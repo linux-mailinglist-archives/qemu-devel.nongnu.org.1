@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D43A24467
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04269A24487
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:11:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyFM-0003vT-5D; Fri, 31 Jan 2025 16:08:16 -0500
+	id 1tdyFN-0004Cl-8t; Fri, 31 Jan 2025 16:08:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEg-0003G9-Fg
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:35 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEm-0003c4-BN
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:43 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEe-0007yV-GS
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:34 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361f65ca01so24928355e9.1
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEk-0007zR-HN
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:40 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-38637614567so1147963f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357651; x=1738962451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357656; x=1738962456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CI3fJcIwv6F5yUs6Iv79OMCJfAeeRwik7915FGrttBI=;
- b=rEt06LynfGHe4Guj8QTrSUZEppvAfhBidMPsLAZ0rQqJ1hzEacpAXq9+CeLTYKD7Xx
- 1syXWW4FvT9NVBEAi8pO2V5Txpf6CPIiuN2+e1fHoNoniP2w7xc3O7gsXE3715flf4t4
- lFvdm/GTwucuoamH9yDAal3pL4npwMGGzKMolxRCjQBxHrmcJxlu2SNNnkfKOTFBAITf
- nzEbh/Quuq2C9Q66fGnskwH32FHr+ZpwEDA8Vt3RQCoccJzbptx3Fa2keHYYfEJYgpUU
- eo51qk1s+hOfZUKXk+OACqdNze33xR6dJigwkmKTDqxzAh9TXkc4HH2DsKUyAP6Il3UE
- WxMA==
+ bh=VwhcEyrTW8SxL1gomr78xxwwBfYGuo9Xtd73z405jUg=;
+ b=cKf9CMFlMp6xGGC2ZNg6hl1p0cGZ1WMzfS1iUUL/UJMaK4QPGNUMsE3v68KqMVrgBz
+ XGehkAgHy4C5zrrNzLpHlCNcokaaVzPI8UeVC+FCvOGTtg1FE3gA65RjAZxOjjdHyJXc
+ Vup01/OTTxwPtTLWdsHVOmnrsDLA7AiguWpYyy1zMQVRqW8DQTKdCg31J6lrXxpo9kwQ
+ DRswJNQfn4Y9fdsBK8b82wgFDtRTsvO3P7i2IFYZEOqPr0RMzTnBs9AhPF2qRjHcopfW
+ 2Ml4Gvm+Vy703/LmSlYpTYzpYJXoX3MxyMwXvJd+KDpC6oVXiuaqGnAw3G5rE/Lky+KR
+ WBkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357651; x=1738962451;
+ d=1e100.net; s=20230601; t=1738357656; x=1738962456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CI3fJcIwv6F5yUs6Iv79OMCJfAeeRwik7915FGrttBI=;
- b=tzD8Jsveva1W4Ld0DNVZfc1WA/pzg52qvAbTGrsUs3sDyj+jMTxqsg21q5mLor02fO
- A4oXt6a+wJoZeaiEytK7FrsOA85b8Smmz11rGNH2IjKvwP4WxWiNNUojfwF1mSZPgU8l
- 1LFuW48wbrqkmDDK3xnr0w7cDBenjMBPg+U6CyEevsl+xVbesz+5YHYollFXxhY0FKDY
- sYgA2gSLS0nsgdV98OyriBZti1Q0XtRwlXt/aNY05pTv6IRdnnEanpG7Z4qh2iLs9RLI
- 4YDOrnRLhRErDnpymvZdBmTw8tyg43OB5uf/gom72EGDjS2xF9tZmNc75/epOEso0luh
- tENA==
-X-Gm-Message-State: AOJu0Yy/67Z1pjlkYYzzSBRRGKs1tn/c13s42GRH9oAozJZQfM7UuB1K
- MaVxQ0zVHiUtBDnkNFWtlRTv3bEkYR+DJHlnnpgM4eOn/ppF2L/XzT8LI9+isftJxc8i3P6yahw
- gkBo=
-X-Gm-Gg: ASbGncsCLj2eW4aUs9nYHuYOPaKlWarXqZkA8xsUOxGXK691VGmInbjcY5vaXXHLxGc
- aV3JAVGLxmlyjkw7k3FeYVJBj8EkSHicErIcCaKr3VHFBR47G80824DBW+n8gZH0Sv3SNGfv7T9
- D1NYl34uQ23UWgbDSFHPuKvXY5V58bkEkB5nScFFtBlkK0904JwdSjq5SEhTaXDKDWdydl36N7/
- PQR6Mj+zeupTvkFSwBWBCBwYQobNYngcphQdg4u3eNBuApwzlAsCY51ubMpbLbMLOSV7pZHjxIB
- 6aZmOB/IkqzJX9Vil1sYUbSof8i+I8rK1LuJMlWaDJ4BN6z8nmGa8M1ck0DHj9o9hg==
-X-Google-Smtp-Source: AGHT+IFoTD1sgynSL111p4mYKna9uh0kOurQLNp4GBb+ts4/konv0H6QitdCc+J7g7fKN1xN4qiuHQ==
-X-Received: by 2002:a05:600c:3c9f:b0:438:a240:c63 with SMTP id
- 5b1f17b1804b1-438dc3aa55emr117422865e9.2.1738357650656; 
- Fri, 31 Jan 2025 13:07:30 -0800 (PST)
+ bh=VwhcEyrTW8SxL1gomr78xxwwBfYGuo9Xtd73z405jUg=;
+ b=cnVCHiebVMfOr/Qqcwxou8ewEYbGHzc17qMTJaRbu1Nchxdwc/FEZ2pjiQ/83Z7BCq
+ cheJbMZW//YmS6C0IfzHi+loaAJgRNXZ2nEJshRU/I4PEcRY07lAWDBRkKSkcjbfv3Dr
+ 1V9OcH/4Qov6F5soQ9gAhrcm6RkvZdzJc0sTeg/eoIhlUWgZg4m+bkcZ78b7WyXsWcY2
+ 8O9gtmW0gPjCZMlDLLYhWNDu5cDa9V3OSPO1WxBxuXdAB9w40cmjO+G9Oo+1hWxb+A+z
+ E6Rtm1cXS6CKT7nGw1mx3dQmBARTzjiC2cRx8kezzel+Igi7WbEOb/RY480X8GHF+rXo
+ voGQ==
+X-Gm-Message-State: AOJu0YwUlqFNM7cYJkwDCItfag9K51x+rDluJJNjH/Kuo6Oyc8T1Mxbw
+ wRsDqjhH9kEPdGjha4qn6S+Ta+hjs2kT5em++btRyfhG7x5afq7ZzMMJfLogVCJjBkuMI+vyIzg
+ W3Bg=
+X-Gm-Gg: ASbGnctN2cGwKVy+tzWh6ezWYysUP8tB77xUx/6GccJOS1tAzjFu+WyssaQfbNvIikt
+ zY+I6Noz7OlfSPnAyXkYvc4UqdbgtftSMQa8MByFgzVq83ZvWJiyDmFnjQbUddckgiGKRDOtHYr
+ Cmi+41S/sa7DnwQOqVL10+M8CyhvIDZh26RB9VC6ek0M0ZA/6JAs8LORkbTVgQZCi+Vu+0Ght+N
+ 2zx6Bnj8qV1LSWRgGTBc3htInAGIQ1EP4JK5xsOiw4DI85EFzOhPBt6719RcdL0uB5aMUjlI5wj
+ ipuDfcSMWOwGFFG1avRFBdH2aQfkDz4ODsL3HkrCB77lRgP2dq3/FhyLAZOSDZmqHA==
+X-Google-Smtp-Source: AGHT+IFNQXg6pB9VnAgLLZCNaPka2MT5qyPvtKPrbcj4GjeQtaudzK7Cgtpr81+uFYtGcdgL8hHX0Q==
+X-Received: by 2002:a5d:588c:0:b0:385:f38e:c0c3 with SMTP id
+ ffacd0b85a97d-38c51930ff6mr10790922f8f.6.1738357656042; 
+ Fri, 31 Jan 2025 13:07:36 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438e23deddcsm66098885e9.14.2025.01.31.13.07.29
+ ffacd0b85a97d-38c5c0ece21sm5529637f8f.20.2025.01.31.13.07.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:07:30 -0800 (PST)
+ Fri, 31 Jan 2025 13:07:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 26/36] hw/sd/omap_mmc: Do a minimal conversion to QDev
-Date: Fri, 31 Jan 2025 22:05:09 +0100
-Message-ID: <20250131210520.85874-27-philmd@linaro.org>
+Subject: [PULL 27/36] hw/sd/omap_mmc: Convert remaining 'struct omap_mmc_s'
+ uses to OMAPMMCState
+Date: Fri, 31 Jan 2025 22:05:10 +0100
+Message-ID: <20250131210520.85874-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,212 +101,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Do a minimal conversion of the omap_mmc device model to QDev.
-
-In this commit we do the bare minimum to produce a working device:
- * add the SysBusDevice parent_obj and the usual type boilerplate
- * omap_mmc_init() now returns a DeviceState*
- * reset is handled by sysbus reset, so the SoC reset function
-   doesn't need to call omap_mmc_reset() any more
- * code that should obviously be in init/realize is moved there
-   from omap_mmc_init()
-
-We leave various pieces of cleanup to later commits:
- * rationalizing 'struct omap_mmc_s *' to 'OMAPMMCState *'
- * using gpio lines rather than having omap_mmc_init() directly
-   set s->irq, s->dma
- * switching away from the legacy SD API and instead having
-   the SD card plugged into a bus
+Mechanically convert the remaining uses of 'struct omap_mmc_s' to
+'OMAPMMCState'.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250128104519.3981448-2-peter.maydell@linaro.org>
-[PMD: Do not add omap_mmc_realize()]
+Message-ID: <20250128104519.3981448-3-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/omap.h | 15 +++++----
- hw/arm/omap1.c        |  1 -
- hw/sd/omap_mmc.c      | 77 ++++++++++++++++++++++++++++++++++---------
- 3 files changed, 70 insertions(+), 23 deletions(-)
+ include/hw/arm/omap.h |  2 +-
+ hw/sd/omap_mmc.c      | 20 ++++++++++----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index 420ed1d5735..6339c5a581e 100644
+index 6339c5a581e..7d1a1afc4f8 100644
 --- a/include/hw/arm/omap.h
 +++ b/include/hw/arm/omap.h
-@@ -529,12 +529,13 @@ struct omap_lcd_panel_s *omap_lcdc_init(MemoryRegion *sysmem,
-                                         omap_clk clk);
+@@ -530,7 +530,7 @@ struct omap_lcd_panel_s *omap_lcdc_init(MemoryRegion *sysmem,
  
  /* omap_mmc.c */
--struct omap_mmc_s;
--struct omap_mmc_s *omap_mmc_init(hwaddr base,
--                MemoryRegion *sysmem,
--                BlockBackend *blk,
--                qemu_irq irq, qemu_irq dma[], omap_clk clk);
--void omap_mmc_reset(struct omap_mmc_s *s);
-+#define TYPE_OMAP_MMC "omap-mmc"
-+OBJECT_DECLARE_SIMPLE_TYPE(omap_mmc_s, OMAP_MMC)
-+
-+DeviceState *omap_mmc_init(hwaddr base,
-+                           MemoryRegion *sysmem,
-+                           BlockBackend *blk,
-+                           qemu_irq irq, qemu_irq dma[], omap_clk clk);
+ #define TYPE_OMAP_MMC "omap-mmc"
+-OBJECT_DECLARE_SIMPLE_TYPE(omap_mmc_s, OMAP_MMC)
++OBJECT_DECLARE_SIMPLE_TYPE(OMAPMMCState, OMAP_MMC)
  
- /* omap_i2c.c */
- I2CBus *omap_i2c_bus(DeviceState *omap_i2c);
-@@ -601,7 +602,7 @@ struct omap_mpu_state_s {
-     /* MPU public TIPB peripherals */
-     struct omap_32khz_timer_s *os_timer;
- 
--    struct omap_mmc_s *mmc;
-+    DeviceState *mmc;
- 
-     struct omap_mpuio_s *mpuio;
- 
-diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
-index f3a0ac40e48..ea07b9aa31e 100644
---- a/hw/arm/omap1.c
-+++ b/hw/arm/omap1.c
-@@ -3716,7 +3716,6 @@ static void omap1_mpu_reset(void *opaque)
-     omap_uart_reset(mpu->uart[0]);
-     omap_uart_reset(mpu->uart[1]);
-     omap_uart_reset(mpu->uart[2]);
--    omap_mmc_reset(mpu->mmc);
-     omap_mpuio_reset(mpu->mpuio);
-     omap_uwire_reset(mpu->microwire);
-     omap_pwl_reset(mpu->pwl);
+ DeviceState *omap_mmc_init(hwaddr base,
+                            MemoryRegion *sysmem,
 diff --git a/hw/sd/omap_mmc.c b/hw/sd/omap_mmc.c
-index 1d4e30e6b7b..fec2cfd4d66 100644
+index fec2cfd4d66..0f17479ecb8 100644
 --- a/hw/sd/omap_mmc.c
 +++ b/hw/sd/omap_mmc.c
-@@ -21,11 +21,15 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/log.h"
-+#include "qapi/error.h"
- #include "hw/irq.h"
-+#include "hw/sysbus.h"
+@@ -27,7 +27,7 @@
  #include "hw/arm/omap.h"
  #include "hw/sd/sdcard_legacy.h"
  
--struct omap_mmc_s {
-+typedef struct omap_mmc_s {
-+    SysBusDevice parent_obj;
-+
-     qemu_irq irq;
-     qemu_irq *dma;
-     qemu_irq coverswitch;
-@@ -66,7 +70,7 @@ struct omap_mmc_s {
-     int cdet_enable;
-     int cdet_state;
-     qemu_irq cdet;
--};
-+} OMAPMMCState;
+-typedef struct omap_mmc_s {
++typedef struct OMAPMMCState {
+     SysBusDevice parent_obj;
  
- static void omap_mmc_interrupts_update(struct omap_mmc_s *s)
+     qemu_irq irq;
+@@ -72,12 +72,12 @@ typedef struct omap_mmc_s {
+     qemu_irq cdet;
+ } OMAPMMCState;
+ 
+-static void omap_mmc_interrupts_update(struct omap_mmc_s *s)
++static void omap_mmc_interrupts_update(OMAPMMCState *s)
  {
-@@ -297,7 +301,7 @@ static void omap_mmc_pseudo_reset(struct omap_mmc_s *host)
+     qemu_set_irq(s->irq, !!(s->status & s->mask));
+ }
+ 
+-static void omap_mmc_fifolevel_update(struct omap_mmc_s *host)
++static void omap_mmc_fifolevel_update(OMAPMMCState *host)
+ {
+     if (!host->transfer && !host->fifo_len) {
+         host->status &= 0xf3ff;
+@@ -125,7 +125,7 @@ typedef enum {
+     SD_TYPE_ADTC = 3,   /* addressed with data transfer */
+ } MMCCmdType;
+ 
+-static void omap_mmc_command(struct omap_mmc_s *host, int cmd, int dir,
++static void omap_mmc_command(OMAPMMCState *host, int cmd, int dir,
+                              MMCCmdType type, int busy,
+                              sd_rsp_type_t resptype, int init)
+ {
+@@ -234,7 +234,7 @@ static void omap_mmc_command(struct omap_mmc_s *host, int cmd, int dir,
+         host->status |= 0x0001;
+ }
+ 
+-static void omap_mmc_transfer(struct omap_mmc_s *host)
++static void omap_mmc_transfer(OMAPMMCState *host)
+ {
+     uint8_t value;
+ 
+@@ -289,19 +289,19 @@ static void omap_mmc_transfer(struct omap_mmc_s *host)
+ 
+ static void omap_mmc_update(void *opaque)
+ {
+-    struct omap_mmc_s *s = opaque;
++    OMAPMMCState *s = opaque;
+     omap_mmc_transfer(s);
+     omap_mmc_fifolevel_update(s);
+     omap_mmc_interrupts_update(s);
+ }
+ 
+-static void omap_mmc_pseudo_reset(struct omap_mmc_s *host)
++static void omap_mmc_pseudo_reset(OMAPMMCState *host)
+ {
+     host->status = 0;
      host->fifo_len = 0;
  }
  
--void omap_mmc_reset(struct omap_mmc_s *host)
-+static void omap_mmc_reset(struct omap_mmc_s *host)
+-static void omap_mmc_reset(struct omap_mmc_s *host)
++static void omap_mmc_reset(OMAPMMCState *host)
  {
      host->last_cmd = 0;
      memset(host->rsp, 0, sizeof(host->rsp));
-@@ -328,7 +332,9 @@ void omap_mmc_reset(struct omap_mmc_s *host)
-      * into any bus, and we must reset it manually. When omap_mmc is
-      * QOMified this must move into the QOM reset function.
-      */
--    device_cold_reset(DEVICE(host->card));
-+    if (host->card) {
-+        device_cold_reset(DEVICE(host->card));
-+    }
- }
- 
+@@ -340,7 +340,7 @@ static void omap_mmc_reset(struct omap_mmc_s *host)
  static uint64_t omap_mmc_read(void *opaque, hwaddr offset, unsigned size)
-@@ -583,29 +589,70 @@ static const MemoryRegionOps omap_mmc_ops = {
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
- 
--struct omap_mmc_s *omap_mmc_init(hwaddr base,
--                MemoryRegion *sysmem,
--                BlockBackend *blk,
--                qemu_irq irq, qemu_irq dma[], omap_clk clk)
-+DeviceState *omap_mmc_init(hwaddr base,
-+                           MemoryRegion *sysmem,
-+                           BlockBackend *blk,
-+                           qemu_irq irq, qemu_irq dma[], omap_clk clk)
  {
--    struct omap_mmc_s *s = g_new0(struct omap_mmc_s, 1);
-+    DeviceState *dev;
-+    OMAPMMCState *s;
-+
-+    dev = qdev_new(TYPE_OMAP_MMC);
-+    s = OMAP_MMC(dev);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(s), &error_fatal);
+     uint16_t i;
+-    struct omap_mmc_s *s = opaque;
++    OMAPMMCState *s = opaque;
  
-     s->irq = irq;
-     s->dma = dma;
-     s->clk = clk;
--    s->lines = 1;	/* TODO: needs to be settable per-board */
--    s->rev = 1;
+     if (size != 2) {
+         return omap_badwidth_read16(opaque, offset);
+@@ -433,7 +433,7 @@ static void omap_mmc_write(void *opaque, hwaddr offset,
+                            uint64_t value, unsigned size)
+ {
+     int i;
+-    struct omap_mmc_s *s = opaque;
++    OMAPMMCState *s = opaque;
  
--    memory_region_init_io(&s->iomem, NULL, &omap_mmc_ops, s, "omap.mmc", 0x800);
--    memory_region_add_subregion(sysmem, base, &s->iomem);
-+    memory_region_add_subregion(sysmem, base,
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(s), 0));
- 
-     /* Instantiate the storage */
-     s->card = sd_init(blk, false);
-     if (s->card == NULL) {
-         exit(1);
-     }
-+    return dev;
-+}
-+
-+static void omap_mmc_reset_hold(Object *obj, ResetType type)
-+{
-+    OMAPMMCState *s = OMAP_MMC(obj);
- 
-     omap_mmc_reset(s);
--
--    return s;
- }
-+
-+static void omap_mmc_initfn(Object *obj)
-+{
-+    OMAPMMCState *s = OMAP_MMC(obj);
-+
-+    /* In theory these could be settable per-board */
-+    s->lines = 1;
-+    s->rev = 1;
-+
-+    memory_region_init_io(&s->iomem, obj, &omap_mmc_ops, s, "omap.mmc", 0x800);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem);
-+}
-+
-+static void omap_mmc_class_init(ObjectClass *oc, void *data)
-+{
-+    ResettableClass *rc = RESETTABLE_CLASS(oc);
-+
-+    rc->phases.hold = omap_mmc_reset_hold;
-+}
-+
-+static const TypeInfo omap_mmc_info = {
-+    .name = TYPE_OMAP_MMC,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(OMAPMMCState),
-+    .instance_init = omap_mmc_initfn,
-+    .class_init = omap_mmc_class_init,
-+};
-+
-+static void omap_mmc_register_types(void)
-+{
-+    type_register_static(&omap_mmc_info);
-+}
-+
-+type_init(omap_mmc_register_types)
+     if (size != 2) {
+         omap_badwidth_write16(opaque, offset, value);
 -- 
 2.47.1
 
