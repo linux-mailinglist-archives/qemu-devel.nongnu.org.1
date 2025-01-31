@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D29DA24473
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEABA24464
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:08:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyFO-0004WG-Ll; Fri, 31 Jan 2025 16:08:18 -0500
+	id 1tdyFP-0004aO-GW; Fri, 31 Jan 2025 16:08:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEr-0003rF-LC
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:46 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEw-0003zA-17
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:53 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEp-000800-SF
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:45 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-436326dcb1cso17109405e9.0
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEt-00080G-UH
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:49 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3862f32a33eso1117190f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357661; x=1738962461; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357666; x=1738962466; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9N3BSf00evn14ZysC8qEFhKlpze4TdqYVBorbd99L/M=;
- b=sdGyFc0CmYnQqi/Je3YzWxOIULzDfVU9t6pvwugIST4rLP+V0gKCqDTot0Fz+yolyZ
- Y+6PzScqHzYTE3e5zgHFHzOfLSaes14iHxdJClwrasLD02zn9ZZ/ygJ0Qez9JwniZdgx
- y8lQL6z2b39iuV5kCX5Ltg5KDla/Jzy5n4d745j/SQ89Sz/TFPaHRVu1WPImwl8Oyz8e
- 9iqeiWHmiLXwjhGEN0pltcYdtVSzWQCP0uZeEyNUEdKVg3oEmsAA2+rTKyGR2ibfBx40
- gAvB+9BTSlaojWgnoLYG2t8ideKetJTxz45CsOByTBl/9djrhonOJEeVEHFqhqkEorUA
- nOsw==
+ bh=q41kF9LgoBzRCfJNt+CSBeq/VMhGxdw7fo0GoRWO1As=;
+ b=NGE+sNmr6JRn4fRmIgAjcn2cGEKKT0IsJsVbLR866NbE27uHMNFYY2ZYeP6JWB4+3f
+ HOjraJY0S6GsRZ+XWSFFUlfnGN8rUyQSOUb3Q9AFdcQsU+NLIZwJuI5ruCNGdI0ctaER
+ Wexa04QqdDZWaS4x+5wcDzvQTK4MIzgnFv1st30kg2vBxz9KOwpkbpw1PPlEBV3ohjP3
+ gg+whBYttgxaw25fXNYTifsbeyxUtcY8aaok7iUAMmC4nL+i9kMGKlr/5GJjUCXC6sn4
+ i6zpQuZEhBYN5kaNZbO0mYnHrM6xc+YAexaSQpxlWa887tRkaSG2DVERIqooK+Vf7qsb
+ ugig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357661; x=1738962461;
+ d=1e100.net; s=20230601; t=1738357666; x=1738962466;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9N3BSf00evn14ZysC8qEFhKlpze4TdqYVBorbd99L/M=;
- b=PNApABcx1pHksLn1ghqBVzhMQlJ4TPR2aWDLWPfqtzscdm6rXLVFebxMXT8kjrweoq
- FRqlslGZZLaLnx/a9rKfzlboskcI5NEAdNx5mEgdEl47HqATponT9VLUojCEs0guAxPO
- hVa0bB91s+PM7P1P1JC5A7aGrpfLgxX+oY+YXOpkdRk0xIhW8OGhdZIREEDhdJHawYA9
- kx1sKQ4VXAbNQLJtewUr/ZSvbEwEMnzHOjz0Joh3HQi/1HDTQsOzR0FyWh+XH6uOnsyA
- jrVtB/TqYxE1OaM1yF844ymUriUrNuZ2qNwKBt6hH/ad1z46NRHZxfpTOVupqX9O+6Ne
- jnjQ==
-X-Gm-Message-State: AOJu0Yw6P/BiUKuGrX3bdFVqaeHr3jzqpO0yJqgQO6SgfhTDysDVHEAW
- 4mES14aB7p9RpGRryZiLXZ1DyxTklOGIA2WH2Om6oR/DEw5QAGpqALNWCvQMAg3GBuF3cMujsyH
- 3Hz0=
-X-Gm-Gg: ASbGnctnMPP/ynpsUVuxc3PBqLsS1yBjURnV2fqZPFv8r5SaMupvuk/IAG/raV6p1eK
- +RYVPHIetN1XAOKGU8C3PksxfFe7TYorpoYtyxtuGzoPwbDHa87xEg290Edre+YB89aaN5ZzLxs
- 4073ob3A9+zGIofDA0TcbCJEMqqfHfLBQpCkSfjjkSIfvut0W/vRH6rZIYqulCaeIxCd1mO1F71
- ZV1Tq0FWZ6UHU0fKkskcyx1OxaqDwtYqsFquLfUu3sm5JpLe9eWdKJwKtDgkVQDrUzSV8TyAp2U
- U5Ln9bM5yHIdCI/XYb+y6x/QAAgudDBgxWqMiXVnqZf2apDfB9MXQwULGt8yRJGscw==
-X-Google-Smtp-Source: AGHT+IFRST/9omdZJm2MHvHuuTxqfsIl7UbubeL0ZfHynfJ/kEb36QvOKpfLeLFbWOub4LA5fEkTGA==
-X-Received: by 2002:a5d:5384:0:b0:38a:8ed1:c5c7 with SMTP id
- ffacd0b85a97d-38c520bdb45mr8449662f8f.46.1738357661386; 
- Fri, 31 Jan 2025 13:07:41 -0800 (PST)
+ bh=q41kF9LgoBzRCfJNt+CSBeq/VMhGxdw7fo0GoRWO1As=;
+ b=t7xTOTTmJ6KlIe11KlqQw4ZT+4uFsohnDHJf9A2jjJZH714u1j5r83YEbzowdKPHr0
+ ET5ASVSg9CPGI/UZCXs6/LUXC5/hlPj9pxqAlJm3JnVX2da+I3nMr8Ard42Ly5GK1KIw
+ Kq3CeOVpj6WAQDksr0YB/ymQNO+wDnqMqpEqQuUugRb3YmqHBzFCaGvuSp78w+bIAtQ1
+ ZYJt4B91N4K98WV7Ah5v0Ah8QTNhGsPpLGkjFfvpLWDKsArBFp1TfHrjetEcg53nHNRh
+ DvsRNyRkl37+QZ6A8MSb1yYHg5IXo6f/h2gwbP8ltuOx5/JWxkIoA16vohIhegH+o0+d
+ Odnw==
+X-Gm-Message-State: AOJu0YyDWPbGbfdihf7P/Mt1d0MzSWsGD2Idx/2wiYPSDY9EOr0BHRG9
+ RksjZEIQCMkNM5n52KihJg9Q5qzXlAvBwVj7DI5KWvV9fZFMFLO+XE/CL3VU/+rNpH6TULQFlJH
+ fM90=
+X-Gm-Gg: ASbGncspfIX6wNxn07NXjHTApbrXKKKQTdb/SHvj3KhRe14ZKo4W7g0u0jicw6HVFVw
+ lJKB0Xac0lC34/WT1QWLObUQnBzXGAf98NSSFNmtL29ZJLtME+M2MOVUM3XgAmJDFsKnPrXYxc5
+ Ev5MWE7TkVeW1A5lZcDoP14X8fYeRcDqB0cmOzdQH+ozBcFnkRTYAy7bQmDTfHkHHGGIP1EnFDS
+ pIDgzzC4R367MGj874/ecCNfQCW9l7sLnNqwrVRGP1Yr/Bp+zMCAtfyj7SkT9M/1NpUwQWGZjgf
+ 1BCLCAVKNey6/DPE/bWq+JmoYq/vlN8UD994Fwl79xPEBIEo2JsQk5Lr3BLh74CTdA==
+X-Google-Smtp-Source: AGHT+IEJ/1Zl7byyR7cLni8lU7uFN5y+imbzzFfaJRVS59j1t2UlYtaM+pGSx2fY8nqSsRJLFQF/ig==
+X-Received: by 2002:a05:6000:188b:b0:385:f2a2:50df with SMTP id
+ ffacd0b85a97d-38c5195f498mr12239186f8f.27.1738357665967; 
+ Fri, 31 Jan 2025 13:07:45 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c102bc0sm5656665f8f.35.2025.01.31.13.07.39
+ ffacd0b85a97d-38c5c139f15sm5640733f8f.59.2025.01.31.13.07.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:07:40 -0800 (PST)
+ Fri, 31 Jan 2025 13:07:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/36] hw/sd/omap_mmc: Convert output qemu_irqs to gpio and
- sysbus IRQ APIs
-Date: Fri, 31 Jan 2025 22:05:11 +0100
-Message-ID: <20250131210520.85874-29-philmd@linaro.org>
+Subject: [PULL 29/36] hw/sd/omap_mmc: Convert to SDBus API
+Date: Fri, 31 Jan 2025 22:05:12 +0100
+Message-ID: <20250131210520.85874-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,87 +99,175 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The omap_mmc device has three outbound qemu_irq lines:
- * one actual interrupt line
- * two which connect to the DMA controller and are signalled for
-   TX and RX DMA
-
-Convert these to a sysbus IRQ and two named GPIO outputs.
+Convert the OMAP MMC controller to the new SDBus API:
+ * the controller creates an SDBus bus
+ * instead of sd_foo functions on the SDState object, call
+   sdbus_foo functions on the SDBus
+ * the board code creates a proper TYPE_SD_CARD object and attaches
+   it to the controller's SDBus, instead of the controller creating
+   a card directly via sd_init() that never gets attached to any bus
+ * because the SD card object is on a bus, it gets reset automatically
+   by the "traverse the qbus tree resetting things" code, and we don't
+   need to manually reset the card from the controller reset function
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250128104519.3981448-4-peter.maydell@linaro.org>
+Message-ID: <20250128104519.3981448-5-peter.maydell@linaro.org>
+[PMD: Include "hw/sd/sd.h" instead of "hw/sd/sdcard_legacy.h",
+      create bus in omap_mmc_initfn() instead of omap_mmc_realize()]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/omap_mmc.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ include/hw/arm/omap.h |  1 -
+ hw/arm/omap1.c        | 10 +++++++++-
+ hw/sd/omap_mmc.c      | 31 ++++++++++---------------------
+ 3 files changed, 19 insertions(+), 23 deletions(-)
 
+diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
+index 7d1a1afc4f8..d20c55a8957 100644
+--- a/include/hw/arm/omap.h
++++ b/include/hw/arm/omap.h
+@@ -534,7 +534,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(OMAPMMCState, OMAP_MMC)
+ 
+ DeviceState *omap_mmc_init(hwaddr base,
+                            MemoryRegion *sysmem,
+-                           BlockBackend *blk,
+                            qemu_irq irq, qemu_irq dma[], omap_clk clk);
+ 
+ /* omap_i2c.c */
+diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
+index ea07b9aa31e..15ba0a0d0c4 100644
+--- a/hw/arm/omap1.c
++++ b/hw/arm/omap1.c
+@@ -29,6 +29,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/arm/boot.h"
+ #include "hw/arm/omap.h"
++#include "hw/sd/sd.h"
+ #include "system/blockdev.h"
+ #include "system/system.h"
+ #include "hw/arm/soc_dma.h"
+@@ -3981,11 +3982,18 @@ struct omap_mpu_state_s *omap310_mpu_init(MemoryRegion *dram,
+         warn_report("missing SecureDigital device");
+     }
+     s->mmc = omap_mmc_init(0xfffb7800, system_memory,
+-                           dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
+                            qdev_get_gpio_in(s->ih[1], OMAP_INT_OQN),
+                            &s->drq[OMAP_DMA_MMC_TX],
+                     omap_findclk(s, "mmc_ck"));
+ 
++    if (dinfo) {
++        DeviceState *card = qdev_new(TYPE_SD_CARD);
++        qdev_prop_set_drive_err(card, "drive", blk_by_legacy_dinfo(dinfo),
++                                &error_fatal);
++        qdev_realize_and_unref(card, qdev_get_child_bus(s->mmc, "sd-bus"),
++                               &error_fatal);
++    }
++
+     s->mpuio = omap_mpuio_init(system_memory, 0xfffb5000,
+                                qdev_get_gpio_in(s->ih[1], OMAP_INT_KEYBOARD),
+                                qdev_get_gpio_in(s->ih[1], OMAP_INT_MPUIO),
 diff --git a/hw/sd/omap_mmc.c b/hw/sd/omap_mmc.c
-index 0f17479ecb8..43203a76c58 100644
+index 43203a76c58..1bc8290f9d6 100644
 --- a/hw/sd/omap_mmc.c
 +++ b/hw/sd/omap_mmc.c
-@@ -31,7 +31,8 @@ typedef struct OMAPMMCState {
+@@ -25,18 +25,19 @@
+ #include "hw/irq.h"
+ #include "hw/sysbus.h"
+ #include "hw/arm/omap.h"
+-#include "hw/sd/sdcard_legacy.h"
++#include "hw/sd/sd.h"
+ 
+ typedef struct OMAPMMCState {
      SysBusDevice parent_obj;
  
++    SDBus sdbus;
++
      qemu_irq irq;
--    qemu_irq *dma;
-+    qemu_irq dma_tx_gpio;
-+    qemu_irq dma_rx_gpio;
+     qemu_irq dma_tx_gpio;
+     qemu_irq dma_rx_gpio;
      qemu_irq coverswitch;
      MemoryRegion iomem;
      omap_clk clk;
-@@ -87,22 +88,22 @@ static void omap_mmc_fifolevel_update(OMAPMMCState *host)
-     if (host->fifo_len > host->af_level && host->ddir) {
-         if (host->rx_dma) {
-             host->status &= 0xfbff;
--            qemu_irq_raise(host->dma[1]);
-+            qemu_irq_raise(host->dma_rx_gpio);
-         } else
-             host->status |= 0x0400;
-     } else {
-         host->status &= 0xfbff;
--        qemu_irq_lower(host->dma[1]);
-+        qemu_irq_lower(host->dma_rx_gpio);
-     }
+-    SDState *card;
+     uint16_t last_cmd;
+     uint16_t sdio;
+     uint16_t rsp[8];
+@@ -158,7 +159,7 @@ static void omap_mmc_command(OMAPMMCState *host, int cmd, int dir,
+     request.arg = host->arg;
+     request.crc = 0; /* FIXME */
  
-     if (host->fifo_len < host->ae_level && !host->ddir) {
-         if (host->tx_dma) {
-             host->status &= 0xf7ff;
--            qemu_irq_raise(host->dma[0]);
-+            qemu_irq_raise(host->dma_tx_gpio);
-         } else
-             host->status |= 0x0800;
-     } else {
--        qemu_irq_lower(host->dma[0]);
-+        qemu_irq_lower(host->dma_tx_gpio);
-         host->status &= 0xf7ff;
-     }
+-    rsplen = sd_do_command(host->card, &request, response);
++    rsplen = sdbus_do_command(&host->sdbus, &request, response);
+ 
+     /* TODO: validate CRCs */
+     switch (resptype) {
+@@ -247,10 +248,10 @@ static void omap_mmc_transfer(OMAPMMCState *host)
+             if (host->fifo_len > host->af_level)
+                 break;
+ 
+-            value = sd_read_byte(host->card);
++            value = sdbus_read_byte(&host->sdbus);
+             host->fifo[(host->fifo_start + host->fifo_len) & 31] = value;
+             if (-- host->blen_counter) {
+-                value = sd_read_byte(host->card);
++                value = sdbus_read_byte(&host->sdbus);
+                 host->fifo[(host->fifo_start + host->fifo_len) & 31] |=
+                         value << 8;
+                 host->blen_counter --;
+@@ -262,10 +263,10 @@ static void omap_mmc_transfer(OMAPMMCState *host)
+                 break;
+ 
+             value = host->fifo[host->fifo_start] & 0xff;
+-            sd_write_byte(host->card, value);
++            sdbus_write_byte(&host->sdbus, value);
+             if (-- host->blen_counter) {
+                 value = host->fifo[host->fifo_start] >> 8;
+-                sd_write_byte(host->card, value);
++                sdbus_write_byte(&host->sdbus, value);
+                 host->blen_counter --;
+             }
+ 
+@@ -328,14 +329,6 @@ static void omap_mmc_reset(OMAPMMCState *host)
+     host->clkdiv = 0;
+ 
+     omap_mmc_pseudo_reset(host);
+-
+-    /* Since we're still using the legacy SD API the card is not plugged
+-     * into any bus, and we must reset it manually. When omap_mmc is
+-     * QOMified this must move into the QOM reset function.
+-     */
+-    if (host->card) {
+-        device_cold_reset(DEVICE(host->card));
+-    }
  }
-@@ -601,12 +602,13 @@ DeviceState *omap_mmc_init(hwaddr base,
-     s = OMAP_MMC(dev);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(s), &error_fatal);
  
--    s->irq = irq;
--    s->dma = dma;
-     s->clk = clk;
+ static uint64_t omap_mmc_read(void *opaque, hwaddr offset, unsigned size)
+@@ -592,7 +585,6 @@ static const MemoryRegionOps omap_mmc_ops = {
  
-     memory_region_add_subregion(sysmem, base,
-                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(s), 0));
-+    qdev_connect_gpio_out_named(dev, "dma-tx", 0, dma[0]);
-+    qdev_connect_gpio_out_named(dev, "dma-rx", 0, dma[1]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq);
+ DeviceState *omap_mmc_init(hwaddr base,
+                            MemoryRegion *sysmem,
+-                           BlockBackend *blk,
+                            qemu_irq irq, qemu_irq dma[], omap_clk clk)
+ {
+     DeviceState *dev;
+@@ -610,11 +602,6 @@ DeviceState *omap_mmc_init(hwaddr base,
+     qdev_connect_gpio_out_named(dev, "dma-rx", 0, dma[1]);
+     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq);
  
-     /* Instantiate the storage */
-     s->card = sd_init(blk, false);
-@@ -633,6 +635,10 @@ static void omap_mmc_initfn(Object *obj)
+-    /* Instantiate the storage */
+-    s->card = sd_init(blk, false);
+-    if (s->card == NULL) {
+-        exit(1);
+-    }
+     return dev;
+ }
  
-     memory_region_init_io(&s->iomem, obj, &omap_mmc_ops, s, "omap.mmc", 0x800);
-     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem);
+@@ -639,6 +626,8 @@ static void omap_mmc_initfn(Object *obj)
+     sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
+     qdev_init_gpio_out_named(DEVICE(obj), &s->dma_tx_gpio, "dma-tx", 1);
+     qdev_init_gpio_out_named(DEVICE(obj), &s->dma_rx_gpio, "dma-rx", 1);
 +
-+    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
-+    qdev_init_gpio_out_named(DEVICE(obj), &s->dma_tx_gpio, "dma-tx", 1);
-+    qdev_init_gpio_out_named(DEVICE(obj), &s->dma_rx_gpio, "dma-rx", 1);
++    qbus_init(&s->sdbus, sizeof(s->sdbus), TYPE_SD_BUS, DEVICE(obj), "sd-bus");
  }
  
  static void omap_mmc_class_init(ObjectClass *oc, void *data)
