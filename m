@@ -2,66 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34265A23D5B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 12:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC362A23D9D
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 13:20:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdpZY-0004y5-Mn; Fri, 31 Jan 2025 06:52:32 -0500
+	id 1tdpzh-00025l-3r; Fri, 31 Jan 2025 07:19:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tdpZV-0004xi-IY
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 06:52:29 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tdpZT-0003Jl-33
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 06:52:29 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YkvPV01Mbz6K5ny;
- Fri, 31 Jan 2025 19:51:42 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 7BE32140155;
- Fri, 31 Jan 2025 19:52:23 +0800 (CST)
-Received: from localhost (10.195.244.178) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 31 Jan
- 2025 12:52:22 +0100
-Date: Fri, 31 Jan 2025 11:52:20 +0000
-To: Zhi Wang <zhiw@nvidia.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave.jiang@intel.com"
- <dave.jiang@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "fan.ni@samsung.com" <fan.ni@samsung.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "alucerop@amd.com" <alucerop@amd.com>,
- "clg@redhat.com" <clg@redhat.com>, Andy Currid <ACurrid@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Surath Mitra <smitra@nvidia.com>, Ankit Agrawal
- <ankita@nvidia.com>, Aniket Agashe <aniketa@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
- "zhiwang@kernel.org" <zhiwang@kernel.org>
-Subject: Re: [PATCH 3/3] hw/cxl: introduce CXL type-2 device emulation
-Message-ID: <20250131115220.0000625c@huawei.com>
-In-Reply-To: <8d08ab33-d989-4209-b137-a6991c7af415@nvidia.com>
-References: <20241212130422.69380-1-zhiw@nvidia.com>
- <20241212130422.69380-4-zhiw@nvidia.com>
- <20250121161610.000025af@huawei.com>
- <8d08ab33-d989-4209-b137-a6991c7af415@nvidia.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tdpze-00025E-8D
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 07:19:30 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tdpzc-0003hl-7e
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 07:19:29 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-ab70043cd05so118923166b.0
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 04:19:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738325964; x=1738930764; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ue4CKSaxIpbWuDuLGY4HpEtFZBoTtmI8ffUDc2Q1oVk=;
+ b=OMPINKoJko/wLHSYjYeb6e/b4Nw4arZwsKZzXnR/H2cI+QM7J5fg7nXGpeWBOGZN/R
+ i5ZjjYBsSiTkFcbQ1FuPQ8yCMJmHRRnovEt6aS+JxNwhB73ZHyd0llmgaEEOf9gtyv5B
+ YkarB98T0HgzcooQoKIEUNF0DAdNriR2x9ByNzLPAl1T2JGuCqs9UmEdFxTHdwyLJhTq
+ g7zHI7ueeHY5Niw3aqbNUuVY9/3gBe05cZrzyEpKr9ymzIiadBHML1FtlCAZFzed0CYh
+ Hk5YxdK44tBUCoUdzwKqLpxtAq4MbrMuSECK/XeJt0utg3qg6MZ09tLGLK+nplQpHHRT
+ U5aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738325964; x=1738930764;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Ue4CKSaxIpbWuDuLGY4HpEtFZBoTtmI8ffUDc2Q1oVk=;
+ b=twPMW1o3bD9O7KuJHdn0gZtFYmXWQlHb2srGgQ3IwrVjYZkkvkp8Hj148gz3zMjBMV
+ clgzVcz/cc1vClktGojCzQ6nPn1mP6RgWYPzdUtXNDgvUSHoLtC8smSO25qnrBz0J7NM
+ 6ykTJ0Xw3Gvixtw0OIR0LsaAWIcY+9b2zvQkjh+h5g2KCAY0pOk/266LkgjE2LjeuHTy
+ kB0kDRy37+cuIy35L2EmIapKKnb1v8v79RlbukltcwhxKDNRIgHWPpEl8Dq+T9uxBTsi
+ DBrANZLqNHK3U2LbvTw+LsDJl34UZbKpCL0rmKbRjUOYWXuJRpBIGvLjktKQpb0iSYWp
+ ICrA==
+X-Gm-Message-State: AOJu0YzkDxXnJidkd4xI4xoFkvW5+bza3oAG9ymPWq/Ye8cQIFnNOBs6
+ lItxuO3ZTFev2eXgx6oncmdfLJoLcuXzKA2eCz5pBDKazqzzjiu4RCFBFPFLvic=
+X-Gm-Gg: ASbGncsBSo4j8yroLeJ3ZMXTsYJ9YXqw0PZEc67Irk60Pv045VJuk0mLenLom4lcCzy
+ Y/DItV4Uz/m2sTkqq9OfP0yZnITILzG7HiVXIKIAYudKfKu27JnVmQE+YBo4DxotuFCskSxQSAX
+ 2AsPj15g4wy+H5LTzklOBTqDfTacJhpjzpBpQCpzUKFwwTm0XgiY/oNtfKed+EXW+HxfXKoVzoo
+ im3/58GSmuztKG2xIPrkDD3WDRFDvLB/8zfXEZtt2PJKN+2OHHW1hJx7DNwbpFcIHdMqWLm8UgT
+ 1MtQggdLzDnEMSYFlw==
+X-Google-Smtp-Source: AGHT+IEmHDcEImIvrclUA/qAU5cmhVTzbUXS1iMJBfJNnav8qnNInKxAVTpiX3i7xRFS8f3+RizPOQ==
+X-Received: by 2002:a17:907:968f:b0:ab6:cf9c:584a with SMTP id
+ a640c23a62f3a-ab6cfce8973mr1202703766b.15.1738325963889; 
+ Fri, 31 Jan 2025 04:19:23 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab6e49ffd63sm288208366b.94.2025.01.31.04.19.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 31 Jan 2025 04:19:23 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 332B95F93F;
+ Fri, 31 Jan 2025 12:19:22 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
+ pbonzini@redhat.com,  imp@bsdimp.com,  kevans@freebsd.org,
+ gaosong@loongson.cn,  laurent@vivier.eu
+Subject: Re: [PATCH 4/6] tcg:tlb: use tcg_debug_assert() in
+ assert_cpu_is_self()
+In-Reply-To: <20250129134436.1240740-5-imammedo@redhat.com> (Igor Mammedov's
+ message of "Wed, 29 Jan 2025 14:44:34 +0100")
+References: <20250129134436.1240740-1-imammedo@redhat.com>
+ <20250129134436.1240740-5-imammedo@redhat.com>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Fri, 31 Jan 2025 12:19:22 +0000
+Message-ID: <8734gz2n1x.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.195.244.178]
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,70 +101,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Igor Mammedov <imammedo@redhat.com> writes:
 
-> >> +static void cxl_accel_class_init(ObjectClass *oc, void *data)
-> >> +{
-> >> +    DeviceClass *dc = DEVICE_CLASS(oc);
-> >> +    PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
-> >> +
-> >> +    pc->realize = cxl_accel_realize;
-> >> +    pc->exit = cxl_accel_exit;
-> >> +
-> >> +    pc->class_id = PCI_CLASS_CXL_QEMU_ACCEL;
-> >> +    pc->vendor_id = PCI_VENDOR_ID_INTEL;
-> >> +    pc->device_id = 0xd94;  
-> >  
-> 
-> The IDs are mostly from Ira's original T2 emulated device patches.
-> I will take a look to see if there is a better option for this.
+> that will enable assert_cpu_is_self when QEMU is configured with
+>    --enable-debug
+> without need for manual patching DEBUG_TLB_GATE define.
+>
+> Need to manually path DEBUG_TLB_GATE define to enable assert,
+> let regression caused by [1] creep in unnoticed.
+>
+> 1) 30933c4fb4f3d ("tcg/cputlb: remove other-cpu capability from TLB flush=
+ing")
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> Suggested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+>  accel/tcg/cputlb.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+>
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index b4ccf0cdcb..71207d6dbf 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -61,8 +61,8 @@
+>  #  define DEBUG_TLB_LOG_GATE 0
+>  # endif
+>  #else
+> -# define DEBUG_TLB_GATE 0
+> -# define DEBUG_TLB_LOG_GATE 0
+> +# define DEBUG_TLB_GATE 1
+> +# define DEBUG_TLB_LOG_GATE 1
+>  #endif
 
-I pinged Ira and you on the CXL discord.  May be fine to use this
-and save you figuring out who in holds the magic list at NVidia
-and persuading them to let you have one ;)
+This shouldn't be changed because it still gates the much more expensive
+tlb_debug() which hasn't yet been converted to trace points.
 
-> 
-> > If you are posting these I hope you have those IDs reserved
-> > (which seems unlikely ;)
-> > We need to be absolutely sure we never hit an existing ID which generally
-> > means you need to find whoever controls those allocations in your company
-> > and get them to give you an ID for this.
-> >  
-> >> +    pc->revision = 1;
-> >> +
-> >> +    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
-> >> +    dc->desc = "CXL Accelerator Device (Type 2)";
-> >> +    device_class_set_legacy_reset(dc, cxl_accel_reset);
-> >> +    device_class_set_props(dc, cxl_accel_props);
-> >> +}  
-> >  
-> >>   void cxl_event_init(CXLDeviceState *cxlds, int start_msg_num);
-> >> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
-> >> index f1a53fea8d..08bc469316 100644
-> >> --- a/include/hw/pci/pci_ids.h
-> >> +++ b/include/hw/pci/pci_ids.h
-> >> @@ -55,6 +55,7 @@
-> >>   #define PCI_CLASS_MEMORY_RAM             0x0500
-> >>   #define PCI_CLASS_MEMORY_FLASH           0x0501
-> >>   #define PCI_CLASS_MEMORY_CXL             0x0502
-> >> +#define PCI_CLASS_CXL_QEMU_ACCEL         0x0503  
-> >
-> > Either this is a real device class (which seems unlikely given the name)
-> > or you need to choose something else.  PCI maintains a big list of
-> > class codes and currently 0x0502 is the highest one define in baseclass 05h
-> > (memory controllers)
-> >
-> > https://members.pcisig.com/wg/PCI-SIG/document/20113
-> > (behind a pcisig login)
-> >  
-> >>   #define PCI_CLASS_MEMORY_OTHER           0x0580
-> >>
-> >>   #define PCI_BASE_CLASS_BRIDGE            0x06  
-> >  
-> 
+>=20=20
+>  #define tlb_debug(fmt, ...) do { \
+> @@ -74,11 +74,8 @@
+>      } \
+>  } while (0)
+>=20=20
+> -#define assert_cpu_is_self(cpu) do {                              \
+> -        if (DEBUG_TLB_GATE) {                                     \
+> -            g_assert(!(cpu)->created || qemu_cpu_is_self(cpu));   \
+> -        }                                                         \
+> -    } while (0)
+> +#define assert_cpu_is_self(cpu)                             \
+> +    tcg_debug_assert(!(cpu)->created || qemu_cpu_is_self(cpu))
+>
 
+This is fine.
+
+
+>  /* run_on_cpu_data.target_ptr should always be big enough for a
+>   * vaddr even on 32 bit builds
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
