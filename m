@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C734A2424B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 18:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4996A2424C
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 18:58:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdvGg-0000NK-V3; Fri, 31 Jan 2025 12:57:26 -0500
+	id 1tdvGi-0000OI-MD; Fri, 31 Jan 2025 12:57:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lacraig3@gmail.com>)
- id 1tdvGe-0000Mc-I0
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 12:57:24 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1tdvGg-0000NG-6C
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 12:57:26 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <lacraig3@gmail.com>)
- id 1tdvGd-0004T8-1S
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 12:57:24 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5d982de9547so4280324a12.2
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 09:57:22 -0800 (PST)
+ id 1tdvGe-0004TX-KP
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 12:57:25 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-ab69bba49e2so338103066b.2
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 09:57:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738346241; x=1738951041; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1738346243; x=1738951043; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e6uGwaniCL5bYZNfnfF6MzaJzg1nlQBZKTNndfBAHl8=;
- b=AjXqOtUoEUwOa2qUYa4uNs5kkoKbvXbdTLasQkvZMQYsyzYxG0pXvLKvDYC8bVznVn
- 2JoQ+ppDG0vfyWIt4U975+hs9NDEzJ9UlP6m9dURXHt8TDy+y1okiBlrp3XHhVSy+GKr
- //MKaGhraHFJU0pQEt4YXDwWZE8pgQcb3+32oZcNg0FxUnX5yBevX53Q+qVpaKjvHIGc
- 01KkGDs7yJclI41GupKGz8Y0+nNx03JOMEmE7c+bs7wCZGX+vJB1bm5RgUUTvN7zMaxV
- xDmIIS1iUIvTtl7Dsjp92R3Cnjo+ITVBAulDUrZSc4quKofzqrINCbeth6VG/iV8xlVd
- 0MZQ==
+ bh=lVbnKaU7RlSgIZ7qVYEauJNFrVGZ7rmvt3ZQ+hTVMow=;
+ b=V4XyUTPwBb3RkUjpruB7xe6ujRgct/qSRA4NaqJTtlX8UgEEkPYsDsOnMxjumdLaT3
+ TJWG/8UNfZHqIfKvfjk9i80Nvx2W8EpxKkqXipOQMPa5BK2sovP881JVKaSaJlguM3+z
+ b+YMBE45Y9hFqmTmn1+LgTMfOCBOWUHKn1SokuVorFvCVBhkSbXzFYdC3vT5HklAdC/i
+ pvNqkkIEBnYcQ9TfTwUenheAEyMgKOvgVHsti2rzlyK14VX8IvrzPHQeMMDYhtNndvUY
+ dvDYFJTPOrB0TNWuwmJL/jcTxaj3X/w3dhKaBKj/gYwo/tiPMbacsfoHmUy5Fbgjcle5
+ aYOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738346241; x=1738951041;
+ d=1e100.net; s=20230601; t=1738346243; x=1738951043;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e6uGwaniCL5bYZNfnfF6MzaJzg1nlQBZKTNndfBAHl8=;
- b=X9unB6jo1VE+OA8pqtNIIZpa0WF+Kj8VyO1vWpPnNQsgOSoJ/YgMKHtd0uFkOtPoQm
- g49+MFdJxbGtOCfp75kJFfc8vT5gN6Jt4+iLWykDcYOZ2wMVmEc0GTtuwOxLneYz7lUp
- VsGFu/DCL0ojpvVMTu2N8lPGX8qRze+3peLRyWX2o0HB2ejojvL4bGMHC+CeSDugOlt3
- gJOnlAfK5ms/Iy6Hw28SklC0zbYWBE0SdyyjC9RYZMuY5NGHrOum9hVO7yRNSEFLan5x
- hrdOWgaT+4aSKyr8azM/Q00r+gSfsQFu0LiarvzmlSUrq4b+j4IaWS9hF4GuAICE1na0
- JxiA==
-X-Gm-Message-State: AOJu0YwneN6EqJnkijsdjJJYCRAU2ELNk+OJ6e6iO5PVn1df7mqwL+TV
- 52mMMqGGH/hEausd2JpPsQ5sHNevT74+CPlgqAHvSloQOFcIixBnz5bRoA==
-X-Gm-Gg: ASbGncuTt2vNqgkJI3deX2RJmSvd3B1iSzk+5DBi3Jg3QUq1/jXtQ//NQdK0InFzj9q
- qNEX0oP0eB68p7BaOWi6T4epfFO8a3vDlkhh5Vik36I25Y2BDGE3AmMrp2Q7OVKWjVfc2KGQ+zx
- 3zEzMFIWpNEtpjQidzw4G0QTqa+8xT8+Fu5s6UyVxIs6H4PfYOSO6SSuVP51xwNz/WXe19opZAp
- Mi3mvRFLdLm81g3cgGfPBPniaS+eq3pdbNhbPpU9AXQYTB2u93TWMDeSz4HHlo1ZJeE34tmsj1a
- ba0tRONjWU0=
-X-Google-Smtp-Source: AGHT+IHO/8dm5p3YxVE448p2NyRGp5QWIyuIEy4/zVsFXahTfu/cQnwxiwMd8Gl4oJwd6JC71aumww==
-X-Received: by 2002:a05:6402:518f:b0:5dc:32eb:f289 with SMTP id
- 4fb4d7f45d1cf-5dc5f01e810mr11304728a12.22.1738346240858; 
- Fri, 31 Jan 2025 09:57:20 -0800 (PST)
+ bh=lVbnKaU7RlSgIZ7qVYEauJNFrVGZ7rmvt3ZQ+hTVMow=;
+ b=koJwMGNSoaU6kImFnEZeNXb/Pkkldon6FMLnQv1vvRKxU4ZWe3wElv5jUqCn/WiI24
+ XV6Z405trkocvqJPtMf5mAICPyZrG+FY1Uf4/H/qhL3/gedMzHgdYUhmuL6qqV3FRb6s
+ VRlo5vwTIlhXw2H9WBLYVspmFCxgQpdnF1250/B050voHtqXacfVwctUw4HxK+JUwwfY
+ c9IW9QA8Y7l5fqzbutetppsUO91HAXi3bs5C5eAuCY6Ffz+b6XoV60sSiobYdhkkxREp
+ wioCzMuhFWr6G1+5WgFpKn9dBwMyfk+IHCovyhbZFT2rZmHhH/wm7B7/6qg4GpBYA2Jh
+ zGcg==
+X-Gm-Message-State: AOJu0YzA5KCBnLeqhku20zlFXuhU601nUXFurh8Jia/3BWnoqNMD7Ye7
+ zAvS6IhdAyQlnuCZZ1C9Ia7guNKhJIJBLhDmegPcnpCpTNzNHeJqj58JLg==
+X-Gm-Gg: ASbGncvbjLX1pjWGTlT9WXtEqs7IGHowQb7dDmwTontIT/mUcyj/Y4157khI6L1LOTp
+ xJtmUvA13OM5Nnj1STs7GDmSYO2Wb7Qj3MNYS/iDCgRu21ChX0D6veSNmKJKcvMnNGa6T3LQ7x5
+ 6N8mWRAdzkswrX/Ri/gCdyluu907J27vJKu2zHITqTe+hj0Ee/35DFN5FLRqwJQ4gdo2szAabPz
+ 0gkBDdzQvUu7dAEGYknFXNZjpebs26rkSpWgj6onjGqB0IVGiG8M1ATwy4y2Soot3AedJ+EBm+L
+ ae+xscA0p/U=
+X-Google-Smtp-Source: AGHT+IF2+/2pREiFDxPijy/zZiDL+9qVSY1vmDs45HbLIReTGNez3Lt4v6KO0HqkxU/Ef6WLhShtxw==
+X-Received: by 2002:a05:6402:a001:b0:5dc:796f:fc86 with SMTP id
+ 4fb4d7f45d1cf-5dc79700476mr9506439a12.16.1738346242346; 
+ Fri, 31 Jan 2025 09:57:22 -0800 (PST)
 Received: from luke-igloo.. ([18.4.85.124]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dc723efc45sm3110074a12.32.2025.01.31.09.57.19
+ 4fb4d7f45d1cf-5dc723efc45sm3110074a12.32.2025.01.31.09.57.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Jan 2025 09:57:20 -0800 (PST)
+ Fri, 31 Jan 2025 09:57:21 -0800 (PST)
 From: Luke Craig <lacraig3@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -67,17 +67,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Luke Craig <lacraig3@gmail.com>
-Subject: [PATCH v2 1/3] plugin: extend API with
- qemu_plugin_tb_get_insn_by_vaddr
-Date: Fri, 31 Jan 2025 12:57:14 -0500
-Message-Id: <20250131175716.3218600-2-lacraig3@gmail.com>
+Subject: [PATCH v2 2/3] plugin: extend API with qemu_plugin_tb_size
+Date: Fri, 31 Jan 2025 12:57:15 -0500
+Message-Id: <20250131175716.3218600-3-lacraig3@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250131175716.3218600-1-lacraig3@gmail.com>
 References: <20250131175716.3218600-1-lacraig3@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=lacraig3@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=lacraig3@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,56 +101,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- include/qemu/qemu-plugin.h | 11 +++++++++++
- plugins/api.c              | 13 +++++++++++++
- 2 files changed, 24 insertions(+)
+ include/qemu/qemu-plugin.h | 10 ++++++++++
+ plugins/api.c              |  7 +++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 3a850aa216..a1c478c54f 100644
+index a1c478c54f..1fa656da82 100644
 --- a/include/qemu/qemu-plugin.h
 +++ b/include/qemu/qemu-plugin.h
-@@ -500,6 +500,17 @@ QEMU_PLUGIN_API
- struct qemu_plugin_insn *
- qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx);
+@@ -476,6 +476,16 @@ void qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+ QEMU_PLUGIN_API
+ size_t qemu_plugin_tb_n_insns(const struct qemu_plugin_tb *tb);
  
 +/**
-+ * qemu_plugin_tb_get_insn_by_vaddr() - lookup handle for instruction by vaddr
++ * qemu_plugin_tb_size() - query helper for size of TB
 + * @tb: opaque handle to TB passed to callback
-+ * @vaddr: virtual address of instruction
-+ *
-+ * Returns: opaque handle to instruction
++ * 
++ * Returns: size of block in bytes
 + */
++
 +QEMU_PLUGIN_API
-+struct qemu_plugin_insn *
-+qemu_plugin_tb_get_insn_by_vaddr(const struct qemu_plugin_tb *tb, uint64_t vaddr);
++size_t qemu_plugin_tb_size(const struct qemu_plugin_tb *tb);
 +
  /**
-  * qemu_plugin_insn_data() - copy instruction data
-  * @insn: opaque instruction handle from qemu_plugin_tb_get_insn()
+  * qemu_plugin_tb_vaddr() - query helper for vaddr of TB start
+  * @tb: opaque handle to TB passed to callback
 diff --git a/plugins/api.c b/plugins/api.c
-index 4110cfaa23..a6bd912c56 100644
+index a6bd912c56..ae74668c2e 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -258,6 +258,19 @@ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx)
-     return insn;
+@@ -241,6 +241,13 @@ size_t qemu_plugin_tb_n_insns(const struct qemu_plugin_tb *tb)
+     return tb->n;
  }
  
-+struct qemu_plugin_insn *
-+qemu_plugin_tb_get_insn_by_vaddr(const struct qemu_plugin_tb *tb, uint64_t vaddr)
++size_t qemu_plugin_tb_size(const struct qemu_plugin_tb *tb)
 +{
-+    struct qemu_plugin_insn *insn;
-+    for (size_t i = 0; i < tb->n; i++){
-+        insn = g_ptr_array_index(tb->insns, i);
-+        if (insn != NULL && insn->vaddr == vaddr){
-+            return insn;
-+        }
-+    }
-+    return NULL;
++    struct qemu_plugin_insn *last;
++    last = g_ptr_array_index(tb->insns, tb->n - 1);
++    return qemu_plugin_insn_vaddr(last) + qemu_plugin_insn_size(last) - qemu_plugin_tb_vaddr(tb);
 +}
 +
- /*
-  * Instruction information
-  *
+ uint64_t qemu_plugin_tb_vaddr(const struct qemu_plugin_tb *tb)
+ {
+     const DisasContextBase *db = tcg_ctx->plugin_db;
 -- 
 2.34.1
 
