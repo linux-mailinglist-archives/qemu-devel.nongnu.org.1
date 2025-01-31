@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7BEA24461
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D6A24465
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:08:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyE5-0000U5-W1; Fri, 31 Jan 2025 16:06:58 -0500
+	id 1tdyEA-0000fN-L7; Fri, 31 Jan 2025 16:07:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE3-0000Kk-Jg
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:55 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE7-0000Yu-S3
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:59 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE1-0007u4-Rh
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:55 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso17494065e9.0
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE6-0007uP-8b
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:59 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-436345cc17bso18797515e9.0
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357612; x=1738962412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357616; x=1738962416; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yx9zBwtSy3gGrxCYpvjzpuUDny+fjTYjt9csPoUwmf4=;
- b=zxFO5hAcp8+5j6jTtmzp+r+tmo7gGDIrLQv9AZjeV24YCX+kQ+5Cof1vyoV4fPxCSx
- nai6Rk3/+wBYUdn1HpxoUICcAw+eMMQZvkCuH9SNj4x35LVs/GRirVTpgPuPr9LCAOKj
- PUBN+aE2bdIqmBI28yBnZ2QN9B/fHgPG0yQe6yMwqGVOehdK/o1HIw8pzhymt4vPvpu0
- k+DXOxrHVCZZasIvRv18+M2ExKYrlf3esmU6FIlwb+MkSr2YA6PIIzr4X7OTZCz4jL5q
- TExAuF/5iPgDXjSupQMsUzedfsmS1qVW3aTLDQk/2pEjcyLQwV9/GY8BagU72E2ubInN
- WI8A==
+ bh=YDQ5LJGo9o+LKPmuD53dLkja8+w1xu30AF94L0IcYX4=;
+ b=rsSXQjCnGFu1kqXcJ2BmFF9YLAGRlVpqxtLQWnWSSb15rl7E1FX3bYj4aII9gbiNow
+ MbLLr2jkZkBPFiOHoa2R39xLfqXgTGU2u8yITFQH7NSXPRLUr4rNoGDT8R4P7XJodorW
+ u7n3QGBxeJrDgPgOiawxgXyNVKpiCkw23DGvc5TsvfMuUk7Tq9vK5v6tlu/um/iLPIj6
+ gQRo+y1y+LVHfYDsdPmhELSzPjoxhZUlpBTxRSBptemyobD9udnHwg0T0I/V5SdaqUg/
+ ntauMPgu6iKtWhWOg2ODFWrK2OjEwfKbutDSXBa+gAVW0prlBZ2meYHfNb5PJIbAvmfU
+ h4CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357612; x=1738962412;
+ d=1e100.net; s=20230601; t=1738357616; x=1738962416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yx9zBwtSy3gGrxCYpvjzpuUDny+fjTYjt9csPoUwmf4=;
- b=iU3heIAfneJAh7b2T8v/+h0tyV4SmyB5L2Lkq0lPVqmP1eN7lXt86oyl+OR2etVu0u
- xA9TD5vXvOJuNw80MzNZdirlU9uqOh6kMs/HgQma6L2Ou8qiUis7Hr/pLDinRXmZuYqa
- r6BOKSiUAttpINLszf4i1qITDt6wErOJ45S/7CbXjnHQv9ZTvzLJthxxmU5dJ7EBqjS3
- hMhbMktZRZpiPt5U4y89iH/VjunqXNR0i/rfOrqbVcpy+XiD6tP+y3r6FvYRWbi7qsBW
- bgRT0BlYRqvi3kOPqRvVUIayxN0e3/Cc8hByQZwO4M8pORBbBY3mZNNaGhT1kn2MnmKQ
- 5Oow==
-X-Gm-Message-State: AOJu0YwDC2PNJoYdUB52b/IjXIBsGjvX0vKVtjDBG6oNCge69fK/a96k
- /s3Go9hZBKOf6E9k3BodiUPfUIu8S1njNu3eGE5rFu78Plhz4xnG+ZXSSaKZLDqpS6gIyVusnJx
- PBDQ=
-X-Gm-Gg: ASbGncunFVGq/CfLV+tcZC2rE1gyii5BpLb1wqldv6pkXrMIHQejYHgN12vNeSaG3I5
- EtdIQxhtInCsGPNbFuNopRFVBG+WUElaCeIFimzWEC5tkfaI1gmUzpXJxl9N6R0RbhDcZ5HKQLL
- Hbprrqadh2sXpVG6HkJ0cCBsSJxjlENxy+8OgrPfQN5MaEVdnTAz9LY6i0et82ALKC20WZ3vTyo
- DDNuwjf6vkEqewVuvuBttVNVTCJNWWXhM16lx4AUkIHpHz5pS2pijIqfpUEUszYAgrzX1UK+Jom
- BnSRevuuIy2uFXLnP3tqYWpz/wk7lJ8feFFShBMRco1LCqVPQpUtONYVPk4m9wzEZw==
-X-Google-Smtp-Source: AGHT+IFtmVu8oi+o//GaboNDYBJNnpaB/ubHIhDTYcuTLDK1cG+ltJZD3LhM9GLPvE6TbYDaBrNyuQ==
-X-Received: by 2002:a05:600c:1d27:b0:436:5fc9:30ba with SMTP id
- 5b1f17b1804b1-438dc429771mr122794815e9.29.1738357611713; 
- Fri, 31 Jan 2025 13:06:51 -0800 (PST)
+ bh=YDQ5LJGo9o+LKPmuD53dLkja8+w1xu30AF94L0IcYX4=;
+ b=shWpEPXMKLxCWXzEHBawY43ksPAScJyGfrwkrD1SKumPvb5JODSTFGYHef4IDjckaB
+ l/qD3mTa9jSv59LARKx/kGNMu3HlfOBFDzT0+CKU6BbkB3YftqDWAy7qxweJ9et4Hksv
+ u5h8DvE7oojWeKj/oYqxnSQJftYv+QHxCJ0uC1pWKES/wc1sIMg7YylcLqj9aFJ0QHN/
+ GE47Wvcm3mwmQEU3F0rPJr/Gq0KUrubJeWXtp3CLDW1H7z94xKA5rD0HoZH8s1OtmWXo
+ qjR+WR932BF8AxTwn+BtB5bPiKXfZtJ6RpsUZfpBY1fktGrp1gDp9Nf8Gq4k366zmllq
+ l6vQ==
+X-Gm-Message-State: AOJu0Yw74TIFyHRZjfVMCrMQbnVd2OgCBEdxprIXrJbvBriZpY4SzQwh
+ jY9743bVNprPGFPZTylm+f88xZzbn371EGum1x4FccA5uCnGoL9I8LWJIBeB4V/tUhnG0xeqeFK
+ ltuw=
+X-Gm-Gg: ASbGncumlzbuIMenVICnWSvRTu/09FInMFOOvZ+nMArzBtd+ZdA+1+ZVRwcniDaphj7
+ PpWtXyA0AzLk6S8hNO9TZhJK7ZokCFxtxlkKFXo3V+EB1nSyIQIjZ0JkuzABsahazAlayMxoyRM
+ MwOZkI0Pgt4y1qTsnoaknaQAtB5MM2lLWAcEdzTfAdrm/oLKz76F4aT8k6/7NYnyk8UVZBEDK8B
+ rlesFRXRhjS274uHXn8lAxvVzC5K35UITy3XuH3YL7U3m9WfNitmz5oFcb2Bcy++U76NtZIV9io
+ tEF91vBftBDdNQF9VKpcsObJSVmW1A2fjflR/cVcWtzS83Gk62WPikdiQ69Aviu0PQ==
+X-Google-Smtp-Source: AGHT+IHuwt52Nm4Wo0Iz6wxTYPBWT/DQOJ2FLt0I+Nppl4GRxWhV9JanaMdhiNcGM8mQdv6mF+2Btw==
+X-Received: by 2002:a5d:6d8d:0:b0:38b:ebcd:305c with SMTP id
+ ffacd0b85a97d-38c519698e9mr10751541f8f.29.1738357616312; 
+ Fri, 31 Jan 2025 13:06:56 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc26b15sm102018555e9.11.2025.01.31.13.06.50
+ ffacd0b85a97d-38c5c0ecc80sm5707516f8f.16.2025.01.31.13.06.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:06:50 -0800 (PST)
+ Fri, 31 Jan 2025 13:06:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Titus Rwantare <titusr@google.com>, Hao Wu <wuhaotsh@google.com>,
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/36] hw/misc/i2c-echo: add tracing
-Date: Fri, 31 Jan 2025 22:05:01 +0100
-Message-ID: <20250131210520.85874-19-philmd@linaro.org>
+Subject: [PULL 19/36] hw/usb/hcd-ehci: Fix debug printf format string
+Date: Fri, 31 Jan 2025 22:05:02 +0100
+Message-ID: <20250131210520.85874-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,92 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Titus Rwantare <titusr@google.com>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This has been useful when debugging and unsure if the guest is
-generating i2c traffic.
+The variable is uint64_t so needs %PRIu64 instead of %d.
 
-Signed-off-by: Titus Rwantare <titusr@google.com>
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
+Fixes: 3ae7eb88c47 ("ehci: fix overflow in frame timer code")
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250121105935.3069035-1-titusr@google.com>
+Message-ID: <20250124124713.64F8C4E6031@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/i2c-echo.c   | 8 ++++++++
- hw/misc/trace-events | 5 +++++
- 2 files changed, 13 insertions(+)
+ hw/usb/hcd-ehci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
-index 5ae3d0817ea..65d10029dc7 100644
---- a/hw/misc/i2c-echo.c
-+++ b/hw/misc/i2c-echo.c
-@@ -13,6 +13,7 @@
- #include "qemu/main-loop.h"
- #include "block/aio.h"
- #include "hw/i2c/i2c.h"
-+#include "trace.h"
+diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+index 6c4c14c8959..b090f253656 100644
+--- a/hw/usb/hcd-ehci.c
++++ b/hw/usb/hcd-ehci.c
+@@ -2287,7 +2287,8 @@ static void ehci_work_bh(void *opaque)
+             ehci_update_frindex(ehci, skipped_uframes);
+             ehci->last_run_ns += UFRAME_TIMER_NS * skipped_uframes;
+             uframes -= skipped_uframes;
+-            DPRINTF("WARNING - EHCI skipped %d uframes\n", skipped_uframes);
++            DPRINTF("WARNING - EHCI skipped %"PRIu64" uframes\n",
++                    skipped_uframes);
+         }
  
- #define TYPE_I2C_ECHO "i2c-echo"
- OBJECT_DECLARE_SIMPLE_TYPE(I2CEchoState, I2C_ECHO)
-@@ -80,11 +81,13 @@ static int i2c_echo_event(I2CSlave *s, enum i2c_event event)
-     case I2C_START_RECV:
-         state->pos = 0;
- 
-+        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_START_RECV");
-         break;
- 
-     case I2C_START_SEND:
-         state->pos = 0;
- 
-+        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_START_SEND");
-         break;
- 
-     case I2C_FINISH:
-@@ -92,12 +95,15 @@ static int i2c_echo_event(I2CSlave *s, enum i2c_event event)
-         state->state = I2C_ECHO_STATE_START_SEND;
-         i2c_bus_master(state->bus, state->bh);
- 
-+        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_FINISH");
-         break;
- 
-     case I2C_NACK:
-+        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_NACK");
-         break;
- 
-     default:
-+        trace_i2c_echo_event(DEVICE(s)->canonical_path, "UNHANDLED");
-         return -1;
-     }
- 
-@@ -112,6 +118,7 @@ static uint8_t i2c_echo_recv(I2CSlave *s)
-         return 0xff;
-     }
- 
-+    trace_i2c_echo_recv(DEVICE(s)->canonical_path, state->data[state->pos]);
-     return state->data[state->pos++];
- }
- 
-@@ -119,6 +126,7 @@ static int i2c_echo_send(I2CSlave *s, uint8_t data)
- {
-     I2CEchoState *state = I2C_ECHO(s);
- 
-+    trace_i2c_echo_send(DEVICE(s)->canonical_path, data);
-     if (state->pos > 2) {
-         return -1;
-     }
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index cf1abe69285..b35b0e77f7d 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -390,3 +390,8 @@ ivshmem_flat_read_write_mmr_invalid(uint64_t addr_offset) "No ivshmem register m
- ivshmem_flat_interrupt_invalid_peer(uint16_t peer_id) "Can't interrupt non-existing peer %u"
- ivshmem_flat_write_mmr(uint64_t addr_offset) "Write access at offset %"PRIu64
- ivshmem_flat_interrupt_peer(uint16_t peer_id, uint16_t vector_id) "Interrupting peer ID %u, vector %u..."
-+
-+# i2c-echo.c
-+i2c_echo_event(const char *id, const char *event) "%s: %s"
-+i2c_echo_recv(const char *id, uint8_t data) "%s: recv 0x%02" PRIx8
-+i2c_echo_send(const char *id, uint8_t data) "%s: send 0x%02" PRIx8
+         for (i = 0; i < uframes; i++) {
 -- 
 2.47.1
 
