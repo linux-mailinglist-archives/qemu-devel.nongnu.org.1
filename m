@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EC0A24460
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7BEA24461
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:07:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyE1-0008VD-9G; Fri, 31 Jan 2025 16:06:53 -0500
+	id 1tdyE5-0000U5-W1; Fri, 31 Jan 2025 16:06:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDy-0008Es-2v
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:50 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE3-0000Kk-Jg
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:55 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDw-0007tR-DX
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:49 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso17493785e9.0
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyE1-0007u4-Rh
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:55 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso17494065e9.0
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357606; x=1738962406; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357612; x=1738962412; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DA1wMZ2yl5z/7wIXRmmiIP3J469q4sqq1JVgdMv1DSg=;
- b=OzPp04JwPKsP48lZcOEtww9TcxmeWQSEjbroAKPougDQstq/WpKbK788B6UVCnZEVc
- WBCQHUv5ZTkgBC4g4W2P3/LNGtv+LeoqNo9KgWydIHlc/MxFEJlT/2+P50p6/cBpnl5g
- ek0LeZpCPy89NFew8kdDF6A+gxbblr8Qz+O0h4tZRjG7PfvW6UsFjHJgcvJlnBggnmtz
- gi5vdoFbRKgFdKtVGIzXWbEX9kAVzZzzFFObaW6rpggVDjUgRNL7H/aChOfz2NpV3/Tz
- RVRluIaea7x0fMWXbJtd+V3BK08v7IUYyXo2zUXZwbSu8rFtvRokwHbn0wkBo6DFNSSG
- J/yA==
+ bh=Yx9zBwtSy3gGrxCYpvjzpuUDny+fjTYjt9csPoUwmf4=;
+ b=zxFO5hAcp8+5j6jTtmzp+r+tmo7gGDIrLQv9AZjeV24YCX+kQ+5Cof1vyoV4fPxCSx
+ nai6Rk3/+wBYUdn1HpxoUICcAw+eMMQZvkCuH9SNj4x35LVs/GRirVTpgPuPr9LCAOKj
+ PUBN+aE2bdIqmBI28yBnZ2QN9B/fHgPG0yQe6yMwqGVOehdK/o1HIw8pzhymt4vPvpu0
+ k+DXOxrHVCZZasIvRv18+M2ExKYrlf3esmU6FIlwb+MkSr2YA6PIIzr4X7OTZCz4jL5q
+ TExAuF/5iPgDXjSupQMsUzedfsmS1qVW3aTLDQk/2pEjcyLQwV9/GY8BagU72E2ubInN
+ WI8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357606; x=1738962406;
+ d=1e100.net; s=20230601; t=1738357612; x=1738962412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DA1wMZ2yl5z/7wIXRmmiIP3J469q4sqq1JVgdMv1DSg=;
- b=X0nWzolatLk2hs6Zr4pIQj0eGnDgOm0pueiuMBtoKuxp6yemIAW5BFZlBm1w7ds/2Z
- XOGXqPLXSEkAg8HjObbTjLMsTSumdpRtfeK5S4tl7XIPdSCtcJCt5XQryi6ciVKgHlqj
- akO/s49kNYFWexXmOW4IGRNkxFWhpfBcrUheUiMgImhM+6Xl6unRjZpdYX00toZBBbMP
- 2p3jqKKuvxaSOqlxREhWp6coNi72TRVL7ziriAIs7R3MhtDK18QJ7ijuLI9H2FJfHwtn
- 4xWKRz8zdeDclp61nWNaBquPa7YmcuhJ18e31dCEgFs08CMvL08/2OixgGwHf4ivdnnG
- uOIw==
-X-Gm-Message-State: AOJu0YzPByPbf95xKG2xiCc54rC1TfhkTRC2Z15f8muBHqYdTDcOjXjz
- dGMa7vOe6UcAIx89EevzZ8O9tvUewSVuwdbBTN077VTl/3MnF0nLogPoAEc//kY+er48sRtqfbI
- hYWQ=
-X-Gm-Gg: ASbGncuET6JvdpEMsZzZaljzKJQSozFRhmrwKggRb+nY6ZsLAtXCwKOeYLk7aignH3l
- ngeSNntBi5xvsz9lhQGBmxnMdImQvrTXuiE5C45oXRqRYKHQXVA4PsugtDYBJegd3QrIde+3tAB
- vrKwlp9T/COUxnMc0G8bnTKqN6YWlL1vKIfKO1Qyde6LmWRRFCkQjSoHGxnOfXrfgbQ/Siw4NUm
- KtbuSXgbNObfXAmeg5w0OBgzyvKiOejXuusHpVj/qveidocCuVBjbmj6oSbGcg/APEXjWYUMa7g
- VLPWdtlUDsDGbzulLXx587tZF7wyJhUH3X6ZHjJzo/hybO3Jwsh2wiHuWpm7J2e7nQ==
-X-Google-Smtp-Source: AGHT+IEv20jLlcFdxroJHAWxWd4IY4fYv5ROQUbeBab/15PIAzNgQxvqhbQl4l2IRDhMl01oaocC4g==
-X-Received: by 2002:a05:600c:524a:b0:434:9f81:76d5 with SMTP id
- 5b1f17b1804b1-438dc40ffdamr105809035e9.22.1738357606421; 
- Fri, 31 Jan 2025 13:06:46 -0800 (PST)
+ bh=Yx9zBwtSy3gGrxCYpvjzpuUDny+fjTYjt9csPoUwmf4=;
+ b=iU3heIAfneJAh7b2T8v/+h0tyV4SmyB5L2Lkq0lPVqmP1eN7lXt86oyl+OR2etVu0u
+ xA9TD5vXvOJuNw80MzNZdirlU9uqOh6kMs/HgQma6L2Ou8qiUis7Hr/pLDinRXmZuYqa
+ r6BOKSiUAttpINLszf4i1qITDt6wErOJ45S/7CbXjnHQv9ZTvzLJthxxmU5dJ7EBqjS3
+ hMhbMktZRZpiPt5U4y89iH/VjunqXNR0i/rfOrqbVcpy+XiD6tP+y3r6FvYRWbi7qsBW
+ bgRT0BlYRqvi3kOPqRvVUIayxN0e3/Cc8hByQZwO4M8pORBbBY3mZNNaGhT1kn2MnmKQ
+ 5Oow==
+X-Gm-Message-State: AOJu0YwDC2PNJoYdUB52b/IjXIBsGjvX0vKVtjDBG6oNCge69fK/a96k
+ /s3Go9hZBKOf6E9k3BodiUPfUIu8S1njNu3eGE5rFu78Plhz4xnG+ZXSSaKZLDqpS6gIyVusnJx
+ PBDQ=
+X-Gm-Gg: ASbGncunFVGq/CfLV+tcZC2rE1gyii5BpLb1wqldv6pkXrMIHQejYHgN12vNeSaG3I5
+ EtdIQxhtInCsGPNbFuNopRFVBG+WUElaCeIFimzWEC5tkfaI1gmUzpXJxl9N6R0RbhDcZ5HKQLL
+ Hbprrqadh2sXpVG6HkJ0cCBsSJxjlENxy+8OgrPfQN5MaEVdnTAz9LY6i0et82ALKC20WZ3vTyo
+ DDNuwjf6vkEqewVuvuBttVNVTCJNWWXhM16lx4AUkIHpHz5pS2pijIqfpUEUszYAgrzX1UK+Jom
+ BnSRevuuIy2uFXLnP3tqYWpz/wk7lJ8feFFShBMRco1LCqVPQpUtONYVPk4m9wzEZw==
+X-Google-Smtp-Source: AGHT+IFtmVu8oi+o//GaboNDYBJNnpaB/ubHIhDTYcuTLDK1cG+ltJZD3LhM9GLPvE6TbYDaBrNyuQ==
+X-Received: by 2002:a05:600c:1d27:b0:436:5fc9:30ba with SMTP id
+ 5b1f17b1804b1-438dc429771mr122794815e9.29.1738357611713; 
+ Fri, 31 Jan 2025 13:06:51 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc6dfb5sm103980675e9.31.2025.01.31.13.06.45
+ 5b1f17b1804b1-438dcc26b15sm102018555e9.11.2025.01.31.13.06.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:06:46 -0800 (PST)
+ Fri, 31 Jan 2025 13:06:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 17/36] hw/char/pci-multi: Convert legacy qemu_allocate_irqs to
- qemu_init_irq
-Date: Fri, 31 Jan 2025 22:05:00 +0100
-Message-ID: <20250131210520.85874-18-philmd@linaro.org>
+Cc: Titus Rwantare <titusr@google.com>, Hao Wu <wuhaotsh@google.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 18/36] hw/misc/i2c-echo: add tracing
+Date: Fri, 31 Jan 2025 22:05:01 +0100
+Message-ID: <20250131210520.85874-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,64 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are a fixed number of PCI IRQs, known beforehand.
-Allocate them within PCIMultiSerialState, and initialize
-using qemu_init_irq(), allowing to remove the legacy
-qemu_allocate_irqs() and qemu_free_irqs() calls.
+From: Titus Rwantare <titusr@google.com>
 
+This has been useful when debugging and unsure if the guest is
+generating i2c traffic.
+
+Signed-off-by: Titus Rwantare <titusr@google.com>
+Reviewed-by: Hao Wu <wuhaotsh@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250121105935.3069035-1-titusr@google.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250121182828.45088-1-philmd@linaro.org>
 ---
- hw/char/serial-pci-multi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ hw/misc/i2c-echo.c   | 8 ++++++++
+ hw/misc/trace-events | 5 +++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/hw/char/serial-pci-multi.c b/hw/char/serial-pci-multi.c
-index 7578e863cfe..718ae251317 100644
---- a/hw/char/serial-pci-multi.c
-+++ b/hw/char/serial-pci-multi.c
-@@ -45,7 +45,7 @@ typedef struct PCIMultiSerialState {
-     char         *name[PCI_SERIAL_MAX_PORTS];
-     SerialState  state[PCI_SERIAL_MAX_PORTS];
-     uint32_t     level[PCI_SERIAL_MAX_PORTS];
--    qemu_irq     *irqs;
-+    IRQState     irqs[PCI_SERIAL_MAX_PORTS];
-     uint8_t      prog_if;
- } PCIMultiSerialState;
+diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
+index 5ae3d0817ea..65d10029dc7 100644
+--- a/hw/misc/i2c-echo.c
++++ b/hw/misc/i2c-echo.c
+@@ -13,6 +13,7 @@
+ #include "qemu/main-loop.h"
+ #include "block/aio.h"
+ #include "hw/i2c/i2c.h"
++#include "trace.h"
  
-@@ -61,7 +61,6 @@ static void multi_serial_pci_exit(PCIDevice *dev)
-         memory_region_del_subregion(&pci->iobar, &s->io);
-         g_free(pci->name[i]);
+ #define TYPE_I2C_ECHO "i2c-echo"
+ OBJECT_DECLARE_SIMPLE_TYPE(I2CEchoState, I2C_ECHO)
+@@ -80,11 +81,13 @@ static int i2c_echo_event(I2CSlave *s, enum i2c_event event)
+     case I2C_START_RECV:
+         state->pos = 0;
+ 
++        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_START_RECV");
+         break;
+ 
+     case I2C_START_SEND:
+         state->pos = 0;
+ 
++        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_START_SEND");
+         break;
+ 
+     case I2C_FINISH:
+@@ -92,12 +95,15 @@ static int i2c_echo_event(I2CSlave *s, enum i2c_event event)
+         state->state = I2C_ECHO_STATE_START_SEND;
+         i2c_bus_master(state->bus, state->bh);
+ 
++        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_FINISH");
+         break;
+ 
+     case I2C_NACK:
++        trace_i2c_echo_event(DEVICE(s)->canonical_path, "I2C_NACK");
+         break;
+ 
+     default:
++        trace_i2c_echo_event(DEVICE(s)->canonical_path, "UNHANDLED");
+         return -1;
      }
--    qemu_free_irqs(pci->irqs, pci->ports);
+ 
+@@ -112,6 +118,7 @@ static uint8_t i2c_echo_recv(I2CSlave *s)
+         return 0xff;
+     }
+ 
++    trace_i2c_echo_recv(DEVICE(s)->canonical_path, state->data[state->pos]);
+     return state->data[state->pos++];
  }
  
- static void multi_serial_irq_mux(void *opaque, int n, int level)
-@@ -102,7 +101,6 @@ static void multi_serial_pci_realize(PCIDevice *dev, Error **errp)
-     pci->dev.config[PCI_INTERRUPT_PIN] = 0x01;
-     memory_region_init(&pci->iobar, OBJECT(pci), "multiserial", 8 * nports);
-     pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &pci->iobar);
--    pci->irqs = qemu_allocate_irqs(multi_serial_irq_mux, pci, nports);
+@@ -119,6 +126,7 @@ static int i2c_echo_send(I2CSlave *s, uint8_t data)
+ {
+     I2CEchoState *state = I2C_ECHO(s);
  
-     for (i = 0; i < nports; i++) {
-         s = pci->state + i;
-@@ -110,7 +108,7 @@ static void multi_serial_pci_realize(PCIDevice *dev, Error **errp)
-             multi_serial_pci_exit(dev);
-             return;
-         }
--        s->irq = pci->irqs[i];
-+        s->irq = &pci->irqs[i];
-         pci->name[i] = g_strdup_printf("uart #%zu", i + 1);
-         memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s,
-                               pci->name[i], 8);
-@@ -183,6 +181,7 @@ static void multi_serial_init(Object *o)
-     size_t i, nports = multi_serial_get_port_count(PCI_DEVICE_GET_CLASS(dev));
- 
-     for (i = 0; i < nports; i++) {
-+        qemu_init_irq(&pms->irqs[i], multi_serial_irq_mux, pms, i);
-         object_initialize_child(o, "serial[*]", &pms->state[i], TYPE_SERIAL);
++    trace_i2c_echo_send(DEVICE(s)->canonical_path, data);
+     if (state->pos > 2) {
+         return -1;
      }
- }
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index cf1abe69285..b35b0e77f7d 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -390,3 +390,8 @@ ivshmem_flat_read_write_mmr_invalid(uint64_t addr_offset) "No ivshmem register m
+ ivshmem_flat_interrupt_invalid_peer(uint16_t peer_id) "Can't interrupt non-existing peer %u"
+ ivshmem_flat_write_mmr(uint64_t addr_offset) "Write access at offset %"PRIu64
+ ivshmem_flat_interrupt_peer(uint16_t peer_id, uint16_t vector_id) "Interrupting peer ID %u, vector %u..."
++
++# i2c-echo.c
++i2c_echo_event(const char *id, const char *event) "%s: %s"
++i2c_echo_recv(const char *id, uint8_t data) "%s: recv 0x%02" PRIx8
++i2c_echo_send(const char *id, uint8_t data) "%s: send 0x%02" PRIx8
 -- 
 2.47.1
 
