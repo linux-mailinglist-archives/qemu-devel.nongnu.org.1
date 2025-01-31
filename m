@@ -2,131 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E94A24439
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 21:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3439A24454
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:06:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdxwX-0003JV-FP; Fri, 31 Jan 2025 15:48:49 -0500
+	id 1tdyCh-000603-51; Fri, 31 Jan 2025 16:05:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a.manzanares@samsung.com>)
- id 1tdxwT-0003JE-AR
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 15:48:45 -0500
-Received: from mailout1.w2.samsung.com ([211.189.100.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a.manzanares@samsung.com>)
- id 1tdxwO-0003TK-Nl
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 15:48:45 -0500
-Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
- by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
- 20250131204829usoutp014b58434d3884b8bb7c53a0059a090342~f4gj5H1sg3065430654usoutp01I;
- Fri, 31 Jan 2025 20:48:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
- 20250131204829usoutp014b58434d3884b8bb7c53a0059a090342~f4gj5H1sg3065430654usoutp01I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1738356509;
- bh=dn7AOiMrkvNFM8GcWtlfX244WruKGylU+ySg/8RP0As=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=t7GS5NfJeAEqeDNFy8xFK3kbOyJo3tG2Ec1MM5So5hCt0i5xGPX7yAqK3hoiVprS8
- W6KiPrHWCOmXceviTITsIV70ATFElfDNA9/unKX3nUUYnnEDXbTfp+oiAM2EF2qsd7
- OXuWkoMOxIrb/iSfG/afOq7r2DWo3X5i+7CeJf4Q=
-Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
- [203.254.195.112]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20250131204829uscas1p2668fbb862b969d8174b239270e8b33e2~f4gjscg9e0635406354uscas1p29;
- Fri, 31 Jan 2025 20:48:29 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges3new.samsung.com (USCPEMTA) with SMTP id C2.9A.10853.C173D976; Fri,
- 31 Jan 2025 15:48:28 -0500 (EST)
-Received: from ussmgxs3new.samsung.com (u92.gpu85.samsung.co.kr
- [203.254.195.92]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20250131204828uscas1p283110e0caa90588d2caffa1067a944b0~f4gjL5P7A1415014150uscas1p2L;
- Fri, 31 Jan 2025 20:48:28 +0000 (GMT)
-X-AuditID: cbfec370-4b7ff70000002a65-76-679d371cd42e
-Received: from SSI-EX4.ssi.samsung.com ( [105.128.3.66]) by
- ussmgxs3new.samsung.com (USCPEXMTA) with SMTP id 82.22.23624.C173D976; Fri,
- 31 Jan 2025 15:48:28 -0500 (EST)
-Received: from SSI-EX3.ssi.samsung.com (105.128.2.228) by
- SSI-EX4.ssi.samsung.com (105.128.2.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2507.44; Fri, 31 Jan 2025 12:48:27 -0800
-Received: from SSI-EX3.ssi.samsung.com ([105.128.8.30]) by
- SSI-EX3.ssi.samsung.com ([105.128.8.30]) with mapi id 15.01.2507.044; Fri,
- 31 Jan 2025 12:48:27 -0800
-From: Adam Manzanares <a.manzanares@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: Vinayak Holikatti <vinayak.kh@samsung.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "krish.reddy@samsung.com"
- <krish.reddy@samsung.com>, "vishak.g@samsung.com" <vishak.g@samsung.com>,
- "alok.rathore@samsung.com" <alok.rathore@samsung.com>,
- "s5.kumari@samsung.com" <s5.kumari@samsung.com>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH 2/2] hw/cxl/cxl-mailbox-utils: Add support for Media
- operations Sanitize and Write Zeros commands (8.2.9.9.5.3)
-Thread-Topic: [PATCH 2/2] hw/cxl/cxl-mailbox-utils: Add support for Media
- operations Sanitize and Write Zeros commands (8.2.9.9.5.3)
-Thread-Index: AQHbbVtToxMXh83zVkezCaraYyzDprMmkjIAgAtcIgA=
-Date: Fri, 31 Jan 2025 20:48:27 +0000
-Message-ID: <Z503EpvqMczHIZqF@sjvm-adma01.eng.stellus.in>
-In-Reply-To: <20250124151946.0000134f@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <9D4DB61AC3B29E4CABDF7F19B705F2E5@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyCc-0005zo-Tx
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:05:27 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyCa-0007m4-SF
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:05:26 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-438a3216fc2so24217155e9.1
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:05:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738357522; x=1738962322; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=t85JfzSySsJNmkSw200IIYELaXWv/XR2Cy20L4r7KeU=;
+ b=AGSYCBnfmVVUG4ltfR6melTWifcQ6HCHdIgAozgvctbFIaGFRFNPrdxelWLx0sQteU
+ 1C4xl51H3Wlugz3lpev1TwBAiFCc74kCmGIBZGfnAbFaRO3wfZf/XEXfGWAl5p3hP3Nj
+ CMJact0tF/5TNI+wIlYUQPGaI103OJuzWWFfGbuiBlUFCUN/rIrHWZ2T+H+Iq42GfhIV
+ xGPrVxSZqFpqQX5JC43aWq7KbhgF7RVQVgncranJs/XjB6/a0aoSyKsjTlICb9f7kliO
+ 1NZgI+nIqneFUi6d2KlVheMlkNkRtsGvGuHAClR2AB04Mhgk08ZOmKgv3HL5sr48FiJZ
+ moOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738357522; x=1738962322;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t85JfzSySsJNmkSw200IIYELaXWv/XR2Cy20L4r7KeU=;
+ b=A7ZCffu/MiXa1gfKv/YsNwGjuvGguGCHTevQdnCtsQlTAOOfHmURNDIGqEEooG09lh
+ lkUwFInqFMigCUJfod16btKFNB1w1ReCvZsh5smXMiIN8axSAirZY9ewgVSqi8YkzeWi
+ yZ0yCVoCPE92mUkSDGqMhKyRh79EIK9sLSewLk2MvTxZfh2biKEF8VDdi4R1wF18i5QI
+ VKBXRNhucPMpbSWbvxZPejPreMsv2RlH0soFAtleBx2W7sb/AmKiUNcSmI94Kk1BpazZ
+ vI8XWu42tT7ArJV9qb/MCm8es4QYD0apgEkSTpND6uwQmqcq/YPuL0M9bySTT67xO5NZ
+ GrAg==
+X-Gm-Message-State: AOJu0YyGssydASntvxc7UXxFMBdQoVbJ34IpwtHezmWgg046G9WOBf1E
+ JpuJLBTV8sMdb98m1oX599YXCgCHmRb1t1G+FcphwUeeJAjMVGzJcRB0SFgspzFIL1D+iDdr7Xs
+ Oolk=
+X-Gm-Gg: ASbGnctBU+MKG9wUT0cna96pa2rwWYxDgiq+ZpUbqFWVRuy51+r+zmV4PDuvPapZVHP
+ X243QUNDZKpgkpVdMGIY3qkMufGPB9bLWzX210ZkohhDHdpwmpyZDaNdkkckd6/Bd4t/viK4DGn
+ D2VbmyjpDiYWOUX3UWU8aWIR1u0VSu0Vhn4jZ8gwo58M4ZKoBOlrLyIPwIpuRgYeDJeHVgvrVDm
+ TygYeGd02KCfUNcl6JiPMG1H9c2x24fhtWYyXzmPH0NZf66VjmYBzWjGAOW4kuvTM062cPgDIe2
+ tOcf3b7AR4dOxyKQaAmW+I0PDw+3DdCBeHYOw1yZrXF7TmnjjPQgBMlY4Cd7TlSo0w==
+X-Google-Smtp-Source: AGHT+IEtq5MYKQbjn884t28dXVAJIQaNFfdQJ33OMDWpCfiqVGXoruPYgTkxwUhRHjF1ZozPXr3k2g==
+X-Received: by 2002:a05:600c:6c44:b0:436:fb02:e90 with SMTP id
+ 5b1f17b1804b1-438dc48aa14mr128845825e9.10.1738357522473; 
+ Fri, 31 Jan 2025 13:05:22 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438e23e5e53sm65665165e9.17.2025.01.31.13.05.20
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 31 Jan 2025 13:05:21 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/36] Misc HW patches for 2025-01-31
+Date: Fri, 31 Jan 2025 22:04:43 +0100
+Message-ID: <20250131210520.85874-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsWy7djXc7oy5nPTDRbOsbZYtfAam8X5WadY
- LI737mBxYPZoOfKW1ePJtc1MHp83yQUwR3HZpKTmZJalFunbJXBl/Fy2grngTFXF1hXfWBoY
- G8K6GDk5JARMJJo3H2HvYuTiEBJYyShx+8hkJginlUni3roLbDBVL/+fZoZIrGGU2Dm7C6rq
- E6PEiRm7oTJLGCUOHDjFAtLCJmAg8fv4RmYQW0TASOLdjUmMIEXMAu+YJGbdngdWJCzQyijx
- YVU+SEJEoI1R4tDMJ0BzOYAcK4n775VBalgEVCXubJ3DBGLzClhKXDj/DczmFDCUODhjAdgc
- RgExie+n1oDFmQXEJW49mc8EcbegxKLZe5ghbDGJf7seQv2jKHH/+0t2iHodiQW7P7FB2HYS
- c5f8g7K1JZYtfM0MsVdQ4uTMJywQvZISB1fcYAG5WUJgC4fE4RMXoZa5SHzY8RHKlpaYvuYy
- VEO+xK62K1BHVEhcfd0NdYS1xMI/65kmMKrMQnL3LCQ3zUJy0ywkN81CctMCRtZVjOKlxcW5
- 6anFxnmp5XrFibnFpXnpesn5uZsYgYnm9L/DBTsYb936qHeIkYmD8RCjBAezkggvx+E56UK8
- KYmVValF+fFFpTmpxYcYpTlYlMR5VQ60pgsJpCeWpGanphakFsFkmTg4pRqY9AuNzsZNyb9+
- YbaM9i/59XPSdy812/73oZtBhFTpS8FsCy+mTTfXcu9VeHbDXm32eduWKUdzzjXFxQceWXQv
- Kf9hXdOhj05RFVftxFYmXOR7v12wvn+/SsPi5MPzHz3edyVlretKu78zAt5d3l0rab5oPY+l
- y9ykTbWl7ffPhluu3Xm7IXeiyq5Hyhu06lbe3T1Z4sz/w9l+6Xt+VdZImO7y9jmwUmGSvvJz
- zjX9B/Ptni3/MldAmvXda38ns7rUqLMn6lwLX1RtFjFVOO67NZ9LXGDtQ/e7X6srtvUWLuRn
- XF81Vbb0tnuOb657xnaR31erNFfqzv33K+OuquilqNSL23V3SvYLXTuYljJdSYmlOCPRUIu5
- qDgRACxnLGqjAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHIsWRmVeSWpSXmKPExsWS2cDspCtjPjfd4M4rGYtVC6+xWZyfdYrF
- 4njvDhYHZo+WI29ZPZ5c28zk8XmTXABzFJdNSmpOZllqkb5dAlfGz2UrmAvOVFVsXfGNpYGx
- IayLkZNDQsBE4uX/08xdjFwcQgKrGCVmX9nMCOF8YpT4vOsNK4SzhFGiYcMERpAWNgEDid/H
- NzKD2CICRhLvbkwC62AWeMMksfn7X7CEsEAro8SHVfkgCRGBNkaJjVN/sHQxcgA5VhL33yuD
- 1LAIqErc2TqHCcTmFbCUuHD+GxPEtheMEtNP7WcBSXAKGEocnLEAzGYUEJP4fmoNWAOzgLjE
- rSfzmSCeEJBYsuc8M4QtKvHy8T9WCFtR4v73l+wQ9ToSC3Z/YoOw7STmLvkHZWtLLFv4mhni
- CEGJkzOfsED0SkocXHGDZQKjxCwk62YhGTULyahZSEbNQjJqASPrKkbx0uLi3PSKYuO81HK9
- 4sTc4tK8dL3k/NxNjMAoPf3vcMwOxnu3PuodYmTiYDzEKMHBrCTCy3F4TroQb0piZVVqUX58
- UWlOavEhRmkOFiVx3rsPNFKFBNITS1KzU1MLUotgskwcnFINTFVqlrxT77j7ef9UdHTjW9w6
- 5/ASCxvtu1LT9rvlufqn/FTxuxQcn9q5UHDi1mdvmlLOR96ufZKz1PWm2PUPRefjN567tUL7
- dnMO77E8dQsptv5lisKTdNqUNe7cFbr53ztlk1GhWZSS4vMcS/NQRs3/5VNq2U8eWfmQf13U
- 2R1nMy4vkLpzqW2rwFTf9F7btvJX3XFLX5xj3iXgzWfgIOuW4yxeb5eS/uqaJt9EH8sEzp6b
- VicWSAQ/VDgyZWekvcB0S5e8eof1Nrbez86eWfZwYpepzZXVShLO0ybeUS22P78mRXym2tft
- eut+3SlJDKmJTdzW/SXS8XBcdrRlXVPrK8azcyyq9zsUGngpsRRnJBpqMRcVJwIARPhP8kED
- AAA=
-X-CMS-MailID: 20250131204828uscas1p283110e0caa90588d2caffa1067a944b0
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20250123050913epcas5p45fb9a638e62f436076da283e86e54ea2
-References: <20250123050903.92336-1-vinayak.kh@samsung.com>
- <CGME20250123050913epcas5p45fb9a638e62f436076da283e86e54ea2@epcas5p4.samsung.com>
- <20250123050903.92336-3-vinayak.kh@samsung.com>
- <20250124151946.0000134f@huawei.com>
-Received-SPF: pass client-ip=211.189.100.11;
- envelope-from=a.manzanares@samsung.com; helo=mailout1.w2.samsung.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -142,454 +93,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 03:19:46PM +0000, Jonathan Cameron wrote:
-> On Thu, 23 Jan 2025 10:39:03 +0530
-> Vinayak Holikatti <vinayak.kh@samsung.com> wrote:
->=20
-> >     CXL spec 3.1 section 8.2.9.9.5.3 describes media operations command=
-s.
-> >     CXL devices supports media operations Sanitize and Write zero comma=
-nd.
->=20
-> As before, don't indent this.
->=20
-> >=20
-> > Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c  | 217 ++++++++++++++++++++++++++++++++++--
-> >  include/hw/cxl/cxl_device.h |  11 ++
-> >  2 files changed, 220 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index 2315d07fb1..89847ddd9d 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -1722,6 +1722,145 @@ static CXLRetCode cmd_sanitize_overwrite(const =
-struct cxl_cmd *cmd,
-> >      return CXL_MBOX_BG_STARTED;
-> >  }
-> > =20
-> > +#define DPA_RANGE_GRANULARITY 64
->=20
-> Could use existing CXL_CACHELINE_SIZE definition for this, though I guess
-> strictly speaking it could be unrelated.
->=20
-> > +struct dpa_range_list_entry {
-> > +    uint64_t starting_dpa;
-> > +    uint64_t length;
-> > +};
-> > +
-> > +static int validate_dpa_addr(CXLType3Dev *ct3d, uint64_t dpa_addr,
-> > +                             size_t length)
-> > +{
-> > +    MemoryRegion *vmr =3D NULL, *pmr =3D NULL, *dc_mr =3D NULL;
-> > +    uint64_t vmr_size =3D 0, pmr_size =3D 0, dc_size =3D 0;
-> > +    int rc =3D 0;
-> > +
-> > +    if ((dpa_addr % DPA_RANGE_GRANULARITY) ||
-> > +         (length % DPA_RANGE_GRANULARITY)) {
-> Probably makes sense to also check for length 0 here as that would
-> be very odd if sent.
-> > +        return -EINVAL;
-> > +    }
-> > +
-> > +    if (ct3d->hostvmem) {
-> > +        vmr =3D host_memory_backend_get_memory(ct3d->hostvmem);
-> > +        vmr_size =3D memory_region_size(vmr);
-> > +    }
-> > +    if (ct3d->hostpmem) {
-> > +        pmr =3D host_memory_backend_get_memory(ct3d->hostpmem);
-> > +        pmr_size =3D memory_region_size(pmr);
-> > +    }
-> > +    if (ct3d->dc.host_dc) {
-> > +        dc_mr =3D host_memory_backend_get_memory(ct3d->dc.host_dc);
-> > +        dc_size =3D memory_region_size(dc_mr);
-> > +    }
-> > +
-> > +    if (!vmr && !pmr && !dc_mr) {
-> > +        return -ENODEV;
-> > +    }
-> > +
-> > +    if (dpa_addr >=3D vmr_size + pmr_size + dc_size ||
-> > +        (dpa_addr + length) > vmr_size + pmr_size + dc_size) {
->=20
-> If length is checked as non zero above, only the second test is needed.
->=20
-> > +        return -EINVAL;
-> > +    }
-> > +
-> > +    if (dpa_addr > vmr_size + pmr_size) {
-> > +        if (!ct3_test_region_block_backed(ct3d, dpa_addr, length)) {
-> > +            return -ENODEV;
-> > +        }
-> > +    }
-> > +
-> > +
-> > +    return rc;
->=20
-> return 0. rc is never set to anything else.
->=20
-> > +}
-> > +
-> > +static int sanitize_range(CXLType3Dev *ct3d, uint64_t dpa_addr, size_t=
- length,
-> > +                          uint8_t fill_value)
-> > +{
-> > +
-> > +    MemoryRegion *vmr =3D NULL, *pmr =3D NULL;
-> > +    uint64_t vmr_size =3D 0, pmr_size =3D 0;
-> > +    AddressSpace *as =3D NULL;
-> > +    MemTxAttrs mem_attrs =3D {0};
-> > +
-> > +    if (ct3d->hostvmem) {
-> > +        vmr =3D host_memory_backend_get_memory(ct3d->hostvmem);
-> > +        vmr_size =3D memory_region_size(vmr);
-> > +    }
-> > +    if (ct3d->hostpmem) {
-> > +        pmr =3D host_memory_backend_get_memory(ct3d->hostpmem);
-> > +        pmr_size =3D memory_region_size(pmr);
-> > +    }
-> > +
-> > +    if (dpa_addr < vmr_size) {
-> > +        as =3D &ct3d->hostvmem_as;
-> > +    } else if (dpa_addr < vmr_size + pmr_size) {
-> > +        as =3D &ct3d->hostpmem_as;
-> > +    } else {
-> > +        if (!ct3_test_region_block_backed(ct3d, dpa_addr, length)) {
-> > +            return -ENODEV;
-> > +        }
-> > +        as =3D &ct3d->dc.host_dc_as;
-> > +    }
->=20
-> You could factor out everything down to here and then use that
-> for the validate_dpa_addr() as finding an address space means
-> we also checked the address is valid. Otherwise it does not match.
->=20
-> > +
-> > +    return  address_space_set(as, dpa_addr,
->=20
-> odd spacing after return. Should just be one space.
->=20
-> > +                              fill_value, length, mem_attrs);
-> > +}
-> > +
-> > +/* Perform the actual device zeroing */
-> > +static void __do_sanitize(CXLType3Dev *ct3d)
-> > +{
-> > +    struct CXLSanitizeInfo  *san_info =3D ct3d->media_op_sanitize;
->=20
-> Single space only before *san_info
->=20
-> > +    int dpa_range_count =3D san_info->dpa_range_count;
-> > +    int rc =3D 0;
-> > +
-> > +    for (int i =3D 0; i < dpa_range_count; i++) {
-> > +        rc =3D sanitize_range(ct3d, san_info->dpa_range_list[i].starti=
-ng_dpa,
-> > +                san_info->dpa_range_list[i].length, san_info->fill_val=
-ue);
-> > +        if (rc) {
-> > +            goto exit;
-> > +        }
-> > +    }
-> > +    cxl_discard_all_event_records(&ct3d->cxl_dstate);
->=20
-> Add a comment on why we are deleting event records when sanitizing a smal=
-l
-> part of memory?
->=20
+The following changes since commit 871af84dd599fab68c8ed414d9ecbdb2bcfc5801:
 
-See response below for disabling the media state. Same section referenced
-below, 8.2.10.9.5.1 states all event logs should be deleted. Outcome
-depends on how we interpret "follow the method described in 8.2.10.9.5.1".
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-01-29 09:51:03 -0500)
 
-> > +exit:
-> > +    g_free(ct3d->media_op_sanitize);
-> > +    ct3d->media_op_sanitize =3D NULL;
-> > +    return;
-> > +}
-> > +
-> > +static int get_sanitize_duration(uint64_t total_mem)
->=20
-> Where did this come from?  Factor out the existing code
-> in cmd_santize_overwrite() instead of duplicating this stack
-> of if/else if
->=20
-> Ideally do that as a precursor patch as it's just code movement.
->=20
->=20
-> > +{
-> > +    int secs =3D 0;
-> > +
-> > +    if (total_mem <=3D 512) {
-> > +        secs =3D 4;
-> > +    } else if (total_mem <=3D 1024) {
-> > +        secs =3D 8;
-> > +    } else if (total_mem <=3D 2 * 1024) {
-> > +        secs =3D 15;
-> > +    } else if (total_mem <=3D 4 * 1024) {
-> > +        secs =3D 30;
-> > +    } else if (total_mem <=3D 8 * 1024) {
-> > +        secs =3D 60;
-> > +    } else if (total_mem <=3D 16 * 1024) {
-> > +        secs =3D 2 * 60;
-> > +    } else if (total_mem <=3D 32 * 1024) {
-> > +        secs =3D 4 * 60;
-> > +    } else if (total_mem <=3D 64 * 1024) {
-> > +        secs =3D 8 * 60;
-> > +    } else if (total_mem <=3D 128 * 1024) {
-> > +        secs =3D 15 * 60;
-> > +    } else if (total_mem <=3D 256 * 1024) {
-> > +        secs =3D 30 * 60;
-> > +    } else if (total_mem <=3D 512 * 1024) {
-> > +        secs =3D 60 * 60;
-> > +    } else if (total_mem <=3D 1024 * 1024) {
-> > +        secs =3D 120 * 60;
-> > +    } else {
-> > +        secs =3D 240 * 60; /* max 4 hrs */
-> > +    }
-> > +
-> > +    return secs;
-> > +}
-> > +
-> >  enum {
-> >      MEDIA_OP_GENERAL  =3D 0x0,
-> >      MEDIA_OP_SANITIZE =3D 0x1,
-> > @@ -1729,10 +1868,9 @@ enum {
-> >  } MEDIA_OPERATION_CLASS;
-> > =20
-> >  enum {
-> > -    MEDIA_OP_SUB_DISCOVERY =3D 0x0,
-> > -    MEDIA_OP_SUB_SANITIZE =3D 0x0,
-> > -    MEDIA_OP_SUB_ZERO     =3D 0x1,
-> > -    MEDIA_OP_SUB_CLASS_MAX
-> > +    MEDIA_OP_GEN_DISCOVERY =3D 0x0,
-> > +    MEDIA_OP_SAN_SANITIZE =3D 0x0,
-> > +    MEDIA_OP_SAN_ZERO     =3D 0x1,
->=20
-> See naming suggestions in first patch. Make sure to tidy up so you don't =
-introduce
-> them there then change them here!
->=20
-> >  } MEDIA_OPERATION_SUB_CLASS;
-> > =20
-> >  struct media_op_supported_list_entry {
-> > @@ -1777,9 +1915,14 @@ static CXLRetCode cmd_media_operations(const str=
-uct cxl_cmd *cmd,
-> >      };
-> >      } QEMU_PACKED *media_op_in_pl =3D (void *)payload_in;
-> > =20
-> > +
->=20
-> Blank line here doesn't add anything.
->=20
-> > +    CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
-> >      uint8_t media_op_cl =3D media_op_in_pl->media_operation_class;
-> >      uint8_t media_op_subclass =3D media_op_in_pl->media_operation_subc=
-lass;
-> >      uint32_t dpa_range_count =3D media_op_in_pl->dpa_range_count;
-> > +    uint8_t fill_value =3D 0;
-> > +    uint64_t total_mem =3D 0;
-> > +    int secs =3D 0;
-> > =20
-> >      if (len_in < sizeof(*media_op_in_pl)) {
-> >          return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> > @@ -1788,7 +1931,7 @@ static CXLRetCode cmd_media_operations(const stru=
-ct cxl_cmd *cmd,
-> >      switch (media_op_cl) {
-> >      case MEDIA_OP_GENERAL:
-> >          switch (media_op_subclass) {
-> > -        case MEDIA_OP_SUB_DISCOVERY:
-> > +        case MEDIA_OP_GEN_DISCOVERY:
-> >              int count =3D 0;
-> >              struct media_op_discovery_out_pl *media_out_pl =3D
-> >                  (void *)payload_out;
-> > @@ -1806,7 +1949,7 @@ static CXLRetCode cmd_media_operations(const stru=
-ct cxl_cmd *cmd,
-> >                  return CXL_MBOX_INVALID_INPUT;
-> >              }
-> > =20
-> > -            media_out_pl->dpa_range_granularity =3D CXL_CAPACITY_MULTI=
-PLIER;
-> > +            media_out_pl->dpa_range_granularity =3D DPA_RANGE_GRANULAR=
-ITY;
-> >              media_out_pl->total_supported_operations =3D MAX_SUPPORTED=
-_OPS;
-> >              if (num_ops > 0) {
-> >                  for (int i =3D start_index; i < MAX_SUPPORTED_OPS; i++=
-) {
-> > @@ -1824,22 +1967,73 @@ disc_out:
-> >              media_out_pl->num_of_supported_operations =3D count;
-> >              *len_out =3D sizeof(struct media_op_discovery_out_pl) +
-> >              (sizeof(struct media_op_supported_list_entry) * count);
-> > -            break;
-> > +            goto exit;
-> return CXL_MBOX_SUCCESS;  No purpose in having the exit label as nothing
-> to be done.
->=20
->=20
-> >          default:
-> >              return CXL_MBOX_UNSUPPORTED;
-> >          }
-> >          break;
-> >      case MEDIA_OP_SANITIZE:
-> > +    {
->=20
-> From code here not obvious why scoping {} needed.
->=20
-> >          switch (media_op_subclass) {
-> > -
-> > +        case MEDIA_OP_SAN_SANITIZE:
-> > +            if (len_in < (sizeof(*media_op_in_pl) +
-> > +                   (dpa_range_count * sizeof(struct dpa_range_list_ent=
-ry)))) {
-> > +                return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> > +            }
-> The check applies to all current cases. So move it outside this switch st=
-atement
-> to remove duplication.  Here all you should do is set the fill_value;
->=20
-> > +            fill_value =3D 0xF;
-> > +            goto sanitize_range;
-> > +        case MEDIA_OP_SAN_ZERO:
-> > +            if (len_in < (sizeof(*media_op_in_pl) +
-> > +                (dpa_range_count * sizeof(struct dpa_range_list_entry)=
-))) {
-> > +                return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> > +            }
-> > +            fill_value =3D 0;
-> > +            goto sanitize_range;
-> Why goto. Just break...
-> >          default:
-> >              return CXL_MBOX_UNSUPPORTED;
-> >          }
-> and have the stuff below under the sanitize_range label here.
->=20
-> >          break;
-> > +    }
-> >      default:
-> >          return CXL_MBOX_UNSUPPORTED;
-> >      }
-> > =20
-> > +sanitize_range:
-> > +    if (dpa_range_count > 0) {
-> > +        for (int i =3D 0; i < dpa_range_count; i++) {
-> > +            if (validate_dpa_addr(ct3d,
-> > +                media_op_in_pl->dpa_range_list[i].starting_dpa,
-> > +                media_op_in_pl->dpa_range_list[i].length)) {
-> > +                return CXL_MBOX_INVALID_INPUT;
-> > +            }
-> > +            total_mem +=3D media_op_in_pl->dpa_range_list[i].length;
-> > +        }
-> > +        ct3d->media_op_sanitize =3D g_malloc0(sizeof(struct CXLSanitiz=
-eInfo) +
-> > +                                  (dpa_range_count *
-> > +                                  sizeof(struct dpa_range_list_entry))=
-);
-> > +
-> > +        if (ct3d->media_op_sanitize) {
-> > +            ct3d->media_op_sanitize->dpa_range_count =3D dpa_range_cou=
-nt;
-> > +            ct3d->media_op_sanitize->fill_value =3D fill_value;
-> > +            memcpy(ct3d->media_op_sanitize->dpa_range_list,
-> > +                   media_op_in_pl->dpa_range_list,
-> > +                   (dpa_range_count *
-> > +                   sizeof(struct dpa_range_list_entry)));
-> > +            secs =3D get_sanitize_duration(total_mem >> 20);
-> > +            goto start_bg;
-> > +        }
-> > +    } else if (dpa_range_count =3D=3D 0) {
-> > +        goto exit;
->     if (dpa_range_count =3D=3D 0) {
->        return CXL_MBOX_SUCCESS;
->     }
->     for (i =3D 0; i < dpa_range_count; i++)
->=20
-> //that is return early in the simple case the no need for else
-> and the extra level of indent on these long lines.
->=20
->=20
-> > +    }
-> > +
-> > +start_bg:
-> > +    /* EBUSY other bg cmds as of now */
-> > +    cci->bg.runtime =3D secs * 1000UL;
-> > +    *len_out =3D 0;
-> > +    /* sanitize when done */
-> > +    cxl_dev_disable_media(&ct3d->cxl_dstate);
-> Why?  This is santizing part of the device. As I undestand it the
-> main aim is to offload cleanup when the device is in use. Definitely
-> don't want to disable media.  If I'm missing a reason please give
-> a spec reference.
+are available in the Git repository at:
 
-Table 8-164, sanitize description mentions to follow method
-in 8.2.10.9.5.1, which does call out placing device in disabled
-state, but I'm not sure if method refers to all text in 8.2.10.9.5.1
-or the method devices uses to sanitize internally.
+  https://github.com/philmd/qemu.git tags/hw-misc-20250131
 
-I would imagine since sanitize is destructive we would not want to return=20
-any data from device ranges impacted by sanitize. I believe a simple
-way to achieve this is to disable entire device.=20
+for you to fetch changes up to aa0cbf85f3f0b949f61e7aead9902fb6eaee29a8:
 
->=20
-> > +    return CXL_MBOX_BG_STARTED;
-> > +exit:
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> > =20
-> > @@ -3154,6 +3348,13 @@ static void bg_timercb(void *opaque)
-> >              cxl_dev_enable_media(&ct3d->cxl_dstate);
-> >          }
-> >          break;
-> > +        case 0x4402: /* Media Operations sanitize */
-> > +        {
-> > +            CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
-> > +            __do_sanitize(ct3d);
-> > +            cxl_dev_enable_media(&ct3d->cxl_dstate);
-> Ah. You turn it back on here.   Specification reference needed.
-> > +        }
-> > +        break;
-> >          case 0x4304: /* scan media */
-> >          {
-> >              CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index a64739be25..6d82eb266a 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -581,6 +581,15 @@ typedef struct CXLSetFeatureInfo {
-> >      size_t data_size;
-> >  } CXLSetFeatureInfo;
-> > =20
-> > +struct CXLSanitizeInfo {
-> > +    uint32_t dpa_range_count;
-> > +    uint8_t fill_value;
-> > +    struct {
-> > +            uint64_t starting_dpa;
-> > +            uint64_t length;
-> > +    } dpa_range_list[0];
-> []
-> > +};
-> > +
-> >  struct CXLType3Dev {
-> >      /* Private */
-> >      PCIDevice parent_obj;
-> > @@ -651,6 +660,8 @@ struct CXLType3Dev {
-> >          uint8_t num_regions; /* 0-8 regions */
-> >          CXLDCRegion regions[DCD_MAX_NUM_REGION];
-> >      } dc;
-> > +
-> > +    struct CXLSanitizeInfo  *media_op_sanitize;
-> Here we just need to know there is a definition of struct
-> CXLSantizeInfo not what form it takes.  So use a forwards
-> defintion and push the definition of struct CXLSanitizeInfo
-> down to where it is needed only (in the c file).
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> >  };
-> > =20
-> >  #define TYPE_CXL_TYPE3 "cxl-type3"
-> =
+  hw/sd: Remove unused SDState::enable (2025-01-31 19:36:44 +0100)
+
+----------------------------------------------------------------
+Misc HW patches
+
+- Remove uses of &first_cpu in rx-gdbsim and loongson3_virt machines (Philippe)
+- Convert few legacy qemu_allocate_irqs to qemu_init_irqs (Philippe)
+- Add tracing events in i2c-echo device (Titus)
+- Fix debug format string in USB EHCI (Zoltan)
+- Rework loader API to remove its target_words_bigendian() call (Philippe)
+- QOMify OMAP MMC device (Peter)
+- Remove legacy SD Card APIs (Peter)
+
+----------------------------------------------------------------
+
+BALATON Zoltan (1):
+  hw/usb/hcd-ehci: Fix debug printf format string
+
+Peter Maydell (11):
+  hw/sd/omap_mmc: Do a minimal conversion to QDev
+  hw/sd/omap_mmc: Convert remaining 'struct omap_mmc_s' uses to
+    OMAPMMCState
+  hw/sd/omap_mmc: Convert output qemu_irqs to gpio and sysbus IRQ APIs
+  hw/sd/omap_mmc: Convert to SDBus API
+  hw/sd/omap_mmc: Use similar API for "wire up omap_clk" to other OMAP
+    devices
+  hw/arm/omap1: Inline creation of MMC
+  hw/sd/omap_mmc: Remove unused coverswitch qemu_irq
+  hw/sd/omap_mmc: Untabify
+  hw/sd: Remove unused 'enable' method from SDCardClass
+  hw/sd: Remove unused legacy functions, stop killing mammoths
+  hw/sd: Remove unused SDState::enable
+
+Philippe Mathieu-Daudé (23):
+  hw/rx/rx-gdbsim: Remove unnecessary uses of &first_cpu
+  hw/mips/loongson3_virt: Factor generic_cpu_reset() out
+  hw/mips/loongson3_virt: Invert vCPU creation order to remove
+    &first_cpu
+  hw/mips/loongson3_virt: Have fw_conf_init() access local loaderparams
+  hw/mips/loongson3_virt: Pass CPU argument to get_cpu_freq_hz()
+  hw/mips/loongson3_bootp: Include missing headers
+  hw/mips/loongson3: Propagate cpu_count to init_loongson_params()
+  hw/mips/loongson3_virt: Propagate cpu_count to init_boot_param()
+  hw/mips/loongson3_bootp: Propagate processor_id to init_cpu_info()
+  hw/mips/loongson3_virt: Propagate processor_id to
+    init_loongson_params()
+  hw/mips/loongson3_virt: Propagate %processor_id to init_boot_param()
+  hw/mips/loongson3_bootp: Move to common_ss[]
+  hw/irq: Introduce qemu_init_irqs() helper
+  hw/ipack: Clarify KConfig symbols
+  hw/ipack: Remove legacy qemu_allocate_irqs() use
+  hw/sh4/r2d: Convert legacy qemu_allocate_irqs() to qemu_init_irqs()
+  hw/char/pci-multi: Convert legacy qemu_allocate_irqs to qemu_init_irq
+  hw/avr/boot: Replace load_elf_ram_sym() -> load_elf_as()
+  hw/loader: Remove unused load_elf_ram()
+  hw/loader: Clarify local variable name in load_elf_ram_sym()
+  hw/loader: Pass ELFDATA endian order argument to load_elf_ram_sym()
+  hw/loader: Pass ELFDATA endian order argument to load_elf_as()
+  hw/loader: Pass ELFDATA endian order argument to load_elf()
+
+Titus Rwantare (1):
+  hw/misc/i2c-echo: add tracing
+
+ hw/mips/loongson3_bootp.h      |   1 +
+ include/hw/arm/omap.h          |  17 ++-
+ include/hw/ipack/ipack.h       |   7 +-
+ include/hw/irq.h               |  11 ++
+ include/hw/loader.h            |  22 +--
+ include/hw/sd/sd.h             |   1 -
+ include/hw/sd/sdcard_legacy.h  |  50 -------
+ hw/alpha/dp264.c               |   4 +-
+ hw/arm/armv7m.c                |   2 +-
+ hw/arm/boot.c                  |  16 +--
+ hw/arm/omap1.c                 |  26 +++-
+ hw/avr/boot.c                  |   8 +-
+ hw/char/ipoctal232.c           |   4 +-
+ hw/char/serial-pci-multi.c     |   7 +-
+ hw/core/generic-loader.c       |   6 +-
+ hw/core/irq.c                  |   8 ++
+ hw/core/loader.c               |  44 ++----
+ hw/hppa/machine.c              |   4 +-
+ hw/i386/multiboot.c            |   4 +-
+ hw/i386/x86-common.c           |   4 +-
+ hw/ipack/ipack.c               |   5 +-
+ hw/ipack/tpci200.c             |   6 +-
+ hw/loongarch/boot.c            |   2 +-
+ hw/m68k/an5206.c               |   2 +-
+ hw/m68k/mcf5208.c              |   2 +-
+ hw/m68k/q800.c                 |   2 +-
+ hw/m68k/virt.c                 |   2 +-
+ hw/microblaze/boot.c           |   6 +-
+ hw/mips/boston.c               |   2 +-
+ hw/mips/fuloong2e.c            |   2 +-
+ hw/mips/loongson3_bootp.c      |  16 ++-
+ hw/mips/loongson3_virt.c       |  59 ++++----
+ hw/mips/malta.c                |   5 +-
+ hw/mips/mipssim.c              |   3 +-
+ hw/misc/i2c-echo.c             |   8 ++
+ hw/openrisc/boot.c             |   2 +-
+ hw/pci-host/raven.c            |   4 +-
+ hw/ppc/e500.c                  |   2 +-
+ hw/ppc/mac_newworld.c          |   5 +-
+ hw/ppc/mac_oldworld.c          |   4 +-
+ hw/ppc/pegasos2.c              |   8 +-
+ hw/ppc/ppc405_boards.c         |   2 +-
+ hw/ppc/ppc440_bamboo.c         |   3 +-
+ hw/ppc/sam460ex.c              |   2 +-
+ hw/ppc/spapr.c                 |   8 +-
+ hw/ppc/virtex_ml507.c          |   4 +-
+ hw/riscv/boot.c                |   3 +-
+ hw/rx/rx-gdbsim.c              |   4 +-
+ hw/s390x/ipl.c                 |   6 +-
+ hw/sd/omap_mmc.c               | 250 ++++++++++++++++++---------------
+ hw/sd/sd.c                     |  94 +++----------
+ hw/sh4/r2d.c                   |  38 ++---
+ hw/sparc/leon3.c               |   2 +-
+ hw/sparc/sun4m.c               |   5 +-
+ hw/sparc64/sun4u.c             |   6 +-
+ hw/tricore/triboard.c          |   2 +-
+ hw/tricore/tricore_testboard.c |   2 +-
+ hw/usb/hcd-ehci.c              |   3 +-
+ hw/xtensa/sim.c                |   3 +-
+ hw/xtensa/xtfpga.c             |   3 +-
+ hw/char/Kconfig                |   5 +
+ hw/char/meson.build            |   2 +-
+ hw/ipack/Kconfig               |   4 +
+ hw/ipack/meson.build           |   3 +-
+ hw/mips/meson.build            |   3 +-
+ hw/misc/trace-events           |   5 +
+ tests/qtest/libqos/meson.build |   4 +-
+ tests/qtest/meson.build        |   4 +-
+ 68 files changed, 408 insertions(+), 455 deletions(-)
+ delete mode 100644 include/hw/sd/sdcard_legacy.h
+
+-- 
+2.47.1
+
 
