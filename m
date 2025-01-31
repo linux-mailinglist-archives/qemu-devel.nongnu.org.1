@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F56A24483
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9440A244A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:30:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyGN-00022d-Vv; Fri, 31 Jan 2025 16:09:20 -0500
+	id 1tdyZi-0003RH-0Q; Fri, 31 Jan 2025 16:29:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <onebigemail@gmail.com>)
- id 1tdyGM-00021F-1N
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:09:18 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <onebigemail@gmail.com>)
- id 1tdyGJ-000857-Ur
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:09:17 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-ab6d4810332so38806466b.1
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:09:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738357754; x=1738962554; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GHriA1JVBTyLxUQMJn1prS2++unY+un0wHZdtSZ3+Oo=;
- b=Bspn3K5NtonwYNWK4jP1Q7Eai5hvNSCTTEMIjaq4bvLrjlP2E/pmHVRjPkjXDVzVif
- SQoVnlLjL0Zh4aMdCikQTGAmaSlG2bSsoKi9XBAz5Qr8x+XeKUKUFIhocaIfg1NjgxK8
- FHHoT0aIrSX0LqJoOsS6ZUW25hXSdVBmIQLVOBRbfMsA36r+EL9dXvllNsJ0NWJiidDL
- SFttKwSwx6vZhzyu94shwaKAbcJpJ99ySYILqHtQDfDe9QVToVM8slDmv1FKb0mb/6gh
- Nee7gikPT8A0dDwsGcmBkfQmlgrgBNukC34mnCXFIPdzNd4qqSl/vKo7MBDB5qGEjfwh
- +TyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357754; x=1738962554;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GHriA1JVBTyLxUQMJn1prS2++unY+un0wHZdtSZ3+Oo=;
- b=jTEiRDlcEiSQKcWUmTc06qDQW7moyW49kU6EugvnbbdvSWLTDYyRTBfPsPuTCz4aIZ
- hTu8jxMe/4cV+MQPcSHKNZpslUlWj3TEb72bOibVyXyCvJl0QPqOjXbGzzRWcviLiEXf
- sZrt/vZSJHjMjAUIsdeT0N1aqZiyOuQ5c8hik5LtQWhWEzBFKyy7Cc6zFbnWVDlJ+w/9
- YkOEaCG2jkhzVE7nvI1wZwKejzDnwveYbyF78VNTF07pkCx2IuyqYMJ9ZmoHKoRyqg9i
- YnptLiYS1yPmNG7FmgeqirHijKOxrCPBYQNeADVmlmFRFFp3ziSRrXWA+5L55/5jKhYA
- Iu4Q==
-X-Gm-Message-State: AOJu0YxPAJca6kPrUSAz7Xf9juI87fJ3g6MtrgGFSyYri+abq8HEGzi1
- WMhLqTWq7+WHR5UpzchKvolIuEJsn9ILesHoMzs2iJAkl0aD/PSOkmH8ymUbPaMtOUONfr1zoqH
- /yYoIA9Nq67dNGIEC5lWDCV28myQ=
-X-Gm-Gg: ASbGncsoc7gOsdsN62bSBE1ClD48kHFdPwyvzbq0VICJWBgMgBIDBSEcsc9UjrIbBYX
- jeZWUuZDPd26UOOO8AeKH8+Byf8uh+bmIkZDTOjopjUwIv+3yw5n059P3iUaKetgS+9JjSgDxnw
- ==
-X-Google-Smtp-Source: AGHT+IFXqQ935AgJ1WYwbLG009gK3eGSo+lr2VDBkFsoPKtmpBME4Tln+LIAmsoJx1yCZmwgI6Zz3EP8pimbKhwQBiA=
-X-Received: by 2002:a17:907:60d2:b0:ab6:eec4:c9c2 with SMTP id
- a640c23a62f3a-ab6eec4d883mr279690866b.7.1738357753445; Fri, 31 Jan 2025
- 13:09:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tdyZg-0003Qt-Gt
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:29:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tdyZe-00050h-8F
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:29:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738358950;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=oHmLDy+cP0TKEKGiBFBdrMwxKrR9TDf2AZVLB5a8pvc=;
+ b=W4pfK0t4xDeZCtuTJnIXnDCAXnVntSIcKBEAKiNTj12a2W/1oNai1lJ6K+P/limqr7HyO+
+ njTG23+0fgyZYnhpkxXXLyjVu6Dc+dn1kaEkEgD9zvsGTkFeaRhIi/s4h+6083L0p/i9hR
+ mR0DxamHg76eiaqECdLWbGm97fwahtc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-o7Bx2ihlOtSN4Lt6sADwKg-1; Fri,
+ 31 Jan 2025 16:29:03 -0500
+X-MC-Unique: o7Bx2ihlOtSN4Lt6sADwKg-1
+X-Mimecast-MFC-AGG-ID: o7Bx2ihlOtSN4Lt6sADwKg
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59C311956087; Fri, 31 Jan 2025 21:29:01 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.44])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C30118008F0; Fri, 31 Jan 2025 21:28:56 +0000 (UTC)
+Date: Fri, 31 Jan 2025 21:28:53 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ "Hajnoczi, Stefan" <stefanha@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Liviu Ionescu <ilg@livius.net>
+Subject: Re: [PATCH 0/1] meson: Deprecate 32-bit host systems
+Message-ID: <Z51AlWh80Pqou6h_@redhat.com>
+References: <87plk72tvr.fsf@draig.linaro.org>
+ <ad6ca73a-c38a-4a9b-bdcb-ab50aa53ccd1@linaro.org>
+ <Z5ii-ueFt5-5Brxz@redhat.com>
+ <8c0eea44-d0bf-4b86-9b1b-1c2082ab2df9@linaro.org>
+ <9bf6d4b0-7a89-4110-a1e1-46bbdb2fc793@linaro.org>
+ <c13e207e-06a5-4f40-b319-f4f2e59d919a@redhat.com>
+ <CAFEAcA_CfVfypS5yUtT3V34CDxmAqx7wYnDoKPfHq-o=54GgAg@mail.gmail.com>
+ <8a54600c-ff3f-42dd-b164-62a57de867df@redhat.com>
+ <62449bfd-eb65-41d6-ae53-0333bcb603b3@linaro.org>
+ <CABgObfYvYWxua7_TwYzWH99N5pR92Vsmv8Q=57FU_g5wSwmacw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250131175716.3218600-1-lacraig3@gmail.com>
- <1f2ceb5a-e40f-42c3-beb2-e3839e0229fd@linaro.org>
-In-Reply-To: <1f2ceb5a-e40f-42c3-beb2-e3839e0229fd@linaro.org>
-From: Luke Craig <lacraig3@gmail.com>
-Date: Fri, 31 Jan 2025 16:09:03 -0500
-X-Gm-Features: AWEUYZmrdOkIDDQwr1kxeeIwKucaLKMY-hUHAAJjorCHNCMEQ9xvWkdpVQ6uqv4
-Message-ID: <CAHEB4Fi7KRpEwyQ3sw2z4sdS+opjtofb+AKpo9_CEEMiFtmsMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] plugins: add tb convenience functions
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>, 
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: multipart/alternative; boundary="00000000000063127f062d06f422"
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=onebigemail@gmail.com; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CABgObfYvYWxua7_TwYzWH99N5pR92Vsmv8Q=57FU_g5wSwmacw@mail.gmail.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,162 +95,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000063127f062d06f422
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jan 31, 2025 at 06:08:32PM +0100, Paolo Bonzini wrote:
+> Il ven 31 gen 2025, 17:46 Richard Henderson <richard.henderson@linaro.org>
+> ha scritto:
+> 
+> > On 1/29/25 04:47, Paolo Bonzini wrote:
+> > > The difference with TCG of course is that TCG is in active development,
+> > and therefore its
+> > > 32-bit host support is not surviving passively in the same way that a
+> > random device is.
+> > > Still, I think we can identify at least three different parts that
+> > should be treated
+> > > differently: 64-on-32, 32-on-32 system-mode emulation and 32-on-32
+> > user-mode emulation.
+> >
+> > Why the user/system split for 32-on-32?
+> >
+> 
+> Various reasons which overall point at 32-on-32 system emulation being not
+> used very much.
+> 
+> 1) 32-bit has the address space size limitation, which makes it harder to
+> test even moderately sized (2G) guests.
+> 
+> 2) I might be wrong but user mode emulation has no equivalent of the
+> forced-64bit hwaddr or ram_addr_t types; 32 bit is not very 32 bit anyway
+> in the case of system emulation
+> 
+> 3) 32-bit virtualization support only exists on x86 and possibly MIPS
+> 
+> 4) system emulation is used mostly on development systems, whereas user
+> mode emulation might be used on small systems to run short-lived
+> proprietary programs
+> 
+> 5) for those 32-bit hosts that have a completely separate TCG backend
+> (well, that's Arm), getting rid TLB accesses does eliminate a bit of code.
 
-Hi Pierrick,
+These days perhaps one of the more (most?) common "linux-user" scenarios
+I see is foreign arch containers. When telling docker/podman to run a
+non- native container image, it relies on qemu-user to make it all work
+transparently. Users probably don't even realize they're relying on
+QEMU, things just look a little slower.
 
-Thank you for your reply.
+Given the prevalence of containers these days, if you have an OS install
+whether 32-bit or 64-bit you're probably relying on podman/docker to some
+extent. Those who need non-native containers is admittedly relatively
+niche, but it wouldn't surprise me to hear of people doing it on 32-bit
+machines.
 
-I have submitted a new patch series with commits signed off.
+In general I think the biggest problem we have is that users that are likely
+to be impacted by our decisions won't pay any attention to QEMU upstream
+at all. IOW they'll never see our deprecation announcement, and thus we
+will never hear any feedback if they want it kept around
 
-Thanks!
--Luke
+So perhaps we need to make a bit more effort to broadcast this particular
+plan, given its more fundamental impact that most deprecations.
 
-On Fri, Jan 31, 2025, 2:53=E2=80=AFPM Pierrick Bouvier <pierrick.bouvier@li=
-naro.org>
-wrote:
+I'd suggest we should put out a qemu.org blog post post asking for feedback
+on the proposal to drop 32-bit support. Then get people to publicise this
+to their distro forums/mailing lists, and/or CC lwn.net to ask for it to be
+featured it as a news item.
 
-> Hi Luke,
->
-> On 1/31/25 09:57, Luke Craig wrote:
-> > This PR extends the plugin API with two functions which allow convenien=
-t
-> access around tbs.
-> >
-> > The first, qemu_plugin_tb_size, provides a mechanism for determining th=
-e
-> total size of a translation block.
-> >
-> > The second, qemu_plugin_tb_get_insn_by_vaddr, allows users to get a
-> reference to an instruction by its virtual address rather than just its
-> index.
-> >
-> > In response to feedback from Pierrick I have updated the implementation
-> of qemu_plugin_tb_size.
-> >
-> > Additionally, I have added these functions to the insn.c test plugin in
-> response to Alex's feedback.
-> >
-> > Lastly, I'll provide a reply to Alex's feeback (repeated below):
-> >
-> >> But the general comment is this is an example of tying the plugin API
-> >> too deeply with the internals of the translator. Why does a plugin nee=
-d
-> >> to know what is an implementation detail?
-> >
-> > Finding the line between implementation detail and relevant to plugins
-> is challenging, but I submitted this change because I found myself
-> implementing these functions in plugins. If you'd like for me to enumerat=
-e
-> examples where knowing the tb_size is relevant to analysis I'd be happy t=
-o
-> submit some.
-> >
-> > Luke Craig (3):
-> >    plugin: extend API with qemu_plugin_tb_get_insn_by_vaddr
-> >    plugin: extend API with qemu_plugin_tb_size
-> >    plugins: extend insn test for new convenience functions
-> >
->
-> For all the series,
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->
-> >   include/qemu/qemu-plugin.h | 21 +++++++++++++++++++++
-> >   plugins/api.c              | 20 ++++++++++++++++++++
-> >   tests/tcg/plugins/insn.c   | 10 ++++++++++
-> >   3 files changed, 51 insertions(+)
-> >
->
-> To accept this series, commits should be signed off [1].
->
-> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#patch-emai=
-ls-must-include-a-signed-off-by-line
->
-> Thanks,
-> Pierrick
->
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
---00000000000063127f062d06f422
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div>Hi Pierrick,</div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto">Thank you for your reply.</div><div dir=3D"auto"><br></div><div=
- dir=3D"auto">I have submitted a new patch series with commits signed off.<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">Thanks!</div><div dir=3D=
-"auto">-Luke<br><br><div class=3D"gmail_quote gmail_quote_container" dir=3D=
-"auto"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jan 31, 2025, 2:53=E2=
-=80=AFPM Pierrick Bouvier &lt;<a href=3D"mailto:pierrick.bouvier@linaro.org=
-">pierrick.bouvier@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"=
-gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-=
-left:1ex">Hi Luke,<br>
-<br>
-On 1/31/25 09:57, Luke Craig wrote:<br>
-&gt; This PR extends the plugin API with two functions which allow convenie=
-nt access around tbs.<br>
-&gt; <br>
-&gt; The first, qemu_plugin_tb_size, provides a mechanism for determining t=
-he total size of a translation block.<br>
-&gt; <br>
-&gt; The second, qemu_plugin_tb_get_insn_by_vaddr, allows users to get a re=
-ference to an instruction by its virtual address rather than just its index=
-.<br>
-&gt; <br>
-&gt; In response to feedback from Pierrick I have updated the implementatio=
-n of qemu_plugin_tb_size.<br>
-&gt; <br>
-&gt; Additionally, I have added these functions to the insn.c test plugin i=
-n response to Alex&#39;s feedback.<br>
-&gt; <br>
-&gt; Lastly, I&#39;ll provide a reply to Alex&#39;s feeback (repeated below=
-):<br>
-&gt; <br>
-&gt;&gt; But the general comment is this is an example of tying the plugin =
-API<br>
-&gt;&gt; too deeply with the internals of the translator. Why does a plugin=
- need<br>
-&gt;&gt; to know what is an implementation detail?<br>
-&gt; <br>
-&gt; Finding the line between implementation detail and relevant to plugins=
- is challenging, but I submitted this change because I found myself impleme=
-nting these functions in plugins. If you&#39;d like for me to enumerate exa=
-mples where knowing the tb_size is relevant to analysis I&#39;d be happy to=
- submit some.<br>
-&gt; <br>
-&gt; Luke Craig (3):<br>
-&gt;=C2=A0 =C2=A0 plugin: extend API with qemu_plugin_tb_get_insn_by_vaddr<=
-br>
-&gt;=C2=A0 =C2=A0 plugin: extend API with qemu_plugin_tb_size<br>
-&gt;=C2=A0 =C2=A0 plugins: extend insn test for new convenience functions<b=
-r>
-&gt; <br>
-<br>
-For all the series,<br>
-Reviewed-by: Pierrick Bouvier &lt;<a href=3D"mailto:pierrick.bouvier@linaro=
-.org" target=3D"_blank" rel=3D"noreferrer">pierrick.bouvier@linaro.org</a>&=
-gt;<br>
-<br>
-&gt;=C2=A0 =C2=A0include/qemu/qemu-plugin.h | 21 +++++++++++++++++++++<br>
-&gt;=C2=A0 =C2=A0plugins/api.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 | 20 ++++++++++++++++++++<br>
-&gt;=C2=A0 =C2=A0tests/tcg/plugins/insn.c=C2=A0 =C2=A0| 10 ++++++++++<br>
-&gt;=C2=A0 =C2=A03 files changed, 51 insertions(+)<br>
-&gt; <br>
-<br>
-To accept this series, commits should be signed off [1].<br>
-<a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-patch.html#p=
-atch-emails-must-include-a-signed-off-by-line" rel=3D"noreferrer noreferrer=
-" target=3D"_blank">https://www.qemu.org/docs/master/devel/submitting-a-pat=
-ch.html#patch-emails-must-include-a-signed-off-by-line</a><br>
-<br>
-Thanks,<br>
-Pierrick<br>
-</blockquote></div></div></div>
-
---00000000000063127f062d06f422--
 
