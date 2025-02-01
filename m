@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3792A24A92
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B95FEA24AC8
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:51:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1teGYS-0006lz-LH; Sat, 01 Feb 2025 11:41:12 -0500
+	id 1teGYT-0006o5-HT; Sat, 01 Feb 2025 11:41:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYO-0006g2-Ld
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:08 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1teGYQ-0006ib-MO
+ for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:11 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYM-0001Ec-MO
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:08 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso22431825e9.2
- for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:41:06 -0800 (PST)
+ id 1teGYN-0001Ey-MP
+ for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:09 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43634b570c1so21878555e9.0
+ for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:41:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738428065; x=1739032865; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738428066; x=1739032866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4SIxijMH1bd/VjPyy4//6A0KHczC2X1t6r/A1ob+iQQ=;
- b=cYgq2kdgQy36IDXP6zScDS7IBUZVWJmmwMdJ6q/7NdeQC45U5+ovK3xj7hrzlHw2VZ
- +nFNsZDKkkns2q4Dpq9XL++8dHechDjPBPcH2HSnc0ZuDkg/ho4u12Al241L49N3Ad48
- x8meRBKlCXiHbEWhE4H/yKiHvNYcfwaBSkT2q2ER8mC0dUw4og0xem4/c/Tnc3SFCuWV
- ZcVZpYqQkwgtrGSxLnAlH+aGdrOk+MZ3s/m1pgQ3mT/pBvRvsOCKJZxRO5zwL2Vxn/CI
- UBv++QCQnjlWXYYRVTG7kZ5TEs8/ZELXt9KVWx3UnpjSWNXuJF2iVmLZcBUcTvtrSR50
- R6BQ==
+ :reply-to; bh=DtbhFC8pE11SMUdv+S1RAxT/ZcF5GGxfsyxqYuDbnFc=;
+ b=i6540+RP3Za2UyD/hUR9oofRxcQhgrr6cx4mSOK91JIExs3NxHoVXR0J5bMlONxmXz
+ 2q+/ujllIFDDJI9k6GYX5f7IVMCQ7R6vNulapTGESdYNW0HokOlm4FUzdha/0eG9C02e
+ yOc0J0JklYENiFaiIy5QwLswhqQ6owqzIpUPKDlM+inYGmDZgAIy4bdsaNZAz1whT8c+
+ tYxgT3lQwqLUKSjT34sdr/UYck5yISyU/RllMK8OOylOS7fnjjgRH0DgYiz9141LvhTk
+ zvmTXamSCHMxgKluXEIL0rSk3Ia0n96Wf6E0ZhxxJA9hkphsxI0rdVMAdCdzk+reeItC
+ Q0/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738428065; x=1739032865;
+ d=1e100.net; s=20230601; t=1738428066; x=1739032866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4SIxijMH1bd/VjPyy4//6A0KHczC2X1t6r/A1ob+iQQ=;
- b=wodQ1ASrptocDWf7cKqwkWvDz3cklB34r3bO8rdSI4XpizKTQxJssLOR8Ma9fXF2HK
- BcuZ94ACjVOwsbt1lWCVA7H0aMU89QNtidt2EwK/XdG284sysSH8Xqc8cKRK0/iJQmd3
- NHnfZAwbDvKV/u92MqYomCX/7S49Trtj5f0UIjHFBgaHWka2dObXh+niWVswUplF/Pzm
- RKXS48On4FFP65pyYYjT69FPE9jS4/A18W8gBANWCoPSja3HwgvXeTQbBNYNmL65vGC5
- MhVU10UtegQxQCQMo5H3JzP+BSdeN/B7drhe6gR0lihn/v5NeA02t1lM/9cWDTs81zEV
- cAQg==
+ bh=DtbhFC8pE11SMUdv+S1RAxT/ZcF5GGxfsyxqYuDbnFc=;
+ b=qao7GAz59M9vbj7FbJUdEjUSC2FJSIhPsyPDGrhv95QpMiMjGefe6UpBddICUsjKKe
+ ml7xCQe7jQWWwIUzYOsyTyaBWZVOxxJ+r227gI5Fghi+uy9qvzUrRVzZFGezr4/Vl/Tv
+ ORzZt4jL8VsgNd89ReQaBe/2WhIq3lNkphK/hHR5Vrm1YMEereGQQHjwPDtRSXIKeU8z
+ mDcqAymbZMTL0mwev+DUqsKQHW5M5KYKHk86VV1AzyqN+e6Mn5InltKZ2GqdFPoo8pha
+ XTRJ08A4XgPJxoWLbG1MCjsSz0WieZHbw2IpFPSqFUjO4KQZJtH59B5fZse+8WKU7r7E
+ /grw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXykdx5P7IF6KKBBAGZDSh1ct/jvbXlh3t/y0uMHaA/SiAjs9I8ZMsNQqc3U71tpjWgcFtn2yppCu1d@nongnu.org
-X-Gm-Message-State: AOJu0YywoLd/jRnoMrZeibT2GTFcQ8gHrukCtxISuPt3jCAwYZaDe3nJ
- dxBQsBOddv3cf+4ZaQ5bFaDEdfRSCKpUnED8rniKVsJJRI/lDc5p3Ao4G8Z9DC6DdiEGo2Kl/Yp
- K
-X-Gm-Gg: ASbGnctd+CNCBCWtWX4+JiqGKpjoV/hxQW1lf2her8ie85qv4J1RJpO/QX6wtq+PpNg
- DBaItUDqEsBnvk3svK1WsW853X43Dvw3lydsx57bpJtz67TpV/QDcwc0JQQnIgbe1AlljqoLDfP
- JxivBxPqVqagrl84aRjd6POffdFEk4S7lJ1Z2jLij4Ec0yVjc7zTpaDsD5ATIYd/8HtvvRsJhuS
- R3QgR545GRwbVejuyqfFhxzuSzJj60WsL2deZjrtezB3OPZauAKYjYGW1kZqdyD65qmsiHU9nKr
- l7YOUFDDi3zQ1Cp4BaRn
-X-Google-Smtp-Source: AGHT+IFtfrNKgTVcH1eLwO3nRlFlhcQYyejp5mVfCps8ycP+y93itPFR/Za0fnAep3AJtqktyBnMgg==
-X-Received: by 2002:a5d:4e86:0:b0:386:2a3b:8aa with SMTP id
- ffacd0b85a97d-38c5209000bmr10305001f8f.37.1738428065219; 
- Sat, 01 Feb 2025 08:41:05 -0800 (PST)
+ AJvYcCU6ZYJYS5N/c6Ljz95VUxUnjmG34fM+yPIA0txd+NBDQl+4EsNXWabrJz68pKxVGf0DG/vPGfQNZ03O@nongnu.org
+X-Gm-Message-State: AOJu0YxTFJcSrymlmjyrmi7mAxT4qHcbgjFmfpjoZC+vjcS3jE8kZ7/R
+ XUXpCrbsDLQ8B9to87t6ws/jBulzzMSx/s921oJS7cyYvEsYLpd1WSyyr7a5H4Q=
+X-Gm-Gg: ASbGnctqv8/YocdUBGsVmE53gq5Cmbv2ovMo4IyNMeMsM4SabvQq3qifQDNZg7AAZfd
+ ORvNcZ6hjtQvMT/aYVntjRVZRM2H5QrrHp3WPuV1jXCNdpNScTpn5SHvcf2T/oERIv8Ui8eNKOg
+ tfBl2/zCSmJD7DL3V4KsoOS+Fa4MxHrwljFWS1W8LZsbcQjWa7c66P1VjYqraA+uNevXhlO2fif
+ KlKSG5Sjm4yOLIQhjQAF/4u8bNmA/txzklsgkick9N7zMwXt+i0liLdRdGunjbbqfConFfV9cB5
+ nb/Kp7MWvbIbEDrVgggJ
+X-Google-Smtp-Source: AGHT+IEvZOrxPOqqOrTjFaKCxYWSVOYt8aZC0lG2MtwduIYlavFI0h0+Zu22FJLZJykjy4exy4nXQg==
+X-Received: by 2002:a05:600c:3585:b0:435:192:63ca with SMTP id
+ 5b1f17b1804b1-438dc3fc57cmr123491785e9.21.1738428066239; 
+ Sat, 01 Feb 2025 08:41:06 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.41.04
+ 5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.41.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Feb 2025 08:41:04 -0800 (PST)
+ Sat, 01 Feb 2025 08:41:05 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 38/69] target/arm: Handle FPCR.AH in negation steps in FCADD
-Date: Sat,  1 Feb 2025 16:39:41 +0000
-Message-Id: <20250201164012.1660228-39-peter.maydell@linaro.org>
+Subject: [PATCH v2 39/69] target/arm: Handle FPCR.AH in FRECPS and FRSQRTS
+ scalar insns
+Date: Sat,  1 Feb 2025 16:39:42 +0000
+Message-Id: <20250201164012.1660228-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250201164012.1660228-1-peter.maydell@linaro.org>
 References: <20250201164012.1660228-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,140 +98,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The negation steps in FCADD must honour FPCR.AH's "don't change the
-sign of a NaN" semantics.  Implement this by encoding FPCR.AH into
-the SIMD data field passed to the helper and using that to decide
-whether to negate the values.
+Handle the FPCR.AH semantics that we do not change the sign of an
+input NaN in the FRECPS and FRSQRTS scalar insns, by providing
+new helper functions that do the CHS part of the operation
+differently.
 
-The construction of neg_imag and neg_real were done to make it easy
-to apply both in parallel with two simple logical operations.  This
-changed with FPCR.AH, which is more complex than that. Switch to
-an approach closer to the pseudocode, where we extract the rot
-parameter from the SIMD data word and negate the appropriate
-input value.
+Since the extra helper functions would be very repetitive if written
+out longhand, we condense them and the existing non-AH helpers into
+being emitted via macros.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 10 +++++--
- target/arm/tcg/vec_helper.c    | 54 +++++++++++++++++++---------------
- 2 files changed, 38 insertions(+), 26 deletions(-)
+v2: squash in patch from RTH to move float*_ah_chs() to vec_internal.h
+---
+ target/arm/tcg/helper-a64.h    |   6 ++
+ target/arm/tcg/vec_internal.h  |  18 ++++++
+ target/arm/tcg/helper-a64.c    | 115 ++++++++++++---------------------
+ target/arm/tcg/translate-a64.c |  25 +++++--
+ 4 files changed, 83 insertions(+), 81 deletions(-)
 
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index ae0424f6de9..85023465b76 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -38,9 +38,15 @@ DEF_HELPER_FLAGS_3(neon_cgt_f64, TCG_CALL_NO_RWG, i64, i64, i64, fpst)
+ DEF_HELPER_FLAGS_3(recpsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
+ DEF_HELPER_FLAGS_3(recpsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
+ DEF_HELPER_FLAGS_3(recpsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_3(recpsf_ah_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(recpsf_ah_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
++DEF_HELPER_FLAGS_3(recpsf_ah_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
+ DEF_HELPER_FLAGS_3(rsqrtsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
+ DEF_HELPER_FLAGS_3(rsqrtsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
+ DEF_HELPER_FLAGS_3(rsqrtsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_ah_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_ah_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_ah_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
+ DEF_HELPER_FLAGS_2(frecpx_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
+ DEF_HELPER_FLAGS_2(frecpx_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
+ DEF_HELPER_FLAGS_2(frecpx_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index 826791523a6..6b93b5aeb94 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -267,6 +267,24 @@ float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
+  */
+ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp);
+ 
++/*
++ * Negate as for FPCR.AH=1 -- do not negate NaNs.
++ */
++static inline float16 float16_ah_chs(float16 a)
++{
++    return float16_is_any_nan(a) ? a : float16_chs(a);
++}
++
++static inline float32 float32_ah_chs(float32 a)
++{
++    return float32_is_any_nan(a) ? a : float32_chs(a);
++}
++
++static inline float64 float64_ah_chs(float64 a)
++{
++    return float64_is_any_nan(a) ? a : float64_chs(a);
++}
++
+ static inline float16 float16_maybe_ah_chs(float16 a, bool fpcr_ah)
+ {
+     return fpcr_ah && float16_is_any_nan(a) ? a : float16_chs(a);
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index ed5e4a45997..32f0647ca4f 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -38,6 +38,7 @@
+ #ifdef CONFIG_USER_ONLY
+ #include "user/page-protection.h"
+ #endif
++#include "vec_internal.h"
+ 
+ /* C2.4.7 Multiply and divide */
+ /* special cases for 0 and LLONG_MIN are mandated by the standard */
+@@ -208,88 +209,52 @@ uint64_t HELPER(neon_cgt_f64)(float64 a, float64 b, float_status *fpst)
+     return -float64_lt(b, a, fpst);
+ }
+ 
+-/* Reciprocal step and sqrt step. Note that unlike the A32/T32
++/*
++ * Reciprocal step and sqrt step. Note that unlike the A32/T32
+  * versions, these do a fully fused multiply-add or
+  * multiply-add-and-halve.
++ * The FPCR.AH == 1 versions need to avoid flipping the sign of NaN.
+  */
+-
+-uint32_t HELPER(recpsf_f16)(uint32_t a, uint32_t b, float_status *fpst)
+-{
+-    a = float16_squash_input_denormal(a, fpst);
+-    b = float16_squash_input_denormal(b, fpst);
+-
+-    a = float16_chs(a);
+-    if ((float16_is_infinity(a) && float16_is_zero(b)) ||
+-        (float16_is_infinity(b) && float16_is_zero(a))) {
+-        return float16_two;
++#define DO_RECPS(NAME, CTYPE, FLOATTYPE, CHSFN)                         \
++    CTYPE HELPER(NAME)(CTYPE a, CTYPE b, float_status *fpst)            \
++    {                                                                   \
++        a = FLOATTYPE ## _squash_input_denormal(a, fpst);               \
++        b = FLOATTYPE ## _squash_input_denormal(b, fpst);               \
++        a = FLOATTYPE ## _ ## CHSFN(a);                                 \
++        if ((FLOATTYPE ## _is_infinity(a) && FLOATTYPE ## _is_zero(b)) || \
++            (FLOATTYPE ## _is_infinity(b) && FLOATTYPE ## _is_zero(a))) { \
++            return FLOATTYPE ## _two;                                   \
++        }                                                               \
++        return FLOATTYPE ## _muladd(a, b, FLOATTYPE ## _two, 0, fpst);  \
+     }
+-    return float16_muladd(a, b, float16_two, 0, fpst);
+-}
+ 
+-float32 HELPER(recpsf_f32)(float32 a, float32 b, float_status *fpst)
+-{
+-    a = float32_squash_input_denormal(a, fpst);
+-    b = float32_squash_input_denormal(b, fpst);
++DO_RECPS(recpsf_f16, uint32_t, float16, chs)
++DO_RECPS(recpsf_f32, float32, float32, chs)
++DO_RECPS(recpsf_f64, float64, float64, chs)
++DO_RECPS(recpsf_ah_f16, uint32_t, float16, ah_chs)
++DO_RECPS(recpsf_ah_f32, float32, float32, ah_chs)
++DO_RECPS(recpsf_ah_f64, float64, float64, ah_chs)
+ 
+-    a = float32_chs(a);
+-    if ((float32_is_infinity(a) && float32_is_zero(b)) ||
+-        (float32_is_infinity(b) && float32_is_zero(a))) {
+-        return float32_two;
+-    }
+-    return float32_muladd(a, b, float32_two, 0, fpst);
+-}
++#define DO_RSQRTSF(NAME, CTYPE, FLOATTYPE, CHSFN)                       \
++    CTYPE HELPER(NAME)(CTYPE a, CTYPE b, float_status *fpst)            \
++    {                                                                   \
++        a = FLOATTYPE ## _squash_input_denormal(a, fpst);               \
++        b = FLOATTYPE ## _squash_input_denormal(b, fpst);               \
++        a = FLOATTYPE ## _ ## CHSFN(a);                                 \
++        if ((FLOATTYPE ## _is_infinity(a) && FLOATTYPE ## _is_zero(b)) || \
++            (FLOATTYPE ## _is_infinity(b) && FLOATTYPE ## _is_zero(a))) { \
++            return FLOATTYPE ## _one_point_five;                        \
++        }                                                               \
++        return FLOATTYPE ## _muladd_scalbn(a, b, FLOATTYPE ## _three,   \
++                                           -1, 0, fpst);                \
++    }                                                                   \
+ 
+-float64 HELPER(recpsf_f64)(float64 a, float64 b, float_status *fpst)
+-{
+-    a = float64_squash_input_denormal(a, fpst);
+-    b = float64_squash_input_denormal(b, fpst);
+-
+-    a = float64_chs(a);
+-    if ((float64_is_infinity(a) && float64_is_zero(b)) ||
+-        (float64_is_infinity(b) && float64_is_zero(a))) {
+-        return float64_two;
+-    }
+-    return float64_muladd(a, b, float64_two, 0, fpst);
+-}
+-
+-uint32_t HELPER(rsqrtsf_f16)(uint32_t a, uint32_t b, float_status *fpst)
+-{
+-    a = float16_squash_input_denormal(a, fpst);
+-    b = float16_squash_input_denormal(b, fpst);
+-
+-    a = float16_chs(a);
+-    if ((float16_is_infinity(a) && float16_is_zero(b)) ||
+-        (float16_is_infinity(b) && float16_is_zero(a))) {
+-        return float16_one_point_five;
+-    }
+-    return float16_muladd_scalbn(a, b, float16_three, -1, 0, fpst);
+-}
+-
+-float32 HELPER(rsqrtsf_f32)(float32 a, float32 b, float_status *fpst)
+-{
+-    a = float32_squash_input_denormal(a, fpst);
+-    b = float32_squash_input_denormal(b, fpst);
+-
+-    a = float32_chs(a);
+-    if ((float32_is_infinity(a) && float32_is_zero(b)) ||
+-        (float32_is_infinity(b) && float32_is_zero(a))) {
+-        return float32_one_point_five;
+-    }
+-    return float32_muladd_scalbn(a, b, float32_three, -1, 0, fpst);
+-}
+-
+-float64 HELPER(rsqrtsf_f64)(float64 a, float64 b, float_status *fpst)
+-{
+-    a = float64_squash_input_denormal(a, fpst);
+-    b = float64_squash_input_denormal(b, fpst);
+-
+-    a = float64_chs(a);
+-    if ((float64_is_infinity(a) && float64_is_zero(b)) ||
+-        (float64_is_infinity(b) && float64_is_zero(a))) {
+-        return float64_one_point_five;
+-    }
+-    return float64_muladd_scalbn(a, b, float64_three, -1, 0, fpst);
+-}
++DO_RSQRTSF(rsqrtsf_f16, uint32_t, float16, chs)
++DO_RSQRTSF(rsqrtsf_f32, float32, float32, chs)
++DO_RSQRTSF(rsqrtsf_f64, float64, float64, chs)
++DO_RSQRTSF(rsqrtsf_ah_f16, uint32_t, float16, ah_chs)
++DO_RSQRTSF(rsqrtsf_ah_f32, float32, float32, ah_chs)
++DO_RSQRTSF(rsqrtsf_ah_f64, float64, float64, ah_chs)
+ 
+ /* Floating-point reciprocal exponent - see FPRecpX in ARM ARM */
+ uint32_t HELPER(frecpx_f16)(uint32_t a, float_status *fpst)
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0c1e97e6c40..52f93cb905b 100644
+index 52f93cb905b..a3404c9e68c 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -6117,8 +6117,14 @@ static gen_helper_gvec_3_ptr * const f_vector_fcadd[3] = {
-     gen_helper_gvec_fcadds,
-     gen_helper_gvec_fcaddd,
- };
--TRANS_FEAT(FCADD_90, aa64_fcma, do_fp3_vector, a, 0, f_vector_fcadd)
--TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1, f_vector_fcadd)
-+/*
-+ * Encode FPCR.AH into the data so the helper knows whether the
-+ * negations it does should avoid flipping the sign bit on a NaN
-+ */
-+TRANS_FEAT(FCADD_90, aa64_fcma, do_fp3_vector, a, 0 | (s->fpcr_ah << 1),
-+           f_vector_fcadd)
-+TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1 | (s->fpcr_ah << 1),
-+           f_vector_fcadd)
+@@ -5250,11 +5250,12 @@ static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f,
+                                        FPST_A64_F16 : FPST_A64);
+ }
  
- static bool trans_FCMLA_v(DisasContext *s, arg_FCMLA_v *a)
+-static bool do_fp3_scalar_ah(DisasContext *s, arg_rrr_e *a, const FPScalar *f,
+-                             int mergereg)
++static bool do_fp3_scalar_ah_2fn(DisasContext *s, arg_rrr_e *a,
++                                 const FPScalar *fnormal, const FPScalar *fah,
++                                 int mergereg)
  {
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 0b84a562c03..b181b9734d4 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -879,19 +879,21 @@ void HELPER(gvec_fcaddh)(void *vd, void *vn, void *vm,
-     float16 *d = vd;
-     float16 *n = vn;
-     float16 *m = vm;
--    uint32_t neg_real = extract32(desc, SIMD_DATA_SHIFT, 1);
--    uint32_t neg_imag = neg_real ^ 1;
-+    bool rot = extract32(desc, SIMD_DATA_SHIFT, 1);
-+    bool fpcr_ah = extract64(desc, SIMD_DATA_SHIFT + 1, 1);
-     uintptr_t i;
+-    return do_fp3_scalar_with_fpsttype(s, a, f, mergereg,
+-                                       select_ah_fpst(s, a->esz));
++    return do_fp3_scalar_with_fpsttype(s, a, s->fpcr_ah ? fah : fnormal,
++                                       mergereg, select_ah_fpst(s, a->esz));
+ }
  
--    /* Shift boolean to the sign bit so we can xor to negate.  */
--    neg_real <<= 15;
--    neg_imag <<= 15;
--
-     for (i = 0; i < opr_sz / 2; i += 2) {
-         float16 e0 = n[H2(i)];
--        float16 e1 = m[H2(i + 1)] ^ neg_imag;
-+        float16 e1 = m[H2(i + 1)];
-         float16 e2 = n[H2(i + 1)];
--        float16 e3 = m[H2(i)] ^ neg_real;
-+        float16 e3 = m[H2(i)];
-+
-+        if (rot) {
-+            e3 = float16_maybe_ah_chs(e3, fpcr_ah);
-+        } else {
-+            e1 = float16_maybe_ah_chs(e1, fpcr_ah);
-+        }
+ /* Some insns need to call different helpers when FPCR.AH == 1 */
+@@ -5475,14 +5476,26 @@ static const FPScalar f_scalar_frecps = {
+     gen_helper_recpsf_f32,
+     gen_helper_recpsf_f64,
+ };
+-TRANS(FRECPS_s, do_fp3_scalar_ah, a, &f_scalar_frecps, a->rn)
++static const FPScalar f_scalar_ah_frecps = {
++    gen_helper_recpsf_ah_f16,
++    gen_helper_recpsf_ah_f32,
++    gen_helper_recpsf_ah_f64,
++};
++TRANS(FRECPS_s, do_fp3_scalar_ah_2fn, a,
++      &f_scalar_frecps, &f_scalar_ah_frecps, a->rn)
  
-         d[H2(i)] = float16_add(e0, e1, fpst);
-         d[H2(i + 1)] = float16_add(e2, e3, fpst);
-@@ -906,19 +908,21 @@ void HELPER(gvec_fcadds)(void *vd, void *vn, void *vm,
-     float32 *d = vd;
-     float32 *n = vn;
-     float32 *m = vm;
--    uint32_t neg_real = extract32(desc, SIMD_DATA_SHIFT, 1);
--    uint32_t neg_imag = neg_real ^ 1;
-+    bool rot = extract32(desc, SIMD_DATA_SHIFT, 1);
-+    bool fpcr_ah = extract64(desc, SIMD_DATA_SHIFT + 1, 1);
-     uintptr_t i;
+ static const FPScalar f_scalar_frsqrts = {
+     gen_helper_rsqrtsf_f16,
+     gen_helper_rsqrtsf_f32,
+     gen_helper_rsqrtsf_f64,
+ };
+-TRANS(FRSQRTS_s, do_fp3_scalar_ah, a, &f_scalar_frsqrts, a->rn)
++static const FPScalar f_scalar_ah_frsqrts = {
++    gen_helper_rsqrtsf_ah_f16,
++    gen_helper_rsqrtsf_ah_f32,
++    gen_helper_rsqrtsf_ah_f64,
++};
++TRANS(FRSQRTS_s, do_fp3_scalar_ah_2fn, a,
++      &f_scalar_frsqrts, &f_scalar_ah_frsqrts, a->rn)
  
--    /* Shift boolean to the sign bit so we can xor to negate.  */
--    neg_real <<= 31;
--    neg_imag <<= 31;
--
-     for (i = 0; i < opr_sz / 4; i += 2) {
-         float32 e0 = n[H4(i)];
--        float32 e1 = m[H4(i + 1)] ^ neg_imag;
-+        float32 e1 = m[H4(i + 1)];
-         float32 e2 = n[H4(i + 1)];
--        float32 e3 = m[H4(i)] ^ neg_real;
-+        float32 e3 = m[H4(i)];
-+
-+        if (rot) {
-+            e3 = float32_maybe_ah_chs(e3, fpcr_ah);
-+        } else {
-+            e1 = float32_maybe_ah_chs(e1, fpcr_ah);
-+        }
- 
-         d[H4(i)] = float32_add(e0, e1, fpst);
-         d[H4(i + 1)] = float32_add(e2, e3, fpst);
-@@ -933,19 +937,21 @@ void HELPER(gvec_fcaddd)(void *vd, void *vn, void *vm,
-     float64 *d = vd;
-     float64 *n = vn;
-     float64 *m = vm;
--    uint64_t neg_real = extract64(desc, SIMD_DATA_SHIFT, 1);
--    uint64_t neg_imag = neg_real ^ 1;
-+    bool rot = extract32(desc, SIMD_DATA_SHIFT, 1);
-+    bool fpcr_ah = extract64(desc, SIMD_DATA_SHIFT + 1, 1);
-     uintptr_t i;
- 
--    /* Shift boolean to the sign bit so we can xor to negate.  */
--    neg_real <<= 63;
--    neg_imag <<= 63;
--
-     for (i = 0; i < opr_sz / 8; i += 2) {
-         float64 e0 = n[i];
--        float64 e1 = m[i + 1] ^ neg_imag;
-+        float64 e1 = m[i + 1];
-         float64 e2 = n[i + 1];
--        float64 e3 = m[i] ^ neg_real;
-+        float64 e3 = m[i];
-+
-+        if (rot) {
-+            e3 = float64_maybe_ah_chs(e3, fpcr_ah);
-+        } else {
-+            e1 = float64_maybe_ah_chs(e1, fpcr_ah);
-+        }
- 
-         d[i] = float64_add(e0, e1, fpst);
-         d[i + 1] = float64_add(e2, e3, fpst);
+ static bool do_fcmp0_s(DisasContext *s, arg_rr_e *a,
+                        const FPScalar *f, bool swap)
 -- 
 2.34.1
 
