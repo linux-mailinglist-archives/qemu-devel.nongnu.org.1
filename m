@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D71A24AC7
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E00DDA24B9B
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 20:39:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1teGZL-0001RP-Fb; Sat, 01 Feb 2025 11:42:07 -0500
+	id 1teJJ4-0003Bx-V0; Sat, 01 Feb 2025 14:37:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYx-0007q1-FB
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:43 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYv-0001PX-Ms
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:41:43 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-436a39e4891so20935355e9.1
- for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:41:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738428100; x=1739032900; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=u/2K8Z3pwUQ/oXE8NyEXdkhcGga/r0RB0mzMV+vu/gw=;
- b=HpnUcnlXy1XSRv5ukDQm2bxK+fbSQKBegkU5LdKwDxrp8QAUKxTnKf2/HNboKBODXX
- eGqitR6EzbDY7STfe3WqYs+vfNyZnyW7xd/lZjobceyJRiKxQOReMuy5ZIynOXIepy2u
- 1RdxfCX3v9QNgVxdE37RH1L2UvZD0BtF3jME4ThuyJkpcP/p+vZmQ4jgGWQTN7LXEqub
- zibX0TZ8tVNnjGsIieqkFUqZPCBwIzQ82QXRhxPHfj9HHDvT+H7y/etixEwFKCbAedef
- UxlATlIBz95Af6N4Gj2QOaLaFII69Y+0nquAdta/yy/Cmw6H03WkDOUB67SMQ5vY55ML
- OhPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738428100; x=1739032900;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=u/2K8Z3pwUQ/oXE8NyEXdkhcGga/r0RB0mzMV+vu/gw=;
- b=Al3rKDb9e3yq/6FU6V/IIzWpxCsP1B0emJ/xlRZn/0RG8B3S6zWcEqwuhDQb4ibPuS
- 4AP8BxdobkJ+Hvuj2FEgi1/WExrVIdENEepR/hnmbjdwUQdWOPMKufwJOotfx2oggX/K
- CtQnMbyyZkPqKZSCJ0CBfimqtWmxcnvmwHoqDlYCJiTSarpILQKJ6TCdPBPWgs8ei4Ni
- oIKjcRd1qbuWBqrapFS4xvreVGYRSsAAuyYRmmcaG9gDk10azlySRZVhCXANJyWk816s
- OB8un4RkohDqRUybPeEXz/82CQLw/2+uK5VNRS6xueeEpkY7QVD2n/upPMIspgFwAH39
- updg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUYwRwY1gbS7/z0DJLQ6yCXS0/7e+plMvEG7PZLqDHexvYoB+AedeAIp6O3mwv71/xJzOeOiYQbcy8L@nongnu.org
-X-Gm-Message-State: AOJu0YxsWQW+ssGfUqk8FisFRqrA9dHYaVj5axqokrvOIqMdYpfDQjEp
- zHoh/NpQ4jvPy/9qVFIeTi3hUyGmkNzMJzRWzIXK5M3mwkapwhDt4D5kmsHE0XQ=
-X-Gm-Gg: ASbGncuvh47aBGQ3vOywhjl91TRUkJfnHHEZbzA7m7JyOUgh0zmyfppWQoTBmzN6c/L
- aqRAHRwJnvqEBLOVLxCI4f9YIgTXKlC664aJx1k8LviqXM5sVwDaRdRSaFV1KXkY95XPOFBiUH8
- +D1upINN+eJZ8Z14Kq0draqsZ3SAk+taY91OnaekCXaI7kqhkh8+l6MEXRCF5wdyrepql+YKzUr
- ZnwAy0KhWYzcyjKj6pO0yPGZH0/IRbjWcAqsl42qQ9mRnwoyl8dyHTkw0IMgh17LG54K0WeAkwd
- sreFgAQSH7tv6rr8cqnr
-X-Google-Smtp-Source: AGHT+IFGiudVddJ1Gllwlmw7ow/aXOmwX64d048+LqdaCl+Tyhm2y/aLU80Wb/o6h1VWe8YHfqxk9A==
-X-Received: by 2002:a5d:5988:0:b0:38b:ed1c:a70d with SMTP id
- ffacd0b85a97d-38c5167b477mr14007649f8f.0.1738428100234; 
- Sat, 01 Feb 2025 08:41:40 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.41.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Feb 2025 08:41:39 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 69/69] target/arm: Sink fp_status and fpcr access into
- do_fmlal*
-Date: Sat,  1 Feb 2025 16:40:12 +0000
-Message-Id: <20250201164012.1660228-70-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250201164012.1660228-1-peter.maydell@linaro.org>
-References: <20250201164012.1660228-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1teJIt-0003Ay-3Q; Sat, 01 Feb 2025 14:37:20 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1teJIo-0003vm-D2; Sat, 01 Feb 2025 14:37:17 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0FCB3E3DD2;
+ Sat, 01 Feb 2025 22:36:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 80F1A1AA2B8;
+ Sat,  1 Feb 2025 22:36:58 +0300 (MSK)
+Message-ID: <9080590d-d823-473e-833e-d726490f1b18@tls.msk.ru>
+Date: Sat, 1 Feb 2025 22:36:58 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] net: Fix announce_self with vhost
+To: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, QEMU Trivial <qemu-trivial@nongnu.org>, 
+ qemu-stable@nongnu.org
+References: <20250117111709.970789-1-lvivier@redhat.com>
+ <fee03f11-bcf5-4586-abc1-2d38ce6a7f9c@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <fee03f11-bcf5-4586-abc1-2d38ce6a7f9c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,97 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+17.01.2025 17:05, Laurent Vivier wrote:
+> CC: qemu-stable and qemu-trivial.
+> 
+> On 17/01/2025 12:17, Laurent Vivier wrote:
+>> announce_self that sends a RARP packet after migration
+>> or with announce_self QMP/HMP command doesn't work with
+>> vhost because of the vnet headers.
+>>
+>> announce_self is the only user of QEMU_NET_PACKET_FLAG_RAW and
+>> this flag is not correctly managed.
+>>
+>> This series fix a problem with this flag in filter-dump and in
+>> qemu_deliver_packet_iov().
+>>
+>> Laurent Vivier (2):
+>>    net: Fix announce_self
+>>    net/dump: Correctly compute Ethernet packet offset
 
-Sink common code from the callers into do_fmlal
-and do_fmlal_idx.  Reorder the arguments to minimize
-the re-sorting from the caller's arguments.
+Is this one - "Correctly compute Ethernet packet offset" - needed for
+older stable series too, like 8.2 and 7.2 (currently active ones)?
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250129013857.135256-35-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/vec_helper.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+Since it doesn't apply without 4b52d63249 (tap: Remove qemu_using_vnet_hdr()).
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index cc3586f44ac..986eaf8ffa4 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2125,9 +2125,13 @@ static uint64_t load4_f16(uint64_t *ptr, int is_q, int is_2)
-  * as there is not yet SVE versions that might use blocking.
-  */
- 
--static void do_fmlal(float32 *d, void *vn, void *vm, float_status *fpst,
--                     uint64_t negx, int negf, uint32_t desc, bool fz16)
-+static void do_fmlal(float32 *d, void *vn, void *vm,
-+                     CPUARMState *env, uint32_t desc,
-+                     ARMFPStatusFlavour fpst_idx,
-+                     uint64_t negx, int negf)
- {
-+    float_status *fpst = &env->vfp.fp_status[fpst_idx];
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     intptr_t i, oprsz = simd_oprsz(desc);
-     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
-     int is_q = oprsz == 16;
-@@ -2154,8 +2158,7 @@ void HELPER(gvec_fmlal_a32)(void *vd, void *vn, void *vm,
-     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     uint64_t negx = is_s ? 0x8000800080008000ull : 0;
- 
--    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--             env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal(vd, vn, vm, env, desc, FPST_STD, negx, 0);
- }
- 
- void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
-@@ -2172,8 +2175,7 @@ void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
-             negx = 0x8000800080008000ull;
-         }
-     }
--    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--             env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal(vd, vn, vm, env, desc, FPST_A64, negx, negf);
- }
- 
- void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-@@ -2205,9 +2207,13 @@ void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-     }
- }
- 
--static void do_fmlal_idx(float32 *d, void *vn, void *vm, float_status *fpst,
--                         uint64_t negx, int negf, uint32_t desc, bool fz16)
-+static void do_fmlal_idx(float32 *d, void *vn, void *vm,
-+                         CPUARMState *env, uint32_t desc,
-+                         ARMFPStatusFlavour fpst_idx,
-+                         uint64_t negx, int negf)
- {
-+    float_status *fpst = &env->vfp.fp_status[fpst_idx];
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     intptr_t i, oprsz = simd_oprsz(desc);
-     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
-     int index = extract32(desc, SIMD_DATA_SHIFT + 2, 3);
-@@ -2235,8 +2241,7 @@ void HELPER(gvec_fmlal_idx_a32)(void *vd, void *vn, void *vm,
-     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     uint64_t negx = is_s ? 0x8000800080008000ull : 0;
- 
--    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--                 env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal_idx(vd, vn, vm, env, desc, FPST_STD, negx, 0);
- }
- 
- void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
-@@ -2253,8 +2258,7 @@ void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
-             negx = 0x8000800080008000ull;
-         }
-     }
--    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--                 env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal_idx(vd, vn, vm, env, desc, FPST_A64, negx, negf);
- }
- 
- void HELPER(sve2_fmlal_zzxw_s)(void *vd, void *vn, void *vm, void *va,
--- 
-2.34.1
+Thanks,
 
+/mjt
 
