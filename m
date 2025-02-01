@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8B8A24AA0
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242C4A24AD0
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:52:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1teGYH-0006TX-Im; Sat, 01 Feb 2025 11:41:01 -0500
+	id 1teGYI-0006U2-Jp; Sat, 01 Feb 2025 11:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYD-0006Kq-1N
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:57 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1teGYE-0006PR-Lz
+ for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:58 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGYB-0001BR-AX
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:56 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43635796b48so18698575e9.0
- for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:40:54 -0800 (PST)
+ id 1teGYC-0001Bp-VS
+ for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:58 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4361c705434so22420965e9.3
+ for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:40:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738428054; x=1739032854; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738428055; x=1739032855; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=g0Z2ycNCf9W70DtwUEodSWkhpWcrCzYt5vzIvDPUjeo=;
- b=VoFoHhy8qZZXnM6B0j8IXgeejZrqnH+sEvqGB8Ms9nquAwZ9sTU9SYi10oQKck/Bnv
- 6IxMEstg/62Sd0vkthW5EkJqGkkDVjG70+IxXM6HoXshnO+I/Iu4r/3TcPsMdBdG9UIM
- RYqhzT6cSFoMgSvBTBp91HFuuVjiOskh9E2/sar5eCZ6UNMq3Hdm1O0vUdtAq/tVPRu6
- Oju17dRks1QwwKt14J/lQXL9M8p/omRXTjUbq6k0mqA098e1R3PsNtVv0Q02dtXMOgsj
- OEzzlDwBM+dyxK6D1ePSF6I/stlaIRgkd2N51aF5TIAITKOS4nRJdZ2Gz8IakqPWpANd
- j7oA==
+ :reply-to; bh=2jpxKV3cZKID86X9NgsSgQN/RBeTni16lZXdGrHHA/o=;
+ b=j+BaWDgkicdfj7pI2C82yw9Ia4Co1zrihxIlW37WNcHFL3BL2N9i+w9F8x3uQO/nrO
+ ofaqmorr5Pwx5OdTCK9Kz3WzxWeOGR6i0kxOE+NPc+kuN0vfX8CX9ElDq8LcefYUudAG
+ gI0ySCkP4/fTZfT5cCVU/re0vgnJoclwWxSxb8SxmoyZx3RuUeJVCAzES+VLWo7BkqO8
+ NsctAEh/N42QWzxXvmQJLB9khQv17wIahRAWmih4v09JJ6ISPcO/YnCSHwhUJ2VtdzVD
+ Z8F8kge+6DGEjWGHcCj5pDzSvSnpPMKZmAUf1X62SozQ4pm1dzTTRPKyuMXRK/7MN7rE
+ +rkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738428054; x=1739032854;
+ d=1e100.net; s=20230601; t=1738428055; x=1739032855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g0Z2ycNCf9W70DtwUEodSWkhpWcrCzYt5vzIvDPUjeo=;
- b=m6JFX1+EedwJKFHQuxDglxCtn9me6fa/iUyDYLucGT4O4HQdlgReX57NaCNX5vvdxw
- smUeNvTU5eB/DUsNDY3wCVDygbfsdnpZlZnK8An026cmOrsH7/gMoIbALX+dx2DqeKBX
- n/AnYzXTNuUDh27VV8Vk3Is6A1rKDVGkUtqRDc9irlrJUK7iSxZJdQF5GeBDbtrLZZlA
- tCE9TELCqNImhR3duF+YwNnjHa9McKZeAAR1iYvuGU+DscdrgKkSU9+yS0Pa3APPdUnB
- IyJQ/xnvg3eUxmyw7xUfwy4caOZOZhfiIzgO+lY4GcBhxUmm8RiTGY7yT7tjRQDhgkhe
- KbVA==
+ bh=2jpxKV3cZKID86X9NgsSgQN/RBeTni16lZXdGrHHA/o=;
+ b=MONvqUn3hZYWWzC7hjpRNn3xzChVqmOBJ9qv+AAABYQVp797LVW6PwX1J/sYSXsW+8
+ PilhSfIcWElHyai73bZvfsCWinc8TLKSdwLzUGfsHnzVQVoANAXWWBgLsN1fnxXE7iXN
+ NFUaRev/auQ8t5KAc81k+TIIU6t3nMl4HyI+do6hHylvupg52yyALQRhqx0uofuUKVlc
+ U9qi7bT5D2l5/TDkOWSq2XglLUJibdIt08FAU7Hg+TjOpoeokaQtRzYMLWLpuYXiptVa
+ nkICbjWhoTjZVl6NRhlpvTW4aJxWIbJ+OKALgedYAq5f6yHj4+m0l06W0VW8j5NJrSEt
+ L04w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV1ennbz3M28ir5N/Ya3AjU62AQswxZeW7chXR31xyYUPuBPwD+cUr/m6oSMGxoL/ntPGbAT5TZRzKC@nongnu.org
-X-Gm-Message-State: AOJu0Yz7wRpr5+AEC2tDzu5gb/E3kqfw4gaI+KgKDAu3NcLL3szQ6Pfs
- OYEqice3cStwVV+vZo9IcZqo85PDF2KmErqr+TOSl/rQ3HT56VzixvOc2zwDf2KDqYyn9U76eEj
- O
-X-Gm-Gg: ASbGncu6CIo5qXGqhMoXxlrb6lHZv+IJgxrCZaPs/1/SZBTRH5bLAV9TlLSV32juu0l
- TQCeUEuCtYAtxLumDSxb8TUtSo1CzKiMedhlQrC4jYK8uY0llpLAAPVSXi1bl4K3KTuhJPdiqHg
- EIOg3W+q9yOcYjh4FrYv9JZdSt7OfwflAyrUerfxd7av2xMl8831H0LhAg22/yEJzyF9pELhjWG
- 30Utd49ddWwgCBLsk4LXIJOFUWAzaAeRUUEtbHofRcq9+LizUy5sYONoIO01rLT4faYD/zDimqr
- 7/3RhuSpLLkN9cqGF+k7
-X-Google-Smtp-Source: AGHT+IEcrWdJqjbxinaEdyf7n7EvQ4W1ciTbOQf9sjJJJBQ3DSRYvrZiiBE7FGxqY81Lnck9siPbwA==
-X-Received: by 2002:a05:600c:1913:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-438e16ebb49mr94166305e9.10.1738428053804; 
- Sat, 01 Feb 2025 08:40:53 -0800 (PST)
+ AJvYcCXh/9glmjglr9kzxMRvy7L6FKkbgLSJ9R4KIFkO1kz4y0segMsTx54fep/Su6D0JDCaaZFLAGYLMaWV@nongnu.org
+X-Gm-Message-State: AOJu0YwV/8X0rEdJ+c+IvQbD18JLU3QPL8wvgcAWdb93TDb16kQS/QCm
+ u1ApEbeZj+Q+Od1wwAf0lhaOKUR3p8jJEdSINyDu9RS0r07c4EAt2x+7ohMSQ5U=
+X-Gm-Gg: ASbGncscmwfRrQsQRazTC6SyLdNvXwkn24zEY7x+DJUhW0nlKBlts4Je68dmqblrvSy
+ xgyAJAypXVfBgJrrVZggoXers7ywh5NWBptGJCfHVj67GV3Pqfc4cMhBnRcytAEFgrtUHoFu7nT
+ 2zQ/f/XY0EmGbpZHE2To0a90Oci++i8pZvwKuCqGvNyqg+TQudNZDqIywWaqL+si/+BKxu20tIz
+ kaUo1/U28BD2DYC5e/pwK7JUHsilB1BYsvaDb/PTexlnaP0W7wOpCAJlUK9rBkxHTn1xu7C81lg
+ aFdcdXQiE1XXaOWJZ537
+X-Google-Smtp-Source: AGHT+IHgwBsZXl74emuVYObRmpmSRUGwKXd/dIKSgI7HlQ2Xx6TIjXTbq+XuO+13xIHDwEhs6o+MpA==
+X-Received: by 2002:a05:6000:1ace:b0:385:ec89:2f07 with SMTP id
+ ffacd0b85a97d-38c51970003mr11770908f8f.32.1738428055478; 
+ Sat, 01 Feb 2025 08:40:55 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.40.52
+ 5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.40.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Feb 2025 08:40:53 -0800 (PST)
+ Sat, 01 Feb 2025 08:40:54 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 29/69] target/arm: Implement FPCR.AH semantics for SVE
- FMIN/FMAX immediate
-Date: Sat,  1 Feb 2025 16:39:32 +0000
-Message-Id: <20250201164012.1660228-30-peter.maydell@linaro.org>
+Subject: [PATCH v2 30/69] target/arm: Implement FPCR.AH semantics for SVE
+ FMIN/FMAX vector
+Date: Sat,  1 Feb 2025 16:39:33 +0000
+Message-Id: <20250201164012.1660228-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250201164012.1660228-1-peter.maydell@linaro.org>
 References: <20250201164012.1660228-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,103 +98,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the FPCR.AH semantics for the SVE FMAX and FMIN operations
-that take an immediate as the second operand.
+Implement the FPCR.AH semantics for the SVE FMAX and FMIN
+operations that take two vector operands.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  target/arm/tcg/helper-sve.h    | 14 ++++++++++++++
  target/arm/tcg/sve_helper.c    |  8 ++++++++
- target/arm/tcg/translate-sve.c | 25 +++++++++++++++++++++++--
- 3 files changed, 45 insertions(+), 2 deletions(-)
+ target/arm/tcg/translate-sve.c | 17 +++++++++++++++--
+ 3 files changed, 37 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
-index 7ca95b8fa94..3c1d2624ed4 100644
+index 3c1d2624ed4..918f2e61b7e 100644
 --- a/target/arm/tcg/helper-sve.h
 +++ b/target/arm/tcg/helper-sve.h
-@@ -1231,6 +1231,20 @@ DEF_HELPER_FLAGS_6(sve_fmins_s, TCG_CALL_NO_RWG,
- DEF_HELPER_FLAGS_6(sve_fmins_d, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, i64, fpst, i32)
+@@ -1140,6 +1140,20 @@ DEF_HELPER_FLAGS_6(sve_fmax_s, TCG_CALL_NO_RWG,
+ DEF_HELPER_FLAGS_6(sve_fmax_d, TCG_CALL_NO_RWG,
+                    void, ptr, ptr, ptr, ptr, fpst, i32)
  
-+DEF_HELPER_FLAGS_6(sve_ah_fmaxs_h, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
-+DEF_HELPER_FLAGS_6(sve_ah_fmaxs_s, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
-+DEF_HELPER_FLAGS_6(sve_ah_fmaxs_d, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmin_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmin_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmin_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
 +
-+DEF_HELPER_FLAGS_6(sve_ah_fmins_h, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
-+DEF_HELPER_FLAGS_6(sve_ah_fmins_s, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
-+DEF_HELPER_FLAGS_6(sve_ah_fmins_d, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, i64, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmax_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmax_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_6(sve_ah_fmax_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, fpst, i32)
 +
- DEF_HELPER_FLAGS_5(sve_fcvt_sh, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(sve_fcvt_dh, TCG_CALL_NO_RWG,
+ DEF_HELPER_FLAGS_6(sve_fminnum_h, TCG_CALL_NO_RWG,
+                    void, ptr, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_6(sve_fminnum_s, TCG_CALL_NO_RWG,
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 3631d85f23a..2f6fc82ee4f 100644
+index 2f6fc82ee4f..a688b98d284 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -4459,6 +4459,14 @@ DO_ZPZS_FP(sve_fmins_h, float16, H1_2, float16_min)
- DO_ZPZS_FP(sve_fmins_s, float32, H1_4, float32_min)
- DO_ZPZS_FP(sve_fmins_d, float64, H1_8, float64_min)
+@@ -4347,6 +4347,14 @@ DO_ZPZZ_FP(sve_fmax_h, uint16_t, H1_2, float16_max)
+ DO_ZPZZ_FP(sve_fmax_s, uint32_t, H1_4, float32_max)
+ DO_ZPZZ_FP(sve_fmax_d, uint64_t, H1_8, float64_max)
  
-+DO_ZPZS_FP(sve_ah_fmaxs_h, float16, H1_2, helper_vfp_ah_maxh)
-+DO_ZPZS_FP(sve_ah_fmaxs_s, float32, H1_4, helper_vfp_ah_maxs)
-+DO_ZPZS_FP(sve_ah_fmaxs_d, float64, H1_8, helper_vfp_ah_maxd)
++DO_ZPZZ_FP(sve_ah_fmin_h, uint16_t, H1_2, helper_vfp_ah_minh)
++DO_ZPZZ_FP(sve_ah_fmin_s, uint32_t, H1_4, helper_vfp_ah_mins)
++DO_ZPZZ_FP(sve_ah_fmin_d, uint64_t, H1_8, helper_vfp_ah_mind)
 +
-+DO_ZPZS_FP(sve_ah_fmins_h, float16, H1_2, helper_vfp_ah_minh)
-+DO_ZPZS_FP(sve_ah_fmins_s, float32, H1_4, helper_vfp_ah_mins)
-+DO_ZPZS_FP(sve_ah_fmins_d, float64, H1_8, helper_vfp_ah_mind)
++DO_ZPZZ_FP(sve_ah_fmax_h, uint16_t, H1_2, helper_vfp_ah_maxh)
++DO_ZPZZ_FP(sve_ah_fmax_s, uint32_t, H1_4, helper_vfp_ah_maxs)
++DO_ZPZZ_FP(sve_ah_fmax_d, uint64_t, H1_8, helper_vfp_ah_maxd)
 +
- /* Fully general two-operand expander, controlled by a predicate,
-  * With the extra float_status parameter.
-  */
+ DO_ZPZZ_FP(sve_fminnum_h, uint16_t, H1_2, float16_minnum)
+ DO_ZPZZ_FP(sve_fminnum_s, uint32_t, H1_4, float32_minnum)
+ DO_ZPZZ_FP(sve_fminnum_d, uint64_t, H1_8, float64_minnum)
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 35f6d78a0e0..187bd647c29 100644
+index 187bd647c29..2813e5f4871 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -3821,14 +3821,35 @@ static bool do_fp_imm(DisasContext *s, arg_rpri_esz *a, uint64_t imm,
-     TRANS_FEAT(NAME##_zpzi, aa64_sve, do_fp_imm, a,                     \
-                name##_const[a->esz][a->imm], name##_fns[a->esz])
+@@ -3759,11 +3759,24 @@ TRANS_FEAT_NONSTREAMING(FTSMUL, aa64_sve, gen_gvec_fpst_arg_zzz,
+     };                                                          \
+     TRANS_FEAT(NAME, FEAT, gen_gvec_fpst_arg_zpzz, name##_zpzz_fns[a->esz], a)
  
-+#define DO_FP_AH_IMM(NAME, name, const0, const1)                        \
-+    static gen_helper_sve_fp2scalar * const name##_fns[4] = {           \
-+        NULL, gen_helper_sve_##name##_h,                                \
-+        gen_helper_sve_##name##_s,                                      \
-+        gen_helper_sve_##name##_d                                       \
++#define DO_ZPZZ_AH_FP(NAME, FEAT, name, ah_name)                        \
++    static gen_helper_gvec_4_ptr * const name##_zpzz_fns[4] = {         \
++        NULL,                  gen_helper_##name##_h,                   \
++        gen_helper_##name##_s, gen_helper_##name##_d                    \
 +    };                                                                  \
-+    static gen_helper_sve_fp2scalar * const name##_ah_fns[4] = {        \
-+        NULL, gen_helper_sve_ah_##name##_h,                             \
-+        gen_helper_sve_ah_##name##_s,                                   \
-+        gen_helper_sve_ah_##name##_d                                    \
++    static gen_helper_gvec_4_ptr * const name##_ah_zpzz_fns[4] = {      \
++        NULL,                  gen_helper_##ah_name##_h,                \
++        gen_helper_##ah_name##_s, gen_helper_##ah_name##_d              \
 +    };                                                                  \
-+    static uint64_t const name##_const[4][2] = {                        \
-+        { -1, -1 },                                                     \
-+        { float16_##const0, float16_##const1 },                         \
-+        { float32_##const0, float32_##const1 },                         \
-+        { float64_##const0, float64_##const1 },                         \
-+    };                                                                  \
-+    TRANS_FEAT(NAME##_zpzi, aa64_sve, do_fp_imm, a,                     \
-+               name##_const[a->esz][a->imm],                            \
-+               s->fpcr_ah ? name##_ah_fns[a->esz] : name##_fns[a->esz])
++    TRANS_FEAT(NAME, FEAT, gen_gvec_fpst_arg_zpzz,                      \
++               s->fpcr_ah ? name##_ah_zpzz_fns[a->esz] :                \
++               name##_zpzz_fns[a->esz], a)
 +
- DO_FP_IMM(FADD, fadds, half, one)
- DO_FP_IMM(FSUB, fsubs, half, one)
- DO_FP_IMM(FMUL, fmuls, half, two)
- DO_FP_IMM(FSUBR, fsubrs, half, one)
- DO_FP_IMM(FMAXNM, fmaxnms, zero, one)
- DO_FP_IMM(FMINNM, fminnms, zero, one)
--DO_FP_IMM(FMAX, fmaxs, zero, one)
--DO_FP_IMM(FMIN, fmins, zero, one)
-+DO_FP_AH_IMM(FMAX, fmaxs, zero, one)
-+DO_FP_AH_IMM(FMIN, fmins, zero, one)
- 
- #undef DO_FP_IMM
- 
+ DO_ZPZZ_FP(FADD_zpzz, aa64_sve, sve_fadd)
+ DO_ZPZZ_FP(FSUB_zpzz, aa64_sve, sve_fsub)
+ DO_ZPZZ_FP(FMUL_zpzz, aa64_sve, sve_fmul)
+-DO_ZPZZ_FP(FMIN_zpzz, aa64_sve, sve_fmin)
+-DO_ZPZZ_FP(FMAX_zpzz, aa64_sve, sve_fmax)
++DO_ZPZZ_AH_FP(FMIN_zpzz, aa64_sve, sve_fmin, sve_ah_fmin)
++DO_ZPZZ_AH_FP(FMAX_zpzz, aa64_sve, sve_fmax, sve_ah_fmax)
+ DO_ZPZZ_FP(FMINNM_zpzz, aa64_sve, sve_fminnum)
+ DO_ZPZZ_FP(FMAXNM_zpzz, aa64_sve, sve_fmaxnum)
+ DO_ZPZZ_FP(FABD, aa64_sve, sve_fabd)
 -- 
 2.34.1
 
