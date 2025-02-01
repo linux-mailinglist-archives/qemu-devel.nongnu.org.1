@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B39A24AA2
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB874A24AC4
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Feb 2025 17:51:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1teGY0-00067n-WB; Sat, 01 Feb 2025 11:40:45 -0500
+	id 1teGY7-0006F4-Gd; Sat, 01 Feb 2025 11:40:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGXt-00063T-4K
+ id 1teGXt-00063U-7E
  for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:37 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1teGXn-00015A-M3
- for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:34 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361b0ec57aso31075695e9.0
- for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:40:30 -0800 (PST)
+ id 1teGXp-00015U-S4
+ for qemu-devel@nongnu.org; Sat, 01 Feb 2025 11:40:36 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4361b6f9faeso18601695e9.1
+ for <qemu-devel@nongnu.org>; Sat, 01 Feb 2025 08:40:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738428030; x=1739032830; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738428032; x=1739032832; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QSWlr4evNHIOrPAke9eHdO8l/yZ0zpwffXN2cBE755Y=;
- b=Dtds9qXTLSXmGkhu/4DRRiLn0i7k69OZJCnTC4rf1U5WLFKhAFiHnIhFgRmLPMOJg6
- 6eHs98vJgZcp+5JMY6ctus+thLYj0vaop0/EbpMiYMjRmMUvdkuyfZ4uWL0/Z1sSup4w
- hyb3MkyA3BVL20nUovinP9U9Rr2ds/UhBdiPiG43LahGWwreDsRJtsOks6vmwyyS9toQ
- jOAZXS8AK6FLKT2WKFbIhtD9UeS/nxMX8Qr6cwuMazP/RM/IPNw54T217bZRDkDSbUAA
- waHQmrFfH7DLyFe+QtmTWtQNUXELaxG+ZFyakaXc7xdxLSZc0g36dUg5Sh7YeIi8Ml+1
- JEzg==
+ :reply-to; bh=tNVyOI67cLjV7qgXOMaDxBYxftWVJWK+laD/5IMvX/k=;
+ b=gCTMefMNXFrodQWAp4FwaJ0OTco76UjlbjmFy+rDdyp/wbicZcLy+xQKEAdDQRQIWe
+ Kuom/QP3voI9FqGS/PSMecDcOACjOf2OUK6pf85rNp5PELk4T5ac6t377ggz+v8Y8zYI
+ /5ysfvoOhoRPRTNI5/PjQM422v4gyjP0gBXFtDGkzTfEw4QJLEbGNwvTtPnBr1TQxV+p
+ 3TsXtzfcMrL5i/XUJAhakZGdclQzJWBqCV7iq3X67V2hg7kVjpYPzk8yIRYCV5BfAMt1
+ FrNIhTjqJ765g8QsdRpXcaEI9ZXGp5jpbSzpAmvQDvx92jdvPTDpqcR0wUc83n69ugsr
+ gsPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738428030; x=1739032830;
+ d=1e100.net; s=20230601; t=1738428032; x=1739032832;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QSWlr4evNHIOrPAke9eHdO8l/yZ0zpwffXN2cBE755Y=;
- b=lU/E3uvgcrbvGVIaKVcLd/0RK+E8la/T0ctLTNpDXCg/HvoMcRkhme39i9S0ab2pdf
- wSjwYNGvHgYKVEaCOh1yjzodocueaIAVKwSx7yIMkl1ywx+U0OGqxnq4SMV6nBeHllVv
- /NQld5WJL7STtbZFfL4Br7Rk7gLxrleyunx4YmvQZDtgHUSoNGnbj3kt7Uq47cohc5QI
- /9xjjpgwNlZMDsyuWGFQtDaRrLUhc/tt1stiN8KTd/wKu8yjYTMFM+4+9km1rpY9uRRQ
- gt86DSmNAImXKw9ywwAWA75aETKm/K07DGVaOHqArxkyu93QdKqn0Yc+pfNeray4bHv+
- XaUA==
+ bh=tNVyOI67cLjV7qgXOMaDxBYxftWVJWK+laD/5IMvX/k=;
+ b=lbAWhL6yU0jzk2TPXHvYelQGt1oXzgcq7Uhx6w9LDYDis2OmxEH58I2pn7JWPjai+M
+ eiMa4L2O77/h0kT/mL+C1MIV2tcw3w62IBQOvTNLr2i5J7Cm1GwLTNzm+66hxKE93WA6
+ 4opZjLeMlSP3kpj5yV9+0jJiZp+zh5+f1KWmMnVYl3KRDee1l/so38cZlR6u8ciRE1Sb
+ FCg0ghxNMkPq42gzYyAVL9nosJVulRaluRsvsAVqFMyhKAZWXJJ6/K0sK6NH2Qa5XTl7
+ ko8BDUvVZLxhj4Os56qLaUMMUkNWM2ovEvme5sbDQ/uUfG3AKsdSAO0Gqoa6DPHyrHVs
+ VqQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVLzLw7O6P+XOIiFKDZwMyFNJDc4v/5PwIT0AmW2ynssP+1XZaueCvGc29hxH7NJ/XmQqBSzC0sEQN1@nongnu.org
-X-Gm-Message-State: AOJu0Yx31b9P+X+ZACkmMS1NmP87DXWSF1IWijWrNvkBHilTFmjKRaBW
- 1rK9FLrbL/C5rl38Tkh8ii3HaXIdSaPc9n1xKb3/SXRiGMv6wwVKUCgTjvzSa50=
-X-Gm-Gg: ASbGnctKMlAggs5uNyDyA2b8i2H4kNi4bOnJrdxZUUqdymaEdI1P65LHw53Ufp62fmb
- 1b6zkfnkiMj7kHTXiHw2PDOxO+R/FHOvxJQsozH2NdhIJDCyQzayN4shoQYbOe/5hCQgMfC1JtK
- TPiMiO05BDHOJswvHMOaIWLhyOjrjrNccTc/qJusLfvApSqiypyxj5rEDYTHwS/qWpt/Jwom5Ot
- zw+UVAgUrrYZMcK0wakhHhsLAmCuGidPSrV6oxX5wC/sbcEP77lBy9qY3Vv7olsCGUXk8/5Fvwd
- 6nMNoajcLDGXLZgj9QJO
-X-Google-Smtp-Source: AGHT+IGjuJk8sphTdU+RToJ6hik1k4FV4npVYktvSii4oeNjkdS6MKBUGuhbRZ40CrOOosi+jDrZ7Q==
-X-Received: by 2002:a05:6000:400e:b0:38a:3732:444d with SMTP id
- ffacd0b85a97d-38c5195c27dmr13532118f8f.23.1738428029889; 
- Sat, 01 Feb 2025 08:40:29 -0800 (PST)
+ AJvYcCVYOzC5raZy9VJr5TCEC96gjkWPE23gYJPcIyKn+8Xlu97LeJhwZpny+G0fZSHeyed6kHKMZWH7d91p@nongnu.org
+X-Gm-Message-State: AOJu0Yw4lttDwKPKefYw/+X/oYD0BCYwud/c/RSL2cpxfLydi6DRKn1R
+ ICDE7qkWvz1hWkvhL5Nvow35/2/Ikk4YJ9Rkm3H6DRs7rB8rstpAE/my/q+Zq2UgX7Ub3eEeKcS
+ z
+X-Gm-Gg: ASbGncuyEkwn1w8aKE3c77qZ8TAi1YVpP91c2+NbGVeRfN/dIgcoJ2YVUJQoii+37Nc
+ L2B/BpN9Q2SNQO31OEg6jRZvGfQ+XIVOAPwE1OE5DGA4JtbEWIOAZ78h80XNw2FdOaGkdcRPIIO
+ OGrdVqyMwt3Tt9IVdqwSNIz6dsZsNW9W/gjWmNjDVulbpp93U2Lvwsr6rVmWSnxfhEPp98W+3iz
+ 8ZMHdetmbHJMwvEWvLrK4C/bOp/UkQ4Ll/TtsZ8xS1W/cVIPmOLa0gJeNeo2WyUfMcMXFnUGAbH
+ Su3dK2hL1k7DrPXjBqzw
+X-Google-Smtp-Source: AGHT+IFeDeR0l23JtsQlZF7twSsDXghPVgrDlcg9MbxgrIjk3BkT+Qe8lYmwLAOLuIwdMKh8EwZGMA==
+X-Received: by 2002:a05:600c:ccc:b0:434:f1bd:1e40 with SMTP id
+ 5b1f17b1804b1-438e15e4757mr84556915e9.6.1738428031503; 
+ Sat, 01 Feb 2025 08:40:31 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-438dcc81d74sm127401525e9.37.2025.02.01.08.40.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Feb 2025 08:40:29 -0800 (PST)
+ Sat, 01 Feb 2025 08:40:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 11/69] target/arm: Set up float_status to use for FPCR.AH=1
- behaviour
-Date: Sat,  1 Feb 2025 16:39:14 +0000
-Message-Id: <20250201164012.1660228-12-peter.maydell@linaro.org>
+Subject: [PATCH v2 12/69] target/arm: Use FPST_FPCR_AH for FRECPE, FRECPS,
+ FRECPX, FRSQRTE, FRSQRTS
+Date: Sat,  1 Feb 2025 16:39:15 +0000
+Message-Id: <20250201164012.1660228-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250201164012.1660228-1-peter.maydell@linaro.org>
 References: <20250201164012.1660228-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,207 +99,414 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When FPCR.AH is 1, the behaviour of some instructions changes:
- * AdvSIMD BFCVT, BFCVTN, BFCVTN2, BFMLALB, BFMLALT
- * SVE BFCVT, BFCVTNT, BFMLALB, BFMLALT, BFMLSLB, BFMLSLT
- * SME BFCVT, BFCVTN, BFMLAL, BFMLSL (these are all in SME2 which
-   QEMU does not yet implement)
- * FRECPE, FRECPS, FRECPX, FRSQRTE, FRSQRTS
-
-The behaviour change is:
- * the instructions do not update the FPSR cumulative exception flags
- * trapped floating point exceptions are disabled (a no-op for QEMU,
-   which doesn't implement FPCR.{IDE,IXE,UFE,OFE,DZE,IOE})
- * rounding is always round-to-nearest-even regardless of FPCR.RMode
- * denormalized inputs and outputs are always flushed to zero, as if
-   FPCR.{FZ,FIZ} is {1,1}
- * FPCR.FZ16 is still honoured for half-precision inputs
-
-(See the Arm ARM DDI0487L.a section A1.5.9.)
-
-We can provide all these behaviours with another pair of float_status fields
-which we use only for these insns, when FPCR.AH is 1. These float_status
-fields will always have:
- * flush_to_zero and flush_inputs_to_zero set for the non-F16 field
- * rounding mode set to round-to-nearest-even
-and so the only FPCR fields they need to honour are DN and FZ16.
-
-In this commit we only define the new fp_status fields and give them
-the required behaviour when FPSR is updated.  In subsequent commits
-we will arrange to use this new fp_status field for the instructions
-that should be affected by FPCR.AH in this way.
+For the instructions FRECPE, FRECPS, FRECPX, FRSQRTE, FRSQRTS, use
+FPST_FPCR_AH or FPST_FPCR_AH_F16 when FPCR.AH is 1, so that they get
+the required behaviour changes.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h           | 15 +++++++++++++++
- target/arm/internals.h     |  2 ++
- target/arm/tcg/translate.h | 14 ++++++++++++++
- target/arm/cpu.c           |  4 ++++
- target/arm/vfp_helper.c    | 13 ++++++++++++-
- 5 files changed, 47 insertions(+), 1 deletion(-)
+v1->v2: rename select_fpst() to select_ah_fpst(), put it in
+translate-a64.h
+---
+ target/arm/tcg/translate-a64.h |  13 ++++
+ target/arm/tcg/translate-a64.c | 119 +++++++++++++++++++++++++--------
+ target/arm/tcg/translate-sve.c |  30 ++++++---
+ 3 files changed, 127 insertions(+), 35 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c8b44c725d0..cfb16151577 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -640,6 +640,13 @@ typedef struct CPUArchState {
-          *  standard_fp_status : the ARM "Standard FPSCR Value"
-          *  standard_fp_status_fp16 : used for half-precision
-          *       calculations with the ARM "Standard FPSCR Value"
-+         *  ah_fp_status: used for the A64 insns which change behaviour
-+         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
-+         *       and the reciprocal and square root estimate/step insns)
-+         *  ah_fp_status_f16: used for the A64 insns which change behaviour
-+         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
-+         *       and the reciprocal and square root estimate/step insns);
-+         *       for half-precision
-          *
-          * Half-precision operations are governed by a separate
-          * flush-to-zero control bit in FPSCR:FZ16. We pass a separate
-@@ -654,6 +661,12 @@ typedef struct CPUArchState {
-          * the "standard FPSCR" tracks the FPSCR.FZ16 bit rather than
-          * using a fixed value for it.
-          *
-+         * The ah_fp_status is needed because some insns have different
-+         * behaviour when FPCR.AH == 1: they don't update cumulative
-+         * exception flags, they act like FPCR.{FZ,FIZ} = {1,1} and
-+         * they ignore FPCR.RMode. But they don't ignore FPCR.FZ16,
-+         * which means we need an ah_fp_status_f16 as well.
-+         *
-          * To avoid having to transfer exception bits around, we simply
-          * say that the FPSCR cumulative exception flags are the logical
-          * OR of the flags in the four fp statuses. This relies on the
-@@ -666,6 +679,8 @@ typedef struct CPUArchState {
-         float_status fp_status_f16_a64;
-         float_status standard_fp_status;
-         float_status standard_fp_status_f16;
-+        float_status ah_fp_status;
-+        float_status ah_fp_status_f16;
- 
-         uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
-         uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 98073acc276..b3187341456 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1831,5 +1831,7 @@ int alle1_tlbmask(CPUARMState *env);
- 
- /* Set the float_status behaviour to match the Arm defaults */
- void arm_set_default_fp_behaviours(float_status *s);
-+/* Set the float_status behaviour to match Arm FPCR.AH=1 behaviour */
-+void arm_set_ah_fp_behaviours(float_status *s);
- 
- #endif
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 1fc4fdd7794..3be3fcbe728 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -676,6 +676,8 @@ typedef enum ARMFPStatusFlavour {
-     FPST_A64,
-     FPST_A32_F16,
-     FPST_A64_F16,
-+    FPST_AH,
-+    FPST_AH_F16,
-     FPST_STD,
-     FPST_STD_F16,
- } ARMFPStatusFlavour;
-@@ -696,6 +698,12 @@ typedef enum ARMFPStatusFlavour {
-  *   for AArch32 operations controlled by the FPCR where FPCR.FZ16 is to be used
-  * FPST_A64_F16
-  *   for AArch64 operations controlled by the FPCR where FPCR.FZ16 is to be used
-+ * FPST_AH:
-+ *   for AArch64 operations which change behaviour when AH=1 (specifically,
-+ *   bfloat16 conversions and multiplies, and the reciprocal and square root
-+ *   estimate/step insns)
-+ * FPST_AH_F16:
-+ *   ditto, but for half-precision operations
-  * FPST_STD
-  *   for A32/T32 Neon operations using the "standard FPSCR value"
-  * FPST_STD_F16
-@@ -719,6 +727,12 @@ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
-     case FPST_A64_F16:
-         offset = offsetof(CPUARMState, vfp.fp_status_f16_a64);
-         break;
-+    case FPST_AH:
-+        offset = offsetof(CPUARMState, vfp.ah_fp_status);
-+        break;
-+    case FPST_AH_F16:
-+        offset = offsetof(CPUARMState, vfp.ah_fp_status_f16);
-+        break;
-     case FPST_STD:
-         offset = offsetof(CPUARMState, vfp.standard_fp_status);
-         break;
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 1ba22c4c7aa..8fa220a7165 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -556,6 +556,10 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
-     arm_set_default_fp_behaviours(&env->vfp.fp_status_f16_a32);
-     arm_set_default_fp_behaviours(&env->vfp.fp_status_f16_a64);
-     arm_set_default_fp_behaviours(&env->vfp.standard_fp_status_f16);
-+    arm_set_ah_fp_behaviours(&env->vfp.ah_fp_status);
-+    set_flush_to_zero(1, &env->vfp.ah_fp_status);
-+    set_flush_inputs_to_zero(1, &env->vfp.ah_fp_status);
-+    arm_set_ah_fp_behaviours(&env->vfp.ah_fp_status_f16);
- 
- #ifndef CONFIG_USER_ONLY
-     if (kvm_enabled()) {
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index 57100e95378..371d708cf7a 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -64,7 +64,7 @@ void arm_set_default_fp_behaviours(float_status *s)
-  *    set Invalid for a QNaN
-  *  * default NaN has sign bit set, msb frac bit set
-  */
--static void arm_set_ah_fp_behaviours(float_status *s)
-+void arm_set_ah_fp_behaviours(float_status *s)
- {
-     set_float_detect_tininess(float_tininess_after_rounding, s);
-     set_float_ftz_detection(float_ftz_after_rounding, s);
-@@ -128,6 +128,11 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
-     a64_flags |= get_float_exception_flags(&env->vfp.fp_status_a64);
-     a64_flags |= (get_float_exception_flags(&env->vfp.fp_status_f16_a64)
-           & ~(float_flag_input_denormal_flushed | float_flag_input_denormal_used));
-+    /*
-+     * We do not merge in flags from ah_fp_status or ah_fp_status_f16, because
-+     * they are used for insns that must not set the cumulative exception bits.
-+     */
-+
-     /*
-      * Flushing an input denormal *only* because FPCR.FIZ == 1 does
-      * not set FPSR.IDC; if FPCR.FZ is also set then this takes
-@@ -156,6 +161,8 @@ static void vfp_clear_float_status_exc_flags(CPUARMState *env)
-     set_float_exception_flags(0, &env->vfp.fp_status_f16_a64);
-     set_float_exception_flags(0, &env->vfp.standard_fp_status);
-     set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
-+    set_float_exception_flags(0, &env->vfp.ah_fp_status);
-+    set_float_exception_flags(0, &env->vfp.ah_fp_status_f16);
+diff --git a/target/arm/tcg/translate-a64.h b/target/arm/tcg/translate-a64.h
+index 0fcf7cb63ad..7d3b59ccd96 100644
+--- a/target/arm/tcg/translate-a64.h
++++ b/target/arm/tcg/translate-a64.h
+@@ -185,6 +185,19 @@ static inline TCGv_ptr pred_full_reg_ptr(DisasContext *s, int regno)
+     return ret;
  }
  
- static void vfp_sync_and_clear_float_status_exc_flags(CPUARMState *env)
-@@ -201,9 +208,11 @@ static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask)
-         set_flush_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a32);
-         set_flush_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a64);
-         set_flush_to_zero(ftz_enabled, &env->vfp.standard_fp_status_f16);
-+        set_flush_to_zero(ftz_enabled, &env->vfp.ah_fp_status_f16);
-         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a32);
-         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a64);
-         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.standard_fp_status_f16);
-+        set_flush_inputs_to_zero(ftz_enabled, &env->vfp.ah_fp_status_f16);
++/*
++ * Return the ARMFPStatusFlavour to use based on element size and
++ * whether FPCR.AH is set.
++ */
++static inline ARMFPStatusFlavour select_ah_fpst(DisasContext *s, MemOp esz)
++{
++    if (s->fpcr_ah) {
++        return esz == MO_16 ? FPST_AH_F16 : FPST_AH;
++    } else {
++        return esz == MO_16 ? FPST_A64_F16 : FPST_A64;
++    }
++}
++
+ bool disas_sve(DisasContext *, uint32_t);
+ bool disas_sme(DisasContext *, uint32_t);
+ 
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ac4e8f8ec4a..b01d05fe30e 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -723,10 +723,10 @@ static void gen_gvec_op3_ool(DisasContext *s, bool is_q, int rd,
+  * an out-of-line helper.
+  */
+ static void gen_gvec_op3_fpst(DisasContext *s, bool is_q, int rd, int rn,
+-                              int rm, bool is_fp16, int data,
++                              int rm, ARMFPStatusFlavour fpsttype, int data,
+                               gen_helper_gvec_3_ptr *fn)
+ {
+-    TCGv_ptr fpst = fpstatus_ptr(is_fp16 ? FPST_A64_F16 : FPST_A64);
++    TCGv_ptr fpst = fpstatus_ptr(fpsttype);
+     tcg_gen_gvec_3_ptr(vec_full_reg_offset(s, rd),
+                        vec_full_reg_offset(s, rn),
+                        vec_full_reg_offset(s, rm), fpst,
+@@ -5036,14 +5036,16 @@ typedef struct FPScalar {
+     void (*gen_d)(TCGv_i64, TCGv_i64, TCGv_i64, TCGv_ptr);
+ } FPScalar;
+ 
+-static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
++static bool do_fp3_scalar_with_fpsttype(DisasContext *s, arg_rrr_e *a,
++                                        const FPScalar *f,
++                                        ARMFPStatusFlavour fpsttype)
+ {
+     switch (a->esz) {
+     case MO_64:
+         if (fp_access_check(s)) {
+             TCGv_i64 t0 = read_fp_dreg(s, a->rn);
+             TCGv_i64 t1 = read_fp_dreg(s, a->rm);
+-            f->gen_d(t0, t0, t1, fpstatus_ptr(FPST_A64));
++            f->gen_d(t0, t0, t1, fpstatus_ptr(fpsttype));
+             write_fp_dreg(s, a->rd, t0);
+         }
+         break;
+@@ -5051,7 +5053,7 @@ static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
+         if (fp_access_check(s)) {
+             TCGv_i32 t0 = read_fp_sreg(s, a->rn);
+             TCGv_i32 t1 = read_fp_sreg(s, a->rm);
+-            f->gen_s(t0, t0, t1, fpstatus_ptr(FPST_A64));
++            f->gen_s(t0, t0, t1, fpstatus_ptr(fpsttype));
+             write_fp_sreg(s, a->rd, t0);
+         }
+         break;
+@@ -5062,7 +5064,7 @@ static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
+         if (fp_access_check(s)) {
+             TCGv_i32 t0 = read_fp_hreg(s, a->rn);
+             TCGv_i32 t1 = read_fp_hreg(s, a->rm);
+-            f->gen_h(t0, t0, t1, fpstatus_ptr(FPST_A64_F16));
++            f->gen_h(t0, t0, t1, fpstatus_ptr(fpsttype));
+             write_fp_sreg(s, a->rd, t0);
+         }
+         break;
+@@ -5072,6 +5074,18 @@ static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
+     return true;
+ }
+ 
++static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
++{
++    return do_fp3_scalar_with_fpsttype(s, a, f,
++                                       a->esz == MO_16 ?
++                                       FPST_A64_F16 : FPST_A64);
++}
++
++static bool do_fp3_scalar_ah(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
++{
++    return do_fp3_scalar_with_fpsttype(s, a, f, select_ah_fpst(s, a->esz));
++}
++
+ static const FPScalar f_scalar_fadd = {
+     gen_helper_vfp_addh,
+     gen_helper_vfp_adds,
+@@ -5225,14 +5239,14 @@ static const FPScalar f_scalar_frecps = {
+     gen_helper_recpsf_f32,
+     gen_helper_recpsf_f64,
+ };
+-TRANS(FRECPS_s, do_fp3_scalar, a, &f_scalar_frecps)
++TRANS(FRECPS_s, do_fp3_scalar_ah, a, &f_scalar_frecps)
+ 
+ static const FPScalar f_scalar_frsqrts = {
+     gen_helper_rsqrtsf_f16,
+     gen_helper_rsqrtsf_f32,
+     gen_helper_rsqrtsf_f64,
+ };
+-TRANS(FRSQRTS_s, do_fp3_scalar, a, &f_scalar_frsqrts)
++TRANS(FRSQRTS_s, do_fp3_scalar_ah, a, &f_scalar_frsqrts)
+ 
+ static bool do_fcmp0_s(DisasContext *s, arg_rr_e *a,
+                        const FPScalar *f, bool swap)
+@@ -5483,8 +5497,10 @@ TRANS(CMHS_s, do_cmop_d, a, TCG_COND_GEU)
+ TRANS(CMEQ_s, do_cmop_d, a, TCG_COND_EQ)
+ TRANS(CMTST_s, do_cmop_d, a, TCG_COND_TSTNE)
+ 
+-static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+-                          gen_helper_gvec_3_ptr * const fns[3])
++static bool do_fp3_vector_with_fpsttype(DisasContext *s, arg_qrrr_e *a,
++                                        int data,
++                                        gen_helper_gvec_3_ptr * const fns[3],
++                                        ARMFPStatusFlavour fpsttype)
+ {
+     MemOp esz = a->esz;
+     int check = fp_access_check_vector_hsd(s, a->q, esz);
+@@ -5493,11 +5509,26 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+         return check == 0;
      }
-     if (changed & FPCR_FZ) {
-         bool ftz_enabled = val & FPCR_FZ;
-@@ -227,6 +236,8 @@ static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask)
-         set_default_nan_mode(dnan_enabled, &env->vfp.fp_status_a64);
-         set_default_nan_mode(dnan_enabled, &env->vfp.fp_status_f16_a32);
-         set_default_nan_mode(dnan_enabled, &env->vfp.fp_status_f16_a64);
-+        set_default_nan_mode(dnan_enabled, &env->vfp.ah_fp_status);
-+        set_default_nan_mode(dnan_enabled, &env->vfp.ah_fp_status_f16);
+ 
+-    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                      esz == MO_16, data, fns[esz - 1]);
++    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm, fpsttype,
++                      data, fns[esz - 1]);
+     return true;
+ }
+ 
++static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
++                          gen_helper_gvec_3_ptr * const fns[3])
++{
++    return do_fp3_vector_with_fpsttype(s, a, data, fns,
++                                       a->esz == MO_16 ?
++                                       FPST_A64_F16 : FPST_A64);
++}
++
++static bool do_fp3_vector_ah(DisasContext *s, arg_qrrr_e *a, int data,
++                             gen_helper_gvec_3_ptr * const f[3])
++{
++    return do_fp3_vector_with_fpsttype(s, a, data, f,
++                                       select_ah_fpst(s, a->esz));
++}
++
+ static gen_helper_gvec_3_ptr * const f_vector_fadd[3] = {
+     gen_helper_gvec_fadd_h,
+     gen_helper_gvec_fadd_s,
+@@ -5622,14 +5653,14 @@ static gen_helper_gvec_3_ptr * const f_vector_frecps[3] = {
+     gen_helper_gvec_recps_s,
+     gen_helper_gvec_recps_d,
+ };
+-TRANS(FRECPS_v, do_fp3_vector, a, 0, f_vector_frecps)
++TRANS(FRECPS_v, do_fp3_vector_ah, a, 0, f_vector_frecps)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_frsqrts[3] = {
+     gen_helper_gvec_rsqrts_h,
+     gen_helper_gvec_rsqrts_s,
+     gen_helper_gvec_rsqrts_d,
+ };
+-TRANS(FRSQRTS_v, do_fp3_vector, a, 0, f_vector_frsqrts)
++TRANS(FRSQRTS_v, do_fp3_vector_ah, a, 0, f_vector_frsqrts)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_faddp[3] = {
+     gen_helper_gvec_faddp_h,
+@@ -6385,7 +6416,8 @@ static bool do_fp3_vector_idx(DisasContext *s, arg_qrrx_e *a,
      }
-     if (changed & FPCR_AH) {
-         bool ah_enabled = val & FPCR_AH;
+ 
+     gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                      esz == MO_16, a->idx, fns[esz - 1]);
++                      esz == MO_16 ? FPST_A64_F16 : FPST_A64,
++                      a->idx, fns[esz - 1]);
+     return true;
+ }
+ 
+@@ -8394,8 +8426,9 @@ typedef struct FPScalar1 {
+     void (*gen_d)(TCGv_i64, TCGv_i64, TCGv_ptr);
+ } FPScalar1;
+ 
+-static bool do_fp1_scalar(DisasContext *s, arg_rr_e *a,
+-                          const FPScalar1 *f, int rmode)
++static bool do_fp1_scalar_with_fpsttype(DisasContext *s, arg_rr_e *a,
++                                        const FPScalar1 *f, int rmode,
++                                        ARMFPStatusFlavour fpsttype)
+ {
+     TCGv_i32 tcg_rmode = NULL;
+     TCGv_ptr fpst;
+@@ -8407,7 +8440,7 @@ static bool do_fp1_scalar(DisasContext *s, arg_rr_e *a,
+         return check == 0;
+     }
+ 
+-    fpst = fpstatus_ptr(a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
++    fpst = fpstatus_ptr(fpsttype);
+     if (rmode >= 0) {
+         tcg_rmode = gen_set_rmode(rmode, fpst);
+     }
+@@ -8438,6 +8471,20 @@ static bool do_fp1_scalar(DisasContext *s, arg_rr_e *a,
+     return true;
+ }
+ 
++static bool do_fp1_scalar(DisasContext *s, arg_rr_e *a,
++                          const FPScalar1 *f, int rmode)
++{
++    return do_fp1_scalar_with_fpsttype(s, a, f, rmode,
++                                       a->esz == MO_16 ?
++                                       FPST_A64_F16 : FPST_A64);
++}
++
++static bool do_fp1_scalar_ah(DisasContext *s, arg_rr_e *a,
++                             const FPScalar1 *f, int rmode)
++{
++    return do_fp1_scalar_with_fpsttype(s, a, f, rmode, select_ah_fpst(s, a->esz));
++}
++
+ static const FPScalar1 f_scalar_fsqrt = {
+     gen_helper_vfp_sqrth,
+     gen_helper_vfp_sqrts,
+@@ -8492,21 +8539,21 @@ static const FPScalar1 f_scalar_frecpe = {
+     gen_helper_recpe_f32,
+     gen_helper_recpe_f64,
+ };
+-TRANS(FRECPE_s, do_fp1_scalar, a, &f_scalar_frecpe, -1)
++TRANS(FRECPE_s, do_fp1_scalar_ah, a, &f_scalar_frecpe, -1)
+ 
+ static const FPScalar1 f_scalar_frecpx = {
+     gen_helper_frecpx_f16,
+     gen_helper_frecpx_f32,
+     gen_helper_frecpx_f64,
+ };
+-TRANS(FRECPX_s, do_fp1_scalar, a, &f_scalar_frecpx, -1)
++TRANS(FRECPX_s, do_fp1_scalar_ah, a, &f_scalar_frecpx, -1)
+ 
+ static const FPScalar1 f_scalar_frsqrte = {
+     gen_helper_rsqrte_f16,
+     gen_helper_rsqrte_f32,
+     gen_helper_rsqrte_f64,
+ };
+-TRANS(FRSQRTE_s, do_fp1_scalar, a, &f_scalar_frsqrte, -1)
++TRANS(FRSQRTE_s, do_fp1_scalar_ah, a, &f_scalar_frsqrte, -1)
+ 
+ static bool trans_FCVT_s_ds(DisasContext *s, arg_rr *a)
+ {
+@@ -9361,9 +9408,10 @@ TRANS_FEAT(FRINT64Z_v, aa64_frint, do_fp1_vector, a,
+            &f_scalar_frint64, FPROUNDING_ZERO)
+ TRANS_FEAT(FRINT64X_v, aa64_frint, do_fp1_vector, a, &f_scalar_frint64, -1)
+ 
+-static bool do_gvec_op2_fpst(DisasContext *s, MemOp esz, bool is_q,
+-                             int rd, int rn, int data,
+-                             gen_helper_gvec_2_ptr * const fns[3])
++static bool do_gvec_op2_fpst_with_fpsttype(DisasContext *s, MemOp esz,
++                                           bool is_q, int rd, int rn, int data,
++                                           gen_helper_gvec_2_ptr * const fns[3],
++                                           ARMFPStatusFlavour fpsttype)
+ {
+     int check = fp_access_check_vector_hsd(s, is_q, esz);
+     TCGv_ptr fpst;
+@@ -9372,7 +9420,7 @@ static bool do_gvec_op2_fpst(DisasContext *s, MemOp esz, bool is_q,
+         return check == 0;
+     }
+ 
+-    fpst = fpstatus_ptr(esz == MO_16 ? FPST_A64_F16 : FPST_A64);
++    fpst = fpstatus_ptr(fpsttype);
+     tcg_gen_gvec_2_ptr(vec_full_reg_offset(s, rd),
+                        vec_full_reg_offset(s, rn), fpst,
+                        is_q ? 16 : 8, vec_full_reg_size(s),
+@@ -9380,6 +9428,23 @@ static bool do_gvec_op2_fpst(DisasContext *s, MemOp esz, bool is_q,
+     return true;
+ }
+ 
++static bool do_gvec_op2_fpst(DisasContext *s, MemOp esz, bool is_q,
++                             int rd, int rn, int data,
++                             gen_helper_gvec_2_ptr * const fns[3])
++{
++    return do_gvec_op2_fpst_with_fpsttype(s, esz, is_q, rd, rn, data, fns,
++                                          esz == MO_16 ? FPST_A64_F16 :
++                                          FPST_A64);
++}
++
++static bool do_gvec_op2_ah_fpst(DisasContext *s, MemOp esz, bool is_q,
++                                int rd, int rn, int data,
++                                gen_helper_gvec_2_ptr * const fns[3])
++{
++    return do_gvec_op2_fpst_with_fpsttype(s, esz, is_q, rd, rn, data,
++                                          fns, select_ah_fpst(s, esz));
++}
++
+ static gen_helper_gvec_2_ptr * const f_scvtf_v[] = {
+     gen_helper_gvec_vcvt_sh,
+     gen_helper_gvec_vcvt_sf,
+@@ -9489,14 +9554,14 @@ static gen_helper_gvec_2_ptr * const f_frecpe[] = {
+     gen_helper_gvec_frecpe_s,
+     gen_helper_gvec_frecpe_d,
+ };
+-TRANS(FRECPE_v, do_gvec_op2_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frecpe)
++TRANS(FRECPE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frecpe)
+ 
+ static gen_helper_gvec_2_ptr * const f_frsqrte[] = {
+     gen_helper_gvec_frsqrte_h,
+     gen_helper_gvec_frsqrte_s,
+     gen_helper_gvec_frsqrte_d,
+ };
+-TRANS(FRSQRTE_v, do_gvec_op2_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frsqrte)
++TRANS(FRSQRTE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frsqrte)
+ 
+ static bool trans_FCVTL_v(DisasContext *s, arg_qrr_e *a)
+ {
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index e1788330aa7..c084bb58e7e 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -137,11 +137,11 @@ static bool gen_gvec_fpst_zz(DisasContext *s, gen_helper_gvec_2_ptr *fn,
+     return true;
+ }
+ 
+-static bool gen_gvec_fpst_arg_zz(DisasContext *s, gen_helper_gvec_2_ptr *fn,
+-                                 arg_rr_esz *a, int data)
++static bool gen_gvec_fpst_ah_arg_zz(DisasContext *s, gen_helper_gvec_2_ptr *fn,
++                                    arg_rr_esz *a, int data)
+ {
+     return gen_gvec_fpst_zz(s, fn, a->rd, a->rn, data,
+-                            a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
++                            select_ah_fpst(s, a->esz));
+ }
+ 
+ /* Invoke an out-of-line helper on 3 Zregs. */
+@@ -194,6 +194,13 @@ static bool gen_gvec_fpst_arg_zzz(DisasContext *s, gen_helper_gvec_3_ptr *fn,
+                              a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
+ }
+ 
++static bool gen_gvec_fpst_ah_arg_zzz(DisasContext *s, gen_helper_gvec_3_ptr *fn,
++                                     arg_rrr_esz *a, int data)
++{
++    return gen_gvec_fpst_zzz(s, fn, a->rd, a->rn, a->rm, data,
++                             select_ah_fpst(s, a->esz));
++}
++
+ /* Invoke an out-of-line helper on 4 Zregs. */
+ static bool gen_gvec_ool_zzzz(DisasContext *s, gen_helper_gvec_4 *fn,
+                               int rd, int rn, int rm, int ra, int data)
+@@ -3597,13 +3604,13 @@ static gen_helper_gvec_2_ptr * const frecpe_fns[] = {
+     NULL,                     gen_helper_gvec_frecpe_h,
+     gen_helper_gvec_frecpe_s, gen_helper_gvec_frecpe_d,
+ };
+-TRANS_FEAT(FRECPE, aa64_sve, gen_gvec_fpst_arg_zz, frecpe_fns[a->esz], a, 0)
++TRANS_FEAT(FRECPE, aa64_sve, gen_gvec_fpst_ah_arg_zz, frecpe_fns[a->esz], a, 0)
+ 
+ static gen_helper_gvec_2_ptr * const frsqrte_fns[] = {
+     NULL,                      gen_helper_gvec_frsqrte_h,
+     gen_helper_gvec_frsqrte_s, gen_helper_gvec_frsqrte_d,
+ };
+-TRANS_FEAT(FRSQRTE, aa64_sve, gen_gvec_fpst_arg_zz, frsqrte_fns[a->esz], a, 0)
++TRANS_FEAT(FRSQRTE, aa64_sve, gen_gvec_fpst_ah_arg_zz, frsqrte_fns[a->esz], a, 0)
+ 
+ /*
+  *** SVE Floating Point Compare with Zero Group
+@@ -3707,11 +3714,18 @@ static bool trans_FADDA(DisasContext *s, arg_rprr_esz *a)
+     };                                                              \
+     TRANS_FEAT(NAME, aa64_sve, gen_gvec_fpst_arg_zzz, name##_fns[a->esz], a, 0)
+ 
++#define DO_FP3_AH(NAME, name) \
++    static gen_helper_gvec_3_ptr * const name##_fns[4] = {          \
++        NULL, gen_helper_gvec_##name##_h,                           \
++        gen_helper_gvec_##name##_s, gen_helper_gvec_##name##_d      \
++    };                                                              \
++    TRANS_FEAT(NAME, aa64_sve, gen_gvec_fpst_ah_arg_zzz, name##_fns[a->esz], a, 0)
++
+ DO_FP3(FADD_zzz, fadd)
+ DO_FP3(FSUB_zzz, fsub)
+ DO_FP3(FMUL_zzz, fmul)
+-DO_FP3(FRECPS, recps)
+-DO_FP3(FRSQRTS, rsqrts)
++DO_FP3_AH(FRECPS, recps)
++DO_FP3_AH(FRSQRTS, rsqrts)
+ 
+ #undef DO_FP3
+ 
+@@ -3993,7 +4007,7 @@ static gen_helper_gvec_3_ptr * const frecpx_fns[] = {
+     gen_helper_sve_frecpx_s, gen_helper_sve_frecpx_d,
+ };
+ TRANS_FEAT(FRECPX, aa64_sve, gen_gvec_fpst_arg_zpz, frecpx_fns[a->esz],
+-           a, 0, a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
++           a, 0, select_ah_fpst(s, a->esz))
+ 
+ static gen_helper_gvec_3_ptr * const fsqrt_fns[] = {
+     NULL,                   gen_helper_sve_fsqrt_h,
 -- 
 2.34.1
 
