@@ -2,108 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7055A260B9
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 18:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C29FAA260BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 18:02:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tezna-0006Az-FY; Mon, 03 Feb 2025 11:59:50 -0500
+	id 1tezna-0006Ah-1Y; Mon, 03 Feb 2025 11:59:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1teznY-00069r-GS
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 11:59:48 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1teznX-00069N-UR
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 11:59:47 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1teznW-0001Mq-ER
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 11:59:48 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1teznW-0001My-6I
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 11:59:47 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B8E772115B
- for <qemu-devel@nongnu.org>; Mon,  3 Feb 2025 16:59:42 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 57B631F390;
+ Mon,  3 Feb 2025 16:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738601982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fk+a0seA2v2BaWN2j7YC9dj/64HXFTV1RseFpk4/DQc=;
- b=QpGRB9TadGrcy5FfbeCRYMcKC2KSFEPyWPuQ4RHFAi2NTn8fwLz4Cf35TMYVNI+CjYTCqh
- 38FSC7iNOV3sf67eTkcbIro1gvjbd8cqImkO9+IGgfazPhZvrPiB0PSqZMQZDvCPIBy9cr
- 02xQQDOlezG18qDx3JD5AtD2Np5rpks=
+ t=1738601984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uG/0ZJ/Xxz/BLzmofmRVTfCL163uK0fqQ/R0xWxfNxo=;
+ b=O41wfcPUVjk4JE49MUh86GM9dKWXAzaFN6TUx6QxxSr9x4kJqMAEJogMAHwbcjFZ1yj8kc
+ gqpw5dr1QPYvb9L/eiCVmM2+c/ZThl6oiciQrmZhXl4i0XEvbL8CvahElyJXo5h3jwfaBH
+ QcpLFDaZ9/qRneObjJoNEKt6BzMB4sw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738601982;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fk+a0seA2v2BaWN2j7YC9dj/64HXFTV1RseFpk4/DQc=;
- b=6fxgegI4nuO6WPdywqohxdOfCxCwws94iEMepuCcC2nMNj3tbUVarsf6riVOmP/8zw3gwV
- XiIPlRS+rzEeukDQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QpGRB9Ta;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6fxgegI4
+ s=susede2_ed25519; t=1738601984;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uG/0ZJ/Xxz/BLzmofmRVTfCL163uK0fqQ/R0xWxfNxo=;
+ b=kR9+AnhMsxxwILSnUS71EVP+GBha/KFGLY2MAtPtSk6qL9KkiEnB5NpXwiCSB5308GMLX+
+ 3WtgnME21C1VX6DQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738601982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fk+a0seA2v2BaWN2j7YC9dj/64HXFTV1RseFpk4/DQc=;
- b=QpGRB9TadGrcy5FfbeCRYMcKC2KSFEPyWPuQ4RHFAi2NTn8fwLz4Cf35TMYVNI+CjYTCqh
- 38FSC7iNOV3sf67eTkcbIro1gvjbd8cqImkO9+IGgfazPhZvrPiB0PSqZMQZDvCPIBy9cr
- 02xQQDOlezG18qDx3JD5AtD2Np5rpks=
+ t=1738601984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uG/0ZJ/Xxz/BLzmofmRVTfCL163uK0fqQ/R0xWxfNxo=;
+ b=O41wfcPUVjk4JE49MUh86GM9dKWXAzaFN6TUx6QxxSr9x4kJqMAEJogMAHwbcjFZ1yj8kc
+ gqpw5dr1QPYvb9L/eiCVmM2+c/ZThl6oiciQrmZhXl4i0XEvbL8CvahElyJXo5h3jwfaBH
+ QcpLFDaZ9/qRneObjJoNEKt6BzMB4sw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738601982;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fk+a0seA2v2BaWN2j7YC9dj/64HXFTV1RseFpk4/DQc=;
- b=6fxgegI4nuO6WPdywqohxdOfCxCwws94iEMepuCcC2nMNj3tbUVarsf6riVOmP/8zw3gwV
- XiIPlRS+rzEeukDQ==
+ s=susede2_ed25519; t=1738601984;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uG/0ZJ/Xxz/BLzmofmRVTfCL163uK0fqQ/R0xWxfNxo=;
+ b=kR9+AnhMsxxwILSnUS71EVP+GBha/KFGLY2MAtPtSk6qL9KkiEnB5NpXwiCSB5308GMLX+
+ 3WtgnME21C1VX6DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1CAB13A78
- for <qemu-devel@nongnu.org>; Mon,  3 Feb 2025 16:59:41 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3CB5813A78;
+ Mon,  3 Feb 2025 16:59:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id K9r1Jv31oGfDdgAAD6G6ig
- (envelope-from <farosas@suse.de>)
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:59:41 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id IC+yOv71oGfDdgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 03 Feb 2025 16:59:42 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/6] QTest patches for 2025-02-03
-Date: Mon,  3 Feb 2025 13:59:32 -0300
-Message-Id: <20250203165938.14320-1-farosas@suse.de>
+Cc: Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 1/6] libqos/fw_cfg: refactor file directory iteraton to make it
+ more reusable
+Date: Mon,  3 Feb 2025 13:59:33 -0300
+Message-Id: <20250203165938.14320-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250203165938.14320-1-farosas@suse.de>
+References: <20250203165938.14320-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B8E772115B
-X-Spam-Score: -3.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_ONE(0.00)[1]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; TO_DN_NONE(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,52 +119,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6fccaa2fba391815308a746d68f7fa197bc93586:
+From: Ani Sinha <anisinha@redhat.com>
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2025-02-02 11:09:10 -0500)
+fw-cfg file directory iteration code can be used by other functions that may
+want to implement fw-cfg file operations. Refactor it into a smaller helper
+so that it can be reused.
 
-are available in the Git repository at:
+No functional change.
 
-  https://gitlab.com/farosas/qemu.git tags/qtest-20250203-pull-request
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20250120043847.954881-2-anisinha@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/qtest/libqos/fw_cfg.c | 67 +++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 25 deletions(-)
 
-for you to fetch changes up to cd6406df15ed2216e70e34c45a4a82f42b55873f:
-
-  tests/qtest/vhost-user-test: Use modern virtio for vhost-user tests (2025-02-03 12:32:54 -0300)
-
-----------------------------------------------------------------
-Qtest pull request
-
-- fw-cfg: DMA support and new vmcoreinfo test
-- accel detection via QOM for non-KVM accels
-- use virtio modern for vhost-user
-
-----------------------------------------------------------------
-
-Ani Sinha (3):
-  libqos/fw_cfg: refactor file directory iteraton to make it more
-    reusable
-  tests/qtest/libqos: add DMA support for writing and reading fw_cfg
-    files
-  tests/qtest/vmcoreinfo: add a unit test to exercize basic vmcoreinfo
-    function
-
-Philippe Mathieu-Daudé (2):
-  tests/qtest: Extract qtest_qom_has_concrete_type() helper
-  tests/qtest: Make qtest_has_accel() generic
-
-Thomas Huth (1):
-  tests/qtest/vhost-user-test: Use modern virtio for vhost-user tests
-
- MAINTAINERS                   |   2 +
- tests/qtest/libqos/fw_cfg.c   | 206 +++++++++++++++++++++++++++++-----
- tests/qtest/libqos/fw_cfg.h   |   6 +-
- tests/qtest/libqtest.c        | 110 ++++++++++--------
- tests/qtest/meson.build       |   1 +
- tests/qtest/vhost-user-test.c |   3 +-
- tests/qtest/vmcoreinfo-test.c |  90 +++++++++++++++
- 7 files changed, 342 insertions(+), 76 deletions(-)
- create mode 100644 tests/qtest/vmcoreinfo-test.c
-
+diff --git a/tests/qtest/libqos/fw_cfg.c b/tests/qtest/libqos/fw_cfg.c
+index 89f053ccac..22435873d9 100644
+--- a/tests/qtest/libqos/fw_cfg.c
++++ b/tests/qtest/libqos/fw_cfg.c
+@@ -60,27 +60,18 @@ static void mm_fw_cfg_select(QFWCFG *fw_cfg, uint16_t key)
+     qtest_writew(fw_cfg->qts, fw_cfg->base, key);
+ }
+ 
+-/*
+- * The caller need check the return value. When the return value is
+- * nonzero, it means that some bytes have been transferred.
+- *
+- * If the fw_cfg file in question is smaller than the allocated & passed-in
+- * buffer, then the buffer has been populated only in part.
+- *
+- * If the fw_cfg file in question is larger than the passed-in
+- * buffer, then the return value explains how much room would have been
+- * necessary in total. And, while the caller's buffer has been fully
+- * populated, it has received only a starting slice of the fw_cfg file.
+- */
+-size_t qfw_cfg_get_file(QFWCFG *fw_cfg, const char *filename,
+-                      void *data, size_t buflen)
++static bool find_pdir_entry(QFWCFG *fw_cfg, const char *filename,
++                            uint16_t *sel, uint32_t *size)
+ {
++    g_autofree unsigned char *filesbuf = NULL;
+     uint32_t count;
+-    uint32_t i;
+-    unsigned char *filesbuf = NULL;
+     size_t dsize;
+     FWCfgFile *pdir_entry;
+-    size_t filesize = 0;
++    uint32_t i;
++    bool found = false;
++
++    *size = 0;
++    *sel = 0;
+ 
+     qfw_cfg_get(fw_cfg, FW_CFG_FILE_DIR, &count, sizeof(count));
+     count = be32_to_cpu(count);
+@@ -90,17 +81,43 @@ size_t qfw_cfg_get_file(QFWCFG *fw_cfg, const char *filename,
+     pdir_entry = (FWCfgFile *)(filesbuf + sizeof(uint32_t));
+     for (i = 0; i < count; ++i, ++pdir_entry) {
+         if (!strcmp(pdir_entry->name, filename)) {
+-            uint32_t len = be32_to_cpu(pdir_entry->size);
+-            uint16_t sel = be16_to_cpu(pdir_entry->select);
+-            filesize = len;
+-            if (len > buflen) {
+-                len = buflen;
+-            }
+-            qfw_cfg_get(fw_cfg, sel, data, len);
++            *size = be32_to_cpu(pdir_entry->size);
++            *sel = be16_to_cpu(pdir_entry->select);
++            found = true;
+             break;
+         }
+     }
+-    g_free(filesbuf);
++
++    return found;
++}
++
++/*
++ * The caller need check the return value. When the return value is
++ * nonzero, it means that some bytes have been transferred.
++ *
++ * If the fw_cfg file in question is smaller than the allocated & passed-in
++ * buffer, then the buffer has been populated only in part.
++ *
++ * If the fw_cfg file in question is larger than the passed-in
++ * buffer, then the return value explains how much room would have been
++ * necessary in total. And, while the caller's buffer has been fully
++ * populated, it has received only a starting slice of the fw_cfg file.
++ */
++size_t qfw_cfg_get_file(QFWCFG *fw_cfg, const char *filename,
++                        void *data, size_t buflen)
++{
++    size_t filesize = 0;
++    uint32_t len;
++    uint16_t sel;
++
++    if (find_pdir_entry(fw_cfg, filename, &sel, &len)) {
++        filesize = len;
++        if (len > buflen) {
++            len = buflen;
++        }
++        qfw_cfg_get(fw_cfg, sel, data, len);
++    }
++
+     return filesize;
+ }
+ 
 -- 
 2.35.3
 
