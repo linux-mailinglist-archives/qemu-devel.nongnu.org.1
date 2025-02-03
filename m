@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BEEA25CF7
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22054A25D59
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:50:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1texdh-0003xI-LV; Mon, 03 Feb 2025 09:41:30 -0500
+	id 1texlT-0000uF-Gd; Mon, 03 Feb 2025 09:49:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1texdS-0003if-Km
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:41:18 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1texlN-0000qV-00
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:49:25 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1texdE-0002Qr-Fi
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:41:14 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-aaf900cc7fbso970374366b.3
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 06:41:00 -0800 (PST)
+ id 1texlJ-0003Hb-G5
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:49:24 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-ab737e5674bso112591266b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 06:49:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738593659; x=1739198459; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738594147; x=1739198947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DNmUeNVqLMWnKw5VpxIg7HB3Zjmh6ElltpcE7zlO/sI=;
- b=qaWAs1id5oc0k+rIsPeBbxyvOV13fuiVqJVROMSZB0Lb44lr8Y2Xs75qAVbH2Oc1lY
- Vr8Vg/3PdTsuplHxgt6YxLgRb+h210YtsGbaU+Msoqa/nr5Tkh/2bhxhzXPk5x8BveS0
- 58CNPmAE/Q1ec6u+pCIWyw5v4pdg9ssa9DD5pn41hHPN6rbBmYvJ+2Kub21PQecSA4rE
- 8tzwTs9r/nxfzVVu0WQIdc1Ud+QTg1eVPwl4fY7vo7ixFUDfJBSjsye3qSLToAv6KpOm
- MujfGLUdRVFPmxk8a1pj6HHYXZB69gJXi4yJn76Kuud34fDLagvGGRzITp3cRv2R+BAu
- rjDg==
+ bh=BYLUPD3P/9Yhc9T5gc39GsuYcITC/cYJ3+WE96RAZnc=;
+ b=ZJmmiEU2YwO8sK8ZLu2i4XWkVHGOwJjSYb/KkJBq0O8xhynSIjoJFsOP5ZT/LwXx/Y
+ htZnbgWh4HjGGwu52JTSk9gNHm/c6nFc0xd6G2Ben1p6bJ4fp2w+L/IKQiMZLgvrJG+j
+ T7gSlaJ8WAbB9U29hKGg9tlh4bw9MQvAslEna7eBWi+nNLIRxu5dbPPwMOUyX7c+8S8B
+ zDe2qocimYGbfvw5F0ld3Inw5OFQ0cv1UpAh4P3Y1F6CRo8bapurCVx4vydseGZfvjno
+ 3DI4hghj69rNW8Uz257xo9Q0nNR966dv7hKz2+9iOWPx44LOoVR3VjZmI78Hk+TL2AKw
+ B6Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738593659; x=1739198459;
+ d=1e100.net; s=20230601; t=1738594147; x=1739198947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DNmUeNVqLMWnKw5VpxIg7HB3Zjmh6ElltpcE7zlO/sI=;
- b=ZHsrGg4ita1BXobi8P4NYxsWIx/kry8JooAtqrriF4IT4jxG8yfYhi7/VAj0Nj5rZV
- hRVs19qFiaf9TEB5R9TRLZXmW/vsBtZ8tqzHe2aonvvqqzUH9W1Y10JvUaRJNHLfLv8e
- rlsA0Ua47Hz9iUhnHFJWQRwe1PH+Gue+USfAXkUsGgUobRZKcKm/RdHkg3KoH3zupObb
- kHm3kWt0klspkJMgQYv+u1pCkdVPXBFcE638Lt6DJAmU5F/NjQ2xe4CGgFPDWy3DpAaw
- ZMh0CtueLebrzkUWNl/eh/M0+OYst50Wo2N9kxiPjjQMOi/aHXmOTmcI314r8GO3AZPa
- boBA==
-X-Gm-Message-State: AOJu0YyEIWAvIVdbeWQPkUYhiS6arGqbci+z3e/vUWItqjy8gof1P/Qe
- ed3qoUiG/6Vff4n4JNP89k8Dcg5991RwXpEKCsyjR4Fiyw0EJdPNMLUtWuOCzOI=
-X-Gm-Gg: ASbGncugwdPSBQLJbjOgGR0KXdtJr5yqbDIXu7dAQ06RfdmUCCFcfBBcT2o/XzP/Nad
- 1wL43ANGEbcA/Ebjj0fbMRtx3GShbP6a6x4d87pI8k5QKCrN+TmzqcWls2sEEfgCId/1jZvPxjP
- u4DHipGfZQ33jcDwG03aljPIHaTPjg2SqVORVweGhzWCnJszelc5EagFaRXCLV4T8Gl0ftcAGEe
- TdC5pEvAzwI7crCkr7czyr8OV20N2ryYVKo0xMtMcrLt+V4PSIkZ0c9VXBK+9FkmpkHknSNX2tc
- rkw4QCxBuns0bxFJDQ==
-X-Google-Smtp-Source: AGHT+IERc32Yfp0Ol9MGOsgKzyZPwb4uj3aFdLp1icKl6wSJpAi9oq7kRr25owzUkCJZa2ih6KGhMw==
-X-Received: by 2002:a17:906:e218:b0:ab6:dd6b:2a3 with SMTP id
- a640c23a62f3a-ab6dd6b0549mr1789421266b.22.1738593658893; 
- Mon, 03 Feb 2025 06:40:58 -0800 (PST)
+ bh=BYLUPD3P/9Yhc9T5gc39GsuYcITC/cYJ3+WE96RAZnc=;
+ b=QyPqzmMfW1lG86Lq8AYX1AWj3883ib+goH1tXnCO/IiP9gaQpxr8MiknQBzdE29rUw
+ E6FQR0KHqkK0wYz5gl1BRPkudA4by4iVEXGbKXV+viTVfWZsbHsNJHj533hwM4+mcCj2
+ WTpgQPBUDm3qRWVAA8A7xGAumkJLeuryjKafeFHXzfWKZM4mMQ3neecYCf+6chbsBOal
+ nqmcTWm7lo4nQcn/mG8cCb91J6RPtNuKvsG9v1l9LeqjknyYJ2iMe4svyfZb8GgN2Eh8
+ ppYcV4+xwiCvD/xgXZ1ScRvexTNSnKMnHRur+PgeknpDhQedd+/G3gb65oHRlw18C6Sk
+ 8dNA==
+X-Gm-Message-State: AOJu0Yxxxk0eOU66S4rKVSMoAKcabIA+/fdJM01A7yD038FDq6hxoZt7
+ tQA+7L0IQCimGLSUw+no1lOvaABWo6fMPcR73DrACkSf2XS+PFxcOoNUVz9UTC8=
+X-Gm-Gg: ASbGnctXehlU1BR2bRki2E1aVGIitBBFqrflNXBBNXiv1/dZKLJ6e8aaB+RjAF8NNiD
+ GJLTZaG8KDLo/emPVZi71wEupr54LUPejynICmNvFyS5sUBS9a1wg3v0C7ylNaIW8XslnTKGL8P
+ 6mi1LFxWkYP8Qw19k3wTAYqb3PlNrKuMO8wD0WT4LwYw7lKOfcaXhE3kqpPdEyEOX5Tl4YdMe69
+ t5+RJeYL++j401UVKTc610WJFGeuXwQxG5CI+JF6GY4BTnUKeo4xZc4wOOC4Z9Y5H+4UF2cYQTW
+ /EogPwQmjG/THIwqVA==
+X-Google-Smtp-Source: AGHT+IHgsx6VegpQf/B5RuOCVkQFxqV47V8mc1V6eFUOyK0LWGPsQGdoL7+XE026OxIOUgxH9LTjpw==
+X-Received: by 2002:a17:907:72c1:b0:aa6:ab70:4a78 with SMTP id
+ a640c23a62f3a-ab6cfda4254mr2919815166b.37.1738594147146; 
+ Mon, 03 Feb 2025 06:49:07 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab6e4a57181sm768648166b.170.2025.02.03.06.40.54
+ a640c23a62f3a-ab71166a8e0sm404508566b.158.2025.02.03.06.49.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Feb 2025 06:40:57 -0800 (PST)
+ Mon, 03 Feb 2025 06:49:06 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 356195FA5E;
+ by draig.lan (Postfix) with ESMTP id 4D79B60C3D;
  Mon,  3 Feb 2025 14:40:50 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,24 +84,25 @@ Cc: qemu-ppc@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
  Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 15/18] gdbstub: Allow late attachment
-Date: Mon,  3 Feb 2025 14:40:45 +0000
-Message-Id: <20250203144048.2131117-16-alex.bennee@linaro.org>
+Subject: [PATCH 16/18] docs/user: Document the %d placeholder and suspend=n
+ QEMU_GDB features
+Date: Mon,  3 Feb 2025 14:40:46 +0000
+Message-Id: <20250203144048.2131117-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250203144048.2131117-1-alex.bennee@linaro.org>
 References: <20250203144048.2131117-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,202 +120,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Allow debugging individual processes in multi-process applications by
-starting them with export QEMU_GDB=/tmp/qemu-%d.sock,suspend=n.
-Currently one would have to attach to every process to ensure the app
-makes progress.
-
-In case suspend=n is not specified, the flow remains unchanged. If it
-is specified, then accepting the client connection is delegated to a
-thread. In the future this machinery may be reused for handling
-reconnections and interruptions.
-
-On accepting a connection, the thread schedules gdb_handlesig() on the
-first CPU and wakes it up with host_interrupt_signal. Note that the
-result of this gdb_handlesig() invocation is handled, as opposed to
-many other existing call sites. These other call sites probably need to
-be fixed separately.
-
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20250117001542.8290-7-iii@linux.ibm.com>
+Message-Id: <20250117001542.8290-8-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- bsd-user/main.c   |   1 -
- gdbstub/user.c    | 115 +++++++++++++++++++++++++++++++++++++++++-----
- linux-user/main.c |   1 -
- 3 files changed, 103 insertions(+), 14 deletions(-)
+ docs/user/main.rst | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index b2f6a9be2f..fdb160bed0 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -629,7 +629,6 @@ int main(int argc, char **argv)
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 80a77f0a0c..9a1c60448c 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -54,7 +54,7 @@ Command line options
  
-     if (gdbstub) {
-         gdbserver_start(gdbstub, &error_fatal);
--        gdb_handlesig(cpu, 0, NULL, NULL, 0);
-     }
-     cpu_loop(env);
-     /* never exits */
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 8225b70280..3730f32c41 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -22,6 +22,7 @@
- #include "gdbstub/user.h"
- #include "gdbstub/enums.h"
- #include "hw/core/cpu.h"
-+#include "user/signal.h"
- #include "trace.h"
- #include "internals.h"
+ ::
  
-@@ -393,32 +394,122 @@ static int gdbserver_open_port(int port, Error **errp)
-     return fd;
- }
+-   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g port] [-B offset] [-R size] program [arguments...]
++   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g endpoint] [-B offset] [-R size] program [arguments...]
  
--bool gdbserver_start(const char *port_or_path, Error **errp)
-+static bool gdbserver_accept(int port, int gdb_fd, const char *path)
- {
--    int port = g_ascii_strtoull(port_or_path, NULL, 10);
-+    bool ret;
-+
-+    if (port > 0) {
-+        ret = gdb_accept_tcp(gdb_fd);
-+    } else {
-+        ret = gdb_accept_socket(gdb_fd);
-+        if (ret) {
-+            gdbserver_user_state.socket_path = g_strdup(path);
-+        }
-+    }
-+
-+    if (!ret) {
-+        close(gdb_fd);
-+    }
-+
-+    return ret;
-+}
-+
-+struct {
-+    int port;
-     int gdb_fd;
-+    char *path;
-+} gdbserver_args;
-+
-+static void do_gdb_handlesig(CPUState *cs, run_on_cpu_data arg)
-+{
-+    int sig;
-+
-+    sig = target_to_host_signal(gdb_handlesig(cs, 0, NULL, NULL, 0));
-+    if (sig >= 1 && sig < NSIG) {
-+        qemu_kill_thread(gdb_get_cpu_index(cs), sig);
-+    }
-+}
-+
-+static void *gdbserver_accept_thread(void *arg)
-+{
-+    if (gdbserver_accept(gdbserver_args.port, gdbserver_args.gdb_fd,
-+                         gdbserver_args.path)) {
-+        CPUState *cs = first_cpu;
-+
-+        async_safe_run_on_cpu(cs, do_gdb_handlesig, RUN_ON_CPU_NULL);
-+        qemu_kill_thread(gdb_get_cpu_index(cs), host_interrupt_signal);
-+    }
-+
-+    g_free(gdbserver_args.path);
-+    gdbserver_args.path = NULL;
-+
-+    return NULL;
-+}
+ ``-h``
+    Print the help
+@@ -91,8 +91,18 @@ Debug options:
+    Activate logging of the specified items (use '-d help' for a list of
+    log items)
  
-+#define USAGE "\nUsage: -g {port|path}[,suspend={y|n}]"
+-``-g port``
+-   Wait gdb connection to port
++``-g endpoint``
++   Wait gdb connection to a port (e.g., ``1234``) or a unix socket (e.g.,
++   ``/tmp/qemu.sock``).
 +
-+bool gdbserver_start(const char *args, Error **errp)
-+{
-+    g_auto(GStrv) argv = g_strsplit(args, ",", 0);
-+    const char *port_or_path = NULL;
-+    bool suspend = true;
-+    int gdb_fd, port;
-+    GStrv arg;
++   If a unix socket path contains single ``%d`` placeholder (e.g.,
++   ``/tmp/qemu-%d.sock``), it is replaced by the emulator PID, which is useful
++   when passing this option via the ``QEMU_GDB`` environment variable to a
++   multi-process application.
 +
-+    for (arg = argv; *arg; arg++) {
-+        g_auto(GStrv) tokens = g_strsplit(*arg, "=", 2);
-+
-+        if (g_strcmp0(tokens[0], "suspend") == 0) {
-+            if (tokens[1] == NULL) {
-+                error_setg(errp,
-+                           "gdbstub: missing \"suspend\" option value" USAGE);
-+                return false;
-+            } else if (!qapi_bool_parse(tokens[0], tokens[1],
-+                                        &suspend, errp)) {
-+                return false;
-+            }
-+        } else {
-+            if (port_or_path) {
-+                error_setg(errp, "gdbstub: unknown option \"%s\"" USAGE, *arg);
-+                return false;
-+            }
-+            port_or_path = *arg;
-+        }
-+    }
-+    if (!port_or_path) {
-+        error_setg(errp, "gdbstub: port or path not specified" USAGE);
-+        return false;
-+    }
-+
-+    port = g_ascii_strtoull(port_or_path, NULL, 10);
-     if (port > 0) {
-         gdb_fd = gdbserver_open_port(port, errp);
-     } else {
-         gdb_fd = gdbserver_open_socket(port_or_path, errp);
-     }
--
-     if (gdb_fd < 0) {
-         return false;
-     }
++   If the endpoint address is followed by ``,suspend=n`` (e.g.,
++   ``1234,suspend=n``), then the emulated program starts without waiting for a
++   connection, which can be established at any later point in time.
  
--    if (port > 0 && gdb_accept_tcp(gdb_fd)) {
--        return true;
--    } else if (gdb_accept_socket(gdb_fd)) {
--        gdbserver_user_state.socket_path = g_strdup(port_or_path);
-+    if (suspend) {
-+        if (gdbserver_accept(port, gdb_fd, port_or_path)) {
-+            gdb_handlesig(first_cpu, 0, NULL, NULL, 0);
-+            return true;
-+        } else {
-+            error_setg(errp, "gdbstub: failed to accept connection");
-+            return false;
-+        }
-+    } else {
-+        QemuThread thread;
-+
-+        gdbserver_args.port = port;
-+        gdbserver_args.gdb_fd = gdb_fd;
-+        gdbserver_args.path = g_strdup(port_or_path);
-+        qemu_thread_create(&thread, "gdb-accept",
-+                           &gdbserver_accept_thread, NULL,
-+                           QEMU_THREAD_DETACHED);
-         return true;
-     }
--
--    /* gone wrong */
--    close(gdb_fd);
--    error_setg(errp, "gdbstub: failed to accept connection");
--    return false;
- }
- 
- void gdbserver_fork_start(void)
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 7198fa0986..5c74c52cc5 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -1024,7 +1024,6 @@ int main(int argc, char **argv, char **envp)
- 
-     if (gdbstub) {
-         gdbserver_start(gdbstub, &error_fatal);
--        gdb_handlesig(cpu, 0, NULL, NULL, 0);
-     }
- 
- #ifdef CONFIG_SEMIHOSTING
+ ``-one-insn-per-tb``
+    Run the emulation with one guest instruction per translation block.
 -- 
 2.39.5
 
