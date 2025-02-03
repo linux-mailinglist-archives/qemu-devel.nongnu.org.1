@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6597DA25689
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 10:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45505A25692
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 11:02:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tetEH-00021P-Ft; Mon, 03 Feb 2025 04:58:57 -0500
+	id 1tetGl-0003Uc-9K; Mon, 03 Feb 2025 05:01:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tetE0-0001z9-9A
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 04:58:40 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tetFw-0003OH-J2
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 05:00:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tetDy-0004Tj-OO
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 04:58:40 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tetFq-0004kW-S9
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 05:00:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738576715;
+ s=mimecast20190719; t=1738576832;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=CfVR3c8Hz7mgCOGL6MI24KglT+2z6ja28GAcVDx2SaI=;
- b=ejvdxoKZDWVsNHYRpaI6SKQCavkePTkvzRBGb3+oMPOFufkVuu85wsSUpdwiW5ZhOliZWk
- 5N4RSY7PiyJ9mCZcc+Ke0hgJmsqqXcKdZrSSxOxyKWwASlP+rbtztykvy+1bV0KiQ3WpIE
- 13zTTGXHExphjX50pPO36GTnpEIB9ms=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=N4eXBdXkDePeLEEspARtRXscZ2PfVvFxzq7SucSX9rU=;
+ b=I3MSLQ2jN+OjwpqktbnpYSH5rceHN99THerdcVPRkCUPA7xKtAJ0ntTqnKx3xeMxH9iczA
+ 1WtIFG7DDSzK3BFYWf9Tkz7WPQ/6rRSCtMeVrV1wwJ6kw1rDP2jKHEP2D8iKY6Phvt9Nyn
+ FUof9ko/p8CodHDHPFL8GVgTLF1jSWI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-g1OR5sKqPSOpUzVJcQHSeg-1; Mon, 03 Feb 2025 04:58:30 -0500
-X-MC-Unique: g1OR5sKqPSOpUzVJcQHSeg-1
-X-Mimecast-MFC-AGG-ID: g1OR5sKqPSOpUzVJcQHSeg
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4361efc9dc6so21658905e9.3
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 01:58:30 -0800 (PST)
+ us-mta-650-OKXqUUjcPn-hdKiVzg34dA-1; Mon, 03 Feb 2025 05:00:30 -0500
+X-MC-Unique: OKXqUUjcPn-hdKiVzg34dA-1
+X-Mimecast-MFC-AGG-ID: OKXqUUjcPn-hdKiVzg34dA
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385ded5e92aso1740979f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 02:00:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738576709; x=1739181509;
+ d=1e100.net; s=20230601; t=1738576829; x=1739181629;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CfVR3c8Hz7mgCOGL6MI24KglT+2z6ja28GAcVDx2SaI=;
- b=SW0QxpQygBKWOWlwBisDTWRMJc2VIpUkkv+1HOzE8qRUUUnkxGFlEVYuOdIofwz5kA
- SDQRVBw2odPOSuARVDsswXyil1pkPTLHTBluNZdcAqld7XTR3uPMSKR6eIz0bPWRMooc
- 2uar3I4fG55x/xB0GQgB4lBQa4OXjEi7eh2fgx3LzIvS00HYTz7d5B6vTeWu37z1Eqnv
- J9m6AlA6Wf7T6TquFDrdluuwHaXmg64kdrrZ8VfbDmAgKcsxuqR0utMzEhxJeDlUxEo6
- JdG06cyRmq/8N5YUjY/SsT+dGFERmGiI7Tk/94Jd9vKYzKMWwVkLmrQFYJcRl+U71xx8
- HPTA==
+ bh=N4eXBdXkDePeLEEspARtRXscZ2PfVvFxzq7SucSX9rU=;
+ b=bHuiMe0xgFapwREk5VabtbF+gz5PnHQJg/RgjLPYjHsZoBCcGaj7QWYxBMViJF58sF
+ mMhMlHs7DjutiNajsHkWif6hZKR/CypExpoSbTzcbh25WO3gdqSw1bYFRD01gzUOgv3L
+ gFFlXnmATMWY4recQRuqBFlMiL95Jzs1grfXRDY/FguPUWyseOI1aA6Pagevm6N8IdeK
+ bCqGxisNAcaHnTFFwEzHYjJqf71ORHKVc2+FG51AaxZFnvYNYacNBK1Gwvj26RddH9Co
+ Y/HQABiq0SrxAvX08Tor+jFjYxe+sv3K0CFEE8aDEXP+LJ4At5sBvXllXAuGXSRRXRWx
+ a0uA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9ScjcCwL+eCEZbhhwd6ESPFqX3UdOTgXT3Zqr1cb/vLsX7RiAbbhPsjPujnOcy5UC/3jK/atWjHQ7@nongnu.org
-X-Gm-Message-State: AOJu0Yz73aw42unu8RsAyOWQb6ZpFQI6nU/BoDIRj7zbIHA++prS37dd
- 1iSkq7aAz+ZK61jSFOVwTY6CX9X07DHf5Z9PgVDjklEm7Yqr8fmZWf3yl6SIJbY705kF3D7a8PD
- yIaF0x3LE5bYa3WJlL7OrXGeR9673UnwwN6OqyIwp48XixJRGeDWS
-X-Gm-Gg: ASbGncvTWJ0/mCK6F8j/nUz5LisqHdDqooAgyqMaf2t+bIEJYYBZlgUqSX695GEI8u5
- pV7l2v5BRsTx4ly487MqTo0m05sIxQZTCVGeBh4yUN9QBZf2oHK4mI0fgbFzQ2upiwK4k7l+/IB
- QHBey5sLlgxExNdmOiAKSWh/uLMAHawTzWsxzheb+fEmTf/R8pwkHuHVq9ZjEW4CC1JyaA9sssc
- 34iLwP3yBTfQxUT5OEhIajdyDaaHE/IoLE3Vs9rED1Jbzc0bOEetI4N3lohuxOxK9GxL4Bwffcd
- gESZgPECZDEGbqlF7rNv7S6blOyMZw==
-X-Received: by 2002:a05:600c:1f10:b0:434:f8e5:1bb with SMTP id
- 5b1f17b1804b1-438dc3af90cmr184491475e9.12.1738576709615; 
- Mon, 03 Feb 2025 01:58:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEujqhfa1qIf3iTt0h6DJDQVAu2cKXExqQ4ucZQTChEyy7TRnMv92KMOR2D5KUKgr+7zdT8fg==
-X-Received: by 2002:a05:600c:1f10:b0:434:f8e5:1bb with SMTP id
- 5b1f17b1804b1-438dc3af90cmr184491215e9.12.1738576709269; 
- Mon, 03 Feb 2025 01:58:29 -0800 (PST)
+ AJvYcCX6SaOh99THTUxACGF4ykIW825S2Y4T/chjj5U0O05i2MCLqA9ocfr1hii/59sa3XEvcIdEHmdXNbwU@nongnu.org
+X-Gm-Message-State: AOJu0YyqG72UpbO/TvSWqU/05gJ8Azd3A3+Gta+DI5Yc9WbMhshGu7Vq
+ ZHCv/6KFbQvkxvuGrSWoIBYRmQKWjasKGzYhBVf3doDrBb7POcofP3oNmDOKRDguNbGcBIBO1x+
+ Aaf30p3hBh6yONDDfg6PcynMqTHxLr4qVw12lf5ZB6Mmk5KRzjwOq
+X-Gm-Gg: ASbGncuCZJzJDnlFCiAjkrPBLYavWDyVlZrUU1giy5eArvA1cKvw9kumIqYPWSfKBZ3
+ MwCzH+URI4IxLcrernRhOP9UUoYHCyVvxxm4bay6A5+5TFQfGFjFGOGBpPxvD2gCzB04+QZ+CwW
+ 1A7xWQN2CUtT9GqTwFsWgKgXsh+dKshmbTiFqwxHRGaQRND+6oPcOdFNATHC8zaeqEcHnBaOt1s
+ vq5bzNWcebabXYtvk6ospcLvJJouzG/zEk0V0mCOLQqvTbr4VQdAjx3kjVUATbEvpxnb0zVqwIT
+ +d6YCDeq1mL5ZmUYUd9Viiho1zUKjg==
+X-Received: by 2002:a5d:5384:0:b0:38a:8ed1:c5c7 with SMTP id
+ ffacd0b85a97d-38c520bdb45mr12952982f8f.46.1738576829219; 
+ Mon, 03 Feb 2025 02:00:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqhbau6O2dpkJpdxWu+lUKFq9Dbr/3H4MavnzJqQQu8zNGQTSBmPbcPFPTvmCW6EBVp47vwg==
+X-Received: by 2002:a5d:5384:0:b0:38a:8ed1:c5c7 with SMTP id
+ ffacd0b85a97d-38c520bdb45mr12952951f8f.46.1738576828904; 
+ Mon, 03 Feb 2025 02:00:28 -0800 (PST)
 Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc6de2dsm185485985e9.26.2025.02.03.01.58.28
+ 5b1f17b1804b1-438dcc13151sm183157735e9.1.2025.02.03.02.00.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Feb 2025 01:58:28 -0800 (PST)
-Message-ID: <49d601e0-9a35-4c70-ace7-415dc6175a9a@redhat.com>
-Date: Mon, 3 Feb 2025 10:58:28 +0100
+ Mon, 03 Feb 2025 02:00:28 -0800 (PST)
+Message-ID: <6260bc3a-c00a-4e46-adaa-3b16dc30cf17@redhat.com>
+Date: Mon, 3 Feb 2025 11:00:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/14] meson: Drop tcg as a module
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH v2 02/14] tcg: Move stubs in tcg/perf.h to tcg/perf-stubs.c
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
- philmd@linaro.org, "Jose R. Ziviani" <jziviani@suse.de>
+ philmd@linaro.org
 References: <20250203031821.741477-1-richard.henderson@linaro.org>
- <20250203031821.741477-2-richard.henderson@linaro.org>
+ <20250203031821.741477-3-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -125,7 +124,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250203031821.741477-2-richard.henderson@linaro.org>
+In-Reply-To: <20250203031821.741477-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -154,21 +153,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 03/02/2025 04.18, Richard Henderson wrote:
-> The fact that this is only enabled for x86 probably means it
-> was done incorrectly.  Certainly the set of files selected to
-> go into the module is woefully incomplete.  Drop it for now.
+> These are not called so frequently as to be
+> performance sensitive.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   accel/tcg/meson.build | 11 ++++-------
->   meson.build           | 18 +-----------------
->   2 files changed, 5 insertions(+), 24 deletions(-)
-
-Looking at the cover letter 
-https://lore.kernel.org/qemu-devel/20210624103836.2382472-1-kraxel@redhat.com/ 
-it indeed only mentions "a small fraction of tcg (x86 only)", and since 
-there were no follow up patches, it sounds like an incomplete conversion to 
-me. So reverting it three and a half years later sounds reasonable.
+>   include/tcg/perf.h | 23 -----------------------
+>   tcg/perf-stubs.c   | 26 ++++++++++++++++++++++++++
+>   tcg/meson.build    |  2 ++
+>   3 files changed, 28 insertions(+), 23 deletions(-)
+>   create mode 100644 tcg/perf-stubs.c
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
