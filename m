@@ -2,65 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77794A25C0E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 322EDA25BE5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1texG0-00056z-A7; Mon, 03 Feb 2025 09:17:00 -0500
+	id 1tex7i-0007fe-FD; Mon, 03 Feb 2025 09:08:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win>)
- id 1tex1V-0006pe-6w
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:02:01 -0500
-Received: from smtp.forwardemail.net ([207.246.76.47])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tex7h-0007eO-28
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:08:25 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win>)
- id 1tex1T-0005Lk-HR
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:02:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=miszr.win;
- h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
- To: From; q=dns/txt; s=fe-257304d8b2; t=1738591316;
- bh=raYIHEgeTxW3E2Hf+6kFG/cpXPTBsO8kwXXvuIO7W/Y=;
- b=ayWZonxJjH1ENVX0EMjEAe2xHr5140zunFL8LhjQkfHyE/WgiUpgAvUbvAZXmra5jKNmxDaXg
- UDQyKTaKdgWyNKya6Vo5ob61r5JHl34chOIU1zNhvzAab1LEdaagT5q0BU1g3a6om4E3U/ASEiw
- eAlcJjYYJd6OICOy78YZ/is=
-X-Forward-Email-ID: 67a0cc50514bf110fcaed145
-X-Forward-Email-Sender: rfc822; git@miszr.win, smtp.forwardemail.net,
- 207.246.76.47
-X-Forward-Email-Version: 0.4.40
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-From: Mikael Szreder <git@miszr.win>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Mikael Szreder <git@miszr.win>
-Subject: [PATCH] target/sparc: Fix register selection for the fdtox and fqtox
- instructions
-Date: Mon,  3 Feb 2025 15:01:30 +0100
-Message-ID: <20250203140130.78240-1-git@miszr.win>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tex7f-0006qY-Ho
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:08:24 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a9e44654ae3so713095266b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 06:08:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738591701; x=1739196501; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WU52AN2OUlZ1qKBo1DH2Ik2TSp35tGJqbGoyklt/ofU=;
+ b=lrNfw1qn/zmUzRSKdLjGe7KIJbZ2nMPP9KuELVqWIldyuKHiKAhZEWakr1sBS38HlM
+ soxGyi8QwCSeco8lt+qRnN/+lkmtFYdYEhy+it7Kwo7LFbGhtBYUXvBL60Zs0eGoa1ZO
+ jVX9UznPOcZmBoA+qzrWUfnFnnM/cnem5cNCm64BFlF0G4T6JfPBhiWzXMw+9yr9ia1f
+ p6UdmCRvmwx1AAE5S2StI8y1pYxsqvHhFoBL/RFRA0B9etkzyijAE77eLOtRkuDWrtky
+ qqO6tOSbMNjJgtD9mgSGBNvG1PXMyz6XWDWxKhp5wTZ8I/B7EZTO56H91yX0xdYakPaJ
+ /JKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738591701; x=1739196501;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WU52AN2OUlZ1qKBo1DH2Ik2TSp35tGJqbGoyklt/ofU=;
+ b=mKXnRfHaoOQKFU9gARMUHeBvEkcGqEnUPi4TSboZatUys1Iefg2dkVZ0l89HVGgbGw
+ CcOHi/El4sk2Sb9aTnMExK1G+qrkMAkNvClULupkgQWpv9zM0L2U8H3Aj1hQ4OUoIzJa
+ elrZQSvh9vP6W7xNpgSmMv7967LvBWgf5Q9w9d8HIpVgJRIeBl5sSzkXSqP6pm36xezQ
+ ZkVQvyuMnn0j+blWRx6HV4ItF1l6IPArNkDvs5f+sLVsKR3ysoQeloqCmFzVh/3YkdCg
+ Nhnh8jgWB9dKUClEkeneDtBp82s15X4UhZjM5XOfTRUN5RsQOW9u/serDa4TldFq8iVG
+ k8Wg==
+X-Gm-Message-State: AOJu0YzkF8q1g4MVsaUBEYQZKmzv6FrTFURnDNsm9QkVytJqYJ/DSz5n
+ SdEIwjWTorxFLp0/kU67EwlFpZB35vr8gEEw4f8BVwg7gi0IoayKpXOVBIwqjAU=
+X-Gm-Gg: ASbGncuSfamsdFVqKRGu6VXbAvwUedHwAH4Kve2cOySuiX/T3CA9QcRcFb/zW2Hrnw0
+ F6DbRD1sA4GEZsSxo1vXexdxZFstF6AsHoR/vT/ZBKV3tfifVg9oQVyZnQ7PRI9gKKLa9FnT4Rf
+ bWroLfqKB5s+OsFAdcHjTR+QCg8ZZvYz6hE34nDvk75WuIRp+cnQD8PMTUjsWYa10U20SJy3YL5
+ XmrC0LsZh4Pb0EUklRj+eoAu+Ee3PmevENQvFkMINLcdNPFoMdq4Fvyaq60CVDq+9olVcLQR0Tr
+ PReoc4fI5VmbqnQcfg==
+X-Google-Smtp-Source: AGHT+IGh7IreZa8eW2wqj32gawdJUchpdge5r622aiXwj57S1ABb9+gN/n+0ZOTJ2GEMyp3KWOsQiA==
+X-Received: by 2002:a17:907:97c5:b0:aa6:5d30:d971 with SMTP id
+ a640c23a62f3a-ab6cfcb6979mr2690745666b.11.1738591699716; 
+ Mon, 03 Feb 2025 06:08:19 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab6e4a56dadsm764843866b.176.2025.02.03.06.08.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Feb 2025 06:08:19 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 442B15F8BF;
+ Mon,  3 Feb 2025 14:08:18 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH 0/2] migration: Reduce migration-test time for non-KVM
+ archs
+In-Reply-To: <20250130184012.5711-1-farosas@suse.de> (Fabiano Rosas's message
+ of "Thu, 30 Jan 2025 15:40:10 -0300")
+References: <20250130184012.5711-1-farosas@suse.de>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Mon, 03 Feb 2025 14:08:18 +0000
+Message-ID: <877c67ce99.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=207.246.76.47;
- envelope-from=SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win;
- helo=smtp.forwardemail.net
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_FMBLA_NEWDOM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 03 Feb 2025 09:16:47 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,33 +103,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A bug was introduced in commit 0bba7572d40d which causes the fdtox and
- fqtox instructions to incorrectly select the destination registers.
-More information and a test program can be found in issue #2802.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Fixes: 0bba7572d40d ("target/sparc: Perform DFPREG/QFPREG in decodetree")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2802
-Signed-off-by: Mikael Szreder <git@miszr.win>
----
- target/sparc/insns.decode | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Hi, continuing the work from the previous[1] series to reduce the time
+> migration-test takes during make check, here's a couple of patches to
+> create a smaller set of tests.
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 989c20b44a..694a28d88c 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -322,8 +322,8 @@ FNHADDs     10 ..... 110100 ..... 0 0111 0001 .....        @r_r_r
- FNHADDd     10 ..... 110100 ..... 0 0111 0010 .....        @d_d_d
- FNsMULd     10 ..... 110100 ..... 0 0111 1001 .....        @d_r_r
- FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @r_r2
--FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @r_d2
--FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @r_q2
-+FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @d_d2
-+FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @q_q2
- FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_r2
- FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_r2
- FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_r2
--- 
-2.48.1
+Queued to testing/next, thanks.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
