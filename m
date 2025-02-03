@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40CFA251AF
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18299A251B5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:20:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1temyq-00082Y-5y; Sun, 02 Feb 2025 22:18:36 -0500
+	id 1temys-00086A-0i; Sun, 02 Feb 2025 22:18:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temym-00080V-Mx
- for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:32 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1temyn-000814-72
+ for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:33 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temyl-0002fh-2K
+ id 1temyl-0002fz-MN
  for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:32 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-216281bc30fso85004985ad.0
- for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 19:18:30 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-216634dd574so43914055ad.2
+ for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 19:18:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738552709; x=1739157509; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738552710; x=1739157510; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YOiNmgCG27GGUfQ2A+akEblYYk9R7T+pJq3Iu4mV5EA=;
- b=Lp8MYQt8PpyKcS/nWukh/AlcdL6co8wyjswUErJLYDePCFOexsWk1lXJ4vhJPGNef+
- H+ezSglBgOGKyitjthaoFviuhLiYrkrSCNiV7lOq2B9GBF5u/x9niaVGV0kzMOSPT1Dh
- QEK+9GK/U7ByQgk0r8st+GyP3GXPlHRpiusOjOtRbnUObeSLCHXH0J4ryjGxDRct5ytR
- MdO+eItq6JVBNPvSc6ZuxbhHA7+2wk368LNk0wL63jkbrG0vyl7AUUdBYPe0X4KsArkU
- c9GwUiG7pAlxEk2h17x9X5d/sjgqCOIlY/OKaF0Vgkp80mJhz8OnjCbhZWLQl6Ly28WA
- bx6A==
+ bh=wgGWKoRbIU40nf+pgjk4xuoPstQyTD/DlLIN5LNZmQ8=;
+ b=SGH+HAnshnpsmxo1zn3XBxSHOlf8mH7a7OeN1XA+Vz8LGosrPb75U3wTdfng9gqpLv
+ IbvSiDiuYuiOqqH5jTdp7gNLHY+2mRIz3TLKLSnu9uz+HFPVBh/yppGHOE9qYbSVAqBJ
+ XsMPJBfhyutJZXuRciOBrD0646PSTHCvR5vVSo58+KlS5huVED7HOuqRd2nD9G7uvPS4
+ lviQDhTiqP7DwdZ4VD6BtUYo3M4toZW/mjbjjj/m7JnFR8PdCNsSmpZiMF9JBG1IGo8A
+ 1CBq78Ux0opLi6S35yQN630MOYFCLaEu8amh7VjXVzacKzq9C+v6q1i0VwwG8FGNJMJm
+ /b4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738552709; x=1739157509;
+ d=1e100.net; s=20230601; t=1738552710; x=1739157510;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YOiNmgCG27GGUfQ2A+akEblYYk9R7T+pJq3Iu4mV5EA=;
- b=sTZ4Skx8OHnDgJiygRPw1AoxC7P7cRALHR2xyZx9MHwpTEJBmeU5viW5coCbfDKAwS
- TECs6ZMyPm5GjToJ3cRkOKZNGo6PQd4vuIo5yS2SPmX9feqXNA3K16ooHnkmSjCbpRBP
- kvdi1BbMQOo8q6bOwnwsL+tyhY92ggxF/6Wkd1Ib8NlDbIrYcOmBVPifz0OQjDtvLqDT
- Yup7lJF8nC5QIaF3WDUkrrtskqun8+MYnJmlLqze5zWdzosBcBZtkD0nexjZ5GySFFtv
- xkP16Fg7IdG3SA1EpEcsSUEile8A0UG9ZuyvJWE51vnfnRrvM7nBIO/4z2L67SRqazHW
- 8skw==
-X-Gm-Message-State: AOJu0YxvGrX2oDl7g3kQ/aHbiw6oPaf6Wu3FuSEo29Yk4zp5ye6XHbhC
- /YSxstSglOq3QozgILvSJq3Kp6/qY1+QLfVJBur0rhO3Qsk5YNzfChv6hWV2Rfrko08eFSIALqj
+ bh=wgGWKoRbIU40nf+pgjk4xuoPstQyTD/DlLIN5LNZmQ8=;
+ b=OCjSfHqfX0+wENbIS0k8YeSc6seV0oRKPKCfgivEl8+ith0Oe6wQGItIY/ysTQ2V1u
+ UVEly58gEQEwnJRzew+/mdzRlmi9VZ7jsrCm8c+tAn7+1zPTHqmeRsN8YpFQx7s9qk/a
+ UmQHqLcSt2ee2MhWxRs8rAW5SiadUk6HqBEu/zPPejTMNyA/R3AiAHSXNA9ArUnJHOER
+ j5B12J6IkOhNtR2VJpuqAbZkDtX5sXseQ4wFOKE2k5FkwXd/WwBQPW15l73hYVBrZSIq
+ 0BW1/991hrODxrG36ie+EpIFT7fTAhkfpB21XZkJzedWeuCMP+lK6Q117u0YmyG6RrTI
+ HJsw==
+X-Gm-Message-State: AOJu0YwMrSGRZ6wl1rm/pKiLC6ewSTLloZrNkMm4ITyWt/8BtMnpOlgG
+ cA16bZ4GVjbrLotFD6sYIxJ7VG/n+EAANwo7SrCyZFvAB/vbfPx9xpskLSwXs9Fv5JtAA7NVUMO
  5
-X-Gm-Gg: ASbGncs66oR0nFYheoOjCz1/XOf+e1H0z4fv9uv2vL/3B/WHRznB4ve2WW8jAcHrufk
- nZmFPjKTQn5yCdanC6QRLdvWL58O455A0Tdbc//wM/AF4zsqHvhoggQOCO1MLoEyAm+Cuknv5oS
- eVjk6FYklzDF9MW8ruuCnLCk4A53BdmeQD2mqjzBaERGZhHfck172kIc/BsyjvIfQeK5LRBgxPL
- swqO9k8Fo+DlCenDiAvvqbGRB2K5+JzvQPe96LrX9qWcyh2PyrgRXSQhQTkmyPxfKkMfsGYQK78
- cTfuLPN4YS4fzrSSP0Pr8Wb+pnRCHZgA8Aj/pwX6rsSiQ8o=
-X-Google-Smtp-Source: AGHT+IFNiC/vwV48hmHMWXV2+a9mE8Gm2cfj9YRPyTTLurcNzPpdQVpCCxNkVsZh5UGIpUkX79C19g==
-X-Received: by 2002:a17:902:c941:b0:215:5ea2:654b with SMTP id
- d9443c01a7336-21dd7c49718mr319441735ad.1.1738552709583; 
- Sun, 02 Feb 2025 19:18:29 -0800 (PST)
+X-Gm-Gg: ASbGncv4wwB4zXGEpkz84w0UAdbWZCw8UKjUgNic1OUepscJTPmGVT2cpgVxVOMXWFM
+ UcnyB0af0RA0InBzHFMjSJksqkvP5tLGWRVmHqQ9OyLz8W6X2/6LeziNrBW/yMNnfshfwZ7ScBC
+ Y0I/TgOwRT5Cu4qwLE9BnlbJItnpaqVnWiMs4ShtakIZzJk8irumr3D4/+5kQ/KLLcRZ1kXIk/K
+ Deima5x0S6uF4ewFyV9wWEfRXpBJlXD9sxmGzXhzfu0RDa/JT6lEHwCxILSaDwvLKARIIDRwcla
+ OYkTO2iez1G9r7t2L5j44tc/A2dxYOv9E8SkkIut9OB1cOQ=
+X-Google-Smtp-Source: AGHT+IGgv7fqmeVYHTK1dkXP9SIR9TaXOuEADw07S8izflkU455myvlhAZTlkelsJH3c4f1Lu6cSFg==
+X-Received: by 2002:a17:902:f54e:b0:215:9470:7e82 with SMTP id
+ d9443c01a7336-21dd7c55e3bmr323465985ad.4.1738552710409; 
+ Sun, 02 Feb 2025 19:18:30 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-21de32eb419sm65698135ad.145.2025.02.02.19.18.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Feb 2025 19:18:29 -0800 (PST)
+ Sun, 02 Feb 2025 19:18:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
  philmd@linaro.org, thuth@redhat.com
-Subject: [PATCH v2 08/14] target/mips: Protect objects with CONFIG_TCG
-Date: Sun,  2 Feb 2025 19:18:15 -0800
-Message-ID: <20250203031821.741477-9-richard.henderson@linaro.org>
+Subject: [PATCH v2 09/14] gitlab: Replace aarch64 with arm in cross-i686-tci
+ build
+Date: Sun,  2 Feb 2025 19:18:16 -0800
+Message-ID: <20250203031821.741477-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250203031821.741477-1-richard.henderson@linaro.org>
 References: <20250203031821.741477-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,57 +99,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hack around mips32 host allowing kvm acceleration
-of mips64 guest, but tcg is disabled.
+Configuration of 64-bit host on 32-bit guest will shortly
+be denied.  Use a 32-bit guest instead.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/mips/tcg/meson.build        | 4 ++--
- target/mips/tcg/system/meson.build | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ .gitlab-ci.d/crossbuilds.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/mips/tcg/meson.build b/target/mips/tcg/meson.build
-index fff9cd6c7f..e5574f177b 100644
---- a/target/mips/tcg/meson.build
-+++ b/target/mips/tcg/meson.build
-@@ -10,7 +10,7 @@ gen = [
- ]
- 
- mips_ss.add(gen)
--mips_ss.add(files(
-+mips_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'dsp_helper.c',
-   'exception.c',
-   'fpu_helper.c',
-@@ -26,7 +26,7 @@ mips_ss.add(files(
-   'vr54xx_helper.c',
-   'vr54xx_translate.c',
- ))
--mips_ss.add(when: 'TARGET_MIPS64', if_true: files(
-+mips_ss.add(when: ['CONFIG_TCG', 'TARGET_MIPS64'], if_true: files(
-   'tx79_translate.c',
-   'octeon_translate.c',
-   'lcsr_translate.c',
-diff --git a/target/mips/tcg/system/meson.build b/target/mips/tcg/system/meson.build
-index 911341ac37..606ccacebc 100644
---- a/target/mips/tcg/system/meson.build
-+++ b/target/mips/tcg/system/meson.build
-@@ -1,12 +1,12 @@
--mips_system_ss.add(files(
-+mips_system_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'cp0_helper.c',
-   'special_helper.c',
-   'tlb_helper.c',
- ))
--mips_system_ss.add(when: ['CONFIG_SEMIHOSTING'],
-+mips_system_ss.add(when: ['CONFIG_TCG', 'CONFIG_SEMIHOSTING'],
-   if_true: files('mips-semi.c'),
-   if_false: files('semihosting-stub.c')
- )
--mips_system_ss.add(when: 'TARGET_MIPS64', if_true: files(
-+mips_system_ss.add(when: ['CONFIG_TCG', 'TARGET_MIPS64'], if_true: files(
-   'lcsr_helper.c',
- ))
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 95dfc39224..7ae0f966f1 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -61,7 +61,7 @@ cross-i686-tci:
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
++    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,arm-softmmu,arm-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+     # Force tests to run with reduced parallelism, to see whether this
+     # reduces the flakiness of this CI job. The CI
+     # environment by default shows us 8 CPUs and so we
 -- 
 2.43.0
 
