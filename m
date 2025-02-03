@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6E6A251AC
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:19:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 158AAA251A8
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:18:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1temyn-00080d-Al; Sun, 02 Feb 2025 22:18:33 -0500
+	id 1temyo-00081h-QL; Sun, 02 Feb 2025 22:18:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temyk-0007zP-Uw
+ id 1temyl-0007zm-QW
  for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:31 -0500
 Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temyi-0002er-TY
- for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:30 -0500
+ id 1temyk-0002f8-5o
+ for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:31 -0500
 Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-219f8263ae0so69179095ad.0
- for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 19:18:28 -0800 (PST)
+ d9443c01a7336-21ddb406f32so59669465ad.2
+ for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 19:18:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738552707; x=1739157507; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738552708; x=1739157508; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SAfl37xDnFz/0zdZPRXfsa8UPn/22lXCD6HUC3zbL6A=;
- b=IP5uwkmMR/3OqwVfKCLpFY07vV0H32DB+53tZP7jBq+Pf5/KuRiId1QwZhvugCfXzd
- i4fk4LBroSfexomksM/5VrWyU2JEThDO5jnrrl9wmBGOINYIey/YniR2J4LafMxGai8F
- u8/oXIfbbLJKu7+ucbeOuYK4WaXhm7O0ML/Csf3Orl03ry+cimxRXKMFe15MDFKdfY3M
- kTZbvLGVESRWW4a4s0O/4CibFmp4qd0lUTrUxOYN5Yf5/VOXGDvlkuLLQEIAMSHV7pE/
- rJrFO5lX2LYSJN0+42dTj7yBFg+iaCN6MZN9Qe9H+ip65cxE7A2NfoHmaOfKJSLhjULm
- d1ag==
+ bh=buZLA0qUirjW027SjrYQXL+U33fLGsXttbSr8L05NfY=;
+ b=hAwnu63hvTrfsKdkc82YuvY5OnZlD43RDjNbk8z/ThmGXW7qNcWkpk/pTv2mMy7ZwZ
+ DibThNcgKK1nUvKCb3Mfu8kWKRbZyc8omP8u6VFYGZ4QeVjm+5MgjTZSIPeuPd9e5ABX
+ n13BJ3jVSWSTA8e+npksjPxVjed/pl58iFgGeMkWgyawMYIfTGy9uAzIdA1XCbjKR8nZ
+ lwuvRoAJo06cSbVOCtdRO9nfcST6Dgq9iAY48aIA0vI6G/ug4LQtlHufce/H2Bv+CQTV
+ LMYX8/2Fy9350MZOFmduFsJ8/4L7/MjcjXAN/O/4gHIUGKkrRkLwhcaISk3kkbpTa0rL
+ 2zdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738552707; x=1739157507;
+ d=1e100.net; s=20230601; t=1738552708; x=1739157508;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SAfl37xDnFz/0zdZPRXfsa8UPn/22lXCD6HUC3zbL6A=;
- b=idEw9m9sl/C7uzS/2d8kzi4+++AKEfhGOLUUzjqI+2F4spXUiKhUb9ZXFMaiDJShxq
- rsbCt2s1vqPOAALQGiFE6+iNVfUcsDTwI4MNEmTs4BUlh2NEY/NvVLugbS5ykJd7m5lc
- rvVzonhFUh8U8z9f3E1N/kWsAweBgv4CsnepKAWr+JjfKSAkXpcVcggEykD5yWr+1znt
- X3XakTEoGpi0PmRQSxBf7TuhMjNKwO5ieNjTBTnF3ylKUwIIYDxNj5BA/75BMRh/1V1j
- ru65Fiw8+yLGvwa7FK9bnoPUwc3LqNOho5LraIyFaAro1P8kK8nxlGOWamoOp7eNLybF
- ViGA==
-X-Gm-Message-State: AOJu0YxJj90eHm9RTrUPP3VMeK/FfFY3FW7rkPYAZI2eymSnb/XhI4yc
- 9eRZ+ET1h84bYK4fiCVIu+jGahA7yiF/f5v4Ff+y5j1mAQgOyPtdJb+XHQBZMi44vO3qWqaX/88
- P
-X-Gm-Gg: ASbGncsFwedZSDBdDh08UdWjBm2HT5cuAjaJxMATEUsvzKZ/SZ7+CExNZaxKylfZavc
- G63Xnh6/8DSk4LcmHIlNrvXxQNZb5sl2zFVVmph7O31L10YQYmN0rAc/qww3ciRJh+BCecosyT9
- huc4zjEEI7zlJzbtKC0zyObPttyzx6eOFWo8ebpPAXIvS8BDmevVXlSs7Yz5y/1UzcF28Da/L+D
- b5++DgxQXZUQn9tnDtZ1tEC3YxnGqEiw4L+5CghTT+3fXfS4fIDFdd8X30AlDnOgE0HQJnOpNJU
- F2aSSE5ONkBPmi0XyKaQP7OgmU2+OGujWQTz//2xASRsHUM=
-X-Google-Smtp-Source: AGHT+IFsT0lMqaFvXVFpixRqd7sjOpA62/A3rL7CCzuBFLS44z0F85UL5uxYuqRd0VGggYuVKlBCdQ==
-X-Received: by 2002:a17:903:947:b0:212:4c82:e3d4 with SMTP id
- d9443c01a7336-21dd7df2d2cmr329309785ad.46.1738552707343; 
- Sun, 02 Feb 2025 19:18:27 -0800 (PST)
+ bh=buZLA0qUirjW027SjrYQXL+U33fLGsXttbSr8L05NfY=;
+ b=Gf788noqWNNPmLYBG5RiUeCLveauC0rt0vAHk6p9OdyOUodUaFh2yP69AjU7MVa0On
+ VZL52I+Wsn8RW8PKND3v13JMmRjLzvwLWmjLqDU+DMsxZqUsGZKYgcxiZLdn1ILYd/Xz
+ SfUeiMVufkedJ8yhsvfNX1gAaqFm/+oHE9VbYbjY+w1cKdA2oNV+DZLvUIrd9xLwmv9H
+ WXR1EUSrbkS91nv0U92s7l10DLNEwk8L+Orf8qWLSzOKagBmaXtg57MP9ChV4rVYUZ5E
+ HNgfopz8/47SzTrTK08WiafdBCfAMAbho76uZxy7Itho79629PDDbtIzMcSficWXDOB/
+ q0EQ==
+X-Gm-Message-State: AOJu0YxUDmlcj2bTgA/ogniM4o0IVEIvzqn1khJ/sKOzM+Ih6FvnnIEg
+ R2cbNNN8HbsIL0T69kMTTahF5JjiZtweUiM5aD/1CfW4E1qEcuYexga6NWNbOAWgzT+e1zLnneY
+ N
+X-Gm-Gg: ASbGncvBXqFwVET4ckpDYTAG0hFxNmfWYUlCDeWMwRsAgLJFQnsy7Eg6y/oG5S0t9sm
+ o9RAnr2lhxWmSkrJ6kYGFkqWnA7FC0xVMSjqceWMqAdRc3PJU/j7dY/CjHPa6GATBXWyZJDrbVf
+ DxXxNddzXgVKtmC5BOYKUcHfbKBMBTR3KuW8faONwrcI0fLD7tJjPsHhx8L+v8+IsDeoJHtK2Rd
+ fu5rU/lkCPa8a1U8zXmD7y5En8ehbVtoUQ6EvoIIzQJaMGswnswPg1KL5Y6PU4yVrpPUWYk1OUA
+ qY2z7YKfgvYI0kXUZa8bLOaB5S51f5JES59t9bmLDcNd7MU=
+X-Google-Smtp-Source: AGHT+IGH205mypJ3s4gJ21UF+h+paxy8MOrVm10Pak8SvfGnhZEuQVM06uElNyBD2B7tvluwXi2EPQ==
+X-Received: by 2002:a17:903:228d:b0:215:6e01:ad07 with SMTP id
+ d9443c01a7336-21dd7c4e402mr280122615ad.6.1738552708128; 
+ Sun, 02 Feb 2025 19:18:28 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21de32eb419sm65698135ad.145.2025.02.02.19.18.26
+ d9443c01a7336-21de32eb419sm65698135ad.145.2025.02.02.19.18.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 02 Feb 2025 19:18:27 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
  philmd@linaro.org, thuth@redhat.com
-Subject: [PATCH v2 05/14] tcg: Link only when required in system mode
-Date: Sun,  2 Feb 2025 19:18:12 -0800
-Message-ID: <20250203031821.741477-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 06/14] plugins: Link only when required in system mode
+Date: Sun,  2 Feb 2025 19:18:13 -0800
+Message-ID: <20250203031821.741477-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250203031821.741477-1-richard.henderson@linaro.org>
 References: <20250203031821.741477-1-richard.henderson@linaro.org>
@@ -98,29 +98,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than unconditional linkage via system_ss, conditinally
-include the static library via specific_ss.  This will elide
-the code when CONFIG_TCG is disabled for a specific target.
+Provide out-of-line versions of some of the qemu/plugin.h API.
+These will be referenced with --enable-plugin, but CONFIG_TCG
+is disabled for a specific target.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/meson.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ plugins/stubs.c     | 49 +++++++++++++++++++++++++++++++++++++++++++++
+ plugins/meson.build |  5 ++++-
+ 2 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 plugins/stubs.c
 
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 2977df5862..8266bcb324 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -49,4 +49,8 @@ libtcg_system = static_library('tcg_system',
- 
- tcg_system = declare_dependency(objects: libtcg_system.extract_all_objects(recursive: false),
-                                 dependencies: tcg_ss.dependencies())
--system_ss.add(tcg_system)
+diff --git a/plugins/stubs.c b/plugins/stubs.c
+new file mode 100644
+index 0000000000..57af8357e4
+--- /dev/null
++++ b/plugins/stubs.c
+@@ -0,0 +1,49 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Stubs for when CONFIG_PLUGIN is enabled generally, but
++ * CONFIG_TCG_TARGET is disabled for a specific target.
++ * This will only be the case for 64-bit guests on 32-bit hosts
++ * when an alternate accelerator is enabled.
++ */
 +
-+specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: tcg_system)
-+if host_os == 'linux'
-+  specific_ss.add(when: 'CONFIG_TCG', if_false: files('perf-stubs.c'))
-+endif
++#include "qemu/osdep.h"
++#include "qemu/plugin.h"
++#include "qapi/error.h"
++
++
++void qemu_plugin_add_opts(void)
++{
++}
++
++void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head)
++{
++    error_report("plugin interface not enabled in this build");
++    exit(1);
++}
++
++int qemu_plugin_load_list(QemuPluginList *head, Error **errp)
++{
++    return 0;
++}
++
++void qemu_plugin_vcpu_init_hook(CPUState *cpu)
++{
++}
++
++void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
++{
++}
++
++void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
++{
++}
++
++void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
++{
++}
++
++CPUPluginState *qemu_plugin_create_vcpu_state(void)
++{
++    /* Protected by tcg_enabled() */
++    g_assert_not_reached();
++}
+diff --git a/plugins/meson.build b/plugins/meson.build
+index d60be2a4d6..42442fe22b 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -57,8 +57,11 @@ if host_os == 'windows'
+     command: dlltool_cmd
+   )
+ endif
+-specific_ss.add(files(
++
++specific_ss.add(when: 'CONFIG_TCG', if_true: files(
+   'loader.c',
+   'core.c',
+   'api.c',
++), if_false: files(
++  'stubs.c'
+ ))
 -- 
 2.43.0
 
