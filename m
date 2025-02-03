@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158AAA251A8
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0C6A251B1
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 04:19:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1temyo-00081h-QL; Sun, 02 Feb 2025 22:18:34 -0500
+	id 1temyp-00082D-HW; Sun, 02 Feb 2025 22:18:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temyl-0007zm-QW
- for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:31 -0500
+ id 1temyl-0007zy-Vi
+ for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:32 -0500
 Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1temyk-0002f8-5o
+ id 1temyk-0002fQ-5x
  for qemu-devel@nongnu.org; Sun, 02 Feb 2025 22:18:31 -0500
 Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-21ddb406f32so59669465ad.2
+ d9443c01a7336-2162c0f6a39so84940305ad.0
  for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 19:18:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738552708; x=1739157508; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738552709; x=1739157509; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=buZLA0qUirjW027SjrYQXL+U33fLGsXttbSr8L05NfY=;
- b=hAwnu63hvTrfsKdkc82YuvY5OnZlD43RDjNbk8z/ThmGXW7qNcWkpk/pTv2mMy7ZwZ
- DibThNcgKK1nUvKCb3Mfu8kWKRbZyc8omP8u6VFYGZ4QeVjm+5MgjTZSIPeuPd9e5ABX
- n13BJ3jVSWSTA8e+npksjPxVjed/pl58iFgGeMkWgyawMYIfTGy9uAzIdA1XCbjKR8nZ
- lwuvRoAJo06cSbVOCtdRO9nfcST6Dgq9iAY48aIA0vI6G/ug4LQtlHufce/H2Bv+CQTV
- LMYX8/2Fy9350MZOFmduFsJ8/4L7/MjcjXAN/O/4gHIUGKkrRkLwhcaISk3kkbpTa0rL
- 2zdw==
+ bh=iJ8koAp3lno99JhZwLI7fXS72dpOl8VJ910HFJ9faM0=;
+ b=ztN2hvLRxbPbg1J5ywFfO6u3n66fz3EH/BfqBjLXltzehD9V3psy+0R4VEq+OE0w3G
+ XOv22ktIM09VfzfEnZktRXpCYk1yp1FmuIRZ+cj49qvXiV5ViTE/z0mgJu6D0GEqQRju
+ TGudgEjeWKpCcu/viGrFra3GhOf5CozB+GJonRAkksyLa02N81AvmtaaNK4C+N/ZBlfX
+ u1E2+MNqg83HAumTKOeXeM8FFSIUqcSseCw6uzLJRatpok5qXTLSX9ZFBqelZu64f1Nn
+ 9VYuadvT7cGQAz9zm+G+N/S1OOb0H4+VC6gD6aLoREihMCr7DwPiDzrv9sg4kW86JXyR
+ XO0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738552708; x=1739157508;
+ d=1e100.net; s=20230601; t=1738552709; x=1739157509;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=buZLA0qUirjW027SjrYQXL+U33fLGsXttbSr8L05NfY=;
- b=Gf788noqWNNPmLYBG5RiUeCLveauC0rt0vAHk6p9OdyOUodUaFh2yP69AjU7MVa0On
- VZL52I+Wsn8RW8PKND3v13JMmRjLzvwLWmjLqDU+DMsxZqUsGZKYgcxiZLdn1ILYd/Xz
- SfUeiMVufkedJ8yhsvfNX1gAaqFm/+oHE9VbYbjY+w1cKdA2oNV+DZLvUIrd9xLwmv9H
- WXR1EUSrbkS91nv0U92s7l10DLNEwk8L+Orf8qWLSzOKagBmaXtg57MP9ChV4rVYUZ5E
- HNgfopz8/47SzTrTK08WiafdBCfAMAbho76uZxy7Itho79629PDDbtIzMcSficWXDOB/
- q0EQ==
-X-Gm-Message-State: AOJu0YxUDmlcj2bTgA/ogniM4o0IVEIvzqn1khJ/sKOzM+Ih6FvnnIEg
- R2cbNNN8HbsIL0T69kMTTahF5JjiZtweUiM5aD/1CfW4E1qEcuYexga6NWNbOAWgzT+e1zLnneY
- N
-X-Gm-Gg: ASbGncvBXqFwVET4ckpDYTAG0hFxNmfWYUlCDeWMwRsAgLJFQnsy7Eg6y/oG5S0t9sm
- o9RAnr2lhxWmSkrJ6kYGFkqWnA7FC0xVMSjqceWMqAdRc3PJU/j7dY/CjHPa6GATBXWyZJDrbVf
- DxXxNddzXgVKtmC5BOYKUcHfbKBMBTR3KuW8faONwrcI0fLD7tJjPsHhx8L+v8+IsDeoJHtK2Rd
- fu5rU/lkCPa8a1U8zXmD7y5En8ehbVtoUQ6EvoIIzQJaMGswnswPg1KL5Y6PU4yVrpPUWYk1OUA
- qY2z7YKfgvYI0kXUZa8bLOaB5S51f5JES59t9bmLDcNd7MU=
-X-Google-Smtp-Source: AGHT+IGH205mypJ3s4gJ21UF+h+paxy8MOrVm10Pak8SvfGnhZEuQVM06uElNyBD2B7tvluwXi2EPQ==
-X-Received: by 2002:a17:903:228d:b0:215:6e01:ad07 with SMTP id
- d9443c01a7336-21dd7c4e402mr280122615ad.6.1738552708128; 
+ bh=iJ8koAp3lno99JhZwLI7fXS72dpOl8VJ910HFJ9faM0=;
+ b=JaWFHlmD7rlS1XFMXpKwVOLRCEhnp3Gs3h3B8y6RhJbu2Usot8So/9D6+baLjB0B85
+ BP5JbxYQj86YWDJLhEJCGYcnrWG3CHNllKq4P0W2BsAU/iw18b82JnhYdu7/N5iPmzZI
+ gfHHzJSUjzlofn9tQzibJdj0wAPqFw6HXgzzR0gtNslaLyBPyJudAA1hZwxIeas/Wngv
+ rX9R1pWmQ3/b0enhgGWV3hNE0kVTJg3bXXwSEBSrOpqOVXS5Udz2LEPrQRFnxQhNlg6E
+ Esz3R/undYpsgVCYMHKkfhS2S7lbH+IQcH8KJK+f2vROop9lVHFofcz9lIRvlGsGLktb
+ PQUg==
+X-Gm-Message-State: AOJu0YyOA9kh/Qz5gUWPdgZBBEXSs5GY3CMa3FQWK8JDJ4tSz6AE/9xW
+ 16aep+wQ+uq2hXSQkNSgjI0tPzOzPmYBh7DX6a2r/Xl8RTaZyjzPzcL0qsGSDikGe+SM9h/I4e7
+ X
+X-Gm-Gg: ASbGncvC2bmShU+Iz5x6SpbE34fCf6ibq5RxrAqDMEC9qmRcRUl8DXqN0UPiU7RdXpP
+ pmB5ON866267g9hMorRvy7g0yuWLCvAL/SZarAs6NiM7BGV6MeCSC+ar3P7mMWQp8AROr7mTGy2
+ pXT+Tq00czr5gCzumb9dulI8QsYJ7oMU+0UP8ypIkBHhG8AP+xuQtvY5wsDyAehyxTudlrLNJyc
+ 88/WrJnCPuOaHMGihjk8WtX+CZGQXgmpBN8J5cfHm1G7anFFSCPHUlVG0ThICPPD+IUg0IIM2cD
+ U0JAl0y3CxbROmm8PCbHBpcFJtKoXRyV0KG1MqTsMq0jJBA=
+X-Google-Smtp-Source: AGHT+IHwf9cp3+t2xWKq9P92LcsAd5ZEPuO+jFTLjB8NDp/XH8TNdPiH7YNbD2isf2fynVf0th7r1A==
+X-Received: by 2002:a17:903:240c:b0:21a:87e8:3891 with SMTP id
+ d9443c01a7336-21edd7eba4fmr196981355ad.6.1738552708754; 
  Sun, 02 Feb 2025 19:18:28 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21de32eb419sm65698135ad.145.2025.02.02.19.18.27
+ d9443c01a7336-21de32eb419sm65698135ad.145.2025.02.02.19.18.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Feb 2025 19:18:27 -0800 (PST)
+ Sun, 02 Feb 2025 19:18:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
  philmd@linaro.org, thuth@redhat.com
-Subject: [PATCH v2 06/14] plugins: Link only when required in system mode
-Date: Sun,  2 Feb 2025 19:18:13 -0800
-Message-ID: <20250203031821.741477-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/14] accel/stubs: Expand stubs for TCG
+Date: Sun,  2 Feb 2025 19:18:14 -0800
+Message-ID: <20250203031821.741477-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250203031821.741477-1-richard.henderson@linaro.org>
 References: <20250203031821.741477-1-richard.henderson@linaro.org>
@@ -98,89 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide out-of-line versions of some of the qemu/plugin.h API.
-These will be referenced with --enable-plugin, but CONFIG_TCG
-is disabled for a specific target.
+Add tcg_allowed, qmp_x_query_jit, qmp_x_query_opcount.
+These are referenced when CONFIG_TCG is enabled globally,
+but not for a specific target.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- plugins/stubs.c     | 49 +++++++++++++++++++++++++++++++++++++++++++++
- plugins/meson.build |  5 ++++-
- 2 files changed, 53 insertions(+), 1 deletion(-)
- create mode 100644 plugins/stubs.c
+ accel/stubs/tcg-stub.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/plugins/stubs.c b/plugins/stubs.c
-new file mode 100644
-index 0000000000..57af8357e4
---- /dev/null
-+++ b/plugins/stubs.c
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Stubs for when CONFIG_PLUGIN is enabled generally, but
-+ * CONFIG_TCG_TARGET is disabled for a specific target.
-+ * This will only be the case for 64-bit guests on 32-bit hosts
-+ * when an alternate accelerator is enabled.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/plugin.h"
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index 7f4208fddf..9c2e2dc6e1 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -13,6 +13,18 @@
+ #include "qemu/osdep.h"
+ #include "exec/tb-flush.h"
+ #include "exec/exec-all.h"
 +#include "qapi/error.h"
 +
++/*
++ * This file *ought* to be built once and linked only when required.
++ * However, it is built per-target, which means qemu/osdep.h has already
++ * undef'ed CONFIG_TCG, which hides the auto-generated declaration.
++ */
++#define CONFIG_TCG
++#include "qapi/qapi-commands-machine.h"
 +
-+void qemu_plugin_add_opts(void)
++
++const bool tcg_allowed = false;
+ 
+ void tb_flush(CPUState *cpu)
+ {
+@@ -27,3 +39,15 @@ G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc)
+ {
+     g_assert_not_reached();
+ }
++
++HumanReadableText *qmp_x_query_jit(Error **errp)
 +{
++    error_setg(errp, "JIT information is only available with accel=tcg");
++    return NULL;
 +}
 +
-+void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head)
++HumanReadableText *qmp_x_query_opcount(Error **errp)
 +{
-+    error_report("plugin interface not enabled in this build");
-+    exit(1);
++    error_setg(errp, "Opcode count information is only available with accel=tcg");
++    return NULL;
 +}
-+
-+int qemu_plugin_load_list(QemuPluginList *head, Error **errp)
-+{
-+    return 0;
-+}
-+
-+void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-+{
-+}
-+
-+void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
-+{
-+}
-+
-+void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
-+{
-+}
-+
-+void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
-+{
-+}
-+
-+CPUPluginState *qemu_plugin_create_vcpu_state(void)
-+{
-+    /* Protected by tcg_enabled() */
-+    g_assert_not_reached();
-+}
-diff --git a/plugins/meson.build b/plugins/meson.build
-index d60be2a4d6..42442fe22b 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -57,8 +57,11 @@ if host_os == 'windows'
-     command: dlltool_cmd
-   )
- endif
--specific_ss.add(files(
-+
-+specific_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'loader.c',
-   'core.c',
-   'api.c',
-+), if_false: files(
-+  'stubs.c'
- ))
 -- 
 2.43.0
 
