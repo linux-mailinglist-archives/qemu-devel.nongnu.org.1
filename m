@@ -2,112 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB39A2520C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 06:34:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5924CA2521E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 06:44:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tep6D-0008Kt-0p; Mon, 03 Feb 2025 00:34:21 -0500
+	id 1tepEj-0004qJ-Ei; Mon, 03 Feb 2025 00:43:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tep3s-0006DU-PI
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 00:32:00 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tep3q-00079G-8M
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 00:31:56 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-219f8263ae0so70529595ad.0
- for <qemu-devel@nongnu.org>; Sun, 02 Feb 2025 21:31:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1738560712; x=1739165512;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zqx3EuVvg+YtifqQIKTiL0Yq5mCZ/UpbJfEaQOA2L0Y=;
- b=E6gmCPhTFo8Rl2Aj6k9T3n1XpaU46BV7XZLbGe82fLB0snChuJJRtqNu/NhwNwSKO8
- PwkM7sfbD3UiPUW3mMnzCGbROjUDSW+DudHqoxeLuYqPp1NY0LLylgGvh5H4zJnrH0hx
- 9Gg4h6NfqNSjZ7iQVz+fgL9IIVdgwYyTXHlFGTzGlsi/Mj2I/4R1JKy/cV2QjhG/E6g9
- +cx8bRJKeM1qmgiEWFXoAI9q3yJOX5WIXYiRSWBn/H9Gus57eN96VOHl+fVvJ1Ts77RL
- mSGzTt8uQP/gyg7QJtbkPTvWJWNvTccPH3XwzMlYFhI9GPBV7kE81bmTUvj1BfMb6mE5
- nIfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738560712; x=1739165512;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zqx3EuVvg+YtifqQIKTiL0Yq5mCZ/UpbJfEaQOA2L0Y=;
- b=SgXcYX7g8pNWqbD6uWDN34pM4hSZqIzEYUSxFaVyJy+Xi+mc1Bmw1IkZ1UaTvbcPou
- QVG23M24p3Le8vJDx1GAU3eJxlfWyfupoc+yqA8l9PMiQH2pwD2QUvIdHGeF9XU6J7iM
- QGJivJuDIJfwt9Cw8rFtBiHE/iBKrZMjPc/kAQ/XAEx80zqiL/SKKueF5EUjzbZb8tiO
- by12NHAUoymNA4n0kxwLiPquAm6lNLjGm1enpwRQq6Q8zN1bX8mCGUI1i5z0+q8tpWQe
- 21MATnOZ6ceV1b+vh4QVoGCj7rVtlwgV/gLZc2TYSQpPyUuagfOy7EqFigUdxMiV7Lku
- G12Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUMX+qAh+KCkGJS3AsaX7v1p2bnCxx3lEBjLlFQQQ2q3rFOdo818dG7OLsoi3cn5beWVybK1heTNSQb@nongnu.org
-X-Gm-Message-State: AOJu0YwnuVdlRbB1PS8hwbcepvF2yDVi+DeuMGAGhVJaMy2QU6UrLU6W
- zzzMH7zp2JzQprqqUjx2fwI67zYEEqZZQTwSqskR9SzEWSUj76nkDEMmTqhxEXI=
-X-Gm-Gg: ASbGncvobOhkr7oJPEEaDYK92kf6AvyNRHcHbxfC2Di6sIXiE0Scsg/rEN2TD26Uh2B
- rRUrstd8xu0+2l7B8S6XSXWkPF3ad7xfcRfB5J4YeCR4clHmArqwCOajO8rDc4UggBHbYPo7p5Z
- lKnp0Jac6+soqOe4LX1XWtgPWVtNioA93UKMFl2ZUM0Hi6anSUTcSaDVvffEBYoJ67IVnP7HdU5
- 8mRHi7QEQUHsSPOcETgExk08WntYQy2aHssBQ+Na3OtkBAuAVK1YVidpLyhBa+A8tH3bH52Ae2l
- K8JXkMj46Beol0M3e2PHXCJS66cS
-X-Google-Smtp-Source: AGHT+IHOYMeyoJqQlxdMp60VDHEklXDx5NJ7NhG09oNvbZzvHj7CCVi68ru/ypGnA8vKGm5GFsoaXQ==
-X-Received: by 2002:a05:6a00:180b:b0:72f:9f9e:5bc8 with SMTP id
- d2e1a72fcca58-72fd0c74655mr29902786b3a.22.1738560712099; 
- Sun, 02 Feb 2025 21:31:52 -0800 (PST)
-Received: from [157.82.207.107] ([157.82.207.107])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72fe642b218sm7621543b3a.57.2025.02.02.21.31.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Feb 2025 21:31:51 -0800 (PST)
-Message-ID: <0f88994f-1a93-4049-addc-a62e8ca49904@daynix.com>
-Date: Mon, 3 Feb 2025 14:31:44 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/8] docs/system: Expand the virtio-gpu documentation
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
- <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-References: <20250119220050.15167-1-dmitry.osipenko@collabora.com>
- <20250119220050.15167-9-dmitry.osipenko@collabora.com>
- <c2e1c362-5d02-488e-b849-d0b14781a60f@daynix.com>
- <87ikq9r7wj.fsf@draig.linaro.org>
- <171b1cd3-1077-438c-a27c-3b9b3ce25f0f@daynix.com>
- <ea866d19-90f6-4bb9-a3f6-f84b2ea2c457@collabora.com>
- <86dce86b-03bf-4abe-b825-1341e93eb88d@daynix.com>
- <920043a8-9294-4b40-8d8e-3611727e4cd2@collabora.com>
+ (Exim 4.90_1) (envelope-from <d.sharikhin@yadro.com>)
+ id 1tepEf-0004q0-KX; Mon, 03 Feb 2025 00:43:05 -0500
+Received: from mta-03.yadro.com ([89.207.88.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <d.sharikhin@yadro.com>)
+ id 1tepEc-0008I8-Na; Mon, 03 Feb 2025 00:43:05 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 6C75FE0006
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1738561376; bh=XR+Qgb5RdAafKA3ZcekGXNrej0cUluA6kYTYApuad9I=;
+ h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
+ b=m5y7gfcH1O/MyEJ8uc3wow5AkifRaKVgRK4dquXivTuRJAn37fzEle30jqDf5uGDy
+ WtdgKkxGQ/nGPqC1mIp1TQsCqz7XMPtwYFejU/nWLaYaFs0W2pCzZqLFVn+5/69hZC
+ ugMFfy2ciSwpuNwBKNRViMyvBgDfJ+vX7pxGR/X0dYL69pfSmwbxgadtk3T9IehtoQ
+ zbcDeQbO7PxhHbDE0yUvuV49Xfk6eLhoPBi15EUzCPPtdHNakbgVEiORcXA477YLdz
+ ZvaLUXdNpvHiD2XS2TTSs8RC+/cKPl3bEXv3WDaYpgCo3JLPGazLsGPSPqrFgTt5yz
+ oMj2lFZV0DzrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1738561376; bh=XR+Qgb5RdAafKA3ZcekGXNrej0cUluA6kYTYApuad9I=;
+ h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
+ b=JrMq9oPkO4snSSlQ65Ob246U+NRbqMwUpize4sHWTj8zbGsY1v3xpPd0WhvGnQpY2
+ 1t/58jMb4rqqoPZtT6MPLZMM0RLHCJ3YTESuKVvDgQGZLIltpMxCS3iJqlbER8qm2X
+ nNyWzkmnG0IRw7N8l5v3IxGMaVRUheEAjS9TAHoqlhZNwfo4SfGO1t7M8xAMcukK/a
+ PwEEVfGSmG6WYrgGN3AyTZytxpNJ/JRfasJL0vsy3rZlOiBWP/SRQiZkdYS53CVRoF
+ O3TqDE3+cNeLUKi1+Qo5wzlSlkT4DX29v7/bEINl3OksdRAcbzQVNinee1XeWm2Ml5
+ kiTpS6prsnMbA==
+From: Dmitriy Sharikhin <d.sharikhin@yadro.com>
+To: "sai.pavan.boddu@amd.com" <sai.pavan.boddu@amd.com>,
+ "edgar.iglesias@amd.com" <edgar.iglesias@amd.com>,
+ "francisco.iglesias@amd.com" <francisco.iglesias@amd.com>,
+ "shentey@gmail.com" <shentey@gmail.com>, "philmd@linaro.org"
+ <philmd@linaro.org>
+CC: "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
+ "alistair@alistair23.me" <alistair@alistair23.me>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "edgar.iglesias@gmail.com"
+ <edgar.iglesias@gmail.com>, "jcd@tribudubois.net" <jcd@tribudubois.net>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 20/21] hw/i2c: Import TCA6416 emulation from Xilinx
+Thread-Topic: [PATCH 20/21] hw/i2c: Import TCA6416 emulation from Xilinx
+Thread-Index: AQHbc2uGyayL9vQVLUO2O4IgflO+6LMyYrYAgAGufQCAANKYgA==
+Date: Mon, 3 Feb 2025 05:42:55 +0000
+Message-ID: <bfe7bca1df7d420266ec804d00a5352ef187c13c.camel@yadro.com>
+References: <20250120203748.4687-1-shentey@gmail.com>
+ <20250120203748.4687-21-shentey@gmail.com>
+ <df0ed59a-fe1b-44b0-a0cc-c62303294d7b@linaro.org>
+ <32A9B14A-A0F9-4768-A28F-80702FA93960@gmail.com>
+ <9d957453-5749-47c7-aad1-6977dac9aeea@linaro.org>
+In-Reply-To: <9d957453-5749-47c7-aad1-6977dac9aeea@linaro.org>
+Accept-Language: ru-RU, en-US
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <920043a8-9294-4b40-8d8e-3611727e4cd2@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <605BF31B22CB7C479F05972E077AFCC3@yadro.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Received-SPF: pass client-ip=89.207.88.253; envelope-from=d.sharikhin@yadro.com;
+ helo=mta-03.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,77 +92,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/02/03 7:08, Dmitry Osipenko wrote:
-> On 1/27/25 07:57, Akihiko Odaki wrote:
->> On 2025/01/27 3:06, Dmitry Osipenko wrote:
->>> On 1/21/25 07:26, Akihiko Odaki wrote:
->>> ...
->>>>>> I feel the dependency information for virglrenderer and Mesa are more
->>>>>> suited for the Mesa documentation as they are not specific to QEMU and
->>>>>> potentially useful also for e.g., libkrun and crosvm.
->>>>>
->>>>> I think while everything is in so much flux it doesn't hurt to include
->>>>> in our docs. I don't know if mesa currently has a dedicated page for
->>>>> GPU
->>>>> virtualisation.
->>>>
->>>> Mesa has pages for VirGL and Venus, which can be linked from the
->>>> respective parts of this documentation. gfxstream is not documented but
->>>> I think most people will use it only for Android anyway. A documentation
->>>> for DRM native context will be a nice addition for Mesa. I will not
->>>> object if you put this information to QEMU documentation though.
->>>
->>> Adding native context doc to Mesa indeed will be a good move, as well as
->>> adding links to the Mesa virgl/venus pages in QEMU.
->>>
->>> RE requirements documentation, it's also a valid point that stuff like
->>> build flags should belong to the relevant projects. On the other hand,
->>> it's a common headache for a newcoming people to figure everything out
->>> from scratch and having more centralized documentation helps. The build
->>> requirements aren't cleanly documented anywhere AFAICT, and the
->>> requirements also differ based on VMM. I'll update and keep this patch
->>> in v6, the requirements info should stay actual for a next couple years
->>> IMO. Let's discuss it further in v6 if more objections will arise.
->>>
->>
->> I think it's fine to require one click to reach the relevant documentation.
->>
->> How do the requirements described here vary with VMM?
-> 
-> Requirements don't vary much. For example virglrenderer minigbm support
-> is mandatory for crosvm, while for QEMU it's not.
-
-Is that true? It seems that virglrenderer uses builds without minigbm 
-support to run tests on GitLab CI.
-
-Anyway, if there is any variance in the build procedure, that may 
-justify having a separate build instruction in QEMU tree to avoid 
-confusion. Otherwise, it's better to have a documentation shared with 
-other VMMs.
-
-> 
->> I'm not entirely sure the documentation will stay as is for that long.
->> The requirements of Intel native context refer to merge requests that
->> can be merged sooner or later. Asahi may need more updates if you
->> document it too because its DRM ABI is still unstable.
-> 
-> The unstable parts of course will need to be updated sooner, but the
-> stable should be solid for years. I expect that about a year later
-> requirements will need to be revisited.
-> 
-
-It will be some burden in the future. Now you are adding this 
-documentation just for QEMU, but crosvm and libkrun may gain similar 
-documentation. The DRM native context support for Intel and Asahi is in 
-development, and I guess nvk will support it someday.
-
-So, a very rough estimation of future documentation updates will be:
-(number of VMMs) * (number of DRM native contexts in development)
-= 3 * 3
-= 9
-
-That's manageable but suboptimal.
-
-Regards,
-Akihiko Odaki
+QXQgU3VuLCAwMi8wMi8yMDI1IGF0IDE4OjA5ICswMTAwLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTD
+qSB3cml0ZXM6DQo+IE5vIGNsdWUgYWJvdXQgY29tcGF0aWJpbGl0eS4gSWYgeW91IHVuZm9ydHVu
+YXRlbHkgbmVlZCB0byBhZGQgaXQsDQo+IHRoZW4gcGxlYXNlIGFkZHJlc3MgbXkgY29tbWVudHMg
+aW4gdGhlIG5leHQgdmVyc2lvbi4NClRDQTY0MTYgaXMgX3dheV8gbW9yZSBjb21wbGV4IGRldmlj
+ZSB0aGFuIFBDRjg1NzQuIEJhc2ljYWxseSBQQ0Y4NTc0IGlzDQpzaGlmdCByZWdpc3RlciBkaXJl
+Y3RseSBjb25uZWN0ZWQgdG8gSU8gbGluZXMsIHdoaWxlIFRDQTY0MTYgaXMgbW9yZSBsaWtlDQpm
+dWxseS1mbGVkZ2VkIEdQSU8gY29udHJvbGxlciB3aXRoIG91dHB1dCBkaXJlY3Rpb24sIGRyaXZl
+IHN0cmVuZ3RoLCBpbnRlcnJ1cHQNCm1hc2sgY29uZmlndXJhdGlvbiBldGMgZXRjLg0KDQpJbiBM
+aW51eCBrZXJuZWwgdGhlc2UgZGV2aWNlcyBhcmUgaGFuZGxlZCBieSBmYW1pbHktY29tcGF0aWJs
+ZSBkcml2ZXINCiAgIGRyaXZlcnMvZ3Bpby9ncGlvLXBjYTk1M3guYw0KQ2xvc2VzdCB0aGluZ3Mg
+YnkgaW1wbGVtZW50YXRpb24gaW4gUUVNVSBzb3VyY2UgdHJlZSBhcmUNCiAgIGh3L2dwaW8vcGNh
+OTU1Mi5jIGFuZA0KICAgaHcvZ3Bpby9wY2E5NTU0LmMNCkhvd2V2ZXIgdGhleSBhcmUgTk9UIHJl
+Z2lzdGVyLWNvbXBhdGlibGUgd2l0aCBwY2E5NTN4LiBJIHN1cHBvc2UsIGJlc3QNCmRlY2lzaW9u
+IHdvdWxkIGJlIG5ldyBkcml2ZXIgZm9yIFRDQTY0MTYgd2hpY2ggZXZlbnR1YWxseSBzaG91bGQg
+c3VwcG9ydCB3aG9sZQ0KcGNhOTUzeCBmYW1pbHkgb2YgSTJDIEdQSU8gZXhwYW5kZXJzLg0KDQpC
+ZXN0IHJlZ2FyZHMsDQpEbWl0cmlpDQo=
 
