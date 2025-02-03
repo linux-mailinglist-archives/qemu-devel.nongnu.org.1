@@ -2,99 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBC6A25D57
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5863EA25D31
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:46:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1texlT-0000tX-8i; Mon, 03 Feb 2025 09:49:31 -0500
+	id 1texiD-0005aQ-5p; Mon, 03 Feb 2025 09:46:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1texlK-0000pJ-Su
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:49:23 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1texhT-0004so-33
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:45:24 -0500
+Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1texlH-0003HG-Nx
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:49:22 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-aaf0f1adef8so856059066b.3
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 06:49:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1texhQ-000328-US
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:45:22 -0500
+Received: by mail-yb1-xb30.google.com with SMTP id
+ 3f1490d57ef6-e5afeb2acecso880573276.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 06:45:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738594148; x=1739198948; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1738593919; x=1739198719; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nWETF7v5SQvqoJsQUou+WYUPWgAQpGGIidnYpzh2j4Q=;
- b=HNSm6bRdHGDDFxqkp3PlHuInutEPWBEk2K1Hfw+WbHURBlxDRcrnH+3RzDPKWdHb1F
- yWyZU5X/+R1SE65AsZQdIMvQYPJezx4R/3YkrZTl/fKVbX9KbeE3sLmie6ywPjtW27g8
- uFE9TRtiGIKGKj5GpOvoN1uPXwYrFBO5rYqPsj4IKAC1Tmp4xonvbQKgBWSW2K8VjBpy
- XZU+tKVV90FGp1s/Hb+jaf7b8+/l5IAACDaZGXWRpG8vlKuSg5SJ92tWdNvEI0pCJ3Uk
- kE6o1OHLBfjC+zMA1RwB6IwKXWoF+IPCSoJVQBa1j5+lWSU+jS1I5I7aYaG89WOeEwQI
- 1iQA==
+ bh=wRQby+/AMmtw/cfXqrX1L291GtS4VEHF49TlvBYGG8w=;
+ b=ZSY7K040iYlxniqNDu9F0l0aX1kiF8gAuN3LVarejXnhph5DRSd0I+wpw/IufdAQaD
+ u6NLHhJOXrsj1OxsUeAmUf7sa0j0IoOKsfzDUvHY16HEXgzxZ2ocqsIdeFvCceS2kQGB
+ h3nr0kww69DO+bdGvlCKZPpvy+LuIca/IEhlr7ciNxts+63jpumnS4sNMpbN7/1frD8l
+ 8RuuX4nn2c7Q01azGuVnlWqhpjtwUG8gNh4URJ6W7dojSlOQWD/8WXcNkQDr2psHsftv
+ LYV7IPtRXUTQtWgGqUQQ5rwmwmWIkn6V6xU4CG1y7DpNKErPin6typW5RiDQ/XvHksgH
+ bXbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738594148; x=1739198948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1738593919; x=1739198719;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nWETF7v5SQvqoJsQUou+WYUPWgAQpGGIidnYpzh2j4Q=;
- b=PfTxAW/WWzRUOrwnhcQ0BPXMIgncCGPWqc99Y1tVp2oVSaMwn6x++jUscuwPee/ItO
- 6p2CrLV/SpHjq6Eo7GyC3dcX6Oewf8flXa5Vcu1qbFVZiRYOrpK5CHavyiJYligrozl2
- SNK2MqvrboNggiUge4qQflY1c8TqYRdsGL4rU9sYGIQEczKsPsA9XBKgM9wGRoDA84nI
- 2ClTtaZDNi8U3HKlZBzY8fFgriwSik1Sq1qkbBnk7enk+l5l3efGLhhR4znJne91IWvF
- Kr0hSuAjJHqmiYhK4hwJZiGcxq9G/9MmyDTzr1WoGok8oLnsAywxAnKYa2mtsJwRAf01
- HRGg==
-X-Gm-Message-State: AOJu0YzonstAYoB7Lh1SRr47HBks0ucSjMv6qpGKUJJYxn9LGCTGbPfV
- LSZBlAuY62Ka0yn7pCZ10pwfeTbS/DMdZlPZP4uqeB6Z89v2fbE2ZcZiA1edGQY=
-X-Gm-Gg: ASbGncsjw5S1rF4WeZJLxihQBHixOUArTBi+fmgZcOym3e5vnto2wD4pZOs2mXhe3i7
- OHufkrpmV2WAL6xgWPh88EtYU0pkgbOJ3qnT9vBtR0LwkE99gzdmITnCdsHsAdk8MoQUgBZT6O5
- fhLSThNF3vwHYEJbwyFCauCcBl2WlGvMqsTuTETkGDO7yfRoGwkWYO5cCfSmL/V6AICKQbRaqDz
- 0R8lyxgxKsLOopaySWWiA+y0kYaEaonY6yymCGa2nFwjmptVr6ULsbc2aNScyYd0j/7RUXEawWm
- XLT8XAiuW7NvpbZmfw==
-X-Google-Smtp-Source: AGHT+IHCBJbspYBJtSHjAYclL3HRGFlq9TESmSXnRpqM9nfvkyXmc3bXADWs6SZLLMr4H9qJqw87bw==
-X-Received: by 2002:a17:907:6e92:b0:aae:8be7:ba07 with SMTP id
- a640c23a62f3a-ab6cfcdf5dfmr2398457766b.17.1738594147546; 
- Mon, 03 Feb 2025 06:49:07 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab7106178ccsm412435466b.9.2025.02.03.06.49.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Feb 2025 06:49:06 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8209F60F1B;
- Mon,  3 Feb 2025 14:40:50 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Hao Wu <wuhaotsh@google.com>, Peter Xu <peterx@redhat.com>,
- Warner Losh <imp@bsdimp.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Kyle Evans <kevans@freebsd.org>,
- Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-rust@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>,
- qemu-riscv@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 18/18] plugins: fix -Werror=maybe-uninitialized false-positive
-Date: Mon,  3 Feb 2025 14:40:48 +0000
-Message-Id: <20250203144048.2131117-19-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250203144048.2131117-1-alex.bennee@linaro.org>
-References: <20250203144048.2131117-1-alex.bennee@linaro.org>
+ bh=wRQby+/AMmtw/cfXqrX1L291GtS4VEHF49TlvBYGG8w=;
+ b=W3iReSzlic7rS1ZdorluafxnW9MzaE4PtIPRe2nyvqCHWKtQmT5c5bTNszWYnXCwsx
+ dznlIrgcl0BrWmUO3xpuFbRyo01nkT6O3ONWm+iFRVZK1XqhFlnZ8y7t6PQyZ4jJtRNe
+ SAHuDR6rKsELW0qzaO1mqlTsKVQUbZP3D0Ltgrl5FZZPQ6Gmiyvi1p8k8zcWG59r2SRe
+ RBkSKlPHSxMQLYzMe8MmdpEr2o76JppDwCR+YnSOOhR4YjnMvYWZayJBZJzkcxjM8Ota
+ Ji+JuQ4jAnyt2nnwH5G2JbSd8CFIaQTHcJ8FRHj0cPDpaIm/e/GjwGIPSScIRvPr7RAf
+ jmig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUHAIp+mC5o/BeKJt8gCzBeZ+RPn04kDGB4D1FG9jmyc+b0/hYTjfq2r7S2gA2duM1/LNZ7SolGp1eR@nongnu.org
+X-Gm-Message-State: AOJu0YzCT0T55ju26ZZiwkdsaGUFbtjNnPc6e5xIp1BP1J1F5uumut59
+ 0DZsbNPD3uhiA3QFhV2RfbCsXv0zlq2JZFlv9j1FPrdYTDikO28oaYQRikqnaNz6ptUO0Rjn3h1
+ LxfKtQMA6ogImC2COcdMKXEbtAyM+py8gy8ErXw==
+X-Gm-Gg: ASbGncuccocX6A3tWVVDMMtrVkEWQghbSYPIVNUWq2bMkhp2+NQMgpR4wiKRu+VD6fE
+ WmBys2fPdMLZp8wVxrQAMJfM1Kb6THxPXrDxsIBPzbVb5tr5WlQ0CX1BKe9nL6x4b9+ksewATpQ
+ ==
+X-Google-Smtp-Source: AGHT+IFaVV4uQcgTS6i69pIZpKQ17Zxnp+3d1624oclFGgWbbcJSVQB2qUm3ITxk3QIZOKBaR3ZLqN+FnFfRO//WQts=
+X-Received: by 2002:a25:dcd1:0:b0:e58:16b0:3798 with SMTP id
+ 3f1490d57ef6-e5ac89567ccmr10460254276.24.1738593917962; Mon, 03 Feb 2025
+ 06:45:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+References: <20250201091528.1177-1-philmd@linaro.org>
+ <90d87f0e-56a3-8966-614c-364f3e726d61@eik.bme.hu>
+ <CAFEAcA_mBXO20NhYRHJCgkB0h8uYQQhBMdwVW376R4u-qh51nA@mail.gmail.com>
+ <87ed0fayoy.fsf@draig.linaro.org> <Z6DTsdf35ApQ0qLU@redhat.com>
+In-Reply-To: <Z6DTsdf35ApQ0qLU@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 3 Feb 2025 14:45:06 +0000
+X-Gm-Features: AWEUYZmacHCS6PQYUkMX9OKHszLEzvKRz95YjA1VR1GyKmgnZeVAvxybu0jIWXw
+Message-ID: <CAFEAcA8Qigt1EBVgz1D4hon0x4ukLZbZ-jS_KB+ZBH0yi+QCXw@mail.gmail.com>
+Subject: Re: [PATCH 0/7] hw/arm/raspi4b: Add models with 4GB and 8GB of DRAM
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Jared Mauch <jared+home@puck.nether.net>,
+ qemu-arm@nongnu.org, devel@lists.libvirt.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,37 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Mon, 3 Feb 2025 at 14:33, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
+>
+> On Mon, Feb 03, 2025 at 02:29:49PM +0000, Alex Benn=C3=A9e wrote:
+> > Peter Maydell <peter.maydell@linaro.org> writes:
+> >
+> > > On Sat, 1 Feb 2025 at 12:57, BALATON Zoltan <balaton@eik.bme.hu> wrot=
+e:
+> > >>
+> > >> On Sat, 1 Feb 2025, Philippe Mathieu-Daud=C3=A9 wrote:
+> > >> > - Deprecate the 'raspi4b' machine name, renaming it as
+> > >> >  'raspi4b-1g' on 32-bit hosts, 'raspi4b-2g' otherwise.
+> > >> > - Add the 'raspi4b-4g' and 'raspi4b-8g' machines, with
+> > >> >  respectively 4GB and 8GB of DRAM.
+> > >>
+> > >> IMHO (meaning you can ignore it, just my opinion) if the only differ=
+ence
+> > >> is the memory size -machine raspi4b -memory 4g would be better user
+> > >> experience than having a lot of different machines.
+> > >
+> > > Yes, I think I agree. We have a way for users to specify
+> > > how much memory they want, and I think it makes more sense
+> > > to use that than to have lots of different machine types.
+> >
+> > I guess for the Pi we should validate the -memory supplied is on of the
+> > supported grid of devices rather than an arbitrary value?
+>
+> If the user wants to create a rpi4 with 6 GB RAM why should we stop
+> them ? It is their choice if they want to precisely replicate RAM
+> size from a physical model, or use something different when virtualized.
 
-../contrib/plugins/cache.c:638:9: error: ‘l2_cache’ may be used uninitialized [-Werror=maybe-uninitialized]
-  638 |         append_stats_line(rep, l1_dmem_accesses, l1_dmisses,
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The board revision code (reported to the guest via the emulated
+firmware interface) only supports reporting 256MB, 512MB,
+1GB, 2GB, 4GB or 8GB:
 
-Is a false-positive, since cores > 1, so the variable is set in the
-above loop.
+https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#new-s=
+tyle-revision-codes
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20250114104820.2613099-1-marcandre.lureau@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- contrib/plugins/cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+For Arm embedded boards we mostly tend to "restrict the user
+to what you can actually do", except for older boards where
+we tended not to write any kind of sanity checking on CPU
+type, memory size, etc.
 
-diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
-index 7baff86860..7cfd3df249 100644
---- a/contrib/plugins/cache.c
-+++ b/contrib/plugins/cache.c
-@@ -603,7 +603,7 @@ static int l2_cmp(gconstpointer a, gconstpointer b)
- static void log_stats(void)
- {
-     int i;
--    Cache *icache, *dcache, *l2_cache;
-+    Cache *icache, *dcache, *l2_cache = NULL;
- 
-     g_autoptr(GString) rep = g_string_new("core #, data accesses, data misses,"
-                                           " dmiss rate, insn accesses,"
--- 
-2.39.5
-
+thanks
+-- PMM
 
