@@ -2,73 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4B4A26247
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 19:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E713A26255
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 19:28:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf18g-0000Cm-Hi; Mon, 03 Feb 2025 13:25:42 -0500
+	id 1tf1AO-00016e-07; Mon, 03 Feb 2025 13:27:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tf18e-0000CZ-Ov
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 13:25:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tf1A2-0000zA-Bx
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 13:27:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tf18d-0002gu-2c
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 13:25:40 -0500
+ id 1tf1A0-0002im-V8
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 13:27:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738607138;
+ s=mimecast20190719; t=1738607223;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=BS/Q0ZdKhb7DQBuLQ0lPhPYEBdD4j/lRFkaiKI0P1zE=;
- b=hJU/41C/w6UsU4LSe3lpRdpUHFlCnEGMB71SuGrJOhImeYpCum1VvXffItJSIWOi8sKEJT
- Yp1Bq6Lkw1nyQ/ACH8ccu6kxkLlN9vDa2iO/AFIOf8iU5q7pHj0b8Fud6NJCZKa9IctQIv
- 4Le9zLhA9YxhAHrAVbNHwDgjoePU/ec=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=oq64Ig4Gvc2/8hK+c/HYV0j4i0y/I+sBahsIe9f0NN0=;
+ b=ibY3UKBdIA4Jt+obRxKo491zKSV3H7UUYd34Ak9VewI1E0WiC0g5GWMaDt2A/OHDdJfcrx
+ bH1XJWoC7ZEC1NnHOjO3xVC1nYGYmt9bbcnukonOrJ6iZWQnjfxOn4/PSpkMpS37rACz7B
+ BMPu8bQtTX0MSGXePCAHsXpi48bTa7I=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-B6pSK3PrOLeHynO3Lw476A-1; Mon,
- 03 Feb 2025 13:25:34 -0500
-X-MC-Unique: B6pSK3PrOLeHynO3Lw476A-1
-X-Mimecast-MFC-AGG-ID: B6pSK3PrOLeHynO3Lw476A
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-m-ZWbgoZPTa5_mcmopwZRw-1; Mon,
+ 03 Feb 2025 13:27:00 -0500
+X-MC-Unique: m-ZWbgoZPTa5_mcmopwZRw-1
+X-Mimecast-MFC-AGG-ID: m-ZWbgoZPTa5_mcmopwZRw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 258601956055; Mon,  3 Feb 2025 18:25:32 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 10EB4183047D; Mon,  3 Feb 2025 18:26:55 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.131])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 84D611956095; Mon,  3 Feb 2025 18:25:30 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 729EC1977024; Mon,  3 Feb 2025 18:26:53 +0000 (UTC)
+Date: Mon, 3 Feb 2025 13:26:52 -0500
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: <qemu-block@nongnu.org>,
-	qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Wen Congyang <wencongyang2@huawei.com>,
- John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Xie Changlong <xiechanglong.d@gmail.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH] block: remove unused BLOCK_OP_TYPE_DATAPLANE
-Date: Mon,  3 Feb 2025 13:25:29 -0500
-Message-ID: <20250203182529.269066-1-stefanha@redhat.com>
+To: nirsof@gmail.com
+Cc: qemu-devel@nongnu.org
+Subject: qemu-iotests 302 failing
+Message-ID: <20250203182652.GA268514@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="6cCcwyW2l+2BC5gH"
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,106 +79,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BLOCK_OP_TYPE_DATAPLANE prevents BlockDriverState from being used by
-virtio-blk/virtio-scsi with IOThread. Commit b112a65c52aa ("block:
-declare blockjobs and dataplane friends!") eliminated the main reason
-for this blocker in 2014.
 
-Nowadays the block layer supports I/O from multiple AioContexts, so
-there is even less reason to block IOThread users. Any legitimate
-reasons related to interference would probably also apply to
-non-IOThread users.
+--6cCcwyW2l+2BC5gH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The only remaining users are bdrv_op_unblock(BLOCK_OP_TYPE_DATAPLANE)
-calls after bdrv_op_block_all(). If we remove BLOCK_OP_TYPE_DATAPLANE
-their behavior doesn't change.
+Hi Nir,
+qemu-iotests 302 is failing:
 
-Existing bdrv_op_block_all() callers that don't explicitly unblock
-BLOCK_OP_TYPE_DATAPLANE seem to do so simply because no one bothered to
-rather than because it is necessary to keep BLOCK_OP_TYPE_DATAPLANE
-blocked.
+  $ git show
+  commit 6fccaa2fba391815308a746d68f7fa197bc93586
+  ...
+  $ python --version # on Fedora 41 x86_64
+  Python 3.13.1
+  $ tests/qemu-iotests/check -qcow2 302
+  302   fail       [13:16:45] [13:16:45]   0.5s   (last: 0.5s)  failed, exi=
+t status 1
+  --- /home/stefanha/qemu/tests/qemu-iotests/302.out
+  +++ /home/stefanha/qemu/scratch/qcow2-file-302/302.out.bad
+  @@ -32,5 +32,10 @@
+   Images are identical.
+ =20
+   Kill NBD server
+  -=3D=3D=3D OVA file contents =3D=3D=3D
+  -[{"name": "vm.ovf", "offset": 512, "size": 6}, {"name": "disk", "offset"=
+: 1536, "size": 393216}]
+  +Traceback (most recent call last):
+  +  File "/home/stefanha/qemu/tests/qemu-iotests/302", line 118, in <modul=
+e>
+  +    tar.addfile(disk)
+  +    ~~~~~~~~~~~^^^^^^
+  +  File "/usr/lib64/python3.13/tarfile.py", line 2262, in addfile
+  +    raise ValueError("fileobj not provided for non zero-size regular fil=
+e")
+  +ValueError: fileobj not provided for non zero-size regular file
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- include/block/block-common.h | 1 -
- block/replication.c          | 1 -
- blockjob.c                   | 2 --
- hw/block/virtio-blk.c        | 9 ---------
- hw/scsi/virtio-scsi.c        | 3 ---
- 5 files changed, 16 deletions(-)
+Any ideas?
 
-diff --git a/include/block/block-common.h b/include/block/block-common.h
-index 338fe5ff7a..2b0aae5bc9 100644
---- a/include/block/block-common.h
-+++ b/include/block/block-common.h
-@@ -355,7 +355,6 @@ typedef enum BlockOpType {
-     BLOCK_OP_TYPE_CHANGE,
-     BLOCK_OP_TYPE_COMMIT_SOURCE,
-     BLOCK_OP_TYPE_COMMIT_TARGET,
--    BLOCK_OP_TYPE_DATAPLANE,
-     BLOCK_OP_TYPE_DRIVE_DEL,
-     BLOCK_OP_TYPE_EJECT,
-     BLOCK_OP_TYPE_EXTERNAL_SNAPSHOT,
-diff --git a/block/replication.c b/block/replication.c
-index 2ce16f0589..d4d677a902 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -576,7 +576,6 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
-         }
-         bdrv_op_block_all(top_bs, s->blocker);
--        bdrv_op_unblock(top_bs, BLOCK_OP_TYPE_DATAPLANE, s->blocker);
- 
-         bdrv_graph_wrunlock();
- 
-diff --git a/blockjob.c b/blockjob.c
-index e94a840d7f..32007f31a9 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -539,8 +539,6 @@ void *block_job_create(const char *job_id, const BlockJobDriver *driver,
-         goto fail;
-     }
- 
--    bdrv_op_unblock(bs, BLOCK_OP_TYPE_DATAPLANE, job->blocker);
--
-     if (!block_job_set_speed(job, speed, errp)) {
-         goto fail;
-     }
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index e0acce89e1..a1829e3abd 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1562,15 +1562,6 @@ static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
-             error_setg(errp, "ioeventfd is required for iothread");
-             return false;
-         }
--
--        /*
--         * If ioeventfd is (re-)enabled while the guest is running there could
--         * be block jobs that can conflict.
--         */
--        if (blk_op_is_blocked(conf->conf.blk, BLOCK_OP_TYPE_DATAPLANE, errp)) {
--            error_prepend(errp, "cannot start virtio-blk ioeventfd: ");
--            return false;
--        }
-     }
- 
-     s->vq_aio_context = g_new(AioContext *, conf->num_queues);
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 23516995dc..7d094e1881 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -1065,9 +1065,6 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     int ret;
- 
-     if (s->ctx && !s->dataplane_fenced) {
--        if (blk_op_is_blocked(sd->conf.blk, BLOCK_OP_TYPE_DATAPLANE, errp)) {
--            return;
--        }
-         ret = blk_set_aio_context(sd->conf.blk, s->ctx, errp);
-         if (ret < 0) {
-             return;
--- 
-2.48.1
+Thanks,
+Stefan
+
+--6cCcwyW2l+2BC5gH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmehCmsACgkQnKSrs4Gr
+c8h5Fwf/W9KC0BqePzmZNEXF/EuHVXBVx6r3e+VOKWbhuA0t05tEbiGK4Wyb615V
+7///p1LNi4GDOZI3mMPd10gh+0qtTZSQ3dleB7jTzuG25dLfQAcOr49N8y2PxVVO
+Zn2eiaroh/ueAbmOVDgvcVODl2jrmFYmXsuXEa9zUdQ2PvT2/P1ERdYIfSE/nh8R
+lYonorKpb6yWpJXh2w/0YQI+MV5CxgM0WZOnvsk8xeFWpbcQijpMUKwuodc7FqVm
+PL5NreOoxMKlryAwcPoEswtec7/WHbQZM10FWAf3iXFQbVNHwdI/0G/xkl7IiXBF
+t01OmzkJvuZAfDhSTwGoVYYkF2k+JA==
+=GVrn
+-----END PGP SIGNATURE-----
+
+--6cCcwyW2l+2BC5gH--
 
 
