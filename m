@@ -2,208 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDBBA2668F
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 23:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4545CA266DD
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 23:40:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf4vD-0002AS-5G; Mon, 03 Feb 2025 17:28:03 -0500
+	id 1tf55U-00074n-Me; Mon, 03 Feb 2025 17:38:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tf4vA-000262-OT
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 17:28:00 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tf4v8-0002Ph-Dj
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 17:28:00 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513JMtKg001047;
- Mon, 3 Feb 2025 22:27:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=TH0v4OMyCvmBQC54YpD/3EZtZ37kAiY1bk+3qu81VP8=; b=
- SrcJl8IcGkHaAmh3svGNRzozBIEh/73CZ8CstoAEiAy+ORRsR/K38YaPCoIQru1g
- r9COdB73l7xkSeofpfTahJZ5eLKN4vEpa1rBnlzW/+XTRh7obJHXKwl5nOlXF2Kx
- MylZbO5BcupMCSAWkfzSeFlALDpsUvwx7E3GoJvS2bxOljN22CZvDiyS25CrvX20
- /2RsiSRaO6LrbH8EYveJdTE8I883Kec3upRmhGiB/kpoHDxcwjgTtav4kdi0ZDNa
- nSQRyts4+Hmyjj3Y8BI4mv4FxcpJR9d7+3GtWukA0msLHGoBwj/BDS7euBF54As0
- p+YDGtyzSWs0oRJ9bGzPSg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hhjtupmd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Feb 2025 22:27:54 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 513LiML7029909; Mon, 3 Feb 2025 22:27:53 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44j8p285sq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Feb 2025 22:27:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c9UOL0NIy2TCQYB9MjLBkRg0F5rvN15RrUouSJcqR3t+01vbW9ulH3RPPno20eo18jNLtanJMOcMVr2qtIqVHNvMIxUXeN22lMHYn0SepEmsSIOe8zc5/nMg4prxsFdziKSUD8Iswf72qHM0x3InkmRU7CM+cFFmO3wPmXqlw4e/wVmfvmz76p0FqDywcFH2B8lTYXzXJTgYnIYMTnkl8BnCIW/lUQy62lCY27WhwIW//T8L21DFu/gC6NWHuLJ3Lp2L56iFqVJjRiYSm1H3rP59kj7PpbCaznScIcaALlnR/zgaqc1nnX9vMddhf+qY/ULVHCPnjC7fWdAaYzAOwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TH0v4OMyCvmBQC54YpD/3EZtZ37kAiY1bk+3qu81VP8=;
- b=QZL5jG2g9uvzTJbTWz6TsF1obPG2ybPTUBJOlfeHz1C9IkyBu9wQnaO1dnlaBGa7teDjNnQSVmKHzsNp66VNcd6AIUOUK6C8Hre7tRJpbbg77rojeU6ZbKwwPvkCEcDN4QpGHkIhrDC3Ml1Z2tKNCYoJZCu/ZiBefn12JtBDqCJbbrofkR7Khw2JVdAaFdyR3Y6s73Pg+jeT45JwoDRFh4fRrtWLtCyPx4G9STvOc+CQYW/tFY/gq6dkRSPd54raSO9Q4h4LOhOXfpSz60BIL6l6maKYgcXAC4xWHqSu0eLzFmm/kKRMGsZUzFB8RuNfKNtgG0n4Z4DluHzYKxrveg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tf55C-00074P-1w; Mon, 03 Feb 2025 17:38:22 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tf55A-000411-1e; Mon, 03 Feb 2025 17:38:21 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4364a37a1d7so49616815e9.3; 
+ Mon, 03 Feb 2025 14:38:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TH0v4OMyCvmBQC54YpD/3EZtZ37kAiY1bk+3qu81VP8=;
- b=MqRVTExuiymhQ19KqgoNIUCtU9tuePyOvVkdK0u0pA4wttl+Ps+EL6vg6n5MoXhQPyaayKju0D4HmFvc8GrvNGXyDhzGIFuao4xj2NcQrzQQo730mSK6K373j9PGM0vkbCYkDTeae8mDokZmO9rmfZQzsh99TUSFZpm7ViBZL1w=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by PH7PR10MB6312.namprd10.prod.outlook.com (2603:10b6:510:1b3::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Mon, 3 Feb
- 2025 22:27:51 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.8398.025; Mon, 3 Feb 2025
- 22:27:51 +0000
-Message-ID: <5e3fd711-2875-4eaf-a3c6-2a94f7dea6b2@oracle.com>
-Date: Mon, 3 Feb 2025 17:27:46 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 06/26] vfio/container: preserve DMA mappings
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <1738161802-172631-1-git-send-email-steven.sistare@oracle.com>
- <1738161802-172631-7-git-send-email-steven.sistare@oracle.com>
- <d5ec094e-490d-4de4-ac3a-66b1bdae11e2@redhat.com>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <d5ec094e-490d-4de4-ac3a-66b1bdae11e2@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR11CA0096.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::37) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ d=gmail.com; s=20230601; t=1738622298; x=1739227098; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IAKLNEpDR6VD1VyCrD9gEMLtDw9+ZUPBORuPtT24fN0=;
+ b=Nj/XLXDFsHsIyZg9A+3r/2VDHfj0WtSUXCkE+7K4/0ss39b70oh//x1ZSg1m4FK9Mp
+ yB0DmQBanOpI3vN4NeRyhSqTX+Eugpnm2GZLrHFONZl3knzsueYVtG0kCxfUPNHv9jsr
+ C0ZrqucKu/1jzPvpdfqynMVgdNnBcrLleQMKCk1O3VugEN2lO7th0siA1CWhVW9V6ZWr
+ G+J4CUH+l6mNChMBBSK3nXS3aVWI0xng+OgQvvdWa9YsboNucIFZ2bCy0perDzeNBs+B
+ o5E37WlxNUvZEz9cbB9X1bCroZLnY9GsisrKkQFMR4DrT1tnezwRh+L115PIOWlNrWqr
+ Fc7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738622298; x=1739227098;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IAKLNEpDR6VD1VyCrD9gEMLtDw9+ZUPBORuPtT24fN0=;
+ b=w5SHD6WzQVOzbknIQJ4sK4XipPeRHiOM17SNoPLwg8ogjROQvluQEXnneZ7EZBXJKS
+ naIyy9nbx8FYxd05iuG4+hUgm/sPo5fve2JYkv7pxCxMqDEne8TYro0UaI79JaPK8DBi
+ 2z+iirgQYz+V3rLKqEmzx7BXqZwy705Fq1ZTe7UXerCnBHXjIMEykbPSLeHIPy9aRcZF
+ Yr5/N50YaeEqRtAVqcoVYXmVzFGcWXELz06BxvyGfggf3PHHRkDNRHu3NjIoi9nrt1eb
+ yD3pZegSKD7w3hUVVRSjJcCAo6Xyj4bACxPhEiUWaQYiYyg8eR/uUyfbkiIdhse2AzAm
+ fpwA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUzjopM2dOecADCOeAwy6VJl/qJm6bh+8OsIgEs2tadfADkSfZdp0+hIVoxtcNrRdP4zg0JkmxOfyJhJA==@nongnu.org,
+ AJvYcCX//RvYPni5piHJGLsXpaQtaGINzlI+5RNAhD3QgV1srrbwJqL/nNG4h4y46bG+CcsJFo+hYyLGUQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yw2ML5FxLyjYjvuB6AO8TNV34ATuEV62PAWitmmrkLFRNEgW+DW
+ CfgjX1aFneeEiaSiql40oqQdmAZELsWHAbPmNbPF2li0ZxPZFfe/
+X-Gm-Gg: ASbGncvxrv7ysNvhSj84Qvq7wqr7zJDdFhQ8fCXuC+aWZg5Cr7tf8ELNZIYwLXhowzF
+ mzZEQsX+78egcE4LPLPDHSaqu2J75wqBHkdX5pvDIFSdBS1q/ue38/mpa91mB98lWs97LXjE/Cq
+ GsnbqAfvHum/d41fHE04KxYwZJ4aBk3NiLDyaBjVkOu7c2EVp8TXLK3ownvEzSi501zh11ija2Q
+ 13v7OyEdUnvL47aVBIx9Dojh4hRSs477Urk5cFjR9wUWv3cE3/1H0Y6tm/5BrrvITRDDT+VZogs
+ ShAbDFunJQT2r+ohTQctwBH0O7ziYot8fY+/pvP5KE6C5B9IiIHE3drHCBKckui619U+m33+WQ=
+ =
+X-Google-Smtp-Source: AGHT+IEQOHqQ02etw0Uh7zEBEhJr+Pz5YKRBOc7FW+pApMvhOR0LZM8R5ChN3iWQCxbLCxyLpg7rNg==
+X-Received: by 2002:a05:600c:1c93:b0:435:9ed3:5698 with SMTP id
+ 5b1f17b1804b1-438dc41d1cbmr183241135e9.24.1738622297240; 
+ Mon, 03 Feb 2025 14:38:17 -0800 (PST)
+Received: from ?IPv6:::1?
+ (p200300faaf00430048cf2359cf0b0456.dip0.t-ipconnect.de.
+ [2003:fa:af00:4300:48cf:2359:cf0b:456])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38da1ac7297sm2903156f8f.38.2025.02.03.14.38.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Feb 2025 14:38:16 -0800 (PST)
+Date: Mon, 03 Feb 2025 22:38:13 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Dmitrii Sharikhin <d.sharikhin@yadro.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: Re: [PATCH 20/21] hw/i2c: Import TCA6416 emulation from Xilinx
+In-Reply-To: <9d957453-5749-47c7-aad1-6977dac9aeea@linaro.org>
+References: <20250120203748.4687-1-shentey@gmail.com>
+ <20250120203748.4687-21-shentey@gmail.com>
+ <df0ed59a-fe1b-44b0-a0cc-c62303294d7b@linaro.org>
+ <32A9B14A-A0F9-4768-A28F-80702FA93960@gmail.com>
+ <9d957453-5749-47c7-aad1-6977dac9aeea@linaro.org>
+Message-ID: <2DFC7DBA-A73C-4BF2-8DD1-B52BCA4FFED2@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|PH7PR10MB6312:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5fe25c47-682d-4eae-cc81-08dd44a1fedb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eHJzOWw2RW9FaENpS3UzcTk5ZXpTL3ZiYzlINHRpTW1oNG9qd0t2V3d5WFZD?=
- =?utf-8?B?cUpFdFpKMlRuZUQzcDNmSjF5M1BmT2ZQa0s3dzB5Y2ZMSEhYRGN1L2dBMXNV?=
- =?utf-8?B?cm9zUTdoTGpGTmZQV0hzTHhHNjJRd25DbVZqUk9ham5yajdkMHdkeGVib3Rn?=
- =?utf-8?B?S1ZIUSt4YzFBbGdJSmhUVmlxaE1wUHBxTUdZL0d5TkszaHZ6UUNKTXVaQk9n?=
- =?utf-8?B?cC9xbm5DV0x5VVU4TWNCTmFPQkQrdWhGT3pqYkZlOXUyazFzWGU3cXN4TnhM?=
- =?utf-8?B?S3cvcDlqNFRQQis1bzdmV3BmM0xRdW5DdGNqdTMzbDdaWGtDaXhacXNpRlRm?=
- =?utf-8?B?K3dVZ2NGdGtSRHhoSk14aEpPZXdQUStPdVkxdkRLOGJFYll0UzZaUXN2UEph?=
- =?utf-8?B?aEpJYk9ROFM5MXVNVVQ4TXpIYXluOTNFUWtHdTBlc1Q5aEpxeEdZdE9YLzl3?=
- =?utf-8?B?Z2ZqRUlFM2QwZXlxeGt0a3pnMTViLzB5cUh6eU9YTWNud1FmbHg5VUxmRnBr?=
- =?utf-8?B?bkQ3MHpHYW9RNk55aWlleHNYayswbHY4RmxKc0xhRFZTSGtYdnBNWnducTFm?=
- =?utf-8?B?ZWk4d3p6VEVsNjQ1dHBXTCtHSytaaFpteWRabit1bWxYeG9BUlN3UnJ5N2My?=
- =?utf-8?B?MXNQTlVVVGRwSzg3aVk4bldjbDFlNGF6UTR5S1U1V0QrcHJwN0JSa0tidWJZ?=
- =?utf-8?B?WjJhMXdhak9TT3B6Tmh4dEtvWDBCam8yalBDSlZ0dEI1RVU4eS9sWGE1cEhr?=
- =?utf-8?B?cmxBS1VReUcrQTk2M2dPVGlsd0t3UUFPUDFTU2MzdFpha2RXTjI4VTVob3E0?=
- =?utf-8?B?RDlGNG1KVVNSMU9PNUlZNTI5ME9sZ3lQYSs5ZUJ2ODNKRkhqNzR5ZjZiVEll?=
- =?utf-8?B?RXRsN2YyQ0RJdXBvWWpXaFBLalFjL3dRRjZuTjh1UmI4eUwzMVE0S1R6aVYw?=
- =?utf-8?B?dVR0SHdvUTN4cmpHL1ZkMCtyNkl6UTFWNXNvZ3hjYUhodmV0RHdHQ0ZsUXhu?=
- =?utf-8?B?V3Yvb1VtU2crTlhkUzBuM1JtTUtDTE9JSkFaK0ZJN2RqVmxLWFlXcnR1dHhB?=
- =?utf-8?B?RDlmUFdmWTZoVkp5UTFKZzJDSDRiajJkVFBSYVZNeXY4a1JlS0RDL0dpVFVI?=
- =?utf-8?B?bnI5NVJZcWNlanZtWUpNQzlMV3lpM21nUUR5RjdVUFhNaWJrVHEvQlo1b2dC?=
- =?utf-8?B?c2ora0ZvRmtjNis0WXprQmdHQ2ExSzdKNTB5cGVici83TnpueHpaM2tXRkNj?=
- =?utf-8?B?RmJ0U1UwSXVKODNzLzdnRkxRUnVBTVo4YlNtOXdzSXdjcFFNM2tuU3hRMzF6?=
- =?utf-8?B?SGxwUExVZkR4SmN3c1RWSkY0T2tNbDdINDJsLzc2RWZtcVBHV1RMUVZkOXFL?=
- =?utf-8?B?Ynl4QVl2dDdqR08yUWJpNjJ4ZlMvUjVHL0JaSXV6cTlYRndsWjhJRms5MU05?=
- =?utf-8?B?UFRPNmx3M1lLMkRJNUJHK2NxWkRQZENSdVViYUNlSGNtK3RsczJYUDhqUVMr?=
- =?utf-8?B?QUdBMDRsRUdhN2tVT1hDb3ZYZTBPaURvMnArUXJGL01VaWYveWpBODhFNTZG?=
- =?utf-8?B?WEg4Zlp2aTNuYlZ6OTVSSEpyY0xNZXhicnhYSnNzeEo0ekc2YkVFUDhnTUZQ?=
- =?utf-8?B?TU9wMkpyNGZhU0RUdm5hTWUwNS93N1hONndpOUVuR2xnai9FMWcyOUQ2OGxs?=
- =?utf-8?B?V2NwWnUwTUMrb1pjQjhBSmhjbUt0eXpodGJYYzc3L2kxUXRJTVRrTFdGTHR5?=
- =?utf-8?B?ck1OWkFMd3FrUVdZemxjaWVBa0tkWDR3R2w2UG81SDJ1UUVaVDh5d1FGbmV4?=
- =?utf-8?B?WUdtZ0R6MlRST0hkNzNldUEySjBKYlVYQk54dVp6a1FYcjdlT0M4NWVaNGwv?=
- =?utf-8?Q?eYRCQeGuu+G5c?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?czNXOGlrMWVrZzBRTytGenR5c3UxaSs0VkZqckFuVW1wYitRY0ZUTExIUWhM?=
- =?utf-8?B?UWZITUpsZVduQVUzUDNseGpVWUtzaTcvYlRsZGhDNjZUVUtKT0pQOUdiTm5R?=
- =?utf-8?B?OFVROGRTd2lta3Z4MmtuV1ZHcTV3UVFLQ0FvbmhlR0ZQWXRXWE5QZ0E2QlQ3?=
- =?utf-8?B?a3pXbzhIbVgrbkQ2M0oxSEc1ZDB2QlJXZXUrbk13TjVoY1YwZlBaam9GTjBm?=
- =?utf-8?B?bWFnQittazA4TWhEMUJjelErcVI3OFRZcWVUTjhnV09JVnc4Q1g3anhqZEdn?=
- =?utf-8?B?SFpnNC9ESklnMWpUV3ovMy9YQjFSSGlsb2lyTkdiUExad0NRTjIxYVZ3OEFO?=
- =?utf-8?B?Y01GVm5icHAvNUlkcFJNY2hqOEpWOTVzTE5CVjVGNHR0ZHpud2dmdGl0aE1N?=
- =?utf-8?B?OGh4aTBwZmx3T0pHWVMyU3BVdTBEVTU5eUtXclpBenczZ3RvZ2ozY2hwMTY2?=
- =?utf-8?B?T3htRlNDaWt6d01hZ2pYQjZ0K2lqZGxCZk9rQVp5cGRhUGZjNzhiRWZjcmU4?=
- =?utf-8?B?KytIQUhaWGlBeUhxY2NnR29xTEFvWWE2WVR3SzRKdTVHWkNiRmRydTUvSlhB?=
- =?utf-8?B?K2FZcTNjM29WclBJajM3TklyR3g1VlIzekNhNjdHMEJFMzYzVTJKZDZPdURI?=
- =?utf-8?B?L2dnamVoM2E2eWZuVzBSTXgzSTRnTlRLWUhBTzdzNFpxRUlPeTRtd0xxQUVu?=
- =?utf-8?B?ZHlKSnhCZDA2YlpFOU52RUhDTmxBNk8xR09EZjBZZkFsKzlUM24xa3ZwYUox?=
- =?utf-8?B?VEpxT2pWWVhjY2krWkttR1g1UlJQT1ZicEZmbEpXVUFMVmZwR3Z3dWMrLzd3?=
- =?utf-8?B?Sy9CZlBsZGExTnVrdldUa05rRHQxazd5ZzU5K1pTVURxUWFZM0RKL2VSNWdy?=
- =?utf-8?B?Q21zM2h1N0NxQ0tPNjlXQkZ4Z3UrSmJHMXBJUE9qOExlQ2RVa0E5ckVEM04v?=
- =?utf-8?B?Qkl2VndBbFprQUtmam1kVktyTkFnenl4RWNlNG5tT0Y1SE9zaXVZWDJ0LzRi?=
- =?utf-8?B?Y2tJdHZyZEtDeHQrT3RUYXJVaWFEUTNEQVlpMjBkVEptRFpUL0lLSzlTdzJi?=
- =?utf-8?B?dENKUzQ0bGtmWGdSOEprdUlZNzN1N25ZekpOTzIxemQ4dWtsRWUvM1FCeU9v?=
- =?utf-8?B?bjVrbW9XTW03TEthSUJ4Tmh5ZFVVZ21Bb2FCTmx4Z2tvNnNjYzNGenowOSth?=
- =?utf-8?B?ak9SS2NEWHNtbUYvc1dKdTUrRHhaZ2R3cCtObitlbHcrWm5DM1UxenBZYnlJ?=
- =?utf-8?B?WWljaG1QNmphbTk0U3QrSmE1aXAzNVl6ZzM2TlBXc0dLQTBpUWwyeWZQSkFM?=
- =?utf-8?B?WlI3QmFrUzRyR1RNYjdmdEVKbTRqRTBiNFkvQnlGTzNFcG1DN2h6M2oyalRE?=
- =?utf-8?B?SDVudERoSk5mUHFiYjg3TmtWRFhUcFI3Uk9hMFRzcXFsQWF1UkkwNDkyckRU?=
- =?utf-8?B?L0ZFaC8rNms0VXFVN2NId2dzSmVHeVV3YnlEVjhyc3ZhVmhpUGxvYVFNbENO?=
- =?utf-8?B?MXA0NFNLWDVQWW9WNFJ0aWsxbkt6TnBzUDhPa29vbmdISG9hVkIrK2ZkWXZH?=
- =?utf-8?B?WUJ6SVJJdFZmY1o4bXdZTWcycldRd3dnM1hHTWs3cDdpSlZJSW9WeE5mQyt6?=
- =?utf-8?B?cDVTT01NWUUvcHN3d3BVS2hYMXF0b0tDZkI1anUxKzdYbHJXK2RiN2hzazRs?=
- =?utf-8?B?OW81SGVqMkZsVHhTZEpWdEhkQmZuVnh2dlB0azRwLzNpRjRCTXlnYW16eFM3?=
- =?utf-8?B?NVBEbGx1Z1ZFaW1LN1k0RG9sMWtyY3I0SjRaUTJKNC91NjQ3bmI3L0FiYitM?=
- =?utf-8?B?Z3o1VjRDdkx1M1NoRW8yMm5SV2VSZ0Y0MUwxL2Rkek5peVY0ZXRBODF5dHNZ?=
- =?utf-8?B?aHhsWXlYZGdxdXZLVmx3N1c2Tk93RDdTbTVOYUJSNmZvUlVBWjU5cDZSYkcx?=
- =?utf-8?B?TTJjbWJIYW9mQnRHb0ZZYytGUFFJQXMrS1ozczRIUUZQQ3k0RHNLd2JPZkd2?=
- =?utf-8?B?dUxBTWNGSGl4c0NlRUVqc0ZMWmkwRGNCZ0daWUdzTm1WaE9CVkJud2FCUFNJ?=
- =?utf-8?B?MW1lYjJCODJ2cHo2YXZxbGJkT3VrU3VjRVNoK1cyQWlOdlcxWlIvUEY0bzh3?=
- =?utf-8?B?Nm5obzQ1c1FkSldWbzlxaXJKRTlMd0xVV3JrWGpDelBOOGpIc2t3eDcxVnhI?=
- =?utf-8?B?aWc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: YQ2M9afnBjvYekNlTVbYmL46h0fm0cAxJ3hRroEeH8ONe+ADrCKEmgnohCOk1CuOHt0siJW0pFcXToyF31eYFDBQl6LEJ3K7sQ99o8IbUbjJNdCH+zNm3ljqRiHnEzeovaCXyYYmZYlEp3V8GbnJ6pXjv9Soh2L1OtVo0u/XPRbX4rAQbmfMdPedfi+/dHzCTubznNDIkWkgAHdbBcZ+mI5v5TmDm8T17iyQPeYFGPe/769WhtoNcnB9ESS9BXrsZVRw7IAocpfna5fWxu+HseOdIvLzOPL5p90tCwkmonDfRBxlzJu8bgJkAM/qi0GLBbH6uJ/ieJd9bHEUrnwk/1CcKnabbzB3vEfcWmx5niNO8FT23Ry32b3YsKQpxSmrIO1GXtLSKUe4YK8DK3HmBa40c/v6nICPPhSmq9iKv2YGoyzP4ciG4On10AS3oZAdWJSlnE4wWFIT7DLEqf4FsUmEs83aEeAK1Vi/k8P0iIUyKKVvMVYgeMRd6SsgWdxWlU0CY1aldiiC+21nmvUvtX8f+fcyKG6srDo8KikHZqZTgWWTQJ2kHUiqQoMhs6BsvLqDaS8HwJm+hQR4eLlLJ8B1ImAHPx8UuA6VS4QGs/I=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fe25c47-682d-4eae-cc81-08dd44a1fedb
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 22:27:51.4862 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 37QWZCFgc/I25wopieMMxFYnS4B5qfAnZnzG+DSzQjMSFEet40rXFxoExVEnIFQfYAHWleAqsMu058n4kEHYvpxlD0Dt5HTgELL5/a8aP2A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6312
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-03_09,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
- definitions=main-2502030163
-X-Proofpoint-GUID: BOajz32kZNnAuD2uqxrGC-snXfJav6QK
-X-Proofpoint-ORIG-GUID: BOajz32kZNnAuD2uqxrGC-snXfJav6QK
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -219,240 +115,328 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/3/2025 1:25 PM, Cédric Le Goater wrote:
-> On 1/29/25 15:43, Steve Sistare wrote:
->> Preserve DMA mappings during cpr-transfer.
->>
->> In the container pre_save handler, suspend the use of virtual addresses
->> in DMA mappings with VFIO_DMA_UNMAP_FLAG_VADDR, because guest RAM will
->> be remapped at a different VA after exec.  DMA to already-mapped pages
->> continues.
->>
->> Because the vaddr is temporarily invalid, mediated devices cannot be
->> supported, so add a blocker for them.  This restriction will not apply
->> to iommufd containers when CPR is added for them in a future patch.
->>
->> In new QEMU, do not register the memory listener at device creation time.
->> Register it later, in the container post_load handler, after all vmstate
->> that may affect regions and mapping boundaries has been loaded.  The
->> post_load registration will cause the listener to invoke its callback on
->> each flat section, and the calls will match the mappings remembered by the
->> kernel.  Modify vfio_dma_map (which is called by the listener) to pass the
->> new VA to the kernel using VFIO_DMA_MAP_FLAG_VADDR.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> ---
->>   hw/vfio/container.c           | 44 +++++++++++++++++++++++++++++++++++++++----
->>   hw/vfio/cpr-legacy.c          | 32 +++++++++++++++++++++++++++++++
->>   include/hw/vfio/vfio-common.h |  3 +++
->>   3 files changed, 75 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 81d0ccc..2b5125e 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -32,6 +32,7 @@
->>   #include "trace.h"
->>   #include "qapi/error.h"
->>   #include "migration/cpr.h"
->> +#include "migration/blocker.h"
->>   #include "pci.h"
->>   VFIOGroupList vfio_group_list =
->> @@ -132,6 +133,8 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
->>       int ret;
->>       Error *local_err = NULL;
->> +    assert(!container->reused);
->> +
->>       if (iotlb && vfio_devices_all_dirty_tracking_started(bcontainer)) {
->>           if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
->>               bcontainer->dirty_pages_supported) {
->> @@ -183,12 +186,24 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->>                                                     bcontainer);
->>       struct vfio_iommu_type1_dma_map map = {
->>           .argsz = sizeof(map),
->> -        .flags = VFIO_DMA_MAP_FLAG_READ,
->>           .vaddr = (__u64)(uintptr_t)vaddr,
->>           .iova = iova,
->>           .size = size,
->>       };
->> +    /*
->> +     * Set the new vaddr for any mappings registered during cpr load.
->> +     * Reused is cleared thereafter.
->> +     */
->> +    if (container->reused) {
->> +        map.flags = VFIO_DMA_MAP_FLAG_VADDR;
->> +        if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map)) {
->> +            goto fail;
->> +        }
->> +        return 0;
->> +    }
-> 
-> This is a bit ugly.
-> 
-> When reaching routine vfio_attach_device(), could we detect that CPR is
-> in progress and replace the 'VFIOIOMMUClass *' temporarily with a set of
-> CPR specific handlers ?
 
-Good idea, I'll try it.  I wrote this code years ago before the dma
-map and unmap functions were defined in an ops vector.
 
->> +
->> +    map.flags = VFIO_DMA_MAP_FLAG_READ;
->>       if (!readonly) {
->>           map.flags |= VFIO_DMA_MAP_FLAG_WRITE;
->>       }
->> @@ -205,7 +220,11 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->>           return 0;
->>       }
->> -    error_report("VFIO_MAP_DMA failed: %s", strerror(errno));
->> +fail:
->> +    error_report("vfio_dma_map %s (iova %lu, size %ld, va %p): %s",
->> +        (container->reused ? "VADDR" : ""), iova, size, vaddr,
->> +        strerror(errno));
->> +
-> 
-> 
-> FYI, I am currently trying to remove this error report.
-> 
-> 
->>       return -errno;
->>   }
->> @@ -689,8 +708,17 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->>       group->container = container;
->>       QLIST_INSERT_HEAD(&container->group_list, group, container_next);
->> -    bcontainer->listener = vfio_memory_listener;
->> -    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
->> +    /*
->> +     * If reused, register the listener later, after all state that may
->> +     * affect regions and mapping boundaries has been cpr load'ed.  Later,
->> +     * the listener will invoke its callback on each flat section and call
->> +     * vfio_dma_map to supply the new vaddr, and the calls will match the
->> +     * mappings remembered by the kernel.
->> +     */
->> +    if (!reused) {
->> +        bcontainer->listener = vfio_memory_listener;
->> +        memory_listener_register(&bcontainer->listener, bcontainer->space->as);
->> +    }
-> 
-> oh ! This is an important change. Please move in its own patch.
+Am 2=2E Februar 2025 17:09:06 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
+hilmd@linaro=2Eorg>:
+>On 1/2/25 16:28, Bernhard Beschow wrote:
+>>=20
+>>=20
+>> Am 30=2E Januar 2025 23:05:53 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
+ <philmd@linaro=2Eorg>:
+>>> Cc'ing AMD folks
+>>>=20
+>>> Hi Bernhard,
+>>>=20
+>>> TL;DR; can't you use the PCF8574 which is a more complete model of I/O
+>>> expander? (See hw/gpio/pcf8574=2Ec)
+>>=20
+>> If it is software-compatible then I could use it=2E I'm modeling a real=
+ board whose device tree I'd like to use unchanged, so I don't have much ch=
+oice=2E The only reason I need it is because its absence clogs the i2c bus=
+=2E
+>
+>No clue about compatibility=2E If you unfortunately need to add it,
+>then please address my comments in the next version=2E
 
-OK.
+Sure, I'll link your and Zoltan's comments as todos in the next version=2E
 
->>       if (bcontainer->error) {
->>           error_propagate_prepend(errp, bcontainer->error,
->> @@ -1002,6 +1030,13 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
->>           return false;
->>       }
->> +    if (vbasedev->mdev) {
->> +        error_setg(&vbasedev->cpr_mdev_blocker,
->> +                   "CPR does not support vfio mdev %s", vbasedev->name);
->> +        migrate_add_blocker_modes(&vbasedev->cpr_mdev_blocker, &error_fatal,
->> +                                  MIG_MODE_CPR_TRANSFER, -1);
->> +    }
-> 
-> same here, the cpr blocker for mdev devices should be in its own patch.
+Best regards,
+Bernhard
 
-OK.  It was a separate patch in my workspace then I squashed it :)
-
->>       bcontainer = &group->container->bcontainer;
->>       vbasedev->bcontainer = bcontainer;
->>       QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
->> @@ -1018,6 +1053,7 @@ static void vfio_legacy_detach_device(VFIODevice *vbasedev)
->>       QLIST_REMOVE(vbasedev, container_next);
->>       vbasedev->bcontainer = NULL;
->>       trace_vfio_detach_device(vbasedev->name, group->groupid);
->> +    migrate_del_blocker(&vbasedev->cpr_mdev_blocker);
->>       vfio_put_base_device(vbasedev);
->>       vfio_put_group(group);
->>   }
->> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
->> index ce6f14e..f3a31d1 100644
->> --- a/hw/vfio/cpr-legacy.c
->> +++ b/hw/vfio/cpr-legacy.c
->> @@ -14,6 +14,21 @@
->>   #include "migration/vmstate.h"
->>   #include "qapi/error.h"
->> +static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
->> +{
->> +    struct vfio_iommu_type1_dma_unmap unmap = {
->> +        .argsz = sizeof(unmap),
->> +        .flags = VFIO_DMA_UNMAP_FLAG_VADDR | VFIO_DMA_UNMAP_FLAG_ALL,
->> +        .iova = 0,
->> +        .size = 0,
->> +    };
->> +    if (ioctl(container->fd, VFIO_IOMMU_UNMAP_DMA, &unmap)) {
->> +        error_setg_errno(errp, errno, "vfio_dma_unmap_vaddr_all");
->> +        return false;
->> +    }
->> +    return true;
->> +}
->> +
->>   static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
->>   {
->>       if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
->> @@ -29,12 +44,27 @@ static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
->>       }
->>   }
->> +static int vfio_container_pre_save(void *opaque)
->> +{
->> +    VFIOContainer *container = opaque;
->> +    Error *err = NULL;
->> +
->> +    if (!vfio_dma_unmap_vaddr_all(container, &err)) {
->> +        error_report_err(err);
-> 
-> We should modify vmstate_save_state_v() to call .pre_save() handlers
-> with an Error ** parameter.
-
-Hmm, that changes the signature of every pre_save handler.  That does not
-belong in this series, IMO.  It would be a separate RFE for migration.
-
-- Steve
-
->> +        return -1;
->> +    }
->> +    return 0;
->> +}
->> +
->>   static int vfio_container_post_load(void *opaque, int version_id)
->>   {
->>       VFIOContainer *container = opaque;
->> +    VFIOContainerBase *bcontainer = &container->bcontainer;
->>       VFIOGroup *group;
->>       VFIODevice *vbasedev;
->> +    bcontainer->listener = vfio_memory_listener;
->> +    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
->>       container->reused = false;
->>       QLIST_FOREACH(group, &container->group_list, container_next) {
->> @@ -49,6 +79,8 @@ static const VMStateDescription vfio_container_vmstate = {
->>       .name = "vfio-container",
->>       .version_id = 0,
->>       .minimum_version_id = 0,
->> +    .priority = MIG_PRI_LOW,  /* Must happen after devices and groups */
->> +    .pre_save = vfio_container_pre_save,
->>       .post_load = vfio_container_post_load,
->>       .needed = cpr_needed_for_reuse,
->>       .fields = (VMStateField[]) {
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index a435a90..1e974e0 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -143,6 +143,7 @@ typedef struct VFIODevice {
->>       unsigned int flags;
->>       VFIOMigration *migration;
->>       Error *migration_blocker;
->> +    Error *cpr_mdev_blocker;
->>       OnOffAuto pre_copy_dirty_page_tracking;
->>       OnOffAuto device_dirty_page_tracking;
->>       bool dirty_pages_supported;
->> @@ -310,6 +311,8 @@ int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->>   int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
->>                             uint64_t size, ram_addr_t ram_addr, Error **errp);
->> +void vfio_listener_register(VFIOContainerBase *bcontainer);
->> +
->>   /* Returns 0 on success, or a negative errno. */
->>   bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
->>   void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
-> 
-
+>
+>>=20
+>> Best regards,
+>> Bernhard
+>>=20
+>>>=20
+>>> On 20/1/25 21:37, Bernhard Beschow wrote:
+>>>> Xilinx QEMU implements a TCA6416 device model which may be useful for=
+ the
+>>>> broader QEMU community, so upstream it=2E In the Xilinx fork, the dev=
+ice model
+>>>> gets compiled whenever CONFIG_CADENCE is true, so have it maintained =
+by the
+>>>> "hw/*/cadence_*" maintainers=2E
+>>>>=20
+>>>> The code is based on Xilinx QEMU version xilinx_v2024=2E2 plus the fo=
+llowing
+>>>> modifications:
+>>>> * Use OBJECT_DECLARE_SIMPLE_TYPE()
+>>>> * Port from DPRINTF() to trace events
+>>>> * Follow QEMU conventions for naming of state struct
+>>>> * Rename type to not contain a ','
+>>>> * Use DEFINE_TYPES() macro
+>>>> * Implement under hw/gpio since device is i2c client and gpio provide=
+r
+>>>> * Have dedicated Kconfig switch
+>>>>=20
+>>>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>>>>=20
+>>>> --
+>>>> I have a use for TCA6416 emulation=2E Question: Are Xilinx Zynq maint=
+ainers
+>>>> willing to maintain this device model?
+>>>> ---
+>>>>    MAINTAINERS          |   1 +
+>>>>    hw/gpio/tca6416=2Ec    | 122 +++++++++++++++++++++++++++++++++++++=
+++++++
+>>>>    hw/gpio/Kconfig      |   5 ++
+>>>>    hw/gpio/meson=2Ebuild  |   1 +
+>>>>    hw/gpio/trace-events |   4 ++
+>>>>    5 files changed, 133 insertions(+)
+>>>>    create mode 100644 hw/gpio/tca6416=2Ec
+>>>>=20
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index 7531d65429=2E=2E0cac9c90bc 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -1030,6 +1030,7 @@ S: Maintained
+>>>>    F: hw/*/xilinx_*
+>>>>    F: hw/*/cadence_*
+>>>>    F: hw/misc/zynq_slcr=2Ec
+>>>> +F: hw/gpio/tca6416=2Ec
+>>>>    F: hw/adc/zynq-xadc=2Ec
+>>>>    F: include/hw/misc/zynq_slcr=2Eh
+>>>>    F: include/hw/adc/zynq-xadc=2Eh
+>>>> diff --git a/hw/gpio/tca6416=2Ec b/hw/gpio/tca6416=2Ec
+>>>> new file mode 100644
+>>>> index 0000000000=2E=2E81ed7a654d
+>>>> --- /dev/null
+>>>> +++ b/hw/gpio/tca6416=2Ec
+>>>> @@ -0,0 +1,122 @@
+>>>> +/*
+>>>> + * QEMU model of TCA6416 16-Bit I/O Expander
+>>>=20
+>>> Please add datasheet reference=2E
+>>>=20
+>>>> + *
+>>>> + * Copyright (c) 2018 Xilinx Inc=2E
+>>>> + *
+>>>> + * Written by Sai Pavan Boddu <sai=2Epavan=2Eboddu@xilinx=2Ecom>
+>>>> + *
+>>>> + * Permission is hereby granted, free of charge, to any person obtai=
+ning a copy
+>>>> + * of this software and associated documentation files (the "Softwar=
+e"), to deal
+>>>> + * in the Software without restriction, including without limitation=
+ the rights
+>>>> + * to use, copy, modify, merge, publish, distribute, sublicense, and=
+/or sell
+>>>> + * copies of the Software, and to permit persons to whom the Softwar=
+e is
+>>>> + * furnished to do so, subject to the following conditions:
+>>>> + *
+>>>> + * The above copyright notice and this permission notice shall be in=
+cluded in
+>>>> + * all copies or substantial portions of the Software=2E
+>>>> + *
+>>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, E=
+XPRESS OR
+>>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTA=
+BILITY,
+>>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT=2E IN NO EVE=
+NT SHALL
+>>>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES=
+ OR OTHER
+>>>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, A=
+RISING FROM,
+>>>> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEA=
+LINGS IN
+>>>> + * THE SOFTWARE=2E
+>>>=20
+>>> Sai/Edgar/Francisco, should we update to AMD here? Remove or update th=
+e
+>>> email address? Also, can you Ack the replacement of this license by a
+>>> SPDX tag?
+>>>=20
+>>>> + */
+>>>> +#include "qemu/osdep=2Eh"
+>>>> +#include "hw/i2c/i2c=2Eh"
+>>>> +#include "trace=2Eh"
+>>>> +
+>>>> +#define TYPE_TCA6416 "tca6416"
+>>>> +OBJECT_DECLARE_SIMPLE_TYPE(Tca6416State, TCA6416)
+>>>> +
+>>>> +#define IN_PORT0    0
+>>>> +#define IN_PORT1    1
+>>>> +#define OUT_PORT0   2
+>>>> +#define OUT_PORT1   3
+>>>> +#define POL_INV0    4
+>>>> +#define POL_INV1    5
+>>>> +#define CONF_PORT0  6
+>>>> +#define CONF_PORT1  7
+>>>=20
+>>> enum up to here?
+>>>=20
+>>>> +#define RMAX (CONF_PORT1 + 1)
+>>>> +
+>>>> +enum tca6416_events {
+>>>> +     ADDR_DONE,
+>>>> +     ADDRESSING,
+>>>> +};
+>>>> +
+>>>> +struct Tca6416State {
+>>>> +     I2CSlave i2c;
+>>>> +
+>>>> +     uint8_t addr;
+>>>> +     uint8_t state;
+>>>> +     uint8_t regs[RMAX];
+>>>> +};
+>>>> +
+>>>> +static uint8_t tca6416_read(I2CSlave *i2c)
+>>>> +{
+>>>> +    Tca6416State *s =3D TCA6416(i2c);
+>>>> +    uint8_t ret;
+>>>> +
+>>>> +    ret =3D s->regs[s->addr];
+>>>> +    trace_tca6416_read(ret);
+>>>> +    return ret;
+>>>> +}
+>>>> +
+>>>> +static int tca6416_write(I2CSlave *i2c, uint8_t data)
+>>>> +{
+>>>> +    Tca6416State *s =3D TCA6416(i2c);
+>>>> +
+>>>> +    trace_tca6416_write(data);
+>>>> +    if (s->state =3D=3D ADDRESSING) {
+>>>> +        s->addr =3D data;
+>>>=20
+>>> I suppose HW masks here=2E
+>>>=20
+>>>           s->addr =3D data & 0xf;
+>>>=20
+>>>> +    } else {
+>>>> +        s->regs[s->addr] =3D data;
+>>>=20
+>>> (otherwise this could overflow)=2E
+>>>=20
+>>> So this device isn't doing anything actually (I'd have
+>>> expected 1 IRQ and 16 GPIO lines)=2E What is the point,
+>>> at least in this state?
+>>>=20
+>>>> +    }
+>>>> +
+>>>> +    return 0;
+>>>> +}
+>>>> +
+>>>> +static void tca6416_realize(DeviceState *dev, Error **errp)
+>>>> +{
+>>>> +    Tca6416State *s =3D TCA6416(dev);
+>>>> +
+>>>=20
+>>> Missing:
+>>>=20
+>>>        s->regs[OUT_PORT0] =3D 0xff;
+>>>        s->regs[OUT_PORT1] =3D 0xff;
+>>>        s->regs[POL_INV0] =3D 0x00;
+>>>        s->regs[POL_INV1] =3D 0x00;
+>>>=20
+>>>> +    s->regs[CONF_PORT0] =3D 0xFF;
+>>>> +    s->regs[CONF_PORT1] =3D 0xFF;
+>>>=20
+>>> Style is 0xff=2E
+>>>=20
+>>> That said, this is not a REALIZE but RESET handler=2E
+>>>=20
+>>>> +}
+>>>> +
+>>>> +static int tca6416_event(I2CSlave *i2c, enum i2c_event event)
+>>>> +{
+>>>> +    Tca6416State *s =3D TCA6416(i2c);
+>>>> +
+>>>> +    switch (event) {
+>>>> +    case I2C_START_SEND:
+>>>> +        s->state =3D ADDRESSING;
+>>>> +        break;
+>>>> +    default:
+>>>> +         s->state =3D ADDR_DONE;
+>>>> +    };
+>>>> +    return 0;
+>>>> +}
+>>>> +
+>>>> +static void tca6416_class_init(ObjectClass *klass, void *data)
+>>>> +{
+>>>> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
+>>>> +    I2CSlaveClass *k =3D I2C_SLAVE_CLASS(klass);
+>>>> +
+>>>> +    dc->realize =3D tca6416_realize;
+>>>=20
+>>> (tca6416_realize is a reset handler)=2E
+>>>=20
+>>> Please complete:
+>>>=20
+>>>        dc->desc =3D "TCA6416 I/O Expander";
+>>>        set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>>>=20
+>>> No migration state?
+>>>=20
+>>>> +    k->recv =3D tca6416_read;
+>>>> +    k->send =3D tca6416_write;
+>>>> +    k->event =3D tca6416_event;
+>>>> +}> +
+>>>> +static const TypeInfo tca6416_types[] =3D {
+>>>> +    {
+>>>> +        =2Ename =3D TYPE_TCA6416,
+>>>> +        =2Eparent =3D TYPE_I2C_SLAVE,
+>>>> +        =2Eclass_init =3D tca6416_class_init,
+>>>> +        =2Einstance_size =3D sizeof(Tca6416State),
+>>>> +    }
+>>>> +};
+>>>> +
+>>>> +DEFINE_TYPES(tca6416_types)
+>>>> diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
+>>>> index c423e10f59=2E=2Ea240cf2de2 100644
+>>>> --- a/hw/gpio/Kconfig
+>>>> +++ b/hw/gpio/Kconfig
+>>>> @@ -20,5 +20,10 @@ config PCF8574
+>>>>        bool
+>>>>        depends on I2C
+>>>>    +config TCA6416
+>>>> +    bool
+>>>> +    depends on I2C
+>>>> +    default y if I2C_DEVICES
+>>>> +
+>>>>    config ZAURUS_SCOOP
+>>>>        bool
+>>>> diff --git a/hw/gpio/meson=2Ebuild b/hw/gpio/meson=2Ebuild
+>>>> index 74840619c0=2E=2Eb3ff7c7460 100644
+>>>> --- a/hw/gpio/meson=2Ebuild
+>>>> +++ b/hw/gpio/meson=2Ebuild
+>>>> @@ -18,3 +18,4 @@ system_ss=2Eadd(when: 'CONFIG_STM32L4X5_SOC', if_tr=
+ue: files('stm32l4x5_gpio=2Ec'))
+>>>>    system_ss=2Eadd(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_=
+gpio=2Ec'))
+>>>>    system_ss=2Eadd(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive=
+_gpio=2Ec'))
+>>>>    system_ss=2Eadd(when: 'CONFIG_PCF8574', if_true: files('pcf8574=2E=
+c'))
+>>>> +system_ss=2Eadd(when: 'CONFIG_TCA6416', if_true: files('tca6416=2Ec'=
+))
+>>>> diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
+>>>> index cea896b28f=2E=2E6724f2efb8 100644
+>>>> --- a/hw/gpio/trace-events
+>>>> +++ b/hw/gpio/trace-events
+>>>> @@ -46,3 +46,7 @@ stm32l4x5_gpio_read(char *gpio, uint64_t addr) "GPI=
+O%s addr: 0x%" PRIx64 " "
+>>>>    stm32l4x5_gpio_write(char *gpio, uint64_t addr, uint64_t data) "GP=
+IO%s addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
+>>>>    stm32l4x5_gpio_update_idr(char *gpio, uint32_t old_idr, uint32_t n=
+ew_idr) "GPIO%s from: 0x%x to: 0x%x"
+>>>>    stm32l4x5_gpio_pins(char *gpio, uint16_t disconnected, uint16_t hi=
+gh) "GPIO%s disconnected pins: 0x%x levels: 0x%x"
+>>>> +
+>>>> +# tca6416=2Ec
+>>>> +tca6416_write(uint8_t value) "0x%02x"
+>>>=20
+>>> "wr 0x%02x"
+>>>=20
+>>>> +tca6416_read(uint8_t value) "0x%02x"
+>>>=20
+>>> "rd =2E=2E=2E"
+>>>=20
+>>> Regards,
+>>>=20
+>>> Phil=2E
+>
 
