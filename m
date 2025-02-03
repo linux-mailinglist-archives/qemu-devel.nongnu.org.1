@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80DAA26631
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 22:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B8FA26691
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 23:28:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf4Q2-0004KO-Te; Mon, 03 Feb 2025 16:55:51 -0500
+	id 1tf4ul-0001ZV-Ds; Mon, 03 Feb 2025 17:27:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tf4Px-0004KB-J8
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 16:55:45 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tf4Pu-0006sw-Qw
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 16:55:44 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-21ddab8800bso68512855ad.3
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 13:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738619740; x=1739224540; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yvaPmVtbJpUbcl8izaOeKH9jF+8Y8qcKsxyN9OiSW1c=;
- b=tTm0+cKVXa/mCFfHYuic8vxDncAVV5Eb1yU43657SRdXAC5WR0jP8R8zaustQbLTwu
- 2Q/H9r5m68QngQK0dILVpk4+xgpj+KAt0cGbeoXheegfrgnAwV57W6h1azu1Yh3DUchF
- UdYOOtc+BIvmMDRwD+tf49KAZDsIYibouhB0rEXLU9PDStgKZ6x7L58O+ZyIK1uI/wo5
- HGwA/rpdaXzNNTsXleBiLlSG08YUKN3JoqA0/NXH/qDlwJCb00pI/D5soZU6Fy3SZThQ
- H4roHHFHDcgIBUiXXRBH5MBOchx8apTKSJsKhmBwWWr5PHxpcSoInCnfxDoG0P4Fd3cx
- 2wog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738619740; x=1739224540;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yvaPmVtbJpUbcl8izaOeKH9jF+8Y8qcKsxyN9OiSW1c=;
- b=THQyzuR1I4NNUtXwOS/XpuvTT01VWkwmqpm6U37z3O/83IKjQ45dk7ACD+wiFbfRRd
- RRDvE3f0Qd5ATObMVAhQbo2qmhBtIvGD8UOUQMoJUaS4ajh2qEpT7LUZ9plPiuwn8oMi
- 2lhL4HwUcE/ZdP8aCCbhYVmQPJva4krIFtc4nfdJtgQTUn2vEq48jfT7bzTH7+l+5Y+H
- XOiLGn0KV9S4+1HwvEwoJk4LbbHcJWyvVhk33ID2zAqzf9YAmtflNB/68rYu2aLgD2Fb
- a1eHUXqwC7AXaPADlUtF3nX+W7vzHvCd2MdvwgPPX2/Xlf/YAQQpsEO7FlYixptnYFxY
- xsbw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhljR6TMrc8mU3rCjtT9AzLAicqEf2fMttb5QyIBwrPuRAXb8qL0/th+0E31wlMQGw+oYWzbKp4JDf@nongnu.org
-X-Gm-Message-State: AOJu0YwNlitLMXqV27eF/8LAL9yxfjLIRwrpYO+zhgs1k9T+YpMTVj9j
- K4KNZsx1ZSXPDIz3CrfzzxawqlAuoF6EWP8D/mQO9ZtWfUYsdQGdI/hxpQQ0nZg=
-X-Gm-Gg: ASbGncvEyFaiaG8Q7p6BR5CtxK48xhfL7BdoHsZaKluWp8SYcP41JVIR+OA5vaEMp15
- DVwps8kpGPF8S3mzV9RccVNTHpqtFP+qVIysQwvKw7h4oOh9sGHQi9ke8vS0bHcbD0XDMMlPljR
- +fGCEjJG+k8zYp9/LXf+xa2ym/1D5vx3S+8pMTW91sD65WAzQea1gRUUXFJJy5DMURxclEnnyoM
- cg+fYszZUp4h9vceAfD4WwE+cq4B/QX4mVU/0ZiOJ3TT+3JRg9I/d+sraRQh8PX6mLgJkMTcB18
- rei8dTOCLNT/p4Neldpdvab+M/zGrsqB++Ea6CCyAdhLSEdNjI+BF8Q=
-X-Google-Smtp-Source: AGHT+IHV74xAjQYh5V057MZUZgxd5L5oxF+/XIH9IWZYdFs4eAz1xg8e6V7QUNuaq7+SWOVnnj2U5A==
-X-Received: by 2002:a05:6a00:1411:b0:725:9f02:489a with SMTP id
- d2e1a72fcca58-72fd0c5ee8cmr33213659b3a.17.1738619740422; 
- Mon, 03 Feb 2025 13:55:40 -0800 (PST)
-Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72fe64275c4sm9348350b3a.61.2025.02.03.13.55.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Feb 2025 13:55:40 -0800 (PST)
-Message-ID: <e40c39d4-425c-4566-af41-373941894045@linaro.org>
-Date: Mon, 3 Feb 2025 13:55:36 -0800
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tf4ui-0001VV-RS
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 17:27:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tf4uh-0002JZ-Bz
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 17:27:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738621649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6n84EVl+QathsgycT1XNfNmLRO0wbFQY8xOrcR50UYU=;
+ b=WQjITAneaC5cGt9e3aLpWUU50JWn5N0DEVH7P1fKghIKe7Jd7jWqELrC5JVMxwVetPAHZX
+ Hc+0doGy0ssWJrKIqGZZdOH5hjiWtKciM8E4jUrwa8EO/1k/tJ1OaTo4jKESbfjKOyezAZ
+ lJrZIXe/g0WbQx2dReNxYBpzqXiNaF8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-wj8pAB15Plap_zaXAffmaQ-1; Mon,
+ 03 Feb 2025 17:27:27 -0500
+X-MC-Unique: wj8pAB15Plap_zaXAffmaQ-1
+X-Mimecast-MFC-AGG-ID: wj8pAB15Plap_zaXAffmaQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E874719560BB; Mon,  3 Feb 2025 22:27:25 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.73])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2D8D419560AD; Mon,  3 Feb 2025 22:27:23 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org
+Subject: [PATCH 0/2] nbd: Allow debugging tuning of handshake limit
+Date: Mon,  3 Feb 2025 16:26:05 -0600
+Message-ID: <20250203222722.650694-4-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/14] meson: Deprecate 32-bit host support
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Stefano Stabellini <sstabellini@kernel.org>
-Cc: mark.cave-ayland@ilande.co.uk, berrange@redhat.com, philmd@linaro.org,
- thuth@redhat.com
-References: <20250203031821.741477-1-richard.henderson@linaro.org>
- <467a5a58-952e-4930-8e91-744eda6d87d9@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <467a5a58-952e-4930-8e91-744eda6d87d9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,27 +77,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/3/25 04:54, Paolo Bonzini wrote:
-> On 2/3/25 04:18, Richard Henderson wrote:
->> v1: 20250128004254.33442-1-richard.henderson@linaro.org
->>
->> For v2, immediately disable 64-on-32 TCG.
->>
->> I *suspect* that we should disable 64-on-32 for *all* accelerators.
->> The idea that an i686 binary on an x86_64 host may be used to spawn
->> an x86_64 guest via kvm is silly and a bit more than niche.
-> 
-> At least Xen used to be commonly used with 32-bit dom0, because it saved memory and dom0 
-> would map in guest buffers as needed.  I'm not sure how common that is these days, perhaps 
-> Stefano knows.
+Reviving a patch that has been sitting in my tree for a while.  It's
+mostly useful for low-level integration testing (such as debugging
+libnbd as an NBD client).
 
-As a data-point, debian does not ship libxen-dev for i686.
-We cannot build-test this configuration at all.
+Eric Blake (2):
+  qemu-nbd: Allow users to adjust handshake limit
+  nbd/server: Allow users to adjust handshake limit in QMP
 
-I can build-test Xen for armhf, and I guess it would use i386-softmmu; it's unclear 
-whether x86_64-softmmu and aarch64-softmmu are relevant or useful for an armhf host, or as 
-an armhf binary running on an aarch64 host.
+ docs/tools/qemu-nbd.rst        |  5 +++++
+ qapi/block-export.json         | 10 +++++++++
+ include/block/nbd.h            |  6 ++---
+ block/monitor/block-hmp-cmds.c |  4 ++--
+ blockdev-nbd.c                 | 26 ++++++++++++++-------
+ qemu-nbd.c                     | 41 +++++++++++++++++++++-------------
+ 6 files changed, 64 insertions(+), 28 deletions(-)
 
+-- 
+2.48.1
 
-r~
 
