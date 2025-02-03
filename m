@@ -2,93 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169EDA25B95
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 14:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77794A25C0E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 15:17:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tewyl-0005xK-9A; Mon, 03 Feb 2025 08:59:11 -0500
+	id 1texG0-00056z-A7; Mon, 03 Feb 2025 09:17:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tewyj-0005wu-Bh
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 08:59:09 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win>)
+ id 1tex1V-0006pe-6w
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:02:01 -0500
+Received: from smtp.forwardemail.net ([207.246.76.47])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tewyh-0004um-TU
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 08:59:09 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-ab698eae2d9so891174266b.0
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 05:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738591146; x=1739195946; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gt8Rn86AXh6kVZpy4m9lU14y7OqHcZJmxjxjCyF74hs=;
- b=yorblmMQYw+Fq5dcxwdQ4cfsn9p5TL3M/wr78ykS4S5CPXSDQWsSVT52KNe9JkF5l1
- eTnszfZDAaTh5AR+KtAEeS6MqHReYlRyTxn9P/yV4Z3tmgkjpr2HrCZDaZZKAI0J3fUp
- isnyDcsTtuxQWtJNCeMwvdMhch8W3KVHZ3Y4NDXF1DhDbsJzkPvYBaSLtTcjNBcxdRpv
- 3au78ioBVbEOl5VOlsp1f9lmUMT7jvac4mwHjD5Ox9NPCKfbpQHt0FdJfZOpE+3yG6Sl
- 3pwysc49l8MhuD2HQ4K5OZ++mtQYBK7VauEtvlvbCG+X1uxp0rPadBvSSbQLI+dSalrI
- Erpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738591146; x=1739195946;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=gt8Rn86AXh6kVZpy4m9lU14y7OqHcZJmxjxjCyF74hs=;
- b=tdoY6L5XXofAgUFKRI66rlkLHwp2l+1xYjE0zXaVkmjw1OL3IK+8DzJYcwUs6TReBE
- 5DsOynNzyVzESsJvxI6Xacy6NllylNgNtx71oah5E0I9mN7X653U1RhhxReXfwa6pLBR
- J5yhYwMP7YTRtR17+OAU6wUbi7sSv2RJzgJdzOxHKTewzjhbMXqszXuHgnvqdU7KMyqX
- Jc1AGESiXG+jVeguobgxCqJSF/y07t/iMPmqKV1zaLGNT+cftlq1FghlyDeDHFdztfrt
- UHRisDu72REZpCQzmYDk8x1WNiVBGMe8GYkwgiCWvo+NHjXLBYSjpWJV/6bpQ4guUBic
- aPXw==
-X-Gm-Message-State: AOJu0YyGXx5pbik7mrkL9oW6Gbi8IFSLGs1IiVbhlFOOyyCTvOMjYg3i
- 59ClyfVU+pE5jwDTA8S4sOCKTAgzwOi9peilD+qRGI75ryLj5bjx6hDrpnzWAF4=
-X-Gm-Gg: ASbGncuBpzluIdgtkuZxnvYlwztaqImWRvnbwT4Y04tUPgKBifZbF77f7bu4DO1w2Wz
- Ic3zxZIRli02ZQQjYkm1JjByYsDvlswyL+xLzBEpd6h9iZwgCGU/Soh1v4dUsUw/YuSIg0/wWef
- Gzz8wiC3FiDSG+qqSQLMsAIsTnCKvlrsweaHE6hkB0XAJ9cxNNO6hWDnUJR2cbEHu68CIqtIW8Q
- c0uLxygB0UB45OtZ6jbZNYLNuYPi3B/X9wQu5vQUYby5f9f7QYzKkCU1qHP6uw1N1idZvxkJhIT
- E99JraegDMP0Z/rprA==
-X-Google-Smtp-Source: AGHT+IExS6WPeOJojLQkDYn1avo+StqiYmk7Sn1Nb3vehFXK95hSurh5GZBy9GatB9hBCBugO4tTJQ==
-X-Received: by 2002:a17:907:1c0e:b0:ab2:b936:f110 with SMTP id
- a640c23a62f3a-ab6cfcb8d3emr2430314666b.20.1738591146168; 
- Mon, 03 Feb 2025 05:59:06 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab6e47d0fc4sm765013366b.65.2025.02.03.05.59.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Feb 2025 05:59:05 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EBE505F8BF;
- Mon,  3 Feb 2025 13:59:04 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,
- mark.cave-ayland@ilande.co.uk,  berrange@redhat.com,  philmd@linaro.org,
- thuth@redhat.com
-Subject: Re: [PATCH v2 14/14] tcg: Remove TCG_OVERSIZED_GUEST
-In-Reply-To: <20250203031821.741477-15-richard.henderson@linaro.org> (Richard
- Henderson's message of "Sun, 2 Feb 2025 19:18:21 -0800")
-References: <20250203031821.741477-1-richard.henderson@linaro.org>
- <20250203031821.741477-15-richard.henderson@linaro.org>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Mon, 03 Feb 2025 13:59:04 +0000
-Message-ID: <87cyfzceon.fsf@draig.linaro.org>
+ (Exim 4.90_1)
+ (envelope-from <SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win>)
+ id 1tex1T-0005Lk-HR
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 09:02:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=miszr.win;
+ h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
+ To: From; q=dns/txt; s=fe-257304d8b2; t=1738591316;
+ bh=raYIHEgeTxW3E2Hf+6kFG/cpXPTBsO8kwXXvuIO7W/Y=;
+ b=ayWZonxJjH1ENVX0EMjEAe2xHr5140zunFL8LhjQkfHyE/WgiUpgAvUbvAZXmra5jKNmxDaXg
+ UDQyKTaKdgWyNKya6Vo5ob61r5JHl34chOIU1zNhvzAab1LEdaagT5q0BU1g3a6om4E3U/ASEiw
+ eAlcJjYYJd6OICOy78YZ/is=
+X-Forward-Email-ID: 67a0cc50514bf110fcaed145
+X-Forward-Email-Sender: rfc822; git@miszr.win, smtp.forwardemail.net,
+ 207.246.76.47
+X-Forward-Email-Version: 0.4.40
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+From: Mikael Szreder <git@miszr.win>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Mikael Szreder <git@miszr.win>
+Subject: [PATCH] target/sparc: Fix register selection for the fdtox and fqtox
+ instructions
+Date: Mon,  3 Feb 2025 15:01:30 +0100
+Message-ID: <20250203140130.78240-1-git@miszr.win>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=207.246.76.47;
+ envelope-from=SRS0=d7fa=U3=miszr.win=git@fe-bounces.miszr.win;
+ helo=smtp.forwardemail.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FROM_FMBLA_NEWDOM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 03 Feb 2025 09:16:47 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,23 +75,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+A bug was introduced in commit 0bba7572d40d which causes the fdtox and
+ fqtox instructions to incorrectly select the destination registers.
+More information and a test program can be found in issue #2802.
 
-> This is now prohibited in configuration.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-<snip>
-> -#if TARGET_LONG_BITS > TCG_TARGET_REG_BITS
+Fixes: 0bba7572d40d ("target/sparc: Perform DFPREG/QFPREG in decodetree")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2802
+Signed-off-by: Mikael Szreder <git@miszr.win>
+---
+ target/sparc/insns.decode | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Is it worth keeping a compile time assert with a comment so if anyone
-attempts to hack 32 bit support back in they will find out quickly?
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 989c20b44a..694a28d88c 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -322,8 +322,8 @@ FNHADDs     10 ..... 110100 ..... 0 0111 0001 .....        @r_r_r
+ FNHADDd     10 ..... 110100 ..... 0 0111 0010 .....        @d_d_d
+ FNsMULd     10 ..... 110100 ..... 0 0111 1001 .....        @d_r_r
+ FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @r_r2
+-FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @r_d2
+-FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @r_q2
++FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @d_d2
++FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @q_q2
+ FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_r2
+ FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_r2
+ FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_r2
+-- 
+2.48.1
 
-Otherwise:
-
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
