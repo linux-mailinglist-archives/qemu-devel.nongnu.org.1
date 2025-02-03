@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4122AA2613C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 18:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5D1A2615C
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Feb 2025 18:27:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf07B-0008Q1-Hm; Mon, 03 Feb 2025 12:20:06 -0500
+	id 1tf0Cl-0006Cs-EO; Mon, 03 Feb 2025 12:25:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tf06s-0008N0-Ox
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 12:19:46 -0500
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf0Ca-00069k-Bk
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 12:25:40 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tf06q-00040c-Up
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 12:19:46 -0500
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-467b74a1754so59821391cf.1
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 09:19:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf0CY-0004mh-BK
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 12:25:40 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4361dc6322fso32256315e9.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 09:25:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738603183; x=1739207983; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hz7Qpw8DiAEmNhs73hTo78lZWzySWRHjnujk7zGlscY=;
- b=hYIemv04Q9MRa2xgkstSlpmC9OjTgYdfGVlKLGH9xGtn8Ezk1sooWVik4hHTi/k+ak
- lKf4E6OF1yLjgzsYWn9EOH6fvayhLDhTkNmAbECIdG7jo4FH7yntP788WeVJVMNiSyb4
- oXgGcr2wyU6ghHH8MOogZTazqq6EnPrcnTuJYOmyt/66qjzTCHkV870nFTpeBR3X1QZK
- F7q4t7Sq2A6bqTdZQqLmOD2VqFP402A7+EMnSc2IbLk1Tx02NiohpM+5SRYfEyjCB8UH
- Jw+kuernrDTnWBghna05sS09FppWXvQcmDlrwIzM9bpa83LPMoSmx5Phz2riyR4M4ZQf
- 2fvA==
+ d=linaro.org; s=google; t=1738603536; x=1739208336; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=f1qk/YkLRT02+ON310wkt9KYiBH+73GAyu2gfxVI1lU=;
+ b=GI8VmyXKFnW61G/ZHTiJiy4G5XkEpWtuMmE/f659FHYrDk3nq1IOlZ2a8QtxDyK6wt
+ 0czY6EVp18egkIuw7d20VRwXcKF/bOIBEEE/VcfLPKQaM29RF4+2oaIxJBvstBNNXvSB
+ f9PK87DrKWq23ENAe43qpRJAs4rLK8Id9ABclz0V99EH2BsxCtCJOovwLONNRSGEaMq9
+ hK1z5u3aLmKrpM+iYary2XiqKFqm79Ep9sgeJAexuQZsGtAYEgPKIQDoYaY2i8ZAsHQW
+ XC/34DuGmhIySmtFF1jwTJ4pHIhjQtQ/kW4E9IfncegSfOCh/Rg3762TroAQElciqmgi
+ eENA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738603183; x=1739207983;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Hz7Qpw8DiAEmNhs73hTo78lZWzySWRHjnujk7zGlscY=;
- b=E8uYZIodiIQcZmDtpgVVVmOczaGY4Ag6hCHYDFo3c/kSKmYZTIg75vyjioMr7w662a
- w7DmBWJ8JaG5sbtx83Mtz2SylMqkuS21uXAq5RvSo4sLtMZwymsERwK6oXrFcaOQOhiP
- NDVO3+i3rqJgrsNOoE2yhUtw/2kbheepKlp/XQe9xdOAp/LHXKJPD/5Y2PWzXLk7cW5O
- CpqOxiSa9lZ0yS5bVJLlaxxNst7htcEWSTsUey6I0ZRZy8epNA+fWm2tTdTouQh6f82l
- yVjjEeDO99nIDhbxwZNfVEGwU+NWVg2IbjyxoGWYv2/zVAJ1pQ6RfUhRLfDIwhyeMGBK
- jzqQ==
-X-Gm-Message-State: AOJu0YyNjssmL3h6pA++KOwklMfA9Zra4fbltztrg2c8UF2EOyETi1r6
- wl570rJNB9C5/4k9OCYSe0T378rSPWDgzIuMqYQvwQPwvVqcXZFhd4bQsDapCwc+sEt0nXy9xGs
- TpfD2M4oZhzbCEUUA9Qhw0I/fCKs=
-X-Gm-Gg: ASbGncsyMAQRt247nj0YiwUBSS2uGEspz7C5qMkHL58GQi6AFeXnn3Gz68klkYw4MZa
- EUqIpZKPse8WHK65f3VMQjPG2mJTOIEGMxkdObJ0JFrKQuPj7fGKzD9uqZGW0Ll2PW9DOqR+Sya
- SO2oXSnYrQqiEp4krHAsrWxd9dhdatSg==
-X-Google-Smtp-Source: AGHT+IEoo9SWoVqyDNx5yAEN7cos/yy0Tvh6OZM0ChIWG0d9ot6w207N7xSI4Miu9w6p0aHKFIZX/RCivqwwNyxobdU=
-X-Received: by 2002:a05:622a:1e92:b0:467:6226:bfc1 with SMTP id
- d75a77b69052e-46fd0adcbeamr329809341cf.29.1738603183091; Mon, 03 Feb 2025
- 09:19:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738603536; x=1739208336;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f1qk/YkLRT02+ON310wkt9KYiBH+73GAyu2gfxVI1lU=;
+ b=VEKDDLhu9h/qm3asKrFq9h3p/kUgjc8sZDsOX7V8uwl9O8NprfYU/3SJ1CMEhdT+5y
+ x4M6WAHOLiP/NdjW/rudWdPkXeQY8ng2h1lK5+f82RHEkcpKDzSfwSfiEd0oo2JAuF6Q
+ vJKuksTwZveoMq6SK2o72r+aeRO2foc6v1MbZdFLSyeWpoFzyH0KFpwnwLmtSnnEQAWJ
+ Tw6uB2VurTQp0Bxv12UBLK1vjALgdpkAq93hUWk+RkU+lHs5DtLbAuxf31IMJBQ2xnFl
+ yevH7vuXB6Uabj7smxymXVoc0KbWNqFBlsJ7iYnXi/fHlYREITykoJz8t4TjdRGm905C
+ ZxNA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUzNZfnShq2J2HNcZIPnbdr6A1qDfvk11jeNQrvojXlABdxiu90tbZZ8y77D+O7EREEcPr/pmX3hADG@nongnu.org
+X-Gm-Message-State: AOJu0YwcIJtRtP0ZEMgPNi8qPuAfk7H3IjIN/gykfRrd2LZsUImh8YEx
+ 8WBU0o0afat0tayDUc62WqCPfUr2YjWUmYQZRjl5zVp8iQULtG0d+7vxjo634oQ=
+X-Gm-Gg: ASbGnctNCmNSeHxPB9u1+9X3WSRW5URzU/gYjB7Z4a/tc8XE90rvnm/iaT9sNWgPC75
+ hp0Vr2uLMYUo8O3EXDdwtKhlZRbdk/iBQ24IE1Uay+YCVj8oewBqq/UbvhFaBW4wqng3GZaHifY
+ 9h3es6s5NOVLaBpqXEMwnG8+ptIbg92wYxbGlwUVPRHwlbxlbALVWoptJsJYFcHUyB+Rc37pvR6
+ G9lLq7PWPwgsGBK4bUNO3Mg/lDR+p3qfN3O2HkOeG711qCXc+NH0AunNBXJcaa/fFT4alexqP5I
+ DwLAypxu6g4TcDzme52ce1UQKeWLr3Ys9lmAByxg8hx5j7nov/IE1ATC5U8=
+X-Google-Smtp-Source: AGHT+IEbn+17I6jMeyAyMSX+ojfNGIbof4KeE5G9t45nCYDyrM4EAdbEhRSUfeuwaXXWaeymu4r5pw==
+X-Received: by 2002:a05:6000:1865:b0:386:1cf9:b993 with SMTP id
+ ffacd0b85a97d-38c51974311mr17895726f8f.26.1738603536050; 
+ Mon, 03 Feb 2025 09:25:36 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438e244eb0dsm163778835e9.27.2025.02.03.09.25.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Feb 2025 09:25:35 -0800 (PST)
+Message-ID: <f5f62fd7-0d42-4f0c-b8bf-cbcdd9dc54ab@linaro.org>
+Date: Mon, 3 Feb 2025 18:25:34 +0100
 MIME-Version: 1.0
-References: <20250203125721.640451-1-marcandre.lureau@redhat.com>
- <CAJSP0QX+zW0eenxwdZL4=jrdXB2=dVjpb2hw8BzFM7Ee9EHdrw@mail.gmail.com>
-In-Reply-To: <CAJSP0QX+zW0eenxwdZL4=jrdXB2=dVjpb2hw8BzFM7Ee9EHdrw@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 3 Feb 2025 21:19:31 +0400
-X-Gm-Features: AWEUYZl-taOUzofv75peo87aMeua-83_LLNT4uQsBS9I7Ob8hq21TBnoU1BbH3E
-Message-ID: <CAJ+F1CJifV4Dk_7fCoH6arHZYDRo=eOr-uDGVbDLVVuU8z1Uew@mail.gmail.com>
-Subject: Re: [PULL 0/8] Ui patches
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Markus Armbruster <armbru@redhat.com>, peter.maydell@linaro.org, 
- Gerd Hoffmann <kraxel@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/14] target/mips: Protect objects with CONFIG_TCG
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
+ thuth@redhat.com
+References: <20250203031821.741477-1-richard.henderson@linaro.org>
+ <20250203031821.741477-9-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250203031821.741477-9-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,53 +100,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Hi Richard,
 
-On Mon, Feb 3, 2025 at 6:29=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.com>=
- wrote:
->
-> On Mon, Feb 3, 2025 at 7:58=E2=80=AFAM <marcandre.lureau@redhat.com> wrot=
-e:
-> >
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > The following changes since commit 6fccaa2fba391815308a746d68f7fa197bc9=
-3586:
-> >
-> >   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu in=
-to staging (2025-02-02 11:09:10 -0500)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
-> >
-> > for you to fetch changes up to f327a2cea1502a8cad2beb13bc4e2c12b95b10ba=
-:
-> >
-> >   dbus: add -audio dbus nsamples option (2025-02-03 13:58:08 +0400)
-> >
-> > ----------------------------------------------------------------
-> > UI/chardev-related patch queue
-> >
-> > ----------------------------------------------------------------
-> >
-> > Marc-Andr=C3=A9 Lureau (4):
-> >   ui/dbus: on win32, allow ANONYMOUS with p2p
->
-> Hi Marc-Andr=C3=A9,
-> There is an unexpected submodule update in this commit. Although it's
-> not included in the patch email sent to the mailing list, GitLab shows
-> it:
-> https://gitlab.com/marcandre.lureau/qemu/-/commit/31d9023965ba1963afd1e0e=
-0f48c75399a7bc23e
->
-> Please rebase onto qemu.git/master and remove the spurious libvirt-ci
-> submodule update before resending this pull request. Thank you!
->
+On 3/2/25 04:18, Richard Henderson wrote:
+> Hack around mips32 host allowing kvm acceleration
+> of mips64 guest, but tcg is disabled.
 
-Sorry, bad .gitconfig.. resent, thanks
+We have in target/mips/meson.build:
 
+if 'CONFIG_TCG' in config_all_accel
+   subdir('tcg')
+endif
 
---=20
-Marc-Andr=C3=A9 Lureau
+What is the problem you are trying to address here?
+
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/mips/tcg/meson.build        | 4 ++--
+>   target/mips/tcg/system/meson.build | 6 +++---
+>   2 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/target/mips/tcg/meson.build b/target/mips/tcg/meson.build
+> index fff9cd6c7f..e5574f177b 100644
+> --- a/target/mips/tcg/meson.build
+> +++ b/target/mips/tcg/meson.build
+> @@ -10,7 +10,7 @@ gen = [
+>   ]
+>   
+>   mips_ss.add(gen)
+> -mips_ss.add(files(
+> +mips_ss.add(when: 'CONFIG_TCG', if_true: files(
+>     'dsp_helper.c',
+>     'exception.c',
+>     'fpu_helper.c',
+> @@ -26,7 +26,7 @@ mips_ss.add(files(
+>     'vr54xx_helper.c',
+>     'vr54xx_translate.c',
+>   ))
+> -mips_ss.add(when: 'TARGET_MIPS64', if_true: files(
+> +mips_ss.add(when: ['CONFIG_TCG', 'TARGET_MIPS64'], if_true: files(
+>     'tx79_translate.c',
+>     'octeon_translate.c',
+>     'lcsr_translate.c',
+> diff --git a/target/mips/tcg/system/meson.build b/target/mips/tcg/system/meson.build
+> index 911341ac37..606ccacebc 100644
+> --- a/target/mips/tcg/system/meson.build
+> +++ b/target/mips/tcg/system/meson.build
+> @@ -1,12 +1,12 @@
+> -mips_system_ss.add(files(
+> +mips_system_ss.add(when: 'CONFIG_TCG', if_true: files(
+>     'cp0_helper.c',
+>     'special_helper.c',
+>     'tlb_helper.c',
+>   ))
+> -mips_system_ss.add(when: ['CONFIG_SEMIHOSTING'],
+> +mips_system_ss.add(when: ['CONFIG_TCG', 'CONFIG_SEMIHOSTING'],
+>     if_true: files('mips-semi.c'),
+>     if_false: files('semihosting-stub.c')
+>   )
+> -mips_system_ss.add(when: 'TARGET_MIPS64', if_true: files(
+> +mips_system_ss.add(when: ['CONFIG_TCG', 'TARGET_MIPS64'], if_true: files(
+>     'lcsr_helper.c',
+>   ))
+
 
