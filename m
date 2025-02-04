@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F90A27D21
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DCAA27D1F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:17:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQGv-000639-Nz; Tue, 04 Feb 2025 16:15:54 -0500
+	id 1tfQH8-0006R0-Cd; Tue, 04 Feb 2025 16:16:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGA-0005TZ-Gs
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:07 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGB-0005V9-Fc
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG8-0005lM-PY
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:06 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG9-0005lY-Ie
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1738703704;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/86f5bSB6BnLPLnxm5jhqTldXHYzs1kbPlm3UuvkGq0=;
- b=dJnsCX5qdVfrbFl2FsfMDY8fFIe4m9Q8P+GrkRPA/YDGSmOiMtlr2mrfQN2+1xi+BV13bj
- ZHzOyyXJjfDHYg/H2H/iN3h2wneC95hm6EvZtSgnbDcbgRgMysqDK7CajMpOvxiz+zBesW
- Qn+qSWSfJmZr8cjwsQEnU4a2CmMUagE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Gy0Ro0AiLBW+IDrNU0PGthGke20CO9S9gyVmcl9+x2Q=;
+ b=K7nUDtYsdKWX1gmmbnHjHAUJV9J2LZSZbUNtisSH3HmDTjhBpYzdMAU3iqWnISMmiROXo+
+ +KndZCIZIZgLabiyOKlXjQib7AStsZ5HgtdGopUD/mvXEdXPIwR7oRfuet7zcpYj3zsz6M
+ Kokotd9GR0Woo/N1bS8gkubp7SlRVgE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-ncGj2zQYN5aJcAAwNkiJ5Q-1; Tue,
- 04 Feb 2025 16:14:58 -0500
-X-MC-Unique: ncGj2zQYN5aJcAAwNkiJ5Q-1
-X-Mimecast-MFC-AGG-ID: ncGj2zQYN5aJcAAwNkiJ5Q
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-JmbhT8AvMrG8XfD-0PHavg-1; Tue,
+ 04 Feb 2025 16:15:01 -0500
+X-MC-Unique: JmbhT8AvMrG8XfD-0PHavg-1
+X-Mimecast-MFC-AGG-ID: JmbhT8AvMrG8XfD-0PHavg
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A27C219560B0; Tue,  4 Feb 2025 21:14:57 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E80A19560B1; Tue,  4 Feb 2025 21:15:00 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.100])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 57CFB1800365; Tue,  4 Feb 2025 21:14:55 +0000 (UTC)
+ id 157761800365; Tue,  4 Feb 2025 21:14:57 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
  pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
  qemu-devel@nongnu.org
-Subject: [PATCH v3 12/16] block/export: Add option to allow export of inactive
- nodes
-Date: Tue,  4 Feb 2025 22:14:03 +0100
-Message-ID: <20250204211407.381505-13-kwolf@redhat.com>
+Subject: [PATCH v3 13/16] nbd/server: Support inactive nodes
+Date: Tue,  4 Feb 2025 22:14:04 +0100
+Message-ID: <20250204211407.381505-14-kwolf@redhat.com>
 In-Reply-To: <20250204211407.381505-1-kwolf@redhat.com>
 References: <20250204211407.381505-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -82,121 +81,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an option in BlockExportOptions to allow creating an export on an
-inactive node without activating the node. This mode needs to be
-explicitly supported by the export type (so that it doesn't perform any
-operations that are forbidden for inactive nodes), so this patch alone
-doesn't allow this option to be successfully used yet.
+In order to support running an NBD export on inactive nodes, we must
+make sure to return errors for any operations that aren't allowed on
+inactive nodes. Reads are the only operation we know we need for
+inactive images, so to err on the side of caution, return errors for
+everything else, even if some operations could possibly be okay.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- qapi/block-export.json | 10 +++++++++-
- include/block/export.h |  3 +++
- block/export/export.c  | 31 +++++++++++++++++++++----------
- 3 files changed, 33 insertions(+), 11 deletions(-)
+ nbd/server.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/qapi/block-export.json b/qapi/block-export.json
-index ce33fe378d..117b05d13c 100644
---- a/qapi/block-export.json
-+++ b/qapi/block-export.json
-@@ -372,6 +372,13 @@
- #     cannot be moved to the iothread.  The default is false.
- #     (since: 5.2)
- #
-+# @allow-inactive: If true, the export allows the exported node to be inactive.
-+#     If it is created for an inactive block node, the node remains inactive. If
-+#     the export type doesn't support running on an inactive node, an error is
-+#     returned. If false, inactive block nodes are automatically activated before
-+#     creating the export and trying to inactivate them later fails.
-+#     (since: 10.0; default: false)
-+#
- # Since: 4.2
- ##
- { 'union': 'BlockExportOptions',
-@@ -381,7 +388,8 @@
-             '*iothread': 'str',
-             'node-name': 'str',
-             '*writable': 'bool',
--            '*writethrough': 'bool' },
-+            '*writethrough': 'bool',
-+            '*allow-inactive': 'bool' },
-   'discriminator': 'type',
-   'data': {
-       'nbd': 'BlockExportOptionsNbd',
-diff --git a/include/block/export.h b/include/block/export.h
-index f2fe0f8078..4bd9531d4d 100644
---- a/include/block/export.h
-+++ b/include/block/export.h
-@@ -29,6 +29,9 @@ typedef struct BlockExportDriver {
-      */
-     size_t instance_size;
- 
-+    /* True if the export type supports running on an inactive node */
-+    bool supports_inactive;
+diff --git a/nbd/server.c b/nbd/server.c
+index f64e47270c..2076fb2666 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -2026,6 +2026,7 @@ static void nbd_export_delete(BlockExport *blk_exp)
+ const BlockExportDriver blk_exp_nbd = {
+     .type               = BLOCK_EXPORT_TYPE_NBD,
+     .instance_size      = sizeof(NBDExport),
++    .supports_inactive  = true,
+     .create             = nbd_export_create,
+     .delete             = nbd_export_delete,
+     .request_shutdown   = nbd_export_request_shutdown,
+@@ -2920,6 +2921,22 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+     NBDExport *exp = client->exp;
+     char *msg;
+     size_t i;
++    bool inactive;
 +
-     /* Creates and starts a new block export */
-     int (*create)(BlockExport *, BlockExportOptions *, Error **);
- 
-diff --git a/block/export/export.c b/block/export/export.c
-index bac42b8608..f3bbf11070 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -75,6 +75,7 @@ static const BlockExportDriver *blk_exp_find_driver(BlockExportType type)
- BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
- {
-     bool fixed_iothread = export->has_fixed_iothread && export->fixed_iothread;
-+    bool allow_inactive = export->has_allow_inactive && export->allow_inactive;
-     const BlockExportDriver *drv;
-     BlockExport *exp = NULL;
-     BlockDriverState *bs;
-@@ -138,17 +139,24 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-         }
-     }
- 
--    /*
--     * Block exports are used for non-shared storage migration. Make sure
--     * that BDRV_O_INACTIVE is cleared and the image is ready for write
--     * access since the export could be available before migration handover.
--     * ctx was acquired in the caller.
--     */
-     bdrv_graph_rdlock_main_loop();
--    ret = bdrv_activate(bs, errp);
--    if (ret < 0) {
--        bdrv_graph_rdunlock_main_loop();
--        goto fail;
-+    if (allow_inactive) {
-+        if (!drv->supports_inactive) {
-+            error_setg(errp, "Export type does not support inactive exports");
-+            bdrv_graph_rdunlock_main_loop();
-+            goto fail;
++    WITH_GRAPH_RDLOCK_GUARD() {
++        inactive = bdrv_is_inactive(blk_bs(exp->common.blk));
++        if (inactive) {
++            switch (request->type) {
++            case NBD_CMD_READ:
++                /* These commands are allowed on inactive nodes */
++                break;
++            default:
++                /* Return an error for the rest */
++                return nbd_send_generic_reply(client, request, -EPERM,
++                                              "export is inactive", errp);
++            }
 +        }
-+    } else {
-+        /*
-+         * Block exports are used for non-shared storage migration. Make sure
-+         * that BDRV_O_INACTIVE is cleared and the image is ready for write
-+         * access since the export could be available before migration handover.
-+         */
-+        ret = bdrv_activate(bs, errp);
-+        if (ret < 0) {
-+            bdrv_graph_rdunlock_main_loop();
-+            goto fail;
-+        }
-     }
-     bdrv_graph_rdunlock_main_loop();
- 
-@@ -162,6 +170,9 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-     if (!fixed_iothread) {
-         blk_set_allow_aio_context_change(blk, true);
-     }
-+    if (allow_inactive) {
-+        blk_set_force_allow_inactivate(blk);
 +    }
  
-     ret = blk_insert_bs(blk, bs, errp);
-     if (ret < 0) {
+     switch (request->type) {
+     case NBD_CMD_CACHE:
 -- 
 2.48.1
 
