@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DFFA26875
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F1CA2687F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf6iI-0008GK-Dz; Mon, 03 Feb 2025 19:22:50 -0500
+	id 1tf6iN-0008HJ-8Q; Mon, 03 Feb 2025 19:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iG-0008Fb-EX
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:48 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iK-0008GX-BN
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:52 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iE-0006zS-OB
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:48 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43675b1155bso58285685e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:22:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iI-00070W-Tc
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:52 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-38637614567so2222970f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:22:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738628563; x=1739233363; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kZOdbeb6T6qDJ09VSMCL2tbpN7fDjsLgjuUeDOztlJw=;
- b=qIu1M7rFh9SPE5OTMxroTS3RQmuc/EL3mAc17yi47aZU1vBm6P1Ni+sS+ePWguESff
- qhk9NZWkDRr0UpRcNBwSv7WIs0m9+pd7n153EshqEd/3OtsmdsmKjVSlwNiVjF61bdFN
- Y7Nh8o9ggz/lAHBN4bODLFbldVca8HfmrrwWi9a9Atytdff1gMIV9KlcvRt4c2xpehy5
- Dz3mH7lcxExk3NLlGxQQ48+QUZQEqajnUv1wOkp1DSVw4ea10Y88gPS1+jefEiTLiJuD
- sGR2bEq3fPlRELIjT55nUa1Vvc5ffC6De9EJq71LNI0PIYoLEwgfKcu9tKc6GJPo8DQ0
- vNpA==
+ d=linaro.org; s=google; t=1738628569; x=1739233369; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Az8EPLdbpaM4rrJ7UfHg0zKoQFfHGEeaDufKhZSFa9M=;
+ b=Wb355+44R5wbRQHVdlUmADuEDOQGuqE7WZl230AVRb0jvSsL77OQS4uKWgc26UqwtY
+ q2llNUluOrfFzmEdyNxWzdco7pEqEhek9PwG/AGQ9ma3pevLbAcrhTwGbwdVKZFYMf/a
+ e948WClgD5ydRKEdpZlIjYEHx5k6rzgVOpVBap5t+2Al/LXvLW323mRtSnN3hS3ZuNF9
+ VfuvcSh2GKkzXkfF/mMqEwKjpOe+m9VKueY/qofcm3RqsQDlRzTDx8zOrB/cqDUYdfch
+ aeWNyZKzdt9bZ/jNzW/FyTcdNpBT+S9opqLF/7kGuuox8fbNLlNlzkDtjQivg+ulBAbI
+ EgSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738628563; x=1739233363;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kZOdbeb6T6qDJ09VSMCL2tbpN7fDjsLgjuUeDOztlJw=;
- b=VK15l1rLXmilJ3GaqkIudOASBBdbS8OhHIXLJ+rQGW9aBlq4R7S/KPXd3A9sgHjipb
- wSopzsXerOUOs+3B9kHzCKKO6AdJaUxdeqs6TCjan5bYWWReNjMZ2Q9bH1ODSFAfeBKJ
- VFQHvyIug58LSaVoU31q9enDRXxG8LXrym0QYlVG8P9miwY9CyeEFkEsq+fyTdDgSSsD
- tQZvYv3JhY51JOQtHoXRMOr7u/+aZTRb2AFNNXqcZMEqA5sCYMh4eQYOTxQdYrh1CnJI
- 2C+fR4AF4aLvk/fIw+MhnMDCfiDBCYiAhlsoAhKb0n1ctHpv2gGZ4FoHhaoyFfTn5nQJ
- beIQ==
-X-Gm-Message-State: AOJu0YwEL+fptv24FcxteX1Go2CMkrfD1mbEbKt1VhQct7ze8/dg9dL0
- l2h45MKeLsiqQ+cKwHnX7KRMcK8egHAN/Rpnaig3oWfjpYlFhVNeBnPheanppMgR91shIuapyN7
- UHsk=
-X-Gm-Gg: ASbGncuG/3tS2yCSwc2emdYbndC4piTquYuq2O2x9oCKJZsZdrSBS9dZM0k85Fwf5l5
- HTcWYmWyJ+OQaiavtLIJb/K/RGlWJGFA5TnniM28lraK0JHo5WSAv35bTytMqw3rydX5NZwejfL
- EjkAYzrHH0sCRFUzc3lclyzNYDJtT5PbpnxrG3XRAbwJt/YvDpeHAw0rgKpNJTtiMa54ua6Rmxt
- JoJK7TgyRVO9jnM5drTcCiji5B+WozV+UaZsIGh3r2FKNtE9rCKFcl88B/kECSe1G8OAZm3sGG5
- lM6M4fmxfbAChJ2W+P7awlUXbjMFWgTgf2o/XxJ+lAPhTOD9z04PGtmlD9G4OG0Njg==
-X-Google-Smtp-Source: AGHT+IHy6CJhM2TwAoAA8lJ+tS6d0s5TrMMgkexQg1HbHClkotfNU8RmQ08pWBRgcSa5vbyB0b6P0g==
-X-Received: by 2002:a05:6000:1fab:b0:386:416b:9c69 with SMTP id
- ffacd0b85a97d-38c5194a58cmr20463197f8f.16.1738628563523; 
- Mon, 03 Feb 2025 16:22:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738628569; x=1739233369;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Az8EPLdbpaM4rrJ7UfHg0zKoQFfHGEeaDufKhZSFa9M=;
+ b=ePEof+eYXsT8yboqmzKvkzm3FrX77YTZkvh4qq/Wsmf6Bz4WxqmYSHXxbW8zWHZv1M
+ 0ZTVJh54mttlJcRB5sGbYTZXWV7PHL0lG0A2U/cScatKTOYO3IvVw8PuFF3Z14rL4ij/
+ qnuy1uP/IqhOGMIsY3gizVKk5nNPl3fz0ZXbK2ESTx4rSqw++q5ufG9dv8HiOUmdqeMl
+ z32SLeBuBLmqKLBitdLNMrQ+wbirImJWcV7pguzDDFlHXCG3piiZQKjIxz1HSq2lK/6c
+ SYQOkRQ18z34XkmQE5iIXx0pz2zSs6Ffl4uGhzxvQCQljkmJ/Qd950c7sg8+tw6Jj8rF
+ MPnA==
+X-Gm-Message-State: AOJu0Yxm/I297sJt/7MxqCT1BuOydUqAgqeBTAZN7X1DcZlDwJv5Ctdm
+ NwJdTIQMffyXA4wDLLDV1NUgfEv0ppcnzO+r+gvQVhn7bVz4zemcE+pthCXbnQGPRGEN41/V393
+ MRpI=
+X-Gm-Gg: ASbGncv2su3Z4/t3js6BzM7B3EhTFk6fouy/xNakB6if7Ias9jyPrML+6uD/xUuNnKQ
+ B2/vP0SAOrZnTX2gCtT9viCc0VweqAGlRhBPw4/J8LyR0PqE59MiocMFvB0dZW0rzFafd0v6Qar
+ uRpqdgYCRyBkNp7AOsZbiWz1OQ5LBX67qvYFosx+Qvh2wZcu5WCKoI3ydCTBKyLaqA8qMa0uOTf
+ AE++ZhHGphpHh5JwQhrcnIpeEZzvPBYMZgoKGAsBV6MPxfTqGVG+iYTx5CW4hxsrlIb8Hu3vfmZ
+ 1rRXEwHq8UztcioZx6EA6iWqh5v1dSKV+o5QYwNbPvUixQlzCZnvP4WfEQmC62Po/Q==
+X-Google-Smtp-Source: AGHT+IGehyswMqyU/BOxxk5EPd2/kVZgXrKnQ5/w12TJ2w9ENui2JG35mk6P9Jze2hMJ186vIP0Ceg==
+X-Received: by 2002:a05:6000:18af:b0:385:e30a:e0f7 with SMTP id
+ ffacd0b85a97d-38c5195e81dmr18362724f8f.22.1738628569093; 
+ Mon, 03 Feb 2025 16:22:49 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38da8f6691bsm229504f8f.42.2025.02.03.16.22.41
+ ffacd0b85a97d-38c5c1cf2eesm13942861f8f.85.2025.02.03.16.22.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Feb 2025 16:22:43 -0800 (PST)
+ Mon, 03 Feb 2025 16:22:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -71,15 +72,18 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  devel@lists.libvirt.org
-Subject: [PATCH v2 00/12] hw/arm/raspi: Allow creating any Raspberry Pi machine
-Date: Tue,  4 Feb 2025 01:22:28 +0100
-Message-ID: <20250204002240.97830-1-philmd@linaro.org>
+Subject: [PATCH v2 01/12] hw/arm/raspi: Access SoC parent object using
+ BCM283X_BASE() macro
+Date: Tue,  4 Feb 2025 01:22:29 +0100
+Message-ID: <20250204002240.97830-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250204002240.97830-1-philmd@linaro.org>
+References: <20250204002240.97830-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,50 +106,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Full rewrite of v1 [1], addressing Zoltan & Peter suggestion.
+We shouldn't access a QOM parent object directly.
+Use the appropriate type-cast macro.
 
-Introduce a generic 'raspi' machine, which takes a 'model'
-and 'revision' properties, and any memory size. The 'board_rev'
-register is filled appropriately.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/arm/raspi.c   | 2 +-
+ hw/arm/raspi4b.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Before, merge raspi4b.c within raspi.c (more is planned here
-with the MPCore refactor [2]).
-
-Regards,
-
-Phil.
-
-[1] https://lore.kernel.org/qemu-devel/20250201091528.1177-1-philmd@linaro.org/
-[2] https://lore.kernel.org/qemu-devel/20231212162935.42910-1-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (12):
-  hw/arm/raspi: Access SoC parent object using  BCM283X_BASE() macro
-  hw/arm/raspi: Merge model 4B with other models
-  hw/arm/raspi: Unify RASPI_MACHINE types
-  hw/arm/raspi: Pass board_rev as argument to raspi_base_machine_init()
-  hw/arm/raspi: Consider processor id in types[] array
-  hw/arm/raspi: Consider network interface for B models
-  hw/arm/raspi: Check ramsize is within chipset aperture
-  hw/arm/raspi: Introduce generic Raspberry Pi machine
-  hw/arm/raspi: Have the generic machine take a 'revision' property
-  hw/arm/raspi: List models creatable by the generic 'raspi' machine
-  hw/arm/raspi: Deprecate old raspiX machine names
-  hw/arm/raspi: Support more models
-
- docs/about/deprecated.rst               |  13 +
- include/hw/arm/raspi_platform.h         |   5 +-
- hw/arm/raspi.c                          | 383 ++++++++++++++++++++++--
- hw/arm/raspi4b.c                        | 136 ---------
- tests/qtest/bcm2835-dma-test.c          |   2 +-
- tests/qtest/bcm2835-i2c-test.c          |   2 +-
- tests/qtest/boot-serial-test.c          |   3 +-
- hw/arm/meson.build                      |   2 +-
- tests/functional/test_aarch64_raspi3.py |   5 +-
- tests/functional/test_aarch64_raspi4.py |   4 +-
- tests/functional/test_arm_raspi2.py     |   4 +-
- 11 files changed, 385 insertions(+), 174 deletions(-)
- delete mode 100644 hw/arm/raspi4b.c
-
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index a7a662f40db..508f90479e2 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -312,7 +312,7 @@ void raspi_machine_init(MachineState *machine)
+ 
+     object_initialize_child(OBJECT(machine), "soc", soc,
+                             board_soc_type(mc->board_rev));
+-    raspi_base_machine_init(machine, &soc->parent_obj);
++    raspi_base_machine_init(machine, BCM283X_BASE(soc));
+ }
+ 
+ void raspi_machine_class_common_init(MachineClass *mc,
+diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
+index 1264e0d6eed..9b08a598f39 100644
+--- a/hw/arm/raspi4b.c
++++ b/hw/arm/raspi4b.c
+@@ -104,7 +104,7 @@ static void raspi4b_machine_init(MachineState *machine)
+     object_initialize_child(OBJECT(machine), "soc", soc,
+                             board_soc_type(mc->board_rev));
+ 
+-    raspi_base_machine_init(machine, &soc->parent_obj);
++    raspi_base_machine_init(machine, BCM283X_BASE(soc));
+ }
+ 
+ static void raspi4b_machine_class_init(ObjectClass *oc, void *data)
 -- 
 2.47.1
 
