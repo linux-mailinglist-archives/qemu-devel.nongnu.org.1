@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE26BA27DBF
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E08EA27DD4
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:56:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQke-0008Oe-HN; Tue, 04 Feb 2025 16:46:36 -0500
+	id 1tfQrx-0001YZ-Bs; Tue, 04 Feb 2025 16:54:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfQkc-0008O5-Lx
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:46:34 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tfQrt-0001Xo-IF
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:05 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfQkZ-0005Nl-Kg
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:46:34 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38db104d35eso704853f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:46:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tfQrq-0008TC-K2
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:04 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2f9c3124f31so1780717a91.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:54:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738705590; x=1739310390; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6zix+2XzlAWB3iAZ7J6dqnst6Y/RLxo8jGubN17CA0I=;
- b=Lza/yNQQN1cT0EuqDyveidlbE4Ep/Ek1FzSlMe3+cPoe764Th0o9hQvf5gTW1y4/8s
- qrvs0YndgOiIUi9e9ts6I3F/qbwBQCP10g4KZy1EWZc+mukSBrFyOJwEPVMj7fclo3up
- oY79w4s8RM917bhiZurHBYXmZkn2vlUZaa48trnQ8hg5f1x0ba4sFvqpQ9LnSAZEajKM
- sIAGgyQRjkKSKPLdWqYtot7VzbXhGL4N+Hpv+KNXHreuP4oZyiNuHaM0aA58cfmuN+fF
- U22xMH9G/KRMzx1fN1wMqMuuwp6li3/nHiEqocRFiZBQwq/8uCiFg+HCX2oxalSXVlNp
- txmg==
+ d=linaro.org; s=google; t=1738706040; x=1739310840; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZHGk4p3byPyeKlgAUGx5bC7Rt4ZTms7YKJhqNict/Y4=;
+ b=nls6fyaRLvVAf2LXXY8/4cbh23pNvIXfhzTtF0fq9N/Jn531OWUuI4QbsPE5p4Oddm
+ 6343rlB91GwbJB2xMYvcKXpu3pqQ8sK8BG5SzgbGMSslAGzuk1kdcSiHLV9Gw/XWXk3A
+ gQ3O3JIvF0kA3xCBDSlsjDmVBfIoADq8ps1KKUP2xL5AMcAks7cnUaziDbUUdloZauIe
+ c7Eezhx2Iot0bM+0AEkkp7NC/yKyaFQiS7NRD3zo/pZDbqstxgVbrPOU+72V4cZDaQDq
+ okqxP8FJWd+dd9/l5+vr00eykgSt6FCFuyLgIKUsQyZNsem1pScjPqEMUWvAeRW6QouX
+ 92dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738705590; x=1739310390;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6zix+2XzlAWB3iAZ7J6dqnst6Y/RLxo8jGubN17CA0I=;
- b=aYu8Ymb2vzWlWkr+f+JHxocDYbzGZGL2yfVGDRwirKapKceYBbjpm5GIbRxq0HfqXG
- uosiZxtJr9kUHvmjI0aoufhVrDh2xBvnRTcQxCw/g0pICO40iniIePsWRiCDJH2FNYQ+
- jfSfBZA4cbb0RO9jYDUwn0knwYJiT0m4SXyoWzo1rcHYg6EHXK3eYbdAi9hWmNHXAGZd
- va0dd8Yt845d0TncFMhzuqmYyvyA1px8wLpBycvgnb8YB9Oguwbzr3BQk2cydLxUBetU
- L1Mcl2TUuUdIAJ0rNlZYThgTzbH3lUXou932QuS4N6nmBMFYa+KUA+HZUe/zzOmMrsp+
- U90g==
-X-Gm-Message-State: AOJu0YwdsXTX3OJZuzQbK0rD0++eN+9ixm1dHgan9dYVMcXayJiY+kGl
- 8WGSEndF1d5gIV/VltcZXAmUZX9wE+cqiJuM9eFmlzDy+SfzzZmmAmHlTZYsDQg=
-X-Gm-Gg: ASbGncuXWnAa7hVZSECzOTfmAnU0MxyS0XOsTS9uGSOIBMuRKKzFWJxtskaIBkxT39Q
- hZaUp+63lo6stuh9fSWCDPall0PjIHT0k2zk+wjcUlaCchtDZgtOqvPpi2OU5TK6dcrrQFLkZUl
- ulS2lxRuqKoJqoB69xUispFMT8+biPmY0dlHKjaIIDFWMMcFxjDMBVXxP7zkfdgBPBGfJuaJh3t
- 9lrOommAm+yLLxq9HYvCy4duUrZ4j6CcU3qPAtDWyUcJ5e/ucOrRSYs1F1cihLpC+eAy0zwNK6P
- 1OnWZblJfqohETk480ql36wX6D95jO7NT2bADAtAV+5RlzrVngL37bdrP1Q=
-X-Google-Smtp-Source: AGHT+IG9fYVcNjd4KrepiyxYV/XOclbCs7/Tu4PydlvgnG441JpTbvLsm3f67QBRBdAo40c76+lx6Q==
-X-Received: by 2002:adf:ef89:0:b0:38d:a883:b95b with SMTP id
- ffacd0b85a97d-38db48a42f8mr273456f8f.28.1738705589709; 
- Tue, 04 Feb 2025 13:46:29 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c1cf560sm16648489f8f.89.2025.02.04.13.46.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Feb 2025 13:46:29 -0800 (PST)
-Message-ID: <e6d14f33-94ec-47ba-9fec-64ce94da2ad0@linaro.org>
-Date: Tue, 4 Feb 2025 22:46:28 +0100
+ d=1e100.net; s=20230601; t=1738706040; x=1739310840;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZHGk4p3byPyeKlgAUGx5bC7Rt4ZTms7YKJhqNict/Y4=;
+ b=VkDyk1oEXSVSxjc3gOlBT5HadCEsNIVk/Klmxno+FokoYKx9ShQeqGzlbvELTaJiiU
+ lxEBfCFyX76fBGaA984s5K2TBQafO3OlPq4m40X0u7SuAO1zQ39H5b+ZWmDubuiwKISo
+ dVgybWEQY9BQJgJAHSELOR39pern2tjFTFJrSJSsnHsaxNAW2GJCx8pEaJ/N3W46c4BS
+ rR8euE/1cve+LRqlTt2VAIxdl2+KAhZPrcFsPkwkxLA5nlSVmLFRXGxfc9jIfkg0sFcf
+ VGEGOOdL8wO6hQPkPuMFjKZ//lLNpqugBVBp/5e2trUcNzz+2ChL1xu0aBYG61QNoQUo
+ Fd1g==
+X-Gm-Message-State: AOJu0Yz6lkFo9HdifUI8VZRrf4SN5JJAe1FAEvYeRcc5wzO+ugmXk2QI
+ H0uyTd1Sre/49xxtxhaJAeomzTZOHSjQuPVprgoIwaHF/JO+aI4XY9a1UlwjdpUHgD9ps7e8Od6
+ 0
+X-Gm-Gg: ASbGncvrf93EUuqy23F0lq1jitxI+ouSq4mL31cV8Yd4YP2ZS+PFQmfMhWWC0lwtMh2
+ KQiyL6TwVyvAKdgvwCDT16cCFmFdMMBPWS+cdge1ywYtU24QzPaVGsbxKn0WI3hjL8Bu4M15e5i
+ lO7Nb8a1VZhDqNU3Qcaw4kwd8EovIdITOU4zaU0ssW2544jY0iQhNNTIoFYxLBGJH4vB+Pbge4R
+ Xpf1Go+fdrtCE3NJA1bUyKMWlHMzahpMMxDYmA9oK0RnNixbJn9ps8bGp7ln+1Eu3CErMna3SYf
+ plqVZB+/GEujdhKqP8DwNB5xnMqrMwWoUCz/1bW+KjAEpIk=
+X-Google-Smtp-Source: AGHT+IGBUih4lbonlY6s+QjkGhN1dngVkaAjdcDaA0lTWnZZytNHO/YuQ7hbK4fLBPhiAGR0Q5Mlkg==
+X-Received: by 2002:a17:90b:4c4b:b0:2ee:a6f0:f54 with SMTP id
+ 98e67ed59e1d1-2f9e076c892mr588331a91.13.1738706040626; 
+ Tue, 04 Feb 2025 13:54:00 -0800 (PST)
+Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Feb 2025 13:54:00 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
+ philmd@linaro.org, thuth@redhat.com
+Subject: [PATCH v3 00/12] meson: Deprecate 32-bit host support
+Date: Tue,  4 Feb 2025 13:53:47 -0800
+Message-ID: <20250204215359.1238808-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] smbios: make memory device size configurable per Machine
-To: Igor Mammedov <imammedo@redhat.com>, qemu-riscv <qemu-riscv@nongnu.org>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, mst@redhat.com,
- wangyanan55@huawei.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- anisinha@redhat.com, qemu-arm@nongnu.org
-References: <20240711074822.3384344-1-imammedo@redhat.com>
- <d921c3d3-71a9-49e4-9f28-1ff3f19b9c48@linaro.org>
- <20240711104230.1582fba0@imammedo.users.ipa.redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240711104230.1582fba0@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,95 +96,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/24 10:42, Igor Mammedov wrote:
-> On Thu, 11 Jul 2024 10:19:27 +0200
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> 
->> Hi Igor,
->>
->> On 11/7/24 09:48, Igor Mammedov wrote:
->>> Currently SMBIOS maximum memory device chunk is capped at 16Gb,
->>> which is fine for the most cases (QEMU uses it to describe initial
->>> RAM (type 17 SMBIOS table entries)).
->>> However when starting guest with terabytes of RAM this leads to
->>> too many memory device structures, which eventually upsets linux
->>> kernel as it reserves only 64K for these entries and when that
->>> border is crossed out it runs out of reserved memory.
->>>
->>> Instead of partitioning initial RAM on 16Gb chunks, use maximum
->>> possible chunk size that SMBIOS spec allows[1]. Which lets
->>> encode RAM in Mb units in uint32_t-1 field (upto 2047Tb).
->>> As result initial RAM will generate only one type 17 structure
->>> until host/guest reach ability to use more RAM in the future.
->>>
->>> Compat changes:
->>> We can't unconditionally change chunk size as it will break
->>> QEMU<->guest ABI (and migration). Thus introduce a new machine class
->>> field that would let older versioned machines to use 16Gb chunks
->>> while new machine type could use maximum possible chunk size.
->>>
->>> While it might seem to be risky to rise max entry size this much
->>> (much beyond of what current physical RAM modules support),
->>> I'd not expect it causing much issues, modulo uncovering bugs
->>> in software running within guest. And those should be fixed
->>> on guest side to handle SMBIOS spec properly, especially if
->>> guest is expected to support so huge RAM configs.
->>> In worst case, QEMU can reduce chunk size later if we would
->>> care enough about introducing a workaround for some 'unfixable'
->>> guest OS, either by fixing up the next machine type or
->>> giving users a CLI option to customize it.
->>>
->>> 1) SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
->>>
->>> PS:
->>> * tested on 8Tb host with RHEL6 guest, which seems to parse
->>>     type 17 SMBIOS table entries correctly (according to 'dmidecode').
->>>
->>> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
->>> ---
->>>    include/hw/boards.h |  4 ++++
->>>    hw/arm/virt.c       |  1 +
->>>    hw/core/machine.c   |  1 +
->>>    hw/i386/pc_piix.c   |  1 +
->>>    hw/i386/pc_q35.c    |  1 +
->>>    hw/smbios/smbios.c  | 11 ++++++-----
->>>    6 files changed, 14 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/include/hw/boards.h b/include/hw/boards.h
->>> index ef6f18f2c1..48ff6d8b93 100644
->>> --- a/include/hw/boards.h
->>> +++ b/include/hw/boards.h
->>> @@ -237,6 +237,9 @@ typedef struct {
->>>     *    purposes only.
->>>     *    Applies only to default memory backend, i.e., explicit memory backend
->>>     *    wasn't used.
->>> + * @smbios_memory_device_size:
->>> + *    Default size of memory device,
->>> + *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
->>>     */
->>>    struct MachineClass {
->>>        /*< private >*/
->>> @@ -304,6 +307,7 @@ struct MachineClass {
->>>        const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
->>>        int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
->>>        ram_addr_t (*fixup_ram_size)(ram_addr_t size);
->>> +    uint64_t smbios_memory_device_size;
->>
->> Quick notes since I'm on holidays (not meant to block this patch):
->>
->> - How will evolve this machine class property in the context of
->>     a heterogeneous machine (i.e. x86_64 cores and 1 riscv32 one)?
-> 
-> I'm not aware of a SMBIOS spec (3.x) that cares about that heterogeneous
-> setup yet. Are there anything in that area exists yet?
+v1: 20250128004254.33442-1-richard.henderson@linaro.org
+v2: 20250203031821.741477-1-richard.henderson@linaro.org
 
-Not yet.
+For v3, immediately disable 64-on-32 for all accelerators.
+This eliminates most of the hoops through which v2 jumped.
 
-> 
->> - Should this become a SmbiosProviderInterface later?
-> if/when SMBIOS does get there (heterogeneous machines), introducing
-> an interface might make a sense.
 
-OK.
+r~
+
+
+Richard Henderson (12):
+  meson: Drop tcg as a module
+  tcg: Move stubs in tcg/perf.h to tcg/perf-stubs.c
+  plugins: Uninline qemu_plugin_add_opts
+  meson: Disallow 64-bit on 32-bit KVM emulation
+  meson: Disallow 64-bit on 32-bit Xen emulation
+  meson: Disallow 64-bit on 32-bit HVF/NVMM/WHPX emulation
+  gitlab-ci: Replace aarch64 with arm in cross-i686-tci build
+  configure: Define TARGET_LONG_BITS in configs/targets/*.mak
+  target/*: Remove TARGET_LONG_BITS from cpu-param.h
+  meson: Disallow 64-bit on 32-bit emulation
+  meson: Deprecate 32-bit host support
+  tcg: Remove TCG_OVERSIZED_GUEST
+
+ include/qemu/atomic.h                       | 18 +----
+ include/qemu/plugin.h                       |  9 +--
+ include/tcg/oversized-guest.h               | 23 ------
+ include/tcg/perf.h                          | 23 ------
+ target/alpha/cpu-param.h                    |  2 -
+ target/arm/cpu-param.h                      |  2 -
+ target/avr/cpu-param.h                      |  1 -
+ target/hexagon/cpu-param.h                  |  1 -
+ target/hppa/cpu-param.h                     |  2 -
+ target/i386/cpu-param.h                     |  2 -
+ target/loongarch/cpu-param.h                |  1 -
+ target/m68k/cpu-param.h                     |  1 -
+ target/microblaze/cpu-param.h               |  2 -
+ target/mips/cpu-param.h                     |  5 --
+ target/openrisc/cpu-param.h                 |  1 -
+ target/ppc/cpu-param.h                      |  2 -
+ target/riscv/cpu-param.h                    |  2 -
+ target/rx/cpu-param.h                       |  1 -
+ target/s390x/cpu-param.h                    |  1 -
+ target/sh4/cpu-param.h                      |  1 -
+ target/sparc/cpu-param.h                    |  2 -
+ target/tricore/cpu-param.h                  |  1 -
+ target/xtensa/cpu-param.h                   |  1 -
+ accel/tcg/cputlb.c                          |  7 --
+ accel/tcg/tcg-all.c                         |  9 ++-
+ plugins/loader.c                            |  7 +-
+ target/arm/ptw.c                            | 34 ---------
+ target/riscv/cpu_helper.c                   | 13 +---
+ tcg/perf-stubs.c                            | 26 +++++++
+ .gitlab-ci.d/crossbuilds.yml                |  2 +-
+ accel/tcg/meson.build                       | 11 ++-
+ configs/targets/aarch64-bsd-user.mak        |  1 +
+ configs/targets/aarch64-linux-user.mak      |  1 +
+ configs/targets/aarch64-softmmu.mak         |  1 +
+ configs/targets/aarch64_be-linux-user.mak   |  1 +
+ configs/targets/alpha-linux-user.mak        |  1 +
+ configs/targets/alpha-softmmu.mak           |  1 +
+ configs/targets/arm-bsd-user.mak            |  1 +
+ configs/targets/arm-linux-user.mak          |  1 +
+ configs/targets/arm-softmmu.mak             |  1 +
+ configs/targets/armeb-linux-user.mak        |  1 +
+ configs/targets/avr-softmmu.mak             |  1 +
+ configs/targets/hexagon-linux-user.mak      |  1 +
+ configs/targets/hppa-linux-user.mak         |  2 +
+ configs/targets/hppa-softmmu.mak            |  1 +
+ configs/targets/i386-bsd-user.mak           |  1 +
+ configs/targets/i386-linux-user.mak         |  1 +
+ configs/targets/i386-softmmu.mak            |  1 +
+ configs/targets/loongarch64-linux-user.mak  |  1 +
+ configs/targets/loongarch64-softmmu.mak     |  1 +
+ configs/targets/m68k-linux-user.mak         |  1 +
+ configs/targets/m68k-softmmu.mak            |  1 +
+ configs/targets/microblaze-linux-user.mak   |  1 +
+ configs/targets/microblaze-softmmu.mak      |  3 +
+ configs/targets/microblazeel-linux-user.mak |  1 +
+ configs/targets/microblazeel-softmmu.mak    |  3 +
+ configs/targets/mips-linux-user.mak         |  1 +
+ configs/targets/mips-softmmu.mak            |  1 +
+ configs/targets/mips64-linux-user.mak       |  1 +
+ configs/targets/mips64-softmmu.mak          |  1 +
+ configs/targets/mips64el-linux-user.mak     |  1 +
+ configs/targets/mips64el-softmmu.mak        |  1 +
+ configs/targets/mipsel-linux-user.mak       |  1 +
+ configs/targets/mipsel-softmmu.mak          |  1 +
+ configs/targets/mipsn32-linux-user.mak      |  1 +
+ configs/targets/mipsn32el-linux-user.mak    |  1 +
+ configs/targets/or1k-linux-user.mak         |  1 +
+ configs/targets/or1k-softmmu.mak            |  1 +
+ configs/targets/ppc-linux-user.mak          |  1 +
+ configs/targets/ppc-softmmu.mak             |  1 +
+ configs/targets/ppc64-linux-user.mak        |  1 +
+ configs/targets/ppc64-softmmu.mak           |  1 +
+ configs/targets/ppc64le-linux-user.mak      |  1 +
+ configs/targets/riscv32-linux-user.mak      |  1 +
+ configs/targets/riscv32-softmmu.mak         |  1 +
+ configs/targets/riscv64-bsd-user.mak        |  1 +
+ configs/targets/riscv64-linux-user.mak      |  1 +
+ configs/targets/riscv64-softmmu.mak         |  1 +
+ configs/targets/rx-softmmu.mak              |  1 +
+ configs/targets/s390x-linux-user.mak        |  1 +
+ configs/targets/s390x-softmmu.mak           |  1 +
+ configs/targets/sh4-linux-user.mak          |  1 +
+ configs/targets/sh4-softmmu.mak             |  1 +
+ configs/targets/sh4eb-linux-user.mak        |  1 +
+ configs/targets/sh4eb-softmmu.mak           |  1 +
+ configs/targets/sparc-linux-user.mak        |  1 +
+ configs/targets/sparc-softmmu.mak           |  1 +
+ configs/targets/sparc32plus-linux-user.mak  |  1 +
+ configs/targets/sparc64-linux-user.mak      |  1 +
+ configs/targets/sparc64-softmmu.mak         |  1 +
+ configs/targets/tricore-softmmu.mak         |  1 +
+ configs/targets/x86_64-bsd-user.mak         |  1 +
+ configs/targets/x86_64-linux-user.mak       |  1 +
+ configs/targets/x86_64-softmmu.mak          |  1 +
+ configs/targets/xtensa-linux-user.mak       |  1 +
+ configs/targets/xtensa-softmmu.mak          |  1 +
+ configs/targets/xtensaeb-linux-user.mak     |  1 +
+ configs/targets/xtensaeb-softmmu.mak        |  1 +
+ docs/about/deprecated.rst                   |  7 ++
+ docs/devel/multi-thread-tcg.rst             |  1 -
+ meson.build                                 | 77 +++++++++++----------
+ tcg/meson.build                             |  2 +
+ 102 files changed, 167 insertions(+), 205 deletions(-)
+ delete mode 100644 include/tcg/oversized-guest.h
+ create mode 100644 tcg/perf-stubs.c
+
+-- 
+2.43.0
 
 
