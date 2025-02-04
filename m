@@ -2,98 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE51A274CA
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01CFA274E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:55:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfKDK-0007vi-PY; Tue, 04 Feb 2025 09:47:46 -0500
+	id 1tfKId-0001FC-Ib; Tue, 04 Feb 2025 09:53:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfKDI-0007t6-U0
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:47:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfKDH-0005lk-0o
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:47:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738680452;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ycb8MdhLNYc68pS4VNjC+5DVI72g9Ja3t1up8hvyurU=;
- b=VCTxUh4T/YQk2wYVfn9Kl8pfvI/6ms+vacA1Z2lNOZ2SPfTPxHL2vcDF63qTbe3yS5/+YN
- DHasNBrGSL8PqCazy9ooRprLDSQEZSfeAw2NObajNMk2Utbh/cEHGxly2PBSUbj7cwizvf
- r24B1s7uuQkg37AhE8utKVCEbbxC+rc=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-WETwsLtbNGq_GBQk9s8J_Q-1; Tue, 04 Feb 2025 09:47:30 -0500
-X-MC-Unique: WETwsLtbNGq_GBQk9s8J_Q-1
-X-Mimecast-MFC-AGG-ID: WETwsLtbNGq_GBQk9s8J_Q
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7b6e6cf6742so1623411185a.3
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 06:47:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tfKIb-0001F4-R0
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:53:13 -0500
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tfKIa-000265-4R
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:53:13 -0500
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-6f6ae4846c7so35315257b3.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 06:53:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738680790; x=1739285590; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=A9Q8Ge+j1xa7blEz+k0liHP3yP5grLk7zy9GsQZOF2Q=;
+ b=UyDye4cTdvm2f9cX2KYS3lHWZNuR53dKWjiKqnjNewE/uGKprUcYntGgwEFpZbic43
+ yAxFNbjb8lnwgAN7d9FdSQW46kHHVSr2inwcTd0W1yTQIs37z5lz7hAQDZFCiK/CgsNO
+ Wkjg1AUHprHcbqAdIdoQL0btWDcY5n1xmO3k6XKCJkz0B2ZiAzRKnB1Egz6LB71XHi0o
+ QYUnbCx/2+QK/ea8aTk8pvjitgX/a6ie5OL52B5kwM8zL7E5RG3OwpeqLfnQ84NPrVWR
+ 9wTskwYEg1gUKPOdcZ+3oY7obb5ohhDMQpvFEVbJaNNk0o+e/UzL78cKpTxn4eWUAL9d
+ yP9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738680448; x=1739285248;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ycb8MdhLNYc68pS4VNjC+5DVI72g9Ja3t1up8hvyurU=;
- b=f3mdCxz3i3t0YvYCUTjebEZ6oikzotPSDHI3a29JVsNc2yF/95AMvUblhIQ/LHpK8m
- x4yPss9CFs1mA5m8LsoQr2kY8Ss//xagEoPCKPNgiENnCa5tGjZSORz94tvKPewxDYP/
- vy2nd1XAknnVK018iF1POA72j1CVBtMgV2j/PEjUV1jauJMROPn5Q5jHndoxR1nYxYZ6
- XHqAxGSJBgJiTRtV1h1xysGKjsTp4O4YrP6lw6Nlc8mVdJJcW+2se+R/e7oZ4AnQffKy
- NTyOUF1rW99P9x8N9omxlWRNANKTTOJJWjvmZERJB2ao5Ez+wFvMF6yhk/32kv0LbtQm
- 5N3Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVCaGsHnId2zzOOF2a9eSiLFjTV8fEwmYN30WwntwakX85S1NawSlznQ6RX3d3LGNkUPfin/Fe0SM/9@nongnu.org
-X-Gm-Message-State: AOJu0YwYsu+3rHCPLHNeKFhxMxHgt5f1dNyIEoWzuHeXjg9JG2o8zrb7
- ZG9OzDiuomd7wBkNjvwM8kqhgXrbDGUCuRTIVosTZ8j33kUrvri6Yr8XpplDHm5DfagS5iMSW28
- 28LaoGLoSBY+bq5v2bcb1Nm4ShYOT3c6f8G1i8tc5a2X9Jo1B9xRb
-X-Gm-Gg: ASbGncvjKBCZlfxmTbf2uv8slw1VLZiuhDYJNMZp6ZQI8DZ5sioOJl9RwG9jOZddZwC
- HirYLCltf+Ano84Uluk43yBDsC2vMpjjG1PNLddjy6I8z9/EpY4cLiYJ/Yo+dO7ItaAJXZd6Nzc
- hxW83WseoeWTBbFZx/X5h9yyT7J7jAUjLgysuM/inwSCQ5m0aKlJwUzTVuQ6cA0GY0AS2dgifDj
- pFz3tRd5D+9koVTBI9gjJPM16xah+ofbJ92lg46XMsJiisq4AB4+QgT7He7zJCkOYvx/jp6OZzn
- Knmg/zWG6rjF9xVUNbViSwx93KO1G2UKPrIywkS8Rwuvnp8d
-X-Received: by 2002:a05:620a:8088:b0:7b6:d6ff:86ba with SMTP id
- af79cd13be357-7bffcd99e37mr3762005385a.52.1738680448560; 
- Tue, 04 Feb 2025 06:47:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGUxti8JHHRpKYeuHGqslWSlWEh1eCWXjv4Q0SgjAL3XOWnHSa4b+64HNM3tG/r0rzRqKfWUw==
-X-Received: by 2002:a05:620a:8088:b0:7b6:d6ff:86ba with SMTP id
- af79cd13be357-7bffcd99e37mr3762002785a.52.1738680448246; 
- Tue, 04 Feb 2025 06:47:28 -0800 (PST)
-Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c00a8d96ecsm642772285a.62.2025.02.04.06.47.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 06:47:27 -0800 (PST)
-Date: Tue, 4 Feb 2025 09:47:26 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Fabiano Rosas <farosas@suse.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 0/4] overcommit: introduce mem-lock-onfault
-Message-ID: <Z6Iofl0pp1xDENHz@x1.local>
-References: <20250123131944.391886-1-d-tatianin@yandex-team.ru>
- <Z5Ju0ZnR6KEEF-Bu@x1n>
- <1abc7363-21be-4a9e-a946-c50deb266dea@yandex-team.ru>
+ d=1e100.net; s=20230601; t=1738680790; x=1739285590;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=A9Q8Ge+j1xa7blEz+k0liHP3yP5grLk7zy9GsQZOF2Q=;
+ b=q0CEMkdqQeHRrRhN2ZTL11dhSIXSAE9pjtvC/+DcrUnbW5IbW6G0Lc9cNUtGhaSuLd
+ Ld72qnxyHQwqnUiQb9Rh6F+XaHFw4tehNAYYaqM3TnL1twdKsWIqpCGEvuoocDJ4WB0o
+ o1JaTNKdcnG5a80PS2NnWirt3HDx6EsiPSQgTnQL04hlfrOTNmUylT5p1PTnb1nDAHGp
+ N6pJMDZWnc88zFuO+CzmoYpXzOipoKxdJkP0Kv8l67rZ1vuCjxDA7W1X3JuP7MMst53V
+ vsj27IfKHK/Lk7THbR5q99kScLN394r8ITFz+2I/rbGBZ36+BV8AFatSR0p8B6VDTlFm
+ b9rg==
+X-Gm-Message-State: AOJu0YyknPEwfc1kt51BA/xJmI2BCtLfYKhynfySo9J1bJySShF1m638
+ EVvIWioX5rlhLjmUWC0PpiiZb8pXCEP4jVYo5P8FuoyZTlGlgAOaxjDfuzpKL9ROTL+HD1GgGi0
+ 2hJIxBzp4+7d5mvFNhLZRjQV0hlH2EzkXd6on9g==
+X-Gm-Gg: ASbGncs7fYXxqWAcJCm+AeINQq/wfoO6YHLTsqzN7oYyNg2odv7B9LZ4L3vQ1k9uBlU
+ rxJLPDu8ycZT/VAW5fJJKmy6Ap2YmDISZb+vhH6sK+PfiD5cJae7OslHiopXgbpxu8sESxh447Q
+ ==
+X-Google-Smtp-Source: AGHT+IFVPoqUv9kSvrlWcVLfWEwFYv9pXI/VFOKFYa6BQaafMZLcSw1+ka9xb1xcxZIWezBF84SajUrV3N9eU00X+bw=
+X-Received: by 2002:a05:6902:f85:b0:e57:346f:5b12 with SMTP id
+ 3f1490d57ef6-e58a4b01f98mr15788524276.18.1738680790099; Tue, 04 Feb 2025
+ 06:53:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1abc7363-21be-4a9e-a946-c50deb266dea@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250116140315.2455143-1-dwmw2@infradead.org>
+ <20250116140315.2455143-4-dwmw2@infradead.org>
+ <CAFEAcA9CKgumt-6V_EjCipm1DYdYw5GETNoSbUKeRsGEVhNv_Q@mail.gmail.com>
+ <2498d8fa34f6503879f99f671b58055bb6a63fdc.camel@infradead.org>
+In-Reply-To: <2498d8fa34f6503879f99f671b58055bb6a63fdc.camel@infradead.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 4 Feb 2025 14:52:57 +0000
+X-Gm-Features: AWEUYZmWJU1fMLui0Foh6FkZIQ-iSCgBLibUk13q72sxRHZaHv7XxsQqgjRDVpQ
+Message-ID: <CAFEAcA9=Z11c3LkSqsODQ40EutN0KSvywxFAciFfj=OpvytuHw@mail.gmail.com>
+Subject: Re: [PATCH v7 3/3] hw/acpi: Add vmclock device
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Cornelia Huck <cohuck@redhat.com>, Peter Hilber <quic_philber@quicinc.com>, 
+ "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>, paul <paul@xen.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,100 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 04, 2025 at 11:23:41AM +0300, Daniil Tatianin wrote:
-> 
-> On 1/23/25 7:31 PM, Peter Xu wrote:
-> > On Thu, Jan 23, 2025 at 04:19:40PM +0300, Daniil Tatianin wrote:
-> > > Currently, passing mem-lock=on to QEMU causes memory usage to grow by
-> > > huge amounts:
-> > > 
-> > > no memlock:
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=off
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      45652
-> > > 
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=off -enable-kvm
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      39756
-> > > 
-> > > memlock:
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=on
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      1309876
-> > > 
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=on -enable-kvm
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      259956
-> > > 
-> > > This is caused by the fact that mlockall(2) automatically
-> > > write-faults every existing and future anonymous mappings in the
-> > > process right away.
-> > > 
-> > > One of the reasons to enable mem-lock is to protect a QEMU process'
-> > > pages from being compacted and migrated by kcompactd (which does so
-> > > by messing with a live process page tables causing thousands of TLB
-> > > flush IPIs per second) basically stealing all guest time while it's
-> > > active.
-> > > 
-> > > mem-lock=on helps against this (given compact_unevictable_allowed is 0),
-> > > but the memory overhead it introduces is an undesirable side effect,
-> > > which we can completely avoid by passing MCL_ONFAULT to mlockall, which
-> > > is what this series allows to do with a new option for mem-lock called
-> > > on-fault.
-> > > 
-> > > memlock-onfault:
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=on-fault
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      54004
-> > > 
-> > >      $ ./qemu-system-x86_64 -overcommit mem-lock=on-fault -enable-kvm
-> > >      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
-> > >      47772
-> > > 
-> > > You may notice the memory usage is still slightly higher, in this case
-> > > by a few megabytes over the mem-lock=off case. I was able to trace this
-> > > down to a bug in the linux kernel with MCL_ONFAULT not being honored for
-> > > the early process heap (with brk(2) etc.) so it is still write-faulted in
-> > > this case, but it's still way less than it was with just the mem-lock=on.
-> > > 
-> > > Changes since v1:
-> > >      - Don't make a separate mem-lock-onfault, add an on-fault option to mem-lock instead
-> > > 
-> > > Changes since v2:
-> > >      - Move overcommit option parsing out of line
-> > >      - Make enable_mlock an enum instead
-> > > 
-> > > Changes since v3:
-> > >      - Rebase to latest master due to the recent sysemu -> system renames
-> > > 
-> > > Daniil Tatianin (4):
-> > >    os: add an ability to lock memory on_fault
-> > >    system/vl: extract overcommit option parsing into a helper
-> > >    system: introduce a new MlockState enum
-> > >    overcommit: introduce mem-lock=on-fault
-> > > 
-> > >   hw/virtio/virtio-mem.c    |  2 +-
-> > >   include/system/os-posix.h |  2 +-
-> > >   include/system/os-win32.h |  3 ++-
-> > >   include/system/system.h   | 12 ++++++++-
-> > >   migration/postcopy-ram.c  |  4 +--
-> > >   os-posix.c                | 10 ++++++--
-> > >   qemu-options.hx           | 14 +++++++----
-> > >   system/globals.c          | 12 ++++++++-
-> > >   system/vl.c               | 52 +++++++++++++++++++++++++++++++--------
-> > >   9 files changed, 87 insertions(+), 24 deletions(-)
-> > Considering it's very mem relevant change and looks pretty benign.. I can
-> > pick this if nobody disagrees (or beats me to it, which I'd appreciate).
-> > 
-> > I'll also provide at least one week for people to stop me.
-> 
-> I think it's been almost two weeks, so should be good now :)
+On Tue, 4 Feb 2025 at 14:17, David Woodhouse <dwmw2@infradead.org> wrote:
+>
+> On Tue, 2025-02-04 at 13:49 +0000, Peter Maydell wrote:
+> > On Thu, 16 Jan 2025 at 14:05, David Woodhouse <dwmw2@infradead.org>
+> > wrote:
+> > > +    qemu_register_reset(vmclock_handle_reset, vms);
+> >
+> > No new calls to qemu_register_reset(), please. This is
+> > a device, use the device reset API.
+>
+> Ack. This was cargo-culted from vmgenid; should I fix that too?
 
-Don't worry, this is in track.  I'll send it maybe in a few days.
+Yes, please.
 
-Thanks,
+> Is commit c009a311e93 the right example to follow?
 
--- 
-Peter Xu
+I guess so, but I don't understand why that code is
+adding its own ResettableState and overriding rc->get_state.
+Devices all already have a ResettableState.
 
+This is annoyingly complicated because your device
+is directly inheriting from TYPE_DEVICE, and not from
+TYPE_SYSBUS_DEVICE. TYPE_DEVICE devices are not plugged into
+any bus, so they don't get automatically reset on system
+reset. TYPE_SYSBUS_DEVICE devices plug into the sysbus,
+so they get reset when system reset walks the bus tree to
+reset everything.
+
+I would ideally like to figure out a more sensible design
+for reset that doesn't require that either everything plugs
+into a bus or else grotty hacks to arrange for it to get
+reset manually, but that's a design problem that's been
+on my todo list for some years now. My interim stance has
+basically been "don't directly inherit from TYPE_DEVICE,
+because then you won't get reset; prefer TYPE_SYSBUS_DEVICE
+instead"...
+
+thanks
+-- PMM
 
