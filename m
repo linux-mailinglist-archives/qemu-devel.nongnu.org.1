@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED450A27DEF
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 23:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7A8A27D1C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:16:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQyd-0001MU-I0; Tue, 04 Feb 2025 17:01:03 -0500
+	id 1tfQFo-0005CR-1C; Tue, 04 Feb 2025 16:14:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
- id 1tfPGu-0004If-SO
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 15:11:49 -0500
-Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQFa-0005At-TL
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:14:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
- id 1tfPGt-0006qq-5A
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 15:11:48 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id D4C79A42D98;
- Tue,  4 Feb 2025 20:09:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A85CEC4CEE2;
- Tue,  4 Feb 2025 20:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738699894;
- bh=n903QA//BBYKpY4cOT1+2ldqqv5Gmu9LPXH4tfYVe+M=;
- h=From:Date:Subject:To:Cc:From;
- b=X0cVKyykFPgFYOo3dDvgLfl5FNFub693RuAPV7nu4GVgs69DHHeA//1TwN2ccEtZ3
- qlPJVeDhw6yqm96CGKUQttH441T8X4ppwZfWhXehCPrkDA4pTQgYts8E/TkFMn3YTF
- VCaZQgfgTQeFRwhXCSCZFjKj2zDzRoPeJ/4w3BOBHeYKtm8Pdhr+dRLat6X32H7vxD
- ald5SqILyBWvtX50q1Sreyf65Z4VSmfixruVxUH6H/YgCu+kG29v5P68ot55u7+2rR
- ZZepapIsRtZUa6JGwiCES3wxYliBzj3gHdj9mU6a+m6lhpoFHAV1m5nB65WszefBTD
- SXXZuzGElOsEQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org
- (localhost.localdomain [127.0.0.1])
- by smtp.lore.kernel.org (Postfix) with ESMTP id 8FDC7C02193;
- Tue,  4 Feb 2025 20:11:34 +0000 (UTC)
-From: Joel Granados <joel.granados@kernel.org>
-Date: Tue, 04 Feb 2025 21:10:34 +0100
-Subject: [PATCH] build: Replace meson introspection argument with a
- builddir
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQFX-0005dT-HE
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:14:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738703664;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=rRooqp8moNxYSN/y7I28kkGj6UpSZgH5MOyJcr71MlM=;
+ b=hQUHNPmB0D4vSjrQFiIyEvdJgRrdq4ssqZ/3YSc+VNIi8qjaQLzAEXO4hZeyA1D+KCF10f
+ ic/xR3Z2QihJll2f8KqpyM+KePvkBrBLQS0xj3tCekB/giPB1tLpERj3pjvQesLix7DbJu
+ PR+EQ8FehJQERvvWum0ezzzx+zjSLI4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-cfHZbZPtPNKOkedRZxUgXA-1; Tue,
+ 04 Feb 2025 16:14:21 -0500
+X-MC-Unique: cfHZbZPtPNKOkedRZxUgXA-1
+X-Mimecast-MFC-AGG-ID: cfHZbZPtPNKOkedRZxUgXA
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3BCC41801F1F; Tue,  4 Feb 2025 21:14:19 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.194.100])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BF68D1800268; Tue,  4 Feb 2025 21:14:15 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
+ pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
+ qemu-devel@nongnu.org
+Subject: [PATCH v3 00/16] block: Managing inactive nodes (QSD migration)
+Date: Tue,  4 Feb 2025 22:13:51 +0100
+Message-ID: <20250204211407.381505-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250204-jag-fix_meson-v1-1-ecb6bdb1db51@kernel.org>
-X-B4-Tracking: v=1; b=H4sIADl0omcC/x2MWwqAIBAAryL7neDzo64SEZabbZCGQgTS3ZM+h
- 2GmQsFMWGBgFTLeVCjFBrJjsO4uBuTkG4MSygolDD9c4Bs984klRW60X4xXvdDSQmuujE3+v3F
- 63w/xCzuaXwAAAA==
-X-Change-ID: 20250204-jag-fix_meson-43db4d290315
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Joel Granados <joel.granados@kernel.org>
-X-Mailer: b4 0.15-dev-64da2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1262;
- i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=n903QA//BBYKpY4cOT1+2ldqqv5Gmu9LPXH4tfYVe+M=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGeidEdVR4Y+ouemPf1zTZjEMaNRJFn89bnt4
- dgnUdtMIAj4A4kBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJnonRHAAoJELqXzVK3
- lkFPuDUL/3uPcT7NKjoHmxwSq470mQp0rmGM0CqaKYBCZWBSJxdaQw6uhViGUT1C8PXWp/kWY+O
- tEtyUyhiD5V3HIc5i7X8bveN4A+potmEJaJ2LWf8sIJcMWFPlENh2wOzk1DpGRy0Y/8c1Y0B4Wv
- fJteBBO9XAICnim88PhzpXkt9ia0KeNHKrbq7nhE2p2WXDjIB4wCrUyR1tM55A4FTKTLoxDP3nh
- qJLgK2VRbJOkuRx4UfTl0VYfQiar5UT/9m60YXg4/ueighvMAOUhbt4JoRlrRjZ6OIBil8x6y5D
- W21VwLubidLzKf5MiZDlo8T260HqhklvaDh+WGSdC8hd96Q5exgKjC1FCiUzkPyzlaqQsMP48ta
- QY5Gt+HbPbK5NUSCBJ/3kAkwi2rL7Da3vYcU4n7Q2/zuKwbQh5KAJ2VcLF4MJLUgMMYyTv0rTy0
- 8Cvza78hO4HNoZyg1c3yR4ipwtxExlQQb/fm9UKcG+Gd5bG73T6AhlXON1peDDiYxBj3kajTEU7
- HA=
-X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
- auth_id=239
-Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
- envelope-from=joel.granados@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 04 Feb 2025 17:00:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,42 +78,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the meson introspect argument with the build directory instead
-of the meson.build file. The introspect command accepts an optional
-build directory not a file.
+This series adds a mechanism that allows the user or management tool to
+manually activate and inactivate block nodes instead of fully relying on
+the automatic management in the migration code.
 
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
----
-For some reason this causes an error when I "remote" compile qemu.
-In any case, the introspect only accepts directories, so having it point
-the to the meson.build file is a mistake.
+One case where this is needed is for migration with shared storage and
+devices backed by qemu-storage-daemon, which as an external process is
+not involved in the VM migration. Management tools can manually
+orchestrate the handover in this scenario. The new qemu-iotests case
+qsd-migrate demonstrates this.
 
-Comments are greatly appreciated
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+There are other cases without qemu-storage-daemon where manual
+management is necessary. For example, after migration, the destination
+VM only activates images on 'cont', but after migrating a paused VM, the
+user may want to perform operations on a block node while the VM is
+still paused.
 
-diff --git a/Makefile b/Makefile
-index b65b0bd41a..da88d9bb31 100644
---- a/Makefile
-+++ b/Makefile
-@@ -129,7 +129,7 @@ Makefile.mtest: build.ninja scripts/mtest2make.py
- .PHONY: update-buildoptions
- all update-buildoptions: $(SRC_PATH)/scripts/meson-buildoptions.sh
- $(SRC_PATH)/scripts/meson-buildoptions.sh: $(SRC_PATH)/meson_options.txt
--	$(MESON) introspect --buildoptions $(SRC_PATH)/meson.build | $(PYTHON) \
-+	$(MESON) introspect --buildoptions $(BUILD_DIR) | $(PYTHON) \
- 	  scripts/meson-buildoptions.py > $@.tmp && mv $@.tmp $@
- endif
- 
+This series adds support for block exports on an inactive node (needed
+for shared storage migration with qemu-storage-daemon) only to NBD.
+Adding it to other export types will be done in a future series.
 
----
-base-commit: d922088eb4ba6bc31a99f17b32cf75e59dd306cd
-change-id: 20250204-jag-fix_meson-43db4d290315
+v3:
+- Moved bdrv_is_inactive() to patch 1 to fix the build [Fabiano]
+- Patch 5 ('block: Allow inactivating already inactive nodes') has
+  become patch 2 to fix the logical ordering [Eric]
+- Patch 8: Fixed typo in the documentation [Eric]
+- Patch 10: Fixed typo in the commit message [Stefan]
+- Added Patch 11: Drain nodes for setting inactive flag [Stefan]
+- Patch 14: Test reading inactive images from both sides [Eric]
+- Patch 16: Fix typo in a comment [Eric]
 
-Best regards,
+v2:
+- Added a comprehensive test case that tests how inactive nodes
+  interoperate with many operations
+- Added a couple of fixes for bugs uncovered by the tests (that would
+  usually lead to crashes when an unsupported operation is performed on
+  inactive nodes)
+- Added 'active' status to query-block information
+
+Kevin Wolf (16):
+  block: Add 'active' field to BlockDeviceInfo
+  block: Allow inactivating already inactive nodes
+  block: Inactivate external snapshot overlays when necessary
+  migration/block-active: Remove global active flag
+  block: Don't attach inactive child to active node
+  block: Fix crash on block_resize on inactive node
+  block: Add option to create inactive nodes
+  block: Add blockdev-set-active QMP command
+  block: Support inactive nodes in blk_insert_bs()
+  block/export: Don't ignore image activation error in blk_exp_add()
+  block: Drain nodes before inactivating them
+  block/export: Add option to allow export of inactive nodes
+  nbd/server: Support inactive nodes
+  iotests: Add filter_qtest()
+  iotests: Add qsd-migrate case
+  iotests: Add (NBD-based) tests for inactive nodes
+
+ qapi/block-core.json                          |  44 ++-
+ qapi/block-export.json                        |  10 +-
+ include/block/block-common.h                  |   1 +
+ include/block/block-global-state.h            |   6 +
+ include/block/export.h                        |   3 +
+ migration/migration.h                         |   3 -
+ block.c                                       |  64 +++-
+ block/block-backend.c                         |  16 +-
+ block/export/export.c                         |  29 +-
+ block/monitor/block-hmp-cmds.c                |   5 +-
+ block/qapi.c                                  |   1 +
+ blockdev.c                                    |  48 +++
+ migration/block-active.c                      |  46 ---
+ migration/migration.c                         |   8 -
+ nbd/server.c                                  |  17 +
+ tests/qemu-iotests/iotests.py                 |   8 +
+ tests/qemu-iotests/041                        |   4 +-
+ tests/qemu-iotests/165                        |   4 +-
+ tests/qemu-iotests/184.out                    |   2 +
+ tests/qemu-iotests/191.out                    |  16 +
+ tests/qemu-iotests/273.out                    |   5 +
+ tests/qemu-iotests/tests/copy-before-write    |   3 +-
+ tests/qemu-iotests/tests/inactive-node-nbd    | 303 ++++++++++++++++++
+ .../qemu-iotests/tests/inactive-node-nbd.out  | 239 ++++++++++++++
+ tests/qemu-iotests/tests/migrate-bitmaps-test |   7 +-
+ tests/qemu-iotests/tests/qsd-migrate          | 140 ++++++++
+ tests/qemu-iotests/tests/qsd-migrate.out      |  59 ++++
+ 27 files changed, 1004 insertions(+), 87 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/inactive-node-nbd
+ create mode 100644 tests/qemu-iotests/tests/inactive-node-nbd.out
+ create mode 100755 tests/qemu-iotests/tests/qsd-migrate
+ create mode 100644 tests/qemu-iotests/tests/qsd-migrate.out
+
 -- 
-Joel Granados <joel.granados@kernel.org>
-
+2.48.1
 
 
