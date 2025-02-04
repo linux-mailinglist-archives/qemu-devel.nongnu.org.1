@@ -2,100 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1586A2748F
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8842A274CB
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:48:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfK6p-00050H-N6; Tue, 04 Feb 2025 09:41:03 -0500
+	id 1tfKCf-0007jW-9j; Tue, 04 Feb 2025 09:47:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfK6m-0004yF-KJ
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:41:00 -0500
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfKCO-0007hH-NW
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:46:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfK6k-0003Qc-Rv
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:41:00 -0500
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfK6g-00000006qtE-2549; Tue, 04 Feb 2025 15:40:54 +0100
-Message-ID: <c2e18a90-858f-45c6-b5e4-62b1f56f5f01@maciej.szmigiero.name>
-Date: Tue, 4 Feb 2025 15:40:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/33] migration/multifd: Device state transfer support
- - receive side
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfKCJ-0005Gy-Dw
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:46:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738680400;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=++kN6Fekww5w0N6JZf7kMT7JmISFlzuwH3O3FibrCjU=;
+ b=hjrhCJfqKnDUn3UHTuk6dau+OkuJ2uNW2DNm2k/aiVvDEIs+rsxY3FvPANyBc4U1HsDSqq
+ shq6rAVn3APS6a3GbpYkmP/A11auna+Uq6OBBzdeivTNAmIWm3+hDaUBNsxgSJaKtULDTQ
+ 11ZV+a4oqIX4+jUzmpWuEzgOtgM+Ygo=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-G-EEKzMwOZSXwxqvmbNVog-1; Tue, 04 Feb 2025 09:46:38 -0500
+X-MC-Unique: G-EEKzMwOZSXwxqvmbNVog-1
+X-Mimecast-MFC-AGG-ID: G-EEKzMwOZSXwxqvmbNVog
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c034838f38so87201785a.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 06:46:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738680398; x=1739285198;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=++kN6Fekww5w0N6JZf7kMT7JmISFlzuwH3O3FibrCjU=;
+ b=UcSVs5WcifTLGszmTIsKzZV4bvaPtgqo/TUGT9PYFCQa7X4EiopPc5hCUQPOjiDGzp
+ /bbU3vUn2TushqMOrXEU/tvzyrZr2deMIUWtnO1yGK3HQ+LMSUitq7oFHxdDuCXOVMJ4
+ L+d2RXE1WdnXEoJfiNAu5Sa4Fs7KpP6nizDKCZcrKViQ/3HIPdAcSgwLTfduujS1yUI2
+ OmyWxnM3IcrGa9CeJq/qDPZIiCk1aQN1tSr8qxX4IHOogP7JU0I/sj9uB0PZfYwmXbLC
+ 98R0UbVba+zinKIkIydvz3fEYTRURlZE5jFpkYI5qqwEtqPSSwOLdQQFwhmPBBuBq+Cs
+ QIwA==
+X-Gm-Message-State: AOJu0YxSzSs9G76N/85v6/6FbOAsASh0WdmSM/5uX8zS2x/3rsUNmIzi
+ FMdfOOISOl8FB5wLu/4k7qM9Nqdx08MzcW8dAj0hycZqBhjLVbX7nMVwCTMhDIOlALqUEe9jzLl
+ VDTYQL378a2jtpOODQjKw80bZrpcwX84LCccqW6m001MGvDQB85Mq
+X-Gm-Gg: ASbGncsZ7tu6EUzkZnz6bF5Vewx2qulNYSXYbFkHsyrXlxD8Ox7Km085wj5Vl44QeBU
+ KqlNBniENpYhrlt42yt1DA1ay18o/zdJaL2taN7dCfvtODRrqTqOKPzg2skordLg1TH7x1Cs+Wa
+ kG9IfKvSl7WinPmi9PGMEFx/9n3WLYYMvFJql1OG872tXhU6qTmacX2WfscTci8pOShmtsjb9Hl
+ HTdxGNscdPHgBHr8ydTEXABP5TDWdlgR4bCGLrHnDNCzdXZCMKueAxVb+Sr0QiBq222ODXCzDOt
+ f8mWa7Kduv0Tj1JJOnNDFSAK7VryOHvnm4WVgrJp+wvLCitp
+X-Received: by 2002:a05:620a:404f:b0:7b7:5d6:37fa with SMTP id
+ af79cd13be357-7bffcd92940mr3768428785a.41.1738680398090; 
+ Tue, 04 Feb 2025 06:46:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWOiVazuMDypTQNM71mrxoM6jcV8sJtm1FO6AnfSi4XUNTldHrdOAIkTs6ARdar/DWgmMk8Q==
+X-Received: by 2002:a05:620a:404f:b0:7b7:5d6:37fa with SMTP id
+ af79cd13be357-7bffcd92940mr3768423585a.41.1738680397706; 
+ Tue, 04 Feb 2025 06:46:37 -0800 (PST)
+Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7c00a904810sm640362485a.66.2025.02.04.06.46.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Feb 2025 06:46:37 -0800 (PST)
+Date: Tue, 4 Feb 2025 09:46:35 -0500
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <654768fd717b0def70906bf7adfd6739cfd2ecf3.1738171076.git.maciej.szmigiero@oracle.com>
- <Z6E03MMQqTDNFsnX@x1.local>
- <c80c298c-b838-4ea3-8b72-48ca8bf6cb44@maciej.szmigiero.name>
- <Z6FKOKrKZpSmzf68@x1.local>
-Content-Language: en-US, pl-PL
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <Z6FKOKrKZpSmzf68@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.07, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, Stefan Zabka <git@zabka.it>
+Subject: Re: [PATCH v2 0/7] physmem: teach cpu_memory_rw_debug() to write to
+ more memory regions
+Message-ID: <Z6IoS9DWj24oZhRV@x1.local>
+References: <20250124154533.3534250-1-david@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250124154533.3534250-1-david@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,62 +114,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3.02.2025 23:59, Peter Xu wrote:
-> On Mon, Feb 03, 2025 at 11:18:11PM +0100, Maciej S. Szmigiero wrote:
->> On 3.02.2025 22:27, Peter Xu wrote:
->>> On Thu, Jan 30, 2025 at 11:08:34AM +0100, Maciej S. Szmigiero wrote:
->>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>>>
->>>> Add a basic support for receiving device state via multifd channels -
->>>> channels that are shared with RAM transfers.
->>>>
->>>> Depending whether MULTIFD_FLAG_DEVICE_STATE flag is present or not in the
->>>> packet header either device state (MultiFDPacketDeviceState_t) or RAM
->>>> data (existing MultiFDPacket_t) is read.
->>>>
->>>> The received device state data is provided to
->>>> qemu_loadvm_load_state_buffer() function for processing in the
->>>> device's load_state_buffer handler.
->>>>
->>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->>>
->>> I think I acked this one.  You could keep my R-b if...
->>>
->>> [...]
->>>
->>>> diff --git a/migration/multifd.h b/migration/multifd.h
->>>> index 9e4baa066312..abf3acdcee40 100644
->>>> --- a/migration/multifd.h
->>>> +++ b/migration/multifd.h
->>>> @@ -62,6 +62,12 @@ MultiFDRecvData *multifd_get_recv_data(void);
->>>>    #define MULTIFD_FLAG_UADK (8 << 1)
->>>>    #define MULTIFD_FLAG_QATZIP (16 << 1)
->>>> +/*
->>>> + * If set it means that this packet contains device state
->>>> + * (MultiFDPacketDeviceState_t), not RAM data (MultiFDPacket_t).
->>>> + */
->>>> +#define MULTIFD_FLAG_DEVICE_STATE (1 << 6)
->>>
->>> ... if this won't conflict with MULTIFD_FLAG_QATZIP.
->>
->> Hmm, isn't (16 << 1) = 32 while (1 << 6) = 64?
+On Fri, Jan 24, 2025 at 04:45:25PM +0100, David Hildenbrand wrote:
+> This is a follow-up to [1], implementing it by avoiding the use of
+> address_space_write_rom() in cpu_memory_rw_debug() completely, and
+> teaching address_space_write() about debug access instead, the can also
+> write to ROM.
 > 
-> Oops. :)
+> The goal is to let GDB via cpu_memory_rw_debug() to also properly write to
+> MMIO device regions, not just RAM/ROM.
 > 
->>> I think we should stick with one way to write it, then when rebase you can
->>> see such conflicts - either your patch uses 32 << 1, or perhaps we should
->>> start to switch to BIT() for all above instead..
+> It's worth noting that other users of address_space_write_rom() are
+> left unchanged. Maybe hw/core/loader.c and friends could now be converted
+> to to a debug access via address_space_write() instead?
 > 
-> Still, do you mind switch to "32 << 1" (or use BIT())?
+> Survives a basic gitlab CI build/check.
+> 
+> [1] https://lore.kernel.org/all/20241220195923.314208-1-git@zabka.it/
+> 
+> v1 -> v2:
+> * Split up "physmem: disallow direct access to RAM DEVICE in
+>   address_space_write_rom()" into 4 patches
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Cc: Peter Maydell <peter.maydell@linaro.org>
+> Cc: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Cc: Eduardo Habkost <eduardo@habkost.net>
+> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+> Cc: Jagannathan Raman <jag.raman@oracle.com>
+> Cc: "Dr. David Alan Gilbert" <dave@treblig.org>
+> Cc: Stefan Zabka <git@zabka.it>
+> 
+> David Hildenbrand (7):
+>   physmem: factor out memory_region_is_ram_device() check in
+>     memory_access_is_direct()
+>   physmem: factor out RAM/ROMD check in memory_access_is_direct()
+>   physmem: factor out direct access check into
+>     memory_region_supports_direct_access()
+>   physmem: disallow direct access to RAM DEVICE in
+>     address_space_write_rom()
+>   memory: pass MemTxAttrs to memory_access_is_direct()
+>   hmp: use cpu_get_phys_page_debug() in hmp_gva2gpa()
+>   physmem: teach cpu_memory_rw_debug() to write to more memory regions
 
-I will switch to 32 << 1 for consistency with the compression flags
-above.
-  > With either, feel free to take:
-> 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> 
+David, I think it doesn't apply on master, would you rebase and repost?
+
+Stefan, it'll always be good to get an ack from you to show this at least
+works for you - I'd expect that but an explicit email or Tested-by at the
+last patch would be great (either this or a new version).
 
 Thanks,
-Maciej
+
+-- 
+Peter Xu
 
 
