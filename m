@@ -2,95 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3948A277F3
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 18:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B27A277FA
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 18:10:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfMPN-0004fz-RF; Tue, 04 Feb 2025 12:08:21 -0500
+	id 1tfMQs-0006Y8-Kf; Tue, 04 Feb 2025 12:09:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tfMPG-0004cv-A5; Tue, 04 Feb 2025 12:08:14 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfMQl-0006Lg-0v
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 12:09:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tfMPD-0007On-RS; Tue, 04 Feb 2025 12:08:14 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514GF4q7031837;
- Tue, 4 Feb 2025 17:08:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=bDtmD3uahoU0Rlnbm
- 02OUIfLNADVPIOIcSjT34aX7BM=; b=nFUqmiPqO+7EdP0ZKTQnthW2mOGBAo4Sa
- Xpa0pY8p/V3jljDn0puh6gEaSTepM8HHHo+xPEOy1ULbbZWWknA4boRREMS1rhT5
- THTjcZRAeea9oTalGtIJD8rzly1pdN/MTHcb/Va9t2aQDegPeR2+2Yg1aPn7eGqZ
- WCTfp79gd5PJo2CMCE9dzY501ABa14/0HBlXvhwWshyUSI51iny3yrIZHYf8KfC8
- 2yBsV+9MMTIgMCyTQKjVXS80GLgdqRryDrCBoj1JUR7TKSElxqvoHlrWCx10nO0x
- oXvYOijUGIMovNck1LgnRHxJ1P1LjeZuMQfN+fO03mgLz3gDX3sFA==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kekp2qx6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Feb 2025 17:08:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514FUTW0007192;
- Tue, 4 Feb 2025 17:08:09 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxaymmrg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Feb 2025 17:08:09 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 514H87Wl32506442
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Feb 2025 17:08:08 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5FD858053;
- Tue,  4 Feb 2025 17:08:07 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9703D58043;
- Tue,  4 Feb 2025 17:08:06 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.255.239])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Feb 2025 17:08:06 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com
-Subject: [RFC PATCH v2 5/5] s390: implementing CHSC SEI for AP config change
-Date: Tue,  4 Feb 2025 12:07:59 -0500
-Message-Id: <20250204170759.36540-6-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250204170759.36540-1-rreyes@linux.ibm.com>
-References: <20250204170759.36540-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfMQi-0007aI-Gd
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 12:09:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738688983;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MixZuTPd0vMsw7h9RgZuz45+Lso91h1jNJV5awYBfHA=;
+ b=E+4+eKI6irfissx2BQoOYEaQkdsx1BBSRUEnj2PBhY0M6PXTJKWvIGwMZHQXIf/5ETSEAi
+ OKHW2xvBULCIDCsAXuh4dhO1RQZ4kWa7KfkTWkI6RUl6NG3ZYKWY0zX1w3t4nV/KDXysay
+ DVNaANkPndX5f/+Uv8N1So/WGhGvHSk=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262-FnJ4IVrsOUy5epfhGA57jw-1; Tue, 04 Feb 2025 12:09:40 -0500
+X-MC-Unique: FnJ4IVrsOUy5epfhGA57jw-1
+X-Mimecast-MFC-AGG-ID: FnJ4IVrsOUy5epfhGA57jw
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-46798d74f0cso114411061cf.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 09:09:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738688979; x=1739293779;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MixZuTPd0vMsw7h9RgZuz45+Lso91h1jNJV5awYBfHA=;
+ b=QE+KiWS5JKlDcEHIytBtPa1IOm/ruBVYSBzy1AnUFIDB8h3YiyKizsZ10DHrSYD7aQ
+ i3aZrkeU12RCaBME9sw4Q4S/C/Ohv53mJ70AHEblcmuVI3mBggYhyrTej7FbUm5MhOKn
+ 05ho08N8UjNY/jM5QtvF8/xNM9IDHveFqsHK3rIpIpuGLzXffA6fXwwreJd5Mz4hcC/0
+ jR2lLiyCcdNTT9icpln115cpkzI+Ez6zy2c3S4saqQ51lF7afXxy850UGMAGTW6dabLH
+ BBbwL25f130U7RsCdM8zDQ6w2zEmRxjJSkLJKJUZwHMbcCkmXu6KlW9ulEzfXSuTKm5T
+ ZaaA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6ff+A+sFPqGoRjFiJnLJexV8m5lbBvEKwK4fTm09YhJfW05YMotiEQaumH6lEXy2WKvPkzH17QQyf@nongnu.org
+X-Gm-Message-State: AOJu0YyRbhBoR1Nezsg20FXlTwkXouy+Fok0xUG7+UzbZpHaE6rX/htr
+ CLS2JUj6FJY7NdOrEn0CkUt9bXpKBftXcFPwH1l6TZiULRKTZktwnbvcN7avpqFMfG2MylJ2REK
+ ATTYwfshcxh3Zqn6UlYIlvDC1hhrp1Iuub1zIs/pLz/9b8y+Y7+00
+X-Gm-Gg: ASbGnctYFhUDNNpzmibgg65AiplotobFkiJwz5QEjeXOrq1ZWRqemD2WxMRWvPGYiGu
+ P8i5/nqSdO26SQYPLTShrFTlk5UupMupR89UNLj+ojkazGPfhp0IEcWfjL1vUy5osBtaLXQhht/
+ GXvlxJwErxG5SY/obabocPtA8Bj7TSdYL2kvb9kB2koWKYkylGoiYee6OZbJ6xbWjyn9gTZEu0m
+ NFiMeXWUOXo7FiblbX+KITxuyqPe8WbJlOtmo34iHwpUuEH1kSVb1I8IVx8c9iAJv9+cwFNpgHg
+ tFTUYb6Rd3mmMJS6RjtRVfDVbQQISr5JDPFdJMr6vmymS2xQ
+X-Received: by 2002:a05:622a:1e8c:b0:466:a308:292c with SMTP id
+ d75a77b69052e-46fd0b6f3dbmr421300271cf.32.1738688979509; 
+ Tue, 04 Feb 2025 09:09:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXKpGyny5yszYPGxO1L8KpdaLn3zBgJgFYl9aN2bthczbWuJ+WK9AMia+mq+ibrmkoydDEDA==
+X-Received: by 2002:a05:622a:1e8c:b0:466:a308:292c with SMTP id
+ d75a77b69052e-46fd0b6f3dbmr421299861cf.32.1738688979137; 
+ Tue, 04 Feb 2025 09:09:39 -0800 (PST)
+Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-46fdf0a72d4sm60457551cf.13.2025.02.04.09.09.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Feb 2025 09:09:38 -0800 (PST)
+Date: Tue, 4 Feb 2025 12:09:37 -0500
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>
+Cc: david@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, pbonzini@redhat.com,
+ richard.henderson@linaro.org, philmd@linaro.org,
+ peter.maydell@linaro.org, mtosatti@redhat.com, imammedo@redhat.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
+Subject: Re: [PATCH v7 2/6] system/physmem: poisoned memory discard on reboot
+Message-ID: <Z6JJ0fDjkttUcW7n@x1.local>
+References: <20250201095726.3768796-1-william.roche@oracle.com>
+ <20250201095726.3768796-3-william.roche@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zwnfh5ws8WPTYF0yvywaONTAXTVnyr16
-X-Proofpoint-GUID: zwnfh5ws8WPTYF0yvywaONTAXTVnyr16
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_08,2025-02-04_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 phishscore=0 mlxlogscore=925 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502040131
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <20250201095726.3768796-3-william.roche@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,51 +112,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+On Sat, Feb 01, 2025 at 09:57:22AM +0000, “William Roche wrote:
+> From: William Roche <william.roche@oracle.com>
+> 
+> Repair poisoned memory location(s), calling ram_block_discard_range():
+> punching a hole in the backend file when necessary and regenerating
+> a usable memory.
+> If the kernel doesn't support the madvise calls used by this function
+> and we are dealing with anonymous memory, fall back to remapping the
+> location(s).
+> 
+> Signed-off-by: William Roche <william.roche@oracle.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> ---
+>  system/physmem.c | 58 ++++++++++++++++++++++++++++++------------------
+>  1 file changed, 36 insertions(+), 22 deletions(-)
+> 
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 3dd2adde73..e8ff930bc9 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -2167,6 +2167,23 @@ void qemu_ram_free(RAMBlock *block)
+>  }
+>  
+>  #ifndef _WIN32
+> +/* Simply remap the given VM memory location from start to start+length */
+> +static int qemu_ram_remap_mmap(RAMBlock *block, uint64_t start, size_t length)
+> +{
+> +    int flags, prot;
+> +    void *area;
+> +    void *host_startaddr = block->host + start;
+> +
+> +    assert(block->fd < 0);
+> +    flags = MAP_FIXED | MAP_ANONYMOUS;
+> +    flags |= block->flags & RAM_SHARED ? MAP_SHARED : MAP_PRIVATE;
+> +    flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
+> +    prot = PROT_READ;
+> +    prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
+> +    area = mmap(host_startaddr, length, prot, flags, -1, 0);
+> +    return area != host_startaddr ? -errno : 0;
+> +}
+> +
+>  /*
+>   * qemu_ram_remap - remap a single RAM page
+>   *
+> @@ -2184,9 +2201,7 @@ void qemu_ram_remap(ram_addr_t addr)
+>  {
+>      RAMBlock *block;
+>      uint64_t offset;
+> -    int flags;
+> -    void *area, *vaddr;
+> -    int prot;
+> +    void *vaddr;
+>      size_t page_size;
+>  
+>      RAMBLOCK_FOREACH(block) {
+> @@ -2201,25 +2216,24 @@ void qemu_ram_remap(ram_addr_t addr)
+>                  ;
+>              } else if (xen_enabled()) {
+>                  abort();
+> -            } else {
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Tested-by: Anthony Krowiak <akrowiak@linux.ibm.com>
----
- target/s390x/ioinst.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Do we need to keep this line?  Otherwise it looks to me the new code won't
+be executed at all in !xen..
 
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index a944f16c25..f061c6db14 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -17,6 +17,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -573,13 +574,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
+> -                flags = MAP_FIXED;
+> -                flags |= block->flags & RAM_SHARED ?
+> -                         MAP_SHARED : MAP_PRIVATE;
+> -                flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
+> -                prot = PROT_READ;
+> -                prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
+> -                if (block->fd >= 0) {
+> -                    area = mmap(vaddr, page_size, prot, flags, block->fd,
+> -                                offset + block->fd_offset);
+> -                } else {
+> -                    flags |= MAP_ANONYMOUS;
+> -                    area = mmap(vaddr, page_size, prot, flags, -1, 0);
+> -                }
+> -                if (area != vaddr) {
+> -                    error_report("Could not remap RAM %s:%" PRIx64 "+%" PRIx64
+> -                                 " +%zx", block->idstr, offset,
+> -                                 block->fd_offset, page_size);
+> -                    exit(1);
+> +                if (ram_block_discard_range(block, offset, page_size) != 0) {
+> +                    /*
+> +                     * Fall back to using mmap() only for anonymous mapping,
+> +                     * as if a backing file is associated we may not be able
+> +                     * to recover the memory in all cases.
+> +                     * So don't take the risk of using only mmap and fail now.
+> +                     */
+> +                    if (block->fd >= 0) {
+> +                        error_report("Could not remap RAM %s:%" PRIx64 "+%"
+> +                                     PRIx64 " +%zx", block->idstr, offset,
+> +                                     block->fd_offset, page_size);
+> +                        exit(1);
+> +                    }
+> +                    if (qemu_ram_remap_mmap(block, offset, page_size) != 0) {
+> +                        error_report("Could not remap RAM %s:%" PRIx64 " +%zx",
+> +                                     block->idstr, offset, page_size);
+> +                        exit(1);
+> +                    }
+>                  }
+>                  memory_try_enable_merging(vaddr, page_size);
+>                  qemu_ram_setup_dump(vaddr, page_size);
+> -- 
+> 2.43.5
+> 
+
 -- 
-2.39.5 (Apple Git-154)
+Peter Xu
 
 
