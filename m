@@ -2,107 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48ADA27303
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B1BA27304
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 14:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfJ9v-0002wO-0q; Tue, 04 Feb 2025 08:40:11 -0500
+	id 1tfJA4-00031E-5z; Tue, 04 Feb 2025 08:40:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tfJ9s-0002w5-39
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tfJ9p-0001e4-BZ
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738676403;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Fpwi/uAGiZl2TO6E2msFPHs/wAJOGyBG92fvc8C3tmE=;
- b=d029y5Slf1Ji3D0XAgw68p9Wlcw5Yq6Dvmkw8HB12cQGI15qxwDRdDTReF3+rIVgy8URtz
- zDXaqV2uCxyrsfc2GMbo/uuARYlZtjypLvbasV7Lao6wGGxJ83EhasKegx2+2m2Y1EaWta
- JbP4aXkYmGF8HxCBpCKxA+urwAGs4k8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-xjqInKzXPXa-4SQgoMfxaw-1; Tue, 04 Feb 2025 08:39:58 -0500
-X-MC-Unique: xjqInKzXPXa-4SQgoMfxaw-1
-X-Mimecast-MFC-AGG-ID: xjqInKzXPXa-4SQgoMfxaw
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38a2140a400so3814872f8f.0
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 05:39:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfJ9z-0002zb-5w
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:15 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfJ9x-0001nw-7z
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:14 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43622267b2eso55961315e9.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 05:40:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738676411; x=1739281211; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4abu7DgodGgrUEXih3A/ZeH1z0OLewVueM3xF7MKAsI=;
+ b=NQHe2YcOrnIg+Bgt41uaOW82zEwzlQ15v3n1R1cHQys9cYsk3JBNBvZ3xT/4mhNr2L
+ snW5q17j3LliwbkwhoL69IXOjduUMlZf4woinV4k7VdJ7aVZa0X5GfDK+q2O7eK2y+tf
+ Qe6mdzfcvxzmWmSnWw5i6Y/qy25uuVQTB2rBEzJT7bTUPIJp3JzC5ouydpeZ4vU69UUa
+ /AVIt11gG3l5vZhI6OWh6SJC0PmKSGokJiVcO7w8+pbZYez7CE38RIFl1SUlcaVJiQDX
+ NIBSEMjRZvakZXOD4gZH3Qwcd5oxQlj58f25HfauTuAAd7NC8uGe3puZOTWvTwtb/3Ay
+ U3aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738676396; x=1739281196;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fpwi/uAGiZl2TO6E2msFPHs/wAJOGyBG92fvc8C3tmE=;
- b=BXftwBI/69TzF7TiPXPxXRF88f2R3itK0a+MgSBw9oM2zemWuQ7A2yNqdWpNZp600F
- H9WyfSrH6Cqkns/sE92ezqsVhKvfZ1P341z4zLA3CW7LfO1S+pJbLw+WR4ari/iUIgH2
- 5nW8e2NDWJPgrQ2AdS81bnP3FklXb81LIdsSzyRyC4vhjSYgSpvQDqnPqsjq8cBdgFFP
- w0ARLQ6Jdz31P5L597ravXw79dmd9M/utB+gdocuBa2T9V6hm4WuTgQQPKT6fFICpozj
- 1YRLqoCl2gXHa9Z+fhLHHFR1v2uVRwGKsTvcpVdS9N2uBa0Z1oqtS5mpQSNOhPCHRTm0
- 0mCw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCViCc4HhQacSSDxD5fp2v+RETFn8HL9JFf2SPaftNS4XpsYYNEyddK+g3HK4IFAJfnKNXmU10Of2P+c@nongnu.org
-X-Gm-Message-State: AOJu0YwL8PFTWwaKHPwm+cXKBaRcY7oiDukwPewttdntYR2H72hKtsfb
- YpDmbmCV/8hUkZ0ePphqreiUofpJQhTEGKL7XCAeov2atQbbWYb3zamqMeXJOvDFRSRcnSHxl5T
- UPIvNEmtr/z5lcuHYeP6c87Z7kUI3NQOY97kZLPXdJ2Dj3uP00FD1jmU19gkT
-X-Gm-Gg: ASbGncsEeK9ET0V1dihvjDNRvkXm+d5sdLoetPDpWaGZbEeWBQONxfIhLE7WqUB/wV4
- lUX8tWcsnfckln0W+yeeTAvTQbHpKV6Gn2K3Fv8gXyIsfeE7ZDQIj/3UVESd3tYwoAURy86ElUE
- 5Ju0CiObl5MEKhHXk65PmE92mXTjq7hA+NN0Gq0z817GrpTqHvHM9jzNtQND1z5sV+J6MyLKJKq
- BYYCK00itbdYogL3jnuKkHCY6G+Ylt67dm1y/Tqfb/3wjuSDlfSsOAvcigiTq29pAoOkX2bBApn
- 0gAAGxc8C5wDMZSGwReQ7tzKysd4rRo82wzWXBBm5ncEUdAu2qrF
-X-Received: by 2002:a05:6000:1882:b0:38d:ac77:d7cb with SMTP id
- ffacd0b85a97d-38dac77e622mr1511607f8f.25.1738676396098; 
- Tue, 04 Feb 2025 05:39:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEWS06XkS4wfY87PLKsU5U+H33xduHzvci02Yyz8BZjsSU1w5EfjswfpK2x2K0vZhyJYXoDeg==
-X-Received: by 2002:a05:6000:1882:b0:38d:ac77:d7cb with SMTP id
- ffacd0b85a97d-38dac77e622mr1511579f8f.25.1738676395601; 
- Tue, 04 Feb 2025 05:39:55 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc1315esm221741005e9.6.2025.02.04.05.39.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 05:39:55 -0800 (PST)
-Date: Tue, 4 Feb 2025 14:39:53 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>, Harsh
- Prateek Bora <harshpb@linux.ibm.com>, kvm@vger.kernel.org, Zhao Liu
- <zhao1.liu@intel.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH 4/9] hw/qdev: Introduce DeviceClass::[un]wire()
- handlers
-Message-ID: <20250204143953.27430bc3@imammedo.users.ipa.redhat.com>
-In-Reply-To: <b7646baf-a07d-4ded-804c-6809173c1f6b@linaro.org>
-References: <20250128142152.9889-1-philmd@linaro.org>
- <20250128142152.9889-5-philmd@linaro.org>
- <b7646baf-a07d-4ded-804c-6809173c1f6b@linaro.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1738676411; x=1739281211;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4abu7DgodGgrUEXih3A/ZeH1z0OLewVueM3xF7MKAsI=;
+ b=P8mLhSrFytAOCeRudc1VHcIH6a6f1wenymivouyd/h7p/KwiTZmaCsO6Y3JMR6ac4b
+ nlgXXczaj0Zk0AZuW+Xdbk9F+IAECAWJgyjrUi4cHLZ7YwC/F8Y9grWKDWL/QDyDQXTp
+ J9G2K5JzGY47cK/2vfNIB/yamtyGs+Vu64ilxXwS7rY2XMWIKZ6JFGs13+nK/VBAEUgY
+ s7Kw2zmyHkzNR/b8fiC9h7XKxx3cjvsV7fXCFtE+XHLJ7vIR3NGbF5HawLnOWXtlHdbF
+ DPcfw6S5B70pMl0z5kUKbnJF8dIrgiEbH55ZdkCFLMcg7wUMmhTBtbPFxuvwFKqGmHIQ
+ long==
+X-Gm-Message-State: AOJu0Yyg0BypFhu8ReVjYVOFonXM02FlpqMjuMLdT7kv9vINdqHj/Pav
+ YXNgCcFXLWVk8tJ9YveZ+To1zvEUTA2lQK5BRUynnIi1yhqWrOnO6JLZ8X6dT40=
+X-Gm-Gg: ASbGncsAEHxnbW2s40hM+MQzaCTOoNMUA12DShN7zHEeCJQr7gm9T7lj/zztNvXnhRj
+ 8HPfUuyHmBr0GicC+gBD4BZZ8hPV6JsE+iFAlG2fjMCdaEaCFdeEnqCWB7vWbdWU9sJ1pBDo1xC
+ +oRIXN1CDGtEG3xxgN52ft0zqK7SCU7ikJQgND2ieHfLI+MIK2z2IxYCfKZ5V2Jmc97s9InTmu5
+ +KzMU7+W0Qj+J4VBV5g7i1jw1QG5ZwC93Csnc7p1IygFPLqKcYbqW7RT/XVFpphYRQS5BOxI+l9
+ OjqPo09BNGIzhiF1simsgmqc49V6+9t+74tmo/vu8aBxpEBLcJd5kZCAYHc=
+X-Google-Smtp-Source: AGHT+IEeJDWMdGayWk7JCYoXQIneANAogcQLAXjc6zdz8z0r5MNgtUPRr0BH/wOzOgyk+Ggt2TjPbQ==
+X-Received: by 2002:a05:600c:4f83:b0:436:713b:cb31 with SMTP id
+ 5b1f17b1804b1-438dc3a904cmr216578035e9.3.1738676411275; 
+ Tue, 04 Feb 2025 05:40:11 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438dcc27125sm223275395e9.15.2025.02.04.05.40.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Feb 2025 05:40:10 -0800 (PST)
+Message-ID: <8616891b-9747-4388-99dc-d6e53e090001@linaro.org>
+Date: Tue, 4 Feb 2025 14:40:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/12] hw/arm/raspi: Deprecate old raspiX machine names
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>,
+ Jared Mauch <jared+home@puck.nether.net>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ devel@lists.libvirt.org
+References: <20250204002240.97830-1-philmd@linaro.org>
+ <20250204002240.97830-12-philmd@linaro.org>
+ <CAFEAcA-3JJ1tZAXsik5hAonuSO9sCqDF1xqPQVhAeN-XwAAhDw@mail.gmail.com>
+ <e32a54f2-ef46-4964-89d4-a8969b6d1b05@linaro.org>
+ <Z6HklNsu0Mzgh7bC@redhat.com>
+ <CAFEAcA9m8g=K-0RU31kswbNSKWnUqA78KxNkcXEAqR=BhWc9bA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA9m8g=K-0RU31kswbNSKWnUqA78KxNkcXEAqR=BhWc9bA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,297 +108,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Jan 2025 12:52:39 -0800
-Richard Henderson <richard.henderson@linaro.org> wrote:
+On 4/2/25 12:13, Peter Maydell wrote:
+> On Tue, 4 Feb 2025 at 09:57, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>>
+>> On Tue, Feb 04, 2025 at 10:51:04AM +0100, Philippe Mathieu-Daudé wrote:
+>>> On 4/2/25 10:22, Peter Maydell wrote:
+>>>> On Tue, 4 Feb 2025 at 00:23, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>>>>
+>>>>> All previous raspi machines can be created using the
+>>>>> generic machine. Deprecate the old names to maintain
+>>>>> a single one. Update the tests.
+>>>>>
+>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>
+>>>>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>>>>> index 4a3c302962a..c9a11a52f78 100644
+>>>>> --- a/docs/about/deprecated.rst
+>>>>> +++ b/docs/about/deprecated.rst
+>>>>> @@ -257,6 +257,19 @@ Big-Endian variants of MicroBlaze ``petalogix-ml605`` and ``xlnx-zynqmp-pmu`` ma
+>>>>>    Both ``petalogix-ml605`` and ``xlnx-zynqmp-pmu`` were added for little endian
+>>>>>    CPUs. Big endian support is not tested.
+>>>>>
+>>>>> +ARM ``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b`` and ``raspi4b`` machines (since 10.0)
+>>>>> +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+>>>>> +
+>>>>> +The Raspberry Pi machines have been unified under the generic ``raspi`` machine,
+>>>>> +which takes the model as argument.
+>>>>> +
+>>>>> +    - `raspi0`` is now an alias for ``raspi,model=Zero``
+>>>>> +    - `raspi1ap`` is now an alias for ``raspi,model=1A+``
+>>>>> +    - `raspi2b`` is now an alias for ``raspi,model=2B``
+>>>>> +    - `raspi3ap`` is now an alias for ``raspi,model=3A+``
+>>>>> +    - `raspi3b`` is now an alias for ``raspi,model=3B``
+>>>>> +    - `raspi4b`` is now an alias for ``raspi,model=4B``
+>>>>
+>>>> This is not how we typically handle "we have a bunch
+>>>> of different devboards in one family". What's wrong with the
+>>>> existing set of machine names?
+>>>
+>>> Zoltan and you don't want to add more machine names, then you
+>>> don't want a generic machine. This is very confusing.
+>>
+>> IMHO we can have distinct machines for each model, but
+>> *NOT* have further machines for each RAM size within a
+>> model.
+> 
+> Yes, this was what I was intending to suggest. Apologies
+> if I was confusing with what I said the previous time round.
 
-> On 1/28/25 06:21, Philippe Mathieu-Daud=C3=A9 wrote:
-> > We are trying to understand what means "a qdev is realized".
-> > One explanation was "the device is guest visible"; however
-> > many devices are realized before being mapped, thus are not
-> > "guest visible". Some devices map / wire their IRQs before
-> > being realized (such ISA devices). There is a need for devices
-> > to be "automatically" mapped/wired (see [2]) such CLI-created
-> > devices, but this apply generically to dynamic machines.
-> >=20
-> > Currently the device creation steps are expected to roughly be:
-> >=20
-> >    (external use)                (QDev core)                   (Device =
-Impl)
-> >     ~~~~~~~~~~~~                  ~~~~~~~~~                     ~~~~~~~=
-~~~~
-> >=20
-> >                                 INIT enter =20
-> >                     -----> =20
-> >                           +----------------------+
-> >                           |    Allocate state    |
-> >                           +----------------------+ =20
-> >                                                   -----> =20
-> >                                                          +-------------=
---------+
-> >                                                          | INIT childre=
-n       |
-> >                                                          |             =
-        |
-> >                                                          | Alias childr=
-en properties
-> >                                                          |             =
-        |
-> >                                                          | Expose prope=
-rties   |
-> >                                  INIT exit               +-------------=
---------+
-> >                     <-----------------------------------
-> >   +----------------+
-> >   | set properties |
-> >   |                |
-> >   | set ClkIn      |
-> >   +----------------+          REALIZE enter =20
-> >                     ----------------------------------> =20
-> >                                                         +--------------=
---------+
-> >                                                         | Use config pr=
-operties|
-> >                                                         |              =
-        |
-> >                                                         | Realize child=
-ren     |
-> >                                                         |              =
-        |
-> >                                                         | Init GPIOs/IR=
-Qs      |
-> >                                                         |              =
-        |
-> >                                                         | Init MemoryRe=
-gions   |
-> >                                                         +--------------=
---------+
-> >                                 REALIZE exit
-> >                     <-----------------------------------               =
-         ----  "realized" / "guest visible"
-> > +-----------------+
-> > | Explicit wiring:|
-> > |   IRQs          |
-> > |   I/O / Mem     |
-> > |   ClkOut        |
-> > +-----------------+             RESET enter =20
-> >                      ---------------------------------> =20
-> >                                                         +--------------=
---------+
-> >                                                         | Reset default=
- values |
-> >                                                         +--------------=
---------+
-> >=20
-> > But as mentioned, various devices "wire" parts before they exit
-> > the "realize" step.
-> > In order to clarify, I'm trying to enforce what can be done
-> > *before* and *after* realization.
-> >=20
-> > *after* a device is expected to be stable (no more configurable)
-> > and fully usable.
-> >=20
-> > To be able to use internal/auto wiring (such ISA devices) and
-> > keep the current external/explicit wiring, I propose to add an
-> > extra "internal wiring" step, happening after the REALIZE step
+OK, let's see if we understand each other correctly as developer,
+before explaining to users, taking the 4B model as example.
 
-we partially have such wiring in place
-  hotplug_handler_plug
-'hotplug_' prefix is legacy remnant to confuse every, it really
-should be renamed to just plug_handler or 'wire_foo'.
+The 4B come in 4 physical variants, depending on the amount of
+DRAM: 1G, 2G, 4G and 8G.
 
-For bus-less CPUs it's used both on hot- and cold-plug paths.
+We can not allocate 2G on 32-bit hosts, so to have a reproducible
+guest behavior on 32/64-bit hosts, it makes sense to takes the
+model with 1G of DRAM as default for the 'raspi4b' machine.
 
-It does take care of wiring after realize part is completed
-(basically exposing device to the external users).
-
-And I it also handles 'bus' based plug workflow
-see qdev_get_hotplug_handler() assuming bus owner has provided a callback.
-It's likely no-one had cared about ISA, as it was out of
-hotplug scope when the interface was introduced.
-
-Unplug part is however is not wired directly into unrealize() stage,
-but rather to an external caller (mgmt or guest), which
-essentially unwinds into the same hotplug_handler chain as plug,
-to unwire device and then the same external caller does call unrealize
-on device. (see:hotplug_handler_unplug() )
-
-As for more direct hack, there is also DEVICE_LISTENER_CALL() callback,
-which is more close to this approach (modulo users are hidden as
-there is not explicit wiring).
-Unrealize part is called too late (which probably is not right),
-and realize part is called before subtree is realized (might work for
-current users, but likely should be placed at the same site as wire() call.
-
-Hence we should think if already existing methods could be reused/adapted t=
-o,
-before adding similar wire/unwire mechanism.
-
-
-> > as:
-> >=20
-> >    (external use)                (QDev core)                   (Device =
-Impl)
-> >     ~~~~~~~~~~~~                  ~~~~~~~~~                     ~~~~~~~=
-~~~~
-> >=20
-> >                                 INIT enter =20
-> >                     -----> =20
-> >                           +----------------------+
-> >                           |    Allocate state    |
-> >                           +----------------------+ =20
-> >                                                   -----> =20
-> >                                                          +-------------=
---------+
-> >                                                          | INIT childre=
-n       |
-> >                                                          |             =
-        |
-> >                                                          | Alias childr=
-en properties
-> >                                                          |             =
-        |
-> >                                                          | Expose prope=
-rties   |
-> >                                  INIT exit               +-------------=
---------+
-> >                     <-----------------------------------
-> >   +----------------+
-> >   | set properties |
-> >   |                |
-> >   | set ClkIn      |
-> >   +----------------+          REALIZE enter =20
-> >                     ----------------------------------> =20
-> >                                                         +--------------=
---------+
-> >                                                         | Use config pr=
-operties|
-> >                                                         |              =
-        |
-> >                                                         | Realize child=
-ren     |
-> >                                                         |              =
-        |
-> >                                                         | Init GPIOs/IR=
-Qs      |
-> >                                                         |              =
-        |
-> >                                                         | Init MemoryRe=
-gions   |
-> >                                                         +--------------=
---------+
-> >                                 REALIZE exit       <---
-> >                           +----------------------+
-> >                           | Internal auto wiring |
-> >                           |   IRQs               |  (i.e. ISA bus)
-> >                           |   I/O / Mem          |
-> >                           |   ClkOut             |
-> >                           +----------------------+
-> >                      <---                                              =
-         ----  "realized"
-> > +-----------------+
-> > | External wiring:|
-> > |   IRQs          |
-> > |   I/O / Mem     |
-> > |   ClkOut        |
-> > +-----------------+             RESET enter                            =
-        ----  "guest visible" =20
-> >                      ---------------------------------> =20
-> >                                                         +--------------=
---------+
-> >                                                         | Reset default=
- values |
-> >                                                         +--------------=
---------+
-> >=20
-> > The "realized" point is not changed. "guest visible" concept only
-> > occurs *after* wiring, just before the reset phase.
-> >=20
-> > This change introduces the DeviceClass::wire handler within qdev
-> > core realization code.
-> >=20
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> >   include/hw/qdev-core.h |  7 +++++++
-> >   hw/core/qdev.c         | 20 +++++++++++++++++++-
-> >   2 files changed, 26 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-> > index 530f3da7021..021bb7afdc0 100644
-> > --- a/include/hw/qdev-core.h
-> > +++ b/include/hw/qdev-core.h
-> > @@ -102,7 +102,12 @@ typedef int (*DeviceSyncConfig)(DeviceState *dev, =
-Error **errp);
-> >    * @props: Properties accessing state fields.
-> >    * @realize: Callback function invoked when the #DeviceState:realized
-> >    * property is changed to %true.
-> > + * @wire: Callback function called after @realize to connect IRQs,
-> > + * clocks and map memories. Can not fail.
-> > + * @unwire: Callback function to undo @wire. Called before @unrealize.
-> > + * Can not fail.
-> >    * @unrealize: Callback function invoked when the #DeviceState:realiz=
-ed
-> > + * property is changed to %false. Can not fail.
-> >    * property is changed to %false.
-> >    * @sync_config: Callback function invoked when QMP command device-sy=
-nc-config
-> >    * is called. Should synchronize device configuration from host to gu=
-est part
-> > @@ -171,6 +176,8 @@ struct DeviceClass {
-> >        */
-> >       DeviceReset legacy_reset;
-> >       DeviceRealize realize;
-> > +    void (*wire)(DeviceState *dev);
-> > +    void (*unwire)(DeviceState *dev);
-> >       DeviceUnrealize unrealize;
-> >       DeviceSyncConfig sync_config;
-> >  =20
-> > diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-> > index 82bbdcb654e..38449255365 100644
-> > --- a/hw/core/qdev.c
-> > +++ b/hw/core/qdev.c
-> > @@ -554,6 +554,15 @@ static void device_set_realized(Object *obj, bool =
-value, Error **errp)
-> >               }
-> >          }
-> >  =20
-> > +        if (dc->wire) {
-> > +            if (!dc->unwire) {
-> > +                warn_report_once("wire() without unwire() for type '%s=
-'",
-> > +                                 object_get_typename(OBJECT(dev)));
-> > +            }
-> > +            dc->wire(dev);
-> > +        }
-> > +
-> > +        /* At this point the device is "guest visible". */
-> >          qatomic_store_release(&dev->realized, value);
-> >  =20
-> >       } else if (!value && dev->realized) {
-> > @@ -573,6 +582,15 @@ static void device_set_realized(Object *obj, bool =
-value, Error **errp)
-> >            */
-> >           smp_wmb();
-> >  =20
-> > +        if (dc->unwire) {
-> > +            if (!dc->wire) {
-> > +                error_report("disconnect() without connect() for type =
-'%s'",
-> > +                             object_get_typename(OBJECT(dev)));
-> > +                abort();
-> > +            }
-> > +            dc->unwire(dev);
-> > +        } =20
->=20
-> Mismatched error messages (wire vs connect).
-> But, really, just check both directions properly at startup.
-> There's probably lots of places where devices are never unrealized.
->=20
-> Otherwise, this seems sane, having a kind of post_init on the realize pat=
-h, running after=20
-> all superclass realization is done.
->=20
->=20
-> r~
->=20
-
+If an user specify -m 2G ... 8G, we can adapt the 'board_rev'
+register to expose the corresponding amount of ram. Now, how /
+where to tell the users 1/ the default is 1G, and 2/ they can use
+2/4/8G?
 
