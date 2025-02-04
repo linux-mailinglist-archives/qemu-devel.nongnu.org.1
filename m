@@ -2,81 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E67A27305
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 14:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36ED2A27310
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 14:42:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfJAd-0003EY-RZ; Tue, 04 Feb 2025 08:40:55 -0500
+	id 1tfJCR-0005YB-Uu; Tue, 04 Feb 2025 08:42:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tfJAa-0003Cf-Ju
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:53 -0500
-Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tfJAX-0001uR-EV
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:40:52 -0500
-Received: by mail-yb1-xb2f.google.com with SMTP id
- 3f1490d57ef6-e5b1c4d14f2so411245276.0
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 05:40:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738676447; x=1739281247; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rudjwNQeYPUWERrrMB/LNEAE0nfdBbuoEYusxtBz6Hk=;
- b=qbrdEbwA9HvSTzknY6mwlWIFD3PFpIPyDFFZQfmb255vCobtAA7RjetIHYoCJeoRJM
- KC1WU3OSGkg5ZeUkb9dYacFW4MIORaPURQfDRXdNTQ8rHHg/zhHJfZuRHWJtOgxKNOff
- 8MMv39abtPXuMvHe8TxDO80PD3yHM7nipfNMvui+XwggCo797h8JIGDcCpPB80YFnjlb
- Mo1Myv0n74COgoTkAFvtVev9Py82lzQoGdlItnhuNzCbef5EbRnOnL+kNCaB/jx/hroB
- H32yLBhVDbIyYdxTMujYVE4JjAAZn756aDdTd6C/O5RWs2Ss+Ec3XAU/eLsByE9pCgg3
- OC1g==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tfJCP-0005Xz-7k
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:42:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tfJCN-0002A3-E7
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 08:42:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738676561;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=3HH4i/2ygnec+xMcPHEvVDyUfMsLSzkJsBaOj9jJAbw=;
+ b=dFgcuaWXKrGcNui6UQdxe3B+CEoiRKqNglwnH0b49LGHMgiUxs4Ql9Z3ZzWcga3y9Ac8UX
+ h9aJWpUxP95O0KopR1I4Pse8Vq0uFwmqVyAGalstk0IfeblJczrrFWGCrRBT56PVNiHMEk
+ tux3h+0OzDModsZmjB94Bzzkd4fLLV8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-208-20XBQdpSNHW0RMYj0Esztg-1; Tue, 04 Feb 2025 08:42:39 -0500
+X-MC-Unique: 20XBQdpSNHW0RMYj0Esztg-1
+X-Mimecast-MFC-AGG-ID: 20XBQdpSNHW0RMYj0Esztg
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6e4237b6cf0so11492986d6.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 05:42:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738676447; x=1739281247;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rudjwNQeYPUWERrrMB/LNEAE0nfdBbuoEYusxtBz6Hk=;
- b=tn5FtCqUdGD7dFOZGAjaA9AOI6PX9gAhnvABMhC+aSXXAA/sE4FIHZWL+jvl6JF1hJ
- rrnwZZXa378QPAFT1Xy3TPI9Pv5cNpEsYNx66mZpDp4prKD0R6LrmNBJ5rs9qnf/UBRI
- uWgBIBvEC5z3Be3/pugYijmlKlZxiZtca9h+4q+gWki/dDq3ULDyCRwXSrumGaawN8x7
- yfwQ/twE4a71KJkem7DAkBU9yHwHHOhNXqE9/56kXpfOT6IO1O/nfdRs3MtHHDm+SZyS
- rlG4URDZsbeaznIxjsH0a6dnSxNvK5gzTWYL9qIZ9qajRzgFAllx0PrvvLNy5ljzWL3I
- vm1g==
-X-Gm-Message-State: AOJu0YzqyUXdDGSyLIqZS1d+7LC7NqfGbM4eTK5FhQdQXT1jqorquFl4
- AB1zQtn7HV2/Z9NOa9/K1mYVZNAVygg1ZXcLA1Ze8V/Ei7H6tGky1l9ipFAV4NV7D2iKuNADTAN
- b2aWmPNuFBeXfwGIGXlWdxG0sZaklf4oWJvJ2UA==
-X-Gm-Gg: ASbGncvO4zlanYp2K9IUhqLmBaNNrXvXAy7F6cj0lXlKEuqYJ3E71fDh70DnuDzrQJy
- xzr6geoSRTi9QSrVx3zzdHNJtPCbGD/zTnXpb3dQJA7DZPHC2a6gBGXIj+zGyMW8I6OfJpNbx0w
- ==
-X-Google-Smtp-Source: AGHT+IHeHRYxr+Swa+BwCou+cErm/FptXK49eojgCJiQUdrsLbWFfnerhYfiOQG6XLkuk+ZFF4/Av/vgoftCdwpFQZ0=
-X-Received: by 2002:a05:6902:2088:b0:e57:2ff6:945a with SMTP id
- 3f1490d57ef6-e58a4936160mr18704318276.0.1738676445825; Tue, 04 Feb 2025
- 05:40:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738676559; x=1739281359;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3HH4i/2ygnec+xMcPHEvVDyUfMsLSzkJsBaOj9jJAbw=;
+ b=waDcEXvnxhSL05zxd3/jkrhaOlID8MTYuK2iFZXc2rMTwzptNBF0Q5PpXUZ5m1ZEli
+ R59wcGNN10c6fdp7PMzedQthO5CZrZCNEiKf0eUwRb4OWZMAW3AfvTwmadO8CTMNr/cy
+ kz8UEqODvL6pWN7/F812GQYDvn1ph/TzC0flHN3esZILXkAp3OwnYgS1ZM/JQEwNFsjK
+ 8WZ2T9J0ZXBVMgcyTML6sVJowLfa6THYrhpmhc7kgfMRBzbZKoGBlJcV+WaBtotsyor3
+ GOa26qhJCWIrgOYkz6YdGsrZpEuehqGMEUO/mL2VOSmSKlAHG4Sgw1Qm1fXEPGPpeKG7
+ nOdQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXQGcM7WZVP47XiswT/O29TqMjsphbsHbirUC2igyqaP+nUaxsYZUxDE3VGaX4w/9WzyroYsgH/Z234@nongnu.org
+X-Gm-Message-State: AOJu0YxCQkBhb1mhTabHinDG8y9mSPeF8r/RdF/1pVpezOPSmApvfluw
+ 8UQLMdyIG3kGU+AEAd645A4PZ0KLUVkAvUlOPYNP241CgW3kwZl5FyRb6bWNyooOs2ZXXttq/yG
+ 0qPUkY1dIIPLT1h2IeCFzl8nnYYOOgJ3tvUO6R4SesKQLeVBK7x/2
+X-Gm-Gg: ASbGncuoGjluQcGQtG8CAFUqPJRhVuus7RtUEfuPv/jlxn13u+XjhInaDqXK4ShpAst
+ 1wnT7jU8I3pybsf0QWGiwc7NL13pDt/CIsVm7ypHENlAjHWuWDFwibWYUHvEvo0tfogmvVOo8OP
+ WnGpEoI++uaRJZarudWDOIfcOMUsFWLQb16OMklfkHExCsAEv8vnWdSKZQrCg7M5naQsvD0E761
+ +NDoFzJ2LCYMuBG20STKxPdwsJ5hJXXgpF5FR+6KTXYG8ix2StdC8s7YygvBRH9oYMESdOBPJlO
+ tYAkNhQEz6yanhZMa3om2VTMdNV1H8tfUqWYCyTjG9E=
+X-Received: by 2002:a05:6214:202c:b0:6da:dc79:a3c9 with SMTP id
+ 6a1803df08f44-6e243b910e7mr326914236d6.9.1738676558989; 
+ Tue, 04 Feb 2025 05:42:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLESZFyb7FPpqATOzCe4f1if+GggYCxOLuNh8QIzrvkJ6SeqTqcxxVnegZkndNMTHQVoIDyA==
+X-Received: by 2002:a05:6214:202c:b0:6da:dc79:a3c9 with SMTP id
+ 6a1803df08f44-6e243b910e7mr326913976d6.9.1738676558634; 
+ Tue, 04 Feb 2025 05:42:38 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e254922e21sm61957506d6.92.2025.02.04.05.42.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Feb 2025 05:42:38 -0800 (PST)
+Message-ID: <8638674e-5a79-4405-9063-89ba78112c8f@redhat.com>
+Date: Tue, 4 Feb 2025 14:42:36 +0100
 MIME-Version: 1.0
-References: <20250129160059.6987-1-farosas@suse.de>
- <20250129160059.6987-18-farosas@suse.de>
-In-Reply-To: <20250129160059.6987-18-farosas@suse.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 4 Feb 2025 13:40:34 +0000
-X-Gm-Features: AWEUYZntsz34b6Zq9iRaewdxvbQ6HhMaOXxOBH-KR6OgjfLmqqOuqkuFDQm7f5Y
-Message-ID: <CAFEAcA9q+QLJnyVZDAKLsB0i2iBohNwkTXmycpV5CUsWYWZmFw@mail.gmail.com>
-Subject: Re: [PULL 17/42] migration: cpr-transfer mode
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Steve Sistare <steven.sistare@oracle.com>,
- Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINER: Add a maintainer for CPR
+To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+References: <20250204082859.846886-1-clg@redhat.com>
+ <8599e016-4ea4-4c1d-b4d2-c583c57a9558@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <8599e016-4ea4-4c1d-b4d2-c583c57a9558@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,124 +153,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 Jan 2025 at 16:11, Fabiano Rosas <farosas@suse.de> wrote:
->
-> From: Steve Sistare <steven.sistare@oracle.com>
->
-> Add the cpr-transfer migration mode, which allows the user to transfer
-> a guest to a new QEMU instance on the same host with minimal guest pause
-> time, by preserving guest RAM in place, albeit with new virtual addresses
-> in new QEMU, and by preserving device file descriptors.  Pages that were
-> locked in memory for DMA in old QEMU remain locked in new QEMU, because the
-> descriptor of the device that locked them remains open.
->
-> cpr-transfer preserves memory and devices descriptors by sending them to
-> new QEMU over a unix domain socket using SCM_RIGHTS.  Such CPR state cannot
-> be sent over the normal migration channel, because devices and backends
-> are created prior to reading the channel, so this mode sends CPR state
-> over a second "cpr" migration channel.  New QEMU reads the cpr channel
-> prior to creating devices or backends.  The user specifies the cpr channel
-> in the channel arguments on the outgoing side, and in a second -incoming
-> command-line parameter on the incoming side.
->
-> The user must start old QEMU with the the '-machine aux-ram-share=on' option,
-> which allows anonymous memory to be transferred in place to the new process
-> by transferring a memory descriptor for each ram block.  Memory-backend
-> objects must have the share=on attribute, but memory-backend-epc is not
-> supported.
->
-> The user starts new QEMU on the same host as old QEMU, with command-line
-> arguments to create the same machine, plus the -incoming option for the
-> main migration channel, like normal live migration.  In addition, the user
-> adds a second -incoming option with channel type "cpr".  This CPR channel
-> must support file descriptor transfer with SCM_RIGHTS, i.e. it must be a
-> UNIX domain socket.
->
-> To initiate CPR, the user issues a migrate command to old QEMU, adding
-> a second migration channel of type "cpr" in the channels argument.
-> Old QEMU stops the VM, saves state to the migration channels, and enters
-> the postmigrate state.  New QEMU mmap's memory descriptors, and execution
-> resumes.
->
-> The implementation splits qmp_migrate into start and finish functions.
-> Start sends CPR state to new QEMU, which responds by closing the CPR
-> channel.  Old QEMU detects the HUP then calls finish, which connects the
-> main migration channel.
->
-> In summary, the usage is:
->
->   qemu-system-$arch -machine aux-ram-share=on ...
->
->   start new QEMU with "-incoming <main-uri> -incoming <cpr-channel>"
->
->   Issue commands to old QEMU:
->     migrate_set_parameter mode cpr-transfer
->
->     {"execute": "migrate", ...
->         {"channel-type": "main"...}, {"channel-type": "cpr"...} ... }
->
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> Link: https://lore.kernel.org/r/1736967650-129648-17-git-send-email-steven.sistare@oracle.com
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On 2/4/25 14:31, Steven Sistare wrote:
+> Hi Cedric, CPR is a mode of live migration, integrated so closely that
+> it makes more sense for the migration maintainers to maintain it, and
+> consult me if/when necessary.  "migration" appears in 4 of the 5 paths
+> you list below.
 
-Hi; this commit includes some code that has confused
-Coverity (CID 1590980) and it also confused me, so maybe
-it could be usefully made clearer?
+CPR is growing with the recent proposal and it is a large enough
+feature to have its own maintainer IMHO.
 
+Should we add cpr* files under the migration subsystem then ?
 
->  void qmp_migrate(const char *uri, bool has_channels,
->                   MigrationChannelList *channels, bool has_detach, bool detach,
->                   bool has_resume, bool resume, Error **errp)
-> @@ -2056,6 +2118,7 @@ void qmp_migrate(const char *uri, bool has_channels,
->      g_autoptr(MigrationChannel) channel = NULL;
->      MigrationAddress *addr = NULL;
->      MigrationChannel *channelv[MIGRATION_CHANNEL_TYPE__MAX] = { NULL };
-> +    MigrationChannel *cpr_channel = NULL;
->
->      /*
->       * Having preliminary checks for uri and channel
-> @@ -2076,6 +2139,7 @@ void qmp_migrate(const char *uri, bool has_channels,
->              }
->              channelv[type] = channels->value;
->          }
-> +        cpr_channel = channelv[MIGRATION_CHANNEL_TYPE_CPR];
->          addr = channelv[MIGRATION_CHANNEL_TYPE_MAIN]->addr;
->          if (!addr) {
->              error_setg(errp, "Channel list has no main entry");
-> @@ -2096,12 +2160,52 @@ void qmp_migrate(const char *uri, bool has_channels,
->          return;
->      }
->
-> +    if (s->parameters.mode == MIG_MODE_CPR_TRANSFER && !cpr_channel) {
-> +        error_setg(errp, "missing 'cpr' migration channel");
-> +        return;
-> +    }
+Thanks,
 
-Here in qmp_migrate() we bail out if cpr_channel is NULL,
-provided that s->parameters.mode is MIG_MODE_CPR_TRANSFER...
+C.
 
-> +
->      resume_requested = has_resume && resume;
->      if (!migrate_prepare(s, resume_requested, errp)) {
->          /* Error detected, put into errp */
->          return;
->      }
->
-> +    if (cpr_state_save(cpr_channel, &local_err)) {
+> - Steve
+> 
+> On 2/4/2025 3:28 AM, Cédric Le Goater wrote:
+>> The CPR feature was added in QEMU 9.0 and it lacks a maintainer.
+>> Propose the main contributor to become one.
+>>
+>> Cc: Steve Sistare <steven.sistare@oracle.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   MAINTAINERS | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index db8c41fbe0f9..efb9da02f142 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -2943,6 +2943,15 @@ F: include/qemu/co-shared-resource.h
+>>   T: git https://gitlab.com/jsnow/qemu.git jobs
+>>   T: git https://gitlab.com/vsementsov/qemu.git block
+>> +CheckPoint and Restart (CPR)
+>> +M: Steve Sistare <steven.sistare@oracle.com>
+>> +S: Supported
+>> +F: hw/vfio/cpr*
+>> +F: include/migration/cpr.h
+>> +F: migration/cpr*
+>> +F: tests/qtest/migration/cpr*
+>> +F: docs/devel/migration/CPR.rst
+>> +
+>>   Compute Express Link
+>>   M: Jonathan Cameron <jonathan.cameron@huawei.com>
+>>   R: Fan Ni <fan.ni@samsung.com>
+> 
 
-...but in cpr_state_save() when we decide whether to dereference
-cpr_channel or not, we aren't checking s->parameters.mode,
-we call migrate_mode() and check the result of that.
-And migrate_mode() isn't completely trivial: it calls
-cpr_get_incoming_mode(), so it's not obvious that it's
-necessarily going to be the same value as s->parameters.mode.
-So Coverity complains that it sees a code path where we
-might dereference cpr_channel even when it's NULL.
-
-Could this be made a bit clearer somehow, do you think?
-
-thanks
--- PMM
 
