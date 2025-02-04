@@ -2,92 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B19A27AFB
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 20:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D80B7A27B59
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 20:33:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfOLd-0003Z5-6g; Tue, 04 Feb 2025 14:12:37 -0500
+	id 1tfOew-0007f0-IR; Tue, 04 Feb 2025 14:32:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfOLY-0003SV-M4
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:12:32 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfOLW-0007yW-43
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:12:32 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4368a293339so68888785e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 11:12:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738696348; x=1739301148; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1uhHhvRU/BGikXKHNsjTq2q46NE2D8U8FefZtc09pRc=;
- b=U7LT57lSksdBrCNlZFKXvk/oImbV90v4kwQR9KBGLMqn5L02aUbBSQzbUhr+v4L5qD
- gWjO3M8WYjMJjOdC45D5S80DlWAuTIwgJc1O3gj+VChOznAxcvn9NXXukTPsIFVzXvbF
- K0Fz2PTE+MQQUWHRciNKH16To25grZaineCUqsXl3NPnpeaYcz+XxdUV6lH4vnxm6xTt
- dE61Omf4txeIU48K82fePe4Yq/baRWu8lSz+KMPXdoCoesQsp+QOe5fLQo+X+v6tx3Ga
- nKyYjfTHPCUUVc5btKBNyGVKZxkCHlwYk12xihhbwSwt8phzbdK254/zmWAeLyPjVr5Z
- 6+JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738696348; x=1739301148;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1uhHhvRU/BGikXKHNsjTq2q46NE2D8U8FefZtc09pRc=;
- b=pU+sN9TzuvNWCPIkVAgBruaOSZb5gn6eOjupq7x07lWXRluogBYyr2B8DcASgBRDXm
- x+NiGgPn2y4NjPfH96a4wtNJbo0u4FMBmgaH1aRCuM+dEvpooZrwIVxTR3dh/0Sbwlvx
- Sobnqwml+j8nIYRYZZyHWb9VxGqAPzsMqnLcNn9PA/NnNBg7PtKbMgjUKpC9R63eOBfu
- t5xGgfdfi+7roD0W4Mjh9aSHYhGZ5MKnE5+Rz1XhoCba0LP3Ve1CDJNzKVZx+J67swvx
- MkF5JomN1YMudCuyRM29JkUJUXK5i7MTUmcTfmWG8Bpu5IN5Nnf7AL3YLzTbOLqUha/T
- 5asw==
-X-Gm-Message-State: AOJu0YyKRXFWKhPu+4QRLJc9E/lrf9Im+ooqz3BjQ50ruTyGzeuAibKp
- Qh11x2h1f86dmm4lBhg7xFjRXGaOpic3x9Gn8ZlDfB7yJoo2VnLz5cQolCHJEG8/gqzAPruK24b
- j/c8=
-X-Gm-Gg: ASbGncuLg4aBc+sYlGseYUqi0ZhZtck/vlJ00AsKl7+tkhJcFkpfF4qU+n6a5nVYICn
- sm6Q/XiEY4SFy63RRHQQGYkt4TtIUmaFqk91BD+9sC66Zykk/+rQCPDejsTbhwLrrN88C/GdjQX
- bTurusLfEDksthv3q3tD/pRV2RytRpteJTBH0BFZDaN95eW2hneUm9TeRYavP53KGQr0VPjqpqm
- uEMcKisg7jwN258SblgQ4y0PQI6Vg1G/kMnqVqqgFeFpB989Kr25DhT9g+qeP6LdEXIh6ENlIeV
- er81VRW1k06FmBoiidTk19MatjzMM7vTPFXPCUlW4Z1UbJllcetXKtGeP1k=
-X-Google-Smtp-Source: AGHT+IE4Yj47EUyCHLt5Q1kF54DsHrXlF76hFpyWiqdPCpLwBMfZpVOKCt58+zzfXvmaWMzQbkn5Lg==
-X-Received: by 2002:a05:600c:3488:b0:436:ed38:5c85 with SMTP id
- 5b1f17b1804b1-438dc3cbc24mr258085405e9.14.1738696348146; 
- Tue, 04 Feb 2025 11:12:28 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc6dfb5sm240172815e9.31.2025.02.04.11.12.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Feb 2025 11:12:27 -0800 (PST)
-Message-ID: <075834df-6e81-43f8-81e0-2b2df5b9a828@linaro.org>
-Date: Tue, 4 Feb 2025 20:12:26 +0100
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tfOet-0007dt-4S
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:32:31 -0500
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tfOer-0005Gg-9C
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:32:30 -0500
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tfOei-00000006rkP-3u7B; Tue, 04 Feb 2025 20:32:20 +0100
+Message-ID: <4ad3e311-e701-4029-bb51-e69da4f69468@maciej.szmigiero.name>
+Date: Tue, 4 Feb 2025 20:32:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] hw/arm: Remove all invalid uses of
- auto_create_sdcard=true
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-References: <20250204182903.59200-1-philmd@linaro.org>
- <20250204182903.59200-6-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250204182903.59200-6-philmd@linaro.org>
+Subject: Re: [PATCH v4 19/33] migration: Add save_live_complete_precopy_thread
+ handler
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
+ <7561a5d67e113e166c7d43246d52feec6ca06fb5.1738171076.git.maciej.szmigiero@oracle.com>
+ <Z6JUP2w9u_FQRP6u@x1.local>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <Z6JUP2w9u_FQRP6u@x1.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.07, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,48 +109,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/2/25 19:29, Philippe Mathieu-Daudé wrote:
-> MachineClass::auto_create_sdcard is only useful to automatically
-> create a SD card, attach a IF_SD block drive to it and plug the
-> card onto a SD bus. None of the ARM machines modified by this
-> commit try to use the IF_SD interface.
+On 4.02.2025 18:54, Peter Xu wrote:
+> On Thu, Jan 30, 2025 at 11:08:40AM +0100, Maciej S. Szmigiero wrote:
+>> +static int multifd_device_state_save_thread(void *opaque)
+>> +{
+>> +    struct MultiFDDSSaveThreadData *data = opaque;
+>> +    int ret;
+>> +
+>> +    ret = data->hdlr(data->idstr, data->instance_id, &send_threads_abort,
+>> +                     data->handler_opaque);
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/arm/aspeed.c            | 21 ---------------------
->   hw/arm/b-l475e-iot01a.c    |  1 -
->   hw/arm/bananapi_m2u.c      |  1 -
->   hw/arm/collie.c            |  1 -
->   hw/arm/digic_boards.c      |  1 -
->   hw/arm/exynos4_boards.c    |  2 --
->   hw/arm/fby35.c             |  1 -
->   hw/arm/highbank.c          |  2 --
->   hw/arm/imx25_pdk.c         |  1 -
->   hw/arm/kzm.c               |  1 -
->   hw/arm/mcimx6ul-evk.c      |  1 -
->   hw/arm/mcimx7d-sabre.c     |  3 ++-
->   hw/arm/microbit.c          |  1 -
->   hw/arm/mps2-tz.c           |  4 ----
->   hw/arm/mps2.c              |  4 ----
->   hw/arm/mps3r.c             |  1 -
->   hw/arm/msf2-som.c          |  1 -
->   hw/arm/musca.c             |  2 --
->   hw/arm/musicpal.c          |  1 -
->   hw/arm/netduino2.c         |  1 -
->   hw/arm/netduinoplus2.c     |  1 -
->   hw/arm/olimex-stm32-h405.c |  1 -
->   hw/arm/raspi.c             |  5 -----
->   hw/arm/raspi4b.c           |  1 -
->   hw/arm/sabrelite.c         |  1 -
->   hw/arm/sbsa-ref.c          |  1 -
->   hw/arm/stellaris.c         |  1 -
->   hw/arm/stm32vldiscovery.c  |  1 -
->   hw/arm/versatilepb.c       |  2 --
->   hw/arm/virt.c              |  1 -
->   hw/arm/xen-pvh.c           |  1 -
->   hw/arm/xlnx-versal-virt.c  |  1 -
->   hw/arm/xlnx-zcu102.c       |  1 -
->   33 files changed, 2 insertions(+), 67 deletions(-)
+> I thought we discussed somewhere and the plan was we could use Error** here
+> to report errors.  Would that still make sense, or maybe I lost some
+> context?
 
-As Thomas noted in v2, this patch isn't correct.
+That was about *load* threads, here these are *save* threads.
+
+Save handlers do not return an Error value, neither save_live_iterate, nor
+save_live_complete_precopy or save_state does so.
+
+> Meanwhile, I still feel uneasy on having these globals (send_threads_abort,
+> send_threads_ret).  Can we make MultiFDDSSaveThreadData the only interface
+> between migration and the threads impl?  So I wonder if it can be:
+> 
+>    ret = data->hdlr(data);
+> 
+> With extended struct like this (I added thread_error and thread_quit):
+> 
+> struct MultiFDDSSaveThreadData {
+>      SaveLiveCompletePrecopyThreadHandler hdlr;
+>      char *idstr;
+>      uint32_t instance_id;
+>      void *handler_opaque;
+>      /*
+>       * Should be NULL when struct passed over to thread, the thread should
+>       * set this if the handler would return false.  It must be kept NULL if
+>       * the handler returned true / success.
+>       */
+>      Error *thread_error;
+
+As I mentioned above, these handlers do not generally return Error type,
+so this would need to be an *int;
+
+>      /*
+>       * Migration core would set this when it wants to notify thread to
+>       * quit, for example, when error occured in other threads, or migration is
+>       * cancelled by the user.
+>       */
+>      bool thread_quit;
+
+             ^ I guess that was supposed to be a pointer too (*thread_quit).
+
+> };
+> 
+> Then if any multifd_device_state_save_thread() failed, for example, it
+> should notify all threads to quit by setting thread_quit, instead of
+> relying on yet another global variable to show migration needs to quit.
+
+multifd_abort_device_state_save_threads() needs to access
+send_threads_abort too.
+
+And multifd_join_device_state_save_threads() needs to access
+send_threads_ret.
+
+These variables ultimately will have to be stored somewhere since
+there can be multiple save threads and so multiple instances of
+MultiFDDSSaveThreadData.
+
+So these need to be stored somewhere where
+multifd_spawn_device_state_save_thread() can reach them to assign
+their addresses to MultiFDDSSaveThreadData members.
+
+However, at that point multifd_device_state_save_thread() can
+access them too so it does not need to have them passed via
+MultiFDDSSaveThreadData.
+
+However, nothing prevents putting send_threads* variables
+into a global struct (with internal linkage - "static", just as
+these separate ones are) if you like such construct more.
+
+> Thanks,
+
+Thanks,
+Maciej
+
 
