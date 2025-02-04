@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02178A27960
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 19:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD3FA27967
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 19:11:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfNLB-0004H2-CO; Tue, 04 Feb 2025 13:08:05 -0500
+	id 1tfNLC-0004M5-M2; Tue, 04 Feb 2025 13:08:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNL0-0004Fz-49
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:07:54 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNL4-0004J4-IB
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:07:59 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNKx-00077V-16
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:07:53 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-436345cc17bso44335305e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 10:07:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNL1-00078m-CQ
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:07:57 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4363ae65100so70141105e9.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 10:07:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738692468; x=1739297268; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=AiRrQHAbky113j1+PiE1EMSskAkNYDTMAifBRCLYEYs=;
- b=L371BlFok2LPS+08QWBnMZ1/Z2wClrtQG/4GRCRnUHimRghAXWFWOgfiQmOp7BpSFY
- wZf5q0NBedGmUWOezAdGWdd5WGMc4D/WeClHjRv4u9MvQsL7NK/YSmQ6ASEr7AUT78cm
- 2CK6DcUGMfx/qtYlsYYF4t5RWeCo6c6R6yy5MvNNSa73FLtbfHfnbw0NN90oioWPANA2
- OnveezDntITZMmQHcVLXf2ME8DmRl8Dpen4njYVqNaZOFrxCMnMLIjpOhQbq1WadZjEe
- 2YmIDZUY49VrOpZuv2SMhOQtq0JNEM9SWtYqT4avYRRKhv4J50tIGuradXH510CN1Pns
- mdrw==
+ d=linaro.org; s=google; t=1738692473; x=1739297273; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BrfjnJSg9CX0l2LnyeLtW/bJrqIZsHOwQ9P6gpzmndY=;
+ b=P2uA0u+8gWRX/oPFEDrpcFV80nG1++BjwvtUFTEq14oz4bG4BUlSld580WrxXNWAFB
+ CMHoN/nMiyV0zxVkutCGL6Jpp+AVwJSMiiFdkPC3otwdrhaenyHznlRL/h4JboIu2TnY
+ oIOiIvVUmQtRZuMhEw81ez151ngqokHDXhchS/dksjngAgnITTckVnbVYqvdNer+Hmps
+ KnXl3qOSPlrNv0omX2s6jMHSr+R8ChJPdBFEES5LPewasySpHzGswGghPevlg27ULOXe
+ yGiuNMHXyWA4IzqlkrYDWLhGYLP5lcjWFWvtGW/BROymx/Q7td7Srm2E3B0fdtfCc7jf
+ 9oqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738692468; x=1739297268;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AiRrQHAbky113j1+PiE1EMSskAkNYDTMAifBRCLYEYs=;
- b=dAXctaUxRjmbmHEpSfjZX/v1iad3CioZmyGgE65mkNJC3KS1EYughHEGDoDa0oAvji
- ytL73sp/4cqjV6TFgZJfDOnwDiRRG5Q3LyIzx8RE95l+cHc/wyh26wwQ4RuLeEey38tm
- jr0gl8t69AEvs2u7tB9kcaq/7flVP8L6pdCCPtf3ckOksdGPknSDkC3Ujip2jn7udG/b
- ziFP0XqtUlmTz7GlwnMh/I/H6SilDqhdDX/siJCVT8+/3NogO1V9GxKUcaOET1a3tEb8
- CXGHUDGJzXcik++E5XSYamoTrVu5keoOEXjkfgz4SzTgdjGDUsNvJrQ3xS4Ct9glLIyr
- GZSA==
-X-Gm-Message-State: AOJu0YyU87TViwi81sOgj5Fco9arsfE0m3y7xYomm9bx4emINpnOvks/
- SMGR78RV9YpFzAGhC3BXtrwLS86ZUAQwSvPRYhKDm7hJZ1twTqOlwbwpKt1uIvYE9ArjAXmoJXv
- EEI4=
-X-Gm-Gg: ASbGncsPaQahYjS4goZDncr0LHpVGNkA0WhzEOgZkLC8pV2fO4GwFL1EfYl++qBj9Yb
- aukUR/av/36S5tkgh6+umTqpsrf84oXXM5YDTDgc2mjQyI9R7D0+Vrn0nlGyaIGps+6t1L9Y2ue
- IPrh+Nl4H/81nkyCYcqrkdlauTQi5HQHQBPPXWqX/wxX9keh6QA1C9nu+rpFovJc0JtfAD2bXNo
- ejxKWNSWNdNe+Q3a5S2YFu/HK40uxUi59B5sDgR9bxZ8lTRh6JkRsNG7byJFBe/kZZ5HpRmKQtf
- ruR4PXDXoMeWbqWCLFaU81jwqrKTN6QdFyBiyk+iF/c4sHK9PYvvyL5tRe6fMJnNOQ==
-X-Google-Smtp-Source: AGHT+IFdma8wTs9/3KN+dfTx6cuJQaTA3+DLkbunazFtBHeUiM44wqOrs28oinOGA9sA21qKdWYrxA==
-X-Received: by 2002:a05:600c:3488:b0:434:a711:ace4 with SMTP id
- 5b1f17b1804b1-438dc3cb049mr238796015e9.17.1738692468556; 
- Tue, 04 Feb 2025 10:07:48 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738692473; x=1739297273;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BrfjnJSg9CX0l2LnyeLtW/bJrqIZsHOwQ9P6gpzmndY=;
+ b=lTffHsM+W2av20JhYQdLA0ziLv1akWrRe4XSXFwpXq0iquMHOWy6U8YD64Aw91yC4w
+ IrV5qA9JwgGCurKtcVeqakhdEc/lNnzGUTBJPc2tVCn9PSLH3BHY/+gJLFDx/zFaQGg8
+ JLNRuMon6ZskX70peie+u9ykEumU0NbVklJjNuqeVmPRTmpMJ4tbRw44oJJ2ZUK+uvQ/
+ +q1mYAfOvfjrFPNMwWGwpzXiELMQ+ekaPxsD30Nc7vrA7Kyp5vi3xfzUKJJgBjZQiaoV
+ NhHhU0ClsoTPSsviSLa+57+AZ/rDzVwUn3la0X35pewkpDa9+ngpsAS/Bo0gWY+N+s68
+ E6Bg==
+X-Gm-Message-State: AOJu0YyRwriNxzVgCIl0dTmqkY4ee6EsbH0hAVxBRIgZT1jcepatfZWZ
+ xPlCbbOyBXKAYUdnrhT+J8bQq4NCgKDwtpe4JlN2UEO3zk3tigRSuD/PxCtWQsYQ987UbPgWdjv
+ 3cFk=
+X-Gm-Gg: ASbGnct6ZmxmgkQRGcRKCVgo1Xk1lfN8y7rj+V5OVYSndQu4yswv7JeMSIPFQIafwLr
+ kPcrmb+FHUmelhoOuufDusWBRQmVwwsh8wcC5D3TA/J2mGNC774glV8SicSjlwx3obl3LUj40uQ
+ bpcNmlPj5UcTOrRDtt9ml2vDCkoWG+B92d+2fMBw6rhAoNxUZawai0Dypo/+iOI8TZJYRQyvwHn
+ kI72QglbHu/WA9CQ2PbLuwGvEKuiw6mR/eIzwJhftmCmQMMk+TR7v3fDuZgkGcm2Vy1YcttGQAs
+ i5aOlyNO/O65eWo90xMCELzUUW3RFwLnx8/inrDn35SiHGwJpfgg3TxAsvt8Vl0goA==
+X-Google-Smtp-Source: AGHT+IHaMX7mmU9E7UEgI1vWWgAXf6q0ok6gWpVqC2bryTYzi8x5sMqE2tVEuCFmDrouXMZVf8D4UQ==
+X-Received: by 2002:a05:6000:1faa:b0:385:fb8d:865b with SMTP id
+ ffacd0b85a97d-38c520a344emr28306088f8f.48.1738692473369; 
+ Tue, 04 Feb 2025 10:07:53 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc13146sm230941905e9.4.2025.02.04.10.07.47
+ 5b1f17b1804b1-438dcc80e61sm236364185e9.34.2025.02.04.10.07.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Feb 2025 10:07:47 -0800 (PST)
+ Tue, 04 Feb 2025 10:07:52 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
@@ -67,16 +68,18 @@ Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/8] hw/boards: Try to make sense of
- MachineClass::no_sdcard flag
-Date: Tue,  4 Feb 2025 19:07:38 +0100
-Message-ID: <20250204180746.58357-1-philmd@linaro.org>
+Subject: [PATCH v2 1/8] hw/boards: Convert no_sdcard flag to OnOffAuto
+ tri-state
+Date: Tue,  4 Feb 2025 19:07:39 +0100
+Message-ID: <20250204180746.58357-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250204180746.58357-1-philmd@linaro.org>
+References: <20250204180746.58357-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,41 +102,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invert MachineClass 'no_sdcard' flag logic and rename it
-to 'create_default_sdcard_drive' to make sense of this
-default value applied to all machines.
-We use the OnOffAuto tri-state to catch implicit default
-values. Then we toggle the logic and remove invalid uses.
-No logical change intended (except the assertion added).
+MachineClass::no_sdcard is initialized as false by default.
+To catch all uses, convert it to a tri-state, having the
+current default (false) becoming AUTO.
 
-Philippe Mathieu-Daudé (8):
-  hw/boards: Convert no_sdcard flag to OnOffAuto tri-state
-  hw/boards: Explicit no_sdcard=false as ON_OFF_AUTO_OFF
-  hw/boards: Rename no_sdcard -> auto_create_sdcard
-  hw/boards: Remove all invalid uses of auto_create_sdcard=true
-  hw/ppc/e500: Remove empty ppce500_machine_class_init()
-  hw/arm: Remove all invalid uses of auto_create_sdcard=true
-  hw/riscv: Remove all invalid uses of auto_create_sdcard=true
-  hw/boards: Ensure machine setting auto_create_sdcard expose a SD Bus
+No logical change intended.
 
- include/hw/boards.h        |  2 +-
- hw/arm/cubieboard.c        |  1 +
- hw/arm/integratorcp.c      |  1 +
- hw/arm/mcimx7d-sabre.c     |  2 ++
- hw/arm/npcm7xx_boards.c    |  5 +++++
- hw/arm/omap_sx1.c          |  2 ++
- hw/arm/orangepi.c          |  1 +
- hw/arm/realview.c          |  4 ++++
- hw/arm/stellaris.c         |  1 +
- hw/arm/vexpress.c          |  2 ++
- hw/arm/xilinx_zynq.c       |  1 -
- hw/core/null-machine.c     |  1 -
- hw/riscv/microchip_pfsoc.c |  1 +
- hw/riscv/sifive_u.c        |  1 +
- hw/s390x/s390-virtio-ccw.c |  1 -
- system/vl.c                | 16 ++++++++++++----
- 16 files changed, 34 insertions(+), 8 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+---
+ include/hw/boards.h        | 2 +-
+ hw/arm/xilinx_zynq.c       | 2 +-
+ hw/core/null-machine.c     | 2 +-
+ hw/s390x/s390-virtio-ccw.c | 2 +-
+ system/vl.c                | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index e1f41b2a533..d61b0a47780 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -283,9 +283,9 @@ struct MachineClass {
+         no_parallel:1,
+         no_floppy:1,
+         no_cdrom:1,
+-        no_sdcard:1,
+         pci_allow_0_address:1,
+         legacy_fw_cfg_order:1;
++    OnOffAuto no_sdcard;
+     bool is_default;
+     const char *default_machine_opts;
+     const char *default_boot_order;
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 8477b828745..12418094f9d 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -463,7 +463,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
+     mc->init = zynq_init;
+     mc->max_cpus = ZYNQ_MAX_CPUS;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
+     mc->ignore_memory_transaction_failures = true;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->default_ram_id = "zynq.ext_ram";
+diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
+index f586a4bef54..b93056c0f7b 100644
+--- a/hw/core/null-machine.c
++++ b/hw/core/null-machine.c
+@@ -53,7 +53,7 @@ static void machine_none_machine_init(MachineClass *mc)
+     mc->no_parallel = 1;
+     mc->no_floppy = 1;
+     mc->no_cdrom = 1;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
+ }
+ 
+ DEFINE_MACHINE("none", machine_none_machine_init)
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d9e683c5b49..5f78c8d20ff 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -817,7 +817,7 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
+     mc->no_cdrom = 1;
+     mc->no_floppy = 1;
+     mc->no_parallel = 1;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
+     mc->max_cpus = S390_MAX_CPUS;
+     mc->has_hotpluggable_cpus = true;
+     mc->smp_props.books_supported = true;
+diff --git a/system/vl.c b/system/vl.c
+index db8e604ebab..2940c865b19 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1346,7 +1346,7 @@ static void qemu_disable_default_devices(void)
+     if (!has_defaults || machine_class->no_cdrom) {
+         default_cdrom = 0;
+     }
+-    if (!has_defaults || machine_class->no_sdcard) {
++    if (!has_defaults || machine_class->no_sdcard == ON_OFF_AUTO_ON) {
+         default_sdcard = 0;
+     }
+     if (!has_defaults) {
 -- 
 2.47.1
 
