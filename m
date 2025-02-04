@@ -2,62 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1729EA267D5
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 00:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DFFA26875
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf5jq-00084c-VW; Mon, 03 Feb 2025 18:20:22 -0500
+	id 1tf6iI-0008GK-Dz; Mon, 03 Feb 2025 19:22:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tf5jl-00084I-NI; Mon, 03 Feb 2025 18:20:17 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tf5jf-0003ko-PD; Mon, 03 Feb 2025 18:20:14 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id ED7554E6010;
- Tue, 04 Feb 2025 00:20:07 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id pKSBRQrVEwqf; Tue,  4 Feb 2025 00:20:05 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id ACE834E600E; Tue, 04 Feb 2025 00:20:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A7CB574577D;
- Tue, 04 Feb 2025 00:20:05 +0100 (CET)
-Date: Tue, 4 Feb 2025 00:20:05 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org, Jared Mauch <jared+home@puck.nether.net>, 
- qemu-arm@nongnu.org, devel@lists.libvirt.org
-Subject: Re: [PATCH 0/7] hw/arm/raspi4b: Add models with 4GB and 8GB of
- DRAM
-In-Reply-To: <7f765a75-d02d-450e-b229-3232d16871c3@linaro.org>
-Message-ID: <816f46cb-ad10-e5bc-1ba1-45cf991c0347@eik.bme.hu>
-References: <20250201091528.1177-1-philmd@linaro.org>
- <90d87f0e-56a3-8966-614c-364f3e726d61@eik.bme.hu>
- <CAFEAcA_mBXO20NhYRHJCgkB0h8uYQQhBMdwVW376R4u-qh51nA@mail.gmail.com>
- <87ed0fayoy.fsf@draig.linaro.org> <Z6DTsdf35ApQ0qLU@redhat.com>
- <CAFEAcA8Qigt1EBVgz1D4hon0x4ukLZbZ-jS_KB+ZBH0yi+QCXw@mail.gmail.com>
- <Z6DXmN-ROswsaDAi@redhat.com>
- <7f765a75-d02d-450e-b229-3232d16871c3@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iG-0008Fb-EX
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:48 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iE-0006zS-OB
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:22:48 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43675b1155bso58285685e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:22:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738628563; x=1739233363; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kZOdbeb6T6qDJ09VSMCL2tbpN7fDjsLgjuUeDOztlJw=;
+ b=qIu1M7rFh9SPE5OTMxroTS3RQmuc/EL3mAc17yi47aZU1vBm6P1Ni+sS+ePWguESff
+ qhk9NZWkDRr0UpRcNBwSv7WIs0m9+pd7n153EshqEd/3OtsmdsmKjVSlwNiVjF61bdFN
+ Y7Nh8o9ggz/lAHBN4bODLFbldVca8HfmrrwWi9a9Atytdff1gMIV9KlcvRt4c2xpehy5
+ Dz3mH7lcxExk3NLlGxQQ48+QUZQEqajnUv1wOkp1DSVw4ea10Y88gPS1+jefEiTLiJuD
+ sGR2bEq3fPlRELIjT55nUa1Vvc5ffC6De9EJq71LNI0PIYoLEwgfKcu9tKc6GJPo8DQ0
+ vNpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738628563; x=1739233363;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kZOdbeb6T6qDJ09VSMCL2tbpN7fDjsLgjuUeDOztlJw=;
+ b=VK15l1rLXmilJ3GaqkIudOASBBdbS8OhHIXLJ+rQGW9aBlq4R7S/KPXd3A9sgHjipb
+ wSopzsXerOUOs+3B9kHzCKKO6AdJaUxdeqs6TCjan5bYWWReNjMZ2Q9bH1ODSFAfeBKJ
+ VFQHvyIug58LSaVoU31q9enDRXxG8LXrym0QYlVG8P9miwY9CyeEFkEsq+fyTdDgSSsD
+ tQZvYv3JhY51JOQtHoXRMOr7u/+aZTRb2AFNNXqcZMEqA5sCYMh4eQYOTxQdYrh1CnJI
+ 2C+fR4AF4aLvk/fIw+MhnMDCfiDBCYiAhlsoAhKb0n1ctHpv2gGZ4FoHhaoyFfTn5nQJ
+ beIQ==
+X-Gm-Message-State: AOJu0YwEL+fptv24FcxteX1Go2CMkrfD1mbEbKt1VhQct7ze8/dg9dL0
+ l2h45MKeLsiqQ+cKwHnX7KRMcK8egHAN/Rpnaig3oWfjpYlFhVNeBnPheanppMgR91shIuapyN7
+ UHsk=
+X-Gm-Gg: ASbGncuG/3tS2yCSwc2emdYbndC4piTquYuq2O2x9oCKJZsZdrSBS9dZM0k85Fwf5l5
+ HTcWYmWyJ+OQaiavtLIJb/K/RGlWJGFA5TnniM28lraK0JHo5WSAv35bTytMqw3rydX5NZwejfL
+ EjkAYzrHH0sCRFUzc3lclyzNYDJtT5PbpnxrG3XRAbwJt/YvDpeHAw0rgKpNJTtiMa54ua6Rmxt
+ JoJK7TgyRVO9jnM5drTcCiji5B+WozV+UaZsIGh3r2FKNtE9rCKFcl88B/kECSe1G8OAZm3sGG5
+ lM6M4fmxfbAChJ2W+P7awlUXbjMFWgTgf2o/XxJ+lAPhTOD9z04PGtmlD9G4OG0Njg==
+X-Google-Smtp-Source: AGHT+IHy6CJhM2TwAoAA8lJ+tS6d0s5TrMMgkexQg1HbHClkotfNU8RmQ08pWBRgcSa5vbyB0b6P0g==
+X-Received: by 2002:a05:6000:1fab:b0:386:416b:9c69 with SMTP id
+ ffacd0b85a97d-38c5194a58cmr20463197f8f.16.1738628563523; 
+ Mon, 03 Feb 2025 16:22:43 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38da8f6691bsm229504f8f.42.2025.02.03.16.22.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 03 Feb 2025 16:22:43 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jared Mauch <jared+home@puck.nether.net>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ devel@lists.libvirt.org
+Subject: [PATCH v2 00/12] hw/arm/raspi: Allow creating any Raspberry Pi machine
+Date: Tue,  4 Feb 2025 01:22:28 +0100
+Message-ID: <20250204002240.97830-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-441919731-1738624805=:61971"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,113 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Full rewrite of v1 [1], addressing Zoltan & Peter suggestion.
 
---3866299591-441919731-1738624805=:61971
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Introduce a generic 'raspi' machine, which takes a 'model'
+and 'revision' properties, and any memory size. The 'board_rev'
+register is filled appropriately.
 
-On Mon, 3 Feb 2025, Philippe Mathieu-Daudé wrote:
-> On 3/2/25 15:50, Daniel P. Berrangé wrote:
->> On Mon, Feb 03, 2025 at 02:45:06PM +0000, Peter Maydell wrote:
->>> On Mon, 3 Feb 2025 at 14:33, Daniel P. Berrangé <berrange@redhat.com> 
->>> wrote:
->>>> 
->>>> On Mon, Feb 03, 2025 at 02:29:49PM +0000, Alex Bennée wrote:
->>>>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>>> 
->>>>>> On Sat, 1 Feb 2025 at 12:57, BALATON Zoltan <balaton@eik.bme.hu> wrote:
->>>>>>> 
->>>>>>> On Sat, 1 Feb 2025, Philippe Mathieu-Daudé wrote:
->>>>>>>> - Deprecate the 'raspi4b' machine name, renaming it as
->>>>>>>>   'raspi4b-1g' on 32-bit hosts, 'raspi4b-2g' otherwise.
->>>>>>>> - Add the 'raspi4b-4g' and 'raspi4b-8g' machines, with
->>>>>>>>   respectively 4GB and 8GB of DRAM.
->>>>>>> 
->>>>>>> IMHO (meaning you can ignore it, just my opinion) if the only 
->>>>>>> difference
->>>>>>> is the memory size -machine raspi4b -memory 4g would be better user
->>>>>>> experience than having a lot of different machines.
->>>>>> 
->>>>>> Yes, I think I agree. We have a way for users to specify
->>>>>> how much memory they want, and I think it makes more sense
->>>>>> to use that than to have lots of different machine types.
->>>>> 
->>>>> I guess for the Pi we should validate the -memory supplied is on of the
->>>>> supported grid of devices rather than an arbitrary value?
->>>> 
->>>> If the user wants to create a rpi4 with 6 GB RAM why should we stop
->>>> them ? It is their choice if they want to precisely replicate RAM
->>>> size from a physical model, or use something different when virtualized.
->>> 
->>> The board revision code (reported to the guest via the emulated
->>> firmware interface) only supports reporting 256MB, 512MB,
->>> 1GB, 2GB, 4GB or 8GB:
->>> 
->>> https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#new-style-revision-codes
->> 
->> I think it would be valid to report the revision code for the memory
->> size that doesn't exceed what QEMU has configured. eg if configured
->> with 6 GB, then report code for 4 GB.
->
-> We need to distinct between physical machines VS virtual ones.
->
-> Guests on virtual machines have some way to figure the virtual
-> hardware (ACPI tables, DeviceTree blob, fw-cfg, ...).
->
-> Guests for physical machines usually expect fixed hardware (not
-> considering devices on busses).
->
-> For the particular case of the Raspberry Pi machines, their
-> bootloader gets the board layout by reading the
-> RPI_FWREQ_GET_BOARD_REVISION constant value.
->
->
-> What would be the point of emulating a raspi machine with 6GB
-> if the FW is not going to consider besides 4GB?
-> Besides, someone modify a guest to work with 6GB, it won't work
-> on real HW.
-
-Usually the point of such non-standard configs would be running Linux via 
--kernel which could use whatever is configured if it has a way to detect 
-it or maybe for memory it could even be specified on the kernel command 
-line. But maybe this is not a common enough config to support so reporting 
-error for memory size that's not on the list of valid sizes might be 
-enough. This is similar to qemu-system-ppc -machine sam460ex which has a 
-memory controller register that can only describe existing DIMM sizes. 
-Originally I allowed users to specify whatever memory size and only warn 
-for sizes not matching a DIMM size because Linux only looks at the device 
-tree which QEMU can generate when booting with -kernel so it works but the 
-firmware detects RAM from the SPD data and can only support certain sizes 
-so only less RAM that could be convered with SPD data would be visible for 
-guests. But then others thought it's better to return error for such cases 
-and changed it and removed the support for arbitrary memory size so now it 
-returns error when non power of 2 memory size is specified.
+Before, merge raspi4b.c within raspi.c (more is planned here
+with the MPCore refactor [2]).
 
 Regards,
-BALATON Zoltan
 
->>> For Arm embedded boards we mostly tend to "restrict the user
->>> to what you can actually do", except for older boards where
->>> we tended not to write any kind of sanity checking on CPU
->>> type, memory size, etc.
->> 
->> If we're going to strictly limit memory size that's accepted I wonder
->> how we could information users/mgmt apps about what's permitted ?
->> 
->> Expressing valid combinations of configs across different args gets
->> pretty complicated quickly :-(
->
-> I'll try to address Zoltan and Peter request to have a dynamic raspi
-> machine. It is a bit unfortunate we didn't insisted on that when we
-> decided to expose a fixed set of existing boards in order to not be
-> bothered by inconsistent bug reports, back in 2019.
->
-> Regards,
->
-> Phil.
->
->
---3866299591-441919731-1738624805=:61971--
+Phil.
+
+[1] https://lore.kernel.org/qemu-devel/20250201091528.1177-1-philmd@linaro.org/
+[2] https://lore.kernel.org/qemu-devel/20231212162935.42910-1-philmd@linaro.org/
+
+Philippe Mathieu-Daudé (12):
+  hw/arm/raspi: Access SoC parent object using  BCM283X_BASE() macro
+  hw/arm/raspi: Merge model 4B with other models
+  hw/arm/raspi: Unify RASPI_MACHINE types
+  hw/arm/raspi: Pass board_rev as argument to raspi_base_machine_init()
+  hw/arm/raspi: Consider processor id in types[] array
+  hw/arm/raspi: Consider network interface for B models
+  hw/arm/raspi: Check ramsize is within chipset aperture
+  hw/arm/raspi: Introduce generic Raspberry Pi machine
+  hw/arm/raspi: Have the generic machine take a 'revision' property
+  hw/arm/raspi: List models creatable by the generic 'raspi' machine
+  hw/arm/raspi: Deprecate old raspiX machine names
+  hw/arm/raspi: Support more models
+
+ docs/about/deprecated.rst               |  13 +
+ include/hw/arm/raspi_platform.h         |   5 +-
+ hw/arm/raspi.c                          | 383 ++++++++++++++++++++++--
+ hw/arm/raspi4b.c                        | 136 ---------
+ tests/qtest/bcm2835-dma-test.c          |   2 +-
+ tests/qtest/bcm2835-i2c-test.c          |   2 +-
+ tests/qtest/boot-serial-test.c          |   3 +-
+ hw/arm/meson.build                      |   2 +-
+ tests/functional/test_aarch64_raspi3.py |   5 +-
+ tests/functional/test_aarch64_raspi4.py |   4 +-
+ tests/functional/test_arm_raspi2.py     |   4 +-
+ 11 files changed, 385 insertions(+), 174 deletions(-)
+ delete mode 100644 hw/arm/raspi4b.c
+
+-- 
+2.47.1
+
 
