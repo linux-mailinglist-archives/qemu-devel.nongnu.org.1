@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FD7A27DCE
+	by mail.lfdr.de (Postfix) with ESMTPS id 5229EA27DCD
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:55:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQs0-0001ZU-Kq; Tue, 04 Feb 2025 16:54:13 -0500
+	id 1tfQs9-0001by-Hu; Tue, 04 Feb 2025 16:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQrt-0001Xt-Vk
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:06 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1tfQru-0001YI-Tm
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:07 -0500
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQrr-0008TW-JD
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:05 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2f9ba87f5d4so2084023a91.3
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:54:03 -0800 (PST)
+ id 1tfQrt-0008Td-8F
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:06 -0500
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2f833af7a09so8052897a91.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:54:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738706042; x=1739310842; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738706043; x=1739310843; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b0+vQ/EpH+1Ge24XXY5IBMPR1lS4eEvzXBLIAsOfJmA=;
- b=LTvYNsQRw3jc5rFBP5Ak3pWB++ahY/UpF6Pt1EXE7DVlZWM/w0r4cnFXlrqmD8q2zE
- lOI5lftN2sYOQT3MIdzMhWWK6IJeerzhdH1kIkEB282ZbbImM5L4t+0nf2xMm3McuNuE
- BZNpliaa1/Yrkj2UDMNODmCDS5bahSxEjdT0K8moK+FKQSEaGGzQJq7Az4yJq2gHplbJ
- IMB+fm+/Nyhf7eAVn7NvOFJZimf7PYXVjwdkGDtHTrVumSchNoCciPbPynWFeK0ACrX2
- EIhz++jbnZgWAXnPBjRGfThFaAVN2+RvtQ/T01U9HqkfX8f3gSraUVgXd8xRINGo+mMd
- 1ZTA==
+ bh=AKQNLi/LAdrzzrDV1L5+9YwVJWRO7OgsuSiBwshaaYQ=;
+ b=ZTxUwRMMNqdklsl7SsO4wCrW9hCx0/A17fJtfTm/Nxrxy674MaFtGJ+eDON0dla3UP
+ szeOZvQjZLoJGJgvdGcIutxH6NO23ihX1KbscXYFTDrk4r0EBOehdcIUyD5EgpVUJlSY
+ 4KUWJHQKxDjWIspveI/41d3TLkGZxNdSEM5L7H4404AxCagVlliG7jmWpxGlMR94VnM8
+ dFgG2pkfVriymcCuXjtYHUHIiNynfRNPf0QLz4TbOKixr2Jc0F6PEZgArY3/vpf/YU1c
+ Jb/Q79F97iauIDfu2nya2Nlmw9adk1WAg3tC67gkYAYZB58f1wuOa0TVMLs1af3ol2/B
+ RPlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738706042; x=1739310842;
+ d=1e100.net; s=20230601; t=1738706043; x=1739310843;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b0+vQ/EpH+1Ge24XXY5IBMPR1lS4eEvzXBLIAsOfJmA=;
- b=jSFTr2lIQ5Dj9Cntr/QTxzEUyQUe9IJgzJcQPMIJLSqad3Jiukn865xoW4mTzYy9IL
- f3Il8c5sG2XgY775sqy9HPhIuB7Dcek3P9+WA3W5mfJ0lxAf5l5ITICX7IZOajb9FmgN
- eFsBpHBs/052ST65TgoyGOOs6PwkJ7GJiRN8ZFWT+NIhxurvOQfN9DBa5VG5xSVtsOOm
- /8NAr4AA3klSV8sty1qLmf7BqBAyHlXWHcR9YDMx3pdUZnazsOqRPDV6TtokBPapYuC7
- 8KddSyr8eGpprHzTUHIH7MlI0y7koo28htBv8GdS+155zqCsoUbQfiZZZwswPMTxDkQw
- 9bgA==
-X-Gm-Message-State: AOJu0YyYVD8ncAxwhYIMN4KdAggXsBwaBZR9/FgB7+G8WXLc//QB946/
- Q9h6j/yZeYiHJmisuVSNIHG9n/MkWQKRC+49bqfsnK1yE+2ZblB8S2JVUc4kyoIpGjkEyF/WBQ4
- o
-X-Gm-Gg: ASbGncsNtMN9esysZfDU7KW1r20537xjbcc31AyBtA0GdORFYzIUzPzXBBS6umby+kM
- Oh7I2nRPa+QwZ0bM2rroUT7WMO/stNpOHjfEvJoJjKElWD/EEtNrYKyGrVUMtnUPCgxcQfgNXqF
- O0aFIusm9QHP1l7GiyE1Vh4tpP7J4ROorW8yzmg03V8n77yoAba2HoOWjFVZpYfrA3SnSrPtYao
- 1/hMRsL7pfdILaKihz9jixqCTSQOJEqc2qMWn+lqXdFXOYHrV6HeNm/3r28Ud7MUXpJnKhlzq2l
- bDPKlarqDVV4IrwCRnsCF9egmmtZfJCGu4LY67V90uEkM3o=
-X-Google-Smtp-Source: AGHT+IGKKmyDs1uGbvmgv1GySkEskEIY4B/ZbqNWBSGYhQgjWoQYDl7WH9HRMx2NoSVMHZQQdu/hhA==
-X-Received: by 2002:a17:90b:1e43:b0:2ee:acb4:fecd with SMTP id
- 98e67ed59e1d1-2f9e075c58amr631608a91.9.1738706042166; 
+ bh=AKQNLi/LAdrzzrDV1L5+9YwVJWRO7OgsuSiBwshaaYQ=;
+ b=E7nsLBtQR9Kj6OdsB22+Nc6rtuOesreSHYlt5FW3HDsJwb8koLm7nEyQZEOGXTXZiV
+ yc3WcvPUI/uA7X0BitigxZ08jOhS8ZR49H2ohfZpKiONkqeUSMD8fq2EInNSc/JKA0Xp
+ kJImWfFn1y/w8nMy0zh17M9gp0NjxC0USSE3Pyi7CYoATz23nVWATj3d75ccA5wbHCy2
+ npRpeGDN4nfqYZu91NLGYW8D/6NJIQyHB9FCafsWKCQ0es/27m3JrrK7PRMSIB70Itdi
+ QNYvM6kfatlCvZ6+liRiJ7onBHgHXsNaI4mUX73lzf3CqudOulKMIJrP7FVgR/DsHFas
+ EofA==
+X-Gm-Message-State: AOJu0Yy/nMFKwz4QMJc1ZqRB25UZ//jaDwmvBTiPyQmNYsxeZNNeQAxR
+ e4v8IAipN39SJEyZQA4thTrmBAdVm4jFY93m7J1JqyEefQI5YueFW9YpAAb/z85NAuNWTuVYZZN
+ 7
+X-Gm-Gg: ASbGncvxNaG+hUNHFMLfphbqcvL63qAgikL1BEPXNxRtrGj2K/EhOuTLAsvRcTR2yzQ
+ 9x1ndT522oX54x8vHlbFQEkIgvQWzV71e/8+FcpK5QeRlEb8Cvh/OUX/JKNZ6HO3rR7qjwFSu1V
+ Qfd5zk4asBlnayIIY1wfQ5wR7J9dgf6dCLJHD1tMWolmpjhPMe8nvUUrm6X4b2MvypbGkdk8Te2
+ YR8b147H5gSzvj54HotV0F0M1Eu/Z4fbXHVZX4DM/vBXeMA243YzrXyaggIXn2ZoTkd/ZCqDV5S
+ TryaZGpmiUqHqkejEIcrA9N+vNLlCfKRYZS6IajNr/kkXpM=
+X-Google-Smtp-Source: AGHT+IEIyNpCWoPRrSri1S3vKosYJ0Dhd9ciMIIsUpFahrNobUsgH6N1jBDgLlP5PoEjjwLX6iHLnQ==
+X-Received: by 2002:a17:90b:17c8:b0:2ee:f80c:688d with SMTP id
+ 98e67ed59e1d1-2f9e083c5a3mr533768a91.25.1738706042927; 
  Tue, 04 Feb 2025 13:54:02 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.01
+ 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 13:54:01 -0800 (PST)
+ Tue, 04 Feb 2025 13:54:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
  philmd@linaro.org, thuth@redhat.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 02/12] tcg: Move stubs in tcg/perf.h to tcg/perf-stubs.c
-Date: Tue,  4 Feb 2025 13:53:49 -0800
-Message-ID: <20250204215359.1238808-3-richard.henderson@linaro.org>
+Subject: [PATCH v3 03/12] plugins: Uninline qemu_plugin_add_opts
+Date: Tue,  4 Feb 2025 13:53:50 -0800
+Message-ID: <20250204215359.1238808-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250204215359.1238808-1-richard.henderson@linaro.org>
 References: <20250204215359.1238808-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,103 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are not called so frequently as to be performance sensitive.
+No need to expand this function inline.
+Unexport qemu_plugin_opts to match.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/perf.h | 23 -----------------------
- tcg/perf-stubs.c   | 26 ++++++++++++++++++++++++++
- tcg/meson.build    |  2 ++
- 3 files changed, 28 insertions(+), 23 deletions(-)
- create mode 100644 tcg/perf-stubs.c
+ include/qemu/plugin.h | 9 +--------
+ plugins/loader.c      | 7 ++++++-
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/include/tcg/perf.h b/include/tcg/perf.h
-index c96b5920a3..050ba855ab 100644
---- a/include/tcg/perf.h
-+++ b/include/tcg/perf.h
-@@ -7,7 +7,6 @@
- #ifndef TCG_PERF_H
- #define TCG_PERF_H
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index 9726a9ebf3..3efded6a3e 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -11,7 +11,6 @@
+ #include "qemu/qemu-plugin.h"
+ #include "qemu/error-report.h"
+ #include "qemu/queue.h"
+-#include "qemu/option.h"
+ #include "qemu/plugin-event.h"
+ #include "qemu/bitmap.h"
+ #include "exec/memopidx.h"
+@@ -44,13 +43,7 @@ get_plugin_meminfo_rw(qemu_plugin_meminfo_t i)
+ }
  
--#if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
- /* Start writing perf-<pid>.map. */
- void perf_enable_perfmap(void);
- 
-@@ -23,27 +22,5 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
- 
- /* Stop writing perf-<pid>.map and/or jit-<pid>.dump. */
- void perf_exit(void);
--#else
--static inline void perf_enable_perfmap(void)
+ #ifdef CONFIG_PLUGIN
+-extern QemuOptsList qemu_plugin_opts;
+-
+-static inline void qemu_plugin_add_opts(void)
 -{
+-    qemu_add_opts(&qemu_plugin_opts);
 -}
 -
--static inline void perf_enable_jitdump(void)
--{
--}
--
--static inline void perf_report_prologue(const void *start, size_t size)
--{
--}
--
--static inline void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
--                                    const void *start)
--{
--}
--
--static inline void perf_exit(void)
--{
--}
--#endif
++void qemu_plugin_add_opts(void);
+ void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head);
+ int qemu_plugin_load_list(QemuPluginList *head, Error **errp);
  
- #endif
-diff --git a/tcg/perf-stubs.c b/tcg/perf-stubs.c
-new file mode 100644
-index 0000000000..ce2dd1a4b7
---- /dev/null
-+++ b/tcg/perf-stubs.c
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* TCG perf stubs */
-+
-+#include "qemu/osdep.h"
-+#include "tcg/perf.h"
-+
-+void perf_enable_perfmap(void)
-+{
-+}
-+
-+void perf_enable_jitdump(void)
-+{
-+}
-+
-+void perf_report_prologue(const void *start, size_t size)
-+{
-+}
-+
-+void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
-+                                    const void *start)
-+{
-+}
-+
-+void perf_exit(void)
-+{
-+}
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 69ebb4908a..2977df5862 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -25,6 +25,8 @@ endif
- tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
- if host_os == 'linux'
-   tcg_ss.add(files('perf.c'))
-+else
-+  tcg_ss.add(files('perf-stubs.c'))
- endif
+diff --git a/plugins/loader.c b/plugins/loader.c
+index ebc01da9c6..35680bfc13 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -55,7 +55,7 @@ struct qemu_plugin_parse_arg {
+     struct qemu_plugin_desc *curr;
+ };
  
- tcg_ss = tcg_ss.apply({})
+-QemuOptsList qemu_plugin_opts = {
++static QemuOptsList qemu_plugin_opts = {
+     .name = "plugin",
+     .implied_opt_name = "file",
+     .head = QTAILQ_HEAD_INITIALIZER(qemu_plugin_opts.head),
+@@ -65,6 +65,11 @@ QemuOptsList qemu_plugin_opts = {
+     },
+ };
+ 
++void qemu_plugin_add_opts(void)
++{
++    qemu_add_opts(&qemu_plugin_opts);
++}
++
+ typedef int (*qemu_plugin_install_func_t)(qemu_plugin_id_t, const qemu_info_t *, int, char **);
+ 
+ extern struct qemu_plugin_state plugin;
 -- 
 2.43.0
 
