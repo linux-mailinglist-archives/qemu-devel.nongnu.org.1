@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACDFA27E26
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 23:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94B9A27E24
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 23:19:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfREj-0005Vh-P3; Tue, 04 Feb 2025 17:17:42 -0500
+	id 1tfREm-0005WZ-6d; Tue, 04 Feb 2025 17:17:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREg-0005UG-3L
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREg-0005UY-HA
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:38 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREe-0005Qx-AG
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:37 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREe-0005RM-Pj
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:38 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 9F50DA42D30;
- Tue,  4 Feb 2025 22:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A63C4CEDF;
- Tue,  4 Feb 2025 22:17:33 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id EAEDFA42E92;
+ Tue,  4 Feb 2025 22:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFDEC4CEE2;
+ Tue,  4 Feb 2025 22:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738707454;
- bh=x2atwE4gHU0GpGAhwAVJlP3HgxN8fVPhNglWL/AB3UM=;
+ s=k20201202; t=1738707455;
+ bh=Stz/PkE+RsExG68z0c7Y2GO5tU8XrxTcb9wEAxlyp6M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mSCyAHem5B5MW/V6rUguiXEbGVeOS8kaTWkSZd387PHKNqV6yUjoRKT9aAOfaznrB
- ejx48euwsZXrlWXFvGcVRcIc+DLwY8gSfWb2VXfJ96n9dw5vrgG7rxGhUw2AEBhqoa
- UfmibVc3TOv+qpohJXHhkkw29hQN55zTdhkESawJMuflFGGiAZfLteKZMcsgA0K6r7
- xfCcv0XzjLWoJ5yJH8ZkyLkZQJEyomfs/herl6juvtzovQ3kJ04Kd0KumHu/eRIIqJ
- jg7aWjBAHLricxXCzKqe/8pCW78C6hBENg7nF+ypiVlrTVZqXA3Ka2arYeYHmQHzgM
- /ojIKy8hLJ6nQ==
+ b=u4RZI6S4PBqp4LLiwicCvCibHgMKlBoS1EaQFzvtJsNdrSOV5O2JXYdzYBIhI4ZJv
+ jNsrPuPEzIoegFlqh4073K+eSHBt2jaV4L+iIUQ+CRAKq9ZR5jaWFd9wAcEMeT1jOV
+ S7Az0ySQUtoDi9oyUuEC6FFAM9S/HvvDo8BvJasEPRYes9Ygq17zY/Seeb0NmuqYVL
+ u7KHMuoGapizKaqZ3LqTDpaP5JBlBXSW1S+KALxHn5d9XsPjDS2D2W97eAHlXrPmdR
+ nv9hld4hD2Gqjsb2nVJe+EteCXBRVpt/K7Aw7zONi4qKh7NPGKT2cetazJPDAn57oU
+ SLhpHLTdzaFJA==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH 4/6] hw/hppa: Avoid creation of artist if disabled on command
- line
-Date: Tue,  4 Feb 2025 23:17:24 +0100
-Message-ID: <20250204221726.151287-5-deller@kernel.org>
+Subject: [PATCH 5/6] hw/pci-host/astro: Add LMMIO range support
+Date: Tue,  4 Feb 2025 23:17:25 +0100
+Message-ID: <20250204221726.151287-6-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250204221726.151287-1-deller@kernel.org>
 References: <20250204221726.151287-1-deller@kernel.org>
@@ -71,38 +70,115 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Do not create the artist graphic card if the user disabled it
-with "-global artist.disable=true" on the command line.
+Each Astro on 64-bit machines supports up to four LMMIO regions.
+Those regions are used by graphic cards and other PCI devices which
+need to map huge memory areas. The LMMIO regions are configured and
+set up by SeaBIOS-hppa and then used as-is by the operating systems
+(Linux, HP-UX).
+
+With this addition it's now possible to add other PCI graphic
+cards on the command line, e.g. with "-device ati-vga".
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/machine.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ hw/pci-host/astro.c         | 52 +++++++++++++++++++++++++++++++++++++
+ include/hw/pci-host/astro.h |  6 ++---
+ 2 files changed, 55 insertions(+), 3 deletions(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 9c98b4c229..c5f247633e 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -366,12 +366,15 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
+index 62e9c8acbf..039cc3ad01 100644
+--- a/hw/pci-host/astro.c
++++ b/hw/pci-host/astro.c
+@@ -521,6 +521,53 @@ static ElroyState *elroy_init(int num)
+  * Astro Runway chip.
+  */
  
-     /* Graphics setup. */
-     if (machine->enable_graphics && vga_interface_type != VGA_NONE) {
--        vga_interface_created = true;
-         dev = qdev_new("artist");
-         s = SYS_BUS_DEVICE(dev);
--        sysbus_realize_and_unref(s, &error_fatal);
--        sysbus_mmio_map(s, 0, translate(NULL, LASI_GFX_HPA));
--        sysbus_mmio_map(s, 1, translate(NULL, ARTIST_FB_ADDR));
-+        bool disabled = object_property_get_bool(OBJECT(dev), "disable", NULL);
-+        if (!disabled) {
-+            sysbus_realize_and_unref(s, &error_fatal);
-+            vga_interface_created = true;
-+            sysbus_mmio_map(s, 0, translate(NULL, LASI_GFX_HPA));
-+            sysbus_mmio_map(s, 1, translate(NULL, ARTIST_FB_ADDR));
++static void adjust_LMMIO_DIRECT_mapping(AstroState *s, unsigned int reg_index)
++{
++    MemoryRegion *lmmio_alias;
++    unsigned int lmmio_index, map_route;
++    hwaddr map_addr;
++    uint32_t map_size;
++    struct ElroyState *elroy;
++
++    /* pointer to LMMIO_DIRECT entry */
++    lmmio_index = reg_index / 3;
++    lmmio_alias = &s->lmmio_direct[lmmio_index];
++
++    map_addr  = s->ioc_ranges[3 * lmmio_index + 0];
++    map_size  = s->ioc_ranges[3 * lmmio_index + 1];
++    map_route = s->ioc_ranges[3 * lmmio_index + 2];
++
++    /* find elroy to which this address is routed */
++    map_route &= (ELROY_NUM - 1);
++    elroy = s->elroy[map_route];
++
++    if (lmmio_alias->enabled) {
++        memory_region_set_enabled(lmmio_alias, false);
++    }
++
++    map_addr = F_EXTEND(map_addr);
++    map_addr &= TARGET_PAGE_MASK;
++    map_size = (~map_size) + 1;
++    map_size &= TARGET_PAGE_MASK;
++
++    /* exit if disabled or zero map size */
++    if (!(map_addr & 1) || !map_size) {
++        return;
++    }
++
++    if (!memory_region_size(lmmio_alias)) {
++        memory_region_init_alias(lmmio_alias, OBJECT(elroy),
++                        "pci-lmmmio-alias", &elroy->pci_mmio,
++                        (uint32_t) map_addr, map_size);
++        memory_region_add_subregion(get_system_memory(), map_addr,
++                                 lmmio_alias);
++    } else {
++        memory_region_set_alias_offset(lmmio_alias, map_addr);
++        memory_region_set_size(lmmio_alias, map_size);
++        memory_region_set_enabled(lmmio_alias, true);
++    }
++}
++
+ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
+                                              uint64_t *data, unsigned size,
+                                              MemTxAttrs attrs)
+@@ -628,6 +675,11 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
+         break;
+     case 0x0300 ... 0x03d8 - 1: /* LMMIO_DIRECT0_BASE... */
+         put_val_in_arrary(s->ioc_ranges, 0x300, addr, size, val);
++        unsigned int index = (addr - 0x300) / 8;
++        /* check if one of the 4 LMMIO_DIRECT regs, each using 3 entries. */
++        if (index < LMMIO_DIRECT_RANGES * 3) {
++            adjust_LMMIO_DIRECT_mapping(s, index);
 +        }
-     }
+         break;
+     case 0x10200:
+     case 0x10220:
+diff --git a/include/hw/pci-host/astro.h b/include/hw/pci-host/astro.h
+index e2966917cd..832125a05a 100644
+--- a/include/hw/pci-host/astro.h
++++ b/include/hw/pci-host/astro.h
+@@ -24,6 +24,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ElroyState, ELROY_PCI_HOST_BRIDGE)
+ #define LMMIO_DIST_BASE_ADDR      0xf4000000ULL
+ #define LMMIO_DIST_BASE_SIZE       0x4000000ULL
  
-     /* Network setup. */
++#define LMMIO_DIRECT_RANGES     4
++
+ #define IOS_DIST_BASE_ADDR      0xfffee00000ULL
+ #define IOS_DIST_BASE_SIZE           0x10000ULL
+ 
+@@ -83,9 +85,7 @@ struct AstroState {
+     struct ElroyState *elroy[ELROY_NUM];
+ 
+     MemoryRegion this_mem;
+-
+-    MemoryRegion pci_mmio;
+-    MemoryRegion pci_io;
++    MemoryRegion lmmio_direct[LMMIO_DIRECT_RANGES];
+ 
+     IOMMUMemoryRegion iommu;
+     AddressSpace iommu_as;
 -- 
 2.47.0
 
