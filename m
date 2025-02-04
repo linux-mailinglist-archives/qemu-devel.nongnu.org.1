@@ -2,142 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AEDA26E2C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 10:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5535FA26E69
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 10:31:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfF96-0000sF-1v; Tue, 04 Feb 2025 04:23:04 -0500
+	id 1tfFFj-0002b1-OG; Tue, 04 Feb 2025 04:29:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tfF8z-0000Ur-L6
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 04:22:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tfFFh-0002aD-FY; Tue, 04 Feb 2025 04:29:53 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tfF8x-0005DD-Az
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 04:22:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738660973;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=b/Ku1EYx+KuWQQKuJvy69ICVE/NhQK7jM86K8vQXSHU=;
- b=iP9H/uxqb2zFq60hAG5QLnGXz5VrFtvd/G1QrfCiGXmJRqEE405S9cqU9sFXj6RS5pK60i
- xa/1r/b/+UFvWcRiKZCGE6PfMNEzj7sUBAaGkxE9fL0X8B15Xvu9H9wwN+w18Jf3QrfTMm
- SfQcECwGHLhJeZfOctlMQOvmJHJejrg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-PE622HBbPJuMHkdAYDu-fQ-1; Tue, 04 Feb 2025 04:22:52 -0500
-X-MC-Unique: PE622HBbPJuMHkdAYDu-fQ-1
-X-Mimecast-MFC-AGG-ID: PE622HBbPJuMHkdAYDu-fQ
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3862e986d17so2136095f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 01:22:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738660971; x=1739265771;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=b/Ku1EYx+KuWQQKuJvy69ICVE/NhQK7jM86K8vQXSHU=;
- b=vpG65rs4tND/5OpO348grd/G/RI+0klEPzm9by6gf4uGL811SFQsHo5gMoUdiKq9Ne
- rnPRmjgTGl2SfIJY5gx4/86myEE7waAbOjCEiun/NyeMXPl1uC2GjPY5NnRJHiqqirUl
- FMRiXj+3zo9YnUkj2Jy8mlCLDxb/zhiBDQqU1DKVyWMxvq5xtXhidRLTpedmMU8LaOwq
- hTLqNPj/jRFKDRi6/QeavOyMBT14zOHkHTpJjNvqN3IkgAzIO4Bdsrb7rg3AKyqIlwlv
- 4rI+Ob45/OAPr3fgp+Ux/5j/AS3dx/d3pgH02SOMk/DKtMsBxbXX6ftGV9H5CRHQEy6f
- dPyg==
-X-Gm-Message-State: AOJu0YwRSzyIu6V7gd0L/n4QlwOla+Insokd7K81HX9O+69dqYsut4zT
- 6yTsnwRjcjLPXr/ErKib457btz26C/9WFOkZ/ahtwpF03EhB06SsTNuoWKTkHz5f7jMNt/x4zi/
- ZTzFi4XBLE0pJWTPJHfwUM5T3a95gI7QDPJlUdf/vq7Kv/bOd0M8G
-X-Gm-Gg: ASbGncvCyrye9Cn8TNb5oLnBsBVL1ARHu1idDiAzA7b9GKXFqRRGmO9FGnPML3NVfyI
- hSsEl50DUWVwHid7Hts9UAKEBEKSBDo6oxM6JGUEkcAQfixF4EGRpgCGwEVulceD7LiazYC5xqH
- elPoyBYkSI2PpGf1IkNc8ducxoMQFzbrDAIWdsZ2lVtVa8ugxsvVUc31C8d0abK+UglF0/L40gQ
- i8duNuqzmrYMn+WsuyelmctxZqxh6I++qakGEGQ4jdEDLE+D4dkl76kLtLYeN10er5DA+OtSV5s
- +gRVTsUbQTthKbP2Zgwknw1zpy1cGLtk
-X-Received: by 2002:a05:6000:1f86:b0:38c:5b62:9fdf with SMTP id
- ffacd0b85a97d-38c5b62a3b2mr15115741f8f.31.1738660971301; 
- Tue, 04 Feb 2025 01:22:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqMhSIO4onYt1yEg/PyCjTc46juRXkuLlzqVxZAsz5JjuJL/OTiz/m6HQnGPlgOns6IXDwOQ==
-X-Received: by 2002:a05:6000:1f86:b0:38c:5b62:9fdf with SMTP id
- ffacd0b85a97d-38c5b62a3b2mr15115727f8f.31.1738660970905; 
- Tue, 04 Feb 2025 01:22:50 -0800 (PST)
-Received: from [192.168.3.141] (p5b0c6602.dip0.t-ipconnect.de. [91.12.102.2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c1cf831sm15439760f8f.90.2025.02.04.01.22.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Feb 2025 01:22:49 -0800 (PST)
-Message-ID: <d8d1e39c-961a-4c29-8275-5936f3c32752@redhat.com>
-Date: Tue, 4 Feb 2025 10:22:48 +0100
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tfFFe-0006j3-ES; Tue, 04 Feb 2025 04:29:53 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YnJ0v3Pbpz6L4tw;
+ Tue,  4 Feb 2025 17:27:11 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 3309414011B;
+ Tue,  4 Feb 2025 17:29:46 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 4 Feb
+ 2025 10:29:45 +0100
+Date: Tue, 4 Feb 2025 09:29:44 +0000
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
+ <linuxarm@huawei.com>, <qemu-arm@nongnu.org>, Yuquan Wang
+ <wangyuquan1236@phytium.com.cn>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Subject: Re: [RFC PATCH v12 qemu 2/2] qtest/cxl: Add aarch64 virt test for CXL
+Message-ID: <20250204092944.00004d3c@huawei.com>
+In-Reply-To: <4AEA1355-C6E8-4A9D-8652-607FEBD7EE03@linux.dev>
+References: <20250203173040.145763-1-Jonathan.Cameron@huawei.com>
+ <20250203173040.145763-3-Jonathan.Cameron@huawei.com>
+ <4AEA1355-C6E8-4A9D-8652-607FEBD7EE03@linux.dev>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/virtio: reset virtio balloon stats on machine reset
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20241218172912.4170899-1-berrange@redhat.com>
- <d2730488-8468-4639-876c-18a860c6469e@redhat.com>
- <Z6Hb4dX1nK0wgyE0@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Z6Hb4dX1nK0wgyE0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,126 +67,199 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.02.25 10:20, Daniel P. Berrangé wrote:
-> On Thu, Dec 19, 2024 at 02:51:21PM +0100, David Hildenbrand wrote:
->> On 18.12.24 18:29, Daniel P. Berrangé wrote:
->>> When a machine is first booted, all virtio balloon stats are initialized
->>> to their default value -1 (18446744073709551615 when represented as
->>> unsigned).
->>>
->>> They remain that way while the firmware is loading, and early phase of
->>> guest OS boot, until the virtio-balloon driver is activated. Thereafter
->>> the reported stats reflect the guest OS activity.
->>>
->>> When a machine reset is performed, however, the virtio-balloon stats are
->>> left unchanged by QEMU, despite the guest OS no longer updating them,
->>> nor indeed even still existing.
->>>
->>> IOW, the mgmt app keeps getting stale stats until the guest OS starts
->>> once more and loads the virtio-balloon driver (if ever). At that point
->>> the app will see a discontinuity in the reported values as they sudden
->>> jump from the stale value to the new value. This jump is indigituishable
->>> from a valid data update.
->>>
->>> While there is an "last-updated" field to report on the freshness of
->>> the stats, that does not unambiguously tell the mgmt app whether the
->>> stats are still conceptually relevant to the current running workload.
->>>
->>> It is more conceptually useful to reset the stats to their default
->>> values on machine reset, given that the previous guest workload the
->>> stats reflect no longer exists. The mgmt app can now clearly identify
->>> that there are is no stats information available from the current
->>> executing workload.
->>>
->>> The 'last-updated' time is also reset back to 0.
->>>
->>> IOW, on every machine reset, the virtio stats are in the same clean
->>> state they were when the macine first powered on.
->>>
->>> A functional test is added to validate this behaviour with a real
->>> world guest OS.
->>>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
->>> ---
->>>
->>> One side-thought I have, is whether it makes sense to add a
->>> 'reset-count' field in the virtio stats, alongside the
->>> 'last-updated' field. While apps can infer a reset from seeing
->>> the stats all go back to their defaults, an explicit flag is
->>> simpler...
->>>
->>>    MAINTAINERS                             |   1 +
->>>    hw/virtio/virtio-balloon.c              |  30 ++++-
->>>    include/hw/virtio/virtio-balloon.h      |   4 +
->>>    tests/functional/test_virtio_balloon.py | 161 ++++++++++++++++++++++++
->>>    4 files changed, 195 insertions(+), 1 deletion(-)
->>>    create mode 100755 tests/functional/test_virtio_balloon.py
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 822f34344b..1380d53d03 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -2234,6 +2234,7 @@ F: include/hw/virtio/virtio-balloon.h
->>>    F: system/balloon.c
->>>    F: include/sysemu/balloon.h
->>>    F: tests/qtest/virtio-balloon-test.c
->>> +F: tests/functional/test_virtio_balloon.py
->>>    virtio-9p
->>>    M: Greg Kurz <groug@kaod.org>
->>> diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
->>> index ab2ee30475..fe0854e198 100644
->>> --- a/hw/virtio/virtio-balloon.c
->>> +++ b/hw/virtio/virtio-balloon.c
->>> @@ -31,7 +31,7 @@
->>>    #include "trace.h"
->>>    #include "qemu/error-report.h"
->>>    #include "migration/misc.h"
->>> -
->>> +#include "sysemu/reset.h"
->>>    #include "hw/virtio/virtio-bus.h"
->>>    #include "hw/virtio/virtio-access.h"
->>> @@ -910,6 +910,8 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
->>>        }
->>>        reset_stats(s);
->>> +    s->stats_last_update = 0;
->>> +    qemu_register_resettable(OBJECT(dev));
->>>    }
->>>    static void virtio_balloon_device_unrealize(DeviceState *dev)
->>> @@ -917,6 +919,7 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
->>>        VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->>>        VirtIOBalloon *s = VIRTIO_BALLOON(dev);
->>> +    qemu_unregister_resettable(OBJECT(dev));
->>>        if (s->free_page_bh) {
->>>            qemu_bh_delete(s->free_page_bh);
->>>            object_unref(OBJECT(s->iothread));
->>> @@ -987,6 +990,27 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
->>>        }
->>>    }
->>
->> Using qemu_register_resettable() can have unfortunate side effects that this
->> code is triggered when the device is reset, not necessarily when the
->> complete machine.
->>
->> For virtio-mem at least that's an issue, and here is how I'll fix it:
->>
->> https://lore.kernel.org/qemu-devel/20241218105303.1966303-2-david@redhat.com/
-> 
-> So having looked at it, I'm not convinced this is a problem for the
-> virtio-balloon scenario.
-> 
-> Is there anything you'd like changed on this patch, or is it acceptable
-> as is ?
+On Tue, 4 Feb 2025 14:16:19 +0900
+Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
 
-Probably "_system_reset" should be called differently, to make it 
-clearer that there are other cases.
+> Jonathan,
+>=20
+> > On Feb 4, 2025, at 2:30, Jonathan Cameron <Jonathan.Cameron@huawei.com>=
+ wrote:
+> >=20
+> > Add a single complex case for aarch64 virt machine.
+> > Given existing much more comprehensive tests for x86 cover the
+> > common functionality, a single test should be enough to verify
+> > that the aarch64 part continue to work.
+> >=20
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > tests/qtest/cxl-test.c  | 59 ++++++++++++++++++++++++++++++++---------
+> > tests/qtest/meson.build |  1 +
+> > 2 files changed, 47 insertions(+), 13 deletions(-)
+> >=20
+> > diff --git a/tests/qtest/cxl-test.c b/tests/qtest/cxl-test.c
+> > index a600331843..c7189d6222 100644
+> > --- a/tests/qtest/cxl-test.c
+> > +++ b/tests/qtest/cxl-test.c
+> > @@ -19,6 +19,12 @@
+> >     "-device pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D53 " \
+> >     "-M cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.targets.1=3Dcxl.1,cxl-fmw=
+.0.size=3D4G "
+> >=20
+> > +#define QEMU_VIRT_2PXB_CMD \
+> > +    "-machine virt,cxl=3Don -cpu max " \
+> > +    "-device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D52 " \
+> > +    "-device pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D53 " \
+> > +    "-M cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.targets.1=3Dcxl.1,cxl-fm=
+w.0.size=3D4G "
+> > +
+> > #define QEMU_RP \
+> >     "-device cxl-rp,id=3Drp0,bus=3Dcxl.0,chassis=3D0,slot=3D0 "
+> >=20
+> > @@ -197,25 +203,52 @@ static void cxl_2pxb_4rp_4t3d(void)
+> >     qtest_end();
+> >     rmdir(tmpfs);
+> > }
+> > +
+> > +static void cxl_virt_2pxb_4rp_4t3d(void)
+> > +{
+> > +    g_autoptr(GString) cmdline =3D g_string_new(NULL);
+> > +    char template[] =3D "/tmp/cxl-test-XXXXXX";
+> > +    const char *tmpfs;
+> > +
+> > +    tmpfs =3D mkdtemp(template);
+> > +
+> > +    g_string_printf(cmdline, QEMU_VIRT_2PXB_CMD QEMU_4RP QEMU_4T3D,
+> > +                    tmpfs, tmpfs, tmpfs, tmpfs, tmpfs, tmpfs,
+> > +                    tmpfs, tmpfs);
+> > +
+> > +    qtest_start(cmdline->str);
+> > +    qtest_end();
+> > +    rmdir(tmpfs);
+> > +}
+> > #endif /* CONFIG_POSIX */
+> >=20
+> > int main(int argc, char **argv)
+> > {
+> > -    g_test_init(&argc, &argv, NULL);
+> > +    const char *arch =3D qtest_get_arch();
+> >=20
+> > -    qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
+> > -    qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
+> > -    qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window);
+> > -    qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_window=
+);
+> > -    qtest_add_func("/pci/cxl/rp", cxl_root_port);
+> > -    qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
+> > +    g_test_init(&argc, &argv, NULL);
+> > +    if (strcmp(arch, "i386") =3D=3D 0 || strcmp(arch, "x86_64") =3D=3D=
+ 0) {
+> > +        qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
+> > +        qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
+> > +        qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window=
+);
+> > +        qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_wi=
+ndow);
+> > +        qtest_add_func("/pci/cxl/rp", cxl_root_port);
+> > +        qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
+> > #ifdef CONFIG_POSIX
+> > -    qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
+> > -    qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persistent);
+> > -    qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
+> > -    qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volatile_=
+lsa);
+> > -    qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
+> > -    qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4", cxl_2pxb_4=
+rp_4t3d);
+> > +        qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
+> > +        qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persisten=
+t);
+> > +        qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
+> > +        qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volat=
+ile_lsa);
+> > +        qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
+> > +        qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4",
+> > +                       cxl_2pxb_4rp_4t3d);
+> > #endif
+> > +    } else if (strcmp(arch, "aarch64") =3D=3D 0) {
+> > +#ifdef CONFIG_POSIX
+> > +        qtest_add_func("/pci/cxl/virt/pxb_x2_root_port_x4_type3_x4",
+> > +                       cxl_virt_2pxb_4rp_4t3d);
+> > +#endif
+> > +    }
+> > +
+> >     return g_test_run();
+> > }
+> > diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> > index e60e92fe9d..f5e7fb060e 100644
+> > --- a/tests/qtest/meson.build
+> > +++ b/tests/qtest/meson.build
+> > @@ -257,6 +257,7 @@ qtests_aarch64 =3D \
+> >   (config_all_accel.has_key('CONFIG_TCG') and                          =
+                  \
+> >    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-tes=
+t'] : []) + \
+> >   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : =
+[]) + \
+> > +  qtests_cxl +                                                        =
+                          \
+> >   ['arm-cpu-features',
+> >    'numa-test',
+> >    'boot-serial-test',
+> > --=20
+> > 2.43.0
+> >  =20
+>=20
+> In Ubuntu 22.04 LTS, cxl-test applied on top of today=E2=80=99s QEMU upst=
+ream master branch cxl-test fails:
+>=20
+> $ ./tests/qtest/cxl-test
+> # random seed: R02S2a8b02df7b32b79d086ce22f7f8ebeab
+> 1..1
+> # Start of aarch64 tests
+> # Start of pci tests
+> # Start of cxl tests
+> # Start of virt tests
+> # starting QEMU: exec qemu-system-aarch64 -qtest unix:/tmp/qtest-568421.s=
+ock -qtest-log /dev/null -chardev socket,path=3D/tmp/qtest-568421.qmp,id=3D=
+char0 -mon chardev=3Dchar0,mode=3Dcontrol -display none -audio none -machin=
+e virt,cxl=3Don -cpu max -device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D5=
+2 -device pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D53 -M cxl-fmw.0.targets.=
+0=3Dcxl.0,cxl-fmw.0.targets.1=3Dcxl.1,cxl-fmw.0.size=3D4G -device cxl-rp,id=
+=3Drp0,bus=3Dcxl.0,chassis=3D0,slot=3D0 -device cxl-rp,id=3Drp1,bus=3Dcxl.0=
+,chassis=3D0,slot=3D1 -device cxl-rp,id=3Drp2,bus=3Dcxl.1,chassis=3D0,slot=
+=3D2 -device cxl-rp,id=3Drp3,bus=3Dcxl.1,chassis=3D0,slot=3D3 -object memor=
+y-backend-file,id=3Dcxl-mem0,mem-path=3D/tmp/cxl-test-WdBn4X,size=3D256M -o=
+bject memory-backend-file,id=3Dlsa0,mem-path=3D/tmp/cxl-test-WdBn4X,size=3D=
+256M -device cxl-type3,bus=3Drp0,persistent-memdev=3Dcxl-mem0,lsa=3Dlsa0,id=
+=3Dpmem0 -object memory-backend-file,id=3Dcxl-mem1,mem-path=3D/tmp/cxl-test=
+-WdBn4X,size=3D256M -object memory-backend-file,id=3Dlsa1,mem-path=3D/tmp/c=
+xl-test-WdBn4X,size=3D256M -device cxl-type3,bus=3Drp1,persistent-memdev=3D=
+cxl-mem1,lsa=3Dlsa1,id=3Dpmem1 -object memory-backend-file,id=3Dcxl-mem2,me=
+m-path=3D/tmp/cxl-test-WdBn4X,size=3D256M -object memory-backend-file,id=3D=
+lsa2,mem-path=3D/tmp/cxl-test-WdBn4X,size=3D256M -device cxl-type3,bus=3Drp=
+2,persistent-memdev=3Dcxl-mem2,lsa=3Dlsa2,id=3Dpmem2 -object memory-backend=
+-file,id=3Dcxl-mem3,mem-path=3D/tmp/cxl-test-WdBn4X,size=3D256M -object mem=
+ory-backend-file,id=3Dlsa3,mem-path=3D/tmp/cxl-test-WdBn4X,size=3D256M -dev=
+ice cxl-type3,bus=3Drp3,persistent-memdev=3Dcxl-mem3,lsa=3Dlsa3,id=3Dpmem3 =
+ -accel qtest
+> qemu-system-aarch64: -audio: invalid option
+> socket_accept failed: Resource temporarily unavailable
+> **
+> ERROR:../tests/qtest/libqtest.c:550:qtest_connect: assertion failed: (s->=
+fd >=3D 0 && s->qmp_fd >=3D 0)
+> Bail out! ERROR:../tests/qtest/libqtest.c:550:qtest_connect: assertion fa=
+iled: (s->fd >=3D 0 && s->qmp_fd >=3D 0)
+> ../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU proces=
+s but encountered exit status 1 (expected 0)
+> Aborted (core dumped)
+>=20
+> Do I need set env vars when execute this test?
 
-Apart from that, I agree that virtio-balloon is likely fine.
+I've just been running it with make check-qtest and not seeing anything sim=
+ilar.
 
--- 
-Cheers,
+I'm not sure what infrastructure qtest puts round these but I guess it sets
+up that socket.
 
-David / dhildenb
+Jonathan
 
+
+
+>=20
+> Itaru.
 
