@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F8A26877
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F95EA26878
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf6jJ-0000sQ-Jb; Mon, 03 Feb 2025 19:23:53 -0500
+	id 1tf6jJ-0000sl-JV; Mon, 03 Feb 2025 19:23:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6jC-0000aY-4F
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:47 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6jF-0000ha-Ri
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:50 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6j9-00077c-2i
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:45 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so58356485e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:23:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6jD-000784-E7
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:49 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-38633b5dbcfso5215138f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738628621; x=1739233421; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738628625; x=1739233425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4BsHBCpnaPz96xyXgY6FPwDTShzZ0gjgpBf5vsUfhxs=;
- b=UMQ3YQwLsFy9KCH0bwJv1YJrekfy/X1BdHa8hlo2E73bAvXrclnRhBpyE9yM0iSLSA
- GZOFM3EhxSzzWDwVtCuh8cUohooSJakVT+/Fvcu3Pu4YfR7mZzmj5p1KLCtCp/i8HT+H
- 0bDJFNQV/yUo+CXKzN6Tz3wWF9NA/InyWHZzi/2SiYjnGIJANAvy2C2JuKaZhnqUql8v
- 1ongUyqaub8IZoql9qFw/4eCJysaJ7hojwygCA2DYDu8q0ZfqeFfrGIrd2NjXI0ofmUb
- +m45ZezlpMiztdHnGRJON34KuuKsQLKa46QFLKk59Roau5N2Gn80vpuAUr9MF19W57R5
- Hc1g==
+ bh=5hQiwa2G4uGjFgckcI0Yx0+nxXdng0uMBIPPXR9mbN0=;
+ b=KXmV0YLORGdBchskuC28+TKYuHyS+RDSw0/1/1dbNZvMsOvjZPSvn0KQ9En/U/Nyxf
+ u/mAZttXv9BSgadyALVCmwTHuGPDL4w+/lb+112StiNXa9p6H4ovHrdDKC9e8THKVptw
+ OQUZRE4y6BXCi5sCzIEg5i2vbaWKPVY4Z//T24g1oZhCSQBmPOsNgp691C3IFqS2epAG
+ MUI5X00ZMggKZo7VpaituW41A9By39bG/izOqWNMRr+AHaTrnIkF+WCvVHWXEzyrKwJf
+ ewsxg7cgvczrrG7T+32L0HDiwYkwSwFypnxrkVii0smQTLiqokMhpz1YWGz88XGf+GRi
+ r5ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738628621; x=1739233421;
+ d=1e100.net; s=20230601; t=1738628625; x=1739233425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4BsHBCpnaPz96xyXgY6FPwDTShzZ0gjgpBf5vsUfhxs=;
- b=g8qG3fsUC2IJmlpteUUXesj5nDl+14E20MwvHyRWKF4SbRsYXJHLJAcl16A2cFmVvf
- EDtcxIWOshs+0Bq3SYnLVYtcgLVNBR6DBcOiK1eT8UuYuXBBlwfH86kBkMIlNlhWa3pt
- 0KMRsKOWmTGI5aZpzE6tZFND6zbTjX6CljmJz2X7x5L0DacQHm3+3MxfwL2jJYzbOpvh
- n9b1T4gn5bdNHrgJnsU7TlcOeOLOwcOz0RgTIyDQe9KayMBbJaaZl26kfumfnKpCNlYk
- bb5y8MN9bCVqjA0pIamv/ShiYiLz2fdV1eWPMHX1U4fFTCJxPqTjfddiYcJGI4G6+vCG
- f73A==
-X-Gm-Message-State: AOJu0YzLkYjXMd4HQ8ByEVCLAalr10jWAZ8/TTl0W20IoP9ozaRUfYL3
- jq++tN14CvcJ2Q/F1+8MZT+bKK97S/xhwtGeMTtgZVyDqFZDHMtsmUglCRs2IdDEUzF4H9gS3Kh
- vHsQ=
-X-Gm-Gg: ASbGncsJFT2ufKMHW5yKsTFkn6sxQSqbSq9qru/BFgILI5g7sO1jEROzjbkXp7gqdjw
- whhDRX4lI3F3wHvqUX/z/YFmDfNfjpD6F6iTrU6cphrkvK0AQ16QbsHTv79DRIfo5MTeMdgEfra
- YqrO1/3GwRX239dfdF2/NNu8rbvftyqPNWqqTvPLs8EFe2m1R3k3SYQGAc33zpMduz8RHa1+Wee
- pKWhmwneib5U/lxNkRFOe3uCvy2eSZJ7pLBDM3XOglY0R18dUzgXGpggMFhHsdQK0+ZHBtBfVJc
- PuFahYzoaFxkRQUIlxc8qysgPaIIrqt1BymG2bEfDuhy73RGlKqvCmBZHuzdGKjh5w==
-X-Google-Smtp-Source: AGHT+IG7jWGrmSQyucvp8cl04A0B6GQvyWzANUSPKFJhjeQG53dan6HWFQx2maj55IYQawVpHdmwxA==
-X-Received: by 2002:a05:600c:1d06:b0:434:fa61:fdfb with SMTP id
- 5b1f17b1804b1-438e561ceaemr158695135e9.18.1738628620679; 
- Mon, 03 Feb 2025 16:23:40 -0800 (PST)
+ bh=5hQiwa2G4uGjFgckcI0Yx0+nxXdng0uMBIPPXR9mbN0=;
+ b=W3VGEnXJbxqp0c22JsaCx8wkjXSIOnmhcOYEFZDyS5lkY3S0ot43VyBnySydueqMse
+ 9/OFo9OBGNOR8DVcwfVFGmyeRJOFY3rYRdPFzLZry5xE5Z2mXdtTKLkVJE/PzfjO0Quw
+ r5Ulv02f+kStiyXvG7J9ybfEsyfwxzOGeuJcbvC28dYBw4o8eFzn1uDatYQ9HWyRy9sV
+ Ivk9+ORXxJHLkKkJ3jHmjJXnfyQJRcDMuoSf4wEUX3Z97O2UX2yEdJzlWB0W9rUN7lbI
+ njiJvLQPcoNvhnnsi5f8tULWP1udX+4YvIm88cqFGBb199iq/Vu3+fITMIp9Shs+L7Zr
+ 4h1Q==
+X-Gm-Message-State: AOJu0Yx5IZd4F7Ot7VrCWQLrkrhIwemhdz+qLo9s3XObyMqrqz0C0Rlt
+ ts1xxk/uhPocfNOASfoWyQuUQkukb1/s9qZm1HAOLvptT5Sew5VHxt0WNA/Q3DmPuhGt/+jcaDm
+ OWBM=
+X-Gm-Gg: ASbGncvZW7ftWwnvuc9JzmtP+zuDR4SJ4fvEtUgagDX6lYK9vWptrvto9WlU8QXSE4y
+ sQrBplTtJYDM+wQ66ZVDNyA0RK6VyOJmmWjel+LpiMJu04UYOnIukUvG/8tauXPi52bppM6fnLP
+ mGKKYtgmYWK9uHAEQjWA6clQ3Yblt07w+QUEu1bIhPVl5MwIt9kI6AkkcwC8eGYjPH2le3HI1na
+ VU/w8NTuUpoIbHk8R+hORodhzfiLazBJLoyMjWAxyAg5P5VTGoF+CAK/krSDnDV9PYoOgEhHAok
+ X08apypI1zeYP3dft4cEdtk8vMZL2SY8nCKZ0tnaqg7A6AMyRIobcB2POASIvZ3kAw==
+X-Google-Smtp-Source: AGHT+IGlQD4ZmGLKUil5WfVZGYdxEsJmCOEa6i0RsnTR0Suea1nAcU2pJ0fJ4ozP82WDv94mnLgENA==
+X-Received: by 2002:a05:6000:186f:b0:385:d7f9:f16c with SMTP id
+ ffacd0b85a97d-38c520a34b6mr25211298f8f.46.1738628625510; 
+ Mon, 03 Feb 2025 16:23:45 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c1016a1sm14187863f8f.21.2025.02.03.16.23.39
+ ffacd0b85a97d-38c5c11fadbsm13895097f8f.44.2025.02.03.16.23.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Feb 2025 16:23:40 -0800 (PST)
+ Mon, 03 Feb 2025 16:23:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -72,18 +72,17 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  devel@lists.libvirt.org
-Subject: [PATCH v2 10/12] hw/arm/raspi: List models creatable by the generic
- 'raspi' machine
-Date: Tue,  4 Feb 2025 01:22:38 +0100
-Message-ID: <20250204002240.97830-11-philmd@linaro.org>
+Subject: [PATCH v2 11/12] hw/arm/raspi: Deprecate old raspiX machine names
+Date: Tue,  4 Feb 2025 01:22:39 +0100
+Message-ID: <20250204002240.97830-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250204002240.97830-1-philmd@linaro.org>
 References: <20250204002240.97830-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,87 +105,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All the following models can be created (with different RAM size):
-
-  $ qemu-system-aarch64 -M raspi
-  qemu-system-aarch64: Missing model, try -M raspi,model=help
-  $ qemu-system-aarch64 -M raspi,model=help
-  Available models (processor):
-  - A          (BCM2835)
-  - B          (BCM2835)
-  - A+         (BCM2835)
-  - B+         (BCM2835)
-  - 2B         (BCM2836)
-  - CM1        (BCM2835)
-  - 3B         (BCM2837)
-  - Zero       (BCM2835)
-  - CM3        (BCM2837)
-  - ZeroW      (BCM2835)
-  - 3B+        (BCM2837)
-  - 3A+        (BCM2837)
-  - CM3+       (BCM2837)
-  - 4B         (BCM2838)
+All previous raspi machines can be created using the
+generic machine. Deprecate the old names to maintain
+a single one. Update the tests.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/raspi.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+QOM HMP introspection test fails because without the 'model'
+argument set, no machine is created...
 
+  $ qemu-system-aarch64 -M raspi
+  qemu-system-aarch64: Missing model, try -M raspi,model=help
+---
+ docs/about/deprecated.rst               | 13 +++++++++++++
+ hw/arm/raspi.c                          |  5 +++++
+ tests/qtest/bcm2835-dma-test.c          |  2 +-
+ tests/qtest/bcm2835-i2c-test.c          |  2 +-
+ tests/qtest/boot-serial-test.c          |  3 ++-
+ tests/functional/test_aarch64_raspi3.py |  5 ++---
+ tests/functional/test_aarch64_raspi4.py |  4 ++--
+ tests/functional/test_arm_raspi2.py     |  4 ++--
+ 8 files changed, 28 insertions(+), 10 deletions(-)
+
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 4a3c302962a..c9a11a52f78 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -257,6 +257,19 @@ Big-Endian variants of MicroBlaze ``petalogix-ml605`` and ``xlnx-zynqmp-pmu`` ma
+ Both ``petalogix-ml605`` and ``xlnx-zynqmp-pmu`` were added for little endian
+ CPUs. Big endian support is not tested.
+ 
++ARM ``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b`` and ``raspi4b`` machines (since 10.0)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++The Raspberry Pi machines have been unified under the generic ``raspi`` machine,
++which takes the model as argument.
++
++    - `raspi0`` is now an alias for ``raspi,model=Zero``
++    - `raspi1ap`` is now an alias for ``raspi,model=1A+``
++    - `raspi2b`` is now an alias for ``raspi,model=2B``
++    - `raspi3ap`` is now an alias for ``raspi,model=3A+``
++    - `raspi3b`` is now an alias for ``raspi,model=3B``
++    - `raspi4b`` is now an alias for ``raspi,model=4B``
++
+ Backend options
+ ---------------
+ 
 diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index b184ac3c446..8cae1ff6f93 100644
+index 8cae1ff6f93..86ecc988e06 100644
 --- a/hw/arm/raspi.c
 +++ b/hw/arm/raspi.c
-@@ -445,7 +445,7 @@ static void raspi_generic_machine_init(MachineState *ms)
-     uint64_t max_ramsize;
+@@ -637,6 +637,7 @@ static void raspi0_machine_class_init(ObjectClass *oc, void *data)
  
-     if (!board_rev) {
--        error_report("Missing model");
-+        error_report("Missing model, try -M raspi,model=help");
-         exit(1);
+     rmc->board_rev = 0x920092; /* Revision 1.2 */
+     raspi_machine_class_init(mc, rmc->board_rev);
++    mc->deprecation_reason = "-M raspi,model=Zero";
+ };
+ 
+ static void raspi1ap_machine_class_init(ObjectClass *oc, void *data)
+@@ -646,6 +647,7 @@ static void raspi1ap_machine_class_init(ObjectClass *oc, void *data)
+ 
+     rmc->board_rev = 0x900021; /* Revision 1.1 */
+     raspi_machine_class_init(mc, rmc->board_rev);
++    mc->deprecation_reason = "-M raspi,model=A+ (-m 512m)";
+ };
+ 
+ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
+@@ -655,6 +657,7 @@ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
+ 
+     rmc->board_rev = 0xa21041;
+     raspi_machine_class_init(mc, rmc->board_rev);
++    mc->deprecation_reason = "-M raspi,model=2B -m 1g";
+ };
+ 
+ #ifdef TARGET_AARCH64
+@@ -665,6 +668,7 @@ static void raspi3ap_machine_class_init(ObjectClass *oc, void *data)
+ 
+     rmc->board_rev = 0x9020e0; /* Revision 1.0 */
+     raspi_machine_class_init(mc, rmc->board_rev);
++    mc->deprecation_reason = "-M raspi,model=3A+ -m 512m";
+ };
+ 
+ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
+@@ -674,6 +678,7 @@ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
+ 
+     rmc->board_rev = 0xa02082;
+     raspi_machine_class_init(mc, rmc->board_rev);
++    mc->deprecation_reason = "-M raspi,model=3B -m 1g";
+ };
+ 
+ static void raspi4b_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/tests/qtest/bcm2835-dma-test.c b/tests/qtest/bcm2835-dma-test.c
+index 18901b76d21..705e6b2362b 100644
+--- a/tests/qtest/bcm2835-dma-test.c
++++ b/tests/qtest/bcm2835-dma-test.c
+@@ -111,7 +111,7 @@ int main(int argc, char **argv)
+     g_test_init(&argc, &argv, NULL);
+     qtest_add_func("/bcm2835/dma/test_interrupts",
+                    bcm2835_dma_test_interrupts);
+-    qtest_start("-machine raspi3b");
++    qtest_start("-machine raspi,model=3B -m 1g");
+     ret = g_test_run();
+     qtest_end();
+     return ret;
+diff --git a/tests/qtest/bcm2835-i2c-test.c b/tests/qtest/bcm2835-i2c-test.c
+index 15991949260..15904abf393 100644
+--- a/tests/qtest/bcm2835-i2c-test.c
++++ b/tests/qtest/bcm2835-i2c-test.c
+@@ -104,7 +104,7 @@ int main(int argc, char **argv)
      }
  
-@@ -500,8 +500,33 @@ static void raspi_update_board_rev(RaspiBaseMachineState *s)
-     ms->smp.max_cpus = soc_property[proc].cores_count;
- }
+     /* Run I2C tests with TMP105 slaves on all three buses */
+-    qtest_start("-M raspi3b "
++    qtest_start("-M raspi,model=3B -m 1g "
+                 "-device tmp105,address=0x50,bus=i2c-bus.0 "
+                 "-device tmp105,address=0x50,bus=i2c-bus.1 "
+                 "-device tmp105,address=0x50,bus=i2c-bus.2");
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index a05d26ee996..fbafd73facb 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -188,7 +188,8 @@ static const testdef_t tests[] = {
+       sizeof(kernel_pls3adsp1800), kernel_pls3adsp1800 },
+     { "microblazeel", "petalogix-ml605", "", "TT",
+       sizeof(kernel_plml605), kernel_plml605 },
+-    { "arm", "raspi2b", "", "TT", sizeof(bios_raspi2), 0, bios_raspi2 },
++    { "arm", "raspi,model=2B -m 1g", "", "TT",
++      sizeof(bios_raspi2), 0, bios_raspi2 },
+     { "aarch64", "virt", "-cpu max", "TT", sizeof(kernel_aarch64),
+       kernel_aarch64 },
+     { "arm", "microbit", "", "T", sizeof(kernel_nrf51), kernel_nrf51 },
+diff --git a/tests/functional/test_aarch64_raspi3.py b/tests/functional/test_aarch64_raspi3.py
+index 74f6630ed26..05766d93b3f 100755
+--- a/tests/functional/test_aarch64_raspi3.py
++++ b/tests/functional/test_aarch64_raspi3.py
+@@ -21,10 +21,9 @@ def test_aarch64_raspi3_atf(self):
+         efi_name = 'RPI_EFI.fd'
+         efi_fd = self.archive_extract(self.ASSET_RPI3_UEFI, member=efi_name)
  
-+static void raspi_list_machine_models(void)
-+{
-+    printf("Available models (processor):\n");
-+
-+    for (unsigned i = 0; i < ARRAY_SIZE(types); i++) {
-+        const char *soc_type;
-+
-+        if (!types[i].model) {
-+            continue;
-+        }
-+
-+        soc_type = soc_property[types[i].proc_id].type;
-+        if (!soc_type) {
-+            continue;
-+        }
-+        printf("- %-10s (BCM%s)\n",
-+               types[i].model,
-+               soc_property[types[i].proc_id].type + 3);
-+    }
-+}
-+
- static void raspi_set_machine_model(Object *obj, const char *value, Error **errp)
- {
-+    if (!strcmp(value, "help")) {
-+        raspi_list_machine_models();
-+        exit(0);
-+    }
-     for (unsigned i = 0; i < ARRAY_SIZE(types); i++) {
-         if (types[i].model && !strcmp(value, types[i].model)) {
-             RaspiBaseMachineState *s = RASPI_BASE_MACHINE(obj);
-@@ -512,6 +537,7 @@ static void raspi_set_machine_model(Object *obj, const char *value, Error **errp
-         }
-     }
-     error_setg(errp, "Invalid model");
-+    error_append_hint(errp, "Use model=help to list models.\n");
- }
+-        self.set_machine('raspi3b')
++        self.set_machine('raspi,model=3B -m 1g')
+         self.vm.set_console(console_index=1)
+-        self.vm.add_args('-cpu', 'cortex-a53',
+-                         '-nodefaults',
++        self.vm.add_args('-nodefaults',
+                          '-device', f'loader,file={efi_fd},force-raw=true')
+         self.vm.launch()
+         self.wait_for_console_pattern('version UEFI Firmware v1.15')
+diff --git a/tests/functional/test_aarch64_raspi4.py b/tests/functional/test_aarch64_raspi4.py
+index 7a4302b0c5a..3becee9333a 100755
+--- a/tests/functional/test_aarch64_raspi4.py
++++ b/tests/functional/test_aarch64_raspi4.py
+@@ -34,7 +34,7 @@ def test_arm_raspi4(self):
+         dtb_path = self.archive_extract(self.ASSET_KERNEL_20190215,
+                                         member='boot/bcm2711-rpi-4-b.dtb')
  
- static char *raspi_get_machine_model(Object *obj, Error **errp)
+-        self.set_machine('raspi4b')
++        self.set_machine('raspi,model=4B -m 1g')
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'earlycon=pl011,mmio32,0xfe201000 ' +
+@@ -64,7 +64,7 @@ def test_arm_raspi4_initrd(self):
+                                         member='boot/bcm2711-rpi-4-b.dtb')
+         initrd_path = self.uncompress(self.ASSET_INITRD)
+ 
+-        self.set_machine('raspi4b')
++        self.set_machine('raspi,model=4B -m 1g')
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'earlycon=pl011,mmio32,0xfe201000 ' +
+diff --git a/tests/functional/test_arm_raspi2.py b/tests/functional/test_arm_raspi2.py
+index d3c7aaa39b0..37390a9c360 100755
+--- a/tests/functional/test_arm_raspi2.py
++++ b/tests/functional/test_arm_raspi2.py
+@@ -39,7 +39,7 @@ def do_test_arm_raspi2(self, uart_id):
+         dtb_path = self.archive_extract(self.ASSET_KERNEL_20190215,
+                                         member='boot/bcm2709-rpi-2-b.dtb')
+ 
+-        self.set_machine('raspi2b')
++        self.set_machine('raspi,model=2B -m 1g')
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                serial_kernel_cmdline[uart_id] +
+@@ -65,7 +65,7 @@ def test_arm_raspi2_initrd(self):
+                                         member='boot/bcm2709-rpi-2-b.dtb')
+         initrd_path = self.uncompress(self.ASSET_INITRD)
+ 
+-        self.set_machine('raspi2b')
++        self.set_machine('raspi,model=2B -m 1g')
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'earlycon=pl011,0x3f201000 console=ttyAMA0 '
 -- 
 2.47.1
 
