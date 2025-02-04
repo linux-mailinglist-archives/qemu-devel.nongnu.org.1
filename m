@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C34A26879
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFBA26880
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 01:24:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tf6is-0000Ec-4y; Mon, 03 Feb 2025 19:23:26 -0500
+	id 1tf6jE-0000Qk-Hr; Mon, 03 Feb 2025 19:23:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6io-00009w-Et
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:22 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iv-0000Nt-SG
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:30 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6im-00074i-Uo
- for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:22 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385e27c75f4so4146668f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:23:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tf6iu-00075R-17
+ for qemu-devel@nongnu.org; Mon, 03 Feb 2025 19:23:29 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38632b8ae71so4204936f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Feb 2025 16:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738628599; x=1739233399; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738628605; x=1739233405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7ETuzJ6SLiQ/NiVSSl3xkPrhN42XnijAgudKaENxFFg=;
- b=hhG/7OZe/znQ5f1S7qyAWD4XACKBwXpdTucUHCSiGpEVqW751yn5jhTti6J9iAkoDc
- 3luef1D8FvsoEy9AMlzbcqxPZW4mbHRhg2WiatHqlsYa9iVsjQcIapq2pMEGiQ9RRtID
- UwiKYHj0yocvH5h2V1X7ypAB1K0Yu4YDuXthYw7zfXtUqjJjY3NnsFQXS3oB3MDFvZgd
- lGZ4OLOvNlSzGLkrQ4lMz/ZcOgBTapg/N3nYHQLWex1QYEBe0KF9tvnhpuQFB9c9sq5p
- Y5bUNwHXcw3Ohtj/ALGd7De26MHytbcpQjroK7L7cmZmfTU5EsTp4IVlRHrabqzqQI+E
- 6gaQ==
+ bh=WpPlnEnDWFC/Ik2Y/thdSUt8XZtZU/cwYbfSseA7YMQ=;
+ b=eJoy79M816f9ircBf3Q3bwRnl1uLFR9VVOFE4GblqE13ZQRmOzZ60qLif/FdUcuLD6
+ /pnoYVgqsTRJVGgKAVovZavh84CyrRDxtnWxV+ze6nHyQE8l9g4vWtZqCP0VUm7f/KQC
+ t6HfUdH+pS89U4xxq2BsJLHJSomXZLE8kaHBqSN0IVI1gwtib70zhATEwelDRDydAZLp
+ grpeaGXA2EeEvzqFirHVzmcRKnseC3fOoGz+LJHf4PnmGL+XHIBU5UgSW+swmGP+5V7g
+ d+1oKB+YVXrwUUx6LlBh9sbHki6ZnlUk6ybarqzhmJN62LTsPlHTdccUFx6NufB83+OV
+ Ac9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738628599; x=1739233399;
+ d=1e100.net; s=20230601; t=1738628605; x=1739233405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7ETuzJ6SLiQ/NiVSSl3xkPrhN42XnijAgudKaENxFFg=;
- b=rmNu/j05tB9hwklJMWG9ttgPBslnPx4a2uzGSvZynawkgNTehjjf8AfTB1thXpwYMS
- fuN2rG2ko27KWLzkxItTzEFG9BI99mAPoqeTcGDwls8WhV4A+MGYI9z2XrIrBlZcyrEr
- RwU0sdTf79S1xbQdSDR3WmEjRqmg8fTaCHtXuOVZN7W8tFsa1PkrJA4i7Q213YMuG+b4
- yuzgdWn7f1nQOPnJnOuX0NvSuDKVVmykjJ32Ci1hh9T+dWVdpTjD7wRF6XYooNBNqx2D
- qdaLUv7MW+BAkksvy+3xj+Sztd4CYuAaKZlcwIjMMPS6WE3DwJYnVAAtazo1dYiPbZGO
- 4feg==
-X-Gm-Message-State: AOJu0YxmhFKNvzGf/qWtAI/rUDTLYJXgEHmO4ZS8/uZJuVcpgLUa0BNR
- A63XEmxN4UuN6gWCdky5D91oNLkEHCIFCoLMm2mMvCEv2XGEvjcjYqBxh0G+DBGRWl2EZUt9GiL
- uArQ=
-X-Gm-Gg: ASbGnctFPru9CRxPfUUC14hACHLwL+qRfz/Epjmx0n3jNeBNt11x+7iD0NfT/cm5cQc
- sEubmFAHAjU5raKtzpa9RGHDEbYr/qqnvJcgihF4tJYkL451eSXGCvud/Sc7blNqBCU9MSvAQ2Z
- q6b+v5/o7o/9QW8qg+xfWI+lM+7gg3YinpGLZmw33B8CzLZL64phj/Za0PPzmiaSxDYW/KEYAxw
- owL/YDgHO8xo5Dherd28hA3MKyT1z51aX/HuTHC1Kz8we26TPkgW7/NqUZDc2JtqP6AQpvRtj1K
- gDdLa5YorGyqtEp827Bz1WfquaBHc9g+A22ebQIXUBUkNM5/qc7JTEzCvEBW7y6y5w==
-X-Google-Smtp-Source: AGHT+IE5eacu+tscRKXYBvGC7D2HiLBrNH0amLlpLTUZJ+7YJSAfPVR1pLS83k8+E9AGhYYQnO6mrQ==
-X-Received: by 2002:a5d:5988:0:b0:385:fd07:8616 with SMTP id
- ffacd0b85a97d-38c5167d80bmr20625537f8f.0.1738628599192; 
- Mon, 03 Feb 2025 16:23:19 -0800 (PST)
+ bh=WpPlnEnDWFC/Ik2Y/thdSUt8XZtZU/cwYbfSseA7YMQ=;
+ b=Ua8/WbP5VNYiRIg+PD4eGv+hdDwnuR/kcnbi2hnRZ+cKfXjFRmcdf22Z5RKO+Ua5OS
+ LRwIAMJSWOwfw9YV9JeByBjIhWlch13/Yu4+i2NeXD2j47rGo8v1nD4i8WtiuIAIl3hF
+ kccTzUQ4IEfq6etEgELN/S5TpqjLD1Iq5rp3ivgp8CUpyogudaaYHRN5A5PKXSf8XZpZ
+ T6b7QrPxQW+WkfMYL4+z+NFhaLunl1kSEm2kkcUCT7zOwRWVrFixtN4rXWUHWQG5iNiU
+ WKQgH5P1MMtwuXjUTvGQYpZK70Sg08p/tAkCR7usYAyFQ9xd6sT+RyQAOpPMrkz5LuzF
+ zqzw==
+X-Gm-Message-State: AOJu0Yz3ipm3J2MLILp0rljcYx/FG4NLr4u0wOe92c66ViTW7ZkLfsEt
+ AZeK0n8c/H+TQLx/x93UuJgwAewd+mCduTMIxR+GStxacSM42iVr9eGXHUlPrlTjq5Zzv664adO
+ 1G9U=
+X-Gm-Gg: ASbGncvdAOP0XKLprSVrkc5SIvBX8IbMEdv9bgeCMofuiPZEr6Py/gPMBnlFFETyLeR
+ TBA0bHI6WaLScIODHFqJnk6ajoRSfn6sHox4fufPkcBc6jnu3aZfMyFBrJIr8rWHzRJwmUgHaDV
+ TJjuaTbTTfejOdVAuYzFb3ucsY02fYoRrq5r8NIpbgdQILFYwt25wQVs3d719AnI0RfKuW3533V
+ bvGUG01RboT+2mPE3kGHK2qpuBx5o7KHczjDzawWT4rdVN6F8zdE/1MwMUxPYj87NjFQWF+IPFM
+ Pgiv3HH0HRpNhJ4Z6wJ5gTEMwlc/oU946aPogKmC2SzEb5Uo6K8/HBRprMcXsgjF5g==
+X-Google-Smtp-Source: AGHT+IFXxjdiX1jXLTjFtTEgAoBvG3NXn1OkUcQYFs5o3H1ayhaOYKZLsiFB8Nd03rQGcAki3/kgcw==
+X-Received: by 2002:a5d:6d86:0:b0:385:df43:2179 with SMTP id
+ ffacd0b85a97d-38c51967fd9mr16644540f8f.17.1738628605611; 
+ Mon, 03 Feb 2025 16:23:25 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438e245efbcsm168179175e9.33.2025.02.03.16.23.16
+ 5b1f17b1804b1-438e245f5a5sm175171855e9.40.2025.02.03.16.23.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Feb 2025 16:23:18 -0800 (PST)
+ Mon, 03 Feb 2025 16:23:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -72,17 +72,18 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  devel@lists.libvirt.org
-Subject: [PATCH v2 06/12] hw/arm/raspi: Consider network interface for B models
-Date: Tue,  4 Feb 2025 01:22:34 +0100
-Message-ID: <20250204002240.97830-7-philmd@linaro.org>
+Subject: [PATCH v2 07/12] hw/arm/raspi: Check ramsize is within chipset
+ aperture
+Date: Tue,  4 Feb 2025 01:22:35 +0100
+Message-ID: <20250204002240.97830-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250204002240.97830-1-philmd@linaro.org>
 References: <20250204002240.97830-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,46 +106,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Raspberry Pi 'B' models have an ethernet chipset (the LAN9512).
-Since we don't yet model it, add a /* TODO */ comment.
+Add the 'max_ramsize' field to the soc_property[] array,
+corresponding to the maximum DRAM size a SoC can map.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/raspi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/arm/raspi.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
 diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index 1a6a1f8ff22..68332fba027 100644
+index 68332fba027..d44277001ee 100644
 --- a/hw/arm/raspi.c
 +++ b/hw/arm/raspi.c
-@@ -143,6 +143,16 @@ static const char *board_type(uint32_t board_rev)
-     return types[bt].model;
+@@ -76,11 +76,12 @@ typedef enum RaspiProcessorId {
+ static const struct {
+     const char *type;
+     int cores_count;
++    uint64_t max_ramsize;
+ } soc_property[] = {
+-    [PROCESSOR_ID_BCM2835] = {TYPE_BCM2835, 1},
+-    [PROCESSOR_ID_BCM2836] = {TYPE_BCM2836, BCM283X_NCPUS},
+-    [PROCESSOR_ID_BCM2837] = {TYPE_BCM2837, BCM283X_NCPUS},
+-    [PROCESSOR_ID_BCM2838] = {TYPE_BCM2838, BCM283X_NCPUS},
++    [PROCESSOR_ID_BCM2835] = {TYPE_BCM2835, 1,              512 * MiB},
++    [PROCESSOR_ID_BCM2836] = {TYPE_BCM2836, BCM283X_NCPUS,  1 * GiB},
++    [PROCESSOR_ID_BCM2837] = {TYPE_BCM2837, BCM283X_NCPUS,  1 * GiB},
++    [PROCESSOR_ID_BCM2838] = {TYPE_BCM2838, BCM283X_NCPUS,  8 * GiB},
+ };
+ 
+ static const struct {
+@@ -133,6 +134,11 @@ static int cores_count(uint32_t board_rev)
+     return soc_property[board_processor_id(board_rev)].cores_count;
  }
  
-+static bool is_model_b(uint32_t board_rev)
++static uint64_t ramsize_max(uint32_t board_rev)
 +{
-+    return !!strchr(board_type(board_rev), 'B');
++    return soc_property[board_processor_id(board_rev)].max_ramsize;
 +}
 +
-+static bool has_enet(uint32_t board_rev)
-+{
-+    return is_model_b(board_rev);
-+}
-+
- static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
+ static const char *board_type(uint32_t board_rev)
  {
-     static const ARMInsnFixup smpboot[] = {
-@@ -304,6 +314,10 @@ void raspi_base_machine_init(MachineState *machine,
-                             machine->kernel_cmdline, &error_abort);
-     qdev_realize(DEVICE(soc), NULL, &error_fatal);
+     assert(FIELD_EX32(board_rev, REV_CODE, STYLE)); /* Only new style */
+@@ -294,6 +300,7 @@ void raspi_base_machine_init(MachineState *machine,
+     BlockBackend *blk;
+     BusState *bus;
+     DeviceState *carddev;
++    uint64_t max_ramsize;
  
-+    if (has_enet(board_rev)) {
-+        /* TODO: model LAN9512 and wire over USB2 */
+     if (machine->ram_size != ram_size) {
+         char *size_str = size_to_str(ram_size);
+@@ -301,6 +308,12 @@ void raspi_base_machine_init(MachineState *machine,
+         g_free(size_str);
+         exit(1);
+     }
++    max_ramsize = ramsize_max(board_rev);
++    if (ram_size > max_ramsize) {
++        g_autofree char *max_ramsize_str = size_to_str(max_ramsize);
++        error_report("At most %s of RAM can be used", max_ramsize_str);
++         exit(1);
 +    }
-+
-     /* Create and plug in the SD cards */
-     di = drive_get(IF_SD, 0, 0);
-     blk = di ? blk_by_legacy_dinfo(di) : NULL;
+ 
+     /* FIXME: Remove when we have custom CPU address space support */
+     memory_region_add_subregion_overlap(get_system_memory(), 0,
 -- 
 2.47.1
 
