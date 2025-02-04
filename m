@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8FEAA27D27
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78287A27D1A
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:16:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQH7-0006N7-Vo; Tue, 04 Feb 2025 16:16:06 -0500
+	id 1tfQHC-0006my-F2; Tue, 04 Feb 2025 16:16:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGK-0005ds-EO
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGM-0005kK-Lq
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGH-0005yb-Kp
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:16 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQGJ-0005yw-5t
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738703713;
+ s=mimecast20190719; t=1738703714;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sbwBEdFwmqa83hMZQKzK5OMU79Jnl2+8CKVXZ9pmV0I=;
- b=XrzpHcZEN5mkxBCiBAoEDLR3oT72mc+EZofisSnDoPuydcUKPAtSWrKQT5oeNoHD3F2rkp
- jXbRMADtn82pO2/JLzx8+s6k8surV1fcNeDsohp0N2DRmXEEhS1Z5Jua0cTKB/t9powG8S
- fGlseZRo3zHbDuUnoc9SRIMaknFExyI=
+ bh=avHUH+YE5G7nRDTUtTi4aEnyQGlh6f9K9ES9RLmlSrg=;
+ b=C975q3jVDhXP894ID+zQsGrOISdVtIPRoj+meiTH6yZVgLxBOf/u91Qy9NQ3X1gredyJRA
+ b3FnRxXduoHrbCvTuL07JZov53xn2gRnCRFof3UKl6GozYuhpvrLZaJOxR8mhMkmp53gMu
+ ZkdYFbYp12KWBTUuiR10/9mh36/M2vU=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-fJzAeLo2N_uc5fkW9be-0w-1; Tue,
- 04 Feb 2025 16:15:09 -0500
-X-MC-Unique: fJzAeLo2N_uc5fkW9be-0w-1
-X-Mimecast-MFC-AGG-ID: fJzAeLo2N_uc5fkW9be-0w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-OOKzLZayOi-2MhqdmL0L0w-1; Tue,
+ 04 Feb 2025 16:15:12 -0500
+X-MC-Unique: OOKzLZayOi-2MhqdmL0L0w-1
+X-Mimecast-MFC-AGG-ID: OOKzLZayOi-2MhqdmL0L0w
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E272E19560B0; Tue,  4 Feb 2025 21:15:07 +0000 (UTC)
+ id 3C36019560B7; Tue,  4 Feb 2025 21:15:11 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.100])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A48C1800365; Tue,  4 Feb 2025 21:15:03 +0000 (UTC)
+ id 5B57C1800365; Tue,  4 Feb 2025 21:15:08 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
  pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
  qemu-devel@nongnu.org
-Subject: [PATCH v3 15/16] iotests: Add qsd-migrate case
-Date: Tue,  4 Feb 2025 22:14:06 +0100
-Message-ID: <20250204211407.381505-16-kwolf@redhat.com>
+Subject: [PATCH v3 16/16] iotests: Add (NBD-based) tests for inactive nodes
+Date: Tue,  4 Feb 2025 22:14:07 +0100
+Message-ID: <20250204211407.381505-17-kwolf@redhat.com>
 In-Reply-To: <20250204211407.381505-1-kwolf@redhat.com>
 References: <20250204211407.381505-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,25 +81,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test that it's possible to migrate a VM that uses an image on shared
-storage through qemu-storage-daemon.
+This tests different types of operations on inactive block nodes
+(including graph changes, block jobs and NBD exports) to make sure that
+users manually activating and inactivating nodes doesn't break things.
+
+Support for inactive nodes in other export types will have to come with
+separate test cases because they have different dependencies like blkio
+or root permissions and we don't want to disable this basic test when
+they are not fulfilled.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- tests/qemu-iotests/tests/qsd-migrate     | 140 +++++++++++++++++++++++
- tests/qemu-iotests/tests/qsd-migrate.out |  59 ++++++++++
- 2 files changed, 199 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/qsd-migrate
- create mode 100644 tests/qemu-iotests/tests/qsd-migrate.out
+ tests/qemu-iotests/iotests.py                 |   4 +
+ tests/qemu-iotests/tests/inactive-node-nbd    | 303 ++++++++++++++++++
+ .../qemu-iotests/tests/inactive-node-nbd.out  | 239 ++++++++++++++
+ 3 files changed, 546 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/inactive-node-nbd
+ create mode 100644 tests/qemu-iotests/tests/inactive-node-nbd.out
 
-diff --git a/tests/qemu-iotests/tests/qsd-migrate b/tests/qemu-iotests/tests/qsd-migrate
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index 9c9c908983..7292c8b342 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -913,6 +913,10 @@ def add_incoming(self, addr):
+         self._args.append(addr)
+         return self
+ 
++    def add_paused(self):
++        self._args.append('-S')
++        return self
++
+     def hmp(self, command_line: str, use_log: bool = False) -> QMPMessage:
+         cmd = 'human-monitor-command'
+         kwargs: Dict[str, Any] = {'command-line': command_line}
+diff --git a/tests/qemu-iotests/tests/inactive-node-nbd b/tests/qemu-iotests/tests/inactive-node-nbd
 new file mode 100755
-index 0000000000..de17562cb0
+index 0000000000..a95b37e796
 --- /dev/null
-+++ b/tests/qemu-iotests/tests/qsd-migrate
-@@ -0,0 +1,140 @@
++++ b/tests/qemu-iotests/tests/inactive-node-nbd
+@@ -0,0 +1,303 @@
 +#!/usr/bin/env python3
 +# group: rw quick
 +#
@@ -122,189 +142,532 @@ index 0000000000..de17562cb0
 +
 +import iotests
 +
-+from iotests import filter_qemu_io, filter_qtest
++from iotests import QemuIoInteractive
++from iotests import filter_qemu_io, filter_qtest, filter_qmp_testfiles
 +
 +iotests.script_initialize(supported_fmts=['generic'],
 +                          supported_protocols=['file'],
 +                          supported_platforms=['linux'])
 +
++def get_export(node_name='disk-fmt', allow_inactive=None):
++    exp = {
++        'id': 'exp0',
++        'type': 'nbd',
++        'node-name': node_name,
++        'writable': True,
++    }
++
++    if allow_inactive is not None:
++        exp['allow-inactive'] = allow_inactive
++
++    return exp
++
++def node_is_active(_vm, node_name):
++    nodes = _vm.cmd('query-named-block-nodes', flat=True)
++    node = next(n for n in nodes if n['node-name'] == node_name)
++    return node['active']
++
 +with iotests.FilePath('disk.img') as path, \
-+     iotests.FilePath('nbd-src.sock', base_dir=iotests.sock_dir) as nbd_src, \
-+     iotests.FilePath('nbd-dst.sock', base_dir=iotests.sock_dir) as nbd_dst, \
-+     iotests.FilePath('migrate.sock', base_dir=iotests.sock_dir) as mig_sock, \
-+     iotests.VM(path_suffix="-src") as vm_src, \
-+     iotests.VM(path_suffix="-dst") as vm_dst:
++     iotests.FilePath('snap.qcow2') as snap_path, \
++     iotests.FilePath('snap2.qcow2') as snap2_path, \
++     iotests.FilePath('target.img') as target_path, \
++     iotests.FilePath('nbd.sock', base_dir=iotests.sock_dir) as nbd_sock, \
++     iotests.VM() as vm:
 +
 +    img_size = '10M'
 +
 +    iotests.log('Preparing disk...')
 +    iotests.qemu_img_create('-f', iotests.imgfmt, path, img_size)
++    iotests.qemu_img_create('-f', iotests.imgfmt, target_path, img_size)
 +
-+    iotests.log('Launching source QSD...')
-+    qsd_src = iotests.QemuStorageDaemon(
-+        '--blockdev', f'file,node-name=disk-file,filename={path}',
-+        '--blockdev', f'{iotests.imgfmt},file=disk-file,node-name=disk-fmt',
-+        '--nbd-server', f'addr.type=unix,addr.path={nbd_src}',
-+        '--export', 'nbd,id=exp0,node-name=disk-fmt,writable=true,'
-+                    'allow-inactive=true',
-+        qmp=True,
-+    )
++    iotests.qemu_img_create('-f', 'qcow2', '-b', path, '-F', iotests.imgfmt,
++                            snap_path)
++    iotests.qemu_img_create('-f', 'qcow2', '-b', snap_path, '-F', 'qcow2',
++                            snap2_path)
 +
-+    iotests.log('Launching source VM...')
-+    vm_src.add_args('-blockdev', f'nbd,node-name=disk,server.type=unix,'
-+                                 f'server.path={nbd_src},export=disk-fmt')
-+    vm_src.add_args('-device', 'virtio-blk,drive=disk,id=virtio0')
-+    vm_src.launch()
++    iotests.log('Launching VM...')
++    vm.add_blockdev(f'file,node-name=disk-file,filename={path}')
++    vm.add_blockdev(f'{iotests.imgfmt},file=disk-file,node-name=disk-fmt,'
++                     'active=off')
++    vm.add_blockdev(f'file,node-name=target-file,filename={target_path}')
++    vm.add_blockdev(f'{iotests.imgfmt},file=target-file,node-name=target-fmt')
++    vm.add_blockdev(f'file,node-name=snap-file,filename={snap_path}')
++    vm.add_blockdev(f'file,node-name=snap2-file,filename={snap2_path}')
 +
-+    iotests.log('Launching destination QSD...')
-+    qsd_dst = iotests.QemuStorageDaemon(
-+        '--blockdev', f'file,node-name=disk-file,filename={path},active=off',
-+        '--blockdev', f'{iotests.imgfmt},file=disk-file,node-name=disk-fmt,'
-+                      f'active=off',
-+        '--nbd-server', f'addr.type=unix,addr.path={nbd_dst}',
-+        '--export', 'nbd,id=exp0,node-name=disk-fmt,writable=true,'
-+                    'allow-inactive=true',
-+        qmp=True,
-+        instance_id='b',
-+    )
++    # Actually running the VM activates all images
++    vm.add_paused()
 +
-+    iotests.log('Launching destination VM...')
-+    vm_dst.add_args('-blockdev', f'nbd,node-name=disk,server.type=unix,'
-+                                 f'server.path={nbd_dst},export=disk-fmt')
-+    vm_dst.add_args('-device', 'virtio-blk,drive=disk,id=virtio0')
-+    vm_dst.add_args('-incoming', f'unix:{mig_sock}')
-+    vm_dst.launch()
++    vm.launch()
++    vm.qmp_log('nbd-server-start',
++                addr={'type': 'unix', 'data':{'path': nbd_sock}},
++                filters=[filter_qmp_testfiles])
 +
-+    iotests.log('\nTest I/O on the source')
-+    vm_src.hmp_qemu_io('virtio0/virtio-backend', 'write -P 0x11 0 4k',
-+                       use_log=True, qdev=True)
-+    vm_src.hmp_qemu_io('virtio0/virtio-backend', 'read -P 0x11 0 4k',
-+                       use_log=True, qdev=True)
++    iotests.log('\n=== Creating export of inactive node ===')
 +
-+    iotests.log('\nStarting migration...')
++    iotests.log('\nExports activate nodes without allow-inactive')
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('block-export-add', **get_export())
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    mig_caps = [
-+        {'capability': 'events', 'state': True},
-+        {'capability': 'pause-before-switchover', 'state': True},
-+    ]
-+    vm_src.qmp_log('migrate-set-capabilities', capabilities=mig_caps)
-+    vm_dst.qmp_log('migrate-set-capabilities', capabilities=mig_caps)
-+    vm_src.qmp_log('migrate', uri=f'unix:{mig_sock}',
-+                   filters=[iotests.filter_qmp_testfiles])
++    iotests.log('\nExports activate nodes with allow-inactive=false')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('block-export-add', **get_export(allow_inactive=False))
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    vm_src.event_wait('MIGRATION',
-+                      match={'data': {'status': 'pre-switchover'}})
++    iotests.log('\nExport leaves nodes inactive with allow-inactive=true')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('block-export-add', **get_export(allow_inactive=True))
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    iotests.log('\nPre-switchover: Reconfigure QSD instances')
++    iotests.log('\n=== Inactivating node with existing export ===')
 +
-+    iotests.log(qsd_src.qmp('blockdev-set-active', {'active': False}))
++    iotests.log('\nInactivating nodes with an export fails without '
++                'allow-inactive')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=True)
++    vm.qmp_log('block-export-add', **get_export(node_name='disk-fmt'))
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    # Reading is okay from both sides while the image is inactive. Note that
-+    # the destination may have stale data until it activates the image, though.
-+    vm_src.hmp_qemu_io('virtio0/virtio-backend', 'read -P 0x11 0 4k',
-+                       use_log=True, qdev=True)
-+    vm_dst.hmp_qemu_io('virtio0/virtio-backend', 'read 0 4k',
-+                       use_log=True, qdev=True)
++    iotests.log('\nInactivating nodes with an export fails with '
++                'allow-inactive=false')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=True)
++    vm.qmp_log('block-export-add',
++               **get_export(node_name='disk-fmt', allow_inactive=False))
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    iotests.log(qsd_dst.qmp('blockdev-set-active', {'active': True}))
++    iotests.log('\nInactivating nodes with an export works with '
++                'allow-inactive=true')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=True)
++    vm.qmp_log('block-export-add',
++               **get_export(node_name='disk-fmt', allow_inactive=True))
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    vm.qmp_log('query-block-exports')
++    vm.qmp_log('block-export-del', id='exp0')
++    vm.event_wait('BLOCK_EXPORT_DELETED')
++    vm.qmp_log('query-block-exports')
 +
-+    iotests.log('\nCompleting migration...')
++    iotests.log('\n=== Inactive nodes with parent ===')
 +
-+    vm_src.qmp_log('migrate-continue', state='pre-switchover')
-+    vm_dst.event_wait('MIGRATION', match={'data': {'status': 'completed'}})
++    iotests.log('\nInactivating nodes with an active parent fails')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=True)
++    vm.qmp_log('blockdev-set-active', node_name='disk-file', active=False)
++    iotests.log('disk-file active: %s' % node_is_active(vm, 'disk-file'))
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
 +
-+    iotests.log('\nTest I/O on the destination')
++    iotests.log('\nInactivating nodes with an inactive parent works')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=False)
++    vm.qmp_log('blockdev-set-active', node_name='disk-file', active=False)
++    iotests.log('disk-file active: %s' % node_is_active(vm, 'disk-file'))
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
 +
-+    # Now the destination must see what the source wrote
-+    vm_dst.hmp_qemu_io('virtio0/virtio-backend', 'read -P 0x11 0 4k',
-+                       use_log=True, qdev=True)
++    iotests.log('\nCreating active parent node with an inactive child fails')
++    vm.qmp_log('blockdev-add', driver='raw', file='disk-fmt',
++               node_name='disk-filter')
++    vm.qmp_log('blockdev-add', driver='raw', file='disk-fmt',
++               node_name='disk-filter', active=True)
 +
-+    # And be able to overwrite it
-+    vm_dst.hmp_qemu_io('virtio0/virtio-backend', 'write -P 0x22 0 4k',
-+                       use_log=True, qdev=True)
-+    vm_dst.hmp_qemu_io('virtio0/virtio-backend', 'read -P 0x22 0 4k',
-+                       use_log=True, qdev=True)
++    iotests.log('\nCreating inactive parent node with an inactive child works')
++    vm.qmp_log('blockdev-add', driver='raw', file='disk-fmt',
++               node_name='disk-filter', active=False)
++    vm.qmp_log('blockdev-del', node_name='disk-filter')
 +
-+    iotests.log('\nDone')
++    iotests.log('\n=== Resizing an inactive node ===')
++    vm.qmp_log('block_resize', node_name='disk-fmt', size=16*1024*1024)
 +
-+    vm_src.shutdown()
-+    iotests.log('\n--- vm_src log ---')
-+    log = vm_src.get_log()
++    iotests.log('\n=== Taking a snapshot of an inactive node ===')
++
++    iotests.log('\nActive overlay over inactive backing file automatically '
++                'makes both inactive for compatibility')
++    vm.qmp_log('blockdev-add', driver='qcow2', node_name='snap-fmt',
++               file='snap-file', backing=None)
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    vm.qmp_log('blockdev-snapshot', node='disk-fmt', overlay='snap-fmt')
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    vm.qmp_log('blockdev-del', node_name='snap-fmt')
++
++    iotests.log('\nInactive overlay over inactive backing file just works')
++    vm.qmp_log('blockdev-add', driver='qcow2', node_name='snap-fmt',
++               file='snap-file', backing=None, active=False)
++    vm.qmp_log('blockdev-snapshot', node='disk-fmt', overlay='snap-fmt')
++
++    iotests.log('\n=== Block jobs with inactive nodes ===')
++
++    iotests.log('\nStreaming into an inactive node')
++    vm.qmp_log('block-stream', device='snap-fmt',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nCommitting an inactive root node (active commit)')
++    vm.qmp_log('block-commit', job_id='job0', device='snap-fmt',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nCommitting an inactive intermediate node to inactive base')
++    vm.qmp_log('blockdev-add', driver='qcow2', node_name='snap2-fmt',
++               file='snap2-file', backing='snap-fmt', active=False)
++
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    iotests.log('snap2-fmt active: %s' % node_is_active(vm, 'snap2-fmt'))
++
++    vm.qmp_log('block-commit', job_id='job0', device='snap2-fmt',
++               top_node='snap-fmt',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nCommitting an inactive intermediate node to active base')
++    vm.qmp_log('blockdev-set-active', node_name='disk-fmt', active=True)
++    vm.qmp_log('block-commit', job_id='job0', device='snap2-fmt',
++               top_node='snap-fmt',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nMirror from inactive source to active target')
++    vm.qmp_log('blockdev-mirror', job_id='job0', device='snap2-fmt',
++               target='target-fmt', sync='full',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nMirror from active source to inactive target')
++
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    iotests.log('snap2-fmt active: %s' % node_is_active(vm, 'snap2-fmt'))
++    iotests.log('target-fmt active: %s' % node_is_active(vm, 'target-fmt'))
++
++    # Activating snap2-fmt recursively activates the whole backing chain
++    vm.qmp_log('blockdev-set-active', node_name='snap2-fmt', active=True)
++    vm.qmp_log('blockdev-set-active', node_name='target-fmt', active=False)
++
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    iotests.log('snap2-fmt active: %s' % node_is_active(vm, 'snap2-fmt'))
++    iotests.log('target-fmt active: %s' % node_is_active(vm, 'target-fmt'))
++
++    vm.qmp_log('blockdev-mirror', job_id='job0', device='snap2-fmt',
++               target='target-fmt', sync='full',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nBackup from active source to inactive target')
++
++    vm.qmp_log('blockdev-backup', job_id='job0', device='snap2-fmt',
++               target='target-fmt', sync='full',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\nBackup from inactive source to active target')
++
++    # Inactivating snap2-fmt recursively inactivates the whole backing chain
++    vm.qmp_log('blockdev-set-active', node_name='snap2-fmt', active=False)
++    vm.qmp_log('blockdev-set-active', node_name='target-fmt', active=True)
++
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    iotests.log('snap2-fmt active: %s' % node_is_active(vm, 'snap2-fmt'))
++    iotests.log('target-fmt active: %s' % node_is_active(vm, 'target-fmt'))
++
++    vm.qmp_log('blockdev-backup', job_id='job0', device='snap2-fmt',
++               target='target-fmt', sync='full',
++               filters=[iotests.filter_qmp_generated_node_ids])
++
++    iotests.log('\n=== Accessing export on inactive node ===')
++
++    # Use the target node because it has the right image format and isn't the
++    # (read-only) backing file of a qcow2 node
++    vm.qmp_log('blockdev-set-active', node_name='target-fmt', active=False)
++    vm.qmp_log('block-export-add',
++               **get_export(node_name='target-fmt', allow_inactive=True))
++
++    # The read should succeed, everything else should fail gracefully
++    qemu_io = QemuIoInteractive('-f', 'raw',
++                                f'nbd+unix:///target-fmt?socket={nbd_sock}')
++    iotests.log(qemu_io.cmd('read 0 64k'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('write 0 64k'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('write -z 0 64k'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('write -zu 0 64k'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('discard 0 64k'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('flush'), filters=[filter_qemu_io])
++    iotests.log(qemu_io.cmd('map'), filters=[filter_qemu_io])
++    qemu_io.close()
++
++    iotests.log('\n=== Resuming VM activates all images ===')
++    vm.qmp_log('cont')
++
++    iotests.log('disk-fmt active: %s' % node_is_active(vm, 'disk-fmt'))
++    iotests.log('snap-fmt active: %s' % node_is_active(vm, 'snap-fmt'))
++    iotests.log('snap2-fmt active: %s' % node_is_active(vm, 'snap2-fmt'))
++    iotests.log('target-fmt active: %s' % node_is_active(vm, 'target-fmt'))
++
++    iotests.log('\nShutting down...')
++    vm.shutdown()
++    log = vm.get_log()
 +    if log:
 +        iotests.log(log, [filter_qtest, filter_qemu_io])
-+    qsd_src.stop()
-+
-+    vm_dst.shutdown()
-+    iotests.log('\n--- vm_dst log ---')
-+    log = vm_dst.get_log()
-+    if log:
-+        iotests.log(log, [filter_qtest, filter_qemu_io])
-+    qsd_dst.stop()
-diff --git a/tests/qemu-iotests/tests/qsd-migrate.out b/tests/qemu-iotests/tests/qsd-migrate.out
+diff --git a/tests/qemu-iotests/tests/inactive-node-nbd.out b/tests/qemu-iotests/tests/inactive-node-nbd.out
 new file mode 100644
-index 0000000000..4a5241e5d4
+index 0000000000..a458b4fc05
 --- /dev/null
-+++ b/tests/qemu-iotests/tests/qsd-migrate.out
-@@ -0,0 +1,59 @@
++++ b/tests/qemu-iotests/tests/inactive-node-nbd.out
+@@ -0,0 +1,239 @@
 +Preparing disk...
-+Launching source QSD...
-+Launching source VM...
-+Launching destination QSD...
-+Launching destination VM...
-+
-+Test I/O on the source
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"write -P 0x11 0 4k\""}}
-+{"return": ""}
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"read -P 0x11 0 4k\""}}
-+{"return": ""}
-+
-+Starting migration...
-+{"execute": "migrate-set-capabilities", "arguments": {"capabilities": [{"capability": "events", "state": true}, {"capability": "pause-before-switchover", "state": true}]}}
-+{"return": {}}
-+{"execute": "migrate-set-capabilities", "arguments": {"capabilities": [{"capability": "events", "state": true}, {"capability": "pause-before-switchover", "state": true}]}}
-+{"return": {}}
-+{"execute": "migrate", "arguments": {"uri": "unix:SOCK_DIR/PID-migrate.sock"}}
++Launching VM...
++{"execute": "nbd-server-start", "arguments": {"addr": {"data": {"path": "SOCK_DIR/PID-nbd.sock"}, "type": "unix"}}}
 +{"return": {}}
 +
-+Pre-switchover: Reconfigure QSD instances
++=== Creating export of inactive node ===
++
++Exports activate nodes without allow-inactive
++disk-fmt active: False
++{"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
 +{"return": {}}
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"read -P 0x11 0 4k\""}}
-+{"return": ""}
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"read 0 4k\""}}
-+{"return": ""}
++disk-fmt active: True
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++Exports activate nodes with allow-inactive=false
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"return": {}}
++disk-fmt active: False
++{"execute": "block-export-add", "arguments": {"allow-inactive": false, "id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++disk-fmt active: True
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++Export leaves nodes inactive with allow-inactive=true
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"return": {}}
++disk-fmt active: False
++{"execute": "block-export-add", "arguments": {"allow-inactive": true, "id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++disk-fmt active: False
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++=== Inactivating node with existing export ===
++
++Inactivating nodes with an export fails without allow-inactive
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"error": {"class": "GenericError", "desc": "Failed to inactivate node: Operation not permitted"}}
++disk-fmt active: True
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++Inactivating nodes with an export fails with allow-inactive=false
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "block-export-add", "arguments": {"allow-inactive": false, "id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"error": {"class": "GenericError", "desc": "Failed to inactivate node: Operation not permitted"}}
++disk-fmt active: True
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++Inactivating nodes with an export works with allow-inactive=true
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "block-export-add", "arguments": {"allow-inactive": true, "id": "exp0", "node-name": "disk-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"return": {}}
++disk-fmt active: False
++{"execute": "query-block-exports", "arguments": {}}
++{"return": [{"id": "exp0", "node-name": "disk-fmt", "shutting-down": false, "type": "nbd"}]}
++{"execute": "block-export-del", "arguments": {"id": "exp0"}}
++{"return": {}}
++{"execute": "query-block-exports", "arguments": {}}
++{"return": []}
++
++=== Inactive nodes with parent ===
++
++Inactivating nodes with an active parent fails
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-file"}}
++{"error": {"class": "GenericError", "desc": "Node has active parent node"}}
++disk-file active: True
++disk-fmt active: True
++
++Inactivating nodes with an inactive parent works
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "disk-file"}}
++{"return": {}}
++disk-file active: False
++disk-fmt active: False
++
++Creating active parent node with an inactive child fails
++{"execute": "blockdev-add", "arguments": {"driver": "raw", "file": "disk-fmt", "node-name": "disk-filter"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'disk-fmt' can't be a file child of active 'disk-filter'"}}
++{"execute": "blockdev-add", "arguments": {"active": true, "driver": "raw", "file": "disk-fmt", "node-name": "disk-filter"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'disk-fmt' can't be a file child of active 'disk-filter'"}}
++
++Creating inactive parent node with an inactive child works
++{"execute": "blockdev-add", "arguments": {"active": false, "driver": "raw", "file": "disk-fmt", "node-name": "disk-filter"}}
++{"return": {}}
++{"execute": "blockdev-del", "arguments": {"node-name": "disk-filter"}}
 +{"return": {}}
 +
-+Completing migration...
-+{"execute": "migrate-continue", "arguments": {"state": "pre-switchover"}}
++=== Resizing an inactive node ===
++{"execute": "block_resize", "arguments": {"node-name": "disk-fmt", "size": 16777216}}
++{"error": {"class": "GenericError", "desc": "Permission 'resize' unavailable on inactive node"}}
++
++=== Taking a snapshot of an inactive node ===
++
++Active overlay over inactive backing file automatically makes both inactive for compatibility
++{"execute": "blockdev-add", "arguments": {"backing": null, "driver": "qcow2", "file": "snap-file", "node-name": "snap-fmt"}}
++{"return": {}}
++disk-fmt active: False
++snap-fmt active: True
++{"execute": "blockdev-snapshot", "arguments": {"node": "disk-fmt", "overlay": "snap-fmt"}}
++{"return": {}}
++disk-fmt active: False
++snap-fmt active: False
++{"execute": "blockdev-del", "arguments": {"node-name": "snap-fmt"}}
 +{"return": {}}
 +
-+Test I/O on the destination
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"read -P 0x11 0 4k\""}}
-+{"return": ""}
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"write -P 0x22 0 4k\""}}
-+{"return": ""}
-+{"execute": "human-monitor-command", "arguments": {"command-line": "qemu-io -d virtio0/virtio-backend \"read -P 0x22 0 4k\""}}
-+{"return": ""}
++Inactive overlay over inactive backing file just works
++{"execute": "blockdev-add", "arguments": {"active": false, "backing": null, "driver": "qcow2", "file": "snap-file", "node-name": "snap-fmt"}}
++{"return": {}}
++{"execute": "blockdev-snapshot", "arguments": {"node": "disk-fmt", "overlay": "snap-fmt"}}
++{"return": {}}
 +
-+Done
++=== Block jobs with inactive nodes ===
 +
-+--- vm_src log ---
-+wrote 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Streaming into an inactive node
++{"execute": "block-stream", "arguments": {"device": "snap-fmt"}}
++{"error": {"class": "GenericError", "desc": "Could not create node: Inactive 'snap-fmt' can't be a file child of active 'NODE_NAME'"}}
 +
-+--- vm_dst log ---
-+read 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 4096/4096 bytes at offset 0
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Committing an inactive root node (active commit)
++{"execute": "block-commit", "arguments": {"device": "snap-fmt", "job-id": "job0"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'snap-fmt' can't be a backing child of active 'NODE_NAME'"}}
++
++Committing an inactive intermediate node to inactive base
++{"execute": "blockdev-add", "arguments": {"active": false, "backing": "snap-fmt", "driver": "qcow2", "file": "snap2-file", "node-name": "snap2-fmt"}}
++{"return": {}}
++disk-fmt active: False
++snap-fmt active: False
++snap2-fmt active: False
++{"execute": "block-commit", "arguments": {"device": "snap2-fmt", "job-id": "job0", "top-node": "snap-fmt"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'snap-fmt' can't be a backing child of active 'NODE_NAME'"}}
++
++Committing an inactive intermediate node to active base
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "disk-fmt"}}
++{"return": {}}
++{"execute": "block-commit", "arguments": {"device": "snap2-fmt", "job-id": "job0", "top-node": "snap-fmt"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'snap-fmt' can't be a backing child of active 'NODE_NAME'"}}
++
++Mirror from inactive source to active target
++{"execute": "blockdev-mirror", "arguments": {"device": "snap2-fmt", "job-id": "job0", "sync": "full", "target": "target-fmt"}}
++{"error": {"class": "GenericError", "desc": "Inactive 'snap2-fmt' can't be a backing child of active 'NODE_NAME'"}}
++
++Mirror from active source to inactive target
++disk-fmt active: True
++snap-fmt active: False
++snap2-fmt active: False
++target-fmt active: True
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "snap2-fmt"}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "target-fmt"}}
++{"return": {}}
++disk-fmt active: True
++snap-fmt active: True
++snap2-fmt active: True
++target-fmt active: False
++{"execute": "blockdev-mirror", "arguments": {"device": "snap2-fmt", "job-id": "job0", "sync": "full", "target": "target-fmt"}}
++{"error": {"class": "GenericError", "desc": "Permission 'write' unavailable on inactive node"}}
++
++Backup from active source to inactive target
++{"execute": "blockdev-backup", "arguments": {"device": "snap2-fmt", "job-id": "job0", "sync": "full", "target": "target-fmt"}}
++{"error": {"class": "GenericError", "desc": "Could not create node: Inactive 'target-fmt' can't be a target child of active 'NODE_NAME'"}}
++
++Backup from inactive source to active target
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "snap2-fmt"}}
++{"return": {}}
++{"execute": "blockdev-set-active", "arguments": {"active": true, "node-name": "target-fmt"}}
++{"return": {}}
++disk-fmt active: False
++snap-fmt active: False
++snap2-fmt active: False
++target-fmt active: True
++{"execute": "blockdev-backup", "arguments": {"device": "snap2-fmt", "job-id": "job0", "sync": "full", "target": "target-fmt"}}
++{"error": {"class": "GenericError", "desc": "Could not create node: Inactive 'snap2-fmt' can't be a file child of active 'NODE_NAME'"}}
++
++=== Accessing export on inactive node ===
++{"execute": "blockdev-set-active", "arguments": {"active": false, "node-name": "target-fmt"}}
++{"return": {}}
++{"execute": "block-export-add", "arguments": {"allow-inactive": true, "id": "exp0", "node-name": "target-fmt", "type": "nbd", "writable": true}}
++{"return": {}}
++read 65536/65536 bytes at offset 0
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++write failed: Operation not permitted
++
++write failed: Operation not permitted
++
++write failed: Operation not permitted
++
++discard failed: Operation not permitted
++
++
++qemu-io: Failed to get allocation status: Operation not permitted
++
++
++=== Resuming VM activates all images ===
++{"execute": "cont", "arguments": {}}
++{"return": {}}
++disk-fmt active: True
++snap-fmt active: True
++snap2-fmt active: True
++target-fmt active: True
++
++Shutting down...
++
 -- 
 2.48.1
 
