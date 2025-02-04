@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB103A27E23
+	by mail.lfdr.de (Postfix) with ESMTPS id CF33FA27E21
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 23:19:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfREg-0005UM-Th; Tue, 04 Feb 2025 17:17:38 -0500
+	id 1tfREi-0005VY-Pq; Tue, 04 Feb 2025 17:17:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREe-0005Tc-Cn
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:36 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREf-0005Tt-4M
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:37 -0500
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREb-0005QI-PO
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tfREc-0005Qd-LA
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 17:17:36 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 051885C571B;
- Tue,  4 Feb 2025 22:16:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1296C4CEDF;
- Tue,  4 Feb 2025 22:17:29 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id 512995C5772;
+ Tue,  4 Feb 2025 22:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEED5C4CEE2;
+ Tue,  4 Feb 2025 22:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738707450;
- bh=XqqcKTiqr37pWU6TZ9vOOlIFt2Td5Ilt6/cULAw4RFo=;
+ s=k20201202; t=1738707451;
+ bh=LN0dnrIDGZQR72H3wmJeJtnzrcc5u2AjRrx48WJYYTY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=KS1ewTvHHQH8hnUtDTtUSswPQjjLcqtQyqxjLIN5PrAHV+kFMTua9sSFLhdx1Iph8
- P5x4BQirjPXrZgy275BeTP0ka5iYDXsH2Ek/EsCiLBJutAXKs7wKfdI64EooiiW5Sz
- KiXrMlYvlPdKNAKfzt5CLBLyj6aCdC8TRVJ1RZymbX5XMlYrzPCr9cK7hjkOr9tXEp
- +4d4LbofEdti+DFo8t7wE3Ar3cBzc+9Nf62zmXBHrYeYPwTncde/NBM+OE9iJVObFZ
- QlaYxNm5PkggnJ2ucTezvHoiVibeWhOopYCDwqvVOdIPzQzGpsXgUkKWowm3iIOSK7
- g5k7IlOAt/VPw==
+ b=h4ReIeGu/DANJCuBwGrTfp3ERQkSD5Vykvz2WMBH7hkDNO820nnoE8KKlzdJj7jGc
+ hr8L4MBMNYgynbrZDsD8MlqpFuBMpT9k1xuIaw0xngyFo0J2Xt5zCJRQtSkbLJ+UFa
+ v/tl1rjQRIw2lOIhsKnxZ+JboB8MG/KzbRWzIfp3yU3MJkQ1vXHBhFvCyDgdDAj8V1
+ UR1IbQWx6IAcvZwO6YSpZG/Kfqb+4UwfgDrN6xzBYshq2WouIy/E/1MnWol3kHCKos
+ OzOEKlTKSGRPA9piOPwSZuUyWlcJxKmZ8VxvDjJj2FDdbj7A36onbnfHET+duZ7pSe
+ rITjgq2mHKEYQ==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH 1/6] hw/char: Add emulation of Diva GSP PCI management boards
-Date: Tue,  4 Feb 2025 23:17:21 +0100
-Message-ID: <20250204221726.151287-2-deller@kernel.org>
+Subject: [PATCH 2/6] hw/hppa: Wire up Diva GSP card
+Date: Tue,  4 Feb 2025 23:17:22 +0100
+Message-ID: <20250204221726.151287-3-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250204221726.151287-1-deller@kernel.org>
 References: <20250204221726.151287-1-deller@kernel.org>
@@ -70,364 +70,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The Diva GSP ("Guardian Service Processor") PCI boards are Remote
-Management cards for PA-RISC machines.  They come with built-in 16550A
-UARTs for serial consoles and modem functionalities, as well as a
-mailbox-like memory area for hardware auto-reboot functionality.
-
-Latest generation HP PA-RISC server machines use those Diva cards
-for console output.
+Until now we used a standard serial-pci device to emulate a HP serial
+console.  This worked nicely with 32-bit Linux and 32-bit HP-UX, but
+64-bit HP-UX crashes with it and expects either a Diva GSP card, or a real
+64-bit capable PCI graphic card (which we don't have yet).
+In order to continue with 64-bit HP-UX, switch over to the recently
+added Diva GSP card emulation.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- MAINTAINERS         |   1 +
- hw/char/Kconfig     |   3 +
- hw/char/diva-gsp.c  | 297 ++++++++++++++++++++++++++++++++++++++++++++
- hw/char/meson.build |   1 +
- 4 files changed, 302 insertions(+)
- create mode 100644 hw/char/diva-gsp.c
+ hw/hppa/Kconfig   |  1 +
+ hw/hppa/machine.c | 31 +++++++++++--------------------
+ 2 files changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bf737eb6db..e09a8d2791 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1193,6 +1193,7 @@ M: Richard Henderson <richard.henderson@linaro.org>
- M: Helge Deller <deller@gmx.de>
- S: Maintained
- F: configs/devices/hppa-softmmu/default.mak
-+F: hw/char/diva-gsp.c
- F: hw/display/artist.c
- F: hw/hppa/
- F: hw/input/lasips2.c
-diff --git a/hw/char/Kconfig b/hw/char/Kconfig
-index 1dc20ee4c2..3f702565e6 100644
---- a/hw/char/Kconfig
-+++ b/hw/char/Kconfig
-@@ -66,6 +66,9 @@ config RENESAS_SCI
- config AVR_USART
-     bool
+diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
+index 9312c4294a..cab21045de 100644
+--- a/hw/hppa/Kconfig
++++ b/hw/hppa/Kconfig
+@@ -11,6 +11,7 @@ config HPPA_B160L
+     select LASI
+     select SERIAL_MM
+     select SERIAL_PCI
++    select DIVA_GSP
+     select ISA_BUS
+     select I8259
+     select IDE_CMD646
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index b6135d9526..9c98b4c229 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -383,26 +383,17 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
  
-+config DIVA_GSP
-+    bool
-+
- config MCHP_PFSOC_MMUART
-     bool
-     select SERIAL
-diff --git a/hw/char/diva-gsp.c b/hw/char/diva-gsp.c
-new file mode 100644
-index 0000000000..ecec1f7bb1
---- /dev/null
-+++ b/hw/char/diva-gsp.c
-@@ -0,0 +1,297 @@
-+/*
-+ * HP Diva GSP controller
-+ *
-+ * The Diva PCI boards are Remote Management cards for PA-RISC machines.
-+ * They come with built-in 16550A multi UARTs for serial consoles
-+ * and a mailbox-like memory area for hardware auto-reboot functionality.
-+ * GSP stands for "Guardian Service Processor". Later products were marketed
-+ * "Management Processor" (MP).
-+ *
-+ * Diva cards are multifunctional cards. The first part, the aux port,
-+ * is on physical machines not useable but we still try to mimic it here.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Copyright (c) 2025 Helge Deller <deller@gmx.de>
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "hw/char/serial.h"
-+#include "hw/irq.h"
-+#include "hw/pci/pci_device.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-properties-system.h"
-+#include "migration/vmstate.h"
-+
-+#define PCI_DEVICE_ID_HP_DIVA           0x1048
-+/* various DIVA GSP cards: */
-+#define PCI_DEVICE_ID_HP_DIVA_TOSCA1    0x1049
-+#define PCI_DEVICE_ID_HP_DIVA_TOSCA2    0x104A
-+#define PCI_DEVICE_ID_HP_DIVA_MAESTRO   0x104B
-+#define PCI_DEVICE_ID_HP_REO_IOC        0x10f1
-+#define PCI_DEVICE_ID_HP_DIVA_HALFDOME  0x1223
-+#define PCI_DEVICE_ID_HP_DIVA_KEYSTONE  0x1226
-+#define PCI_DEVICE_ID_HP_DIVA_POWERBAR  0x1227
-+#define PCI_DEVICE_ID_HP_DIVA_EVEREST   0x1282
-+#define PCI_DEVICE_ID_HP_DIVA_AUX       0x1290
-+#define PCI_DEVICE_ID_HP_DIVA_RMP3      0x1301
-+#define PCI_DEVICE_ID_HP_DIVA_HURRICANE 0x132a
-+
-+
-+#define PCI_SERIAL_MAX_PORTS 4
-+
-+typedef struct PCIDivaSerialState {
-+    PCIDevice    dev;
-+    MemoryRegion membar;        /* for serial ports */
-+    MemoryRegion mailboxbar;    /* for hardware mailbox */
-+    uint32_t     subvendor;
-+    uint32_t     ports;
-+    char         *name[PCI_SERIAL_MAX_PORTS];
-+    SerialState  state[PCI_SERIAL_MAX_PORTS];
-+    uint32_t     level[PCI_SERIAL_MAX_PORTS];
-+    qemu_irq     *irqs;
-+    uint8_t      prog_if;
-+    bool         disable;
-+} PCIDivaSerialState;
-+
-+static void diva_pci_exit(PCIDevice *dev)
-+{
-+    PCIDivaSerialState *pci = DO_UPCAST(PCIDivaSerialState, dev, dev);
-+    SerialState *s;
-+    int i;
-+
-+    for (i = 0; i < pci->ports; i++) {
-+        s = pci->state + i;
-+        qdev_unrealize(DEVICE(s));
-+        memory_region_del_subregion(&pci->membar, &s->io);
-+        g_free(pci->name[i]);
-+    }
-+    qemu_free_irqs(pci->irqs, pci->ports);
-+}
-+
-+static void multi_serial_irq_mux(void *opaque, int n, int level)
-+{
-+    PCIDivaSerialState *pci = opaque;
-+    int i, pending = 0;
-+
-+    pci->level[n] = level;
-+    for (i = 0; i < pci->ports; i++) {
-+        if (pci->level[i]) {
-+            pending = 1;
-+        }
-+    }
-+    pci_set_irq(&pci->dev, pending);
-+}
-+
-+struct diva_info {
-+    unsigned int nports:4; /* number of serial ports */
-+    unsigned int omask:12; /* offset mask: BIT(1) -> offset 8 */
-+};
-+
-+static struct diva_info diva_get_diva_info(PCIDeviceClass *pc)
-+{
-+    switch (pc->subsystem_id) {
-+    case PCI_DEVICE_ID_HP_DIVA_POWERBAR:
-+    case PCI_DEVICE_ID_HP_DIVA_HURRICANE:
-+        return (struct diva_info) { .nports = 1,
-+                        .omask = BIT(0) };
-+    case PCI_DEVICE_ID_HP_DIVA_TOSCA2:
-+        return (struct diva_info) { .nports = 2,
-+                        .omask = BIT(0) | BIT(1) };
-+    case PCI_DEVICE_ID_HP_DIVA_TOSCA1:
-+    case PCI_DEVICE_ID_HP_DIVA_HALFDOME:
-+    case PCI_DEVICE_ID_HP_DIVA_KEYSTONE:
-+        return (struct diva_info) { .nports = 3,
-+                        .omask = BIT(0) | BIT(1) | BIT(2) };
-+    case PCI_DEVICE_ID_HP_DIVA_EVEREST: /* e.g. in rp3410 */
-+        return (struct diva_info) { .nports = 3,
-+                        .omask = BIT(0) | BIT(2) | BIT(7) };
-+    case PCI_DEVICE_ID_HP_DIVA_MAESTRO:
-+        return (struct diva_info) { .nports = 4,
-+                        .omask = BIT(0) | BIT(1) | BIT(2) | BIT(7) };
-+    }
-+    g_assert_not_reached();
-+}
-+
-+
-+static void diva_pci_realize(PCIDevice *dev, Error **errp)
-+{
-+    PCIDeviceClass *pc = PCI_DEVICE_GET_CLASS(dev);
-+    PCIDivaSerialState *pci = DO_UPCAST(PCIDivaSerialState, dev, dev);
-+    SerialState *s;
-+    struct diva_info di = diva_get_diva_info(pc);
-+    size_t i, offset = 0;
-+    size_t portmask = di.omask;
-+
-+    pci->dev.config[PCI_CLASS_PROG] = pci->prog_if;
-+    pci->dev.config[PCI_INTERRUPT_PIN] = 0x01;
-+    memory_region_init(&pci->membar, OBJECT(pci), "serial_ports", 4096);
-+    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &pci->membar);
-+    pci->irqs = qemu_allocate_irqs(multi_serial_irq_mux, pci, di.nports);
-+
-+    for (i = 0; i < di.nports; i++) {
-+        s = pci->state + i;
-+        if (!qdev_realize(DEVICE(s), NULL, errp)) {
-+            diva_pci_exit(dev);
-+            return;
-+        }
-+        s->irq = pci->irqs[i];
-+        pci->name[i] = g_strdup_printf("uart #%zu", i + 1);
-+        memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s,
-+                              pci->name[i], 8);
-+
-+        /* calculate offset of given port based on bitmask */
-+        while ((portmask & BIT(0)) == 0) {
-+            offset += 8;
-+            portmask >>= 1;
-+        }
-+        memory_region_add_subregion(&pci->membar, offset, &s->io);
-+        offset += 8;
-+        portmask >>= 1;
-+        pci->ports++;
-+    }
-+
-+    /* mailbox bar */
-+    memory_region_init(&pci->mailboxbar, OBJECT(pci), "mailbox", 128 * KiB);
-+    pci_register_bar(&pci->dev, 1, PCI_BASE_ADDRESS_SPACE_MEMORY |
-+                     PCI_BASE_ADDRESS_MEM_PREFETCH, &pci->mailboxbar);
-+}
-+
-+static const VMStateDescription vmstate_pci_diva = {
-+    .name = "pci-diva-serial",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_PCI_DEVICE(dev, PCIDivaSerialState),
-+        VMSTATE_STRUCT_ARRAY(state, PCIDivaSerialState, PCI_SERIAL_MAX_PORTS,
-+                             0, vmstate_serial, SerialState),
-+        VMSTATE_UINT32_ARRAY(level, PCIDivaSerialState, PCI_SERIAL_MAX_PORTS),
-+        VMSTATE_BOOL(disable, PCIDivaSerialState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static const Property diva_serial_properties[] = {
-+    DEFINE_PROP_BOOL("disable",  PCIDivaSerialState, disable, false),
-+    DEFINE_PROP_CHR("chardev1",  PCIDivaSerialState, state[0].chr),
-+    DEFINE_PROP_CHR("chardev2",  PCIDivaSerialState, state[1].chr),
-+    DEFINE_PROP_CHR("chardev3",  PCIDivaSerialState, state[2].chr),
-+    DEFINE_PROP_CHR("chardev4",  PCIDivaSerialState, state[3].chr),
-+    DEFINE_PROP_UINT8("prog_if",  PCIDivaSerialState, prog_if, 0x02),
-+    DEFINE_PROP_UINT32("subvendor", PCIDivaSerialState, subvendor,
-+                                    PCI_DEVICE_ID_HP_DIVA_TOSCA1),
-+};
-+
-+static void diva_serial_class_initfn(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
-+    pc->realize = diva_pci_realize;
-+    pc->exit = diva_pci_exit;
-+    pc->vendor_id = PCI_VENDOR_ID_HP;
-+    pc->device_id = PCI_DEVICE_ID_HP_DIVA;
-+    pc->subsystem_vendor_id = PCI_VENDOR_ID_HP;
-+    pc->subsystem_id = PCI_DEVICE_ID_HP_DIVA_TOSCA1;
-+    pc->revision = 3;
-+    pc->class_id = PCI_CLASS_COMMUNICATION_SERIAL;
-+    dc->vmsd = &vmstate_pci_diva;
-+    device_class_set_props(dc, diva_serial_properties);
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
-+}
-+
-+static void diva_serial_init(Object *o)
-+{
-+    PCIDevice *dev = PCI_DEVICE(o);
-+    PCIDivaSerialState *pms = DO_UPCAST(PCIDivaSerialState, dev, dev);
-+    struct diva_info di = diva_get_diva_info(PCI_DEVICE_GET_CLASS(dev));
-+    size_t i;
-+
-+    for (i = 0; i < di.nports; i++) {
-+        object_initialize_child(o, "serial[*]", &pms->state[i], TYPE_SERIAL);
-+    }
-+}
-+
-+
-+/* Diva-aux is the driver for portion 0 of the multifunction PCI device */
-+
-+struct DivaAuxState {
-+    PCIDevice dev;
-+    MemoryRegion mem;
-+    qemu_irq irq;
-+};
-+
-+#define TYPE_DIVA_AUX "diva-aux"
-+OBJECT_DECLARE_SIMPLE_TYPE(DivaAuxState, DIVA_AUX)
-+
-+static void diva_aux_realize(PCIDevice *dev, Error **errp)
-+{
-+    DivaAuxState *pci = DO_UPCAST(DivaAuxState, dev, dev);
-+
-+    pci->dev.config[PCI_CLASS_PROG] = 0x02;
-+    pci->dev.config[PCI_INTERRUPT_PIN] = 0x01;
-+    pci->irq = pci_allocate_irq(&pci->dev);
-+
-+    memory_region_init(&pci->mem, OBJECT(pci), "mem", 16);
-+    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &pci->mem);
-+}
-+
-+static void diva_aux_exit(PCIDevice *dev)
-+{
-+    DivaAuxState *pci = DO_UPCAST(DivaAuxState, dev, dev);
-+    qemu_free_irq(pci->irq);
-+}
-+
-+static void diva_aux_class_initfn(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
-+    pc->realize = diva_aux_realize;
-+    pc->exit = diva_aux_exit;
-+    pc->vendor_id = PCI_VENDOR_ID_HP;
-+    pc->device_id = PCI_DEVICE_ID_HP_DIVA_AUX;
-+    pc->subsystem_vendor_id = PCI_VENDOR_ID_HP;
-+    pc->subsystem_id = 0x1291;
-+    pc->revision = 1;
-+    pc->class_id = PCI_CLASS_COMMUNICATION_MULTISERIAL;
-+    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-+    dc->user_creatable = false;
-+}
-+
-+static void diva_aux_init(Object *o)
-+{
-+}
-+
-+static const TypeInfo diva_aux_info = {
-+    .name          = TYPE_DIVA_AUX,
-+    .parent        = TYPE_PCI_DEVICE,
-+    .instance_size = sizeof(DivaAuxState),
-+    .instance_init = diva_aux_init,
-+    .class_init    = diva_aux_class_initfn,
-+    .interfaces = (InterfaceInfo[]) {
-+        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-+        { },
-+    },
-+};
-+
-+
-+
-+static const TypeInfo diva_serial_pci_info = {
-+    .name          = "diva-gsp",
-+    .parent        = TYPE_PCI_DEVICE,
-+    .instance_size = sizeof(PCIDivaSerialState),
-+    .instance_init = diva_serial_init,
-+    .class_init    = diva_serial_class_initfn,
-+    .interfaces = (InterfaceInfo[]) {
-+        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-+        { },
-+    },
-+};
-+
-+static void diva_pci_register_type(void)
-+{
-+    type_register_static(&diva_serial_pci_info);
-+    type_register_static(&diva_aux_info);
-+}
-+
-+type_init(diva_pci_register_type)
-diff --git a/hw/char/meson.build b/hw/char/meson.build
-index ed3529cbbb..86ee808cae 100644
---- a/hw/char/meson.build
-+++ b/hw/char/meson.build
-@@ -20,6 +20,7 @@ system_ss.add(when: 'CONFIG_SHAKTI_UART', if_true: files('shakti_uart.c'))
- system_ss.add(when: 'CONFIG_VIRTIO_SERIAL', if_true: files('virtio-console.c'))
- system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen_console.c'))
- system_ss.add(when: 'CONFIG_XILINX', if_true: files('xilinx_uartlite.c'))
-+system_ss.add(when: 'CONFIG_DIVA_GSP', if_true: files('diva-gsp.c'))
+     pci_init_nic_devices(pci_bus, mc->default_nic);
  
- system_ss.add(when: 'CONFIG_AVR_USART', if_true: files('avr_usart.c'))
- system_ss.add(when: 'CONFIG_COLDFIRE', if_true: files('mcf_uart.c'))
+-    /* BMC board: HP Powerbar SP2 Diva (with console only) */
+-    pci_dev = pci_new(-1, "pci-serial");
+-    if (!lasi_dev) {
+-        /* bind default keyboard/serial to Diva card */
+-        qdev_prop_set_chr(DEVICE(pci_dev), "chardev", serial_hd(0));
+-    }
+-    qdev_prop_set_uint8(DEVICE(pci_dev), "prog_if", 0);
+-    pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+-    pci_config_set_vendor_id(pci_dev->config, PCI_VENDOR_ID_HP);
+-    pci_config_set_device_id(pci_dev->config, 0x1048);
+-    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_VENDOR_ID], PCI_VENDOR_ID_HP);
+-    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
+-
+-    /* create a second serial PCI card when running Astro */
+-    if (serial_hd(1) && !lasi_dev) {
+-        pci_dev = pci_new(-1, "pci-serial-4x");
+-        qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
+-        qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
+-        qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(3));
+-        qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(4));
++    /* BMC board: HP Diva GSP */
++    dev = qdev_new("diva-gsp");
++    if (!object_property_get_bool(OBJECT(dev), "disable", NULL)) {
++        pci_dev = pci_new_multifunction(PCI_DEVFN(2, 0), "diva-gsp");
++        if (!lasi_dev) {
++            /* bind default keyboard/serial to Diva card */
++            qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(0));
++            qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(1));
++            qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(2));
++            qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(3));
++        }
+         pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+     }
+ 
 -- 
 2.47.0
 
