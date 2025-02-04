@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476EAA277F7
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 18:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6D0A277F4
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 18:09:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfMPG-0004bX-Kr; Tue, 04 Feb 2025 12:08:14 -0500
+	id 1tfMPH-0004d4-Ej; Tue, 04 Feb 2025 12:08:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tfMP9-0004aC-1d; Tue, 04 Feb 2025 12:08:07 -0500
+ id 1tfMPA-0004aK-6Y; Tue, 04 Feb 2025 12:08:08 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tfMP7-0007N9-BM; Tue, 04 Feb 2025 12:08:06 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514GEmuk028549;
- Tue, 4 Feb 2025 17:08:03 GMT
+ id 1tfMP7-0007NM-Rn; Tue, 04 Feb 2025 12:08:07 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514GEoIx030630;
+ Tue, 4 Feb 2025 17:08:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=OKXxXs79uyB70aMSQRtD+/VaQAV83iMpIaNKE+Wg4
- iU=; b=FpkdIX8XTSAQOyaCChoJJr249DBFDUJEbtXUyipm5kGRjuSKXbvai7sTi
- 6do+C9XClSObnw3FG/zX97lsFSdo4yaVsItCs5mV+Z9/FAK8R871UwQ+Hy6Z4k/T
- aqYgbyh2ovsZvtyY53I9G68sSTaKh0+etv6HVleOONzgx8/KQwFeMuLhNrIJLBpW
- e+KSWRFfZGnW2/aRBZ/jRKVxgtMrz4wXwKKAJK/bO+u5x9vaf+NjJcxcMWHPdY/1
- 6Kl0xHCLx3uKnymA3rLPPyqF9EeD9OOKOworBoSppC/ae7bS9qQCoQDDcyq/H47q
- SpiaYJ0HQfAWmfgKgNdXLQjN1YMRg==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44knqtrek5-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=GpzwVFe2I6Yk5SZ8t
+ ySdyYobiM3eUVaKLJ1IhAVx7pI=; b=NMDbeIBJ2OqMk+ddd+4JvP5O8n3ShBhcS
+ dOe7oAe+tnM3IvjZmgtb8Ph8UwlUR7L8D/ndIzBexNUt5mfOZb9yj1Kj21gyqPZ4
+ hJR6xBwwlJ5lPc1MsvCN40v9XkR0DCv3ulCv+m7TePvxmYY4vEWYommr7mKneGRG
+ O+McAwJFUePC7wWymHja95BUwOFtShHrjDtNEtOyY4PBaTrLH9Yyg9dwL71Lv/5c
+ HhpujgGCwoJr6mHRSyigLrXDJb45x9dsQiG7/hy8tIThWl1BmjkX+QI4Ainx/Y/R
+ /QgopJELDmVs/RJtjq2Qk6+iguKg9Wg9j6ny+Vs2zMgYdIt61WVwg==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kekp2qwj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Feb 2025 17:08:03 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514DxBGD021493;
- Tue, 4 Feb 2025 17:08:02 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j0n1c6m5-1
+ Tue, 04 Feb 2025 17:08:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514FZptE007150;
+ Tue, 4 Feb 2025 17:08:03 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxaymmr4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Feb 2025 17:08:02 +0000
+ Tue, 04 Feb 2025 17:08:03 +0000
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
  [10.39.53.232])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 514H81Y24325938
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 514H82Rq15467046
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Feb 2025 17:08:01 GMT
+ Tue, 4 Feb 2025 17:08:02 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 679035805D;
+ by IMSVA (Postfix) with ESMTP id A14DC5805F;
+ Tue,  4 Feb 2025 17:08:02 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E0F658053;
  Tue,  4 Feb 2025 17:08:01 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4AF2358043;
- Tue,  4 Feb 2025 17:08:00 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.255.239])
  by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Feb 2025 17:08:00 +0000 (GMT)
+ Tue,  4 Feb 2025 17:08:01 +0000 (GMT)
 From: Rorie Reyes <rreyes@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
 Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
  jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
  alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
  akrowiak@linux.ibm.com
-Subject: [RFC PATCH v2 0/5] Report vfio-ap configuration changes
-Date: Tue,  4 Feb 2025 12:07:54 -0500
-Message-Id: <20250204170759.36540-1-rreyes@linux.ibm.com>
+Subject: [RFC PATCH v2 1/5] linux-headers: NOTFORMERGE - placeholder uapi
+ updates for AP config change
+Date: Tue,  4 Feb 2025 12:07:55 -0500
+Message-Id: <20250204170759.36540-2-rreyes@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250204170759.36540-1-rreyes@linux.ibm.com>
+References: <20250204170759.36540-1-rreyes@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oQa8SUNrlhRfz2EkmaRIdcmQIQcPBrTG
-X-Proofpoint-ORIG-GUID: oQa8SUNrlhRfz2EkmaRIdcmQIQcPBrTG
+X-Proofpoint-ORIG-GUID: SFFbI6HugPm84FdCdyTmYOxxPapemkci
+X-Proofpoint-GUID: SFFbI6HugPm84FdCdyTmYOxxPapemkci
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-04_08,2025-02-04_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=933 phishscore=0 malwarescore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502040131
+ impostorscore=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 phishscore=0 mlxlogscore=958 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502040131
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -104,42 +107,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changelog:
+This patch adds enumeration constant VFIO_AP_CFG_CHG_IRQ_INDEX to specify
+an IRQ index for signaling that a change has been made to the guest's AP
+configuration. This is a placeholder for QEMU patches that use this value
+since it is a linux-headers update which includes changes that aren't
+merged into the kernel. Linux-headers patches should be generated using
+scripts/update-linux-headers.sh.
 
-v2:
-- removed warnings that weren't needed
-- added unregister function
-- removed whitelines
-- changed variable names for consistency
-- removed rc variable and returning 1 or 0 outright
-- reversed logics for if statements
-- using g_free() instead of free()
-- replaced hardcoded numeric values by defining them with #define
-in the header 
+Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+---
+ linux-headers/linux/vfio.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---------------------------------------------------------------------------
-This patch series creates and registers a handler that is called when
-userspace is notified by the kernel that a guest's AP configuration has
-changed. The handler in turn notifies the guest that its AP configuration
-has changed. This allows the guest to immediately respond to AP
-configuration changes rather than relying on polling or some other
-inefficient mechanism for detecting config changes.
-
-Rorie Reyes (5):
-  linux-headers: NOTFORMERGE - placeholder uapi updates for AP config
-    change
-  hw/vfio/ap: notification handler for AP config changed event
-  hw/vfio/ap: store object indicating AP config changed in a queue
-  hw/vfio/ap: Storing event information for an AP configuration change
-    event
-  s390: implementing CHSC SEI for AP config change
-
- hw/vfio/ap.c                 | 79 ++++++++++++++++++++++++++++++++++++
- include/hw/s390x/ap-bridge.h | 22 ++++++++++
- linux-headers/linux/vfio.h   |  1 +
- target/s390x/ioinst.c        | 11 ++++-
- 4 files changed, 111 insertions(+), 2 deletions(-)
-
+diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+index 1b5e254d6a..d0426b5ec0 100644
+--- a/linux-headers/linux/vfio.h
++++ b/linux-headers/linux/vfio.h
+@@ -671,6 +671,7 @@ enum {
+  */
+ enum {
+ 	VFIO_AP_REQ_IRQ_INDEX,
++	VFIO_AP_CFG_CHG_IRQ_INDEX,
+ 	VFIO_AP_NUM_IRQS
+ };
+ 
 -- 
 2.39.5 (Apple Git-154)
 
