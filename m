@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2671A27D23
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D40E1A27D25
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:18:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQGG-0005Rx-BP; Tue, 04 Feb 2025 16:15:12 -0500
+	id 1tfQGY-0005a4-VV; Tue, 04 Feb 2025 16:15:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG2-0005MO-Vb
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:14:59 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG6-0005Nm-82
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG1-0005jn-GK
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:14:58 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tfQG4-0005kN-FJ
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:15:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738703696;
+ s=mimecast20190719; t=1738703699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4qbX+A6R+7xKWWd2h1RuZGvdRY/nyBCowJRgO9Iep3M=;
- b=KnwDkpMdI8AJ4zdq7sjP7usM7aQXJclY2cdgU+C8X0xortYTZkYhRa8aW+YYqGqWQN1uD/
- xX/Kth6fiTkAc/h/+5m0OU2bcAIaimtbUdbwAjWFRBF90UnoBoJOSuUl2gOhyYbocNUCrQ
- xEMQtkU7xoTbZaVX4/fKp01RwQJoD0o=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Yh8r9aazOxh4iudbELqACHjQNqnsLiUCBFbRzvJrGFQ=;
+ b=fypPhFPoffWbUeuaa/klPYreqwwgfyKn2PEGWBAXWO8LBVYML8a8mDUCUok+6BdJicQZh6
+ s4JHX2wc4GxL1WY28gSqPte7broLJ3Ho2Ed2n+0GG21ubESnPPcEnE+N9wJlxz8jBleG3/
+ j9JZPUPOliuF10E93HOA9xXN5UZaqYE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-A6dg_DtTO8unmv5VZGcjuw-1; Tue,
- 04 Feb 2025 16:14:52 -0500
-X-MC-Unique: A6dg_DtTO8unmv5VZGcjuw-1
-X-Mimecast-MFC-AGG-ID: A6dg_DtTO8unmv5VZGcjuw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-rfKFmOtTP2aihKnOOFVjSA-1; Tue,
+ 04 Feb 2025 16:14:55 -0500
+X-MC-Unique: rfKFmOtTP2aihKnOOFVjSA-1
+X-Mimecast-MFC-AGG-ID: rfKFmOtTP2aihKnOOFVjSA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DAACC18002A5; Tue,  4 Feb 2025 21:14:51 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E0AB81955DC6; Tue,  4 Feb 2025 21:14:54 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.100])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E647F1800268; Tue,  4 Feb 2025 21:14:48 +0000 (UTC)
+ id 525731800365; Tue,  4 Feb 2025 21:14:52 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
  pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
  qemu-devel@nongnu.org
-Subject: [PATCH v3 10/16] block/export: Don't ignore image activation error in
- blk_exp_add()
-Date: Tue,  4 Feb 2025 22:14:01 +0100
-Message-ID: <20250204211407.381505-11-kwolf@redhat.com>
+Subject: [PATCH v3 11/16] block: Drain nodes before inactivating them
+Date: Tue,  4 Feb 2025 22:14:02 +0100
+Message-ID: <20250204211407.381505-12-kwolf@redhat.com>
 In-Reply-To: <20250204211407.381505-1-kwolf@redhat.com>
 References: <20250204211407.381505-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,36 +81,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, block exports can't handle inactive images correctly.
-Incoming write requests would run into assertion failures. Make sure
-that we return an error when creating an export can't activate the
-image.
+So far the assumption has always been that if we try to inactivate a
+node, it is already idle. This doesn't hold true any more if we allow
+inactivating exported nodes because we can't know when new external
+requests come in.
+
+Drain the node around setting BDRV_O_INACTIVE so that requests can't
+start operating on an active node and then in the middle it suddenly
+becomes inactive. With this change, it's enough for exports to check
+for new requests that they operate on an active node (or, like reads,
+are allowed even on an inactive node).
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/export/export.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ block.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/export/export.c b/block/export/export.c
-index 79c71ee245..bac42b8608 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -145,7 +145,11 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-      * ctx was acquired in the caller.
-      */
-     bdrv_graph_rdlock_main_loop();
--    bdrv_activate(bs, NULL);
-+    ret = bdrv_activate(bs, errp);
-+    if (ret < 0) {
-+        bdrv_graph_rdunlock_main_loop();
-+        goto fail;
-+    }
-     bdrv_graph_rdunlock_main_loop();
+diff --git a/block.c b/block.c
+index 7eeb8d076e..1601b25f66 100644
+--- a/block.c
++++ b/block.c
+@@ -7032,7 +7032,9 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
+         return -EPERM;
+     }
  
-     perm = BLK_PERM_CONSISTENT_READ;
++    bdrv_drained_begin(bs);
+     bs->open_flags |= BDRV_O_INACTIVE;
++    bdrv_drained_end(bs);
+ 
+     /*
+      * Update permissions, they may differ for inactive nodes.
 -- 
 2.48.1
 
