@@ -2,147 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FDDA27430
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:15:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B6FA27435
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 15:18:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfJh2-0002X3-Lm; Tue, 04 Feb 2025 09:14:27 -0500
+	id 1tfJkJ-0004bJ-Ne; Tue, 04 Feb 2025 09:17:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tfJgu-0002T3-9z
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:14:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+3804d581db0c8b0b41aa+7835+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tfJkF-0004b0-4x
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:17:43 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tfJgs-00038l-IF
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:14:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738678452;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uoQihLFxJouBYznNHgtnZ2Dd0/sg9BDXkNdAOpjYLhs=;
- b=BxUK5mxqgqduV36sbtuTIS9TDU4+iHaO4tFm5gzF8gp7kGaTq3xpHuDBzko0N/qF1MkIuL
- Ix5wrIoLSmHy/dv4/YJnBpL4PFM5USG1uNRd1hYXAbS1/QQlPG08YrVMokQkS1y2SgSUKU
- Qv9fxuF5HkfxnD90UVbT1SaCD+ttoXo=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-JMne0fzrO2K95W6rH3b9tQ-1; Tue, 04 Feb 2025 09:14:10 -0500
-X-MC-Unique: JMne0fzrO2K95W6rH3b9tQ-1
-X-Mimecast-MFC-AGG-ID: JMne0fzrO2K95W6rH3b9tQ
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6d8f6903d2eso100518026d6.2
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 06:14:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738678450; x=1739283250;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uoQihLFxJouBYznNHgtnZ2Dd0/sg9BDXkNdAOpjYLhs=;
- b=e8b6/GyQJyXXgpw5Ol2EsKU7MzNiojUnU+5tukgbPcieXwTKaXjMpfV0qnPFV12S3Y
- dkteY2I76jUA6CooMns+I4TzLfUPYOYyJvd6vs7hJNOVNkhap7e4vakSJ2e7Ntq8cIPa
- DlzAPQueEPAQJvrapfVJoEbJoYmcSP/1jWl+wKUPGSKA2ChewHvhRQaeL58vNGYckiw/
- pPWH5YQ4OFezGCWTt4G9pxtkPFrj850g1jq3vfzBTDjZq8fyFGyyjZ0+/Lb1ZdPaRPJk
- fMo7Qr+1Gk50UA4Xkh6PlwmRGepazOxUNe7OYjqB5n+XVchS4PO8oW8hfkpDFjc1K2WE
- KjLA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWch3Cnnk81V3hLwtJL5+nQ7+FnhQc9AEDGzFMvpfid3ABx+Cbtx1ROKkc9AyyA4zql2Xo9zpclWcJr@nongnu.org
-X-Gm-Message-State: AOJu0YzWqkRqIJfeUoZI9TQnnwN2rfzOiziD1lEaRjlI2g/gKy2ZvHTy
- zPtMRX0FtlC9b4tI8ifQ660+oG1tGm9e5sY1unwY/TRiakvK3vEjRKuvNusqn5tRyJOnri4lwl2
- xw5VLRsXryo35QkEpyjU7fht+A+/KOjOWnqP+MnRWaGZSkZQAVWLT
-X-Gm-Gg: ASbGncvCTrlg71b7cW6iJXiAZMLH8Md+VC89Hxj7hJqO0RyAFPLJFilZa6htRHw+Fua
- ixZNgLwnBZUbXpG3jXhZI5XmF5vL5h63812t85HGpNGK9Yg5Po5Bt9nVbIGLyEOvYLV/nZMzZRq
- UmUz+YvWeA4/CMUQ95ruqYW2qTMreRMyiuE2L6bF+Ohs2WC8wRtNc8HAoXaMAS7+5OWBaaWtf1v
- UHW2h9EeUj7DcRwoLqgvQVbOsWRsARgfQHIFrt3zIns4PkGOk2DiwYSh/xlBypU3vL1SZONdwbl
- 2QPcBh/G9t5+9MK+/T2U4R5wSUIcZ8uKhIBZQgqGx9k=
-X-Received: by 2002:a05:6214:27e4:b0:6e1:69fa:f023 with SMTP id
- 6a1803df08f44-6e243c7e338mr379415366d6.39.1738678449877; 
- Tue, 04 Feb 2025 06:14:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEhA77+wDM8KsmKKiGue9KQYrTT3YwtVETZcqKMowfKO4CUNGLMXjisbHS3LbWJQT8o8ksbRw==
-X-Received: by 2002:a05:6214:27e4:b0:6e1:69fa:f023 with SMTP id
- 6a1803df08f44-6e243c7e338mr379414946d6.39.1738678449561; 
- Tue, 04 Feb 2025 06:14:09 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e2548141b5sm62058406d6.39.2025.02.04.06.14.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Feb 2025 06:14:09 -0800 (PST)
-Message-ID: <8d675900-2a3f-43f9-8e54-331934c7aa02@redhat.com>
-Date: Tue, 4 Feb 2025 15:14:07 +0100
+ (Exim 4.90_1) (envelope-from
+ <BATV+3804d581db0c8b0b41aa+7835+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tfJkC-0003pZ-O9
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 09:17:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=LYj6Q/uUnL0wVa0XUl6BnHNbgKEdXQRa5Cmnaso9o3Q=; b=M6Tzq23AXwsrxxGz/y8CrGIQc1
+ kybkVuzLrF7fkwV+lAi03MZ0qUNmcAud8eMJCTF+A3GHNdlEhU95a2EOBQccp3pVpYrGZGZQ2XVOC
+ H6dYhRK34jqbzkQMr5XMmbtLkcRqOXd+Xg7tlcCnky/XyI4f6zBnnFgV8qjvY44KgdiI0Npeq/hdn
+ qz68iTxnveMpf1Wt9zCLekXyCwiEE3AhdKcg1oIqZWqp6ZiiYs56ZPPWZD/BdcA+RRztXwJlZOpUu
+ oQ+6UkLoShxQUXUnChvLLs+xLzoczLS+a/Qyajjf0yGjtO38iYwt03v5ChSOlbgXCzqIHL1BaEHIm
+ O40ymTTw==;
+Received: from [54.240.197.235] (helo=u09cd745991455d.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+ id 1tfJk3-00000002q9r-0Ovq; Tue, 04 Feb 2025 14:17:31 +0000
+Message-ID: <2498d8fa34f6503879f99f671b58055bb6a63fdc.camel@infradead.org>
+Subject: Re: [PATCH v7 3/3] hw/acpi: Add vmclock device
+From: David Woodhouse <dwmw2@infradead.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Cornelia Huck <cohuck@redhat.com>, Peter Hilber
+ <quic_philber@quicinc.com>, "Mohamed Abuelfotoh, Hazem"
+ <abuehaze@amazon.com>,  paul <paul@xen.org>
+Date: Tue, 04 Feb 2025 14:17:29 +0000
+In-Reply-To: <CAFEAcA9CKgumt-6V_EjCipm1DYdYw5GETNoSbUKeRsGEVhNv_Q@mail.gmail.com>
+References: <20250116140315.2455143-1-dwmw2@infradead.org>
+ <20250116140315.2455143-4-dwmw2@infradead.org>
+ <CAFEAcA9CKgumt-6V_EjCipm1DYdYw5GETNoSbUKeRsGEVhNv_Q@mail.gmail.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-XV7OTgt3yG1IFue2dtTT"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 08/26] pci: skip reset during cpr
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1738161802-172631-1-git-send-email-steven.sistare@oracle.com>
- <1738161802-172631-9-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1738161802-172631-9-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+3804d581db0c8b0b41aa+7835+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,54 +81,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/29/25 15:43, Steve Sistare wrote:
-> Do not reset a vfio-pci device during CPR.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   hw/pci/pci.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 2afa423..16b4f71 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -32,6 +32,7 @@
->   #include "hw/pci/pci_host.h"
->   #include "hw/qdev-properties.h"
->   #include "hw/qdev-properties-system.h"
-> +#include "migration/misc.h"
->   #include "migration/qemu-file-types.h"
->   #include "migration/vmstate.h"
->   #include "net/net.h"
-> @@ -459,6 +460,18 @@ static void pci_reset_regions(PCIDevice *dev)
->   
->   static void pci_do_device_reset(PCIDevice *dev)
->   {
-> +    /*
-> +     * A PCI device that is resuming for cpr is already configured, so do
-> +     * not reset it here when we are called from qemu_system_reset prior to
-> +     * cpr load, else interrupts may be lost for vfio-pci devices.  It is
-> +     * safe to skip this reset for all PCI devices, because cpr load will set
-> +     * all fields that would have been set here.
-> +     */
-> +    MigMode mode = migrate_mode();
-> +    if (mode == MIG_MODE_CPR_TRANSFER) {
-> +        return;
-> +    }
 
-Please use cpr_needed_for_reuse(). Or an appropriate helper.
+--=-XV7OTgt3yG1IFue2dtTT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I would the test under pci_device_reset() and avoid calling
-pci_do_device_reset().
+On Tue, 2025-02-04 at 13:49 +0000, Peter Maydell wrote:
+> On Thu, 16 Jan 2025 at 14:05, David Woodhouse <dwmw2@infradead.org>
+> wrote:
+> >=20
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > The vmclock device addresses the problem of live migration with
+> > precision clocks. The tolerances of a hardware counter (e.g. TSC)
+> > are
+> > typically around =C2=B150PPM. A guest will use NTP/PTP/PPS to disciplin=
+e
+> > that
+> > counter against an external source of 'real' time, and track the
+> > precise
+> > frequency of the counter as it changes with environmental
+> > conditions.
+>=20
+> Hi; I see this has already gone into git, but:
+>=20
+> > +static void vmclock_realize(DeviceState *dev, Error **errp)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 VmclockState *vms =3D VMCLOCK(dev);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Given that this function is executing, ther=
+e is at least
+> > one VMCLOCK
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * device. Check if there are several.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0 if (!find_vmclock_dev()) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "at most o=
+ne %s device is permitted",
+> > TYPE_VMCLOCK);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 vms->physaddr =3D VMCLOCK_ADDR;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 e820_add_entry(vms->physaddr, VMCLOCK_SIZE, E820_RE=
+SERVED);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 memory_region_init_ram(&vms->clk_page, OBJECT(dev),
+> > "vmclock_page",
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 VMCLOCK_SIZE, &error_abort);
+> > +=C2=A0=C2=A0=C2=A0 memory_region_set_enabled(&vms->clk_page, true);
+> > +=C2=A0=C2=A0=C2=A0 vms->clk =3D memory_region_get_ram_ptr(&vms->clk_pa=
+ge);
+> > +=C2=A0=C2=A0=C2=A0 memset(vms->clk, 0, VMCLOCK_SIZE);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 vms->clk->magic =3D cpu_to_le32(VMCLOCK_MAGIC);
+> > +=C2=A0=C2=A0=C2=A0 vms->clk->size =3D cpu_to_le16(VMCLOCK_SIZE);
+> > +=C2=A0=C2=A0=C2=A0 vms->clk->version =3D cpu_to_le16(1);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /* These are all zero and thus default, but be expl=
+icit */
+> > +=C2=A0=C2=A0=C2=A0 vms->clk->clock_status =3D VMCLOCK_STATUS_UNKNOWN;
+> > +=C2=A0=C2=A0=C2=A0 vms->clk->counter_id =3D VMCLOCK_COUNTER_INVALID;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 qemu_register_reset(vmclock_handle_reset, vms);
+>=20
+> No new calls to qemu_register_reset(), please. This is
+> a device, use the device reset API.
 
-Thanks,
+Ack. This was cargo-culted from vmgenid; should I fix that too?
 
-C.
+Is commit c009a311e93 the right example to follow?
 
 
->       pci_device_deassert_intx(dev);
->       assert(dev->irq_state == 0);
->   
+--=-XV7OTgt3yG1IFue2dtTT
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDIwNDE0MTcy
+OVowLwYJKoZIhvcNAQkEMSIEID4373HqMXifnNEfIIMC8FTzrsSIVf+U0UHPa172JWjnMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAKIuepQfI6SYn
+nbZWEkB/uWey49xsY6UUFmNb4fFEOfLstnsHJt5LNnewRxHEt3rSdjTE1exVxRfDmofIdCWwfINO
+lH2cwXZaTKkvKwsD3TCmUevcIIQWBMOE1F6noyOQ20//NbSyhaYcmRDtnJSP+BS1iDXRFxzFN/1g
+kRGsoRnknvkynLGS5d5l7taJrO3nyLCEYpbxL9DqMTEVbfUDWa9Td49EctsYpINaQHmhcQRMKdoE
+LxUbzgcSHxyECJRGKXDgoB83zTgW2++qFzQCgIy6Cbp+UIa6Sou+0zYvo4qr1a8aO8fEyx5Lb2E+
+i5Ugr97j/hmk13E1Ix74N4PgFcR0MeN9c5XF1rC9SXCt/EIoYoN7UppyIGHPgFT0ndQR83JDWgUt
+zE5LsKaGtvMe+KGRRjBpUenUQy3T4qt46L50jVnDf7d09cN9/krLIX2s4DcAXeR5PsVpawrwE0BQ
+iID7fgwpAY+P3SAKDMd8bnqwqF58ngMnV1gO/GnJ33wxoDUn4Qo+rXYwfQaBq/GMHsIS8x43b4j7
+LRLn6nl3DfYQVCZ3sYothy15uEekylf+vjIlznhiziUXlx9ZIDOli1b0mFdl1383nvArlpY1lAp3
+Tw0XvdxXtNrYHQj6Z7xv1uRckdy91gEjIkp6e+eqSV4QKJaa4L5+ZP2/hdOok/EAAAAAAAA=
+
+
+--=-XV7OTgt3yG1IFue2dtTT--
 
