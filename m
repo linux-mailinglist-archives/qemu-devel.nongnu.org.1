@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA0EA27973
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 19:12:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A320A27974
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 19:12:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfNO2-000802-Ig; Tue, 04 Feb 2025 13:11:03 -0500
+	id 1tfNPT-0004qH-PW; Tue, 04 Feb 2025 13:12:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNNl-0007ib-Dr
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:10:49 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNPG-0004RY-4m
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:12:19 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNNj-0007cM-Mc
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:10:45 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4364a37a1d7so59024215e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 10:10:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfNPE-0007nA-8n
+ for qemu-devel@nongnu.org; Tue, 04 Feb 2025 13:12:17 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-38db3a3cf1cso16773f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 10:12:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738692641; x=1739297441; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738692734; x=1739297534; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZlE4fNYmUStQOF+rAXXEDQvHrAQjzPrrJWt5KEXXmgw=;
- b=crBb+v0yWDqdCQF38FVc5mk+JBTPjIuXGKWDIVz06Nmws/NcBh6sPxwdKC9x3aVBxr
- B3Qd8rli/OMPvU7qBnXP+DcYf7Ui/mEB8QLKQ+JwrQKLTP6Cm9aXG2qw8vEbJe26KvK1
- 3U8FQFu6a9WlovjMW9ZPbSL3zv5v6CegFVKncfXCOeOQCBkgokat4HHc9bokvnVRqtRh
- m9PjowIYgV4tAzn0vCIDEif6h7nFhT1M3kA7L0hLjYjGKrDbdJYn8LCCEKjfpNWSVPoA
- TAvB5uK499Sd2Xkcl5dZPB0t3flmiOuAWFyASUDQaaFcVuc89l6oNyht5ChF6dCZoeiq
- ugxg==
+ bh=Y6n4KRzeTHbK4w+XNxVWOELQISpUnvz1D+9zTHfaYRY=;
+ b=muh4c5AwFCqdwm3Jh+xqCkUZ5qDh9P9REfPBmE7zr2aV3ZKXPkJHy/sqm89MuJbpqz
+ Fc8QxIvrDJGMYbQS85E3TduQTyqtud1MxTM9IRP8WUHysmRXkP6r7N0AYHbjZKZFTSIC
+ 5ihaGkF+A7NjzT9DSw0hl+MkY8ClvJrAe8Veyqv6TZOkWIDHHzVGv9vI75iFw44EIFxB
+ X03CvvZyrfd5GN3QrgJ7sElYfRr2Vk+eyJUT7LX36nzmx6QbVOFJM/OpTIAzZDs6expm
+ HtQo5Cuhw5sEW8d/LdTbQ4xuROku5BZdVNhOxTDJ0nK3wvvcGxsLFJAKpe7J0d6oA6UX
+ +SZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738692641; x=1739297441;
+ d=1e100.net; s=20230601; t=1738692734; x=1739297534;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZlE4fNYmUStQOF+rAXXEDQvHrAQjzPrrJWt5KEXXmgw=;
- b=SNqJF9QHxiwKCkQTjyX6mL1F6AGUS5J0vyN+YXnstEFO9f27zUS4NsrO/Vh26fqaDs
- JhpEQwOyw5iIc1YJLB7qY2D59D7vPzRwkUtz05GDsT7ZjwHMxa2BfPg1I0UYXYLFBqiS
- nUBqb3mzGnc5lUiLx71cHA6WIVOeUSkzvvGcBRWWBixRbL6VxwYUf3AULHPWJ5YoTtzN
- rsSaOrddTOOD+DLdo3S3J1PtUDM5hEPnBGM7qAYkMNfUY18PamXQgYFog5ULEhDQeh1k
- mVAkFcwE5NH6Q/RSEAAn1zEs5bO1HTeUZkl9RAcoz7Fnx4N4Mxj28o4gYGJqjIneE5PD
- EhzQ==
-X-Gm-Message-State: AOJu0YxIsFyQZk16e7IcVlBN0aIfmkbUEDnZ7M8/+elUbes0xxaDFP4f
- pb68fzm8rKNJmDdaO8CerOU79ujdGYxiXUvYdL4KANmipVESTyTEwWOwLAD0QlW2ZQL/wFd6g0O
- IuRM=
-X-Gm-Gg: ASbGncvaNJUkUfwdlC4mRGqNkKjMr3zxHIkvjSC0Q+tsgiUdH5fbr9W6dPdgHRxdrCU
- 7s6uM7XORoA5o1vWnRADFHnlU+aUaUylwInQHo87L47YJGiKnbzFTYPEaAVnC0NzjRaG8iBVbg4
- dX1tztQeAkqxd7XBvNQRp+dmxTrCSc2tqUYNATSg/lqamONnSb4wYHuiY3Hf8jPDfv4iA7sARC/
- FW4scbKAxitgIXAvj79s7XoLtnpx0Da6oTAa/ClcAIHvdSyDXZyreg/8RKbxilTI19znwAQIyR+
- LEauu5vpDKLX4kIIrPB8oni+KQQsQBm8ZSwLUhOoSt7OR7CP9ntvMngXQrg=
-X-Google-Smtp-Source: AGHT+IFxZNVmxFf+mZ5sRNUQMaaf/RLjUDYZ1foqcJeEkgROcJokkvylsbTG319ol953lldio1PF4w==
-X-Received: by 2002:a05:6000:1a8b:b0:385:ecdf:a30a with SMTP id
- ffacd0b85a97d-38c51b63ed0mr24849695f8f.33.1738692641616; 
- Tue, 04 Feb 2025 10:10:41 -0800 (PST)
+ bh=Y6n4KRzeTHbK4w+XNxVWOELQISpUnvz1D+9zTHfaYRY=;
+ b=AkSqpLa4aBez6sQIW2OTdpAYDKDcVoqChsCuGZkYJiIM/03YLhdZ9s0h5AsVwDmytw
+ 6Ix3sQkjpw7/5xkQON/hHVZfUhV+8e4YC7ixsp6yd9IRlAOvXywBrft9XTV+ECDM2TaS
+ IziCbx2mMfeotvtnao8IZzPneOex63WiGPlmlsWqETKwrdQ5Dp3vCfpUoorGQ+CxvYC8
+ 7buRp+OEFmBMoVYgW/6QPjVe548wwLywtq1PRLTg8EXTO/deFszLI/pnLYWJ7oxZuXQ8
+ zpP4ELvemOjGLzwzKm0Q/QzsSNNQ/fXk5GUn3Qhv2/W1X0fH2RH3qlFzEMwGqX2PWu/i
+ EbXQ==
+X-Gm-Message-State: AOJu0YyiYC5dOoeLgo5HhtGQR/ID6z379rHD/YMl19CJHpZ/e9j1gdoz
+ 79Alk17252wdzpLhUsJvF8sYzQtplqsNtd8oDnpCnPoWZDZP5YPghMw7cPI20aQCEz6NdFQbH29
+ K2Yw=
+X-Gm-Gg: ASbGncssfi117dcWVEQMmpvaesnq7BvCd/bpyj42BkoCVfLLZujmJKREaETQJl8q+/8
+ CvYD16/RAp+9EPVo5v3WhKbjYW0mBWJJ8jv3CMn9/jqmpsqGHtjsWFNKTPJq/McgX9KsikSiMWo
+ Z6pswnmaOt+D+UWIaaZPgwAkTK3pzOW0UBPkC3NdexWkcIDmPzDjMQODZUWHtJekrsPHU0T7+eK
+ BvHhnfcwHn2XfgCCzyrKkM+F7/c6lViH2x1ppEKH7XELOv6qUAwtxly1D4Ipc9XjzhwpL/TsiZk
+ q3ZOWmB8ck/jqRvlqCc8prNilj8WLrrrZ05hAi+K4QBwE1CLZcyOovdJf3A=
+X-Google-Smtp-Source: AGHT+IG6c5VXZ9qRf1qq9Q3QP9hhMRgOviUewRn3aO38/wp+yoZPJE7e5PMl2988x9oHzCbu9BD0qw==
+X-Received: by 2002:a05:6000:1fa4:b0:38a:673b:3738 with SMTP id
+ ffacd0b85a97d-38c519738d2mr23483948f8f.33.1738692733926; 
+ Tue, 04 Feb 2025 10:12:13 -0800 (PST)
 Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc13151sm231467285e9.1.2025.02.04.10.10.40
+ 5b1f17b1804b1-438e23e6860sm197358125e9.20.2025.02.04.10.12.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Feb 2025 10:10:41 -0800 (PST)
-Message-ID: <af58daa1-45a0-4252-be09-38be43233db0@linaro.org>
-Date: Tue, 4 Feb 2025 19:10:40 +0100
+ Tue, 04 Feb 2025 10:12:13 -0800 (PST)
+Message-ID: <4c200141-d9c9-4a8f-832e-38f4aeeb0ed0@linaro.org>
+Date: Tue, 4 Feb 2025 19:12:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] hw/boards: Try to make sense of
- MachineClass::no_sdcard flag
+Subject: Re: [PATCH v2 5/8] hw/ppc/e500: Remove empty
+ ppce500_machine_class_init()
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
@@ -73,20 +73,21 @@ Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, Markus Armbruster <armbru@redhat.com>
 References: <20250204180746.58357-1-philmd@linaro.org>
+ <20250204180746.58357-6-philmd@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250204180746.58357-1-philmd@linaro.org>
+In-Reply-To: <20250204180746.58357-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,60 +104,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/2/25 19:07, Philippe Mathieu-Daudé wrote:
-> Invert MachineClass 'no_sdcard' flag logic and rename it
-> to 'create_default_sdcard_drive' to make sense of this
-> default value applied to all machines.
-> We use the OnOffAuto tri-state to catch implicit default
-> values. Then we toggle the logic and remove invalid uses.
-> No logical change intended (except the assertion added).
+> Previous commit left this method empty, remove it.
 > 
-> Philippe Mathieu-Daudé (8):
->    hw/boards: Convert no_sdcard flag to OnOffAuto tri-state
->    hw/boards: Explicit no_sdcard=false as ON_OFF_AUTO_OFF
->    hw/boards: Rename no_sdcard -> auto_create_sdcard
->    hw/boards: Remove all invalid uses of auto_create_sdcard=true
->    hw/ppc/e500: Remove empty ppce500_machine_class_init()
->    hw/arm: Remove all invalid uses of auto_create_sdcard=true
->    hw/riscv: Remove all invalid uses of auto_create_sdcard=true
->    hw/boards: Ensure machine setting auto_create_sdcard expose a SD Bus
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/ppc/e500.c | 5 -----
+>   1 file changed, 5 deletions(-)
 > 
->   include/hw/boards.h        |  2 +-
->   hw/arm/cubieboard.c        |  1 +
->   hw/arm/integratorcp.c      |  1 +
->   hw/arm/mcimx7d-sabre.c     |  2 ++
->   hw/arm/npcm7xx_boards.c    |  5 +++++
->   hw/arm/omap_sx1.c          |  2 ++
->   hw/arm/orangepi.c          |  1 +
->   hw/arm/realview.c          |  4 ++++
->   hw/arm/stellaris.c         |  1 +
->   hw/arm/vexpress.c          |  2 ++
->   hw/arm/xilinx_zynq.c       |  1 -
->   hw/core/null-machine.c     |  1 -
->   hw/riscv/microchip_pfsoc.c |  1 +
->   hw/riscv/sifive_u.c        |  1 +
->   hw/s390x/s390-virtio-ccw.c |  1 -
+> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+> index 59208da87de..26933e0457e 100644
+> --- a/hw/ppc/e500.c
+> +++ b/hw/ppc/e500.c
+> @@ -1285,10 +1285,6 @@ static void e500_ccsr_initfn(Object *obj)
+>                          MPC8544_CCSRBAR_SIZE);
+>   }
+>   
+> -static void ppce500_machine_class_init(ObjectClass *oc, void *data)
+> -{
+> -}
 
-We can now easily see the machines automatically creating SDcard:
-
-$ git grep 'auto_create_sdcard = true'
-hw/arm/cubieboard.c:125:    mc->auto_create_sdcard = true;
-hw/arm/integratorcp.c:691:    mc->auto_create_sdcard = true;
-hw/arm/npcm7xx_boards.c:484:    mc->auto_create_sdcard = true;
-hw/arm/npcm7xx_boards.c:497:    mc->auto_create_sdcard = true;
-hw/arm/npcm7xx_boards.c:510:    mc->auto_create_sdcard = true;
-hw/arm/npcm7xx_boards.c:523:    mc->auto_create_sdcard = true;
-hw/arm/npcm7xx_boards.c:536:    mc->auto_create_sdcard = true;
-hw/arm/omap_sx1.c:219:    mc->auto_create_sdcard = true;
-hw/arm/omap_sx1.c:238:    mc->auto_create_sdcard = true;
-hw/arm/orangepi.c:124:    mc->auto_create_sdcard = true;
-hw/arm/realview.c:418:    mc->auto_create_sdcard = true;
-hw/arm/realview.c:439:    mc->auto_create_sdcard = true;
-hw/arm/realview.c:458:    mc->auto_create_sdcard = true;
-hw/arm/realview.c:478:    mc->auto_create_sdcard = true;
-hw/arm/stellaris.c:1444:    mc->auto_create_sdcard = true;
-hw/arm/vexpress.c:806:    mc->auto_create_sdcard = true;
-hw/arm/vexpress.c:822:    mc->auto_create_sdcard = true;
-hw/riscv/microchip_pfsoc.c:653:    mc->auto_create_sdcard = true;
-hw/riscv/sifive_u.c:727:    mc->auto_create_sdcard = true;
+Hmm I think it is a left-over and shouldn't be necessary in patch #2.
 
 
