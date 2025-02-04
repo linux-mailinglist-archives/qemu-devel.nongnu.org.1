@@ -2,43 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80B7A27B59
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 20:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A23D7A27B5A
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 20:33:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfOew-0007f0-IR; Tue, 04 Feb 2025 14:32:34 -0500
+	id 1tfOev-0007eP-0G; Tue, 04 Feb 2025 14:32:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfOet-0007dt-4S
+ id 1tfOet-0007dr-0G
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:32:31 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfOer-0005Gg-9C
+ id 1tfOer-0005Gi-84
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 14:32:30 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tfOei-00000006rkP-3u7B; Tue, 04 Feb 2025 20:32:20 +0100
-Message-ID: <4ad3e311-e701-4029-bb51-e69da4f69468@maciej.szmigiero.name>
-Date: Tue, 4 Feb 2025 20:32:15 +0100
+ id 1tfOek-00000006rkP-3Lfd; Tue, 04 Feb 2025 20:32:22 +0100
+Message-ID: <f3f382de-c2aa-4546-a40c-22c45b68b45a@maciej.szmigiero.name>
+Date: Tue, 4 Feb 2025 20:32:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/33] migration: Add save_live_complete_precopy_thread
- handler
+Subject: Re: [PATCH v4 09/33] migration: postcopy_ram_listen_thread() needs to
+ take BQL for some calls
 To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Fabiano Rosas <farosas@suse.de>, Alex Williamson
+ <alex.williamson@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <7561a5d67e113e166c7d43246d52feec6ca06fb5.1738171076.git.maciej.szmigiero@oracle.com>
- <Z6JUP2w9u_FQRP6u@x1.local>
+References: <Z57TPqhRYY4V14BE@gallifrey>
+ <d3a27b10-a7a6-4aa6-97ad-9c39f49df4fc@maciej.szmigiero.name>
+ <Z59o4u9zui3CPrkm@gallifrey>
+ <fafbc505-acee-408e-a2ef-0a62bd30689b@maciej.szmigiero.name>
+ <Z6Ef3iwQs7JSFY3c@x1.local>
+ <afb27de1-d20a-4b0d-b271-ef6eef0e06ed@maciej.szmigiero.name>
+ <Z6Eow-Ei3CvLy1vG@x1.local>
+ <af219c2f-5cbe-4107-a35c-26bb0e2be1a4@maciej.szmigiero.name>
+ <Z6FK_4p24OjCziOF@x1.local>
+ <27e3cb26-43e0-4505-84da-865c79af680a@maciej.szmigiero.name>
+ <Z6I0x0hVc-6f1-v4@x1.local>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -82,7 +91,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <Z6JUP2w9u_FQRP6u@x1.local>
+In-Reply-To: <Z6I0x0hVc-6f1-v4@x1.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=145.239.82.108;
@@ -109,86 +118,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4.02.2025 18:54, Peter Xu wrote:
-> On Thu, Jan 30, 2025 at 11:08:40AM +0100, Maciej S. Szmigiero wrote:
->> +static int multifd_device_state_save_thread(void *opaque)
->> +{
->> +    struct MultiFDDSSaveThreadData *data = opaque;
->> +    int ret;
->> +
->> +    ret = data->hdlr(data->idstr, data->instance_id, &send_threads_abort,
->> +                     data->handler_opaque);
+On 4.02.2025 16:39, Peter Xu wrote:
+> On Tue, Feb 04, 2025 at 03:57:37PM +0100, Maciej S. Szmigiero wrote:
+>> The vfio_migration_cleanup() used to just close a migration FD, while
+>> RAM might end up calling qemu_ram_msync(), which sounds like something
+>> that should be called under BQL.
+>>
+>> But I am not sure whether that lack of BQL around qemu_ram_msync()
+>> actually causes problems.
 > 
-> I thought we discussed somewhere and the plan was we could use Error** here
-> to report errors.  Would that still make sense, or maybe I lost some
-> context?
-
-That was about *load* threads, here these are *save* threads.
-
-Save handlers do not return an Error value, neither save_live_iterate, nor
-save_live_complete_precopy or save_state does so.
-
-> Meanwhile, I still feel uneasy on having these globals (send_threads_abort,
-> send_threads_ret).  Can we make MultiFDDSSaveThreadData the only interface
-> between migration and the threads impl?  So I wonder if it can be:
+> I believe msync() is thread-safe.  So that doesn't need BQL, AFAICT.
 > 
->    ret = data->hdlr(data);
+> Personally I actually prefer not having the BQL requirement if ever
+> possible in any vmstate hooks.
 > 
-> With extended struct like this (I added thread_error and thread_quit):
+> I think the only challenge here is if VFIO will start to need BQL for some
+> specific code path that you added in this series, it means VFIO needs to
+> detect bql_locked() to make sure it won't deadlock.. and only take BQL if
+> it's not taken.
 > 
-> struct MultiFDDSSaveThreadData {
->      SaveLiveCompletePrecopyThreadHandler hdlr;
->      char *idstr;
->      uint32_t instance_id;
->      void *handler_opaque;
->      /*
->       * Should be NULL when struct passed over to thread, the thread should
->       * set this if the handler would return false.  It must be kept NULL if
->       * the handler returned true / success.
->       */
->      Error *thread_error;
+>  From that POV, it might be easier for you to define that hook as "always do
+> cleanup() with BQL" globally, just to avoid one bql_locked() usage in vfio
+> specific hook.  We pay that with slow RAM sync in corner cases like pmem
+> that could potentially block VM from making progress (e.g. vcpu
+> concurrently accessing MMIO regions).
 
-As I mentioned above, these handlers do not generally return Error type,
-so this would need to be an *int;
+Not only the VFIO load_cleanup hook is BQL-sensitive in this patch set but
+also the load threads pool cleanup handler.
 
->      /*
->       * Migration core would set this when it wants to notify thread to
->       * quit, for example, when error occured in other threads, or migration is
->       * cancelled by the user.
->       */
->      bool thread_quit;
-
-             ^ I guess that was supposed to be a pointer too (*thread_quit).
-
-> };
-> 
-> Then if any multifd_device_state_save_thread() failed, for example, it
-> should notify all threads to quit by setting thread_quit, instead of
-> relying on yet another global variable to show migration needs to quit.
-
-multifd_abort_device_state_save_threads() needs to access
-send_threads_abort too.
-
-And multifd_join_device_state_save_threads() needs to access
-send_threads_ret.
-
-These variables ultimately will have to be stored somewhere since
-there can be multiple save threads and so multiple instances of
-MultiFDDSSaveThreadData.
-
-So these need to be stored somewhere where
-multifd_spawn_device_state_save_thread() can reach them to assign
-their addresses to MultiFDDSSaveThreadData members.
-
-However, at that point multifd_device_state_save_thread() can
-access them too so it does not need to have them passed via
-MultiFDDSSaveThreadData.
-
-However, nothing prevents putting send_threads* variables
-into a global struct (with internal linkage - "static", just as
-these separate ones are) if you like such construct more.
+And migration_incoming_state_destroy() was already called with BQL everywhere
+but in the postcopy thread so I think that any BQL-related performance issue
+would already be uncovered by its other callers.
 
 > Thanks,
+> 
 
 Thanks,
 Maciej
