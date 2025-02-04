@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682C4A27DD2
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 026C4A27DD1
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:56:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQs6-0001ZX-0n; Tue, 04 Feb 2025 16:54:18 -0500
+	id 1tfQsB-0001cP-Ho; Tue, 04 Feb 2025 16:54:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQrw-0001Yz-Me
+ id 1tfQrx-0001Z2-08
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:09 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQru-0008UG-Qx
+ id 1tfQrv-0008US-F8
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:08 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2f9e037ee4cso215534a91.3
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2f9da2a7004so672638a91.0
  for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:54:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738706045; x=1739310845; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738706046; x=1739310846; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kKWqfZr/ly3gmQRbhv9ZVAtml+TTp731tjlwJ2lULuY=;
- b=eomqP4u+XADCj1UcavmfVyUJ+2twetMrju3pARBKOlN5v5fSN1lQPtuE45eFcwf1Ok
- 1pXtX0htRGuszm58t30UHfg5uZbol9xYzSE88crWMMXx7aI8pYxB5lmYVgvErJgtrjhO
- 2k4qej/0JcDltHsYmdEIDqGi/gmvSPzNQ7wKF5ZR6WHLwaly+FTp/qSokYAF181+gdi8
- XA+hxqz9JImsiqjWPMLNunB2t6Usq58xplH2ZjIt8fxBhk/kLyuSKugkzfC6j9ioFXwT
- nWJA96UW3Dk21IKFF2IUxAx8WM9G+TuC+j+ZCH1Ua7zYyiSRd7QGDNIfWwYqarKoOFMc
- xtrA==
+ bh=j2FzoHSuAoX+1zQ7RA2/urh/hio8OfZSmlzrSvDG4W4=;
+ b=PAOvao2ptAE7ZcNTocNLHNFC7AjDnGRq5GLUAzRyrUkeHvJ7hcebZj46Xnp3qzIcSp
+ vA8+H9sLtw0M64qcV/n5VV80127kTtDILzCbSLr0NPJpvU4Bc1NrmCSjsUEPxjh3WD53
+ ZwL2J/W4E5o52tdi/zuddcFQaI2jC8a9l5w8Ckw6edRBVm8QORH6SkAsgvQtiuDsuF4q
+ U783ekSMITmXceNq7GajtPPpe+LfBfISx0xvhhnl0MraQTKrst4pKd6Zo4wvSmvXj0Dc
+ QnsSSVwm5o6Xm/2GO6MYNR38DvQyes+qperaJyxXCDWAgi4OIGZLA7xa7x5QwKvB/csF
+ UpjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738706045; x=1739310845;
+ d=1e100.net; s=20230601; t=1738706046; x=1739310846;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kKWqfZr/ly3gmQRbhv9ZVAtml+TTp731tjlwJ2lULuY=;
- b=mAQF+R5XKF3SWxiNONj4e7dVleey/AtqwUeAlDod8RGG9UGkSYJoKTrZRU6BduNb8M
- yVqCyteYGHxlVAtA+XuH0UFtm98+NkjWL9FGYwgG4ZwRHkHY8CC77vibe4tibv3mZ2wq
- 9/b3dI9RcdpLmL4gOzwA18BSzzzNmi3ptcXqfC2a9CwR2VzOM5qk2aIRqeJSBEJ4Pwnq
- P4NNgpiNu9LM8XZR9qi3isQEklGQVDIm/RgPdYj+449JTPPsFQrrpDdo8ACXxS/GOfEG
- eoVkWaBYvQ1Pdabt4fgQS2fml8MJnw2qjuEYEY6W0v8679YNjWuGZ0vl+IoNyF0sR0Ri
- 0ykg==
-X-Gm-Message-State: AOJu0YwpgjIowO4M8mWERiUjQ+pGJYbjxt8WtBzfl3nGNVsUmCKIcU5w
- Bzev0IhnA0M1HNWpwj6Zp+6kWatAyLR+wHKN8Uc1X+R00MoDZkeGvISljHftdvf2zfvxH/TSF0a
- F
-X-Gm-Gg: ASbGnctiJfrbmOIrj682dOHwWm11pbxFJiVncPeb8XwfjzbuYkQXcAzVpLIVG2Zwkv0
- DtjUxeFVSKasPteJzv0J4dOJDHvVLz0cu1BJsDUZO6top3fbuwn7wNMHhV+nnCVDSN1ymdkEkZJ
- P7vlCsDKaUSOZHMGMQd3+9WcSOP1k+vjFA4VmdCITAgN7TPG3ZlUoP8cIMXCzcon7nkrnxLNGM1
- HOyBWdjZkPeau0SwHzftlU1C/0+v+evBw2Skn2Q2Qb52vhn1yGG0CXYBygyGMY0XfsrTrPPFx1s
- mvd8wh9qXeRsrj+OL5Ssrikmhs47yt5WJEyqbZfZ4SJh64Q=
-X-Google-Smtp-Source: AGHT+IFyZ+7AM4K8AzoeNjp1MuTEOjQSpKWtpPCakpHfXoZ/MTiZuyRaBVG3zNCVc4bvV6IZy9E4qA==
-X-Received: by 2002:a17:90a:d406:b0:2ee:a76a:830 with SMTP id
- 98e67ed59e1d1-2f9e07fbf3dmr584609a91.24.1738706045239; 
- Tue, 04 Feb 2025 13:54:05 -0800 (PST)
+ bh=j2FzoHSuAoX+1zQ7RA2/urh/hio8OfZSmlzrSvDG4W4=;
+ b=fdQKxMTOplHfbIjktKmcF7MLywhgRrxGvYspo9ENt+G4pPKXvbt3k2F9MEmOVsob/+
+ xJX9o0VVLKeTkhqOdQYjjc7GBUjjsC9yT1ItGVHrmwlEhyzg0ti+AJIvlpELrEJ6DnRO
+ 9y8UqQOlB6P1qmrFzDaG+42kxA9rje2fVAIOVj8+UbWyG5btR6t/0PCZry7SznSw3S4T
+ iZ+hRMmHhMUavDdHKJDg/gcGxMYYbbg2DgyQ+3CattBlGWC+uVJiuMRLBnkyNvxBaqCb
+ /SJvunpskU1RQka+LF9o9SPNKMNRlGdmCpI64VDHS6yTm1vrJoETfB65eRuupZwyBbC/
+ OxRw==
+X-Gm-Message-State: AOJu0YyN8mnNBJrpeansAsHG4gck2WET6LbL+YKrEgyECUiDETtZ9nLI
+ 9+hyBXi16N1+zzSv58fyIApPWTAhBDevM4z36lGTZV3mSB5q8RoehqamNeAGgsyYnR+MjT+01is
+ t
+X-Gm-Gg: ASbGncsOC2KRPZOgYnwLvZ+qJXATOOXmmJG8gXlRJLV1rM7eNfe5XRNpQLy6TNO7HCy
+ 8rWfVW+wJEk+coxtHngNcKeEm2cAg4HBBjPfKhuqt1NVU4B2EOMdDVE+wIyH1YfgX6AWxA5l0Jd
+ lzjG1gUoJew2FIRlgxyA8cKinXN4/A5aBDef4yVruSfe/Pz8qc4T6izcb31NExg7JrszajOvjK8
+ fxBtlSSD0WrfIXtxMwSK6KbpIO9uo4fh2zFLfYbe7GYHz8C3XRv4mbaDBy02p7NQsmLFk/iOTws
+ fgUTUfpV1AOwWR5whVhrzdu11u+IL+uDM7B7WOrYf4cR79E=
+X-Google-Smtp-Source: AGHT+IGK2nBlBlheukBIc5u1PmVI4QupaSBfiH3Jf65IQNX4JgwUkONtwKNYvGuU1k2oAXScGOy4Cg==
+X-Received: by 2002:a17:90b:2247:b0:2ee:94d1:7a89 with SMTP id
+ 98e67ed59e1d1-2f9e074d1fdmr508250a91.1.1738706046038; 
+ Tue, 04 Feb 2025 13:54:06 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.04
+ 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 13:54:04 -0800 (PST)
+ Tue, 04 Feb 2025 13:54:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
- philmd@linaro.org, thuth@redhat.com
-Subject: [PATCH v3 06/12] meson: Disallow 64-bit on 32-bit HVF/NVMM/WHPX
- emulation
-Date: Tue,  4 Feb 2025 13:53:53 -0800
-Message-ID: <20250204215359.1238808-7-richard.henderson@linaro.org>
+ philmd@linaro.org, thuth@redhat.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 07/12] gitlab-ci: Replace aarch64 with arm in
+ cross-i686-tci build
+Date: Tue,  4 Feb 2025 13:53:54 -0800
+Message-ID: <20250204215359.1238808-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250204215359.1238808-1-richard.henderson@linaro.org>
 References: <20250204215359.1238808-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,41 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Require a 64-bit host binary to spawn a 64-bit guest.
+Configuration of 64-bit host on 32-bit guest will shortly
+be denied.  Use a 32-bit guest instead.
 
-For HVF this is trivially true because macOS 11 dropped
-support for 32-bit applications entirely.
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ .gitlab-ci.d/crossbuilds.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 0ca83135e2..c80382befd 100644
---- a/meson.build
-+++ b/meson.build
-@@ -319,13 +319,16 @@ else
- endif
- accelerator_targets += { 'CONFIG_XEN': xen_targets }
- 
--if cpu in ['aarch64']
-+if cpu == 'aarch64'
-   accelerator_targets += {
-     'CONFIG_HVF': ['aarch64-softmmu']
-   }
--endif
--
--if cpu in ['x86', 'x86_64']
-+elif cpu == 'x86'
-+  accelerator_targets += {
-+    'CONFIG_NVMM': ['i386-softmmu'],
-+    'CONFIG_WHPX': ['i386-softmmu'],
-+  }
-+elif cpu == 'x86_64'
-   accelerator_targets += {
-     'CONFIG_HVF': ['x86_64-softmmu'],
-     'CONFIG_NVMM': ['i386-softmmu', 'x86_64-softmmu'],
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 95dfc39224..7ae0f966f1 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -61,7 +61,7 @@ cross-i686-tci:
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
++    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,arm-softmmu,arm-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+     # Force tests to run with reduced parallelism, to see whether this
+     # reduces the flakiness of this CI job. The CI
+     # environment by default shows us 8 CPUs and so we
 -- 
 2.43.0
 
