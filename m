@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5229EA27DCD
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D40FCA27DDE
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 22:56:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfQs9-0001by-Hu; Tue, 04 Feb 2025 16:54:21 -0500
+	id 1tfQsA-0001cK-KD; Tue, 04 Feb 2025 16:54:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQru-0001YI-Tm
+ id 1tfQrv-0001YK-3V
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:07 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfQrt-0008Td-8F
+ id 1tfQrt-0008Tn-B1
  for qemu-devel@nongnu.org; Tue, 04 Feb 2025 16:54:06 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2f833af7a09so8052897a91.2
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2f9bed1f521so2040696a91.3
  for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 13:54:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738706043; x=1739310843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738706044; x=1739310844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AKQNLi/LAdrzzrDV1L5+9YwVJWRO7OgsuSiBwshaaYQ=;
- b=ZTxUwRMMNqdklsl7SsO4wCrW9hCx0/A17fJtfTm/Nxrxy674MaFtGJ+eDON0dla3UP
- szeOZvQjZLoJGJgvdGcIutxH6NO23ihX1KbscXYFTDrk4r0EBOehdcIUyD5EgpVUJlSY
- 4KUWJHQKxDjWIspveI/41d3TLkGZxNdSEM5L7H4404AxCagVlliG7jmWpxGlMR94VnM8
- dFgG2pkfVriymcCuXjtYHUHIiNynfRNPf0QLz4TbOKixr2Jc0F6PEZgArY3/vpf/YU1c
- Jb/Q79F97iauIDfu2nya2Nlmw9adk1WAg3tC67gkYAYZB58f1wuOa0TVMLs1af3ol2/B
- RPlg==
+ bh=4SBoep/xPxJrFv8mDouvokBTO/0tkAwIyQsgJPv3zeU=;
+ b=TtSo2SOZ94dC+1/ZBNEG4fJeVBi1QWwJR7BfQrLs7TVwlE91ShxTNfhJxfhMS7pJlr
+ K06b3osStVeUT3rCB39MRCak8xUX5I3ggNlNrQ0vnOR/GHgS02elI8FG7aFJH0LIKZ8L
+ mby6eLEkqH9VBxmCtEpijrd11wEKgRHLK3puOWZyP24qlghdXMBnTk5Cxlah3YjQJma9
+ 6yK5muqknH4BiUttkFvqGZEEN0+ePNUOHB6wl8nkdzlnZnLUSrSqZL/KHwvk2YO20shJ
+ 9bCUnoUELaXM80mP39hi9eB43kUON7tpCJIvv+4AI8A5XSYa/+Sl/RqzWfTpmvq7BKGB
+ mQJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738706043; x=1739310843;
+ d=1e100.net; s=20230601; t=1738706044; x=1739310844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AKQNLi/LAdrzzrDV1L5+9YwVJWRO7OgsuSiBwshaaYQ=;
- b=E7nsLBtQR9Kj6OdsB22+Nc6rtuOesreSHYlt5FW3HDsJwb8koLm7nEyQZEOGXTXZiV
- yc3WcvPUI/uA7X0BitigxZ08jOhS8ZR49H2ohfZpKiONkqeUSMD8fq2EInNSc/JKA0Xp
- kJImWfFn1y/w8nMy0zh17M9gp0NjxC0USSE3Pyi7CYoATz23nVWATj3d75ccA5wbHCy2
- npRpeGDN4nfqYZu91NLGYW8D/6NJIQyHB9FCafsWKCQ0es/27m3JrrK7PRMSIB70Itdi
- QNYvM6kfatlCvZ6+liRiJ7onBHgHXsNaI4mUX73lzf3CqudOulKMIJrP7FVgR/DsHFas
- EofA==
-X-Gm-Message-State: AOJu0Yy/nMFKwz4QMJc1ZqRB25UZ//jaDwmvBTiPyQmNYsxeZNNeQAxR
- e4v8IAipN39SJEyZQA4thTrmBAdVm4jFY93m7J1JqyEefQI5YueFW9YpAAb/z85NAuNWTuVYZZN
- 7
-X-Gm-Gg: ASbGncvxNaG+hUNHFMLfphbqcvL63qAgikL1BEPXNxRtrGj2K/EhOuTLAsvRcTR2yzQ
- 9x1ndT522oX54x8vHlbFQEkIgvQWzV71e/8+FcpK5QeRlEb8Cvh/OUX/JKNZ6HO3rR7qjwFSu1V
- Qfd5zk4asBlnayIIY1wfQ5wR7J9dgf6dCLJHD1tMWolmpjhPMe8nvUUrm6X4b2MvypbGkdk8Te2
- YR8b147H5gSzvj54HotV0F0M1Eu/Z4fbXHVZX4DM/vBXeMA243YzrXyaggIXn2ZoTkd/ZCqDV5S
- TryaZGpmiUqHqkejEIcrA9N+vNLlCfKRYZS6IajNr/kkXpM=
-X-Google-Smtp-Source: AGHT+IEIyNpCWoPRrSri1S3vKosYJ0Dhd9ciMIIsUpFahrNobUsgH6N1jBDgLlP5PoEjjwLX6iHLnQ==
-X-Received: by 2002:a17:90b:17c8:b0:2ee:f80c:688d with SMTP id
- 98e67ed59e1d1-2f9e083c5a3mr533768a91.25.1738706042927; 
- Tue, 04 Feb 2025 13:54:02 -0800 (PST)
+ bh=4SBoep/xPxJrFv8mDouvokBTO/0tkAwIyQsgJPv3zeU=;
+ b=ptQ6+WcZ6cd/kfLx57OGbMeNhSJYc74SwpYM9FQcjC8lB4USn47MXPe3WenHY1RWNs
+ L9sfemqBhJyIzyw/Szy/tmKKfuFR7fQX/CGmOsEFNq73hGqJ8+4wAtOTtii7aM17TetA
+ CJwxLXt2wP9/16KqFWzYyxlcjVZuoF8Ky9gSfKVUOqurKKMRXsy8h0nbQFLPMZrayE2O
+ efksmgfsqWv8uaMUBxiWDEoYOB/FZMuOKbdjS9j+aIJ7aEuLffrVC+D0SF1e/HXI/jQQ
+ 82SGBtlXkAb8SJwIL6+Q5pW53VTaoNwBMu4UkHFo5/kd9/fRsUy8ECa4gGholDPU1ADP
+ Hxnw==
+X-Gm-Message-State: AOJu0Yzv4/ZJ4fGv06PFdYhYcmKZcJ8i43dAGfdrdD6BQm7uOxBVGhe4
+ Nt/wwBuE+PNJOusdvX8wnpldT/2AiNfLFgnOH4hn99/YwUGa16i7g4FjuMuqP+qK/EuvdqiHWrI
+ c
+X-Gm-Gg: ASbGncu19CtyIfMbnl8b7g+8XTO0x1/ZCM30QQwz2yab09xrbrHu8lYTtuc4C+Z9d7r
+ QW6IkSAQHMsupvQPBCK5aylr5HWIy5OwGmYWpegz2O5P/mJjLlVwu9m1r4QQBx8Ja0iMrRHQasy
+ 5u6MQ6cyBcGQ/B6uAIzUHI/N5qAP91z54+yBEDG23JaJf1yQwqM9DzZ7rHlJ2wkhsUReWXuaxEz
+ 00juwtSf+8I7Xmbl+lrq2TjIPah5tDLFKQ98xGY6KRjbx5DWlKHI2DPnd4zjljyebb6soE06vud
+ DW3gqCYcWp1Ngul1m4MDGkVMkh2IaUHLqX8hplalDwA9rK8=
+X-Google-Smtp-Source: AGHT+IHcURON4+jqS5IUou39/iLd9DoK4HF+wUKFbn/PsbvJhxci5s58lgd7oURevLr7mJc9tEZxQg==
+X-Received: by 2002:a17:90b:3842:b0:2ea:37b4:5373 with SMTP id
+ 98e67ed59e1d1-2f9e076162fmr603578a91.10.1738706043725; 
+ Tue, 04 Feb 2025 13:54:03 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.02
+ 98e67ed59e1d1-2f9e1d60b57sm33888a91.9.2025.02.04.13.54.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 13:54:02 -0800 (PST)
+ Tue, 04 Feb 2025 13:54:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
- philmd@linaro.org, thuth@redhat.com,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 03/12] plugins: Uninline qemu_plugin_add_opts
-Date: Tue,  4 Feb 2025 13:53:50 -0800
-Message-ID: <20250204215359.1238808-4-richard.henderson@linaro.org>
+ philmd@linaro.org, thuth@redhat.com
+Subject: [PATCH v3 04/12] meson: Disallow 64-bit on 32-bit KVM emulation
+Date: Tue,  4 Feb 2025 13:53:51 -0800
+Message-ID: <20250204215359.1238808-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250204215359.1238808-1-richard.henderson@linaro.org>
 References: <20250204215359.1238808-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to expand this function inline.
-Unexport qemu_plugin_opts to match.
+Require a 64-bit host binary to spawn a 64-bit guest.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/plugin.h | 9 +--------
- plugins/loader.c      | 7 ++++++-
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ meson.build | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 9726a9ebf3..3efded6a3e 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -11,7 +11,6 @@
- #include "qemu/qemu-plugin.h"
- #include "qemu/error-report.h"
- #include "qemu/queue.h"
--#include "qemu/option.h"
- #include "qemu/plugin-event.h"
- #include "qemu/bitmap.h"
- #include "exec/memopidx.h"
-@@ -44,13 +43,7 @@ get_plugin_meminfo_rw(qemu_plugin_meminfo_t i)
- }
+diff --git a/meson.build b/meson.build
+index b72114819b..5a40a2a629 100644
+--- a/meson.build
++++ b/meson.build
+@@ -277,21 +277,27 @@ else
+   host_arch = cpu
+ endif
  
- #ifdef CONFIG_PLUGIN
--extern QemuOptsList qemu_plugin_opts;
--
--static inline void qemu_plugin_add_opts(void)
--{
--    qemu_add_opts(&qemu_plugin_opts);
--}
--
-+void qemu_plugin_add_opts(void);
- void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head);
- int qemu_plugin_load_list(QemuPluginList *head, Error **errp);
- 
-diff --git a/plugins/loader.c b/plugins/loader.c
-index ebc01da9c6..35680bfc13 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -55,7 +55,7 @@ struct qemu_plugin_parse_arg {
-     struct qemu_plugin_desc *curr;
- };
- 
--QemuOptsList qemu_plugin_opts = {
-+static QemuOptsList qemu_plugin_opts = {
-     .name = "plugin",
-     .implied_opt_name = "file",
-     .head = QTAILQ_HEAD_INITIALIZER(qemu_plugin_opts.head),
-@@ -65,6 +65,11 @@ QemuOptsList qemu_plugin_opts = {
-     },
- };
- 
-+void qemu_plugin_add_opts(void)
-+{
-+    qemu_add_opts(&qemu_plugin_opts);
-+}
-+
- typedef int (*qemu_plugin_install_func_t)(qemu_plugin_id_t, const qemu_info_t *, int, char **);
- 
- extern struct qemu_plugin_state plugin;
+-if cpu in ['x86', 'x86_64']
++if cpu == 'x86'
++  kvm_targets = ['i386-softmmu']
++elif cpu == 'x86_64'
+   kvm_targets = ['i386-softmmu', 'x86_64-softmmu']
+ elif cpu == 'aarch64'
+   kvm_targets = ['aarch64-softmmu']
+ elif cpu == 's390x'
+   kvm_targets = ['s390x-softmmu']
+-elif cpu in ['ppc', 'ppc64']
++elif cpu == 'ppc'
++  kvm_targets = ['ppc-softmmu']
++elif cpu == 'ppc64'
+   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
+-elif cpu in ['mips', 'mips64']
++elif cpu == 'mips'
++  kvm_targets = ['mips-softmmu', 'mipsel-softmmu']
++elif cpu == 'mips64'
+   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
+-elif cpu in ['riscv32']
++elif cpu == 'riscv32'
+   kvm_targets = ['riscv32-softmmu']
+-elif cpu in ['riscv64']
++elif cpu == 'riscv64'
+   kvm_targets = ['riscv64-softmmu']
+-elif cpu in ['loongarch64']
++elif cpu == 'loongarch64'
+   kvm_targets = ['loongarch64-softmmu']
+ else
+   kvm_targets = []
 -- 
 2.43.0
 
