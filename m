@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8E6A26E26
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 10:22:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CA8A26E31
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Feb 2025 10:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfF7f-0004nV-3q; Tue, 04 Feb 2025 04:21:35 -0500
+	id 1tfF7h-0004sB-TU; Tue, 04 Feb 2025 04:21:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tfF7c-0004mc-EG; Tue, 04 Feb 2025 04:21:32 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tfF7d-0004n9-Jf; Tue, 04 Feb 2025 04:21:33 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tfF7Y-000538-Ur; Tue, 04 Feb 2025 04:21:32 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so61802305e9.1; 
- Tue, 04 Feb 2025 01:21:27 -0800 (PST)
+ id 1tfF7Z-00053Y-TT; Tue, 04 Feb 2025 04:21:33 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38da6dde4c0so220863f8f.1; 
+ Tue, 04 Feb 2025 01:21:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738660886; x=1739265686; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1738660887; x=1739265687; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cWeGJV8lxpMyWqQ0ohwO6lTA2TIWenKMbVoNYi2bA2A=;
- b=U4htYf7Y6Gc8O+2V3zfYa5Gd01CzhltWfZUZLGwU/Gk/ShILIB8Bdubm0D9zp8B2sb
- EexwuWDIfi32vNi7uHWqQW5bzKqowWQ+JXThTmslemL7Oh2soDX7Nc5i4HNaGe0Zf9js
- tFsfF7z7raKObGYPr6jj7iH/5UmpxKYewnLNsw/bKwIi/5NLznR1sz3bYJKlxbe7zR23
- RpdJ/nvBAIsDmwG8sKNn89vjW6Z6L6rFuzts9Ts9cTdiM+/JUhALDsaEMY9O3mvd2qGe
- 5C4Q+KFT1UZJAzDnO/8CVTl/yRLesqUHUq4ZuQ6SAZjpDcKUNaVhkADwPGJe2waIL+Tl
- Nqig==
+ bh=NxX79turrt1zunTONzzMY2OYVd4/EuiGZ1w88yBqCAY=;
+ b=SsbIy+DFvmpCatfxLZz55cMDuatdpeTrdo42qq0Uqo33AOqwKyqIhXGaudNZL74fn/
+ Oswf3TjlKjGReAqcUBvWRMi+e7NNidpfpNbtGkVb6Wnxu7fFjQ0QQlufb+CV4u9onniT
+ rSCrYfG9+jcJDHNlvKtfYxVp1F3jJWECpjDExMNY2WgJ423D/xCaddRt5vS3ZdUBqUXn
+ TTTHZrPTbHeFx+L9uVL93EG4PCxI7dEQeSt2323Qw7KH+B6GkJl/QfJHdj5g53OAJ6xw
+ C3Ch6yOfiH7YEyH6mNORlUKIVp/RX0hbFRWh0IqemWecmrmpVPfdOXC6eRgCi0Y4r0os
+ 4E6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738660886; x=1739265686;
+ d=1e100.net; s=20230601; t=1738660887; x=1739265687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cWeGJV8lxpMyWqQ0ohwO6lTA2TIWenKMbVoNYi2bA2A=;
- b=U/TpPlzNwatHDaMk933F5IpPSL6JVwPGSQHqy5L+VLFo+IDSsDVcogXgchT/GQfy0T
- CbDa4X6mN87fHy0bLKp9bZOP/ktbXHg/yDYBwpqlN5VpmBihItN0xAiIEq3VDROhUIcl
- JnMY1hRgVa4L3HtX3Gn346QIDyyiIWVh7B/QZF4MJUWJeOAYTTGsxtAs2ZSdDqhUujNw
- JFcR2CCQvE6luIWad1Y3ja1P2kFtDFYtbOQREu8Va4zoh3UrQwn+SLnyfKyFxrsz4fcl
- FxRoF36tC9+1iEQuC410/4hJi1NxqBqrcwmMKsA0bZt9ZoXzt+3Jpce15ZCKL6+AXQlo
- ToUg==
+ bh=NxX79turrt1zunTONzzMY2OYVd4/EuiGZ1w88yBqCAY=;
+ b=CGXhrgg/LQaAMB1BkOis6iNb5yI9Kg00POpiNHN+lPUrtWqYvjlhhzyUqfVQLhPefL
+ 9gbXH6p3WlQCsyCAvQuROdRm8NuzJC73q2reSHsG237w0oZRuHf6HNXZJUyS+GcnNv17
+ 6Xsbxq5dJjuPEPaXI5tYxSivmfd/8PkW/FRf8oYe1MQkSg01diBi7shjtRs+RdmIu3dn
+ 0Z/jbvw3jB7ZhMiaW+osIAtK5oD9ub2Gx81sGgyD1ifkgnjlqOjbrwwCvCDu5+ST1I4/
+ ZnY/sDLNvcWX9AoSZZ6S+yN22Uoa6oLStwQ1iej/VdaBXjQl08hL/PpH2VN2mcPIBEMm
+ YYoQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW95aPA9g19OO4P3LiEg24nuH39bkCQCR4bdOBgnpEvQDtQDwMZDhc7b/uQAbuXrHoJhJpChPPunQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxytGSM6gkXmBjIaYf4dW00sIMo8cweyZhwkZ3aoYOTrafbU2vZ
- MjbgAWyRKWKoOl+kIYLsLL5HhO23uNMQifXkB4FdRgtNP9ys296f6dE3fw==
-X-Gm-Gg: ASbGncup7chaJosG7TJGkE6biGHM0v68pBe+53eMpHXHx8twin4UNTbBYQRrkyBTeXo
- IzZUtW13sk8LEdPWhcxUipyDamdeZuLCcGBAGmPGcBAwiY3TQVT3kYCRGsDELS6qsxTfZov4n/2
- +0xCff15LI0lkqPlSuRv0dbPlAS1MpW7xBOUDkOYld8WfIMOVQnKJSRluu3AztNS2g7KdIPikuz
- 9vUA5C4grjm0yXMq+RZAnpaOOD+TggLqSAbaEPiHB3U4dpNuD/nMyCosYYhke0IJ8DujSNBVKGH
- qDwQ7hTveO0hX6gWtRYAeC6PzRWYCg/7tNygXeNUZOoM5WV1DLKGti7u3V2Qcdys9HGjs7H6Ojo
- cFpcIBcSSJg==
-X-Google-Smtp-Source: AGHT+IFHUELUI8Nxl9Z6UPn/m+YIQcQUW2VYUXubUL9Yp28S+pqy9pJWkNHE9E0PXxVXDms951sYOg==
-X-Received: by 2002:a05:600c:1d83:b0:434:a781:f5d5 with SMTP id
- 5b1f17b1804b1-438dc43540bmr225399325e9.30.1738660885637; 
- Tue, 04 Feb 2025 01:21:25 -0800 (PST)
+ AJvYcCXEQVjF1CeIoaQTvr486S2iloPOkYf9uHe37jd6ktQW4l2w/o0u1B/e3SwLgdLoJOE/3qgcrtYH3g==@nongnu.org
+X-Gm-Message-State: AOJu0YwXq4KEiqCSKgcgEy1EYV5NhSJYpJELNgova2668PjpfodthRAn
+ a8u4mg/SZBk+u84AU0kwNrMngzhUFIL9XNlOWZVOBjmV7MZSeKqsMoPM8A==
+X-Gm-Gg: ASbGncv8OMj8pGul385ut9/hrUaaqBP/mtfdHryIKOAYRTCjUx3h/Z5MPalyVu7Znum
+ z/YoU7KgkbmZPfeDtx1tlli2PlerrMXxHeL2R8C4HlcIDCI3RUGcknyucCW7rU2Xt8jzCLlLX2w
+ 94RVeO2y/8dp7i+x/aWWNiRflNdt7vpIRHrxeEDXBAhQTowTUSo1bPDBOKaf6jPXEzdvnar2vX/
+ ia00EbQvEdCGpLuqzYiEHpu36burAsENbJgYFULyGg0U2CVCM0h59OODA/jmF2R+HjP8E8cS30H
+ BjYn5mLLKxPtS8B0wGHZpK0ZwlZ0EFK+P5S0QmoErpK4ziG3BMSlzoQMteBo92b9cVXO6t4tRNj
+ 1X4UFbi6dEw==
+X-Google-Smtp-Source: AGHT+IHaFweNsXLmi8gXS/l8QyTT2AJ/onIITpcX8jAM/wkr/mX4MsMwKBtT5HfIm5+YwyzoWreVFQ==
+X-Received: by 2002:a5d:64e4:0:b0:38a:8d4c:aad3 with SMTP id
+ ffacd0b85a97d-38c5194b957mr20073963f8f.18.1738660886502; 
+ Tue, 04 Feb 2025 01:21:26 -0800 (PST)
 Received: from Georg-PC.fritz.box
  (p200300faaf0043006a2cae69f03f1c85.dip0.t-ipconnect.de.
  [2003:fa:af00:4300:6a2c:ae69:f03f:1c85])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438e23d42c7sm187233595e9.3.2025.02.04.01.21.23
+ 5b1f17b1804b1-438e23d42c7sm187233595e9.3.2025.02.04.01.21.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 01:21:24 -0800 (PST)
+ Tue, 04 Feb 2025 01:21:26 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Andrey Smirnov <andrew.smirnov@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 04/18] hw/arm: Add i.MX 8M Plus EVK board
-Date: Tue,  4 Feb 2025 10:20:58 +0100
-Message-ID: <20250204092112.26957-5-shentey@gmail.com>
+Subject: [PATCH v2 05/18] hw/arm/fsl-imx8mp: Implement clock tree
+Date: Tue,  4 Feb 2025 10:20:59 +0100
+Message-ID: <20250204092112.26957-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250204092112.26957-1-shentey@gmail.com>
 References: <20250204092112.26957-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,790 +102,634 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As a first step, implement the bare minimum: CPUs, RAM, interrupt controller,
-serial. All other devices of the A53 memory map are represented as
-TYPE_UNIMPLEMENTED_DEVICE, i.e. the whole memory map is provided. This allows
-for running Linux without it crashing due to invalid memory accesses.
+Fixes quite a few stack traces during the Linux boot process. Also provides the
+clocks for devices added later, e.g. enet1.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- MAINTAINERS                    |   9 +
- docs/system/arm/imx8mp-evk.rst |  56 +++++
- docs/system/target-arm.rst     |   1 +
- include/hw/arm/fsl-imx8mp.h    | 189 +++++++++++++++++
- hw/arm/fsl-imx8mp.c            | 371 +++++++++++++++++++++++++++++++++
- hw/arm/imx8mp-evk.c            |  55 +++++
- hw/arm/Kconfig                 |  12 ++
- hw/arm/meson.build             |   2 +
- 8 files changed, 695 insertions(+)
- create mode 100644 docs/system/arm/imx8mp-evk.rst
- create mode 100644 include/hw/arm/fsl-imx8mp.h
- create mode 100644 hw/arm/fsl-imx8mp.c
- create mode 100644 hw/arm/imx8mp-evk.c
+ MAINTAINERS                     |   2 +
+ docs/system/arm/imx8mp-evk.rst  |   1 +
+ include/hw/arm/fsl-imx8mp.h     |   4 +
+ include/hw/misc/imx8mp_analog.h |  81 +++++++++++++++
+ include/hw/misc/imx8mp_ccm.h    |  30 ++++++
+ hw/arm/fsl-imx8mp.c             |  20 ++++
+ hw/misc/imx8mp_analog.c         | 160 +++++++++++++++++++++++++++++
+ hw/misc/imx8mp_ccm.c            | 175 ++++++++++++++++++++++++++++++++
+ hw/arm/Kconfig                  |   2 +
+ hw/misc/Kconfig                 |   6 ++
+ hw/misc/meson.build             |   2 +
+ 11 files changed, 483 insertions(+)
+ create mode 100644 include/hw/misc/imx8mp_analog.h
+ create mode 100644 include/hw/misc/imx8mp_ccm.h
+ create mode 100644 hw/misc/imx8mp_analog.c
+ create mode 100644 hw/misc/imx8mp_ccm.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cf37fce7b..8db59114bc 100644
+index 8db59114bc..5b5b0d0bed 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -820,6 +820,15 @@ F: hw/pci-host/designware.c
- F: include/hw/pci-host/designware.h
- F: docs/system/arm/mcimx7d-sabre.rst
+@@ -826,7 +826,9 @@ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/arm/imx8mp-evk.c
+ F: hw/arm/fsl-imx8mp.c
++F: hw/misc/imx8mp_*.c
+ F: include/hw/arm/fsl-imx8mp.h
++F: include/hw/misc/imx8mp_*.h
+ F: docs/system/arm/imx8mp-evk.rst
  
-+MCIMX8MP-EVK / i.MX8MP
-+M: Bernhard Beschow <shentey@gmail.com>
-+L: qemu-arm@nongnu.org
-+S: Maintained
-+F: hw/arm/imx8mp-evk.c
-+F: hw/arm/fsl-imx8mp.c
-+F: include/hw/arm/fsl-imx8mp.h
-+F: docs/system/arm/imx8mp-evk.rst
-+
  MPS2 / MPS3
- M: Peter Maydell <peter.maydell@linaro.org>
- L: qemu-arm@nongnu.org
 diff --git a/docs/system/arm/imx8mp-evk.rst b/docs/system/arm/imx8mp-evk.rst
-new file mode 100644
-index 0000000000..a9c1fab390
---- /dev/null
+index a9c1fab390..e5039fc8c4 100644
+--- a/docs/system/arm/imx8mp-evk.rst
 +++ b/docs/system/arm/imx8mp-evk.rst
-@@ -0,0 +1,56 @@
-+NXP i.MX 8M Plus Evaluation Kit (``imx8mp-evk``)
-+================================================
-+
-+The QEMU i.MX 8M Plus EVK board emulation is intended to emulate a plain i.MX 8M
-+Plus system on chip (SoC). All peripherals the real board has such as flash and
-+I2C devices are intended to be added via configuration, e.g. command line.
-+
-+Supported devices
-+-----------------
-+
-+The ``imx8mp-evk`` machine implements the following devices:
-+
-+ * Up to 4 Cortex-A53 Cores
-+ * Generic Interrupt Controller (GICv3)
-+ * 4 UARTs
-+
-+Boot options
-+------------
-+
-+The ``imx8mp-evk`` machine can start using the standard -kernel functionality
-+for loading a Linux kernel.
-+
-+Direct Linux Kernel Boot
-+''''''''''''''''''''''''
-+
-+Probably the easiest way to get started with a whole Linux system on the machine
-+is to generate an image with Buildroot. Version 2024.11.1 is tested at the time
-+of writing and involves two steps. First run the following commands in the
-+toplevel directory of the Buildroot source tree:
-+
-+.. code-block:: bash
-+
-+  $ echo "BR2_TARGET_ROOTFS_CPIO=y" >> configs/freescale_imx8mpevk_defconfig
-+  $ make freescale_imx8mpevk_defconfig
-+  $ make
-+
-+Once finished successfully there is an ``output/image`` subfolder. Navigate into
-+it patch the device tree needs to be patched with the following commands which
-+will remove the ``cpu-idle-states`` properties from CPU nodes:
-+
-+.. code-block:: bash
-+
-+  $ dtc imx8mp-evk.dtb | sed '/cpu-idle-states/d' > imx8mp-evk-patched.dts
-+  $ dtc imx8mp-evk-patched.dts -o imx8mp-evk-patched.dtb
-+
-+Now that everything is prepared the newly built image can be run in the QEMU
-+``imx8mp-evk`` machine:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-aarch64 -M imx8mp-evk -smp 4 -m 3G \
-+      -display none -serial null -serial stdio \
-+      -kernel Image \
-+      -dtb imx8mp-evk-patched.dtb \
-+      -initrd rootfs.cpio \
-+      -append "root=/dev/ram"
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index 9aaa9c414c..a43ec8f10e 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -95,6 +95,7 @@ Board-specific documentation
-    arm/imx25-pdk
-    arm/mcimx6ul-evk
-    arm/mcimx7d-sabre
-+   arm/imx8mp-evk
-    arm/orangepi
-    arm/raspi
-    arm/collie
+@@ -13,6 +13,7 @@ The ``imx8mp-evk`` machine implements the following devices:
+  * Up to 4 Cortex-A53 Cores
+  * Generic Interrupt Controller (GICv3)
+  * 4 UARTs
++ * Clock Tree
+ 
+ Boot options
+ ------------
 diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
-new file mode 100644
-index 0000000000..57e23d1b69
---- /dev/null
+index 57e23d1b69..ce5188e7f2 100644
+--- a/include/hw/arm/fsl-imx8mp.h
 +++ b/include/hw/arm/fsl-imx8mp.h
-@@ -0,0 +1,189 @@
+@@ -12,6 +12,8 @@
+ #include "cpu.h"
+ #include "hw/char/imx_serial.h"
+ #include "hw/intc/arm_gicv3_common.h"
++#include "hw/misc/imx8mp_analog.h"
++#include "hw/misc/imx8mp_ccm.h"
+ #include "qom/object.h"
+ #include "qemu/units.h"
+ 
+@@ -32,6 +34,8 @@ struct FslImx8mpState {
+ 
+     ARMCPU             cpu[FSL_IMX8MP_NUM_CPUS];
+     GICv3State         gic;
++    IMX8MPCCMState     ccm;
++    IMX8MPAnalogState  analog;
+     IMXSerialState     uart[FSL_IMX8MP_NUM_UARTS];
+ };
+ 
+diff --git a/include/hw/misc/imx8mp_analog.h b/include/hw/misc/imx8mp_analog.h
+new file mode 100644
+index 0000000000..955f03215a
+--- /dev/null
++++ b/include/hw/misc/imx8mp_analog.h
+@@ -0,0 +1,81 @@
 +/*
-+ * i.MX 8M Plus SoC Definitions
++ * Copyright (c) 2025 Bernhard Beschow <shentey@gmail.com>
 + *
-+ * Copyright (c) 2024, Bernhard Beschow <shentey@gmail.com>
++ * i.MX8MP ANALOG IP block emulation code
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef FSL_IMX8MP_H
-+#define FSL_IMX8MP_H
++#ifndef IMX8MP_ANALOG_H
++#define IMX8MP_ANALOG_H
 +
-+#include "cpu.h"
-+#include "hw/char/imx_serial.h"
-+#include "hw/intc/arm_gicv3_common.h"
 +#include "qom/object.h"
-+#include "qemu/units.h"
++#include "hw/sysbus.h"
 +
-+#define TYPE_FSL_IMX8MP "fsl-imx8mp"
-+OBJECT_DECLARE_SIMPLE_TYPE(FslImx8mpState, FSL_IMX8MP)
++enum IMX8MPAnalogRegisters {
++    ANALOG_AUDIO_PLL1_GEN_CTRL = 0x000 / 4,
++    ANALOG_AUDIO_PLL1_FDIV_CTL0 = 0x004 / 4,
++    ANALOG_AUDIO_PLL1_FDIV_CTL1 = 0x008 / 4,
++    ANALOG_AUDIO_PLL1_SSCG_CTRL = 0x00c / 4,
++    ANALOG_AUDIO_PLL1_MNIT_CTRL = 0x010 / 4,
++    ANALOG_AUDIO_PLL2_GEN_CTRL = 0x014 / 4,
++    ANALOG_AUDIO_PLL2_FDIV_CTL0 = 0x018 / 4,
++    ANALOG_AUDIO_PLL2_FDIV_CTL1 = 0x01c / 4,
++    ANALOG_AUDIO_PLL2_SSCG_CTRL = 0x020 / 4,
++    ANALOG_AUDIO_PLL2_MNIT_CTRL = 0x024 / 4,
++    ANALOG_VIDEO_PLL1_GEN_CTRL = 0x028 / 4,
++    ANALOG_VIDEO_PLL1_FDIV_CTL0 = 0x02c / 4,
++    ANALOG_VIDEO_PLL1_FDIV_CTL1 = 0x030 / 4,
++    ANALOG_VIDEO_PLL1_SSCG_CTRL = 0x034 / 4,
++    ANALOG_VIDEO_PLL1_MNIT_CTRL = 0x038 / 4,
++    ANALOG_DRAM_PLL_GEN_CTRL = 0x050 / 4,
++    ANALOG_DRAM_PLL_FDIV_CTL0 = 0x054 / 4,
++    ANALOG_DRAM_PLL_FDIV_CTL1 = 0x058 / 4,
++    ANALOG_DRAM_PLL_SSCG_CTRL = 0x05c / 4,
++    ANALOG_DRAM_PLL_MNIT_CTRL = 0x060 / 4,
++    ANALOG_GPU_PLL_GEN_CTRL = 0x064 / 4,
++    ANALOG_GPU_PLL_FDIV_CTL0 = 0x068 / 4,
++    ANALOG_GPU_PLL_LOCKD_CTRL = 0x06c / 4,
++    ANALOG_GPU_PLL_MNIT_CTRL = 0x070 / 4,
++    ANALOG_VPU_PLL_GEN_CTRL = 0x074 / 4,
++    ANALOG_VPU_PLL_FDIV_CTL0 = 0x078 / 4,
++    ANALOG_VPU_PLL_LOCKD_CTRL = 0x07c / 4,
++    ANALOG_VPU_PLL_MNIT_CTRL = 0x080 / 4,
++    ANALOG_ARM_PLL_GEN_CTRL = 0x084 / 4,
++    ANALOG_ARM_PLL_FDIV_CTL0 = 0x088 / 4,
++    ANALOG_ARM_PLL_LOCKD_CTRL = 0x08c / 4,
++    ANALOG_ARM_PLL_MNIT_CTRL = 0x090 / 4,
++    ANALOG_SYS_PLL1_GEN_CTRL = 0x094 / 4,
++    ANALOG_SYS_PLL1_FDIV_CTL0 = 0x098 / 4,
++    ANALOG_SYS_PLL1_LOCKD_CTRL = 0x09c / 4,
++    ANALOG_SYS_PLL1_MNIT_CTRL = 0x100 / 4,
++    ANALOG_SYS_PLL2_GEN_CTRL = 0x104 / 4,
++    ANALOG_SYS_PLL2_FDIV_CTL0 = 0x108 / 4,
++    ANALOG_SYS_PLL2_LOCKD_CTRL = 0x10c / 4,
++    ANALOG_SYS_PLL2_MNIT_CTRL = 0x110 / 4,
++    ANALOG_SYS_PLL3_GEN_CTRL = 0x114 / 4,
++    ANALOG_SYS_PLL3_FDIV_CTL0 = 0x118 / 4,
++    ANALOG_SYS_PLL3_LOCKD_CTRL = 0x11c / 4,
++    ANALOG_SYS_PLL3_MNIT_CTRL = 0x120 / 4,
++    ANALOG_OSC_MISC_CFG = 0x124 / 4,
++    ANALOG_ANAMIX_PLL_MNIT_CTL = 0x128 / 4,
 +
-+#define FSL_IMX8MP_RAM_START        0x40000000
-+#define FSL_IMX8MP_RAM_SIZE_MAX     (8 * GiB)
-+
-+enum FslImx8mpConfiguration {
-+    FSL_IMX8MP_NUM_CPUS         = 4,
-+    FSL_IMX8MP_NUM_IRQS         = 160,
-+    FSL_IMX8MP_NUM_UARTS        = 4,
++    ANALOG_DIGPROG = 0x800 / 4,
++    ANALOG_MAX,
 +};
 +
-+struct FslImx8mpState {
-+    DeviceState    parent_obj;
++#define TYPE_IMX8MP_ANALOG "imx8mp.analog"
++OBJECT_DECLARE_SIMPLE_TYPE(IMX8MPAnalogState, IMX8MP_ANALOG)
 +
-+    ARMCPU             cpu[FSL_IMX8MP_NUM_CPUS];
-+    GICv3State         gic;
-+    IMXSerialState     uart[FSL_IMX8MP_NUM_UARTS];
++struct IMX8MPAnalogState {
++    SysBusDevice parent_obj;
++
++    struct {
++        MemoryRegion container;
++        MemoryRegion analog;
++    } mmio;
++
++    uint32_t analog[ANALOG_MAX];
 +};
 +
-+enum FslImx8mpMemoryRegions {
-+    FSL_IMX8MP_A53_DAP,
-+    FSL_IMX8MP_AIPS1_CONFIGURATION,
-+    FSL_IMX8MP_AIPS2_CONFIGURATION,
-+    FSL_IMX8MP_AIPS3_CONFIGURATION,
-+    FSL_IMX8MP_AIPS4_CONFIGURATION,
-+    FSL_IMX8MP_AIPS5_CONFIGURATION,
-+    FSL_IMX8MP_ANA_OSC,
-+    FSL_IMX8MP_ANA_PLL,
-+    FSL_IMX8MP_ANA_TSENSOR,
-+    FSL_IMX8MP_APBH_DMA,
-+    FSL_IMX8MP_ASRC,
-+    FSL_IMX8MP_AUDIO_BLK_CTRL,
-+    FSL_IMX8MP_AUDIO_DSP,
-+    FSL_IMX8MP_AUDIO_XCVR_RX,
-+    FSL_IMX8MP_AUD_IRQ_STEER,
-+    FSL_IMX8MP_BOOT_ROM,
-+    FSL_IMX8MP_BOOT_ROM_PROTECTED,
-+    FSL_IMX8MP_CAAM,
-+    FSL_IMX8MP_CAAM_MEM,
-+    FSL_IMX8MP_CCM,
-+    FSL_IMX8MP_CSU,
-+    FSL_IMX8MP_DDR_BLK_CTRL,
-+    FSL_IMX8MP_DDR_CTL,
-+    FSL_IMX8MP_DDR_PERF_MON,
-+    FSL_IMX8MP_DDR_PHY,
-+    FSL_IMX8MP_DDR_PHY_BROADCAST,
-+    FSL_IMX8MP_ECSPI1,
-+    FSL_IMX8MP_ECSPI2,
-+    FSL_IMX8MP_ECSPI3,
-+    FSL_IMX8MP_EDMA_CHANNELS,
-+    FSL_IMX8MP_EDMA_MANAGEMENT_PAGE,
-+    FSL_IMX8MP_ENET1,
-+    FSL_IMX8MP_ENET2_TSN,
-+    FSL_IMX8MP_FLEXCAN1,
-+    FSL_IMX8MP_FLEXCAN2,
-+    FSL_IMX8MP_GIC_DIST,
-+    FSL_IMX8MP_GIC_REDIST,
-+    FSL_IMX8MP_GPC,
-+    FSL_IMX8MP_GPIO1,
-+    FSL_IMX8MP_GPIO2,
-+    FSL_IMX8MP_GPIO3,
-+    FSL_IMX8MP_GPIO4,
-+    FSL_IMX8MP_GPIO5,
-+    FSL_IMX8MP_GPT1,
-+    FSL_IMX8MP_GPT2,
-+    FSL_IMX8MP_GPT3,
-+    FSL_IMX8MP_GPT4,
-+    FSL_IMX8MP_GPT5,
-+    FSL_IMX8MP_GPT6,
-+    FSL_IMX8MP_GPU2D,
-+    FSL_IMX8MP_GPU3D,
-+    FSL_IMX8MP_HDMI_TX,
-+    FSL_IMX8MP_HDMI_TX_AUDLNK_MSTR,
-+    FSL_IMX8MP_HSIO_BLK_CTL,
-+    FSL_IMX8MP_I2C1,
-+    FSL_IMX8MP_I2C2,
-+    FSL_IMX8MP_I2C3,
-+    FSL_IMX8MP_I2C4,
-+    FSL_IMX8MP_I2C5,
-+    FSL_IMX8MP_I2C6,
-+    FSL_IMX8MP_INTERCONNECT,
-+    FSL_IMX8MP_IOMUXC,
-+    FSL_IMX8MP_IOMUXC_GPR,
-+    FSL_IMX8MP_IPS_DEWARP,
-+    FSL_IMX8MP_ISI,
-+    FSL_IMX8MP_ISP1,
-+    FSL_IMX8MP_ISP2,
-+    FSL_IMX8MP_LCDIF1,
-+    FSL_IMX8MP_LCDIF2,
-+    FSL_IMX8MP_MEDIA_BLK_CTL,
-+    FSL_IMX8MP_MIPI_CSI1,
-+    FSL_IMX8MP_MIPI_CSI2,
-+    FSL_IMX8MP_MIPI_DSI1,
-+    FSL_IMX8MP_MU_1_A,
-+    FSL_IMX8MP_MU_1_B,
-+    FSL_IMX8MP_MU_2_A,
-+    FSL_IMX8MP_MU_2_B,
-+    FSL_IMX8MP_MU_3_A,
-+    FSL_IMX8MP_MU_3_B,
-+    FSL_IMX8MP_NPU,
-+    FSL_IMX8MP_OCOTP_CTRL,
-+    FSL_IMX8MP_OCRAM,
-+    FSL_IMX8MP_OCRAM_S,
-+    FSL_IMX8MP_PCIE1,
-+    FSL_IMX8MP_PCIE1_MEM,
-+    FSL_IMX8MP_PCIE_PHY1,
-+    FSL_IMX8MP_PDM,
-+    FSL_IMX8MP_PERFMON1,
-+    FSL_IMX8MP_PERFMON2,
-+    FSL_IMX8MP_PWM1,
-+    FSL_IMX8MP_PWM2,
-+    FSL_IMX8MP_PWM3,
-+    FSL_IMX8MP_PWM4,
-+    FSL_IMX8MP_QOSC,
-+    FSL_IMX8MP_QSPI,
-+    FSL_IMX8MP_QSPI1_RX_BUFFER,
-+    FSL_IMX8MP_QSPI1_TX_BUFFER,
-+    FSL_IMX8MP_QSPI_MEM,
-+    FSL_IMX8MP_RAM,
-+    FSL_IMX8MP_RDC,
-+    FSL_IMX8MP_SAI1,
-+    FSL_IMX8MP_SAI2,
-+    FSL_IMX8MP_SAI3,
-+    FSL_IMX8MP_SAI5,
-+    FSL_IMX8MP_SAI6,
-+    FSL_IMX8MP_SAI7,
-+    FSL_IMX8MP_SDMA1,
-+    FSL_IMX8MP_SDMA2,
-+    FSL_IMX8MP_SDMA3,
-+    FSL_IMX8MP_SEMAPHORE1,
-+    FSL_IMX8MP_SEMAPHORE2,
-+    FSL_IMX8MP_SEMAPHORE_HS,
-+    FSL_IMX8MP_SNVS_HP,
-+    FSL_IMX8MP_SPBA1,
-+    FSL_IMX8MP_SPBA2,
-+    FSL_IMX8MP_SRC,
-+    FSL_IMX8MP_SYSCNT_CMP,
-+    FSL_IMX8MP_SYSCNT_CTRL,
-+    FSL_IMX8MP_SYSCNT_RD,
-+    FSL_IMX8MP_TCM_DTCM,
-+    FSL_IMX8MP_TCM_ITCM,
-+    FSL_IMX8MP_TZASC,
-+    FSL_IMX8MP_UART1,
-+    FSL_IMX8MP_UART2,
-+    FSL_IMX8MP_UART3,
-+    FSL_IMX8MP_UART4,
-+    FSL_IMX8MP_USB1,
-+    FSL_IMX8MP_USB2,
-+    FSL_IMX8MP_USDHC1,
-+    FSL_IMX8MP_USDHC2,
-+    FSL_IMX8MP_USDHC3,
-+    FSL_IMX8MP_VPU,
-+    FSL_IMX8MP_VPU_BLK_CTRL,
-+    FSL_IMX8MP_VPU_G1_DECODER,
-+    FSL_IMX8MP_VPU_G2_DECODER,
-+    FSL_IMX8MP_VPU_VC8000E_ENCODER,
-+    FSL_IMX8MP_WDOG1,
-+    FSL_IMX8MP_WDOG2,
-+    FSL_IMX8MP_WDOG3,
-+};
-+
-+enum FslImx8mpIrqs {
-+    FSL_IMX8MP_UART1_IRQ    = 26,
-+    FSL_IMX8MP_UART2_IRQ    = 27,
-+    FSL_IMX8MP_UART3_IRQ    = 28,
-+    FSL_IMX8MP_UART4_IRQ    = 29,
-+    FSL_IMX8MP_UART5_IRQ    = 30,
-+    FSL_IMX8MP_UART6_IRQ    = 16,
-+};
-+
-+#endif /* FSL_IMX8MP_H */
-diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
++#endif /* IMX8MP_ANALOG_H */
+diff --git a/include/hw/misc/imx8mp_ccm.h b/include/hw/misc/imx8mp_ccm.h
 new file mode 100644
-index 0000000000..0836d82ca0
+index 0000000000..685c8582ff
 --- /dev/null
-+++ b/hw/arm/fsl-imx8mp.c
-@@ -0,0 +1,371 @@
++++ b/include/hw/misc/imx8mp_ccm.h
+@@ -0,0 +1,30 @@
 +/*
-+ * i.MX 8M Plus SoC Implementation
++ * Copyright (c) 2025 Bernhard Beschow <shentey@gmail.com>
 + *
-+ * Based on hw/arm/fsl-imx6.c
++ * i.MX 8M Plus CCM IP block emulation code
 + *
-+ * Copyright (c) 2024, Bernhard Beschow <shentey@gmail.com>
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef IMX8MP_CCM_H
++#define IMX8MP_CCM_H
++
++#include "hw/misc/imx_ccm.h"
++#include "qom/object.h"
++
++enum IMX8MPCCMRegisters {
++    CCM_MAX = 0xc6fc / sizeof(uint32_t) + 1,
++};
++
++#define TYPE_IMX8MP_CCM "imx8mp.ccm"
++OBJECT_DECLARE_SIMPLE_TYPE(IMX8MPCCMState, IMX8MP_CCM)
++
++struct IMX8MPCCMState {
++    IMXCCMState parent_obj;
++
++    MemoryRegion iomem;
++
++    uint32_t ccm[CCM_MAX];
++};
++
++#endif /* IMX8MP_CCM_H */
+diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
+index 0836d82ca0..a1a8843b3b 100644
+--- a/hw/arm/fsl-imx8mp.c
++++ b/hw/arm/fsl-imx8mp.c
+@@ -200,6 +200,10 @@ static void fsl_imx8mp_init(Object *obj)
+ 
+     object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GICV3);
+ 
++    object_initialize_child(obj, "ccm", &s->ccm, TYPE_IMX8MP_CCM);
++
++    object_initialize_child(obj, "analog", &s->analog, TYPE_IMX8MP_ANALOG);
++
+     for (i = 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
+         snprintf(name, NAME_SIZE, "uart%d", i + 1);
+         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
+@@ -308,6 +312,20 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+         }
+     }
+ 
++    /* CCM */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->ccm), errp)) {
++        return;
++    }
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccm), 0,
++                    fsl_imx8mp_memmap[FSL_IMX8MP_CCM].addr);
++
++    /* Analog */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->analog), errp)) {
++        return;
++    }
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->analog), 0,
++                    fsl_imx8mp_memmap[FSL_IMX8MP_ANA_PLL].addr);
++
+     /* UARTs */
+     for (i = 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
+         static const struct {
+@@ -333,6 +351,8 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+     /* Unimplemented devices */
+     for (i = 0; i < ARRAY_SIZE(fsl_imx8mp_memmap); i++) {
+         switch (i) {
++        case FSL_IMX8MP_ANA_PLL:
++        case FSL_IMX8MP_CCM:
+         case FSL_IMX8MP_GIC_DIST:
+         case FSL_IMX8MP_GIC_REDIST:
+         case FSL_IMX8MP_RAM:
+diff --git a/hw/misc/imx8mp_analog.c b/hw/misc/imx8mp_analog.c
+new file mode 100644
+index 0000000000..71333b3e9e
+--- /dev/null
++++ b/hw/misc/imx8mp_analog.c
+@@ -0,0 +1,160 @@
++/*
++ * Copyright (c) 2025 Bernhard Beschow <shentey@gmail.com>
++ *
++ * i.MX 8M Plus ANALOG IP block emulation code
++ *
++ * Based on hw/misc/imx7_ccm.c
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
 +#include "qemu/osdep.h"
-+#include "exec/address-spaces.h"
-+#include "hw/arm/bsa.h"
-+#include "hw/arm/fsl-imx8mp.h"
-+#include "hw/intc/arm_gicv3.h"
-+#include "hw/misc/unimp.h"
-+#include "hw/boards.h"
-+#include "system/system.h"
-+#include "target/arm/cpu-qom.h"
-+#include "qapi/qmp/qlist.h"
-+#include "qapi/error.h"
++#include "qemu/log.h"
 +
-+static const struct {
-+    hwaddr addr;
-+    size_t size;
-+    const char *name;
-+} fsl_imx8mp_memmap[] = {
-+    [FSL_IMX8MP_RAM] = { FSL_IMX8MP_RAM_START, FSL_IMX8MP_RAM_SIZE_MAX, "ram" },
-+    [FSL_IMX8MP_DDR_PHY_BROADCAST] = { 0x3dc00000, 4 * MiB, "ddr_phy_broadcast" },
-+    [FSL_IMX8MP_DDR_PERF_MON] = { 0x3d800000, 4 * MiB, "ddr_perf_mon" },
-+    [FSL_IMX8MP_DDR_CTL] = { 0x3d400000, 4 * MiB, "ddr_ctl" },
-+    [FSL_IMX8MP_DDR_BLK_CTRL] = { 0x3d000000, 1 * MiB, "ddr_blk_ctrl" },
-+    [FSL_IMX8MP_DDR_PHY] = { 0x3c000000, 16 * MiB, "ddr_phy" },
-+    [FSL_IMX8MP_AUDIO_DSP] = { 0x3b000000, 16 * MiB, "audio_dsp" },
-+    [FSL_IMX8MP_GIC_DIST] = { 0x38800000, 512 * KiB, "gic_dist" },
-+    [FSL_IMX8MP_GIC_REDIST] = { 0x38880000, 512 * KiB, "gic_redist" },
-+    [FSL_IMX8MP_NPU] = { 0x38500000, 2 * MiB, "npu" },
-+    [FSL_IMX8MP_VPU] = { 0x38340000, 2 * MiB, "vpu" },
-+    [FSL_IMX8MP_VPU_BLK_CTRL] = { 0x38330000, 2 * MiB, "vpu_blk_ctrl" },
-+    [FSL_IMX8MP_VPU_VC8000E_ENCODER] = { 0x38320000, 2 * MiB, "vpu_vc8000e_encoder" },
-+    [FSL_IMX8MP_VPU_G2_DECODER] = { 0x38310000, 2 * MiB, "vpu_g2_decoder" },
-+    [FSL_IMX8MP_VPU_G1_DECODER] = { 0x38300000, 2 * MiB, "vpu_g1_decoder" },
-+    [FSL_IMX8MP_USB2] = { 0x38200000, 1 * MiB, "usb2" },
-+    [FSL_IMX8MP_USB1] = { 0x38100000, 1 * MiB, "usb1" },
-+    [FSL_IMX8MP_GPU2D] = { 0x38008000, 32 * KiB, "gpu2d" },
-+    [FSL_IMX8MP_GPU3D] = { 0x38000000, 32 * KiB, "gpu3d" },
-+    [FSL_IMX8MP_QSPI1_RX_BUFFER] = { 0x34000000, 32 * MiB, "qspi1_rx_buffer" },
-+    [FSL_IMX8MP_PCIE1] = { 0x33800000, 4 * MiB, "pcie1" },
-+    [FSL_IMX8MP_QSPI1_TX_BUFFER] = { 0x33008000, 32 * KiB, "qspi1_tx_buffer" },
-+    [FSL_IMX8MP_APBH_DMA] = { 0x33000000, 32 * KiB, "apbh_dma" },
++#include "hw/misc/imx8mp_analog.h"
++#include "migration/vmstate.h"
 +
-+    /* AIPS-5 Begin */
-+    [FSL_IMX8MP_MU_3_B] = { 0x30e90000, 64 * KiB, "mu_3_b" },
-+    [FSL_IMX8MP_MU_3_A] = { 0x30e80000, 64 * KiB, "mu_3_a" },
-+    [FSL_IMX8MP_MU_2_B] = { 0x30e70000, 64 * KiB, "mu_2_b" },
-+    [FSL_IMX8MP_MU_2_A] = { 0x30e60000, 64 * KiB, "mu_2_a" },
-+    [FSL_IMX8MP_EDMA_CHANNELS] = { 0x30e40000, 128 * KiB, "edma_channels" },
-+    [FSL_IMX8MP_EDMA_MANAGEMENT_PAGE] = { 0x30e30000, 64 * KiB, "edma_management_page" },
-+    [FSL_IMX8MP_AUDIO_BLK_CTRL] = { 0x30e20000, 64 * KiB, "audio_blk_ctrl" },
-+    [FSL_IMX8MP_SDMA2] = { 0x30e10000, 64 * KiB, "sdma2" },
-+    [FSL_IMX8MP_SDMA3] = { 0x30e00000, 64 * KiB, "sdma3" },
-+    [FSL_IMX8MP_AIPS5_CONFIGURATION] = { 0x30df0000, 64 * KiB, "aips5_configuration" },
-+    [FSL_IMX8MP_SPBA2] = { 0x30cf0000, 64 * KiB, "spba2" },
-+    [FSL_IMX8MP_AUDIO_XCVR_RX] = { 0x30cc0000, 64 * KiB, "audio_xcvr_rx" },
-+    [FSL_IMX8MP_HDMI_TX_AUDLNK_MSTR] = { 0x30cb0000, 64 * KiB, "hdmi_tx_audlnk_mstr" },
-+    [FSL_IMX8MP_PDM] = { 0x30ca0000, 64 * KiB, "pdm" },
-+    [FSL_IMX8MP_ASRC] = { 0x30c90000, 64 * KiB, "asrc" },
-+    [FSL_IMX8MP_SAI7] = { 0x30c80000, 64 * KiB, "sai7" },
-+    [FSL_IMX8MP_SAI6] = { 0x30c60000, 64 * KiB, "sai6" },
-+    [FSL_IMX8MP_SAI5] = { 0x30c50000, 64 * KiB, "sai5" },
-+    [FSL_IMX8MP_SAI3] = { 0x30c30000, 64 * KiB, "sai3" },
-+    [FSL_IMX8MP_SAI2] = { 0x30c20000, 64 * KiB, "sai2" },
-+    [FSL_IMX8MP_SAI1] = { 0x30c10000, 64 * KiB, "sai1" },
-+    /* AIPS-5 End */
++#define ANALOG_PLL_LOCK BIT(31)
 +
-+    /* AIPS-4 Begin */
-+    [FSL_IMX8MP_HDMI_TX] = { 0x32fc0000, 128 * KiB, "hdmi_tx" },
-+    [FSL_IMX8MP_TZASC] = { 0x32f80000, 64 * KiB, "tzasc" },
-+    [FSL_IMX8MP_HSIO_BLK_CTL] = { 0x32f10000, 64 * KiB, "hsio_blk_ctl" },
-+    [FSL_IMX8MP_PCIE_PHY1] = { 0x32f00000, 64 * KiB, "pcie_phy1" },
-+    [FSL_IMX8MP_MEDIA_BLK_CTL] = { 0x32ec0000, 64 * KiB, "media_blk_ctl" },
-+    [FSL_IMX8MP_LCDIF2] = { 0x32e90000, 64 * KiB, "lcdif2" },
-+    [FSL_IMX8MP_LCDIF1] = { 0x32e80000, 64 * KiB, "lcdif1" },
-+    [FSL_IMX8MP_MIPI_DSI1] = { 0x32e60000, 64 * KiB, "mipi_dsi1" },
-+    [FSL_IMX8MP_MIPI_CSI2] = { 0x32e50000, 64 * KiB, "mipi_csi2" },
-+    [FSL_IMX8MP_MIPI_CSI1] = { 0x32e40000, 64 * KiB, "mipi_csi1" },
-+    [FSL_IMX8MP_IPS_DEWARP] = { 0x32e30000, 64 * KiB, "ips_dewarp" },
-+    [FSL_IMX8MP_ISP2] = { 0x32e20000, 64 * KiB, "isp2" },
-+    [FSL_IMX8MP_ISP1] = { 0x32e10000, 64 * KiB, "isp1" },
-+    [FSL_IMX8MP_ISI] = { 0x32e00000, 64 * KiB, "isi" },
-+    [FSL_IMX8MP_AIPS4_CONFIGURATION] = { 0x32df0000, 64 * KiB, "aips4_configuration" },
-+    /* AIPS-4 End */
-+
-+    [FSL_IMX8MP_INTERCONNECT] = { 0x32700000, 1 * MiB, "interconnect" },
-+
-+    /* AIPS-3 Begin */
-+    [FSL_IMX8MP_ENET2_TSN] = { 0x30bf0000, 64 * KiB, "enet2_tsn" },
-+    [FSL_IMX8MP_ENET1] = { 0x30be0000, 64 * KiB, "enet1" },
-+    [FSL_IMX8MP_SDMA1] = { 0x30bd0000, 64 * KiB, "sdma1" },
-+    [FSL_IMX8MP_QSPI] = { 0x30bb0000, 64 * KiB, "qspi" },
-+    [FSL_IMX8MP_USDHC3] = { 0x30b60000, 64 * KiB, "usdhc3" },
-+    [FSL_IMX8MP_USDHC2] = { 0x30b50000, 64 * KiB, "usdhc2" },
-+    [FSL_IMX8MP_USDHC1] = { 0x30b40000, 64 * KiB, "usdhc1" },
-+    [FSL_IMX8MP_I2C6] = { 0x30ae0000, 64 * KiB, "i2c6" },
-+    [FSL_IMX8MP_I2C5] = { 0x30ad0000, 64 * KiB, "i2c5" },
-+    [FSL_IMX8MP_SEMAPHORE_HS] = { 0x30ac0000, 64 * KiB, "semaphore_hs" },
-+    [FSL_IMX8MP_MU_1_B] = { 0x30ab0000, 64 * KiB, "mu_1_b" },
-+    [FSL_IMX8MP_MU_1_A] = { 0x30aa0000, 64 * KiB, "mu_1_a" },
-+    [FSL_IMX8MP_AUD_IRQ_STEER] = { 0x30a80000, 64 * KiB, "aud_irq_steer" },
-+    [FSL_IMX8MP_UART4] = { 0x30a60000, 64 * KiB, "uart4" },
-+    [FSL_IMX8MP_I2C4] = { 0x30a50000, 64 * KiB, "i2c4" },
-+    [FSL_IMX8MP_I2C3] = { 0x30a40000, 64 * KiB, "i2c3" },
-+    [FSL_IMX8MP_I2C2] = { 0x30a30000, 64 * KiB, "i2c2" },
-+    [FSL_IMX8MP_I2C1] = { 0x30a20000, 64 * KiB, "i2c1" },
-+    [FSL_IMX8MP_AIPS3_CONFIGURATION] = { 0x309f0000, 64 * KiB, "aips3_configuration" },
-+    [FSL_IMX8MP_CAAM] = { 0x30900000, 256 * KiB, "caam" },
-+    [FSL_IMX8MP_SPBA1] = { 0x308f0000, 64 * KiB, "spba1" },
-+    [FSL_IMX8MP_FLEXCAN2] = { 0x308d0000, 64 * KiB, "flexcan2" },
-+    [FSL_IMX8MP_FLEXCAN1] = { 0x308c0000, 64 * KiB, "flexcan1" },
-+    [FSL_IMX8MP_UART2] = { 0x30890000, 64 * KiB, "uart2" },
-+    [FSL_IMX8MP_UART3] = { 0x30880000, 64 * KiB, "uart3" },
-+    [FSL_IMX8MP_UART1] = { 0x30860000, 64 * KiB, "uart1" },
-+    [FSL_IMX8MP_ECSPI3] = { 0x30840000, 64 * KiB, "ecspi3" },
-+    [FSL_IMX8MP_ECSPI2] = { 0x30830000, 64 * KiB, "ecspi2" },
-+    [FSL_IMX8MP_ECSPI1] = { 0x30820000, 64 * KiB, "ecspi1" },
-+    /* AIPS-3 End */
-+
-+    /* AIPS-2 Begin */
-+    [FSL_IMX8MP_QOSC] = { 0x307f0000, 64 * KiB, "qosc" },
-+    [FSL_IMX8MP_PERFMON2] = { 0x307d0000, 64 * KiB, "perfmon2" },
-+    [FSL_IMX8MP_PERFMON1] = { 0x307c0000, 64 * KiB, "perfmon1" },
-+    [FSL_IMX8MP_GPT4] = { 0x30700000, 64 * KiB, "gpt4" },
-+    [FSL_IMX8MP_GPT5] = { 0x306f0000, 64 * KiB, "gpt5" },
-+    [FSL_IMX8MP_GPT6] = { 0x306e0000, 64 * KiB, "gpt6" },
-+    [FSL_IMX8MP_SYSCNT_CTRL] = { 0x306c0000, 64 * KiB, "syscnt_ctrl" },
-+    [FSL_IMX8MP_SYSCNT_CMP] = { 0x306b0000, 64 * KiB, "syscnt_cmp" },
-+    [FSL_IMX8MP_SYSCNT_RD] = { 0x306a0000, 64 * KiB, "syscnt_rd" },
-+    [FSL_IMX8MP_PWM4] = { 0x30690000, 64 * KiB, "pwm4" },
-+    [FSL_IMX8MP_PWM3] = { 0x30680000, 64 * KiB, "pwm3" },
-+    [FSL_IMX8MP_PWM2] = { 0x30670000, 64 * KiB, "pwm2" },
-+    [FSL_IMX8MP_PWM1] = { 0x30660000, 64 * KiB, "pwm1" },
-+    [FSL_IMX8MP_AIPS2_CONFIGURATION] = { 0x305f0000, 64 * KiB, "aips2_configuration" },
-+    /* AIPS-2 End */
-+
-+    /* AIPS-1 Begin */
-+    [FSL_IMX8MP_CSU] = { 0x303e0000, 64 * KiB, "csu" },
-+    [FSL_IMX8MP_RDC] = { 0x303d0000, 64 * KiB, "rdc" },
-+    [FSL_IMX8MP_SEMAPHORE2] = { 0x303c0000, 64 * KiB, "semaphore2" },
-+    [FSL_IMX8MP_SEMAPHORE1] = { 0x303b0000, 64 * KiB, "semaphore1" },
-+    [FSL_IMX8MP_GPC] = { 0x303a0000, 64 * KiB, "gpc" },
-+    [FSL_IMX8MP_SRC] = { 0x30390000, 64 * KiB, "src" },
-+    [FSL_IMX8MP_CCM] = { 0x30380000, 64 * KiB, "ccm" },
-+    [FSL_IMX8MP_SNVS_HP] = { 0x30370000, 64 * KiB, "snvs_hp" },
-+    [FSL_IMX8MP_ANA_PLL] = { 0x30360000, 64 * KiB, "ana_pll" },
-+    [FSL_IMX8MP_OCOTP_CTRL] = { 0x30350000, 64 * KiB, "ocotp_ctrl" },
-+    [FSL_IMX8MP_IOMUXC_GPR] = { 0x30340000, 64 * KiB, "iomuxc_gpr" },
-+    [FSL_IMX8MP_IOMUXC] = { 0x30330000, 64 * KiB, "iomuxc" },
-+    [FSL_IMX8MP_GPT3] = { 0x302f0000, 64 * KiB, "gpt3" },
-+    [FSL_IMX8MP_GPT2] = { 0x302e0000, 64 * KiB, "gpt2" },
-+    [FSL_IMX8MP_GPT1] = { 0x302d0000, 64 * KiB, "gpt1" },
-+    [FSL_IMX8MP_WDOG3] = { 0x302a0000, 64 * KiB, "wdog3" },
-+    [FSL_IMX8MP_WDOG2] = { 0x30290000, 64 * KiB, "wdog2" },
-+    [FSL_IMX8MP_WDOG1] = { 0x30280000, 64 * KiB, "wdog1" },
-+    [FSL_IMX8MP_ANA_OSC] = { 0x30270000, 64 * KiB, "ana_osc" },
-+    [FSL_IMX8MP_ANA_TSENSOR] = { 0x30260000, 64 * KiB, "ana_tsensor" },
-+    [FSL_IMX8MP_GPIO5] = { 0x30240000, 64 * KiB, "gpio5" },
-+    [FSL_IMX8MP_GPIO4] = { 0x30230000, 64 * KiB, "gpio4" },
-+    [FSL_IMX8MP_GPIO3] = { 0x30220000, 64 * KiB, "gpio3" },
-+    [FSL_IMX8MP_GPIO2] = { 0x30210000, 64 * KiB, "gpio2" },
-+    [FSL_IMX8MP_GPIO1] = { 0x30200000, 64 * KiB, "gpio1" },
-+    [FSL_IMX8MP_AIPS1_CONFIGURATION] = { 0x301f0000, 64 * KiB, "aips1_configuration" },
-+    /* AIPS-1 End */
-+
-+    [FSL_IMX8MP_A53_DAP] = { 0x28000000, 16 * MiB, "a53_dap" },
-+    [FSL_IMX8MP_PCIE1_MEM] = { 0x18000000, 128 * MiB, "pcie1_mem" },
-+    [FSL_IMX8MP_QSPI_MEM] = { 0x08000000, 256 * MiB, "qspi_mem" },
-+    [FSL_IMX8MP_OCRAM] = { 0x00900000, 576 * KiB, "ocram" },
-+    [FSL_IMX8MP_TCM_DTCM] = { 0x00800000, 128 * KiB, "tcm_dtcm" },
-+    [FSL_IMX8MP_TCM_ITCM] = { 0x007e0000, 128 * KiB, "tcm_itcm" },
-+    [FSL_IMX8MP_OCRAM_S] = { 0x00180000, 36 * KiB, "ocram_s" },
-+    [FSL_IMX8MP_CAAM_MEM] = { 0x00100000, 32 * KiB, "caam_mem" },
-+    [FSL_IMX8MP_BOOT_ROM_PROTECTED] = { 0x0003f000, 4 * KiB, "boot_rom_protected" },
-+    [FSL_IMX8MP_BOOT_ROM] = { 0x00000000, 252 * KiB, "boot_rom" },
-+};
-+
-+#define NAME_SIZE 20
-+
-+static void fsl_imx8mp_init(Object *obj)
++static void imx8mp_analog_reset(DeviceState *dev)
 +{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    FslImx8mpState *s = FSL_IMX8MP(obj);
-+    char name[NAME_SIZE];
-+    int i;
++    IMX8MPAnalogState *s = IMX8MP_ANALOG(dev);
 +
-+    for (i = 0; i < MIN(ms->smp.cpus, FSL_IMX8MP_NUM_CPUS); i++) {
-+        snprintf(name, NAME_SIZE, "cpu%d", i);
-+        object_initialize_child(obj, name, &s->cpu[i],
-+                                ARM_CPU_TYPE_NAME("cortex-a53"));
-+    }
++    memset(s->analog, 0, sizeof(s->analog));
 +
-+    object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GICV3);
++    s->analog[ANALOG_AUDIO_PLL1_GEN_CTRL] = 0x00002010;
++    s->analog[ANALOG_AUDIO_PLL1_FDIV_CTL0] = 0x00145032;
++    s->analog[ANALOG_AUDIO_PLL1_FDIV_CTL1] = 0x00000000;
++    s->analog[ANALOG_AUDIO_PLL1_SSCG_CTRL] = 0x00000000;
++    s->analog[ANALOG_AUDIO_PLL1_MNIT_CTRL] = 0x00100103;
++    s->analog[ANALOG_AUDIO_PLL2_GEN_CTRL] = 0x00002010;
++    s->analog[ANALOG_AUDIO_PLL2_FDIV_CTL0] = 0x00145032;
++    s->analog[ANALOG_AUDIO_PLL2_FDIV_CTL1] = 0x00000000;
++    s->analog[ANALOG_AUDIO_PLL2_SSCG_CTRL] = 0x00000000;
++    s->analog[ANALOG_AUDIO_PLL2_MNIT_CTRL] = 0x00100103;
++    s->analog[ANALOG_VIDEO_PLL1_GEN_CTRL] = 0x00002010;
++    s->analog[ANALOG_VIDEO_PLL1_FDIV_CTL0] = 0x00145032;
++    s->analog[ANALOG_VIDEO_PLL1_FDIV_CTL1] = 0x00000000;
++    s->analog[ANALOG_VIDEO_PLL1_SSCG_CTRL] = 0x00000000;
++    s->analog[ANALOG_VIDEO_PLL1_MNIT_CTRL] = 0x00100103;
++    s->analog[ANALOG_DRAM_PLL_GEN_CTRL] = 0x00002010;
++    s->analog[ANALOG_DRAM_PLL_FDIV_CTL0] = 0x0012c032;
++    s->analog[ANALOG_DRAM_PLL_FDIV_CTL1] = 0x00000000;
++    s->analog[ANALOG_DRAM_PLL_SSCG_CTRL] = 0x00000000;
++    s->analog[ANALOG_DRAM_PLL_MNIT_CTRL] = 0x00100103;
++    s->analog[ANALOG_GPU_PLL_GEN_CTRL] = 0x00000810;
++    s->analog[ANALOG_GPU_PLL_FDIV_CTL0] = 0x000c8031;
++    s->analog[ANALOG_GPU_PLL_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_GPU_PLL_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_VPU_PLL_GEN_CTRL] = 0x00000810;
++    s->analog[ANALOG_VPU_PLL_FDIV_CTL0] = 0x0012c032;
++    s->analog[ANALOG_VPU_PLL_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_VPU_PLL_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_ARM_PLL_GEN_CTRL] = 0x00000810;
++    s->analog[ANALOG_ARM_PLL_FDIV_CTL0] = 0x000fa031;
++    s->analog[ANALOG_ARM_PLL_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_ARM_PLL_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_SYS_PLL1_GEN_CTRL] = 0x0aaaa810;
++    s->analog[ANALOG_SYS_PLL1_FDIV_CTL0] = 0x00190032;
++    s->analog[ANALOG_SYS_PLL1_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_SYS_PLL1_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_SYS_PLL2_GEN_CTRL] = 0x0aaaa810;
++    s->analog[ANALOG_SYS_PLL2_FDIV_CTL0] = 0x000fa031;
++    s->analog[ANALOG_SYS_PLL2_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_SYS_PLL2_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_SYS_PLL3_GEN_CTRL] = 0x00000810;
++    s->analog[ANALOG_SYS_PLL3_FDIV_CTL0] = 0x000fa031;
++    s->analog[ANALOG_SYS_PLL3_LOCKD_CTRL] = 0x0010003f;
++    s->analog[ANALOG_SYS_PLL3_MNIT_CTRL] = 0x00280081;
++    s->analog[ANALOG_OSC_MISC_CFG] = 0x00000000;
++    s->analog[ANALOG_ANAMIX_PLL_MNIT_CTL] = 0x00000000;
++    s->analog[ANALOG_DIGPROG] = 0x00824010;
 +
-+    for (i = 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
-+        snprintf(name, NAME_SIZE, "uart%d", i + 1);
-+        object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
++    /* all PLLs need to be locked */
++    s->analog[ANALOG_AUDIO_PLL1_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_AUDIO_PLL2_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_VIDEO_PLL1_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_DRAM_PLL_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_GPU_PLL_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_VPU_PLL_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_ARM_PLL_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_SYS_PLL1_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_SYS_PLL2_GEN_CTRL] |= ANALOG_PLL_LOCK;
++    s->analog[ANALOG_SYS_PLL3_GEN_CTRL] |= ANALOG_PLL_LOCK;
++}
++
++static uint64_t imx8mp_analog_read(void *opaque, hwaddr offset, unsigned size)
++{
++    IMX8MPAnalogState *s = opaque;
++
++    return s->analog[offset >> 2];
++}
++
++static void imx8mp_analog_write(void *opaque, hwaddr offset,
++                                uint64_t value, unsigned size)
++{
++    IMX8MPAnalogState *s = opaque;
++
++    if (offset >> 2 == ANALOG_DIGPROG) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "Guest write to read-only ANALOG_DIGPROG register\n");
++    } else {
++        s->analog[offset >> 2] = value;
 +    }
 +}
 +
-+static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    FslImx8mpState *s = FSL_IMX8MP(dev);
-+    DeviceState *gicdev = DEVICE(&s->gic);
-+    int i;
-+
-+    if (ms->smp.cpus > FSL_IMX8MP_NUM_CPUS) {
-+        error_setg(errp, "%s: Only %d CPUs are supported (%d requested)",
-+                   TYPE_FSL_IMX8MP, FSL_IMX8MP_NUM_CPUS, ms->smp.cpus);
-+        return;
-+    }
-+
-+    /* CPUs */
-+    for (i = 0; i < ms->smp.cpus; i++) {
-+        /* On uniprocessor, the CBAR is set to 0 */
-+        if (ms->smp.cpus > 1) {
-+            object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
-+                                    fsl_imx8mp_memmap[FSL_IMX8MP_GIC_DIST].addr,
-+                                    &error_abort);
-+        }
-+
-+        /*
-+         * Magic value from Linux output: "arch_timer: cp15 timer(s) running at
-+         * 8.00MHz (phys)".
-+         */
-+        object_property_set_int(OBJECT(&s->cpu[i]), "cntfrq", 8000000,
-+                                &error_abort);
-+
-+        if (i) {
-+            /*
-+             * Secondary CPUs start in powered-down state (and can be
-+             * powered up via the SRC system reset controller)
-+             */
-+            object_property_set_bool(OBJECT(&s->cpu[i]), "start-powered-off",
-+                                     true, &error_abort);
-+        }
-+
-+        if (!qdev_realize(DEVICE(&s->cpu[i]), NULL, errp)) {
-+            return;
-+        }
-+    }
-+
-+    /* GIC */
-+    {
-+        SysBusDevice *gicsbd = SYS_BUS_DEVICE(&s->gic);
-+        QList *redist_region_count;
-+
-+        qdev_prop_set_uint32(gicdev, "num-cpu", ms->smp.cpus);
-+        qdev_prop_set_uint32(gicdev, "num-irq",
-+                             FSL_IMX8MP_NUM_IRQS + GIC_INTERNAL);
-+        redist_region_count = qlist_new();
-+        qlist_append_int(redist_region_count, ms->smp.cpus);
-+        qdev_prop_set_array(gicdev, "redist-region-count", redist_region_count);
-+        object_property_set_link(OBJECT(&s->gic), "sysmem",
-+                                 OBJECT(get_system_memory()), &error_fatal);
-+        if (!sysbus_realize(gicsbd, errp)) {
-+            return;
-+        }
-+        sysbus_mmio_map(gicsbd, 0, fsl_imx8mp_memmap[FSL_IMX8MP_GIC_DIST].addr);
-+        sysbus_mmio_map(gicsbd, 1, fsl_imx8mp_memmap[FSL_IMX8MP_GIC_REDIST].addr);
-+
-+        /*
-+         * Wire the outputs from each CPU's generic timer and the GICv3
-+         * maintenance interrupt signal to the appropriate GIC PPI inputs, and
-+         * the GIC's IRQ/FIQ interrupt outputs to the CPU's inputs.
-+         */
-+        for (i = 0; i < ms->smp.cpus; i++) {
-+            DeviceState *cpudev = DEVICE(&s->cpu[i]);
-+            int intidbase = FSL_IMX8MP_NUM_IRQS + i * GIC_INTERNAL;
-+            qemu_irq irq;
-+
-+            /*
-+             * Mapping from the output timer irq lines from the CPU to the
-+             * GIC PPI inputs.
-+             */
-+            static const int timer_irqs[] = {
-+                [GTIMER_PHYS] = ARCH_TIMER_NS_EL1_IRQ,
-+                [GTIMER_VIRT] = ARCH_TIMER_VIRT_IRQ,
-+                [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
-+                [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
-+            };
-+
-+            for (int j = 0; j < ARRAY_SIZE(timer_irqs); j++) {
-+                irq = qdev_get_gpio_in(gicdev, intidbase + timer_irqs[j]);
-+                qdev_connect_gpio_out(cpudev, j, irq);
-+            }
-+
-+            irq = qdev_get_gpio_in(gicdev, intidbase + ARCH_GIC_MAINT_IRQ);
-+            qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt",
-+                                        0, irq);
-+
-+            irq = qdev_get_gpio_in(gicdev, intidbase + VIRTUAL_PMU_IRQ);
-+            qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0, irq);
-+
-+            sysbus_connect_irq(gicsbd, i,
-+                               qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-+            sysbus_connect_irq(gicsbd, i + ms->smp.cpus,
-+                               qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-+        }
-+    }
-+
-+    /* UARTs */
-+    for (i = 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
-+        static const struct {
-+            hwaddr addr;
-+            unsigned int irq;
-+        } serial_table[FSL_IMX8MP_NUM_UARTS] = {
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_UART1].addr, FSL_IMX8MP_UART1_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_UART2].addr, FSL_IMX8MP_UART2_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_UART3].addr, FSL_IMX8MP_UART3_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_UART4].addr, FSL_IMX8MP_UART4_IRQ },
-+        };
-+
-+        qdev_prop_set_chr(DEVICE(&s->uart[i]), "chardev", serial_hd(i));
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->uart[i]), errp)) {
-+            return;
-+        }
-+
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->uart[i]), 0, serial_table[i].addr);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0,
-+                           qdev_get_gpio_in(gicdev, serial_table[i].irq));
-+    }
-+
-+    /* Unimplemented devices */
-+    for (i = 0; i < ARRAY_SIZE(fsl_imx8mp_memmap); i++) {
-+        switch (i) {
-+        case FSL_IMX8MP_GIC_DIST:
-+        case FSL_IMX8MP_GIC_REDIST:
-+        case FSL_IMX8MP_RAM:
-+        case FSL_IMX8MP_UART1 ... FSL_IMX8MP_UART4:
-+            /* device implemented and treated above */
-+            break;
-+
-+        default:
-+            create_unimplemented_device(fsl_imx8mp_memmap[i].name,
-+                                        fsl_imx8mp_memmap[i].addr,
-+                                        fsl_imx8mp_memmap[i].size);
-+            break;
-+        }
-+    }
-+}
-+
-+static void fsl_imx8mp_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+
-+    dc->realize = fsl_imx8mp_realize;
-+
-+    dc->desc = "i.MX 8M Plus SoC";
-+}
-+
-+static const TypeInfo fsl_imx8mp_types[] = {
-+    {
-+        .name = TYPE_FSL_IMX8MP,
-+        .parent = TYPE_DEVICE,
-+        .instance_size = sizeof(FslImx8mpState),
-+        .instance_init = fsl_imx8mp_init,
-+        .class_init = fsl_imx8mp_class_init,
++static const struct MemoryRegionOps imx8mp_analog_ops = {
++    .read = imx8mp_analog_read,
++    .write = imx8mp_analog_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++        .unaligned = false,
 +    },
 +};
 +
-+DEFINE_TYPES(fsl_imx8mp_types)
-diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
++static void imx8mp_analog_init(Object *obj)
++{
++    IMX8MPAnalogState *s = IMX8MP_ANALOG(obj);
++    SysBusDevice *sd = SYS_BUS_DEVICE(obj);
++
++    memory_region_init(&s->mmio.container, obj, TYPE_IMX8MP_ANALOG, 0x10000);
++
++    memory_region_init_io(&s->mmio.analog, obj, &imx8mp_analog_ops, s,
++                          TYPE_IMX8MP_ANALOG, sizeof(s->analog));
++    memory_region_add_subregion(&s->mmio.container, 0, &s->mmio.analog);
++
++    sysbus_init_mmio(sd, &s->mmio.container);
++}
++
++static const VMStateDescription vmstate_imx8mp_analog = {
++    .name = TYPE_IMX8MP_ANALOG,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32_ARRAY(analog, IMX8MPAnalogState, ANALOG_MAX),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static void imx8mp_analog_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    device_class_set_legacy_reset(dc, imx8mp_analog_reset);
++    dc->vmsd  = &vmstate_imx8mp_analog;
++    dc->desc  = "i.MX 8M Plus Analog Module";
++}
++
++static const TypeInfo imx8mp_ccm_types[] = {
++    {
++        .name          = TYPE_IMX8MP_ANALOG,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(IMX8MPAnalogState),
++        .instance_init = imx8mp_analog_init,
++        .class_init    = imx8mp_analog_class_init,
++    }
++};
++
++DEFINE_TYPES(imx8mp_ccm_types);
+diff --git a/hw/misc/imx8mp_ccm.c b/hw/misc/imx8mp_ccm.c
 new file mode 100644
-index 0000000000..2756d4c21c
+index 0000000000..7c869ff86b
 --- /dev/null
-+++ b/hw/arm/imx8mp-evk.c
-@@ -0,0 +1,55 @@
++++ b/hw/misc/imx8mp_ccm.c
+@@ -0,0 +1,175 @@
 +/*
-+ * NXP i.MX 8M Plus Evaluation Kit System Emulation
++ * Copyright (c) 2025 Bernhard Beschow <shentey@gmail.com>
 + *
-+ * Copyright (c) 2024, Bernhard Beschow <shentey@gmail.com>
++ * i.MX 8M Plus CCM IP block emulation code
++ *
++ * Based on hw/misc/imx7_ccm.c
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
 +#include "qemu/osdep.h"
-+#include "exec/address-spaces.h"
-+#include "hw/arm/boot.h"
-+#include "hw/arm/fsl-imx8mp.h"
-+#include "hw/boards.h"
-+#include "system/qtest.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
++#include "qemu/log.h"
 +
-+static void imx8mp_evk_init(MachineState *machine)
++#include "hw/misc/imx8mp_ccm.h"
++#include "migration/vmstate.h"
++
++#include "trace.h"
++
++#define CKIH_FREQ 16000000 /* 16MHz crystal input */
++
++static void imx8mp_ccm_reset(DeviceState *dev)
 +{
-+    static struct arm_boot_info boot_info;
-+    FslImx8mpState *s;
++    IMX8MPCCMState *s = IMX8MP_CCM(dev);
 +
-+    if (machine->ram_size > FSL_IMX8MP_RAM_SIZE_MAX) {
-+        error_report("RAM size " RAM_ADDR_FMT " above max supported (%08" PRIx64 ")",
-+                     machine->ram_size, FSL_IMX8MP_RAM_SIZE_MAX);
-+        exit(1);
-+    }
++    memset(s->ccm, 0, sizeof(s->ccm));
++}
 +
-+    boot_info = (struct arm_boot_info) {
-+        .loader_start = FSL_IMX8MP_RAM_START,
-+        .board_id = -1,
-+        .ram_size = machine->ram_size,
-+        .psci_conduit = QEMU_PSCI_CONDUIT_SMC,
++#define CCM_INDEX(offset)   (((offset) & ~(hwaddr)0xF) / sizeof(uint32_t))
++#define CCM_BITOP(offset)   ((offset) & (hwaddr)0xF)
++
++enum {
++    CCM_BITOP_NONE = 0x00,
++    CCM_BITOP_SET  = 0x04,
++    CCM_BITOP_CLR  = 0x08,
++    CCM_BITOP_TOG  = 0x0C,
++};
++
++static uint64_t imx8mp_set_clr_tog_read(void *opaque, hwaddr offset,
++                                        unsigned size)
++{
++    const uint32_t *mmio = opaque;
++
++    return mmio[CCM_INDEX(offset)];
++}
++
++static void imx8mp_set_clr_tog_write(void *opaque, hwaddr offset,
++                                     uint64_t value, unsigned size)
++{
++    const uint8_t  bitop = CCM_BITOP(offset);
++    const uint32_t index = CCM_INDEX(offset);
++    uint32_t *mmio = opaque;
++
++    switch (bitop) {
++    case CCM_BITOP_NONE:
++        mmio[index]  = value;
++        break;
++    case CCM_BITOP_SET:
++        mmio[index] |= value;
++        break;
++    case CCM_BITOP_CLR:
++        mmio[index] &= ~value;
++        break;
++    case CCM_BITOP_TOG:
++        mmio[index] ^= value;
++        break;
 +    };
-+
-+    s = FSL_IMX8MP(object_new(TYPE_FSL_IMX8MP));
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(s));
-+    qdev_realize(DEVICE(s), NULL, &error_fatal);
-+
-+    memory_region_add_subregion(get_system_memory(), FSL_IMX8MP_RAM_START,
-+                                machine->ram);
-+
-+    if (!qtest_enabled()) {
-+        arm_load_kernel(&s->cpu[0], machine, &boot_info);
-+    }
 +}
 +
-+static void imx8mp_evk_machine_init(MachineClass *mc)
++static const struct MemoryRegionOps imx8mp_set_clr_tog_ops = {
++    .read = imx8mp_set_clr_tog_read,
++    .write = imx8mp_set_clr_tog_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        /*
++         * Our device would not work correctly if the guest was doing
++         * unaligned access. This might not be a limitation on the real
++         * device but in practice there is no reason for a guest to access
++         * this device unaligned.
++         */
++        .min_access_size = 4,
++        .max_access_size = 4,
++        .unaligned = false,
++    },
++};
++
++static void imx8mp_ccm_init(Object *obj)
 +{
-+    mc->desc = "NXP i.MX 8M Plus EVK Board";
-+    mc->init = imx8mp_evk_init;
-+    mc->max_cpus = FSL_IMX8MP_NUM_CPUS;
-+    mc->default_ram_id = "imx8mp-evk.ram";
++    SysBusDevice *sd = SYS_BUS_DEVICE(obj);
++    IMX8MPCCMState *s = IMX8MP_CCM(obj);
++
++    memory_region_init_io(&s->iomem,
++                          obj,
++                          &imx8mp_set_clr_tog_ops,
++                          s->ccm,
++                          TYPE_IMX8MP_CCM ".ccm",
++                          sizeof(s->ccm));
++
++    sysbus_init_mmio(sd, &s->iomem);
 +}
-+DEFINE_MACHINE("imx8mp-evk", imx8mp_evk_machine_init)
++
++static const VMStateDescription vmstate_imx8mp_ccm = {
++    .name = TYPE_IMX8MP_CCM,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32_ARRAY(ccm, IMX8MPCCMState, CCM_MAX),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static uint32_t imx8mp_ccm_get_clock_frequency(IMXCCMState *dev, IMXClk clock)
++{
++    /*
++     * This function is "consumed" by GPT emulation code. Some clocks
++     * have fixed frequencies and we can provide requested frequency
++     * easily. However for CCM provided clocks (like IPG) each GPT
++     * timer can have its own clock root.
++     * This means we need additional information when calling this
++     * function to know the requester's identity.
++     */
++    uint32_t freq = 0;
++
++    switch (clock) {
++    case CLK_NONE:
++        break;
++    case CLK_32k:
++        freq = CKIL_FREQ;
++        break;
++    case CLK_HIGH:
++        freq = CKIH_FREQ;
++        break;
++    case CLK_IPG:
++    case CLK_IPG_HIGH:
++        /*
++         * For now we don't have a way to figure out the device this
++         * function is called for. Until then the IPG derived clocks
++         * are left unimplemented.
++         */
++        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Clock %d Not implemented\n",
++                      TYPE_IMX8MP_CCM, __func__, clock);
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: unsupported clock %d\n",
++                      TYPE_IMX8MP_CCM, __func__, clock);
++        break;
++    }
++
++    trace_ccm_clock_freq(clock, freq);
++
++    return freq;
++}
++
++static void imx8mp_ccm_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    IMXCCMClass *ccm = IMX_CCM_CLASS(klass);
++
++    device_class_set_legacy_reset(dc, imx8mp_ccm_reset);
++    dc->vmsd  = &vmstate_imx8mp_ccm;
++    dc->desc  = "i.MX 8M Plus Clock Control Module";
++
++    ccm->get_clock_frequency = imx8mp_ccm_get_clock_frequency;
++}
++
++static const TypeInfo imx8mp_ccm_types[] = {
++    {
++        .name          = TYPE_IMX8MP_CCM,
++        .parent        = TYPE_IMX_CCM,
++        .instance_size = sizeof(IMX8MPCCMState),
++        .instance_init = imx8mp_ccm_init,
++        .class_init    = imx8mp_ccm_class_init,
++    },
++};
++
++DEFINE_TYPES(imx8mp_ccm_types);
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 256013ca80..e22916df57 100644
+index e22916df57..0079c51734 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -577,6 +577,18 @@ config FSL_IMX7
-     select OR_IRQ
+@@ -580,6 +580,8 @@ config FSL_IMX7
+ config FSL_IMX8MP
+     bool
+     select ARM_GIC
++    select FSL_IMX8MP_ANALOG
++    select FSL_IMX8MP_CCM
+     select IMX
      select UNIMP
  
-+config FSL_IMX8MP
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 4271e2f4ac..82bd68b4bb 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -78,6 +78,12 @@ config IMX
+     select SSI
+     select USB_EHCI_SYSBUS
+ 
++config FSL_IMX8MP_ANALOG
 +    bool
-+    select ARM_GIC
-+    select IMX
-+    select UNIMP
 +
-+config FSL_IMX8MP_EVK
++config FSL_IMX8MP_CCM
 +    bool
-+    default y
-+    depends on TCG && AARCH64
-+    select FSL_IMX8MP
 +
- config ARM_SMMUV3
+ config STM32_RCC
      bool
  
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 490234b3b8..79750ae7b1 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -53,6 +53,8 @@ arm_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-soc.c'))
- arm_ss.add(when: 'CONFIG_MUSCA', if_true: files('musca.c'))
- arm_ss.add(when: 'CONFIG_ARMSSE', if_true: files('armsse.c'))
- arm_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.c'))
-+arm_ss.add(when: 'CONFIG_FSL_IMX8MP', if_true: files('fsl-imx8mp.c'))
-+arm_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
- arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
- arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
- arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 55f493521b..f9285cf2f1 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -55,6 +55,8 @@ system_ss.add(when: 'CONFIG_AXP2XX_PMU', if_true: files('axp2xx.c'))
+ system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('arm_sysctl.c'))
+ system_ss.add(when: 'CONFIG_ECCMEMCTL', if_true: files('eccmemctl.c'))
+ system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_pmu.c', 'exynos4210_clk.c', 'exynos4210_rng.c'))
++system_ss.add(when: 'CONFIG_FSL_IMX8MP_ANALOG', if_true: files('imx8mp_analog.c'))
++system_ss.add(when: 'CONFIG_FSL_IMX8MP_CCM', if_true: files('imx8mp_ccm.c'))
+ system_ss.add(when: 'CONFIG_IMX', if_true: files(
+   'imx25_ccm.c',
+   'imx31_ccm.c',
 -- 
 2.48.1
 
