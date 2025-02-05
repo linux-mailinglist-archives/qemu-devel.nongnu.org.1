@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54076A29D78
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42D5A29D6C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfodE-0003KY-Q8; Wed, 05 Feb 2025 18:16:33 -0500
+	id 1tfodL-0003oS-0k; Wed, 05 Feb 2025 18:16:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod7-00030r-9t
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:26 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod8-00031d-Vq
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocp-0006Y2-Sj
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:10 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod2-0006YT-3D
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797367;
+ s=mimecast20190719; t=1738797372;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kZ4ptJK3jOz6/9nCnwYuhTipEGLIpTu/jDPEuN8oFBM=;
- b=NLjCBsrkmTESOt9IDVObqAJY9tQ2xA+DzDN6tNhcF6CnYyPGmsOYvmMHl9JCanoJcvJVCW
- oPZ1om1Vv1frCdzgk1PmJzIcOpmfic6VsBx7xNb1l2HI7ObhHi22Z7T7T0Hl+cX/R/IeUA
- A9lbB6l/ocMydPpb4d9ivm6Ws7YwF4o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OG1OMNHyw6wL72+on5pGRFR4/JQLepCqy5ztn8vdu08=;
+ b=gDUqFW9nCznvtH3pAGpPxUJQogWItclU9XMMe/k/Hd74Y72xZZIWCIjaNxSGVWFYweNUSY
+ a2O7dzxvgPhqsGfRIaw0FpA7wXBxQCNGmc+3vnbzP3VsTlJwPMZtwa9UsQLTN8kRMGyqK5
+ aFWmaUhLh5iarvz8UVgJtIKhX65P8B0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-8QRaCY-GOLK8tkrfdah5Lw-1; Wed,
- 05 Feb 2025 18:16:05 -0500
-X-MC-Unique: 8QRaCY-GOLK8tkrfdah5Lw-1
-X-Mimecast-MFC-AGG-ID: 8QRaCY-GOLK8tkrfdah5Lw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-O5dzuOe0MomKpZp09rTSxA-1; Wed,
+ 05 Feb 2025 18:16:11 -0500
+X-MC-Unique: O5dzuOe0MomKpZp09rTSxA-1
+X-Mimecast-MFC-AGG-ID: O5dzuOe0MomKpZp09rTSxA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1531819560B6; Wed,  5 Feb 2025 23:16:04 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 00803195608C; Wed,  5 Feb 2025 23:16:10 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 91FB21800570; Wed,  5 Feb 2025 23:15:58 +0000 (UTC)
+ id 640A81800570; Wed,  5 Feb 2025 23:16:04 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 37/42] qapi/schema: add __iter__ method to QAPISchemaVariants
-Date: Wed,  5 Feb 2025 18:12:03 -0500
-Message-ID: <20250205231208.1480762-38-jsnow@redhat.com>
+Subject: [PATCH 38/42] docs/qapi: add branch support to inliner
+Date: Wed,  5 Feb 2025 18:12:04 -0500
+Message-ID: <20250205231208.1480762-39-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,157 +90,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just semantic sugar that makes it easier to do something like:
-
-for var in variants:
-    ...
-
-Instead of the more cumbersome and repetitive:
-
-for var in variants.variants:
-    ...
-
-Especially in conjunction with entities that aren't guaranteed to have
-variants. Compare:
-
-for var in variants.variants if variants else []:
-    ...
-
-against:
-
-for var in variants or []:
-    ...
-
-Update callsites to reflect the new usage pattern.
+Well, kind of. Anything beyond simple member definitions aren't
+included; including ifcond, details sections, features, etc. Definitely
+the most "WIP" part of this entire patch series.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py     | 2 +-
- scripts/qapi/introspect.py | 4 ++--
- scripts/qapi/schema.py     | 8 ++++++--
- scripts/qapi/types.py      | 4 ++--
- scripts/qapi/visit.py      | 4 ++--
- 5 files changed, 13 insertions(+), 9 deletions(-)
+ docs/sphinx/qapidoc.py | 57 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 81133b9b441..755eb0fa0ec 100644
+index 755eb0fa0ec..86c13520d94 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -695,7 +695,7 @@ def _nodes_for_members(self, doc, what, base=None, branches=None):
-                                         None)
+@@ -44,6 +44,7 @@
+ from qapi.schema import (
+     QAPISchema,
+     QAPISchemaArrayType,
++    QAPISchemaBranches,
+     QAPISchemaCommand,
+     QAPISchemaEntity,
+     QAPISchemaEnumMember,
+@@ -68,6 +69,20 @@
+ logger = logging.getLogger(__name__)
  
-         if branches:
--            for v in branches.variants:
-+            for v in branches:
-                 if v.type.name == 'q_empty':
-                     continue
-                 assert not v.type.is_implicit()
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index ac14b20f308..6ec34e055d3 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -342,7 +342,7 @@ def visit_object_type_flat(self, name: str, info: Optional[QAPISourceInfo],
-         }
-         if branches:
-             obj['tag'] = branches.tag_member.name
--            obj['variants'] = [self._gen_variant(v) for v in branches.variants]
-+            obj['variants'] = [self._gen_variant(v) for v in branches]
-         self._gen_tree(name, 'object', obj, ifcond, features)
  
-     def visit_alternate_type(self, name: str, info: Optional[QAPISourceInfo],
-@@ -353,7 +353,7 @@ def visit_alternate_type(self, name: str, info: Optional[QAPISourceInfo],
-             name, 'alternate',
-             {'members': [Annotated({'type': self._use_type(m.type)},
-                                    m.ifcond)
--                         for m in alternatives.variants]},
-+                         for m in alternatives]},
-             ifcond, features
-         )
- 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index e97c978d38d..4c55f7640b6 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -26,6 +26,7 @@
-     Any,
-     Callable,
-     Dict,
-+    Iterator,
-     List,
-     Optional,
-     Union,
-@@ -669,7 +670,7 @@ def check(self, schema: QAPISchema) -> None:
-         # so we have to check for potential name collisions ourselves.
-         seen: Dict[str, QAPISchemaMember] = {}
-         types_seen: Dict[str, str] = {}
--        for v in self.alternatives.variants:
-+        for v in self.alternatives:
-             v.check_clash(self.info, seen)
-             qtype = v.type.alternate_qtype()
-             if not qtype:
-@@ -700,7 +701,7 @@ def check(self, schema: QAPISchema) -> None:
-     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         super().connect_doc(doc)
-         doc = doc or self.doc
--        for v in self.alternatives.variants:
-+        for v in self.alternatives:
-             v.connect_doc(doc)
- 
-     def c_type(self) -> str:
-@@ -726,6 +727,9 @@ def __init__(
-         self.tag_member: QAPISchemaObjectTypeMember
-         self.variants = variants
- 
-+    def __iter__(self) -> Iterator[QAPISchemaVariant]:
-+        return iter(self.variants)
++# These classes serve as pseudo-sections that this generator uses to
++# flatten and inline arg sections from multiple entities.
++class BranchStart(QAPIDoc.Section):
++    def __init__(self, key: str, value: str, info: QAPISourceInfo):
++        super().__init__(info, QAPIDoc.Kind.META)
++        self.key = key
++        self.value = value
 +
-     def set_defined_in(self, name: str) -> None:
-         for v in self.variants:
-             v.set_defined_in(name)
-diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index 0dd0b00ada3..ad36b55488f 100644
---- a/scripts/qapi/types.py
-+++ b/scripts/qapi/types.py
-@@ -166,7 +166,7 @@ def gen_object(name: str, ifcond: QAPISchemaIfCond,
-     objects_seen.add(name)
++
++class BranchEnd(QAPIDoc.Section):
++    def __init__(self, info: QAPISourceInfo):
++        super().__init__(info, QAPIDoc.Kind.META)
++
++
+ def dedent(text: str) -> str:
+     # Adjust indentation to make description text parse as paragraph.
  
-     ret = ''
--    for var in variants.variants if variants else ():
-+    for var in variants or ():
-         obj = var.type
-         if not isinstance(obj, QAPISchemaObjectType):
-             continue
-@@ -234,7 +234,7 @@ def gen_variants(variants: QAPISchemaVariants) -> str:
- ''',
-                 c_name=c_name(variants.tag_member.name))
+@@ -105,6 +120,7 @@ def categorize(section: QAPIDoc.Section) -> "Optional[DocRegion]":
+     QAPIDoc.Kind.SINCE: None,
+     QAPIDoc.Kind.TODO: None,
+     QAPIDoc.Kind.DETAIL: DocRegion.DETAIL,
++    QAPIDoc.Kind.META: DocRegion.MEMBER,
+ }
  
--    for var in variants.variants:
-+    for var in variants:
-         if var.type.name == 'q_empty':
-             continue
-         ret += var.ifcond.gen_if()
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 12f92e429f6..1eca452378c 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -141,7 +141,7 @@ def gen_visit_object_members(name: str,
- ''',
-                      c_name=c_name(tag_member.name))
  
--        for var in branches.variants:
-+        for var in branches:
-             case_str = c_enum_const(tag_member.type.name, var.name,
-                                     tag_member.type.prefix)
-             ret += var.ifcond.gen_if()
-@@ -246,7 +246,7 @@ def gen_visit_alternate(name: str,
- ''',
-                 c_name=c_name(name))
+@@ -226,6 +242,15 @@ def _get_inline_target(
+             return ent.base
+         return None
  
--    for var in alternatives.variants:
-+    for var in alternatives:
-         ret += var.ifcond.gen_if()
-         ret += mcgen('''
-     case %(case)s:
++    def _variants(ent) -> Optional[QAPISchemaBranches]:
++        if isinstance(ent, QAPISchemaObjectType):
++            return ent.branches
++        return None
++
++    def _memb_filter(sec: QAPIDoc.Section) -> bool:
++        # meta grabs branch start/end markers, too.
++        return sec.kind in (QAPIDoc.Kind.MEMBER, QAPIDoc.Kind.META)
++
+     # Let's do this thing!
+ 
+     if ent is None:
+@@ -241,7 +266,22 @@ def _get_inline_target(
+     # Now, stitch the results together!
+     sections.absorb(inlined)
+ 
+-    # FIXME: Branches should be handled about here O:-)
++    # Now, pick up member sections from branches, if any.
++    # FIXME: Anything other than members are unhandled/ignored here...!
++    branch_sections = []
++    if variants := _variants(ent):
++        for variant in variants.variants:
++            branch_sections.append(
++                BranchStart(
++                    variants.tag_member.name, variant.name, variants.info
++                )
++            )
++            var_sections = inline(variant.type)
++            branch_sections.extend(filter(_memb_filter, var_sections))
++            branch_sections.append(BranchEnd(variants.info))
++
++    # Inject branches *after* the member section.
++    sections.partitions[DocRegion.MEMBER].extend(branch_sections)
+ 
+     # Pseudo-feature: document the OOB property.
+     if isinstance(ent, QAPISchemaCommand) and ent.allow_oob:
+@@ -485,6 +525,21 @@ def visit_sections(self, ent: QAPISchemaEntity) -> None:
+ 
+         # Add sections *in the order they are documented*:
+         for section in sections:
++            if isinstance(section, BranchStart):
++                self.ensure_blank_line()
++                self.add_line(
++                    f".. qapi:branch:: {section.key} {section.value}",
++                    section.info,
++                )
++                self.ensure_blank_line()
++                self.indent += 1
++                continue
++
++            if isinstance(section, BranchEnd):
++                self.ensure_blank_line()
++                self.indent -= 1
++                continue
++
+             if section.kind.name in ("INTRO", "DETAIL"):
+                 self.visit_paragraph(section)
+             elif section.kind == QAPIDoc.Kind.MEMBER:
 -- 
 2.48.1
 
