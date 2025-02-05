@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82BDA29D3D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:13:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C4A29D40
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:13:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfoZm-0001IH-PG; Wed, 05 Feb 2025 18:12:58 -0500
+	id 1tfoZm-0001IP-Pc; Wed, 05 Feb 2025 18:12:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZR-0001GQ-D3
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:39 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZY-0001Hn-Vi
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZP-0005bQ-RJ
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:37 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZW-0005bq-Lw
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797154;
+ s=mimecast20190719; t=1738797161;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GyiRxmydcU0/fOZaO5aRgfQNpoUwmviAK70kDpUDoAk=;
- b=OkM6gObNihpCPOtPthf2iLZJ9w+WkhyMyEI6fBjGI2agKdZ9wIj/Srav50Gn45ITff7gdS
- 1F1Cxw5F54VKZH9P/NIWRiCLVxe5mNd+Vrkw5x4no+sVAFF0Vc+YJegfSdLexq7A3/wIF4
- mzKMKzl+Dz9FWN3jEZdUV6+nPA8SCW8=
+ bh=idbJdwJ8CDyE+xVdzPTbisC279pESEqsJVDljvElmiw=;
+ b=LdW/5qON/ZdtRFHnAYcMvjOFKcohf5VsbB75ogcuQybPUuQsYDf4bTP4SOzW7ZWpRek+Ig
+ QcB5vHvmgBOxkz6TUJLGj352PCDYJODzTgDj9FLj4eF+9XCr68yNS9YwyQMDFIpyXVbXJQ
+ ZNxZXs5RHD1MPDpdFy8aOKY02+D1sB4=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-hI6tSBmUMyez9CfJnLNhqw-1; Wed,
- 05 Feb 2025 18:12:30 -0500
-X-MC-Unique: hI6tSBmUMyez9CfJnLNhqw-1
-X-Mimecast-MFC-AGG-ID: hI6tSBmUMyez9CfJnLNhqw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-u6sy38uLMwilO3-bmKIMVw-1; Wed,
+ 05 Feb 2025 18:12:36 -0500
+X-MC-Unique: u6sy38uLMwilO3-bmKIMVw-1
+X-Mimecast-MFC-AGG-ID: u6sy38uLMwilO3-bmKIMVw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C97F11800982; Wed,  5 Feb 2025 23:12:28 +0000 (UTC)
+ id 25C761800878; Wed,  5 Feb 2025 23:12:34 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5AEEA1800570; Wed,  5 Feb 2025 23:12:22 +0000 (UTC)
+ id 45A4B1800267; Wed,  5 Feb 2025 23:12:28 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 02/42] qapi/parser: adjust info location for doc body section
-Date: Wed,  5 Feb 2025 18:11:28 -0500
-Message-ID: <20250205231208.1480762-3-jsnow@redhat.com>
+Subject: [PATCH 03/42] docs/qapidoc: remove example section support
+Date: Wed,  5 Feb 2025 18:11:29 -0500
+Message-ID: <20250205231208.1480762-4-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,41 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of using the info object for the doc block as a whole (which
-always points to the very first line of the block), update the info
-pointer for each call to ensure_untagged_section when the existing
-section is otherwise empty. This way, Sphinx error information will
-match precisely to where the text actually starts.
-
-For example, this patch will move the info pointer for the "Hello!"
-untagged section ...
-
-> ##       <-- from here ...
-> # Hello! <-- ... to here.
-> ##
+Since commit 3c5f6114 (qapi: remove "Example" doc section), Example
+sections no longer exist, so this support in qapidoc is now dead code.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/parser.py | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index adc85b5b394..36cb64a677a 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -687,7 +687,11 @@ def end(self) -> None:
-     def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
-         if self.all_sections and not self.all_sections[-1].tag:
-             # extend current section
--            self.all_sections[-1].text += '\n'
-+            section = self.all_sections[-1]
-+            if not section.text:
-+                # Section is empty so far; update info to start *here*.
-+                section.info = info
-+            section.text += '\n'
-             return
-         # start new section
-         section = self.Section(info)
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 5a4d7388b29..61997fd21af 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -254,10 +254,6 @@ def _nodes_for_features(self, doc):
+         section += dlnode
+         return [section]
+ 
+-    def _nodes_for_example(self, exampletext):
+-        """Return list of doctree nodes for a code example snippet"""
+-        return [nodes.literal_block(exampletext, exampletext)]
+-
+     def _nodes_for_sections(self, doc):
+         """Return list of doctree nodes for additional sections"""
+         nodelist = []
+@@ -275,10 +271,7 @@ def _nodes_for_sections(self, doc):
+                 continue
+ 
+             snode = self._make_section(section.tag)
+-            if section.tag.startswith('Example'):
+-                snode += self._nodes_for_example(dedent(section.text))
+-            else:
+-                self._parse_text_into_node(dedent(section.text), snode)
++            self._parse_text_into_node(dedent(section.text), snode)
+             nodelist.append(snode)
+         return nodelist
+ 
 -- 
 2.48.1
 
