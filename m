@@ -2,91 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8EAA29248
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 15:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2071CA295F7
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:14:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfgrI-0007ci-MC; Wed, 05 Feb 2025 09:58:32 -0500
+	id 1tfi1B-0004d5-MO; Wed, 05 Feb 2025 11:12:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tfgrG-0007c7-JD
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 09:58:30 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <i.chichkov@yadro.com>)
+ id 1tfgsS-0001ib-07
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 09:59:44 -0500
+Received: from mta-03.yadro.com ([89.207.88.253])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tfgrF-0008V1-11
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 09:58:30 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 515DRSq0022495;
- Wed, 5 Feb 2025 14:58:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=yOI69
- 1WvAHOHycEBdzZFaoCxfn5EXkXGfyIrGHVCTig=; b=XMmiAycdkNs3uhel3d8J3
- WrBY9CaOyMaN9s5TTJdAD8mZpI0ObeIgYLk1X3bEw8PmhM6tdT/d8Q1J3Ovsv08n
- eVvau0Kj2ZR4AJMmYYGRwuKcvyTfjJzZmVygCkqtvoJf97U75eRWn/8O46dxh0Pr
- N4yG4rnUDayYTqR62m7Oy5E1RXcPuL9L2zSiz4eXZCv1jJPT0JELlcYlAozMXo8C
- LkdixKUe50TKfEsRgYwWOUYMGIcLmJm+QAnDm1jNiwPOXRYInTBos7FQsaVEWw4J
- +NZaF6eLS5UcrKSGjO0AcRMEyYI/u21FuQ09+fOaWjSEy5D2Dv18DHy7K+GcNdmU
- w==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44m50u8n09-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 05 Feb 2025 14:58:26 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 515EhhRp022529; Wed, 5 Feb 2025 14:58:25 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 44j8e96bk3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 05 Feb 2025 14:58:25 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 515EwGhF022923;
- Wed, 5 Feb 2025 14:58:25 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-182-246.vpn.oracle.com
- [10.65.182.246])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 44j8e96bbx-5; Wed, 05 Feb 2025 14:58:25 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: eperezma@redhat.com, mst@redhat.com, leiyang@redhat.com, peterx@redhat.com,
- dtatulea@nvidia.com, jasowang@redhat.com, si-wei.liu@oracle.com,
- boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [PATCH 4/4] vhost-iova-tree: Update documentation
-Date: Wed,  5 Feb 2025 09:58:10 -0500
-Message-ID: <20250205145813.394915-5-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250205145813.394915-1-jonah.palmer@oracle.com>
-References: <20250205145813.394915-1-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <i.chichkov@yadro.com>)
+ id 1tfgsN-00006r-Uu
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 09:59:43 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com D29A1E0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1738767565; bh=AEiL84VmaeUTvs8PpT0NlIW40l3PgJmXCwYD0whMxCM=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=gbw5a45juNARPBEpoIC+o9kKa08hmBoo45u3JhW5yuCvlQk0P3ZLhNvxHKnMNixYL
+ JMYqJPSYVyBqNf3c4MhkuPqZ/pawesA3qSz6cOe6lxqKC78xIhrdwK8vxoH828C1TI
+ EzrDlZrieGJ2O3GRV9gzvCqczEJLXGLvWEwDqs34GxCpDjTjKFNGZUNKfOhGSST64+
+ 5iIfiNqEIUhmEVpsZN9mcUc/vyWVoR9N2JZRiIPnyngVDQR731JeLJywZX0RUIsrO1
+ Pk9iIDzS4gLd7SJEoRriHxOkKNxn7SqhjNqbIojDMCqIPcaqCzKahPnOjDeal+YS8i
+ pvA4S9/2m3GEA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1738767565; bh=AEiL84VmaeUTvs8PpT0NlIW40l3PgJmXCwYD0whMxCM=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=ehzZW6F2nnk0Ja/wC2tyPlFmOyY+8v6TTAfXPevx6iUPpQo6h8mkEP7SHHW4l+1es
+ E+1IQD4zb8GXiTwnDX50a6XSCKb2IoGtt6NH24JwqGW2xULJNb0Ke9xup2MCj1sblf
+ wUatH6JptrxaeGWfkjutHwKef3QoQogXkdSNoJY3LJQcamQTkEkqDsF8E7V+bXBSbh
+ ZTHZUhRcXpcrGhNJi4NLRBP9gBRyyNvSgYndj6Mq9jM1r7mBmJJ2KkiYiL5LhYQsE+
+ vHPuPBJ4sSYnVa4wXmQb0Yiu/SzeaYx+fk0PMWmrYstluVupLWILOL/KSdWlXoGf5o
+ deEKKEV6CO7kA==
+From: Ilya Chichkov <i.chichkov@yadro.com>
+To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, Ilya Chichkov <i.chichkov@yadro.com>
+Subject: [PATCH] hw/sensors: Add temperature SI705x sensor
+Date: Wed, 5 Feb 2025 17:57:04 +0300
+Message-ID: <20250205145704.67791-1-i.chichkov@yadro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-05_06,2025-02-05_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- phishscore=0 adultscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2501170000 definitions=main-2502050117
-X-Proofpoint-GUID: PfTLlndr5AiqOynJ5Ig-aOeHstfxTFqv
-X-Proofpoint-ORIG-GUID: PfTLlndr5AiqOynJ5Ig-aOeHstfxTFqv
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-07.corp.yadro.com (172.17.11.57) To
+ T-EXCH-12.corp.yadro.com (172.17.11.143)
+Received-SPF: pass client-ip=89.207.88.253; envelope-from=i.chichkov@yadro.com;
+ helo=mta-03.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 05 Feb 2025 11:12:45 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,85 +74,446 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- hw/virtio/vhost-iova-tree.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+Add SI705x temperature sensor with I2C interface and allow setting
+temperature, VDD status and measurement resolution through properties.
+This commit adds support for interfacing with it and implements
+functionality for sensor's commands.
 
-diff --git a/hw/virtio/vhost-iova-tree.c b/hw/virtio/vhost-iova-tree.c
-index 9d2d6a7af2..fa4147b773 100644
---- a/hw/virtio/vhost-iova-tree.c
-+++ b/hw/virtio/vhost-iova-tree.c
-@@ -37,9 +37,9 @@ struct VhostIOVATree {
- };
- 
- /**
-- * Create a new IOVA tree
-+ * Create a new VhostIOVATree
-  *
-- * Returns the new IOVA tree
-+ * Returns the new VhostIOVATree.
-  */
- VhostIOVATree *vhost_iova_tree_new(hwaddr iova_first, hwaddr iova_last)
- {
-@@ -56,7 +56,7 @@ VhostIOVATree *vhost_iova_tree_new(hwaddr iova_first, hwaddr iova_last)
- }
- 
- /**
-- * Delete an iova tree
-+ * Delete a VhostIOVATree
-  */
- void vhost_iova_tree_delete(VhostIOVATree *iova_tree)
- {
-@@ -69,10 +69,10 @@ void vhost_iova_tree_delete(VhostIOVATree *iova_tree)
- /**
-  * Find the IOVA address stored from a memory address
-  *
-- * @tree: The iova tree
-+ * @tree: The VhostIOVATree
-  * @map: The map with the memory address
-  *
-- * Return the stored mapping, or NULL if not found.
-+ * Returns the stored IOVA->HVA mapping, or NULL if not found.
-  */
- const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *tree,
-                                         const DMAMap *map)
-@@ -81,10 +81,10 @@ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *tree,
- }
- 
- /**
-- * Allocate a new mapping
-+ * Allocate a new IOVA range and add the mapping to the IOVA->HVA tree
-  *
-- * @tree: The iova tree
-- * @map: The iova map
-+ * @tree: The VhostIOVATree
-+ * @map: The IOVA mapping
-  * @taddr: The translated address (HVA)
-  *
-  * Returns:
-@@ -92,7 +92,7 @@ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *tree,
-  * - IOVA_ERR_INVALID if the map does not make sense (like size overflow)
-  * - IOVA_ERR_NOMEM if tree cannot allocate more space.
-  *
-- * It returns assignated iova in map->iova if return value is VHOST_DMA_MAP_OK.
-+ * It returns an assigned IOVA in map->iova if the return value is IOVA_OK.
-  */
- int vhost_iova_tree_map_alloc(VhostIOVATree *tree, DMAMap *map, hwaddr taddr)
- {
-@@ -117,9 +117,9 @@ int vhost_iova_tree_map_alloc(VhostIOVATree *tree, DMAMap *map, hwaddr taddr)
- }
- 
- /**
-- * Remove existing mappings from iova tree
-+ * Remove existing mappings from the IOVA-only and IOVA->HVA trees
-  *
-- * @iova_tree: The vhost iova tree
-+ * @iova_tree: The VhostIOVATree
-  * @map: The map to remove
-  */
- void vhost_iova_tree_remove(VhostIOVATree *iova_tree, DMAMap map)
+Datasheet: https://www.integrated-circuit.com/pdf/502/391/4.pdf
+---
+ hw/sensor/Kconfig      |   5 +
+ hw/sensor/meson.build  |   1 +
+ hw/sensor/tmp_si705x.c | 359 +++++++++++++++++++++++++++++++++++++++++
+ hw/sensor/trace-events |   9 ++
+ hw/sensor/trace.h      |   1 +
+ meson.build            |   1 +
+ 6 files changed, 376 insertions(+)
+ create mode 100644 hw/sensor/tmp_si705x.c
+ create mode 100644 hw/sensor/trace-events
+ create mode 100644 hw/sensor/trace.h
+
+diff --git a/hw/sensor/Kconfig b/hw/sensor/Kconfig
+index bc6331b4ab..554ccbc5f6 100644
+--- a/hw/sensor/Kconfig
++++ b/hw/sensor/Kconfig
+@@ -43,3 +43,8 @@ config ISL_PMBUS_VR
+ config MAX31785
+     bool
+     depends on PMBUS
++
++config SI705X
++    bool
++    depends on I2C
++    default y if I2C_DEVICES
+diff --git a/hw/sensor/meson.build b/hw/sensor/meson.build
+index 420fdc3359..fba9ccd255 100644
+--- a/hw/sensor/meson.build
++++ b/hw/sensor/meson.build
+@@ -8,3 +8,4 @@ system_ss.add(when: 'CONFIG_MAX34451', if_true: files('max34451.c'))
+ system_ss.add(when: 'CONFIG_LSM303DLHC_MAG', if_true: files('lsm303dlhc_mag.c'))
+ system_ss.add(when: 'CONFIG_ISL_PMBUS_VR', if_true: files('isl_pmbus_vr.c'))
+ system_ss.add(when: 'CONFIG_MAX31785', if_true: files('max31785.c'))
++system_ss.add(when: 'CONFIG_SI705X', if_true: files('tmp_si705x.c'))
+diff --git a/hw/sensor/tmp_si705x.c b/hw/sensor/tmp_si705x.c
+new file mode 100644
+index 0000000000..3b729974f0
+--- /dev/null
++++ b/hw/sensor/tmp_si705x.c
+@@ -0,0 +1,359 @@
++/*
++ * SI705X-A20-IM, Board Mount Temperature Sensors.
++ *
++ * https://www.integrated-circuit.com/pdf/502/391/4.pdf
++ *
++ * Copyright (c) 2024 Ilya Chichkov <i.chichkov@yadro.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "hw/i2c/i2c.h"
++#include "qapi/error.h"
++#include "hw/register.h"
++#include "qapi/visitor.h"
++#include "migration/vmstate.h"
++#include "trace.h"
++
++#define TYPE_SI705X "si705x"
++#define SI705X(obj) OBJECT_CHECK(Si705xState, (obj), TYPE_SI705X)
++
++#define  SI705X_CMD_MEASURE_HOLD_MASTER    0xe3
++#define  SI705X_CMD_MEASURE                0xf3
++#define  SI705X_CMD_RESET                  0xfe
++#define  SI705X_CMD_WRITE_USER_REG         0xe6
++#define  SI705X_CMD_READ_USER_REG          0xe7
++#define  SI705X_CMD_READ_ID_BYTE1_1        0xFA
++#define  SI705X_CMD_READ_ID_BYTE1_2        0x0F
++#define  SI705X_CMD_READ_ID_BYTE2_1        0xFC
++#define  SI705X_CMD_READ_ID_BYTE2_2        0xC9
++#define  SI705X_CMD_READ_FIRMWARE_REV_1    0x84
++#define  SI705X_CMD_READ_FIRMWARE_REV_2    0xB8
++
++#define SI705X_WRITE_MASK   0x81
++
++#define CRC_POLY            0x31
++#define BYTE7               0x80
++#define CRC_SEED            0
++
++#define  SI705X_UR1         0x00
++REG32(SI705X_UR1, 0x00)
++    FIELD(SI705X_UR1, RES0,  0,  1)
++    FIELD(SI705X_UR1, RSVD,  1,  5)
++    FIELD(SI705X_UR1, VDD,   6,  1)
++    FIELD(SI705X_UR1, RES1,  7,  1)
++
++typedef struct Si705xState {
++    /*< private >*/
++    I2CSlave i2c;
++
++    /*< public >*/
++    uint8_t user_reg;
++    uint8_t read_index;
++    uint8_t write_index;
++    uint8_t prev_command;
++    uint8_t command;
++    uint8_t io_buf[5];
++
++    uint8_t temperature[2];
++    uint8_t measurement_resolution;
++    uint8_t vdd_status;
++
++    uint64_t serial_num;
++    uint8_t fw_rev;
++} Si705xState;
++
++static uint8_t temp_sensor_crc(uint8_t *p_data, uint32_t len)
++{
++    uint8_t crc = CRC_SEED;
++
++    for (uint32_t i = 0U; i < len; i++) {
++        crc ^= p_data[i];
++
++        for (uint8_t j = 0U; j < 8; j++) {
++            if ((crc & BYTE7) != 0U) {
++                crc = (crc << 1U) ^ CRC_POLY;
++            } else {
++                crc <<= 1U;
++            }
++        }
++    }
++
++    return crc;
++}
++
++static void si705x_get_temperature(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++
++    int16_t hv = s->temperature[0] << 8;
++    int64_t value = hv | s->temperature[1];
++
++    visit_type_int(v, name, &value, errp);
++}
++
++static void si705x_set_temperature(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++    int64_t temp;
++
++    if (!visit_type_int(v, name, &temp, errp)) {
++        return;
++    }
++
++    /* Apply measurement resolution to set value */
++    temp &= ~((1 << (1 + s->measurement_resolution)) - 1);
++
++    s->temperature[0] = 0xff & (temp >> 8);
++    s->temperature[1] = 0xff & temp;
++}
++
++static void si705x_get_measure_res(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++    int64_t value = s->measurement_resolution;
++    visit_type_int(v, name, &value, errp);
++}
++
++static void si705x_set_measure_res(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++    int64_t temp;
++
++    if (!visit_type_int(v, name, &temp, errp)) {
++        return;
++    }
++
++    s->measurement_resolution = temp & 0x3;
++    s->user_reg |= ((s->measurement_resolution >> 1) << 7);
++    s->user_reg |= (s->measurement_resolution & 0x1);
++}
++
++static void si705x_get_vdds(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++    int64_t value = s->vdd_status;
++    visit_type_int(v, name, &value, errp);
++}
++
++static void si705x_set_vdds(Object *obj, Visitor *v, const char *name,
++                                   void *opaque, Error **errp)
++{
++    Si705xState *s = SI705X(obj);
++    int64_t temp;
++
++    if (!visit_type_int(v, name, &temp, errp)) {
++        return;
++    }
++
++    s->vdd_status = temp & 0x1;
++    s->user_reg |= s->vdd_status << 6;
++}
++
++static void si705x_reset(I2CSlave *i2c)
++{
++    trace_si705x_reset();
++    Si705xState *s = SI705X(i2c);
++
++    s->user_reg = 0x3A;
++    s->read_index = 0;
++    s->write_index = 0;
++    s->command = 0;
++    s->measurement_resolution = 0;
++    s->vdd_status = 0;
++    s->serial_num = 0x37000000;
++    s->fw_rev = 0x20;
++
++    memset(s->io_buf, 0, sizeof(s->io_buf));
++    memset(s->temperature, 0, sizeof(s->temperature));
++}
++
++static void si705x_read(Si705xState *s)
++{
++    switch (s->command) {
++    case SI705X_CMD_MEASURE_HOLD_MASTER:
++    case SI705X_CMD_MEASURE:
++        s->io_buf[0] = s->temperature[0];
++        s->io_buf[1] = s->temperature[1];
++        s->io_buf[2] = temp_sensor_crc(s->io_buf, 2);
++        break;
++    case SI705X_CMD_READ_USER_REG:
++        s->io_buf[0] = s->user_reg;
++        break;
++    case SI705X_CMD_READ_ID_BYTE1_2:
++        if (s->prev_command == SI705X_CMD_READ_ID_BYTE1_1) {
++            s->io_buf[0] = (s->serial_num >> 56) & 0xff;
++            s->io_buf[1] = (s->serial_num >> 48) & 0xff;
++            s->io_buf[2] = (s->serial_num >> 40) & 0xff;
++            s->io_buf[3] = (s->serial_num >> 32) & 0xff;
++        }
++        break;
++    case SI705X_CMD_READ_ID_BYTE2_2:
++        if (s->prev_command == SI705X_CMD_READ_ID_BYTE1_1) {
++            s->io_buf[0] = (s->serial_num >> 24) & 0xff;
++            s->io_buf[1] = (s->serial_num >> 16) & 0xff;
++            s->io_buf[2] = (s->serial_num >> 8) & 0xff;
++            s->io_buf[3] = (s->serial_num >> 0) & 0xff;
++        }
++        break;
++    case SI705X_CMD_READ_FIRMWARE_REV_2:
++        if (s->prev_command == SI705X_CMD_READ_FIRMWARE_REV_1) {
++            s->io_buf[0] = s->fw_rev;
++        }
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                    "%s: write to unimplemented register\n", __func__);
++        break;
++    }
++    trace_si705x_read(s->command);
++}
++
++static void si705x_write(Si705xState *s)
++{
++    switch (s->command) {
++    case SI705X_CMD_RESET:
++        si705x_reset(&s->i2c);
++        break;
++    case SI705X_CMD_WRITE_USER_REG:
++        s->user_reg = s->io_buf[0] & SI705X_WRITE_MASK;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                    "%s:  write to unimplemented register\n", __func__);
++        break;
++    }
++}
++
++static uint8_t si705x_rx(I2CSlave *i2c)
++{
++    Si705xState *s = SI705X(i2c);
++
++    if (s->read_index < sizeof(s->io_buf)) {
++        trace_si705x_rx(s->io_buf[s->read_index]);
++        return s->io_buf[s->read_index++];
++    }
++    trace_si705x_rx(0xff);
++    return 0xff;
++}
++
++static int si705x_tx(I2CSlave *i2c, uint8_t data)
++{
++    Si705xState *s = SI705X(i2c);
++    trace_si705x_write(s->write_index, sizeof(s->io_buf), data);
++
++    if (s->write_index == 0) {
++        s->command = data;
++        switch (s->command) {
++        case SI705X_CMD_READ_ID_BYTE1_1:
++        case SI705X_CMD_READ_ID_BYTE2_1:
++        case SI705X_CMD_READ_FIRMWARE_REV_1:
++            s->prev_command = s->command;
++            s->write_index = 0;
++            break;
++        default:
++            s->write_index++;
++            break;
++        }
++    } else {
++        if (s->write_index <= sizeof(s->io_buf)) {
++            s->io_buf[s->write_index - 1] = data;
++        }
++        s->write_index++;
++        si705x_write(s);
++    }
++
++    return 0;
++}
++
++static int si705x_event(I2CSlave *i2c, enum i2c_event event)
++{
++    Si705xState *s = SI705X(i2c);
++    trace_si705x_event(event);
++
++    switch (event) {
++    case I2C_START_RECV:
++        si705x_read(s);
++        break;
++    case I2C_FINISH:
++        s->read_index = 0;
++        s->write_index = 0;
++    default:
++        break;
++    }
++    return 0;
++}
++
++static const VMStateDescription vmstate_si705x = {
++    .name = "SI705X",
++    .version_id = 0,
++    .minimum_version_id = 0,
++};
++
++static void si705x_realize(DeviceState *dev, Error **errp)
++{
++    I2CSlave *i2c = I2C_SLAVE(dev);
++    Si705xState *s = SI705X(i2c);
++
++    si705x_reset(&s->i2c);
++}
++
++static void si705x_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
++
++    k->event = si705x_event;
++    k->recv = si705x_rx;
++    k->send = si705x_tx;
++    dc->realize = si705x_realize;
++    dc->vmsd = &vmstate_si705x;
++
++    trace_si705x_init();
++}
++
++static void si705x_initfn(Object *obj)
++{
++    object_property_add(obj, "temperature", "int",
++                        si705x_get_temperature,
++                        si705x_set_temperature, NULL, NULL);
++    object_property_add(obj, "vdds", "int",
++                        si705x_get_vdds,
++                        si705x_set_vdds, NULL, NULL);
++    object_property_add(obj, "resolution", "int",
++                        si705x_get_measure_res,
++                        si705x_set_measure_res, NULL, NULL);
++}
++
++static const TypeInfo si705x_info = {
++    .name          = TYPE_SI705X,
++    .parent        = TYPE_I2C_SLAVE,
++    .instance_size = sizeof(Si705xState),
++    .instance_init = si705x_initfn,
++    .class_init    = si705x_class_init,
++};
++
++static void si705x_register_types(void)
++{
++    type_register_static(&si705x_info);
++}
++
++type_init(si705x_register_types)
+diff --git a/hw/sensor/trace-events b/hw/sensor/trace-events
+new file mode 100644
+index 0000000000..42e19da98e
+--- /dev/null
++++ b/hw/sensor/trace-events
+@@ -0,0 +1,9 @@
++# See docs/devel/tracing.rst for syntax documentation.
++
++# tmp_si705x.c
++si705x_write(uint8_t index, uint8_t buf_len, uint8_t data) "index: [%d/%d], data: 0x%x"
++si705x_read(uint8_t cmd) "Command: 0x%x"
++si705x_rx(uint8_t data) "Read RX: 0x%x"
++si705x_event(uint8_t event) "Event: 0x%x"
++si705x_init(void)
++si705x_reset(void)
+diff --git a/hw/sensor/trace.h b/hw/sensor/trace.h
+new file mode 100644
+index 0000000000..e4721560b0
+--- /dev/null
++++ b/hw/sensor/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_sensor.h"
+diff --git a/meson.build b/meson.build
+index d0329966f1..385c903253 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3330,6 +3330,7 @@ if have_system
+     'hw/watchdog',
+     'hw/xen',
+     'hw/gpio',
++    'hw/sensor',
+     'migration',
+     'net',
+     'system',
 -- 
-2.43.5
+2.34.1
 
 
