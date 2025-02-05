@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552FBA29D7A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA89A29D72
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfobD-00051Y-BZ; Wed, 05 Feb 2025 18:14:27 -0500
+	id 1tfobG-0005OD-4o; Wed, 05 Feb 2025 18:14:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoap-00047M-VW
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:14:07 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfob5-0004Wh-AX
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:14:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoao-0005kl-G6
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:14:03 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfob3-0005lz-L8
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:14:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797241;
+ s=mimecast20190719; t=1738797257;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HRpc7AwRZVi7Vg7CoI/dFhPnm3CysqVN8sNkubJQE9Y=;
- b=JEfF+d7nQlQmZ5L0ilXrilfaLC2RiB5pj5kx0nLQ4cekdglPbRAGHhcxyvLJlstUniSUlc
- R9j+pb5tH0iL0fnnQZnoMcZ4DXUsFTylYfKudcRXJtaNcxtviTB1LCPBPW4NpPUpTMNJCl
- Vk7DAyCl03WKpFCKBexQXMXrvCUegpM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Y3so7sjMVhMRbBG93ZOIT+wc4861dMaNY5TLcWMYjjQ=;
+ b=JRFXXNF/uC1iofLAdJB/rTQ4k7+USfM5FHf5BymIGjjLiaR0ZZDVMfu5kS6V0B9ts0jhW5
+ Rx13I87snJ4m4LpSHIiay+9a6UKon+NXywsy9/b9Q4Z9dIBUsV93otymAVPwzhPEim190M
+ Rj/GlY6xNVyErfNXXt7MsrB88Af88PM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-kxlXjwkzP9awaE_lNMqcAQ-1; Wed,
- 05 Feb 2025 18:14:00 -0500
-X-MC-Unique: kxlXjwkzP9awaE_lNMqcAQ-1
-X-Mimecast-MFC-AGG-ID: kxlXjwkzP9awaE_lNMqcAQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-Xq75XvX1MYOWMUDvs0LupA-1; Wed,
+ 05 Feb 2025 18:14:13 -0500
+X-MC-Unique: Xq75XvX1MYOWMUDvs0LupA-1
+X-Mimecast-MFC-AGG-ID: Xq75XvX1MYOWMUDvs0LupA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3090E1955F16; Wed,  5 Feb 2025 23:13:58 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED7881956088; Wed,  5 Feb 2025 23:14:10 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9CDA51800570; Wed,  5 Feb 2025 23:13:52 +0000 (UTC)
+ id 2097E1800267; Wed,  5 Feb 2025 23:14:04 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,10 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 17/42] docs/qapidoc: prepare to record entity being
- transmogrified
-Date: Wed,  5 Feb 2025 18:11:43 -0500
-Message-ID: <20250205231208.1480762-18-jsnow@redhat.com>
+Subject: [PATCH 19/42] docs/qapidoc: add visit_member() method
+Date: Wed,  5 Feb 2025 18:11:45 -0500
+Message-ID: <20250205231208.1480762-20-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -91,39 +90,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prepare to keep a record of which entity we're working on documenting
-for the purposes of being able to change certain generative features
-conditionally and create stronger assertions.
-
-If you find yourself asking: "Wait, but where does the current entity
-actually get recorded?!", you're right! That part comes with the
-visit_entity() implementation, which gets added later.
+This method is used for generating the "members" of a wide variety of
+things, including structs, unions, enums, alternates, etc. The field
+name it uses to do so is dependent on the type of entity the "member"
+belongs to.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+ docs/sphinx/qapidoc.py | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index e9af072c5a6..a4dbfa3b3dd 100644
+index cbc62eb5084..5f00615ae32 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -74,9 +74,15 @@ def dedent(text: str) -> str:
+@@ -74,6 +74,16 @@ def dedent(text: str) -> str:
+ 
  
  class Transmogrifier:
++    # Field names used for different entity types:
++    field_types = {
++        "enum": "value",
++        "struct": "memb",
++        "union": "memb",
++        "event": "memb",
++        "command": "arg",
++        "alternate": "choice",
++    }
++
      def __init__(self, schema):
-+        self._curr_ent = None
+         self._curr_ent = None
          self._result = StringList()
-         self.indent = 0
+@@ -84,6 +94,10 @@ def entity(self) -> QAPISchemaEntity:
+         assert self._curr_ent is not None
+         return self._curr_ent
  
 +    @property
-+    def entity(self) -> QAPISchemaEntity:
-+        assert self._curr_ent is not None
-+        return self._curr_ent
++    def member_field_type(self) -> str:
++        return self.field_types[self.entity.meta]
 +
      # General-purpose rST generation functions
  
      def get_indent(self) -> str:
+@@ -194,6 +208,19 @@ def visit_paragraph(self, section: QAPIDoc.Section) -> None:
+         self.add_lines(section.text, section.info)
+         self.ensure_blank_line()
+ 
++    def visit_member(self, section: QAPIDoc.ArgSection) -> None:
++        # TODO: ifcond for members
++        # TODO?: features for members (documented at entity-level,
++        # but sometimes defined per-member. Should we add such
++        # information to member descriptions when we can?)
++        assert section.text
++        self.generate_field(
++            self.member_field_type,
++            section.member,
++            section.text,
++            section.info,
++        )
++
+     def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
+         # FIXME - ifcond for features is not handled at all yet!
+         # Proposal: decorate the right-hand column with some graphical
 -- 
 2.48.1
 
