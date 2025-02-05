@@ -2,69 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C094A28A02
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603EDA28A42
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:29:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfeK9-0005SQ-3T; Wed, 05 Feb 2025 07:16:09 -0500
+	id 1tfeVW-0008EG-K0; Wed, 05 Feb 2025 07:27:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfeK5-0005S6-Vw
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:16:07 -0500
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tfeVU-0008E7-RG
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:27:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfeK3-0006WV-2X
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:16:05 -0500
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tfeVS-0008WR-CP
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:27:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738757761;
+ s=mimecast20190719; t=1738758466;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GsIwVFa6yLOKW+vVsSD4c+ZKT9wIuMs1HeimAfceEl4=;
- b=c/+QKHzjkFY5b5BtuyoU59TmTyBVyzU4OmQDJUSTJToHZiqd8bq32kSfLPpx3X4MZsP6t1
- hr6yYCoKN6P8X2mVmiK+Tv+5W12PsgFhqg6Zv+Tm7wJINeYsZn59GrqZ+pHf7OqnktUgTR
- s4/hCKfCvG2AaftXetu8+yUW+x43OPY=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5zLVO83m8xyuM9UAHycgzPmBBddoQn40h+NaPApA9XA=;
+ b=Ce9IRV1lcJ5tdQdljwE+jIOXHEXB4EHXeh9ItQJjNf7Dn10Ndt+L71xaqvPbI1uVZqzik4
+ 3oFaquIAzgJrc7BlF6AnRPpLSiKxX/Eu7ZWEqkzoX2RCRzlTNsO4s8IBG0A1n50VDINsKV
+ 1CkD7xHJpV0uF5TPRKB8JYPWJnqasVQ=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-Zgkjj6eWPx2MZY8ucWFUpw-1; Wed,
- 05 Feb 2025 07:14:29 -0500
-X-MC-Unique: Zgkjj6eWPx2MZY8ucWFUpw-1
-X-Mimecast-MFC-AGG-ID: Zgkjj6eWPx2MZY8ucWFUpw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-Zvl630XHOdSPTG6lBUadZg-1; Wed,
+ 05 Feb 2025 07:27:44 -0500
+X-MC-Unique: Zvl630XHOdSPTG6lBUadZg-1
+X-Mimecast-MFC-AGG-ID: Zvl630XHOdSPTG6lBUadZg
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 222F01800875; Wed,  5 Feb 2025 12:14:28 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.40])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4E398300018D; Wed,  5 Feb 2025 12:14:27 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EAFFF21E6A28; Wed, 05 Feb 2025 13:14:24 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Melody Wang <huibo.wang@amd.com>
-Cc: <qemu-devel@nongnu.org>,  Tom Lendacky <thomas.lendacky@amd.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  <eduardo@habkost.net>,
- <berrange@redhat.com>,  <pankaj.gupta@amd.com>,  <jroedel@suse.com>,
- <michael.roth@amd.com>
-Subject: Re: [RFC PATCH v2 3/3] i386/sev: Add KVM_EXIT_SNP_REQ_CERTS support
- for certificate-fetching
-In-Reply-To: <20250120213116.521519-4-huibo.wang@amd.com> (Melody Wang's
- message of "Mon, 20 Jan 2025 21:31:16 +0000")
-References: <20250120213116.521519-1-huibo.wang@amd.com>
- <20250120213116.521519-4-huibo.wang@amd.com>
-Date: Wed, 05 Feb 2025 13:14:24 +0100
-Message-ID: <87o6zgzizj.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ id 8D5FB1800873; Wed,  5 Feb 2025 12:27:43 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.17.174])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D20DF19560A3; Wed,  5 Feb 2025 12:27:30 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PATCH v5 0/5] Allow to enable multifd and postcopy migration together
+Date: Wed,  5 Feb 2025 17:57:07 +0530
+Message-ID: <20250205122712.229151-1-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,114 +79,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Melody Wang <huibo.wang@amd.com> writes:
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-> From: Michael Roth <michael.roth@amd.com>
->
-> The GHCB specification[1] defines a VMGEXIT-based Guest Request
-> hypercall to allow an SNP guest to issue encrypted requests directly to
-> SNP firmware to do things like query the attestation report for the
-> guest. These are generally handled purely in the kernel.
->
-> In some some cases, it's useful for the host to be able to additionally
-> supply the certificate chain for the signing key that SNP firmware uses
-> to sign these attestation reports. To allow for this, the GHCB
-> specification defines an Extended Guest Request where this certificate
-> data can be provided in a special format described in the GHCB spec.
-> This certificate data may be global or guest-specific depending on how
-> the guest was configured. Rather than providing interfaces to manage
-> these within the kernel, KVM provides a new KVM_EXIT_SNP_REQ_CERTS exit
-> to request the certificate contents from userspace. Implement support
-> for that in QEMU.
->
-> To synchronize delivery of the certificates to the guest in a way where
-> they will not be rendered invalid by updates to SNP firmware or
-> attestation singing/endorsement keys by management tools outside the
-> purview of QEMU, it is expected by users of KVM_EXIT_SNP_REQ_CERTS to
-> obtain a shared/read lock on the certificate file prior to delivering
-> them back to KVM. Only after this will the attestation report be
-> retrieved from firmware and bundled with the certificate data, so QEMU
-> must continue to hold the file lock until KVM confirms that the
-> attestation report has been retrieved/bundled. This confirmation is done
-> by way of the kvm_immediate_exit callback infrastructure that was
-> introduced in a previous patch.
 
-In review of v1, I inquired about the locking, and Mike explained it
-some more.  I wonder whether we should work some of that into our
-documentation.
+Hello,
 
-> [1] "Guest Hypervisor Communication Block (GHCB) Standardization",
->     https://www.amd.com/en/developer/sev.html
->
->   [Melody: Add a while(1) loop using the libvirt example with fstat and
->   stat for the locking certificate blob code in open_certs_locked() to
->   fix the recreation race problem suggested by Daniel P. Berrang=C3=A9. A=
-nd
->   fix the json format and filename suggested by Markus Armbruster.]
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Melody Wang <huibo.wang@amd.com>
-> ---
->  qapi/qom.json                 |  21 ++-
->  target/i386/kvm/kvm.c         |  10 ++
->  target/i386/sev-system-stub.c |   5 +
->  target/i386/sev.c             | 277 ++++++++++++++++++++++++++++++++++
->  target/i386/sev.h             |   2 +-
->  5 files changed, 313 insertions(+), 2 deletions(-)
->
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 28ce24cd8d..c6f9ad5d45 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -1034,6 +1034,23 @@
->  #     firmware.  Set this to true to disable the use of VCEK.
->  #     (default: false) (since: 9.1)
->  #
-> +# @certs-filename: Certificate data that can be passed to guests via
-> +#     SNP Extended Guest Requests. File should be in the format
-> +#     described in the GHCB specification. (default: none)
+* This series (v5) consolidates migration capabilities setting in one
+  'set_migration_capabilities()' function, thus simplifying test sources.
+  It passes all migration tests.
+===
+66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             143.66s   71 subtests passed
+===
 
-Is this referring to the "Guest Hypervisor Communication Block (GHCB)
-Standardization" mentioned in the commit message?
 
-That's 70 pages...  Where exactly is the file format specified?
+v4: https://lore.kernel.org/qemu-devel/20250127120823.144949-1-ppandit@redhat.com/T/#t
+* This series (v4) adds more 'multifd+postcopy' qtests which test
+  Precopy migration with 'postcopy-ram' attribute set. And run
+  Postcopy migrations with 'multifd' channels enabled.
+===
+$ ../qtest/migration-test --tap -k -r '/x86_64/migration/multifd+postcopy' | grep -i 'slow test'
+# slow test /x86_64/migration/multifd+postcopy/plain executed in 1.29 secs
+# slow test /x86_64/migration/multifd+postcopy/recovery/tls/psk executed in 2.48 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/plain executed in 1.49 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/recovery/tls/psk executed in 2.52 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/tls/psk/match executed in 3.62 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/zstd executed in 1.34 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/cancel executed in 2.24 secs
+...
+66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             148.41s   71 subtests passed
+===
 
-> +#     (since: 10.0)
-> +#
-> +# @certs-timeout: Maximum time in milliseconds to wait to obtain a read =
-lock
-> +#     on the certificate file specified by @certs-filename. This is
-> +#     not a cumulative value and only affects how long QEMU waits
-> +#     before returning execution to the vCPU and informing the guest
-> +#     of the timeout, so the guest can still continue retrying for
-> +#     as long as it likes (which will be about 60 seconds for linux
-> +#     guests at the time of this writing). If the guest-side timeout
-> +#     is insufficient, set this higher to allow more time to fetch the
-> +#     certificate. If the guest-side timeout is sufficient, set this
-> +#     lower to reduce the likelihood of soft lockups in the guest.
-> +#     (default: 100) (since: 10.0)
-> +#
 
-docs/devel/qapi-code-gen.rst:
+v3: https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
+* This series (v3) passes all existing 'tests/qtest/migration/*' tests
+  and adds a new one to enable multifd channels with postcopy migration.
 
-    For legibility, wrap text paragraphs so every line is at most 70
-    characters long.
 
-    Separate sentences with two spaces.
+v2: https://lore.kernel.org/qemu-devel/20241129122256.96778-1-ppandit@redhat.com/T/#u
+* This series (v2) further refactors the 'ram_save_target_page'
+  function to make it independent of the multifd & postcopy change.
 
->  # Since: 9.1
->  ##
->  { 'struct': 'SevSnpGuestProperties',
-> @@ -1045,7 +1062,9 @@
->              '*id-auth': 'str',
->              '*author-key-enabled': 'bool',
->              '*host-data': 'str',
-> -            '*vcek-disabled': 'bool' } }
-> +            '*vcek-disabled': 'bool',
-> +            '*certs-filename': 'str',
-> +            '*certs-timeout': 'uint32' } }
->=20=20
->  ##
->  # @ThreadContextProperties:
+
+v1: https://lore.kernel.org/qemu-devel/20241126115748.118683-1-ppandit@redhat.com/T/#u
+* This series removes magic value (4-bytes) introduced in the
+  previous series for the Postcopy channel.
+
+
+v0: https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
+* Currently Multifd and Postcopy migration can not be used together.
+  QEMU shows "Postcopy is not yet compatible with multifd" message.
+
+  When migrating guests with large (100's GB) RAM, Multifd threads
+  help to accelerate migration, but inability to use it with the
+  Postcopy mode delays guest start up on the destination side.
+
+* This patch series allows to enable both Multifd and Postcopy
+  migration together. Precopy and Multifd threads work during
+  the initial guest (RAM) transfer. When migration moves to the
+  Postcopy phase, Multifd threads are restrained and the Postcopy
+  threads start to request pages from the source side.
+
+* This series introduces magic value (4-bytes) to be sent on the
+  Postcopy channel. It helps to differentiate channels and properly
+  setup incoming connections on the destination side.
+
+
+Thank you.
+---
+Prasad Pandit (5):
+  migration/multifd: move macros to multifd header
+  migration: refactor ram_save_target_page functions
+  migration: enable multifd and postcopy together
+  tests/qtest/migration: add postcopy tests with multifd
+  tests/qtest/migration: consolidate set capabilities
+
+ migration/migration.c                     | 106 ++++++++++++++--------
+ migration/multifd-nocomp.c                |   3 +-
+ migration/multifd.c                       |   5 -
+ migration/multifd.h                       |   5 +
+ migration/options.c                       |   5 -
+ migration/ram.c                           |  69 ++++----------
+ tests/qtest/migration/compression-tests.c |  18 +++-
+ tests/qtest/migration/cpr-tests.c         |   4 +-
+ tests/qtest/migration/file-tests.c        |  44 +++------
+ tests/qtest/migration/framework.c         |  58 ++++++++++--
+ tests/qtest/migration/framework.h         |   4 +-
+ tests/qtest/migration/postcopy-tests.c    |  27 +++++-
+ tests/qtest/migration/precopy-tests.c     |  38 +++++---
+ tests/qtest/migration/tls-tests.c         |  45 ++++++++-
+ 14 files changed, 262 insertions(+), 169 deletions(-)
+
+--
+2.48.1
 
 
