@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0337FA29D38
+	by mail.lfdr.de (Postfix) with ESMTPS id C82BDA29D3D
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:13:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfoZa-0001GY-MA; Wed, 05 Feb 2025 18:12:48 -0500
+	id 1tfoZm-0001IH-PG; Wed, 05 Feb 2025 18:12:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZL-0001F5-A8
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZR-0001GQ-D3
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZJ-0005aj-St
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:31 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZP-0005bQ-RJ
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797146;
+ s=mimecast20190719; t=1738797154;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7rlY36oQtVSPyIz+C7TU5nD1O/rmrISF76rdDY3L36k=;
- b=dav0/iozheJ2OaW9/A0Hh11BhrUSuaf4eloBXgfQK5lB82hNdb4QQuWJvfXXvFgmlMYh5x
- WJo67owaSj3Oe3VI3XMhK4NKIe6168Uq2SoK+5VGcvpOq3ugLyoSYe3/pGFxjuJ5deNadF
- eRKFFWeV88pRRDU8mI12XHRSC/38zus=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=GyiRxmydcU0/fOZaO5aRgfQNpoUwmviAK70kDpUDoAk=;
+ b=OkM6gObNihpCPOtPthf2iLZJ9w+WkhyMyEI6fBjGI2agKdZ9wIj/Srav50Gn45ITff7gdS
+ 1F1Cxw5F54VKZH9P/NIWRiCLVxe5mNd+Vrkw5x4no+sVAFF0Vc+YJegfSdLexq7A3/wIF4
+ mzKMKzl+Dz9FWN3jEZdUV6+nPA8SCW8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-ENQ3uxTOMImZ_wEeITVSmQ-1; Wed,
- 05 Feb 2025 18:12:23 -0500
-X-MC-Unique: ENQ3uxTOMImZ_wEeITVSmQ-1
-X-Mimecast-MFC-AGG-ID: ENQ3uxTOMImZ_wEeITVSmQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-hI6tSBmUMyez9CfJnLNhqw-1; Wed,
+ 05 Feb 2025 18:12:30 -0500
+X-MC-Unique: hI6tSBmUMyez9CfJnLNhqw-1
+X-Mimecast-MFC-AGG-ID: hI6tSBmUMyez9CfJnLNhqw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9EE991956046; Wed,  5 Feb 2025 23:12:21 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C97F11800982; Wed,  5 Feb 2025 23:12:28 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2640C1800267; Wed,  5 Feb 2025 23:12:16 +0000 (UTC)
+ id 5AEEA1800570; Wed,  5 Feb 2025 23:12:22 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,22 +57,22 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 01/42] docs/qapidoc: support header-less freeform sections
-Date: Wed,  5 Feb 2025 18:11:27 -0500
-Message-ID: <20250205231208.1480762-2-jsnow@redhat.com>
+Subject: [PATCH 02/42] qapi/parser: adjust info location for doc body section
+Date: Wed,  5 Feb 2025 18:11:28 -0500
+Message-ID: <20250205231208.1480762-3-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,50 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code as written can't handle if a header isn't found and will crash,
-because `node` will be uninitialized. If we don't have a section title,
-create a generic block to insert text into instead.
+Instead of using the info object for the doc block as a whole (which
+always points to the very first line of the block), update the info
+pointer for each call to ensure_untagged_section when the existing
+section is otherwise empty. This way, Sphinx error information will
+match precisely to where the text actually starts.
 
-(This patch also removes a lingering pylint warning in the QAPIDoc
-implementation that prevents getting a clean baseline to use for
-forthcoming additions.)
+For example, this patch will move the info pointer for the "Hello!"
+untagged section ...
 
-I am not attempting to *fully* clean up the existing QAPIDoc
-implementation in pylint because I intend to delete it anyway; this
-patch merely accomplishes a baseline under a specific pylint
-configuration:
-
-PYTHONPATH=../../scripts/ pylint --disable=fixme,too-many-lines,\
-consider-using-f-string,missing-docstring,unused-argument,\
-too-many-arguments,too-many-positional-arguments,\
-too-many-public-methods \
-qapidoc.py
-
-(under at least pylint 3.3.1; more robust tamping down of the
-environment needed to consistently perform checks will happen later -
-hopefully soon, sorry for the inconvenience.)
-
-This at least ensures there aren't regressions outside of these general
-warnings in the new qapidoc.py code to be committed.
+> ##       <-- from here ...
+> # Hello! <-- ... to here.
+> ##
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/qapi/parser.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 5f96b46270b..5a4d7388b29 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -421,6 +421,8 @@ def freeform(self, doc):
-             node = self._start_new_heading(heading, len(leader))
-             if text == '':
-                 return
-+        else:
-+            node = nodes.container()
- 
-         self._parse_text_into_node(text, node)
-         self._cur_doc = None
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index adc85b5b394..36cb64a677a 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -687,7 +687,11 @@ def end(self) -> None:
+     def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
+         if self.all_sections and not self.all_sections[-1].tag:
+             # extend current section
+-            self.all_sections[-1].text += '\n'
++            section = self.all_sections[-1]
++            if not section.text:
++                # Section is empty so far; update info to start *here*.
++                section.info = info
++            section.text += '\n'
+             return
+         # start new section
+         section = self.Section(info)
 -- 
 2.48.1
 
