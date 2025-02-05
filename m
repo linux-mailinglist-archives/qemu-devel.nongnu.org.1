@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF37A28A64
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40171A28AC8
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:53:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfeeM-0005rh-Rt; Wed, 05 Feb 2025 07:37:04 -0500
+	id 1tfesz-0002bu-4t; Wed, 05 Feb 2025 07:52:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfedc-0005b3-U3
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:36:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfedZ-0001nF-Vn
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:36:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738758972;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1/HN5I+S0qog/DLq+T9W7iJzMzk+n1V7ccSk6S3HYAA=;
- b=Kc6q2F3YXK2R6NQEB222ZhiFxVU6uEzJhUzGTuiUGAoVdDOLoAkHhLVWUXgIr+eTJAkFlO
- 2uwmNdvmkALipAa4Qq2HZggQUB3C8TvW1+ABdOM7eTRDcsU8FlSiZww5rNgrtmcK4HrsFD
- Xcb1Ue9laoORZQUtauYVlDsifzAFDBk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-g5BIVhXTOnKFiaPmBiI7fA-1; Wed,
- 05 Feb 2025 07:36:07 -0500
-X-MC-Unique: g5BIVhXTOnKFiaPmBiI7fA-1
-X-Mimecast-MFC-AGG-ID: g5BIVhXTOnKFiaPmBiI7fA
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AD5DD1800877; Wed,  5 Feb 2025 12:36:06 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.26])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5EF2E195608D; Wed,  5 Feb 2025 12:36:04 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 4/4] qapi: expose all schema features to code
-Date: Wed,  5 Feb 2025 12:35:50 +0000
-Message-ID: <20250205123550.2754387-5-berrange@redhat.com>
-In-Reply-To: <20250205123550.2754387-1-berrange@redhat.com>
-References: <20250205123550.2754387-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tfesw-0002aZ-7D
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:52:06 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tfest-00046M-KK
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:52:05 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-aaf60d85238so1065686166b.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Feb 2025 04:52:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738759921; x=1739364721; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xmlSxGRa2s4sSfRPMbq1Nbwh/C+SvwJJ9ldnNzwpwvQ=;
+ b=SEZnNchoDG6xDeB1b6hZP0TcUR3k957jSlUA4DjrYL7xAxNrbaGUr6aWPLMO223efH
+ pz36T3FZQHJq8ukk13VghfIiowKi+TAvxhwxgsHxwPaUefTIIpxkux+/Tz5ep8uL1yYU
+ 34Tr49nTHnnmJ+XljvJRbGyiE+42D2X5MBM/GBE7YrCcnKWKpMMsg6r4x1ZP4kFMMUDZ
+ W6O8v6uyMB9XvEYn/kCeMIFkpL76Xf+NbQxoGW+4/s1/5p3iv0keKw6kXYuL+8ZkDblA
+ hY8b8VQGc85gJ7yvE4CAAY7CS8wN0Vz7+CC0KaRNGcNceg7+p+hTqQNLbBOI2j83yG4q
+ IKfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738759921; x=1739364721;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=xmlSxGRa2s4sSfRPMbq1Nbwh/C+SvwJJ9ldnNzwpwvQ=;
+ b=iv2bimyn0xGYlhkOsYI1T8ZfPIKQpMt+IZ36lKwiuWeulTLYMDeeNNd3j6BMq8UnDx
+ cpw5K/tAkyZPCRR4d5QzpPciVSlqBAHhZryJ9k8uHSNx0GnA0adz/BWaXNciscSaQsCO
+ 0WvCyDe3MQePvaQgxx6apsLnMNUrakT6AmWlASCGp+hRVB94spHBE7KP9p5ZuVQ0hNyI
+ JT6WEqDCmJReOWMIxeag1v8ZTdajMHHV1GfLZCwbWA2vvguD/OQA8OzH13cQt4Bbz1Nv
+ ugXpBsJyshaRZB6KHSGZCE1QVbB+4AmpYhyusRHYbqNBbLGMvHt11cmQ8f79HqZyGzBg
+ G3Vw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVT+L/7e7qV6ubu0apzBkS84CcvmoGqGWFwhERV0Cv6+n0HH5M25gxVEYlaqDz/VVnWoleGdsaQasQH@nongnu.org
+X-Gm-Message-State: AOJu0YwTWqBh9MVNG0Baxi1TfmbZ9J7m66Z5DVLZLlhECgGWYujyzc0r
+ QkhD1DqEHygvRrCpaBTiatHPEAuh0YrS1uy5MnKsEKXb5kMMI+TfTX9RsGXoQxo=
+X-Gm-Gg: ASbGnctGbv6EG9KyC9pzyXVJ1YJQZqvSj3WG9LH998qEsSz9ilwqPZnHCbXSXGaMnCS
+ c93o5p9e+hKKQnbxgxXHHWOEIYrRXL8nMf8payJg+4zx593e5bt7hqGF0XqPnao14Ni8fJlKD9O
+ GuSadz/0Z2fwkujauVoMr7pX5heCKOAnsAP3RET4d9ik3t//966k9KXDWO424Dd6V0HNpGIrtL3
+ VzDyZqTqpIW1Zt8MysQKJPwFNFIOm7XAGBazBwI1nYDH3jacFMc79Jw3nQZnw3/or+CI2IsvMRv
+ MF1U//8SHRYwUsJe4Q==
+X-Google-Smtp-Source: AGHT+IFZYAl5rPmxBu/7WF7Rw4sz5nICpEhkDL+ax2PkSTfYd79m6iocn7vG6e5ECsz5vdHGUEMNoA==
+X-Received: by 2002:a17:907:72c4:b0:ab7:9a7:688e with SMTP id
+ a640c23a62f3a-ab75e35dc28mr292675766b.45.1738759921205; 
+ Wed, 05 Feb 2025 04:52:01 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5dcdf8529f1sm901051a12.1.2025.02.05.04.51.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Feb 2025 04:52:00 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6E3245F90B;
+ Wed,  5 Feb 2025 12:51:59 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org
+Subject: Re: [PATCH 05/14] target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3
+ be Monitor traps
+In-Reply-To: <20250130182309.717346-6-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Thu, 30 Jan 2025 18:23:00 +0000")
+References: <20250130182309.717346-1-peter.maydell@linaro.org>
+ <20250130182309.717346-6-peter.maydell@linaro.org>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Wed, 05 Feb 2025 12:51:59 +0000
+Message-ID: <874j18a70w.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,325 +104,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces use of the constants from the QapiSpecialFeatures
-enum, with constants from the auto-generate QapiFeatures enum
-in qapi-features.h
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-The 'deprecated' and 'unstable' features still have a little bit of
-special handling, being force defined to be the 1st + 2nd features
-in the enum, regardless of whether they're used in the schema. This
-retains compatibility with common code that references the features
-via the QapiSpecialFeatures constants.
+> In system register access pseudocode the common pattern for
+> AArch32 registers with access traps to EL3 is:
+>
+> at EL1 and EL2:
+>   if HaveEL(EL3) && !ELUsingAArch32(EL3) && (SCR_EL3.TERR =3D=3D 1) then
+>      AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+>   elsif HaveEL(EL3) && ELUsingAArch32(EL3) && (SCR.TERR =3D=3D 1) then
+>      AArch32.TakeMonitorTrapException();
+> at EL3:
+>   if (PSTATE.M !=3D M32_Monitor) && (SCR.TERR =3D=3D 1) then
+>      AArch32.TakeMonitorTrapException();
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- meson.build                              |  1 +
- scripts/qapi/commands.py                 |  1 +
- scripts/qapi/features.py                 | 51 ++++++++++++++++++++++++
- scripts/qapi/gen.py                      |  6 +--
- scripts/qapi/main.py                     |  2 +
- scripts/qapi/schema.py                   | 31 +++++++++++++-
- scripts/qapi/types.py                    |  7 +++-
- scripts/qapi/visit.py                    |  3 +-
- tests/meson.build                        |  2 +
- tests/qapi-schema/features-too-many.err  |  2 +
- tests/qapi-schema/features-too-many.json | 13 ++++++
- tests/qapi-schema/features-too-many.out  |  0
- tests/qapi-schema/meson.build            |  1 +
- 13 files changed, 113 insertions(+), 7 deletions(-)
- create mode 100644 scripts/qapi/features.py
- create mode 100644 tests/qapi-schema/features-too-many.err
- create mode 100644 tests/qapi-schema/features-too-many.json
- create mode 100644 tests/qapi-schema/features-too-many.out
+I was confused a little by my copy which was:
 
-diff --git a/meson.build b/meson.build
-index 2c9ac9cfe1..67759df257 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3444,6 +3444,7 @@ qapi_gen_depends = [ meson.current_source_dir() / 'scripts/qapi/__init__.py',
-                      meson.current_source_dir() / 'scripts/qapi/schema.py',
-                      meson.current_source_dir() / 'scripts/qapi/source.py',
-                      meson.current_source_dir() / 'scripts/qapi/types.py',
-+                     meson.current_source_dir() / 'scripts/qapi/features.py',
-                      meson.current_source_dir() / 'scripts/qapi/visit.py',
-                      meson.current_source_dir() / 'scripts/qapi-gen.py'
- ]
-diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
-index d629d2d97e..bf88bfc442 100644
---- a/scripts/qapi/commands.py
-+++ b/scripts/qapi/commands.py
-@@ -355,6 +355,7 @@ def visit_begin(self, schema: QAPISchema) -> None:
- #include "qemu/osdep.h"
- #include "%(prefix)sqapi-commands.h"
- #include "%(prefix)sqapi-init-commands.h"
-+#include "%(prefix)sqapi-features.h"
- 
- void %(c_prefix)sqmp_init_marshal(QmpCommandList *cmds)
- {
-diff --git a/scripts/qapi/features.py b/scripts/qapi/features.py
-new file mode 100644
-index 0000000000..be3e5d03ff
---- /dev/null
-+++ b/scripts/qapi/features.py
-@@ -0,0 +1,51 @@
-+"""
-+QAPI features generator
-+
-+Copyright 2024 Red Hat
-+
-+This work is licensed under the terms of the GNU GPL, version 2.
-+# See the COPYING file in the top-level directory.
-+"""
-+
-+from typing import Dict, ValuesView
-+
-+from .common import c_enum_const, c_name
-+from .gen import QAPISchemaMonolithicCVisitor
-+from .schema import (
-+    QAPISchema,
-+    QAPISchemaFeature,
-+)
-+
-+
-+class QAPISchemaGenFeatureVisitor(QAPISchemaMonolithicCVisitor):
-+
-+    def __init__(self, prefix: str):
-+        super().__init__(
-+            prefix, 'qapi-features',
-+            ' * Schema-defined QAPI features',
-+            __doc__)
-+
-+        self.features: ValuesView[QAPISchemaFeature]
-+
-+    def visit_begin(self, schema: QAPISchema) -> None:
-+        self.features = schema.features()
-+        self._genh.add("#include \"qapi/util.h\"\n\n")
-+
-+    def visit_end(self) -> None:
-+        self._genh.add("typedef enum {\n")
-+        for f in self.features:
-+            self._genh.add(f"    {c_enum_const('qapi_feature', f.name)}")
-+            if f.name in QAPISchemaFeature.SPECIAL_NAMES:
-+                self._genh.add(f" = {c_enum_const('qapi', f.name)},\n")
-+            else:
-+                self._genh.add(",\n")
-+
-+        self._genh.add("} " + c_name('QapiFeature') + ";\n")
-+
-+
-+def gen_features(schema: QAPISchema,
-+                 output_dir: str,
-+                 prefix: str) -> None:
-+    vis = QAPISchemaGenFeatureVisitor(prefix)
-+    schema.visit(vis)
-+    vis.write(output_dir)
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index b51f8d955e..d3c56d45c8 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -42,9 +42,9 @@
- 
- 
- def gen_features(features: Sequence[QAPISchemaFeature]) -> str:
--    featenum = [f"1u << {c_enum_const('qapi', feat.name)}"
--                for feat in features if feat.is_special()]
--    return ' | '.join(featenum) or '0'
-+    feats = [f"1u << {c_enum_const('qapi_feature', feat.name)}"
-+             for feat in features]
-+    return ' | '.join(feats) or '0'
- 
- 
- class QAPIGen:
-diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-index 316736b6a2..2b9a2c0c02 100644
---- a/scripts/qapi/main.py
-+++ b/scripts/qapi/main.py
-@@ -18,6 +18,7 @@
- from .introspect import gen_introspect
- from .schema import QAPISchema
- from .types import gen_types
-+from .features import gen_features
- from .visit import gen_visit
- 
- 
-@@ -49,6 +50,7 @@ def generate(schema_file: str,
- 
-     schema = QAPISchema(schema_file)
-     gen_types(schema, output_dir, prefix, builtins)
-+    gen_features(schema, output_dir, prefix)
-     gen_visit(schema, output_dir, prefix, builtins)
-     gen_commands(schema, output_dir, prefix, gen_tracing)
-     gen_events(schema, output_dir, prefix)
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index e97c978d38..7f70969c09 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -29,6 +29,7 @@
-     List,
-     Optional,
-     Union,
-+    ValuesView,
-     cast,
- )
- 
-@@ -933,8 +934,11 @@ def connect_doc(self, doc: Optional[QAPIDoc]) -> None:
- class QAPISchemaFeature(QAPISchemaMember):
-     role = 'feature'
- 
-+    # Features which are standardized across all schemas
-+    SPECIAL_NAMES = ['deprecated', 'unstable']
-+
-     def is_special(self) -> bool:
--        return self.name in ('deprecated', 'unstable')
-+        return self.name in QAPISchemaFeature.SPECIAL_NAMES
- 
- 
- class QAPISchemaObjectTypeMember(QAPISchemaMember):
-@@ -1138,6 +1142,16 @@ def __init__(self, fname: str):
-         self._entity_list: List[QAPISchemaEntity] = []
-         self._entity_dict: Dict[str, QAPISchemaDefinition] = {}
-         self._module_dict: Dict[str, QAPISchemaModule] = OrderedDict()
-+        # NB, values in the dict will identify the first encountered
-+        # usage of a named feature only
-+        self._feature_dict: Dict[str, QAPISchemaFeature] = OrderedDict()
-+
-+        # All schemas get the names defined in the QapiSpecialFeature enum.
-+        # Rely on dict iteration order matching insertion order so that
-+        # the special names are emitted first when generating code.
-+        for f in QAPISchemaFeature.SPECIAL_NAMES:
-+            self._feature_dict[f] = QAPISchemaFeature(f, None)
-+
-         self._schema_dir = os.path.dirname(fname)
-         self._make_module(QAPISchemaModule.BUILTIN_MODULE_NAME)
-         self._make_module(fname)
-@@ -1147,6 +1161,9 @@ def __init__(self, fname: str):
-         self._def_exprs(exprs)
-         self.check()
- 
-+    def features(self) -> ValuesView[QAPISchemaFeature]:
-+        return self._feature_dict.values()
-+
-     def _def_entity(self, ent: QAPISchemaEntity) -> None:
-         self._entity_list.append(ent)
- 
-@@ -1258,6 +1275,12 @@ def _make_features(
-     ) -> List[QAPISchemaFeature]:
-         if features is None:
-             return []
-+
-+        for f in features:
-+            feat = QAPISchemaFeature(f['name'], info)
-+            if feat.name not in self._feature_dict:
-+                self._feature_dict[feat.name] = feat
-+
-         return [QAPISchemaFeature(f['name'], info,
-                                   QAPISchemaIfCond(f.get('if')))
-                 for f in features]
-@@ -1485,6 +1508,12 @@ def check(self) -> None:
-         for doc in self.docs:
-             doc.check()
- 
-+        features = list(self._feature_dict.values())
-+        if len(features) > 64:
-+            raise QAPISemError(
-+                features[64].info,
-+                "Maximum of 64 schema features is permitted")
-+
-     def visit(self, visitor: QAPISchemaVisitor) -> None:
-         visitor.visit_begin(self)
-         for mod in self._module_dict.values():
-diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index ade6b7a3d7..5294e5ea3b 100644
---- a/scripts/qapi/types.py
-+++ b/scripts/qapi/types.py
-@@ -308,11 +308,14 @@ def _begin_user_module(self, name: str) -> None:
- #include "qapi/dealloc-visitor.h"
- #include "%(types)s.h"
- #include "%(visit)s.h"
-+#include "%(prefix)sqapi-features.h"
- ''',
--                                      types=types, visit=visit))
-+                                      types=types, visit=visit,
-+                                      prefix=self._prefix))
-         self._genh.preamble_add(mcgen('''
- #include "qapi/qapi-builtin-types.h"
--'''))
-+''',
-+                                      prefix=self._prefix))
- 
-     def visit_begin(self, schema: QAPISchema) -> None:
-         # gen_object() is recursive, ensure it doesn't visit the empty type
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 8dbf4ef1c3..2d678c281d 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -360,8 +360,9 @@ def _begin_user_module(self, name: str) -> None:
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "%(visit)s.h"
-+#include "%(prefix)sqapi-features.h"
- ''',
--                                      visit=visit))
-+                                      visit=visit, prefix=self._prefix))
-         self._genh.preamble_add(mcgen('''
- #include "qapi/qapi-builtin-visit.h"
- #include "%(types)s.h"
-diff --git a/tests/meson.build b/tests/meson.build
-index f96c1be574..c59619220f 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -16,6 +16,8 @@ test_qapi_outputs = [
-   'test-qapi-events-sub-sub-module.h',
-   'test-qapi-events.c',
-   'test-qapi-events.h',
-+  'test-qapi-features.c',
-+  'test-qapi-features.h',
-   'test-qapi-init-commands.c',
-   'test-qapi-init-commands.h',
-   'test-qapi-introspect.c',
-diff --git a/tests/qapi-schema/features-too-many.err b/tests/qapi-schema/features-too-many.err
-new file mode 100644
-index 0000000000..bbbd6e5202
---- /dev/null
-+++ b/tests/qapi-schema/features-too-many.err
-@@ -0,0 +1,2 @@
-+features-too-many.json: In command 'go-fish':
-+features-too-many.json:2: Maximum of 64 schema features is permitted
-diff --git a/tests/qapi-schema/features-too-many.json b/tests/qapi-schema/features-too-many.json
-new file mode 100644
-index 0000000000..aab0a0b5f1
---- /dev/null
-+++ b/tests/qapi-schema/features-too-many.json
-@@ -0,0 +1,13 @@
-+# Max 64 features, with 2 specials, so 63rd custom is invalid
-+{ 'command': 'go-fish',
-+  'features': [
-+      'f00', 'f01', 'f02', 'f03', 'f04', 'f05', 'f06', 'f07',
-+      'f08', 'f09', 'f0a', 'f0b', 'f0c', 'f0d', 'f0e', 'f0f',
-+      'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17',
-+      'f18', 'f19', 'f1a', 'f1b', 'f1c', 'f1d', 'f1e', 'f1f',
-+      'f20', 'f21', 'f22', 'f23', 'f24', 'f25', 'f26', 'f27',
-+      'f28', 'f29', 'f2a', 'f2b', 'f2c', 'f2d', 'f2e', 'f2f',
-+      'f30', 'f31', 'f32', 'f33', 'f34', 'f35', 'f36', 'f37',
-+      'f38', 'f39', 'f3a', 'f3b', 'f3c', 'f3d', 'f3e'
-+  ]
-+}
-diff --git a/tests/qapi-schema/features-too-many.out b/tests/qapi-schema/features-too-many.out
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
-index 0f479d9317..9577178b6f 100644
---- a/tests/qapi-schema/meson.build
-+++ b/tests/qapi-schema/meson.build
-@@ -105,6 +105,7 @@ schemas = [
-   'event-case.json',
-   'event-member-invalid-dict.json',
-   'event-nest-struct.json',
-+  'features-too-many.json',
-   'features-bad-type.json',
-   'features-deprecated-type.json',
-   'features-duplicate-name.json',
--- 
-2.47.1
+    elsif HaveEL(EL3) && !ELUsingAArch32(EL3) && SCR_EL3.TERR =3D=3D '1' th=
+en
+        if EL3SDDUndef() then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
 
+But I think EL3SDDUndef() is always false for us as we don't have an
+external debug interface.
+
+>
+> (taking as an example the ERRIDR access pseudocode).
+>
+> This implements the behaviour of (in this case) SCR.TERR that
+> "Accesses to the specified registers from modes other than Monitor
+> mode generate a Monitor Trap exception" and of SCR_EL3.TERR that
+> "Accesses of the specified Error Record registers at EL2 and EL1
+> are trapped to EL3, unless the instruction generates a higher
+> priority exception".
+>
+> In QEMU we don't implement this pattern correctly in two ways:
+>  * in access_check_cp_reg() we turn the CP_ACCESS_TRAP_EL3 into
+>    an UNDEF, not a trap to Monitor mode
+>  * in the access functions, we check trap bits like SCR.TERR
+>    only when arm_current_el(env) < 3 -- this is correct for
+>    AArch64 EL3, but misses the "trap non-Monitor-mode execution
+>    at EL3 into Monitor mode" case for AArch32 EL3
+>
+> In this commit we fix the first of these two issues, by
+> making access_check_cp_reg() handle CP_ACCESS_TRAP_EL3
+> as a Monitor trap. This is a kind of exception that we haven't
+> yet implemented(!), so we need a new EXCP_MON_TRAP for it.
+>
+> This diverges from the pseudocode approach, where every access check
+> function explicitly checks for "if EL3 is AArch32" and takes a
+> monitor trap; if we wanted to be closer to the pseudocode we could
+> add a new CP_ACCESS_TRAP_MONITOR and make all the accessfns use it
+> when appropriate.  But because there are no non-standard cases in the
+> pseudocode (i.e.  where either it raises a Monitor trap that doesn't
+> correspond to an AArch64 SystemAccessTrap or where it raises a
+> SystemAccessTrap that doesn't correspond to a Monitor trap), handling
+> this all in one place seems less likely to result in future bugs
+> where we forgot again about this special case when writing an
+> accessor.
+>
+> (The cc of stable here is because "hw/intc/arm_gicv3_cpuif: Don't
+> downgrade monitor traps for AArch32 EL3" which is also cc:stable
+> will implicitly use the new EXCP_MON_TRAP code path.)
+>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  target/arm/cpu.h           |  1 +
+>  target/arm/helper.c        | 11 +++++++++++
+>  target/arm/tcg/op_helper.c | 13 ++++++++++++-
+>  3 files changed, 24 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 2213c277348..4cb672c120b 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -62,6 +62,7 @@
+>  #define EXCP_NMI            26
+>  #define EXCP_VINMI          27
+>  #define EXCP_VFNMI          28
+> +#define EXCP_MON_TRAP       29   /* AArch32 trap to Monitor mode */
+>  /* NB: add new EXCP_ defines to the array in arm_log_exception() too */
+>=20=20
+>  #define ARMV7M_EXCP_RESET   1
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index 5d9eca35c04..c5cd27b249f 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -9684,6 +9684,7 @@ void arm_log_exception(CPUState *cs)
+>              [EXCP_NMI] =3D "NMI",
+>              [EXCP_VINMI] =3D "Virtual IRQ NMI",
+>              [EXCP_VFNMI] =3D "Virtual FIQ NMI",
+> +            [EXCP_MON_TRAP] =3D "Monitor Trap",
+>          };
+>=20=20
+>          if (idx >=3D 0 && idx < ARRAY_SIZE(excnames)) {
+> @@ -10250,6 +10251,16 @@ static void arm_cpu_do_interrupt_aarch32(CPUStat=
+e *cs)
+>          mask =3D CPSR_A | CPSR_I | CPSR_F;
+>          offset =3D 0;
+>          break;
+> +    case EXCP_MON_TRAP:
+> +        new_mode =3D ARM_CPU_MODE_MON;
+> +        addr =3D 0x04;
+> +        mask =3D CPSR_A | CPSR_I | CPSR_F;
+> +        if (env->thumb) {
+> +            offset =3D 2;
+> +        } else {
+> +            offset =3D 4;
+> +        }
+> +        break;
+>      default:
+>          cpu_abort(cs, "Unhandled exception 0x%x\n", cs->exception_index);
+>          return; /* Never happens.  Keep compiler happy.  */
+> diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+> index 1161d301b71..1ba727e8e9f 100644
+> --- a/target/arm/tcg/op_helper.c
+> +++ b/target/arm/tcg/op_helper.c
+> @@ -758,6 +758,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *=
+env, uint32_t key,
+>      const ARMCPRegInfo *ri =3D get_arm_cp_reginfo(cpu->cp_regs, key);
+>      CPAccessResult res =3D CP_ACCESS_OK;
+>      int target_el;
+> +    uint32_t excp;
+>=20=20
+>      assert(ri !=3D NULL);
+>=20=20
+> @@ -851,8 +852,18 @@ const void *HELPER(access_check_cp_reg)(CPUARMState =
+*env, uint32_t key,
+>      }
+>=20=20
+>   fail:
+> +    excp =3D EXCP_UDEF;
+>      switch (res & ~CP_ACCESS_EL_MASK) {
+>      case CP_ACCESS_TRAP:
+> +        /*
+> +         * If EL3 is AArch32 then there's no syndrome register; the cases
+> +         * where we would raise a SystemAccessTrap to AArch64 EL3 all be=
+come
+> +         * raising a Monitor trap exception. (Because there's no visible
+> +         * syndrome it doesn't matter what we pass to raise_exception().)
+> +         */
+> +        if ((res & CP_ACCESS_EL_MASK) =3D=3D 3 && !arm_el_is_aa64(env, 3=
+)) {
+> +            excp =3D EXCP_MON_TRAP;
+> +        }
+>          break;
+>      case CP_ACCESS_TRAP_UNCATEGORIZED:
+>          /* Only CP_ACCESS_TRAP traps are direct to a specified EL */
+> @@ -888,7 +899,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *=
+env, uint32_t key,
+>          g_assert_not_reached();
+>      }
+>=20=20
+> -    raise_exception(env, EXCP_UDEF, syndrome, target_el);
+> +    raise_exception(env, excp, syndrome, target_el);
+>  }
+>=20=20
+>  const void *HELPER(lookup_cp_reg)(CPUARMState *env, uint32_t key)
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
