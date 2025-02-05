@@ -2,85 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5ABA28338
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 05:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573C3A28351
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 05:21:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfWdw-0008Ku-G8; Tue, 04 Feb 2025 23:04:06 -0500
+	id 1tfWsx-00005g-ER; Tue, 04 Feb 2025 23:19:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfWdp-0008Ji-8C
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 23:03:57 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tfWdn-0007Fp-3L
- for qemu-devel@nongnu.org; Tue, 04 Feb 2025 23:03:57 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-21f01fe1ce8so21574525ad.2
- for <qemu-devel@nongnu.org>; Tue, 04 Feb 2025 20:03:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738728234; x=1739333034; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=q0zAIe7SWbgfcY9vZuTS6FSoBBjcjACpHzR+Y3UmH08=;
- b=kKtBOQv6lJjN6+M8Tw5GZJ7gDEkKjxWizPZeqObGM/QsRtB74vU6nCuj3qzD4tahSA
- TvUqyuXXT1AO/yzwV33DfdnKBLEsOGaBksZuqoUqinSxhFGUjdN2kIbWmbDmqB9at3uz
- 7L2vW4GSkwlqIzIeeKh2m8bCLi8QBoZjPStZTUcRZWDwBRyiUPEgjaZiKMk7+tNR0SxI
- 69OTLEoUP1pogTWbABfWh1ULtQkOSYVz99G7f62D9W2TpErEd1PMkTaeyPd5+Egkv6cQ
- c2vW1GkUlPRxa7LHSpa8+LCseQU1t0uqvPi/30q+AaGiQoNBp8SdOF+2hrprA/cHerp5
- p4Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738728234; x=1739333034;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=q0zAIe7SWbgfcY9vZuTS6FSoBBjcjACpHzR+Y3UmH08=;
- b=OX2uKnyOBzvtPxfqG/UpQkhGzEE7P2gBDC/zInbFLWU31hnLqWVem+ECMMMBM0ykJ4
- l5HbS28ytWdX/aAfYGSiiP7b2kXS5cY00ki2I8quPRQPPF4U6yLpajlYHdIY12aUFwn6
- JHhmz8j0R0CNxRXQKRncqRbljmhtc8blCKSmnvvaniBbkUQnviCExIozaaF4lCUyOySM
- a8YNF9ayySq2A1hiX/SSOWTZ13e4zwqbni2JiuAjk4NuL+fwVO8uCJf5l45t9GkueBmS
- OjmZdXJyZAIpJr5loWa5LwvezmSVXsakkxh/6GHDdKAAX95Va1XsWFwp4to5a3AfFgbE
- Xwag==
-X-Gm-Message-State: AOJu0YyLwWb9MNGkUpHny3rap26otVq8MJM1SrToptxcBUx5kIcqG8AX
- YUu2Xv/zUgWfk1zvePEEBoUSLZH166YPPAZaPDjWSm+b/whM5OrkS4ipwBrvhsayo3P7Tkr/t8M
- 2
-X-Gm-Gg: ASbGncv1VgwGAvcOBnLdnIVqk2YsDCH76DYDnpzWY0uvQ6+LFcguarOgDeJxNyuRodF
- YhhfRuXf2mNAg3xei6nN12RFAXrJWFdI+UypVQkzYiyJwEYNSnInriy+zXJzxWMot6V1GeEMpCj
- IZV8JcISCiQmQFfikl1fGb+8v8F2Av+S0a0KY7dIglIYArrE2OeNpzhy4maF8pEPFGBP88Y2uYR
- Y9Zgsdp1KsebFaxFBOP9Oov1vXoxnaZ24SRgUqMaySh27pgDpOlsnauRyZAQ+Nuq0UaFZGJ9pJl
- cSCRJSLpsS+ww5c7/4oRk19yWndsxjPlo3yu9JfHkQKRNUc=
-X-Google-Smtp-Source: AGHT+IF7va74PKI1DDGVinX1zooP9rE4m5REzeDeLSkvhy5diFDcRo72ToclevN6uB17LKm9vONv4w==
-X-Received: by 2002:a17:902:ced1:b0:215:65f3:27f2 with SMTP id
- d9443c01a7336-21f17e2719dmr22637905ad.8.1738728233649; 
- Tue, 04 Feb 2025 20:03:53 -0800 (PST)
-Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f054eb89esm22380325ad.79.2025.02.04.20.03.52
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Feb 2025 20:03:53 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 11/11] include/exec: Use uintptr_t in CPUTLBEntry
-Date: Tue,  4 Feb 2025 20:03:41 -0800
-Message-ID: <20250205040341.2056361-12-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250205040341.2056361-1-richard.henderson@linaro.org>
-References: <20250205040341.2056361-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <mochs@nvidia.com>)
+ id 1tfWsw-00005T-2Y; Tue, 04 Feb 2025 23:19:34 -0500
+Received: from mail-dm3nam02on2062f.outbound.protection.outlook.com
+ ([2a01:111:f403:2405::62f]
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mochs@nvidia.com>)
+ id 1tfWst-0003BC-GA; Tue, 04 Feb 2025 23:19:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IglqyWeTzdcWCflnQRAAmLby1o0IM+foQ1zFu/tGkKc/LtVnXW79qqMhc3RdJYoCDI1Gjx7mdjAxgIsAWzmhxvK791yDD2cdxkLpsGM34v/Ej+kOhlAsxpevbDgku7DyKX0S3yxJS2H2J+TfsFb9zObsYS4qdVepGXtyKlzP8ser+2FEdmbUp9v6DuoJblFTpMHjb/lO2wq5qdxWx5SFDKuqqHsDJ88WvmXdE4u37k7ytZv6rKEUsmPu5Lmi6AVoW9w4wjzcDnLzhW1nGdOXOJJ8gQb4Ov9wahq2mWNBcP0cuzdNkTYXzn78j1RK+pWni+IKhkDhBLg98scybCpVYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kNyG4a8mXZHuVnlS53JB/iEIUZoorq5O6cS9MeAqvJI=;
+ b=KrNKIkmhcjf3Pz9kOD9DEzts2JqVNnafT+7+LadjW2eLzDWohUZ/2AycR0Nak5mgba2x0dAE4bRjU+gMAh8yzNZru3tTh5qMc5vd+Yzg+QW6X3yFx2MaDU21Mh5aT/VcL8ncgSRw5dzoZW6D/r9b3iFuVhTV2i9tyLo7afMkx1vvDnp9u3JGoN7q/S62PXeAnUJq5CXfB6d+lDU8NX1T+9mcE1/IniWLSrdqqVI1U2xpMnBZZ2dRITrpDr/l1ZOj8pzml3tJNZ5n2Dq1NzXXkC8x1OKGwP1VqQMHDmqqNc+3nhAC/2Qmn05i1Th59GBrT1LFWvPbCCKUmJTn8wfP/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kNyG4a8mXZHuVnlS53JB/iEIUZoorq5O6cS9MeAqvJI=;
+ b=EIbGMYAEJE6HWIHGIZsDTa9tjHLxKZQ+V2/wQeJS3fBYwj732M0b6Zjzyl6TQZ9aqFn4yfim2U07NzzfwA+DSS2R7jUvUaYz94Bq+J7VccQ7pqDaKd8C0tUfq4MKi1V4/rumKWKZeZ/kvTpgxKWN8asH8ty9vIV3xkyaeuI21gbuYxtYtXjzJk33hS2WxcH7t719ICDqIxczVY4uU678aVcWmnwtcFklO+HdzpQZ291rjxkbEGU1rBVyxQWkGdA42ut1Bm5esjuSIrhoKdY8LqGNEHecrH2vjuc7voqg64fs3Lsa4un/rIJExh3xQI5iMH4a+djITewTzyjK1nq81g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW6PR12MB8897.namprd12.prod.outlook.com (2603:10b6:303:24a::19)
+ by DS0PR12MB8044.namprd12.prod.outlook.com (2603:10b6:8:148::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Wed, 5 Feb
+ 2025 04:19:25 +0000
+Received: from MW6PR12MB8897.namprd12.prod.outlook.com
+ ([fe80::7c55:5a45:be80:e971]) by MW6PR12MB8897.namprd12.prod.outlook.com
+ ([fe80::7c55:5a45:be80:e971%4]) with mapi id 15.20.8422.009; Wed, 5 Feb 2025
+ 04:19:25 +0000
+From: "Matthew R. Ochs" <mochs@nvidia.com>
+To: qemu-devel@nongnu.org, shameerali.kolothum.thodi@huawei.com,
+ nathanc@nvidia.com
+Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, ddutile@redhat.com,
+ eric.auger@redhat.com, nicolinc@nvidia.com, ankita@nvidia.com
+Subject: [PATCH v2] hw/arm/virt: Support larger highmem MMIO regions
+Date: Tue,  4 Feb 2025 20:19:18 -0800
+Message-ID: <20250205041918.2340237-1-mochs@nvidia.com>
+X-Mailer: git-send-email 2.46.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0045.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::20) To MW6PR12MB8897.namprd12.prod.outlook.com
+ (2603:10b6:303:24a::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8897:EE_|DS0PR12MB8044:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f241928-2eb6-4cc4-7a9d-08dd459c4611
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?MouONbdrQpBXwyE+Vp3c0vQiXkM4cQvd/LaQJz1geFaZdxXveC2Jk0Jwn9YN?=
+ =?us-ascii?Q?3l2rlVR2e8r1ulbSjU8sB0p0AJo0pPUitEjF+JoCt6OYpHa8RM2cVYxxsAuX?=
+ =?us-ascii?Q?+H2Ab5Erk2CNhR+qTbNIG3AfjNjbrBB+UP/FkdPUwW9P1MU2lwcmllbHwRFg?=
+ =?us-ascii?Q?6BxfGAy0Ests1QWD123wZP4e7KwdZExDSyeaxYUPPpC55VywztSiX8K6oLSi?=
+ =?us-ascii?Q?2He9E3rvs5kRc9Py9L66Q4J5vbac+DYW2C+T3F74LsO3dqJdevj47SMOM+/Y?=
+ =?us-ascii?Q?LKeBBr7h1M3hc4SuXmcUIlzSuFYfbdQ8L7RpAfk2Fe+CmcMu7BgThaRbkQR0?=
+ =?us-ascii?Q?dIjmcsyehhIiI4WJxEYrfQn0k5g+nQO8arNfH5szW09npcUXmZdnNYUjmH7x?=
+ =?us-ascii?Q?le4Kf1zURyH27JdHcLvsMEgkZL//sq2Gk+roSrkVGSjAhfx9oFbtaaPQmNDl?=
+ =?us-ascii?Q?bz5MAP03v9bZxTH30ORwnntqtZNbafeLK4UTCtFWAJxdIYG+gBCbb3gtMK3x?=
+ =?us-ascii?Q?eQOn0UEYqaZIBBxI0x+tY4JBZZf02Z39OTnySzcr0MQIBfpD+50n0qLTIDny?=
+ =?us-ascii?Q?HTvOt1BhCU9w+jilp6JBnBMUuu2oxXd6FJdNEPi2APhh7FInFhuu4e+wMVOo?=
+ =?us-ascii?Q?VH9TgWThtidONBY1WSZ5p3/UfqncrSrs0xh1wmmzkYMilGZjCHx4Ewc2cz96?=
+ =?us-ascii?Q?2uCSAYK4X8fvacHGbyJutOipidEmMUm+T4qQIT0jKCPU/gAb5QNfb+d5FNPC?=
+ =?us-ascii?Q?rq5Zb5V58LVABUdou8de4dczsfarrdaN6SROq14w4YyFH8mGFKSY/C/qIYgn?=
+ =?us-ascii?Q?M2cDsEVcbG3eu9YWvB7QOQmPYJszHx5kTh3EkTvd78xIOBUnLAcYuSb1DU4f?=
+ =?us-ascii?Q?3k9iIiZRLBjoc6Fzs0te+v1c1bijRBFH6713JeAFNGS+A22RfEpkizzpG7OE?=
+ =?us-ascii?Q?nmX+AlFIkRJtcx4QKRAoxFPDFVc7/A9CDcb/+6XBwt825Ui8G9wQ/N7Uc93h?=
+ =?us-ascii?Q?kbnq5cfFAZoILL4Ik8wOGy2Tw9RS1dLmGhl/C7KJ88Nb1XL/a2qqgrMs0py+?=
+ =?us-ascii?Q?N9+d3F9bdWxGQC7cEzKfayaRMZE+7ZL5rX6Ft4AkUsLMSdVM1TECS31UYILw?=
+ =?us-ascii?Q?7K+do+58FFHbBxNocyvQc+Qo9RnnkCwcWMpp3nMIpLAa20+VuQRyaYXsQrDW?=
+ =?us-ascii?Q?Gtzre2FeVqI7K95p5QEHTwnFLUBbMIsPgfBaozYqdWIKGis3fNO0SnardZVu?=
+ =?us-ascii?Q?dQTYCHCKYjxqMIGqx9yHM3HQREkjJdQ7wCn3B9BxXTwcBJE+g9JEFCzS6DVs?=
+ =?us-ascii?Q?0va7fqmAIyxaS2GDfXda5N2uc8VzPQjSn7EFlcC3fBF9CH3Fs9GxAW3QZ0Hi?=
+ =?us-ascii?Q?9J7F0vJDnRcsatpfGwqcIkC2u3/y?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW6PR12MB8897.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?AwIvisKlj5b4/1OIFzdS/PRrujjGZfzITGWiIdm1uAdU2RtE8ldgxmqbmlLa?=
+ =?us-ascii?Q?2yYLDIq39XDsqKNaF5Yh/3qjOUdXnDxzbTmI3oQsSh7Aqpjug06/r4Z/f2ul?=
+ =?us-ascii?Q?bFYA0/mLcceV1+24q0pGhLhTPCpy7tjSYfJmlbl5qRFG9gPRKOxSevnF6ZGf?=
+ =?us-ascii?Q?2Pv1XcpJx8jIqat3UDt5V9hDxopxEkbZxQT18qCNDJfSkfQhnw7QE4IzEg+4?=
+ =?us-ascii?Q?Rr9qmXtv6aPO3FB2qLrzqd5JWqab8KSOQQbeMBBL/WJ14fheMitSsaaBjbLX?=
+ =?us-ascii?Q?W0yghrjEo+5U0VRtm62SxlgCOxhkSjNjpqjZlcxg5ssx8NFPwK7cAE1fLZbG?=
+ =?us-ascii?Q?0t2zN2FPzQn4ioBT35O5ozByZI3PZn1Qy6q1Y+EOL90w9Vy53VhhEi0YRzKM?=
+ =?us-ascii?Q?1fEdHNUA0hCI2gs5ojHcQbko9CkS2fSc+sPcPKgO321tMcakj01OcvsaqE++?=
+ =?us-ascii?Q?blyRmnC+S4PAanlih2CUhGChevGK2CSycFI0w/9rIXsjoSm/zMmCAvpM74h5?=
+ =?us-ascii?Q?7llO2UazV3heaf2dWVI+FPCWuGU3BSqjwIB0XdVIPKnpt0StW9qErwOysM9D?=
+ =?us-ascii?Q?DJE5wsvYXVV/uSkaahYHEbrovbth0iZWpCjeOpiUUn14UZ2JTmIlXSeM/rBW?=
+ =?us-ascii?Q?30oqSzSKif8AXhPVOSbataoGoHs9HasRJP6yPcUDj6Itb8y2VJ0atMfA/wFW?=
+ =?us-ascii?Q?8awZYZ/kK2IG0ajgbN1sCRw57UFHgYeQdX2RofFm0/+Y+BaJA1fTIVl0IPsA?=
+ =?us-ascii?Q?ija2nMA/3wAWBc8bnl8kfd0650SwRgWykIhETwWidREiw7qrn5LXLmv7tRkT?=
+ =?us-ascii?Q?vWg4OjEemYycXkBMHYxAWBvjMPgEzIySmxeBO4Irbf5jJn+WwssQLkTckoVJ?=
+ =?us-ascii?Q?Wqv9v3GrDSZxVX0bLoCimWBxyNePMkzQjIemJyV0HryCR+A8HhnkYEVKsy4h?=
+ =?us-ascii?Q?nA2voshQu3mppFJ9R3QCMEdR5vwtwhlYQtVN8ymUyhJRO+afCV0Y6I9VwF2Z?=
+ =?us-ascii?Q?0gG3jzLH2e/Ju9nBqbrMh17PZOFpcegiv6YN+OfU0bg2cqJx00EMLGa+Rtjv?=
+ =?us-ascii?Q?RxBdLCtKx4zrOwdpSTV+tzfnHbOf3fN+Vvkf6VAW1K8NRYKzg564Dq9QsZVA?=
+ =?us-ascii?Q?jXjsGaWLzGrN8E5nuyRqNSDE9AqFWWUjyU9dsgDtebO0OEqA4MeTksLKyShu?=
+ =?us-ascii?Q?sgMVCLm7JbwAw5HkUV0A5f/AN2u7JF7PFpaW80si+NeHstPmams866HRJ6ED?=
+ =?us-ascii?Q?5wuRm2ARVwFywXHL/vfKnjPHbDCdY/qoLNVBg9tU3tC6uXuhv4o3E8cdEC6x?=
+ =?us-ascii?Q?ducSbdSwXFTxsPYlL6wpAl3vM9ZTPqvC/ELziYM7QfugngJvi/YRoUUw7bie?=
+ =?us-ascii?Q?P9nByFXlwesNDV9TWsclLE6Elrsxk66TFrB71ac48rjGIrDX0gpC1CVuYH04?=
+ =?us-ascii?Q?pxy4lOd5nOG4epliAm3309TQWGuUvKtSOaQ7KURlfiVzVe/lNNIiDxjhhWwW?=
+ =?us-ascii?Q?X5389OLaXrM+BqBcKs9bkcb88MhV0Im1xuwCTGz29XRj+OzywpZ6DMZRYyp/?=
+ =?us-ascii?Q?H+3ifXY0xh6+7YQo1xKMrByb893PlZL15L/3lmEW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f241928-2eb6-4cc4-7a9d-08dd459c4611
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8897.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 04:19:25.0403 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ddDPNXx4DMisXQ/vYcKp5Tz+GAxeJKROMWG9QRHYPG8fD4Y/vO+nXhDH/QZTl/X8JlSgK3NGVQvsed93nTVG9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8044
+Received-SPF: softfail client-ip=2a01:111:f403:2405::62f;
+ envelope-from=mochs@nvidia.com;
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,180 +155,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we no longer support 64-bit guests on 32-bit hosts,
-we can use a 32-bit type on a 32-bit host.  This shrinks
-the size of the structure to 16 bytes on a 32-bit host.
+The MMIO region size required to support virtualized environments with
+large PCI BAR regions can exceed the hardcoded limit configured in QEMU.
+For example, a VM with multiple NVIDIA Grace-Hopper GPUs passed through
+requires more MMIO memory than the amount provided by VIRT_HIGH_PCIE_MMIO
+(currently 512GB). Instead of updating VIRT_HIGH_PCIE_MMIO, introduce a
+new parameter, highmem-mmio-size, that specifies the MMIO size required
+to support the VM configuration.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Example usage with 1TB MMIO region size:
+	-machine virt,gic-version=3,highmem-mmio-size=1T
+
+Signed-off-by: Matthew R. Ochs <mochs@nvidia.com>
 ---
- include/exec/tlb-common.h  | 10 +++++-----
- accel/tcg/cputlb.c         | 21 ++++-----------------
- tcg/arm/tcg-target.c.inc   |  1 -
- tcg/mips/tcg-target.c.inc  |  9 ++-------
- tcg/ppc/tcg-target.c.inc   | 21 +++++----------------
- tcg/riscv/tcg-target.c.inc |  1 -
- 6 files changed, 16 insertions(+), 47 deletions(-)
+v2: - Add unit suffix to example in commit message
+    - Use existing "high memory region" terminology
+    - Resolve minor braces nit
 
-diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
-index dc5a5faa0b..03b5a8ffc7 100644
---- a/include/exec/tlb-common.h
-+++ b/include/exec/tlb-common.h
-@@ -19,14 +19,14 @@
- #ifndef EXEC_TLB_COMMON_H
- #define EXEC_TLB_COMMON_H 1
+ docs/system/arm/virt.rst |  4 ++++
+ hw/arm/virt.c            | 38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
+
+diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+index e67e7f0f7c50..f96cf4da2a78 100644
+--- a/docs/system/arm/virt.rst
++++ b/docs/system/arm/virt.rst
+@@ -138,6 +138,10 @@ highmem-mmio
+   Set ``on``/``off`` to enable/disable the high memory region for PCI MMIO.
+   The default is ``on``.
  
--#define CPU_TLB_ENTRY_BITS 5
-+#define CPU_TLB_ENTRY_BITS (HOST_LONG_BITS == 32 ? 4 : 5)
++highmem-mmio-size
++  Set the high memory region size for PCI MMIO. Must be a power-of-2 and
++  greater than the default size.
++
+ gic-version
+   Specify the version of the Generic Interrupt Controller (GIC) to provide.
+   Valid values are:
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 49eb0355ef0c..d8d62df43f04 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2773,6 +2773,36 @@ static void virt_set_highmem_mmio(Object *obj, bool value, Error **errp)
+     vms->highmem_mmio = value;
+ }
  
- /* Minimalized TLB entry for use by TCG fast path. */
- typedef union CPUTLBEntry {
-     struct {
--        uint64_t addr_read;
--        uint64_t addr_write;
--        uint64_t addr_code;
-+        uintptr_t addr_read;
-+        uintptr_t addr_write;
-+        uintptr_t addr_code;
-         /*
-          * Addend to virtual address to get host address.  IO accesses
-          * use the corresponding iotlb value.
-@@ -37,7 +37,7 @@ typedef union CPUTLBEntry {
-      * Padding to get a power of two size, as well as index
-      * access to addr_{read,write,code}.
-      */
--    uint64_t addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(uint64_t)];
-+    uintptr_t addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(uintptr_t)];
- } CPUTLBEntry;
++static void virt_get_highmem_mmio_size(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
++{
++    uint64_t size = extended_memmap[VIRT_HIGH_PCIE_MMIO].size;
++
++    visit_type_size(v, name, &size, errp);
++}
++
++static void virt_set_highmem_mmio_size(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
++{
++    uint64_t size;
++
++    if (!visit_type_size(v, name, &size, errp)) {
++        return;
++    }
++
++    if (!is_power_of_2(size)) {
++        error_setg(errp, "highmem_mmio_size is not a power-of-2");
++        return;
++    }
++
++    if (size < extended_memmap[VIRT_HIGH_PCIE_MMIO].size) {
++        error_setg(errp, "highmem_mmio_size is less than the default (%lu)",
++                   extended_memmap[VIRT_HIGH_PCIE_MMIO].size);
++        return;
++    }
++
++    extended_memmap[VIRT_HIGH_PCIE_MMIO].size = size;
++}
  
- QEMU_BUILD_BUG_ON(sizeof(CPUTLBEntry) != (1 << CPU_TLB_ENTRY_BITS));
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 75d075d044..ad158050a1 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -104,22 +104,15 @@ static inline uint64_t tlb_read_idx(const CPUTLBEntry *entry,
+ static bool virt_get_its(Object *obj, Error **errp)
  {
-     /* Do not rearrange the CPUTLBEntry structure members. */
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_read) !=
--                      MMU_DATA_LOAD * sizeof(uint64_t));
-+                      MMU_DATA_LOAD * sizeof(uintptr_t));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_write) !=
--                      MMU_DATA_STORE * sizeof(uint64_t));
-+                      MMU_DATA_STORE * sizeof(uintptr_t));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_code) !=
--                      MMU_INST_FETCH * sizeof(uint64_t));
-+                      MMU_INST_FETCH * sizeof(uintptr_t));
+@@ -3446,6 +3476,14 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+                                           "Set on/off to enable/disable high "
+                                           "memory region for PCI MMIO");
  
--#if TARGET_LONG_BITS == 32
--    /* Use qatomic_read, in case of addr_write; only care about low bits. */
--    const uint32_t *ptr = (uint32_t *)&entry->addr_idx[access_type];
--    ptr += HOST_BIG_ENDIAN;
--    return qatomic_read(ptr);
--#else
--    const uint64_t *ptr = &entry->addr_idx[access_type];
-+    const uintptr_t *ptr = &entry->addr_idx[access_type];
-     /* ofs might correspond to .addr_write, so use qatomic_read */
-     return qatomic_read(ptr);
--#endif
- }
- 
- static inline uint64_t tlb_addr_write(const CPUTLBEntry *entry)
-@@ -899,14 +892,8 @@ static void tlb_reset_dirty_range_locked(CPUTLBEntry *tlb_entry,
-         addr &= TARGET_PAGE_MASK;
-         addr += tlb_entry->addend;
-         if ((addr - start) < length) {
--#if TARGET_LONG_BITS == 32
--            uint32_t *ptr_write = (uint32_t *)&tlb_entry->addr_write;
--            ptr_write += HOST_BIG_ENDIAN;
--            qatomic_set(ptr_write, *ptr_write | TLB_NOTDIRTY);
--#else
-             qatomic_set(&tlb_entry->addr_write,
-                         tlb_entry->addr_write | TLB_NOTDIRTY);
--#endif
-         }
-     }
- }
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 865aab0ccd..f03bb76396 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -1506,7 +1506,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-          * Add the tlb_table pointer, creating the CPUTLBEntry address in R1.
-          * Load the tlb comparator into R2 and the fast path addend into R1.
-          */
--        QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-         if (cmp_off == 0) {
-             tcg_out_ld32_rwb(s, COND_AL, TCG_REG_R2, TCG_REG_R1, TCG_REG_R0);
-         } else {
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index d744b853cd..6fe7a77813 100644
---- a/tcg/mips/tcg-target.c.inc
-+++ b/tcg/mips/tcg-target.c.inc
-@@ -1262,13 +1262,8 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         /* Add the tlb_table pointer, creating the CPUTLBEntry address.  */
-         tcg_out_opc_reg(s, ALIAS_PADD, TCG_TMP3, TCG_TMP3, TCG_TMP1);
- 
--        if (TCG_TARGET_REG_BITS == 32 || addr_type == TCG_TYPE_I32) {
--            /* Load the (low half) tlb comparator.  */
--            tcg_out_ld(s, TCG_TYPE_I32, TCG_TMP0, TCG_TMP3,
--                       cmp_off + HOST_BIG_ENDIAN * 4);
--        } else {
--            tcg_out_ld(s, TCG_TYPE_I64, TCG_TMP0, TCG_TMP3, cmp_off);
--        }
-+        /* Load the tlb comparator.  */
-+        tcg_out_ld(s, TCG_TYPE_PTR, TCG_TMP0, TCG_TMP3, cmp_off);
- 
-         if (TCG_TARGET_REG_BITS == 64 || addr_type == TCG_TYPE_I32) {
-             /* Load the tlb addend for the fast path.  */
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 2d16807ec7..822925a19b 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -2490,27 +2490,16 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         tcg_out32(s, AND | SAB(TCG_REG_TMP1, TCG_REG_TMP1, TCG_REG_R0));
- 
-         /*
--         * Load the (low part) TLB comparator into TMP2.
-+         * Load the TLB comparator into TMP2.
-          * For 64-bit host, always load the entire 64-bit slot for simplicity.
-          * We will ignore the high bits with tcg_out_cmp(..., addr_type).
-          */
--        if (TCG_TARGET_REG_BITS == 64) {
--            if (cmp_off == 0) {
--                tcg_out32(s, LDUX | TAB(TCG_REG_TMP2,
--                                        TCG_REG_TMP1, TCG_REG_TMP2));
--            } else {
--                tcg_out32(s, ADD | TAB(TCG_REG_TMP1,
--                                       TCG_REG_TMP1, TCG_REG_TMP2));
--                tcg_out_ld(s, TCG_TYPE_I64, TCG_REG_TMP2,
--                           TCG_REG_TMP1, cmp_off);
--            }
--        } else if (cmp_off == 0 && !HOST_BIG_ENDIAN) {
--            tcg_out32(s, LWZUX | TAB(TCG_REG_TMP2,
--                                     TCG_REG_TMP1, TCG_REG_TMP2));
-+        if (cmp_off == 0) {
-+            tcg_out32(s, (TCG_TARGET_REG_BITS == 64 ? LDUX : LWZUX)
-+                      | TAB(TCG_REG_TMP2, TCG_REG_TMP1, TCG_REG_TMP2));
-         } else {
-             tcg_out32(s, ADD | TAB(TCG_REG_TMP1, TCG_REG_TMP1, TCG_REG_TMP2));
--            tcg_out_ld(s, TCG_TYPE_I32, TCG_REG_TMP2, TCG_REG_TMP1,
--                       cmp_off + 4 * HOST_BIG_ENDIAN);
-+            tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP2, TCG_REG_TMP1, cmp_off);
-         }
- 
-         /*
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 689fbea0df..dae892437e 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -1760,7 +1760,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, TCGReg *pbase,
-         }
- 
-         /* Load the tlb comparator and the addend.  */
--        QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-         tcg_out_ld(s, addr_type, TCG_REG_TMP0, TCG_REG_TMP2,
-                    is_ld ? offsetof(CPUTLBEntry, addr_read)
-                          : offsetof(CPUTLBEntry, addr_write));
++    object_class_property_add(oc, "highmem-mmio-size", "size",
++                                   virt_get_highmem_mmio_size,
++                                   virt_set_highmem_mmio_size,
++                                   NULL, NULL);
++    object_class_property_set_description(oc, "highmem-mmio-size",
++                                          "Set the high memory region size "
++                                          "for PCI MMIO");
++
+     object_class_property_add_str(oc, "gic-version", virt_get_gic_version,
+                                   virt_set_gic_version);
+     object_class_property_set_description(oc, "gic-version",
 -- 
-2.43.0
+2.46.0
 
 
