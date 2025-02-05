@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC01A29D6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76125A29D6E
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfodB-0002qb-W3; Wed, 05 Feb 2025 18:16:30 -0500
+	id 1tfodB-0002mk-6I; Wed, 05 Feb 2025 18:16:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocb-0002NS-Mb
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:54 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocf-0002WM-CH
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocZ-0006EI-2Q
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:52 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocd-0006GF-Ow
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797349;
+ s=mimecast20190719; t=1738797355;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e1nXQRB0gq61g6CFwyR/nEelwMCHxNNP2QX+vNSesCs=;
- b=OYUf5whmI/WDxI94FDmmIOB75NCrEG3SiTQcIBMzFknOZUYCAQSnDZZHFNNW/QDMmfJ2f8
- 88kUbKpeGS2AEm9wMbg+WfShP2yqrCsYT1UzDec+K1HPK/0l7YHcp1PrcKCE4GqHNYSI6X
- ZmgYXXkTbh34/zhmu4u+qrwjLz+cqmM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=IHIxoPvKeLIyYkefng7YSQobtR2GjSRxfS7Jhn3AbE8=;
+ b=cIL0RUB3a2sSX0YlkqgagwI1FaM1lNtomv8nmNz0dN4bRHVd0DyIE2A9T6JCdw09uf8SQu
+ nnY6e7qmZ4RgFF6yWZLqdJz/+YB+/JPs/V3bnTxk3aRYHhXBfCyjR1+lGnKg1ke74zUKH5
+ j7SqKyTJ+d1NTtpLBrzW7LUSMCCSzC0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-F9ExWoRWNFC9LdrfFMZIfw-1; Wed,
- 05 Feb 2025 18:15:46 -0500
-X-MC-Unique: F9ExWoRWNFC9LdrfFMZIfw-1
-X-Mimecast-MFC-AGG-ID: F9ExWoRWNFC9LdrfFMZIfw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-LYEq5sQoOkCEXY3X1l_WUw-1; Wed,
+ 05 Feb 2025 18:15:52 -0500
+X-MC-Unique: LYEq5sQoOkCEXY3X1l_WUw-1
+X-Mimecast-MFC-AGG-ID: LYEq5sQoOkCEXY3X1l_WUw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 605121955F28; Wed,  5 Feb 2025 23:15:44 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 460CA1800264; Wed,  5 Feb 2025 23:15:50 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F13461800570; Wed,  5 Feb 2025 23:15:38 +0000 (UTC)
+ id C0F9E1800570; Wed,  5 Feb 2025 23:15:44 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 34/42] docs/qapidoc: document the "out-of-band" pseudofeature
-Date: Wed,  5 Feb 2025 18:12:00 -0500
-Message-ID: <20250205231208.1480762-35-jsnow@redhat.com>
+Subject: [PATCH 35/42] docs/qapidoc: generate out-of-band pseudofeature
+ sections
+Date: Wed,  5 Feb 2025 18:12:01 -0500
+Message-ID: <20250205231208.1480762-36-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,41 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support to the transmogrifier for documenting the "out-of-band"
-"pseudofeature" of QMP commands. This patch relies on the inliner adding
-a dummy feature based on the presence of the oob flag for a QMP command,
-which happens in the next commit.
-
-A "pseudofeature" as I'm terming it here is not associated with a
-particular member, unlike a standard real-deal feature.
+For QMP commands with the oob flag set, insert a dummy feature
+("pseudofeature") representing this behavior so that it can be
+documented.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ docs/sphinx/qapidoc.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 5c65f3a8025..e70a85a6403 100644
+index e70a85a6403..81133b9b441 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -411,9 +411,15 @@ def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
-         # Proposal: decorate the right-hand column with some graphical
-         # element to indicate conditional availability?
-         assert section.text  # Guaranteed by parser.py
--        assert section.member
+@@ -243,6 +243,12 @@ def _get_inline_target(
  
--        self.generate_field("feat", section.member, section.text, section.info)
-+        if section.member:
-+            # Normal feature
-+            self.generate_field(
-+                "feat", section.member, section.text, section.info
-+            )
-+        else:
-+            # Pseudo-feature (OOB)
-+            self.add_field("feat", section.name, section.text, section.info)
+     # FIXME: Branches should be handled about here O:-)
  
-     def visit_returns(self, section: QAPIDoc.Section) -> None:
-         assert isinstance(self.entity, QAPISchemaCommand)
++    # Pseudo-feature: document the OOB property.
++    if isinstance(ent, QAPISchemaCommand) and ent.allow_oob:
++        feat = QAPIDoc.ArgSection(ent.info, QAPIDoc.Kind.FEATURE, "allow-oob")
++        feat.append_line("This command supports `out-of-band execution`.")
++        sections.partitions[DocRegion.FEATURE].append(feat)
++
+     # Generated "returns" statement.
+     if isinstance(ent, QAPISchemaCommand) and not any(
+         s.kind == QAPIDoc.Kind.RETURNS
 -- 
 2.48.1
 
