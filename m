@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42425A29D4D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17113A29D5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:17:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfocS-0001RP-LJ; Wed, 05 Feb 2025 18:15:45 -0500
+	id 1tfocl-0002SH-26; Wed, 05 Feb 2025 18:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocH-0000zo-8a
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:33 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocU-0002By-8c
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocF-00064B-Gi
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:33 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocQ-000663-IL
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797330;
+ s=mimecast20190719; t=1738797338;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8q0WYBtgPbrxavnpeYV09ffJck3G5AT6jE50aGCFuo=;
- b=YELVrBsQYDFFwo/vcaFl1H4+kwimiqbHI5iVhFEU+GUzS2JaNNqt9jhzcEzYRQcdH1Fssr
- Na2e3PvMusUHx7GwHtdZRrbqmU81dLr7DZNqPp8bwlvtSV3QKJ+yVUkhanCF78ACvLmCmU
- W3cx0umQWoqb1AfKGL77oxMe5zyDlRI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=HGQzUOGkYPNjVTBU4zzr+Xt4CX1F1lTyaUAlIivtS+c=;
+ b=gNoZUS/SD06LG40y6Z3AEksRW3IXDpoiwCPUj7O6Y20pM2x1np4HuwvuDpJ9BTO4K7Ct5I
+ 0AAJIEP3aKK4iOJ5cq3pKEeuU2ni8EZ3QQ3r961+jvR61s1SyU0nWHDuF0bhnuXFuCqEWA
+ Z9MgrEoDT5qojiwy1M/P9IQY+dNGk+Y=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-pmnLvOPhNR-WW32AtuxZIg-1; Wed,
- 05 Feb 2025 18:15:27 -0500
-X-MC-Unique: pmnLvOPhNR-WW32AtuxZIg-1
-X-Mimecast-MFC-AGG-ID: pmnLvOPhNR-WW32AtuxZIg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-kww7hkHTPIGqXBQ1Gt_gLw-1; Wed,
+ 05 Feb 2025 18:15:34 -0500
+X-MC-Unique: kww7hkHTPIGqXBQ1Gt_gLw-1
+X-Mimecast-MFC-AGG-ID: kww7hkHTPIGqXBQ1Gt_gLw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 87231180087A; Wed,  5 Feb 2025 23:15:25 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9CBD419560BC; Wed,  5 Feb 2025 23:15:32 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DB9701800570; Wed,  5 Feb 2025 23:15:19 +0000 (UTC)
+ id 24E481800265; Wed,  5 Feb 2025 23:15:25 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 31/42] docs/qapidoc: autogenerate undocumented return docs
-Date: Wed,  5 Feb 2025 18:11:57 -0500
-Message-ID: <20250205231208.1480762-32-jsnow@redhat.com>
+Subject: [PATCH 32/42] docs/qapidoc: Add generated returns documentation to
+ inliner
+Date: Wed,  5 Feb 2025 18:11:58 -0500
+Message-ID: <20250205231208.1480762-33-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,47 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds support for handling undocumented returns values
-sections -- which aren't actually implemented until the next patch.
+Generate "empty" returns sections for undocumented returns values in the
+inliner: the transmogrifier will pick these up and document them
+specially.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ docs/sphinx/qapidoc.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 538c26e812d..b9fe2f476cb 100644
+index b9fe2f476cb..5c65f3a8025 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -410,15 +410,21 @@ def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
-     def visit_returns(self, section: QAPIDoc.Section) -> None:
-         assert isinstance(self.entity, QAPISchemaCommand)
-         rtype = self.entity.ret_type
--        # q_empty can produce None, but we won't be documenting anything
--        # without an explicit return statement in the doc block, and we
--        # should not have any such explicit statements when there is no
--        # return value.
--        assert rtype
+@@ -243,6 +243,14 @@ def _get_inline_target(
+ 
+     # FIXME: Branches should be handled about here O:-)
+ 
++    # Generated "returns" statement.
++    if isinstance(ent, QAPISchemaCommand) and not any(
++        s.kind == QAPIDoc.Kind.RETURNS
++        for s in sections.partitions[DocRegion.OTHER]
++    ):
++        sect = QAPIDoc.Section(ent.info, QAPIDoc.Kind.RETURNS)
++        sections.partitions[DocRegion.OTHER].append(sect)
 +
-+        if not rtype:
-+            # Markus prefers q_empty returning commands just say
-+            # nothing.  I'd like a "Returns nothing" in the generated
-+            # docs because I like explicit to implicit - Users may not
-+            # know that commands have an implicit return type and may
-+            # wrongly assume that a missing "Returns" statement means
-+            # it's undocumented. Well, that's my $0.02.
-+            return
+     # Return the combined list of sections.
+     return list(sections)
  
-         typ = self.format_type(rtype)
--        assert section.text  # We don't expect empty returns sections.
--        self.add_field("returns", typ, section.text, section.info)
-+        if section.text:
-+            self.add_field("returns", typ, section.text, section.info)
-+        else:
-+            self.add_lines(f":returns-nodesc: {typ}", section.info)
- 
-     def visit_errors(self, section: QAPIDoc.Section) -> None:
-         # FIXME: the formatting for errors may be inconsistent and may
 -- 
 2.48.1
 
