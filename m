@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42D5A29D6C
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B889A29D71
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfodL-0003oS-0k; Wed, 05 Feb 2025 18:16:39 -0500
+	id 1tfodP-0004H7-Oi; Wed, 05 Feb 2025 18:16:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod8-00031d-Vq
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfodA-00032S-Cn
  for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod2-0006YT-3D
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:26 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod8-0006cR-PG
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797372;
+ s=mimecast20190719; t=1738797386;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OG1OMNHyw6wL72+on5pGRFR4/JQLepCqy5ztn8vdu08=;
- b=gDUqFW9nCznvtH3pAGpPxUJQogWItclU9XMMe/k/Hd74Y72xZZIWCIjaNxSGVWFYweNUSY
- a2O7dzxvgPhqsGfRIaw0FpA7wXBxQCNGmc+3vnbzP3VsTlJwPMZtwa9UsQLTN8kRMGyqK5
- aFWmaUhLh5iarvz8UVgJtIKhX65P8B0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=t/9paVO1pxyYJ28kkMcOqfaSWRKUzMpG7ObtwDsDFz4=;
+ b=ebaQuPNCEXx37rp9o+KiS4QjHryuGvTPF5aWybi8OvCxCxMQCDCssXkwMS6tOf7LfudKew
+ I1YT76uHgYkstH+MXVqumnZeAYbtt4R8J2FTeoySfAaRj2ZB1o0LrrYrBb7R5nEdRUHDku
+ t/n/jntHsWhjTAg1QhVPmAvbkyOlNHE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-O5dzuOe0MomKpZp09rTSxA-1; Wed,
- 05 Feb 2025 18:16:11 -0500
-X-MC-Unique: O5dzuOe0MomKpZp09rTSxA-1
-X-Mimecast-MFC-AGG-ID: O5dzuOe0MomKpZp09rTSxA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-i4VCLBLQOO6UrHVfXJVynA-1; Wed,
+ 05 Feb 2025 18:16:24 -0500
+X-MC-Unique: i4VCLBLQOO6UrHVfXJVynA-1
+X-Mimecast-MFC-AGG-ID: i4VCLBLQOO6UrHVfXJVynA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00803195608C; Wed,  5 Feb 2025 23:16:10 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0DB9C1800981; Wed,  5 Feb 2025 23:16:23 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 640A81800570; Wed,  5 Feb 2025 23:16:04 +0000 (UTC)
+ id 8EC9D1800570; Wed,  5 Feb 2025 23:16:16 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 38/42] docs/qapi: add branch support to inliner
-Date: Wed,  5 Feb 2025 18:12:04 -0500
-Message-ID: <20250205231208.1480762-39-jsnow@redhat.com>
+Subject: [PATCH 40/42] docs/qapidoc: cull (most) un-named entities from docs
+Date: Wed,  5 Feb 2025 18:12:06 -0500
+Message-ID: <20250205231208.1480762-41-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,118 +90,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Well, kind of. Anything beyond simple member definitions aren't
-included; including ifcond, details sections, features, etc. Definitely
-the most "WIP" part of this entire patch series.
+This patch excludes any items not marked visible from the transmogrifier
+output. The legacy qapidoc mechanism continues to ignore this flag, so
+the existing docs are not effected.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 57 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 755eb0fa0ec..86c13520d94 100644
+index 86c13520d94..e7da5b2225f 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -44,6 +44,7 @@
- from qapi.schema import (
-     QAPISchema,
-     QAPISchemaArrayType,
-+    QAPISchemaBranches,
-     QAPISchemaCommand,
-     QAPISchemaEntity,
-     QAPISchemaEnumMember,
-@@ -68,6 +69,20 @@
- logger = logging.getLogger(__name__)
+@@ -616,6 +616,13 @@ def visit_freeform(self, doc) -> None:
+     def visit_entity(self, ent):
+         assert ent is not None
  
- 
-+# These classes serve as pseudo-sections that this generator uses to
-+# flatten and inline arg sections from multiple entities.
-+class BranchStart(QAPIDoc.Section):
-+    def __init__(self, key: str, value: str, info: QAPISourceInfo):
-+        super().__init__(info, QAPIDoc.Kind.META)
-+        self.key = key
-+        self.value = value
++        # Some entities need not be rendered; they are not exposed via
++        # introspection and are only relevant for purposes of
++        # inlining/inheritance. They don't need their own entries and
++        # don't need to be in the index.
++        if not ent.doc_visible:
++            return
 +
-+
-+class BranchEnd(QAPIDoc.Section):
-+    def __init__(self, info: QAPISourceInfo):
-+        super().__init__(info, QAPIDoc.Kind.META)
-+
-+
- def dedent(text: str) -> str:
-     # Adjust indentation to make description text parse as paragraph.
- 
-@@ -105,6 +120,7 @@ def categorize(section: QAPIDoc.Section) -> "Optional[DocRegion]":
-     QAPIDoc.Kind.SINCE: None,
-     QAPIDoc.Kind.TODO: None,
-     QAPIDoc.Kind.DETAIL: DocRegion.DETAIL,
-+    QAPIDoc.Kind.META: DocRegion.MEMBER,
- }
- 
- 
-@@ -226,6 +242,15 @@ def _get_inline_target(
-             return ent.base
-         return None
- 
-+    def _variants(ent) -> Optional[QAPISchemaBranches]:
-+        if isinstance(ent, QAPISchemaObjectType):
-+            return ent.branches
-+        return None
-+
-+    def _memb_filter(sec: QAPIDoc.Section) -> bool:
-+        # meta grabs branch start/end markers, too.
-+        return sec.kind in (QAPIDoc.Kind.MEMBER, QAPIDoc.Kind.META)
-+
-     # Let's do this thing!
- 
-     if ent is None:
-@@ -241,7 +266,22 @@ def _get_inline_target(
-     # Now, stitch the results together!
-     sections.absorb(inlined)
- 
--    # FIXME: Branches should be handled about here O:-)
-+    # Now, pick up member sections from branches, if any.
-+    # FIXME: Anything other than members are unhandled/ignored here...!
-+    branch_sections = []
-+    if variants := _variants(ent):
-+        for variant in variants.variants:
-+            branch_sections.append(
-+                BranchStart(
-+                    variants.tag_member.name, variant.name, variants.info
-+                )
-+            )
-+            var_sections = inline(variant.type)
-+            branch_sections.extend(filter(_memb_filter, var_sections))
-+            branch_sections.append(BranchEnd(variants.info))
-+
-+    # Inject branches *after* the member section.
-+    sections.partitions[DocRegion.MEMBER].extend(branch_sections)
- 
-     # Pseudo-feature: document the OOB property.
-     if isinstance(ent, QAPISchemaCommand) and ent.allow_oob:
-@@ -485,6 +525,21 @@ def visit_sections(self, ent: QAPISchemaEntity) -> None:
- 
-         # Add sections *in the order they are documented*:
-         for section in sections:
-+            if isinstance(section, BranchStart):
-+                self.ensure_blank_line()
-+                self.add_line(
-+                    f".. qapi:branch:: {section.key} {section.value}",
-+                    section.info,
-+                )
-+                self.ensure_blank_line()
-+                self.indent += 1
-+                continue
-+
-+            if isinstance(section, BranchEnd):
-+                self.ensure_blank_line()
-+                self.indent -= 1
-+                continue
-+
-             if section.kind.name in ("INTRO", "DETAIL"):
-                 self.visit_paragraph(section)
-             elif section.kind == QAPIDoc.Kind.MEMBER:
+         try:
+             self._curr_ent = ent
+             # This line gets credited to the start of the /definition/.
 -- 
 2.48.1
 
