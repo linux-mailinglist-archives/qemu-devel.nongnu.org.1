@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7C1A29D3B
+	by mail.lfdr.de (Postfix) with ESMTPS id 0337FA29D38
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:13:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfoZR-0001FM-4c; Wed, 05 Feb 2025 18:12:38 -0500
+	id 1tfoZa-0001GY-MA; Wed, 05 Feb 2025 18:12:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZK-0001Ey-5H
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:30 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZL-0001F5-A8
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZG-0005ae-TD
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:29 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoZJ-0005aj-St
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:12:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797144;
+ s=mimecast20190719; t=1738797146;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=yAmmG7l3qu6h6I5cJ/VHSxEbL4AyzQnT22w/Z2JplrM=;
- b=W3I1YvmrLSAo2RKUNeeJRbza7Fozvu+y1atZ4mgO00iKjHyy5oKAnlhsDt2dPKACRM/HnS
- HUl6ZV0W1ImW9spUq74ZuJUg4+Wwo6wMBscqQtsDCcCCQ/CF6ReQ7ZPkXsV+Z+d68ubC2j
- Q7Ru6cxB5jIhFVPILg4rNnjJo5tDW3c=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7rlY36oQtVSPyIz+C7TU5nD1O/rmrISF76rdDY3L36k=;
+ b=dav0/iozheJ2OaW9/A0Hh11BhrUSuaf4eloBXgfQK5lB82hNdb4QQuWJvfXXvFgmlMYh5x
+ WJo67owaSj3Oe3VI3XMhK4NKIe6168Uq2SoK+5VGcvpOq3ugLyoSYe3/pGFxjuJ5deNadF
+ eRKFFWeV88pRRDU8mI12XHRSC/38zus=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-kiTKx8_fNNS3t-OFZcemmA-1; Wed,
- 05 Feb 2025 18:12:20 -0500
-X-MC-Unique: kiTKx8_fNNS3t-OFZcemmA-1
-X-Mimecast-MFC-AGG-ID: kiTKx8_fNNS3t-OFZcemmA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-ENQ3uxTOMImZ_wEeITVSmQ-1; Wed,
+ 05 Feb 2025 18:12:23 -0500
+X-MC-Unique: ENQ3uxTOMImZ_wEeITVSmQ-1
+X-Mimecast-MFC-AGG-ID: ENQ3uxTOMImZ_wEeITVSmQ
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D769A1956086; Wed,  5 Feb 2025 23:12:15 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9EE991956046; Wed,  5 Feb 2025 23:12:21 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E0B671800570; Wed,  5 Feb 2025 23:12:10 +0000 (UTC)
+ id 2640C1800267; Wed,  5 Feb 2025 23:12:16 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -56,12 +57,13 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 00/42] docs: add sphinx-domain rST generator to qapidoc
-Date: Wed,  5 Feb 2025 18:11:26 -0500
-Message-ID: <20250205231208.1480762-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 01/42] docs/qapidoc: support header-less freeform sections
+Date: Wed,  5 Feb 2025 18:11:27 -0500
+Message-ID: <20250205231208.1480762-2-jsnow@redhat.com>
+In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
+References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -88,147 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-based-on: https://patchew.org/QEMU/20241213011307.2942030-1-jsnow@redhat.co=
-m/=0D
-=0D
-Hiya! This series is based on a rebased version of the above=0D
-series. Apply the above patches to origin/master and then apply this=0D
-series and you should be good to go. Or just snitch the patches from my=0D
-GitLab branch:=0D
-=0D
-https://gitlab.com/jsnow/qemu/-/commits/sphinx-domain-blergh2=0D
-=0D
-(... ignore the branch name. I ran into some problems with stacked git=0D
-corrupting my branches ...)=0D
-=0D
-If you're just tuning in, this series adds a new sphinx documentation=0D
-generator for QAPI as presented on at KVM Forum; the big win here is=0D
-cross-references and indices for QMP commands and events. It depends on=0D
-the qapi-domain plugin for sphinx which is posted in the pre-requisite=0D
-series; it's not polished for review and should be considered=0D
-POC-quality. I felt it was easier to review this series backwards,=0D
-because the design of the rST generator informs the design of the domain=0D
-plugin. (Which makes sense: the rST is generated first, and then it's=0D
-parsed. Our review follows the flow of data through the generator.)=0D
-=0D
-Overview:=0D
-=0D
-Patches 1-24: Mostly the same as in v2; implements the very basics of=0D
-    the new qapidoc generator. "type" was changed to "kind" for the doc=0D
-    section metadata, and "untagged" changed to "plain". Some small=0D
-    phrasing tweaks here and there.=0D
-=0D
-Patches 25-26: Add auto-generated stub docs for undocumented members.=0D
-=0D
-Patches 27-29: Restrict the source QAPIDoc syntax slightly and=0D
-    differentiate "plain" sections as either intro or details. Necessary=0D
-    for the inliner.=0D
-=0D
-Patch 30: Add the "inliner", the component that squishes "inherited"=0D
-    arguments/members into a single reference for commands/events.=0D
-=0D
-Patches 31-32: Add auto-generated documentation for commands that return=0D
-    a value that is not documented.=0D
-=0D
-Patches 33-35: Document the "out-of-band" property on QMP commands.=0D
-=0D
-Patches 36-38: Add branch support to the inliner. Ish. See below.=0D
-=0D
-Patches 39-40: Cull unused definitions from the generated QMP docs; cull=0D
-    anything that has been inlined and no longer needs to be documented=0D
-    separately.=0D
-=0D
-Patches 41-42: Add intermediate representation rST document writing in=0D
-    DEBUG mode=0D
-=0D
-Things notably still not perfect:=0D
-=0D
-  (ignoring aesthetics; we care only about the rST generator itself in=0D
-  this series.)=0D
-=0D
-- ifcond for anything other than root level entires is still ignored=0D
-- branch inliner ignores all sections except members (ifcond, details,=0D
-  features)=0D
-- intro/details separation enforces no plain paragraphs to appear in the=0D
-  "middle" of the documentation section; new markup may be desired if we=0D
-  want to add annotations to categories/regions instead of to specific=0D
-  members/features.=0D
-=0D
-If you want to give this a whirl yourself, build QEMU with documentation=0D
-support enabled and look at docs/manual/qapi/index.html for a sample=0D
-generation of the QMP manual using the new system. You probably need=0D
-sphinx >=3D 4.0 for the time being to do so.=0D
-=0D
-John Snow (42):=0D
-  docs/qapidoc: support header-less freeform sections=0D
-  qapi/parser: adjust info location for doc body section=0D
-  docs/qapidoc: remove example section support=0D
-  qapi: expand tags to all doc sections=0D
-  qapi/schema: add __repr__ to QAPIDoc.Section=0D
-  docs/qapidoc: add transmogrifier stub=0D
-  docs/qapidoc: add transmogrifier class stub=0D
-  docs/qapidoc: add visit_module() method=0D
-  qapi/source: allow multi-line QAPISourceInfo advancing=0D
-  docs/qapidoc: add visit_freeform() method=0D
-  docs/qapidoc: add preamble() method=0D
-  docs/qapidoc: add visit_paragraph() method=0D
-  docs/qapidoc: add visit_errors() method=0D
-  docs/qapidoc: add format_type() method=0D
-  docs/qapidoc: add add_field() and generate_field() helper methods=0D
-  docs/qapidoc: add visit_feature() method=0D
-  docs/qapidoc: prepare to record entity being transmogrified=0D
-  docs/qapidoc: add visit_returns() method=0D
-  docs/qapidoc: add visit_member() method=0D
-  docs/qapidoc: add visit_sections() method=0D
-  docs/qapidoc: add visit_entity()=0D
-  docs/qapidoc: implement transmogrify() method=0D
-  docs: disambiguate cross-references=0D
-  docs/qapidoc: add transmogrifier test document=0D
-  docs/qapidoc: generate entries for undocumented members=0D
-  qapi/parser: add undocumented stub members to all_sections=0D
-  qapi: differentiate "intro" and "detail" sections=0D
-  qapi/parser: prohibit untagged sections between tagged sections=0D
-  qapi: Add "Details:" disambiguation marker=0D
-  docs/qapidoc: add minimalistic inliner=0D
-  docs/qapidoc: autogenerate undocumented return docs=0D
-  docs/qapidoc: Add generated returns documentation to inliner=0D
-  docs/qmp: add target to Out-of-band execution section=0D
-  docs/qapidoc: document the "out-of-band" pseudofeature=0D
-  docs/qapidoc: generate out-of-band pseudofeature sections=0D
-  qapi/parser: add "meta" kind to QAPIDoc.Kind=0D
-  qapi/schema: add __iter__ method to QAPISchemaVariants=0D
-  docs/qapi: add branch support to inliner=0D
-  qapi/schema: add doc_visible property to QAPISchemaDefinition=0D
-  docs/qapidoc: cull (most) un-named entities from docs=0D
-  qapi: resolve filenames in info structures=0D
-  docs/qapidoc: add intermediate output debugger=0D
-=0D
- docs/devel/codebase.rst         |   6 +-=0D
- docs/glossary.rst               |  10 +-=0D
- docs/index.rst                  |   1 +=0D
- docs/interop/qmp-spec.rst       |   2 +=0D
- docs/qapi/index.rst             |  53 +++=0D
- docs/sphinx/qapidoc.py          | 716 ++++++++++++++++++++++++++++++--=0D
- qapi/machine.json               |   2 +=0D
- qapi/migration.json             |   4 +=0D
- qapi/net.json                   |   4 +-=0D
- qapi/qom.json                   |   8 +-=0D
- qapi/yank.json                  |   2 +=0D
- scripts/qapi/introspect.py      |   4 +-=0D
- scripts/qapi/parser.py          | 178 ++++++--=0D
- scripts/qapi/schema.py          |  48 ++-=0D
- scripts/qapi/source.py          |   4 +-=0D
- scripts/qapi/types.py           |   4 +-=0D
- scripts/qapi/visit.py           |   4 +-=0D
- tests/qapi-schema/doc-good.json |   4 +-=0D
- tests/qapi-schema/doc-good.out  |  12 +-=0D
- tests/qapi-schema/doc-good.txt  |   8 +-=0D
- tests/qapi-schema/test-qapi.py  |   4 +-=0D
- 21 files changed, 975 insertions(+), 103 deletions(-)=0D
- create mode 100644 docs/qapi/index.rst=0D
-=0D
--- =0D
-2.48.1=0D
-=0D
+The code as written can't handle if a header isn't found and will crash,
+because `node` will be uninitialized. If we don't have a section title,
+create a generic block to insert text into instead.
+
+(This patch also removes a lingering pylint warning in the QAPIDoc
+implementation that prevents getting a clean baseline to use for
+forthcoming additions.)
+
+I am not attempting to *fully* clean up the existing QAPIDoc
+implementation in pylint because I intend to delete it anyway; this
+patch merely accomplishes a baseline under a specific pylint
+configuration:
+
+PYTHONPATH=../../scripts/ pylint --disable=fixme,too-many-lines,\
+consider-using-f-string,missing-docstring,unused-argument,\
+too-many-arguments,too-many-positional-arguments,\
+too-many-public-methods \
+qapidoc.py
+
+(under at least pylint 3.3.1; more robust tamping down of the
+environment needed to consistently perform checks will happen later -
+hopefully soon, sorry for the inconvenience.)
+
+This at least ensures there aren't regressions outside of these general
+warnings in the new qapidoc.py code to be committed.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ docs/sphinx/qapidoc.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 5f96b46270b..5a4d7388b29 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -421,6 +421,8 @@ def freeform(self, doc):
+             node = self._start_new_heading(heading, len(leader))
+             if text == '':
+                 return
++        else:
++            node = nodes.container()
+ 
+         self._parse_text_into_node(text, node)
+         self._cur_doc = None
+-- 
+2.48.1
 
 
