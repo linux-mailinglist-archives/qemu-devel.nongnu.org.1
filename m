@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4724A29D41
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9D4A29D45
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:14:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfoaF-0001b8-P7; Wed, 05 Feb 2025 18:13:27 -0500
+	id 1tfoaX-0002Ra-2I; Wed, 05 Feb 2025 18:13:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoaC-0001YY-ND
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:13:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoaQ-0002G0-9F
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:13:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoaA-0005fm-Rt
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:13:24 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoaO-0005hr-AH
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:13:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797202;
+ s=mimecast20190719; t=1738797215;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y4NwkAqiVaH5YimagugqJ5APb5BOWKEEhKm2N7RFwyI=;
- b=fOloSKY2G1TWsPY6N6kbP1TRBobrm61OF8zkKhb462tRMVbRXU9RvvqW3Z2zndR63Y0izh
- tNg52YtbI3thLZWulpOhxF5CWnz2new6iyvCykuvKDKs3attsLw1J/KDdxJBRbtzL8qmgt
- PW490a6q3Xv+3KXwGr+DDnxgCeXUUiw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ifDmYjcDkcsPKK2h0FWyf0lwnkxZx0G8P2XUmvBR8Ko=;
+ b=Tg4+Gc9QfHKod/c6vHSLKU+8ynKodO6GQB24BLsAmcw81OAVrpaUQcJj1mWMgzYcn+u4iC
+ qZscmuu5LwNqrxoMn4lFNzO2MU10ZEwe7y87RAlmQBgYp+vI5N/toZRubwODdz9uUGWzSt
+ 7uHWpFzzoA97XyxYzJJgx4Q/OSYYkm4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-hnQwiie9N4ugTEgAFQP2UA-1; Wed,
- 05 Feb 2025 18:13:19 -0500
-X-MC-Unique: hnQwiie9N4ugTEgAFQP2UA-1
-X-Mimecast-MFC-AGG-ID: hnQwiie9N4ugTEgAFQP2UA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-VplHk14OM9Cq4uaHomXB-Q-1; Wed,
+ 05 Feb 2025 18:13:25 -0500
+X-MC-Unique: VplHk14OM9Cq4uaHomXB-Q-1
+X-Mimecast-MFC-AGG-ID: VplHk14OM9Cq4uaHomXB-Q
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5AEDD19560A6; Wed,  5 Feb 2025 23:13:17 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EBB31800987; Wed,  5 Feb 2025 23:13:23 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D0F301800267; Wed,  5 Feb 2025 23:13:12 +0000 (UTC)
+ id A01B81800570; Wed,  5 Feb 2025 23:13:17 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,22 +57,22 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 10/42] docs/qapidoc: add visit_freeform() method
-Date: Wed,  5 Feb 2025 18:11:36 -0500
-Message-ID: <20250205231208.1480762-11-jsnow@redhat.com>
+Subject: [PATCH 11/42] docs/qapidoc: add preamble() method
+Date: Wed,  5 Feb 2025 18:11:37 -0500
+Message-ID: <20250205231208.1480762-12-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,69 +90,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This method adds the options/preamble to each definition block. Notably,
+:since: and :ifcond: are added, as are any "special features" such as
+:deprecated: and :unstable:.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 47 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ docs/sphinx/qapidoc.py | 32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 658eae3e386..c42cc3705aa 100644
+index c42cc3705aa..97868e5c375 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -133,6 +133,53 @@ def visit_module(self, path: str) -> None:
-         self.add_line_raw(f".. qapi:module:: {name}", path, 1)
-         self.ensure_blank_line()
+@@ -38,7 +38,7 @@
+ from qapi.error import QAPIError, QAPISemError
+ from qapi.gen import QAPISchemaVisitor
+ from qapi.parser import QAPIDoc
+-from qapi.schema import QAPISchema
++from qapi.schema import QAPISchema, QAPISchemaEntity
+ from qapi.source import QAPISourceInfo
  
-+    def visit_freeform(self, doc) -> None:
-+        # TODO: Once the old qapidoc transformer is deprecated, freeform
-+        # sections can be updated to pure rST, and this transformed removed.
-+        #
-+        # For now, translate our micro-format into rST. Code adapted
-+        # from Peter Maydell's freeform().
+ from sphinx import addnodes
+@@ -125,6 +125,36 @@ def ensure_blank_line(self) -> None:
+             # +2: correct for zero/one index, then increment by one.
+             self.add_line_raw("", fname, line + 2)
+ 
++    # Transmogrification helpers
 +
-+        assert len(doc.all_sections) == 1, doc.all_sections
-+        body = doc.all_sections[0]
-+        text = body.text
-+        info = doc.info
++    def preamble(self, ent: QAPISchemaEntity) -> None:
++        """
++        Generate option lines for qapi entity directives.
++        """
++        if ent.doc and ent.doc.since:
++            assert ent.doc.since.kind == QAPIDoc.Kind.SINCE
++            # Generated from the entity's docblock; info location is exact.
++            self.add_line(f":since: {ent.doc.since.text}", ent.doc.since.info)
 +
-+        if re.match(r"=+ ", text):
-+            # Section/subsection heading (if present, will always be the
-+            # first line of the block)
-+            (heading, _, text) = text.partition("\n")
-+            (leader, _, heading) = heading.partition(" ")
-+            level = len(leader) + 1  # Implicit +1 for heading in .rST stub
++        if ent.ifcond.is_present():
++            doc = ent.ifcond.docgen()
++            # Generated from entity definition; info location is approximate.
++            self.add_line(f":ifcond: {doc}", ent.info)
 +
-+            # https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
-+            markers = {
-+                1: "#",
-+                2: "*",
-+                3: "=",
-+                4: "-",
-+                5: "^",
-+                6: '"',
-+            }
-+            overline = level <= 2
-+            marker = markers[level]
++        # Hoist special features such as :deprecated: and :unstable:
++        # into the options block for the entity. If, in the future, new
++        # special features are added, qapi-domain will chirp about
++        # unrecognized options and fail until they are handled in
++        # qapi-domain.
++        for feat in ent.features:
++            if feat.is_special():
++                # FIXME: handle ifcond if present. How to display that
++                # information is TBD.
++                # Generated from entity def; info location is approximate.
++                self.add_line(f":{feat.name}:", feat.info)
 +
-+            self.ensure_blank_line()
-+            # This credits all 2 or 3 lines to the single source line.
-+            if overline:
-+                self.add_line(marker * len(heading), info)
-+            self.add_line(heading, info)
-+            self.add_line(marker * len(heading), info)
-+            self.ensure_blank_line()
-+
-+            # Eat blank line(s) and advance info
-+            trimmed = text.lstrip("\n")
-+            text = trimmed
-+            info = info.next_line(len(text) - len(trimmed) + 1)
-+
-+        self.add_lines(text, info)
 +        self.ensure_blank_line()
 +
+     # Transmogrification core methods
  
- # Disable black auto-formatter until re-enabled:
- # fmt: off
+     def visit_module(self, path: str) -> None:
 -- 
 2.48.1
 
