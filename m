@@ -2,64 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4079BA28619
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 10:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60422A2861F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 10:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfbKG-0006FN-FJ; Wed, 05 Feb 2025 04:04:04 -0500
+	id 1tfbNB-0008KD-CG; Wed, 05 Feb 2025 04:07:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=dc2d=U4=miszr.win=git@fe-bounces.miszr.win>)
- id 1tfbKB-0006E0-RH
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 04:04:00 -0500
-Received: from smtp.forwardemail.net ([207.246.76.47])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <SRS0=dc2d=U4=miszr.win=git@fe-bounces.miszr.win>)
- id 1tfbK8-0002ly-NB
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 04:03:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=miszr.win;
- h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
- Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-257304d8b2;
- t=1738746235; bh=Tq+fp2HWyDXK3lzVFWHzHmixXBdrlEjZq2eKJn1cqcY=;
- b=FeKPFuh3RH594ta5cxe1xB6FF/bDK7VTRv5nu/o6U2OPMRISi+1xB0fU3nzw4+iKhgMq2JJFk
- zZixfD2GxVaz1MVh3qG35h1pJie3vhPjxaKusLK4yfmYnBSjFxGjT+ie5xR3XYHWkWxqDRGT/kc
- GMtR93u9Uuzy19eDd0kOsto=
-X-Forward-Email-ID: 67a32979f2c6eba601968091
-X-Forward-Email-Sender: rfc822; git@miszr.win, smtp.forwardemail.net,
- 207.246.76.47
-X-Forward-Email-Version: 0.4.40
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-From: Mikael Szreder <git@miszr.win>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Mikael Szreder <git@miszr.win>
-Subject: [PATCH v2 2/2] target/sparc: Fix register selection for all F*TOx and
- FxTO* instructions
-Date: Wed,  5 Feb 2025 10:03:33 +0100
-Message-ID: <20250205090333.19626-3-git@miszr.win>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205090333.19626-1-git@miszr.win>
-References: <20250205090333.19626-1-git@miszr.win>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfbN8-0008K0-Kg
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 04:07:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfbN6-0004R8-Tm
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 04:07:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738746416;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8VMVgiAdSJJx4Yt6je91mqO890uzHAfBCBH1el+e/CQ=;
+ b=PwFOgfbkaCa9bHj8pr4MKOiZG3kBaI35M7MaiWIXZc1uRfWe7hmNo+45n1lkWASyx547ok
+ kdQvi9H5FwGSRF0+ow3WZaJNlzIHsJfyg2Nl2wlYsUJYiDK/6QRGpFB/TIf9O234n4fO12
+ tPCnkzMiDRAQltiOWRw7sMZNyoHD36k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-Wq6XyF8mPdSeR_g2vWNSrA-1; Wed,
+ 05 Feb 2025 04:06:51 -0500
+X-MC-Unique: Wq6XyF8mPdSeR_g2vWNSrA-1
+X-Mimecast-MFC-AGG-ID: Wq6XyF8mPdSeR_g2vWNSrA
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BB455180087B; Wed,  5 Feb 2025 09:06:48 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.40])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6F3561800872; Wed,  5 Feb 2025 09:06:47 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1F9ED21E6A28; Wed, 05 Feb 2025 10:06:45 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Igor
+ Mammedov <imammedo@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,  "Michael
+ S. Tsirkin" <mst@redhat.com>,  Eric Blake <eblake@redhat.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Marcelo Tosatti
+ <mtosatti@redhat.com>,  Huacai Chen <chenhuacai@kernel.org>,  Rick
+ Edgecombe <rick.p.edgecombe@intel.com>,  Francesco Lavra
+ <francescolavra.fl@gmail.com>,  qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v7 12/52] i386/tdx: Validate TD attributes
+In-Reply-To: <20250124132048.3229049-13-xiaoyao.li@intel.com> (Xiaoyao Li's
+ message of "Fri, 24 Jan 2025 08:20:08 -0500")
+References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
+ <20250124132048.3229049-13-xiaoyao.li@intel.com>
+Date: Wed, 05 Feb 2025 10:06:45 +0100
+Message-ID: <878qqk4v6i.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=207.246.76.47;
- envelope-from=SRS0=dc2d=U4=miszr.win=git@fe-bounces.miszr.win;
- helo=smtp.forwardemail.net
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_FMBLA_NEWDOM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,39 +94,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixed a mistake I made in the FqTOx instruction.
-Fixed issues in the FsTOx, FxTOs, FxTOd, FxTOq instructions.
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-Fixes: 0bba7572d40d ("target/sparc: Perform DFPREG/QFPREG in decodetree")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2802
-Signed-off-by: Mikael Szreder <git@miszr.win>
----
- target/sparc/insns.decode | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> Validate TD attributes with tdx_caps that only supported bits arer
+> allowed by KVM.
+>
+> Besides, sanity check the attribute bits that have not been supported by
+> QEMU yet. e.g., debug bit, it will be allowed in the future when debug
+> TD support lands in QEMU.
+>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+> Changes in v7:
+> - Define TDX_SUPPORTED_TD_ATTRS as QEMU supported mask, to validates
+>   user's request. (Rick)
+>
+> Changes in v3:
+> - using error_setg() for error report; (Daniel)
+> ---
+>  qapi/qom.json         |  16 +++++-
+>  target/i386/kvm/tdx.c | 118 +++++++++++++++++++++++++++++++++++++++++-
+>  target/i386/kvm/tdx.h |   3 ++
+>  3 files changed, 134 insertions(+), 3 deletions(-)
+>
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 8740626c4ee6..a53000ca6fb4 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -1060,11 +1060,25 @@
+>  #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
+>  #     be set, otherwise they refuse to boot.
+>  #
+> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
+> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
+> +#     Defaults to all zeros.
+> +#
+> +# @mrowner: ID for the guest TD=E2=80=99s owner (base64 encoded SHA384 d=
+igest).
+> +#     Defaults to all zeros.
+> +#
+> +# @mrownerconfig: ID for owner-defined configuration of the guest TD,
+> +#     e.g., specific to the workload rather than the run-time or OS
+> +#     (base64 encoded SHA384 digest).  Defaults to all zeros.
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 694a28d88c..cfcdf6690e 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -321,12 +321,12 @@ FdMULq      10 ..... 110100 ..... 0 0110 1110 .....        @q_d_d
- FNHADDs     10 ..... 110100 ..... 0 0111 0001 .....        @r_r_r
- FNHADDd     10 ..... 110100 ..... 0 0111 0010 .....        @d_d_d
- FNsMULd     10 ..... 110100 ..... 0 0111 1001 .....        @d_r_r
--FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @r_r2
-+FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @d_r2
- FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @d_d2
--FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @q_q2
--FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_r2
--FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_r2
--FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_r2
-+FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @d_q2
-+FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_d2
-+FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_d2
-+FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_d2
- FiTOs       10 ..... 110100 00000 0 1100 0100 .....        @r_r2
- FdTOs       10 ..... 110100 00000 0 1100 0110 .....        @r_d2
- FqTOs       10 ..... 110100 00000 0 1100 0111 .....        @r_q2
--- 
-2.48.1
+All three members are IDs, but only the first one has "id" in its name.
+Odd.  Any particular reason for that?
+
+> +#
+>  # Since: 10.0
+>  ##
+>  { 'struct': 'TdxGuestProperties',
+>    'data': { '*attributes': 'uint64',
+> -            '*sept-ve-disable': 'bool' } }
+> +            '*sept-ve-disable': 'bool',
+> +            '*mrconfigid': 'str',
+> +            '*mrowner': 'str',
+> +            '*mrownerconfig': 'str' } }
+
+The member names are abbreviations all run together, wheras QAPI/QMP
+favors words-separated-with-dashes.  If you invented them, please change
+them to QAPI/QMP style.  If they are established TDX terminology, keep
+them as they are, but please show us your evidence.
+
+>=20=20
+>  ##
+>  # @ThreadContextProperties:
+
+[...]
 
 
