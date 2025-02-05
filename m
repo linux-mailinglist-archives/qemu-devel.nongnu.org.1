@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B889A29D71
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5411DA29D79
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:19:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfodP-0004H7-Oi; Wed, 05 Feb 2025 18:16:44 -0500
+	id 1tfodV-0004g9-Kv; Wed, 05 Feb 2025 18:16:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfodA-00032S-Cn
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:28 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfodQ-0004ZH-1j
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfod8-0006cR-PG
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:28 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfodO-0006e5-5m
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797386;
+ s=mimecast20190719; t=1738797401;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t/9paVO1pxyYJ28kkMcOqfaSWRKUzMpG7ObtwDsDFz4=;
- b=ebaQuPNCEXx37rp9o+KiS4QjHryuGvTPF5aWybi8OvCxCxMQCDCssXkwMS6tOf7LfudKew
- I1YT76uHgYkstH+MXVqumnZeAYbtt4R8J2FTeoySfAaRj2ZB1o0LrrYrBb7R5nEdRUHDku
- t/n/jntHsWhjTAg1QhVPmAvbkyOlNHE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=QJyts+XObo7CJGUMCjTABmQ6SpbjxdYyosgm/niuzRo=;
+ b=QjNtSfjofwrVGzPCqUeBdN2M81h2LL07fJkrCN2qdIgaooEaJfT1MmSVFcAbA5TeL2tVdl
+ 7Qie/jghkY9sdq88bjFAaUnVCIsnoD6OOH99ucUdSdHGO9BLzshdyTXyWnD7KZNoHxNeKf
+ hZ5rpT+GE6vFUbg+gPra4NS9iwRfibM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-i4VCLBLQOO6UrHVfXJVynA-1; Wed,
- 05 Feb 2025 18:16:24 -0500
-X-MC-Unique: i4VCLBLQOO6UrHVfXJVynA-1
-X-Mimecast-MFC-AGG-ID: i4VCLBLQOO6UrHVfXJVynA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-5v7oEv1YPI61VazQgRzy1A-1; Wed,
+ 05 Feb 2025 18:16:38 -0500
+X-MC-Unique: 5v7oEv1YPI61VazQgRzy1A-1
+X-Mimecast-MFC-AGG-ID: 5v7oEv1YPI61VazQgRzy1A
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0DB9C1800981; Wed,  5 Feb 2025 23:16:23 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F4C41800875; Wed,  5 Feb 2025 23:16:36 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8EC9D1800570; Wed,  5 Feb 2025 23:16:16 +0000 (UTC)
+ id 63EC41800570; Wed,  5 Feb 2025 23:16:30 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 40/42] docs/qapidoc: cull (most) un-named entities from docs
-Date: Wed,  5 Feb 2025 18:12:06 -0500
-Message-ID: <20250205231208.1480762-41-jsnow@redhat.com>
+Subject: [PATCH 42/42] docs/qapidoc: add intermediate output debugger
+Date: Wed,  5 Feb 2025 18:12:08 -0500
+Message-ID: <20250205231208.1480762-43-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,33 +90,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch excludes any items not marked visible from the transmogrifier
-output. The legacy qapidoc mechanism continues to ignore this flag, so
-the existing docs are not effected.
+Add debugging output for the qapidoc transmogrifier - setting DEBUG=1
+will produce .ir files (one for each qapidoc directive) that write the
+generated rst file to disk to allow for easy debugging and verification
+of the generated document.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 7 +++++++
- 1 file changed, 7 insertions(+)
+ docs/sphinx/qapidoc.py | 41 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 4 deletions(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 86c13520d94..e7da5b2225f 100644
+index e7da5b2225f..7b895c3668e 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -616,6 +616,13 @@ def visit_freeform(self, doc) -> None:
-     def visit_entity(self, ent):
-         assert ent is not None
+@@ -36,7 +36,7 @@
+ from typing import Dict, List, Optional
  
-+        # Some entities need not be rendered; they are not exposed via
-+        # introspection and are only relevant for purposes of
-+        # inlining/inheritance. They don't need their own entries and
-+        # don't need to be in the index.
-+        if not ent.doc_visible:
-+            return
+ from docutils import nodes
+-from docutils.parsers.rst import Directive, directives
++from docutils.parsers.rst import directives
+ from docutils.statemachine import StringList, ViewList
+ from qapi.error import QAPIError, QAPISemError
+ from qapi.gen import QAPISchemaVisitor
+@@ -60,7 +60,7 @@
+ from sphinx.directives.code import CodeBlock
+ from sphinx.errors import ExtensionError
+ from sphinx.util import logging
+-from sphinx.util.docutils import switch_source_input
++from sphinx.util.docutils import SphinxDirective, switch_source_input
+ from sphinx.util.nodes import nested_parse_with_titles
+ 
+ 
+@@ -1053,7 +1053,7 @@ def visit_module(self, name):
+         super().visit_module(name)
+ 
+ 
+-class NestedDirective(Directive):
++class NestedDirective(SphinxDirective):
+     def run(self):
+         raise NotImplementedError
+ 
+@@ -1122,10 +1122,43 @@ def transmogrify(self, schema) -> nodes.Element:
+                 node.document = self.state.document
+                 self.state.nested_parse(content, 0, contentnode)
+         logger.info("Transmogrifier's nested parse completed.")
 +
-         try:
-             self._curr_ent = ent
-             # This line gets credited to the start of the /definition/.
++        if self.env.app.verbosity >= 2 or os.environ.get("DEBUG"):
++            argname = "_".join(Path(self.arguments[0]).parts)
++            name = Path(argname).stem + ".ir"
++            self.write_intermediate(content, name)
++
+         sys.stdout.flush()
+-
+         return contentnode
+ 
++    def write_intermediate(self, content, filename):
++        logger.info(
++            "writing intermediate rST for '%s' to '%s'",
++            self.arguments[0],
++            filename,
++        )
++
++        srctree = Path(self.env.app.config.qapidoc_srctree).resolve()
++        outlines = []
++        lcol_width = 0
++
++        for i, line in enumerate(content):
++            src, lineno = content.info(i)
++            src = Path(src).resolve()
++            src = src.relative_to(srctree)
++
++            lcol = f"{src}:{lineno:04d}"
++            lcol_width = max(lcol_width, len(lcol))
++            outlines.append((lcol, line))
++
++        with open(filename, "w", encoding="UTF-8") as outfile:
++            for lcol, rcol in outlines:
++                outfile.write(lcol.rjust(lcol_width))
++                outfile.write(" |")
++                if rcol:
++                    outfile.write(f" {rcol}")
++                outfile.write("\n")
++
+     def legacy(self, schema) -> nodes.Element:
+         vis = QAPISchemaGenRSTVisitor(self)
+         vis.visit_begin(schema)
 -- 
 2.48.1
 
