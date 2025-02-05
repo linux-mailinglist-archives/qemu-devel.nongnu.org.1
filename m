@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76125A29D6E
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C073FA29D73
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfodB-0002mk-6I; Wed, 05 Feb 2025 18:16:29 -0500
+	id 1tfodE-0003HM-KT; Wed, 05 Feb 2025 18:16:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocf-0002WM-CH
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:58 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfoco-0002rN-9Z
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocd-0006GF-Ow
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:57 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocm-0006Se-Qo
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:16:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797355;
+ s=mimecast20190719; t=1738797364;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IHIxoPvKeLIyYkefng7YSQobtR2GjSRxfS7Jhn3AbE8=;
- b=cIL0RUB3a2sSX0YlkqgagwI1FaM1lNtomv8nmNz0dN4bRHVd0DyIE2A9T6JCdw09uf8SQu
- nnY6e7qmZ4RgFF6yWZLqdJz/+YB+/JPs/V3bnTxk3aRYHhXBfCyjR1+lGnKg1ke74zUKH5
- j7SqKyTJ+d1NTtpLBrzW7LUSMCCSzC0=
+ bh=aM/k1aBVrX5LbuN3fvXOrQB5zCHh8SMeQZaRxBqvIxA=;
+ b=ZD9+1Jwid3Zr6AfU6VW+TFkzMvHmH5C9Kipe25gP1gzdIxIMUT4q/5hE2jUjseO8kyTuWY
+ Rnvyk/Kx5m/AF54QQiIAF+ekO8wFjbAstoh38RM1p//dTgc7cI78g9WKqfk5Ry00W7xX6W
+ nTE9fpZdC3nNKemjOUnQWJ+haIZIYEw=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-LYEq5sQoOkCEXY3X1l_WUw-1; Wed,
- 05 Feb 2025 18:15:52 -0500
-X-MC-Unique: LYEq5sQoOkCEXY3X1l_WUw-1
-X-Mimecast-MFC-AGG-ID: LYEq5sQoOkCEXY3X1l_WUw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-zUmgoklzMxmoG-K-aZ2KjQ-1; Wed,
+ 05 Feb 2025 18:16:00 -0500
+X-MC-Unique: zUmgoklzMxmoG-K-aZ2KjQ-1
+X-Mimecast-MFC-AGG-ID: zUmgoklzMxmoG-K-aZ2KjQ
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 460CA1800264; Wed,  5 Feb 2025 23:15:50 +0000 (UTC)
+ id 437011800268; Wed,  5 Feb 2025 23:15:58 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C0F9E1800570; Wed,  5 Feb 2025 23:15:44 +0000 (UTC)
+ id B95B81800265; Wed,  5 Feb 2025 23:15:50 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,10 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 35/42] docs/qapidoc: generate out-of-band pseudofeature
- sections
-Date: Wed,  5 Feb 2025 18:12:01 -0500
-Message-ID: <20250205231208.1480762-36-jsnow@redhat.com>
+Subject: [PATCH 36/42] qapi/parser: add "meta" kind to QAPIDoc.Kind
+Date: Wed,  5 Feb 2025 18:12:02 -0500
+Message-ID: <20250205231208.1480762-37-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -91,32 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For QMP commands with the oob flag set, insert a dummy feature
-("pseudofeature") representing this behavior so that it can be
-documented.
+This adds a "META" category for sections, for the express purpose of
+adding empty branch-start and branch-end sections into a linear section list
+for the purpose of rendering collapsible branches in sphinx HTML output.
+
+This is ... a little hacky. Sorry.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+ scripts/qapi/parser.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index e70a85a6403..81133b9b441 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -243,6 +243,12 @@ def _get_inline_target(
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 5890a13b5ba..c92bbc908e7 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -678,6 +678,7 @@ class Kind(enum.Enum):
+         SINCE = 5
+         TODO = 6
+         DETAIL = 7
++        META = 8
  
-     # FIXME: Branches should be handled about here O:-)
- 
-+    # Pseudo-feature: document the OOB property.
-+    if isinstance(ent, QAPISchemaCommand) and ent.allow_oob:
-+        feat = QAPIDoc.ArgSection(ent.info, QAPIDoc.Kind.FEATURE, "allow-oob")
-+        feat.append_line("This command supports `out-of-band execution`.")
-+        sections.partitions[DocRegion.FEATURE].append(feat)
-+
-     # Generated "returns" statement.
-     if isinstance(ent, QAPISchemaCommand) and not any(
-         s.kind == QAPIDoc.Kind.RETURNS
+         @staticmethod
+         def from_string(kind: str) -> 'QAPIDoc.Kind':
 -- 
 2.48.1
 
