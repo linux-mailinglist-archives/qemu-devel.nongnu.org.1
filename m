@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6D5A29590
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E58CDA2958B
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfhou-0006p8-1v; Wed, 05 Feb 2025 11:00:08 -0500
+	id 1tfhov-0006pd-Ev; Wed, 05 Feb 2025 11:00:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfhoq-0006oL-AK
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 11:00:04 -0500
+ id 1tfhor-0006oj-L9
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 11:00:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfhoo-0001Lf-MA
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 11:00:04 -0500
+ id 1tfhop-0001PJ-Ey
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 11:00:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738771201;
+ s=mimecast20190719; t=1738771202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9ZHuUSSEfLVR8YhjvWGcoC8+zUMIHyaTIZI83tFOw5M=;
- b=NAj2i8m2Z+aK6GCz6Q5Qi8aOe+ANixcMSxVtWCeUh60AtPcihxb5TbR6Vx0TVBAgogfwXC
- TYow2Q0dEyJbnz3ksEMJU9TwiP18V6gwgilEVbKVwLfp7PXdEihg4eIyMzoIIWvTwOD/3W
- VNO16oO20RIdmtmOeaNDk7nykgpDlcg=
+ bh=iJ2p1A8CTSdONnDKxN+tuBTW4cFdXDYG7d72xpn4jPM=;
+ b=d0sEOBWZBsIGfWLUUXpz60TaZODBx+LD6Wq7HCBmKHH7ZctKsE7X73xmYhwaogipIMKWT/
+ ypzsyPJAaVAu5wM6fabIeT+dP9eHxmaaIjqRDlnPYeLB65vBim9bjawqS9m6epH1QNjKXL
+ 05M9GOiMN9KyksccR4khcKa4J7Pdaac=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-362-fo0lflImNKOu8eWW-tJGsg-1; Wed,
- 05 Feb 2025 10:59:58 -0500
-X-MC-Unique: fo0lflImNKOu8eWW-tJGsg-1
-X-Mimecast-MFC-AGG-ID: fo0lflImNKOu8eWW-tJGsg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-5pr-3K1PP6ezdUyM2k1fnA-1; Wed,
+ 05 Feb 2025 11:00:01 -0500
+X-MC-Unique: 5pr-3K1PP6ezdUyM2k1fnA-1
+X-Mimecast-MFC-AGG-ID: 5pr-3K1PP6ezdUyM2k1fnA
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4E8721955ED9; Wed,  5 Feb 2025 15:59:57 +0000 (UTC)
+ id 32AFE1955E94; Wed,  5 Feb 2025 16:00:00 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.26])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5678E195608D; Wed,  5 Feb 2025 15:59:55 +0000 (UTC)
+ id C5FAF195608D; Wed,  5 Feb 2025 15:59:57 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -52,9 +52,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/5] tests/functional: set 'qemu_bin' as an object level field
-Date: Wed,  5 Feb 2025 15:59:44 +0000
-Message-ID: <20250205155946.2811296-4-berrange@redhat.com>
+Subject: [PATCH 4/5] tests/functional: remove all class level fields
+Date: Wed,  5 Feb 2025 15:59:45 +0000
+Message-ID: <20250205155946.2811296-5-berrange@redhat.com>
 In-Reply-To: <20250205155946.2811296-1-berrange@redhat.com>
 References: <20250205155946.2811296-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,51 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'qemu_bin' field is currently set on the class, despite being
-accessed as if it were an object instance field with 'self.qemu_bin'.
-
-This is no obvious need to have it as a class field, so move it into
-the object instance.
+A number of fields are set at the class level on QemuBaseTest, even
+though the exact same named field is then set at the object level
+later in most cases.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/testing/functional.rst      | 2 +-
- tests/functional/qemu_test/testcase.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/qemu_test/testcase.py | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index ecc738922b..bcb5509512 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -173,7 +173,7 @@ QEMU binary selection
- ^^^^^^^^^^^^^^^^^^^^^
- 
- The QEMU binary used for the ``self.vm`` QEMUMachine instance will
--primarily depend on the value of the ``qemu_bin`` class attribute.
-+primarily depend on the value of the ``qemu_bin`` instance attribute.
- If it is not explicitly set by the test code, its default value will
- be the result the QEMU_TEST_QEMU_BINARY environment variable.
- 
 diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 332c782ebc..574c1942f2 100644
+index 574c1942f2..531d6393ad 100644
 --- a/tests/functional/qemu_test/testcase.py
 +++ b/tests/functional/qemu_test/testcase.py
-@@ -33,7 +33,6 @@
+@@ -33,12 +33,6 @@
  
  class QemuBaseTest(unittest.TestCase):
  
--    qemu_bin = os.getenv('QEMU_TEST_QEMU_BINARY')
-     arch = None
- 
-     workdir = None
-@@ -193,6 +192,7 @@ def assets_available(self):
-         return True
- 
-     def setUp(self):
-+        self.qemu_bin = os.getenv('QEMU_TEST_QEMU_BINARY')
-         if self.qemu_bin is None:
-             self.skipTest("QEMU_TEST_QEMU_BINARY env variable is not set")
- 
+-    arch = None
+-
+-    workdir = None
+-    log = None
+-    logdir = None
+-
+     '''
+     @params compressed: filename, Asset, or file-like object to uncompress
+     @params format: optional compression format (gzip, lzma)
 -- 
 2.47.1
 
