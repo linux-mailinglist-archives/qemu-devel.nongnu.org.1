@@ -2,96 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8373DA29573
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 16:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27651A29589
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfhlI-0005Xa-Iy; Wed, 05 Feb 2025 10:56:24 -0500
+	id 1tfhok-0006mJ-1e; Wed, 05 Feb 2025 10:59:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfhlG-0005WX-5Q
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:56:22 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tfhoi-0006m9-Jw
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tfhlD-0000qQ-Pa
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:56:21 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tfhog-0001Kn-MH
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738770978;
+ s=mimecast20190719; t=1738771193;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Yar1gRsf5oRdvocznnOksxQ9IHw20YPaHujDk9gUTw0=;
- b=gTGB/zl6MNndsomKTNxOnyd6TV82Y0dq4AOvDXxDLOuZuBjPEAglnsPv3o2QftijzWTSPe
- MuuEmWXfdsCYhtabPtHJgYPg4JcdY11McDQCFx16QHEnUadKFD3Evfhol+RNxnd4gbDwdn
- zx7d+skmTxL68RSY7J7azpdfTWn3Qfs=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-158-JuPgAn9wNzqjKWhWgxjs5Q-1; Wed, 05 Feb 2025 10:56:04 -0500
-X-MC-Unique: JuPgAn9wNzqjKWhWgxjs5Q-1
-X-Mimecast-MFC-AGG-ID: JuPgAn9wNzqjKWhWgxjs5Q
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6e42d5ff26cso30680226d6.1
- for <qemu-devel@nongnu.org>; Wed, 05 Feb 2025 07:56:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738770963; x=1739375763;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Yar1gRsf5oRdvocznnOksxQ9IHw20YPaHujDk9gUTw0=;
- b=gGL7rY8eo7IjsMagP0hefI2zAdjH8HOFcJFvgj1KWunDeYm9MoIEoiWel1Dqg0ICcu
- p0SnB2LtGHVZKOa28Jv6oCsELhnAxKgz+ALOmCA5TEhWdua5kGmM212TPb/p+r/NN9VG
- UmKI0xPAWS0mdbZuc+fTYsB6z7towdle6SxAHO+Hc/VIBRKwPpsGwbeVZV0hA6pJUPBS
- 3nmvvbedMuWfZi2Dzeb4ZKFOH0cHgKRvdO4ZtCfbGUmAHBgf0DmxDh0bRwfceWlr2Fxt
- 4suJO5NFaDShsSn3i3nhb9ErHUgcMtpgzXFD3zq+3KA8IoAMZ+h/TktG9ldLu2lNkEk5
- fCJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWz7VwPPv0vP/q+nYm+D1fKeNXxSGHoklF06GNItwd33yeyqKO9aNXK9OnT9uJH2KTCGn4BdKFgzfsZ@nongnu.org
-X-Gm-Message-State: AOJu0Yxj4d3XNCogcCUm6r3z5vxC1Bz7CuGRSNgopBVZI3/6IVDpdlyW
- wcS3Juk3we+OB2ry2kacsIX4OIzlTeRsx66YxwdXbhqXKg/OKCunJqBpe/HQTNdByx7z2iIo6Pd
- goy47rXg0459uugYtoJUUhkpG2ODgqssmkz3oRC1J/TZWq8a8zrj9
-X-Gm-Gg: ASbGncvK4nWpKHH4urZB+QY/p+eGZaC88TBupKrQxKDrJWrPlRuVahIFnznKW+PpbYT
- xGqKVpew8Y5hsAvn6MX9bAA37AWBqG+6irZ4rLTOQ/KLjZvq4dATVS74YvXDP3GHcwp9RsHhcW+
- qjVLuO76hgZMv1Y5Rdvnw/zsC9iZAWh8ylfYJCGTA6HeAstvgjM5h2eaCZVNKL+XJ5YOPLFRvEr
- SjWQBm4hTzONNnUBtyDkeUrjrDS13X496ebcum2OZhpFru2Stl0QlNYNWSTkbms4uk+TaFrIg1+
- vCESKGCfd4YtQ9BFOTaNOsxJcRDbQR2HlImUJmpWPCIOwuvP
-X-Received: by 2002:a05:6214:2462:b0:6d8:861f:adca with SMTP id
- 6a1803df08f44-6e42fca5013mr51389766d6.42.1738770963370; 
- Wed, 05 Feb 2025 07:56:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHzv/fuf42Qro+qFj5Exxd+y9qPjQwSfuOpqLvCNLqj2davR4hsk4++gfoH1oko66MlyDlztA==
-X-Received: by 2002:a05:6214:2462:b0:6d8:861f:adca with SMTP id
- 6a1803df08f44-6e42fca5013mr51389346d6.42.1738770962926; 
- Wed, 05 Feb 2025 07:56:02 -0800 (PST)
-Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e2547f3e55sm75465796d6.16.2025.02.05.07.56.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Feb 2025 07:56:02 -0800 (PST)
-Date: Wed, 5 Feb 2025 10:55:59 -0500
-From: Peter Xu <peterx@redhat.com>
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 19/33] migration: Add
- save_live_complete_precopy_thread handler
-Message-ID: <Z6OKDxw1hnNKCjJn@x1.local>
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <7561a5d67e113e166c7d43246d52feec6ca06fb5.1738171076.git.maciej.szmigiero@oracle.com>
- <Z6JUP2w9u_FQRP6u@x1.local>
- <4ad3e311-e701-4029-bb51-e69da4f69468@maciej.szmigiero.name>
- <Z6J5vyd1_gdWlYAB@x1.local>
- <c107d827-6913-4af5-8a63-c71000060fec@maciej.szmigiero.name>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BzZ5P5YiMeKo9I1EToLPISTDb5ixmbQoYJDQPJT6XVg=;
+ b=g8Cj/DJHoPpN7C0KChY7cUBb9JzHdt5bizGv2NNgIl3jHBkF37lyh9CcpaYVwQ2zM3lRBQ
+ jfnSm1SGLp3+UWEYakQoRfzv94gB6o6/r8T1NDFqAHU/tnGfwWmP5mibbt1WTeqgCT9w3Z
+ yleyngze3E6wzBEUxC4QchQmwjoF3GM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-f9hJj6XAOE-UEcNmy5YwvA-1; Wed,
+ 05 Feb 2025 10:59:51 -0500
+X-MC-Unique: f9hJj6XAOE-UEcNmy5YwvA-1
+X-Mimecast-MFC-AGG-ID: f9hJj6XAOE-UEcNmy5YwvA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0C98E180121A; Wed,  5 Feb 2025 15:59:50 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.26])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8B1A41956052; Wed,  5 Feb 2025 15:59:47 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/5] tests/functional: a few misc cleanups and fixes
+Date: Wed,  5 Feb 2025 15:59:41 +0000
+Message-ID: <20250205155946.2811296-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c107d827-6913-4af5-8a63-c71000060fec@maciej.szmigiero.name>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -116,320 +83,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 05, 2025 at 12:53:21PM +0100, Maciej S. Szmigiero wrote:
-> On 4.02.2025 21:34, Peter Xu wrote:
-> > On Tue, Feb 04, 2025 at 08:32:15PM +0100, Maciej S. Szmigiero wrote:
-> > > On 4.02.2025 18:54, Peter Xu wrote:
-> > > > On Thu, Jan 30, 2025 at 11:08:40AM +0100, Maciej S. Szmigiero wrote:
-> > > > > +static int multifd_device_state_save_thread(void *opaque)
-> > > > > +{
-> > > > > +    struct MultiFDDSSaveThreadData *data = opaque;
-> > > > > +    int ret;
-> > > > > +
-> > > > > +    ret = data->hdlr(data->idstr, data->instance_id, &send_threads_abort,
-> > > > > +                     data->handler_opaque);
-> > > > 
-> > > > I thought we discussed somewhere and the plan was we could use Error** here
-> > > > to report errors.  Would that still make sense, or maybe I lost some
-> > > > context?
-> > > 
-> > > That was about *load* threads, here these are *save* threads.
-> > 
-> > Ah OK.
-> > 
-> > > 
-> > > Save handlers do not return an Error value, neither save_live_iterate, nor
-> > > save_live_complete_precopy or save_state does so.
-> > 
-> > Let's try to make new APIs work with Error* if possible.
-> 
-> Let's assume that these threads return an Error object.
-> 
-> What's qemu_savevm_state_complete_precopy_iterable() supposed to do with it?
+See individual commit messages for descriptions of the
+cleanups/fixes.
 
-IIUC it's not about qemu_savevm_state_complete_precopy_iterable() in this
-context, as the Error* will be used in one of the thread of the pool, not
-migration thread.
+Daniel P. Berrangé (5):
+  tests/functional: skip test if QEMU_TEST_QEMU_BINARY is not set
+  tests/functional: remove unused 'bin_prefix' variable
+  tests/functional: set 'qemu_bin' as an object level field
+  tests/functional: remove all class level fields
+  tests/functional: skip mem addr test on 32-bit hosts
 
-The goal is to be able to set Error* with migrate_set_error(), so that when
-migration failed, query-migrate can return the error to libvirt, so
-migration always tries to remember the 1st error hit if ever possible.
-
-It's multifd_device_state_save_thread() to do migrate_set_error(), not in
-migration thread.  qemu_savevm_state_complete_*() are indeed not ready to
-pass Errors, but it's not in the discussed stack.
-
-> Both it and its caller qemu_savevm_state_complete_precopy() only handle int
-> errors.
-> 
-> qemu_savevm_state_complete_precopy() in turn has 4 callers, half of which (2)
-> also would need to be enlightened with Error handling somehow.
-
-Right, we don't need to touch those, as explained above.
-
-Generally speaking, IMHO it's always good to add new code with Error*
-reports, rather than retvals in migration, even if the new code is in the
-migration thread stack.  It made future changes easier to switch to Error*.
-
-> 
-> > 
-> > > 
-> > > > Meanwhile, I still feel uneasy on having these globals (send_threads_abort,
-> > > > send_threads_ret).  Can we make MultiFDDSSaveThreadData the only interface
-> > > > between migration and the threads impl?  So I wonder if it can be:
-> > > > 
-> > > >     ret = data->hdlr(data);
-> > > > 
-> > > > With extended struct like this (I added thread_error and thread_quit):
-> > > > 
-> > > > struct MultiFDDSSaveThreadData {
-> > > >       SaveLiveCompletePrecopyThreadHandler hdlr;
-> > > >       char *idstr;
-> > > >       uint32_t instance_id;
-> > > >       void *handler_opaque;
-> > > >       /*
-> > > >        * Should be NULL when struct passed over to thread, the thread should
-> > > >        * set this if the handler would return false.  It must be kept NULL if
-> > > >        * the handler returned true / success.
-> > > >        */
-> > > >       Error *thread_error;
-> > > 
-> > > As I mentioned above, these handlers do not generally return Error type,
-> > > so this would need to be an *int;
-> > > 
-> > > >       /*
-> > > >        * Migration core would set this when it wants to notify thread to
-> > > >        * quit, for example, when error occured in other threads, or migration is
-> > > >        * cancelled by the user.
-> > > >        */
-> > > >       bool thread_quit;
-> > > 
-> > >              ^ I guess that was supposed to be a pointer too (*thread_quit).
-> > 
-> > It's my intention to make this bool, to make everything managed per-thread.
-> 
-> But that's unnecessary since this flag is common to all these threads.
-
-One bool would be enough, but you'll need to export another API for VFIO to
-use otherwise.  I suppose that's ok too.
-
-Some context of multifd threads and how that's done there..
-
-We started with one "quit" per thread struct, but then we switched to one
-bool exactly as you said, see commit 15f3f21d598148.
-
-If you want to stick with one bool, it's okay too, you can export something
-similar in misc.h, e.g. multifd_device_state_save_thread_quitting(), then
-we can avoid passing in the "quit" either as handler parameter, or
-per-thread flag.
-
-> 
-> > It's actually what we do with multifd, these are a bunch of extra threads
-> > to differeciate from the "IO threads" / "multifd threads".
-> > 
-> > > 
-> > > > };
-> > > > 
-> > > > Then if any multifd_device_state_save_thread() failed, for example, it
-> > > > should notify all threads to quit by setting thread_quit, instead of
-> > > > relying on yet another global variable to show migration needs to quit.
-> > > 
-> > > multifd_abort_device_state_save_threads() needs to access
-> > > send_threads_abort too.
-> > 
-> > This may need to become something like:
-> > 
-> >    QLIST_FOREACH() {
-> >        MultiFDDSSaveThreadData *data = ...;
-> >        data->thread_quit = true;
-> >    }
-> 
-> At the most basic level that's turning O(1) operation into O(n).
-> 
-> Besides, it creates a question now who now owns these MultiFDDSSaveThreadData
-> structures - they could be owned by either thread pool or the
-> multifd_device_state code.
-
-I think it should be owned by migration, and with this idea it will need to
-be there until waiting thread pool completing their works, so migration
-core needs to free them.
-
-> 
-> Currently the ownership is simple - the multifd_device_state code
-> allocates such per-thread structure in multifd_spawn_device_state_save_thread()
-> and immediately passes its ownership to the thread pool which
-> takes care to free it once it no longer needs it.
-
-Right, this is another reason why I think having migration owing these
-structs is better.  We used to have task dangling issues when we shift
-ownership of something to mainloop then we lose track of them (e.g. on TLS
-handshake gsources).  Those are pretty hard to debug when hanged, because
-migration core has nothing to link to the hanged tasks again anymore.
-
-I think we should start from having migration core being able to reach
-these thread-based tasks when needed.  Migration also have control of the
-thread pool, then it would be easier.  Thread pool is so far simple so we
-may still need to be able to reference to per-task info separately.
-
-> 
-> Now, with the list implementation if the thread pool were to free
-> that MultiFDDSSaveThreadData it would also need to release it from
-> the list.
-> 
-> Which in turn would need appropriate locking around this removal
-> operation and probably also each time the list is iterated over.
-> 
-> On the other hand if the multifd_device_state code were to own
-> that MultiFDDSSaveThreadData then it would linger around until
-> multifd_device_state_send_cleanup() cleans it up even though its
-> associated thread might be long gone.
-
-Do you see a problem with it?  It sounds good to me actually.. and pretty
-easy to understand.
-
-So migration creates these MultiFDDSSaveThreadData, then create threads to
-enqueue then, then wait for all threads to complete, then free these
-structs.
-
-> 
-> > We may want to double check qmp 'migrate_cancel' will work when save
-> > threads are running, but this can also be done for later.
-> 
-> > > 
-> > > And multifd_join_device_state_save_threads() needs to access
-> > > send_threads_ret.
-> > 
-> > Then this one becomes:
-> > 
-> >    thread_pool_wait(send_threads);
-> >    QLIST_FOREACH() {
-> >        MultiFDDSSaveThreadData *data = ...;
-> >        if (data->thread_error) {
-> >           return false;
-> >        }
-> >    }
-> >    return true;
-> 
-> Same here, having a common error return would save us from having
-> to iterate over a list (or having a list in the first place).
-
-IMHO perf isn't an issue here. It's slow path, threads num is small, loop
-is cheap.  I prefer prioritize cleaness in this case.
-
-Otherwise any suggestion we could report an Error* in the threads?
-
-> 
-> > > 
-> > > These variables ultimately will have to be stored somewhere since
-> > > there can be multiple save threads and so multiple instances of
-> > > MultiFDDSSaveThreadData.
-> > > 
-> > > So these need to be stored somewhere where
-> > > multifd_spawn_device_state_save_thread() can reach them to assign
-> > > their addresses to MultiFDDSSaveThreadData members.
-> > 
-> > Then multifd_spawn_device_state_save_thread() will need to manage the
-> > qlist, making sure migration core remembers what jobs it submitted.  It
-> > sounds good to have that bookkeeping when I think about it, instead of
-> > throw the job to the thread pool and forget it..
-> 
-> It's not "forgetting" about the job but rather letting thread pool
-> manage it - I think thread pool was introduced so these details
-> (thread management) are abstracted from the migration code.
-> Now they would be effectively duplicated in the migration code.
-
-Migration is still managing those as long as you have send_threads_abort,
-isn't it?  The thread pool doesn't yet have an API to say "let's quit all
-the tasks", otherwise I'm OK too to use the pool API instead of having
-thread_quit.
-
-> 
-> > > 
-> > > However, at that point multifd_device_state_save_thread() can
-> > > access them too so it does not need to have them passed via
-> > > MultiFDDSSaveThreadData.
-> > > 
-> > > However, nothing prevents putting send_threads* variables
-> > > into a global struct (with internal linkage - "static", just as
-> > > these separate ones are) if you like such construct more.
-> > 
-> > This should be better than the current global vars indeed, but less
-> > favoured if the per-thread way could work above.
-> 
-> You still need that list to be a global variable,
-> so it's the same amount of global variables as just putting
-> the existing variables in a struct (which could be even allocated
-> in multifd_device_state_send_setup() and deallocated in
-> multifd_device_state_send_cleanup() for extra memory savings).
-
-Yes this works for me.
-
-I think you got me wrong on "not allowing to introduce global variables".
-I'm OK with it, but please still consider..
-
-  - Put it under some existing global object rather than having separate
-    global variables all over the places..
-
-  - Having Error reports
-
-And I still think we can change:
-
-typedef int (*SaveLiveCompletePrecopyThreadHandler)(char *idstr,
-                                                    uint32_t instance_id,
-                                                    bool *abort_flag,
-                                                    void *opaque);
-
-To:
-
-typedef int (*SaveLiveCompletePrecopyThreadHandler)(MultiFDDSSaveThreadData*);
-
-No matter what.
-
-> 
-> These variables are having internal linkage limited to (relatively
-> small) multifd-device-state.c, so it's not like they are polluting
-> namespace in some major migration translation unit.
-
-If someone proposes to introduce 100 global vars in multifd-device-state.c,
-I'll strongly stop that.
-
-If it's one global var, I'm OK.
-
-What if it's 5?
-
-===8<===
-static QemuMutex queue_job_mutex;
-
-static ThreadPool *send_threads;
-static int send_threads_ret;
-static bool send_threads_abort;
-
-static MultiFDSendData *device_state_send;
-===8<===
-
-I think I should start calling a stop.  That's what happened..
-
-Please consider introducing something like multifd_send_device_state so we
-can avoid anyone in the future randomly add static global vars.
-
-> 
-> Taking into consideration having to manage an extra data structure
-> (list), needing more code to do so, having worse algorithms I don't
-> really see a point of using that list.
-> 
-> (This is orthogonal to whether the thread return type is changed to
-> Error which could be easily done on the existing save threads pool
-> implementation).
-
-My bet is changing to list is as easy (10-20 LOC?).  If not, I can try to
-provide the diff on top of your patch.
-
-I'm also not strictly asking for a list, but anything that makes the API
-cleaner (less globals, better error reports, etc.).
-
-Thanks,
+ docs/devel/testing/functional.rst        |  2 +-
+ tests/functional/qemu_test/__init__.py   |  2 +-
+ tests/functional/qemu_test/decorators.py | 12 ++++++++++++
+ tests/functional/qemu_test/testcase.py   | 18 +++++++-----------
+ tests/functional/test_mem_addr_space.py  | 17 ++++++++++++++++-
+ 5 files changed, 37 insertions(+), 14 deletions(-)
 
 -- 
-Peter Xu
+2.47.1
 
 
