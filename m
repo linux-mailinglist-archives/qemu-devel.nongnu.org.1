@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF05A29D6D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F88A29D77
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 00:19:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfocE-0000SO-P6; Wed, 05 Feb 2025 18:15:30 -0500
+	id 1tfodB-0002pn-VK; Wed, 05 Feb 2025 18:16:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfobs-00087N-Km
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:12 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocU-0002CD-DR
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfobq-00061W-6K
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:08 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tfocS-0006Aj-MY
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 18:15:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738797305;
+ s=mimecast20190719; t=1738797343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aCyKutJWGOcr8VObj1Oj+4uR8ZmsNxHABIofgBJXEss=;
- b=QvI+nQQg5AYdawh4iEhU0EiLmH2DmugP/Vc21jUMi+1VB27LFvJTgcQ7FG79rtsHIYoq+9
- PqzC/oXCZ1kA85+1hcPVeEbck+FWQasAx4GycJM/foXSkooblSVvElvHci2PaPXbQS5qqV
- U/tUi1paXCAvbBDSw6YPTXKznbXGnh8=
+ bh=2q5bhksPoiCxanHmvPQ7o2n/l9UjpHDjKW0NSj4q+ZU=;
+ b=QO/aSVhS3MjMq7/yor04h5DBnENEwlxJn1Wi/Ld9pHR5+1PwDp5v/FaPgd9Mj+mZIBsphe
+ 907qpA2us6rraZ7q4Kgikyt4Yiw2R9/iUFiP7+IPiR0+AAB2kGCdfWbvz86/FOOFlQb8o1
+ BMQrOiOZyil8bBOMEXqNEYq8LSsbDyU=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-RrnFoDO_Mh6zp2Hc-d4TDQ-1; Wed,
- 05 Feb 2025 18:15:02 -0500
-X-MC-Unique: RrnFoDO_Mh6zp2Hc-d4TDQ-1
-X-Mimecast-MFC-AGG-ID: RrnFoDO_Mh6zp2Hc-d4TDQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-283-vy-MiG4vPAu0U12bdn-PIQ-1; Wed,
+ 05 Feb 2025 18:15:40 -0500
+X-MC-Unique: vy-MiG4vPAu0U12bdn-PIQ-1
+X-Mimecast-MFC-AGG-ID: vy-MiG4vPAu0U12bdn-PIQ
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8C7D61800570; Wed,  5 Feb 2025 23:15:00 +0000 (UTC)
+ id AAA081800877; Wed,  5 Feb 2025 23:15:38 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.104])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 607FF1800570; Wed,  5 Feb 2025 23:14:54 +0000 (UTC)
+ id 0CB231800570; Wed,  5 Feb 2025 23:15:32 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 27/42] qapi: differentiate "intro" and "detail" sections
-Date: Wed,  5 Feb 2025 18:11:53 -0500
-Message-ID: <20250205231208.1480762-28-jsnow@redhat.com>
+Subject: [PATCH 33/42] docs/qmp: add target to Out-of-band execution section
+Date: Wed,  5 Feb 2025 18:11:59 -0500
+Message-ID: <20250205231208.1480762-34-jsnow@redhat.com>
 In-Reply-To: <20250205231208.1480762-1-jsnow@redhat.com>
 References: <20250205231208.1480762-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -90,183 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch begins distinguishing "Plain" sections as being either
-"Intro" or "Details" sections for the purpose of knowing when and where
-to inline those sections.
+This allows us to cross-reference this section from other docs; the main
+motivator here is to refer to this section when documenting the
+Out-of-band capability for QMP commands that support it in the rendered
+HTML documentation.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py         |  4 ++--
- scripts/qapi/parser.py         | 30 +++++++++++++++++++-----------
- tests/qapi-schema/doc-good.out |  8 ++++----
- 3 files changed, 25 insertions(+), 17 deletions(-)
+ docs/interop/qmp-spec.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 2d83556629d..154ebc1b4cd 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -289,7 +289,7 @@ def visit_sections(self, ent: QAPISchemaEntity) -> None:
+diff --git a/docs/interop/qmp-spec.rst b/docs/interop/qmp-spec.rst
+index 563344160e6..ea713a96ac0 100644
+--- a/docs/interop/qmp-spec.rst
++++ b/docs/interop/qmp-spec.rst
+@@ -119,6 +119,8 @@ Where:
  
-         # Add sections *in the order they are documented*:
-         for section in sections:
--            if section.kind == QAPIDoc.Kind.PLAIN:
-+            if section.kind.name in ("INTRO", "DETAIL"):
-                 self.visit_paragraph(section)
-             elif section.kind == QAPIDoc.Kind.MEMBER:
-                 self.visit_member(section)
-@@ -578,7 +578,7 @@ def _nodes_for_sections(self, doc):
-                 # Hide TODO: sections
-                 continue
+ The actual commands are documented in the :doc:`qemu-qmp-ref`.
  
--            if section.kind == QAPIDoc.Kind.PLAIN:
-+            if section.kind.name in ("INTRO", "DETAIL"):
-                 # Sphinx cannot handle sectionless titles;
-                 # Instead, just append the results to the prior section.
-                 container = nodes.container()
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index a8b30ae1a4b..b2f77ffdd7a 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -499,7 +499,7 @@ def get_doc(self) -> 'QAPIDoc':
-             doc = QAPIDoc(info, symbol)
-             self.accept(False)
-             line = self.get_doc_line()
--            no_more_args = False
-+            have_tagged = False
- 
-             while line is not None:
-                 # Blank lines
-@@ -528,10 +528,10 @@ def get_doc(self) -> 'QAPIDoc':
-                     if not doc.features:
-                         raise QAPIParseError(
-                             self, 'feature descriptions expected')
--                    no_more_args = True
-+                    have_tagged = True
-                 elif match := self._match_at_name_colon(line):
-                     # description
--                    if no_more_args:
-+                    if have_tagged:
-                         raise QAPIParseError(
-                             self,
-                             "description of '@%s:' follows a section"
-@@ -543,7 +543,7 @@ def get_doc(self) -> 'QAPIDoc':
-                         if text:
-                             doc.append_line(text)
-                         line = self.get_doc_indented(doc)
--                    no_more_args = True
-+                    have_tagged = True
-                 elif match := re.match(
-                         r'(Returns|Errors|Since|Notes?|Examples?|TODO)'
-                         r'(?!::): *',
-@@ -584,14 +584,20 @@ def get_doc(self) -> 'QAPIDoc':
-                     if text:
-                         doc.append_line(text)
-                     line = self.get_doc_indented(doc)
--                    no_more_args = True
-+                    have_tagged = True
-                 elif line.startswith('='):
-                     raise QAPIParseError(
-                         self,
-                         "unexpected '=' markup in definition documentation")
-                 else:
-                     # plain paragraph(s)
--                    doc.ensure_untagged_section(self.info)
-+                    if have_tagged:
-+                        no_more_tags = True
++.. _out-of-band execution:
 +
-+                    # Paragraphs before tagged sections are "intro" paragraphs.
-+                    # Any appearing after are "detail" paragraphs.
-+                    intro = not have_tagged
-+                    doc.ensure_untagged_section(self.info, intro)
-                     doc.append_line(line)
-                     line = self.get_doc_paragraph(doc)
-         else:
-@@ -640,21 +646,22 @@ class QAPIDoc:
-     """
+ Out-of-band execution
+ ---------------------
  
-     class Kind(enum.Enum):
--        PLAIN = 0
-+        INTRO = 0
-         MEMBER = 1
-         FEATURE = 2
-         RETURNS = 3
-         ERRORS = 4
-         SINCE = 5
-         TODO = 6
-+        DETAIL = 7
- 
-         @staticmethod
-         def from_string(kind: str) -> 'QAPIDoc.Kind':
-             return QAPIDoc.Kind[kind.upper()]
- 
-         def text_required(self) -> bool:
--            # Only "plain" sections can be empty
--            return self.value not in (0,)
-+            # Only Intro/Detail sections can be empty
-+            return self.value not in (0, 7)
- 
-         def __str__(self) -> str:
-             return self.name.title()
-@@ -700,7 +707,7 @@ def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
-         self.symbol: Optional[str] = symbol
-         # the sections in textual order
-         self.all_sections: List[QAPIDoc.Section] = [
--            QAPIDoc.Section(info, QAPIDoc.Kind.PLAIN)
-+            QAPIDoc.Section(info, QAPIDoc.Kind.INTRO)
-         ]
-         # the body section
-         self.body: Optional[QAPIDoc.Section] = self.all_sections[0]
-@@ -725,8 +732,9 @@ def end(self) -> None:
-     def ensure_untagged_section(
-         self,
-         info: QAPISourceInfo,
-+        intro: bool = True,
-     ) -> None:
--        kind = QAPIDoc.Kind.PLAIN
-+        kind = QAPIDoc.Kind.INTRO if intro else QAPIDoc.Kind.DETAIL
- 
-         if self.all_sections and self.all_sections[-1].kind == kind:
-             # extend current section
-diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
-index 2d33a305ee7..3eb28503f6b 100644
---- a/tests/qapi-schema/doc-good.out
-+++ b/tests/qapi-schema/doc-good.out
-@@ -110,7 +110,7 @@ The _one_ {and only}, description on the same line
- Also _one_ {and only}
-     feature=enum-member-feat
- a member feature
--    section=Plain
-+    section=Detail
- @two is undocumented
- doc symbol=Base
-     body=
-@@ -168,7 +168,7 @@ description starts on the same line
- a feature
-     feature=cmd-feat2
- another feature
--    section=Plain
-+    section=Detail
- .. note:: @arg3 is undocumented
-     section=Returns
- @Object
-@@ -176,7 +176,7 @@ another feature
- some
-     section=Todo
- frobnicate
--    section=Plain
-+    section=Detail
- .. admonition:: Notes
- 
-  - Lorem ipsum dolor sit amet
-@@ -209,7 +209,7 @@ If you're bored enough to read this, go see a video of boxed cats
- a feature
-     feature=cmd-feat2
- another feature
--    section=Plain
-+    section=Detail
- .. qmp-example::
- 
-    -> "this example"
 -- 
 2.48.1
 
