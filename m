@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27651A29589
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F065A29588
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 17:00:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfhok-0006mJ-1e; Wed, 05 Feb 2025 10:59:58 -0500
+	id 1tfhon-0006nV-5N; Wed, 05 Feb 2025 11:00:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfhoi-0006m9-Jw
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:56 -0500
+ id 1tfhok-0006mZ-8x
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tfhog-0001Kn-MH
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:56 -0500
+ id 1tfhoi-0001Ku-Nr
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 10:59:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738771193;
+ s=mimecast20190719; t=1738771195;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=BzZ5P5YiMeKo9I1EToLPISTDb5ixmbQoYJDQPJT6XVg=;
- b=g8Cj/DJHoPpN7C0KChY7cUBb9JzHdt5bizGv2NNgIl3jHBkF37lyh9CcpaYVwQ2zM3lRBQ
- jfnSm1SGLp3+UWEYakQoRfzv94gB6o6/r8T1NDFqAHU/tnGfwWmP5mibbt1WTeqgCT9w3Z
- yleyngze3E6wzBEUxC4QchQmwjoF3GM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fysQSNA1E970ViCFvsrSMcbTwNV0+wBLHllSL/r6qwc=;
+ b=G5OdXD9QGjyPzhlkMpU4PqQUWB5n4/wcHD0jDNBiUAEXpglCyFRSkoSCoMX8lwPHBeQLre
+ yrfyzKgKvxJW1xRdEZj4N8ExP/tQJc7MCR1hXau03pfSTpDPpWfOkOk78kkbBRTT1UuJ3S
+ cln5lJxjRVa8alPHt2IyckUm1CtFTaQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-f9hJj6XAOE-UEcNmy5YwvA-1; Wed,
- 05 Feb 2025 10:59:51 -0500
-X-MC-Unique: f9hJj6XAOE-UEcNmy5YwvA-1
-X-Mimecast-MFC-AGG-ID: f9hJj6XAOE-UEcNmy5YwvA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-290-v0VYLq4kN0usPTmUcwozWg-1; Wed,
+ 05 Feb 2025 10:59:53 -0500
+X-MC-Unique: v0VYLq4kN0usPTmUcwozWg-1
+X-Mimecast-MFC-AGG-ID: v0VYLq4kN0usPTmUcwozWg
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C98E180121A; Wed,  5 Feb 2025 15:59:50 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 632521800373; Wed,  5 Feb 2025 15:59:52 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.26])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8B1A41956052; Wed,  5 Feb 2025 15:59:47 +0000 (UTC)
+ id 6FB6A195608D; Wed,  5 Feb 2025 15:59:50 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -51,11 +52,14 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/5] tests/functional: a few misc cleanups and fixes
-Date: Wed,  5 Feb 2025 15:59:41 +0000
-Message-ID: <20250205155946.2811296-1-berrange@redhat.com>
+Subject: [PATCH 1/5] tests/functional: skip test if QEMU_TEST_QEMU_BINARY is
+ not set
+Date: Wed,  5 Feb 2025 15:59:42 +0000
+Message-ID: <20250205155946.2811296-2-berrange@redhat.com>
+In-Reply-To: <20250205155946.2811296-1-berrange@redhat.com>
+References: <20250205155946.2811296-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -83,23 +87,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See individual commit messages for descriptions of the
-cleanups/fixes.
+If QEMU_TEST_QEMU_BINARY is not set we currently assert in the setUp
+function, resulting in a big traceback:
 
-Daniel P. Berrangé (5):
-  tests/functional: skip test if QEMU_TEST_QEMU_BINARY is not set
-  tests/functional: remove unused 'bin_prefix' variable
-  tests/functional: set 'qemu_bin' as an object level field
-  tests/functional: remove all class level fields
-  tests/functional: skip mem addr test on 32-bit hosts
+    TAP version 13
+    Traceback (most recent call last):
+      File "/var/home/berrange/src/virt/qemu/tests/functional/qemu_test/testcase.py", line 280, in setUp
+        super().setUp('qemu-system-')
+        ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+      File "/var/home/berrange/src/virt/qemu/tests/functional/qemu_test/testcase.py", line 196, in setUp
+        self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
+        ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    AssertionError: unexpectedly None : QEMU_TEST_QEMU_BINARY must be set
 
- docs/devel/testing/functional.rst        |  2 +-
- tests/functional/qemu_test/__init__.py   |  2 +-
- tests/functional/qemu_test/decorators.py | 12 ++++++++++++
- tests/functional/qemu_test/testcase.py   | 18 +++++++-----------
- tests/functional/test_mem_addr_space.py  | 17 ++++++++++++++++-
- 5 files changed, 37 insertions(+), 14 deletions(-)
+    not ok 1 test_ppc_405.Ppc405Machine.test_ppc_ref405ep
+    1..1
 
+For every other test pre-requisite that's missing we will mark the test
+as skipped. This does the same for missing QEMU_TEST_QEMU_BINARY, such
+that we get
+
+    TAP version 13
+    ok 1 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 2 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_noapic_nomsi # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 3 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_nomsi # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 4 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_novector # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 5 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_novector_noapic # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 6 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_novector_nomsi # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    ok 7 test_x86_64_kvm_xen.KVMXenGuest.test_kvm_xen_guest_vapic # SKIP QEMU_TEST_QEMU_BINARY env variable is not set
+    1..7
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ tests/functional/qemu_test/testcase.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 869f3949fe..94541e8bfb 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -193,7 +193,9 @@ def assets_available(self):
+         return True
+ 
+     def setUp(self, bin_prefix):
+-        self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
++        if self.qemu_bin is None:
++            self.skipTest("QEMU_TEST_QEMU_BINARY env variable is not set")
++
+         self.arch = self.qemu_bin.split('-')[-1]
+         self.socketdir = None
+ 
 -- 
 2.47.1
 
