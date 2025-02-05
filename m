@@ -2,94 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5E1A289DD
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A29A28A43
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Feb 2025 13:29:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfe9z-0002ZO-EB; Wed, 05 Feb 2025 07:05:39 -0500
+	id 1tfeVq-0008G4-88; Wed, 05 Feb 2025 07:28:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tfe9w-0002Yi-EI
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:05:36 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tfe9t-0004M7-MT
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:05:35 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5dca468c5e4so6568181a12.1
- for <qemu-devel@nongnu.org>; Wed, 05 Feb 2025 04:05:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738757132; x=1739361932; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8NBezMpoYq3Nd3pV1ASrHM0JQ9E1YF7JEDo6fsbB6D8=;
- b=hDglX/ngHK8WejNNQqVtuJmq3+WwToxsXs6xtGtghMVo7rL2LLUgNBA9JEkpbUKqOR
- JSnL26OuUvdt6hnh3D8ynIXAVF4PCVi/0WlyNjAemC3qwOxFwb3yvbGRCKZAajlFmNmp
- qNCvWSjQDFrB0bcBO1sVHeh5Tekvmgs55SXGTS8TilJOnZ2UCdk7q4NNjO/8lcfIFdlj
- ZJNGzlGRzSMyZRHivKqk7MvhXN0pSqio7It67+s7B2s+dFrmDNjK4mFe7oBlPE+IjUcf
- m4DH4GIH3lUO6fjjtbZTnHI4ldnbcoWXQ3Vs02UvChKt0lAzk2TyWc80rfl1gnDHI3/o
- 1PDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738757132; x=1739361932;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=8NBezMpoYq3Nd3pV1ASrHM0JQ9E1YF7JEDo6fsbB6D8=;
- b=nuywUugJG7KF/40L6YQ5JLQgd89uo3ZobOL0uEEtq8J4eJMnsW5CV9tAYQ99LAFgTo
- huFbI4yYvT91EACB60g9UfSRwbzB99aJoenEEFoNPOEpZisZxCKuz7F1vEY6C5EIM8MB
- bz9XbO2g1ubQev5xaS9p1hT/aWeL4Xkc70VctJX13zQ3eQJRPb73UJtQ28F2K9KpIs1M
- opOFZpPzP4xy2AxE8iOrIWC6dMxcrm+BN6VMx1amF/0nJf/Rla3TvyGusUI7o0iUBKtm
- BRS7enFCFDHJLBGGnz5RAx47Czp5jM37q1Ti3j3XlzqQYgPlJfg8EdWpcny+pdFurJkw
- MnBQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNIsL+g7aMMOahNSCBFf5kN4pgBKbtXrReDt0TSN0FZRINemDvXeHGX361VNmphCirbh54HIsMIjCU@nongnu.org
-X-Gm-Message-State: AOJu0YwVMjGqiRvneRR8Ajw9vTUATWZ6IJYULSskEwS/Q3vqNsXxYc1a
- qAv70pgoMudze/Je66lxRr8/8KxyH6osz7jvsBV4vhg7XobC09LTKlIEWhLG11UtQdCtivbPN2g
- d3Zw=
-X-Gm-Gg: ASbGncuB+DPQEZhzNy+yk0x4APeeGx1nFIKmdgzT7YR6mso2Hju5TKdQdGC4vOotI5h
- CpXswt2C5+as/NJixFYoQy8wjA15KYAdFYxYihgAXN2i++7WPt8BElYKdSgq0nCmhiACUfYd98I
- 92Vu+aVTEB0eAZNjmbbtr7bAuBwCKUe24mna4sBI42PBxGP/nDBZ1cc1Lb6a2FFfGB8hMUK8U0y
- 3M6z5OtWvIzEgM82tPWr26M4qg1JlMFOY1HJIXy+2I7irix6bffsvHTVzqDbhem23Gl7C/9lfFZ
- N4MxeTzBIfxAn/ESFg==
-X-Google-Smtp-Source: AGHT+IFH32kDLtFnDnLdXjjSQVblCqeQva1N71UrIrWd+YAnQZXsnhFxRk1z7NulrzboePJtKYSBmQ==
-X-Received: by 2002:a05:6402:2355:b0:5dc:7f72:5eae with SMTP id
- 4fb4d7f45d1cf-5dcdb778ecamr2160033a12.23.1738757131803; 
- Wed, 05 Feb 2025 04:05:31 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dc8857d60esm8848060a12.41.2025.02.05.04.05.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Feb 2025 04:05:31 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 542665F90B;
- Wed,  5 Feb 2025 12:05:29 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/14] target/arm: Report correct syndrome for UNDEFINED
- LOR sysregs when NS=0
-In-Reply-To: <20250130182309.717346-5-peter.maydell@linaro.org> (Peter
- Maydell's message of "Thu, 30 Jan 2025 18:22:59 +0000")
-References: <20250130182309.717346-1-peter.maydell@linaro.org>
- <20250130182309.717346-5-peter.maydell@linaro.org>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Wed, 05 Feb 2025 12:05:29 +0000
-Message-ID: <87frksa96e.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1tfeVk-0008Fh-3Y
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:28:08 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1tfeVg-00007l-NG
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 07:28:07 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxrOJFWaNnA0BsAA--.19316S3;
+ Wed, 05 Feb 2025 20:27:49 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMDxH+VFWaNnkVUAAA--.3084S2;
+ Wed, 05 Feb 2025 20:27:49 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: Bibo Mao <Maobibo@loongson.cn>,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PATCH] target/loongarch: fix vcpu reset command word issue
+Date: Wed,  5 Feb 2025 20:06:35 +0800
+Message-Id: <20250205120635.2516406-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMDxH+VFWaNnkVUAAA--.3084S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,19 +61,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+When the KVM_REG_LOONGARCH_VCPU_RESET command word
+is sent to the kernel through the kvm_set_one_reg interface,
+the parameter source needs to be a legal address,
+otherwise the kernel will return an error and the command word
+will fail to be sent.
 
-> The pseudocode for the accessors for the LOR sysregs says they
-> are UNDEFINED if SCR_EL3.NS is 0. We were reporting the wrong
-> syndrome value here; use CP_ACCESS_TRAP_UNCATEGORIZED.
->
-> Cc: qemu-stable@nongnu.org
-> Fixes: 2d7137c10faf ("target/arm: Implement the ARMv8.1-LOR extension")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+---
+Cc: Bibo Mao <Maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+ target/loongarch/kvm/kvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index a3f55155b0..01cddb7012 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -581,9 +581,10 @@ static int kvm_loongarch_get_lbt(CPUState *cs)
+ void kvm_arch_reset_vcpu(CPUState *cs)
+ {
+     CPULoongArchState *env = cpu_env(cs);
++    uint64_t val;
+ 
+     env->mp_state = KVM_MP_STATE_RUNNABLE;
+-    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, 0);
++    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, &val);
+ }
+ 
+ static int kvm_loongarch_get_mpstate(CPUState *cs)
+-- 
+2.39.1
+
 
