@@ -2,89 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0B0A2A3DB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD1A2A3AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 09:56:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfxqV-0006qU-Fr; Thu, 06 Feb 2025 04:06:51 -0500
+	id 1tfxgf-0002Fu-Uq; Thu, 06 Feb 2025 03:56:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfxqQ-0006q8-OC
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:06:47 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfxqO-0008Cc-Mp
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:06:46 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38dae9a0566so266286f8f.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:06:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738832803; x=1739437603; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IzCJVvvfB1EaRb4n7nTPbLIP0W9cumDbV+oH5GXptgs=;
- b=Wfl2z4jaKejKQjxVllFulSmaqfsKLnTJOao8meIdEzl/d+ssvfPg71Ixorpq4HO6Lk
- 2Md1mlsXw1Tl/KNM/sx2O/5W0wCfy3BSS573qeBMGpJJOMX3BJoe9A3oiphHvH5uXuIX
- GnMapvGTk4kPLeJisZ1qCHUrTl4Firvcrhn+rbnjU3rME88bEpTgg1oo366cGmTHhq3w
- DORghthnrr+ERTUBG6cUvGgzRRbKPPg1MRl6lHx8eeT+MAMltESf1m1dhZqX2jv2PZ8X
- u0whhFs4HZdqE9r4ozcv+oFRSxMKzoKPDjV9vqMqpmHeJNCynRZUZ2fifnKZkYcEhu06
- H1Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738832803; x=1739437603;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IzCJVvvfB1EaRb4n7nTPbLIP0W9cumDbV+oH5GXptgs=;
- b=iOO5N/ufA5B1EKZ8GcwbpWV8rqV8QsYQlvZ6ODnmSfMJc2z42qWfiVfdWgs3WXCUbP
- 7YQoZ154o7UUmGz8g7H8QN7Ds0UbDVNUaK6WuN7zkaZZBiU3R2B7nlTG70zG3Lj4yKt5
- Ck/p3NvPByQdDkVUndoiwR2oBaa6pOphKize5dMlQCPsM+DyI7WgwUtlSXHEf9pj2dH9
- 1ozIp5iJgLXRqEIz5nl6uTrVmQrSkLC/WAUJxgVPFh7eR0hwhJ2tVpcknV5+1QZu/e+i
- AqS4rmsjxxhR1CxvoUAdMtMR64ZusMreoXmR2/bMpTwlEwF1ED9l9iO00Uz8YftjoHU0
- MJVA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVJVLHrhyV1SJzwSQDUuhSKU8Bq+wjeh01Q5iuYFkkmVOZGHiGgZMng7RUTZLbRlqVJlw+AG5TB0L1g@nongnu.org
-X-Gm-Message-State: AOJu0YxqozWp21fkaEQy7OowNO1VLJZeKPN8slpsYrvigcrcShtF0uVl
- K/tLb/pnmP0UEfjPEZGUtcSIUdxpDjJimecGlKVywbsCImWD6EGHs8Kr1gJo2R4=
-X-Gm-Gg: ASbGncuKjC+xkv2yYrep476oITC6jpdclDFdt42MTcQucERpoaTjIc+6/fC4TIzEtM1
- ztaSZD46UEHmPz3fRoCgzvShOJkx2V4U4e52ZffeAZwPprdJ4qt3E0NwgF02MUP0w4lHMkbdh5R
- niNbLZA+MQw89Yusylqbl99Zy1PGbbyDvGBqtZVb9MaXmRXiZ44EauZKSkDgotfbOcjA68us/Vv
- zxBjdYzkT9W4rZF7LB6+s2h2x7wmIZHgI9wRld7/5j1cA+efIOTHPFTdh9JnFGg53RV7M9H99dF
- kp5+r/Ovr/5zDZAxpfsEKiLAKeZbFhydtP/Qrdk0vqxr3P0ek34ybOAbVzY=
-X-Google-Smtp-Source: AGHT+IFbMv9XKV1GETfc05io7Kbe/qY9nyLARm8SIgneOGEa6PLUau6IEQaR3iG5eRZXRnBigTDGIQ==
-X-Received: by 2002:a05:6000:1fa4:b0:38d:b125:3787 with SMTP id
- ffacd0b85a97d-38db48bcac1mr3965207f8f.17.1738832802699; 
- Thu, 06 Feb 2025 01:06:42 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde31ccesm1176186f8f.98.2025.02.06.01.06.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 01:06:42 -0800 (PST)
-Message-ID: <20258263-a231-45be-b0f4-f6499d613640@linaro.org>
-Date: Thu, 6 Feb 2025 10:06:40 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfxgD-0002Bl-H1; Thu, 06 Feb 2025 03:56:18 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfxg8-0002ul-Rp; Thu, 06 Feb 2025 03:56:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738832169; x=1770368169;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fQR0TLXvClroks2hWUKN6sdJ/ANfiOsQYzy7EqbMrBY=;
+ b=JQ2KBkOORLW4UabyNk565UpRPkb6jXtT3u4hge9Cz/lc2dK1JmWDW97+
+ 6PYRYocENKvfTDlLXFF1PINhHMjavY4gqK/7N4xRKoqBZnn9oECycv2Ed
+ Rv7UjYq1NTEkftKz+nKwmZ0WfroFyEHuARe8VBhyioRlMDujdBMzpLeYP
+ ouDiY6MUZXfJVMV0X1zyPaslWV3rjsDvI3a7A/R/WuM8WA3W/oBwpYdcq
+ uOnjBs2e+ujPiqpjXC1IAfyJCX8LuHTxVEln4Neqwsm6szhjG8O2k7znq
+ Mxi/1BbDUrYopCM34PwIyDf7moPNlve7qal3v6D4SYRqm+bK3BpIO/viD Q==;
+X-CSE-ConnectionGUID: SB2dIfk6TJK3n5E22BoOpQ==
+X-CSE-MsgGUID: gX+Wl2UcS3CJvr3PHYrCHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39581772"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="39581772"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 00:56:05 -0800
+X-CSE-ConnectionGUID: tKe42gNZRVW18Dv+i0Xeog==
+X-CSE-MsgGUID: ikoylS+lScihDs/eA7etcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="111350079"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 06 Feb 2025 00:56:03 -0800
+Date: Thu, 6 Feb 2025 17:15:33 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 10/10] rust: bindings for MemoryRegionOps
+Message-ID: <Z6R9tSD5T5tkCYsP@intel.com>
+References: <20250117194003.1173231-1-pbonzini@redhat.com>
+ <20250117194003.1173231-11-pbonzini@redhat.com>
+ <Z5d4PTtIRhgZ0tss@intel.com>
+ <CABgObfYc5ccC16=K7KVmdLP-jmvwVbxqv1L6c4Oe55MSK4ndng@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/17] hw/ssi: Make flash size a property in NPCM7XX FIU
-To: Hao Wu <wuhaotsh@google.com>, peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, venture@google.com,
- Avi.Fishman@nuvoton.com, kfting@nuvoton.com, hskinnemoen@google.com,
- titusr@google.com, chli30@nuvoton.corp-partner.google.com
-References: <20250206013105.3228344-1-wuhaotsh@google.com>
- <20250206013105.3228344-4-wuhaotsh@google.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250206013105.3228344-4-wuhaotsh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfYc5ccC16=K7KVmdLP-jmvwVbxqv1L6c4Oe55MSK4ndng@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,115 +81,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Hao,
-
-On 6/2/25 02:30, Hao Wu wrote:
-> This allows different FIUs to have different flash sizes, useful
-> in NPCM8XX which has multiple different sized FIU modules.
+> > > +pub struct MemoryRegionOps<T>(
+> > > +    bindings::MemoryRegionOps,
+> > > +    // Note: quite often you'll see PhantomData<fn(&T)> mentioned when discussing
+> > > +    // covariance and contravariance; you don't need any of those to understand
+> > > +    // this usage of PhantomData.  Quite simply, MemoryRegionOps<T> *logically*
+> > > +    // holds callbacks that take an argument of type &T, except the type is erased
+> > > +    // before the callback is stored in the bindings::MemoryRegionOps field.
+> > > +    // The argument of PhantomData is a function pointer in order to represent
+> > > +    // that relationship; while that will also provide desirable and safe variance
+> > > +    // for T, variance is not the point but just a consequence.
+> > > +    PhantomData<fn(&T)>,
+> > > +);
+> >
+> > Wow, it can be wrapped like this!
 > 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
-> ---
->   hw/arm/npcm7xx.c             |  6 ++++++
->   hw/ssi/npcm7xx_fiu.c         | 11 +++++++----
->   include/hw/ssi/npcm7xx_fiu.h |  1 +
->   3 files changed, 14 insertions(+), 4 deletions(-)
+> I like your enthusiasm but I'm not sure what you refer to. ;) Maybe
+> it's worth documenting this pattern, so please tell me more (after
+> your holidays).
+
+Throughout the entire holiday, I couldn't think of a better way to
+express this. I find it particularly useful when wrapping multiple
+callbacks. In the future, I want to explore more use cases where this
+pattern can be applied.
+
+> > > +impl MemoryRegion {
+> > > +    // inline to ensure that it is not included in tests, which only
+> > > +    // link to hwcore and qom.  FIXME: inlining is actually the opposite
+> > > +    // of what we want, since this is the type-erased version of the
+> > > +    // init_io function below.  Look into splitting the qemu_api crate.
+> >
+> > Ah, I didn't understand the issue described in this comment. Why would
+> > inlining affect the linking of tests?
 > 
-> diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-> index 386b2c35e9..2d6e08b72b 100644
-> --- a/hw/arm/npcm7xx.c
-> +++ b/hw/arm/npcm7xx.c
-> @@ -292,17 +292,21 @@ static const struct {
->       hwaddr regs_addr;
->       int cs_count;
->       const hwaddr *flash_addr;
-> +    size_t flash_size;
->   } npcm7xx_fiu[] = {
->       {
->           .name = "fiu0",
->           .regs_addr = 0xfb000000,
->           .cs_count = ARRAY_SIZE(npcm7xx_fiu0_flash_addr),
->           .flash_addr = npcm7xx_fiu0_flash_addr,
-> +        .flash_size = 128 * MiB,
-> +
->       }, {
->           .name = "fiu3",
->           .regs_addr = 0xc0000000,
->           .cs_count = ARRAY_SIZE(npcm7xx_fiu3_flash_addr),
->           .flash_addr = npcm7xx_fiu3_flash_addr,
-> +        .flash_size = 128 * MiB,
->       },
->   };
->   
-> @@ -735,6 +739,8 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
->   
->           object_property_set_int(OBJECT(sbd), "cs-count",
->                                   npcm7xx_fiu[i].cs_count, &error_abort);
-> +        object_property_set_int(OBJECT(sbd), "flash-size",
-> +                                npcm7xx_fiu[i].flash_size, &error_abort);
->           sysbus_realize(sbd, &error_abort);
->   
->           sysbus_mmio_map(sbd, 0, npcm7xx_fiu[i].regs_addr);
-> diff --git a/hw/ssi/npcm7xx_fiu.c b/hw/ssi/npcm7xx_fiu.c
-> index 21fc489038..ccdce67fa9 100644
-> --- a/hw/ssi/npcm7xx_fiu.c
-> +++ b/hw/ssi/npcm7xx_fiu.c
-> @@ -28,9 +28,6 @@
->   
->   #include "trace.h"
->   
-> -/* Up to 128 MiB of flash may be accessed directly as memory. */
-> -#define NPCM7XX_FIU_FLASH_WINDOW_SIZE (128 * MiB)
-> -
->   /* Each module has 4 KiB of register space. Only a fraction of it is used. */
->   #define NPCM7XX_FIU_CTRL_REGS_SIZE (4 * KiB)
->   
-> @@ -507,6 +504,11 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> +    if (s->flash_size == 0) {
-> +        error_setg(errp, "%s: flash size must be set", dev->canonical_path);
-> +        return;
-> +    }
-> +
->       s->spi = ssi_create_bus(dev, "spi");
->       s->cs_lines = g_new0(qemu_irq, s->cs_count);
->       qdev_init_gpio_out_named(DEVICE(s), s->cs_lines, "cs", s->cs_count);
-> @@ -525,7 +527,7 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
->           flash->fiu = s;
->           memory_region_init_io(&flash->direct_access, OBJECT(s),
->                                 &npcm7xx_fiu_flash_ops, &s->flash[i], "flash",
-> -                              NPCM7XX_FIU_FLASH_WINDOW_SIZE);
-> +                              s->flash_size);
+> If you don't inline it, do_init_io will always be linked into the
+> tests because it is a non-generic function. The tests then fail to
+> link, because memory_region_init_io is undefined.
 
-Per the comment, this is the device aperture.
+I find even if I drop the `inline` attribution, the test.rs can still be
+compiled (by `make check`), I think it's because test.rs hasn't involved
+memory related tests so that do_init_io isn't linked into test.rs.
 
-Either add a check whether size is always <= 128 * MiB, or use
-MIN(s->flash_size, NPCM7XX_FIU_FLASH_WINDOW_SIZE)?
+> This is ugly because do_init_io exists *exactly* to extract the part
+> that is not generic. (See
+> https://users.rust-lang.org/t/soft-question-significantly-improve-rust-compile-time-via-minimizing-generics/103632/8
+> for an example of this; I think there's even a procedural macro crate
+> that does that for you, but I can't find it right now).
 
->           sysbus_init_mmio(sbd, &flash->direct_access);
->       }
->   }
-> @@ -543,6 +545,7 @@ static const VMStateDescription vmstate_npcm7xx_fiu = {
->   
->   static const Property npcm7xx_fiu_properties[] = {
->       DEFINE_PROP_INT32("cs-count", NPCM7xxFIUState, cs_count, 0),
-> +    DEFINE_PROP_SIZE("flash-size", NPCM7xxFIUState, flash_size, 0),
->   };
->   
->   static void npcm7xx_fiu_class_init(ObjectClass *klass, void *data)
-> diff --git a/include/hw/ssi/npcm7xx_fiu.h b/include/hw/ssi/npcm7xx_fiu.h
-> index a3a1704289..1785ea16f4 100644
-> --- a/include/hw/ssi/npcm7xx_fiu.h
-> +++ b/include/hw/ssi/npcm7xx_fiu.h
-> @@ -60,6 +60,7 @@ struct NPCM7xxFIUState {
->       int32_t cs_count;
->       int32_t active_cs;
->       qemu_irq *cs_lines;
-> +    size_t flash_size;
->       NPCM7xxFIUFlash *flash;
->   
->       SSIBus *spi;
+Thanks! I see. I agree to keep `inline` anyway.
 
 
