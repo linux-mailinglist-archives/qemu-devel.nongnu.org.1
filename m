@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78ABA2A54D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F622A2A559
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:59:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyem-0008Gy-EN; Thu, 06 Feb 2025 04:58:48 -0500
+	id 1tfyf8-0000HX-Vc; Thu, 06 Feb 2025 04:59:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tfyek-0008Gp-6h
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:58:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tfyei-0006IB-4K
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:58:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738835922;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=JGRL1wIcRLgVQYu6ppXJozW9sLfu2j1bpGZjXaqriK4=;
- b=DAhQ6tOr6kFDwsRKso6ib2zss4QVMh6CV6DfshfWlEc8gjEUZaglJpevx93D7V+EmteJkS
- 00U4nwW4aE+ElCN2A+ZkHq/OBPM9t8dNJuGIt/YDhgL2ZQDQlmq6dPOsfxuWsA6ErFwh1H
- nN0tcBvacAN98o8Ksl4qZc4m3zWJQro=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-JFX1Rc-uPpuOe_zNqWC-4w-1; Thu, 06 Feb 2025 04:58:41 -0500
-X-MC-Unique: JFX1Rc-uPpuOe_zNqWC-4w-1
-X-Mimecast-MFC-AGG-ID: JFX1Rc-uPpuOe_zNqWC-4w
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ab77e03f2c0so14212866b.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:58:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1tfyf5-00008q-Vw
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:59:08 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1tfyf2-0006JN-Er
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:59:07 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-21f21cc7af5so9465625ad.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:59:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1738835942; x=1739440742;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uCI4X5t3ctqe+eI91egl8+b7NybtBjs0uaXRxYcMVbo=;
+ b=b8S/r/+MZugP/Dp+YtxI3MuLQufNvi1cMDt8SlnwFkRH9paYOaDmnod90iJKxMlIwF
+ w8nGhgJWUnGzT0twkCb7lNX6Rlaa4eT4I4wj5lu3lvHlJzBYvpbSns7R8YHZ/hmCiogY
+ z3w4CzioVfne/+8sONT5wv66+XGL5cha0KrEvWR9bsk9Y3OG282R3YLpyGk3QpD5Sh/s
+ ADClBxJ7R1lIEz54iIdyBi+BH/MoylPAau/E0TEOPOCTBtvf3D5fjkFkT5A62WS6U7bu
+ enj6GlvpFCXEOaHoWNJxX6v4nkFWniAMdtngalPcKjLc1iL3IrdrJPrJJB2eVzrS3Ygz
+ Us4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738835919; x=1739440719;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1738835942; x=1739440742;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=JGRL1wIcRLgVQYu6ppXJozW9sLfu2j1bpGZjXaqriK4=;
- b=q4RCdsoBZidPV20tXA3Zmw8qTuDPmER1d/Gcvyzso1jzclC9F4VX1CI8iqQ44jW/Gj
- QX+BwEi3GRmWN93Im+ZXqL37euv4JzO9SfB1RC8zPT4C8Q6IufHiGYipdQ0qJnOSksky
- +rUGGTDJA28hETLUcs4NBEX5wge3RBwJ9A8YclX3BuTj+TowW1SmwJdSxCuS7I/DctR4
- 1fOxDAtr/jzD5bx2JV8uzprkYQB0LO6mBtIapFFShfrOr5WYenqtCszARMtVFLkLM4kD
- Gkdw78pbhX7dNYSMqepU3nmyzDuiEpu7/eaVteUv//BhugCdVAnn6ur/dr9MIKK8al6o
- pUtw==
-X-Gm-Message-State: AOJu0Yw/40KgQHScojfJpfJsEiR67RVQBIhuiUnDWb+gIw57FQUlKJTK
- pX7IXYQKCjOw8MLcmyWg8Y4iJ1IHSrYtklZ8zR3s5erSaEo+Ph+x2KDUQKvJ75ucJ3W3t7qgnfQ
- 04wcQwtA9+H3AQSsXoEeBPulMOSiZ4flhwdVWdqp+0pWy02tfuDf9Pq2fRVRHmygLF7x7a1Wx/X
- IERxPg0Go4UQV5FAEJs/RK5uALWLdesPRUg8uHYjQ=
-X-Gm-Gg: ASbGncsi4JPAocegxtzWOA+vNxa0xJJp4/zEsymGFe7aHez0mMsLaVAh3Ird354jUXg
- m+OJfiS8g9n3XmeTFTg0uQibwFPY1j0nTgZsOXksKBXBHx135FDKnomropyVdHKTxZrsL8q1r90
- B6PnSFKrfqTIaNrOUomETpyORuJ6eFcgKbID8ZqgGtGDihhBSQ9APoVW1yl/MsqoQgD+xeG0EtM
- 6oqXRPGkPcKrcxf/Ln2ztPbM25AVSbxC4Ez/UYEHaNMLslzSbdUp6SnQW76qYBjGb2Hvd/0Xh80
- 3YpfuQ==
-X-Received: by 2002:a17:906:d542:b0:aa6:5d30:d971 with SMTP id
- a640c23a62f3a-ab75e21fd4bmr630200766b.11.1738835918729; 
- Thu, 06 Feb 2025 01:58:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGzIIVWcn7cjZwj6VOTn2fzz/e5TpcNNzhnB+/EQMQVf7HO9owT+Aw+RJqDt9ckycgikFjwA==
-X-Received: by 2002:a17:906:d542:b0:aa6:5d30:d971 with SMTP id
- a640c23a62f3a-ab75e21fd4bmr630198166b.11.1738835918252; 
- Thu, 06 Feb 2025 01:58:38 -0800 (PST)
-Received: from [192.168.10.3] ([151.62.97.55])
+ bh=uCI4X5t3ctqe+eI91egl8+b7NybtBjs0uaXRxYcMVbo=;
+ b=ELmkZ6pXcs39Bb9GDzoizD1UF+u7yFA7Cpt2PFmfjGbqpbMmZiyiz7YhVyGhWWVaaU
+ lECGfbP73iTAnrF4TMEsQg8Pc4tSz3ku0cscGW4kbxQ/oP9EYpwYCDVNYiY0jVSzy2dm
+ wg5NZULk0M2vUoBCMyLKPoDjfARleOGeSbMULgZnLUW4qLuKyrbbxo02hf0tRfFUr1cU
+ bPAEynPSAcZeGeRLQyTelHSlOnbn8u/Cgi0MyQTG1tiqX7N2Sq964FRnwxPQhVMzfljB
+ Xdo82J4sTKtPmTYa7YIldyoFBdm56yZEYj1snX5v9luy2Z8NspjGz3APxGiiq0zPTGxl
+ OAMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU6Z+wN5MKtm/6ITxh15838i/8+q9aY+RKV8PdTdKOc1+KA5YvWq2M0e0GoiRR3G3J8JsZBKVdNOA0s@nongnu.org
+X-Gm-Message-State: AOJu0YxmVPqffkleOlDJFnSGThxPqiKH8paSrtT8l2Pz+0Ik81l31igH
+ qdKfpTug2eqA+QzesGfXMOXrB3i1qPd8CdATy9MROWleNJQvPOwSa+GN1sWo7CM=
+X-Gm-Gg: ASbGncv4d96QJHQ6VDBGmJQPJMrqR+UUz27VTQtZXxtsMNKOqR1rrTAzO40xIV/SCH7
+ OHjLDJpt5h6yVC2d6jgZoSV7oNrbbN70oR6R3l0cWnnURZEWjbsgw0GQMHA/cBG7Ziwv45F8OFg
+ wF+gdp1YOi7C1tCjW46m6u/d8SPQrk7y8UN1X4ThNSHVPkvzZPnLzrNWOnQvo8HbTbP4MQvGc4O
+ X+NnclCTYYaBWPUIMxymCuqlxRUxO6ZQ+baKD+6gZupEoaLtybjLPw4m/WCuN6h3PlEY5sxSXul
+ Pl+VBt3aWMDHGWIcG1953ZlqWnJ9
+X-Google-Smtp-Source: AGHT+IFo9FQRKiSEr84rYbIzNC1Qr3LX5OCVei9VUzM4nrwgcWGStPhACpZ34LvSjxomGkfXfP8Jqg==
+X-Received: by 2002:a17:903:46d0:b0:21e:ffaf:8908 with SMTP id
+ d9443c01a7336-21f17ecbd38mr110409025ad.34.1738835942149; 
+ Thu, 06 Feb 2025 01:59:02 -0800 (PST)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab772f8bbbfsm73680766b.74.2025.02.06.01.58.36
+ d9443c01a7336-21f365616ecsm8768815ad.100.2025.02.06.01.59.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Feb 2025 01:58:37 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org,
-	peter.maydell@linaro.org
-Subject: [PATCH v2] qom: reverse order of instance_post_init calls
-Date: Thu,  6 Feb 2025 10:58:36 +0100
-Message-ID: <20250206095836.2120918-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
+ Thu, 06 Feb 2025 01:59:01 -0800 (PST)
+From: Atish Patra <atishp@rivosinc.com>
+Subject: [PATCH v2 0/2] Minor mhpmevent related fixes
+Date: Thu, 06 Feb 2025 01:58:45 -0800
+Message-Id: <20250206-pmu_minor_fixes-v2-0-1bb0f4aeb8b4@rivosinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANWHpGcC/3WNwQ7CIBBEf6XZsxhYRIkn/8M0TUu3dg+FBpRoG
+ v5d7N3jm8mb2SBRZEpwbTaIlDlx8BXw0ICbe/8gwWNlQIlGKmXEury6hX2I3cRvSuLS42BJn42
+ lE1RrjbQXVbq3lWdOzxA/+0FWv/T/VlZCCqdRWzvSNEi8Rc4hsXdHFxZoSylfy7JggbEAAAA=
+To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Cc: Atish Patra <atishp@rivosinc.com>, liwei1518@gmail.com, 
+ zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
+ dbarboza@ventanamicro.com, alistair.francis@wdc.com
+X-Mailer: b4 0.15-dev-13183
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,63 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the instance_post_init calls are performed from the leaf
-class and all the way up to Object.  This is incorrect because the
-leaf class cannot observe property values applied by the superclasses;
-for example, a compat property will be set on a device *after*
-the class's post_init callback has run.
+Here are two small fixes around mhpmevent encoding and reset value.
+The first patch is picked from the platform specific event encoding
+series[1].
 
-In particular this makes it impossible for implementations of
-accel_cpu_instance_init() to operate based on the actual values of
-the properties, though it seems that cxl_dsp_instance_post_init and
-rp_instance_post_init might have similar issues.
+[1] https://lore.kernel.org/qemu-devel/20241009-pmu_event_machine-v1-0-dcbd7a60e3ba@rivosinc.com/
 
-Follow instead the same order as instance_init, starting with Object
-and running the child class's instance_post_init after the parent.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- include/qom/object.h | 3 ++-
- qom/object.c         | 8 ++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+Changes in v2:
+- Replace GENMASK_ULL with MAKE_64BIT_MASK
+- Applied RB/AB tags.
+- Link to v1: https://lore.kernel.org/r/20250115-pmu_minor_fixes-v1-0-c32388defb02@rivosinc.com
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 9192265db76..c87a392259d 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -445,7 +445,8 @@ struct Object
-  *   class will have already been initialized so the type is only responsible
-  *   for initializing its own members.
-  * @instance_post_init: This function is called to finish initialization of
-- *   an object, after all @instance_init functions were called.
-+ *   an object, after all @instance_init functions were called, as well as
-+ *   @instance_post_init functions for the parent classes.
-  * @instance_finalize: This function is called during object destruction.  This
-  *   is called before the parent @instance_finalize function has been called.
-  *   An object should only free the members that are unique to its type in this
-diff --git a/qom/object.c b/qom/object.c
-index ec447f14a78..9b03da22cce 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -431,13 +431,13 @@ static void object_init_with_type(Object *obj, TypeImpl *ti)
- 
- static void object_post_init_with_type(Object *obj, TypeImpl *ti)
- {
--    if (ti->instance_post_init) {
--        ti->instance_post_init(obj);
--    }
--
-     if (type_has_parent(ti)) {
-         object_post_init_with_type(obj, type_get_parent(ti));
-     }
-+
-+    if (ti->instance_post_init) {
-+        ti->instance_post_init(obj);
-+    }
- }
- 
- bool object_apply_global_props(Object *obj, const GPtrArray *props,
--- 
-2.48.1
+---
+Atish Patra (2):
+      target/riscv: Fix the hpmevent mask
+      target/riscv: Mask out upper sscofpmf bits during validation
+
+ target/riscv/cpu_bits.h | 5 ++---
+ target/riscv/pmu.c      | 2 +-
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+---
+base-commit: 3f26a7a370c11c7dff68dabcccc19c4e0de901e4
+change-id: 20250115-pmu_minor_fixes-7a2b8e3658e4
+--
+Regards,
+Atish patra
 
 
