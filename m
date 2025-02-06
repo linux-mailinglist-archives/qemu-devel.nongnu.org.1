@@ -2,75 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E0BA2AF84
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 18:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBEAA2AF9C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:00:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg68J-0005CG-6A; Thu, 06 Feb 2025 12:57:47 -0500
+	id 1tg69Z-0005w1-My; Thu, 06 Feb 2025 12:59:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tg68G-0005A3-AJ; Thu, 06 Feb 2025 12:57:44 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tg68D-0001A4-OX; Thu, 06 Feb 2025 12:57:43 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YplBK04D4z6M4KH;
- Fri,  7 Feb 2025 01:55:21 +0800 (CST)
-Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
- by mail.maildlp.com (Postfix) with ESMTPS id 75B8E140A30;
- Fri,  7 Feb 2025 01:57:38 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 6 Feb 2025 18:57:38 +0100
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Thu, 6 Feb 2025 18:57:38 +0100
-To: Jason Gunthorpe <jgg@nvidia.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>
-CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>, "nathanc@nvidia.com"
- <nathanc@nvidia.com>
-Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rMv66IAgAA0HqCAAb2VAIAIsUnQgAADD4CAAB6MsIAAJxaAgAATMvCAABLUAIAAAjUAgAAKIYCAABKiIA==
-Date: Thu, 6 Feb 2025 17:57:38 +0000
-Message-ID: <eb4375c4ca914b1887f5f8a501b93354@huawei.com>
-References: <Z5uiGnAxUf4jXTEI@redhat.com>
- <7ecabe74e0514367baf28d67675e5db8@huawei.com> <Z51DmtP83741RAsb@redhat.com>
- <47d2c2556d794d87abf440263b2f7cd8@huawei.com> <Z6SQ3_5bcqseyzVa@redhat.com>
- <f898b6de4a664fe8810b06b7741e3120@huawei.com> <Z6TLSdwgajmHVmGH@redhat.com>
- <71116749d1234ab48a205fd2588151ec@huawei.com>
- <20250206170238.GG2960738@nvidia.com> <Z6TtCLQ35UI12T77@redhat.com>
- <20250206174647.GA3480821@nvidia.com>
-In-Reply-To: <20250206174647.GA3480821@nvidia.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.156.189]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tg69X-0005vI-TO
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 12:59:03 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tg69W-0001Ia-CB
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 12:59:03 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 02AE52115F;
+ Thu,  6 Feb 2025 17:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1738864741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=Z4dgHOSSEyPp7cYp3bp7jB3Gp6bAXeF6Y/Td8liEeUg=;
+ b=ZKBn5LEcW2FuaRpBC/aXof2CIRyWO9cXUCqrxtKSOgdOD+DFu2mj7VTcM+7i4nIwsqrOWn
+ is6Ss3xnqxWwzaNr5afs3S1ESaJZxRCHlsSVCLiEDv6IRWeR0qPYNv2olHI/h0GGdmzEvs
+ giLT757LOW/NBe6IcG+LbVQl1SJv4bs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1738864741;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=Z4dgHOSSEyPp7cYp3bp7jB3Gp6bAXeF6Y/Td8liEeUg=;
+ b=sAyeLuJjUUAwFEVvORe3iomX07+VPWVm+urhIn8ifSzR84TlGFpNMRl4Ua41/c6fGNxyJc
+ fDhb3DgcehHI6VCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1738864741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=Z4dgHOSSEyPp7cYp3bp7jB3Gp6bAXeF6Y/Td8liEeUg=;
+ b=ZKBn5LEcW2FuaRpBC/aXof2CIRyWO9cXUCqrxtKSOgdOD+DFu2mj7VTcM+7i4nIwsqrOWn
+ is6Ss3xnqxWwzaNr5afs3S1ESaJZxRCHlsSVCLiEDv6IRWeR0qPYNv2olHI/h0GGdmzEvs
+ giLT757LOW/NBe6IcG+LbVQl1SJv4bs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1738864741;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=Z4dgHOSSEyPp7cYp3bp7jB3Gp6bAXeF6Y/Td8liEeUg=;
+ b=sAyeLuJjUUAwFEVvORe3iomX07+VPWVm+urhIn8ifSzR84TlGFpNMRl4Ua41/c6fGNxyJc
+ fDhb3DgcehHI6VCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D60013697;
+ Thu,  6 Feb 2025 17:58:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VU6kAmP4pGeVZwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 06 Feb 2025 17:58:59 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [RFC PATCH 0/4] crypto,io,migration: Add support to gnutls_bye()
+Date: Thu,  6 Feb 2025 14:58:20 -0300
+Message-Id: <20250206175824.22664-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,46 +104,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmFzb24gR3VudGhvcnBl
-IDxqZ2dAbnZpZGlhLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEZlYnJ1YXJ5IDYsIDIwMjUgNTo0
-NyBQTQ0KPiBUbzogRGFuaWVsIFAuIEJlcnJhbmfDqSA8YmVycmFuZ2VAcmVkaGF0LmNvbT4NCj4g
-Q2M6IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPHNoYW1lZXJhbGkua29sb3RodW0udGhv
-ZGlAaHVhd2VpLmNvbT47IHFlbXUtYXJtQG5vbmdudS5vcmc7DQo+IHFlbXUtZGV2ZWxAbm9uZ251
-Lm9yZzsgZXJpYy5hdWdlckByZWRoYXQuY29tOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7
-IG5pY29saW5jQG52aWRpYS5jb207IGRkdXRpbGVAcmVkaGF0LmNvbTsNCj4gTGludXhhcm0gPGxp
-bnV4YXJtQGh1YXdlaS5jb20+OyBXYW5nemhvdSAoQikNCj4gPHdhbmd6aG91MUBoaXNpbGljb24u
-Y29tPjsgamlhbmdrdW5rdW4gPGppYW5na3Vua3VuQGh1YXdlaS5jb20+Ow0KPiBKb25hdGhhbiBD
-YW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+Ow0KPiB6aGFuZ2ZlaS5nYW9AbGlu
-YXJvLm9yZzsgbmF0aGFuY0BudmlkaWEuY29tDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIDAv
-NV0gaHcvYXJtL3ZpcnQ6IEFkZCBzdXBwb3J0IGZvciB1c2VyLWNyZWF0YWJsZQ0KPiBuZXN0ZWQg
-U01NVXYzDQo+IA0KPiBPbiBUaHUsIEZlYiAwNiwgMjAyNSBhdCAwNToxMDozMlBNICswMDAwLCBE
-YW5pZWwgUC4gQmVycmFuZ8OpIHdyb3RlOg0KPiA+IE9uIFRodSwgRmViIDA2LCAyMDI1IGF0IDAx
-OjAyOjM4UE0gLTA0MDAsIEphc29uIEd1bnRob3JwZSB3cm90ZToNCj4gPiA+IE9uIFRodSwgRmVi
-IDA2LCAyMDI1IGF0IDAzOjA3OjA2UE0gKzAwMDAsIFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkN
-Cj4gd3JvdGU6DQo+ID4gPiA+ID4gSWYgd2Ugc2V0IHRoZSBwaHlzaWNhbC9ndWVzdCBTTU1VIHJl
-bGF0aW9uc2hpcCBkaXJlY3RseSwgdGhlbiBhdCB0aGUNCj4gPiA+ID4gPiB0aW1lIHRoZSBWRklP
-IGRldmljZSBpcyBwbHVnZ2VkLCB3ZSBjYW4gZGlhZ25vc2UgdGhlIGluY29ycmVjdGx5DQo+ID4g
-PiA+ID4gcGxhY2VkIFZGSU8gZGV2aWNlLCBhbmQgYmV0dGVyIHJlYXNvbiBhYm91dCBiZWhhdmlv
-dXIuDQo+ID4gPiA+DQo+ID4gPiA+IEFncmVlLg0KPiA+ID4NCj4gPiA+IENhbiB5b3UganVzdCB0
-YWtlIGluIGEgVkZJTyBjZGV2IEZEIHJlZmVyZW5jZSBvbiB0aGlzIGNvbW1hbmQgbGluZToNCj4g
-PiA+DQo+ID4gPiAgLWRldmljZSBhcm0tc21tdXYzLWFjY2VsLGlkPXNtbXV2MixidXM9cGNpZS4y
-DQo+ID4gPg0KPiA+ID4gQW5kIHRoYXQgd2lsbCBsb2NrIHRoZSBwU01NVS92U01NVSByZWxhdGlv
-bnNoaXA/DQo+ID4NCj4gPiBXZSBzaG91bGRuJ3QgYXNzdW1lIGFueSBWRklPIGRldmljZSBleGlz
-dHMgaW4gdGhlIFFFTVUgY25vZmlnIGF0IHRoZQ0KPiB0aW1lDQo+ID4gd2UgcmVhbGl6ZSB0aGUg
-dmlydHVhbCBzc211LiBJIGV4cGVjdCB0aGUgU01NVSBtYXkgYmUgY29sZCBwbHVnZ2VkLA0KPiB3
-aGlsZQ0KPiA+IHRoZSBWRklPIGRldmljZXMgbWF5IGJlIGhvdCBwbHVnZ2VkIGFyYml0cmFybHkg
-bGF0ZXIsIGFuZCB3ZSBzaG91bGQgaGF2ZQ0KPiA+IHRoZSBhc3NvY2lhdGlvbiBpbml0aWFsaXpl
-ZCB0aGUgU01NVSBpcyByZWFsaXplZC4NCj4gDQo+IFRoaXMgaXMgbm90IHN1cHBvcnRlZCBrZXJu
-ZWwgc2lkZSwgeW91IGNhbid0IGluc3RhbnRpYXRlIGEgdklPTU1VDQo+IHdpdGhvdXQgYSBWRklP
-IGRldmljZSB0aGF0IHVzZXMgaXQuIEZvciBzZWN1cml0eS4NCg0KSSB0aGluayB0aGF0IGlzIGZp
-bmUgaWYgUWVtdSBrbm93cyBhYm91dCBhc3NvY2lhdGlvbiBiZWZvcmVoYW5kLiBEdXJpbmcgDQp2
-SU9NTVUgaW5zdGFudGlhdGlvbiBpdCBjYW4gY3Jvc3MgY2hlY2sgd2hldGhlciB0aGUgdXNlciBz
-cGVjaWZpZWQNCnBTTU1VIDwtPnZTTU1VIGlzIGNvcnJlY3QgZm9yIHRoZSBkZXZpY2UuDQoNCkFs
-c28gaG93IGRvIHdlIGRvIGl0IHdpdGggbXVsdGlwbGUgVkYgZGV2aWNlcyB1bmRlciBhIHBTVU1N
-VSA/IFdoaWNoDQpjZGV2IGZkIGluIHRoYXQgY2FzZT8gDQoNClRoYW5rcywNClNoYW1lZXINCg==
+Hi,
+
+We've been discussing a way to stop multifd recv threads from getting
+an error at the end of migration when the source threads close the
+iochannel without ending the TLS session.
+
+The original issue was introduced by commit 1d457daf86
+("migration/multifd: Further remove the SYNC on complete") which
+altered the synchronization of the source and destination in a manner
+that causes the destination to already be waiting at recv() when the
+source closes the connection.
+
+One approach would be to issue gnutls_bye() at the source after all
+the data has been sent. The destination would then gracefully exit
+when it gets EOF.
+
+Aside from stopping the recv thread from seeing an error, this also
+creates a contract that all connections should be closed only after
+the TLS session is ended. This helps to avoid masking a legitimate
+issue where the connection is closed prematurely.
+
+Fabiano Rosas (4):
+  crypto: Allow gracefully ending the TLS session
+  io: tls: Add qio_channel_tls_bye
+  migration/multifd: Terminate the TLS connection
+  migration: Check migration error after loadvm
+
+ crypto/tlssession.c         | 40 ++++++++++++++++++
+ include/crypto/tlssession.h | 22 ++++++++++
+ include/io/channel-tls.h    | 12 ++++++
+ io/channel-tls.c            | 84 +++++++++++++++++++++++++++++++++++++
+ io/trace-events             |  5 +++
+ migration/multifd.c         | 34 ++++++++++++++-
+ migration/savevm.c          |  6 ++-
+ migration/tls.c             |  5 +++
+ migration/tls.h             |  2 +-
+ 9 files changed, 207 insertions(+), 3 deletions(-)
+
+-- 
+2.35.3
+
 
