@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D67A2B078
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80EFA2B074
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:19:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg6Sl-0007lI-RE; Thu, 06 Feb 2025 13:18:55 -0500
+	id 1tg6Ss-0007tD-OB; Thu, 06 Feb 2025 13:19:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Sj-0007hb-Ez
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:53 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Sp-0007s8-Mi
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:59 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Sh-0006pc-Jx
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:53 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43634b570c1so8950705e9.0
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:18:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Sn-0006qW-7f
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:59 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-436345cc17bso9209535e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:18:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738865929; x=1739470729; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738865935; x=1739470735; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nF0gOL375kOEqgBWe6BH6Zaiz34mrVikUB/O+vzSeyU=;
- b=lJyTZgulPhZDU/yoF6OKY0U02otJMjDLM53Tc7ch0Qx6ett9hVidjMEYrNrg7J6JUw
- Xs0YSBXvtAsGs4Jvu6XC/LdwrSA+OMpwsHlMf8ho3lUr1b2P2vgElCfMIRNYmDWmkROY
- Lreu1NhSqSjZsI1kq93q/KXm2iwdyOWIIJ580UFvbpJJhn9086uMljg9zFBOMM3ReEGA
- pm+YAG7OFMMBzTISb4pJSpLHC+MQU4wKLH3JeLu6AXBF2Sb4FtVuO0qIqxNpR+npLl0b
- L5aqSYg9XxQsieILhGj8+Tl3QshJueoUMDfpdAA2Daxez2ccwNiLIqbEFFqEfkAiCDkD
- hfpw==
+ bh=3chV6Syf4UgzPYrc3klqldaIF78PGsSbuVaW5fDvGGY=;
+ b=mM3fr7aYsRzvJJGqOTAiU7R7OJHjyzO640aF3yItt6Ixb5Lw/QiuDw0I0bUs4dIZ0T
+ XVH5Hz5Wy1gJApwoq5mkonhazpCpu49bVM8elitA7HY85cKaD3o087TvdGgoFkpFnGHx
+ cXa4KWk4FqolvrNO6v38Qxo/2dH4sMBCuEFh1un4UiJ/7hw1lErRWPA5XlaKVJGoEN1M
+ /nK2cu46sKyC5Wb2pthuvTBwsHyXzznGHM3DN5vxybT+LdB/KTkO9nWSk81ia0lcXduT
+ M5pxZA4/wyxhccDOjz/CTDjgmoRDU25XXpJoBGnQK25+cZx52diQNJrWNSQrkTplsD3N
+ hH5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738865929; x=1739470729;
+ d=1e100.net; s=20230601; t=1738865935; x=1739470735;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nF0gOL375kOEqgBWe6BH6Zaiz34mrVikUB/O+vzSeyU=;
- b=dv0Gq0CtXWXbXdbncLUZVaVvkTpTAsNhPGRAEEgnnSOteC3TJIWXxnugbjJHzxpR6e
- IPEcvNkk4rByl2wicTLJ6ForENjRAwUzC8dlIG7pO7ogrZa+GVTPDTThuSOTnbVbSR4Z
- AZnkQMUYTSfxDaZhkQ2MR0c75A1S8k364h2OHuqo4vH6xPtauwV1pKPCOK4O2NYcNtee
- DafcJE+XOmFvW8DXh/9DZzFD54+6xxx7szj67Ye3M8l2+Km4tPT1Gp1DiArEr0B4tv6G
- 43TNpyWlRqTU/ko6zgMWX3HrHNOS/cuSp9JIkWl84NPLiAhwChf+pvHT8x5QA2/dflx3
- dnnw==
-X-Gm-Message-State: AOJu0Ywdt6ScsTujgsfZcsNQGIVWoeSHDLkLKIBw8Ou/XSDq9tDTa2zo
- qSQazsi6DGZqtCck2tSKeRfBgSTEanimSgCRg508tuiut0ixc3uZPjIVo9fbxSCerf9uxUfx1fB
- MgwE=
-X-Gm-Gg: ASbGncsAQdxeuDq9yG9iM+HKswwvOV1u9H5//YtGJ0lor5hgJnjf9Nif45+nyUM1gTd
- 5FZn/Sn5xGYs+nzNJ/i8gU5kkd1+QuORb0C71VLjibO2bWuJwJhJOEQMmRFINyHj59MEACafPh6
- fcL2RQ84C77OlLax6zgUfQSFTcIalIsyKrFkNmQ4EygvaC4QtafCfq9y6V0v9eq6tKBq/0OtuP7
- pkLxFS9tQ0vEIj9k18/MIxOle8iUNVVKoCzjCWwDF71ovCvY/0O1NOnLzliz2vIrG/jt5MeblZ1
- 7RhMe5kYp9blapUjjm328Gr5E4AF0SST+0xhSBv3fNoFWwNtIE0QbF6I9mS8SHg72A==
-X-Google-Smtp-Source: AGHT+IEr6mKVF/5i7XI9bPvijw6JSF2ZIebTXVKbzR1YpFeo3XtTLng05fB/qgrsOlZD9l4eG5PdLQ==
-X-Received: by 2002:a05:600c:1c0e:b0:434:fdf3:2c26 with SMTP id
- 5b1f17b1804b1-439249a8b60mr3401665e9.19.1738865929487; 
- Thu, 06 Feb 2025 10:18:49 -0800 (PST)
+ bh=3chV6Syf4UgzPYrc3klqldaIF78PGsSbuVaW5fDvGGY=;
+ b=LOimC4Ibi1skTF+RyzbEA1DHiiV5IbDsXDILq35OQNRWSKUzQJYh0Shm+F6MUg22cq
+ n9yRtNgYRp7Lsl4XJbMC9QK7AnX2y3KNqVKMwZGl/sMoYJY1+/AiLov+uhjVWHU8azyy
+ yliKv+sSJLZTjg5nkp/Cfx3YREVGI5+xAKUze0APfkx4tIzV3msTqcXX1/H55FvNPtX7
+ yRfM0quNU3E3WuYNefROSWP2y0hLiWWv/ExiD+QwpPEWSnDe+z/491dSrFEi9I8nAXW6
+ oqHk/hXLGWE/tH2GHWzEgpjoDaK+tctFxlBiPaxw/4AZL25CKnqv0cnqjt9fFrNJSnD1
+ /NSQ==
+X-Gm-Message-State: AOJu0Yztvb/THXpXNr9mkEoQ2l9gLtRPZFfK4uyufkhA8NSYl+fKNzKk
+ cshd7/saEMtdJ+KARziRNddLbkj+dBJttvfgLr23/axHpuTqaybSlkp1LPKMYkaIkEh+rpuqpOG
+ oEEw=
+X-Gm-Gg: ASbGncvd3jfwG3CE7WdHlcK55v1CggOspTBQwr34ovsW3KABvr44Yg8G4jUEPAW09D2
+ 5SIbQA2RcFw4rFwPXMKcXaGtV5FJTuddt5VwOdi1EbIuFJpsinME10sRz+WBSPjkkVXYR/0WBVZ
+ f4s4i+nAS506DYCYT5ALHu4cu8+clnBgIcEip3Bwm6ArCSBX/x3UOekUKRm90zd2LbQw8CeuKKD
+ /Hi9BDjs3h98eu51qvjzLd2RFx+HUNiqJdHQT7qVXCSOKxQ/ZHyiy2jw+EfyNv9OQgbcm9qX98G
+ 0L8mx5ScUqC+sq0CX7Om3gP6bVztIpkxBS9zrBPmjRrATmSjPTMYmiv16eGkMFXPtg==
+X-Google-Smtp-Source: AGHT+IEA0DMN4iOBz9G2FC5ueovoYaZq2D4m+00UatsLM9qrQKFf6i0Vnv5yiTPmm2//MFKpTDLJHQ==
+X-Received: by 2002:a05:600c:1e0e:b0:436:f3f6:9582 with SMTP id
+ 5b1f17b1804b1-43924988870mr3600075e9.8.1738865935183; 
+ Thu, 06 Feb 2025 10:18:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4390d94d40csm62272665e9.9.2025.02.06.10.18.48
+ 5b1f17b1804b1-43907f16ffasm58795995e9.1.2025.02.06.10.18.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Feb 2025 10:18:49 -0800 (PST)
+ Thu, 06 Feb 2025 10:18:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
@@ -69,17 +69,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
  Sunil V L <sunilvl@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/7] hw/riscv/boot: Use 'hwaddr' type for firmware addresses
-Date: Thu,  6 Feb 2025 19:18:24 +0100
-Message-ID: <20250206181827.41557-5-philmd@linaro.org>
+Subject: [PATCH 5/7] hw/riscv/iommu: Reduce needs for target-specific code
+Date: Thu,  6 Feb 2025 19:18:25 +0100
+Message-ID: <20250206181827.41557-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250206181827.41557-1-philmd@linaro.org>
 References: <20250206181827.41557-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,188 +102,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some places already use the hwaddr type. Use it all over
-the API allows it to be target agnostic. Use cpu_env() in
-riscv_plic_hart_config_string() to shorten the access.
+Use the qemu_target_page_size() runtime function instead
+of the TARGET_PAGE_SIZE definition, remove unnecessary
+"exec/exec-all.h" header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/riscv/boot.h         | 21 ++++++++++-----------
- include/hw/riscv/boot_opensbi.h | 14 +++++++-------
- hw/riscv/boot.c                 | 28 ++++++++++++++--------------
- 3 files changed, 31 insertions(+), 32 deletions(-)
+ hw/riscv/riscv-iommu-pci.c | 5 +++--
+ hw/riscv/riscv-iommu-sys.c | 1 -
+ hw/riscv/riscv-iommu.c     | 1 +
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
-index 7d59b2e6c63..1f66432eaed 100644
---- a/include/hw/riscv/boot.h
-+++ b/include/hw/riscv/boot.h
-@@ -20,7 +20,6 @@
- #ifndef RISCV_BOOT_H
- #define RISCV_BOOT_H
- 
--#include "exec/cpu-defs.h"
- #include "hw/loader.h"
+diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
+index 12451869e41..d8779481421 100644
+--- a/hw/riscv/riscv-iommu-pci.c
++++ b/hw/riscv/riscv-iommu-pci.c
+@@ -22,13 +22,13 @@
+ #include "hw/pci/pci_bus.h"
+ #include "hw/qdev-properties.h"
  #include "hw/riscv/riscv_hart.h"
- 
-@@ -43,21 +42,21 @@ bool riscv_is_32bit(RISCVHartArrayState *harts);
- char *riscv_plic_hart_config_string(int hart_count);
- 
- void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts);
--target_ulong riscv_calc_kernel_start_addr(RISCVBootInfo *info,
--                                          target_ulong firmware_end_addr);
--target_ulong riscv_find_and_load_firmware(MachineState *machine,
--                                          const char *default_machine_firmware,
--                                          hwaddr *firmware_load_addr,
--                                          symbol_fn_t sym_cb);
-+hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
-+                                    hwaddr firmware_end_addr);
-+hwaddr riscv_find_and_load_firmware(MachineState *machine,
-+                                    const char *default_machine_firmware,
-+                                    hwaddr *firmware_load_addr,
-+                                    symbol_fn_t sym_cb);
- const char *riscv_default_firmware_name(RISCVHartArrayState *harts);
- char *riscv_find_firmware(const char *firmware_filename,
-                           const char *default_machine_firmware);
--target_ulong riscv_load_firmware(const char *firmware_filename,
--                                 hwaddr *firmware_load_addr,
--                                 symbol_fn_t sym_cb);
-+hwaddr riscv_load_firmware(const char *firmware_filename,
-+                           hwaddr *firmware_load_addr,
-+                           symbol_fn_t sym_cb);
- void riscv_load_kernel(MachineState *machine,
-                        RISCVBootInfo *info,
--                       target_ulong kernel_start_addr,
-+                       hwaddr kernel_start_addr,
-                        bool load_initrd,
-                        symbol_fn_t sym_cb);
- uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-diff --git a/include/hw/riscv/boot_opensbi.h b/include/hw/riscv/boot_opensbi.h
-index 18664a174b5..e6998c668ad 100644
---- a/include/hw/riscv/boot_opensbi.h
-+++ b/include/hw/riscv/boot_opensbi.h
-@@ -8,7 +8,7 @@
- #ifndef RISCV_BOOT_OPENSBI_H
- #define RISCV_BOOT_OPENSBI_H
- 
--#include "exec/cpu-defs.h"
-+#include "exec/hwaddr.h"
- 
- /** Expected value of info magic ('OSBI' ascii string in hex) */
- #define FW_DYNAMIC_INFO_MAGIC_VALUE     0x4942534f
-@@ -31,15 +31,15 @@ enum sbi_scratch_options {
- /** Representation dynamic info passed by previous booting stage */
- struct fw_dynamic_info {
-     /** Info magic */
--    target_long magic;
-+    hwaddr magic;
-     /** Info version */
--    target_long version;
-+    hwaddr version;
-     /** Next booting stage address */
--    target_long next_addr;
-+    hwaddr next_addr;
-     /** Next booting stage mode */
--    target_long next_mode;
-+    hwaddr next_mode;
-     /** Options for OpenSBI library */
--    target_long options;
-+    hwaddr options;
-     /**
-      * Preferred boot HART id
-      *
-@@ -55,7 +55,7 @@ struct fw_dynamic_info {
-      * stage can set it to -1UL which will force the FW_DYNAMIC firmware
-      * to use the relocation lottery mechanism.
-      */
--    target_long boot_hart;
-+    hwaddr boot_hart;
- };
- 
- /** Representation dynamic info passed by previous booting stage */
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index c309441b7d8..acc0d221fce 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -21,7 +21,6 @@
- #include "qemu/datadir.h"
- #include "qemu/units.h"
++#include "exec/target_page.h"
+ #include "migration/vmstate.h"
+ #include "qapi/error.h"
  #include "qemu/error-report.h"
--#include "exec/cpu-defs.h"
- #include "hw/boards.h"
- #include "hw/loader.h"
- #include "hw/riscv/boot.h"
-@@ -31,6 +30,7 @@
- #include "system/qtest.h"
- #include "system/kvm.h"
- #include "system/reset.h"
+ #include "qemu/host-utils.h"
+ #include "qom/object.h"
+ 
+-#include "cpu_bits.h"
+ #include "riscv-iommu.h"
+ #include "riscv-iommu-bits.h"
+ #include "trace.h"
+@@ -102,7 +102,8 @@ static void riscv_iommu_pci_realize(PCIDevice *dev, Error **errp)
+     qdev_realize(DEVICE(iommu), NULL, errp);
+ 
+     memory_region_init(&s->bar0, OBJECT(s), "riscv-iommu-bar0",
+-        QEMU_ALIGN_UP(memory_region_size(&iommu->regs_mr), TARGET_PAGE_SIZE));
++        QEMU_ALIGN_UP(memory_region_size(&iommu->regs_mr),
++                      qemu_target_page_size()));
+     memory_region_add_subregion(&s->bar0, 0, &iommu->regs_mr);
+ 
+     pcie_endpoint_cap_init(dev, 0);
+diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
+index 65b24fb07de..bbe839ed241 100644
+--- a/hw/riscv/riscv-iommu-sys.c
++++ b/hw/riscv/riscv-iommu-sys.c
+@@ -26,7 +26,6 @@
+ #include "qemu/host-utils.h"
+ #include "qemu/module.h"
+ #include "qom/object.h"
+-#include "exec/exec-all.h"
+ #include "trace.h"
+ 
+ #include "riscv-iommu.h"
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index e7568ca227a..fb763e6e69d 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -26,6 +26,7 @@
+ #include "qapi/error.h"
+ #include "qemu/timer.h"
+ 
 +#include "target/riscv/cpu.h"
- 
- #include <libfdt.h>
- 
-@@ -51,7 +51,7 @@ char *riscv_plic_hart_config_string(int hart_count)
- 
-     for (i = 0; i < hart_count; i++) {
-         CPUState *cs = qemu_get_cpu(i);
--        CPURISCVState *env = &RISCV_CPU(cs)->env;
-+        CPURISCVState *env = cpu_env(cs);
- 
-         if (kvm_enabled()) {
-             vals[i] = "S";
-@@ -74,8 +74,8 @@ void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts)
-     info->is_32bit = riscv_is_32bit(harts);
- }
- 
--target_ulong riscv_calc_kernel_start_addr(RISCVBootInfo *info,
--                                          target_ulong firmware_end_addr) {
-+hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
-+                                    hwaddr firmware_end_addr) {
-     if (info->is_32bit) {
-         return QEMU_ALIGN_UP(firmware_end_addr, 4 * MiB);
-     } else {
-@@ -133,13 +133,13 @@ char *riscv_find_firmware(const char *firmware_filename,
-     return filename;
- }
- 
--target_ulong riscv_find_and_load_firmware(MachineState *machine,
--                                          const char *default_machine_firmware,
--                                          hwaddr *firmware_load_addr,
--                                          symbol_fn_t sym_cb)
-+hwaddr riscv_find_and_load_firmware(MachineState *machine,
-+                                    const char *default_machine_firmware,
-+                                    hwaddr *firmware_load_addr,
-+                                    symbol_fn_t sym_cb)
- {
-     char *firmware_filename;
--    target_ulong firmware_end_addr = *firmware_load_addr;
-+    hwaddr firmware_end_addr = *firmware_load_addr;
- 
-     firmware_filename = riscv_find_firmware(machine->firmware,
-                                             default_machine_firmware);
-@@ -154,11 +154,11 @@ target_ulong riscv_find_and_load_firmware(MachineState *machine,
-     return firmware_end_addr;
- }
- 
--target_ulong riscv_load_firmware(const char *firmware_filename,
--                                 hwaddr *firmware_load_addr,
--                                 symbol_fn_t sym_cb)
-+hwaddr riscv_load_firmware(const char *firmware_filename,
-+                           hwaddr *firmware_load_addr,
-+                           symbol_fn_t sym_cb)
- {
--    uint64_t firmware_entry, firmware_end;
-+    hwaddr firmware_entry, firmware_end;
-     ssize_t firmware_size;
- 
-     g_assert(firmware_filename != NULL);
-@@ -227,7 +227,7 @@ static void riscv_load_initrd(MachineState *machine, RISCVBootInfo *info)
- 
- void riscv_load_kernel(MachineState *machine,
-                        RISCVBootInfo *info,
--                       target_ulong kernel_start_addr,
-+                       hwaddr kernel_start_addr,
-                        bool load_initrd,
-                        symbol_fn_t sym_cb)
- {
+ #include "cpu_bits.h"
+ #include "riscv-iommu.h"
+ #include "riscv-iommu-bits.h"
 -- 
 2.47.1
 
