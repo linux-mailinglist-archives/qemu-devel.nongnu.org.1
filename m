@@ -2,139 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2614A2A45E
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84851A2A4AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:36:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyCp-0000I4-3y; Thu, 06 Feb 2025 04:29:55 -0500
+	id 1tfyJA-00030A-OJ; Thu, 06 Feb 2025 04:36:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tfyCi-0000H5-MI
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:29:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
+ id 1tfyIo-0002pQ-Rj
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:36:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tfyCh-0005nK-49
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:29:48 -0500
+ (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
+ id 1tfyIk-0007vF-RT
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:36:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738834185;
+ s=mimecast20190719; t=1738834561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=am4iMHLtBYq6QIfw4BK+y7dS1PsroeK3j91cjc7MSy0=;
- b=PUznXp+7IBeaF7quqLtLlV8c/oQkzDtMapitSicF8SA3UH/0+YAwflnnLfkW5FZabLGMQv
- TXTSQcMgdIvFR8+VYIrdymA/lsqni96uO8/RmCPAA2R3WnS6Rk2yZZ7CRXqZsLJHxEtfPj
- 9IIFLbuYTCSoum9sxB63eDqKvwfiagI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=P4ZHJjPRFMKV2LyTsMjVC9uMgqNHhpd5qSqQo6h6SPo=;
+ b=IMcybpnJ5SyY5Sws1GWYL3IR+0ecJc1zrsLZEpHzuzh7COcK08myaOXn3k3D1ZjnGVOaWV
+ l+ceSpFXTT+7tmL175FyOhVcv1PbnkLWtiDtiP9TW2Zr8vt+gpFR3YwJlGqFKjC/YYdj3e
+ y3pJwC9pRqAREVkS6CiEJq7Jr4ryh5Y=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-UkUZUJP6N56iDgx6Sso8YQ-1; Thu, 06 Feb 2025 04:29:42 -0500
-X-MC-Unique: UkUZUJP6N56iDgx6Sso8YQ-1
-X-Mimecast-MFC-AGG-ID: UkUZUJP6N56iDgx6Sso8YQ
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38dc32f753dso48306f8f.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:29:42 -0800 (PST)
+ us-mta-663-_etfvzXAMT2qeYtt4-2McA-1; Thu, 06 Feb 2025 04:34:23 -0500
+X-MC-Unique: _etfvzXAMT2qeYtt4-2McA-1
+X-Mimecast-MFC-AGG-ID: _etfvzXAMT2qeYtt4-2McA
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43625ceae52so4118845e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:34:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738834181; x=1739438981;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=am4iMHLtBYq6QIfw4BK+y7dS1PsroeK3j91cjc7MSy0=;
- b=Xz86zOlBXehIdRV9gilAYmOPcQkR3Hco/V57wMxxX/6AtIMelufQ4Si98wyl7D1Ll1
- w7wFtm4Bgsz1il3HXY5CW4dE6yz2y3HLG/Ibb5AYiSVKE0BAkYtOW613pcHfLfTre1Hj
- Aim6+iyYYpioFu+44zvgaYJ6dVeCeytOUZcmsDOKzwVmXsey3gi/QjLOJ3LcEVs99dFs
- vL/NMzcB4ufF6/d0CAP5hOBOTU69eUQTIq3Q7CgDSEgvGxlfF04gyyc0OT/BkzTgq5BK
- qidkOduk7hPgwrMeP0GeX/aDHinrq8t7sfwDH9XTcvJTPQ2kKg/PzlW4o6ftqPjnexWp
- z7gg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVhR91mNOrZlx1QhYYBKIfQjX+SFAHU3mJynPZfonJA4qucCY+/Zv8HJnn6rkbXu8/JwnwxE1HNAmi4@nongnu.org
-X-Gm-Message-State: AOJu0YxNfFQibjZLP0jtOH2pWBJQPhFk/5AHRm8WVa2YPWnbdgd1lTP2
- MyaEPlm+zb4jK8RoP/h0fUpt2zgfXxiJXpeVxd1c06yH1sEfmhrCPaX8DnksENlmuBTNRYYQUa2
- /s6EV0lk8hCIRzLxbdLj+4oT/EwrXhB/1z8UYRNZ0yh16iNiioGdp
-X-Gm-Gg: ASbGnct1M3r8bVVEoUXrfLPXNs44+lE1UjEFIhTUN8OOJAh/j5zwgCKrgD2SdqFefk9
- CxL+YqjI+VsoRS9JZ0oqgNHHPce4DtQGcp6L/7gln+rxwwXhjxeCLbsYfW53ueTlasO49m4LsDH
- VEC71zVP5Cc7RnBMVEDKkQGxniFtKqG8icnuCRMsAEhGy1R6p48qrt/XKv9K7s5ucc1nO5t6aUe
- /mlMkDjB1cq7ty0EgfBg6GiWCCxysK7nWxbfF615ZjWkhuPfKZPfr9NfFk7r0TPe8wQWx6DPNPr
- hJQwi7pF4x8PpYDpQiM138kh1P18tJlveC55
-X-Received: by 2002:a5d:6c61:0:b0:38d:b1a5:3f74 with SMTP id
- ffacd0b85a97d-38db48a9705mr4970066f8f.6.1738834181382; 
- Thu, 06 Feb 2025 01:29:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0Kb65TWBEXhYscaUU/FZO/3+5YUPqYhYyv+5t+lVR3c2W1o9jXW71j/3SqtlD95DXQIEU0Q==
-X-Received: by 2002:a5d:6c61:0:b0:38d:b1a5:3f74 with SMTP id
- ffacd0b85a97d-38db48a9705mr4970051f8f.6.1738834181048; 
- Thu, 06 Feb 2025 01:29:41 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-48-132.web.vodafone.de.
- [109.42.48.132]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbdd1aee5sm1244144f8f.19.2025.02.06.01.29.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 01:29:40 -0800 (PST)
-Message-ID: <397d0afe-675f-4c21-b782-75e795a93491@redhat.com>
-Date: Thu, 6 Feb 2025 10:29:39 +0100
+ d=1e100.net; s=20230601; t=1738834459; x=1739439259;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=P4ZHJjPRFMKV2LyTsMjVC9uMgqNHhpd5qSqQo6h6SPo=;
+ b=UQ5I7j7mQCqQ5VqCKb/QbyA3GYmCQh8s47dIxSD+nrkmS2WfI7L7ID67TglTvwtIdi
+ r2idqcSWbDKyJYTcHlfGCEpgv8XAo1I1jhi/ssGkMzYkK/6T/8d6guUhah2oEqgVLyBB
+ CgsQOUPaZT9YT7h/BoxEKdrGDiFXaN8CVHD1riIUNTqy6qQr3RFSvR4ZE/AHlvwRC7Tz
+ 0w6f1dQ+su7XIZg03/goUNQwla2C8KKDY+5ZbRPFLVoDGAsKbqCeIUq5DxPfzAVBmarA
+ ShwLukBTHQJoV8ywiU0kFaDJVF3puTM+3itV+OGOi8uEz8D8nBFPfNny2RBagT+NZXAI
+ EyxA==
+X-Gm-Message-State: AOJu0YzowTdJ0kPl8GvX/mkpixx3mJa862pnQK5kRWlqAd5meg4erTsT
+ Eo+EgoawvKnc/Xq7ieA4Qo4Yox95g6+ZhaQ4NL+rXbh5RN8UIGdDmhF7y7pnWdBlnkgZXR6O0JX
+ Q3ZOOPkQa6q/81oeG05/7Ua9EkFEFTPHuvVp2VT14vqd2ea/j96tZQRcWM6xM1kI=
+X-Gm-Gg: ASbGncvVKbaxMvGskxN9Y7mWldrX3PEOaN86MOy43IjUvj7/cyjmfJqYBjLm69MDekv
+ geoEHhh9PDcFPBjwQJGCGZ/1DV0JoyKg09ppYD58pIqNCE94fE+TxSsGENBLgTj3qVaFZtIgZ7w
+ mm8G2IBam5EAo/Td1gyOtuh0ugmaDm9Xz4Ihx/2sJIG+M+5Q48uF5iEJX1ZSSIS56Gg85Jl+3NL
+ AGFfFZWmbQOwhZzz+6KYLVFaK0QYNaRPn1QrP0t7AdkRaa/+i7lWXkTFnaFj8FRNLYCi2UBgSc=
+X-Received: by 2002:a05:600c:1c9d:b0:434:9e1d:7626 with SMTP id
+ 5b1f17b1804b1-4390d5a2e06mr40199505e9.25.1738834459519; 
+ Thu, 06 Feb 2025 01:34:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHy2fOO/MU56iUKzPnZlhBwxpOevv3LvEJRLHdAajpCbdN4rFxi6UgPiA9NlUPEvJo9+svERA==
+X-Received: by 2002:a05:600c:1c9d:b0:434:9e1d:7626 with SMTP id
+ 5b1f17b1804b1-4390d5a2e06mr40199075e9.25.1738834459019; 
+ Thu, 06 Feb 2025 01:34:19 -0800 (PST)
+Received: from fedora ([2a01:e0a:257:8c60:80f1:cdf8:48d0:b0a1])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4390db11750sm49963365e9.40.2025.02.06.01.34.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Feb 2025 01:34:18 -0800 (PST)
+Date: Thu, 6 Feb 2025 10:34:16 +0100
+From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex Bennee <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@gmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Bibo Mao <maobibo@loongson.cn>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, felisous@amazon.com,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: Call for GSoC internship project ideas
+Message-ID: <Z6SCGN+rW2tJYATh@fedora>
+References: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] tests/functional: skip mem addr test on 32-bit hosts
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250205155946.2811296-1-berrange@redhat.com>
- <20250205155946.2811296-6-berrange@redhat.com>
- <9edd3138-3411-4459-96c3-d48c30e197e0@linaro.org>
- <Z6OXlPu0fw_S9iy6@redhat.com>
- <23032dd9-063e-49b3-a6b8-25d0c8f72cef@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <23032dd9-063e-49b3-a6b8-25d0c8f72cef@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvaralar@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -152,26 +118,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/02/2025 19.25, Richard Henderson wrote:
-> On 2/5/25 08:53, Daniel P. Berrangé wrote:
->>>> +Decorator to skip execution of a test on 32-bit targets
->>>> +Example:
->>>> +
->>>> +  @skipIf32BitTarget()
->>>> +'''
->>>> +def skipIf32BitTarget():
->>>> +    enoughBits = sys.maxsize > 2**32
->>>> +    return skipUnless(enoughBits,
->>>> +                      'Test requires a host with 64-bit address space')
->>>
->>> skipIf32BitHost?
->>
->> I don't mind either way.
+On Tue, Jan 28, 2025 at 11:16:43AM -0500, Stefan Hajnoczi wrote:
+> Dear QEMU and KVM communities,
+> QEMU will apply for the Google Summer of Code internship
+> program again this year. Regular contributors can submit project
+> ideas that they'd like to mentor by replying to this email by
+> February 7th.
 > 
-> Definitely host.
+> About Google Summer of Code
+> -----------------------------------------
+> GSoC (https://summerofcode.withgoogle.com/) offers paid open
+> source remote work internships to eligible people wishing to participate
+> in open source development. QEMU has been doing internship for
+> many years. Our mentors have enjoyed helping talented interns make
+> their first open source contributions and some former interns continue
+> to participate today.
+> 
+> Who can mentor
+> ----------------------
+> Regular contributors to QEMU and KVM can participate as mentors.
+> Mentorship involves about 5 hours of time commitment per week to
+> communicate with the intern, review their patches, etc. Time is also
+> required during the intern selection phase to communicate with
+> applicants. Being a mentor is an opportunity to help someone get
+> started in open source development, will give you experience with
+> managing a project in a low-stakes environment, and a chance to
+> explore interesting technical ideas that you may not have time to
+> develop yourself.
+> 
+> How to propose your idea
+> ------------------------------
+> Reply to this email with the following project idea template filled in:
+> 
+> === TITLE ===
+> 
+> '''Summary:''' Short description of the project
+> 
+> Detailed description of the project that explains the general idea,
+> including a list of high-level tasks that will be completed by the
+> project, and provides enough background for someone unfamiliar with
+> the code base to research the idea. Typically 2 or 3 paragraphs.
+> 
+> '''Links:'''
+> * Links to mailing lists threads, git repos, or web sites
+> 
+> '''Details:'''
+> * Skill level: beginner or intermediate or advanced
+> * Language: C/Python/Rust/etc
+> 
+> More information
+> ----------------------
+> You can find out about the process we follow here:
+> Video: https://www.youtube.com/watch?v=xNVCX7YMUL8
+> Slides (PDF): https://vmsplice.net/~stefan/stefanha-kvm-forum-2016.pdf
+> 
+> The QEMU wiki page for GSoC 2024 is now available:
+> https://wiki.qemu.org/Google_Summer_of_Code_2025
+> 
+> What about Outreachy?
+> -------------------------------
+> We have struggled to find sponsors for the Outreachy internship
+> program (https://www.outreachy.org/) in recent years. If you or your
+> organization would like to sponsor an Outreachy internship, please get
+> in touch.
+> 
+> Thanks,
+> Stefan
 
-+1 for host. Otherwise this gets confused with "qemu-system-i386" etc.
+=== Adding Kani proofs for Virtqueues in Rust-vmm ===
 
-  Thomas
+'''Summary:''' Verify conformance of the virtqueue implementation in
+rust-vmm to the VirtIO specification.
+
+In the rust-vmm project, devices rely on the virtqueue implementation
+provided by the `vm-virtio` crate. This implementation is based on the
+VirtIO specification, which defines the behavior and requirements for
+virtqueues. To ensure that the implementation meets these
+specifications, we have been relying on unit tests that check the output
+of the code given specific inputs.
+
+However, writing unit tests can be incomplete, as it's challenging to
+cover all possible scenarios and edge cases. During this internship, we
+propose a more comprehensive approach: using Kani proofs to verify that
+the virtqueue implementation conforms to the VirtIO specification.
+
+Kani allows us to write exhaustive checks for all possible values, going
+beyond what unit tests can achieve. By writing Kani proofs, we can
+confirm that our implementation meets the requirements of the VirtIO
+specification. If a proof passes, it provides strong evidence that the
+virtqueue implementation is correct and conformant.
+
+During the internship, we propose the following tasks:
+- Get familiar with Kani proofs written for Firecraker
+- Finish current PR that adds a proof for the notification suppression
+  mechanism (see [2])
+- Port add_used() proof (see [5])
+- Port verify_prepare_kick() proof (see [6])
+
+'''Links:'''
+  * [1] Kani source code - https://github.com/model-checking/kani/
+  * [2] Notification suppression mechanism PR -
+    https://github.com/rust-vmm/vm-virtio/pull/324
+  * [3] LPC Talk about how we may check conformance in the VirtIO
+    specification - https://www.youtube.com/watch?v=w7BAR228344
+  * [4] FOSDEM'25 talk current effort to use Kani -
+    https://fosdem.org/2025/schedule/event/fosdem-2025-5930-hunting-virtio-specification-violations/
+  * [5] https://github.com/firecracker-microvm/firecracker/blob/4bbbec06ee0d529add07807f75d923cc3d3cd210/src/vmm/src/devices/virtio/queue.rs#L1006
+  * [6] https://github.com/firecracker-microvm/firecracker/blob/4bbbec06ee0d529add07807f75d923cc3d3cd210/src/vmm/src/devices/virtio/queue.rs#L966
+ 
+'''Details:'''
+  * Skill level: intermediate
+  * Language: Rust 
 
 
