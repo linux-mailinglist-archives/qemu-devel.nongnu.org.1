@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D14A2AC94
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 16:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3F0A2ACD5
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 16:42:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg3te-0002Z6-7a; Thu, 06 Feb 2025 10:34:30 -0500
+	id 1tg40R-0006KB-0s; Thu, 06 Feb 2025 10:41:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1tg3tS-0002Sm-4T
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:34:18 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tg40O-0006Jj-RI
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:41:29 -0500
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1tg3tQ-0001Fw-7w
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:34:17 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-38a8b17d7a7so494695f8f.2
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 07:34:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tg40M-0002gB-H5
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:41:28 -0500
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e5b1c4d14f2so926182276.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 07:41:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1738856054; x=1739460854;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=O4fAi/WFyk5fUA9AqpTcM5pdirl0mVctIzxsel8zKVc=;
- b=RCactgeaRbwb7gMcVIE6DIG4QrZlN3XtBDGEHIh16M6G9hst6StOBQdFVldo7w/r50
- z2PQa+Hk8AKVSM8Zy1Sh+yqUtRSQdNDjqazPEuVsNYt2JnL9+Whnw6q933Ia/LuAiFfj
- C7Ey3/sAtKSEjULsfRSkYiPNCj/4vgPs4/ua/MvoEHtv9dHZfKCQ8isOkDnHMtPQL5VU
- syeQM8GEsfU/VTV5yC/mYXk6FHX6K3VBz55PM9srJ7TG9XLP7wmozODt51geHU4ZU5Yw
- t8J34KMD9Bg7zNnDRE6VLwCmc8/Blv7d6CiS6WM8+yxlcG51H/WOORvjikNJ0pi43Clm
- SSaw==
+ d=linaro.org; s=google; t=1738856484; x=1739461284; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=MUmIUl+7CiZDD1nVfbNvHDoplWKLvo/NAi2M7/ioT+8=;
+ b=s6e0nHDnAesWEOZMfaAO/WETLNT/fJzFnauXMiH1qKYHd3s/BB+usNhcsIK+CZUYNB
+ 6Va34xp5EojKsinKx3cGGSnHP02XQ4MC2lBp5wpcKD7fQIBWc8gvybue67iB6yDm0h5L
+ n5Anji1rwJLe06HEpVMHwDMBZxIQFtF/BQYlampXIQ4S9AftWrm0aN14gfp1M6PukQxK
+ LxXUBVIAKY6qxT75WdWBJdb6iYruWXl7FIekbrpHB06uKSXPbz+ZvKZLWZ9duq5cZvca
+ XTdHUmPdYYIBsi9k5jnT2BpxcGLWykoX0J3vTj4agvg6VOxEa7lk3jtM6sj/hX92n8RI
+ h7Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738856054; x=1739460854;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O4fAi/WFyk5fUA9AqpTcM5pdirl0mVctIzxsel8zKVc=;
- b=EK9zr2Lgi39g0dm5bgi1Yi5lFjlVp7jcOo2DFVU57wQWTkirYPY/t0DdzmMhTgA+Z/
- PTtH0WBzQmGSx2kzgbJZoWNrWy6319mbpPEQZ9VuWIr+IQTMY4UEngZlJvM9kA8HYWai
- fyLujcNjBmrw3rd9DcgV3qVHZa3pRSgLbR5nRyg7OBvp4EsBV5hUXh2jrn+i2W31mwms
- 1Suk60Xg7ZW/OFVQY22m5ibJ8prUgID43dI0SDigc9ciJVgYZev2YpoOw0mgbEMrWkUD
- OyAfVDGZ9Q6H+ERXchIAzGUopM7bQW0LNC0+IFWrW0JXssaIKmsXb8+UuvyOPddUBPOL
- 55fQ==
-X-Gm-Message-State: AOJu0YzXu7qyzuT0EA8VDT36iGu6d+9c3PNAmqo6H0PgV1OX+nvYGRrX
- bJ4NGKI9SjxtTlOrfV8IhFOtWwYhvLm8OGdUmPjy0vPtbjlCJB8/+lUUHiNKC7OBaInb6LD4JvB
- V
-X-Gm-Gg: ASbGncs6DhdrPEQjDCNQldFH5KkWliYwKe3c2TCDXrauJrd2PuLXIeJ9JJS0KF3y5jo
- h6EfkOJxQdI3QhpFvIWwO2XbX9yBVoT82tvgxglxe/+UM8VbmAKjv8Fmq80JVJhvlAitDlxwvUn
- YqX7oBbyH37JsbeR1qWnc2RzgdJHWqMVZ5kQgOFtgsDhMt46kKKHzqF0Yeh6ir+PujBC/NGTyUj
- aMKeHdkrljcTlo0hWlI1/4wVYMUk3u0zec7c8II2A1K8GxtmVXRU+7D8lBw85ZSGC28neKytINz
- gM/S9IZqWCXb6DvuvU5bVCvYMp2haPSJlfPgXYAhBIKwA1q815Pf0FC0K4cP7xScY9A=
-X-Google-Smtp-Source: AGHT+IE+lIqtmzQFCpof9gOpI5qAce29bO2n7sMxfQ6jcqolHCidIieIJjlkCp49engQ87U8LkLoZQ==
-X-Received: by 2002:a05:6000:18a4:b0:38d:bf56:8658 with SMTP id
- ffacd0b85a97d-38dbf568bb3mr1841968f8f.24.1738856053891; 
- Thu, 06 Feb 2025 07:34:13 -0800 (PST)
-Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
- [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dc45c26f2sm850516f8f.51.2025.02.06.07.34.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Feb 2025 07:34:13 -0800 (PST)
-From: Rob Bradford <rbradford@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH 2/2] disas/riscv: Add missing Sdtrig CSRs
-Date: Thu,  6 Feb 2025 15:34:10 +0000
-Message-ID: <20250206153410.236636-3-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250206153410.236636-1-rbradford@rivosinc.com>
-References: <20250206153410.236636-1-rbradford@rivosinc.com>
+ d=1e100.net; s=20230601; t=1738856484; x=1739461284;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MUmIUl+7CiZDD1nVfbNvHDoplWKLvo/NAi2M7/ioT+8=;
+ b=vvRAtZV6TjKeHLPBlryzrLF9WXRAuZALDPWAud2HF3zc0JtjQ+mV0YXZAI77oTVwcf
+ JSkWxlfNZpXcOhYuAdpY8p/hvsMCc1ZGzACSHWdNlIMmLI0tJeoKjFV7JuHPKSlUZwan
+ i+oj2sdmfXhK2cjzqjSdgKsHfMbd5JTjqxj/mkFs6KQgnQoAO+lKWtOMm64DxWnD0VYw
+ xcPw/97m/tGlr/0uVAM/IrqmBQu68kyHJIHIpjotKiVkHkdPP2AjEzthnlu7/n9t3CJ9
+ umxpuRjkjQDlLAKubcP4UQqMnV/n+7RpGOO2Q3EUEqJZjb8n6vMITY/CK9sE/ecZ5+77
+ ZdOg==
+X-Gm-Message-State: AOJu0YxjsFJQI6WJSPzOWktN+0cPRhHgSScTVabL0sbdPfEVpqCcsitz
+ Oku2xV3ZgGJj//GMJU3W/cOfKO27fMk2ZO3H9oRy9jB3FRasU9KmLdKAmI4Swv85LyZi9wjmoPU
+ oAMaI9LWwd79zaTuRgQB/jcMcWdLeL5bMCs+tEw==
+X-Gm-Gg: ASbGncsPayZVPC3bpNeHIrCY0cj8UjQ+CUnzYMclxQM2rcgfQA1zxtuya4l3Qn7lRV4
+ tbjCsx7WXFvbpkDk6Ln2PPO2BAe+sGD5Yrn2l063viyyzHeRSk8NK17aDs8b89eKWV082fDSS1Q
+ ==
+X-Google-Smtp-Source: AGHT+IEQYoK7m6ukCkfWVtPyPECRjxZZMSwxIDjatSWlNpaDxigHgRH/AMt8wmr96H2m5vZvnYXyNlAL/Wc5S6BUKpc=
+X-Received: by 2002:a05:6902:cc9:b0:e5b:257e:c3b1 with SMTP id
+ 3f1490d57ef6-e5b259d1967mr5605889276.8.1738856484213; Thu, 06 Feb 2025
+ 07:41:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20240615185423.49474-1-florian.lugou@provenrun.com>
+ <CAFEAcA_+WrzM4fXQMUxMi3L5yiUWMrUGTSZH=NDdYDKUCP+8NQ@mail.gmail.com>
+ <20240620135627.qxcrkdx5v7wdurx4@flugou-latitude5401>
+ <CAFEAcA-ngrrEUDD7eA_sOLGF+_wRCuQVxTwuCA4pXjRcuJucmA@mail.gmail.com>
+ <20240621140725.f4hsasmhrhh4joxm@flugou-latitude5401>
+ <CAFEAcA9c9hbpsdyc7+=QEOZGrNY2m-urk6VrWdwCdfk9ipkwpw@mail.gmail.com>
+ <20240820113024.53tmzejw2omm6bbx@flugou-latitude5401>
+In-Reply-To: <20240820113024.53tmzejw2omm6bbx@flugou-latitude5401>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 6 Feb 2025 15:41:12 +0000
+X-Gm-Features: AWEUYZmahiK2qpuPa0z3RYfenGXJ3dinOUgdtOsO67P154Uz5jEB1MLc-NVKMig
+Message-ID: <CAFEAcA9X0w5QW2qnnhF2k72ZrS8SALWiXV7uNr1e=jQnZvrQ7Q@mail.gmail.com>
+Subject: Re: [PATCH] target/arm/helper: Fix timer interrupt masking when
+ HCR_EL2.E2H == 0
+To: Florian Lugou <florian.lugou@provenrun.com>
+Cc: qemu-devel@nongnu.org, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,32 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reflects the latest frozen version of the RISC-V Debug
-specification (1.0.0-rc4) which includes the Sdtrig extension.
+On Tue, 20 Aug 2024 at 12:30, Florian Lugou <florian.lugou@provenrun.com> wrote:
+>
+> > > $ aarch64-none-elf-gcc -ffreestanding -nostdlib -T qemu/tests/tcg/aarch64/system/kernel.ld -o test test.S
+> > >
+> > > $ qemu-system-aarch64 \
+> > >         -machine virt,secure=on,gic-version=3 \
+> > >         -cpu cortex-a57 \
+> > >         -kernel test \
+> > >         -display none \
+> > >         -semihosting
+> > >
+> > > $ # Exits after ~1s
+> > >
+> > > $ qemu-system-aarch64 \
+> > >         -machine virt,secure=on,gic-version=3 \
+> > >         -cpu cortex-a57 \
+> > >         -kernel test \
+> > >         -display none \
+> > >         -semihosting \
+> > >         -icount shift=0,sleep=off
+> > >
+> > > ... (hangs until QEMU is killed)
+> >
+> > For me, with QEMU commit 9eb51530c12ae645b, this test case
+> > exits (doesn't hang) with both these command lines. Do you
+> > still see this bug? I guess it's possible we fixed it in
+> > the last month or so, though I can't see anything obviously
+> > relevant in the git logs.
+>
+> Thank you for taking the time to test it.
+>
+> On my machine (Ubuntu 22.04), with QEMU configuration options
+> "--target-list=aarch64-softmmu --enable-debug", running the provided test case
+> with "-icount shift=0,sleep=off" still makes QEMU hang forever on commit
+> 9eb51530c12ae645b.
+>
+> The issue was initially reported by a colleague of mine so I was hoping it would
+> be somehow reliably reproducible. But apparently it is not.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- disas/riscv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Somebody else reported a similar issue to this to me this week,
+which reminded me of a different bug that we'd found and fixed
+in the interim, which was enough of a hint that I figured out
+why this wasn't reproducible for me.
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 305dd40ac4..85cd2a9c2a 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -2438,9 +2438,11 @@ static const char *csr_name(int csrno)
-     case 0x07a1: return "tdata1";
-     case 0x07a2: return "tdata2";
-     case 0x07a3: return "tdata3";
-+    case 0x07a4: return "tinfo";
-     case 0x07b0: return "dcsr";
-     case 0x07b1: return "dpc";
--    case 0x07b2: return "dscratch";
-+    case 0x07b2: return "dscratch0";
-+    case 0x07b3: return "dscratch1";
-     case 0x0b00: return "mcycle";
-     case 0x0b01: return "mtime";
-     case 0x0b02: return "minstret";
--- 
-2.48.1
+This bug only reproduces if your QEMU binary isn't compiled
+with slirp support (which will happen if your host system
+doesn't have libslirp-dev or libslirp-devel installed).
+If slirp is present then the usermode networking backend
+will be present and it always has an active timer. Without
+slirp, the problem manifests when there are no active timers.
 
+You can also repro it on a with-slirp compile by adding
+"-net none" to the command line.
+
+I'll have a look at what the underlying bug is... thanks again
+for the handy test case.
+
+thanks
+-- PMM
 
