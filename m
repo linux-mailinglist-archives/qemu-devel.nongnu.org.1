@@ -2,50 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B814A2AE21
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD52AA2AE20
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:50:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg54S-0008Rk-1P; Thu, 06 Feb 2025 11:49:46 -0500
+	id 1tg53p-0008Ls-Eq; Thu, 06 Feb 2025 11:49:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <3d68de855175ae590479f15b37e8db300d43e860@kylie.crudebyte.com>)
- id 1tg53t-0008MU-Cg
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:09 -0500
+ (envelope-from <9a0dd4b3e4e0b06ec35c5ac370f54a36ea1846ed@kylie.crudebyte.com>)
+ id 1tg53n-0008LL-OT
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:03 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <3d68de855175ae590479f15b37e8db300d43e860@kylie.crudebyte.com>)
- id 1tg53r-0006F9-Vx
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:09 -0500
+ (envelope-from <9a0dd4b3e4e0b06ec35c5ac370f54a36ea1846ed@kylie.crudebyte.com>)
+ id 1tg53m-0006Eu-1e
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=Ca3s76Xbf8+ekttt2UWEE6onhWTBpocpOOjWu6ipy1A=; b=VfDis
- 0lb4ATJYRDgueDhE0f6CYwW2MKN+o538mpeawsV/D7Qefqt6SXs+bu3mP/l5EVAndmlRBWoWa4Ssg
- 7hncKAomBh71q5vFxI9KJ/jLkK6qTqtDupnFv3EwMHtdZLzXZID2eicOlCT+3zo6izdwG7IiSSY6K
- bmCcoX/dNv7F7Dh3cZtNepJRxrtgY79kKmhFh7a0003Z9mNh2x9xr6uenTxDQix6qLsd7EVUFS5GP
- pWyVdStIpSlMRbETvFBX5uIXLEhTGc3JztTtJyX5NvDwabZNOifdiA9qF5fmXQYiePJtbZdbrAxzY
- t2uzHe0aOJ50r+3zMhNqN+L4R7wEvGeTF3+hVTH8ZyKnmA3VKL0sh1FTLSBq/44xyVQrsuMdF/2O7
- w1EaLhmHXUTVgAJtAjYvttVDXRM2+07bipvScixqzT3fIdkvjFWe3mGTL2PFWAAuXdlCikIiNB94H
- Qqk8GfIqYubwOb0PNetS3b4IKt4Fgp/UMaID8XmlEQpjx/jkCkuwfBZW5DW5J+ZzZlc96x7obEh0F
- YqXC2a/fc+pgX8MXDHEtf0/M6T3iIC/3hISsNpHy00lZY/MgRV3J03QJ0S4sEaagejKHF8ACquPx3
- fKk1AA8HaZL1ZL+LdIBn40Teo69Br4+Pa4qzE90I0eIIBRH9iFCzJjNTGp2cAE=;
-Message-Id: <3d68de855175ae590479f15b37e8db300d43e860.1738860115.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=647mmsLP3uA3INY74GivlMfueppYt8qBzVKkJaljaRo=; b=YBVBY
+ Qn5evLclw23qHNqiPOzbJAIWkNsu24/fvsbFtxkyKsMJW91cdiPz23fQWKhmZre8x7u/XSA4wEkNe
+ Mo7W8TwspLA9tOFGYAwx4DljX+7Rfhmx0GAbTf00q59N8UzvwghGgTo8SDHoxI0qwn3GDh2npQ5re
+ JYJINGwkEEJr/6PXN3wgBZJ+ZMDwS5BnssSGimHN2nvuCGoVwch71bU+zlohWjL8YRqe05sJyxBWM
+ 6gdh5aVYP07XmO5Di2DPenIs1KHj+ETioyCqAhhrTHA8qOzwNf08uXiS634cFIqPFitkVMx4bPnpA
+ atwcCTMK+Wuy0fcaGawtT+SnNpswkBsL17VA78GmEwosB0+cZ6HGEO5SqTPsufjRCTogMnGc9uHSj
+ k4ySw7qehE6VTracbVg+SJfm6iCR8dAkbmDAe4+1jU6EN1iajs/+uQbqmbkH+MO6MrJxICtD1feCo
+ RmsAN0Ct8b0o1DWjlL/hHUwRb5jOGVN6G+u8gTkk97uOL9/wDacEDSCfj+5Hrs6AbBAsJPG2NWxUV
+ vsG/qMAyozGpOi2XyWu77cGkfMr3Pi8i3uch3EJW8XHTy8wl2VKB14pkARING2TyN+urKgBhlYJ70
+ Q4HkRhYzRGZDXNNu2eVdI5XGBeEKcdy/p0Y62LQai51+EeBTz23OG+cQLHT9RM=;
+Message-Id: <9a0dd4b3e4e0b06ec35c5ac370f54a36ea1846ed.1738860115.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1738860115.git.qemu_oss@crudebyte.com>
 References: <cover.1738860115.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 06 Feb 2025 17:41:56 +0100
-Subject: [PULL 4/7] tests/9p: rename test use_after_unlink ->
- use_file_after_unlink
+Subject: [PULL 3/7] 9pfs: improve v9fs_open() tracing
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>,
     Stefan Hajnoczi <stefanha@redhat.com>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=3d68de855175ae590479f15b37e8db300d43e860@kylie.crudebyte.com;
+ envelope-from=9a0dd4b3e4e0b06ec35c5ac370f54a36ea1846ed@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,42 +68,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To pave the way for adding new test use_dir_after_unlink with subsequent
-patch, i.e. making it clear that the existing test is just about unlinked
-files, not unlinked directories.
+Improve tracing of 9p 'Topen' request type by showing open() flags as
+human-readable text.
+
+E.g. trace output:
+
+  v9fs_open tag 0 id 12 fid 2 mode 100352
+
+would become:
+
+  v9fs_open tag=0 id=12 fid=2 mode=100352(RDONLY|NONBLOCK|DIRECTORY|
+  TMPFILE|NDELAY)
+
+Therefor add a new utility function qemu_open_flags_tostr() that converts
+numeric open() flags from host's native O_* flag constants to a string
+presentation.
+
+9p2000.L and 9p2000.u protocol variants use different numeric 'mode'
+constants for 'Topen' requests. Instead of writing string conversion code
+for both protocol variants, use the already existing conversion functions
+that convert the mode flags from respective protocol constants to host's
+native open() numeric flag constants and pass that result to the new
+string conversion function qemu_open_flags_tostr().
 
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Message-Id: <9d2ca46a58b812ad17ca7bb8a84f12252d3e3832.1736427878.git.qemu_oss@crudebyte.com>
+Message-Id: <E1tTgDR-000oRr-9g@kylie.crudebyte.com>
 ---
- tests/qtest/virtio-9p-test.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/9pfs/9p-util-generic.c | 50 +++++++++++++++++++++++++++++++++++++++
+ hw/9pfs/9p-util.h         |  6 +++++
+ hw/9pfs/9p.c              |  9 ++++++-
+ hw/9pfs/meson.build       |  1 +
+ hw/9pfs/trace-events      |  2 +-
+ 5 files changed, 66 insertions(+), 2 deletions(-)
+ create mode 100644 hw/9pfs/9p-util-generic.c
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index ab3a12c816..07459c5289 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -693,8 +693,8 @@ static void fs_unlinkat_hardlink(void *obj, void *data,
-     g_assert(stat(real_file, &st_real) == 0);
- }
+diff --git a/hw/9pfs/9p-util-generic.c b/hw/9pfs/9p-util-generic.c
+new file mode 100644
+index 0000000000..4c1e9c887d
+--- /dev/null
++++ b/hw/9pfs/9p-util-generic.c
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "9p-util.h"
++#include <glib/gstrfuncs.h>
++
++char *qemu_open_flags_tostr(int flags)
++{
++    int acc = flags & O_ACCMODE;
++    return g_strconcat(
++        (acc == O_WRONLY) ? "WRONLY" : (acc == O_RDONLY) ? "RDONLY" : "RDWR",
++        (flags & O_CREAT) ? "|CREAT" : "",
++        (flags & O_EXCL) ? "|EXCL" : "",
++        (flags & O_NOCTTY) ? "|NOCTTY" : "",
++        (flags & O_TRUNC) ? "|TRUNC" : "",
++        (flags & O_APPEND) ? "|APPEND" : "",
++        (flags & O_NONBLOCK) ? "|NONBLOCK" : "",
++        (flags & O_DSYNC) ? "|DSYNC" : "",
++        #ifdef O_DIRECT
++        (flags & O_DIRECT) ? "|DIRECT" : "",
++        #endif
++        (flags & O_LARGEFILE) ? "|LARGEFILE" : "",
++        (flags & O_DIRECTORY) ? "|DIRECTORY" : "",
++        (flags & O_NOFOLLOW) ? "|NOFOLLOW" : "",
++        #ifdef O_NOATIME
++        (flags & O_NOATIME) ? "|NOATIME" : "",
++        #endif
++        #ifdef O_CLOEXEC
++        (flags & O_CLOEXEC) ? "|CLOEXEC" : "",
++        #endif
++        #ifdef __O_SYNC
++        (flags & __O_SYNC) ? "|SYNC" : "",
++        #else
++        ((flags & O_SYNC) == O_SYNC) ? "|SYNC" : "",
++        #endif
++        #ifdef O_PATH
++        (flags & O_PATH) ? "|PATH" : "",
++        #endif
++        #ifdef __O_TMPFILE
++        (flags & __O_TMPFILE) ? "|TMPFILE" : "",
++        #elif defined(O_TMPFILE)
++        ((flags & O_TMPFILE) == O_TMPFILE) ? "|TMPFILE" : "",
++        #endif
++        /* O_NDELAY is usually just an alias of O_NONBLOCK */
++        #if defined(O_NDELAY) && O_NDELAY != O_NONBLOCK
++        (flags & O_NDELAY) ? "|NDELAY" : "",
++        #endif
++        NULL /* always last (required NULL termination) */
++    );
++}
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index 95ee4da9bd..7bc4ec8e85 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -267,4 +267,10 @@ int pthread_fchdir_np(int fd) __attribute__((weak_import));
+ #endif
+ int qemu_mknodat(int dirfd, const char *filename, mode_t mode, dev_t dev);
  
--static void fs_use_after_unlink(void *obj, void *data,
--                                QGuestAllocator *t_alloc)
-+static void fs_use_file_after_unlink(void *obj, void *data,
-+                                     QGuestAllocator *t_alloc)
- {
-     QVirtio9P *v9p = obj;
-     v9fs_set_allocator(t_alloc);
-@@ -802,8 +802,8 @@ static void register_virtio_9p_test(void)
-     qos_add_test("local/hardlink_file", "virtio-9p", fs_hardlink_file, &opts);
-     qos_add_test("local/unlinkat_hardlink", "virtio-9p", fs_unlinkat_hardlink,
-                  &opts);
--    qos_add_test("local/use_after_unlink", "virtio-9p", fs_use_after_unlink,
--                 &opts);
-+    qos_add_test("local/use_file_after_unlink", "virtio-9p",
-+                 fs_use_file_after_unlink, &opts);
- }
++/*
++ * Returns a newly allocated string presentation of open() flags, intended
++ * for debugging (tracing) purposes only.
++ */
++char *qemu_open_flags_tostr(int flags);
++
+ #endif
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 6f24c1abb3..7cad2bce62 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -2008,6 +2008,7 @@ static void coroutine_fn v9fs_open(void *opaque)
+     V9fsFidState *fidp;
+     V9fsPDU *pdu = opaque;
+     V9fsState *s = pdu->s;
++    g_autofree char *trace_oflags = NULL;
  
- libqos_init(register_virtio_9p_test);
+     if (s->proto_version == V9FS_PROTO_2000L) {
+         err = pdu_unmarshal(pdu, offset, "dd", &fid, &mode);
+@@ -2019,7 +2020,13 @@ static void coroutine_fn v9fs_open(void *opaque)
+     if (err < 0) {
+         goto out_nofid;
+     }
+-    trace_v9fs_open(pdu->tag, pdu->id, fid, mode);
++    if (trace_event_get_state_backends(TRACE_V9FS_OPEN)) {
++        trace_oflags = qemu_open_flags_tostr(
++            (s->proto_version == V9FS_PROTO_2000L) ?
++                dotl_to_open_flags(mode) : omode_to_uflags(mode)
++        );
++        trace_v9fs_open(pdu->tag, pdu->id, fid, mode, trace_oflags);
++    }
+ 
+     fidp = get_fid(pdu, fid);
+     if (fidp == NULL) {
+diff --git a/hw/9pfs/meson.build b/hw/9pfs/meson.build
+index eceffdb81e..d35d4f44ff 100644
+--- a/hw/9pfs/meson.build
++++ b/hw/9pfs/meson.build
+@@ -3,6 +3,7 @@ fs_ss.add(files(
+   '9p-local.c',
+   '9p-posix-acl.c',
+   '9p-synth.c',
++  '9p-util-generic.c',
+   '9p-xattr-user.c',
+   '9p-xattr.c',
+   '9p.c',
+diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
+index ed9f4e7209..0e0fc37261 100644
+--- a/hw/9pfs/trace-events
++++ b/hw/9pfs/trace-events
+@@ -13,7 +13,7 @@ v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag
+ v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
+ v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
+ v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
+-v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
++v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode, const char* oflags) "tag=%d id=%d fid=%d mode=%d(%s)"
+ v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
+ v9fs_lcreate(uint16_t tag, uint8_t id, int32_t dfid, int32_t flags, int32_t mode, uint32_t gid) "tag %d id %d dfid %d flags %d mode %d gid %u"
+ v9fs_lcreate_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int32_t iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
 -- 
 2.30.2
 
