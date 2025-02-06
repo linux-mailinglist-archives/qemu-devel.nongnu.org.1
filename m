@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088B3A2B091
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3F1A2B084
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:20:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg6Sf-0007cO-Oe; Thu, 06 Feb 2025 13:18:49 -0500
+	id 1tg6Sg-0007e2-NH; Thu, 06 Feb 2025 13:18:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6SW-0007aB-NX
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:40 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Sb-0007bx-Ez
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:45 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6SV-0006nd-0r
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:40 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso9052065e9.2
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:18:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6SZ-0006oX-9C
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:45 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-436249df846so8657445e9.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:18:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738865915; x=1739470715; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738865921; x=1739470721; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6LHjztvOXiDQDfjzUacIFhli1dmDqwSPlQwLVgEIi+o=;
- b=Pre/BAxJIQ8nd5r1OBDzQtMaFgEh6RulGb/kyQXP88RXjybEGXpSugXBFXpZw/qekL
- o8hS9/8nOxQ4yR83R6DiCcITKV3yUn4XJL7YuUpz7RBog2lRHikKVmT/hRlStVwsL73w
- a3Jomr39EBjM88bcAbrrbXf0cBCkwhpAOAmeO0tGZOBwYcI5IvQx3L7vqsLy3VLdJXgo
- sl8GYwd72O0JmCjeW3sf2OXYFTkyxsJxjmt4ECklVGQbVwyVwtKNcG23rQ5WrUVGmGIH
- gFG7o3N7oezF4X9ZuzrbqqIwXvq7VSkB0oGOjJeC7aFuoDt/ghI6yGiIsBItvibTZF9x
- ED3A==
+ bh=FJl7/XCq/mOYxrX7g6HKZEwMAdetJgh4DocsCwIosNE=;
+ b=lAde4DnB0uWJJXxZfn03EkrEA80KRWSlSVEr6cFP9UPJ024TjzCEc7GmAbTIUng1Np
+ C1E20ILsmX6iKkNZGatVhBfkpsMst/nQa3eAK5Ie8ZOg3r7GEGTApL2sJ/7aMuHjk+Ir
+ pQf21fmsn24lQxdYlh6mH6qGcmeYL+1idf5A4/ZWt6KAXlypCdqlwXxnOKxc/IZK/9hT
+ J9VfJ4YGLhccyAF+fGKAfxYviGNFp+4n2fFSSJIedm5ddlhA0GOPi1RwFRqCNVOvqFqk
+ Ls08RG30/n5p28AzmnRBl5Er5GTGe/7PHVeMQ4Iun4LLMppt5vs46zMdwj+c9YKfi4kC
+ pXAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738865915; x=1739470715;
+ d=1e100.net; s=20230601; t=1738865921; x=1739470721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6LHjztvOXiDQDfjzUacIFhli1dmDqwSPlQwLVgEIi+o=;
- b=st6X3/IosNdcwAMYqF0SIPnBJ0axBBs0f8Sg2gugTH4T3Vur+USuwKOlQTaSRNkxD2
- taLjzWstE+5DapiniWRHcsvVonNCPFgMUMqwGxlKA8V1tziHIbpRTx0HiMG3GIL+mtF2
- N4Oq9Jpjsup1UMSjZDpEgXx8NcwEwu8Ftk3oSZZ3U1GlX7lwRho5/dJsk1lZkOLuYsdm
- WzmREH2hmfGWzQStStp6tmPJnZ5/AJcODShrH2LU+EoOgzUdbIYRyaYjkJb/ZA0j1E6q
- lPxk2PJHwZ7Sd+5FBmgAX6P33aTKc9jpCUaFRQSpCS68otwTo1zIPIjnU/9WJUcQukM7
- 9f5w==
-X-Gm-Message-State: AOJu0Yzwt4qrPdlSv0wX0Sc7vN0J1JZBvh3S6cvxelEnngfA8bQjRPDH
- XpeKvFvdUOLCLSz/DPnhtEbRj8AsvS+Cgld7YLRXB2X7iesfe29enn9HnRc+EvqniOLxn38iYwt
- YZCQ=
-X-Gm-Gg: ASbGncubOX87cu4i4KF6H4khJ1dJixpCW+9bO9kf2jjM7tFMoWEzEcZRGBIYaofpyE7
- +Tdv3i+990CPx8/4IK2PSVyEdj1OlgghCPmjrE9gKFmNpKvrOOWAptkBnUmN1stc8EnJ0RgVyOe
- bqpdOwAMCPX5Q/8rEjDDv9BjkVvDO/JtCsEHRvB5U462ABnNqSB7Mq2ieRiJhL7l7nig3ermbHW
- bfm1HaCRm3tUqGPxUfnQZN4MjKRZenB/qJRVgzsNnwKwqo5/NDK7BikFjMHnC5MGLiduNFvvMNd
- 0Kn24ruow5XwAuxy6HfheVn/EZW67MVPHyD/6C6QxLFig+INHSXf71Ck6nhpeymfZw==
-X-Google-Smtp-Source: AGHT+IHWsdt7Hu475L9U/wXrO8KwbKW2OPsB4SJj840Ah0NqXBlSgye30DjFHJDj7fkskVwA7kuF8Q==
-X-Received: by 2002:a05:600c:219a:b0:434:fbda:1f36 with SMTP id
- 5b1f17b1804b1-439249b2ecfmr3525805e9.20.1738865914625; 
- Thu, 06 Feb 2025 10:18:34 -0800 (PST)
+ bh=FJl7/XCq/mOYxrX7g6HKZEwMAdetJgh4DocsCwIosNE=;
+ b=ljIKkg/t679Qo0Y5WntrvQrUAcGCEpf7PwodlGW40Sxx+Vt8Mdj6FL+afl5xp392Td
+ VHAbUIDYZzGFM2KcxqcwHpQrecVlu1oIKQC2uvkLZ7tLjvXa4K15DKxjByh8TH5bb6ru
+ Uf4tR6KR+H/6wEMcKmchlr8ZRQVOG/Od2R2XVU4E6jgbNP/FKWnEGOhz4qsT3M9nKtIA
+ u+HU6MsiFjUbkMR1zJpy6XMZ97w8Npp3G2Jl1+/G6olyI62JXcPdOgI2D7TSTZ4W66ds
+ PmoTgArts5jYkygOTxIynIxDO++0xkwjnkWo+sBtd6SjTjmpWrMAo07zX3iqNxSPocpH
+ slNw==
+X-Gm-Message-State: AOJu0YyL63hD9tMC87xxabp/zT5nTgIXYnBtaF7JMIdD3AC/II6Jsaa0
+ hV+vnULLTpkaUMq9IQqSHG7Q4l8QFntJq4ZzBaDhrbxuVCIu0gSp6NdhrVa59tDdurLHXZBDICG
+ oIHU=
+X-Gm-Gg: ASbGncuWHPFRhnR938OLoneeGYDaupVWP1C7+kp7PkPm8hcIMrliAxAeLOQWseBuEIB
+ YKbAjRNJSFpsfWavaNXQ1VFp6WrRkXCWInqZJpw9V0rHe6bNvgOz28PnL+2zrCSo+eKD5o4L6xh
+ jWNG3n8EIDezFTATv1Biu7K4i+ZOmP5eEBC0IORf+CzqUannlbqg8p+w+CDGF264p/TsgFpOtX+
+ z3eucREy6dLPypnvhY7F7cyQkKByKe8O16W48pOsJdqcThP0f14eN3bdLwv/q1Geb9TcWVtg37b
+ T5H+5lMBYYrQ/ntDqpQVKv2K0nslfTn9ahI4OebuP7oEKDzUmfWBV0wxeEej5AtHLg==
+X-Google-Smtp-Source: AGHT+IHG7C2tyyfiGwe2p+xdnPWu21qDsS92W896e/2VOWr+1H/9f9iYFPgUHovHTeAn5h1rVy4ZOQ==
+X-Received: by 2002:a05:600c:1e28:b0:437:c3a1:5fe7 with SMTP id
+ 5b1f17b1804b1-439249abd7amr3524595e9.20.1738865919619; 
+ Thu, 06 Feb 2025 10:18:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4391dcae80dsm26339635e9.22.2025.02.06.10.18.33
+ 5b1f17b1804b1-4390db11200sm61574155e9.38.2025.02.06.10.18.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Feb 2025 10:18:34 -0800 (PST)
+ Thu, 06 Feb 2025 10:18:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
@@ -69,24 +69,25 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
  Sunil V L <sunilvl@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/7] MAINTAINERS: Unify Alistair's professional email address
-Date: Thu,  6 Feb 2025 19:18:21 +0100
-Message-ID: <20250206181827.41557-2-philmd@linaro.org>
+Subject: [PATCH 2/7] target/riscv: Move target-agnostic definitions to
+ 'cpu-qom.h'
+Date: Thu,  6 Feb 2025 19:18:22 +0100
+Message-ID: <20250206181827.41557-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250206181827.41557-1-philmd@linaro.org>
 References: <20250206181827.41557-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,77 +103,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alistair's email is typed differently, so the get_maintainer.pl
-script add it twice :) Unify to reduce traffic.
+"cpu.h" is target-specific. Definitions which can be used
+by hw/ code when building QOM blocks can be in "cpu-qom.h",
+which is target-agnostic.
 
-  $ git grep -h 'Alistair Francis' -- MAINTAINERS | sort -u
-  M: Alistair Francis <Alistair.Francis@wdc.com>
-  M: Alistair Francis <alistair.francis@wdc.com>
-  M: Alistair Francis <alistair@alistair23.me>
+Move the MISA bits (removing the pointless target_ulong cast)
+and the IRQ index definitions.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/riscv/cpu-qom.h  | 40 ++++++++++++++++++++++++++++++++++++++++
+ target/riscv/cpu.h      | 24 ------------------------
+ target/riscv/cpu_bits.h | 15 ---------------
+ 3 files changed, 40 insertions(+), 39 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cf37fce7b5..b7ac1519ee3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -318,7 +318,7 @@ F: tests/functional/test_ppc_74xx.py
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index d56b067bf24..6028aa38fb2 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -55,4 +55,44 @@
  
- RISC-V TCG CPUs
- M: Palmer Dabbelt <palmer@dabbelt.com>
--M: Alistair Francis <alistair.francis@wdc.com>
-+M: alistair.francis <alistair.francis@wdc.com>
- M: Bin Meng <bmeng.cn@gmail.com>
- R: Weiwei Li <liwei1518@gmail.com>
- R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-@@ -753,7 +753,7 @@ F: docs/system/arm/digic.rst
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
  
- Goldfish RTC
- M: Anup Patel <anup.patel@wdc.com>
--M: Alistair Francis <Alistair.Francis@wdc.com>
-+M: alistair.francis <alistair.francis@wdc.com>
- L: qemu-riscv@nongnu.org
- S: Maintained
- F: hw/rtc/goldfish_rtc.c
-@@ -1009,7 +1009,7 @@ F: tests/functional/test_arm_tuxrun.py
++/* Interrupt causes */
++#define IRQ_U_SOFT                         0
++#define IRQ_S_SOFT                         1
++#define IRQ_VS_SOFT                        2
++#define IRQ_M_SOFT                         3
++#define IRQ_U_TIMER                        4
++#define IRQ_S_TIMER                        5
++#define IRQ_VS_TIMER                       6
++#define IRQ_M_TIMER                        7
++#define IRQ_U_EXT                          8
++#define IRQ_S_EXT                          9
++#define IRQ_VS_EXT                         10
++#define IRQ_M_EXT                          11
++#define IRQ_S_GEXT                         12
++#define IRQ_PMU_OVF                        13
++
++#define RV(x) (1UL << (x - 'A'))
++
++/*
++ * Update misa_bits[], misa_ext_info_arr[] and misa_ext_cfgs[]
++ * when adding new MISA bits here.
++ */
++#define RVI RV('I')
++#define RVE RV('E') /* E and I are mutually exclusive */
++#define RVM RV('M')
++#define RVA RV('A')
++#define RVF RV('F')
++#define RVD RV('D')
++#define RVV RV('V')
++#define RVC RV('C')
++#define RVS RV('S')
++#define RVU RV('U')
++#define RVH RV('H')
++#define RVG RV('G')
++#define RVB RV('B')
++
++extern const uint32_t misa_bits[];
++const char *riscv_get_misa_ext_name(uint32_t bit);
++const char *riscv_get_misa_ext_description(uint32_t bit);
++
+ #endif /* RISCV_CPU_QOM_H */
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 97713681cbe..4e681ad3917 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -54,30 +54,6 @@ typedef struct CPUArchState CPURISCVState;
+  */
+ #define RISCV_UW2_ALWAYS_STORE_AMO 1
  
- Xilinx Zynq
- M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
--M: Alistair Francis <alistair@alistair23.me>
-+M: alistair.francis <alistair@alistair23.me>
- M: Peter Maydell <peter.maydell@linaro.org>
- L: qemu-arm@nongnu.org
- S: Maintained
-@@ -1593,7 +1593,7 @@ F: pc-bios/vof*
- RISC-V Machines
- ---------------
- OpenTitan
--M: Alistair Francis <Alistair.Francis@wdc.com>
-+M: Alistair Francis <alistair.francis@wdc.com>
- L: qemu-riscv@nongnu.org
- S: Supported
- F: hw/riscv/opentitan.c
-@@ -1628,7 +1628,7 @@ F: include/hw/riscv/shakti_c.h
- F: include/hw/char/shakti_uart.h
+-#define RV(x) ((target_ulong)1 << (x - 'A'))
+-
+-/*
+- * Update misa_bits[], misa_ext_info_arr[] and misa_ext_cfgs[]
+- * when adding new MISA bits here.
+- */
+-#define RVI RV('I')
+-#define RVE RV('E') /* E and I are mutually exclusive */
+-#define RVM RV('M')
+-#define RVA RV('A')
+-#define RVF RV('F')
+-#define RVD RV('D')
+-#define RVV RV('V')
+-#define RVC RV('C')
+-#define RVS RV('S')
+-#define RVU RV('U')
+-#define RVH RV('H')
+-#define RVG RV('G')
+-#define RVB RV('B')
+-
+-extern const uint32_t misa_bits[];
+-const char *riscv_get_misa_ext_name(uint32_t bit);
+-const char *riscv_get_misa_ext_description(uint32_t bit);
+-
+ #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
  
- SiFive Machines
--M: Alistair Francis <Alistair.Francis@wdc.com>
-+M: Alistair Francis <alistair.francis@wdc.com>
- M: Bin Meng <bmeng.cn@gmail.com>
- M: Palmer Dabbelt <palmer@dabbelt.com>
- L: qemu-riscv@nongnu.org
-@@ -3842,7 +3842,7 @@ F: tcg/ppc/
+ typedef struct riscv_cpu_profile {
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index f97c48a3943..80701bc77fe 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -720,21 +720,6 @@ typedef enum RISCVException {
+ #define RISCV_EXCP_INT_FLAG                0x80000000
+ #define RISCV_EXCP_INT_MASK                0x7fffffff
  
- RISC-V TCG target
- M: Palmer Dabbelt <palmer@dabbelt.com>
--M: Alistair Francis <Alistair.Francis@wdc.com>
-+M: Alistair Francis <alistair.francis@wdc.com>
- L: qemu-riscv@nongnu.org
- S: Maintained
- F: tcg/riscv/
+-/* Interrupt causes */
+-#define IRQ_U_SOFT                         0
+-#define IRQ_S_SOFT                         1
+-#define IRQ_VS_SOFT                        2
+-#define IRQ_M_SOFT                         3
+-#define IRQ_U_TIMER                        4
+-#define IRQ_S_TIMER                        5
+-#define IRQ_VS_TIMER                       6
+-#define IRQ_M_TIMER                        7
+-#define IRQ_U_EXT                          8
+-#define IRQ_S_EXT                          9
+-#define IRQ_VS_EXT                         10
+-#define IRQ_M_EXT                          11
+-#define IRQ_S_GEXT                         12
+-#define IRQ_PMU_OVF                        13
+ #define IRQ_LOCAL_MAX                      64
+ /* -1 is due to bit zero of hgeip and hgeie being ROZ. */
+ #define IRQ_LOCAL_GUEST_MAX                (TARGET_LONG_BITS - 1)
 -- 
 2.47.1
 
