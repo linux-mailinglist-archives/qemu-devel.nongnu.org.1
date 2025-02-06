@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B314A2AB9D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 15:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E933A2ABF5
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 15:58:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg31N-00023Q-FJ; Thu, 06 Feb 2025 09:38:25 -0500
+	id 1tg3Jl-0000m0-Lk; Thu, 06 Feb 2025 09:57:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tg31I-0001z3-Ef; Thu, 06 Feb 2025 09:38:21 -0500
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tg31G-0003yN-6r; Thu, 06 Feb 2025 09:38:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738852698; x=1770388698;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jfGStSSlY2W8EaMKPfKJE3V47I6s68bEGdj7zqDZJXU=;
- b=HygE2dyndj3Jcwx8ILtFVhchqrK1+CEJfmGTG14lW2sWn9H1Wlgx5WPv
- vCx+q/8SRzRlFJMqL/49xtmB2bN24Y2Ndt42dCkgd7rwXy+4GqjtUka2W
- qXJSPOwFjDJUARxNi7vsdcfCsLsA6e4AVm8rKSch6rMGB9jMiq2iXdMe9
- gW4rbI8ScRXowXIeqzFhzeE3BuO00P5wI4yGXmjXp0Zcqzr56eXohi9zt
- jZklzXGrCCN/tUa0Jejb0Uek+3L0P/z1vVcsVHZfF2oMHW10rMTf4B4Cj
- 6AUTCR8zOrY4J2k83itVApzK1Shvni2WUWkewT/4xiq7EzUIOCFTXcbX1 w==;
-X-CSE-ConnectionGUID: OFohIQEEQyyMlIxVtv1epA==
-X-CSE-MsgGUID: SC6L8JsHRwSlJ9icx+WxSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43213755"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="43213755"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 06:38:14 -0800
-X-CSE-ConnectionGUID: dP1RgmONRgiX4KjojGxDhA==
-X-CSE-MsgGUID: eLEb1rSlTJu9e1GKfNwPKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111079245"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 06 Feb 2025 06:35:13 -0800
-Date: Thu, 6 Feb 2025 22:54:41 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ++/vQ==?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-Message-ID: <Z6TNMZbonWmsnyM7@intel.com>
-References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <20250122090517.294083-4-zhao1.liu@intel.com>
- <87zfj01z8x.fsf@pond.sub.org> <Z6SG2NLxxhz4adlV@intel.com>
- <Z6SEIqhJEWrMWTU1@redhat.com> <878qqjqskm.fsf@pond.sub.org>
- <Z6TFr49Cnhe1s4/5@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tg3Jg-0000lY-Ka
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 09:57:21 -0500
+Received: from mail-yb1-xb29.google.com ([2607:f8b0:4864:20::b29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tg3Jf-0002xD-96
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 09:57:20 -0500
+Received: by mail-yb1-xb29.google.com with SMTP id
+ 3f1490d57ef6-e46c6547266so766079276.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 06:57:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738853833; x=1739458633; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=L1a2n0F410wlCJlpCR7hdiclHsymQOFkDNDCJ3Aks74=;
+ b=r8Ft5jggYXX8Q7KniCVwBXYJ8eaaiRR83doPPNcBe+TX7zhK3XKgRkQfrdE2DJSjdZ
+ Hn6vTuJWHX61IrWwkPLd6xqhKWNI2PUAsNKXLJw06rmGjpB9/OSqBvrqdj6ytrdcGPlo
+ fuAmADv9fDpP0WVeWlHPWCcprWrO233Bpbgg0nYGosTLY/g9f1y9upBjJwZgYE50IhLi
+ jIkNH7vcIv3zziCeS/ib7kVeBjbv8PmTg6DX1GibOP1SpwBNJ0jqVxN9nUrGdZS4Ozg1
+ yURUkT+wr2NyU+UozHlbvuVutsAiwYnt9UWvfoNFo368B7CuLg043T7h5YAjzikZjG0O
+ HTOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738853833; x=1739458633;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=L1a2n0F410wlCJlpCR7hdiclHsymQOFkDNDCJ3Aks74=;
+ b=Vu7NcudHJqAiSsNxePXf9To73ssXJejeOjIoVAPTxPdH5rjWZvomdgwBN8eClF/uJg
+ 9+9oUt0nczHgUwRc49nY2jTuSo+mBZ6wyIotTk2nlngEWOp+I9H6m0ob3NPSHu3IYdWz
+ JkeNqB1E98EtpWuIPNIAlhwm6jvpYaUaOwOAu75275vpjbivIY0oncqGpMAoXzLU43JA
+ eksYvaQ/rY/6gUAYyDak+ZIOlozsmD1ffnSreR0DJS3EkWXt5luKgg/nCetiAjxqEvij
+ IvM2RWUKqkdFGimNuIFJy5X83Yz/onx7yzGXvkVPDIFZTFYuJEFtuu/jDE3n2uE/1J51
+ GLtA==
+X-Gm-Message-State: AOJu0YzZofTVL5aaDpcNEnT/bCsUHbR5vCReOfqHSLjWIb0XGffn2IKL
+ SUBcI0RdioMoAUfq8Fa0ZrvLWOosQofV8BS0YJ3gSmNYlInPtbi1/SJKy9e1F3HDHHLPo9l6AHT
+ 1Umo793NnYsDUsbaIoYLDCOjbm+K1fUNKuOm2ew==
+X-Gm-Gg: ASbGncv3cUdHB6v6S80KmOVdJLs24fFYy5fLH/XA3/5H+eEpB5V0kjAKofGNk31xgBH
+ b3zODoscaiq3qYJWa/mY7wyhSvDzrZMhdUnM/MIctQYRCktWwFlofs1JH7996b5B1QqDh1RcLUA
+ ==
+X-Google-Smtp-Source: AGHT+IEp5SigU4ikB2xhMT8f02GRoT6m1WSVjU8TyB3lWYhY+YcMQvZBswTtsGvNNa0AKlY9HCAMdoX17IRqMkqBiiU=
+X-Received: by 2002:a05:6902:250a:b0:e5a:e7eb:2809 with SMTP id
+ 3f1490d57ef6-e5b25b4956amr5730615276.24.1738853833531; Thu, 06 Feb 2025
+ 06:57:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6TFr49Cnhe1s4/5@intel.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250124175053.74461-1-philmd@linaro.org>
+ <20250124175053.74461-2-philmd@linaro.org>
+In-Reply-To: <20250124175053.74461-2-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 6 Feb 2025 14:57:02 +0000
+X-Gm-Features: AWEUYZltzsQ7x-MJFdj1yYYFfIr7XDzaGL1uSsrizKElKYdZPn8zEo4ZKOWwTLY
+Message-ID: <CAFEAcA8n8FkUUHkAehj=srGyHbLjEE=mDKsiWOGgcgxPGuyJYw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] hw/char/sh_serial: Delete fifo_timeout_timer in
+ DeviceUnrealize
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>, 
+ Magnus Damm <magnus.damm@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b29;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,54 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Do users need to know how to compute the raw event value from @select
-> > and @umask?
-> 
-> Yes, because it's also a unified calculation. AMD and Intel have
-> differences in bits for supported select field, but this calculation
-> (which follows from the KVM code) makes both compatible.
-> 
-> > If yes, is C code the best way?
+On Fri, 24 Jan 2025 at 17:51, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> fifo_timeout_timer is created in the DeviceRealize handler,
+> not in the instance_init one. For parity, delete it in
+> DeviceUnrealize, rather than instance_finalize.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Sorry, I missed this line. In this patch, there's macro:
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-+#define X86_PMU_RAW_EVENT(eventsel, umask) (((eventsel & 0xf00UL) << 24) | \
-+                                            ((eventsel) & 0xff) | \
-+                                            ((umask) & 0xff) << 8)
-
-So could I said something like the following?
-
-+##
-+# @KVMPMUX86SelectUmaskEvent:
-+#
-+# x86 PMU event encoding with select and umask.  Using the X86_PMU_RAW_EVENT
-+# macro, the select and umask fields will be encoded into raw foramt and
-+# delivered to KVM.
-+#
-+# @select: x86 PMU event select field, which is a 12-bit unsigned
-+#     number.
-+#
-+# @umask: x86 PMU event umask field.
-+#
-+# Since 10.0
-+##
-+{ 'struct': 'KVMPMUX86DefalutEvent',
-+  'data': { 'select': 'uint16',
-+            'umask': 'uint8' } }
-+
-
-Thanks very much!
-
-> > Here's another way:
-> > 
-> >     bits  0..7 : bits 0..7 of @select
-> >     bits  8..15: @umask
-> >     bits 24..27: bits 8..11 of @select
-> >     all other bits: zero
-> >
-> 
-> Thank you! This is what I want.
-> 
-> 
-> 
+thanks
+-- PMM
 
