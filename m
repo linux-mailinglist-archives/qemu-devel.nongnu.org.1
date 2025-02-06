@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA317A2A940
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 395C6A2A936
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:12:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg1fE-000557-DW; Thu, 06 Feb 2025 08:11:28 -0500
+	id 1tg1fI-00056n-0j; Thu, 06 Feb 2025 08:11:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg1fB-00054Y-GZ
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:11:25 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg1fF-00055p-Ag
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:11:29 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg1f8-000856-7d
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:11:24 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38dbcf418f5so339235f8f.1
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 05:11:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg1fD-000867-9A
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:11:29 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-38da66ce63bso464645f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 05:11:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738847480; x=1739452280; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738847485; x=1739452285; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X20R65gi2tCckItv1V/R89183LZ1ZNOLWFw83d9B9RI=;
- b=ZswQIY0Xica2E3W2WGNaXzqh+KYYVESzI4FPNjMdT7C7k/xwIr24qFS5FK/Fvyhjuy
- gF/RoCczIthkE+KGKtf5bJcwj1byLnoaEbelSjoO8zsdSrgG0zJ73yguYrHTzXkkfFdn
- ttQSNvCQlgZqFXLnhqPYKfFN5JyVuxzMJaZ5UFCuYQT+mk/jIoYD4FNivyxkoa6C9qIC
- PVm1E4fuCaAo+4epL9XStP7vqz+ebYjktz94/KDkhgpE4wFNfes3L69AadQVIiYkWvte
- YfdADTlJHHDfgdmAnq3U2B9kh/rQXNJm8k9EwNOLW/5+m2I0jRvfHvwKkdM/+D2U700F
- QN4g==
+ bh=r3g08ohEQSqeyZw6xIdCyqqo2uAlLNUZF1ZoGaNfqHI=;
+ b=QvmxTOgHTmAnid7oFxuDWaPFcHlU2zS29pjJEd/IT9nt8opTgzn1iM4zLvrB1VJznB
+ eVSyakxaSmy4Jf5KcR7B2pq0YBxjq2Yl2xDUOWUMUHGAtN7hKtYDfMhUPmpkC8hf/p7Q
+ HMReITs2ey6oDclumUerK7ePjvAl39WWfoFS+HMnkLOUL3O1pEzpH3+VcyoTm1xAhsaS
+ sp3+KCo569pTd2Vda9I+PGyODCpvrC/bPXqAl5KVe00PB/R/m7RmynGtVVWoquIqLXD6
+ LpQ2+4cljAKJFtBCdtIYJvbBWiPxEKCwh8YtpCXRY2FLj7ALuLxCuViQ4KvWxHJgtEkT
+ zsRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738847480; x=1739452280;
+ d=1e100.net; s=20230601; t=1738847485; x=1739452285;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X20R65gi2tCckItv1V/R89183LZ1ZNOLWFw83d9B9RI=;
- b=DnEto8oUUwJUlo8cbZchrHQnKfgn8dJueuQGGX+VMRYkzfIO+PS0Y262mKE9BD4xqR
- EotqyS8ZD5sF/YIs+4rZvqRj/aVTdU+RVpR7Rle0IosbrSqc/Puy626o8OpwPHGshXjY
- GhP2RSnA5asdxB55I8nUQ2LmRrn9NnTJKNp0Ydp7GFh57l4KrpZMwYUjTHUDU4gDy+rr
- prxKbdIJ8zvTcc/AZAEMiOyD+L+Qt3cojXpDYZLKUcIB+cQDZlB36XwKz4ininWOj5dA
- +cmWkf6VxP6YtZuVjlmMILzQbWwu9yXl7atGX+i8sZplix0KeO11oPJptlThl3AUldvX
- CVMA==
-X-Gm-Message-State: AOJu0YzxCj07/yXhSOr9Z2K2jGqrE+pejXMdGyrM2pwgk7+keP1/sGOG
- XGQldSmsYCYZNPr/jIbS+gNrSp+T9GPSoLaYqHsv21PMBNBZkBwGpWL9d3SOz/fRepzqcaIx0VO
- bN1Q=
-X-Gm-Gg: ASbGncvY6XgIaaQjrxopELJgqekv9MLnUif/U39Sbw1VLy7YkPGh1N/fyFSmMMzrWWY
- KdUtdfhyN6PB3CJ2tmafQGNa631OQgR13WqB6OlEW8oDZzAqZgaHplyR/RvkQdZ3iN6KRhPhGNF
- Fwl88r072rh3/yz8nSlmFeOrkxmxDSf1QR1n+f/DwESBtV3wySB9U72tWGtMcDSlK0C4JqxIHnG
- tDBVHG4XyqwTdCcer6DHOuFLJTLojH/90FyvPKMkKigSwZ08j2qjEkImzzdJRgnKEGs9kLz5a57
- g10wDVEdWf5bwGsdsd3M9/QMVHf45d0TssV2a/rmcgHZXF1NKlRtBrCFLpD00HO25w==
-X-Google-Smtp-Source: AGHT+IEyVzXfV8+1W0wsg2XiziTo9MaIysVng3j4cjton4+hSj1eJzA+TuXZsVlOGkarXmYsViTLBA==
-X-Received: by 2002:a5d:47a9:0:b0:38d:bcf1:1011 with SMTP id
- ffacd0b85a97d-38dbcf11476mr1847306f8f.29.1738847479735; 
- Thu, 06 Feb 2025 05:11:19 -0800 (PST)
+ bh=r3g08ohEQSqeyZw6xIdCyqqo2uAlLNUZF1ZoGaNfqHI=;
+ b=Q0oo/odD/LI6wF1DGSTFAlqe0KZrG+ylz0V4PXL7VzarXpQDhGGIXb9jbwo/E9i0/B
+ KaOmJ4FYRH8jzGnTfIzo/uAfNkvGlq+VrI4R6k4RCqUgi9bHvyhHJ3/N/jCuulkd7E2x
+ ByxZ7Rwcf3SiR1nYCq53BmHFdpl9kw+IZm+1amjfudJsVT8HW7l8VskgaSRVLk3kfwYp
+ IO2mwTxD0LQZX6DqDQuwHL9+UUqXCeaVj4tpccSQ2Q+rAsGfY9XqjP9tx2C+7yGCiZMC
+ dcRGzsDrYmiJja2e2PdCcy99KBqZeTo2wBjuBEQr3b77os0s+096I1OY3vPKZPQmWpsz
+ n3Jg==
+X-Gm-Message-State: AOJu0YxLVCFqVJfBr084fLF3n6d/7qVNBORASJvJBsACj6cGq399ZktI
+ Cx6fIlp9u/wyGPklt20LCPtrKfl7laSXEGWRiweY+OjmqrB9oOT70NdhCuRvT5TvIr6LeIyt+BU
+ M9YU=
+X-Gm-Gg: ASbGncueRks0EhOqK1lMBUj9Fz3p+XJFxO7nvHTA03osdJ8vo+JE7xs9186VElC2/fY
+ hcVl/swEiqHsr6orn3jwZcBfxm2tmvYv29EuyafzePRbrDKoO7uX2mK40PmJW7xkohsFqcO0lrY
+ JnMAck09Uvm6m7FzyBhae0HlPPdF2SrOiRadEjEwV2k8JfS1EaiZiND9DJEfp3YD/5Iv1P79AvK
+ tTXiWzFx/L2gqsImZG85iDUQ3+VeoZcYfMiByPBFe4IpVYfLhg1VmXwg3Cx96KlQ5cVRWg37xza
+ VkVGkmsPXvgtJudtsC6oZO0nUslffMBIt+lEbAWWXHFjNG1KK17hp4mg2Xomu6p80g==
+X-Google-Smtp-Source: AGHT+IEMKR2UYi/vp77sP4+ry+xOc5EirscmX9kw1fzakpplzFyhm2uBoqySil+1ZZAJ9jbXlc+JZA==
+X-Received: by 2002:a05:6000:1546:b0:385:f249:c336 with SMTP id
+ ffacd0b85a97d-38db48db20emr4823198f8f.45.1738847485416; 
+ Thu, 06 Feb 2025 05:11:25 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde1e034sm1672874f8f.89.2025.02.06.05.11.18
+ 5b1f17b1804b1-4390d94d685sm54977725e9.13.2025.02.06.05.11.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Feb 2025 05:11:19 -0800 (PST)
+ Thu, 06 Feb 2025 05:11:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Anton Johansson <anjo@rev.ng>,
@@ -69,25 +69,25 @@ Cc: qemu-arm@nongnu.org, Anton Johansson <anjo@rev.ng>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 05/16] hw/ssi/xilinx_spi: Make device endianness
- configurable
-Date: Thu,  6 Feb 2025 14:10:41 +0100
-Message-ID: <20250206131052.30207-6-philmd@linaro.org>
+Subject: [PATCH v5 06/16] hw/arm/xlnx-zynqmp: Use &error_abort for programming
+ errors
+Date: Thu,  6 Feb 2025 14:10:42 +0100
+Message-ID: <20250206131052.30207-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250206131052.30207-1-philmd@linaro.org>
 References: <20250206131052.30207-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,88 +103,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair
-of DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
-Add the "little-endian" property to select the device
-endianness, defaulting to little endian.
-Set the proper endianness on the single machine using the
-device.
+When a property value is static (not provided by QMP or CLI),
+error shouldn't happen, otherwise it is a programming error.
+Therefore simplify and use &error_abort as this can't fail.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/microblaze/petalogix_ml605_mmu.c |  1 +
- hw/ssi/xilinx_spi.c                 | 24 +++++++++++++++---------
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ hw/arm/xlnx-zynqmp.c | 38 ++++++++++++--------------------------
+ 1 file changed, 12 insertions(+), 26 deletions(-)
 
-diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-index bbda70aa93b..a795c6385b4 100644
---- a/hw/microblaze/petalogix_ml605_mmu.c
-+++ b/hw/microblaze/petalogix_ml605_mmu.c
-@@ -175,6 +175,7 @@ petalogix_ml605_init(MachineState *machine)
-         SSIBus *spi;
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index bd5b0dd5e76..d6022ff2d3d 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -689,16 +689,10 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+          * - SDIO Specification Version 3.0
+          * - eMMC Specification Version 4.51
+          */
+-        if (!object_property_set_uint(sdhci, "sd-spec-version", 3, errp)) {
+-            return;
+-        }
+-        if (!object_property_set_uint(sdhci, "capareg", SDHCI_CAPABILITIES,
+-                                      errp)) {
+-            return;
+-        }
+-        if (!object_property_set_uint(sdhci, "uhs", UHS_I, errp)) {
+-            return;
+-        }
++        object_property_set_uint(sdhci, "sd-spec-version", 3, &error_abort);
++        object_property_set_uint(sdhci, "capareg", SDHCI_CAPABILITIES,
++                                 &error_abort);
++        object_property_set_uint(sdhci, "uhs", UHS_I, &error_abort);
+         if (!sysbus_realize(SYS_BUS_DEVICE(sdhci), errp)) {
+             return;
+         }
+@@ -763,14 +757,10 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+     xlnx_zynqmp_create_unimp_mmio(s);
  
-         dev = qdev_new("xlnx.xps-spi");
-+        qdev_prop_set_bit(dev, "little-endian", true);
-         qdev_prop_set_uint8(dev, "num-ss-bits", NUM_SPI_FLASHES);
-         busdev = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(busdev, &error_fatal);
-diff --git a/hw/ssi/xilinx_spi.c b/hw/ssi/xilinx_spi.c
-index fd1ff12eb1d..299004ff36d 100644
---- a/hw/ssi/xilinx_spi.c
-+++ b/hw/ssi/xilinx_spi.c
-@@ -83,6 +83,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(XilinxSPI, XILINX_SPI)
- struct XilinxSPI {
-     SysBusDevice parent_obj;
+     for (i = 0; i < XLNX_ZYNQMP_NUM_GDMA_CH; i++) {
+-        if (!object_property_set_uint(OBJECT(&s->gdma[i]), "bus-width", 128,
+-                                      errp)) {
+-            return;
+-        }
+-        if (!object_property_set_link(OBJECT(&s->gdma[i]), "dma",
+-                                      OBJECT(system_memory), errp)) {
+-            return;
+-        }
++        object_property_set_uint(OBJECT(&s->gdma[i]), "bus-width", 128,
++                                 &error_abort);
++        object_property_set_link(OBJECT(&s->gdma[i]), "dma",
++                                 OBJECT(system_memory), &error_abort);
+         if (!sysbus_realize(SYS_BUS_DEVICE(&s->gdma[i]), errp)) {
+             return;
+         }
+@@ -811,10 +801,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->qspi_dma), 0,
+                        qdev_get_gpio_in(DEVICE(&s->qspi_irq_orgate), 0));
  
-+    bool little_endian_model;
-     MemoryRegion mmio;
- 
-     qemu_irq irq;
-@@ -313,14 +314,17 @@ done:
-     xlx_spi_update_irq(s);
- }
- 
--static const MemoryRegionOps spi_ops = {
--    .read = spi_read,
--    .write = spi_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
--    .valid = {
--        .min_access_size = 4,
--        .max_access_size = 4
+-    if (!object_property_set_link(OBJECT(&s->qspi), "stream-connected-dma",
+-                                  OBJECT(&s->qspi_dma), errp)) {
+-         return;
 -    }
-+static const MemoryRegionOps spi_ops[2] = {
-+    [0 ... 1] = {
-+        .read = spi_read,
-+        .write = spi_write,
-+        .valid = {
-+            .min_access_size = 4,
-+            .max_access_size = 4,
-+        },
-+    },
-+    [0].endianness = DEVICE_BIG_ENDIAN,
-+    [1].endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
- static void xilinx_spi_realize(DeviceState *dev, Error **errp)
-@@ -339,7 +343,8 @@ static void xilinx_spi_realize(DeviceState *dev, Error **errp)
-         sysbus_init_irq(sbd, &s->cs_lines[i]);
++    object_property_set_link(OBJECT(&s->qspi), "stream-connected-dma",
++                             OBJECT(&s->qspi_dma), &error_abort);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->qspi), errp)) {
+         return;
+     }
+@@ -833,10 +821,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
      }
  
--    memory_region_init_io(&s->mmio, OBJECT(s), &spi_ops, s,
-+    memory_region_init_io(&s->mmio, OBJECT(s),
-+                          &spi_ops[s->little_endian_model], s,
-                           "xilinx-spi", R_MAX * 4);
-     sysbus_init_mmio(sbd, &s->mmio);
+     for (i = 0; i < XLNX_ZYNQMP_NUM_USB; i++) {
+-        if (!object_property_set_link(OBJECT(&s->usb[i].sysbus_xhci), "dma",
+-                                      OBJECT(system_memory), errp)) {
+-            return;
+-        }
++        object_property_set_link(OBJECT(&s->usb[i].sysbus_xhci), "dma",
++                                 OBJECT(system_memory), &error_abort);
  
-@@ -362,6 +367,7 @@ static const VMStateDescription vmstate_xilinx_spi = {
- };
- 
- static const Property xilinx_spi_properties[] = {
-+    DEFINE_PROP_BOOL("little-endian", XilinxSPI, little_endian_model, true),
-     DEFINE_PROP_UINT8("num-ss-bits", XilinxSPI, num_cs, 1),
- };
- 
+         qdev_prop_set_uint32(DEVICE(&s->usb[i].sysbus_xhci), "intrs", 4);
+         qdev_prop_set_uint32(DEVICE(&s->usb[i].sysbus_xhci), "slots", 2);
 -- 
 2.47.1
 
