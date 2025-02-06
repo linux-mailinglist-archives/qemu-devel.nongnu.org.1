@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E828CA2A3B8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 09:59:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC442A2A3C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:02:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfxie-0003FO-2Y; Thu, 06 Feb 2025 03:58:44 -0500
+	id 1tfxlZ-0004ID-WA; Thu, 06 Feb 2025 04:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfxiZ-0003F6-A6
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 03:58:39 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ id 1tfxlW-0004HV-3e
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:01:42 -0500
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfxiX-0004WJ-O4
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 03:58:39 -0500
+ id 1tfxlT-0004td-Ia
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:01:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738832318; x=1770368318;
+ t=1738832500; x=1770368500;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=eeuulv5JLGftzUOJMSAtkOWvy58gJZCXRj6UIl2qTYg=;
- b=B5u+j8E5HnAf1vu1Ksfcw4c+Mbb97iuIOU+vZEoL23VV2cecFP70SYJW
- yIU3wmGSl4UtkD8zhzWoK8tCgT2q7ectUecJ8fvAlSyPJzQTHEBHhYOMa
- dGLvjg3ai5nIim+OR8JiN1ngYsLWVDszhqvkFQvXn0dwv4MxuErf3uuDS
- FUMRILCCVnUtaA+14b1uduFcHvRF31kCVqMgnsYkkO7vVnjr1/LDYnVTc
- ebSAZk9sY1HsIJOEx1LY/lU62ijwyXDX89GN5dGKufQd4Hj4JtD66eDwt
- HNf7UsgNxvxe0T43wh01SDwx3VHmGqnr3mNPeEygNu9UyjK+bGBMSXjtr g==;
-X-CSE-ConnectionGUID: 0xzSH2z+RqejNtlJwUBVUA==
-X-CSE-MsgGUID: 1W71PJ37QDuyFRTLXzxPHA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="64779127"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="64779127"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 00:58:32 -0800
-X-CSE-ConnectionGUID: J1i99jh2QnOK8baB8N2FXg==
-X-CSE-MsgGUID: uq7B1JZ1QNmZ9MO8yBtwog==
+ bh=rMALyY/WIFqAgbBKM3q53b9XJsK7ZRIByn6rqRUhu8w=;
+ b=D4I/B/PbeES3P1waKuDCQs9/RtE33P8EvulU7HggixyefXNMK9pYRGXP
+ ihnLiIyZKXgrE1Ov7FKCkoKDWHDha3bz6OhmJ9ExQhMz740akE/rZRpDH
+ EyKzUm1jNhF4hsw8CJF9Mu3KJ7gv9Sp9iiKEnc3A2VlKu4S0ILBFaX02Y
+ Qv+V4WVqpr9xNxRYMh45iaSvNGJnq6BdZ1+6sC/+kDG3M95ndKjrcbiNG
+ ahA7YoiIjUA6GjvFY9ILP/rLQTc+xySnSsjSekarFST63gguUBRlvp65S
+ S7p5ZeN4bvhmtasDyRPB/3TSS31klXCLfRzuhFd8HJo8ciBA/lKE6SCCZ A==;
+X-CSE-ConnectionGUID: YNPAiEFEQdatGr7QD9XbIw==
+X-CSE-MsgGUID: h61eFzrDT+ahat4P5Hl9AQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="61900828"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="61900828"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 01:01:36 -0800
+X-CSE-ConnectionGUID: 2tQmAu0RQlOmzipqpMkvsQ==
+X-CSE-MsgGUID: gd5jUwzyRUOwXXjOul4/Xg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="116184254"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="148351839"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 06 Feb 2025 00:58:29 -0800
-Date: Thu, 6 Feb 2025 17:17:58 +0800
+ by orviesa001.jf.intel.com with ESMTP; 06 Feb 2025 01:01:33 -0800
+Date: Thu, 6 Feb 2025 17:21:01 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -61,14 +60,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org
 Subject: Re: [PATCH v7 RESEND 0/5] i386: Support SMP Cache Topology
-Message-ID: <Z6R+RpFGJHWyE5iq@intel.com>
+Message-ID: <Z6R+/R66Gs2uNBez@intel.com>
 References: <20250110145115.1574345-1-zhao1.liu@intel.com>
- <87jza4zi5o.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87jza4zi5o.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250110145115.1574345-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -93,23 +91,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 05, 2025 at 01:32:19PM +0100, Markus Armbruster wrote:
-> Date: Wed, 05 Feb 2025 13:32:19 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH v7 RESEND 0/5] i386: Support SMP Cache Topology
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > Hi folks,
-> >
-> > This is my v7 resend version (updated the commit message of origin
-> > v7's Patch 1).
-> 
-> If anything changed, even if it's just a commit message, make it a new
-> version, not a resend, to avoid confusion.  Next time :)
-> 
-> [...]
+Hi Paolo,
 
-Thanks Markus! I'll keep in my mind about this :-).
+A kindly ping. (I dropped the cache per thread; do you think this version
+is ok?)
 
+Thanks,
+Zhao
+
+On Fri, Jan 10, 2025 at 10:51:10PM +0800, Zhao Liu wrote:
+> Date: Fri, 10 Jan 2025 22:51:10 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH v7 RESEND 0/5] i386: Support SMP Cache Topology
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi folks,
+> 
+> This is my v7 resend version (updated the commit message of origin
+> v7's Patch 1).
+> 
+> Compared with v6 [1], v7 dropped the "thread" level cache topology
+> (cache per thread):
+> 
+>  - Patch 1 is the new patch to reject "thread" parameter for smp-cache.
+>  - Ptach 2 dropped cache per thread support.
+>  (Others remain unchanged.)
+> 
+> There're several reasons:
+> 
+>  * Currently, neither i386 nor ARM have real hardware support for per-
+>    thread cache.
+>  * ARM can't support thread level cache in device tree. [2].
+> 
+> So it is unnecessary to support it at this moment, even though per-
+> thread cache might have potential scheduling benefits for VMs without
+> CPU affinity.
+> 
+> In the future, if there is a clear demand for this feature, the correct
+> approach would be to add a new control field in MachineClass.smp_props
+> and enable it only for the machines that require it.
+> 
+> 
+> This series is based on the master branch at commit aa3a285b5bc5 ("Merge
+> tag 'mem-2024-12-21' of https://github.com/davidhildenbrand/qemu into
+> staging").
+> 
+> Smp-cache support of ARM side can be found at [3].
+> 
+> 
+> Background
+> ==========
+> 
+> The x86 and ARM (RISCV) need to allow user to configure cache properties
+> (current only topology):
+>  * For x86, the default cache topology model (of max/host CPU) does not
+>    always match the Host's real physical cache topology. Performance can
+>    increase when the configured virtual topology is closer to the
+>    physical topology than a default topology would be.
+>  * For ARM, QEMU can't get the cache topology information from the CPU
+>    registers, then user configuration is necessary. Additionally, the
+>    cache information is also needed for MPAM emulation (for TCG) to
+>    build the right PPTT. (Originally from Jonathan)
+> 
+> 
+> About smp-cache
+> ===============
+> 
+> The API design has been discussed heavily in [4].
+> 
+> Now, smp-cache is implemented as a array integrated in -machine. Though
+> -machine currently can't support JSON format, this is the one of the
+> directions of future.
+> 
+> An example is as follows:
+> 
+> smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
+> 
+> "cache" specifies the cache that the properties will be applied on. This
+> field is the combination of cache level and cache type. Now it supports
+> "l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+> cache) and "l3" (L3 unified cache).
+> 
+> "topology" field accepts CPU topology levels including "core", "module",
+> "cluster", "die", "socket", "book", "drawer" and a special value
+> "default". (Note, now, in v7, smp-cache doesn't support "thread".)
+> 
+> The "default" is introduced to make it easier for libvirt to set a
+> default parameter value without having to care about the specific
+> machine (because currently there is no proper way for machine to
+> expose supported topology levels and caches).
+> 
+> If "default" is set, then the cache topology will follow the
+> architecture's default cache topology model. If other CPU topology level
+> is set, the cache will be shared at corresponding CPU topology level.
+> 
+> [1]: Patch v6: https://lore.kernel.org/qemu-devel/20241219083237.265419-1-zhao1.liu@intel.com/
+> [2]: Gap of cache per thread for ARM: https://lore.kernel.org/qemu-devel/20250110114100.00002296@huawei.com/T/#m50c37fa5d372feac8e607c279cd446da3e22a12c
+> [3]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20250102152012.1049-1-alireza.sanaee@huawei.com/
+> [4]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
+> 
+> Thanks and Best Regards,
+> Zhao
+> ---
+> Alireza Sanaee (1):
+>   i386/cpu: add has_caches flag to check smp_cache configuration
+> 
+> Zhao Liu (4):
+>   hw/core/machine: Reject thread level cache
+>   i386/cpu: Support module level cache topology
+>   i386/cpu: Update cache topology with machine's configuration
+>   i386/pc: Support cache topology in -machine for PC machine
+> 
+>  hw/core/machine-smp.c |  9 ++++++
+>  hw/i386/pc.c          |  4 +++
+>  include/hw/boards.h   |  3 ++
+>  qemu-options.hx       | 30 +++++++++++++++++-
+>  target/i386/cpu.c     | 71 ++++++++++++++++++++++++++++++++++++++++++-
+>  5 files changed, 115 insertions(+), 2 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
