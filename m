@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BEBA2AC5C
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 16:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA350A2AC93
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 16:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg3hZ-0008Mt-Tj; Thu, 06 Feb 2025 10:22:01 -0500
+	id 1tg3ti-0002bh-J2; Thu, 06 Feb 2025 10:34:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tg3hX-0008MD-Fb
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:21:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tg3hV-000599-O7
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:21:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738855316;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DpV63lmlHFTW8rPxsUNo3ZqcDK3KgCRBJFh9ATs0+OM=;
- b=Dz0LVlz4oE1I72HoXWKvbh10z60vNWEv3VTLICSNscBevwaEIlR4IxSVMYSHGzTuUGccr+
- HKR+vAW2KY0PwNhjmWH12bbBJtiDQzRWmhgvXxRo2LHLM1ciEzLnYrt//YkjVfAAnZTGmm
- ckmqMhnNx4SZhLsfNii2XBSDoO9jOKE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-LkKsof9NPEy64FIWWHC5ew-1; Thu,
- 06 Feb 2025 10:21:51 -0500
-X-MC-Unique: LkKsof9NPEy64FIWWHC5ew-1
-X-Mimecast-MFC-AGG-ID: LkKsof9NPEy64FIWWHC5ew
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B30BC19560AA; Thu,  6 Feb 2025 15:21:50 +0000 (UTC)
-Received: from localhost (unknown [10.44.33.231])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 22B7C1800872; Thu,  6 Feb 2025 15:21:48 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Corvin =?utf-8?Q?K=C3=B6hne?= <corvin.koehne@gmail.com>,
- qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le
- Goater
- <clg@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Corvin =?utf-8?Q?K=C3=B6hne?=
- <c.koehne@beckhoff.com>
-Subject: Re: [PATCH 2/4] scripts/update-linux-headers: include PCI ID header
- for Intel GPUs
-In-Reply-To: <20250206121341.118337-3-corvin.koehne@gmail.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20250206121341.118337-1-corvin.koehne@gmail.com>
- <20250206121341.118337-3-corvin.koehne@gmail.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Thu, 06 Feb 2025 16:21:46 +0100
-Message-ID: <87ikpn6qut.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1tg3tS-0002So-5A
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:34:18 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1tg3tO-0001FE-Fe
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 10:34:16 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-38db909acc9so785742f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 07:34:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1738856052; x=1739460852;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aN+4417yj64sAq5Mfzi8lgKD4spgoqn16QT2UJqP7ak=;
+ b=GuL8sH704V6WvClEuwczeh3UnNTFW7jSbPQyXADSnQjyWw45ddgwE8VbaN8GoKON65
+ ZU/jnkkXboOoNNW1Ea4VI5uvz4ZBYNpNFB7hj3dSr4fPFCjWYV3HIWHC4ficDbn2MgA/
+ 9yY8te0oeq5y+e3jV11mSOcin/YXoO8nfv12Uuyhg21wA9fwrSwcjNd0MppWDDgj2UCQ
+ 6IjvGDMUNJ6vSs4G0T75pTZYDxLA4Lyy2Ndntzr/c5POh/aLZfgOsLw4nQAFr2vMphqD
+ LVP51JiuF0pDYJuRbDm5QdOfyMUONGkYJ1KsEz+zD6ieR3T5TCD6T3cFUq+9leKZpObC
+ WvLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738856052; x=1739460852;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aN+4417yj64sAq5Mfzi8lgKD4spgoqn16QT2UJqP7ak=;
+ b=Aeyq2v1bghv0r0UPuIOaxYvHdnKq25vsExzqRbQDArB+JlUeDy2n+hI/3Qj/kQ5h8h
+ KdFXkkqVSNoEjobb516mfaewa1SqhVTwMnuUrMNfN6vn5hIuRnM48Wo8SPBB+FPg+rmL
+ IoDOIZMfTlPaJaCO8Ka4Q8P3NY+LzLESNrxFBFYjb+0H9dAyKAbJigGogWrC69MDECAi
+ UxftuVGHPtLoA6U4NrAJMvL8HqqGmo+2G7/nuxaAdS+ZjK4hhpiwe/nvLZ9JVG4SU52x
+ 1iYUOOEkFDP7r2AnugBFa5v5eeC23/Mb1woHWyM3HCNfoq1KTfb4FF1zeQuZhLGr6Khf
+ GUFw==
+X-Gm-Message-State: AOJu0YzDd4DX2Fkn7JP7VcHiUDqrJPfdWQxKlPPjqDZonnLip4WAv+lh
+ O5H5medahBcCT87Or6a9EX7CnntiI2VTiBt4sjPtcaNTEDWVFOeJ/i3367EIk1AkoPIPOZPD6HY
+ i
+X-Gm-Gg: ASbGnctu9zGjRn/MNPVUPo4sAbdClWbLSuTImnoIjqjF8VK367ZywkovipjWDMckoZy
+ hXXfSmIWB2p6FDXL4jl2VKMO1H+vbKpF1WAhAMvqOcxBMpNT4SaHS11r6WpHNi7MmM0hUHT7pxz
+ 7Qkv+G7MBuJEf1i1Aq63a0qa7zkJvWfWqQwNN49RtTRPeMqihJNRA9/dfSJBUFJMaAp/OrN2IcA
+ d5I2yY2IFoG3yUCYhMR01MAznpQk6LM0ey1cr/zyxQuX0Jm/IoMo3Ab4sOjezHIy95t6OCscYeO
+ 7A40wPY4HWNxV6EfoRV8MjIvsTwATF7IYoeDv2lLKoTgetKDM0v/HYyvC0E4gkFptOE=
+X-Google-Smtp-Source: AGHT+IH/SU0aKmqTVXvQ+cZeS/9H8mZRfCBkZM0ZzmshlWRCdPmNOcRrJHFMjdIsmMuylEbuUqbB1A==
+X-Received: by 2002:a05:6000:1543:b0:385:faaa:9d1d with SMTP id
+ ffacd0b85a97d-38db4929c07mr6349270f8f.35.1738856051781; 
+ Thu, 06 Feb 2025 07:34:11 -0800 (PST)
+Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
+ [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38dc45c26f2sm850516f8f.51.2025.02.06.07.34.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Feb 2025 07:34:11 -0800 (PST)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH 0/2] disas/riscv: Add missing Sdtrig CSRs
+Date: Thu,  6 Feb 2025 15:34:08 +0000
+Message-ID: <20250206153410.236636-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.48.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,46 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 06 2025, Corvin K=C3=B6hne <corvin.koehne@gmail.com> wrote:
+Add missing Sdtrig CSRs per the latest RISC-V Debug specification. (+ minor
+whitespace fix)
 
-> From: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
->
-> We've recently imported the PCI ID header for Intel GPUs into our tree.
-> Add it to our helper script to make it easier for us to sync this file
-> in the future.
->
-> Signed-off-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
-> ---
->  scripts/update-linux-headers.sh | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-heade=
-rs.sh
-> index 8913e4fb99..a4ff5a8fe9 100755
-> --- a/scripts/update-linux-headers.sh
-> +++ b/scripts/update-linux-headers.sh
-> @@ -269,6 +269,12 @@ mkdir -p "$output/include/standard-headers/drm"
->  cp_portable "$hdrdir/include/drm/drm_fourcc.h" \
->              "$output/include/standard-headers/drm"
->=20=20
-> +# Linux does not install the PCI IDs header for i915 devices, so we have=
- to
-> +# pick it up from the source tree itself.
-> +mkdir -p "$output/include/standard-headers/drm/intel"
-> +cp_portable "$linux/include/drm/intel/pciids.h" \
-> +            "$output/include/standard-headers/drm/intel"
-> +
->  cat <<EOF >$output/include/standard-headers/linux/types.h
->  /* For QEMU all types are already defined via osdep.h, so this
->   * header does not need to do anything.
+Rob Bradford (2):
+  disas/riscv: Fix minor whitespace issues
+  disas/riscv: Add missing Sdtrig CSRs
 
-The correct process here would be:
-1. update the script (this patch)
-2. run a full headers update against Linux v.13 (replaces patch 1)
+ disas/riscv.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-I'll leave discussion of the whole series to the others :)
-
-Thanks,
-Cornelia
+-- 
+2.48.1
 
 
