@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA0EA2B06A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C30D9A2B06F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:19:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg6SH-0007XK-1B; Thu, 06 Feb 2025 13:18:25 -0500
+	id 1tg6Se-0007aq-Qy; Thu, 06 Feb 2025 13:18:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tg6SD-0007Wr-P2; Thu, 06 Feb 2025 13:18:22 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tg6SB-0006Gu-FL; Thu, 06 Feb 2025 13:18:21 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yplf6092gz67Cwc;
- Fri,  7 Feb 2025 02:15:58 +0800 (CST)
-Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
- by mail.maildlp.com (Postfix) with ESMTPS id 81DB21402C4;
- Fri,  7 Feb 2025 02:18:15 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 6 Feb 2025 19:18:15 +0100
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Thu, 6 Feb 2025 19:18:15 +0100
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>, "nathanc@nvidia.com"
- <nathanc@nvidia.com>
-Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rMv66IAgAA0HqCAAb2VAIAIsUnQgAADD4CAAB6MsIAAJxaAgAATMvCAABLUAIAAAjUAgAAKIYCAAAJIgIAAAQ2AgAARRyD///K+AIAAERgA
-Date: Thu, 6 Feb 2025 18:18:14 +0000
-Message-ID: <02a0080a4a1642d69b7f5dd4707a5b3d@huawei.com>
-References: <Z6SQ3_5bcqseyzVa@redhat.com>
- <f898b6de4a664fe8810b06b7741e3120@huawei.com> <Z6TLSdwgajmHVmGH@redhat.com>
- <71116749d1234ab48a205fd2588151ec@huawei.com>
- <20250206170238.GG2960738@nvidia.com> <Z6TtCLQ35UI12T77@redhat.com>
- <20250206174647.GA3480821@nvidia.com> <Z6T3cX_fM-aeYbMI@redhat.com>
- <20250206175843.GI2960738@nvidia.com>
- <13b1d8b97a314cb28b87563fa9b45299@huawei.com>
- <20250206181306.GK2960738@nvidia.com>
-In-Reply-To: <20250206181306.GK2960738@nvidia.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.156.189]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6SQ-0007ZE-61
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:35 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6SO-0006kp-6M
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:18:33 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-438a39e659cso8318395e9.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:18:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738865909; x=1739470709; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oA7haI5LhG5r9smI/ATEoeTI8SYOBebnSO/8gJsVZP8=;
+ b=AOH0adHkiHHzSmOIash2bPwxOUsq8TZOzMOFDfdIYD6gsVOp0OpKedGRnfj0xGMHWZ
+ QaUwO/tefddmfJZ33cf7O2Vy6M96Gcl+A1P1aKbmcXuipovr4lE8fbRST81EwHAZUBda
+ BlRH0Q/eMo8gPnyBRDnvCXTp+t1l0tyP5YEDXd8TaV973dohxC/Hczd3dqebx+eavq0M
+ j+cdDEL3zceefoD3QeYxLWyDznqefELLVTy/ZnmmG3q97CPgIm9aMGhtAtKdNHbNr+Oq
+ jBQ0s8iFqKvAwcYj0PSRqXMFQLoJaw7QmCAgfJtalct6hckCNaVb+uBHHoxTeZQ9UXmZ
+ E9ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738865909; x=1739470709;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oA7haI5LhG5r9smI/ATEoeTI8SYOBebnSO/8gJsVZP8=;
+ b=vSpyGgdFR8ZmLpcLiyDFt78Pw8MbGAPOnfPdz12SBwaaI4NIiMC8GZ84LNpJj7bcOR
+ F5V2AAday3LnmQqOZrACT1NZ+5Hoc5+/TxIt3HX1KxObIALn/or3BZmv0h/tfkDfjtE1
+ H341IJkoGmfD04GMmWTZatjsQmxhLRQvw/4rWrU4LwEKzTAKgdJkYXJosJ0FehpTyb+m
+ 3BSetTNiRbWUhlCXtZODChBfD03eHy8/QxPGU1JaIP+BVBfXpMgHWLlEwMhH7lNzxTac
+ fuYBdyg0zOnojef1NnTRrDo+6YHumQg3BAATvNCJl2gANzOJ3rNws8yqMGefM8XDESNX
+ A7OQ==
+X-Gm-Message-State: AOJu0YxBc6EIVkE1vfZ1v5iajW5jsQlmF5fEziJYLELhvgX/QotklgAe
+ 8tdQfimJYF7AiAOL+3wIzkezT7g4/tLLPfVWB2mNMYBzuIKNyTgAC87kWAC0QDA0a8JWSrOL8qW
+ Jdcs=
+X-Gm-Gg: ASbGncu0MCYBpeDKCQDh2asRnwQ+b8W5mY4UfdaFbSJvBCcj5UY3/C7oqpUTx4/1dUQ
+ 6MJJWwyU5KA06QeJtdNWkmT0BkOaVNMUajSfSPBbsp7EDd2qkZ/EKKrng+GoGu3GxCoD4HpB7MQ
+ g3VlJol5eORSs9oKJjvMa2FHi9ytwUnymRbdDZ8Etqs/2wbJCvtxiccWZ/8UEE5oZLnqPbD2akn
+ eQ/GgUTNWIcu/HcomEUDMMAAE9iScLcNSw4/GugogrWErPLRAoljIqAQ7hAZ3lz3xQ0Fud43tMY
+ V4wCs6gRkuZC5B9i7mqtV7OLUTD8OJ7kX6VcJJy2SWII4NqA+sdmum983Si/S6T7yw==
+X-Google-Smtp-Source: AGHT+IEafAL2zqe9LiF8uiaXbSAc4SQr4atI4Wo+oHl1W+KmZGCN2yAGbll1nwyiVh1uRMYxOQAN9A==
+X-Received: by 2002:a05:600c:4f50:b0:436:ed50:4f8a with SMTP id
+ 5b1f17b1804b1-439249841b4mr4224485e9.10.1738865909457; 
+ Thu, 06 Feb 2025 10:18:29 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43907f19247sm58323555e9.1.2025.02.06.10.18.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 06 Feb 2025 10:18:28 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Sunil V L <sunilvl@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/7] hw/riscv: Move few units to common_ss[]
+Date: Thu,  6 Feb 2025 19:18:20 +0100
+Message-ID: <20250206181827.41557-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,64 +96,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Remove target-specificity in some units and move them to
+the meson common_ss[] source set to build them once.
 
+Philippe Mathieu-Daudé (7):
+  MAINTAINERS: Unify Alistair's professional email address
+  target/riscv: Move target-agnostic definitions to 'cpu-qom.h'
+  hw/riscv/opentitan: Include missing 'exec/address-spaces.h' header
+  hw/riscv/boot: Use 'hwaddr' type for firmware addresses
+  hw/riscv/iommu: Reduce needs for target-specific code
+  hw/riscv/hart: Make 'riscv_hart.h' header target-agnostic
+  hw/riscv: Move few objects to common_ss[] to build them once
 
-> -----Original Message-----
-> From: Jason Gunthorpe <jgg@nvidia.com>
-> Sent: Thursday, February 6, 2025 6:13 PM
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: Daniel P. Berrang=E9 <berrange@redhat.com>; qemu-arm@nongnu.org;
-> qemu-devel@nongnu.org; eric.auger@redhat.com;
-> peter.maydell@linaro.org; nicolinc@nvidia.com; ddutile@redhat.com;
-> Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
-> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
-> Jonathan Cameron <jonathan.cameron@huawei.com>;
-> zhangfei.gao@linaro.org; nathanc@nvidia.com
-> Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
-> nested SMMUv3
->=20
-> On Thu, Feb 06, 2025 at 06:04:57PM +0000, Shameerali Kolothum Thodi
-> wrote:
-> > > Some kind of hot plug smmu would have to create a vSMMU without
-> any
-> > > kernel backing and then later bind it to a kernel implementation.
-> >
-> > Not sure I get the problem with associating vSMMU with a pSMMU.
-> Something
-> > like an iommu instance id mentioned before,
-> >
-> > -device arm-smmuv3-accel,id=3Dsmmuv2,bus=3Dpcie.2,host-smmu=3Diommu.1
-> >
-> > This can realize the vSMMU without actually creating a vIOMMU in kernel=
-.
-> > And when the dev gets attached/realized, check (GET_HW_INFO)the
-> specified
-> > iommu instance id matches or not.
-> >
-> > Or the concern here is exporting an iommu instance id to user space?
->=20
-> Philisophically we do not permit any HW access through iommufd without
-> a VFIO fd to "prove" the process has rights to touch hardware.
->=20
-> We don't have any way to prove the process has rights to touch the
-> iommu hardware seperately from VFIO.
+ MAINTAINERS                     | 12 +++++-----
+ include/hw/riscv/boot.h         | 21 +++++++++--------
+ include/hw/riscv/boot_opensbi.h | 14 ++++++------
+ include/hw/riscv/riscv_hart.h   |  4 ++--
+ target/riscv/cpu-qom.h          | 40 +++++++++++++++++++++++++++++++++
+ target/riscv/cpu.h              | 24 --------------------
+ target/riscv/cpu_bits.h         | 15 -------------
+ hw/riscv/boot.c                 | 28 +++++++++++------------
+ hw/riscv/opentitan.c            |  1 +
+ hw/riscv/riscv-iommu-pci.c      |  5 +++--
+ hw/riscv/riscv-iommu-sys.c      |  1 -
+ hw/riscv/riscv-iommu.c          |  1 +
+ hw/riscv/virt-acpi-build.c      |  1 +
+ hw/riscv/meson.build            |  5 +++--
+ 14 files changed, 88 insertions(+), 84 deletions(-)
 
-It is not. Qemu just instantiates a vSMMU and assigns the IOMMU=20
-instance id to it.
+-- 
+2.47.1
 
->=20
-> So even if you invent an iommu ID we cannot accept it as a handle to
-> create viommu in iommufd.
-
-Creating the vIOMMU only happens when the user does a  cold/hot plug of
-a VFIO device. At that time Qemu checks whether the assigned id matches
-with whatever the kernel tell it.=20
-
-Thanks,
-Shameer
 
