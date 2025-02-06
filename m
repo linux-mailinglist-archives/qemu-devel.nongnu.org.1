@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96ECEA2B072
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E81EAA2B08C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:21:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg6T9-0008Ni-9r; Thu, 06 Feb 2025 13:19:19 -0500
+	id 1tg6Tv-00014H-C8; Thu, 06 Feb 2025 13:20:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6T5-0008Jd-CO
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:19:15 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6TY-0000aI-MT
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:19:49 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6T1-0006sJ-AU
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:19:15 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-38daf156e97so692341f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:19:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6TV-0006uu-Pp
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:19:44 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385dece873cso573851f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:19:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738865945; x=1739470745; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cvk5XVWM6B/U3edLFXPiRke7Pe808hVHpTM0rnQwgtQ=;
- b=SVIQACkHxIxHQXcjc1ksIuC4CypjMF+czbB9r4LmfXrZNM1d+hCDdgrzgZMSgtN/1/
- jjWPWNFTzb/YWWv3ts5ruL80JDW9XgCFF/hPnX1ub8ycVwoYLv89B8fTyheym9KnWuPm
- uWJk3h+Fj86prAJeHuh2dNPoY+x0s2cOcZNIdwKYEc/fBHlPUPmXnPcigbS/6PrhogLh
- 8RVXXaBoa8t0wJRSe5IOMTvsBG8fQkDYnXOFvAxX/WR5fV3hGbSdMdX7IhYZ1IqeroNx
- ELuC8MIvwzY2ym+T/Qo559luruWDRnwY4RWdc/IvU4r3yevVEzqlFDWAlXHjyiKA5bd3
- a33g==
+ d=linaro.org; s=google; t=1738865978; x=1739470778; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rLMKHfpwsmRq9cvK/Unfd2Atjehb+xWOik9/MUFQQbw=;
+ b=vp4SXV++8vmekOwKO32h5DTjIf+HIbah9BXCwbUeShvYbP4NwsVWX0AT0CuADCMBkb
+ 6sCzEsXuM3WvGa+VC0RdzfCbJHywXNOK/YnjtdTYS+qH+DyGafP28NktrU9MjSYIc4hI
+ gUMX+joAIPTqTMSRwrSmHYp0Wf/Zwy2zNJ10tweV6q33P5VsFiM85cnRSqJxxF7rkm3y
+ NH5p25wx5F7XjnPP7GA05TPdfQ0sEpl+kzj6Fsy1wWyanlrR+FH/U7lxkIT1/waC4/YJ
+ pH0RaAcB7yVOi7v76JQO15Zso0VA5+fz1z2Uv3nsRon9X2IaE2xZO2abjrx6phtMZp6w
+ IEgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738865945; x=1739470745;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cvk5XVWM6B/U3edLFXPiRke7Pe808hVHpTM0rnQwgtQ=;
- b=tXG47fvlC8/BYjcM+LhaEDV+7AK7fXoTsl9J5UtByeUkDokh8o3QeLe8Izkg+iQTEv
- f7+BApPPWYFk4x2btv2+KszPsSNYrKV5hZVofuaCKKbhbCrseNdUps3qYA1XUGdoX4zQ
- Itz4lmsh1bunvFnFL0UIOQWbou12BdZvgB2gxbojntrAlVnSIyi3Mry9aH9A8O/pSblQ
- KMSWgl/UHuCyb1plm0RkOqjic7Jl67YV1BRrYLlUsEFljBbxhcO+dXXwCxbCiOJHDNzl
- GzQIo38asw1tswj04FRqfKFo9b4ksnszoiqKC2oWVsteDvUz2WHfcim2cmwcfqSagnFP
- Yxjg==
-X-Gm-Message-State: AOJu0Yzf/CxA0leVaQEAV4XQlwrjQRZeox1frOxJ+spEdzsgygmbW8rF
- uISKWYADXeuOfZy0qDYwRcvsiRxEVZZgNTfRQwMB6J8VtJikuayc72SOb4qXe5D2mlxqpYR3qqF
- 0xTo=
-X-Gm-Gg: ASbGncuqqySk/Bd7NhUlhb20UPC9tjKEApQUKIeU4KuEoqcy57YhDeY3TwICTcT5V9O
- c6uskgeI7nt5s9Q7FEdaYmd4/vLW5k4xF97kUjP5SUPtGOgk9Gq2pGSmhepfC4bA/fDWp8J7nV/
- CK4PsRkU8pLPM6EP6y+g0ROfuM4jJji9sKTM5Pr3cYMkmL1L07yyiAr/sqHr+jg6n6Qi08kYS9b
- e1RYkAiyBy146Mf9/5V0pyjrZcSNhMTAtZewjF8UmCAK3+aLuWcZtIa31Q8tisb9YHk4QNbDX2Z
- 6vapRnzYFUHK4kcfWU2t7j9sHXVHYJ43q0BGJzyQsbH9g1zYWnrnaPO2pldgde/9XQ==
-X-Google-Smtp-Source: AGHT+IEISMzuba5y5/a/hV1oFvHOX1dJCnIqiaCa55m0+aDk27ImuF5o9z6OsKXLJ5E4PHf3A2yCLA==
-X-Received: by 2002:adf:e30e:0:b0:38d:c85c:f917 with SMTP id
- ffacd0b85a97d-38dc85cf9f1mr99566f8f.55.1738865945467; 
- Thu, 06 Feb 2025 10:19:05 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1738865978; x=1739470778;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rLMKHfpwsmRq9cvK/Unfd2Atjehb+xWOik9/MUFQQbw=;
+ b=DdUqcmPImpf7NCJVIRcaGkUDXgpDTrgnoID153KJG7+FrglSy7h4UGCMYQvEBSsmMO
+ VJV/AjUxjGZ/4X3AcEuUekn0JSVfb7tbXXGAD8hmfy9QxsvhoSuZmiyhjycnGMTlz0FJ
+ ZwgsyOmGwHOSQnVH+JVeHFTnyY9FDq3GFPxicBzNYY0eiiQltahYALRjgn+IXatWvEaf
+ 0Q7D5RrsjuQ/WEKUpfPHe+lcPDumaVNO/ygHj6f2bxXVxvJ4MprTA3VooFo+H92Wgx2F
+ 6p5MlE91oifKjby567EMtdRmi4pLzsx7+41+rZ6KeziUv4vkWlAazokODLfz43OmEO1r
+ a8dA==
+X-Gm-Message-State: AOJu0YyObKPHoDQklHXCrCPB+L8M9rwE9O8GFUjM4953zUbJLIZI8iX0
+ dOEImULXUS34ZqNsarWSKUyygtQ6CR8p2xlXDRsL68344V3sQbTHi9uRUuOEgyE2nlxkL/IaPrV
+ KXZI=
+X-Gm-Gg: ASbGncuDJtSHFImNNN1PpUyvSaiFUVbfrEBCSjgTGE8hm4kGdBtaNcEpDuracGdJU1c
+ n/OAiNadtdhRoBgZKriuTKLOHdADvSeVilEJBU7TTPYTl+kW0i4jZCeRyoMuMRN/bfRWXZX9kX9
+ VTiILN4mzwLFE+y/jJszCcF+DhECr3AnXxlirN4EDXhpMIRAC3mhwKYOax6OfRC7Mdq+CHCRQPr
+ ZsgERZnuVtcq0obY/TSEIA2f3CP58y6pnEGMWmRJCURCqwmpk0/2s4M0pI7Rhuyxh6JOR2PKj7R
+ ZxWrDY7NTltuQ1Q/ssJZd12FyL4x5PYqAHUxpBgq2l4I9PQdmUd5sA4G/qA=
+X-Google-Smtp-Source: AGHT+IEX9XgRQKxCwwoo+fjKGwF6p4g6vZiIw0RmtERh0y0RhN08POvBePfkazta5gkMmeyikgSoSg==
+X-Received: by 2002:a05:6000:1865:b0:38c:5fbf:10d6 with SMTP id
+ ffacd0b85a97d-38dc90e19e9mr8592f8f.7.1738865978389; 
+ Thu, 06 Feb 2025 10:19:38 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbdd1c151sm2310535f8f.7.2025.02.06.10.19.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Feb 2025 10:19:04 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ ffacd0b85a97d-38dbdd35bd6sm2317204f8f.22.2025.02.06.10.19.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Feb 2025 10:19:37 -0800 (PST)
+Message-ID: <5574afe4-191b-454f-bbd2-cd7b26a0d581@linaro.org>
+Date: Thu, 6 Feb 2025 19:19:36 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] MAINTAINERS: Unify Alistair's professional email
+ address
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
  Sunil V L <sunilvl@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 7/7] hw/riscv: Move few objects to common_ss[] to build them
- once
-Date: Thu,  6 Feb 2025 19:18:27 +0100
-Message-ID: <20250206181827.41557-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250206181827.41557-1-philmd@linaro.org>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 References: <20250206181827.41557-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250206181827.41557-2-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250206181827.41557-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,39 +104,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-opentitan.c, riscv-iommu-pci.c, riscv-iommu-sys.c don't depend
-on target-specific knowledge. Move them to common_ss[] to build
-them once.
+On 6/2/25 19:18, Philippe Mathieu-Daudé wrote:
+> Alistair's email is typed differently, so the get_maintainer.pl
+> script add it twice :) Unify to reduce traffic.
+> 
+>    $ git grep -h 'Alistair Francis' -- MAINTAINERS | sort -u
+>    M: Alistair Francis <Alistair.Francis@wdc.com>
+>    M: Alistair Francis <alistair.francis@wdc.com>
+>    M: Alistair Francis <alistair@alistair23.me>
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   MAINTAINERS | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0cf37fce7b5..b7ac1519ee3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -318,7 +318,7 @@ F: tests/functional/test_ppc_74xx.py
+>   
+>   RISC-V TCG CPUs
+>   M: Palmer Dabbelt <palmer@dabbelt.com>
+> -M: Alistair Francis <alistair.francis@wdc.com>
+> +M: alistair.francis <alistair.francis@wdc.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/riscv/meson.build | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 3c7e083aca1..ff578a2e01a 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -2,7 +2,7 @@ riscv_ss = ss.source_set()
- riscv_ss.add(files('boot.c'))
- riscv_ss.add(when: 'CONFIG_RISCV_NUMA', if_true: files('numa.c'))
- riscv_ss.add(files('riscv_hart.c'))
--riscv_ss.add(when: 'CONFIG_OPENTITAN', if_true: files('opentitan.c'))
-+common_ss.add(when: 'CONFIG_OPENTITAN', if_true: files('opentitan.c'))
- riscv_ss.add(when: 'CONFIG_RISCV_VIRT', if_true: files('virt.c'))
- riscv_ss.add(when: 'CONFIG_SHAKTI_C', if_true: files('shakti_c.c'))
- riscv_ss.add(when: 'CONFIG_SIFIVE_E', if_true: files('sifive_e.c'))
-@@ -10,7 +10,8 @@ riscv_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('sifive_u.c'))
- riscv_ss.add(when: 'CONFIG_SPIKE', if_true: files('spike.c'))
- riscv_ss.add(when: 'CONFIG_MICROCHIP_PFSOC', if_true: files('microchip_pfsoc.c'))
- riscv_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
--riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu.c', 'riscv-iommu-pci.c', 'riscv-iommu-sys.c'))
-+riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu.c'))
-+common_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu-pci.c', 'riscv-iommu-sys.c'))
- riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-generic.c'))
- 
- hw_arch += {'riscv': riscv_ss}
--- 
-2.47.1
+Grr this isn't the version I wanted to post, sorry for the noise...
 
 
