@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6278FA2B2CC
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F172A2B2DB
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:04:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg806-00078Q-Jc; Thu, 06 Feb 2025 14:57:26 -0500
+	id 1tg80L-0007Dq-7b; Thu, 06 Feb 2025 14:57:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg804-000772-1x
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:24 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tg805-00078w-QP
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:25 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg801-0000Rt-UG
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:23 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-21f48ebaadfso12071805ad.2
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 11:57:21 -0800 (PST)
+ id 1tg802-0000S1-HA
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:25 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2f9c69aefdbso2645674a91.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 11:57:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738871840; x=1739476640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738871841; x=1739476641; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RfMF2F0u1KO0UNQVblc+TNx0Vp4TbWKK/lW8gV/9m78=;
- b=Qmc97TnJGNpHnzcB927XzFlQKxRtWa8AwawN0uKirxluzCLarH330YK2kAy1MSPvew
- jHjqsEv8M3K2SpVkXxApUmalyb2mFleORw4l98oj02AmWyp8+grp+14gz3UbZ6GfTe/e
- eWbl25TlwmqYrOBMsYIeXtu5KukQPIHh+zS3OJbdBai/DqyoxtyGg6nePp+phoW75tWa
- ge+dgVHy3RfHYR7+V2yFJR+qJ99trfjEj+THNReNBjMbj8f82XT6IBbqao65L5GuIEx2
- /kl66fkxDjQvmdKkaLBJz/J6CDNKA+TXfsjnUEi8nluHhE3HJYFr9vbJ7c3wfUV5PdEU
- wuBA==
+ bh=9cf3tZ+uL08zlh8bFAF0MJI9Fv9UayGjAADjcJixVgA=;
+ b=EMLwhjvsWOE9dNaLZkbLFAsz4XhGzwx6W2vpVASdu5TOklAAvFExRVkczng79fmFFa
+ 6DDsE8enloDCt/ZhhzOcoVNhoSNoZZJsUpZYrWKqXEc0DF8PUzfHtmn5Q7I2Lxwj39+k
+ wuCE/mq0x6/ddPoQIbCtOaZOKUtjKxoQ6ry6x1a7i5rXM4O6Y7WMMhpnetjw9YQ3yX/g
+ TqQFLqiKth6Wq+GBMUKFTLpWb02A6xmkN4dSFKA+LGvhnraYLrc1XnlH8Jy1z5+AF/+b
+ d9ki159Y7xiavz43Rr4KyKhnCyTFbXmAuu7Ic6ar3CotIEuT6euEA6DT1X3Mg1kRa2EZ
+ Peqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738871840; x=1739476640;
+ d=1e100.net; s=20230601; t=1738871841; x=1739476641;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RfMF2F0u1KO0UNQVblc+TNx0Vp4TbWKK/lW8gV/9m78=;
- b=LO1pqaoS+3tfPpHqqjFcVSniVOvdHQvjzNexPHKCedsC8JrrsQrV0XqXYvkWwWYTrG
- gBg6B/IUgFhUt18GUU24ThHgFSgirgF+5fRy2wx1/LNmmI+bqaTYKtLFp+OfgPdyObwr
- A8IxlewXc/G+xSNDBUTo9jPU0P0uRzs7aNih6VpRttwUIHvgen99AmfVbG0j/ifI7W9W
- iXcmwKwPcD4RICs/Uwx5hC4anHE5Q6fN8kfJlVFsQkSAdUWcc048M0DJNk5r9BRhfZip
- OncEjyXnSmrN66vYdlfkJJgxMP/YkWnLimUX7YiS8wXwXaH+cUrFgucEiFCO/yTMOEtc
- DTAw==
-X-Gm-Message-State: AOJu0YwIae/RDFceKdFLusZca+8wb8ZZ+u6nxyS2mZnw+gHHn7i9XBAP
- lnZNDL8kwX0WwLcEy3xy3LpAX0TwoPE0dEa1dX6OU6YEOBx5tB4o+gThJgSz4ayJQ6Od3u03qHU
- s
-X-Gm-Gg: ASbGnctAbZ1GqAuEZfk5KtNsOWroJLFwdGr8W3s+Fe+LnqOraVYUQviEb3c/3rJqJIE
- +7zSYiFTYaL01RwT7p0CjpeIEwrPl07/DvnzGZ3+2HmE9d8B6TmXNkOaHvnh2PFYh05E69ScqmB
- SKo0HCSPLX8qAjSrDq9WXUn1SMwicSLEm8Qn4VutJDr5bOEdPr60/cFRuZHvvvwlCaruRk98/jr
- Dkfp5d7H5h9SKmrO/a8uvvCNBzkea4S2o+2QNiAZ28oTl4+shmZUEotnCw4CTz9lLy7/+FNF0Bf
- 9Nr8x5QEbck5XSTbpcOD+IanYqWvDj60ynVkwnnHSz1kARI=
-X-Google-Smtp-Source: AGHT+IEiXlXeYDXvHZnNpbF62Q661oxYhEiax5pJtHec4AR8pzJzTNrn4y1mCNsW1OxgiuKnwYwKSA==
-X-Received: by 2002:a05:6a00:148d:b0:724:e75b:22d1 with SMTP id
- d2e1a72fcca58-7305d4f0349mr940057b3a.16.1738871840376; 
- Thu, 06 Feb 2025 11:57:20 -0800 (PST)
+ bh=9cf3tZ+uL08zlh8bFAF0MJI9Fv9UayGjAADjcJixVgA=;
+ b=Vo85e1S/QpIGZYvbJPZ3raSWmJfK1sjJwHW4dwufFeqIHyBNZvBRgxqG4Yx9WPOrUp
+ cNmNXraBEvF2K5Ux1ZUgvqugde0CoPeZXqZD6UHtK+/bv25QI+26OEVf0TUzg9sNAX8T
+ 5YMw4V79GI1QXgSf3wYVeFgSYO7CnN9JR6ur5LKGA/Rgx/lOTvmI8zxmYXs6a8JWNX0p
+ QmuBnSmJMsisqBgcR3Jq2WYGXR56o3ATCBL9RwfCkpXnNJqCHHgE0EaJSkGFeTCZxVOa
+ 5+XWDLUgUcu5Vv3QaxXaS4j7h3Iwv5bdbxxvd+uEgXAFCRRYPumAi+JboTvcJUXe/vKr
+ 9o8A==
+X-Gm-Message-State: AOJu0Yyp6Zlnb/AdmuHUBll2OF8bngN53ToVk/+osCU4p7lswFiAf10B
+ IGQEXDjzWDbo78pzpCsuhuJcfS9KA7ah0SEE5liaM69+33wmt62V6HjlbCwa6QyGbfru0Xa6ykt
+ t
+X-Gm-Gg: ASbGncuJ2YeeNB06+1vYLjZ8N4hESaUBKC4HOVO7+Q3hhpCRHqC9MwZtzqWdf3TB3Nq
+ 1O/SMDeCZ5b3S9xCncTsVrQpdssbPTq+fQAB18/HB1HLuypXOmdJ3ES4fz6FYkVSbKk0Cnw02Zc
+ MwQYaYC95RNPQWhmWGLgxRx3mkubz8j6iEAIvdRJ00N4prei4WVw3h/aJ+u7ETJ0QdOOitJQgkz
+ BXtPNPcUqwANpf8i1ytm6fAewMCc/1h6kWgOJ+cQhkmeyijBQleQE69WgXJcy+rKHeERefJiDZu
+ Ix/gS1yAUWwggBeftEskidoCVnRFJevOgXRHnm5WglNNp8Y=
+X-Google-Smtp-Source: AGHT+IFdfIS8cIyn5PI/aNOMZCdyYzgyK1rTwVuc5xr0Uuo7SNQJrUaack+Mhj/NI59YgueGdw0Jxg==
+X-Received: by 2002:a05:6a00:ac8a:b0:725:d1d5:6d86 with SMTP id
+ d2e1a72fcca58-7305d51c766mr721898b3a.19.1738871841178; 
+ Thu, 06 Feb 2025 11:57:21 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73048c16370sm1666993b3a.152.2025.02.06.11.57.19
+ d2e1a72fcca58-73048c16370sm1666993b3a.152.2025.02.06.11.57.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 06 Feb 2025 11:57:20 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 05/61] tcg: Split out tcg_gen_gvec_2_var
-Date: Thu,  6 Feb 2025 11:56:19 -0800
-Message-ID: <20250206195715.2150758-6-richard.henderson@linaro.org>
+Subject: [PATCH 06/61] tcg: Split out tcg_gen_gvec_3_var
+Date: Thu,  6 Feb 2025 11:56:20 -0800
+Message-ID: <20250206195715.2150758-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250206195715.2150758-1-richard.henderson@linaro.org>
 References: <20250206195715.2150758-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -99,213 +99,232 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-op-gvec-common.h |  3 ++
- tcg/tcg-op-gvec.c                | 85 ++++++++++++++++++++------------
- 2 files changed, 56 insertions(+), 32 deletions(-)
+ include/tcg/tcg-op-gvec-common.h |   4 ++
+ tcg/tcg-op-gvec.c                | 102 +++++++++++++++++++------------
+ 2 files changed, 68 insertions(+), 38 deletions(-)
 
 diff --git a/include/tcg/tcg-op-gvec-common.h b/include/tcg/tcg-op-gvec-common.h
-index 65553f5f97..877871c101 100644
+index 877871c101..6e8fccad01 100644
 --- a/include/tcg/tcg-op-gvec-common.h
 +++ b/include/tcg/tcg-op-gvec-common.h
-@@ -227,6 +227,9 @@ typedef struct {
-     bool prefer_i64;
- } GVecGen4i;
- 
-+void tcg_gen_gvec_2_var(TCGv_ptr dbase, uint32_t dofs,
+@@ -236,6 +236,10 @@ void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+                      uint32_t maxsz, int64_t c, const GVecGen2i *);
+ void tcg_gen_gvec_2s(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+                      uint32_t maxsz, TCGv_i64 c, const GVecGen2s *);
++void tcg_gen_gvec_3_var(TCGv_ptr dbase, uint32_t dofs,
 +                        TCGv_ptr abase, uint32_t aofs,
-+                        uint32_t oprsz, uint32_t maxsz, const GVecGen2 *);
- void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
-                     uint32_t oprsz, uint32_t maxsz, const GVecGen2 *);
- void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
++                        TCGv_ptr bbase, uint32_t bofs,
++                        uint32_t oprsz, uint32_t maxsz, const GVecGen3 *);
+ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+                     uint32_t oprsz, uint32_t maxsz, const GVecGen3 *);
+ void tcg_gen_gvec_3i(uint32_t dofs, uint32_t aofs, uint32_t bofs,
 diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 54304d08cc..08019421f2 100644
+index 08019421f2..3e53e43354 100644
 --- a/tcg/tcg-op-gvec.c
 +++ b/tcg/tcg-op-gvec.c
-@@ -129,9 +129,10 @@ uint32_t simd_desc(uint32_t oprsz, uint32_t maxsz, int32_t data)
+@@ -178,9 +178,11 @@ void tcg_gen_gvec_2i_ool(uint32_t dofs, uint32_t aofs, TCGv_i64 c,
  }
  
- /* Generate a call to a gvec-style helper with two vector operands.  */
--void tcg_gen_gvec_2_ool(uint32_t dofs, uint32_t aofs,
+ /* Generate a call to a gvec-style helper with three vector operands.  */
+-void tcg_gen_gvec_3_ool(uint32_t dofs, uint32_t aofs, uint32_t bofs,
 -                        uint32_t oprsz, uint32_t maxsz, int32_t data,
--                        gen_helper_gvec_2 *fn)
-+static void expand_2_ool(TCGv_ptr dbase, uint32_t dofs,
+-                        gen_helper_gvec_3 *fn)
++static void expand_3_ool(TCGv_ptr dbase, uint32_t dofs,
 +                         TCGv_ptr abase, uint32_t aofs,
++                         TCGv_ptr bbase, uint32_t bofs,
 +                         uint32_t oprsz, uint32_t maxsz,
-+                         int32_t data, gen_helper_gvec_2 *fn)
++                         int32_t data, gen_helper_gvec_3 *fn)
  {
-     TCGv_ptr a0, a1;
+     TCGv_ptr a0, a1, a2;
      TCGv_i32 desc = tcg_constant_i32(simd_desc(oprsz, maxsz, data));
-@@ -139,8 +140,8 @@ void tcg_gen_gvec_2_ool(uint32_t dofs, uint32_t aofs,
-     a0 = tcg_temp_ebb_new_ptr();
+@@ -189,9 +191,9 @@ void tcg_gen_gvec_3_ool(uint32_t dofs, uint32_t aofs, uint32_t bofs,
      a1 = tcg_temp_ebb_new_ptr();
+     a2 = tcg_temp_ebb_new_ptr();
  
 -    tcg_gen_addi_ptr(a0, tcg_env, dofs);
 -    tcg_gen_addi_ptr(a1, tcg_env, aofs);
+-    tcg_gen_addi_ptr(a2, tcg_env, bofs);
 +    tcg_gen_addi_ptr(a0, dbase, dofs);
 +    tcg_gen_addi_ptr(a1, abase, aofs);
++    tcg_gen_addi_ptr(a2, bbase, bofs);
  
-     fn(a0, a1, desc);
+     fn(a0, a1, a2, desc);
  
-@@ -148,6 +149,13 @@ void tcg_gen_gvec_2_ool(uint32_t dofs, uint32_t aofs,
-     tcg_temp_free_ptr(a1);
+@@ -200,6 +202,14 @@ void tcg_gen_gvec_3_ool(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+     tcg_temp_free_ptr(a2);
  }
  
-+void tcg_gen_gvec_2_ool(uint32_t dofs, uint32_t aofs,
++void tcg_gen_gvec_3_ool(uint32_t dofs, uint32_t aofs, uint32_t bofs,
 +                        uint32_t oprsz, uint32_t maxsz, int32_t data,
-+                        gen_helper_gvec_2 *fn)
++                        gen_helper_gvec_3 *fn)
 +{
-+    expand_2_ool(tcg_env, dofs, tcg_env, aofs, oprsz, maxsz, data, fn);
++    expand_3_ool(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs,
++                 oprsz, maxsz, data, fn);
 +}
 +
- /* Generate a call to a gvec-style helper with two vector operands
-    and one scalar operand.  */
- void tcg_gen_gvec_2i_ool(uint32_t dofs, uint32_t aofs, TCGv_i64 c,
-@@ -719,20 +727,21 @@ static void expand_clr(TCGv_ptr dbase, uint32_t dofs, uint32_t maxsz)
+ /* Generate a call to a gvec-style helper with four vector operands.  */
+ void tcg_gen_gvec_4_ool(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+                         uint32_t cofs, uint32_t oprsz, uint32_t maxsz,
+@@ -789,8 +799,10 @@ static void expand_2s_i32(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
  }
  
- /* Expand OPSZ bytes worth of two-operand operations using i32 elements.  */
--static void expand_2_i32(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
--                         bool load_dest, void (*fni)(TCGv_i32, TCGv_i32))
-+static void expand_2_i32(TCGv_ptr dbase, uint32_t dofs, TCGv_ptr abase,
-+                         uint32_t aofs, uint32_t oprsz, bool load_dest,
-+                         void (*fni)(TCGv_i32, TCGv_i32))
+ /* Expand OPSZ bytes worth of three-operand operations using i32 elements.  */
+-static void expand_3_i32(uint32_t dofs, uint32_t aofs,
+-                         uint32_t bofs, uint32_t oprsz, bool load_dest,
++static void expand_3_i32(TCGv_ptr dbase, uint32_t dofs,
++                         TCGv_ptr abase, uint32_t aofs,
++                         TCGv_ptr bbase, uint32_t bofs,
++                         uint32_t oprsz, bool load_dest,
+                          void (*fni)(TCGv_i32, TCGv_i32, TCGv_i32))
  {
      TCGv_i32 t0 = tcg_temp_new_i32();
-     TCGv_i32 t1 = tcg_temp_new_i32();
+@@ -799,13 +811,13 @@ static void expand_3_i32(uint32_t dofs, uint32_t aofs,
      uint32_t i;
  
      for (i = 0; i < oprsz; i += 4) {
 -        tcg_gen_ld_i32(t0, tcg_env, aofs + i);
+-        tcg_gen_ld_i32(t1, tcg_env, bofs + i);
 +        tcg_gen_ld_i32(t0, abase, aofs + i);
++        tcg_gen_ld_i32(t1, bbase, bofs + i);
          if (load_dest) {
--            tcg_gen_ld_i32(t1, tcg_env, dofs + i);
-+            tcg_gen_ld_i32(t1, dbase, dofs + i);
+-            tcg_gen_ld_i32(t2, tcg_env, dofs + i);
++            tcg_gen_ld_i32(t2, dbase, dofs + i);
          }
-         fni(t1, t0);
--        tcg_gen_st_i32(t1, tcg_env, dofs + i);
-+        tcg_gen_st_i32(t1, dbase, dofs + i);
+         fni(t2, t0, t1);
+-        tcg_gen_st_i32(t2, tcg_env, dofs + i);
++        tcg_gen_st_i32(t2, dbase, dofs + i);
      }
-     tcg_temp_free_i32(t0);
+     tcg_temp_free_i32(t2);
      tcg_temp_free_i32(t1);
-@@ -882,20 +891,21 @@ static void expand_4i_i32(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+@@ -953,8 +965,10 @@ static void expand_2s_i64(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
  }
  
- /* Expand OPSZ bytes worth of two-operand operations using i64 elements.  */
--static void expand_2_i64(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
--                         bool load_dest, void (*fni)(TCGv_i64, TCGv_i64))
-+static void expand_2_i64(TCGv_ptr dbase, uint32_t dofs, TCGv_ptr abase,
-+                         uint32_t aofs, uint32_t oprsz, bool load_dest,
-+                         void (*fni)(TCGv_i64, TCGv_i64))
+ /* Expand OPSZ bytes worth of three-operand operations using i64 elements.  */
+-static void expand_3_i64(uint32_t dofs, uint32_t aofs,
+-                         uint32_t bofs, uint32_t oprsz, bool load_dest,
++static void expand_3_i64(TCGv_ptr dbase, uint32_t dofs,
++                         TCGv_ptr abase, uint32_t aofs,
++                         TCGv_ptr bbase, uint32_t bofs,
++                         uint32_t oprsz, bool load_dest,
+                          void (*fni)(TCGv_i64, TCGv_i64, TCGv_i64))
  {
      TCGv_i64 t0 = tcg_temp_new_i64();
-     TCGv_i64 t1 = tcg_temp_new_i64();
+@@ -963,13 +977,13 @@ static void expand_3_i64(uint32_t dofs, uint32_t aofs,
      uint32_t i;
  
      for (i = 0; i < oprsz; i += 8) {
 -        tcg_gen_ld_i64(t0, tcg_env, aofs + i);
+-        tcg_gen_ld_i64(t1, tcg_env, bofs + i);
 +        tcg_gen_ld_i64(t0, abase, aofs + i);
++        tcg_gen_ld_i64(t1, bbase, bofs + i);
          if (load_dest) {
--            tcg_gen_ld_i64(t1, tcg_env, dofs + i);
-+            tcg_gen_ld_i64(t1, dbase, dofs + i);
+-            tcg_gen_ld_i64(t2, tcg_env, dofs + i);
++            tcg_gen_ld_i64(t2, dbase, dofs + i);
          }
-         fni(t1, t0);
--        tcg_gen_st_i64(t1, tcg_env, dofs + i);
-+        tcg_gen_st_i64(t1, dbase, dofs + i);
+         fni(t2, t0, t1);
+-        tcg_gen_st_i64(t2, tcg_env, dofs + i);
++        tcg_gen_st_i64(t2, dbase, dofs + i);
      }
-     tcg_temp_free_i64(t0);
+     tcg_temp_free_i64(t2);
      tcg_temp_free_i64(t1);
-@@ -1045,7 +1055,8 @@ static void expand_4i_i64(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+@@ -1114,8 +1128,9 @@ static void expand_2s_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
  }
  
- /* Expand OPSZ bytes worth of two-operand operations using host vectors.  */
--static void expand_2_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
-+static void expand_2_vec(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
+ /* Expand OPSZ bytes worth of three-operand operations using host vectors.  */
+-static void expand_3_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
+-                         uint32_t bofs, uint32_t oprsz,
++static void expand_3_vec(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
 +                         TCGv_ptr abase, uint32_t aofs,
-                          uint32_t oprsz, uint32_t tysz, TCGType type,
-                          bool load_dest,
-                          void (*fni)(unsigned, TCGv_vec, TCGv_vec))
-@@ -1054,12 +1065,12 @@ static void expand_2_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
-         TCGv_vec t0 = tcg_temp_new_vec(type);
++                         TCGv_ptr bbase, uint32_t bofs, uint32_t oprsz,
+                          uint32_t tysz, TCGType type, bool load_dest,
+                          void (*fni)(unsigned, TCGv_vec, TCGv_vec, TCGv_vec))
+ {
+@@ -1124,13 +1139,13 @@ static void expand_3_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
          TCGv_vec t1 = tcg_temp_new_vec(type);
+         TCGv_vec t2 = tcg_temp_new_vec(type);
  
 -        tcg_gen_ld_vec(t0, tcg_env, aofs + i);
+-        tcg_gen_ld_vec(t1, tcg_env, bofs + i);
 +        tcg_gen_ld_vec(t0, abase, aofs + i);
++        tcg_gen_ld_vec(t1, bbase, bofs + i);
          if (load_dest) {
--            tcg_gen_ld_vec(t1, tcg_env, dofs + i);
-+            tcg_gen_ld_vec(t1, dbase, dofs + i);
+-            tcg_gen_ld_vec(t2, tcg_env, dofs + i);
++            tcg_gen_ld_vec(t2, dbase, dofs + i);
          }
-         fni(vece, t1, t0);
--        tcg_gen_st_vec(t1, tcg_env, dofs + i);
-+        tcg_gen_st_vec(t1, dbase, dofs + i);
+         fni(vece, t2, t0, t1);
+-        tcg_gen_st_vec(t2, tcg_env, dofs + i);
++        tcg_gen_st_vec(t2, dbase, dofs + i);
      }
  }
  
-@@ -1201,8 +1212,9 @@ static void expand_4i_vec(unsigned vece, uint32_t dofs, uint32_t aofs,
+@@ -1432,8 +1447,10 @@ void tcg_gen_gvec_2s(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
  }
  
- /* Expand a vector two-operand operation.  */
--void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
--                    uint32_t oprsz, uint32_t maxsz, const GVecGen2 *g)
-+void tcg_gen_gvec_2_var(TCGv_ptr dbase, uint32_t dofs,
+ /* Expand a vector three-operand operation.  */
+-void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+-                    uint32_t oprsz, uint32_t maxsz, const GVecGen3 *g)
++void tcg_gen_gvec_3_var(TCGv_ptr dbase, uint32_t dofs,
 +                        TCGv_ptr abase, uint32_t aofs,
-+                        uint32_t oprsz, uint32_t maxsz, const GVecGen2 *g)
++                        TCGv_ptr bbase, uint32_t bofs,
++                        uint32_t oprsz, uint32_t maxsz, const GVecGen3 *g)
  {
      const TCGOpcode *this_list = g->opt_opc ? : vecop_list_empty;
      const TCGOpcode *hold_list = tcg_swap_vecop_list(this_list);
-@@ -1210,7 +1222,7 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+@@ -1441,7 +1458,7 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
      uint32_t some;
  
-     check_size_align(oprsz, maxsz, dofs | aofs);
--    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
-+    check_overlap_2(dbase, dofs, abase, aofs, maxsz);
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs);
+-    check_overlap_3(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs, maxsz);
++    check_overlap_3(dbase, dofs, abase, aofs, bbase, bofs, maxsz);
  
      type = 0;
      if (g->fniv) {
-@@ -1223,8 +1235,8 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+@@ -1454,8 +1471,8 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
           * that e.g. size == 80 would be expanded with 2x32 + 1x16.
           */
          some = QEMU_ALIGN_DOWN(oprsz, 32);
--        expand_2_vec(g->vece, dofs, aofs, some, 32, TCG_TYPE_V256,
+-        expand_3_vec(g->vece, dofs, aofs, bofs, some, 32, TCG_TYPE_V256,
 -                     g->load_dest, g->fniv);
-+        expand_2_vec(g->vece, dbase, dofs, abase, aofs, some, 32,
-+                     TCG_TYPE_V256, g->load_dest, g->fniv);
++        expand_3_vec(g->vece, dbase, dofs, abase, aofs, bbase, bofs,
++                     some, 32, TCG_TYPE_V256, g->load_dest, g->fniv);
          if (some == oprsz) {
              break;
          }
-@@ -1234,22 +1246,25 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+@@ -1466,23 +1483,25 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
          maxsz -= some;
          /* fallthru */
      case TCG_TYPE_V128:
--        expand_2_vec(g->vece, dofs, aofs, oprsz, 16, TCG_TYPE_V128,
+-        expand_3_vec(g->vece, dofs, aofs, bofs, oprsz, 16, TCG_TYPE_V128,
 -                     g->load_dest, g->fniv);
-+        expand_2_vec(g->vece, dbase, dofs, abase, aofs, oprsz, 16,
-+                     TCG_TYPE_V128, g->load_dest, g->fniv);
++        expand_3_vec(g->vece, dbase, dofs, abase, aofs, bbase, bofs,
++                     oprsz, 16, TCG_TYPE_V128, g->load_dest, g->fniv);
          break;
      case TCG_TYPE_V64:
--        expand_2_vec(g->vece, dofs, aofs, oprsz, 8, TCG_TYPE_V64,
+-        expand_3_vec(g->vece, dofs, aofs, bofs, oprsz, 8, TCG_TYPE_V64,
 -                     g->load_dest, g->fniv);
-+        expand_2_vec(g->vece, dbase, dofs, abase, aofs, oprsz, 8,
-+                     TCG_TYPE_V64, g->load_dest, g->fniv);
++        expand_3_vec(g->vece, dbase, dofs, abase, aofs, bbase, bofs,
++                     oprsz, 8, TCG_TYPE_V64, g->load_dest, g->fniv);
          break;
  
      case 0:
          if (g->fni8 && check_size_impl(oprsz, 8)) {
--            expand_2_i64(dofs, aofs, oprsz, g->load_dest, g->fni8);
-+            expand_2_i64(dbase, dofs, abase, aofs,
+-            expand_3_i64(dofs, aofs, bofs, oprsz, g->load_dest, g->fni8);
++            expand_3_i64(dbase, dofs, abase, aofs, bbase, bofs,
 +                         oprsz, g->load_dest, g->fni8);
          } else if (g->fni4 && check_size_impl(oprsz, 4)) {
--            expand_2_i32(dofs, aofs, oprsz, g->load_dest, g->fni4);
-+            expand_2_i32(dbase, dofs, abase, aofs,
+-            expand_3_i32(dofs, aofs, bofs, oprsz, g->load_dest, g->fni4);
++            expand_3_i32(dbase, dofs, abase, aofs, bbase, bofs,
 +                         oprsz, g->load_dest, g->fni4);
          } else {
              assert(g->fno != NULL);
--            tcg_gen_gvec_2_ool(dofs, aofs, oprsz, maxsz, g->data, g->fno);
-+            expand_2_ool(dbase, dofs, abase, aofs,
+-            tcg_gen_gvec_3_ool(dofs, aofs, bofs, oprsz,
+-                               maxsz, g->data, g->fno);
++            expand_3_ool(dbase, dofs, abase, aofs, bbase, bofs,
 +                         oprsz, maxsz, g->data, g->fno);
              oprsz = maxsz;
          }
          break;
-@@ -1260,10 +1275,16 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+@@ -1493,10 +1512,17 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
      tcg_swap_vecop_list(hold_list);
  
      if (oprsz < maxsz) {
@@ -314,15 +333,16 @@ index 54304d08cc..08019421f2 100644
      }
  }
  
-+void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
-+                    uint32_t oprsz, uint32_t maxsz, const GVecGen2 *g)
++void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
++                    uint32_t oprsz, uint32_t maxsz, const GVecGen3 *g)
 +{
-+    tcg_gen_gvec_2_var(tcg_env, dofs, tcg_env, aofs, oprsz, maxsz, g);
++    tcg_gen_gvec_3_var(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs,
++                       oprsz, maxsz, g);
 +}
 +
- /* Expand a vector operation with two vectors and an immediate.  */
- void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
-                      uint32_t maxsz, int64_t c, const GVecGen2i *g)
+ /* Expand a vector operation with three vectors and an immediate.  */
+ void tcg_gen_gvec_3i(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+                      uint32_t oprsz, uint32_t maxsz, int64_t c,
 -- 
 2.43.0
 
