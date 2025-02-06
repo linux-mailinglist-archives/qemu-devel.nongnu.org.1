@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08F4A2AE1D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12766A2AE23
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:50:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg53o-0008Lp-UB; Thu, 06 Feb 2025 11:49:04 -0500
+	id 1tg53o-0008LI-5r; Thu, 06 Feb 2025 11:49:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <a2f17bd40b3d302f6c1ddf0da75d2343966e0a3f@kylie.crudebyte.com>)
- id 1tg53i-0008Kd-PZ
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:00 -0500
+ (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
+ id 1tg53b-0008Ji-NM
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:48:52 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <a2f17bd40b3d302f6c1ddf0da75d2343966e0a3f@kylie.crudebyte.com>)
- id 1tg53g-0006EH-1x
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:48:57 -0500
+ (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
+ id 1tg53Z-0006DY-Vo
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:48:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=wWlmiOVMENnEwZf9iPw+EDJPnbEjYuKXLevRQyibxQ0=; b=rm3I3
- bSkLFm07bvsTn5bzQKHxM9HosyNqpMYfJYybwxfYlFoo9P/A15ugQzl9Bski3UdDopG65IORNtEGZ
- n5kArh0tOAC5gAWpgiDzjwyH4+4oMH+YFmQntxEALa5dhW/a1ZOa+XUxzuA4murFdvX+UYf5WXHAD
- hJ+rVmSUY3mfQgvGjNCFs1KTr4o6/zepi8oTXCRqNpV9crSnPV5B8cCKCPb58LtU32eK5lwEAdoAd
- eMelZeJyhndMhkSKkkc3l4RA60sjSsKse704jHkk1NhCekvAGg5m3+0KK7G6FmlGS5fJ8ZpoCjMpC
- CGvY8Nlkd4MxmfpW4TqC7Rfi6IqPq3Mo64L/lILAdlZwqS724vQna9BnVHZ9PeQ6zv7+UXiQXX/K2
- m4T1BeohJYij5a0qae6p/wCaQc5vsOdW79NhYpWgeqK4NTk2cmvYKkh70EMikhrXKoQ28+23ClsTL
- s48a7iePWc3ltsf5ru63eUPT2ybeIj/wMe/p/6XvNsmwGkEXYAdIVWZ9/t7s5xtw+1f+mbUHkeqZv
- JHG61ambBY+y/uR02A66K1dbBU1ap9zIkyJgY4NbUERHZ+kTirt7fMCSk5Vhp7YxOezR2GU+vqq+6
- BcVrnXfmwWmo1oC+PdfEm5f7mD5as1jA4SxMcAhYWD++UUUxEiLm1F9gJ27ktQ=;
-Message-Id: <a2f17bd40b3d302f6c1ddf0da75d2343966e0a3f.1738860115.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=D9wDRyQBxJlr5I2gWNfNbciP1wRvnJLh7g260qArd8s=; b=S5RQ0
+ K3KqMFuQ8mrfIzynOPNmUYiJ++3QHACX3N6NICWwAao2dfS0TcOh6xOhvthx73Nw8UanCsQUtrgMO
+ p0WQZu8ymCXPNUWjZKTtrKY3fSGnvDDl3h3ooGpM7oAjtM5aIASGbHNudvz8iLqWPNqBhy9xINhZ5
+ kS7Fgwi2yAgfSIYffx2rFmalyJaZ/vjmNFuLkbM8cA0ibuCOFendBfsp4B0NhKgAVcBWsMEr1JRvf
+ uwNLTnqeHLf0dw2ni/0SHjCKkv1UiGgDw2BpvVkjnu3VwKy8kzAmww+XlUCu9Jac/66y/T2mIM+8R
+ vjiexZOglbDO1vl+7Anv0te683ktK298uGqgRFm8xBeqHjh4XdxqRoTbRS5880S03i0JQqvcxmyq0
+ 8vVITW9K6IGIV0MFvscrRYHqJejIgFwshTQMaUi9fWuwm1lg8Xsh+/E+FqdK4eYHtd+YmjsA0AjUM
+ AkwXJlExM7XHzIEA2ZqDBRPXI8DiUywFHlkgEvsKRLk1Kj7Qx7wnqaJHlsQ7YNMxYCBfnyk7kHoDc
+ Raa5m6/KrXk5f5zUeuIr1TUrO8xJd/DaamwReW1I6+mKRDIkW6BOuafhLIrAerx6RXP781fIN41uj
+ LqG+21/iZUUKCT4wEMwgNI7rS9YQULbKJUDGrtBsWO+etgxrm0BaQTozTIwDzM=;
+Message-Id: <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4.1738860115.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1738860115.git.qemu_oss@crudebyte.com>
 References: <cover.1738860115.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 06 Feb 2025 17:41:56 +0100
-Subject: [PULL 2/7] 9pfs: make multidevs=remap default
+Subject: [PULL 1/7] 9pfs: improve v9fs_walk() tracing
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>,
     Stefan Hajnoczi <stefanha@redhat.com>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=a2f17bd40b3d302f6c1ddf0da75d2343966e0a3f@kylie.crudebyte.com;
+ envelope-from=0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,110 +68,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1a6ed33cc5 introduced option multidevs=remap|forbid|warn and made
-"warn" the default option.
+'Twalk' is the most important request type in the 9p protocol to look out
+for when debugging 9p communication. That's because it is the only part
+of the 9p protocol which actually deals with human-readable path names,
+whereas all other 9p request types work on numeric file IDs (FIDs) only.
 
-As it turned out though, e.g. by several reports in conjunction with
-following 9p client issue:
+Improve tracing of 'Twalk' requests, e.g. let's say client wanted to walk
+to "/home/bob/src", then improve trace output from:
 
-https://github.com/torvalds/linux/commit/850925a8133c73c4a2453c360b2c3beb3bab67c9
+  v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames 3
 
-Many people are just ignoring this warning, or even do not notice the
-warning at all. Therefore make multidevs=remap the new default option to
-prevent people to run into such kind of severe misbehaviours in the first
-place.
+to:
 
-From performance PoV the runtime overhead of multidevs=remap is
-neglectable with few or even just only one device being shared with the
-same 9p export, expected to be constant Theta(1). The inode numbers
-emitted to guest also just loose one bit (since 6b6aa8285d) for the 1st
-device being shared.
+  v9fs_walk tag=0 id=110 fid=0 newfid=1 nwnames=3 wnames={home, bob, src}
+
+To achieve this, add a new helper function trace_v9fs_walk_wnames() which
+converts the received V9fsString array of individual path elements into a
+comma-separated string presentation for being passed to the tracing system.
+As this conversion is somewhat expensive, this conversion function is only
+called if tracing of event 'v9fs_walk' is currently enabled.
 
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Message-Id: <09cc84e5561f66b6a8cf49b3532c6c78a6acc806.1734876877.git.qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <E1tJamT-007Cqk-9E@kylie.crudebyte.com>
 ---
- hw/9pfs/9p-local.c |  3 +++
- qemu-options.hx    | 49 +++++++++++++++++++++++++---------------------
- 2 files changed, 30 insertions(+), 22 deletions(-)
+ hw/9pfs/9p.c         | 36 +++++++++++++++++++++++++++++++-----
+ hw/9pfs/trace-events |  2 +-
+ 2 files changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index 1b1f3b9ec8..928523afcc 100644
---- a/hw/9pfs/9p-local.c
-+++ b/hw/9pfs/9p-local.c
-@@ -1538,6 +1538,9 @@ static int local_parse_opts(QemuOpts *opts, FsDriverEntry *fse, Error **errp)
-                               "[remap|forbid|warn]\n");
-             return -1;
-         }
-+    } else {
-+        fse->export_flags &= ~V9FS_FORBID_MULTIDEVS;
-+        fse->export_flags |= V9FS_REMAP_INODES;
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 578517739a..6f24c1abb3 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -1774,6 +1774,21 @@ static bool same_stat_id(const struct stat *a, const struct stat *b)
+     return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
+ }
+ 
++/*
++ * Returns a (newly allocated) comma-separated string presentation of the
++ * passed array for logging (tracing) purpose for trace event "v9fs_walk".
++ *
++ * It is caller's responsibility to free the returned string.
++ */
++static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)
++{
++    g_autofree char **arr = g_malloc0_n(nwnames + 1, sizeof(char *));
++    for (size_t i = 0; i < nwnames; ++i) {
++        arr[i] = wnames[i].data;
++    }
++    return g_strjoinv(", ", arr);
++}
++
+ static void coroutine_fn v9fs_walk(void *opaque)
+ {
+     int name_idx, nwalked;
+@@ -1787,6 +1802,7 @@ static void coroutine_fn v9fs_walk(void *opaque)
+     size_t offset = 7;
+     int32_t fid, newfid;
+     P9ARRAY_REF(V9fsString) wnames = NULL;
++    g_autofree char *trace_wnames = NULL;
+     V9fsFidState *fidp;
+     V9fsFidState *newfidp = NULL;
+     V9fsPDU *pdu = opaque;
+@@ -1800,11 +1816,9 @@ static void coroutine_fn v9fs_walk(void *opaque)
      }
+     offset += err;
  
-     if (!path) {
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ec0090dfe2..1b26ad53bd 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1951,32 +1951,37 @@ SRST
-         Specifies the tag name to be used by the guest to mount this
-         export point.
+-    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames);
+-
+     if (nwnames > P9_MAXWELEM) {
+         err = -EINVAL;
+-        goto out_nofid;
++        goto out_nofid_nownames;
+     }
+     if (nwnames) {
+         P9ARRAY_NEW(V9fsString, wnames, nwnames);
+@@ -1814,15 +1828,23 @@ static void coroutine_fn v9fs_walk(void *opaque)
+         for (i = 0; i < nwnames; i++) {
+             err = pdu_unmarshal(pdu, offset, "s", &wnames[i]);
+             if (err < 0) {
+-                goto out_nofid;
++                goto out_nofid_nownames;
+             }
+             if (name_is_illegal(wnames[i].data)) {
+                 err = -ENOENT;
+-                goto out_nofid;
++                goto out_nofid_nownames;
+             }
+             offset += err;
+         }
++        if (trace_event_get_state_backends(TRACE_V9FS_WALK)) {
++            trace_wnames = trace_v9fs_walk_wnames(wnames, nwnames);
++            trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames,
++                            trace_wnames);
++        }
++    } else {
++        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "");
+     }
++
+     fidp = get_fid(pdu, fid);
+     if (fidp == NULL) {
+         err = -ENOENT;
+@@ -1957,7 +1979,11 @@ out:
+     }
+     v9fs_path_free(&dpath);
+     v9fs_path_free(&path);
++    goto out_pdu_complete;
++out_nofid_nownames:
++    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "<?>");
+ out_nofid:
++out_pdu_complete:
+     pdu_complete(pdu, err);
+ }
  
--    ``multidevs=multidevs``
--        Specifies how to deal with multiple devices being shared with a
--        9p export. Supported behaviours are either "remap", "forbid" or
--        "warn". The latter is the default behaviour on which virtfs 9p
--        expects only one device to be shared with the same export, and
--        if more than one device is shared and accessed via the same 9p
--        export then only a warning message is logged (once) by qemu on
--        host side. In order to avoid file ID collisions on guest you
--        should either create a separate virtfs export for each device to
--        be shared with guests (recommended way) or you might use "remap"
--        instead which allows you to share multiple devices with only one
--        export instead, which is achieved by remapping the original
--        inode numbers from host to guest in a way that would prevent
--        such collisions. Remapping inodes in such use cases is required
-+    ``multidevs=remap|forbid|warn``
-+        Specifies how to deal with multiple devices being shared with
-+        the same 9p export in order to avoid file ID collisions on guest.
-+        Supported behaviours are either "remap" (default), "forbid" or
-+        "warn".
-+
-+        ``remap`` : assumes the possibility that more than one device is
-+        shared with the same 9p export. Therefore inode numbers from host
-+        are remapped for guest in a way that would prevent file ID
-+        collisions on guest. Remapping inodes in such cases is required
-         because the original device IDs from host are never passed and
-         exposed on guest. Instead all files of an export shared with
--        virtfs always share the same device id on guest. So two files
-+        virtfs always share the same device ID on guest. So two files
-         with identical inode numbers but from actually different devices
-         on host would otherwise cause a file ID collision and hence
--        potential misbehaviours on guest. "forbid" on the other hand
--        assumes like "warn" that only one device is shared by the same
--        export, however it will not only log a warning message but also
--        deny access to additional devices on guest. Note though that
--        "forbid" does currently not block all possible file access
--        operations (e.g. readdir() would still return entries from other
--        devices).
-+        potential severe misbehaviours on guest.
-+
-+        ``warn`` : virtfs 9p expects only one device to be shared with
-+        the same export. If however more than one device is shared and
-+        accessed via the same 9p export then only a warning message is
-+        logged (once) by qemu on host side. No further action is performed
-+        in this case that would prevent file ID collisions on guest. This
-+        could thus lead to severe misbehaviours in this case like wrong
-+        files being accessed and data corruption on the exported tree.
-+
-+        ``forbid`` : assumes like "warn" that only one device is shared
-+        by the same 9p export, however it will not only log a warning
-+        message but also deny access to additional devices on guest. Note
-+        though that "forbid" does currently not block all possible file
-+        access operations (e.g. readdir() would still return entries from
-+        other devices).
- ERST
- 
- DEF("iscsi", HAS_ARG, QEMU_OPTION_iscsi,
+diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
+index a12e55c165..ed9f4e7209 100644
+--- a/hw/9pfs/trace-events
++++ b/hw/9pfs/trace-events
+@@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
+ v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atime, int32_t mtime, int64_t length) "tag %d id %d stat={mode %d atime %d mtime %d length %"PRId64"}"
+ v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag %d id %d fid %d request_mask %"PRIu64
+ v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
+-v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames) "tag %d id %d fid %d newfid %d nwnames %d"
++v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
+ v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
+ v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
+ v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
 -- 
 2.30.2
 
