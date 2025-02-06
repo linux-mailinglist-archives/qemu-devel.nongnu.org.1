@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B40CA2B2E3
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A68A2B32D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:15:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg877-0003eY-5N; Thu, 06 Feb 2025 15:04:42 -0500
+	id 1tg85Y-0002MJ-60; Thu, 06 Feb 2025 15:03:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg83s-00082e-Kt
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:21 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1tg83k-0007v9-Hs
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:17 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg83j-0001Ba-D6
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:18 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2f9cd9601b8so2318162a91.3
+ id 1tg83h-0001Bt-QW
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:12 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2f441791e40so1895391a91.3
  for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 12:01:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738872060; x=1739476860; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738872061; x=1739476861; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rib88K3Vq9r86qb9m6rKUTkXJDCx+ZO4Ay+fuRWmhO4=;
- b=iXWTIvOQVQIMlnRKcFL5Y4xb8qYRLoL5I+qAOFvuXppPpneKfEVxfGsej9iVcgLjy9
- scLc1Up3KoLFduT0v8VUiDMu7TFe1ubdFw600agDTopAZpR9idPKVT6KSZOl64G55oTi
- 8zjNojbYJijju1i7cmJ1HiY+G+5cT1fooLNdYrgQv1jC9KvMAe89T5cpmbXbJwurBgBj
- CnBuDlFMoet5cg8q8u+9E4imu+7jxAIa3Nitqy3HSB+FldGOV8XKY2SPCFNdWupZX6vz
- nWB+4b8FK4XRsJKg3Ono4qbpcwDVpa1nDdRFe36vD75EezH3+Eb8TLlFnpd6RHxraQez
- +2cg==
+ bh=WaA26QwdbT5KEG0jRzmu/uC0u+13aOEkIOvu+re9AH4=;
+ b=Px4sCQf6ZXxmx6EgDucHWFT/4iPUKoDlB1hK4TJ6hIbuoaVQ3cMpy+E1jy1UolMsZE
+ /nCXNYX5Mxy/XP1emQd1VapGVlwCogf85yhccHHDAMzL5138wjd39x+cV7ErRIE1uYG0
+ 5HmNsVXfMWfvqvX4l13mIlLAfkYhUFTjRY6Z51CUbNTDF+ZKmiRnVIRA1qwHC7g76kC/
+ S28TuVQud/njuPUEZXk2LpcZ0YnlislBDbylsuFSgxXbhvss0uRbdJf8bobs/ezmEna4
+ oVAs40m+aMedWo6Tw6NLa3rZoepBpLbODytcZGuMQ1ar2Sd9B9UVxLBeiLl7hJ9VHkrr
+ LrDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738872060; x=1739476860;
+ d=1e100.net; s=20230601; t=1738872061; x=1739476861;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rib88K3Vq9r86qb9m6rKUTkXJDCx+ZO4Ay+fuRWmhO4=;
- b=JILrvaNrDoYd0QpfNOnW/EUYOybbsVTThHJHmd70JTKuxfdfXfw3o29wrWWs1JnHOR
- 1ntc9MbOnWGADX90Q7ePxP4hrFwmGTPB8H2GdJt+xcxzsrnidkJWPTlKIQ2t+6VkRE9o
- cOzbZHbZF7LFAHghNyctkXZOU+i8KcqtCNiS3d19jmFxdf41PwMQpM3MxlcOIFvCXrzF
- Q9yWuWiF3GIGHmvILEznXpW9JNDyF/Lm7Mw0NQnM0j74ICO2wUq/Hf+jpI64pupFXhVI
- 72kLkPfHhG1LTPBqFthRG3jpWTNvK1Vcpz30bz4m/0n/1dGnFHl1GYrJuRVhzClAkMzm
- gCqQ==
-X-Gm-Message-State: AOJu0Yw0+43sZfsFSlxielrs3fyw8giPtlXydltjX6sjmTCcvoKtNuMa
- MDHcVWsm/LwlbNUI1/7PjEaYt7H30jnf2lb1DNWEwJDUdhXxBBassTuTFEgsQip0h+KLTzSpCDQ
- c
-X-Gm-Gg: ASbGncsAyDCZWyyAuSqslKa4K/nrpwjaVKc7NGIKR97xsv3CRm4uUBWVZkJxO6RqFuM
- aVq4WfKPXMmWtc7sAfMLusXTC5nRBlzSr6kcAN+fwLuvZ+UGFHBHnCAIkErjU2ZLaLmcEhLWhZz
- ePoK1jJYdJRx15l8EtBQ8kEis4MaZ8KORxlp2POhQBy5VEqrPYTGKV/iD+bRNJxzWZz34bKqKda
- GbmgvgVmamU455EsLqEmOI1kS1Zq1sj8KcxvCoqMzL3Y4v+hPQozx/fl0pWJLpxNeyKQMLZQ9O7
- rtC99YFtcLKBPWOxSQTu73SurpyJ/i6jQGWv1laC+jvcqRk=
-X-Google-Smtp-Source: AGHT+IEy++1Q1IbH4pWGbalvvGkHUBEQqesgaIeNFVbrDb74zdVc680Cn6uIjPhsoU1MoQcqyTHvFg==
-X-Received: by 2002:a17:90b:3596:b0:2ee:b2e6:4276 with SMTP id
- 98e67ed59e1d1-2fa243e9aaamr497446a91.27.1738872060324; 
+ bh=WaA26QwdbT5KEG0jRzmu/uC0u+13aOEkIOvu+re9AH4=;
+ b=PjmlS8nNJxqsovBstbzdrBQrualve+oos+5CkOFpv1yXj3n/UPs5HqBXYLrTh+3MoX
+ U8JuMwBZ7azshp4iRz/TjCyE5/jXAjioL5zjGAsVDoQrfTgwsfW48m21ISCop4eT/Wo2
+ TR2Ig84kiP19Eo+o7D3mwFH0/D9EnLPYKKD1jHOoOIw2yFfUqq6gOm4Ysx29Hz6+659n
+ f5+8cJKc7AXn49fY9KN5OXf0gixx7OmxRRi1fRyLANeG1BXa4MFmC09x2brf/6QVi6na
+ bxkzW84bzEupTP2Opg0yeARSMyOX/T46lAp8ChJ9YijoLcBRHN4OlNjhQMcgPqHwlu6+
+ 2VTA==
+X-Gm-Message-State: AOJu0YykU2WdNVjsBN48hrpQVYd0O7HK/dNSAIuQd22TugNS6d46e5Zi
+ 3W7pFWtKCVBwS7rmz01QOES8B0dlFhlSRK42u4WnftPfESTUlbShfHPXZEcHHeIZaBVM5t+E18W
+ h
+X-Gm-Gg: ASbGncsnPkbx8ceYS1Wfgvn/aN7cgmOdOex5zpzDSWdZ3raDf7XUSksYid98fMhQm7D
+ tgEjyz6LBUzSug4KkT0r6Rm5sK4HykqzV0zuPDciaLWon3fEoZVXz1njcFmURux86qgxX4rJaA/
+ 0aXHTWxRt/NEiKLs9WLgrmDXMec1S1odKbFkwC6qaoYUHE3JJJZlzGbtXqmIZfrgol4JVgE/2Su
+ NSNCHgwf2mG2UC2BWxkyZvyTWAT5rrGt7i6Yw5KRHElOfO3Zjtj/jWoLL+rTmdHfzfm08X8HZuq
+ wIhqeoE0sVGpDY70lJ+knrvYxrdj/6bcwTDogNzFekorHeI=
+X-Google-Smtp-Source: AGHT+IE1FzgIaO8jM68uKeZ6H4W63fQPsfPe/4PeybZ91nJJ6WcpiLuX7MeqOo+bzKPg0PBpgba9Kg==
+X-Received: by 2002:a17:90b:4c02:b0:2ee:a4f2:b311 with SMTP id
+ 98e67ed59e1d1-2fa2406471emr509817a91.8.1738872060934; 
  Thu, 06 Feb 2025 12:01:00 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fa09b3ee24sm1808857a91.36.2025.02.06.12.00.59
+ 98e67ed59e1d1-2fa09b3ee24sm1808857a91.36.2025.02.06.12.01.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 06 Feb 2025 12:01:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 59/61] target/arm: Implement SME2 FCLAMP, SCLAMP, UCLAMP
-Date: Thu,  6 Feb 2025 11:57:13 -0800
-Message-ID: <20250206195715.2150758-60-richard.henderson@linaro.org>
+Subject: [PATCH 60/61] target/arm: Implement SME2 SEL
+Date: Thu,  6 Feb 2025 11:57:14 -0800
+Message-ID: <20250206195715.2150758-61-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250206195715.2150758-1-richard.henderson@linaro.org>
 References: <20250206195715.2150758-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,184 +99,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sme.h    | 15 +++++++++
- target/arm/tcg/sme_helper.c    | 52 +++++++++++++++++++++++++++++++
- target/arm/tcg/translate-sme.c | 56 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/sme.decode      | 17 +++++++++++
- 4 files changed, 140 insertions(+)
+ target/arm/tcg/translate-sme.c | 25 +++++++++++++++++++++++++
+ target/arm/tcg/sme.decode      |  9 +++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
-index a4216c8f3b..6f66e84f38 100644
---- a/target/arm/tcg/helper-sme.h
-+++ b/target/arm/tcg/helper-sme.h
-@@ -293,3 +293,18 @@ DEF_HELPER_FLAGS_3(sme2_sqrshrun_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(sme2_sqrshrn_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(sme2_uqrshrn_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(sme2_sqrshrun_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sme2_sclamp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_sclamp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_sclamp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_sclamp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sme2_uclamp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_uclamp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_uclamp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sme2_uclamp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_5(sme2_fclamp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+DEF_HELPER_FLAGS_5(sme2_fclamp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+DEF_HELPER_FLAGS_5(sme2_fclamp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+DEF_HELPER_FLAGS_5(sme2_bfclamp, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index a88b602314..850d130512 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -1949,3 +1949,55 @@ UZP4(sme2_uzp4_d, uint64_t, )
- UZP4(sme2_uzp4_q, Int128, )
- 
- #undef UZP4
-+
-+#define ICLAMP(NAME, TYPE, H) \
-+void HELPER(NAME)(void *vd, void *vn, void *vm, uint32_t desc)  \
-+{                                                               \
-+    size_t stride = sizeof(ARMVectorReg) / sizeof(TYPE);        \
-+    size_t elements = simd_oprsz(desc) / sizeof(TYPE);          \
-+    size_t nreg = simd_data(desc);                              \
-+    TYPE *d = vd, *n = vn, *m = vm;                             \
-+    for (size_t e = 0; e < elements; e++) {                     \
-+        TYPE nn = n[H(e)], mm = m[H(e)];                        \
-+        for (size_t r = 0; r < nreg; r++) {                     \
-+            TYPE *dd = &d[r * stride + H(e)];                   \
-+            *dd = MIN(MAX(*dd, nn), mm);                        \
-+        }                                                       \
-+    }                                                           \
-+}
-+
-+ICLAMP(sme2_sclamp_b, int8_t, H1)
-+ICLAMP(sme2_sclamp_h, int16_t, H2)
-+ICLAMP(sme2_sclamp_s, int32_t, H4)
-+ICLAMP(sme2_sclamp_d, int64_t, H8)
-+
-+ICLAMP(sme2_uclamp_b, uint8_t, H1)
-+ICLAMP(sme2_uclamp_h, uint16_t, H2)
-+ICLAMP(sme2_uclamp_s, uint32_t, H4)
-+ICLAMP(sme2_uclamp_d, uint64_t, H8)
-+
-+#undef ICLAMP
-+
-+#define FCLAMP(NAME, TYPE, H) \
-+void HELPER(NAME)(void *vd, void *vn, void *vm,                 \
-+                  float_status *fpst, uint32_t desc)            \
-+{                                                               \
-+    size_t stride = sizeof(ARMVectorReg) / sizeof(TYPE);        \
-+    size_t elements = simd_oprsz(desc) / sizeof(TYPE);          \
-+    size_t nreg = simd_data(desc);                              \
-+    TYPE *d = vd, *n = vn, *m = vm;                             \
-+    for (size_t e = 0; e < elements; e++) {                     \
-+        TYPE nn = n[H(e)], mm = m[H(e)];                        \
-+        for (size_t r = 0; r < nreg; r++) {                     \
-+            TYPE *dd = &d[r * stride + H(e)];                   \
-+            *dd = TYPE##_minnum(TYPE##_maxnum(*dd, nn, fpst), mm, fpst); \
-+        }                                                       \
-+    }                                                           \
-+}
-+
-+FCLAMP(sme2_fclamp_h, float16, H2)
-+FCLAMP(sme2_fclamp_s, float32, H4)
-+FCLAMP(sme2_fclamp_d, float64, H8)
-+FCLAMP(sme2_bfclamp, bfloat16, H2)
-+
-+#undef FCLAMP
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index c449760add..e71e3ec8e3 100644
+index e71e3ec8e3..78bd750701 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -1464,3 +1464,59 @@ static gen_helper_gvec_3 * const uzp2_fns[] = {
+@@ -1520,3 +1520,28 @@ static gen_helper_gvec_3 * const uclamp_fns[] = {
+     gen_helper_sme2_uclamp_d,
  };
- TRANS_FEAT(UZP_2, aa64_sme2, do_zipuzp_2, a, uzp2_fns)
- 
-+static bool trans_FCLAMP(DisasContext *s, arg_zzz_en *a)
+ TRANS_FEAT(UCLAMP, aa64_sme2, do_clamp, a, uclamp_fns)
++
++static bool trans_SEL(DisasContext *s, arg_SEL *a)
 +{
-+    static gen_helper_gvec_3_ptr * const fn[] = {
-+        gen_helper_sme2_bfclamp,
-+        gen_helper_sme2_fclamp_h,
-+        gen_helper_sme2_fclamp_s,
-+        gen_helper_sme2_fclamp_d,
++    static gen_helper_gvec_4 * const fns[4] = {
++        gen_helper_sve_sel_zpzz_b, gen_helper_sve_sel_zpzz_h,
++        gen_helper_sve_sel_zpzz_s, gen_helper_sve_sel_zpzz_d
 +    };
 +
-+    /* This insn uses MO_8 to encode BFloat16. */
-+    if (!(a->esz == MO_8
-+          ? dc_isar_feature(aa64_sme2_b16b16, s)
-+          : dc_isar_feature(aa64_sme2, s))) {
++    if (!dc_isar_feature(aa64_sme2, s)) {
 +        return false;
 +    }
-+
 +    if (sme_sm_enabled_check(s)) {
 +        int svl = streaming_vec_reg_size(s);
-+        TCGv_ptr fpst = fpstatus_ptr(a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
++        gen_helper_gvec_4 *f = fns[a->esz];
 +
-+        tcg_gen_gvec_3_ptr(vec_full_reg_offset(s, a->zd),
-+                           vec_full_reg_offset(s, a->zn),
-+                           vec_full_reg_offset(s, a->zm),
-+                           fpst, svl, svl, a->n, fn[a->esz]);
++        for (int i = 0; i < a->n; ++i) {
++            tcg_gen_gvec_4_ool(vec_full_reg_offset(s, a->zd + i),
++                               vec_full_reg_offset(s, a->zn + i),
++                               vec_full_reg_offset(s, a->zm + i),
++                               pred_full_reg_offset(s, a->pg),
++                               svl, svl, 0, f);
++        }
 +    }
 +    return true;
 +}
-+
-+static bool do_clamp(DisasContext *s, arg_zzz_en *a,
-+                     gen_helper_gvec_3 * const fn[4])
-+{
-+    if (sme_sm_enabled_check(s)) {
-+        int svl = streaming_vec_reg_size(s);
-+        tcg_gen_gvec_3_ool(vec_full_reg_offset(s, a->zd),
-+                           vec_full_reg_offset(s, a->zn),
-+                           vec_full_reg_offset(s, a->zm),
-+                           svl, svl, a->n, fn[a->esz]);
-+    }
-+    return true;
-+}
-+
-+static gen_helper_gvec_3 * const sclamp_fns[] = {
-+    gen_helper_sme2_sclamp_b,
-+    gen_helper_sme2_sclamp_h,
-+    gen_helper_sme2_sclamp_s,
-+    gen_helper_sme2_sclamp_d,
-+};
-+TRANS_FEAT(SCLAMP, aa64_sme2, do_clamp, a, sclamp_fns)
-+
-+static gen_helper_gvec_3 * const uclamp_fns[] = {
-+    gen_helper_sme2_uclamp_b,
-+    gen_helper_sme2_uclamp_h,
-+    gen_helper_sme2_uclamp_s,
-+    gen_helper_sme2_uclamp_d,
-+};
-+TRANS_FEAT(UCLAMP, aa64_sme2, do_clamp, a, uclamp_fns)
 diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index bd485a26f0..9bbf89b15c 100644
+index 9bbf89b15c..1d0ac4f09b 100644
 --- a/target/arm/tcg/sme.decode
 +++ b/target/arm/tcg/sme.decode
-@@ -855,3 +855,20 @@ UZP_2           11000001 esz:2 1 zm:5 110100 zn:5 .... 1    \
-                 &zzz_e zd=%zd_ax2
- UZP_2           11000001 00    1 zm:5 110101 zn:5 .... 1    \
-                 &zzz_e zd=%zd_ax2 esz=4
+@@ -872,3 +872,12 @@ UCLAMP          11000001 esz:2 1 zm:5 110001 zn:5 .... 1    \
+                 &zzz_en zd=%zd_ax2 n=2
+ UCLAMP          11000001 esz:2 1 zm:5 110011 zn:5 ...0 1    \
+                 &zzz_en zd=%zd_ax4 n=4
 +
-+&zzz_en         zd zn zm esz n
++### SME2 Multi-vector SVE Select
 +
-+FCLAMP          11000001 esz:2 1 zm:5 110000 zn:5 .... 0    \
-+                &zzz_en zd=%zd_ax2 n=2
-+FCLAMP          11000001 esz:2 1 zm:5 110010 zn:5 ...0 0    \
-+                &zzz_en zd=%zd_ax4 n=4
++%sel_pg         10:3 !function=plus_8
 +
-+SCLAMP          11000001 esz:2 1 zm:5 110001 zn:5 .... 0    \
-+                &zzz_en zd=%zd_ax2 n=2
-+SCLAMP          11000001 esz:2 1 zm:5 110011 zn:5 ...0 0    \
-+                &zzz_en zd=%zd_ax4 n=4
-+
-+UCLAMP          11000001 esz:2 1 zm:5 110001 zn:5 .... 1    \
-+                &zzz_en zd=%zd_ax2 n=2
-+UCLAMP          11000001 esz:2 1 zm:5 110011 zn:5 ...0 1    \
-+                &zzz_en zd=%zd_ax4 n=4
++SEL             11000001 esz:2 1 ....0 100 ... ....0 ....0  \
++                n=2 zd=%zd_ax2 zn=%zn_ax2 zm=%zm_ax2 pg=%sel_pg
++SEL             11000001 esz:2 1 ...01 100 ... ...00 ...00  \
++                n=4 zd=%zd_ax4 zn=%zn_ax4 zm=%zm_ax4 pg=%sel_pg
 -- 
 2.43.0
 
