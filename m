@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F187DA2A5C0
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA58FA2A590
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfz3o-0006Mb-V2; Thu, 06 Feb 2025 05:24:41 -0500
+	id 1tfyoJ-0008E0-AC; Thu, 06 Feb 2025 05:08:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfz3m-0006MP-SJ
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:24:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfyoA-0008CN-Pj; Thu, 06 Feb 2025 05:08:31 -0500
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tfz3k-00067q-Cn
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:24:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738837475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=J1JJwh6yF/IsT6sxd11Y4Ef5wsz/K3dI/+2i6YU4egY=;
- b=bgbNBMQmP+2XGIt4SNx+ilanf4AbJuJC1jTu/rgXNZsme+6kcDb3TELlG1SaWuWaNzVb1t
- OoYEI9pQej38mMkDSinYsDcJr9WfEwBCFxwUCfWnTGcLnrkrqvFPT3OpOSa+SnOKkT7XgP
- qlMJz0MWmPjbfuNF3i3ybojIeM+F/jw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-GwQ5mL2yOECZrkG943ojpQ-1; Thu,
- 06 Feb 2025 05:24:30 -0500
-X-MC-Unique: GwQ5mL2yOECZrkG943ojpQ-1
-X-Mimecast-MFC-AGG-ID: GwQ5mL2yOECZrkG943ojpQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE9CE1956088; Thu,  6 Feb 2025 10:24:28 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.40])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5403830001AB; Thu,  6 Feb 2025 10:24:27 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 27B7321E6A28; Thu, 06 Feb 2025 11:24:25 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- Eric Blake <eblake@redhat.com>,  Michael Roth <michael.roth@amd.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Marcelo Tosatti
- <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric Auger
- <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Laurent
- Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Sebastian
- Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-In-Reply-To: <Z6SEIqhJEWrMWTU1@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Thu, 6 Feb 2025 09:42:58 +0000")
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfyo7-0001lM-Ae; Thu, 06 Feb 2025 05:08:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738836507; x=1770372507;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=oP0y8I2b0k86JdcYw9jox2qnw26MXTvDoDpMb9y/Ax4=;
+ b=AuJN5K6d4ga3UGvFjOeugAV4SfZo+3Ev3kD04Bc84eSSkE9hE+Gf7Iqk
+ ytTjMyMI/8uI9rLV8Qn8/qBcPm47Ovcx2X8XRIRzC2oWp1vNnqn6uhTbs
+ xoneDfBPDBjA90ACY9iKyuDimvuFTzVSiuPKqkhW2Y5rqzvQZUOkxOKQo
+ QTKLS244Z7Mwqci1SrgK81XMgZbHikF4/40sxFcB+RgB6wmGlC5c/1kk+
+ 0W8WbuyRez7pZBVajnAl+M1atW/i5SwssAMHy7TMJTyyoDI6nYBvqt3ji
+ gQ67+2aDYGzOoGEKOvXIjN4d5sQZie7Z5O7DwNW6vHmOlGJCM6BspqxEF w==;
+X-CSE-ConnectionGUID: UxU7t8J2QDGOzamvirjPmw==
+X-CSE-MsgGUID: xUVPm0e8Q+GjMXlM3rN5jg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43187318"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="43187318"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 02:08:23 -0800
+X-CSE-ConnectionGUID: na8BE7FXTjK8oidnTjBbzw==
+X-CSE-MsgGUID: twhacpdTQ+mS2Rq1hHFoAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="111744739"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 06 Feb 2025 02:08:19 -0800
+Date: Thu, 6 Feb 2025 18:27:48 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [RFC v2 1/5] qapi/qom: Introduce kvm-pmu-filter object
+Message-ID: <Z6SOpEcLjNW5NpFy@intel.com>
 References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <20250122090517.294083-4-zhao1.liu@intel.com>
- <87zfj01z8x.fsf@pond.sub.org> <Z6SG2NLxxhz4adlV@intel.com>
- <Z6SEIqhJEWrMWTU1@redhat.com>
-Date: Thu, 06 Feb 2025 11:24:25 +0100
-Message-ID: <878qqjqskm.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <20250122090517.294083-2-zhao1.liu@intel.com>
+ <871pwc3dyw.fsf@pond.sub.org> <Z6SMxlWhHgronott@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6SMxlWhHgronott@intel.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,142 +90,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+> > > @@ -1183,6 +1185,7 @@
+> > >                                        'if': 'CONFIG_LINUX' },
+> > >        'iommufd':                    'IOMMUFDProperties',
+> > >        'iothread':                   'IothreadProperties',
+> > > +      'kvm-pmu-filter':             'KVMPMUFilterPropertyVariant',
+> > 
+> > The others are like
+> > 
+> >          'mumble': 'MumbleProperties'
+> > 
+> > Let's stick to that, and also avoid running together multiple
+> > capitalized acronyms: KvmPmuFilterProperties.
+> 
+> IIUC, then I should use the name "KvmPmuFilterProperties" (string version
+> for QAPI), and the name "KvmPmuFilterPropertiesVariant" (numeric version
+> in codes), do you agree?
+>  
 
-> On Thu, Feb 06, 2025 at 05:54:32PM +0800, Zhao Liu wrote:
->> On Wed, Feb 05, 2025 at 11:07:10AM +0100, Markus Armbruster wrote:
->> > Date: Wed, 05 Feb 2025 11:07:10 +0100
->> > From: Markus Armbruster <armbru@redhat.com>
->> > Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask
->> >  format in KVM PMU filter
->> >=20
->> > Zhao Liu <zhao1.liu@intel.com> writes:
->> >=20
->> > > The select&umask is the common way for x86 to identify the PMU event,
->> > > so support this way as the "x86-default" format in kvm-pmu-filter
->> > > object.
->> >=20
->> > So, format 'raw' lets you specify the PMU event code as a number, wher=
-as
->> > 'x86-default' lets you specify it as select and umask, correct?
->>=20
->> Yes!
->>=20
->> > Why do we want both?
->>=20
->> This 2 formats are both wildly used in x86(for example, in perf tool).
->>=20
->> x86 documents usually specify the umask and select fields.
->>=20
->> But raw format could also be applied for ARM since ARM just uses a number
->> to encode event.
-
-Is it really too much to ask of the client to compute a raw value from
-umask and select values?
-
->> > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
->> >=20
->> > [...]
->> >=20
->> > > diff --git a/qapi/kvm.json b/qapi/kvm.json
->> > > index d51aeeba7cd8..93b869e3f90c 100644
->> > > --- a/qapi/kvm.json
->> > > +++ b/qapi/kvm.json
->> > > @@ -27,11 +27,13 @@
->> > >  #
->> > >  # @raw: the encoded event code that KVM can directly consume.
->> > >  #
->> > > +# @x86-default: standard x86 encoding format with select and umask.
->> >=20
->> > Why is this named -default?
->>=20
->> Intel and AMD both use umask+select to encode events, but this format
->> doesn't have a name... so I call it `default`, or what about
->> "x86-umask-select"?
-
-Works for me.
-
->> > > +#
->> > >  # Since 10.0
->> > >  ##
->> > >  { 'enum': 'KVMPMUEventEncodeFmt',
->> > >    'prefix': 'KVM_PMU_EVENT_FMT',
->> > > -  'data': ['raw'] }
->> > > +  'data': ['raw', 'x86-default'] }
->> > >=20=20
->> > >  ##
->> > >  # @KVMPMURawEvent:
->> > > @@ -46,6 +48,25 @@
->> > >  { 'struct': 'KVMPMURawEvent',
->> > >    'data': { 'code': 'uint64' } }
->> > >=20=20
->> > > +##
->> > > +# @KVMPMUX86DefalutEvent:
->> >=20
->> > Default, I suppose.
->>=20
->> Thanks!
->>=20
->> > > +#
->> > > +# x86 PMU event encoding with select and umask.
->> > > +# raw_event =3D ((select & 0xf00UL) << 24) | \
->> > > +#              (select) & 0xff) | \
->> > > +#              ((umask) & 0xff) << 8)
->> >=20
->> > Sphinx rejects this with "Unexpected indentation."
->> >=20
->> > Is the formula needed here?
->>=20
->> I tried to explain the relationship between raw format and umask+select.
->>=20
->> Emm, where do you think is the right place to put the document like
->> this?
-
-Do users need to know how to compute the raw event value from @select
-and @umask?
-
-If yes, is C code the best way?
-
-Here's another way:
-
-    bits  0..7 : bits 0..7 of @select
-    bits  8..15: @umask
-    bits 24..27: bits 8..11 of @select
-    all other bits: zero
-
->> ...
->>=20
->> > > +##
->> > > +# @KVMPMUX86DefalutEventVariant:
->
-> Typo   s/Defalut/Default/ - repeated many times in this patch.
->
->> > > +#
->> > > +# The variant of KVMPMUX86DefalutEvent with the string, rather than
->> > > +# the numeric value.
->> > > +#
->> > > +# @select: x86 PMU event select field.  This field is a 12-bit
->> > > +#     unsigned number string.
->> > > +#
->> > > +# @umask: x86 PMU event umask field. This field is a uint8 string.
->> >=20
->> > Why are these strings?  How are they parsed into numbers?
->>=20
->> In practice, the values associated with PMU events (code for arm, select&
->> umask for x86) are often expressed in hexadecimal. Further, from linux
->> perf related information (tools/perf/pmu-events/arch/*/*/*.json), x86/
->> arm64/riscv/nds32/powerpc all prefer the hexadecimal numbers and only
->> s390 uses decimal value.
->>=20
->> Therefore, it is necessary to support hexadecimal in order to honor PMU
->> conventions.
->
-> IMHO having a data format that matches an arbitrary external tool is not
-> a goal for QMP. It should be neutral and exclusively use the normal JSON
-> encoding, ie base-10 decimal. Yes, this means a user/client may have to
-> convert from hex to dec before sending data over QMP. This is true of
-> many areas of QMP/QEMU config though and thus normal/expected behaviour.
-
-Concur.
+Thanks to Daniel's feedback, pmu filter doesn't need the string version
+anymore. So there's only 1 "KvmPmuFilterProperties" structure in QAPI.
 
 
