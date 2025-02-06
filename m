@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CE8A2B2A9
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F2BA2B2CE
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:59:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg7sO-000444-HF; Thu, 06 Feb 2025 14:49:28 -0500
+	id 1tg806-00077X-2q; Thu, 06 Feb 2025 14:57:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1tg7sL-00043e-3M; Thu, 06 Feb 2025 14:49:25 -0500
-Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tg802-00076F-Bo
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:22 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1tg7sJ-0005eI-Nr; Thu, 06 Feb 2025 14:49:24 -0500
-Received: by mail-vs1-xe32.google.com with SMTP id
- ada2fe7eead31-4ba7787f128so269790137.1; 
- Thu, 06 Feb 2025 11:49:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tg7zz-0000NY-4v
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:57:22 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-219f8263ae0so27805695ad.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 11:57:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738871361; x=1739476161; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FFQm2ZHwyxo8JuKx8Z7FDry0rxBkb9nMIXnYNGZwf9o=;
- b=SUJlM6Vb14+m083sabWIxXkdU7wKV9WMw1W1V7Vecyu9WCKgmhwDhekxbHjiKlHgoz
- z6vW8U17DSAB29LruaJ96DhZxZ/+C3vhaEQKVw6PcjdlIFfmL/d9UsIJrYsAMAIuKIRS
- FjbUdIfMeMLMDUHd0en5taW1teGG+Cuoq2yVG8DLoU/G45chRyLGJQb3aLmvZ0fiCxma
- ob+aNSwDX29HoQDISw3YWux95HPlTN+AfREoQayOeE8jG0Stt+57McOSoARV+7WxlipQ
- UcnIE0jHWFbYQSEaqEe7MQ4sOkcwB9pAr76Li911gfR7U33Z4eBbZUHHLv8gN5oFcbC3
- QM+Q==
+ d=linaro.org; s=google; t=1738871837; x=1739476637; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jf2yGo1onw0qReRBUVYGLnwdRRuXBqoyLpotia/2CDI=;
+ b=zDBnt6g1A0Zv9i2ckH2OvQ/zLtLEEWqf3NjEk5D+0kBgxTccE01JPqSRDc6B9dN+vF
+ mijH4TKe8Ju2Xl4ZVdXvFDRx/F5I8E3RoNx79Hx3lIyIe/1AOYRF7OZvQkLAYZr64T3q
+ QhHNWU4Ql83P4e1u1hhthRkNWomLBGEyMKapfrrp7y80PCqLj1Bn3uDcCiJDzrivnpHp
+ G0V4KJ9JjUtX5x//sdAHukUEJ7UnUc+7snvVwNoiwkjzYo0J9ksstBcrcOc5jDL0hiMx
+ 3WCl4AO5t0vNeI2jLUiRbKwpIM9DLxTgghdyiHHcGyUmnFIZBQd5TVpQevcNKZ1mef8R
+ VpIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738871361; x=1739476161;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FFQm2ZHwyxo8JuKx8Z7FDry0rxBkb9nMIXnYNGZwf9o=;
- b=gmBoZTct6odqyeG4L/Kkf48oJQ44Cfv2hwFU5A2nrhyP3Pwsijx0jdxeAIQoSKB0Ec
- zsAEjxtH4rLPL53uqYsRUQi9cVgSzx07udtDJQ6dPyKPDu35AgUUNW5qLdcmNfabG2l/
- oMYISv8uouLwrDTlC1tW3P4o99qVBYXzQMTP6lYkvpPu0/PTE8Dhx9gW7uJdOjMRbCou
- b1wOOkPaFmOhiY616ZSysW846G6mqzmtFl20SfyYD/DVN5nA+EGtcosVqreOk9Ud72i2
- CU3dTaAdDWP7eTpaZyOmz8ltzvx6mqPwilGi4J91aLSQm/NqLT515QZNVDehEII1Px9r
- cYYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW19CwbcO8IKTiLKH0ZyWvBw+81ioC0Hhtou0fejdLndwgC2wOy5gi2V+upvDaqi5FcR6bKJQkWprOrbg==@nongnu.org
-X-Gm-Message-State: AOJu0YwJjpSz+Y4KDiLs63jz8sUNwk/7uagchOsirQZRlQ2//wvynu3P
- f3/nsFQupivE1W+PLoI+qRX3OrGp4s1NOeThDs6j8XBYBJOrOtRkJD2V1lqL
-X-Gm-Gg: ASbGncv6M6Gpk+cZJXMmM8buBm6oY849yYyxwXzsC1/tYZVibVBb5u9zd1QkMIiGBBj
- XyPqaKe3jREZjWxam7c2c8szYU1IpEEH/m1DwR72Mj4x5J2MAVcfyko7UJCWc6RHH8hJtFp7iaf
- pqeAwP5FpEUtjnVRK//lnGRT/EmRrGlDLyCfpH42xAzNwie5gHcUAKQdz/32AuP6qb8ecOVxaox
- vlSfareVwBJWpKiRjoaFEphNLeX9qcDvp8nTTLYx+Yc4WhQIvD1FuhxaTkLLKErmnRmyc3fagTm
- KvPawsjaS+0sIHzbMEMz+T802mEYhpZ6nT1baQ+IEY+ughNzOfpRJx0n7xy3cA==
-X-Google-Smtp-Source: AGHT+IHV88cKMntCdzuDGpUdmPinFfIc/Ky9C7BHZqj5IxcpPHEM7cX9qegjV0hcK9kFR/d78G+5AA==
-X-Received: by 2002:a05:6102:94e:b0:4af:f3bd:51cd with SMTP id
- ada2fe7eead31-4ba85eeccfbmr429451137.16.1738871361324; 
- Thu, 06 Feb 2025 11:49:21 -0800 (PST)
-Received: from gmail.com (ip190-5-140-142.intercom.com.sv. [190.5.140.142])
+ d=1e100.net; s=20230601; t=1738871837; x=1739476637;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jf2yGo1onw0qReRBUVYGLnwdRRuXBqoyLpotia/2CDI=;
+ b=cQZicmgMBAPFv01YTasjs1N5WsZQtUMOPpt8IsBIYQa1+Dx7y6Im1xAeHMoR31/ilx
+ QoVc2v9gJYf2zLGfmkHwFEaEBmRT6YSqMqb01q6I+lkxxDqvS9zF0y+KOUA6qd0wCQvG
+ Mo2be95YOXrw0VLTXC/xDLKxGIgCNqFqdmoyVC1E3y0MoXemfBYpCVPixoBEJqRmyETl
+ T1DM+ulp1RC/4FoHoM+rRK2lT6k3ikynE+x9PDjesFor+p1J3UagL/XmgdoOkaDMr6hI
+ lwYRzcT50+KgeJR5hNBXiuT3fnZmswmek44pTMKH7p+oumbdvRTIQ0hMea4ZOElZfGvF
+ v5Cg==
+X-Gm-Message-State: AOJu0YxcVG2k6bRDUPGvJW8TignHUsZOWSSTzQfRF7ahFAIE0kuq06ms
+ FNzUg3q2QNlrrKwmDgOtTh1/fxFfNJ9MZm6MZih1smUXdpRjSLcZZahUV+7fPHSAsBc4ULJSRfj
+ T
+X-Gm-Gg: ASbGnctXDOr/LRK5/Zhp4VgpF630mQYnaIQBiUvIdy9TNkfcrsW8uZJllIMfg9Iyic/
+ m82MLt4TfYT64JYJ2Aqr9doW+izvcZ6zsBQDZaeyrHD1frWAAEstT7ouWWswQvJ6C+vPnufbWC8
+ Z0S8tb14Y0KT55HMzDjC41abzLQts6llQcQgUW00AvQ3c58oPOvbqRdD9Ze0nmC8YD50925Ry7m
+ SxHa/Kuw8Awdj1tMxpaCdrK9HP56qoVLY0fmTROWQXnWxqREJH5pIaOGRKbnTSjdjfvRDxc7aA/
+ jTLMjbOWGBXxmP9iV56i7l7W1K0G/8pC4RVOZhDOjOgBHUw=
+X-Google-Smtp-Source: AGHT+IGnIoQzmj+Ym7/xofm2SMUmnQcL75mQzGAmQZUBODjELx63Gzhb3K/Rpq+5TJPIxrJz0LGx+A==
+X-Received: by 2002:aa7:8894:0:b0:725:ebab:bb2e with SMTP id
+ d2e1a72fcca58-7305d4684aamr751453b3a.11.1738871836915; 
+ Thu, 06 Feb 2025 11:57:16 -0800 (PST)
+Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- a1e0cc1a2514c-866f97d8c6asm294265241.21.2025.02.06.11.49.19
+ d2e1a72fcca58-73048c16370sm1666993b3a.152.2025.02.06.11.57.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Feb 2025 11:49:20 -0800 (PST)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org,
-	qemu-stable@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- olaf@aepfle.de, edgar.iglesias@amd.com, xen-devel@lists.xenproject.org
-Subject: [PATCH v1 1/1] xen: No need to flush the mapcache for grants
-Date: Thu,  6 Feb 2025 20:49:15 +0100
-Message-ID: <20250206194915.3357743-2-edgar.iglesias@gmail.com>
+ Thu, 06 Feb 2025 11:57:16 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 00/61] target/arm: Implement FEAT_SME2
+Date: Thu,  6 Feb 2025 11:56:14 -0800
+Message-ID: <20250206195715.2150758-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250206194915.3357743-1-edgar.iglesias@gmail.com>
-References: <20250206194915.3357743-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-vs1-xe32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,36 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Stabellini <stefano.stabellini@amd.com>
+Based-on: 20250201164012.1660228-1-peter.maydell@linaro.org
+("[PATCH v2 00/69] target/arm: FEAT_AFP and FEAT_RPRES")
 
-On IOREQ_TYPE_INVALIDATE we need to invalidate the mapcache for regular
-mappings. Since recently we started reusing the mapcache also to keep
-track of grants mappings. However, there is no need to remove grant
-mappings on IOREQ_TYPE_INVALIDATE requests, we shouldn't do that. So
-remove the function call.
+This implements the Scalar Matrix Extensions, version 2, plus two
+trivial extensions for float16 and bfloat16.
 
-Fixes: 9ecdd4bf08 (xen: mapcache: Add support for grant mappings)
-Cc: qemu-stable@nongnu.org
-Reported-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- hw/xen/xen-mapcache.c | 1 -
- 1 file changed, 1 deletion(-)
+This hasn't been tested much at all; I need to either get FVP up and
+running for RISU comparison, or write some stand-alone test cases.
+But in the meantime this could use some eyes.
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 00bfbcc6fb..698b5c53ed 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -700,7 +700,6 @@ void xen_invalidate_map_cache(void)
-     bdrv_drain_all();
- 
-     xen_invalidate_map_cache_single(mapcache);
--    xen_invalidate_map_cache_single(mapcache_grants);
- }
- 
- static uint8_t *xen_replace_cache_entry_unlocked(MapCache *mc,
+SME2 is the first vector-like extension we've had that has dynamic
+indexing of registers: ZArray[(rv + offset) % svl], where RV is a
+general register.  So the first thing I do is extend TCG's gvec
+support to handle TCGv_ptr base + offset addressing.  I only changed
+enough to handle what I needed within SME2; changing it all would be
+a big job, and it would (at least for the moment) remain unused.
+
+Still to-do are few more extensions for SME2p1.
+
+
+r~
+
+
+Richard Henderson (61):
+  tcg: Add dbase argument to do_dup_store
+  tcg: Add dbase argument to do_dup
+  tcg: Add dbase argument to expand_clr
+  tcg: Add base arguments to check_overlap_[234]
+  tcg: Split out tcg_gen_gvec_2_var
+  tcg: Split out tcg_gen_gvec_3_var
+  tcg: Split out tcg_gen_gvec_mov_var
+  tcg: Split out tcg_gen_gvec_{add,sub}_var
+  target/arm: Introduce FPST_ZA, FPST_ZA_F16
+  target/arm: Use FPST_ZA for sme_fmopa_[hsd]
+  target/arm: Rename zarray to za_state.za
+  target/arm: Add isar_feature_aa64_sme2*
+  target/arm: Add ZT0
+  target/arm: Add zt0_excp_el to DisasContext
+  target/arm: Implement SME2 ZERO ZT0
+  target/arm: Implement SME2 LDR/STR ZT0
+  target/arm: Implement SME2 MOVT
+  target/arm: Split get_tile_rowcol argument tile_index
+  target/arm: Rename MOVA for translate
+  target/arm: Implement SME2 MOVA to/from tile, multiple registers
+  target/arm: Split out get_zarray
+  target/arm: Implement SME2 MOVA to/from array, multiple registers
+  target/arm: Implement SME2 BMOPA
+  target/arm: Implement SME2 SMOPS, UMOPS (2-way)
+  target/arm: Introduce gen_gvec_sve2_sqdmulh
+  target/arm: Implement SME2 Multiple and Single SVE Destructive
+  target/arm: Implement SME2 Multiple Vectors SVE Destructive
+  target/arm: Implement SME2 ADD/SUB (array results, multiple and single
+    vector)
+  target/arm: Implement SME2 ADD/SUB (array results, multiple vectors)
+  target/arm: Pass ZA to helper_sve2_fmlal_zz[zx]w_s
+  target/arm: Implement SME2 FMLAL, BFMLAL
+  target/arm: Implement SME2 FDOT
+  target/arm: Implement SME2 BFDOT
+  target/arm: Implement SME2 FVDOT, BFVDOT
+  target/arm: Rename helper_gvec_*dot_[bh] to *_4[bh]
+  target/arm: Remove helper_gvec_sudot_idx_4b
+  target/arm: Implemement SME2 SDOT, UDOT, USDOT, SUDOT
+  target/arm: Implement SME2 SVDOT, UVDOT, SUVDOT, USVDOT
+  target/arm: Implement SME2 SMLAL, SMLSL, UMLAL, UMLSL
+  target/arm: Implement SME2 SMLALL, SMLSLL, UMLALL, UMLSLL
+  target/arm: Rename gvec_fml[as]_[hs] with _nf_ infix
+  target/arm: Implement SME2 FMLA, FMLS
+  target/arm: Implement SME2 BFMLA, BFMLS
+  target/arm: Implement SME2 FADD, FSUB, BFADD, BFSUB
+  target/arm: Remove CPUARMState.vfp.scratch
+  target/arm: Implement SME2 BFCVT, BFCVTN, FCVT, FCVTN
+  target/arm: Implement SME2 FCVT (widening), FCVTL
+  target/arm: Implement SME2 FCVTZS, FCVTZU
+  target/arm: Implement SME2 SCVTF, UCVTF
+  target/arm: Implement SME2 FRINTN, FRINTP, FRINTM, FRINTA
+  target/arm: Introduce do_[us]sat_[bhs] macros
+  target/arm: Use do_[us]sat_[bhs] in sve_helper.c
+  target/arm: Implement SME2 SQCVT, UQCVT, SQCVTU
+  target/arm: Implement SME2 SUNPK, UUNPK
+  target/arm: Implement SME2 ZIP, UZP (four registers)
+  target/arm: Move do_urshr, do_srshr to vec_internal.h
+  target/arm: Implement SME2 SQRSHR, UQRSHR, SQRSHRN
+  target/arm: Implement SME2 ZIP, UZP (two registers)
+  target/arm: Implement SME2 FCLAMP, SCLAMP, UCLAMP
+  target/arm: Implement SME2 SEL
+  target/arm: Enable FEAT_SME2, FEAT_SME_F16F16, FEAT_SVE_B16B16 on -cpu
+    max
+
+ include/tcg/tcg-op-gvec-common.h |   20 +
+ target/arm/cpu-features.h        |   35 +
+ target/arm/cpu.h                 |   68 +-
+ target/arm/helper.h              |   47 +-
+ target/arm/syndrome.h            |    1 +
+ target/arm/tcg/helper-sme.h      |  164 ++++
+ target/arm/tcg/translate-a64.h   |    4 +
+ target/arm/tcg/translate.h       |   11 +
+ target/arm/tcg/vec_internal.h    |   32 +
+ linux-user/aarch64/signal.c      |    4 +-
+ target/arm/cpu.c                 |   11 +-
+ target/arm/helper.c              |    2 +-
+ target/arm/machine.c             |   23 +-
+ target/arm/tcg/cpu64.c           |    7 +-
+ target/arm/tcg/gengvec.c         |    6 +
+ target/arm/tcg/gengvec64.c       |   11 +
+ target/arm/tcg/helper-a64.c      |    2 +
+ target/arm/tcg/hflags.c          |   34 +-
+ target/arm/tcg/mve_helper.c      |   21 -
+ target/arm/tcg/sme_helper.c      |  867 +++++++++++++++++++--
+ target/arm/tcg/sve_helper.c      |  137 ++--
+ target/arm/tcg/translate-a64.c   |   15 +-
+ target/arm/tcg/translate-neon.c  |   18 +-
+ target/arm/tcg/translate-sme.c   | 1238 +++++++++++++++++++++++++++++-
+ target/arm/tcg/translate-sve.c   |   28 +-
+ target/arm/tcg/vec_helper.c      |  162 +++-
+ target/arm/vfp_helper.c          |   10 +
+ tcg/tcg-op-gvec.c                |  363 +++++----
+ docs/system/arm/emulation.rst    |    3 +
+ target/arm/tcg/sme.decode        |  823 +++++++++++++++++++-
+ 30 files changed, 3719 insertions(+), 448 deletions(-)
+
 -- 
 2.43.0
 
