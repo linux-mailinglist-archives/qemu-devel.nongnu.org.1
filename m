@@ -2,87 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93A6A2B334
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DB2A2B30B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg88V-000520-Ou; Thu, 06 Feb 2025 15:06:10 -0500
+	id 1tg8AB-0008Ou-8V; Thu, 06 Feb 2025 15:07:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg83n-0007w8-Mz
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:19 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tg83i-0001CV-6V
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:01:15 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2f9c69aefdbso2652618a91.2
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 12:01:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738872066; x=1739476866; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4rgyDgloSqpxlaMe84m6ZsHP0mk+qpudbxX1HADMZbA=;
- b=zbgC++h3NI9j3TpRSvZ0mZZpcpshDo4dOYfvcxeNf1XsPzv35KAee7QIIMafryefdQ
- gQZ8pG3T9OtBkOK2T1U9nLVlOyb5tcN8N1tCYJhze/Pk/dUuaU12WIr3XkogKhjYL9h2
- AUfvqGMS+ZK6werOLYWBjSnszTtLIq1DQJ1XsHe7BrGCqiJey7WomM36xopLXdb1Gg1+
- 4MeIPHOGCRakUqXxnyoRkam5Gfm91D9SnD56k4MnSXbl/I2TXFkDWRnFjhNbfbZOtq7q
- 3WPTch6WiP7MFDIJRHCKzhl47xCQjr+dw+ySdJtSlWP3hhmyEkBJnvQgmWtPC7fUVHc+
- TcUQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tg85n-0002sX-Ri
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:03:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tg85l-0001cw-MT
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:03:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738872195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DKqGPfhuKIGtj4Hghs+eXC5K6q9Go7OMpG2M9IoV/XY=;
+ b=R0Bk8ek+Xti0xoAo8KfDcY5JbGf5WZRyh3BjfCtEuR+aRgmkTLe1S1B3dSkDR3tOH5OpkU
+ ImRViaQe9xbHlkubmbahU/7uMMmOyQHeSFggk3d6fGAmJkcdKxz6ZwvZtvkYoECyZvW3nu
+ 5cUsXFY0CMvJNZ+Nwnb9ZT73e8wrUwE=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-3hGmFWovPNCyfcxJz7Aszw-1; Thu, 06 Feb 2025 15:03:14 -0500
+X-MC-Unique: 3hGmFWovPNCyfcxJz7Aszw-1
+X-Mimecast-MFC-AGG-ID: 3hGmFWovPNCyfcxJz7Aszw
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-467b19b5641so25802811cf.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 12:03:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738872066; x=1739476866;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4rgyDgloSqpxlaMe84m6ZsHP0mk+qpudbxX1HADMZbA=;
- b=ZzQooUQiGS1VloSBx/zczH7kpWr3hYuMjWKn/dLHUDqAeKyXVrOLI20brMGYrb2/bS
- QIuoKNdF05nQS1zyRdNWq4vSQ16xZNDCP1PQsgs5Qw4C0Un+6FUcG3Xo+1SEAJL94OpF
- zYufhqNx3EhfHf/cKZaPquqyQqL8Fs5fgNizyfqlL5pWKV1E8TmsBLtMczc4k1QXBnNf
- GHR1DSG7HzuufyYrdu5GXSn3FTQXlDL2OM/zJYnxLSQctwoDOc+a7lXPtJEkB0kBPMfe
- 4n0tmVJQT2j9piz/ZVuLKcS7rYtp7khGU9kxNfuGgQZS8L2Y1+igvLLNF0Q/Xw8/SnNb
- UhoA==
-X-Gm-Message-State: AOJu0YzuD/p/A4mtUYjuUWaXV3i3Dgu7hbMMAgQIRj8N8E7/N0V0It53
- 1zlAIn+2CyHyfloUhzGJUGH/P7beOh9Heg/+gi0eE0ZlzwWtYwwG7PMqOctlVvtGs8DN9UNxI7J
- 6
-X-Gm-Gg: ASbGncvNbk7ZthsIrllvzhxr8suk9sStK5JGaWhgNp1dJDzchp/l92aW0Y3hQXoYIZQ
- Rrtd+TGrnj4c7ioQdpBtJ/kwhkKEJtntUpNgwD0G7pu535V05iGvuPJ0UJJxSYtwhNaVYTzpjW8
- lZG5IN2WoF9r2mES8Esr97BytsoevYm0uN/tP5cWfqTjzUcZ+4eZHAOCxCfcq8e4oPfzYHGW4IY
- HY/GYFvYUoHoEmsnTbEjMiosXitgZp4Uc3tBj7Fxy7AEo25Q/pLm9ePk1CgbQRythSoxXockQM3
- 6+c7uN0XDwJIN1+jhIsVuUqTpdJhlO3W9YaHp/FxOWKH5/0=
-X-Google-Smtp-Source: AGHT+IGcl+hUpmuB49lIdwULX+9yyFAWeUhLWi00isQbKdngUYfD+p0sHNehH3yL7lcHgtiDMoiYkQ==
-X-Received: by 2002:a17:90b:3588:b0:2ee:d193:f3d5 with SMTP id
- 98e67ed59e1d1-2fa23f5703fmr564701a91.7.1738872061968; 
- Thu, 06 Feb 2025 12:01:01 -0800 (PST)
-Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fa09b3ee24sm1808857a91.36.2025.02.06.12.01.01
+ d=1e100.net; s=20230601; t=1738872194; x=1739476994;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DKqGPfhuKIGtj4Hghs+eXC5K6q9Go7OMpG2M9IoV/XY=;
+ b=h+UmFRMTO4BoVEWBsXAuy2uUtLjPCEuKKfc3yoYTPBUIbWFAKwvQW4sscHW+Kop/ah
+ GPaSDiI/yZkjy5rXrslIp7C4TqrjhbymXjkLo+7pvS9wz/dBFlmTIdQvlCuh0t2dmALU
+ K1kz+jy1Kwfci0zbUtR6rgQ4tnI1d6rpZlCv26ytlD0x1bPuR9YkeF5bEFovSENIaEwj
+ YRrE/lefjT83TdSTwnq6j++fOo7i8nFx3c8aSkMVsijGR6uymKPfFarTNrDSLDLrNXUU
+ xaheXtNJwhr9i/vJ6QptSNv1jiGWQ6xqGt2lAc7NW+2UGrfBr9pWiCEEvR/PVbuEusDP
+ 0ZXw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEyPz4uL/VIHx6Dg37T92G99UB0ndYX5DiBtvtl6cweUZCkV+uOJjMRDMfC9yENLL9Qc66gyzsPsHu@nongnu.org
+X-Gm-Message-State: AOJu0Yz8FShSDG0b57OhVBzk14rAvRg/Yen5CkZxJ5mhsLRPK8lwp4NL
+ ZAER4HSUAYobDNpqJRnXzyoipCjNj+5lt9ZNPq8/HU4z0t3k2A8fZpMWRmnG35wFpWQ3JAbiOBc
+ ZzwsTpvrRYrhXjeUs1Gb1YFtVUogXE6o4OePNV7Slu6q+iYRXdmZY
+X-Gm-Gg: ASbGnctcu09fuyGSdO7gz/WI34wQ7sBq9WeQjPqOtBdQpE0LXMHzSR0xT9PlFXmz4cX
+ N08AqbWJ3RaZuLH7LJYhEsiJ88y2h8QmUdsWjz6Ebt9GqmHIJXhUDTVW7SqceRQPdw4i/wfOc5L
+ CE4PBjMq9jn8q9oz3ea7DfxwAf5Y+6Bs6thl/jSct1lEoKG0dp9kvhS6MrcwXA7uZ2vJ+rNPsTC
+ XoMn5DAxgmBY+H6RJnlzdmI6keM3rtJmpNWY6qpqk5UxXHIliaFcUlmncV3agojbroRM8FQdUbr
+ j2P22D3wJmppU+meAHnsTqIf4k3vMkS+J5UXOvaPdtkm2dOX
+X-Received: by 2002:a05:622a:256:b0:467:7109:c783 with SMTP id
+ d75a77b69052e-4716798aeedmr9263571cf.3.1738872193992; 
+ Thu, 06 Feb 2025 12:03:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENmMKXdalwsDefa/7t7DHwVYizdH9C6eqbzxx/dcYYf6qBnHuQPjPtuYUdoaY4dulor+h2mg==
+X-Received: by 2002:a05:622a:256:b0:467:7109:c783 with SMTP id
+ d75a77b69052e-4716798aeedmr9262931cf.3.1738872193467; 
+ Thu, 06 Feb 2025 12:03:13 -0800 (PST)
+Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-47153beaa5csm8459611cf.68.2025.02.06.12.03.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Feb 2025 12:01:01 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 61/61] target/arm: Enable FEAT_SME2, FEAT_SME_F16F16,
- FEAT_SVE_B16B16 on -cpu max
-Date: Thu,  6 Feb 2025 11:57:15 -0800
-Message-ID: <20250206195715.2150758-62-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250206195715.2150758-1-richard.henderson@linaro.org>
-References: <20250206195715.2150758-1-richard.henderson@linaro.org>
+ Thu, 06 Feb 2025 12:03:12 -0800 (PST)
+Date: Thu, 6 Feb 2025 15:03:10 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z6UVfrllv-Ahex73@x1.local>
+References: <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
+ <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050> <Z5EgFaWIyjIiOZnv@x1n>
+ <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050> <Z5Jylb73kDJ6HTEZ@x1n>
+ <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050> <Z5O4BSCjlhhu4rrw@x1n>
+ <Z5WtRYSf7cjqITXH@yilunxu-OptiPlex-7050>
+ <Z5uom-NTtekV9Crd@x1.local>
+ <Z6SRxV83I9/kamop@yilunxu-OptiPlex-7050>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z6SRxV83I9/kamop@yilunxu-OptiPlex-7050>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,62 +117,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/cpu64.c        | 7 ++++++-
- docs/system/arm/emulation.rst | 3 +++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+On Thu, Feb 06, 2025 at 06:41:09PM +0800, Xu Yilun wrote:
+> On Thu, Jan 30, 2025 at 11:28:11AM -0500, Peter Xu wrote:
+> > On Sun, Jan 26, 2025 at 11:34:29AM +0800, Xu Yilun wrote:
+> > > > Definitely not suggesting to install an invalid pointer anywhere.  The
+> > > > mapped pointer will still be valid for gmem for example, but the fault
+> > > > isn't.  We need to differenciate two things (1) virtual address mapping,
+> > > > then (2) permission and accesses on the folios / pages of the mapping.
+> > > > Here I think it's okay if the host pointer is correctly mapped.
+> > > > 
+> > > > For your private MMIO use case, my question is if there's no host pointer
+> > > > to be mapped anyway, then what's the benefit to make the MR to be ram=on?
+> > > > Can we simply make it a normal IO memory region?  The only benefit of a
+> > > 
+> > > The guest access to normal IO memory region would be emulated by QEMU,
+> > > while private assigned MMIO requires guest direct access via Secure EPT.
+> > > 
+> > > Seems the existing code doesn't support guest direct access if
+> > > mr->ram == false:
+> > 
+> > Ah it's about this, ok.
+> > 
+> > I am not sure what's the best approach, but IMHO it's still better we stick
+> > with host pointer always available when ram=on.  OTOH, VFIO private regions
+> > may be able to provide a special mark somewhere, just like when romd_mode
+> > was done previously as below (qemu 235e8982ad39), so that KVM should still
+> > apply these MRs even if they're not RAM.
+> 
+> Also good to me.
+> 
+> > 
+> > > 
+> > > static void kvm_set_phys_mem(KVMMemoryListener *kml,
+> > >                              MemoryRegionSection *section, bool add)
+> > > {
+> > >     [...]
+> > > 
+> > >     if (!memory_region_is_ram(mr)) {
+> > >         if (writable || !kvm_readonly_mem_allowed) {
+> > >             return;
+> > >         } else if (!mr->romd_mode) {
+> > >             /* If the memory device is not in romd_mode, then we actually want
+> > >              * to remove the kvm memory slot so all accesses will trap. */
+> > >             add = false;
+> > >         }
+> > >     }
+> > > 
+> > >     [...]
+> > > 
+> > >     /* register the new slot */
+> > >     do {
+> > > 
+> > >         [...]
+> > > 
+> > >         err = kvm_set_user_memory_region(kml, mem, true);
+> > >     }
+> > > }
+> > > 
+> > > > ram=on MR is, IMHO, being able to be accessed as RAM-like.  If there's no
+> > > > host pointer at all, I don't yet understand how that helps private MMIO
+> > > > from working.
+> > > 
+> > > I expect private MMIO not accessible from host, but accessible from
+> > > guest so has kvm_userspace_memory_region2 set. That means the resolving
+> > > of its PFN during EPT fault cannot depends on host pointer.
+> > > 
+> > > https://lore.kernel.org/all/20250107142719.179636-1-yilun.xu@linux.intel.com/
+> > 
+> > I'll leave this to KVM experts, but I actually didn't follow exactly on why
+> > mmu notifier is an issue to make , as I thought that was per-mm anyway, and KVM
+> > should logically be able to skip all VFIO private MMIO regions if affected.
+> 
+> I think this creates logical inconsistency. You builds the private MMIO
+> EPT mapping on fault based on the HVA<->HPA mapping, but doesn't follow
+> the HVA<->HPA mapping change. Why KVM believes the mapping on fault time
+> but doesn't on mmu notify time?
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 29ab0ac79d..6fb821ad9a 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1194,7 +1194,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-      */
-     t = FIELD_DP64(t, ID_AA64PFR1, MTE, 3);       /* FEAT_MTE3 */
-     t = FIELD_DP64(t, ID_AA64PFR1, RAS_FRAC, 0);  /* FEAT_RASv1p1 + FEAT_DoubleFault */
--    t = FIELD_DP64(t, ID_AA64PFR1, SME, 1);       /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64PFR1, SME, 2);       /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_3 */
-     t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
-     cpu->isar.id_aa64pfr1 = t;
-@@ -1264,11 +1264,16 @@ void aarch64_max_tcg_initfn(Object *obj)
- 
-     t = cpu->isar.id_aa64smfr0;
-     t = FIELD_DP64(t, ID_AA64SMFR0, F32F32, 1);   /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, BI32I32, 1);  /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, B16F32, 1);   /* FEAT_SME */
-     t = FIELD_DP64(t, ID_AA64SMFR0, F16F32, 1);   /* FEAT_SME */
-     t = FIELD_DP64(t, ID_AA64SMFR0, I8I32, 0xf);  /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, F16F16, 1);   /* FEAT_SME_F16F16 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, B16B16, 1);   /* FEAT_SVE_B16B16 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, I16I32, 5);   /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, F64F64, 1);   /* FEAT_SME_F64F64 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, I16I64, 0xf); /* FEAT_SME_I16I64 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, SMEVER, 1);   /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, FA64, 1);     /* FEAT_SME_FA64 */
-     cpu->isar.id_aa64smfr0 = t;
- 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 78c2fd2113..d063571556 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -129,11 +129,14 @@ the following architecture extensions:
- - FEAT_SM3 (Advanced SIMD SM3 instructions)
- - FEAT_SM4 (Advanced SIMD SM4 instructions)
- - FEAT_SME (Scalable Matrix Extension)
-+- FEAT_SME2 (Scalable Matrix Extension version 2)
- - FEAT_SME_FA64 (Full A64 instruction set in Streaming SVE mode)
-+- FEAT_SME_F16F16 (Non-widening half-precision FP16 arithmetic for SME2)
- - FEAT_SME_F64F64 (Double-precision floating-point outer product instructions)
- - FEAT_SME_I16I64 (16-bit to 64-bit integer widening outer product instructions)
- - FEAT_SVE (Scalable Vector Extension)
- - FEAT_SVE_AES (Scalable Vector AES instructions)
-+- FEAT_SVE_B16B16 (Non-widening BFloat16 arithmetic for SVE2 and SME2)
- - FEAT_SVE_BitPerm (Scalable Vector Bit Permutes instructions)
- - FEAT_SVE_PMULL128 (Scalable Vector PMULL instructions)
- - FEAT_SVE_SHA3 (Scalable Vector SHA3 instructions)
+IMHO as long as kvm knows it's a private MMIO and there's no mapping under
+it guaranteed, then KVM can safely skip those ranges to speedup the mmu
+notifier.
+
+Said that, I'm not suggesting to stick with hvas if there're better
+alternatives.  It's only about the paragraph that confused me a bit.
+
+> 
+> > This is a comment to this part of your commit message:
+> > 
+> >         Rely on userspace mapping also means private MMIO mapping should
+> >         follow userspace mapping change via mmu_notifier. This conflicts
+> >         with the current design that mmu_notifier never impacts private
+> >         mapping. It also makes no sense to support mmu_notifier just for
+> >         private MMIO, private MMIO mapping should be fixed when CoCo-VM
+> >         accepts the private MMIO, any following mapping change without
+> >         guest permission should be invalid.
+> > 
+> > So I don't yet see a hard-no of reusing userspace mapping even if they're
+> > not faultable as of now - what if they can be faultable in the future?  I
+> 
+> The first commit of guest_memfd emphasize a lot on the benifit of
+> decoupling KVM mapping from host mapping. My understanding is even if
+> guest memfd can be faultable later, KVM should still work in a way
+> without userspace mapping.
+
+I could have implied to suggest using hva, not my intention.  I agree
+fd-based API is better too in this case at least as of now.
+
+What I'm not sure is how the whole things evolve with either gmemfd or
+device fd when they're used with shared and mappable pages.  We can leave
+that for later discussion for sure.
+
+> 
+> > am not sure..
+> > 
+> > OTOH, I also don't think we need KVM_SET_USER_MEMORY_REGION3 anyway.. The
+> > _REGION2 API is already smart enough to leave some reserved fields:
+> > 
+> > /* for KVM_SET_USER_MEMORY_REGION2 */
+> > struct kvm_userspace_memory_region2 {
+> > 	__u32 slot;
+> > 	__u32 flags;
+> > 	__u64 guest_phys_addr;
+> > 	__u64 memory_size;
+> > 	__u64 userspace_addr;
+> > 	__u64 guest_memfd_offset;
+> > 	__u32 guest_memfd;
+> > 	__u32 pad1;
+> > 	__u64 pad2[14];
+> > };
+> > 
+> > I think we _could_ reuse some pad*?  Reusing guest_memfd field sounds error
+> > prone to me.
+> 
+> It truly is. I'm expecting some suggestions here.
+
+Maybe a generic fd+offset pair from pad*?  I'm not sure whether at some
+point that could also support guest-memfd there too, after all it's easy
+for kvm to check whatever file->f_op it's backing, so logically kvm should
+allow backing a memslot with whatever file without HVA.  Just my 2 cents.
+
+Thanks,
+
 -- 
-2.43.0
+Peter Xu
 
 
