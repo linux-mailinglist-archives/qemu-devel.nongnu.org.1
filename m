@@ -2,51 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B107FA2A53A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B57AA2A4A7
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:36:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyZY-00023M-To; Thu, 06 Feb 2025 04:53:24 -0500
+	id 1tfyI2-0002NK-FV; Thu, 06 Feb 2025 04:35:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tfyZU-000215-1J; Thu, 06 Feb 2025 04:53:20 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfyHy-0002Lw-QG; Thu, 06 Feb 2025 04:35:14 -0500
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tfyZS-00051a-J5; Thu, 06 Feb 2025 04:53:19 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 6 Feb
- 2025 17:52:54 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 6 Feb 2025 17:52:54 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v2 6/6] hw/intc/aspeed: Support different memory region ops
-Date: Thu, 6 Feb 2025 17:52:52 +0800
-Message-ID: <20250206095253.928308-7-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250206095253.928308-1-jamin_lin@aspeedtech.com>
-References: <20250206095253.928308-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tfyHv-0007qb-Q2; Thu, 06 Feb 2025 04:35:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738834512; x=1770370512;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=SbzsFpxSlqt0LRVCVphwfchnZcpRBWTRP4V0UBxDljg=;
+ b=KtNH0nNEz4WS/0uh7TOqmTQh+JIRSdNSdBm3lfcQ64I6NFHvClIZcyaC
+ LfRTkg4AhquK1SQ69NNDM6vRUy/t4W0EG0rKdfaecvDwSPFHrRN0zoJ2b
+ ARKrU61gYqlpvaui/NDbFSwQJSGZMHK3Bn6FG4DVk1MjewwQi1a7J+2vY
+ oc9JSPqVzit8WIdAOcxsqQWWarxTcf/YJnj7P+XEv8Xu6hnUkIgQJNzg8
+ 5FdXfd5z/Ei0RxRaOgcyRrWyFVKAQiiUFE+YsC+ItUXpCZaRQtJDB1Car
+ 85vBuLqdsmJvtcbSwn8zFvWVCD6nOS4iXSlsSf3ziM7QkaEkTXHg09e0Z w==;
+X-CSE-ConnectionGUID: f2qfNfpmTUO5SmaRTc3PSg==
+X-CSE-MsgGUID: OIxj/snRRxeBba9W5XksNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="61905380"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="61905380"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 01:35:08 -0800
+X-CSE-ConnectionGUID: 2gIBkdsDS86vB5dYK1Hsqw==
+X-CSE-MsgGUID: Mm5+m0RnTiC1gkfud4HxFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142041740"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 06 Feb 2025 01:35:03 -0800
+Date: Thu, 6 Feb 2025 17:54:32 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask format
+ in KVM PMU filter
+Message-ID: <Z6SG2NLxxhz4adlV@intel.com>
+References: <20250122090517.294083-1-zhao1.liu@intel.com>
+ <20250122090517.294083-4-zhao1.liu@intel.com>
+ <87zfj01z8x.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zfj01z8x.fsf@pond.sub.org>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,70 +88,119 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous implementation set the "aspeed_intc_ops" struct, containing read
-and write callbacks, to be used when I/O is performed on the INTC region.
-Both "aspeed_intc_read" and "aspeed_intc_write" callback functions were used
-for INTC (CPU Die).
+On Wed, Feb 05, 2025 at 11:07:10AM +0100, Markus Armbruster wrote:
+> Date: Wed, 05 Feb 2025 11:07:10 +0100
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask
+>  format in KVM PMU filter
+> 
+> Zhao Liu <zhao1.liu@intel.com> writes:
+> 
+> > The select&umask is the common way for x86 to identify the PMU event,
+> > so support this way as the "x86-default" format in kvm-pmu-filter
+> > object.
+> 
+> So, format 'raw' lets you specify the PMU event code as a number, wheras
+> 'x86-default' lets you specify it as select and umask, correct?
 
-To support the INTC_IO (IO Die) model, introduces a new "reg_ops" class
-attribute. This allows setting different memory region operations to support
-different INTC models.
+Yes!
 
-Will introduce "aspeed_intc_io_read" and "aspeed_intc_io_write" callback
-functions are used for INTC_IO.
+> Why do we want both?
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/intc/aspeed_intc.c         | 5 ++++-
- include/hw/intc/aspeed_intc.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+This 2 formats are both wildly used in x86(for example, in perf tool).
 
-diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index e1e4a9fe59..e0e843201a 100644
---- a/hw/intc/aspeed_intc.c
-+++ b/hw/intc/aspeed_intc.c
-@@ -335,7 +335,7 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
- 
-     sysbus_init_mmio(sbd, &s->iomem_container);
- 
--    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
-+    memory_region_init_io(&s->iomem, OBJECT(s), aic->reg_ops, s,
-                           TYPE_ASPEED_INTC ".regs", aic->reg_size);
- 
-     memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
-@@ -353,11 +353,14 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
- static void aspeed_intc_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
- 
-     dc->desc = "ASPEED INTC Controller";
-     dc->realize = aspeed_intc_realize;
-     device_class_set_legacy_reset(dc, aspeed_intc_reset);
-     dc->vmsd = NULL;
-+
-+    aic->reg_ops = &aspeed_intc_ops;
- }
- 
- static const TypeInfo aspeed_intc_info = {
-diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-index ecaeb15aea..749d7c55be 100644
---- a/include/hw/intc/aspeed_intc.h
-+++ b/include/hw/intc/aspeed_intc.h
-@@ -43,6 +43,7 @@ struct AspeedINTCClass {
-     uint32_t num_ints;
-     uint64_t mem_size;
-     uint64_t reg_size;
-+    const MemoryRegionOps *reg_ops;
- };
- 
- #endif /* ASPEED_INTC_H */
--- 
-2.34.1
+x86 documents usually specify the umask and select fields.
+
+But raw format could also be applied for ARM since ARM just uses a number
+to encode event.
+
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> [...]
+> 
+> > diff --git a/qapi/kvm.json b/qapi/kvm.json
+> > index d51aeeba7cd8..93b869e3f90c 100644
+> > --- a/qapi/kvm.json
+> > +++ b/qapi/kvm.json
+> > @@ -27,11 +27,13 @@
+> >  #
+> >  # @raw: the encoded event code that KVM can directly consume.
+> >  #
+> > +# @x86-default: standard x86 encoding format with select and umask.
+> 
+> Why is this named -default?
+
+Intel and AMD both use umask+select to encode events, but this format
+doesn't have a name... so I call it `default`, or what about
+"x86-umask-select"?
+
+> > +#
+> >  # Since 10.0
+> >  ##
+> >  { 'enum': 'KVMPMUEventEncodeFmt',
+> >    'prefix': 'KVM_PMU_EVENT_FMT',
+> > -  'data': ['raw'] }
+> > +  'data': ['raw', 'x86-default'] }
+> >  
+> >  ##
+> >  # @KVMPMURawEvent:
+> > @@ -46,6 +48,25 @@
+> >  { 'struct': 'KVMPMURawEvent',
+> >    'data': { 'code': 'uint64' } }
+> >  
+> > +##
+> > +# @KVMPMUX86DefalutEvent:
+> 
+> Default, I suppose.
+
+Thanks!
+
+> > +#
+> > +# x86 PMU event encoding with select and umask.
+> > +# raw_event = ((select & 0xf00UL) << 24) | \
+> > +#              (select) & 0xff) | \
+> > +#              ((umask) & 0xff) << 8)
+> 
+> Sphinx rejects this with "Unexpected indentation."
+> 
+> Is the formula needed here?
+
+I tried to explain the relationship between raw format and umask+select.
+
+Emm, where do you think is the right place to put the document like
+this?
+
+...
+
+> > +##
+> > +# @KVMPMUX86DefalutEventVariant:
+> > +#
+> > +# The variant of KVMPMUX86DefalutEvent with the string, rather than
+> > +# the numeric value.
+> > +#
+> > +# @select: x86 PMU event select field.  This field is a 12-bit
+> > +#     unsigned number string.
+> > +#
+> > +# @umask: x86 PMU event umask field. This field is a uint8 string.
+> 
+> Why are these strings?  How are they parsed into numbers?
+
+In practice, the values associated with PMU events (code for arm, select&
+umask for x86) are often expressed in hexadecimal. Further, from linux
+perf related information (tools/perf/pmu-events/arch/*/*/*.json), x86/
+arm64/riscv/nds32/powerpc all prefer the hexadecimal numbers and only
+s390 uses decimal value.
+
+Therefore, it is necessary to support hexadecimal in order to honor PMU
+conventions.
+
+However, unfortunately, standard JSON (RFC 8259) does not support
+hexadecimal numbers. So I can only consider using the numeric string in
+the QAPI and then parsing it to a number.
+
+I parse this string into number by qemu_strtou64().
 
 
