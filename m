@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70079A2A969
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EB7A2A96F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:16:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg1j0-0007DK-MW; Thu, 06 Feb 2025 08:15:22 -0500
+	id 1tg1jx-0000lp-2f; Thu, 06 Feb 2025 08:16:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1iU-0006w3-Ds
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:14:51 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1jb-0000Zm-NK
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:16:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1iS-0000BQ-S9
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:14:50 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1ja-0000oC-6n
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:15:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738847686;
+ s=mimecast20190719; t=1738847757;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=x/P1lFWbl2YRZK7FGbPa2uPdco4GJontdhgnZkj5Vws=;
- b=dZfE/PbP+0bPgLKzbbutJbq4dwVDlpInycotfgpAKBubNj0DzuXLsOCEgd6tubar/Mvvf+
- ezjl7EadRUgYqMi2vxZWLoRSwYc7bfmB+J3ixwkNKd9SzhTjgh5TiCUQ+2V9mPwq4lsE+g
- +ao8pb4lOw5MYxG+J9aPuh4GT5p9D4s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dhIXdP5ewttDRmMW/3WbMTREMdAne2w8TJDIC/YRI2o=;
+ b=UoOOVL1GWVImi8PSRT8lpaX6Pfm0XACZrOVNFReBJrW4ycVdPbdyGVcykAcUtFBdsKl35Y
+ hj57Sf9sQKzH0508VkkVwzoK5pP4Jfrj8LU1plHSGlpCebg5XyvKK/alpV/pJOJjuBm02m
+ cN8tGYRxpBQLzD8iJ8IZBDJqvZyQr9A=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-pmGH-c4KM5a5vRmCz9SpLQ-1; Thu,
- 06 Feb 2025 08:14:45 -0500
-X-MC-Unique: pmGH-c4KM5a5vRmCz9SpLQ-1
-X-Mimecast-MFC-AGG-ID: pmGH-c4KM5a5vRmCz9SpLQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-abSFQ6jEPiCqzagT2vToYg-1; Thu,
+ 06 Feb 2025 08:14:50 -0500
+X-MC-Unique: abSFQ6jEPiCqzagT2vToYg-1
+X-Mimecast-MFC-AGG-ID: abSFQ6jEPiCqzagT2vToYg
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6F7C9195604F
- for <qemu-devel@nongnu.org>; Thu,  6 Feb 2025 13:14:44 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 54C031801A17
+ for <qemu-devel@nongnu.org>; Thu,  6 Feb 2025 13:14:48 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.15])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 81A4E30001AB; Thu,  6 Feb 2025 13:14:42 +0000 (UTC)
+ id D791330001AB; Thu,  6 Feb 2025 13:14:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 0/7] vfio: Improve error reporting when MMIO region mapping
- fails
-Date: Thu,  6 Feb 2025 14:14:28 +0100
-Message-ID: <20250206131438.1505542-1-clg@redhat.com>
+Subject: [PATCH v3 2/7] vfio/pci: Replace "iommu_device" by "vIOMMU"
+Date: Thu,  6 Feb 2025 14:14:30 +0100
+Message-ID: <20250206131438.1505542-3-clg@redhat.com>
+In-Reply-To: <20250206131438.1505542-1-clg@redhat.com>
+References: <20250206131438.1505542-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -80,58 +82,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+This is to be consistent with other reported errors related to vIOMMU
+devices.
 
-Hello,
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Under certain circumstances, a MMIO region of a device fails to map
-because the region is outside the supported IOVA ranges of the VM. In
-this case, PCI peer-to-peer transactions on BARs are not supported.
-This typically occurs when the IOMMU address space width is less than
-the physical address width, as can be the case on some Intel consumer
-processors or when using a vIOMMU device with default settings.
-
-This series tries to clarify the error message reported to the user.
-
-Thanks,
-
-C.
-
-Changes in v3:
-
- - Fixed warn_report_err_once()
- - Improved commit logs a bit 
- - Dropped check on compatibility of CPU and IOMMU address space
-   width. Will address later in its own series.
-
-Changes in v2:
-
- - Removed advice on how to resolve the issue. Diagnostic is enough.
- - Introduced helpers
- - Checked device type, since this only applies to PCI
- - Added cleanup
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 1b90c78c5a1927b1553c59de7a470544bc07788a..90570e9e4ee571d3ec5a7f7b302b1e7e7f0c9a33 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3116,7 +3116,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
  
-Cédric Le Goater (7):
-  util/error: Introduce warn_report_err_once()
-  vfio/pci: Replace "iommu_device" by "vIOMMU"
-  vfio: Rephrase comment in vfio_listener_region_add() error path
-  vfio: Introduce vfio_get_vfio_device()
-  vfio: Improve error reporting when MMIO region mapping fails
-  vfio: Remove reports of DMA mapping errors in backends
-  vfio: Remove superfluous error report in vfio_listener_region_add()
-
- include/hw/vfio/vfio-common.h |  1 +
- include/qapi/error.h          | 12 +++++++++++
- backends/iommufd.c            |  3 ---
- hw/vfio/common.c              | 40 +++++++++++++++++++++++++----------
- hw/vfio/container.c           |  2 --
- hw/vfio/helpers.c             | 10 +++++++++
- hw/vfio/pci.c                 |  2 +-
- util/error.c                  | 11 ++++++++++
- 8 files changed, 64 insertions(+), 17 deletions(-)
-
+     if (!vbasedev->mdev &&
+         !pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
+-        error_prepend(errp, "Failed to set iommu_device: ");
++        error_prepend(errp, "Failed to set vIOMMU: ");
+         goto out_teardown;
+     }
+ 
 -- 
 2.48.1
 
