@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E50A2B0C9
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC84DA2B0E7
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 19:28:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg6Yi-00008r-Ge; Thu, 06 Feb 2025 13:25:04 -0500
+	id 1tg6ax-000178-4z; Thu, 06 Feb 2025 13:27:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Yf-00007v-MG
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:25:01 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg6Yd-00083R-JP
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:25:01 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so13852115e9.1
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:24:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738866298; x=1739471098; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UEHokQ/tlwrnv9GfhI4Ppqv6w6OxNGWo4cEqfNX/KA0=;
- b=DdhT+rD9TIKmvnCLzlIiwVFZRSP5L7m0AiSL7NfH90+ebdaDu4qBEzS5PhktpRTdYf
- LILT9H77HY0gPNNYVjfm1XNjn4twhha79c7trL8RPXSc+OYQEVvFbZLfaf2CQPPXgtMx
- Yd0JX5BFhyTB2ZFFEaThIQ71aGx743fysMguZfFBrL6X4RB4DRFmfD0kBdBCKpHu55St
- mfaEY9t410dK28V9GVy1jMOF/Yw/G5xdbKiXEPngsGZMFir0zs5bKkims3lpT3vEM7aR
- K/QhFmJCvng9pn4Flbn/pi5am4Pmg3cN3E61JdsIIPd5KixCcULjtexBTdn8iMrhRKRg
- AMtQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tg6at-00016Q-Fu
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:27:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tg6ar-0000x7-QN
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 13:27:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738866436;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aqE03Vgex3UL7QEdCGyZZ09+9MfXrGLX09b9cezsDig=;
+ b=Zm2tI757ydDVgJGYp7VNdNsjMdfvglB/FU5vga9qBSIjB/pLQGRfAcExMI7vdJ+U0RyW66
+ xcVFP/AT+T+G3TqN8gtUY3SiMd6CsZ3ivUFG66Vjh5NYaE0PX+qul0sX7cDec6tDocr4Tl
+ AcVkqk5Z6J8AK520hcZGNLjsxzJlagg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-MoEy6Z3EP22qOmnkES8OhA-1; Thu, 06 Feb 2025 13:27:15 -0500
+X-MC-Unique: MoEy6Z3EP22qOmnkES8OhA-1
+X-Mimecast-MFC-AGG-ID: MoEy6Z3EP22qOmnkES8OhA
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-436723bf7ffso10546325e9.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 10:27:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738866298; x=1739471098;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UEHokQ/tlwrnv9GfhI4Ppqv6w6OxNGWo4cEqfNX/KA0=;
- b=cS3ZnKwLclarlrA6EyUxbhNDpZW9iOHiBiVmrB1UrQl+fWEjslzbmRAGGJcWMhecz3
- 4lk59/7OlKFbo6cgHXr7ACSOh8EVHSl75iDDX3jupSok95SsL4r493omrc7m4nlOjmkt
- fEVw3riI/NDNPj7J9oKK07q33r4PwBxDJhuri9Kg74T1pplhpZghMmIxq5d3YNWU1Fwa
- /jcFoTAWwKgenHE86sOceCpw7o4RMRdO/rqPmWELR7dd0PphD6HQPLoXXHsy71xK2ORe
- eG0L6wD7MVWI57hoPtVpbB7G5Pw2+WA20LVZbs+VI8XsMqMlOU/xtsOCY3pGsxZDLv5i
- R4MA==
-X-Gm-Message-State: AOJu0YzuX2uYfYz1zyD3TOk1t8in92ipFbS0vCBDm1dvAva6+48m6KcO
- UEI9v4f86MdOluMuAYyYSDbJcVSBSA0/PguHBbXh1xw/VlZKOAXX8DYWSrdbwok=
-X-Gm-Gg: ASbGnctWLcuQGCVAF0EX6bdtGsxo442vwSVQJkwb+fJFCfCNka1JWZ7PHTS5GsJ9CvU
- CUWckz5bqwi8y782XeEhLrX9t7CSEJMsBSPMlNDAqMEV5BTVq+a2X4M6LsWhGnY5t3C4XtSOEt1
- N+XPU4ASpXjhD2HusPL+A2eEgizt/yVO67H6vc6oyaSZ8iwpzesWp4nkrKiYOTtl+Tsvk3C1RJg
- ODgPNY6B+LhvnBTU1mRnZ29Ufc8RyJOp/5iRuMjjSPjFMg3aTQejKgY8zm+63XOHNHGY7bACPay
- 5RDoYifTRNsc7I3N6qHuXgbO0UH/mwptJxKJOOi4pM1pdW6gzNTU2HEuhb4=
-X-Google-Smtp-Source: AGHT+IFsypa0N3DQFPf++qwmW0XY2J1A300ZSUz3PvdOg+EGsLUyrbJN28kNphkG7hLb1OCfwKzwFQ==
-X-Received: by 2002:a5d:6d84:0:b0:385:f638:c68a with SMTP id
- ffacd0b85a97d-38dc8deae54mr40551f8f.30.1738866297741; 
- Thu, 06 Feb 2025 10:24:57 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde33e86sm2379379f8f.97.2025.02.06.10.24.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 10:24:57 -0800 (PST)
-Message-ID: <ce653340-1375-41b5-bebb-c7089d3ab2bb@linaro.org>
-Date: Thu, 6 Feb 2025 19:24:55 +0100
+ d=1e100.net; s=20230601; t=1738866434; x=1739471234;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aqE03Vgex3UL7QEdCGyZZ09+9MfXrGLX09b9cezsDig=;
+ b=MLwhoIrtmDB82HCeHZK85w9KPVoAqYb3Z5JEa4BsLZtetAQG3WyV0wywRAeYVx1qGD
+ xw1plu3EZ0OlQeusLWwH9ClzZeYT56C7g2X30ePXJyHqV4O966YSr5O8r7aqPKwooSnX
+ lwsv2qXltUFWZWasf27QtDkPAFox7uoBounX96VyDm5FmSH1+TGfWi+Qhkegx1IAKqa+
+ 9SN4c2GwmQXOAcbIJmwj4IwM9+RYfKXcrhadHvNjWPw8cJm0OZdCwUB6CSWvkaBYN70l
+ aa++Wa9qn5hdzcE87Q6diwi36qnqXc5Dk7Sq2p/jrGZq13wQ6/XkyrCJhtl1YyMLexo3
+ /Itg==
+X-Gm-Message-State: AOJu0YwAKM8eHlay55rZUSf6fg6vNTy+YfjLZ0Swlb4RaVeB+lSeur0d
+ v7jLVKjEITdwD93QLPm+SMeDsDqJKpz2BmzfR/tnS3qycJKLwrDfESH/9XlN8++yikAwFVDuc02
+ +DZc0xF+R3ZDy5mdVnpBJpqBtMoiomyh/77fDC24Y0fIKOQP7yO514oaPqOWFicBgSTi1kON99b
+ VqnLqdUxCNo0qNX/70f18lFG5of4fn69cRjx4iLx8=
+X-Gm-Gg: ASbGnctG4r/dKwL3TbJEz3vsGxLWLF8OgJQdCdB2Ja9ed0zMDdia0hUuu+U2MQKH5sp
+ Inle8Exgi0wAOCMk9Oj/FZPgwV5QdT7wAdrqml1fyJXckvxj4kBdyPh8JGWi/pdt70z3AzLztCg
+ 927qpfGHYRg2ftmTYN7yMaO7gETRweWMl+mAjpuGIom1dPet0aMonYTFp+eR7yXgsJfOhb7wBw8
+ FbpTxIL9C6juV3T4ywhM6Id9L3OztMXpGzJ8eUZFm0tZPc1YSL0f6rhYItGL68N0Cc/+z4MfDZJ
+ 3jfvE6U=
+X-Received: by 2002:a05:600c:35cb:b0:431:557e:b40c with SMTP id
+ 5b1f17b1804b1-439249bceeemr4615835e9.27.1738866433708; 
+ Thu, 06 Feb 2025 10:27:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGluoR7CHkyMBnYcNNLAe3Umjj1M2OOwcuSaK00ewwyH4vVUIx/DSs7goTUU599Kf9l2rhuPw==
+X-Received: by 2002:a05:600c:35cb:b0:431:557e:b40c with SMTP id
+ 5b1f17b1804b1-439249bceeemr4615695e9.27.1738866433318; 
+ Thu, 06 Feb 2025 10:27:13 -0800 (PST)
+Received: from [192.168.1.84] ([93.56.163.127])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4390d933789sm62717835e9.4.2025.02.06.10.27.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Feb 2025 10:27:12 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com
+Subject: [PATCH 00/22] target/riscv: declarative CPU definitions
+Date: Thu,  6 Feb 2025 19:26:48 +0100
+Message-ID: <20250206182711.2420505-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/16] hw/microblaze: Support various endianness for
- s3adsp1800 machines
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Michal Simek <michal.simek@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Anton Johansson
- <anjo@rev.ng>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair@alistair23.me>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-References: <20250206131052.30207-1-philmd@linaro.org>
- <20250206131052.30207-12-philmd@linaro.org> <Z6S3Mgt1G7fIjeBB@redhat.com>
- <4624f149-76d0-4da5-8f13-8c015043c335@linaro.org>
- <Z6THtfjL6UVhBiW7@redhat.com>
- <3156dc3b-9553-4b5f-a934-f29ee0601887@linaro.org>
- <Z6TtisO7JGAMGILH@redhat.com>
- <63f1130e-a30d-4416-ae74-374f1fd94dbe@linaro.org>
- <Z6T6CiL_F-LvLGel@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <Z6T6CiL_F-LvLGel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,84 +103,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Michal
+Hi Alastair,
 
-On 6/2/25 19:06, Daniel P. Berrangé wrote:
-> On Thu, Feb 06, 2025 at 06:49:38PM +0100, Philippe Mathieu-Daudé wrote:
->> On 6/2/25 18:12, Daniel P. Berrangé wrote:
->>> On Thu, Feb 06, 2025 at 04:04:20PM +0100, Philippe Mathieu-Daudé wrote:
->>>> On 6/2/25 15:31, Daniel P. Berrangé wrote:
->>>>> On Thu, Feb 06, 2025 at 02:53:58PM +0100, Philippe Mathieu-Daudé wrote:
->>>>>> Hi Daniel,
->>>>>>
->>>>>> On 6/2/25 14:20, Daniel P. Berrangé wrote:
->>>>>>> On Thu, Feb 06, 2025 at 02:10:47PM +0100, Philippe Mathieu-Daudé wrote:
->>>>>>>> Introduce an abstract machine parent class which defines
->>>>>>>> the 'little_endian' property. Duplicate the current machine,
->>>>>>>> which endian is tied to the binary endianness, to one big
->>>>>>>> endian and a little endian machine; updating the machine
->>>>>>>> description. Keep the current default machine for each binary.
->>>>>>>>
->>>>>>>> 'petalogix-s3adsp1800' machine is aliased as:
->>>>>>>> - 'petalogix-s3adsp1800-be' on big-endian binary,
->>>>>>>> - 'petalogix-s3adsp1800-le' on little-endian one.
->>>>>>>
->>>>>>> Does it makes sense to expose these as different machine types ?
->>>>>>>
->>>>>>> If all the HW is identical in both cases, it feels like the
->>>>>>> endianness could just be a bool property of the machine type,
->>>>>>> rather than a new machine type.
->>>>>>
->>>>>> Our test suites expect "qemu-system-foo -M bar" to work out of
->>>>>> the box, we can not have non-default properties.
->>>>>>
->>>>>> (This is related to the raspberry pi discussion in
->>>>>> https://lore.kernel.org/qemu-devel/20250204002240.97830-1-philmd@linaro.org/).
->>>>>>
->>>>>> My plan is to deprecate 'petalogix-s3adsp1800', so once we
->>>>>> remove it we can merge both qemu-system-microblaze and
->>>>>> qemu-system-microblazeel into a single binary.
->>>>>>
->>>>>> If you don't want to add more machines, what should be the
->>>>>> endianness of the 'petalogix-s3adsp1800' machine in a binary
->>>>>> with no particular endianness? Either we add for explicit
->>>>>> endianness (fixing test suites) or we add one machine for
->>>>>> each endianness; I fail to see other options not too
->>>>>> confusing for our users.
->>>>>
->>>>> We would pick an arbitrary endianness of our choosing
->>>>> I guess. How does this work in physical machines ? Is
->>>>> the choice of endianess a firmware setting, or a choice
->>>>> by the vendor when manufacturing in some way ?
->>>>
->>>> Like MIPS*, SH4* and Xtensa*, it is a jumper on the board
->>>> (wired to a CPU pin which is sampled once at cold reset).
->>>
->>> That makes me thing even more it is just a machine type property.
->>
->> I'm happy with a machine property, this was even my first approach
->> using OnOffAuto until I ran the test-suite and have qom-introspection
->> failing.
->>
->> What should be the default?
->>
->> Per the SH4 datasheet:
->>
->>    Bit 31—Endian Flag (ENDIAN): Samples the value of the endian
->>    specification external pin (MD5) in a power-on reset by the
->>    RESET pin. The endian mode of all spaces is determined by this
->>    bit. ENDIAN is a read-only bit.
->>
->> There is no default per the spec, and I believe using one is
->> a mistake.
-> 
-> If it is left as an unspecified choice in the spec, then I would
-> presume HW vendors are picking an option based on what they
-> expect "most" common usage to be amongst their customers. IOW,
-> if we know of typically used guest OS prefer big or little, that
-> could influence our choice.
+the subject is a slightly underhanded description, in that what I really
+wanted to achieve was removing RISC-V's use of .instance_post_init; that's
+because RISC-V operate with an opposite conception of .instance_post_init
+compared to everyone else: RISC-V wants to register properties there,
+whereas x86 and hw/pci-bridge/pcie_root_port.c want to set them.
+While it's possible to move RISC-V's code to instance_init, the others
+have to run after global properties have been set by device_post_init().
 
-Please have a look at this thread:
-https://lore.kernel.org/qemu-devel/d3346a55-584b-427b-8c87-32f7411a9290@amd.com/
+However, I think the result is an improvement anyway, in that it makes
+CPU definitions entirely declarative.  Previously, multiple instance_init
+functions each override the properties that were set by the superclass,
+and the code used a mix of subclassing and direct invocation of other
+functions.  Now, instead, after .class_init all the settings for each
+model are available in a RISCVCPUDef struct, and the result is copied
+into the RISCVCPU at .instance_init time.  This is done with a single
+function that starts from the parent's RISCVCPUDef and applies the delta
+stored in the CPU's class_data.
+
+Apart from the small reduction in line count, one advantage is that
+more validation of the models can be done unconditionally at startup,
+instead of happening dynamically if a CPU model is chosen.
+
+Tested by running query-cpu-model-expansion on all concrete models,
+before and after applying the patches, with no change except the bugfix
+noted in patch 10.  The 64-bit variant of the script is as follows:
+
+  for i in \
+    "max" "max32" "rv32" "rv64" "x-rv128" "rv32i" "rv32e" "rv64i" "rv64e" \
+    "rva22u64" "rva22s64" "lowrisc-ibex" "shakti-c" "sifive-e31" "sifive-e34" \
+    "sifive-e51" "sifive-u34" "sifive-u54" "thead-c906" "veyron-v1" \
+    "tt-ascalon" "xiangshan-nanhu"
+  do
+  echo $i
+  echo "
+  {'execute': 'qmp_capabilities'}
+  {'execute': 'query-cpu-model-expansion', 'arguments':{'type': 'full', 'model': {'name': '$i'}}}
+  {'execute': 'quit'}
+  " | ./qemu-system-riscv64 -qmp stdio -display none -M none | jq .return.model > list-new/$i
+  echo "
+  {'execute': 'qmp_capabilities'}
+  {'execute': 'query-cpu-model-expansion', 'arguments':{'type': 'full', 'model': {'name': '$i'}}}
+  {'execute': 'quit'}
+  " | ../../qemu-rust/+build/qemu-system-riscv64 -qmp stdio -display none -M none | jq .return.model > list-old/$i
+  done
+
+Do you think this is a good approach?
+
+Paolo
+
+Paolo Bonzini (22):
+  target/riscv: remove unused macro DEFINE_CPU
+  target/riscv: introduce RISCVCPUDef
+  target/riscv: store RISCVCPUDef struct directly in the class
+  target/riscv: merge riscv_cpu_class_init with the class_base function
+  target/riscv: move RISCVCPUConfig fields to a header file
+  target/riscv: add more RISCVCPUDef fields
+  target/riscv: convert abstract CPU classes to RISCVCPUDef
+  target/riscv: convert profile CPU models to RISCVCPUDef
+  target/riscv: convert bare CPU models to RISCVCPUDef
+  target/riscv: move 128-bit check to TCG realize
+  target/riscv: convert dynamic CPU models to RISCVCPUDef
+  target/riscv: convert SiFive E CPU models to RISCVCPUDef
+  target/riscv: convert ibex CPU models to RISCVCPUDef
+  target/riscv: convert SiFive U models to RISCVCPUDef
+  target/riscv: th: make CSR insertion test a bit more intuitive
+  target/riscv: generalize custom CSR functionality
+  target/riscv: convert TT C906 to RISCVCPUDef
+  target/riscv: convert TT Ascalon to RISCVCPUDef
+  target/riscv: convert Ventana V1 to RISCVCPUDef
+  target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
+  target/riscv: remove .instance_post_init
+  target/riscv: move SATP modes out of CPUConfig
+
+ target/riscv/cpu-qom.h            |   2 +
+ target/riscv/cpu.h                |  43 +-
+ target/riscv/cpu_cfg.h            | 175 +-----
+ target/riscv/cpu_cfg_fields.h.inc | 163 +++++
+ hw/riscv/boot.c                   |   2 +-
+ hw/riscv/virt-acpi-build.c        |   6 +-
+ hw/riscv/virt.c                   |   4 +-
+ target/riscv/cpu.c                | 967 ++++++++++++++----------------
+ target/riscv/csr.c                |   2 +-
+ target/riscv/gdbstub.c            |   6 +-
+ target/riscv/kvm/kvm-cpu.c        |  21 +-
+ target/riscv/machine.c            |   2 +-
+ target/riscv/tcg/tcg-cpu.c        |  19 +-
+ target/riscv/th_csr.c             |  30 +-
+ target/riscv/translate.c          |   2 +-
+ 15 files changed, 689 insertions(+), 755 deletions(-)
+ create mode 100644 target/riscv/cpu_cfg_fields.h.inc
+
+-- 
+2.48.1
 
 
