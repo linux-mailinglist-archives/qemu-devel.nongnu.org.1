@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8094A2A573
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:03:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5976A2A5A3
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:14:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyif-0004E8-1m; Thu, 06 Feb 2025 05:02:49 -0500
+	id 1tfysT-0001Ty-70; Thu, 06 Feb 2025 05:12:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfyic-0004Da-Ke
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:02:46 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfysQ-0001SY-5n
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:12:54 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfyia-0006qY-PG
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:02:46 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so7227235e9.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 02:02:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tfysL-0002Hf-Ov
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 05:12:52 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-38dc1dfd9f2so171603f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 02:12:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738836163; x=1739440963; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738836768; x=1739441568; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yeaok4WWlYGNgKeHMkGKkK/9rdsvj/4UHjdGDu32Oy8=;
- b=cO/ncsmxaRlah9zFcRLG5VnkYET59yAvsO8Z4PwzUMKGB8TgDirzTUEC7c4AxDSnFT
- sMX8SAsE+clurduuuA+zmMYfwPz9hGLlHZRxrZ1ARvTYz+t9b1GhK7Q711QouzfumYhx
- XB0YFMDh/M6WfhDXoy2+v+N3ZRpsD/nmukQO0CDiXqWTtNzBBEiY/qpzCKdKiRXe+YgS
- nryphywXqvhgEFxfB0INqVfWo0Ou0pHFHJ757HDuC7XtYkpZFCjtKSH3u2GzQkbxC7dY
- dtjaH6H6ZDQG7YME5eYxAv0iRmul9QxiHHz2gUrT9thGj8aLXwzZrYbWq6jZ5cAyweUL
- Orzw==
+ bh=74qmYuiEHZsoW3qpFUrxotGCmscxu7yjDuGjZCX+Wj4=;
+ b=FavQIoe8K4z4kG9CRNFVQgkIPyME1YRyt6NwqjfPxDljRyG4Z5n4ZHfwDhh+oVeKJN
+ +BV0GOtoDkkMRHvPsa48XWktLIJ1jnOYahks0fpRpKE9aV4OIchD07ON14+vvEHTLJr6
+ cBsbDNtTsLjUkJC19BgVjXvx9ibIExG3qEwonkHazYgE3vD2x7CQEXYpyEIgFX0lQOHi
+ zCcDKpD2CPkSdH6jmUMJbp71bnXU0dJhe2hGg26wY1+VKSkpnUtpEoTb354PqpiauyKT
+ k/U0NUwDnvG85eljxpLTOlLgkeI3RqgcMPS8eplDNTMspud1ELurwqF0HG1zxpNqTevo
+ 8egg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738836163; x=1739440963;
+ d=1e100.net; s=20230601; t=1738836768; x=1739441568;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yeaok4WWlYGNgKeHMkGKkK/9rdsvj/4UHjdGDu32Oy8=;
- b=H3YXOvmIU/mj3SnfzUmI7H3bQL71PMBytNbH/Sq3BTtwo0bYbVm09hPK1XiP/DkLsd
- os6uPsxjOt3gQ7ylepO/1BCWT0Zv269HLGWHi2eAYoyVS5P7N2ivN6dGGGs9UGKHUXfS
- vBz+tNZwfN87infVlze6/Xu9QuUB7cHLaYufSxHPMfDSqMo5uZyo7OJ2BuCsSCpxNe5W
- NE/ivOi9xGCIOdYylrrCfjfcFVogLgIuCo3UFzWdgu7Kh9onAqrS7ZrypRbVeF32k1Yi
- T8yF82k/B9slz0JbLarlYx8lN0p4lHhdTIw8dXckKC4tY6lj23T0BHbms+GN8wQjmL8l
- y7sg==
-X-Gm-Message-State: AOJu0YzscFYGiiUDvCQF/rU+pSiHyfRCj4PIXwiyrS6P9Mslz4yqSNqo
- ac6kL3jE3Uu4eCiGiAOnZwy9+jRRI1XsTL7mkSxucyUrytBNqEY2LcXIvJlV+gk=
-X-Gm-Gg: ASbGnctbdVQp68h54o12C7Vy2pYguJcMhCtw7JCo3wUi9+MLbszgvj7eFocxQDFDIBK
- L622pOhH40jXkk2hYwb0xxfMsKWqyIynsVeCua2kahaVQFvdVtufURAuUiyUrPrn8lD6wQQ0A5i
- xXWxAvEsdtwoE7Ylv5IsS26RRdhCeMYzqNiy6Nc68EQUuFhZ2WCCT3X/4wDkbyWOO+f/NxqU9v6
- 2aQuju8doxvJsPFlfVjjNLregY+ziYFv56r+kmTI3LfRtt4r901ZE1AKLZHlxDJZ1/MAjVncSm2
- k45RpcCUVXejzGZ+gKevvTp/Txo7ldtuVBahtt9ZFMkmqZaJIIGaRF8a/o8=
-X-Google-Smtp-Source: AGHT+IG/gEHZ8REiLMok8ShQ3D84gz/1Ju0Z6FbD/3cJgyS2L4S9uHvQnQMCItnrNJmt1kfdcd+5ug==
-X-Received: by 2002:a05:600c:4586:b0:434:a734:d279 with SMTP id
- 5b1f17b1804b1-4390d43e90emr70963515e9.16.1738836162996; 
- Thu, 06 Feb 2025 02:02:42 -0800 (PST)
+ bh=74qmYuiEHZsoW3qpFUrxotGCmscxu7yjDuGjZCX+Wj4=;
+ b=g2MV5/pnBTaTbkVXuLEBGj9XHk8UAVkSr6FXhzh22n2Plz7HYNhD0kKiUTKboBnUiA
+ GBGOqHwlgW9f9czaPW8MhR/YRTEjMlt0hMUWN7ltA+57vPmfhuLEJ9Jl23uCaGQc7B7d
+ FbxmZvqJlZULbZjC4ceqTQeyEmK4pWS4Aaf8jyU84l6WSt28SKlEEaMhUW5NIw9xrIpe
+ Wqe9qC0WbosNHRh3+xWlv490kv9EyvkWtYXkHb8CHEuuGIjMfBcbTIVN2uHbnhrPnzId
+ kBb1ZVWD+drmzJKp+AGYl6XcR9ChfiCZ0e7id0k8vtgnuVXaMlqXrfV8yk8cf4n1Vid5
+ Doiw==
+X-Gm-Message-State: AOJu0YzKb4o+XCWiwLDAdlJnR3oI/0MUuWRNiOzcJ+A1C/N4fj7/tLwo
+ Lp+dbzztHSXxlt86j2r84XsiQzJoBWO7+zuyocDw9jAR/UCbdmKaMxuDX0VvEx8=
+X-Gm-Gg: ASbGncvQvM1GpCHVKiBYt+rAu3CTDjmz1NSfY3TlEKIBl5Tj0N+Pv16CmPHWyKBu4gp
+ +PjjdTGCc+TvykoDsxP3FU+dSy5AgQ8Yb/Dxqwdw156VP15IrDJTEAYAqaood9uMI8JWeES453H
+ q7H2z3RGpINx5W7B2q7SrmTnuUoMl9mnj2nXywhUeB9CQ5SJUJNMBV9QbUs7vAfqpWutE9Gqi86
+ hsEn4U4O7JUODs4wQKf6cOnUzKxhmWiFp0nZPU0H65T5cKEU/hjiSwfQeRmHomZr5w8+0/Qq4Hx
+ s9GKktZKzF8AB4qAB7cUzC4c6XS2J2uIFlvvmRwd8pip0aYAGuNZlig2o+k=
+X-Google-Smtp-Source: AGHT+IG8UN2JRUsaTbO/GEIpX0lp3+G9jpKZxO8CSvmHpdU80rjLnqFlC5G5cIUzm1EWYeXdfMw9rg==
+X-Received: by 2002:a05:6000:a8a:b0:385:e37a:2a56 with SMTP id
+ ffacd0b85a97d-38db48fec0bmr3972471f8f.52.1738836767869; 
+ Thu, 06 Feb 2025 02:12:47 -0800 (PST)
 Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde1de32sm1266558f8f.83.2025.02.06.02.02.42
+ ffacd0b85a97d-38dbdd1b9b3sm1336405f8f.13.2025.02.06.02.12.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 02:02:42 -0800 (PST)
-Message-ID: <ad5dcd1b-ae0e-42ac-befe-a33b3f900c71@linaro.org>
-Date: Thu, 6 Feb 2025 11:02:41 +0100
+ Thu, 06 Feb 2025 02:12:47 -0800 (PST)
+Message-ID: <34235ce5-9f6c-4968-a8c1-ab868389e9cf@linaro.org>
+Date: Thu, 6 Feb 2025 11:12:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] rust: bindings for MemoryRegionOps
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-References: <20250117194003.1173231-1-pbonzini@redhat.com>
- <20250117194003.1173231-11-pbonzini@redhat.com>
- <7e35b5b6-01dd-457b-b36f-507a85300b45@linaro.org>
- <CABgObfbr4yHBJxCVtOk9rQau3Z8M-QUy0+OqTnjecTsKTXrH0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] hw/boards: Remove all invalid uses of
+ auto_create_sdcard=true
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org
+References: <20250204180746.58357-1-philmd@linaro.org>
+ <20250204180746.58357-5-philmd@linaro.org> <87a5b07u1d.fsf@pond.sub.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfbr4yHBJxCVtOk9rQau3Z8M-QUy0+OqTnjecTsKTXrH0Q@mail.gmail.com>
+In-Reply-To: <87a5b07u1d.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,72 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/2/25 09:46, Paolo Bonzini wrote:
-> On Thu, Feb 6, 2025 at 9:40 AM Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Hi Paolo,
->>
->> On 17/1/25 20:40, Paolo Bonzini wrote:
->>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->>> ---
->>>    rust/hw/char/pl011/src/device.rs     |  43 +++---
->>>    rust/hw/char/pl011/src/lib.rs        |   1 -
->>>    rust/hw/char/pl011/src/memory_ops.rs |  36 -----
->>>    rust/qemu-api/meson.build            |   1 +
->>>    rust/qemu-api/src/lib.rs             |   1 +
->>>    rust/qemu-api/src/memory.rs          | 191 +++++++++++++++++++++++++++
->>>    rust/qemu-api/src/sysbus.rs          |   7 +-
->>>    rust/qemu-api/src/zeroable.rs        |  12 ++
->>>    8 files changed, 234 insertions(+), 58 deletions(-)
->>>    delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
->>>    create mode 100644 rust/qemu-api/src/memory.rs
->>>
->>> diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
->>> index 259efacb046..294394c6e82 100644
->>> --- a/rust/hw/char/pl011/src/device.rs
->>> +++ b/rust/hw/char/pl011/src/device.rs
->>> @@ -2,7 +2,7 @@
->>>    // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->>>    // SPDX-License-Identifier: GPL-2.0-or-later
->>>
->>> -use core::ptr::{addr_of_mut, NonNull};
->>> +use core::ptr::{addr_of, addr_of_mut, NonNull};
->>>    use std::{
->>>        ffi::CStr,
->>>        os::raw::{c_int, c_void},
->>> @@ -12,14 +12,14 @@
->>>        bindings::{self, *},
->>>        c_str, impl_vmstate_forward,
->>>        irq::InterruptSource,
->>> +    memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
->>>        prelude::*,
->>> -    qdev::{Clock, ClockEvent, DeviceImpl, ResettablePhasesImpl, ResetType},
->>> +    qdev::{Clock, ClockEvent, DeviceImpl, ResetType, ResettablePhasesImpl},
->>>        qom::{ClassInitImpl, ObjectImpl, Owned, ParentField},
->>>    };
->>>
->>>    use crate::{
->>>        device_class,
->>> -    memory_ops::PL011_OPS,
->>>        registers::{self, Interrupt},
->>>        RegisterOffset,
->>>    };
->>> @@ -490,20 +490,24 @@ impl PL011State {
->>>        /// location/instance. All its fields are expected to hold unitialized
->>>        /// values with the sole exception of `parent_obj`.
->>>        unsafe fn init(&mut self) {
->>> +        static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
->>> +            .read(&PL011State::read)
->>> +            .write(&PL011State::write)
->>> +            .native_endian()
->>
->> Could we always make .valid_sizes() explicit?
+On 5/2/25 08:03, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
 > 
-> Yes (for example build() could even fail to compile if you don't have
-> impl_sizes/valid_sizes set), but why do you want that? I'm not even
-> sure that all cases of .valid.max_access_size=4 are correct...
+>> MachineClass::auto_create_sdcard is only useful to automatically
+>> create a SD card, attach a IF_SD block drive to it and plug the
+>> card onto a SD bus. Only the ARM and RISCV targets use such
+>> feature:
+>>
+>>   $ git grep -wl IF_SD hw | cut -d/ -f-2 | sort -u
+>>   hw/arm
+>>   hw/riscv
+>>   $
+>>
+>> Remove all other uses.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Impact?
+> 
+> As far as I can tell, this stops creation of the if=sd default drive
+> these machines don't actually use.  Correct?
+> 
 
-Exactly for that :) Not have implicit default values, so correct
-values are reviewed when models are added.
+Yes, since these machines don't expose a SD-bus, the drive can
+not be attached and always triggers the same error:
+
+$ qemu-system-hppa -sd /bin/sh
+qemu-system-hppa: -sd /bin/sh: machine type does not support 
+if=sd,bus=0,unit=0
 
 
