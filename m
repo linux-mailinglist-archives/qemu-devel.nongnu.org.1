@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A12A2B4EF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 23:17:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E55A2B4F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 23:17:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgA6x-0005tc-Rw; Thu, 06 Feb 2025 17:12:39 -0500
+	id 1tgA6x-0005sY-5G; Thu, 06 Feb 2025 17:12:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3xjOlZwgKCgc31ohv0zonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--wuhaotsh.bounces.google.com>)
- id 1tgA6m-0005hE-4j
+ <3xzOlZwgKCgg42piw10powwotm.kwuymu2-lm3mtvwvov2.wzo@flex--wuhaotsh.bounces.google.com>)
+ id 1tgA6n-0005jg-Sh
  for qemu-devel@nongnu.org; Thu, 06 Feb 2025 17:12:29 -0500
-Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
+Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3xjOlZwgKCgc31ohv0zonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--wuhaotsh.bounces.google.com>)
- id 1tgA6i-0001SB-Sh
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 17:12:27 -0500
-Received: by mail-pj1-x1049.google.com with SMTP id
- 98e67ed59e1d1-2fa1c093f12so1573292a91.2
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 14:12:23 -0800 (PST)
+ <3xzOlZwgKCgg42piw10powwotm.kwuymu2-lm3mtvwvov2.wzo@flex--wuhaotsh.bounces.google.com>)
+ id 1tgA6l-0001Ss-SV
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 17:12:29 -0500
+Received: by mail-pl1-x649.google.com with SMTP id
+ d9443c01a7336-21f3aad4e0bso15778255ad.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 14:12:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1738879942; x=1739484742; darn=nongnu.org;
+ d=google.com; s=20230601; t=1738879944; x=1739484744; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=kvE7Ht553KRGIAvaHX5qBB87bcC7M5MR+v6uhs8tY1M=;
- b=sEeRo6RmhzJEzX2uz3hHksh8bAHcFVO9wHaLnSQ0TY0Urvmt7ha0Z035czu9LekgjC
- 6Adzpoh5jadPgKB+udTje5t/YLLaEZnPg0D4fEjhcaa5JynXWd7cnQ5WdR57KZVAEoR7
- vL1ZV3fkXIl0F48GBmJrHkxVO8mM18VWEC6vrwpv3fW44jBOc1Ot4x6ct5b9LxRNJWSt
- fLUviikahaeVcdAjmJTETc1IpsVhNWtA4l2BOzXVK0X4Ot9WLdqaEd//RmIEzV0SuSRb
- l9euvHI6RBJg/KMbmLzT/pfH77wLF2Qa5B6HG/uhmDT60DOgepv88KDP72wtr8v1DURP
- go8A==
+ bh=dxX6imhWZ2mg4ZjjitY6mh/e3sKQjimnzWB10ozPo74=;
+ b=Q0T+U5zMkpTJVEenrITLIc3qFUaXFkrgUhkYKBRnZvkJDTN2mt0w0Oj4KJQvXQ2tse
+ TZaSoeqJ+GNKPVqAw11sq7pQEaVb6B8o/CVH+iTzR3Rbg32Ykh+x6ZMSPqYr/oAdYRv5
+ gIJqot/W8lvnUVsYFhQFmaDDSQRU7M1xVQhwhfMy6Ul1PnPUzAT3+bBRHyR9pdu4TehG
+ Fp3aODPtRwBT4zm03AkxQQrgaI1DMySnCvwV9rW0BMwdSDNuj+CHrv4HK/cqwlt8vRRC
+ bPrsxJoJXrK+4hwo5VZXv8K02BwICtVs4lVMqRtJtqj07iGFHFBv1SOeCIYN9vqXJJHT
+ Z5Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738879942; x=1739484742;
+ d=1e100.net; s=20230601; t=1738879944; x=1739484744;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kvE7Ht553KRGIAvaHX5qBB87bcC7M5MR+v6uhs8tY1M=;
- b=lyHSmLFYwhWIeUaglGQ+/izGC/xOPzsclL4T7DIOXyy7+7+taZciBGHzOzhD1k2umC
- eVuUf308OZU4YyXtMaQ7hTMZzH6UcZr9Hc1CGSpuGMl6uiRS6fBDDrtsFRnRp74BbBBt
- 5Vz39KfiLvH419H4+D4yCwB8Uxp6iYD6s5aGRgdgWdPj0QQVRXW7TknuMGZGVK18pDgw
- DMJCbyROVWjhCMQAOD4y2qhBA5s+IBHIUIKjSKmT4gdtFZY/CHZ7yt5AZKZQmknggM35
- ITVXhUJ4ENT9TQ2zExcxWNDov1nzpznFI1ySyuqYsgTGPxW/2S4qn5+6TdjwAkizBNw1
- gU/A==
+ bh=dxX6imhWZ2mg4ZjjitY6mh/e3sKQjimnzWB10ozPo74=;
+ b=KREKNpiSyfMLg5kfEBXB+5MUwUvwzIsdOH6DHf+52j5ZSveIH9BwQqrNVtf4FO6YJs
+ Ggi/5hV3CxJqFXC8dK3lUppUNcBUP64vTBc+KMUTop1RzIvJgt5jpB5AUiw9JEjuLJgD
+ gY9lUfLSj+c+SttdvnvBBDfUjq2TdgX8S5O7fsyBZHmI7+jHB7+sohaAmMY4qxI6y+BC
+ 9kmDNXGe9+qpSwfjNfTU08jnrWspNQ8wx8BXlRsHYKOxA2vBs65LY+/1T+CmsBSyHGzm
+ Yx7U62jvKdM7UPwa3FPWmgCKTl8VoXKlpbIX2FkDjXkiq+q8pnug0tL7SdorptoYVTFu
+ ctjg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV1MNacWY5j5wV+yi7uWgDFb2uIu/VL8ww/SBjcxbvX2pXrSUH5b2MYBNzDFRhJLMTWDGiLrlPGH5md@nongnu.org
-X-Gm-Message-State: AOJu0YxMn8lAgOTQHJjNb3o14lQ2Q1h5KsOFVeK71sS+miHQRHMchr28
- 5u/Q3H55mvWQtlwIxsVJ5zZTyu5OJEcEamrRRMAkytF5+NF3Ee52RIRa2WHWYmgcOcs8QIozQtC
- Sik7Y9NZtXw==
-X-Google-Smtp-Source: AGHT+IEeWbai9Gn1PgqWB9HJc9cFYlWzRf2m1VUWpz2CsDC9GguKrbXgU6bwuqMxYZPdMSfgZ8/pxgbCqxdn6w==
-X-Received: from pjur16.prod.google.com ([2002:a17:90a:d410:b0:2f2:e5c9:de99])
+ AJvYcCXBkg1ruRDSRbBBZBNWfTSMysxjM3GsiNraixWWOtUNGaWINFbueta/a8jR76en2zg/0NVNKrqpkg2Y@nongnu.org
+X-Gm-Message-State: AOJu0YxgqSO1eKZW0BDJiKDJd/NBp240gbtnDpUx5rMcved0PRSZXgaH
+ MbhKRzPJt6IVX2ySimUjNnjoxQsXfDf9L0Cvm3fFIYOokZvTzbcAfM7gc/Q4DreO9QTgkv5jxT1
+ DD6EeCIyzbg==
+X-Google-Smtp-Source: AGHT+IGVoOEmyJs4I9rn9/wdD8pWiEqvTZY/RZFGej0twbFkVaXylFzxv5VMbBjKDNLBWEgFP8WlSQXg6OEAOw==
+X-Received: from plbmq6.prod.google.com ([2002:a17:902:fd46:b0:212:48d4:bf16])
  (user=wuhaotsh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:194f:b0:2ee:59af:a432 with SMTP id
- 98e67ed59e1d1-2fa2450985amr1053633a91.31.1738879942207; 
- Thu, 06 Feb 2025 14:12:22 -0800 (PST)
-Date: Thu,  6 Feb 2025 14:11:55 -0800
+ 2002:a17:902:e547:b0:212:996:3536 with SMTP id
+ d9443c01a7336-21f4e1cb73fmr15396815ad.10.1738879943875; 
+ Thu, 06 Feb 2025 14:12:23 -0800 (PST)
+Date: Thu,  6 Feb 2025 14:11:56 -0800
 In-Reply-To: <20250206221203.4187217-1-wuhaotsh@google.com>
 Mime-Version: 1.0
 References: <20250206221203.4187217-1-wuhaotsh@google.com>
 X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
-Message-ID: <20250206221203.4187217-10-wuhaotsh@google.com>
-Subject: [PATCH v4 09/17] hw/misc: Support 8-bytes memop in NPCM GCR module
+Message-ID: <20250206221203.4187217-11-wuhaotsh@google.com>
+Subject: [PATCH v4 10/17] hw/misc: Rename npcm7xx_clk to npcm_clk
 From: Hao Wu <wuhaotsh@google.com>
 To: peter.maydell@linaro.org
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com, 
@@ -71,16 +71,16 @@ Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com,
  chli30@nuvoton.corp-partner.google.com, pbonzini@redhat.com, 
  jasowang@redhat.com, alistair@alistair23.me, philmd@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
- envelope-from=3xjOlZwgKCgc31ohv0zonvvnsl.jvtxlt1-kl2lsuvunu1.vyn@flex--wuhaotsh.bounces.google.com;
- helo=mail-pj1-x1049.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
+ envelope-from=3xzOlZwgKCgg42piw10powwotm.kwuymu2-lm3mtvwvov2.wzo@flex--wuhaotsh.bounces.google.com;
+ helo=mail-pl1-x649.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,162 +96,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The NPCM8xx GCR device can be accessed with 64-bit memory operations.
-This patch supports that.
+NPCM7XX and NPCM8XX have a different set of CLK registers. This
+commit changes the name of the clk files to be used by both
+NPCM7XX and NPCM8XX CLK modules.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Hao Wu <wuhaotsh@google.com>
 ---
- hw/misc/npcm_gcr.c   | 94 +++++++++++++++++++++++++++++++++-----------
- hw/misc/trace-events |  4 +-
- 2 files changed, 74 insertions(+), 24 deletions(-)
+ hw/misc/meson.build                           | 2 +-
+ hw/misc/{npcm7xx_clk.c => npcm_clk.c}         | 2 +-
+ include/hw/arm/npcm7xx.h                      | 2 +-
+ include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} | 6 +++---
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+ rename hw/misc/{npcm7xx_clk.c => npcm_clk.c} (99%)
+ rename include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} (98%)
 
-diff --git a/hw/misc/npcm_gcr.c b/hw/misc/npcm_gcr.c
-index 7cdea2e392..d644d7ddd5 100644
---- a/hw/misc/npcm_gcr.c
-+++ b/hw/misc/npcm_gcr.c
-@@ -200,6 +200,7 @@ static uint64_t npcm_gcr_read(void *opaque, hwaddr offset, unsigned size)
-     uint32_t reg = offset / sizeof(uint32_t);
-     NPCMGCRState *s = opaque;
-     NPCMGCRClass *c = NPCM_GCR_GET_CLASS(s);
-+    uint64_t value;
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 554eb8df5b..edd36a334d 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -69,7 +69,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
+   'imx_rngc.c',
+ ))
+ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files(
+-  'npcm7xx_clk.c',
++  'npcm_clk.c',
+   'npcm_gcr.c',
+   'npcm7xx_mft.c',
+   'npcm7xx_pwm.c',
+diff --git a/hw/misc/npcm7xx_clk.c b/hw/misc/npcm_clk.c
+similarity index 99%
+rename from hw/misc/npcm7xx_clk.c
+rename to hw/misc/npcm_clk.c
+index 46f907b61c..2bcb731099 100644
+--- a/hw/misc/npcm7xx_clk.c
++++ b/hw/misc/npcm_clk.c
+@@ -16,7 +16,7 @@
  
-     if (reg >= c->nr_regs) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-@@ -208,9 +209,21 @@ static uint64_t npcm_gcr_read(void *opaque, hwaddr offset, unsigned size)
-         return 0;
-     }
+ #include "qemu/osdep.h"
  
--    trace_npcm_gcr_read(offset, s->regs[reg]);
-+    switch (size) {
-+    case 4:
-+        value = s->regs[reg];
-+        break;
-+
-+    case 8:
-+        value = deposit64(s->regs[reg], 32, 32, s->regs[reg + 1]);
-+        break;
-+
-+    default:
-+        g_assert_not_reached();
-+    }
+-#include "hw/misc/npcm7xx_clk.h"
++#include "hw/misc/npcm_clk.h"
+ #include "hw/timer/npcm7xx_timer.h"
+ #include "hw/qdev-clock.h"
+ #include "migration/vmstate.h"
+diff --git a/include/hw/arm/npcm7xx.h b/include/hw/arm/npcm7xx.h
+index 2e708471ec..e80fd91f20 100644
+--- a/include/hw/arm/npcm7xx.h
++++ b/include/hw/arm/npcm7xx.h
+@@ -23,7 +23,7 @@
+ #include "hw/gpio/npcm7xx_gpio.h"
+ #include "hw/i2c/npcm7xx_smbus.h"
+ #include "hw/mem/npcm7xx_mc.h"
+-#include "hw/misc/npcm7xx_clk.h"
++#include "hw/misc/npcm_clk.h"
+ #include "hw/misc/npcm_gcr.h"
+ #include "hw/misc/npcm7xx_mft.h"
+ #include "hw/misc/npcm7xx_pwm.h"
+diff --git a/include/hw/misc/npcm7xx_clk.h b/include/hw/misc/npcm_clk.h
+similarity index 98%
+rename from include/hw/misc/npcm7xx_clk.h
+rename to include/hw/misc/npcm_clk.h
+index 5ed4a4672b..0aef81e10c 100644
+--- a/include/hw/misc/npcm7xx_clk.h
++++ b/include/hw/misc/npcm_clk.h
+@@ -13,8 +13,8 @@
+  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  */
+-#ifndef NPCM7XX_CLK_H
+-#define NPCM7XX_CLK_H
++#ifndef NPCM_CLK_H
++#define NPCM_CLK_H
  
--    return s->regs[reg];
-+    trace_npcm_gcr_read(offset, value);
-+    return value;
- }
+ #include "exec/memory.h"
+ #include "hw/clock.h"
+@@ -177,4 +177,4 @@ struct NPCM7xxCLKState {
+ #define TYPE_NPCM7XX_CLK "npcm7xx-clk"
+ OBJECT_DECLARE_SIMPLE_TYPE(NPCM7xxCLKState, NPCM7XX_CLK)
  
- static void npcm_gcr_write(void *opaque, hwaddr offset,
-@@ -230,29 +243,65 @@ static void npcm_gcr_write(void *opaque, hwaddr offset,
-         return;
-     }
- 
--    switch (reg) {
--    case NPCM7XX_GCR_PDID:
--    case NPCM7XX_GCR_PWRON:
--    case NPCM7XX_GCR_INTSR:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "%s: register @ 0x%04" HWADDR_PRIx " is read-only\n",
--                      __func__, offset);
--        return;
--
--    case NPCM7XX_GCR_RESSR:
--    case NPCM7XX_GCR_CP2BST:
--        /* Write 1 to clear */
--        value = s->regs[reg] & ~value;
-+    switch (size) {
-+    case 4:
-+        switch (reg) {
-+        case NPCM7XX_GCR_PDID:
-+        case NPCM7XX_GCR_PWRON:
-+        case NPCM7XX_GCR_INTSR:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: register @ 0x%04" HWADDR_PRIx " is read-only\n",
-+                          __func__, offset);
-+            return;
-+
-+        case NPCM7XX_GCR_RESSR:
-+        case NPCM7XX_GCR_CP2BST:
-+            /* Write 1 to clear */
-+            value = s->regs[reg] & ~value;
-+            break;
-+
-+        case NPCM7XX_GCR_RLOCKR1:
-+        case NPCM7XX_GCR_MDLR:
-+            /* Write 1 to set */
-+            value |= s->regs[reg];
-+            break;
-+        };
-+        s->regs[reg] = value;
-         break;
- 
--    case NPCM7XX_GCR_RLOCKR1:
--    case NPCM7XX_GCR_MDLR:
--        /* Write 1 to set */
--        value |= s->regs[reg];
-+    case 8:
-+        s->regs[reg] = value;
-+        s->regs[reg + 1] = extract64(v, 32, 32);
-         break;
--    };
- 
--    s->regs[reg] = value;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static bool npcm_gcr_check_mem_op(void *opaque, hwaddr offset,
-+                                  unsigned size, bool is_write,
-+                                  MemTxAttrs attrs)
-+{
-+    NPCMGCRClass *c = NPCM_GCR_GET_CLASS(opaque);
-+
-+    if (offset >= c->nr_regs * sizeof(uint32_t)) {
-+        return false;
-+    }
-+
-+    switch (size) {
-+    case 4:
-+        return true;
-+    case 8:
-+        if (offset >= NPCM8XX_GCR_SCRPAD_00 * sizeof(uint32_t) &&
-+            offset < (NPCM8XX_GCR_NR_REGS - 1) * sizeof(uint32_t)) {
-+            return true;
-+        } else {
-+            return false;
-+        }
-+    default:
-+        return false;
-+    }
- }
- 
- static const struct MemoryRegionOps npcm_gcr_ops = {
-@@ -261,7 +310,8 @@ static const struct MemoryRegionOps npcm_gcr_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid      = {
-         .min_access_size        = 4,
--        .max_access_size        = 4,
-+        .max_access_size        = 8,
-+        .accepts                = npcm_gcr_check_mem_op,
-         .unaligned              = false,
-     },
- };
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 0f7204a237..f25dbd6030 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -135,8 +135,8 @@ npcm7xx_clk_read(uint64_t offset, uint32_t value) " offset: 0x%04" PRIx64 " valu
- npcm7xx_clk_write(uint64_t offset, uint32_t value) "offset: 0x%04" PRIx64 " value: 0x%08" PRIx32
- 
- # npcm_gcr.c
--npcm_gcr_read(uint64_t offset, uint32_t value) " offset: 0x%04" PRIx64 " value: 0x%08" PRIx32
--npcm_gcr_write(uint64_t offset, uint32_t value) "offset: 0x%04" PRIx64 " value: 0x%08" PRIx32
-+npcm_gcr_read(uint64_t offset, uint64_t value) " offset: 0x%04" PRIx64 " value: 0x%08" PRIx64
-+npcm_gcr_write(uint64_t offset, uint64_t value) "offset: 0x%04" PRIx64 " value: 0x%08" PRIx64
- 
- # npcm7xx_mft.c
- npcm7xx_mft_read(const char *name, uint64_t offset, uint16_t value) "%s: offset: 0x%04" PRIx64 " value: 0x%04" PRIx16
+-#endif /* NPCM7XX_CLK_H */
++#endif /* NPCM_CLK_H */
 -- 
 2.48.1.502.g6dc24dfdaf-goog
 
