@@ -2,68 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A81CA2A63D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E706DA2A7EC
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 12:50:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfzLM-00040B-JM; Thu, 06 Feb 2025 05:42:48 -0500
+	id 1tg0O9-0005pc-CG; Thu, 06 Feb 2025 06:49:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfzLH-0003zz-8Y; Thu, 06 Feb 2025 05:42:43 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
+ id 1tg0O1-0005mf-J9
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 06:49:38 -0500
+Received: from mailout1.samsung.com ([203.254.224.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfzLE-0003aW-Nb; Thu, 06 Feb 2025 05:42:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738838561; x=1770374561;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=0TuoMBuUpu/g96bN1tn3TkdHhKsGnYB6JKQpBFhrVBI=;
- b=S6qEg6lgHlLWAFzHpDo+WLzjpkQEJ9Hbp8lMVO08CEAw9vZaNPsRxSjy
- DiKlA/qjDACsDsZFBZadaM2/FeTdE2au8W4gGfZe8dHOjqPixv3Gcs0Sl
- EGzceG2WwIhXxjXVM+4zpsFTn0Mth2Yy3TmLPJCdhpcQ5lXWB43E+xqiQ
- M3wyJc3CZIXKPkZeF8gbF2U2+DG//lfieWROA7jMwJCVI+tRfFDpWyFMR
- uNhCZ1E+ISzPSGvAn9LHSy3+o3KHqyvw7/Uc6ug9F0HWZbqUjp8jXpLvb
- kWFWgMg+VwM5yafnJAHgAZ1EC1lYcJxBDe1umPuBdIPhvpiJmFDNjmP3C Q==;
-X-CSE-ConnectionGUID: XYOQCyxhSHivGz7vxjuAGg==
-X-CSE-MsgGUID: slrd2L+7TWyne6NhdXO2yA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39592858"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="39592858"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 02:42:37 -0800
-X-CSE-ConnectionGUID: DIGNoqYEQJOQoh3SrxxVTg==
-X-CSE-MsgGUID: r7OEm/5XTLOp7U9ER5tb6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="148384471"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 06 Feb 2025 02:42:36 -0800
-Date: Thu, 6 Feb 2025 19:02:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 2/2] rust: include rust_version in Cargo.toml
-Message-ID: <Z6SWrSZ1HSyIc52q@intel.com>
-References: <20250129083705.1321407-1-pbonzini@redhat.com>
- <20250129083705.1321407-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
+ id 1tg0Nw-0005u6-Hh
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 06:49:37 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20250206114920epoutp013c5678e88e2b33b44a70ae387eb43741~hnBiH5Py51170011700epoutp01x
+ for <qemu-devel@nongnu.org>; Thu,  6 Feb 2025 11:49:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20250206114920epoutp013c5678e88e2b33b44a70ae387eb43741~hnBiH5Py51170011700epoutp01x
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1738842560;
+ bh=8BO6fSJ3PLRi0PMbkALdhPzyPL/cIx2ZMkox75hjJVQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=uHyT8SykdZeXmjj4U3cou4cnZbK5oKsGWL72y1R/nrzdrwVWH4FZ6mq5qOj7w8Ap6
+ OGR/lAs45o7WS7Jb8K1m8HzU/9fu9GSoFsYxwS9nR9BupfL3OI53auSmboSqBZ2FXV
+ cI+uvfQPBkkWTQNhBgo5HjKQ1XiVCm22iAaWlpkA=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+ 20250206114920epcas5p46a9d6f7601ef839f81fae1057c86ae57~hnBh1mL_n1700217002epcas5p4l;
+ Thu,  6 Feb 2025 11:49:20 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.177]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4Ypb3y1qlkz4x9Pv; Thu,  6 Feb
+ 2025 11:49:18 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+ epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 56.42.29212.EB1A4A76; Thu,  6 Feb 2025 20:49:18 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250206092733epcas5p3d5435304fce10ca2eafaf10c0a8ec295~hlFvKIBvN2615426154epcas5p3B;
+ Thu,  6 Feb 2025 09:27:33 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250206092733epsmtrp197232591cf83ac86a46ec1877ab13873~hlFvGXg_r2070520705epsmtrp1e;
+ Thu,  6 Feb 2025 09:27:33 +0000 (GMT)
+X-AuditID: b6c32a50-7ebff7000000721c-7a-67a4a1be7f21
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+ epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 8C.3E.18729.48084A76; Thu,  6 Feb 2025 18:27:32 +0900 (KST)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+ epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250206092731epsmtip2c17e43ee75922a89f81fd147cf80b8e6~hlFt25wvA2968629686epsmtip2C;
+ Thu,  6 Feb 2025 09:27:31 +0000 (GMT)
+Date: Thu, 6 Feb 2025 14:57:24 +0530
+From: Vinayak Holikatti <vinayak.kh@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, krish.reddy@samsung.com, vishak.g@samsung.com,
+ a.manzanares@samsung.com, alok.rathore@samsung.com, s5.kumari@samsung.com,
+ linux-cxl@vger.kernel.org
+Subject: Re: [PATCH 2/2] hw/cxl/cxl-mailbox-utils: Add support for Media
+ operations Sanitize and Write Zeros commands (8.2.9.9.5.3)
+Message-ID: <20250206092714.zdwd6lddw64d5j3b@test-PowerEdge-R740xd>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250129083705.1321407-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+In-Reply-To: <20250124151946.0000134f@huawei.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnk+LIzCtJLcpLzFFi42LZdlhTS3ffwiXpBou3cFhMP6xo8eX0HjaL
+ VQuvsVks3LiMyeL8rFMsFsd7d7BYrDn3mQXIncPuwOHRcuQtq8eTa5uZPPq2rGL0+LxJLoAl
+ KtsmIzUxJbVIITUvOT8lMy/dVsk7ON453tTMwFDX0NLCXEkhLzE31VbJxSdA1y0zB+gKJYWy
+ xJxSoFBAYnGxkr6dTVF+aUmqQkZ+cYmtUmpBSk6BSYFecWJucWleul5eaomVoYGBkSlQYUJ2
+ xtcz09gKJhdXTN7ylqWBcX1QFyMHh4SAicTfOaVdjFwcQgJ7GCV+zDrBDuF8YpS4cvkvM4Tz
+ jVHi8K4ZQBlOsI4nuy6zQCT2MkqsOnqLDa5l58eLbCBVLAIqEi/W9LKC2GwCBhIPmo+DdYsI
+ GEm8uzGJEaSBWWATUEPTQ7AGYYFWRokPq/JBbF4BZ4nPG+exQtiCEidnPmEBsTkFDCUOzlgA
+ tlpC4CO7xI99U9ghvnCROL3MH+I8YYlXx7dAnSol8bK/Dcouljh38RMjhF0j8bprBTOEbS/R
+ eqofzGYWyJD4t+0wVL2sxNRT65gg4nwSvb+fMEHEeSV2zAOxQdaqSCx9mwmz6suzZqjxHhJz
+ 9q6DhuMLRokFU/exTWCUm4XknVlI1kHYVhKdH5pYZwGNZRaQllj+jwPC1JRYv0t/ASPrKkap
+ 1ILi3PTUZNMCQ9281HJ4LCfn525iBKdMrYAdjKs3/NU7xMjEwXiIUYKDWUmE9/T2BelCvCmJ
+ lVWpRfnxRaU5qcWHGE2BETSRWUo0OR+YtPNK4g1NLA1MzMzMTCyNzQyVxHmbd7akCwmkJ5ak
+ ZqemFqQWwfQxcXBKNTDFfpyytuH35KJdCp3CNZs99LTXlMpNjzm+5QB/6l2nyXrxz8QTAmqb
+ IpQ7khRnfOKT62yakKxW+2mzbEtY9n7VqcEyd4/Wtp95k3tmZYWgsfiMHaxStUxuPiVRyzN7
+ H5TXap16un9BQ2J4tF+1/91PE92FvXcptZsK1h8x+ZtSWmZwT/NY74dcmRM7C//vvenQl97x
+ 9V8Do5pJs+0yJrPO209+pR+59Fmk5kf8wsZIiZa8wmezDT8vN16+uJRlr6bS3tqqntP9e7Zl
+ 5xZ2Pvg1py/tZdc1teDSzya35DZci2w2mucn9byKI+wU+/I0gVOTAz5cyvnFx+jtl/P5qPbk
+ lyt8Vm/NfbH6Ye7jaCWW4oxEQy3mouJEAAxpijYiBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrILMWRmVeSWpSXmKPExsWy7bCSvG5Lw5J0g80bLSymH1a0+HJ6D5vF
+ qoXX2CwWblzGZHF+1ikWi+O9O1gs1pz7zALkzmF34PBoOfKW1ePJtc1MHn1bVjF6fN4kF8AS
+ xWWTkpqTWZZapG+XwJVxY/l99oKjBRVve+6yNzD+9u9i5OSQEDCReLLrMksXIxeHkMBuRon5
+ L/ezQySkJI7t/MkGYQtLrPz3HCwuJPCBUeLDNRMQm0VAReLFml5WEJtNwEDiQfNxsBoRASOJ
+ dzcmMYIMZRbYxChx5OZsZpCEsEArUPOqfBCbV8BZ4vPGeawQm18wSkw/tZ8FIiEocXLmEzCb
+ WcBMYt7mh0DNHEC2tMTyfxwgYU4BQ4mDMxawTGAUmIWkYxaSjlkIHQsYmVcxSqYWFOem5xYb
+ FhjmpZbrFSfmFpfmpesl5+duYgSHupbmDsbtqz7oHWJk4mA8xCjBwawkwnt6+4J0Id6UxMqq
+ 1KL8+KLSnNTiQ4zSHCxK4rziL3pThATSE0tSs1NTC1KLYLJMHJxSDUwV2aslVixYGDG3v+rq
+ priohMjqUyzbdjo1frPgnPd7eY7X2/eyPuWy65eWTJnEF3D9iddzF79pO4o3sxkd3fPf8fIz
+ I21Lj5Ufz2mq1XBya66U6p6/4YZEQ/6lb1cr+4+zPLTgSwi6dOHC9Bf7Y1nWVxV9XP7uQ9WC
+ XmZlixehtxc0ey5Rao0I/xOdF3XvVMLeJbdkqhY3vbyUt77183JrBaalcW563m3Ljr41cH6z
+ 7oihzvqt/JMm/P8ftSJZpK0tpPjRzsmdV7QFHLew7D5yuGTeQe1dbfXr701L5fzK9F7FlHFn
+ 2dZH7TaH65LbNXiVYm6Lq9o+bGZwOnyjzGvrqozKh+qHt9nOen3nOtcnJZbijERDLeai4kQA
+ GxVvyOQCAAA=
+X-CMS-MailID: 20250206092733epcas5p3d5435304fce10ca2eafaf10c0a8ec295
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+ boundary="----MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_32b8a_"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250123050913epcas5p45fb9a638e62f436076da283e86e54ea2
+References: <20250123050903.92336-1-vinayak.kh@samsung.com>
+ <CGME20250123050913epcas5p45fb9a638e62f436076da283e86e54ea2@epcas5p4.samsung.com>
+ <20250123050903.92336-3-vinayak.kh@samsung.com>
+ <20250124151946.0000134f@huawei.com>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=vinayak.kh@samsung.com; helo=mailout1.samsung.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,23 +138,433 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-> index 8a157a663fb..dbef93f6cb3 100644
-> --- a/rust/hw/char/pl011/src/device_class.rs
-> +++ b/rust/hw/char/pl011/src/device_class.rs
-> @@ -12,7 +12,6 @@
->  
->  use crate::device::{PL011Registers, PL011State};
->  
-> -#[allow(clippy::missing_const_for_fn)]
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_32b8a_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-It seems like a rebase nit since the commit 7d0520398f7f ("rust: prefer
-NonNull::new to assertions"), which is not worth an extra commit either.
+On 24/01/25 03:19PM, Jonathan Cameron wrote:
+>On Thu, 23 Jan 2025 10:39:03 +0530
+>Vinayak Holikatti <vinayak.kh@samsung.com> wrote:
+>
+>>     CXL spec 3.1 section 8.2.9.9.5.3 describes media operations commands.
+>>     CXL devices supports media operations Sanitize and Write zero command.
+>
+>As before, don't indent this.
+>
+>>
+>> Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
+>> ---
+>>  hw/cxl/cxl-mailbox-utils.c  | 217 ++++++++++++++++++++++++++++++++++--
+>>  include/hw/cxl/cxl_device.h |  11 ++
+>>  2 files changed, 220 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>> index 2315d07fb1..89847ddd9d 100644
+>> --- a/hw/cxl/cxl-mailbox-utils.c
+>> +++ b/hw/cxl/cxl-mailbox-utils.c
+>> @@ -1722,6 +1722,145 @@ static CXLRetCode cmd_sanitize_overwrite(const struct cxl_cmd *cmd,
+>>      return CXL_MBOX_BG_STARTED;
+>>  }
+>>
+>> +#define DPA_RANGE_GRANULARITY 64
+>
+>Could use existing CXL_CACHELINE_SIZE definition for this, though I guess
+>strictly speaking it could be unrelated.
+>
+>> +struct dpa_range_list_entry {
+>> +    uint64_t starting_dpa;
+>> +    uint64_t length;
+>> +};
+>> +
+>> +static int validate_dpa_addr(CXLType3Dev *ct3d, uint64_t dpa_addr,
+>> +                             size_t length)
+>> +{
+>> +    MemoryRegion *vmr = NULL, *pmr = NULL, *dc_mr = NULL;
+>> +    uint64_t vmr_size = 0, pmr_size = 0, dc_size = 0;
+>> +    int rc = 0;
+>> +
+>> +    if ((dpa_addr % DPA_RANGE_GRANULARITY) ||
+>> +         (length % DPA_RANGE_GRANULARITY)) {
+>Probably makes sense to also check for length 0 here as that would
+>be very odd if sent.
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    if (ct3d->hostvmem) {
+>> +        vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+>> +        vmr_size = memory_region_size(vmr);
+>> +    }
+>> +    if (ct3d->hostpmem) {
+>> +        pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+>> +        pmr_size = memory_region_size(pmr);
+>> +    }
+>> +    if (ct3d->dc.host_dc) {
+>> +        dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+>> +        dc_size = memory_region_size(dc_mr);
+>> +    }
+>> +
+>> +    if (!vmr && !pmr && !dc_mr) {
+>> +        return -ENODEV;
+>> +    }
+>> +
+>> +    if (dpa_addr >= vmr_size + pmr_size + dc_size ||
+>> +        (dpa_addr + length) > vmr_size + pmr_size + dc_size) {
+>
+>If length is checked as non zero above, only the second test is needed.
+>
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    if (dpa_addr > vmr_size + pmr_size) {
+>> +        if (!ct3_test_region_block_backed(ct3d, dpa_addr, length)) {
+>> +            return -ENODEV;
+>> +        }
+>> +    }
+>> +
+>> +
+>> +    return rc;
+>
+>return 0. rc is never set to anything else.
+>
+>> +}
+>> +
+>> +static int sanitize_range(CXLType3Dev *ct3d, uint64_t dpa_addr, size_t length,
+>> +                          uint8_t fill_value)
+>> +{
+>> +
+>> +    MemoryRegion *vmr = NULL, *pmr = NULL;
+>> +    uint64_t vmr_size = 0, pmr_size = 0;
+>> +    AddressSpace *as = NULL;
+>> +    MemTxAttrs mem_attrs = {0};
+>> +
+>> +    if (ct3d->hostvmem) {
+>> +        vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+>> +        vmr_size = memory_region_size(vmr);
+>> +    }
+>> +    if (ct3d->hostpmem) {
+>> +        pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+>> +        pmr_size = memory_region_size(pmr);
+>> +    }
+>> +
+>> +    if (dpa_addr < vmr_size) {
+>> +        as = &ct3d->hostvmem_as;
+>> +    } else if (dpa_addr < vmr_size + pmr_size) {
+>> +        as = &ct3d->hostpmem_as;
+>> +    } else {
+>> +        if (!ct3_test_region_block_backed(ct3d, dpa_addr, length)) {
+>> +            return -ENODEV;
+>> +        }
+>> +        as = &ct3d->dc.host_dc_as;
+>> +    }
+>
+>You could factor out everything down to here and then use that
+>for the validate_dpa_addr() as finding an address space means
+>we also checked the address is valid. Otherwise it does not match.
 
->  extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
->      let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
->      unsafe { state.as_ref().migrate_clock }
+Didnt get what you meant, validate_dpa_addr is meant for 
+checking valid dpa address and sanitize_range is 
+get the address space handle to do actual sanitize
+of dpa address, so two are different purposes, 
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>
+>> +
+>> +    return  address_space_set(as, dpa_addr,
+>
+>odd spacing after return. Should just be one space.
+>
+>> +                              fill_value, length, mem_attrs);
+>> +}
+>> +
+>> +/* Perform the actual device zeroing */
+>> +static void __do_sanitize(CXLType3Dev *ct3d)
+>> +{
+>> +    struct CXLSanitizeInfo  *san_info = ct3d->media_op_sanitize;
+>
+>Single space only before *san_info
+>
+>> +    int dpa_range_count = san_info->dpa_range_count;
+>> +    int rc = 0;
+>> +
+>> +    for (int i = 0; i < dpa_range_count; i++) {
+>> +        rc = sanitize_range(ct3d, san_info->dpa_range_list[i].starting_dpa,
+>> +                san_info->dpa_range_list[i].length, san_info->fill_value);
+>> +        if (rc) {
+>> +            goto exit;
+>> +        }
+>> +    }
+>> +    cxl_discard_all_event_records(&ct3d->cxl_dstate);
+>
+>Add a comment on why we are deleting event records when sanitizing a small
+>part of memory?
+>
+>> +exit:
+>> +    g_free(ct3d->media_op_sanitize);
+>> +    ct3d->media_op_sanitize = NULL;
+>> +    return;
+>> +}
+>> +
+>> +static int get_sanitize_duration(uint64_t total_mem)
+>
+>Where did this come from?  Factor out the existing code
+>in cmd_santize_overwrite() instead of duplicating this stack
+>of if/else if
+>
+>Ideally do that as a precursor patch as it's just code movement.
+>
+>
+>> +{
+>> +    int secs = 0;
+>> +
+>> +    if (total_mem <= 512) {
+>> +        secs = 4;
+>> +    } else if (total_mem <= 1024) {
+>> +        secs = 8;
+>> +    } else if (total_mem <= 2 * 1024) {
+>> +        secs = 15;
+>> +    } else if (total_mem <= 4 * 1024) {
+>> +        secs = 30;
+>> +    } else if (total_mem <= 8 * 1024) {
+>> +        secs = 60;
+>> +    } else if (total_mem <= 16 * 1024) {
+>> +        secs = 2 * 60;
+>> +    } else if (total_mem <= 32 * 1024) {
+>> +        secs = 4 * 60;
+>> +    } else if (total_mem <= 64 * 1024) {
+>> +        secs = 8 * 60;
+>> +    } else if (total_mem <= 128 * 1024) {
+>> +        secs = 15 * 60;
+>> +    } else if (total_mem <= 256 * 1024) {
+>> +        secs = 30 * 60;
+>> +    } else if (total_mem <= 512 * 1024) {
+>> +        secs = 60 * 60;
+>> +    } else if (total_mem <= 1024 * 1024) {
+>> +        secs = 120 * 60;
+>> +    } else {
+>> +        secs = 240 * 60; /* max 4 hrs */
+>> +    }
+>> +
+>> +    return secs;
+>> +}
+>> +
+>>  enum {
+>>      MEDIA_OP_GENERAL  = 0x0,
+>>      MEDIA_OP_SANITIZE = 0x1,
+>> @@ -1729,10 +1868,9 @@ enum {
+>>  } MEDIA_OPERATION_CLASS;
+>>
+>>  enum {
+>> -    MEDIA_OP_SUB_DISCOVERY = 0x0,
+>> -    MEDIA_OP_SUB_SANITIZE = 0x0,
+>> -    MEDIA_OP_SUB_ZERO     = 0x1,
+>> -    MEDIA_OP_SUB_CLASS_MAX
+>> +    MEDIA_OP_GEN_DISCOVERY = 0x0,
+>> +    MEDIA_OP_SAN_SANITIZE = 0x0,
+>> +    MEDIA_OP_SAN_ZERO     = 0x1,
+>
+>See naming suggestions in first patch. Make sure to tidy up so you don't introduce
+>them there then change them here!
+>
+>>  } MEDIA_OPERATION_SUB_CLASS;
+>>
+>>  struct media_op_supported_list_entry {
+>> @@ -1777,9 +1915,14 @@ static CXLRetCode cmd_media_operations(const struct cxl_cmd *cmd,
+>>      };
+>>      } QEMU_PACKED *media_op_in_pl = (void *)payload_in;
+>>
+>> +
+>
+>Blank line here doesn't add anything.
+>
+>> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>>      uint8_t media_op_cl = media_op_in_pl->media_operation_class;
+>>      uint8_t media_op_subclass = media_op_in_pl->media_operation_subclass;
+>>      uint32_t dpa_range_count = media_op_in_pl->dpa_range_count;
+>> +    uint8_t fill_value = 0;
+>> +    uint64_t total_mem = 0;
+>> +    int secs = 0;
+>>
+>>      if (len_in < sizeof(*media_op_in_pl)) {
+>>          return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+>> @@ -1788,7 +1931,7 @@ static CXLRetCode cmd_media_operations(const struct cxl_cmd *cmd,
+>>      switch (media_op_cl) {
+>>      case MEDIA_OP_GENERAL:
+>>          switch (media_op_subclass) {
+>> -        case MEDIA_OP_SUB_DISCOVERY:
+>> +        case MEDIA_OP_GEN_DISCOVERY:
+>>              int count = 0;
+>>              struct media_op_discovery_out_pl *media_out_pl =
+>>                  (void *)payload_out;
+>> @@ -1806,7 +1949,7 @@ static CXLRetCode cmd_media_operations(const struct cxl_cmd *cmd,
+>>                  return CXL_MBOX_INVALID_INPUT;
+>>              }
+>>
+>> -            media_out_pl->dpa_range_granularity = CXL_CAPACITY_MULTIPLIER;
+>> +            media_out_pl->dpa_range_granularity = DPA_RANGE_GRANULARITY;
+>>              media_out_pl->total_supported_operations = MAX_SUPPORTED_OPS;
+>>              if (num_ops > 0) {
+>>                  for (int i = start_index; i < MAX_SUPPORTED_OPS; i++) {
+>> @@ -1824,22 +1967,73 @@ disc_out:
+>>              media_out_pl->num_of_supported_operations = count;
+>>              *len_out = sizeof(struct media_op_discovery_out_pl) +
+>>              (sizeof(struct media_op_supported_list_entry) * count);
+>> -            break;
+>> +            goto exit;
+>return CXL_MBOX_SUCCESS;  No purpose in having the exit label as nothing
+>to be done.
+>
+>
+>>          default:
+>>              return CXL_MBOX_UNSUPPORTED;
+>>          }
+>>          break;
+>>      case MEDIA_OP_SANITIZE:
+>> +    {
+>
+>From code here not obvious why scoping {} needed.
+>
+>>          switch (media_op_subclass) {
+>> -
+>> +        case MEDIA_OP_SAN_SANITIZE:
+>> +            if (len_in < (sizeof(*media_op_in_pl) +
+>> +                   (dpa_range_count * sizeof(struct dpa_range_list_entry)))) {
+>> +                return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+>> +            }
+>The check applies to all current cases. So move it outside this switch statement
+>to remove duplication.  Here all you should do is set the fill_value;
+>
+>> +            fill_value = 0xF;
+>> +            goto sanitize_range;
+>> +        case MEDIA_OP_SAN_ZERO:
+>> +            if (len_in < (sizeof(*media_op_in_pl) +
+>> +                (dpa_range_count * sizeof(struct dpa_range_list_entry)))) {
+>> +                return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+>> +            }
+>> +            fill_value = 0;
+>> +            goto sanitize_range;
+>Why goto. Just break...
+>>          default:
+>>              return CXL_MBOX_UNSUPPORTED;
+>>          }
+>and have the stuff below under the sanitize_range label here.
+>
+>>          break;
+>> +    }
+>>      default:
+>>          return CXL_MBOX_UNSUPPORTED;
+>>      }
+>>
+>> +sanitize_range:
+>> +    if (dpa_range_count > 0) {
+>> +        for (int i = 0; i < dpa_range_count; i++) {
+>> +            if (validate_dpa_addr(ct3d,
+>> +                media_op_in_pl->dpa_range_list[i].starting_dpa,
+>> +                media_op_in_pl->dpa_range_list[i].length)) {
+>> +                return CXL_MBOX_INVALID_INPUT;
+>> +            }
+>> +            total_mem += media_op_in_pl->dpa_range_list[i].length;
+>> +        }
+>> +        ct3d->media_op_sanitize = g_malloc0(sizeof(struct CXLSanitizeInfo) +
+>> +                                  (dpa_range_count *
+>> +                                  sizeof(struct dpa_range_list_entry)));
+>> +
+>> +        if (ct3d->media_op_sanitize) {
+>> +            ct3d->media_op_sanitize->dpa_range_count = dpa_range_count;
+>> +            ct3d->media_op_sanitize->fill_value = fill_value;
+>> +            memcpy(ct3d->media_op_sanitize->dpa_range_list,
+>> +                   media_op_in_pl->dpa_range_list,
+>> +                   (dpa_range_count *
+>> +                   sizeof(struct dpa_range_list_entry)));
+>> +            secs = get_sanitize_duration(total_mem >> 20);
+>> +            goto start_bg;
+>> +        }
+>> +    } else if (dpa_range_count == 0) {
+>> +        goto exit;
+>    if (dpa_range_count == 0) {
+>       return CXL_MBOX_SUCCESS;
+>    }
+>    for (i = 0; i < dpa_range_count; i++)
+>
+>//that is return early in the simple case the no need for else
+>and the extra level of indent on these long lines.
+>
+>
+>> +    }
+>> +
+>> +start_bg:
+>> +    /* EBUSY other bg cmds as of now */
+>> +    cci->bg.runtime = secs * 1000UL;
+>> +    *len_out = 0;
+>> +    /* sanitize when done */
+>> +    cxl_dev_disable_media(&ct3d->cxl_dstate);
+>Why?  This is santizing part of the device. As I undestand it the
+>main aim is to offload cleanup when the device is in use. Definitely
+>don't want to disable media.  If I'm missing a reason please give
+>a spec reference.
+>
+>> +    return CXL_MBOX_BG_STARTED;
+>> +exit:
+>>      return CXL_MBOX_SUCCESS;
+>>  }
+>>
+>> @@ -3154,6 +3348,13 @@ static void bg_timercb(void *opaque)
+>>              cxl_dev_enable_media(&ct3d->cxl_dstate);
+>>          }
+>>          break;
+>> +        case 0x4402: /* Media Operations sanitize */
+>> +        {
+>> +            CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>> +            __do_sanitize(ct3d);
+>> +            cxl_dev_enable_media(&ct3d->cxl_dstate);
+>Ah. You turn it back on here.   Specification reference needed.
+>> +        }
+>> +        break;
+>>          case 0x4304: /* scan media */
+>>          {
+>>              CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+>> index a64739be25..6d82eb266a 100644
+>> --- a/include/hw/cxl/cxl_device.h
+>> +++ b/include/hw/cxl/cxl_device.h
+>> @@ -581,6 +581,15 @@ typedef struct CXLSetFeatureInfo {
+>>      size_t data_size;
+>>  } CXLSetFeatureInfo;
+>>
+>> +struct CXLSanitizeInfo {
+>> +    uint32_t dpa_range_count;
+>> +    uint8_t fill_value;
+>> +    struct {
+>> +            uint64_t starting_dpa;
+>> +            uint64_t length;
+>> +    } dpa_range_list[0];
+>[]
+>> +};
+>> +
+>>  struct CXLType3Dev {
+>>      /* Private */
+>>      PCIDevice parent_obj;
+>> @@ -651,6 +660,8 @@ struct CXLType3Dev {
+>>          uint8_t num_regions; /* 0-8 regions */
+>>          CXLDCRegion regions[DCD_MAX_NUM_REGION];
+>>      } dc;
+>> +
+>> +    struct CXLSanitizeInfo  *media_op_sanitize;
+>Here we just need to know there is a definition of struct
+>CXLSantizeInfo not what form it takes.  So use a forwards
+>defintion and push the definition of struct CXLSanitizeInfo
+>down to where it is needed only (in the c file).
+>
+>Thanks,
+>
+>Jonathan
+>
+>>  };
+>>
+>>  #define TYPE_CXL_TYPE3 "cxl-type3"
+>
 
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_32b8a_
+Content-Type: text/plain; charset="utf-8"
+
+
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_32b8a_--
 
