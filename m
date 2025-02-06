@@ -2,155 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26301A2B1EA
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19541A2B257
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg75d-0006GV-Ci; Thu, 06 Feb 2025 13:59:05 -0500
+	id 1tg7dY-0008Uq-6u; Thu, 06 Feb 2025 14:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tg75a-0006Fi-WB; Thu, 06 Feb 2025 13:59:03 -0500
-Received: from mail-mw2nam12on20614.outbound.protection.outlook.com
- ([2a01:111:f403:200a::614]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tg7dM-0008Qq-Qt
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:33:57 -0500
+Received: from mail-dm6nam12on2087.outbound.protection.outlook.com
+ ([40.107.243.87] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tg75Y-00023U-V3; Thu, 06 Feb 2025 13:59:02 -0500
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tg7dK-000373-IN
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:33:56 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KTldQc/uF72DojydcSTczvW8qWgILcW/2EJ6Jn1lLDuckgGbDTQV5tdYozNPlfhVRy9sxUUyMW4JerAWYQLyLgaaXKdDw3shesUP5jjTSbSZtNMYWR/IgOXsIVcBbWikAA/PC50sAqTnhPzCZ9QAPDwiielJAmm8d9i0isfiGLZ8FijYgQqZ4k5or8jfHlVhE4nireNC4oIfMiFVpD48StCqrUeIn8a8pcFOYpHCwHF2h3N3kOO+i5GcT7FQX9Y49DnI9Fo72ymBdOku1EnxVlDBM4EldHJ5JsS08cXZeuJkOHSDAn6cMWGB/Ukz8k4XupdKQRKBj0UE+azNBtbdgg==
+ b=RMWNtW7j+5XxlytcmswIndVKM6jGOxlnvECp7dOUtp29U+izgkdzDqniH/uCkr6pUuHgjvR1lYF3qfqxa5QwxFz7w03V2Gc4k3U5gQgVaWhtK5/UCTuAFfEf+IP4raonoOH2wOfprt+9ZMsO/YWnAHzh46NNXdxZuwAqJXbn5Uw3kKqoESYY6PYHYFjing/6ntcjv4EYrdeGXnt4gCXUzf8svEz1G4Z63bOvKycvY9/R0m4OKKgYjZhubbNt7caaIHtkYRzvyhn18vHuTYcG4gDMAFCiGuZ33WMghqJnBz6bGSay++yCOpd2v8cdN1EboSisZbo2OIB0MhQNiGMEsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+HFqi/73bnRM9MGkwHZZoCVHEL4OcnXE7ci3tmndE0=;
- b=MgdkJJgficq9zlZS78o8vhpMNAt/FYptSGAlvOhXdWUZ9d55Lw/j9aWWeOFNc9UxIrLwmyoHxgbT6QogR+Xv33aGCcClH1E8du3rq0KvXaGxi3Ng0yYt1n8MJKRHZDNEjLP6XCFlaJKwzq0yVXdjI58Rob+R/UKPrhVluoSgFYKOj088tDuLpY6t2/Nf/BTfyp7sa+hssxQvRcbVjxiLKf+xcgT5cvBHl+wKj4GRsNkzP9Nz8FbMDhGohbumUjN9iLOc8kU/VlAVVcxEQqi1pE0MeQM1VY9fOgXMNpBj/rk3HBLRlCuKeKwjXjnbmTBOV0vLRrPxj8o5C3mPtiaDIA==
+ bh=oTl03S4dzjIOc24j49r7KWzJqmNMAxawXxN2EqRv3Po=;
+ b=p5zFxCUrviuVLmvSIZHBbdaVWys7ailsJtXNsZkA6z6I+9C65bHYJI9jJUREDdekVPMxIOItxRxdKA5ugCrNRIp6zzGw/67kpbxo10uqSBQO6Z2cAfcxQPRA46crpqOvqbc//no+gmXJ2DPYPxdWMWNAaGf4L5Rq58Aj3HkQjdUw8Z5vuZ2ITPQWQfLrrggdOBoJnmF7+k6NCrh/N4J+o9AhdbAdyKCezP29WGgcaSU8rVLv8v2CTwr/oCJ+mQUgTvoUC4qQW+vAOcCEwfS9BLqN+0lY31enl21QXFwmbQtB8w9MxXd3/UEUQFtrqrSF2Hyx2KbpOxXRn/S8U9eRSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+HFqi/73bnRM9MGkwHZZoCVHEL4OcnXE7ci3tmndE0=;
- b=lpyQ4W892UG/njyez8/R1NN6cKayzrgu+5oE7nnSAfzmE95kOLupMVJ/lc3aF256f8XTZCtasCtRMbtCg0qLaZ+q+v9+u7IYLL/QBHRmSRmS0MbjyN79wW2yj+u19/lLBBlAQF3tY2bGGNUI1Nv1iC3YhaOpYgNpX1IbgK4FZHMx75zUCnjDO104Nw+IOGbo1TIffNEePjj05M3XKVR9Bmp1pY9pVDT8Gc1qI2dnGyHmnKIY41hqT2VGFkDcgz+oTHviBCWudUgLbPY3+RhI2UtnWIpm4hvrVm5CeaaG3Kq+inzKyuria9P4jJocBN9iOHj2ub0AnIoFyBx02ZnmbA==
-Received: from SA0PR12CA0020.namprd12.prod.outlook.com (2603:10b6:806:6f::25)
- by IA1PR12MB8191.namprd12.prod.outlook.com (2603:10b6:208:3f3::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Thu, 6 Feb
- 2025 18:58:45 +0000
-Received: from SA2PEPF00003AEA.namprd02.prod.outlook.com
- (2603:10b6:806:6f:cafe::c) by SA0PR12CA0020.outlook.office365.com
- (2603:10b6:806:6f::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Thu,
- 6 Feb 2025 18:58:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF00003AEA.mail.protection.outlook.com (10.167.248.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.14 via Frontend Transport; Thu, 6 Feb 2025 18:58:43 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 6 Feb 2025
- 10:58:30 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 6 Feb
- 2025 10:58:30 -0800
-Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Thu, 6 Feb 2025 10:58:29 -0800
-Date: Thu, 6 Feb 2025 10:58:28 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-CC: Eric Auger <eric.auger@redhat.com>, "ddutile@redhat.com"
- <ddutile@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Jason
- Gunthorpe" <jgg@nvidia.com>, Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?=
- <berrange@redhat.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Message-ID: <Z6UGVP3olKvakHUh@Asurada-Nvidia>
-References: <Z1wh69_gZ9izr1iU@redhat.com> <Z1wsslDnwlth3A8+@nvidia.com>
- <CAFEAcA8TW2RKyFnh-TZRpfaKfZipHD5TZy_hymUr41GJ4rs4xA@mail.gmail.com>
- <329445b2f68a47269292aefb34584375@huawei.com>
- <Z39Ugx2M+FRFVVpB@Asurada-Nvidia>
- <f4e64a3a-5c1d-49f2-ac72-b84ecd353c9d@redhat.com>
- <Z6EQENkHJy7TrkYy@Asurada-Nvidia>
- <77f736f6-9ef9-462b-916e-c8cfff279044@redhat.com>
- <Z6KsAE9wnjWU0xMs@Asurada-Nvidia>
- <8224c38797344d1a9c0f453774925db3@huawei.com>
+ bh=oTl03S4dzjIOc24j49r7KWzJqmNMAxawXxN2EqRv3Po=;
+ b=mUmFriZ7OHeqQhAOlkwOkz++PWPw92Wbq3mTVG/E967/XuBObXMoRpTpT3wpSosOgvwtMvLCbHTulKb3sLimqwrgfGXYCFaEEzrb8h9ophkHcKNs5RkZ2flJL1aubDJdE/s6hJQR3Q5cK3soAELBpsdFQMtGjtl77tUUWf7NfyM=
+Received: from CH0PR03CA0212.namprd03.prod.outlook.com (2603:10b6:610:e7::7)
+ by BY5PR12MB4115.namprd12.prod.outlook.com (2603:10b6:a03:20f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.10; Thu, 6 Feb
+ 2025 19:28:46 +0000
+Received: from CH3PEPF00000017.namprd21.prod.outlook.com
+ (2603:10b6:610:e7:cafe::32) by CH0PR03CA0212.outlook.office365.com
+ (2603:10b6:610:e7::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.28 via Frontend Transport; Thu,
+ 6 Feb 2025 19:28:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH3PEPF00000017.mail.protection.outlook.com (10.167.244.122) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8445.2 via Frontend Transport; Thu, 6 Feb 2025 19:28:46 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 6 Feb
+ 2025 13:28:45 -0600
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>
+CC: <zhao1.liu@intel.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
+ <davydov-max@yandex-team.ru>
+Subject: [PATCH v5 0/6] target/i386: Update EPYC CPU models for Cache property, RAS,
+ SVM feature and add EPYC-Turin CPU model
+Date: Thu, 6 Feb 2025 13:28:33 -0600
+Message-ID: <cover.1738869208.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <8224c38797344d1a9c0f453774925db3@huawei.com>
-X-NV-OnPremToCloud: AnonymousSubmission
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AEA:EE_|IA1PR12MB8191:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8daf9523-f7a0-4256-ab6c-08dd46e0471f
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000017:EE_|BY5PR12MB4115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 759e4cde-2ea1-4441-a24c-08dd46e4799f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026|7416014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sAckDMSoPjrdQfseadpFBv3OYj46uvsvWjFuvlrOe+SpRBS9sHbkYmQ6YIZ1?=
- =?us-ascii?Q?AJgzQ+Yp6ousVuMyiqVR8a7tCQcjthNGMNEJz/CJuAq5+ebi+tFFcdKzmCPO?=
- =?us-ascii?Q?RicSPDC+DXInslgbf9hLRZUafM9oDgg18RD9IyRjhuJpipItfU9c9lNrBKBh?=
- =?us-ascii?Q?p4524wiqOM85CtfLtAJtWrqpRzSJKKYk6Wx4LtKkdsXuZhMFrQAA5/bRC8cS?=
- =?us-ascii?Q?9vGu8lnVoa/FK/+nLB0UD0SarraY2wCey0XT3gGt8NxG7ZvNBeHfX09JrDnq?=
- =?us-ascii?Q?wX8crxPuTWu19X+mgHiijjxa3lyY2xXZ3xCBxx7u15Z3qpxBfYgQf4ukJon/?=
- =?us-ascii?Q?IteM6TjqcnO4Qs0fWgJHq+7ODwOlgJI/u4BlrdKMXpdapmPUtqVntYEHrBjo?=
- =?us-ascii?Q?cSZ5RYPP05xU0wL04V0S4CZBTwtDNkmNYu4F7wMwWd3PPVr4monP6f1upqeC?=
- =?us-ascii?Q?yNEcO5azI7koEoq7jZPFWivd6EMat/pCAqPbupM3G/FvQkCCYSiXE14orxY7?=
- =?us-ascii?Q?SX+zHVT9echahCCYSdT+NJcPH5820ICCUgvW3U62Gbo5BYfL1oM1k6SuQYYr?=
- =?us-ascii?Q?MV85giERg5Vgd360bFpmC2tZnUAIpkmtMsEp7Rit7isZ+krsF2oOMF45pX4q?=
- =?us-ascii?Q?8R2p1jocGyd/J7KnjaG3UuNI/q65IDrTza5CceT/m8QafonQEbmItcVLKUJ4?=
- =?us-ascii?Q?hQJGZEEG9kzhP0CuX0iDZJFv3mJhkeXOnQXN5DPqAvxtHPKjy/L1GhOSSt2c?=
- =?us-ascii?Q?o2iy1U3X1SrsyHA9B+Zh1/yolIEXJ0SFvDA80IyWgD7DCWKjnvWk/ohEPw+F?=
- =?us-ascii?Q?mBHyRgH4q0s/kc0OV1zLnFdLDj+XBs8pZWaOiAPN5iQBhDSv1Qvk7D3lrEGj?=
- =?us-ascii?Q?p2E37fE9UbP4VLvnmFw64npjaBzqdOJmbxXJjFnksjHIl5dpzki3Ztjrid/q?=
- =?us-ascii?Q?XSOJ7Nxa13ZfQ7Cy1m5c40F7+/2TVRvwltlEPh8t3gvbqOdIeYW0wtfY0pIS?=
- =?us-ascii?Q?LZG4Bt5c905VYiaCYxPHYFHBFBXtpKlRDNDLSnfFhf5BbTEnVPsk8E5fY2lV?=
- =?us-ascii?Q?RA6W6OUp64pwVj0N0wlI2voo9Rla5NQTnRw82tGxSgUxzCLcJD28AFciwRZ2?=
- =?us-ascii?Q?Uiz+IoSthG/spY+w3zs29Gt7pN4+15KaanQ9R1g+CUyf58b7R9vWX29vGkzW?=
- =?us-ascii?Q?kFj3WAO6W7kbPn+HZ0ds6gOsSsy5CnQ3D/Xq9Os703pcc15jZmI/aemal25r?=
- =?us-ascii?Q?P9lmfC1+DLHxSQ8+6qAZ9zXFLEskHP845XrIWdn4vU11c9uQcuGB2T4FTegA?=
- =?us-ascii?Q?bPzIDnrB267nzT2OQz5vzktGkDboLI4bzk0uznWBl5CteU5+mGB228t2lScm?=
- =?us-ascii?Q?YV0n4ibrPXy4qny0l+lPmL7lhCqB/EyiIZgxAiQCPS1pZjQfGIe9b5fKDXHC?=
- =?us-ascii?Q?6WHrVZfbFrC13SYDi78l2TmltCfAUFrs8cfKGnVWaSlmDZC/UOjNUQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(7416014); DIR:OUT;
+ ARA:13230040|376014|82310400026|36860700013|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Us5IuhTLteOvXdsDvk9IKGHM2yI+QibTFiG09a1ysN7CF6O2fEAbHE96UQMJ?=
+ =?us-ascii?Q?yR26opT2sVW/1hKUGH9az5MmNO90OWORap83BOaheEd3pXHpL2QbSyEuuEdu?=
+ =?us-ascii?Q?Imn4BV5RZETC1gySqcLcmUQx3bsPZn+QJxOtu5RZLn2cs/4RwcVcR3TcbuiV?=
+ =?us-ascii?Q?qkclhoTt7fKHq+qOgRBGPFgjiTDTqCGZIygY8acyw6KtTMIIM2IqPhh+qaJn?=
+ =?us-ascii?Q?nH4cLJgRn7kQV6B8HJOIPQ7NZt3hjwHmiNfKK3PYUivAOYc6d1tCnWamZrwo?=
+ =?us-ascii?Q?kEWZd9+y/BJY2uUR9ym0WYoQswj4n5psVhaw8+h/+orJBRZ6N3trW9Igq11K?=
+ =?us-ascii?Q?2Lq1qO/MqjL/+jZNPUWqWMjP1lN4Eszhy7YV6HQlkbpPxG1V+23RQIwIZlQc?=
+ =?us-ascii?Q?axvPk6TIc5NkaGaq4mVAHJbX+tG/gIhavJQljyL35gD3T18FMUdggyfIwMA9?=
+ =?us-ascii?Q?BL+U+NNYxsNUuDlmn93QC7ubeSBMjtAIUJAjfNpdfYOdGmLZgPK29E4wMalv?=
+ =?us-ascii?Q?1Khl8p+nJ6xs82kIcJ2wdNNAavcjCFxGtkcur6n7mKRQ1xvLUAFr2KjByNSr?=
+ =?us-ascii?Q?8ejwTKG1qKf/dUtWa1pu1LbMDjxqT5E7NwQI7y52CGBQqStDdpNZqgPRj/gh?=
+ =?us-ascii?Q?jbG7+Y9F+7B5kXAjHaheCEFOlTWOifYPTOUpW3dW5296gUq0UVZqVawfkVVX?=
+ =?us-ascii?Q?QKpkWTIaU8wqNRHYBgvfj0Y4EQzj5Fnej0bgV8OHakj87cJZq5GD0GVeH/to?=
+ =?us-ascii?Q?Ku1jl/vqIbJuaBVnwuCFD9IgpssTDhRYIoy3FAA2Bjb2AOZ3biHAUllJO0Zd?=
+ =?us-ascii?Q?fIMRfvt3YoDLcBwpQfeXzdkXGiMkPJJjZXnLvJyvchrB/P3WJPDjH31cJB+U?=
+ =?us-ascii?Q?4hWjrBCqL7U2gb9gCrJbUd5uZfoTeW4N73deLqsgxlZkTEFKfzkYp0cXPI0j?=
+ =?us-ascii?Q?T2aCLTbMdC7joPBD5vusBatlkzFEEihn6ecCh4MHM3PiMBNrWsCp4mSEk21b?=
+ =?us-ascii?Q?pRMg9lfV30tgIKnGB+rV67YWivvL/kAUNnC0evMY95cH2Q5QoTeHSpv3/XZR?=
+ =?us-ascii?Q?hrBtErVxmjrawMI7hNXn5oPjvCCGWxHCsfkcOrN07fa6c/WCH/gEcvU8vqti?=
+ =?us-ascii?Q?7xRxRQ/7txLyqcjifNX7xt6ZNA/tQSdTCPeO3ROuqJexqA/Eut9Qfj16k/Uj?=
+ =?us-ascii?Q?1Z3tJszh9ayNW7f/6Q1cPTIGZLFzTpNt28zEJYIyOjQ7/OgvGOCocI/nzb/Q?=
+ =?us-ascii?Q?35hwqkwLTar2zWfafWKbffth5UfXe+EP7XzkiG7c3OgUx/kb5+jYkIg5ri7Z?=
+ =?us-ascii?Q?Ir4EbVunZ0zeYFK8O4CQE0vwe0aY26fK11GqOIJ/Wg5taXFPXb1cbMzw4eBp?=
+ =?us-ascii?Q?UOznU6rFtdjSLW1gioqKYlQs7K+xmrKEZkH5OXa9HDVjGKJlliLZ7yqvDFvf?=
+ =?us-ascii?Q?8ARunvsPRSN0TYoBLyCUqO/k0Dr2LLTx?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
  SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 18:58:43.4792 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8daf9523-f7a0-4256-ab6c-08dd46e0471f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003AEA.namprd02.prod.outlook.com
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 19:28:46.2533 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 759e4cde-2ea1-4441-a24c-08dd46e4799f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000017.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8191
-Received-SPF: softfail client-ip=2a01:111:f403:200a::614;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4115
+Received-SPF: permerror client-ip=40.107.243.87;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,28 +146,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 06, 2025 at 10:34:15AM +0000, Shameerali Kolothum Thodi wrote:
-> > -----Original Message-----
-> > From: Nicolin Chen <nicolinc@nvidia.com>
-> > On Tue, Feb 04, 2025 at 06:49:15PM +0100, Eric Auger wrote:
-> > > However in
-> > >
-> > > Shameer suggested he may include it in his SMMU multi instance series.
-> > > What do you both prefer?
-> > 
-> > Sure, I think it's good to include those patches, 
-> 
-> One of the feedback I received on my series was to rename "arm-smmuv3-nested"
-> to "arm-smmuv3-accel" and possibly rename function names to include "accel' as well
-> and move those functions to a separate "smmuv3-accel.c" file. I suppose that applies to 
-> the " Add HW accelerated nesting support for arm SMMUv3" series as well. 
-> 
-> Is that fine with you?
 
-Oh, no problem. If you want to rename the whole thing, please feel
-free. I do see the naming conflict between the "nested" stage and
-the "nested" HW feature, which are both supported by the vSMMU now.
+Following changes are implemented in this series.
 
-Thanks
-Nicolin
+1. Fixed the cache(L2,L3) property details in all the EPYC models.
+2. Add RAS feature bits (SUCCOR, McaOverflowRecov) on all EPYC models
+3. Add missing SVM feature bits required for nested guests on all EPYC models
+4. Add the missing feature bit fs-gs-base-ns(WRMSR to {FS,GS,KERNEL_G}S_BASE is
+   non-serializing). This bit is added in EPYC-Genoa and EPYC-Turin models.
+5. Add RAS, SVM, fs-gs-base-ns and perfmon-v2 on EPYC-Genoa and EPYC-Turin models.
+6. Add support for EPYC-Turin. 
+   (Add all the above feature bits and few additional bits movdiri, movdir64b,
+    avx512-vp2intersect, avx-vnni, sbpb, ibpb-brtype, srso-user-kernel-no).
+
+Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
+---
+v5: Add EPYC-Turin CPU model
+    Dropped ERAPS and RAPSIZE bits from EPYC-Turin models as kernel support for
+    these bits are not done yet. Users can still use the options +eraps,+rapsize
+    to test these featers.
+    Add Reviewed-by tag from Maksim for the patches already reviewed.
+
+v4: Some of the patches in v3 are already merged. Posting the rest of the patches.
+    Dropped EPYC-Turin model for now. Will post them later.
+    Added SVM feature bit as discussed in
+    https://lore.kernel.org/kvm/b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com/
+    Fixed the cache property details as discussed in
+    https://lore.kernel.org/kvm/20230504205313.225073-8-babu.moger@amd.com/
+    Thanks to Maksim and Paolo for their feedback.
+
+v3: Added SBPB, IBPB_BRTYPE, SRSO_USER_KERNEL_NO, ERAPS and RAPSIZE bits
+    to EPYC-Turin.
+    Added new patch(1) to fix a minor typo.
+
+v2: Fixed couple of typos.
+    Added Reviewed-by tag from Zhao.
+    Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
+
+Previous revisions:
+v4: https://lore.kernel.org/kvm/cover.1731616198.git.babu.moger@amd.com/
+v3: https://lore.kernel.org/kvm/cover.1729807947.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/kvm/cover.1723068946.git.babu.moger@amd.com/
+v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
+
+Babu Moger (6):
+  target/i386: Update EPYC CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Rome CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Milan CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Add feature that indicates WRMSR to BASE reg is
+    non-serializing
+  target/i386: Update EPYC-Genoa for Cache property, perfmon-v2, RAS and
+    SVM feature bits
+  target/i386: Add support for EPYC-Turin model
+
+ target/i386/cpu.c | 437 +++++++++++++++++++++++++++++++++++++++++++++-
+ target/i386/cpu.h |   2 +
+ 2 files changed, 438 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
 
