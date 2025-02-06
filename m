@@ -2,80 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B57AA2A4A7
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78ABA2A54D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:59:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyI2-0002NK-FV; Thu, 06 Feb 2025 04:35:18 -0500
+	id 1tfyem-0008Gy-EN; Thu, 06 Feb 2025 04:58:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfyHy-0002Lw-QG; Thu, 06 Feb 2025 04:35:14 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tfyek-0008Gp-6h
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:58:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfyHv-0007qb-Q2; Thu, 06 Feb 2025 04:35:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738834512; x=1770370512;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=SbzsFpxSlqt0LRVCVphwfchnZcpRBWTRP4V0UBxDljg=;
- b=KtNH0nNEz4WS/0uh7TOqmTQh+JIRSdNSdBm3lfcQ64I6NFHvClIZcyaC
- LfRTkg4AhquK1SQ69NNDM6vRUy/t4W0EG0rKdfaecvDwSPFHrRN0zoJ2b
- ARKrU61gYqlpvaui/NDbFSwQJSGZMHK3Bn6FG4DVk1MjewwQi1a7J+2vY
- oc9JSPqVzit8WIdAOcxsqQWWarxTcf/YJnj7P+XEv8Xu6hnUkIgQJNzg8
- 5FdXfd5z/Ei0RxRaOgcyRrWyFVKAQiiUFE+YsC+ItUXpCZaRQtJDB1Car
- 85vBuLqdsmJvtcbSwn8zFvWVCD6nOS4iXSlsSf3ziM7QkaEkTXHg09e0Z w==;
-X-CSE-ConnectionGUID: f2qfNfpmTUO5SmaRTc3PSg==
-X-CSE-MsgGUID: OIxj/snRRxeBba9W5XksNQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="61905380"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="61905380"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 01:35:08 -0800
-X-CSE-ConnectionGUID: 2gIBkdsDS86vB5dYK1Hsqw==
-X-CSE-MsgGUID: Mm5+m0RnTiC1gkfud4HxFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142041740"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 06 Feb 2025 01:35:03 -0800
-Date: Thu, 6 Feb 2025 17:54:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-Message-ID: <Z6SG2NLxxhz4adlV@intel.com>
-References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <20250122090517.294083-4-zhao1.liu@intel.com>
- <87zfj01z8x.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tfyei-0006IB-4K
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:58:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738835922;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=JGRL1wIcRLgVQYu6ppXJozW9sLfu2j1bpGZjXaqriK4=;
+ b=DAhQ6tOr6kFDwsRKso6ib2zss4QVMh6CV6DfshfWlEc8gjEUZaglJpevx93D7V+EmteJkS
+ 00U4nwW4aE+ElCN2A+ZkHq/OBPM9t8dNJuGIt/YDhgL2ZQDQlmq6dPOsfxuWsA6ErFwh1H
+ nN0tcBvacAN98o8Ksl4qZc4m3zWJQro=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-263-JFX1Rc-uPpuOe_zNqWC-4w-1; Thu, 06 Feb 2025 04:58:41 -0500
+X-MC-Unique: JFX1Rc-uPpuOe_zNqWC-4w-1
+X-Mimecast-MFC-AGG-ID: JFX1Rc-uPpuOe_zNqWC-4w
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ab77e03f2c0so14212866b.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:58:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738835919; x=1739440719;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JGRL1wIcRLgVQYu6ppXJozW9sLfu2j1bpGZjXaqriK4=;
+ b=q4RCdsoBZidPV20tXA3Zmw8qTuDPmER1d/Gcvyzso1jzclC9F4VX1CI8iqQ44jW/Gj
+ QX+BwEi3GRmWN93Im+ZXqL37euv4JzO9SfB1RC8zPT4C8Q6IufHiGYipdQ0qJnOSksky
+ +rUGGTDJA28hETLUcs4NBEX5wge3RBwJ9A8YclX3BuTj+TowW1SmwJdSxCuS7I/DctR4
+ 1fOxDAtr/jzD5bx2JV8uzprkYQB0LO6mBtIapFFShfrOr5WYenqtCszARMtVFLkLM4kD
+ Gkdw78pbhX7dNYSMqepU3nmyzDuiEpu7/eaVteUv//BhugCdVAnn6ur/dr9MIKK8al6o
+ pUtw==
+X-Gm-Message-State: AOJu0Yw/40KgQHScojfJpfJsEiR67RVQBIhuiUnDWb+gIw57FQUlKJTK
+ pX7IXYQKCjOw8MLcmyWg8Y4iJ1IHSrYtklZ8zR3s5erSaEo+Ph+x2KDUQKvJ75ucJ3W3t7qgnfQ
+ 04wcQwtA9+H3AQSsXoEeBPulMOSiZ4flhwdVWdqp+0pWy02tfuDf9Pq2fRVRHmygLF7x7a1Wx/X
+ IERxPg0Go4UQV5FAEJs/RK5uALWLdesPRUg8uHYjQ=
+X-Gm-Gg: ASbGncsi4JPAocegxtzWOA+vNxa0xJJp4/zEsymGFe7aHez0mMsLaVAh3Ird354jUXg
+ m+OJfiS8g9n3XmeTFTg0uQibwFPY1j0nTgZsOXksKBXBHx135FDKnomropyVdHKTxZrsL8q1r90
+ B6PnSFKrfqTIaNrOUomETpyORuJ6eFcgKbID8ZqgGtGDihhBSQ9APoVW1yl/MsqoQgD+xeG0EtM
+ 6oqXRPGkPcKrcxf/Ln2ztPbM25AVSbxC4Ez/UYEHaNMLslzSbdUp6SnQW76qYBjGb2Hvd/0Xh80
+ 3YpfuQ==
+X-Received: by 2002:a17:906:d542:b0:aa6:5d30:d971 with SMTP id
+ a640c23a62f3a-ab75e21fd4bmr630200766b.11.1738835918729; 
+ Thu, 06 Feb 2025 01:58:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHGzIIVWcn7cjZwj6VOTn2fzz/e5TpcNNzhnB+/EQMQVf7HO9owT+Aw+RJqDt9ckycgikFjwA==
+X-Received: by 2002:a17:906:d542:b0:aa6:5d30:d971 with SMTP id
+ a640c23a62f3a-ab75e21fd4bmr630198166b.11.1738835918252; 
+ Thu, 06 Feb 2025 01:58:38 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.97.55])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab772f8bbbfsm73680766b.74.2025.02.06.01.58.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Feb 2025 01:58:37 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org,
+	peter.maydell@linaro.org
+Subject: [PATCH v2] qom: reverse order of instance_post_init calls
+Date: Thu,  6 Feb 2025 10:58:36 +0100
+Message-ID: <20250206095836.2120918-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfj01z8x.fsf@pond.sub.org>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,116 +104,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 05, 2025 at 11:07:10AM +0100, Markus Armbruster wrote:
-> Date: Wed, 05 Feb 2025 11:07:10 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask
->  format in KVM PMU filter
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > The select&umask is the common way for x86 to identify the PMU event,
-> > so support this way as the "x86-default" format in kvm-pmu-filter
-> > object.
-> 
-> So, format 'raw' lets you specify the PMU event code as a number, wheras
-> 'x86-default' lets you specify it as select and umask, correct?
+Currently, the instance_post_init calls are performed from the leaf
+class and all the way up to Object.  This is incorrect because the
+leaf class cannot observe property values applied by the superclasses;
+for example, a compat property will be set on a device *after*
+the class's post_init callback has run.
 
-Yes!
+In particular this makes it impossible for implementations of
+accel_cpu_instance_init() to operate based on the actual values of
+the properties, though it seems that cxl_dsp_instance_post_init and
+rp_instance_post_init might have similar issues.
 
-> Why do we want both?
+Follow instead the same order as instance_init, starting with Object
+and running the child class's instance_post_init after the parent.
 
-This 2 formats are both wildly used in x86(for example, in perf tool).
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ include/qom/object.h | 3 ++-
+ qom/object.c         | 8 ++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-x86 documents usually specify the umask and select fields.
-
-But raw format could also be applied for ARM since ARM just uses a number
-to encode event.
-
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> [...]
-> 
-> > diff --git a/qapi/kvm.json b/qapi/kvm.json
-> > index d51aeeba7cd8..93b869e3f90c 100644
-> > --- a/qapi/kvm.json
-> > +++ b/qapi/kvm.json
-> > @@ -27,11 +27,13 @@
-> >  #
-> >  # @raw: the encoded event code that KVM can directly consume.
-> >  #
-> > +# @x86-default: standard x86 encoding format with select and umask.
-> 
-> Why is this named -default?
-
-Intel and AMD both use umask+select to encode events, but this format
-doesn't have a name... so I call it `default`, or what about
-"x86-umask-select"?
-
-> > +#
-> >  # Since 10.0
-> >  ##
-> >  { 'enum': 'KVMPMUEventEncodeFmt',
-> >    'prefix': 'KVM_PMU_EVENT_FMT',
-> > -  'data': ['raw'] }
-> > +  'data': ['raw', 'x86-default'] }
-> >  
-> >  ##
-> >  # @KVMPMURawEvent:
-> > @@ -46,6 +48,25 @@
-> >  { 'struct': 'KVMPMURawEvent',
-> >    'data': { 'code': 'uint64' } }
-> >  
-> > +##
-> > +# @KVMPMUX86DefalutEvent:
-> 
-> Default, I suppose.
-
-Thanks!
-
-> > +#
-> > +# x86 PMU event encoding with select and umask.
-> > +# raw_event = ((select & 0xf00UL) << 24) | \
-> > +#              (select) & 0xff) | \
-> > +#              ((umask) & 0xff) << 8)
-> 
-> Sphinx rejects this with "Unexpected indentation."
-> 
-> Is the formula needed here?
-
-I tried to explain the relationship between raw format and umask+select.
-
-Emm, where do you think is the right place to put the document like
-this?
-
-...
-
-> > +##
-> > +# @KVMPMUX86DefalutEventVariant:
-> > +#
-> > +# The variant of KVMPMUX86DefalutEvent with the string, rather than
-> > +# the numeric value.
-> > +#
-> > +# @select: x86 PMU event select field.  This field is a 12-bit
-> > +#     unsigned number string.
-> > +#
-> > +# @umask: x86 PMU event umask field. This field is a uint8 string.
-> 
-> Why are these strings?  How are they parsed into numbers?
-
-In practice, the values associated with PMU events (code for arm, select&
-umask for x86) are often expressed in hexadecimal. Further, from linux
-perf related information (tools/perf/pmu-events/arch/*/*/*.json), x86/
-arm64/riscv/nds32/powerpc all prefer the hexadecimal numbers and only
-s390 uses decimal value.
-
-Therefore, it is necessary to support hexadecimal in order to honor PMU
-conventions.
-
-However, unfortunately, standard JSON (RFC 8259) does not support
-hexadecimal numbers. So I can only consider using the numeric string in
-the QAPI and then parsing it to a number.
-
-I parse this string into number by qemu_strtou64().
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 9192265db76..c87a392259d 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -445,7 +445,8 @@ struct Object
+  *   class will have already been initialized so the type is only responsible
+  *   for initializing its own members.
+  * @instance_post_init: This function is called to finish initialization of
+- *   an object, after all @instance_init functions were called.
++ *   an object, after all @instance_init functions were called, as well as
++ *   @instance_post_init functions for the parent classes.
+  * @instance_finalize: This function is called during object destruction.  This
+  *   is called before the parent @instance_finalize function has been called.
+  *   An object should only free the members that are unique to its type in this
+diff --git a/qom/object.c b/qom/object.c
+index ec447f14a78..9b03da22cce 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -431,13 +431,13 @@ static void object_init_with_type(Object *obj, TypeImpl *ti)
+ 
+ static void object_post_init_with_type(Object *obj, TypeImpl *ti)
+ {
+-    if (ti->instance_post_init) {
+-        ti->instance_post_init(obj);
+-    }
+-
+     if (type_has_parent(ti)) {
+         object_post_init_with_type(obj, type_get_parent(ti));
+     }
++
++    if (ti->instance_post_init) {
++        ti->instance_post_init(obj);
++    }
+ }
+ 
+ bool object_apply_global_props(Object *obj, const GPtrArray *props,
+-- 
+2.48.1
 
 
