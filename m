@@ -2,106 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DB2A2B30B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 360D3A2B373
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 21:35:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg8AB-0008Ou-8V; Thu, 06 Feb 2025 15:07:53 -0500
+	id 1tg8ZP-0003hF-JA; Thu, 06 Feb 2025 15:33:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tg85n-0002sX-Ri
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:03:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1tg8ZM-0003gZ-Pn; Thu, 06 Feb 2025 15:33:53 -0500
+Received: from mail-bn7nam10on20621.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::621]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tg85l-0001cw-MT
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 15:03:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738872195;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DKqGPfhuKIGtj4Hghs+eXC5K6q9Go7OMpG2M9IoV/XY=;
- b=R0Bk8ek+Xti0xoAo8KfDcY5JbGf5WZRyh3BjfCtEuR+aRgmkTLe1S1B3dSkDR3tOH5OpkU
- ImRViaQe9xbHlkubmbahU/7uMMmOyQHeSFggk3d6fGAmJkcdKxz6ZwvZtvkYoECyZvW3nu
- 5cUsXFY0CMvJNZ+Nwnb9ZT73e8wrUwE=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-3hGmFWovPNCyfcxJz7Aszw-1; Thu, 06 Feb 2025 15:03:14 -0500
-X-MC-Unique: 3hGmFWovPNCyfcxJz7Aszw-1
-X-Mimecast-MFC-AGG-ID: 3hGmFWovPNCyfcxJz7Aszw
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-467b19b5641so25802811cf.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 12:03:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738872194; x=1739476994;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DKqGPfhuKIGtj4Hghs+eXC5K6q9Go7OMpG2M9IoV/XY=;
- b=h+UmFRMTO4BoVEWBsXAuy2uUtLjPCEuKKfc3yoYTPBUIbWFAKwvQW4sscHW+Kop/ah
- GPaSDiI/yZkjy5rXrslIp7C4TqrjhbymXjkLo+7pvS9wz/dBFlmTIdQvlCuh0t2dmALU
- K1kz+jy1Kwfci0zbUtR6rgQ4tnI1d6rpZlCv26ytlD0x1bPuR9YkeF5bEFovSENIaEwj
- YRrE/lefjT83TdSTwnq6j++fOo7i8nFx3c8aSkMVsijGR6uymKPfFarTNrDSLDLrNXUU
- xaheXtNJwhr9i/vJ6QptSNv1jiGWQ6xqGt2lAc7NW+2UGrfBr9pWiCEEvR/PVbuEusDP
- 0ZXw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEyPz4uL/VIHx6Dg37T92G99UB0ndYX5DiBtvtl6cweUZCkV+uOJjMRDMfC9yENLL9Qc66gyzsPsHu@nongnu.org
-X-Gm-Message-State: AOJu0Yz8FShSDG0b57OhVBzk14rAvRg/Yen5CkZxJ5mhsLRPK8lwp4NL
- ZAER4HSUAYobDNpqJRnXzyoipCjNj+5lt9ZNPq8/HU4z0t3k2A8fZpMWRmnG35wFpWQ3JAbiOBc
- ZzwsTpvrRYrhXjeUs1Gb1YFtVUogXE6o4OePNV7Slu6q+iYRXdmZY
-X-Gm-Gg: ASbGnctcu09fuyGSdO7gz/WI34wQ7sBq9WeQjPqOtBdQpE0LXMHzSR0xT9PlFXmz4cX
- N08AqbWJ3RaZuLH7LJYhEsiJ88y2h8QmUdsWjz6Ebt9GqmHIJXhUDTVW7SqceRQPdw4i/wfOc5L
- CE4PBjMq9jn8q9oz3ea7DfxwAf5Y+6Bs6thl/jSct1lEoKG0dp9kvhS6MrcwXA7uZ2vJ+rNPsTC
- XoMn5DAxgmBY+H6RJnlzdmI6keM3rtJmpNWY6qpqk5UxXHIliaFcUlmncV3agojbroRM8FQdUbr
- j2P22D3wJmppU+meAHnsTqIf4k3vMkS+J5UXOvaPdtkm2dOX
-X-Received: by 2002:a05:622a:256:b0:467:7109:c783 with SMTP id
- d75a77b69052e-4716798aeedmr9263571cf.3.1738872193992; 
- Thu, 06 Feb 2025 12:03:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IENmMKXdalwsDefa/7t7DHwVYizdH9C6eqbzxx/dcYYf6qBnHuQPjPtuYUdoaY4dulor+h2mg==
-X-Received: by 2002:a05:622a:256:b0:467:7109:c783 with SMTP id
- d75a77b69052e-4716798aeedmr9262931cf.3.1738872193467; 
- Thu, 06 Feb 2025 12:03:13 -0800 (PST)
-Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-47153beaa5csm8459611cf.68.2025.02.06.12.03.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Feb 2025 12:03:12 -0800 (PST)
-Date: Thu, 6 Feb 2025 15:03:10 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-Message-ID: <Z6UVfrllv-Ahex73@x1.local>
-References: <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
- <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050> <Z5EgFaWIyjIiOZnv@x1n>
- <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050> <Z5Jylb73kDJ6HTEZ@x1n>
- <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050> <Z5O4BSCjlhhu4rrw@x1n>
- <Z5WtRYSf7cjqITXH@yilunxu-OptiPlex-7050>
- <Z5uom-NTtekV9Crd@x1.local>
- <Z6SRxV83I9/kamop@yilunxu-OptiPlex-7050>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1tg8ZK-0001BM-L6; Thu, 06 Feb 2025 15:33:52 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mLR9OtT7JVfeiOeQ4SWvoyF8m05bZXB1DYtXN/146JgEG91ki9Psrcah4CdEvrKUluE7f6SxvNekCBCrSCXgS1eLDCayPAUESKF2mGUc6fO5KEB12Nbc+MCCNJ7SbxM2E81v89LKorU2MUPGjz3ly2osvJWMzl7lYNsDt5mJyRb77iPXIBv6QJOnIKB9WiPKMe1srKnCpl46nIm/zkBMC52NoOFjy5oQY6PeRTIUi/hj9OMC591niOhNLj+e0VurlsyPSSQTemZEmh0TkK9Sb88mvZJRlsjoeJfnJpGOkBFZ0xYSmGZbzPq3D7xjHgD1FmCBv535msiLavxJ/zxZ7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lueOmOPM0zEEGYBUu3qw+wXc5l2wC39Pq519QYV8Li4=;
+ b=nGnR2xGWbV76Al1bhzaztR8y68DqQuNlTOcmBfN37GIT1n2dGYbfv+EnKSaA/zCQK6hbFUOL0iDht8PEul95tjWJxDWfINA5lBtYd4KvrmJYojFZ85UbZifA0tIaSZTgq66xe9g8Sxa1Z2ejaz0q9hB4o8iRwvaz/WumAeB+kdkhlTjp1QLABTr1ZfTfwbFAlww5LOCV9GIbdsbg68qCxxmA9aRcSSZUvuRFhPxxsHzzAEPOvx2XyRvYtGWZb05jbzENprYmDFEsrz9rDbnNyfwpUSq5u016M6DW/3RuLRv1Ag0pufIow7HDYPLN8fnruGJNQw6sGd8US7+TAA+Sfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lueOmOPM0zEEGYBUu3qw+wXc5l2wC39Pq519QYV8Li4=;
+ b=IZp0b3LVQFl33cgpIecc0ieRFDdX4qxm/GUcVXq9ckxqBt0aTmIhFykRfvStKh0CJ2P07JLd6zK3PpjA+T717aUc2T6ZIiDKXNO3vkwKEAA+FOhIQT1e60TE2dV2wGvDBaJRsQ4hCpNnE7+H+f2Sa2cU8RoGWgyejB9XNADeh1rwJIuwmo+bbiUkJnLtBIDZf7vR+lBi0repFBDzo1sHLqcUL5CyWLl8wCxflLnMmw9+bsPmsM+NNZBo6rg2niyrJx0MF54IK6nSzzm0HodbG1Km70sk7N979uEIb+Nf6qgyxKS+OpGAn0OLIrOwrvA1KD9jbemzmKSeBOP81Kq7ZA==
+Received: from BL1PR13CA0411.namprd13.prod.outlook.com (2603:10b6:208:2c2::26)
+ by IA0PR12MB9046.namprd12.prod.outlook.com (2603:10b6:208:405::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Thu, 6 Feb
+ 2025 20:33:41 +0000
+Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
+ (2603:10b6:208:2c2:cafe::d0) by BL1PR13CA0411.outlook.office365.com
+ (2603:10b6:208:2c2::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.6 via Frontend Transport; Thu, 6
+ Feb 2025 20:33:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Thu, 6 Feb 2025 20:33:40 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 6 Feb 2025
+ 12:33:22 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 6 Feb
+ 2025 12:33:22 -0800
+Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Thu, 6 Feb 2025 12:33:21 -0800
+Date: Thu, 6 Feb 2025 12:33:19 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Daniel
+ =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>, Jason Gunthorpe
+ <jgg@nvidia.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ddutile@redhat.com"
+ <ddutile@redhat.com>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>, "nathanc@nvidia.com" <nathanc@nvidia.com>
+Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Message-ID: <Z6Ucj/u3wt9muakb@Asurada-Nvidia>
+References: <71116749d1234ab48a205fd2588151ec@huawei.com>
+ <20250206170238.GG2960738@nvidia.com> <Z6TtCLQ35UI12T77@redhat.com>
+ <20250206174647.GA3480821@nvidia.com> <Z6T3cX_fM-aeYbMI@redhat.com>
+ <20250206175843.GI2960738@nvidia.com>
+ <13b1d8b97a314cb28b87563fa9b45299@huawei.com>
+ <20250206181306.GK2960738@nvidia.com>
+ <02a0080a4a1642d69b7f5dd4707a5b3d@huawei.com>
+ <20250206182201.GL2960738@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <Z6SRxV83I9/kamop@yilunxu-OptiPlex-7050>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20250206182201.GL2960738@nvidia.com>
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|IA0PR12MB9046:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60659fb1-e119-483c-7246-08dd46ed8b13
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|7416014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Y1pkdi1g2Pk21DtQ+GimqUisHjOwirmhXPZ6up15oFRjGbK81gj9zfcSlRvT?=
+ =?us-ascii?Q?KQipTDV1QCvbB3/rILu76qcPcJQOFsEt7A3gbnlvORqv0FD/OXvU4e3INSri?=
+ =?us-ascii?Q?bBPL8Y4+6APniH9cE0HNAUIciklciznFJPksNC0XnAk5FuZLOWVHnUaPWcQ0?=
+ =?us-ascii?Q?jKx2EE1F4kAomanT7Q0hwn5av3a1tqLVFHGpLBsHTTEk5DfS9TjAIQfO5AhI?=
+ =?us-ascii?Q?WIYxXnN1wbFJEWE+TC09s3OgVQ+KtGdDD6iJ0eAVr4L9cEvyJPDe20I0IQXi?=
+ =?us-ascii?Q?lrATEdrcwTXGMvStnipUbf+LruL8kh89qdH4yai0ZbO699BlX/CszYuxsTol?=
+ =?us-ascii?Q?hcyXU3ozxSuPIbR833YqKW5nBkNnEOBAxYzeoyDBmgaP0XgpAVUu9hqcWgRq?=
+ =?us-ascii?Q?5nDJluWDV8MpVPzoy71fFhc+hS7uiqmLjP+VSH12njbRVRWK0eSQX+38STh+?=
+ =?us-ascii?Q?YYJZQaMoFMhrkFx94q097fBL0bg93OWBwDHRJ5i0c1iYCUoJFRfHI/zJpDYh?=
+ =?us-ascii?Q?0pT5scfMCyY90t0xwJWXEvGmgxrDJReFEehz2kz5KFggv+G50sRmdOaZfdsC?=
+ =?us-ascii?Q?kdgT732KA4K8axOumVyChGMr5ka9X/Os/Pw9Guwp1hyyEb3gGSGE4iro+XxZ?=
+ =?us-ascii?Q?o7FGcSHJRUyAa2kd6ylnI/6vovRu0GJzSr0ofiUfSXpmiqZGZ4vV71+U4h9r?=
+ =?us-ascii?Q?5cI1BqkunYZ64/btwvHmLxjCH5m/WQwEgm1d3L/gOdaGw9a9nEi07GmYsIQ1?=
+ =?us-ascii?Q?9rkDN3AxZ+SmFgQ9MqptYhVXeuI2NtgEvp5j22y537SMUeoLWVoNsNTEo8+j?=
+ =?us-ascii?Q?Vj7hTISN8zN/nGLH7Gq6kFljuGc4lAyF/dvBq6ZiaNSezPOeUGbwvA+4kykE?=
+ =?us-ascii?Q?ctreFcskn8oB+6UqKV+4a3V0WCXjbfRiGzzFNCF7tEzhG8BGD17S2e6orYTf?=
+ =?us-ascii?Q?H1WhLQ24m8yqdpXUuXR87cJaefD+gvzndQlkQtkMJIpaDKxTH5s09KbUNpO5?=
+ =?us-ascii?Q?tFk1dmc7bWkHMDG/Yj9Km+T+yMS37BnNUOSZS2k4T8rsfxR5unoPd9JMf2PP?=
+ =?us-ascii?Q?TPnS6NIKBP/pdDsozWrIJ9gJVKlS+hj4mzBMJD8oYoiu0A05rlcyKzt3z2V9?=
+ =?us-ascii?Q?5SwfeeomTtQzK7Uync/xLRFr6CE2DGiNo8dxwFV95HoXIm9OLOgUwP0Vpfyf?=
+ =?us-ascii?Q?iZXbMeQCj0LwI08ZSHFW0FDsZQksbu4oOdfvcRkRTWBUdkWNrC2jjfAXewJ1?=
+ =?us-ascii?Q?xpFJTCPz6hxMuW5PC2+3FysntN8yd/DKk3GRJGCc8defeEvsWmb5UZVRA0ed?=
+ =?us-ascii?Q?nmEuKeIv5QUeRFG4VLgg8ySEh+OHLzFx6FnmhLzI/9sbfmU5YtOURurg9pIk?=
+ =?us-ascii?Q?6Rq5Q+VEDRuyjuhxMJZq9EzT6pqePbPUKaqJuP5y/+jEhC1BPo2wHTQFf3T9?=
+ =?us-ascii?Q?H/Rdss4kk1i5bBW0Qkt9wYocN/PHNY6V13+rYIglD+1YmAGgPePNO6k+MqJK?=
+ =?us-ascii?Q?yzshlmTx0LiqY60=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 20:33:40.8948 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60659fb1-e119-483c-7246-08dd46ed8b13
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9046
+Received-SPF: softfail client-ip=2a01:111:f403:2009::621;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,147 +167,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 06, 2025 at 06:41:09PM +0800, Xu Yilun wrote:
-> On Thu, Jan 30, 2025 at 11:28:11AM -0500, Peter Xu wrote:
-> > On Sun, Jan 26, 2025 at 11:34:29AM +0800, Xu Yilun wrote:
-> > > > Definitely not suggesting to install an invalid pointer anywhere.  The
-> > > > mapped pointer will still be valid for gmem for example, but the fault
-> > > > isn't.  We need to differenciate two things (1) virtual address mapping,
-> > > > then (2) permission and accesses on the folios / pages of the mapping.
-> > > > Here I think it's okay if the host pointer is correctly mapped.
-> > > > 
-> > > > For your private MMIO use case, my question is if there's no host pointer
-> > > > to be mapped anyway, then what's the benefit to make the MR to be ram=on?
-> > > > Can we simply make it a normal IO memory region?  The only benefit of a
-> > > 
-> > > The guest access to normal IO memory region would be emulated by QEMU,
-> > > while private assigned MMIO requires guest direct access via Secure EPT.
-> > > 
-> > > Seems the existing code doesn't support guest direct access if
-> > > mr->ram == false:
-> > 
-> > Ah it's about this, ok.
-> > 
-> > I am not sure what's the best approach, but IMHO it's still better we stick
-> > with host pointer always available when ram=on.  OTOH, VFIO private regions
-> > may be able to provide a special mark somewhere, just like when romd_mode
-> > was done previously as below (qemu 235e8982ad39), so that KVM should still
-> > apply these MRs even if they're not RAM.
+On Thu, Feb 06, 2025 at 02:22:01PM -0400, Jason Gunthorpe wrote:
+> On Thu, Feb 06, 2025 at 06:18:14PM +0000, Shameerali Kolothum Thodi wrote:
 > 
-> Also good to me.
+> > > So even if you invent an iommu ID we cannot accept it as a handle to
+> > > create viommu in iommufd.
+> > 
+> > Creating the vIOMMU only happens when the user does a  cold/hot plug of
+> > a VFIO device. At that time Qemu checks whether the assigned id matches
+> > with whatever the kernel tell it. 
 > 
-> > 
-> > > 
-> > > static void kvm_set_phys_mem(KVMMemoryListener *kml,
-> > >                              MemoryRegionSection *section, bool add)
-> > > {
-> > >     [...]
-> > > 
-> > >     if (!memory_region_is_ram(mr)) {
-> > >         if (writable || !kvm_readonly_mem_allowed) {
-> > >             return;
-> > >         } else if (!mr->romd_mode) {
-> > >             /* If the memory device is not in romd_mode, then we actually want
-> > >              * to remove the kvm memory slot so all accesses will trap. */
-> > >             add = false;
-> > >         }
-> > >     }
-> > > 
-> > >     [...]
-> > > 
-> > >     /* register the new slot */
-> > >     do {
-> > > 
-> > >         [...]
-> > > 
-> > >         err = kvm_set_user_memory_region(kml, mem, true);
-> > >     }
-> > > }
-> > > 
-> > > > ram=on MR is, IMHO, being able to be accessed as RAM-like.  If there's no
-> > > > host pointer at all, I don't yet understand how that helps private MMIO
-> > > > from working.
-> > > 
-> > > I expect private MMIO not accessible from host, but accessible from
-> > > guest so has kvm_userspace_memory_region2 set. That means the resolving
-> > > of its PFN during EPT fault cannot depends on host pointer.
-> > > 
-> > > https://lore.kernel.org/all/20250107142719.179636-1-yilun.xu@linux.intel.com/
-> > 
-> > I'll leave this to KVM experts, but I actually didn't follow exactly on why
-> > mmu notifier is an issue to make , as I thought that was per-mm anyway, and KVM
-> > should logically be able to skip all VFIO private MMIO regions if affected.
-> 
-> I think this creates logical inconsistency. You builds the private MMIO
-> EPT mapping on fault based on the HVA<->HPA mapping, but doesn't follow
-> the HVA<->HPA mapping change. Why KVM believes the mapping on fault time
-> but doesn't on mmu notify time?
+> This is not hard up until the guest is started. If you boot a guest
+> without a backing viommu iommufd object then there will be some more
+> complexities.
 
-IMHO as long as kvm knows it's a private MMIO and there's no mapping under
-it guaranteed, then KVM can safely skip those ranges to speedup the mmu
-notifier.
+Yea, I imagined that things would be complicated with hotplugs..
 
-Said that, I'm not suggesting to stick with hvas if there're better
-alternatives.  It's only about the paragraph that confused me a bit.
+On one hand, I got the part that we need some fixed link forehand
+to ease migration/hotplugs.
 
-> 
-> > This is a comment to this part of your commit message:
-> > 
-> >         Rely on userspace mapping also means private MMIO mapping should
-> >         follow userspace mapping change via mmu_notifier. This conflicts
-> >         with the current design that mmu_notifier never impacts private
-> >         mapping. It also makes no sense to support mmu_notifier just for
-> >         private MMIO, private MMIO mapping should be fixed when CoCo-VM
-> >         accepts the private MMIO, any following mapping change without
-> >         guest permission should be invalid.
-> > 
-> > So I don't yet see a hard-no of reusing userspace mapping even if they're
-> > not faultable as of now - what if they can be faultable in the future?  I
-> 
-> The first commit of guest_memfd emphasize a lot on the benifit of
-> decoupling KVM mapping from host mapping. My understanding is even if
-> guest memfd can be faultable later, KVM should still work in a way
-> without userspace mapping.
+On the other hand, all IOMMUFD ioctls need a VFIO device FD, which
+brings the immediate attention that we cannot even decide vSMMU's
+capabilities being reflected in its IDR/IIDR registers, without a
+coldplug device -- if we boot a VM (one vSMMU<->pSMMU) with only a
+hotplug device, the IOMMU_GET_HW_INFO cannot be done during guest
+kernel probing vSMMU instance. So we would have to reset the vSMMU
+"HW" after the device hotplug?
 
-I could have implied to suggest using hva, not my intention.  I agree
-fd-based API is better too in this case at least as of now.
-
-What I'm not sure is how the whole things evolve with either gmemfd or
-device fd when they're used with shared and mappable pages.  We can leave
-that for later discussion for sure.
-
-> 
-> > am not sure..
-> > 
-> > OTOH, I also don't think we need KVM_SET_USER_MEMORY_REGION3 anyway.. The
-> > _REGION2 API is already smart enough to leave some reserved fields:
-> > 
-> > /* for KVM_SET_USER_MEMORY_REGION2 */
-> > struct kvm_userspace_memory_region2 {
-> > 	__u32 slot;
-> > 	__u32 flags;
-> > 	__u64 guest_phys_addr;
-> > 	__u64 memory_size;
-> > 	__u64 userspace_addr;
-> > 	__u64 guest_memfd_offset;
-> > 	__u32 guest_memfd;
-> > 	__u32 pad1;
-> > 	__u64 pad2[14];
-> > };
-> > 
-> > I think we _could_ reuse some pad*?  Reusing guest_memfd field sounds error
-> > prone to me.
-> 
-> It truly is. I'm expecting some suggestions here.
-
-Maybe a generic fd+offset pair from pad*?  I'm not sure whether at some
-point that could also support guest-memfd there too, after all it's easy
-for kvm to check whatever file->f_op it's backing, so logically kvm should
-allow backing a memslot with whatever file without HVA.  Just my 2 cents.
-
-Thanks,
-
--- 
-Peter Xu
-
+Nicolin
 
