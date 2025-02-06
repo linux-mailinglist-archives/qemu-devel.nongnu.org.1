@@ -2,58 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3313AA2B254
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D95A2B2A8
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 20:50:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg7bm-0006rD-Tk; Thu, 06 Feb 2025 14:32:19 -0500
+	id 1tg7sL-00043X-U4; Thu, 06 Feb 2025 14:49:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tg7bV-0006f8-Nj
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:32:02 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tg7bT-0002To-KL
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 14:32:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=2k33yNk25PagPEBcHClhr9elIb26+Y/tGaEy2O98CYA=; b=aaCXAIWwnfD8PLmaWgOVLOkyuW
- /VCCPdPKpCy9LHiLaON2RjNxmUOU1upMI2FEvSzGO80Fw/KB+r9n7Mjf/qQS+NDDnqNB3dscafa7I
- EX5w6D553eq1fzmMaGLmQtN/pTMfCVJ7tpt9ZzkJjZMcqYIB16Km24aHOO/ipNUJUZCIquJX0IS+B
- 7TX200/gEgrTqgjtELi9p0j2CJBSvQGxISci26fs2BhZJAv24nEnXa17eAC764e515XYNgglR+cYJ
- L59JEyzkvMWFJm81reDAkerXLWSH+W0fTS5xUsAKuKAdhToR3csLt51WYRRpRWOTIxEK7pss65Tnx
- jC8QsreNVCsM8hIVXSH6aplxb14zg+lZtD7dQz7fI8csuC+Zu7wTebfLsAjBsWG5YRdgfEFzvmEWg
- iovONTev81rRbHwxRiX03m43t+PmmDjgHqbF4M8O/cnKtVaRA6O9FEeym1psZZp0hXkwTCErY/g/P
- homn1IFHoSgKc0aMrmbKNlnl36xdKW2BjlQQLDpqsNcTBj3GmeGHCyQC4lAwjiWSvWH7h67ui+u/J
- XGYcE1+xOVsqobBsNIkokTej5yKC8nA4vDwllJt96Od+GQm5h/pYVm2zDD4tCwm/5YdsiKmHSdZf/
- kjpQdOOXkB0PrwNfspWDjUSg6aqeiPzTu5nBrXsS8=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Greg Kurz <groug@kaod.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PULL 0/7] 9p queue 2025-02-06
-Date: Thu, 06 Feb 2025 20:31:53 +0100
-Message-ID: <3857025.yXzrrPSgKx@silver>
-In-Reply-To: <CAJSP0QVAdAEKVi6WBGm=XM_wZTjnD5r=qEe9SWwZh6uv5O5uYw@mail.gmail.com>
-References: <cover.1738860115.git.qemu_oss@crudebyte.com>
- <CAJSP0QVAdAEKVi6WBGm=XM_wZTjnD5r=qEe9SWwZh6uv5O5uYw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1tg7sI-00042K-PU; Thu, 06 Feb 2025 14:49:23 -0500
+Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1tg7sH-0005Wg-CK; Thu, 06 Feb 2025 14:49:22 -0500
+Received: by mail-vk1-xa33.google.com with SMTP id
+ 71dfb90a1353d-51f2ec5a5fcso40030e0c.3; 
+ Thu, 06 Feb 2025 11:49:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1738871358; x=1739476158; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1AHQGaQ6a+2WwzZc/NqArKgJbl25fEKxLjNub7Wpx0U=;
+ b=DNdGMJYyFped6gSwCg+Syhof92txxdrOqwGMw8SBfYXq1KzbZTW9YF54XcuPRTDTEa
+ 1DXiVswWa8+zj4p1RjUSN0rbaqYcQ7Wzeumtpxm9Molg7nP5LWIYMsyE4YA0raEt/SuE
+ wK2w6zVozLt+JNuHTr8f5om1MxXUI7j6k4g0Zos2N7gw+LkfD/TvpucBlZrUsTDm5wPW
+ 6YfBXbl4mhY6Fc47YomwhpTvjjwVfWJPlmMMmAFarxljv+p7ZTmyl6YnehDBYCTIOc6s
+ 9NiPyMB+xLOBSzH4RH/zmlZ8lYdDRHbZEurM5Gi0aAKYLhfbSJUpUqxvYIF6PqcMYP+c
+ S5wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738871358; x=1739476158;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1AHQGaQ6a+2WwzZc/NqArKgJbl25fEKxLjNub7Wpx0U=;
+ b=EZ9So30ae/IE7JJ94AmQaXfsfrjdnVAza75LMYhVAakzn4zPPQ4OU8g5KkcQQ9sotK
+ J3qlQblqHcLtxei6bhgofzKAervfaaYgFPB7OJjShyWXcpKBNnjsC0w3iAe3ggq1dNZN
+ 9ZlJWE9ETldCURR150Lyb80x2h5U29HZplww/pJU+AXUcwKDD7eIWTb8evgeSomfAbkL
+ nDfz3G7LPyICYTvKtj33yJCmXjjeEhNwCJukGzDgMTMXYKBm5sfFSKQkHbo8TeACFXsb
+ da1dKNo4PaK6Q0CUyYhTb30KIdi3fdOLLHrD15Xdjg12H6TJ1pY4iyDgONIZlFqd5sCV
+ Omng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUr2lt3dsvnvxpayibGI3aR9eLvzwZDqvujxuoK9Q1ydz1pza75A6KTywvtgGkqAHf+jMYnV9KacZAAvA==@nongnu.org
+X-Gm-Message-State: AOJu0YwTJvPTji/t68E+KNiROqbEwxA2u6FctEEdOIcxMu7LxBYoIXfl
+ 5riFnldJpDcOUHWtXBxrQfL5pbwtDpd0Url5l6mHq3sdW46btPtpm67h6N6p
+X-Gm-Gg: ASbGncu6EJT9WgPIPEX60mWhhkEpmFqcuD7UHJNC2+YtSfAGd/fSjv6fj/XyfHTBPUV
+ bFCkiufPs46px2RqjUhpDIHgEPKRcPMZwz/np+rUvRT05r1t7e4q7yFPzGsogMSbqH4WiHfmZDD
+ EbKfMZOJZ9bw/ZjoUULrhWMVKWsC/DQ5GUG9RbD4DHasQB7AAHMu3BoeafSeyUtCybFkp0XupwV
+ AeKS7vpFiipW38+Wp4oa05I1yb9jTlV+vWetdb0Sd7wlnYAoXguH3jgET2FVqXO8zkxW0a9O+iO
+ aDaNMG2MO2uP7fG3DGizZmCgmuSrNTQFEZJbNLP3sNkZLfkk1+afLAVKUF6aVA==
+X-Google-Smtp-Source: AGHT+IFVsnACvhkr17SGqaghVSfNMb9sKxIujmMevzJ6uGZOdHm49960ITi5q9P0koSCvsuUZzIwGA==
+X-Received: by 2002:a05:6122:8c0b:b0:51c:c23e:8cd3 with SMTP id
+ 71dfb90a1353d-51f2e151fbcmr630171e0c.4.1738871358385; 
+ Thu, 06 Feb 2025 11:49:18 -0800 (PST)
+Received: from gmail.com (ip190-5-140-142.intercom.com.sv. [190.5.140.142])
+ by smtp.gmail.com with ESMTPSA id
+ 71dfb90a1353d-51f22736ed8sm283221e0c.12.2025.02.06.11.49.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Feb 2025 11:49:17 -0800 (PST)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org,
+	qemu-stable@nongnu.org
+Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ olaf@aepfle.de, edgar.iglesias@amd.com, xen-devel@lists.xenproject.org
+Subject: [PATCH v1 0/1] xen: Remove invalidation of mapcache_grants on
+ IOREQ_TYPE_INVALIDATE
+Date: Thu,  6 Feb 2025 20:49:14 +0100
+Message-ID: <20250206194915.3357743-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-vk1-xa33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,110 +96,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thursday, February 6, 2025 7:49:07 PM CET Stefan Hajnoczi wrote:
-> On Thu, Feb 6, 2025 at 11:49=E2=80=AFAM Christian Schoenebeck
-> <qemu_oss@crudebyte.com> wrote:
-> >
-> > The following changes since commit d922088eb4ba6bc31a99f17b32cf75e59dd3=
-06cd:
-> >
-> >   Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qe=
-mu into staging (2025-02-03 13:42:02 -0500)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://github.com/cschoenebeck/qemu.git tags/pull-9p-20250206
-> >
-> > for you to fetch changes up to bfa7bf02782dbd996201c90f850ca11730041af1:
-> >
-> >   MAINTAINERS: Mark me as reviewer only for 9pfs (2025-02-06 17:10:46 +=
-0100)
-> >
-> > ----------------------------------------------------------------
-> >
-> > * Greg Kurz steps back as maintainer of 9pfs.
-> >
-> > * Make multidevs=3Dremap default option (instead of multidevs=3Dwarn)
-> >   and update documentation related to this option.
-> >
-> > * Improve tracing (i.e. usefulness of log output content).
-> >
-> > * Add test cases for accessing a directory after removal.
-> >
-> > ----------------------------------------------------------------
-> > Christian Schoenebeck (6):
-> >       9pfs: improve v9fs_walk() tracing
-> >       9pfs: make multidevs=3Dremap default
-> >       9pfs: improve v9fs_open() tracing
-> >       tests/9p: rename test use_after_unlink -> use_file_after_unlink
-> >       tests/9p: add use_dir_after_unlink test
-> >       tests/9p: extend use_dir_after_unlink test with Treaddir
->=20
-> The following test failure occurred in the CI system:
->=20
-> 12/65 qemu:qtest+qtest-x86_64 / qtest-x86_64/qos-test ERROR 14.74s
-> killed by signal 6 SIGABRT
-> =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80 =E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95
-> stderr:
-> Received response 7 (RLERROR) instead of 77 (RUNLINKAT)
-> Rlerror has errno 22 (Invalid argument)
-> **
-> ERROR:../tests/qtest/libqos/virtio-9p-client.c:276:v9fs_req_recv:
-> assertion failed (hdr.id =3D=3D id): (7 =3D=3D 77)
-> (test program exited with status code -6)
->=20
-> https://gitlab.com/qemu-project/qemu/-/jobs/9065429175
->=20
-> Please take a look. Thanks!
->=20
-> Stefan
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Hmm, in that test a directory is deleted while still having a directory str=
-eam
-open (via opendir() call) on it. And that directory removal fails when runn=
-ing
-in the Gitlab cloud.
+Olaf reported a slowdown in boot time on x86 HVM guests and Stefano
+provided a patch that removes the invalidation of the grants mapcache
+since not needed, more details here:
+https://lore.kernel.org/all/Z5oIvUINVDfrrVla@zapote/T/
 
-So I guess that means that this is file system dependant behaviour whether =
-or
-not it is accepted to delete a directory while still having a dir stream op=
-en.
+Cheers,
+Edgar
 
-I'll just drop this directory test then.
+Stefano Stabellini (1):
+  xen: No need to flush the mapcache for grants
 
-/Christian
+ hw/xen/xen-mapcache.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> >
-> > Greg Kurz (1):
-> >       MAINTAINERS: Mark me as reviewer only for 9pfs
-> >
-> >  MAINTAINERS                  |  3 +--
-> >  hw/9pfs/9p-local.c           |  3 +++
-> >  hw/9pfs/9p-util-generic.c    | 50 ++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  hw/9pfs/9p-util.h            |  6 ++++++
-> >  hw/9pfs/9p.c                 | 45 +++++++++++++++++++++++++++++++++---=
-=2D--
-> >  hw/9pfs/meson.build          |  1 +
-> >  hw/9pfs/trace-events         |  4 ++--
-> >  qemu-options.hx              | 49 ++++++++++++++++++++++++------------=
-=2D------
-> >  tests/qtest/virtio-9p-test.c | 50 ++++++++++++++++++++++++++++++++++++=
-++++----
-> >  9 files changed, 175 insertions(+), 36 deletions(-)
-> >  create mode 100644 hw/9pfs/9p-util-generic.c
-> >
->=20
->=20
-
+-- 
+2.43.0
 
 
