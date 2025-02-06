@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1C7A2A7F5
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 12:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09494A2A829
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 13:14:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg0U3-0008Tw-Ik; Thu, 06 Feb 2025 06:55:51 -0500
+	id 1tg0lF-0003QO-E9; Thu, 06 Feb 2025 07:13:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg0U1-0008TU-S1
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 06:55:49 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tg0U0-0000FM-8O
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 06:55:49 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-38be3bfb045so1199837f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 03:55:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738842946; x=1739447746; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CA/dXdowQ5Z8MBm0t+JciI+P8nSeSoHs1GjTv6IxbE8=;
- b=Tdz1aIUxAc9Uya7bhBW14QoeaoenEMQ8MsR2cDYUyGojANZ0LSMyr/K2j+8yvd9z1m
- 7+w3zkCUcJvQ4uYNHB7stc+MTBj+Pt0hbPKWr4F3ckY+aa62rAelcxYrp+lyAhapBA2j
- NStoYQKRNUnXCF/fxXopG/5Sz/k5qcrsf9GD4s2bxhy7Ifh0n5tusHsEVyxxCvMlpV0w
- 2w5YYhUhE0HttGZtUcQVnWsnhnvqGHpWlVhpG9w5tpAH2Pz7uLJz7rwkfENP4h5bmsDN
- CMlUu/i6BtxWXJLC9ogRuK5lDuzj4rO54EoMtH+BUI9v4UUqr4HqL17p/bXO7xVPwKzi
- y+zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738842946; x=1739447746;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CA/dXdowQ5Z8MBm0t+JciI+P8nSeSoHs1GjTv6IxbE8=;
- b=eAFGI40fEx6I+2EqspKcTyqJwk2+KAsYd3X4Qos9mgZRrpvV/Miyp/MoECHukwI89t
- 4v/rMkRDLBWaqdpE978mMPvGx4iubnsY5DQsZZ8ABxUNR5xTqPF6FpCIZdrXbY1CO+bY
- 8e4koIuq96GPxf/g2qnLOJoixoa3Iss3d4qxvHMyF+J4RGrXhnT3end4RTdYwdUQYft1
- kv+g5/L8ZJL+W2UAMs6IwGOfYLcJ8/tOCD4H0HktwrhLuMWb0YB36Il0/S9+RymaSCgr
- DtckHehPrbFRD/PtknVYKk8ivj/cBqCfwWDSSfk/Zc4oc7xn4IASoNjgdg7vDjJPR/ah
- 0ZBg==
-X-Gm-Message-State: AOJu0YxDgRk9ont+QAQF2pRVtdvyNuwWLhdxOTj7zVD+A/MrOG1vzfHH
- pXjkrcnVr7q3N9zDi9Qhr/h+sWJ/zwmNpSy3ccvyXtwF2KSAdJFlnnc618mNLt1cKJALpRjR4R7
- 99qY=
-X-Gm-Gg: ASbGncvs9LR9aJDMpJXmLXDXr90q8bV1Lq55TAk+xGZsMTIgeQdRd+XfhgXa4kAUHg7
- TjNaDRYuGruCODd5O1VwYmhizApccRsbuabaoAX+2XPh2fa4JiTfg5TzTMuIJph4TgXTxhjg/zr
- 4/ClO/d5i0mDhvqKGatxaHzOpG6r+EFcqC6/wwn84TxNHkjaMzacNv6ox9p3MpMmmMkvdjYzfXB
- 8l/Kjv51COIvOLUm5CkiaH6CYhCMYdFlpF6/pXlnB4j6AWrL1GIP76npiAZQnLAQuDDWLS3CX0V
- 6B9bZb1msvGA3zw+IS4ov0hYbIhPXk9am51HtbdDl3wpMXi9X7ccNaS/a9Q=
-X-Google-Smtp-Source: AGHT+IG4ZrowLTaDXcRGnSDg98abu3rx9bXnkOW9gj6RS9RozGbTyj7AnzT4bEirLona4ScwyADTJQ==
-X-Received: by 2002:a05:6000:1f83:b0:385:faf5:ebb8 with SMTP id
- ffacd0b85a97d-38dbb24ca21mr2241758f8f.7.1738842945955; 
- Thu, 06 Feb 2025 03:55:45 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbdd53a6esm1525725f8f.43.2025.02.06.03.55.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 03:55:45 -0800 (PST)
-Message-ID: <e7ff4aa6-96b2-48d5-ad12-567be6fe1393@linaro.org>
-Date: Thu, 6 Feb 2025 12:55:44 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tg0l1-0003PA-46
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 07:13:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tg0kx-0004RY-1V
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 07:13:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738843996;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QbaGyGBhUSjBumJijeigRGmqZB/oIS5ICSFxiOZSqrQ=;
+ b=Bq2C20rlG/QDLm98ogGa+VTgWodFmjJLDGr8V11EI+VuLn9LuW4LjQJ9Smwo9ovytk3SCR
+ GyFxi+D2E4qYrCcu5UUzSSffcqsZLLGMg5IPhwunRodPc8rmhXJtn6MqvN+QepT2LuYCh/
+ cgLjNo4Zkpc1lkZ+Bbrj2beegQyAOMo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-tBgfEbVwPb-ADGZjCYreww-1; Thu,
+ 06 Feb 2025 07:13:14 -0500
+X-MC-Unique: tBgfEbVwPb-ADGZjCYreww-1
+X-Mimecast-MFC-AGG-ID: tBgfEbVwPb-ADGZjCYreww
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B60C1956096; Thu,  6 Feb 2025 12:13:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.40])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 08A3119560A3; Thu,  6 Feb 2025 12:13:10 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B11F921E6A28; Thu, 06 Feb 2025 13:13:07 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
+Subject: Re: [RFC v2 1/5] qapi/qom: Introduce kvm-pmu-filter object
+In-Reply-To: <Z6SMxlWhHgronott@intel.com> (Zhao Liu's message of "Thu, 6 Feb
+ 2025 18:19:50 +0800")
+References: <20250122090517.294083-1-zhao1.liu@intel.com>
+ <20250122090517.294083-2-zhao1.liu@intel.com>
+ <871pwc3dyw.fsf@pond.sub.org> <Z6SMxlWhHgronott@intel.com>
+Date: Thu, 06 Feb 2025 13:13:07 +0100
+Message-ID: <87h657p8z0.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] hw/char/sh_serial: QOM housekeeping
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- Magnus Damm <magnus.damm@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>
-References: <20250124175053.74461-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250124175053.74461-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,17 +92,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/1/25 18:50, Philippe Mathieu-Daudé wrote:
-> - Parity in realize / unrealize
-> - Define TypeInfo structure
-> 
-> Philippe Mathieu-Daudé (2):
->    hw/char/sh_serial: Delete fifo_timeout_timer in DeviceUnrealize
->    hw/char/sh_serial: Convert to TypeInfo
-> 
->   hw/char/sh_serial.c | 24 ++++++++++++++----------
->   1 file changed, 14 insertions(+), 10 deletions(-)
-> 
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-ping?
+> On Wed, Feb 05, 2025 at 11:03:51AM +0100, Markus Armbruster wrote:
+>> Date: Wed, 05 Feb 2025 11:03:51 +0100
+>> From: Markus Armbruster <armbru@redhat.com>
+>> Subject: Re: [RFC v2 1/5] qapi/qom: Introduce kvm-pmu-filter object
+>> 
+>> Quick & superficial review for now.
+>
+> Thanks!
+>
+>> > diff --git a/qapi/kvm.json b/qapi/kvm.json
+>> > new file mode 100644
+>> > index 000000000000..d51aeeba7cd8
+>> > --- /dev/null
+>> > +++ b/qapi/kvm.json
+>> > @@ -0,0 +1,116 @@
+>> > +# -*- Mode: Python -*-
+>> > +# vim: filetype=python
+>> > +
+>> > +##
+>> > +# = KVM based feature API
+>> 
+>> This is a top-level section.  It ends up between sections "QMP
+>> introspection" and "QEMU Object Model (QOM)".  Is this what we want?  Or
+>> should it be a sub-section of something?  Or next to something else?
+>
+> Do you mean it's not in the right place in the qapi-schema.json?
+>
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index b1581988e4eb..742818d16e45 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -64,6 +64,7 @@
+>  { 'include': 'compat.json' }
+>  { 'include': 'control.json' }
+>  { 'include': 'introspect.json' }
+> +{ 'include': 'kvm.json' }
+>  { 'include': 'qom.json' }
+>  { 'include': 'qdev.json' }
+>  { 'include': 'machine-common.json' }
+>
+> Because qom.json includes kvm.json, so I have to place it before
+> qom.json.
+>
+> It doesn't have any dependencies itself, so placing it in the previous
+> position should be fine, where do you prefer?
+
+Let's ignore how to place it for now, and focus on where we would *like*
+to place it.
+
+Is it related to anything other than ObjectType / ObjectOptions in the
+QMP reference manual?
+
+I guess qapi/kvm.json is for KVM-specific stuff in general, not just the
+KVM PMU filter.  Should we have a section for accelerator-specific
+stuff, with subsections for the various accelerators?
+
+[...]
+
 
