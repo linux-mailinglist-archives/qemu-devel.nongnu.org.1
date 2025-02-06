@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20673A2A5BB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A81CA2A63D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:43:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfz29-0005dJ-7i; Thu, 06 Feb 2025 05:22:57 -0500
+	id 1tfzLM-00040B-JM; Thu, 06 Feb 2025 05:42:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfz25-0005co-KI; Thu, 06 Feb 2025 05:22:53 -0500
-Received: from mgamail.intel.com ([198.175.65.19])
+ id 1tfzLH-0003zz-8Y; Thu, 06 Feb 2025 05:42:43 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfz21-0005wr-PC; Thu, 06 Feb 2025 05:22:53 -0500
+ id 1tfzLE-0003aW-Nb; Thu, 06 Feb 2025 05:42:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738837369; x=1770373369;
+ t=1738838561; x=1770374561;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=7YvjgdFPhRVvYw+UmD94ieXFYl4XTC5l5c0+MA5KbYg=;
- b=UMKcTIER5im28kb81p5QjiNDlkoZQnfyNJklBL1/Ll+TAe5xQXH8ffxa
- OSlQlUXI81rPJS/FyKn73rbk+b4oW5rpM2/lpwnSOA7tXtlk4+FSaAUzQ
- yi7TOoWVdeHAPCc04pt1W2oC9O1xEBN+/aR+RSjQZrK5L6eTNhLNW6AUt
- VIjDs/o5gZSRxRXzoZNF2bRfQCyAYYn06MKtGTCzZOfirdvpab9fr9tIY
- tQapPmOnMSNMo/oRFmVs3Uk67+SMXDi9HR0yJzGdrKVmOwYDw/s5ee/Vd
- GUKbCuOeFSFPv8F/n2rCsp77vPjYtJomIBu3VVXPQHirYMsGBR6kx/FdC Q==;
-X-CSE-ConnectionGUID: nCug5IFjRJKEE5BRX+RHDA==
-X-CSE-MsgGUID: WoynbqWtScCBlLW4ykr7xw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39307594"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="39307594"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 02:22:46 -0800
-X-CSE-ConnectionGUID: v/qESQ7TS6yFT9lUeVe8jg==
-X-CSE-MsgGUID: IqcH1MHVSNa3ohntEq3FYQ==
+ bh=0TuoMBuUpu/g96bN1tn3TkdHhKsGnYB6JKQpBFhrVBI=;
+ b=S6qEg6lgHlLWAFzHpDo+WLzjpkQEJ9Hbp8lMVO08CEAw9vZaNPsRxSjy
+ DiKlA/qjDACsDsZFBZadaM2/FeTdE2au8W4gGfZe8dHOjqPixv3Gcs0Sl
+ EGzceG2WwIhXxjXVM+4zpsFTn0Mth2Yy3TmLPJCdhpcQ5lXWB43E+xqiQ
+ M3wyJc3CZIXKPkZeF8gbF2U2+DG//lfieWROA7jMwJCVI+tRfFDpWyFMR
+ uNhCZ1E+ISzPSGvAn9LHSy3+o3KHqyvw7/Uc6ug9F0HWZbqUjp8jXpLvb
+ kWFWgMg+VwM5yafnJAHgAZ1EC1lYcJxBDe1umPuBdIPhvpiJmFDNjmP3C Q==;
+X-CSE-ConnectionGUID: XYOQCyxhSHivGz7vxjuAGg==
+X-CSE-MsgGUID: slrd2L+7TWyne6NhdXO2yA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39592858"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="39592858"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 02:42:37 -0800
+X-CSE-ConnectionGUID: DIGNoqYEQJOQoh3SrxxVTg==
+X-CSE-MsgGUID: r7OEm/5XTLOp7U9ER5tb6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111023084"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="148384471"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 06 Feb 2025 02:22:45 -0800
-Date: Thu, 6 Feb 2025 18:42:14 +0800
+ by orviesa001.jf.intel.com with ESMTP; 06 Feb 2025 02:42:36 -0800
+Date: Thu, 6 Feb 2025 19:02:05 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 1/2] rust: remove unnecessary Cargo.toml metadata
-Message-ID: <Z6SSBl3j9DUgdwLi@intel.com>
+Subject: Re: [PATCH 2/2] rust: include rust_version in Cargo.toml
+Message-ID: <Z6SWrSZ1HSyIc52q@intel.com>
 References: <20250129083705.1321407-1-pbonzini@redhat.com>
- <20250129083705.1321407-2-pbonzini@redhat.com>
+ <20250129083705.1321407-3-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250129083705.1321407-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250129083705.1321407-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -79,29 +79,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 29, 2025 at 09:37:03AM +0100, Paolo Bonzini wrote:
-> Date: Wed, 29 Jan 2025 09:37:03 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 1/2] rust: remove unnecessary Cargo.toml metadata
-> X-Mailer: git-send-email 2.48.1
-> 
-> Some items of Cargo.toml (readme, homepage, repository) are
-> only present because of clippy::cargo warnings being enabled in
-> rust/hw/char/pl011/src/lib.rs.  But these items are not
-> particularly useful and would be all the same for all Cargo.toml
-> files in the QEMU workspace.  Clean them up.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/Cargo.toml   |  3 ---
->  rust/hw/char/pl011/README.md    | 31 -------------------------------
->  rust/hw/char/pl011/src/lib.rs   | 14 ++++++--------
->  rust/qemu-api-macros/Cargo.toml |  3 ---
->  rust/qemu-api-macros/README.md  |  1 -
->  5 files changed, 6 insertions(+), 46 deletions(-)
->  delete mode 100644 rust/hw/char/pl011/README.md
->  delete mode 100644 rust/qemu-api-macros/README.md
->
+> diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+> index 8a157a663fb..dbef93f6cb3 100644
+> --- a/rust/hw/char/pl011/src/device_class.rs
+> +++ b/rust/hw/char/pl011/src/device_class.rs
+> @@ -12,7 +12,6 @@
+>  
+>  use crate::device::{PL011Registers, PL011State};
+>  
+> -#[allow(clippy::missing_const_for_fn)]
+
+It seems like a rebase nit since the commit 7d0520398f7f ("rust: prefer
+NonNull::new to assertions"), which is not worth an extra commit either.
+
+>  extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
+>      let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
+>      unsafe { state.as_ref().migrate_clock }
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
