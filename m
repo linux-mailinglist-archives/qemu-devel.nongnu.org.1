@@ -2,49 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA05A2AE26
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740D6A2AE27
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 17:51:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg54V-0000Kw-Rb; Thu, 06 Feb 2025 11:49:48 -0500
+	id 1tg53n-0008KM-2t; Thu, 06 Feb 2025 11:49:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <6eadd8767ab9422942c3c5e8d70c923e5ee3aa3f@kylie.crudebyte.com>)
- id 1tg54K-0008U4-KQ
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:38 -0500
+ (envelope-from <bfa7bf02782dbd996201c90f850ca11730041af1@kylie.crudebyte.com>)
+ id 1tg53Y-0008JV-V3
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:48:49 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <6eadd8767ab9422942c3c5e8d70c923e5ee3aa3f@kylie.crudebyte.com>)
- id 1tg54G-0006GI-Lg
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:49:33 -0500
+ (envelope-from <bfa7bf02782dbd996201c90f850ca11730041af1@kylie.crudebyte.com>)
+ id 1tg53W-0006Cy-Lf
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 11:48:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=PqKdHe7ois7thoZS8jd2yyOq9qy3lzC6R+YWRsAjpF4=; b=JV8Sg
- 4MYSZpWS9j+wb7T8HQRcEuRWU8/DZhngvisgykswBgj/0xy4fM1FHV0HiSCifPEt5qcbgf7aChEph
- CrkFdBUR+6vovHEOZa+ZbyHddDtV/JKk0oW9DVz+CmkMREBWwfBvqrs5UFKEaYoemkgS9P1NYFFTk
- u8y1H0gf6thsQ4eSmw3GscWeh9LILnHBfjUjynuPnIgqGK262qptOE9js1ddbHlg3jfHDCRzyHWga
- qcYjfcEqmQFt+di61KLtJ5kfRM6vBLcmy1aUGi6eZ5OtE1qXDTO3J8B6FY4acne1t7y1zYuUyygaC
- nbbKs0E2B/mNFZl1OV9GvzMqeCqjHyvEoK5gDKYmPcZpp/V16d+5VwFo/bx31+sbAISSOvXXydTpM
- JE2gxeFYEcJkSYO6R5vVuDou9CSc80Lb80WC3glTPE7puVf2mBfX1TIyJlCWYe1rME2Pnk1Ol8iBo
- y6c27ZFTxv+37JNKxJwZVf3Rq5upRA5YFQVeE5d+1tzAUSp0iQpDEFLcEBvKXOt5H/UGKlZG9cEx1
- nzCIr2s0puPGGNGpTZDCQLhWyYQ7L224m4eiJk77NEqtrdYccYj2unfONf5Oomwod3YdjgFA/uHQy
- v9ZMQxDrENGwAmxxLYkJ7WoEA8NUznVgqJW373LWIYq+Oz6KsdhcX9UapCY06c=;
-Message-Id: <6eadd8767ab9422942c3c5e8d70c923e5ee3aa3f.1738860115.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1738860115.git.qemu_oss@crudebyte.com>
-References: <cover.1738860115.git.qemu_oss@crudebyte.com>
+ d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=Qr3w56at5qJ1Gp8o8hIWkMpDLh47TyYeRe74iQHg6u4=; b=whOtj
+ O48yzLsRSt0HyqDSNsVMX4ocsLicR6E8I6SRQXodPPjF4WKkv/cTxbRMTViKn7drirJBeIphAAGpR
+ PRASO5wLjbuUZyhZzHuPLZYLXP1IWHW+FhJuf6Caf6WMmxIe07awxaPoz+X0Yc6Wda1uLHvGIaUwe
+ cRxk7BWEBsRA9R72GbQkfsEOCOT25qBWDXIRYyKYFCrD40zlc2KVndp/wBZF38j2AFoSjC2jYF0DR
+ QjxKDKxKp2etPE+X3afdK1qcbKoAVNyViOcPlIcqsclGKSbmvtf9Ia3nJ/1fd1juCa5WOXHzJ7fD6
+ 5HggSVaVzpiYxjcSPZis4BG8nPhH+vkTQFUVjKiYCir8FrKZixYHPJTOTMXAaC6ZKomhzuax2x1CQ
+ JZghWKO4xeEa0Z0vfTptDlnBCyDg/mw+etAqrhYNU3MOGBPqD4AJH2wkB/H6lXUTEd4pNu3I+VTJz
+ 8UdIDvfAaP5+wPkhokW5dk0ZogqsEN+ED2lbiPHZx26rZnoSdBK3d/IJLolbTGJSilnIFVPPGrWKA
+ zBWdvujAq4wur2tqI1j/u+lKi0HSvlT9FBZ7J7oE6nAzwNphsFetH/YHd83nFLtzcKAyodW7V1fYT
+ QpIQ9TgOHbhfrIKCo7yz7HpXC886vbGd8nY4oLqw4oIwt1HKj22tojhhin6YWE=;
+Message-Id: <cover.1738860115.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 06 Feb 2025 17:41:56 +0100
-Subject: [PULL 6/7] tests/9p: extend use_dir_after_unlink test with Treaddir
+Subject: [PULL 0/7] 9p queue 2025-02-06
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>,
     Stefan Hajnoczi <stefanha@redhat.com>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=6eadd8767ab9422942c3c5e8d70c923e5ee3aa3f@kylie.crudebyte.com;
+ envelope-from=bfa7bf02782dbd996201c90f850ca11730041af1@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,35 +66,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sending a Treaddir request on an unlinked directory should also succeed
-if the directory was alread opened before unlink. We just check that no
-error occurs and that we get some kind of Treaddir result, but completely
-ignore the actual Treaddir result content. In fact, there should be no
-system as of to date that would allow a removed directory to have any
-content (files, links, devices, subdirectories) and POSIX specifies that
-a directory must be empty when trying to remove it from the file system.
+The following changes since commit d922088eb4ba6bc31a99f17b32cf75e59dd306cd:
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Message-Id: <f1b91e3a33a6502be816d88dfb6b719101b69d41.1736427878.git.qemu_oss@crudebyte.com>
----
- tests/qtest/virtio-9p-test.c | 3 +++
- 1 file changed, 3 insertions(+)
+  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2025-02-03 13:42:02 -0500)
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index 35c42cd0d7..10243247ab 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -772,6 +772,9 @@ static void fs_use_dir_after_unlink(void *obj, void *data,
-         .client = v9p, .fid = fid_dir, .request_mask = P9_GETATTR_BASIC,
-         .rgetattr.attr = &attr
-     });
-+    treaddir({
-+        .client = v9p, .fid = fid_dir, .offset = 0, .count = P9_MAX_SIZE - 11
-+    });
- }
- 
- static void cleanup_9p_local_driver(void *data)
--- 
-2.30.2
+are available in the Git repository at:
 
+  https://github.com/cschoenebeck/qemu.git tags/pull-9p-20250206
+
+for you to fetch changes up to bfa7bf02782dbd996201c90f850ca11730041af1:
+
+  MAINTAINERS: Mark me as reviewer only for 9pfs (2025-02-06 17:10:46 +0100)
+
+----------------------------------------------------------------
+
+* Greg Kurz steps back as maintainer of 9pfs.
+
+* Make multidevs=remap default option (instead of multidevs=warn)
+  and update documentation related to this option.
+
+* Improve tracing (i.e. usefulness of log output content).
+
+* Add test cases for accessing a directory after removal.
+
+----------------------------------------------------------------
+Christian Schoenebeck (6):
+      9pfs: improve v9fs_walk() tracing
+      9pfs: make multidevs=remap default
+      9pfs: improve v9fs_open() tracing
+      tests/9p: rename test use_after_unlink -> use_file_after_unlink
+      tests/9p: add use_dir_after_unlink test
+      tests/9p: extend use_dir_after_unlink test with Treaddir
+
+Greg Kurz (1):
+      MAINTAINERS: Mark me as reviewer only for 9pfs
+
+ MAINTAINERS                  |  3 +--
+ hw/9pfs/9p-local.c           |  3 +++
+ hw/9pfs/9p-util-generic.c    | 50 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/9pfs/9p-util.h            |  6 ++++++
+ hw/9pfs/9p.c                 | 45 +++++++++++++++++++++++++++++++++------
+ hw/9pfs/meson.build          |  1 +
+ hw/9pfs/trace-events         |  4 ++--
+ qemu-options.hx              | 49 ++++++++++++++++++++++++-------------------
+ tests/qtest/virtio-9p-test.c | 50 ++++++++++++++++++++++++++++++++++++++++----
+ 9 files changed, 175 insertions(+), 36 deletions(-)
+ create mode 100644 hw/9pfs/9p-util-generic.c
 
