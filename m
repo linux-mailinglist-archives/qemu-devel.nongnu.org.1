@@ -2,141 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F643A2A443
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B33A2A469
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 10:30:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyAi-0007KY-Hs; Thu, 06 Feb 2025 04:27:44 -0500
+	id 1tfyDQ-0000cR-D5; Thu, 06 Feb 2025 04:30:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tfyAg-0007JY-Dq
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:27:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tfyAe-0004Te-CF
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:27:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738834059;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Kraiodq5yodhpoLdZHjfkXkvAzl7YznfAux4sffab/k=;
- b=RU9cxX1VkrVpp6ZthP2yq892nXIt83mK0iOeuNjJOal5QTrxwT8DOs6NbWiLVkYm2up95q
- jqhxsgaTSKD62GNmU0G7tATrxULnQmbpJK1rUx/gzcAn3VQWjmCXHW8FBZFh0YJLonGHds
- DJjsP1N18eDyScKtA2t33CvFqqDjB2w=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-MnLTds7WNfKNLQ2TJUosuQ-1; Thu, 06 Feb 2025 04:27:37 -0500
-X-MC-Unique: MnLTds7WNfKNLQ2TJUosuQ-1
-X-Mimecast-MFC-AGG-ID: MnLTds7WNfKNLQ2TJUosuQ
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361efc9dc6so3936095e9.3
- for <qemu-devel@nongnu.org>; Thu, 06 Feb 2025 01:27:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738834056; x=1739438856;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Kraiodq5yodhpoLdZHjfkXkvAzl7YznfAux4sffab/k=;
- b=eAbb5V3WYaOoU6YgQqrlX8Ixdi7iPOP01kqTqN4IunuwqK4c4hj15Vrln686fUjcAS
- AWUYkb9+HjK4GPjeohlSLoWLaGTw+JW8h2mHDvLEVLAdgsjSaXZLZvAwEHX1PMw97KOW
- lDMO1dso9ccP0x6Lfc1NHiJDfcS0TK66yFAl4v5tA2CfbAUjbHu5YNClxtwNe3o17LdZ
- 3XE9hkkZV03jkBVLFcLhE2vRndxu3S20ewn+A37dDtevObujFx5BSyHum7dVx6CXQZ6V
- 87/4WVibOdfLx9ifJHko4ZwQiHC7rkwwKjBKyw0gjmrCqi+ph1Nc7xBaum4dVnvi7x8K
- 9bWg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVg5ExoDqB6uIhRqTYVDFHeF8U3NTfompBJ8VjBXRapVyfy4xdIf4jpcVDor9VdVq2j8cyPHwfPFC5w@nongnu.org
-X-Gm-Message-State: AOJu0Ywq4yqWzNQAf47gcKS+F4hxuOAv+kEBlEOdV6DqUcgzXljozrPR
- /OwqFrpzvOf4I27n8/Zb32peqr5wDTrQIllZqpfjLjpyxJlIGb4Ylojcg06VYOHgfkR/57xRpXr
- /o9s891lnmKh7AYVTqJqX3aJZCheeqPFPE/jPihJrVu8dGPX0xtgo
-X-Gm-Gg: ASbGnct6XVDvnx1Skh+c6Nr9swdKcDZ+ABAFriJ4TaB0DMmJtBj+NQx6rrmHUyPExDq
- Gu5JuS5kJ/TGPEvY5wgnwQBsHd8tBRKBREkx4FKdVJoG4M804SX3MoobJhH9xTUONuj0R14Ksin
- NuFi2lXMBQLvQU8xpjFgzodSJAWgC9zcDGutFtgyH2ljXLCs5FjEFHRSP3dNwCMps9xeK8a9IGt
- ebQ5UEaUcdAVSh3aaOWZRvp1p0kDA93WEAP9a7nt9z8uMLG8DbPvwIVbyazAMlU/phuS8YAcGLD
- xDiNgh9zF9nkJNecoxQtcwdSWTD46HuFVN9R
-X-Received: by 2002:a05:600c:46c9:b0:434:e8cf:6390 with SMTP id
- 5b1f17b1804b1-4390d42ce2bmr45913805e9.6.1738834056222; 
- Thu, 06 Feb 2025 01:27:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtRswpHQWTFBCljDoM7AJTYEa45eaqkX5V4jufPhGMn9XTilcvvvMEIWtm99NfGNhaespP+g==
-X-Received: by 2002:a05:600c:46c9:b0:434:e8cf:6390 with SMTP id
- 5b1f17b1804b1-4390d42ce2bmr45913625e9.6.1738834055824; 
- Thu, 06 Feb 2025 01:27:35 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-48-132.web.vodafone.de.
- [109.42.48.132]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde0fc1asm1222832f8f.67.2025.02.06.01.27.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Feb 2025 01:27:35 -0800 (PST)
-Message-ID: <370f5393-e19e-4dfd-a627-05a60ba80bbb@redhat.com>
-Date: Thu, 6 Feb 2025 10:27:34 +0100
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tfyD7-0000OC-6H
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:30:15 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tfyD1-0005o8-LL
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 04:30:11 -0500
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8Cx73MKgaRn3DltAA--.27881S3;
+ Thu, 06 Feb 2025 17:29:47 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMCxbsUHgaRnat8BAA--.8594S3;
+ Thu, 06 Feb 2025 17:29:46 +0800 (CST)
+Subject: Re: [PATCH] target/loongarch: fix vcpu reset command word issue
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>
+References: <20250205120635.2516406-1-lixianglai@loongson.cn>
+ <3e857bbf-834b-3ae5-f9c4-35d858db5108@loongson.cn>
+ <a8ee0227-8385-4907-b24b-efddaf907165@linaro.org>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <3bad0c4a-0fa0-a35f-d400-d0d38c22057b@loongson.cn>
+Date: Thu, 6 Feb 2025 17:29:10 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] tests/functional: remove all class level fields
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250205155946.2811296-1-berrange@redhat.com>
- <20250205155946.2811296-5-berrange@redhat.com>
+In-Reply-To: <a8ee0227-8385-4907-b24b-efddaf907165@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250205155946.2811296-5-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-CM-TRANSID: qMiowMCxbsUHgaRnat8BAA--.8594S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CrykAF4kCw15Cr1ftw4fWFX_yoW8Zry3pr
+ ykAFWDKFyFkrykJ3sFq34qq34UAr47Gwn7XFyIqFyIyrs0qry0g3W0qrsI9F98Aw4xGF4Y
+ yr1Fkr1UZFW7JwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+ 6r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+ CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+ 0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+ AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+ Ja73UjIFyTuYvjxUrNtxDUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.838,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -154,33 +82,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/02/2025 16.59, Daniel P. Berrangé wrote:
-> A number of fields are set at the class level on QemuBaseTest, even
-> though the exact same named field is then set at the object level
-> later in most cases.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/functional/qemu_test/testcase.py | 6 ------
->   1 file changed, 6 deletions(-)
-> 
-> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-> index 574c1942f2..531d6393ad 100644
-> --- a/tests/functional/qemu_test/testcase.py
-> +++ b/tests/functional/qemu_test/testcase.py
-> @@ -33,12 +33,6 @@
->   
->   class QemuBaseTest(unittest.TestCase):
->   
-> -    arch = None
-> -
-> -    workdir = None
-> -    log = None
-> -    logdir = None
 
-That's what you get when a Python ignorant like me tries to write object 
-oriented Python code ;-) Thanks for cleaning up my mess!
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+On 2025/2/6 下午5:02, Philippe Mathieu-Daudé wrote:
+> On 6/2/25 03:34, bibo mao wrote:
+>> On 2025/2/5 下午8:06, Xianglai Li wrote:
+>>> When the KVM_REG_LOONGARCH_VCPU_RESET command word
+>>> is sent to the kernel through the kvm_set_one_reg interface,
+>>> the parameter source needs to be a legal address,
+>>> otherwise the kernel will return an error and the command word
+>>> will fail to be sent.
+>> Hi Xianglai,
+>>
+>> Good catch, it is actually one problem and thanks for reporting it.
+>>
+>>>
+>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>> ---
+>>> Cc: Bibo Mao <Maobibo@loongson.cn>
+>>> Cc: Song Gao <gaosong@loongson.cn>
+>>>
+>>>   target/loongarch/kvm/kvm.c | 3 ++-
+>>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+>>> index a3f55155b0..01cddb7012 100644
+>>> --- a/target/loongarch/kvm/kvm.c
+>>> +++ b/target/loongarch/kvm/kvm.c
+>>> @@ -581,9 +581,10 @@ static int kvm_loongarch_get_lbt(CPUState *cs)
+>>>   void kvm_arch_reset_vcpu(CPUState *cs)
+>>>   {
+>>>       CPULoongArchState *env = cpu_env(cs);
+>>> +    uint64_t val;
+>> How about set initial value here although it is not used? such as
+>>         uint64_t val = 0;
+> 
+> Or        uint64_t unused = 0;
+yes, that is better and easier to understand -:)
+
+> 
+>>>       env->mp_state = KVM_MP_STATE_RUNNABLE;
+>>> -    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, 0);
+>>> +    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, &val);
+>> Can we add return value checking here? such as
+>>         ret = kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, &val);
+>>         if (ret) {
+>>             error_report("... %s", strerror(errno));
+>>         }
+>>
+>> Regards
+>> Bibo Mao
+>>>   }
+>>>   static int kvm_loongarch_get_mpstate(CPUState *cs)
+>>>
+>>
+>>
 
 
