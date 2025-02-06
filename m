@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853E0A29E60
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 02:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AA8A29EDE
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 03:37:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfqkr-0005UF-Gy; Wed, 05 Feb 2025 20:32:33 -0500
+	id 1tfrkF-0001a8-HE; Wed, 05 Feb 2025 21:35:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3-hCkZwgKCu8nlYRfkjYXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--wuhaotsh.bounces.google.com>)
- id 1tfqkD-0005GX-4K
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 20:31:59 -0500
-Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3-hCkZwgKCu8nlYRfkjYXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--wuhaotsh.bounces.google.com>)
- id 1tfqk3-0006wu-3J
- for qemu-devel@nongnu.org; Wed, 05 Feb 2025 20:31:45 -0500
-Received: by mail-pj1-x1049.google.com with SMTP id
- 98e67ed59e1d1-2f816a85facso768852a91.3
- for <qemu-devel@nongnu.org>; Wed, 05 Feb 2025 17:31:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1738805498; x=1739410298; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=EMwJqO0GVwvNpTJ+WKNZl+C56TmDUIgVRx3/tC2n9ds=;
- b=yNyVYLVD6En4DINC36obiUZ6MlDsncvsylWXXulO5gGwY2Fq4PRqb/0+Zq+A892N1C
- iDIh/yVwKpRm32Ivi9kG4Z3bx3+mzwGDhXqnTw5DwJsNtO0es0SQgNGTZZz66sAh+zkv
- jQ4ROuwVczsv3wcrp6Um2i9ae797hLNe4FjZLK2Q7z2Ks/LqqMTPSFC59+RiAAw93Cnj
- b2sPp/Op1MpaKrjQpFLJmuFFZQfv6WyjNN366F/E2Hl7VUVoTUCYaXmem+7yCcvfVnC0
- FtAnbowR/oJwMMP38LAgarC8uFLDuaioCd9WJ1Qvai9MvD/cr7oq3G8ozp5PyRHd52jR
- trcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738805498; x=1739410298;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EMwJqO0GVwvNpTJ+WKNZl+C56TmDUIgVRx3/tC2n9ds=;
- b=RzTo1IWz63aOi5+md+WgkK5UbVK4I2AJrT5xOMcAwm2pmi2PMQwKAbeeJXnOy7mj10
- Lvct5TZcvLZD3ePztQpeiL4lnb9QP16n9WVSzI0gfDzs5aaDYSNiZICPXHYNZbzWk7YL
- OfdSp9v3yY1PUkY1M3tR37iScyd1j+CrQbC77qmx6vOk9pQf6T4IacMl1L8Rf7ffYIaO
- VDeGBL6xzDsgNIU4RsBFPN7yODzTPmYDhCupgHsRjjCzDbGt81BATwoeaCwpj9roAzn+
- 7FJ/j5KLNMlEu1naNXrpeemr50IvsxOzh9cCRX+L+aD4LnmjshU60aYdzsnYFjrd9tRJ
- aY9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVFdSFzNLsIc4vuVdBLvGA8ZfvtypuHBEFkQ8MKzqXywSapWuvelmfLgoveFQqFIMM1tT75sN5qU0s2@nongnu.org
-X-Gm-Message-State: AOJu0YwE1xxP6vV0aPSMF9CSrF0yWY2V4sFLjZTbkzXmHPJ/eAvfYeTn
- ENRuTiRY24XTXlvV4q40XkGsMWcBNivhew45r3lFR2Fm5Z+V7NEg0DAtlaju++BoQdm+w/etSRE
- PZ4Im83A8LQ==
-X-Google-Smtp-Source: AGHT+IEVuqWqwNuFze/Qa8TeL/yzlKHDkGRvqwswpw3Ydt1bZdOCk8hwLazAc/dA72TT+61Ppr1tBgfwkQnPFQ==
-X-Received: from pjbli9.prod.google.com ([2002:a17:90b:48c9:b0:2e0:52d7:183e])
- (user=wuhaotsh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4f4b:b0:2ee:aed2:c15c with SMTP id
- 98e67ed59e1d1-2f9e083cc9cmr7802162a91.28.1738805498106; 
- Wed, 05 Feb 2025 17:31:38 -0800 (PST)
-Date: Wed,  5 Feb 2025 17:31:05 -0800
-In-Reply-To: <20250206013105.3228344-1-wuhaotsh@google.com>
-Mime-Version: 1.0
-References: <20250206013105.3228344-1-wuhaotsh@google.com>
-X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
-Message-ID: <20250206013105.3228344-18-wuhaotsh@google.com>
-Subject: [PATCH v3 17/17] docs/system/arm: Add Description for NPCM8XX SoC
-From: Hao Wu <wuhaotsh@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com, 
- venture@google.com, Avi.Fishman@nuvoton.com, kfting@nuvoton.com, 
- hskinnemoen@google.com, titusr@google.com, 
- chli30@nuvoton.corp-partner.google.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
- envelope-from=3-hCkZwgKCu8nlYRfkjYXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--wuhaotsh.bounces.google.com;
- helo=mail-pj1-x1049.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tfrkB-0001Zp-EC
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 21:35:55 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tfrk4-0007zr-6C
+ for qemu-devel@nongnu.org; Wed, 05 Feb 2025 21:35:53 -0500
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxquD0H6RnHupsAA--.16541S3;
+ Thu, 06 Feb 2025 10:35:33 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMDxPcXyH6RnPVsBAA--.3660S3;
+ Thu, 06 Feb 2025 10:35:32 +0800 (CST)
+Subject: Re: [PATCH] target/loongarch: fix vcpu reset command word issue
+To: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>
+References: <20250205120635.2516406-1-lixianglai@loongson.cn>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <3e857bbf-834b-3ae5-f9c4-35d858db5108@loongson.cn>
+Date: Thu, 6 Feb 2025 10:34:58 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20250205120635.2516406-1-lixianglai@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMDxPcXyH6RnPVsBAA--.3660S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr1xKw1ftrWxKw13ur1kCrX_yoW8XF4xpF
+ W3A39rGFy8KrykAa97X34DZ3WUZrWxGws7WFyIqryIkr1Yqry8J3W8twsxWF98C34rGa1F
+ vr18Cr1jvayxJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.838,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,76 +79,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NPCM8XX SoC is the successor of the NPCM7XX. It features quad-core
-Cortex-A35 (Armv8, 64-bit) CPUs and some additional peripherals.
+On 2025/2/5 下午8:06, Xianglai Li wrote:
+> When the KVM_REG_LOONGARCH_VCPU_RESET command word
+> is sent to the kernel through the kvm_set_one_reg interface,
+> the parameter source needs to be a legal address,
+> otherwise the kernel will return an error and the command word
+> will fail to be sent.
+Hi Xianglai,
 
-This document describes the NPCM8XX SoC and an evaluation board
-(NPCM 845 EVB).
+Good catch, it is actually one problem and thanks for reporting it.
 
-Signed-off-by: Hao Wu <wuhaotsh@google.com>
----
- docs/system/arm/nuvoton.rst | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+> 
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+> Cc: Bibo Mao <Maobibo@loongson.cn>
+> Cc: Song Gao <gaosong@loongson.cn>
+> 
+>   target/loongarch/kvm/kvm.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+> index a3f55155b0..01cddb7012 100644
+> --- a/target/loongarch/kvm/kvm.c
+> +++ b/target/loongarch/kvm/kvm.c
+> @@ -581,9 +581,10 @@ static int kvm_loongarch_get_lbt(CPUState *cs)
+>   void kvm_arch_reset_vcpu(CPUState *cs)
+>   {
+>       CPULoongArchState *env = cpu_env(cs);
+> +    uint64_t val;
+How about set initial value here although it is not used? such as
+        uint64_t val = 0;
+>   
+>       env->mp_state = KVM_MP_STATE_RUNNABLE;
+> -    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, 0);
+> +    kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, &val);
+Can we add return value checking here? such as
+        ret = kvm_set_one_reg(cs, KVM_REG_LOONGARCH_VCPU_RESET, &val);
+        if (ret) {
+            error_report("... %s", strerror(errno));
+        }
 
-diff --git a/docs/system/arm/nuvoton.rst b/docs/system/arm/nuvoton.rst
-index 05059378e5..e4827fb43a 100644
---- a/docs/system/arm/nuvoton.rst
-+++ b/docs/system/arm/nuvoton.rst
-@@ -1,12 +1,13 @@
--Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``)
--=====================================================================================================
-+Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``, ``npcm845-evb``)
-+======================================================================================================================
- 
--The `Nuvoton iBMC`_ chips (NPCM7xx) are a family of ARM-based SoCs that are
-+The `Nuvoton iBMC`_ chips are a family of Arm-based SoCs that are
- designed to be used as Baseboard Management Controllers (BMCs) in various
--servers. They all feature one or two ARM Cortex-A9 CPU cores, as well as an
--assortment of peripherals targeted for either Enterprise or Data Center /
--Hyperscale applications. The former is a superset of the latter, so NPCM750 has
--all the peripherals of NPCM730 and more.
-+servers. Currently there are two families: NPCM7XX series and
-+NPCM8XX series. NPCM7XX series feature one or two Arm Cortex-A9 CPU cores,
-+while NPCM8XX feature 4 Arm Cortex-A35 CPU cores. Both series contain a
-+different assortment of peripherals targeted for either Enterprise or Data
-+Center / Hyperscale applications.
- 
- .. _Nuvoton iBMC: https://www.nuvoton.com/products/cloud-computing/ibmc/
- 
-@@ -27,6 +28,11 @@ There are also two more SoCs, NPCM710 and NPCM705, which are single-core
- variants of NPCM750 and NPCM730, respectively. These are currently not
- supported by QEMU.
- 
-+The NPCM8xx SoC is the successor of the NPCM7xx SoC. It has 4 Cortex-A35 cores.
-+The following machines are based on this chip :
-+
-+- ``npcm845-evb``       Nuvoton NPCM845 Evaluation board
-+
- Supported devices
- -----------------
- 
-@@ -62,6 +68,8 @@ Missing devices
-    * System Wake-up Control (SWC)
-    * Shared memory (SHM)
-    * eSPI slave interface
-+   * Block-transfer interface (8XX only)
-+   * Virtual UART (8XX only)
- 
-  * Ethernet controller (GMAC)
-  * USB device (USBD)
-@@ -76,6 +84,11 @@ Missing devices
-  * Video capture
-  * Encoding compression engine
-  * Security features
-+ * I3C buses (8XX only)
-+ * Temperature sensor interface (8XX only)
-+ * Virtual UART (8XX only)
-+ * Flash monitor (8XX only)
-+ * JTAG master (8XX only)
- 
- Boot options
- ------------
--- 
-2.48.1.362.g079036d154-goog
+Regards
+Bibo Mao
+>   }
+>   
+>   static int kvm_loongarch_get_mpstate(CPUState *cs)
+> 
 
 
