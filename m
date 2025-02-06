@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA58FA2A590
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDEEA2A5E1
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 11:35:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tfyoJ-0008E0-AC; Thu, 06 Feb 2025 05:08:39 -0500
+	id 1tfzDH-0000XT-58; Thu, 06 Feb 2025 05:34:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfyoA-0008CN-Pj; Thu, 06 Feb 2025 05:08:31 -0500
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tfzDE-0000Wu-Cl; Thu, 06 Feb 2025 05:34:24 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tfyo7-0001lM-Ae; Thu, 06 Feb 2025 05:08:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1738836507; x=1770372507;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=oP0y8I2b0k86JdcYw9jox2qnw26MXTvDoDpMb9y/Ax4=;
- b=AuJN5K6d4ga3UGvFjOeugAV4SfZo+3Ev3kD04Bc84eSSkE9hE+Gf7Iqk
- ytTjMyMI/8uI9rLV8Qn8/qBcPm47Ovcx2X8XRIRzC2oWp1vNnqn6uhTbs
- xoneDfBPDBjA90ACY9iKyuDimvuFTzVSiuPKqkhW2Y5rqzvQZUOkxOKQo
- QTKLS244Z7Mwqci1SrgK81XMgZbHikF4/40sxFcB+RgB6wmGlC5c/1kk+
- 0W8WbuyRez7pZBVajnAl+M1atW/i5SwssAMHy7TMJTyyoDI6nYBvqt3ji
- gQ67+2aDYGzOoGEKOvXIjN4d5sQZie7Z5O7DwNW6vHmOlGJCM6BspqxEF w==;
-X-CSE-ConnectionGUID: UxU7t8J2QDGOzamvirjPmw==
-X-CSE-MsgGUID: xUVPm0e8Q+GjMXlM3rN5jg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43187318"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="43187318"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2025 02:08:23 -0800
-X-CSE-ConnectionGUID: na8BE7FXTjK8oidnTjBbzw==
-X-CSE-MsgGUID: twhacpdTQ+mS2Rq1hHFoAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; d="scan'208";a="111744739"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 06 Feb 2025 02:08:19 -0800
-Date: Thu, 6 Feb 2025 18:27:48 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 1/5] qapi/qom: Introduce kvm-pmu-filter object
-Message-ID: <Z6SOpEcLjNW5NpFy@intel.com>
-References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <20250122090517.294083-2-zhao1.liu@intel.com>
- <871pwc3dyw.fsf@pond.sub.org> <Z6SMxlWhHgronott@intel.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tfzDB-0001TM-0y; Thu, 06 Feb 2025 05:34:24 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YpYLk4TwZz6H8Vk;
+ Thu,  6 Feb 2025 18:31:58 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+ by mail.maildlp.com (Postfix) with ESMTPS id 9F1D51408F9;
+ Thu,  6 Feb 2025 18:34:15 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 6 Feb 2025 11:34:15 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Thu, 6 Feb 2025 11:34:15 +0100
+To: Nicolin Chen <nicolinc@nvidia.com>, Eric Auger <eric.auger@redhat.com>
+CC: "ddutile@redhat.com" <ddutile@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>
+Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rLkOMCAgAAM2QCAAAz2gIAEhqeggCVVAYCAI176AIAE12cAgAGBGYCAAGn5AIACTjRQ
+Date: Thu, 6 Feb 2025 10:34:15 +0000
+Message-ID: <8224c38797344d1a9c0f453774925db3@huawei.com>
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <Z1wh69_gZ9izr1iU@redhat.com> <Z1wsslDnwlth3A8+@nvidia.com>
+ <CAFEAcA8TW2RKyFnh-TZRpfaKfZipHD5TZy_hymUr41GJ4rs4xA@mail.gmail.com>
+ <329445b2f68a47269292aefb34584375@huawei.com>
+ <Z39Ugx2M+FRFVVpB@Asurada-Nvidia>
+ <f4e64a3a-5c1d-49f2-ac72-b84ecd353c9d@redhat.com>
+ <Z6EQENkHJy7TrkYy@Asurada-Nvidia>
+ <77f736f6-9ef9-462b-916e-c8cfff279044@redhat.com>
+ <Z6KsAE9wnjWU0xMs@Asurada-Nvidia>
+In-Reply-To: <Z6KsAE9wnjWU0xMs@Asurada-Nvidia>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6SMxlWhHgronott@intel.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, PDS_BTC_ID=0.498,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ THREAD_INDEX_BAD=3.197 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,28 +86,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > > @@ -1183,6 +1185,7 @@
-> > >                                        'if': 'CONFIG_LINUX' },
-> > >        'iommufd':                    'IOMMUFDProperties',
-> > >        'iothread':                   'IothreadProperties',
-> > > +      'kvm-pmu-filter':             'KVMPMUFilterPropertyVariant',
-> > 
-> > The others are like
-> > 
-> >          'mumble': 'MumbleProperties'
-> > 
-> > Let's stick to that, and also avoid running together multiple
-> > capitalized acronyms: KvmPmuFilterProperties.
-> 
-> IIUC, then I should use the name "KvmPmuFilterProperties" (string version
-> for QAPI), and the name "KvmPmuFilterPropertiesVariant" (numeric version
-> in codes), do you agree?
->  
+Hi Nicolin,
 
-Thanks to Daniel's feedback, pmu filter doesn't need the string version
-anymore. So there's only 1 "KvmPmuFilterProperties" structure in QAPI.
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Wednesday, February 5, 2025 12:09 AM
+> To: Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; Eric Auger
+> <eric.auger@redhat.com>
+> Cc: ddutile@redhat.com; Peter Maydell <peter.maydell@linaro.org>; Jason
+> Gunthorpe <jgg@nvidia.com>; Daniel P. Berrang=E9 <berrange@redhat.com>;
+> qemu-arm@nongnu.org; qemu-devel@nongnu.org; Linuxarm
+> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
+> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
+> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
+> Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+> nested SMMUv3
+>=20
+> On Tue, Feb 04, 2025 at 06:49:15PM +0100, Eric Auger wrote:
+> > > In summary, we will have the following series:
+> > > 1) HWPT uAPI patches in backends/iommufd.c (Zhenzhong or Shameer)
+> > >    https://lore.kernel.org/qemu-
+> devel/SJ0PR11MB6744943702EB5798EC9B3B9992E02@SJ0PR11MB6744.nam
+> prd11.prod.outlook.com/
+> > > 2) vIOMMU uAPI patches in backends/iommufd.c (I will rebase/send)
+>=20
+> > for 1 and 2, are you taking about the "Add VIOMMU infrastructure
+> support
+> > " series in Shameer's branch: private-smmuv3-nested-dev-rfc-v1.
+> > Sorry I may instead refer to NVidia or Intel's branch but I am not sure
+> > about the last ones.
+>=20
+> That "vIOMMU infrastructure" is for 2, yes.
+>=20
+> For 1, it's inside the Intel's series:
+> "cover-letter: intel_iommu: Enable stage-1 translation for passthrough
+> device"
+>=20
+> So, we need to extract them out and make it separately..
+>=20
+> > > 3) vSMMUv3 patches for HW-acc/nesting (Hoping Don/you could take
+> over)
+> > We can start sending it upstream assuming we have a decent test
+> environment.
+> >
+> > However in
+> >
+> https://lore.kernel.org/all/329445b2f68a47269292aefb34584375@huawei.c
+> om/
+> >
+> > Shameer suggested he may include it in his SMMU multi instance series.
+> > What do you both prefer?
+>=20
+> Sure, I think it's good to include those patches,=20
+
+One of the feedback I received on my series was to rename "arm-smmuv3-neste=
+d"
+to "arm-smmuv3-accel" and possibly rename function names to include "accel'=
+ as well
+and move those functions to a separate "smmuv3-accel.c" file. I suppose tha=
+t applies to=20
+the " Add HW accelerated nesting support for arm SMMUv3" series as well.=20
+
+Is that fine with you?
+
+Thanks,
+Shameer
 
 
