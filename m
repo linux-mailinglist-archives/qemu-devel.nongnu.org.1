@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC14A2A975
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6C9A2A964
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Feb 2025 14:15:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tg1k1-0001Ar-D7; Thu, 06 Feb 2025 08:16:25 -0500
+	id 1tg1j0-0007Ic-KY; Thu, 06 Feb 2025 08:15:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1jn-0000df-Ej
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:16:14 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1ia-000779-JP
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:14:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1jf-0000qW-W1
- for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:16:06 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tg1iZ-0000CO-3n
+ for qemu-devel@nongnu.org; Thu, 06 Feb 2025 08:14:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738847760;
+ s=mimecast20190719; t=1738847694;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=08fbyKhZ36Cf9CIMyEWusAbI9TdQnp+cgrMz0jjM9ZM=;
- b=inqgTPnn8udgKhQDImG98X/4zcbLgBtJJ/VvhaiKpiWfh3NW7jioxFPP7pKO2g0+neexpL
- r0MuMZgdt2NPqYreo65g3pimSK3+6DYqMgU9HYeStB37r+X8Qk+aobUTIw46QZ0l2uCWHb
- pdb6PFzOwiZel5J3dzj6p69aMbtjnXI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Q3oJ/f2lYBy+mVYg+gP8Eo/xbAj6TYb489HgxZY98qM=;
+ b=ZLAuJemnw1kjDkwSq6tLYQyYOhhIlx8cjTauuo0MngQqr9/ZDE6BjDgIoyBHQos+ZL8jAL
+ UvZMV3XxSmNJ5vgyvYr3Vgn4cV0DQgaHzZQz0H5S1kHQvXaPYtlYs5KZBp8APRUNAtrYo6
+ e3VY2/xg2/f9xoIA5xTRaBAxDfGiano=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-zoQDOlWVM7ytlpUi6ysVgA-1; Thu,
- 06 Feb 2025 08:14:50 -0500
-X-MC-Unique: zoQDOlWVM7ytlpUi6ysVgA-1
-X-Mimecast-MFC-AGG-ID: zoQDOlWVM7ytlpUi6ysVgA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-hCWgVRCWN1mtYXBRUltoRw-1; Thu,
+ 06 Feb 2025 08:14:52 -0500
+X-MC-Unique: hCWgVRCWN1mtYXBRUltoRw-1
+X-Mimecast-MFC-AGG-ID: hCWgVRCWN1mtYXBRUltoRw
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E4CEF19560B0
- for <qemu-devel@nongnu.org>; Thu,  6 Feb 2025 13:14:49 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89F891800876
+ for <qemu-devel@nongnu.org>; Thu,  6 Feb 2025 13:14:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.15])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B44313001D10; Thu,  6 Feb 2025 13:14:48 +0000 (UTC)
+ id 5C58F30001AB; Thu,  6 Feb 2025 13:14:50 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 3/7] vfio: Rephrase comment in vfio_listener_region_add()
- error path
-Date: Thu,  6 Feb 2025 14:14:31 +0100
-Message-ID: <20250206131438.1505542-4-clg@redhat.com>
+Subject: [PATCH v3 4/7] vfio: Introduce vfio_get_vfio_device()
+Date: Thu,  6 Feb 2025 14:14:32 +0100
+Message-ID: <20250206131438.1505542-5-clg@redhat.com>
 In-Reply-To: <20250206131438.1505542-1-clg@redhat.com>
 References: <20250206131438.1505542-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,48 +82,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rephrase a bit the ending comment about how errors are handled
-depending on the phase in which vfio_listener_region_add() is called.
+This helper will be useful in the listener handlers to extract the
+VFIO device from a memory region using memory_region_owner(). At the
+moment, we only care for PCI passthrough devices. If the need arises,
+we will add more.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/hw/vfio/vfio-common.h |  1 +
+ hw/vfio/helpers.c             | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index f7499a9b7447a7593198e1523c50858b70a8bd85..62af1216fc5a9089fc718c2afe3a405d9381db32 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -683,12 +683,13 @@ fail:
-         error_reportf_err(err, "PCI p2p may not work: ");
-         return;
-     }
--    /*
--     * On the initfn path, store the first error in the container so we
--     * can gracefully fail.  Runtime, there's not much we can do other
--     * than throw a hardware error.
--     */
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 0c60be5b15c70168f4f94ad7054d9bd750a162d3..ac35136a11051b079cd9d04e6becd344a0e0f7e7 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -252,6 +252,7 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp);
+ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+                         AddressSpace *as, Error **errp);
+ void vfio_detach_device(VFIODevice *vbasedev);
++VFIODevice *vfio_get_vfio_device(Object *obj);
+ 
+ int vfio_kvm_device_add_fd(int fd, Error **errp);
+ int vfio_kvm_device_del_fd(int fd, Error **errp);
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 913796f437f84eece8711cb4b4b654a44040d17c..4b255d4f3a9e81f55df00c68fc71da769fd5bd04 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -23,6 +23,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "hw/vfio/vfio-common.h"
++#include "hw/vfio/pci.h"
+ #include "hw/hw.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+@@ -728,3 +729,12 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp)
+ 
+     return HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp);
+ }
 +
-     if (!bcontainer->initialized) {
-+        /*
-+         * At machine init time or when the device is attached to the
-+         * VM, store the first error in the container so we can
-+         * gracefully fail the device realize routine.
-+         */
-         if (!bcontainer->error) {
-             error_propagate_prepend(&bcontainer->error, err,
-                                     "Region %s: ",
-@@ -697,6 +698,10 @@ fail:
-             error_free(err);
-         }
-     } else {
-+        /*
-+         * At runtime, there's not much we can do other than throw a
-+         * hardware error.
-+         */
-         error_report_err(err);
-         hw_error("vfio: DMA mapping failed, unable to continue");
-     }
++VFIODevice *vfio_get_vfio_device(Object *obj)
++{
++    if (object_dynamic_cast(obj, TYPE_VFIO_PCI)) {
++        return &VFIO_PCI(obj)->vbasedev;
++    } else {
++        return NULL;
++    }
++}
 -- 
 2.48.1
 
