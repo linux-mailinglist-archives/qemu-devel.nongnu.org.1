@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF53A2C080
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B6BA2C07F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:22:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLUa-000843-Jl; Fri, 07 Feb 2025 05:21:48 -0500
+	id 1tgLUc-00085u-Fo; Fri, 07 Feb 2025 05:21:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUX-00082T-VD; Fri, 07 Feb 2025 05:21:45 -0500
+ id 1tgLUY-00083N-Rb; Fri, 07 Feb 2025 05:21:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUU-0006JZ-BD; Fri, 07 Feb 2025 05:21:45 -0500
+ id 1tgLUX-0006K3-0F; Fri, 07 Feb 2025 05:21:46 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9F2C7E737A;
+ by isrv.corpit.ru (Postfix) with ESMTP id A34C7E737B;
  Fri, 07 Feb 2025 13:20:56 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1A6F81B0A6C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1E9551B0A6D;
  Fri,  7 Feb 2025 13:21:38 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 1030C52D89; Fri, 07 Feb 2025 13:21:38 +0300 (MSK)
+ id 12E9652D8B; Fri, 07 Feb 2025 13:21:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hongren Zheng <i@zenithal.me>,
- Juan Jose Lopez Jaimez <thatjiaozi@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 47/51] hw/usb/canokey: Fix buffer overflow for OUT
- packet
-Date: Fri,  7 Feb 2025 13:21:28 +0300
-Message-Id: <20250207102136.2239826-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Steve Sistare <steven.sistare@oracle.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 48/51] physmem: fix qemu_ram_alloc_from_fd size
+ calculation
+Date: Fri,  7 Feb 2025 13:21:29 +0300
+Message-Id: <20250207102136.2239826-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
@@ -61,80 +61,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hongren Zheng <i@zenithal.me>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-When USBPacket in OUT direction has larger payload
-than the ep_out_buffer (of size 512), a buffer overflow
-would occur.
+qemu_ram_alloc_from_fd allocates space if file_size == 0.  If non-zero,
+it uses the existing space and verifies it is large enough, but the
+verification was broken when the offset parameter was introduced.  As
+a result, a file smaller than offset passes the verification and causes
+errors later.  Fix that, and update the error message to include offset.
 
-It could be fixed by limiting the size of usb_packet_copy
-to be at most buffer size. Further optimization gets rid
-of the ep_out_buffer and directly uses ep_out as the target
-buffer.
+Peter provides this concise reproducer:
 
-This is reported by a security researcher who artificially
-constructed an OUT packet of size 2047. The report has gone
-through the QEMU security process, and as this device is for
-testing purpose and no deployment of it in virtualization
-environment is observed, it is triaged not to be a security bug.
+  $ touch ramfile
+  $ truncate -s 64M ramfile
+  $ ./qemu-system-x86_64 -object memory-backend-file,mem-path=./ramfile,offset=128M,size=128M,id=mem1,prealloc=on
+  qemu-system-x86_64: qemu_prealloc_mem: preallocating memory failed: Bad address
+
+With the fix, the error message is:
+  qemu-system-x86_64: mem1 backing store size 0x4000000 is too small for 'size' option 0x8000000 plus 'offset' option 0x8000000
 
 Cc: qemu-stable@nongnu.org
-Fixes: d7d34918551dc48 ("hw/usb: Add CanoKey Implementation")
-Reported-by: Juan Jose Lopez Jaimez <thatjiaozi@gmail.com>
-Signed-off-by: Hongren Zheng <i@zenithal.me>
-Message-id: Z4TfMOrZz6IQYl_h@Sun
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 664280abddcb3cacc9c6204706bb739fcc1316f7)
+Fixes: 4b870dc4d0c0 ("hostmem-file: add offset option")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/1736967650-129648-3-git-send-email-steven.sistare@oracle.com
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+(cherry picked from commit 719168fba7c3215cc996dcfd32a6e5e9c7b8eee0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/usb/canokey.c b/hw/usb/canokey.c
-index b306eeb20e..9af9d4da6e 100644
---- a/hw/usb/canokey.c
-+++ b/hw/usb/canokey.c
-@@ -197,8 +197,8 @@ static void canokey_handle_data(USBDevice *dev, USBPacket *p)
-     switch (p->pid) {
-     case USB_TOKEN_OUT:
-         trace_canokey_handle_data_out(ep_out, p->iov.size);
--        usb_packet_copy(p, key->ep_out_buffer[ep_out], p->iov.size);
-         out_pos = 0;
-+        /* segment packet into (possibly multiple) ep_out */
-         while (out_pos != p->iov.size) {
-             /*
-              * key->ep_out[ep_out] set by prepare_receive
-@@ -207,8 +207,8 @@ static void canokey_handle_data(USBDevice *dev, USBPacket *p)
-              * to be the buffer length
-              */
-             out_len = MIN(p->iov.size - out_pos, key->ep_out_size[ep_out]);
--            memcpy(key->ep_out[ep_out],
--                    key->ep_out_buffer[ep_out] + out_pos, out_len);
-+            /* usb_packet_copy would update the pos offset internally */
-+            usb_packet_copy(p, key->ep_out[ep_out], out_len);
-             out_pos += out_len;
-             /* update ep_out_size to actual len */
-             key->ep_out_size[ep_out] = out_len;
-diff --git a/hw/usb/canokey.h b/hw/usb/canokey.h
-index e528889d33..1b60d73485 100644
---- a/hw/usb/canokey.h
-+++ b/hw/usb/canokey.h
-@@ -24,8 +24,6 @@
- #define CANOKEY_EP_NUM 3
- /* BULK/INTR IN can be up to 1352 bytes, e.g. get key info */
- #define CANOKEY_EP_IN_BUFFER_SIZE 2048
--/* BULK OUT can be up to 270 bytes, e.g. PIV import cert */
--#define CANOKEY_EP_OUT_BUFFER_SIZE 512
+diff --git a/system/physmem.c b/system/physmem.c
+index e25c12d267..ea1d80f934 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1901,10 +1901,12 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
  
- typedef enum {
-     CANOKEY_EP_IN_WAIT,
-@@ -59,8 +57,6 @@ typedef struct CanoKeyState {
-     /* OUT pointer to canokey recv buffer */
-     uint8_t *ep_out[CANOKEY_EP_NUM];
-     uint32_t ep_out_size[CANOKEY_EP_NUM];
--    /* For large BULK OUT, multiple write to ep_out is needed */
--    uint8_t ep_out_buffer[CANOKEY_EP_NUM][CANOKEY_EP_OUT_BUFFER_SIZE];
+     size = HOST_PAGE_ALIGN(size);
+     file_size = get_file_size(fd);
+-    if (file_size > offset && file_size < (offset + size)) {
+-        error_setg(errp, "backing store size 0x%" PRIx64
+-                   " does not match 'size' option 0x" RAM_ADDR_FMT,
+-                   file_size, size);
++    if (file_size && file_size < offset + size) {
++        error_setg(errp, "%s backing store size 0x%" PRIx64
++                   " is too small for 'size' option 0x" RAM_ADDR_FMT
++                   " plus 'offset' option 0x%" PRIx64,
++                   memory_region_name(mr), file_size, size,
++                   (uint64_t)offset);
+         return NULL;
+     }
  
-     /* Properties */
-     char *file; /* canokey-file */
 -- 
 2.39.5
 
