@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B184BA2C76D
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC79A2C741
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:32:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgQLW-000122-E0; Fri, 07 Feb 2025 10:32:46 -0500
+	id 1tgQKo-00086j-MC; Fri, 07 Feb 2025 10:32:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQKD-000842-QU
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:27 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1tgQK7-0007zb-Sk
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:19 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQK6-0003xZ-JI
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:24 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5dcd8d6f130so4399235a12.1
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 07:31:17 -0800 (PST)
+ id 1tgQK5-0003ww-Fr
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:19 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5dcf0de81ebso4306037a12.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 07:31:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738942276; x=1739547076; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738942274; x=1739547074; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TgN34HFjNsDM8vD8ylx4YNq6temrMo6Bfwlmv/QI6BI=;
- b=Hhts110rpdfD53pM2x8aBxsMRrtvw3A95Nt+5TOnjx1I6erYUU/6yjkq4uTPQKrPgz
- j7YUI5thE/4n2qSIQZHPUme6Iyw4E3qabnHKBqN8q8hI/OYB9bZE4CVbUKy6vGPtHRmN
- xrSOj0GEccvhTPwGOWUOVn4S/gqo20XxJzjTvkDAZ7zEFs0uvYyPW3aAFLaCUP0YCmfE
- mN/H9Kk2nI38P0FByFe8wrkMpbEiW5sU+YNtL0v5MD2Jil6dJUrJcdLt3VUlj9/WMwn0
- /f8jAMwFrbiCMvFNRSBXH5LAcyWolJAHIFwRceM2wYfiuulxUcRL56zFA8SqQ2j6bvrL
- GZ/w==
+ bh=Um1CwtmhdsQHyRWJ4xWo6y2AlcWR+j1kN7yWOVUF0WM=;
+ b=LfD4fPp0TZbBGnBQ0dM6TTBLxRPNHtZOFOf5A8B5oqp8yXlj01MtfW7mXSe91PlpM6
+ u6W7s5aiY69tIaAgkneDz7QDHskuxOiieTU4ajNLXPPWpAtcQq4XOg9kEfMVTF4v3IVv
+ iiWQEKD4OkyrNZsEmB5w0bquGDjleNaCL5a/CwnADK/+NQ9N7SZCTkRDMvXPmuTrB2pG
+ QKH5N4KoLBIKoBdxO9pMhmlk4tOu6UccAjDgGq3yM6PAkjhim6wDHiQ9+cc2/dYqKYPe
+ KEyCJB58dB5ZSa23KRyvQJ9eApF4aAKtjvAy/+9/vC3C9iYuSxV6FPqRF4CZNZ5/7a6B
+ 7udg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738942276; x=1739547076;
+ d=1e100.net; s=20230601; t=1738942274; x=1739547074;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TgN34HFjNsDM8vD8ylx4YNq6temrMo6Bfwlmv/QI6BI=;
- b=LBP6Lqqo45G8v7tHCZIFhDRcbuqhqCCVK2eG/Io+sWzq95gBeFom/GdGlSd4OgklxE
- rHxgLlzUZ+gVZ8Uamzrfw+jTqk4TTYE1aonBcr55xjRGGbJv7idL3Wh8uJfOCnAgNf6t
- YMOURAly++WvqRhG0ip2pMqdxWNXn1H+3tVU97iyniOG/ZxX3P7q66XWlI3LfFnhU4IX
- cAmQkbaYMLU3nGLrYZgkIKgvtr0jccUs8yGrBUZaYjPgjVZ95uaFFwdqEa5y9IGQXD2I
- 9tpBAIx++Oe9f0hnP2NSVhQlPUrM6cvVx+BtJzLzZfbNpwV+Ln8H7tnVuhZ9v170KVmP
- SpSA==
-X-Gm-Message-State: AOJu0YyiMv+yrrT1+Gd7pqCo+YDlugyshWjdACZsFt/KC2pxcqOKWU0j
- Azv1Aa+nBIFtRWeVmsu6Njm0qZHU+bn0KrPaNq7qlhNjjAXeg5oNJKeL5Ti3h2k=
-X-Gm-Gg: ASbGncuK3/8bGaZekYjRVIRC2H621veu4GaJ7wB/mJhX6h8Exw/4sM54RAfXYRSDKwM
- uz9DSrhtI/MEcKmM/rmrS0jyF+8vAt3MNRk+21QU8zJax+wLdI/gxHFnTMKaRrP7/looTxPPGKv
- XKkVovJ4hMe/uyXrldqnRytnki3W9RBWGunWd7imj+Q4tgP+RtoCqvnc2CAFIPVxGuvwPyAp5CN
- yQ5o66OxcTNfSoQwe8b2RG/GEutTxTXWyCXIf7aUukIwiAdmioRRVKOjF7HueJmTFVrGo/J03em
- KFubd5ze4mWWyQg3Cg==
-X-Google-Smtp-Source: AGHT+IEqzFUgykFDg+BzRAsgHxxxzwOjwd0iFxcy5saGCHYKMbqqCTZmszVdtqyx4yCd8hLnqX/+uw==
-X-Received: by 2002:a05:6402:3903:b0:5dc:74f1:8a32 with SMTP id
- 4fb4d7f45d1cf-5de458c49d5mr4466459a12.28.1738942274649; 
- Fri, 07 Feb 2025 07:31:14 -0800 (PST)
+ bh=Um1CwtmhdsQHyRWJ4xWo6y2AlcWR+j1kN7yWOVUF0WM=;
+ b=utcJe5GNVVftKU3YfgOfY+83p/FqvVeyT11QbP85dbQsVPEufAqrtMmHHHqgfxqGPa
+ qzTL7VUPTfgPSlB3mXdAy0Ohj1dFxp4dAjZcwSTUwItzH4nmfRHsVA40AbZzw2IigFF9
+ KQKsyj0Tx27/CY2/FUPR2rzxHMrTAbzKzX6F7wqxdUSEokPBrMJk4c9zXOyMpXToCVvh
+ 3/wrA6X0TvSV2zzlnOprXnpLrC0kYeKbZIADh6RS4lCHfx5PennGTkc5r029vfpvFD94
+ jS+hHZIjMxJH5BA6PsHqeUqEYapxQXOlyVV185wzjzibzR70rmBZaShxElGe1SLoMGvx
+ AymQ==
+X-Gm-Message-State: AOJu0YwtvII3DymOxtQzDb4S0t0ZUKzmJtjYJ2qEbvepNrRXOMyOo27v
+ H3t3dFjKknDzrR/fwvvEYtiH1Il3MKSEWRLPb9MiBk17q7vtBErHprkZCvQUhYk=
+X-Gm-Gg: ASbGncuxN3SzAGyJwMJTWXwUVDmrjKdV8eom4tEhzt50EQaf4GrfILQzS6PxLF/i3Zp
+ GoPw1laNKcSajsIjVAY/0XEQDLVbVJiLzrOHBZl3rFmRaHSwfoFlIOU+uMg835QjOeit5MHHus7
+ sFvPYL7oEjD9hPvJIDHvE7A/zdqQCvLqQlO60nrdlSae4NOjIMhwJfkpSgKPyvbdOvHNi74VK90
+ bJS4qXQn+fB+kj+oKxc42qVlbiMNFYqI4N4cNJbuga5sjxbaEtK+GapebEjgh0IKLXDKkKjLVyV
+ rfU0F52GjauXrqbqOA==
+X-Google-Smtp-Source: AGHT+IElHjFtPVYJA73ULLa7+KgfPOyHampW28+/996bqIedaJsi9vSXndyF9JnqnF8avBEpNO5jIA==
+X-Received: by 2002:a17:907:7b06:b0:ab6:eec6:7cab with SMTP id
+ a640c23a62f3a-ab789c3ac8amr448973266b.38.1738942273971; 
+ Fri, 07 Feb 2025 07:31:13 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5de46b7b480sm1366479a12.36.2025.02.07.07.31.13
+ a640c23a62f3a-ab781453f04sm205306266b.161.2025.02.07.07.31.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 07 Feb 2025 07:31:13 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A48D95FA80;
+ by draig.lan (Postfix) with ESMTP id B6FC05FAD2;
  Fri,  7 Feb 2025 15:31:12 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,19 +84,18 @@ Cc: Peter Xu <peterx@redhat.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
- qemu-riscv@nongnu.org
-Subject: [PATCH v2 03/17] tests/qtest: don't step clock at start of npcm7xx
- periodic IRQ test
-Date: Fri,  7 Feb 2025 15:30:58 +0000
-Message-Id: <20250207153112.3939799-4-alex.bennee@linaro.org>
+ qemu-riscv@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 04/17] tests/qtest: simplify qtest_process_inbuf
+Date: Fri,  7 Feb 2025 15:30:59 +0000
+Message-Id: <20250207153112.3939799-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250207153112.3939799-1-alex.bennee@linaro.org>
 References: <20250207153112.3939799-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,28 +118,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Until there are timers enabled the semantics of clock_step_next() will
-fail. Since d524441a36 (system/qtest: properly feedback results of
-clock_[step|set]) we will signal a FAIL if time doesn't advance.
+Don't both creating a GString to temporarily hold our qtest command.
+Instead do a simpler g_strndup and use autofree to clean up
+afterwards.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/npcm7xx_timer-test.c | 1 -
- 1 file changed, 1 deletion(-)
+ system/qtest.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/tests/qtest/npcm7xx_timer-test.c b/tests/qtest/npcm7xx_timer-test.c
-index 58f58c2f71..43711049ca 100644
---- a/tests/qtest/npcm7xx_timer-test.c
-+++ b/tests/qtest/npcm7xx_timer-test.c
-@@ -465,7 +465,6 @@ static void test_periodic_interrupt(gconstpointer test_data)
-     int i;
+diff --git a/system/qtest.c b/system/qtest.c
+index e68ed0f2a8..bb1efba9fd 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -763,25 +763,21 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+     }
+ }
  
-     tim_reset(td);
--    clock_step_next();
++/*
++ * Process as much of @inbuf as we can in newline terminated chunks.
++ * Remove the processed commands from @inbuf as we go.
++ */
+ static void qtest_process_inbuf(CharBackend *chr, GString *inbuf)
+ {
+     char *end;
  
-     tim_write_ticr(td, count);
-     tim_write_tcsr(td, CEN | IE | MODE_PERIODIC | PRESCALE(ps));
+     while ((end = strchr(inbuf->str, '\n')) != NULL) {
+-        size_t offset;
+-        GString *cmd;
+-        gchar **words;
+-
+-        offset = end - inbuf->str;
++        size_t len = end - inbuf->str;
++        g_autofree char *cmd = g_strndup(inbuf->str, len);
++        g_auto(GStrv) words = g_strsplit(cmd, " ", 0);
+ 
+-        cmd = g_string_new_len(inbuf->str, offset);
+-        g_string_erase(inbuf, 0, offset + 1);
+-
+-        words = g_strsplit(cmd->str, " ", 0);
++        g_string_erase(inbuf, 0, len + 1);
+         qtest_process_command(chr, words);
+-        g_strfreev(words);
+-
+-        g_string_free(cmd, TRUE);
+     }
+ }
+ 
 -- 
 2.39.5
 
