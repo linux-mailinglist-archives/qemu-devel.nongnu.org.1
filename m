@@ -2,80 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF63A2C0A8
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED96A2C132
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 12:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLff-0002jB-4o; Fri, 07 Feb 2025 05:33:15 -0500
+	id 1tgM8p-0002W4-5j; Fri, 07 Feb 2025 06:03:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tgLfX-0002iO-Ey
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:33:08 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tgM8m-0002Ve-L8
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 06:03:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tgLfV-0003Mi-O9
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:33:07 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tgM8k-0006Om-GG
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 06:03:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738924385;
+ s=mimecast20190719; t=1738926196;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pvWFizoz9pJGHnfDdSO1CR7ZlUrvUtkaOixb6rFsBNA=;
- b=b6iwGbHqapQwvp/+Sa3Ay04GZHnlho8VZ/nQEyoW2IHki74Nb9/de/ahYuCmdax+T5PcEg
- h4Y3FFqPRXDx0QYVbyiSKkioxCQkOfghnUZTu/MxZV6MWx4DKcXpr31vx7PLlgVsjoZ41n
- 2fdxdxsR8g1u5p+3s9TXbqeOAlMP4/U=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-NtjUAF4gM92YLOyi4Y5eCg-1; Fri, 07 Feb 2025 05:33:03 -0500
-X-MC-Unique: NtjUAF4gM92YLOyi4Y5eCg-1
-X-Mimecast-MFC-AGG-ID: NtjUAF4gM92YLOyi4Y5eCg
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38dc88ed7caso386038f8f.0
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:33:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738924382; x=1739529182;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pvWFizoz9pJGHnfDdSO1CR7ZlUrvUtkaOixb6rFsBNA=;
- b=ajf6XwPeQat6GwQF8C9yk/pOMiuTkB2DckZyCRde9JwM/LpYAqD/gKFV76lqHr5LVF
- Eh915ztwD7Vy6jwI41uYq/HX/7yfp9EyBp7vFcwPm68rvOpB/YRR9v/3q1b7BMyQsfvW
- Zdae/KizYKxPW/SP8ZlZzMeYm5bBzE6gHbqxb9Hi7dKgsxVEQ2OQSQXvN9caK00wnGvg
- NxArd5NvBcFf4w02fZsfaLrCqNR25SQgPFZ1Apwac4v0qY90z23NguExph0HMFxfqi6b
- 1jtXfBiB6pfuSLocj1Vu4r4FL5UA3bpugTcrPUiL83JQLjSSd7FWpMB6+6bfHseCaCYF
- 8s5Q==
-X-Gm-Message-State: AOJu0YykazjHuFyGO+wv+1jQWNYUtRR81586Xk481vdJtx+qxcx+72md
- 0PqzfnIUGrfbxLEb3TI9tkupBfT50gF+VUrJbddrLvH9+jlErUOwtT7lCzPN65/iTgzAmkW0VHY
- okazorqykgF/9bXMKf7ghjjp6uCKPhKDPDLX4E0LGjfKj711YUDgXzWwyCMA5GaNur/tXFLd2yN
- 9Za1Thy2StTIyAoekj2ETE5BlEOl8=
-X-Gm-Gg: ASbGncshC1ntooD0zWlKsVWoQvVg9nF8qve44iHUJmyfPHolXMPOP5kk7dSyrCaLifi
- zo2uY8BsTpcjts/7pWMnIHlnD+6MJIRlNTDZjaIXXoxBtQfwuYQIIFbDVa2a40g==
-X-Received: by 2002:a5d:5986:0:b0:38d:cf79:20a2 with SMTP id
- ffacd0b85a97d-38dcf7924f6mr455305f8f.35.1738924382381; 
- Fri, 07 Feb 2025 02:33:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE/D4kx2CNFqPlPETolNxfwpBOLKksXIPC3hCnfeFOO3jdEHT1OecECXiVxUFu3iszamjFPokMUdtpX1eeaZPc=
-X-Received: by 2002:a5d:5986:0:b0:38d:cf79:20a2 with SMTP id
- ffacd0b85a97d-38dcf7924f6mr455284f8f.35.1738924381992; Fri, 07 Feb 2025
- 02:33:01 -0800 (PST)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tbM9CuVu36PPibrDw89XRxqtWkXgC2pjRfq8eqbXE0c=;
+ b=iTKCltT0xdzqGZ+4yTBFVAPQZQBd1BMQpkIKn1WUpqsDIgobVeTrRhvKYOH61+fy+IyyEq
+ XD2Nrfh4g/DP66IK/X+0Ye1HFRZ6omOvKkT5DSOrAvCo4pFqFmbvf50qGTvJh0zGGffXfH
+ hfVy8KZf/nzam8vfoFKjQF+2b+vbwjY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-170-sgBEqSZGMV6s4az5mD8VXQ-1; Fri,
+ 07 Feb 2025 06:03:14 -0500
+X-MC-Unique: sgBEqSZGMV6s4az5mD8VXQ-1
+X-Mimecast-MFC-AGG-ID: sgBEqSZGMV6s4az5mD8VXQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D9B3A1800875; Fri,  7 Feb 2025 11:03:11 +0000 (UTC)
+Received: from gondolin.redhat.com (unknown [10.67.24.130])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 32BBD19560A3; Fri,  7 Feb 2025 11:02:55 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com
+Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH 00/15] arm: rework id register storage
+Date: Fri,  7 Feb 2025 12:02:33 +0100
+Message-ID: <20250207110248.1580465-1-cohuck@redhat.com>
 MIME-Version: 1.0
-References: <20250205122712.229151-1-ppandit@redhat.com>
- <20250205122712.229151-4-ppandit@redhat.com>
- <Z6VCxEKxn6-_okRx@x1.local>
-In-Reply-To: <Z6VCxEKxn6-_okRx@x1.local>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Fri, 7 Feb 2025 16:02:44 +0530
-X-Gm-Features: AWEUYZmQCEw7HiJYBIqjttDo1vqQDGMumhp7FiNmrJ3xqFX4UNgqXsP50u-lEpQ
-Message-ID: <CAE8KmOwJSYq2Ok38_sq29cr7JhbLLh1ZEncP13QpDdnYKOAheQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] migration: enable multifd and postcopy together
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, berrange@redhat.com, 
- Prasad Pandit <pjp@fedoraproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,173 +83,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+[Note: I've kept the cc list from the last round of cpu model patches;
+so if you're confused as to why you're cc:ed here, take it as a
+heads-up that a new cpu model series will come along soon]
 
-On Fri, 7 Feb 2025 at 04:46, Peter Xu <peterx@redhat.com> wrote:
-> > +/* Migration channel types */
-> > +enum { CH_DEFAULT, CH_MULTIFD, CH_POSTCOPY };
->
-> Maybe s/DEFAULT/MAIN/?
+This patch series contains patches extracted from the larger cpu model
+series (RFC v2 last posted at
+https://lore.kernel.org/qemu-devel/20241206112213.88394-1-cohuck@redhat.com/)
+and aims at providing a base upon which we can continue with building
+support for cpu models, but which is hopefully already an improvement
+on its own.
 
-* Okay.
+Main changes from the patches in that series include:
+- post-pone the changes to handle KVM writable ID registers for cpu models
+  (I have a series including that on top of this one)
+- change how we store the list of ID registers, and access them
+  basically, use an enum for indexing, and an enum doing encodings in a
+  pattern similar to cpregs
+- move some hunks to different patches
+- update the scripts to generate the register descriptions, and run
+  them against a recent Linux sysregs file
 
-> > -    if (migrate_multifd() && !migrate_mapped_ram() &&
-> > -        !migrate_postcopy_ram() &&
-> > -        qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-> > +    if (!migration_should_start_incoming(channel)) {
->
-> This says "if we assume this is the main channel, and if we shouldn't start
-> incoming migration, then we should peek at the buffers".
-> Could you help explain?
+What I've kept:
+- generating the register descriptions from the Linux sysregs file
+  I think that file is still our best bet to generate the descriptions
+  easily, and updating the definitions is a manual step that can be checked
+  for unintended changes
+- most of the hard work that Eric had been doing; all new bugs in there
+  are my own :)
 
-* New migration starts only when the main channel and if 'multifd' is
-enabled all multifd channels are established. So, if 'main' and
-'multifd' channels are _not_ established then migration should _not_
-start. And in that case, incoming connection is likely for one of
-those channels and so we should peek at the buffers, because both
-'main' and 'multifd' channels send magic values.
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage
 
-* migration_should_start_incoming() function returns 'true' only when
-'main' and 'multifd' channels are being established. For 'postcopy'
-channel it returns false.
+I plan to send cpu model patches based on top of this Real Soon(tm).
 
+Cornelia Huck (2):
+  arm/kvm: add accessors for storing host features into idregs
+  arm/cpu: Add generated files
 
-> > +            } else if (!mis->from_src_file
-> > +                        && mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
-> > +                /* reconnect default channel for postcopy recovery */
-> > +                channel = CH_DEFAULT;
->
-> This is still in the big "peek buffer" if condition.
-> IMHO we can skip peeking buffer when postcopy paused, because in this stage
-> the channel must be (1) main channel first, then (2) preempt channel next.
+Eric Auger (13):
+  arm/cpu: Add sysreg definitions in cpu-sysregs.h
+  arm/cpu: Store aa64isar0 into the idregs arrays
+  arm/cpu: Store aa64isar1/2 into the idregs array
+  arm/cpu: Store aa64pfr0/1 into the idregs array
+  arm/cpu: Store aa64mmfr0-3 into the idregs array
+  arm/cpu: Store aa64dfr0/1 into the idregs array
+  arm/cpu: Store aa64smfr0 into the idregs array
+  arm/cpu: Store id_isar0-7 into the idregs array
+  arm/cpu: Store id_mfr0/1 into the idregs array
+  arm/cpu: Store id_dfr0/1 into the idregs array
+  arm/cpu: Store id_mmfr0-5 into the idregs array
+  arm/cpu: Add infra to handle generated ID register definitions
+  arm/cpu: Add sysreg generation scripts
 
-* It is in the big 'peek buffer' condition because the 'main' channel
-(= CH_DEFAULT) is being established here. Ideally, all channels should
-send magic values to be consistent. The 'main' channel sends magic
-value when it is established before starting migration, but the same
-'main' channel does not send magic value when it is established during
-postcopy recovery, that is an inconsistency (a bug) here. Ideal fix is
-to send a magic value every time the 'main' channel is established,
-irrespective of when it is established.
+ hw/intc/armv7m_nvic.c                 |  27 +-
+ scripts/gen-cpu-sysreg-properties.awk | 325 ++++++++++++
+ scripts/gen-cpu-sysregs-header.awk    |  70 +++
+ scripts/update-aarch64-sysreg-code.sh |  30 ++
+ target/arm/cpu-custom.h               |  55 ++
+ target/arm/cpu-features.h             | 313 +++++------
+ target/arm/cpu-sysreg-properties.c    | 713 ++++++++++++++++++++++++++
+ target/arm/cpu-sysregs.h              |  22 +
+ target/arm/cpu-sysregs.h.inc          | 164 ++++++
+ target/arm/cpu.c                      | 111 ++--
+ target/arm/cpu.h                      |  73 +--
+ target/arm/cpu64.c                    | 133 +++--
+ target/arm/helper.c                   |  68 +--
+ target/arm/internals.h                |   6 +-
+ target/arm/kvm.c                      | 138 ++---
+ target/arm/meson.build                |   1 +
+ target/arm/ptw.c                      |   6 +-
+ target/arm/tcg/cpu-v7m.c              | 174 ++++---
+ target/arm/tcg/cpu32.c                | 320 ++++++------
+ target/arm/tcg/cpu64.c                | 460 +++++++++--------
+ 20 files changed, 2308 insertions(+), 901 deletions(-)
+ create mode 100755 scripts/gen-cpu-sysreg-properties.awk
+ create mode 100755 scripts/gen-cpu-sysregs-header.awk
+ create mode 100755 scripts/update-aarch64-sysreg-code.sh
+ create mode 100644 target/arm/cpu-custom.h
+ create mode 100644 target/arm/cpu-sysreg-properties.c
+ create mode 100644 target/arm/cpu-sysregs.h
+ create mode 100644 target/arm/cpu-sysregs.h.inc
 
-* Adding conditionals to check if it is _POSTCOPY_PAUSED state then
-don't peek will only lead to complicated 'if' conditionals. This
-channel handling code is already complex and non-intuitive enough.
-
-> > +        } else if (mis->from_src_file
-> > +            && (!strcmp(ioc->name, "migration-tls-incoming")
-> > +                || !strcmp(ioc->name, "migration-file-incoming"))) {
-> > +            channel = CH_MULTIFD;
->
-> Confused here too.  Why do we need to check ioc name? Shouldn't multifd has
-> the headers?
-
-* Because they are not 'multifd' channels, tls/file channels don't
-send magic values, but are still handled by
-'multifd_recv_new_channel()' function.
-===
-    ...
-    if (default_channel) {
-        migration_incoming_setup(f);
-    } else {
-        if (migrate_multifd()) {
-            multifd_recv_new_channel(ioc, &local_err);
-        } else {
-            postcopy_preempt_new_channel(mis, f);
-        }
-===
-In the code above, if 'default_channel==false' and multifd() is
-enabled, all incoming connections are handled by
-'multifd_recv_new_channel()', irrespective of whether it is a
-'multifd' channel or not. While creating multifd channels, there is no
-check for channel type like: if(channel == CH_MULTIFD).
-
-* IMHO, if we make all channels behave with consistency, ie. either
-they all send magic value or none sends magic value, that'll simplify
-this code a lot.
-
-> > -        assert(migration_needs_multiple_sockets());
-> Could I ask why removal?
-
-* Because that function returns migrate_multifd() =>
-migrate_multifd() || migrate_postcopy_preempt();
-* And the very following check is also migrate_multifd(), as below:
-
-> >          if (migrate_multifd()) {
-> >              multifd_recv_new_channel(ioc, &local_err);
-
-
-> It might be better to avoid such "ret && XXX" nested check.  E.g. do you
-> think below easier to read?
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 74c50cc72c..9eb2f3fdeb 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1064,12 +1064,14 @@ bool migration_has_all_channels(void)
->          return false;
->      }
->
-> -    if (migrate_multifd()) {
-> -        return multifd_recv_all_channels_created();
-> +    if (migrate_multifd() &&
-> +        !multifd_recv_all_channels_created()) {
-> +        return false;
->      }
->
-> -    if (migrate_postcopy_preempt()) {
-> -        return mis->postcopy_qemufile_dst != NULL;
-> +    if (migrate_postcopy_preempt() &&
-> +        mis->postcopy_qemufile_dst == NULL) {
-> +        return false;
->      }
->
->      return true;
-
-* Will try it.
-
-> > -    if (!migrate_multifd()) {
-> > +    if (!migrate_multifd() || migration_in_postcopy()) {
-> >          return 0;
-> >      }
->
-> [1]
->
-> >
-> >      if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
-> > diff --git a/migration/ram.c b/migration/ram.c
-> > index f2326788de..bdba7abe73 100644
-> > --- a/migration/ram.c
-> > +++ b/migration/ram.c
-> > @@ -1295,7 +1295,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-> >          pss->page = 0;
-> >          pss->block = QLIST_NEXT_RCU(pss->block, next);
-> >          if (!pss->block) {
-> > -            if (multifd_ram_sync_per_round()) {
-> > +            if (multifd_ram_sync_per_round() && !migration_in_postcopy()) {
->
-> If you have above[1], why need this?
-
-* True, I tried with just [1] above first, but it was failing for some
-reason. Will try again.
-
-> This patch still did nothing for multifd in postcopy_start().  I'm not sure
-> it's safe.
->
-> What happens if some multifd pages were sent, then we start postcopy, dest
-> vcpu threads running, then during postcopy some multifd pages finally
-> arrived and modifying the guest pages during vcpus running?
-
-* ram_save_target_page() function saves multifd pages only when
-(..!migration_in_postcopy()) not in postcopy mode. Case of 'multifd'
-page arriving late on destination and 'postcopy' starting before that
-is strange, because if multifd page is getting late, that network
-latency should affect 'postcopy' channel too, no? But still if it is
-possible, do we want to call - multifd_ram_flush_and_sync() before
-postcopy_start()? Will that help?  I'll check if/how it works.
-
-Thank you.
----
-  - Prasad
+-- 
+2.48.1
 
 
