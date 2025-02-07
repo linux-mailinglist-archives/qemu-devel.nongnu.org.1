@@ -2,50 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03BDA2BC31
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 08:25:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D80BA2BC35
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 08:25:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgIic-0004BM-7P; Fri, 07 Feb 2025 02:24:06 -0500
+	id 1tgIkH-0005JH-PZ; Fri, 07 Feb 2025 02:25:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgIiZ-0004B9-KC; Fri, 07 Feb 2025 02:24:03 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tgIjq-0004x8-FG; Fri, 07 Feb 2025 02:25:23 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgIiX-0007RF-Oy; Fri, 07 Feb 2025 02:24:03 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1F6EDE71FA;
- Fri, 07 Feb 2025 10:23:03 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5EC6B1B06D2;
- Fri,  7 Feb 2025 10:23:44 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 55D5652D69; Fri, 07 Feb 2025 10:23:44 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hongren Zheng <i@zenithal.me>,
- Juan Jose Lopez Jaimez <thatjiaozi@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 33/33] hw/usb/canokey: Fix buffer overflow for OUT
- packet
-Date: Fri,  7 Feb 2025 10:23:37 +0300
-Message-Id: <20250207072343.2109513-2-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-7.2.16-20250207102241@cover.tls.msk.ru>
-References: <qemu-stable-7.2.16-20250207102241@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tgIjo-0007ni-7o; Fri, 07 Feb 2025 02:25:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1738913120; x=1770449120;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=hYxTtbnYvDndJpJUwjiU7VHXzZNkmmW/xe8XNc4Zcpc=;
+ b=ep52DSVPjeVeArRPnFCH/BPrHtePzrmGw+0VZ6l/OkYP+k3aeeoY+4Em
+ mBz4qVyc6JtunwvFJL1kPocTX9XFlpNJMhrKhfSmsfzsAd4q9kjC3tGRK
+ k0rG8JUrQ69bJZ8gwYBykeBhINuVra8BKk05gIWOl427j7EsVK3RQsmvQ
+ pZYvL6lhtoALB0pXLByBpqZnihrnknpJICSHNvw/hm1Tc6uChxPUCNZmB
+ 3DiIx0qnq1YUDwkiBB/HYP4a6phjXV8Mgg+pXrh8O9xpPLx676JwUtA4R
+ HHXll4q7rZQIfFGeCw1rpWKgo/ZB7hWTzaBBmwo/BTQhfOpa3ib/aX8Xq A==;
+X-CSE-ConnectionGUID: A/dvwY/jTyaOAM+uInAkkw==
+X-CSE-MsgGUID: U6+g3cllTOySyGzjRTv4uw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="38749094"
+X-IronPort-AV: E=Sophos;i="6.13,266,1732608000"; d="scan'208";a="38749094"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2025 23:25:17 -0800
+X-CSE-ConnectionGUID: NMGhLfdaST2jZz4+30a0Yg==
+X-CSE-MsgGUID: IeGjMfwSSr2HBuzB1nAzFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,266,1732608000"; d="scan'208";a="111275797"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 06 Feb 2025 23:25:11 -0800
+Date: Fri, 7 Feb 2025 15:44:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 03/10] rust/irq: Add a helper to convert
+ [InterruptSource] to [*mut IRQState]
+Message-ID: <Z6W56AH3J1qOx18m@intel.com>
+References: <20250125125137.1223277-1-zhao1.liu@intel.com>
+ <20250125125137.1223277-4-zhao1.liu@intel.com>
+ <17907481-89d6-457c-bcd3-66a444b1325d@redhat.com>
+ <Z6Wx/RGBIElMaeZy@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+In-Reply-To: <Z6Wx/RGBIElMaeZy@intel.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RAZOR2_CF_RANGE_51_100=1.886, RAZOR2_CHECK=0.922, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,81 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hongren Zheng <i@zenithal.me>
+On Fri, Feb 07, 2025 at 03:10:53PM +0800, Zhao Liu wrote:
+> Date: Fri, 7 Feb 2025 15:10:53 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: Re: [PATCH 03/10] rust/irq: Add a helper to convert
+>  [InterruptSource] to [*mut IRQState]
+> 
+> On Wed, Jan 29, 2025 at 11:51:02AM +0100, Paolo Bonzini wrote:
+> > Date: Wed, 29 Jan 2025 11:51:02 +0100
+> > From: Paolo Bonzini <pbonzini@redhat.com>
+> > Subject: Re: [PATCH 03/10] rust/irq: Add a helper to convert
+> >  [InterruptSource] to [*mut IRQState]
+> > 
+> > On Sat, Jan 25, 2025 at 1:32 PM Zhao Liu <zhao1.liu@intel.com> wrote:
+> > > 
+> > > This is useful to hanlde InterruptSource slice and pass it to C
+> > > bindings.
+> > > 
+> > > Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> > 
+> > This may be a bad suggestion, after all. clippy complains that you're
+> > casting &[*mut IRQState] to mutable (https://rust-lang.github.io/rust-
+> > clippy/master/#as_ptr_cast_mut).
+> > 
+> > I can think of two solutions:
+> > 
+> > 1) add #[allow(clippy::as_ptr_cast_mut)] and explain with a comment
+> > 
+> >     // Casting to *mut *mut IRQState is valid, because
+> >     // the source slice `pins` uses interior mutability.
+> >
 
-When USBPacket in OUT direction has larger payload
-than the ep_out_buffer (of size 512), a buffer overflow
-would occur.
+I agree it's the best to use interior mutability.
 
-It could be fixed by limiting the size of usb_packet_copy
-to be at most buffer size. Further optimization gets rid
-of the ep_out_buffer and directly uses ep_out as the target
-buffer.
+Just to confirm, I check with `cargo +nightly clippy` but it doesn't
+complain about this case. Should I switch to another version of clippy
+when I do such check? (currently I'm using v0.1.63 clippy as well, to
+match rustc.)
 
-This is reported by a security researcher who artificially
-constructed an OUT packet of size 2047. The report has gone
-through the QEMU security process, and as this device is for
-testing purpose and no deployment of it in virtualization
-environment is observed, it is triaged not to be a security bug.
-
-Cc: qemu-stable@nongnu.org
-Fixes: d7d34918551dc48 ("hw/usb: Add CanoKey Implementation")
-Reported-by: Juan Jose Lopez Jaimez <thatjiaozi@gmail.com>
-Signed-off-by: Hongren Zheng <i@zenithal.me>
-Message-id: Z4TfMOrZz6IQYl_h@Sun
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 664280abddcb3cacc9c6204706bb739fcc1316f7)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/usb/canokey.c b/hw/usb/canokey.c
-index bbc5da07b5..5abb8db771 100644
---- a/hw/usb/canokey.c
-+++ b/hw/usb/canokey.c
-@@ -197,8 +197,8 @@ static void canokey_handle_data(USBDevice *dev, USBPacket *p)
-     switch (p->pid) {
-     case USB_TOKEN_OUT:
-         trace_canokey_handle_data_out(ep_out, p->iov.size);
--        usb_packet_copy(p, key->ep_out_buffer[ep_out], p->iov.size);
-         out_pos = 0;
-+        /* segment packet into (possibly multiple) ep_out */
-         while (out_pos != p->iov.size) {
-             /*
-              * key->ep_out[ep_out] set by prepare_receive
-@@ -207,8 +207,8 @@ static void canokey_handle_data(USBDevice *dev, USBPacket *p)
-              * to be the buffer length
-              */
-             out_len = MIN(p->iov.size - out_pos, key->ep_out_size[ep_out]);
--            memcpy(key->ep_out[ep_out],
--                    key->ep_out_buffer[ep_out] + out_pos, out_len);
-+            /* usb_packet_copy would update the pos offset internally */
-+            usb_packet_copy(p, key->ep_out[ep_out], out_len);
-             out_pos += out_len;
-             /* update ep_out_size to actual len */
-             key->ep_out_size[ep_out] = out_len;
-diff --git a/hw/usb/canokey.h b/hw/usb/canokey.h
-index 24cf304203..fdcad10f80 100644
---- a/hw/usb/canokey.h
-+++ b/hw/usb/canokey.h
-@@ -24,8 +24,6 @@
- #define CANOKEY_EP_NUM 3
- /* BULK/INTR IN can be up to 1352 bytes, e.g. get key info */
- #define CANOKEY_EP_IN_BUFFER_SIZE 2048
--/* BULK OUT can be up to 270 bytes, e.g. PIV import cert */
--#define CANOKEY_EP_OUT_BUFFER_SIZE 512
- 
- typedef enum {
-     CANOKEY_EP_IN_WAIT,
-@@ -59,8 +57,6 @@ typedef struct CanoKeyState {
-     /* OUT pointer to canokey recv buffer */
-     uint8_t *ep_out[CANOKEY_EP_NUM];
-     uint32_t ep_out_size[CANOKEY_EP_NUM];
--    /* For large BULK OUT, multiple write to ep_out is needed */
--    uint8_t ep_out_buffer[CANOKEY_EP_NUM][CANOKEY_EP_OUT_BUFFER_SIZE];
- 
-     /* Properties */
-     char *file; /* canokey-file */
--- 
-2.39.5
+Thanks,
+Zhao
 
 
