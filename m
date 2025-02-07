@@ -2,110 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386C9A2CD49
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 20:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAA0A2CD4F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 20:55:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgUQf-0003D3-L8; Fri, 07 Feb 2025 14:54:21 -0500
+	id 1tgUQh-0003Da-85; Fri, 07 Feb 2025 14:54:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgUQa-0003CD-BR
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 14:54:16 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgUQc-0003Cr-IO
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 14:54:18 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgUQY-0000NI-Bk
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 14:54:15 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgUQa-0000Nc-GA
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 14:54:17 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 097411F452;
- Fri,  7 Feb 2025 19:54:13 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3D2641F453;
+ Fri,  7 Feb 2025 19:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738958053; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1738958055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iRsRX3Mj1GVAMbNt2PVEx+jFR98P0uMWXn3sVIy+E6o=;
- b=eNyliNS72qaaTTzZfGReBsI8e9b6yn3Q7OAxJjZm+VPEqdk0DZrI/U7QeJaD2X/MWJb9Lq
- WFikSUhldhV9zAuiX1sYNgbrg8IcCBDsvXqkUk73JiKjKUY/c299F+cQpQjY/6YOONU+ZU
- CxuTT1eCIdOsqsfp+Ubny55qnOBZZOo=
+ bh=z7/MJJlGz7WcMfSW1AjO9ksPI7pky5U+1f5GQNmsyWM=;
+ b=DcmwSGYurujZAUQT5nb1lHi49CmosMoYnpZAdHr/iIB0BRf8FmgKEtFzhWU6p5wCh6VD48
+ on9MvlhP7CbcBoH1cOzWY13y+Q+IrnwqDsSEeqV1IKqtluRxvd3JPeY0dthgIYtfKrhAQ8
+ EMLQg+kCxPG0VN+SeVkyS4luggxogc4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738958053;
+ s=susede2_ed25519; t=1738958055;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iRsRX3Mj1GVAMbNt2PVEx+jFR98P0uMWXn3sVIy+E6o=;
- b=xOqUpMf1hNUkCx1ewHJ5U8khQg+Kdwnv3IlgfDKEMPz9xrrTJ7RL1elkuxpEkRz4vkTUPY
- UeProDptuL/fJQBQ==
+ bh=z7/MJJlGz7WcMfSW1AjO9ksPI7pky5U+1f5GQNmsyWM=;
+ b=wwf2J3f5XW/qvJxTyh5BPoM1M6bXUetldFUDtf3nH1PgIuxY9t4JC8v7lC9xjcp0aau/u5
+ pOdZr2HM8pU5K1Ag==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eNyliNS7;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xOqUpMf1
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738958053; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1738958055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iRsRX3Mj1GVAMbNt2PVEx+jFR98P0uMWXn3sVIy+E6o=;
- b=eNyliNS72qaaTTzZfGReBsI8e9b6yn3Q7OAxJjZm+VPEqdk0DZrI/U7QeJaD2X/MWJb9Lq
- WFikSUhldhV9zAuiX1sYNgbrg8IcCBDsvXqkUk73JiKjKUY/c299F+cQpQjY/6YOONU+ZU
- CxuTT1eCIdOsqsfp+Ubny55qnOBZZOo=
+ bh=z7/MJJlGz7WcMfSW1AjO9ksPI7pky5U+1f5GQNmsyWM=;
+ b=DcmwSGYurujZAUQT5nb1lHi49CmosMoYnpZAdHr/iIB0BRf8FmgKEtFzhWU6p5wCh6VD48
+ on9MvlhP7CbcBoH1cOzWY13y+Q+IrnwqDsSEeqV1IKqtluRxvd3JPeY0dthgIYtfKrhAQ8
+ EMLQg+kCxPG0VN+SeVkyS4luggxogc4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738958053;
+ s=susede2_ed25519; t=1738958055;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iRsRX3Mj1GVAMbNt2PVEx+jFR98P0uMWXn3sVIy+E6o=;
- b=xOqUpMf1hNUkCx1ewHJ5U8khQg+Kdwnv3IlgfDKEMPz9xrrTJ7RL1elkuxpEkRz4vkTUPY
- UeProDptuL/fJQBQ==
+ bh=z7/MJJlGz7WcMfSW1AjO9ksPI7pky5U+1f5GQNmsyWM=;
+ b=wwf2J3f5XW/qvJxTyh5BPoM1M6bXUetldFUDtf3nH1PgIuxY9t4JC8v7lC9xjcp0aau/u5
+ pOdZr2HM8pU5K1Ag==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D59A913694;
- Fri,  7 Feb 2025 19:54:10 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 90FB213694;
+ Fri,  7 Feb 2025 19:54:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +KgNJOJkpme1GQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 19:54:10 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id UOyWE+Vkpme1GQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 19:54:13 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: [RFC PATCH v3 4/8] io: Add flags argument to
- qio_channel_readv_full_all_eof
-Date: Fri,  7 Feb 2025 16:53:55 -0300
-Message-Id: <20250207195359.17443-5-farosas@suse.de>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [RFC PATCH v3 5/8] io: Add a read flag for relaxed EOF
+Date: Fri,  7 Feb 2025 16:53:56 -0300
+Message-Id: <20250207195359.17443-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250207195359.17443-1-farosas@suse.de>
 References: <20250207195359.17443-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 097411F452
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
+ NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]; RCPT_COUNT_FIVE(0.00)[6];
- RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid, suse.de:email,
- imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:email,
+ suse.de:mid]
+X-Spam-Score: -3.30
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -131,92 +120,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to pass flags into qio_channel_tls_readv() but
-qio_channel_readv_full_all_eof() doesn't take a flags argument.
+Add a read flag that can inform a channel that it's ok to receive an
+EOF at any moment. Channels that have some form of strict EOF
+tracking, such as TLS session termination, may choose to ignore EOF
+errors with the use of this flag.
 
-No functional change.
+This is being added for compatibility with older migration streams
+that do not include a TLS termination step.
 
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- hw/remote/mpqemu-link.c | 2 +-
- include/io/channel.h    | 2 ++
- io/channel.c            | 9 ++++++---
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ include/io/channel.h | 1 +
+ io/channel-tls.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/remote/mpqemu-link.c b/hw/remote/mpqemu-link.c
-index e25f97680d..49885a1db6 100644
---- a/hw/remote/mpqemu-link.c
-+++ b/hw/remote/mpqemu-link.c
-@@ -110,7 +110,7 @@ static ssize_t mpqemu_read(QIOChannel *ioc, void *buf, size_t len, int **fds,
-         bql_unlock();
-     }
- 
--    ret = qio_channel_readv_full_all_eof(ioc, &iov, 1, fds, nfds, errp);
-+    ret = qio_channel_readv_full_all_eof(ioc, &iov, 1, fds, nfds, 0, errp);
- 
-     if (drop_bql && !iothread && !qemu_in_coroutine()) {
-         bql_lock();
 diff --git a/include/io/channel.h b/include/io/channel.h
-index bdf0bca92a..58940eead5 100644
+index 58940eead5..62b657109c 100644
 --- a/include/io/channel.h
 +++ b/include/io/channel.h
-@@ -885,6 +885,7 @@ void qio_channel_set_aio_fd_handler(QIOChannel *ioc,
-  * @niov: the length of the @iov array
-  * @fds: an array of file handles to read
-  * @nfds: number of file handles in @fds
-+ * @flags: read flags (QIO_CHANNEL_READ_FLAG_*)
-  * @errp: pointer to a NULL-initialized error object
-  *
-  *
-@@ -903,6 +904,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
-                                                       const struct iovec *iov,
-                                                       size_t niov,
-                                                       int **fds, size_t *nfds,
-+                                                      int flags,
-                                                       Error **errp);
+@@ -35,6 +35,7 @@ OBJECT_DECLARE_TYPE(QIOChannel, QIOChannelClass,
+ #define QIO_CHANNEL_WRITE_FLAG_ZERO_COPY 0x1
  
- /**
-diff --git a/io/channel.c b/io/channel.c
-index e3f17c24a0..ebd9322765 100644
---- a/io/channel.c
-+++ b/io/channel.c
-@@ -115,7 +115,8 @@ int coroutine_mixed_fn qio_channel_readv_all_eof(QIOChannel *ioc,
-                                                  size_t niov,
-                                                  Error **errp)
- {
--    return qio_channel_readv_full_all_eof(ioc, iov, niov, NULL, NULL, errp);
-+    return qio_channel_readv_full_all_eof(ioc, iov, niov, NULL, NULL, 0,
-+                                          errp);
- }
+ #define QIO_CHANNEL_READ_FLAG_MSG_PEEK 0x1
++#define QIO_CHANNEL_READ_FLAG_RELAXED_EOF 0x2
  
- int coroutine_mixed_fn qio_channel_readv_all(QIOChannel *ioc,
-@@ -130,6 +131,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
-                                                       const struct iovec *iov,
-                                                       size_t niov,
-                                                       int **fds, size_t *nfds,
-+                                                      int flags,
-                                                       Error **errp)
- {
-     int ret = -1;
-@@ -155,7 +157,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
-     while ((nlocal_iov > 0) || local_fds) {
-         ssize_t len;
-         len = qio_channel_readv_full(ioc, local_iov, nlocal_iov, local_fds,
--                                     local_nfds, 0, errp);
-+                                     local_nfds, flags, errp);
-         if (len == QIO_CHANNEL_ERR_BLOCK) {
-             if (qemu_in_coroutine()) {
-                 qio_channel_yield(ioc, G_IO_IN);
-@@ -222,7 +224,8 @@ int coroutine_mixed_fn qio_channel_readv_full_all(QIOChannel *ioc,
-                                                   int **fds, size_t *nfds,
-                                                   Error **errp)
- {
--    int ret = qio_channel_readv_full_all_eof(ioc, iov, niov, fds, nfds, errp);
-+    int ret = qio_channel_readv_full_all_eof(ioc, iov, niov, fds, nfds, 0,
-+                                             errp);
+ typedef enum QIOChannelFeature QIOChannelFeature;
  
-     if (ret == 0) {
-         error_setg(errp, "Unexpected end-of-file before all data were read");
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index ecde6b57bf..caf8301a9e 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -359,6 +359,7 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
+             tioc->session,
+             iov[i].iov_base,
+             iov[i].iov_len,
++            flags & QIO_CHANNEL_READ_FLAG_RELAXED_EOF ||
+             qatomic_load_acquire(&tioc->shutdown) & QIO_CHANNEL_SHUTDOWN_READ,
+             errp);
+         if (ret == QCRYPTO_TLS_SESSION_ERR_BLOCK) {
 -- 
 2.35.3
 
