@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0433FA2C00B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 10:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9259A2C00A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 10:59:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgL8R-0004KX-Bc; Fri, 07 Feb 2025 04:58:55 -0500
+	id 1tgL87-0003pJ-Nr; Fri, 07 Feb 2025 04:58:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <52065d405ae96221f15b0fd9c099437c77178d4f@kylie.crudebyte.com>)
- id 1tgL8N-00044J-02
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:51 -0500
+ (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
+ id 1tgL84-0003jY-Ub
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:33 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <52065d405ae96221f15b0fd9c099437c77178d4f@kylie.crudebyte.com>)
- id 1tgL8L-0001Kr-DK
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:50 -0500
+ (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
+ id 1tgL83-0001Is-7n
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=JkRdxjgnBKt71547XwUn1O1/I1Rb6x+CIeZvvDqy18c=; b=e9cvd
- QTiXv3zc5UaN1mjj9K8O/stP3/tyTdthqNvx2CzLzuYnNqCD6n6xWBViNiNfJ5dYKaApadoGMfv0Z
- C7Oma4MoaR+JB4Pe/8j44Cc/vPW2hK03jLh6thp0T/EqotxsTksOIj4xUJb7JQZic04dRfABpp387
- HPc3jhZ6iklW90x1qwVWOfP0iID+xc/K61RQqkOcvcXkyC6l+b+KsofEFhJVW5/uNdcw3JD72l6HD
- iYXz0dA25nW5qvF2Czgq61FxzTfwh56UhRHMcEDxHv1/cS+enXSRuxwrq60pN6CLU7neb0PGbSL5u
- JdhAoSZ7YeeDntCvdrC4KZpqoOlBSDHCUhUnU37ANQ7k7wVUJUqxoqxXEukVl3e3TKwTfJjErijE0
- xUqMdbENUJQTZdUPL1BxFHBjR2ywaRb/lOrP80RLGpUulkVv7juL/d8dbyfF7Lk1kkNXQFm/pKKxR
- NO6VTvVYAWuZV5g77EIKYpRKl5rKfY5frm35seMSuKDKJuTdhmQGbxQGp9dlzGhwOO4kbIVoi2se8
- XYSSFjJsTY/Vh6TGAUkXpuz/7HGr2LuKC5885tIsZTYLmkxIz0U++LJbcgx1gw5lFg7nFVCvuFz6C
- 3/kFTbLGlquVnBHnNHasX8NhU4ok43H8m8QYtasG+TLQNGQJ6ckJVEAnyymrRg=;
-Message-Id: <52065d405ae96221f15b0fd9c099437c77178d4f.1738921999.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=D9wDRyQBxJlr5I2gWNfNbciP1wRvnJLh7g260qArd8s=; b=hlXCu
+ Exypre/JsL9xnr5yzllWX7zPFkBwGl3BijuZhTHAUw7yXrbnQb/tvE+cT043D5ABsUn+k9BBrEr5f
+ DyFaoFmqgcLywqU/miNb/NGc5FREsq0WSy+OJFvXZlv0Ea6XZpd/Muy943bSbLPlqNknwhYmvRuZu
+ qw9bPQI+K3oEtdSZHy8uSs3sSNtNHXkewY1uxJ81CQKB6BkBmVHpMwl1eoQYeR73yjE/gcz/bhEb9
+ TCEAx/574362CYdtAHIODwqomiP3GecfVzHhwencUQMjs1o9OfabtGY09VjqcxYXPWDNosszR5ayW
+ e8spUcorRQGjSvjyYFasQfZQNUeQxz985Ix+ljcdvl7bntuDvw0lAmo1cl/d0SHj6n2I2kOGy6pAS
+ qKaWohfvFS7im8KoJn36Ol6UVqGZn6Gyax7Z+S6TnIi1jEefbHs4Bs95r9q8wPb0g4iIhjQzga3vv
+ 4RIvSMjdAOSrQ/zLTk0Tq5SJkkCtXacozl9Oe3Fyuw5OmJrY0kYC2g+zwNICsE9Whf6c2bpO4Dyq7
+ 4KVUuNfjmATpr4p6A+wt6ca2U3KHRegS1IldeabvaCoiJiB05d8G3lX7DdNc9q8qX9QMG8sFJQuZ5
+ tKirs6GzpTT+imactg63fgKCyYnvkT6lbTyB7l07IPN4eoKt8lUX57IrDlsk6g=;
+Message-Id: <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4.1738921999.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1738921999.git.qemu_oss@crudebyte.com>
 References: <cover.1738921999.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Fri, 07 Feb 2025 10:53:19 +0100
-Subject: [PULL v2 4/4] MAINTAINERS: Mark me as reviewer only for 9pfs
+Subject: [PULL v2 1/4] 9pfs: improve v9fs_walk() tracing
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>,
     Stefan Hajnoczi <stefanha@redhat.com>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=52065d405ae96221f15b0fd9c099437c77178d4f@kylie.crudebyte.com;
+ envelope-from=0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,43 +68,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Greg Kurz <groug@kaod.org>
+'Twalk' is the most important request type in the 9p protocol to look out
+for when debugging 9p communication. That's because it is the only part
+of the 9p protocol which actually deals with human-readable path names,
+whereas all other 9p request types work on numeric file IDs (FIDs) only.
 
-I still review 9pfs changes from time to time but I'm definitely
-not able to do actual maintainer work. Drop my tree on the way
-as I'll obviously not use it anymore, and it has been left
-untouched since May 2020.
+Improve tracing of 'Twalk' requests, e.g. let's say client wanted to walk
+to "/home/bob/src", then improve trace output from:
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Message-Id: <20250115100849.259612-1-groug@kaod.org>
+  v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames 3
+
+to:
+
+  v9fs_walk tag=0 id=110 fid=0 newfid=1 nwnames=3 wnames={home, bob, src}
+
+To achieve this, add a new helper function trace_v9fs_walk_wnames() which
+converts the received V9fsString array of individual path elements into a
+comma-separated string presentation for being passed to the tracing system.
+As this conversion is somewhat expensive, this conversion function is only
+called if tracing of event 'v9fs_walk' is currently enabled.
+
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <E1tJamT-007Cqk-9E@kylie.crudebyte.com>
 ---
- MAINTAINERS | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/9pfs/9p.c         | 36 +++++++++++++++++++++++++++++++-----
+ hw/9pfs/trace-events |  2 +-
+ 2 files changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cf37fce7b..c6859cbb0e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2254,8 +2254,8 @@ F: include/system/balloon.h
- F: tests/qtest/virtio-balloon-test.c
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 578517739a..6f24c1abb3 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -1774,6 +1774,21 @@ static bool same_stat_id(const struct stat *a, const struct stat *b)
+     return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
+ }
  
- virtio-9p
--M: Greg Kurz <groug@kaod.org>
- M: Christian Schoenebeck <qemu_oss@crudebyte.com>
-+R: Greg Kurz <groug@kaod.org>
- S: Maintained
- W: https://wiki.qemu.org/Documentation/9p
- F: hw/9pfs/
-@@ -2263,7 +2263,6 @@ X: hw/9pfs/xen-9p*
- F: fsdev/
- F: tests/qtest/virtio-9p-test.c
- F: tests/qtest/libqos/virtio-9p*
--T: git https://gitlab.com/gkurz/qemu.git 9p-next
- T: git https://github.com/cschoenebeck/qemu.git 9p.next
++/*
++ * Returns a (newly allocated) comma-separated string presentation of the
++ * passed array for logging (tracing) purpose for trace event "v9fs_walk".
++ *
++ * It is caller's responsibility to free the returned string.
++ */
++static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)
++{
++    g_autofree char **arr = g_malloc0_n(nwnames + 1, sizeof(char *));
++    for (size_t i = 0; i < nwnames; ++i) {
++        arr[i] = wnames[i].data;
++    }
++    return g_strjoinv(", ", arr);
++}
++
+ static void coroutine_fn v9fs_walk(void *opaque)
+ {
+     int name_idx, nwalked;
+@@ -1787,6 +1802,7 @@ static void coroutine_fn v9fs_walk(void *opaque)
+     size_t offset = 7;
+     int32_t fid, newfid;
+     P9ARRAY_REF(V9fsString) wnames = NULL;
++    g_autofree char *trace_wnames = NULL;
+     V9fsFidState *fidp;
+     V9fsFidState *newfidp = NULL;
+     V9fsPDU *pdu = opaque;
+@@ -1800,11 +1816,9 @@ static void coroutine_fn v9fs_walk(void *opaque)
+     }
+     offset += err;
  
- virtio-blk
+-    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames);
+-
+     if (nwnames > P9_MAXWELEM) {
+         err = -EINVAL;
+-        goto out_nofid;
++        goto out_nofid_nownames;
+     }
+     if (nwnames) {
+         P9ARRAY_NEW(V9fsString, wnames, nwnames);
+@@ -1814,15 +1828,23 @@ static void coroutine_fn v9fs_walk(void *opaque)
+         for (i = 0; i < nwnames; i++) {
+             err = pdu_unmarshal(pdu, offset, "s", &wnames[i]);
+             if (err < 0) {
+-                goto out_nofid;
++                goto out_nofid_nownames;
+             }
+             if (name_is_illegal(wnames[i].data)) {
+                 err = -ENOENT;
+-                goto out_nofid;
++                goto out_nofid_nownames;
+             }
+             offset += err;
+         }
++        if (trace_event_get_state_backends(TRACE_V9FS_WALK)) {
++            trace_wnames = trace_v9fs_walk_wnames(wnames, nwnames);
++            trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames,
++                            trace_wnames);
++        }
++    } else {
++        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "");
+     }
++
+     fidp = get_fid(pdu, fid);
+     if (fidp == NULL) {
+         err = -ENOENT;
+@@ -1957,7 +1979,11 @@ out:
+     }
+     v9fs_path_free(&dpath);
+     v9fs_path_free(&path);
++    goto out_pdu_complete;
++out_nofid_nownames:
++    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "<?>");
+ out_nofid:
++out_pdu_complete:
+     pdu_complete(pdu, err);
+ }
+ 
+diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
+index a12e55c165..ed9f4e7209 100644
+--- a/hw/9pfs/trace-events
++++ b/hw/9pfs/trace-events
+@@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
+ v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atime, int32_t mtime, int64_t length) "tag %d id %d stat={mode %d atime %d mtime %d length %"PRId64"}"
+ v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag %d id %d fid %d request_mask %"PRIu64
+ v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
+-v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames) "tag %d id %d fid %d newfid %d nwnames %d"
++v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
+ v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
+ v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
+ v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
 -- 
 2.30.2
 
