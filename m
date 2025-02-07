@@ -2,113 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B845FA2C509
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F82A2C54A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:30:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgPAU-0006XJ-RZ; Fri, 07 Feb 2025 09:17:18 -0500
+	id 1tgPL3-0001QH-E2; Fri, 07 Feb 2025 09:28:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPA4-0006Vr-5v
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:16:55 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPKw-0001P9-Kz
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:08 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPA1-0003Eg-1I
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:16:51 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPKu-0007f3-9c
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:06 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 624E421160;
- Fri,  7 Feb 2025 14:16:45 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 8FA791F45A;
+ Fri,  7 Feb 2025 14:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738937805; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738938482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JgaRctii7xd80iGcWxLrv0Kahdr/XJqeoW8QI4X9RzQ=;
- b=cKOpfrq3+b6PNhBpWcK1Kczz16IHdhTmMi2tcz3xbP8wLzW35ax29IgwXq9EokNj2Cl7e0
- 0FGb36837tyyr6/AT8V7rjiRcHuJC/g3lh1EReMbJANoByREvxIywrS94yZhPN3E4Fv5yu
- C222mR1Yyh+NhMjyQSAoeKDDOLppa4Q=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v6Ai/7bP5tmA4IzgQuemzID5rsAWSaJ2kOKVvpW8Q2U=;
+ b=xkSD9lv2e6WCIurcLJbdpbFPss00kIOXzlWSCLQPEfTlUHoQvzJrq6EhSOSDo/SNyQXYHA
+ uyXHxW9MXVinCv2L9sA9bzPfnWpa0mm4OwUAbbSoNIgdcIY7NNlPF4x1S3fb/PyEPUivSG
+ 78jiKGNsA0PIyUPJPuUpsIe3gN9lSAo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738937805;
+ s=susede2_ed25519; t=1738938482;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JgaRctii7xd80iGcWxLrv0Kahdr/XJqeoW8QI4X9RzQ=;
- b=AuFjy86jOYuut5Q6NAMMskh3kNiCrtJ+nRtZSJc+AYBKX5Wcb0oQAmqTtJUW8vuTDPpTQE
- mAWdEyUmk8JpwzBw==
-Authentication-Results: smtp-out1.suse.de;
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v6Ai/7bP5tmA4IzgQuemzID5rsAWSaJ2kOKVvpW8Q2U=;
+ b=MgqBFJ80tP2Afjir9QjiOjAPSX8rvvy973+mqoIZQGZ0qWyOMbdbVv6YKFUVGdhYswuGJm
+ Sk8MA1hUhTIf5eCQ==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738937805; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738938482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JgaRctii7xd80iGcWxLrv0Kahdr/XJqeoW8QI4X9RzQ=;
- b=cKOpfrq3+b6PNhBpWcK1Kczz16IHdhTmMi2tcz3xbP8wLzW35ax29IgwXq9EokNj2Cl7e0
- 0FGb36837tyyr6/AT8V7rjiRcHuJC/g3lh1EReMbJANoByREvxIywrS94yZhPN3E4Fv5yu
- C222mR1Yyh+NhMjyQSAoeKDDOLppa4Q=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v6Ai/7bP5tmA4IzgQuemzID5rsAWSaJ2kOKVvpW8Q2U=;
+ b=xkSD9lv2e6WCIurcLJbdpbFPss00kIOXzlWSCLQPEfTlUHoQvzJrq6EhSOSDo/SNyQXYHA
+ uyXHxW9MXVinCv2L9sA9bzPfnWpa0mm4OwUAbbSoNIgdcIY7NNlPF4x1S3fb/PyEPUivSG
+ 78jiKGNsA0PIyUPJPuUpsIe3gN9lSAo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738937805;
+ s=susede2_ed25519; t=1738938482;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JgaRctii7xd80iGcWxLrv0Kahdr/XJqeoW8QI4X9RzQ=;
- b=AuFjy86jOYuut5Q6NAMMskh3kNiCrtJ+nRtZSJc+AYBKX5Wcb0oQAmqTtJUW8vuTDPpTQE
- mAWdEyUmk8JpwzBw==
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v6Ai/7bP5tmA4IzgQuemzID5rsAWSaJ2kOKVvpW8Q2U=;
+ b=MgqBFJ80tP2Afjir9QjiOjAPSX8rvvy973+mqoIZQGZ0qWyOMbdbVv6YKFUVGdhYswuGJm
+ Sk8MA1hUhTIf5eCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C021F139CB;
- Fri,  7 Feb 2025 14:16:44 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE293139CB;
+ Fri,  7 Feb 2025 14:28:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 1p0FH8wVpmfGNwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:16:44 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kqhOKnAYpmcoOwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:28:00 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>, Alex Williamson
- <alex.williamson@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, Eric Blake
- <eblake@redhat.com>, Markus
- Armbruster <armbru@redhat.com>, Avihai Horon <avihaih@nvidia.com>, Joao
- Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 08/33] migration/multifd: Allow premature EOF on TLS
- incoming channels
-In-Reply-To: <Z6YS95V5RA9-UmGl@x1.local>
-References: <87zfj0mcmy.fsf@suse.de> <87wme4m8ci.fsf@suse.de>
- <192db6a6-f3ff-4cf9-8537-b849fb3a97b3@maciej.szmigiero.name>
- <87tt97ma9l.fsf@suse.de>
- <ac6f56c0-58d9-45a4-bbf4-6b28649a8952@maciej.szmigiero.name>
- <87msezm75y.fsf@suse.de>
- <eba9c2d2-5a20-489c-aa89-8adde2781c7a@maciej.szmigiero.name>
- <87jza3m12b.fsf@suse.de> <Z6Uu50gzSIgKsiLA@x1.local>
- <87cyftnbc0.fsf@suse.de> <Z6YS95V5RA9-UmGl@x1.local>
-Date: Fri, 07 Feb 2025 11:16:41 -0300
-Message-ID: <87a5axn8l2.fsf@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [RFC PATCH v2 0/8] crypto,io,migration: Add support to gnutls_bye()
+Date: Fri,  7 Feb 2025 11:27:50 -0300
+Message-Id: <20250207142758.6936-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_HAS_DN(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- MISSING_XM_UA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[10];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,141 +114,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+v2:
 
-> On Fri, Feb 07, 2025 at 10:17:19AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Feb 06, 2025 at 02:32:12PM -0300, Fabiano Rosas wrote:
->> >> > In any case we'd still need some kind of a compatibility behavior for
->> >> > the TLS bit stream emitted by older QEMU versions (which is always
->> >> > improperly terminated).
->> >> >
->> >> 
->> >> There is no compat issue. For <= 9.2, QEMU is still doing an extra
->> >> multifd_send_sync_main(), which results in an extra MULTIFD_FLAG_SYNC on
->> >> the destination and it gets stuck waiting for the
->> >> RAM_SAVE_FLAG_MULTIFD_FLUSH that never comes. Therefore the src always
->> >> closes the connection before dst reaches the extra recv().
->> >> 
->> >> I test migration both ways with 2 previous QEMU versions and the
->> >> gnutls_bye() series passes all tests. I also put an assert at
->> >> tlssession.c and never triggers for GNUTLS_E_PREMATURE_TERMINATION. The
->> >> MULTIFD_FLAG_EOS should behave the same.
->> >
->> > Which are the versions you tried?  As only 9.1 and 9.2 has 637280aeb2, so I
->> > wonder if the same issue would hit too with 9.0 or older.
->> 
->> Good point. 9.0 indeed breaks.
->> 
->> >
->> > I'd confess I feel unreliable relying on the side effect of 637280aeb2,
->> > because fundamentally it works based on the fact that multifd threads need
->> > to be kicked out by the main load thread SYNC event on dest QEMU to avoid
->> > the readv() from going wrong.
->> >
->> 
->> We're relying on the opposite: mutlifd_recv NOT getting kicked. Which is
->> a bug that 1d457daf86 fixed.
->> 
->> > What I'm not sure here is, is it sheer luck that the main channel SYNC will
->> > always arrive _before_ pre-mature terminations of the multifd channels?  It
->> > sounds like it could also happen when the multifd channels got its
->> > pre-mature termination early, before the main thread got the SYNC.
->> 
->> You lost me here, what main channel sync? Its the MULTIFD_FLAG_SYNC that
->> puts the recv thread in the "won't see the termination" state and that
->> is serialized:
->> 
->>    SEND                        RECV
->>    -------------------------+----------------------------
->> 1  multifd_send_sync_main()
->> 2  pending_sync==true,
->> 3  send thread sends SYNC      recv thread gets SYNC
->> 4  <some work>                 recv gets stuck.
->> 5  multifd_send_shutdown()     <time passes>
->> 6  shutdown()                  multifd_recv_shutdown()
->>                                recv_terminate_threads()
->>                                recv exits without recv()
->> 
->> In other words, RECV would need to see the shutdown (6) before the SYNC
->> (3), which I don't think it possible.
->
-> Ah yeah, I somehow remembered we sent a SYNC in the main channel but forgot
-> to push the per-channel SYNC.  I got it the other way round.  Yeah if data
-> is always ordered with shutdown() effect on recv then it seems in order.
->
->> 
->> >
->> > Maybe we still need a compat property at the end..
->> 
->> This is actually similar to preempt_pre_7_2, what about:
->> 
->>     /*
->>      * This variable only makes sense when set on the machine that is
->>      * the destination of a multifd migration with TLS enabled. It
->>      * affects the behavior of the last send->recv iteration with
->>      * regards to termination of the TLS session. Defaults to true.
->>      *
->>      * When set:
->>      *
->>      * - the destination QEMU instance can expect to never get a
->>      *   GNUTLS_E_PREMATURE_TERMINATION error. Manifested as the error
->>      *   message: "The TLS connection was non-properly terminated".
->>      *
->>      * When clear:
->>      *
->>      * - the destination QEMU instance can expect to see a
->>      *   GNUTLS_E_PREMATURE_TERMINATION error in any multifd channel
->>      *   whenever the last recv() call of that channel happens after
->>      *   the source QEMU instance has already issued shutdown() on the
->>      *   channel. This is affected by (at least) commits 637280aeb2
->>      *   and 1d457daf86.
->
-> If we want to reference them after all, we could use another sentence to
-> describe the effects:
->
->        *   Commit 637280aeb2 (since 9.1) introduced a side effect to cause
->        *   pre-mature termination not happen, while commit 1d457daf86
->        *   (since 10.0) can unexpectedly re-expose the pre-mature
->        *   termination issue.
->
+Added the premature_ok logic;
+Added compat property for QEMU <9.1;
+Refactored the existing handshake code;
 
-I'll add this.
+CI run:
+https://gitlab.com/farosas/qemu/-/pipelines/1660800456
 
->>      *
->>      * NOTE: Regardless of the state of this option, a premature
->>      * termination of the TLS connection might happen due to error at
->>      * any moment prior to the last send->recv iteration.
->>      */
->>     bool multifd_clean_tls_termination;
->> 
->> And I think the more straight-forward implementation is to incorporate
->> Maciej's premature_ok patches (in some form), otherwise that option will
->> have to take effect on the QIOChannel which is a layering violation.
->
-> If we take Dan's comment into account:
->
-> https://lore.kernel.org/r/Z6I86e-hzJAlxk0r@redhat.com
->
-> It means whenever multifd recv thread invokes the iochannel API it will use
-> multifd_clean_tls_termination to decide QIO_CHANNEL_READ_RELAXED_EOF flag
-> to pass in.  I hope this is not layer violation, or I could miss something..
+v1:
+https://lore.kernel.org/r/20250206175824.22664-1-farosas@suse.de
 
-Yes, we need that.
+Hi,
 
->
-> So if we're on the same page we need that knob, to make this series easier
-> we could make it two steps:
->
->   - Step 1: introduce the parameter and QIO_CHANNEL_READ_RELAXED_EOF, set
->     it default to false.
->
->   - Step 2: Your other RFC series to implement gnutls_bye(), at last make
->     it a compat property and switch default true.
->
-> Then Maciej only needs step 1, it looks to me.
+We've been discussing a way to stop multifd recv threads from getting
+an error at the end of migration when the source threads close the
+iochannel without ending the TLS session.
 
-I'm sending everything as a v2 in a moment. We can cherry-pick from
-there.
+The original issue was introduced by commit 1d457daf86
+("migration/multifd: Further remove the SYNC on complete") which
+altered the synchronization of the source and destination in a manner
+that causes the destination to already be waiting at recv() when the
+source closes the connection.
+
+One approach would be to issue gnutls_bye() at the source after all
+the data has been sent. The destination would then gracefully exit
+when it gets EOF.
+
+Aside from stopping the recv thread from seeing an error, this also
+creates a contract that all connections should be closed only after
+the TLS session is ended. This helps to avoid masking a legitimate
+issue where the connection is closed prematurely.
+
+Fabiano Rosas (8):
+  crypto: Allow gracefully ending the TLS session
+  io: tls: Add qio_channel_tls_bye
+  migration/multifd: Terminate the TLS connection
+  migration: Check migration error after loadvm
+  crypto: Remove qcrypto_tls_session_get_handshake_status
+  io: Plumb read flags into qio_channel_read_all_eof
+  io: Add a read flag for relaxed EOF
+  migration/multifd: Add a compat property for TLS termination
+
+ crypto/tlssession.c                 | 105 +++++++++++++++++-----------
+ hw/remote/mpqemu-link.c             |   2 +-
+ include/crypto/tlssession.h         |  46 ++++++------
+ include/io/channel-tls.h            |  12 ++++
+ include/io/channel.h                |   7 ++
+ io/channel-tls.c                    |  92 +++++++++++++++++++++++-
+ io/channel.c                        |  13 ++--
+ io/trace-events                     |   5 ++
+ migration/migration.h               |  33 +++++++++
+ migration/multifd.c                 |  42 ++++++++++-
+ migration/multifd.h                 |   2 +
+ migration/options.c                 |   2 +
+ migration/savevm.c                  |   6 +-
+ migration/tls.c                     |   5 ++
+ migration/tls.h                     |   2 +-
+ tests/unit/test-crypto-tlssession.c |  12 ++--
+ tools/i386/qemu-vmsr-helper.c       |   3 +-
+ util/vhost-user-server.c            |   2 +-
+ 18 files changed, 308 insertions(+), 83 deletions(-)
+
+-- 
+2.35.3
+
 
