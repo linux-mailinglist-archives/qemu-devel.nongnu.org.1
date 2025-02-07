@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC83A2C081
+	by mail.lfdr.de (Postfix) with ESMTPS id D6402A2C082
 	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:23:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLUf-00089m-BI; Fri, 07 Feb 2025 05:21:53 -0500
+	id 1tgLUi-0008GD-T2; Fri, 07 Feb 2025 05:21:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUc-00086C-0a; Fri, 07 Feb 2025 05:21:50 -0500
+ id 1tgLUe-0008Bm-SJ; Fri, 07 Feb 2025 05:21:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUa-0006Kg-7b; Fri, 07 Feb 2025 05:21:49 -0500
+ id 1tgLUc-0006L2-NQ; Fri, 07 Feb 2025 05:21:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AC522E737D;
+ by isrv.corpit.ru (Postfix) with ESMTP id B0676E737E;
  Fri, 07 Feb 2025 13:20:56 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 27AA51B0A6F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2BA391B0A70;
  Fri,  7 Feb 2025 13:21:38 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 18B5C52D8F; Fri, 07 Feb 2025 13:21:38 +0300 (MSK)
+ id 1B47A52D91; Fri, 07 Feb 2025 13:21:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 50/51] gdbstub/user-target: fix gdbserver int format
- (%d -> %x)
-Date: Fri,  7 Feb 2025 13:21:31 +0300
-Message-Id: <20250207102136.2239826-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 51/51] tap: Remove qemu_using_vnet_hdr()
+Date: Fri,  7 Feb 2025 13:21:32 +0300
+Message-Id: <20250207102136.2239826-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,69 +59,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This commit fixes an incorrect format string for formatting integers
-provided to GDB when debugging a target run in QEMU user mode.
+Since qemu_set_vnet_hdr_len() is always called when
+qemu_using_vnet_hdr() is called, we can merge them and save some code.
 
-The correct format is hexadecimal for both success and errno values,
-some of which can be seen here [0].
+For consistency, express that the virtio-net header is not in use by
+returning 0 with qemu_get_vnet_hdr_len() instead of having a dedicated
+function, qemu_get_using_vnet_hdr().
 
-[0] https://github.com/bminor/binutils-gdb/blob/e65a355022d0dc6b5707310876a72b5693ec0aa5/gdbserver/hostio.cc#L196-L213
-
-Signed-off-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Fixes: e282010b2e1e ("gdbstub: Add support for info proc mappings")
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 8b647bd352505234cab2acd2422aba183a1aa1fd)
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 4b52d63249a508dd927222ffac1a868d38681fc5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index c4bba4c72c..b760beb0fc 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -316,9 +316,9 @@ void gdb_handle_v_file_open(GArray *params, void *user_ctx)
-     int fd = open(filename, flags, mode);
- #endif
-     if (fd < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-     } else {
--        g_string_printf(gdbserver_state.str_buf, "F%d", fd);
-+        g_string_printf(gdbserver_state.str_buf, "F%x", fd);
+diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
+index e41a6c1038..4edb58858e 100644
+--- a/hw/net/e1000e.c
++++ b/hw/net/e1000e.c
+@@ -352,7 +352,6 @@ e1000e_init_net_peer(E1000EState *s, PCIDevice *pci_dev, uint8_t *macaddr)
+     for (i = 0; i < s->conf.peers.queues; i++) {
+         nc = qemu_get_subqueue(s->nic, i);
+         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
+-        qemu_using_vnet_hdr(nc->peer, true);
      }
-     gdb_put_strbuf();
  }
-@@ -328,7 +328,7 @@ void gdb_handle_v_file_close(GArray *params, void *user_ctx)
-     int fd = get_param(params, 0)->val_ul;
  
-     if (close(fd) == -1) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
+diff --git a/hw/net/igb.c b/hw/net/igb.c
+index 8089acfea4..7cebbc276b 100644
+--- a/hw/net/igb.c
++++ b/hw/net/igb.c
+@@ -349,7 +349,6 @@ igb_init_net_peer(IGBState *s, PCIDevice *pci_dev, uint8_t *macaddr)
+     for (i = 0; i < s->conf.peers.queues; i++) {
+         nc = qemu_get_subqueue(s->nic, i);
+         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
+-        qemu_using_vnet_hdr(nc->peer, true);
      }
-@@ -351,7 +351,7 @@ void gdb_handle_v_file_pread(GArray *params, void *user_ctx)
+ }
  
-     ssize_t n = pread(fd, buf, bufsiz, offset);
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
+diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+index b7b1de816d..1f79b82b77 100644
+--- a/hw/net/net_tx_pkt.c
++++ b/hw/net/net_tx_pkt.c
+@@ -582,7 +582,7 @@ static void net_tx_pkt_sendv(
+ {
+     NetClientState *nc = opaque;
+ 
+-    if (qemu_get_using_vnet_hdr(nc->peer)) {
++    if (qemu_get_vnet_hdr_len(nc->peer)) {
+         qemu_sendv_packet(nc, virt_iov, virt_iov_cnt);
+     } else {
+         qemu_sendv_packet(nc, iov, iov_cnt);
+@@ -812,7 +812,7 @@ static bool net_tx_pkt_do_sw_fragmentation(struct NetTxPkt *pkt,
+ 
+ bool net_tx_pkt_send(struct NetTxPkt *pkt, NetClientState *nc)
+ {
+-    bool offload = qemu_get_using_vnet_hdr(nc->peer);
++    bool offload = qemu_get_vnet_hdr_len(nc->peer);
+     return net_tx_pkt_send_custom(pkt, offload, net_tx_pkt_sendv, nc);
+ }
+ 
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 534faa1b88..405e920b28 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3751,9 +3751,6 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+ 
+     peer_test_vnet_hdr(n);
+     if (peer_has_vnet_hdr(n)) {
+-        for (i = 0; i < n->max_queue_pairs; i++) {
+-            qemu_using_vnet_hdr(qemu_get_subqueue(n->nic, i)->peer, true);
+-        }
+         n->host_hdr_len = sizeof(struct virtio_net_hdr);
+     } else {
+         n->host_hdr_len = 0;
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 6fb4102d03..81ab8ada55 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -2091,8 +2091,6 @@ static void vmxnet3_net_init(VMXNET3State *s)
+     if (s->peer_has_vhdr) {
+         qemu_set_vnet_hdr_len(qemu_get_queue(s->nic)->peer,
+             sizeof(struct virtio_net_hdr));
+-
+-        qemu_using_vnet_hdr(qemu_get_queue(s->nic)->peer, 1);
      }
-@@ -374,7 +374,7 @@ void gdb_handle_v_file_readlink(GArray *params, void *user_ctx)
-     ssize_t n = readlink(filename, buf, BUFSIZ);
- #endif
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
-     }
+ 
+     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
+diff --git a/include/net/net.h b/include/net/net.h
+index ffbd2c8d56..374a827190 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -57,8 +57,6 @@ typedef bool (HasUfo)(NetClientState *);
+ typedef bool (HasUso)(NetClientState *);
+ typedef bool (HasVnetHdr)(NetClientState *);
+ typedef bool (HasVnetHdrLen)(NetClientState *, int);
+-typedef bool (GetUsingVnetHdr)(NetClientState *);
+-typedef void (UsingVnetHdr)(NetClientState *, bool);
+ typedef void (SetOffload)(NetClientState *, int, int, int, int, int, int, int);
+ typedef int (GetVnetHdrLen)(NetClientState *);
+ typedef void (SetVnetHdrLen)(NetClientState *, int);
+@@ -88,10 +86,7 @@ typedef struct NetClientInfo {
+     HasUso *has_uso;
+     HasVnetHdr *has_vnet_hdr;
+     HasVnetHdrLen *has_vnet_hdr_len;
+-    GetUsingVnetHdr *get_using_vnet_hdr;
+-    UsingVnetHdr *using_vnet_hdr;
+     SetOffload *set_offload;
+-    GetVnetHdrLen *get_vnet_hdr_len;
+     SetVnetHdrLen *set_vnet_hdr_len;
+     SetVnetLE *set_vnet_le;
+     SetVnetBE *set_vnet_be;
+@@ -194,8 +189,6 @@ bool qemu_has_ufo(NetClientState *nc);
+ bool qemu_has_uso(NetClientState *nc);
+ bool qemu_has_vnet_hdr(NetClientState *nc);
+ bool qemu_has_vnet_hdr_len(NetClientState *nc, int len);
+-bool qemu_get_using_vnet_hdr(NetClientState *nc);
+-void qemu_using_vnet_hdr(NetClientState *nc, bool enable);
+ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+                       int ecn, int ufo, int uso4, int uso6);
+ int qemu_get_vnet_hdr_len(NetClientState *nc);
+diff --git a/net/dump.c b/net/dump.c
+index 16073f2458..956e34a123 100644
+--- a/net/dump.c
++++ b/net/dump.c
+@@ -154,10 +154,8 @@ static ssize_t filter_dump_receive_iov(NetFilterState *nf, NetClientState *sndr,
+                                        int iovcnt, NetPacketSent *sent_cb)
+ {
+     NetFilterDumpState *nfds = FILTER_DUMP(nf);
+-    int offset = qemu_get_using_vnet_hdr(nf->netdev) ?
+-                 qemu_get_vnet_hdr_len(nf->netdev) : 0;
+ 
+-    dump_receive_iov(&nfds->ds, iov, iovcnt, offset);
++    dump_receive_iov(&nfds->ds, iov, iovcnt, qemu_get_vnet_hdr_len(nf->netdev));
+     return 0;
+ }
+ 
+diff --git a/net/net.c b/net/net.c
+index 0520bc1681..98ed0280d3 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -524,24 +524,6 @@ bool qemu_has_vnet_hdr_len(NetClientState *nc, int len)
+     return nc->info->has_vnet_hdr_len(nc, len);
+ }
+ 
+-bool qemu_get_using_vnet_hdr(NetClientState *nc)
+-{
+-    if (!nc || !nc->info->get_using_vnet_hdr) {
+-        return false;
+-    }
+-
+-    return nc->info->get_using_vnet_hdr(nc);
+-}
+-
+-void qemu_using_vnet_hdr(NetClientState *nc, bool enable)
+-{
+-    if (!nc || !nc->info->using_vnet_hdr) {
+-        return;
+-    }
+-
+-    nc->info->using_vnet_hdr(nc, enable);
+-}
+-
+ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+                           int ecn, int ufo, int uso4, int uso6)
+ {
+@@ -554,11 +536,7 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+ 
+ int qemu_get_vnet_hdr_len(NetClientState *nc)
+ {
+-    if (!nc || !nc->info->get_vnet_hdr_len) {
+-        return 0;
+-    }
+-
+-    return nc->info->get_vnet_hdr_len(nc);
++    return nc->vnet_hdr_len;
+ }
+ 
+ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
+diff --git a/net/netmap.c b/net/netmap.c
+index 241b27c8e9..297510e190 100644
+--- a/net/netmap.c
++++ b/net/netmap.c
+@@ -351,10 +351,6 @@ static bool netmap_has_vnet_hdr(NetClientState *nc)
+     return netmap_has_vnet_hdr_len(nc, sizeof(struct virtio_net_hdr));
+ }
+ 
+-static void netmap_using_vnet_hdr(NetClientState *nc, bool enable)
+-{
+-}
+-
+ static void netmap_set_vnet_hdr_len(NetClientState *nc, int len)
+ {
+     NetmapState *s = DO_UPCAST(NetmapState, nc, nc);
+@@ -393,7 +389,6 @@ static NetClientInfo net_netmap_info = {
+     .has_ufo = netmap_has_vnet_hdr,
+     .has_vnet_hdr = netmap_has_vnet_hdr,
+     .has_vnet_hdr_len = netmap_has_vnet_hdr_len,
+-    .using_vnet_hdr = netmap_using_vnet_hdr,
+     .set_offload = netmap_set_offload,
+     .set_vnet_hdr_len = netmap_set_vnet_hdr_len,
+ };
+diff --git a/net/tap.c b/net/tap.c
+index c23d0323c2..e080a9b969 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -266,13 +266,6 @@ static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
+     return !!tap_probe_vnet_hdr_len(s->fd, len);
+ }
+ 
+-static int tap_get_vnet_hdr_len(NetClientState *nc)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    return s->host_vnet_hdr_len;
+-}
+-
+ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
+ {
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+@@ -284,23 +277,7 @@ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
+ 
+     tap_fd_set_vnet_hdr_len(s->fd, len);
+     s->host_vnet_hdr_len = len;
+-}
+-
+-static bool tap_get_using_vnet_hdr(NetClientState *nc)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    return s->using_vnet_hdr;
+-}
+-
+-static void tap_using_vnet_hdr(NetClientState *nc, bool using_vnet_hdr)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
+-    assert(!!s->host_vnet_hdr_len == using_vnet_hdr);
+-
+-    s->using_vnet_hdr = using_vnet_hdr;
++    s->using_vnet_hdr = true;
+ }
+ 
+ static int tap_set_vnet_le(NetClientState *nc, bool is_le)
+@@ -398,10 +375,7 @@ static NetClientInfo net_tap_info = {
+     .has_uso = tap_has_uso,
+     .has_vnet_hdr = tap_has_vnet_hdr,
+     .has_vnet_hdr_len = tap_has_vnet_hdr_len,
+-    .get_using_vnet_hdr = tap_get_using_vnet_hdr,
+-    .using_vnet_hdr = tap_using_vnet_hdr,
+     .set_offload = tap_set_offload,
+-    .get_vnet_hdr_len = tap_get_vnet_hdr_len,
+     .set_vnet_hdr_len = tap_set_vnet_hdr_len,
+     .set_vnet_le = tap_set_vnet_le,
+     .set_vnet_be = tap_set_vnet_be,
 -- 
 2.39.5
 
