@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69409A2C751
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9656BA2C776
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:40:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgQLe-0001Vp-7N; Fri, 07 Feb 2025 10:32:54 -0500
+	id 1tgQSf-0005NN-KV; Fri, 07 Feb 2025 10:40:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQKY-0008G8-IH
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:52 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1tgQSI-0004dG-Gh
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:39:47 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQKI-000447-MI
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:31:45 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5dcea5d8f16so4380497a12.2
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 07:31:26 -0800 (PST)
+ id 1tgQSE-0005Qf-Pm
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:39:46 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-ab794ae3cf2so41912366b.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 07:39:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738942285; x=1739547085; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738942781; x=1739547581; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BYLUPD3P/9Yhc9T5gc39GsuYcITC/cYJ3+WE96RAZnc=;
- b=cNWUNp6iqSEN5S+2196aERtNTILTuYe7zoTFQEYG2iVvo6cNmv7LfgHfBLKsjcEKbV
- /TlcM2NFGPJf99CjtpwxiZhWi24C/Z8oUuRFhsWz7z8eH8gqbTBDqiuWNRI63xFdInDJ
- ZDSMJY+gjwYjrIkVOzh0C6sumFaArCuw2eS56B4glzmFGX0bTviMXW0Ehr6Yj8C/eNUr
- NcezNty/W1Sa9wvvLG63REW8sSnWRigyiFvCSfboJwCwBiAOIQrARXTNbOhVcXZE2uM/
- QBniJ7KcLfm0kDseFLy3n5Zt3i7X9yGVV7Z9Y5uah8XSJaAxz4DRNC1Po/Pz7WhxxffP
- 1hfA==
+ bh=gkJVfCavNsBQMZBi92Kjm0ej3U2Pdiir6so6tZSVLo8=;
+ b=kK54ulUUTfU7vcmorGOTmA6Lj5XKpd809W86iO8J3WqBjScA6oX23y/GUU6+L5BQJv
+ jjRN40Jzs23P7C61Cs+Zr35xsx/Y3J+8PTvboy1hJPGkfC5EOcRcT2Xzgnpe2pfFhtTp
+ BAOgJ0bl/lLfSA9+OohuKUsLsZn24q8dyDk/prjEXcI6s9c5IQWVQsN0nCNne9nW8LQ9
+ a+F4zKAzvba6280Bbi0PeWOX6L8zLGmu2Juei+j3BdUwNb/sXkxqB/6Hr9/6LBtkM06B
+ sNO8+/zj++W14LDAWQ6TLTyuX5Jyl3CtGZJkDkYpxQ/INwxQSTir9hlOwiFFpSU/6HMD
+ q4Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738942285; x=1739547085;
+ d=1e100.net; s=20230601; t=1738942781; x=1739547581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BYLUPD3P/9Yhc9T5gc39GsuYcITC/cYJ3+WE96RAZnc=;
- b=Pli35lnk9j7h5XuK3okIfytqzeyIAea76ezTTPC7vZFmMzbBStQJ9PBkvWt+M7PB4m
- 12jppk6BlYd8up2RJa/PzEBDqYGkFAE5ZcFjOdorti+RRcx4w1MmO+cMe/Ay10c/hROt
- fZB9/cU7DPqxoyABhkOa1K+ePtJFd+XTczv62XXxUpr6W7fUTCggU7VbiOfFDlPFAmZU
- vZ7fyFFwzdpOD2u+wI3WQYMEU9AfFJHBPeu9cCYosVTgE8SRoW5DdLRTTIUoE3VrLmnX
- ORPdF3elgEvjDUNGr9sntiNl3hkufhgHiQaux6jPRadjWnxq1YIaT7/QZ79ZZuL8TXnq
- FyjQ==
-X-Gm-Message-State: AOJu0YypZ7Y9v1RpopSvf73KQUD8mTNdJtwVmvMJkdSoU0+hacQT0dCE
- /VMLCJ+7sEqX3zBueMeKnS9EQIU743bMK4zDiGLZbPqCKjpdYvqMO/61QEG4GRA=
-X-Gm-Gg: ASbGncs9J4IhUDMYViydZLx4PsNlRckTDnl5T0YYaskL2QUAFuoolrPX3FP5rZ3vLtg
- Lo7HjLY3/STO+OnDGtUH0dzVqS8YWJaeaobWxKWJsUA+scZrhpEhKGBh3jAaStWbKb8QhXqOAzk
- kk6KGmwjCluL8Ngt4vgnVrXQx6gQ3ylg10mFPY0L8bCvGVUsGh40y1wpcthO1YE5U8owoUVpYl4
- /osYzrMowFkTcg9G5NpdpvxJ5hdADMHtpFoPRVp2yNkaEUgIbVayPwjgxoTFxdCHR2E/c0HXGWB
- +PZgRB1rNHPFl3zBSQ==
-X-Google-Smtp-Source: AGHT+IGktyptZvO6wP9Lf0Vti23wWr2h2wRy8URVUKIHWi7WMZ3mQAsLZNP4ZAvhdtyZeAjI8cic8A==
-X-Received: by 2002:a17:907:c28:b0:ab7:63fa:e368 with SMTP id
- a640c23a62f3a-ab789c87ec5mr381999866b.52.1738942285213; 
- Fri, 07 Feb 2025 07:31:25 -0800 (PST)
+ bh=gkJVfCavNsBQMZBi92Kjm0ej3U2Pdiir6so6tZSVLo8=;
+ b=YxM3/v0yefWRXYUtMocxDk8q/mtXO+O9+s2z9WKEVvO+9JZY/SBwS2/IMxbSYKBJx7
+ tEgw+m0arQ8Mi/tpnhZI70XsO60qlcCfcgaJopDcU/TB/mZh1q53dpm/6kYD//FHIQUG
+ xWZQzEkK0iqUPby6nFtZMsKhPXPlbSivcoziqFLVZeQ0ZKJtI+Yl+zPm4AUtl+Q5TMni
+ 5nxSs9fPTiIHIUMCkQAOTgur5ES/ZJNTXCQb6tkJPBSJpHKdJDWFA/zfyw5UQkX8KWA5
+ pkHM8brN6CFPgITzysLAS9KUD072I+pHMEdgO0ZDgfYhYwPY8ih9aplTlo1jW4DU0Z20
+ MweQ==
+X-Gm-Message-State: AOJu0YxfQV8jfQkXNo852FJNjwYa5bVBDxGsCsfA0Y5KfEP99NAbgfVV
+ dYYeiL2XjxX95LcSfegLWkq9STKk92e8rWrvjpLe47wjYGAFIrW0/lnXGhmQu6Q=
+X-Gm-Gg: ASbGncuK03ynfRcZ/Po+Gjj2L4nbY9AH+O/ZbTHdQuhED6TpyaxbQAEJEYCk6BSxlaI
+ J5LNvBKFcQ4PlU9rdPEn9YHUxpwzQhoiZ5939t1S+JUjz6vQIbfrfSOA7TQKy9Ppm6RBe73hXvb
+ LXBcEvcGAHVw5RCZ8ebZr0qB3msU64/3IC/yOyVgxvLSIxFvQB134ZjfX+WvvOSidr29UlLYpLO
+ I5+Il0iH5LUdIzTJGed2QvwEWSOVXfjBLoQbmDg7m4Q4ccNacAAOc1vUiU6plYoUNR+W9JxQ2qv
+ g/1tyDFKBydZBxztvg==
+X-Google-Smtp-Source: AGHT+IGy3CFxyRw/yf4WHCWUzXcl5y/9NPCITxVQTG4AsZscUAZKIPFWb24sTK0/0lOFvmn8E7SNjA==
+X-Received: by 2002:a17:907:7e89:b0:ab3:ed0:8d7 with SMTP id
+ a640c23a62f3a-ab789ac0f4cmr330413066b.23.1738942780986; 
+ Fri, 07 Feb 2025 07:39:40 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab772f842c8sm285285766b.39.2025.02.07.07.31.18
+ a640c23a62f3a-ab772f843f4sm290915266b.68.2025.02.07.07.39.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 07:31:20 -0800 (PST)
+ Fri, 07 Feb 2025 07:39:40 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D224960F1B;
+ by draig.lan (Postfix) with ESMTP id EBB25619CE;
  Fri,  7 Feb 2025 15:31:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,18 +85,17 @@ Cc: Peter Xu <peterx@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
  qemu-riscv@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 16/17] docs/user: Document the %d placeholder and suspend=n
- QEMU_GDB features
-Date: Fri,  7 Feb 2025 15:31:11 +0000
-Message-Id: <20250207153112.3939799-17-alex.bennee@linaro.org>
+Subject: [PATCH v2 17/17] tests/tcg: Add late gdbstub attach test
+Date: Fri,  7 Feb 2025 15:31:12 +0000
+Message-Id: <20250207153112.3939799-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250207153112.3939799-1-alex.bennee@linaro.org>
 References: <20250207153112.3939799-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,48 +120,165 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
+Add a small test to prevent regressions.
+Make sure that host_interrupt_signal is not visible to the guest.
+
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20250117001542.8290-8-iii@linux.ibm.com>
+Message-Id: <20250117001542.8290-9-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/user/main.rst | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ tests/tcg/multiarch/late-attach.c          | 41 ++++++++++++++++++++++
+ tests/guest-debug/run-test.py              | 15 ++++++--
+ tests/tcg/multiarch/Makefile.target        |  9 ++++-
+ tests/tcg/multiarch/gdbstub/late-attach.py | 28 +++++++++++++++
+ 4 files changed, 90 insertions(+), 3 deletions(-)
+ create mode 100644 tests/tcg/multiarch/late-attach.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
 
-diff --git a/docs/user/main.rst b/docs/user/main.rst
-index 80a77f0a0c..9a1c60448c 100644
---- a/docs/user/main.rst
-+++ b/docs/user/main.rst
-@@ -54,7 +54,7 @@ Command line options
- 
- ::
- 
--   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g port] [-B offset] [-R size] program [arguments...]
-+   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g endpoint] [-B offset] [-R size] program [arguments...]
- 
- ``-h``
-    Print the help
-@@ -91,8 +91,18 @@ Debug options:
-    Activate logging of the specified items (use '-d help' for a list of
-    log items)
- 
--``-g port``
--   Wait gdb connection to port
-+``-g endpoint``
-+   Wait gdb connection to a port (e.g., ``1234``) or a unix socket (e.g.,
-+   ``/tmp/qemu.sock``).
+diff --git a/tests/tcg/multiarch/late-attach.c b/tests/tcg/multiarch/late-attach.c
+new file mode 100644
+index 0000000000..20a364034b
+--- /dev/null
++++ b/tests/tcg/multiarch/late-attach.c
+@@ -0,0 +1,41 @@
++/*
++ * Test attaching GDB to a running process.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
 +
-+   If a unix socket path contains single ``%d`` placeholder (e.g.,
-+   ``/tmp/qemu-%d.sock``), it is replaced by the emulator PID, which is useful
-+   when passing this option via the ``QEMU_GDB`` environment variable to a
-+   multi-process application.
++static const char *phase = "start";
 +
-+   If the endpoint address is followed by ``,suspend=n`` (e.g.,
-+   ``1234,suspend=n``), then the emulated program starts without waiting for a
-+   connection, which can be established at any later point in time.
++int main(void)
++{
++    sigset_t set;
++    int sig;
++
++    assert(sigfillset(&set) == 0);
++    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
++
++    /* Let GDB know it can send SIGUSR1. */
++    phase = "sigwait";
++    if (getenv("LATE_ATTACH_PY")) {
++        assert(sigwait(&set, &sig) == 0);
++        if (sig != SIGUSR1) {
++            fprintf(stderr, "Unexpected signal %d\n", sig);
++            return EXIT_FAILURE;
++        }
++    }
++
++    /* Check that the guest does not see host_interrupt_signal. */
++    assert(sigpending(&set) == 0);
++    for (sig = 1; sig < NSIG; sig++) {
++        if (sigismember(&set, sig)) {
++            fprintf(stderr, "Unexpected signal %d\n", sig);
++            return EXIT_FAILURE;
++        }
++    }
++
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
+index 5a091db8be..75e9c92e03 100755
+--- a/tests/guest-debug/run-test.py
++++ b/tests/guest-debug/run-test.py
+@@ -36,6 +36,8 @@ def get_args():
+     parser.add_argument("--gdb-args", help="Additional gdb arguments")
+     parser.add_argument("--output", help="A file to redirect output to")
+     parser.add_argument("--stderr", help="A file to redirect stderr to")
++    parser.add_argument("--no-suspend", action="store_true",
++                        help="Ask the binary to not wait for GDB connection")
  
- ``-one-insn-per-tb``
-    Run the emulation with one guest instruction per translation block.
+     return parser.parse_args()
+ 
+@@ -73,10 +75,19 @@ def log(output, msg):
+ 
+     # Launch QEMU with binary
+     if "system" in args.qemu:
++        if args.no_suspend:
++            suspend = ''
++        else:
++            suspend = ' -S'
+         cmd = f'{args.qemu} {args.qargs} {args.binary}' \
+-            f' -S -gdb unix:path={socket_name},server=on'
++            f'{suspend} -gdb unix:path={socket_name},server=on'
+     else:
+-        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
++        if args.no_suspend:
++            suspend = ',suspend=n'
++        else:
++            suspend = ''
++        cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
++            f' {args.binary}'
+ 
+     log(output, "QEMU CMD: %s" % (cmd))
+     inferior = subprocess.Popen(shlex.split(cmd))
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 18d3cf4ae0..688a6be203 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -130,6 +130,13 @@ run-gdbstub-follow-fork-mode-parent: follow-fork-mode
+ 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
+ 	following parents on fork)
+ 
++run-gdbstub-late-attach: late-attach
++	$(call run-test, $@, env LATE_ATTACH_PY=1 $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" --no-suspend \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/late-attach.py, \
++	attaching to a running process)
++
+ else
+ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
+@@ -139,7 +146,7 @@ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
+ 	      run-gdbstub-registers run-gdbstub-prot-none \
+ 	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
+ 	      run-gdbstub-follow-fork-mode-parent \
+-	      run-gdbstub-qxfer-siginfo-read
++	      run-gdbstub-qxfer-siginfo-read run-gdbstub-late-attach
+ 
+ # ARM Compatible Semi Hosting Tests
+ #
+diff --git a/tests/tcg/multiarch/gdbstub/late-attach.py b/tests/tcg/multiarch/gdbstub/late-attach.py
+new file mode 100644
+index 0000000000..1d40efb5ec
+--- /dev/null
++++ b/tests/tcg/multiarch/gdbstub/late-attach.py
+@@ -0,0 +1,28 @@
++"""Test attaching GDB to a running process.
++
++SPDX-License-Identifier: GPL-2.0-or-later
++"""
++from test_gdbstub import main, report
++
++
++def run_test():
++    """Run through the tests one by one"""
++    try:
++        phase = gdb.parse_and_eval("phase").string()
++    except gdb.error:
++        # Assume the guest did not reach main().
++        phase = "start"
++
++    if phase == "start":
++        gdb.execute("break sigwait")
++        gdb.execute("continue")
++        phase = gdb.parse_and_eval("phase").string()
++    report(phase == "sigwait", "{} == \"sigwait\"".format(phase))
++
++    gdb.execute("signal SIGUSR1")
++
++    exitcode = int(gdb.parse_and_eval("$_exitcode"))
++    report(exitcode == 0, "{} == 0".format(exitcode))
++
++
++main(run_test)
 -- 
 2.39.5
 
