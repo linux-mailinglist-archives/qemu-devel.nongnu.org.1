@@ -2,97 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA81FA2C005
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 10:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AA8A2C014
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgL7B-0002uR-9t; Fri, 07 Feb 2025 04:57:37 -0500
+	id 1tgL9b-0006mf-MD; Fri, 07 Feb 2025 05:00:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgL79-0002tm-2O
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:57:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tgL9W-0006mI-Re; Fri, 07 Feb 2025 05:00:02 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgL77-0001CI-2b
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:57:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738922252;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lvaWgedovhL6qvDodJtc27J/k74HSE3JQmFk9FPCRRI=;
- b=SKd3DDZxC5VqDbPE5Y7DUclvzPf2UW3iiJNgu7goqIwWqI6efSzJIDwVBSHfpS2EugvHWF
- qAe/034CaB4exvHQLkdwb2ApeSkTWuJx1CLH6EoZIegB9B/qfCH4JMIfeurkw+0pgkVhFD
- OcE/LGI+ZOhQA1H75CXkNMg4J9aHAtg=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-GxLiMnGLNkaFT9zfRGQdjQ-1; Fri, 07 Feb 2025 04:57:30 -0500
-X-MC-Unique: GxLiMnGLNkaFT9zfRGQdjQ-1
-X-Mimecast-MFC-AGG-ID: GxLiMnGLNkaFT9zfRGQdjQ
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-2f9f2bf2aaeso4122309a91.1
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 01:57:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738922250; x=1739527050;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lvaWgedovhL6qvDodJtc27J/k74HSE3JQmFk9FPCRRI=;
- b=YTz1//I5E3fpFZpSsDMWMRKCKSkVSy3ZSd/qTt6CFBwtQZreRTQ3UUjACUHU4OD09Y
- p68WM6Siqe1r3IIrm8GxYZs42FCJnYqZoAJvmPxgowEqpQWl8x+Q/bCH0v7XAUoGB8+u
- 9Zj3uFGYyT5t4xPN2SeDo1ucfWGUQY4wrqIvsx/D+yOgDmlnqlrOYtBX1RIGOTyNTYOC
- pwVmlm+Hg9ilvNqoubFim+G75zo9JAQtd0/iDHtKKXXWNNSK/NZf+QyOQjSnmM0aFwFN
- tcjUL8iMkKDjZ/OekqShi7PJoyijZubi+Cwxx0+gUHeDGevyT4pT08dGeU0HeDYnu/9n
- CT3w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWqDIC7k/rvGVOhUhVZDlTNpm/hj9Tcm7utQVUrn+RrYj2abl9Nov9DodbN+vj2PjPGDEvPqBydbBeI@nongnu.org
-X-Gm-Message-State: AOJu0YxBqhK+Ye5FIX8wi23V5CsZNMSEUk22znX2S91aWkskzdnFZ6jA
- gTWVeccmkVsUKt3QvpSt+Q7+f3OT/mBh00p3/z8aD3NL7qS1tvGAR+41gATXQMuyPT8vIPIqR6r
- v3uvXmpinFe1VSccwCialJ4AUL6RvnqmfydH3PA+pQ0rnXyoSI9DzgtWGKs3Rd4hysHAlfjBMxv
- YFNgRc28mH9RJHHRYZTt59MMosHl8=
-X-Gm-Gg: ASbGncuA8/myLbmd6q3EtGXx7CpIGbj8Y2S2kBnS4Ny6wfKly9Qj9QLvsdOBb7+nApZ
- XFhhUfJkWXJsP9FgBYsslSaj2agDuhqGNVUJBUHfc4nJyHqbxy3uQGKuM9etX
-X-Received: by 2002:a17:90b:4b:b0:2f4:47fc:7f18 with SMTP id
- 98e67ed59e1d1-2fa2406b9aemr4303376a91.10.1738922249798; 
- Fri, 07 Feb 2025 01:57:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8vg7sO/fnXGSX1pcn/6c7jld/122tubULgKnf5kYhDaNVh9PRJuH9QAaxWY/wP0GsOFXCRDVI+e//iAVUqOk=
-X-Received: by 2002:a17:90b:4b:b0:2f4:47fc:7f18 with SMTP id
- 98e67ed59e1d1-2fa2406b9aemr4303343a91.10.1738922249487; Fri, 07 Feb 2025
- 01:57:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tgL9U-0001pl-7y; Fri, 07 Feb 2025 05:00:02 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D4359E7345;
+ Fri, 07 Feb 2025 12:59:14 +0300 (MSK)
+Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 470E01B09C9;
+ Fri,  7 Feb 2025 12:59:56 +0300 (MSK)
+Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
+ id 0C27F52D73; Fri, 07 Feb 2025 12:59:56 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 v2 00/49] Patch Round-up for stable 9.2.1,
+ freeze on 2025-02-06 (frozen)
+Date: Fri,  7 Feb 2025 12:59:43 +0300
+Message-Id: <qemu-stable-9.2.1-20250207102656@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250125125137.1223277-1-zhao1.liu@intel.com>
- <20250125125137.1223277-4-zhao1.liu@intel.com>
- <17907481-89d6-457c-bcd3-66a444b1325d@redhat.com> <Z6Wx/RGBIElMaeZy@intel.com>
- <Z6W56AH3J1qOx18m@intel.com>
-In-Reply-To: <Z6W56AH3J1qOx18m@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 7 Feb 2025 10:57:11 +0100
-X-Gm-Features: AWEUYZn2gU4VufkLk8QEyRFVx4vlcD4ak9JuJiEFz8GxxeARNPiPzUJNMBAn4Po
-Message-ID: <CABgObfa+_VVQWvrGWf6fJjf39O0AkoNB5aoptDrhk7dDx_SNXQ@mail.gmail.com>
-Subject: Re: [PATCH 03/10] rust/irq: Add a helper to convert [InterruptSource]
- to [*mut IRQState]
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>, 
- =?UTF-8?Q?Alex_Benn=EF=BF=BDe?= <alex.bennee@linaro.org>, 
- =?UTF-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- =?UTF-8?B?RGFuaWVsIFAgLiBCZXJyYW5n77+9?= <berrange@redhat.com>, 
- qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f9210a062d8a6265"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,64 +59,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f9210a062d8a6265
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following patches are queued for QEMU stable v9.2.1:
 
-Il ven 7 feb 2025, 08:25 Zhao Liu <zhao1.liu@intel.com> ha scritto:
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.2
 
-> Just to confirm, I check with `cargo +nightly clippy` but it doesn't
-> complain about this case. Should I switch to another version of clippy
-> when I do such check? (currently I'm using v0.1.63 clippy as well, to
-> match rustc.)
->
+Patch freeze is 2025-02-06 (frozen), and the release is planned for 2025-02-08:
 
-I don't remember exactly how I noticed it=E2=80=94I am pretty sure it broke=
- in CI
-though. Maybe the change to add rust_version hid it.
+  https://wiki.qemu.org/Planning/9.2
 
-To answer your question, generally the idea is that we use the latest
-version of the developer tools (cargo, rustfmt, clippy). In particular old
-versions of cargo don't support retrieving clippy settings from Cargo.toml.
+Please respond here or CC qemu-stable@nongnu.org on any patches
+you think shouldn't be included in the release.
 
-Paolo
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
+Thanks!
 
-> Thanks,
-> Zhao
->
->
+/mjt
 
---000000000000f9210a062d8a6265
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--------------------------------------
+01* d06a9d843fb6 Christian Schoenebeck:
+   9pfs: fix regression regarding CVE-2023-2861
+02* 04e006ab36a8 Richard Henderson:
+   tcg: Reset free_temps before tcg_optimize
+03* b438362a1425 Roman Artemev:
+   tcg/riscv: Fix StoreStore barrier generation
+04* 57e2cc9abf5d Gerd Hoffmann:
+   x86/loader: only patch linux kernels
+05* 0f5715e4b570 Gerd Hoffmann:
+   roms: re-add edk2-basetools target
+06* 74dc38d0c6c1 Heinrich Schuchardt:
+   pc-bios: add missing riscv64 descriptor
+07* 9678b9c50572 Peter Maydell:
+   hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
+08* e2d98f257138 Thomas Huth:
+   meson.build: Disallow libnfs v6 to fix the broken macOS build
+09* 3f2a05b31ee9 Maciej S. Szmigiero:
+   target/i386: Reset TSCs of parked vCPUs too on VM reset
+10* 0d0141fadc90 Yong-Xuan Wang:
+   hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum write emulation
+11* 14e568ab4836 David Hildenbrand:
+   s390x/s390-virtio-ccw: don't crash on weird RAM sizes
+12* d41989e75483 Bibo Mao:
+   target/loongarch: Use actual operand size with vbsrl check
+13* 916f50172baa Philippe Mathieu-Daudé:
+   docs: Correct '-runas' and '-fsdev/-virtfs proxy' indentation
+14* b4859e8f33a7 Philippe Mathieu-Daudé:
+   docs: Correct release of TCG trace-events removal
+15* 93dcc9390e5a Han Han:
+   target/i386/cpu: Fix notes for CPU models
+16* d127294f265e Shameer Kolothum:
+   migration/multifd: Fix compile error caused by page_size usage
+17* b93d897ea2f0 Fabiano Rosas:
+   migration/multifd: Fix compat with QEMU < 9.0
+18* 86bee9e0c761 Fabiano Rosas:
+   migration: Add more error handling to analyze-migration.py
+19* 2aead53d39b8 Fabiano Rosas:
+   migration: Remove unused argument in vmsd_desc_field_end
+20* 69d1f784569f Fabiano Rosas:
+   migration: Fix parsing of s390 stream
+21* c76ee1f6255c Fabiano Rosas:
+   s390x: Fix CSS migration
+22* f52965bf0eee Fabiano Rosas:
+   migration: Rename vmstate_info_nullptr
+23* 9867c3a7ced1 Peter Xu:
+   migration: Dump correct JSON format for nullptr replacement
+24* 35049eb0d2fc Fabiano Rosas:
+   migration: Fix arrays of pointers in JSON writer
+25* cdc3970f8597 Yuan Liu:
+   multifd: bugfix for migration using compression methods
+26* 2588a5f99b0c Yuan Liu:
+   multifd: bugfix for incorrect migration data with QPL compression
+27* a523bc52166c Yuan Liu:
+   multifd: bugfix for incorrect migration data with qatzip compression
+28* ec2dfb7c389b Philippe Mathieu-Daudé:
+   tests/functional/test_rx_gdbsim: Use stable URL for test_linux_sash
+29* 4572dacc33e2 Keoseong Park:
+   hw/ufs: Adjust value to match CPU's endian format
+30* a87077316ed2 Philippe Mathieu-Daudé:
+   tests/qtest/boot-serial-test: Correct HPPA machine name
+31* 78b0c15a563a Gabriel Barrantes:
+   backends/cryptodev-vhost-user: Fix local_error leaks
+32* bb5b7fced6b5 Phil Dennis-Jordan:
+   hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+33* 694632fd4498 Sebastian Ott:
+   pci: ensure valid link status bits for downstream ports
+34* 42e2a7a0ab23 Nicholas Piggin:
+   pci/msix: Fix msix pba read vector poll end calculation
+35* 1ad32644fe4c Igor Mammedov:
+   tests: acpi: whitelist expected blobs
+36* 0b053391985a Igor Mammedov:
+   pci: acpi: Windows 'PCI Label Id' bug workaround
+37* 9fb1c9a1bb26 Igor Mammedov:
+   tests: acpi: update expected blobs
+38* 1ce979e7269a Li Zhijian:
+   hw/cxl: Fix msix_notify: Assertion `vector < dev->msix_entries_nr`
+39* be27b5149c86 Paolo Bonzini:
+   make-release: only leave tarball of wrap-file subprojects
+40* cf4c26355188 Zhao Liu:
+   i386/cpu: Mark avx10_version filtered when prefix is NULL
+41* 145f12ea885c Daniel P. Berrangé:
+   crypto: fix bogus error benchmarking pbkdf on fast machines
+42 8113dbbcdaee Zhao Liu:
+   stub: Fix build failure with --enable-user --disable-system --enable-tools
+43 1edc3d43f20d Peter Maydell:
+   target/arm: arm_reset_sve_state() should set FPSR, not FPCR
+44 664280abddcb Hongren Zheng:
+   hw/usb/canokey: Fix buffer overflow for OUT packet
+45 719168fba7c3 Steve Sistare:
+   physmem: fix qemu_ram_alloc_from_fd size calculation
+46 e43ced8be18d Ilya Leoshkevich:
+   target/s390x: Fix MVC not always invalidating translation blocks
+47 84dfdcbff33f Laurent Vivier:
+   net: Fix announce_self
+48 c6a1b591a68b Laurent Vivier:
+   net/dump: Correctly compute Ethernet packet offset
+49 8b647bd35250 Dominik 'Disconnect3d' Czarnota:
+   gdbstub/user-target: fix gdbserver int format (%d -> %x)
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 7 feb 2025, 08:25 Zhao Li=
-u &lt;<a href=3D"mailto:zhao1.liu@intel.com">zhao1.liu@intel.com</a>&gt; ha=
- scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Just t=
-o confirm, I check with `cargo +nightly clippy` but it doesn&#39;t<br>
-complain about this case. Should I switch to another version of clippy<br>
-when I do such check? (currently I&#39;m using v0.1.63 clippy as well, to<b=
-r>
-match rustc.)<br></blockquote></div></div><div dir=3D"auto"><br></div><div =
-dir=3D"auto">I don&#39;t remember exactly how I noticed it=E2=80=94I am pre=
-tty sure it broke in CI though. Maybe the change to add rust_version hid it=
-.</div><div dir=3D"auto"><br></div><div dir=3D"auto">To answer your questio=
-n, generally the idea is that we use the latest version of the developer to=
-ols (cargo, rustfmt, clippy). In particular old versions of cargo don&#39;t=
- support retrieving clippy settings from Cargo.toml.</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto">Paolo=C2=A0</div><div dir=3D"auto"><br></div><=
-div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><blockquo=
-te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
-solid rgb(204,204,204);padding-left:1ex">
-<br>
-Thanks,<br>
-Zhao<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000f9210a062d8a6265--
-
+(commit(s) marked with * were in previous series and are not resent)
 
