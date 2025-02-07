@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB49FA2C542
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD23A2C53A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:29:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgPL6-0001Sh-7w; Fri, 07 Feb 2025 09:28:16 -0500
+	id 1tgPL8-0001UL-4f; Fri, 07 Feb 2025 09:28:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL3-0001Rr-J7
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:13 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL4-0001SP-4Y
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:14 -0500
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL0-0007w6-BE
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:12 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL2-00084x-In
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:13 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 1744A2116A;
- Fri,  7 Feb 2025 14:28:09 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 40AAF2111F;
+ Fri,  7 Feb 2025 14:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738938489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738938491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1x9zDgucQe3JQlPJ+Pwdg7uNZ7hc3RIFAk3es8NNuE=;
- b=UZQpdSvHMVeVDwyUfZ1r/+3yClChVUXh8VAWGqOnYGMg+6CGOVF71xQqzIwgehlf1mwOxC
- /WrTmdtxAlhcmtnjzj/idACpzwqNwzeF+dgzpVSe7hxp9vMyEwgkWniwXHkItHPtTT7lOr
- eY9VIaOK9H70Tad6v20FnP+e8gVeQmw=
+ bh=no/uCmxpXOZ2Pbzzc6BaMgFVdtTAkSiF7pAuNlIERws=;
+ b=mqU9CrJg1fiT/l+R8KGasBPK2rQG3WXUYMFDqvqLAOs+aWoUlGt5n0nwlBCh4qm4WfmCCi
+ RpAMyMQrIzWOKcwKp1N7pu6OxM6MaFK0LzyM3GVhZElcJd8Teo9MPNeufnnxjAYonZYXSG
+ MAlCcS+bYlk8Z62WwOe76luDMwNX6/o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738938489;
+ s=susede2_ed25519; t=1738938491;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1x9zDgucQe3JQlPJ+Pwdg7uNZ7hc3RIFAk3es8NNuE=;
- b=8bhSgwOi2z45kfLdMy+uDVvfyR3GwG3QKPGW6B1lhpnDmT70Xr6jXM1tw9MikaLDj4jm1u
- A73knDwQ6yBsr+CQ==
+ bh=no/uCmxpXOZ2Pbzzc6BaMgFVdtTAkSiF7pAuNlIERws=;
+ b=E+3/kLUVOqmx9ulbgvgxvqYXdYigyZyFVqO4rLZwuaABTAC/1Z+lchaxeTsV9zd3W18L1B
+ ReZ5Y0Ox8IxeE4CQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738938489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738938491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1x9zDgucQe3JQlPJ+Pwdg7uNZ7hc3RIFAk3es8NNuE=;
- b=UZQpdSvHMVeVDwyUfZ1r/+3yClChVUXh8VAWGqOnYGMg+6CGOVF71xQqzIwgehlf1mwOxC
- /WrTmdtxAlhcmtnjzj/idACpzwqNwzeF+dgzpVSe7hxp9vMyEwgkWniwXHkItHPtTT7lOr
- eY9VIaOK9H70Tad6v20FnP+e8gVeQmw=
+ bh=no/uCmxpXOZ2Pbzzc6BaMgFVdtTAkSiF7pAuNlIERws=;
+ b=mqU9CrJg1fiT/l+R8KGasBPK2rQG3WXUYMFDqvqLAOs+aWoUlGt5n0nwlBCh4qm4WfmCCi
+ RpAMyMQrIzWOKcwKp1N7pu6OxM6MaFK0LzyM3GVhZElcJd8Teo9MPNeufnnxjAYonZYXSG
+ MAlCcS+bYlk8Z62WwOe76luDMwNX6/o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738938489;
+ s=susede2_ed25519; t=1738938491;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1x9zDgucQe3JQlPJ+Pwdg7uNZ7hc3RIFAk3es8NNuE=;
- b=8bhSgwOi2z45kfLdMy+uDVvfyR3GwG3QKPGW6B1lhpnDmT70Xr6jXM1tw9MikaLDj4jm1u
- A73knDwQ6yBsr+CQ==
+ bh=no/uCmxpXOZ2Pbzzc6BaMgFVdtTAkSiF7pAuNlIERws=;
+ b=E+3/kLUVOqmx9ulbgvgxvqYXdYigyZyFVqO4rLZwuaABTAC/1Z+lchaxeTsV9zd3W18L1B
+ ReZ5Y0Ox8IxeE4CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75840139CB;
- Fri,  7 Feb 2025 14:28:07 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C35B139CB;
+ Fri,  7 Feb 2025 14:28:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QOD6DHcYpmcoOwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:28:07 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id UK1QFnkYpmcoOwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:28:09 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH v2 3/8] migration/multifd: Terminate the TLS connection
-Date: Fri,  7 Feb 2025 11:27:53 -0300
-Message-Id: <20250207142758.6936-4-farosas@suse.de>
+Subject: [RFC PATCH v2 4/8] migration: Check migration error after loadvm
+Date: Fri,  7 Feb 2025 11:27:54 -0300
+Message-Id: <20250207142758.6936-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250207142758.6936-1-farosas@suse.de>
 References: <20250207142758.6936-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
@@ -119,111 +119,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The multifd recv side has been getting a TLS error of
-GNUTLS_E_PREMATURE_TERMINATION at the end of migration when the send
-side closes the sockets without ending the TLS session. This has been
-masked by the code not checking the migration error after loadvm.
+We're currently only checking the QEMUFile error after
+qemu_loadvm_state(). Check the migration error as well to avoid
+missing errors that might be set by the multifd recv thread.
 
-Start ending the TLS session at multifd_send_shutdown() so the recv
-side always sees a clean termination (EOF) and we can start to
-differentiate that from an actual premature termination that might
-possibly happen in the middle of the migration.
-
-There's nothing to be done if a previous migration error has already
-broken the connection, so add a comment explaining it and ignore any
-errors coming from gnutls_bye().
-
-This doesn't break compat with older recv-side QEMUs because EOF has
-always caused the recv thread to exit cleanly.
+This doesn't break compat between 9.2 and 10.0 because 9.2 still has
+the multifd recv threads stuck at sync when the source channel shuts
+down. I.e. it doesn't have commit 1d457daf86 ("migration/multifd:
+Further remove the SYNC on complete"). QEMU versions with that commit
+will have compat broken with versions containing this commit. This is
+not an issue because both will be present in 10.0, but development
+trees might see a migration error.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 34 +++++++++++++++++++++++++++++++++-
- migration/tls.c     |  5 +++++
- migration/tls.h     |  2 +-
- 3 files changed, 39 insertions(+), 2 deletions(-)
+ migration/savevm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index ab73d6d984..b57cad3bb1 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -490,6 +490,32 @@ void multifd_send_shutdown(void)
-         return;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index bc375db282..4046faf009 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2940,7 +2940,11 @@ int qemu_loadvm_state(QEMUFile *f)
+ 
+     /* When reaching here, it must be precopy */
+     if (ret == 0) {
+-        ret = qemu_file_get_error(f);
++        if (migrate_has_error(migrate_get_current())) {
++            ret = -EINVAL;
++        } else {
++            ret = qemu_file_get_error(f);
++        }
      }
  
-+    for (i = 0; i < migrate_multifd_channels(); i++) {
-+        MultiFDSendParams *p = &multifd_send_state->params[i];
-+
-+        /* thread_created implies the TLS handshake has succeeded */
-+        if (p->tls_thread_created && p->thread_created) {
-+            Error *local_err = NULL;
-+            /*
-+             * The destination expects the TLS session to always be
-+             * properly terminated. This helps to detect a premature
-+             * termination in the middle of the stream.  Note that
-+             * older QEMUs always break the connection on the source
-+             * and the destination always sees
-+             * GNUTLS_E_PREMATURE_TERMINATION.
-+             */
-+            migration_tls_channel_end(p->c, &local_err);
-+
-+            if (local_err) {
-+                /*
-+                 * The above can fail with broken pipe due to a
-+                 * previous migration error, ignore the error.
-+                 */
-+                assert(migration_has_failed(migrate_get_current()));
-+            }
-+        }
-+    }
-+
-     multifd_send_terminate_threads();
- 
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-@@ -1141,7 +1167,13 @@ static void *multifd_recv_thread(void *opaque)
- 
-             ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
-                                            p->packet_len, &local_err);
--            if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
-+            if (!ret) {
-+                /* EOF */
-+                assert(!local_err);
-+                break;
-+            }
-+
-+            if (ret == -1) {
-                 break;
-             }
- 
-diff --git a/migration/tls.c b/migration/tls.c
-index fa03d9136c..5cbf952383 100644
---- a/migration/tls.c
-+++ b/migration/tls.c
-@@ -156,6 +156,11 @@ void migration_tls_channel_connect(MigrationState *s,
-                               NULL);
- }
- 
-+void migration_tls_channel_end(QIOChannel *ioc, Error **errp)
-+{
-+    qio_channel_tls_bye(QIO_CHANNEL_TLS(ioc), errp);
-+}
-+
- bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc)
- {
-     if (!migrate_tls()) {
-diff --git a/migration/tls.h b/migration/tls.h
-index 5797d153cb..58b25e1228 100644
---- a/migration/tls.h
-+++ b/migration/tls.h
-@@ -36,7 +36,7 @@ void migration_tls_channel_connect(MigrationState *s,
-                                    QIOChannel *ioc,
-                                    const char *hostname,
-                                    Error **errp);
--
-+void migration_tls_channel_end(QIOChannel *ioc, Error **errp);
- /* Whether the QIO channel requires further TLS handshake? */
- bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc);
- 
+     /*
 -- 
 2.35.3
 
