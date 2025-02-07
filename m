@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E606BA2C067
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B901CA2C059
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:18:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLQO-0007ob-W5; Fri, 07 Feb 2025 05:17:29 -0500
+	id 1tgLQV-000865-6n; Fri, 07 Feb 2025 05:17:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLQM-0007hg-HW
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:26 -0500
+ id 1tgLQQ-00080E-Op
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLQL-0004Lq-04
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:26 -0500
+ id 1tgLQP-0004MU-13
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738923444;
+ s=mimecast20190719; t=1738923448;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2zMrreiA6fXml/tyoB0xwdzip2po3nTWUJjLq04bCbM=;
- b=IvYEJZ72oWYtUSSx4XRXvato5E8FkAOh96jAoKZb7d+ZOdUznF8/CddXVMiQj5sVSnYbPC
- UARdTWNaLhv41T/B/QiP6OvWNLZatNJ2kwnStVeSZLq6+qvYAmNAATHw0lrUWsNn2cCSde
- OQhpb9IL9tAKlBiO5EV2Ghh5T9OyKNI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aKHP+M1YbRMZ4IFrh+t3bRBHjugSohWNkvOiKtYRuX0=;
+ b=UaAUiSWpIRWZf17yN1D7gFgshzvAzkdivKrC0jOuk86Nmrz+9ebyS9NVeOo8MdrAevQNFG
+ Ea4JW2pQVbZJH594U6yjlhpypLnHRq42UfIYVtDUg0bMyZVZeFE06yl7EpHY0Ky9qWl1aT
+ t09HE7NLjUv/Ioet7W7Z+Tix+0E61V0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-CJXagb1hP5CU44sSqsF9Hg-1; Fri, 07 Feb 2025 05:17:23 -0500
-X-MC-Unique: CJXagb1hP5CU44sSqsF9Hg-1
-X-Mimecast-MFC-AGG-ID: CJXagb1hP5CU44sSqsF9Hg
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ab2e44dc9b8so312118166b.1
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:17:22 -0800 (PST)
+ us-mta-93-Cm-MlBMpNX-bD5gx_R60VQ-1; Fri, 07 Feb 2025 05:17:27 -0500
+X-MC-Unique: Cm-MlBMpNX-bD5gx_R60VQ-1
+X-Mimecast-MFC-AGG-ID: Cm-MlBMpNX-bD5gx_R60VQ
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-aa67f03ca86so137824466b.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:17:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738923441; x=1739528241;
+ d=1e100.net; s=20230601; t=1738923444; x=1739528244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2zMrreiA6fXml/tyoB0xwdzip2po3nTWUJjLq04bCbM=;
- b=Sqg9O7QTEVy0KLeXvq9hnUp1aWim+m657Y1Qgy/lTwbedKf/yRu2zpCs7v83uLtOVU
- /64Wo2qhXajVS8fcrPZkq59wdlkmFt+knwPrjKfnTQt9+4eqF0sGPJTOpWwaT1H1jtw+
- T9Lze1LdvXfDuqT9rOCLZfe5krkzbsBjew6c8sI5uSECvKusHWrUG5uHRDoP5jHyMLGA
- 7V0IjiHDBJeYBlg4I+sygZKNrqVNsRf/8oI4jR/qS3al21KXSGLybdiVAp0ULvclpCiS
- wR5d1BKR1PGtVur+iVeT+R1HPpenIvRl9659Qkd7XHxhtSRgUR/iN9pcoEy1RfMxGLeS
- PfpA==
-X-Gm-Message-State: AOJu0YwZbbr0bJCD9HyG6HfjR81Der2Yx1GcilQ6TKuGf2XjH8shWvKI
- xR4vpqs3Xab0bljUx4nCIHx8YOw9an5NWORcmPtnyVb5dIaKDPlP/7xonAwse2opsp1ol3Na7vb
- WBNpdaCkYfKg6Tu+M72iIB6dM62O+8MlcdoWaRQL+f8yqodPPbmYCVN3gIMAdiyoMioRN6rZ1iL
- RNVW57BeFJk+BoWg+Yci4VTNMevZvPZigi7MboOrY=
-X-Gm-Gg: ASbGncuOyMFRK+lTUtViR5rmU8v1R0gqwPlUw5++k7o+5PBdqr6Jb9yZ1BZxccsecrd
- Yd/CkMGAzp3y4us49E7jzRIGHAtwm5so2c9pbMVmNiTEHFZxH9AOalhDi6ceAAGHHeyBvW3HNpy
- 6X8yGqhvM2VgP6E1UIiUjwiWCsdGZcb4fP4We/Wb8k8IjwnOnUxFm4j0vNBaAgHDpIOqarKe5hg
- EUOwuIqrykjj7B5LTn+PpQZ2mPbOrixcDiq+n7+hFR0T2lLFVCQsvSIFBzht9kjE7OcN5DVlF5E
- YZfD2A==
-X-Received: by 2002:a17:907:6d0e:b0:ab6:cdc2:3417 with SMTP id
- a640c23a62f3a-ab76e8cef13mr685456966b.15.1738923441006; 
- Fri, 07 Feb 2025 02:17:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE6CjID0RSFN1ybO48T/D2riX1cvSrYvRckWhyBsi/kD+UvPszJG/T/VWvUl46MIRHbYT/twA==
-X-Received: by 2002:a17:907:6d0e:b0:ab6:cdc2:3417 with SMTP id
- a640c23a62f3a-ab76e8cef13mr685452266b.15.1738923440500; 
- Fri, 07 Feb 2025 02:17:20 -0800 (PST)
+ bh=aKHP+M1YbRMZ4IFrh+t3bRBHjugSohWNkvOiKtYRuX0=;
+ b=GMSUq9/aZbZldIDUT6+UNv5zdJI+rV5FrUvKJX4PWsjSvB75D0cg9nknnrryIyQKUc
+ x91CNASTtLIRcVFyJQX9rryTs2/TwYfC5GeWOOrfX+deI7TvYFXdfZy3gCFfXF+d3JLC
+ GDKtT3hH0DsjW6ODHkAciGi6ojeSqbO4ighqxwxEaH0ORNI2eCgd1iUMiylk9M3XHcGW
+ ppq1MbU5pfKj3SKJnX3S25iTdBHh8UQfCoEhAariNGjmpaD6oG0oKDzNn+fC9J2UFcLv
+ Hy+Yzrt3Vw8vGLwE2WxuyPfpG96zUEnIf3I9xvcygccSFwTbocjp7zIlUEupzaGRzrhQ
+ AKtA==
+X-Gm-Message-State: AOJu0YxvfL0F0OO1tMsEsCrC4TMUzRG4F4TWSsp17jTYeg70MBTCUWU1
+ 9dDv+SrbnfWNtNLHJnxY4OrZxma9EDGzuDvkJxh6fINDgkIpVwh/i0sVc1eT8L25BFi52Cta8ut
+ 0c47bH0+EpE2mBuCs1lqTz3Q5290nA5DytkL7XEhFBJzHeDhs2Yx+tsEHtcKkLwOKi6htaYkM5e
+ ix2w5VMdFAOKRjEwJSooXcqvHwanpM8S2cfgAFU6E=
+X-Gm-Gg: ASbGncsKvPO49whNTx2/NcagMpXq2DmY+YKqHVJ8uM+i9+OtJ9FtEj/YiLdroln/cTh
+ M6Dc+17lkdfhJ1ybJAQ4ZkgNS8e1LVkVL7ZJXeXwJVgQ0SMqpmpmHW2rhPQA2KrYmBItnbzgyui
+ 1ien0+Zod3fckFBfvAF66oR014ThHAW4RtJJRIbyBvUEEvn92XfBtLddkw24BzpPg9evjHwg9Gi
+ fzEH4i120UyEOBfWDg088pwAw2UlI0GxBx/25ztp89WxpJXNXqv3IgOFwlNSJ/kfQdbrxKnzbga
+ ExQpUg==
+X-Received: by 2002:a05:6402:2392:b0:5de:4a8b:4c9c with SMTP id
+ 4fb4d7f45d1cf-5de4a8b4fc4mr3255591a12.32.1738923444191; 
+ Fri, 07 Feb 2025 02:17:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfsoSU1JKMR6X86QsmGLSD3TaYkv4VQukNlw/UjcAmcXXn4FgyZ4tohgtK6GEsxcTAsO+s9g==
+X-Received: by 2002:a05:6402:2392:b0:5de:4a8b:4c9c with SMTP id
+ 4fb4d7f45d1cf-5de4a8b4fc4mr3255525a12.32.1738923443524; 
+ Fri, 07 Feb 2025 02:17:23 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab78405313dsm146061166b.55.2025.02.07.02.17.15
+ 4fb4d7f45d1cf-5dcf1b85a4dsm2272828a12.47.2025.02.07.02.17.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 02:17:16 -0800 (PST)
+ Fri, 07 Feb 2025 02:17:21 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	zhao1.liu@intel.com
-Subject: [PATCH 10/12] rust: irq: define ObjectType for IRQState
-Date: Fri,  7 Feb 2025 11:16:21 +0100
-Message-ID: <20250207101623.2443552-11-pbonzini@redhat.com>
+Subject: [PATCH 11/12] rust: chardev, qdev: add bindings to qdev_prop_set_chr
+Date: Fri,  7 Feb 2025 11:16:22 +0100
+Message-ID: <20250207101623.2443552-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250207101623.2443552-1-pbonzini@redhat.com>
 References: <20250207101623.2443552-1-pbonzini@redhat.com>
@@ -107,54 +107,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a small preparation in order to use an Owned<IRQState> for the argument
-to sysbus_connect_irq.
+Because the argument to the function is an Owned<Chardev>, this also
+adds an ObjectType implementation to Chardev.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/irq.rs | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ rust/hw/char/pl011/src/device.rs |  1 +
+ rust/qemu-api/meson.build        |  1 +
+ rust/qemu-api/src/chardev.rs     | 19 +++++++++++++++++++
+ rust/qemu-api/src/lib.rs         |  1 +
+ rust/qemu-api/src/qdev.rs        |  9 +++++++++
+ 5 files changed, 31 insertions(+)
+ create mode 100644 rust/qemu-api/src/chardev.rs
 
-diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
-index 638545c3a64..835b027d5e5 100644
---- a/rust/qemu-api/src/irq.rs
-+++ b/rust/qemu-api/src/irq.rs
-@@ -5,11 +5,12 @@
- //! Bindings for interrupt sources
- 
- use core::ptr;
--use std::{marker::PhantomData, os::raw::c_int};
-+use std::{ffi::CStr, marker::PhantomData, os::raw::c_int};
- 
- use crate::{
--    bindings::{qemu_set_irq, IRQState},
-+    bindings::{self, qemu_set_irq},
-     prelude::*,
-+    qom::ObjectClass,
- };
- 
- /// Interrupt sources are used by devices to pass changes to a value (typically
-@@ -21,7 +22,8 @@
- /// method sends a `true` value to the sink.  If the guest has to see a
- /// different polarity, that change is performed by the board between the
- /// device and the interrupt controller.
--///
-+pub type IRQState = bindings::IRQState;
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 5e4e75133c8..22f3ca3b4e8 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -15,6 +15,7 @@
+         sysbus_mmio_map, sysbus_realize, CharBackend, Chardev, QEMUChrEvent,
+         CHR_IOCTL_SERIAL_SET_BREAK,
+     },
++    chardev::Chardev,
+     c_str, impl_vmstate_forward,
+     irq::InterruptSource,
+     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 80eafc7f6bd..45e30324b29 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -20,6 +20,7 @@ _qemu_api_rs = static_library(
+       'src/bitops.rs',
+       'src/callbacks.rs',
+       'src/cell.rs',
++      'src/chardev.rs',
+       'src/c_str.rs',
+       'src/irq.rs',
+       'src/memory.rs',
+diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
+new file mode 100644
+index 00000000000..74cfb634e5f
+--- /dev/null
++++ b/rust/qemu-api/src/chardev.rs
+@@ -0,0 +1,19 @@
++// Copyright 2024 Red Hat, Inc.
++// Author(s): Paolo Bonzini <pbonzini@redhat.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
- /// Interrupts are implemented as a pointer to the interrupt "sink", which has
- /// type [`IRQState`].  A device exposes its source as a QOM link property using
- /// a function such as [`SysBusDeviceMethods::init_irq`], and
-@@ -91,3 +93,10 @@ fn default() -> Self {
++//! Bindings for character devices
++
++use std::ffi::CStr;
++
++use crate::{bindings, prelude::*};
++
++pub type Chardev = bindings::Chardev;
++pub type ChardevClass = bindings::ChardevClass;
++
++unsafe impl ObjectType for Chardev {
++    type Class = ChardevClass;
++    const TYPE_NAME: &'static CStr =
++        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_CHARDEV) };
++}
++qom_isa!(Chardev: Object);
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 8cc095b13f6..1d7112445e2 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -17,6 +17,7 @@
+ pub mod c_str;
+ pub mod callbacks;
+ pub mod cell;
++pub mod chardev;
+ pub mod irq;
+ pub mod memory;
+ pub mod module;
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 2ec1ecc8489..0041c66ed0c 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -16,6 +16,7 @@
+     bindings::{self, Error, ResettableClass},
+     callbacks::FnCall,
+     cell::bql_locked,
++    chardev::Chardev,
+     prelude::*,
+     qom::{ClassInitImpl, ObjectClass, ObjectImpl, Owned},
+     vmstate::VMStateDescription,
+@@ -299,6 +300,14 @@ fn init_clock_out(&self, name: &str) -> Owned<Clock> {
+             Owned::from(&*clk)
          }
      }
- }
 +
-+unsafe impl ObjectType for IRQState {
-+    type Class = ObjectClass;
-+    const TYPE_NAME: &'static CStr =
-+        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_IRQ) };
-+}
-+qom_isa!(IRQState: Object);
++    fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
++        assert!(bql_locked());
++        let c_propname = CString::new(propname).unwrap();
++        unsafe {
++            bindings::qdev_prop_set_chr(self.as_mut_ptr(), c_propname.as_ptr(), chr.as_mut_ptr());
++        }
++    }
+ }
+ 
+ impl<R: ObjectDeref> DeviceMethods for R where R::Target: IsA<DeviceState> {}
 -- 
 2.48.1
 
