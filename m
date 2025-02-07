@@ -2,96 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FB8A2C065
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D958A2C07A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:21:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLQj-0008LK-B7; Fri, 07 Feb 2025 05:17:49 -0500
+	id 1tgLUI-0007x6-W3; Fri, 07 Feb 2025 05:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLQV-00089n-Ac
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tgLUD-0007uX-7N; Fri, 07 Feb 2025 05:21:25 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLQT-0004Nq-9w
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:17:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738923452;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oC4sSczyHUPcW1OOZ38NHr8TjI3/9SwgCw7OQNwY7a8=;
- b=dkdr8XWp5T2b/AMVWspnyvaQ9qcwp/GzK8vTXnPH+/Tkd1VLAn1yiIV4VBuE3WqvEp2422
- GBw6QuBEEUcHkpqznN7RwSInb30mz6VFuSa4HCjNh+rMNVc/KQZaoN+3VoNVntlY83Xcli
- KFi3MXSmGEC/kW4O1LJGsztWOY65bnc=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-HLDGdtmWO6WdQakRnONK8Q-1; Fri, 07 Feb 2025 05:17:31 -0500
-X-MC-Unique: HLDGdtmWO6WdQakRnONK8Q-1
-X-Mimecast-MFC-AGG-ID: HLDGdtmWO6WdQakRnONK8Q
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ab7912ce928so24637266b.0
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:17:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738923449; x=1739528249;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oC4sSczyHUPcW1OOZ38NHr8TjI3/9SwgCw7OQNwY7a8=;
- b=MVavbQDi66lxcjcciR3rXxJJYvhZjLXYhpVtbafXmG+JLFBqxrdLq1oWKzMg0e4Y+U
- wa8vWWItVjLyBHA4Xz3xpvKe9LH4QsbCb1Hl4Jhj1qLy5/fuTY5Qi9gFjjfLOCxBOBoz
- UNbnVwjeIBMl7U5zQJ8h5kWrQBavcRow21kfmyxkWoFNu4Nb/ArugrawBmrWku4K4xaB
- zgwmCytjn/AXhaZDeSvfP8fNar4bLzYgXRev4a0W3ZdHWv+JKNXJOtASI3GmKrxL0BC+
- p6V2Q/85KwtGxDStqV5AGcRjugp+Di6D9xTRya5G8BuqxE0X/0/gOnvXykRHL2txmQcD
- oXMw==
-X-Gm-Message-State: AOJu0YzuXHpa/wE+y2Gh3ulE0/mIKBRLHiwWiQZlirOYGD+95vfTT1mO
- mffduzdrQFsooZnC+bOidBgpdTYgEhf6ePR5Af252ZtbtOP7RKIVgHa2VvpnsrQagGyQAfxjZOi
- QuMo6Hi8RBO0cdpaNwdzokB7WzwCnZKmNsvIhalJgM4HyWxMK0VvRz93uRbNCM8MajIWOxrJkTR
- IipTJB99zvmQ3jMqHwvRI7ixgV5fHavp8rf8K4vlc=
-X-Gm-Gg: ASbGncuO2LFVv1auo/Pr+Mg+cuVpv6Ai8ZNIBsipTo/jfoJd4OdWym5rYqWIJUBx7TP
- w6o+/HA13jTriOSzr9wsmpAt9/JRphwZ4wOFANnVPu+jGLWRq7M7EDeIEhidYkOUtdoQVB828Qv
- aakX91tDChAo9ckJwCC5DTL9TvhBafPTxkr10kLLTpAOYPyDf0ELuZBYf+hDmp4zY2R8i2GzZ6a
- uWBf1msGpdU0jZ5LSey+P//KCW5VdR6SGKu5OBUmUoNUopyePLseZjqMmN3HSvpE1m72mzmfTcU
- dZm7GQ==
-X-Received: by 2002:a17:907:d08d:b0:ab7:6d49:2c03 with SMTP id
- a640c23a62f3a-ab789c60410mr215138466b.19.1738923449222; 
- Fri, 07 Feb 2025 02:17:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFe0xsu8AxCXKMVsluGB+rII8w3U/NIqVdeJNW6ztpaWVv5HgBhXR4pXND5uDrb6wiZzetH/g==
-X-Received: by 2002:a17:907:d08d:b0:ab7:6d49:2c03 with SMTP id
- a640c23a62f3a-ab789c60410mr215134966b.19.1738923448776; 
- Fri, 07 Feb 2025 02:17:28 -0800 (PST)
-Received: from [192.168.10.3] ([151.62.97.55])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab7732e6192sm238995966b.121.2025.02.07.02.17.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 02:17:25 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	zhao1.liu@intel.com
-Subject: [PATCH 12/12] rust: pl011: convert pl011_create to safe Rust
-Date: Fri,  7 Feb 2025 11:16:23 +0100
-Message-ID: <20250207101623.2443552-13-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250207101623.2443552-1-pbonzini@redhat.com>
-References: <20250207101623.2443552-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tgLUA-0006GW-3h; Fri, 07 Feb 2025 05:21:24 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yq90n37prz6L55T;
+ Fri,  7 Feb 2025 18:18:33 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+ by mail.maildlp.com (Postfix) with ESMTPS id AF4FE1408F9;
+ Fri,  7 Feb 2025 18:21:17 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 7 Feb 2025 11:21:17 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Fri, 7 Feb 2025 11:21:17 +0100
+To: Nicolin Chen <nicolinc@nvidia.com>,
+ =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, "Jason
+ Gunthorpe" <jgg@nvidia.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ddutile@redhat.com"
+ <ddutile@redhat.com>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>, "nathanc@nvidia.com" <nathanc@nvidia.com>
+Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rMv66IAgAA0HqCAAb2VAIAIsUnQgAADD4CAAB6MsIAAJxaAgAATMvCAABLUAIAAAjUAgAAKIYCAAAJIgIAAAQ2AgAARRyD///K+AIAAERgA///xZoCAACSvgIAA9kUQ
+Date: Fri, 7 Feb 2025 10:21:17 +0000
+Message-ID: <9112ba0694bd42199e279e37fbfc9dd0@huawei.com>
+References: <71116749d1234ab48a205fd2588151ec@huawei.com>
+ <20250206170238.GG2960738@nvidia.com> <Z6TtCLQ35UI12T77@redhat.com>
+ <20250206174647.GA3480821@nvidia.com> <Z6T3cX_fM-aeYbMI@redhat.com>
+ <20250206175843.GI2960738@nvidia.com>
+ <13b1d8b97a314cb28b87563fa9b45299@huawei.com>
+ <20250206181306.GK2960738@nvidia.com>
+ <02a0080a4a1642d69b7f5dd4707a5b3d@huawei.com>
+ <20250206182201.GL2960738@nvidia.com> <Z6Ucj/u3wt9muakb@Asurada-Nvidia>
+In-Reply-To: <Z6Ucj/u3wt9muakb@Asurada-Nvidia>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,148 +85,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not a major change but, as a small but significant step in creating
-qdev bindings, show how pl011_create can be written without "unsafe"
-calls (apart from converting pointers to references).
 
-This also provides a starting point for creating Error** bindings.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/hw/char/pl011/src/device.rs | 39 ++++++++++++++++----------------
- rust/qemu-api/src/sysbus.rs      | 34 +++++++++++++++++++++++++---
- 2 files changed, 50 insertions(+), 23 deletions(-)
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Thursday, February 6, 2025 8:33 PM
+> To: Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; Daniel P. Berrang=E9
+> <berrange@redhat.com>; Jason Gunthorpe <jgg@nvidia.com>
+> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
+> eric.auger@redhat.com; peter.maydell@linaro.org; ddutile@redhat.com;
+> Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
+> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+> Jonathan Cameron <jonathan.cameron@huawei.com>;
+> zhangfei.gao@linaro.org; nathanc@nvidia.com
+> Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+> nested SMMUv3
+>=20
+> On Thu, Feb 06, 2025 at 02:22:01PM -0400, Jason Gunthorpe wrote:
+> > On Thu, Feb 06, 2025 at 06:18:14PM +0000, Shameerali Kolothum Thodi
+> wrote:
+> >
+> > > > So even if you invent an iommu ID we cannot accept it as a handle t=
+o
+> > > > create viommu in iommufd.
+> > >
+> > > Creating the vIOMMU only happens when the user does a  cold/hot
+> plug of
+> > > a VFIO device. At that time Qemu checks whether the assigned id
+> matches
+> > > with whatever the kernel tell it.
+> >
+> > This is not hard up until the guest is started. If you boot a guest
+> > without a backing viommu iommufd object then there will be some more
+> > complexities.
+>=20
+> Yea, I imagined that things would be complicated with hotplugs..
+>=20
+> On one hand, I got the part that we need some fixed link forehand
+> to ease migration/hotplugs.
+>=20
+> On the other hand, all IOMMUFD ioctls need a VFIO device FD, which
+> brings the immediate attention that we cannot even decide vSMMU's
+> capabilities being reflected in its IDR/IIDR registers, without a
+> coldplug device -- if we boot a VM (one vSMMU<->pSMMU) with only a
+> hotplug device, the IOMMU_GET_HW_INFO cannot be done during guest
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 22f3ca3b4e8..7e936b50eb0 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -10,14 +10,12 @@
- 
- use qemu_api::{
-     bindings::{
--        error_fatal, qdev_prop_set_chr, qemu_chr_fe_accept_input, qemu_chr_fe_ioctl,
--        qemu_chr_fe_set_handlers, qemu_chr_fe_write_all, qemu_irq, sysbus_connect_irq,
--        sysbus_mmio_map, sysbus_realize, CharBackend, Chardev, QEMUChrEvent,
--        CHR_IOCTL_SERIAL_SET_BREAK,
-+        qemu_chr_fe_accept_input, qemu_chr_fe_ioctl, qemu_chr_fe_set_handlers,
-+        qemu_chr_fe_write_all, CharBackend, QEMUChrEvent, CHR_IOCTL_SERIAL_SET_BREAK,
-     },
-     chardev::Chardev,
--    c_str, impl_vmstate_forward,
--    irq::InterruptSource,
-+    impl_vmstate_forward,
-+    irq::{IRQState, InterruptSource},
-     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
-     prelude::*,
-     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
-@@ -698,26 +696,27 @@ pub fn post_load(&self, _version_id: u32) -> Result<(), ()> {
- 
- /// # Safety
- ///
--/// We expect the FFI user of this function to pass a valid pointer for `chr`.
-+/// We expect the FFI user of this function to pass a valid pointer for `chr`
-+/// and `irq`.
- #[no_mangle]
- pub unsafe extern "C" fn pl011_create(
-     addr: u64,
--    irq: qemu_irq,
-+    irq: *mut IRQState,
-     chr: *mut Chardev,
- ) -> *mut DeviceState {
--    let pl011 = PL011State::new();
--    unsafe {
--        let dev = pl011.as_mut_ptr::<DeviceState>();
--        qdev_prop_set_chr(dev, c_str!("chardev").as_ptr(), chr);
-+    // SAFETY: The callers promise that they have owned references.
-+    // They do not gift them to pl011_create, so use `Owned::from`.
-+    let irq = unsafe { Owned::<IRQState>::from(&*irq) };
-+    let chr = unsafe { Owned::<Chardev>::from(&*chr) };
- 
--        let sysbus = pl011.as_mut_ptr::<SysBusDevice>();
--        sysbus_realize(sysbus, addr_of_mut!(error_fatal));
--        sysbus_mmio_map(sysbus, 0, addr);
--        sysbus_connect_irq(sysbus, 0, irq);
--
--        // return the pointer, which is kept alive by the QOM tree; drop owned ref
--        pl011.as_mut_ptr()
--    }
-+    let dev = PL011State::new();
-+    dev.prop_set_chr("chardev", &chr);
-+    dev.realize();
-+    dev.mmio_map(0, addr);
-+    dev.connect_irq(0, &irq);
-+    // SAFETY: return the pointer, which has to be mutable and is kept alive
-+    // by the QOM tree; drop owned ref
-+    unsafe { dev.as_mut_ptr() }
- }
- 
- #[repr(C)]
-diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
-index c27dbf79e43..1f071706ce8 100644
---- a/rust/qemu-api/src/sysbus.rs
-+++ b/rust/qemu-api/src/sysbus.rs
-@@ -2,18 +2,18 @@
- // Author(s): Paolo Bonzini <pbonzini@redhat.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use std::ffi::CStr;
-+use std::{ffi::CStr, ptr::addr_of_mut};
- 
- pub use bindings::{SysBusDevice, SysBusDeviceClass};
- 
- use crate::{
-     bindings,
-     cell::bql_locked,
--    irq::InterruptSource,
-+    irq::{IRQState, InterruptSource},
-     memory::MemoryRegion,
-     prelude::*,
-     qdev::{DeviceClass, DeviceState},
--    qom::ClassInitImpl,
-+    qom::{ClassInitImpl, Owned},
- };
- 
- unsafe impl ObjectType for SysBusDevice {
-@@ -60,6 +60,34 @@ fn init_irq(&self, irq: &InterruptSource) {
-             bindings::sysbus_init_irq(self.as_mut_ptr(), irq.as_ptr());
-         }
-     }
-+
-+    // TODO: do we want a type like GuestAddress here?
-+    fn mmio_map(&self, id: u32, addr: u64) {
-+        assert!(bql_locked());
-+        let id: i32 = id.try_into().unwrap();
-+        unsafe {
-+            bindings::sysbus_mmio_map(self.as_mut_ptr(), id, addr);
-+        }
-+    }
-+
-+    // Owned<> is used here because sysbus_connect_irq (via
-+    // object_property_set_link) adds a reference to the IRQState,
-+    // which can prolong its life
-+    fn connect_irq(&self, id: u32, irq: &Owned<IRQState>) {
-+        assert!(bql_locked());
-+        let id: i32 = id.try_into().unwrap();
-+        unsafe {
-+            bindings::sysbus_connect_irq(self.as_mut_ptr(), id, irq.as_mut_ptr());
-+        }
-+    }
-+
-+    fn realize(&self) {
-+        // TODO: return an Error
-+        assert!(bql_locked());
-+        unsafe {
-+            bindings::sysbus_realize(self.as_mut_ptr(), addr_of_mut!(bindings::error_fatal));
-+        }
-+    }
- }
- 
- impl<R: ObjectDeref> SysBusDeviceMethods for R where R::Target: IsA<SysBusDevice> {}
--- 
-2.48.1
+Right. I forgot about the call to smmu_dev_get_info() during the reset.
+That means we need at least one dev per Guest SMMU during Guest
+boot :(
 
+Thanks,
+Shameer
 
