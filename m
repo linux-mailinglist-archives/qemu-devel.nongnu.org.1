@@ -2,106 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616AEA2C539
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34324A2C540
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 15:29:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgPLC-0001W6-NS; Fri, 07 Feb 2025 09:28:22 -0500
+	id 1tgPLC-0001Vm-7e; Fri, 07 Feb 2025 09:28:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPLA-0001VN-Jh
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPLA-0001VZ-RZ
  for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:20 -0500
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL5-0008Co-Pb
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tgPL8-00006Q-IR
  for qemu-devel@nongnu.org; Fri, 07 Feb 2025 09:28:20 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6D5642115F;
- Fri,  7 Feb 2025 14:28:13 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 56AD02111F;
+ Fri,  7 Feb 2025 14:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738938493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1738938497; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qQj+mXq6EHQUvS4SW9yvgtTrr/OpMRPh5pjA/ogVtoU=;
- b=UkY6FDDerKIU766pHwhFJgzZEhul2WQbqDDAanKc2DzQ3jwE+yxYHq0lFQmP4d7D6j+rGG
- CmYeq8zAuKXq/UfmwEpF+OXBVKE0+3ZmehmsbYFxrStPtI+XAvQ8jgvnoGjGme7dIWk7X5
- gdcZc90hO/yyS8+Lq+rKRkdpTfOf6To=
+ bh=VyfGXLCm+wkkzGdyntVYoc2+S3JM7lOCipiHbQwaNhQ=;
+ b=HPzxVChply+fbck5bNHzJT8VcTFQoRVZC8M8n/ERUXLN3232pPBCfQpp3NMwkGBwiDsRQ8
+ D/lnn8QX0ochCJ+9xhIQ+a/k6IL84/uWWfMiRy8NLisAYET/dQtVOy4XQOPgzZv8Hq8J3B
+ LaON9+leKcEJ4mJ2bvgypjcRnJZVv8E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738938493;
+ s=susede2_ed25519; t=1738938497;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qQj+mXq6EHQUvS4SW9yvgtTrr/OpMRPh5pjA/ogVtoU=;
- b=vzp9hkqWba88OPuaXVf/OlS3hPp7Q+QPxQGiSK7rz6DkoFdHS4LYCwDFYfHnP+U4MIdkG0
- gATHozdvHT2VrVCg==
+ bh=VyfGXLCm+wkkzGdyntVYoc2+S3JM7lOCipiHbQwaNhQ=;
+ b=e9zhDs8EFPmZ3g4TfFu7LbIP3OyotYgHrX1ouKG5Tb4ZRUJg2p0I4mQhjA87wjuzD4M+oA
+ Nt5JtbukQ/A/7oAA==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UkY6FDDe;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vzp9hkqW
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HPzxVChp;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=e9zhDs8E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738938493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1738938497; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qQj+mXq6EHQUvS4SW9yvgtTrr/OpMRPh5pjA/ogVtoU=;
- b=UkY6FDDerKIU766pHwhFJgzZEhul2WQbqDDAanKc2DzQ3jwE+yxYHq0lFQmP4d7D6j+rGG
- CmYeq8zAuKXq/UfmwEpF+OXBVKE0+3ZmehmsbYFxrStPtI+XAvQ8jgvnoGjGme7dIWk7X5
- gdcZc90hO/yyS8+Lq+rKRkdpTfOf6To=
+ bh=VyfGXLCm+wkkzGdyntVYoc2+S3JM7lOCipiHbQwaNhQ=;
+ b=HPzxVChply+fbck5bNHzJT8VcTFQoRVZC8M8n/ERUXLN3232pPBCfQpp3NMwkGBwiDsRQ8
+ D/lnn8QX0ochCJ+9xhIQ+a/k6IL84/uWWfMiRy8NLisAYET/dQtVOy4XQOPgzZv8Hq8J3B
+ LaON9+leKcEJ4mJ2bvgypjcRnJZVv8E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738938493;
+ s=susede2_ed25519; t=1738938497;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qQj+mXq6EHQUvS4SW9yvgtTrr/OpMRPh5pjA/ogVtoU=;
- b=vzp9hkqWba88OPuaXVf/OlS3hPp7Q+QPxQGiSK7rz6DkoFdHS4LYCwDFYfHnP+U4MIdkG0
- gATHozdvHT2VrVCg==
+ bh=VyfGXLCm+wkkzGdyntVYoc2+S3JM7lOCipiHbQwaNhQ=;
+ b=e9zhDs8EFPmZ3g4TfFu7LbIP3OyotYgHrX1ouKG5Tb4ZRUJg2p0I4mQhjA87wjuzD4M+oA
+ Nt5JtbukQ/A/7oAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAAFE139CB;
- Fri,  7 Feb 2025 14:28:11 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 060D2139CB;
+ Fri,  7 Feb 2025 14:28:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QAp2IXsYpmcoOwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:28:11 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ePlRLX0YpmcoOwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 07 Feb 2025 14:28:13 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH v2 5/8] crypto: Remove
- qcrypto_tls_session_get_handshake_status
-Date: Fri,  7 Feb 2025 11:27:55 -0300
-Message-Id: <20250207142758.6936-6-farosas@suse.de>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>
+Subject: [RFC PATCH v2 6/8] io: Plumb read flags into qio_channel_read_all_eof
+Date: Fri,  7 Feb 2025 11:27:56 -0300
+Message-Id: <20250207142758.6936-7-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250207142758.6936-1-farosas@suse.de>
 References: <20250207142758.6936-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D5642115F
-X-Spam-Score: -3.51
+X-Rspamd-Queue-Id: 56AD02111F
+X-Spam-Score: -1.51
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ SUSPICIOUS_RECIPS(1.50)[]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
  MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; ARC_NA(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,maciej.szmigiero.name,oracle.com,intel.com,gmail.com];
  DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
- DKIM_TRACE(0.00)[suse.de:+]
+ TAGGED_RCPT(0.00)[]; RCPT_COUNT_SEVEN(0.00)[9];
+ DKIM_TRACE(0.00)[suse.de:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
  envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
@@ -126,263 +132,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The correct way of calling qcrypto_tls_session_handshake() requires
-calling qcrypto_tls_session_get_handshake_status() right after it so
-there's no reason to have a separate method.
-
-Refactor qcrypto_tls_session_handshake() to inform the status in its
-own return value and alter the callers accordingly.
+We want to pass flags into qio_channel_tls_readv() but some functions
+along the way don't take a flags argument. Plumb the flags through.
 
 No functional change.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- crypto/tlssession.c                 | 64 +++++++++++------------------
- include/crypto/tlssession.h         | 32 ++++-----------
- io/channel-tls.c                    |  7 ++--
- tests/unit/test-crypto-tlssession.c | 12 ++----
- 4 files changed, 39 insertions(+), 76 deletions(-)
+ hw/remote/mpqemu-link.c       |  2 +-
+ include/io/channel.h          |  6 ++++++
+ io/channel.c                  | 13 +++++++++----
+ migration/multifd.c           |  2 +-
+ tools/i386/qemu-vmsr-helper.c |  3 ++-
+ util/vhost-user-server.c      |  2 +-
+ 6 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/tlssession.c b/crypto/tlssession.c
-index d769d7a304..567698f5d9 100644
---- a/crypto/tlssession.c
-+++ b/crypto/tlssession.c
-@@ -546,45 +546,35 @@ qcrypto_tls_session_handshake(QCryptoTLSSession *session,
-                               Error **errp)
- {
-     int ret = gnutls_handshake(session->handle);
--    if (ret == 0) {
-+    if (!ret) {
-         session->handshakeComplete = true;
--    } else {
--        if (ret == GNUTLS_E_INTERRUPTED ||
--            ret == GNUTLS_E_AGAIN) {
--            ret = 1;
--        } else {
--            if (session->rerr || session->werr) {
--                error_setg(errp, "TLS handshake failed: %s: %s",
--                           gnutls_strerror(ret),
--                           error_get_pretty(session->rerr ?
--                                            session->rerr : session->werr));
--            } else {
--                error_setg(errp, "TLS handshake failed: %s",
--                           gnutls_strerror(ret));
--            }
--            ret = -1;
--        }
--    }
--    error_free(session->rerr);
--    error_free(session->werr);
--    session->rerr = session->werr = NULL;
--
--    return ret;
--}
--
--
--QCryptoTLSSessionHandshakeStatus
--qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *session)
--{
--    if (session->handshakeComplete) {
-         return QCRYPTO_TLS_HANDSHAKE_COMPLETE;
--    } else if (gnutls_record_get_direction(session->handle) == 0) {
--        return QCRYPTO_TLS_HANDSHAKE_RECVING;
-+    }
-+
-+    if (ret == GNUTLS_E_INTERRUPTED || ret == GNUTLS_E_AGAIN) {
-+        int direction = gnutls_record_get_direction(session->handle);
-+        return direction ? QCRYPTO_TLS_HANDSHAKE_SENDING :
-+            QCRYPTO_TLS_HANDSHAKE_RECVING;
-+    }
-+
-+    if (session->rerr || session->werr) {
-+        error_setg(errp, "TLS handshake failed: %s: %s",
-+                   gnutls_strerror(ret),
-+                   error_get_pretty(session->rerr ?
-+                                    session->rerr : session->werr));
-     } else {
--        return QCRYPTO_TLS_HANDSHAKE_SENDING;
-+        error_setg(errp, "TLS handshake failed: %s",
-+                   gnutls_strerror(ret));
-     }
-+
-+    error_free(session->rerr);
-+    error_free(session->werr);
-+    session->rerr = session->werr = NULL;
-+
-+    return -1;
- }
- 
-+
- int
- qcrypto_tls_session_bye(QCryptoTLSSession *session, Error **errp)
- {
-@@ -720,14 +710,6 @@ qcrypto_tls_session_check_pending(QCryptoTLSSession *session)
- int
- qcrypto_tls_session_handshake(QCryptoTLSSession *sess,
-                               Error **errp)
--{
--    error_setg(errp, "TLS requires GNUTLS support");
--    return -1;
--}
--
--
--QCryptoTLSSessionHandshakeStatus
--qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *sess)
- {
-     return QCRYPTO_TLS_HANDSHAKE_COMPLETE;
- }
-diff --git a/include/crypto/tlssession.h b/include/crypto/tlssession.h
-index c0f64ce989..d77ae0d423 100644
---- a/include/crypto/tlssession.h
-+++ b/include/crypto/tlssession.h
-@@ -75,12 +75,14 @@
-  *                                      GINT_TO_POINTER(fd));
-  *
-  *    while (1) {
-- *       if (qcrypto_tls_session_handshake(sess, errp) < 0) {
-+ *       int ret = qcrypto_tls_session_handshake(sess, errp);
-+ *
-+ *       if (ret < 0) {
-  *           qcrypto_tls_session_free(sess);
-  *           return -1;
-  *       }
-  *
-- *       switch(qcrypto_tls_session_get_handshake_status(sess)) {
-+ *       switch(ret) {
-  *       case QCRYPTO_TLS_HANDSHAKE_COMPLETE:
-  *           if (qcrypto_tls_session_check_credentials(sess, errp) < )) {
-  *               qcrypto_tls_session_free(sess);
-@@ -170,7 +172,7 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(QCryptoTLSSession, qcrypto_tls_session_free)
-  *
-  * Validate the peer's credentials after a successful
-  * TLS handshake. It is an error to call this before
-- * qcrypto_tls_session_get_handshake_status() returns
-+ * qcrypto_tls_session_handshake() returns
-  * QCRYPTO_TLS_HANDSHAKE_COMPLETE
-  *
-  * Returns 0 if the credentials validated, -1 on error
-@@ -226,7 +228,7 @@ void qcrypto_tls_session_set_callbacks(QCryptoTLSSession *sess,
-  * registered with qcrypto_tls_session_set_callbacks()
-  *
-  * It is an error to call this before
-- * qcrypto_tls_session_get_handshake_status() returns
-+ * qcrypto_tls_session_handshake() returns
-  * QCRYPTO_TLS_HANDSHAKE_COMPLETE
-  *
-  * Returns: the number of bytes sent,
-@@ -256,7 +258,7 @@ ssize_t qcrypto_tls_session_write(QCryptoTLSSession *sess,
-  * opposed to an error.
-  *
-  * It is an error to call this before
-- * qcrypto_tls_session_get_handshake_status() returns
-+ * qcrypto_tls_session_handshake() returns
-  * QCRYPTO_TLS_HANDSHAKE_COMPLETE
-  *
-  * Returns: the number of bytes received,
-@@ -289,8 +291,7 @@ size_t qcrypto_tls_session_check_pending(QCryptoTLSSession *sess);
-  * the underlying data channel is non-blocking, then
-  * this method may return control before the handshake
-  * is complete. On non-blocking channels the
-- * qcrypto_tls_session_get_handshake_status() method
-- * should be used to determine whether the handshake
-+ * return value determines whether the handshake
-  * has completed, or is waiting to send or receive
-  * data. In the latter cases, the caller should setup
-  * an event loop watch and call this method again
-@@ -306,23 +307,6 @@ typedef enum {
-     QCRYPTO_TLS_HANDSHAKE_RECVING,
- } QCryptoTLSSessionHandshakeStatus;
- 
--/**
-- * qcrypto_tls_session_get_handshake_status:
-- * @sess: the TLS session object
-- *
-- * Check the status of the TLS handshake. This
-- * is used with non-blocking data channels to
-- * determine whether the handshake is waiting
-- * to send or receive further data to/from the
-- * remote peer.
-- *
-- * Once this returns QCRYPTO_TLS_HANDSHAKE_COMPLETE
-- * it is permitted to send/receive payload data on
-- * the channel
-- */
--QCryptoTLSSessionHandshakeStatus
--qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *sess);
--
- typedef enum {
-     QCRYPTO_TLS_BYE_COMPLETE,
-     QCRYPTO_TLS_BYE_SENDING,
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index 517ce190a4..ecde6b57bf 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -162,16 +162,17 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
-                                            GMainContext *context)
- {
-     Error *err = NULL;
--    QCryptoTLSSessionHandshakeStatus status;
-+    int status;
- 
--    if (qcrypto_tls_session_handshake(ioc->session, &err) < 0) {
-+    status = qcrypto_tls_session_handshake(ioc->session, &err);
-+
-+    if (status < 0) {
-         trace_qio_channel_tls_handshake_fail(ioc);
-         qio_task_set_error(task, err);
-         qio_task_complete(task);
-         return;
+diff --git a/hw/remote/mpqemu-link.c b/hw/remote/mpqemu-link.c
+index e25f97680d..49885a1db6 100644
+--- a/hw/remote/mpqemu-link.c
++++ b/hw/remote/mpqemu-link.c
+@@ -110,7 +110,7 @@ static ssize_t mpqemu_read(QIOChannel *ioc, void *buf, size_t len, int **fds,
+         bql_unlock();
      }
  
--    status = qcrypto_tls_session_get_handshake_status(ioc->session);
-     if (status == QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-         trace_qio_channel_tls_handshake_complete(ioc);
-         if (qcrypto_tls_session_check_credentials(ioc->session,
-diff --git a/tests/unit/test-crypto-tlssession.c b/tests/unit/test-crypto-tlssession.c
-index 3395f73560..554054e934 100644
---- a/tests/unit/test-crypto-tlssession.c
-+++ b/tests/unit/test-crypto-tlssession.c
-@@ -158,8 +158,7 @@ static void test_crypto_tls_session_psk(void)
-             rv = qcrypto_tls_session_handshake(serverSess,
-                                                &error_abort);
-             g_assert(rv >= 0);
--            if (qcrypto_tls_session_get_handshake_status(serverSess) ==
--                QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-+            if (rv == QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-                 serverShake = true;
+-    ret = qio_channel_readv_full_all_eof(ioc, &iov, 1, fds, nfds, errp);
++    ret = qio_channel_readv_full_all_eof(ioc, &iov, 1, fds, nfds, 0, errp);
+ 
+     if (drop_bql && !iothread && !qemu_in_coroutine()) {
+         bql_lock();
+diff --git a/include/io/channel.h b/include/io/channel.h
+index bdf0bca92a..6110f0ffe9 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -298,6 +298,7 @@ ssize_t qio_channel_writev_full(QIOChannel *ioc,
+  * @ioc: the channel object
+  * @iov: the array of memory regions to read data into
+  * @niov: the length of the @iov array
++ * @flags: read flags (QIO_CHANNEL_READ_FLAG_*)
+  * @errp: pointer to a NULL-initialized error object
+  *
+  * Read data from the IO channel, storing it in the
+@@ -321,6 +322,7 @@ ssize_t qio_channel_writev_full(QIOChannel *ioc,
+ int coroutine_mixed_fn qio_channel_readv_all_eof(QIOChannel *ioc,
+                                                  const struct iovec *iov,
+                                                  size_t niov,
++                                                 int flags,
+                                                  Error **errp);
+ 
+ /**
+@@ -442,6 +444,7 @@ ssize_t qio_channel_write(QIOChannel *ioc,
+  * @ioc: the channel object
+  * @buf: the memory region to read data into
+  * @buflen: the number of bytes to @buf
++ * @flags: read flags (QIO_CHANNEL_READ_FLAG_*)
+  * @errp: pointer to a NULL-initialized error object
+  *
+  * Reads @buflen bytes into @buf, possibly blocking or (if the
+@@ -457,6 +460,7 @@ ssize_t qio_channel_write(QIOChannel *ioc,
+ int coroutine_mixed_fn qio_channel_read_all_eof(QIOChannel *ioc,
+                                                 char *buf,
+                                                 size_t buflen,
++                                                int flags,
+                                                 Error **errp);
+ 
+ /**
+@@ -885,6 +889,7 @@ void qio_channel_set_aio_fd_handler(QIOChannel *ioc,
+  * @niov: the length of the @iov array
+  * @fds: an array of file handles to read
+  * @nfds: number of file handles in @fds
++ * @flags: read flags (QIO_CHANNEL_READ_FLAG_*)
+  * @errp: pointer to a NULL-initialized error object
+  *
+  *
+@@ -903,6 +908,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
+                                                       const struct iovec *iov,
+                                                       size_t niov,
+                                                       int **fds, size_t *nfds,
++                                                      int flags,
+                                                       Error **errp);
+ 
+ /**
+diff --git a/io/channel.c b/io/channel.c
+index e3f17c24a0..61e09202f1 100644
+--- a/io/channel.c
++++ b/io/channel.c
+@@ -113,9 +113,11 @@ ssize_t qio_channel_writev_full(QIOChannel *ioc,
+ int coroutine_mixed_fn qio_channel_readv_all_eof(QIOChannel *ioc,
+                                                  const struct iovec *iov,
+                                                  size_t niov,
++                                                 int flags,
+                                                  Error **errp)
+ {
+-    return qio_channel_readv_full_all_eof(ioc, iov, niov, NULL, NULL, errp);
++    return qio_channel_readv_full_all_eof(ioc, iov, niov, NULL, NULL, flags,
++                                          errp);
+ }
+ 
+ int coroutine_mixed_fn qio_channel_readv_all(QIOChannel *ioc,
+@@ -130,6 +132,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
+                                                       const struct iovec *iov,
+                                                       size_t niov,
+                                                       int **fds, size_t *nfds,
++                                                      int flags,
+                                                       Error **errp)
+ {
+     int ret = -1;
+@@ -155,7 +158,7 @@ int coroutine_mixed_fn qio_channel_readv_full_all_eof(QIOChannel *ioc,
+     while ((nlocal_iov > 0) || local_fds) {
+         ssize_t len;
+         len = qio_channel_readv_full(ioc, local_iov, nlocal_iov, local_fds,
+-                                     local_nfds, 0, errp);
++                                     local_nfds, flags, errp);
+         if (len == QIO_CHANNEL_ERR_BLOCK) {
+             if (qemu_in_coroutine()) {
+                 qio_channel_yield(ioc, G_IO_IN);
+@@ -222,7 +225,8 @@ int coroutine_mixed_fn qio_channel_readv_full_all(QIOChannel *ioc,
+                                                   int **fds, size_t *nfds,
+                                                   Error **errp)
+ {
+-    int ret = qio_channel_readv_full_all_eof(ioc, iov, niov, fds, nfds, errp);
++    int ret = qio_channel_readv_full_all_eof(ioc, iov, niov, fds, nfds, 0,
++                                             errp);
+ 
+     if (ret == 0) {
+         error_setg(errp, "Unexpected end-of-file before all data were read");
+@@ -329,10 +333,11 @@ ssize_t qio_channel_write(QIOChannel *ioc,
+ int coroutine_mixed_fn qio_channel_read_all_eof(QIOChannel *ioc,
+                                                 char *buf,
+                                                 size_t buflen,
++                                                int flags,
+                                                 Error **errp)
+ {
+     struct iovec iov = { .iov_base = buf, .iov_len = buflen };
+-    return qio_channel_readv_all_eof(ioc, &iov, 1, errp);
++    return qio_channel_readv_all_eof(ioc, &iov, 1, flags, errp);
+ }
+ 
+ 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index b57cad3bb1..b4f82b0893 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -1166,7 +1166,7 @@ static void *multifd_recv_thread(void *opaque)
              }
+ 
+             ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
+-                                           p->packet_len, &local_err);
++                                           p->packet_len, 0, &local_err);
+             if (!ret) {
+                 /* EOF */
+                 assert(!local_err);
+diff --git a/tools/i386/qemu-vmsr-helper.c b/tools/i386/qemu-vmsr-helper.c
+index a35dcb88a3..2a9f1825b7 100644
+--- a/tools/i386/qemu-vmsr-helper.c
++++ b/tools/i386/qemu-vmsr-helper.c
+@@ -237,7 +237,8 @@ static void coroutine_fn vh_co_entry(void *opaque)
+          * Only RAPL MSR in rapl-msr-index.h is allowed
+          */
+         r = qio_channel_read_all_eof(QIO_CHANNEL(client->ioc),
+-                                     (char *) &request, sizeof(request), &local_err);
++                                     (char *) &request, sizeof(request), 0,
++                                     &local_err);
+         if (r <= 0) {
+             break;
          }
-@@ -167,8 +166,7 @@ static void test_crypto_tls_session_psk(void)
-             rv = qcrypto_tls_session_handshake(clientSess,
-                                                &error_abort);
-             g_assert(rv >= 0);
--            if (qcrypto_tls_session_get_handshake_status(clientSess) ==
--                QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-+            if (rv == QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-                 clientShake = true;
-             }
-         }
-@@ -352,8 +350,7 @@ static void test_crypto_tls_session_x509(const void *opaque)
-             rv = qcrypto_tls_session_handshake(serverSess,
-                                                &error_abort);
-             g_assert(rv >= 0);
--            if (qcrypto_tls_session_get_handshake_status(serverSess) ==
--                QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-+            if (rv == QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-                 serverShake = true;
-             }
-         }
-@@ -361,8 +358,7 @@ static void test_crypto_tls_session_x509(const void *opaque)
-             rv = qcrypto_tls_session_handshake(clientSess,
-                                                &error_abort);
-             g_assert(rv >= 0);
--            if (qcrypto_tls_session_get_handshake_status(clientSess) ==
--                QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-+            if (rv == QCRYPTO_TLS_HANDSHAKE_COMPLETE) {
-                 clientShake = true;
-             }
-         }
+diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
+index b19229074a..7006328b2e 100644
+--- a/util/vhost-user-server.c
++++ b/util/vhost-user-server.c
+@@ -190,7 +190,7 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
+         .iov_len = vmsg->size,
+     };
+     if (vmsg->size) {
+-        rc = qio_channel_readv_all_eof(ioc, &iov_payload, 1, &local_err);
++        rc = qio_channel_readv_all_eof(ioc, &iov_payload, 1, 0, &local_err);
+         if (rc != 1) {
+             if (local_err) {
+                 error_report_err(local_err);
 -- 
 2.35.3
 
