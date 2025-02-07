@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC12A2C016
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787D7A2C01D
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:02:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgL9n-0006zC-ON; Fri, 07 Feb 2025 05:00:20 -0500
+	id 1tgLA0-0007C3-K2; Fri, 07 Feb 2025 05:00:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgL9h-0006vz-6a; Fri, 07 Feb 2025 05:00:13 -0500
+ id 1tgL9i-0006wi-0i; Fri, 07 Feb 2025 05:00:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgL9f-00025W-EK; Fri, 07 Feb 2025 05:00:12 -0500
+ id 1tgL9g-00025o-AW; Fri, 07 Feb 2025 05:00:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2BDBDE734B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2FD85E734C;
  Fri, 07 Feb 2025 12:59:18 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 959241B09CF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9994D1B09D0;
  Fri,  7 Feb 2025 12:59:59 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 86E9252D7F; Fri, 07 Feb 2025 12:59:59 +0300 (MSK)
+ id 8957652D81; Fri, 07 Feb 2025 12:59:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Xiaohui Li <xiaohli@redhat.com>, akihiko.odaki@daynix.com,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 47/49] net: Fix announce_self
-Date: Fri,  7 Feb 2025 12:59:49 +0300
-Message-Id: <20250207095956.2238705-6-mjt@tls.msk.ru>
+ akihiko.odaki@daynix.com, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 48/49] net/dump: Correctly compute Ethernet packet
+ offset
+Date: Fri,  7 Feb 2025 12:59:50 +0300
+Message-Id: <20250207095956.2238705-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250207102656@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250207102656@cover.tls.msk.ru>
@@ -62,22 +62,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-b9ad513e1876 ("net: Remove receive_raw()") adds an iovec entry
-in qemu_deliver_packet_iov() to add the virtio-net header
-in the data when QEMU_NET_PACKET_FLAG_RAW is set but forgets
-to increase the number of iovec entries in the array, so
-receive_iov() will only send the first entry (the virtio-net
-entry, full of 0) and no data. The packet will be discarded.
+When a packet is sent with QEMU_NET_PACKET_FLAG_RAW by QEMU it
+never includes virtio-net header even if qemu_get_vnet_hdr_len()
+is not 0, and filter-dump is not managing this case.
 
-The only user of QEMU_NET_PACKET_FLAG_RAW is announce_self.
-
-We can see the problem with tcpdump:
+The only user of QEMU_NET_PACKET_FLAG_RAW is announce_self,
+we can show the problem using it and tcpddump:
 
 - QEMU parameters:
 
   .. -monitor stdio \
      -netdev bridge,id=netdev0,br=virbr0 \
      -device virtio-net,mac=9a:2b:2c:2d:2e:2f,netdev=netdev0 \
+     -object filter-dump,netdev=netdev0,file=log.pcap,id=pcap0
 
 - HMP command:
 
@@ -85,42 +82,45 @@ We can see the problem with tcpdump:
 
 - TCP dump:
 
-  $ sudo tcpdump -nxi virbr0
+  $ tcpdump -nxr log.pcap
 
   without the fix:
 
-    <nothing>
+    08:00:06:04:00:03 > 2e:2f:80:35:00:01, ethertype Unknown (0x9a2b), length 50:
+         0x0000:  2c2d 2e2f 0000 0000 9a2b 2c2d 2e2f 0000
+         0x0010:  0000 0000 0000 0000 0000 0000 0000 0000
+         0x0020:  0000 0000
 
   with the fix:
 
-   ARP, Reverse Request who-is 9a:2b:2c:2d:2e:2f tell 9a:2b:2c:2d:2e:2f, length 46
-        0x0000:  0001 0800 0604 0003 9a2b 2c2d 2e2f 0000
-        0x0010:  0000 9a2b 2c2d 2e2f 0000 0000 0000 0000
-        0x0020:  0000 0000 0000 0000 0000 0000 0000
+    ARP, Reverse Request who-is 9a:2b:2c:2d:2e:2f tell 9a:2b:2c:2d:2e:2f, length 46
+         0x0000:  0001 0800 0604 0003 9a2b 2c2d 2e2f 0000
+         0x0010:  0000 9a2b 2c2d 2e2f 0000 0000 0000 0000
+         0x0020:  0000 0000 0000 0000 0000 0000 0000
 
-Reported-by: Xiaohui Li <xiaohli@redhat.com>
-Bug: https://issues.redhat.com/browse/RHEL-73891
-Fixes: b9ad513e1876 ("net: Remove receive_raw()")
+Fixes: 481c52320a26 ("net: Strip virtio-net header when dumping")
 Cc: akihiko.odaki@daynix.com
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 84dfdcbff33fff185528501be408c25c44499f32)
+(cherry picked from commit c6a1b591a68b4d7230d6c3f56965e18080d737e5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/net.c b/net/net.c
-index 7ef6885876..fefa701bb2 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -822,6 +822,7 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-         iov_copy[0].iov_len =  nc->vnet_hdr_len;
-         memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
-         iov = iov_copy;
-+        iovcnt++;
-     }
+diff --git a/net/dump.c b/net/dump.c
+index 956e34a123..42ab8d7716 100644
+--- a/net/dump.c
++++ b/net/dump.c
+@@ -155,7 +155,8 @@ static ssize_t filter_dump_receive_iov(NetFilterState *nf, NetClientState *sndr,
+ {
+     NetFilterDumpState *nfds = FILTER_DUMP(nf);
  
-     if (nc->info->receive_iov) {
+-    dump_receive_iov(&nfds->ds, iov, iovcnt, qemu_get_vnet_hdr_len(nf->netdev));
++    dump_receive_iov(&nfds->ds, iov, iovcnt, flags & QEMU_NET_PACKET_FLAG_RAW ?
++                     0 : qemu_get_vnet_hdr_len(nf->netdev));
+     return 0;
+ }
+ 
 -- 
 2.39.5
 
