@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3B4A2CEBB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 22:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC93A2CEC5
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 22:07:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgVZ7-0007Z3-2V; Fri, 07 Feb 2025 16:07:09 -0500
+	id 1tgVZ7-0007Ys-9S; Fri, 07 Feb 2025 16:07:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgVZ0-0007BU-Nj
+ id 1tgVZ1-0007Jl-PF
  for qemu-devel@nongnu.org; Fri, 07 Feb 2025 16:07:03 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgVYz-00022y-7C
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 16:07:02 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21f61b01630so11042745ad.1
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 13:07:00 -0800 (PST)
+ id 1tgVZ0-00023E-8u
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 16:07:03 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-21c2f1b610dso62649495ad.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 13:07:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738962420; x=1739567220; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738962421; x=1739567221; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/KwnHCfQIkLSuI5gCbIKhc6TbHv3lQ5OLotA3Bb1FOg=;
- b=tTcszQbiymLl49HQS9tEYc3GwkGRFqgAXF7r2M/7PFrTHzGC1Writw9H9JXtpaPlqf
- QGHAhzvyrg3uvYWfFG19i9pyMMJaV7hrR4Rvvtoag24oxYMAXfCWyJdZrESifDJfu7us
- etmrpDar4fS998rb55xtJuvIXfWJx4d8U6NX7CHQgRX9ens+9K+Ykguo3jvwvMHMLIv5
- ygAJ3Sci46VgvmXVeSL80ETLa1rEr9j26LpvVSFMadNw59+an1j9ZIvFYbwxOBkRY4W0
- oJVDK43o8kiPeZu2r8FPMSaLodtmUpcZK2CNrrVycsW1ZQSJxUN8P6HEJYJV0InaFIL7
- wuMg==
+ bh=83rDUEYq9wOvP0NwfgWL2G1APFDj5PaKxVull0vQqa0=;
+ b=Pr21zwnQUdSVo1NOM96+8vzsdmTieym6OJwyCUsYPBWf9bz4bpu2xhyG7M0sbQGPRg
+ 7WKKTYuEAmWE/iwRI/YrCxSDXVxsTNm9ZtHa6Kj7acGxyzB/N0SYnfAFLEPJc5cLXiej
+ TkaQnPSNLKUvXp5CMXWHFw0t0bTVu/30lo4aKP/2mc7Lb0f7xCfWMU/Eqjp71VkhhOmk
+ fyRAHFH4020MxaQkYvvGqk+cMinNNdUaJvMEzleKpx3YGPiDZA/dCVXIWmD3V2vRnAVG
+ kOFRVHneSXLtf+KWFBzKU1Xl9ckaBQlERTl7Jb2xmrgW8NhQmHcNKAb31HsLCUNmdm5M
+ rvOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738962420; x=1739567220;
+ d=1e100.net; s=20230601; t=1738962421; x=1739567221;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/KwnHCfQIkLSuI5gCbIKhc6TbHv3lQ5OLotA3Bb1FOg=;
- b=jexzx+KQv3JiTHMzf384dobDDTNhELoenquj7gOiJPlb2UzDfT903QjG6SXHwWHd3u
- nvb2IGiA3m1SVVo50J79F6M7X/cTmFaDeVcHZwaIlV7rQdnMb7W49mM/kHvXtlQnSWgp
- J96zwU6L9JBwK2mfacq+D/k3U1S8mvEvTbnxc+cyvXtqUGWzywunUnJoc2dOYlygZE2M
- u1wOrwLdEVRPLsNP3WJdZXJLkQG+SwVf/s2Dv1JWjNi9xhguuX+shm35WSeHrNrzLrnO
- Uw7+mkmDzsbI3+v+KvQDQj3EPC5DVVZKg/OO61I/paSpk0Xhp0UUZOd1YRONVfdzSnxA
- JITQ==
-X-Gm-Message-State: AOJu0YyY1N8E/L4jLQPJfTz3mPzrbtMxgbXOLFjlPqtp9APyv2pEUU+1
- 7FMSoJP21wNkKIm+u3vyJbNWjQKIShmuknGZFqz1hOnhNIeon4wDx0m4TIKxHnJSYHVkpotdK99
- 1
-X-Gm-Gg: ASbGncv94Hi7ogzFcSNXTPpsFvN11gEnecuID9eWKF8HYNzQEoAMnXPcEIDygqeurww
- uiUXF2D004NZ4JJ0sT4Oo2aSWQf+XbjDDpHZahVZAr7JlFyOhzs9uIGMsVrAOmEOiWJ25feHTw8
- mk19Sm7IQTN5nid3dFznhQAJnyME1+rDlIDo0XBcaC9KC6SnOQK/fqnp8tH1LAXzK8OthvPQVxs
- P9j0vvTwWxssBOBT1pM24q3/IRH86hYoIIU4InMH7Ubd2qHxGp9dkaCwevhy+t+uLA+EK7J2Mz1
- CO0NjAoWRaCF4p8PZu5+M57tmVwN7t1cLuHoRu4UjRVjXaU=
-X-Google-Smtp-Source: AGHT+IHAevrT7TY9yhFK2NZNLr20UqMQ7fJtLFsRoCuQq6YnJov1TZHuw6brOgYLRV02rraJX0hdvQ==
-X-Received: by 2002:a05:6a20:7f81:b0:1d8:c74d:1ca0 with SMTP id
- adf61e73a8af0-1edf35c14eamr12564788637.11.1738962419835; 
- Fri, 07 Feb 2025 13:06:59 -0800 (PST)
+ bh=83rDUEYq9wOvP0NwfgWL2G1APFDj5PaKxVull0vQqa0=;
+ b=VSOlhW4qw7idWP0tXqGLgJ7fadtyYPRpaCqIKHgYut3xDEA3YYadJby3GZ7zrWZ7l3
+ opyfblCr+GKh+G5xAX1y4wUW7YGYanEHQ362CcbepBtF/47QyRpKhtoIoyXKjotYv4iM
+ 9NDHAiRSfmgM9f03WUp3nA6eJ19ys4ZKnyrHzG6SGUA1k/DGzPHxaoPgFJu5aupkkNP6
+ JrCPb8eAP3W1+Zm7xX2JKQYuwtMYUFxXGHOyWBQW41wTszwDmQ3PYKoSxWYFZtQmgPMT
+ boWEXHp0gjL+/FQteiuxJSnUddeUFGwflNozbcGOK5yxHbGLJN2TTn1jYmyMY0CXoj2I
+ /T8g==
+X-Gm-Message-State: AOJu0Yy3dJZ1WxtloUuZCGylMgo2/RlUxPH4wYArF8aON56ExQ5QsAgw
+ /jmjGnRIcWF9TCe9TPM463rLsVyDNr9kM2J+Faoaa5MR7vxZpiEG4sHgXSpPSzvUvg1YrEOa5r/
+ l
+X-Gm-Gg: ASbGncu25VjPbW11JQzloB0qO2Bh3WS/tsHdTNK+j0RPahAMpUEgiiyh3I8JKNNSgeV
+ OZcdacAO83YmorAjfBng0xHQ1tGBtEVieKbRNoLja3Mfx2plD29MRCHKZCMt5r+Gp0ZzwYStK2S
+ oxK/eh8igaB9UoQsLvs8sTqywIXW6/hWL0nBVIPBWWWyX7drHh84sC7ee9mCUPTqi9IkeyzB4CI
+ 3exq378NC6ks9n7tMZs1MzkrhFnFGoBdT0PXl/pOR9Mumc4ctzjD7GTBkHZVPD/LwE8MQu4HqdY
+ zcBBAnqtdnWByV1TjKxi793bvdJcaTQa9Tk9vn/6tnSC+5U=
+X-Google-Smtp-Source: AGHT+IF4bu0UvG19okFVE0caRgxYPpmtLhkdcKRxGH13BPd0GhZq2gfGByba8qhsjqu+SFrXoPhksQ==
+X-Received: by 2002:a05:6a20:6f8b:b0:1e0:de01:4407 with SMTP id
+ adf61e73a8af0-1ee03b70c02mr9157991637.37.1738962420742; 
+ Fri, 07 Feb 2025 13:07:00 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-ad51af64c1dsm3539043a12.52.2025.02.07.13.06.58
+ 41be03b00d2f7-ad51af64c1dsm3539043a12.52.2025.02.07.13.07.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 13:06:58 -0800 (PST)
+ Fri, 07 Feb 2025 13:07:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mark.cave-ayland@ilande.co.uk, berrange@redhat.com,
  philmd@linaro.org, thuth@redhat.com
-Subject: [PATCH v4 2/9] meson: Disallow 64-bit on 32-bit KVM emulation
-Date: Fri,  7 Feb 2025 13:06:48 -0800
-Message-ID: <20250207210655.16717-3-richard.henderson@linaro.org>
+Subject: [PATCH v4 3/9] meson: Disallow 64-bit on 32-bit Xen emulation
+Date: Fri,  7 Feb 2025 13:06:49 -0800
+Message-ID: <20250207210655.16717-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250207210655.16717-1-richard.henderson@linaro.org>
 References: <20250207210655.16717-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,47 +105,30 @@ Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ meson.build | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index e50a103f8a..1af8aeb194 100644
+index 1af8aeb194..911955cfa8 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -277,21 +277,27 @@ else
-   host_arch = cpu
+@@ -304,9 +304,14 @@ else
  endif
+ accelerator_targets = { 'CONFIG_KVM': kvm_targets }
  
 -if cpu in ['x86', 'x86_64']
 +if cpu == 'x86'
-+  kvm_targets = ['i386-softmmu']
++  xen_targets = ['i386-softmmu']
 +elif cpu == 'x86_64'
-   kvm_targets = ['i386-softmmu', 'x86_64-softmmu']
- elif cpu == 'aarch64'
-   kvm_targets = ['aarch64-softmmu']
- elif cpu == 's390x'
-   kvm_targets = ['s390x-softmmu']
--elif cpu in ['ppc', 'ppc64']
-+elif cpu == 'ppc'
-+  kvm_targets = ['ppc-softmmu']
-+elif cpu == 'ppc64'
-   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
--elif cpu in ['mips', 'mips64']
-+elif cpu == 'mips'
-+  kvm_targets = ['mips-softmmu', 'mipsel-softmmu']
-+elif cpu == 'mips64'
-   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
--elif cpu in ['riscv32']
-+elif cpu == 'riscv32'
-   kvm_targets = ['riscv32-softmmu']
--elif cpu in ['riscv64']
-+elif cpu == 'riscv64'
-   kvm_targets = ['riscv64-softmmu']
--elif cpu in ['loongarch64']
-+elif cpu == 'loongarch64'
-   kvm_targets = ['loongarch64-softmmu']
+   xen_targets = ['i386-softmmu', 'x86_64-softmmu']
+-elif cpu in ['arm', 'aarch64']
++elif cpu == 'arm'
++  # i386 emulator provides xenpv machine type for multiple architectures
++  xen_targets = ['i386-softmmu']
++elif cpu == 'aarch64'
+   # i386 emulator provides xenpv machine type for multiple architectures
+   xen_targets = ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu']
  else
-   kvm_targets = []
 -- 
 2.43.0
 
