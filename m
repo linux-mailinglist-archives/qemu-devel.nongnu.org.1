@@ -2,82 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAECA2C83A
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9C6A2C839
 	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 17:03:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgQoF-0000Po-Bt; Fri, 07 Feb 2025 11:02:27 -0500
+	id 1tgQoP-0000TR-Si; Fri, 07 Feb 2025 11:02:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tgQo1-0000Ne-6c
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:02:23 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tgQnz-0007Bc-Du
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:02:12 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-544ff74be63so436462e87.0
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 08:02:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738944129; x=1739548929; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1ws/hCOjjsYOBqMg3NpBqu06i8dgOTgFvePzpBfs4tU=;
- b=UnKS3VD0nmSXFyZHklDFxRdM2X2aJ7eKVlsZcUoIYD4+SqO8hb2fFb+Am+iuPqm7Db
- 0dXnCEvLLs4MMY1RL8QnZCehodW3tYDpb/QRl8r5yeGoQMX9EkQT59xEL/iKcd06yc2s
- rQSLTawiPu6cneQoz+Q8VF5UclndeH8HLsrq+SOuJsfpIP1fMH/MF4vq6xcEh+VbsHD7
- SrIad0W69fPpRwL5ojh4NnYYYDw8RQXBjgGrtvB5oIlsXa/Y/8LeA/4n++ksztlnbE1W
- gma2PYJYC6/FTRXkDUyjsEAlk5tXvsBF07yLdTGfcC+/dI4X/QfZKPqwoPzudoHxCrDK
- vQxQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tgQoF-0000QH-Jg
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:02:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tgQoD-0007G4-M4
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:02:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738944144;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=nYmDv7aMaGjQaZMAV2X7qgjajETu0BznXuUVEYnnqMw=;
+ b=URTWMTb3cES4RtB/q2qQDtp7WAz44awO8McLzdcG5jPYLBJ4JM81AlWSHPRVNeIC+oepNC
+ uzDzievYm1frH4kgLEHQnb8QMbXKhODoYtbaODO1U+PGFNfxkKQi69UKN7grS5Sc28a/3/
+ nn4kY5TeKMg89jHyIkNsx8C3Ewj2wtA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-vGW0yefeO2CbRp_hVyvVNw-1; Fri, 07 Feb 2025 11:02:21 -0500
+X-MC-Unique: vGW0yefeO2CbRp_hVyvVNw-1
+X-Mimecast-MFC-AGG-ID: vGW0yefeO2CbRp_hVyvVNw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43631d8d9c7so11855005e9.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 08:02:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738944129; x=1739548929;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1ws/hCOjjsYOBqMg3NpBqu06i8dgOTgFvePzpBfs4tU=;
- b=Kdf1oEelkkgOU8lrboljSCLg1a95l4ed+GU78ARlRM5jN/5Xb0g8t3wd/RuDXznc25
- 8f+SaezqLB9WCWNA4+wsa9al7EmnBA1O4zoKV8e/Nt0cjUhRr8o5ptmpKBNLpTEVlkpE
- cXztC3vUrMSBfNIEyFbfDrULJJLeBQVm/0P4KpxuXZ9I9urUAKIa9ePt5mnrH/grS+c6
- YFCjN03KzpWvGbONAsk8Q6fuc1KoJZic0JuelbqqEb7hmw6fRpvV8Qjm9yRoJIXCAX6u
- hqxaXciBys+XKg2pZccaCrC5sZKNraL+HfpudaD9vK96TfdlI+gkn6fPz8BpG/oY8lON
- WfBg==
-X-Gm-Message-State: AOJu0YwYaBQXBLPbsT2JwWU3ZTcNWXfYA0PGNsggEkiQXHNlYqYQIoc9
- RrL4hT0ZyWz9PkI/DqftGw3oq+efhXjsM2cIS+NQFSUMt/cn1CcoW2I7UcwLjpRV/QQfyDDiKoV
- x1GnMPYmKyvWj7+uuukA9lRhdy55u0P2f
-X-Gm-Gg: ASbGnctXCjUkZPmk95CHv3/oxlbcFIyChFyJorqyYq5mgqlI3CtdhuuPLBuRtIFoqOR
- yqyZx1QsxiW4UEY9ynD3cqs/8l/daCcv5Ip1sSNtr674mtgBWyZnmByDjaimY/FBpvmH9C7c=
-X-Google-Smtp-Source: AGHT+IG8/rXq5lbeHqJetJfYLHaTfGMfbkwo8tcYRHcuoJamHmnKuAKWKbXcLFHd/oV9bwAPLX9s0s+PT0RVp4iCbGg=
-X-Received: by 2002:a05:6512:2388:b0:542:2934:71a7 with SMTP id
- 2adb3069b0e04-54414a9d01bmr1405363e87.15.1738944125184; Fri, 07 Feb 2025
- 08:02:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738944140; x=1739548940;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nYmDv7aMaGjQaZMAV2X7qgjajETu0BznXuUVEYnnqMw=;
+ b=DQV32SdGkMWpbrBTo0YX9K1JSNvq+WnXwtCToH2dENh4y+qPes+IRyRMCIgsWW4qqB
+ fldC1ATRPd8Jxl4jYm4W2AiaYIw4H+aJugq4vlFMPE19W6af7pQhmvv6wWOwqAhvM52O
+ W4jHbBqRlE0H/ThmFaz26/vJInw8pfJ/Sab5Xz9ASsW1H17xoQDtLxLZYhJhOO2k3ZnJ
+ RH4SMFPKxVdlND+w8Rea24qlG+H5g48BluHFprVF9VeY8XoEKzif+rkO3j5exNTT7K7Z
+ F6RQeko6KijopMyNc/T2ytOM9HK4/Lgykaxkmc2D1/sb6SeeAuDoUK7LvP1b+A7ciG1q
+ aQeg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCULZkB7Sspm/+MTY684KL8hEr8u1imUqibVfNsRHngA5DVj33mChnl4rgcojwdq4lvjIteRNFtkunAc@nongnu.org
+X-Gm-Message-State: AOJu0Yxg3utki58scmSeorrPg9eN444IyRK0LIQ2dtb9A+4yPr0ytiSV
+ ZxGwnmC98LrNx2PINqnLNEDmecV0oCpByHasUe0E9kWvV4KRYK04o26w6NIGJ1vQoqgAJqGZk0x
+ qfdXFQxTh4Rv4+VAKJug49Ol891IwimrGBicLcvcrFYuZcMJDmSYE
+X-Gm-Gg: ASbGnctakXWahoeEvy9R/F+B7Ls6baa0TsaHsZx0LBD8W6/d9uKfu93POvywH5OYkMP
+ C7rnfsrJHMlsdnPVmabh2VJYqNq6sLYUv07v+Lm6XCJ3j2UP2G5LSYBlOvhWGjMeSwZd7ehSbR9
+ Ri+Rmh0bg4nQpuwbJ99+EjOMYRsvJiry4glJvXvFNU8VL2DvU98k75+pM4X2otWgLV/1UTxsQ5l
+ pcnFz7J2x420W4lPBOJ+EuGCHJVcWrIyP6T3c/rXb2KB+5bOPTkrPQS4IBe7//OKoKxQcjUBqra
+ ZylzuLyXOxScyaaVyIzTbgq/ExZ5OpgDq2K3
+X-Received: by 2002:a05:600c:198a:b0:436:1af3:5b13 with SMTP id
+ 5b1f17b1804b1-43912d49c3amr65700135e9.15.1738944140036; 
+ Fri, 07 Feb 2025 08:02:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPNKYqpqSev2PKeajI3uh5KtnlpQGvb1jhoV/TfPJa8J4oXLNMORLSS+7dvgrHtgXKIkmfJQ==
+X-Received: by 2002:a05:600c:198a:b0:436:1af3:5b13 with SMTP id
+ 5b1f17b1804b1-43912d49c3amr65699565e9.15.1738944139545; 
+ Fri, 07 Feb 2025 08:02:19 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-48-132.web.vodafone.de.
+ [109.42.48.132]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4391da9648dsm61317795e9.7.2025.02.07.08.02.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Feb 2025 08:02:18 -0800 (PST)
+Message-ID: <75f73a61-b89b-4c17-b72f-35a027049d5e@redhat.com>
+Date: Fri, 7 Feb 2025 17:02:16 +0100
 MIME-Version: 1.0
-References: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
- <74d703f3-b2c4-416a-805f-61859a5a4e70@gmx.de>
- <CAJSP0QWfaW0Nk2hdAWyT7kr9bOY6FNC3FXMqsjVfzONfU5cU0g@mail.gmail.com>
- <a1bee9ff-f621-42c6-8ef8-c52432d735e7@gmx.de>
-In-Reply-To: <a1bee9ff-f621-42c6-8ef8-c52432d735e7@gmx.de>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 7 Feb 2025 11:01:53 -0500
-X-Gm-Features: AWEUYZkgrcKF11WT8U0AaHTctcUQ-FF8IU1ZidhCacSVbWiUqi3yI39U0QLWbjs
-Message-ID: <CAJSP0QU+NCDJhajgzotF_c8pMB_bxxpVwbvDpJjm3UasFApNSQ@mail.gmail.com>
-Subject: Re: Call for GSoC internship project ideas
-To: Helge Deller <deller@gmx.de>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=stefanha@gmail.com; helo=mail-lf1-x129.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/17] tests/qtest: don't attempt to clock_step while
+ waiting for virtio ISR
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
+ qemu-arm@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Kyle Evans <kevans@freebsd.org>, Alistair Francis
+ <alistair.francis@wdc.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Laurent Vivier <laurent@vivier.eu>,
+ Riku Voipio <riku.voipio@iki.fi>, Harsh Prateek Bora
+ <harshpb@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Alexandre Iooss <erdnaxe@crans.org>, Laurent Vivier <lvivier@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Warner Losh
+ <imp@bsdimp.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
+ qemu-riscv@nongnu.org
+References: <20250207153112.3939799-1-alex.bennee@linaro.org>
+ <20250207153112.3939799-3-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250207153112.3939799-3-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,40 +168,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 7, 2025 at 10:34=E2=80=AFAM Helge Deller <deller@gmx.de> wrote:
->
-> On 2/7/25 15:47, Stefan Hajnoczi wrote:
-> > On Fri, Feb 7, 2025 at 9:39=E2=80=AFAM Helge Deller <deller@gmx.de> wro=
-te:
-> >>
-> >> Hi Stefan,
-> >>
-> >> On 1/28/25 17:16, Stefan Hajnoczi wrote:
-> >>> How to propose your idea
-> >>> ------------------------------
-> >>> Reply to this email with the following project idea template filled i=
-n:
-> >>
-> >> Would something like this be acceptable?
-> >
-> > Yes, it would be great to have an emulation project idea like this!
-> >
-> > Please choose exactly which device you'd like them to implement.
-> > Interns may not be knowledgeable in the field yet and you actually
-> > help by setting limitations.
-> >
-> > Link to the specific device's datasheet, existing open source driver
-> > example, internal QEMU APIs needed to implement this type of device,
-> > etc so that it's easy for an applicant to investigate the idea and
-> > decide whether or not to apply.
->
-> Ok, here is an updated text:
+On 07/02/2025 16.30, Alex Bennée wrote:
+> This replicates the changes from 92cb8f8bf6 (tests/qtest: remove
+> clock_steps from virtio tests) as there are no timers in the virtio
+> code. We still busy wait and timeout though.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> 
+> ---
+> v2
+>    - fix trailing space
+> ---
+>   tests/qtest/libqos/virtio-pci-modern.c | 6 ++----
+>   tests/qtest/libqos/virtio-pci.c        | 6 ++----
+>   2 files changed, 4 insertions(+), 8 deletions(-)
 
-Thanks, I have added it to the project ideas list with some edits:
-https://wiki.qemu.org/Google_Summer_of_Code_2025#Implement_LASI_network_car=
-d_and/or_NCR_710_SCSI_controller_device_models
+I wonder whether a usleep(10000) in the loop might help to avoid burning too 
+much CPU time in there?
 
-Feel free to update the project description on the wiki!
+Anyway,
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Stefan
 
