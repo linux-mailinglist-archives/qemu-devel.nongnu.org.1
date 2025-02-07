@@ -2,46 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6402A2C082
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7653AA2C0B1
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:36:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLUi-0008GD-T2; Fri, 07 Feb 2025 05:21:57 -0500
+	id 1tgLiu-0004ho-Vr; Fri, 07 Feb 2025 05:36:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUe-0008Bm-SJ; Fri, 07 Feb 2025 05:21:52 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tgLis-0004hI-Qu
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:36:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tgLUc-0006L2-NQ; Fri, 07 Feb 2025 05:21:52 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B0676E737E;
- Fri, 07 Feb 2025 13:20:56 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2BA391B0A70;
- Fri,  7 Feb 2025 13:21:38 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 1B47A52D91; Fri, 07 Feb 2025 13:21:38 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tgLiq-0003uE-NY
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:36:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738924591;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=y7qS0yOzgYwl5t6BKbxFNe0TkmyofLDnUYYtoUyHCrI=;
+ b=FGrszdvPHAxn33641IGLVoK2g4Y0Gyd11z1RX0bQwH21tQK8lGnE69/0vvKwCGupsnsJkM
+ OOFbBZn6+7f2q0h7rTyjthBRUyRZD9t2LCTFEL7n0M2J1vcGmyFrUEuB5EWMaNgVT4n7Yu
+ 4cJ3XdHRS37bpz0LzOEEmg7qi4UKS3k=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-z-6YxkNBPwi1zL4MsOCWSA-1; Fri, 07 Feb 2025 05:28:07 -0500
+X-MC-Unique: z-6YxkNBPwi1zL4MsOCWSA-1
+X-Mimecast-MFC-AGG-ID: z-6YxkNBPwi1zL4MsOCWSA
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ab6eecc3221so243632866b.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:28:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738924085; x=1739528885;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y7qS0yOzgYwl5t6BKbxFNe0TkmyofLDnUYYtoUyHCrI=;
+ b=maoRxkuyew8hoo95dJVj/9lAK+AxHILFEAbotHSicDvll7sU87eLfoIPd2CSBYs5yG
+ LsbpGlHG/i3vlz5b1dYdUAa7tCQ68ei3vTXiR5sG8ki6co/mMGTGwIznJWjPmOeNzGKW
+ QokVTZ3u3k8cNTNGtd1pwjyVjD00wd15Rw/lb1rTGW8cRcIn9Y3K83n+yAMqly5ayer5
+ ePFBKoA3AU1v/SNYN7S2SagENoHqQ+OC8WboY4vbeZ2Bm+dTV+fQsSZUgmPn0G2OBLVO
+ kiLKsYY8wOHRa2PUrdz9CgaKAeR07qF9BeqtXgzKmE4hJQ2xDr8VMjj+RGAHd69l8epz
+ o0pQ==
+X-Gm-Message-State: AOJu0Yz5VYHuw/3V5XZE13/S7dYStZXLpVKPyRppM1KCpJIGkHBffKRx
+ Pld5zkX2GpwhcLE+mkQawvmioFo6iZ1LeQ+5eXsZv+yhx1/JfbfDXypHR0pLG2FyH3j7mrfuHNR
+ UlOQJK+PNVZhMb7bJhc9kQgBV/zPIOAIKY1I7a99dUk/3uw9KlF92c53sNKoLa58L11pcYSH22g
+ 1vHvx5X1llD14x4VClYGTjwVF/KW8EKyD6qKS2J6g=
+X-Gm-Gg: ASbGncsOu3jZwhVTLjbowlGUKl9WNs0mWQ2AR+S0d4spfoOPiK42mcFufyk8Tm4/riK
+ UKyOEtv8Yzrsf9FeZ0TJm4OxHKYcozBqtoxI+RRl6SgpC9bv0BP9KeekGF7/d8eefwfNrLqKIXy
+ BufZXytpnVc252/clxF1SyFIKekt7pLG01PJvW03ydNrrqAQKqTakJn+EldAXro17vZfVkjLgU8
+ Ky5hGkORCC3PVS//pJJJcTsaS/ExGZWE8Laf/OuL7dDpfMdqIOtyyadvZX0rPDUVanG5kmYhc3i
+ 6Pf2aA==
+X-Received: by 2002:a17:906:7954:b0:ab6:f59f:5427 with SMTP id
+ a640c23a62f3a-ab789a6ae5cmr302419766b.11.1738924085554; 
+ Fri, 07 Feb 2025 02:28:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPn0zH+3LgThwVT7FN6/bbljybDhSY6TpmLGo/kGxNzxbMUG3emiozfvKh0yHH8Qxk2oTlPA==
+X-Received: by 2002:a17:906:7954:b0:ab6:f59f:5427 with SMTP id
+ a640c23a62f3a-ab789a6ae5cmr302416366b.11.1738924085004; 
+ Fri, 07 Feb 2025 02:28:05 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.97.55])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab7917d10d4sm30254566b.105.2025.02.07.02.28.03
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Feb 2025 02:28:03 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 51/51] tap: Remove qemu_using_vnet_hdr()
-Date: Fri,  7 Feb 2025 13:21:32 +0300
-Message-Id: <20250207102136.2239826-6-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
-References: <qemu-stable-8.2.9-20250207102509@cover.tls.msk.ru>
+Subject: [PULL 0/7] Rust, TCG, x86 patches for 2025-02-07
+Date: Fri,  7 Feb 2025 11:27:54 +0100
+Message-ID: <20250207102802.2445596-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -59,262 +102,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+The following changes since commit 131c58469f6fb68c89b38fee6aba8bbb20c7f4bf:
 
-Since qemu_set_vnet_hdr_len() is always called when
-qemu_using_vnet_hdr() is called, we can merge them and save some code.
+  rust: add --rust-target option for bindgen (2025-02-06 13:51:46 -0500)
 
-For consistency, express that the virtio-net header is not in use by
-returning 0 with qemu_get_vnet_hdr_len() instead of having a dedicated
-function, qemu_get_using_vnet_hdr().
+are available in the Git repository at:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 4b52d63249a508dd927222ffac1a868d38681fc5)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
-index e41a6c1038..4edb58858e 100644
---- a/hw/net/e1000e.c
-+++ b/hw/net/e1000e.c
-@@ -352,7 +352,6 @@ e1000e_init_net_peer(E1000EState *s, PCIDevice *pci_dev, uint8_t *macaddr)
-     for (i = 0; i < s->conf.peers.queues; i++) {
-         nc = qemu_get_subqueue(s->nic, i);
-         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
--        qemu_using_vnet_hdr(nc->peer, true);
-     }
- }
- 
-diff --git a/hw/net/igb.c b/hw/net/igb.c
-index 8089acfea4..7cebbc276b 100644
---- a/hw/net/igb.c
-+++ b/hw/net/igb.c
-@@ -349,7 +349,6 @@ igb_init_net_peer(IGBState *s, PCIDevice *pci_dev, uint8_t *macaddr)
-     for (i = 0; i < s->conf.peers.queues; i++) {
-         nc = qemu_get_subqueue(s->nic, i);
-         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
--        qemu_using_vnet_hdr(nc->peer, true);
-     }
- }
- 
-diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
-index b7b1de816d..1f79b82b77 100644
---- a/hw/net/net_tx_pkt.c
-+++ b/hw/net/net_tx_pkt.c
-@@ -582,7 +582,7 @@ static void net_tx_pkt_sendv(
- {
-     NetClientState *nc = opaque;
- 
--    if (qemu_get_using_vnet_hdr(nc->peer)) {
-+    if (qemu_get_vnet_hdr_len(nc->peer)) {
-         qemu_sendv_packet(nc, virt_iov, virt_iov_cnt);
-     } else {
-         qemu_sendv_packet(nc, iov, iov_cnt);
-@@ -812,7 +812,7 @@ static bool net_tx_pkt_do_sw_fragmentation(struct NetTxPkt *pkt,
- 
- bool net_tx_pkt_send(struct NetTxPkt *pkt, NetClientState *nc)
- {
--    bool offload = qemu_get_using_vnet_hdr(nc->peer);
-+    bool offload = qemu_get_vnet_hdr_len(nc->peer);
-     return net_tx_pkt_send_custom(pkt, offload, net_tx_pkt_sendv, nc);
- }
- 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 534faa1b88..405e920b28 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3751,9 +3751,6 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
- 
-     peer_test_vnet_hdr(n);
-     if (peer_has_vnet_hdr(n)) {
--        for (i = 0; i < n->max_queue_pairs; i++) {
--            qemu_using_vnet_hdr(qemu_get_subqueue(n->nic, i)->peer, true);
--        }
-         n->host_hdr_len = sizeof(struct virtio_net_hdr);
-     } else {
-         n->host_hdr_len = 0;
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index 6fb4102d03..81ab8ada55 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -2091,8 +2091,6 @@ static void vmxnet3_net_init(VMXNET3State *s)
-     if (s->peer_has_vhdr) {
-         qemu_set_vnet_hdr_len(qemu_get_queue(s->nic)->peer,
-             sizeof(struct virtio_net_hdr));
--
--        qemu_using_vnet_hdr(qemu_get_queue(s->nic)->peer, 1);
-     }
- 
-     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
-diff --git a/include/net/net.h b/include/net/net.h
-index ffbd2c8d56..374a827190 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -57,8 +57,6 @@ typedef bool (HasUfo)(NetClientState *);
- typedef bool (HasUso)(NetClientState *);
- typedef bool (HasVnetHdr)(NetClientState *);
- typedef bool (HasVnetHdrLen)(NetClientState *, int);
--typedef bool (GetUsingVnetHdr)(NetClientState *);
--typedef void (UsingVnetHdr)(NetClientState *, bool);
- typedef void (SetOffload)(NetClientState *, int, int, int, int, int, int, int);
- typedef int (GetVnetHdrLen)(NetClientState *);
- typedef void (SetVnetHdrLen)(NetClientState *, int);
-@@ -88,10 +86,7 @@ typedef struct NetClientInfo {
-     HasUso *has_uso;
-     HasVnetHdr *has_vnet_hdr;
-     HasVnetHdrLen *has_vnet_hdr_len;
--    GetUsingVnetHdr *get_using_vnet_hdr;
--    UsingVnetHdr *using_vnet_hdr;
-     SetOffload *set_offload;
--    GetVnetHdrLen *get_vnet_hdr_len;
-     SetVnetHdrLen *set_vnet_hdr_len;
-     SetVnetLE *set_vnet_le;
-     SetVnetBE *set_vnet_be;
-@@ -194,8 +189,6 @@ bool qemu_has_ufo(NetClientState *nc);
- bool qemu_has_uso(NetClientState *nc);
- bool qemu_has_vnet_hdr(NetClientState *nc);
- bool qemu_has_vnet_hdr_len(NetClientState *nc, int len);
--bool qemu_get_using_vnet_hdr(NetClientState *nc);
--void qemu_using_vnet_hdr(NetClientState *nc, bool enable);
- void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
-                       int ecn, int ufo, int uso4, int uso6);
- int qemu_get_vnet_hdr_len(NetClientState *nc);
-diff --git a/net/dump.c b/net/dump.c
-index 16073f2458..956e34a123 100644
---- a/net/dump.c
-+++ b/net/dump.c
-@@ -154,10 +154,8 @@ static ssize_t filter_dump_receive_iov(NetFilterState *nf, NetClientState *sndr,
-                                        int iovcnt, NetPacketSent *sent_cb)
- {
-     NetFilterDumpState *nfds = FILTER_DUMP(nf);
--    int offset = qemu_get_using_vnet_hdr(nf->netdev) ?
--                 qemu_get_vnet_hdr_len(nf->netdev) : 0;
- 
--    dump_receive_iov(&nfds->ds, iov, iovcnt, offset);
-+    dump_receive_iov(&nfds->ds, iov, iovcnt, qemu_get_vnet_hdr_len(nf->netdev));
-     return 0;
- }
- 
-diff --git a/net/net.c b/net/net.c
-index 0520bc1681..98ed0280d3 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -524,24 +524,6 @@ bool qemu_has_vnet_hdr_len(NetClientState *nc, int len)
-     return nc->info->has_vnet_hdr_len(nc, len);
- }
- 
--bool qemu_get_using_vnet_hdr(NetClientState *nc)
--{
--    if (!nc || !nc->info->get_using_vnet_hdr) {
--        return false;
--    }
--
--    return nc->info->get_using_vnet_hdr(nc);
--}
--
--void qemu_using_vnet_hdr(NetClientState *nc, bool enable)
--{
--    if (!nc || !nc->info->using_vnet_hdr) {
--        return;
--    }
--
--    nc->info->using_vnet_hdr(nc, enable);
--}
--
- void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
-                           int ecn, int ufo, int uso4, int uso6)
- {
-@@ -554,11 +536,7 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
- 
- int qemu_get_vnet_hdr_len(NetClientState *nc)
- {
--    if (!nc || !nc->info->get_vnet_hdr_len) {
--        return 0;
--    }
--
--    return nc->info->get_vnet_hdr_len(nc);
-+    return nc->vnet_hdr_len;
- }
- 
- void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
-diff --git a/net/netmap.c b/net/netmap.c
-index 241b27c8e9..297510e190 100644
---- a/net/netmap.c
-+++ b/net/netmap.c
-@@ -351,10 +351,6 @@ static bool netmap_has_vnet_hdr(NetClientState *nc)
-     return netmap_has_vnet_hdr_len(nc, sizeof(struct virtio_net_hdr));
- }
- 
--static void netmap_using_vnet_hdr(NetClientState *nc, bool enable)
--{
--}
--
- static void netmap_set_vnet_hdr_len(NetClientState *nc, int len)
- {
-     NetmapState *s = DO_UPCAST(NetmapState, nc, nc);
-@@ -393,7 +389,6 @@ static NetClientInfo net_netmap_info = {
-     .has_ufo = netmap_has_vnet_hdr,
-     .has_vnet_hdr = netmap_has_vnet_hdr,
-     .has_vnet_hdr_len = netmap_has_vnet_hdr_len,
--    .using_vnet_hdr = netmap_using_vnet_hdr,
-     .set_offload = netmap_set_offload,
-     .set_vnet_hdr_len = netmap_set_vnet_hdr_len,
- };
-diff --git a/net/tap.c b/net/tap.c
-index c23d0323c2..e080a9b969 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -266,13 +266,6 @@ static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
-     return !!tap_probe_vnet_hdr_len(s->fd, len);
- }
- 
--static int tap_get_vnet_hdr_len(NetClientState *nc)
--{
--    TAPState *s = DO_UPCAST(TAPState, nc, nc);
--
--    return s->host_vnet_hdr_len;
--}
--
- static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
- {
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
-@@ -284,23 +277,7 @@ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
- 
-     tap_fd_set_vnet_hdr_len(s->fd, len);
-     s->host_vnet_hdr_len = len;
--}
--
--static bool tap_get_using_vnet_hdr(NetClientState *nc)
--{
--    TAPState *s = DO_UPCAST(TAPState, nc, nc);
--
--    return s->using_vnet_hdr;
--}
--
--static void tap_using_vnet_hdr(NetClientState *nc, bool using_vnet_hdr)
--{
--    TAPState *s = DO_UPCAST(TAPState, nc, nc);
--
--    assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
--    assert(!!s->host_vnet_hdr_len == using_vnet_hdr);
--
--    s->using_vnet_hdr = using_vnet_hdr;
-+    s->using_vnet_hdr = true;
- }
- 
- static int tap_set_vnet_le(NetClientState *nc, bool is_le)
-@@ -398,10 +375,7 @@ static NetClientInfo net_tap_info = {
-     .has_uso = tap_has_uso,
-     .has_vnet_hdr = tap_has_vnet_hdr,
-     .has_vnet_hdr_len = tap_has_vnet_hdr_len,
--    .get_using_vnet_hdr = tap_get_using_vnet_hdr,
--    .using_vnet_hdr = tap_using_vnet_hdr,
-     .set_offload = tap_set_offload,
--    .get_vnet_hdr_len = tap_get_vnet_hdr_len,
-     .set_vnet_hdr_len = tap_set_vnet_hdr_len,
-     .set_vnet_le = tap_set_vnet_le,
-     .set_vnet_be = tap_set_vnet_be,
+for you to fetch changes up to 07f858bd1bf7cafc201789d7e379b2e95dc76946:
+
+  tcg/optimize: optimize TSTNE using smask and zmask (2025-02-07 11:16:39 +0100)
+
+----------------------------------------------------------------
+* tcg/optimize: optimize TSTNE using smask and zmask
+* target/i386: fix exceptions for 0 * Inf + QNaN
+* rust: cleanups for configuration
+* rust: add developer docs
+
+----------------------------------------------------------------
+Paolo Bonzini (5):
+      rust: remove unnecessary Cargo.toml metadata
+      rust: include rust_version in Cargo.toml
+      rust: add docs
+      rust: add clippy configuration file
+      tcg/optimize: optimize TSTNE using smask and zmask
+
+Peter Maydell (2):
+      target/i386: Do not raise Invalid for 0 * Inf + QNaN
+      tests/tcg/x86_64/fma: Test some x86 fused-multiply-add cases
+
+ docs/devel/index-process.rst           |   1 +
+ docs/devel/rust.rst                    | 425 +++++++++++++++++++++++++++++++++
+ include/fpu/softfloat-types.h          |  16 +-
+ target/i386/tcg/fpu_helper.c           |   5 +-
+ tcg/optimize.c                         |  13 +-
+ tests/tcg/x86_64/fma.c                 | 109 +++++++++
+ fpu/softfloat-parts.c.inc              |   5 +-
+ rust/clippy.toml                       |   2 +
+ rust/hw/char/pl011/Cargo.toml          |   4 +-
+ rust/hw/char/pl011/README.md           |  31 ---
+ rust/hw/char/pl011/src/device_class.rs |   1 -
+ rust/hw/char/pl011/src/lib.rs          |  14 +-
+ rust/qemu-api-macros/Cargo.toml        |   4 +-
+ rust/qemu-api-macros/README.md         |   1 -
+ rust/qemu-api/Cargo.toml               |   1 +
+ tests/lcitool/libvirt-ci               |   2 +-
+ tests/tcg/x86_64/Makefile.target       |   1 +
+ 17 files changed, 576 insertions(+), 59 deletions(-)
+ create mode 100644 docs/devel/rust.rst
+ create mode 100644 tests/tcg/x86_64/fma.c
+ create mode 100644 rust/clippy.toml
+ delete mode 100644 rust/hw/char/pl011/README.md
+ delete mode 100644 rust/qemu-api-macros/README.md
 -- 
-2.39.5
+2.48.1
 
 
