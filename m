@@ -2,57 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9259A2C00A
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 10:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D4FA2C000
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 10:55:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgL87-0003pJ-Nr; Fri, 07 Feb 2025 04:58:35 -0500
+	id 1tgL48-0001dR-BP; Fri, 07 Feb 2025 04:54:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
- id 1tgL84-0003jY-Ub
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:33 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tgL43-0001c5-Lt
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:54:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com>)
- id 1tgL83-0001Is-7n
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:58:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=D9wDRyQBxJlr5I2gWNfNbciP1wRvnJLh7g260qArd8s=; b=hlXCu
- Exypre/JsL9xnr5yzllWX7zPFkBwGl3BijuZhTHAUw7yXrbnQb/tvE+cT043D5ABsUn+k9BBrEr5f
- DyFaoFmqgcLywqU/miNb/NGc5FREsq0WSy+OJFvXZlv0Ea6XZpd/Muy943bSbLPlqNknwhYmvRuZu
- qw9bPQI+K3oEtdSZHy8uSs3sSNtNHXkewY1uxJ81CQKB6BkBmVHpMwl1eoQYeR73yjE/gcz/bhEb9
- TCEAx/574362CYdtAHIODwqomiP3GecfVzHhwencUQMjs1o9OfabtGY09VjqcxYXPWDNosszR5ayW
- e8spUcorRQGjSvjyYFasQfZQNUeQxz985Ix+ljcdvl7bntuDvw0lAmo1cl/d0SHj6n2I2kOGy6pAS
- qKaWohfvFS7im8KoJn36Ol6UVqGZn6Gyax7Z+S6TnIi1jEefbHs4Bs95r9q8wPb0g4iIhjQzga3vv
- 4RIvSMjdAOSrQ/zLTk0Tq5SJkkCtXacozl9Oe3Fyuw5OmJrY0kYC2g+zwNICsE9Whf6c2bpO4Dyq7
- 4KVUuNfjmATpr4p6A+wt6ca2U3KHRegS1IldeabvaCoiJiB05d8G3lX7DdNc9q8qX9QMG8sFJQuZ5
- tKirs6GzpTT+imactg63fgKCyYnvkT6lbTyB7l07IPN4eoKt8lUX57IrDlsk6g=;
-Message-Id: <0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4.1738921999.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1738921999.git.qemu_oss@crudebyte.com>
-References: <cover.1738921999.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Fri, 07 Feb 2025 10:53:19 +0100
-Subject: [PULL v2 1/4] 9pfs: improve v9fs_walk() tracing
-To: qemu-devel@nongnu.org,
-    Peter Maydell <peter.maydell@linaro.org>
-Cc: Greg Kurz <groug@kaod.org>,
-    Stefan Hajnoczi <stefanha@redhat.com>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=0ad7cb925edff3f14bd47fdb7ef3c0b6186960d4@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tgL41-00080d-Q2
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 04:54:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738922059;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=14N4LN9FPiVuAo2srZND+rufrzAZ5UTPmrbsIu/NbzQ=;
+ b=IWYD1KxjCm5FEl2tLYpvE+Eh+umoSTfNoRgh1rEDYJ+63TmYzKL0rpzxeJcQz1kIGzldx0
+ KHLmmNcnvalbbXxktl5bjuOd0fhWMs0ClPmx9uXuCWn5I4Xkp+zzsPjKX460f7qRJ9Y2wn
+ lnRPjef19h/SSuoAZgDPTiHNy1KvMvk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-ARc_3FHiMfK1Qj6N7h6oKw-1; Fri, 07 Feb 2025 04:54:17 -0500
+X-MC-Unique: ARc_3FHiMfK1Qj6N7h6oKw-1
+X-Mimecast-MFC-AGG-ID: ARc_3FHiMfK1Qj6N7h6oKw
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38dc32f753dso572621f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 01:54:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738922056; x=1739526856;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=14N4LN9FPiVuAo2srZND+rufrzAZ5UTPmrbsIu/NbzQ=;
+ b=SxDe2XhfGds0CMQYOu0kxdTMs2jR5undCz+VK/4fpsnaTUb2Osqt8ubcKOr+toc24K
+ SMx2jldCjOQmvn7Qk4txjma+ml5m8hXZhFP1llNDNQH2Pu/AwwF/mJ+tlRf4tYSPE7FM
+ zytiJ7y2STV6mfe3eNjV3oqX8kRfPTS36DYGP940aNchZk/4MAiNogFJApP3hXqRbhbg
+ sBLIJWiuYnl1ID0+6gMkrZPiwU3DtSRqsOh4X3icy2tAvWRKMheEAn5j6nGCG4taVwP0
+ E32MY0UiHdGiFPfokeXXGWcstoCQvCKCtFf5cr9Y1+loAb0KwrT9pvZxpd6CkqQpdsbI
+ Sk0A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUb3Dy/trTdM89nc67/zWJGukEF1hUb86zFYsp/XuzfDAmyI/0qDQ2G2Ag0mmezQniewh9qhlH9f+N2@nongnu.org
+X-Gm-Message-State: AOJu0YySGqyhqiFpqEbyY5Ou0H79k9XXkN1EyZXlOLkLZHA6XycB9BYP
+ DbKHWhQzfPBy0tnTCUThU/FIzFuRBfU+ppWuxUHuxoQogliDqcKXc57I/YYz0Mva1ILJ5Z6vdUI
+ U4tjnUOwGeOo0IhdMnq7yFR5q8dvaqLrbyP0VnLvY3oYynBnZkSrjAP0FIkhtupH5HsPZgT1jKG
+ qtz/7X07NxXZydZ+04yussLdtCBxw=
+X-Gm-Gg: ASbGncs6TBd6fn8Rbni7v6imE773t3qZ5nm1ektkpxHaExwTmvnQ3i++1tPMCH2sKfP
+ 8R/L8SfgiadDMlQ+AP+F9BkcH/VxP8D34kSn76zhxMk5m7Bw692gd0aYufLZU
+X-Received: by 2002:a5d:5f48:0:b0:38d:b409:7d46 with SMTP id
+ ffacd0b85a97d-38dc959f9fbmr1778548f8f.48.1738922056335; 
+ Fri, 07 Feb 2025 01:54:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGl5OE8FSyqQJ2lqJo4WnAhWZgVl6JVKHTSxceTb5ID0uMEAc47pJhtaMTmfVKL+KZTlG+LUA80I+F/Rmz6QRI=
+X-Received: by 2002:a5d:5f48:0:b0:38d:b409:7d46 with SMTP id
+ ffacd0b85a97d-38dc959f9fbmr1778530f8f.48.1738922055978; Fri, 07 Feb 2025
+ 01:54:15 -0800 (PST)
+MIME-Version: 1.0
+References: <20250125125137.1223277-1-zhao1.liu@intel.com>
+ <20250125125137.1223277-5-zhao1.liu@intel.com>
+ <5a19e7d2-9d69-45fe-812f-84145229876f@redhat.com> <Z6XHzXwoIklPZQ/I@intel.com>
+In-Reply-To: <Z6XHzXwoIklPZQ/I@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 7 Feb 2025 10:54:04 +0100
+X-Gm-Features: AWEUYZkpMUjEgdAOeT7C0ODn4XbHSMnbIytTWsCaZe5o4KIf8kL9ABrIgpKg3YU
+Message-ID: <CABgObfYathYPF-KWrZv+33+iEA_j=ee7eJbJmzA5F2rpY-ktqw@mail.gmail.com>
+Subject: Re: [PATCH 04/10] rust: add bindings for gpio_{in|out} initialization
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000706c23062d8a57cd"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,134 +109,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'Twalk' is the most important request type in the 9p protocol to look out
-for when debugging 9p communication. That's because it is the only part
-of the 9p protocol which actually deals with human-readable path names,
-whereas all other 9p request types work on numeric file IDs (FIDs) only.
+--000000000000706c23062d8a57cd
+Content-Type: text/plain; charset="UTF-8"
 
-Improve tracing of 'Twalk' requests, e.g. let's say client wanted to walk
-to "/home/bob/src", then improve trace output from:
+Il ven 7 feb 2025, 09:24 Zhao Liu <zhao1.liu@intel.com> ha scritto:
 
-  v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames 3
+> > Please add "let _: () = F::ASSERT_IS_SOME;", which is added by the
+> > qdev_init_clock_in() patch.
+> >
+>
+> Okay.
+>
+> I would add `assert!(F::is_some());` at the beginning of init_gpio_in().
+>
 
-to:
+Use the "let" so that it's caught at compile time.
 
-  v9fs_walk tag=0 id=110 fid=0 newfid=1 nwnames=3 wnames={home, bob, src}
+There's a difference with origianl C version:
+>
+> In C side, qdev_get_gpio_in() family could accept a NULL handler, but
+> there's no such case in current QEMU:
+>
+> * qdev_get_gpio_in
+> * qdev_init_gpio_in_named
+> * qdev_init_gpio_in_named_with_opaque
+>
+> And from code logic view, creating an input GPIO line but doing nothing
+> on input, sounds also unusual.
+>
 
-To achieve this, add a new helper function trace_v9fs_walk_wnames() which
-converts the received V9fsString array of individual path elements into a
-comma-separated string presentation for being passed to the tracing system.
-As this conversion is somewhat expensive, this conversion function is only
-called if tracing of event 'v9fs_walk' is currently enabled.
+Wouldn't it then crash in qemu_set_irq?
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <E1tJamT-007Cqk-9E@kylie.crudebyte.com>
----
- hw/9pfs/9p.c         | 36 +++++++++++++++++++++++++++++++-----
- hw/9pfs/trace-events |  2 +-
- 2 files changed, 32 insertions(+), 6 deletions(-)
+Paolo
 
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 578517739a..6f24c1abb3 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1774,6 +1774,21 @@ static bool same_stat_id(const struct stat *a, const struct stat *b)
-     return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
- }
- 
-+/*
-+ * Returns a (newly allocated) comma-separated string presentation of the
-+ * passed array for logging (tracing) purpose for trace event "v9fs_walk".
-+ *
-+ * It is caller's responsibility to free the returned string.
-+ */
-+static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)
-+{
-+    g_autofree char **arr = g_malloc0_n(nwnames + 1, sizeof(char *));
-+    for (size_t i = 0; i < nwnames; ++i) {
-+        arr[i] = wnames[i].data;
-+    }
-+    return g_strjoinv(", ", arr);
-+}
-+
- static void coroutine_fn v9fs_walk(void *opaque)
- {
-     int name_idx, nwalked;
-@@ -1787,6 +1802,7 @@ static void coroutine_fn v9fs_walk(void *opaque)
-     size_t offset = 7;
-     int32_t fid, newfid;
-     P9ARRAY_REF(V9fsString) wnames = NULL;
-+    g_autofree char *trace_wnames = NULL;
-     V9fsFidState *fidp;
-     V9fsFidState *newfidp = NULL;
-     V9fsPDU *pdu = opaque;
-@@ -1800,11 +1816,9 @@ static void coroutine_fn v9fs_walk(void *opaque)
-     }
-     offset += err;
- 
--    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames);
--
-     if (nwnames > P9_MAXWELEM) {
-         err = -EINVAL;
--        goto out_nofid;
-+        goto out_nofid_nownames;
-     }
-     if (nwnames) {
-         P9ARRAY_NEW(V9fsString, wnames, nwnames);
-@@ -1814,15 +1828,23 @@ static void coroutine_fn v9fs_walk(void *opaque)
-         for (i = 0; i < nwnames; i++) {
-             err = pdu_unmarshal(pdu, offset, "s", &wnames[i]);
-             if (err < 0) {
--                goto out_nofid;
-+                goto out_nofid_nownames;
-             }
-             if (name_is_illegal(wnames[i].data)) {
-                 err = -ENOENT;
--                goto out_nofid;
-+                goto out_nofid_nownames;
-             }
-             offset += err;
-         }
-+        if (trace_event_get_state_backends(TRACE_V9FS_WALK)) {
-+            trace_wnames = trace_v9fs_walk_wnames(wnames, nwnames);
-+            trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames,
-+                            trace_wnames);
-+        }
-+    } else {
-+        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "");
-     }
-+
-     fidp = get_fid(pdu, fid);
-     if (fidp == NULL) {
-         err = -ENOENT;
-@@ -1957,7 +1979,11 @@ out:
-     }
-     v9fs_path_free(&dpath);
-     v9fs_path_free(&path);
-+    goto out_pdu_complete;
-+out_nofid_nownames:
-+    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "<?>");
- out_nofid:
-+out_pdu_complete:
-     pdu_complete(pdu, err);
- }
- 
-diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
-index a12e55c165..ed9f4e7209 100644
---- a/hw/9pfs/trace-events
-+++ b/hw/9pfs/trace-events
-@@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
- v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atime, int32_t mtime, int64_t length) "tag %d id %d stat={mode %d atime %d mtime %d length %"PRId64"}"
- v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag %d id %d fid %d request_mask %"PRIu64
- v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
--v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames) "tag %d id %d fid %d newfid %d nwnames %d"
-+v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
- v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
- v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
- v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
--- 
-2.30.2
+So, for simplicity, in the Rust version I make the handler non-optional.
+>
+>
+>
+
+--000000000000706c23062d8a57cd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 7 feb 2025, 09:24 Zhao Li=
+u &lt;<a href=3D"mailto:zhao1.liu@intel.com">zhao1.liu@intel.com</a>&gt; ha=
+ scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">&gt; P=
+lease add &quot;let _: () =3D F::ASSERT_IS_SOME;&quot;, which is added by t=
+he<br>
+&gt; qdev_init_clock_in() patch.<br>
+&gt; <br>
+<br>
+Okay.<br>
+<br>
+I would add `assert!(F::is_some());` at the beginning of init_gpio_in().<br=
+></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Use=
+ the &quot;let&quot; so that it&#39;s caught at compile time.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote=
+_container"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+There&#39;s a difference with origianl C version:<br>
+<br>
+In C side, qdev_get_gpio_in() family could accept a NULL handler, but<br>
+there&#39;s no such case in current QEMU:<br>
+<br>
+* qdev_get_gpio_in<br>
+* qdev_init_gpio_in_named<br>
+* qdev_init_gpio_in_named_with_opaque<br>
+<br>
+And from code logic view, creating an input GPIO line but doing nothing<br>
+on input, sounds also unusual.<br></blockquote></div></div><div dir=3D"auto=
+"><br></div><div dir=3D"auto">Wouldn&#39;t it then crash in qemu_set_irq?</=
+div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"au=
+to"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_conta=
+iner"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">So, for simplicity,=
+ in the Rust version I make the handler non-optional.<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000706c23062d8a57cd--
 
 
