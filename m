@@ -2,107 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9656BA2C776
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3664A2C76E
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 16:39:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgQSf-0005NN-KV; Fri, 07 Feb 2025 10:40:09 -0500
+	id 1tgQPA-0007sE-RX; Fri, 07 Feb 2025 10:36:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQSI-0004dG-Gh
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:39:47 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tgQSE-0005Qf-Pm
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:39:46 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-ab794ae3cf2so41912366b.2
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 07:39:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738942781; x=1739547581; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gkJVfCavNsBQMZBi92Kjm0ej3U2Pdiir6so6tZSVLo8=;
- b=kK54ulUUTfU7vcmorGOTmA6Lj5XKpd809W86iO8J3WqBjScA6oX23y/GUU6+L5BQJv
- jjRN40Jzs23P7C61Cs+Zr35xsx/Y3J+8PTvboy1hJPGkfC5EOcRcT2Xzgnpe2pfFhtTp
- BAOgJ0bl/lLfSA9+OohuKUsLsZn24q8dyDk/prjEXcI6s9c5IQWVQsN0nCNne9nW8LQ9
- a+F4zKAzvba6280Bbi0PeWOX6L8zLGmu2Juei+j3BdUwNb/sXkxqB/6Hr9/6LBtkM06B
- sNO8+/zj++W14LDAWQ6TLTyuX5Jyl3CtGZJkDkYpxQ/INwxQSTir9hlOwiFFpSU/6HMD
- q4Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738942781; x=1739547581;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gkJVfCavNsBQMZBi92Kjm0ej3U2Pdiir6so6tZSVLo8=;
- b=YxM3/v0yefWRXYUtMocxDk8q/mtXO+O9+s2z9WKEVvO+9JZY/SBwS2/IMxbSYKBJx7
- tEgw+m0arQ8Mi/tpnhZI70XsO60qlcCfcgaJopDcU/TB/mZh1q53dpm/6kYD//FHIQUG
- xWZQzEkK0iqUPby6nFtZMsKhPXPlbSivcoziqFLVZeQ0ZKJtI+Yl+zPm4AUtl+Q5TMni
- 5nxSs9fPTiIHIUMCkQAOTgur5ES/ZJNTXCQb6tkJPBSJpHKdJDWFA/zfyw5UQkX8KWA5
- pkHM8brN6CFPgITzysLAS9KUD072I+pHMEdgO0ZDgfYhYwPY8ih9aplTlo1jW4DU0Z20
- MweQ==
-X-Gm-Message-State: AOJu0YxfQV8jfQkXNo852FJNjwYa5bVBDxGsCsfA0Y5KfEP99NAbgfVV
- dYYeiL2XjxX95LcSfegLWkq9STKk92e8rWrvjpLe47wjYGAFIrW0/lnXGhmQu6Q=
-X-Gm-Gg: ASbGncuK03ynfRcZ/Po+Gjj2L4nbY9AH+O/ZbTHdQuhED6TpyaxbQAEJEYCk6BSxlaI
- J5LNvBKFcQ4PlU9rdPEn9YHUxpwzQhoiZ5939t1S+JUjz6vQIbfrfSOA7TQKy9Ppm6RBe73hXvb
- LXBcEvcGAHVw5RCZ8ebZr0qB3msU64/3IC/yOyVgxvLSIxFvQB134ZjfX+WvvOSidr29UlLYpLO
- I5+Il0iH5LUdIzTJGed2QvwEWSOVXfjBLoQbmDg7m4Q4ccNacAAOc1vUiU6plYoUNR+W9JxQ2qv
- g/1tyDFKBydZBxztvg==
-X-Google-Smtp-Source: AGHT+IGy3CFxyRw/yf4WHCWUzXcl5y/9NPCITxVQTG4AsZscUAZKIPFWb24sTK0/0lOFvmn8E7SNjA==
-X-Received: by 2002:a17:907:7e89:b0:ab3:ed0:8d7 with SMTP id
- a640c23a62f3a-ab789ac0f4cmr330413066b.23.1738942780986; 
- Fri, 07 Feb 2025 07:39:40 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab772f843f4sm290915266b.68.2025.02.07.07.39.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 07:39:40 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EBB25619CE;
- Fri,  7 Feb 2025 15:31:13 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
- qemu-arm@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Bin Meng <bmeng.cn@gmail.com>,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Kyle Evans <kevans@freebsd.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Fabiano Rosas <farosas@suse.de>, Alexandre Iooss <erdnaxe@crans.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Warner Losh <imp@bsdimp.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
- qemu-riscv@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 17/17] tests/tcg: Add late gdbstub attach test
-Date: Fri,  7 Feb 2025 15:31:12 +0000
-Message-Id: <20250207153112.3939799-18-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250207153112.3939799-1-alex.bennee@linaro.org>
-References: <20250207153112.3939799-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1tgQMr-0002sL-CD
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:34:09 -0500
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1tgQMo-0004TQ-Pz
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 10:34:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+ s=s31663417; t=1738942444; x=1739547244; i=deller@gmx.de;
+ bh=swMt/q1ZhkbV/4dlXskwvN8unajecEUyMgTJKnT0D+o=;
+ h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+ References:From:In-Reply-To:Content-Type:
+ Content-Transfer-Encoding:cc:content-transfer-encoding:
+ content-type:date:from:message-id:mime-version:reply-to:subject:
+ to;
+ b=frO0gzYwews31QQxj9XA6CWS7SNt5f4WMP9W4uK3aTqUNnTsk2R2cOx76xkPk/6R
+ g1dMDnXTK07qOAES1M97JEB/5UPhrZYu7ydqRapIqnire6RbwW2D9P24sjqQfHzs4
+ /4LZqnWQo+SCD6mEeJG99VOyp5cREMnGeXWhcNsJXV2ZivCA4hxcMxYBs5VKTIzJU
+ ty7HzIKY5l7oWyOmJ2HXJm3J73A+2FKfeEvIJaml5L9TlS5h7ikvui0G8Gf9zR1hs
+ RgbyUjFiZ7DkPjsqVHKVaGjCBA5MDerSK+M6ppblzmRchJsVBFLsAHg5L0IRpW2nR
+ 6ZyNY5GqRqEbX0xi0A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.172] ([109.250.63.6]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M2wKq-1thWpL3yTk-00Gfpr; Fri, 07
+ Feb 2025 16:34:04 +0100
+Message-ID: <a1bee9ff-f621-42c6-8ef8-c52432d735e7@gmx.de>
+Date: Fri, 7 Feb 2025 16:34:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: Call for GSoC internship project ideas
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+References: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
+ <74d703f3-b2c4-416a-805f-61859a5a4e70@gmx.de>
+ <CAJSP0QWfaW0Nk2hdAWyT7kr9bOY6FNC3FXMqsjVfzONfU5cU0g@mail.gmail.com>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <CAJSP0QWfaW0Nk2hdAWyT7kr9bOY6FNC3FXMqsjVfzONfU5cU0g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GWsKprxdY00U+0+iu1Z40CbNsfMDvqn0P2C0hjiJk1e+GSIjsQr
+ 47GhTPL8eTZaZth/p/relGTAlR3aOZYIy25PnsmbT+GF4r3wXVMuYYtHWAS9+H0RwmUNn1m
+ M7HlGUKYFa4CQLFSmztb6y6V7UOycmlempysGmX8CUYpoGufv/tDtRqUzoHwtH7h7TCH1M9
+ KQTgefcNNlXPPDAY+ND5Q==
+UI-OutboundReport: notjunk:1;M01:P0:Zskj8j08Lco=;kgZsuDkijTYfnfN8ZG/rmYDalTQ
+ VPy0pMb7tucVTcJ9mDMx+B9nBCuOLzo3hZ0wzCCoiCULNq9D3inQGCKFSZpmGzwaDzC8EEN0K
+ yktfxCpcNpVCb0Dt+5P7BR7Wgvk4DtvoluVkreKBfvDvXyqUAMZwx4Av/mYISZhpjyZEl2B+J
+ ZKG7rLfHRRuaoM35v+ukMuzkxAf8RXB03Cq8U9UyFV2udU9f6ue+WMkUuEqRqK79zSkDrEwwR
+ 2UgibqVXqKcyimy4YAyHu36mV4HiyF21CJ13ZpJxFzkUyn2rca16tdPfQVLW3OgDpiMsMK66h
+ 9+C/abd57ybZbEYhRc9zmmfdg/odP5WC+gnrATVSgNbxXiRkchbTY40wupTcX1grUUEEdB4+f
+ DS5Da1XcdJO3zkOZXtE3I2H+gHGM4WOOgysW9g6NLwywjAmCNGC9XteywuZ8qSZ5D1A/LBUUi
+ UDxxPaVnmEUjHJhLiEtieE/LRb7AiFOvsj2/+0bG938gMsf/viOfCLbttAdJRNgjI+3XwJCT+
+ qPXMt7aqrHrRA9fbf0PNxJt0JMKTAh/ORZIPGzoeUZM6kli+FyJqcfALWkrbjgeh4MchgJZzY
+ lCuShy2vWP5mOCJ1Q8VYQCRt667tMX4ST60kkKrLsz6X2EbJaogfy7S/EYzW9nuH2Ldsl4sUl
+ 7EYdrYhvbVqxlxZos7qSf1r+C2sr+RKF2WsMnk9voAHpL2uDuePB+PADTHKsE7FlmjzL4fJ14
+ eoF7MvtQkNmim4FAMsitbq1c8OP0QKR73zh7/UzUpAAqSucsCpOojF3eEQWMzOkBlxQbAa4zX
+ nC/Mf6tle5dGZxTKfemmi59ASjmQCqTpV77XHQ7JhYN90rLJqBqM4jA8wujpiJkx1oJj9Qyl7
+ uK30w33UMULLO8XcKSGfhE2x19iX1WTwLWxn0Gns3VlrUp2n5WYp5jrOZrQzbCHCQVfTqcBfs
+ yDy4oAvVYJumkKzj0GgDxIA0wmXCabMw1+nXecMicsE9PLHSg7q8z7sTXEcLpjW0rzvD1PbXB
+ z4v5NLPsFDtqqUpevvNAAuIjpUZi7NyjL22dFxJt8/2Swjt1lOtG98SeQoVE1WSaPLyzlFAWQ
+ FGpYHh7utu5rhEwpzIo6tXgWCy48H7EBeSkBfrFSpTQvZKwXWVDw4vi0PdcHOLOgYSLNjC/cp
+ xR4fG4KYhu9UYAsxsCbS2Zv07mGZ27VSpPQpDyQgMecv+ccLDDL9PZloauH/8bG3Yux1BG3mI
+ eHMXrbZVhBKOgSmZyBaYopRyFRCbDHOR3lulX5cJm2AAxhddwjlgkwbVQ+lju2Wq/+ZQzR/3K
+ CkiJK9fQDC5nt6TiyhcGGrtuayyR24C43O8dEEMKVf83WAe3/IhrPmpYj3ij1Sn+NSDqNcBKz
+ sMIRHlmwQwK5Me/Wrl2O9lUSfbeQDAXl46zeN/FqoMPfpAhN59hqnxxqDwDpXemfu+o7KHrdv
+ rVzL8aDZOzCS5tf42RsqaovRqGWOapLP+8qBFfGoeGwn9fyy4
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,168 +143,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+On 2/7/25 15:47, Stefan Hajnoczi wrote:
+> On Fri, Feb 7, 2025 at 9:39=E2=80=AFAM Helge Deller <deller@gmx.de> wrot=
+e:
+>>
+>> Hi Stefan,
+>>
+>> On 1/28/25 17:16, Stefan Hajnoczi wrote:
+>>> How to propose your idea
+>>> ------------------------------
+>>> Reply to this email with the following project idea template filled in=
+:
+>>
+>> Would something like this be acceptable?
+>
+> Yes, it would be great to have an emulation project idea like this!
+>
+> Please choose exactly which device you'd like them to implement.
+> Interns may not be knowledgeable in the field yet and you actually
+> help by setting limitations.
+>
+> Link to the specific device's datasheet, existing open source driver
+> example, internal QEMU APIs needed to implement this type of device,
+> etc so that it's easy for an applicant to investigate the idea and
+> decide whether or not to apply.
 
-Add a small test to prevent regressions.
-Make sure that host_interrupt_signal is not visible to the guest.
+Ok, here is an updated text:
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20250117001542.8290-9-iii@linux.ibm.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/tcg/multiarch/late-attach.c          | 41 ++++++++++++++++++++++
- tests/guest-debug/run-test.py              | 15 ++++++--
- tests/tcg/multiarch/Makefile.target        |  9 ++++-
- tests/tcg/multiarch/gdbstub/late-attach.py | 28 +++++++++++++++
- 4 files changed, 90 insertions(+), 3 deletions(-)
- create mode 100644 tests/tcg/multiarch/late-attach.c
- create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+=3D=3D=3D Develop a driver to emulate an existing network-, scsi- or graph=
+ic-card in software =3D=3D=3D
 
-diff --git a/tests/tcg/multiarch/late-attach.c b/tests/tcg/multiarch/late-attach.c
-new file mode 100644
-index 0000000000..20a364034b
---- /dev/null
-+++ b/tests/tcg/multiarch/late-attach.c
-@@ -0,0 +1,41 @@
-+/*
-+ * Test attaching GDB to a running process.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+static const char *phase = "start";
-+
-+int main(void)
-+{
-+    sigset_t set;
-+    int sig;
-+
-+    assert(sigfillset(&set) == 0);
-+    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
-+
-+    /* Let GDB know it can send SIGUSR1. */
-+    phase = "sigwait";
-+    if (getenv("LATE_ATTACH_PY")) {
-+        assert(sigwait(&set, &sig) == 0);
-+        if (sig != SIGUSR1) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    /* Check that the guest does not see host_interrupt_signal. */
-+    assert(sigpending(&set) == 0);
-+    for (sig = 1; sig < NSIG; sig++) {
-+        if (sigismember(&set, sig)) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index 5a091db8be..75e9c92e03 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -36,6 +36,8 @@ def get_args():
-     parser.add_argument("--gdb-args", help="Additional gdb arguments")
-     parser.add_argument("--output", help="A file to redirect output to")
-     parser.add_argument("--stderr", help="A file to redirect stderr to")
-+    parser.add_argument("--no-suspend", action="store_true",
-+                        help="Ask the binary to not wait for GDB connection")
- 
-     return parser.parse_args()
- 
-@@ -73,10 +75,19 @@ def log(output, msg):
- 
-     # Launch QEMU with binary
-     if "system" in args.qemu:
-+        if args.no_suspend:
-+            suspend = ''
-+        else:
-+            suspend = ' -S'
-         cmd = f'{args.qemu} {args.qargs} {args.binary}' \
--            f' -S -gdb unix:path={socket_name},server=on'
-+            f'{suspend} -gdb unix:path={socket_name},server=on'
-     else:
--        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
-+        if args.no_suspend:
-+            suspend = ',suspend=n'
-+        else:
-+            suspend = ''
-+        cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
-+            f' {args.binary}'
- 
-     log(output, "QEMU CMD: %s" % (cmd))
-     inferior = subprocess.Popen(shlex.split(cmd))
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 18d3cf4ae0..688a6be203 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -130,6 +130,13 @@ run-gdbstub-follow-fork-mode-parent: follow-fork-mode
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
- 	following parents on fork)
- 
-+run-gdbstub-late-attach: late-attach
-+	$(call run-test, $@, env LATE_ATTACH_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" --no-suspend \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/late-attach.py, \
-+	attaching to a running process)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
-@@ -139,7 +146,7 @@ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
- 	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
- 	      run-gdbstub-follow-fork-mode-parent \
--	      run-gdbstub-qxfer-siginfo-read
-+	      run-gdbstub-qxfer-siginfo-read run-gdbstub-late-attach
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/late-attach.py b/tests/tcg/multiarch/gdbstub/late-attach.py
-new file mode 100644
-index 0000000000..1d40efb5ec
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/late-attach.py
-@@ -0,0 +1,28 @@
-+"""Test attaching GDB to a running process.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    try:
-+        phase = gdb.parse_and_eval("phase").string()
-+    except gdb.error:
-+        # Assume the guest did not reach main().
-+        phase = "start"
-+
-+    if phase == "start":
-+        gdb.execute("break sigwait")
-+        gdb.execute("continue")
-+        phase = gdb.parse_and_eval("phase").string()
-+    report(phase == "sigwait", "{} == \"sigwait\"".format(phase))
-+
-+    gdb.execute("signal SIGUSR1")
-+
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
--- 
-2.39.5
+'''Summary:''' Develop a driver for Qemu to emulate an old network-, SCSI-=
+ or graphic card in software
 
+Qemu allows to emulate a lot of physical machines. Beside widely used
+x86 machines as used with KVM, this includes historic machines
+based on PowerPC, Alpha or HP PA-RISC CPUs too.
+To allow to emulate additional specific historic machine models,
+drivers to emulate specific hardware like network-, SCSI- or graphic
+cards need to be developed.
+This project is about to develop such a driver for the historic
+HP PA-RISC architecture. Based on the knowledge and interest of the
+applicant, here are two non-exclusive options:
+a) driver for the "LASI" network card. This is basically an Intel 82596
+network chip, which was integrated into another ASIC in the HP 700 series.
+That chip was used in SUN machines as well, and the full Linux driver
+for the various machines can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/net/ethernet/i825xx
+A driver for Qemu exists, but it's not fully functional yet:
+https://gitlab.com/qemu-project/qemu/-/blob/master/hw/net/lasi_i82596.c
+https://gitlab.com/qemu-project/qemu/-/blob/master/hw/net/i82596.c
+Datasheets for this chip exists too.
+This project is about debugging and analyzing existing code, including
+development of missing code.
+
+b) a driver to emulate a "classic" first-generation NCR 710 SCSI controlle=
+r.
+Really old machines used a NCR 710 SCSI controller, for which currently
+no qemu driver exists.
+Qemu has a LSI53C895A driver, which partly even allows to
+emulate a LSI53C810 too, but those chips are "too new" and as such
+are not accepted and supported on old operating systems (e.g. HP-UX9).
+The WinUAE project seem to have modified the existing qemu driver
+to emulate a NCR710 to support the Amiga:
+https://github.com/tonioni/WinUAE/blob/master/qemuvga/lsi53c710.cpp
+The goal of this project should be to develop a nice & clean NCR710
+driver which is acceptable to include in qemu source code repository.
+
+'''Links:'''
+* https://parisc.docs.kernel.org/en/latest/technical_documentation.html
+* existing Linux kernel drivers
+
+'''Details:'''
+* Skill level: advanced
+* Language: C
 
