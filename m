@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F08A2C05D
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDF7A2C064
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:18:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLQN-0007lM-UQ; Fri, 07 Feb 2025 05:17:27 -0500
+	id 1tgLQI-0007Ur-U4; Fri, 07 Feb 2025 05:17:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLPp-0007Nd-3R
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:16:55 -0500
+ id 1tgLPv-0007Pf-HF
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:16:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLPn-0004GU-2a
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:16:52 -0500
+ id 1tgLPu-0004Hc-2F
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:16:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738923410;
+ s=mimecast20190719; t=1738923417;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qPLe8n7w4lU+JK6BULn/ii43xbBtY2BZigYuJPo3FFQ=;
- b=iII3ZBDf2LGLyi/VU3r2enK8wQP/OsOVRmFXIKO9uatgQ49YHI5Kr2YBP/ZRIVhJugIq1n
- DcIhr6V850c7cyKRUR49mgyE8ww4fPJ6Zh1fxLD3e063w7xGzxyatxGN4U/1PAWLyNYfCk
- V3lxMHi0BHRaFqv38kyQV+Vnclj9nDA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e8ugkz2MCTVi9k0wZ/H/gZ6hjpuLYxOLaMc5B1rAzi0=;
+ b=cmqBMnWSdKLdmKXESraUkoraBDV7jfv/Ytal+oJlgfV/kg6Hv3lxQ1b566xC8p3zMaNFT1
+ wKo8+H48h1yKI6A3hmYBVVaxSErreHWM6Shur5VNNj99iDgDntg+YdZjhSk4ZGEyi5vWxx
+ Krxm9hZ2H1HnD1pq2Ut/Px6pPWcMk0g=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-RAEH24RFN4CgJKh44eEXqA-1; Fri, 07 Feb 2025 05:16:49 -0500
-X-MC-Unique: RAEH24RFN4CgJKh44eEXqA-1
-X-Mimecast-MFC-AGG-ID: RAEH24RFN4CgJKh44eEXqA
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5dc5beb5eb0so1501294a12.1
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:16:48 -0800 (PST)
+ us-mta-642-GS6K0KNGMhC6aO2VD5gKSw-1; Fri, 07 Feb 2025 05:16:56 -0500
+X-MC-Unique: GS6K0KNGMhC6aO2VD5gKSw-1
+X-Mimecast-MFC-AGG-ID: GS6K0KNGMhC6aO2VD5gKSw
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-ab2e44dc9b8so312064666b.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:16:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738923407; x=1739528207;
+ d=1e100.net; s=20230601; t=1738923413; x=1739528213;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qPLe8n7w4lU+JK6BULn/ii43xbBtY2BZigYuJPo3FFQ=;
- b=SxQdV+qcXeMXZZjE9q4r5rOtAL5US+HjThVYNS2jlkRmRB02IoDdWMliDMlE03pCNA
- Ea01XNBK8a7UtQyf992SmQ1ye3EQLqoWhI8JLG4deCV14qBfwvk1OINgkNfF+0IkdOcs
- Qgi2J7JN6Ny8gCrcEJU5Fgnjhyu5qkQxrTYYg09VannzKRQF2DlAjC++26D6KoGJ4kyD
- CGebmAmQNaNrp6pOhAMxOViiBJCL87ZVx1qUaPFx+0VHfnmBSq7m31StVUc4v7fTHaXp
- oz0sOrEHCioHIhe9maXqfV+z9nJ8mvNDkgBnSzqk/CD1uv6qL0os6vjQts3L5FkEmcoi
- N7kA==
-X-Gm-Message-State: AOJu0YzYQ93FJPfEQc5EU0G9aOzCi6FvjVAIQz6XHiNV6rJIirR0WLxF
- pzEBYfUeJzIFILXJfzwQdKDI0Q55+juNfXeYlS6YnSrYe3YVZSLXQZbjfyVLyfqNnePiC5ATvfE
- nTVKufV7X46j/tPb3rihp2TN+w6i4ZEQ9VAh+Q1PdmfWdqHDFJgvpy6AhoVxzF9t+Y4rq5rlbV/
- g0NM73GXv3trldXYGkX7j809cClhI4GQ9PMtUJjNM=
-X-Gm-Gg: ASbGncuDuETHADvOIvtYr2mUQp4ijcGpITT0Ez1PKogWehGJbKhnj0wUG0CN53gWjUy
- 9q+ZfB1pNCg2JAhlWDBFyAqIM3+r04vcPzBaNgE2qSV+nXLFuZB804hrkoO7Dux4cutTAH4oJN+
- ue9wGYNT3DpUJGIH3hIKxlS+NphNPwtdP/bBJDIU/hBh6sNwJtxQqu/XkR6pgjRnvoEiFwJrG1Y
- C5l3IwRBjQYyt8uk3gRGtaPvFLPulDKJhMUPWl9Lzz+UQ220KlKFzkRhvI5e5nW9fY8a34HRZ6S
- rzBkpw==
-X-Received: by 2002:a05:6402:4588:b0:5db:e91a:6baf with SMTP id
- 4fb4d7f45d1cf-5de45015f49mr7206872a12.14.1738923406475; 
- Fri, 07 Feb 2025 02:16:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHyLaRlLhMDi0sic2b81oIjyoDiKQ8HxFyoPHsUiHz/TTRI0oQR/+PmMjzhrWK8g7PQ3Zf3VQ==
-X-Received: by 2002:a05:6402:4588:b0:5db:e91a:6baf with SMTP id
- 4fb4d7f45d1cf-5de45015f49mr7206826a12.14.1738923405955; 
- Fri, 07 Feb 2025 02:16:45 -0800 (PST)
+ bh=e8ugkz2MCTVi9k0wZ/H/gZ6hjpuLYxOLaMc5B1rAzi0=;
+ b=Xd3Y1l4/offFQ7GIkhQ8aj7yoPLWaVlyHVPOHplYAYf+6y7vMvFUH4nzOTLpPV8d1X
+ lDkpI5P1JZJUGtSjSZ0gp5plBkYv4QJczfSy96LxtvS7v6oHuDiMwMXVce4XL3usaNaG
+ i5r4eVDsCttLsbuuct+vE0Eb1x16iBkzdxtqW+8se/XZZ/rkmUsNXrGubpKJ2IY1GaSe
+ DkCvTulU2NoWUvmFSHdW3T7LvtoAo7OwBhA1wC8KSmMg83JOCEUx7O8EjG6LVWK+hXwc
+ 6ImLMCcx/wPBUn+cDmBcY5JHdkPyuEpZWmjCi3X7HWXz8WJZa8mrfGFaPzSt7DVpMC1w
+ afFg==
+X-Gm-Message-State: AOJu0Yyc6SUyTiS0CFh19sd/9PMd41H9he/hHp6/LQplP50HIViZGlgh
+ x6ZQ6bJ7ViN598afQzHAUpulfNcMDm08eoeCI1ndrwLBzYvQ7Wx0vWf32D2gUtbyFhwdyS/C43G
+ engWCQ5vCU6FY/SlWKlEx36BsewyRgFjH/uhVvaxQW+vtGSUxIkygKQnmDu+OrzaDl8k0t4NKez
+ QLlp3Mk6WnJjdcgTqUlTXJjWkasGsItH+NVIseRmY=
+X-Gm-Gg: ASbGncu6A1S97fP1nC0ULYuUYmIP6hF8inAE54RXf0eDdUnMxfcoi3DWCf+x9PTJr0Q
+ WBpbXAoC+Kqs/39314QFytPvWWD5hRYyOFW7phSU69cykrS614GrgNQ65AzlPAKkMSvsDqu7ZLM
+ jJQrNOyYS8wtKAsumhzCjTjJ+36EuD+J/4Za1wJD46m1bBzfiqwV5id8UPiTpRQ280QVQhwAc7x
+ ublC/JkQNRdl3qS7PX8GOWo4/cGYBcdWa2aQGwmwwqWhaiGcjf+vskjXF0WyoB68+aE7HEZLzn8
+ GmSj6w==
+X-Received: by 2002:a17:907:7e8c:b0:ab6:f782:3ee2 with SMTP id
+ a640c23a62f3a-ab76e896c1cmr679681466b.9.1738923412914; 
+ Fri, 07 Feb 2025 02:16:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFM3lk2ydc7epwpkztg3w/h+v1br1TpLcOGK5HJ3x0fJvwRo4UJf6MhFQZ1H9LxVlL2Y6xFHw==
+X-Received: by 2002:a17:907:7e8c:b0:ab6:f782:3ee2 with SMTP id
+ a640c23a62f3a-ab76e896c1cmr679677266b.9.1738923412411; 
+ Fri, 07 Feb 2025 02:16:52 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dcf6c9f904sm2276175a12.58.2025.02.07.02.16.41
+ a640c23a62f3a-ab7732e7232sm241982766b.97.2025.02.07.02.16.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 02:16:42 -0800 (PST)
+ Fri, 07 Feb 2025 02:16:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	zhao1.liu@intel.com
-Subject: [PATCH 04/12] rust: qdev: add clock creation
-Date: Fri,  7 Feb 2025 11:16:15 +0100
-Message-ID: <20250207101623.2443552-5-pbonzini@redhat.com>
+Subject: [PATCH 05/12] rust: qom: allow initializing interface vtables
+Date: Fri,  7 Feb 2025 11:16:16 +0100
+Message-ID: <20250207101623.2443552-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250207101623.2443552-1-pbonzini@redhat.com>
 References: <20250207101623.2443552-1-pbonzini@redhat.com>
@@ -107,270 +107,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a Rust version of qdev_init_clock_in, which can be used in
-instance_init.  There are a couple differences with the C
-version:
+Unlike regular classes, interface vtables can only be obtained via
+object_class_dynamic_cast.  Provide a wrapper that allows accessing
+the vtable and pass it to a ClassInitImpl implementation, for example
+ClassInitImpl<ResettableClass>.
 
-- in Rust the object keeps its own reference to the clock (in addition to
-  the one embedded in the NamedClockList), and the reference is dropped
-  automatically by instance_finalize(); this is encoded in the signature
-  of DeviceClassMethods::init_clock_in, which makes the lifetime of the
-  clock independent of that of the object it holds.  This goes unnoticed
-  in the C version and is due to the existence of aliases.
-
-- also, anything that happens during instance_init uses the pinned_init
-  framework to operate on a partially initialized object, and is done
-  through class methods (i.e. through DeviceClassMethods rather than
-  DeviceMethods) because the device does not exist yet.  Therefore, Rust
-  code *must* create clocks from instance_init, which is stricter than C.
-
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs |  43 +++++-------
- rust/qemu-api/src/prelude.rs     |   2 +
- rust/qemu-api/src/qdev.rs        | 109 ++++++++++++++++++++++++++++++-
- rust/qemu-api/src/vmstate.rs     |   4 +-
- 4 files changed, 127 insertions(+), 31 deletions(-)
+ rust/qemu-api/src/prelude.rs |  1 +
+ rust/qemu-api/src/qom.rs     | 45 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index f5db114b0c7..37936a328b8 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -10,17 +10,16 @@
- 
- use qemu_api::{
-     bindings::{
--        error_fatal, hwaddr, memory_region_init_io, qdev_init_clock_in, qdev_prop_set_chr,
--        qemu_chr_fe_accept_input, qemu_chr_fe_ioctl, qemu_chr_fe_set_handlers,
--        qemu_chr_fe_write_all, qemu_irq, sysbus_connect_irq, sysbus_mmio_map, sysbus_realize,
--        CharBackend, Chardev, Clock, ClockEvent, MemoryRegion, QEMUChrEvent,
--        CHR_IOCTL_SERIAL_SET_BREAK,
-+        error_fatal, hwaddr, memory_region_init_io, qdev_prop_set_chr, qemu_chr_fe_accept_input,
-+        qemu_chr_fe_ioctl, qemu_chr_fe_set_handlers, qemu_chr_fe_write_all, qemu_irq,
-+        sysbus_connect_irq, sysbus_mmio_map, sysbus_realize, CharBackend, Chardev, MemoryRegion,
-+        QEMUChrEvent, CHR_IOCTL_SERIAL_SET_BREAK,
-     },
-     c_str, impl_vmstate_forward,
-     irq::InterruptSource,
-     prelude::*,
--    qdev::{DeviceImpl, DeviceState, Property},
--    qom::{ClassInitImpl, ObjectImpl, ParentField},
-+    qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property},
-+    qom::{ClassInitImpl, ObjectImpl, Owned, ParentField},
-     sysbus::{SysBusDevice, SysBusDeviceClass},
-     vmstate::VMStateDescription,
- };
-@@ -131,7 +130,7 @@ pub struct PL011State {
-     #[doc(alias = "irq")]
-     pub interrupts: [InterruptSource; IRQMASK.len()],
-     #[doc(alias = "clk")]
--    pub clock: NonNull<Clock>,
-+    pub clock: Owned<Clock>,
-     #[doc(alias = "migrate_clk")]
-     pub migrate_clock: bool,
- }
-@@ -485,8 +484,6 @@ impl PL011State {
-     /// location/instance. All its fields are expected to hold unitialized
-     /// values with the sole exception of `parent_obj`.
-     unsafe fn init(&mut self) {
--        const CLK_NAME: &CStr = c_str!("clk");
--
-         // SAFETY:
-         //
-         // self and self.iomem are guaranteed to be valid at this point since callers
-@@ -506,22 +503,16 @@ unsafe fn init(&mut self) {
- 
-         // SAFETY:
-         //
--        // self.clock is not initialized at this point; but since `NonNull<_>` is Copy,
--        // we can overwrite the undefined value without side effects. This is
--        // safe since all PL011State instances are created by QOM code which
--        // calls this function to initialize the fields; therefore no code is
--        // able to access an invalid self.clock value.
--        unsafe {
--            let dev: &mut DeviceState = self.upcast_mut();
--            self.clock = NonNull::new(qdev_init_clock_in(
--                dev,
--                CLK_NAME.as_ptr(),
--                None, /* pl011_clock_update */
--                addr_of_mut!(*self).cast::<c_void>(),
--                ClockEvent::ClockUpdate.0,
--            ))
--            .unwrap();
--        }
-+        // self.clock is not initialized at this point; but since `Owned<_>` is
-+        // not Drop, we can overwrite the undefined value without side effects;
-+        // it's not sound but, because for all PL011State instances are created
-+        // by QOM code which calls this function to initialize the fields, at
-+        // leastno code is able to access an invalid self.clock value.
-+        self.clock = self.init_clock_in("clk", &Self::clock_update, ClockEvent::ClockUpdate);
-+    }
-+
-+    const fn clock_update(&self, _event: ClockEvent) {
-+        /* pl011_trace_baudrate_change(s); */
-     }
- 
-     fn post_init(&self) {
 diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
-index 3df6a5c21ec..87e3ce90f26 100644
+index 87e3ce90f26..254edb476dd 100644
 --- a/rust/qemu-api/src/prelude.rs
 +++ b/rust/qemu-api/src/prelude.rs
-@@ -7,6 +7,8 @@
- pub use crate::cell::BqlCell;
- pub use crate::cell::BqlRefCell;
+@@ -9,6 +9,7 @@
  
-+pub use crate::qdev::DeviceMethods;
-+
+ pub use crate::qdev::DeviceMethods;
+ 
++pub use crate::qom::InterfaceType;
  pub use crate::qom::IsA;
  pub use crate::qom::Object;
  pub use crate::qom::ObjectCast;
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index f4c75c752f1..8f6744c5e26 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -4,14 +4,20 @@
- 
- //! Bindings to create devices and access device functionality from Rust.
- 
--use std::{ffi::CStr, ptr::NonNull};
-+use std::{
-+    ffi::{CStr, CString},
-+    os::raw::c_void,
-+    ptr::NonNull,
-+};
- 
--pub use bindings::{DeviceClass, DeviceState, Property};
-+pub use bindings::{Clock, ClockEvent, DeviceClass, DeviceState, Property};
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index fad4759d7a6..fa69ae4c702 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -66,8 +66,8 @@
  
  use crate::{
-     bindings::{self, Error},
-+    callbacks::FnCall,
-+    cell::bql_locked,
-     prelude::*,
--    qom::{ClassInitImpl, ObjectClass},
-+    qom::{ClassInitImpl, ObjectClass, Owned},
-     vmstate::VMStateDescription,
+     bindings::{
+-        self, object_dynamic_cast, object_get_class, object_get_typename, object_new, object_ref,
+-        object_unref, TypeInfo,
++        self, object_class_dynamic_cast, object_dynamic_cast, object_get_class,
++        object_get_typename, object_new, object_ref, object_unref, TypeInfo,
+     },
+     cell::bql_locked,
  };
- 
-@@ -143,3 +149,100 @@ unsafe impl ObjectType for DeviceState {
-         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_DEVICE) };
+@@ -263,6 +263,47 @@ unsafe fn as_object_mut_ptr(&self) -> *mut Object {
+     }
  }
- qom_isa!(DeviceState: Object);
-+
-+/// Trait for methods exposed by the [`DeviceState`] class.  The methods can be
-+/// called on all objects that have the trait `IsA<DeviceState>`.
+ 
++/// Trait exposed by all structs corresponding to QOM interfaces.
++/// Unlike `ObjectType`, it is implemented on the class type (which provides
++/// the vtable for the interfaces).
 +///
-+/// The trait should only be used through the blanket implementation,
-+/// which guarantees safety via `IsA`.
-+pub trait DeviceMethods: ObjectDeref
-+where
-+    Self::Target: IsA<DeviceState>,
-+{
-+    /// Add an input clock named `name`.  Invoke the callback with
-+    /// `self` as the first parameter for the events that are requested.
++/// # Safety
++///
++/// `TYPE` must match the contents of the `TypeInfo` as found in the C code;
++/// right now, interfaces can only be declared in C.
++pub unsafe trait InterfaceType: Sized {
++    /// The name of the type, which can be passed to
++    /// `object_class_dynamic_cast()` to obtain the pointer to the vtable
++    /// for this interface.
++    const TYPE_NAME: &'static CStr;
++
++    /// Initialize the vtable for the interface; the generic argument `T` is the
++    /// type being initialized, while the generic argument `U` is the type that
++    /// lists the interface in its `TypeInfo`.
 +    ///
-+    /// The resulting clock is added as a child of `self`, but it also
-+    /// stays alive until after `Drop::drop` is called because C code
-+    /// keeps an extra reference to it until `device_finalize()` calls
-+    /// `qdev_finalize_clocklist()`.  Therefore (unlike most cases in
-+    /// which Rust code has a reference to a child object) it would be
-+    /// possible for this function to return a `&Clock` too.
-+    #[inline]
-+    fn init_clock_in<F: for<'a> FnCall<(&'a Self::Target, ClockEvent)>>(
-+        &self,
-+        name: &str,
-+        _cb: &F,
-+        events: ClockEvent,
-+    ) -> Owned<Clock> {
-+        fn do_init_clock_in(
-+            dev: *mut DeviceState,
-+            name: &str,
-+            cb: Option<unsafe extern "C" fn(*mut c_void, ClockEvent)>,
-+            events: ClockEvent,
-+        ) -> Owned<Clock> {
-+            assert!(bql_locked());
-+
-+            // SAFETY: the clock is heap allocated, but qdev_init_clock_in()
-+            // does not gift the reference to its caller; so use Owned::from to
-+            // add one.  The callback is disabled automatically when the clock
-+            // is unparented, which happens before the device is finalized.
-+            unsafe {
-+                let cstr = CString::new(name).unwrap();
-+                let clk = bindings::qdev_init_clock_in(
-+                    dev,
-+                    cstr.as_ptr(),
-+                    cb,
-+                    dev.cast::<c_void>(),
-+                    events.0,
-+                );
-+
-+                Owned::from(&*clk)
-+            }
-+        }
-+
-+        let cb: Option<unsafe extern "C" fn(*mut c_void, ClockEvent)> = if F::is_some() {
-+            unsafe extern "C" fn rust_clock_cb<T, F: for<'a> FnCall<(&'a T, ClockEvent)>>(
-+                opaque: *mut c_void,
-+                event: ClockEvent,
-+            ) {
-+                // SAFETY: the opaque is "this", which is indeed a pointer to T
-+                F::call((unsafe { &*(opaque.cast::<T>()) }, event))
-+            }
-+            Some(rust_clock_cb::<Self::Target, F>)
-+        } else {
-+            None
-+        };
-+
-+        // SAFETY: self can be cast to DeviceState because its type has an
-+        // IsA<DeviceState> bound.
-+        do_init_clock_in(unsafe { self.as_mut_ptr() }, name, cb, events)
-+    }
-+
-+    /// Add an output clock named `name`.
++    /// # Panics
 +    ///
-+    /// The resulting clock is added as a child of `self`, but it also
-+    /// stays alive until after `Drop::drop` is called because C code
-+    /// keeps an extra reference to it until `device_finalize()` calls
-+    /// `qdev_finalize_clocklist()`.  Therefore (unlike most cases in
-+    /// which Rust code has a reference to a child object) it would be
-+    /// possible for this function to return a `&Clock` too.
-+    #[inline]
-+    fn init_clock_out(&self, name: &str) -> Owned<Clock> {
++    /// Panic if the incoming argument if `T` does not implement the interface.
++    fn interface_init<
++        T: ObjectType + ClassInitImpl<Self> + ClassInitImpl<U::Class>,
++        U: ObjectType,
++    >(
++        klass: &mut U::Class,
++    ) {
 +        unsafe {
-+            let cstr = CString::new(name).unwrap();
-+            let clk = bindings::qdev_init_clock_out(self.as_mut_ptr(), cstr.as_ptr());
++            // SAFETY: upcasting to ObjectClass is always valid, and the
++            // return type is either NULL or the argument itself
++            let result: *mut Self = object_class_dynamic_cast(
++                (klass as *mut U::Class).cast(),
++                Self::TYPE_NAME.as_ptr(),
++            )
++            .cast();
 +
-+            Owned::from(&*clk)
++            <T as ClassInitImpl<Self>>::class_init(result.as_mut().unwrap())
 +        }
 +    }
 +}
 +
-+impl<R: ObjectDeref> DeviceMethods for R where R::Target: IsA<DeviceState> {}
-+
-+unsafe impl ObjectType for Clock {
-+    type Class = ObjectClass;
-+    const TYPE_NAME: &'static CStr =
-+        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_CLOCK) };
-+}
-+qom_isa!(Clock: Object);
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 11d21b8791c..164effc6553 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -470,11 +470,11 @@ macro_rules! vmstate_clock {
-                 $crate::assert_field_type!(
-                     $struct_name,
-                     $field_name,
--                    core::ptr::NonNull<$crate::bindings::Clock>
-+                    $crate::qom::Owned<$crate::bindings::Clock>
-                 );
-                 $crate::offset_of!($struct_name, $field_name)
-             },
--            size: ::core::mem::size_of::<*const $crate::bindings::Clock>(),
-+            size: ::core::mem::size_of::<*const $crate::qdev::Clock>(),
-             flags: VMStateFlags(VMStateFlags::VMS_STRUCT.0 | VMStateFlags::VMS_POINTER.0),
-             vmsd: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_clock) },
-             ..$crate::zeroable::Zeroable::ZERO
+ /// This trait provides safe casting operations for QOM objects to raw pointers,
+ /// to be used for example for FFI. The trait can be applied to any kind of
+ /// reference or smart pointers, and enforces correctness through the [`IsA`]
 -- 
 2.48.1
 
