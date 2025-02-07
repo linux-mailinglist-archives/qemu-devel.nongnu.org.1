@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C9BA2C883
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 17:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BADA2C88D
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 17:23:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgR6k-0000uk-3t; Fri, 07 Feb 2025 11:21:34 -0500
+	id 1tgR6o-0000wB-Cg; Fri, 07 Feb 2025 11:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tgR6S-0000sL-LL
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:21:16 -0500
+ id 1tgR6V-0000u9-Tj
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:21:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tgR6Q-0007WH-6g
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:21:16 -0500
+ id 1tgR6U-0007ei-D0
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 11:21:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738945273;
+ s=mimecast20190719; t=1738945277;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kyuAjPAUeA1HKK8QUbzGtEGxr0V5B53mz4cYKLRd53Q=;
- b=DO2MBtyWUKVelmeIUSZqJwnI1cm8MACHbpdS8TpevI560MLGPCgA2t1cOHfH+R9YVdzPSx
- AzHNjLLTUPfF9D12+jeOlkZZPPMSttGLkB6EYcaICFL1fbZCx+gydd70+9VS3lcZdFCgbu
- uV46nyu6fMAtdG4VPRV6s1hN80ZKkiw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=zLnalPDK5Dw5CE83Liep9DcgASL15xi5RCTTFoM4WJU=;
+ b=emWCn9pzDIU104CxssBtyb+dus5e+QDZpUgCDSm0bE8CYYNkemFxA2eN8rXGFIgD4I44sX
+ uOg78+O2D90SX4IldgMgoulsdp3CEU6dG7F30Bm6qWLWpISpFTkwjw5w7M0gzxAtaYC7xm
+ WmIY5CJrJ4Pwr9qLE0KO0hZ6ej5ozHg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-4UFneXOSOUyTq_sLYdJdEg-1; Fri,
- 07 Feb 2025 11:21:12 -0500
-X-MC-Unique: 4UFneXOSOUyTq_sLYdJdEg-1
-X-Mimecast-MFC-AGG-ID: 4UFneXOSOUyTq_sLYdJdEg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-E0q3J-dVOxqFu9AHSp0k1Q-1; Fri,
+ 07 Feb 2025 11:21:14 -0500
+X-MC-Unique: E0q3J-dVOxqFu9AHSp0k1Q-1
+X-Mimecast-MFC-AGG-ID: E0q3J-dVOxqFu9AHSp0k1Q
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DA09D1955D82; Fri,  7 Feb 2025 16:21:09 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E4B6719560B9; Fri,  7 Feb 2025 16:21:11 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 13F781800879; Fri,  7 Feb 2025 16:21:07 +0000 (UTC)
+ id 613A31800878; Fri,  7 Feb 2025 16:21:10 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 06/10] tcg: drop cpu->created check
-Date: Fri,  7 Feb 2025 17:20:44 +0100
-Message-ID: <20250207162048.1890669-7-imammedo@redhat.com>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 07/10] accel/tcg: Simplify use of &first_cpu in
+ rr_cpu_thread_fn()
+Date: Fri,  7 Feb 2025 17:20:45 +0100
+Message-ID: <20250207162048.1890669-8-imammedo@redhat.com>
 In-Reply-To: <20250207162048.1890669-1-imammedo@redhat.com>
 References: <20250207162048.1890669-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
@@ -87,42 +87,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-previous commits fixed 2 remaining cases where vcpu might
-have had 'cpu->created == false' during 1st vcpu reset (at realize time)
-that leads to call chain
-      tcg_cpu_reset_hold() => tlb_flush_by_mmuidx()
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-remove not need anymore check, with cpu->created always being true.
+Let vCPUs wait for themselves being ready first, then other ones.
+This allows the first thread to starts without the global vcpu
+queue (thus &first_cpu) being populated.
 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
-CC: Nicholas Piggin <npiggin@gmail.com>
----
- accel/tcg/cputlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/tcg-accel-ops-rr.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 3d1d7d2409..6ccb173960 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -75,7 +75,7 @@
- } while (0)
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 028b385af9..d9eadd5ec4 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -197,16 +197,19 @@ static void *rr_cpu_thread_fn(void *arg)
+     qemu_guest_random_seed_thread_part2(cpu->random_seed);
  
- #define assert_cpu_is_self(cpu)                             \
--    tcg_debug_assert(!(cpu)->created || qemu_cpu_is_self(cpu))
-+    tcg_debug_assert(qemu_cpu_is_self(cpu))
+     /* wait for initial kick-off after machine start */
+-    while (first_cpu->stopped) {
+-        qemu_cond_wait_bql(first_cpu->halt_cond);
++    while (cpu->stopped) {
++        CPUState *iter_cpu;
++
++        qemu_cond_wait_bql(cpu->halt_cond);
  
- /* run_on_cpu_data.target_ptr should always be big enough for a
-  * vaddr even on 32 bit builds
-@@ -416,7 +416,7 @@ void tlb_flush_by_mmuidx(CPUState *cpu, uint16_t idxmap)
- {
-     tlb_debug("mmu_idx: 0x%" PRIx16 "\n", idxmap);
+         /* process any pending work */
+-        CPU_FOREACH(cpu) {
+-            current_cpu = cpu;
+-            qemu_wait_io_event_common(cpu);
++        CPU_FOREACH(iter_cpu) {
++            current_cpu = iter_cpu;
++            qemu_wait_io_event_common(iter_cpu);
+         }
+     }
  
--    if (cpu->created && !qemu_cpu_is_self(cpu)) {
-+    if (!qemu_cpu_is_self(cpu)) {
-         async_run_on_cpu(cpu, tlb_flush_by_mmuidx_async_work,
-                          RUN_ON_CPU_HOST_INT(idxmap));
-     } else {
++    g_assert(first_cpu);
+     rr_start_kick_timer();
+ 
+     cpu = first_cpu;
 -- 
 2.43.0
 
