@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72672A2C093
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:29:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB59BA2C091
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Feb 2025 11:29:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgLbI-0005w0-Iy; Fri, 07 Feb 2025 05:28:44 -0500
+	id 1tgLbK-0005wt-G0; Fri, 07 Feb 2025 05:28:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLb8-0005t7-Lm
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:28:35 -0500
+ id 1tgLbB-0005uc-NO
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:28:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tgLb6-0008KG-TB
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:28:34 -0500
+ id 1tgLbA-0008WU-9C
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 05:28:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738924112;
+ s=mimecast20190719; t=1738924115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dGTMV/JVOhgwSD7zfFhjmY9o50J6ILSLJjCbihcs1Oc=;
- b=EF5nqKhXRwhZXCtwCWBYU0IgDXrYCuwFiw8atvhrpbtIJcbf/TsKGtHoWBwQRlksBkgVsl
- 9PwKDHz832yhjfniGmNIcbVTAIxMQ4bdvWO2ly/IjGqDekX6l/lH/Oxd5RLd6anbcgyyBV
- xLp5WTSVE4vkvsTRh/HnlBpmLsZ+UNg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=79wQisxmrG4uGvWqFVzBGJF7Meflxb2NnqvI+vXjWx4=;
+ b=SnJFikfy9qhmfQiiT/OE9TaPiuPqOR260hb89SNaLb6oGe0eLoUfv/RPCMb5/A4usUx9Kc
+ ewUtYwND0TIXamxson1eKAbJNH3IfFa2fVr4ostryaYJVp+QEHGcE41ziF8ayxXygShUPn
+ Nly8VnAKe1JDzNnEiLkRQnpnMkeaGWM=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-493-3KzueV56MA2BRjcXDlq-2Q-1; Fri, 07 Feb 2025 05:28:30 -0500
-X-MC-Unique: 3KzueV56MA2BRjcXDlq-2Q-1
-X-Mimecast-MFC-AGG-ID: 3KzueV56MA2BRjcXDlq-2Q
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ab78afc6390so66870866b.3
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:28:30 -0800 (PST)
+ us-mta-665-4954BYXrOMuuZcrIUGnEpA-1; Fri, 07 Feb 2025 05:28:34 -0500
+X-MC-Unique: 4954BYXrOMuuZcrIUGnEpA-1
+X-Mimecast-MFC-AGG-ID: 4954BYXrOMuuZcrIUGnEpA
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ab789e71f9bso53509066b.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 02:28:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738924108; x=1739528908;
+ d=1e100.net; s=20230601; t=1738924111; x=1739528911;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dGTMV/JVOhgwSD7zfFhjmY9o50J6ILSLJjCbihcs1Oc=;
- b=I6WiJwxKwWxKtDgbIgO/z57fkmWV3aGsk2lb71clpT2W8t2/zD0kLQTz64Y17A8V+e
- 4Y8IgkgsAFvDfyT1uhM8JV/H3ECoWLUeR0WPeVz3G9uzRxCDEf+SBHG68mwLN8V4ziZz
- LtR3leE0wlKvr45fEj+HXKm3TIyCtqtBd+HAc8qOPamh3yYBI6rEupWe2RHvhQiKHWE2
- N2yafspnqKzKx7TlykS0Po5ttMckRQZM/OF8sjMLMQrij6OpHXzSiV1IYJWPhvx5ZjfE
- mV7q5Q2v3sL9pibnIv7nFqrB7G5c92ljwHqggqhQ6F6hZoi3T5f4cKBojz5mnh3rgLij
- 57Ng==
-X-Gm-Message-State: AOJu0YyQnZ3wyVtsQQpwFp1TCHj5yBNPEjiRpHqHnNz3BwU4Ydwpdc4e
- gbkRvoCtV1qWFv6IzqNUn0jKHfa1YPY4qYXyWQ9NWv4+s/XfG4+ZGpSbkC7dAJ2/lHlEX1c6h9R
- nUE6DNjNER1qei4M4KrysP5gMaVBb9uuihM2R5ZhW0sgmFeq/aJOw2rxt/rV0RykWrw9uQpXRnr
- psrdNOmbqcZsXz/fdiryw0677mAIRaSxXNvCHt+k0=
-X-Gm-Gg: ASbGncs0yDT0XIqK+GpTiIIo3aS1NY84KCNBAnopDy1LLqpoHObFK+bwe6t7ZBva53K
- vZvUqJg0PBR7yjmrp6oGJl6IeZfelx7IJ8gPuQkAFz5n+RjT7ZSiXMe5a7sO7q3bUAmZqRZE4Xp
- 4A3haUgMu+98x1XfZIMoGieIcgog+PdpeGiLqZja9ToK6s1WamKocX7xpfuh9jpBhKt9+2Y+Ir0
- 0cUIoGjQ5YEdzCL+XD8AgxMeoPbn9DfwY7oWfu8XbK8qTDizkQ3JV4IdEChaWtojuBIFMDyG1S/
- xIH35Q==
-X-Received: by 2002:a17:907:2d2c:b0:ab7:93a9:2ba6 with SMTP id
- a640c23a62f3a-ab793a92c49mr36776966b.5.1738924108464; 
- Fri, 07 Feb 2025 02:28:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGShQXFzlsUAfdmLVBAyBKRjIiFk7hJkxu2BLvJcSG/amyTIz/cG+Iko+zT0uhk7y+o+h7Hhw==
-X-Received: by 2002:a17:907:2d2c:b0:ab7:93a9:2ba6 with SMTP id
- a640c23a62f3a-ab793a92c49mr36773366b.5.1738924108004; 
- Fri, 07 Feb 2025 02:28:28 -0800 (PST)
+ bh=79wQisxmrG4uGvWqFVzBGJF7Meflxb2NnqvI+vXjWx4=;
+ b=KGe5Ufmx5TpFugZNMPNov4cpXIrCkx5moTwO3DKyLsVDhJMNHu3EwGs0r/y+pr7Y6o
+ TW4I9XDyy+nA7Jokw+rWLEoBr1DhHQTPiBl/DTHP9J1N0NgZy0pB9nRYDWo4WmBRK9u4
+ XUmZQGJPmvE2rHLyaRgowP3Lh1QyB6UTt2NTYc5lpEe09QYLuI1o8TDJTjynUPm/jHm3
+ UKgTSd7S09A48wRBa000ideXHXBoYbMU0qPGRYyXdWoTBnqYU60MhT84+RAJKvjQ4QEg
+ /33ZpJI4yvz5fvryT9GMdIXDn5q4beHb/tZQlEkDQd2zVNK/Db+qlYvwRHGPw/VoADWJ
+ b5+A==
+X-Gm-Message-State: AOJu0YxYLQcoSwlE8q99cA30jWSSYqCy1wuN219u1k4oosu63UpVEP0y
+ eBMh1y3THfSAnmlOTXWsbASMoBVQhLI0K7/lXxWw8Lx1xK3t+8vWhi62qtrVUjGkZFZCZfp7co8
+ CfNP3G7FXslwovoNFeR52QKThqgSuabCLebAZadljVzWwp2UGT0W6WuwhNRWsH/MWuLrBXbsVxg
+ FwjOd/vG8PEqWHSC2mQEzlt8S9zg5oufLOmk9MMxs=
+X-Gm-Gg: ASbGnctRWIjRTXDX3fxJuXVqJmEGHBiyKCwpG1hO8ORg2SnSJvscTb1WiQGtyDokN8z
+ PSJ74gVJCyiZGgn2EqPLgT4mx0RD6p7fz2gYIE1WKzu/bMJe0XIs0oBwhw+Ee9V9ek+naBlrgNj
+ 7aLsBqxDK1fKsChg3UArNei2ai8RxRj3IqIrPrloQxTNtuSgFfERyny2IzmOOVk5R+begDmKo/B
+ 3omJCLX5q5cvojpWVBWpN+VcSwZKHHZMcpvSt3UTBVw18eQE4nxcP7u14wKpUP0miEEjBeK51am
+ Om3ihw==
+X-Received: by 2002:a17:907:803:b0:ab6:fe30:f48b with SMTP id
+ a640c23a62f3a-ab789c30c0bmr278040666b.52.1738924111433; 
+ Fri, 07 Feb 2025 02:28:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGyDaLA66EyI/0O036QTw3l6s6OFhJypZYluvdED98KkntEyhoXeLZ0lyeCtp3tgitQMjfGA==
+X-Received: by 2002:a17:907:803:b0:ab6:fe30:f48b with SMTP id
+ a640c23a62f3a-ab789c30c0bmr278037666b.52.1738924110953; 
+ Fri, 07 Feb 2025 02:28:30 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab7732e71e3sm240031566b.112.2025.02.07.02.28.23
+ 4fb4d7f45d1cf-5de44e4bc17sm1170755a12.70.2025.02.07.02.28.28
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2025 02:28:24 -0800 (PST)
+ Fri, 07 Feb 2025 02:28:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 6/7] tests/tcg/x86_64/fma: Test some x86 fused-multiply-add
- cases
-Date: Fri,  7 Feb 2025 11:28:00 +0100
-Message-ID: <20250207102802.2445596-7-pbonzini@redhat.com>
+Subject: [PULL 7/7] tcg/optimize: optimize TSTNE using smask and zmask
+Date: Fri,  7 Feb 2025 11:28:01 +0100
+Message-ID: <20250207102802.2445596-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250207102802.2445596-1-pbonzini@redhat.com>
 References: <20250207102802.2445596-1-pbonzini@redhat.com>
@@ -108,159 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+Generalize the existing optimization of "TSTNE x,sign" and "TSTNE x,-1".
+This can be useful for example in the i386 frontend, which will generate
+tests of zero-extended registers against 0xffffffff.
 
-Add a test case which tests some corner case behaviour of
-fused-multiply-add on x86:
- * 0 * Inf + SNaN should raise Invalid
- * 0 * Inf + QNaN shouldh not raise Invalid
- * tininess should be detected after rounding
+Ironically, on x86 hosts this is a very slight pessimization in the very
+case it's meant to optimize because
 
-There is also one currently-disabled test case:
- * flush-to-zero should be done after rounding
+ brcond_i64 cc_dst,$0xffffffff,tsteq,$L1
 
-This is disabled because QEMU's emulation currently does this
-incorrectly (and so would fail the test).  The test case is kept in
-but disabled, as the justification for why the test running harness
-has support for testing both with and without FTZ set.
+(test %ebx, %ebx) is 1 byte smaller than
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20250116112536.4117889-3-peter.maydell@linaro.org
+ brcond_i64 cc_dst,$0x0,eq,$L1
+
+(test %rbx, %rbx).  However, in general it is an improvement, especially
+if it avoids placing a large immediate in the constant pool.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tcg/x86_64/fma.c           | 109 +++++++++++++++++++++++++++++++
- tests/tcg/x86_64/Makefile.target |   1 +
- 2 files changed, 110 insertions(+)
- create mode 100644 tests/tcg/x86_64/fma.c
+ tcg/optimize.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/tests/tcg/x86_64/fma.c b/tests/tcg/x86_64/fma.c
-new file mode 100644
-index 00000000000..09c622ebc00
---- /dev/null
-+++ b/tests/tcg/x86_64/fma.c
-@@ -0,0 +1,109 @@
-+/*
-+ * Test some fused multiply add corner cases.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <stdio.h>
-+#include <stdint.h>
-+#include <stdbool.h>
-+#include <inttypes.h>
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 8c6303e3afa..bca11cc427b 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -766,6 +766,7 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
+                                      TCGArg *p1, TCGArg *p2, TCGArg *pcond)
+ {
+     TCGCond cond;
++    TempOptInfo *i1;
+     bool swap;
+     int r;
+ 
+@@ -783,19 +784,21 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
+         return -1;
+     }
+ 
++    i1 = arg_info(*p1);
 +
-+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-+
-+/*
-+ * Perform one "n * m + a" operation using the vfmadd insn and return
-+ * the result; on return *mxcsr_p is set to the bottom 6 bits of MXCSR
-+ * (the Flag bits). If ftz is true then we set MXCSR.FTZ while doing
-+ * the operation.
-+ * We print the operation and its results to stdout.
-+ */
-+static uint64_t do_fmadd(uint64_t n, uint64_t m, uint64_t a,
-+                         bool ftz, uint32_t *mxcsr_p)
-+{
-+    uint64_t r;
-+    uint32_t mxcsr = 0;
-+    uint32_t ftz_bit = ftz ? (1 << 15) : 0;
-+    uint32_t saved_mxcsr = 0;
-+
-+    asm volatile("stmxcsr %[saved_mxcsr]\n"
-+                 "stmxcsr %[mxcsr]\n"
-+                 "andl $0xffff7fc0, %[mxcsr]\n"
-+                 "orl %[ftz_bit], %[mxcsr]\n"
-+                 "ldmxcsr %[mxcsr]\n"
-+                 "movq %[a], %%xmm0\n"
-+                 "movq %[m], %%xmm1\n"
-+                 "movq %[n], %%xmm2\n"
-+                 /* xmm0 = xmm0 + xmm2 * xmm1 */
-+                 "vfmadd231sd %%xmm1, %%xmm2, %%xmm0\n"
-+                 "movq %%xmm0, %[r]\n"
-+                 "stmxcsr %[mxcsr]\n"
-+                 "ldmxcsr %[saved_mxcsr]\n"
-+                 : [r] "=r" (r), [mxcsr] "=m" (mxcsr),
-+                   [saved_mxcsr] "=m" (saved_mxcsr)
-+                 : [n] "r" (n), [m] "r" (m), [a] "r" (a),
-+                   [ftz_bit] "r" (ftz_bit)
-+                 : "xmm0", "xmm1", "xmm2");
-+    *mxcsr_p = mxcsr & 0x3f;
-+    printf("vfmadd132sd 0x%" PRIx64 " 0x%" PRIx64 " 0x%" PRIx64
-+           " = 0x%" PRIx64 " MXCSR flags 0x%" PRIx32 "\n",
-+           n, m, a, r, *mxcsr_p);
-+    return r;
-+}
-+
-+typedef struct testdata {
-+    /* Input n, m, a */
-+    uint64_t n;
-+    uint64_t m;
-+    uint64_t a;
-+    bool ftz;
-+    /* Expected result */
-+    uint64_t expected_r;
-+    /* Expected low 6 bits of MXCSR (the Flag bits) */
-+    uint32_t expected_mxcsr;
-+} testdata;
-+
-+static testdata tests[] = {
-+    { 0, 0x7ff0000000000000, 0x7ff000000000aaaa, false, /* 0 * Inf + SNaN */
-+      0x7ff800000000aaaa, 1 }, /* Should be QNaN and does raise Invalid */
-+    { 0, 0x7ff0000000000000, 0x7ff800000000aaaa, false, /* 0 * Inf + QNaN */
-+      0x7ff800000000aaaa, 0 }, /* Should be QNaN and does *not* raise Invalid */
-+    /*
-+     * These inputs give a result which is tiny before rounding but which
-+     * becomes non-tiny after rounding. x86 is a "detect tininess after
-+     * rounding" architecture, so it should give a non-denormal result and
-+     * not set the Underflow flag (only the Precision flag for an inexact
-+     * result).
-+     */
-+    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, false,
-+      0x8010000000000000, 0x20 },
-+    /*
-+     * Flushing of denormal outputs to zero should also happen after
-+     * rounding, so setting FTZ should not affect the result or the flags.
-+     * QEMU currently does not emulate this correctly because we do the
-+     * flush-to-zero check before rounding, so we incorrectly produce a
-+     * zero result and set Underflow as well as Precision.
-+     */
-+#ifdef ENABLE_FAILING_TESTS
-+    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, true,
-+      0x8010000000000000, 0x20 }, /* Enabling FTZ shouldn't change flags */
-+#endif
-+};
-+
-+int main(void)
-+{
-+    bool passed = true;
-+    for (int i = 0; i < ARRAY_SIZE(tests); i++) {
-+        uint32_t mxcsr;
-+        uint64_t r = do_fmadd(tests[i].n, tests[i].m, tests[i].a,
-+                              tests[i].ftz, &mxcsr);
-+        if (r != tests[i].expected_r) {
-+            printf("expected result 0x%" PRIx64 "\n", tests[i].expected_r);
-+            passed = false;
-+        }
-+        if (mxcsr != tests[i].expected_mxcsr) {
-+            printf("expected MXCSR flags 0x%x\n", tests[i].expected_mxcsr);
-+            passed = false;
-+        }
-+    }
-+    return passed ? 0 : 1;
-+}
-diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
-index d6dff559c7d..be20fc64e88 100644
---- a/tests/tcg/x86_64/Makefile.target
-+++ b/tests/tcg/x86_64/Makefile.target
-@@ -18,6 +18,7 @@ X86_64_TESTS += adox
- X86_64_TESTS += test-1648
- X86_64_TESTS += test-2175
- X86_64_TESTS += cross-modifying-code
-+X86_64_TESTS += fma
- TESTS=$(MULTIARCH_TESTS) $(X86_64_TESTS) test-x86_64
- else
- TESTS=$(MULTIARCH_TESTS)
+     /*
+      * TSTNE x,x -> NE x,0
+-     * TSTNE x,-1 -> NE x,0
++     * TSTNE x,i -> NE x,0 if i includes all nonzero bits of x
+      */
+-    if (args_are_copies(*p1, *p2) || arg_is_const_val(*p2, -1)) {
++    if (args_are_copies(*p1, *p2) ||
++        (arg_is_const(*p2) && (i1->z_mask & ~arg_info(*p2)->val) == 0)) {
+         *p2 = arg_new_constant(ctx, 0);
+         *pcond = tcg_tst_eqne_cond(cond);
+         return -1;
+     }
+ 
+-    /* TSTNE x,sign -> LT x,0 */
+-    if (arg_is_const_val(*p2, (ctx->type == TCG_TYPE_I32
+-                               ? INT32_MIN : INT64_MIN))) {
++    /* TSTNE x,i -> LT x,0 if i only includes sign bit copies */
++    if (arg_is_const(*p2) && (arg_info(*p2)->val & ~i1->s_mask) == 0) {
+         *p2 = arg_new_constant(ctx, 0);
+         *pcond = tcg_tst_ltge_cond(cond);
+         return -1;
 -- 
 2.48.1
 
