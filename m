@@ -2,139 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F54CA2D186
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 00:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13BDA2D2E8
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 03:09:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgXs9-0005ci-U3; Fri, 07 Feb 2025 18:34:57 -0500
+	id 1tgaGE-0004BJ-0Z; Fri, 07 Feb 2025 21:07:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kim.phillips@amd.com>)
- id 1tgXs8-0005c5-IG
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 18:34:56 -0500
-Received: from mail-bn8nam12on2062e.outbound.protection.outlook.com
- ([2a01:111:f403:2418::62e]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kim.phillips@amd.com>)
- id 1tgXs6-0005qi-HM
- for qemu-devel@nongnu.org; Fri, 07 Feb 2025 18:34:56 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jKCiMuZF5SrJ9C95BYhoSYBMJ0sFvYkIxUHn5rChuHRsjNwlHT1UrcfGsHAnlMaApx5bd29KFfugVk3bs3t6emFtcMOu4b80BBu39z9BYsIB/q2hIDJnPLhrqcwpEq5PA0tqB61zly693z1nibr2hbF/8iS8/fGvweHhZxhJy4wz6cLQRS/3NL0jxgwFBY83KVUCzwv/ocjG8J3WZP/vQ2lDRlvCAg7vQ5lDL8max5iH1U6AS/94tXdsphxQ1x4JfqDtjf+Sjm5gIDBZEXv2yWD6jYUQM16E7UqBrnvOvm6uC5v84r+rJW5PWkREly2oDFkeNnERUkRB32R7Ok508w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5zCyf/9o8EcVmGuPfIo75VZBwAT40Wd68cp9w/rW7hk=;
- b=g7sNN1nJGZEspruhMdppsGx+dl1cp+PNMVPzcM+7kM8k92oYbdBlebiEHIqY1f+r9N6SrYgQEHIfLOCzk0r9pv6dDfDFfJA3SVhweI6j2QWm6q0wfF2f3CMzBtp82Ue3/dYCsTXflAzTqsMLYfQ/Cx8E06OIjg1LFqD6tCo92qqLEF/bdGdmqx/wxYzP7CoNA82I8aanCkte9zCnCtxIQImjXQE+BjiYG64x/OC41pkBStXRH2cNwJHXysUQeotnJSwgiVQRwOP2z+/bxBNz+bWy6eNPuNrOQ8LtfMTG173IiJjG1RZw2+cOaajxHsmhb5zEUPhowW4utUZ7kSNlUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5zCyf/9o8EcVmGuPfIo75VZBwAT40Wd68cp9w/rW7hk=;
- b=Hl8qAsoZ/fxfiFvahHH0fggpvfRXgXXC28ZD9IeG++kuym3vQi7rlpZVZX33N9D+tScbb7NOO6D6cKHtff9qQSJOCQ7tkxmtLGiT57M7zIjt3TIJQDA+3s3YkEf1XoPFG0cCqEpBWA5NTFRPhTZ2e8Up9n3BxSPxJPufXSZiwSs=
-Received: from BL0PR1501CA0032.namprd15.prod.outlook.com
- (2603:10b6:207:17::45) by DS0PR12MB8454.namprd12.prod.outlook.com
- (2603:10b6:8:15e::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.10; Fri, 7 Feb
- 2025 23:34:47 +0000
-Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
- (2603:10b6:207:17:cafe::e4) by BL0PR1501CA0032.outlook.office365.com
- (2603:10b6:207:17::45) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.30 via Frontend Transport; Fri,
- 7 Feb 2025 23:34:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8398.14 via Frontend Transport; Fri, 7 Feb 2025 23:34:47 +0000
-Received: from zweier.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 7 Feb
- 2025 17:34:46 -0600
-From: Kim Phillips <kim.phillips@amd.com>
-To: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>
-CC: Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, "Nikunj A .
- Dadhania" <nikunj@amd.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sean Christopherson <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>, Kim Phillips <kim.phillips@amd.com>,
- "Kishon Vijay Abraham I" <kvijayab@amd.com>
-Subject: [PATCH v3 2/2] KVM: SEV: Configure "ALLOWED_SEV_FEATURES" VMCB Field
-Date: Fri, 7 Feb 2025 17:34:09 -0600
-Message-ID: <20250207233410.130813-3-kim.phillips@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250207233410.130813-1-kim.phillips@amd.com>
-References: <20250207233410.130813-1-kim.phillips@amd.com>
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@gmail.com>)
+ id 1tgaGB-0004Ap-Q0
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 21:07:55 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@gmail.com>)
+ id 1tgaG9-0007Je-P3
+ for qemu-devel@nongnu.org; Fri, 07 Feb 2025 21:07:55 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-21f53ad05a0so20955975ad.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 18:07:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1738980472; x=1739585272; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oTMdW6hNFsTAb1VH85K0+3nOEFz1Thjnz9Om4MyPZDU=;
+ b=lYc+dpm1oXMz5zuCH4fsF1Nu25ksgYqhaIdnIEDN0AeKaC7n2tYA+aFmt8lEvmBeLt
+ oXYUvGKmUH9N/gmyjA/18Iw+WIyQGIh9K9swPuxfwMeh16gfIcbMobdroabQSc/R0HX9
+ AhCb8+f2cYNgWgCJO9qoz1RagBmk8fWI4Oc57em6DblYzWEF2f9ergyB4NJgnvfTOgHu
+ d2lT4kfNmUg1XC5ohA7sWncFjirhqTqG1zugh2+ggcfl6OMq8uxY9GKpAh7CpKYqdY60
+ AJXAgOzIt8w7JrypMWY+4TA9qSUYsnZ/QcDncMOeCv12Slw9L4PlhgVFb9/4KqjGN3QS
+ sHdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738980472; x=1739585272;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oTMdW6hNFsTAb1VH85K0+3nOEFz1Thjnz9Om4MyPZDU=;
+ b=O/SY5Giv1CpVFLDCOZmtE9BzV2eXanrV4YjqNlyHUbKCdEpyJlrewobk/9HTIXABAA
+ Yv9ExRLYpf3PacnZv2vDoQjRpTaYQLrRLkzuvWETMwWXEkL772bbWgokvRW7KXdG09R+
+ XNBjhA9OgIC3fXcmpS7jxW2OR5WJlNVTg3lB5AZkKR2b+kJe2C+DPQQCsB7sZNb2RJrA
+ gx9RRMJSzyC13eiR1Lmw0Ib95vjd5cAPT/JWBKviuBTAcTN9R5/tbRZnZzYaQpthAUAd
+ IymLeORy1yIGqTFGXbRgv3clPi+VbkIW6Y4fI5qoOOBrdXTT3KKnd7KT1zFMU9tfzlHS
+ zg9Q==
+X-Gm-Message-State: AOJu0YzQXaGvIvonIdVhBKwH/Cv2d8dhSq40eOTwQIv6rrUVSxfEn6PO
+ xCTJmB8lcrJtqU9JkbtcBqg67ujC8ZRX2uuBwFt+U+mNUiKOrNlCzaMvplg53Xu+SUkFvaWUtvU
+ Kgwmo5tJwo79F8lN1EKTeG8BgU6A=
+X-Gm-Gg: ASbGncsNV+3fc1GM3CDbOytNp2i8sGx26lav4B7S2ytgjW5kfHBj6cZsHXpgLZPZ7U0
+ S4lHlLtI3FgNj0mZWeEBdlTGAIJdZxpLAS11/5n3nnJ86Es5NXCC8mU1PoQMnc/Q5vLxhklFeHq
+ SLXA==
+X-Google-Smtp-Source: AGHT+IFYR5arAQZKPJ4H0AH9VCzSGmRFT8cYL+mhkVufL0LpZIgzwCzWwiIzH66qRajKZgczbYnJ/eJfynhjWaR5XAE=
+X-Received: by 2002:a17:902:db0b:b0:21f:123b:8f84 with SMTP id
+ d9443c01a7336-21f4e76ec2amr97398115ad.46.1738980471702; Fri, 07 Feb 2025
+ 18:07:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|DS0PR12MB8454:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0987dc23-2bbc-4ee3-22de-08dd47d0026f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|1800799024|376014|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iPNsxxPa6r8VLkujid06bvadA6vJTZ80XJf+i9Rul1adGS0a0krHNdKEnZsg?=
- =?us-ascii?Q?9U68Kam5kQfnTjx7gVJVcODbrCtiQlyLuDKcm1Mshb17z663kF/WN5fpM7uN?=
- =?us-ascii?Q?2LP6O6jhhz4HGsbR54YxJ6riRmtR1RN6g0Qe8/DiTKFnmVypvajedtmXJsBS?=
- =?us-ascii?Q?9wEyjB3ZUeGgSRFLDuADZEOTUjv1l4COe114HSlWKIX1tLjyZsVRrJ3nTmZs?=
- =?us-ascii?Q?/y3NfiPdqM9MfqNW2A5S8LUoV0/yFOuchjV0naansmdVNkW6Q9R84z9kwl9P?=
- =?us-ascii?Q?hcircUbG5DLp2ZC+LmCEgSobNjs7yFPDTNPwwxGmZJi30ZXATlA7Woq1XlTg?=
- =?us-ascii?Q?Gtfpxv2pGXJ/JyxAfQmYhP5cudNFOJrhJEBAfTXaZvo8Juf08nWE6MoGsrqO?=
- =?us-ascii?Q?sA/pTnzIQEhPHFUrgJlpDMCGbwFGUqpssx1mjnBAmc0vX1el/7phWCiCXHSq?=
- =?us-ascii?Q?t3L9vCvLV2ifgek44etRD1WgeiXI9Dz1J7o7Qyut9GXbfQX81PpGk770agQz?=
- =?us-ascii?Q?o+nb+CHcy7s9fkMc+pHArs+XSvigtjdXuaCcYrM5MV8b9lbY0QmgLcqNYZmr?=
- =?us-ascii?Q?0jUJbNrmTSjSILraK2NVSPXYOzijJObR/TdZXIqIFuG7CXpbrrzKElT5xQPO?=
- =?us-ascii?Q?YgXBi4a7KO+nPRitCaw6Yt+PDrAVP0pcE5MZFOLm8arSYGmYoCOo3Gwat8Z7?=
- =?us-ascii?Q?pmtLTtcf8kvr0i7B1jFA9h1jJzgF6H84b3CZTwbNo52iPV/+KBvnhy50l5tp?=
- =?us-ascii?Q?kGphKOlkK4VSlJvc4AwEn78UiLwko5NmVN7tOBQ2mG5GHSDIObodxlRo6jAE?=
- =?us-ascii?Q?j8UIKjzNlZRYXLzm9tvhwS+qq8r68S2WfaE/yaV+WxZmIJWBggqo3iWDWVyj?=
- =?us-ascii?Q?kNcyTdAPFtfMhJJxfl5EPueYJCJENnjWdQcUhSUMZ6ut05nT8VflHb8z1ec4?=
- =?us-ascii?Q?LXyt6wsz4ZM4dz0WxILgRlfhR3IfB6UIiul4f+DQlpjNuQiCM3zmi05YR/6d?=
- =?us-ascii?Q?l/PICDzuaRhEGfGuugby5PkTWyiG2ORDZaw0bZNeFtHvyQo+kqILJxzpEHQl?=
- =?us-ascii?Q?L886zBBtRUptG/NnWv6N9pIMO1xmiYd18w56GPpABjo4qxHcgolacSzso8Oz?=
- =?us-ascii?Q?7csiysfiLJVYktu3UWDkl1Sfdq3JwHDgSr1+5i3lJimm+3IkQT0Qv6kL8E+T?=
- =?us-ascii?Q?0+kQY9FOpIz+jiK6/6eO62UgXGq8qj5tJusAKb/DHAnxvpFu/5LSBj/GB8tj?=
- =?us-ascii?Q?SR8THDNBf2WlQGoic3LAcpjSZJ19MxzONuK3bF2TH6nZinfvC2CtdJPycD+G?=
- =?us-ascii?Q?EJQ8mx63XJXAm91NGFSiEXazawFRcwIbtxplXzUEb8OZ9IIC3mBlE5s4nAYD?=
- =?us-ascii?Q?WiROrHQueeN7SIVjvL1TGvwv4ZeCQ5ig6ZMsP4n3GuVj/On8sg6mpEbSAdcA?=
- =?us-ascii?Q?zWES6B/Yq1A=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(13003099007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 23:34:47.5460 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0987dc23-2bbc-4ee3-22de-08dd47d0026f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FB.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8454
-Received-SPF: permerror client-ip=2a01:111:f403:2418::62e;
- envelope-from=kim.phillips@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+References: <20230622214845.3980-1-joao.m.martins@oracle.com>
+ <CAMj5Bki73PNZdZvNAsK1YJiWGMeZugQCZ18QPekCM5EN61QqBg@mail.gmail.com>
+ <62d4bffa-a912-48b4-9a7c-b16b21bffb7a@oracle.com>
+In-Reply-To: <62d4bffa-a912-48b4-9a7c-b16b21bffb7a@oracle.com>
+From: Zhangfei Gao <zhangfei.gao@gmail.com>
+Date: Sat, 8 Feb 2025 10:07:40 +0800
+X-Gm-Features: AWEUYZl1VAjvmacfxZ2ekARikAbYi_kzLmN2XJSxkjuU1uXv9Q0eLxvv2cd3OBU
+Message-ID: <CAMj5Bkh9zEGBa6NgWAD3X7F4sG_we5tnKKyQdA6HF_ZyPBqwjA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/15] vfio: VFIO migration support with vIOMMU
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>, 
+ Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+ Zhangfei Gao <zhangfei.gao@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=zhangfei.gao@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,109 +103,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AMD EPYC 5th generation processors have introduced a feature that allows
-the hypervisor to control the SEV_FEATURES that are set for, or by, a
-guest [1].  ALLOWED_SEV_FEATURES can be used by the hypervisor to enforce
-that SEV-ES and SEV-SNP guests cannot enable features that the
-hypervisor does not want to be enabled.
+On Wed, Jan 22, 2025 at 12:43=E2=80=AFAM Joao Martins <joao.m.martins@oracl=
+e.com> wrote:
+>
+> On 07/01/2025 06:55, Zhangfei Gao wrote:
+> > Hi, Joao
+> >
+> > On Fri, Jun 23, 2023 at 5:51=E2=80=AFAM Joao Martins <joao.m.martins@or=
+acle.com> wrote:
+> >>
+> >> Hey,
+> >>
+> >> This series introduces support for vIOMMU with VFIO device migration,
+> >> particurlarly related to how we do the dirty page tracking.
+> >>
+> >> Today vIOMMUs serve two purposes: 1) enable interrupt remaping 2)
+> >> provide dma translation services for guests to provide some form of
+> >> guest kernel managed DMA e.g. for nested virt based usage; (1) is spec=
+ially
+> >> required for big VMs with VFs with more than 255 vcpus. We tackle both
+> >> and remove the migration blocker when vIOMMU is present provided the
+> >> conditions are met. I have both use-cases here in one series, but I am=
+ happy
+> >> to tackle them in separate series.
+> >>
+> >> As I found out we don't necessarily need to expose the whole vIOMMU
+> >> functionality in order to just support interrupt remapping. x86 IOMMUs
+> >> on Windows Server 2018[2] and Linux >=3D5.10, with qemu 7.1+ (or reall=
+y
+> >> Linux guests with commit c40aaaac10 and since qemu commit 8646d9c773d8=
+)
+> >> can instantiate a IOMMU just for interrupt remapping without needing t=
+o
+> >> be advertised/support DMA translation. AMD IOMMU in theory can provide
+> >> the same, but Linux doesn't quite support the IR-only part there yet,
+> >> only intel-iommu.
+> >>
+> >> The series is organized as following:
+> >>
+> >> Patches 1-5: Today we can't gather vIOMMU details before the guest
+> >> establishes their first DMA mapping via the vIOMMU. So these first fou=
+r
+> >> patches add a way for vIOMMUs to be asked of their properties at start
+> >> of day. I choose the least churn possible way for now (as opposed to a
+> >> treewide conversion) and allow easy conversion a posteriori. As
+> >> suggested by Peter Xu[7], I have ressurected Yi's patches[5][6] which
+> >> allows us to fetch PCI backing vIOMMU attributes, without necessarily
+> >> tieing the caller (VFIO or anyone else) to an IOMMU MR like I
+> >> was doing in v3.
+> >>
+> >> Patches 6-8: Handle configs with vIOMMU interrupt remapping but withou=
+t
+> >> DMA translation allowed. Today the 'dma-translation' attribute is
+> >> x86-iommu only, but the way this series is structured nothing stops fr=
+om
+> >> other vIOMMUs supporting it too as long as they use
+> >> pci_setup_iommu_ops() and the necessary IOMMU MR get_attr attributes
+> >> are handled. The blocker is thus relaxed when vIOMMUs are able to togg=
+le
+> >> the toggle/report DMA_TRANSLATION attribute. With the patches up to th=
+is set,
+> >> we've then tackled item (1) of the second paragraph.
+> >
+> > Not understanding how to handle the device page table.
+> >
+> > Does this mean after live-migration, the page table built by vIOMMU
+> > will be re-build in the target guest via pci_setup_iommu_ops?
+>
+> AFAIU It is supposed to be done post loading the vIOMMU vmstate when enab=
+ling
+> the vIOMMU related MRs. And when walking the different 'emulated' address=
+ spaces
+>  it will replay all mappings (and skip non-present parts of the address s=
+pace).
+>
+> The trick in making this work largelly depends on individual vIOMMU
+> implementation (and this emulated vIOMMU stuff shouldn't be confused with=
+ IOMMU
+> nesting btw!). In intel case (and AMD will be similar) the root table poi=
+nter
+> that's part of the vmstate has all the device pagetables, which is just g=
+uest
+> memory that gets migrated over and enough to resolve VT-d/IVRS page walks=
+.
+>
+> The somewhat hard to follow part is that when it replays it walks all the=
+ whole
+> DMAR memory region and only notifies IOMMU MR listeners if there's a pres=
+ent PTE
+> or skip it. So at the end of the enabling of MRs the IOTLB gets reconstru=
+cted.
+> Though you would have to try to understand the flow with the vIOMMU you a=
+re using.
+>
+> The replay in intel-iommu is triggered more or less this stack trace for =
+a
+> present PTE:
+>
+> vfio_iommu_map_notify
+> memory_region_notify_iommu_one
+> vtd_replay_hook
+> vtd_page_walk_one
+> vtd_page_walk_level
+> vtd_page_walk_level
+> vtd_page_walk_level
+> vtd_page_walk
+> vtd_iommu_replay
+> memory_region_iommu_replay
+> vfio_listener_region_add
+> address_space_update_topology_pass
+> address_space_set_flatview
+> memory_region_transaction_commit
+> vtd_switch_address_space
+> vtd_switch_address_space_all
+> vtd_post_load
+> vmstate_load_state
+> vmstate_load
+> qemu_loadvm_section_start_full
+> qemu_loadvm_state_main
+> qemu_loadvm_state
+> process_incoming_migration_co
 
-When ALLOWED_SEV_FEATURES is enabled, a VMRUN will fail if any
-non-reserved bits are 1 in SEV_FEATURES but are 0 in
-ALLOWED_SEV_FEATURES.
+Thanks Joao for the info
 
-Some SEV_FEATURES - currently PmcVirtualization and SecureAvic
-(see Appendix B, Table B-4) - require an opt-in via ALLOWED_SEV_FEATURES,
-i.e. are off-by-default, whereas all other features are effectively
-on-by-default, but still honor ALLOWED_SEV_FEATURES.
+Sorry, some more questions,
 
-[1] Section 15.36.20 "Allowed SEV Features", AMD64 Architecture
-    Programmer's Manual, Pub. 24593 Rev. 3.42 - March 2024:
-    https://bugzilla.kernel.org/attachment.cgi?id=306250
+When src boots up, the guest kernel will send commands to qemu.
+qemu will consume these commands, and trigger
 
-Co-developed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
----
- arch/x86/include/asm/svm.h |  5 ++++-
- arch/x86/kvm/svm/sev.c     | 17 +++++++++++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+smmuv3_cmdq_consume
+smmu_realloc_veventq
+smmuv3_cmdq_consume
+smmuv3_cmdq_consume SMMU_CMD_CFGI_STE
+smmuv3_install_nested_ste
+iommufd_backend_alloc_hwpt
+host_iommu_device_iommufd_attach_hwpt
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index e2fac21471f5..6d94a727cc1a 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -158,7 +158,9 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- 	u64 avic_physical_id;	/* Offset 0xf8 */
- 	u8 reserved_7[8];
- 	u64 vmsa_pa;		/* Used for an SEV-ES guest */
--	u8 reserved_8[720];
-+	u8 reserved_8[40];
-+	u64 allowed_sev_features;	/* Offset 0x138 */
-+	u8 reserved_9[672];
- 	/*
- 	 * Offset 0x3e0, 32 bytes reserved
- 	 * for use by hypervisor/software.
-@@ -289,6 +291,7 @@ static_assert((X2AVIC_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AVIC_
- #define SVM_SEV_FEAT_RESTRICTED_INJECTION		BIT(3)
- #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
- #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
-+#define SVM_SEV_FEAT_ALLOWED_SEV_FEATURES		BIT_ULL(63)
- 
- #define SVM_SEV_FEAT_INT_INJ_MODES		\
- 	(SVM_SEV_FEAT_RESTRICTED_INJECTION |	\
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a2a794c32050..a9e16792cac0 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -894,9 +894,19 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- 	return 0;
- }
- 
-+static u64 allowed_sev_features(struct kvm_sev_info *sev)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_ALLOWED_SEV_FEATURES) &&
-+	    (sev->vmsa_features & SVM_SEV_FEAT_ALLOWED_SEV_FEATURES))
-+		return sev->vmsa_features;
-+
-+	return 0;
-+}
-+
- static int __sev_launch_update_vmsa(struct kvm *kvm, struct kvm_vcpu *vcpu,
- 				    int *error)
- {
-+	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
- 	struct sev_data_launch_update_vmsa vmsa;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	int ret;
-@@ -906,6 +916,8 @@ static int __sev_launch_update_vmsa(struct kvm *kvm, struct kvm_vcpu *vcpu,
- 		return -EINVAL;
- 	}
- 
-+	svm->vmcb->control.allowed_sev_features = allowed_sev_features(sev);
-+
- 	/* Perform some pre-encryption checks against the VMSA */
- 	ret = sev_es_sync_vmsa(svm);
- 	if (ret)
-@@ -2447,6 +2459,8 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 		struct vcpu_svm *svm = to_svm(vcpu);
- 		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
- 
-+		svm->vmcb->control.allowed_sev_features = allowed_sev_features(sev);
-+
- 		ret = sev_es_sync_vmsa(svm);
- 		if (ret)
- 			return ret;
-@@ -3069,6 +3083,9 @@ void __init sev_hardware_setup(void)
- 	sev_supported_vmsa_features = 0;
- 	if (sev_es_debug_swap_enabled)
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-+
-+	if (sev_es_enabled && cpu_feature_enabled(X86_FEATURE_ALLOWED_SEV_FEATURES))
-+		sev_supported_vmsa_features |= SVM_SEV_FEAT_ALLOWED_SEV_FEATURES;
- }
- 
- void sev_hardware_unsetup(void)
--- 
-2.43.0
+After live-migration, the dst does not get these commands, so it does
+not call smmuv3_install_nested_ste etc.
+so the dma page table is not set up and the kernel reports errors.
 
+Not sure if we need to set up these commands in the dst, or directly
+copy the existing page table from src to the dst.
+
+Thanks
 
