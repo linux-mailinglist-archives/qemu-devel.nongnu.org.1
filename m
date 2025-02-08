@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8522A2D8BD
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB78A2D8BC
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:58:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgrtS-0001uS-FO; Sat, 08 Feb 2025 15:57:38 -0500
+	id 1tgrtS-0001uU-Pm; Sat, 08 Feb 2025 15:57:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtM-0001sR-3c
+ id 1tgrtM-0001sb-MU
  for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:32 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtK-00057U-FJ
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:31 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-21f78b1fb7dso4824165ad.3
+ id 1tgrtL-00057k-4L
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:32 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-21f53ad05a0so28320885ad.3
  for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 12:57:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739048249; x=1739653049; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739048250; x=1739653050; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U+e3NmMpDYxhMb26080aeO1z+Gh7xEdjEvCdFDBVM7k=;
- b=NbdpL+oMJB5T22EhZxUtSiq5QjvyfVV0DtAaHhMIy11/HaNSdAovWjHV8RnTNz3E1P
- bV6eLAFJdqxC1D1/M//FFvVREkSv5ICTT5geXlX7DWE1Xrq2IZ2adJucYgI266yLxlRm
- HzXpYcVFtq6+fVTo7nB7GEoGiJp4XcPDnLMo+JwtKDeufQTtTBclGsBvw1SY6Mtm1VpR
- mVyZW6eCYiKQlYNMay3RLofy+UKRvEkmyNk52ahxL+A7YMUgGIQ/AeS3zbzWP4KjJytk
- OnCX7dMfMWiZrzDuL23lhcmZY+VSmsh+xcTVsyEgAgeUyXvW6/A8osMk/ib3R1ohvuXl
- Jhrg==
+ bh=j2FzoHSuAoX+1zQ7RA2/urh/hio8OfZSmlzrSvDG4W4=;
+ b=EM9g0quJb+N3RL+8CFgcIMquKAfT365FU2Z6hfcklfUS1t/sT7No6cM0xtq00NbmI2
+ wUKxJMEuULZfGWiG4nMjFEB6x0hhZrXQ96tyV2JQGcKO0lQ0W9sEW2SSTnivUf1MIa7o
+ CCF/GMcLpWkClRkvNe7XTKNJFiu+H+LW2c3blDS5DpZLM44T1dwYCRHK9+2jXrUbYnee
+ jW9olGWkHkoWHNq0FImWlQfMGQJkYu6J73MwGkO4sbxfZ8S/WPAbH5mCyfnrR/t4ffY5
+ pluGP9rCJLaXCpdOQnTyrI78rKDJZf/Ku5Q83XAdM0dGtg7RLMZtYEfaapNR9p4wgiEw
+ 0/sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739048249; x=1739653049;
+ d=1e100.net; s=20230601; t=1739048250; x=1739653050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U+e3NmMpDYxhMb26080aeO1z+Gh7xEdjEvCdFDBVM7k=;
- b=l7pZlVS5EnDdg7aqy1kcAbzRRqsJrxq8KG87zgGi283ncaEYkJj9Q0Sg2WZz21EjGz
- 3c3pe12pbQMmIaLNGKgHMWLzlXmwwu0gIDqHlFgmEFpmpVdHAJKAMfa3/IPocHg2iY2Y
- W1LfXGnXWw8cFGGdLpphfL1WrCAzTTDOTsyZr8XugDS5fp2OMlIByGNkzoS3f8uw1stw
- uwRlK9dlSgROe0IwwQudV938q5wea+ExoLVRqhwF4+a4fQnzbIP/ugfY9akvHWJL8w12
- mHvgwAFUOK7C5OBmpszuWxS6l6t9mOqm2glGRwZR/NPuGGEmDeAp+1Q+ejvdXRwSIdkn
- n36A==
-X-Gm-Message-State: AOJu0YxL2gk5UEQeNl3CQ5Na1w4t/rHKD5yAxOKpd/H4EtcBoc4xng42
- so0EAkyTIzPZjX5APJsT9VvIK9YULuVwz3bMudGuPDzQwPp0P5is5G/ytEtp0vDKLLe/opw2EZe
- Q
-X-Gm-Gg: ASbGncvVMN+SSshTHDAWUsPkSCg8kHHUHXC6PGhvyls0/DRB3OpFJB5ClZdN8JSqQ0j
- 7rn0RMG7LqWi2QuGHG1/MaZj0IfR10P2B7FLzvDB1FvvHiIw59RiRb05gk5/a96jgWksYVlloMk
- qg9qAcfkG6tTN005ggbXTt0ify0Y3kJorRlE+zXAtbMNFFSvhbortSNK5sYy694nwdeo3AZviZc
- n8gf6YTl8dtdNVSKpYMMY1/zWlEknNmO/lMpCMLipIJJARpp1ECARu485i2sOwrhNrweuq5TEuB
- 3/2fbHgUMB2aaFxXnMTnPtjI2zrVm2vjZC32AGzxJD/FmVk=
-X-Google-Smtp-Source: AGHT+IF7utxRzvlgzmcC0OXBEZFDclZK3/iC5bZ8Yj3+W/0IealyWxqP4xTk4Sl2/4GVII3GwcBTXQ==
-X-Received: by 2002:a17:903:2311:b0:215:b5c6:9ee8 with SMTP id
- d9443c01a7336-21f4e6a028cmr118157045ad.7.1739048249079; 
+ bh=j2FzoHSuAoX+1zQ7RA2/urh/hio8OfZSmlzrSvDG4W4=;
+ b=XFZp3ZlOuFXF2Q85qZS6zlg6KBkzYD03oZ95ryskA0PMK7VNx2vP/gfv5eI9pGZaiF
+ pWPBf21REabPVtUY911ETPSNB9xp2DPYMGBOHqUrMEz928Jq7N7qGZ9OhryiNiy110GN
+ sJ21Ec9ZhF1Z+xOrl1u4IoSND8EOsD73iqHm5KIBijSxO0JHXT78a2MXlQRJL2lo9yhX
+ I3DVrZgunRKa7iItZCm0ipaMtC6ntFfISTQiF4MZpd2Vef3gUpiI7j8CJ+kZSl+6avOC
+ WQYu1SEsqjnHupBYM03WOQt8Q+n/MW2PUEPyvtgg3IGkxovyJ1I6zYuEzP2uTX/aGhte
+ y8xA==
+X-Gm-Message-State: AOJu0YxcKEsbzZlIPAAnmFd8P2Zn2OHadoe0qe57Bze4vT6BjxFQuUtq
+ wp6GhVc9fliHgL3NHtBqhW+GT1PvtqzhLh3vhNxRXlc91TdtOdkdX7Hk/rxETcufkMM94/U4/SB
+ 6
+X-Gm-Gg: ASbGnctX6moPK0i/sqQbY9SQgrfxBLH5C02lIGQ354KczxL3BwTPoOE2xXy+VzCUWuS
+ e+eUQFeEDbWES/ucumy0uc/h9UfxJCbiKwoNS8vSeMhtGpowTFP1MQeXjqHdu9W+Au87SJ4ChRF
+ a5e9PPYr8X/1oTPO5fD6C0T4wz8cOB1vXcedwsEciGbzShBlKBUhDsrC1H5gpye9c6bNQvn7WTb
+ Pz9pY+0rBTMoC3hF4ZyOn9K0HRDrrxkUCpqffy1OKCEWSwy3xhQ9jYlF1E09vQRxiksuS+1KxeD
+ 6RiBcEBDP9srY9V2dZhwOrDu22s8veGyTO3/sELcn0+4RI4=
+X-Google-Smtp-Source: AGHT+IGzc0jiyUgdQJtK1eufS6pLuTxjzL3AiQUBpJNMenVWLgTbVutyoXfzW7H2XuAd5DGiNlCs+A==
+X-Received: by 2002:a17:902:d592:b0:217:9172:2ce1 with SMTP id
+ d9443c01a7336-21f4e6d7d8bmr158877355ad.22.1739048249867; 
  Sat, 08 Feb 2025 12:57:29 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.28
+ d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Feb 2025 12:57:28 -0800 (PST)
+ Sat, 08 Feb 2025 12:57:29 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/9] meson: Disallow 64-bit on 32-bit HVF/NVMM/WHPX emulation
-Date: Sat,  8 Feb 2025 12:57:19 -0800
-Message-ID: <20250208205725.568631-5-richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 5/9] gitlab-ci: Replace aarch64 with arm in cross-i686-tci build
+Date: Sat,  8 Feb 2025 12:57:20 -0800
+Message-ID: <20250208205725.568631-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250208205725.568631-1-richard.henderson@linaro.org>
 References: <20250208205725.568631-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,42 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Require a 64-bit host binary to spawn a 64-bit guest.
+Configuration of 64-bit host on 32-bit guest will shortly
+be denied.  Use a 32-bit guest instead.
 
-For HVF this is trivially true because macOS 11 dropped
-support for 32-bit applications entirely.
-
-For NVMM, NetBSD only enables nvmm on x86_64:
-  http://cvsweb.netbsd.org/bsdweb.cgi/src/sys/dev/nvmm/Makefile?rev=1.1.6.2;content-type=text%2Fplain
-
-For WHPX, we have already dropped support for 32-bit Windows.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .gitlab-ci.d/crossbuilds.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 911955cfa8..85317cd63f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -319,13 +319,11 @@ else
- endif
- accelerator_targets += { 'CONFIG_XEN': xen_targets }
- 
--if cpu in ['aarch64']
-+if cpu == 'aarch64'
-   accelerator_targets += {
-     'CONFIG_HVF': ['aarch64-softmmu']
-   }
--endif
--
--if cpu in ['x86', 'x86_64']
-+elif cpu == 'x86_64'
-   accelerator_targets += {
-     'CONFIG_HVF': ['x86_64-softmmu'],
-     'CONFIG_NVMM': ['i386-softmmu', 'x86_64-softmmu'],
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 95dfc39224..7ae0f966f1 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -61,7 +61,7 @@ cross-i686-tci:
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
++    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,arm-softmmu,arm-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+     # Force tests to run with reduced parallelism, to see whether this
+     # reduces the flakiness of this CI job. The CI
+     # environment by default shows us 8 CPUs and so we
 -- 
 2.43.0
 
