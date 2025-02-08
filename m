@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6B0A2D466
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 08:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D46A2D468
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 08:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgevr-0002ub-CB; Sat, 08 Feb 2025 02:07:15 -0500
+	id 1tgevr-0002ud-TN; Sat, 08 Feb 2025 02:07:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tgevl-0002rt-8D
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:07:10 -0500
+ id 1tgevm-0002rw-EL
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:07:12 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tgevi-0003PY-BS
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:07:08 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1tgevi-0003PX-R6
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:07:10 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxUa+QAqdnR0hvAA--.20860S3;
+ by gateway (Coremail) with SMTP id _____8BxeeGQAqdnSUhvAA--.25153S3;
  Sat, 08 Feb 2025 15:06:56 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxLcWPAqdnJuIFAA--.20476S3;
- Sat, 08 Feb 2025 15:06:55 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxLcWPAqdnJuIFAA--.20476S4;
+ Sat, 08 Feb 2025 15:06:56 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 1/3] hw/loongarch/virt: Rename filename acpi-build with
- virt-acpi-build
-Date: Sat,  8 Feb 2025 15:06:53 +0800
-Message-Id: <20250208070655.3039366-2-maobibo@loongson.cn>
+Subject: [PATCH 2/3] hw/loongarch/virt: Rename function prefix name
+Date: Sat,  8 Feb 2025 15:06:54 +0800
+Message-Id: <20250208070655.3039366-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250208070655.3039366-1-maobibo@loongson.cn>
 References: <20250208070655.3039366-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxLcWPAqdnJuIFAA--.20476S3
+X-CM-TRANSID: qMiowMCxLcWPAqdnJuIFAA--.20476S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,32 +63,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-File acpi-build.c is relative with virt machine type, rename it with
+Replace function prefix name loongarch_xxx with virt_xxx in file
 virt-acpi-build.c
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/loongarch/meson.build                         | 2 +-
- hw/loongarch/{acpi-build.c => virt-acpi-build.c} | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename hw/loongarch/{acpi-build.c => virt-acpi-build.c} (100%)
+ hw/loongarch/virt-acpi-build.c | 6 +++---
+ hw/loongarch/virt.c            | 2 +-
+ include/hw/loongarch/virt.h    | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
-index 005f017e21..3f020de7dc 100644
---- a/hw/loongarch/meson.build
-+++ b/hw/loongarch/meson.build
-@@ -4,6 +4,6 @@ loongarch_ss.add(files(
- ))
- common_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('fw_cfg.c'))
- loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('virt.c'))
--loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
-+loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
+diff --git a/hw/loongarch/virt-acpi-build.c b/hw/loongarch/virt-acpi-build.c
+index fdd62acf7e..9ca88d63ae 100644
+--- a/hw/loongarch/virt-acpi-build.c
++++ b/hw/loongarch/virt-acpi-build.c
+@@ -656,7 +656,7 @@ static const VMStateDescription vmstate_acpi_build = {
+     },
+ };
  
- hw_arch += {'loongarch': loongarch_ss}
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/virt-acpi-build.c
-similarity index 100%
-rename from hw/loongarch/acpi-build.c
-rename to hw/loongarch/virt-acpi-build.c
+-static bool loongarch_is_acpi_enabled(LoongArchVirtMachineState *lvms)
++static bool virt_is_acpi_enabled(LoongArchVirtMachineState *lvms)
+ {
+     if (lvms->acpi == ON_OFF_AUTO_OFF) {
+         return false;
+@@ -664,7 +664,7 @@ static bool loongarch_is_acpi_enabled(LoongArchVirtMachineState *lvms)
+     return true;
+ }
+ 
+-void loongarch_acpi_setup(LoongArchVirtMachineState *lvms)
++void virt_acpi_setup(LoongArchVirtMachineState *lvms)
+ {
+     AcpiBuildTables tables;
+     AcpiBuildState *build_state;
+@@ -674,7 +674,7 @@ void loongarch_acpi_setup(LoongArchVirtMachineState *lvms)
+         return;
+     }
+ 
+-    if (!loongarch_is_acpi_enabled(lvms)) {
++    if (!virt_is_acpi_enabled(lvms)) {
+         ACPI_BUILD_DPRINTF("ACPI disabled. Bailing out.\n");
+         return;
+     }
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 63fa0f4e32..82d840d93f 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -686,7 +686,7 @@ static void virt_done(Notifier *notifier, void *data)
+     LoongArchVirtMachineState *lvms = container_of(notifier,
+                                       LoongArchVirtMachineState, machine_done);
+     virt_build_smbios(lvms);
+-    loongarch_acpi_setup(lvms);
++    virt_acpi_setup(lvms);
+     virt_fdt_setup(lvms);
+ }
+ 
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 9ba47793ef..062f63d874 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -64,5 +64,5 @@ struct LoongArchVirtMachineState {
+ 
+ #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
+-void loongarch_acpi_setup(LoongArchVirtMachineState *lvms);
++void virt_acpi_setup(LoongArchVirtMachineState *lvms);
+ #endif
 -- 
 2.39.3
 
