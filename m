@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDDBA2D8C1
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FABA2D8C3
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:59:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgrtT-0001ui-1e; Sat, 08 Feb 2025 15:57:39 -0500
+	id 1tgrtW-0001vQ-4G; Sat, 08 Feb 2025 15:57:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtP-0001tR-AI
+ id 1tgrtP-0001th-Ss
  for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:35 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtN-00058I-AL
+ id 1tgrtO-00058S-3K
  for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:35 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-21f4500a5c3so57841115ad.3
- for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 12:57:32 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-21f6d2642faso16292215ad.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 12:57:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739048252; x=1739653052; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739048253; x=1739653053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eG/d8IONo4okZHoOBktlmuHynzB6DQe11EAuukemM7Q=;
- b=OxAsnNWj8OyD7uEI7W5eqUZ8yfjydvr+VkNo/Jkb6EOgPPOfDHMUxvUSn9kcNnhist
- 2BV/iVb+E+vig8AZjhYBB/1lkHyZVaV3RDFOVPZaWxvBVQ+TvrJ/evKp655to+e0Uc6A
- bYoLnDr1vYQxdBpdc7kY/ojBertxGWb230vKrhoOUViiryRU0ld7ldrasWqDX/Ns3JLj
- vZYnWIOB3D8hmcqYaypXlKOXna+W4QilVeKwKCjijz5OI5E1sj3RK4I2HHX411VRm+zZ
- T155veSuLFdXQ05Tf1pJiUECGGMpsu8C1ZBW2WcWy4X3K3d7x+ICm/ZAl+ti2hptZxuO
- vZJA==
+ bh=VLitLdlmGvTcmycuDS6Q71bKYSkfaIiONi8PyJuH2g8=;
+ b=y7sE+bEMnGa45uncQBP0jC1O2YfFj7joR73i7gSWmYNo/NgP73SIO6Kmmznf4ysiyE
+ sAkrTzYWsfgcnMSLAnxBx95l0Pig5oP+xg3rv+EwaEm7J49myanCkNsdGFw6NIVVQJkn
+ tr/w833SB9zkiKIvxgkZ1wNZW2vwbL+4D7yRFOxq082aQckDNnb0QtWcrnKYU8njW1z7
+ 6vEYrcoL/+xyNBgulhu4yYXD12vKITm0rhATXid03Z9VhkdXomBDA2F+yVhk6r0Bb4Ks
+ DQ76cB9EQFW9W092a3zBUT3D2ywcPDdD8mRHDMJTNaoYI/15nRCn6v7nqqFAW/Z7+qcC
+ 502g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739048252; x=1739653052;
+ d=1e100.net; s=20230601; t=1739048253; x=1739653053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eG/d8IONo4okZHoOBktlmuHynzB6DQe11EAuukemM7Q=;
- b=UII48c0BUOGx0HobYfsfA6INomZW2QUNccxisJlixhkvWvpotPKu6oR1KpC5EmFWIn
- CpcFGzvqZgxSg1FxAltyZmqdoQD7zJV0hd5vTa7OXIVqHB7kKlFfWsWnp6KVV2w7JkG5
- WVzyihjakRQtsj+Hkjl4gTs2qJGD5xJSSKmi+vewb98uQduK1rCrGHpxypbx2exjTenQ
- Zc2aq9OiAGv4IJgY70ecZVOf5D6dxNUIZ1XbE2SdXx/VcBQNZvmflSDt/mwUnRZf8KNJ
- 5HrcoaHa8EcaP6K0xFJDfLbYVH1U3eDlb/MEsqabJgU0cvSHYUrMpnAXENjz+VXuhYLb
- ciig==
-X-Gm-Message-State: AOJu0YwFuGI/JSiPrrIsinMTHiwTWfb6Ee84/KGC6uJog5TZQPDG8V03
- 7ZvP7z8DsFty164VZqBd18wW1c3uPdUF06WYIpsiVZIjwdgEt5ajoIo/7iByfvVGYra9QdvnQQG
- Q
-X-Gm-Gg: ASbGncv2JnJPGf2Dllug8D/cHEdeLhpmHA8Z07P4Qlt3P405WHp7t3o/thgKCQJDwpU
- ZOvY/R6+o+uMnuecl7ZTKBVuabDsJrhWsVBxkh9hDwpN2I819BjUbCyR1HBZz6O1QjWYrvAkYQo
- lEomtHjVcv93pXqAHq405MFdarD/FXg8fdWT4H2VyNqE5NXgnfwqgPkLxdyDdnlnQh4RVClTJ2b
- Vn4yI62zH5RKIq0oQqT2HWTQe7aGH9U4RtBN/pIaqZRNLbHsDETZ/+Z1f6V/D59zj+Cr/3LB1cl
- kPpSvvQHH6dvW4H0c/BocqkTsaFkyl3njHvLsPsGJ+jgGdI=
-X-Google-Smtp-Source: AGHT+IHuzG2ZotrVY8dk5FVqrNKTuItLVBRPbYsh3ZhCHNynrkr6hsEvCUzXmzaR67a42g9WMaEjSg==
-X-Received: by 2002:a17:903:104b:b0:215:bf1b:a894 with SMTP id
- d9443c01a7336-21f4e7249bdmr114952075ad.24.1739048252018; 
+ bh=VLitLdlmGvTcmycuDS6Q71bKYSkfaIiONi8PyJuH2g8=;
+ b=UqCCx93G30iHFUtdrq8qNdauZmuWbBZEyQ7cUZ/P/JBFH2Zkj0tn0ZWIGMRciPdE/6
+ bkUT/AfO9MZ5C7FXZAkZV8S9jnZMNVI069bJyviLGxD5y+ETWcc2Ip6/54aYctzINQ/A
+ yGerXlmJSJlDU7BmdjgGtULP18a7XzAJ/qDz6vpE+ihLPFlJ0nj+X/T1yFdbwkCrWZ5H
+ L1/f/IkTo8w4GYPd+Mj0rDftVE62F99Szxd1rGqs/kwkYkbE4G+E3BK4cySayipRRTeJ
+ NJRqH+KmR/UH3Q7iJhQ3FNiJT80TwzKn85D13y7L3gs3nr6NzWhc95VlsJ5BXIN6PYhW
+ vGfg==
+X-Gm-Message-State: AOJu0Yy/3fo/NSgx+J/ocHlU2uWokNbHAR/8mA6k6T7pr4mexVxYLNcw
+ RfP+dDo6zeUjlT3lXDsUrau1aZifGU44JBFSFTEGccrlFxL2lszUbCnuGmtl+mFufmrelvxcwOr
+ i
+X-Gm-Gg: ASbGncsldHX9E+Q/U1SBOCnmXR4SiDQFW9b6Plmr5F04VDSLcgiMpcHjBR39JEJv0jy
+ Fb34wRZRWKlQH5YvOhS9NrVzkS6R9XMCudru/BLIUXLBRulZmDGcHDn13L2DqvA1B2wPZv0FZoc
+ Z9dOBxT6vM7xpsajg5xVExeh0oiStwCGW3U8YWfjw7sR1N0EkOIJHfqk9aRalrWLQrKFAS2uvGu
+ crP+YX5uBvmB1RSJHZl3TbwKfJM0KjHJwmhKeROUYvm7z04tB9lQrh4pn10bPQOPHMERyZ5pIil
+ 4RPc+AQD1xdAxIyo+EWdYX7x3Jxbn5kzTbFMjimFaFx5QhA=
+X-Google-Smtp-Source: AGHT+IG8EMSw1/ZEdMrPh5rCbaH5f97Utm7YW63kNGvIPDBonlah5kWbsL80pCJgjuVmT3uDOgLsFQ==
+X-Received: by 2002:a17:903:1250:b0:216:4016:5aea with SMTP id
+ d9443c01a7336-21f4e7059damr128566395ad.29.1739048252771; 
  Sat, 08 Feb 2025 12:57:32 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.31
+ d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Feb 2025 12:57:31 -0800 (PST)
+ Sat, 08 Feb 2025 12:57:32 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] meson: Disallow 64-bit on 32-bit emulation
-Date: Sat,  8 Feb 2025 12:57:23 -0800
-Message-ID: <20250208205725.568631-9-richard.henderson@linaro.org>
+Subject: [PULL 9/9] meson: Deprecate 32-bit host support
+Date: Sat,  8 Feb 2025 12:57:24 -0800
+Message-ID: <20250208205725.568631-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250208205725.568631-1-richard.henderson@linaro.org>
 References: <20250208205725.568631-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,72 +100,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For system mode, we can rarely support the amount of RAM that
-the guest requires. TCG emulation is restricted to round-robin
-mode, which solves many of the atomicity issues, but not those
-associated with virtio.  In any case, round-robin does nothing
-to help the speed of emulation.
-
-For user mode, most emulation does not succeed at all.  Most
-of the time we cannot even load 64-bit non-PIE binaries due
-to lack of a 64-bit address space.  Threads are run in
-parallel, not round-robin, which means that atomicity
-is not handled.
+We deprecated i686 system mode support for qemu 8.0.  However, to
+make real cleanups to TCG we need to deprecate all 32-bit hosts.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ docs/about/deprecated.rst | 7 +++++++
+ meson.build               | 8 +++-----
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 4a3c302962..7c61d0ba16 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -204,6 +204,13 @@ is going to be so much slower it wouldn't make sense for any serious
+ instrumentation. Due to implementation differences there will also be
+ anomalies in things like memory instrumentation.
+ 
++32-bit host operating systems (since 10.0)
++''''''''''''''''''''''''''''''''''''''''''
++
++Keeping 32-bit host support alive is a substantial burden for the
++QEMU project.  Thus QEMU will in future drop the support for all
++32-bit host systems.
++
+ System emulator CPUs
+ --------------------
+ 
 diff --git a/meson.build b/meson.build
-index 85317cd63f..ec51827f40 100644
+index ec51827f40..387490d922 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3185,6 +3185,9 @@ if host_os == 'windows'
+@@ -4841,14 +4841,12 @@ if host_arch == 'unknown'
+     message('configure has succeeded and you can continue to build, but')
+     message('QEMU will use a slow interpreter to emulate the target CPU.')
    endif
+-elif host_arch == 'mips'
++elif host_long_bits < 64
+   message()
+   warning('DEPRECATED HOST CPU')
+   message()
+-  message('Support for CPU host architecture ' + cpu + ' is going to be')
+-  message('dropped as soon as the QEMU project stops supporting Debian 12')
+-  message('("Bookworm"). Going forward, the QEMU project will not guarantee')
+-  message('that QEMU will compile or work on this host CPU.')
++  message('Support for 32-bit CPU host architecture ' + cpu + ' is going')
++  message('to be dropped in a future QEMU release.')
  endif
  
-+# Detect host pointer size for the target configuration loop.
-+host_long_bits = cc.sizeof('void *') * 8
-+
- ########################
- # Target configuration #
- ########################
-@@ -3277,8 +3280,14 @@ foreach target : target_dirs
-     }
-   endif
- 
-+  config_target += keyval.load('configs/targets' / target + '.mak')
-+
-   target_kconfig = []
-   foreach sym: accelerators
-+    # Disallow 64-bit on 32-bit emulation and virtualization
-+    if host_long_bits < config_target['TARGET_LONG_BITS'].to_int()
-+      continue
-+    endif
-     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
-       config_target += { sym: 'y' }
-       config_all_accel += { sym: 'y' }
-@@ -3292,9 +3301,6 @@ foreach target : target_dirs
-     error('No accelerator available for target @0@'.format(target))
-   endif
- 
--  config_target += keyval.load('configs/targets' / target + '.mak')
--  config_target += { 'TARGET_' + config_target['TARGET_ARCH'].to_upper(): 'y' }
--
-   if 'TARGET_NEED_FDT' in config_target and not fdt.found()
-     if default_targets
-       warning('Disabling ' + target + ' due to missing libfdt')
-@@ -3307,6 +3313,7 @@ foreach target : target_dirs
-   actual_target_dirs += target
- 
-   # Add default keys
-+  config_target += { 'TARGET_' + config_target['TARGET_ARCH'].to_upper(): 'y' }
-   if 'TARGET_BASE_ARCH' not in config_target
-     config_target += {'TARGET_BASE_ARCH': config_target['TARGET_ARCH']}
-   endif
+ if not supported_oses.contains(host_os)
 -- 
 2.43.0
 
