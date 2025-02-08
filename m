@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E5FA2D4AF
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 08:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A51A2D4B0
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 08:52:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgfcm-0005zH-VY; Sat, 08 Feb 2025 02:51:36 -0500
+	id 1tgfcu-00061C-GG; Sat, 08 Feb 2025 02:51:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tgfcl-0005yt-3H
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:35 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tgfcs-00060m-3v
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:42 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tgfcj-0007Vu-FE
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:34 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-21c2f1b610dso70012605ad.0
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 23:51:33 -0800 (PST)
+ id 1tgfcq-0007aF-Fa
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:41 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2fa0892f9bdso4052461a91.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 23:51:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1739001092; x=1739605892;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1739001099; x=1739605899;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xJPqyACVWuy+f95M2UxICBXYp3QYbJ6h2gyeOOlBE4s=;
- b=OfpFnJoeD5GsgGstYowUTLncEqupk25y3AEg+5oQ2KBdxdz8lyNl7YdSGe7EBS5TTk
- P0d7170HftmJR2ObooBkPL5BtjJo5jp2X1+iqX8CALyOxFzEFMGsquROgPOwfwB195L6
- yajHWjKIJ5ApIqnSEZ5fFvJq5Pzak612kVK0To4k6PtxMOV1WqXhMohT/rd5z+8/ayxv
- k0riY5LjMu/dKAhcoyw4zhmm9k6i8CyGPwLrgRx7E9e8duAE74ZdSWKphtfkDfrPz/ma
- Ux6blGzUIv3k4hHogY5rGOqY99T5jUaaIMkwx7pO3QkhG9v4dmhlWNP5v98EKUQXrR+n
- gM2Q==
+ :reply-to; bh=dj8ygh4vHQ3IWs88c977D3eMuGw5gxEkT1B9kT9ojBI=;
+ b=gtZ3n+CiYGMIN4KZbLuRh3r7UG0WD5zkxoj1vp9r9cy6XanAcGJ89OeJR255VA7rZ4
+ 9tSBPtga4auAa7KiqORpPVdPNOf2HDVdBVDESL8ohsy/euG2sxg8QrmgM88St9WkuOx2
+ J69DveGZ6SuR7b/cpRnqgjN+yOM+a3u5TrGAZpDeYcAUNNJGI4vE0vwNOplyjdELKzUq
+ G5+JtiAxHVUn/KxrpNeQxqJz5w6hkJoch2N/KZRe9KQPifIlyHM9oBtK4Y9P4c19KqTX
+ jrkTmmEptpHxfJKhgnSkJCsTUnIP95GSdLLNR30anMLuT5f4MrOsxKNmo0v1qdYiq13B
+ 57vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739001092; x=1739605892;
+ d=1e100.net; s=20230601; t=1739001099; x=1739605899;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xJPqyACVWuy+f95M2UxICBXYp3QYbJ6h2gyeOOlBE4s=;
- b=TGbM9BCdJ0ewk2sBz8mm2WiwC011QC7ZnBLeDiZoPVLoW+hKn3sG5j/KQGL3ZGr3Hu
- eS3DWLOVFo8XEy1iGqXgrdth3gCRMUImZ/4M3KsO0Hfo57NutwwJbK2NLYExftRQXoFB
- fiM2k4FDWPGdlfc0HxItRRhSwxW1RJ/OclfmOzwXmcYnagWvoqlhsSEKKsrecaFhfYCG
- G3Qn1ZEdNHrvHAnFN6gx6YZjtthdMNRUFGz/vIk8WebKs3fS4GTwHhDrrUI9B68ZaL/n
- gKhJsZdbFJltutkQgod55CrWeLrXiaUPqQuXTkz1Op4EWJ83hQnK3ABhE+em3nEL1LfX
- sG5Q==
-X-Gm-Message-State: AOJu0YwFhKoOD7iSXdY+exn4UlGqheY16I4+eIYpoGS4qWbSLFe+gOcw
- 9WcvuRHhZs0aVP0FwdPBJ67PJkmvurp991cd7A75tVAvjWv9mqUKW64fZKNYYb4=
-X-Gm-Gg: ASbGncvTObqLfsEmpB7Gj93tv6UB2qCHaIAGb9gQmOJG/ji5DYzVfjV5Ya7u69CMuu9
- VMQCvTDTVDBQh4qrQqLSfsmCrj9vvdumn3V/McazL3aXlPzvsITRYTtkLlCKgVqCbWCQNVutdjK
- lOHV3IaMzhPuYHPdePUXq1yjIayoqEG/BdlDZtRZgaI5ajjCrD4IHUBREXsEkKu9Ok7N5vUfTnk
- T3114UeZYJsdMOxP+f+cL/BQq3Olt67sv9emcPP5hsRoez64VeH5dClNd0laBkNv8T7/IHSr09Y
- o+06FceGO63g76i4Rd8=
-X-Google-Smtp-Source: AGHT+IHlCnrLQEnc4bz1UYyArmKAbb0ibEPs/DkUUG+6WboIMattskGZZmvy/vF8M4qY43vnNeQENg==
-X-Received: by 2002:a05:6a21:458a:b0:1e1:3970:d75a with SMTP id
- adf61e73a8af0-1ee03a21d7fmr11713144637.9.1739001091923; 
- Fri, 07 Feb 2025 23:51:31 -0800 (PST)
+ bh=dj8ygh4vHQ3IWs88c977D3eMuGw5gxEkT1B9kT9ojBI=;
+ b=EdT56EzHdNRqrL354q1vujOerh8KLc166XC72JvoYJIQs9LXYvWQH8vmyl6088YQf1
+ Sc7g4A4vmIT+UdocjwfH/EqC665RYoTLxYoFn20AyGF2ewQor9bgFAt+EdDh4+wHl4Vd
+ IYnwdSenTpA/b9i7BNfTVYN5oo2H+d3xLutwOjO390oueL78gSRof3KBRHfut7QT/6bI
+ wR4P1VrGCaQBllX2P35rMuqauc4mvr63o/ta+cut/ZcJ97Iz3xWE7DYshhgkHf2jXta6
+ wDmEgivtMuS+xmB1Dy1tq7bwf4mR0FU+membp1Rdq1GQirIZ0h72cz14hh0WQvjwug8p
+ Vwyg==
+X-Gm-Message-State: AOJu0YzpsYfYAweBU1AACBHLtAtSL9RKcr2R5s+jocrEauZPRUQG+Gvq
+ CB+JPHGgX/vhzmU//V4WJa5ba4A0m5gdB6FotgEmd5tkp/3BWnYBxWmOFbZZP34=
+X-Gm-Gg: ASbGncu5gz46J/9fraRQrVRT5VALYeAxiGgPTcpHznlsRroCLzeQmCd9CmqJSzvk8nh
+ 0z0qdmodlliHAiTVcAQzr/sZNN2OpGoNsVkXRWPnmSQljIgcN5eWb9ZI9xgjm92Va21EOuWnToe
+ CJHH4pTF2MgDXO9RQp9UT2zP7Ldgm8KuIVxTWQV3hN0Hv2xZqDPRm6ayUhxZzbIQ7vsTJpyntpG
+ 6DPUVzZcdowpxnkK7aDD6DL4vYfaaPI4sZ6wyRfpOGZ7Ee79Xvisc/mgP7Q1J//I8tQHUlFEaVd
+ g4rJFAUyudK+Y52GFzc=
+X-Google-Smtp-Source: AGHT+IE7Ra8iD8s/TG01A3EUYSnmLXr3jSrTlD8vtUslNB34/1ASIXeBwDVb8Nr6wYW4ztks1InN/w==
+X-Received: by 2002:a05:6a00:9286:b0:725:322a:9438 with SMTP id
+ d2e1a72fcca58-7305d4135bemr9005357b3a.1.1739001099211; 
+ Fri, 07 Feb 2025 23:51:39 -0800 (PST)
 Received: from localhost ([157.82.205.237])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-73048a9d063sm4156905b3a.34.2025.02.07.23.51.26
+ d2e1a72fcca58-7307bfc03efsm188745b3a.160.2025.02.07.23.51.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Feb 2025 23:51:31 -0800 (PST)
+ Fri, 07 Feb 2025 23:51:38 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 08 Feb 2025 16:51:08 +0900
-Subject: [PATCH v5 2/4] qapi: Accept bool for OnOffAuto and OnOffSplit
+Date: Sat, 08 Feb 2025 16:51:09 +0900
+Subject: [PATCH v5 3/4] qdev-properties: Add
+ DEFINE_PROP_ON_OFF_AUTO_BIT64()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250208-virtio-v5-2-4376cb218c0f@daynix.com>
+Message-Id: <20250208-virtio-v5-3-4376cb218c0f@daynix.com>
 References: <20250208-virtio-v5-0-4376cb218c0f@daynix.com>
 In-Reply-To: <20250208-virtio-v5-0-4376cb218c0f@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
@@ -88,8 +89,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Lei Yang <leiyang@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14.2
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -111,113 +112,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bool has representations of "on" and "off" different from
-OnOffAuto/OnOffSplit:
-- The command line syntax accepts on/yes/true/y and off/no/false/n for
-  bool but only on and off for OnOffAuto.
-- JSON uses true/false for bool but "on" and "off" for
-  OnOffAuto/OnOffSplit.
-
-This inconsistency causes some problems:
-- Users need to take the underlying type into consideration to determine
-  what literal to specify, increasing cognitive loads for human users
-  and complexity for programs invoking QEMU.
-- Converting an existing bool property to OnOffAuto/OnOffSplit will
-  break compatibility.
-
-Fix these problems by accepting bool literals for OnOffAuto/OnOffSplit.
-This change is specific to OnOffAuto/OnOffSplit; types added in the
-future may be defined as an alternate of bool and enum to avoid the
-mentioned problems in the first place.
+DEFINE_PROP_ON_OFF_AUTO_BIT64() corresponds to DEFINE_PROP_ON_OFF_AUTO()
+as DEFINE_PROP_BIT64() corresponds to DEFINE_PROP_BOOL(). The difference
+is that DEFINE_PROP_ON_OFF_AUTO_BIT64() exposes OnOffAuto instead of
+bool.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/core/qdev-properties.c | 17 ++++++++++++++++-
- scripts/qapi/visit.py     | 24 ++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 1 deletion(-)
+ include/hw/qdev-properties.h | 18 ++++++++++++
+ hw/core/qdev-properties.c    | 66 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 83 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
+index bf27375a3ccdb238ef3327dd85d3d0a1431cbfbf..0d161325e8dc92d0e0e5aa9a1e2dd734f7a55cae 100644
+--- a/include/hw/qdev-properties.h
++++ b/include/hw/qdev-properties.h
+@@ -43,11 +43,22 @@ struct PropertyInfo {
+     ObjectPropertyRelease *release;
+ };
+ 
++/**
++ * struct OnOffAutoBit64 - OnOffAuto storage with 64 elements.
++ * @on_bits: Bitmap of elements with "on".
++ * @auto_bits: Bitmap of elements with "auto".
++ */
++typedef struct OnOffAutoBit64 {
++    uint64_t on_bits;
++    uint64_t auto_bits;
++} OnOffAutoBit64;
++
+ 
+ /*** qdev-properties.c ***/
+ 
+ extern const PropertyInfo qdev_prop_bit;
+ extern const PropertyInfo qdev_prop_bit64;
++extern const PropertyInfo qdev_prop_on_off_auto_bit64;
+ extern const PropertyInfo qdev_prop_bool;
+ extern const PropertyInfo qdev_prop_enum;
+ extern const PropertyInfo qdev_prop_uint8;
+@@ -100,6 +111,13 @@ extern const PropertyInfo qdev_prop_link;
+                 .set_default = true,                              \
+                 .defval.u  = (bool)_defval)
+ 
++#define DEFINE_PROP_ON_OFF_AUTO_BIT64(_name, _state, _field, _bit, _defval) \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_on_off_auto_bit64,         \
++                OnOffAutoBit64,                                             \
++                .bitnr    = (_bit),                                         \
++                .set_default = true,                                        \
++                .defval.i = (OnOffAuto)_defval)
++
+ #define DEFINE_PROP_BOOL(_name, _state, _field, _defval)     \
+     DEFINE_PROP(_name, _state, _field, qdev_prop_bool, bool, \
+                 .set_default = true,                         \
 diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 434a76f5036edd2091a9c79525b8e102582637be..073902431213c5be47197cb0d993d60cc2562501 100644
+index 073902431213c5be47197cb0d993d60cc2562501..cfab7b97091ad704b7f43d6ba6fcd8937ca5dfe3 100644
 --- a/hw/core/qdev-properties.c
 +++ b/hw/core/qdev-properties.c
-@@ -2,6 +2,7 @@
- #include "hw/qdev-properties.h"
- #include "qapi/error.h"
- #include "qapi/qapi-types-misc.h"
-+#include "qapi/qapi-visit-common.h"
- #include "qapi/qmp/qlist.h"
- #include "qemu/ctype.h"
- #include "qemu/error-report.h"
-@@ -493,12 +494,26 @@ const PropertyInfo qdev_prop_string = {
+@@ -188,7 +188,8 @@ const PropertyInfo qdev_prop_bit = {
  
- /* --- on/off/auto --- */
+ static uint64_t qdev_get_prop_mask64(const Property *prop)
+ {
+-    assert(prop->info == &qdev_prop_bit64);
++    assert(prop->info == &qdev_prop_bit64 ||
++           prop->info == &qdev_prop_on_off_auto_bit64);
+     return 0x1ull << prop->bitnr;
+ }
  
-+static void set_on_off_auto(Object *obj, Visitor *v, const char *name,
-+                            void *opaque, Error **errp)
+@@ -233,6 +234,69 @@ const PropertyInfo qdev_prop_bit64 = {
+     .set_default_value = set_default_value_bool,
+ };
+ 
++static void prop_get_on_off_auto_bit64(Object *obj, Visitor *v,
++                                       const char *name, void *opaque,
++                                       Error **errp)
 +{
 +    Property *prop = opaque;
-+    int *ptr = object_field_prop_ptr(obj, prop);
++    OnOffAutoBit64 *p = object_field_prop_ptr(obj, prop);
 +    OnOffAuto value;
++    uint64_t mask = qdev_get_prop_mask64(prop);
++
++    if (p->auto_bits & mask) {
++        value = ON_OFF_AUTO_AUTO;
++    } else if (p->on_bits & mask) {
++        value = ON_OFF_AUTO_ON;
++    } else {
++        value = ON_OFF_AUTO_OFF;
++    }
++
++    visit_type_OnOffAuto(v, name, &value, errp);
++}
++
++static void prop_set_on_off_auto_bit64(Object *obj, Visitor *v,
++                                       const char *name, void *opaque,
++                                       Error **errp)
++{
++    Property *prop = opaque;
++    OnOffAutoBit64 *p = object_field_prop_ptr(obj, prop);
++    OnOffAuto value;
++    uint64_t mask = qdev_get_prop_mask64(prop);
 +
 +    if (!visit_type_OnOffAuto(v, name, &value, errp)) {
 +        return;
 +    }
 +
-+    *ptr = value;
-+}
++    switch (value) {
++    case ON_OFF_AUTO_AUTO:
++        p->on_bits &= ~mask;
++        p->auto_bits |= mask;
++        break;
 +
- const PropertyInfo qdev_prop_on_off_auto = {
-     .name = "OnOffAuto",
-     .description = "on/off/auto",
-     .enum_table = &OnOffAuto_lookup,
-     .get = qdev_propinfo_get_enum,
--    .set = qdev_propinfo_set_enum,
-+    .set = set_on_off_auto,
-     .set_default_value = qdev_propinfo_set_default_value_enum,
- };
- 
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 12f92e429f6bafc091f74af88c1b837d08c7f733..221373b165aa95bceb4eb50a557edf0e5b4c01f7 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -209,6 +209,29 @@ def gen_visit_list(name: str, element_type: QAPISchemaType) -> str:
- 
- 
- def gen_visit_enum(name: str) -> str:
-+    if name in ('OnOffAuto', 'OnOffSplit'):
-+        return mcgen('''
++    case ON_OFF_AUTO_ON:
++        p->on_bits |= mask;
++        p->auto_bits &= ~mask;
++        break;
 +
-+bool visit_type_%(c_name)s(Visitor *v, const char *name,
-+                 %(c_name)s *obj, Error **errp)
-+{
-+    bool b;
-+    int i;
++    case ON_OFF_AUTO_OFF:
++        p->on_bits &= ~mask;
++        p->auto_bits &= ~mask;
++        break;
 +
-+    if (v->type == VISITOR_INPUT && visit_type_bool(v, name, &b, NULL)) {
-+        *obj = b ? %(on)s : %(off)s;
-+        return true;
++    case ON_OFF_AUTO__MAX:
++        g_assert_not_reached();
 +    }
-+
-+    b = visit_type_enum(v, name, &i, &%(c_name)s_lookup, errp);
-+    *obj = i;
-+
-+    return b;
 +}
-+''',
-+                     c_name=c_name(name),
-+                     on=c_enum_const(name, 'on'), off=c_enum_const(name, 'off'))
 +
-     return mcgen('''
++const PropertyInfo qdev_prop_on_off_auto_bit64 = {
++    .name  = "OnOffAuto",
++    .description = "on/off/auto",
++    .enum_table = &OnOffAuto_lookup,
++    .get = prop_get_on_off_auto_bit64,
++    .set = prop_set_on_off_auto_bit64,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
++
+ /* --- bool --- */
  
- bool visit_type_%(c_name)s(Visitor *v, const char *name,
-@@ -359,6 +382,7 @@ def _begin_user_module(self, name: str) -> None:
-         self._genc.preamble_add(mcgen('''
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qapi/visitor-impl.h"
- #include "%(visit)s.h"
- ''',
-                                       visit=visit))
+ static void get_bool(Object *obj, Visitor *v, const char *name, void *opaque,
 
 -- 
 2.48.1
