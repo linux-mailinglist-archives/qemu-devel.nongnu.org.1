@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788D5A2D8C4
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125D6A2D8BF
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 21:58:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgrtM-0001s1-7A; Sat, 08 Feb 2025 15:57:32 -0500
+	id 1tgrtR-0001tt-BZ; Sat, 08 Feb 2025 15:57:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtK-0001ra-6l
+ id 1tgrtK-0001rp-Of
  for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:30 -0500
 Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tgrtI-000579-JS
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:29 -0500
+ id 1tgrtJ-00057K-79
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 15:57:30 -0500
 Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21ddab8800bso44894185ad.3
+ d9443c01a7336-21f50895565so26333315ad.2
  for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 12:57:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1739048247; x=1739653047; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XkDk8OxqW6uxutlAZ9P73/1ySr9ma3Px3naV7Jdqb0w=;
- b=jZsdYdxzeUe+iFQVItZVD5YD/ocFTnWTdpMRSRXX6S/ETkzPcQGDRV+QgLytKj8azF
- om6zF0osN31egX2X+NOk5NhxU+Xjquapk+X3rYWIcRgj4OoCYdrKOqJ383vilBXLOVYO
- KA3bMhhutjdvF2591D+HFsvwFxGdJe+/PEeHIeTwUWSX54WP+IlugDFW/e4KF7gkg1pu
- TYatRgg+lF0jJPJZp+RhVuilbeUSFWhaYtKw9Mhz/xFtzO6uirPTrGKWeNIcRPut4I7Z
- MySpaQHv+6nQ9R6zldsgMGCeBJsB5DE8JM8Efn29U8RLWiMYJHfKSub6zri1m5i8YD+v
- pnZA==
+ bh=/KwnHCfQIkLSuI5gCbIKhc6TbHv3lQ5OLotA3Bb1FOg=;
+ b=vvAtBFHcqttXCdPb8ajkZKxSIRxuDxw/a0IHdXr1IdQFWQEzp8Fu9JKHAdF+nvT18C
+ v/I8plcy5QvqEIpjhC5TotzmQTDs2Zgn/TwqJZrhFRrCxd+9ApZ6X3m73PEIrXC+wBBG
+ rlDGRrA+wTsQxtm9TSbqAi3AT2BpgUOFQwGt3vHlVIZ4SVM3Q/eTkgsFVHBpFlMxFTnP
+ DdveFNymnFpxD6RjB790EJ+0XuAxCMQ4ymu7R76vVnjG+6wc+ntfDj3nNEu/+zjpqdwf
+ S3moxfE/QxCzVj7/QExqiMOFOiZ5YZoAT0DxYhWM60lOqQNFmK8hzBgN/Znz/q+Yjc4z
+ KUEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1739048247; x=1739653047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XkDk8OxqW6uxutlAZ9P73/1ySr9ma3Px3naV7Jdqb0w=;
- b=fmr8qlb+kzpOPyTlmuxf4Pai/kSRlGKojkNpzjILOT/IOYQFz2xlyuRv6xBVu4J2xQ
- QNAR7EX8BGL65Noe5aalqKY/72XxUivdHOpgE75pg6RVARqlgXUraiubWiwhL18gyioE
- B68/l7XLM5j3p05Dm+xerX6q3QDl0J17KPCiLDRKNVdHmYWsPit7YPXOkXlQSqCiGlnT
- V4mILe5Zn5zXSSuXWvNrxkU4lhkdDN3Y8r7NXw7gXnUyJySqcFafNcZB3il5EWQZQ2uO
- Cq0Daj+QxzlEjS/uYASSUJdRPnSsLD/K+v0ys7ePpi25hlucMcK5hmf8Wsj2C2c63eJU
- 27RA==
-X-Gm-Message-State: AOJu0YybE3p6JaDzOhoqI2hUJPSQbniMAFwikIlqXZSq4o68q6V4/yOE
- ImDIhL94iRwwNbJMkjUUbY83icgmJ/hZyLdvvag0GPcC+CkIgXQpzhfiL+294qIgHN/2JV7TmP3
- r
-X-Gm-Gg: ASbGncuGiU+wNiZFopaAYOysTtGH3fHdJaCEOcl7tdlvBcGhT79dP1WHKa5o+IIQ3FU
- FkG+FWiinCFuQmdMpXWnysgjQBYn/OELDE5W6ds8HoWSYBPIQiSBdWegNoN1maJlaChrzIvVEZs
- f7bAdX3ufORNU//14uF40EHgWplMzz95wszIzVU6aHVBTTVFBWQNUvPLwjVLXA+BolZ0zo0ZMGH
- 1zAzZXqzXCGDoFY6pQ11wrCAYhLtMVKcxnHCRovEDUJ+7Hj54HUEGv6TxF74fpGoaC2qxnLp+iG
- NVjI7Rvk1ezIdoIOPcLIZIv7SpH5zPsZjX0jNgphMuaernw=
-X-Google-Smtp-Source: AGHT+IEL6zx/yVRpIa3pZczCgMftxb7mP3PrrrL2UvbSqxMYyckgnmNejr+t3pzUcjWZ9w8SWFWwRQ==
-X-Received: by 2002:a17:902:e552:b0:216:2259:a4bd with SMTP id
- d9443c01a7336-21f4e76cfc0mr118520015ad.52.1739048247028; 
+ bh=/KwnHCfQIkLSuI5gCbIKhc6TbHv3lQ5OLotA3Bb1FOg=;
+ b=FBx7TZ7uaDoTAxUWLGRHqGVBP0s0ok/3fzvZVmJW0w3eEIQNsNpOIm3LDOH53RZJij
+ 0wOzlcbyiGWsPX+M4EuXgSQFxYFLYi35bW9v0h6OBAn3GYdCgwp+tuW7lmJcXqCeiyhg
+ wICRwhmhP5J2P4sZUdoqhaWiHXAO588aUGomlDhuVTlcXHs+r2Mt7boJlef1C9M3zL6p
+ pSTIIoYtBCZGslHwtJLBrw7FrnkOhRioh7qnyQlNycl1OOoyqX4G9WG4C0SL351iGv17
+ 9/P1ER6bXzJF08rini/8WOBsA7Vj7Ce7MwTK4X3L2m4wJFw+AAa4FOZhi7W1WlwZiMIL
+ 5gXg==
+X-Gm-Message-State: AOJu0Yyej/OZd+vDZ5vFbXC+OKVNDArYFh25cR55avg4fV4WnL8yojZT
+ 16kORXtXxNoEdQ1SnlOpgCaM9dxpN4ZUJkVkkft7Pzk2KiGdkaaiwGNI0BQrDU9yQPjTzOTPPBX
+ L
+X-Gm-Gg: ASbGncvXDfSAG2FiN57WEzyajV1bpSQUAKEEzeVTAH7/kqoj3wokU5CcizDupRAEJQl
+ nYF4jVRBLPi5UkJmsn9MDTNNT3YQMfMcXARw2jwCujxynseIUX+18TvuZvwSuoXLo3Ib0dvVqLJ
+ LX2eaycBxDG6cKhYxVxOkv5/J2sSk9a0FlKJAFHoWft8PdIWG1j2qonPmSPz6bhwhcWsH1WhI0+
+ /fZjPnmzuAJDTTymNLIFk9lv9sC5xCTandnCd5ZiapmW4Eo6JYc3ymhA/7PhEqTvEPWtoCAXosh
+ oZOoNQLcfyHPx/SLJTncFw3+EdiMEW0nUxNum/0TLhuAaT0=
+X-Google-Smtp-Source: AGHT+IGT0gUdl5BxYgZ6WXx4AFubJ+VbzC5L5lCwKm9a4OXIOd/b3TT9QNCxaSyWOcy3fk4Z4es9Zw==
+X-Received: by 2002:a17:902:f541:b0:21f:5e6f:a432 with SMTP id
+ d9443c01a7336-21f5e6ffccamr93752375ad.24.1739048247667; 
  Sat, 08 Feb 2025 12:57:27 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.26
+ d9443c01a7336-21f3683d58fsm50852685ad.122.2025.02.08.12.57.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Feb 2025 12:57:26 -0800 (PST)
+ Sat, 08 Feb 2025 12:57:27 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/9] meson: Drop tcg as a module
-Date: Sat,  8 Feb 2025 12:57:16 -0800
-Message-ID: <20250208205725.568631-2-richard.henderson@linaro.org>
+Subject: [PULL 2/9] meson: Disallow 64-bit on 32-bit KVM emulation
+Date: Sat,  8 Feb 2025 12:57:17 -0800
+Message-ID: <20250208205725.568631-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250208205725.568631-1-richard.henderson@linaro.org>
 References: <20250208205725.568631-1-richard.henderson@linaro.org>
@@ -100,95 +99,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit dae0ec159f9 ("accel: build tcg modular").
-The attempt was only enabled for x86, only modularized a small
-portion of tcg, and in more than 3 years there have been no
-follow-ups to improve the situation.
+Require a 64-bit host binary to spawn a 64-bit guest.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/meson.build | 11 ++++-------
- meson.build           | 18 +-----------------
- 2 files changed, 5 insertions(+), 24 deletions(-)
+ meson.build | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index aef80de967..69f4808ac4 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -21,16 +21,13 @@ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-   'cputlb.c',
-   'watchpoint.c',
-+  'tcg-accel-ops.c',
-+  'tcg-accel-ops-mttcg.c',
-+  'tcg-accel-ops-icount.c',
-+  'tcg-accel-ops-rr.c',
- ))
- 
- system_ss.add(when: ['CONFIG_TCG'], if_true: files(
-   'icount-common.c',
-   'monitor.c',
- ))
--
--tcg_module_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
--  'tcg-accel-ops.c',
--  'tcg-accel-ops-mttcg.c',
--  'tcg-accel-ops-icount.c',
--  'tcg-accel-ops-rr.c',
--))
 diff --git a/meson.build b/meson.build
-index 131b2225ab..e50a103f8a 100644
+index e50a103f8a..1af8aeb194 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -322,12 +322,6 @@ if cpu in ['x86', 'x86_64']
-   }
+@@ -277,21 +277,27 @@ else
+   host_arch = cpu
  endif
  
--modular_tcg = []
--# Darwin does not support references to thread-local variables in modules
--if host_os != 'darwin'
--  modular_tcg = ['i386-softmmu', 'x86_64-softmmu']
--endif
--
- ##################
- # Compiler flags #
- ##################
-@@ -3279,11 +3273,6 @@ foreach target : target_dirs
-     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
-       config_target += { sym: 'y' }
-       config_all_accel += { sym: 'y' }
--      if target in modular_tcg
--        config_target += { 'CONFIG_TCG_MODULAR': 'y' }
--      else
--        config_target += { 'CONFIG_TCG_BUILTIN': 'y' }
--      endif
-       target_kconfig += [ sym + '=y' ]
-     endif
-   endforeach
-@@ -3642,7 +3631,6 @@ util_ss = ss.source_set()
- 
- # accel modules
- qtest_module_ss = ss.source_set()
--tcg_module_ss = ss.source_set()
- 
- modules = {}
- target_modules = {}
-@@ -3803,11 +3791,7 @@ subdir('tests/qtest/libqos')
- subdir('tests/qtest/fuzz')
- 
- # accel modules
--tcg_real_module_ss = ss.source_set()
--tcg_real_module_ss.add_all(when: 'CONFIG_TCG_MODULAR', if_true: tcg_module_ss)
--specific_ss.add_all(when: 'CONFIG_TCG_BUILTIN', if_true: tcg_module_ss)
--target_modules += { 'accel' : { 'qtest': qtest_module_ss,
--                                'tcg': tcg_real_module_ss }}
-+target_modules += { 'accel' : { 'qtest': qtest_module_ss }}
- 
- ##############################################
- # Internal static_libraries and dependencies #
+-if cpu in ['x86', 'x86_64']
++if cpu == 'x86'
++  kvm_targets = ['i386-softmmu']
++elif cpu == 'x86_64'
+   kvm_targets = ['i386-softmmu', 'x86_64-softmmu']
+ elif cpu == 'aarch64'
+   kvm_targets = ['aarch64-softmmu']
+ elif cpu == 's390x'
+   kvm_targets = ['s390x-softmmu']
+-elif cpu in ['ppc', 'ppc64']
++elif cpu == 'ppc'
++  kvm_targets = ['ppc-softmmu']
++elif cpu == 'ppc64'
+   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
+-elif cpu in ['mips', 'mips64']
++elif cpu == 'mips'
++  kvm_targets = ['mips-softmmu', 'mipsel-softmmu']
++elif cpu == 'mips64'
+   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
+-elif cpu in ['riscv32']
++elif cpu == 'riscv32'
+   kvm_targets = ['riscv32-softmmu']
+-elif cpu in ['riscv64']
++elif cpu == 'riscv64'
+   kvm_targets = ['riscv64-softmmu']
+-elif cpu in ['loongarch64']
++elif cpu == 'loongarch64'
+   kvm_targets = ['loongarch64-softmmu']
+ else
+   kvm_targets = []
 -- 
 2.43.0
 
