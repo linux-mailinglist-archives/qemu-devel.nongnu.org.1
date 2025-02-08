@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD36A2D4AE
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E5FA2D4AF
 	for <lists+qemu-devel@lfdr.de>; Sat,  8 Feb 2025 08:52:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgfcg-0005xv-0I; Sat, 08 Feb 2025 02:51:30 -0500
+	id 1tgfcm-0005zH-VY; Sat, 08 Feb 2025 02:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tgfce-0005vT-4S
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:28 -0500
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1tgfcl-0005yt-3H
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:35 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tgfcc-0007VL-3W
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:27 -0500
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2fa21145217so3595364a91.3
- for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 23:51:25 -0800 (PST)
+ id 1tgfcj-0007Vu-FE
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 02:51:34 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-21c2f1b610dso70012605ad.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Feb 2025 23:51:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1739001084; x=1739605884;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1739001092; x=1739605892;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KZyqVN9RpjPMwnzyGHN4dKQm8h3LMbjbUFr2jjDnuTQ=;
- b=1R+kr0bVn3SJZtXYk3fYGYd841eQImoo4dinsgtj/x8H3OW3r/JwrWqlGaK/mwyEb/
- rlIs0VLzN+dOGziERAFkY/ri13tH/3EBjl26sEB3ZkfX3sotYpj+oFpwB9ptbL1h5X1e
- zEa5a4j1/eUgzAiYXDAE1M9NVrR0yoHtD66hr0tAKyvNlsWAZzWng90my7AE0no90DSJ
- a6qIZoVRsetoGhK7HlHvrUCiVK8zFsFHX8D0slXbEW5tu8zTLQ78hZcPve7t4SeQ/U/a
- uOyyBGLAvhJijFkU7O1ePfQ45b9qxljygNEFpiTq0szKbNMC9rJybLA19Q3Id9KDHmsQ
- zrSA==
+ :reply-to; bh=xJPqyACVWuy+f95M2UxICBXYp3QYbJ6h2gyeOOlBE4s=;
+ b=OfpFnJoeD5GsgGstYowUTLncEqupk25y3AEg+5oQ2KBdxdz8lyNl7YdSGe7EBS5TTk
+ P0d7170HftmJR2ObooBkPL5BtjJo5jp2X1+iqX8CALyOxFzEFMGsquROgPOwfwB195L6
+ yajHWjKIJ5ApIqnSEZ5fFvJq5Pzak612kVK0To4k6PtxMOV1WqXhMohT/rd5z+8/ayxv
+ k0riY5LjMu/dKAhcoyw4zhmm9k6i8CyGPwLrgRx7E9e8duAE74ZdSWKphtfkDfrPz/ma
+ Ux6blGzUIv3k4hHogY5rGOqY99T5jUaaIMkwx7pO3QkhG9v4dmhlWNP5v98EKUQXrR+n
+ gM2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739001084; x=1739605884;
+ d=1e100.net; s=20230601; t=1739001092; x=1739605892;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KZyqVN9RpjPMwnzyGHN4dKQm8h3LMbjbUFr2jjDnuTQ=;
- b=gf4TlOAXupfC9Jobc6BuxeRctouOxWSUNeY4eg5YEyXe6ChWI6tXOWGkbCgDtfsksn
- Sv1zX6ZjyfooDWVeDenXxx+sBhdsRB2aqnIBwMfAveG0K7lyxA2iOpY7+PzS0lvO2nau
- iqLGIpUkKQhZ0gSAOXd9d5YbQu34p+cOGRinwJ+m8aAonpljzWYaC/9Vn+eQzC8/EwOj
- WCeIpHDyTS4wc5bm7ilEGujcg7LkgAbFEwIucmkMx4+zAXAZsRMrN3L+fplJwuRXjFbS
- K2F/STmeNchcyE9Ke3v1nrePPWjjcaodH1EAftTTgHoans4INVXCXWNkK18jlY6b0htH
- 9usQ==
-X-Gm-Message-State: AOJu0YzigwKTmOhZyNnHd0BGOGW7pxQDRt332iDK7v1i8rhgR6Zdquph
- Hu9oOxFIiWmhbe3btGcJri1Mkg4kfwzENngRtX4GK2qrIqzNGcCahFx3Wx/iP3s=
-X-Gm-Gg: ASbGncvjZFS4dxu8QqRgoh6J7xEtgG7vCjXCramUyhLf8ejF3ugm10KDvJzPRguYXTZ
- 5ZVMZ0iaru3T29QSVvKCVuE7ZntP1kiJrRhgwTbPUu1SV4VE1wgZ3Dvbi+eJ3tXMyG0Tn8kBtge
- kBIay1GbkrENorHOHuhoSy3XccR0HATBj2ffSNH6iwRugSIVgERkqyxAqJpTJRJQcbA63iqQ7c8
- dOYrRSBzkkiBRZD2LbP0j4u5taSsI5kPse/4uO1nqRNAhLvSqY2m1RahrloNql78U+4+HHpIdgW
- JMTCrn1UJHVNbb21wog=
-X-Google-Smtp-Source: AGHT+IHPrU85QsIRqJLCtguhWbqF3bbTUKbJ5D/sFO+5WJzVuQMTsodkADu3jFdgFFtRVU72+OYw0A==
-X-Received: by 2002:a05:6a00:3d51:b0:729:35b:542e with SMTP id
- d2e1a72fcca58-7305d51c6a5mr8372289b3a.16.1739001084579; 
- Fri, 07 Feb 2025 23:51:24 -0800 (PST)
+ bh=xJPqyACVWuy+f95M2UxICBXYp3QYbJ6h2gyeOOlBE4s=;
+ b=TGbM9BCdJ0ewk2sBz8mm2WiwC011QC7ZnBLeDiZoPVLoW+hKn3sG5j/KQGL3ZGr3Hu
+ eS3DWLOVFo8XEy1iGqXgrdth3gCRMUImZ/4M3KsO0Hfo57NutwwJbK2NLYExftRQXoFB
+ fiM2k4FDWPGdlfc0HxItRRhSwxW1RJ/OclfmOzwXmcYnagWvoqlhsSEKKsrecaFhfYCG
+ G3Qn1ZEdNHrvHAnFN6gx6YZjtthdMNRUFGz/vIk8WebKs3fS4GTwHhDrrUI9B68ZaL/n
+ gKhJsZdbFJltutkQgod55CrWeLrXiaUPqQuXTkz1Op4EWJ83hQnK3ABhE+em3nEL1LfX
+ sG5Q==
+X-Gm-Message-State: AOJu0YwFhKoOD7iSXdY+exn4UlGqheY16I4+eIYpoGS4qWbSLFe+gOcw
+ 9WcvuRHhZs0aVP0FwdPBJ67PJkmvurp991cd7A75tVAvjWv9mqUKW64fZKNYYb4=
+X-Gm-Gg: ASbGncvTObqLfsEmpB7Gj93tv6UB2qCHaIAGb9gQmOJG/ji5DYzVfjV5Ya7u69CMuu9
+ VMQCvTDTVDBQh4qrQqLSfsmCrj9vvdumn3V/McazL3aXlPzvsITRYTtkLlCKgVqCbWCQNVutdjK
+ lOHV3IaMzhPuYHPdePUXq1yjIayoqEG/BdlDZtRZgaI5ajjCrD4IHUBREXsEkKu9Ok7N5vUfTnk
+ T3114UeZYJsdMOxP+f+cL/BQq3Olt67sv9emcPP5hsRoez64VeH5dClNd0laBkNv8T7/IHSr09Y
+ o+06FceGO63g76i4Rd8=
+X-Google-Smtp-Source: AGHT+IHlCnrLQEnc4bz1UYyArmKAbb0ibEPs/DkUUG+6WboIMattskGZZmvy/vF8M4qY43vnNeQENg==
+X-Received: by 2002:a05:6a21:458a:b0:1e1:3970:d75a with SMTP id
+ adf61e73a8af0-1ee03a21d7fmr11713144637.9.1739001091923; 
+ Fri, 07 Feb 2025 23:51:31 -0800 (PST)
 Received: from localhost ([157.82.205.237])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-7307cf77a3asm68331b3a.68.2025.02.07.23.51.19
+ d2e1a72fcca58-73048a9d063sm4156905b3a.34.2025.02.07.23.51.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Feb 2025 23:51:24 -0800 (PST)
+ Fri, 07 Feb 2025 23:51:31 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 08 Feb 2025 16:51:07 +0900
-Subject: [PATCH v5 1/4] qapi: Do not consume a value if failed
+Date: Sat, 08 Feb 2025 16:51:08 +0900
+Subject: [PATCH v5 2/4] qapi: Accept bool for OnOffAuto and OnOffSplit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250208-virtio-v5-1-4376cb218c0f@daynix.com>
+Message-Id: <20250208-virtio-v5-2-4376cb218c0f@daynix.com>
 References: <20250208-virtio-v5-0-4376cb218c0f@daynix.com>
 In-Reply-To: <20250208-virtio-v5-0-4376cb218c0f@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
@@ -88,8 +88,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Lei Yang <leiyang@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14.2
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -111,339 +111,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not consume a value if interpreting one failed so that we can
-reinterpret the value with a different type.
+bool has representations of "on" and "off" different from
+OnOffAuto/OnOffSplit:
+- The command line syntax accepts on/yes/true/y and off/no/false/n for
+  bool but only on and off for OnOffAuto.
+- JSON uses true/false for bool but "on" and "off" for
+  OnOffAuto/OnOffSplit.
+
+This inconsistency causes some problems:
+- Users need to take the underlying type into consideration to determine
+  what literal to specify, increasing cognitive loads for human users
+  and complexity for programs invoking QEMU.
+- Converting an existing bool property to OnOffAuto/OnOffSplit will
+  break compatibility.
+
+Fix these problems by accepting bool literals for OnOffAuto/OnOffSplit.
+This change is specific to OnOffAuto/OnOffSplit; types added in the
+future may be defined as an alternate of bool and enum to avoid the
+mentioned problems in the first place.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- qapi/qobject-input-visitor.c | 103 +++++++++++++++++++++++++++++--------------
- 1 file changed, 69 insertions(+), 34 deletions(-)
+ hw/core/qdev-properties.c | 17 ++++++++++++++++-
+ scripts/qapi/visit.py     | 24 ++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/qobject-input-visitor.c b/qapi/qobject-input-visitor.c
-index f110a804b2ae0f3f75122775ddbc5ec7cc5de230..799c1c9bd6bde0676d6b028b485de13cb4884395 100644
---- a/qapi/qobject-input-visitor.c
-+++ b/qapi/qobject-input-visitor.c
-@@ -116,9 +116,8 @@ static const char *full_name(QObjectInputVisitor *qiv, const char *name)
-     return full_name_nth(qiv, name, 0);
- }
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 434a76f5036edd2091a9c79525b8e102582637be..073902431213c5be47197cb0d993d60cc2562501 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -2,6 +2,7 @@
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-types-misc.h"
++#include "qapi/qapi-visit-common.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/ctype.h"
+ #include "qemu/error-report.h"
+@@ -493,12 +494,26 @@ const PropertyInfo qdev_prop_string = {
  
--static QObject *qobject_input_try_get_object(QObjectInputVisitor *qiv,
--                                             const char *name,
--                                             bool consume)
-+static QObject *qobject_input_try_get_object(const QObjectInputVisitor *qiv,
-+                                             const char *name)
- {
-     StackObject *tos;
-     QObject *qobj;
-@@ -138,34 +137,19 @@ static QObject *qobject_input_try_get_object(QObjectInputVisitor *qiv,
-     if (qobject_type(qobj) == QTYPE_QDICT) {
-         assert(name);
-         ret = qdict_get(qobject_to(QDict, qobj), name);
--        if (tos->h && consume && ret) {
--            bool removed = g_hash_table_remove(tos->h, name);
--            assert(removed);
--        }
-     } else {
-         assert(qobject_type(qobj) == QTYPE_QLIST);
-         assert(!name);
--        if (tos->entry) {
--            ret = qlist_entry_obj(tos->entry);
--            if (consume) {
--                tos->entry = qlist_next(tos->entry);
--            }
--        } else {
--            ret = NULL;
--        }
--        if (consume) {
--            tos->index++;
--        }
-+        ret = tos->entry ? qlist_entry_obj(tos->entry) : NULL;
-     }
+ /* --- on/off/auto --- */
  
-     return ret;
- }
- 
- static QObject *qobject_input_get_object(QObjectInputVisitor *qiv,
--                                         const char *name,
--                                         bool consume, Error **errp)
-+                                         const char *name, Error **errp)
- {
--    QObject *obj = qobject_input_try_get_object(qiv, name, consume);
-+    QObject *obj = qobject_input_try_get_object(qiv, name);
- 
-     if (!obj) {
-         error_setg(errp, QERR_MISSING_PARAMETER, full_name(qiv, name));
-@@ -173,6 +157,38 @@ static QObject *qobject_input_get_object(QObjectInputVisitor *qiv,
-     return obj;
- }
- 
-+static void qobject_input_consume_object(QObjectInputVisitor *qiv,
-+                                         const char *name)
++static void set_on_off_auto(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
 +{
-+    StackObject *tos;
-+    QObject *qobj;
++    Property *prop = opaque;
++    int *ptr = object_field_prop_ptr(obj, prop);
++    OnOffAuto value;
 +
-+    if (QSLIST_EMPTY(&qiv->stack)) {
-+        /* Starting at root, name is ignored. */
++    if (!visit_type_OnOffAuto(v, name, &value, errp)) {
 +        return;
 +    }
 +
-+    /* We are in a container; find the next element. */
-+    tos = QSLIST_FIRST(&qiv->stack);
-+    qobj = tos->obj;
-+    assert(qobj);
-+
-+    if (qobject_type(qobj) == QTYPE_QDICT) {
-+        assert(name);
-+        if (tos->h) {
-+            bool removed = g_hash_table_remove(tos->h, name);
-+            assert(removed);
-+        }
-+    } else {
-+        assert(qobject_type(qobj) == QTYPE_QLIST);
-+        assert(!name);
-+        if (tos->entry) {
-+            tos->entry = qlist_next(tos->entry);
-+        }
-+        tos->index++;
-+    }
++    *ptr = value;
 +}
 +
- static const char *qobject_input_get_keyval(QObjectInputVisitor *qiv,
-                                             const char *name,
-                                             Error **errp)
-@@ -180,7 +196,7 @@ static const char *qobject_input_get_keyval(QObjectInputVisitor *qiv,
-     QObject *qobj;
-     QString *qstr;
+ const PropertyInfo qdev_prop_on_off_auto = {
+     .name = "OnOffAuto",
+     .description = "on/off/auto",
+     .enum_table = &OnOffAuto_lookup,
+     .get = qdev_propinfo_get_enum,
+-    .set = qdev_propinfo_set_enum,
++    .set = set_on_off_auto,
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
  
--    qobj = qobject_input_get_object(qiv, name, true, errp);
-+    qobj = qobject_input_get_object(qiv, name, errp);
-     if (!qobj) {
-         return NULL;
-     }
-@@ -233,6 +249,7 @@ static const QListEntry *qobject_input_push(QObjectInputVisitor *qiv,
-         tos->index = -1;
-     }
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index 12f92e429f6bafc091f74af88c1b837d08c7f733..221373b165aa95bceb4eb50a557edf0e5b4c01f7 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -209,6 +209,29 @@ def gen_visit_list(name: str, element_type: QAPISchemaType) -> str:
  
-+    qobject_input_consume_object(qiv, name);
-     QSLIST_INSERT_HEAD(&qiv->stack, tos, node);
-     return tos->entry;
- }
-@@ -279,7 +296,7 @@ static bool qobject_input_start_struct(Visitor *v, const char *name, void **obj,
-                                        size_t size, Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
  
-     if (obj) {
-         *obj = NULL;
-@@ -316,7 +333,7 @@ static bool qobject_input_start_list(Visitor *v, const char *name,
-                                      Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     const QListEntry *entry;
- 
-     if (list) {
-@@ -382,7 +399,7 @@ static bool qobject_input_start_alternate(Visitor *v, const char *name,
-                                           Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, false, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
- 
-     if (!qobj) {
-         *obj = NULL;
-@@ -397,7 +414,7 @@ static bool qobject_input_type_int64(Visitor *v, const char *name, int64_t *obj,
-                                      Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     QNum *qnum;
- 
-     if (!qobj) {
-@@ -409,6 +426,7 @@ static bool qobject_input_type_int64(Visitor *v, const char *name, int64_t *obj,
-                    full_name(qiv, name));
-         return false;
-     }
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -428,6 +446,7 @@ static bool qobject_input_type_int64_keyval(Visitor *v, const char *name,
-                    full_name(qiv, name), "integer");
-         return false;
-     }
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -435,7 +454,7 @@ static bool qobject_input_type_uint64(Visitor *v, const char *name,
-                                       uint64_t *obj, Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     QNum *qnum;
-     int64_t val;
- 
-@@ -448,12 +467,14 @@ static bool qobject_input_type_uint64(Visitor *v, const char *name,
-     }
- 
-     if (qnum_get_try_uint(qnum, obj)) {
-+        qobject_input_consume_object(qiv, name);
-         return true;
-     }
- 
-     /* Need to accept negative values for backward compatibility */
-     if (qnum_get_try_int(qnum, &val)) {
-         *obj = val;
-+        qobject_input_consume_object(qiv, name);
-         return true;
-     }
- 
-@@ -479,6 +500,7 @@ static bool qobject_input_type_uint64_keyval(Visitor *v, const char *name,
-                    full_name(qiv, name), "integer");
-         return false;
-     }
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -486,7 +508,7 @@ static bool qobject_input_type_bool(Visitor *v, const char *name, bool *obj,
-                                     Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     QBool *qbool;
- 
-     if (!qobj) {
-@@ -500,6 +522,7 @@ static bool qobject_input_type_bool(Visitor *v, const char *name, bool *obj,
-     }
- 
-     *obj = qbool_get_bool(qbool);
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -518,6 +541,7 @@ static bool qobject_input_type_bool_keyval(Visitor *v, const char *name,
-                    full_name(qiv, name), "'on' or 'off'");
-         return false;
-     }
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -525,7 +549,7 @@ static bool qobject_input_type_str(Visitor *v, const char *name, char **obj,
-                                    Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     QString *qstr;
- 
-     *obj = NULL;
-@@ -540,6 +564,7 @@ static bool qobject_input_type_str(Visitor *v, const char *name, char **obj,
-     }
- 
-     *obj = g_strdup(qstring_get_str(qstr));
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -549,15 +574,20 @@ static bool qobject_input_type_str_keyval(Visitor *v, const char *name,
-     QObjectInputVisitor *qiv = to_qiv(v);
-     const char *str = qobject_input_get_keyval(qiv, name, errp);
- 
-+    if (!str) {
-+        return false;
+ def gen_visit_enum(name: str) -> str:
++    if name in ('OnOffAuto', 'OnOffSplit'):
++        return mcgen('''
++
++bool visit_type_%(c_name)s(Visitor *v, const char *name,
++                 %(c_name)s *obj, Error **errp)
++{
++    bool b;
++    int i;
++
++    if (v->type == VISITOR_INPUT && visit_type_bool(v, name, &b, NULL)) {
++        *obj = b ? %(on)s : %(off)s;
++        return true;
 +    }
 +
-     *obj = g_strdup(str);
--    return !!str;
-+    qobject_input_consume_object(qiv, name);
-+    return true;
- }
++    b = visit_type_enum(v, name, &i, &%(c_name)s_lookup, errp);
++    *obj = i;
++
++    return b;
++}
++''',
++                     c_name=c_name(name),
++                     on=c_enum_const(name, 'on'), off=c_enum_const(name, 'off'))
++
+     return mcgen('''
  
- static bool qobject_input_type_number(Visitor *v, const char *name, double *obj,
-                                       Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
-     QNum *qnum;
- 
-     if (!qobj) {
-@@ -571,6 +601,7 @@ static bool qobject_input_type_number(Visitor *v, const char *name, double *obj,
-     }
- 
-     *obj = qnum_get_double(qnum);
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -593,6 +624,7 @@ static bool qobject_input_type_number_keyval(Visitor *v, const char *name,
-     }
- 
-     *obj = val;
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -600,7 +632,7 @@ static bool qobject_input_type_any(Visitor *v, const char *name, QObject **obj,
-                                    Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
- 
-     *obj = NULL;
-     if (!qobj) {
-@@ -608,6 +640,7 @@ static bool qobject_input_type_any(Visitor *v, const char *name, QObject **obj,
-     }
- 
-     *obj = qobject_ref(qobj);
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -615,7 +648,7 @@ static bool qobject_input_type_null(Visitor *v, const char *name,
-                                     QNull **obj, Error **errp)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_get_object(qiv, name, true, errp);
-+    QObject *qobj = qobject_input_get_object(qiv, name, errp);
- 
-     *obj = NULL;
-     if (!qobj) {
-@@ -628,6 +661,7 @@ static bool qobject_input_type_null(Visitor *v, const char *name,
-         return false;
-     }
-     *obj = qnull();
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
-@@ -647,13 +681,14 @@ static bool qobject_input_type_size_keyval(Visitor *v, const char *name,
-                    full_name(qiv, name), "size");
-         return false;
-     }
-+    qobject_input_consume_object(qiv, name);
-     return true;
- }
- 
- static void qobject_input_optional(Visitor *v, const char *name, bool *present)
- {
-     QObjectInputVisitor *qiv = to_qiv(v);
--    QObject *qobj = qobject_input_try_get_object(qiv, name, false);
-+    QObject *qobj = qobject_input_try_get_object(qiv, name);
- 
-     if (!qobj) {
-         *present = false;
+ bool visit_type_%(c_name)s(Visitor *v, const char *name,
+@@ -359,6 +382,7 @@ def _begin_user_module(self, name: str) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/visitor-impl.h"
+ #include "%(visit)s.h"
+ ''',
+                                       visit=visit))
 
 -- 
 2.48.1
