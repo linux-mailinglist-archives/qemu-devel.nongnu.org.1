@@ -2,82 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF324A2DF41
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 18:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A95A2DF62
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 18:29:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thAei-0003AX-Ed; Sun, 09 Feb 2025 11:59:40 -0500
+	id 1thB6C-0004VI-0i; Sun, 09 Feb 2025 12:28:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1thAeb-0002pr-AV
- for qemu-devel@nongnu.org; Sun, 09 Feb 2025 11:59:33 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1thB69-0004UM-N2
+ for qemu-devel@nongnu.org; Sun, 09 Feb 2025 12:28:01 -0500
+Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1thAeY-0007Sp-PS
- for qemu-devel@nongnu.org; Sun, 09 Feb 2025 11:59:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1739120359; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=Ch7Wr0WpEnC6kcEhkYTOQKUQFr3yp3PZ5y20NQzHWW4mydEfrRSOKJUQyHsVn1jCSF5i6k+kZdxtOlitguLL+jKCdr0BnzQ6DlMltecXPCaStb6PDu1a2shKfOS2rd9qeM0HJRXJyAg17gIjD3GqFCWgksiDTutsU40SCxaGO10=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1739120359;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=64uV+I0WgV7YvBrDsehY8khnJNZ+HrjZx/C48Sc9hm8=; 
- b=V/JsZ9DjxCjTfCb9tb+jusBJK3TnYhaDRS4QXqarJN4SU/VLGxdthyuNGO9aKOIx3VK4BNEePQWn3UgQ0N97pXygjgor7JMAVrNBPha0V0Z09wksnak4UyGNxuDGBdv+vw5XVEcF9NxR50grKUfx2QwsBVy+7uOKJZP8Rlzc1gM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739120359; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=64uV+I0WgV7YvBrDsehY8khnJNZ+HrjZx/C48Sc9hm8=;
- b=DWUeyxiO9qFHRMA7ks5bgDeX3fyTuSMoDzSB0rGXk8ASGFykiu1q2FJvk8b4soYN
- KHDTAerP2YBadXRlDQfs0UNV76NV/4SpuBtHD02zVJwEmuoA5LmZSvDmdp0CIQkECJG
- EOwwOXrjDT8+nlK5X8P3F7R8vh7R3Atj5Mn1nc5A=
-Received: by mx.zohomail.com with SMTPS id 1739120356466466.17990285617464;
- Sun, 9 Feb 2025 08:59:16 -0800 (PST)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v8 10/10] docs/system: virtio-gpu: Document host/guest
- requirements
-Date: Sun,  9 Feb 2025 19:56:49 +0300
-Message-ID: <20250209165649.544005-11-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250209165649.544005-1-dmitry.osipenko@collabora.com>
-References: <20250209165649.544005-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1thB67-0006Fk-AE
+ for qemu-devel@nongnu.org; Sun, 09 Feb 2025 12:28:01 -0500
+Received: from localhost.localdomain (default-rdns.vocus.co.nz
+ [202.150.110.104] (may be forged)) (authenticated bits=0)
+ by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
+ 519HRdEn3380282
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+ Sun, 9 Feb 2025 17:27:42 GMT
+Authentication-Results: anarch128.org; auth=pass;
+ dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
+ header.i=@anarch128.org header.b=GoMmRaG/ header.a=rsa-sha256 header.s=100003;
+ x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org); 
+ x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
+ s=100003; t=1739122065;
+ bh=+xtV3Iad1s8I/+U6+W4aJTRczgTZNHlFTTaccSGQ5Ks=;
+ h=From:To:Cc:Subject:Date:From;
+ b=GoMmRaG/pnbHcb/3ys9XSbXFnF9Dw6tpNcvzbiTkfwCj3C8iYtCSNg4ppQB1ExaQP
+ R8u+3tHOsJg6WSRUrNfSFUQwHk76G0S9Y8oW6bLrl2u8g2JeyqamHr0ksOEPdFoHOG
+ AL50r2JpbdqrzQjX2bHVmzI5ZvZ+FaJppt+mw88Wein5e26PuM85Lx7MWB73nFjlHi
+ g+rH1GG4qX7JKsdXgt5jXefNBQJ38y6eq0dwYSE5opsSEBubq1KIEazkvZRVzZV6Gf
+ rAGcUyYrKQiomAQL5lWvrjv84B+tMci39LCnbmWn3acd85Ur3louKv8ZSYIkkzWnkj
+ XiHYZbXh2Z+OA==
+From: Michael Clark <michael@anarch128.org>
+To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Cc: Michael Clark <michael@anarch128.org>
+Subject: [PATCH v2 0/4] x86-disas: port x86-mini disassembler to QEMU
+Date: Mon, 10 Feb 2025 06:26:52 +1300
+Message-ID: <20250209172656.1466556-1-michael@anarch128.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
+ envelope-from=michael@anarch128.org; helo=anarch128.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,165 +75,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+a port of an embeddable x86-mini disassembler to QEMU.
 
-This attempts to tidy up the VirtIO GPU documentation to make the list
-of requirements clearer. There are still a lot of moving parts and the
-distros have some catching up to do before this is all handled
-automatically.
+- https://github.com/michaeljclark/qemu/tree/x86-mini-v2
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Sergio Lopez Pascual <slp@redhat.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-[dmitry.osipenko@collabora.com: Extended and corrected doc]
----
- docs/system/devices/virtio-gpu.rst | 106 ++++++++++++++++++++++++++++-
- 1 file changed, 104 insertions(+), 2 deletions(-)
+# x86-mini disassembler
 
-diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-index ea3eb052df3c..664fc4000fa9 100644
---- a/docs/system/devices/virtio-gpu.rst
-+++ b/docs/system/devices/virtio-gpu.rst
-@@ -5,14 +5,34 @@ virtio-gpu
- ==========
- 
- This document explains the setup and usage of the virtio-gpu device.
--The virtio-gpu device paravirtualizes the GPU and display controller.
-+The virtio-gpu device provides a GPU and display controller
-+paravirtualized using VirtIO. It supports a number of different modes
-+from simple 2D displays to fully accelerated 3D graphics.
-+
-+virtio-gpu requirements
-+-----------------------
- 
- Linux kernel support
----------------------
-+^^^^^^^^^^^^^^^^^^^^
- 
- virtio-gpu requires a guest Linux kernel built with the
- ``CONFIG_DRM_VIRTIO_GPU`` option.
- 
-+Host Linux kernel requirements vary depending on a used virtio-gpu
-+capabilities. See further sections for a detailed descriptions.
-+
-+3D acceleration
-+^^^^^^^^^^^^^^^
-+
-+3D acceleration of a virtualized GPU is still an evolving field.
-+Depending on the 3D mode you are running you may need to override
-+distribution supplied libraries with more recent versions or enable
-+build options. There are a number of requirements the host must meet
-+to be able to be able to support guests. QEMU must be able to access the
-+host's GPU and for the best performance be able to reliably share GPU
-+memory with the guest. Details of 3D acceleration requirements are
-+described in a further sections.
-+
- QEMU virtio-gpu variants
- ------------------------
- 
-@@ -65,8 +85,14 @@ intermediate representation is communicated to the host and the
- `virglrenderer`_ library on the host translates the intermediate
- representation back to OpenGL API calls.
- 
-+By default OpenGL version on guest is limited to 4.3. In order to enable
-+OpenGL 4.6 support, virtio-gpu host blobs feature (``hostmem`` and ``blob``
-+fields) should be enabled.  The ``hostmem`` field specifies the size of
-+virtio-gpu host memory window. This is typically between 256M and 8G.
-+
- .. parsed-literal::
-     -device virtio-gpu-gl
-+    -device virtio-gpu-gl,hostmem=8G,blob=true
- 
- .. _virgl: https://docs.mesa3d.org/drivers/virgl.html
- .. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-@@ -94,6 +120,62 @@ of virtio-gpu host memory window. This is typically between 256M and 8G.
- 
- .. _drm: https://gitlab.freedesktop.org/virgl/virglrenderer/-/tree/main/src/drm
- 
-+.. list-table:: Linux Host Requirements
-+  :header-rows: 1
-+
-+  * - Capability
-+    - Kernel
-+    - virglrenderer build flags
-+  * - OpenGL pass-through
-+    - Any Linux version compatible with QEMU if not using host blobs feature,
-+      Linux 6.13+ otherwise
-+    - N/A
-+  * - Vulkan pass-through
-+    - Linux 6.13+
-+    - -Dvenus=true -Drender-server=true
-+  * - AMDGPU DRM native context
-+    - Linux 6.13+
-+    - -Ddrm-renderers=amdgpu-experimental
-+  * - Freedreno DRM native context
-+    - Linux 6.4+
-+    - -Ddrm-renderers=msm
-+  * - Intel i915 DRM native context
-+    - Linux 6.13+
-+    - -Ddrm-renderers=i915-experimental `mr1384`_
-+  * - Asahi DRM native context
-+    - Downstream version of Asahi Linux kernel
-+    - -Ddrm-renderers=asahi-experimental `mr1274`_
-+
-+.. _mr1384: https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1384
-+.. _mr1274: https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1274
-+
-+.. list-table:: Linux Guest Requirements
-+  :header-rows: 1
-+
-+  * - Capability
-+    - Mesa Version
-+    - Mesa build flags
-+  * - OpenGL pass-through
-+    - 16.0.0+
-+    - -Dgallium-drivers=virgl
-+  * - Vulkan pass-through
-+    - 24.2.0+
-+    - -Dvulkan-drivers=virtio
-+  * - AMDGPU DRM native context
-+    - 25.0.0+
-+    - -Dgallium-drivers=radeonsi -Dvulkan-drivers=amd -Damdgpu-virtio=true
-+  * - Freedreno DRM native context
-+    - 23.1.0+
-+    - -Dgallium-drivers=freedreno -Dvulkan-drivers=freedreno
-+  * - Intel i915 DRM native context
-+    - `mr29870`_
-+    - -Dgallium-drivers=iris -Dvulkan-drivers=intel -Dintel-virtio-experimental=true
-+  * - Asahi DRM native context
-+    - 24.2.0+
-+    - -Dgallium-drivers=asahi -Dvulkan-drivers=asahi
-+
-+.. _mr29870: https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29870
-+
- virtio-gpu rutabaga
- -------------------
- 
-@@ -133,3 +215,23 @@ Surfaceless is the default if ``wsi`` is not specified.
- .. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
- .. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
- .. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
-+
-+.. list-table:: Linux Host Requirements
-+  :header-rows: 1
-+
-+  * - Capability
-+    - Kernel
-+    - Rutabaga build flags
-+  * - Vulkan+Wayland pass-through
-+    - Linux 6.13+
-+    - Follow `gfxstream-enabled rutabaga`_ build instructions
-+
-+.. list-table:: Linux Guest Requirements
-+  :header-rows: 1
-+
-+  * - Capability
-+    - Mesa Version
-+    - Mesa build flags
-+  * - Vulkan pass-through
-+    - 24.3.0+
-+    - -Dvulkan-drivers=gfxstream
+the x86-mini library is a lightweight x86 encoder, decoder, and
+disassembler that uses extensions to the Intel instruction set
+metadata format to encode modern VEX/EVEX instructions and legacy
+instructions using a parameterized LEX (legacy extension) format.
+
+- metadata-driven disassembler with Intel format output.
+- written in C11 for compatibility with projects written in C.
+- low-level instruction encoder and decoder uses <= 32-bytes.
+- python tablegen program to generate C tables from CSV metadata.
+- metadata table tool to inspect operand encode and decode tables.
+- carefully checked machine-readable instruction set metadata.
+- support for REX/VEX/EVEX and preliminary support for REX2.
+
+the x86-mini x86 encoder and decoder library has been written from
+scratch to be modern and as simple as possible while also covering
+recent additions to the Intel and AMD 64-bit instruction sets such
+as the EVEX encodings for recent AVX-512 extensions and soon REX2/
+EVEX encodings for Intel APX, as it is written with that in mind.
+
+## interest to the QEMU community
+
+- x86-mini is fast. raw decode performance is ~100-200MiB/sec.
+- x86-mini is small. 5 files, ~5 KLOC or ~13 KLOC including tables.
+- x86-mini is complete and includes the latest AVX-512 extensions.
+- x86-mini is easy to extend and uses extended Intel format metadata.
+- x86-mini is documented with detailed info on the metadata format.
+- x86-mini has CLI tools for searching x86 instruction set metadata.
+
+it would be nice to have an x86 disassembler building out-of-the-box
+as I find QEMU's built-in tracing extremely useful and given x86 is
+a popular target, a small embedded disassembler might be useful.
+
+- https://github.com/michaeljclark/x86/tree/x86-mini
+
+## techinical notes
+
+- the decoder is table-based and uses a metadata interpreter.
+- the decode table is ~66KiB with a ~150KiB acceleration trie.
+- there are currently 3658 opcode entries active on x86-64
+  which expands to 4775 table entries due to parameterization.
+
+after cherry-picking the commits, one can test host and target
+disassembly support. e.g. for an x86-64 target on an x86-64 host:
+
+$ echo aaa | qemu-x86_64 -d in_asm,out_asm /usr/bin/openssl sha256
+
+## caveats
+
+- supports 32-bit and 64-bit disassembly, and theoretically 16-bit.
+- designed to support 16-bit. base index formats are not done yet.
+- x86-64 is exhaustively fuzz-tested against the LLVM disassembler.
+- but x86-mini is new and hasn't been battle-tested in production.
+
+## conclusion
+
+the metadata is based on x86-csv but has had numerous inaccuracies
+fixed plus conversion of legacy instructions to the new LEX format.
+in effect the metadata has been fuzz-tested against LLVM for x86-64
+and ISA coverage is in the order of ~99.9%. the main branch of the
+linked repo has a procedural fuzzer for metadata-based instruction
+synthesis that could be useful for generating test cases for QEMU.
+
+## summary of changes
+
+v2
+- improve grouping of encode, decode, and disasm functions.
+- fix some metadata documentation errors and ommissions.
+- use g_malloc/g_malloc0/g_free instead of malloc/calloc/free.
+- use cpu_to_{le16|le32|le64}, {le16|le32|le64}_to_cpu.
+- move bitfield documentation comments next to definitions.
+- redefine condition codes enum and remove redundant functions.
+- reduce snprintf performance cost with optimized version.
+- remove duplicate unused definition of ctz/clz/popcnt.
+- remove duplicate host endianness conversion functions.
+- remove some magic constants and replace with math.
+- remove some unnecessary casts.
+
+v1
+- simplification to memory operand formatting logic.
+- fixed VSIB pointer formatting for consistency with LLVM.
+- 64-bit disasembly exhaustively fuzz tested against LLVM.
+- includes x86 metadata and x86-tablegen.py python script.
+- includes x86 metadata opcode and operand documentation.
+- addressed non-whitespace related checkpatch.pl warnings.
+
+Michael Clark (4):
+  x86-disas: add x86-mini instruction set metadata
+  x86-disas: add x86-mini metadata documentation
+  x86-disas: add x86-mini metadata tablegen script
+  x86-disas: add x86-mini disassembler implementation
+
+ disas/disas-host.c                        |    5 +
+ disas/meson.build                         |   97 +
+ disas/x86-core.c                          | 3059 +++++++++++++++++++++
+ disas/x86-data/x86_adx.csv                |    5 +
+ disas/x86-data/x86_aes.csv                |   13 +
+ disas/x86-data/x86_aeskle.csv             |    3 +
+ disas/x86-data/x86_aesklewide.csv         |    3 +
+ disas/x86-data/x86_avx.csv                |  375 +++
+ disas/x86-data/x86_avx2.csv               |  171 ++
+ disas/x86-data/x86_avx5124fmaps.csv       |    5 +
+ disas/x86-data/x86_avx5124vnniw.csv       |    3 +
+ disas/x86-data/x86_avx512b.csv            |    3 +
+ disas/x86-data/x86_avx512bf16.csv         |   10 +
+ disas/x86-data/x86_avx512bitalg.csv       |   10 +
+ disas/x86-data/x86_avx512bw.csv           |  291 ++
+ disas/x86-data/x86_avx512cd.csv           |   19 +
+ disas/x86-data/x86_avx512d.csv            |    2 +
+ disas/x86-data/x86_avx512dq.csv           |  143 +
+ disas/x86-data/x86_avx512er.csv           |   11 +
+ disas/x86-data/x86_avx512f.csv            |  901 ++++++
+ disas/x86-data/x86_avx512fp16.csv         |  237 ++
+ disas/x86-data/x86_avx512ifma.csv         |    7 +
+ disas/x86-data/x86_avx512pf.csv           |   17 +
+ disas/x86-data/x86_avx512vbmi.csv         |   13 +
+ disas/x86-data/x86_avx512vbmi2.csv        |   61 +
+ disas/x86-data/x86_avx512vl.csv           |    2 +
+ disas/x86-data/x86_avx512vnni.csv         |   13 +
+ disas/x86-data/x86_avx512vp2intersect.csv |    7 +
+ disas/x86-data/x86_avx512vpopcntdq.csv    |    7 +
+ disas/x86-data/x86_avxneconvert.csv       |   15 +
+ disas/x86-data/x86_avxvnni.csv            |    9 +
+ disas/x86-data/x86_avxvnniint8.csv        |   13 +
+ disas/x86-data/x86_base.csv               |  549 ++++
+ disas/x86-data/x86_bmi1.csv               |   13 +
+ disas/x86-data/x86_bmi2.csv               |   17 +
+ disas/x86-data/x86_cet.csv                |   15 +
+ disas/x86-data/x86_cldemote.csv           |    2 +
+ disas/x86-data/x86_clwb.csv               |    2 +
+ disas/x86-data/x86_enqcmd.csv             |    3 +
+ disas/x86-data/x86_f16c.csv               |    5 +
+ disas/x86-data/x86_fma.csv                |   97 +
+ disas/x86-data/x86_fsgsbase.csv           |    9 +
+ disas/x86-data/x86_gfni.csv               |   19 +
+ disas/x86-data/x86_hreset.csv             |    2 +
+ disas/x86-data/x86_invpcid.csv            |    2 +
+ disas/x86-data/x86_lzcnt.csv              |    3 +
+ disas/x86-data/x86_mmx.csv                |   60 +
+ disas/x86-data/x86_movdir64b.csv          |    2 +
+ disas/x86-data/x86_movdiri.csv            |    3 +
+ disas/x86-data/x86_mpx.csv                |    9 +
+ disas/x86-data/x86_msrlist.csv            |    4 +
+ disas/x86-data/x86_ospke.csv              |    3 +
+ disas/x86-data/x86_pclmulqdq.csv          |    3 +
+ disas/x86-data/x86_pconfig.csv            |    2 +
+ disas/x86-data/x86_prefetchw.csv          |    7 +
+ disas/x86-data/x86_raoint.csv             |    9 +
+ disas/x86-data/x86_rdpid.csv              |    2 +
+ disas/x86-data/x86_rdrand.csv             |    2 +
+ disas/x86-data/x86_rdseed.csv             |    2 +
+ disas/x86-data/x86_rtm.csv                |    5 +
+ disas/x86-data/x86_serialize.csv          |    2 +
+ disas/x86-data/x86_sha.csv                |    8 +
+ disas/x86-data/x86_smap.csv               |    3 +
+ disas/x86-data/x86_sse.csv                |   58 +
+ disas/x86-data/x86_sse2.csv               |  148 +
+ disas/x86-data/x86_sse3.csv               |   11 +
+ disas/x86-data/x86_sse4_1.csv             |   48 +
+ disas/x86-data/x86_sse4_2.csv             |    7 +
+ disas/x86-data/x86_sse4_3.csv             |    2 +
+ disas/x86-data/x86_ssse3.csv              |   33 +
+ disas/x86-data/x86_uintr.csv              |    6 +
+ disas/x86-data/x86_vaes.csv               |   17 +
+ disas/x86-data/x86_vmx.csv                |   14 +
+ disas/x86-data/x86_waitpkg.csv            |    4 +
+ disas/x86-data/x86_wbnoinvd.csv           |    2 +
+ disas/x86-data/x86_x87.csv                |  145 +
+ disas/x86-data/x86_xsaveopt.csv           |    3 +
+ disas/x86-disas.c                         |   94 +
+ disas/x86.h                               | 1858 +++++++++++++
+ docs/x86-metadata.txt                     |  303 ++
+ include/disas/dis-asm.h                   |    1 +
+ scripts/x86-tablegen.py                   |  693 +++++
+ target/i386/cpu.c                         |    7 +
+ 83 files changed, 9848 insertions(+)
+ create mode 100644 disas/x86-core.c
+ create mode 100644 disas/x86-data/x86_adx.csv
+ create mode 100644 disas/x86-data/x86_aes.csv
+ create mode 100644 disas/x86-data/x86_aeskle.csv
+ create mode 100644 disas/x86-data/x86_aesklewide.csv
+ create mode 100644 disas/x86-data/x86_avx.csv
+ create mode 100644 disas/x86-data/x86_avx2.csv
+ create mode 100644 disas/x86-data/x86_avx5124fmaps.csv
+ create mode 100644 disas/x86-data/x86_avx5124vnniw.csv
+ create mode 100644 disas/x86-data/x86_avx512b.csv
+ create mode 100644 disas/x86-data/x86_avx512bf16.csv
+ create mode 100644 disas/x86-data/x86_avx512bitalg.csv
+ create mode 100644 disas/x86-data/x86_avx512bw.csv
+ create mode 100644 disas/x86-data/x86_avx512cd.csv
+ create mode 100644 disas/x86-data/x86_avx512d.csv
+ create mode 100644 disas/x86-data/x86_avx512dq.csv
+ create mode 100644 disas/x86-data/x86_avx512er.csv
+ create mode 100644 disas/x86-data/x86_avx512f.csv
+ create mode 100644 disas/x86-data/x86_avx512fp16.csv
+ create mode 100644 disas/x86-data/x86_avx512ifma.csv
+ create mode 100644 disas/x86-data/x86_avx512pf.csv
+ create mode 100644 disas/x86-data/x86_avx512vbmi.csv
+ create mode 100644 disas/x86-data/x86_avx512vbmi2.csv
+ create mode 100644 disas/x86-data/x86_avx512vl.csv
+ create mode 100644 disas/x86-data/x86_avx512vnni.csv
+ create mode 100644 disas/x86-data/x86_avx512vp2intersect.csv
+ create mode 100644 disas/x86-data/x86_avx512vpopcntdq.csv
+ create mode 100644 disas/x86-data/x86_avxneconvert.csv
+ create mode 100644 disas/x86-data/x86_avxvnni.csv
+ create mode 100644 disas/x86-data/x86_avxvnniint8.csv
+ create mode 100644 disas/x86-data/x86_base.csv
+ create mode 100644 disas/x86-data/x86_bmi1.csv
+ create mode 100644 disas/x86-data/x86_bmi2.csv
+ create mode 100644 disas/x86-data/x86_cet.csv
+ create mode 100644 disas/x86-data/x86_cldemote.csv
+ create mode 100644 disas/x86-data/x86_clwb.csv
+ create mode 100644 disas/x86-data/x86_enqcmd.csv
+ create mode 100644 disas/x86-data/x86_f16c.csv
+ create mode 100644 disas/x86-data/x86_fma.csv
+ create mode 100644 disas/x86-data/x86_fsgsbase.csv
+ create mode 100644 disas/x86-data/x86_gfni.csv
+ create mode 100644 disas/x86-data/x86_hreset.csv
+ create mode 100644 disas/x86-data/x86_invpcid.csv
+ create mode 100644 disas/x86-data/x86_lzcnt.csv
+ create mode 100644 disas/x86-data/x86_mmx.csv
+ create mode 100644 disas/x86-data/x86_movdir64b.csv
+ create mode 100644 disas/x86-data/x86_movdiri.csv
+ create mode 100644 disas/x86-data/x86_mpx.csv
+ create mode 100644 disas/x86-data/x86_msrlist.csv
+ create mode 100644 disas/x86-data/x86_ospke.csv
+ create mode 100644 disas/x86-data/x86_pclmulqdq.csv
+ create mode 100644 disas/x86-data/x86_pconfig.csv
+ create mode 100644 disas/x86-data/x86_prefetchw.csv
+ create mode 100644 disas/x86-data/x86_raoint.csv
+ create mode 100644 disas/x86-data/x86_rdpid.csv
+ create mode 100644 disas/x86-data/x86_rdrand.csv
+ create mode 100644 disas/x86-data/x86_rdseed.csv
+ create mode 100644 disas/x86-data/x86_rtm.csv
+ create mode 100644 disas/x86-data/x86_serialize.csv
+ create mode 100644 disas/x86-data/x86_sha.csv
+ create mode 100644 disas/x86-data/x86_smap.csv
+ create mode 100644 disas/x86-data/x86_sse.csv
+ create mode 100644 disas/x86-data/x86_sse2.csv
+ create mode 100644 disas/x86-data/x86_sse3.csv
+ create mode 100644 disas/x86-data/x86_sse4_1.csv
+ create mode 100644 disas/x86-data/x86_sse4_2.csv
+ create mode 100644 disas/x86-data/x86_sse4_3.csv
+ create mode 100644 disas/x86-data/x86_ssse3.csv
+ create mode 100644 disas/x86-data/x86_uintr.csv
+ create mode 100644 disas/x86-data/x86_vaes.csv
+ create mode 100644 disas/x86-data/x86_vmx.csv
+ create mode 100644 disas/x86-data/x86_waitpkg.csv
+ create mode 100644 disas/x86-data/x86_wbnoinvd.csv
+ create mode 100644 disas/x86-data/x86_x87.csv
+ create mode 100644 disas/x86-data/x86_xsaveopt.csv
+ create mode 100644 disas/x86-disas.c
+ create mode 100644 disas/x86.h
+ create mode 100644 docs/x86-metadata.txt
+ create mode 100755 scripts/x86-tablegen.py
+
 -- 
-2.47.1
+2.43.0
 
 
