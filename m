@@ -2,67 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C6BA2DA71
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 03:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73D7A2DA9B
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 04:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgxST-0000Gi-7p; Sat, 08 Feb 2025 21:54:09 -0500
+	id 1tgy3n-0005oN-T7; Sat, 08 Feb 2025 22:32:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgxSR-0000Fe-1d; Sat, 08 Feb 2025 21:54:07 -0500
-Received: from mail-pj1-f51.google.com ([209.85.216.51])
+ id 1tgy3j-0005oB-Qw
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:39 -0500
+Received: from mail-pl1-f180.google.com ([209.85.214.180])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgxSO-0001Eo-FD; Sat, 08 Feb 2025 21:54:05 -0500
-Received: by mail-pj1-f51.google.com with SMTP id
- 98e67ed59e1d1-2f9ba87f5d4so4667307a91.3; 
- Sat, 08 Feb 2025 18:54:03 -0800 (PST)
+ id 1tgy3h-0001PH-RP
+ for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:39 -0500
+Received: by mail-pl1-f180.google.com with SMTP id
+ d9443c01a7336-21f5268cf50so26635595ad.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 19:32:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739069641; x=1739674441;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OECC3Kx/J6h+c9zd/MNgk5sxZHcHGBgSRgIZ+2LsnqU=;
- b=qMBwLlRoO/2FJLxUbt60G9WV6GegjCcEBSRTsCckLmTD9oqP3zHTAJq1CQquNdlDBE
- /CXTlstwhPWgxvdMnkIkIpr+w+gsIBCXJUN/zgPR5/7ReT9hg2Vp1sVfWFBKzENkgHH1
- f3hA6qGZ1gb594Lm+mU+1iEv/kQMjlgsAzXABNrl5JSjuNwibIRjcvTBaLTjfA3UAjqD
- CoJnfxBDWnqmbQerjq/VtX5l4d+V+hHTJt/43ofIMYXRIJxosPOw3Z9cnuI71wkjIobF
- Mcg+tnL8a21c/6IVStn0jftCei0HBlow2evQogdYXOwP8c2aARL+y8lZbo2wbHb4ZY0k
- 2hOw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWWPmPQp0o59amrqeNeg7ERe4N4ujhKZsx1x8WNpHB2+44z4mAIjMVCzSUqTpG0+PhRQvfAQ3FzsQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yx+W8T/4ZarcZ5oSNqpUjZSWHhZ3gPzzP157I8aGOAKURTZ/bix
- bAhxErjjxQwmVKmcOGlqkqEj6gRRE9ZWiDxxIHx1/DwztmRdE+VB07ESc0i1
-X-Gm-Gg: ASbGncs3Wxo6J4QS+kIFS/JR9ZztcygAIXKWx9xrcIIlhw2tjyukyeKZhWN9PDNQYpc
- gbsCIz6TpspXaoAcUpqNFaF7SXOM13LDTLVUlBxl3Tr/kQbDEMPtdA+ZIw1WPdKVzUL/ZKdzv7V
- mkR7+ATSNrWrE0Y8RBZr1P6oi91QPvxodXSqq2DYY1wjSLEm+eGdofoMyS9ZylZQyAmCb/8aE3T
- 55B561SdrGdOahyZybXWYTtaDk0AAnhxgm5Ub41T3K/OhMIoy/X/N66WZ4urueKW7Q+WPxwV91S
- o5gcvToA1zSbWkbGg8YRz032HAvFypRty3TUWXhovHvu4+4=
-X-Google-Smtp-Source: AGHT+IElRIL+zFthLR00itAg66E0dO2mHuhyoihchVSUQvU73mKip+S4aRBMkOwcJvUQBxf+Qm1iOA==
-X-Received: by 2002:a17:90a:f94f:b0:2ee:96a5:721c with SMTP id
- 98e67ed59e1d1-2fa2417c12fmr12141832a91.21.1739069641393; 
- Sat, 08 Feb 2025 18:54:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739071956; x=1739676756;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QYsSeGIBQIN4Xd6KssoggAwwiUFz1a+HTSCoc/7tD/E=;
+ b=YvVhYZ6me2AwKBJzaOol1zCxykF4I5T83t8oh3Lb2LFBpAQywLSVPTdNcOSMlvRLbj
+ H8ZW/LXY5sSvlYZkMHgwrX0DzqVTuE2Fb77QzQk2mVkhCI9LHffLi58laN3U+P8TvtEr
+ SpAlUD4uWZebvBxwd9G+Y20X/Cx+AWp1V5+83azvbOI5tn1JUP0U+ficPcrQqsxAWbW9
+ ffz+Jr5YFTbpz0T3wSobTajGdNc0kJVvuPCBnTxM77wC1y8FlWwgzWLH554PWdJGxgNY
+ XEGg2C2WStiqRLkR6ioTWIj3SpeGKJI/FrR4eeogcMgfdbv0LQ82SyQEmF027GaFHTt0
+ xwcw==
+X-Gm-Message-State: AOJu0YyF5DdhhSDAT+IdlP/iXsTlmnEF71rooJq4Q1F6EsGes54J10Pk
+ 5XwJ4bZCznDXAjjrFDcJq0VoiPATKG/lskhmJVxLy2/gmtDjFKrW4mHCFY+K
+X-Gm-Gg: ASbGncuVPH3m9dxdcPJ1Xzer1SHndedYjeYUOTOB27qPwUTC2e6hH6cDKkq2vvpH0Kz
+ EKoLM+ObX2B+qW9/dqLMGtwK9lUVPNkgp0D5r39Sf7t8ob20klpJNrpxEGoKFXGy6St3oLm9vOD
+ tLfKaT96mUwyyaRf5c84Lz+EIsTK75saTgoWIkJAHNjgcm6KiGBI94Cnu7FOW0ar+QlgD+hCd+5
+ mHe9Zz9TrWI/eY8koVjfEibYW1DOpFqc00qFKDS3ZtQ/7lBy8NVcV6fU5zZe8SiXbC/Mu1SGqg2
+ 2NaXQLQzAcF7pSmc16zneFDeiS6zIni6GOP1aNkOGWN1TS4=
+X-Google-Smtp-Source: AGHT+IEJ6rLEy887D+j3WT+Gl234IYFbkoSYfCDqCkqxCJS3vkyoq9MkFZLu5amvmkCUYQtoeAK6eA==
+X-Received: by 2002:a17:902:cf11:b0:216:4a06:e87a with SMTP id
+ d9443c01a7336-21f4e744803mr159912765ad.40.1739071955879; 
+ Sat, 08 Feb 2025 19:32:35 -0800 (PST)
 Received: from localhost.localdomain
  ([2607:fb90:9e97:4903:dc10:4530:8a3f:fdb6])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f5786a07bsm33070645ad.115.2025.02.08.18.54.00
+ 41be03b00d2f7-ad5453e2366sm1333610a12.47.2025.02.08.19.32.35
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Feb 2025 18:54:00 -0800 (PST)
+ Sat, 08 Feb 2025 19:32:35 -0800 (PST)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH] hvf: arm: sign extend when SSE=1
-Date: Sat,  8 Feb 2025 18:53:58 -0800
-Message-ID: <20250209025358.43533-1-j@getutm.app>
+Subject: [PATCH RFC 0/4] hvf: use TCG emulation to handle data aborts
+Date: Sat,  8 Feb 2025 19:32:29 -0800
+Message-ID: <20250209033233.53853-1-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.216.51; envelope-from=osy86dev@gmail.com;
- helo=mail-pj1-f51.google.com
+Received-SPF: pass client-ip=209.85.214.180; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f180.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -87,48 +84,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the ARM manual, when SSE=1 the data item must be sign
-extended.
+When the VM exits with an data abort, we check the ISV field in the ESR and when
+ISV=1, that means the processor has filled the remaining fields with information
+needed to determine the access that caused the abort: address, access width, and
+the register operand. However, only a limited set of instructions which can
+cause a data abort is nice enough for the processor to decode this way. Many
+instructions such as LDP/STP and SIMD can cause an data abort with ISV=0 and for
+that the hypervisor needs to manually decode the instruction, find the operands,
+and emulate the access.
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- target/arm/hvf/hvf.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+QEMU already ships with the ability to do this: TCG. However, TCG currently
+operates as a stand-alone accelerator. This patch set enables HVF to call into
+TCG when needed in order to perform a memory access that caused the abort.
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 0afd96018e..28886970c9 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1876,6 +1876,11 @@ static void hvf_sync_vtimer(CPUState *cpu)
-     }
- }
- 
-+static inline uint64_t sign_extend(uint64_t value, uint32_t bits)
-+{
-+    return (uint64_t)((int64_t)(value << (64 - bits)) >> (64 - bits));
-+}
-+
- int hvf_vcpu_exec(CPUState *cpu)
- {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-@@ -1971,6 +1976,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-         bool isv = syndrome & ARM_EL_ISV;
-         bool iswrite = (syndrome >> 6) & 1;
-         bool s1ptw = (syndrome >> 7) & 1;
-+        bool sse = (syndrome >> 21) & 1;
-         uint32_t sas = (syndrome >> 22) & 3;
-         uint32_t len = 1 << sas;
-         uint32_t srt = (syndrome >> 16) & 0x1f;
-@@ -1998,6 +2004,9 @@ int hvf_vcpu_exec(CPUState *cpu)
-             address_space_read(&address_space_memory,
-                                hvf_exit->exception.physical_address,
-                                MEMTXATTRS_UNSPECIFIED, &val, len);
-+            if (sse && len != sizeof(uint64_t)) {
-+                val = sign_extend(val, len * 8);
-+            }
-             hvf_set_reg(cpu, srt, val);
-         }
- 
+One thing this enables is the ability to use virtio-vga with Windows for ARM64.
+Currently, graphics support for Windows is flakey because you must first boot
+with ramfb to get to the desktop where you can then install the virtio-gpu
+drivers and then start up with virtio-gpu. Even then, there is a known issue
+where Windows mistakingly thinks there are two monitors connected because the
+boot display does not share a framebuffer with the GPU. This results in
+sometimes a black screen when updating Windows.
+
+Another issue is that the TPM driver uses LDP/STP to access the command buffer
+and so the QEMU device which maps registers as MMIO will not work.
+
+There are a couple major issues with the patch as it currently stands. First of
+all, it is very slow. Because we do not track writes to code pages, to be safe
+we flush TLBs and TBs every time we switch to emulation mode. We also need to
+synchronize the register states between HVF and QEMU each time we enter and
+exit emulation mode. Since we enter/exit emulation mode for every instruction
+that causes the data abort, in the case of the VGA buffer being cleared in a
+loop, this means we need to enter-exit emulation mode to execute a single
+instruction for every pixel. Second, we don't support plugins at all. Lastly,
+some of the CPU state used by TCG is not properly synchronized with HVF and so
+subtle issues can occur. We may want to constrain the emulator to only run with
+a known allowlist of instructions we wish to handle in a data abort.
+
+I think these issues can be worked around but I want to know if people think
+this approach is worth doing or if instead we should pursue alternatives such
+as a more basic instruction decoder which only supports a subset of instructions
+which are interesting for memory accesses.
+
+Joelle van Dyne (4):
+  cpu-exec: support single-step without debug
+  cpu-target: support emulation from non-TCG accels
+  hvf: arm: emulate instruction when ISV=0
+  hw/arm/virt: enable VGA
+
+ include/exec/cpu-common.h |   1 +
+ include/hw/core/cpu.h     |  11 +++++
+ include/system/hvf_int.h  |   2 +-
+ target/arm/hvf_arm.h      |   5 ++
+ target/arm/internals.h    |   3 +-
+ accel/hvf/hvf-accel-ops.c |   2 +-
+ accel/tcg/cpu-exec.c      |  35 +++++++++----
+ accel/tcg/plugin-gen.c    |   4 ++
+ accel/tcg/tb-maint.c      |   2 +-
+ accel/tcg/tcg-accel-ops.c |   3 +-
+ cpu-target.c              |  20 +++++++-
+ plugins/core.c            |  12 +++++
+ system/physmem.c          |   7 +--
+ target/arm/hvf/hvf.c      | 100 ++++++++++++++++++++++++++++++++++++--
+ target/i386/hvf/hvf.c     |   2 +-
+ hw/arm/Kconfig            |   1 +
+ 16 files changed, 186 insertions(+), 24 deletions(-)
+
 -- 
 2.41.0
 
