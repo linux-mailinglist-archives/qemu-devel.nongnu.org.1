@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF61DA2DA9E
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 04:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56082A2DA9D
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 04:34:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgy3z-0005qV-TY; Sat, 08 Feb 2025 22:32:57 -0500
+	id 1tgy44-0005rM-FR; Sat, 08 Feb 2025 22:33:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgy3p-0005p9-Hh
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:45 -0500
-Received: from mail-pl1-f178.google.com ([209.85.214.178])
+ id 1tgy3t-0005pU-7u; Sat, 08 Feb 2025 22:32:49 -0500
+Received: from mail-pj1-f48.google.com ([209.85.216.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgy3m-0001Pk-90
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:43 -0500
-Received: by mail-pl1-f178.google.com with SMTP id
- d9443c01a7336-21f48ab13d5so49139005ad.0
- for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 19:32:41 -0800 (PST)
+ id 1tgy3p-0001QE-LD; Sat, 08 Feb 2025 22:32:48 -0500
+Received: by mail-pj1-f48.google.com with SMTP id
+ 98e67ed59e1d1-2f9bd7c480eso6096426a91.1; 
+ Sat, 08 Feb 2025 19:32:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739071960; x=1739676760;
+ d=1e100.net; s=20230601; t=1739071963; x=1739676763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bASirKS+zBZ/cXg1G6SS+ljxL6qPKc/2+Hbke0UzVIc=;
- b=m7S+1I5apFAaL7b+fjP8x/wTykDbZ2NANqo1S86md22Pd/i0kQ5MPIgEKzmhAvbYis
- YyAsuIQ/vhs0UenTlNAJwBza2l7AkUU/uptnHjrAdcYGPHzZK3hmojKw2dWal0xh9cOd
- 5soGPtvGONP7Y3MH5szwXt4CvIsCLZyLqBN0UnAjcjeyivQTcXBb5tc5RHSt++uk5sP2
- 0Iz77SDLklvGI3z9U8H1pqT/ZOm2yWMICajCOhsvvythMhlZ9NUPesN4HExKiUVcavot
- 0N+RQRL3s7KZOCmgsSLBOiNbh+P6UUGXE0mAvhKAa1DWtiEnS9mLFXRzrwMGP3Mmqo5M
- TZow==
-X-Gm-Message-State: AOJu0YzTRhLlYpQPLq7+9FJ9mLQF/nejreucx1K0nQvFoyjpwA/w9YA4
- iFWnAK1nhrBQDRTkNIqgR9hEHbYdoffZast3Ee5FXHX0Z91Y9cIIQHFHaLmF
-X-Gm-Gg: ASbGncvx12Bv0L0lnWZFb89kzPPXSAmMkSez0SuX6xvkZeE9zQnIKt3Q36PxWIRlYHS
- yIX0DzejuUDv1wqU1L6RfEr5MC+u+RIOjp6G1rQGur1HyMAMbJTNTaYuGqcDk88ua+lnmG38EjI
- ZBi2K/tqwsSmmpwTpamSq5LjcorSwmROPVtiratwONXAAhoyKcSXDWFFpDGJGmLP6ukd1ij7rtY
- ZNuX6ZVv+p1xol9NUHcHwEd6FIgssbHjml+GfiEPKwy3xA/nivGCozaJ7ZakbzGzpA++K10RatG
- 4p7vnRXXOcNxBiuwiZcQOUbZdDtjZLM6w8a7BX/1Ks04DA4=
-X-Google-Smtp-Source: AGHT+IET3ItL6IwDQSW+LvvjAuQEHgmLznl5BqwpKqZzxtN48FxwOD0XQyawSkogY4qzFs1DgPxqgA==
-X-Received: by 2002:a05:6a21:9205:b0:1e1:aa24:2e58 with SMTP id
- adf61e73a8af0-1ee03a22ce7mr17546406637.7.1739071960591; 
- Sat, 08 Feb 2025 19:32:40 -0800 (PST)
+ bh=eVpRSsG7WNoH4YtghwZkR3dBDTVbuBw688Dyz1Cfbrw=;
+ b=DiTysRERxC3scjRkvy3pBVGMZfOseCDzs5d1IytOyC8vc5drcioBhY7nWWpfts6bgs
+ IlA0yN1QffLLM3ZktiNB0B9g2mzyuh0yWJfcvnFXPHHcM6XBjvYC+CWaKILD3C1QH1+D
+ LbAEyoM+XrE4CqKxuWN9M5OCveZbfT3vUSLhFdCS+iTlZw1YfV+T/6BHNhjUJF3QW2J5
+ MCGhHPvlo7dasDPk9rHzxYKKO4mQEpVE5IMovncB8/Yck5hbjSCwVkVD1r0sUdV9ghR1
+ pk9qVVLagUozsaei1+dLj8wFAO7KKi0JGootzCD8Csp3PZF8832D4MmOi2bzaiWqwUst
+ VMgA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUD4zKD+cTRiBIkaAIa6YbspVu8kWQ40PvZotcxfknIISE7B/iiBPKYwjA+vViWfTOsLdlZiPS/ww==@nongnu.org
+X-Gm-Message-State: AOJu0YyTrcATNDCslLzn0O216F9O+aRXv1D9RS3AqKJFrebUznubgZzY
+ 1BOh3Ou9wEJFTl2iJo46im2V1Z3qHg0AV4UGLC34WS+X0B5PnLCNTNw6wkZy
+X-Gm-Gg: ASbGnctjmWyKmYmUvSL58DzB8FwDEJXS4tQvmXJqwXIx+8gTCe4MZWX3RNER5xIwOtB
+ KPh5L+6nzeNiq13xd8ps07FcZw4llwGsRD1IoMJOybrja6qmTCvcnb2hhI4AmWiSOqHT0uFQx67
+ acY46LViRZZy8YY8LdTiBdIhTE6hBTUV2wv+9dIHeV5sBUJl7HwMnGLHr+SARYXBYhU/rs5Zjy7
+ hRpoghWj1/9URNjchGU0LIMyLgcuizHO/Lwpc3D8+/nkXqphDxHIylI1qQTBqZ3gsfw2UjGR0i4
+ FcTbnt4o+7HG4QhBHp5SK24vNGkkMqrKvGbNXO/42AvJhgQ=
+X-Google-Smtp-Source: AGHT+IEmGKSVrTEgSHkKyXXQHTg7buaGlh9O0VWAYxnTQ6X/tb4JA5vaGTh76Rt68SswGpVUEx1RCw==
+X-Received: by 2002:a17:90b:4d81:b0:2fa:1f1b:3db7 with SMTP id
+ 98e67ed59e1d1-2fa24272512mr16390106a91.18.1739071962841; 
+ Sat, 08 Feb 2025 19:32:42 -0800 (PST)
 Received: from localhost.localdomain
  ([2607:fb90:9e97:4903:dc10:4530:8a3f:fdb6])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-ad5453e2366sm1333610a12.47.2025.02.08.19.32.38
+ 41be03b00d2f7-ad5453e2366sm1333610a12.47.2025.02.08.19.32.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Feb 2025 19:32:40 -0800 (PST)
+ Sat, 08 Feb 2025 19:32:42 -0800 (PST)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+Cc: Joelle van Dyne <j@getutm.app>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PATCH RFC 2/4] cpu-target: support emulation from non-TCG accels
-Date: Sat,  8 Feb 2025 19:32:31 -0800
-Message-ID: <20250209033233.53853-3-j@getutm.app>
+ Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs)
+Subject: [PATCH RFC 3/4] hvf: arm: emulate instruction when ISV=0
+Date: Sat,  8 Feb 2025 19:32:32 -0800
+Message-ID: <20250209033233.53853-4-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20250209033233.53853-1-j@getutm.app>
 References: <20250209033233.53853-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.214.178; envelope-from=osy86dev@gmail.com;
- helo=mail-pl1-f178.google.com
+Received-SPF: pass client-ip=209.85.216.48; envelope-from=osy86dev@gmail.com;
+ helo=mail-pj1-f48.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,183 +94,257 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We create a toggle to allow TCG emulation to be used dynamically when
-running other accelerators. Tracking dirty code can be expensive so we
-need to flush the TLBs and TBs every time we toggle emulation mode. Plugin
-support is currently disabled when running in this mode.
+On a data abort, the processor will try to decode the faulting instruction
+so the hypervisor can emulate the read/write. However, it is not always
+able to do this and ISV=0 whenever the instruction is not decoded. This is
+the case for example if the faulting instruction is SIMD or a LDP/STP.
+
+When this happens, we can use TCG to emulate the faulting instruction.
+This is needed if the processor uses one of these instructions to access
+memory that is currently unmapped such as with VGA VRAM.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- include/hw/core/cpu.h     | 10 ++++++++++
- accel/tcg/plugin-gen.c    |  4 ++++
- accel/tcg/tb-maint.c      |  2 +-
- accel/tcg/tcg-accel-ops.c |  3 ++-
- cpu-target.c              | 13 +++++++++++++
- plugins/core.c            | 12 ++++++++++++
- system/physmem.c          |  5 +++--
- 7 files changed, 45 insertions(+), 4 deletions(-)
+ include/system/hvf_int.h  |   2 +-
+ target/arm/hvf_arm.h      |   5 ++
+ accel/hvf/hvf-accel-ops.c |   2 +-
+ system/physmem.c          |   2 +-
+ target/arm/hvf/hvf.c      | 100 ++++++++++++++++++++++++++++++++++++--
+ target/i386/hvf/hvf.c     |   2 +-
+ 6 files changed, 106 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index e3c8450f8f..dbbaca06ee 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -569,6 +569,9 @@ struct CPUState {
-     /* track IOMMUs whose translations we've cached in the TCG TLB */
-     GArray *iommu_notifiers;
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index 42ae18433f..7b85dbc495 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -64,7 +64,7 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
+                         const char *exp);
+ #define assert_hvf_ok(EX) assert_hvf_ok_impl((EX), __FILE__, __LINE__, #EX)
+ const char *hvf_return_string(hv_return_t ret);
+-int hvf_arch_init(void);
++int hvf_arch_init(MachineState *ms);
+ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range);
+ int hvf_arch_init_vcpu(CPUState *cpu);
+ void hvf_arch_vcpu_destroy(CPUState *cpu);
+diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+index 26c717b382..6ebef31390 100644
+--- a/target/arm/hvf_arm.h
++++ b/target/arm/hvf_arm.h
+@@ -41,4 +41,9 @@ static inline uint32_t hvf_arm_get_max_ipa_bit_size(void)
  
-+    /* doing emulation when not in TCG backend */
-+    bool emulation_enabled;
-+
-     /*
-      * MUST BE LAST in order to minimize the displacement to CPUArchState.
-      */
-@@ -1083,6 +1086,13 @@ void qemu_init_vcpu(CPUState *cpu);
-  */
- void cpu_single_step(CPUState *cpu, int enabled);
+ #endif
  
 +/**
-+ * cpu_emulate:
-+ * @cpu: CPU to set to emulation mode
-+ * @enabled: enable emulation mode
++ * hvf_arm_init_emulator() - initialize TCG emulator
 + */
-+void cpu_emulate(CPUState *cpu, bool enabled);
++void hvf_arm_init_emulator(int splitwx, unsigned max_cpus);
 +
- /* Breakpoint/watchpoint flags */
- #define BP_MEM_READ           0x01
- #define BP_MEM_WRITE          0x02
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 7e5f040bf7..e07dffeb00 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -388,6 +388,10 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
- {
-     struct qemu_plugin_tb *ptb;
+ #endif
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index 945ba72051..1caf713118 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -346,7 +346,7 @@ static int hvf_accel_init(MachineState *ms)
+     hvf_state = s;
+     memory_listener_register(&hvf_memory_listener, &address_space_memory);
  
-+    if (cpu->emulation_enabled) {
-+        return false;
-+    }
-+
-     if (!test_bit(QEMU_PLUGIN_EV_VCPU_TB_TRANS,
-                   cpu->plugin_state->event_mask)) {
-         return false;
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 3f1bebf6ab..14d4bed347 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -791,7 +791,7 @@ done:
- 
- void tb_flush(CPUState *cpu)
- {
--    if (tcg_enabled()) {
-+    if (tcg_enabled() || unlikely(cpu->emulation_enabled)) {
-         unsigned tb_flush_count = qatomic_read(&tb_ctx.tb_flush_count);
- 
-         if (cpu_in_serial_context(cpu)) {
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 6e3f1fa92b..3c07407ccf 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -32,6 +32,7 @@
- #include "qemu/main-loop.h"
- #include "qemu/guest-random.h"
- #include "qemu/timer.h"
-+#include "exec/cpu-common.h"
- #include "exec/exec-all.h"
- #include "exec/hwaddr.h"
- #include "exec/tb-flush.h"
-@@ -74,7 +75,7 @@ void tcg_cpu_destroy(CPUState *cpu)
- int tcg_cpu_exec(CPUState *cpu)
- {
-     int ret;
--    assert(tcg_enabled());
-+    assert(tcg_enabled() || cpu->emulation_enabled);
-     cpu_exec_start(cpu);
-     ret = cpu_exec(cpu);
-     cpu_exec_end(cpu);
-diff --git a/cpu-target.c b/cpu-target.c
-index 6293477ed9..8df75e915a 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -339,6 +339,19 @@ void cpu_single_step(CPUState *cpu, int enabled)
-     }
+-    return hvf_arch_init();
++    return hvf_arch_init(ms);
  }
  
-+void cpu_emulate(CPUState *cpu, bool enabled)
-+{
-+    if (cpu->emulation_enabled != enabled) {
-+        cpu->emulation_enabled = enabled;
-+
-+        if (enabled) {
-+            /* FIXME: track dirty code to improve performance */
-+            tb_flush(cpu);
-+            tlb_flush(cpu);
-+        }
-+    }
-+}
-+
- void cpu_abort(CPUState *cpu, const char *fmt, ...)
- {
-     va_list ap;
-diff --git a/plugins/core.c b/plugins/core.c
-index bb105e8e68..dee6ffd722 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -55,6 +55,10 @@ struct qemu_plugin_ctx *plugin_id_to_ctx_locked(qemu_plugin_id_t id)
- 
- static void plugin_cpu_update__async(CPUState *cpu, run_on_cpu_data data)
- {
-+    if (cpu->emulation_enabled) {
-+        return;
-+    }
-+
-     bitmap_copy(cpu->plugin_state->event_mask,
-                 &data.host_ulong, QEMU_PLUGIN_EV_MAX);
-     tcg_flush_jmp_cache(cpu);
-@@ -499,6 +503,10 @@ qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1, uint64_t a2,
-     struct qemu_plugin_cb *cb, *next;
-     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_SYSCALL;
- 
-+    if (cpu->emulation_enabled) {
-+        return;
-+    }
-+
-     if (!test_bit(ev, cpu->plugin_state->event_mask)) {
-         return;
-     }
-@@ -521,6 +529,10 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
-     struct qemu_plugin_cb *cb, *next;
-     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_SYSCALL_RET;
- 
-+    if (cpu->emulation_enabled) {
-+        return;
-+    }
-+
-     if (!test_bit(ev, cpu->plugin_state->event_mask)) {
-         return;
-     }
+ static inline int hvf_gdbstub_sstep_flags(void)
 diff --git a/system/physmem.c b/system/physmem.c
-index 67c9db9daa..4bb2976646 100644
+index 4bb2976646..950cac5971 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -2696,7 +2696,9 @@ static void tcg_commit_cpu(CPUState *cpu, run_on_cpu_data data)
-     CPUAddressSpace *cpuas = data.host_ptr;
+@@ -771,7 +771,7 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+     newas = &cpu->cpu_ases[asidx];
+     newas->cpu = cpu;
+     newas->as = as;
+-    if (tcg_enabled()) {
++    if (tcg_enabled() || hvf_enabled()) {
+         newas->tcg_as_listener.log_global_after_sync = tcg_log_global_after_sync;
+         newas->tcg_as_listener.commit = tcg_commit;
+         newas->tcg_as_listener.name = "tcg";
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 28886970c9..2c70e691fb 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -37,6 +37,17 @@
  
-     cpuas->memory_dispatch = address_space_to_dispatch(cpuas->as);
--    tlb_flush(cpu);
-+    if (tcg_enabled() || cpu->emulation_enabled) {
-+        tlb_flush(cpu);
+ #include "gdbstub/enums.h"
+ 
++#if defined(CONFIG_TCG)
++#include "accel/tcg/internal-common.h"
++#include "accel/tcg/tcg-accel-ops.h"
++#include "exec/tb-flush.h"
++#include "hw/core/cpu.h"
++#include "qapi/error.h"
++#include "qemu/units.h"
++#include "system/tcg.h"
++#include "tcg/startup.h"
++#endif /* defined(CONFIG_TCG) */
++
+ #define MDSCR_EL1_SS_SHIFT  0
+ #define MDSCR_EL1_MDE_SHIFT 15
+ 
+@@ -150,6 +161,17 @@ void hvf_arm_init_debug(void)
+         g_array_sized_new(true, true, sizeof(HWWatchpoint), max_hw_wps);
+ }
+ 
++#if defined(CONFIG_TCG)
++void hvf_arm_init_emulator(int splitwx, unsigned max_cpus)
++{
++    mttcg_enabled = true;
++    page_init();
++    tb_htable_init();
++    tcg_init(64 * MiB, splitwx, max_cpus);
++    tcg_prologue_init();
++}
++#endif /* defined(CONFIG_TCG) */
++
+ #define HVF_SYSREG(crn, crm, op0, op1, op2) \
+         ENCODE_AA64_CP_REG(CP_REG_ARM64_SYSREG_CP, crn, crm, op0, op1, op2)
+ 
+@@ -968,6 +990,9 @@ void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
+ 
+ void hvf_arch_vcpu_destroy(CPUState *cpu)
+ {
++#if defined(CONFIG_TCG)
++    tcg_exec_unrealizefn(cpu);
++#endif
+ }
+ 
+ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+@@ -1060,13 +1085,26 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+                               arm_cpu->isar.id_aa64mmfr0);
+     assert_hvf_ok(ret);
+ 
++    /* enable TCG emulator */
++#if defined(CONFIG_TCG)
++    tcg_register_thread();
++    tcg_cpu_init_cflags(cpu, current_machine->smp.max_cpus > 1);
++    tcg_exec_realizefn(cpu, &error_fatal);
++#endif
++
+     return 0;
+ }
+ 
+ void hvf_kick_vcpu_thread(CPUState *cpu)
+ {
+-    cpus_kick_thread(cpu);
+-    hv_vcpus_exit(&cpu->accel->fd, 1);
++    if (cpu->emulation_enabled) {
++        cpu_exit(cpu);
++    } else {
++        cpus_kick_thread(cpu);
++        if (cpu->accel) {
++            hv_vcpus_exit(&cpu->accel->fd, 1);
++        }
 +    }
  }
  
- static void tcg_commit(MemoryListener *listener)
-@@ -2704,7 +2706,6 @@ static void tcg_commit(MemoryListener *listener)
-     CPUAddressSpace *cpuas;
-     CPUState *cpu;
+ static void hvf_raise_exception(CPUState *cpu, uint32_t excp,
+@@ -1881,6 +1919,50 @@ static inline uint64_t sign_extend(uint64_t value, uint32_t bits)
+     return (uint64_t)((int64_t)(value << (64 - bits)) >> (64 - bits));
+ }
  
--    assert(tcg_enabled());
-     /* since each CPU stores ram addresses in its TLB cache, we must
-        reset the modified entries */
-     cpuas = container_of(listener, CPUAddressSpace, tcg_as_listener);
++#if defined(CONFIG_TCG)
++static int emulate_single_instruction(CPUState *cpu)
++{
++    ARMCPU *arm_cpu = ARM_CPU(cpu);
++    CPUARMState *env = &arm_cpu->env;
++    int prev_ss_enable = cpu->singlestep_enabled;
++    int ret;
++
++    cpu_synchronize_state(cpu);
++    arm_rebuild_hflags(env);
++    cpu_emulate(cpu, true);
++    cpu_single_step(cpu, SSTEP_NODEBUG | SSTEP_ENABLE);
++    do {
++        if (cpu_can_run(cpu)) {
++            bql_unlock();
++            ret = tcg_cpu_exec(cpu);
++            bql_lock();
++            if (ret == EXCP_ATOMIC) {
++                bql_unlock();
++                cpu_exec_step_atomic(cpu);
++                bql_lock();
++                ret = 0;
++            }
++            /* retry if we got an interrupt */
++            if (ret != EXCP_INTERRUPT) {
++                break;
++            }
++        }
++
++        qatomic_set_mb(&cpu->exit_request, 0);
++        qemu_wait_io_event(cpu);
++    } while (!cpu->unplug || cpu_can_run(cpu));
++    cpu_single_step(cpu, prev_ss_enable);
++    cpu_emulate(cpu, false);
++    cpu->accel->dirty = true;
++    flush_cpu_state(cpu);
++    if (!ret && prev_ss_enable) {
++        /* if single-stepping, always return EXCP_DEBUG */
++        ret = EXCP_DEBUG;
++    }
++    return ret;
++}
++#endif
++
+ int hvf_vcpu_exec(CPUState *cpu)
+ {
+     ARMCPU *arm_cpu = ARM_CPU(cpu);
+@@ -1993,7 +2075,15 @@ int hvf_vcpu_exec(CPUState *cpu)
+             break;
+         }
+ 
++#if defined(CONFIG_TCG)
++        if (unlikely(!isv)) {
++            ret = emulate_single_instruction(cpu);
++            advance_pc = false;
++            break;
++        }
++#else
+         assert(isv);
++#endif
+ 
+         if (iswrite) {
+             val = hvf_get_reg(cpu, srt);
+@@ -2124,7 +2214,7 @@ static void hvf_vm_state_change(void *opaque, bool running, RunState state)
+     }
+ }
+ 
+-int hvf_arch_init(void)
++int hvf_arch_init(MachineState *ms)
+ {
+     hvf_state->vtimer_offset = mach_absolute_time();
+     vmstate_register(NULL, 0, &vmstate_hvf_vtimer, &vtimer);
+@@ -2132,6 +2222,10 @@ int hvf_arch_init(void)
+ 
+     hvf_arm_init_debug();
+ 
++#if defined(CONFIG_TCG)
++    hvf_arm_init_emulator(0, ms->smp.max_cpus);
++#endif
++
+     return 0;
+ }
+ 
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index ca08f0753f..bcf9433d33 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -218,7 +218,7 @@ void hvf_kick_vcpu_thread(CPUState *cpu)
+     hv_vcpu_interrupt(&cpu->accel->fd, 1);
+ }
+ 
+-int hvf_arch_init(void)
++int hvf_arch_init(MachineState *ms)
+ {
+     return 0;
+ }
 -- 
 2.41.0
 
