@@ -2,64 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73D7A2DA9B
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 04:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33791A2DA9F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Feb 2025 04:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tgy3n-0005oN-T7; Sat, 08 Feb 2025 22:32:43 -0500
+	id 1tgy46-0005sD-Qi; Sat, 08 Feb 2025 22:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgy3j-0005oB-Qw
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:39 -0500
-Received: from mail-pl1-f180.google.com ([209.85.214.180])
+ id 1tgy3p-0005pA-Hk; Sat, 08 Feb 2025 22:32:45 -0500
+Received: from mail-pl1-f177.google.com ([209.85.214.177])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tgy3h-0001PH-RP
- for qemu-devel@nongnu.org; Sat, 08 Feb 2025 22:32:39 -0500
-Received: by mail-pl1-f180.google.com with SMTP id
- d9443c01a7336-21f5268cf50so26635595ad.1
- for <qemu-devel@nongnu.org>; Sat, 08 Feb 2025 19:32:37 -0800 (PST)
+ id 1tgy3k-0001PT-Go; Sat, 08 Feb 2025 22:32:43 -0500
+Received: by mail-pl1-f177.google.com with SMTP id
+ d9443c01a7336-21f6d2642faso19270845ad.1; 
+ Sat, 08 Feb 2025 19:32:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739071956; x=1739676756;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QYsSeGIBQIN4Xd6KssoggAwwiUFz1a+HTSCoc/7tD/E=;
- b=YvVhYZ6me2AwKBJzaOol1zCxykF4I5T83t8oh3Lb2LFBpAQywLSVPTdNcOSMlvRLbj
- H8ZW/LXY5sSvlYZkMHgwrX0DzqVTuE2Fb77QzQk2mVkhCI9LHffLi58laN3U+P8TvtEr
- SpAlUD4uWZebvBxwd9G+Y20X/Cx+AWp1V5+83azvbOI5tn1JUP0U+ficPcrQqsxAWbW9
- ffz+Jr5YFTbpz0T3wSobTajGdNc0kJVvuPCBnTxM77wC1y8FlWwgzWLH554PWdJGxgNY
- XEGg2C2WStiqRLkR6ioTWIj3SpeGKJI/FrR4eeogcMgfdbv0LQ82SyQEmF027GaFHTt0
- xwcw==
-X-Gm-Message-State: AOJu0YyF5DdhhSDAT+IdlP/iXsTlmnEF71rooJq4Q1F6EsGes54J10Pk
- 5XwJ4bZCznDXAjjrFDcJq0VoiPATKG/lskhmJVxLy2/gmtDjFKrW4mHCFY+K
-X-Gm-Gg: ASbGncuVPH3m9dxdcPJ1Xzer1SHndedYjeYUOTOB27qPwUTC2e6hH6cDKkq2vvpH0Kz
- EKoLM+ObX2B+qW9/dqLMGtwK9lUVPNkgp0D5r39Sf7t8ob20klpJNrpxEGoKFXGy6St3oLm9vOD
- tLfKaT96mUwyyaRf5c84Lz+EIsTK75saTgoWIkJAHNjgcm6KiGBI94Cnu7FOW0ar+QlgD+hCd+5
- mHe9Zz9TrWI/eY8koVjfEibYW1DOpFqc00qFKDS3ZtQ/7lBy8NVcV6fU5zZe8SiXbC/Mu1SGqg2
- 2NaXQLQzAcF7pSmc16zneFDeiS6zIni6GOP1aNkOGWN1TS4=
-X-Google-Smtp-Source: AGHT+IEJ6rLEy887D+j3WT+Gl234IYFbkoSYfCDqCkqxCJS3vkyoq9MkFZLu5amvmkCUYQtoeAK6eA==
-X-Received: by 2002:a17:902:cf11:b0:216:4a06:e87a with SMTP id
- d9443c01a7336-21f4e744803mr159912765ad.40.1739071955879; 
- Sat, 08 Feb 2025 19:32:35 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739071958; x=1739676758;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=40hOV1XLmKGFFIuKf1SgFgrMU4Y3jviwBqNER7UevnM=;
+ b=tbFTHo7Zr34NV16sxBEzvLubokqveC+FpZTN1CZjG5hJb7umQC7c7HZKRT2alM2T25
+ dTu42Sl3tvQ6M9n+6aPy69of2S7nKnrsSyDlzZ8AdvJkrFCk9AEA2hMUdDfpJfJMpn97
+ aBVjDy4U/IGzhV+x5q6P4SRKvhfLxQwFSCu+U7JHxIr2EmhnzQwkz0HpmV0oDs18RCc3
+ WXR/xtYhEQSCQojHAOVVrlHtgCD74VbEVAJsmPHg77RGZeLQLwULILGxAkxyoW/4tsKi
+ i27idnB/UPeBoR3NbYKd9GSdkpiOPMorKV9dwUgj+9z+l8RPf2HcQD/aZInVJB/2E9Ql
+ KBAQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVw7W3svtQqN6Y2RutvgMDNXZWGNnn4kwL/WVVLU/rw+ZtKPl7NJsUJucKKclnPLGNIA7KF/+PzCQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyXz0vLcHmADaPNF3wjb9LMxHzx510K3IHyUyLNpP8N6LzQikt1
+ SdxF18eb9ellu8eg8oASLE4DQ5stjRK03N5GjIjVKVFQuW6w/Cq/YVec8Gh3
+X-Gm-Gg: ASbGnctMe7LJIW6zXUpG3HpiCMopOBqS7ga6OIWK5f8XNSMG1JKTjWKuAl7DQpuLNVP
+ up24VQdd6y57ktvFSxb4xVYB7rhrl9lWQ8ZikZFXmBZmxQ1HolYgrqyueVZsLiIeS5KwkKFlWgT
+ v5QCchmsisRPa6kB84PX3D8n3UfC/KodjadNd7lMjAtzLyZ3TpJRZaQ96XoNpj5vmDE4TXnbrBa
+ b4kXjNNNC8AtCkt2TNMW2RqdzyrWsbVMtsAntO/joY1A3MCOU6JLuC8+n/R9iRjajM79bkGnddT
+ lGKwo8Mo/xA7oZJkFuh6NwaOe0fPkP/+nn43JFALty0Z0AM=
+X-Google-Smtp-Source: AGHT+IH+ALL7cX3DTai2279KB0dFYtI4aVNWY7NNbmRvoL6IvzpattoDFsNJlsAfIqIRWpUroDR/Dw==
+X-Received: by 2002:a05:6a21:9211:b0:1ed:a4e2:8638 with SMTP id
+ adf61e73a8af0-1ee03b78d70mr16423609637.39.1739071958132; 
+ Sat, 08 Feb 2025 19:32:38 -0800 (PST)
 Received: from localhost.localdomain
  ([2607:fb90:9e97:4903:dc10:4530:8a3f:fdb6])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-ad5453e2366sm1333610a12.47.2025.02.08.19.32.35
- for <qemu-devel@nongnu.org>
+ 41be03b00d2f7-ad5453e2366sm1333610a12.47.2025.02.08.19.32.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Feb 2025 19:32:35 -0800 (PST)
+ Sat, 08 Feb 2025 19:32:37 -0800 (PST)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Subject: [PATCH RFC 0/4] hvf: use TCG emulation to handle data aborts
-Date: Sat,  8 Feb 2025 19:32:29 -0800
-Message-ID: <20250209033233.53853-1-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs)
+Subject: [PATCH RFC 1/4] cpu-exec: support single-step without debug
+Date: Sat,  8 Feb 2025 19:32:30 -0800
+Message-ID: <20250209033233.53853-2-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20250209033233.53853-1-j@getutm.app>
+References: <20250209033233.53853-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.214.180; envelope-from=osy86dev@gmail.com;
- helo=mail-pl1-f180.google.com
+Received-SPF: pass client-ip=209.85.214.177; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f177.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -84,71 +94,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the VM exits with an data abort, we check the ISV field in the ESR and when
-ISV=1, that means the processor has filled the remaining fields with information
-needed to determine the access that caused the abort: address, access width, and
-the register operand. However, only a limited set of instructions which can
-cause a data abort is nice enough for the processor to decode this way. Many
-instructions such as LDP/STP and SIMD can cause an data abort with ISV=0 and for
-that the hypervisor needs to manually decode the instruction, find the operands,
-and emulate the access.
+Currently, single-stepping is tied to GDB debugging. This means that when
+EXCP_DEBUG is returned, a debug exception is triggered in many cases. We
+define a new EXCP_SINGLESTEP to differentiate the case where we want a
+single step to not be tied to a debug exception. We also define a new flag
+for cpu->singlestep_enabled called SSTEP_NODEBUG which is set when we want
+to use single-step for purposes other than debugging.
 
-QEMU already ships with the ability to do this: TCG. However, TCG currently
-operates as a stand-alone accelerator. This patch set enables HVF to call into
-TCG when needed in order to perform a memory access that caused the abort.
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+---
+ include/exec/cpu-common.h |  1 +
+ include/hw/core/cpu.h     |  1 +
+ target/arm/internals.h    |  3 ++-
+ accel/tcg/cpu-exec.c      | 35 +++++++++++++++++++++++++----------
+ cpu-target.c              |  7 +++++--
+ 5 files changed, 34 insertions(+), 13 deletions(-)
 
-One thing this enables is the ability to use virtio-vga with Windows for ARM64.
-Currently, graphics support for Windows is flakey because you must first boot
-with ramfb to get to the desktop where you can then install the virtio-gpu
-drivers and then start up with virtio-gpu. Even then, there is a known issue
-where Windows mistakingly thinks there are two monitors connected because the
-boot display does not share a framebuffer with the GPU. This results in
-sometimes a black screen when updating Windows.
-
-Another issue is that the TPM driver uses LDP/STP to access the command buffer
-and so the QEMU device which maps registers as MMIO will not work.
-
-There are a couple major issues with the patch as it currently stands. First of
-all, it is very slow. Because we do not track writes to code pages, to be safe
-we flush TLBs and TBs every time we switch to emulation mode. We also need to
-synchronize the register states between HVF and QEMU each time we enter and
-exit emulation mode. Since we enter/exit emulation mode for every instruction
-that causes the data abort, in the case of the VGA buffer being cleared in a
-loop, this means we need to enter-exit emulation mode to execute a single
-instruction for every pixel. Second, we don't support plugins at all. Lastly,
-some of the CPU state used by TCG is not properly synchronized with HVF and so
-subtle issues can occur. We may want to constrain the emulator to only run with
-a known allowlist of instructions we wish to handle in a data abort.
-
-I think these issues can be worked around but I want to know if people think
-this approach is worth doing or if instead we should pursue alternatives such
-as a more basic instruction decoder which only supports a subset of instructions
-which are interesting for memory accesses.
-
-Joelle van Dyne (4):
-  cpu-exec: support single-step without debug
-  cpu-target: support emulation from non-TCG accels
-  hvf: arm: emulate instruction when ISV=0
-  hw/arm/virt: enable VGA
-
- include/exec/cpu-common.h |   1 +
- include/hw/core/cpu.h     |  11 +++++
- include/system/hvf_int.h  |   2 +-
- target/arm/hvf_arm.h      |   5 ++
- target/arm/internals.h    |   3 +-
- accel/hvf/hvf-accel-ops.c |   2 +-
- accel/tcg/cpu-exec.c      |  35 +++++++++----
- accel/tcg/plugin-gen.c    |   4 ++
- accel/tcg/tb-maint.c      |   2 +-
- accel/tcg/tcg-accel-ops.c |   3 +-
- cpu-target.c              |  20 +++++++-
- plugins/core.c            |  12 +++++
- system/physmem.c          |   7 +--
- target/arm/hvf/hvf.c      | 100 ++++++++++++++++++++++++++++++++++++--
- target/i386/hvf/hvf.c     |   2 +-
- hw/arm/Kconfig            |   1 +
- 16 files changed, 186 insertions(+), 24 deletions(-)
-
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index b1d76d6985..e1c798b07d 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -22,6 +22,7 @@
+ #define EXCP_HALTED     0x10003 /* cpu is halted (waiting for external event) */
+ #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
+ #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
++#define EXCP_SINGLESTEP 0x10006 /* singlestep without debugging */
+ 
+ void cpu_exec_init_all(void);
+ void cpu_exec_step_atomic(CPUState *cpu);
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index fb397cdfc5..e3c8450f8f 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1072,6 +1072,7 @@ void qemu_init_vcpu(CPUState *cpu);
+ #define SSTEP_ENABLE  0x1  /* Enable simulated HW single stepping */
+ #define SSTEP_NOIRQ   0x2  /* Do not use IRQ while single stepping */
+ #define SSTEP_NOTIMER 0x4  /* Do not Timers while single stepping */
++#define SSTEP_NODEBUG 0x8  /* Single-stepping is not for debugging */
+ 
+ /**
+  * cpu_single_step:
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 863a84edf8..961cd9927a 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -57,7 +57,8 @@ static inline bool excp_is_internal(int excp)
+         || excp == EXCP_HALTED
+         || excp == EXCP_EXCEPTION_EXIT
+         || excp == EXCP_KERNEL_TRAP
+-        || excp == EXCP_SEMIHOST;
++        || excp == EXCP_SEMIHOST
++        || excp == EXCP_SINGLESTEP;
+ }
+ 
+ /*
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 8b773d8847..6b4e63e69e 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -349,7 +349,7 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
+      * so that one could (gdb) singlestep into the guest kernel's
+      * architectural breakpoint handler.
+      */
+-    if (cpu->singlestep_enabled) {
++    if (cpu->singlestep_enabled && !(cpu->singlestep_enabled & SSTEP_NODEBUG)) {
+         return false;
+     }
+ 
+@@ -529,7 +529,11 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
+      * is handled in cpu_handle_exception.
+      */
+     if (unlikely(cpu->singlestep_enabled) && cpu->exception_index == -1) {
+-        cpu->exception_index = EXCP_DEBUG;
++        if (!(cpu->singlestep_enabled & SSTEP_NODEBUG)) {
++            cpu->exception_index = EXCP_DEBUG;
++        } else {
++            cpu->exception_index = EXCP_SINGLESTEP;
++        }
+         cpu_loop_exit(cpu);
+     }
+ 
+@@ -781,13 +785,20 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+         cpu->exception_index = -1;
+ 
+         if (unlikely(cpu->singlestep_enabled)) {
+-            /*
+-             * After processing the exception, ensure an EXCP_DEBUG is
+-             * raised when single-stepping so that GDB doesn't miss the
+-             * next instruction.
+-             */
+-            *ret = EXCP_DEBUG;
+-            cpu_handle_debug_exception(cpu);
++            if (!(cpu->singlestep_enabled & SSTEP_NODEBUG)) {
++                /*
++                 * After processing the exception, ensure an EXCP_DEBUG is
++                 * raised when single-stepping so that GDB doesn't miss the
++                 * next instruction.
++                 */
++                *ret = EXCP_DEBUG;
++                cpu_handle_debug_exception(cpu);
++            } else {
++                /*
++                 * In case of non-debug single step, just return
++                 */
++                *ret = EXCP_SINGLESTEP;
++            }
+             return true;
+         }
+     } else if (!replay_has_interrupt()) {
+@@ -892,7 +903,11 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+                  * next instruction.
+                  */
+                 if (unlikely(cpu->singlestep_enabled)) {
+-                    cpu->exception_index = EXCP_DEBUG;
++                    if (!(cpu->singlestep_enabled & SSTEP_NODEBUG)) {
++                        cpu->exception_index = EXCP_DEBUG;
++                    } else {
++                        cpu->exception_index = EXCP_SINGLESTEP;
++                    }
+                     bql_unlock();
+                     return true;
+                 }
+diff --git a/cpu-target.c b/cpu-target.c
+index 667688332c..6293477ed9 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -322,9 +322,12 @@ void list_cpus(void)
+    CPU loop after each instruction */
+ void cpu_single_step(CPUState *cpu, int enabled)
+ {
+-    if (cpu->singlestep_enabled != enabled) {
+-        cpu->singlestep_enabled = enabled;
++    int previous = cpu->singlestep_enabled;
++    bool prev_debug_en = previous && !(previous & SSTEP_NODEBUG);
++    bool cur_debug_en = enabled && !(enabled & SSTEP_NODEBUG);
+ 
++    cpu->singlestep_enabled = enabled;
++    if (prev_debug_en != cur_debug_en) {
+ #if !defined(CONFIG_USER_ONLY)
+         const AccelOpsClass *ops = cpus_get_accel();
+         if (ops->update_guest_debug) {
 -- 
 2.41.0
 
