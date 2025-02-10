@@ -2,69 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835A2A2F2F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03445A2F31A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thWO7-0006oO-18; Mon, 10 Feb 2025 11:11:59 -0500
+	id 1thWSF-0006nj-3B; Mon, 10 Feb 2025 11:16:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWNs-0006gq-Dd
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWNq-00018J-Aq
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739203901;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vH17dfNtoF7dp+qqcESuD3DiukoWCJ2/xxWOV2bzx6s=;
- b=CRydHXJcbNDCbDhdTt3kvwGIYitgmaXXifFzOkkx91ecgnHZV9V4Pt8InunRdUN3XdjbAH
- bvRjM+InKg+/yOCV4mGlpRysuP4T+4mixBfJ/E5enJph8bNPwtqbxuzWqr7iq/WmJVgVpb
- ihFszNFGipe16o4SEMq5cHgz/2exLqQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-pCbp_q5fPHu6jTTDj28Edw-1; Mon,
- 10 Feb 2025 11:11:39 -0500
-X-MC-Unique: pCbp_q5fPHu6jTTDj28Edw-1
-X-Mimecast-MFC-AGG-ID: pCbp_q5fPHu6jTTDj28Edw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A417180087F; Mon, 10 Feb 2025 16:11:37 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.45.225.156])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AB66A195608D; Mon, 10 Feb 2025 16:11:35 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 25/25] block: remove unused BLOCK_OP_TYPE_DATAPLANE
-Date: Mon, 10 Feb 2025 17:10:34 +0100
-Message-ID: <20250210161034.76494-26-kwolf@redhat.com>
-In-Reply-To: <20250210161034.76494-1-kwolf@redhat.com>
-References: <20250210161034.76494-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1thWR3-00049G-Bx
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:15:04 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1thWR0-0001Ur-Rw
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:15:00 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5de5bf41652so4051498a12.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739204097; x=1739808897; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1RFUaUw8AmOoBrTLJ033QBHmmzDR19jzUEOy29awR64=;
+ b=y7hQ78LRPlm5P0W1JfDhrsSa24KgX6HukgSqoaGN2a10pJ2mOo0/JES3XPt7sl8fJD
+ EQcOdwyjA/rVFBaljMG8j0cehjK4IOFE+r7mzTFLJpC3iHZSgbppYlpxLdBPx2KpaeRu
+ 9m2oymhAE60Ym4/57ZChEsyZBxVIIYwRzMOrFH6QuLBcBVdYw9TyW0njEJrC4A8jqW9O
+ bWJAaQBleyMBwRRgsvEcW2iI4rU/TWb+Bpaw3EKHrWj6GxJTzftG3y/S0lAyIumOQdAG
+ 5e09JFCjr+92j5+5sDdzTrZknICDPN+OCTiTDqEc7tvQ8eqjzjvC99uOte0+vYS1Ne/+
+ d4Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739204097; x=1739808897;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1RFUaUw8AmOoBrTLJ033QBHmmzDR19jzUEOy29awR64=;
+ b=aKUKFnUOpCxgyATBjuw2M87/EYJZyvuDs9jxjf/zb1BYw6VJs7f4ZMVV3G55apNEIW
+ I8NkoGMDw5pB8VRhKhikqeehRfD5LnMqLpILpPx0lcVlMPAAbTU+r7qNmNOhbRd02Mhh
+ 1rY187TJIWj9iAKyuv+/RwH09JRg/wjnnlvcM4WHZnpW310WrzKkWB6ZXU1biPRQFMkv
+ rUi83uG4tIIPI5qs9xqYhmZZpfJsk1OZOKhA27RCLblhbynb29w2yKxNBjJIaDRhWD9P
+ GNQCw4dsYlCyK9hSHmpJTA4o/1BD7vr2tOFnh1SXkgwZZr1eSWEk29NRdEFMoE7buGjV
+ kajA==
+X-Gm-Message-State: AOJu0Ywey/DaAuld4BO6XrU4ni8tUrnjIrbmlpF1sGkMhbpTGDVh9XHD
+ bVH0Ft0d+BxhvSm7+FM6B2Vgif2wGwvz258NvwDDu2HPMt26Obh/lXNWSiduyZnezkxV+fo1mzT
+ /y+g=
+X-Gm-Gg: ASbGncsEb7fv5bIlUp2JL3cUahtfi2OpH8tb8dw8yPh6qODqH7VXAayCK2eOmARhM7j
+ PHtH0bSoK4KyGQCGJ+hnTVZyaKOWKfCRNu0WKmHp3fDRhPNQtonTJE5i8I7/uiucap0t1Drd0P5
+ yPq3NHTHpRD3FApyn3sXAm7kBxef5cKlbvViv5Gx/frd9gtYdTO/tausI6yA2TyMu5ds/0fYZl0
+ zdEC9Nx2KztMPgDv+EPXfrCqflpOsxYd6AyaHw4xmKVYJbaHUt8rM8gUD31XH6IOqVHZvyBlzuP
+ T3CcF8qBgkC6yh26ew==
+X-Google-Smtp-Source: AGHT+IF77MokyEFbpnSHKwFEo1MhEy8jF1Yslehqh/Mozf5TZgdkvuUvnUaFnQBOJqGvBZTIHkEakw==
+X-Received: by 2002:a05:6402:13c8:b0:5dc:cc02:5d25 with SMTP id
+ 4fb4d7f45d1cf-5de45002faamr13195735a12.11.1739204097080; 
+ Mon, 10 Feb 2025 08:14:57 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5dcf1b7adf4sm8147447a12.26.2025.02.10.08.14.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Feb 2025 08:14:53 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id CA4695F8CF;
+ Mon, 10 Feb 2025 16:14:51 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/17] testing and gdbstub updates
+Date: Mon, 10 Feb 2025 16:14:34 +0000
+Message-Id: <20250210161451.3273284-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,112 +97,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+The following changes since commit 04d3d0e9f54d4c42759f3810aa135ce314d98dc4:
 
-BLOCK_OP_TYPE_DATAPLANE prevents BlockDriverState from being used by
-virtio-blk/virtio-scsi with IOThread. Commit b112a65c52aa ("block:
-declare blockjobs and dataplane friends!") eliminated the main reason
-for this blocker in 2014.
+  Merge tag 'hppa-system-for-v10-diva-artist-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2025-02-08 09:00:57 -0500)
 
-Nowadays the block layer supports I/O from multiple AioContexts, so
-there is even less reason to block IOThread users. Any legitimate
-reasons related to interference would probably also apply to
-non-IOThread users.
+are available in the Git repository at:
 
-The only remaining users are bdrv_op_unblock(BLOCK_OP_TYPE_DATAPLANE)
-calls after bdrv_op_block_all(). If we remove BLOCK_OP_TYPE_DATAPLANE
-their behavior doesn't change.
+  https://gitlab.com/stsquad/qemu.git tags/pull-10.0-testing-and-gdstub-updates-100225-1
 
-Existing bdrv_op_block_all() callers that don't explicitly unblock
-BLOCK_OP_TYPE_DATAPLANE seem to do so simply because no one bothered to
-rather than because it is necessary to keep BLOCK_OP_TYPE_DATAPLANE
-blocked.
+for you to fetch changes up to 24c61663dcec0e87bb4206a7623f0e222e188b47:
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20250203182529.269066-1-stefanha@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- include/block/block-common.h | 1 -
- block/replication.c          | 1 -
- blockjob.c                   | 2 --
- hw/block/virtio-blk.c        | 9 ---------
- hw/scsi/virtio-scsi.c        | 3 ---
- 5 files changed, 16 deletions(-)
+  tests/tcg: Add late gdbstub attach test (2025-02-10 13:47:59 +0000)
 
-diff --git a/include/block/block-common.h b/include/block/block-common.h
-index 7030669f04..0b831ef87b 100644
---- a/include/block/block-common.h
-+++ b/include/block/block-common.h
-@@ -356,7 +356,6 @@ typedef enum BlockOpType {
-     BLOCK_OP_TYPE_CHANGE,
-     BLOCK_OP_TYPE_COMMIT_SOURCE,
-     BLOCK_OP_TYPE_COMMIT_TARGET,
--    BLOCK_OP_TYPE_DATAPLANE,
-     BLOCK_OP_TYPE_DRIVE_DEL,
-     BLOCK_OP_TYPE_EJECT,
-     BLOCK_OP_TYPE_EXTERNAL_SNAPSHOT,
-diff --git a/block/replication.c b/block/replication.c
-index 2ce16f0589..d4d677a902 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -576,7 +576,6 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
-         }
-         bdrv_op_block_all(top_bs, s->blocker);
--        bdrv_op_unblock(top_bs, BLOCK_OP_TYPE_DATAPLANE, s->blocker);
- 
-         bdrv_graph_wrunlock();
- 
-diff --git a/blockjob.c b/blockjob.c
-index e94a840d7f..32007f31a9 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -539,8 +539,6 @@ void *block_job_create(const char *job_id, const BlockJobDriver *driver,
-         goto fail;
-     }
- 
--    bdrv_op_unblock(bs, BLOCK_OP_TYPE_DATAPLANE, job->blocker);
--
-     if (!block_job_set_speed(job, speed, errp)) {
-         goto fail;
-     }
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index e0acce89e1..a1829e3abd 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1562,15 +1562,6 @@ static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
-             error_setg(errp, "ioeventfd is required for iothread");
-             return false;
-         }
--
--        /*
--         * If ioeventfd is (re-)enabled while the guest is running there could
--         * be block jobs that can conflict.
--         */
--        if (blk_op_is_blocked(conf->conf.blk, BLOCK_OP_TYPE_DATAPLANE, errp)) {
--            error_prepend(errp, "cannot start virtio-blk ioeventfd: ");
--            return false;
--        }
-     }
- 
-     s->vq_aio_context = g_new(AioContext *, conf->num_queues);
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 23516995dc..7d094e1881 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -1065,9 +1065,6 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     int ret;
- 
-     if (s->ctx && !s->dataplane_fenced) {
--        if (blk_op_is_blocked(sd->conf.blk, BLOCK_OP_TYPE_DATAPLANE, errp)) {
--            return;
--        }
-         ret = blk_set_aio_context(sd->conf.blk, s->ctx, errp);
-         if (ret < 0) {
-             return;
+----------------------------------------------------------------
+testing and gdbstub updates:
+
+  - add a check-rust test to docker builds
+  - re-factor the qtest logic to be cleaner
+  - fix tests to not clock_step when no timers enabled
+  - roll-up log prefix into qtest_send
+  - cleaner error reporting when qtest_clock_set fails
+  - revert old deadlock fix now tests are updated
+  - only run full set of migration tests under HW acceleration
+  - support late attachment to user-mode gdbstubs
+
+----------------------------------------------------------------
+Alex Bennée (7):
+      tests/docker: replicate the check-rust-tools-nightly CI job
+      tests/qtest: don't attempt to clock_step while waiting for virtio ISR
+      tests/qtest: don't step clock at start of npcm7xx periodic IRQ test
+      tests/qtest: simplify qtest_process_inbuf
+      tests/qtest: rename qtest_send_prefix and roll-up into qtest_send
+      tests/qtest: tighten up the checks on clock_step
+      Revert "util/timer: avoid deadlock when shutting down"
+
+Fabiano Rosas (2):
+      tests/qtest/migration: Add --full option
+      tests/qtest/migration: Pick smoke tests
+
+Ilya Leoshkevich (8):
+      gdbstub: Allow the %d placeholder in the socket path
+      gdbstub: Try unlinking the unix socket before binding
+      user: Introduce user/signal.h
+      user: Introduce host_interrupt_signal
+      osdep: Introduce qemu_kill_thread()
+      gdbstub: Allow late attachment
+      docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+      tests/tcg: Add late gdbstub attach test
+
+ MAINTAINERS                                |   1 +
+ docs/user/main.rst                         |  16 ++-
+ bsd-user/signal-common.h                   |   1 -
+ include/qemu/osdep.h                       |   9 ++
+ include/system/qtest.h                     |   1 -
+ include/user/signal.h                      |  25 +++++
+ linux-user/signal-common.h                 |   1 -
+ tests/qtest/migration/framework.h          |   1 +
+ bsd-user/main.c                            |   1 -
+ bsd-user/signal.c                          |  13 +++
+ gdbstub/user.c                             | 150 ++++++++++++++++++++++-------
+ hw/ppc/spapr_rtas.c                        |   1 -
+ hw/riscv/riscv_hart.c                      |   1 -
+ linux-user/main.c                          |   1 -
+ linux-user/signal.c                        |  26 ++++-
+ linux-user/syscall.c                       |   1 +
+ stubs/monitor-fd.c                         |   9 ++
+ system/qtest.c                             |  59 +++++-------
+ tests/qtest/libqos/virtio-pci-modern.c     |   6 +-
+ tests/qtest/libqos/virtio-pci.c            |   6 +-
+ tests/qtest/migration-test.c               |  25 +++++
+ tests/qtest/migration/compression-tests.c  |  15 ++-
+ tests/qtest/migration/cpr-tests.c          |   6 ++
+ tests/qtest/migration/file-tests.c         |  19 +++-
+ tests/qtest/migration/misc-tests.c         |  16 ++-
+ tests/qtest/migration/postcopy-tests.c     |  14 ++-
+ tests/qtest/migration/precopy-tests.c      |  23 +++--
+ tests/qtest/migration/tls-tests.c          |  14 ++-
+ tests/qtest/npcm7xx_timer-test.c           |   1 -
+ tests/tcg/multiarch/late-attach.c          |  41 ++++++++
+ util/oslib-posix.c                         |  15 +++
+ util/qemu-timer.c                          |  16 +--
+ stubs/meson.build                          |   2 +
+ tests/docker/Makefile.include              |   3 +
+ tests/docker/test-rust                     |  21 ++++
+ tests/guest-debug/run-test.py              |  15 ++-
+ tests/qtest/meson.build                    |  11 ++-
+ tests/tcg/multiarch/Makefile.target        |   9 +-
+ tests/tcg/multiarch/gdbstub/late-attach.py |  28 ++++++
+ util/meson.build                           |   2 +
+ 40 files changed, 490 insertions(+), 135 deletions(-)
+ create mode 100644 include/user/signal.h
+ create mode 100644 stubs/monitor-fd.c
+ create mode 100644 tests/tcg/multiarch/late-attach.c
+ create mode 100755 tests/docker/test-rust
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+
 -- 
-2.48.1
+2.39.5
 
 
