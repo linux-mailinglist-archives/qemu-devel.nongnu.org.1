@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D0A2E24F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD83A2E251
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:42:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thJjy-00009D-93; Sun, 09 Feb 2025 21:41:42 -0500
+	id 1thJk1-0000An-Fo; Sun, 09 Feb 2025 21:41:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjw-00008x-Ur; Sun, 09 Feb 2025 21:41:40 -0500
+ id 1thJjz-0000AI-PQ; Sun, 09 Feb 2025 21:41:43 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjv-00088s-9v; Sun, 09 Feb 2025 21:41:40 -0500
+ id 1thJjx-00088s-Ns; Sun, 09 Feb 2025 21:41:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739155299; x=1770691299;
+ t=1739155302; x=1770691302;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=y/muAhgS03tDvmIKU/5AGbd6xaeSngpnzqvwG7x9b6c=;
- b=Z/gwpjAMaoqE4/b/aN3bQbWB2E3GoMt/8bJsU1QNqPtLryis3ydjY/g0
- nhUESNrakE8psGccEWF3FPCJMCnexk5IYfyXpzuple41jNPmpcMtm+Juv
- vNtHF9ASoOQiaHPBa22JxIDbI8oKIXi+KxxvsdJ/3eCliRHJhH7T99OiR
- LD0edFm7QNaEqGnvCYkNUPNAHBEpio8KR8TIy6kTf7VOv2zmdZC6fse56
- UfqoB+wUUDg9uwlTusWuQL+GzBUF+nRxs6+N/XRnR5vFc5pIMD/nFpK9J
- j+mnBYQzShw/Z/zfV30ULyf0AUdMy06cSCr9BcdD5pGkyz0sxOB3sp3ES A==;
-X-CSE-ConnectionGUID: ZomfTb0xQnSj8TjZTnksGg==
-X-CSE-MsgGUID: TpvWQbM4T6imHz5KA9PK1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351261"
-X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351261"
+ bh=atlW9CPzWUlAleUv5uCC+01KqSDTHP8baoSghJqOJ4E=;
+ b=Pgb6/c/HtJb/mxRQsGcpI3Aiz0QV/x5SvZyz28nLKIB2NCTSXQbvf+oO
+ EP7es/YFaTYM2GuriBuYHZZfN7iAwdhflXK5pUl2d/52kvEuo3qJuW+BK
+ tcPH3G1JZCg07R9snzjf5M3vjyO8AtNRyrwGI3mR+/zFAlsk/XO0dGkUk
+ D8VObNSQyQl40G36arbJNOYOkgWLz/5ZAArtPi1o2+QYUJAbMrtT9h/25
+ FMrUp7vCPK27+P9TapfOhc2geIWRU9i1HHUifcFlPgp06xRlsdsvF9v07
+ G1tuARAN/I4nB9kvDqcqkipcaGKxtkxDOFFyd/1ne4eqYNDJS7WY7sUVT A==;
+X-CSE-ConnectionGUID: Ms/PnYTRSRqvKK9/x42Yjw==
+X-CSE-MsgGUID: s8I7S8DpR5aSW4y+xx3d2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351269"
+X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351269"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2025 18:41:38 -0800
-X-CSE-ConnectionGUID: KscAoHMtTLOxiWvwwktlOA==
-X-CSE-MsgGUID: 20ClY6PDQpaX+cKbz2A5mA==
+ 09 Feb 2025 18:41:41 -0800
+X-CSE-ConnectionGUID: w0DHvat3TuqpLC1jwuEEcA==
+X-CSE-MsgGUID: sMBZTORGTli6URDuipyBsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938222"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938227"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:35 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:38 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -51,9 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 05/10] rust: add bindings for memattrs
-Date: Mon, 10 Feb 2025 11:00:46 +0800
-Message-Id: <20250210030051.2562726-6-zhao1.liu@intel.com>
+Subject: [PATCH v2 06/10] rust: add bindings for timer
+Date: Mon, 10 Feb 2025 11:00:47 +0800
+Message-Id: <20250210030051.2562726-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210030051.2562726-1-zhao1.liu@intel.com>
 References: <20250210030051.2562726-1-zhao1.liu@intel.com>
@@ -84,80 +84,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MemTxAttrs structure contains bitfield members, and bindgen is
-unable to generate an equivalent macro definition for
-MEMTXATTRS_UNSPECIFIED.
+Add timer bindings to help handle idiomatic Rust callbacks.
 
-Therefore, manually define a global constant variable
-MEMTXATTRS_UNSPECIFIED to support calls from Rust code.
+Additionally, wrap QEMUClockType in ClockType binding to avoid unsafe
+calls in device code.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes since RFC:
- * With a boolean type unspecified field, no need to add once_cell.
- * Merge memattrs binding to memory.rs.
----
- rust/qemu-api/src/memory.rs   | 16 ++++++++++++++--
- rust/qemu-api/src/zeroable.rs |  1 +
- rust/wrapper.h                |  1 +
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ * Use FnCall to support timer callback.
+ * Only add timer_init_full() binding. timer_new() is unnecessary since
+   device (HPET) could create and allocate QEMUTimer.
+ * Implement Drop for QEMUTimer.
+ * Add ClockType binding.
 
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index 963d689c27d4..fff92508c68f 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -2,7 +2,7 @@
- // Author(s): Paolo Bonzini <pbonzini@redhat.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
+Changes since Patch v1:
+ * Use Timer/TimerListGroup in Rust code instead of
+   QEMUTimer/QEMUTimerListGroup.
+ * Rename timer_init_full()/timer_mod() to init_full()/modify().
+ * Ensure the callback passed to Timer::init() is not none.
+ * Add as_mut_ptr()/delete() method for Timer.
+ * Make ClockType's `id` field private, as well as make Timer::init()
+   accept ClockType instead of QEMUClockType.
+ * Drop used qemu_clock_get_virtual_ns().
+ * Add MS/US/NS wrappers.
+---
+ meson.build                |  7 +++
+ rust/qemu-api/meson.build  |  1 +
+ rust/qemu-api/src/lib.rs   |  1 +
+ rust/qemu-api/src/timer.rs | 98 ++++++++++++++++++++++++++++++++++++++
+ rust/wrapper.h             |  1 +
+ 5 files changed, 108 insertions(+)
+ create mode 100644 rust/qemu-api/src/timer.rs
+
+diff --git a/meson.build b/meson.build
+index 32abefb7c48c..20192347d4d6 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4086,6 +4086,13 @@ if have_rust
+   foreach enum : c_bitfields
+     bindgen_args += ['--bitfield-enum', enum]
+   endforeach
++  c_nocopy = [
++    'QEMUTimer',
++  ]
++  # Used to customize Drop trait
++  foreach struct : c_nocopy
++    bindgen_args += ['--no-copy', struct]
++  endforeach
  
--//! Bindings for `MemoryRegion` and `MemoryRegionOps`
-+//! Bindings for `MemoryRegion`, `MemoryRegionOps` and `MemTxAttrs`
+   # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
+   #
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 45e30324b295..2e9c1078b9b2 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -30,6 +30,7 @@ _qemu_api_rs = static_library(
+       'src/qdev.rs',
+       'src/qom.rs',
+       'src/sysbus.rs',
++      'src/timer.rs',
+       'src/vmstate.rs',
+       'src/zeroable.rs',
+     ],
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 1d7112445e24..047511d36487 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -25,6 +25,7 @@
+ pub mod qdev;
+ pub mod qom;
+ pub mod sysbus;
++pub mod timer;
+ pub mod vmstate;
+ pub mod zeroable;
  
- use std::{
-     ffi::{CStr, CString},
-@@ -11,7 +11,7 @@
-     ptr::addr_of,
- };
- 
--pub use bindings::hwaddr;
-+pub use bindings::{hwaddr, MemTxAttrs};
- 
- use crate::{
-     bindings::{self, device_endian, memory_region_init_io},
-@@ -189,3 +189,15 @@ unsafe impl ObjectType for MemoryRegion {
-         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_MEMORY_REGION) };
- }
- qom_isa!(MemoryRegion: Object);
+diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
+new file mode 100644
+index 000000000000..05a5061b6dda
+--- /dev/null
++++ b/rust/qemu-api/src/timer.rs
+@@ -0,0 +1,98 @@
++// Copyright (C) 2024 Intel Corporation.
++// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+/// A special `MemTxAttrs` constant, used to indicate that no memary
-+/// attributes are specified.
-+///
-+/// Bus masters which don't specify any attributes will get this,
-+/// which has all attribute bits clear except the topmost one
-+/// (so that we can distinguish "all attributes deliberately clear"
-+/// from "didn't specify" if necessary).
-+pub const MEMTXATTRS_UNSPECIFIED: MemTxAttrs = MemTxAttrs {
-+    unspecified: true,
-+    ..Zeroable::ZERO
++use std::os::raw::{c_int, c_void};
++
++use crate::{
++    bindings::{self, qemu_clock_get_ns, timer_del, timer_init_full, timer_mod, QEMUClockType},
++    callbacks::FnCall,
 +};
-diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
-index 304ad6698360..53dc90da31a1 100644
---- a/rust/qemu-api/src/zeroable.rs
-+++ b/rust/qemu-api/src/zeroable.rs
-@@ -103,3 +103,4 @@ fn default() -> Self {
- impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_1);
- impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_2);
- impl_zeroable!(crate::bindings::MemoryRegionOps);
-+impl_zeroable!(crate::bindings::MemTxAttrs);
++
++pub type Timer = bindings::QEMUTimer;
++pub type TimerListGroup = bindings::QEMUTimerListGroup;
++
++impl Timer {
++    pub fn new() -> Self {
++        Default::default()
++    }
++
++    const fn as_mut_ptr(&self) -> *mut Self {
++        self as *const Timer as *mut _
++    }
++
++    pub fn init_full<'timer, 'opaque: 'timer, T, F>(
++        &'timer mut self,
++        timer_list_group: Option<&TimerListGroup>,
++        clk_type: ClockType,
++        scale: u32,
++        attributes: u32,
++        _cb: F,
++        opaque: &'opaque T,
++    ) where
++        F: for<'a> FnCall<(&'a T,)>,
++    {
++        let _: () = F::ASSERT_IS_SOME;
++
++        /// timer expiration callback
++        unsafe extern "C" fn rust_timer_handler<T, F: for<'a> FnCall<(&'a T,)>>(
++            opaque: *mut c_void,
++        ) {
++            // SAFETY: the opaque was passed as a reference to `T`.
++            F::call((unsafe { &*(opaque.cast::<T>()) },))
++        }
++
++        let timer_cb: unsafe extern "C" fn(*mut c_void) = rust_timer_handler::<T, F>;
++
++        // SAFETY: the opaque outlives the timer
++        unsafe {
++            timer_init_full(
++                self,
++                if let Some(g) = timer_list_group {
++                    g as *const TimerListGroup as *mut _
++                } else {
++                    ::core::ptr::null_mut()
++                },
++                clk_type.id,
++                scale as c_int,
++                attributes as c_int,
++                Some(timer_cb),
++                (opaque as *const T).cast::<c_void>() as *mut c_void,
++            )
++        }
++    }
++
++    pub fn modify(&self, expire_time: u64) {
++        unsafe { timer_mod(self.as_mut_ptr(), expire_time as i64) }
++    }
++
++    pub fn delete(&self) {
++        unsafe { timer_del(self.as_mut_ptr()) }
++    }
++}
++
++impl Drop for Timer {
++    fn drop(&mut self) {
++        self.delete()
++    }
++}
++
++pub struct ClockType {
++    id: QEMUClockType,
++}
++
++impl ClockType {
++    pub fn get_ns(&self) -> u64 {
++        // SAFETY: cannot be created outside this module, therefore id
++        // is valid
++        (unsafe { qemu_clock_get_ns(self.id) }) as u64
++    }
++}
++
++pub const CLOCK_VIRTUAL: ClockType = ClockType {
++    id: QEMUClockType::QEMU_CLOCK_VIRTUAL,
++};
++
++pub const MS: u32 = bindings::SCALE_MS;
++pub const US: u32 = bindings::SCALE_US;
++pub const NS: u32 = bindings::SCALE_NS;
 diff --git a/rust/wrapper.h b/rust/wrapper.h
-index a9bc67af0d5f..54839ce0f510 100644
+index 54839ce0f510..a35bfbd1760d 100644
 --- a/rust/wrapper.h
 +++ b/rust/wrapper.h
-@@ -62,3 +62,4 @@ typedef enum memory_order {
- #include "qapi/error.h"
+@@ -63,3 +63,4 @@ typedef enum memory_order {
  #include "migration/vmstate.h"
  #include "chardev/char-serial.h"
-+#include "exec/memattrs.h"
+ #include "exec/memattrs.h"
++#include "qemu/timer.h"
 -- 
 2.34.1
 
