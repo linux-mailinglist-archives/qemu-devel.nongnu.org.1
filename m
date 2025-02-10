@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E349FA2FAEA
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A264A2FAEF
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thacx-0007qF-9A; Mon, 10 Feb 2025 15:43:35 -0500
+	id 1thad1-0008Ju-2C; Mon, 10 Feb 2025 15:43:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacr-0007eY-6P
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:29 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacx-00086E-HD
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:35 -0500
 Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thaco-0003hD-S1
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:28 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacu-0003i3-Ql
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:35 -0500
 Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-38dd011ff8bso2651776f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:25 -0800 (PST)
+ ffacd0b85a97d-38dc9eba8a1so2960001f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220204; x=1739825004; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220210; x=1739825010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AZC1HEaPoraYEpey1ubDRQ5Kf2104vV3xZFjDQTDihc=;
- b=faj4W1oqgzBP2ZKpi+yrlBS5oo0aaiIXeOW9t0fwh718naNnYnZEILv1JxtuvUS+jl
- PZjUJfWd0RJWfu+Wfpi36Zox6QbZjTAvze4vv+60XPQ85FmxblkCnmlNXHHZxTVR3CBC
- kIANNGfcljHMynPlnugWiJ6YOVCA/pcsJjTdWaB+IqxP3s0FSgn6j3Nt3n2HH93oAksX
- enWgGe2TcswGrC+UgSHabVfeLHsxi/XcxXudBzm6RdapaqexLTVQXEV0+pADjjTbinRy
- d6w4WagHSePX5RMGd5erlLNpAfkvOJXp9wh8EpTz+kVHrI50QZ7K/QTdEC1xiDnxMJFa
- lXTA==
+ bh=SlCwGl9a0Wn+Waa2w2Ewq41sfDqQZGhbhfbBayKi8KM=;
+ b=fo6a6gh3zZGLz3p/aMTH52JnHEhQddgu+ScHtJKmhxMg/EbvD7csUesQoAmHxmPQP1
+ 3FY62X/WlE9AjnRcGx04JPn8ddjksySiXfzqaqJ7nkyp8N0hmTN+Gdxunjgz09Oyswcd
+ +rZ4bj0mjth/5uWuUvYM4XuyvMNy3x6GtMXPGf2lVCU3oC3vNFwfg/V2BSktuN05yYo1
+ 0LWglYaxhd6twsFvj7g0+LDRRsiZc9eQk/TlAfgSP+v7FroQEcQlRHj2v+4tNbfYhoka
+ 272Pt1P22rkuzivdX2TOknTBbIEefR8iaaMaawJ68X5mmWcoEBMFL61U5DgpGBLmJNiO
+ GT0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220204; x=1739825004;
+ d=1e100.net; s=20230601; t=1739220210; x=1739825010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AZC1HEaPoraYEpey1ubDRQ5Kf2104vV3xZFjDQTDihc=;
- b=aWg1mfwlPPMF5kZJ8MdDKGFAsSCPAMPIuf/LOZLL3I31FfNG4e35BjozZ82jEiIjvp
- oJpCzTAUfhLtkzgSF8+g3GzEaNlwzmDNrunkVDhivErttbG6toGDJsTxzB1UGdncrIvi
- Arz6tthgWwmYzpJUM26X5QdVUqYn+9GSqGL4CNBZn+SsiQzH/a2FTZpXsOLPtiiJnKeg
- II+Vrt6jN3hhBj+lgA8DW1h1dnVxzUJm7ydMpmInlr+kvLt5fCDwsNN4i6iDw7ZboWZg
- cFDFXHxCU2yGw6/yxy9CT12MPIYon6DFLsZTvNcE2x8yuxvCLTna9O6OUG4GxbET7Pqg
- mdYw==
-X-Gm-Message-State: AOJu0YzHljqDDSSIGMiKmRXQvf0gN3Pjke1NWKzg3vZM32IZNUwrAbcK
- Kz6D1UyWkh59XblyYgqIsYDiG28WZ1Z5CVuSu7z3+5kx2HHGOxPKxUEiQXLOrcy70LFykEdrqq2
- sKiE=
-X-Gm-Gg: ASbGncs5lp9VhUBv5NcJ1oyRfD8Dq7OOC6UZkDRuQtHKquPyTcHphzQYAmRUHqFTTZ3
- 2lwsxvcgPVz1dfuk0Dz77s7vf+lY119pkfjH1rtLVD0K3NqhkOsXfPHOzkvDQ8pFOvHr7d76ueV
- hqR5HuZQsfSngznT5NDYsZqdbtvvEYJaAgtLFnuG2lfpkBrYFUMRfWGgIkmyC8JYy8n2/U+QjyP
- z+//YrihO6/5DG/tG8hdfKshGEa5G6GHFONy6fr9zLE/+9YrGpPdSTN/qsNiATFzeSjjFKtoxKr
- 6DtUQIfyfzcpavxiWGXVgHd6yEQipBVxCVnh4ZQSO3qKLjoAZQ/esDMdyWJqI4RpSg==
-X-Google-Smtp-Source: AGHT+IFERB7loWxLzcxYY6BMjWGcXa6YdFb/dx6OKiE3TFEzh0qR6VtbMevcU3k/DF8z8v21rjL9DA==
-X-Received: by 2002:a05:6000:400f:b0:38d:c9f2:c57e with SMTP id
- ffacd0b85a97d-38dc9f2ccf2mr10364671f8f.32.1739220204046; 
- Mon, 10 Feb 2025 12:43:24 -0800 (PST)
+ bh=SlCwGl9a0Wn+Waa2w2Ewq41sfDqQZGhbhfbBayKi8KM=;
+ b=KLfSD9bbQUwvGKj2sGgA9rJblmboob2ZdVWwe+oM6i7Ryc3NYANuC2Aw7x/T9oxrDy
+ HKrzZLFPK82a2yB45kbKPGPu0npOtIkZ35KLCkxOFWsg+hSOnZ1S5msmzFkpt3uNHslA
+ flwCYqeqOgnLjffQCeSeEIOp7kX3RxPHhe1hwJ5Ui0xyBJGkM3L4/ilo+PpRrwmWJmcS
+ UZT3B2x9c83PhSNdvhXbSLpb/08Yr30l6oeOfn17Y9IL5h3SvAxeXKgnZC9q5QGEuW50
+ UpfXsRdz/oVyH23/lVe7Jf/INPNX9zplPhJbe5YkmQ6IpoWhPYgIfT0ye9smP1d7YSUd
+ 50dQ==
+X-Gm-Message-State: AOJu0YxCVeSN3LVK4T5JXlG6Ae9yP2oBiHfSWViSxcdUT03zEVpfQZg+
+ QPWfn5/zRxNXh42L8xaw6LzmoJN44rui8GSbnnilwucOQgc7S8T6bTsrrAO+Y4Dqmav9BQRhvR7
+ 30kg=
+X-Gm-Gg: ASbGncuvHIKCiYyrSAur1bWW0wvKbKdDRMq+SJ8vnUszjfhVUj9oPqOFsgh0yi7+p8k
+ F90fJGQLk5dqRl7E7ZwlVAfm2ad/y0yHnjJHyOyG0Sd1MPkNNQks+ksydpCxdSs7BAWZaTZ0+M4
+ LzdZDV25UB/R3gJiH/G/I2x/XsdiPKxRLsewEAL8u514QOUDOSMWUc4tVtrqlwmdKGycq7FjrsQ
+ heQgt4TGPOIhT2/qvMv+y6TyJWbt7+aE3/3xZaS8CdeRxeJ8ye7oUG0j/OKCG/HSJpph8jKGG+r
+ HbCAyziUsPtD+VeuSbmFg0KUp7rU+T3FLeUg7ObDV7zGH/Rktnjpy1N5EbF9c0LwuQ==
+X-Google-Smtp-Source: AGHT+IF+WS+y6upoHrlyoJD+cE1lj0c9LPmNepAqWvs7ZfD7lYit6kIlFiU6GsdGEN30xApPmHPuzg==
+X-Received: by 2002:adf:e6cb:0:b0:385:f72a:a3b0 with SMTP id
+ ffacd0b85a97d-38dc9357796mr8459637f8f.55.1739220210461; 
+ Mon, 10 Feb 2025 12:43:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dd2ef7efesm8173837f8f.52.2025.02.10.12.43.22
+ 5b1f17b1804b1-4390db11264sm187851455e9.35.2025.02.10.12.43.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:43:23 -0800 (PST)
+ Mon, 10 Feb 2025 12:43:29 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alexander Graf <graf@amazon.com>,
- =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>
-Subject: [PULL 15/32] hw/i386: Have X86_IOMMU devices inherit from
+ =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 16/32] hw/net: Have eTSEC device inherit from
  DYNAMIC_SYS_BUS_DEVICE
-Date: Mon, 10 Feb 2025 21:41:47 +0100
-Message-ID: <20250210204204.54407-16-philmd@linaro.org>
+Date: Mon, 10 Feb 2025 21:41:48 +0100
+Message-ID: <20250210204204.54407-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
@@ -100,60 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not explain why _X86_IOMMU devices are user_creatable,
-have them inherit TYPE_DYNAMIC_SYS_BUS_DEVICE, to explicit
-they can optionally be plugged on TYPE_PLATFORM_BUS_DEVICE.
+Because the network eTSEC device can be optionally plugged on the
+TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alexander Graf <graf@amazon.com>
 Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250125181343.59151-7-philmd@linaro.org>
+Tested-by: Bernhard Beschow <shentey@gmail.com>
+Acked-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20250125181343.59151-8-philmd@linaro.org>
 ---
- hw/i386/amd_iommu.c   | 2 --
- hw/i386/intel_iommu.c | 2 --
- hw/i386/x86-iommu.c   | 2 +-
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ hw/net/fsl_etsec/etsec.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 6b13ce894b1..e8e084c7cf8 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1687,8 +1687,6 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
-     dc->hotpluggable = false;
-     dc_class->realize = amdvi_sysbus_realize;
-     dc_class->int_remap = amdvi_int_remap;
--    /* Supported by the pc-q35-* machine types */
+diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
+index 781b9003954..3ce4fa2662d 100644
+--- a/hw/net/fsl_etsec/etsec.c
++++ b/hw/net/fsl_etsec/etsec.c
+@@ -425,14 +425,12 @@ static void etsec_class_init(ObjectClass *klass, void *data)
+     dc->realize = etsec_realize;
+     device_class_set_legacy_reset(dc, etsec_reset);
+     device_class_set_props(dc, etsec_properties);
+-    /* Supported by ppce500 machine */
 -    dc->user_creatable = true;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
-     device_class_set_props(dc, amdvi_properties);
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index f366c223d0e..7fde0603bfe 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -4871,8 +4871,6 @@ static void vtd_class_init(ObjectClass *klass, void *data)
-     dc->hotpluggable = false;
-     x86_class->realize = vtd_realize;
-     x86_class->int_remap = vtd_int_remap;
--    /* Supported by the pc-q35-* machine types */
--    dc->user_creatable = true;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "Intel IOMMU (VT-d) DMA Remapping device";
  }
-diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-index fed34b2fcfa..5cdd165af0d 100644
---- a/hw/i386/x86-iommu.c
-+++ b/hw/i386/x86-iommu.c
-@@ -146,7 +146,7 @@ bool x86_iommu_ir_supported(X86IOMMUState *s)
  
- static const TypeInfo x86_iommu_info = {
-     .name          = TYPE_X86_IOMMU_DEVICE,
--    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .instance_size = sizeof(X86IOMMUState),
-     .class_init    = x86_iommu_class_init,
-     .class_size    = sizeof(X86IOMMUClass),
+ static const TypeInfo etsec_types[] = {
+     {
+         .name          = TYPE_ETSEC_COMMON,
+-        .parent        = TYPE_SYS_BUS_DEVICE,
++        .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
+         .instance_size = sizeof(eTSEC),
+         .class_init    = etsec_class_init,
+         .instance_init = etsec_instance_init,
 -- 
 2.47.1
 
