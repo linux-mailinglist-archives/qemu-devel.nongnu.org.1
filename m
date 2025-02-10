@@ -2,85 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40523A2EFCF
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CB2A2EF6F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:13:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thUoO-0003Ap-HY; Mon, 10 Feb 2025 09:31:00 -0500
+	id 1thUWj-0007Fz-Tm; Mon, 10 Feb 2025 09:12:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thUoD-00035M-GU
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:30:52 -0500
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thUoB-00087y-Js
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:30:49 -0500
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-e5372a2fbddso3613263276.3
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:30:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739197846; x=1739802646; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cFImeAuzMskLt5/hknU5oGD3tZhASYQ5K70QvKwOzuE=;
- b=Fs1CbZVyMKRF7N9vrfBoi8t/BynvVuPejUF3XDozeEiO/YtJLCe5IXwYWYi7ey8O66
- cdCVvWvb6dHtkV3jaDiWpCJyRN+1csTgsrM7e7Qo/nWbCnhoYMucNBHklFiW0i+XtApw
- lFhJd6ewMvMeviBkUF+XX0/XC2puXObNEHw1sItFsDZ5nJ6z+x0I/+tvupmLc42S7wX0
- tKQiIZ9sxTci/TeytrZOHy/m5nwLEw3ISfPdykx6AlovXBAcpzBOm8oABVC/8wPjvr9y
- FUP8ndWeAMZ/ZMYXU7C76KY3ff+l+XQQl34qPgg8kb5i7LNXCrH0GckoyFUsR80yMVYo
- V32w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739197846; x=1739802646;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cFImeAuzMskLt5/hknU5oGD3tZhASYQ5K70QvKwOzuE=;
- b=oevFgki+qwOsw5gKQwqOphTfvLc9XQ1k8vG60GUHntKc7G+JVn3CjSwAtInT0/Aoyz
- hUnlRxThc4DeSEfNItQxKQucOLQH58y8V47z/PpVSZc2oEKuou3NmJjPws0QS6fFVbvx
- bvFljDfDDiwkL2fIQ7Gp+qb0PJDzyDWXJ4Gfg8QQRccwh++xrD3+z4dfusV0PRP4ayiA
- 5zpTrPh3+/CZYt8/zSDkk/dmyTCipL5/360Bh9HeyOO5KXLASDADdVtOAEyjV1anyZao
- 41jOc7teNeOCvBXvItX/BEJ055lvEYJ4PvQQ7IQ4seFRzSmFlDGKnhG+fn9HE4uKNBbX
- WFXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5QI+d2v6Y5I6Z7x5xU92I2q1mzfi+V2WIeNtaHcLd8XEzYh3fLN86RfSySmyUfe9c20lHQuOPSsBa@nongnu.org
-X-Gm-Message-State: AOJu0YxBwZER4ib/q3SXZRj8LrCdC4ynKJ4DFwWyroic6egaGTItDwi0
- 0P0HFipVaW5OkFWaMUUrZ/hqjg6qDuZ9SKYXVMwfKDKaqT0U5IIWMbVdgv+4zLgNBKxWIWXdwKm
- wetiEfCn3Ho+/fJkqXiRoeCrkSS4uAI1gesxnvw==
-X-Gm-Gg: ASbGncsAEo1dVTTXIFheRHKNJz6vGmTkKIGqpY8B6ftVpnhSF2+YuSNb5YDwsYkB9jW
- KSH+UPt+aByKcR0C/ihzI4pIbJ2593FU35I3hlc0jGv4FmlRmM/kmwih2JyNJ6fF5FyLZyDEW4w
- ==
-X-Google-Smtp-Source: AGHT+IFi/AAn0pXfMcosLF+Wchz/c6K3W08w6Dw0xNOsnzByckvxcVv7LrORN87SgKhyTq7xBlG/QdWnQaNRStQWKw0=
-X-Received: by 2002:a05:6902:2807:b0:e58:1575:6fa6 with SMTP id
- 3f1490d57ef6-e5b4625a6cdmr11074754276.34.1739197845707; Mon, 10 Feb 2025
- 06:30:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thUWS-0007Dk-9j; Mon, 10 Feb 2025 09:12:33 -0500
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thUWP-00053L-Pz; Mon, 10 Feb 2025 09:12:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739196746; x=1770732746;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=8bZA4Uzy6BHrko0L1T3EoFFplZmi9GTEN8JhOqR3zYU=;
+ b=e82qb/KmSuXkrrBlW+yFUG+LRt27XPGz6dNqZ00hv7g0hJGANxdqTbCV
+ 2jvaQ5qYihs9Dolr7OWEUU4SbZl74sb8Mxy8e0Sm4fdB0JLaPyRQwbfF6
+ 3sF1kBzD+cDNaLMvCnjpca1emNLtjJT1TENdrzHeJUHlxN5GDnCE60sPg
+ +kLWgcKkZfNWqEniaKQrva9GryeBPDia9K8DtT7XmV3WryeQtYq/t7E+t
+ /5it2wK8nphIXm1UkVsG8QvU3rRSP0WFnC9qm4NfBARIqovW42n1Izm8Y
+ Wyj7YSeVSrodL1SvYJCF6+VfOohhUA76z+qJLuGBA58zDRsookRmkk48v A==;
+X-CSE-ConnectionGUID: jvV2+jdOTTebMX9VSx2R8A==
+X-CSE-MsgGUID: INcyIQrMShunGQyw0h3TZg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="62252958"
+X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; d="scan'208";a="62252958"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2025 06:12:23 -0800
+X-CSE-ConnectionGUID: IlnqHOzYRIu5mZ+/IPaQ8A==
+X-CSE-MsgGUID: KXqy4DV0Ri+lLXY1XEY54Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; d="scan'208";a="112039099"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 10 Feb 2025 06:12:21 -0800
+Date: Mon, 10 Feb 2025 22:31:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 03/12] rust: callbacks: allow passing optional callbacks
+ as ()
+Message-ID: <Z6oN2KMfyMcmiZWD@intel.com>
+References: <20250207101623.2443552-1-pbonzini@redhat.com>
+ <20250207101623.2443552-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250206221203.4187217-1-wuhaotsh@google.com>
- <20250206221203.4187217-18-wuhaotsh@google.com>
-In-Reply-To: <20250206221203.4187217-18-wuhaotsh@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Feb 2025 14:30:33 +0000
-X-Gm-Features: AWEUYZlVWYBwhAqjyoTwlukbdbNwAfr2Ety-Fy0KL1RxkwNmOq_Fhi04Bdehtk0
-Message-ID: <CAFEAcA_oiCOQeZgb2LxjqYTL3yK0i52OabYHQqT7P0WVg6_C=w@mail.gmail.com>
-Subject: Re: [PATCH v4 17/17] docs/system/arm: Add Description for NPCM8XX SoC
-To: Hao Wu <wuhaotsh@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, venture@google.com, 
- Avi.Fishman@nuvoton.com, kfting@nuvoton.com, hskinnemoen@google.com, 
- titusr@google.com, chli30@nuvoton.corp-partner.google.com, 
- pbonzini@redhat.com, jasowang@redhat.com, alistair@alistair23.me, 
- philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207101623.2443552-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +80,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 6 Feb 2025 at 22:12, Hao Wu <wuhaotsh@google.com> wrote:
->
-> NPCM8XX SoC is the successor of the NPCM7XX. It features quad-core
-> Cortex-A35 (Armv8, 64-bit) CPUs and some additional peripherals.
->
-> This document describes the NPCM8XX SoC and an evaluation board
-> (NPCM 845 EVB).
->
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+On Fri, Feb 07, 2025 at 11:16:14AM +0100, Paolo Bonzini wrote:
+> Date: Fri,  7 Feb 2025 11:16:14 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 03/12] rust: callbacks: allow passing optional callbacks as
+>  ()
+> X-Mailer: git-send-email 2.48.1
+> 
+> In some cases, callbacks are optional.  Using "Some(function)" and "None"
+> does not work well, because when someone writes "None" the compiler does
+> not know what to use for "F" in "Option<F>".
+> 
+> Therefore, adopt () to mean a "null" callback.  It is possible to enforce
+> that a callback is valid by adding a "let _: () = F::ASSERT_IS_SOME" before
+> the invocation of F::call.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  docs/system/arm/nuvoton.rst | 27 ++++++++++++++++++++-------
->  1 file changed, 20 insertions(+), 7 deletions(-)
+>  rust/qemu-api/src/callbacks.rs | 97 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 97 insertions(+)
+>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-thanks
--- PMM
 
