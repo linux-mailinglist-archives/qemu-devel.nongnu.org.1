@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42115A2F21C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A08A2F21E
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:51:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thW3j-0007wT-Ek; Mon, 10 Feb 2025 10:50:56 -0500
+	id 1thW48-0008N8-7I; Mon, 10 Feb 2025 10:51:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thW2n-0007Eh-3W
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:49:57 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1thW32-0007Ku-9X
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:50:15 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thW2l-0004hu-5R
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:49:56 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4362f61757fso45148765e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 07:49:53 -0800 (PST)
+ id 1thW30-0004w1-9s
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:50:12 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5de6e26d4e4so3170947a12.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 07:50:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739202593; x=1739807393; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739202605; x=1739807405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=C5heOUGneotf5f/UOG2KrqgfCQsXkzBU9Lgw0sQAJEA=;
- b=a5EvWjUI6yrJ/FeG9V1ub5stDrNBZUbKhKtZzmCxliPUlfhJwIv67Jv6jvh9U1P0Am
- lll0sKnR/vEGkD21z4s6hbRDNqWSgZV0AfidMI1pvB7n35cKSOev/4wIgmYSg5urA8u1
- dLgTAMOYJuTAOFXNlq3vdXPMRmb/15yb4w+DklozddKLPfVXyoXJ+G3CicVpQG+BGrHP
- BGTdbFedg99dH/0k3RF6uwwItjYrBdOm9zR97Lm6Alr4PK9nf1S+MWf+zs6nT4FPMqCZ
- 4y9gONnWXj1DBjUG1Ugb68VYA2KFqL4iJou9c/1gh4Z/V5n1LD/hviY7BP9H2ZUnGSad
- k6tw==
+ :reply-to; bh=hU1IsAVO/zRvXWw+5IDT2Vye4Emk4sjMX3L4S35zVsM=;
+ b=xmRlPSLeJLuroASEw0T0EpxEh7WmC5+KabuqTynPQy5ThnWR8cGvxR+2fOFXqKRShc
+ 7MWBykydOkueuJvnVQwDNBA1TQyJddJFv9kB65EW6kg6BGzoeqEWYngslxkX3UrM9mGo
+ Ta6XyKOw82QgM3uPTrpObRFd6l8ycIARWJfVS6XTvWEcfw8mZsa4Q5mHE7D6QCf4Ov9C
+ XcF1SRVbxmOPPlxTLMCxv3h6gRaLL5rpXueW4us+kNMV/j0mIh/maaPggzIAl+rGdGAv
+ ruOeOQ4XIM0Ka4DsEgaaQVWwYaM5i3HYBm/DKJmDs/f9it1vJVyT76ZxRcf5brZW2HTd
+ wpRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739202593; x=1739807393;
+ d=1e100.net; s=20230601; t=1739202605; x=1739807405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C5heOUGneotf5f/UOG2KrqgfCQsXkzBU9Lgw0sQAJEA=;
- b=fCqHjkXo/qdEy0hUW7qhrMl7fcSWlfdXhVVWnt1qfKh15QPKtCDX+6YDopoiR1MeBH
- VAkDjTHFEBMCZnrB/Sw67KlsmURuc5ZN/qTGFWksujfqIqjmewb87DYRVSC2ZOaeauk6
- 8eAgnCxHyg97KVpsUGR5/Pu2Wg0k2aSx1EaYaiIRNvDGOW33MTY4oaYYtdVRjYBDU4fD
- PURF2pqD0cgrhlhgohFcy0c+FXJ5jjcubOImZs7uO6RiyZveA44PlLg7QNBg6e/CT1lf
- PpIrDx5GC/wsNCpD9GeoXXmXm0c3vaZz+3CURExUJawU48NrumQreTHruf9fbkuJDhaC
- Mkfg==
-X-Gm-Message-State: AOJu0Yz0x/UMdiulz3PUgRw/mQFMryMonhhruokWK2LfaIvPeh4Od60n
- UBZn6R4hqrhdaxvfXPLqym2Q9gIU96ppTTelI++W0e8C/k/RakCeFIl3HPFrbr76M31vVMDczGy
- +
-X-Gm-Gg: ASbGncujBpf/SUG1oot4vMEdtgPp/x+XqCyfR7NOXJJy1Tdc2A6K88UFu7bBj4QN7xj
- ATXp7as+Nq1T2pDjLH/jmomnsc35h7954ciW7URpFBLK2W2rFB5TfHor6GUkJLN4bTS43vmljjY
- QPz42XP6h5MZXKO0medpXuZuWZkPmPjS8B7cju9GI3IAeX0vWn4Zx1sDGXcTPKVR3bJT6V8BNvE
- yog2zVvVeDcwGpRqch5nf3ci0HoFMRKn9+IJPI4nSxn2NHD/uK7/IbKfi14N264xDIWXjasQMDo
- PETbvkke++9RPNRkJ+ZL
-X-Google-Smtp-Source: AGHT+IGFNTQNRd9xmoW3Yd9Z7r81Lk1T+20ykM3vgSfrySpSbU66jBvyLvZTbTQzA/NdQPDV4h/LGQ==
-X-Received: by 2002:a05:600c:1e25:b0:436:17e4:ad4c with SMTP id
- 5b1f17b1804b1-43924972ce9mr110357145e9.6.1739202592647; 
- Mon, 10 Feb 2025 07:49:52 -0800 (PST)
+ bh=hU1IsAVO/zRvXWw+5IDT2Vye4Emk4sjMX3L4S35zVsM=;
+ b=FzR0s1js3HNlr30xB7LTB/kSzEDqLH7hoE8OAmUJnP4Vp90rspNU3lS+vHiH5ee+8e
+ IvhAnfRnuGuqd1okVJtta2lUAWuMHpP31+Co3DaAPtTBUKoD7pV3I0w1XEDmoYrn5USz
+ wa+YMML9cqFsftbGWx+3v3qglVmxB27UJqsMqm2KMShqG0HTsL+K8A7aNYaj7/e0oR7J
+ mnjgQkJPez7jzGXS6bT2+wBGCw/mGbcSrr1u665+QnGfKbTVVLb3ffMHRDRirwcuOfbo
+ oTSfLf6P5q889XKiYfBDlVFCi3TTKBxVk4+PUVc2RN6RI14mq6ony/+JEFjdQdsM4dQ6
+ BB2Q==
+X-Gm-Message-State: AOJu0YzhVsPI2xxajZHaCUvPsCYPTxcAVgcadrA2LtJdEw4cBlRkrD46
+ fnn6VkKpHrCEM8uHhccj5SMAXdy0IN1rGqvJzBcC5kLBGgpepGOUVKjgQZd2ICiAbXLqw7lY7pg
+ F
+X-Gm-Gg: ASbGncshGthp7ZULqo8UiDG2MkjlRIR4uU/llyW516eX9/2kn+sSVNm29eli908lBtj
+ rgpyaeKIaB9kPETh0M+Z3qHJJteDwetOKxtOn3OsDSsdFYUyMOzPLhosA0Ol2gw2cEntaQX6HQu
+ mngRlKaHytBXtW4tQ2sFKpUWajdIDL0A8eTYhh9zIlThI37p+IcE9XiUJTA0DTncsdm1eTYmOpH
+ /CkDHNYmVmnWJR9GyagItBI3Xka6WV3dySSeBU3wdd2FJG6VGLiM5vCbvHfxAlvvG0GV2l5QdlY
+ yH0FpUxiQr2i/0lbsisv
+X-Google-Smtp-Source: AGHT+IENINeF0K1iaaDId55mOuqLgWUY45pOkEA0UxK6PnF4aKrQGjoaKEkHiqOXPO9Kx3uy/sdOzA==
+X-Received: by 2002:a05:600c:4f50:b0:436:ed50:4f8a with SMTP id
+ 5b1f17b1804b1-439249841b4mr128940225e9.10.1739202593573; 
+ Mon, 10 Feb 2025 07:49:53 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4391dfd8448sm150612845e9.38.2025.02.10.07.49.51
+ 5b1f17b1804b1-4391dfd8448sm150612845e9.38.2025.02.10.07.49.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 07:49:51 -0800 (PST)
+ Mon, 10 Feb 2025 07:49:52 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/12] hw/arm/fsl-imx7: Add local 'mpcore/gic' variables
-Date: Mon, 10 Feb 2025 15:49:37 +0000
-Message-Id: <20250210154942.3634878-8-peter.maydell@linaro.org>
+Subject: [PULL 08/12] hw/cpu/arm: Alias 'num-cpu' property on
+ TYPE_REALVIEW_MPCORE
+Date: Mon, 10 Feb 2025 15:49:38 +0000
+Message-Id: <20250210154942.3634878-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210154942.3634878-1-peter.maydell@linaro.org>
 References: <20250210154942.3634878-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,173 +100,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The A7MPCore forward the IRQs from its internal GIC.
-To make the code clearer, add the 'mpcore' and 'gic'
-variables.
+No need to duplicate and forward the 'num-cpu' property from
+TYPE_ARM11MPCORE_PRIV to TYPE_REALVIEW_MPCORE, alias it with
+QOM object_property_add_alias().
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250130112615.3219-5-philmd@linaro.org
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Message-id: 20250130112615.3219-6-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/fsl-imx7.c | 52 +++++++++++++++++++++--------------------------
- 1 file changed, 23 insertions(+), 29 deletions(-)
+ hw/cpu/realview_mpcore.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-index 004bf499376..3374018cde0 100644
---- a/hw/arm/fsl-imx7.c
-+++ b/hw/arm/fsl-imx7.c
-@@ -166,7 +166,8 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- {
-     MachineState *ms = MACHINE(qdev_get_machine());
-     FslIMX7State *s = FSL_IMX7(dev);
--    Object *o;
-+    DeviceState *mpcore = DEVICE(&s->a7mpcore);
-+    DeviceState *gic;
+diff --git a/hw/cpu/realview_mpcore.c b/hw/cpu/realview_mpcore.c
+index 4268735e3a5..7480b38d1ab 100644
+--- a/hw/cpu/realview_mpcore.c
++++ b/hw/cpu/realview_mpcore.c
+@@ -14,7 +14,6 @@
+ #include "hw/cpu/arm11mpcore.h"
+ #include "hw/intc/realview_gic.h"
+ #include "hw/irq.h"
+-#include "hw/qdev-properties.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_REALVIEW_MPCORE_RIRQ "realview_mpcore"
+@@ -68,7 +67,6 @@ static void realview_mpcore_realize(DeviceState *dev, Error **errp)
+     int n;
      int i;
-     qemu_irq irq;
-     char name[NAME_SIZE];
-@@ -182,7 +183,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-      * CPUs
-      */
-     for (i = 0; i < smp_cpus; i++) {
--        o = OBJECT(&s->cpu[i]);
-+        Object *o = OBJECT(&s->cpu[i]);
  
-         /* On uniprocessor, the CBAR is set to 0 */
-         if (smp_cpus > 1) {
-@@ -205,16 +206,15 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-     /*
-      * A7MPCORE
-      */
--    object_property_set_int(OBJECT(&s->a7mpcore), "num-cpu", smp_cpus,
--                            &error_abort);
--    object_property_set_int(OBJECT(&s->a7mpcore), "num-irq",
-+    object_property_set_int(OBJECT(mpcore), "num-cpu", smp_cpus, &error_abort);
-+    object_property_set_int(OBJECT(mpcore), "num-irq",
-                             FSL_IMX7_MAX_IRQ + GIC_INTERNAL, &error_abort);
-+    sysbus_realize(SYS_BUS_DEVICE(mpcore), &error_abort);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(mpcore), 0, FSL_IMX7_A7MPCORE_ADDR);
+-    qdev_prop_set_uint32(priv, "num-cpu", s->num_cpu);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->priv), errp)) {
+         return;
+     }
+@@ -100,6 +98,7 @@ static void mpcore_rirq_init(Object *obj)
+     int i;
  
--    sysbus_realize(SYS_BUS_DEVICE(&s->a7mpcore), &error_abort);
--    sysbus_mmio_map(SYS_BUS_DEVICE(&s->a7mpcore), 0, FSL_IMX7_A7MPCORE_ADDR);
+     object_initialize_child(obj, "a11priv", &s->priv, TYPE_ARM11MPCORE_PRIV);
++    object_property_add_alias(obj, "num-cpu", OBJECT(&s->priv), "num-cpu");
+     privbusdev = SYS_BUS_DEVICE(&s->priv);
+     sysbus_init_mmio(sbd, sysbus_mmio_get_region(privbusdev, 0));
+ 
+@@ -108,16 +107,11 @@ static void mpcore_rirq_init(Object *obj)
+     }
+ }
+ 
+-static const Property mpcore_rirq_properties[] = {
+-    DEFINE_PROP_UINT32("num-cpu", mpcore_rirq_state, num_cpu, 1),
+-};
 -
-+    gic = mpcore;
-     for (i = 0; i < smp_cpus; i++) {
--        SysBusDevice *sbd = SYS_BUS_DEVICE(&s->a7mpcore);
-+        SysBusDevice *sbd = SYS_BUS_DEVICE(gic);
-         DeviceState  *d   = DEVICE(qemu_get_cpu(i));
+ static void mpcore_rirq_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
  
-         irq = qdev_get_gpio_in(d, ARM_CPU_IRQ);
-@@ -255,8 +255,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_realize(SYS_BUS_DEVICE(&s->gpt[i]), &error_abort);
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpt[i]), 0, FSL_IMX7_GPTn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpt[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPTn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPTn_IRQ[i]));
-     }
+     dc->realize = realview_mpcore_realize;
+-    device_class_set_props(dc, mpcore_rirq_properties);
+ }
  
-     /*
-@@ -298,12 +297,10 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-                         FSL_IMX7_GPIOn_ADDR[i]);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPIOn_LOW_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPIOn_LOW_IRQ[i]));
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 1,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPIOn_HIGH_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPIOn_HIGH_IRQ[i]));
-     }
- 
-     /*
-@@ -355,8 +352,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->spi[i]), 0,
-                         FSL_IMX7_SPIn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_SPIn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_SPIn_IRQ[i]));
-     }
- 
-     /*
-@@ -381,8 +377,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->i2c[i]), 0, FSL_IMX7_I2Cn_ADDR[i]);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_I2Cn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_I2Cn_IRQ[i]));
-     }
- 
-     /*
-@@ -416,7 +411,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->uart[i]), 0, FSL_IMX7_UARTn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_UARTn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_UARTn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0, irq);
-     }
- 
-@@ -454,9 +449,9 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->eth[i]), 0, FSL_IMX7_ENETn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_ENET_IRQ(i, 0));
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_ENET_IRQ(i, 0));
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth[i]), 0, irq);
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_ENET_IRQ(i, 3));
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_ENET_IRQ(i, 3));
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth[i]), 1, irq);
-     }
- 
-@@ -483,7 +478,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
-                         FSL_IMX7_USDHCn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_USDHCn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_USDHCn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0, irq);
-     }
- 
-@@ -522,8 +517,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->wdt[i]), 0, FSL_IMX7_WDOGn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->wdt[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_WDOGn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_WDOGn_IRQ[i]));
-     }
- 
-     /*
-@@ -606,11 +600,11 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-     irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTD_MSI_IRQ);
-     qdev_connect_gpio_out(DEVICE(&s->pcie4_msi_irq), 0, irq);
- 
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTA_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTA_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 0, irq);
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTB_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTB_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 1, irq);
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTC_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTC_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 2, irq);
-     irq = qdev_get_gpio_in(DEVICE(&s->pcie4_msi_irq), 0);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 3, irq);
-@@ -643,7 +637,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usb[i]), 0,
-                         FSL_IMX7_USBn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_USBn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_USBn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usb[i]), 0, irq);
- 
-         snprintf(name, NAME_SIZE, "usbmisc%d", i);
+ static const TypeInfo mpcore_rirq_info = {
 -- 
 2.34.1
 
