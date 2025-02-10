@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E84A2FAEB
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF38A2FB01
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:47:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thadM-0000eN-9U; Mon, 10 Feb 2025 15:44:00 -0500
+	id 1thadQ-00014U-GL; Mon, 10 Feb 2025 15:44:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadA-0000Hg-SL
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:54 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadF-0000Op-JC
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:56 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thad9-0003l2-7o
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:48 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-38dd93a6f0aso1417352f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadD-0003lb-SD
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:53 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43948f77f1aso7037445e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220225; x=1739825025; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220230; x=1739825030; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DVW9ufOV2+0hfeUzGxYgydnkdsq/0Dv+lLX+D5jdROY=;
- b=Z/937dnso5mLwo3K682GNI4f5JlMRqlC+VWrSv8FydAnrpmNT2rg73e/HQ8KX2m075
- Wm4I4T1kGrAN3HQy5M4pPNcJTrka1AIbfJ8bP/TxB3uRTGTdBfNUfL3cbNAhpCij+kww
- nbBtQoTlvTVgvE3tcRvQsL7pAuXNLG8RMNFiya5K8yen2zCPzeDrtdyl5TxYwje0CyuY
- johSmcqeu5dYH4GY5+6k4wFtMuMoO6ryxca5WuURt58knmdYn9wA9C5v/TnILguGCEJp
- EQtfuqV8wb9AsEd+hwQ1y9rUz+M3nNfMAcHvKGU3/SrPgwTfrDme4OnH1SjQiI39aUEi
- 6BPA==
+ bh=zXvQGNnfpvT1VTqpauRS8evm2rYYkEf6B70nswq9ErA=;
+ b=Nta/IgQH+ZisLmFChmCsvjZZBvrpEiN+9miuCyFm+rVzcetz9xedJr14/c19/GAEEc
+ jUJE6wt7YhCTagND7AmbTay9+09kI15eqnwvXvc746tUBf5JCxHDQTscQphttiuQNU78
+ lqnvBRJ/LL4SRmt9ChZbAjkrB9h/a/NLp0hR7CKbHTCyNtZiEtvD3CwD4AInMX5GpcL8
+ oJjrMeOouthcdYd6LANGlsS5krbkccxc/1lHvxw1ogSjJ+YXiKXgWMP80VPIF5nLWdSC
+ N1SrG2EI/B9iBHo34fEe/qZEGeH85CZbbfbvXKjSJrOstTP+Lvqg6WcE98pXAwQIPZqO
+ Lxog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220225; x=1739825025;
+ d=1e100.net; s=20230601; t=1739220230; x=1739825030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DVW9ufOV2+0hfeUzGxYgydnkdsq/0Dv+lLX+D5jdROY=;
- b=G8uaGnSvFNJwZU6YkVgWn+Zc6voYx+QGfRg1gHkCzgo7uAgt7utyRFlPDIJn0VUDA1
- xoHUj261o7+XKDi/gRZPcCDkBuzhBd13p0e8TIKaxMTurzF2LXP6+9d8pJ0yNZ/8zTcd
- TbC9GdSIMdC65wlvzwMdKNx0JBnwL4Irm2yT7+oFFWBPgHDrzsS2aCClZAvGktQUhLD1
- tXpfH2QkKDt0VcV6VGGtt45R7qu3dDWVYTRZ3Lyn8RJTj0p8hxKu3Srsq1NRINWQxykO
- qYXtatb0a7pqzbjuBWftaXRref5IMLTbM72pLArDd5rC9SDAANvds8O0S+A3/tYAfzxT
- N87A==
-X-Gm-Message-State: AOJu0Yy267B69oo59PzQKQLEB/sqMcEtoDBpmFjT5e5JyEM3hRXEXnZe
- pVsFo0PE5a6IbCEgWt3rYVtxBg9+sPJsG7oAcs17jEubJrGDZpxbvlKQzzRcYsCX62X0Q3sKCTQ
- 3q7s=
-X-Gm-Gg: ASbGncvk97hMVwC/wxZjUZBoQ/c7/mgHF+45YeyW1NUkuy5dEAlduLvz1Z0vLf1yUu0
- dn6EINDhgSBZcRi2A5iKKqlZW610VXqFBR2l7LewHcchoHLmNHzabkjrhl8Xjt1HCOk5qiMVJxl
- 5Kx/ZvMEB3epkN/Q5e0vVtyZGEeLgL+10Ah67xyptNZNY+jaYffF2jCLayfVPxSfHcMRSJYLZNx
- j+3LaCR40MhM2Rqh83Ns5hPBEYb/CbQeRCP0XEwsULd3PPN7+hqNxjpdpKRd3Fhh7e+cGBtzWYM
- sRzbpwBqPkQZK12Anb9sNSBcvSnRBx0P2+SHs/84IsgoyGv0YeCxAhRQxoyPeb7ZwA==
-X-Google-Smtp-Source: AGHT+IEdB9jyOOCnMAcW3U4fWGN7UpQagFk/0iIxmpIkI0Q6zbVDrSMunjAlgNVyfCDVPvMFf+JKjQ==
-X-Received: by 2002:a05:6000:1fa5:b0:38d:deca:fcc1 with SMTP id
- ffacd0b85a97d-38ddecaff06mr4788510f8f.29.1739220225258; 
- Mon, 10 Feb 2025 12:43:45 -0800 (PST)
+ bh=zXvQGNnfpvT1VTqpauRS8evm2rYYkEf6B70nswq9ErA=;
+ b=c+DAkpY3pjMjferZgXf0rr4h7WkGokDN0w7+y1R799Ndo4tVD34HH5OPnu2Q1CAu8W
+ deWKBZojc/aqIdlm5o/yLro1N3JQL5a1k/rVCfxF881NAm4fnnBhicfkkfsIGjVictZO
+ 2GC6AhmnNNUyzvUEQDr5qvSTzYxj1KYKoo3xpX+ONr/HhO18MkOFe9KJsm+BIA0cJvEw
+ KKcujpoMMiKd56x+jPNpXAYfgEWuM4qfdJV+NSyIwk8GEIxrNEAHRnnnSuhrRQUBHgUW
+ fZL7PU/t3FCYJBlnyDoAAzZQZXTybeK5Q5x1okoUESKJ/1ZgfbbBhRs76Sp3BBDiTYTY
+ MxJg==
+X-Gm-Message-State: AOJu0Yyzcc4/ZhomKoeqeeqLlISOxE1pQ/ZMhoJurgMYwNNpNqCbBrlO
+ fUyR0H8XegnEdFNXdvxgtG4p+ZCGoBoHTlp7bW2gEBTEGzsZdv5aSxPiOGDjw99j+FUdl6NwU/l
+ UX5o=
+X-Gm-Gg: ASbGncspVSek0iTGqy2/i9YlbBEyDhSJhmeThL7As6lOAx0FRYodY2MjZjHh4AlGpaH
+ k7DpkiTI/3Xiv25GOwMy3qw+Uahhnvv+SGjXWxRyGAiQbBgczmsmP+00PbHgAFH0HM5XHdX+vC4
+ EyXb84HU3kJ916eSZxUO9GXvDVW0oFVFnCBEEw+0oIBcwHNM1TzPom82uGlrMtU564huOemJ2MT
+ d/TjbQhBQTQLosKpvoEF3tXjy1kRCb0T+KP9RUNQY5Mg6uKBtNtYC9G0Bo0LEdoW7llAjzb14XS
+ 1DeOqxeCPLE9CmQGWTD9RRh4vcdYyXBn51+zBE6Ip+P5k94gezIC3gi6FH6xLYS8dQ==
+X-Google-Smtp-Source: AGHT+IGxZ0VyTFz2OLb855O009Q8ElmdYG6IKwQq+Ff2cTq7t17PHa+GAHmlYJO2U/4hMHc0xdMdbw==
+X-Received: by 2002:a05:6000:1448:b0:385:ee40:2d88 with SMTP id
+ ffacd0b85a97d-38dc90e39c5mr11772777f8f.3.1739220229954; 
+ Mon, 10 Feb 2025 12:43:49 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dc5839877sm11546143f8f.3.2025.02.10.12.43.44
+ ffacd0b85a97d-38dd3dcca71sm7795971f8f.76.2025.02.10.12.43.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:43:44 -0800 (PST)
+ Mon, 10 Feb 2025 12:43:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexander Graf <graf@amazon.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 19/32] hw/xen: Have legacy Xen backend inherit from
- DYNAMIC_SYS_BUS_DEVICE
-Date: Mon, 10 Feb 2025 21:41:51 +0100
-Message-ID: <20250210204204.54407-20-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 20/32] hw/boards: Convert no_sdcard flag to OnOffAuto tri-state
+Date: Mon, 10 Feb 2025 21:41:52 +0100
+Message-ID: <20250210204204.54407-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,74 +97,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the legacy Xen backend devices can optionally be plugged on the
-TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
-Remove the implicit TYPE_XENSYSDEV instance_size.
+MachineClass::no_sdcard is initialized as false by default.
+To catch all uses, convert it to a tri-state, having the
+current default (false) becoming AUTO.
+
+No logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alexander Graf <graf@amazon.com>
-Tested-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20250125181343.59151-10-philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250204200934.65279-2-philmd@linaro.org>
 ---
- include/hw/xen/xen_pvdev.h  | 5 +++--
- hw/xen/xen-legacy-backend.c | 7 ++-----
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ include/hw/boards.h        | 2 +-
+ hw/arm/xilinx_zynq.c       | 2 +-
+ hw/core/null-machine.c     | 2 +-
+ hw/s390x/s390-virtio-ccw.c | 2 +-
+ system/vl.c                | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/xen/xen_pvdev.h b/include/hw/xen/xen_pvdev.h
-index 0c984440476..629bec90d09 100644
---- a/include/hw/xen/xen_pvdev.h
-+++ b/include/hw/xen/xen_pvdev.h
-@@ -1,7 +1,7 @@
- #ifndef QEMU_HW_XEN_PVDEV_H
- #define QEMU_HW_XEN_PVDEV_H
- 
--#include "hw/qdev-core.h"
-+#include "hw/sysbus.h"
- #include "hw/xen/xen_backend_ops.h"
- 
- /* ------------------------------------------------------------- */
-@@ -32,7 +32,8 @@ struct XenDevOps {
- };
- 
- struct XenLegacyDevice {
--    DeviceState        qdev;
-+    SysBusDevice parent_obj;
-+
-     const char         *type;
-     int                dom;
-     int                dev;
-diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
-index ca2fe0e6b36..bf58db0ca68 100644
---- a/hw/xen/xen-legacy-backend.c
-+++ b/hw/xen/xen-legacy-backend.c
-@@ -640,16 +640,14 @@ static void xendev_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
--    /* xen-backend devices can be plugged/unplugged dynamically */
--    dc->user_creatable = true;
-     dc->bus_type = TYPE_XENSYSBUS;
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index e1f41b2a533..d61b0a47780 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -283,9 +283,9 @@ struct MachineClass {
+         no_parallel:1,
+         no_floppy:1,
+         no_cdrom:1,
+-        no_sdcard:1,
+         pci_allow_0_address:1,
+         legacy_fw_cfg_order:1;
++    OnOffAuto no_sdcard;
+     bool is_default;
+     const char *default_machine_opts;
+     const char *default_boot_order;
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 8477b828745..12418094f9d 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -463,7 +463,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
+     mc->init = zynq_init;
+     mc->max_cpus = ZYNQ_MAX_CPUS;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
+     mc->ignore_memory_transaction_failures = true;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->default_ram_id = "zynq.ext_ram";
+diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
+index f586a4bef54..b93056c0f7b 100644
+--- a/hw/core/null-machine.c
++++ b/hw/core/null-machine.c
+@@ -53,7 +53,7 @@ static void machine_none_machine_init(MachineClass *mc)
+     mc->no_parallel = 1;
+     mc->no_floppy = 1;
+     mc->no_cdrom = 1;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
  }
  
- static const TypeInfo xendev_type_info = {
-     .name          = TYPE_XENBACKEND,
--    .parent        = TYPE_DEVICE,
-+    .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .class_init    = xendev_class_init,
--    .instance_size = sizeof(struct XenLegacyDevice),
-+    .instance_size = sizeof(XenLegacyDevice),
- };
- 
- static void xen_sysbus_class_init(ObjectClass *klass, void *data)
-@@ -672,7 +670,6 @@ static const TypeInfo xensysbus_info = {
- static const TypeInfo xensysdev_info = {
-     .name          = TYPE_XENSYSDEV,
-     .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(SysBusDevice),
- };
- 
- static void xenbe_register_types(void)
+ DEFINE_MACHINE("none", machine_none_machine_init)
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d9e683c5b49..5f78c8d20ff 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -817,7 +817,7 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
+     mc->no_cdrom = 1;
+     mc->no_floppy = 1;
+     mc->no_parallel = 1;
+-    mc->no_sdcard = 1;
++    mc->no_sdcard = ON_OFF_AUTO_ON;
+     mc->max_cpus = S390_MAX_CPUS;
+     mc->has_hotpluggable_cpus = true;
+     mc->smp_props.books_supported = true;
+diff --git a/system/vl.c b/system/vl.c
+index ff91af8eca6..a845f692af1 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1346,7 +1346,7 @@ static void qemu_disable_default_devices(void)
+     if (!has_defaults || machine_class->no_cdrom) {
+         default_cdrom = 0;
+     }
+-    if (!has_defaults || machine_class->no_sdcard) {
++    if (!has_defaults || machine_class->no_sdcard == ON_OFF_AUTO_ON) {
+         default_sdcard = 0;
+     }
+     if (!has_defaults) {
 -- 
 2.47.1
 
