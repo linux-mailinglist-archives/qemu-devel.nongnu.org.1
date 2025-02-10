@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACCFA2E963
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845B3A2E957
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:27:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thQzx-0001YH-O3; Mon, 10 Feb 2025 05:26:41 -0500
+	id 1thQzy-0001bL-Dw; Mon, 10 Feb 2025 05:26:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thQzv-0001RM-4G
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thQzv-0001Ri-6H
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:26:39 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thQzo-0001nq-Oz
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thQzt-0001px-AD
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:26:38 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38dc73cc5acso1784516f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:26:32 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso27910895e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:26:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739183191; x=1739787991; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739183195; x=1739787995; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xBCJMHcPe/iIrLZobFxGzbZ4tBIo/mQI53ey/01FGoU=;
- b=bMbHC/XJjZQZE+anDENSgs+Oxj/cF0MhoCrpjNkFZ7+3Dus7jmozeLgcvCKMz9tGW2
- +1yAZLmw/Cq2w2mvqe/rG8z/SmcFBMN6gSXa/D6wn55s3t2Y5eaTL4h9qsc5mCC68jDu
- Mfrdx4EL/g0Jl0v9dyJKhkWQ67MNlRCAkUysZJJ8ZSSvW33Xq49R1zjDXnXu+bfdOzut
- eB2ede7S9FVE8XF5wp+HQEw6PfrXp8Gr3JWPimg+LeJJqOz18uJH1B4kddFfsqehbNfH
- Dc/gfU0K1a3O2chK4+2gSkrgkRIvbXFkZcInxu682SaZFdHdg6hPUICkcYzY5S9c0LyV
- UAug==
+ bh=tRDqbtanMlA5Asve4v+RadDNokWUtgjMp7wgM0p7V4g=;
+ b=Y3YuWfrEPCspAh6vyGKQ/bRHIY9DBK52r7bkwQTzELRFIAv4Fs5wNQ+raNVnlOfJ/D
+ dpu6fSiByY4Ipt6ttrLNkM6gON1UJr4N6cajSmcdcQCCGZHs4dJ6OcNHyW5YZbBL1tpD
+ HHJw3FnKQ7m6D9St9ogfejg/A8ky8SAvdoDIzgE0Xe8FbyOmLU4z+IVurbT/kf9eD2Pn
+ PQPC2xwgLGcH2MVqLS78VN2o4zD+zXe6O6pyNJERbTYF0KKdjQer+9HSlvoKU0z0mX7z
+ JlHN44XRxkENPs59kCzvZR8S8K7ZJ+OUPW6v6SwL4yUJjw1zMkLg9bMp7007xnwDF0sF
+ Eh9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739183191; x=1739787991;
+ d=1e100.net; s=20230601; t=1739183195; x=1739787995;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xBCJMHcPe/iIrLZobFxGzbZ4tBIo/mQI53ey/01FGoU=;
- b=RQpYJmEvb3BlWt4WlowqCRLaDiqLvOYnhKlq4qWHnwElzQITQ2uLGODuw0gz2DStjC
- /StDb5CX07Lr2Rp+x3wWbNoPbkKZH4Dk/XjtlcfN7wUduoUD4XUIf+xIMYj9xJguwY8+
- 9jRmIowcmMst7uSX0YKpBM5djIzKunGMC8ME5POavlQ+CjH0TSyWepNkFonGg1qIkzEr
- iYmSP1T57cg5kfyDYG0eHFJS8jwUla4wsEkEZY1+saTETxUGH11VfzXebSrLXyNuACuf
- LJwkipJvHoc3WRfErWbSHhoN4WYUoHX3mPMJuUyB83Q/MqBXkU2jrTV1xwtay1PC6cZE
- 1uYA==
-X-Gm-Message-State: AOJu0YwZFRDIfhqyHceAw2RLhuUl6WFagfWPFxaCGlwfvYo8CI8P2Sme
- nzrYAuRa03jAVg9gQN3ZXW98JesUjeI0VCdecZyNw15SdTPV8/WLwwUZUt/mzn4dFTBAM6pf3Yk
- perk=
-X-Gm-Gg: ASbGncsmPvBllyPmmfTvEQEVyl3jVZht0lJWadYidRX/ULcebvFRWCTpt41Wenucn9w
- vcnNGcnavJDVc6bZrVG1d1kJNeyBayBcOpV0LkniUR1+VuDzJIfkNOlM8bYIIkvP+pSLC0XRyP1
- UUyrlJCX+0vvDse94hg9DgDyS4LtQZTgnuthcYeAWEfwZWZ57DfuSjwbS93omtkpwABXu/5+Tvg
- nY6oMDtnXsvGNcvx/xNJU0/pypP6HbQLijwfKZ7MXPnxfXvKz7V/PV/+IS7TgTTZZcpprnp022Q
- UeC2O9y7gpwzYbI89llqrbkx7V6Syh7/Nywc8Ptx0qsqhGebPdDZACq3PAQlm1/X4vkY95o=
-X-Google-Smtp-Source: AGHT+IFsk4Sm5GtJcrljfyFdZDFfEzE6alyDValtScdGjuwRyLdffPNgRUGjpr98MaYFefZPsvEAQw==
-X-Received: by 2002:a5d:64ef:0:b0:38d:e092:3d0a with SMTP id
- ffacd0b85a97d-38de0923f1dmr1426772f8f.9.1739183190610; 
- Mon, 10 Feb 2025 02:26:30 -0800 (PST)
+ bh=tRDqbtanMlA5Asve4v+RadDNokWUtgjMp7wgM0p7V4g=;
+ b=Sf6yEWbuwlqBl9eAmrWr0aptrhSGopTXeLgTIKa5CdmKAKhOQlB82/s6ONyngDkxdP
+ 7Sccv/mK1qnh6YHXuMpCXu/EgQ8il4qopAWmdtRWKe/tgT07NULqS6pJNJoiZ0b5z8yC
+ Oqycj54OTmeDp6YX1rqEbw4vhewX1kVMwVvjJQNCI8pLa5a8aeej8nH781Pp1ranaCbv
+ +4T4DBaucYtVb5GQlwQ3kRtr4w+3dSEGaMXrKFf7rW7n2VvFtpGHEJDG0k/LnLFbYQl4
+ q3owNYreWTZlSsaYsvgHpUReryLDeSHK9/mw45cj1PoYFBYMJTTxeBYTchdPqXKrpFJ7
+ DZtg==
+X-Gm-Message-State: AOJu0YykOpAsO5qgyOpZZse8WzAg5Qhwa2GW1YzNBKk73ZCSWPQZFZB6
+ QnLvdwAEYyZdtPmNoCW7bXQwdKEgXsvBr3Qie6/CM8Wp7ZgjT1fzXjk6XRjuIagt0XtGXCyhrWO
+ X3yA=
+X-Gm-Gg: ASbGncsV2RX8RK4/qbfmiTkLGT7E9oZ171ItI9YmFo8sTQsF8DWcaBaeIgT0pQsQAuV
+ JdPgUZ+QSQdHglHMzXv/hnE/OU81gOXTA3YIXXlkb4XLRKbfMmyWqU+Bvvo3kvQH8nDlHUZ6rkb
+ 1E4c/NiOeuYAI8+7phCX7BKJPsvOiNK23Q9IkmwQlH3YGhjPdbudDcBXJlE+2r9ff+V52hUBzRO
+ MKW9C7w08besgIZGpcTkwFU8jPOBD+XLR7FuCH3q1YrN5uamSwbMyvDXNno8MrgfTbZe1NARUwm
+ RrDCBwJXT0iK1q4go2E11X653QxknM3ck9NjAA56cGHK+jiAmOgVeWlovFFQ2EGcRuAirY0=
+X-Google-Smtp-Source: AGHT+IHrqGrYCnv6aFVdtB2T/pXjIhKu2h6/wogDJe5McArtoOWzQVdnFbXhUsJc3hjIxrSJiHvjMA==
+X-Received: by 2002:a05:600c:4eca:b0:434:a852:ba6d with SMTP id
+ 5b1f17b1804b1-4392498a1e3mr93634665e9.9.1739183195282; 
+ Mon, 10 Feb 2025 02:26:35 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbdd368c9sm12051181f8f.34.2025.02.10.02.26.29
+ 5b1f17b1804b1-4390d94d753sm175560445e9.11.2025.02.10.02.26.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 02:26:30 -0800 (PST)
+ Mon, 10 Feb 2025 02:26:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-riscv@nongnu.org
-Subject: [PATCH 05/10] target/riscv: Convert misa_mxl_max using GLib macros
-Date: Mon, 10 Feb 2025 11:25:59 +0100
-Message-ID: <20250210102604.34284-6-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 06/10] hw: Declare various const data as 'const'
+Date: Mon, 10 Feb 2025 11:26:00 +0100
+Message-ID: <20250210102604.34284-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210102604.34284-1-philmd@linaro.org>
 References: <20250210102604.34284-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,74 +98,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use GLib conversion macros to pass misa_mxl_max as
-riscv_cpu_class_init() class data.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Cc: qemu-riscv@nongnu.org
----
- target/riscv/cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ hw/isa/vt82c686.c     | 2 +-
+ hw/rtc/m48t59-isa.c   | 2 +-
+ hw/rtc/m48t59.c       | 2 +-
+ hw/sensor/tmp421.c    | 2 +-
+ hw/usb/hcd-ehci-pci.c | 2 +-
+ hw/usb/hcd-uhci.c     | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f3ad7f88f0e..9fe1b23a297 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2955,7 +2955,7 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 6f44b381a5f..43bd67eeef2 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -224,7 +224,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
  {
-     RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+-    ViaPMInitInfo *info = data;
++    const ViaPMInitInfo *info = data;
  
--    mcc->misa_mxl_max = (RISCVMXL)(uintptr_t)data;
-+    mcc->misa_mxl_max = (RISCVMXL)GPOINTER_TO_UINT(data);
-     riscv_cpu_validate_misa_mxl(mcc);
+     k->realize = via_pm_realize;
+     k->config_write = pm_write_config;
+diff --git a/hw/rtc/m48t59-isa.c b/hw/rtc/m48t59-isa.c
+index 38bc8dcf100..9c3855a3ef1 100644
+--- a/hw/rtc/m48t59-isa.c
++++ b/hw/rtc/m48t59-isa.c
+@@ -129,7 +129,7 @@ static void m48txx_isa_class_init(ObjectClass *klass, void *data)
+ static void m48txx_isa_concrete_class_init(ObjectClass *klass, void *data)
+ {
+     M48txxISADeviceClass *u = M48TXX_ISA_CLASS(klass);
+-    M48txxInfo *info = data;
++    const M48txxInfo *info = data;
+ 
+     u->info = *info;
  }
+diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
+index c9bd6f878fe..3fb2f27d9d1 100644
+--- a/hw/rtc/m48t59.c
++++ b/hw/rtc/m48t59.c
+@@ -639,7 +639,7 @@ static void m48txx_sysbus_class_init(ObjectClass *klass, void *data)
+ static void m48txx_sysbus_concrete_class_init(ObjectClass *klass, void *data)
+ {
+     M48txxSysBusDeviceClass *u = M48TXX_SYS_BUS_CLASS(klass);
+-    M48txxInfo *info = data;
++    const M48txxInfo *info = data;
  
-@@ -3057,7 +3057,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-         .parent = TYPE_RISCV_CPU,                           \
-         .instance_init = (initfn),                          \
-         .class_init = riscv_cpu_class_init,                 \
--        .class_data = (void *)(misa_mxl_max)                \
-+        .class_data = GUINT_TO_POINTER(misa_mxl_max)        \
-     }
+     u->info = *info;
+ }
+diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
+index 82e604279c5..007f7cd018b 100644
+--- a/hw/sensor/tmp421.c
++++ b/hw/sensor/tmp421.c
+@@ -68,7 +68,7 @@ struct TMP421State {
  
- #define DEFINE_DYNAMIC_CPU(type_name, misa_mxl_max, initfn) \
-@@ -3066,7 +3066,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-         .parent = TYPE_RISCV_DYNAMIC_CPU,                   \
-         .instance_init = (initfn),                          \
-         .class_init = riscv_cpu_class_init,                 \
--        .class_data = (void *)(misa_mxl_max)                \
-+        .class_data = GUINT_TO_POINTER(misa_mxl_max)        \
-     }
+ struct TMP421Class {
+     I2CSlaveClass parent_class;
+-    DeviceInfo *dev;
++    const DeviceInfo *dev;
+ };
  
- #define DEFINE_VENDOR_CPU(type_name, misa_mxl_max, initfn)  \
-@@ -3075,7 +3075,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-         .parent = TYPE_RISCV_VENDOR_CPU,                    \
-         .instance_init = (initfn),                          \
-         .class_init = riscv_cpu_class_init,                 \
--        .class_data = (void *)(misa_mxl_max)                \
-+        .class_data = GUINT_TO_POINTER(misa_mxl_max)        \
-     }
+ #define TYPE_TMP421 "tmp421-generic"
+diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
+index d410c38a8a2..e00316721ac 100644
+--- a/hw/usb/hcd-ehci-pci.c
++++ b/hw/usb/hcd-ehci-pci.c
+@@ -182,7 +182,7 @@ static void ehci_data_class_init(ObjectClass *klass, void *data)
+ {
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+-    EHCIPCIInfo *i = data;
++    const EHCIPCIInfo *i = data;
  
- #define DEFINE_BARE_CPU(type_name, misa_mxl_max, initfn)    \
-@@ -3084,7 +3084,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-         .parent = TYPE_RISCV_BARE_CPU,                      \
-         .instance_init = (initfn),                          \
-         .class_init = riscv_cpu_class_init,                 \
--        .class_data = (void *)(misa_mxl_max)                \
-+        .class_data = GUINT_TO_POINTER(misa_mxl_max)        \
-     }
+     k->vendor_id = i->vendor_id;
+     k->device_id = i->device_id;
+diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
+index 8528d493d63..0561a6d801a 100644
+--- a/hw/usb/hcd-uhci.c
++++ b/hw/usb/hcd-uhci.c
+@@ -1289,7 +1289,7 @@ void uhci_data_class_init(ObjectClass *klass, void *data)
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     UHCIPCIDeviceClass *u = UHCI_CLASS(klass);
+-    UHCIInfo *info = data;
++    const UHCIInfo *info = data;
  
- #define DEFINE_PROFILE_CPU(type_name, misa_mxl_max, initfn) \
-@@ -3093,7 +3093,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-         .parent = TYPE_RISCV_BARE_CPU,                      \
-         .instance_init = (initfn),                          \
-         .class_init = riscv_cpu_class_init,                 \
--        .class_data = (void *)(misa_mxl_max)                \
-+        .class_data = GUINT_TO_POINTER(misa_mxl_max)        \
-     }
- 
- static const TypeInfo riscv_cpu_type_infos[] = {
+     k->realize = info->realize ? info->realize : usb_uhci_common_realize;
+     k->exit = info->unplug ? usb_uhci_exit : NULL;
 -- 
 2.47.1
 
