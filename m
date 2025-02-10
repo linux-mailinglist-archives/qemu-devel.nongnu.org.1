@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C04AA2FC1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 22:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3659A2FC17
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 22:32:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thbMZ-0004e0-Oe; Mon, 10 Feb 2025 16:30:43 -0500
+	id 1thbMb-0004jz-01; Mon, 10 Feb 2025 16:30:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thbMD-0004QX-64
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 16:30:22 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thbMI-0004RA-7N
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 16:30:40 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thbMA-0002Te-Eb
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 16:30:20 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-436ce2ab251so33523655e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 13:30:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thbMF-0002V1-W0
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 16:30:25 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38dd14c99d3so2418589f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 13:30:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739223016; x=1739827816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739223022; x=1739827822; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W3TRvMCsTOKayhPJBtpLWMZ5XRU7il83OMKb5CXGBDk=;
- b=P1sgswSz2ikAXuhcR2LUP38G+wLbQC9CkkWKTbI7/0SyRE/bFYPN6MccULfnc0XME8
- uD5s993mLhaoFhKSowp+J0PBStq01snVkN+XMLRnguAlWnX63V6m0wLxnJ92j3tx/10k
- FmvgCmsKzcml524EB7AC5l6g1AUHHoPYG+tOPhjzep/iBcuI46YkGJCNdjTIxP3ePExe
- 1AIiaES+Yz39ydlG4OEkPUKyrYsukyWQMuAkzLPblOLX0oS7ZY8tGjvisvHctN0RDnY5
- CmYc4GVYanW/49TU+VYbZZG1f+KZNay0pPlpO0sMPKz30oly9vqhuoAPRKwMJFwmcVfb
- JlVw==
+ bh=LstW3Dp8wkhRDMPLlcZPAPERKl2k3gDe4YnYzMJVkXE=;
+ b=AHuujSzT/vIc03J7vcPjIbWL5sK+jSW/DyV/WXxknilZ/ltsSpWanjW8c9zmu0k6rr
+ A5tptiAOhQA+NTc6adnBnGXQjfbX6T1Qxpo3NxTTCvi3vZZ5RYEb5+7OLNPjeoifoR9x
+ /tmPaUg9GL7iDodVE2aK/xCS9FvOVOIJnvseb27QQg0GNEaT6nIfnMpR8mtC9Y8cp4uK
+ 0hwAPkwX/Gi+VZmJ7OCC70vOkjCJ836+McK03aoOkuk8qjjdYb/d+bjLp45Oo6/v3z3n
+ yKtqbG9ensAnuc0nZ7INbPCmImFYJ5juXL+uFcdXQtRIJxF+F8PHGnvsB0f83CgcWu7C
+ A3WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739223016; x=1739827816;
+ d=1e100.net; s=20230601; t=1739223022; x=1739827822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W3TRvMCsTOKayhPJBtpLWMZ5XRU7il83OMKb5CXGBDk=;
- b=vgWA5cR6MHZ2aVbVJQrM0kDU1l4Jx3tulEzKh62ntQ3UzORImroeVGzfSvb0Ks0rHi
- lRB42xevzFHhlwOQLrTeoe03VdWu6diJW0x5uoOx9MH9gp338hMEAb6zfodzYSWNlEgq
- fdhEdgxO77zvaceeeBv12ktgpMIQJCjDQLWeBPpJ+XeKhP4kRnyDiEND93VVNeg/rzwD
- LPm84uiBgeEqCNfLoUjvvwkJRJynFVJ8ipttfS8jPuYQ3PaQdAt8uNzpWAuzXW8ctBn7
- UQFDOeWRpR5ftOvKQrNuXbIrxtDy7wlnSH4kM4GgpDZDvtvRkQhFTPlWEzGrBucZdqbw
- jDYA==
-X-Gm-Message-State: AOJu0YxVZdaCNiVVEENXIiLBkWjKMT7rCzQtnBP1iPF1Eq8jn3pUNMdv
- hCf3UBAjZeE5+b3Oki2dF56TlZkQdSqs1Qk8MjkAJKYqqqYsq2SSg/tuJSqYN1zlgqgONEp2UvO
- 7g/8=
-X-Gm-Gg: ASbGnctT/N99LC5SZcWFtNmkq8vYVPAWiZWSJW1VjiRvGPtoMEeXMOOqhUORe3FOVBN
- fv12I4bhxqKEoPHnw1DLvRclkqKFdCadcJrBhBO7xkURepKPgs78Gxef334Odn5mUCRtDJYOTcR
- RvFwFg3ADrPYDxEa1SvRb84UFLEj9z58uuR9Wc1Q4ZWv7oDfy97sGI05H6AAHcpV0xDuGLmzWt/
- /cniZH/BFoUeEmlz+a37JnjAaNynPTTRm9sHFtL+tFdgLHpe2tu5EiucEbzVajTaI6sUg6ywWse
- L30wGEA0iB+h5X+ESuEpgRCvD2GEVJM0ByROALUER+cJbEBayUz4cjr5050wABVa6A==
-X-Google-Smtp-Source: AGHT+IGKmr59/tETcQOVTqSTYfTjeM0bqbgNNsd0GvkQv9Zm/O9W9rQwPIVCSLj+At+cQl2W9x0KRg==
-X-Received: by 2002:a05:6000:1f83:b0:38d:de92:adab with SMTP id
- ffacd0b85a97d-38dde92ae55mr5311247f8f.29.1739223015904; 
- Mon, 10 Feb 2025 13:30:15 -0800 (PST)
+ bh=LstW3Dp8wkhRDMPLlcZPAPERKl2k3gDe4YnYzMJVkXE=;
+ b=MBC5dOUGatMQS+5yua/O6iTKUctu3YJB2QDK6Bwv4jElcajeG4VvI5aHh96ydVpYol
+ JNHNANBm40s6yzXe59l2A9FCepc+v33yukG/x/5+5zbvOZfCbf+uF+a7pSr9xyb+uLLo
+ Yek3ieu5OBCk242HtYGahrbKluscsyzAzRX4HuKzAWsSlLP/xKRuwL868Osb1sg7Nw88
+ vw4jw8PzoWYwTUzRZVlBjHiNU1s5F47yCuBvKPNPxE4N4zQjMijOKXBMZ79ZxwdjEBa5
+ ozt97gDMhRKJaES5Pfw3v7C3rZtRszNpvJHIPc3WNKdvN0lHw4BwcQN/C6o7PxkM4XSU
+ Brdg==
+X-Gm-Message-State: AOJu0YyaG1/59zwq0CJDJuapClNKjk8WLBIH67eklUPqXgNex7rGGiEi
+ ew5Yg91/nYp8ef3yxecBkg563xyOXnTs53WdcBSfustTfZiZHietTQ7eEk0n9uiD8Uzj5Q01kgx
+ boRw=
+X-Gm-Gg: ASbGnct5+fWgLnYJw15k1p5wEmEQhrClPBURv+Xr6r7If9/F79RAWUL5egB/YJkawFm
+ zApUKxt+70zgmh9cCK9JOeWYu/Ulcd7QUM3k+yrHauKXUHodaOM7aDMZ5GHJo+pdjrdnGUwdXA7
+ mm733rfRc9eiTFCT/PFYg8B1TRDAwRniw48wNIaIPHLRiiHmaVgbXkLZSOAqaPZm393gs2KunHx
+ fgxnsEnxVfaUOz3ijEGmYxe7yiluhI2rHvAQpzwdbw2ZZ4aUwUg+nFNqL4Ys/xQRFaFlNFEmNLs
+ qy/vRHtquokyVV9Fo6UCDdCg18NQNwMDfPn7l36WyN6Y6pUaBSe75w/osYv6o2DT6Q==
+X-Google-Smtp-Source: AGHT+IEzTJ44VsNwmKpxj/vB9wEUjYCYpZ/i3rUv4ZNFDQKr/78ZUuyADGycQZ/O10oaiL3ZlWS2BA==
+X-Received: by 2002:a5d:47a6:0:b0:38d:d9e4:9ba6 with SMTP id
+ ffacd0b85a97d-38dd9e49c91mr6523185f8f.3.1739223021731; 
+ Mon, 10 Feb 2025 13:30:21 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dcb22f737sm10243442f8f.24.2025.02.10.13.30.14
+ 5b1f17b1804b1-4390daf7dbcsm193931685e9.30.2025.02.10.13.30.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 13:30:14 -0800 (PST)
+ Mon, 10 Feb 2025 13:30:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 08/10] target/sh4: Set disassemble_info::endian value in
+Subject: [PATCH v2 09/10] target/xtensa: Set disassemble_info::endian value in
  disas_set_info()
-Date: Mon, 10 Feb 2025 22:29:28 +0100
-Message-ID: <20250210212931.62401-9-philmd@linaro.org>
+Date: Mon, 10 Feb 2025 22:29:29 +0100
+Message-ID: <20250210212931.62401-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210212931.62401-1-philmd@linaro.org>
 References: <20250210212931.62401-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,25 +106,25 @@ disassemble_info::endian field.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- target/sh4/cpu.c | 5 +++++
+ target/xtensa/cpu.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index e3c2aea1a64..9d3e6cb2fd7 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -134,6 +134,11 @@ static void superh_cpu_reset_hold(Object *obj, ResetType type)
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index efbfe73fcfb..bc170dbb5cc 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -159,6 +159,11 @@ static void xtensa_cpu_disas_set_info(CPUState *cs, disassemble_info *info)
  
- static void superh_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
- {
+     info->private_data = cpu->env.config->isa;
+     info->print_insn = print_insn_xtensa;
 +#if TARGET_BIG_ENDIAN
 +    info->endian = BFD_ENDIAN_BIG;
 +#else
 +    info->endian = BFD_ENDIAN_LITTLE;
 +#endif
-     info->mach = bfd_mach_sh4;
-     info->print_insn = print_insn_sh;
  }
+ 
+ static void xtensa_cpu_realizefn(DeviceState *dev, Error **errp)
 -- 
 2.47.1
 
