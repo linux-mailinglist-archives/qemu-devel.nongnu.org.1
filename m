@@ -2,169 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F62FA2F679
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 19:10:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FB3A2F6F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 19:25:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thYD3-0000S5-Nl; Mon, 10 Feb 2025 13:08:41 -0500
+	id 1thYSn-0006Pz-48; Mon, 10 Feb 2025 13:24:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Thomas.Lendacky@amd.com>)
- id 1thYD0-0000Rp-Tc
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 13:08:39 -0500
-Received: from mail-sn1nam02on20624.outbound.protection.outlook.com
- ([2a01:111:f403:2406::624]
- helo=NAM02-SN1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Thomas.Lendacky@amd.com>)
- id 1thYCx-000169-On
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 13:08:38 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nD4Tprsdr8GCZ7ftKvsqoUxn8OTdpF3ODB+QoxzNfDOsWqs/vXjqSpvMqL5zLt558MMzFO3lSyRBNw/ZuUwvJuwb2jCkePvoEZc+T/5RsqZr09rHEDktgnF6vYMae/4z3f96MTRUD4qSDxjEvpulSzkpEKL4gjSkzTR9A0BLTcKWB0vIZwLlnmYEW7q52Ykp3MOdRKciPZ8TtzSXZNx2whY9VhwHugPLAr9KKTHYNW2PFG1Li/Kf+qhd6lE+p3A6RA0x0uTi7wSXQQW+f2Gtgs0zMOl4vPqj+0Uq/jWqVIQluHcCb+OaC/VRIsY3JUt1ROzTtjIzlb1nHpU7yw0Ysw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W/33JxauDs1lS+J73Q5JnuKEga8Jf9wXtuKw6frQm64=;
- b=QvxnVm8o3L7KdKlc3ksvDBhv90VxRGB/IqjeUMPvDL5ZXDG2RkObfG3xulmx+k2aHTCZWkt8uH6sTZ4ikk00TEZlYYaTFENL7Ughn+AdQ4UPDRdBADXcsGuLT8bl3ivo5BAB2ZdewG7kWMeflYo35fgwMLCa+wME5VxsHeURINoY11aaudHpP2L8QI1SHnmC7RtwWW/cNyVOKxsqeCF2vIpHJvhzSbrpxJnyMedBQC/XPFeoLjPo5g2FWCHKiW+hpI6O9bPGmw2VNjAprrDAMpqU9DKL6Lhi0SuNtlkprKNglOl9pb4jHpEiYx88izMnOWBdomctSoekHNHFWJvJTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W/33JxauDs1lS+J73Q5JnuKEga8Jf9wXtuKw6frQm64=;
- b=wp2aDQ+PDX0YziMuot+VmQ0LpXjyw5rWZ4a32LihKKspyFD6MAWObeFeYEJIOKh+x6zerifUA3EdBLUw2ULVD3M+X126dYrtloCXOMko3DMZUaFc2kNpQdyrC1etqVKKjuolhKZVPbFBvEdJUB6/4S115ubitsS9D6FYy1+adCg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CYYPR12MB9014.namprd12.prod.outlook.com (2603:10b6:930:bf::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.16; Mon, 10 Feb
- 2025 18:08:30 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
- 18:08:30 +0000
-Message-ID: <4eb24414-4483-3291-894a-f5a58465a80d@amd.com>
-Date: Mon, 10 Feb 2025 12:08:28 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Kim Phillips <kim.phillips@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
- "Nikunj A . Dadhania" <nikunj@amd.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Kishon Vijay Abraham I <kvijayab@amd.com>
-References: <20250207233410.130813-1-kim.phillips@amd.com>
- <20250207233410.130813-3-kim.phillips@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v3 2/2] KVM: SEV: Configure "ALLOWED_SEV_FEATURES" VMCB
- Field
-In-Reply-To: <20250207233410.130813-3-kim.phillips@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR01CA0016.prod.exchangelabs.com (2603:10b6:805:b6::29)
- To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CYYPR12MB9014:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bd10857-e2b7-4cb7-bf8c-08dd49fdec6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?b1BBU25hN0JOWEVxYlVUc0FxeVkxT1k2eEtSQ25DL2llN0VjcHlDbEdxQ0N6?=
- =?utf-8?B?NUJSRy9VMVVTQVZDVENUSFVNamV0YkxMQmJ0U0crd1I1bzhacDRQM0k0dldM?=
- =?utf-8?B?ekNpeVA3SndqWHdpSHptcVptaHIreHprUWVqTTM3c1lUbG5XU3U3aWpWeG0z?=
- =?utf-8?B?akh2cUhia2RmUWZwV1B5U29tWWpSekNpbGxhTExmOU1Bc3Q1eVgrNXo5KzI1?=
- =?utf-8?B?aTZsRW1qWEZyVVhyYmVNQWtwWDA3ZUVQMW1XWWgvTlF6WkRqVndKMHZmSGlp?=
- =?utf-8?B?angvdWdtSTNtYU1KNzdEdGY0VHRwNlNVSlM1UHNTVWRXMmV3QmFQZnlJUnoy?=
- =?utf-8?B?ZGIxdzhOa2ZhbGdQeFFST3JBRzJPczNicGNDTlFsWUc2RVF3STdOYmlZWmV6?=
- =?utf-8?B?bmdYaHNOQlJyaERacHQvUURJR3htYm5na1lndUtFbUdBdkZpS20zMGQyWE1t?=
- =?utf-8?B?bG8vQlphTjRESVZUYmlVMW4wejV5WFJRV0dIWWJPZCswV2cvaEVxQU9GSXZj?=
- =?utf-8?B?MjdGdEtqeVllcFJ6eTJzY1BjNm9VLzNXWTBEbUN4NmJ0K0NiaDQxS2JrYkg5?=
- =?utf-8?B?UlgwakI0azZBNW5JQjRnNFdZczZ1VHhwWmZWakNpdWd1ZHc4MkcxZ0lOZVVQ?=
- =?utf-8?B?ZHFIOVVid2cyWHdPU01TODdWQ3M1UGxsaWJwSzBSQkZwWU9UZHV0Q3FXb3Rx?=
- =?utf-8?B?dnZlL000dkVmSU9SaTViQWFMb1hoUXhLQlhLS0VET0p3T2d5MHRBUWdGdmJF?=
- =?utf-8?B?M0NWM0Q5TGV4MVd0b1hMamtBRDZwSmNXSUM2cEEyM2dqekFEdytneWprZC8x?=
- =?utf-8?B?MFdJaUFnMk9zR3NjdWZOcFZMdkl5TzhmZXVCN3Q4dW80eXVFWUhudWF3Mmtm?=
- =?utf-8?B?bmt0SDF1R0VadUZaRDJKSGlFcFA3azY2elBaUWpwZFBNVEFZOU5SL1lHWDJV?=
- =?utf-8?B?bjVlS2RBc21LclA4b3dOK3NCNmpqMXlvR2czQ0ZZU0h2WnhMK1lGVmxGL1JZ?=
- =?utf-8?B?SU1vTUNzU0Q0c0RuUTNHbmZKazBnN3hVU0VNclorMTVKOGhFNEZzbHc0QW1r?=
- =?utf-8?B?azRuVlc2ZlVqblk2U2dYcXNLaXBuN3NZaTc4NjUvZFFkK2VlWjFsK1JSUHZ0?=
- =?utf-8?B?SFQwQy9HUmZBQWk5cnlFbHVSZVZVZ1Q0b1pnbmt0aG9WOWE5QTNuK01uR0NI?=
- =?utf-8?B?dXVxODJhUFdGTUNJZElOZTd2Y1QxT1dhcjBKQTFEbjVzNkUrbi9JUEdpajVD?=
- =?utf-8?B?S2I3S3RzNCtlclVzaGpSWGRwSHB6QzBXTGVoZ3R4aThrN3BWNXBiSFVRd2x0?=
- =?utf-8?B?UHAyaktMQmk0MDVVd2dWcUZDcUZLSUgrQlh6ODNzVjJnY0JMaDhzYzFHUG1L?=
- =?utf-8?B?ekNtT1A2MllPcWp3T3FqNFh1NTI0WklXa01PWWhnNXc4bndLWnUybWJyVW8y?=
- =?utf-8?B?QUwvcHZFVksxWGkveVhwSFJvdlBuUW02RTBsaWRiQ3RGcmlpNnpDOCtJMzdS?=
- =?utf-8?B?SmxtdTZqTkVMajdONFhQRnZPOTNzUW9uT0tKeHo1cXlqM1hrL0o2SmUxdmYr?=
- =?utf-8?B?akwyS0Fuc1FNK2tNQURsUWFzWENtUzJPZEwzYzFQb1l6ZGJuTy9zYkw0dnpU?=
- =?utf-8?B?eFRUaEFYOU9Pd2lwNVJIOGpEK09ndzZnczExZWdIcEJ5MXhhSGZLaW0xb2tW?=
- =?utf-8?B?RmwycXpUb1dkUnZScFJDbTNFbW9qNERtWFJ3UzdJTFh2Nm8wTW9kOTFYdEZu?=
- =?utf-8?B?RTRSdzJPQUpnWXNJNllIU0VRbkRDSWgxWmFNaURIcjVqWkFNUWY5Q2x5d25R?=
- =?utf-8?B?SlY1TjB3V2RkUWJVRjZBQT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5070.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VS9mNEl2dlh5aVFVNzU3azg3ZDI1QWZXTlJtUDFTeE9sRXVma3BablFsb3Zp?=
- =?utf-8?B?S0prVUhXM2VqRnAyeVFHS0RzMUQrS1JndGVubWFzRjl5blBscHZYTmkycnJl?=
- =?utf-8?B?SGRiYlJDYjZtNW84dk9qM01JRDB2TkxLNHhrbS96R2dUWUppVEdBbmY1cFAx?=
- =?utf-8?B?NmxNbXJ1bmI4QXpOUFhzTXdrWDRma0EvN1VMMDdaTWsxUERuQ3Vad3I3N1Vj?=
- =?utf-8?B?Ry95SFZXSTNCTVlqT3cyUlBlWU9CUnFoS0ZLUE1QUEFNS0MyUEppaGp6MjUx?=
- =?utf-8?B?czVodTRoQ3dZSFA4cUlQbVVGL0ZWRkRVZjlYN0lKMmt3V0UvVWRhZS9qS1JN?=
- =?utf-8?B?T1pJZkhwNDM3NU9lV2FSZTFxNFpIblhEcUJHWVlNSUNwM0RkYmt1SmsvbkxZ?=
- =?utf-8?B?bktNLzRXNmhDTmpISlcwMHdTSVlHVWc1SVg2bkFZbEN6Y1RBOFhYSUx3OE0z?=
- =?utf-8?B?TVVHM0FubTVPeGQzeFB2bUNhUUNQRFd2TkVDajRiMHFLYVlKd2dyK1FCVDV3?=
- =?utf-8?B?L2NuNmxubTFuZWsycTMzMlE2R01QYUNJeWdub1c2RjVNTS9vZjNhSkQ4UWFt?=
- =?utf-8?B?M3NNMmVUZFRRNHFmK3RodGE3NmRsZlZzWFV0SE45S0xmVWhWdFR3Tm9RZEtP?=
- =?utf-8?B?WStQN3RPczZkZXFsZENJcFZPb1ZJTTFwTjY0TjNNdEtvYmNFcjVoNHJpaE54?=
- =?utf-8?B?ZHRNZnIwZGh3UUtPaE05emhZbkRaU05DcldmUTBzeGtIZXRsdkZCTmdwUXMv?=
- =?utf-8?B?YkZqcXl1c2w3Z2NuWkp5a0tJWjFOaERtU0Z4Y3lNNkVyekgwYXVWL1NkSFgv?=
- =?utf-8?B?NTB2dnhPOFRpVVdKbVJISk1CbktRZ1BWSHo5aVVWNUYxVlpVc2luZXR5N2I0?=
- =?utf-8?B?b3U2dkRTcmJMRlpXYzJuR1FraHUxYVo2MnFyeW1vUldkbGtZRm1qQjlpbTZO?=
- =?utf-8?B?RnByd1A0eHYwQ1hVTUhLcG1pM21wZnFBRVpHUTgyVEJ0RkhlSHprWFpPUXBu?=
- =?utf-8?B?TENMNndhUE1FbnJpeHkxeFdOdkxDcjR4d2FqejYxeDhXRTlmam02SUZiTDNm?=
- =?utf-8?B?MnRZSFZHa2lWUzJ2emdKbzJid3g1NTVIaGJqNjJrbzlLODlCcENITzBiMWxw?=
- =?utf-8?B?b0Y0UUxoTDJkRks3SnpDYmFvQUdMWWtkZ01BV2ZxVUhiaHpydGRURHFZQUVh?=
- =?utf-8?B?UHZwVVVHbkVETEpWaUJ0b013NjJlRFFZK3dObjN4VWd1dFc2Sy8yb2kyK0dO?=
- =?utf-8?B?NExIVDFJakI2TkdOcFE0K1paUG16STlzWC9KQk1yWWdZaGplUjg0aUtqVWhP?=
- =?utf-8?B?SCtOUmVFbGNnRDJ1d1RZQ3ZGRDdJZnMrM2ExNnoxMUtuNG1zK2ZjaHRNaUxY?=
- =?utf-8?B?Y25FekdLb1NMWFYyZ0xtM2JpdXRSSnQ0Z3ZKcWQydHVxU0lveFdSUjVkdjRM?=
- =?utf-8?B?Yml5MFB5aW9DTm1yWnlZejEzU2Q1dDI5cmU4L2E1eTRMK0lUODNOZk11TGhn?=
- =?utf-8?B?ejA3N3VxdzlyazdYN2MwVElpaG5kVFQxcVVPbDd1UlFkWkFUYlpETk9EZEly?=
- =?utf-8?B?Ukx6akNQR3VDVTUxNk04V1VpQU9UeEZya2hxZWZmVm1hWGF3QjZkZzVRUkdX?=
- =?utf-8?B?SGEyYWFjaUZCcThjeTN4bXQ3ZWF4QnZmVE80bFhaSDVNY3MvYVRqR0JxUkww?=
- =?utf-8?B?RnR0ZzhyYVdOUmNpSFYrWnFySVh6cDJpZjROSUhCMjhUUk40aDBkS2FqNzFn?=
- =?utf-8?B?TStMN1hxU2w0MFh3T0ZMeUxrWVFOU2pOT2FpZTdVZ3lRSlVZbVdqOGFkOUpU?=
- =?utf-8?B?WXkyWDdwSi8xc3QvUW5DcjNVMWJERG5uUEx5MHhqS1hOemVDcERJUW1tcjJ3?=
- =?utf-8?B?TDMxK0dYWEVvc0pINXF1azdIOUFVUkhKWGliMmFUZUQrbEN4VEVwdGVjN0ta?=
- =?utf-8?B?NC90V2JwZlZlM2ZhZnFMV2JMYjVxMW5TaldCY0xDWEExMmNtenZCaHRwUkNG?=
- =?utf-8?B?Y3RTTVduRUlQbDdCd3NtUU9rRnJkUXcwa1Q4V2w0ZXMyRStWZVh6Y1QxOTJR?=
- =?utf-8?B?U0lYRWU1SjF6VWFsb2hCUXpYb1dnK1lWTjduNS8wNVN0Qm52NXBZN2RxTkVo?=
- =?utf-8?Q?JQfDW6SVfxYm6onIUnqSD4LC/?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd10857-e2b7-4cb7-bf8c-08dd49fdec6a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 18:08:29.9973 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1gaesJBYfToY6P/l1fgWP8IK4iT++Go55vFuM4NEEUlQn2xnwcZn8kHc7Jiarc3evSQDxDEIzpWYW9Vp0Av8mQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9014
-Received-SPF: permerror client-ip=2a01:111:f403:2406::624;
- envelope-from=Thomas.Lendacky@amd.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
+ (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
+ id 1thYSc-0006Of-Ua
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 13:24:47 -0500
+Received: from ma-mx03.apple.com ([17.23.4.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
+ id 1thYSa-0004Hl-2h
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 13:24:46 -0500
+Received: from rn-mailsvcp-mta-lapp02.rno.apple.com
+ (rn-mailsvcp-mta-lapp02.rno.apple.com [10.225.203.150])
+ by st47p01nt-mxp03.apple.com
+ (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
+ 2023)) with ESMTPS id <0SRH07JH6CARRK10@st47p01nt-mxp03.apple.com> for
+ qemu-devel@nongnu.org; Mon, 10 Feb 2025 18:20:54 +0000 (GMT)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-10_10,2025-02-10_01,2024-11-22_01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=apple.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=20180706;
+ bh=qMEdyulZfdiP73iCLUpds07W2dQse2Y7pgxfHGbEn0s=;
+ b=lQ86fTdE2Xz1V1EkSQwzyXDKhWL/QL5X9fjXtseXP1rmntZGxyAA+PDNrIH4yQDm8mGW
+ h+NZnZMG+Dv5CsQ0vxzOAqGJx4w7RcZvITc/QmDxpZMp7ssRkem2ckbp3G94UMSKkTIq
+ Cr6goznA9Os16VPNGM9Hqy++JOywz0tmBsjIdp2uZR2rjutc7QF4jkVIWNwEvYHZU13m
+ GzqmACj2EBSeAJq07F700NoU7YXjgfI4uLShG3Mx2WtudbrJa2EZgf/M3Ydydb+DXG+k
+ zm6V40W7bvK3ykBqPy9qxQF8ZvMpMXb4DKgIFvV0eC1mVI1opsOo/7zSLRNsqamZH80Z Ew==
+Received: from mr55p01nt-mmpp04.apple.com
+ (mr55p01nt-mmpp04.apple.com [10.170.185.204])
+ by rn-mailsvcp-mta-lapp02.rno.apple.com
+ (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
+ 2023)) with ESMTPS id <0SRH00LM2CAQTAF0@rn-mailsvcp-mta-lapp02.rno.apple.com>; 
+ Mon, 10 Feb 2025 10:20:51 -0800 (PST)
+Received: from process_milters-daemon.mr55p01nt-mmpp04.apple.com by
+ mr55p01nt-mmpp04.apple.com
+ (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
+ 2023)) id <0SRH2BW00C815300@mr55p01nt-mmpp04.apple.com>; Mon,
+ 10 Feb 2025 18:20:50 +0000 (GMT)
+X-Va-A: 
+X-Va-T-CD: c44a9cfa28000692834f9157fcd48a55
+X-Va-E-CD: 2325b25e1853304713f33c2dc3bf5831
+X-Va-R-CD: f2c730f0a964009da4023b008f6c4c11
+X-Va-ID: 6ce190e8-4232-4cea-a369-31dd77f2cc8c
+X-Va-CD: 0
+X-V-A: 
+X-V-T-CD: c44a9cfa28000692834f9157fcd48a55
+X-V-E-CD: 2325b25e1853304713f33c2dc3bf5831
+X-V-R-CD: f2c730f0a964009da4023b008f6c4c11
+X-V-ID: b0fa74e5-afc4-486b-8ed7-0780e2f8b18f
+X-V-CD: 0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-10_10,2025-02-10_01,2024-11-22_01
+Received: from smtpclient.apple (unknown [17.243.208.254])
+ by mr55p01nt-mmpp04.apple.com
+ (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
+ 2023)) with ESMTPSA id <0SRH2B99MCAPMW00@mr55p01nt-mmpp04.apple.com>; Mon,
+ 10 Feb 2025 18:20:50 +0000 (GMT)
+Content-type: text/plain; charset=utf-8
+MIME-version: 1.0 (Mac OS X Mail 16.0 \(3815.100.3\))
+Subject: Re: [PATCH v2 3/3] hvf: arm: Implement and use
+ hvf_get_physical_address_range
+From: Danny Canter <danny_canter@apple.com>
+In-reply-to: <e67f8106-f741-4e81-a291-db06bfbedd7c@linaro.org>
+Date: Mon, 10 Feb 2025 10:20:39 -0800
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Itaru Kitayama <itaru.kitayama@fujitsu.com>, dirty@apple.com,
+ rbolshakov@ddn.com, agraf@csgraf.de, peter.maydell@linaro.org,
+ pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ mst@redhat.com, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ zhao1.liu@intel.com
+Content-transfer-encoding: quoted-printable
+Message-id: <1CE8C01E-6930-4DFA-8C96-CACCFEBD24AE@apple.com>
+References: <20240828111552.93482-1-danny_canter@apple.com>
+ <20240828111552.93482-4-danny_canter@apple.com>
+ <e67f8106-f741-4e81-a291-db06bfbedd7c@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3815.100.3)
+Received-SPF: pass client-ip=17.23.4.21; envelope-from=danny_canter@apple.com;
+ helo=ma-mx03.apple.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.023, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -181,132 +112,338 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/7/25 17:34, Kim Phillips wrote:
-> AMD EPYC 5th generation processors have introduced a feature that allows
-> the hypervisor to control the SEV_FEATURES that are set for, or by, a
-> guest [1].  ALLOWED_SEV_FEATURES can be used by the hypervisor to enforce
-> that SEV-ES and SEV-SNP guests cannot enable features that the
-> hypervisor does not want to be enabled.
-> 
-> When ALLOWED_SEV_FEATURES is enabled, a VMRUN will fail if any
-> non-reserved bits are 1 in SEV_FEATURES but are 0 in
-> ALLOWED_SEV_FEATURES.
-> 
-> Some SEV_FEATURES - currently PmcVirtualization and SecureAvic
-> (see Appendix B, Table B-4) - require an opt-in via ALLOWED_SEV_FEATURES,
-> i.e. are off-by-default, whereas all other features are effectively
-> on-by-default, but still honor ALLOWED_SEV_FEATURES.
-> 
-> [1] Section 15.36.20 "Allowed SEV Features", AMD64 Architecture
->     Programmer's Manual, Pub. 24593 Rev. 3.42 - March 2024:
->     https://bugzilla.kernel.org/attachment.cgi?id=306250
-> 
-> Co-developed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-> Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> ---
->  arch/x86/include/asm/svm.h |  5 ++++-
->  arch/x86/kvm/svm/sev.c     | 17 +++++++++++++++++
->  2 files changed, 21 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-> index e2fac21471f5..6d94a727cc1a 100644
-> --- a/arch/x86/include/asm/svm.h
-> +++ b/arch/x86/include/asm/svm.h
-> @@ -158,7 +158,9 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
->  	u64 avic_physical_id;	/* Offset 0xf8 */
->  	u8 reserved_7[8];
->  	u64 vmsa_pa;		/* Used for an SEV-ES guest */
-> -	u8 reserved_8[720];
-> +	u8 reserved_8[40];
-> +	u64 allowed_sev_features;	/* Offset 0x138 */
-> +	u8 reserved_9[672];
->  	/*
->  	 * Offset 0x3e0, 32 bytes reserved
->  	 * for use by hypervisor/software.
-> @@ -289,6 +291,7 @@ static_assert((X2AVIC_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AVIC_
->  #define SVM_SEV_FEAT_RESTRICTED_INJECTION		BIT(3)
->  #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
->  #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
-> +#define SVM_SEV_FEAT_ALLOWED_SEV_FEATURES		BIT_ULL(63)
+Will do. I=E2=80=99ll reach out if I need extra info. The issue appears =
+to be closed though, was this fixed/no-repro already though?
 
-Hmmm... I believe it is safe to define this bit value, as the Allowed
-SEV features VMCB field shows bits 61:0 being used for the allowed
-features mask and we know that the SEV_FEATURES field is used in the SEV
-Features MSR left-shifted 2 bits, so we only expect bits 61:0 to be used
-and bits 62 and 63 will always be reserved. But, given that I think we
-need two functions:
+-Danny=20
 
-- get_allowed_sev_features()
-  keeping it as you have it below, where it returns the
-  sev->vmsa_features bitmap if SVM_SEV_FEAT_ALLOWED_SEV_FEATURES is set
-  or 0 if SVM_SEV_FEAT_ALLOWED_SEV_FEATURES is not set.
+> On Feb 10, 2025, at 9:26=E2=80=AFAM, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> Hi Danny,
+>=20
+> On 28/8/24 13:15, Danny Canter wrote:
+>> This patch's main focus is to use the previously added
+>> hvf_get_physical_address_range to inform VM creation
+>> about the IPA size we need for the VM, so we can extend
+>> the default 36b IPA size and support VMs with 64+GB of
+>> RAM. This is done by freezing the memory map, computing
+>> the highest GPA and then (depending on if the platform
+>> supports an IPA size that large) telling the kernel to
+>> use a size >=3D for the VM. In pursuit of this a couple of
+>> things related to how we handle the physical address range
+>> we expose to guests were altered, but for an explanation of
+>> what we were doing:
+>> Today, to get the IPA size we were reading id_aa64mmfr0_el1's
+>> PARange field from a newly made vcpu. Unfortunately, HVF just
+>> returns the hosts PARange directly for the initial value and
+>> not the IPA size that will actually back the VM, so we believe
+>> we have much more address space than we actually do today it seems.
+>> Starting in macOS 13.0 some APIs were introduced to be able to
+>> query the maximum IPA size the kernel supports, and to set the IPA
+>> size for a given VM. However, this still has a couple of issues
+>> on < macOS 15. Up until macOS 15 (and if the hardware supported
+>> it) the max IPA size was 39 bits which is not a valid PARange
+>> value, so we can't clamp down what we advertise in the vcpu's
+>> id_aa64mmfr0_el1 to our IPA size. Starting in macOS 15 however,
+>> the maximum IPA size is 40 bits (if it's supported in the hardware
+>> as well) which is also a valid PARange value so we can set our IPA
+>> size to the maximum as well as clamp down the PARange we advertise
+>> to the guest. This allows VMs with 64+ GB of RAM and should fix the
+>> oddness of the PARange situation as well.
+>=20
+> Could you have a look at the following issue related to your patch?
+> https://gitlab.com/qemu-project/qemu/-/issues/2800
+>=20
+>=20
+>> Signed-off-by: Danny Canter <danny_canter@apple.com>
+>> ---
+>>  accel/hvf/hvf-accel-ops.c | 12 ++++++++-
+>>  hw/arm/virt.c             | 31 +++++++++++++++++++++-
+>>  target/arm/hvf/hvf.c      | 56 =
+++++++++++++++++++++++++++++++++++++++-
+>>  target/arm/hvf_arm.h      | 19 +++++++++++++
+>>  target/arm/internals.h    | 19 +++++++++++++
+>>  target/arm/ptw.c          | 15 +++++++++++
+>>  6 files changed, 149 insertions(+), 3 deletions(-)
+>> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+>> index dbebf209f4..d60874d3e6 100644
+>> --- a/accel/hvf/hvf-accel-ops.c
+>> +++ b/accel/hvf/hvf-accel-ops.c
+>> @@ -53,6 +53,7 @@
+>>  #include "exec/address-spaces.h"
+>>  #include "exec/exec-all.h"
+>>  #include "gdbstub/enums.h"
+>> +#include "hw/boards.h"
+>>  #include "sysemu/cpus.h"
+>>  #include "sysemu/hvf.h"
+>>  #include "sysemu/hvf_int.h"
+>> @@ -319,8 +320,17 @@ static int hvf_accel_init(MachineState *ms)
+>>      int x;
+>>      hv_return_t ret;
+>>      HVFState *s;
+>> +    int pa_range =3D 36;
+>> +    MachineClass *mc =3D MACHINE_GET_CLASS(ms);
+>>  -    ret =3D hvf_arch_vm_create(ms, 0);
+>> +    if (mc->hvf_get_physical_address_range) {
+>> +        pa_range =3D mc->hvf_get_physical_address_range(ms);
+>> +        if (pa_range < 0) {
+>> +            return -EINVAL;
+>> +        }
+>> +    }
+>> +
+>> +    ret =3D hvf_arch_vm_create(ms, (uint32_t)pa_range);
+>>      assert_hvf_ok(ret);
+>>        s =3D g_new0(HVFState, 1);
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index 62ee5f849b..b39c7924a0 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -66,6 +66,7 @@
+>>  #include "hw/intc/arm_gicv3_its_common.h"
+>>  #include "hw/irq.h"
+>>  #include "kvm_arm.h"
+>> +#include "hvf_arm.h"
+>>  #include "hw/firmware/smbios.h"
+>>  #include "qapi/visitor.h"
+>>  #include "qapi/qapi-visit-common.h"
+>> @@ -3030,7 +3031,35 @@ static int virt_kvm_type(MachineState *ms, =
+const char *type_str)
+>>    static int virt_hvf_get_physical_address_range(MachineState *ms)
+>>  {
+>> -    return 0;
+>> +    VirtMachineState *vms =3D VIRT_MACHINE(ms);
+>> +
+>> +    int default_ipa_size =3D hvf_arm_get_default_ipa_bit_size();
+>> +    int max_ipa_size =3D hvf_arm_get_max_ipa_bit_size();
+>> +
+>> +    /* We freeze the memory map to compute the highest gpa */
+>> +    virt_set_memmap(vms, max_ipa_size);
+>> +
+>> +    int requested_ipa_size =3D 64 - clz64(vms->highest_gpa);
+>> +
+>> +    /*
+>> +     * If we're <=3D the default IPA size just use the default.
+>> +     * If we're above the default but below the maximum, round up to
+>> +     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
+>> +     * returns values that are valid ARM PARange values.
+>> +     */
+>> +    if (requested_ipa_size <=3D default_ipa_size) {
+>> +        requested_ipa_size =3D default_ipa_size;
+>> +    } else if (requested_ipa_size <=3D max_ipa_size) {
+>> +        requested_ipa_size =3D max_ipa_size;
+>> +    } else {
+>> +        error_report("-m and ,maxmem option values "
+>> +                     "require an IPA range (%d bits) larger than "
+>> +                     "the one supported by the host (%d bits)",
+>> +                     requested_ipa_size, max_ipa_size);
+>> +        return -1;
+>> +    }
+>> +
+>> +    return requested_ipa_size;
+>>  }
+>>    static void virt_machine_class_init(ObjectClass *oc, void *data)
+>> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+>> index 19964d241e..6cea483d42 100644
+>> --- a/target/arm/hvf/hvf.c
+>> +++ b/target/arm/hvf/hvf.c
+>> @@ -22,6 +22,7 @@
+>>  #include <mach/mach_time.h>
+>>    #include "exec/address-spaces.h"
+>> +#include "hw/boards.h"
+>>  #include "hw/irq.h"
+>>  #include "qemu/main-loop.h"
+>>  #include "sysemu/cpus.h"
+>> @@ -297,6 +298,8 @@ void hvf_arm_init_debug(void)
+>>    static void hvf_wfi(CPUState *cpu);
+>>  +static uint32_t chosen_ipa_bit_size;
+>> +
+>>  typedef struct HVFVTimer {
+>>      /* Vtimer value during migration and paused state */
+>>      uint64_t vtimer_val;
+>> @@ -839,6 +842,16 @@ static uint64_t hvf_get_reg(CPUState *cpu, int =
+rt)
+>>      return val;
+>>  }
+>>  +static void clamp_id_aa64mmfr0_parange_to_ipa_size(uint64_t =
+*id_aa64mmfr0)
+>> +{
+>> +    uint32_t ipa_size =3D chosen_ipa_bit_size ?
+>> +            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
+>> +
+>> +    /* Clamp down the PARange to the IPA size the kernel supports. =
+*/
+>> +    uint8_t index =3D round_down_to_parange_index(ipa_size);
+>> +    *id_aa64mmfr0 =3D (*id_aa64mmfr0 & ~R_ID_AA64MMFR0_PARANGE_MASK) =
+| index;
+>> +}
+>> +
+>>  static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>>  {
+>>      ARMISARegisters host_isar =3D {};
+>> @@ -882,6 +895,8 @@ static bool =
+hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>>      r |=3D hv_vcpu_get_sys_reg(fd, HV_SYS_REG_MIDR_EL1, =
+&ahcf->midr);
+>>      r |=3D hv_vcpu_destroy(fd);
+>>  +    =
+clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
+>> +
+>>      ahcf->isar =3D host_isar;
+>>        /*
+>> @@ -904,6 +919,30 @@ static bool =
+hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>>      return r =3D=3D HV_SUCCESS;
+>>  }
+>>  +uint32_t hvf_arm_get_default_ipa_bit_size(void)
+>> +{
+>> +    uint32_t default_ipa_size;
+>> +    hv_return_t ret =3D =
+hv_vm_config_get_default_ipa_size(&default_ipa_size);
+>> +    assert_hvf_ok(ret);
+>> +
+>> +    return default_ipa_size;
+>> +}
+>> +
+>> +uint32_t hvf_arm_get_max_ipa_bit_size(void)
+>> +{
+>> +    uint32_t max_ipa_size;
+>> +    hv_return_t ret =3D =
+hv_vm_config_get_max_ipa_size(&max_ipa_size);
+>> +    assert_hvf_ok(ret);
+>> +
+>> +    /*
+>> +     * We clamp any IPA size we want to back the VM with to a valid =
+PARange
+>> +     * value so the guest doesn't try and map memory outside of the =
+valid range.
+>> +     * This logic just clamps the passed in IPA bit size to the =
+first valid
+>> +     * PARange value <=3D to it.
+>> +     */
+>> +    return round_down_to_parange_bit_size(max_ipa_size);
+>> +}
+>> +
+>>  void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
+>>  {
+>>      if (!arm_host_cpu_features.dtb_compatible) {
+>> @@ -931,8 +970,18 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
+>>    hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t =
+pa_range)
+>>  {
+>> +    hv_return_t ret;
+>>      hv_vm_config_t config =3D hv_vm_config_create();
+>> -    hv_return_t ret =3D hv_vm_create(config);
+>> +
+>> +    ret =3D hv_vm_config_set_ipa_size(config, pa_range);
+>> +    if (ret !=3D HV_SUCCESS) {
+>> +        goto cleanup;
+>> +    }
+>> +    chosen_ipa_bit_size =3D pa_range;
+>> +
+>> +    ret =3D hv_vm_create(config);
+>> +
+>> +cleanup:
+>>      os_release(config);
+>>        return ret;
+>> @@ -1004,6 +1053,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+>>                                &arm_cpu->isar.id_aa64mmfr0);
+>>      assert_hvf_ok(ret);
+>>  +    =
+clamp_id_aa64mmfr0_parange_to_ipa_size(&arm_cpu->isar.id_aa64mmfr0);
+>> +    ret =3D hv_vcpu_set_sys_reg(cpu->accel->fd, =
+HV_SYS_REG_ID_AA64MMFR0_EL1,
+>> +                              arm_cpu->isar.id_aa64mmfr0);
+>> +    assert_hvf_ok(ret);
+>> +
+>>      return 0;
+>>  }
+>>  diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+>> index e848c1d27d..26c717b382 100644
+>> --- a/target/arm/hvf_arm.h
+>> +++ b/target/arm/hvf_arm.h
+>> @@ -22,4 +22,23 @@ void hvf_arm_init_debug(void);
+>>    void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+>>  +#ifdef CONFIG_HVF
+>> +
+>> +uint32_t hvf_arm_get_default_ipa_bit_size(void);
+>> +uint32_t hvf_arm_get_max_ipa_bit_size(void);
+>> +
+>> +#else
+>> +
+>> +static inline uint32_t hvf_arm_get_default_ipa_bit_size(void)
+>> +{
+>> +    return 0;
+>> +}
+>> +
+>> +static inline uint32_t hvf_arm_get_max_ipa_bit_size(void)
+>> +{
+>> +    return 0;
+>> +}
+>> +
+>> +#endif
+>> +
+>>  #endif
+>> diff --git a/target/arm/internals.h b/target/arm/internals.h
+>> index 203a2dae14..c5d7b0b492 100644
+>> --- a/target/arm/internals.h
+>> +++ b/target/arm/internals.h
+>> @@ -450,6 +450,25 @@ static inline void update_spsel(CPUARMState =
+*env, uint32_t imm)
+>>   */
+>>  unsigned int arm_pamax(ARMCPU *cpu);
+>>  +/*
+>> + * round_down_to_parange_index
+>> + * @bit_size: uint8_t
+>> + *
+>> + * Rounds down the bit_size supplied to the first supported ARM =
+physical
+>> + * address range and returns the index for this. The index is =
+intended to
+>> + * be used to set ID_AA64MMFR0_EL1's PARANGE bits.
+>> + */
+>> +uint8_t round_down_to_parange_index(uint8_t bit_size);
+>> +
+>> +/*
+>> + * round_down_to_parange_bit_size
+>> + * @bit_size: uint8_t
+>> + *
+>> + * Rounds down the bit_size supplied to the first supported ARM =
+physical
+>> + * address range bit size and returns this.
+>> + */
+>> +uint8_t round_down_to_parange_bit_size(uint8_t bit_size);
+>> +
+>>  /* Return true if extended addresses are enabled.
+>>   * This is always the case if our translation regime is 64 bit,
+>>   * but depends on TTBCR.EAE for 32 bit.
+>> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+>> index 278004661b..defd6b84de 100644
+>> --- a/target/arm/ptw.c
+>> +++ b/target/arm/ptw.c
+>> @@ -96,6 +96,21 @@ static const uint8_t pamax_map[] =3D {
+>>      [6] =3D 52,
+>>  };
+>>  +uint8_t round_down_to_parange_index(uint8_t bit_size)
+>> +{
+>> +    for (int i =3D ARRAY_SIZE(pamax_map) - 1; i >=3D 0; i--) {
+>> +        if (pamax_map[i] <=3D bit_size) {
+>> +            return i;
+>> +        }
+>> +    }
+>> +    g_assert_not_reached();
+>> +}
+>> +
+>> +uint8_t round_down_to_parange_bit_size(uint8_t bit_size)
+>> +{
+>> +    return pamax_map[round_down_to_parange_index(bit_size)];
+>> +}
+>> +
+>>  /*
+>>   * The cpu-specific constant value of PAMax; also used by =
+hw/arm/virt.
+>>   * Note that machvirt_init calls this on a CPU that is inited but =
+not realized!
+>=20
 
-- get_vmsa_sev_features()
-  which removes the SVM_SEV_FEAT_ALLOWED_SEV_FEATURES bit, since it is
-  not defined in the VMSA SEV_FEATURES definition.
-
->  
->  #define SVM_SEV_FEAT_INT_INJ_MODES		\
->  	(SVM_SEV_FEAT_RESTRICTED_INJECTION |	\
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index a2a794c32050..a9e16792cac0 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -894,9 +894,19 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
->  	return 0;
->  }
->  
-> +static u64 allowed_sev_features(struct kvm_sev_info *sev)
-> +{
-> +	if (cpu_feature_enabled(X86_FEATURE_ALLOWED_SEV_FEATURES) &&
-
-Not sure if the cpu_feature_enabled() check is necessary, as init should
-have failed if SVM_SEV_FEAT_ALLOWED_SEV_FEATURES wasn't set in
-sev_supported_vmsa_features.
-
-Thanks,
-Tom
-
-> +	    (sev->vmsa_features & SVM_SEV_FEAT_ALLOWED_SEV_FEATURES))
-> +		return sev->vmsa_features;
-> +
-> +	return 0;
-> +}
-> +
->  static int __sev_launch_update_vmsa(struct kvm *kvm, struct kvm_vcpu *vcpu,
->  				    int *error)
->  {
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
->  	struct sev_data_launch_update_vmsa vmsa;
->  	struct vcpu_svm *svm = to_svm(vcpu);
->  	int ret;
-> @@ -906,6 +916,8 @@ static int __sev_launch_update_vmsa(struct kvm *kvm, struct kvm_vcpu *vcpu,
->  		return -EINVAL;
->  	}
->  
-> +	svm->vmcb->control.allowed_sev_features = allowed_sev_features(sev);
-> +
->  	/* Perform some pre-encryption checks against the VMSA */
->  	ret = sev_es_sync_vmsa(svm);
->  	if (ret)
-> @@ -2447,6 +2459,8 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  		struct vcpu_svm *svm = to_svm(vcpu);
->  		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
->  
-> +		svm->vmcb->control.allowed_sev_features = allowed_sev_features(sev);
-> +
->  		ret = sev_es_sync_vmsa(svm);
->  		if (ret)
->  			return ret;
-> @@ -3069,6 +3083,9 @@ void __init sev_hardware_setup(void)
->  	sev_supported_vmsa_features = 0;
->  	if (sev_es_debug_swap_enabled)
->  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-> +
-> +	if (sev_es_enabled && cpu_feature_enabled(X86_FEATURE_ALLOWED_SEV_FEATURES))
-> +		sev_supported_vmsa_features |= SVM_SEV_FEAT_ALLOWED_SEV_FEATURES;
->  }
->  
->  void sev_hardware_unsetup(void)
 
