@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339DBA2EE08
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 14:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B694A2EE11
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 14:34:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thTuP-0000Q2-Rz; Mon, 10 Feb 2025 08:33:10 -0500
+	id 1thTum-0000eb-73; Mon, 10 Feb 2025 08:33:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTt3-00085i-GS
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:31:45 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTt8-0008Dr-42
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:31:51 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTt1-00065L-M8
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:31:45 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43948021a45so5837435e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 05:31:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTt6-00066R-5f
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:31:49 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-436ce2ab251so29608635e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 05:31:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739194301; x=1739799101; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739194306; x=1739799106; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KVG9LleBgVUQXQy5aq+er1NbCMyLlUd6s760Io8ryMc=;
- b=t1ZKdIMwaHQA2mPC2qpzDgphzl0qyd3twds2/45l5vbpHPd0Pqcoz0i+4wq5QZLpnK
- iU7IWL2z02sGHH91U1u7oXzhV0RFAnSDrA2SA+tM/v2pHISrCQgo0BUdzPZvsLmflqo4
- HUkeCvLwK0wfG3343MaYLzl7tbZNEnk816gYLY7s287KWkgM1waRIbM0wwWQAOgtUIlr
- d+Nnq/WdWz5Pv4Cs1DZUQScB6A/mNU1OBqbhKkgO9pWrRrZPprpdWDFdYXw81xgpXVto
- aZg+keo3/0G4ZeJCHnjRbovNM9U/SsnNhkZKV1RLguSBj3CtA9iNlcw88rao/4B8wvNr
- GYPw==
+ bh=MMveWtKIlfL6uuWpVkSZWRAB3s97sFlGFregYh5GkmE=;
+ b=sK3Ov6hIvUKivO2/Qw2IRa2wLofil2fd8BKLFZyzSL6i6ZbeEjvJCeiA0OjkchDh3g
+ 2v2nctFqj/AQ8F+ewc6u3TteWi0VtsYhHneheQewAayT6qyQQ/JdR/Do2Ew7sslbLd/6
+ 9rxKIAWDS09ac7yo9+aHJpui1mMZLBFHb0Q1chh+HWZ+98Rx31z9+hmgADSWlHg/lrPs
+ Lgm5De8PO2KLHwJhmBwDC3tFSGqn24R3ReQfagUGABjD9wDTyBEiN4h7XGpx8e0/1G0b
+ pD6fhcJxc5Gf04e4qoHNJCrTbsDNUGOdq6LmIf2447CDYFRdy2nUO0lPkW7uTdnEiSkC
+ XHwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739194301; x=1739799101;
+ d=1e100.net; s=20230601; t=1739194306; x=1739799106;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KVG9LleBgVUQXQy5aq+er1NbCMyLlUd6s760Io8ryMc=;
- b=B7hzbD+lIzoCpj1Q5/D3zTlwSuHtQGlQWP+VmAWZ+7Q3S477E6D25zbXb31av6Z2jA
- b6/HAvEt96dYUhAfEp+AjGP9UFgsqnFwVPjg4YSTPs6aHMjIEQdjZGbook0ACLdfB15A
- jbIHxT+3J9AF5IQPnf+6OSz8MKSGx2Gv94tk8ppBnRRXNgNFXKps2+AM1yueDKK8SxqK
- f28mlgYlLArvLzT9ZqB5IF2EXKlB0/PxKr5vVWLQuc/V7C4HHCgYXyo7fqqFuAndYOUk
- B/JAK1mVWe7m00tDx4n7Nlo3g79ubYd1OPSV6+wZcdg7CLFMxErtnY3wogDt0PisjXPy
- 1k6Q==
-X-Gm-Message-State: AOJu0YygcIIEy6bCMFxwkvKy4knxExmvKpsMtfVFh6bpD42GF0pFLJZM
- yZM2dRGpheTBoQP3rTSQ/TdXuP17MphAFzXETA7CLzB0h3NgtE6Pd+gPCxa4OGRNuty2EF6ks6K
- W7RU=
-X-Gm-Gg: ASbGncsscSfLvM55gSzAfSkYM5Q70ozAfkZuTb03P2FSM7xdQHodx5AMPhVvIUKwL+l
- ENnx9G5mKEyk+J7H48dTvm8ySolG105vMhSTN95NUO2bgVOlbaXaKxNbo5V0ACR4qGV4FHStvJo
- Czoi/oMXE/NZj5SPH2MGt9PJDWb44RjLbicqGCMZzixSqK/g58Z8k9jrFTKjreYxFD0VhUeUPyF
- qpjyirVeJa99ZgJMbApdsDbAp2wsbbHH15JNN1nUw+JX1TjfDWsTayQL3ptrULz7IpOWlZgucCf
- MS+9XrQa59RoXS6TwpgiAfB/mKTVhvAtzEeOT2xpAtPgdFxGbkGTfVNJSXTbMrxUbAttbBU=
-X-Google-Smtp-Source: AGHT+IG0yhrlyVEd+hFqzg2RXipAj1y7ia32IeCHs6zDWxv5vFKlBeMNvc3N14xmZn5Lp9slk4K8sQ==
-X-Received: by 2002:a05:600c:4254:b0:439:30bd:7df9 with SMTP id
- 5b1f17b1804b1-43930bd7f9fmr59531505e9.9.1739194301407; 
- Mon, 10 Feb 2025 05:31:41 -0800 (PST)
+ bh=MMveWtKIlfL6uuWpVkSZWRAB3s97sFlGFregYh5GkmE=;
+ b=uiTFX0ddESKFCTfoAqmdrI4XxkYF++MK65JJZGGydckhNJ/4MpH5Wf5+K20+eSRNca
+ E6tkZS7ISXjTfjv46QInYVW3KeGgF+3b5u7QPr4/9OxuwzVx8pkoLHBldlRdlFqkdclj
+ MsWkLw5Hc0SnIwXrU3mZIq2T1ti739/R08rbMz1FvlWwDQ1wBLqapehcKECyHNFGOzU7
+ Eo/mt5ahB7syZorWR+Cc0sl41iM1rZ4MPmeGUCMjHeaRB35W4lZ+ogDN7F8fH7U64MSY
+ f8GiwR5MYDUUKXcnKioV/cbJ90CMePUsNna5ZfR8AkBJ1ny+z79uX2fpr5yP9PgPJFuZ
+ EjHA==
+X-Gm-Message-State: AOJu0YyBMQ3vv+teL7B/ZUhiYN6uV9sdWPoPrNxP9My0e7Q5TYU8KHB9
+ vtL4NlmFxz8isvqEhQ/n7115Gg89hCvkPK9ejP4yqF/3wQ1Nn59EBBhNkKYCoAJfZJyDiBen8YT
+ dENU=
+X-Gm-Gg: ASbGncsThbovqnh1Kd0O8m+e14BJ7CXrVEphWDH7dBHy6YzPF0N5OpjHTSo2j/Ypmai
+ CO7XBUeuNCupcjqOMa2wUSZ0FnIgBgio60rRZ+Y2MJ5o7jZ/ZX/bH7TCsTO6iKB1+RtINXs1QEm
+ X0KSpxyVDFHJ7W2iXrsptCgHvNx7Zgp7N6leHqg+stjj7sHGwAj/f2Y9DWPT606Zk2LlLoamIQY
+ dOpy+3SyiLBQiPZKqFglsR8xvwHBvvPwa7P6KXeetmBhWj4T/PiuR6d7MUqsxMc0qeboBGOeow1
+ Vd8GV4AV3X8qVjuBZvGDLXRicduImef/66cqVlcmOdv7QexRplaor5kzxTMDoI9jxkrSVkY=
+X-Google-Smtp-Source: AGHT+IFM4c6MIvFK1trMtyaxa6PeFUW3m90EoB5X/zpNv8gIHyo5FM6J7nuzDDk25Dzj7tqJfAEN7w==
+X-Received: by 2002:adf:ea8e:0:b0:385:f47b:1501 with SMTP id
+ ffacd0b85a97d-38dc90f0db9mr8900109f8f.32.1739194306284; 
+ Mon, 10 Feb 2025 05:31:46 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4390daf4438sm185433705e9.25.2025.02.10.05.31.40
+ ffacd0b85a97d-38dcb88d5e6sm9212643f8f.1.2025.02.10.05.31.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 05:31:40 -0800 (PST)
+ Mon, 10 Feb 2025 05:31:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 01/11] target/i386: Constify X86CPUModel uses
-Date: Mon, 10 Feb 2025 14:31:24 +0100
-Message-ID: <20250210133134.90879-2-philmd@linaro.org>
+Subject: [PATCH v2 02/11] target/sparc: Constify SPARCCPUClass::cpu_def
+Date: Mon, 10 Feb 2025 14:31:25 +0100
+Message-ID: <20250210133134.90879-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210133134.90879-1-philmd@linaro.org>
 References: <20250210133134.90879-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,63 +100,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.h | 2 +-
- target/i386/cpu.c | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ target/sparc/cpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c67b42d34fc..f9ce6970ee1 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2288,7 +2288,7 @@ struct X86CPUClass {
-      * CPU definition, automatically loaded by instance_init if not NULL.
-      * Should be eventually replaced by subclass-specific property defaults.
-      */
--    X86CPUModel *model;
-+    const X86CPUModel *model;
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index dda811503b5..462bcb6c0e6 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -574,7 +574,7 @@ struct SPARCCPUClass {
  
-     bool host_cpuid_required;
-     int ordering;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b5dd60d2812..4b2da45366b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6436,7 +6436,7 @@ void x86_cpu_apply_props(X86CPU *cpu, PropValue *props)
-  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
-  */
+     DeviceRealize parent_realize;
+     ResettablePhases parent_phases;
+-    sparc_def_t *cpu_def;
++    const sparc_def_t *cpu_def;
+ };
  
--static void x86_cpu_apply_version_props(X86CPU *cpu, X86CPUModel *model)
-+static void x86_cpu_apply_version_props(X86CPU *cpu, const X86CPUModel *model)
- {
-     const X86CPUVersionDefinition *vdef;
-     X86CPUVersion version = x86_cpu_model_resolve_version(model);
-@@ -6465,7 +6465,7 @@ static void x86_cpu_apply_version_props(X86CPU *cpu, X86CPUModel *model)
- }
- 
- static const CPUCaches *x86_cpu_get_versioned_cache_info(X86CPU *cpu,
--                                                         X86CPUModel *model)
-+                                                       const X86CPUModel *model)
- {
-     const X86CPUVersionDefinition *vdef;
-     X86CPUVersion version = x86_cpu_model_resolve_version(model);
-@@ -6493,7 +6493,7 @@ static const CPUCaches *x86_cpu_get_versioned_cache_info(X86CPU *cpu,
-  * Load data from X86CPUDefinition into a X86CPU object.
-  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
-  */
--static void x86_cpu_load_model(X86CPU *cpu, X86CPUModel *model)
-+static void x86_cpu_load_model(X86CPU *cpu, const X86CPUModel *model)
- {
-     const X86CPUDefinition *def = model->cpudef;
-     CPUX86State *env = &cpu->env;
-@@ -6563,7 +6563,7 @@ static const gchar *x86_gdb_arch_name(CPUState *cs)
- 
- static void x86_cpu_cpudef_class_init(ObjectClass *oc, void *data)
- {
--    X86CPUModel *model = data;
-+    const X86CPUModel *model = data;
-     X86CPUClass *xcc = X86_CPU_CLASS(oc);
-     CPUClass *cc = CPU_CLASS(oc);
- 
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.47.1
 
