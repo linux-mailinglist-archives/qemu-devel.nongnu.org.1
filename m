@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB6EA2F1ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE6DA2F216
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:51:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thVtT-0004rA-JO; Mon, 10 Feb 2025 10:40:19 -0500
+	id 1thW2l-0007DN-9U; Mon, 10 Feb 2025 10:49:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thVtN-0004pk-VZ
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:40:14 -0500
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ id 1thW2e-0007CB-G7
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:49:48 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thVtL-0003YL-Bt
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:40:13 -0500
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-e5b1c7c31b2so3656074276.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 07:40:10 -0800 (PST)
+ id 1thW2c-0004gS-JU
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:49:48 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-436281c8a38so30020185e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 07:49:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739202010; x=1739806810; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OnSd/e/jEqTUcYBz684UyvujbuuystBLx+4LOUZE/hg=;
- b=rsz8GeMRPBP9xXqWTUSAryrUM6twgyDMpeHsFs+J3kxatpP4N7Bvdm37bdJ5+xB3ge
- 3Khw1Y5d5B5vGXHZSEaI/z+hE8fu3BjBcbidGcKN9SmmpYeoFqQ07a+Bsefdvk0hSMdX
- vbTkIxH41BG62fdutvDztJB5pOHZr0jJzG4bmxEaCZaXyK1nW/RLqn6f0yI7ODgrvjYI
- hROO0Emk1TWf+A7beIT+dL7xLby+lLikg9ysotxF7FJYW0gKA5p8oYZwj6IDaeoecBdd
- RH32xS8RlRMDpmdQgTxSdE9GVW36c9AlFkCwhhciyNZMfGM4yhglo3qSdrjedsbqz21v
- xSaA==
+ d=linaro.org; s=google; t=1739202585; x=1739807385; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eIhwxGSJo+fnEjb9uUzGNFjWk9qjiJXDurLhZkghUFo=;
+ b=nwuMHul2+dOKpL4ZyQinWn2YmaI0ooJLqG8CdDa+LqtOZ1IdSo6MeDtFrG15kfcKVG
+ 6OdUbygwd868WviWgHeZ2qRLL5Jgs8ReVag8dprsbACe0UpZCL51KERmn+brxetL0Z52
+ 36xA48vg5yIEqx63ZmyBGn7Z03Pe6drFTM/cNgxoWh3gV4aSinS6VPZi/Vf3ilBPQumN
+ 0xa1l3mHMILDYKOvikJn7BiluwOxY40q3Pi2POFGbKm0U/HOoILqqjaNVKc/GxqrUFVb
+ q3N5H5BqQj3yj68hcWtg0fu4J+ZWzHjxlwAd8/OPsqV5706G5PuGzGIGtx0jf7nMfAD+
+ YNNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739202010; x=1739806810;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OnSd/e/jEqTUcYBz684UyvujbuuystBLx+4LOUZE/hg=;
- b=NdMWQFQOFI55hHGyaHO4F9otcp7h/ttbYB6nPjZKhWA8w51Hw6UtRLNTp5vDXUeOoj
- mHYYWZQ5H58qWy/DCX9r8w97kCZCkn393F81JZwKCsrxeUbASY6ycIcN0GqwofuFYZed
- 09UGAsJK43q2XM0zAWjKmM2+0tvLJOmg2AMY1/0iV5v6W6a6+UH/TVxZpaLk6mOX1w9q
- jg+4yi5qW+P/WKRQUPxqDn0AXNaV8FjhTY75Cs+PNQCdY/ISeHCvgnXYSsT4vhpjtlu/
- F0wxp4UuMVcr5RBscwi5+CrglUYYsPbBcjmFmyJnBMx7F+B7577OOM76rO5kTj72uhiJ
- 7gZw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXC39BB81RfriUGmbBZDhEeROMw9MQsHOCtuBU7cPjTAXoBmxb5rk8bAyuSq3fNpGBunaF1RagDYNIp@nongnu.org
-X-Gm-Message-State: AOJu0YzOwNdlCsUdgMpRVWo4J1J3ISl4MMPeWkuwKTQW+J6HDyQXgHEJ
- Qnw6XdO1x/TSb1Dj11MC3aZSMVowtzTmS05UNsmqQy81mpHHc/o+u7guoGgmi2rTUXbeixmoH3c
- SkdkIoPCsKdTzRiTkyEwBfEuAU0MF4KHSX6rUGg==
-X-Gm-Gg: ASbGncsptvu7040eIHp/V4VTXqrY8cr9x389NC+HL9vm2vjSvg5Kp7c68L3lEd9wsMV
- uS57HNqkuUpSlxmQFZNB5chRe5DmW7U0m4rM6GHZjcIXXTFHu8UbTgqXlZzX7FkDvchEHMK73+A
- ==
-X-Google-Smtp-Source: AGHT+IGZ6tTtQbSYRKN7SBTNNh5paFiswS2IAV7Qu5inH+1JnCBNWIVqaP4UBWFpzvDbKN87vztRT1l9CP9Efq1p3fs=
-X-Received: by 2002:a05:6902:1021:b0:e5b:38df:b44e with SMTP id
- 3f1490d57ef6-e5b46b7d685mr9947422276.2.1739202009938; Mon, 10 Feb 2025
- 07:40:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20250210135804.3526943-1-peter.maydell@linaro.org>
-In-Reply-To: <20250210135804.3526943-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1739202585; x=1739807385;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eIhwxGSJo+fnEjb9uUzGNFjWk9qjiJXDurLhZkghUFo=;
+ b=NSZpbOhyrYMuZiAXug0fx4jam4ad0x/Wm6uXB5GXiupwOUV/9YhFEhaZ2ik2nYwqN/
+ TjQx0Bl/tPCwkv2YDfnwWY+UdjjQLhecWXBE6CJfGBOBv0niCCy4KOa4gp8Mr+ThbX0k
+ h2StDOgW4QCLUjRKoVcOJJQhGK6R78jO4fvMxlG7ip6MnjU9g75mZS0rZjBzz32AUXqx
+ NCb4jSVpk5v/mUZkYZnF4AbzOxD9Sak9FKyMBLL7YZdOhSaDDwHzV5RJtI0NMzZ3tptr
+ u6s0kTS4QqkwPETbF7wpz7zoxIftvj4JEmB3/fU1qNxeKk7Ajxe9Kc9FVO5idHR8ilcw
+ VLnw==
+X-Gm-Message-State: AOJu0YysvosBHd+E6WFbq3+sYqOzivnupgoE536YIopk030neUO5oABc
+ W7KZwuSd+k2/53uUd0bKaQ55E8sDf4KyD3SUuQkclFV6SpFfViPviJ5UDhIjsQRLVm5n1h8UP8S
+ 5
+X-Gm-Gg: ASbGncueJg7/IbVdPviFxrfXe1f6gMC3mHx7kVnBtdaR7vy8flt9W4CYGdh0wKTs323
+ kLWOACBv9XVu/yopwA11VJFWkTTWaWjdLojwBrDmkN5k+iPYF7PMxrHfVLe98M6LjPFjOm+yMif
+ 1Ys0lc1wrR5NYgqwRf6SQUpEIX/uuPJZv8bm/ZtF2xDaRcgxuyMFt/4f23hCJ6uSSZ/SUZDmQpB
+ fcqpmLVVcdce51/uHo3q/6fgE397CucekL16Ow13dqb5qbrFaIhC0leATeMXTZjfnnMkt4IJPnU
+ LDhMu2sSnG+Ye16Y4Q9M
+X-Google-Smtp-Source: AGHT+IG+RzJDLON9+FEECOVGkV4LpGmnJFCd8thcxYg7Tr6ntQJ/yQQn1KkbEeFymFaJvDi99Xmtvg==
+X-Received: by 2002:a05:600c:4f50:b0:438:a240:c54 with SMTP id
+ 5b1f17b1804b1-43924987962mr103243025e9.9.1739202584712; 
+ Mon, 10 Feb 2025 07:49:44 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4391dfd8448sm150612845e9.38.2025.02.10.07.49.43
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Feb 2025 07:49:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Feb 2025 15:39:58 +0000
-X-Gm-Features: AWEUYZlKrxW_nY6VZoKTKhrWWp6oTjox6P5o4lp5DpJJOmaWb-04m8RbnrXulOg
-Message-ID: <CAFEAcA_gA9CSsQboFYT5ZmOUc3Gr=c25ayOVyW=RzCqT3fdWYg@mail.gmail.com>
-Subject: Re: [PATCH] util/qemu-timer.c: Don't warp timer from timerlist_rearm()
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/12] target-arm queue
+Date: Mon, 10 Feb 2025 15:49:30 +0000
+Message-Id: <20250210154942.3634878-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,26 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Feb 2025 at 13:58, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Currently we call icount_start_warp_timer() from timerlist_rearm().
-> This produces incorrect behaviour, because timerlist_rearm() is
-> called, for instance, when a timer callback modifies its timer.  We
-> cannot decide here to warp the timer forwards to the next timer
-> deadline merely because all_cpu_threads_idle() is true, because the
-> timer callback we were called from (or some other callback later in
-> the list of callbacks being invoked) may be about to raise a CPU
-> interrupt and move a CPU from idle to ready.5A
->
-> The only valid place to choose to warp the timer forward is from the
-> main loop, when we know we have no outstanding IO or timer callbacks
-> that might be about to wake up a CPU.
+The following changes since commit 131c58469f6fb68c89b38fee6aba8bbb20c7f4bf:
 
-This patch also seems to fix
-https://gitlab.com/qemu-project/qemu/-/issues/2703
-(a report that with an x86 system sometimes the ptimer
-period would be longer than you'd programmed the ptimer for).
+  rust: add --rust-target option for bindgen (2025-02-06 13:51:46 -0500)
 
-thanks
--- PMM
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20250210
+
+for you to fetch changes up to 27a8d899c7a100fd5aa040a8b993bb257687c393:
+
+  linux-user: Do not define struct sched_attr if libc headers do (2025-02-07 16:09:20 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * Deprecate pxa2xx CPUs, iwMMXt emulation, -old-param option
+ * Drop unused AArch64DecodeTable typedefs
+ * Minor code cleanups
+ * hw/net/cadence_gem:  Fix the mask/compare/disable-mask logic
+ * linux-user: Do not define struct sched_attr if libc headers do
+
+----------------------------------------------------------------
+Andrew Yuan (1):
+      hw/net/cadence_gem:  Fix the mask/compare/disable-mask logic
+
+Khem Raj (1):
+      linux-user: Do not define struct sched_attr if libc headers do
+
+Peter Maydell (4):
+      target/arm: deprecate the pxa2xx CPUs and iwMMXt emulation
+      tests/tcg/arm: Remove test-arm-iwmmxt test
+      target/arm: Drop unused AArch64DecodeTable typedefs
+      qemu-options: Deprecate -old-param command line option
+
+Philippe Mathieu-Daudé (6):
+      hw/arm/boot: Propagate vCPU to arm_load_dtb()
+      hw/arm/fsl-imx6: Add local 'mpcore/gic' variables
+      hw/arm/fsl-imx6ul: Add local 'mpcore/gic' variables
+      hw/arm/fsl-imx7: Add local 'mpcore/gic' variables
+      hw/cpu/arm: Alias 'num-cpu' property on TYPE_REALVIEW_MPCORE
+      hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES() macro
+
+ docs/about/deprecated.rst       | 34 ++++++++++++++++++++++
+ include/hw/arm/boot.h           |  4 ++-
+ target/arm/cpu.h                |  1 +
+ hw/arm/boot.c                   | 11 +++----
+ hw/arm/fsl-imx6.c               | 52 ++++++++++++++-------------------
+ hw/arm/fsl-imx6ul.c             | 64 +++++++++++++++++------------------------
+ hw/arm/fsl-imx7.c               | 52 +++++++++++++++------------------
+ hw/arm/virt.c                   |  2 +-
+ hw/cpu/a15mpcore.c              | 21 ++++++--------
+ hw/cpu/a9mpcore.c               | 21 ++++++--------
+ hw/cpu/arm11mpcore.c            | 21 ++++++--------
+ hw/cpu/realview_mpcore.c        | 29 +++++++------------
+ hw/net/cadence_gem.c            | 26 +++++++++++++----
+ linux-user/syscall.c            |  4 ++-
+ system/vl.c                     |  1 +
+ target/arm/cpu.c                |  3 ++
+ target/arm/tcg/cpu32.c          | 36 +++++++++++++++--------
+ target/arm/tcg/translate-a64.c  | 11 -------
+ tests/tcg/arm/Makefile.target   |  7 -----
+ tests/tcg/arm/README            |  5 ----
+ tests/tcg/arm/test-arm-iwmmxt.S | 49 -------------------------------
+ 21 files changed, 205 insertions(+), 249 deletions(-)
+ delete mode 100644 tests/tcg/arm/test-arm-iwmmxt.S
 
