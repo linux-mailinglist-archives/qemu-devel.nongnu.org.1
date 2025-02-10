@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6805EA2FAEE
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E74A2FAF2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thadL-0000PD-C4; Mon, 10 Feb 2025 15:43:59 -0500
+	id 1thadN-0000oS-EX; Mon, 10 Feb 2025 15:44:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thad2-00005R-18
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:41 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thad6-0000Cw-TF
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:50 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thad0-0003jM-6R
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:39 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-439350f1a0bso13623315e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thad4-0003kM-MB
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:44 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-38dd006a4e1so2364556f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220215; x=1739825015; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220220; x=1739825020; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VmIIepxBiZLQsNuZn8sQxup5Et3m6InNRnsHpKWou+Y=;
- b=XAM/HyuomU9xEQ1J3Gf+ZMFiLAIqA4xvrvi/6DbpE7mo37NVd+565iXdAeuF2e1CYH
- r+aX8L3Qyo9pK9hQjZqKS2LG3A0d4aauKczPWggGt5ZYLU88J1qmzlJsmD/BOs5nqSp4
- QNb5a8t3hYfz0GT17Q2CbTJCUzCwZoKREBsbcN3ePeMs1dKZIXqcUuuOswZeVZ4D+RjJ
- 7uEkaRIwNklkluBc10TLIW3c4/6/0L5iCD3A+3lVYCVvz22FQrJ/UvyF8Mms9AhU99v7
- nY0GfBc6rrfDzBzPPwZFhP6m8TJNoVbm6warmlK2j7/Hhsdkqyp4n3Zpr9pbpA+v15vi
- XlDw==
+ bh=IDnd01ghJ5DO/nQRavFMGCul8vTWrpJP0MrxUBtvjqA=;
+ b=tYk0+pDTu4YHam5eFbWgcsCvvZUY4CmLT+330bbU2hXrkOLtlWrbL8YFRcH9h1CfAl
+ OLSyADn+T5Jr3jsx8yGsXfnpgd585SVEQo2AiJRC8AnKedTmY5UdT3fjESceR3Wa0+FC
+ pQ/feP31vQTsskfwastAzHfcumgc7FVPsHq4TMMZ0Aad5o7+pj+0iWtDCNnNKwpme+ir
+ 9rLm6+6rHQT9euX1AsB1HLuWhusrSnfhcFcNzlWexHMIrleMpP51jm8g5jPepxqMEON3
+ M2u17HZpVtaIqcMd9rNp5zoL40mLqbDi8e/QhkuWRXMUSarAJdbqcPBUO3jFKvNFnwH7
+ UPJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220215; x=1739825015;
+ d=1e100.net; s=20230601; t=1739220220; x=1739825020;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VmIIepxBiZLQsNuZn8sQxup5Et3m6InNRnsHpKWou+Y=;
- b=HnnwH3m0uEQJ59xItXbYekjEMuTap9ZiEfYhZMVXY/CQEBip7JYC9Xv9O5W7D0ZiUz
- Kte6ch9gGA5HI8tDLJ0J1L55RnxpjpIW8IFYPpVrxCzn2pOTk6OPByqfIsNwVkj3FtQI
- jDesnSz6iQ0/U214Xf0hw3vkBtgQeG6wZ4HKtKaDD7x3L5aDLuAVsEUW02Lp9pNwUq2E
- 54slwF8oVJk0IeV1zqLDKBjX4mEEQWpye0ZVfGJ/XQcGyNGQQZ5Y8WC0iQj4CFMw+8PV
- 0PCd9PCe2VJy6N8SSjkF8OwE1wp9ybHF07SpzhFygHRpVPp1hs9/Q1s3shm6IevhlRo9
- UyYg==
-X-Gm-Message-State: AOJu0YzD1m6Vjcit538jzXQAjyqY/kBLOWvPBitHGAVRie/asi0KpOnf
- Nj7krDnvWLMkfjApCmYFjuSXsd+ycQN6Fl+6bJQO9i5Ph6ENfgiwtEeFo8eErjH2anruojHuOzU
- PZA0=
-X-Gm-Gg: ASbGncsur33gn3CFdPxnvJn0KXSq6XtGjWw1U6nTqVCjQj+xikCBFx0xXwJcvrv6s2R
- g2fWoNrqzaJ29Jh2JqWYnjXWucylJzDVvc6FiFF2mDxH/yxSS1GSuxEBJQnGyXuK4VdEcr1iya+
- QwIQ/KC9+ECM4yG2VkQzEVZ+xROMIclOPgorCLqnFiTixtrqR8jSQsmN/+n/u6pLo4YiduThX6S
- Xj8ywMlqTcOIimOfFPgcG1vmWON/AeVDUJiD3Bu8iq6dCcXzUpcESUfx1ID1wOXx8cYoalG4Rm+
- QzU0vUf129HdJK0viKbeiEt+bDK8Xzqf4kfdLdA20LhrN0NBzlGwKOP4A3Cl2E0g7w==
-X-Google-Smtp-Source: AGHT+IFJqu0DKdDRN2QlIrSnTEF+9zUa6rnnow21TMw4pVrV/bwKJy9Bk9p2a8DIhTBD3KxxbdOMDQ==
-X-Received: by 2002:a05:600c:450d:b0:434:ff08:202e with SMTP id
- 5b1f17b1804b1-4394cec568fmr6745795e9.8.1739220215210; 
- Mon, 10 Feb 2025 12:43:35 -0800 (PST)
+ bh=IDnd01ghJ5DO/nQRavFMGCul8vTWrpJP0MrxUBtvjqA=;
+ b=tRUdiRQFQtHCXCJhHQYv4crOpZWQUOgCPkrkIm4Bt7wqhfWljkraJ/GBgCMsOx+mLA
+ lQ8b3WSDcwLiDrRq9P33FwbKbGz8IG/O7X68KiioAIlZQQYgYvwUJYe2B0ipjHRlbUze
+ BBu2gpV0vQ1f+cqqjiNHPDp9MqIYdPRuxLXoSnC24qd+kDiXy1+zdeT1uiGzSNiNn7w5
+ yYuZ1WMA+qZt0YOIPbNTVzJCIdA6UjgqcMDtft0IhEdiwOMwGnSFps4vYn3E9WiUAXM+
+ a/rY+Em4EdsxqMlSWZhRV9uLVTILtfd58cfwhOpHH4WDpWWfUiGwAsz9viI0qGxtbhB5
+ SHRQ==
+X-Gm-Message-State: AOJu0YyF3L6Svucr21BEm/6TTomNfZwMPvi2W30x01/D+i4UZ7Yjp9VV
+ PchMB45i5dVFDOhuZIjpQ1YJSZm0bRCbPA4y8aWr4RC+XxrTltSQbZp/MrKm8A1k0p2wXUGIR/4
+ 4ahY=
+X-Gm-Gg: ASbGncvROFu5AfdePCR/XhuvqjfIJLZ3SMJoEXgQ2/CnWZv0XJvzuugdZyX0m76oJV1
+ p3AnfUOP+AdjXsi069v5ddaxbtEwwcIayDM21Azi9QQVvja7vvyEU2e2LrALt3HEFxLpa755EE0
+ OI1kM/nxGsuvgBQdzFyZ5Hkw6Gn4juE0AEZXyWzVtMH58Q1Xej7eRk1f3/iA+23RxhueyXgUaef
+ R+Chh3edm4amKPs7d5b7/diZeyIKdUqau2hdHDI5FG9gZHtdTgS45lgAj1TOXG2Q2LNfhMmUIom
+ 7SIPZKskGMSIhku8Ab9DrXGG9kytQdXpaQnJutChXNeEuOKdWjVob07iXNgu3eq2tg==
+X-Google-Smtp-Source: AGHT+IEUS4KsM7fzmfs7yQyJ2FkAAETO7gNHE4f4ZS4rpmqcRCFu992IquUV3L93p62rcS5Iblwvtg==
+X-Received: by 2002:a05:6000:1884:b0:38d:a6a1:2edc with SMTP id
+ ffacd0b85a97d-38dc8d9c237mr11179506f8f.9.1739220220567; 
+ Mon, 10 Feb 2025 12:43:40 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4390d964c71sm188667265e9.18.2025.02.10.12.43.34
+ ffacd0b85a97d-38dc17e278bsm12265152f8f.48.2025.02.10.12.43.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:43:34 -0800 (PST)
+ Mon, 10 Feb 2025 12:43:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <graf@amazon.com>,
- =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PULL 17/32] hw/tpm: Have TPM TIS sysbus device inherit from
- DYNAMIC_SYS_BUS_DEVICE
-Date: Mon, 10 Feb 2025 21:41:49 +0100
-Message-ID: <20250210204204.54407-18-philmd@linaro.org>
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 18/32] hw/xen: Prefer QOM cast for XenLegacyDevice
+Date: Mon, 10 Feb 2025 21:41:50 +0100
+Message-ID: <20250210204204.54407-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,40 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the TPM TIS sysbus device can be optionally plugged on the
-TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
+From: Bernhard Beschow <shentey@gmail.com>
 
+Makes the code less sensitive regarding changes in the class hierarchy which
+will be performed in the next patch.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250127094129.15941-1-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alexander Graf <graf@amazon.com>
-Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Message-Id: <20250125181343.59151-9-philmd@linaro.org>
 ---
- hw/tpm/tpm_tis_sysbus.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/usb/xen-usb.c            | 6 +++---
+ hw/xen/xen-legacy-backend.c | 2 +-
+ hw/xen/xen_pvdev.c          | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
-index ee0bfe9538e..4f187690a28 100644
---- a/hw/tpm/tpm_tis_sysbus.c
-+++ b/hw/tpm/tpm_tis_sysbus.c
-@@ -133,7 +133,6 @@ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
-     dc->vmsd  = &vmstate_tpm_tis_sysbus;
-     tc->model = TPM_MODEL_TPM_TIS;
-     dc->realize = tpm_tis_sysbus_realizefn;
--    dc->user_creatable = true;
-     device_class_set_legacy_reset(dc, tpm_tis_sysbus_reset);
-     tc->request_completed = tpm_tis_sysbus_request_completed;
-     tc->get_version = tpm_tis_sysbus_get_tpm_version;
-@@ -142,7 +141,7 @@ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/usb/xen-usb.c b/hw/usb/xen-usb.c
+index 13b065b0faa..fa46a7da01c 100644
+--- a/hw/usb/xen-usb.c
++++ b/hw/usb/xen-usb.c
+@@ -755,10 +755,10 @@ static void usbback_portid_add(struct usbback_info *usbif, unsigned port,
  
- static const TypeInfo tpm_tis_sysbus_info = {
-     .name = TYPE_TPM_TIS_SYSBUS,
--    .parent = TYPE_SYS_BUS_DEVICE,
-+    .parent = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .instance_size = sizeof(TPMStateSysBus),
-     .instance_init = tpm_tis_sysbus_initfn,
-     .class_init  = tpm_tis_sysbus_class_init,
+     qdict = qdict_new();
+     qdict_put_str(qdict, "driver", "usb-host");
+-    tmp = g_strdup_printf("%s.0", usbif->xendev.qdev.id);
++    tmp = g_strdup_printf("%s.0", DEVICE(&usbif->xendev)->id);
+     qdict_put_str(qdict, "bus", tmp);
+     g_free(tmp);
+-    tmp = g_strdup_printf("%s-%u", usbif->xendev.qdev.id, port);
++    tmp = g_strdup_printf("%s-%u", DEVICE(&usbif->xendev)->id, port);
+     qdict_put_str(qdict, "id", tmp);
+     g_free(tmp);
+     qdict_put_int(qdict, "port", port);
+@@ -1022,7 +1022,7 @@ static void usbback_alloc(struct XenLegacyDevice *xendev)
+     usbif = container_of(xendev, struct usbback_info, xendev);
+ 
+     usb_bus_new(&usbif->bus, sizeof(usbif->bus), &xen_usb_bus_ops,
+-                DEVICE(&xendev->qdev));
++                DEVICE(xendev));
+     for (i = 0; i < USBBACK_MAXPORTS; i++) {
+         p = &(usbif->ports[i].port);
+         usb_register_port(&usbif->bus, p, usbif, i, &xen_usb_port_ops,
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index 118c571b3a7..ca2fe0e6b36 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -163,7 +163,7 @@ static struct XenLegacyDevice *xen_be_get_xendev(const char *type, int dom,
+ 
+     /* init new xendev */
+     xendev = g_malloc0(ops->size);
+-    object_initialize(&xendev->qdev, ops->size, TYPE_XENBACKEND);
++    object_initialize(xendev, ops->size, TYPE_XENBACKEND);
+     OBJECT(xendev)->free = g_free;
+     qdev_set_id(DEVICE(xendev), g_strdup_printf("xen-%s-%d", type, dev),
+                 &error_fatal);
+diff --git a/hw/xen/xen_pvdev.c b/hw/xen/xen_pvdev.c
+index c9143ba259e..fe95b62d133 100644
+--- a/hw/xen/xen_pvdev.c
++++ b/hw/xen/xen_pvdev.c
+@@ -273,7 +273,7 @@ void xen_pv_del_xendev(struct XenLegacyDevice *xendev)
+ 
+     QTAILQ_REMOVE(&xendevs, xendev, next);
+ 
+-    qdev_unplug(&xendev->qdev, NULL);
++    qdev_unplug(DEVICE(xendev), NULL);
+ }
+ 
+ void xen_pv_insert_xendev(struct XenLegacyDevice *xendev)
 -- 
 2.47.1
 
