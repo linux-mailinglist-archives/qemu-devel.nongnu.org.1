@@ -2,66 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47263A2E68C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 09:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC136A2E6A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 09:41:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thPIA-0008Pb-Of; Mon, 10 Feb 2025 03:37:22 -0500
+	id 1thPKf-0000fn-L3; Mon, 10 Feb 2025 03:39:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thPI6-0008P6-LG
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 03:37:18 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thPKc-0000fP-KM
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 03:39:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thPI4-00033U-D7
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 03:37:17 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thPKa-0003Dj-TP
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 03:39:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739176634;
+ s=mimecast20190719; t=1739176792;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mymLosjx8yBb96OnIFYnflS/oIfCmiYMYF4pJHwg+Z0=;
- b=VjwrWRlVOhmV1fl2NWzvEii6C+I/CKPHMnuuYMzOQiuawb5Kw48UnLhbN/nPlB7vj8W7NW
- TOtj9T8twz3daCWPG3usqa5PacZMFZH5wS/wMN7Ejbpses/XjBCgcco+XCs9XuFyL5CphA
- 8Xe26hA/MeEDFRRPCHAQyMQSNYNkook=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ucaoTy/UjG5JFULP/oJaS48DvOwwqhCr2WZi3Dr4Gzk=;
+ b=MLbAIGEC9UwvxKhpXCf+ynZv4GzQcXOxdYwA/28ratbbNYW8r/7WU3GVBUF9EC9XEq3nSK
+ DRsZpK5robecPADQnl1EkpARzWYZ03pmL2oUnsMLNBnDKBQ6WIoKzo1RSXOeTQt8Xk+3Xg
+ C7qTr/tPg4HLS/ZJ7M9JJNr8jgdJCPQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-490-TnR0wh3zPQOJfSvJZCsNYA-1; Mon,
- 10 Feb 2025 03:37:12 -0500
-X-MC-Unique: TnR0wh3zPQOJfSvJZCsNYA-1
-X-Mimecast-MFC-AGG-ID: TnR0wh3zPQOJfSvJZCsNYA
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-34oZybWnN9aG3_fgZRoa1w-1; Mon,
+ 10 Feb 2025 03:39:50 -0500
+X-MC-Unique: 34oZybWnN9aG3_fgZRoa1w-1
+X-Mimecast-MFC-AGG-ID: 34oZybWnN9aG3_fgZRoa1w
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 45472195608C; Mon, 10 Feb 2025 08:37:11 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 69BBB1956086
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:39:49 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0078C1956094; Mon, 10 Feb 2025 08:37:10 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1FD031800873
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:39:49 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8CFEA21E6A28; Mon, 10 Feb 2025 09:37:08 +0100 (CET)
+ id A22AC21E6A28; Mon, 10 Feb 2025 09:39:46 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 0/4] qapi: generalize special features
-In-Reply-To: <20250205123550.2754387-1-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 5 Feb 2025 12:35:46
- +0000")
-References: <20250205123550.2754387-1-berrange@redhat.com>
-Date: Mon, 10 Feb 2025 09:37:08 +0100
-Message-ID: <87ldue9owb.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL 0/6] QAPI patches patches for 2025-02-10
+Date: Mon, 10 Feb 2025 09:39:40 +0100
+Message-ID: <20250210083946.3553415-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
@@ -87,6 +81,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued with imports tidied up.  Thanks!
+The following changes since commit 04d3d0e9f54d4c42759f3810aa135ce314d98dc4:
+
+  Merge tag 'hppa-system-for-v10-diva-artist-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2025-02-08 09:00:57 -0500)
+
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-02-10
+
+for you to fetch changes up to 9c339601b652edf91d74a626999285e3245b2589:
+
+  qapi: expose all schema features to code (2025-02-10 09:14:14 +0100)
+
+----------------------------------------------------------------
+QAPI patches patches for 2025-02-10
+
+----------------------------------------------------------------
+Daniel P. Berrangé (4):
+      qapi: cope with feature names containing a '-'
+      qapi: change 'unsigned special_features' to 'uint64_t features'
+      qapi: rename 'special_features' to 'features'
+      qapi: expose all schema features to code
+
+Victor Toso (1):
+      qapi: fix colon in Since tag section
+
+Zhang Boyang (1):
+      qapi/ui: Fix documentation of upper bound value in InputMoveEvent
+
+ meson.build                              |  1 +
+ qapi/cxl.json                            |  4 +--
+ qapi/ui.json                             |  2 +-
+ include/qapi/compat-policy.h             |  2 +-
+ include/qapi/qmp/dispatch.h              |  4 +--
+ include/qapi/util.h                      |  2 +-
+ include/qapi/visitor-impl.h              |  4 +--
+ include/qapi/visitor.h                   | 12 ++++----
+ qapi/qapi-forward-visitor.c              |  8 +++---
+ qapi/qapi-util.c                         |  6 ++--
+ qapi/qapi-visit-core.c                   | 12 ++++----
+ qapi/qmp-dispatch.c                      |  2 +-
+ qapi/qmp-registry.c                      |  4 +--
+ qapi/qobject-input-visitor.c             |  4 +--
+ qapi/qobject-output-visitor.c            |  6 ++--
+ scripts/qapi/commands.py                 |  5 ++--
+ scripts/qapi/features.py                 | 48 ++++++++++++++++++++++++++++++++
+ scripts/qapi/gen.py                      |  9 +++---
+ scripts/qapi/main.py                     |  2 ++
+ scripts/qapi/schema.py                   | 31 ++++++++++++++++++++-
+ scripts/qapi/types.py                    | 23 ++++++++-------
+ scripts/qapi/visit.py                    | 21 ++++++--------
+ tests/meson.build                        |  2 ++
+ tests/qapi-schema/features-too-many.err  |  2 ++
+ tests/qapi-schema/features-too-many.json | 13 +++++++++
+ tests/qapi-schema/features-too-many.out  |  0
+ tests/qapi-schema/meson.build            |  1 +
+ 27 files changed, 163 insertions(+), 67 deletions(-)
+ create mode 100644 scripts/qapi/features.py
+ create mode 100644 tests/qapi-schema/features-too-many.err
+ create mode 100644 tests/qapi-schema/features-too-many.json
+ create mode 100644 tests/qapi-schema/features-too-many.out
+
+-- 
+2.48.1
 
 
