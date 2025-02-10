@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0172A2F0B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:03:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C59E7A2F0BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:03:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thVI2-0005ip-Br; Mon, 10 Feb 2025 10:01:39 -0500
+	id 1thVI0-0005fM-5z; Mon, 10 Feb 2025 10:01:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHl-0005aJ-2G
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:21 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHi-0005Yw-DP
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHj-0004ro-Lh
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:20 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHg-0004qd-HP
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739199679;
+ s=mimecast20190719; t=1739199675;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BBlriYGr22I7AWSEq1q4kv/MJaHyfYIEFj647WKS5/I=;
- b=MbJ7lwL9jqvDAhHskiR+7QofNX8zZEWCN+jug1mH2e1BH1pgkAaJ3BdJDvAZKkDx7eM3rW
- Q16mhKnN1BYBoCE5DT+bMNk/7eAcFhCwhVVt156JNSszIb+EIjzxixvboXmXezHhJhusez
- dfyb8W8JUaEk4wdUjEvfnc+ctaZBlvs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=oo7e/z5yYvjKLNMxKI9ikNx7KlprmXFpAylKDOmriJM=;
+ b=BKh2lERl5+Hvzl35QR5U8fKBqT+6XlzEXnb4Hzow4yeKrFbTNvYCdy+Hy7Nux6HW0FyAgZ
+ YNZjM3MJsztI8e72OQDvYh6HxD/FUZYj5Nd1FbgB47pOq4sAhfAC5gt2dfyK3Nw7QbxYpX
+ WcZLLnqPTb+9pcsUC48rrbQcSHY+OaE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-7BiWAqKdN-K9AOb87lk70A-1; Mon,
- 10 Feb 2025 10:01:10 -0500
-X-MC-Unique: 7BiWAqKdN-K9AOb87lk70A-1
-X-Mimecast-MFC-AGG-ID: 7BiWAqKdN-K9AOb87lk70A
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-rxjoS1PUMRG1JJP96aPauA-1; Mon,
+ 10 Feb 2025 10:01:13 -0500
+X-MC-Unique: rxjoS1PUMRG1JJP96aPauA-1
+X-Mimecast-MFC-AGG-ID: rxjoS1PUMRG1JJP96aPauA
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A0C171800875; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CD2951800877
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:12 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59C8E180035E; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+ id 6726F1800352
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:12 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B214021E692E; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
+ id B5B2E21E6939; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
-	Zhang Boyang <zhangboyang.id@gmail.com>
-Subject: [PULL v2 4/8] qapi/ui: Fix documentation of upper bound value in
- InputMoveEvent
-Date: Mon, 10 Feb 2025 16:01:02 +0100
-Message-ID: <20250210150106.3924507-5-armbru@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL v2 5/8] qapi: cope with feature names containing a '-'
+Date: Mon, 10 Feb 2025 16:01:03 +0100
+Message-ID: <20250210150106.3924507-6-armbru@redhat.com>
 In-Reply-To: <20250210150106.3924507-1-armbru@redhat.com>
 References: <20250210150106.3924507-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
@@ -83,33 +85,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhang Boyang <zhangboyang.id@gmail.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The upper bound of pointer position in InputMoveEvent should be 0x7fff,
-according to INPUT_EVENT_ABS_MAX.
+When we shortly expose all feature names to code, it will be valid to
+include a '-', which must be translated to a '_' for the enum constants.
 
-Signed-off-by: Zhang Boyang <zhangboyang.id@gmail.com>
-Message-ID: <20250116104433.12114-1-zhangboyang.id@gmail.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-[Phrasing tweak squashed in]
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250205123550.2754387-2-berrange@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/ui.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/qapi/gen.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 460a26b981..c536d4e524 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -1133,7 +1133,7 @@
- # @axis: Which axis is referenced by @value.
- #
- # @value: Pointer position.  For absolute coordinates the valid range
--#     is 0 -> 0x7ffff
-+#     is 0 to 0x7fff.
- #
- # Since: 2.0
- ##
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index 6a8abe0041..c53ca72950 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -24,6 +24,7 @@
+ )
+ 
+ from .common import (
++    c_enum_const,
+     c_fname,
+     c_name,
+     guardend,
+@@ -41,7 +42,7 @@
+ 
+ 
+ def gen_special_features(features: Sequence[QAPISchemaFeature]) -> str:
+-    special_features = [f"1u << QAPI_{feat.name.upper()}"
++    special_features = [f"1u << {c_enum_const('qapi', feat.name)}"
+                         for feat in features if feat.is_special()]
+     return ' | '.join(special_features) or '0'
+ 
 -- 
 2.48.1
 
