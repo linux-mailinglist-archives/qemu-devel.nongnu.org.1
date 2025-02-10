@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594B2A2FAF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E349FA2FAEA
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thacu-0007ce-GP; Mon, 10 Feb 2025 15:43:32 -0500
+	id 1thacx-0007qF-9A; Mon, 10 Feb 2025 15:43:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thack-0007Ly-2n
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:22 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacr-0007eY-6P
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:29 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thaci-0003go-6k
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:21 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436ce2ab251so33298175e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thaco-0003hD-S1
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:28 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-38dd011ff8bso2651776f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:43:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220198; x=1739824998; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220204; x=1739825004; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pv8qJPmK42u5ft2lbwmLghiT3/wjKEkezy3y/HRjV2I=;
- b=VqTSyRoHEpB3/sAVSdw+BRhNg7PDeFOEe9vBEwYF4CjPQoQFdbhtzRCjB9w22d+HA8
- 7UgGfenjO9JiAPS3vHvGKragS7yQfN+SVmnFZlN1fAl7nxd8EUkALhV42rm8Fi3GgXeq
- ELTRfKtWAHxN9miV7eeVYTyBqobGoB5cpHZ4VIOkAAOjFOjN45/8uJjPhBl3sQ6sjKNm
- 7sA5ZQVjfDKwPUt7zsJQ9tTRgkJKJK/PyhWidI1b386XOjQrR9peFtl7zHwh4s64skU6
- 1uY1KaPVHkwkkAnq2Q0+p7aVJTo281zv3vntscbS+PR7UBfDVWw6qxD0oCu58N5s/Y6t
- hVvw==
+ bh=AZC1HEaPoraYEpey1ubDRQ5Kf2104vV3xZFjDQTDihc=;
+ b=faj4W1oqgzBP2ZKpi+yrlBS5oo0aaiIXeOW9t0fwh718naNnYnZEILv1JxtuvUS+jl
+ PZjUJfWd0RJWfu+Wfpi36Zox6QbZjTAvze4vv+60XPQ85FmxblkCnmlNXHHZxTVR3CBC
+ kIANNGfcljHMynPlnugWiJ6YOVCA/pcsJjTdWaB+IqxP3s0FSgn6j3Nt3n2HH93oAksX
+ enWgGe2TcswGrC+UgSHabVfeLHsxi/XcxXudBzm6RdapaqexLTVQXEV0+pADjjTbinRy
+ d6w4WagHSePX5RMGd5erlLNpAfkvOJXp9wh8EpTz+kVHrI50QZ7K/QTdEC1xiDnxMJFa
+ lXTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220198; x=1739824998;
+ d=1e100.net; s=20230601; t=1739220204; x=1739825004;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pv8qJPmK42u5ft2lbwmLghiT3/wjKEkezy3y/HRjV2I=;
- b=mSrCukXgn0qq9d5thbZ1ObUYjkGmHYvANCJ9nFyQKVy5ML75HB3RlR2OCpSJIeldoI
- 4GVC7pCorV/ba5BOK/YolN/FtyIc7WGBtZCmBkC62/C5ix0+C/FpYSjAmWfTuF67a9iV
- 2oZ+3bvSeXPBYk2IDRXu6rqbvKccm6mO/oqgE7/xFNByh/1gsidpHNcbFf+TgVzxtn9C
- HvIYHtjh1Fj0h/BqnvAw8U8O6Pb+HmtVSjQKZLIAuG+ojou/tKX1i7iZ+UbbYsqxA7qY
- sxOk4ullVk+AN+2K+++9J/MgerOfnIqcrRku1AdOtdgKXVfAlU5T1EY2OtqLqcOxokK9
- ZySw==
-X-Gm-Message-State: AOJu0YzGPBYcPpKTyTj5/xAbDoUPp8myKvF26Q5J8uW8VEsQI+4HJBTF
- R2RaWxTKL3WZgJcs5iUnAZcbJH1UZ/0cSmC6Fsod0jPVF/r/v/lMdrzkq1ifBThNqKoQdm87INX
- oFQ4=
-X-Gm-Gg: ASbGncvJBrb1nDFhZhEIObxvO1TnclS8KONYtsKqU6d2/5GBdGwiCxA8tgEpi8+mWm3
- FPzFFEEBj9tJWM8rFeHp4nbYn5xIVbat7UStMbbX8Z5fzcaxKGDwt/L7RWzg4C+HnLa+u2Fh5jL
- CVCu6M53qfIzM2/cFeC/tAZqIA/Gt7BH0vA8Tw2iJ06s7U/kkK4zO6l3j5z2r0KFrkqUz0EF+NZ
- nGCvGpY3nmLdL6ld/Jsiv7z8lO9kyaJMvwYrK60rmEB0GtlG8Ljiguul3XGp+wuHKp8Pos+W+A8
- wkyJj2HhEr6euF8D+a700DQHlFoKeCqbJfUyvgG9GdiVI/YzRVJ+luH2WIgAwpEY9w==
-X-Google-Smtp-Source: AGHT+IGrcKR6B3Exm0LtHPP187T7dWDBBKgPGrN9Vtom2CcgrwqLWb2fKGCP810XEysxncmzKv30+Q==
-X-Received: by 2002:a05:600c:510a:b0:434:f5c0:32b1 with SMTP id
- 5b1f17b1804b1-4392498f0c2mr130787835e9.15.1739220198176; 
- Mon, 10 Feb 2025 12:43:18 -0800 (PST)
+ bh=AZC1HEaPoraYEpey1ubDRQ5Kf2104vV3xZFjDQTDihc=;
+ b=aWg1mfwlPPMF5kZJ8MdDKGFAsSCPAMPIuf/LOZLL3I31FfNG4e35BjozZ82jEiIjvp
+ oJpCzTAUfhLtkzgSF8+g3GzEaNlwzmDNrunkVDhivErttbG6toGDJsTxzB1UGdncrIvi
+ Arz6tthgWwmYzpJUM26X5QdVUqYn+9GSqGL4CNBZn+SsiQzH/a2FTZpXsOLPtiiJnKeg
+ II+Vrt6jN3hhBj+lgA8DW1h1dnVxzUJm7ydMpmInlr+kvLt5fCDwsNN4i6iDw7ZboWZg
+ cFDFXHxCU2yGw6/yxy9CT12MPIYon6DFLsZTvNcE2x8yuxvCLTna9O6OUG4GxbET7Pqg
+ mdYw==
+X-Gm-Message-State: AOJu0YzHljqDDSSIGMiKmRXQvf0gN3Pjke1NWKzg3vZM32IZNUwrAbcK
+ Kz6D1UyWkh59XblyYgqIsYDiG28WZ1Z5CVuSu7z3+5kx2HHGOxPKxUEiQXLOrcy70LFykEdrqq2
+ sKiE=
+X-Gm-Gg: ASbGncs5lp9VhUBv5NcJ1oyRfD8Dq7OOC6UZkDRuQtHKquPyTcHphzQYAmRUHqFTTZ3
+ 2lwsxvcgPVz1dfuk0Dz77s7vf+lY119pkfjH1rtLVD0K3NqhkOsXfPHOzkvDQ8pFOvHr7d76ueV
+ hqR5HuZQsfSngznT5NDYsZqdbtvvEYJaAgtLFnuG2lfpkBrYFUMRfWGgIkmyC8JYy8n2/U+QjyP
+ z+//YrihO6/5DG/tG8hdfKshGEa5G6GHFONy6fr9zLE/+9YrGpPdSTN/qsNiATFzeSjjFKtoxKr
+ 6DtUQIfyfzcpavxiWGXVgHd6yEQipBVxCVnh4ZQSO3qKLjoAZQ/esDMdyWJqI4RpSg==
+X-Google-Smtp-Source: AGHT+IFERB7loWxLzcxYY6BMjWGcXa6YdFb/dx6OKiE3TFEzh0qR6VtbMevcU3k/DF8z8v21rjL9DA==
+X-Received: by 2002:a05:6000:400f:b0:38d:c9f2:c57e with SMTP id
+ ffacd0b85a97d-38dc9f2ccf2mr10364671f8f.32.1739220204046; 
+ Mon, 10 Feb 2025 12:43:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439471bf782sm30693655e9.39.2025.02.10.12.43.17
+ ffacd0b85a97d-38dd2ef7efesm8173837f8f.52.2025.02.10.12.43.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:43:17 -0800 (PST)
+ Mon, 10 Feb 2025 12:43:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alexander Graf <graf@amazon.com>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>
-Subject: [PULL 14/32] hw/display: Have RAMFB device inherit from
+Subject: [PULL 15/32] hw/i386: Have X86_IOMMU devices inherit from
  DYNAMIC_SYS_BUS_DEVICE
-Date: Mon, 10 Feb 2025 21:41:46 +0100
-Message-ID: <20250210204204.54407-15-philmd@linaro.org>
+Date: Mon, 10 Feb 2025 21:41:47 +0100
+Message-ID: <20250210204204.54407-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,37 +100,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the RAM FB device can be optionally plugged on the
-TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
+Do not explain why _X86_IOMMU devices are user_creatable,
+have them inherit TYPE_DYNAMIC_SYS_BUS_DEVICE, to explicit
+they can optionally be plugged on TYPE_PLATFORM_BUS_DEVICE.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alexander Graf <graf@amazon.com>
 Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250125181343.59151-6-philmd@linaro.org>
+Message-Id: <20250125181343.59151-7-philmd@linaro.org>
 ---
- hw/display/ramfb-standalone.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/i386/amd_iommu.c   | 2 --
+ hw/i386/intel_iommu.c | 2 --
+ hw/i386/x86-iommu.c   | 2 +-
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-index 6c35028965d..1be106b57f2 100644
---- a/hw/display/ramfb-standalone.c
-+++ b/hw/display/ramfb-standalone.c
-@@ -72,13 +72,12 @@ static void ramfb_class_initfn(ObjectClass *klass, void *data)
-     dc->vmsd = &ramfb_dev_vmstate;
-     dc->realize = ramfb_realizefn;
-     dc->desc = "ram framebuffer standalone device";
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 6b13ce894b1..e8e084c7cf8 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1687,8 +1687,6 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
+     dc->hotpluggable = false;
+     dc_class->realize = amdvi_sysbus_realize;
+     dc_class->int_remap = amdvi_int_remap;
+-    /* Supported by the pc-q35-* machine types */
 -    dc->user_creatable = true;
-     device_class_set_props(dc, ramfb_properties);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
+     device_class_set_props(dc, amdvi_properties);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index f366c223d0e..7fde0603bfe 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4871,8 +4871,6 @@ static void vtd_class_init(ObjectClass *klass, void *data)
+     dc->hotpluggable = false;
+     x86_class->realize = vtd_realize;
+     x86_class->int_remap = vtd_int_remap;
+-    /* Supported by the pc-q35-* machine types */
+-    dc->user_creatable = true;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->desc = "Intel IOMMU (VT-d) DMA Remapping device";
  }
+diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
+index fed34b2fcfa..5cdd165af0d 100644
+--- a/hw/i386/x86-iommu.c
++++ b/hw/i386/x86-iommu.c
+@@ -146,7 +146,7 @@ bool x86_iommu_ir_supported(X86IOMMUState *s)
  
- static const TypeInfo ramfb_info = {
-     .name          = TYPE_RAMFB_DEVICE,
+ static const TypeInfo x86_iommu_info = {
+     .name          = TYPE_X86_IOMMU_DEVICE,
 -    .parent        = TYPE_SYS_BUS_DEVICE,
 +    .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .instance_size = sizeof(RAMFBStandaloneState),
-     .class_init    = ramfb_class_initfn,
- };
+     .instance_size = sizeof(X86IOMMUState),
+     .class_init    = x86_iommu_class_init,
+     .class_size    = sizeof(X86IOMMUClass),
 -- 
 2.47.1
 
