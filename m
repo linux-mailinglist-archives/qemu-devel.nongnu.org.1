@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780F1A2E263
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A56D8A2E258
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:43:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thJxc-0007eT-JF; Sun, 09 Feb 2025 21:55:49 -0500
+	id 1thJjr-00005r-6r; Sun, 09 Feb 2025 21:41:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1thJxG-0007d1-Eu; Sun, 09 Feb 2025 21:55:26 -0500
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1thJxE-0001PG-U6; Sun, 09 Feb 2025 21:55:26 -0500
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-866eb01bde9so2495771241.0; 
- Sun, 09 Feb 2025 18:55:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739156123; x=1739760923; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KEPlvcFJyyyPg9V3qUeq2H44oh55V3PP51Q9CSm/qo4=;
- b=Mkp1uDquC21BuqzNnqEEzvT9MNLe5X6MKOU+/Lq8gseHQ7Wlqs+j7C3EzzwwkExnhx
- uFcposOx7b6rjLcj7fvSjnm4BVlq1nldwLkhhMTNsusqygmVgZawWHE7ZHQV9+fvzunP
- xsM6HXjeqyo5pyYTpaw1c59CXQMZiQPmSVrRX19gPdD32OSi8PGwv/1BwYY8ESfx7gPc
- AUT7KJncR7vPK77+O14iXgKzC6mg4CdnN+niX0r7mTKhZI2w/9iPzG0wLOS3zP7bmKUu
- KgRwVhUBYu2IU11JsUFphePyOUpTCz6ioWMcSkkD1SDAefudwI+Qwq8rz6/Lg7vTUqEL
- rHdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739156123; x=1739760923;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KEPlvcFJyyyPg9V3qUeq2H44oh55V3PP51Q9CSm/qo4=;
- b=W8eexFMWDi4TgvroAa3JyUnP0ayd7MmcP6yqQp4R8zn5JkDQpzgKzVjqAXLLbH7xAR
- Bm8blsWhbY5ndaqNMe+rah4w/lKOSz1tU99IopxvkUq8AWHeqn+2LskMAPpktV8pBL5r
- 4LchBaTVYKoLOAQkbXOXd9dOUw1tr6DW6ZVLabt4QQtjvwCN6jXZaCiK7d3LyyUumqD0
- 9ymLWwkaBo3pihGptOyYEduUv53mUfIgjhpZVrXYlts8nzhDtwyN928LVNSRLPjdNeL5
- jGKMHjAmzaST3qVUoqz0/s/SgCRTcn8hDUy2pvDVxN2ei8pYpIKL2N5iqM6o7XYPMvJA
- KO9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXMM2eBA8Ti9fkC904y06tfYZX3pIsZQpEdxY2KDEhUW/T93dmp5YyDf59LmtQPPzVppgQ0L3bjCukO@nongnu.org
-X-Gm-Message-State: AOJu0YwT8Bh0+gB6fWdI8zsmy3C5s1rL7pNXCsdMlKgPaNx7J5mhBdz0
- 828QlIbJ8FxB1UmcYFMEtkw3xG+0ehz87L8/TqJOfGGy40uMDG/Blix6epycwwaejF7tmWg+8bj
- RvKfeddJehSO9KtDYjuEsPcp62Jk=
-X-Gm-Gg: ASbGnctq6ACQM7EUkKyH9kx8WS8gorxDGU3xAalCPu1MiLIxY4oqJa9idMDimOztKSD
- B9dePE2u1OViUi/GjbOH9HkAQXvRcjKmxalvYX6RtvoEl03pEIbP/Vn8T2zK3do8kizadosloiS
- CaK8dfH7nT1a42mJiabQ64R2HKmg==
-X-Google-Smtp-Source: AGHT+IG+/yfWkHUGNF8Sdqv2ptBO6gc9KuzGQW5AtK0rDdwOL8mz0mJIAbTbDLEVuJLFeyUtgrV+jqFJlLfqByW4WCg=
-X-Received: by 2002:a05:6102:4414:b0:4af:e61d:e22f with SMTP id
- ada2fe7eead31-4ba85f90424mr9409532137.24.1739156123321; Sun, 09 Feb 2025
- 18:55:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thJjn-000052-QH; Sun, 09 Feb 2025 21:41:32 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thJjl-00087T-Ee; Sun, 09 Feb 2025 21:41:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739155289; x=1770691289;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=6Bhvn9P3OVdK6MCLTZFEyCeNu+b6OtofVuWnjBFpu38=;
+ b=it1Yp1PkaXr28Um2m8uF3BCcIQUGVHeV2QVhS64y8O+9eyPM0ly0efVh
+ JtPe/P9SyRr0XurXtV3HGtesIsR/vkY3Atl0zCntZLLTEWAuNhuXHQ6Qx
+ HRCnt2IyorhK1uTgy/Bc6dMMWyukTdMKlUyHrjJieDGCqnxAliHASU1Vp
+ grgTDVoEtrb+U6GUzzcQLN8uOkJFOaqZ2xthUoClNJ0flERfncTI6bR0H
+ bPqMsLMIoh0kTUXBjuq/6iXojvk2OdsLxFomukPVUvoEl+d2LW9/T0K7p
+ HgH4UsqekyEMRV1NOoYki2Q+ocg5bl2Ymc8TFWLzmm8JreVPMJkjQdpQb w==;
+X-CSE-ConnectionGUID: j+JpRMh/Qiethoaf5n6o4g==
+X-CSE-MsgGUID: QozZ+gjIQZS8L2nIpwdQvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351228"
+X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351228"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2025 18:41:24 -0800
+X-CSE-ConnectionGUID: 0Y7EAuuKRgyaXdUkLfx0tg==
+X-CSE-MsgGUID: zMS077icQmSTix4iFrcgWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938194"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:21 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 00/10] rust: Add HPET timer device
+Date: Mon, 10 Feb 2025 11:00:41 +0800
+Message-Id: <20250210030051.2562726-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250206-pmu_minor_fixes-v2-0-1bb0f4aeb8b4@rivosinc.com>
-In-Reply-To: <20250206-pmu_minor_fixes-v2-0-1bb0f4aeb8b4@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 10 Feb 2025 12:54:57 +1000
-X-Gm-Features: AWEUYZmIwcflzyh5bQuiuhXRX6VBW_PlqTJKgVIbNLN_ImC-HxOnRV_AjDx9pMg
-Message-ID: <CAKmqyKMuNS6kAytheSAwDXo1MEOvadi-0nXMOR9BRN_hKRnYEw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Minor mhpmevent related fixes
-To: Atish Patra <atishp@rivosinc.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, liwei1518@gmail.com, 
- zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
- dbarboza@ventanamicro.com, alistair.francis@wdc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.405,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,45 +83,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 6, 2025 at 7:59=E2=80=AFPM Atish Patra <atishp@rivosinc.com> wr=
-ote:
->
-> Here are two small fixes around mhpmevent encoding and reset value.
-> The first patch is picked from the platform specific event encoding
-> series[1].
->
-> [1] https://lore.kernel.org/qemu-devel/20241009-pmu_event_machine-v1-0-dc=
-bd7a60e3ba@rivosinc.com/
->
-> Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Hi folks,
 
-Thanks!
+This is Rust HPET normal patch series, and you can find the previous RFC
+at [1].
 
-Applied to riscv-to-apply.next
+This series is based on Paolo's rust-next branch at the commit
+43c0ef3bfb3b ("rust: vmstate: remove redundant link targets") along with
+another 2 more seperate patches:
 
-Alistair
+* https://lore.kernel.org/qemu-devel/20241205203721.347233-1-pbonzini@redhat.com/
+* https://lore.kernel.org/qemu-devel/20250121140121.84550-1-zhao1.liu@intel.com/
 
-> ---
-> Changes in v2:
-> - Replace GENMASK_ULL with MAKE_64BIT_MASK
-> - Applied RB/AB tags.
-> - Link to v1: https://lore.kernel.org/r/20250115-pmu_minor_fixes-v1-0-c32=
-388defb02@rivosinc.com
->
-> ---
-> Atish Patra (2):
->       target/riscv: Fix the hpmevent mask
->       target/riscv: Mask out upper sscofpmf bits during validation
->
->  target/riscv/cpu_bits.h | 5 ++---
->  target/riscv/pmu.c      | 2 +-
->  2 files changed, 3 insertions(+), 4 deletions(-)
-> ---
-> base-commit: 3f26a7a370c11c7dff68dabcccc19c4e0de901e4
-> change-id: 20250115-pmu_minor_fixes-7a2b8e3658e4
-> --
-> Regards,
-> Atish patra
->
->
+Overall, HPET in Rust maintains the same logic as the original C
+version, adhering to the Intel IA PC-HPET spec v1.0a [2]. While keeping
+the logic unchanged, it attempts to keep up with the current development
+progress of Rust for QEMU, leveraging the latest and ongoing Rust binding
+updates as much as possible, such as BqlCell / BqlRefCell, qom & qdev
+enhancements, irq binding, and more.
+
+Additionally, it introduces new bindings, including gpio_{in|out},
+memattrs, and timer.
+
+Welcome your comments and feedback!
+
+
+TODOs
+=====
+
+* Add more documentations for new bindings and HPET.
+* Live migration support for HPET.
+* address-spaces binding (for address_space_memory, address_space_stl_le).
+
+
+Introduction
+============
+
+.
+│ 
+...
+└── timer
+    ├── hpet
+    │   ├── Cargo.toml
+    │   ├── meson.build
+    │   └── src
+    │       ├── fw_cfg.rs
+    │       ├── hpet.rs
+    │       ├── lib.rs
+    ├── Kconfig
+    └── meson.build
+
+
+HPET emulation contains 2 parts:
+ * HPET device emulation:
+   - hpet.rs:
+     It includes basic operations for the HPET timer and HPET state
+     (which actually represents the HPET timer block).
+
+     Here, similar to the C implementation, it directly defines the
+     registers and bit shifts as const variables, without a complete
+     register space structure.
+
+     And, it implements various QEMU qdev/qom required traits for the
+     HPETState.
+
+ * Global HPET firmwrie configuration:
+   - fw_cfg.rs
+     In the C code, there is a variable hpet_fw_cfg (old name: hpet_cfg)
+     used to configure the number of HPET timer blocks and the basic
+     HPET firmware configuration. It is defined in .c file and is
+     referenced as extern in the .h file.
+
+     For the Rust HPET, fw_cfg.rs also implementes hpet_fw_cfg so that
+     the .h file can still reference it.
+
+
+Change Log
+==========
+
+Main changes since Patch v1:
+ * Reimplement InterruptSource::slice_as_ptr() by dereferring `slice[0]`.
+ * Ensure the callback parameter of input GPIO/timer is not none.
+ * Use Timer/TimerListGroup in Rust code instead of QEMUTimer/
+   QEMUTimerListGroup.
+ * Add MS/US/NS wrappers.
+ * Enable workspace's lint configurations in hpet's Cargo.toml.
+ * Add rust_version in Cargo.toml.
+ * Fix complaints from cargo (+nightly) doc/clippy/fmt (v1.84.0).
+ * Do `addr & !4` in timer's register read and write.
+ * Mask the timer N's register address with 0x1F (timer_and_addr()).
+ * Drop HPETClass.
+ * Fix a memory leak issue by not destroying the timer instance in
+   HPETTimer::del_timer().
+
+
+[1]: https://lore.kernel.org/qemu-devel/20250125125137.1223277-1-zhao1.liu@intel.com/
+[2]: https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/software-developers-hpet-spec-1-0a.pdf
+
+Thanks and Best Rgards,
+Zhao
+---
+Zhao Liu (10):
+  i386/fw_cfg: move hpet_cfg definition to hpet.c
+  rust/qdev: add the macro to define bit property
+  rust/irq: Add a helper to convert [InterruptSource] to pointer
+  rust: add bindings for gpio_{in|out} initialization
+  rust: add bindings for memattrs
+  rust: add bindings for timer
+  rust/timer/hpet: define hpet_fw_cfg
+  rust/timer/hpet: add basic HPET timer and HPETState
+  rust/timer/hpet: add qom and qdev APIs support
+  i386: enable rust hpet for pc when rust is enabled
+
+ configs/devices/i386-softmmu/default.mak |   1 +
+ hw/i386/fw_cfg.c                         |   6 +-
+ hw/i386/pc.c                             |   2 +-
+ hw/timer/Kconfig                         |   6 +-
+ hw/timer/hpet.c                          |  14 +-
+ include/hw/timer/hpet.h                  |   2 +-
+ meson.build                              |   7 +
+ rust/Cargo.lock                          |   8 +
+ rust/Cargo.toml                          |   1 +
+ rust/hw/Kconfig                          |   1 +
+ rust/hw/meson.build                      |   1 +
+ rust/hw/timer/Kconfig                    |   2 +
+ rust/hw/timer/hpet/Cargo.toml            |  18 +
+ rust/hw/timer/hpet/meson.build           |  18 +
+ rust/hw/timer/hpet/src/fw_cfg.rs         |  78 ++
+ rust/hw/timer/hpet/src/hpet.rs           | 890 +++++++++++++++++++++++
+ rust/hw/timer/hpet/src/lib.rs            |  18 +
+ rust/hw/timer/meson.build                |   1 +
+ rust/qemu-api/meson.build                |   1 +
+ rust/qemu-api/src/irq.rs                 |   5 +
+ rust/qemu-api/src/lib.rs                 |   1 +
+ rust/qemu-api/src/memory.rs              |  16 +-
+ rust/qemu-api/src/qdev.rs                |  59 +-
+ rust/qemu-api/src/timer.rs               |  98 +++
+ rust/qemu-api/src/zeroable.rs            |   7 +-
+ rust/wrapper.h                           |   3 +
+ tests/qtest/meson.build                  |   3 +-
+ 27 files changed, 1245 insertions(+), 22 deletions(-)
+ create mode 100644 rust/hw/timer/Kconfig
+ create mode 100644 rust/hw/timer/hpet/Cargo.toml
+ create mode 100644 rust/hw/timer/hpet/meson.build
+ create mode 100644 rust/hw/timer/hpet/src/fw_cfg.rs
+ create mode 100644 rust/hw/timer/hpet/src/hpet.rs
+ create mode 100644 rust/hw/timer/hpet/src/lib.rs
+ create mode 100644 rust/hw/timer/meson.build
+ create mode 100644 rust/qemu-api/src/timer.rs
+
+-- 
+2.34.1
+
 
