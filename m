@@ -2,148 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6B5A2F52F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 18:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957EAA2F534
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 18:26:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thXWi-0007cv-8L; Mon, 10 Feb 2025 12:24:56 -0500
+	id 1thXYP-00017B-OG; Mon, 10 Feb 2025 12:26:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thXWe-0007ZG-NB
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:24:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thXWc-0007v3-Fg
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:24:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739208288;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=eUI5zq619vWRI2CRs8FEGxGPSIMHfbnM9XVHX/eUdUU=;
- b=D9g20GEvXLNLSfIUgkMpLJNW//7PdyL5M6iKX1VDgLGkPawj6KSYSUMXKCKdN051pUS/td
- 9b5FTtGxn5HXq9Wih8K8zGn/XXwwVmy2OcMauuRVAVaN3b/+MFPOTsXi5tufdo4xOTP4DU
- AEUf6APfTBt84IDrW+DjNGmYGu27UME=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-CruiPQqlOGi3_xerl44X6Q-1; Mon, 10 Feb 2025 12:24:46 -0500
-X-MC-Unique: CruiPQqlOGi3_xerl44X6Q-1
-X-Mimecast-MFC-AGG-ID: CruiPQqlOGi3_xerl44X6Q
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-438e4e9a53fso34694175e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 09:24:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thXYK-00011F-1m
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:26:36 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thXYF-0008SB-4m
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:26:35 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-38dd93a6f0aso1302966f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 09:26:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739208389; x=1739813189; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BOtjWaSy+k4S4bmPs5ukM/TTeYEyXR1P84WmX/uBsKA=;
+ b=W0Fp2sbl9Ssr1mt+J8/hSAxnyRu1Kvv2HdQ/mHRbCa0Cw7xQS8EL7rAUhg6TY4nm3x
+ nDTtZGLItbzGYlMYZjhl/VcA9Q5a0uADttUIlh71kNzAsfsDlrC908Fe8v/+xIyZVcoh
+ HPjHVUw/3OITV5dQiiHJHuz8aNJAI2gJ76yWQmkjrliZQmLjfzjRt1uu6obKVB6ic48Q
+ LEhDtHWsJVuizI0Ef10rjtwmbenMbb/9Kx1qIgI/4qiqRaIj11UBpj0vN22067CUTfN5
+ XTZb05UObWjt2hrzxb424qwEzcR6WwbBJoc8SG6w+qwAGri6ez8XzFveXITaS/WKJp8/
+ 7oeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739208285; x=1739813085;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eUI5zq619vWRI2CRs8FEGxGPSIMHfbnM9XVHX/eUdUU=;
- b=XC8EzbEPy9PLZsaT95jetd86+NVcDhTxLW4v2/oRuqWAVoJ8Oo7QBOGZp5BtiTjmPd
- PCU7V6/KpcJZYeemIyPaeUoRo/kmueitE9hMKI1aSZZYhAH3s/T7ky0g8xcuWD2FmkRd
- g1uX+mLxszoeOlZgX2RglBn9bGp/UtnW4YKG5PFhbB0RtNcYY74k/AFXzt7neuPBswtV
- pC9GZ7AtXzGveOlSu4AbH57eBZ2E2AhzDIu+bR4AojYvX2qmu0j5ke917rUr3NXP7dLv
- fBw+kiV9OZ2OXwl3F4pYNMrQ28Yr+/DhWQmI2FKeohz1CwYQxHh4Pd83zLpPJZ5J6uBk
- ODYQ==
+ d=1e100.net; s=20230601; t=1739208389; x=1739813189;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BOtjWaSy+k4S4bmPs5ukM/TTeYEyXR1P84WmX/uBsKA=;
+ b=tTK1rFFpNWz2a+aDh4skBZj+fQrMwxLs/p3gnZybxaF3ZWF73IYXMHFZI7/4BrV+qY
+ JKJV5otiAjOoMWrfyMKWnQ6UkRrcRKPoKFMjDkiaLmSdNd5f8Yp2f+V8VLZqDi9q3X8q
+ C8vTunOz4uS39fIHCLGRBTT2wvLC50uqAKPQaW7jxrZHJu332VUhvrU5gHnKeqG3Dye2
+ VdMuJKaGim1KVqMv5E42EjFQDtxy6CX3TcpKD0XsHEogY8rrlHXD981rBWi6RSwBPeal
+ HUhVYTbxM66a7WDdxAIZL601HpuZdWIqWWIvREAZeV+wJEPHRjojhDFIYTK6AHG8eDuP
+ Pfmg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVmbm5WZZmA5KrRwwO5aNrOohfjzuoF09JegQ7EhtupiH4KeSL9DlF5JcKl3JyVx7drRCRgbBxqO2ev@nongnu.org
-X-Gm-Message-State: AOJu0YxP8WwqVuUpp4uVh0bOPqVQ+jDJwSLmSJI4oaDtejLxZxERG70Y
- TYwz9bO72iV0AJXTFpS9xwH1eYccOSQbQz61q+1meBCM0GbIbuIv+VKUugqrQr2XlFNK/TtDr0N
- hBTjk0EIeJFTwrZFfmLkLuGlR+15b74aTPYT7WNIWDtROjGPV7dXP
-X-Gm-Gg: ASbGncubP7BHYtCwZbl81zCXHjwlPsPttOtgONtxUgdbgMCh5kzS6fH5gW1C9GDYl5O
- aJpWW7QpD2r1fzoqqmDaoX91MCS/UFEQ4Q41XBEbGHDiU7GrJTTgYq76ZBeIGvigb7U3BNYwRwK
- k/TSiB0OprrchjpQYSxpsoSw7Ka6p+Q7LdOONcrl1gBWwd9CQV13KZprsIc/4/vUc0f0ztrkPBr
- SJGVThmJpdmFKQdre8ipyqm0gTs+5Oj4J8QUSW4i/A2Ys5hIleC53tlwvVx/tnltK1d1zXsqkjU
- JwzkDSnRIQkTJR1TShUzxwoa1TkIEKnpJwe7+wv8mVQ=
-X-Received: by 2002:a05:600c:3c9b:b0:436:f960:3428 with SMTP id
- 5b1f17b1804b1-439249c6e17mr132511945e9.29.1739208285290; 
- Mon, 10 Feb 2025 09:24:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYPqTm8YPRt5t5/GLix3H6SZHmbn6t6fiaAZlkr1eKC+W0HrfcvM1fXhA4DKz4NrXQ7atXDQ==
-X-Received: by 2002:a05:600c:3c9b:b0:436:f960:3428 with SMTP id
- 5b1f17b1804b1-439249c6e17mr132511715e9.29.1739208284885; 
- Mon, 10 Feb 2025 09:24:44 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:ecac:5b28:cd98:868a?
- ([2a01:e0a:280:24f0:ecac:5b28:cd98:868a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43946bff4d4sm28156075e9.3.2025.02.10.09.24.43
+ AJvYcCURKyILXtAidgRWI+r9K6CzLRO0JPq1FWIoP6rvnhj7lbd91tpFxYlPp3uXMLkU8Gwi0Qspq/kZn/RC@nongnu.org
+X-Gm-Message-State: AOJu0YwcLnH+xwySjARtffk1t5mcoCGP4DD823ds+vkkleObbhjWizbF
+ GGpN0b9efOead6XJCTlse14T3xDZubNuDjfl+FRsYkSf+Wo8ZYMTvC3wD6Ow5k8=
+X-Gm-Gg: ASbGnctxmRHGqudE2AGcQi1pFhqBcCbZFD+gQtQNOV2k3Rwl2AeTLbw6oXnDqpvH3CL
+ m6Whp4hQXRtRUCbhlhlBtNEJ1I7q5oZmw53qb46wIoXNcScEsgZkHa5FF3scuToS7qQPqvkKRew
+ +6U7Ru9Ig+uPLc5qVyLFUK/+Vf6V5E5ujW78XnNikqYTmptCA+JwuEFc1GG9P2oZKn7N0eOwAzg
+ K5MXbE3wxqC6h/tqQxqfQtkTX0pXVz7KcPZwofe21bnPDUTciLpmaBuZ9sqk6G64xylyO+vHqi1
+ Jbs7OgJonxpQEQMYZhdDZOAf0jbDVCjofMDvgr4wqiFdtjWmNlMl211eRfw=
+X-Google-Smtp-Source: AGHT+IF5JE9khO4Ucmju1BxaMXTk1QvlLwx98C3IIhMFy4ZwMtuVcN6z0KJguWWRQgj/PqXny593aA==
+X-Received: by 2002:a05:6000:2c1:b0:38d:d666:5448 with SMTP id
+ ffacd0b85a97d-38dd66656aemr9027728f8f.40.1739208389176; 
+ Mon, 10 Feb 2025 09:26:29 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38dd8dee385sm5700218f8f.61.2025.02.10.09.26.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Feb 2025 09:24:44 -0800 (PST)
-Message-ID: <36beb97e-ab1e-41f4-b9d0-75238d5faaa9@redhat.com>
-Date: Mon, 10 Feb 2025 18:24:43 +0100
+ Mon, 10 Feb 2025 09:26:28 -0800 (PST)
+Message-ID: <e67f8106-f741-4e81-a291-db06bfbedd7c@linaro.org>
+Date: Mon, 10 Feb 2025 18:26:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/33] vfio/migration: Add
- x-migration-load-config-after-iter VFIO property
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <11f12c43e098ac5e2466e456e8cf8936c54210dc.1738171076.git.maciej.szmigiero@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <11f12c43e098ac5e2466e456e8cf8936c54210dc.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: Re: [PATCH v2 3/3] hvf: arm: Implement and use
+ hvf_get_physical_address_range
+To: Danny Canter <danny_canter@apple.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: dirty@apple.com, rbolshakov@ddn.com, agraf@csgraf.de,
+ peter.maydell@linaro.org, pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ wangyanan55@huawei.com, zhao1.liu@intel.com
+References: <20240828111552.93482-1-danny_canter@apple.com>
+ <20240828111552.93482-4-danny_canter@apple.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240828111552.93482-4-danny_canter@apple.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,97 +104,328 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/30/25 11:08, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Hi Danny,
+
+On 28/8/24 13:15, Danny Canter wrote:
+> This patch's main focus is to use the previously added
+> hvf_get_physical_address_range to inform VM creation
+> about the IPA size we need for the VM, so we can extend
+> the default 36b IPA size and support VMs with 64+GB of
+> RAM. This is done by freezing the memory map, computing
+> the highest GPA and then (depending on if the platform
+> supports an IPA size that large) telling the kernel to
+> use a size >= for the VM. In pursuit of this a couple of
+> things related to how we handle the physical address range
+> we expose to guests were altered, but for an explanation of
+> what we were doing:
 > 
-> This property allows configuring whether to start the config load only
-> after all iterables were loaded.
-> Such interlocking is required for ARM64 due to this platform VFIO
-> dependency on interrupt controller being loaded first.
+> Today, to get the IPA size we were reading id_aa64mmfr0_el1's
+> PARange field from a newly made vcpu. Unfortunately, HVF just
+> returns the hosts PARange directly for the initial value and
+> not the IPA size that will actually back the VM, so we believe
+> we have much more address space than we actually do today it seems.
 > 
-> The property defaults to AUTO, which means ON for ARM, OFF for other
-> platforms.>
-> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> Starting in macOS 13.0 some APIs were introduced to be able to
+> query the maximum IPA size the kernel supports, and to set the IPA
+> size for a given VM. However, this still has a couple of issues
+> on < macOS 15. Up until macOS 15 (and if the hardware supported
+> it) the max IPA size was 39 bits which is not a valid PARange
+> value, so we can't clamp down what we advertise in the vcpu's
+> id_aa64mmfr0_el1 to our IPA size. Starting in macOS 15 however,
+> the maximum IPA size is 40 bits (if it's supported in the hardware
+> as well) which is also a valid PARange value so we can set our IPA
+> size to the maximum as well as clamp down the PARange we advertise
+> to the guest. This allows VMs with 64+ GB of RAM and should fix the
+> oddness of the PARange situation as well.
+
+Could you have a look at the following issue related to your patch?
+https://gitlab.com/qemu-project/qemu/-/issues/2800
+
+
+> 
+> Signed-off-by: Danny Canter <danny_canter@apple.com>
 > ---
->   hw/vfio/migration.c           | 25 +++++++++++++++++++++++++
->   hw/vfio/pci.c                 |  3 +++
->   include/hw/vfio/vfio-common.h |  1 +
->   3 files changed, 29 insertions(+)
+>   accel/hvf/hvf-accel-ops.c | 12 ++++++++-
+>   hw/arm/virt.c             | 31 +++++++++++++++++++++-
+>   target/arm/hvf/hvf.c      | 56 ++++++++++++++++++++++++++++++++++++++-
+>   target/arm/hvf_arm.h      | 19 +++++++++++++
+>   target/arm/internals.h    | 19 +++++++++++++
+>   target/arm/ptw.c          | 15 +++++++++++
+>   6 files changed, 149 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index adfa752db527..d801c861d202 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -254,6 +254,31 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
->       return ret;
->   }
+> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+> index dbebf209f4..d60874d3e6 100644
+> --- a/accel/hvf/hvf-accel-ops.c
+> +++ b/accel/hvf/hvf-accel-ops.c
+> @@ -53,6 +53,7 @@
+>   #include "exec/address-spaces.h"
+>   #include "exec/exec-all.h"
+>   #include "gdbstub/enums.h"
+> +#include "hw/boards.h"
+>   #include "sysemu/cpus.h"
+>   #include "sysemu/hvf.h"
+>   #include "sysemu/hvf_int.h"
+> @@ -319,8 +320,17 @@ static int hvf_accel_init(MachineState *ms)
+>       int x;
+>       hv_return_t ret;
+>       HVFState *s;
+> +    int pa_range = 36;
+> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
 >   
-> +static bool vfio_load_config_after_iter(VFIODevice *vbasedev)
-> +{
-> +    if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_ON) {
-> +        return true;
-> +    } else if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_OFF) {
-> +        return false;
+> -    ret = hvf_arch_vm_create(ms, 0);
+> +    if (mc->hvf_get_physical_address_range) {
+> +        pa_range = mc->hvf_get_physical_address_range(ms);
+> +        if (pa_range < 0) {
+> +            return -EINVAL;
+> +        }
 > +    }
 > +
-> +    assert(vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_AUTO);
+> +    ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
+>       assert_hvf_ok(ret);
+>   
+>       s = g_new0(HVFState, 1);
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 62ee5f849b..b39c7924a0 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -66,6 +66,7 @@
+>   #include "hw/intc/arm_gicv3_its_common.h"
+>   #include "hw/irq.h"
+>   #include "kvm_arm.h"
+> +#include "hvf_arm.h"
+>   #include "hw/firmware/smbios.h"
+>   #include "qapi/visitor.h"
+>   #include "qapi/qapi-visit-common.h"
+> @@ -3030,7 +3031,35 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+>   
+>   static int virt_hvf_get_physical_address_range(MachineState *ms)
+>   {
+> -    return 0;
+> +    VirtMachineState *vms = VIRT_MACHINE(ms);
+> +
+> +    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
+> +    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
+> +
+> +    /* We freeze the memory map to compute the highest gpa */
+> +    virt_set_memmap(vms, max_ipa_size);
+> +
+> +    int requested_ipa_size = 64 - clz64(vms->highest_gpa);
 > +
 > +    /*
-> +     * Starting the config load only after all iterables were loaded is required
-> +     * for ARM64 due to this platform VFIO dependency on interrupt controller
-> +     * being loaded first.
-> +     *
-> +     * See commit d329f5032e17 ("vfio: Move the saving of the config space to
-> +     * the right place in VFIO migration").
+> +     * If we're <= the default IPA size just use the default.
+> +     * If we're above the default but below the maximum, round up to
+> +     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
+> +     * returns values that are valid ARM PARange values.
 > +     */
-> +#if defined(TARGET_ARM)
-> +    return true;
-> +#else
-> +    return false;
-> +#endif
-
-I would rather deactivate support on ARM and avoid workarounds.
-
-This can be done in routine vfio_multifd_transfer_supported() I believe,
-at the end of this series. A warning can be added to inform the user.
-
-Thanks,
-
-C.
-
-
-
+> +    if (requested_ipa_size <= default_ipa_size) {
+> +        requested_ipa_size = default_ipa_size;
+> +    } else if (requested_ipa_size <= max_ipa_size) {
+> +        requested_ipa_size = max_ipa_size;
+> +    } else {
+> +        error_report("-m and ,maxmem option values "
+> +                     "require an IPA range (%d bits) larger than "
+> +                     "the one supported by the host (%d bits)",
+> +                     requested_ipa_size, max_ipa_size);
+> +        return -1;
+> +    }
+> +
+> +    return requested_ipa_size;
+>   }
+>   
+>   static void virt_machine_class_init(ObjectClass *oc, void *data)
+> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+> index 19964d241e..6cea483d42 100644
+> --- a/target/arm/hvf/hvf.c
+> +++ b/target/arm/hvf/hvf.c
+> @@ -22,6 +22,7 @@
+>   #include <mach/mach_time.h>
+>   
+>   #include "exec/address-spaces.h"
+> +#include "hw/boards.h"
+>   #include "hw/irq.h"
+>   #include "qemu/main-loop.h"
+>   #include "sysemu/cpus.h"
+> @@ -297,6 +298,8 @@ void hvf_arm_init_debug(void)
+>   
+>   static void hvf_wfi(CPUState *cpu);
+>   
+> +static uint32_t chosen_ipa_bit_size;
+> +
+>   typedef struct HVFVTimer {
+>       /* Vtimer value during migration and paused state */
+>       uint64_t vtimer_val;
+> @@ -839,6 +842,16 @@ static uint64_t hvf_get_reg(CPUState *cpu, int rt)
+>       return val;
+>   }
+>   
+> +static void clamp_id_aa64mmfr0_parange_to_ipa_size(uint64_t *id_aa64mmfr0)
+> +{
+> +    uint32_t ipa_size = chosen_ipa_bit_size ?
+> +            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
+> +
+> +    /* Clamp down the PARange to the IPA size the kernel supports. */
+> +    uint8_t index = round_down_to_parange_index(ipa_size);
+> +    *id_aa64mmfr0 = (*id_aa64mmfr0 & ~R_ID_AA64MMFR0_PARANGE_MASK) | index;
 > +}
 > +
->   static int vfio_save_device_config_state(QEMUFile *f, void *opaque,
->                                            Error **errp)
+>   static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
 >   {
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index ab17a98ee5b6..83090c544d95 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3377,6 +3377,9 @@ static const Property vfio_pci_dev_properties[] = {
->                       VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
->       DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
->                               vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
-> +    DEFINE_PROP_ON_OFF_AUTO("x-migration-load-config-after-iter", VFIOPCIDevice,
-> +                            vbasedev.migration_load_config_after_iter,
-> +                            ON_OFF_AUTO_AUTO),
->       DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
->                        vbasedev.migration_events, false),
->       DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 0c60be5b15c7..153d03745dc7 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -133,6 +133,7 @@ typedef struct VFIODevice {
->       bool no_mmap;
->       bool ram_block_discard_allowed;
->       OnOffAuto enable_migration;
-> +    OnOffAuto migration_load_config_after_iter;
->       bool migration_events;
->       VFIODeviceOps *ops;
->       unsigned int num_irqs;
-> 
+>       ARMISARegisters host_isar = {};
+> @@ -882,6 +895,8 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>       r |= hv_vcpu_get_sys_reg(fd, HV_SYS_REG_MIDR_EL1, &ahcf->midr);
+>       r |= hv_vcpu_destroy(fd);
+>   
+> +    clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
+> +
+>       ahcf->isar = host_isar;
+>   
+>       /*
+> @@ -904,6 +919,30 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>       return r == HV_SUCCESS;
+>   }
+>   
+> +uint32_t hvf_arm_get_default_ipa_bit_size(void)
+> +{
+> +    uint32_t default_ipa_size;
+> +    hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
+> +    assert_hvf_ok(ret);
+> +
+> +    return default_ipa_size;
+> +}
+> +
+> +uint32_t hvf_arm_get_max_ipa_bit_size(void)
+> +{
+> +    uint32_t max_ipa_size;
+> +    hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
+> +    assert_hvf_ok(ret);
+> +
+> +    /*
+> +     * We clamp any IPA size we want to back the VM with to a valid PARange
+> +     * value so the guest doesn't try and map memory outside of the valid range.
+> +     * This logic just clamps the passed in IPA bit size to the first valid
+> +     * PARange value <= to it.
+> +     */
+> +    return round_down_to_parange_bit_size(max_ipa_size);
+> +}
+> +
+>   void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
+>   {
+>       if (!arm_host_cpu_features.dtb_compatible) {
+> @@ -931,8 +970,18 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
+>   
+>   hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+>   {
+> +    hv_return_t ret;
+>       hv_vm_config_t config = hv_vm_config_create();
+> -    hv_return_t ret = hv_vm_create(config);
+> +
+> +    ret = hv_vm_config_set_ipa_size(config, pa_range);
+> +    if (ret != HV_SUCCESS) {
+> +        goto cleanup;
+> +    }
+> +    chosen_ipa_bit_size = pa_range;
+> +
+> +    ret = hv_vm_create(config);
+> +
+> +cleanup:
+>       os_release(config);
+>   
+>       return ret;
+> @@ -1004,6 +1053,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+>                                 &arm_cpu->isar.id_aa64mmfr0);
+>       assert_hvf_ok(ret);
+>   
+> +    clamp_id_aa64mmfr0_parange_to_ipa_size(&arm_cpu->isar.id_aa64mmfr0);
+> +    ret = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_ID_AA64MMFR0_EL1,
+> +                              arm_cpu->isar.id_aa64mmfr0);
+> +    assert_hvf_ok(ret);
+> +
+>       return 0;
+>   }
+>   
+> diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+> index e848c1d27d..26c717b382 100644
+> --- a/target/arm/hvf_arm.h
+> +++ b/target/arm/hvf_arm.h
+> @@ -22,4 +22,23 @@ void hvf_arm_init_debug(void);
+>   
+>   void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+>   
+> +#ifdef CONFIG_HVF
+> +
+> +uint32_t hvf_arm_get_default_ipa_bit_size(void);
+> +uint32_t hvf_arm_get_max_ipa_bit_size(void);
+> +
+> +#else
+> +
+> +static inline uint32_t hvf_arm_get_default_ipa_bit_size(void)
+> +{
+> +    return 0;
+> +}
+> +
+> +static inline uint32_t hvf_arm_get_max_ipa_bit_size(void)
+> +{
+> +    return 0;
+> +}
+> +
+> +#endif
+> +
+>   #endif
+> diff --git a/target/arm/internals.h b/target/arm/internals.h
+> index 203a2dae14..c5d7b0b492 100644
+> --- a/target/arm/internals.h
+> +++ b/target/arm/internals.h
+> @@ -450,6 +450,25 @@ static inline void update_spsel(CPUARMState *env, uint32_t imm)
+>    */
+>   unsigned int arm_pamax(ARMCPU *cpu);
+>   
+> +/*
+> + * round_down_to_parange_index
+> + * @bit_size: uint8_t
+> + *
+> + * Rounds down the bit_size supplied to the first supported ARM physical
+> + * address range and returns the index for this. The index is intended to
+> + * be used to set ID_AA64MMFR0_EL1's PARANGE bits.
+> + */
+> +uint8_t round_down_to_parange_index(uint8_t bit_size);
+> +
+> +/*
+> + * round_down_to_parange_bit_size
+> + * @bit_size: uint8_t
+> + *
+> + * Rounds down the bit_size supplied to the first supported ARM physical
+> + * address range bit size and returns this.
+> + */
+> +uint8_t round_down_to_parange_bit_size(uint8_t bit_size);
+> +
+>   /* Return true if extended addresses are enabled.
+>    * This is always the case if our translation regime is 64 bit,
+>    * but depends on TTBCR.EAE for 32 bit.
+> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+> index 278004661b..defd6b84de 100644
+> --- a/target/arm/ptw.c
+> +++ b/target/arm/ptw.c
+> @@ -96,6 +96,21 @@ static const uint8_t pamax_map[] = {
+>       [6] = 52,
+>   };
+>   
+> +uint8_t round_down_to_parange_index(uint8_t bit_size)
+> +{
+> +    for (int i = ARRAY_SIZE(pamax_map) - 1; i >= 0; i--) {
+> +        if (pamax_map[i] <= bit_size) {
+> +            return i;
+> +        }
+> +    }
+> +    g_assert_not_reached();
+> +}
+> +
+> +uint8_t round_down_to_parange_bit_size(uint8_t bit_size)
+> +{
+> +    return pamax_map[round_down_to_parange_index(bit_size)];
+> +}
+> +
+>   /*
+>    * The cpu-specific constant value of PAMax; also used by hw/arm/virt.
+>    * Note that machvirt_init calls this on a CPU that is inited but not realized!
 
 
