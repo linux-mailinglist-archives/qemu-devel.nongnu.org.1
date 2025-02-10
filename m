@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CB0A2E933
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF8DA2E932
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thQwi-0002PB-Nz; Mon, 10 Feb 2025 05:23:20 -0500
+	id 1thQwi-0002P9-GS; Mon, 10 Feb 2025 05:23:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQwg-0002Ok-Jc
+ id 1thQwg-0002Ow-SR
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQwf-0000N5-65
+ id 1thQwf-0000N7-D0
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1739182996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=79wQisxmrG4uGvWqFVzBGJF7Meflxb2NnqvI+vXjWx4=;
- b=RMRRAGNEJMVLwD3Oy/ruJbGYMsyZRo8AhI+bcDHK1MY4RTmBRCfXfqLnLK/rATH3fWew8A
- XMgxvdNSYwf9YzfRXab683gN9PW3OUwoBHoR2UKWz9sui2Zs4xAg1ElXbZhGqZl7b9aEGK
- bcwGGmLLdCBrvah4hBpqLkzjmWGPRuo=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZIZqG/E9D5i5Jo+tlmoRFu4ynuvOisUz6AS8Y0OYPXQ=;
+ b=SNpxUiPYkyoZbynHnyflZdGEamUJpm4IeI0cNVV1azwuS+Ok/oKDUmCFQxc71T3AKLzx9l
+ A+WASQaJkEhQ7UsMz2xD4e1ksLh8m/XsJ24q7e4HWss0C75xjq6VWxZIc4QiTC0bVb38bM
+ LJJHoxHWSxGZJP1Uahv+g7gZwbLrfys=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-193-MPZhp_wmOFGnO9yN2j8ywg-1; Mon, 10 Feb 2025 05:23:12 -0500
-X-MC-Unique: MPZhp_wmOFGnO9yN2j8ywg-1
-X-Mimecast-MFC-AGG-ID: MPZhp_wmOFGnO9yN2j8ywg
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ab77dd2c243so420376066b.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:12 -0800 (PST)
+ us-mta-657-GFtZs3FAO8G7UiL31x_gxQ-1; Mon, 10 Feb 2025 05:23:15 -0500
+X-MC-Unique: GFtZs3FAO8G7UiL31x_gxQ-1
+X-Mimecast-MFC-AGG-ID: GFtZs3FAO8G7UiL31x_gxQ
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5de909cf05dso97995a12.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739182991; x=1739787791;
+ d=1e100.net; s=20230601; t=1739182993; x=1739787793;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=79wQisxmrG4uGvWqFVzBGJF7Meflxb2NnqvI+vXjWx4=;
- b=WoAL0Y3GEJxH+iqrWi6lieeaT9rXORkzjUXCXpwTVurC33aRRSAM8FjgdSAgScMYEu
- BaPLdkeJXwJXiJz+mf3WiBQGSs+kSg4V1uF5NLS+ANBc/O0sElrWsD0C6xBwCge7DsJV
- oS8DVRALgR4IejwBhAoh9fLquskYR59w9DdSJ4eIESCKGT5Aa87l6FdqRxaEhT4rDFNC
- iHNElhOzwDTuFV/Mp0okroEamUMDFGMMt6wynaX2eLrX9bpUCVo5r9yCuZzFoiL3s2iJ
- n2sq53Ixgj9tPrRkuim+M7CDpgEFyKGrjiil1g3noHiGVuAqbWBDc5FJnQS1HQLd438N
- 51VQ==
-X-Gm-Message-State: AOJu0YxPhJ2PtHPgc4fsHjURxgmzRNTGr9MButzS6z6llP7ADS4dKdWC
- /jknziBYiW/wWRB1SQHiXCJT/0FCieYy+dchYcvkQGFYcsTWgkngcNMJSNNi7dy8ESUMSwKvayB
- sNuw/FItzEAxeAJJwi4cp6l2qj88qVULQmIbTimQK0LhcB7ajC3J47Twl0gGK6G8u/lIO7g6zdq
- dihf8ZLRYvCiwCDrOv3G74v/nf2Yubg0xB85TsHW8=
-X-Gm-Gg: ASbGnculdpSjAIL0AOy6wSH9zSCWN5cFuboDdTxUnju52cdX4RK5McEOmSY2uuSWSEm
- FtR5BLSVICHpmvpiNnnZK1tl2rcy/EXHLTTnB+OPVGZO/c5Fl7v4yq1Slwfkbz0bS8KgwYIx3l/
- fuCBkdPPcugH4g6P/O5C+s7NMFNesebE/d1oIb5aAJl0ciH8f+i2ja7Tjck8ecV0mNVK3LDUicm
- dE1YetkAtIIR3TvKMM3tHlEBtSwRPV+II3u9MobImU23RRvsKts0QFmrpvXybbDn4E8mPVKM3Iu
- YcbZJA==
-X-Received: by 2002:a05:6402:3907:b0:5dc:8fb1:d43e with SMTP id
- 4fb4d7f45d1cf-5de4501882bmr13983998a12.12.1739182991224; 
- Mon, 10 Feb 2025 02:23:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEnXapblXN6zG9dxVW9fDKQHoLxx7wjPdumnzuYNDxDW8D4aEQCO2N+dPprArBnTw1RddiBAg==
-X-Received: by 2002:a05:6402:3907:b0:5dc:8fb1:d43e with SMTP id
- 4fb4d7f45d1cf-5de4501882bmr13983979a12.12.1739182990673; 
- Mon, 10 Feb 2025 02:23:10 -0800 (PST)
+ bh=ZIZqG/E9D5i5Jo+tlmoRFu4ynuvOisUz6AS8Y0OYPXQ=;
+ b=w3AFp4lT3qEtULmGAH+nc26RIwzG6tp/k/nOAGTs/PNp9RGJvnbQwqvdJvPMCBvB+p
+ yDevWLHTE1V+h5VfTtIi6400AVX6TOp+jyXa3h1OKi8kETMVC0fvCUH/71Y+/5OpnXMS
+ w+q6kD+S80Umf4kkyLNXZ0qQI/bA9WVID9ItLbLkJjhHvaKhPguDvExkr8kLl7vIYp6O
+ hS3HGiKi2GhAzI6c6KV6JAIm/Df4vmivHqxdsbE8KdQAOXLW7+P9XPBja58fxfJoErsd
+ Mvrho02wV/PgdqdbVM+4IPyULzBqKgYfhy2FLcDEphYXrf/ntmzWfaenZBtm7aI3lOFU
+ fezA==
+X-Gm-Message-State: AOJu0Yzzh36c/iHB2IBOTKkett3iVhREIUpbjNAfx2zFzPJ57tWaMbIl
+ VKz9XhzdyI+B98pQovs4qXib3+jscjB+KtPVS90g5x1waxYulhlRd9rIK8j7T2VYdvSoyj0fgAj
+ y/wnVxT5QnUwRg2VPgS7p3G0bwQwso+WsTddbVNboQ70xGWdX3Rv2n2YhdwuNrINqzLsQiFXmhS
+ OLE3aDG7EFS2wHDppwZvqt1W3w3c0D+neaTR3AztI=
+X-Gm-Gg: ASbGncuThhX/FfZeDttMOKNr/R9i02/yuuvnzgQhZcVF9xH6T4SQhEF5oFBo74OAZUR
+ hNARQfQBmWSRPPJSZNPRFy9rYj0ZskSys9N+ng3PAfBymGBK+ZvnON+yIAvULRd8X5JR1NIAYs6
+ Syl9uGO6tFekBoBiFjl5y9SssKgyvAPUylko5oWcA5vO3XlA+HS0wQs+jZE41IK7y5/wSuBzIuw
+ PfmwE6M2guNZqKYhAxVdUyi3kUObUrBoCkrRj72Tk7KJJJfmakT+FWJofQoyqZPl10a0QsrLMgZ
+ lTzSJg==
+X-Received: by 2002:a05:6402:4416:b0:5dc:c9ce:b022 with SMTP id
+ 4fb4d7f45d1cf-5de45005a55mr14306442a12.9.1739182992868; 
+ Mon, 10 Feb 2025 02:23:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEy5fL0lT9GaNDmcNc/RBQwZNb5t6rRPxWWdmRPF8SPHBew+QLNoiuPT0PLbkOvDfBnI/N+Kw==
+X-Received: by 2002:a05:6402:4416:b0:5dc:c9ce:b022 with SMTP id
+ 4fb4d7f45d1cf-5de45005a55mr14306425a12.9.1739182992438; 
+ Mon, 10 Feb 2025 02:23:12 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dcf9f6c1d6sm7520534a12.65.2025.02.10.02.23.09
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5de4c9b890dsm6032657a12.56.2025.02.10.02.23.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 02:23:09 -0800 (PST)
+ Mon, 10 Feb 2025 02:23:11 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 7/9] tcg/optimize: optimize TSTNE using smask and zmask
-Date: Mon, 10 Feb 2025 11:22:52 +0100
-Message-ID: <20250210102255.2555097-8-pbonzini@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 8/9] rust: pl011: use default set of lints
+Date: Mon, 10 Feb 2025 11:22:53 +0100
+Message-ID: <20250210102255.2555097-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250210102255.2555097-1-pbonzini@redhat.com>
 References: <20250210102255.2555097-1-pbonzini@redhat.com>
@@ -106,66 +106,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generalize the existing optimization of "TSTNE x,sign" and "TSTNE x,-1".
-This can be useful for example in the i386 frontend, which will generate
-tests of zero-extended registers against 0xffffffff.
+Being the first crate added to QEMU, pl011 has a rather restrictive
+Clippy setup.  This can be sometimes a bit too heavy on its suggestions,
+for example
 
-Ironically, on x86 hosts this is a very slight pessimization in the very
-case it's meant to optimize because
+error: this could be a `const fn`
+   --> hw/char/pl011/src/device.rs:382:5
+    |
+382 | /     fn set_read_trigger(&mut self) {
+383 | |         self.read_trigger = 1;
+384 | |     }
+    | |_____^
 
- brcond_i64 cc_dst,$0xffffffff,tsteq,$L1
+Just use the standard set that is present in rust/Cargo.toml, with
+just a small adjustment to allow upper case acronyms which are used
+for register names.
 
-(test %ebx, %ebx) is 1 byte smaller than
-
- brcond_i64 cc_dst,$0x0,eq,$L1
-
-(test %rbx, %rbx).  However, in general it is an improvement, especially
-if it avoids placing a large immediate in the constant pool.
-
+Reported-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tcg/optimize.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ rust/hw/char/pl011/src/lib.rs | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 8c6303e3afa..bca11cc427b 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -766,6 +766,7 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
-                                      TCGArg *p1, TCGArg *p2, TCGArg *pcond)
- {
-     TCGCond cond;
-+    TempOptInfo *i1;
-     bool swap;
-     int r;
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index e704daf6e3e..3c72f1221ff 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -12,16 +12,7 @@
+ //! See [`PL011State`](crate::device::PL011State) for the device model type and
+ //! the [`registers`] module for register types.
  
-@@ -783,19 +784,21 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
-         return -1;
-     }
+-#![deny(
+-    clippy::correctness,
+-    clippy::suspicious,
+-    clippy::complexity,
+-    clippy::perf,
+-    clippy::nursery,
+-    clippy::style
+-)]
+ #![allow(clippy::upper_case_acronyms)]
+-#![allow(clippy::result_unit_err)]
  
-+    i1 = arg_info(*p1);
-+
-     /*
-      * TSTNE x,x -> NE x,0
--     * TSTNE x,-1 -> NE x,0
-+     * TSTNE x,i -> NE x,0 if i includes all nonzero bits of x
-      */
--    if (args_are_copies(*p1, *p2) || arg_is_const_val(*p2, -1)) {
-+    if (args_are_copies(*p1, *p2) ||
-+        (arg_is_const(*p2) && (i1->z_mask & ~arg_info(*p2)->val) == 0)) {
-         *p2 = arg_new_constant(ctx, 0);
-         *pcond = tcg_tst_eqne_cond(cond);
-         return -1;
-     }
+ use qemu_api::c_str;
  
--    /* TSTNE x,sign -> LT x,0 */
--    if (arg_is_const_val(*p2, (ctx->type == TCG_TYPE_I32
--                               ? INT32_MIN : INT64_MIN))) {
-+    /* TSTNE x,i -> LT x,0 if i only includes sign bit copies */
-+    if (arg_is_const(*p2) && (arg_info(*p2)->val & ~i1->s_mask) == 0) {
-         *p2 = arg_new_constant(ctx, 0);
-         *pcond = tcg_tst_ltge_cond(cond);
-         return -1;
 -- 
 2.48.1
 
