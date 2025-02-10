@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB94A2F2AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:12:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C74D4A2F31D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:21:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thWNW-0006Xi-Hv; Mon, 10 Feb 2025 11:11:22 -0500
+	id 1thWNb-0006b8-A7; Mon, 10 Feb 2025 11:11:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWNE-0006TN-Em
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWNL-0006Tb-AY
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWN8-0000xP-Ji
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:01 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1thWNE-0000yF-W5
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:11:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739203857;
+ s=mimecast20190719; t=1739203861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+0QB5AyKI8O//NrGgSlcdLMDkfaI5DWeCBiIMDyzq8U=;
- b=DFf48Afpae+a/r8v9p2EKsfzhMXBXS59S36Li/Zja4xlStE04o9a/YEpsRI6d/HC3aJ9H7
- 7WjbOM/6Pmm3LswbOYhbs0s2HCaM7lTQvRmY31SR3DuSZaV/SpZ0STGx+5zwoPPupmzW7l
- 20cORLx/6fZFj//tk4zSL7Scsy0KtXI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=WBfOH5imhATpuMEU8VBlckuqMBnW0M1uEnt8wFgy4II=;
+ b=iys+HbmpZqETxIccwheYT+YoKHkfBUaY0C4Vlt7oWbBCvas0KDihAhrrAUs3L2OVDU2DHS
+ 9vyT5FyCMhuvLBVj4PpWogAjtZPQIvYtNtnMVq0nwJBIErudoRx1AsnFGMPYjdvSxgl+i6
+ lJzw9TOMwVG2Kyw2swfqtPSTK9tpXXM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-thrJCv_9PVWVt7jimwATpQ-1; Mon,
- 10 Feb 2025 11:10:56 -0500
-X-MC-Unique: thrJCv_9PVWVt7jimwATpQ-1
-X-Mimecast-MFC-AGG-ID: thrJCv_9PVWVt7jimwATpQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-DT9ToAiSPOyc4D-evMX9Hw-1; Mon,
+ 10 Feb 2025 11:10:58 -0500
+X-MC-Unique: DT9ToAiSPOyc4D-evMX9Hw-1
+X-Mimecast-MFC-AGG-ID: DT9ToAiSPOyc4D-evMX9Hw
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7FCD319560B2; Mon, 10 Feb 2025 16:10:55 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 462BA180087B; Mon, 10 Feb 2025 16:10:57 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.45.225.156])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 595E11956048; Mon, 10 Feb 2025 16:10:53 +0000 (UTC)
+ id 00EEC195608D; Mon, 10 Feb 2025 16:10:55 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 02/25] vpc: Read images exported from Azure correctly
-Date: Mon, 10 Feb 2025 17:10:11 +0100
-Message-ID: <20250210161034.76494-3-kwolf@redhat.com>
+Subject: [PULL 03/25] block: Improve blk_get_attached_dev_id() docstring
+Date: Mon, 10 Feb 2025 17:10:12 +0100
+Message-ID: <20250210161034.76494-4-kwolf@redhat.com>
 In-Reply-To: <20250210161034.76494-1-kwolf@redhat.com>
 References: <20250210161034.76494-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
 X-Spam_bar: ---
 X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,64 +81,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-It was found that 'qemu-nbd' is not able to work with some disk images
-exported from Azure. Looking at the 512b footer (which contains VPC
-metadata):
+Expose the method docstring in the header, and mention
+returned value must be free'd by caller.
 
-00000000  63 6f 6e 65 63 74 69 78  00 00 00 02 00 01 00 00  |conectix........|
-00000010  ff ff ff ff ff ff ff ff  2e c7 9b 96 77 61 00 00  |............wa..|
-00000020  00 07 00 00 57 69 32 6b  00 00 00 01 40 00 00 00  |....Wi2k....@...|
-00000030  00 00 00 01 40 00 00 00  28 a2 10 3f 00 00 00 02  |....@...(..?....|
-00000040  ff ff e7 47 8c 54 df 94  bd 35 71 4c 94 5f e5 44  |...G.T...5qL._.D|
-00000050  44 53 92 1a 00 00 00 00  00 00 00 00 00 00 00 00  |DS..............|
-00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-
-we can see that Azure uses a different 'Creator application' --
-'wa\0\0' (offset 0x1c, likely reads as 'Windows Azure') and QEMU uses this
-field to determine how it can get image size. Apparently, Azure uses 'new'
-method, just like Hyper-V.
-
-Overall, it seems that only VPC and old QEMUs need to be ignored as all new
-creator apps seem to have reliable current_size. Invert the logic and make
-'current_size' method the default to avoid adding every new creator app to
-the list.
-
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Message-ID: <20241212134504.1983757-3-vkuznets@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Reported-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241111170333.43833-2-philmd@linaro.org>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/vpc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ include/system/block-backend-io.h |  7 +++++++
+ block/block-backend.c             | 12 ++++++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/block/vpc.c b/block/vpc.c
-index cb0773914c..fb64ea6040 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -237,6 +237,7 @@ static void vpc_parse_options(BlockDriverState *bs, QemuOpts *opts,
-  *      'd2v '  :  current_size     Disk2vhd
-  *      'tap\0' :  current_size     XenServer
-  *      'CTXS'  :  current_size     XenConverter
-+ *      'wa\0\0':  current_size     Azure
-  *
-  *  The user can override the table values via drive options, however
-  *  even with an override we will still use current_size for images
-@@ -244,11 +245,8 @@ static void vpc_parse_options(BlockDriverState *bs, QemuOpts *opts,
-  */
- static bool vpc_ignore_current_size(VHDFooter *footer)
- {
--    return !!strncmp(footer->creator_app, "win ", 4) &&
--           !!strncmp(footer->creator_app, "qem2", 4) &&
--           !!strncmp(footer->creator_app, "d2v ", 4) &&
--           !!strncmp(footer->creator_app, "CTXS", 4) &&
--           !!memcmp(footer->creator_app, "tap", 4));
-+    return !strncmp(footer->creator_app, "vpc ", 4) ||
-+           !strncmp(footer->creator_app, "qemu", 4);
+diff --git a/include/system/block-backend-io.h b/include/system/block-backend-io.h
+index d174275a5c..ba8dfcc7d0 100644
+--- a/include/system/block-backend-io.h
++++ b/include/system/block-backend-io.h
+@@ -32,6 +32,13 @@ void blk_set_allow_aio_context_change(BlockBackend *blk, bool allow);
+ void blk_set_disable_request_queuing(BlockBackend *blk, bool disable);
+ bool blk_iostatus_is_enabled(const BlockBackend *blk);
+ 
++/*
++ * Return the qdev ID, or if no ID is assigned the QOM path,
++ * of the block device attached to the BlockBackend.
++ *
++ * The caller is responsible for releasing the value returned
++ * with g_free() after use.
++ */
+ char *blk_get_attached_dev_id(BlockBackend *blk);
+ 
+ BlockAIOCB *blk_aio_pwrite_zeroes(BlockBackend *blk, int64_t offset,
+diff --git a/block/block-backend.c b/block/block-backend.c
+index c93a7525ad..789fc6d4ea 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -1019,6 +1019,10 @@ DeviceState *blk_get_attached_dev(BlockBackend *blk)
+     return blk->dev;
  }
  
- static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
++/*
++ * The caller is responsible for releasing the value returned
++ * with g_free() after use.
++ */
+ static char *blk_get_attached_dev_id_or_path(BlockBackend *blk, bool want_id)
+ {
+     DeviceState *dev = blk->dev;
+@@ -1033,15 +1037,15 @@ static char *blk_get_attached_dev_id_or_path(BlockBackend *blk, bool want_id)
+     return object_get_canonical_path(OBJECT(dev)) ?: g_strdup("");
+ }
+ 
+-/*
+- * Return the qdev ID, or if no ID is assigned the QOM path, of the block
+- * device attached to the BlockBackend.
+- */
+ char *blk_get_attached_dev_id(BlockBackend *blk)
+ {
+     return blk_get_attached_dev_id_or_path(blk, true);
+ }
+ 
++/*
++ * The caller is responsible for releasing the value returned
++ * with g_free() after use.
++ */
+ static char *blk_get_attached_dev_path(BlockBackend *blk)
+ {
+     return blk_get_attached_dev_id_or_path(blk, false);
 -- 
 2.48.1
 
