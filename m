@@ -2,87 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E14BA2EFC7
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E114BA2EF63
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:11:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thUmC-0001KD-Cy; Mon, 10 Feb 2025 09:28:44 -0500
+	id 1thUVG-0006Ur-2P; Mon, 10 Feb 2025 09:11:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thUmA-0001JR-4v
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:28:42 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thUm8-0007Zo-DT
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:28:41 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-388cae9eb9fso2288486f8f.3
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:28:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739197718; x=1739802518; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=46xlxB1oYnlVOr8Ikw/9xJEJTlqoea2lckYTcdY7BAk=;
- b=NJH8xoW8IzuX7q6bbm6wwEoxEuXtNVhPmUb3PsO2pZ+wosR6hoX5gwVufYbdLrKKcx
- kdHySx1J/9sxC4r7A/c6yg22CbmirFVYSgBvXdHGwR/mXOdq1D0lkFa0F7Dk5BLv2dE/
- pOfX3PuaJnlSRO5jd+LDL5BcG+yNQPqoOgx0r9tYKi1i4h1hcRn14tD5t0qqLNKzgpTT
- 0pOchcvazDGXUCA9ulFPR+MPYokfR17QdTMfYd4W9SrhoXYT5Z7tECTv52qfjhDx/JRy
- 8Cqs0jgxX82N4ZX4hHFKxwvN9V1CtO/o8KcoMLXWpoLinlehgT0BWRsISRs1jUIBtwTW
- UvUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739197718; x=1739802518;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=46xlxB1oYnlVOr8Ikw/9xJEJTlqoea2lckYTcdY7BAk=;
- b=ZNEQEGgiVHpWURJS3oKKpk2yrIRJfsUjBF7eCExceTYuOzbR2neW47zBR1N72xK83f
- z+KRX9wcnxq86QZTa3m/zRI3HFjpvxGmRWP37Pzs/Nz22OzecrVEDQPYNMtkUeiHpJBp
- qGkX3+xgLG0FbTRLeFkj6pWYR8RSse/1xN1KpIlqtxlWi73W/1mvC4OM+yMSMv1nLt4J
- k4XDFkmAKE+2CnxW2eZ/bWWzsk800kxtDNzwcCGknlSaZy5ITsd54nGh940XtK33FuVk
- 6Q45MuN2mmV6m1B45x+JTNLx0l4fuLZOzWssZQOIjahfcZFRndG1VWYoTaXYMcimsah9
- bQLw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXDMWR2HtufDU7Emf/PHI80yoFFJhvtRfIxAFrT5KR+P1+g9KHM87+uvt8gwreX67q3NIoDm47LuM9H@nongnu.org
-X-Gm-Message-State: AOJu0Yx9gXzX3AtlYCh/Cus8lrFs9m+UVVXLrZrpfkoE6EPrXHI8E+2s
- qyxRWzlz9mkq9nwDzVvwrpA/b0sC4DTlC2f7tuYiOhF0pAafjKwvW6JNScx35rw=
-X-Gm-Gg: ASbGnctY6dCIv6iAsUeswo0guj2J2sBUJ6lflnuwqhb5i0qIauXPs8K9tTKQ0orBWM9
- I/dLzQir9mJQftvKekwTfM/p1E16bH+ckuTX2oCIikOGJxmYCJg6W8wuJkxXZtToJi6xzcdO8j8
- 8u6TyG/UQojkSQCvROZHGnqtjKaFJuuJ+V4W9gQsA67NVi65VfiVctjI2fT2WVPOvS9sEcfhy9S
- vyBUOd8SZdrKV7lC8iASrJlEYYlnQ1cSeYXlRJxhKLr17m/1luUJbduGigE8KmPtRSZALz8BThJ
- 1xKia/TmMFEW+HSqh9AN5hQiTba6OtWXL2MnVewi0v/VocTHmpbf8oajK/U=
-X-Google-Smtp-Source: AGHT+IF1zrXPMB25QQx027LokmCixU+2LiUKAQRo4aSgUiBmvMlxPMc6NS8lGD6xXfZt+xPqJ3I1HA==
-X-Received: by 2002:a5d:6da3:0:b0:38b:e919:4053 with SMTP id
- ffacd0b85a97d-38dc934062cmr9446684f8f.44.1739197718490; 
- Mon, 10 Feb 2025 06:28:38 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dbde1dfaesm12618097f8f.90.2025.02.10.06.28.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Feb 2025 06:28:37 -0800 (PST)
-Message-ID: <595c6e74-d74a-4a92-a44f-1f4270fab2d5@linaro.org>
-Date: Mon, 10 Feb 2025 15:28:37 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thUV3-0006Sx-V7; Mon, 10 Feb 2025 09:11:05 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1thUV1-0004qK-J2; Mon, 10 Feb 2025 09:11:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739196660; x=1770732660;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Dl0ZWBsR1/HSCOhMTXqjWRBpm2e6iP4RBwyicQrCF/A=;
+ b=OgjzTGcxmc/eTFqJgO6jGZ3q5k9lco293hBoOnVBmytF/cXP5h47IuP7
+ 1GgI0ioHs+WjzqAcaqon7YZZEqrQ11SwTQzcktXzgDEcJL+XUTjatFtAL
+ 20P1bSBpbcQzgj7zYSEH6iq6m5PoDg1IWAezB0aG0Q64zBq7qjJCJR4zz
+ 1DivholO52JbhxwXf8/XcZc+ibsyBNJGQp/dkKMBAhptb6/erQCquPsGG
+ 4PZur8CIxge0HUK1irbOWUiFNn1QR+97F5WbzZ1dZjre3F6FUbEXQm2bf
+ mEvEv3grkUnmCw/8see807Ynlwsq2xbUi2LCW4XSxrigc15BZVYu2YDi6 A==;
+X-CSE-ConnectionGUID: UMfm4CW/RGum0FSYqKlUaw==
+X-CSE-MsgGUID: pMpjtVjDSweyd0Rl9NNsiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="50010018"
+X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; d="scan'208";a="50010018"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2025 06:10:57 -0800
+X-CSE-ConnectionGUID: EDxs6woCSrKfJxIIHvx4iA==
+X-CSE-MsgGUID: ZgbMYkR0QLOARRgo62pN3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="117128900"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 10 Feb 2025 06:10:56 -0800
+Date: Mon, 10 Feb 2025 22:30:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 02/12] rust: qom: add object creation functionality
+Message-ID: <Z6oNgks2bNDRrIIz@intel.com>
+References: <20250207101623.2443552-1-pbonzini@redhat.com>
+ <20250207101623.2443552-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] vfio/pci: Replace "iommu_device" by "vIOMMU"
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>
-References: <20250130134346.1754143-1-clg@redhat.com>
- <20250130134346.1754143-3-clg@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250130134346.1754143-3-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207101623.2443552-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,15 +79,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/1/25 14:43, Cédric Le Goater wrote:
-> This is to be consistent with other reported errors related to vIOMMU
-> devices.
+On Fri, Feb 07, 2025 at 11:16:13AM +0100, Paolo Bonzini wrote:
+> Date: Fri,  7 Feb 2025 11:16:13 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 02/12] rust: qom: add object creation functionality
+> X-Mailer: git-send-email 2.48.1
 > 
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> The basic object lifecycle test can now be implemented using safe code!
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/vfio/pci.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/hw/char/pl011/src/device.rs | 23 +++++++++++++----------
+>  rust/qemu-api/src/prelude.rs     |  1 +
+>  rust/qemu-api/src/qom.rs         | 23 +++++++++++++++++++++--
+>  rust/qemu-api/tests/tests.rs     | 30 +++++++++++-------------------
+>  4 files changed, 46 insertions(+), 31 deletions(-)
+>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
