@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B310A2E935
+	by mail.lfdr.de (Postfix) with ESMTPS id 33654A2E934
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thQxh-0003e2-7J; Mon, 10 Feb 2025 05:24:21 -0500
+	id 1thQwY-0002Kr-Qs; Mon, 10 Feb 2025 05:23:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQxd-0003WP-3s
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:24:17 -0500
+ id 1thQwX-0002Kh-EP
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:09 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQxa-0000eR-Uv
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:24:16 -0500
+ id 1thQwV-0000LI-Sy
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739183054;
+ s=mimecast20190719; t=1739182986;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lf4c6h56xYCNge6XjLmVtzeXRglB5fuipR2Vwz8DQLs=;
- b=AE9LbxqAVMMKRvuOuXWU2YSR8rxoljDx1t1cG/a3xFbp362zk/iNAzlf5udfuUnuZk9id0
- TPc+u9JqKQ3hG3P3uvZNiDow/6cMLjL+xQY5cVwojyfOX6dUpOG+59zKg5+JViUkwWGxd5
- v7qaMA3iM3ixKIh1kvdkdO8tHU8E+Fc=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3kI2fmnmJgUGnjqtQ5jhxKS9I/PiFpAzsz1KC537irc=;
+ b=Phx5Een57gJ/MgMw8vgc4g5HnXgmE2CugK9IyX9z1TSjiC2BRj4D0KXAzGwle7dgLhCNrs
+ 4YqTPNx+NK6Z5PrycRzr7icPoH3TAHxh2flR2Fu7vnuEuGzMC168FLgPO5zxMW63pNSV72
+ 7HxSc5lsy+9144mMF+2Nb3VM4Jk+Acw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-205-HqWenfjxNEayASUbtnJhuw-1; Mon, 10 Feb 2025 05:23:02 -0500
-X-MC-Unique: HqWenfjxNEayASUbtnJhuw-1
-X-Mimecast-MFC-AGG-ID: HqWenfjxNEayASUbtnJhuw
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5de363763ddso2504501a12.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:02 -0800 (PST)
+ us-mta-14-hwpK8irYOrqIgdBkQBCEaQ-1; Mon, 10 Feb 2025 05:23:03 -0500
+X-MC-Unique: hwpK8irYOrqIgdBkQBCEaQ-1
+X-Mimecast-MFC-AGG-ID: hwpK8irYOrqIgdBkQBCEaQ
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ab7a3a033b4so129709366b.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739182980; x=1739787780;
+ d=1e100.net; s=20230601; t=1739182981; x=1739787781;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lf4c6h56xYCNge6XjLmVtzeXRglB5fuipR2Vwz8DQLs=;
- b=DL1YFZJ/J2y+2+wPY878wBH06/kJL5WU5DzV0q9P5FgDXSYfhA23cMh/grYz2ri2Pg
- JURX2RZKNXdgZ/NZ/0w1G9aJAl0EE6BKzFao/WDUTQ+Zs4umwfCfYSxW+92rAl1Ef4L2
- c54N2T2FkF+1/zbNRTBegDujaOtpfXOWa+6A3/cCdoCVq5yoReH3TL49CoVcZR/QMFbX
- Mqww+yQNKE7ijEp+sRXAXAucFBfmf+K4LIWHsDTxCKTqOi3vOnVcS/pYf4DA1z7vJ9Mi
- TSbd/vv5yTul7agP+7jIxV9oe2Y4Hp9rlEVcqmTZk1RayONu8Pcaqa4HyuDJhuYevt+J
- ckkw==
-X-Gm-Message-State: AOJu0Ywb6LCMbQXs3/SVNF4HEo8+MqNitewOUQBePRwlkQ3abI2OPUjE
- mSv/qKuxlOf7C6aziZ/9hwB50xd2vZ1pgis/ZnICi8pC+A8OOXa1HrsSBEGT7MuvHihnPhViPlH
- zodfbdqKRtmYyhN/L66aG2o/w1oVY/EetNz/fFQkWdGcmfYfuA9ubP9qLH7BKaV1APh+jlAtNNn
- LT2Dy6nnTrg4gASbvTBOx2FVrrM3y2Qq/gg7VdJRs=
-X-Gm-Gg: ASbGncssxkllZvDHqHYv2RDR9PeVKV+KdTRUDPQvA6CK+VyOW+Tpf3E/L3BnSqUTYnt
- MQOiDwMqIIc//l6sQkXlsZmDp25maf8x8jwmC733zJh3Sv80v/qVVxWM4007Dvo4hTbz2Futcra
- TxHSgg9hln+AwVpuBQpHOBmkXF+eXjZ136w4b9bwODv9GWh/5ms3iGpTWfgfwn8NceHZL6aJzSC
- O1NRoo7Eg4F2qMjuBDZyC+fW+NSXDeVzby/fMHhNknMSnxGY2IiuFANGele8+UDN63gh79a+p6K
- KGwUZA==
-X-Received: by 2002:a05:6402:321d:b0:5dc:cfc5:9324 with SMTP id
- 4fb4d7f45d1cf-5de4508084amr40832484a12.30.1739182980180; 
+ bh=3kI2fmnmJgUGnjqtQ5jhxKS9I/PiFpAzsz1KC537irc=;
+ b=Rxy8YNNyY/f6VG9qUpDXVPuJv/mzaxMdWW3Bf3OoFE1IDiB3tHbZJYYq1dsTEKVBHg
+ x51hX2oTaMBmkWiAjqPB+aVWXR0x5BduSUH0hwGU1VaeriOTJv30iqZyyXUhDB3Qip2v
+ RMkwyhN+fZmuHRBXCE8VW5WC90MCTDnQzxu5n7nk/mqXpD/COibaElGCXIB+o6hjJ2Rd
+ iB/9j2Rgf+/4UDUpZWe6r1Z1cnbJEbhhLv4Z+0Gh68hifQdP7iWXCJAgYNapf8PM86CQ
+ /Wc4gqHVXwNrH00bKOf3+G7Cvr9dh5YeOe4m4s93SU+coq4zYi/+EK83sZT2wRbB3bv7
+ euQQ==
+X-Gm-Message-State: AOJu0Yx4yVWoCOBT2muvFn7wgEsZ1nfRlEiY0Mb7eCFEvZRyPAu/SDbn
+ 3gSETE08adbk3UTC0LXT0qNrWxUyp1ETQlQARuY1DQKLrpB1fcGDXAxkklzZyMQD24lZtAYz6p5
+ elO/vppu5jU6bpfj9aL9uMycYRzXdQ7J+5XLAL4xKdTv3vGDo2kIjfexSsdFne343cVndXLtRSw
+ 3qCqcOCYKMLUBusEz1Hzx4SpmwxJmWVdGlLLXGXnA=
+X-Gm-Gg: ASbGnctcEURc6Wj+jFbRGPOBPrgBppwxlUlAJkF8jThXAAKp4XEaFhSuNRPlqzhX+EB
+ xmtm4+yZksFbV3HHfUBOLrytOWzsUhSZz91NGp3x4mRjaQahnLi7dmiYW/vC6aBlYhbpCTV8AHl
+ RtqewMYbbgnggsVoneFAlbes7skho68lUICaePELv3dihGTsXFcchyl+WmZIkk3K+kXrTSl/hqm
+ d10A8pYNI6AHjtj4S3vSSNfiDo7QumxEA75F1wjFp4+VOi9d61MYPnl9EVOlGdKaDnXvDqXdQdL
+ akGqkA==
+X-Received: by 2002:a17:907:1c95:b0:ab7:c94f:af87 with SMTP id
+ a640c23a62f3a-ab7c94fb336mr217388566b.16.1739182981306; 
+ Mon, 10 Feb 2025 02:23:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWBADpk9Vdt5YkfFx+tF4N7pRZWyo3pMmuCDIbXW1+Lyg05wle11lZt0QrgGTsG1WB4gn6/A==
+X-Received: by 2002:a17:907:1c95:b0:ab7:c94f:af87 with SMTP id
+ a640c23a62f3a-ab7c94fb336mr217386166b.16.1739182980771; 
  Mon, 10 Feb 2025 02:23:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE5zeQOjjAbeKNV++dYtQL0f8cINJzeWMgP5UImuqSnOVc43RuRy/2ph7ghH1CLKIaPgPjmrw==
-X-Received: by 2002:a05:6402:321d:b0:5dc:cfc5:9324 with SMTP id
- 4fb4d7f45d1cf-5de4508084amr40832421a12.30.1739182979520; 
- Mon, 10 Feb 2025 02:22:59 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab7ced6fe0dsm61951166b.179.2025.02.10.02.22.58
+ a640c23a62f3a-ab7809a2ec4sm770242466b.116.2025.02.10.02.23.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 02:22:58 -0800 (PST)
+ Mon, 10 Feb 2025 02:23:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/9] rust: remove unnecessary Cargo.toml metadata
-Date: Mon, 10 Feb 2025 11:22:46 +0100
-Message-ID: <20250210102255.2555097-2-pbonzini@redhat.com>
+Subject: [PULL 2/9] rust: include rust_version in Cargo.toml
+Date: Mon, 10 Feb 2025 11:22:47 +0100
+Message-ID: <20250210102255.2555097-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250210102255.2555097-1-pbonzini@redhat.com>
 References: <20250210102255.2555097-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -107,129 +106,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some items of Cargo.toml (readme, homepage, repository) are
-only present because of clippy::cargo warnings being enabled in
-rust/hw/char/pl011/src/lib.rs.  But these items are not
-particularly useful and would be all the same for all Cargo.toml
-files in the QEMU workspace.  Clean them up.
+Tell clippy the minimum supported Rust version for QEMU.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/Cargo.toml   |  3 ---
- rust/hw/char/pl011/README.md    | 31 -------------------------------
- rust/hw/char/pl011/src/lib.rs   | 14 ++++++--------
- rust/qemu-api-macros/Cargo.toml |  3 ---
- rust/qemu-api-macros/README.md  |  1 -
- 5 files changed, 6 insertions(+), 46 deletions(-)
- delete mode 100644 rust/hw/char/pl011/README.md
- delete mode 100644 rust/qemu-api-macros/README.md
+ rust/hw/char/pl011/Cargo.toml          | 1 +
+ rust/hw/char/pl011/src/device_class.rs | 1 -
+ rust/qemu-api-macros/Cargo.toml        | 1 +
+ rust/qemu-api/Cargo.toml               | 1 +
+ 4 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
-index 58f3e859f7e..2b4097864df 100644
+index 2b4097864df..f2296cad58b 100644
 --- a/rust/hw/char/pl011/Cargo.toml
 +++ b/rust/hw/char/pl011/Cargo.toml
-@@ -4,10 +4,7 @@ version = "0.1.0"
- edition = "2021"
- authors = ["Manos Pitsidianakis <manos.pitsidianakis@linaro.org>"]
- license = "GPL-2.0-or-later"
--readme = "README.md"
--homepage = "https://www.qemu.org"
- description = "pl011 device model for QEMU"
--repository = "https://gitlab.com/epilys/rust-for-qemu"
- resolver = "2"
+@@ -9,6 +9,7 @@ resolver = "2"
  publish = false
  keywords = []
-diff --git a/rust/hw/char/pl011/README.md b/rust/hw/char/pl011/README.md
-deleted file mode 100644
-index cd7dea31634..00000000000
---- a/rust/hw/char/pl011/README.md
-+++ /dev/null
-@@ -1,31 +0,0 @@
--# PL011 QEMU Device Model
--
--This library implements a device model for the PrimeCell® UART (PL011)
--device in QEMU.
--
--## Build static lib
--
--Host build target must be explicitly specified:
--
--```sh
--cargo build --target x86_64-unknown-linux-gnu
--```
--
--Replace host target triplet if necessary.
--
--## Generate Rust documentation
--
--To generate docs for this crate, including private items:
--
--```sh
--cargo doc --no-deps --document-private-items --target x86_64-unknown-linux-gnu
--```
--
--To include direct dependencies like `bilge` (bitmaps for register types):
--
--```sh
--cargo tree --depth 1 -e normal --prefix none \
-- | cut -d' ' -f1 \
-- | xargs printf -- '-p %s\n' \
-- | xargs cargo doc --no-deps --document-private-items --target x86_64-unknown-linux-gnu
--```
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index e2df4586bcc..e704daf6e3e 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -1,13 +1,12 @@
- // Copyright 2024, Linaro Limited
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
--//
--// PL011 QEMU Device Model
--//
--// This library implements a device model for the PrimeCell® UART (PL011)
--// device in QEMU.
--//
--#![doc = include_str!("../README.md")]
-+
-+//! PL011 QEMU Device Model
-+//!
-+//! This library implements a device model for the PrimeCell® UART (PL011)
-+//! device in QEMU.
-+//!
- //! # Library crate
- //!
- //! See [`PL011State`](crate::device::PL011State) for the device model type and
-@@ -18,7 +17,6 @@
-     clippy::suspicious,
-     clippy::complexity,
-     clippy::perf,
--    clippy::cargo,
-     clippy::nursery,
-     clippy::style
- )]
+ categories = []
++rust-version = "1.63.0"
+ 
+ [lib]
+ crate-type = ["staticlib"]
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index 8a157a663fb..dbef93f6cb3 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -12,7 +12,6 @@
+ 
+ use crate::device::{PL011Registers, PL011State};
+ 
+-#[allow(clippy::missing_const_for_fn)]
+ extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
+     let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
+     unsafe { state.as_ref().migrate_clock }
 diff --git a/rust/qemu-api-macros/Cargo.toml b/rust/qemu-api-macros/Cargo.toml
-index 5a27b52ee6e..b9b4baecddb 100644
+index b9b4baecddb..89dee1cfb39 100644
 --- a/rust/qemu-api-macros/Cargo.toml
 +++ b/rust/qemu-api-macros/Cargo.toml
-@@ -4,10 +4,7 @@ version = "0.1.0"
- edition = "2021"
- authors = ["Manos Pitsidianakis <manos.pitsidianakis@linaro.org>"]
- license = "GPL-2.0-or-later"
--readme = "README.md"
--homepage = "https://www.qemu.org"
- description = "Rust bindings for QEMU - Utility macros"
--repository = "https://gitlab.com/qemu-project/qemu/"
- resolver = "2"
+@@ -9,6 +9,7 @@ resolver = "2"
  publish = false
  keywords = []
-diff --git a/rust/qemu-api-macros/README.md b/rust/qemu-api-macros/README.md
-deleted file mode 100644
-index f60f54ac4be..00000000000
---- a/rust/qemu-api-macros/README.md
-+++ /dev/null
-@@ -1 +0,0 @@
--# `qemu-api-macros` - Utility macros for defining QEMU devices
+ categories = []
++rust-version = "1.63.0"
+ 
+ [lib]
+ proc-macro = true
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index 4aa22f31986..a51dd142852 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -12,6 +12,7 @@ resolver = "2"
+ publish = false
+ keywords = []
+ categories = []
++rust-version = "1.63.0"
+ 
+ [dependencies]
+ qemu_api_macros = { path = "../qemu-api-macros" }
 -- 
 2.48.1
 
