@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2EAA2F0A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA2CA2F0AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:02:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thVIB-0005mH-5j; Mon, 10 Feb 2025 10:01:47 -0500
+	id 1thVHw-0005cp-W2; Mon, 10 Feb 2025 10:01:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHh-0005Yp-Ho
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:20 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHh-0005Yo-5m
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHe-0004pW-Ug
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:17 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHe-0004pQ-K9
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1739199672;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hcdOCnBnUi5tjJ8Gbk7BytI6Y5QAZ+0M9Twxevyxdno=;
- b=RAYkoWgfQrbmGbWix/1FY6kS5nWanvm8GLSu1J40K+2IpMF4OnBLaf3Nsgoo7S88qKolk2
- xzFC0s+ZFcqU8V1JF9LXGEz6uEyV+68wIbAbbXC/8sjydeUB0Ieq5yzuomkJHUw95OnhvM
- zqQhHdKWFL2bSanuqNoDRqUbCT6UvFA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1nv72Qccu1FBLVSgXzjSvJzUKOptPPadwl1TMlr5q+Y=;
+ b=bXsZ8wlGS2eVQe6Nu8owYMboiRamen9Y76XITLLfMGllMHazsm8/Abx4VjmqD2pUX2Co9t
+ 5O6nTlg85SfmT4/48OQeDUwUTIK9zDHcFnmESVTaueAp2+sy/dOGhH/URqzUWP1cm0dX6I
+ R5KA1E96cyfMxzWIIjpcvzahOZtUyXw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-CFTXD8MqNeG6xDNr_8RzbA-1; Mon,
- 10 Feb 2025 10:01:11 -0500
-X-MC-Unique: CFTXD8MqNeG6xDNr_8RzbA-1
-X-Mimecast-MFC-AGG-ID: CFTXD8MqNeG6xDNr_8RzbA
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-Oy9NYwZNN8-Zi6vrdYqySg-1; Mon,
+ 10 Feb 2025 10:01:10 -0500
+X-MC-Unique: Oy9NYwZNN8-Zi6vrdYqySg-1
+X-Mimecast-MFC-AGG-ID: Oy9NYwZNN8-Zi6vrdYqySg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 34ECE1801A24; Mon, 10 Feb 2025 15:01:10 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D2FC51800987
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 724A919560A3; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 86D1630001AB
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AA7D621E691D; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
+ id AE2D021E6920; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL v2 2/8] qapi: Move and rename qapi/qmp/dispatch.h to
- qapi/qmp-registry.h
-Date: Mon, 10 Feb 2025 16:01:00 +0100
-Message-ID: <20250210150106.3924507-3-armbru@redhat.com>
+	Victor Toso <victortoso@redhat.com>
+Subject: [PULL v2 3/8] qapi: fix colon in Since tag section
+Date: Mon, 10 Feb 2025 16:01:01 +0100
+Message-ID: <20250210150106.3924507-4-armbru@redhat.com>
 In-Reply-To: <20250210150106.3924507-1-armbru@redhat.com>
 References: <20250210150106.3924507-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
@@ -85,155 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Victor Toso <victortoso@redhat.com>
 
-The general expectation is that header files should follow the same
-file/path naming scheme as the corresponding source file. There are
-various historical exceptions to this practice in QEMU, with one of
-the most notable being the include/qapi/qmp/ directory.
+As described in docs/devel/qapi-code-gen.rst line 998,
+there should be no space between "Since" and ":".
 
-include/qapi/qmp/dispatch.h corresponds mostly to qapi/qmp-registry.c.
-Move and rename it to include/qapi/qmp-registry.h.
-
-Now just qerror.h is left in include/qapi/qmp/.  Since it's deprecated
-& (slowly) getting eliminated anyway, it isn't worth moving.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Victor Toso <victortoso@redhat.com>
+Message-ID: <20241217091504.16416-1-victortoso@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20241118151235.2665921-3-armbru@redhat.com>
 ---
- docs/devel/qapi-code-gen.rst                    | 2 +-
- include/qapi/{qmp/dispatch.h => qmp-registry.h} | 0
- monitor/monitor-internal.h                      | 2 +-
- qga/guest-agent-core.h                          | 2 +-
- qapi/qmp-dispatch.c                             | 2 +-
- qapi/qmp-registry.c                             | 2 +-
- stubs/qmp-command-available.c                   | 2 +-
- stubs/qmp-quit.c                                | 2 +-
- system/qdev-monitor.c                           | 2 +-
- scripts/qapi/commands.py                        | 2 +-
- 10 files changed, 9 insertions(+), 9 deletions(-)
- rename include/qapi/{qmp/dispatch.h => qmp-registry.h} (100%)
+ qapi/cxl.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index 259d6b10c3..9fa94251b0 100644
---- a/docs/devel/qapi-code-gen.rst
-+++ b/docs/devel/qapi-code-gen.rst
-@@ -1855,7 +1855,7 @@ Example::
-     #ifndef EXAMPLE_QAPI_INIT_COMMANDS_H
-     #define EXAMPLE_QAPI_INIT_COMMANDS_H
- 
--    #include "qapi/qmp/dispatch.h"
-+    #include "qapi/qmp-registry.h"
- 
-     void example_qmp_init_marshal(QmpCommandList *cmds);
- 
-diff --git a/include/qapi/qmp/dispatch.h b/include/qapi/qmp-registry.h
-similarity index 100%
-rename from include/qapi/qmp/dispatch.h
-rename to include/qapi/qmp-registry.h
-diff --git a/monitor/monitor-internal.h b/monitor/monitor-internal.h
-index 72cab703eb..5676eb334e 100644
---- a/monitor/monitor-internal.h
-+++ b/monitor/monitor-internal.h
-@@ -28,7 +28,7 @@
- #include "chardev/char-fe.h"
- #include "monitor/monitor.h"
- #include "qapi/qapi-types-control.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- #include "qobject/json-parser.h"
- #include "qemu/readline.h"
- #include "system/iothread.h"
-diff --git a/qga/guest-agent-core.h b/qga/guest-agent-core.h
-index b4e7c52c61..a536d07d0d 100644
---- a/qga/guest-agent-core.h
-+++ b/qga/guest-agent-core.h
-@@ -13,7 +13,7 @@
- #ifndef GUEST_AGENT_CORE_H
- #define GUEST_AGENT_CORE_H
- 
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- #include "qga-qapi-types.h"
- 
- #define QGA_READ_COUNT_DEFAULT 4096
-diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
-index e24ba9f0b6..fa95fcceac 100644
---- a/qapi/qmp-dispatch.c
-+++ b/qapi/qmp-dispatch.c
-@@ -16,7 +16,7 @@
- #include "block/aio.h"
- #include "qapi/compat-policy.h"
- #include "qapi/error.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- #include "qobject/qdict.h"
- #include "qobject/qjson.h"
- #include "qapi/qobject-input-visitor.h"
-diff --git a/qapi/qmp-registry.c b/qapi/qmp-registry.c
-index 485bc5e6fc..ac989074ed 100644
---- a/qapi/qmp-registry.c
-+++ b/qapi/qmp-registry.c
-@@ -13,7 +13,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- 
- void qmp_register_command(QmpCommandList *cmds, const char *name,
-                           QmpCommandFunc *fn, QmpCommandOptions options,
-diff --git a/stubs/qmp-command-available.c b/stubs/qmp-command-available.c
-index 46540af7bf..8851faced1 100644
---- a/stubs/qmp-command-available.c
-+++ b/stubs/qmp-command-available.c
-@@ -1,5 +1,5 @@
- #include "qemu/osdep.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- 
- bool qmp_command_available(const QmpCommand *cmd, Error **errp)
- {
-diff --git a/stubs/qmp-quit.c b/stubs/qmp-quit.c
-index a3ff47f7bd..8fb523e905 100644
---- a/stubs/qmp-quit.c
-+++ b/stubs/qmp-quit.c
-@@ -1,6 +1,6 @@
- #include "qemu/osdep.h"
- #include "qapi/qapi-commands-control.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- 
- void qmp_quit(Error **errp)
- {
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 81fe531bd6..856c9e8c32 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -26,7 +26,7 @@
- #include "system/runstate.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-qdev.h"
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- #include "qobject/qdict.h"
- #include "qapi/qmp/qerror.h"
- #include "qobject/qstring.h"
-diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
-index f0aa13b5cf..74f341b2c7 100644
---- a/scripts/qapi/commands.py
-+++ b/scripts/qapi/commands.py
-@@ -346,7 +346,7 @@ def _begin_user_module(self, name: str) -> None:
-     def visit_begin(self, schema: QAPISchema) -> None:
-         self._add_module('./init', ' * QAPI Commands initialization')
-         self._genh.add(mcgen('''
--#include "qapi/qmp/dispatch.h"
-+#include "qapi/qmp-registry.h"
- 
- void %(c_prefix)sqmp_init_marshal(QmpCommandList *cmds);
- ''',
+diff --git a/qapi/cxl.json b/qapi/cxl.json
+index 9f65589bce..dd947d3bbc 100644
+--- a/qapi/cxl.json
++++ b/qapi/cxl.json
+@@ -460,7 +460,7 @@
+ #
+ # @unstable: For now this command is subject to change.
+ #
+-# Since : 9.1
++# Since: 9.1
+ ##
+ { 'command': 'cxl-add-dynamic-capacity',
+   'data': { 'path': 'str',
+@@ -539,7 +539,7 @@
+ #
+ # @unstable: For now this command is subject to change.
+ #
+-# Since : 9.1
++# Since: 9.1
+ ##
+ { 'command': 'cxl-release-dynamic-capacity',
+   'data': { 'path': 'str',
 -- 
 2.48.1
 
