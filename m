@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B0DA2EE26
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 14:34:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DD4A2EE30
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 14:35:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thTvS-0000nV-A8; Mon, 10 Feb 2025 08:34:21 -0500
+	id 1thTwT-0001kx-9E; Mon, 10 Feb 2025 08:35:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTtS-0008OW-Nn
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:32:16 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTtZ-0008RW-1L
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:32:24 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTtP-0006AL-UJ
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:32:09 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43946b5920cso4900475e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 05:32:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thTtV-0006BA-Je
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 08:32:15 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-38dcac27bcbso1796143f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 05:32:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739194326; x=1739799126; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739194330; x=1739799130; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tRDqbtanMlA5Asve4v+RadDNokWUtgjMp7wgM0p7V4g=;
- b=qhxDxgjvqblrHa7CRS/SgJ2Vd7oTFjEspKuvDAHduUNiZ/VWkn3wbMCwoCiL5GZLjl
- y9k5qxh3WdD+dR8Q8hFjxyBWLxJ9dZ0kIVwYGFfr7lDOlZM7HWKs32IkvxMr7uqSF08j
- TUvqJIaYgMRak0e9vR+n6NGWgn7IFV5pqX6iJZat2vx1LMa2sxIDLTxyLtpC3GUIut00
- phAf/UJI4IKjeSRx6BlYm0L0+MQnsMEqK8yZ+xTEtkO3IPvvz+Vq75WJ0jdywbWZZlTq
- WZ4mAWgFRvhBJkjPHcmbozyqylcYaIw2jzqAB0vlVHGymUnmN2Wwg9irhq0S6m7vxfDY
- uUBQ==
+ bh=GB1YwrY+qaOJi+5vuXWHaBJPFs12eogUHsnzqNis+TE=;
+ b=SKT1dJAGOxeUU8GwK+zq5DttnjtvMv3ESLokk0VsWXBpmHJQrJOaGf7eShzi5KCb30
+ QQ3mif9Z+VO4engvIGAJ2lE+AHoWHGa9MJyaE8JCHue57JkWdz6dkXm7SmBuO3mqScbE
+ hui2y1cYCJicfuRlq2DqZATMFFZ6d9GNFjuCGp9tcrKo4DxW9WwjsIaNsU41Ac+3fiDX
+ SdcovBvo/GAKSsncMvof7aW2cguLuAUp6R1SBTxDL9IFV0WNJGRadQ7t4LHr0pBb71ks
+ Xskfby7tx0EQHiAk7dDiYrPY5LaX4CdOsQmOVI81R65kjoz9UtPg1EqRrH5RTUCMIPb5
+ ufaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739194326; x=1739799126;
+ d=1e100.net; s=20230601; t=1739194330; x=1739799130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tRDqbtanMlA5Asve4v+RadDNokWUtgjMp7wgM0p7V4g=;
- b=oVnjvJfiDULQKsQ5KZHZmyNhCR4BT4Nr4p36P1ejDrBFCr4KWDxXzznmxCRcp3XG7T
- 5NDn4+NUTDrqqegANbKOdiLK6SGTrvHfP4bjJQg+e3yiwcKkJUPEwriZP9qZlfrwwOOn
- DYuxYo7iCGk1A1c16BIxfWF6ugpD9gjjb1Ou+Zd7V75H9nbuPbXKgFW9KxjpcYn8hNZ2
- ODk+9ogosWs7OIK1kRJMeCOyjpCYfj9F/uJxyIVfMEMce7ZSSGfOZm4SxEjxxPqreOzP
- 2NXNMYVHQllLOr5d7gZ67QSZ50Tx6YwZn5Q3x4WtHy1rkSBMCDzKk4gPyA02+pwWDYoy
- RJVw==
-X-Gm-Message-State: AOJu0Yxn4yx0aMwU/Nm9CtMCNpLJuNA5aG89n3vVnR7s2s/CjgDwfJb/
- +6MNkL7Q4ayKOCav7fL0m82KlKT5WB9Si1k1yZbq16JDBPZzCLD+WiF9716dww0lHtnrSDSKakJ
- D5bo=
-X-Gm-Gg: ASbGnctDD19oNMAWWt4guuysEIYjSyQO5qBFIqpIn5scoPoZSg4jv8oVoUgGAW75BTq
- 3+vw8jc252+HSHfnXtNCoqBGapyPeBA5NeJyNq1A/5EecOIELybnXnJfDLohaXaAoIb82Z1DO/N
- RjgwblZ1rdAH6iTf0sotPUYJ0IvJ7utcNPlLWdCj0xsSFF7li5s5YCYq4JIC7dwtKK77lbRHGHj
- H5UglIORqI/7NgjWeP8Xf70GNRwUpbpry1wBnYvTZ9vSXTB42QXKz6A/dosZSrkgo3dGJcNDMnR
- UuPGrbxEALkYeylPJ3NGIk1zYs23Ml7NMeZqJuKWoPxYghKT2m9EAohyH+o7LESr1WGlDAw=
-X-Google-Smtp-Source: AGHT+IFzsz880LtYmACqmfTNeXfWjUlEIDGbcMekFpIU7IYI0n1irn3TSeUvIgJArYyrk8VQD6EjLg==
-X-Received: by 2002:a05:600c:3849:b0:439:4a1f:cf8b with SMTP id
- 5b1f17b1804b1-4394a1fd551mr18132165e9.0.1739194325647; 
- Mon, 10 Feb 2025 05:32:05 -0800 (PST)
+ bh=GB1YwrY+qaOJi+5vuXWHaBJPFs12eogUHsnzqNis+TE=;
+ b=CzkQC456G14hjHLtmSeDr+GYXS4OVroZIhNJWm3vTjf+a8fUfYeDOXTt8CgPPgqWmR
+ bheDk3yY5o1NH/VdnXBwZkOyvmYqXI5mIP5v41jPY4suAuA81Uwy2oYKTzMhonrVkNC2
+ ij4xKaJ70RlzEPixjJsY44rxT39ef0E6J8dfktcNE0L0EU4QGwRO75YooB1jBO4S/JsS
+ 0cmnNPCwwcKkiQwd4Ljjg3wjuLxyFoZ9WjYVvAoy61tOkYMdn2ti74aU/yOLpNoLIMi7
+ 3BVoUJ2Q9B4Hnt4YIqFA9CV7hCOJBUq8kSELJN1T1sjapEDh6h9QQijYK2iWcvWA0zky
+ 62wQ==
+X-Gm-Message-State: AOJu0Yw32QgJZYwgfXPwavAVU/IPB1rdoTlPWIAVhQ0SHN7Dj+MWd4Ew
+ HzR49T3Iorq35Ll2kbdFkSkawtYHByAWa9+/BkMoIFe79cKAcSnWu1OaGcRMOnDhXaHiK/1oN15
+ GL2o=
+X-Gm-Gg: ASbGncvDuFe53fJE7MW5a4LXP9IS2A+QRHajEYiUe2aczTkTj70ESVTHQVHN/uu4EGc
+ Zy15YPli9D3x2iChnoMXZk7uFvdBD69v9k4OP+WjxQRcnNxEF1FeHcDHNaUztUP1Ek+Ty9bOMkH
+ zY2ZX3WyPICZnxQSoQANHYPLfTIaXd2fFdC09h93Ftwp/wEKeUCeUAiB/A/R/Y1TW6DtIF5UeVh
+ LDTB0+N/H2S9738U22AA8eNaLtccbVCo3CJ4vtydwN1nDJ9ASqQL5hehrATyWGLtimpZMJJfgdV
+ /nQolwpOKiOsvsld8iT8lHvuyPowl0MXsPihMQyj9Nac0kqNnz40CDfNyoaSdJbvleEr1hs=
+X-Google-Smtp-Source: AGHT+IEwaY8ks3EpUYDDrOnVv7M9eBEuaK3LethIYcHqxjjsP3KlSEaALUYVi8lxEQ2kaf0lMg2x0w==
+X-Received: by 2002:a5d:5f87:0:b0:38d:d222:ee70 with SMTP id
+ ffacd0b85a97d-38dd222ef6amr8289000f8f.20.1739194330442; 
+ Mon, 10 Feb 2025 05:32:10 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4390d94dd1esm183301635e9.16.2025.02.10.05.32.04
+ ffacd0b85a97d-38dbde1dfaesm12495372f8f.90.2025.02.10.05.32.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 05:32:05 -0800 (PST)
+ Mon, 10 Feb 2025 05:32:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 06/11] hw: Declare various const data as 'const'
-Date: Mon, 10 Feb 2025 14:31:29 +0100
-Message-ID: <20250210133134.90879-7-philmd@linaro.org>
+Subject: [PATCH v2 07/11] hw: Make class data 'const'
+Date: Mon, 10 Feb 2025 14:31:30 +0100
+Message-ID: <20250210133134.90879-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210133134.90879-1-philmd@linaro.org>
 References: <20250210133134.90879-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,94 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When the %data argument is not modified, we can declare it const.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/isa/vt82c686.c     | 2 +-
- hw/rtc/m48t59-isa.c   | 2 +-
- hw/rtc/m48t59.c       | 2 +-
- hw/sensor/tmp421.c    | 2 +-
- hw/usb/hcd-ehci-pci.c | 2 +-
- hw/usb/hcd-uhci.c     | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ hw/sd/sdhci-internal.h   | 2 +-
+ hw/sd/sdhci.c            | 2 +-
+ hw/sensor/emc141x.c      | 2 +-
+ hw/sensor/isl_pmbus_vr.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 6f44b381a5f..43bd67eeef2 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -224,7 +224,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
--    ViaPMInitInfo *info = data;
-+    const ViaPMInitInfo *info = data;
+diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
+index 5f3765f12d2..9f768c418e0 100644
+--- a/hw/sd/sdhci-internal.h
++++ b/hw/sd/sdhci-internal.h
+@@ -322,6 +322,6 @@ void sdhci_initfn(SDHCIState *s);
+ void sdhci_uninitfn(SDHCIState *s);
+ void sdhci_common_realize(SDHCIState *s, Error **errp);
+ void sdhci_common_unrealize(SDHCIState *s);
+-void sdhci_common_class_init(ObjectClass *klass, void *data);
++void sdhci_common_class_init(ObjectClass *klass, const void *data);
  
-     k->realize = via_pm_realize;
-     k->config_write = pm_write_config;
-diff --git a/hw/rtc/m48t59-isa.c b/hw/rtc/m48t59-isa.c
-index 38bc8dcf100..9c3855a3ef1 100644
---- a/hw/rtc/m48t59-isa.c
-+++ b/hw/rtc/m48t59-isa.c
-@@ -129,7 +129,7 @@ static void m48txx_isa_class_init(ObjectClass *klass, void *data)
- static void m48txx_isa_concrete_class_init(ObjectClass *klass, void *data)
- {
-     M48txxISADeviceClass *u = M48TXX_ISA_CLASS(klass);
--    M48txxInfo *info = data;
-+    const M48txxInfo *info = data;
- 
-     u->info = *info;
- }
-diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
-index c9bd6f878fe..3fb2f27d9d1 100644
---- a/hw/rtc/m48t59.c
-+++ b/hw/rtc/m48t59.c
-@@ -639,7 +639,7 @@ static void m48txx_sysbus_class_init(ObjectClass *klass, void *data)
- static void m48txx_sysbus_concrete_class_init(ObjectClass *klass, void *data)
- {
-     M48txxSysBusDeviceClass *u = M48TXX_SYS_BUS_CLASS(klass);
--    M48txxInfo *info = data;
-+    const M48txxInfo *info = data;
- 
-     u->info = *info;
- }
-diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
-index 82e604279c5..007f7cd018b 100644
---- a/hw/sensor/tmp421.c
-+++ b/hw/sensor/tmp421.c
-@@ -68,7 +68,7 @@ struct TMP421State {
- 
- struct TMP421Class {
-     I2CSlaveClass parent_class;
--    DeviceInfo *dev;
-+    const DeviceInfo *dev;
+ #endif
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 99dd4a4e952..1f45a77566c 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1542,7 +1542,7 @@ const VMStateDescription sdhci_vmstate = {
+     },
  };
  
- #define TYPE_TMP421 "tmp421-generic"
-diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
-index d410c38a8a2..e00316721ac 100644
---- a/hw/usb/hcd-ehci-pci.c
-+++ b/hw/usb/hcd-ehci-pci.c
-@@ -182,7 +182,7 @@ static void ehci_data_class_init(ObjectClass *klass, void *data)
+-void sdhci_common_class_init(ObjectClass *klass, void *data)
++void sdhci_common_class_init(ObjectClass *klass, const void *data)
  {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
      DeviceClass *dc = DEVICE_CLASS(klass);
--    EHCIPCIInfo *i = data;
-+    const EHCIPCIInfo *i = data;
  
-     k->vendor_id = i->vendor_id;
-     k->device_id = i->device_id;
-diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
-index 8528d493d63..0561a6d801a 100644
---- a/hw/usb/hcd-uhci.c
-+++ b/hw/usb/hcd-uhci.c
-@@ -1289,7 +1289,7 @@ void uhci_data_class_init(ObjectClass *klass, void *data)
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+diff --git a/hw/sensor/emc141x.c b/hw/sensor/emc141x.c
+index aeccd2a3c94..33c1bd330fd 100644
+--- a/hw/sensor/emc141x.c
++++ b/hw/sensor/emc141x.c
+@@ -265,7 +265,7 @@ static void emc141x_initfn(Object *obj)
+                         emc141x_set_temperature, NULL, NULL);
+ }
+ 
+-static void emc141x_class_init(ObjectClass *klass, void *data)
++static void emc141x_class_init(ObjectClass *klass, const void *data)
+ {
      DeviceClass *dc = DEVICE_CLASS(klass);
-     UHCIPCIDeviceClass *u = UHCI_CLASS(klass);
--    UHCIInfo *info = data;
-+    const UHCIInfo *info = data;
+     I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
+diff --git a/hw/sensor/isl_pmbus_vr.c b/hw/sensor/isl_pmbus_vr.c
+index 304a66ea8b0..c60282cfe77 100644
+--- a/hw/sensor/isl_pmbus_vr.c
++++ b/hw/sensor/isl_pmbus_vr.c
+@@ -233,7 +233,7 @@ static void raa228000_init(Object *obj)
+     isl_pmbus_vr_add_props(obj, flags, 1);
+ }
  
-     k->realize = info->realize ? info->realize : usb_uhci_common_realize;
-     k->exit = info->unplug ? usb_uhci_exit : NULL;
+-static void isl_pmbus_vr_class_init(ObjectClass *klass, void *data,
++static void isl_pmbus_vr_class_init(ObjectClass *klass, const void *data,
+                                     uint8_t pages)
+ {
+     PMBusDeviceClass *k = PMBUS_DEVICE_CLASS(klass);
 -- 
 2.47.1
 
