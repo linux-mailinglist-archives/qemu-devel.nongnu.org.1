@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6388A2EF8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:21:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B989FA2EF9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thUeA-0003nG-6Y; Mon, 10 Feb 2025 09:20:26 -0500
+	id 1thUgw-0006DW-Pz; Mon, 10 Feb 2025 09:23:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thUe5-0003mE-99
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:20:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thUe3-0006Tz-Ed
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:20:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739197218;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=unVBynzcTR69zAnyjlxu43GMU8HeDifodQGhYGd6rqw=;
- b=Rh5E2fomGEGegBIjimx9xC/Zti5yQbzpXSeF4RTA4k0SMPVzXJ4GKMJkoxfV3EQ0SLysj9
- Uu3rdVn25rnnwiXviljAql5+TGNb5l/TCz3CNt/lBEImLXsl9+zZfTQQP3JzdJzTqR1T/I
- gEY5vJ1VvxtsGIb6PMhGeAEfS+uBOfg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-sJBabcpNN-ONYNbtZMWzAw-1; Mon, 10 Feb 2025 09:20:16 -0500
-X-MC-Unique: sJBabcpNN-ONYNbtZMWzAw-1
-X-Mimecast-MFC-AGG-ID: sJBabcpNN-ONYNbtZMWzAw
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c051b1860eso162366585a.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:20:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1thUgp-0006Cr-4g
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:23:12 -0500
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1thUgm-0006po-TM
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:23:10 -0500
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-e5b296611d1so4324605276.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:23:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739197387; x=1739802187; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QPvyExTaD3QmjxtU+fytRH974XXHx/8qsCgK4X6TVI4=;
+ b=imtihAFZF5X8mH0bmoObS3UG9Zod5pf27IgrjNI1WXYh74RMBs6vQ96tqf0MGtYM+C
+ mVG6opDXOpn0r2C/R/derMYigvfikBrE55oKMwy37gIHcs9iheNHzJB+Dy/cI01PM4c9
+ V7NWOBkZh8JHxV5CcyLvwHUDaYi/u3/JNWspcJwWKKed8VmJBQgDU+Bf1PcQXsDjrZg4
+ mHww8mFhOLxv4W7HkRBFKFxUn1tqTAa1WcOHVBQ3G49o1SM91vlBf7iR/EO0NXBDHKar
+ NDXDD99bMHNMQCV3HvvDRpIxwUHsyiItC6Vz/Dj9mi5FG3rUh0M1qGqgK2qNNufMM8za
+ 8wIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739197216; x=1739802016;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=unVBynzcTR69zAnyjlxu43GMU8HeDifodQGhYGd6rqw=;
- b=LL0NJ2rkKcpQvfI/kSEtXrsTKmHzLhiXQggZVZv7olSgUBbC2JKloAsn6SLj9B3B02
- W84nNb6ActR3wpoFBh3ns1YFvfFwYbjL1YZ/M5ndcQ/F52APlouVym+biLQ+rSBd4AMS
- 3tr9hX4W6jVKPTbozwMiFYT3emRQdOunIKIvvbASWFrxPvF+RtLbNL0mXtnlQ7460zxN
- wi+TxmUBoHhroPAtkVFxVKkuZ4LuXAZIvxY+wbC3Ny2xyfm682p2V0XFsk5Qk/KAyri0
- vf3Xl7Dl0uuQpDfcieG6iiFSDAK3D5ggITUBC8ksJmP+605OW6cinlwbC7rvZ6PB4Yg/
- PnIQ==
-X-Gm-Message-State: AOJu0Yzy7AiwiwHsh04B76fsAb/SPLCz8V/uogaZu9ux1aoZ7EDilpYg
- mCKGp481i5pW8ry8TC84rOviEQfZpi+D3oIH+q2fAcFkolPYAGbnVN1K51PVPuQ+MNpRfPDrR//
- Z9d7ufovBM7NNDdTPkmqSfjzKpowakjPwNQCiW2TxP7Lb5L8K+ikt
-X-Gm-Gg: ASbGncvVgo4u+JkpJbdOln1J0ZRl+QK6FIkpDzFywba8AqLGa0oMbSgJS3jY/JkVU9X
- itzI0SIKBL3638U00Cn6PIC23k2DsydzfeICr/0kHTaWhBPHE75q2LlNnHMyecddl1vBIzEaivo
- hlM5aSf+4Zmuv/AJZbH3RGRwDTQie9o3NCsit2Sc5e+N6TROiy3c9UQoIL3fiJuE1TKPJ5VhQot
- weJ0Gh13fbJxiUE1Mm10SW3A6K+9J5RUYM26xox+cBAa2Cg3uRRMR/sWOc=
-X-Received: by 2002:a05:620a:414e:b0:7b6:d8da:9095 with SMTP id
- af79cd13be357-7c047bbb346mr1580651585a.13.1739197215750; 
- Mon, 10 Feb 2025 06:20:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF9ZlV083E0iuTlu+eCCsfWFq1ncy12QXCj+9sCkaTXUa0XoxL0iUHWlayOk7gIUXbhcoZt5g==
-X-Received: by 2002:a05:620a:414e:b0:7b6:d8da:9095 with SMTP id
- af79cd13be357-7c047bbb346mr1580648885a.13.1739197215323; 
- Mon, 10 Feb 2025 06:20:15 -0800 (PST)
-Received: from x1.local ([2604:7a40:2041:2b00::1000])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c041dec312sm528969585a.11.2025.02.10.06.20.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 06:20:14 -0800 (PST)
-Date: Mon, 10 Feb 2025 09:20:12 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [RFC PATCH v2 3/8] migration/multifd: Terminate the TLS connection
-Message-ID: <Z6oLHLSGxrQpEzQ-@x1.local>
-References: <20250207142758.6936-1-farosas@suse.de>
- <20250207142758.6936-4-farosas@suse.de> <Z6ZKUTNVcCVgIbjh@x1.local>
- <871pw9mxij.fsf@suse.de>
+ d=1e100.net; s=20230601; t=1739197387; x=1739802187;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QPvyExTaD3QmjxtU+fytRH974XXHx/8qsCgK4X6TVI4=;
+ b=ts7yyYKRu0vN3sr/PfWsnKbZrlcGlpPZjxqJxazs3B7ccTvhDSg7xCgZGBvE+oWvJ7
+ P4mWCv1JcWUSAIQAzxIC0x8N/t36qrila6ftbkyJtOh6yctRg6gXKJtsDm7qjbERSVLi
+ lABvqUmUqW4dHr9QzOvPphX7Wo20g9katPu1gGylAe3RL5Q9iQHroOKYOTTnQJuHPdC7
+ dFYuLWjir2z96etRK0ErqKBregvQBuiEJDVFO4iX7ez07z7ov5ECkvBhYPoud7tdRA8D
+ P8iLvVhRPS0ta8QvdasNpD0k58DHQPmFe3YBvhEnM/7xOZmopaPUF2T4MbEHkNKhvW3i
+ xwsg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV4BERQVKmVkrhObtJz0vZMzObNNnw7DnktSgUX9IN38Ku5RyVCtS9lCqUc+IYAY9vGwM2PYTxOgeby@nongnu.org
+X-Gm-Message-State: AOJu0YwZXFpPsGboNMICMLBQ1+PLM7A6bSrZHGKhVun1BbOjmZsn0SKC
+ fQ4CBRZQxG5s2wtC2amA0hZnrZ9166rJslr7ZoYrcwVJBeXTM9WspjFpC6fTOTVq6ulkgL3R17X
+ tpfTPVMWBtE+6v09KMg3TTuh5txbzklj1sNm/1/Tmm8lIgc1N
+X-Gm-Gg: ASbGncthluZ1TX7gcez/uR7gyYfw3oX5JsBjvxKf4geRdzVLg5U9bu6sB7x4PcLaVcN
+ pI58+pPVc/ouF8p7e9iU7PjvBn6oGYrjsLtuNd39NP/wCbAfMGldglcZe6dZfJIHkzYhdmVIj+A
+ ==
+X-Google-Smtp-Source: AGHT+IHkfHqDmMRDh9R13BLCfdAGB9/GHkKJjC//CmuHBjlvZYeQhY/43HAL1J+kBaUDtRa3gF21XMrIjex7RXMjfr4=
+X-Received: by 2002:a05:6902:218f:b0:e5b:4651:b5c6 with SMTP id
+ 3f1490d57ef6-e5b46c9a8b8mr12117740276.23.1739197387591; Mon, 10 Feb 2025
+ 06:23:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <871pw9mxij.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250206142307.921070-1-eric.auger@redhat.com>
+ <20250206142307.921070-5-eric.auger@redhat.com>
+ <CAFEAcA_LgrBRbafVQ0vLGPd8xG=wsLjWnKTJ2JSEREYUqgRQBQ@mail.gmail.com>
+ <7102d470-ac72-4c02-b8bc-20f1379a4843@redhat.com>
+ <CAFEAcA-XK5GwT0b_Ff-8fYnWcDgzaE-0Ei-YqDoXv-aXFGNXUQ@mail.gmail.com>
+ <Z6ZHTStx_S9ALdxt@x1.local>
+ <CAFEAcA8ovoGsQ9oEco88iw3iUy_3kBOUaYHL+oq5VF-i9xg4+A@mail.gmail.com>
+ <Z6oJzRCt_fJLfkmQ@x1.local>
+In-Reply-To: <Z6oJzRCt_fJLfkmQ@x1.local>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 10 Feb 2025 14:22:56 +0000
+X-Gm-Features: AWEUYZnWjovpjjUXcsKu10xZTHp8n_Z7dx_6vwaK5cZSlyL3OIC1egmzqup-5rE
+Message-ID: <CAFEAcA9640s-Eu7PHxJ-Xb5X38n-25pnUG+GxymsAWkJf8YfcA@mail.gmail.com>
+Subject: Re: [PATCH 4/5] hw/arm/smmuv3: Move reset to exit phase
+To: Peter Xu <peterx@redhat.com>
+Cc: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, mst@redhat.com, jasowang@redhat.com, imammedo@redhat.com, 
+ alex.williamson@redhat.com, clg@redhat.com, philmd@linaro.org, 
+ zhenzhong.duan@intel.com, ddutile@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,44 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 07, 2025 at 03:15:48PM -0300, Fabiano Rosas wrote:
-> >> +    for (i = 0; i < migrate_multifd_channels(); i++) {
-> >> +        MultiFDSendParams *p = &multifd_send_state->params[i];
-> >> +
-> >> +        /* thread_created implies the TLS handshake has succeeded */
-> >> +        if (p->tls_thread_created && p->thread_created) {
-> >> +            Error *local_err = NULL;
-> >> +            /*
-> >> +             * The destination expects the TLS session to always be
-> >> +             * properly terminated. This helps to detect a premature
-> >> +             * termination in the middle of the stream.  Note that
-> >> +             * older QEMUs always break the connection on the source
-> >> +             * and the destination always sees
-> >> +             * GNUTLS_E_PREMATURE_TERMINATION.
-> >> +             */
-> >> +            migration_tls_channel_end(p->c, &local_err);
-> >> +
-> >> +            if (local_err) {
-> >> +                /*
-> >> +                 * The above can fail with broken pipe due to a
-> >> +                 * previous migration error, ignore the error.
-> >> +                 */
-> >> +                assert(migration_has_failed(migrate_get_current()));
+On Mon, 10 Feb 2025 at 14:14, Peter Xu <peterx@redhat.com> wrote:
+>
+> On Fri, Feb 07, 2025 at 06:18:50PM +0000, Peter Maydell wrote:
+> > On Fri, 7 Feb 2025 at 17:48, Peter Xu <peterx@redhat.com> wrote:
+> > >
+> > > On Fri, Feb 07, 2025 at 04:58:39PM +0000, Peter Maydell wrote:
+> > > > (I wonder if we ought to suggest quiescing outstanding
+> > > > DMA in the enter phase? But it's probably easier to fix
+> > > > the iommus like this series does than try to get every
+> > > > dma-capable pci device to do something different.)
+> > >
+> > > I wonder if we should provide some generic helper to register vIOMMU reset
+> > > callbacks, so that we'll be sure any vIOMMU model impl that will register
+> > > at exit() phase only, and do nothing during the initial two phases.  Then
+> > > we can put some rich comment on that helper on why.
+> > >
+> > > Looks like it means the qemu reset model in the future can be a combination
+> > > of device tree (which resets depth-first) and the three phases model.  We
+> > > will start to use different approach to solve different problems.
 > >
-> > Considering this is still src, do we want to be softer on this by
-> > error_report?
-> >
-> > Logically !migration_has_failed() means it succeeded, so we can throw src
-> > qemu way now, that shouldn't be a huge deal. More of thinking out loud kind
-> > of comment..  Your call.
-> >
-> 
-> Maybe even a warning? If at this point migration succeeded, it's probably
-> best to let cleanup carry on.
+> > The tree of QOM devices (i.e. the one based on the qbus buses
+> > and rooted at the sysbus) resets depth-first, but it does so in
+> > three phases: first we traverse everything doing 'enter'; then
+> > we traverse everything doing 'hold'; then we traverse everything
+> > doing 'exit'. There *used* to be an awkward mix of some things
+> > being three-phase and some not, but we have now got rid of all
+> > of those so a system reset does a single three-phase reset run
+> > which resets everything.
+>
+> Right.  Sorry I wasn't very clear before indeed on what I wanted to
+> express.
+>
+> My understanding is the 3 phases reset, even if existed, was not designed
+> to order things like vIOMMU and devices that is already described by system
+> topology.  That's, IMHO, exactly what QOM topology wanted to achieve right
+> now on ordering device resets and the whole depth-first reset method would
+> make sense with it.
+>
+> So from that specific POV, it's a mixture use of both methods on ordering
+> of devices to reset now (rather than the order of reset process within a
+> same device, provided into 3 phases).  It may not be very intuitive when
+> someone reads about the two reset mechanisms, as one would naturally take
+> vIOMMU as a root object of any other PCIe devices under root complex, and
+> thinking the order should be guaranteed by QOM on reset already.  In
+> reality it's not.  So that's the part I wonder if we want to document.
 
-Yep, warning sounds good too.
+Yeah, I see what you mean. The issue here is that the iommu isn't
+actually a parent of the devices that access through it. This is
+true both in the "qbus/qdev bus tree" sense (where it is the PCI
+controller device that owns the PCI bus that the devices are on)
+and also in the QOM tree sense[*] (where usually the iommu and the
+PCI controller are both created by the machine or the SoC, I guess?).
+Instead iommus are separate devices that control data flow but
+aren't in a parent-child relationship with the devices on either
+side of that flow. There is a guarantee about reset ordering between
+bus parent/child (so the PCI controller resets before it resets
+the PCI bus that resets the PCI devices on the bus), but that doesn't
+help the iommu.
 
--- 
-Peter Xu
+[*] I have a vague idea that ideally we might want reset to be
+QOM-tree based rather than qbus-tree based. But getting there from
+here is non-trivial. And maybe what we really want is "objects,
+especially SoCs, that create children can define what their reset
+tree is, with the default being to reset all the QOM children".
+Lots of non-thought-through complexity here ;-)
 
+thanks
+-- PMM
 
