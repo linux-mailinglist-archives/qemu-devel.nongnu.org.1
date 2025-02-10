@@ -2,82 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A24A2EF44
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D29DA2EF7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:15:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thUSe-0005Qu-S8; Mon, 10 Feb 2025 09:08:32 -0500
+	id 1thUYr-0008I7-52; Mon, 10 Feb 2025 09:14:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thUSW-0005QR-IH
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:08:24 -0500
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thUSU-0004GR-O7
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:08:24 -0500
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-e545c1e8a15so3826095276.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:08:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739196501; x=1739801301; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xMydYF9T098euIszM7ik4JTCZxbWbtFNiTuzagikfbM=;
- b=tG+XLSG7m1DfbWVdi1ZOz/ybfbmNHh/SmbR5fsxcQTcGRNy9S/lPHsX9OJARp3Nfcv
- oeZfF9kH6uxPxbICLfmm/o40ElqrAhPF8avSJTRPb6ErRi8hP7kkGef8uVuvFCCOAK27
- +9SATE19/vwvDQep2w1GTGPQLWQ524j2jMf0Ek2F5iVn3AaHduk8As1NIKI6Wo/hhB7T
- sHfoVxn90QJNhBJsOImFyBHwzD85T4G4X5N24Djg0brqXEiMHT5mk22+fsQadi4KpHpe
- roRfgYL5onfawW8oJaGe1Uy9NXeZhV1gnpcANIHhgU7emn4dOQi+d0m3XaNX8GADGfcQ
- d6bQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thUYo-0008D4-NX
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:14:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thUYl-0005HL-As
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:14:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739196884;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2PMBRrivkjfUaWhRN1bT2/4VqOxJ9LmWyNMlDVwIqek=;
+ b=CGe+f8Ec+CldYB3iBvD/LSbFg2T0bzegN4WQu0//XiXc3/3QygDP+ffSYPJ8CpmDwrhNRc
+ 6EKZSiHHyNe3BCJTAaQaIanOIE8n/gnPWqcYGFuy5DRvb84U9qFUSpBT4kvYyQb+xfXvy2
+ yiP4D/SHrlqQGka57UaEAFc/QhiA1IM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-5mvi388YMKykDD23EgytDg-1; Mon, 10 Feb 2025 09:14:43 -0500
+X-MC-Unique: 5mvi388YMKykDD23EgytDg-1
+X-Mimecast-MFC-AGG-ID: 5mvi388YMKykDD23EgytDg
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6e44c1049c5so64471246d6.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:14:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739196501; x=1739801301;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xMydYF9T098euIszM7ik4JTCZxbWbtFNiTuzagikfbM=;
- b=RJHqwwVn0yg9hCNqjmC9A1PqmDArBIYXvrUvzJIMjtL5G5Q+2qVw5nOMP6fnmUMScb
- V6bZiykjVE69BP/Yq+tipko6Thjk6x4ZAnif3LVVd8RIPqxUkuQVTptUxNbcLjwAZhE5
- ENN2/on91pFDNH5pcJWTEErR/LWV5FfDq1Zm5gIQ+pxMnorwD1MwaVczl6AZpUJBhm4l
- Xeb+E5iLnPmEnZ/1wvcK4LZ8JFb2HraUQRyHENsIe1I0VBC4GvyaAr03Gi6DE5UVoxKX
- vP2UoYy7EC9P2WsYDkqJXs5JyeXMVDCp2nx/An6Ny0DjfPmWTEF9gh8zz5lX5opyZg/z
- OWPQ==
+ d=1e100.net; s=20230601; t=1739196882; x=1739801682;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2PMBRrivkjfUaWhRN1bT2/4VqOxJ9LmWyNMlDVwIqek=;
+ b=sGoZU4rXCYe41xvDYVUgDA1XPW9POYMRX9Q7dJPQI/N47tCgsKdXMJSAHbbYQrp9uZ
+ mYMhJKtGn982t+fXZ9HvZP29HC0radVtMq6b7whdO8J3k+F3n9fp+8z/niu4zeHP6UFr
+ ieU8Ki5Rqn67Y2UjOJ/AsmBiYuHjgz/VnWM3kFHwpZ6GEvri6bf7JK244kMLV87qENaV
+ +CPLnkR6HppoEOGYE4on+CZLkI/AqmjASDcT8Yno3jkhzjmbuivgm8/WVxGbmhKylu6m
+ DRHwveLjeJGi3ChrU1o7gYfx0+Kb91Ez8GBp1nVnzDoX7zt7ZGW1cpcsQx4bKHJUpy+k
+ oZ/Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzKK4n+jiOjUDolK2G3uWZVG5KyloK7Bsbd99TymgFCsa5PHmkqhwXY9pCaPpUU2B6H8fBAiLvExWY@nongnu.org
-X-Gm-Message-State: AOJu0Yzy/PgUFqYLslE6jl0GpM13Vg8DdYWYTDjI3vZ5QaE0m1Yk+SP2
- cnRRgOlXnOGwm6ZIRdE74s6d37NCtBBjyYHuT06K6ecHiUG8L08h/HpM67cgUpDUwQTPjK618U9
- jKgD+8gGSfzQKU7nv/QYLo2aXL7TBQnQebXJjZw==
-X-Gm-Gg: ASbGncsNYLMuRL7CF9HKPOdq7VcdJaOe2ybII/LuQ/oWgGaZxWEraUm+XuAGdpzvEwl
- RmQFOSghjiRwTNQqm8PRW9sVFgkCBg3TO+uwnKvwnrtmMAUhxyHws4426J7/zn56JZUa3BaosKw
- ==
-X-Google-Smtp-Source: AGHT+IGYtgvlbMteA8OshRfdmMAGYPL2A88mFNDr3gV4EUJ+eM89dSqUEk7RN5fsm6T9auPUoV71FAGHZlyC9MRddj4=
-X-Received: by 2002:a05:6902:170a:b0:e57:fbf0:5016 with SMTP id
- 3f1490d57ef6-e5b461c3280mr12034195276.22.1739196501416; Mon, 10 Feb 2025
- 06:08:21 -0800 (PST)
+ AJvYcCUDjvVvpX+UzqPUDLS49fR2+V91+IYphncsGL+f0eI7MpqQJpnVpxSrrnlQdpzFpxzic4j65cQ/dLi8@nongnu.org
+X-Gm-Message-State: AOJu0Yx6Mar+X8YC6q55NE1148xnbTkCp/qf+r0Que9PF57B6YESHJc3
+ cFf+6Uk5rLz8OsZpChEfOSozE12Um0g2x/u6axOye9wIiWYJ165nP9wtx22O9hTdvd6i/SvyDG6
+ mQPi8jpbmbANHn7H0HeZrAC/U8H08pUdxBeWN6gKt8wFmRU6nILeW
+X-Gm-Gg: ASbGnct8zQU7rqkiqOff991hB0Gc8971PBfmIowcSx3V1gjIrBeV4gu/j9ufptlyvNh
+ icxNVZ6jTzISFBb6BOdGpbBXuq8qoLpXwrSie5Q4L9wbRKXdPfi8NdhozdN7BtgyxnXl3BrZZbI
+ va11MaP9b64v6joGG1CnvmEeDLVs16sYWJ1RCFaRjjUOA9fhZ8ZaY/NPeT6ayf+rLpuZTsKkF40
+ gYOHJ2vXUTn9m1hQQkxf8r3qMKdhjL8ZLYIR2YSqS/7t1NfAK5DhWwK2Xg=
+X-Received: by 2002:a05:6214:da6:b0:6e1:a51d:e96f with SMTP id
+ 6a1803df08f44-6e4455d8764mr191864946d6.8.1739196882650; 
+ Mon, 10 Feb 2025 06:14:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF578KG49ExKzhFLwuhXfl7qQYrUiKFFVyFKYUOq1QjxhMUvAO9hnz9WFgLrLMEbKekPVWQUw==
+X-Received: by 2002:a05:6214:da6:b0:6e1:a51d:e96f with SMTP id
+ 6a1803df08f44-6e4455d8764mr191864556d6.8.1739196882208; 
+ Mon, 10 Feb 2025 06:14:42 -0800 (PST)
+Received: from x1.local ([2604:7a40:2041:2b00::1000])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e44da75f46sm32473116d6.58.2025.02.10.06.14.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Feb 2025 06:14:40 -0800 (PST)
+Date: Mon, 10 Feb 2025 09:14:37 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jasowang@redhat.com,
+ imammedo@redhat.com, alex.williamson@redhat.com, clg@redhat.com,
+ philmd@linaro.org, zhenzhong.duan@intel.com, ddutile@redhat.com
+Subject: Re: [PATCH 4/5] hw/arm/smmuv3: Move reset to exit phase
+Message-ID: <Z6oJzRCt_fJLfkmQ@x1.local>
+References: <20250206142307.921070-1-eric.auger@redhat.com>
+ <20250206142307.921070-5-eric.auger@redhat.com>
+ <CAFEAcA_LgrBRbafVQ0vLGPd8xG=wsLjWnKTJ2JSEREYUqgRQBQ@mail.gmail.com>
+ <7102d470-ac72-4c02-b8bc-20f1379a4843@redhat.com>
+ <CAFEAcA-XK5GwT0b_Ff-8fYnWcDgzaE-0Ei-YqDoXv-aXFGNXUQ@mail.gmail.com>
+ <Z6ZHTStx_S9ALdxt@x1.local>
+ <CAFEAcA8ovoGsQ9oEco88iw3iUy_3kBOUaYHL+oq5VF-i9xg4+A@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250210135804.3526943-1-peter.maydell@linaro.org>
-In-Reply-To: <20250210135804.3526943-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Feb 2025 14:08:10 +0000
-X-Gm-Features: AWEUYZlYGcA3eOXPzrsb89SM5uWj_mQXJ7tTOfjEylXNA0MUkyl1g0cGYJ_1XAY
-Message-ID: <CAFEAcA97TpSfRVpNOg025GMw3pduR+73gr2LDmncoCpTDfV3jg@mail.gmail.com>
-Subject: Re: [PATCH] util/qemu-timer.c: Don't warp timer from timerlist_rearm()
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8ovoGsQ9oEco88iw3iUy_3kBOUaYHL+oq5VF-i9xg4+A@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,28 +112,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Feb 2025 at 13:58, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Currently we call icount_start_warp_timer() from timerlist_rearm().
-> This produces incorrect behaviour, because timerlist_rearm() is
-> called, for instance, when a timer callback modifies its timer.  We
-> cannot decide here to warp the timer forwards to the next timer
-> deadline merely because all_cpu_threads_idle() is true, because the
-> timer callback we were called from (or some other callback later in
-> the list of callbacks being invoked) may be about to raise a CPU
-> interrupt and move a CPU from idle to ready.5A
+On Fri, Feb 07, 2025 at 06:18:50PM +0000, Peter Maydell wrote:
+> On Fri, 7 Feb 2025 at 17:48, Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Fri, Feb 07, 2025 at 04:58:39PM +0000, Peter Maydell wrote:
+> > > (I wonder if we ought to suggest quiescing outstanding
+> > > DMA in the enter phase? But it's probably easier to fix
+> > > the iommus like this series does than try to get every
+> > > dma-capable pci device to do something different.)
+> >
+> > I wonder if we should provide some generic helper to register vIOMMU reset
+> > callbacks, so that we'll be sure any vIOMMU model impl that will register
+> > at exit() phase only, and do nothing during the initial two phases.  Then
+> > we can put some rich comment on that helper on why.
+> >
+> > Looks like it means the qemu reset model in the future can be a combination
+> > of device tree (which resets depth-first) and the three phases model.  We
+> > will start to use different approach to solve different problems.
+> 
+> The tree of QOM devices (i.e. the one based on the qbus buses
+> and rooted at the sysbus) resets depth-first, but it does so in
+> three phases: first we traverse everything doing 'enter'; then
+> we traverse everything doing 'hold'; then we traverse everything
+> doing 'exit'. There *used* to be an awkward mix of some things
+> being three-phase and some not, but we have now got rid of all
+> of those so a system reset does a single three-phase reset run
+> which resets everything.
 
-(oops, stray editor damage "5A" at end of line)
+Right.  Sorry I wasn't very clear before indeed on what I wanted to
+express.
 
->
-> The only valid place to choose to warp the timer forward is from the
-> main loop, when we know we have no outstanding IO or timer callbacks
-> that might be about to wake up a CPU.
+My understanding is the 3 phases reset, even if existed, was not designed
+to order things like vIOMMU and devices that is already described by system
+topology.  That's, IMHO, exactly what QOM topology wanted to achieve right
+now on ordering device resets and the whole depth-first reset method would
+make sense with it.
 
-This raises actually another question: should the call to
-icount_start_warp_timer() in main_loop_wait() maybe go after
-qemu_clock_run_all_timers() rather than before? (Haven't tested
-whether that breaks anything ;-))
+So from that specific POV, it's a mixture use of both methods on ordering
+of devices to reset now (rather than the order of reset process within a
+same device, provided into 3 phases).  It may not be very intuitive when
+someone reads about the two reset mechanisms, as one would naturally take
+vIOMMU as a root object of any other PCIe devices under root complex, and
+thinking the order should be guaranteed by QOM on reset already.  In
+reality it's not.  So that's the part I wonder if we want to document.
 
--- PMM
+So we must make sure both:
+
+  - All vIOMMUs across all archs must only tear down its mapping at its
+    exit() phase, providing the mapping available for all devices during
+    the initial 2 phases (probably we could even assert the initial 2 phase
+    functions to be NULL when there's a base class).  Meanwhile,
+
+  - All PCIe devices must quiesce their DMA in the initial 2 phases,
+    guaranteeing that there's no on-the-fly DMAs possible in the complete
+    3rd exit() phase, because any vIOMMU implementation can start to tear
+    down its device mappings even as the first entry in 3rd phase (IOW,
+    there's also no order constraint for 3rd phase that vIOMMU exit() will
+    be invoked before devices' exit()).
+
+I'm not sure if it would be important to document this, but only thought
+about it if we want crystal clearance on the choice of this design.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
