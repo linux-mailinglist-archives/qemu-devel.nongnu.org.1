@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA2CA2F0AB
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0172A2F0B3
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thVHw-0005cp-W2; Mon, 10 Feb 2025 10:01:33 -0500
+	id 1thVI2-0005ip-Br; Mon, 10 Feb 2025 10:01:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHh-0005Yo-5m
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:19 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHl-0005aJ-2G
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHe-0004pQ-K9
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:16 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHj-0004ro-Lh
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739199672;
+ s=mimecast20190719; t=1739199679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1nv72Qccu1FBLVSgXzjSvJzUKOptPPadwl1TMlr5q+Y=;
- b=bXsZ8wlGS2eVQe6Nu8owYMboiRamen9Y76XITLLfMGllMHazsm8/Abx4VjmqD2pUX2Co9t
- 5O6nTlg85SfmT4/48OQeDUwUTIK9zDHcFnmESVTaueAp2+sy/dOGhH/URqzUWP1cm0dX6I
- R5KA1E96cyfMxzWIIjpcvzahOZtUyXw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BBlriYGr22I7AWSEq1q4kv/MJaHyfYIEFj647WKS5/I=;
+ b=MbJ7lwL9jqvDAhHskiR+7QofNX8zZEWCN+jug1mH2e1BH1pgkAaJ3BdJDvAZKkDx7eM3rW
+ Q16mhKnN1BYBoCE5DT+bMNk/7eAcFhCwhVVt156JNSszIb+EIjzxixvboXmXezHhJhusez
+ dfyb8W8JUaEk4wdUjEvfnc+ctaZBlvs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-Oy9NYwZNN8-Zi6vrdYqySg-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-7BiWAqKdN-K9AOb87lk70A-1; Mon,
  10 Feb 2025 10:01:10 -0500
-X-MC-Unique: Oy9NYwZNN8-Zi6vrdYqySg-1
-X-Mimecast-MFC-AGG-ID: Oy9NYwZNN8-Zi6vrdYqySg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: 7BiWAqKdN-K9AOb87lk70A-1
+X-Mimecast-MFC-AGG-ID: 7BiWAqKdN-K9AOb87lk70A
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2FC51800987
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A0C171800875; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 86D1630001AB
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59C8E180035E; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AE2D021E6920; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
+ id B214021E692E; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
-	Victor Toso <victortoso@redhat.com>
-Subject: [PULL v2 3/8] qapi: fix colon in Since tag section
-Date: Mon, 10 Feb 2025 16:01:01 +0100
-Message-ID: <20250210150106.3924507-4-armbru@redhat.com>
+	Zhang Boyang <zhangboyang.id@gmail.com>
+Subject: [PULL v2 4/8] qapi/ui: Fix documentation of upper bound value in
+ InputMoveEvent
+Date: Mon, 10 Feb 2025 16:01:02 +0100
+Message-ID: <20250210150106.3924507-5-armbru@redhat.com>
 In-Reply-To: <20250210150106.3924507-1-armbru@redhat.com>
 References: <20250210150106.3924507-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
@@ -84,41 +83,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Victor Toso <victortoso@redhat.com>
+From: Zhang Boyang <zhangboyang.id@gmail.com>
 
-As described in docs/devel/qapi-code-gen.rst line 998,
-there should be no space between "Since" and ":".
+The upper bound of pointer position in InputMoveEvent should be 0x7fff,
+according to INPUT_EVENT_ABS_MAX.
 
-Signed-off-by: Victor Toso <victortoso@redhat.com>
-Message-ID: <20241217091504.16416-1-victortoso@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Zhang Boyang <zhangboyang.id@gmail.com>
+Message-ID: <20250116104433.12114-1-zhangboyang.id@gmail.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+[Phrasing tweak squashed in]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/cxl.json | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qapi/ui.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 9f65589bce..dd947d3bbc 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -460,7 +460,7 @@
+diff --git a/qapi/ui.json b/qapi/ui.json
+index 460a26b981..c536d4e524 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -1133,7 +1133,7 @@
+ # @axis: Which axis is referenced by @value.
  #
- # @unstable: For now this command is subject to change.
+ # @value: Pointer position.  For absolute coordinates the valid range
+-#     is 0 -> 0x7ffff
++#     is 0 to 0x7fff.
  #
--# Since : 9.1
-+# Since: 9.1
+ # Since: 2.0
  ##
- { 'command': 'cxl-add-dynamic-capacity',
-   'data': { 'path': 'str',
-@@ -539,7 +539,7 @@
- #
- # @unstable: For now this command is subject to change.
- #
--# Since : 9.1
-+# Since: 9.1
- ##
- { 'command': 'cxl-release-dynamic-capacity',
-   'data': { 'path': 'str',
 -- 
 2.48.1
 
