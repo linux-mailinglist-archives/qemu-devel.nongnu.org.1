@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAED6A2E257
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4526A2E24E
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:42:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thJjs-000076-Jt; Sun, 09 Feb 2025 21:41:36 -0500
+	id 1thJju-00007v-OK; Sun, 09 Feb 2025 21:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjo-00005O-Tm; Sun, 09 Feb 2025 21:41:32 -0500
+ id 1thJjq-00006E-Hv; Sun, 09 Feb 2025 21:41:34 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjm-00087n-VJ; Sun, 09 Feb 2025 21:41:32 -0500
+ id 1thJjo-00087T-W3; Sun, 09 Feb 2025 21:41:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739155291; x=1770691291;
+ t=1739155293; x=1770691293;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hb1E+rvhbzGMqxScQskJB9sjdylpqfV6pPId6e63v94=;
- b=TECYSYuRLpxyJ3U0nyltU/OjVP6w0S2wHQEvjQSiEGgj5jL+FxS/bHW9
- 5oDXr0da9tDSXyx+J+H0tCwNxfApkmQhjA33ADMRAZxrrdu0VK8yGJvAh
- 9X9VtY3N96luubYcSLi/mwKfvGrBXzG8u30bp6ZAtNPF0VEinSiL99eyh
- mllLL27u2/d+Bns/laMLfxsjjG+MlOPj/lLLmg4eg/MGvi/4c+stN0pB8
- +BkxaWAs4oBgZuFQepZZk0fUSyKnhdJOzjB8pT2aMUQENCkha2PfCXEqm
- XujU9nohE6bNMKuUzDHmy/Jc0+wiXZmUDU10Wuuf18M8YQDIYc8+vnezv Q==;
-X-CSE-ConnectionGUID: gaKGANCZTJ+f+Pw+sVpwpg==
-X-CSE-MsgGUID: q0okhtYBQHGcutl/rmgvtA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351245"
-X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351245"
+ bh=5TXEKFg+zQhVhHBDXza0KM1l2M9Z0UBiB6ob1BWDPi8=;
+ b=ag8RN4BAytFKAslKJDuSTtMGuxI52L4LZOvdjZ5BgA1WMQ4wUVdJdDdR
+ 1lhPGbyeRNdSSwD4xsnp+rJC/GefgYcguPYRDJI9AHq/cbvc5sXzuRU3T
+ 68eEnLdX5W4LiQVRHO6pXgoxL4Lrp4MVxWCpbvc0DmPxrsREJucVo2zwQ
+ Eni4Nt2PHjG1Xr/dQAeD7adMtlLnwnr5D7cUTsI3RZnJCIITi7BWimAum
+ obVV5ptqp2n32Q0Sg6AaGiIbq2Q9tVDWdYfaTlHcmKZgtVj41JfnwW0PS
+ EQ9vBfyf8sPP1wMG3YdiIphL7vBeRbhaD4Li+jY5l5n+f1aohuLiBDEt4 Q==;
+X-CSE-ConnectionGUID: PdpFf4ZTT76sR1OnNf8R+g==
+X-CSE-MsgGUID: kyywwWvPRSK4aJRQ2zXVtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351249"
+X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351249"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2025 18:41:29 -0800
-X-CSE-ConnectionGUID: +oR4jyecR3WQe0niqKW6dw==
-X-CSE-MsgGUID: QLOleOOuS1K0Z9ZIXkeC6Q==
+ 09 Feb 2025 18:41:32 -0800
+X-CSE-ConnectionGUID: oHCvXLY1T4yhKt79gyU+5w==
+X-CSE-MsgGUID: JELxZuK4Qn+zIGEAAmAwXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938209"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938215"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:27 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:30 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -51,9 +51,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 02/10] rust/qdev: add the macro to define bit property
-Date: Mon, 10 Feb 2025 11:00:43 +0800
-Message-Id: <20250210030051.2562726-3-zhao1.liu@intel.com>
+Subject: [PATCH v2 03/10] rust/irq: Add a helper to convert [InterruptSource]
+ to pointer
+Date: Mon, 10 Feb 2025 11:00:44 +0800
+Message-Id: <20250210030051.2562726-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210030051.2562726-1-zhao1.liu@intel.com>
 References: <20250210030051.2562726-1-zhao1.liu@intel.com>
@@ -84,38 +85,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HPET device (Rust device) needs to define the bit type property.
+This is useful to hanlde InterruptSource slice and pass it to C
+bindings.
 
-Add a variant of define_property macro to define bit type property.
-
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/qdev.rs | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Changes since RFC:
+ * New commit.
 
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 0041c66ed0cd..28d9be723d89 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -168,6 +168,18 @@ fn class_init(dc: &mut DeviceClass) {
+Changes since Patch v1:
+ * Drop `pub(crate) use crate::bindings::IRQState`.
+ * Derefer `slice[0]` directly.
+---
+ rust/qemu-api/src/irq.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
+index 835b027d5e5a..05f617b5684a 100644
+--- a/rust/qemu-api/src/irq.rs
++++ b/rust/qemu-api/src/irq.rs
+@@ -83,6 +83,12 @@ pub fn set(&self, level: T) {
+     pub(crate) const fn as_ptr(&self) -> *mut *mut IRQState {
+         self.cell.as_ptr()
+     }
++
++    #[allow(dead_code)]
++    pub(crate) fn slice_as_ptr(slice: &[Self]) -> *mut *mut IRQState {
++        assert!(!slice.is_empty());
++        slice[0].as_ptr()
++    }
+ }
  
- #[macro_export]
- macro_rules! define_property {
-+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, bit = $bitnr:expr, default = $defval:expr$(,)*) => {
-+        $crate::bindings::Property {
-+            // use associated function syntax for type checking
-+            name: ::std::ffi::CStr::as_ptr($name),
-+            info: $prop,
-+            offset: $crate::offset_of!($state, $field) as isize,
-+            bitnr: $bitnr,
-+            set_default: true,
-+            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
-+            ..$crate::zeroable::Zeroable::ZERO
-+        }
-+    };
-     ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
-         $crate::bindings::Property {
-             // use associated function syntax for type checking
+ impl Default for InterruptSource {
 -- 
 2.34.1
 
