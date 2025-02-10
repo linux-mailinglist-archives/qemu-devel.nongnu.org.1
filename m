@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE59FA2FAF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D982A2FAF0
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thacL-0006kb-UF; Mon, 10 Feb 2025 15:42:57 -0500
+	id 1thaci-00076o-2x; Mon, 10 Feb 2025 15:43:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacJ-0006hh-3z
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:55 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacP-0006vk-E7
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:02 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacH-0003du-H9
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:54 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-38dd93a6f0aso1416905f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacN-0003eR-Tz
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:43:01 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4368a293339so53823215e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220171; x=1739824971; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220178; x=1739824978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GOkHWRVq/7AcufWqPBNvF3JtlhqdXf5mWn9gacGGeOo=;
- b=PEEj7ehBujeiGyPeemOIzk8ewxhIXCxQ19hb4W2c/vCsTUO1n41+WGn2Urc8XtqEW4
- PP9LEmdV9XPGEb1T7YInOKItBHgZZxarfatJ/HhOD/D+Yhn1EaO32R0qA8fXkNOJFQ94
- CMFwqVDvnIOGaGl5Zx/TMGToR6Y4q4jwlFr8Vem8EDgaa54K/UaCn69n+kc/XmzQsnRM
- LsJoc9OkleBXDEzJw09Gh/ii7enEI9EzDKk2OxP7SR538xgUWwNuYSnswVH3GOsi6XXA
- pul+IVA60kjjLOxwn6yP4xZM6ooLZyDTyLc5CYf3Bq1FTaDigfEHxmk1dcT8ojCP9BWO
- aMgg==
+ bh=gwT9zD93oS9oyB85S1H2lF/ogmFYt+eViNb9oxoTPgo=;
+ b=vGki82AFfU0K2Rw/dPpHZ8il91fYRw48385JDyz2VYv5r3YYHyxCTrVBQpnjmvUbos
+ rCgBvDqskye1I8AdZkpCjkY80zEDkLDvc7+oV0xwo0RKUtAz42CAnsg+sGCjE3R+b4aW
+ 6CHxibA25Xd1ZQrGeDKhk9eePsDZHjmSPpyJkMlAuDPMjt9LrW+9CjddVd7+ETQSB/nA
+ db+oAsLmOBJV6HIKAWsETQW5eSA++byrXBgIxtIrbGltKqjWqukyf5PMCb4zBr/Lb5RU
+ VokXiHO3gqsm8AbHIbz+EXX/q7ps+wtQs9pKC7HdC29P8/Ch3ErRvhxWT7YJzAB1J6CY
+ q2Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220171; x=1739824971;
+ d=1e100.net; s=20230601; t=1739220178; x=1739824978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GOkHWRVq/7AcufWqPBNvF3JtlhqdXf5mWn9gacGGeOo=;
- b=tKzl6uVFalGVK3Nu5/K+LaLCFav9P65z8POorHk1RFFXPEzYs2IQ2FltDQp+hT6dih
- qxu3ne+aV/4lpQK34zAVNW+8qcxRF/pS3vAESiJoKdSF/yz4HHsYmdfdOVPFgVIx429/
- ++fw14nAdP3cFlnlthvNAGY8CAEgT3wy5D2yRtd/mAIl/qRN5sG71Il0FSzuUy47rUkk
- bvFc2Ems5y7o2nbn2WK0mSBEnd3222OO/biEiDN/SI3qLdV7d5/6TYKUNk/GMMHAgnHc
- o/lCbpBfskxVOwKz5tULMECUk/6Ohi8HwvOn6CV8mVChtp4qtSLershAxnJOwJPLRd8n
- 7Jwg==
-X-Gm-Message-State: AOJu0Yy26JZ4TaV9QXnV4NoJGD9bqEg01sA72y0rEJ5yv8DQuzj1HXZt
- ly8DOT1ROqDuVbyJPuOs7VNFKaUz+xK81UC6V5dxE+Ie6ZSwkut90hveMebOwjghOa2Ilc4+bhP
- Rp9c=
-X-Gm-Gg: ASbGnctlevzC6ZWbZ9icugj80PRktq9Aw48JSU1X+GoqUQxYnVpsz1ufqqz3EdPkTrd
- aODh9i3QCAWoDkMheIWTtomKDSBT11cfzeMzLh9XfDS7+6MUQSkmgX6d/hmXLkIVO/1RhFqs2B8
- jR+293wgLUw/5gVoLjLCBV4M9SG8o+BuS1uz5K8XYE1R6jtYRofp0cgqkZ3/o2BOeGKfb/9R0jZ
- +5xufiycY49JRfveEonNwJkYOcZB++WURjlWpIycSbVW1i/9ZiiKf6ml90FzG8PtMn7KgD4w5cE
- uyVtmcxnIvwdiIbKgPmmNSFG3EagYVbfGPp9vNbhrCm/pqjFiuN0O5nAfT5C43bLKg==
-X-Google-Smtp-Source: AGHT+IH1pliFBulv3OpDz285krX25B3ucS9m8Fylqwvh7mokOa4sAKjz5nxqJSC4Tl1FO3PuMfL3BA==
-X-Received: by 2002:a05:6000:cc:b0:38a:87cc:fb42 with SMTP id
- ffacd0b85a97d-38dc8decf44mr10619754f8f.21.1739220171604; 
- Mon, 10 Feb 2025 12:42:51 -0800 (PST)
+ bh=gwT9zD93oS9oyB85S1H2lF/ogmFYt+eViNb9oxoTPgo=;
+ b=VqqF5IjbrN4xAC/h0e/DsnwXmEgMU96hzPuvQe8njRZ4+mh3hPK7Iq4pke4IOTmf5T
+ Udrzw++dg/KsagmZiXPV7Gjf1B0jVcEbLsP26XfyaFyZ2gU5D4xN5Jcu9dkecCiOF+Af
+ Gh/jqWyhUHpqGXaDLItpu4LQVRhL+tECUCc42kLVOwrLUhImDrkuLW0AW6gIHT5oyoS6
+ TQENzB1q57864JthOgBAGFViTFf4A851Sz+hdfGKC7oz3aFis6UiiBIicMiza7o3u1mW
+ PD/Ibc/uuVxukOiAN+pgf5vlJCQBT0Qnd+nz1UtlKenwlpF/+QsSbqZ6wqvMMN6p4O++
+ 378g==
+X-Gm-Message-State: AOJu0YyFZ25m8mDWyQcC3w5wYCkE0yeix5C2x0IDGB/ep0v9GH0kctfk
+ w+kEoXUZZhYn/fcF3IqlV5TFLGiu93k+/7a97OeE7O66FpBAx/RGoBlt1CNzlCjtm5cgDlwIY4X
+ Z8AM=
+X-Gm-Gg: ASbGnctJNchoZIsfP5Hzk5Er97VdaXMEg5IhbSoKkrV1gDe+4Gku0Zr/IercxmRJzyH
+ 0D57XXJMDrt+2V4wtpFyAmdAtJ2qAfrA+wOsU8wrPn5kHUFoTSImpG2QQbaYxFz4ROAxAHe8Xdr
+ AZgJVQ4PdER1Tr3r0LnB/jOnlAIw5zuoWlWQ5snaOkJEduWNKTPZcFCbGHIhyMIZVQshXw6Aqtb
+ q3no3mM+DhR30C//1N8Z9XX/hoV7daUHDVhQ37KmUzViMDCB7Hm5Nx+7lvlpEMY5GrcllP9a/mU
+ pHVyFo1bTKjdYHCYZuZhYZJwZzyaM0eEdfdOiuKeiJhjYF8q/ZyzVCSNJZbZp2o+fA==
+X-Google-Smtp-Source: AGHT+IEkAZ1IWJfrXmVsC+WIlnANHvpOxz4Y2chNl7EfHBnk8qpy9tDSIJKQUolQk/XW3Psp4TZEMw==
+X-Received: by 2002:a05:600c:3d07:b0:439:4700:9eb3 with SMTP id
+ 5b1f17b1804b1-43947009ff1mr36068765e9.3.1739220177915; 
+ Mon, 10 Feb 2025 12:42:57 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dd3fc7ee5sm7835378f8f.39.2025.02.10.12.42.50
+ 5b1f17b1804b1-4391dcae80dsm153178905e9.22.2025.02.10.12.42.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:42:51 -0800 (PST)
+ Mon, 10 Feb 2025 12:42:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/32] hw/core/machine: Reject thread level cache
-Date: Mon, 10 Feb 2025 21:41:41 +0100
-Message-ID: <20250210204204.54407-10-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <graf@amazon.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>
+Subject: [PULL 10/32] hw/sysbus: Use sizeof(BusState) in
+ main_system_bus_create()
+Date: Mon, 10 Feb 2025 21:41:42 +0100
+Message-ID: <20250210204204.54407-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Rather than using the obscure system_bus_info.instance_size,
+directly use sizeof(BusState).
 
-Currently, neither i386 nor ARM have real hardware support for per-
-thread cache, and there is no clear demand for this specific cache
-topology.
-
-Additionally, since ARM even can't support this special cache topology
-in device tree, it is unnecessary to support it at this moment, even
-though per-thread cache might have potential scheduling benefits for
-VMs without CPU affinity.
-
-Therefore, disable thread-level cache topology in the general machine
-part. At present, i386 has not enabled SMP cache, so disabling the
-thread parameter does not pose compatibility issues.
-
-In the future, if there is a clear demand for this feature, the correct
-approach would be to add a new control field in MachineClass.smp_props
-and enable it only for the machines that require it.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250110145115.1574345-2-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alexander Graf <graf@amazon.com>
+Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Message-Id: <20250125181343.59151-2-philmd@linaro.org>
 ---
- hw/core/machine-smp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/core/sysbus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index b954eb84902..4e020c358b6 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -321,6 +321,13 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
- 
-+        if (props->topology == CPU_TOPOLOGY_LEVEL_THREAD) {
-+            error_setg(errp,
-+                       "%s level cache not supported by this machine",
-+                       CpuTopologyLevel_str(props->topology));
-+            return false;
-+        }
-+
-         if (!machine_check_topo_support(ms, props->topology, errp)) {
-             return false;
-         }
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index 9355849ff0a..f713bbfe04f 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -323,8 +323,8 @@ static void main_system_bus_create(void)
+      * assign main_system_bus before qbus_init()
+      * in order to make "if (bus != sysbus_get_default())" work
+      */
+-    main_system_bus = g_malloc0(system_bus_info.instance_size);
+-    qbus_init(main_system_bus, system_bus_info.instance_size,
++    main_system_bus = g_new0(BusState, 1);
++    qbus_init(main_system_bus, sizeof(BusState),
+               TYPE_SYSTEM_BUS, NULL, "main-system-bus");
+     OBJECT(main_system_bus)->free = g_free;
+ }
 -- 
 2.47.1
 
