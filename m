@@ -2,68 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CB2A2EF6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EC3A2EFD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:34:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thUWj-0007Fz-Tm; Mon, 10 Feb 2025 09:12:46 -0500
+	id 1thUqD-0004Fw-Im; Mon, 10 Feb 2025 09:32:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thUWS-0007Dk-9j; Mon, 10 Feb 2025 09:12:33 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thUWP-00053L-Pz; Mon, 10 Feb 2025 09:12:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739196746; x=1770732746;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8bZA4Uzy6BHrko0L1T3EoFFplZmi9GTEN8JhOqR3zYU=;
- b=e82qb/KmSuXkrrBlW+yFUG+LRt27XPGz6dNqZ00hv7g0hJGANxdqTbCV
- 2jvaQ5qYihs9Dolr7OWEUU4SbZl74sb8Mxy8e0Sm4fdB0JLaPyRQwbfF6
- 3sF1kBzD+cDNaLMvCnjpca1emNLtjJT1TENdrzHeJUHlxN5GDnCE60sPg
- +kLWgcKkZfNWqEniaKQrva9GryeBPDia9K8DtT7XmV3WryeQtYq/t7E+t
- /5it2wK8nphIXm1UkVsG8QvU3rRSP0WFnC9qm4NfBARIqovW42n1Izm8Y
- Wyj7YSeVSrodL1SvYJCF6+VfOohhUA76z+qJLuGBA58zDRsookRmkk48v A==;
-X-CSE-ConnectionGUID: jvV2+jdOTTebMX9VSx2R8A==
-X-CSE-MsgGUID: INcyIQrMShunGQyw0h3TZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="62252958"
-X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; d="scan'208";a="62252958"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2025 06:12:23 -0800
-X-CSE-ConnectionGUID: IlnqHOzYRIu5mZ+/IPaQ8A==
-X-CSE-MsgGUID: KXqy4DV0Ri+lLXY1XEY54Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; d="scan'208";a="112039099"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 10 Feb 2025 06:12:21 -0800
-Date: Mon, 10 Feb 2025 22:31:52 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 03/12] rust: callbacks: allow passing optional callbacks
- as ()
-Message-ID: <Z6oN2KMfyMcmiZWD@intel.com>
-References: <20250207101623.2443552-1-pbonzini@redhat.com>
- <20250207101623.2443552-4-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thUq9-0004Fa-W8
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:32:51 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thUq8-0008S8-2L
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:32:49 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-30797730cbdso43729221fa.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:32:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739197964; x=1739802764; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4mibrs0nPa4b5qhMCk9/SHcgnt6VVF5S6N00pbymtkI=;
+ b=W24BqTQLUW5wxO7vVvHGUOYl3muXRdpJKlDvGUF/BvSbr/9iq5RlBz/ulqH5ECykTy
+ OlgdYLvetegivx9EvyVm+t6vCK5Jxvl0ZpUa1AruDg1gC25zyJlAqz4JceduNZYpGVPM
+ k4LV30sshioOYwQJBc98G3GfZlSlNlYzYcujD8lGECCFbLTDszRK7/dSgsLt/0QcgEtl
+ DZQRpYpvSV7l4gBktlgTdiFVOeGvPPtPgbfheG12XyAYcGAGet+b2p/xkcXjU2/ZnyZn
+ H2a6yZNPMVkJB2jwURf9DoC/ltZ+bLZJlZAfzgV/IIyN2xifJGxNw6TKkCtm7sYZSd63
+ nTXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739197964; x=1739802764;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4mibrs0nPa4b5qhMCk9/SHcgnt6VVF5S6N00pbymtkI=;
+ b=tyVukk7M5GtmPWQza8g+DTqepAJm43BoPGlh5H5KWJC9ZmRj37up3euC26OrVQrq7g
+ G9Cgki0Jq7SZSq/YrwvRpREX8YtkJFFZhmrstr7MCFtXe3Dg2pufZRJEk8nobzkn8ajg
+ XNTt/ftvD0b+S2VL+yX97YP4FcZmEyipZFo+gfQBqtAtGc+VaK2Lsuw1/Z8m4TwQJsD5
+ FDc30jeSEdIknm3TB7qAclPkZ70f08V6bi3Q9Cp8XAO175LxXxf37s1sdSCxetpOKzUr
+ WQbMLY8xngYFn/3vWLbOCEoJxgeMKZF+LXIx+c70qSvumqGGeVx5IiqSlHGYhb/RQYJq
+ C/1w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXaw21IbkuF/cHDcOtIJPaKvVhj5k7iOoTreXJsPvLM5pNeFXiQXRoTqHRqxkv1dTFQiKlWqW4BouZE@nongnu.org
+X-Gm-Message-State: AOJu0YzXxMuT5F8aHEX7UZPXSxvnA7POVF/FrOYXMah+nle+gM9c5mbB
+ H7bLffqmqwaoVg8yIqpgmd+aMSJBohtOcs7jJ1r9hSzQni1iRu0rYwiP/kBvLOE=
+X-Gm-Gg: ASbGncuZGAnZZj8Z+DOD1o/T5SmMkaWc+LCYaYrardCkQDgL1KSansAd6b3RF8Gxj1Y
+ hujz+W8F5mZajyBhQ5odKch8Uj4VjINNooB6JwYQChdTlZv6gIUBZgO0nopbXHE0MTdVSeV8cZD
+ XPygb7gUaRhOp/elHt9Bfo7qFMXd40oY51nXO0UJyCNLB3eCxHjKMB9FUXCV5lLqbbpM8IBqau4
+ 3de3LGh9IbsSLoLArYWIUcGdJZhl8+ZTRAWDj4Q4CE2lkSPWSRB5NYRrm2zHw262HMN5b7lurqm
+ MzJsSec+3ndLhG3WeI2TKucPodudeQF+8yfV8jyd3rzKAkzmIUjyHRNWhFo=
+X-Google-Smtp-Source: AGHT+IF3nZ4Jv488Rc1DXZQR7QkkeS/T/PNOQKX8hX+uvxFoLfDpCXS4sNqUdk35b9sMz+W9GObBfA==
+X-Received: by 2002:a2e:ab0f:0:b0:302:17e7:e16d with SMTP id
+ 38308e7fff4ca-307e57bbcfbmr49965241fa.3.1739197964389; 
+ Mon, 10 Feb 2025 06:32:44 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-308f6a95bc3sm789631fa.110.2025.02.10.06.32.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Feb 2025 06:32:42 -0800 (PST)
+Message-ID: <281482d8-f6db-440f-a892-ad1600e7dc56@linaro.org>
+Date: Mon, 10 Feb 2025 15:32:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207101623.2443552-4-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/9] vfio: Introduce vfio_get_vfio_device()
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>
+References: <20250130134346.1754143-1-clg@redhat.com>
+ <20250130134346.1754143-5-clg@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250130134346.1754143-5-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,27 +99,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 07, 2025 at 11:16:14AM +0100, Paolo Bonzini wrote:
-> Date: Fri,  7 Feb 2025 11:16:14 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 03/12] rust: callbacks: allow passing optional callbacks as
->  ()
-> X-Mailer: git-send-email 2.48.1
+On 30/1/25 14:43, Cédric Le Goater wrote:
+> This helper will be useful in the listener handlers to extract the
+> VFIO device from a memory region using memory_region_owner(). At the
+> moment, we only care for PCI passthrough devices. If the need arises,
+> we will add more.
 > 
-> In some cases, callbacks are optional.  Using "Some(function)" and "None"
-> does not work well, because when someone writes "None" the compiler does
-> not know what to use for "F" in "Option<F>".
-> 
-> Therefore, adopt () to mean a "null" callback.  It is possible to enforce
-> that a callback is valid by adding a "let _: () = F::ASSERT_IS_SOME" before
-> the invocation of F::call.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 > ---
->  rust/qemu-api/src/callbacks.rs | 97 ++++++++++++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
->
+>   include/hw/vfio/vfio-common.h |  1 +
+>   hw/vfio/helpers.c             | 10 ++++++++++
+>   2 files changed, 11 insertions(+)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 0c60be5b15c70168f4f94ad7054d9bd750a162d3..ac35136a11051b079cd9d04e6becd344a0e0f7e7 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -252,6 +252,7 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp);
+>   bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+>                           AddressSpace *as, Error **errp);
+>   void vfio_detach_device(VFIODevice *vbasedev);
+> +VFIODevice *vfio_get_vfio_device(Object *obj);
+>   
+>   int vfio_kvm_device_add_fd(int fd, Error **errp);
+>   int vfio_kvm_device_del_fd(int fd, Error **errp);
+> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+> index 913796f437f84eece8711cb4b4b654a44040d17c..4b255d4f3a9e81f55df00c68fc71da769fd5bd04 100644
+> --- a/hw/vfio/helpers.c
+> +++ b/hw/vfio/helpers.c
+> @@ -23,6 +23,7 @@
+>   #include <sys/ioctl.h>
+>   
+>   #include "hw/vfio/vfio-common.h"
+> +#include "hw/vfio/pci.h"
+>   #include "hw/hw.h"
+>   #include "trace.h"
+>   #include "qapi/error.h"
+> @@ -728,3 +729,12 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp)
+>   
+>       return HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp);
+>   }
+> +
+> +VFIODevice *vfio_get_vfio_device(Object *obj)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Can't we take a VFIOPCIDevice argument?
+
+> +{
+> +    if (object_dynamic_cast(obj, TYPE_VFIO_PCI)) {
+> +        return &VFIO_PCI(obj)->vbasedev;
+> +    } else {
+> +        return NULL;
+> +    }
+> +}
 
 
