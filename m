@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FDDA2F332
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAB4A2F316
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:20:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thWS9-0006Q3-0I; Mon, 10 Feb 2025 11:16:09 -0500
+	id 1thWS1-0005o0-En; Mon, 10 Feb 2025 11:16:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1thWR3-0004AA-Us
+ id 1thWR5-0004AV-4P
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:15:04 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1thWR2-0001V4-0r
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:15:01 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5de5e3729ecso4169367a12.0
+ id 1thWR2-0001VL-Cf
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:15:02 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-ab7a342ef4eso446512166b.0
  for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:14:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739204098; x=1739808898; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739204099; x=1739808899; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WRjcWYmrZaZWP3MsASwgK8gyMjNh7g5UJb6gwrhevyU=;
- b=c6ZcAJK66VbfCY6B+jVgLqvrh7BMFb3Xiz1anoDDwwAHpBgUUf/Njgh8NZZUK15ks/
- RyQoLESOBFnhK4GVL5y+qhxnG/EcpPUojgHzezgwHIf76kDROGzLCoAjy0fRmHGqIXar
- mWFj2qDkwdoPohp7TeTWOwdkyuomlVV8sPQdtqqxmzA/GLADMwGw+Vggk2gTTGoSxB6d
- QTwosm0VQlL5RkFF36KaE8Cs+YStji/w4U6veZKKcVWX1hKk6UtQ52TPuXmLKrjSHbHR
- LJpqhJrCgSRdxNy55QU216VFLW6wlNgVBKvYsRyCqYQB5f4topumDRHMosM1YH2j+Ygt
- QWNQ==
+ bh=5De79NWbhkU5BW07foJEsOJqUNxurUAkpHc9PcGIKnc=;
+ b=upjZqEADPBeOw6gl4+8dckuQGvoAhVOo+Glup/H6aaXWGgkzNkOWgNsuL6jP9yr71J
+ YOvTzjxWejXZ1T++uOdHPKKpY4p/tBjRLhqGpG1rNubu5sfQpdhr0N7P1pbG3DFQeR2t
+ 1SXugAQQeRLLD9dZU53xcYNlhO+fAPAijf3SCJcBA4dczfYorvZ6vgPOhzjEdJgyABcb
+ XrNh/5lrxUg/CmnncrUtvMLJzs8gaHcP5aOmBELDoL39nWsznNZjc5zm6DZa1e0FyqMo
+ u2y8CzSKze603aovms96i8L5QUOP35iD7vHV/IpA5OxWfpVcqx1G+oP4uo5jr1W+5pXw
+ Z7JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739204098; x=1739808898;
+ d=1e100.net; s=20230601; t=1739204099; x=1739808899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WRjcWYmrZaZWP3MsASwgK8gyMjNh7g5UJb6gwrhevyU=;
- b=gAnz9Cn6ECbaEHvWLgdcO+dFUbRz6dMNOmzWs69+MLd0o5w6eLZDUanEPFNGfcNcrb
- bNdyUs0xmi8TRZEzANJFP0hWsVkN0GiHz0RJOU/Ih1pySA7/zxlMJZtwJJNKVjgx+B5V
- aAqz7hlGNRHyHan0FOsxBjmB0RsMN9D480V6JyQ5tEx+AmDjXtZtdiuO86uIygJTOTqf
- N1UgCyYBComResU27AoiDcXFArQR5CVAo9iwVJadb2xrpem+klokzPfbAsssK2kPxEn8
- bsHFUCWZ5sqd5A6X5FMuvhx2gqABhLwePFWJl0sQOg7ClrPdXnD3r0Tf3h0HMIUHSA1W
- i6JQ==
-X-Gm-Message-State: AOJu0YyxvB0pVkULzVosvqKFXtqzXUOk/rC+P117hZdomoqoonUCnGLi
- yk4iFAgPtJ5BRxCEhUkGFdmdelD62r5V+md3mrMAnOHotp+9a23JH2dZ2UnjwVk=
-X-Gm-Gg: ASbGncsc6h1F+acmAq5p5IQm0cbAuHW0pHtGLNQ5xLDn/sWjuSy6qbs5Fke85V+5chc
- RNQlqOBqEFy3XhVA8xjaCBoLScoCg9X6nYUQmVosuqM6YCpsjPnQEM6Xd/ZZFKQGKTrYJ98hIEp
- SvDf6HbfoK+e+lx7JesHw0cFuqgz8XT7B+Lo0P/rBDFJkq9QUwu0R+hZRQkoXrbLhUEebmPS17F
- +vAXPf9jxzJ9MhExeYelTidx/t477TtFq8U4lc/qWPSGCOamAD4i1kzYTYTb3hMCE1CkfusLLyH
- JtpJXBeo+0r2Y6+jIA==
-X-Google-Smtp-Source: AGHT+IGG/iTBzn7g9jQIRnszoJrFH5Y7WXqXc8PvmoXMmR0/8NIPg9gbEnuuse2l6YVANgv9SC+a6g==
-X-Received: by 2002:a05:6402:2189:b0:5dc:c869:da4f with SMTP id
- 4fb4d7f45d1cf-5de9a4645f9mr244118a12.24.1739204098169; 
+ bh=5De79NWbhkU5BW07foJEsOJqUNxurUAkpHc9PcGIKnc=;
+ b=e6hhx4VzXxcNgRFR3wf+mdtOCzcArnKPOAtq9+n0jaO2886GGeVYx8pYufGJbPHF9F
+ BZaKq09EWF3YLpLot4N4+wUbM1RzKocTGP073950qoc6hWCQDN5tIPocSXSYy2w//e/8
+ ixxrCpaL1Rv9ZfwnImJOtPd8rkAt7Eecn0M5JZpn9KkZtHV94FA7mNuysUhnvtnBe1we
+ ze8IDMAYGJXkbsRkF9G8EuR9cUkmQ2An08jvIclKgMMVJ8eN+u/WSO79RhhW/IitX29u
+ xEyeqz+RUcdPf9gbzDRh2EGWNotrtDGxVuMmbNcYWM0Pd8ODV47iBC4xJtD9VbtX95v0
+ tohQ==
+X-Gm-Message-State: AOJu0YxVZbBxAXFmgsDNdMNumJGMS5nNaTFxBUuSmfXVxXqKtcVDLGga
+ iphj3jMU/JKV91/7OD+WUF8E9otbHHSS0mAXE3gJDl7JFfmdMHQAusspn+zBjvM=
+X-Gm-Gg: ASbGnctOR6NW2r0+KrzjiNK862reM2EZnbOILV5DH01uPc7uJuQeKSu04kRBOD94lpG
+ 2i6hYDh7evBZnwu42Frb6tjRURr0yKr2vlByFJC4tefOm4ARma0+I+J2fD4lSymSKJNz5l0UXZI
+ NHREreaD75/PzMfHVl611j1TtXiGJXUgQSe6dpxUStv6K31fI5JlPvBf0SxGE1R4NMHA5bKJI4m
+ aZ3ZvOM71oJPQw233TD2fv4eYMIpoQcbybmY218SS4x/Okj9xDrr57gSULbQqGnm2l0XtnygP4F
+ p6pGnzWmD/dM9L5Ubw==
+X-Google-Smtp-Source: AGHT+IGsLT8DOAIv7Tr2e6mhHhqjUvXua6nW6MZkTLnr8ts3Va56wgaujNw0fPOHkao88QsD/lGijw==
+X-Received: by 2002:a17:907:948a:b0:aac:29a:2817 with SMTP id
+ a640c23a62f3a-ab789b22c1dmr1355930766b.26.1739204098809; 
  Mon, 10 Feb 2025 08:14:58 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dcf1b734e5sm8303006a12.5.2025.02.10.08.14.53
+ a640c23a62f3a-ab7845d8810sm792990466b.72.2025.02.10.08.14.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 08:14:56 -0800 (PST)
+ Mon, 10 Feb 2025 08:14:57 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4D87C601E0;
+ by draig.lan (Postfix) with ESMTP id 601866022C;
  Mon, 10 Feb 2025 16:14:52 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 06/17] tests/qtest: tighten up the checks on clock_step
-Date: Mon, 10 Feb 2025 16:14:40 +0000
-Message-Id: <20250210161451.3273284-7-alex.bennee@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 07/17] Revert "util/timer: avoid deadlock when shutting down"
+Date: Mon, 10 Feb 2025 16:14:41 +0000
+Message-Id: <20250210161451.3273284-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250210161451.3273284-1-alex.bennee@linaro.org>
 References: <20250210161451.3273284-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -101,39 +101,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is invalid to call clock_step with an implied time to step forward
-as if no timers are running we won't be able to advance.
+This reverts commit bc02be4508d8753d1f6071b77d10f4661587df6f.
+
+Now we catch attempts to clock_step to the next timer when none are
+enabled we can revert the previous attempt to prevent deadlock. As
+long as a new target time is given we will move time forward even if
+no timers will fire. This is desirable for tests which are checking
+that nothing changes when things are disabled.
+
+Previously most tests got away with it because --enable-slirp always
+has a timer running while the test is active.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250207153112.3939799-7-alex.bennee@linaro.org>
+Message-Id: <20250207153112.3939799-8-alex.bennee@linaro.org>
 
-diff --git a/system/qtest.c b/system/qtest.c
-index 28b6fac37c..12152efbcd 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -708,10 +708,19 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
-         } else {
-             ns = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-                                             QEMU_TIMER_ATTR_ALL);
-+            if (ns < 0) {
-+                qtest_send(chr, "FAIL "
-+                           "cannot advance clock to the next deadline "
-+                           "because there is no pending deadline\n");
-+                return;
-+            }
-         }
-         new_ns = qemu_clock_advance_virtual_time(old_ns + ns);
--        qtest_sendf(chr, "%s %"PRIi64"\n",
--                    new_ns > old_ns ? "OK" : "FAIL", new_ns);
-+        if (new_ns > old_ns) {
-+            qtest_sendf(chr, "OK %"PRIi64"\n", new_ns);
-+        } else {
-+            qtest_sendf(chr, "FAIL could not advance time\n");
-+        }
-     } else if (strcmp(words[0], "module_load") == 0) {
-         Error *local_err = NULL;
-         int rv;
+diff --git a/util/qemu-timer.c b/util/qemu-timer.c
+index 0e8a453eaa..3243d2c515 100644
+--- a/util/qemu-timer.c
++++ b/util/qemu-timer.c
+@@ -675,17 +675,10 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
+ {
+     int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     AioContext *aio_context;
+-    int64_t deadline;
+-
+     aio_context = qemu_get_aio_context();
+-
+-    deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
+-                                          QEMU_TIMER_ATTR_ALL);
+-    /*
+-     * A deadline of < 0 indicates this timer is not enabled, so we
+-     * won't get far trying to run it forward.
+-     */
+-    while (deadline >= 0 && clock < dest) {
++    while (clock < dest) {
++        int64_t deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
++                                                      QEMU_TIMER_ATTR_ALL);
+         int64_t warp = qemu_soonest_timeout(dest - clock, deadline);
+ 
+         qemu_virtual_clock_set_ns(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + warp);
+@@ -693,9 +686,6 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
+         qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
+         timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
+         clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-
+-        deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
+-                                              QEMU_TIMER_ATTR_ALL);
+     }
+     qemu_clock_notify(QEMU_CLOCK_VIRTUAL);
+ 
 -- 
 2.39.5
 
