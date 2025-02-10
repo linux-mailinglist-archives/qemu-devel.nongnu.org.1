@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC424A2F33A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D030A2F347
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 17:23:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thWYE-00034Q-45; Mon, 10 Feb 2025 11:22:30 -0500
+	id 1thWY6-0002mO-OX; Mon, 10 Feb 2025 11:22:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thWXa-0002Ty-3u
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:21:50 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thWXe-0002Uv-OA
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:21:52 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thWXY-0002lO-8R
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:21:45 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43944181e68so12882475e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:21:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thWXc-0002lk-Lr
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 11:21:50 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38dcf8009f0so1505807f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 08:21:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739204502; x=1739809302; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739204507; x=1739809307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jGsIufIqKlssjun5TXHkqohjkAkuZtcXK/WYSEIHmcE=;
- b=sYr6vG0yEL1Frbl0mWNb2X2vqgL9AVX7/MSPpt62cqUqR9M0/dJXEh3UUc/d51hBt3
- e57EtMwSJKitJHtINirfaVph+rzCKXIrJNrKaoRS+fjxhzKITNceXIz8KntKnUkSCqpW
- f32+dz1y8pr7P8C+jiQLdq1Gv20mKsjpsO8PxaKKWzyqASEPnTwYFzd3b8lk0Kpz4xPQ
- H5gV31Gsi0kt+QV4KUxGIQD1FLNwP/IVQsPYEDkfZKMntZNKjXZut+oXVwO/AWx4Aheo
- HEgdVa/qacqh2LHPQzO9XJvAMfWalx4+orwSSiWnVhHZWubO9E7pJ6UFQemcm/+P3mzr
- /w5w==
+ bh=qsTRNQTUfL2h+m/cpyp4nywBspQp5fByW/Zolmcu5/c=;
+ b=RhrCs16tns4F9azXDP5mH+5jDQAMZ3ZbFgwrhBDzO+rh+B0PZrFK50gSQozMi4JZbg
+ cOtf/BP9rxxtDgnxfbOqCes412TFbo7L9ieR6N/hfgwC7G3GexWLn9ag3hGUFVhzyVQ8
+ xt313L6apj9hzOaCCz0AG93ACiieFCFgWp0BACqCAC11rLKEm+5uca4hZcUdT39Q51Iw
+ sgAPRiEGNOv6Th1HyW5dHaPyVnMv/669THgCd5+HWIU4uQjES94jB0HNxtV8PlFjdRvR
+ 2YSazkpKtrDJWYFl8pmwfehbZRNNbZAmF2FAC87LAG7ITi1kb9FFy28Bgjtk/plDEsC7
+ kYJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739204502; x=1739809302;
+ d=1e100.net; s=20230601; t=1739204507; x=1739809307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jGsIufIqKlssjun5TXHkqohjkAkuZtcXK/WYSEIHmcE=;
- b=opFmZTUjRuB+K3Ztv1QJ1l06TOvuTwqDiR4fkm3iHcUJ0mO632VrHwso2ZA0oXIojS
- PkewrTqwYuiCoRDHc8wq1AWgRp9hOOvYxNATev0Gei9cF+hhnICbHIdRZ1vl0/CcvTty
- gtFXc2S3jOV07WTyaTAF2500xMX0aLPum1tkyY9983Zfwo/KmH9lZ5aVeU2Ps9rrCxBo
- 8ZU4M5icYSpl7nEUcN1No1XamrxBqiXaKtohunq9h7YtNTN87iGQS+d7y/1IRRQqBdeK
- 72slzsIqRPTWRC96/Yb4M7B29lQ5nV6LlJ15y0GnlUAriITZhupTy1J0i+2HXi0pLWVA
- uw+A==
-X-Gm-Message-State: AOJu0YxedntLxy1ODavGtNpF+ta7LxjrkGs8I6Qb6M2/veGWf+nv+j1U
- l38wVLwdoP7Mpzr38C/BAHVsGOr1L8EOd8lllNg/oj7kHUJE1sxqZKS92rsg5Tn4tbEmki0yPaM
- auVM=
-X-Gm-Gg: ASbGncvs2EECIDmUJyCzcW8BS17VZXFJ5PPVWJARw45slKmYIY6o5hJrJEGWf4pkX8r
- MdV0wdJ9rmsJVRQQ0tcwZHvYcnyKuZYuxtAwraSxcmltKO1eENTcMJOgXZDtJfehp4azAUo0ho2
- gcjwuuirV8MLkGUSiObhnWPOOICjWYKjxHfMuVsPTHvZWG+vNA6pMTr/HPUOYm/DMfF3Vq5utol
- qDFhrelHiIi+jpiyCCLtqTFDVOEitoFJtlHlzilIdBpuaeyk3sIawbcDdPIUhuZwfOTPJFJU0lr
- SyIgBladan1eun7vz0TUqukaFcglfMHAi+C2M+8a6bPQyCXmW/x1WLYP3q/Q5I1/Ow==
-X-Google-Smtp-Source: AGHT+IHsfwDJgQBfqY7PR/Fu+9BiYEwvsKbG2y5hVZePDUBBSJyIjll25pF+1vvmJuIPSwR1VlrpYQ==
-X-Received: by 2002:a05:600c:4f05:b0:434:a802:e9a6 with SMTP id
- 5b1f17b1804b1-43924989da5mr135420505e9.7.1739204502137; 
- Mon, 10 Feb 2025 08:21:42 -0800 (PST)
+ bh=qsTRNQTUfL2h+m/cpyp4nywBspQp5fByW/Zolmcu5/c=;
+ b=mIyqDkUEgMcdlhEc6CFOuu1IUSTDxdxmfbnLUWhCZsL4sB5OToSt33pnroO7be3E9p
+ qMMvqa6tbJViEYvdKuHN9O5TfChtFyoore8F2l/KDZoeiRY+XHbPzz8O4ewnILlmSXkp
+ UcT41Ik4nFeIxXWyJiTMIsdGq2t8vVnwpgyALjQY7MasihbAfPdV4gxAtCcEHxcSuC+N
+ pzSx6n9w4fH2fZLg091KsHLcu4aFQm3NoubULdG4iMJnSvkIOA8eSh6lB0lWG4/2dmR7
+ g6dTtSSf6MTwu9IrweIf5U9gA43eSboBsIW5OI2+dxRJ5vaZ82yZZCtRHN/V41QTzF4q
+ zd8A==
+X-Gm-Message-State: AOJu0Yz7qIjJ9OFBXFNBkinDVn+4m9IUp8H+gx0peVzM+KZ6Izcxgtmw
+ e5HL35TTqd7uLMADBGEbRnATbrB30U+P1M5yww+Y4ukQza6jUh28MbiEOKhOPYfAL3R7zrpX5wG
+ PpQ0=
+X-Gm-Gg: ASbGncvBxR/fI/OCLpL0AerTY6I2JbyhmxCZdS2hQ+CkFLcTmyv0f3rikv5/+UVCg1W
+ eb1AP1TG8mSYna3WrNYnpZ3iJujDv9sRufEhQCCrTGl66/cjywWbLyPGC8UI6AJFznB3REpvlJq
+ X/SzbYohlaxqJxj2H8VosKvwKH0Cv/vAEA1l06uuLyYStuop/b8s5MW3B/aw7jPug7uEoCwBDSt
+ Z/G0UFr+xbOLQbaPSryMQNcq9tr2O8E4F8YFulEJ9rmTnFScKkw3dEepLl9ivIj2mQh746Cg2Bz
+ LJC3bYVcv6lo+TTG9yeTlBqoGlI9A6Qq26W4Ch5XVfM61fmpxutrtu7Ylhlm1bQZbw==
+X-Google-Smtp-Source: AGHT+IH9i08OvSTkWg2SEjmSm+UVeusF0LVJsxdYUU2i33MkaJ4cti53SA4guSQcShTU6ZQc/e8pEg==
+X-Received: by 2002:a05:6000:1f83:b0:38d:de92:adab with SMTP id
+ ffacd0b85a97d-38dde92ae55mr4463016f8f.29.1739204506832; 
+ Mon, 10 Feb 2025 08:21:46 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4394328fcb8sm40812425e9.32.2025.02.10.08.21.41
+ ffacd0b85a97d-38dc7711bbbsm10303526f8f.47.2025.02.10.08.21.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 08:21:41 -0800 (PST)
+ Mon, 10 Feb 2025 08:21:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/6] crypto/tlscredsx509: Rename 'creds' -> 'x509_creds'
-Date: Mon, 10 Feb 2025 17:21:30 +0100
-Message-ID: <20250210162135.14123-2-philmd@linaro.org>
+Subject: [PATCH 2/6] crypto/tlscredsx509: Access QOM parent via
+ QCRYPTO_TLS_CREDS() macro
+Date: Mon, 10 Feb 2025 17:21:31 +0100
+Message-ID: <20250210162135.14123-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210162135.14123-1-philmd@linaro.org>
 References: <20250210162135.14123-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,170 +98,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of naming the QCryptoTLSCreds 'creds' in the
-next commit, rename QCryptoTLSCredsX509 creds as 'x509_creds'.
+Prefer accessing QCryptoTLSCredsX509's QOM parent via the
+QCRYPTO_TLS_CREDS() cast macro, rather than parent_obj.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- crypto/tlscredsx509.c | 66 +++++++++++++++++++++----------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ crypto/tlscredsx509.c | 45 +++++++++++++++++++++++--------------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
 diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-index 24ec5849222..eb197e145f3 100644
+index eb197e145f3..84b88747f21 100644
 --- a/crypto/tlscredsx509.c
 +++ b/crypto/tlscredsx509.c
-@@ -531,7 +531,7 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
- 
- 
- static int
--qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-+qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *x509_creds,
+@@ -534,40 +534,41 @@ static int
+ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *x509_creds,
                              Error **errp)
  {
++    QCryptoTLSCreds *creds = QCRYPTO_TLS_CREDS(x509_creds);
      char *cacert = NULL, *cacrl = NULL, *cert = NULL,
-@@ -539,56 +539,56 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
+         *key = NULL, *dhparams = NULL;
      int ret;
      int rv = -1;
  
--    trace_qcrypto_tls_creds_x509_load(creds,
--            creds->parent_obj.dir ? creds->parent_obj.dir : "<nodir>");
-+    trace_qcrypto_tls_creds_x509_load(x509_creds,
-+            x509_creds->parent_obj.dir ? x509_creds->parent_obj.dir : "<nodir>");
+     trace_qcrypto_tls_creds_x509_load(x509_creds,
+-            x509_creds->parent_obj.dir ? x509_creds->parent_obj.dir : "<nodir>");
++                                      creds->dir ? creds->dir : "<nodir>");
  
--    if (creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
--        if (qcrypto_tls_creds_get_path(&creds->parent_obj,
-+    if (x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
-+        if (qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-    if (x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
+-        if (qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++    if (creds->endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
++        if (qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_CA_CERT,
                                         true, &cacert, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_CA_CRL,
                                         false, &cacrl, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_SERVER_CERT,
                                         true, &cert, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_SERVER_KEY,
                                         true, &key, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_DH_PARAMS,
                                         false, &dhparams, errp) < 0) {
              goto cleanup;
          }
      } else {
--        if (qcrypto_tls_creds_get_path(&creds->parent_obj,
-+        if (qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-        if (qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++        if (qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_CA_CERT,
                                         true, &cacert, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_CLIENT_CERT,
                                         false, &cert, errp) < 0 ||
--            qcrypto_tls_creds_get_path(&creds->parent_obj,
-+            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
+-            qcrypto_tls_creds_get_path(&x509_creds->parent_obj,
++            qcrypto_tls_creds_get_path(creds,
                                         QCRYPTO_TLS_CREDS_X509_CLIENT_KEY,
                                         false, &key, errp) < 0) {
              goto cleanup;
-         }
-     }
+@@ -576,7 +577,7 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *x509_creds,
  
--    if (creds->sanityCheck &&
--        qcrypto_tls_creds_x509_sanity_check(creds,
--            creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
-+    if (x509_creds->sanityCheck &&
-+        qcrypto_tls_creds_x509_sanity_check(x509_creds,
-+            x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
+     if (x509_creds->sanityCheck &&
+         qcrypto_tls_creds_x509_sanity_check(x509_creds,
+-            x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
++            creds->endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
              cacert, cert, errp) < 0) {
          goto cleanup;
      }
- 
--    ret = gnutls_certificate_allocate_credentials(&creds->data);
-+    ret = gnutls_certificate_allocate_credentials(&x509_creds->data);
-     if (ret < 0) {
-         error_setg(errp, "Cannot allocate credentials: '%s'",
-                    gnutls_strerror(ret));
-         goto cleanup;
-     }
- 
--    ret = gnutls_certificate_set_x509_trust_file(creds->data,
-+    ret = gnutls_certificate_set_x509_trust_file(x509_creds->data,
-                                                  cacert,
-                                                  GNUTLS_X509_FMT_PEM);
-     if (ret < 0) {
-@@ -599,14 +599,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
- 
-     if (cert != NULL && key != NULL) {
-         char *password = NULL;
--        if (creds->passwordid) {
--            password = qcrypto_secret_lookup_as_utf8(creds->passwordid,
-+        if (x509_creds->passwordid) {
-+            password = qcrypto_secret_lookup_as_utf8(x509_creds->passwordid,
-                                                      errp);
-             if (!password) {
-                 goto cleanup;
-             }
-         }
--        ret = gnutls_certificate_set_x509_key_file2(creds->data,
-+        ret = gnutls_certificate_set_x509_key_file2(x509_creds->data,
-                                                     cert, key,
-                                                     GNUTLS_X509_FMT_PEM,
-                                                     password,
-@@ -620,7 +620,7 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
-     }
- 
-     if (cacrl != NULL) {
--        ret = gnutls_certificate_set_x509_crl_file(creds->data,
-+        ret = gnutls_certificate_set_x509_crl_file(x509_creds->data,
-                                                    cacrl,
-                                                    GNUTLS_X509_FMT_PEM);
-         if (ret < 0) {
-@@ -630,14 +630,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
+@@ -630,14 +631,14 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *x509_creds,
          }
      }
  
--    if (creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
--        if (qcrypto_tls_creds_get_dh_params_file(&creds->parent_obj, dhparams,
--                                                 &creds->parent_obj.dh_params,
-+    if (x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
-+        if (qcrypto_tls_creds_get_dh_params_file(&x509_creds->parent_obj, dhparams,
-+                                                 &x509_creds->parent_obj.dh_params,
+-    if (x509_creds->parent_obj.endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
+-        if (qcrypto_tls_creds_get_dh_params_file(&x509_creds->parent_obj, dhparams,
+-                                                 &x509_creds->parent_obj.dh_params,
++    if (creds->endpoint == QCRYPTO_TLS_CREDS_ENDPOINT_SERVER) {
++        if (qcrypto_tls_creds_get_dh_params_file(creds, dhparams,
++                                                 &creds->dh_params,
                                                   errp) < 0) {
              goto cleanup;
          }
--        gnutls_certificate_set_dh_params(creds->data,
--                                         creds->parent_obj.dh_params);
-+        gnutls_certificate_set_dh_params(x509_creds->data,
-+                                         x509_creds->parent_obj.dh_params);
+         gnutls_certificate_set_dh_params(x509_creds->data,
+-                                         x509_creds->parent_obj.dh_params);
++                                         creds->dh_params);
      }
  
      rv = 0;
-@@ -652,15 +652,15 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *creds,
- 
- 
+@@ -654,13 +655,15 @@ qcrypto_tls_creds_x509_load(QCryptoTLSCredsX509 *x509_creds,
  static void
--qcrypto_tls_creds_x509_unload(QCryptoTLSCredsX509 *creds)
-+qcrypto_tls_creds_x509_unload(QCryptoTLSCredsX509 *x509_creds)
+ qcrypto_tls_creds_x509_unload(QCryptoTLSCredsX509 *x509_creds)
  {
--    if (creds->data) {
--        gnutls_certificate_free_credentials(creds->data);
--        creds->data = NULL;
-+    if (x509_creds->data) {
-+        gnutls_certificate_free_credentials(x509_creds->data);
-+        x509_creds->data = NULL;
++    QCryptoTLSCreds *creds = QCRYPTO_TLS_CREDS(x509_creds);
++
+     if (x509_creds->data) {
+         gnutls_certificate_free_credentials(x509_creds->data);
+         x509_creds->data = NULL;
      }
--    if (creds->parent_obj.dh_params) {
--        gnutls_dh_params_deinit(creds->parent_obj.dh_params);
--        creds->parent_obj.dh_params = NULL;
-+    if (x509_creds->parent_obj.dh_params) {
-+        gnutls_dh_params_deinit(x509_creds->parent_obj.dh_params);
-+        x509_creds->parent_obj.dh_params = NULL;
+-    if (x509_creds->parent_obj.dh_params) {
+-        gnutls_dh_params_deinit(x509_creds->parent_obj.dh_params);
+-        x509_creds->parent_obj.dh_params = NULL;
++    if (creds->dh_params) {
++        gnutls_dh_params_deinit(creds->dh_params);
++        creds->dh_params = NULL;
      }
  }
  
+@@ -746,15 +749,15 @@ qcrypto_tls_creds_x509_reload(QCryptoTLSCreds *creds, Error **errp)
+     QCryptoTLSCredsX509 *x509_creds = QCRYPTO_TLS_CREDS_X509(creds);
+     Error *local_err = NULL;
+     gnutls_certificate_credentials_t creds_data = x509_creds->data;
+-    gnutls_dh_params_t creds_dh_params = x509_creds->parent_obj.dh_params;
++    gnutls_dh_params_t creds_dh_params = creds->dh_params;
+ 
+     x509_creds->data = NULL;
+-    x509_creds->parent_obj.dh_params = NULL;
++    creds->dh_params = NULL;
+     qcrypto_tls_creds_x509_load(x509_creds, &local_err);
+     if (local_err) {
+         qcrypto_tls_creds_x509_unload(x509_creds);
+         x509_creds->data = creds_data;
+-        x509_creds->parent_obj.dh_params = creds_dh_params;
++        creds->dh_params = creds_dh_params;
+         error_propagate(errp, local_err);
+         return false;
+     }
 -- 
 2.47.1
 
