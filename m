@@ -2,170 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB111A2F532
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 18:26:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A5EA2F51C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 18:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thXY5-0000Uw-PV; Mon, 10 Feb 2025 12:26:21 -0500
+	id 1thXTm-0004WM-4F; Mon, 10 Feb 2025 12:21:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Thomas.Lendacky@amd.com>)
- id 1thXXK-0000Np-HM
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:25:37 -0500
-Received: from mail-mw2nam10on2064.outbound.protection.outlook.com
- ([40.107.94.64] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Thomas.Lendacky@amd.com>)
- id 1thXXH-0008Hd-5B
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:25:33 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jkjO4edTunjJYjZKKdmIclzOd8bXG374j1T5dAk9AplzezqA2lg7bZZYqRKDetEBlvBbW+y/H5y7/ISUb78TDeUFvPA9XrTwAUfNb4/YpJqHIPr4lVbJAvyBhVP28mN1y1C/VMS6ifjHjQV8tHNu1oMfRfz0+rj4Nbnw4c1YgK4z96wfnmjknffwgFNeFU3EgJ9vB8iiUWVIOUYQjM2I0/75gkd4WuqyHJ7U6wZ3XwnBqTcOXlLVOF33ERxdkYn3jTqGq/T9vVxUbgmMfI1ELkdAhapFfSO3WUCODsZzLTqTyt5f5U/gKKBtpGKobOgZFm2Dm3X6w9bhXDXSMmsYRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eqS4lwdGkSX4CUtKoLgudBLAMHEz2gpXQavjZVA5bLo=;
- b=Tu6nxBSDWdiUViwlC3J42GP46kXroShw/HEWNGKCIp6gCidiBb7gNPZ/+JBYOuSYOnazTmrHJaIJy/EnTsfVH+8RGIOjA5OKbDDOc9AeXNLNAdHAX2Izii/SRyoGGUdCY5wdw8s9w8ugdLgtV97ibD7ahnYndcZV7SDzDWgGloRaDVrI6KrxVh+c/nl615nWFlYXuM7vByX0NJ/6khTmt59h+XSjQ4iDqYLrLqgr/McpPSORrRBn8rZNPITUOTv3mZquPNHfdL2LjRhsO47sqm7px9SvX3pjOi+yd7iq2cIB5nCD2Z4f/H1QC8ggtJlxL71iy0oqcunZCPyfmzmn5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eqS4lwdGkSX4CUtKoLgudBLAMHEz2gpXQavjZVA5bLo=;
- b=4J3eRMQ9U0dfZ7yxbHi/OjaS3wBsJkRGFJwIphw0vn7/AoeCGtO1wdIjpeDJHuAej5hekpKkIcI75uCknHDFq4PWHF7vBkDoTorWSw+rCVQaq78u9nFlddQQUXmiSCS86Z+CewBN3+8uAtJRvNxTWYzOpv8oio2pt7fGd9XePSI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by PH7PR12MB7938.namprd12.prod.outlook.com (2603:10b6:510:276::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Mon, 10 Feb
- 2025 17:20:24 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
- 17:20:24 +0000
-Message-ID: <244cf1cf-72ae-ccfc-6bf1-261bf4463b8a@amd.com>
-Date: Mon, 10 Feb 2025 11:20:21 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 1/2] x86/cpufeatures: Add "Allowed SEV Features" Feature
-To: Kim Phillips <kim.phillips@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
- "Nikunj A . Dadhania" <nikunj@amd.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Kishon Vijay Abraham I <kvijayab@amd.com>
-References: <20250207233410.130813-1-kim.phillips@amd.com>
- <20250207233410.130813-2-kim.phillips@amd.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20250207233410.130813-2-kim.phillips@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7P222CA0008.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:124::12) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thXTi-0004Uh-NJ
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:21:50 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thXTe-0007Lb-CO
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 12:21:48 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-aaf900cc7fbso783056466b.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 09:21:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739208104; x=1739812904; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=duGXbvA0hjBfTk7OhJrVu/9zBhz4Li2GRi+3aPRPIFM=;
+ b=VDROrh6L3eZVJ/hLlmtimal0H4betbiJTGcvQJbZG53w8fvlhslRdDYgyNuXZ7ov/m
+ 3QH9yPaTfaMgFS96FTNPz1sJ5O24eg8Gh1Mw4pQtKf2pW4Im6C48KDqe0LPrAla7QCbr
+ wv7vEyys9bIqBNPDBeVn1kFNpSpUIR26dv/veN/Th9CPvMkx5zlUSPNGPEOX5+xVdPJf
+ PVExxxsSX9+wP0y687L4ziq7/UsFh7xK/Eq27F00zz5+4tRrB5svm3UjnIe7icjs/6kh
+ KqoZTSEHkbFZZK+Dzq97KooF6myGNo5Q/VUrPAlD9Lx9A5Oczm+5HkMHcs4806ZcSYgH
+ sdww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739208104; x=1739812904;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=duGXbvA0hjBfTk7OhJrVu/9zBhz4Li2GRi+3aPRPIFM=;
+ b=xFHEoAvgyPJgyu0bhonC9C5TKhkXzQkD8E++/gDS5gVCncdqbv4/2MTGo4gDnifd/r
+ ZW1VFHqCRoOEbdl1EDLiL6Pj3yFBzFjIPQOo0PhWB0+npTkmhrV4YwdSlaxJlgIUJsdZ
+ 6lJoxR/NMZdKmd5rf80OYYhQxOqkeh6OWyQhkVqGH05BM45QDXwHLJDceQUQ/IFCWJXN
+ bN3Mp/dxe5bbu7DVlAs046HKB+5a2JkM1qVfwt+Bw2GTZ4idhaY/R6xa+Yy4W+0eGSIb
+ oVmrnMQqvXCtS/0SEZBxEqXHCTPPqmdl430eMC/HFtYdS4rkbA7VVUjCux30Pd82I7xI
+ leqQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV5NNWjjEYIjHlLZTEkW3XUEFzoYhN6hqG72TM3xhobSLyx6Z5Vv0wIuaPTvw0qIwjcIQQTe38CMlwz@nongnu.org
+X-Gm-Message-State: AOJu0YxQxRoV/kYNCcMOCxvl/Fp/mshWgGp8ckdk+Jl4UWwj1eg7L0EG
+ SXpx71jQIxYYy11NgG9rlP0xDPxfTBGDwat01sVuFitYk+KF2zuDqu8KSHzNC00=
+X-Gm-Gg: ASbGnctcRqBtC4w331FbMGgx+rlP9pJg0PoHgoJ0NJ/NRZP1eTA7Ejbpk2pAOHP8DIQ
+ w1EA+cXX3ChIUM4/Q5v+qRUoV6IsssJoe3aWyho+QlICE9tqT50jSk9UiWKHPa+pKyf+rnpZ4rL
+ KQH1t1nRX7vS/DNtLwiKvId/YyOK2Iqt3Gs8I97M7Xg5kgw+RQ8fqQK6W9YMCjv85ejG1a2XfD4
+ cxWAT/MYtiDy+wLewvnVEgH/uJy0nT7+sy7Gqv63/5dFp7HB+S3f5mEetqcukrBj9JCF7LD0Gqo
+ OhLmpoLJM5XJNkaTOCaYehasm+GsSRtcKMzdU6e5+NFBzrsPlMoDlDWS0WI=
+X-Google-Smtp-Source: AGHT+IGJ8PEeNK91ASTgw3auwFAxaUK0F8OverbQHigtkZXr7d7OUa2R7ehntOr9m7cxTdxZZ2jcHw==
+X-Received: by 2002:a17:907:1c24:b0:aa5:225f:47d9 with SMTP id
+ a640c23a62f3a-ab789aeb5demr1461294166b.29.1739208103888; 
+ Mon, 10 Feb 2025 09:21:43 -0800 (PST)
+Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab78c219740sm760973366b.61.2025.02.10.09.21.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Feb 2025 09:21:43 -0800 (PST)
+Message-ID: <58008d22-a006-4e42-aed0-1cad51458a8a@linaro.org>
+Date: Mon, 10 Feb 2025 18:21:42 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|PH7PR12MB7938:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88768df1-ab07-4de4-27b0-08dd49f73434
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UHBSNTNzTTBtSU4zaWV6Tkd0aUhrQ2MyQlJqQ1pNMnVpYlo0S2VkUFJmZitr?=
- =?utf-8?B?U3BTS20zMlQ1OEhMZjl2SndWN1JwenZ0MklUL3NoNzd6bGlFakx2NTlZeVJV?=
- =?utf-8?B?SGl5b1MydFZZSDdlekF1VDBXWExXcm1MOVNybURmNHJiRVNHWlhKY0JLdWdM?=
- =?utf-8?B?aEdYMFVJQ1VockN0MHlYZSs0NVRVSXlXUkRSejl5QkREZTJoc1V0cFo5bFNp?=
- =?utf-8?B?UXloeEEyRUJqenB0V0Y2N3QrVnBKODdWN29iWU9ERUJXTU14a2tzcGkrNHRO?=
- =?utf-8?B?U0hRYVk5ZmhTdUcyV1NKbU1qU1dKS1ZZeUhBVklTTFBYMXFmYkVYMjVjR1Z2?=
- =?utf-8?B?UXJEdE5xd2p0cVlsSzVrandTNFBIamZ6N2Jud3RZc3ZlUmhudDNGZHFRalhG?=
- =?utf-8?B?MzV0Y1JaRDR3SEhiaXk1TkxoMmZ3OVRyWDVxSDZyM0JtMVB2V3dYZzhqQ2hL?=
- =?utf-8?B?NmJoWm5RVTI4NjljclcxUVZXb1dmVTBGOFlBNklaN0Yycy9tUTJDajdkZkRo?=
- =?utf-8?B?VnFsZ1ZJVGFRK1QyTGNCelMrVXVleTRaZS9IemY4NU1UOUIxSHNoK3RmQVFt?=
- =?utf-8?B?Z3dtbjBxVWptbXQ0SmExWk5IcW9CNnIrc214c29mUmNwUFY2dVIyR1hNNTlT?=
- =?utf-8?B?eEFBbEoxVFZlUGRzYzlJdnlZemp5aVZZZXZOUlliOTMzSzlBd3VvclZWVlVP?=
- =?utf-8?B?Q1ZXRE1VdWE2bHgvWWJrbzZYT1NJWmk5bWZ0R1dwWWZ5Y0pMc2tUWGtUNzI2?=
- =?utf-8?B?ay9RazFPWDV2ZGhtcFZGbm80b0ZVYk9ZOCtobi9hOUNqTEdSS2dEY2dxRHVD?=
- =?utf-8?B?ejFZS216OHFGdUtUTnB4U2lTaUF4MW9IN2w0R0ZuaGN3TXUzSy9YbWlvd3Ri?=
- =?utf-8?B?ZDlvMUFhelZEdmNXOXg1RDRJbGF4Ylc2Njh2ZG5PbWpvN3N2R3NZa1I1TXRZ?=
- =?utf-8?B?bDZyTWZvNjYyeGs5d2RFTzdGSGdRdmUzOFc4cnZlUEU5NlZ0NmJhMW5heGl6?=
- =?utf-8?B?UWJqRFVtbGdKQXdwVnFzWGVxdWNrRmpQdEMrdmVOdy83WE96ckhYemxoSkZn?=
- =?utf-8?B?dHJDN2N4bFJKckRWMDBRc1dLQTZqR3BsaXBJTWg0QXJWM2tWOG95VllhN1hV?=
- =?utf-8?B?RUpPWDZ0cEhtSGlGYmZzK29iaE1iUU5qRGgrK2VFYVp6cVYzTktqczMzZWJV?=
- =?utf-8?B?MGtSdU1lWWRzazNPYUNEWi8rMGdrRmFSNExJMWdOS1ZkL1VpbHM5S0dVQk9O?=
- =?utf-8?B?YUtsOXRQM3ZuMmR2U3RtMkFHMHhvWWJvZUQ0bWlXdEJuYTRyYndFa3dsT1Fy?=
- =?utf-8?B?RUUvN25ZcEpUQ0dSNDczZ2pBS0N2MUloZzh3QXdMSWNESUxYQUtYNjNrWHZX?=
- =?utf-8?B?clF4a0VnN3dFV1NwZUd3VXlNOFg5eHNXUVdtSHdrT3lKVFFaSmNWcjh1S1hF?=
- =?utf-8?B?RWpzdGJkL3J1OWRlMzZ3RUVHWmF2K1pqNFZNMlA4TzcveVp0QmVpSWtFMjRp?=
- =?utf-8?B?bVRFWWJQSWJiZi9PaG1DR2wxUGU5N1o1dGMvWmdXbU5OTjV2U0N2VlNXTGNS?=
- =?utf-8?B?VlVObkpwcUt4YUluRHVJb3ptR3J2Uno2c0pVMmFqM2piVVhGczBzWEZUamw0?=
- =?utf-8?B?U2pwb215N3kvRGNFcGFpcWdkS0pNQ2ZCTFpuSm9iMnJsN04wc1FONTg3YU9H?=
- =?utf-8?B?cjI0cTJlcmNvb3p3dU9NdTd6SlR1WkFkY1JRdmxkRlJqeE1xUmZGTWZsMmph?=
- =?utf-8?B?TDlUU01yZGZHY2xobjNqbGdYbEZnSlhXTms0Unp1WWM0MVZvaFg2NDRsOFJq?=
- =?utf-8?B?TWpuU0doT01QOU1vQVNkTmVwWVBPQno2K3JMaGJ5S2NiZFFhbXU1Y1lBWTQ1?=
- =?utf-8?Q?M2L0kY8+Q2a+C?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5070.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RGt2S3VLWldCeVJzU3kzbjVkMU5welBiNlhxWXBCc1U1cXZjK2UxdW5PNFUw?=
- =?utf-8?B?UUphNFU0b0E2elNMbVdPN1g0YXp1YzRCcGZ1US9OUHRIVlliN2JDZDJET2x5?=
- =?utf-8?B?dUc3d2pOS1ArYzA1Vnk2K0wvWWpZZkNkRkNHRktpYy9MdVBtVjNMUWVPQW1V?=
- =?utf-8?B?Sis0VTByUlUzdWlRdGVVcCtmWk8wRVQwWVU0NVA4Z1ROdVRCTUc2MUdzU1lX?=
- =?utf-8?B?V0lWV2NwQVdIeFRoRFZldUtYL1JOMnpUWVYyNGZvcll5QjRGL0luMjlzZjdr?=
- =?utf-8?B?Ni9rSUJleDZQMmh6SDlOSDJsRUcvbC8vNTBqTjVHb2ZXMGJKY2thZWIySWwz?=
- =?utf-8?B?UFgwR2VOUWVCeEFmZVpJWGtEQUNpRXUyWmhXbUx3WlBKeGN5UEIxdjg3UG01?=
- =?utf-8?B?K0hHSURnRmw0NGFLUHJGNFp2L2hRMFRGaEdudHBEQk9CTUdBWWF4bHV5aDls?=
- =?utf-8?B?Ti81QmpPcDliWHBIK01hN1dUZVYyR1NTQmtjQ21scWErZHhTOHQ0OG5VYU96?=
- =?utf-8?B?djZ3ZXIrWFNaZW1EUTZXa21TbTI2bStzazVNeHhUamV3T0VPN1oyR0MwNldN?=
- =?utf-8?B?MG9zd2ZVaGU2cSt2ZGt5SmY1UUh0RzJrenhyaGlIZ292cjIwdEt3ZDg2cUVh?=
- =?utf-8?B?TFVGN05wZzFxVzU3RzgzRExhalRtNUJvNXV5cXJsY093MWhybHN1OXlaRVVN?=
- =?utf-8?B?aUluZjZOT3JWMWM0b0VnWFNSSkEvL3J4Mmd4U21WcmZ6cDdqWUxRNERhbldp?=
- =?utf-8?B?dS94T3Y5RndjVTZwR0FOUzhZMGFxU0RmTFp1VGJ1dTlGTTJ6RW4rQUMyQmVI?=
- =?utf-8?B?N2Q3aHNQVG1KS053Z0ViOFRZMmswNnVpTmpvbDBvaE0yTWdaZHc0Qm01TlJi?=
- =?utf-8?B?SmVkaTFCWUExQlh5eHFnMnRBRkJGRFR0YWR2Y0NLQ2JHUEtvWGIwRTF2bFZM?=
- =?utf-8?B?OUFXcmJLS2QrOVNYR05wNEpmYnVXTXNGNkZydkErNllLODFSZXJrTFlid0VZ?=
- =?utf-8?B?VkZva0NFakcvUWx6ZXQvMjNQYWVCTFBxUjNGVDNiRFM1MWxHODh2UGdScFNG?=
- =?utf-8?B?TWo2NWw0NEkwVVNVc3piSUpsMFE5cXlVVUF6djI2K3VXR25hNjZNRDNTbTU4?=
- =?utf-8?B?ZVl3U0pjK0N2QmRPNlZXaVRVc0JXN0Vhd0VYSXdMSmdLWDljMFhheksrU2RJ?=
- =?utf-8?B?TXJWaU1rMkNNQkxKZmQ1Qm1GcUlsZ2NIZFpUcW5rbzFFUUVQUE50U094K3pW?=
- =?utf-8?B?QkZZK1k0U0JadnI1RWx2UTBwai9ldkt3TWFBbnBiWitCU1RhWkxFRCtzZDU4?=
- =?utf-8?B?MWlDaC93RGx1WEJhVlFZbUN3ZkhpV28rSEY2cFJDZ0I2MFBNY0w1bUEvYkRC?=
- =?utf-8?B?Zk9YMjlCb2ovWXo4bXUzeVR1K1BuUyt4MDRKRXE2ekJYZ2o3YXVRc1ZsekV0?=
- =?utf-8?B?MTFOdVhpdDAvZ1hzZUVJUEpMR1B3YndCbitHL3VnYklXaWp1bGJQd3JhSWg4?=
- =?utf-8?B?ejl5Vzk4YllZM3ZiZHo3Vkxlc2VRcXZXYkxFV1VwNmF1N0tqM1BvdmRscmg0?=
- =?utf-8?B?OHhYY3psTEp1bDlzTTNjcE5XS2VuUmlTa1hEWTBKbnJuRlAvREpac3RKVjY4?=
- =?utf-8?B?VzA5aGhnVUt0OWkzUTNVbHhtTVJVWm1FbnRmUm5OR2EwSEdnVUZmN0IzUExm?=
- =?utf-8?B?V3FOOFFQSHFGeHhoRjdWNnh4MEVMYVNNc25LSmgyek5FZVRQalJYV1RpeDdP?=
- =?utf-8?B?ZzZuYklOdFIvR290RjM1cnpFdTZLRkc4Qys4U0xVUWZkWCswL29nWmNXUk5w?=
- =?utf-8?B?WmFocVdCV3RRNzdqOXlDb0pod3FKWkQxc0pJTDk4VzQ0UUJEeFNwRkl4Ykp1?=
- =?utf-8?B?ZzdUMTRad1l6NnNQNmZqQUt3T0xES0x2Y0phcEkyT2NvYVVHUGp0MjJneXZ6?=
- =?utf-8?B?Z203RFAxdTQvSE1iMjd4MzR3QkdHOURaOWZUVTFLcmVzRHhNblZHQmU0UFg2?=
- =?utf-8?B?SFUwbElrM3J4enNFMkowY0o2Q3VaRnZUWVord2lucFdpZ1NUT0Y2VEtRMlRW?=
- =?utf-8?B?RG12TjN0THE1TEd4RkdCTVFEOE0zSk43cktqWGR0UExJV2QzcmE2bVBMRmVB?=
- =?utf-8?Q?Hk254BX89uEo3O8+M7WYxQPJt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88768df1-ab07-4de4-27b0-08dd49f73434
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 17:20:23.9740 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kRj9TfCKjgrNSU9gzP97UytHNqJ6duqmQZ6zrxOqig/TdxDWdYkWvPyTAjVl1lUnY/DssqFSTsE+RT3AvbnrJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7938
-Received-SPF: permerror client-ip=40.107.94.64;
- envelope-from=Thomas.Lendacky@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.023, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/11] qom: Constify class_data
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20250210133134.90879-1-philmd@linaro.org>
+ <d0c8837f-a47f-45ad-a060-0a2b638932a8@linaro.org>
+ <443902c7-8697-44d4-9f7d-9bddb93607aa@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <443902c7-8697-44d4-9f7d-9bddb93607aa@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,33 +100,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/7/25 17:34, Kim Phillips wrote:
-> From: Kishon Vijay Abraham I <kvijayab@amd.com>
+On 10/2/25 18:02, Richard Henderson wrote:
+> On 2/10/25 05:46, Philippe Mathieu-Daudé wrote:
+>> On 10/2/25 14:31, Philippe Mathieu-Daudé wrote:
+>>> Since v1:
+>>> - Make XtensaConfigList::config not const (Max)
+>>> - Update / test rust (Paolo)
+>>> - Constify InterfaceInfo[]
+>>>
+>>> Following Richard's suggestion [*], make QOM class data *const*.
+>>>
+>>> [*] https://lore.kernel.org/qemu-devel/f4ec871d-e759-44bc- 
+>>> a10b-872322330a3f@linaro.org/
+>>
+>> I'm only seeing +3KiB in .rodata for each binary...
+>>
+>>> Philippe Mathieu-Daudé (11):
+>>>    target/i386: Constify X86CPUModel uses
+>>>    target/sparc: Constify SPARCCPUClass::cpu_def
+>>>    target/xtensa: Finalize config in xtensa_register_core()
+>>>    target/riscv: Declare RISCVCPUClass::misa_mxl_max as RISCVMXL
+>>>    target/riscv: Convert misa_mxl_max using GLib macros
+>>>    hw: Declare various const data as 'const'
+>>>    hw: Make class data 'const'
+>>>    qom: Have class_base_init() take a const data argument
+>>>    qom: Have class_init() take a const data argument
+>>>    qom: Constify TypeInfo::class_data
+>>>    qom: Constify InterfaceInfo[] interfaces
 > 
-> Add CPU feature detection for "Allowed SEV Features" to allow the
-> Hypervisor to enforce that SEV-ES and SEV-SNP guest VMs cannot
-> enable features (via SEV_FEATURES) that the Hypervisor does not
-> support or wish to be enabled.
+> There is some additional data that can be made const after this [1], 
+> though still not lots.  But the additional data that Paolo was going to 
+> add for 99 riscv bottles of beer on the wall would have been quite a bit 
+> more than 3k.
 > 
-> Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> 
+> r~
+> 
+> 
+> [1]
+> 
+> -static M48txxInfo m48txx_isa_info[] = {
+> +static const M48txxInfo m48txx_isa_info[] = {
+> 
+> -static M48txxInfo m48txx_sysbus_info[] = {
+> +static const M48txxInfo m48txx_sysbus_info[] = {
+> 
+> -static struct EHCIPCIInfo ehci_pci_info[] = {
+> +static const struct EHCIPCIInfo ehci_pci_info[] = {
+> 
+> -static UHCIInfo uhci_info[] = {
+> +static const UHCIInfo uhci_info[] = {
+> 
+> -static UHCIInfo uhci_info[] = {
+> +static const UHCIInfo uhci_info[] = {
 
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Doh, I took not for these but forgot 🤦🏻
 
-> ---
->  arch/x86/include/asm/cpufeatures.h | 1 +
->  1 file changed, 1 insertion(+)
+> -static StreamSinkClass xilinx_axidma_data_stream_class = {
+> +static const StreamSinkClass xilinx_axidma_data_stream_class = {
 > 
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index 508c0dad116b..a80a4164d110 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -453,6 +453,7 @@
->  #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" SEV-ES full debug state swap support */
->  #define X86_FEATURE_RMPREAD		(19*32+21) /* RMPREAD instruction */
->  #define X86_FEATURE_SEGMENTED_RMP	(19*32+23) /* Segmented RMP support */
-> +#define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
->  #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
->  #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
->  
+> -static StreamSinkClass xilinx_axidma_control_stream_class = {
+> +static const StreamSinkClass xilinx_axidma_control_stream_class = {
+> 
+
 
