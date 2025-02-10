@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5811AA2FAF9
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6FFA2FAE1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:43:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thacD-0006Q2-Ft; Mon, 10 Feb 2025 15:42:49 -0500
+	id 1thacF-0006QX-6d; Mon, 10 Feb 2025 15:42:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thac9-0006Jv-SR
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:46 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacE-0006QG-6M
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:50 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thac8-0003cr-2p
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:45 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38dcf8009f0so1631159f8f.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacC-0003dP-LZ
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:49 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-38dd14c9a66so1121764f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220162; x=1739824962; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220167; x=1739824967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3LSXPak8+leEas4QYcp9RGIXAMu5A0oBZiFnt7dHBD8=;
- b=ae6vc3AK8a6Ap09rdUYv3lWtPvxt6f79Uks8ZCOc4q+AIoe/yCJncy1WdOeFMFrf5d
- V4sEaI4QuRcJTuiZblK4mVcie651Ze+fRLcXlbcuHYi5Gkp/mxzGDXXDjJ2stTpvQ+m2
- ko11iTlybts6QAYdv3yMW1537QuWfGCk3/Uh80nK/y1pDKnfHLHCMtMqcH/zIP25KoIw
- bwMOKhvQrkiuY28pFjHY9QEKr+N/AAGs+/i6tvQQIsCan/1Jxv+YnnRFkvYLFgTaSPkw
- PYSCfl4C8cMoIqp9vveR9rVndXwx6zzjrPT/0MYUE/Vd6NAM7N70+tRsa4OUb5SasKCb
- vLxQ==
+ bh=3nuHHIvM6pSqnytPWoTxGSW68RW0qHiT+ueaTC+djWc=;
+ b=kOPYnT+9VNjGqZo7qzVn7sBkaEFFdhSTYD8WwFNxLAwVyXPxFRj3oUa77j3Yv6vN90
+ 2O97kuw1UvmVjlgBoNBBhF1rnPlCbQERs5yrYIF62QBm57SGi8Zgz73xLVCmJXDfjdok
+ 1oATUn4fJpHl4XrslYdtWy7tDLguAzAug6HsrhNluXBLC36+BCK5ZGh0r7aQYYCdYWit
+ ETBHEFDcNl6PAlzxRRgJMgbHGxHuAWvpNdnBaWAQo427NTItnSte3CkNWuPZ7QftUsIk
+ gjxVD8EY9X62Ys21J1+SUTjvY3RPzWG/swtyk80wHB/OiyXh3lf0z/BomH2+mJS4AD2P
+ cN9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220162; x=1739824962;
+ d=1e100.net; s=20230601; t=1739220167; x=1739824967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3LSXPak8+leEas4QYcp9RGIXAMu5A0oBZiFnt7dHBD8=;
- b=f2REPg5HYrG5AM5LuQYILsY39JkdFpWWKJpcekYAOW6MxKHPuFWuUGnECLV7UFyGsm
- /kKU36lvxb4PE+r/b+8QKTmrJrhGVl8c9CkWRfmFfjb4ek8gTbiK6aY0wBskFWXzjcBg
- ynZx6T39vVSnRR+krGnHXfy1CRww2b4yG6GG2Orp4t/VGx5ceZ063Vk8196261OAcpux
- VszmSvLAL7yvHmVrzI2N7QRXgFQOVP4lOEnLtvbiHIdzZqzKlpM4abJaXAux3VWE3Z4F
- d7S+5+cKc1QUIMAbXReMXkIJAVJLFU4dmzVbmnFhVBNCfdGaXcVdTEIMNfdrhvLODB9Q
- h5HQ==
-X-Gm-Message-State: AOJu0YzesjdLJcWTXAmQS6ZIxA2ns1d7AE4SoVIg/b8JfMVIUDhUNpk8
- 00AbSQ2MsOO9DcO2P2DRocePlF0McnBMhVFMhJ9O9QaxaVZiQBeHrGF3Ic8NKhDh1+bGYp/Tenl
- uB2A=
-X-Gm-Gg: ASbGncuy94GNiNONqjzDhK3yQyZmbICJPmi7MXEOtbXGNtRaq1HSqIrI4gI8lNQBgZu
- HZ6EhKAE0WgIURRsaMt2KDPkhvHeOONj8KmVLyw9q+LatZkuLWhSI6ThtKlG/02CScFizQPgcZT
- pIWnTwWq/gbubdAnXt6bN+S9aQ8KD/qPBAxlN12wscg0HlEpWH3JfjNR/1JB9KEcr7rQMZW/uGt
- jbOZjQ9XytyPzRuzeCVyJ1EOp/bn+cCZVXB2vef3IZRPQzrtLeg/zc36ab6/tQo8R56SE6YlUic
- zNvyVOd0tPl3TNJtzxpYr9hCPZCD0oMsc3TDfE0JolzyqodI+i3jGsN7+X1P4BW1yg==
-X-Google-Smtp-Source: AGHT+IHhzrA7a5FP2uvQUufgEdqg6xzsvVTY5gXbTTXrn3XN4VXDb7l7d0+ClS+NbXICJL/pUrePGg==
-X-Received: by 2002:a5d:6d81:0:b0:38d:c58f:4ce5 with SMTP id
- ffacd0b85a97d-38dc891f27bmr10236936f8f.0.1739220162173; 
- Mon, 10 Feb 2025 12:42:42 -0800 (PST)
+ bh=3nuHHIvM6pSqnytPWoTxGSW68RW0qHiT+ueaTC+djWc=;
+ b=tSSjM0Z/zhx27kvg06Xt9jMpwb2tuU2rBKLVG+JK/xIEFr/rqBcviGNIbWQ6EhuxvP
+ su7zJIvjYJ7G6APmGT3F42lX8eHeQWX5o+OKjNVcZiMh4xilLEb3HQgKTCHju2HOrooW
+ ctGruXPA6h/Igs87Us2Yangh0uQutzoch2wkLZSSiqP8Q1H/YonWzSJkX9/wHGNs5qJ2
+ SAOmA8KBxvchoQcViDqDk40r4YyTTNtOW5asr8wOMAhB8kc/q1Ny2ERioZrIKPHpEKk0
+ 3FqyJQKljBFGar5XK6cZjqdopGhvVNtQDL5k8FUdlQPgXbUGIVWHY0j34ff7TJtgoYXl
+ PHKA==
+X-Gm-Message-State: AOJu0YxFLkJGy6IPIEja91WVMTNMKCqCUCO95gDch0EfTF+rROn6+Rjh
+ WS/qDKIP+4+qgqfyffkdpdBNZDFFwQqewFwy5m0wDnXGovDkTBf9JqWMEbOz26M/1x58EHtozJX
+ 3KjM=
+X-Gm-Gg: ASbGnctA5VaUP2nuYEuiq7G1FzrD6gRs+Puvfh6WdcwrpRfrLT7w5xbyxtkkM7C/y8m
+ nyVJktUy8gGJHth/bZK98AaT1zNJIRPL56jRbOUYI2mXqJu3KeJ/0NA/8qOLFySmcwKcw+MoaLQ
+ JuywiuVBb1LMba59Hp729a7xYU56YYWetcbjNgs/qP3pwpqT3rwTy5FHzxWHPk4reeAQMrff9jq
+ d28vFprxIO26BW10ScpS5Xu8u8Fa0qgDzS5oKZMcxbFFHvH4S9mSk21FdHHMbLzQGFFQFBFloV2
+ LmUpaS1OC7GsX60hnzwQVHyGbVN5bxTZlzDHcmB86zHGg13PjbRBTLQ2Ngx/sjQrTA==
+X-Google-Smtp-Source: AGHT+IHwlNMgul/D9utFFraEy6LdQZUaJIELgo6s4YE6KmLK+PZ+9vj+uPcsY2ppKMQyN4J3NsFygQ==
+X-Received: by 2002:a5d:64c7:0:b0:38d:d4b5:84d6 with SMTP id
+ ffacd0b85a97d-38dd4b587a1mr7734341f8f.3.1739220166892; 
+ Mon, 10 Feb 2025 12:42:46 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4394376118esm46514355e9.40.2025.02.10.12.42.40
+ ffacd0b85a97d-38dd49d2cafsm7673117f8f.16.2025.02.10.12.42.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:42:40 -0800 (PST)
+ Mon, 10 Feb 2025 12:42:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: [PULL 07/32] hw/arm/xlnx-zynqmp: Use &error_abort for programming
- errors
-Date: Mon, 10 Feb 2025 21:41:39 +0100
-Message-ID: <20250210204204.54407-8-philmd@linaro.org>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/32] hw/intc/apic: Fixes magic number use,
+ removes outdated comment
+Date: Mon, 10 Feb 2025 21:41:40 +0100
+Message-ID: <20250210204204.54407-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,88 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a property value is static (not provided by QMP or CLI),
-error shouldn't happen, otherwise it is a programming error.
-Therefore simplify and use &error_abort as this can't fail.
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
+This changes replaces the use of an explicit literal constant for
+the APIC base address mask with the existing symbolic constant
+intended for this purpose.
+
+Additionally, we remove the comment about not being able to
+re-enable the APIC after disabling it. This is no longer
+the case after the APIC implementation's state machine was
+modified in 9.0.
+
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241209203629.74436-11-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20241108154317.12129-11-philmd@linaro.org>
 ---
- hw/arm/xlnx-zynqmp.c | 38 ++++++++++++--------------------------
- 1 file changed, 12 insertions(+), 26 deletions(-)
+ hw/intc/apic.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index bd5b0dd5e76..d6022ff2d3d 100644
---- a/hw/arm/xlnx-zynqmp.c
-+++ b/hw/arm/xlnx-zynqmp.c
-@@ -689,16 +689,10 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-          * - SDIO Specification Version 3.0
-          * - eMMC Specification Version 4.51
-          */
--        if (!object_property_set_uint(sdhci, "sd-spec-version", 3, errp)) {
--            return;
--        }
--        if (!object_property_set_uint(sdhci, "capareg", SDHCI_CAPABILITIES,
--                                      errp)) {
--            return;
--        }
--        if (!object_property_set_uint(sdhci, "uhs", UHS_I, errp)) {
--            return;
--        }
-+        object_property_set_uint(sdhci, "sd-spec-version", 3, &error_abort);
-+        object_property_set_uint(sdhci, "capareg", SDHCI_CAPABILITIES,
-+                                 &error_abort);
-+        object_property_set_uint(sdhci, "uhs", UHS_I, &error_abort);
-         if (!sysbus_realize(SYS_BUS_DEVICE(sdhci), errp)) {
-             return;
-         }
-@@ -763,14 +757,10 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     xlnx_zynqmp_create_unimp_mmio(s);
- 
-     for (i = 0; i < XLNX_ZYNQMP_NUM_GDMA_CH; i++) {
--        if (!object_property_set_uint(OBJECT(&s->gdma[i]), "bus-width", 128,
--                                      errp)) {
--            return;
--        }
--        if (!object_property_set_link(OBJECT(&s->gdma[i]), "dma",
--                                      OBJECT(system_memory), errp)) {
--            return;
--        }
-+        object_property_set_uint(OBJECT(&s->gdma[i]), "bus-width", 128,
-+                                 &error_abort);
-+        object_property_set_link(OBJECT(&s->gdma[i]), "dma",
-+                                 OBJECT(system_memory), &error_abort);
-         if (!sysbus_realize(SYS_BUS_DEVICE(&s->gdma[i]), errp)) {
-             return;
-         }
-@@ -811,10 +801,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->qspi_dma), 0,
-                        qdev_get_gpio_in(DEVICE(&s->qspi_irq_orgate), 0));
- 
--    if (!object_property_set_link(OBJECT(&s->qspi), "stream-connected-dma",
--                                  OBJECT(&s->qspi_dma), errp)) {
--         return;
--    }
-+    object_property_set_link(OBJECT(&s->qspi), "stream-connected-dma",
-+                             OBJECT(&s->qspi_dma), &error_abort);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->qspi), errp)) {
-         return;
-     }
-@@ -833,10 +821,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index d1d343d4216..d18c1dbf2cb 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -350,9 +350,8 @@ static int apic_set_base(APICCommonState *s, uint64_t val)
+         return -1;
      }
  
-     for (i = 0; i < XLNX_ZYNQMP_NUM_USB; i++) {
--        if (!object_property_set_link(OBJECT(&s->usb[i].sysbus_xhci), "dma",
--                                      OBJECT(system_memory), errp)) {
--            return;
--        }
-+        object_property_set_link(OBJECT(&s->usb[i].sysbus_xhci), "dma",
-+                                 OBJECT(system_memory), &error_abort);
- 
-         qdev_prop_set_uint32(DEVICE(&s->usb[i].sysbus_xhci), "intrs", 4);
-         qdev_prop_set_uint32(DEVICE(&s->usb[i].sysbus_xhci), "slots", 2);
+-    s->apicbase = (val & 0xfffff000) |
++    s->apicbase = (val & MSR_IA32_APICBASE_BASE) |
+         (s->apicbase & (MSR_IA32_APICBASE_BSP | MSR_IA32_APICBASE_ENABLE));
+-    /* if disabled, cannot be enabled again */
+     if (!(val & MSR_IA32_APICBASE_ENABLE)) {
+         s->apicbase &= ~MSR_IA32_APICBASE_ENABLE;
+         cpu_clear_apic_feature(&s->cpu->env);
 -- 
 2.47.1
 
