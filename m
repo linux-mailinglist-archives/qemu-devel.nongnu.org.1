@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68211A2FB05
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 259A6A2FAFA
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:46:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thae6-0003yv-0N; Mon, 10 Feb 2025 15:44:46 -0500
+	id 1thaeC-0004uk-Sd; Mon, 10 Feb 2025 15:44:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadj-0003aj-T4
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:24 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thads-0004IA-GH
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:37 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadi-0003uD-6H
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:23 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4361815b96cso32389755e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:44:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadm-0003x9-Tq
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:32 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-38dd011ff8bso2652244f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:44:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220260; x=1739825060; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220265; x=1739825065; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gj8bVeK5NOhu7y6Rw3GfYIssZOi6C5MlJs9pxmbGNdg=;
- b=C2QuIbabgyPYd3G6V9+QYo3qKox1PYongaMS6tWx01bdSgpbXD8puKi5jvX8Rj6SBn
- Y+c5rLxgRmW3WXP4sbDGSLElb7Siy+G/7IdppXiUgAwRjrl+OFdTus16+5AA9ejtJhaE
- K4byFznoIySIySLFWvO7kXJ918RRCzPVSpyTHerAPjLMMrCN//G2PmRJJ4ZrmvWaVH3b
- bphORmCbivfyO20SxRrOmNnodRyuAmKGIkUkyxoL9i61rkhz6ByQTnp1DkQI0fY9IsDY
- 08MMrereHXY7jrLZ0hsk7aTdVSK1QL92igD45sQGQ+gk3G3LhsS9P5CtHqahr9szoi6B
- ELxg==
+ bh=GAgkBkMy3/LPbRfDSn29phwowCLY9R3s4x7aKYfP9pA=;
+ b=cSwkSGJ3VJ0Onp1T9fACCNdlc1oJICx4Ab3+CFJQzg7OTEDpwS56FsLErN9aecjgNo
+ jJoxe3s3qb5I4Mq0d3UgWzppZsku42Gk1VMaBwVydu2pgvS1iWWnmX9TGavsEJBs1ocr
+ 8nGKseIt8ZyIvHLh0mo7BEKzM/AylzVPSlVVbl4iEWcWxsNiiBkHidYQNaqUtyYcmWDx
+ aV43ZPSxFp9rjwWcIT8FpV5suXw+2XCJn+wNr9vNPMw+FT8TmyPDiS1vgHhD/78e6gqL
+ uOLjSH0yhbO8xAk5ZAc4FP2+XHu3ZLr02pTc45EkG+RR7g47TDmndDnFB9C8OZVb5IjI
+ lbuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220260; x=1739825060;
+ d=1e100.net; s=20230601; t=1739220265; x=1739825065;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gj8bVeK5NOhu7y6Rw3GfYIssZOi6C5MlJs9pxmbGNdg=;
- b=xRNl16M5di/2ahNWDVnZPEOBD9qLOpKRKxvxHeuUEsn1g43dp5E3pMMJL1zxjiZaEO
- Zp9TxOs8daKiyXesFsGwqA6UYoOW9joH5s9B5HcWvTcYq/4isMaJ1IKTuX3Gqfi9yqT5
- DFtaQKaCpX+3/XRkzXnB/nRPVjw+fAhRZ+rGRwj7oy35YNyIzy8V7nnCqjCNpPFR4I24
- uyc8gN6pFPRa8MvSMUp+y2OPtcgMNcBAR3wxwC8CO68OwMQIdnR70AAL817eO/j5Tz4+
- fxWzTyE57OTngh1/Meu+zpgyhIJ1dMLaXxa3R4XDZqPakYlvNSVFcO4g+TBEzc3if34c
- q5LQ==
-X-Gm-Message-State: AOJu0Yzrp6UL7V5cbL0PF1Rh2JsZ78Ko4P3H9RDmKxAH8nn0RXPXas46
- 7SzFHZwLUtZR8tysWCI5oM1bdBo2/5xaAmOQHuqrle3XjxJzLTQhz6dN89ctYBUDdwty9MEy457
- BPlw=
-X-Gm-Gg: ASbGncsfh39YUFpy5ziEBgoWysnmm8P0tB01A7cs7Xx5rIx0YeZaN6hdPrB21l+fj0h
- JGywrHGYy7ta+8QKqCMeQse/DbB2m+6g9uz730gdAo35lvuDntqZG/kQ6fts8uss97tD9qENhum
- q55pgkN7HaIi10khatvB3mxQMDKNiIPS1L00a39jDX9kZP5JVtOVAkh7PsMWWc4aNdSlnsxi/O5
- 2/EgCRcLhKXcKq/XAucrLwUp8mSh89MSO+/Xkdz2deghHIRwmFTW8hFA+DvHDx5fyL4zeWUSZPE
- pF5tzpf8D67gh8tHAPcUBTnpJECTfhsN/wXpWRV1Ys1AS3IvdDXlX3D6EvjYDqUdJA==
-X-Google-Smtp-Source: AGHT+IHYdVOroScQDlt4TOiZe4GG8CJV18muBS3cycrgMwakwWd6k5Kmvr2L7eQRDxRNmFHxPtM9LA==
-X-Received: by 2002:a05:600c:4f90:b0:434:a7e7:a1ca with SMTP id
- 5b1f17b1804b1-439249b04f8mr117469235e9.20.1739220260096; 
- Mon, 10 Feb 2025 12:44:20 -0800 (PST)
+ bh=GAgkBkMy3/LPbRfDSn29phwowCLY9R3s4x7aKYfP9pA=;
+ b=sluGHy34slgr06UzXgeLmuqnS/U8JoaH1FZzj2J5lwXFOkePoueDQpaPAYlgVmmPhJ
+ NaNgVOeLTqmTf1I6umyiNgVwO7q70rQBi4eIQb1AlID78VZgOAkKYHzhd7FzGQQ+fZPq
+ 5n+ji/g/l6E4T/TpW5NZfoplY0vrtfXTKJwrXsQ679/v+6FSCikvRWoWSVDYYDr8b7q7
+ hzhfTCKCJxg/KX3o8PwmTa7UFe1j7oZsBtWJkAzt/HeMwzJ/BRiE8cwNHh89w2RV8Rx7
+ IruFsO9xW5dE3j37H490zevhmLDkDL+Ft4C0URyYkOXxvd6cBv/9CbPe7hdU99b1upKU
+ TJRQ==
+X-Gm-Message-State: AOJu0YzR0/q2XxvPZek4CpX2tmLnqXxfaPmiY2o+KiOlZLFlySzffxBL
+ Y+RC4+9EQdUXT/EHENuvYFscFM/IOW1okRobTgka5gVD4x8nNBSz0glvnUYUihZDnWLopOyZWbF
+ OtFM=
+X-Gm-Gg: ASbGncsV6pOztFAw1WYwN2MI7eTuQf354eP88G+NTjdQSA35bWtXr9tU9Vz7YW0nsJj
+ snDRbzfpV0R9q1ujaqOJ1o8wLvXRHPOwY6fVd1FWz0nJ/u7uAfdU1g4pKE2VvwSOBifvZPRK1U1
+ tLVoxNe9qtG4/EneS+aB8mZ7MV4AtJsttRguLvEtdbBj6fWjAEZV1k74UoBfFLdjRGvWl+UnOC1
+ GORHFQDADerpnFx5ZUPUQtzbl/zU6x1LAzsHhwTw7yVXHmHSrjFqDFL2SlBU1Qyd/VTMdxs75pn
+ P2EHzMTGJpjwOq9QkvE+BsckvbO2ZRKJq1KiIB/LiDMQIAIm3f0/dEVF2owPfCivYw==
+X-Google-Smtp-Source: AGHT+IHBC9EcScR2dacwsrw3VcH0REIrGLYp1M5/tZd5XwG8NrDOyO/HJXBx7hHssuJcQ/0tN0riNw==
+X-Received: by 2002:a05:6000:400f:b0:38c:5bb2:b932 with SMTP id
+ ffacd0b85a97d-38dc8da64damr11344551f8f.3.1739220264841; 
+ Mon, 10 Feb 2025 12:44:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4390d94db77sm190300425e9.15.2025.02.10.12.44.19
+ ffacd0b85a97d-38dc565d62dsm11908055f8f.93.2025.02.10.12.44.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:44:19 -0800 (PST)
+ Mon, 10 Feb 2025 12:44:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 26/32] hw/boards: Ensure machine setting auto_create_sdcard
- expose a SD Bus
-Date: Mon, 10 Feb 2025 21:41:58 +0100
-Message-ID: <20250210204204.54407-27-philmd@linaro.org>
+Subject: [PULL 27/32] tests/functional: Explicit endianness of microblaze
+ assets
+Date: Mon, 10 Feb 2025 21:41:59 +0100
+Message-ID: <20250210204204.54407-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,55 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the auto_create_sdcard feature without SD Bus is irrelevant.
+The archive used in test_microblaze_s3adsp1800.py (testing a
+big-endian target) contains a big-endian kernel. Rename using
+the _BE suffix.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Similarly, the archive in test_microblazeel_s3adsp1800 (testing
+a little-endian target) contains a little-endian kernel. Rename
+using _LE suffix.
+
+These changes will help when adding cross-endian kernel tests.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250204200934.65279-8-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250206131052.30207-13-philmd@linaro.org>
 ---
- system/vl.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/functional/test_microblaze_s3adsp1800.py   | 6 +++---
+ tests/functional/test_microblazeel_s3adsp1800.py | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 2ce7d8c49d7..66862807be4 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -53,6 +53,7 @@
- #include "hw/usb.h"
- #include "hw/isa/isa.h"
- #include "hw/scsi/scsi.h"
-+#include "hw/sd/sd.h"
- #include "hw/display/vga.h"
- #include "hw/firmware/smbios.h"
- #include "hw/acpi/acpi.h"
-@@ -2661,12 +2662,27 @@ static void qemu_init_displays(void)
+diff --git a/tests/functional/test_microblaze_s3adsp1800.py b/tests/functional/test_microblaze_s3adsp1800.py
+index 2c4464bd05a..fac364b1ea9 100755
+--- a/tests/functional/test_microblaze_s3adsp1800.py
++++ b/tests/functional/test_microblaze_s3adsp1800.py
+@@ -15,14 +15,14 @@ class MicroblazeMachine(QemuSystemTest):
  
- static void qemu_init_board(void)
- {
-+    MachineClass *machine_class = MACHINE_GET_CLASS(current_machine);
-+
-     /* process plugin before CPUs are created, but once -smp has been parsed */
-     qemu_plugin_load_list(&plugin_list, &error_fatal);
+     timeout = 90
  
-     /* From here on we enter MACHINE_PHASE_INITIALIZED.  */
-     machine_run_board_init(current_machine, mem_path, &error_fatal);
+-    ASSET_IMAGE = Asset(
++    ASSET_IMAGE_BE = Asset(
+         ('https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/'
+          'day17.tar.xz'),
+         '3ba7439dfbea7af4876662c97f8e1f0cdad9231fc166e4861d17042489270057')
  
-+    if (machine_class->auto_create_sdcard) {
-+        bool ambigous;
-+
-+        /* Ensure there is a SD bus available to create SD card on */
-+        Object *obj = object_resolve_path_type("", TYPE_SD_BUS, &ambigous);
-+        if (!obj && !ambigous) {
-+            fprintf(stderr, "Can not create sd-card on '%s' machine"
-+                            " because it lacks a sd-bus\n",
-+                            machine_class->name);
-+            abort();
-+        }
-+    }
-+
-     drive_check_orphaned();
+-    def test_microblaze_s3adsp1800(self):
++    def test_microblaze_s3adsp1800_be(self):
+         self.set_machine('petalogix-s3adsp1800')
+-        self.archive_extract(self.ASSET_IMAGE)
++        self.archive_extract(self.ASSET_IMAGE_BE)
+         self.vm.set_console()
+         self.vm.add_args('-kernel',
+                          self.scratch_file('day17', 'ballerina.bin'))
+diff --git a/tests/functional/test_microblazeel_s3adsp1800.py b/tests/functional/test_microblazeel_s3adsp1800.py
+index c382afe6bfa..5d353dba5d2 100755
+--- a/tests/functional/test_microblazeel_s3adsp1800.py
++++ b/tests/functional/test_microblazeel_s3adsp1800.py
+@@ -17,14 +17,14 @@ class MicroblazeelMachine(QemuSystemTest):
  
-     realtime_init();
+     timeout = 90
+ 
+-    ASSET_IMAGE = Asset(
++    ASSET_IMAGE_LE = Asset(
+         ('http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
+         'b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22')
+ 
+-    def test_microblazeel_s3adsp1800(self):
++    def test_microblazeel_s3adsp1800_le(self):
+         self.require_netdev('user')
+         self.set_machine('petalogix-s3adsp1800')
+-        self.archive_extract(self.ASSET_IMAGE)
++        self.archive_extract(self.ASSET_IMAGE_LE)
+         self.vm.set_console()
+         self.vm.add_args('-kernel', self.scratch_file('day13', 'xmaton.bin'))
+         tftproot = self.scratch_file('day13')
 -- 
 2.47.1
 
