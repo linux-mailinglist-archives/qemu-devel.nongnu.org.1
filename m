@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9EDA2FADF
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CDCA2FAF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thaby-00066T-71; Mon, 10 Feb 2025 15:42:34 -0500
+	id 1thac0-00067G-J0; Mon, 10 Feb 2025 15:42:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thabr-000660-3G
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:28 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thabv-00066U-PW
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:32 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thabo-0003ZQ-JW
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:26 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38dc9f3cc80so1276406f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thabt-0003ab-KG
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:31 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38dc33931d3so2063167f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220143; x=1739824943; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220147; x=1739824947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/uvodWMt7tm/cs4k5p9ZUh0gPCmIyYRQU06Edyq2zpE=;
- b=V0ch59R+znvE7KKoR4R9eS4f4bF4cELJK2oO75reeoz3FVI8+qDH7VfPkDK6qbm2mh
- NOxF5y5lNF638DUUctfC8rHxXrdwnEFGmx021qtX1NmjBUiGzv1pygJ3L1sfk6lsiWS3
- X6Tw4p0dDBxXn27kIuZBPQLfGonCzEGPrLT7iPueVys+QZmk8uLR1aGt4SUnT4C69Yx+
- cjwD1APzt758Ppo/hxklh+Rrn9ftkmUIJoKpma1pJLkOw1IowWPl4UtE1G6o6U2HNnS7
- x3xp92ud3d3x9EKbolCfozdZld7nHjf7ZZZJR5CZdtuPWhej2axJVFe68AhgkUQEzAeo
- CJoA==
+ bh=vxnVqTrw69QSOa26f2GLgtndlndnd+p0IrIRgpQeBXY=;
+ b=CaLkFbNQaufLSaZt/3GgdFgSt6PHjU0eUKRON9j+rKf8uXFNZQsZHZ4F19xWLkWet3
+ xuturYDUadzaNbFPlUKJkvHODoBPhyOZk7HTfyCYvlNSgJb1NLXwBLQGPvWOBL4mLD8N
+ FMvP/iJxUcsZXEjzK7k6e5L3JAKOjBCAiDmvuDYrzwzV9lJV9M/65CkW43HqXZ81xNIt
+ 8zteiLkGp8rKTwzwIUs87xONG34Rm+3VxVCYovWPTJauJsOkyuubkmaErtFd+BExXqlp
+ nDkhxFH8lyXFD+rlpjwyeCo8XJb5aq7UO4Hp7msxa4Jzjb2c1/rXhY3jP7L9DN+qA5IB
+ c8Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220143; x=1739824943;
+ d=1e100.net; s=20230601; t=1739220147; x=1739824947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/uvodWMt7tm/cs4k5p9ZUh0gPCmIyYRQU06Edyq2zpE=;
- b=kk8WuaitmNCzkaAMtFn7OJ3Z+bM0YO3tnkxiQiC04CgL8KlhtVBoRlhF9s5wO335da
- VNHTBUkKJ3gyqllth/KQNQ+QfVBi2IHVhCLTERea7Dj2a3ENaHH59shwwuxlrqX1FrfC
- RLjWPOhjpCQK+ltdLL56Y07g1ZUqXoCdDvAuNJ4uEE04VhODVgGceZiBMnt7NJD4j2OJ
- 6hB1h2duoNCh4daz3hEoBBestMUlTl7lczbNrvypc5wvK8G/kdYqDOCPt0UR9eHvj61P
- 1r9G/1KQwAXbzX8rM5HL0KR+XiGKnSB5wBeuP5YanOdHw84y3YMUHUVOxW108ZCGyrHV
- 53gg==
-X-Gm-Message-State: AOJu0YweG/C5VwpviUmx3tvGx8W0+uO9WlANucFcKscCTIFDy/W0hwtC
- Ohrj3TiZGwAvq6EMQGu9ChQ6xxDLrN2GNE363hNia5x4lYC6PyFlGljfxp0WVCZ5fMQQvmTu4Zt
- nrUk=
-X-Gm-Gg: ASbGncvjAVu9eQx315s/qIsEgtG43Gwg7ic1bwHDQkj4uywe8wOp7TOpJPfk2jYzHdX
- OVJbiameEv0vmoXQ5BEJlg+BO78Pvk71W0M9yEnJr98ldoAL+eUJ4O1jXoTf9BXsiVxD6VM0rnD
- LC2hbun62ga0gFzFbgC8ArMs/Ni+IgGVElSUUbs4BLJi6ogk408nT9fMafKnOctT1FXHxsxWqrk
- OXzvqVyiirEJElJx2wzX0Su46Jb7ITCztXGw47SxG3jlTqpKr3uYxcuIgwgjYcm6Tl1sp5AlwLC
- k4TYKKW8TN1b5zzOAn/GVKRS6p9JH+Wnq4zA4RpS8OCXnwD6/is1U9C2WXXdGo1lDg==
-X-Google-Smtp-Source: AGHT+IGSaWfAIZL8Tz/rzTp0zFBuBzJXGTfhn0sdJDCR5PY7AHozIqzOd28dXPkorIKC6r/zKcO+6Q==
-X-Received: by 2002:a05:6000:1865:b0:38d:bf57:f371 with SMTP id
- ffacd0b85a97d-38dc9373270mr12790122f8f.48.1739220142595; 
- Mon, 10 Feb 2025 12:42:22 -0800 (PST)
+ bh=vxnVqTrw69QSOa26f2GLgtndlndnd+p0IrIRgpQeBXY=;
+ b=WebwFN3/5FOjr//xWMvAqOFXbPX6OT8WVHOZu3KmjPizmD4UpuS0mpIcX9AFzTmkja
+ vMNyJPAnkhYCaVP+4av5/KicqTXhq7jR61jBVo42hUswGAwxR3L0571PIprZ+iDQxpfK
+ DvU2blkoEoUXzq1ywskveRxaTeeSSgD7tbW1bQevntGQLYuuDMomwfy85+2/3L/WD0Rv
+ J82UYf4n9OCjHWCKvKneE3vBPnfLRXkX5rT3446t9/TlmnXcrt2LKintdUkDt43JvViE
+ dxGOYnng+pK/3GGgOHTR9wRd7y2TkgWaHVe4VX/T5/8sWftFrt2+9LfLOfOa8Yl0Wo6d
+ 1p0A==
+X-Gm-Message-State: AOJu0YxJ3VpUufyyk8RTrRS60SaxWvuENEgFOVP69/7/DklzLs84uMk5
+ vsGglKdb9WLWcP9u8hcGHIiIox/Yv9tEQZ+4sY4Stm8oS43mDNU/SVxGEX2T0RQHAYZYjE6Gb5b
+ gnZY=
+X-Gm-Gg: ASbGncvJkIfHTWDrw4Usudra9L0JUSOLHf9Y0Xq5x0ima+720xpCIsv1gdJdwHtYv7z
+ 2ixJrmrTsWB/M4dvNAmfJWPDymgaamLJVqKji6WAbjj7vUIE7IjFYzLooNQNMsGba1+mBvVlPam
+ hXP/Ahl77+4FEOLnhS2bUJf+nD+/isryP37VS/5DxxKG/kzdso1hGqTwqi6Fy+LMln1GyD33/ZE
+ uovG8s6UUVg+vPI0cO6bVL7TS7VkpNWpFkfePIRkToXlgf9UcqWL2MwBMhZk7kCfdJgSfThNasn
+ ekqPnoij5VZ7vGyk8vE3j32nxz92JzWE1e3BA7cZ40pzPe408rydv8pI6hR8gQh4tQ==
+X-Google-Smtp-Source: AGHT+IFyf8RL1daNzM4j/8yahBQRjnEW3H26fYIFfVSNbuptJeFg6qR6lwuXskyc2p4i+u/G+DZlFw==
+X-Received: by 2002:a05:6000:1fac:b0:38d:d8c0:1f8c with SMTP id
+ ffacd0b85a97d-38dd8c023f7mr7909327f8f.38.1739220147257; 
+ Mon, 10 Feb 2025 12:42:27 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dca0b4237sm10422249f8f.85.2025.02.10.12.42.21
+ ffacd0b85a97d-38dde7d3f8asm3800777f8f.21.2025.02.10.12.42.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:42:22 -0800 (PST)
+ Mon, 10 Feb 2025 12:42:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/32] hw/net/xilinx_ethlite: Make device endianness
+Subject: [PULL 04/32] hw/timer/xilinx_timer: Make device endianness
  configurable
-Date: Mon, 10 Feb 2025 21:41:35 +0100
-Message-ID: <20250210204204.54407-4-philmd@linaro.org>
+Date: Mon, 10 Feb 2025 21:41:36 +0100
+Message-ID: <20250210204204.54407-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,114 +102,129 @@ Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair
 of DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
 Add the "little-endian" property to select the device
 endianness, defaulting to little endian.
-Set the proper endianness on the single machine using the
-device.
+Set the proper endianness for each machine using the device.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250206131052.30207-3-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250206131052.30207-5-philmd@linaro.org>
 ---
+ hw/microblaze/petalogix_ml605_mmu.c      |  1 +
  hw/microblaze/petalogix_s3adsp1800_mmu.c |  1 +
- hw/net/xilinx_ethlite.c                  | 20 ++++++++++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ hw/ppc/virtex_ml507.c                    |  1 +
+ hw/timer/xilinx_timer.c                  | 35 +++++++++++++++---------
+ 4 files changed, 25 insertions(+), 13 deletions(-)
 
+diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
+index cf3b9574db3..bbda70aa93b 100644
+--- a/hw/microblaze/petalogix_ml605_mmu.c
++++ b/hw/microblaze/petalogix_ml605_mmu.c
+@@ -127,6 +127,7 @@ petalogix_ml605_init(MachineState *machine)
+ 
+     /* 2 timers at irq 2 @ 100 Mhz.  */
+     dev = qdev_new("xlnx.xps-timer");
++    qdev_prop_set_bit(dev, "little-endian", true);
+     qdev_prop_set_uint32(dev, "one-timer-only", 0);
+     qdev_prop_set_uint32(dev, "clock-frequency", 100 * 1000000);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
 diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-index 0506497ad0a..fbf52ba8f2f 100644
+index fbf52ba8f2f..9d4316b4036 100644
 --- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
 +++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -121,6 +121,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
+@@ -114,6 +114,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
  
-     dev = qdev_new("xlnx.xps-ethernetlite");
+     /* 2 timers at irq 2 @ 62 Mhz.  */
+     dev = qdev_new("xlnx.xps-timer");
 +    qdev_prop_set_bit(dev, "little-endian", !TARGET_BIG_ENDIAN);
-     qemu_configure_nic_device(dev, true, NULL);
-     qdev_prop_set_uint32(dev, "tx-ping-pong", 0);
-     qdev_prop_set_uint32(dev, "rx-ping-pong", 0);
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index 14bf2b2e17a..103e53831a7 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -90,6 +90,7 @@ struct XlnxXpsEthLite
-     NICState *nic;
-     NICConf conf;
+     qdev_prop_set_uint32(dev, "one-timer-only", 0);
+     qdev_prop_set_uint32(dev, "clock-frequency", 62 * 1000000);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
+index 23238119273..f87c221d076 100644
+--- a/hw/ppc/virtex_ml507.c
++++ b/hw/ppc/virtex_ml507.c
+@@ -230,6 +230,7 @@ static void virtex_init(MachineState *machine)
+ 
+     /* 2 timers at irq 2 @ 62 Mhz.  */
+     dev = qdev_new("xlnx.xps-timer");
++    qdev_prop_set_bit(dev, "little-endian", false);
+     qdev_prop_set_uint32(dev, "one-timer-only", 0);
+     qdev_prop_set_uint32(dev, "clock-frequency", 62 * 1000000);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
+index 6595cf5f517..d942ac226e6 100644
+--- a/hw/timer/xilinx_timer.c
++++ b/hw/timer/xilinx_timer.c
+@@ -3,6 +3,9 @@
+  *
+  * Copyright (c) 2009 Edgar E. Iglesias.
+  *
++ * DS573: https://docs.amd.com/v/u/en-US/xps_timer
++ * LogiCORE IP XPS Timer/Counter (v1.02a)
++ *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+  * in the Software without restriction, including without limitation the rights
+@@ -69,6 +72,7 @@ struct XpsTimerState
+ {
+     SysBusDevice parent_obj;
  
 +    bool little_endian_model;
-     uint32_t c_tx_pingpong;
-     uint32_t c_rx_pingpong;
-     unsigned int port_index; /* dual port RAM index */
-@@ -183,10 +184,10 @@ static void port_tx_write(void *opaque, hwaddr addr, uint64_t value,
-     }
+     MemoryRegion mmio;
+     qemu_irq irq;
+     uint8_t one_timer_only;
+@@ -189,18 +193,21 @@ timer_write(void *opaque, hwaddr addr,
+     timer_update_irq(t);
  }
  
--static const MemoryRegionOps eth_porttx_ops = {
-+static const MemoryRegionOps eth_porttx_ops[2] = {
+-static const MemoryRegionOps timer_ops = {
+-    .read = timer_read,
+-    .write = timer_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+-    .impl = {
+-        .min_access_size = 4,
+-        .max_access_size = 4,
++static const MemoryRegionOps timer_ops[2] = {
 +    [0 ... 1] = {
-         .read = port_tx_read,
-         .write = port_tx_write,
--        .endianness = DEVICE_NATIVE_ENDIAN,
-         .impl = {
-             .min_access_size = 4,
-             .max_access_size = 4,
-@@ -195,6 +196,9 @@ static const MemoryRegionOps eth_porttx_ops = {
-             .min_access_size = 4,
-             .max_access_size = 4,
-         },
-+    },
++        .read = timer_read,
++        .write = timer_write,
++        .impl = {
++            .min_access_size = 4,
++            .max_access_size = 4,
++        },
++        .valid = {
++            .min_access_size = 4,
++            .max_access_size = 4,
++        },
+     },
+-    .valid = {
+-        .min_access_size = 4,
+-        .max_access_size = 4
+-    }
 +    [0].endianness = DEVICE_BIG_ENDIAN,
 +    [1].endianness = DEVICE_LITTLE_ENDIAN,
  };
  
- static uint64_t port_rx_read(void *opaque, hwaddr addr, unsigned int size)
-@@ -232,10 +236,10 @@ static void port_rx_write(void *opaque, hwaddr addr, uint64_t value,
+ static void timer_hit(void *opaque)
+@@ -233,8 +240,9 @@ static void xilinx_timer_realize(DeviceState *dev, Error **errp)
+         ptimer_transaction_commit(xt->ptimer);
      }
+ 
+-    memory_region_init_io(&t->mmio, OBJECT(t), &timer_ops, t, "xlnx.xps-timer",
+-                          R_MAX * 4 * num_timers(t));
++    memory_region_init_io(&t->mmio, OBJECT(t),
++                          &timer_ops[t->little_endian_model], t,
++                          "xlnx.xps-timer", R_MAX * 4 * num_timers(t));
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &t->mmio);
  }
  
--static const MemoryRegionOps eth_portrx_ops = {
-+static const MemoryRegionOps eth_portrx_ops[2] = {
-+    [0 ... 1] = {
-         .read = port_rx_read,
-         .write = port_rx_write,
--        .endianness = DEVICE_NATIVE_ENDIAN,
-         .impl = {
-             .min_access_size = 4,
-             .max_access_size = 4,
-@@ -244,6 +248,9 @@ static const MemoryRegionOps eth_portrx_ops = {
-             .min_access_size = 4,
-             .max_access_size = 4,
-         },
-+    },
-+    [0].endianness = DEVICE_BIG_ENDIAN,
-+    [1].endianness = DEVICE_LITTLE_ENDIAN,
+@@ -247,6 +255,7 @@ static void xilinx_timer_init(Object *obj)
+ }
+ 
+ static const Property xilinx_timer_properties[] = {
++    DEFINE_PROP_BOOL("little-endian", XpsTimerState, little_endian_model, true),
+     DEFINE_PROP_UINT32("clock-frequency", XpsTimerState, freq_hz, 62 * 1000000),
+     DEFINE_PROP_UINT8("one-timer-only", XpsTimerState, one_timer_only, 0),
  };
- 
- static bool eth_can_rx(NetClientState *nc)
-@@ -328,7 +335,7 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-                                BUFSZ_MAX, &error_abort);
-         memory_region_add_subregion(&s->container, 0x0800 * i, &s->port[i].txbuf);
-         memory_region_init_io(&s->port[i].txio, OBJECT(dev),
--                              &eth_porttx_ops, s,
-+                              &eth_porttx_ops[s->little_endian_model], s,
-                               i ? "ethlite.tx[1]io" : "ethlite.tx[0]io",
-                               4 * TX_MAX);
-         memory_region_add_subregion(&s->container, i ? A_TX_BASE1 : A_TX_BASE0,
-@@ -340,7 +347,7 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-         memory_region_add_subregion(&s->container, 0x1000 + 0x0800 * i,
-                                     &s->port[i].rxbuf);
-         memory_region_init_io(&s->port[i].rxio, OBJECT(dev),
--                              &eth_portrx_ops, s,
-+                              &eth_portrx_ops[s->little_endian_model], s,
-                               i ? "ethlite.rx[1]io" : "ethlite.rx[0]io",
-                               4 * RX_MAX);
-         memory_region_add_subregion(&s->container, i ? A_RX_BASE1 : A_RX_BASE0,
-@@ -363,6 +370,7 @@ static void xilinx_ethlite_init(Object *obj)
- }
- 
- static const Property xilinx_ethlite_properties[] = {
-+    DEFINE_PROP_BOOL("little-endian", XlnxXpsEthLite, little_endian_model, true),
-     DEFINE_PROP_UINT32("tx-ping-pong", XlnxXpsEthLite, c_tx_pingpong, 1),
-     DEFINE_PROP_UINT32("rx-ping-pong", XlnxXpsEthLite, c_rx_pingpong, 1),
-     DEFINE_NIC_PROPERTIES(XlnxXpsEthLite, conf),
 -- 
 2.47.1
 
