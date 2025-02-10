@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7636A2FAFD
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA367A2FAF4
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:45:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thadf-0002tK-AT; Mon, 10 Feb 2025 15:44:19 -0500
+	id 1thadk-0003Vf-WE; Mon, 10 Feb 2025 15:44:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thada-0002cJ-SC
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:14 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadf-00035D-B1
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:19 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadY-0003oS-7z
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:14 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38dcb7122c1so2934879f8f.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:44:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thadd-0003sf-Br
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:44:19 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43934d6b155so13690655e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:44:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220250; x=1739825050; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220255; x=1739825055; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jh6WFwwnn1kd3QsBOUy6kQT+tKEZb8bYG1Z8Msovi/k=;
- b=V36fpQnTXNGcGXp7+lp5FqNo6sulthb21Da4xfcgIyQq06yFBAnNR28RZvW2eY0Uuy
- As6mPEVccHwPvdxgVYeTGCtMfABCv7iSwEwN00CiNP0lGJWUNlalDhj6/hutmb/SDY3n
- rTxIFuHhirWX5fYcr+tce+oTvwfkfGTWyKhqP4s9XOzt5uRFBk22ihuvFbj6SIz/IbF3
- T7ctKYkKHJfi2gwuf/IuOs/TT9XwpgYs9K1bC1h9Zr3Pze9mE0trt/jl4Psr3zYEntA5
- AAY9vdGdLUHqpyT3OTwTij+KctGtoQa5oagIDPAVK28FLN7kRaDoDoK9Xr1WVtM9jkI3
- Wq7A==
+ bh=nwm1ZkyQbCKYEL7sQcfI0amiIz6D6N+OhtZTgkExnsw=;
+ b=WHuRt/xZ+SKNK3MJigOap6ZgXNx6Jbyh+fzhFmb5zMUsW0o7YYYAHMC32ar1ykvARd
+ QxMntnCnZbsgvKirtkfKR5XZphi4GhUKZOiB/A8eRlIh0LhwBBRzzU8mGeEhBcFZ3Kn+
+ DpMWPft8N8poAkFgtkszqkKtqWBjXKF00oumNs5pR+hzWiHuuWpgMAd8YaYBykFscVAf
+ 6XyREEgTnWGMzELjHLaTFydlCvpRz8zGiIw7w37KdlRHY5ujam5M/DtEptfYWCGyuoHW
+ UrI5BnC/mi4NWb3+qw2+32Miv6hzBX/YJNQS65FjkQERjLckGziP6KAiiVsIdeUCvTm0
+ 3oSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220250; x=1739825050;
+ d=1e100.net; s=20230601; t=1739220255; x=1739825055;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jh6WFwwnn1kd3QsBOUy6kQT+tKEZb8bYG1Z8Msovi/k=;
- b=nSjDcCqOzXOQvvPX7e8rrO00+exCT15feVmgcX7FTwzEpGYNpMJeSJSGthjPFxl90z
- Ktj0jqqzulTKHAIue2Ab46ZMob3rDnMxDERJw+vn1Rk5cjLZTLtHAuhQauahkvUkTLqo
- w9hdysVM/Vog9r4iIwohXwMFqnbUuzDSUSOXqPeFbNiSIRmBJEXHbGOXT7K6L70LrCLh
- fm5KsWgWfJl71HVji9nSmP+H/Ip66UZyIvcVaDC6ZkdxUC0Hc/uIYDuJeKpyZ0q9MDM4
- t18hoYZj6sQyg9XBniYTelB2j9miQpeXaEUG7sbrPiacEIt/zeCCxrvz7N0Tq+1Ngh8J
- fD7A==
-X-Gm-Message-State: AOJu0YzrfyYcUgi/KuP2i/qRHCHBx0rEs08XgaSUHt038c7f1BV4lZae
- cyburm7hw6odxpm7WIx0Tr+ZkZSNvCvHjVbPbCJaEB/x80C7haqm3bkyblBjP9CGHQ6YuiZlzgQ
- wklk=
-X-Gm-Gg: ASbGncsyotJPI9wuKhd4K0sN6HU7Y1FdOAGIY7rHJv1l7g3Bt+WAQm/VDUCY3Z/0uxn
- kiLNVfMpjvKH4QbG5/S4zuvfctWL99XWqkswx/VEdt0MMGIjGchV9rIoivBcFZO3ifPwVM5xoMq
- qu8mjVCjMqNRDPrB7zeu3cX9AU3W5M473R9a4hNVh5fCofBisB7E+ZP2o8fq3C6jPLqxb/MeCLZ
- 8JzdOjBsDP91vnX41Enn6020pzUjFqXu1tP9vPDbb0a/ew6hS513z22fRYYkr6jMqucJK6ia3Lz
- BNxSV1az/bmoRajnXd3zC3igKEWNDZnJg+Zq4gmKZOaOU15M0/rtKRCNwr4MR/hxag==
-X-Google-Smtp-Source: AGHT+IFy0Mw13XBLuB/xmQv7kCZZN8hNqL7AAHMmmfR7YJki+vtSRJaaiik4Nlc75A3L9zgaA6/riw==
-X-Received: by 2002:a5d:6d8b:0:b0:38d:e016:a66a with SMTP id
- ffacd0b85a97d-38de016a92cmr3466644f8f.50.1739220249895; 
- Mon, 10 Feb 2025 12:44:09 -0800 (PST)
+ bh=nwm1ZkyQbCKYEL7sQcfI0amiIz6D6N+OhtZTgkExnsw=;
+ b=tWQPUPxswvgHmyaNSFfZ/1ayoZ0/z6IV6kKP01RcMFxRBaotXuMP1qWnZkBCCMozt2
+ vqBIkT6DSisnBqMqQ0+JFOr0DcSqsPob5xx09i8jqwGs3UyTLzYbaKGLcSTtxrAAzlxL
+ mh23d08qSb2wrQc6bBkc0V5XEkSAnjj1OM6A758twSbbabQsODLPZnQ9pbGo9mwqZDlr
+ IFZc7wemR37LVgLXKeIejE4YMZqK3KsgrGhy9YavtY/z+yqNMB/Y7dAdKhlGGUfL5eFE
+ RuT5GMDVH/cr/IMykKr8bNqpEGM2//hq41TSDQM4T8aRmNilOOKbKdefkr4+Z8XbcMdU
+ Qw9w==
+X-Gm-Message-State: AOJu0YwNCwoJxU79zssQqOSqAXGD45eLEkkc76tRM/UMA+TyBFPkBRVE
+ hpIFJuDj9UFuf6C9aIaIOPBbboZWPjSKBG2tNtliaSsL1HcUYNb/6UimvXs4nsL4obk3eAvPGK7
+ AcVw=
+X-Gm-Gg: ASbGncvzSDfnUVKGMcsFSpHt00DTWWPFisw/6eBEjE2XGUbSLA1Ci0EI7MqsWLT+yzs
+ Lj5h2EHtlUOPnoEh24iz93LULfrnV46iLUwAEXpeLmfEYy/j5Sh592vZMlyzyRsL3IgRd84yz2S
+ KqFP7eVqmQkZuSkm+WcPikPuiRhtvS2VKsRCt8JzpNj7NIuyfTzgwFbJb+16RAdBcrFt6jwPIvK
+ s/w5hVKFJF6nkUVYAsaCS4taNNtMYyZSxcoIo/6nEUdFleziLAhlAmVLH+Pfgt3WoNnqQaIeJ4N
+ /TgYOlNTzFL4zqzvWmeGefNL80DIfxensiHqtcfvTvtoMPFMxhYvu5AAc7pCGFnVdw==
+X-Google-Smtp-Source: AGHT+IEW00f5NXPMEah0IyXqUYIaAbaLYFMThNpjvOjtZexVfFL2TAoAzUOKUs/LcmU274Q3fJNctQ==
+X-Received: by 2002:a05:600c:1c85:b0:434:ea1a:e30c with SMTP id
+ 5b1f17b1804b1-4394cf08108mr6697495e9.13.1739220255360; 
+ Mon, 10 Feb 2025 12:44:15 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4391dfd8448sm157034185e9.38.2025.02.10.12.44.09
+ 5b1f17b1804b1-4394127afcbsm53217585e9.23.2025.02.10.12.44.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:44:09 -0800 (PST)
+ Mon, 10 Feb 2025 12:44:14 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 24/32] hw/arm: Remove all invalid uses of
+Subject: [PULL 25/32] hw/riscv: Remove all invalid uses of
  auto_create_sdcard=true
-Date: Mon, 10 Feb 2025 21:41:56 +0100
-Message-ID: <20250210204204.54407-25-philmd@linaro.org>
+Date: Mon, 10 Feb 2025 21:41:57 +0100
+Message-ID: <20250210204204.54407-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,352 +100,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 MachineClass::auto_create_sdcard is only useful to automatically
 create a SD card, attach a IF_SD block drive to it and plug the
-card onto a SD bus. None of the ARM machines modified by this
+card onto a SD bus. None of the RISCV machines modified by this
 commit try to use the IF_SD interface.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250204200934.65279-6-philmd@linaro.org>
+Message-Id: <20250204200934.65279-7-philmd@linaro.org>
 ---
- hw/arm/aspeed.c            | 1 -
- hw/arm/b-l475e-iot01a.c    | 1 -
- hw/arm/collie.c            | 1 -
- hw/arm/digic_boards.c      | 1 -
- hw/arm/highbank.c          | 2 --
- hw/arm/kzm.c               | 1 -
- hw/arm/microbit.c          | 1 -
- hw/arm/mps2-tz.c           | 4 ----
- hw/arm/mps2.c              | 4 ----
- hw/arm/mps3r.c             | 1 -
- hw/arm/msf2-som.c          | 1 -
- hw/arm/musca.c             | 2 --
- hw/arm/musicpal.c          | 1 -
- hw/arm/netduino2.c         | 1 -
- hw/arm/netduinoplus2.c     | 1 -
- hw/arm/olimex-stm32-h405.c | 1 -
- hw/arm/sbsa-ref.c          | 1 -
- hw/arm/stellaris.c         | 1 -
- hw/arm/stm32vldiscovery.c  | 1 -
- hw/arm/virt.c              | 1 -
- hw/arm/xen-pvh.c           | 1 -
- 21 files changed, 29 deletions(-)
+ hw/riscv/opentitan.c | 1 -
+ hw/riscv/shakti_c.c  | 1 -
+ hw/riscv/sifive_e.c  | 1 -
+ hw/riscv/spike.c     | 1 -
+ hw/riscv/virt.c      | 1 -
+ 5 files changed, 5 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index f3ba90896c0..98bf071139b 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1658,7 +1658,6 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     amc->spi_model = "w25q256";
-     amc->num_cs = 2;
-     amc->macs_mask = 0;
--    mc->auto_create_sdcard = true;
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
-diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-index f05ee0fee0f..c9a5209216c 100644
---- a/hw/arm/b-l475e-iot01a.c
-+++ b/hw/arm/b-l475e-iot01a.c
-@@ -120,7 +120,6 @@ static void bl475e_machine_init(ObjectClass *oc, void *data)
-     mc->desc = "B-L475E-IOT01A Discovery Kit (Cortex-M4)";
-     mc->init = bl475e_init;
-     mc->valid_cpu_types = machine_valid_cpu_types;
--    mc->auto_create_sdcard = true;
- 
-     /* SRAM pre-allocated as part of the SoC instantiation */
-     mc->default_ram_size = 0;
-diff --git a/hw/arm/collie.c b/hw/arm/collie.c
-index 864c66193b1..eaa5c52d45a 100644
---- a/hw/arm/collie.c
-+++ b/hw/arm/collie.c
-@@ -79,7 +79,6 @@ static void collie_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("sa1110");
-     mc->default_ram_size = RAM_SIZE;
-     mc->default_ram_id = "strongarm.sdram";
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index d78a96c5354..b9e56235d87 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -121,7 +121,6 @@ static void opentitan_machine_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = TYPE_RISCV_CPU_IBEX;
+     mc->default_ram_id = "riscv.lowrisc.ibex.ram";
+     mc->default_ram_size = ibex_memmap[IBEX_DEV_RAM].size;
 -    mc->auto_create_sdcard = true;
  }
  
- static const TypeInfo collie_machine_typeinfo = {
-diff --git a/hw/arm/digic_boards.c b/hw/arm/digic_boards.c
-index f334c1fb02c..2492fafeb85 100644
---- a/hw/arm/digic_boards.c
-+++ b/hw/arm/digic_boards.c
-@@ -143,7 +143,6 @@ static void canon_a1100_machine_init(MachineClass *mc)
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_size = 64 * MiB;
-     mc->default_ram_id = "ram";
+ static void lowrisc_ibex_soc_init(Object *obj)
+diff --git a/hw/riscv/shakti_c.c b/hw/riscv/shakti_c.c
+index efe814b5868..e2242b97d0c 100644
+--- a/hw/riscv/shakti_c.c
++++ b/hw/riscv/shakti_c.c
+@@ -84,7 +84,6 @@ static void shakti_c_machine_class_init(ObjectClass *klass, void *data)
+     mc->default_cpu_type = TYPE_RISCV_CPU_SHAKTI_C;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->default_ram_id = "riscv.shakti.c.ram";
 -    mc->auto_create_sdcard = true;
  }
  
- DEFINE_MACHINE("canon-a1100", canon_a1100_machine_init)
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 975fd7a094a..495704d9726 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -357,7 +357,6 @@ static void highbank_class_init(ObjectClass *oc, void *data)
-     mc->max_cpus = 4;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "highbank.dram";
--    mc->auto_create_sdcard = true;
- }
- 
- static const TypeInfo highbank_type = {
-@@ -382,7 +381,6 @@ static void midway_class_init(ObjectClass *oc, void *data)
-     mc->max_cpus = 4;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "highbank.dram";
--    mc->auto_create_sdcard = true;
- }
- 
- static const TypeInfo midway_type = {
-diff --git a/hw/arm/kzm.c b/hw/arm/kzm.c
-index 736eabab664..08d2b3025cf 100644
---- a/hw/arm/kzm.c
-+++ b/hw/arm/kzm.c
-@@ -137,7 +137,6 @@ static void kzm_machine_init(MachineClass *mc)
-     mc->init = kzm_init;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "kzm.ram";
--    mc->auto_create_sdcard = true;
- }
- 
- DEFINE_MACHINE("kzm", kzm_machine_init)
-diff --git a/hw/arm/microbit.c b/hw/arm/microbit.c
-index fb099508324..3f56fb45ce1 100644
---- a/hw/arm/microbit.c
-+++ b/hw/arm/microbit.c
-@@ -67,7 +67,6 @@ static void microbit_machine_class_init(ObjectClass *oc, void *data)
-     mc->desc = "BBC micro:bit (Cortex-M0)";
-     mc->init = microbit_init;
-     mc->max_cpus = 1;
--    mc->auto_create_sdcard = true;
- }
- 
- static const TypeInfo microbit_info = {
-diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-index 91b8ae6d384..13ed868b6b9 100644
---- a/hw/arm/mps2-tz.c
-+++ b/hw/arm/mps2-tz.c
-@@ -1320,7 +1320,6 @@ static void mps2tz_an505_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN505;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m33");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41045050;
-     mmc->sysclk_frq = 20 * 1000 * 1000; /* 20MHz */
-     mmc->apb_periph_frq = mmc->sysclk_frq;
-@@ -1355,7 +1354,6 @@ static void mps2tz_an521_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN521;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m33");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41045210;
-     mmc->sysclk_frq = 20 * 1000 * 1000; /* 20MHz */
-     mmc->apb_periph_frq = mmc->sysclk_frq;
-@@ -1390,7 +1388,6 @@ static void mps3tz_an524_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN524;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m33");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41045240;
-     mmc->sysclk_frq = 32 * 1000 * 1000; /* 32MHz */
-     mmc->apb_periph_frq = mmc->sysclk_frq;
-@@ -1430,7 +1427,6 @@ static void mps3tz_an547_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN547;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m55");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41055470;
-     mmc->sysclk_frq = 32 * 1000 * 1000; /* 32MHz */
-     mmc->apb_periph_frq = 25 * 1000 * 1000; /* 25MHz */
-diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
-index 40eb5d16187..3f8db0cab60 100644
---- a/hw/arm/mps2.c
-+++ b/hw/arm/mps2.c
-@@ -487,7 +487,6 @@ static void mps2_an385_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN385;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m3");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41043850;
-     mmc->psram_base = 0x21000000;
-     mmc->ethernet_base = 0x40200000;
-@@ -507,7 +506,6 @@ static void mps2_an386_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN386;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m4");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41043860;
-     mmc->psram_base = 0x21000000;
-     mmc->ethernet_base = 0x40200000;
-@@ -527,7 +525,6 @@ static void mps2_an500_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN500;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m7");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41045000;
-     mmc->psram_base = 0x60000000;
-     mmc->ethernet_base = 0xa0000000;
-@@ -547,7 +544,6 @@ static void mps2_an511_class_init(ObjectClass *oc, void *data)
-     mmc->fpga_type = FPGA_AN511;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m3");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->scc_id = 0x41045110;
-     mmc->psram_base = 0x21000000;
-     mmc->ethernet_base = 0x40200000;
-diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
-index f26d1cfb2c4..1bddb5e822f 100644
---- a/hw/arm/mps3r.c
-+++ b/hw/arm/mps3r.c
-@@ -618,7 +618,6 @@ static void mps3r_an536_class_init(ObjectClass *oc, void *data)
-     mc->max_cpus = 2;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-r52");
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
-     mmc->raminfo = an536_raminfo;
-     mps3r_set_default_ram_info(mmc);
- }
-diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
-index 6d3f0a89e0b..9b20f1e2c98 100644
---- a/hw/arm/msf2-som.c
-+++ b/hw/arm/msf2-som.c
-@@ -106,7 +106,6 @@ static void emcraft_sf2_machine_init(MachineClass *mc)
-     mc->desc = "SmartFusion2 SOM kit from Emcraft (M2S010)";
-     mc->init = emcraft_sf2_s2s010_init;
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
- }
- 
- DEFINE_MACHINE("emcraft-sf2", emcraft_sf2_machine_init)
-diff --git a/hw/arm/musca.c b/hw/arm/musca.c
-index 6f19b7d58a0..e9c092abc3d 100644
---- a/hw/arm/musca.c
-+++ b/hw/arm/musca.c
-@@ -615,7 +615,6 @@ static void musca_a_class_init(ObjectClass *oc, void *data)
-     MuscaMachineClass *mmc = MUSCA_MACHINE_CLASS(oc);
- 
-     mc->desc = "ARM Musca-A board (dual Cortex-M33)";
--    mc->auto_create_sdcard = true;
-     mmc->type = MUSCA_A;
-     mmc->init_svtor = 0x10200000;
-     mmc->sram_addr_width = 15;
-@@ -630,7 +629,6 @@ static void musca_b1_class_init(ObjectClass *oc, void *data)
-     MuscaMachineClass *mmc = MUSCA_MACHINE_CLASS(oc);
- 
-     mc->desc = "ARM Musca-B1 board (dual Cortex-M33)";
--    mc->auto_create_sdcard = true;
-     mmc->type = MUSCA_B1;
-     /*
-      * This matches the DAPlink firmware which boots from QSPI. There
-diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
-index fd2975753ee..48a32c24079 100644
---- a/hw/arm/musicpal.c
-+++ b/hw/arm/musicpal.c
-@@ -1342,7 +1342,6 @@ static void musicpal_machine_init(MachineClass *mc)
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("arm926");
-     mc->default_ram_size = MP_RAM_DEFAULT_SIZE;
-     mc->default_ram_id = "musicpal.ram";
+ static const TypeInfo shakti_c_machine_type_info = {
+diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
+index 164eb3ab83b..73d3b74281c 100644
+--- a/hw/riscv/sifive_e.c
++++ b/hw/riscv/sifive_e.c
+@@ -153,7 +153,6 @@ static void sifive_e_machine_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = SIFIVE_E_CPU;
+     mc->default_ram_id = "riscv.sifive.e.ram";
+     mc->default_ram_size = sifive_e_memmap[SIFIVE_E_DEV_DTIM].size;
 -    mc->auto_create_sdcard = true;
  
-     machine_add_audiodev_property(mc);
- }
-diff --git a/hw/arm/netduino2.c b/hw/arm/netduino2.c
-index fca32d45924..df793c77fe1 100644
---- a/hw/arm/netduino2.c
-+++ b/hw/arm/netduino2.c
-@@ -63,7 +63,6 @@ static void netduino2_machine_init(MachineClass *mc)
-     mc->init = netduino2_init;
-     mc->valid_cpu_types = valid_cpu_types;
-     mc->ignore_memory_transaction_failures = true;
+     object_class_property_add_bool(oc, "revb", sifive_e_machine_get_revb,
+                                    sifive_e_machine_set_revb);
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 1ea35937e15..74a20016f14 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -358,7 +358,6 @@ static void spike_machine_class_init(ObjectClass *oc, void *data)
+     /* platform instead of architectural choice */
+     mc->cpu_cluster_has_numa_boundary = true;
+     mc->default_ram_id = "riscv.spike.ram";
 -    mc->auto_create_sdcard = true;
- }
- 
- DEFINE_MACHINE("netduino2", netduino2_machine_init)
-diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
-index e1a59fb9e23..81b6334cf72 100644
---- a/hw/arm/netduinoplus2.c
-+++ b/hw/arm/netduinoplus2.c
-@@ -63,7 +63,6 @@ static void netduinoplus2_machine_init(MachineClass *mc)
-     mc->desc = "Netduino Plus 2 Machine (Cortex-M4)";
-     mc->init = netduinoplus2_init;
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
- }
- 
- DEFINE_MACHINE("netduinoplus2", netduinoplus2_machine_init)
-diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
-index 23f686de876..1f15620f9fd 100644
---- a/hw/arm/olimex-stm32-h405.c
-+++ b/hw/arm/olimex-stm32-h405.c
-@@ -66,7 +66,6 @@ static void olimex_stm32_h405_machine_init(MachineClass *mc)
-     mc->desc = "Olimex STM32-H405 (Cortex-M4)";
-     mc->init = olimex_stm32_h405_init;
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
- 
-     /* SRAM pre-allocated as part of the SoC instantiation */
-     mc->default_ram_size = 0;
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 02c72a62a37..e720de30641 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -900,7 +900,6 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->minimum_page_bits = 12;
-     mc->block_default_type = IF_IDE;
-     mc->no_cdrom = 1;
--    mc->auto_create_sdcard = true;
-     mc->default_nic = "e1000e";
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 25283fd6233..33611113602 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -1421,7 +1421,6 @@ static void lm3s811evb_class_init(ObjectClass *oc, void *data)
-     mc->init = lm3s811evb_init;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m3");
--    mc->auto_create_sdcard = true;
- }
- 
- static const TypeInfo lm3s811evb_type = {
-diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
-index a71da292b84..e6c1f5b8d7d 100644
---- a/hw/arm/stm32vldiscovery.c
-+++ b/hw/arm/stm32vldiscovery.c
-@@ -66,7 +66,6 @@ static void stm32vldiscovery_machine_init(MachineClass *mc)
-     mc->desc = "ST STM32VLDISCOVERY (Cortex-M3)";
-     mc->init = stm32vldiscovery_init;
-     mc->valid_cpu_types = valid_cpu_types;
--    mc->auto_create_sdcard = true;
- }
- 
- DEFINE_MACHINE("stm32vldiscovery", stm32vldiscovery_machine_init)
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 192c2a5ac78..3448200e3bf 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3125,7 +3125,6 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
- #endif
+     object_class_property_add_str(oc, "signature", NULL, spike_set_signature);
+     object_class_property_set_description(oc, "signature",
+                                           "File to write ACT test signature");
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 2aa420f6e55..241389d72f8 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1918,7 +1918,6 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
      mc->block_default_type = IF_VIRTIO;
      mc->no_cdrom = 1;
 -    mc->auto_create_sdcard = true;
      mc->pci_allow_0_address = true;
-     /* We know we will never create a pre-ARMv7 CPU which needs 1K pages */
-     mc->minimum_page_bits = 12;
-diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
-index ce4cc4fce93..d1509bd235d 100644
---- a/hw/arm/xen-pvh.c
-+++ b/hw/arm/xen-pvh.c
-@@ -75,7 +75,6 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-      * mc->max_cpus, QEMU will bail out with an error message.
-      */
-     mc->max_cpus = GUEST_MAX_VCPUS;
--    mc->auto_create_sdcard = true;
- 
-     /* Xen/ARM does not use buffered IOREQs.  */
-     xpc->handle_bufioreq = HVM_IOREQSRV_BUFIOREQ_OFF;
+     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
+     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
 -- 
 2.47.1
 
