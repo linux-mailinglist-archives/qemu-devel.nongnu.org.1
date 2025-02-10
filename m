@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF8DA2E932
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A99D0A2E937
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 11:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thQwi-0002P9-GS; Mon, 10 Feb 2025 05:23:20 -0500
+	id 1thQwm-0002QX-7C; Mon, 10 Feb 2025 05:23:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQwg-0002Ow-SR
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:18 -0500
+ id 1thQwj-0002Pi-2Y
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1thQwf-0000N7-D0
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:18 -0500
+ id 1thQwh-0000NW-Gs
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 05:23:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739182996;
+ s=mimecast20190719; t=1739182998;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZIZqG/E9D5i5Jo+tlmoRFu4ynuvOisUz6AS8Y0OYPXQ=;
- b=SNpxUiPYkyoZbynHnyflZdGEamUJpm4IeI0cNVV1azwuS+Ok/oKDUmCFQxc71T3AKLzx9l
- A+WASQaJkEhQ7UsMz2xD4e1ksLh8m/XsJ24q7e4HWss0C75xjq6VWxZIc4QiTC0bVb38bM
- LJJHoxHWSxGZJP1Uahv+g7gZwbLrfys=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=H1s7l6TURQyL8eCO9/e3NPz0hlAdj5Twhr0tY7ty5ok=;
+ b=KSy6fc4MX8bYfnLo+MIhvXBI0gNs+xA8G19AbmrsRAyfQg642ihUUU4DMpFNEuVEcBZ88S
+ ElXA2kLGQCH6W8r47EEjVSFMZVSFK4uqlJb+eIhCgOr5RqadgRr0OWKdcWwqgdst9SOmLr
+ ZClWjSWN1n7kMNihOZ2XZbzeNS2uGls=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-GFtZs3FAO8G7UiL31x_gxQ-1; Mon, 10 Feb 2025 05:23:15 -0500
-X-MC-Unique: GFtZs3FAO8G7UiL31x_gxQ-1
-X-Mimecast-MFC-AGG-ID: GFtZs3FAO8G7UiL31x_gxQ
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5de909cf05dso97995a12.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:14 -0800 (PST)
+ us-mta-615-37GHqKcwO-iTkHSEd01aNQ-1; Mon, 10 Feb 2025 05:23:17 -0500
+X-MC-Unique: 37GHqKcwO-iTkHSEd01aNQ-1
+X-Mimecast-MFC-AGG-ID: 37GHqKcwO-iTkHSEd01aNQ
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-ab7a7c8c70aso179698266b.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 02:23:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739182993; x=1739787793;
+ d=1e100.net; s=20230601; t=1739182996; x=1739787796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZIZqG/E9D5i5Jo+tlmoRFu4ynuvOisUz6AS8Y0OYPXQ=;
- b=w3AFp4lT3qEtULmGAH+nc26RIwzG6tp/k/nOAGTs/PNp9RGJvnbQwqvdJvPMCBvB+p
- yDevWLHTE1V+h5VfTtIi6400AVX6TOp+jyXa3h1OKi8kETMVC0fvCUH/71Y+/5OpnXMS
- w+q6kD+S80Umf4kkyLNXZ0qQI/bA9WVID9ItLbLkJjhHvaKhPguDvExkr8kLl7vIYp6O
- hS3HGiKi2GhAzI6c6KV6JAIm/Df4vmivHqxdsbE8KdQAOXLW7+P9XPBja58fxfJoErsd
- Mvrho02wV/PgdqdbVM+4IPyULzBqKgYfhy2FLcDEphYXrf/ntmzWfaenZBtm7aI3lOFU
- fezA==
-X-Gm-Message-State: AOJu0Yzzh36c/iHB2IBOTKkett3iVhREIUpbjNAfx2zFzPJ57tWaMbIl
- VKz9XhzdyI+B98pQovs4qXib3+jscjB+KtPVS90g5x1waxYulhlRd9rIK8j7T2VYdvSoyj0fgAj
- y/wnVxT5QnUwRg2VPgS7p3G0bwQwso+WsTddbVNboQ70xGWdX3Rv2n2YhdwuNrINqzLsQiFXmhS
- OLE3aDG7EFS2wHDppwZvqt1W3w3c0D+neaTR3AztI=
-X-Gm-Gg: ASbGncuThhX/FfZeDttMOKNr/R9i02/yuuvnzgQhZcVF9xH6T4SQhEF5oFBo74OAZUR
- hNARQfQBmWSRPPJSZNPRFy9rYj0ZskSys9N+ng3PAfBymGBK+ZvnON+yIAvULRd8X5JR1NIAYs6
- Syl9uGO6tFekBoBiFjl5y9SssKgyvAPUylko5oWcA5vO3XlA+HS0wQs+jZE41IK7y5/wSuBzIuw
- PfmwE6M2guNZqKYhAxVdUyi3kUObUrBoCkrRj72Tk7KJJJfmakT+FWJofQoyqZPl10a0QsrLMgZ
- lTzSJg==
-X-Received: by 2002:a05:6402:4416:b0:5dc:c9ce:b022 with SMTP id
- 4fb4d7f45d1cf-5de45005a55mr14306442a12.9.1739182992868; 
- Mon, 10 Feb 2025 02:23:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEy5fL0lT9GaNDmcNc/RBQwZNb5t6rRPxWWdmRPF8SPHBew+QLNoiuPT0PLbkOvDfBnI/N+Kw==
-X-Received: by 2002:a05:6402:4416:b0:5dc:c9ce:b022 with SMTP id
- 4fb4d7f45d1cf-5de45005a55mr14306425a12.9.1739182992438; 
- Mon, 10 Feb 2025 02:23:12 -0800 (PST)
+ bh=H1s7l6TURQyL8eCO9/e3NPz0hlAdj5Twhr0tY7ty5ok=;
+ b=Yi6vkbLBcGYqQKpTl+E0ZzhImampqmr+bf66KIlHaK9EQGoBGfktUyHKMnS4UY6wc2
+ ODo5PnTkn1GxFTFl6SZppt5rUaWlSq2h8fVAGVGUmgE34eN8HzfjQdxkCjgHpdXk+JqK
+ dZeo4uOXEu07vCcWwn9MyCltIkGu+d/ubY1luFXWPcjrS9zhxGSu2wEItacWDvJz7iq4
+ E8Bj6T15IWO9dFCoNdFQUnPfY3pGQliA9NjaduK6btaCkRH2gTxnUU5vuQGDF3IjZkTH
+ J2/IOotY8VYRLIUK3SPF/o7OcYS66UAM5aPF0zxjqVNpnq88o9DmHh98PRM+GuJ11PFc
+ RiKg==
+X-Gm-Message-State: AOJu0Yzp03bmKG0WHqaF7IsZQHIC5mz/Q3vc8l2lRhqCEV9+yNrYmcRU
+ sMJL7T3C4vOUdimiPgjkHB6q6Z8IcQmdXJqriz9ySenaF2PLl9j8fszIdcv9w1Ypc77M/bUwrgx
+ hhOsNzhkymbj2n6pQ4vsu0uwchNvJJI0rShBxam0QqKdqr2rehJrIr2w8yefyAk6p0Cgj7RXtaB
+ 650sQPMmUfog8FA+XqXL2Syzr8HHBQEendNPPbZU4=
+X-Gm-Gg: ASbGnctLaOt85VgqdCFm7uzoXFgeN0gdyLoYoPMFu2+9xQ7fjvIbxXVAp2TdLBpFu4u
+ uib0XJfkrCcBo+7fHAUNFGnlEIHwMSomXhyCrEdRo88bAC8JNWSPzglaNQXUGtCacHa16hApydo
+ xvy6Lem+TVDl7qoVucNtGb32q3p7VghInHvuXXRWqwEXMc0Ye65VQZMagK/71Hf2eOCrHfGj7NE
+ ZFt7EAoOttn7VLdsBJtnEaCAAZ/dKof8ho4vtt+lngtimNNmQYDr7oH3p2JhVLSL4OJp7Gsjrxj
+ kO+1Pw==
+X-Received: by 2002:a17:907:724e:b0:ab7:9648:17be with SMTP id
+ a640c23a62f3a-ab796481894mr1046879566b.19.1739182995776; 
+ Mon, 10 Feb 2025 02:23:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8IkewaN9mhFyqOkM4ANoRkpKHLlQsYyCryzjrwZgoPgEXFTOlNU6yoxnnNq+tcEo4VrR+Gg==
+X-Received: by 2002:a17:907:724e:b0:ab7:9648:17be with SMTP id
+ a640c23a62f3a-ab796481894mr1046876966b.19.1739182995184; 
+ Mon, 10 Feb 2025 02:23:15 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5de4c9b890dsm6032657a12.56.2025.02.10.02.23.11
+ a640c23a62f3a-ab78ee9e208sm663264066b.50.2025.02.10.02.23.13
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 02:23:11 -0800 (PST)
+ Mon, 10 Feb 2025 02:23:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 8/9] rust: pl011: use default set of lints
-Date: Mon, 10 Feb 2025 11:22:53 +0100
-Message-ID: <20250210102255.2555097-9-pbonzini@redhat.com>
+Subject: [PULL 9/9] rust: restrict missing_const_for_fn to qemu_api crate
+Date: Mon, 10 Feb 2025 11:22:54 +0100
+Message-ID: <20250210102255.2555097-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250210102255.2555097-1-pbonzini@redhat.com>
 References: <20250210102255.2555097-1-pbonzini@redhat.com>
@@ -106,49 +106,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Being the first crate added to QEMU, pl011 has a rather restrictive
-Clippy setup.  This can be sometimes a bit too heavy on its suggestions,
-for example
+missing_const_for_fn is not necessarily useful or good.  For example in
+a private API you can always add const later, and in a public API
+it can be unnecessarily restrictive to annotate everything with const
+(blocking further improvements to the API).
 
-error: this could be a `const fn`
-   --> hw/char/pl011/src/device.rs:382:5
-    |
-382 | /     fn set_read_trigger(&mut self) {
-383 | |         self.read_trigger = 1;
-384 | |     }
-    | |_____^
+Nevertheless, QEMU turns it on because qemu_api uses const quite
+aggressively and therefore it can be handy to have as much as possible
+annotated with const.  Outside qemu_api though, not so much: devices
+are self contained consumers and if there is nothing that could use
+their functions in const contexts that were not anticipated.
 
-Just use the standard set that is present in rust/Cargo.toml, with
-just a small adjustment to allow upper case acronyms which are used
-for register names.
+Since missing_const_for_fn can be a bit noisy and trigger on trivial
+functions that no one would ever call in const context, do not
+turn it on everywhere and only keep it in qemu_api as a special case.
 
-Reported-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/lib.rs | 9 ---------
- 1 file changed, 9 deletions(-)
+ rust/Cargo.toml          | 1 -
+ rust/qemu-api/src/lib.rs | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index e704daf6e3e..3c72f1221ff 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -12,16 +12,7 @@
- //! See [`PL011State`](crate::device::PL011State) for the device model type and
- //! the [`registers`] module for register types.
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 5b6b6ca4382..5b0cb559286 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -52,7 +52,6 @@ empty_structs_with_brackets = "deny"
+ ignored_unit_patterns = "deny"
+ implicit_clone = "deny"
+ macro_use_imports = "deny"
+-missing_const_for_fn = "deny"
+ missing_safety_doc = "deny"
+ multiple_crate_versions = "deny"
+ mut_mut = "deny"
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 83c6a987c05..3cf9371cff0 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -3,6 +3,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
--#![deny(
--    clippy::correctness,
--    clippy::suspicious,
--    clippy::complexity,
--    clippy::perf,
--    clippy::nursery,
--    clippy::style
--)]
- #![allow(clippy::upper_case_acronyms)]
--#![allow(clippy::result_unit_err)]
+ #![cfg_attr(not(MESON), doc = include_str!("../README.md"))]
++#![deny(clippy::missing_const_for_fn)]
  
- use qemu_api::c_str;
- 
+ #[rustfmt::skip]
+ pub mod bindings;
 -- 
 2.48.1
 
