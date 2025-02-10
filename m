@@ -2,101 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4A6A2F069
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 15:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4EEA2F0A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 16:02:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thVC2-0002D2-Ed; Mon, 10 Feb 2025 09:55:26 -0500
+	id 1thVI9-0005kv-8m; Mon, 10 Feb 2025 10:01:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1thVBz-0002CS-P5
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:55:23 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHj-0005ZL-EP
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1thVBx-0003kT-K3
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 09:55:23 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1thVHe-0004pX-Tr
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 10:01:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739199318;
+ s=mimecast20190719; t=1739199672;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FpnWOWPEUPvBwbJvUaGay5WJ38UwPsGX1ZB/3JNKjuY=;
- b=XO6TrwHSry2eukz7IJ3FpLCOXSwpT9crnIFoD/jJfLm4sDHGxDpIUQAjt+3QkAInnASbsy
- q+RSmXzK2ts+QYUD0kEyL9DwMv49a2JU4JOTWUejs4kiV6OD7nK7BjB4XxvJMvhmi1g0Fm
- 6Ex/nj0GNpBSaFZUXdPMb2zrMsvKkIY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-452-O20Kc5yiMJe4zNfqVG1M_Q-1; Mon, 10 Feb 2025 09:55:17 -0500
-X-MC-Unique: O20Kc5yiMJe4zNfqVG1M_Q-1
-X-Mimecast-MFC-AGG-ID: O20Kc5yiMJe4zNfqVG1M_Q
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43941ad86d4so5941475e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 06:55:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739199316; x=1739804116;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FpnWOWPEUPvBwbJvUaGay5WJ38UwPsGX1ZB/3JNKjuY=;
- b=HsXPER4mOylExj1V8i1zFfzBpK4dmspdZk4XC/P7/amADsRIc2tIzi2BMDfOLT3iV7
- 3GIu1sao2or9fhV5PkOyYxGExDHg9Yv8dFyZ/Gc3UzS1aiedHQM7ritTmivSul8OoZNm
- f5IiR/yThCFLKmAc/KvmZZiUkVUpQ7Q4P/xfdXb3eDqxBqgRRtCbrpU5nHjhQ0m7mnN8
- GDYWQbshmUbQKTNEVOxIQ1K3UjrMd2vNfprx6+z4HuQKaiR5oj715iX5bpRkyG4PyonC
- bxcbEW5a3RXPIOHdlC3ySDslSoX/Gcb6vE1hAt2lcWSGlwzdLf2JE9YDvoP3EChKlOkT
- zdUw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXUdZQhwjY07tDmmJUHRBoxbfJp7T5kZkWgp0QptqGW8PsLOFsopij9Rh8fktWrZov5o5y7c8LYOHKH@nongnu.org
-X-Gm-Message-State: AOJu0Yz4TDBG85Ob6+DODIEQU6BelVpCi15aDoBO9j5uGmSyM+X39tze
- btx6KM/066Kpp8StoLWV7EXO1yhJX78hnXg2dNl1s6/izC3sufdYdP1AdyXseQGGopiF0hmR/ab
- zwbUIeNSscbWHDqFfdNjDJ/bdkOF0jKGsPmVtzRCyQUhxVqq4W3PH
-X-Gm-Gg: ASbGnctkVc8vkSNb2DBo7m/zS0kUEbs/7VLhocHjJDiVOds9WiBTDATY2KqHbkbzTNx
- 2rOSW3pVxEUdsEiyWxSVmLYayjnh0dbS2r6+RLkBy1ZKpMIDGVx7SYe5ueLfwTqV5AdQ+xTVEy7
- aaX2eokEELn2OC2pe2zCyRkay6LQY+bLIyaGMbLk0BtpRa5nM8CpLDlUmNOX/G9xNS21cKHAHZK
- JTc/7ez26SfzmZGwithjf24/rQE++6IzsEG27SP6tn7Zz4/tlCD26yMDRXoMy2HLEoxSRJ6AZDI
- upUFL0yjNrAO0sHduxoTTz1iZLuznn1sbiCq+DqoOTN+enLWJ+zUDg==
-X-Received: by 2002:a05:600c:468e:b0:439:47dc:e383 with SMTP id
- 5b1f17b1804b1-43947dce501mr26688215e9.12.1739199315992; 
- Mon, 10 Feb 2025 06:55:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHye52RagamrPb2qBwPmsx0NeC9lhy00tq28FyXcEeKzgvbmb9HS4KAS2R6WgeVH+4xIt3mDQ==
-X-Received: by 2002:a05:600c:468e:b0:439:47dc:e383 with SMTP id
- 5b1f17b1804b1-43947dce501mr26687745e9.12.1739199315220; 
- Mon, 10 Feb 2025 06:55:15 -0800 (PST)
-Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it.
- [79.46.200.29]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4394328fcb8sm38662665e9.32.2025.02.10.06.55.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2025 06:55:14 -0800 (PST)
-Date: Mon, 10 Feb 2025 15:55:09 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>, 
- German Maglione <gmaglione@redhat.com>
-Cc: Rust-VMM Mailing List <rust-vmm@lists.opendev.org>, 
- qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Bennee <alex.bennee@linaro.org>, 
- Akihiko Odaki <akihiko.odaki@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
- Bibo Mao <maobibo@loongson.cn>, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: Call for GSoC internship project ideas
-Message-ID: <CAGxU2F6mP7KfytKUQSoqvbmLyR2DRDVdmT1Gtyq=gOFv69CDXw@mail.gmail.com>
-References: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
- <CAGxU2F7oh+a7nZp9MLh67ghKtkwFvHRNqNvFqjgVhBhbe4HK2w@mail.gmail.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=RbnJW2pvOD7S83xXbZaEv1LhLx1DUfmqRbWpBkkk14I=;
+ b=TsKXz0QUUE1SNqHxfiGaoHaSXlmLW+pZw74Wp5PwnIsFBbr/ikZr9kQvNu4kPutbtiFIbQ
+ wmTYmCANK6GDkoO1nVyblEKoCjXJ4wBYYnFlB9T6UOUivUZjm79AlIK4HbyicJz44oVahA
+ ncnSbEOsYctJH7ae1lQNvDVWc93x98o=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-Y7kpQfa6MSO4c8Zyo0CGXw-1; Mon,
+ 10 Feb 2025 10:01:10 -0500
+X-MC-Unique: Y7kpQfa6MSO4c8Zyo0CGXw-1
+X-Mimecast-MFC-AGG-ID: Y7kpQfa6MSO4c8Zyo0CGXw
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B576E195609F
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2AFA31956094
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 15:01:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A233721E6A28; Mon, 10 Feb 2025 16:01:06 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL v2 0/8] QAPI patches patches for 2025-02-10
+Date: Mon, 10 Feb 2025 16:00:58 +0100
+Message-ID: <20250210150106.3924507-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGxU2F7oh+a7nZp9MLh67ghKtkwFvHRNqNvFqjgVhBhbe4HK2w@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -121,121 +81,329 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
-Sorry for the delay, I attach a proposal!
+The following changes since commit 04d3d0e9f54d4c42759f3810aa135ce314d98dc4:
 
-On Wed, 29 Jan 2025 at 18:44, Stefano Garzarella <sgarzare@redhat.com> wrote:
->
-> +Cc rust-vmm ML, since in past years we have used QEMU as an umbrella
-> project for rust-vmm ideas for GSoC.
->
-> Thanks,
-> Stefano
->
-> On Tue, 28 Jan 2025 at 17:17, Stefan Hajnoczi <stefanha@gmail.com> wrote:
-> >
-> > Dear QEMU and KVM communities,
-> > QEMU will apply for the Google Summer of Code internship
-> > program again this year. Regular contributors can submit project
-> > ideas that they'd like to mentor by replying to this email by
-> > February 7th.
-> >
-> > About Google Summer of Code
-> > -----------------------------------------
-> > GSoC (https://summerofcode.withgoogle.com/) offers paid open
-> > source remote work internships to eligible people wishing to participate
-> > in open source development. QEMU has been doing internship for
-> > many years. Our mentors have enjoyed helping talented interns make
-> > their first open source contributions and some former interns continue
-> > to participate today.
-> >
-> > Who can mentor
-> > ----------------------
-> > Regular contributors to QEMU and KVM can participate as mentors.
-> > Mentorship involves about 5 hours of time commitment per week to
-> > communicate with the intern, review their patches, etc. Time is also
-> > required during the intern selection phase to communicate with
-> > applicants. Being a mentor is an opportunity to help someone get
-> > started in open source development, will give you experience with
-> > managing a project in a low-stakes environment, and a chance to
-> > explore interesting technical ideas that you may not have time to
-> > develop yourself.
-> >
-> > How to propose your idea
-> > ------------------------------
-> > Reply to this email with the following project idea template filled in:
+  Merge tag 'hppa-system-for-v10-diva-artist-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2025-02-08 09:00:57 -0500)
 
+are available in the Git repository at:
 
-=== vhost-user devices in Rust on macOS and *BSD ===
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-02-10-v2
 
-'''Summary:''' Extend rust-vmm crates to support vhost-user devices 
-running on POSIX system like macOS and *BSD
+for you to fetch changes up to 2ebb09f34ffff152dda6d2b5d9a2348f3fefc6d3:
 
-VIRTIO devices can be emulated in an external process to QEMU thanks to 
-the vhost-user protocol, which allows QEMU to offload the entire 
-emulation to a daemon. This is done through an AF_UNIX socket used as a 
-control path between the frontend (i.e. QEMU) and the backend (i.e. the 
-vhost-user daemon). QEMU will share guest memory with the daemon, 
-provide all the information for data path setup, and notification 
-mechanisms.
+  qapi: expose all schema features to code (2025-02-10 15:45:04 +0100)
 
-Moving the emulation of VIRTIO devices to a separate process from QEMU 
-offers significant advantages, primarily in terms of safety, if a device 
-crashes, we can restart it without affecting QEMU. Additionally, this 
-approach simplifies updating device implementations, allows development 
-in other languages (such as Rust as we do in the rust-vmm community), 
-and enhances isolation through seccomp, cgroups, and similar mechanisms.
+----------------------------------------------------------------
+QAPI patches patches for 2025-02-10
 
-The rust-vmm community already provides several crates (e.g. vhost, 
-vhost-user-backend, etc.) to implement a vhost-user backend in an 
-external daemon. For example, these crates are used by virtiofsd 
-(virtio-fs vhost-user device) but also by all vhost-user devices 
-maintained by the rust-vmm community in the rust-vmm/vhost-device 
-workspace. These crates work great on Linux, but unfortunately they use 
-some Linux-specific system calls such as epoll(7) and eventfd(2) that 
-make them impossible to use on other POSIX systems.
+----------------------------------------------------------------
+Daniel P. Berrangé (6):
+      qapi: Move include/qapi/qmp/ to include/qobject/
+      qapi: Move and rename qapi/qmp/dispatch.h to qapi/qmp-registry.h
+      qapi: cope with feature names containing a '-'
+      qapi: change 'unsigned special_features' to 'uint64_t features'
+      qapi: rename 'special_features' to 'features'
+      qapi: expose all schema features to code
 
-The goal of this project is to make sure that we can use rust-vmm's 
-vhost and vhost-user-backend crates on other POSIX systems besides 
-Linux. If time permits, we could also fix up simple devices such as 
-vhost-device-console or vhost-device-vsock to run on any POSIX systems.
+Victor Toso (1):
+      qapi: fix colon in Since tag section
 
-'''Tasks:'''
-* Becoming familiar with QEMU and vhost-user devices
-* Run QEMU with a vhost-user device on macOS or FreeBSD/OpenBSD as 
-covered in the FOSDEM 2025 talk
-* Analyze rust-vmm crates (vmm-sys-util, vhost, vhost-user-backend) to 
-understand which components are Linux-specific
-* Replace epoll(7) with alternatives such as 
-https://github.com/smol-rs/polling
-* Automatic fallback to pipe()/pipe2() if eventfd(2) is not available as 
-QEMU already does
-* Handle any other cases discovered during the analysis
-* Adapt a simple device such as vhost-device-console or 
-vhost-device-vsock to test that everything works on macOS or 
-FreeBSD/OpenBSD
+Zhang Boyang (1):
+      qapi/ui: Fix documentation of upper bound value in InputMoveEvent
 
-'''Links:'''
-* FOSDEM 2025 talk: [https://fosdem.org/2025/schedule/event/fosdem-2025-5100-can-qemu-and-vhost-user-devices-be-used-on-macos-and-bsd-/ Can QEMU and vhost-user devices be used on macOS and *BSD?]
-* [https://qemu-project.gitlab.io/qemu/interop/vhost-user.html vhost-user spacification]
-* [https://patchew.org/QEMU/20240618100043.144657-1-sgarzare@redhat.com/ QEMU series to support vhost-user on any POSIX]
-* [https://gitlab.com/sgarzarella/qemu/-/tree/macos-vhost-user sgarzare's tree where to find some missing QEMU patches]
-* [https://github.com/rust-vmm/vhost rust-vmm vhost & vhost-user-backend crates]
-* [https://github.com/rust-vmm/vmm-sys-util rust-vmm vmm-sys-util crate]
-* [https://github.com/rust-vmm/vhost-device rust-vmm vhost-device workspace]
-* [https://gitlab.com/virtio-fs/virtiofsd virtio-fs vhost-user device]
-* [https://github.com/rust-vmm/vhost/issues/110 Mac build support #110 - rust-vmm/vhost]
-* [https://gitlab.com/virtio-fs/virtiofsd/-/issues/169 Add macOS support #169 - virtio-fs/virtiofsd]
+ MAINTAINERS                                     |   5 +-
+ docs/devel/qapi-code-gen.rst                    |   4 +-
+ meson.build                                     |   1 +
+ qapi/cxl.json                                   |   4 +-
+ qapi/ui.json                                    |   2 +-
+ include/block/qdict.h                           |   2 +-
+ include/qapi/compat-policy.h                    |   2 +-
+ include/qapi/{qmp/dispatch.h => qmp-registry.h} |   4 +-
+ include/qapi/util.h                             |   2 +-
+ include/qapi/visitor-impl.h                     |   4 +-
+ include/qapi/visitor.h                          |  12 +-
+ include/{qapi/qmp => qobject}/json-parser.h     |   0
+ include/{qapi/qmp => qobject}/json-writer.h     |   0
+ include/{qapi/qmp => qobject}/qbool.h           |   2 +-
+ include/{qapi/qmp => qobject}/qdict.h           |   2 +-
+ include/{qapi/qmp => qobject}/qjson.h           |   0
+ include/{qapi/qmp => qobject}/qlist.h           |   2 +-
+ include/{qapi/qmp => qobject}/qlit.h            |   0
+ include/{qapi/qmp => qobject}/qnull.h           |   2 +-
+ include/{qapi/qmp => qobject}/qnum.h            |   2 +-
+ include/{qapi/qmp => qobject}/qobject.h         |   2 +-
+ include/{qapi/qmp => qobject}/qstring.h         |   2 +-
+ migration/migration.h                           |   2 +-
+ monitor/monitor-internal.h                      |   4 +-
+ qga/guest-agent-core.h                          |   2 +-
+ qobject/json-parser-int.h                       |   2 +-
+ qobject/qobject-internal.h                      |   2 +-
+ tests/qtest/libqmp.h                            |   2 +-
+ tests/qtest/libqtest.h                          |   6 +-
+ audio/audio-hmp-cmds.c                          |   2 +-
+ audio/audio.c                                   |   2 +-
+ authz/listfile.c                                |   4 +-
+ backends/cryptodev-hmp-cmds.c                   |   2 +-
+ block.c                                         |   8 +-
+ block/blkdebug.c                                |   6 +-
+ block/blkio.c                                   |   2 +-
+ block/blklogwrites.c                            |   4 +-
+ block/blkverify.c                               |   4 +-
+ block/copy-before-write.c                       |   2 +-
+ block/copy-on-read.c                            |   2 +-
+ block/curl.c                                    |   4 +-
+ block/file-posix.c                              |   4 +-
+ block/file-win32.c                              |   4 +-
+ block/gluster.c                                 |   2 +-
+ block/iscsi.c                                   |   4 +-
+ block/monitor/block-hmp-cmds.c                  |   2 +-
+ block/nbd.c                                     |   2 +-
+ block/nfs.c                                     |   4 +-
+ block/null.c                                    |   4 +-
+ block/nvme.c                                    |   4 +-
+ block/parallels.c                               |   2 +-
+ block/qapi-system.c                             |   2 +-
+ block/qapi.c                                    |  10 +-
+ block/qcow.c                                    |   4 +-
+ block/qcow2.c                                   |   4 +-
+ block/qed.c                                     |   2 +-
+ block/quorum.c                                  |   6 +-
+ block/rbd.c                                     |   8 +-
+ block/replication.c                             |   2 +-
+ block/snapshot.c                                |   4 +-
+ block/ssh.c                                     |   4 +-
+ block/stream.c                                  |   2 +-
+ block/vhdx.c                                    |   2 +-
+ block/vmdk.c                                    |   2 +-
+ block/vpc.c                                     |   2 +-
+ block/vvfat.c                                   |   4 +-
+ blockdev.c                                      |   8 +-
+ chardev/char-hmp-cmds.c                         |   2 +-
+ dump/dump-hmp-cmds.c                            |   2 +-
+ hw/arm/aspeed_ast27x0.c                         |   2 +-
+ hw/arm/mps2-tz.c                                |   2 +-
+ hw/arm/mps2.c                                   |   2 +-
+ hw/arm/mps3r.c                                  |   2 +-
+ hw/arm/sbsa-ref.c                               |   2 +-
+ hw/arm/stellaris.c                              |   2 +-
+ hw/arm/vexpress.c                               |   2 +-
+ hw/arm/virt.c                                   |   2 +-
+ hw/arm/xlnx-versal.c                            |   2 +-
+ hw/block/xen-block.c                            |   4 +-
+ hw/core/machine-hmp-cmds.c                      |   2 +-
+ hw/core/machine-qmp-cmds.c                      |   2 +-
+ hw/core/qdev-properties.c                       |   2 +-
+ hw/core/qdev.c                                  |   2 +-
+ hw/hyperv/hv-balloon.c                          |   2 +-
+ hw/i386/acpi-build.c                            |   2 +-
+ hw/i386/kvm/xen_evtchn.c                        |   2 +-
+ hw/i386/monitor.c                               |   2 +-
+ hw/i386/pc.c                                    |   2 +-
+ hw/net/rocker/rocker-hmp-cmds.c                 |   2 +-
+ hw/net/virtio-net.c                             |   2 +-
+ hw/net/xen_nic.c                                |   2 +-
+ hw/pci/pci-hmp-cmds.c                           |   2 +-
+ hw/ppc/pegasos2.c                               |   2 +-
+ hw/ppc/spapr_drc.c                              |   2 +-
+ hw/rx/rx62n.c                                   |   2 +-
+ hw/s390x/s390-skeys.c                           |   2 +-
+ hw/s390x/s390-stattrib.c                        |   2 +-
+ hw/usb/xen-usb.c                                |   4 +-
+ hw/vfio/pci.c                                   |   2 +-
+ hw/virtio/virtio-hmp-cmds.c                     |   2 +-
+ hw/virtio/virtio-qmp.c                          |   4 +-
+ hw/xen/xen-bus.c                                |   2 +-
+ migration/dirtyrate.c                           |   2 +-
+ migration/migration-hmp-cmds.c                  |   2 +-
+ migration/migration.c                           |   2 +-
+ migration/options.c                             |   2 +-
+ migration/vmstate.c                             |   2 +-
+ monitor/hmp-cmds-target.c                       |   2 +-
+ monitor/hmp-cmds.c                              |   2 +-
+ monitor/hmp.c                                   |   4 +-
+ monitor/monitor.c                               |   2 +-
+ monitor/qemu-config-qmp.c                       |   2 +-
+ monitor/qmp.c                                   |   6 +-
+ net/net-hmp-cmds.c                              |   2 +-
+ net/net.c                                       |   2 +-
+ net/slirp.c                                     |   2 +-
+ qapi/qapi-clone-visitor.c                       |   2 +-
+ qapi/qapi-dealloc-visitor.c                     |   2 +-
+ qapi/qapi-forward-visitor.c                     |  22 +-
+ qapi/qapi-util.c                                |   6 +-
+ qapi/qapi-visit-core.c                          |  12 +-
+ qapi/qmp-dispatch.c                             |  10 +-
+ qapi/qmp-event.c                                |   6 +-
+ qapi/qmp-registry.c                             |   6 +-
+ qapi/qobject-input-visitor.c                    |  18 +-
+ qapi/qobject-output-visitor.c                   |  18 +-
+ qapi/string-input-visitor.c                     |   2 +-
+ qemu-img.c                                      |   4 +-
+ qemu-io-cmds.c                                  |   2 +-
+ qemu-io.c                                       |   4 +-
+ qemu-nbd.c                                      |   4 +-
+ qga/main.c                                      |   6 +-
+ qobject/block-qdict.c                           |   8 +-
+ qobject/json-parser.c                           |  12 +-
+ qobject/json-writer.c                           |   2 +-
+ qobject/qbool.c                                 |   2 +-
+ qobject/qdict.c                                 |  10 +-
+ qobject/qjson.c                                 |  16 +-
+ qobject/qlist.c                                 |  10 +-
+ qobject/qlit.c                                  |  14 +-
+ qobject/qnull.c                                 |   2 +-
+ qobject/qnum.c                                  |   2 +-
+ qobject/qobject.c                               |  12 +-
+ qobject/qstring.c                               |   2 +-
+ qom/object.c                                    |  10 +-
+ qom/object_interfaces.c                         |   6 +-
+ qom/qom-hmp-cmds.c                              |   4 +-
+ qom/qom-qmp-cmds.c                              |   2 +-
+ replay/replay-debugging.c                       |   2 +-
+ replay/replay-snapshot.c                        |   2 +-
+ scsi/qemu-pr-helper.c                           |   2 +-
+ stats/stats-hmp-cmds.c                          |   2 +-
+ storage-daemon/qemu-storage-daemon.c            |   4 +-
+ stubs/qmp-command-available.c                   |   2 +-
+ stubs/qmp-quit.c                                |   2 +-
+ system/device_tree.c                            |   2 +-
+ system/dirtylimit.c                             |   2 +-
+ system/qdev-monitor.c                           |   6 +-
+ system/runstate-hmp-cmds.c                      |   2 +-
+ system/vl.c                                     |   6 +-
+ target/arm/arm-qmp-cmds.c                       |   2 +-
+ target/i386/cpu-apic.c                          |   2 +-
+ target/i386/cpu-system.c                        |   2 +-
+ target/i386/monitor.c                           |   2 +-
+ target/loongarch/loongarch-qmp-cmds.c           |   2 +-
+ target/ppc/cpu_init.c                           |   2 +-
+ target/riscv/riscv-qmp-cmds.c                   |   4 +-
+ target/s390x/cpu_models_system.c                |   2 +-
+ tests/qtest/adm1266-test.c                      |   4 +-
+ tests/qtest/adm1272-test.c                      |   4 +-
+ tests/qtest/ahci-test.c                         |   2 +-
+ tests/qtest/arm-cpu-features.c                  |   4 +-
+ tests/qtest/aspeed_gpio-test.c                  |   2 +-
+ tests/qtest/ast2700-gpio-test.c                 |   2 +-
+ tests/qtest/boot-order-test.c                   |   2 +-
+ tests/qtest/cdrom-test.c                        |   2 +-
+ tests/qtest/cpu-plug-test.c                     |   4 +-
+ tests/qtest/device-introspect-test.c            |   6 +-
+ tests/qtest/device-plug-test.c                  |   4 +-
+ tests/qtest/drive_del-test.c                    |   4 +-
+ tests/qtest/emc141x-test.c                      |   2 +-
+ tests/qtest/fdc-test.c                          |   2 +-
+ tests/qtest/hd-geo-test.c                       |   2 +-
+ tests/qtest/ide-test.c                          |   2 +-
+ tests/qtest/isl_pmbus_vr-test.c                 |   4 +-
+ tests/qtest/libqmp.c                            |   4 +-
+ tests/qtest/libqos/generic-pcihost.c            |   2 +-
+ tests/qtest/libqos/libqos.c                     |   2 +-
+ tests/qtest/libqos/pci-pc.c                     |   2 +-
+ tests/qtest/libqos/qos_external.c               |   8 +-
+ tests/qtest/libqtest.c                          |  10 +-
+ tests/qtest/lsm303dlhc-mag-test.c               |   2 +-
+ tests/qtest/machine-none-test.c                 |   2 +-
+ tests/qtest/max34451-test.c                     |   4 +-
+ tests/qtest/migration-helpers.c                 | 530 ++++++++++++++++++++++++
+ tests/qtest/migration/file-tests.c              |   2 +-
+ tests/qtest/migration/framework.c               |   4 +-
+ tests/qtest/migration/migration-qmp.c           |   6 +-
+ tests/qtest/migration/migration-util.c          |   2 +-
+ tests/qtest/migration/misc-tests.c              |   2 +-
+ tests/qtest/migration/postcopy-tests.c          |   2 +-
+ tests/qtest/migration/precopy-tests.c           |   2 +-
+ tests/qtest/netdev-socket.c                     |   2 +-
+ tests/qtest/npcm7xx_adc-test.c                  |   2 +-
+ tests/qtest/npcm7xx_emc-test.c                  |   4 +-
+ tests/qtest/npcm7xx_pwm-test.c                  |   4 +-
+ tests/qtest/npcm7xx_watchdog_timer-test.c       |   2 +-
+ tests/qtest/numa-test.c                         |   4 +-
+ tests/qtest/pvpanic-pci-test.c                  |   2 +-
+ tests/qtest/pvpanic-test.c                      |   2 +-
+ tests/qtest/q35-test.c                          |   2 +-
+ tests/qtest/qmp-cmd-test.c                      |   2 +-
+ tests/qtest/qmp-test.c                          |   6 +-
+ tests/qtest/qom-test.c                          |   4 +-
+ tests/qtest/qos-test.c                          |   2 +-
+ tests/qtest/readconfig-test.c                   |   6 +-
+ tests/qtest/tco-test.c                          |   2 +-
+ tests/qtest/test-filter-mirror.c                |   2 +-
+ tests/qtest/test-filter-redirector.c            |   2 +-
+ tests/qtest/test-netfilter.c                    |   2 +-
+ tests/qtest/test-x86-cpuid-compat.c             |   8 +-
+ tests/qtest/tmp105-test.c                       |   2 +-
+ tests/qtest/tpm-emu.c                           |   4 +-
+ tests/qtest/tpm-util.c                          |   2 +-
+ tests/qtest/vhost-user-test.c                   |   2 +-
+ tests/qtest/virtio-net-failover.c               |   6 +-
+ tests/qtest/virtio-net-test.c                   |   2 +-
+ tests/qtest/vmgenid-test.c                      |   2 +-
+ tests/qtest/wdt_ib700-test.c                    |   2 +-
+ tests/unit/check-block-qdict.c                  |   4 +-
+ tests/unit/check-qdict.c                        |   6 +-
+ tests/unit/check-qjson.c                        |  12 +-
+ tests/unit/check-qlist.c                        |   4 +-
+ tests/unit/check-qlit.c                         |  12 +-
+ tests/unit/check-qnull.c                        |   2 +-
+ tests/unit/check-qnum.c                         |   2 +-
+ tests/unit/check-qobject.c                      |  12 +-
+ tests/unit/check-qom-proplist.c                 |   4 +-
+ tests/unit/check-qstring.c                      |   2 +-
+ tests/unit/test-block-iothread.c                |   2 +-
+ tests/unit/test-blockjob-txn.c                  |   2 +-
+ tests/unit/test-blockjob.c                      |   2 +-
+ tests/unit/test-char.c                          |   2 +-
+ tests/unit/test-forward-visitor.c               |   4 +-
+ tests/unit/test-image-locking.c                 |   2 +-
+ tests/unit/test-keyval.c                        |   6 +-
+ tests/unit/test-qemu-opts.c                     |   4 +-
+ tests/unit/test-qga.c                           |   4 +-
+ tests/unit/test-qmp-cmds.c                      |   8 +-
+ tests/unit/test-qmp-event.c                     |  10 +-
+ tests/unit/test-qobject-input-visitor.c         |  12 +-
+ tests/unit/test-qobject-output-visitor.c        |  12 +-
+ tests/unit/test-replication.c                   |   2 +-
+ tests/unit/test-visitor-serialization.c         |   4 +-
+ trace/trace-hmp-cmds.c                          |   2 +-
+ ui/ui-hmp-cmds.c                                |   2 +-
+ util/keyval.c                                   |   6 +-
+ util/qemu-config.c                              |   4 +-
+ util/qemu-option.c                              |   8 +-
+ scripts/qapi/commands.py                        |  11 +-
+ scripts/qapi/events.py                          |   2 +-
+ scripts/qapi/features.py                        |  48 +++
+ scripts/qapi/gen.py                             |   9 +-
+ scripts/qapi/introspect.py                      |   2 +-
+ scripts/qapi/main.py                            |   2 +
+ scripts/qapi/schema.py                          |  31 +-
+ scripts/qapi/types.py                           |  23 +-
+ scripts/qapi/visit.py                           |  21 +-
+ tests/meson.build                               |   2 +
+ tests/qapi-schema/features-too-many.err         |   2 +
+ tests/qapi-schema/features-too-many.json        |  13 +
+ tests/qapi-schema/features-too-many.out         |   0
+ tests/qapi-schema/meson.build                   |   1 +
+ 273 files changed, 1142 insertions(+), 519 deletions(-)
+ rename include/qapi/{qmp/dispatch.h => qmp-registry.h} (96%)
+ rename include/{qapi/qmp => qobject}/json-parser.h (100%)
+ rename include/{qapi/qmp => qobject}/json-writer.h (100%)
+ rename include/{qapi/qmp => qobject}/qbool.h (94%)
+ rename include/{qapi/qmp => qobject}/qdict.h (98%)
+ rename include/{qapi/qmp => qobject}/qjson.h (100%)
+ rename include/{qapi/qmp => qobject}/qlist.h (98%)
+ rename include/{qapi/qmp => qobject}/qlit.h (100%)
+ rename include/{qapi/qmp => qobject}/qnull.h (94%)
+ rename include/{qapi/qmp => qobject}/qnum.h (98%)
+ rename include/{qapi/qmp => qobject}/qobject.h (98%)
+ rename include/{qapi/qmp => qobject}/qstring.h (96%)
+ create mode 100644 tests/qtest/migration-helpers.c
+ create mode 100644 scripts/qapi/features.py
+ create mode 100644 tests/qapi-schema/features-too-many.err
+ create mode 100644 tests/qapi-schema/features-too-many.json
+ create mode 100644 tests/qapi-schema/features-too-many.out
 
-'''Details:'''
-* Project size: 350 hours
-* Skill level: intermediate
-* Language: Rust
-* Mentors: Stefano Garzarella <sgarzare@redhat.com>, German Maglione 
-<gmaglione@redhat.com>
-
-
-Thanks,
-Stefano
+-- 
+2.48.1
 
 
