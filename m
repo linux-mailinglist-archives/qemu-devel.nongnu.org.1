@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B99AA2E256
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D0A2E24F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 03:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thJjz-0000AC-Tq; Sun, 09 Feb 2025 21:41:43 -0500
+	id 1thJjy-00009D-93; Sun, 09 Feb 2025 21:41:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjy-00009P-53; Sun, 09 Feb 2025 21:41:42 -0500
+ id 1thJjw-00008x-Ur; Sun, 09 Feb 2025 21:41:40 -0500
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thJjr-00087T-S1; Sun, 09 Feb 2025 21:41:41 -0500
+ id 1thJjv-00088s-9v; Sun, 09 Feb 2025 21:41:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739155296; x=1770691296;
+ t=1739155299; x=1770691299;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8WPc18u0djTU3OQIdYk4SifKW86kcsabADf2I4OvMZM=;
- b=HDBx0Ih3a68w53gChkKk1hyCSDJIK4UbnmHAOtc/W/TwIAgX5/McVw5b
- txaDQkAfjdn3Xsv7+UJi9mlitInm2r8uKj+MylV3MtohKt7LBkr+E6c6c
- frTQK3IMx3nZwlyX2C3HWAFrH1pktv9OJIV489xfHuVzywOwxwvpbJh/Q
- q8woRMBlR1cwH5PMsvwZvkxk1WA8SGMiupJBf9dt22NAfZmDf1L5Bsnrx
- UFDtRigJDqa1jGn7QuW000GbAXkhocZAujY7Twz/JY6GfAqkb2Ruq+pzn
- zMnkw/b88x5z4Ie06YLzmpc8FPPkWzMEPqpqphnvR77XTUpbHuOB0SiPM A==;
-X-CSE-ConnectionGUID: fUGNWf3qRfO5P8HTUHPNhw==
-X-CSE-MsgGUID: N1EdpplSR9O4SW82BNWm9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351254"
-X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351254"
+ bh=y/muAhgS03tDvmIKU/5AGbd6xaeSngpnzqvwG7x9b6c=;
+ b=Z/gwpjAMaoqE4/b/aN3bQbWB2E3GoMt/8bJsU1QNqPtLryis3ydjY/g0
+ nhUESNrakE8psGccEWF3FPCJMCnexk5IYfyXpzuple41jNPmpcMtm+Juv
+ vNtHF9ASoOQiaHPBa22JxIDbI8oKIXi+KxxvsdJ/3eCliRHJhH7T99OiR
+ LD0edFm7QNaEqGnvCYkNUPNAHBEpio8KR8TIy6kTf7VOv2zmdZC6fse56
+ UfqoB+wUUDg9uwlTusWuQL+GzBUF+nRxs6+N/XRnR5vFc5pIMD/nFpK9J
+ j+mnBYQzShw/Z/zfV30ULyf0AUdMy06cSCr9BcdD5pGkyz0sxOB3sp3ES A==;
+X-CSE-ConnectionGUID: ZomfTb0xQnSj8TjZTnksGg==
+X-CSE-MsgGUID: TpvWQbM4T6imHz5KA9PK1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50351261"
+X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; d="scan'208";a="50351261"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2025 18:41:35 -0800
-X-CSE-ConnectionGUID: Zlt4wv88QseNUpg5M+oaTA==
-X-CSE-MsgGUID: 7PD3YtXATWOL+pEM2QuaSw==
+ 09 Feb 2025 18:41:38 -0800
+X-CSE-ConnectionGUID: KscAoHMtTLOxiWvwwktlOA==
+X-CSE-MsgGUID: 20ClY6PDQpaX+cKbz2A5mA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938219"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="142938222"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:32 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 09 Feb 2025 18:41:35 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -51,9 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 04/10] rust: add bindings for gpio_{in|out} initialization
-Date: Mon, 10 Feb 2025 11:00:45 +0800
-Message-Id: <20250210030051.2562726-5-zhao1.liu@intel.com>
+Subject: [PATCH v2 05/10] rust: add bindings for memattrs
+Date: Mon, 10 Feb 2025 11:00:46 +0800
+Message-Id: <20250210030051.2562726-6-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210030051.2562726-1-zhao1.liu@intel.com>
 References: <20250210030051.2562726-1-zhao1.liu@intel.com>
@@ -84,118 +84,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wrap qdev_init_gpio_{in|out} as methods in DeviceMethods. And for
-qdev_init_gpio_in, based on FnCall, it can support idiomatic Rust
-callback without the need for C style wrapper.
+The MemTxAttrs structure contains bitfield members, and bindgen is
+unable to generate an equivalent macro definition for
+MEMTXATTRS_UNSPECIFIED.
+
+Therefore, manually define a global constant variable
+MEMTXATTRS_UNSPECIFIED to support calls from Rust code.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes since RFC:
- * Use FnCall to support gpio in callback.
- * Place gpio_{in|out} in DeviceMethods.
- * Accept &[InterruptSource] as the parameter of gpio_out.
-
-Changes since Patch v1:
- * Ensure the handler of input GPIO is not none.
- * Fix doc issue. No need to specify InterruptSource path in doc.
+ * With a boolean type unspecified field, no need to add once_cell.
+ * Merge memattrs binding to memory.rs.
 ---
- rust/qemu-api/src/irq.rs  |  1 -
- rust/qemu-api/src/qdev.rs | 47 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 43 insertions(+), 5 deletions(-)
+ rust/qemu-api/src/memory.rs   | 16 ++++++++++++++--
+ rust/qemu-api/src/zeroable.rs |  1 +
+ rust/wrapper.h                |  1 +
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
-index 05f617b5684a..f87cd0c7d318 100644
---- a/rust/qemu-api/src/irq.rs
-+++ b/rust/qemu-api/src/irq.rs
-@@ -84,7 +84,6 @@ pub(crate) const fn as_ptr(&self) -> *mut *mut IRQState {
-         self.cell.as_ptr()
-     }
+diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
+index 963d689c27d4..fff92508c68f 100644
+--- a/rust/qemu-api/src/memory.rs
++++ b/rust/qemu-api/src/memory.rs
+@@ -2,7 +2,7 @@
+ // Author(s): Paolo Bonzini <pbonzini@redhat.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
--    #[allow(dead_code)]
-     pub(crate) fn slice_as_ptr(slice: &[Self]) -> *mut *mut IRQState {
-         assert!(!slice.is_empty());
-         slice[0].as_ptr()
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 28d9be723d89..17f12ad1361c 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -6,17 +6,18 @@
+-//! Bindings for `MemoryRegion` and `MemoryRegionOps`
++//! Bindings for `MemoryRegion`, `MemoryRegionOps` and `MemTxAttrs`
  
  use std::{
      ffi::{CStr, CString},
--    os::raw::c_void,
-+    os::raw::{c_int, c_void},
-     ptr::NonNull,
+@@ -11,7 +11,7 @@
+     ptr::addr_of,
  };
  
- pub use bindings::{Clock, ClockEvent, DeviceClass, DeviceState, Property, ResetType};
+-pub use bindings::hwaddr;
++pub use bindings::{hwaddr, MemTxAttrs};
  
  use crate::{
--    bindings::{self, Error, ResettableClass},
-+    bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, Error, ResettableClass},
-     callbacks::FnCall,
-     cell::bql_locked,
-     chardev::Chardev,
-+    irq::InterruptSource,
-     prelude::*,
-     qom::{ClassInitImpl, ObjectClass, ObjectImpl, Owned},
-     vmstate::VMStateDescription,
-@@ -28,8 +29,8 @@ pub trait ResettablePhasesImpl {
-     /// If not None, this is called when the object enters reset. It
-     /// can reset local state of the object, but it must not do anything that
-     /// has a side-effect on other objects, such as raising or lowering an
--    /// [`InterruptSource`](crate::irq::InterruptSource), or reading or
--    /// writing guest memory. It takes the reset's type as argument.
-+    /// [`InterruptSource`], or reading or writing guest memory. It takes the
-+    /// reset's type as argument.
-     const ENTER: Option<fn(&Self, ResetType)> = None;
- 
-     /// If not None, this is called when the object for entry into reset, once
-@@ -320,6 +321,44 @@ fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
-             bindings::qdev_prop_set_chr(self.as_mut_ptr(), c_propname.as_ptr(), chr.as_mut_ptr());
-         }
-     }
-+
-+    fn init_gpio_in<F: for<'a> FnCall<(&'a Self::Target, u32, u32)>>(
-+        &self,
-+        num_lines: u32,
-+        _cb: F,
-+    ) {
-+        let _: () = F::ASSERT_IS_SOME;
-+
-+        unsafe extern "C" fn rust_irq_handler<T, F: for<'a> FnCall<(&'a T, u32, u32)>>(
-+            opaque: *mut c_void,
-+            line: c_int,
-+            level: c_int,
-+        ) {
-+            // SAFETY: the opaque was passed as a reference to `T`
-+            F::call((unsafe { &*(opaque.cast::<T>()) }, line as u32, level as u32))
-+        }
-+
-+        let gpio_in_cb: unsafe extern "C" fn(*mut c_void, c_int, c_int) =
-+            rust_irq_handler::<Self::Target, F>;
-+
-+        unsafe {
-+            qdev_init_gpio_in(
-+                self.as_mut_ptr::<DeviceState>(),
-+                Some(gpio_in_cb),
-+                num_lines as c_int,
-+            );
-+        }
-+    }
-+
-+    fn init_gpio_out(&self, pins: &[InterruptSource]) {
-+        unsafe {
-+            qdev_init_gpio_out(
-+                self.as_mut_ptr::<DeviceState>(),
-+                InterruptSource::slice_as_ptr(pins),
-+                pins.len() as c_int,
-+            );
-+        }
-+    }
+     bindings::{self, device_endian, memory_region_init_io},
+@@ -189,3 +189,15 @@ unsafe impl ObjectType for MemoryRegion {
+         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_MEMORY_REGION) };
  }
- 
- impl<R: ObjectDeref> DeviceMethods for R where R::Target: IsA<DeviceState> {}
+ qom_isa!(MemoryRegion: Object);
++
++/// A special `MemTxAttrs` constant, used to indicate that no memary
++/// attributes are specified.
++///
++/// Bus masters which don't specify any attributes will get this,
++/// which has all attribute bits clear except the topmost one
++/// (so that we can distinguish "all attributes deliberately clear"
++/// from "didn't specify" if necessary).
++pub const MEMTXATTRS_UNSPECIFIED: MemTxAttrs = MemTxAttrs {
++    unspecified: true,
++    ..Zeroable::ZERO
++};
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
+index 304ad6698360..53dc90da31a1 100644
+--- a/rust/qemu-api/src/zeroable.rs
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -103,3 +103,4 @@ fn default() -> Self {
+ impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_1);
+ impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_2);
+ impl_zeroable!(crate::bindings::MemoryRegionOps);
++impl_zeroable!(crate::bindings::MemTxAttrs);
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index a9bc67af0d5f..54839ce0f510 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -62,3 +62,4 @@ typedef enum memory_order {
+ #include "qapi/error.h"
+ #include "migration/vmstate.h"
+ #include "chardev/char-serial.h"
++#include "exec/memattrs.h"
 -- 
 2.34.1
 
