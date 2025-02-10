@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6FFA2FAE1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE59FA2FAF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Feb 2025 21:45:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thacF-0006QX-6d; Mon, 10 Feb 2025 15:42:51 -0500
+	id 1thacL-0006kb-UF; Mon, 10 Feb 2025 15:42:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacE-0006QG-6M
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:50 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacJ-0006hh-3z
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:55 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacC-0003dP-LZ
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:49 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38dd14c9a66so1121764f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thacH-0003du-H9
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 15:42:54 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38dd93a6f0aso1416905f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Feb 2025 12:42:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739220167; x=1739824967; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739220171; x=1739824971; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3nuHHIvM6pSqnytPWoTxGSW68RW0qHiT+ueaTC+djWc=;
- b=kOPYnT+9VNjGqZo7qzVn7sBkaEFFdhSTYD8WwFNxLAwVyXPxFRj3oUa77j3Yv6vN90
- 2O97kuw1UvmVjlgBoNBBhF1rnPlCbQERs5yrYIF62QBm57SGi8Zgz73xLVCmJXDfjdok
- 1oATUn4fJpHl4XrslYdtWy7tDLguAzAug6HsrhNluXBLC36+BCK5ZGh0r7aQYYCdYWit
- ETBHEFDcNl6PAlzxRRgJMgbHGxHuAWvpNdnBaWAQo427NTItnSte3CkNWuPZ7QftUsIk
- gjxVD8EY9X62Ys21J1+SUTjvY3RPzWG/swtyk80wHB/OiyXh3lf0z/BomH2+mJS4AD2P
- cN9A==
+ bh=GOkHWRVq/7AcufWqPBNvF3JtlhqdXf5mWn9gacGGeOo=;
+ b=PEEj7ehBujeiGyPeemOIzk8ewxhIXCxQ19hb4W2c/vCsTUO1n41+WGn2Urc8XtqEW4
+ PP9LEmdV9XPGEb1T7YInOKItBHgZZxarfatJ/HhOD/D+Yhn1EaO32R0qA8fXkNOJFQ94
+ CMFwqVDvnIOGaGl5Zx/TMGToR6Y4q4jwlFr8Vem8EDgaa54K/UaCn69n+kc/XmzQsnRM
+ LsJoc9OkleBXDEzJw09Gh/ii7enEI9EzDKk2OxP7SR538xgUWwNuYSnswVH3GOsi6XXA
+ pul+IVA60kjjLOxwn6yP4xZM6ooLZyDTyLc5CYf3Bq1FTaDigfEHxmk1dcT8ojCP9BWO
+ aMgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739220167; x=1739824967;
+ d=1e100.net; s=20230601; t=1739220171; x=1739824971;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3nuHHIvM6pSqnytPWoTxGSW68RW0qHiT+ueaTC+djWc=;
- b=tSSjM0Z/zhx27kvg06Xt9jMpwb2tuU2rBKLVG+JK/xIEFr/rqBcviGNIbWQ6EhuxvP
- su7zJIvjYJ7G6APmGT3F42lX8eHeQWX5o+OKjNVcZiMh4xilLEb3HQgKTCHju2HOrooW
- ctGruXPA6h/Igs87Us2Yangh0uQutzoch2wkLZSSiqP8Q1H/YonWzSJkX9/wHGNs5qJ2
- SAOmA8KBxvchoQcViDqDk40r4YyTTNtOW5asr8wOMAhB8kc/q1Ny2ERioZrIKPHpEKk0
- 3FqyJQKljBFGar5XK6cZjqdopGhvVNtQDL5k8FUdlQPgXbUGIVWHY0j34ff7TJtgoYXl
- PHKA==
-X-Gm-Message-State: AOJu0YxFLkJGy6IPIEja91WVMTNMKCqCUCO95gDch0EfTF+rROn6+Rjh
- WS/qDKIP+4+qgqfyffkdpdBNZDFFwQqewFwy5m0wDnXGovDkTBf9JqWMEbOz26M/1x58EHtozJX
- 3KjM=
-X-Gm-Gg: ASbGnctA5VaUP2nuYEuiq7G1FzrD6gRs+Puvfh6WdcwrpRfrLT7w5xbyxtkkM7C/y8m
- nyVJktUy8gGJHth/bZK98AaT1zNJIRPL56jRbOUYI2mXqJu3KeJ/0NA/8qOLFySmcwKcw+MoaLQ
- JuywiuVBb1LMba59Hp729a7xYU56YYWetcbjNgs/qP3pwpqT3rwTy5FHzxWHPk4reeAQMrff9jq
- d28vFprxIO26BW10ScpS5Xu8u8Fa0qgDzS5oKZMcxbFFHvH4S9mSk21FdHHMbLzQGFFQFBFloV2
- LmUpaS1OC7GsX60hnzwQVHyGbVN5bxTZlzDHcmB86zHGg13PjbRBTLQ2Ngx/sjQrTA==
-X-Google-Smtp-Source: AGHT+IHwlNMgul/D9utFFraEy6LdQZUaJIELgo6s4YE6KmLK+PZ+9vj+uPcsY2ppKMQyN4J3NsFygQ==
-X-Received: by 2002:a5d:64c7:0:b0:38d:d4b5:84d6 with SMTP id
- ffacd0b85a97d-38dd4b587a1mr7734341f8f.3.1739220166892; 
- Mon, 10 Feb 2025 12:42:46 -0800 (PST)
+ bh=GOkHWRVq/7AcufWqPBNvF3JtlhqdXf5mWn9gacGGeOo=;
+ b=tKzl6uVFalGVK3Nu5/K+LaLCFav9P65z8POorHk1RFFXPEzYs2IQ2FltDQp+hT6dih
+ qxu3ne+aV/4lpQK34zAVNW+8qcxRF/pS3vAESiJoKdSF/yz4HHsYmdfdOVPFgVIx429/
+ ++fw14nAdP3cFlnlthvNAGY8CAEgT3wy5D2yRtd/mAIl/qRN5sG71Il0FSzuUy47rUkk
+ bvFc2Ems5y7o2nbn2WK0mSBEnd3222OO/biEiDN/SI3qLdV7d5/6TYKUNk/GMMHAgnHc
+ o/lCbpBfskxVOwKz5tULMECUk/6Ohi8HwvOn6CV8mVChtp4qtSLershAxnJOwJPLRd8n
+ 7Jwg==
+X-Gm-Message-State: AOJu0Yy26JZ4TaV9QXnV4NoJGD9bqEg01sA72y0rEJ5yv8DQuzj1HXZt
+ ly8DOT1ROqDuVbyJPuOs7VNFKaUz+xK81UC6V5dxE+Ie6ZSwkut90hveMebOwjghOa2Ilc4+bhP
+ Rp9c=
+X-Gm-Gg: ASbGnctlevzC6ZWbZ9icugj80PRktq9Aw48JSU1X+GoqUQxYnVpsz1ufqqz3EdPkTrd
+ aODh9i3QCAWoDkMheIWTtomKDSBT11cfzeMzLh9XfDS7+6MUQSkmgX6d/hmXLkIVO/1RhFqs2B8
+ jR+293wgLUw/5gVoLjLCBV4M9SG8o+BuS1uz5K8XYE1R6jtYRofp0cgqkZ3/o2BOeGKfb/9R0jZ
+ +5xufiycY49JRfveEonNwJkYOcZB++WURjlWpIycSbVW1i/9ZiiKf6ml90FzG8PtMn7KgD4w5cE
+ uyVtmcxnIvwdiIbKgPmmNSFG3EagYVbfGPp9vNbhrCm/pqjFiuN0O5nAfT5C43bLKg==
+X-Google-Smtp-Source: AGHT+IH1pliFBulv3OpDz285krX25B3ucS9m8Fylqwvh7mokOa4sAKjz5nxqJSC4Tl1FO3PuMfL3BA==
+X-Received: by 2002:a05:6000:cc:b0:38a:87cc:fb42 with SMTP id
+ ffacd0b85a97d-38dc8decf44mr10619754f8f.21.1739220171604; 
+ Mon, 10 Feb 2025 12:42:51 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dd49d2cafsm7673117f8f.16.2025.02.10.12.42.46
+ ffacd0b85a97d-38dd3fc7ee5sm7835378f8f.39.2025.02.10.12.42.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Feb 2025 12:42:46 -0800 (PST)
+ Mon, 10 Feb 2025 12:42:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/32] hw/intc/apic: Fixes magic number use,
- removes outdated comment
-Date: Mon, 10 Feb 2025 21:41:40 +0100
-Message-ID: <20250210204204.54407-9-philmd@linaro.org>
+Subject: [PULL 09/32] hw/core/machine: Reject thread level cache
+Date: Mon, 10 Feb 2025 21:41:41 +0100
+Message-ID: <20250210204204.54407-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250210204204.54407-1-philmd@linaro.org>
 References: <20250210204204.54407-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Phil Dennis-Jordan <phil@philjordan.eu>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-This changes replaces the use of an explicit literal constant for
-the APIC base address mask with the existing symbolic constant
-intended for this purpose.
+Currently, neither i386 nor ARM have real hardware support for per-
+thread cache, and there is no clear demand for this specific cache
+topology.
 
-Additionally, we remove the comment about not being able to
-re-enable the APIC after disabling it. This is no longer
-the case after the APIC implementation's state machine was
-modified in 9.0.
+Additionally, since ARM even can't support this special cache topology
+in device tree, it is unnecessary to support it at this moment, even
+though per-thread cache might have potential scheduling benefits for
+VMs without CPU affinity.
 
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Therefore, disable thread-level cache topology in the general machine
+part. At present, i386 has not enabled SMP cache, so disabling the
+thread parameter does not pose compatibility issues.
+
+In the future, if there is a clear demand for this feature, the correct
+approach would be to add a new control field in MachineClass.smp_props
+and enable it only for the machines that require it.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241209203629.74436-11-phil@philjordan.eu>
+Message-ID: <20250110145115.1574345-2-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/apic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/core/machine-smp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index d1d343d4216..d18c1dbf2cb 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -350,9 +350,8 @@ static int apic_set_base(APICCommonState *s, uint64_t val)
-         return -1;
-     }
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index b954eb84902..4e020c358b6 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -321,6 +321,13 @@ bool machine_parse_smp_cache(MachineState *ms,
+             return false;
+         }
  
--    s->apicbase = (val & 0xfffff000) |
-+    s->apicbase = (val & MSR_IA32_APICBASE_BASE) |
-         (s->apicbase & (MSR_IA32_APICBASE_BSP | MSR_IA32_APICBASE_ENABLE));
--    /* if disabled, cannot be enabled again */
-     if (!(val & MSR_IA32_APICBASE_ENABLE)) {
-         s->apicbase &= ~MSR_IA32_APICBASE_ENABLE;
-         cpu_clear_apic_feature(&s->cpu->env);
++        if (props->topology == CPU_TOPOLOGY_LEVEL_THREAD) {
++            error_setg(errp,
++                       "%s level cache not supported by this machine",
++                       CpuTopologyLevel_str(props->topology));
++            return false;
++        }
++
+         if (!machine_check_topo_support(ms, props->topology, errp)) {
+             return false;
+         }
 -- 
 2.47.1
 
