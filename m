@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4748CA30E5B
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE33A30E5D
 	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 15:35:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thrKw-0006UH-6L; Tue, 11 Feb 2025 09:34:07 -0500
+	id 1thrKy-0006VN-Q4; Tue, 11 Feb 2025 09:34:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKt-0006To-Qv
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:34:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKx-0006V1-DA
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:34:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKr-0001tk-Tx
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:34:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKu-0001uT-TK
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:34:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739284441;
+ s=mimecast20190719; t=1739284444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=59hcE9AfFc9vC3VfPAyANCzHbu5uJ8g3zPTEk6idZ+k=;
- b=DlSarkRtB6jkKfWq6FyLhoIrQVuolqT0/PHVdZr/ZtE4eHE4VadZi6k0aHJa8rBznbEhQg
- g8cZBU+HOi4hDLGFeQaThTkgJJrnuZkqJGe5n0GkN1XKPuGjenupnAN0cuqscSlOaQ29h+
- wKQUjCXMOeHU3J0C3nSxmb12cdMwd4M=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=6YQ8mdHXSFhetMqSxe6PkRlVoRM9a4K3E1Ld8Ii1BeM=;
+ b=fxqMktgIKTSu/1EBiVTDg0RY9xZUWo29MpplpoRG6BYt/W9U9zNXJjKGuKbIzmKUr2Pz/L
+ 51nousy9l2AG1WDTgspmgpxc6UHSWl+LiZ2GW2ylKjMFf9UZdILDo7DSCSL6LC01jasakc
+ uO+XfZmREBZQYpc2CsToCHuuQGwlUt4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-QXjwdcJPO7CPC6cUQcQt4Q-1; Tue,
- 11 Feb 2025 09:33:59 -0500
-X-MC-Unique: QXjwdcJPO7CPC6cUQcQt4Q-1
-X-Mimecast-MFC-AGG-ID: QXjwdcJPO7CPC6cUQcQt4Q
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-SPCJcRBoNuyybUiP0QD7Hw-1; Tue,
+ 11 Feb 2025 09:34:01 -0500
+X-MC-Unique: SPCJcRBoNuyybUiP0QD7Hw-1
+X-Mimecast-MFC-AGG-ID: SPCJcRBoNuyybUiP0QD7Hw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 142C619560B1; Tue, 11 Feb 2025 14:33:58 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C2561800981
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:34:00 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.39])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 28DF61800115; Tue, 11 Feb 2025 14:33:55 +0000 (UTC)
+ id AEEC91800115; Tue, 11 Feb 2025 14:33:58 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/12] vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
-Date: Tue, 11 Feb 2025 15:33:33 +0100
-Message-ID: <20250211143340.787996-6-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 06/12] util/error: Introduce warn_report_err_once()
+Date: Tue, 11 Feb 2025 15:33:34 +0100
+Message-ID: <20250211143340.787996-7-clg@redhat.com>
 In-Reply-To: <20250211143340.787996-1-clg@redhat.com>
 References: <20250211143340.787996-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,47 +83,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Depending on the configuration of the host and VM, a passthrough
+device may generate recurring DMA mapping errors at runtime. In such
+cases, reporting the issue once is sufficient.
 
-When iommufd_cdev_ram_block_discard_disable() fails for whatever reason,
-errp should be set or else SIGSEV is triggered in vfio_realize() when
-error_prepend() is called.
+We have already the warn/error_report_once() routines taking a format
+and arguments. Using the same design pattern, add a new warning
+variant taking an 'Error *' parameter.
 
-By this chance, use the same error message for both legacy and iommufd
-backend.
-
-Fixes: 5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend")
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20250116102307.260849-1-zhenzhong.duan@intel.com
+Cc: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250206131438.1505542-2-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/qapi/error.h | 12 ++++++++++++
+ util/error.c         | 11 +++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 3490a8f1eb8877c6f662d9676c82888d8713343a..df61edffc084360d9f332ae1d122518c0ecbb955 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -515,8 +515,8 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-         } else {
-             ret = iommufd_cdev_ram_block_discard_disable(true);
-             if (ret) {
--                error_setg(errp,
--                              "Cannot set discarding of RAM broken (%d)", ret);
-+                error_setg_errno(errp, -ret,
-+                                 "Cannot set discarding of RAM broken");
-                 goto err_discard_disable;
-             }
-             goto found_container;
-@@ -544,6 +544,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+diff --git a/include/qapi/error.h b/include/qapi/error.h
+index 71f8fb2c50eee9a544992d0c05263c9793956fe1..f5fe2162623e5770d652f7415ebc25172d97616e 100644
+--- a/include/qapi/error.h
++++ b/include/qapi/error.h
+@@ -466,6 +466,18 @@ void warn_reportf_err(Error *err, const char *fmt, ...)
+ void error_reportf_err(Error *err, const char *fmt, ...)
+     G_GNUC_PRINTF(2, 3);
  
-     ret = iommufd_cdev_ram_block_discard_disable(true);
-     if (ret) {
-+        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
-         goto err_discard_disable;
-     }
++/*
++ * Similar to warn_report_err(), except it prints the message just once.
++ * Return true when it prints, false otherwise.
++ */
++bool warn_report_err_once_cond(bool *printed, Error *err);
++
++#define warn_report_err_once(err)                           \
++    ({                                                      \
++        static bool print_once_;                            \
++        warn_report_err_once_cond(&print_once_, err);       \
++    })
++
+ /*
+  * Just like error_setg(), except you get to specify the error class.
+  * Note: use of error classes other than ERROR_CLASS_GENERIC_ERROR is
+diff --git a/util/error.c b/util/error.c
+index e5e247209a9e0796074a9794f5598325f22f8d35..673011b89e95f488817b86c31cd389386b2558bb 100644
+--- a/util/error.c
++++ b/util/error.c
+@@ -247,6 +247,17 @@ void warn_report_err(Error *err)
+     error_free(err);
+ }
  
++bool warn_report_err_once_cond(bool *printed, Error *err)
++{
++    if (*printed) {
++        error_free(err);
++        return false;
++    }
++    *printed = true;
++    warn_report_err(err);
++    return true;
++}
++
+ void error_reportf_err(Error *err, const char *fmt, ...)
+ {
+     va_list ap;
 -- 
 2.48.1
 
