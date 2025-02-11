@@ -2,80 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82DCA30909
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 11:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0A8A30A39
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 12:35:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thnmY-0006tc-MK; Tue, 11 Feb 2025 05:46:22 -0500
+	id 1thoWu-0007q2-Jq; Tue, 11 Feb 2025 06:34:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thnmW-0006tD-GB
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 05:46:20 -0500
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1thnmU-0005qC-Ks
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 05:46:20 -0500
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e53a91756e5so4558285276.1
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 02:46:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739270777; x=1739875577; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6Jzg9kFrFcq2yhGW9QTyXyEEJq+TsTn3Vo6KGuO5uyQ=;
- b=rDVpNrEZCcOsXpWRc4Poqo75ajzWvDJnvwNQ2OOR0LD0BDuU6Xr76l7Q2zkzty5k6F
- Q26LBSoB0TEbrSOzeQndjErx3X7uBbnfFMBU2X2mkD9krpZN3HyVehK69qX0d7uZPDqH
- Cud4Ei5nXn0K6H+tDwxIGT9qY82G/RYNNQ0Ep9DpeYzulrfM2mXLobh/yPIwAOB7s+jZ
- YG1qf+GuJacoPkbm5xuHfwvmaD6zz+iBHQai8/5MGvfAJ1MX3m3boOXwlQGhFTfsDF3U
- 7gPsFMylhw7rRvqZmSn4UU7bEgAa52Li3N6hGPycbmK8gm8L1KWJPees2Yshez4ZqhL9
- 7BXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739270777; x=1739875577;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6Jzg9kFrFcq2yhGW9QTyXyEEJq+TsTn3Vo6KGuO5uyQ=;
- b=WjCVVrXV5KQO/GvoIFpvXnubZRe5Ou2UMqcc/tcn8OA4UobwSQVR9PLsDoJKZfwUX6
- 8ou2DcN4QDNLl4a8zNh2Dez8CZe4T0wuitzR68CsrGtFINV9ErTNc4DfeCp8MyFw/FcH
- PQ0+3TZ7jdh6rJgd4pkOj0QK7UKUaU8VHCG/Oa0A2ItK5GNcEhZHiXGqb1RjOWrH0xaj
- oDwaj2+IJ9MdXc0IplBPSqiBCk5WySZmRPcWJd3FpB9u6h7HYr0DYMYMQUhNb0Xo46r5
- 6ORsSOPuIvcL7OYPTRMa3R/WAMK9GSRt2r8gIG89x2TouB/3OM4uqp2e4VuDBk+YKd2r
- +NkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVs6UMFnMCy6hKX+8qz51yp54Rxmy+2PPa6JdPMGqGxPvPm44Vuvtbcp4Kuq5Frq5hldxtMeU4IMi80@nongnu.org
-X-Gm-Message-State: AOJu0Yxic++26pbCC/Nuz0FLCTxn2zos8EYOTOcZgzanuUcSOHvUel/8
- kDJPatLbTZH1epRSaGugS/EoZZTY4MrPmNp8CiI3dMQ3sm7jNu/gd2cMxaBNbWBEkZpZ5j7Tkjq
- cbVqqeisC6SnG1Y/k/hO7QwkFcZiIreAw8Ql2MQ==
-X-Gm-Gg: ASbGncuSa5VXkfEOvRyerSyGVyDRGz5wvxjpFbVtv6SZf4l4ref6h4ynw+sdKJARhxL
- C+Xuy0qfvoEnfidkJMEg6DD54zkOixgRsOXhIIzUliY7boIQ48tpWrSSRhFuz2/shXTQF1K7tSg
- ==
-X-Google-Smtp-Source: AGHT+IEGmS1Emwkj84o13tV5n6h2v7/6T4+ffzBmwy7LgKyOuHfoySzFS1GRd15vOsyMFY80aVCtEE0I5gt12GeaIuI=
-X-Received: by 2002:a05:6902:15c7:b0:e5b:42c7:8f2b with SMTP id
- 3f1490d57ef6-e5d93c7e67emr3687348276.2.1739270777168; Tue, 11 Feb 2025
- 02:46:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1thoWo-0007p4-MF; Tue, 11 Feb 2025 06:34:10 -0500
+Received: from mail-sy4aus01olkn20823.outbound.protection.outlook.com
+ ([2a01:111:f403:2819::823]
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1thoWj-0007LB-DA; Tue, 11 Feb 2025 06:34:10 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I1ebA4o44UMFT1ByQ6M8Fip3K6E3BjBhTFwe3qzY9g+R+Yux4RYbuKN6eNkLGG3PR/v+74FuQtxjBd07bu7JyKRyAi73Wum9GkfyECWm0q/Q7EXTNtonaIqSzNAysVmAe1z7qPCg8iFUhQVLdrrzXQ933ZhUDHpoSOZ5sRnajVygvGs6cQhAoR4oBWeZwX7fmpk2US1aMBmeDlTJY0LW09LekBL67caNjhxSvVWqmIT7ESYPrT6ABo5M/XWaP+XdIjZmubIHCk1A1avxdkrdvgu6XYgSfD7gQOR0D5I0m6J/e4TPSPM55vFmIIkg72YXGQZ/y+Hm6wlALTDO2SM6Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u//ap+z6PFCc7J4sOgEqmgDd80HbJcbAd/SxH0kl318=;
+ b=nKTDX4IMvXuT65njhKy8ofimn8jF/2VO4tvkL36rH6cE+jbW08rxELKD1Nk1MqgIqCoLyu1ihsRkbfxK6AiL2YBViBK/wvLCtXg+q1Pc9/voJpI/+dEvIOMIRma2UJMyPhdYdzGbPSlWflQmzGGlYIPe1wZImRhnHj7TUHaUqrWnO/kRSqwZJMUPGX/LASafYPASOBmsn13DYhafcmMoZiZaN2V9wur+7ZwpeFCZ/7GzetbzczIY04m2tkoLRKHoi1AUEqGFbkJ9gcDyNuTo1+LruoZEYNcbnpYVr/+NLA88UrQBWNn3/ChOmaxa9Phxcx+6sVW3ENWaVB2iXL/VRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u//ap+z6PFCc7J4sOgEqmgDd80HbJcbAd/SxH0kl318=;
+ b=fEg3n2fZZWBQxnEUXwg029QT7XuVUzdP/lRPcFCBwe8WHgN6SiKVvlkjpCWwsChEV1RAGVYbz052mavn52C2aOgHBTbvcP34eIjQafg1iL1pW3Ab1VtZiVYKBiIulXQUC4xQM+iPi0nd9bqSe19GhBGEKlyx1ZtB163IjZPXLRvMUvwsu0rU7TyQ/LuJr81Xr6HTUgB+5JHwZvKLabSu/UHnMtpy7yItHOoFR0NncJTSVyysKeLNM5u1MEKvz81VKfv0B9mU37hZYLb0I5nAFmjUC91pdIyvPrtQBiKq2cNl46k6vQTMot/tDF5MeW+fqzoFmtksxul+HrRSRifnyA==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by ME0P300MB0485.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:22b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.20; Tue, 11 Feb
+ 2025 11:33:56 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%3]) with mapi id 15.20.8422.015; Tue, 11 Feb 2025
+ 11:33:56 +0000
+References: <20250206111514.2134895-1-pbonzini@redhat.com>
+ <20250206111514.2134895-2-pbonzini@redhat.com>
+ <Z6nOAftJsjQ7KAiS@intel.com>
+ <c7685bff-96d1-4e89-ba19-08fbba399d37@redhat.com>
+ <SY0P300MB1026B9C81F2EF236BB703F2B95FD2@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+ <CABgObfbTx9DNkkzw8EeMRU0+L6_+P64KHtAJTUwsW40mtwGSOg@mail.gmail.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
+ qemu-rust@nongnu.org, qemu-stable@nongnu.org
+Subject: Re: vtables and procedural macros (was Re: [PATCH] rust: pl011:
+ convert pl011_create to safe Rust)
+Date: Tue, 11 Feb 2025 18:31:14 +0800
+In-reply-to: <CABgObfbTx9DNkkzw8EeMRU0+L6_+P64KHtAJTUwsW40mtwGSOg@mail.gmail.com>
+Message-ID: <SY0P300MB1026E0CE5AFBEA4E713F73F595FD2@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: KL1PR01CA0052.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:5::16) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <875xlgiulj.fsf@hotmail.com>
 MIME-Version: 1.0
-References: <6866d6b6-24af-4743-8407-26ae2998dd21@gmail.com>
-In-Reply-To: <6866d6b6-24af-4743-8407-26ae2998dd21@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 11 Feb 2025 10:46:04 +0000
-X-Gm-Features: AWEUYZmXoXVHnHq9LPzS6lynLiO-kLDFUvuKwC-EKkQKjHyDnzJnvPPciByFwsM
-Message-ID: <CAFEAcA9B40F21r9RgeDd7k09juy35k9QWewzgkmyNkYVK_K0-g@mail.gmail.com>
-Subject: Re: ldrd implementation issue?
-To: Stu Grossman <stu.grossman@gmail.com>
-Cc: qemu-arm@nongnu.org, QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|ME0P300MB0485:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98b7bb46-c4fe-41e4-e138-08dd4a8ff83f
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|5072599009|6090799003|19110799003|15080799006|8060799006|7092599003|461199028|3412199025|440099028|10035399004|56899033;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MnZLZUxiSjl3ZnlkRkpKRTR3NTJvNmhmYVh6RVJlZ3VDV09tQWdPYTVyQ1VV?=
+ =?utf-8?B?YTcza3lZTWdQSlBObmFUbSt5S0NEeE1OUHlQRlFFYUgxcGZHckMyUThCT3hR?=
+ =?utf-8?B?c3VaN0EwTGdaNEs2ejBORHFFMjdYUjhvTjRyak1yS2hoVnpQY3BmVGVTZWVP?=
+ =?utf-8?B?UmV0Mk5uTHRsdlRJUzJXNUNoVVlMUnRWUmFpZFVJRVRpWURjY3pBMkJlbXE4?=
+ =?utf-8?B?VVBkZjRHV0Z1RnJpUFNTRkZqY0ZqbTdkaWdvSWNibFFqZDFLYWE5U2RMRGtm?=
+ =?utf-8?B?WHNYaXNqSUN2VU5lZWJXRnNHTk1pYVB4SXpVUDUzUzVvVG9selVVU1o4Q2Y4?=
+ =?utf-8?B?ZFI1VytwSjJvOVVEUXp3ekRtOWx2TjFaVUlETlRRaVRIWW5mRTlTbElLb0lJ?=
+ =?utf-8?B?T1dNLzBPWGs0bTNuQitOcWw1bVhuUHJNV2lPSU9Ka3pGYzFHUktuS1FZY2ZD?=
+ =?utf-8?B?UmJUT3JCTHNyRWZzRStOdHJPRzRQSzJuL2swTjFBREt0OTdUUXNkcXEySmRH?=
+ =?utf-8?B?QTJXanRJNE8wbFp5dDNhWTQ2Y0N2cGg3K1NXcjk2QlVIdVd0TkhzcGYrQ1Jr?=
+ =?utf-8?B?WFdJNHd3c0plb0pHcmhXSnFtNE5uUE1HUmpnN0NBRmhJS1pYVEJnaWMwdzU0?=
+ =?utf-8?B?MHpHMTdQbk8xMWwvSmtjam1ENWxFUGlVaDZPbUxGVUw3NGdXSzR6ZDJyb1dD?=
+ =?utf-8?B?VGs3K0RsSDlrenpud1B1ZzNMNFNkNHMvQnpMK3dvMEY3MEJyQWQrWEh0TXh0?=
+ =?utf-8?B?V1FOaUk5TW5aQitVb2QwMFVZUkp0SEtSb2VjbmhhRkhBOTZhYTR6NExpM2E2?=
+ =?utf-8?B?VlpwVXZ6WnN6NUpuSFR2T1UrUEpiczUrd0p0Y1FURyt6WXpYZGpvVkxmWVFO?=
+ =?utf-8?B?QXl5YVF1ZVhDd3RsQUVWT0FjTThWQkNZejZhTUtWa096b3pZbnNCeFkzcHFn?=
+ =?utf-8?B?MStxcldvbFpJSUkydnVsQXpxdXlydGJZQlBsNkJnRi9ndWJDbm1sZlJEeGNk?=
+ =?utf-8?B?dDVJYkN3TUI5NmpDNnYvSDE2Z2JFamo5K2FQV0l1eE4yRkVncFdmYU5mVjNU?=
+ =?utf-8?B?b1pYNnhnSFpMM0pocUZ1RnQ3dkdud2hDT1JsZTE4bGpUa0xDbURGd09aRzBh?=
+ =?utf-8?B?R0tMRHpJR3E3M1BUOU5iRFhXQ0dyN3pvODI0THJ0VnJaYmJTZmhZWkpYTnNH?=
+ =?utf-8?B?TFhuTFc3bDJ3NlJCV0szbzdNYk5YSTJDMlUrTHg3VWo3WTVQK2lZUG0wY1Fs?=
+ =?utf-8?B?eWdwbTVQdjRoTXVlUlhaN3FPM3R3b2dnTExGWTlMczhvSlAzd1d1NE5qN0kx?=
+ =?utf-8?B?SkdTcUNrY3h6Njk3RDJEVm9WY0ZVQXJzVHQ1Z3FLRXhZWDJEdkh6T2VMUXFz?=
+ =?utf-8?B?c3IzQ0RoYjlBRDd2Vko3SVBqNnRIOHNpQnU1aUoxc2VGb1BqamVnU2ZaYjJk?=
+ =?utf-8?B?RG1CNnFxd3EzMUR2V0pCc2puZWFNenRqRXRBSExaa1BqYmJuaDR0b0Z0Szhy?=
+ =?utf-8?B?WTRaSnIzY3NqRnFVam9zK0R2dnhtb3lhdGE5ZWlpblZFQi9FUzRXVkdLcU12?=
+ =?utf-8?Q?CnnhQkSSZKmq8mFNcp5lJH4f0=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aTYwbVNSL2F2V2JXdEE2R1diSTN6VTd3Mm92WFdEd3RFL2xnNFU2Y21zMS9z?=
+ =?utf-8?B?c2s5VDQvc2szU254aHdBanM4OHBsZWlIUnRERDBsSFRHaGVvZ1ZxZks4Nkth?=
+ =?utf-8?B?WnUrVk5wQVZuWkhJaVozNlBTNmtZeVpqRVY2QnVEbzdDaDQvOGJFR3pPMlFk?=
+ =?utf-8?B?QWRPbEZxaGE3bnFrRC9sZUdpbW1SMVIrNGZSWkx5elhYMC80T0RhZVh0VU1j?=
+ =?utf-8?B?a25JNGJjNmtkREVyT0txK2l5UDJWSlAxY1krTVFFcEdGc0FOT2dxWHFvNzhT?=
+ =?utf-8?B?Rmd2dW9YVnIrdklBQ0ppOEViNEV1WkR3SlN4T3ZVQ3kvMFN6Y3dXOEhibEJ0?=
+ =?utf-8?B?ZUhnU1BWK1hsYnhGOUNsYmpTbldnS05MRktWNCtHU3NKR2RmWDYvdEJlRmtT?=
+ =?utf-8?B?VjFkdlNsVUo2Z3AzK3F4QVVzdFgwbFgzZ0RFS2FUbHBHVUVzYVduZ1VESW96?=
+ =?utf-8?B?YWNybmhLLzhIWDJ3SWN6NUFTOHZiMGhmemgwZG9xYm9WYnIyVEk0cE5hTEpp?=
+ =?utf-8?B?SHB6b0VSc095VllrOUFSNGZlZTlaRlF3WCtoRmVPUG5vaW43eXZKZTF5SmUx?=
+ =?utf-8?B?aGVNbkQ2Z25seFJ0cGNjWDVjYzFKYWVabjJuL1NHMVBkSlNueE9nQ0J0NEg4?=
+ =?utf-8?B?a0JSOXVFUXN0akNPc205b1NoTUJ3bmpraGVrZE4xQUdtbUdGbFB6TjM3WVJt?=
+ =?utf-8?B?aWhqdFFWeXBYN3ZGM2EyUWkvZG5tYXIzTXp2Zzk4Q2NmUWh5c0F2RkdSemRH?=
+ =?utf-8?B?SmxEdWFhTjNOaUxvUnkzekt1cE1YZUdzYm9EWG1UN3lWMjlnRWd1dTNreUQx?=
+ =?utf-8?B?ZldxYThxWFkvbzZURHpKcjVUUjNSemY0VlVDRHRPaThMcGhBdjhPM0RGaldw?=
+ =?utf-8?B?WDRVYlNDdmdKTjdWSmFYU0FwTG1oRFZKWWR6M2lMT285R0hjaEpjWTB1M0Z6?=
+ =?utf-8?B?ZWxleW4wRGNrRm9CazRKa3NUeCtCU0k4WTJTQjh4WUtpREJNNmVuVDBoWDFF?=
+ =?utf-8?B?R0huMjNDWDUreElJVlovSWFkUFNMbXVCK2w0RkNpZUpaMXpjcFZyT1ZBZVNB?=
+ =?utf-8?B?cElDZTQycC9qMFZRcHVmdkRMaFUzM3FsZmViT0dGNHFMVlNOYjAyak5qWU8y?=
+ =?utf-8?B?RkEvV2luU0l5ckFOcUVJd0E2NWZvcVdFY3hpRGR5WCtvdjBpbDRPNXlyU2tS?=
+ =?utf-8?B?VHVZSFYxUUx0NFplUEJLL3o5UStsSjl2QXA3Smc1eDlISjQ2YXdGSTJ2V3py?=
+ =?utf-8?B?bW42UXZrZzd5TmFrWkhHeWhWaU1EV0RMV2F5TEFJUmZzdk1qaEw0RjB5M3B3?=
+ =?utf-8?B?QytZQzdOUXNnanoycWFmb2ZRbzY2RHNzNDE2NlpUVHJwODFnTkJTQ2RzK0Fs?=
+ =?utf-8?B?WkgzNnNsek1xYm9EVUcwbmlLWWNKdTB4cWhOcTVhZWdhcXEyb0tXelpzMFBv?=
+ =?utf-8?B?Q0ZTYzkxSzNpSGJDQmNrb0VwdWZuaGgxRmF3UXhvNG8ycER3MGk4RWhER3FW?=
+ =?utf-8?B?VmVTRXRvbGQvNm1aNHVOZkZSMG5jZlMvMUxYTEQvQ0tKNy91SjlmR29WZGNr?=
+ =?utf-8?B?Sy83QUJyejl6cE1tbFJQd0l3bTNEbUx5bU1ZbjIwL0pzRlhsd3RqRWpLMWpE?=
+ =?utf-8?B?YzlES3dCaVpaS0RZdnR1aVZ1bVpLZUxpb014RjhwcDlQemNIVkJCNzBNUW4x?=
+ =?utf-8?Q?D0PKSX7AJnk9LDeHWgLN?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98b7bb46-c4fe-41e4-e138-08dd4a8ff83f
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 11:33:56.5179 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME0P300MB0485
+Received-SPF: pass client-ip=2a01:111:f403:2819::823;
+ envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-SY4-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,131 +160,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(added qemu-devel to the cc list)
 
-On Mon, 10 Feb 2025 at 17:26, Stu Grossman <stu.grossman@gmail.com> wrote:
->
-> I've been getting SIGBUS cores with a bunch of user apps running under
-> linux 5.15 and qemu-system-aarch64.  These happen to be 32 bit (T32?)
-> programs.
->
-> All of the cores point at the following instruction:
->
->         ldrd r2,r3,[r2]
->
-> where r2 points at four bytes prior to the end of a page.  Eg: 0x10ffc.
->
-> The bug appears to be that we get a page fault between the accesses for
-> each word.  Prior to the fault, the first register is updated.  Later,
-> after the fault is serviced, the instruction is restarted with the index
-> register containing the word loaded prior to the fault, which is
-> probably not the desired address, resulting in a coredump.
->
-> So the conditions for the problem are:
->
->         - the index register must be one of the registers being loaded.
->         - the index register must point at a uint64_t that spans a page
->           boundary.
->
-> I understand that the uint64_t spanning a page boundary may not be
-> allowed by the arm 32 bit API.  However, the ldrd instruction definition
-> allows for four byte alignment.
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-Yes, you're right; this is a longstanding bug in our LDRD implementation.
-The Arm ARM defines in section G1.17.8.3 that if the execution of
-an instruction generates a synhcronous Data Abort then the base
-register should be restored to its original value if the aborted
-instruction is a load and the list of registers to be loaded includes
-the base register.
+> On Tue, Feb 11, 2025 at 7:47=E2=80=AFAM Junjie Mao <junjie.mao@hotmail.co=
+m> wrote:
+>> I would suggest to keep the "sysbus" prefix in the method name, or in
+>> general, keep the class prefix in the method names in XXXClassMethods
+>> traits. Otherwise APIs from different parent classes may also
+>> conflict. As an example, in the following class hierarchy:
+>>
+>>   Object -> DeviceState -> PCIDevice -> PCIBridge -> ...
+>>
+>> For PCIDevice instances there is an API pci_device_reset(), and for
+>> PCIBridge ones pci_bridge_reset(). Without class prefixes both will be
+>> wrapped (as blanket impl in two traits) as reset() and a dev.reset()
+>> call will lead to a "multiple applicable items in scope" build error.
+>
+> Yes, reset is definitely a problem.
+>
+> I will wrap qdev_realize() in DeviceMethods to check if you get
+> "multiple applicable items" from that as well.
+>
+> I can also go back and add "sysbus_" in front of init_mmio, init_irq,
+> etc.; but on the other hand we have Timer::{modify, delete} and
+> DeviceMethods::init_{clock,qdev}_{in,out}, should they be changed as
+> well? I'm not sure there is a single solution that always works.
+>
 
-> Note that ldm may have similar issues if the index is one of the
-> registers being loaded and the words cross a page boundary.
+The DeviceMethods::init_* wrappers may need a similar prefix for the
+same reason, though it seems unlikely to suffer from such name
+conflicts. Meanwhile, adding prefixes to timer::* seems redundant.
 
-I believe in LDM we get this correct: in the do_ldm() function
-we have a case for 'i == a->rn' which stashes the loaded value
-into a TCG temporary, and we don't write that into the actual
-register until after we've completed all the loads.
+Essentially we want a naming convention that (1) avoids any potential
+name conflicts, and (2) applies consistently to (ideally) all APIs. For
+goal (1), we need something at API call sites that can resolve the
+potential ambiguity. So instead of dev.realize(), we may write:
 
-> The fix is to defer the register stores till after both words have been
-> read from memory.
->
-> Here is my fix:
->
-> diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-> index 9ee761fc64..78ad0ed186 100644
-> --- a/target/arm/tcg/translate.c
-> +++ b/target/arm/tcg/translate.c
-> @@ -5006,7 +5006,7 @@ static bool op_store_rr(DisasContext *s,
-> arg_ldst_rr *a,
->   static bool trans_LDRD_rr(DisasContext *s, arg_ldst_rr *a)
->   {
->       int mem_idx = get_mem_index(s);
-> -    TCGv_i32 addr, tmp;
-> +    TCGv_i32 addr, tmp1, tmp2;
->
->       if (!ENABLE_ARCH_5TE) {
->           return false;
-> @@ -5017,15 +5017,16 @@ static bool trans_LDRD_rr(DisasContext *s,
-> arg_ldst_rr *a)
->       }
->       addr = op_addr_rr_pre(s, a);
->
-> -    tmp = tcg_temp_new_i32();
-> -    gen_aa32_ld_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-> -    store_reg(s, a->rt, tmp);
-> +    tmp1 = tcg_temp_new_i32();
-> +    gen_aa32_ld_i32(s, tmp1, addr, mem_idx, MO_UL | MO_ALIGN);
->
->       tcg_gen_addi_i32(addr, addr, 4);
->
-> -    tmp = tcg_temp_new_i32();
-> -    gen_aa32_ld_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-> -    store_reg(s, a->rt + 1, tmp);
-> +    tmp2 = tcg_temp_new_i32();
-> +    gen_aa32_ld_i32(s, tmp2, addr, mem_idx, MO_UL | MO_ALIGN);
-> +
-> +    store_reg(s, a->rt, tmp1);
-> +    store_reg(s, a->rt + 1, tmp2);
->
->       /* LDRD w/ base writeback is undefined if the registers overlap.  */
->       op_addr_rr_post(s, a, addr, -4);
-> @@ -5153,19 +5154,20 @@ static bool op_store_ri(DisasContext *s,
-> arg_ldst_ri *a,
->   static bool op_ldrd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
->   {
->       int mem_idx = get_mem_index(s);
-> -    TCGv_i32 addr, tmp;
-> +    TCGv_i32 addr, tmp1, tmp2;
->
->       addr = op_addr_ri_pre(s, a);
->
-> -    tmp = tcg_temp_new_i32();
-> -    gen_aa32_ld_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-> -    store_reg(s, a->rt, tmp);
-> +    tmp1 = tcg_temp_new_i32();
-> +    gen_aa32_ld_i32(s, tmp1, addr, mem_idx, MO_UL | MO_ALIGN);
->
->       tcg_gen_addi_i32(addr, addr, 4);
->
-> -    tmp = tcg_temp_new_i32();
-> -    gen_aa32_ld_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-> -    store_reg(s, rt2, tmp);
-> +    tmp2 = tcg_temp_new_i32();
-> +    gen_aa32_ld_i32(s, tmp2, addr, mem_idx, MO_UL | MO_ALIGN);
-> +
-> +    store_reg(s, a->rt, tmp1);
-> +    store_reg(s, rt2, tmp2);
->
->       /* LDRD w/ base writeback is undefined if the registers overlap.  */
->       op_addr_ri_post(s, a, addr, -4);
+  a) dev.sysbus_realize()
 
-Yes, this fix looks correct to me. Can you provide a
-Signed-off-by: tag for it? We can't accept it as a patch
-without that. (I can do the other administrative tidying
-up of it into a commit, but the signed-off-by is what says
-you have the legal right and are happy to submit it to QEMU
-under our license (LGPLv2.1+ in this case)).
+  b) SysBusDeviceMethods::realize(&dev); dev.realize() is still ok if
+     there is no ambiguity
 
-thanks
--- PMM
+  c) dev.as_ref::<SysBusDevice>().realize()
+
+  (any more options?)
+
+None looks perfect, unfortunately. Option (a) introduces inconsistent
+naming conventions as mentioned earlier; (b) cannot prevent confusions
+when a device has both a "reset()" method and "dev.reset()" calls; (c)
+deviates from how wrappers are auto-delegated to child classes today and
+is the longest to write.
+
+Option (b) + a lint that warns same method names looks a good tradeoff
+to me. I tried to find some clippy lints for that purpose, but have not
+found any yet. A similar issue exists [1], but has been kept open for >6
+years and is not exactly what we want.
+
+[1] https://github.com/rust-lang/rust-clippy/issues/3117
+
+--
+Best Regards
+Junjie Mao
+
+>> I agree that uses of proc macros should be carefully evaluated to see if
+>> they really help or hurt. In this specific case, I'm not sure if using
+>> attributes solves the root cause, though.
+>
+> Yes, it doesn't help if you have multiple similarly-named methods
+> across the "superclasses".
+>
+> Paolo
 
