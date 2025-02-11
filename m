@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFD5A311A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA10BA31158
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:29:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht6W-0007Yc-1a; Tue, 11 Feb 2025 11:27:20 -0500
+	id 1tht6S-0007Gd-Ej; Tue, 11 Feb 2025 11:27:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5a-0006U7-6I
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:22 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tht5a-0006UB-Rc
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:23 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5X-00038P-Po
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:21 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso39884245e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:19 -0800 (PST)
+ id 1tht5Y-00038c-Qp
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:22 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4361815b96cso38875475e9.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291178; x=1739895978; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291179; x=1739895979; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Jzv36lXWBV913+k/GNHt1ww49Fjtm1eDjzOizNTD6d8=;
- b=pcYZep9bJdBNgPmV8v0FBL2cktz52JSy58uV6+Co5rpRadz6J2UOIGl9q3Vhdx/RUv
- veaS0LwhqmH6ItAsuPte5F7euPpKiGuBkV7Jb02WCpVn4QiZNsFhAfmq9IWLMhrJ727D
- UTJfuW6TmFglKax6L5ntfAiq0glzRPi0fTKSS04+6A7QPPb0WHAlVwjlzY2PdY77Ydfy
- Mv93TqjXAf2zGf/zBxPIQty8/fA8bLUoBf3UgydyvhLKRF5DVTJscKitMgnzTBMROO4o
- 51KQ5yj/27aDPFoJMhbVBP066aZbTfll5ygiYSKbKRtg0AZ0yGyZ1SjQXmgUaEQx8SZr
- y5Lw==
+ :reply-to; bh=Jcj6yHICioskvhK/l/YSa7/BamYw6z9ASe3319I7LW8=;
+ b=AuvM0CzzizTUmURfXaazvhBBQN8ojvhH7kGgl7nWGnz6HehXwtMFTvp1AA6ZwjCeg1
+ iqzc2OFcNFcLlSayNaVjTbnXhjF6EreY6Fc5f93981BIEtJjqVTNgckvRJJBM8vZCI3O
+ kGSU3CGdkOAs1ojlOONNhRhbKdM+sMqZxcP7NGEZgcmGPjy2Q2f0NFV5CP/FVez8TIp0
+ vfOfQo5A6+F+EbSc+ONMluTcdMpVk0JiD0tMmKdLVAxfS8poPotD7O4OTeCP5/eVT0Ag
+ udcrPv+tsV2gp+0iUYOA6uzfpWTUDv7ok23Kvrd3vfIqV40K3UN8orDT4QbnLGUQ8F7x
+ nyXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291178; x=1739895978;
+ d=1e100.net; s=20230601; t=1739291179; x=1739895979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jzv36lXWBV913+k/GNHt1ww49Fjtm1eDjzOizNTD6d8=;
- b=cjZc1MnqFItjXX0YsTMsARNLsXUJRb53Tmt7il1II7ezFnRYJl90S9P5eKg9mb9/ky
- anYHpni3KUTwiYwZePu0il+nytZnscv3SH50aJ68tod0wuIWk3/an/SctQ0Z0XUB0UYq
- V+CkGZrih7XORTmtACOqN9402GGibTZdfi+/kM8+1Wq2WPq3uhp1wOfBhDRy5HqgVRKj
- CsFFN5EBLchOY0DIlbDFh5n6iOggiRnX5Lbl0WZOb3gVrIsDKmxdD3sAN1xvm4dwj5My
- Gjd8vKkgYwYuzADt0LNEn/dtIH11WF7kOJos3XN5wzVC89J9FUe1sbja6QopnXPXoNrl
- O3EA==
-X-Gm-Message-State: AOJu0YzeotxV+nYztrUWDOM6JypW2rRXvN4jE6RTTg/gk1IVHlUVEJKf
- cXywBbrDLhC/37Ysu3zGs9xYoycZUpkClOubTD7PVv9acgP30F9TuIyX+XMoMGFyX1v3LMEFj5F
- v
-X-Gm-Gg: ASbGncssG5kcPsmQosDvDoNiRgrCY6gsZdfXAM6NQyj05LHX+JbjcZQB3RxLimK33aE
- 4imkOyhEScuVXhMYwnsJOf4Jox/qZ6kfE1aEXNOd1H+Gi/NjB0DZGmALPAdfXifMuWdC7RxTwGk
- h7UizGxCgWwNb2ueY9TpI3egT0UWn7hT85kAyZx1fiTLmqdXvSaLFNitfkMhFzyLB/GVmcfYTEF
- iQeTIUtx/Zc2dVeAuVCtPNKZ9jqcb7bEF+35P84WCEXGpiozhfYiBvmOOyZRoH0WJA5rKGHWVsb
- eHVls+O8e2myEtXfBF/B
-X-Google-Smtp-Source: AGHT+IHajPYtprDpY48QTZZnVuinSQ/9HafsTscv1jHT3QWbtw/7yePWQE2vnvzUuN7Ppv1keHO1hA==
-X-Received: by 2002:a05:600c:468f:b0:436:e3ea:4447 with SMTP id
- 5b1f17b1804b1-439249c38afmr179943575e9.30.1739291178370; 
- Tue, 11 Feb 2025 08:26:18 -0800 (PST)
+ bh=Jcj6yHICioskvhK/l/YSa7/BamYw6z9ASe3319I7LW8=;
+ b=aOUVGko8e2ZLarNQ2VC0Wd9wU/BJUI27X4I/Fzyw9qpz+DJIaK6O/f5o9EWMd5YGZg
+ XRyUzBodhY3tiKoGGc5EYB8aIPnlTTVH5WnBhWcklOXz+8WPLUTsnwgDL44Es/i7P7Zd
+ TGpJSijy/V6QZqWZ961mjvmSCKQmBBVP6YhhvPqRJqcBCenCTc8GAvl0R8tYLkzvMixg
+ H70c8wI18G2CC9rKYhiE9hDlUcqgoQTLY/pJUngGYXskka1zD13YL5XpU5PSZ6oQn3ol
+ fN7pzDtmoGsGaFj4mtZdFc9N91eoOvDX9eXjsh76gDWwuFuKQaV70BqSQADGVVO1X5xf
+ ejEg==
+X-Gm-Message-State: AOJu0Yy7EqDMfSRhjztzFZ8H1Y2C5zjRRNgeOXsBH/2O9xuToqw4htr9
+ KaJmX5nH86T0g8/2YTbfO2UkwlwmRH3EMnvfyfQES2U7PT+mFvXpjqxWO8r7irhLIqL8IRfjAYd
+ 8
+X-Gm-Gg: ASbGncvhqpqzADZH34nDecXHr5nzxa5uOEZOjGFtn9XYLrwx1TO9AGNpc+A++mEIxze
+ 0eCvNelAgoTik69yr2mBu1XUmw8XlVCJuJr8STXYU+c2MqoyURhP+k1H/9tjSMmVAgtaQ20X0qp
+ PgyPFkpPXAlyEoLpR3Iedcgu3g2E1t0zjogQtgLNx531vzJlgYWlTVtC8qPkew+S9t276OkSKMP
+ kk8Z3B5k4JoYdtxTrvOkm52kSppk8CwjpMV5yE7CNfw6g93R+wzfq4y97Oy8yaCrvXhjSxKKkaS
+ 3AVqzpVeBM9LdMOW3TaE
+X-Google-Smtp-Source: AGHT+IFuB9o+mUiZmFtb0HrnUIe8FGqlPoRk4/7PyuHlWtJ+/5Jis8Ik6RhTGiQW5HG2phZ+HgWXRQ==
+X-Received: by 2002:a05:600c:a013:b0:439:3c71:16a6 with SMTP id
+ 5b1f17b1804b1-4393c711a1cmr103315265e9.29.1739291179300; 
+ Tue, 11 Feb 2025 08:26:19 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.17
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:17 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:18 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/68] target/arm: Handle FPCR.NEP for scalar FABS and FNEG
-Date: Tue, 11 Feb 2025 16:25:06 +0000
-Message-Id: <20250211162554.4135349-21-peter.maydell@linaro.org>
+Subject: [PULL 21/68] target/arm: Handle FPCR.NEP for FCVTXN (scalar)
+Date: Tue, 11 Feb 2025 16:25:07 +0000
+Message-Id: <20250211162554.4135349-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,92 +96,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle FPCR.NEP merging for scalar FABS and FNEG; this requires
-an extra parameter to do_fp1_scalar_int(), since FMOV scalar
-does not have the merging behaviour.
+Unlike the other users of do_2misc_narrow_scalar(), FCVTXN (scalar)
+is always double-to-single and must honour FPCR.NEP.  Implement this
+directly in a trans function rather than using
+do_2misc_narrow_scalar().
+
+We still need gen_fcvtxn_sd() and the f_scalar_fcvtxn[] array for
+the FCVTXN (vector) insn, so we move those down in the file to
+where they are used.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ target/arm/tcg/translate-a64.c | 43 ++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 804b6b5b67d..3195cb5fef1 100644
+index 3195cb5fef1..ac8196136c4 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -8426,21 +8426,30 @@ typedef struct FPScalar1Int {
- } FPScalar1Int;
+@@ -9247,24 +9247,21 @@ static ArithOneOp * const f_scalar_uqxtn[] = {
+ };
+ TRANS(UQXTN_s, do_2misc_narrow_scalar, a, f_scalar_uqxtn)
  
- static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
--                              const FPScalar1Int *f)
-+                              const FPScalar1Int *f,
-+                              bool merging)
+-static void gen_fcvtxn_sd(TCGv_i64 d, TCGv_i64 n)
++static bool trans_FCVTXN_s(DisasContext *s, arg_rr_e *a)
  {
-     switch (a->esz) {
-     case MO_64:
-         if (fp_access_check(s)) {
-             TCGv_i64 t = read_fp_dreg(s, a->rn);
-             f->gen_d(t, t);
--            write_fp_dreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_dreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_dreg(s, a->rd, t);
-+            }
-         }
-         break;
-     case MO_32:
-         if (fp_access_check(s)) {
-             TCGv_i32 t = read_fp_sreg(s, a->rn);
-             f->gen_s(t, t);
--            write_fp_sreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_sreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_sreg(s, a->rd, t);
-+            }
-         }
-         break;
-     case MO_16:
-@@ -8450,7 +8459,11 @@ static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
-         if (fp_access_check(s)) {
-             TCGv_i32 t = read_fp_hreg(s, a->rn);
-             f->gen_h(t, t);
--            write_fp_sreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_hreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_sreg(s, a->rd, t);
-+            }
-         }
-         break;
-     default:
-@@ -8464,21 +8477,21 @@ static const FPScalar1Int f_scalar_fmov = {
-     tcg_gen_mov_i32,
-     tcg_gen_mov_i64,
- };
--TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov)
-+TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov, false)
+-    /*
+-     * 64 bit to 32 bit float conversion
+-     * with von Neumann rounding (round to odd)
+-     */
+-    TCGv_i32 tmp = tcg_temp_new_i32();
+-    gen_helper_fcvtx_f64_to_f32(tmp, n, fpstatus_ptr(FPST_A64));
+-    tcg_gen_extu_i32_i64(d, tmp);
++    if (fp_access_check(s)) {
++        /*
++         * 64 bit to 32 bit float conversion
++         * with von Neumann rounding (round to odd)
++         */
++        TCGv_i64 src = read_fp_dreg(s, a->rn);
++        TCGv_i32 dst = tcg_temp_new_i32();
++        gen_helper_fcvtx_f64_to_f32(dst, src, fpstatus_ptr(FPST_A64));
++        write_fp_sreg_merging(s, a->rd, a->rd, dst);
++    }
++    return true;
+ }
  
- static const FPScalar1Int f_scalar_fabs = {
-     gen_vfp_absh,
-     gen_vfp_abss,
-     gen_vfp_absd,
- };
--TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs)
-+TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs, true)
+-static ArithOneOp * const f_scalar_fcvtxn[] = {
+-    NULL,
+-    NULL,
+-    gen_fcvtxn_sd,
+-};
+-TRANS(FCVTXN_s, do_2misc_narrow_scalar, a, f_scalar_fcvtxn)
+-
+ #undef WRAP_ENV
  
- static const FPScalar1Int f_scalar_fneg = {
-     gen_vfp_negh,
-     gen_vfp_negs,
-     gen_vfp_negd,
- };
--TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg)
-+TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg, true)
+ static bool do_gvec_fn2(DisasContext *s, arg_qrr_e *a, GVecGen2Fn *fn)
+@@ -9366,11 +9363,27 @@ static void gen_fcvtn_sd(TCGv_i64 d, TCGv_i64 n)
+     tcg_gen_extu_i32_i64(d, tmp);
+ }
  
- typedef struct FPScalar1 {
-     void (*gen_h)(TCGv_i32, TCGv_i32, TCGv_ptr);
++static void gen_fcvtxn_sd(TCGv_i64 d, TCGv_i64 n)
++{
++    /*
++     * 64 bit to 32 bit float conversion
++     * with von Neumann rounding (round to odd)
++     */
++    TCGv_i32 tmp = tcg_temp_new_i32();
++    gen_helper_fcvtx_f64_to_f32(tmp, n, fpstatus_ptr(FPST_A64));
++    tcg_gen_extu_i32_i64(d, tmp);
++}
++
+ static ArithOneOp * const f_vector_fcvtn[] = {
+     NULL,
+     gen_fcvtn_hs,
+     gen_fcvtn_sd,
+ };
++static ArithOneOp * const f_scalar_fcvtxn[] = {
++    NULL,
++    NULL,
++    gen_fcvtxn_sd,
++};
+ TRANS(FCVTN_v, do_2misc_narrow_vector, a, f_vector_fcvtn)
+ TRANS(FCVTXN_v, do_2misc_narrow_vector, a, f_scalar_fcvtxn)
+ 
 -- 
 2.34.1
 
