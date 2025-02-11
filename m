@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65A4A31918
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:53:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3714A3190F
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:53:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thz6L-0005ir-NB; Tue, 11 Feb 2025 17:51:33 -0500
+	id 1thz6N-0005k0-0k; Tue, 11 Feb 2025 17:51:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6J-0005hh-5t
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:31 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6K-0005iy-PI
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6H-00056f-E1
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:30 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6I-00056z-Qo
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739314288;
+ s=mimecast20190719; t=1739314290;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3GVYGVKTNNJ14jZdJ2J7SbDQH89zHrOWXpmWYxPzaaI=;
- b=AJzSIkPsabAG1WfeVq1o/unPEi0jwPnp/KPMIvp8HGPYkUnON7EzTHtOb0ps0BTSpj99Xq
- aoUaUpje7QJ/TqTiArdpn9nLLT0i/qfo0Xpt1IAhJnRbWPDuAQkkJ7gqy+/8dsnphNwtYW
- D2bI6iUXyIKLHg05S+Gb56jzNs9tY0Y=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dgza/Y0wiw4u+TyuTMHe0Q7D53LiwmAz3XUt+5camiA=;
+ b=KBtg5UphyY2TR7Gs/rYc/TsWt3yMIh4jzu6omDuVoX8IUvVrZSwSNoTvP9zwCIlaVTVfRk
+ Ii86kyz8SNdNrKOt9ERCpsoogBoaIywiaRioui7+iAhZrOF/okHTE3uaSU/kqARkTWMu1Q
+ QOldWLRdVaePkFG5pkMaOx/6Odj2Vc8=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-2WXLarOkMPmMRIfMfwz6oQ-1; Tue, 11 Feb 2025 17:51:26 -0500
-X-MC-Unique: 2WXLarOkMPmMRIfMfwz6oQ-1
-X-Mimecast-MFC-AGG-ID: 2WXLarOkMPmMRIfMfwz6oQ_1739314286
-Received: by mail-oo1-f69.google.com with SMTP id
- 006d021491bc7-5fc834b0d5bso810697eaf.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:51:26 -0800 (PST)
+ us-mta-208-UUkp4txgM7uj2fEdB8Rc2w-1; Tue, 11 Feb 2025 17:51:28 -0500
+X-MC-Unique: UUkp4txgM7uj2fEdB8Rc2w-1
+X-Mimecast-MFC-AGG-ID: UUkp4txgM7uj2fEdB8Rc2w
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-726e862d3b9so1715263a34.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:51:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739314285; x=1739919085;
+ d=1e100.net; s=20230601; t=1739314287; x=1739919087;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3GVYGVKTNNJ14jZdJ2J7SbDQH89zHrOWXpmWYxPzaaI=;
- b=GPieFwhwgg4HWrwXAhz9OxzcU5ZvzAxaZJn+3XkrshpvxLbq0JoTIfLAR0y+PlEIA3
- xKkseZvQISOz4MgzIc7ergkS1n0PoU1oinGrRUTHnhd7mrypUEd8X11sxu7ppCi5rO+7
- uyByRqxF1/ahULA9M9SUKMNuq2JpmBOOgwlMRB3cHsG1FiSDLjRyLcAj/va9YCTPZKwl
- DFMOah0EXdl8xrKVaQYZM6VsdTZzJhC8Sta1ua3qFlZHZkP7Et7t67wRjsA5j9Un5wH5
- pPNNaDixbpoTaLAOVhKrdSy+KeY20ePSlGG57aeCyQCIV9TkOSRkUdcGkYO57rWN8TI4
- cKJw==
-X-Gm-Message-State: AOJu0YzNSgAezeKdHnAHP8/p7wtN4seLD44a79IsAyuAumZ381Abrdyq
- jj/64/vChEjgegv7UQ6h/TWawyoJq2dy7HC5c41+aKol55Tel4IbzOlN3m2wGK+uOuXo3q6pG/f
- GUDE1SqRQdyJjw5LWpSj0fw8DStKm3JVdIkyDxDUFJ+qp8G7PAh/Fb3piwiYcCNBTSlOnt72VsF
- lbrKAr1yL7R4k+dnnGlctI5uART9SuDMOcTg==
-X-Gm-Gg: ASbGnct7jinu7If8qeEZZaXFatMIScPCcD6vCoDGfRC9Rup1ClmXXTvqvAtlCZAbEpS
- Jg+CoXUiPXhYrHP7GavsRCa9Axc4Udss4i0AC+C/giRxb4V3K66L2OkWDXPQOZg+eg0TJpoJY6Y
- XRxAgZVnuRBOOCL+mpk4yFkjR6BTpeKR79cRuLcz18nNwdDKIEwC9+4hBLN4lZj5WhmyTK8QarC
- imWvewaa6XK+8QlUjKVRBF/OfxinXNKQutgFp/myChSbOye3AJ57XlJ
-X-Received: by 2002:a05:6820:16ab:b0:5fc:9d2a:4921 with SMTP id
- 006d021491bc7-5fca187cdb2mr689695eaf.5.1739314285247; 
- Tue, 11 Feb 2025 14:51:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFf9VdW7Gi+M7z0XGNMi3OY6myZ4ZfgzX+GF32HekQ60VQroCYfWQ4/Z5DdAti1XShnh/UqIQ==
-X-Received: by 2002:a05:6820:16ab:b0:5fc:9d2a:4921 with SMTP id
- 006d021491bc7-5fca187cdb2mr689671eaf.5.1739314284490; 
- Tue, 11 Feb 2025 14:51:24 -0800 (PST)
+ bh=dgza/Y0wiw4u+TyuTMHe0Q7D53LiwmAz3XUt+5camiA=;
+ b=T7NW+cAOSwReYS1Az+qLebkAXfLbbkINc3iO5TH9L58+0QClFoMMTfHNhavXOfApmz
+ GLF1uQx4Bnb0d+VB0plhY5rGEy9KLXu5OzKtDCgzfBOGV3pLLX34zwjqDd2eYvstcx79
+ cZYC4IjUYgMcKUn854i+7KuwKroi16153qlIOpRP1CIr7a3U/yuGKuYpp7YneiVHFNIt
+ //i2x4VApwKLVQavNrZdLxDEcz9NMtMrJ5um8XQVZhDPUVczpRBqG4P4e897EJHs+b/t
+ UZTVAYBsqvesSqWRk3NtfD3wdim3U1iHECZ1JC7NBDoQbScMmknLHhZFr0hAFtk/DqP5
+ Fysw==
+X-Gm-Message-State: AOJu0YxeWdykk0BDXQtGzrNpJ0W32+iA/C3xo3BpjTFrBKUtQkS2MPt2
+ eJE9xVAMZOQXpZT6lc+eNFehTtwqEOYI1yKoqxWCELQ+VaYgRPVxe9b1ZAHi4BznL34MCCr6iEq
+ C0tUNqMgLixBx9DYMf7tCIm5pV2iOhb3ObhXdi8kcUHn2cGhiPEOI3IE30gC3H0v/J5cYbWtM2U
+ jH+p+VVBnK3wLgDBNPcMLC3NBpZFf7Q/rD9A==
+X-Gm-Gg: ASbGncunJBI3U6q0iTEFwIv97h9ZycXt2nkCT1Yakpw/LfFHvDlU/40h5ZdjaaAQj5g
+ UbPxIWohkviH3JmLbVwhrbhTyIV4t7QbY5vxtoNTk5geo8IOxXb+iFiF8vuCiG/XAQiEPe29Ub8
+ uTcOA3TA9BWQ78Cu+p3zCkjxuKyH2SUHsczwCt+swq5F1jV7oEK07luT7221wTMOtRn8R1VlnE1
+ xflR93SprYqNdkIvfns5V7Ikh0lgd0Wy74r9OgC5ghSMMgtiC6czFQe
+X-Received: by 2002:a05:6830:65c1:b0:71d:5c89:e505 with SMTP id
+ 46e09a7af769-726f1c65248mr869333a34.9.1739314286956; 
+ Tue, 11 Feb 2025 14:51:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF7OsuzvjtstwJBJV5Gac4F2rxsCRoVwXw4UPUEbm8iAol2SkW/oPpc3U2o4S2ieJM+AjRGtw==
+X-Received: by 2002:a05:6830:65c1:b0:71d:5c89:e505 with SMTP id
+ 46e09a7af769-726f1c65248mr869318a34.9.1739314286576; 
+ Tue, 11 Feb 2025 14:51:26 -0800 (PST)
 Received: from x1.com ([2604:7a40:2041:2b00::1000])
  by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5fca0992fd0sm482515eaf.34.2025.02.11.14.51.22
+ 006d021491bc7-5fca0992fd0sm482515eaf.34.2025.02.11.14.51.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 14:51:23 -0800 (PST)
+ Tue, 11 Feb 2025 14:51:25 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PULL 12/14] physmem: teach cpu_memory_rw_debug() to write to more
- memory regions
-Date: Tue, 11 Feb 2025 17:50:56 -0500
-Message-ID: <20250211225059.182533-13-peterx@redhat.com>
+ David Hildenbrand <david@redhat.com>,
+ William Roche <william.roche@oracle.com>
+Subject: [PULL 13/14] system/physmem: handle hugetlb correctly in
+ qemu_ram_remap()
+Date: Tue, 11 Feb 2025 17:50:57 -0500
+Message-ID: <20250211225059.182533-14-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250211225059.182533-1-peterx@redhat.com>
 References: <20250211225059.182533-1-peterx@redhat.com>
@@ -106,129 +107,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hildenbrand <david@redhat.com>
+From: William Roche <william.roche@oracle.com>
 
-Right now, we only allow for writing to memory regions that allow direct
-access using memcpy etc; all other writes are simply ignored. This
-implies that debugging guests will not work as expected when writing
-to MMIO device regions.
+The list of hwpoison pages used to remap the memory on reset
+is based on the backend real page size.
+To correctly handle hugetlb, we must mmap(MAP_FIXED) a complete
+hugetlb page; hugetlb pages cannot be partially mapped.
 
-Let's extend cpu_memory_rw_debug() to write to more memory regions,
-including MMIO device regions. Reshuffle the condition in
-memory_access_is_direct() to make it easier to read and add a comment.
-
-While this change implies that debug access can now also write to MMIO
-devices, we now are also permit ELF image loads and similar users of
-cpu_memory_rw_debug() to write to MMIO devices; currently we ignore
-these writes.
-
-Peter assumes [1] that there's probably a class of guest images, which
-will start writing junk (likely zeroes) into device model registers; we
-previously would silently ignore any such bogus ELF sections. Likely
-these images are of questionable correctness and this can be ignored. If
-ever a problem, we could make these cases use address_space_write_rom()
-instead, which is left unchanged for now.
-
-This patch is based on previous work by Stefan Zabka.
-
-[1] https://lore.kernel.org/all/CAFEAcA_2CEJKFyjvbwmpt=on=GgMVamQ5hiiVt+zUr6AY3X=Xg@mail.gmail.com/
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/213
+Signed-off-by: William Roche <william.roche@oracle.com>
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20250210084648.33798-8-david@redhat.com
+Link: https://lore.kernel.org/r/20250211212707.302391-2-william.roche@oracle.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/exec/memattrs.h |  5 ++++-
- include/exec/memory.h   |  3 ++-
- hw/core/cpu-system.c    | 13 +++++++++----
- system/physmem.c        |  9 ++-------
- 4 files changed, 17 insertions(+), 13 deletions(-)
+ include/exec/cpu-common.h |  2 +-
+ accel/kvm/kvm-all.c       |  2 +-
+ system/physmem.c          | 38 +++++++++++++++++++++++++++++---------
+ 3 files changed, 31 insertions(+), 11 deletions(-)
 
-diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index 060b7e7131..8db1d30464 100644
---- a/include/exec/memattrs.h
-+++ b/include/exec/memattrs.h
-@@ -44,6 +44,8 @@ typedef struct MemTxAttrs {
-      * (see MEMTX_ACCESS_ERROR).
-      */
-     unsigned int memory:1;
-+    /* Debug access that can even write to ROM. */
-+    unsigned int debug:1;
-     /* Requester ID (for MSI for example) */
-     unsigned int requester_id:16;
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index b1d76d6985..3771b2130c 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -67,7 +67,7 @@ typedef uintptr_t ram_addr_t;
  
-@@ -56,7 +58,8 @@ typedef struct MemTxAttrs {
-      * Bus masters which don't specify any attributes will get this
-      * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
-      * distinguish "all attributes deliberately clear" from
--     * "didn't specify" if necessary.
-+     * "didn't specify" if necessary. "debug" can be set alongside
-+     * "unspecified".
-      */
-     bool unspecified;
+ /* memory API */
  
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index b18ecf933e..78c4e0aec8 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3018,7 +3018,8 @@ static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write,
-     if (!memory_region_supports_direct_access(mr)) {
-         return false;
-     }
--    if (is_write) {
-+    /* Debug access can write to ROM. */
-+    if (is_write && !attrs.debug) {
-         return !mr->readonly && !mr->rom_device;
-     }
-     return true;
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 6aae28a349..6e307c8959 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -51,13 +51,18 @@ hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
-                                      MemTxAttrs *attrs)
- {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-+    hwaddr paddr;
+-void qemu_ram_remap(ram_addr_t addr, ram_addr_t length);
++void qemu_ram_remap(ram_addr_t addr);
+ /* This should not be used by devices.  */
+ ram_addr_t qemu_ram_addr_from_host(void *ptr);
+ ram_addr_t qemu_ram_addr_from_host_nofail(void *ptr);
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index c65b790433..f89568bfa3 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -1288,7 +1288,7 @@ static void kvm_unpoison_all(void *param)
  
-     if (cc->sysemu_ops->get_phys_page_attrs_debug) {
--        return cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
-+        paddr = cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
-+    } else {
-+        /* Fallback for CPUs which don't implement the _attrs_ hook */
-+        *attrs = MEMTXATTRS_UNSPECIFIED;
-+        paddr = cc->sysemu_ops->get_phys_page_debug(cpu, addr);
+     QLIST_FOREACH_SAFE(page, &hwpoison_page_list, list, next_page) {
+         QLIST_REMOVE(page, list);
+-        qemu_ram_remap(page->ram_addr, TARGET_PAGE_SIZE);
++        qemu_ram_remap(page->ram_addr);
+         g_free(page);
      }
--    /* Fallback for CPUs which don't implement the _attrs_ hook */
--    *attrs = MEMTXATTRS_UNSPECIFIED;
--    return cc->sysemu_ops->get_phys_page_debug(cpu, addr);
-+    /* Indicate that this is a debug access. */
-+    attrs->debug = 1;
-+    return paddr;
  }
- 
- hwaddr cpu_get_phys_page_debug(CPUState *cpu, vaddr addr)
 diff --git a/system/physmem.c b/system/physmem.c
-index 8745c10c9d..d3efdf13d3 100644
+index d3efdf13d3..af1175a57c 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -3680,13 +3680,8 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-         if (l > len)
-             l = len;
-         phys_addr += (addr & ~TARGET_PAGE_MASK);
--        if (is_write) {
--            res = address_space_write_rom(cpu->cpu_ases[asidx].as, phys_addr,
--                                          attrs, buf, l);
--        } else {
--            res = address_space_read(cpu->cpu_ases[asidx].as, phys_addr,
--                                     attrs, buf, l);
--        }
-+        res = address_space_rw(cpu->cpu_ases[asidx].as, phys_addr, attrs, buf,
-+                               l, is_write);
-         if (res != MEMTX_OK) {
-             return -1;
+@@ -2275,17 +2275,35 @@ void qemu_ram_free(RAMBlock *block)
+ }
+ 
+ #ifndef _WIN32
+-void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
++/*
++ * qemu_ram_remap - remap a single RAM page
++ *
++ * @addr: address in ram_addr_t address space.
++ *
++ * This function will try remapping a single page of guest RAM identified by
++ * @addr, essentially discarding memory to recover from previously poisoned
++ * memory (MCE). The page size depends on the RAMBlock (i.e., hugetlb). @addr
++ * does not have to point at the start of the page.
++ *
++ * This function is only to be used during system resets; it will kill the
++ * VM if remapping failed.
++ */
++void qemu_ram_remap(ram_addr_t addr)
+ {
+     RAMBlock *block;
+-    ram_addr_t offset;
++    uint64_t offset;
+     int flags;
+     void *area, *vaddr;
+     int prot;
++    size_t page_size;
+ 
+     RAMBLOCK_FOREACH(block) {
+         offset = addr - block->offset;
+         if (offset < block->max_length) {
++            /* Respect the pagesize of our RAMBlock */
++            page_size = qemu_ram_pagesize(block);
++            offset = QEMU_ALIGN_DOWN(offset, page_size);
++
+             vaddr = ramblock_ptr(block, offset);
+             if (block->flags & RAM_PREALLOC) {
+                 ;
+@@ -2299,21 +2317,23 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
+                 prot = PROT_READ;
+                 prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
+                 if (block->fd >= 0) {
+-                    area = mmap(vaddr, length, prot, flags, block->fd,
++                    area = mmap(vaddr, page_size, prot, flags, block->fd,
+                                 offset + block->fd_offset);
+                 } else {
+                     flags |= MAP_ANONYMOUS;
+-                    area = mmap(vaddr, length, prot, flags, -1, 0);
++                    area = mmap(vaddr, page_size, prot, flags, -1, 0);
+                 }
+                 if (area != vaddr) {
+-                    error_report("Could not remap addr: "
+-                                 RAM_ADDR_FMT "@" RAM_ADDR_FMT "",
+-                                 length, addr);
++                    error_report("Could not remap RAM %s:%" PRIx64 "+%" PRIx64
++                                 " +%zx", block->idstr, offset,
++                                 block->fd_offset, page_size);
+                     exit(1);
+                 }
+-                memory_try_enable_merging(vaddr, length);
+-                qemu_ram_setup_dump(vaddr, length);
++                memory_try_enable_merging(vaddr, page_size);
++                qemu_ram_setup_dump(vaddr, page_size);
+             }
++
++            break;
          }
+     }
+ }
 -- 
 2.47.0
 
