@@ -2,87 +2,170 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DFAA31477
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 19:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FEAA314A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 20:09:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thvOD-00023s-Pz; Tue, 11 Feb 2025 13:53:45 -0500
+	id 1thvcm-0007JZ-Ov; Tue, 11 Feb 2025 14:08:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thvO9-00023a-Ok
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 13:53:41 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thvO4-0006um-Kg
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 13:53:38 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4394820123dso14938215e9.2
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 10:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739300014; x=1739904814; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+SIRFcyVeI9ut2zAnOAqY6WGITTdtoS+RIGx/Iwc3kQ=;
- b=Iz95mBYQz64/MNvTbnMXiQ46qHjmMAkk45zfoPnKFroqhMf/sx+S+y3pROLZB0nKZj
- Yb44uqHcLqG3P+64OAsnZT+wLGtJUPctE9dv28O32Hn82iM2k2K4WWad7Nsm7Tkxgist
- 4ULngDbgDY3Ed7P6+lTNVgBZiG/LQyCs971jm6fNMXDC+q5pnJkxwbF7dWuBfzA843fh
- TVudIV4kL8dVkKl3w0DdymlyJFUL7fb9Dbk8bDXlgBHn0/2/sAoi5sjId3tnxQ1g2vug
- CY7PbYsOYSl/NRCBbwDGm/STdQ/G0arDy5qsWf/H1eiFfArcqcb7dIIQLCr9+MeJHsfP
- y5rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739300014; x=1739904814;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+SIRFcyVeI9ut2zAnOAqY6WGITTdtoS+RIGx/Iwc3kQ=;
- b=pWTQmGFOuqA6a1uUA5aFvmObspqJ9LkLsA/fZPV/SbuBMjX/Yw2byvXQP6bKJI5en8
- 367n13Y+etxNViBrPmR7ieXhWw54r3o3gkkGexS5EqBHvXQeZNvqII9tg/ui7DgrPMSu
- DZnckZoNVV1rS+CTPfd3ZQCzKUIDUuHD14jAs/Lxm2zPGTjn+bTQpBnijH4wKHSb6zSr
- JzKnzpAS0rbM2SEmcYnJCVV0GDckRQa0IyhE9vxJC6PKPMHfmf5+7r7SZzZBnJe0zJUs
- ghYV4VCEv4fVoQ2WF/lEzjc7uN1Ut2uE94z2giysgerlWDyVpN89dMeWRf6xo6y50zbR
- ZrxA==
-X-Gm-Message-State: AOJu0Yz4/bnu7alP5abbZ+sXeDuTnYPMgVo0IzKDm5NmXstDUotvB3/V
- /C22IptEpWGtYUVnrgdBE7deFtk7xtG2AD0oEaiuYqjGQ0qXiXSGbGDsJUXGZf4=
-X-Gm-Gg: ASbGncvRsZew0SGQkowcqQFAmeA61AhmaEmOQGHBbXHQQaOSz1gYbahaKooOdztOBMr
- GxigpECTuJVmf9KH3xcYTyQKs2rAzx8wAhuhVBSm7UfBeHG6kurR8igA00mtUKCoJvt+6iFXZ0g
- qA4Gplh1fiDKPHEtq6r7lXL//N1re3lfo+KOF3aVf/sdK/egHIlIoAqwHIteZntT5EUFal3jT+f
- 2aX1RrKZbZQEUyYjdQApyqVL094mdAwhX3Jbs0oqNn03kwqPIxJGVdVRpxsC3TjnTkeGqInOc1O
- AcunTbw18jCi7i9jFaGziNNM6cRZMcBxWZwzFEzPvmFddjUhxSQkBJYPz9U=
-X-Google-Smtp-Source: AGHT+IFO4IBXvhhh9fy4gT6r7/YM/E/wYhJKi5C0/bqkf3zpWkqG4U6/DFXB1qIBrZkkH03x5uO0ww==
-X-Received: by 2002:adf:e3d1:0:b0:385:f7ef:a57f with SMTP id
- ffacd0b85a97d-38dea28628fmr83248f8f.27.1739300014123; 
- Tue, 11 Feb 2025 10:53:34 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4391dca34a8sm183398685e9.16.2025.02.11.10.53.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Feb 2025 10:53:33 -0800 (PST)
-Message-ID: <1ddb567a-7261-4831-9f46-7c247969a86d@linaro.org>
-Date: Tue, 11 Feb 2025 19:53:32 +0100
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <kim.phillips@amd.com>)
+ id 1thvck-0007IL-Sc
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:08:46 -0500
+Received: from mail-dm6nam11on2055.outbound.protection.outlook.com
+ ([40.107.223.55] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kim.phillips@amd.com>)
+ id 1thvcg-00041B-Ok
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:08:46 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Id3OrO/S4rCt4hrsZsdBQV5cuOlCsqOUodKdyoI5cCZ6EXcSNT4RhtLmJNdedUxWYaqbbc22wYCO4W9yPLrqr7+jG49QZhWeNqLPCmVikxuN/QJ5o5bbQTxndFooS/zxwG6BIoUx1cGsUWZDoncJn4fz5KdGog+ZQQgaZxP0TwbiCIM0+7GGaz10oAxM/4cp6uHmPMHzgFzMdR/32SLrFxQA3PEtJVVPkR8+Qcg7yB2vf9aXqgmHyNPnvjWSP9DwY9vccorNZ+A2UfbhMUq88U+RSTZX0C36rPpdexIutimr+KsGF/sNEMsKh/vFBoWxgs7omlKFYt72jZ8sSvJw0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lrUSHHQzILJWvq2Qd9uEJGxtMW0SO10VdvdLamKzYn0=;
+ b=QKzICztiVyzfJmKzGZJ/kssc9v+XLEoB1EvhbVs6WgQcBmRiigGL0aQkUf4RC/q/z/6eHw0JBqhYHFngJ8MsI3WuqN0BB2uDClooa/VpCO6VRK0jDgovUvUfhZwKnJ3bWkUN+rFRQCbDuaTjfNStscJz/e1RK3Xyf+pBp1H8T5ITTxIvQ9FGSNlDAfrE7Q8AMz2cFayVqUiNMhBt47vvNGI5YnZqvS5qc47JK+8u4dB6715uCX7MVD4xaE5a8UlfFp2P/qFcWeQd0PcDMVxHXwlTIhevKbXbs7+P5/O7e3ZmdV+akEfJF5STNWxZRbPIPgtzB7NgsrifXllH53eAbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lrUSHHQzILJWvq2Qd9uEJGxtMW0SO10VdvdLamKzYn0=;
+ b=RzsQctQXovUjjzXBmODz/oubrzH50wnI20iXOWKT/lWWeyT0rcLrJQ2Binjn+s4gysENfJzcxRuUcdzCweLAXqlco5Ye7eQ2bv2BRDnZetySehng/zYD8LAQsUWrRXE7gP8YFsg1lF0sXVr31kriTfNFcur9pPuSy+OIAiKiVw8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com (2603:10b6:8:95::17) by
+ CH3PR12MB8971.namprd12.prod.outlook.com (2603:10b6:610:177::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.16; Tue, 11 Feb
+ 2025 19:03:30 +0000
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::66d2:1631:5693:7a06]) by DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::66d2:1631:5693:7a06%4]) with mapi id 15.20.8445.008; Tue, 11 Feb 2025
+ 19:03:30 +0000
+Message-ID: <d61d4ca6-41ec-4236-a5ca-8fb40d987e3a@amd.com>
+Date: Tue, 11 Feb 2025 13:03:26 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/32] Misc HW patches for 2025-02-10
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250210204204.54407-1-philmd@linaro.org>
- <CAJSP0QWH2+sLaNGwwLTQr5Kud6kKLML_Y24M=Kz1GSX9yRxDQw@mail.gmail.com>
- <f28e0b87-9bb2-4bb3-8c10-1f3ff0f784c2@linaro.org>
+Subject: Re: [RFC] target/i386: sev: Add cmdline option to enable the Allowed
+ SEV Features feature
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, "Nikunj A . Dadhania" <nikunj@amd.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20250207233327.130770-1-kim.phillips@amd.com>
+ <Z6nFzwwOZDx4p6yq@redhat.com>
 Content-Language: en-US
-In-Reply-To: <f28e0b87-9bb2-4bb3-8c10-1f3ff0f784c2@linaro.org>
+From: Kim Phillips <kim.phillips@amd.com>
+Organization: AMD
+In-Reply-To: <Z6nFzwwOZDx4p6yq@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-ClientProxiedBy: SN7P220CA0013.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::18) To DS7PR12MB6263.namprd12.prod.outlook.com
+ (2603:10b6:8:95::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6263:EE_|CH3PR12MB8971:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6501c991-01ab-40a6-4794-08dd4acec5ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Vk1TTFlvTTluYmdTbDRuVk9tY2lTS3lJUVNnSnZETWo5VnM0Z01tbmVzT1pj?=
+ =?utf-8?B?TWpWeDZxUGNKRlZUZ0tyTW4rcnNEOXovazRMS0U2SUtVcXNrV0t1MmYvOG0v?=
+ =?utf-8?B?NWtseHV4RGxJSTRlck9QcVNQREVWZzJBYUlPYzlrUjF6SFE3SWtzZlpseW94?=
+ =?utf-8?B?U3NOK0RjM2FibzQ4c2IwUFpnak5GR1FqcjBPOTRUdWdQYW5yN3FPWHZ5NHI3?=
+ =?utf-8?B?cXpxQ3RVWVJZU05SQXE3Z3lmV3EveXFXZk9DRDdiZmx0dnI0RXZ5UzMwWHVL?=
+ =?utf-8?B?Q1JqYjRPN0VyeStFVXl1R2Vkd0lwUU5lWGJqM1plT2RTUDJXeXN5TmVXbE5E?=
+ =?utf-8?B?VzBZS2VTcUZIV2Y0UVVuWE1YeVZ0Qk8vbEZYVGlUUXc1cDZyY1NMWkVMY3o3?=
+ =?utf-8?B?RVM2aEtXUXh1SlEzYW5weHg4QUMxRlJkRVM1YklXR2JoTWgyL1h3KzhlWjh5?=
+ =?utf-8?B?ZnFSVVU4Wmw2V2FPeHl6U0R2SjBTcVdjUTNvUG52dGZmNXNzTWUrQVJVMDgv?=
+ =?utf-8?B?elhlcDRPeERaZUxPU25qTkxvdVdNM2cydnNtQTlsTXhuU1dJWjJmQ3F2TVM1?=
+ =?utf-8?B?NTByRWlCTDVVaUZZUmJmMTlEOGNaaGNyNkNxS1JhUjVCSTJpTkZmVW9VWWY2?=
+ =?utf-8?B?UFVTb0FZK3lnL01uRUUxYkxYemxTRzBjK3Rjc1ZESkpJSnVmV2hUcXFtZENQ?=
+ =?utf-8?B?TUFZVjRXdjJlZ0V4M0kvZHBMKzd5K25SOTNjcFRreEN5bFhwOXg5NW9lTGpJ?=
+ =?utf-8?B?MXJGSUNlMHJSeTVpSml4c3dBQ3dmcU5ZS1doeWIxeDhKb2lwUVArcWNRYzR1?=
+ =?utf-8?B?ZzdkNDlsVGtzOWNKK2tCZHppTitaMG5kRnZndXM5UmNmcWliWWdySXdQbUpB?=
+ =?utf-8?B?eFpXSHN4eWNhcDA0OVJVeHRjRWlRanJvaTJ5aklLRFNZbHBXQmdOT1lSNk9z?=
+ =?utf-8?B?WGQvTVBTNm5uems4MGF0a0RJSm92dWkwNkNDNGtGTHpBUnJSTUx2cCtkeW5s?=
+ =?utf-8?B?TjdqYWxYZmdoVTNJejFrR0FONnRGSGxwQW11cHVXTmRaNXJyWWgrck5OWGo3?=
+ =?utf-8?B?SVZiREU0clRYcWt3bCttdCtTT1J0NEo3Nm0yb3l2L3ozRlA2ODRLd3dZYzl3?=
+ =?utf-8?B?YUJNK1c0SHM4eWIwQ05DQTRRSWNQN2RYemdBTkV6aXl3YnQ0MDJHazJHZnJL?=
+ =?utf-8?B?bUhDL2MvdWU5TExEdS8xTDJ3ZGVuSWRTeW9LMkJ6Z3FrNFV1WXRtL1JWZmFs?=
+ =?utf-8?B?N0Z1VGxyakpZZ2ZvMXBtdlR1UHRjRmI0NjhHYjErSTJtYzJyK2xPVGd6MDVN?=
+ =?utf-8?B?WjdIL09iMFZOM1F5enVEVzI2OTgvOVpHRGNMU0VKM2pud3JGSkZkY3FhbDdp?=
+ =?utf-8?B?R1lNL3ZhbHNtQkF2VnFHNWt2eG1DTHFUTFdaYldzUmpSU3NjdTFISHh5LzFT?=
+ =?utf-8?B?MTVqNHdqNlN0UkNvM0xXQkV6R1hBeDgzS3kvVUhnL0NBKzFqNEdXUnBYMG1P?=
+ =?utf-8?B?YkUrdlBQWWwzVWRzZUFSWjdRRGg5Qk9YbEJXdEdTSnNZQjNvbVErRzMrM0R1?=
+ =?utf-8?B?SjlEUHA4NlFGRDVDakZ5NHFoMXV5ZHd2SDZXZDdpWFB6K1pUaW82RGd4b2hS?=
+ =?utf-8?B?RjdZck1oS2JkdTA4MndYaW1VdGh1SmxTbHNDUitXVUc1U2J1WkI5S2xyV24w?=
+ =?utf-8?B?ektYckx2SVVtOG11WmVyYTRVYlJaQTZMVVVJTHVaZUZZYXhSQkFMazhYQ05W?=
+ =?utf-8?B?NkZQKzRCc1pJM3BJV3E4UkVrR3JFVWNpUFFVVkJUOVdqeVFRbDVJY0o1Tzh1?=
+ =?utf-8?B?ekJVenRld0E3OS9YZXlxQT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS7PR12MB6263.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ajhGWXlZbTRBb1BEbkF2cjNzanoxMU9RSm4xRXJWUVFhNUNUSzYzdUZSQ1oz?=
+ =?utf-8?B?MXpMRy9EbG5VRjc2cWVrdktCVWs3eGI0V3JwMmVuclQrcFhmTDJmeE9weEVp?=
+ =?utf-8?B?Q1c0NzBKY2VEZ3hBUlRtREFvWXlqQmxtY2lTMmVncEZYYlNUaVhJM2pKMHpj?=
+ =?utf-8?B?MTJLZTRDMFlPRXBmM21VWXpMSHFTMXhYT3FGT2c1Z0RpaFg4K1ZqL29TaEdZ?=
+ =?utf-8?B?UFdQV0wrd3dNN1Joa0hKYSt3V3NaMXFPVjA0ekxvWm9rZTQwdG1HN25vUnVZ?=
+ =?utf-8?B?Sk0xMGlQMGkwR0R4VmZhcmVvVGMrTC9ZMVpmWmRBR3d2TU1JQ1J3elRHUDZD?=
+ =?utf-8?B?UXFXd2xEV08vL2tvUk9RTkFEQXoxeW9yQ3dGb01zNUVKNzNzR0o3RWx6eEhH?=
+ =?utf-8?B?T1BUbHA5RFRpWTMveGdDRGYyck5EWVJFdkljdEw5OHR1dkZ1Y0hHUExkQmll?=
+ =?utf-8?B?RmVrTFQ5aGdoTUxSeDhSY0pNd0RiT2t1NDZ4aDV4UjZWUGNSZTdYTjBrODFk?=
+ =?utf-8?B?SDZoS213ZXMwQ2NBOEhZY1lTYWZHOEd5SXI1QURJWXZ1L1Q0a1hjOUhxR1E4?=
+ =?utf-8?B?VUtCdnVPV1Jsa3VidUswODlXSTUwOTNWTlBzM0NKQ01MYkRDODdhZXM2K0hI?=
+ =?utf-8?B?cGZySW83YzRYRnlOQXlMdXRIWkY2ZVVZUmdReDRzRlUrR3dveDc3bHByOGJB?=
+ =?utf-8?B?UDk1S1QvM3J3QlNub3lCU05OZnM2dkhzZ0dUWGhQNzZzYVJlUldsQ0Fua0Yr?=
+ =?utf-8?B?eFJYQ2FwaGlGTjgrd3QvdzRNdDg2RGRkbEJmcUhQcForUHhRVDdUOGs0djl3?=
+ =?utf-8?B?aUZmVDVnNlM4UUZtTHYrTjE1Y21nMmR1VmtxcUNJMTlBUHZ4L0Flc3BtL3ho?=
+ =?utf-8?B?OEM4aktEZnhTWS9vM2grOGVtZUJKM0VqdzJjU3V3UlFDdkNadXJNY3hWakZh?=
+ =?utf-8?B?SGRsTjhMUWh3TVF1dHJLQm5lTXJ0ajhaWTdvaHhOZjR6REZsM2dKMjZTbUpa?=
+ =?utf-8?B?RXFrSUN6bzEvUHRhQVZPeGlGV1ZkMWtTcmpOWUE0UjIzTjJvSDN0RDN3SWxR?=
+ =?utf-8?B?cWd4b1BYYmNzcjdhTFFpZEZZRlZpUGI5RnlLdkIzdE53ajd3VllmK2prR0xS?=
+ =?utf-8?B?VUpGemZwUjZiZFJBV1I5Z2VFSDhGdEVBTjduT1dLOW5wcXErRWpyMHQ3ekdq?=
+ =?utf-8?B?VCtHdUE5QXo4S1dJS3E4ZzFWV2EvTmllNXJCMGZNWnJhbVVKZlQxYUlaWjZU?=
+ =?utf-8?B?bS81YWxvUGtMQmZqdFREMm0yN1JmWjJUTzVKRmhub0RjUWhwdUVBR2Y5YVI0?=
+ =?utf-8?B?T2ZVcjQ1SSsrZHdaQmlnUElXaXd1Q2xTZkl2TERmZWN2T0RoYkl1NGFPMFZ0?=
+ =?utf-8?B?NjFTVjdPaXBVYmVGTUxUWjNNMkFLaG4vUjZ4c01OL1oxbVJ3N2NqV0xpaURT?=
+ =?utf-8?B?cFZsbllrNC9URk04OVFFbmFrTERYNGNvb2hHaGJZM2dNMTkybnM2L2loT2Vq?=
+ =?utf-8?B?N255Mm85UFNqK3h0TXlMcmMvSFZmUzdOTnpwemd2bUliKy94WEVyU1M5dis5?=
+ =?utf-8?B?Z1hxOStLWnhjOVRQZE12MThQeUN4UzBrcHpIZFRDV3c1TmVyWWQrRFJkek9i?=
+ =?utf-8?B?WXlFU1dvaGtCZExRZEpoYVVQd3F4bGQ2RkNiN1dSNFhmWVJMTWZxYzZVS2d6?=
+ =?utf-8?B?RjhEVDV4Z2Nxa1p6NW14RFhVRHhadWxtQ1RQR3lLaWpKWCtVRkpJUTMzRmU3?=
+ =?utf-8?B?YVVWR3c3cktBVzJsNTUvaC85V3dadTJidjF3cEtUY0hDWHhaQmgyd2cwaDYv?=
+ =?utf-8?B?ZG5hampRT2g3VnVqN3lrR29SWm1xclI4bnZoOFhGeU5tL09CLzk2MVdLaVRi?=
+ =?utf-8?B?VUlBVS9SL25KZFdvYmhRUUVnVEl1Y3o4TG9UQW9jbGYvaDF6NTJucURxb0pE?=
+ =?utf-8?B?VmVXSTdxZm5lb0pKUkhEdyszdmJmRXhtdzQ2YTJZcURzNHN2Z3dUYW54WUYy?=
+ =?utf-8?B?WTI0WUhBRTBnenU3K2JRU09qQ29WZHFMa1NBZWMxcEJiUlpkZzEyendEWUZU?=
+ =?utf-8?B?a2dBY0pzb0tuV2NtQnlBK0YzZkFtWkx6N1hEZ3lOVjNwU1IxWThDYTBGN05P?=
+ =?utf-8?Q?UYZ7FjWBzepqBjyygi+mBzjI9?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6501c991-01ab-40a6-4794-08dd4acec5ca
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6263.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 19:03:30.2549 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mMUIq3f4LL0S1W7AH4q29xZ1oBWKwK3DLL3md1xcHbZ0xzX8udsJW5eorMuAZcaqnYfEyfSX/vTmRWXOd3CvDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8971
+Received-SPF: permerror client-ip=40.107.223.55;
+ envelope-from=kim.phillips@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,76 +182,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/25 19:48, Philippe Mathieu-Daudé wrote:
-> On 11/2/25 19:26, Stefan Hajnoczi wrote:
->> On Mon, Feb 10, 2025 at 3:43 PM Philippe Mathieu-Daudé
->> <philmd@linaro.org> wrote:
->>>
->>> The following changes since commit 
->>> 54e91d1523b412b4cff7cb36c898fa9dc133e886:
->>>
->>>    Merge tag 'pull-qapi-2025-02-10-v2' of https://repo.or.cz/qemu/ 
->>> armbru into staging (2025-02-10 10:47:31 -0500)
->>>
->>> are available in the Git repository at:
->>>
->>>    https://github.com/philmd/qemu.git tags/hw-misc-20250210
->>>
->>> for you to fetch changes up to 1078a376932cc1d1c501ee3643fef329da6a189a:
->>>
->>>    hw/net/smc91c111: Ignore attempt to pop from empty RX fifo 
->>> (2025-02-10 21:30:44 +0100)
->>>
->>> ----------------------------------------------------------------
->>> Misc HW patches
->>>
->>> - Use qemu_hexdump_line() in TPM backend (Philippe)
->>> - Make various Xilinx devices endianness configurable (Philippe)
->>> - Remove magic number in APIC (Phil)
->>> - Disable thread-level cache topology (Zhao)
->>> - Xen QOM style cleanups (Bernhard)
->>> - Introduce TYPE_DYNAMIC_SYS_BUS_DEVICE (Philippe)
->>> - Invert logic of machine no_sdcard flag (Philippe)
->>> - Housekeeping in MicroBlaze functional tests (Philippe)
+On 2/10/25 3:24 AM, Daniel P. Berrangé wrote:
+> On Fri, Feb 07, 2025 at 05:33:27PM -0600, Kim Phillips wrote:
+>> The Allowed SEV Features feature allows the host kernel to control
+>> which SEV features it does not want the guest to enable [1].
 >>
->> Please take a look at this CI failure:
->> https://gitlab.com/qemu-project/qemu/-/jobs/9106591368
+>> This has to be explicitly opted-in by the user because it has the
+>> ability to break existing VMs if it were set automatically.
+>>
+>> Currently, both the PmcVirtualization and SecureAvic features
+>> require the Allowed SEV Features feature to be set.
+>>
+>> Based on a similar patch written for Secure TSC [2].
+>>
+>> [1] Section 15.36.20 "Allowed SEV Features", AMD64 Architecture
+>>      Programmer's Manual, Pub. 24593 Rev. 3.42 - March 2024:
+>>      https://bugzilla.kernel.org/attachment.cgi?id=306250
+>>
+>> [2] https://github.com/qemu/qemu/commit/4b2288dc6025ba32519ee8d202ca72d565cbbab7
 > 
-> Hmm I can not reproduce locally this error:
+> Despite that URL, that commit also does not appear to be merged into
+> the QEMU git repo, and indeed I can't find any record of it even being
+> posted as a patch for review on qemu-devel.
 > 
->    Exception: Asset cache is invalid and downloads disabled
+> This is horribly misleading to reviewers, suggesting that the referenced
+> patch was already accepted :-(
 
-OK, I could reproduce by blowing my cache away.
+Apologies, that was not the intent.  I'll remove it from the next version.
 
-The problem seems in the "tests/functional: Have microblaze tests
-inherit common parent class" patch, which does:
+>> @@ -1524,6 +1552,20 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+>>       case KVM_X86_SNP_VM: {
+>>           struct kvm_sev_init args = { 0 };
+>>   
+>> +        if (sev_es_enabled()) {
+>> +            __u64 vmsa_features, supported_vmsa_features;
+>> +
+>> +            supported_vmsa_features = sev_supported_vmsa_features();
+>> +            vmsa_features = sev_common->vmsa_features;
+>> +            if ((vmsa_features & supported_vmsa_features) != vmsa_features) {
+>> +                error_setg(errp, "%s: requested sev feature mask (0x%llx) "
+>> +                           "contains bits not supported by the host kernel "
+>> +                           " (0x%llx)", __func__, vmsa_features,
+>> +                           supported_vmsa_features);
+> 
+> This logic is being applied unconditionally, and not connected to
+> the setting of the new 'allowed-sev-features' flag value. Is that
+> correct  ?
 
--class MicroblazeelMachine(QemuSystemTest):
-+class MicroblazeLittleEndianMachine(MicroblazeMachine):
+That's correct.
 
-I presume, since MicroblazeLittleEndianMachine is no more a direct
-child of QemuSystemTest, then the ASSET_IMAGE_* aren't automatically
-downloaded.
+> Will this end up breaking existing deployed guests, or is this a
+> scenario that would have been blocked with an error later on
+> regardless ?
 
-> https://gitlab.com/qemu-project/qemu/-/jobs/9106591368/artifacts/ 
-> external_file/build/tests/functional/microblazeel/ 
-> test_microblazeel_s3adsp1800.MicroblazeLittleEndianMachine.test_microblaze_s3adsp1800_legacy_le/base.log content is:
-> 
->    2025-02-11 16:24:55,525 - DEBUG: Extract /builds/qemu-project/qemu/ 
-> functional-cache/download/ 
-> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22 
-> format=Nonesub_dir=None member=None
-> 
-> which is correct:
-> 
-> $ sha256sum day13.tar.gz
-> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22 
-> day13.tar.gz
-> 
-> Did you restart the job to see if it is a network issue?
-> 
-> Regards,
-> 
-> Phil.
+It would have been blocked regardless by this check in kvm's __sev_guest_init:
 
+https://elixir.bootlin.com/linux/v6.13.2/source/arch/x86/kvm/svm/sev.c#L418
+
+I've addressed all your other comments.
+
+Thank you for your review,
+
+Kim
 
