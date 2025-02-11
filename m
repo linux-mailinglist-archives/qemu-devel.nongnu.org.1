@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1412A301FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 04:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9929CA30207
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 04:12:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thgbo-0005z0-5o; Mon, 10 Feb 2025 22:06:48 -0500
+	id 1thghC-0002zf-7x; Mon, 10 Feb 2025 22:12:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thgbi-0005wE-4J; Mon, 10 Feb 2025 22:06:42 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
+ id 1thgh1-0002yw-Qq; Mon, 10 Feb 2025 22:12:12 -0500
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1thgbd-0007bx-Q4; Mon, 10 Feb 2025 22:06:40 -0500
+ id 1thggy-0001TR-QO; Mon, 10 Feb 2025 22:12:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739243198; x=1770779198;
+ t=1739243529; x=1770779529;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=RusancdOSN5pZD6hD2Db6zM0IygsyfsprIX4VM9JsYM=;
- b=E8uO2mLV3kix3weksZ9V2FzitiZnA1rHx+Ky2/oc26OdbGgVNJwcAAut
- TQ31H7Z+JoqWrYCeofycJKYsyL24Ocxndc5/c8JwjFP3IambKleQj8yz5
- GavuFFcSp+4nV2PTxa7O4QHCH6dzn9nHiT9CAb1HZ0jMCErr6b4yatRTN
- QbXlBttIxQBD6iCm85n4JTmVqZPs1+IZpWIB6K+7jSj6qrfKAsyb9eatd
- PhDeT1gx9na5qG9viazsVq6YaFX51dmgKMTRh0IXE6C0yJVoynlWAUxAt
- jcsLqrqGens/wN7mIdpVanMfA8Nsi6Gc41r7KSfVVXl4QUECsCcaZPDxh Q==;
-X-CSE-ConnectionGUID: zn5fIYZ7SROBuIU2wBe3sw==
-X-CSE-MsgGUID: owpvWxz/SyeXpyygC9NKng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39993556"
-X-IronPort-AV: E=Sophos;i="6.13,276,1732608000"; d="scan'208";a="39993556"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2025 19:06:34 -0800
-X-CSE-ConnectionGUID: BLkAhMPTQbu6TqSr1p31pg==
-X-CSE-MsgGUID: GMHBskXXT56DUh3Ro7voPg==
+ bh=aHqpNgpbf6LhPOY0ipnTGdOXwpnrBnzF5w+KKKRVbM0=;
+ b=T0VJNnLWEd/Br/v3Iu4unuHdJ6ghwM7zsMiaL/ER8iNBaesmy7eu8Z2e
+ r0XXxfOv+ItWnNGH/G6/ryhX9qHh/B1Nq+1e6HQT6wKIA1WAwlBWTcGpg
+ BSy0j5ipZThw2i3vMiKCHlxEk6da6xwa9BG4sw0K8dWMb53tYzBn8yllL
+ Yc9/0yrKIc0LRB7WYZZo53sZxX1pTt1OFNLniwvfK7d7gpYQGmYdLAIus
+ JGi0nZygLHGHhpOnnqVqC2NA7L8nLKxf/t2HJDRP3wLPuS/LseLmDjqXB
+ VuBTzbURE1KkuNqjrDk8xMyZvy7v5J8qs0ElzkfRZQXE3zJROJwdZ8WBG g==;
+X-CSE-ConnectionGUID: p1iNfWfUQ9WpQT/3d/4WDw==
+X-CSE-MsgGUID: KCi93J9VSguOGNr34TignA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="39968658"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="39968658"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2025 19:12:06 -0800
+X-CSE-ConnectionGUID: ofCqhxvjT0eLFnbqAkPvgQ==
+X-CSE-MsgGUID: gEMHVAsCRMqcEjn050HWJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,276,1732608000"; d="scan'208";a="113024933"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116471356"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 10 Feb 2025 19:06:32 -0800
-Date: Tue, 11 Feb 2025 11:26:04 +0800
+ by fmviesa003.fm.intel.com with ESMTP; 10 Feb 2025 19:12:04 -0800
+Date: Tue, 11 Feb 2025 11:31:35 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 09/12] rust: bindings for MemoryRegionOps
-Message-ID: <Z6rDTM4X3P95V+UA@intel.com>
+Subject: Re: [PATCH 10/12] rust: irq: define ObjectType for IRQState
+Message-ID: <Z6rEl3nypz+RtBAC@intel.com>
 References: <20250207101623.2443552-1-pbonzini@redhat.com>
- <20250207101623.2443552-10-pbonzini@redhat.com>
+ <20250207101623.2443552-11-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250207101623.2443552-10-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250207101623.2443552-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
@@ -79,26 +79,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 07, 2025 at 11:16:20AM +0100, Paolo Bonzini wrote:
-> Date: Fri,  7 Feb 2025 11:16:20 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 09/12] rust: bindings for MemoryRegionOps
-> X-Mailer: git-send-email 2.48.1
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs     |  51 +++----
->  rust/hw/char/pl011/src/lib.rs        |   1 -
->  rust/hw/char/pl011/src/memory_ops.rs |  34 -----
->  rust/qemu-api/meson.build            |   1 +
->  rust/qemu-api/src/lib.rs             |   1 +
->  rust/qemu-api/src/memory.rs          | 191 +++++++++++++++++++++++++++
->  rust/qemu-api/src/sysbus.rs          |   7 +-
->  rust/qemu-api/src/zeroable.rs        |   1 +
->  8 files changed, 226 insertions(+), 61 deletions(-)
->  delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
->  create mode 100644 rust/qemu-api/src/memory.rs
->
+> +unsafe impl ObjectType for IRQState {
+> +    type Class = ObjectClass;
+> +    const TYPE_NAME: &'static CStr =
+> +        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_IRQ) };
+> +}
+> +qom_isa!(IRQState: Object);
+
+This is necessary for Owned<>, though IRQState has been defined in C.
+It's another example to handle the C object in Rust (the previous one is
+SysbusDevice).
+
+LGTM,
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
