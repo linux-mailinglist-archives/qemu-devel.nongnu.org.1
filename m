@@ -2,53 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E13A30E33
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 15:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB36A30E5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 15:35:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thrEB-00046f-QQ; Tue, 11 Feb 2025 09:27:07 -0500
+	id 1thrKn-0006Qi-1D; Tue, 11 Feb 2025 09:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1thrE0-00046M-O1
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:26:57 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKl-0006QF-Ez
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:33:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1thrDy-0007jH-7h
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:26:56 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CD4CD4E600E;
- Tue, 11 Feb 2025 15:26:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Z1nbuUMfFFao; Tue, 11 Feb 2025 15:26:48 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E95104E6004; Tue, 11 Feb 2025 15:26:48 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E744074577C;
- Tue, 11 Feb 2025 15:26:48 +0100 (CET)
-Date: Tue, 11 Feb 2025 15:26:48 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Thomas Huth <thuth@redhat.com>
-cc: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, 
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/functional: Add a ppc sam460ex test
-In-Reply-To: <6b18058c-8c02-4171-abb0-ca7ef7d3fd4a@redhat.com>
-Message-ID: <2175f9ff-d561-b405-2a69-ef7251d6b51e@eik.bme.hu>
-References: <20250203092606.491933-1-clg@redhat.com>
- <6b18058c-8c02-4171-abb0-ca7ef7d3fd4a@redhat.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1thrKj-0001rp-B1
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 09:33:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739284430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tJGZpw8AvCCxQVPgZI5VaVfATDGJSZGpUrOw3exR24A=;
+ b=XHwa3uujpnMIdbEJdAfBOB5JCoadyYAuPn5B2BCbsFW+JtYGfAz5D6jJTqIy0gbaHJ8Lnh
+ YwXKHfVvLaboK+lmDC2Bd5mTIA1lB/1YL6HbrCRqtXIRgNxTca+n/twxJOofQ+9xivri3p
+ GmWQdKPst6AwG9LbceTJwLSUhyBnUmE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-37WzBITyMeuxRSpNLqvRmw-1; Tue,
+ 11 Feb 2025 09:33:48 -0500
+X-MC-Unique: 37WzBITyMeuxRSpNLqvRmw-1
+X-Mimecast-MFC-AGG-ID: 37WzBITyMeuxRSpNLqvRmw
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B1FC180056F
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:33:47 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.45.224.39])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 45ED11800873; Tue, 11 Feb 2025 14:33:45 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/12] vfio queue
+Date: Tue, 11 Feb 2025 15:33:28 +0100
+Message-ID: <20250211143340.787996-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1862968807-1739284008=:29847"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -66,72 +79,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The following changes since commit ffaf7f0376f8040ce9068d71ae9ae8722505c42e:
 
---3866299591-1862968807-1739284008=:29847
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+  Merge tag 'pull-10.0-testing-and-gdstub-updates-100225-1' of https://gitlab.com/stsquad/qemu into staging (2025-02-10 13:26:17 -0500)
 
-On Tue, 11 Feb 2025, Thomas Huth wrote:
-> On 03/02/2025 10.26, Cédric Le Goater wrote:
->> The test sequence boots from kernel a sam460ex machine with a
->> virtio-net device to check PCI.
->> 
->> The buildroot is built with config :
->>
->>    BR2_powerpc=y
->>    BR2_powerpc_440fp=y
->> 
->> and the kernel with the '44x/canyonlands' deconfig and virtio support.
->> 
->> Cc: BALATON Zoltan <balaton@eik.bme.hu>
+are available in the Git repository at:
 
-You can also change this Cc line to read:
+  https://github.com/legoater/qemu/ tags/pull-vfio-20250211
 
-Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+for you to fetch changes up to be7d8579eb5758c0edf81eb068017a56471a77e0:
 
-Regards,
-BALATON Zoltan
+  vfio: Remove superfluous error report in vfio_listener_region_add() (2025-02-11 14:15:19 +0100)
 
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   MAINTAINERS                           |  1 +
->>   tests/functional/meson.build          |  1 +
->>   tests/functional/test_ppc_sam460ex.py | 38 +++++++++++++++++++++++++++
->>   3 files changed, 40 insertions(+)
->>   create mode 100644 tests/functional/test_ppc_sam460ex.py
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 8d30c5bafd87..e4ab6031511b 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -1555,6 +1555,7 @@ F: pc-bios/canyonlands.dt[sb]
->>   F: pc-bios/u-boot-sam460ex-20100605.bin
->>   F: roms/u-boot-sam460ex
->>   F: docs/system/ppc/amigang.rst
->> +F: tests/functional/test_ppc_sam460ex.py
->>     pegasos2
->>   M: BALATON Zoltan <balaton@eik.bme.hu>
->> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
->> index 868f4a64b60b..6a5f1dc405cb 100644
->> --- a/tests/functional/meson.build
->> +++ b/tests/functional/meson.build
->> @@ -193,6 +193,7 @@ tests_ppc_system_thorough = [
->>     'ppc_40p',
->>     'ppc_amiga',
->>     'ppc_bamboo',
->> +  'ppc_sam460ex',
->>     'ppc_mac',
->>     'ppc_mpc8544ds',
->>     'ppc_tuxrun',
->
-> I'll sort that entry alphabetically into the list, and then pick this patch 
-> up for my next pull request.
->
-> Thanks!
->  Thomas
->
->
---3866299591-1862968807-1739284008=:29847--
+----------------------------------------------------------------
+vfio queue:
+
+* Coverity fix
+* IGD cleanups using VFIOQuirk
+* SIGSEV fix in IOMMUFD host IOMMU device
+* Improved error reporting for MMIO region mapping failures
+
+----------------------------------------------------------------
+Cédric Le Goater (8):
+      vfio/igd: Fix potential overflow in igd_gtt_memory_size()
+      util/error: Introduce warn_report_err_once()
+      vfio/pci: Replace "iommu_device" by "vIOMMU"
+      vfio: Rephrase comment in vfio_listener_region_add() error path
+      vfio: Introduce vfio_get_vfio_device()
+      vfio: Improve error reporting when MMIO region mapping fails
+      vfio: Remove reports of DMA mapping errors in backends
+      vfio: Remove superfluous error report in vfio_listener_region_add()
+
+Tomita Moeko (3):
+      vfio/pci: declare generic quirks in a new header file
+      vfio/pci: introduce config_offset field in VFIOConfigMirrorQuirk
+      vfio/igd: use VFIOConfigMirrorQuirk for mirrored registers
+
+Zhenzhong Duan (1):
+      vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
+
+ hw/vfio/pci-quirks.h          |  72 ++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h |   1 +
+ include/qapi/error.h          |  12 ++++
+ backends/iommufd.c            |   3 -
+ hw/vfio/common.c              |  40 +++++++++----
+ hw/vfio/container.c           |   2 -
+ hw/vfio/helpers.c             |  10 ++++
+ hw/vfio/igd.c                 | 127 +++++++++++-------------------------------
+ hw/vfio/iommufd.c             |   5 +-
+ hw/vfio/pci-quirks.c          |  57 ++-----------------
+ hw/vfio/pci.c                 |   2 +-
+ util/error.c                  |  11 ++++
+ 12 files changed, 177 insertions(+), 165 deletions(-)
+ create mode 100644 hw/vfio/pci-quirks.h
+
 
