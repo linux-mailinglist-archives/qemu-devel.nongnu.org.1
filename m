@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A450DA318B2
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FC7A31913
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:53:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thyrN-0000x5-5X; Tue, 11 Feb 2025 17:36:05 -0500
+	id 1thz63-0005be-GV; Tue, 11 Feb 2025 17:51:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thyrJ-0000wZ-2L
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:36:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz60-0005bK-MF
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thyrB-0000fr-Bs
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:35:56 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz5y-00052f-Cy
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739313350;
+ s=mimecast20190719; t=1739314269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=AQmLFir4UkEGYUUsaqSF/TAOnlHne0O7Pyi3Uz6Gm6s=;
- b=QmPSfKUPEzpS5S8KwQAh/2R4PaNjZ/uW5qWXA+gJSOVJhRI05zOcp8uEfixVXXGinhEDes
- g/TrqvbR+ho+iUTZ1wAoYuyGp0JEgJjfXbhnoOc9QVfS7KRo19AHIAUpOOLrgmyKJgHrfs
- xSplmJgsxXOBHVTBvCQNsaHq84g0MGc=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kLidyKEQz+z7EePA4Gpsn6MuzeO6r7+SbEpEclErY9w=;
+ b=XSce88bBYPSsDSwMAoHFqa2JMe91QNjJDKD81zQMiuYwjgU0zaVtC3teI85iNOE2n/LTjv
+ fWUaM3YS5dTnpbDzGyeYIWwKkgucePuc1rx5R03AV3NpMJYPcB0nTt1Y6SBK2WA+0+uIfl
+ AlkkOJlqJU5J5rX+Gr4FVl9oZfj5IDk=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-6kt0exFXPmyslSzQlXuclA-1; Tue, 11 Feb 2025 17:35:48 -0500
-X-MC-Unique: 6kt0exFXPmyslSzQlXuclA-1
-X-Mimecast-MFC-AGG-ID: 6kt0exFXPmyslSzQlXuclA_1739313348
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3ef3847424aso6703256b6e.2
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:35:48 -0800 (PST)
+ us-mta-401-Lgl9E2lOMH-EK4XoxUeeSg-1; Tue, 11 Feb 2025 17:51:05 -0500
+X-MC-Unique: Lgl9E2lOMH-EK4XoxUeeSg-1
+X-Mimecast-MFC-AGG-ID: Lgl9E2lOMH-EK4XoxUeeSg
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-5fca07d887cso291553eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:51:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739313348; x=1739918148;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AQmLFir4UkEGYUUsaqSF/TAOnlHne0O7Pyi3Uz6Gm6s=;
- b=RvY1L77qp+F/BP+n6ps+wMSmnpqtJgKWXEplRKQlNoMDqpojLKhNd8fvg4EGjrqy2I
- JVPFv+u/aw10a0Ta5Zh0bDzjS19tiJbp6tcCqtucLli/o3SMdvcH8y6HEw87d/R4+LwB
- /cbpw81nHhsQUdzFJ+32eHf474LFk2jADndxHuFXLahprVizQ6Z05+t9jzyI9wBsDS1G
- A/H0YCGIY9nf0+KGsnq8e/k5EeVnmlueJwNGG7NLNbj9SgKT/gXQNmNWlznmbcmQv2L5
- dVp/xweQPd2QuZO7/crQwuvi4TkQ40r04T5uKqJ8ti2CKYfEQJw3LoZaLl10+4QPs+O+
- ujGQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXXWpwHzJxP3Ghs7llu3G3w8/iuj1ettdjkTEiHnWwwIuaydUj34UUYPVthTZJirG9vDC6EghU/fdoV@nongnu.org
-X-Gm-Message-State: AOJu0YyXo4ioQaYuKPYQHaYYu811AxDhRYifszFOWnYwfVaafPHmck58
- c8MMp7uYUqBHN2CDf+KpH4Mgiewp9JUn64GFrR1AuClgTUu1dMFsTpU5ADIYfCvBbK7wJKh58Z5
- c68hqf3eLv6Spy7r9qItI4YtQr1mrSMS3jv2GAf81TNclcaBBa74t
-X-Gm-Gg: ASbGncsc2CkVy8UDS21O1jd8+FGIsOtjAu1lCxGPtwpCXYlfUo7GEbu6uKVe00j2ABY
- xBtm56FKpXdGGaXi+qbJvzNHegf0+B6VUwEwzYfnRjoZnqNhORCmOUrd0cH13cfbJFDNQKvBzwD
- uIbQ8yNA5GqV9RnwMRSCi3u4wYME62vqtL+a/ZML6eb8851g8yJ39pq3gvtYYp183Q6j93J3dcU
- UcQ3OHEbk/H0cZjrmdm0rtuccjwCIduGT7HjznZD2KJvtOx6/Z5tWLr9pI=
-X-Received: by 2002:a05:6808:80cc:b0:3f3:b0ae:7998 with SMTP id
- 5614622812f47-3f3cd601076mr1099272b6e.17.1739313347846; 
- Tue, 11 Feb 2025 14:35:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtm+HslfUZKczOhDisXpbAz9Wg8zd23YUSu/nhTnz2WuQo5SFimH65ggUbt/iDHmN7BQOJCA==
-X-Received: by 2002:a05:6808:80cc:b0:3f3:b0ae:7998 with SMTP id
- 5614622812f47-3f3cd601076mr1099254b6e.17.1739313347528; 
- Tue, 11 Feb 2025 14:35:47 -0800 (PST)
-Received: from x1.local ([2604:7a40:2041:2b00::1000])
+ d=1e100.net; s=20230601; t=1739314263; x=1739919063;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kLidyKEQz+z7EePA4Gpsn6MuzeO6r7+SbEpEclErY9w=;
+ b=ZVbGnl8yGMiqzQGOOB+xtihNy8zngHuN3TaGDA9a5L9+L8/ggjjS9xJno4HAebUFjd
+ xHCO61Wk0q8w8P+hYYJh1nOWEZUXjaJwIsSL3B+0XfTqeApqUPN3riisptcAQMoO3wEW
+ 4zneBjNjDYS0ik1ny8vg6TWK9eupdkjiRtOqDAiA3OQK/modWgS/2iydhMk4l9SSl9Az
+ ThwpgJORhorN5mJmBNc8iT6eydHA5FvHZuaJHUAduKWxSunqpTAgDmMr1Oh10Rj0Gi8d
+ udiScb+YU5HjGnNsxHtNICxp3yawSPABX2GB5AytWCuhJzHefiNucaPUAdW7n3K1oyvE
+ d/4A==
+X-Gm-Message-State: AOJu0YzAjatCohDbJB3qU7jIzQ9DlQY/9SkjogO3pdjtWNFe/0hkwhMA
+ tYli9onn0tTnRChIv4J7iX1uHJo66yU1Ei6nl6ZpLt0mmmlmHByZ4pdk9pA4p1cpTjz2zITk8dv
+ AXwXnhsF36rRpQU+lb245698qXUfI4++cFmddD6mOgZOwM6ZdE+w7SuG3ATURSNz/6B2HAwkE7D
+ ZZL5UZ5M4PpnK7KCnBMn259JLXAQtmfWA3ig==
+X-Gm-Gg: ASbGncuKuefbOZb0XQAavatmGkJ46CeK/pKXNzE3+gzdvdJPD0UpGNp0vNknYeY1DKo
+ sCt3MYj0/oqsIALZW3J5ihr46v0F0GBUgIlCtwnEs4+OCGfQ11c+1uL6ef0m2/TmxVTR1aph0Bn
+ jcaWjr8xFP9dnjVsf7TjALdI751yFeGz8B31bW3goZVSxq0P78NWfafERJhi9f83uBYMQv6gUAi
+ PgasGKEWeqeMXRGzHoGhundci4JEZOQ9t91TFxYXdT7OKpwReRjM2/r
+X-Received: by 2002:a05:6820:1f07:b0:5fa:3bf1:f9df with SMTP id
+ 006d021491bc7-5fca301f2b6mr321249eaf.8.1739314263430; 
+ Tue, 11 Feb 2025 14:51:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEwVeOnC0DYkHZcRWqhtgHpz0ZxAYb23tlrFiqj7QGbFngm5xAsWyNXQzKURtQqXCiyAxNFyQ==
+X-Received: by 2002:a05:6820:1f07:b0:5fa:3bf1:f9df with SMTP id
+ 006d021491bc7-5fca301f2b6mr321233eaf.8.1739314263051; 
+ Tue, 11 Feb 2025 14:51:03 -0800 (PST)
+Received: from x1.com ([2604:7a40:2041:2b00::1000])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3f389efebe9sm3576089b6e.27.2025.02.11.14.35.45
+ 006d021491bc7-5fca0992fd0sm482515eaf.34.2025.02.11.14.51.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 14:35:46 -0800 (PST)
-Date: Tue, 11 Feb 2025 17:35:42 -0500
+ Tue, 11 Feb 2025 14:51:02 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>
-Cc: david@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, pbonzini@redhat.com,
- richard.henderson@linaro.org, philmd@linaro.org,
- peter.maydell@linaro.org, joao.m.martins@oracle.com
-Subject: Re: [PATCH v8 0/3] Poisoned memory recovery on reboot
-Message-ID: <Z6vQvr4dCCsBR2sX@x1.local>
-References: <20250211212707.302391-1-william.roche@oracle.com>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 00/14] Mem next patches
+Date: Tue, 11 Feb 2025 17:50:44 -0500
+Message-ID: <20250211225059.182533-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250211212707.302391-1-william.roche@oracle.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
@@ -108,39 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 11, 2025 at 09:27:04PM +0000, “William Roche wrote:
-> From: William Roche <william.roche@oracle.com>
-> 
-> Here is a very simplified version of my fix only dealing with the
-> recovery of huge pages on VM reset.
->  ---
-> This set of patches fixes an existing bug with hardware memory errors
-> impacting hugetlbfs memory backed VMs and its recovery on VM reset.
-> When using hugetlbfs large pages, any large page location being impacted
-> by an HW memory error results in poisoning the entire page, suddenly
-> making a large chunk of the VM memory unusable.
-> 
-> The main problem that currently exists in Qemu is the lack of backend
-> file repair before resetting the VM memory, resulting in the impacted
-> memory to be silently unusable even after a VM reboot.
-> 
-> In order to fix this issue, we take into account the page size of the
-> impacted memory block when dealing with the associated poisoned page
-> location.
-> 
-> Using the page size information we also try to regenerate the memory
-> calling ram_block_discard_range() on VM reset when running
-> qemu_ram_remap(). So that a poisoned memory backed by a hugetlbfs
-> file is regenerated with a hole punched in this file. A new page is
-> loaded when the location is first touched.  In case of a discard
-> failure we fall back to remapping the memory location.
-> 
-> But we currently don't reset the memory settings and the 'prealloc'
-> attribute is ignored after the remap from the file backend.
+The following changes since commit ffaf7f0376f8040ce9068d71ae9ae8722505c42e:
 
-queued patch 1-2, thanks.
+  Merge tag 'pull-10.0-testing-and-gdstub-updates-100225-1' of https://gitlab.com/stsquad/qemu into staging (2025-02-10 13:26:17 -0500)
+
+are available in the Git repository at:
+
+  https://gitlab.com/peterx/qemu.git tags/mem-next-pull-request
+
+for you to fetch changes up to 3e05dedb9f3a4687bffbbc91e89e5c27887c5dcd:
+
+  system/physmem: poisoned memory discard on reboot (2025-02-11 16:37:06 -0500)
+
+----------------------------------------------------------------
+Memory pull for 10.0
+
+- William's fix on ram hole punching when with file offset
+- Daniil's patchset to introduce mem-lock=on-fault
+- William's hugetlb hwpoison fix for size report & remap
+- David's series to allow qemu debug writes to MMIOs
+
+----------------------------------------------------------------
+
+Daniil Tatianin (4):
+  os: add an ability to lock memory on_fault
+  system/vl: extract overcommit option parsing into a helper
+  system: introduce a new MlockState enum
+  overcommit: introduce mem-lock=on-fault
+
+David Hildenbrand (7):
+  physmem: factor out memory_region_is_ram_device() check in
+    memory_access_is_direct()
+  physmem: factor out RAM/ROMD check in memory_access_is_direct()
+  physmem: factor out direct access check into
+    memory_region_supports_direct_access()
+  physmem: disallow direct access to RAM DEVICE in
+    address_space_write_rom()
+  memory: pass MemTxAttrs to memory_access_is_direct()
+  hmp: use cpu_get_phys_page_debug() in hmp_gva2gpa()
+  physmem: teach cpu_memory_rw_debug() to write to more memory regions
+
+William Roche (3):
+  system/physmem: take into account fd_offset for file fallocate
+  system/physmem: handle hugetlb correctly in qemu_ram_remap()
+  system/physmem: poisoned memory discard on reboot
+
+ include/exec/cpu-common.h |   2 +-
+ include/exec/memattrs.h   |   5 +-
+ include/exec/memory.h     |  35 ++++++++---
+ include/system/os-posix.h |   2 +-
+ include/system/os-win32.h |   3 +-
+ include/system/system.h   |  12 +++-
+ accel/kvm/kvm-all.c       |   2 +-
+ hw/core/cpu-system.c      |  13 ++--
+ hw/core/loader.c          |   2 +-
+ hw/remote/vfio-user-obj.c |   2 +-
+ hw/virtio/virtio-mem.c    |   2 +-
+ migration/postcopy-ram.c  |   4 +-
+ monitor/hmp-cmds-target.c |   3 +-
+ os-posix.c                |  10 +++-
+ system/globals.c          |  12 +++-
+ system/physmem.c          | 121 ++++++++++++++++++++++++--------------
+ system/vl.c               |  52 ++++++++++++----
+ system/memory_ldst.c.inc  |  18 +++---
+ qemu-options.hx           |  14 +++--
+ 19 files changed, 217 insertions(+), 97 deletions(-)
 
 -- 
-Peter Xu
+2.47.0
 
 
