@@ -2,84 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E502A3113C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F431A31149
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:28:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht5W-0006SP-1n; Tue, 11 Feb 2025 11:26:18 -0500
+	id 1tht6b-00084E-Jv; Tue, 11 Feb 2025 11:27:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tht5N-0006PW-Hc
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:10 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tht5L-000341-Ug
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:09 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4394829ef0fso12778655e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291166; x=1739895966; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UTlj99r0T6pPfzjdgb6uJLs6OLra7ZAWbShTkPt4ma4=;
- b=UwRZ/t9TdxmiVifI8E2XYz55n6GAS61CI91oboq7L4GVhfTzJRvOwobxcSlehAxZhV
- YMw/6qEqdOubWXavvolyCEx8Ptjwnngqq/h38Ek/MkwsG043KtFcaMbAORLu3Pp4WhIb
- AhkSbBhesFatJWyK4yPvtCEYmJv4Cmtq90O2ltHprg0ySZV+wjx05rLqj16aCQs5CW18
- oRxA+GKZ4fnyUabTKANa181Ro9SPo2L8xQWp5gi2rDMi3pSZCHsDPaySIEE+qNfOEStQ
- /lWHgDcuW0XU2ODPhY6jPbrsLeSRk0hB27WKALpsQTknS4XY2afLsP57yKjA6pAkLE+g
- 71HA==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1tht65-0006sG-5K
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1tht62-0003U4-Lq
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739291209;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ag7/kcTmaUTRSM6LCTBcCbtLWMglMNq0WLwQy0Or26E=;
+ b=gxqpBldNMjC5iboHi2L0ONV/vfqiUuX3ENU5fW8zOxLfyHIvmedCs1k+8fpCD/kPMysUfx
+ hzNr5aP2PN8gKJIEN3JnKWZZUd7I+CPrFv8tzsw6qI9gakfjHGZQ9Epc6OFjtdZCtJUxq4
+ C4G6H/29RCktTZnNQZcLOLJJlJeOiu0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-6iYNa6D4OD6Ozhd0_MbsNA-1; Tue, 11 Feb 2025 11:26:46 -0500
+X-MC-Unique: 6iYNa6D4OD6Ozhd0_MbsNA-1
+X-Mimecast-MFC-AGG-ID: 6iYNa6D4OD6Ozhd0_MbsNA
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-38dcd8ddc5eso3001674f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291166; x=1739895966;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UTlj99r0T6pPfzjdgb6uJLs6OLra7ZAWbShTkPt4ma4=;
- b=wEkR990wfecxqWasF+XISqL3VGVF3Lot7TigNC3LOqPhVqzmEUb2BX4RekGIKwyCdG
- 1wWyxBuu7OE7yxpoVE4vGZ99J+jogBIBg4CQnlTJxu0vERxaYL1GSc9yhG/U+jgU/P3g
- W8rD79VliLmBC0lbxsotMgOqqJlkrgL+ntVGzIVWoLloTXMSXa4+fSNWep+hvxgWM1D5
- wIevZ7kWGj3YKLd6EHZZFNLg5SHAIdNMiVK4BPbAQNBBJjSG8hEROnZM8SKpeMwVABBw
- heFyH2RAixzKy3BWRiThyNwFblh8feH9x8+QX8bOZjBMkJAHY+TybQFZbOehlUlcMINl
- TV8A==
-X-Gm-Message-State: AOJu0Ywwcw/V86k+ljcbPJgTRKKXXsDkAuXxJxi8bM3cTjsspk5CCkim
- rS4+8JsFTOZqFWTX7XMxvze3uXagvvkLcTMZzuf7DJvtRyPiYhMHOk3QSjdR8L9NlG1UEYE9VFz
- JRoA=
-X-Gm-Gg: ASbGncsc+nARofYB6W3a9Bi72z/h4NgPGyc9qIcdrgyUrfQwKg2aXDmi8gRLnUHepQK
- nBfrTRuIBVT0CQLAj9AtKaxtxaJZehNiowFmsS+Wmd3e9r5lJgDLFDeyTU9/VcdS/MkLBulyT+V
- y0eIVobrSkyij7h2AT1p/bTVZ5477bRU4SeoHXGEFAPpitgrfTTcQpzJUM7gjosuxHHZLcyAAnt
- GGFwe3uAWTYRb1vbb1V7dHL3ftasRVWkKu9Ey3V/KZPr4mXLkZgvMeA6ySfxOGPH1w1DDue79/a
- kiW3LepX81S5Lgu6oVZMPm9wevsF+lOUxQGw7xiSqNTmD5t4UA4AjOa8H0ksTUCzZg==
-X-Google-Smtp-Source: AGHT+IGkCXBxUVQPAcwuBwCHilnHMerM7BP5F+KU9LkREX3u5uTfqDzwWPGP48jiMzjznLIXWRH9ew==
-X-Received: by 2002:a05:600c:3d8b:b0:438:a313:cda9 with SMTP id
- 5b1f17b1804b1-4394cf0112dmr34712495e9.10.1739291166027; 
- Tue, 11 Feb 2025 08:26:06 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393963c84esm102195835e9.27.2025.02.11.08.26.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Feb 2025 08:26:05 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] target/alpha: Do not mix exception flags and FPCR bits
-Date: Tue, 11 Feb 2025 17:26:04 +0100
-Message-ID: <20250211162604.83446-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
+ d=1e100.net; s=20230601; t=1739291205; x=1739896005;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ag7/kcTmaUTRSM6LCTBcCbtLWMglMNq0WLwQy0Or26E=;
+ b=t7oaIIu38XDmFxCDW6gJZIkdjt5KAEpp359c10mvxdGacAZwEOHtiABjdXU8eVgyAl
+ fmn1s5fM+N4lTV68XuKX1rZ2bYjTIYDDWxMGRCQsDbxqmS6i83uIxDwMhpXeAgnVLQuh
+ /cP696RQf3Od4Bk8BiHkw4pcDNwd84Vn13cys8ARzuQoKqlRGlPYogkM8uDOggUTpkOr
+ y44DylSTYhD9F17Asls+11FNePgjFTi5aYVqwSEqcAIkdhYMXnPR1xBC4prmWDQqcagN
+ Am8gceXellQ3pRzRTsghon5kPvhRu+IBcgqI2F+T2nERXAWsBSpxPhynWFC0E/qmSMxT
+ wFYA==
+X-Gm-Message-State: AOJu0YyzcKs2/P3lSq2xiKhYciBhsKkNNWmE4+gy0yUT3iDtHjkoxTV/
+ SqRLmWXKlrkR54DBmQsgZmNY/C/JE2xcAkmTvXVO6ok6wKtrw+83864xQf5H13dIBFsSIJtS7sO
+ EJQo4GOGTSkVaiAWK0+9L6FqpSZBMpGcuxO1d/iMFEGRZdUZo7Vzs
+X-Gm-Gg: ASbGncvz2yarlYFOg+FxIjOuQnYHYTvb2lSuIt19+3vZsab77orRfSPWO44cxN+w8hX
+ 41ZB3JqHdbQuWE+kWGwjtk5d8IPblbAi85h8wgCPv3IgjCO3xa2t0dQjcVD0TcBMYyCFeSrzzpP
+ WY+o+3lmy7yXnrg+CDsH/kTRN+Z5CpjplBJDYSiKOknQX8LvqW6ak30jxv9BttLnPOwOYcL4AL/
+ SqpOJ+p+1TCzJf1Dx5JKNYkqFiGUCxWvkfZ1IV6ttJiCg/Vp3uUTK69vdVKXMs5HzHsBQo3JHNV
+ hB9zlCA/GApGU9tBzxma+pQiKGqreNGKgjtdorwjIYz1JrH5FWjh+g==
+X-Received: by 2002:a5d:5850:0:b0:38d:d118:8b4d with SMTP id
+ ffacd0b85a97d-38dd1189408mr13736526f8f.54.1739291204817; 
+ Tue, 11 Feb 2025 08:26:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE+8OtW7y97gZpe/WvXipk8JHhm/p06mhyuoVWwvTI+QMyndALi668ow53/APRjnvchayGXkQ==
+X-Received: by 2002:a5d:5850:0:b0:38d:d118:8b4d with SMTP id
+ ffacd0b85a97d-38dd1189408mr13736472f8f.54.1739291204165; 
+ Tue, 11 Feb 2025 08:26:44 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it.
+ [79.46.200.29]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38dbf2ed900sm15117663f8f.53.2025.02.11.08.26.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Feb 2025 08:26:43 -0800 (PST)
+Date: Tue, 11 Feb 2025 17:26:39 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, fam@euphon.net, mst@redhat.com
+Subject: Re: [PATCH 1/1] vhost-scsi: support VIRTIO_SCSI_F_HOTPLUG
+Message-ID: <uut6fljzuwk6rwbzmnc7ieftwtyuwdjimehn5frluldt3cqudq@ndvyu6iu4gul>
+References: <20250203005215.1502-1-dongli.zhang@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250203005215.1502-1-dongli.zhang@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,58 +104,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-get_float_exception_flags() returns exception flags,
-which are distinct from the FPCR bits used as error code.
+On Sun, Feb 02, 2025 at 04:52:15PM -0800, Dongli Zhang wrote:
+>So far there isn't way to test host kernel vhost-scsi event queue path,
+>because VIRTIO_SCSI_F_HOTPLUG isn't supported by QEMU.
+>
+>virtio-scsi.c and vhost-user-scsi.c already support VIRTIO_SCSI_F_HOTPLUG
+>as property "hotplug".
+>
+>Add support to vhost-scsi.c to help evaluate and test event queue.
+>
+>To test the feature:
+>
+>1. Create vhost-scsi target with targetcli.
+>
+>targetcli /backstores/fileio create name=storage file_or_dev=disk01.raw
+>targetcli /vhost create naa.1123451234512345
+>targetcli /vhost/naa.1123451234512345/tpg1/luns create /backstores/fileio/storage
+>
+>2. Create QEMU instance with vhost-scsi.
+>
+>-device vhost-scsi-pci,wwpn=naa.1123451234512345,hotplug=true
+>
+>3. Once guest bootup, hotplug a new LUN from host.
+>
+>targetcli /backstores/fileio create name=storage02 file_or_dev=disk02.raw
+>targetcli /vhost/naa.1123451234512345/tpg1/luns create /backstores/fileio/storage02
+>
+>Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+>---
+> hw/scsi/vhost-scsi.c | 3 +++
+> 1 file changed, 3 insertions(+)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Based-on: <20250211130626.3940412-1-peter.maydell@linaro.org>
----
- target/alpha/fpu_helper.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+LGTM:
 
-diff --git a/target/alpha/fpu_helper.c b/target/alpha/fpu_helper.c
-index f810a9b6a47..6aefb9b851a 100644
---- a/target/alpha/fpu_helper.c
-+++ b/target/alpha/fpu_helper.c
-@@ -455,29 +455,28 @@ static uint64_t do_cvttq(CPUAlphaState *env, uint64_t a, int roundmode)
- {
-     float64 fa;
-     int64_t ret;
--    uint32_t exc;
-+    uint32_t exc = 0;
-+    int flags;
- 
-     fa = t_to_float64(a);
-     ret = float64_to_int64_modulo(fa, roundmode, &FP_STATUS);
- 
--    exc = get_float_exception_flags(&FP_STATUS);
--    if (unlikely(exc)) {
-+    flags = get_float_exception_flags(&FP_STATUS);
-+    if (unlikely(flags)) {
-         set_float_exception_flags(0, &FP_STATUS);
- 
-         /* We need to massage the resulting exceptions. */
--        if (exc & float_flag_invalid_cvti) {
-+        if (flags & float_flag_invalid_cvti) {
-             /* Overflow, either normal or infinity. */
-             if (float64_is_infinity(fa)) {
-                 exc = FPCR_INV;
-             } else {
-                 exc = FPCR_IOV | FPCR_INE;
-             }
--        } else if (exc & float_flag_invalid) {
-+        } else if (flags & float_flag_invalid) {
-             exc = FPCR_INV;
--        } else if (exc & float_flag_inexact) {
-+        } else if (flags & float_flag_inexact) {
-             exc = FPCR_INE;
--        } else {
--            exc = 0;
-         }
-     }
-     env->error_code = exc;
--- 
-2.47.1
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+
+
+>
+>diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+>index 8039d13fd9..d3a260f6a7 100644
+>--- a/hw/scsi/vhost-scsi.c
+>+++ b/hw/scsi/vhost-scsi.c
+>@@ -359,6 +359,9 @@ static const Property vhost_scsi_properties[] = {
+>     DEFINE_PROP_BIT64("t10_pi", VHostSCSICommon, host_features,
+>                                                  VIRTIO_SCSI_F_T10_PI,
+>                                                  false),
+>+    DEFINE_PROP_BIT64("hotplug", VHostSCSICommon, host_features,
+>+                                                  VIRTIO_SCSI_F_HOTPLUG,
+>+                                                  false),
+>     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
+>     DEFINE_PROP_BOOL("worker_per_virtqueue", VirtIOSCSICommon,
+>                      conf.worker_per_virtqueue, false),
+>-- 
+>2.39.3
+>
 
 
