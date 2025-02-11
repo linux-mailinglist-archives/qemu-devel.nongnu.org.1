@@ -2,69 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A4CA3018F
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 03:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DD2A301FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 04:09:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thg9x-0008IV-Ih; Mon, 10 Feb 2025 21:38:01 -0500
+	id 1thgdq-0007CA-3T; Mon, 10 Feb 2025 22:08:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1thg9v-0008I3-8n
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 21:37:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1thg9s-0000Jd-E8
- for qemu-devel@nongnu.org; Mon, 10 Feb 2025 21:37:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739241475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oLs78yXCkzUUr+3ENs7Bh9woV8u9/4fBKeLBIQwmVEA=;
- b=V+b59YSRzs8nNFp9qXa/X3Vez014Cwgs9135Ddww6zbHR7s4bN5eYesKRVfxBk3qbSf5qv
- EghUvUSM1pNc1NsVmJ1yE0vPDz1piRpDGsmqhzlvkq6rM2URyx5YAD9YdWuOhsQ/mTr1TR
- K8DvKAlywwIPh26RQsCAQMZKaESVeg0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-TZkrqN5PPCOOigitSztY-Q-1; Mon,
- 10 Feb 2025 21:37:51 -0500
-X-MC-Unique: TZkrqN5PPCOOigitSztY-Q-1
-X-Mimecast-MFC-AGG-ID: TZkrqN5PPCOOigitSztY-Q
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE36F180087B; Tue, 11 Feb 2025 02:37:50 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.124])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 40EBD18004A7; Tue, 11 Feb 2025 02:37:50 +0000 (UTC)
-Date: Mon, 10 Feb 2025 21:37:49 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/12] target-arm queue
-Message-ID: <20250211023749.GA149889@fedora>
-References: <20250210154942.3634878-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1thgdm-0007AR-Nv
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 22:08:50 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1thgdi-0000Li-KA
+ for qemu-devel@nongnu.org; Mon, 10 Feb 2025 22:08:49 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Ax3eI0v6pn+dZxAA--.28086S3;
+ Tue, 11 Feb 2025 11:08:36 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMCxbsUyv6pnL1YLAA--.43924S2;
+ Tue, 11 Feb 2025 11:08:34 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Subject: [PATCH v5 0/7] hw/loongarch/virt: Add cpu hotplug support
+Date: Tue, 11 Feb 2025 11:08:27 +0800
+Message-Id: <20250211030834.3276732-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="MQLwmwHbDErs1ybt"
-Content-Disposition: inline
-In-Reply-To: <20250210154942.3634878-1-peter.maydell@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCxbsUyv6pnL1YLAA--.43924S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,30 +63,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+LoongArch cpu hotplug is based on ACPI GED device, it depends on
+patchset where TYPE_HOTPLUG_HANDLER interface is added in ipi and extioi
+interrupt controller class for cpu hotplug event notification.
+  https://lore.kernel.org/qemu-devel/0d920309-c7ba-48d8-b46d-04ac1e38efc7@linaro.org/T/#t
 
---MQLwmwHbDErs1ybt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It can be verified with qemu command:
+  qemu-system-loongarch64 -smp 2,maxcpus=16,sockets=4,cores=4,threads=1
+and vcpu can be added or remove with hmp command:
+  device_add la464-loongarch-cpu,socket-id=0,core-id=2,thread-id=0,id=cpu-2
+  device_del cpu-2
 
-Applied, thanks.
+---
+v4 ... v5:
+  1. Use new calculation logic about physical cpu id, the max core-id and
+     thread-id is aligned up with power of 2.
+  2. Remove num-cpu property with ipi and extioi interrupt controller,
+     TYPE_HOTPLUG_HANDLER interface is added with the interrupt
+     controllers for cpu hotplug event notification.
+ 
+v3 ... v4:
+  1. For cold-plug CPUs, move socket-id/core-id/thread-id property
+     setting from preplug function to CPU object creating loop, since
+     there is topo information calculation already in CPU object creating
+     loop.
+  2. Init interrupt pin of CPU object in cpu plug interface for both
+     cold-plug CPUs and hot-plug CPUs.
+  3. Apply the patch based on latest qemu version.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+v2 ... v3:
+  1. Use qdev_realize_and_unref() with qdev_realize() and object_unref().
+  2. Set vcpus_count with 1 since vcpu object is created for every thread.
+  3. Remove property hw-id, use internal variable hw_id to differentiate
+     cold-plug cpus and hot-plug cpus.
+  4. Add generic function virt_init_cpu_irq() to init interrupt pin
+     of CPU object, used by both cold-plug and hot-plug CPUs
 
---MQLwmwHbDErs1ybt
-Content-Type: application/pgp-signature; name="signature.asc"
+v1 ... v2:
+  1. Add new property hw-id, property hw-id is set for cold-added CPUs,
+     and property socket-id/core-id/thread-id is set for hot-added CPUs.
+     The two properties can be generated from each other.
+  2. Use general hotplug api such as hotplug_handler_pre_plug etc
+  3. Reorganize the patch order, split the patch set into 4 small
+     patches.
+---
+Bibo Mao (7):
+  hw/loongarch/virt: Add CPU topology support
+  hw/loongarch/virt: Add topo properties on CPU object
+  hw/loongarch/virt: Add basic cpu plug interface framework
+  hw/loongarch/virt: Implement cpu unplug interface
+  hw/loongarch/virt: Implement cpu plug interface
+  hw/loongarch/virt: Update the ACPI table for hotplug cpu
+  hw/loongarch/virt: Enable cpu hotplug feature on virt machine
 
------BEGIN PGP SIGNATURE-----
+ hw/loongarch/Kconfig           |   1 +
+ hw/loongarch/virt-acpi-build.c |  35 +++-
+ hw/loongarch/virt.c            | 284 ++++++++++++++++++++++++++++++---
+ include/hw/loongarch/virt.h    |   1 +
+ target/loongarch/cpu.c         |  23 +++
+ target/loongarch/cpu.h         |  11 ++
+ 6 files changed, 333 insertions(+), 22 deletions(-)
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmeqt/wACgkQnKSrs4Gr
-c8gEJwf/e1WXJAbDk89Ni7ATlWsQmbeLjkbAe+uB8Pg2KkuKZMh5+EwkhQ5j4hef
-VSRbD5fbxZYt2pCs/s1fhLtiFso4+EIsMnGs3JeG9gOyJV7BlgzlA6KSzXBkn0ki
-zcXTrfswSRKM7HznCX0i1zoZ8F7uGFxdIAoqAbiDl/f4VCfL+TV2/6AqurXs1C9U
-8ri42hUcdu0AKdvOkv7xyuO0yzpnzFEP3Pn+FiTHU5uYwhVj/+csHmOSvrdssObN
-D13CHIZC4dofEI2HVoCT0D/HfNQl1lr0ndakpFWPqXZGPv6bVycH5hr3xTRK+jcW
-Mffk3zf6bEkIfyHzpLHwJd4P5s96Wg==
-=bcPh
------END PGP SIGNATURE-----
-
---MQLwmwHbDErs1ybt--
+-- 
+2.39.3
 
 
