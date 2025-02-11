@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F51BA311B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E9A31161
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:30:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht8I-0004Rs-92; Tue, 11 Feb 2025 11:29:10 -0500
+	id 1tht6g-0008ON-De; Tue, 11 Feb 2025 11:27:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht65-0006tH-Vl
+ id 1tht65-0006tI-VR
  for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:57 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht63-0003Uj-Ha
+ id 1tht64-0003Wo-63
  for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:53 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4394a823036so17359315e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:50 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4394c192285so10769855e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291210; x=1739896010; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291211; x=1739896011; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aqkV0xjCTajJ3P+rZ10ePbD+Oe29v/TIuU4/7Qb75WM=;
- b=JWKbgRnZkYMCLPwQwwd7xTzEYB56p24rulwsN38VAT2Xbz6t2hknHCE89Mn8oJqOg4
- g++QnDFH/ViKQBBgYiBDozLIZf8i5R+oW5D94gWAI0dR317oiDTLcXwQUIkKjinaE2tf
- o/26wqPK3YxjVrFWl7sjv3cf8nOc0F1RLOmt/yvMIDnNVZ1py5JGjKkmEDjcPF7g0jY9
- 5iEN65dcYckk9jcp0KX8o3tmbiE+Po8VnPwOZzOii2qGm0mbkoBy/z5LnPrSrpmRa3QS
- C3wJ1TtXCS/8J2ZZ3ssFmreN9ea3keDaTXPTJXe6K2X/uRs0WHZ68UzAlTLCkQYYdElQ
- tWQQ==
+ :reply-to; bh=qymzXrO+9F4JBSFIAl0zaVLUHcekNoeWY0bsti7Y49Q=;
+ b=NAC0A99aqCn4oiqGPvJ9U3rWeeozLcKjeceEhcYEB0KRE99W+qBi/1E5tyBO/TgIWb
+ 2B860HTK1jcRAjH+bhPmNhBsE+318529Kn83ueD/qD5umWC4RY8MlTdjQIhl7cctWuBx
+ JWKPgo6Kg+I5ON48+5oCThT/nk3WyPJp+q47Pl8ci52JMkWEoc5eM9ISqNkP+myHOvI9
+ I7cDhKNLDelLVqdG3RZIbIkLg99R40snSTZ9CpHgTth0ei2g41itPKpHpNrQa+JGrgGM
+ SsOeLyaC7TWyrbRMrQXTlJpcyYPIstcNmTOBqw9knWDl6CZ8ulX1KGtIQpvJN49tyWj9
+ hhLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291210; x=1739896010;
+ d=1e100.net; s=20230601; t=1739291211; x=1739896011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aqkV0xjCTajJ3P+rZ10ePbD+Oe29v/TIuU4/7Qb75WM=;
- b=VWs46xmpUxBSQZx/AOR3v0sqDfUlbWUsErAOCA8dcGOFRoW7RN6uJ+9Ye0Ta9CmXnW
- zKi2VicjhTwkh+1IWggS++0Ow/fI2LpcoBaixSrx6jHzu130fdvkS2amdyBH28JhZ/cl
- cquCENL3ZrxJKkb5T95oGSfQ1LMfPlCV1RNnLNcO8BqcHoK+ZyNejXskA9CzZpk7Sfg6
- 8s5RMivMS7qeq4SBc2dqKytlQlgdaCpUG90hNqc951rkTi9wAJ0M5G4udQWbtt++7qCN
- PMROifrLUQ6+e+a9uWldht6AMl7Ob9xBBOg0ynM7hpcJenbGPavkwlQgofiBjfI17LhO
- 0h0g==
-X-Gm-Message-State: AOJu0YyNHVEn+wwu5FZokG160lAdG3VgD/Tdf7WPXliSK4jWhOcj5mCx
- fCTSxMsjH3apPqUaOdzaVr7fjBkh3l0DDaektoN5Oz4qJIb3Rmxzf3SV0vqSWyKwK5b4DZCHdwO
- r
-X-Gm-Gg: ASbGncu2KAC4jAd200QH9K0HbT591MYgIP5NqJkVAcNjGQK2EUCfgwjZ7KnWGUdBCEy
- YBgoEiWRCxYOpp+zbS+2yvRLkoQxx6S5wsY8ccb6lIpuAnUjDOnW2pnTTUkHXF194fdZfGgcYal
- 1p2Zf5OeCCPAIwu6Iokw6T7tLbJ0VvF4jP5AxRwU/Ty7y4LhAaLfnYM0ShDo7HpZXc0jM8CUmGi
- m/9B6J31aU44jqkDuRbX1M3/v2GnYJwQQMowT2V9TLkzKV0XORDKRp6oLbJZKLe8M/kKMirtET9
- CaXOHVScPxAxtEyvYUrm
-X-Google-Smtp-Source: AGHT+IG68xo3uJI8isWh5qlGyXU3Wi34AsITRv3h5xnIkRA9P2TGfP3vAlET2kG6wTd/n+RlST0IWg==
-X-Received: by 2002:a05:600c:34ce:b0:439:3254:4bf1 with SMTP id
- 5b1f17b1804b1-43932544f7cmr107098555e9.8.1739291209882; 
- Tue, 11 Feb 2025 08:26:49 -0800 (PST)
+ bh=qymzXrO+9F4JBSFIAl0zaVLUHcekNoeWY0bsti7Y49Q=;
+ b=DiJv7YYB9JdFWUahuVHrKMTzCUhNpJjDyfUSxd136PGCiaUqZXV1EeEYIgNZ2frcV5
+ mv5FQx6N0vcL+RUIh+RSys1lPXsgDqlZMO15rVTdIIKKj2MPP05NFRsNhGMIwKw2lC+j
+ Nvw4Oupq+DqI/CpRKE8zQcpjLZbtkjhT3tAHhjW9c3hnS1hLyiTadvKMgBwulgFPsq7b
+ SFh45NE8kuDDRse1HzGbmi2Z1DalfTAkZQLsss515ub+7oiIFA3UCIwILOSEA5gCwLL3
+ x5Ri1nT8RkYAI1ZBbJGmbYNRZ+nVjyXx7mJgzU1PQWqNThBZ1eY80ygUJhOfbNaXEoIF
+ Fnww==
+X-Gm-Message-State: AOJu0YwAJ6kq+BufRds2gVqaeA68GsVpwpRsEVlH443JWvOHasRXy2VR
+ ui0gldhoBZJctYvPuBaxsokbukBRuIyGzM90LJYblpTdmXNvd26/WiACIf45ex6TZHDKVnEzwZP
+ W
+X-Gm-Gg: ASbGnct7Lpl/ztRO+x09Pfba7++cglhdd5PDWtmoi8Bu0bhi6omFXhU2ZcynqoXsWKt
+ wTqNkwTLEjsQrHwVbu21oSXMwy6Z5YnXBbvqnAG5bkr4mucwZyMZR8JjmyFhbZxkcja3dHw36hA
+ BEM5/sfFzdv6MD6BKcegNNnay5ni1SutHUdZ7YWmz3khW79a3FOagAR8DIFa4IvqgGt3ZJKMFe4
+ DRt397KN4RmjMGn85r4p4gu6+yDKcJlyn9q8mNUwnkJApaTFZ2Nsu41/FouwNVkMElRr0jMcm3/
+ FZx/QMkc9WJ7kEo0UdPL
+X-Google-Smtp-Source: AGHT+IFMEGqpKiMdlQngWDgqVyLX9SReoTkj+7EM5xnC9aaRR4aDtkiQ+0QIPFNKHnYtuGpUtuh6Rg==
+X-Received: by 2002:a05:600c:1d99:b0:439:5506:717f with SMTP id
+ 5b1f17b1804b1-43955067392mr24958015e9.9.1739291210809; 
+ Tue, 11 Feb 2025 08:26:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.49
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:49 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 50/68] target/arm: Handle FPCR.AH in SVE FMLSLB,
- FMLSLT (vectors)
-Date: Tue, 11 Feb 2025 16:25:36 +0000
-Message-Id: <20250211162554.4135349-51-peter.maydell@linaro.org>
+Subject: [PULL 51/68] target/arm: Enable FEAT_AFP for '-cpu max'
+Date: Tue, 11 Feb 2025 16:25:37 +0000
+Message-Id: <20250211162554.4135349-52-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,61 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Now that we have completed the handling for FPCR.{AH,FIZ,NEP}, we
+can enable FEAT_AFP for '-cpu max', and document that we support it.
 
-Handle FPCR.AH's requirement to not negate the sign of a NaN in SVE
-FMLSL (indexed), using the usual trick of negating by XOR when AH=0
-and by muladd flags when AH=1.
-
-Since we have the CPUARMState* in the helper anyway, we can
-look directly at env->vfp.fpcr and don't need toa pass in the
-FPCR.AH value via the SIMD data word.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250129013857.135256-33-richard.henderson@linaro.org
-[PMM: tweaked commit message]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 42bb43acd78..aefcd07ef00 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2178,19 +2178,28 @@ void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-                                CPUARMState *env, uint32_t desc)
- {
-     intptr_t i, oprsz = simd_oprsz(desc);
--    uint16_t negn = extract32(desc, SIMD_DATA_SHIFT, 1) << 15;
-+    bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     intptr_t sel = extract32(desc, SIMD_DATA_SHIFT + 1, 1) * sizeof(float16);
-     float_status *status = &env->vfp.fp_status_a64;
-     bool fz16 = get_flush_inputs_to_zero(&env->vfp.fp_status_f16_a64);
-+    int negx = 0, negf = 0;
-+
-+    if (is_s) {
-+        if (env->vfp.fpcr & FPCR_AH) {
-+            negf = float_muladd_negate_product;
-+        } else {
-+            negx = 0x8000;
-+        }
-+    }
- 
-     for (i = 0; i < oprsz; i += sizeof(float32)) {
--        float16 nn_16 = *(float16 *)(vn + H1_2(i + sel)) ^ negn;
-+        float16 nn_16 = *(float16 *)(vn + H1_2(i + sel)) ^ negx;
-         float16 mm_16 = *(float16 *)(vm + H1_2(i + sel));
-         float32 nn = float16_to_float32_by_bits(nn_16, fz16);
-         float32 mm = float16_to_float32_by_bits(mm_16, fz16);
-         float32 aa = *(float32 *)(va + H1_4(i));
- 
--        *(float32 *)(vd + H1_4(i)) = float32_muladd(nn, mm, aa, 0, status);
-+        *(float32 *)(vd + H1_4(i)) = float32_muladd(nn, mm, aa, negf, status);
-     }
- }
- 
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 60176d08597..63b4cdf5fb1 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -20,6 +20,7 @@ the following architecture extensions:
+ - FEAT_AA64EL3 (Support for AArch64 at EL3)
+ - FEAT_AdvSIMD (Advanced SIMD Extension)
+ - FEAT_AES (AESD and AESE instructions)
++- FEAT_AFP (Alternate floating-point behavior)
+ - FEAT_Armv9_Crypto (Armv9 Cryptographic Extension)
+ - FEAT_ASID16 (16 bit ASID)
+ - FEAT_BBM at level 2 (Translation table break-before-make levels)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 93573ceeb1a..0bc68aac177 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1218,6 +1218,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64MMFR1, XNX, 1);      /* FEAT_XNX */
+     t = FIELD_DP64(t, ID_AA64MMFR1, ETS, 2);      /* FEAT_ETS2 */
+     t = FIELD_DP64(t, ID_AA64MMFR1, HCX, 1);      /* FEAT_HCX */
++    t = FIELD_DP64(t, ID_AA64MMFR1, AFP, 1);      /* FEAT_AFP */
+     t = FIELD_DP64(t, ID_AA64MMFR1, TIDCP1, 1);   /* FEAT_TIDCP1 */
+     t = FIELD_DP64(t, ID_AA64MMFR1, CMOW, 1);     /* FEAT_CMOW */
+     cpu->isar.id_aa64mmfr1 = t;
 -- 
 2.34.1
 
