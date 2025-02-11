@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D41A311B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96540A3113D
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:27:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht5U-0006S5-Rc; Tue, 11 Feb 2025 11:26:16 -0500
+	id 1tht5V-0006SO-IK; Tue, 11 Feb 2025 11:26:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5N-0006PM-3o
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:09 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1tht5N-0006Pb-Vj
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:10 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5L-00033e-66
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:08 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4393dc02b78so18793955e9.3
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:06 -0800 (PST)
+ id 1tht5M-00034B-4M
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:09 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4394a823036so17351885e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291165; x=1739895965; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291167; x=1739895967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FqaQg++LCytft5147IVD/040K0ax8ufWG2wwf4dmJvw=;
- b=r8377NMr5yWFt2/Inf8WLmM8Jl/LwBYjbRouBBvWRtXZUCdna/tPuJ+uk9IvnhsnKd
- hSaCY6lkQ+X6XwVsjp/lapBiAh+BMREdwuU8g3i9wuQDSqNZaEsV3OYNpGOJRgexE4l6
- bCFdcppmR6eSrc6hBtwmB+rOFXoNmjxGCA02HE82949Z3q93swi+Eha1/vhcAX7Qs4r/
- +jrYa7G1FfWIBtBRq2O+fN5NI53XnrZr2PKCW0vXBFkFpWmdcREp/QF1UnZvyI0YAN1h
- icaQ0luo3I20oghrF7HZTAy20IWm32yp+7yCpaNZUHWVIK+Q5f3zdcUbN+mD/h9l/DMr
- k9Hw==
+ :reply-to; bh=yFFYGk2z6wncJvqMPz/0PChB0KSd0ypiZMRnDwsxBYI=;
+ b=icpvYeFV1kowMT4TJE2oAU/lmyoNTNzil5qQhahMlngUwQsAAU7xswBxpdpCtxS9+4
+ Y0cn+MHzEG86BBhfVKy0oDsgy8/qqW6TTQ00dXx5ThX7VQsUW+jc/m9vi5CuvmfRWG8B
+ 728Oy6xJBIKpgN8LBDx13/VjPVjc4BszVLOvDxN1setON1JwXaPwNZ0zIh5D2NK9YkFk
+ 2ZSIJxCclAeNFCoSATwGkMRdHG9DodGbMZAEK2fgoEtrDvDeTHlQPInQ6N6ExefzLxca
+ W+LzQuEdjkre3Tq8HuBbLOUId50bYYPC1u4FIrmYohBZMqW1Sviuj078u5DeV6AwerkC
+ Kp6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291165; x=1739895965;
+ d=1e100.net; s=20230601; t=1739291167; x=1739895967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FqaQg++LCytft5147IVD/040K0ax8ufWG2wwf4dmJvw=;
- b=ot746o57PmPRyIzF8lQXEjY/WDlJOGHbIa7JOsvjN3LC2wftTyIG77k+b7Sb2RFIg8
- XZiCDSMTJiCF20Eb4vHeEdLaYqCW5UYFz2rYLW+zuDQL1+oLHn4+HdP2g+jRhTW1wlnf
- s21fn72Y3DhF8gidtyuV1KUyOPJqvU2DxBr1rULZKMXRoN/Ns9I496D8qP3LI2pedjiX
- +cSWV7nPCWSJtl/oyyULWVjSzFmZtycoTlFxO7Bdm7dXIwC7DbmzBD1aJY9UCZGKWKJ1
- 68DmAlAbUhqVK5PpfthGYc7o9BJbIemxL3xJV4Iz6Ji/I0vV9GwCD70cZ1B6W9qUrNn5
- yNAA==
-X-Gm-Message-State: AOJu0YzQiG0tLWRwO3gfVdRLy7TjXdLQDiLYOINGPDOeugQxPfmR+JPa
- WSVNKFjXEOHkM0Y86mtgWfry3qS4ev6CBicEDwO0quZ3MvmRdafJOHUkcj3GEDQXxu+2KULtf/Z
- x
-X-Gm-Gg: ASbGncuzDkYcNlgbSX2HlP6LvJ1j3kn9zyb/TBnmw9Alx/pTjfvvwG25MKM6/JEokLx
- 4w3GcIaKnYl8CGt3s8sZvI5d02vRNXMwlgkgR3QzQd9Oyt35iDaYfNaOu/FzmJmuFwqvzI0pprZ
- FiI7rb7uJzYbdmYuJLpvF6IuFJb4Shmi47U+Hyo8SA2qJQxiMvDM8UXLDKvCQ9nkdJRfbNJigB0
- g1Yj383RnVc6o7qXri32JeVfyZ3kCcHb+f0Hhk2Yq2dVCUHkc5IdpA43OEealLjsWgVHtpdH5cy
- ExhJXk/gEdydOkrSPjCU
-X-Google-Smtp-Source: AGHT+IFRBzTpM869by61MNb5g9RnDmMjHjUkj2d+JzvlmXjp29jlEg7rPwgNkO97RY86MxAA5Y4foQ==
-X-Received: by 2002:a05:6000:1ac7:b0:38d:e078:43a5 with SMTP id
- ffacd0b85a97d-38de4188ee1mr3779656f8f.13.1739291165543; 
- Tue, 11 Feb 2025 08:26:05 -0800 (PST)
+ bh=yFFYGk2z6wncJvqMPz/0PChB0KSd0ypiZMRnDwsxBYI=;
+ b=IBOAcBquvnZcYEcpVtRQKvUzuyci+EHvGvwSERJZSwNOz88YZ6pMhq29wpoyBI+Its
+ QlhDrWFuzQakMG2B9gzLnWqwI+HQpnckFTUj9bisDafUgfiz96w6lKeGaYVQ6Wwmy/zb
+ gH6Rfx2Uo5spDCJoPstlNjGjHyhNKkI1vzGx9AC1sFCb3JZC4EnXbJW2OBtSvaYkR1+Q
+ mxFkN3sVs9Pax+X7mQHIEZ0OY7QHt/Nw0ZHof/B4ZiB2/PjLkaxFs9m0vVeAhXw+ldx+
+ GaUoyiruGb/XNgsj74laNwqKx1/lAjXCZTa4I9sVWyvoZLK21GuZ4Mr1jZzsOe8dEAk/
+ n66Q==
+X-Gm-Message-State: AOJu0YwD8BX/0NU7YQ/fnecMWjWOE0TPm6x3bnxR7kx4KVzYkbf5uvnt
+ dphpxOBMHkxixsZbGTCd5w75gmuL4o7JGIGpD6vFxhi0qWk80Q0PPcKIark6sSu7hsnmd0iwUIS
+ w
+X-Gm-Gg: ASbGncuhPG7IJmIqGx42L7XPwigfoMd3Zr2hoGj1etAveM9Vigh069ungj58B9fNksm
+ 5veVeT5ihjzRHiD9FFMqlnr1ZLDwgj5qNZ6ks2o7/wrrnAgZa7Gy5cIUC49LHGvDzBmezrrSXLL
+ sNUjwNQqZal8aLYK7FEkdXG6wEog+5i8xTx94hFJn2stqMaOC09QdOjiFTvn+4ANDvf/IFTWRry
+ TIAz/hmKgzFzEQqzVF5fjB2+AUIQiVsleZqxW04qhgh4yhk+v14xAW24oCaU0dpFK8+QS4JzT6K
+ lGYU2958n1P6ph1Hm9Ov
+X-Google-Smtp-Source: AGHT+IHcMuOWlOGV7BeEdxEI+KqujNH3OcI52ZVr4ubsWymI/ruwTfFW14E3SFr3rs2vNh05C/+Sdg==
+X-Received: by 2002:a05:600c:8410:b0:439:5512:ba0d with SMTP id
+ 5b1f17b1804b1-4395512bd2emr27454245e9.24.1739291166538; 
+ Tue, 11 Feb 2025 08:26:06 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.04
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:04 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:05 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/68] target/arm: Adjust exception flag handling for AH = 1
-Date: Tue, 11 Feb 2025 16:24:54 +0000
-Message-Id: <20250211162554.4135349-9-peter.maydell@linaro.org>
+Subject: [PULL 09/68] target/arm: Add FPCR.AH to tbflags
+Date: Tue, 11 Feb 2025 16:24:55 +0000
+Message-Id: <20250211162554.4135349-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,72 +96,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When FPCR.AH = 1, some of the cumulative exception flags in the FPSR
-behave slightly differently for A64 operations:
- * IDC is set when a denormal input is used without flushing
- * IXC (Inexact) is set when an output denormal is flushed to zero
+We are going to need to generate different code in some cases when
+FPCR.AH is 1.  For example:
+ * Floating point neg and abs must not flip the sign bit of NaNs
+ * some insns (FRECPE, FRECPS, FRECPX, FRSQRTE, FRSQRTS, and various
+   BFCVT and BFM bfloat16 ops) need to use a different float_status
+   to the usual one
 
-Update vfp_get_fpsr_from_host() to do this.
+Encode FPCR.AH into the A64 tbflags, so we can refer to it at
+translate time.
 
-Note that because half-precision operations never set IDC, we now
-need to add float_flag_input_denormal_used to the set we mask out of
-fp_status_f16_a64.
+Because we now have a bit in FPCR that affects codegen, we can't mark
+the AArch64 FPCR register as being SUPPRESS_TB_END any more; writes
+to it will now end the TB and trigger a regeneration of hflags.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/vfp_helper.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ target/arm/cpu.h               | 1 +
+ target/arm/tcg/translate.h     | 2 ++
+ target/arm/helper.c            | 2 +-
+ target/arm/tcg/hflags.c        | 4 ++++
+ target/arm/tcg/translate-a64.c | 1 +
+ 5 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index ef85c186f17..62b86d56b8e 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -78,7 +78,7 @@ static void arm_set_ah_fp_behaviours(float_status *s)
- #ifdef CONFIG_TCG
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 1c91b1f50f2..a71f848cc51 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -3198,6 +3198,7 @@ FIELD(TBFLAG_A64, NV2, 34, 1)
+ FIELD(TBFLAG_A64, NV2_MEM_E20, 35, 1)
+ /* Set if FEAT_NV2 RAM accesses are big-endian */
+ FIELD(TBFLAG_A64, NV2_MEM_BE, 36, 1)
++FIELD(TBFLAG_A64, AH, 37, 1)   /* FPCR.AH */
  
- /* Convert host exception flags to vfp form.  */
--static inline uint32_t vfp_exceptbits_from_host(int host_bits)
-+static inline uint32_t vfp_exceptbits_from_host(int host_bits, bool ah)
- {
-     uint32_t target_bits = 0;
- 
-@@ -100,6 +100,16 @@ static inline uint32_t vfp_exceptbits_from_host(int host_bits)
-     if (host_bits & float_flag_input_denormal_flushed) {
-         target_bits |= FPSR_IDC;
-     }
-+    /*
-+     * With FPCR.AH, IDC is set when an input denormal is used,
-+     * and flushing an output denormal to zero sets both IXC and UFC.
-+     */
-+    if (ah && (host_bits & float_flag_input_denormal_used)) {
-+        target_bits |= FPSR_IDC;
-+    }
-+    if (ah && (host_bits & float_flag_output_denormal_flushed)) {
-+        target_bits |= FPSR_IXC;
-+    }
-     return target_bits;
- }
- 
-@@ -117,7 +127,7 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
- 
-     a64_flags |= get_float_exception_flags(&env->vfp.fp_status_a64);
-     a64_flags |= (get_float_exception_flags(&env->vfp.fp_status_f16_a64)
--          & ~float_flag_input_denormal_flushed);
-+          & ~(float_flag_input_denormal_flushed | float_flag_input_denormal_used));
+ /*
+  * Helpers for using the above. Note that only the A64 accessors use
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 084ee63d990..1fc4fdd7794 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -155,6 +155,8 @@ typedef struct DisasContext {
+     bool nv2_mem_e20;
+     /* True if NV2 enabled and NV2 RAM accesses are big-endian */
+     bool nv2_mem_be;
++    /* True if FPCR.AH is 1 (alternate floating point handling) */
++    bool fpcr_ah;
      /*
-      * Flushing an input denormal *only* because FPCR.FIZ == 1 does
-      * not set FPSR.IDC; if FPCR.FZ is also set then this takes
-@@ -129,7 +139,8 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
-     if ((env->vfp.fpcr & (FPCR_FZ | FPCR_AH)) != FPCR_FZ) {
-         a64_flags &= ~float_flag_input_denormal_flushed;
+      * >= 0, a copy of PSTATE.BTYPE, which will be 0 without v8.5-BTI.
+      *  < 0, set by the current instruction.
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 40bdfc851a5..7d95eae9971 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -4848,7 +4848,7 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+       .writefn = aa64_daif_write, .resetfn = arm_cp_reset_ignore },
+     { .name = "FPCR", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .opc2 = 0, .crn = 4, .crm = 4,
+-      .access = PL0_RW, .type = ARM_CP_FPU | ARM_CP_SUPPRESS_TB_END,
++      .access = PL0_RW, .type = ARM_CP_FPU,
+       .readfn = aa64_fpcr_read, .writefn = aa64_fpcr_write },
+     { .name = "FPSR", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .opc2 = 1, .crn = 4, .crm = 4,
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index f03977b4b00..b3a78564ec1 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -404,6 +404,10 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+         DP_TBFLAG_A64(flags, TCMA, aa64_va_parameter_tcma(tcr, mmu_idx));
      }
--    return vfp_exceptbits_from_host(a32_flags | a64_flags);
-+    return vfp_exceptbits_from_host(a64_flags, env->vfp.fpcr & FPCR_AH) |
-+        vfp_exceptbits_from_host(a32_flags, false);
+ 
++    if (env->vfp.fpcr & FPCR_AH) {
++        DP_TBFLAG_A64(flags, AH, 1);
++    }
++
+     return rebuild_hflags_common(env, fp_el, mmu_idx, flags);
  }
  
- static void vfp_clear_float_status_exc_flags(CPUARMState *env)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index d6ac2ed418a..be3f4489e5e 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -9655,6 +9655,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
+     dc->nv2 = EX_TBFLAG_A64(tb_flags, NV2);
+     dc->nv2_mem_e20 = EX_TBFLAG_A64(tb_flags, NV2_MEM_E20);
+     dc->nv2_mem_be = EX_TBFLAG_A64(tb_flags, NV2_MEM_BE);
++    dc->fpcr_ah = EX_TBFLAG_A64(tb_flags, AH);
+     dc->vec_len = 0;
+     dc->vec_stride = 0;
+     dc->cp_regs = arm_cpu->cp_regs;
 -- 
 2.34.1
 
