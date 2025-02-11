@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E65A31911
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7147A31912
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 23:53:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thz6J-0005hN-7m; Tue, 11 Feb 2025 17:51:31 -0500
+	id 1thz6L-0005iq-Lj; Tue, 11 Feb 2025 17:51:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6G-0005gF-1D
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6G-0005gH-Eu
  for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6D-000564-SE
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:27 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thz6E-000566-2E
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 17:51:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1739314285;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PLWlmmzb89GolrhpSAzIBMC01IwngDNc8Jt0Hcx2LH0=;
- b=ZNtZzQtL8SLKZ9MPgJrn6pmJg9TUhMIb5sByq/vFXZXn/dGdDCiIL7ah5DD1nkk3f21z4Q
- GkgfeoE4+D37Vz0uh4qYioc4hWRzSGBUQFH4tbtF+83DlXOnTJ0+kJA94gJWzAjeriXtHM
- bBYg4AnlCfUwZwKh+kv8pT/8lH8+UdM=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ML7ApDFrpE6LdiaKUIk8tOpXVHTwr8mMl/oUpLjQuwc=;
+ b=h31ymj82qf/0iLuLg4fcmwavHFZpVt7+ag9eezqLFh1AugolB3X9UkxffWj0wt6NrZtbAn
+ WvBMJBrXnOXPB+DrDyxIr3on+qVM0kBR9mlRQRLSYg6k42ouy+RuaZFFnwqQ9l2wf8RkLR
+ 2AiO1eertjSTMfILt37l6O3VmGDvY5M=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-235-ybGuAkzpMxmC8X1iDtB1gg-1; Tue, 11 Feb 2025 17:51:22 -0500
-X-MC-Unique: ybGuAkzpMxmC8X1iDtB1gg-1
-X-Mimecast-MFC-AGG-ID: ybGuAkzpMxmC8X1iDtB1gg
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3f3b93f4810so2086657b6e.3
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:51:22 -0800 (PST)
+ us-mta-591-S5ASt57XOhOVO6RL0Hv4tg-1; Tue, 11 Feb 2025 17:51:24 -0500
+X-MC-Unique: S5ASt57XOhOVO6RL0Hv4tg-1
+X-Mimecast-MFC-AGG-ID: S5ASt57XOhOVO6RL0Hv4tg
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-726d163f945so3620398a34.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 14:51:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739314281; x=1739919081;
+ d=1e100.net; s=20230601; t=1739314283; x=1739919083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PLWlmmzb89GolrhpSAzIBMC01IwngDNc8Jt0Hcx2LH0=;
- b=r+CK27H4PWS3WOWTkvGi69g7Ava/9r0ZsiiyLds733gxNbVGClEfk7c7DQ22s/QTYg
- AMO2La8hA9onOSbxm7PgOf1By6LbSjqjaPs8Ty/W6oeop7o6qcdOKK7DTSN2BYnBrsbW
- 7CCGzsvgfC28nhM0NiFfBOGIMaNvwe2kjfQRPVHZbClsRH7ED+Ps8P3XV+yGMN6gMh3b
- whxtwz+/lFa3dUPq9Sw3HuL2zPN+Q0XtoaeD8iw2EQxG1klwO2By1XEB+Wkk47EsrH01
- yRi9FZCIzd7nLXDkm3MRMiy/waQiG3nPqsXgBA+Me60dj4zrd6PPGbuiyDyo9/6enq6F
- 5ZqA==
-X-Gm-Message-State: AOJu0Yxr+f/RhltWZQpDB6NALyTb7mP++ZwTVdBUmpVRyguH3x+eQwN/
- qhDxmcr2z94/mccQzyJuz7EAJCxnpWA2ejaeWaXffVGOIct9HQ7SQ7Fa8aoX41x5SpWjIKQsbh7
- R3pA7sJP9AYtyGhjKs4GtPgI1yhPhEQkYJ/eICzNghwIFAQLfBACsz8GuN+ir3aRvTLTwW7jvCx
- yB87QG0m45/in5arxDOqZTNC3uYmSbTBqSRg==
-X-Gm-Gg: ASbGncuq46mDFt9r8zttMrbbu/YretDeLcWqyUySKkiSUrLKSDnPy10JKD3niOeSUDm
- w9GcJziFDT13x6S30xlGDcvffzZ1JFhhMMSgPF8Kdm2F63VC1A5dcMpO9WDWmvFib3tU75+94r2
- njgAMTTGF1HRe4jutJac3alafByuvpsUC1vxYYzT+/Hvqh6MLRC0KF/Jio8wAc3/wmMSqtSqp8l
- zknDz+eRaAD3tq7tLIrKknE73yAjeTZOqK1RM7JTFCIqm+O6njEpM0u
-X-Received: by 2002:a05:6808:17a9:b0:3f3:cb68:a90a with SMTP id
- 5614622812f47-3f3cd3f1451mr1225966b6e.0.1739314281240; 
- Tue, 11 Feb 2025 14:51:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0nKLedXfFlHw6W3fdTt3YLXfhItv4b6cfCx1+zV4lK4nTiJINHUfzaf++Ytw+V9jpPB9lNQ==
-X-Received: by 2002:a05:6808:17a9:b0:3f3:cb68:a90a with SMTP id
- 5614622812f47-3f3cd3f1451mr1225955b6e.0.1739314280951; 
- Tue, 11 Feb 2025 14:51:20 -0800 (PST)
+ bh=ML7ApDFrpE6LdiaKUIk8tOpXVHTwr8mMl/oUpLjQuwc=;
+ b=sH8DO4umCHptzmo7ECq2c0TEL7AMr7vmirS7+gckGlYz3Znh7/DeXeGIJy36CBeDZW
+ jDqrBafwrwz/CYqCD6qR46M1sEWQB7Dt0Mr8ZLJqc9swb1nYe/vy1D793dwdb+MAmY9j
+ 9EpyV8YSVrjSLeqXEPoXa8Nclpotdrir3MhTvZjPjYEgMGvvKylT/0RpjCiRi8sC4GZD
+ lrqCWa+oMEbIIcpg+o3R4Yd6PW1CTJ8KF4j96+v03s4DUOWFuziZVNv/4C5cP1h9dzVv
+ Ua3nCdcajMDQpguXib6x66zZNr6vdyRDGeh9xuDlPKYGq7ODjiX2l0uy2db1ms8KQQHa
+ uZ0A==
+X-Gm-Message-State: AOJu0Yw3/drTI2cfX1PkwHc1kt3gokF280Bi+n0XChy9m0DnpJhq6gE+
+ UKhb1P77cKInbtLmYjGL6U4QH/tMhT3scQoy6Dozu00K9BwnQ/memdPwQRg+GFd0pwQUnr7Lc8v
+ 1IEGkKrmaNlJHgpfKVPEXDsRcZQl9yBxaz6RBV42QqUK2d3LzeL5nchudYAE6mkW1gs8e/hBBnr
+ keukne0AIsMOwtGUcM52uqNmrOFNdvGQUr5A==
+X-Gm-Gg: ASbGncvt1EmP3gYjBsFArY/68s1mwMQ1DlTh20U7BH03rcKNBhAjHN9OUdoajufIHLI
+ lTPYFXP+OhF80SzwyFt+pAvcjLg7cox0E9pKjExbfXLPcIHXMU+4qyiRZxcnIYgALWGSCtRHcn4
+ 9VRIIQh0pX+PLGA6ZkUFF4b5bPHQ5u0QyfRVIzB5eTdNLHgQRiHQX8nvqzErIFpsJUmbCpA/suF
+ hy3gjPztKBaxPRYcTq55EJoe7In7/VZ3XBT8MnphCsgTbB/mAqeioHE
+X-Received: by 2002:a05:6830:6483:b0:71e:7e4:c54e with SMTP id
+ 46e09a7af769-726f1c33b3fmr818457a34.3.1739314283086; 
+ Tue, 11 Feb 2025 14:51:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF6fL7Pyjhd7ZDtPaoHijVGa0J4q94S5Nxr8WauUHU94TAZlVZS6xxzABtBGgymiCaNBnVDEw==
+X-Received: by 2002:a05:6830:6483:b0:71e:7e4:c54e with SMTP id
+ 46e09a7af769-726f1c33b3fmr818437a34.3.1739314282746; 
+ Tue, 11 Feb 2025 14:51:22 -0800 (PST)
 Received: from x1.com ([2604:7a40:2041:2b00::1000])
  by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5fca0992fd0sm482515eaf.34.2025.02.11.14.51.19
+ 006d021491bc7-5fca0992fd0sm482515eaf.34.2025.02.11.14.51.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 14:51:20 -0800 (PST)
+ Tue, 11 Feb 2025 14:51:21 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/14] memory: pass MemTxAttrs to memory_access_is_direct()
-Date: Tue, 11 Feb 2025 17:50:54 -0500
-Message-ID: <20250211225059.182533-11-peterx@redhat.com>
+Subject: [PULL 11/14] hmp: use cpu_get_phys_page_debug() in hmp_gva2gpa()
+Date: Tue, 11 Feb 2025 17:50:55 -0500
+Message-ID: <20250211225059.182533-12-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250211225059.182533-1-peterx@redhat.com>
 References: <20250211225059.182533-1-peterx@redhat.com>
@@ -109,214 +109,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Hildenbrand <david@redhat.com>
 
-We want to pass another flag that will be stored in MemTxAttrs. So pass
-MemTxAttrs directly.
+We don't need the MemTxAttrs, so let's simply use the simpler function
+variant.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20250210084648.33798-6-david@redhat.com
+Link: https://lore.kernel.org/r/20250210084648.33798-7-david@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/exec/memory.h     |  5 +++--
- hw/core/loader.c          |  2 +-
- hw/remote/vfio-user-obj.c |  2 +-
- system/physmem.c          | 12 ++++++------
- system/memory_ldst.c.inc  | 18 +++++++++---------
- 5 files changed, 20 insertions(+), 19 deletions(-)
+ monitor/hmp-cmds-target.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 4e2cf95ab6..b18ecf933e 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3012,7 +3012,8 @@ static inline bool memory_region_supports_direct_access(MemoryRegion *mr)
-     return !memory_region_is_ram_device(mr);
- }
- 
--static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
-+static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write,
-+                                           MemTxAttrs attrs)
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index 27ffe61818..239c2a61a4 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -301,7 +301,6 @@ void hmp_gpa2hva(Monitor *mon, const QDict *qdict)
+ void hmp_gva2gpa(Monitor *mon, const QDict *qdict)
  {
-     if (!memory_region_supports_direct_access(mr)) {
-         return false;
-@@ -3053,7 +3054,7 @@ MemTxResult address_space_read(AddressSpace *as, hwaddr addr,
-             fv = address_space_to_flatview(as);
-             l = len;
-             mr = flatview_translate(fv, addr, &addr1, &l, false, attrs);
--            if (len == l && memory_access_is_direct(mr, false)) {
-+            if (len == l && memory_access_is_direct(mr, false, attrs)) {
-                 ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
-                 memcpy(buf, ptr, len);
-             } else {
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index fd25c5e01b..332b879a0b 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -144,7 +144,7 @@ ssize_t load_image_mr(const char *filename, MemoryRegion *mr)
- {
-     ssize_t size;
+     target_ulong addr = qdict_get_int(qdict, "addr");
+-    MemTxAttrs attrs;
+     CPUState *cs = mon_get_cpu(mon);
+     hwaddr gpa;
  
--    if (!memory_access_is_direct(mr, false)) {
-+    if (!memory_access_is_direct(mr, false, MEMTXATTRS_UNSPECIFIED)) {
-         /* Can only load an image into RAM or ROM */
-         return -1;
-     }
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index 9e5ff6d87a..6e51a92856 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -358,7 +358,7 @@ static int vfu_object_mr_rw(MemoryRegion *mr, uint8_t *buf, hwaddr offset,
-     int access_size;
-     uint64_t val;
- 
--    if (memory_access_is_direct(mr, is_write)) {
-+    if (memory_access_is_direct(mr, is_write, MEMTXATTRS_UNSPECIFIED)) {
-         /**
-          * Some devices expose a PCI expansion ROM, which could be buffer
-          * based as compared to other regions which are primarily based on
-diff --git a/system/physmem.c b/system/physmem.c
-index cff15ca1df..8745c10c9d 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -573,7 +573,7 @@ MemoryRegion *flatview_translate(FlatView *fv, hwaddr addr, hwaddr *xlat,
-                                     is_write, true, &as, attrs);
-     mr = section.mr;
- 
--    if (xen_enabled() && memory_access_is_direct(mr, is_write)) {
-+    if (xen_enabled() && memory_access_is_direct(mr, is_write, attrs)) {
-         hwaddr page = ((addr & TARGET_PAGE_MASK) + TARGET_PAGE_SIZE) - addr;
-         *plen = MIN(page, *plen);
-     }
-@@ -2869,7 +2869,7 @@ static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
-         return MEMTX_ACCESS_ERROR;
+@@ -310,7 +309,7 @@ void hmp_gva2gpa(Monitor *mon, const QDict *qdict)
+         return;
      }
  
--    if (!memory_access_is_direct(mr, true)) {
-+    if (!memory_access_is_direct(mr, true, attrs)) {
-         uint64_t val;
-         MemTxResult result;
-         bool release_lock = prepare_mmio_access(mr);
-@@ -2965,7 +2965,7 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
-         return MEMTX_ACCESS_ERROR;
-     }
- 
--    if (!memory_access_is_direct(mr, false)) {
-+    if (!memory_access_is_direct(mr, false, attrs)) {
-         /* I/O case */
-         uint64_t val;
-         MemTxResult result;
-@@ -3274,7 +3274,7 @@ static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr len,
-     while (len > 0) {
-         l = len;
-         mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
--        if (!memory_access_is_direct(mr, is_write)) {
-+        if (!memory_access_is_direct(mr, is_write, attrs)) {
-             l = memory_access_size(mr, l, addr);
-             if (!memory_region_access_valid(mr, xlat, l, is_write, attrs)) {
-                 return false;
-@@ -3354,7 +3354,7 @@ void *address_space_map(AddressSpace *as,
-     fv = address_space_to_flatview(as);
-     mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
- 
--    if (!memory_access_is_direct(mr, is_write)) {
-+    if (!memory_access_is_direct(mr, is_write, attrs)) {
-         size_t used = qatomic_read(&as->bounce_buffer_size);
-         for (;;) {
-             hwaddr alloc = MIN(as->max_bounce_buffer_size - used, l);
-@@ -3487,7 +3487,7 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
- 
-     mr = cache->mrs.mr;
-     memory_region_ref(mr);
--    if (memory_access_is_direct(mr, is_write)) {
-+    if (memory_access_is_direct(mr, is_write, MEMTXATTRS_UNSPECIFIED)) {
-         /* We don't care about the memory attributes here as we're only
-          * doing this if we found actual RAM, which behaves the same
-          * regardless of attributes; so UNSPECIFIED is fine.
-diff --git a/system/memory_ldst.c.inc b/system/memory_ldst.c.inc
-index 0e6f3940a9..7f32d3d9ff 100644
---- a/system/memory_ldst.c.inc
-+++ b/system/memory_ldst.c.inc
-@@ -34,7 +34,7 @@ static inline uint32_t glue(address_space_ldl_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, false, attrs);
--    if (l < 4 || !memory_access_is_direct(mr, false)) {
-+    if (l < 4 || !memory_access_is_direct(mr, false, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
- 
-         /* I/O case */
-@@ -103,7 +103,7 @@ static inline uint64_t glue(address_space_ldq_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, false, attrs);
--    if (l < 8 || !memory_access_is_direct(mr, false)) {
-+    if (l < 8 || !memory_access_is_direct(mr, false, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
- 
-         /* I/O case */
-@@ -170,7 +170,7 @@ uint8_t glue(address_space_ldub, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, false, attrs);
--    if (!memory_access_is_direct(mr, false)) {
-+    if (!memory_access_is_direct(mr, false, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
- 
-         /* I/O case */
-@@ -207,7 +207,7 @@ static inline uint16_t glue(address_space_lduw_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, false, attrs);
--    if (l < 2 || !memory_access_is_direct(mr, false)) {
-+    if (l < 2 || !memory_access_is_direct(mr, false, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
- 
-         /* I/O case */
-@@ -277,7 +277,7 @@ void glue(address_space_stl_notdirty, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (l < 4 || !memory_access_is_direct(mr, true)) {
-+    if (l < 4 || !memory_access_is_direct(mr, true, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
- 
-         r = memory_region_dispatch_write(mr, addr1, val, MO_32, attrs);
-@@ -314,7 +314,7 @@ static inline void glue(address_space_stl_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (l < 4 || !memory_access_is_direct(mr, true)) {
-+    if (l < 4 || !memory_access_is_direct(mr, true, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
-         r = memory_region_dispatch_write(mr, addr1, val,
-                                          MO_32 | devend_memop(endian), attrs);
-@@ -377,7 +377,7 @@ void glue(address_space_stb, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (!memory_access_is_direct(mr, true)) {
-+    if (!memory_access_is_direct(mr, true, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
-         r = memory_region_dispatch_write(mr, addr1, val, MO_8, attrs);
+-    gpa  = cpu_get_phys_page_attrs_debug(cs, addr & TARGET_PAGE_MASK, &attrs);
++    gpa  = cpu_get_phys_page_debug(cs, addr & TARGET_PAGE_MASK);
+     if (gpa == -1) {
+         monitor_printf(mon, "Unmapped\n");
      } else {
-@@ -410,7 +410,7 @@ static inline void glue(address_space_stw_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (l < 2 || !memory_access_is_direct(mr, true)) {
-+    if (l < 2 || !memory_access_is_direct(mr, true, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
-         r = memory_region_dispatch_write(mr, addr1, val,
-                                          MO_16 | devend_memop(endian), attrs);
-@@ -474,7 +474,7 @@ static void glue(address_space_stq_internal, SUFFIX)(ARG1_DECL,
- 
-     RCU_READ_LOCK();
-     mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (l < 8 || !memory_access_is_direct(mr, true)) {
-+    if (l < 8 || !memory_access_is_direct(mr, true, attrs)) {
-         release_lock |= prepare_mmio_access(mr);
-         r = memory_region_dispatch_write(mr, addr1, val,
-                                          MO_64 | devend_memop(endian), attrs);
 -- 
 2.47.0
 
