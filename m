@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B366A3120D
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E31A31332
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 18:35:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thtRt-0000yh-GH; Tue, 11 Feb 2025 11:49:25 -0500
+	id 1thu9d-0007no-DP; Tue, 11 Feb 2025 12:34:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1thtRr-0000yS-Fb
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:49:23 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1thtRp-00043e-LT
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:49:23 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-21f92258aa6so66025895ad.3
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:49:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739292560; x=1739897360; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=A/SpX0pZCMH6Nx4aU5binfZTiKllhdOFr9p/c1lzc4Q=;
- b=juIOPoA1IMIvw8qFPjJB9yQT7yIJ3LYeXPaC+wQtjK/RBKx8pDi9UaQ4OBaXB3hc3A
- w1+0kcbTajTQmV5HkmKi5FR/gWW0+qbsdKWIwUsJMf7Qfh7GZLO1Q/vcNe62D/F8n+KV
- OFFetKBfASUOCNbXOOmzxLL3D9yG0uSrSdDDHz0+Crs5x5uoJrdYsdXooK+idqWkdMIF
- 1u2K2Ovbc8WgI5/s2SXiHROdb50A6Gs1N7gyfk36jSaM3CRZYfSX0o9mD2fdF9xCH5eV
- v2NvsBCDNqMP4WUgCNqaL6Gr4FlFm4oP/9d4yZwDi5GiroYUuTDM/NsKWjmhYpO/FZsh
- zRNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739292560; x=1739897360;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=A/SpX0pZCMH6Nx4aU5binfZTiKllhdOFr9p/c1lzc4Q=;
- b=TMAdoVm8VSTaPmIVZL2aakr5h1yl84Hxp0VcF8KG9bvCmWoT5cvgc7fbjzUEzub/6m
- s9zZhW1444XWY6lK+nr/SVRn38b5+ijzLf+bk0SFC0mfXFeOPatx8BjjejuuTW3U6jj+
- GGhQxuET8aw1u9fik6tZhc8BAo+Gu3nCh6HCWr0z9o94iwDviAcIT6Qxh4X3x//SuwRV
- 0i8/sBJ3jWh+z2+pN3LCqgb3UUBDHKTE+xk5S7b1Yq6JliOeb0dNJEjauSCe+mNcUaah
- n6B8JnuTPsUDLd56V7bqoCuM0nqJLOORD7H2G+j0zbC7E/jTjzlC+Tk5IfP4yjGpaGtJ
- voEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVoPa5pN7i/okWyQbdzDUup9RQXgnw3hMg2rTbztCOJfGUWtCAgjvYII8hXVGbH9OotT4SlS9LQqr/Q@nongnu.org
-X-Gm-Message-State: AOJu0YyQtq1/9ABYpZkInhTBMpDprfH+O1bCz77ZMcFo1K2bgCfNADCI
- qA1EvtMxyTKbkA2F6X3T8+V10TkKVO86o2aT3Co2fAiQ4LQeAD8HLTMxWVR2KAdsjT6r062ywMH
- a
-X-Gm-Gg: ASbGnctsgRnFmsYmb9EU7NYaSp3Aml/K/A+5SQZXxswSl9nOOZtC/aGpsR+e6tNoKcn
- ScuqDScTlhq96iPOPndoQtRpXsTzId12597tvi57wDMfVSiZ6p4HjmgPY6KIiN4aAk3bSrXczaS
- OM5xj0lzjA/0zoNXjd3d43M4NzUtn+pb5R3zPmKzDJJcKFU5R8qMh0ZDkkfuVHtw60t59WmaUCB
- GSPCsaHThujfTg/SmkIV/fTiE4pf2Di8V4TUbhQaNj7DCba2CTUDFyH1kFRcMLKo4DkRxVtF91T
- 0ra7xGMvlfmMxTBAp2KHRUu10aiapwqx91wht+i4b9205ay4uZx6Btw=
-X-Google-Smtp-Source: AGHT+IFcWyt3H8T7XWr2MaYiSzbJI9/x8x2FLTPkY1ONySpUCFZBbftZKr9oUXaPK0slUMMJm5GvSA==
-X-Received: by 2002:a17:903:1c8:b0:21f:164d:93fe with SMTP id
- d9443c01a7336-21f4e7e658dmr294002555ad.53.1739292559890; 
- Tue, 11 Feb 2025 08:49:19 -0800 (PST)
-Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21f36896774sm99449835ad.214.2025.02.11.08.49.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Feb 2025 08:49:19 -0800 (PST)
-Message-ID: <52d24c8e-b005-4223-9b26-57885ec3d67d@linaro.org>
-Date: Tue, 11 Feb 2025 08:49:18 -0800
+ (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
+ id 1thszZ-0004zx-NL
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:09 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
+ id 1thszX-00029E-LZ
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:09 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BDgNKf021694;
+ Tue, 11 Feb 2025 16:20:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=75AOCLqOvzG86tQn0BeU/zKJK/1FrvZuuOdGjJEQu
+ Xc=; b=avlrXfocuhNbc4X0unk8dRhiZVBW9C81qkG8fDC25yC2IF09xLMMoGOlk
+ RueJ8Rx/fBYGThWqFU2QovGasrDN026WU0y+IhVsTWM5w3A8cQoxEmJnegKkMR1h
+ SsBuZYAMswIMacX55QJqu/7FGj2xCbiP1sFSSa435NK7CvbAHTWJSexpVE+fPukH
+ vZSzJctRUcH1jneHBrZWf7mklqEAKi4GZYdagbZGWo5dyj4PwZqZUPjMkPsm2CXH
+ MpZrA59Gz3qCRySr+0WfVui14s+tZFHgozZYfLV08xVFbhh0/aXo+uAcEhl0cVFJ
+ Juf3c1dV0HqqlAadOu58ZFkt5vamg==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qwd1bh5c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Feb 2025 16:20:03 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51BEQPtk011642;
+ Tue, 11 Feb 2025 16:20:02 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pktjuum9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Feb 2025 16:20:02 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51BGK1di18023102
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Feb 2025 16:20:02 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4B6E5806C;
+ Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 375C95805D;
+ Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
+Received: from WIN-DU0DFC9G5VV.austin.ibm.com (unknown [9.41.104.243])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+To: eperezma@redhat.com
+Cc: mst@redhat.com, sgarzare@redhat.com, mjrosato@linux.ibm.com,
+ qemu-devel@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>
+Subject: [PATCH] vdpa: Allow vDPA to work on big-endian machine
+Date: Tue, 11 Feb 2025 10:19:23 -0600
+Message-Id: <20250211161923.1477960-1-kshk@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/alpha: Do not mix exception flags and FPCR bits
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <20250211162604.83446-1-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250211162604.83446-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ACfD_gP2YC4aYQxAupOMWBPMyU0bFXnG
+X-Proofpoint-ORIG-GUID: ACfD_gP2YC4aYQxAupOMWBPMyU0bFXnG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-11_07,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=826 clxscore=1011
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502110106
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kshk@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 11 Feb 2025 12:34:14 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,21 +105,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/11/25 08:26, Philippe Mathieu-Daudé wrote:
-> get_float_exception_flags() returns exception flags,
-> which are distinct from the FPCR bits used as error code.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Based-on: <20250211130626.3940412-1-peter.maydell@linaro.org>
-> ---
->   target/alpha/fpu_helper.c | 15 +++++++--------
->   1 file changed, 7 insertions(+), 8 deletions(-)
+Add .set_vnet_le() function that always returns success, assuming that
+vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
+outputs the message:
+"backend does not support LE vnet headers; falling back on userspace virtio"
 
-Yes, this is clearer.
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+---
+ net/vhost-vdpa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-
-r~
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 231b45246c..7219aa2eee 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -270,6 +270,11 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+ 
+ }
+ 
++static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool is_le)
++{
++    return 0;
++}
++
+ static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
+                                        Error **errp)
+ {
+@@ -437,6 +442,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .cleanup = vhost_vdpa_cleanup,
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+         .has_ufo = vhost_vdpa_has_ufo,
++        .set_vnet_le = vhost_vdpa_set_vnet_le,
+         .check_peer_type = vhost_vdpa_check_peer_type,
+         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+ };
+-- 
+2.34.1
 
 
