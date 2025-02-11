@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8E1A3115D
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFD5A311A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht6S-0007E4-02; Tue, 11 Feb 2025 11:27:16 -0500
+	id 1tht6W-0007Yc-1a; Tue, 11 Feb 2025 11:27:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5Y-0006To-R6
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:21 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1tht5a-0006U7-6I
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:22 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5X-000388-4x
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:20 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-38dc0cd94a6so2764819f8f.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:18 -0800 (PST)
+ id 1tht5X-00038P-Po
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:21 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso39884245e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291177; x=1739895977; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291178; x=1739895978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=crXCHXq9JvpLBL04WHbV2f/eJJDZQDZc51amOdmF980=;
- b=HmoOJXUDKaU/yPAHszTQRF7hdFFDD4S1gxUnoZJ8qvxoYLg0dNvuyNhuULpNatBa0Z
- OpO/Rr52triztCisHEwRnWDFE7qTlSHB/WlBRM6bM/0+NEcPHUNqmFqdNP2RiDF1gYAb
- glMNjJoW86+mO5T1B4MpZrIfAiD8ZYgljRl2+W6FJyemJtg3OkQolNlsgahEMKSjLVcC
- 1cu8xwbMWm1qITYdMWAfxUJeuXpo3OEvWvsy568zpcMKtOd7Z4FTpGp42SSFhwzkiFxY
- n8qj/O3+FvUW5GV+5UTvu4reNqGZ5TF9r+Sb2SeGfimi6NxTUGoBHJLmuUW1/cmfbLXi
- m8gA==
+ :reply-to; bh=Jzv36lXWBV913+k/GNHt1ww49Fjtm1eDjzOizNTD6d8=;
+ b=pcYZep9bJdBNgPmV8v0FBL2cktz52JSy58uV6+Co5rpRadz6J2UOIGl9q3Vhdx/RUv
+ veaS0LwhqmH6ItAsuPte5F7euPpKiGuBkV7Jb02WCpVn4QiZNsFhAfmq9IWLMhrJ727D
+ UTJfuW6TmFglKax6L5ntfAiq0glzRPi0fTKSS04+6A7QPPb0WHAlVwjlzY2PdY77Ydfy
+ Mv93TqjXAf2zGf/zBxPIQty8/fA8bLUoBf3UgydyvhLKRF5DVTJscKitMgnzTBMROO4o
+ 51KQ5yj/27aDPFoJMhbVBP066aZbTfll5ygiYSKbKRtg0AZ0yGyZ1SjQXmgUaEQx8SZr
+ y5Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291177; x=1739895977;
+ d=1e100.net; s=20230601; t=1739291178; x=1739895978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=crXCHXq9JvpLBL04WHbV2f/eJJDZQDZc51amOdmF980=;
- b=rBd+rkLHCq80qdruPPY6sGl4mB1MsCyCgtRqXE3I4sR9wDnYC0F4Bv75unSdQxFGye
- V+UyUYUR7osjJ1TP/uQOQZ2wYCndIa6ro3h5mHp/S9/ilTib8QuEUlAclPdHStB7Jh+s
- QHHjnWJMhM8HXzgiv+YaYZthv5x/Bp9gxL1yuUpfpdcw8wmq5wcAhvKo+U2SxOQLDkeB
- gChSuw3bWvU1ciqqlY38ntk4SmGRu085FO8JyeYFF2+zwD1BeZNl7HnShsmF0ZeyIWHU
- 8sRnfdWg+bm37xsG3nWNCpcHfS5xdcR7VI0jhPh5Pcjc5/7YucMmfRYFWUrC54L/bxJI
- tTEw==
-X-Gm-Message-State: AOJu0YyvamtwUqjKS8EyR6QaBv1XGS7hTco3a/em+RfOaacBVprfX0WJ
- xY/hLt+qOu42PdCDokqzcbi0N4kiX3Y5TI2Fu8yYL5yLLrAvRXobroYAFGsXNFPvkTKK5t9IfOA
- w
-X-Gm-Gg: ASbGnctnhsU4Ew2f9U5+kfd668o6yLmYzGFq3poVEKRObQoajbIKfl73Ufgp17uh1+k
- fj3nhtj6YAnlSf73BTqNeFDFcR2K5c2WUExI1lWCdGyeQ47QdQxcWp62L3grwU1wpzAPV4WufnH
- VL9Lsaw8TTIAbCIMA2X/lhSjc0rPQK0XncdJX35RqTYOzxPuJyVtFlq6acHPvuSciY2CSVRfM8H
- MsQgeEljXTAGGQZG0rwFbG8Fwwm8yhL3u38g9uAdhpE8ImA5l89SZqJldQxFzZF5cMWj2DjeiEW
- nPxfnEL01lhLVw0ihVvX
-X-Google-Smtp-Source: AGHT+IHME1TiawMcf42zBKx1ZyEJe7ZzZpVGkN0rEfL2rqRcjuN0rSz56cW6XZO4wbu0fReG94046A==
-X-Received: by 2002:a05:6000:1aca:b0:38d:df70:23e7 with SMTP id
- ffacd0b85a97d-38ddf7025a8mr5781543f8f.31.1739291177523; 
- Tue, 11 Feb 2025 08:26:17 -0800 (PST)
+ bh=Jzv36lXWBV913+k/GNHt1ww49Fjtm1eDjzOizNTD6d8=;
+ b=cjZc1MnqFItjXX0YsTMsARNLsXUJRb53Tmt7il1II7ezFnRYJl90S9P5eKg9mb9/ky
+ anYHpni3KUTwiYwZePu0il+nytZnscv3SH50aJ68tod0wuIWk3/an/SctQ0Z0XUB0UYq
+ V+CkGZrih7XORTmtACOqN9402GGibTZdfi+/kM8+1Wq2WPq3uhp1wOfBhDRy5HqgVRKj
+ CsFFN5EBLchOY0DIlbDFh5n6iOggiRnX5Lbl0WZOb3gVrIsDKmxdD3sAN1xvm4dwj5My
+ Gjd8vKkgYwYuzADt0LNEn/dtIH11WF7kOJos3XN5wzVC89J9FUe1sbja6QopnXPXoNrl
+ O3EA==
+X-Gm-Message-State: AOJu0YzeotxV+nYztrUWDOM6JypW2rRXvN4jE6RTTg/gk1IVHlUVEJKf
+ cXywBbrDLhC/37Ysu3zGs9xYoycZUpkClOubTD7PVv9acgP30F9TuIyX+XMoMGFyX1v3LMEFj5F
+ v
+X-Gm-Gg: ASbGncssG5kcPsmQosDvDoNiRgrCY6gsZdfXAM6NQyj05LHX+JbjcZQB3RxLimK33aE
+ 4imkOyhEScuVXhMYwnsJOf4Jox/qZ6kfE1aEXNOd1H+Gi/NjB0DZGmALPAdfXifMuWdC7RxTwGk
+ h7UizGxCgWwNb2ueY9TpI3egT0UWn7hT85kAyZx1fiTLmqdXvSaLFNitfkMhFzyLB/GVmcfYTEF
+ iQeTIUtx/Zc2dVeAuVCtPNKZ9jqcb7bEF+35P84WCEXGpiozhfYiBvmOOyZRoH0WJA5rKGHWVsb
+ eHVls+O8e2myEtXfBF/B
+X-Google-Smtp-Source: AGHT+IHajPYtprDpY48QTZZnVuinSQ/9HafsTscv1jHT3QWbtw/7yePWQE2vnvzUuN7Ppv1keHO1hA==
+X-Received: by 2002:a05:600c:468f:b0:436:e3ea:4447 with SMTP id
+ 5b1f17b1804b1-439249c38afmr179943575e9.30.1739291178370; 
+ Tue, 11 Feb 2025 08:26:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.16
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:16 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/68] target/arm: Handle FPCR.NEP in do_cvtf_scalar()
-Date: Tue, 11 Feb 2025 16:25:05 +0000
-Message-Id: <20250211162554.4135349-20-peter.maydell@linaro.org>
+Subject: [PULL 20/68] target/arm: Handle FPCR.NEP for scalar FABS and FNEG
+Date: Tue, 11 Feb 2025 16:25:06 +0000
+Message-Id: <20250211162554.4135349-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,45 +96,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle FPCR.NEP in the operations handled by do_cvtf_scalar().
+Handle FPCR.NEP merging for scalar FABS and FNEG; this requires
+an extra parameter to do_fp1_scalar_int(), since FMOV scalar
+does not have the merging behaviour.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/arm/tcg/translate-a64.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a5f59a94ec2..804b6b5b67d 100644
+index 804b6b5b67d..3195cb5fef1 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -8733,7 +8733,7 @@ static bool do_cvtf_scalar(DisasContext *s, MemOp esz, int rd, int shift,
-         } else {
-             gen_helper_vfp_uqtod(tcg_double, tcg_int, tcg_shift, tcg_fpstatus);
-         }
--        write_fp_dreg(s, rd, tcg_double);
-+        write_fp_dreg_merging(s, rd, rd, tcg_double);
-         break;
+@@ -8426,21 +8426,30 @@ typedef struct FPScalar1Int {
+ } FPScalar1Int;
  
+ static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
+-                              const FPScalar1Int *f)
++                              const FPScalar1Int *f,
++                              bool merging)
+ {
+     switch (a->esz) {
+     case MO_64:
+         if (fp_access_check(s)) {
+             TCGv_i64 t = read_fp_dreg(s, a->rn);
+             f->gen_d(t, t);
+-            write_fp_dreg(s, a->rd, t);
++            if (merging) {
++                write_fp_dreg_merging(s, a->rd, a->rd, t);
++            } else {
++                write_fp_dreg(s, a->rd, t);
++            }
+         }
+         break;
      case MO_32:
-@@ -8743,7 +8743,7 @@ static bool do_cvtf_scalar(DisasContext *s, MemOp esz, int rd, int shift,
-         } else {
-             gen_helper_vfp_uqtos(tcg_single, tcg_int, tcg_shift, tcg_fpstatus);
+         if (fp_access_check(s)) {
+             TCGv_i32 t = read_fp_sreg(s, a->rn);
+             f->gen_s(t, t);
+-            write_fp_sreg(s, a->rd, t);
++            if (merging) {
++                write_fp_sreg_merging(s, a->rd, a->rd, t);
++            } else {
++                write_fp_sreg(s, a->rd, t);
++            }
          }
--        write_fp_sreg(s, rd, tcg_single);
-+        write_fp_sreg_merging(s, rd, rd, tcg_single);
          break;
- 
      case MO_16:
-@@ -8753,7 +8753,7 @@ static bool do_cvtf_scalar(DisasContext *s, MemOp esz, int rd, int shift,
-         } else {
-             gen_helper_vfp_uqtoh(tcg_single, tcg_int, tcg_shift, tcg_fpstatus);
+@@ -8450,7 +8459,11 @@ static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
+         if (fp_access_check(s)) {
+             TCGv_i32 t = read_fp_hreg(s, a->rn);
+             f->gen_h(t, t);
+-            write_fp_sreg(s, a->rd, t);
++            if (merging) {
++                write_fp_hreg_merging(s, a->rd, a->rd, t);
++            } else {
++                write_fp_sreg(s, a->rd, t);
++            }
          }
--        write_fp_sreg(s, rd, tcg_single);
-+        write_fp_hreg_merging(s, rd, rd, tcg_single);
          break;
- 
      default:
+@@ -8464,21 +8477,21 @@ static const FPScalar1Int f_scalar_fmov = {
+     tcg_gen_mov_i32,
+     tcg_gen_mov_i64,
+ };
+-TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov)
++TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov, false)
+ 
+ static const FPScalar1Int f_scalar_fabs = {
+     gen_vfp_absh,
+     gen_vfp_abss,
+     gen_vfp_absd,
+ };
+-TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs)
++TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs, true)
+ 
+ static const FPScalar1Int f_scalar_fneg = {
+     gen_vfp_negh,
+     gen_vfp_negs,
+     gen_vfp_negd,
+ };
+-TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg)
++TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg, true)
+ 
+ typedef struct FPScalar1 {
+     void (*gen_h)(TCGv_i32, TCGv_i32, TCGv_ptr);
 -- 
 2.34.1
 
