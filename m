@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EED6A301FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 04:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6E5A301FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 04:09:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thgdp-0007BW-5a; Mon, 10 Feb 2025 22:08:53 -0500
+	id 1thgdq-0007Ch-Oi; Mon, 10 Feb 2025 22:08:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1thgdm-0007AQ-Ni
+ id 1thgdm-0007AP-N9
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 22:08:50 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1thgdj-0000Lj-2A
+ (envelope-from <maobibo@loongson.cn>) id 1thgdj-0000Lk-29
  for qemu-devel@nongnu.org; Mon, 10 Feb 2025 22:08:49 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxeXE2v6pn_tZxAA--.1529S3;
+ by gateway (Coremail) with SMTP id _____8DxOGo2v6pnA9dxAA--.1616S3;
  Tue, 11 Feb 2025 11:08:38 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxbsUyv6pnL1YLAA--.43924S3;
+ by front1 (Coremail) with SMTP id qMiowMCxbsUyv6pnL1YLAA--.43924S4;
  Tue, 11 Feb 2025 11:08:37 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -29,15 +29,15 @@ To: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-Subject: [PATCH v5 1/7] hw/loongarch/virt: Add CPU topology support
-Date: Tue, 11 Feb 2025 11:08:28 +0800
-Message-Id: <20250211030834.3276732-2-maobibo@loongson.cn>
+Subject: [PATCH v5 2/7] hw/loongarch/virt: Add topo properties on CPU object
+Date: Tue, 11 Feb 2025 11:08:29 +0800
+Message-Id: <20250211030834.3276732-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250211030834.3276732-1-maobibo@loongson.cn>
 References: <20250211030834.3276732-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxbsUyv6pnL1YLAA--.43924S3
+X-CM-TRANSID: qMiowMCxbsUyv6pnL1YLAA--.43924S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,126 +65,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add topological relationships for Loongarch VCPU and initialize
-topology member variables.
-
-On LoongArch system there is socket/core/thread topo information,
-physical CPU id is calculated from CPU topo, every topo sub-field is
-aligned by power of 2. So it is different from logical cpu index.
+Add some properties such as socket_id, core_id, thread_id and node_id
+on LoongArch CPU object.
 
 Co-developed-by: Xianglai Li <lixianglai@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/loongarch/virt.c    | 59 ++++++++++++++++++++++++++++++++++++------
- target/loongarch/cpu.h |  6 +++++
- 2 files changed, 57 insertions(+), 8 deletions(-)
+ target/loongarch/cpu.c | 9 +++++++++
+ target/loongarch/cpu.h | 4 ++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 355be14ccc..cc53cf0b4a 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -782,6 +782,48 @@ static void virt_initfn(Object *obj)
-     virt_flash_create(lvms);
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index e91f4a5239..3c877312cd 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -14,6 +14,7 @@
+ #include "system/tcg.h"
+ #include "system/kvm.h"
+ #include "kvm/kvm_loongarch.h"
++#include "hw/qdev-properties.h"
+ #include "exec/exec-all.h"
+ #include "exec/translation-block.h"
+ #include "cpu.h"
+@@ -909,6 +910,13 @@ static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
  }
+ #endif
  
-+static void virt_get_topo_from_index(MachineState *ms,
-+                                     LoongArchCPUTopo *topo, int index)
-+{
-+    topo->socket_id = index / (ms->smp.cores * ms->smp.threads);
-+    topo->core_id = index / ms->smp.threads % ms->smp.cores;
-+    topo->thread_id = index % ms->smp.threads;
-+}
++static const Property loongarch_cpu_properties[] = {
++    DEFINE_PROP_INT32("socket-id", LoongArchCPU, socket_id, 0),
++    DEFINE_PROP_INT32("core-id", LoongArchCPU, core_id, 0),
++    DEFINE_PROP_INT32("thread-id", LoongArchCPU, thread_id, 0),
++    DEFINE_PROP_INT32("node-id", LoongArchCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
++};
 +
-+static unsigned int topo_align_up(unsigned int count)
-+{
-+    g_assert(count >= 1);
-+    count -= 1;
-+    return BIT(count ? 32 - clz32(count) : 0);
-+}
-+
-+/*
-+ * LoongArch Reference Manual Vol1, Chapter 7.4.12 CPU Identity
-+ *  For CPU architecture, bit0 .. bit8 is valid for CPU id, max cpuid is 512
-+ *  However for IPI/Eiointc interrupt controller, max supported cpu id for
-+ *  irq routingis 256
-+ *
-+ *  Here max cpu id is 256 for virt machine
-+ */
-+static int virt_get_arch_id_from_topo(MachineState *ms, LoongArchCPUTopo *topo)
-+{
-+    int arch_id, threads, cores, sockets;
-+
-+    threads = topo_align_up(ms->smp.threads);
-+    cores = topo_align_up(ms->smp.cores);
-+    sockets = topo_align_up(ms->smp.sockets);
-+    if ((threads * cores * sockets) > 256) {
-+        error_report("Exceeding max cpuid 256 with sockets[%d] cores[%d]"
-+                     " threads[%d]", ms->smp.sockets, ms->smp.cores,
-+                     ms->smp.threads);
-+        exit(1);
-+    }
-+
-+    arch_id = topo->thread_id + topo->core_id * threads;
-+    arch_id += topo->socket_id * threads * cores;
-+    return arch_id;
-+}
-+
- static bool memhp_type_supported(DeviceState *dev)
+ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
  {
-     /* we only support pc dimm now */
-@@ -881,8 +923,9 @@ static HotplugHandler *virt_get_hotplug_handler(MachineState *machine,
+     LoongArchCPUClass *lacc = LOONGARCH_CPU_CLASS(c);
+@@ -916,6 +924,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+     DeviceClass *dc = DEVICE_CLASS(c);
+     ResettableClass *rc = RESETTABLE_CLASS(c);
  
- static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
- {
--    int n;
-+    int n, arch_id;
-     unsigned int max_cpus = ms->smp.max_cpus;
-+    LoongArchCPUTopo topo;
- 
-     if (ms->possible_cpus) {
-         assert(ms->possible_cpus->len == max_cpus);
-@@ -893,17 +936,17 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
-                                   sizeof(CPUArchId) * max_cpus);
-     ms->possible_cpus->len = max_cpus;
-     for (n = 0; n < ms->possible_cpus->len; n++) {
-+        virt_get_topo_from_index(ms, &topo, n);
-+        arch_id = virt_get_arch_id_from_topo(ms, &topo);
-         ms->possible_cpus->cpus[n].type = ms->cpu_type;
--        ms->possible_cpus->cpus[n].arch_id = n;
--
-+        ms->possible_cpus->cpus[n].arch_id = arch_id;
-+        ms->possible_cpus->cpus[n].vcpus_count = 1;
-         ms->possible_cpus->cpus[n].props.has_socket_id = true;
--        ms->possible_cpus->cpus[n].props.socket_id  =
--                                   n / (ms->smp.cores * ms->smp.threads);
-+        ms->possible_cpus->cpus[n].props.socket_id = topo.socket_id;
-         ms->possible_cpus->cpus[n].props.has_core_id = true;
--        ms->possible_cpus->cpus[n].props.core_id =
--                                   n / ms->smp.threads % ms->smp.cores;
-+        ms->possible_cpus->cpus[n].props.core_id = topo.core_id;
-         ms->possible_cpus->cpus[n].props.has_thread_id = true;
--        ms->possible_cpus->cpus[n].props.thread_id = n % ms->smp.threads;
-+        ms->possible_cpus->cpus[n].props.thread_id = topo.thread_id;
-     }
-     return ms->possible_cpus;
- }
++    device_class_set_props(dc, loongarch_cpu_properties);
+     device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
+                                     &lacc->parent_realize);
+     resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index f2a23b7a43..8c13ee6bd8 100644
+index 8c13ee6bd8..0fb82a218b 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -390,6 +390,12 @@ typedef struct CPUArchState {
- #endif
- } CPULoongArchState;
- 
-+typedef struct LoongArchCPUTopo {
+@@ -412,6 +412,10 @@ struct ArchCPU {
+     OnOffAuto pmu;
+     OnOffAuto lsx;
+     OnOffAuto lasx;
 +    int32_t socket_id;  /* socket-id of this VCPU */
 +    int32_t core_id;    /* core-id of this VCPU */
 +    int32_t thread_id;  /* thread-id of this VCPU */
-+} LoongArchCPUTopo;
-+
- /**
-  * LoongArchCPU:
-  * @env: #CPULoongArchState
++    int32_t node_id;    /* NUMA node of this VCPU */
+ 
+     /* 'compatible' string for this CPU for Linux device trees */
+     const char *dtb_compatible;
 -- 
 2.39.3
 
