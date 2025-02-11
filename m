@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57D5A3113F
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 114CEA31156
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:29:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht5N-0006OI-0A; Tue, 11 Feb 2025 11:26:09 -0500
+	id 1tht5S-0006Pc-TZ; Tue, 11 Feb 2025 11:26:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5I-0006NZ-Cz
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:04 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1tht5J-0006Nu-6T
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:05 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5F-00031X-B6
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:03 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38dd14c9a66so1608090f8f.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:00 -0800 (PST)
+ id 1tht5G-00032D-J8
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:04 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4395578be70so6995335e9.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291159; x=1739895959; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291161; x=1739895961; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=W2lBHnU/MU2TyjktOcUF41UyX08vQR6GV7D0L3jAq2Q=;
- b=KwuMwBjFh+tf5mt/in5dFlsa2ixZjiUfHt6ckieKLZsVeRJyzfG64kdQGdb6o+QibE
- +pQQ+EmSQcha3Vkr4SiR9UICLGctqmwbNPzler2UWa+ZIX4aWLLoYhL3IXrekqxkmget
- QsShSbsMeeWSR3H++sRhu4kxeDYAqptN3Q4Wbpd9E5BtdEWaU/Ew3Mxpp/k/A8zaP5j5
- HKCkRNLkjgwuK6osDSRB2gI6RP1My4BGROipX5x000U54JqPkc271PwCBmUEaKQUUO6m
- YwIqTegAL3o2fViyHHLJc9hweSLW7wVqPBLiixKZsJKgr/N+ARt1VoWHgv3G5YCrEQSz
- FCWQ==
+ :reply-to; bh=E8d1e8v8TaO/4sfmUH381EpDmG22TwqLuybWuGTDe9I=;
+ b=xBEtcIQGwOCsRygZ1u8O1OBt9G7xfbW6LMIgLMYLN9YHpIECeAHgCX+LfaeFh/v4uA
+ UtzyGq74lYNQjuHj2Z75P1nsjIYPh5Z4opNHzPdbPSSYEa2Ev/wCHBezsLKo+MXPxrMZ
+ Xx26IekRSubBYbMvl6cakIBxGrhyvarnhkQUTgJpxbhvaQxhoR52yPRjncWciGsZmhhj
+ E74CDp/VHd8s+sSQgIetsL9rNfTSjhnN8RLa7OBwzZrMVJeYH797zbxakWy0MuSx7F3Q
+ ST2i3QRgyZc29UaOS3IsPxxTaG3CCf+qRyl72iNqcrObXPYfKAI/gPak9UblQBNOiVNP
+ M7PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291159; x=1739895959;
+ d=1e100.net; s=20230601; t=1739291161; x=1739895961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W2lBHnU/MU2TyjktOcUF41UyX08vQR6GV7D0L3jAq2Q=;
- b=dbRnBuc2OTAudC5fPyLxz6411SCxLpMlKoCWtBLfEXsWQLrwvALOe4kuKliW0Qe4KF
- vzrCj9Qui+0YvhbM1XuqdKEpLaeNNUPsvzEdbS1SD0lQgFg7d0E1i7wfBnMV5yOdDoFX
- LDraCkxMFdBI7fOqslMuEHtEPfKHB0ofaqYEOmUXFY7m171wq6YgV70S1SRxMUxzYh7L
- j9xDddm3aC3uWQQ6wUVXVR3qt34n2nFF5Gdwafz/uQuyF0jQCPfwZssNeDgzQz1I9zsk
- 15Pt93BUAqDMJNfOk49BM7sGUBj5VCfdMStHtVV6OyHKOa0uMSAElfr50uifaOItVmJt
- A0TQ==
-X-Gm-Message-State: AOJu0YwmBqKzp5p1EjY8UbKnXIV7snDJhHomxminYyvTpE5sjyfK5RdT
- FqQ5u5hkYI9/Uu57SyjLXy+KL+50pfJX5/8mNvNFJPjpyGRMdS/+h2R5/FImv5qTJ6N8oeXGjYv
- k
-X-Gm-Gg: ASbGncsBO84wJirhm3B75PGXw/85IK3/kMTQCnNxaQEPnN71ZmWklY0kd4kFgUdkz2v
- /eolE8G1lMG9xlvnFfrv988lv4vHDV+CJ6w8NSgjlNpMsay8hf5yM6B8qDRMkaIyQcFZnTUGqOZ
- PgrwwEB6v83gZHslJx8J5ZY7mYKCSTOKh/JhsU263EtnnPd/jYrSjkg7PaaQ03N9QlvXgDypRSR
- jiUpbgDLiqoeJKg8HzVTQ5JbTPEe739V7dcJ4fXiIZ/cSleJ3MpYdaTNQPU8d2qyZBgAKGJvOrW
- w40J5tS1/MrXTYkil7tP
-X-Google-Smtp-Source: AGHT+IFHxaFfMUVj8U00dZrYinF0EsB3f7tZmsJpi9NBsdnvBoNhstKylBLaDpJQUeLMCnDO7PrI5g==
-X-Received: by 2002:a05:6000:400f:b0:38c:5bfa:a961 with SMTP id
- ffacd0b85a97d-38dc8d9840fmr12852523f8f.4.1739291159225; 
- Tue, 11 Feb 2025 08:25:59 -0800 (PST)
+ bh=E8d1e8v8TaO/4sfmUH381EpDmG22TwqLuybWuGTDe9I=;
+ b=CQd8qz+d97R3KSmMoKzpbOGgkEgyG6nTpyBijRTvNKtxgfuk7AJCver36KoJMtEBd5
+ iBTg7DKYNRNt3YLeHBKoJYIgkw+O6kRBOzQ6mKeSpiUxwArJ24ba2EEPM3T4b9tN6yJp
+ SkY8aOp6eBkiTgadauJMB0VoxMZE8PSg/3TQXh+lqtCyCYy7f4Orfr/CrZ4tkm/Nkdw5
+ M0q+LVowbfVYYd2oN5pJ0qb8X9uZccAQ9u20MeQRoGfuuSJhtYtKjrNWaokIsZD9vePA
+ KYRA/J11jEMrMsba6ka+/xufsMEv5yRtSDpMANlnaCLgh6LumXBvr/qIzpEtKxGatzj3
+ KWnA==
+X-Gm-Message-State: AOJu0Yxti+Sg5Y0gxWdYj04Efh6zUVTvn3L6FKO5rMayC6kxIqtvSIX2
+ Yd8Ov6wphHvGSTIqRIJTgsQaUjrNTXFzqLySqL0psEqiTlOgu3/knL0QNjwK8CARJo5kzqyaxKq
+ q
+X-Gm-Gg: ASbGncvcXtcNrO06CP2y+iOn5eG2XtNFDZvs8V/mKI9MyUC37/7MRMUdy4SxFUcyz0a
+ ZW7RTXJbM2w8sWT+GCzN8ofouSWIwiG0aSmaPgxftYYBNvBiwC4kGMS5NMvTkeW36oUQ0AUuTUO
+ 8KbLz525gr/S7VDX87PXNXOFhaJbOB3sJcKqvs1tStrQ34pXdB0h6ZOcZ7+QTfARzP7tZ3LLhna
+ ntwFOf/qPoADuQjPG+I+tfAZGwFvvvqZDZ+xGNqreT4rCPciM5HI60KQni9Ki+Kj/n19zL+x/GU
+ FylEVCvfFQ1MSdOKw/Fg
+X-Google-Smtp-Source: AGHT+IFLsfBImT9gfsk7rH6ieS30Wa8ZDPFegWEDDKR6m6rzSV2iCIQtsFeeQ6IX10+QK/gt+C4Rlg==
+X-Received: by 2002:a05:600c:1ca6:b0:439:5529:33eb with SMTP id
+ 5b1f17b1804b1-4395529365fmr29827565e9.30.1739291160796; 
+ Tue, 11 Feb 2025 08:26:00 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.25.58
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.25.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:25:58 -0800 (PST)
+ Tue, 11 Feb 2025 08:25:59 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/68] fpu: Add float_class_denormal
-Date: Tue, 11 Feb 2025 16:24:48 +0000
-Message-Id: <20250211162554.4135349-3-peter.maydell@linaro.org>
+Subject: [PULL 03/68] fpu: Implement float_flag_input_denormal_used
+Date: Tue, 11 Feb 2025 16:24:49 +0000
+Message-Id: <20250211162554.4135349-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,356 +96,324 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently in softfloat we canonicalize input denormals and so the
-code that implements floating point operations does not need to care
-whether the input value was originally normal or denormal.  However,
-both x86 and Arm FEAT_AFP require that an exception flag is set if:
- * an input is denormal
- * that input is not squashed to zero
- * that input is actually used in the calculation (e.g. we
-   did not find the other input was a NaN)
+For the x86 and the Arm FEAT_AFP semantics, we need to be able to
+tell the target code that the FPU operation has used an input
+denormal.  Implement this; when it happens we set the new
+float_flag_denormal_input_used.
 
-So we need to track that the input was a non-squashed denormal.  To
-do this we add a new value to the FloatClass enum.  In this commit we
-add the value and adjust the code everywhere that looks at FloatClass
-values so that the new float_class_denormal behaves identically to
-float_class_normal.  We will add the code that does the "raise a new
-float exception flag if an input was an unsquashed denormal and we
-used it" in a subsequent commit.
+Note that we only set this when an input denormal is actually used by
+the operation: if the operation results in Invalid Operation or
+Divide By Zero or the result is a NaN because some other input was a
+NaN then we never needed to look at the input denormal and do not set
+denormal_input_used.
 
-There should be no behavioural change in this commit.
+We mostly do not need to adjust the hardfloat codepaths to deal with
+this flag, because almost all hardfloat operations are already gated
+on the input not being a denormal, and will fall back to softfloat
+for a denormal input.  The only exception is the comparison
+operations, where we need to add the check for input denormals, which
+must now fall back to softfloat where they did not before.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- fpu/softfloat.c           | 32 ++++++++++++++++++++++++++++---
- fpu/softfloat-parts.c.inc | 40 ++++++++++++++++++++++++---------------
- 2 files changed, 54 insertions(+), 18 deletions(-)
+ include/fpu/softfloat-types.h |  7 ++++
+ fpu/softfloat.c               | 38 +++++++++++++++++---
+ fpu/softfloat-parts.c.inc     | 68 ++++++++++++++++++++++++++++++++++-
+ 3 files changed, 107 insertions(+), 6 deletions(-)
 
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index 26f3a8dc87e..03a604c38ec 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -404,12 +404,16 @@ float64_gen2(float64 xa, float64 xb, float_status *s,
- /*
-  * Classify a floating point number. Everything above float_class_qnan
-  * is a NaN so cls >= float_class_qnan is any NaN.
-+ *
-+ * Note that we canonicalize denormals, so most code should treat
-+ * class_normal and class_denormal identically.
-  */
- 
- typedef enum __attribute__ ((__packed__)) {
-     float_class_unclassified,
-     float_class_zero,
-     float_class_normal,
-+    float_class_denormal, /* input was a non-squashed denormal */
-     float_class_inf,
-     float_class_qnan,  /* all NaNs from here */
-     float_class_snan,
-@@ -420,12 +424,14 @@ typedef enum __attribute__ ((__packed__)) {
- enum {
-     float_cmask_zero    = float_cmask(float_class_zero),
-     float_cmask_normal  = float_cmask(float_class_normal),
-+    float_cmask_denormal = float_cmask(float_class_denormal),
-     float_cmask_inf     = float_cmask(float_class_inf),
-     float_cmask_qnan    = float_cmask(float_class_qnan),
-     float_cmask_snan    = float_cmask(float_class_snan),
- 
-     float_cmask_infzero = float_cmask_zero | float_cmask_inf,
-     float_cmask_anynan  = float_cmask_qnan | float_cmask_snan,
-+    float_cmask_anynorm = float_cmask_normal | float_cmask_denormal,
+diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
+index 2e43d1dd9e6..bba1c397bb7 100644
+--- a/include/fpu/softfloat-types.h
++++ b/include/fpu/softfloat-types.h
+@@ -165,6 +165,13 @@ enum {
+     float_flag_invalid_sqrt    = 0x0800,  /* sqrt(-x) */
+     float_flag_invalid_cvti    = 0x1000,  /* non-nan to integer */
+     float_flag_invalid_snan    = 0x2000,  /* any operand was snan */
++    /*
++     * An input was denormal and we used it (without flushing it to zero).
++     * Not set if we do not actually use the denormal input (e.g.
++     * because some other input was a NaN, or because the operation
++     * wasn't actually carried out (divide-by-zero; invalid))
++     */
++    float_flag_input_denormal_used = 0x4000,
  };
  
- /* Flags for parts_minmax. */
-@@ -459,6 +465,20 @@ static inline __attribute__((unused)) bool is_qnan(FloatClass c)
-     return c == float_class_qnan;
- }
- 
-+/*
-+ * Return true if the float_cmask has only normals in it
-+ * (including input denormals that were canonicalized)
-+ */
-+static inline bool cmask_is_only_normals(int cmask)
-+{
-+    return !(cmask & ~float_cmask_anynorm);
-+}
-+
-+static inline bool is_anynorm(FloatClass c)
-+{
-+    return float_cmask(c) & float_cmask_anynorm;
-+}
-+
  /*
-  * Structure holding all of the decomposed parts of a float.
-  * The exponent is unbiased and the fraction is normalized.
-@@ -1729,6 +1749,7 @@ static float64 float64r32_round_pack_canonical(FloatParts64 *p,
-      */
-     switch (p->cls) {
-     case float_class_normal:
-+    case float_class_denormal:
-         if (unlikely(p->exp == 0)) {
-             /*
-              * The result is denormal for float32, but can be represented
-@@ -1817,6 +1838,7 @@ static floatx80 floatx80_round_pack_canonical(FloatParts128 *p,
- 
-     switch (p->cls) {
-     case float_class_normal:
-+    case float_class_denormal:
-         if (s->floatx80_rounding_precision == floatx80_precision_x) {
-             parts_uncanon_normal(p, s, fmt);
-             frac = p->frac_hi;
-@@ -2697,6 +2719,7 @@ static void parts_float_to_ahp(FloatParts64 *a, float_status *s)
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 03a604c38ec..f4fed9bfda9 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -2718,8 +2718,10 @@ static void parts_float_to_ahp(FloatParts64 *a, float_status *s)
+                                   float16_params_ahp.frac_size + 1);
          break;
  
-     case float_class_normal:
-+    case float_class_denormal:
+-    case float_class_normal:
+     case float_class_denormal:
++        float_raise(float_flag_input_denormal_used, s);
++        break;
++    case float_class_normal:
      case float_class_zero:
          break;
  
-@@ -2729,7 +2752,7 @@ static void parts_float_to_float_narrow(FloatParts64 *a, FloatParts128 *b,
+@@ -2733,6 +2735,9 @@ static void parts64_float_to_float(FloatParts64 *a, float_status *s)
+     if (is_nan(a->cls)) {
+         parts_return_nan(a, s);
+     }
++    if (a->cls == float_class_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
+ }
+ 
+ static void parts128_float_to_float(FloatParts128 *a, float_status *s)
+@@ -2740,6 +2745,9 @@ static void parts128_float_to_float(FloatParts128 *a, float_status *s)
+     if (is_nan(a->cls)) {
+         parts_return_nan(a, s);
+     }
++    if (a->cls == float_class_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
+ }
+ 
+ #define parts_float_to_float(P, S) \
+@@ -2752,12 +2760,21 @@ static void parts_float_to_float_narrow(FloatParts64 *a, FloatParts128 *b,
      a->sign = b->sign;
      a->exp = b->exp;
  
--    if (a->cls == float_class_normal) {
-+    if (is_anynorm(a->cls)) {
+-    if (is_anynorm(a->cls)) {
++    switch (a->cls) {
++    case float_class_denormal:
++        float_raise(float_flag_input_denormal_used, s);
++        /* fall through */
++    case float_class_normal:
          frac_truncjam(a, b);
-     } else if (is_nan(a->cls)) {
+-    } else if (is_nan(a->cls)) {
++        break;
++    case float_class_snan:
++    case float_class_qnan:
          /* Discard the low bits of the NaN. */
-@@ -3218,6 +3241,7 @@ static Int128 float128_to_int128_scalbn(float128 a, FloatRoundMode rmode,
-         return int128_zero();
+         a->frac = b->frac_hi;
+         parts_return_nan(a, s);
++        break;
++    default:
++        break;
+     }
+ }
  
-     case float_class_normal:
-+    case float_class_denormal:
-         if (parts_round_to_int_normal(&p, rmode, scale, 128 - 2)) {
-             flags = float_flag_inexact;
-         }
-@@ -3645,6 +3669,7 @@ static Int128 float128_to_uint128_scalbn(float128 a, FloatRoundMode rmode,
-         return int128_zero();
+@@ -2772,6 +2789,9 @@ static void parts_float_to_float_widen(FloatParts128 *a, FloatParts64 *b,
+     if (is_nan(a->cls)) {
+         parts_return_nan(a, s);
+     }
++    if (a->cls == float_class_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
+ }
  
-     case float_class_normal:
-+    case float_class_denormal:
-         if (parts_round_to_int_normal(&p, rmode, scale, 128 - 2)) {
-             flags = float_flag_inexact;
-             if (p.cls == float_class_zero) {
-@@ -5231,6 +5256,8 @@ float32 float32_exp2(float32 a, float_status *status)
-     float32_unpack_canonical(&xp, a, status);
-     if (unlikely(xp.cls != float_class_normal)) {
-         switch (xp.cls) {
-+        case float_class_denormal:
-+            break;
-         case float_class_snan:
-         case float_class_qnan:
-             parts_return_nan(&xp, status);
-@@ -5240,9 +5267,8 @@ float32 float32_exp2(float32 a, float_status *status)
-         case float_class_zero:
-             return float32_one;
-         default:
--            break;
-+            g_assert_not_reached();
-         }
--        g_assert_not_reached();
+ float32 float16_to_float32(float16 a, bool ieee, float_status *s)
+@@ -4411,7 +4431,11 @@ float32_hs_compare(float32 xa, float32 xb, float_status *s, bool is_quiet)
+         goto soft;
      }
  
-     float_raise(float_flag_inexact, status);
+-    float32_input_flush2(&ua.s, &ub.s, s);
++    if (unlikely(float32_is_denormal(ua.s) || float32_is_denormal(ub.s))) {
++        /* We may need to set the input_denormal_used flag */
++        goto soft;
++    }
++
+     if (isgreaterequal(ua.h, ub.h)) {
+         if (isgreater(ua.h, ub.h)) {
+             return float_relation_greater;
+@@ -4461,7 +4485,11 @@ float64_hs_compare(float64 xa, float64 xb, float_status *s, bool is_quiet)
+         goto soft;
+     }
+ 
+-    float64_input_flush2(&ua.s, &ub.s, s);
++    if (unlikely(float64_is_denormal(ua.s) || float64_is_denormal(ub.s))) {
++        /* We may need to set the input_denormal_used flag */
++        goto soft;
++    }
++
+     if (isgreaterequal(ua.h, ub.h)) {
+         if (isgreater(ua.h, ub.h)) {
+             return float_relation_greater;
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 73621f4a970..8621cb87185 100644
+index 8621cb87185..0122b35008a 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -204,7 +204,7 @@ static void partsN(canonicalize)(FloatPartsN *p, float_status *status,
-             frac_clear(p);
-         } else {
-             int shift = frac_normalize(p);
--            p->cls = float_class_normal;
-+            p->cls = float_class_denormal;
-             p->exp = fmt->frac_shift - fmt->exp_bias
-                    - shift + !fmt->m68k_denormal;
-         }
-@@ -395,7 +395,7 @@ static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
- static void partsN(uncanon)(FloatPartsN *p, float_status *s,
-                             const FloatFmt *fmt)
- {
--    if (likely(p->cls == float_class_normal)) {
-+    if (likely(is_anynorm(p->cls))) {
-         parts_uncanon_normal(p, s, fmt);
-     } else {
-         switch (p->cls) {
-@@ -435,7 +435,7 @@ static FloatPartsN *partsN(addsub)(FloatPartsN *a, FloatPartsN *b,
+@@ -433,6 +433,15 @@ static FloatPartsN *partsN(addsub)(FloatPartsN *a, FloatPartsN *b,
+     bool b_sign = b->sign ^ subtract;
+     int ab_mask = float_cmask(a->cls) | float_cmask(b->cls);
  
++    /*
++     * For addition and subtraction, we will consume an
++     * input denormal unless the other input is a NaN.
++     */
++    if ((ab_mask & (float_cmask_denormal | float_cmask_anynan)) ==
++        float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
      if (a->sign != b_sign) {
          /* Subtraction */
--        if (likely(ab_mask == float_cmask_normal)) {
-+        if (likely(cmask_is_only_normals(ab_mask))) {
-             if (parts_sub_normal(a, b)) {
-                 return a;
-             }
-@@ -468,7 +468,7 @@ static FloatPartsN *partsN(addsub)(FloatPartsN *a, FloatPartsN *b,
-         }
-     } else {
-         /* Addition */
--        if (likely(ab_mask == float_cmask_normal)) {
-+        if (likely(cmask_is_only_normals(ab_mask))) {
-             parts_add_normal(a, b);
-             return a;
-         }
-@@ -488,12 +488,12 @@ static FloatPartsN *partsN(addsub)(FloatPartsN *a, FloatPartsN *b,
-     }
- 
-     if (b->cls == float_class_zero) {
--        g_assert(a->cls == float_class_normal);
-+        g_assert(is_anynorm(a->cls));
-         return a;
-     }
- 
-     g_assert(a->cls == float_class_zero);
--    g_assert(b->cls == float_class_normal);
-+    g_assert(is_anynorm(b->cls));
-  return_b:
-     b->sign = b_sign;
-     return b;
-@@ -513,7 +513,7 @@ static FloatPartsN *partsN(mul)(FloatPartsN *a, FloatPartsN *b,
-     int ab_mask = float_cmask(a->cls) | float_cmask(b->cls);
-     bool sign = a->sign ^ b->sign;
- 
--    if (likely(ab_mask == float_cmask_normal)) {
-+    if (likely(cmask_is_only_normals(ab_mask))) {
+         if (likely(cmask_is_only_normals(ab_mask))) {
+@@ -516,6 +525,10 @@ static FloatPartsN *partsN(mul)(FloatPartsN *a, FloatPartsN *b,
+     if (likely(cmask_is_only_normals(ab_mask))) {
          FloatPartsW tmp;
  
++        if (ab_mask & float_cmask_denormal) {
++            float_raise(float_flag_input_denormal_used, s);
++        }
++
          frac_mulw(&tmp, a, b);
-@@ -596,7 +596,7 @@ static FloatPartsN *partsN(muladd_scalbn)(FloatPartsN *a, FloatPartsN *b,
-         a->sign ^= 1;
+         frac_truncjam(a, &tmp);
+ 
+@@ -541,6 +554,10 @@ static FloatPartsN *partsN(mul)(FloatPartsN *a, FloatPartsN *b,
      }
  
--    if (unlikely(ab_mask != float_cmask_normal)) {
-+    if (unlikely(!cmask_is_only_normals(ab_mask))) {
-         if (unlikely(ab_mask == float_cmask_infzero)) {
-             float_raise(float_flag_invalid | float_flag_invalid_imz, s);
-             goto d_nan;
-@@ -611,7 +611,7 @@ static FloatPartsN *partsN(muladd_scalbn)(FloatPartsN *a, FloatPartsN *b,
-         }
+     /* Multiply by 0 or Inf */
++    if (ab_mask & float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
+     if (ab_mask & float_cmask_inf) {
+         a->cls = float_class_inf;
+         a->sign = sign;
+@@ -664,6 +681,16 @@ static FloatPartsN *partsN(muladd_scalbn)(FloatPartsN *a, FloatPartsN *b,
+     if (flags & float_muladd_negate_result) {
+         a->sign ^= 1;
+     }
++
++    /*
++     * All result types except for "return the default NaN
++     * because this is an Invalid Operation" go through here;
++     * this matches the set of cases where we consumed a
++     * denormal input.
++     */
++    if (abc_mask & float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
+     return a;
  
-         g_assert(ab_mask & float_cmask_zero);
--        if (c->cls == float_class_normal) {
-+        if (is_anynorm(c->cls)) {
-             *a = *c;
-             goto return_normal;
-         }
-@@ -692,7 +692,7 @@ static FloatPartsN *partsN(div)(FloatPartsN *a, FloatPartsN *b,
-     int ab_mask = float_cmask(a->cls) | float_cmask(b->cls);
+  return_sub_zero:
+@@ -693,6 +720,9 @@ static FloatPartsN *partsN(div)(FloatPartsN *a, FloatPartsN *b,
      bool sign = a->sign ^ b->sign;
  
--    if (likely(ab_mask == float_cmask_normal)) {
-+    if (likely(cmask_is_only_normals(ab_mask))) {
+     if (likely(cmask_is_only_normals(ab_mask))) {
++        if (ab_mask & float_cmask_denormal) {
++            float_raise(float_flag_input_denormal_used, s);
++        }
          a->sign = sign;
          a->exp -= b->exp + frac_div(a, b);
          return a;
-@@ -750,7 +750,7 @@ static FloatPartsN *partsN(modrem)(FloatPartsN *a, FloatPartsN *b,
- {
+@@ -713,6 +743,10 @@ static FloatPartsN *partsN(div)(FloatPartsN *a, FloatPartsN *b,
+         return parts_pick_nan(a, b, s);
+     }
+ 
++    if ((ab_mask & float_cmask_denormal) && b->cls != float_class_zero) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
+     a->sign = sign;
+ 
+     /* Inf / X */
+@@ -751,6 +785,9 @@ static FloatPartsN *partsN(modrem)(FloatPartsN *a, FloatPartsN *b,
      int ab_mask = float_cmask(a->cls) | float_cmask(b->cls);
  
--    if (likely(ab_mask == float_cmask_normal)) {
-+    if (likely(cmask_is_only_normals(ab_mask))) {
+     if (likely(cmask_is_only_normals(ab_mask))) {
++        if (ab_mask & float_cmask_denormal) {
++            float_raise(float_flag_input_denormal_used, s);
++        }
          frac_modrem(a, b, mod_quot);
          return a;
      }
-@@ -800,6 +800,8 @@ static void partsN(sqrt)(FloatPartsN *a, float_status *status,
+@@ -771,6 +808,10 @@ static FloatPartsN *partsN(modrem)(FloatPartsN *a, FloatPartsN *b,
+         return a;
+     }
  
++    if (ab_mask & float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
+     /* N % Inf; 0 % N */
+     g_assert(b->cls == float_class_inf || a->cls == float_class_zero);
+     return a;
+@@ -801,6 +842,10 @@ static void partsN(sqrt)(FloatPartsN *a, float_status *status,
      if (unlikely(a->cls != float_class_normal)) {
          switch (a->cls) {
-+        case float_class_denormal:
-+            break;
+         case float_class_denormal:
++            if (!a->sign) {
++                /* -ve denormal will be InvalidOperation */
++                float_raise(float_flag_input_denormal_used, status);
++            }
+             break;
          case float_class_snan:
          case float_class_qnan:
-             parts_return_nan(a, status);
-@@ -1130,6 +1132,7 @@ static void partsN(round_to_int)(FloatPartsN *a, FloatRoundMode rmode,
-     case float_class_inf:
-         break;
-     case float_class_normal:
-+    case float_class_denormal:
-         if (parts_round_to_int_normal(a, rmode, scale, fmt->frac_size)) {
-             float_raise(float_flag_inexact, s);
+@@ -1431,6 +1476,9 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
+         if ((flags & (minmax_isnum | minmax_isnumber))
+             && !(ab_mask & float_cmask_snan)
+             && (ab_mask & ~float_cmask_qnan)) {
++            if (ab_mask & float_cmask_denormal) {
++                float_raise(float_flag_input_denormal_used, s);
++            }
+             return is_nan(a->cls) ? b : a;
          }
-@@ -1174,6 +1177,7 @@ static int64_t partsN(float_to_sint)(FloatPartsN *p, FloatRoundMode rmode,
-         return 0;
  
-     case float_class_normal:
-+    case float_class_denormal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, scale, N - 2)) {
-             flags = float_flag_inexact;
-@@ -1241,6 +1245,7 @@ static uint64_t partsN(float_to_uint)(FloatPartsN *p, FloatRoundMode rmode,
-         return 0;
+@@ -1455,6 +1503,10 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
+         return parts_pick_nan(a, b, s);
+     }
  
-     case float_class_normal:
-+    case float_class_denormal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, scale, N - 2)) {
-             flags = float_flag_inexact;
-@@ -1304,6 +1309,7 @@ static int64_t partsN(float_to_sint_modulo)(FloatPartsN *p,
-         return 0;
- 
-     case float_class_normal:
-+    case float_class_denormal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, 0, N - 2)) {
-             flags = float_flag_inexact;
-@@ -1452,9 +1458,10 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
++    if (ab_mask & float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
      a_exp = a->exp;
      b_exp = b->exp;
  
--    if (unlikely(ab_mask != float_cmask_normal)) {
-+    if (unlikely(!cmask_is_only_normals(ab_mask))) {
-         switch (a->cls) {
-         case float_class_normal:
-+        case float_class_denormal:
-             break;
-         case float_class_inf:
-             a_exp = INT16_MAX;
-@@ -1467,6 +1474,7 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
-         }
-         switch (b->cls) {
-         case float_class_normal:
-+        case float_class_denormal:
-             break;
-         case float_class_inf:
-             b_exp = INT16_MAX;
-@@ -1513,7 +1521,7 @@ static FloatRelation partsN(compare)(FloatPartsN *a, FloatPartsN *b,
- {
-     int ab_mask = float_cmask(a->cls) | float_cmask(b->cls);
- 
--    if (likely(ab_mask == float_cmask_normal)) {
-+    if (likely(cmask_is_only_normals(ab_mask))) {
+@@ -1524,6 +1576,10 @@ static FloatRelation partsN(compare)(FloatPartsN *a, FloatPartsN *b,
+     if (likely(cmask_is_only_normals(ab_mask))) {
          FloatRelation cmp;
  
++        if (ab_mask & float_cmask_denormal) {
++            float_raise(float_flag_input_denormal_used, s);
++        }
++
          if (a->sign != b->sign) {
-@@ -1581,6 +1589,7 @@ static void partsN(scalbn)(FloatPartsN *a, int n, float_status *s)
+             goto a_sign;
+         }
+@@ -1549,6 +1605,10 @@ static FloatRelation partsN(compare)(FloatPartsN *a, FloatPartsN *b,
+         return float_relation_unordered;
+     }
+ 
++    if (ab_mask & float_cmask_denormal) {
++        float_raise(float_flag_input_denormal_used, s);
++    }
++
+     if (ab_mask & float_cmask_zero) {
+         if (ab_mask == float_cmask_zero) {
+             return float_relation_equal;
+@@ -1588,8 +1648,10 @@ static void partsN(scalbn)(FloatPartsN *a, int n, float_status *s)
+     case float_class_zero:
      case float_class_inf:
          break;
-     case float_class_normal:
-+    case float_class_denormal:
+-    case float_class_normal:
+     case float_class_denormal:
++        float_raise(float_flag_input_denormal_used, s);
++        /* fall through */
++    case float_class_normal:
          a->exp += MIN(MAX(n, -0x10000), 0x10000);
          break;
      default:
-@@ -1599,6 +1608,8 @@ static void partsN(log2)(FloatPartsN *a, float_status *s, const FloatFmt *fmt)
- 
+@@ -1609,6 +1671,10 @@ static void partsN(log2)(FloatPartsN *a, float_status *s, const FloatFmt *fmt)
      if (unlikely(a->cls != float_class_normal)) {
          switch (a->cls) {
-+        case float_class_denormal:
-+            break;
+         case float_class_denormal:
++            if (!a->sign) {
++                /* -ve denormal will be InvalidOperation */
++                float_raise(float_flag_input_denormal_used, s);
++            }
+             break;
          case float_class_snan:
          case float_class_qnan:
-             parts_return_nan(a, s);
-@@ -1615,9 +1626,8 @@ static void partsN(log2)(FloatPartsN *a, float_status *s, const FloatFmt *fmt)
-             }
-             return;
-         default:
--            break;
-+            g_assert_not_reached();
-         }
--        g_assert_not_reached();
-     }
-     if (unlikely(a->sign)) {
-         goto d_nan;
 -- 
 2.34.1
 
