@@ -2,89 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF80A31498
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 20:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83BFA31591
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 20:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thvYJ-00053z-Vo; Tue, 11 Feb 2025 14:04:12 -0500
+	id 1thwAH-0007oD-17; Tue, 11 Feb 2025 14:43:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thvYB-00051m-TH
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:04:04 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1thvY9-0002fK-K0
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:04:03 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-439566c991dso5201795e9.3
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 11:04:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739300639; x=1739905439; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=GBCq46vjoUlQfpjKU7V8oqPcjKvleGbSpv5SUzOOkZ4=;
- b=ktPVLQY9dAZujMMmGZRmgh7wMVUU7MQg8ZEN97ZhlPK49k8TUozXt32q8DjFqwp3rY
- F6FwlVxHcKZQDT6LZyLGuxEUV81cjExUGf3ZpQYQMyinkDavlF4gmz7VsLeJ3GDAvI82
- IJEmubml0uoDeBzP/Ht9c6gtvAvel2pGEzlwnkz4fXoWsT20OC3DLqJ2n/WXlOk4P/RL
- ATnAHsXGNBqrgDK9UC50ad2atvjzcbsdkRf/r4kVeBuXCoWJyEpdKibeGC8oTORn+jok
- gZrcFfSXPpHGy//QOUSNTvsT71lSQjazdaBoJNSDBwbs/KqnTMlhFfKwDqxJnLnQkKCA
- AwwA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thwAF-0007o1-EF
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:43:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1thwAD-00054F-AX
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 14:43:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739302999;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+FRiz0vFBBQFWvGSWvQmpATQqfAnoP/gg11H3yIdRBs=;
+ b=BKuKBL6sfL87158tmlpgsJquVMb7IhKnzX0v65PbX+vFHIH/HCcubSVE7cQYl8rv4DDs+F
+ ucngwx1nP5DVm8p02U0HqtKVvHJ+vu7Xxjp7PKrEUcgU7vSg4UdgbunPkBtKDnkcm54Kpf
+ WQfvH8SDaAEi7XGg7j0YFaZ/5ciKiok=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-okLYjoOLP22kjn2EhxQeRw-1; Tue, 11 Feb 2025 14:43:15 -0500
+X-MC-Unique: okLYjoOLP22kjn2EhxQeRw-1
+X-Mimecast-MFC-AGG-ID: okLYjoOLP22kjn2EhxQeRw
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c057344597so17808285a.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 11:43:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739300639; x=1739905439;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GBCq46vjoUlQfpjKU7V8oqPcjKvleGbSpv5SUzOOkZ4=;
- b=SvVL760cPXF0daJOaSwriHlcqfuSy3bERU1EfMqeD4EpTocJPJ/muVP6u9unAbUDqs
- aAkTdRLeypyqwXQNcbMkCQJeYj+7/lFIpFhGHHW6joxAkubAXiyIO5dlnSifxOOU4/Fm
- U3xJUp/2MFc6dn0XhHm6+Xz2Bi2NoIQubA5o++MxrzNIzbRJ2Equky9IsPjbXKnAAChc
- 3XeJbTIhiJcNmIXREaJa9h63yv0PaaoMGnnCuZ4Cuz0ScSeUaXYAcZz8wQCU5eQW/dyD
- TyGQ3oW+ok+fcQNQ/Otqdy/Zmm5DY/j/2PEzVzSO1DZGAKRyGuvjCWBNY8CHa4iBaR7L
- adOQ==
-X-Gm-Message-State: AOJu0YyvCd8JX3Ewnj74j39bE2AhJ/+6Z+z+KEQ7tSIKeuDIaLUtiZB+
- FSsKPq45900iheCc4UdeINPfAt7ETEghFPwrOO2t27DS98n9lz4lcPihzYTx/AI=
-X-Gm-Gg: ASbGncuNEAzkPrGn7qHFxwea4uohLSZBR9K9bWLd+XOasN3wV8XkFfo/6Qttal1d8/u
- /7d/vb/F8YgyQI91ULgpLTgKEvqULO+katxfdbfVZV7AeFA0dpl8z1nXu3cZ0WuGfwJaZPsaJJz
- bx51eJ3Tgp52nMDNeQ+ZoC7rhmhw6Vd1yNrIarqx6+v/yzaUa8WKFYu9wfWnb8ruUSupezeB7cs
- VlTQABKvHz0uLNxg40rSn12TUyzv0dvOVAWpJXFJxFmDY5/TVFxtnFXlim/U24OORQVgMQ8BzbZ
- 1wS3v6A3462rCvc+T1eGd92UCw+vwUedh4BSUEyqKati6EoZfYxak4ll8VM=
-X-Google-Smtp-Source: AGHT+IHOAFkJtEhXlZzWzXjTHVC89I/irqytrvIYeVhnfDlHRr2EKUlPE3RZjdXBzoAzRQWZfHxFJw==
-X-Received: by 2002:a05:600c:1d97:b0:436:e3ea:4447 with SMTP id
- 5b1f17b1804b1-439581cbbb8mr3884005e9.30.1739300639177; 
- Tue, 11 Feb 2025 11:03:59 -0800 (PST)
-Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4391da96502sm189706295e9.1.2025.02.11.11.03.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Feb 2025 11:03:58 -0800 (PST)
-Message-ID: <39314f09-268f-48b8-add5-95366c254f81@linaro.org>
-Date: Tue, 11 Feb 2025 20:03:57 +0100
+ d=1e100.net; s=20230601; t=1739302995; x=1739907795;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+FRiz0vFBBQFWvGSWvQmpATQqfAnoP/gg11H3yIdRBs=;
+ b=jz/MZBTaw2EsU1kvoo8TwqRSFIZ+tjtImhyQz/7z2v0YB1iY2R9jdjTNkbHBHY3O1W
+ 3FFLLNmeoRQfRri2SfSCVwGWeOJd8ZsOq2n/b08wY4UcRk7V+5AkNRKGBjTUkuR+TTFW
+ zFEEHDajO40DOl6e3+MC/n2+AcsB6pNv2ZEneqHaSZ1lUacVHY0/R8xRuLGU2PsJnrGQ
+ bf+Fko/AmEJvOuWrPwgOwzotky5IWNqs/Oih9dKxbB7wnV7NQItbjT5YwSlWLGBDbCFd
+ 0pbAEsdHACee9HUE/n2UfO6ZLhb8TKEBi1XTUhaxnRkFZqdVR5XBbV4TeiIonyuupvMo
+ rHcQ==
+X-Gm-Message-State: AOJu0YyXwDmfEVR5V91t73hRsOSPr1AZm/ZVRa+WrzIpbB7/P8xMSCX+
+ 368PXAW2LDTZ/+/yIWL7SaW4I2TBgSCHPbAEA3ux/c5+jWU09qKEZTqOAV+1+bFySyxXuxk3/Nk
+ KNAaHJZ5JDP+rBT/vXbq2AiJ6mkdPUITa5RO1VfFjPjxvd2NVjskz
+X-Gm-Gg: ASbGncsldEdZ2jM82xy2FwYN5PCcW05WEoCi20Ki4tf8P11uJ82yHvH/KeYFC3UhdtX
+ oeoPi+z3g5CBoWTgEQH09Hjzauq1wAFHgARJbUf+1lntjHgaU6s7MQclNUGV5p19QrPx9yXXW1f
+ QadGh2UgXCOURZKDA52QMD/TVdluknVh/8Ck8yGnzMI/58o09K3VwvQBhkI/PZgC2KpHlkfjIsp
+ lOl2EXffDhkXC87aBqId/miraq1CFFEnc6BJYdejX7OfoYF2x5SWskclnI=
+X-Received: by 2002:a05:620a:288b:b0:7b1:ab32:b71e with SMTP id
+ af79cd13be357-7c06ff5a000mr53231685a.0.1739302994980; 
+ Tue, 11 Feb 2025 11:43:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHHLvRXVTbZkpKypPzKxPVWIRCivZcQY/Ld9MJ0HtVPaw6Yjmsj8VLvLC2zxNumjeBgmR4mAA==
+X-Received: by 2002:a05:620a:288b:b0:7b1:ab32:b71e with SMTP id
+ af79cd13be357-7c06ff5a000mr53228185a.0.1739302994622; 
+ Tue, 11 Feb 2025 11:43:14 -0800 (PST)
+Received: from x1.local ([2604:7a40:2041:2b00::1000])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7c04ec3fa82sm470574785a.93.2025.02.11.11.43.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Feb 2025 11:43:14 -0800 (PST)
+Date: Tue, 11 Feb 2025 14:43:11 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 6/9] migration: Don't set FAILED state when cancelling
+Message-ID: <Z6uoTymcfHcjnrtf@x1.local>
+References: <20250211150136.6781-1-farosas@suse.de>
+ <20250211150136.6781-7-farosas@suse.de> <Z6uM5TDDGb5FkVqf@x1.local>
+ <87wmdwuzm2.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/32] Misc HW patches for 2025-02-10
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250210204204.54407-1-philmd@linaro.org>
- <CAJSP0QWH2+sLaNGwwLTQr5Kud6kKLML_Y24M=Kz1GSX9yRxDQw@mail.gmail.com>
- <f28e0b87-9bb2-4bb3-8c10-1f3ff0f784c2@linaro.org>
- <1ddb567a-7261-4831-9f46-7c247969a86d@linaro.org>
-Content-Language: en-US
-In-Reply-To: <1ddb567a-7261-4831-9f46-7c247969a86d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wmdwuzm2.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,128 +104,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/25 19:53, Philippe Mathieu-Daudé wrote:
-> On 11/2/25 19:48, Philippe Mathieu-Daudé wrote:
->> On 11/2/25 19:26, Stefan Hajnoczi wrote:
->>> On Mon, Feb 10, 2025 at 3:43 PM Philippe Mathieu-Daudé
->>> <philmd@linaro.org> wrote:
->>>>
->>>> The following changes since commit 
->>>> 54e91d1523b412b4cff7cb36c898fa9dc133e886:
->>>>
->>>>    Merge tag 'pull-qapi-2025-02-10-v2' of https://repo.or.cz/qemu/ 
->>>> armbru into staging (2025-02-10 10:47:31 -0500)
->>>>
->>>> are available in the Git repository at:
->>>>
->>>>    https://github.com/philmd/qemu.git tags/hw-misc-20250210
->>>>
->>>> for you to fetch changes up to 
->>>> 1078a376932cc1d1c501ee3643fef329da6a189a:
->>>>
->>>>    hw/net/smc91c111: Ignore attempt to pop from empty RX fifo 
->>>> (2025-02-10 21:30:44 +0100)
->>>>
->>>> ----------------------------------------------------------------
->>>> Misc HW patches
->>>>
->>>> - Use qemu_hexdump_line() in TPM backend (Philippe)
->>>> - Make various Xilinx devices endianness configurable (Philippe)
->>>> - Remove magic number in APIC (Phil)
->>>> - Disable thread-level cache topology (Zhao)
->>>> - Xen QOM style cleanups (Bernhard)
->>>> - Introduce TYPE_DYNAMIC_SYS_BUS_DEVICE (Philippe)
->>>> - Invert logic of machine no_sdcard flag (Philippe)
->>>> - Housekeeping in MicroBlaze functional tests (Philippe)
->>>
->>> Please take a look at this CI failure:
->>> https://gitlab.com/qemu-project/qemu/-/jobs/9106591368
->>
->> Hmm I can not reproduce locally this error:
->>
->>    Exception: Asset cache is invalid and downloads disabled
+On Tue, Feb 11, 2025 at 03:04:37PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> OK, I could reproduce by blowing my cache away.
+> > On Tue, Feb 11, 2025 at 12:01:33PM -0300, Fabiano Rosas wrote:
+> >> It's possible that the migration is cancelled during
+> >> migration_switchover_start(). In that case, don't set the migration
+> >> state FAILED in migration_completion().
+> >> 
+> >> Fixes: 3dde8fdbad ("migration: Merge precopy/postcopy on switchover start")
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >
+> > I remember I paid some attention on this one when working on the commit,
+> > where it has:
+> >
+> > static bool migration_switchover_prepare(MigrationState *s)
+> > {
+> >     /* Concurrent cancellation?  Quit */
+> >     if (s->state == MIGRATION_STATUS_CANCELLING) {   <================= [1]
+> >         return false;
+> >     }
+> >     ...
+> >     bql_unlock();
+> >
+> >     qemu_sem_wait(&s->pause_sem);
+> >
+> >     bql_lock();
+> >     /*
+> >      * After BQL released and retaken, the state can be CANCELLING if it
+> >      * happend during sem_wait().. Only change the state if it's still
+> >      * pre-switchover.
+> >      */
+> >     migrate_set_state(&s->state, MIGRATION_STATUS_PRE_SWITCHOVER, <====== [2]
+> >                       MIGRATION_STATUS_DEVICE);
+> >
+> >     return s->state == MIGRATION_STATUS_DEVICE;
+> > }
+> >
+> > So when holding BQL logically it can't change to CANCELLING, it'll check
+> > first [1] making sure no prior CANCELLING.  Then after release and retake
+> > BQL it'll check again [2] (see the comment above [2], it's done by passing
+> > in explicit old_state to not change it if it's CANCELLING).
 > 
-> The problem seems in the "tests/functional: Have microblaze tests
-> inherit common parent class" patch, which does:
+> Right, it doesn't change the state. But the function returns false and
+> someone else changes to FAILED. That's what both my patch and your
+> snippet below fix.
 > 
-> -class MicroblazeelMachine(QemuSystemTest):
-> +class MicroblazeLittleEndianMachine(MicroblazeMachine):
+> >
+> > Any hint on how this could be triggered?
+> >
+> > OTOH, when looking at this.. I seem to have found a bug indeed (which could
+> > be another?), where I may have forgot to touch up the old_state in
+> > migrate_set_state() after switching to always use DEVICE..
+> >
+> > diff --git a/migration/migration.c b/migration/migration.c
+> > index 74c50cc72c..513e5955cc 100644
+> > --- a/migration/migration.c
+> > +++ b/migration/migration.c
+> > @@ -2793,8 +2793,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+> >  fail_closefb:
+> >      qemu_fclose(fb);
+> >  fail:
+> > -    migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+> > -                          MIGRATION_STATUS_FAILED);
+> > +    if (ms->state != MIGRATION_STATUS_CANCELLING) {
+> > +        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
+> > +    }
 > 
-> I presume, since MicroblazeLittleEndianMachine is no more a direct
-> child of QemuSystemTest, then the ASSET_IMAGE_* aren't automatically
-> downloaded.
+> Now that I think about it, we should probably just use the skip at
+> migrate_set_state() always. Isn't this^ the same as:
+> 
+> migrate_set_state(&ms->state, MIGRATION_STATUS_DEVICE,
+> MIGRATION_STATUS_FAILED);
+> 
+> Better to list the state explicitly, no?
 
-Well, apparently related to network failure:
+There's one case where it can be in ACTIVE rather than DEVICE,
+unfortunately:
 
-INFO:qemu-test:Downloading 
-http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz to 
-/Users/philmd/.cache/qemu/download/b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22...
-ERROR:qemu-test:Unable to download 
-http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz: HTTP 
-Error 403: Forbidden
-
-$ curl -v http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz
- > GET /2023/download/day13.tar.gz HTTP/1.1
-< HTTP/1.1 301 Moved Permanently
-< Location: https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz
-
-Using:
-
--- >8 --
-diff --git a/tests/functional/test_microblaze_s3adsp1800.py 
-b/tests/functional/test_microblaze_s3adsp1800.py
-index 177c8a685bc..949e627c84a 100755
---- a/tests/functional/test_microblaze_s3adsp1800.py
-+++ b/tests/functional/test_microblaze_s3adsp1800.py
-@@ -24,3 +24,3 @@ class MicroblazeMachine(QemuSystemTest):
-      ASSET_IMAGE_LE = Asset(
--        ('http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
-+ 
-('https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
-  
-'b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22')
----
-
-I still get:
-
-INFO:qemu-test:Downloading 
-https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz to 
-/Users/philmd/.cache/qemu/download/b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22...
-
-However:
-
-$ curl --http1.0 -v 
-https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz
- > GET /2023/download/day13.tar.gz HTTP/1.0
-< HTTP/1.0 200 OK
-< Content-Length: 4752277
-< Content-Type: application/gzip
-
-So I'm confused...
+    ret = migration_stop_vm(ms, RUN_STATE_FINISH_MIGRATE);
+    if (ret < 0) {
+        error_setg_errno(errp, -ret, "%s: Failed to stop the VM", __func__);
+        goto fail;
+    }
 
 > 
->> https://gitlab.com/qemu-project/qemu/-/jobs/9106591368/artifacts/ 
->> external_file/build/tests/functional/microblazeel/ 
->> test_microblazeel_s3adsp1800.MicroblazeLittleEndianMachine.test_microblaze_s3adsp1800_legacy_le/base.log content is:
->>
->>    2025-02-11 16:24:55,525 - DEBUG: Extract /builds/qemu-project/qemu/ 
->> functional-cache/download/ 
->> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22 
->> format=Nonesub_dir=None member=None
->>
->> which is correct:
->>
->> $ sha256sum day13.tar.gz
->> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22 
->> day13.tar.gz
->>
->> Did you restart the job to see if it is a network issue?
->>
->> Regards,
->>
->> Phil.
+> Or... do we want to incorporate this into migrate_set_state()?
 > 
+> void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
+>                        MigrationStatus new_state)
+> {
+>     assert(new_state < MIGRATION_STATUS__MAX);
+> 
+>     if (qatomic_read(state) == CANCELLING && new_state != CANCELLED) {
+>         /* Once it's cancelling, there's no way back, it must finish cancel */
+>         return;
+>     }
+> 
+>     if (qatomic_cmpxchg(state, old_state, new_state) == old_state) {
+>         trace_migrate_set_state(MigrationStatus_str(new_state));
+>         migrate_generate_event(new_state);
+>     }
+> }
+
+IMHO we'll need the original migrate_set_state() more or less, e.g. when
+setting CANCELLING->CANCELLED in migration_[fd_]cleanup().  So maybe it's
+slightly easier we keep it.
+
+Said that, maybe we could have a few helpers for the state transitions,
+like:
+
+  migrate_set_state_failure(MigrationState *s)
+
+Which can consider CANCELLING.
+
+Also, we have a portion of such state transitions not caring about current
+state, so we could also have some helper for that, like:
+
+  migrate_set_state_always(MigrationState *s, MigrationStatus status)
+
+Or rename old migrate_set_state() into migrate_set_state_atomic(), then
+make migrate_set_state() to ignore current state.
+
+> 
+> >      migration_block_activate(NULL);
+> >      migration_call_notifiers(ms, MIG_EVENT_PRECOPY_FAILED, NULL);
+> >      bql_unlock();
+> >
+> > I'm not sure whether it's relevant to what you hit, though.. since you're
+> > looking at this, I'd rely on you help figuring it out before I do.. :)
+> >
+> >> ---
+> >>  migration/migration.c | 4 +++-
+> >>  1 file changed, 3 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/migration/migration.c b/migration/migration.c
+> >> index 375de6d460..5dc43bcdc0 100644
+> >> --- a/migration/migration.c
+> >> +++ b/migration/migration.c
+> >> @@ -2986,7 +2986,9 @@ fail:
+> >>          error_free(local_err);
+> >>      }
+> >>  
+> >> -    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+> >> +    if (s->state != MIGRATION_STATUS_CANCELLING) {
+> >> +        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+> >> +    }
+> >>  }
+> >>  
+> >>  /**
+> >> -- 
+> >> 2.35.3
+> >> 
+> 
+
+-- 
+Peter Xu
 
 
