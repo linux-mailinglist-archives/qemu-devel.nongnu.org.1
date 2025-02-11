@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE51A30701
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 10:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8CDA306E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 10:25:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thmVE-0003IV-H3; Tue, 11 Feb 2025 04:24:24 -0500
+	id 1thmV8-000300-9R; Tue, 11 Feb 2025 04:24:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1thmUw-0002UR-8o
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 04:24:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1thmUr-0002JS-Vu
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 04:24:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1thmUr-00034S-AC
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 04:24:05 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1thmUq-00034W-96
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 04:24:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739265838;
+ s=mimecast20190719; t=1739265839;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t/vP1Y+kMo8kS2TrEex+VX8EYhsx5K4oxWryHizZVQE=;
- b=hH684VBD3lVjY4jZl1H9chwv2yudct4wghzjyDnze37wpJ3G2+EUYs6wtzvAORGhtDVi8/
- axp91T6qeRUtSI61eIockaeBYl2PmpZRLoBHAZPaW9UHeOT+2jPcMXpk3jewHSp1P5F8xn
- CwTKytuzzEAJMdR1EIY3Mhr0E0vyEK4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=UfzJa85ik8HDMKewE83Gp4yd8DRMF01tRJCM6geVxi8=;
+ b=iMu4rNJG9ZtAGgkdtgYKWsSyNyucy7KTjp7uCfi85UeL+6JzG1K3byvwcwymtg50pw91qc
+ UcR89gp2SwJ7mPy3nrthT+5cUf6zAcf7RyosOV4doSRt92ha30hUm9PX45kgP4+B570XXp
+ EwguqudGStHP8KnNMK9oaLkfmi+2xdg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-ZLkvnQxFOk6LhNQyu8WaGw-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-290-Ub--DrYqMbunoNQki3_hgg-1; Tue,
  11 Feb 2025 04:23:53 -0500
-X-MC-Unique: ZLkvnQxFOk6LhNQyu8WaGw-1
-X-Mimecast-MFC-AGG-ID: ZLkvnQxFOk6LhNQyu8WaGw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: Ub--DrYqMbunoNQki3_hgg-1
+X-Mimecast-MFC-AGG-ID: Ub--DrYqMbunoNQki3_hgg
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DBE01800268; Tue, 11 Feb 2025 09:23:52 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1049819560A0; Tue, 11 Feb 2025 09:23:52 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.57])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB74F30001AB; Tue, 11 Feb 2025 09:23:51 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE8851800358; Tue, 11 Feb 2025 09:23:51 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6FC761800610; Tue, 11 Feb 2025 10:23:25 +0100 (CET)
+ id 80AEC1800615; Tue, 11 Feb 2025 10:23:25 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, graf@amazon.com,
@@ -57,25 +57,24 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, graf@amazon.com,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v3 14/23] hw/uefi: add trace-events
-Date: Tue, 11 Feb 2025 10:23:12 +0100
-Message-ID: <20250211092324.965440-15-kraxel@redhat.com>
+Subject: [PATCH v3 15/23] hw/uefi: add UEFI_VARS to Kconfig
+Date: Tue, 11 Feb 2025 10:23:13 +0100
+Message-ID: <20250211092324.965440-16-kraxel@redhat.com>
 In-Reply-To: <20250211092324.965440-1-kraxel@redhat.com>
 References: <20250211092324.965440-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
 X-Spam_bar: ---
 X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.388,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,37 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add trace events for debugging and trouble shooting.
+Add UEFI_VARS config option, enable by default for x86_64 and aarch64.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/uefi/trace-events | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 hw/uefi/trace-events
+ hw/Kconfig      | 1 +
+ hw/uefi/Kconfig | 3 +++
+ 2 files changed, 4 insertions(+)
+ create mode 100644 hw/uefi/Kconfig
 
-diff --git a/hw/uefi/trace-events b/hw/uefi/trace-events
+diff --git a/hw/Kconfig b/hw/Kconfig
+index 1b4e9bb07f7d..c4dfe2e7af7c 100644
+--- a/hw/Kconfig
++++ b/hw/Kconfig
+@@ -37,6 +37,7 @@ source smbios/Kconfig
+ source ssi/Kconfig
+ source timer/Kconfig
+ source tpm/Kconfig
++source uefi/Kconfig
+ source ufs/Kconfig
+ source usb/Kconfig
+ source virtio/Kconfig
+diff --git a/hw/uefi/Kconfig b/hw/uefi/Kconfig
 new file mode 100644
-index 000000000000..3694712a946d
+index 000000000000..ca6c2bc46a96
 --- /dev/null
-+++ b/hw/uefi/trace-events
-@@ -0,0 +1,17 @@
-+# device
-+uefi_reg_read(uint64_t addr, unsigned size) "addr 0x%" PRIx64 ", size %u"
-+uefi_reg_write(uint64_t addr, uint64_t val, unsigned size) "addr 0x%" PRIx64 ", val 0x%" PRIx64 ", size %d"
-+uefi_hard_reset(void) ""
-+
-+# generic uefi
-+uefi_variable(const char *context, const char *name, uint64_t size, const char *uuid) "context %s, name %s, size %" PRIu64 ", uuid %s"
-+uefi_status(const char *context, const char *name) "context %s, status %s"
-+uefi_event(const char *name) "event %s"
-+
-+# variable protocol
-+uefi_vars_proto_cmd(const char *cmd) "cmd %s"
-+uefi_vars_security_violation(const char *reason) "reason %s"
-+
-+# variable policy protocol
-+uefi_vars_policy_cmd(const char *cmd) "cmd %s"
-+uefi_vars_policy_deny(const char *reason) "reason %s"
++++ b/hw/uefi/Kconfig
+@@ -0,0 +1,3 @@
++config UEFI_VARS
++	bool
++        default y if X86_64 || AARCH64
 -- 
 2.48.1
 
