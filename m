@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803E9A31161
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D374DA31143
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht6g-0008ON-De; Tue, 11 Feb 2025 11:27:30 -0500
+	id 1tht6u-00009z-2J; Tue, 11 Feb 2025 11:27:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht65-0006tI-VR
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:57 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1tht67-0006uE-Ux
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:27:00 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht64-0003Wo-63
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:53 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4394c192285so10769855e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:51 -0800 (PST)
+ id 1tht65-0003XN-N2
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:55 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43948f77f1aso13529185e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291211; x=1739896011; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291212; x=1739896012; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qymzXrO+9F4JBSFIAl0zaVLUHcekNoeWY0bsti7Y49Q=;
- b=NAC0A99aqCn4oiqGPvJ9U3rWeeozLcKjeceEhcYEB0KRE99W+qBi/1E5tyBO/TgIWb
- 2B860HTK1jcRAjH+bhPmNhBsE+318529Kn83ueD/qD5umWC4RY8MlTdjQIhl7cctWuBx
- JWKPgo6Kg+I5ON48+5oCThT/nk3WyPJp+q47Pl8ci52JMkWEoc5eM9ISqNkP+myHOvI9
- I7cDhKNLDelLVqdG3RZIbIkLg99R40snSTZ9CpHgTth0ei2g41itPKpHpNrQa+JGrgGM
- SsOeLyaC7TWyrbRMrQXTlJpcyYPIstcNmTOBqw9knWDl6CZ8ulX1KGtIQpvJN49tyWj9
- hhLg==
+ :reply-to; bh=1nZ+IEGOFKvIZqBhBAoMWi6SFgehG7OHzLJ4Ei6wvCU=;
+ b=pHuxrg2n/Q6sL0jAC/gBGRlBgeScw7xo4hDkMLVZgNLXhU9BOg4vUmTQeSfg/2aXB4
+ vztWSFbZWuSjLc7xvJ0jbcf9NjVUQA3bqfC49mxHkS1RBoukFJ3HQahYpBSez/WCM9pS
+ Luxzk96T7LRmDUgcULtYj9MHSgePxaTq/EAo7Qhk3gbhrAikSFDr2hSTg4aOr/mDkWuz
+ yygo0piLRP07v7+EI5wYydhKKEcg33AiXSM9y/TArbR7T4RvpLTxk1wUg6vw7/SyeF1i
+ Pdetex7W0yTG4iDMAB5SLzgJWabOPHSpRfCpjkACZWtBEGK4U1jfmD6Gc2nt97S/Of1x
+ nEGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291211; x=1739896011;
+ d=1e100.net; s=20230601; t=1739291212; x=1739896012;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qymzXrO+9F4JBSFIAl0zaVLUHcekNoeWY0bsti7Y49Q=;
- b=DiJv7YYB9JdFWUahuVHrKMTzCUhNpJjDyfUSxd136PGCiaUqZXV1EeEYIgNZ2frcV5
- mv5FQx6N0vcL+RUIh+RSys1lPXsgDqlZMO15rVTdIIKKj2MPP05NFRsNhGMIwKw2lC+j
- Nvw4Oupq+DqI/CpRKE8zQcpjLZbtkjhT3tAHhjW9c3hnS1hLyiTadvKMgBwulgFPsq7b
- SFh45NE8kuDDRse1HzGbmi2Z1DalfTAkZQLsss515ub+7oiIFA3UCIwILOSEA5gCwLL3
- x5Ri1nT8RkYAI1ZBbJGmbYNRZ+nVjyXx7mJgzU1PQWqNThBZ1eY80ygUJhOfbNaXEoIF
- Fnww==
-X-Gm-Message-State: AOJu0YwAJ6kq+BufRds2gVqaeA68GsVpwpRsEVlH443JWvOHasRXy2VR
- ui0gldhoBZJctYvPuBaxsokbukBRuIyGzM90LJYblpTdmXNvd26/WiACIf45ex6TZHDKVnEzwZP
- W
-X-Gm-Gg: ASbGnct7Lpl/ztRO+x09Pfba7++cglhdd5PDWtmoi8Bu0bhi6omFXhU2ZcynqoXsWKt
- wTqNkwTLEjsQrHwVbu21oSXMwy6Z5YnXBbvqnAG5bkr4mucwZyMZR8JjmyFhbZxkcja3dHw36hA
- BEM5/sfFzdv6MD6BKcegNNnay5ni1SutHUdZ7YWmz3khW79a3FOagAR8DIFa4IvqgGt3ZJKMFe4
- DRt397KN4RmjMGn85r4p4gu6+yDKcJlyn9q8mNUwnkJApaTFZ2Nsu41/FouwNVkMElRr0jMcm3/
- FZx/QMkc9WJ7kEo0UdPL
-X-Google-Smtp-Source: AGHT+IFMEGqpKiMdlQngWDgqVyLX9SReoTkj+7EM5xnC9aaRR4aDtkiQ+0QIPFNKHnYtuGpUtuh6Rg==
-X-Received: by 2002:a05:600c:1d99:b0:439:5506:717f with SMTP id
- 5b1f17b1804b1-43955067392mr24958015e9.9.1739291210809; 
- Tue, 11 Feb 2025 08:26:50 -0800 (PST)
+ bh=1nZ+IEGOFKvIZqBhBAoMWi6SFgehG7OHzLJ4Ei6wvCU=;
+ b=g1dGafiCjv2W5z+6t3Lt9kSrMe18RQaZZjsFsmSx00TqrMN8eJvYredkYTr8h6I17T
+ BVaUlDaGilplFA05EPrjS3kGSY7jS/lqXeC0XmKT0ayNp6cPIOjMA/C432d2lkmUyJit
+ 78W0yOw5ALWStWnXGn8c/UY4MN6m7j6rvZUCH/hKAUXEjlB0S2Vr+Vm3QSSbPnysERlN
+ g6KSNZOMN2eskLn8Qc2m3980Gw84g0iuxrZc5JLXb52+sQNWgCr3xY6gr8G86iw/eCN7
+ qwsKWh+rDW8B2OU3UktTe6ijASyBLY2W/k0swmmDqpyDdVPMtFO7ruzbStoZNpwifcDM
+ i2YA==
+X-Gm-Message-State: AOJu0Yx+HUrYw2s5cUCDdtd7fXX1BeWxSxlWh9QZXxZb5auSUZzwcCK9
+ TDp5OytWwW3vAFPlZmdtP5DjoERwrr8r+9n3q03NeeQx2rfu1Q8xyHxqkz5gh0qi71t3aosLfSM
+ a
+X-Gm-Gg: ASbGncuZu/TooxMhKztixC1WCVoTt+NULcosKpBTblqKnLh79My7u+uResGXpENB/Hj
+ SNNkAsLyFnXszceTAkmzdWTY3D9K3rE3vPUT6M+29KSivKvMDKLZhOjSDeKHmqZPAlXPkdR7VpF
+ +t5khMy8Kzec/4C51ySbp+CoZcJJwO1+foObDpivVJU1Am3L6u4St2LRnCOxVlcdVmmKVH7ugSV
+ 5jrvL5uXXc9CGTKUUg2h8WlGUbef+3m3fUXbWQfBUpVTCnMahoYhOPKhw33jXou9V4zce0SMqpa
+ g3MSBjwcmOb9plc/dWEs
+X-Google-Smtp-Source: AGHT+IFGACRCt+3Wp7ZY3ZIvz8cjgQ/1amCVJkx0mv5qslK7WWYPg2cuEA4W0n2MhyDzkk5QUj+5Tg==
+X-Received: by 2002:a05:600c:3b11:b0:439:574c:bf77 with SMTP id
+ 5b1f17b1804b1-439574cc16amr6858115e9.8.1739291211728; 
+ Tue, 11 Feb 2025 08:26:51 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:50 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:51 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 51/68] target/arm: Enable FEAT_AFP for '-cpu max'
-Date: Tue, 11 Feb 2025 16:25:37 +0000
-Message-Id: <20250211162554.4135349-52-peter.maydell@linaro.org>
+Subject: [PULL 52/68] target/arm: Plumb FEAT_RPRES frecpe and frsqrte through
+ to new helper
+Date: Tue, 11 Feb 2025 16:25:38 +0000
+Message-Id: <20250211162554.4135349-53-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,40 +97,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have completed the handling for FPCR.{AH,FIZ,NEP}, we
-can enable FEAT_AFP for '-cpu max', and document that we support it.
+FEAT_RPRES implements an "increased precision" variant of the single
+precision FRECPE and FRSQRTE instructions from an 8 bit to a 12
+bit mantissa. This applies only when FPCR.AH == 1. Note that the
+halfprec and double versions of these insns retain the 8 bit
+precision regardless.
+
+In this commit we add all the plumbing to make these instructions
+call a new helper function when the increased-precision is in
+effect. In the following commit we will provide the actual change
+in behaviour in the helpers.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 2 insertions(+)
+ target/arm/cpu-features.h      |  5 +++++
+ target/arm/helper.h            |  4 ++++
+ target/arm/tcg/translate-a64.c | 34 ++++++++++++++++++++++++++++++----
+ target/arm/tcg/translate-sve.c | 16 ++++++++++++++--
+ target/arm/tcg/vec_helper.c    |  2 ++
+ target/arm/vfp_helper.c        | 32 ++++++++++++++++++++++++++++++--
+ 6 files changed, 85 insertions(+), 8 deletions(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 60176d08597..63b4cdf5fb1 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -20,6 +20,7 @@ the following architecture extensions:
- - FEAT_AA64EL3 (Support for AArch64 at EL3)
- - FEAT_AdvSIMD (Advanced SIMD Extension)
- - FEAT_AES (AESD and AESE instructions)
-+- FEAT_AFP (Alternate floating-point behavior)
- - FEAT_Armv9_Crypto (Armv9 Cryptographic Extension)
- - FEAT_ASID16 (16 bit ASID)
- - FEAT_BBM at level 2 (Translation table break-before-make levels)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 93573ceeb1a..0bc68aac177 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1218,6 +1218,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR1, XNX, 1);      /* FEAT_XNX */
-     t = FIELD_DP64(t, ID_AA64MMFR1, ETS, 2);      /* FEAT_ETS2 */
-     t = FIELD_DP64(t, ID_AA64MMFR1, HCX, 1);      /* FEAT_HCX */
-+    t = FIELD_DP64(t, ID_AA64MMFR1, AFP, 1);      /* FEAT_AFP */
-     t = FIELD_DP64(t, ID_AA64MMFR1, TIDCP1, 1);   /* FEAT_TIDCP1 */
-     t = FIELD_DP64(t, ID_AA64MMFR1, CMOW, 1);     /* FEAT_CMOW */
-     cpu->isar.id_aa64mmfr1 = t;
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 7bf24c506b3..525e4cee12f 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -597,6 +597,11 @@ static inline bool isar_feature_aa64_mops(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, MOPS);
+ }
+ 
++static inline bool isar_feature_aa64_rpres(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, RPRES);
++}
++
+ static inline bool isar_feature_aa64_fp_simd(const ARMISARegisters *id)
+ {
+     /* We always set the AdvSIMD and FP fields identically.  */
+diff --git a/target/arm/helper.h b/target/arm/helper.h
+index f0a783b7088..09075058391 100644
+--- a/target/arm/helper.h
++++ b/target/arm/helper.h
+@@ -245,9 +245,11 @@ DEF_HELPER_4(vfp_muladdh, f16, f16, f16, f16, fpst)
+ 
+ DEF_HELPER_FLAGS_2(recpe_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
+ DEF_HELPER_FLAGS_2(recpe_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
++DEF_HELPER_FLAGS_2(recpe_rpres_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
+ DEF_HELPER_FLAGS_2(recpe_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
+ DEF_HELPER_FLAGS_2(rsqrte_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
+ DEF_HELPER_FLAGS_2(rsqrte_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
++DEF_HELPER_FLAGS_2(rsqrte_rpres_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
+ DEF_HELPER_FLAGS_2(rsqrte_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
+ DEF_HELPER_FLAGS_1(recpe_u32, TCG_CALL_NO_RWG, i32, i32)
+ DEF_HELPER_FLAGS_1(rsqrte_u32, TCG_CALL_NO_RWG, i32, i32)
+@@ -680,10 +682,12 @@ DEF_HELPER_FLAGS_4(gvec_vrintx_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ 
+ DEF_HELPER_FLAGS_4(gvec_frecpe_h, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_frecpe_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_4(gvec_frecpe_rpres_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_frecpe_d, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ 
+ DEF_HELPER_FLAGS_4(gvec_frsqrte_h, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_frsqrte_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_4(gvec_frsqrte_rpres_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_frsqrte_d, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ 
+ DEF_HELPER_FLAGS_4(gvec_fcgt0_h, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 1846f81bf58..8bef391bb03 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -8903,7 +8903,14 @@ static const FPScalar1 f_scalar_frecpe = {
+     gen_helper_recpe_f32,
+     gen_helper_recpe_f64,
+ };
+-TRANS(FRECPE_s, do_fp1_scalar_ah, a, &f_scalar_frecpe, -1)
++static const FPScalar1 f_scalar_frecpe_rpres = {
++    gen_helper_recpe_f16,
++    gen_helper_recpe_rpres_f32,
++    gen_helper_recpe_f64,
++};
++TRANS(FRECPE_s, do_fp1_scalar_ah, a,
++      s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ?
++      &f_scalar_frecpe_rpres : &f_scalar_frecpe, -1)
+ 
+ static const FPScalar1 f_scalar_frecpx = {
+     gen_helper_frecpx_f16,
+@@ -8917,7 +8924,14 @@ static const FPScalar1 f_scalar_frsqrte = {
+     gen_helper_rsqrte_f32,
+     gen_helper_rsqrte_f64,
+ };
+-TRANS(FRSQRTE_s, do_fp1_scalar_ah, a, &f_scalar_frsqrte, -1)
++static const FPScalar1 f_scalar_frsqrte_rpres = {
++    gen_helper_rsqrte_f16,
++    gen_helper_rsqrte_rpres_f32,
++    gen_helper_rsqrte_f64,
++};
++TRANS(FRSQRTE_s, do_fp1_scalar_ah, a,
++      s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ?
++      &f_scalar_frsqrte_rpres : &f_scalar_frsqrte, -1)
+ 
+ static bool trans_FCVT_s_ds(DisasContext *s, arg_rr *a)
+ {
+@@ -9948,14 +9962,26 @@ static gen_helper_gvec_2_ptr * const f_frecpe[] = {
+     gen_helper_gvec_frecpe_s,
+     gen_helper_gvec_frecpe_d,
+ };
+-TRANS(FRECPE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frecpe)
++static gen_helper_gvec_2_ptr * const f_frecpe_rpres[] = {
++    gen_helper_gvec_frecpe_h,
++    gen_helper_gvec_frecpe_rpres_s,
++    gen_helper_gvec_frecpe_d,
++};
++TRANS(FRECPE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0,
++      s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ? f_frecpe_rpres : f_frecpe)
+ 
+ static gen_helper_gvec_2_ptr * const f_frsqrte[] = {
+     gen_helper_gvec_frsqrte_h,
+     gen_helper_gvec_frsqrte_s,
+     gen_helper_gvec_frsqrte_d,
+ };
+-TRANS(FRSQRTE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frsqrte)
++static gen_helper_gvec_2_ptr * const f_frsqrte_rpres[] = {
++    gen_helper_gvec_frsqrte_h,
++    gen_helper_gvec_frsqrte_rpres_s,
++    gen_helper_gvec_frsqrte_d,
++};
++TRANS(FRSQRTE_v, do_gvec_op2_ah_fpst, a->esz, a->q, a->rd, a->rn, 0,
++      s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ? f_frsqrte_rpres : f_frsqrte)
+ 
+ static bool trans_FCVTL_v(DisasContext *s, arg_qrr_e *a)
+ {
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 6af94fedd0a..d23be477b4d 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -3629,13 +3629,25 @@ static gen_helper_gvec_2_ptr * const frecpe_fns[] = {
+     NULL,                     gen_helper_gvec_frecpe_h,
+     gen_helper_gvec_frecpe_s, gen_helper_gvec_frecpe_d,
+ };
+-TRANS_FEAT(FRECPE, aa64_sve, gen_gvec_fpst_ah_arg_zz, frecpe_fns[a->esz], a, 0)
++static gen_helper_gvec_2_ptr * const frecpe_rpres_fns[] = {
++    NULL,                           gen_helper_gvec_frecpe_h,
++    gen_helper_gvec_frecpe_rpres_s, gen_helper_gvec_frecpe_d,
++};
++TRANS_FEAT(FRECPE, aa64_sve, gen_gvec_fpst_ah_arg_zz,
++           s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ?
++           frecpe_rpres_fns[a->esz] : frecpe_fns[a->esz], a, 0)
+ 
+ static gen_helper_gvec_2_ptr * const frsqrte_fns[] = {
+     NULL,                      gen_helper_gvec_frsqrte_h,
+     gen_helper_gvec_frsqrte_s, gen_helper_gvec_frsqrte_d,
+ };
+-TRANS_FEAT(FRSQRTE, aa64_sve, gen_gvec_fpst_ah_arg_zz, frsqrte_fns[a->esz], a, 0)
++static gen_helper_gvec_2_ptr * const frsqrte_rpres_fns[] = {
++    NULL,                            gen_helper_gvec_frsqrte_h,
++    gen_helper_gvec_frsqrte_rpres_s, gen_helper_gvec_frsqrte_d,
++};
++TRANS_FEAT(FRSQRTE, aa64_sve, gen_gvec_fpst_ah_arg_zz,
++           s->fpcr_ah && dc_isar_feature(aa64_rpres, s) ?
++           frsqrte_rpres_fns[a->esz] : frsqrte_fns[a->esz], a, 0)
+ 
+ /*
+  *** SVE Floating Point Compare with Zero Group
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index aefcd07ef00..ff3f7d8208f 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -1236,10 +1236,12 @@ void HELPER(NAME)(void *vd, void *vn, float_status *stat, uint32_t desc)  \
+ 
+ DO_2OP(gvec_frecpe_h, helper_recpe_f16, float16)
+ DO_2OP(gvec_frecpe_s, helper_recpe_f32, float32)
++DO_2OP(gvec_frecpe_rpres_s, helper_recpe_rpres_f32, float32)
+ DO_2OP(gvec_frecpe_d, helper_recpe_f64, float64)
+ 
+ DO_2OP(gvec_frsqrte_h, helper_rsqrte_f16, float16)
+ DO_2OP(gvec_frsqrte_s, helper_rsqrte_f32, float32)
++DO_2OP(gvec_frsqrte_rpres_s, helper_rsqrte_rpres_f32, float32)
+ DO_2OP(gvec_frsqrte_d, helper_rsqrte_f64, float64)
+ 
+ DO_2OP(gvec_vrintx_h, float16_round_to_int, float16)
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 5c370e263c6..b97417e5a1a 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -841,7 +841,11 @@ uint32_t HELPER(recpe_f16)(uint32_t input, float_status *fpst)
+     return make_float16(f16_val);
+ }
+ 
+-float32 HELPER(recpe_f32)(float32 input, float_status *fpst)
++/*
++ * FEAT_RPRES means the f32 FRECPE has an "increased precision" variant
++ * which is used when FPCR.AH == 1.
++ */
++static float32 do_recpe_f32(float32 input, float_status *fpst, bool rpres)
+ {
+     float32 f32 = float32_squash_input_denormal(input, fpst);
+     uint32_t f32_val = float32_val(f32);
+@@ -890,6 +894,16 @@ float32 HELPER(recpe_f32)(float32 input, float_status *fpst)
+     return make_float32(f32_val);
+ }
+ 
++float32 HELPER(recpe_f32)(float32 input, float_status *fpst)
++{
++    return do_recpe_f32(input, fpst, false);
++}
++
++float32 HELPER(recpe_rpres_f32)(float32 input, float_status *fpst)
++{
++    return do_recpe_f32(input, fpst, true);
++}
++
+ float64 HELPER(recpe_f64)(float64 input, float_status *fpst)
+ {
+     float64 f64 = float64_squash_input_denormal(input, fpst);
+@@ -1035,7 +1049,11 @@ uint32_t HELPER(rsqrte_f16)(uint32_t input, float_status *s)
+     return make_float16(val);
+ }
+ 
+-float32 HELPER(rsqrte_f32)(float32 input, float_status *s)
++/*
++ * FEAT_RPRES means the f32 FRSQRTE has an "increased precision" variant
++ * which is used when FPCR.AH == 1.
++ */
++static float32 do_rsqrte_f32(float32 input, float_status *s, bool rpres)
+ {
+     float32 f32 = float32_squash_input_denormal(input, s);
+     uint32_t val = float32_val(f32);
+@@ -1080,6 +1098,16 @@ float32 HELPER(rsqrte_f32)(float32 input, float_status *s)
+     return make_float32(val);
+ }
+ 
++float32 HELPER(rsqrte_f32)(float32 input, float_status *s)
++{
++    return do_rsqrte_f32(input, s, false);
++}
++
++float32 HELPER(rsqrte_rpres_f32)(float32 input, float_status *s)
++{
++    return do_rsqrte_f32(input, s, true);
++}
++
+ float64 HELPER(rsqrte_f64)(float64 input, float_status *s)
+ {
+     float64 f64 = float64_squash_input_denormal(input, s);
 -- 
 2.34.1
 
