@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4F4A31123
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C52A31165
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:31:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht0L-00059S-3E; Tue, 11 Feb 2025 11:20:57 -0500
+	id 1tht5Q-0006P5-Om; Tue, 11 Feb 2025 11:26:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1tht0H-00058U-40
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1tht0E-0002Eu-QG
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739290848;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CmL8zCEomqqeH6TBCgFCx6NLF8jU5/YK9n5VSswWW1o=;
- b=jWSc80NG6u8T2DxLx3Chn/1IwPCrzAw/QkDZZispPSM9upLIuEJru6H5ESINHUbmPmQS08
- THJI9SrtYN0jqte5aIVLfdR2hQ6yRO4Jk6cSNpJuS0aXEAFuBW/u77kGXeI9jOMkUUQLJE
- ByKawWLyG+UWaJKA1OMczEr86osNnps=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-HjcuZLLZPbqft_softg5QA-1; Tue, 11 Feb 2025 11:20:45 -0500
-X-MC-Unique: HjcuZLLZPbqft_softg5QA-1
-X-Mimecast-MFC-AGG-ID: HjcuZLLZPbqft_softg5QA
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-e02fff66a83so6614833276.0
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:20:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tht5H-0006NH-Eq
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:03 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tht5D-00030i-25
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:03 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38dc5764fc0so4403886f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:25:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739291157; x=1739895957; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9N7DCto/R1TRAhv/bwrZKREzJ8W3DXVfglrlnEd6kWE=;
+ b=h7tibF/eVu5ieAlWN72RYu8WPyOFXzDyDxj1mCZV0BHNoNBEn33Q7O8odzQdbqQkjW
+ qhxlDjkj8KRrEe/WJzJ5tU777Y6eLOMb6YEcKBezAVdNC2Vq159UdlNkLRmwyfJl8bES
+ rbAD2Q8PHGS41+C9i1PpvC3yKYtzBjncB6jT3crU1IJuSwrj7WNJfGDuZvxRSe6Dl93Z
+ YoGlO9vdnClsOARGYT6xBs3ZRxNSMJKfnluoPIbNO1PInDhBqXPH7SqKqc7BKaqwreCB
+ zlQheRprG+RDi1wZzPVS4hE9vqI5Bis+v4OMLMMtE66v+WSOftBilDwjia1PFyb6SzZS
+ t9Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739290845; x=1739895645;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CmL8zCEomqqeH6TBCgFCx6NLF8jU5/YK9n5VSswWW1o=;
- b=uC2ILsVKPwE2kMcKzvPhDmgXzC4C+AxsVdOh/tJHZBHpmdsvvTLyMEeZiYFWifuNET
- Dq0UI0iVlmRnHaInggLSuKYMBXYtTfKeEUPESS6vZ6A55uThZwkKoP/4vi1r+ipnCnDZ
- Gk3V4PCcV2ukTmf4YnZXObni8/z3DzWVE3RIXfzhbjwJ3xGEnH4NhkF8qAyZzn6s6Vu/
- Wx2W5nb/W7tY6I6fuVQN4VZm9XHQCKPbMs9LHu74yu8IWKGQZvoO0u8VL7hL1t25jpek
- r31amLD19ybiFf9h25IDoVFuwMhoH/CVcjmFmA+xp3tBwzznENMs7x7G3vKYmKmRzOaA
- T2cQ==
-X-Gm-Message-State: AOJu0YzKSQC4DaEzH8HNvpR9hIbTzFoVITsMMt4e9uYNfQrg/mAdGnhL
- ce0i/1BGw8pvV4c7XCk2QVOH7Lcf4SXFYCcesYasr1DGeyxmmsR0LLW28X+7m8+Yeqft4WPkUyy
- P72Bu1711G5PXEZF4Cv6em+eQGrIR1temhghdTeQnTLY+kGHCpO1EJREDquFOY7dYZ/aQBA959+
- QPnnlc3fYrErHOgr7VnnwLTmTV/cM=
-X-Gm-Gg: ASbGncuqYKB2lcRp50sZf9I7P89iDRs3fZBTNyq2feO/BbNcK47HAemKHgPW42VxU9K
- Gpe9yajkfWDuR+iin8ZbanxaG1r5gyGgF1/yt8me4EQq+FeFkrZRJYcbyS3n+
-X-Received: by 2002:a05:6902:1085:b0:e58:3741:2749 with SMTP id
- 3f1490d57ef6-e5d9e88adfemr385081276.40.1739290844698; 
- Tue, 11 Feb 2025 08:20:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGVnydcg91cmv/xZYrDKNH4l+wGY/ti0/Df3rLNrmF+K3pmTROy0cd0qEROQyHWdSaQYicQbvL5KIEIjwGn+hI=
-X-Received: by 2002:a05:6902:1085:b0:e58:3741:2749 with SMTP id
- 3f1490d57ef6-e5d9e88adfemr384996276.40.1739290843984; Tue, 11 Feb 2025
- 08:20:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739291157; x=1739895957;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9N7DCto/R1TRAhv/bwrZKREzJ8W3DXVfglrlnEd6kWE=;
+ b=fWROPdShxrlGr1uZfo5T0No4HZ5gRUflOgqz8GV8I/G/aPxzOfhtjo3SbkFxcQ8Ppv
+ X0fa0EpaSRV2XdoXi6wk12AZOXJII06HOd/ieUprN2Ek3Zab6Y1IR7uP/b0z4/ixqA6I
+ dr8daEQG32n0VBLXEOOzTgG5mh773Bb1nJ6jTLD7eCiKkNLlcT7p0tW6x9E27r6DvogS
+ q+IrOgSGBFdYRmgZqNB1hIIHR4xCi7FM9mu+4qhQpkIT6J3DqEh2DWCiJJpPicQoE02c
+ YhVAkDGKQ4CYDMf2S3D0bGRkN1QXif+ftSCPfKfdQ4tow3tvBxjSIy3EX4jmDPWHGrol
+ /nHw==
+X-Gm-Message-State: AOJu0YwAE/J8A5kYy5YnxrQehSidJLsd4YU93ELWqp0IwP7Wra2qGuee
+ a4FDPZfbdPVmzaH0DbBmmhuBQG/8abrlFBz0/zTlLdh0F1G1Bf8OZ4skwnbYyJj3vMhCbXxyS32
+ p
+X-Gm-Gg: ASbGncsD5w9xYr3wQj8NEgMtZOBtvZ57ayAiHQuyO2dZrOTxwnMS1LGFBBhK+7Bn7NE
+ Ogr07VN3UIDmV9Rt4F5Z2q7a8MAEk9Co2VkEx6oWjV/zHzaJh9Enbp0mS429iBAn89o8cuSJznV
+ zeRsJoHpBbIBpV5zO7M+cz7mDliGDTHRYzF4vZaaEn0nJbRq2+GVF8Q4hUeLgzL7RfNYb5EVRPJ
+ z7Y5MjY706G38Z7bpuK1UVuEfL9ku5bWTgxGTBOfm63Zng4vA3ggsuaQ6l4SJ+TlDGtXA4EpYvE
+ vv21hpLqRz9B6ZhLX2b6
+X-Google-Smtp-Source: AGHT+IHg78OZ3wTeaaGgy7nao3zCUBKIs2x7lxPBDECJhhx6tOgtcyVYdIwwMG41W2GP++XyXb79lQ==
+X-Received: by 2002:a5d:59ad:0:b0:385:fd07:8616 with SMTP id
+ ffacd0b85a97d-38de9003eb9mr426314f8f.0.1739291156889; 
+ Tue, 11 Feb 2025 08:25:56 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.25.55
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Feb 2025 08:25:56 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/68] target-arm queue
+Date: Tue, 11 Feb 2025 16:24:46 +0000
+Message-Id: <20250211162554.4135349-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250205145813.394915-1-jonah.palmer@oracle.com>
-In-Reply-To: <20250205145813.394915-1-jonah.palmer@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 11 Feb 2025 17:20:07 +0100
-X-Gm-Features: AWEUYZl0cBloY_2NnGkeARu-XLws6ljzKI7b0qQv7VmeNL7Fe3BoRyYdVs8si-Y
-Message-ID: <CAJaqyWe=vyx0CW+qaJ+3m6hODg5B7=xcXvaKaGDSztBcwa++EA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Handling aliased guest memory maps in vhost-vDPA SVQs
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, leiyang@redhat.com, 
- peterx@redhat.com, dtatulea@nvidia.com, jasowang@redhat.com, 
- si-wei.liu@oracle.com, boris.ostrovsky@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,137 +94,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 5, 2025 at 3:58=E2=80=AFPM Jonah Palmer <jonah.palmer@oracle.co=
-m> wrote:
->
-> An issue arises from aliased memory mappings in the guest, where
-> different GPAs map to the same HVA. For example:
->
->  - GPA1->HVA1
->  - GPA2->HVA1
->
-> When these mappings exist in the IOVA->HVA tree, a lookup by an HVA
-> backed by guest memory results in ambiguities because the same HVA could
-> correspond to multiple GPAs. This duplication causes issues in managing
-> IOVA trees for SVQs in vDPA, leading to incorrect behavior.
->
-> For example, consider these mapped guest memory regions:
->
->               HVA                            GPA                         =
-IOVA
-> -------------------------------  --------------------------- ------------=
-----------------
-> [0x7f7903e00000, 0x7f7983e00000) [0x0, 0x80000000)           [0x1000, 0x8=
-0000000)
-> [0x7f7983e00000, 0x7f9903e00000) [0x100000000, 0x2080000000) [0x80001000,=
- 0x2000001000)
-> [0x7f7903ea0000, 0x7f7903ec0000) [0xfeda0000, 0xfedc0000)    [0x200000100=
-0, 0x2000021000)
->
-> The last HVA range [0x7f7903ea0000, 0x7f7903ec0000) is contained within
-> the first HVA range [0x7f7903e00000, 0x7f7983e00000). Despite this, the
-> GPA ranges for the first and third mappings do not overlap, so the guest
-> sees them as distinct physical memory regions.
->
-> Now consider an operation to unmap the mapping associated with HVA
-> 0x7f7903eb0000. This HVA fits into both the first and third HVA ranges.
->
-> When searching the HVA->IOVA tree, the search stops at the first
-> matching HVA range [0x7f7903e00000, 0x7f7983e00000) due to the behavior
-> of the red-black tree (GTree). However, the correct mapping to remove is
-> the third mappings, as the HVA translate to GPA 0xfedb0000, which only
-> fits in the third mapping's GPA range.
->
-> To address this, we implement a GPA->IOVA tree and use the GPAs of
-> descriptors backed by guest memory when translating to IOVA.
->
-> When a descriptor's GPA is used for translation, the GPA->IOVA tree
-> ensures that each GPA maps to exactly one IOVA, regardless of any
-> overlapping HVAs. This guarantees that operations such as unmapping or
-> accessing a descriptor correctly targets the intended memory region in
-> the guest's address space.
->
-> For descriptors not backed by guest memory, the existing IOVA->HVA tree
-> is still used.
->
-> GPAs are unique and non-overlapping within the guest's address space. By
-> translating GPAs to IOVAs, the ambiguity caused by multiple GPAs mapping
-> to the same HVA is avoided.
->
+Hi; this pullreq contains only my FEAT_AFP/FEAT_RPRES patches
+(plus a fix for a target/alpha latent bug that would otherwise
+be revealed by the fpu changes), because 68 patches is already
+longer than I prefer to send in at one time...
 
-I'd squash patches 2 and 3. While it adds some clarification, I think
-it is not worth adding the code to remove it.
+thanks
+-- PMM
 
-Either way,
+The following changes since commit ffaf7f0376f8040ce9068d71ae9ae8722505c42e:
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+  Merge tag 'pull-10.0-testing-and-gdstub-updates-100225-1' of https://gitlab.com/stsquad/qemu into staging (2025-02-10 13:26:17 -0500)
 
-Thanks!
+are available in the Git repository at:
 
-> --------
-> This series is a different approach of [1] and is based off of [2],
-> where this issue was originally discovered.
->
-> Patch v1:
-> ---------
->  * Created separate alloc functions for guest-backed and host-only
->    memory.
->  * Alloc functions also insert mappings to their respective trees.
->  * Make patches self-contained and functional to prevent breakage during
->    bisection.
->  * Don't move range checks from alloc functions.
->  * Use existing VirtQueueElement members 'in_addr' & 'out_addr' instead
->    of creating custom 'in_xlat_addr' & 'out_xlat_addr' members.
->  * Move documentation changes to separate patch.
->
-> RFC v3:
-> -------
->  * Decouple the IOVA allocator to support a SVQ IOVA->HVA tree for
->    host-only mappings.
->  * Move range check for IOVA allocator to its own patch.
->  * Implement a GPA->IOVA tree alongside the SVQ IOVA->HVA & IOVA-only
->    trees.
->  * Add in_xlat_addr & out_xlat_addr VirtQueueElement members to hold the
->    GPAs of an element's input/output descriptors (to be used during
->    translation).
->
-> RFC v2:
-> -------
->  * Don't decouple IOVA allocator.
->  * Build a IOVA->GPA tree (instead of GPA->IOVA tree).
->  * Remove IOVA-only tree and keep the full IOVA->HVA tree.
->  * Only search through RAMBlocks when we know the HVA is backed by
->    guest memory.
->  * Slight rewording of function names.
->
-> RFC v1:
-> -------
->  * Alternative approach of [1].
->  * First attempt to address this issue found in [2].
->
-> [1] https://lore.kernel.org/qemu-devel/20240410100345.389462-1-eperezma@r=
-edhat.com
-> [2] https://lore.kernel.org/qemu-devel/20240201180924.487579-1-eperezma@r=
-edhat.com
->
-> Jonah Palmer (4):
->   vhost-iova-tree: Implement an IOVA-only tree
->   vhost-iova-tree: Implement GPA->IOVA & partial IOVA->HVA trees
->   svq: Support translations via GPAs in vhost_svq_translate_addr
->   vhost-iova-tree: Update documentation
->
->  hw/virtio/vhost-iova-tree.c        | 115 ++++++++++++++++++++++++-----
->  hw/virtio/vhost-iova-tree.h        |   8 +-
->  hw/virtio/vhost-shadow-virtqueue.c |  55 +++++++++-----
->  hw/virtio/vhost-shadow-virtqueue.h |   5 +-
->  hw/virtio/vhost-vdpa.c             |  40 ++++++----
->  include/qemu/iova-tree.h           |  22 ++++++
->  net/vhost-vdpa.c                   |  12 ++-
->  util/iova-tree.c                   |  46 ++++++++++++
->  8 files changed, 248 insertions(+), 55 deletions(-)
->
-> --
-> 2.43.5
->
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20250211
 
+for you to fetch changes up to ca4c34e07d1388df8e396520b5e7d60883cd3690:
+
+  target/arm: Sink fp_status and fpcr access into do_fmlal* (2025-02-11 16:22:08 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * target/alpha: Don't corrupt error_code with unknown softfloat flags
+ * target/arm: Implement FEAT_AFP and FEAT_RPRES
+
+----------------------------------------------------------------
+Peter Maydell (49):
+      target/alpha: Don't corrupt error_code with unknown softfloat flags
+      fpu: Add float_class_denormal
+      fpu: Implement float_flag_input_denormal_used
+      fpu: allow flushing of output denormals to be after rounding
+      target/arm: Define FPCR AH, FIZ, NEP bits
+      target/arm: Implement FPCR.FIZ handling
+      target/arm: Adjust FP behaviour for FPCR.AH = 1
+      target/arm: Adjust exception flag handling for AH = 1
+      target/arm: Add FPCR.AH to tbflags
+      target/arm: Set up float_status to use for FPCR.AH=1 behaviour
+      target/arm: Use FPST_FPCR_AH for FRECPE, FRECPS, FRECPX, FRSQRTE, FRSQRTS
+      target/arm: Use FPST_FPCR_AH for BFCVT* insns
+      target/arm: Use FPST_FPCR_AH for BFMLAL*, BFMLSL* insns
+      target/arm: Add FPCR.NEP to TBFLAGS
+      target/arm: Define and use new write_fp_*reg_merging() functions
+      target/arm: Handle FPCR.NEP for 3-input scalar operations
+      target/arm: Handle FPCR.NEP for BFCVT scalar
+      target/arm: Handle FPCR.NEP for 1-input scalar operations
+      target/arm: Handle FPCR.NEP in do_cvtf_scalar()
+      target/arm: Handle FPCR.NEP for scalar FABS and FNEG
+      target/arm: Handle FPCR.NEP for FCVTXN (scalar)
+      target/arm: Handle FPCR.NEP for NEP for FMUL, FMULX scalar by element
+      target/arm: Implement FPCR.AH semantics for scalar FMIN/FMAX
+      target/arm: Implement FPCR.AH semantics for vector FMIN/FMAX
+      target/arm: Implement FPCR.AH semantics for FMAXV and FMINV
+      target/arm: Implement FPCR.AH semantics for FMINP and FMAXP
+      target/arm: Implement FPCR.AH semantics for SVE FMAXV and FMINV
+      target/arm: Implement FPCR.AH semantics for SVE FMIN/FMAX immediate
+      target/arm: Implement FPCR.AH semantics for SVE FMIN/FMAX vector
+      target/arm: Implement FPCR.AH handling of negation of NaN
+      target/arm: Implement FPCR.AH handling for scalar FABS and FABD
+      target/arm: Handle FPCR.AH in vector FABD
+      target/arm: Handle FPCR.AH in SVE FNEG
+      target/arm: Handle FPCR.AH in SVE FABS
+      target/arm: Handle FPCR.AH in SVE FABD
+      target/arm: Handle FPCR.AH in negation steps in SVE FCADD
+      target/arm: Handle FPCR.AH in negation steps in FCADD
+      target/arm: Handle FPCR.AH in FRECPS and FRSQRTS scalar insns
+      target/arm: Handle FPCR.AH in FRECPS and FRSQRTS vector insns
+      target/arm: Handle FPCR.AH in negation step in FMLS (indexed)
+      target/arm: Handle FPCR.AH in negation in FMLS (vector)
+      target/arm: Handle FPCR.AH in negation step in SVE FMLS (vector)
+      target/arm: Handle FPCR.AH in SVE FTSSEL
+      target/arm: Handle FPCR.AH in SVE FTMAD
+      target/arm: Enable FEAT_AFP for '-cpu max'
+      target/arm: Plumb FEAT_RPRES frecpe and frsqrte through to new helper
+      target/arm: Implement increased precision FRECPE
+      target/arm: Implement increased precision FRSQRTE
+      target/arm: Enable FEAT_RPRES for -cpu max
+
+Richard Henderson (19):
+      target/arm: Handle FPCR.AH in vector FCMLA
+      target/arm: Handle FPCR.AH in FCMLA by index
+      target/arm: Handle FPCR.AH in SVE FCMLA
+      target/arm: Handle FPCR.AH in FMLSL (by element and vector)
+      target/arm: Handle FPCR.AH in SVE FMLSL (indexed)
+      target/arm: Handle FPCR.AH in SVE FMLSLB, FMLSLT (vectors)
+      target/arm: Introduce CPUARMState.vfp.fp_status[]
+      target/arm: Remove standard_fp_status_f16
+      target/arm: Remove standard_fp_status
+      target/arm: Remove ah_fp_status_f16
+      target/arm: Remove ah_fp_status
+      target/arm: Remove fp_status_f16_a64
+      target/arm: Remove fp_status_f16_a32
+      target/arm: Remove fp_status_a64
+      target/arm: Remove fp_status_a32
+      target/arm: Simplify fp_status indexing in mve_helper.c
+      target/arm: Simplify DO_VFP_cmp in vfp_helper.c
+      target/arm: Read fz16 from env->vfp.fpcr
+      target/arm: Sink fp_status and fpcr access into do_fmlal*
+
+ docs/system/arm/emulation.rst   |   2 +
+ include/fpu/softfloat-helpers.h |  11 +
+ include/fpu/softfloat-types.h   |  25 ++
+ target/arm/cpu-features.h       |  10 +
+ target/arm/cpu.h                |  97 +++--
+ target/arm/helper.h             |  26 ++
+ target/arm/internals.h          |   6 +
+ target/arm/tcg/helper-a64.h     |  13 +
+ target/arm/tcg/helper-sve.h     | 120 ++++++
+ target/arm/tcg/translate-a64.h  |  13 +
+ target/arm/tcg/translate.h      |  54 +--
+ target/arm/tcg/vec_internal.h   |  35 ++
+ target/mips/fpu_helper.h        |   6 +
+ fpu/softfloat.c                 |  66 +++-
+ target/alpha/cpu.c              |   7 +
+ target/alpha/fpu_helper.c       |   2 +
+ target/arm/cpu.c                |  46 +--
+ target/arm/helper.c             |   2 +-
+ target/arm/tcg/cpu64.c          |   2 +
+ target/arm/tcg/helper-a64.c     | 151 ++++----
+ target/arm/tcg/hflags.c         |  13 +
+ target/arm/tcg/mve_helper.c     |  44 +--
+ target/arm/tcg/sme_helper.c     |   4 +-
+ target/arm/tcg/sve_helper.c     | 367 ++++++++++++++-----
+ target/arm/tcg/translate-a64.c  | 782 ++++++++++++++++++++++++++++++++--------
+ target/arm/tcg/translate-sve.c  | 193 +++++++---
+ target/arm/tcg/vec_helper.c     | 387 ++++++++++++++------
+ target/arm/vfp_helper.c         | 374 +++++++++++++++----
+ target/hppa/fpu_helper.c        |  11 +
+ target/i386/tcg/fpu_helper.c    |   8 +
+ target/mips/msa.c               |   9 +
+ target/ppc/cpu_init.c           |   3 +
+ target/rx/cpu.c                 |   8 +
+ target/sh4/cpu.c                |   8 +
+ target/tricore/helper.c         |   1 +
+ tests/fp/fp-bench.c             |   1 +
+ fpu/softfloat-parts.c.inc       | 127 +++++--
+ 37 files changed, 2325 insertions(+), 709 deletions(-)
 
