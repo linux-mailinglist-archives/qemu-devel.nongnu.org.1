@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E31A31332
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 18:35:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5663A31330
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 18:34:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1thu9d-0007no-DP; Tue, 11 Feb 2025 12:34:37 -0500
+	id 1thu9e-0007qU-3M; Tue, 11 Feb 2025 12:34:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1thszZ-0004zx-NL
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:09 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1thszz-00056g-P2
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:35 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1thszX-00029E-LZ
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:09 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BDgNKf021694;
- Tue, 11 Feb 2025 16:20:04 GMT
+ id 1thszx-0002Cp-Vt
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:20:35 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BE2UZA023490;
+ Tue, 11 Feb 2025 16:20:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=75AOCLqOvzG86tQn0BeU/zKJK/1FrvZuuOdGjJEQu
- Xc=; b=avlrXfocuhNbc4X0unk8dRhiZVBW9C81qkG8fDC25yC2IF09xLMMoGOlk
- RueJ8Rx/fBYGThWqFU2QovGasrDN026WU0y+IhVsTWM5w3A8cQoxEmJnegKkMR1h
- SsBuZYAMswIMacX55QJqu/7FGj2xCbiP1sFSSa435NK7CvbAHTWJSexpVE+fPukH
- vZSzJctRUcH1jneHBrZWf7mklqEAKi4GZYdagbZGWo5dyj4PwZqZUPjMkPsm2CXH
- MpZrA59Gz3qCRySr+0WfVui14s+tZFHgozZYfLV08xVFbhh0/aXo+uAcEhl0cVFJ
- Juf3c1dV0HqqlAadOu58ZFkt5vamg==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qwd1bh5c-1
+ :subject:to; s=pp1; bh=i5vMH/K2F3RkNAWQpt2X9Urz9Lfo+j0C/JQ/+pHJW
+ +g=; b=LXuHIAl72PEr/S5BPJ9uHdgMyS/w7br0n2L/UXGahhUkCi582VlLmX9ln
+ MxsFxGUMrUUHeT6fl4HYTb8ITHNpa9G6TH6fkQkP2nPoYev0y827X9xBmIxxM7OI
+ Q4Pz3PlNGw5OWXIPFiqfe8U7rwtEViRY57oon2AiBk2ws9T9e3ytutq7eNQCCybl
+ mZkhkUeS1v9P/1IDHiLIDOC0H3GqvXQowaepJ8ElIHbHqk85609Yt3jcXrZs1h9q
+ 7JHJp8Yn+raw4EKbqZZcMpX3nsFmo6oXFz9RnYvWoRM3h+iFluWWUg50ZLL6/c4e
+ /T54wOL4PSKuU/LsvZPwSCt+672mQ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qtkac38v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 11 Feb 2025 16:20:03 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51BEQPtk011642;
- Tue, 11 Feb 2025 16:20:02 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pktjuum9-1
+ Tue, 11 Feb 2025 16:20:31 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51BCM3fE021672;
+ Tue, 11 Feb 2025 16:20:30 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44phksm916-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 11 Feb 2025 16:20:02 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51BGK1di18023102
+ Tue, 11 Feb 2025 16:20:30 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51BGKSDr24838634
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Feb 2025 16:20:02 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4B6E5806C;
- Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 375C95805D;
- Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
+ Tue, 11 Feb 2025 16:20:29 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A557258062;
+ Tue, 11 Feb 2025 16:20:28 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E7665805A;
+ Tue, 11 Feb 2025 16:20:28 +0000 (GMT)
 Received: from WIN-DU0DFC9G5VV.austin.ibm.com (unknown [9.41.104.243])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 11 Feb 2025 16:20:01 +0000 (GMT)
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Feb 2025 16:20:28 +0000 (GMT)
 From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 To: eperezma@redhat.com
 Cc: mst@redhat.com, sgarzare@redhat.com, mjrosato@linux.ibm.com,
  qemu-devel@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>
-Subject: [PATCH] vdpa: Allow vDPA to work on big-endian machine
-Date: Tue, 11 Feb 2025 10:19:23 -0600
-Message-Id: <20250211161923.1477960-1-kshk@linux.ibm.com>
+Subject: [PATCH] vdpa: Fix endian bugs in shadow virtqueue
+Date: Tue, 11 Feb 2025 10:20:10 -0600
+Message-Id: <20250211162010.1478402-1-kshk@linux.ibm.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ACfD_gP2YC4aYQxAupOMWBPMyU0bFXnG
-X-Proofpoint-ORIG-GUID: ACfD_gP2YC4aYQxAupOMWBPMyU0bFXnG
+X-Proofpoint-GUID: 4ij2aURy9evwQzm6xMhHl7tMNKse4z5m
+X-Proofpoint-ORIG-GUID: 4ij2aURy9evwQzm6xMhHl7tMNKse4z5m
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-11_07,2025-02-11_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- adultscore=0 impostorscore=0 mlxlogscore=826 clxscore=1011
- priorityscore=1501 spamscore=0 lowpriorityscore=0 phishscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502110106
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kshk@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ priorityscore=1501 mlxscore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 spamscore=0
+ mlxlogscore=494 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502110106
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kshk@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -105,40 +105,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add .set_vnet_le() function that always returns success, assuming that
-vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
-outputs the message:
-"backend does not support LE vnet headers; falling back on userspace virtio"
+VDPA didn't work on a big-endian machine due to missing/incorrect
+CPU<->LE data format conversions.
 
 Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
 ---
- net/vhost-vdpa.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/virtio/vhost-shadow-virtqueue.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 231b45246c..7219aa2eee 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -270,6 +270,11 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 37aca8b431..b3c83f0dfa 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -157,7 +157,7 @@ static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwaddr *sg,
+     for (n = 0; n < num; n++) {
+         if (more_descs || (n + 1 < num)) {
+             descs[i].flags = flags | cpu_to_le16(VRING_DESC_F_NEXT);
+-            descs[i].next = cpu_to_le16(svq->desc_next[i]);
++            descs[i].next = svq->desc_next[i];
+         } else {
+             descs[i].flags = flags;
+         }
+@@ -165,7 +165,7 @@ static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwaddr *sg,
+         descs[i].len = cpu_to_le32(iovec[n].iov_len);
  
+         last = i;
+-        i = cpu_to_le16(svq->desc_next[i]);
++        i = le16_to_cpu(svq->desc_next[i]);
+     }
+ 
+     svq->free_head = le16_to_cpu(svq->desc_next[last]);
+@@ -228,10 +228,12 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+     smp_mb();
+ 
+     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+-        uint16_t avail_event = *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]);
++        uint16_t avail_event = le16_to_cpu(
++                *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]));
+         needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx, svq->shadow_avail_idx - 1);
+     } else {
+-        needs_kick = !(svq->vring.used->flags & VRING_USED_F_NO_NOTIFY);
++        needs_kick =
++                !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO_NOTIFY));
+     }
+ 
+     if (!needs_kick) {
+@@ -365,7 +367,7 @@ static bool vhost_svq_more_used(VhostShadowVirtqueue *svq)
+         return true;
+     }
+ 
+-    svq->shadow_used_idx = cpu_to_le16(*(volatile uint16_t *)used_idx);
++    svq->shadow_used_idx = le16_to_cpu(*(volatile uint16_t *)used_idx);
+ 
+     return svq->last_used_idx != svq->shadow_used_idx;
  }
- 
-+static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool is_le)
-+{
-+    return 0;
-+}
-+
- static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
-                                        Error **errp)
+@@ -383,7 +385,7 @@ static bool vhost_svq_enable_notification(VhostShadowVirtqueue *svq)
  {
-@@ -437,6 +442,7 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .cleanup = vhost_vdpa_cleanup,
-         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
-         .has_ufo = vhost_vdpa_has_ufo,
-+        .set_vnet_le = vhost_vdpa_set_vnet_le,
-         .check_peer_type = vhost_vdpa_check_peer_type,
-         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
- };
+     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+         uint16_t *used_event = (uint16_t *)&svq->vring.avail->ring[svq->vring.num];
+-        *used_event = svq->shadow_used_idx;
++        *used_event = cpu_to_le16(svq->shadow_used_idx);
+     } else {
+         svq->vring.avail->flags &= ~cpu_to_le16(VRING_AVAIL_F_NO_INTERRUPT);
+     }
+@@ -449,7 +451,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
+     num = svq->desc_state[used_elem.id].ndescs;
+     svq->desc_state[used_elem.id].ndescs = 0;
+     last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
+-    svq->desc_next[last_used_chain] = svq->free_head;
++    svq->desc_next[last_used_chain] = cpu_to_le16(svq->free_head);
+     svq->free_head = used_elem.id;
+     svq->num_free += num;
+ 
 -- 
 2.34.1
 
