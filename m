@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610D0A31198
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE54A31184
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Feb 2025 17:32:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tht6Y-0007je-7V; Tue, 11 Feb 2025 11:27:22 -0500
+	id 1tht6G-0006i3-Py; Tue, 11 Feb 2025 11:27:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5c-0006VJ-Oj
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:24 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1tht5d-0006Ve-Af
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:25 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tht5a-00039C-Or
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:24 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38dc962f1b9so2636866f8f.3
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:22 -0800 (PST)
+ id 1tht5b-00039M-Eu
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 11:26:25 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4394c192285so10766285e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 08:26:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739291181; x=1739895981; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739291182; x=1739895982; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IvYMjf6bfdb+SlqLWZJ5FNfXFDh+SeDFyGn8+jMZ1q0=;
- b=fo2hGOsVxC4UnX79Cn4cYkH64oamOVFcmfYJLKF8Pe9JFQwiuJdrj0V+hM7DZ2aO2u
- AHrMX8I8fM5nHXv/WKMJLJ8CWvmu7/Eoh3BzpS8EwK3bWH6Ms8++jMbnexKuY4r7hQbZ
- Z4CRwXiBMB/0kKQkxtiRg+drxBB+UGsH1idEq75pP/XBQOEXAGDMWRkf+UDykzPidn61
- +vAtSW4mMk98TKa8arz8WpxpJU2Y7lCGs73KA8C1o+iUMyzEZg0ulYpTsbaJVhlXubkq
- LfZ+ri5vFzN8Du0basoWjU52qAF392X4MpXs35EafKbJSuQuZpUcs2xVOB96LVQoO1j4
- QMBQ==
+ :reply-to; bh=yTAezoHOP/iCLVoLliWF3UtQZzqr33hZzleMgsTBjew=;
+ b=MvKcCMl4d9aMjRlVNE8EfldDbwH1Hhffb7NeWznumS2n0ebpaiRMAOR6gk6/+aMkr1
+ 0FfdJUpvExEgxnp65aZgDlp3wcgCZpit0g7i5TZOr3mPfaz9KQmi2KdPF4X5dc+Tnlb3
+ KRvCywPDpZS/Jyf7+KnZBDRfcN029lACHcpenAulOP/vz5z7qQR3+tKC5X2WPF1OH4a+
+ oOvjkwejpA69nxu/uUswC/aZRBGkHXgvvul/MZc30vam/3YnWKIiWuO/n4BdINBW1kM2
+ zpBY057eFiBPO2B3MffWMCpmEF3yfYwlHkVBPitkHw4Bo1wHrXvNtEEFd1X33O5ZslfY
+ AsCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739291181; x=1739895981;
+ d=1e100.net; s=20230601; t=1739291182; x=1739895982;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IvYMjf6bfdb+SlqLWZJ5FNfXFDh+SeDFyGn8+jMZ1q0=;
- b=Sx/2+o6ES+smbWmbqbtzmNcrHRVpY092OYI4O8o72roHMYqBedQsy5rkdZtD0KJ5aB
- qxmSEGX6Jli3DYrNl6S3UhqOtEwB9AvTyl18lFvuk742dkOzXoykOt4ZYkLH9AAYgr0o
- 5zooIam7ffk8fc4uQkwHwe84xcowFFrHZ5wJyIeLC9r35xcoOmcAoJSvJimosAHqtO2K
- 7qWB8pBnuYUOqSH/tMg0aao2cAlvGtCnNS0XQWSvkFX7p6AWuDYPFCoIzB52LY6+lTnV
- YQiRIFstGunJCM9rEr3i1Wa8Ua3C+k1JF51GjDXOoJYujlpaYaSj+u7/DYgKduIZ0v0t
- oJ7w==
-X-Gm-Message-State: AOJu0YwZZVLZtb5c+XAHHDfYmGYdlKtSozWoFyMYFV3kijrFpgAfhZZy
- JQSykJQ9WnhBAJdsSM0Tq4mWd9NyAwdReDzdxDoOyhJu5jNU/CpkxNhjMYB7u1gI2m1v3J05Vzd
- /
-X-Gm-Gg: ASbGncueZ66B7nWDuAXji4gokjW4uKjAF+kEOD3qYbfwE80lyDbi/zWL0U4iUyuIejp
- a6iKn6YSYSVoY+oXLR+gAkEKMaQ+sUnK516MwUSvUmbZVMJbjHHSjNfYJmmr0veEXdzW6qfoRwv
- /T3pXF1c54cr4Wc8o13tlUdu0yh98QX+WQHlA/eRVkdWQ2q3vLvfCkGdf9sDMaNxDXTPce0G3kp
- DNP9vXRVrmrxhXmPiAq7cXebRSamJnaLaaRK2duaDExPCxg3iyxPUXETjGJANn5OYZTvp7U2TNo
- ej1qUKewryec71+LcTn/
-X-Google-Smtp-Source: AGHT+IESl0+3Jj71bwm7orp4KN1h7zTV390QsLjcHHqZuVEO2bavQV8uFaxeRyILS77cHCoYkWU77A==
-X-Received: by 2002:a5d:6c6d:0:b0:38d:c433:a97 with SMTP id
- ffacd0b85a97d-38dc935f7b6mr11675571f8f.47.1739291181178; 
- Tue, 11 Feb 2025 08:26:21 -0800 (PST)
+ bh=yTAezoHOP/iCLVoLliWF3UtQZzqr33hZzleMgsTBjew=;
+ b=V8gth3RlSEVotSw5SQ3gLvtZT4AbXFnHnsWQ3Qaq72k6zJ0M8O9qZiSGvoa3VjvXeF
+ DadMBmeO9BtiIFDWGEHdo7PKuELrk4fGTMCc7qVH8mWpw3Nuzu5ymX26ODXX0Hk6C0Fb
+ cN/ed4LOvW/h/eq/TCX7R7PCdB5ZouMrsN6U9Zbw/D0GQG50wcj5+ypBFHmhFs4mzOAG
+ wErTevpzWrwatcFrjXq/828zFVYuQVv3pHKWFf/9qqVZO0AkgdBYZmlEh1dTubJFkGZ3
+ 3yJrtLnBYe6VdIN1SocPRoYNAgUGX2GnOPkWgTaj5rWsG6khnauCDZHAwbGfr/GYv1OZ
+ K7Hg==
+X-Gm-Message-State: AOJu0Yyh2HVzUt9uApJvkzYZldza36ToXUhFGh+LaJ4049M0VM/WqZdo
+ pCdQbgRqpM470aDzAVdWrBcUChR9KX+eFCpRxUDZ4RkocMXpIbkCQhQWa++dugrD8yUDxGzIyxo
+ S
+X-Gm-Gg: ASbGncvbsgNoTm9lF/V+wdyqq8BPdkCBVAkbj+r1Naa0IkbWiUPNkc1PuC5V/q9dZcp
+ ylDDrVBN5ouDF+PP6XgeQ/LYIMPqxlby+EXwEAcE3G/5pQyIcGFlsagUtpKvvN9MX1tGOeIYXhy
+ fL6h9sUsHH3tP+qZ03PBK2M6+tIm+sIeFR7X9Y8U2Q0FREY6fdqu0c6ESffxRJ7il5h8Rm/RTIh
+ JEv2uv3u5UqKzA6iCX5AoorDXzkedq3pGkOKBR0mqLonB1/hr4cI61SsQv3U+PAYJm0YrvhKoq5
+ cmsK2MFku6a7mS23ACRS
+X-Google-Smtp-Source: AGHT+IFs2QOBW8wC2DDGUALrOrgJm+HDmZ7ZF+AHAN+tetNy6oE3Ttls+omejE8bReUbPmGu1OSe/w==
+X-Received: by 2002:a05:6000:1ac9:b0:38d:db8b:f518 with SMTP id
+ ffacd0b85a97d-38ddb8bf750mr9272238f8f.22.1739291182004; 
+ Tue, 11 Feb 2025 08:26:22 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.20
+ 5b1f17b1804b1-4393f202721sm82660455e9.21.2025.02.11.08.26.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 08:26:20 -0800 (PST)
+ Tue, 11 Feb 2025 08:26:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/68] target/arm: Implement FPCR.AH semantics for scalar
+Subject: [PULL 24/68] target/arm: Implement FPCR.AH semantics for vector
  FMIN/FMAX
-Date: Tue, 11 Feb 2025 16:25:09 +0000
-Message-Id: <20250211162554.4135349-24-peter.maydell@linaro.org>
+Date: Tue, 11 Feb 2025 16:25:10 +0000
+Message-Id: <20250211162554.4135349-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211162554.4135349-1-peter.maydell@linaro.org>
 References: <20250211162554.4135349-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,141 +97,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When FPCR.AH == 1, floating point FMIN and FMAX have some odd special
-cases:
-
- * comparing two zeroes (even of different sign) or comparing a NaN
-   with anything always returns the second argument (possibly
-   squashed to zero)
- * denormal outputs are not squashed to zero regardless of FZ or FZ16
-
-Implement these semantics in new helper functions and select them at
-translate time if FPCR.AH is 1 for the scalar FMAX and FMIN insns.
-(We will convert the other FMAX and FMIN insns in subsequent
-commits.)
-
-Note that FMINNM and FMAXNM are not affected.
+Implement the FPCR.AH == 1 semantics for vector FMIN/FMAX, by
+creating new _ah_ versions of the gvec helpers which invoke the
+scalar fmin_ah and fmax_ah helpers on each element.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-a64.h    |  7 +++++++
- target/arm/tcg/helper-a64.c    | 36 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-a64.c | 23 ++++++++++++++++++++--
- 3 files changed, 64 insertions(+), 2 deletions(-)
+ target/arm/tcg/helper-sve.h    | 14 ++++++++++++++
+ target/arm/tcg/translate-a64.c | 21 +++++++++++++++++++--
+ target/arm/tcg/vec_helper.c    |  8 ++++++++
+ 3 files changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index bac12fbe55b..ae0424f6de9 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -67,6 +67,13 @@ DEF_HELPER_4(advsimd_muladd2h, i32, i32, i32, i32, fpst)
- DEF_HELPER_2(advsimd_rinth_exact, f16, f16, fpst)
- DEF_HELPER_2(advsimd_rinth, f16, f16, fpst)
+diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
+index fea43b319c3..f1b4606f763 100644
+--- a/target/arm/tcg/helper-sve.h
++++ b/target/arm/tcg/helper-sve.h
+@@ -972,6 +972,20 @@ DEF_HELPER_FLAGS_5(gvec_rsqrts_s, TCG_CALL_NO_RWG,
+ DEF_HELPER_FLAGS_5(gvec_rsqrts_d, TCG_CALL_NO_RWG,
+                    void, ptr, ptr, ptr, fpst, i32)
  
-+DEF_HELPER_3(vfp_ah_minh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_ah_mins, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_ah_mind, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_ah_maxh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_ah_maxs, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_ah_maxd, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_5(gvec_ah_fmax_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_5(gvec_ah_fmax_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_5(gvec_ah_fmax_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
 +
- DEF_HELPER_2(exception_return, void, env, i64)
- DEF_HELPER_FLAGS_2(dc_zva, TCG_CALL_NO_WG, void, env, i64)
- 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 05036089dd7..ed5e4a45997 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -399,6 +399,42 @@ float32 HELPER(fcvtx_f64_to_f32)(float64 a, float_status *fpst)
-     return r;
- }
- 
-+/*
-+ * AH=1 min/max have some odd special cases:
-+ * comparing two zeroes (regardless of sign), (NaN, anything),
-+ * or (anything, NaN) should return the second argument (possibly
-+ * squashed to zero).
-+ * Also, denormal outputs are not squashed to zero regardless of FZ or FZ16.
-+ */
-+#define AH_MINMAX_HELPER(NAME, CTYPE, FLOATTYPE, MINMAX)                \
-+    CTYPE HELPER(NAME)(CTYPE a, CTYPE b, float_status *fpst)            \
-+    {                                                                   \
-+        bool save;                                                      \
-+        CTYPE r;                                                        \
-+        a = FLOATTYPE ## _squash_input_denormal(a, fpst);               \
-+        b = FLOATTYPE ## _squash_input_denormal(b, fpst);               \
-+        if (FLOATTYPE ## _is_zero(a) && FLOATTYPE ## _is_zero(b)) {     \
-+            return b;                                                   \
-+        }                                                               \
-+        if (FLOATTYPE ## _is_any_nan(a) ||                              \
-+            FLOATTYPE ## _is_any_nan(b)) {                              \
-+            float_raise(float_flag_invalid, fpst);                      \
-+            return b;                                                   \
-+        }                                                               \
-+        save = get_flush_to_zero(fpst);                                 \
-+        set_flush_to_zero(false, fpst);                                 \
-+        r = FLOATTYPE ## _ ## MINMAX(a, b, fpst);                       \
-+        set_flush_to_zero(save, fpst);                                  \
-+        return r;                                                       \
-+    }
++DEF_HELPER_FLAGS_5(gvec_ah_fmin_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_5(gvec_ah_fmin_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_5(gvec_ah_fmin_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, fpst, i32)
 +
-+AH_MINMAX_HELPER(vfp_ah_minh, dh_ctype_f16, float16, min)
-+AH_MINMAX_HELPER(vfp_ah_mins, float32, float32, min)
-+AH_MINMAX_HELPER(vfp_ah_mind, float64, float64, min)
-+AH_MINMAX_HELPER(vfp_ah_maxh, dh_ctype_f16, float16, max)
-+AH_MINMAX_HELPER(vfp_ah_maxs, float32, float32, max)
-+AH_MINMAX_HELPER(vfp_ah_maxd, float64, float64, max)
-+
- /* 64-bit versions of the CRC helpers. Note that although the operation
-  * (and the prototypes of crc32c() and crc32() mean that only the bottom
-  * 32 bits of the accumulator and result are used, we pass and return
+ DEF_HELPER_FLAGS_4(sve_faddv_h, TCG_CALL_NO_RWG,
+                    i64, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sve_faddv_s, TCG_CALL_NO_RWG,
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index f31acee30aa..89f061d20b8 100644
+index 89f061d20b8..24695ab55b6 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -5141,6 +5141,15 @@ static bool do_fp3_scalar_ah(DisasContext *s, arg_rrr_e *a, const FPScalar *f,
-                                        select_ah_fpst(s, a->esz));
+@@ -5596,6 +5596,13 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+                                        FPST_A64_F16 : FPST_A64);
  }
  
-+/* Some insns need to call different helpers when FPCR.AH == 1 */
-+static bool do_fp3_scalar_2fn(DisasContext *s, arg_rrr_e *a,
-+                              const FPScalar *fnormal,
-+                              const FPScalar *fah,
-+                              int mergereg)
++static bool do_fp3_vector_2fn(DisasContext *s, arg_qrrr_e *a, int data,
++                              gen_helper_gvec_3_ptr * const fnormal[3],
++                              gen_helper_gvec_3_ptr * const fah[3])
 +{
-+    return do_fp3_scalar(s, a, s->fpcr_ah ? fah : fnormal, mergereg);
++    return do_fp3_vector(s, a, data, s->fpcr_ah ? fah : fnormal);
 +}
 +
- static const FPScalar f_scalar_fadd = {
-     gen_helper_vfp_addh,
-     gen_helper_vfp_adds,
-@@ -5174,14 +5183,24 @@ static const FPScalar f_scalar_fmax = {
-     gen_helper_vfp_maxs,
-     gen_helper_vfp_maxd,
+ static bool do_fp3_vector_ah(DisasContext *s, arg_qrrr_e *a, int data,
+                              gen_helper_gvec_3_ptr * const f[3])
+ {
+@@ -5636,14 +5643,24 @@ static gen_helper_gvec_3_ptr * const f_vector_fmax[3] = {
+     gen_helper_gvec_fmax_s,
+     gen_helper_gvec_fmax_d,
  };
--TRANS(FMAX_s, do_fp3_scalar, a, &f_scalar_fmax, a->rn)
-+static const FPScalar f_scalar_fmax_ah = {
-+    gen_helper_vfp_ah_maxh,
-+    gen_helper_vfp_ah_maxs,
-+    gen_helper_vfp_ah_maxd,
+-TRANS(FMAX_v, do_fp3_vector, a, 0, f_vector_fmax)
++static gen_helper_gvec_3_ptr * const f_vector_fmax_ah[3] = {
++    gen_helper_gvec_ah_fmax_h,
++    gen_helper_gvec_ah_fmax_s,
++    gen_helper_gvec_ah_fmax_d,
 +};
-+TRANS(FMAX_s, do_fp3_scalar_2fn, a, &f_scalar_fmax, &f_scalar_fmax_ah, a->rn)
++TRANS(FMAX_v, do_fp3_vector_2fn, a, 0, f_vector_fmax, f_vector_fmax_ah)
  
- static const FPScalar f_scalar_fmin = {
-     gen_helper_vfp_minh,
-     gen_helper_vfp_mins,
-     gen_helper_vfp_mind,
+ static gen_helper_gvec_3_ptr * const f_vector_fmin[3] = {
+     gen_helper_gvec_fmin_h,
+     gen_helper_gvec_fmin_s,
+     gen_helper_gvec_fmin_d,
  };
--TRANS(FMIN_s, do_fp3_scalar, a, &f_scalar_fmin, a->rn)
-+static const FPScalar f_scalar_fmin_ah = {
-+    gen_helper_vfp_ah_minh,
-+    gen_helper_vfp_ah_mins,
-+    gen_helper_vfp_ah_mind,
+-TRANS(FMIN_v, do_fp3_vector, a, 0, f_vector_fmin)
++static gen_helper_gvec_3_ptr * const f_vector_fmin_ah[3] = {
++    gen_helper_gvec_ah_fmin_h,
++    gen_helper_gvec_ah_fmin_s,
++    gen_helper_gvec_ah_fmin_d,
 +};
-+TRANS(FMIN_s, do_fp3_scalar_2fn, a, &f_scalar_fmin, &f_scalar_fmin_ah, a->rn)
++TRANS(FMIN_v, do_fp3_vector_2fn, a, 0, f_vector_fmin, f_vector_fmin_ah)
  
- static const FPScalar f_scalar_fmaxnm = {
-     gen_helper_vfp_maxnumh,
+ static gen_helper_gvec_3_ptr * const f_vector_fmaxnm[3] = {
+     gen_helper_gvec_fmaxnum_h,
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 7330b373c38..9f77aa6b919 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -1448,6 +1448,14 @@ DO_3OP(gvec_rsqrts_h, helper_rsqrtsf_f16, float16)
+ DO_3OP(gvec_rsqrts_s, helper_rsqrtsf_f32, float32)
+ DO_3OP(gvec_rsqrts_d, helper_rsqrtsf_f64, float64)
+ 
++DO_3OP(gvec_ah_fmax_h, helper_vfp_ah_maxh, float16)
++DO_3OP(gvec_ah_fmax_s, helper_vfp_ah_maxs, float32)
++DO_3OP(gvec_ah_fmax_d, helper_vfp_ah_maxd, float64)
++
++DO_3OP(gvec_ah_fmin_h, helper_vfp_ah_minh, float16)
++DO_3OP(gvec_ah_fmin_s, helper_vfp_ah_mins, float32)
++DO_3OP(gvec_ah_fmin_d, helper_vfp_ah_mind, float64)
++
+ #endif
+ #undef DO_3OP
+ 
 -- 
 2.34.1
 
