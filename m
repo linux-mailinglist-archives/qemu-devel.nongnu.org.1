@@ -2,141 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D39A31E2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:46:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7390A31E56
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ti5Yw-0002un-S3; Wed, 12 Feb 2025 00:45:30 -0500
+	id 1ti5ht-0007Xk-U9; Wed, 12 Feb 2025 00:54:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1ti5Yu-0002uO-Jb
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:45:28 -0500
-Received: from mail-bn8nam12on2060f.outbound.protection.outlook.com
- ([2a01:111:f403:2418::60f]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ti5hr-0007Xa-Mg
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:54:43 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1ti5Ys-0006GL-Eo
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:45:28 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EzF/SamQSvR7VSZFHcEoGUzR66QFRlrA6RD2Fj8BJZVjlibZt5KepkKiCnT/86pp4xG12caRmwqqnKVQHVngTnIaS0r81UNLcmjwaPzfyo4jj1EdnW/6RtCbzvSoYZSYowVaPYWA4YXxYmh4rmderYUqORGTFCBpW2FtbQT4vCb2MiYqmjav9ntqE3mfhKlSsqrtsmJG8+qNk2jzW+LUvzGlWAb/Q2FPhA6W2vJFuJSCcKWNqRKSDhBVQE5pIWMkxlWEVeK0V1ppRlzvMPi1n16k2ZlyeKFiLnimeepz0XgwZc42ffyMjOJMbbKPg5Kj9Aon8Y/cEpbO43fraQoyZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+37t8iaREdbfp8pbnpzOY527WTZu5ToKMS/xwtLprPA=;
- b=L0ROHPfr3xKchz7GhqZnMcGdeBfb5d0nTXYI499o3pZLUGagBmCJ8NW8RVvc3Rtklc3hlo+6q5uhGGjgXkeoUrAvjsKraCT5EQ7IDkjrNTmxgANWF/pWOIstzYlGdp5z9B6GiPNdZZigHiidOPkosANjO4TU6hXezTmi8FoD5l4WyNRt0LdiJGJDTBMna6NmpUQviomahTMJxw7MGO+FafTgiFedabPW9Sp1j6xPmfipFdV2l5t8IK15XpNGbqLXBdDSGzzXElYssyc9WaLwdUv+NEswG9ZEAGtqQbdv4AZQYk6O2mg0miR+C9RiwBdFghBZYnr8Gi1LMbqJA/H8kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+37t8iaREdbfp8pbnpzOY527WTZu5ToKMS/xwtLprPA=;
- b=qUSkU27CBzn295x0O0nxBDj4MMggCwGMRG2FP1ZKfJACMuEL0vSUY7Kmb13UhTLIZreCFqT7eeMK31PNvNfq+mlwm8UBYfgnNA39yGCLUc4644V6JCCPiR7SAUQV97cNjXXP1OghDC13g6FR99i2Np37+gxKvLC3ws9czodEbak=
-Received: from SN1PR12CA0043.namprd12.prod.outlook.com (2603:10b6:802:20::14)
- by SJ0PR12MB6736.namprd12.prod.outlook.com (2603:10b6:a03:47a::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Wed, 12 Feb
- 2025 05:45:20 +0000
-Received: from SN1PEPF0002BA4E.namprd03.prod.outlook.com
- (2603:10b6:802:20:cafe::2) by SN1PR12CA0043.outlook.office365.com
- (2603:10b6:802:20::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Wed,
- 12 Feb 2025 05:45:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002BA4E.mail.protection.outlook.com (10.167.242.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8445.10 via Frontend Transport; Wed, 12 Feb 2025 05:45:20 +0000
-Received: from purico-ed03host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 11 Feb
- 2025 23:45:15 -0600
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <mst@redhat.com>,
- <marcel.apfelbaum@gmail.com>, <jon.grimm@amd.com>, <santosh.shukla@amd.com>,
- <vasant.hegde@amd.com>, <Wei.Huang2@amd.com>, <bsd@redhat.com>,
- <berrange@redhat.com>, <joao.m.martins@oracle.com>,
- <alejandro.j.jimenez@oracle.com>, Suravee Suthikulpanit
- <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v3 2/2] hw/i386/amd_iommu: Allow migration when explicitly
- create the AMDVI-PCI device
-Date: Wed, 12 Feb 2025 05:44:50 +0000
-Message-ID: <20250212054450.578449-3-suravee.suthikulpanit@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250212054450.578449-1-suravee.suthikulpanit@amd.com>
-References: <20250212054450.578449-1-suravee.suthikulpanit@amd.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ti5hp-00089n-R6
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:54:43 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8B402E9531;
+ Wed, 12 Feb 2025 08:49:05 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D94191B4BC3;
+ Wed, 12 Feb 2025 08:49:09 +0300 (MSK)
+Message-ID: <3448e708-2c4a-48f3-b757-3cf8b65a5306@tls.msk.ru>
+Date: Wed, 12 Feb 2025 08:49:02 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4E:EE_|SJ0PR12MB6736:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95876053-1180-431e-7bf6-08dd4b286fc5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Oxb4G01gV8YlJfmufGdH0M0RVC3/eDgzMaNV63nvxt+6xTnQQnJqpnhVUUvI?=
- =?us-ascii?Q?wsuwdXUzvsDxiwU9+gA/5S7R0Yy8Kr375x6dHZVMUkyZblih6DGuRnU+dLzU?=
- =?us-ascii?Q?Wu8m0HsYxHfHa/XOIbDNLsVAmbba3s369PQCGTVLRUEtpIQSFZ85l4rhImYw?=
- =?us-ascii?Q?kCp0UTd7qfGyaaLn5L7RfvPmOJDO5E0FgRqfVbQQfuW8ERK6jc8QPmd8TZfZ?=
- =?us-ascii?Q?U/vE+HpNsjudogg7RtIWFXWdi4kiypW/2lFO7TU5qGVSZOkcqIDrHsrEemg1?=
- =?us-ascii?Q?YFX7O6ad523Cx54A85wzTWb3b1bhpSR3tE+Qv/0dTIvItfOORxL8IgIDgt5o?=
- =?us-ascii?Q?oTJXTvxTuy6lr4eBjlboec2P5q+2vvesMbMSmEDgE2pOuY5gdaYwlRqixzMR?=
- =?us-ascii?Q?t4U7yiQ8u4G2L0pYZ+bnwRZZKSPxKV/4/RLLmOhxh2IPuxRxzuoS0L9sJqso?=
- =?us-ascii?Q?rKIADLpRmaFI2Jm4+PUpAolI/3XKxkJbQ+tMQbcgisjTsPBHAj7EhC32cSfi?=
- =?us-ascii?Q?//LEhCHMGMzPeGr8krKtqzajlnTee3L9TaXfm2pYhALhshBVx3YfrKSM8Vx9?=
- =?us-ascii?Q?m8OcBBbSt8x1VMzv1dpT3IVdUgo/7bqTgiQHuyzScVMvPqTK8mMbKrscmNLm?=
- =?us-ascii?Q?CYYczDjM7uMFT1n/YoTJLyQbSGDbCC4NJe81ZvpCRU7uxoY7aACfir1sQKvc?=
- =?us-ascii?Q?Y+S2EV/VHEPztXVzAHG36XNOU8vDNN7pkHwjx0Qga+Bs9eqH87J56ba6KAsG?=
- =?us-ascii?Q?D93wJZzuPT1ch07AcL9tfmsBkMFnDd5Nv+jeuL/QXd97+nY+62nUegWQ5hHC?=
- =?us-ascii?Q?0puTm6tnS2VPSdXfZTSeXQ2rCmrgWy4lhGiHEZEDFuam590VO9XVne5e8cec?=
- =?us-ascii?Q?1uSVfdXU561V+l2OFOi4CV1VKIFKEblXK/dnB73RAeoqZCDFl2eJIPO7Vz62?=
- =?us-ascii?Q?ZZvpZ9hmBuWAWbCnMd5VeRVz7fxHx9O2EHv+QgllfvfWpTz1FDaXwJejCA4N?=
- =?us-ascii?Q?Cj9PqHXFmg3dzPfs0MHHrPU9ma5UYGTjgwYcAHl+Yb5HUG/AymGSG5iD7mMS?=
- =?us-ascii?Q?5bXaWjo+a4U/02RwqMRcqLAhlha4Wcgw69cYO8zPRssaJPIQkaXDAvcUeXi3?=
- =?us-ascii?Q?H3VjNvediXTs5Sac+GggURJxjRDfHEoxeHsYRq332RLxt7PfvCUkXRJJ3W5/?=
- =?us-ascii?Q?H7v9ksYAsqX1+gUtl2hac0fNKcQqq3TMbI3Qrcnpxu9H4/On+hGMJES+PFpM?=
- =?us-ascii?Q?2lGFFWX9a6ZAdbOscu0EjpOJKUHAq2CZzZpZAe77uCax6J7prGWAw/WELzkx?=
- =?us-ascii?Q?DhKGGUGYemJk2sP18A5oLAGFU0BBtqJGvF6xvPAF5sB3Sn0dQbWfd0WwciFD?=
- =?us-ascii?Q?UaulsBJ/XltCDnQIPyOq/Fu76VKq9ADiiBBPLgh7QHmZ3DkVAm2oEG3nD4hR?=
- =?us-ascii?Q?zazUpfq4D4w0+nQW0J0RrvPHZU6JKvZHzXQhwmfxq17BAqK6bNfcy5rU0wY+?=
- =?us-ascii?Q?9gPhRf16Y6sJSsE=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 05:45:20.1685 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95876053-1180-431e-7bf6-08dd4b286fc5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4E.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6736
-Received-SPF: permerror client-ip=2a01:111:f403:2418::60f;
- envelope-from=Suravee.Suthikulpanit@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [ANNOUNCE] QEMU 7.2.16 Stable released
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Content-Language: en-US, ru-RU
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------sIN26ugoJFty6O9I4CrF392l"
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,99 +100,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add migration support for AMD IOMMU model by saving necessary AMDVIState
-parameters for MMIO registers, device table, command buffer, and event
-buffers.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------sIN26ugoJFty6O9I4CrF392l
+Content-Type: multipart/mixed; boundary="------------Hl4q4YzI7WYnQ097u8mQXnCW";
+ protected-headers="v1"
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Message-ID: <3448e708-2c4a-48f3-b757-3cf8b65a5306@tls.msk.ru>
+Subject: [ANNOUNCE] QEMU 7.2.16 Stable released
 
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
----
- hw/i386/amd_iommu.c | 58 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 6 deletions(-)
+--------------Hl4q4YzI7WYnQ097u8mQXnCW
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 0f552bafa0..dda1a5781f 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1611,6 +1611,57 @@ static void amdvi_sysbus_reset(DeviceState *dev)
-     amdvi_init(s);
- }
- 
-+static const VMStateDescription vmstate_amdvi_sysbus = {
-+    .name = "amd-iommu",
-+    .unmigratable = 1
-+};
-+
-+static const VMStateDescription vmstate_amdvi_sysbus_migratable = {
-+    .name = "amd-iommu",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .priority = MIG_PRI_IOMMU,
-+    .fields = (VMStateField[]) {
-+      /* Updated in  amdvi_handle_control_write() */
-+      VMSTATE_BOOL(enabled, AMDVIState),
-+      VMSTATE_BOOL(ga_enabled, AMDVIState),
-+      VMSTATE_BOOL(ats_enabled, AMDVIState),
-+      VMSTATE_BOOL(cmdbuf_enabled, AMDVIState),
-+      VMSTATE_BOOL(completion_wait_intr, AMDVIState),
-+      VMSTATE_BOOL(evtlog_enabled, AMDVIState),
-+      VMSTATE_BOOL(evtlog_intr, AMDVIState),
-+      /* Updated in amdvi_handle_devtab_write() */
-+      VMSTATE_UINT64(devtab, AMDVIState),
-+      VMSTATE_UINT64(devtab_len, AMDVIState),
-+      /* Updated in amdvi_handle_cmdbase_write() */
-+      VMSTATE_UINT64(cmdbuf, AMDVIState),
-+      VMSTATE_UINT64(cmdbuf_len, AMDVIState),
-+      /* Updated in amdvi_handle_cmdhead_write() */
-+      VMSTATE_UINT32(cmdbuf_head, AMDVIState),
-+      /* Updated in amdvi_handle_cmdtail_write() */
-+      VMSTATE_UINT32(cmdbuf_tail, AMDVIState),
-+      /* Updated in amdvi_handle_evtbase_write() */
-+      VMSTATE_UINT64(evtlog, AMDVIState),
-+      VMSTATE_UINT32(evtlog_len, AMDVIState),
-+      /* Updated in amdvi_handle_evthead_write() */
-+      VMSTATE_UINT32(evtlog_head, AMDVIState),
-+      /* Updated in amdvi_handle_evttail_write() */
-+      VMSTATE_UINT32(evtlog_tail, AMDVIState),
-+      /* Updated in amdvi_handle_pprbase_write() */
-+      VMSTATE_UINT64(ppr_log, AMDVIState),
-+      VMSTATE_UINT32(pprlog_len, AMDVIState),
-+      /* Updated in amdvi_handle_pprhead_write() */
-+      VMSTATE_UINT32(pprlog_head, AMDVIState),
-+      /* Updated in amdvi_handle_tailhead_write() */
-+      VMSTATE_UINT32(pprlog_tail, AMDVIState),
-+      /* MMIO registers */
-+      VMSTATE_UINT8_ARRAY(mmior, AMDVIState, AMDVI_MMIO_SIZE),
-+      VMSTATE_UINT8_ARRAY(romask, AMDVIState, AMDVI_MMIO_SIZE),
-+      VMSTATE_UINT8_ARRAY(w1cmask, AMDVIState, AMDVI_MMIO_SIZE),
-+      VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
- {
-     DeviceClass *dc = (DeviceClass *) object_get_class(OBJECT(dev));
-@@ -1635,6 +1686,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-         }
- 
-         s->pci = AMD_IOMMU_PCI(pdev);
-+        dc->vmsd = &vmstate_amdvi_sysbus_migratable;
-     } else {
-         s->pci = AMD_IOMMU_PCI(object_new(TYPE_AMD_IOMMU_PCI));
-         /* This device should take care of IOMMU PCI properties */
-@@ -1685,12 +1737,6 @@ static const Property amdvi_properties[] = {
-     DEFINE_PROP_STRING("pci-id", AMDVIState, pci_id),
- };
- 
--static const VMStateDescription vmstate_amdvi_sysbus = {
--    .name = "amd-iommu",
--    .unmigratable = 1
--};
--
--
- static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
--- 
-2.34.1
+SGkgZXZlcnlvbmUsDQoNClRoZSBRRU1VIHY3LjIuMTYgc3RhYmxlIHJlbGVhc2UgaXMgbm93
+IGF2YWlsYWJsZS4NCg0KWW91IGNhbiBncmFiIHRoZSB0YXJiYWxsIGZyb20gb3VyIGRvd25s
+b2FkIHBhZ2UgaGVyZToNCg0KICAgaHR0cHM6Ly93d3cucWVtdS5vcmcvZG93bmxvYWQvI3Nv
+dXJjZQ0KDQogICBodHRwczovL2Rvd25sb2FkLnFlbXUub3JnL3FlbXUtNy4yLjE2LnRhci54
+eg0KICAgaHR0cHM6Ly9kb3dubG9hZC5xZW11Lm9yZy9xZW11LTcuMi4xNi50YXIueHouc2ln
+IChzaWduYXR1cmUpDQoNCnY3LjIuMTYgaXMgbm93IHRhZ2dlZCBpbiB0aGUgb2ZmaWNpYWwg
+cWVtdS5naXQgcmVwb3NpdG9yeSwgYW5kIHRoZQ0Kc3RhYmxlLTcuMiBicmFuY2ggaGFzIGJl
+ZW4gdXBkYXRlZCBhY2NvcmRpbmdseToNCg0KICAgaHR0cHM6Ly9naXRsYWIuY29tL3FlbXUt
+cHJvamVjdC9xZW11Ly0vY29tbWl0cy9zdGFibGUtNy4yDQoNClRoZXJlIGFyZSAzMyBjaGFu
+Z2VzIHNpbmNlIHRoZSBwcmV2aW91cyB2Ny4yLjE1IHJlbGVhc2UuDQoNClRoYW5rIHlvdSBl
+dmVyeW9uZSB3aG8gaGFzIGJlZW4gaW52b2x2ZWQgYW5kIGhlbHBlZCB3aXRoIHRoZSBzdGFi
+bGUgc2VyaWVzIQ0KDQovbWp0DQoNCkNoYW5nZWxvZyAoc3RhYmxlLTcuMi1oYXNoIG1hc3Rl
+ci1oYXNoIEF1dGhvciBOYW1lOiBDb21tbWl0LVN1YmplY3QpOg0KDQowNDRlMWRkNzZiIE1p
+Y2hhZWwgVG9rYXJldjoNCiAgVXBkYXRlIHZlcnNpb24gZm9yIDcuMi4xNiByZWxlYXNlDQow
+MjYxNjgyMzI2IDY2NDI4MGFiZGQgSG9uZ3JlbiBaaGVuZzoNCiAgaHcvdXNiL2Nhbm9rZXk6
+IEZpeCBidWZmZXIgb3ZlcmZsb3cgZm9yIE9VVCBwYWNrZXQNCjM1NTllOTAxNDYgMWVkYzNk
+NDNmMiBQZXRlciBNYXlkZWxsOg0KICB0YXJnZXQvYXJtOiBhcm1fcmVzZXRfc3ZlX3N0YXRl
+KCkgc2hvdWxkIHNldCBGUFNSLCBub3QgRlBDUg0KMTliZWUxNWY4OSA5ZmIxYzlhMWJiIEln
+b3IgTWFtbWVkb3Y6DQogIHRlc3RzOiBhY3BpOiB1cGRhdGUgZXhwZWN0ZWQgYmxvYnMNCjg5
+Y2FhNDViZjMgMGIwNTMzOTE5OCBJZ29yIE1hbW1lZG92Og0KICBwY2k6IGFjcGk6IFdpbmRv
+d3MgJ1BDSSBMYWJlbCBJZCcgYnVnIHdvcmthcm91bmQNCjcxNzFmMDE2NGMgMWFkMzI2NDRm
+ZSBJZ29yIE1hbW1lZG92Og0KICB0ZXN0czogYWNwaTogd2hpdGVsaXN0IGV4cGVjdGVkIGJs
+b2JzDQplZGRiNzYzZTNiIDQyZTJhN2EwYWIgTmljaG9sYXMgUGlnZ2luOg0KICBwY2kvbXNp
+eDogRml4IG1zaXggcGJhIHJlYWQgdmVjdG9yIHBvbGwgZW5kIGNhbGN1bGF0aW9uDQo2ZDFh
+ODBlZGFhIDY5NDYzMmZkNDQgU2ViYXN0aWFuIE90dDoNCiAgcGNpOiBlbnN1cmUgdmFsaWQg
+bGluayBzdGF0dXMgYml0cyBmb3IgZG93bnN0cmVhbSBwb3J0cw0KZTBjM2Y4ZjgyZiBiYjVi
+N2ZjZWQ2IFBoaWwgRGVubmlzLUpvcmRhbjoNCiAgaHcvdXNiL2hjZC14aGNpLXBjaTogVXNl
+IG1vZHVsbyB0byBzZWxlY3QgTVNJIHZlY3RvciBhcyBwZXIgc3BlYw0KNDI0MjJhOThiMiA3
+OGIwYzE1YTU2IEdhYnJpZWwgQmFycmFudGVzOg0KICBiYWNrZW5kcy9jcnlwdG9kZXYtdmhv
+c3QtdXNlcjogRml4IGxvY2FsX2Vycm9yIGxlYWtzDQo2NzdiMjljOTQzIDkzZGNjOTM5MGUg
+SGFuIEhhbjoNCiAgdGFyZ2V0L2kzODYvY3B1OiBGaXggbm90ZXMgZm9yIENQVSBtb2RlbHMN
+CmUyYzRmNmQyOTIgYjQ4NTllOGYzMyBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqToNCiAgZG9j
+czogQ29ycmVjdCByZWxlYXNlIG9mIFRDRyB0cmFjZS1ldmVudHMgcmVtb3ZhbA0KYjVkM2Rl
+ZGZjMyAxNGU1NjhhYjQ4IERhdmlkIEhpbGRlbmJyYW5kOg0KICBzMzkweC9zMzkwLXZpcnRp
+by1jY3c6IGRvbid0IGNyYXNoIG9uIHdlaXJkIFJBTSBzaXplcw0KOWZiZWJkNWVhNCBlMmQ5
+OGYyNTcxIFRob21hcyBIdXRoOg0KICBtZXNvbi5idWlsZDogRGlzYWxsb3cgbGlibmZzIHY2
+IHRvIGZpeCB0aGUgYnJva2VuIG1hY09TIGJ1aWxkDQpmZDQ4NjEzYTBhIDk2NzhiOWM1MDUg
+UGV0ZXIgTWF5ZGVsbDoNCiAgaHcvaW50Yy9hcm1fZ2ljdjNfaXRzOiBaZXJvIGluaXRpYWxp
+emUgbG9jYWwgRFRFbnRyeSBldGMgc3RydWN0cw0KNzA4YmI3MzA5MyA1N2UyY2M5YWJmIEdl
+cmQgSG9mZm1hbm46DQogIHg4Ni9sb2FkZXI6IG9ubHkgcGF0Y2ggbGludXgga2VybmVscw0K
+MjgzMWI0ODlmMyBlN2ZjYTgxZTE3IEFsZXhhbmRlciBCdWxla292Og0KICBmdXp6OiBzcGVj
+aWZ5IGF1ZGlvZGV2IGZvciB1c2ItYXVkaW8NCmE2ZTFkYTBmNWIgYjQzODM2MmExNCBSb21h
+biBBcnRlbWV2Og0KICB0Y2cvcmlzY3Y6IEZpeCBTdG9yZVN0b3JlIGJhcnJpZXIgZ2VuZXJh
+dGlvbg0KZDBkYTUyZGJhYSAyNmRjZjJiZTdlIEFobWFkIEZhdG91bToNCiAgaHcvb3BlbnJp
+c2Mvb3BlbnJpc2Nfc2ltOiBrZWVwIHNlcmlhbEA5MDAwMDAwMCBhcyBkZWZhdWx0DQo3NTJk
+ZmM0MWUwIGZhNDE2YWU2MTUgTmljaG9sYXMgUGlnZ2luOg0KICB0YXJnZXQvcHBjOiBGaXgg
+bm9uLW1hc2thYmxlIGludGVycnVwdCB3aGlsZSBoYWx0ZWQNCjg3M2QyNjE2YzYgZWFhYjQ0
+Y2NjNSBDaHJpc3RpYW4gU2Nob2VuZWJlY2s6DQogIHRlc3RzLzlwOiBhbHNvIGNoZWNrICdU
+Z2V0YXR0cicgaW4gJ3VzZS1hZnRlci11bmxpbmsnIHRlc3QNCjUwOWJjZTM4Y2IgYzgxZTcy
+MTllMCBDaHJpc3RpYW4gU2Nob2VuZWJlY2s6DQogIDlwZnM6IGZpeCAnVGdldGF0dHInIGFm
+dGVyIHVubGluaw0KNWY3OWJmOGQ2MiAzYmM0ZGI0NDQzIENocmlzdGlhbiBTY2hvZW5lYmVj
+azoNCiAgOXBmczogcmVtb3ZlIG9ic29sZXRlIGNvbW1lbnQgaW4gdjlmc19nZXRhdHRyKCkN
+CjkyMjlkZTg2MTkgNDYyZGI4ZmIxZCBDaHJpc3RpYW4gU2Nob2VuZWJlY2s6DQogIHRlc3Rz
+LzlwOiBhZGQgJ3VzZS1hZnRlci11bmxpbmsnIHRlc3QNCjllNmYwYTIzMzQgNGVjOTg0OTY1
+MCBDaHJpc3RpYW4gU2Nob2VuZWJlY2s6DQogIHRlc3RzLzlwOiBhZGQgbWlzc2luZyBSZ2V0
+YXR0ciByZXNwb25zZSBuYW1lDQowMzlmZGQwOWI0IGFiZjBmMDkyYzEgQ2hyaXN0aWFuIFNj
+aG9lbmViZWNrOg0KICB0ZXN0cy85cDogZml4IFJyZWFkZGlyIHJlc3BvbnNlIG5hbWUNCmVm
+NzgwZWU3NjUgM2FiYjY3MzIzYSBHdWVudGVyIFJvZWNrOg0KICBzY3NpOiBtZWdhc2FzOiBJ
+bnRlcm5hbCBjZGJzIGhhdmUgMTYtYnl0ZSBsZW5ndGgNCjY4NmVjZTZhZDQgZmJkZWEzZDZj
+MSBKYWt1YiBKZWxlbjoNCiAgc3NoOiBEbyBub3Qgc3dpdGNoIHNlc3Npb24gdG8gbm9uLWJs
+b2NraW5nIG1vZGUNCmVhMWY5NThiNGUgNTEwMmY5ZGY0YSBLZXZpbiBXb2xmOg0KICBxZGV2
+OiBGaXggc2V0X3BjaV9kZXZmbigpIHRvIHZpc2l0IG9wdGlvbiBvbmx5IG9uY2UNCmFjYjM5
+ZDhlNmUgYTg1NzVmN2ZiMiBBa2loaWtvIE9kYWtpOg0KICB2aXJ0aW8tbmV0OiBGaXggc2l6
+ZSBjaGVjayBpbiBkaGNsaWVudCB3b3JrYXJvdW5kDQpmMzNmMzI2ZmJkIGRhODBmMTFlZmUg
+UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k6DQogIGNpcnJ1cy1jaTogUmVtb3ZlIE1TWVMyIGpv
+YnMgZHVwbGljYXRlZCB3aXRoIGdpdGxhYi1jaQ0KMDI3NzRiNTg2MSAzMzViZTViYzQ0IFBl
+dGVyIE1heWRlbGw6DQogIGh3L2ludGMvbG9vbmdhcmNoX2V4dGlvaTogVXNlIHNldF9iaXQz
+MigpIGFuZCBjbGVhcl9iaXQzMigpIGZvciBzLT5pc3INCjRkZTg2ZDJiMzAgM2Q3NjgwZmIx
+OCBQZXRlciBNYXlkZWxsOg0KICBiaXRvcHMuaDogRGVmaW5lIGJpdCBvcGVyYXRpb25zIG9u
+ICd1aW50MzJfdCcgYXJyYXlzDQpmYzRjYTUzOWQwIDNiZjdkY2Q0N2EgUGV0ZXIgTWF5ZGVs
+bDoNCiAgaHcvaW50Yy9vcGVucGljOiBBdm9pZCB0YWtpbmcgYWRkcmVzcyBvZiBvdXQtb2Yt
+Ym91bmRzIGFycmF5IGluZGV4DQo=
 
+--------------Hl4q4YzI7WYnQ097u8mQXnCW--
+
+--------------sIN26ugoJFty6O9I4CrF392l
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEZKoqtTHVaQM2a/75gqpKJDselHgFAmesNk8ACgkQgqpKJDse
+lHjLQg//ZfUONDIkyORenPlqcitMrw1xUmZAfzTF1OCbDV1GAw2tXriBJe6rQU+b
+5vbYRZdJJ64hHDePo2DxncliK7WSRoO0pawbjz+oBHBwoeKAi2KKfOTtRow/YYtz
+5vIxaMVU/7eH/77Bv+TqQOgbsZr8nK14osO6Rm6ldMZG2hAQ4XeTRP+GyXoHy1lA
+ltuew8on8R2BSBrr8NeZdiVxHAN4yIFWOiGxU5fU3qYqXs+UeVrizblxAKw3bFD0
+4vkpyVwHhs9h2O9nGgrqJIammLn9W5oazSa1BXjwqLW8U3muBIFTpF1+gdXSMS0J
+c8krzOez+BU4y4cDq5RPvwOq5PmL4DH56KB+gG9ssBXUYC0ULibNqE2I1fq5Sm5d
+sYxRN/kuTWeD3ZwaIfEh3qVmmugeEeJdFmtZPIhKP8+q/ISEL5RlkD0avDgKGfbg
+CZVM/9eKGDdEq1TxoUqYs28DY8BumS51MpLY267JY9X512yKTA4QXDh0vGZvFhHq
+NeBi7Ew5DCCMCbmx1uyeGrrh943SD12FGCJRPMPseAtRVAaFl0PB5ygSSaOVls2x
+k8pF/o3msUVFL2OLK+3SI86qRXa8dSWD1OFaZuI6ZveUdEli1AkKFvr7moVvcIFi
+MxmZcquCRX3LSCqenWya13VMPToeKaNRkLmdcwkqS67R7O5PEKY=
+=IRzy
+-----END PGP SIGNATURE-----
+
+--------------sIN26ugoJFty6O9I4CrF392l--
 
