@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427E1A32A67
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 16:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7639AA32A5E
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 16:44:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiEuI-0004XW-Qk; Wed, 12 Feb 2025 10:44:10 -0500
+	id 1tiEuJ-0004YU-Dy; Wed, 12 Feb 2025 10:44:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiEu2-0004Rr-6m
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 10:43:55 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiEu7-0004SH-EI
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 10:43:59 -0500
 Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiEu0-0006uI-L8
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 10:43:53 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiEu5-0006vS-Jk
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 10:43:59 -0500
 Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4394820123dso21816245e9.2
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 07:43:52 -0800 (PST)
+ 5b1f17b1804b1-4394036c0efso25016285e9.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 07:43:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739375030; x=1739979830; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739375035; x=1739979835; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UKvpyBheJZs4xo26Id8y6y+sGte9Qefez9+pLdOdy9I=;
- b=ialgzR/Zcd6TcnLT0ox+tvRECh+rmymBU541eZ628aUPhx+0db8oOrsB684bLuvmtG
- kMbNuPgJ0Qhlca2ldcjL97+P+NcoRU1GwTPSckbi0UzexADUAPtxJvo0qbT4AxoPQisg
- rzvv+KJP3AafKYHca1LqtiYATlDyiBoUKAhai/z4tHua1ZV5bMf4/APF4ZM5A43uhPTU
- 9LeG4zc+kpR3SGD6ObsunyWkJznWun38iXUpnQe8Zsh4g9D9SBQqhw+fXXqOiyaXJaq/
- 9DsGXGxxC4ImHSKtEbMuT5DIVnQHAmXTsbUgX9pcbjNJ4/Tz//1CXVeYcUOOjff9smWg
- yR6Q==
+ bh=mEULPqwUPtpzNSB0Z5/nLsqbWtVDcoNpITYqgf9zX7Q=;
+ b=P7k3ZPyIkKFkLH4dwjWmK9/nwXvJJls5IXb1+24zeRE/ltvtUZO1JvtfS2XaXiqAPq
+ k9CNs1GLJFtfsUEkEZHekY6cdM1eJydveHSUNlIoNCZUZlRw+832wOZW1aBU1GQI0Fds
+ d3TKNUjd6oYDwFjXZmyk2sa9XA7yDjifbPyQ9hrJmL+URH1c/4NpE//fJPuf8Gn+Sb4P
+ knHf+x+BzynCchaI3B9uIWC3CeLlxR95+6vz0sg1xhVqnNjXAZmE1BNB0QwKPZpsLzFN
+ RbiW1W74J54LeBOyZ7sV4TNU3H11KWtkVWbGIUsZ/gSs8/gZBBWiy/MPU7CSsWwJ60ti
+ JSQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739375030; x=1739979830;
+ d=1e100.net; s=20230601; t=1739375035; x=1739979835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UKvpyBheJZs4xo26Id8y6y+sGte9Qefez9+pLdOdy9I=;
- b=mwUIIn4gyJ5H0RCGYfVBQrohY2w7+Ob9pmrzRuPIAdlesmhlvln6zpyBE0sqnSV9Gw
- VJltmVtgjJ7NrqtyN2NK0i8DU3+kU7GupUpPK8WOWH0CYd107MVNAMcC0YuN6sCgCw5o
- ajYg0Y5ZDkjm7fVrCunK3X8Zl/BbD4kaI4v9wZ2UVooXX6K8ETpjZC473ivg0u7dPquR
- b7Y+J9MvYNm46i5Fgj0dfniyMx44P/kA54Li19YNi3U6bfTw9CbXjXnUCkUWB0yXuaA2
- IciNadd5F4Sl8CbiuFrl/iyPjA7mmJRP6doHMUuBlsPVp8WhlB4aaVRXuis3PTnzSy52
- TzFw==
-X-Gm-Message-State: AOJu0YyuyL71sN8Q1Xp8mOSSbFf8QGGXvuJDBCiYWgmQSL+G36Ne/s05
- nHru1t4BjrXQr/rVKFMV6A2Jzx7UtJYdxOFpn7oI2P2cw1n3VeJO+Ab4Di4h7ogJzzPo7F9690K
- 6nEA=
-X-Gm-Gg: ASbGncu7R8mo1i5N9vPt5E77J4/ObsPDdSkEOznF8ZHnEoGLzBftZ5Qxgw8chZDODV0
- tRpoig5Gq6L437mCfx6BeFMhCahIw0F2NPcejldEHy+n7lpaMd2awmpgqaOmK3hrF+sviZUH1/9
- 3eb+Y2U1yEWIZohD4Aos/GopEe0yetdpWctGTgaH59xOcm1Ke4UHUNOg9Wj8K2LKpZc1+Obl/K+
- +1v1djP3iSNBeT5uSYFEOfoK515Xl6x6n8Qne3NBUYVuIvO0dTYdeMxyZS+jXnOIWHi8CUm/EGy
- UJ8O/9UxCDRaistnrIymXRNrea0vDirMVdQI2pbyqrgM8NDOOUvLB8q0aFvao6eF00Uc1s0=
-X-Google-Smtp-Source: AGHT+IH5Zp6HksmPDIRghHF8talJ6aR8Up1VX5nqLH0wm5z6hz0OKDjzvUL+3/RYZw+YAMCr0VCGKw==
-X-Received: by 2002:a05:6000:4014:b0:38d:e092:3ced with SMTP id
- ffacd0b85a97d-38dea251738mr2972459f8f.7.1739375030528; 
- Wed, 12 Feb 2025 07:43:50 -0800 (PST)
+ bh=mEULPqwUPtpzNSB0Z5/nLsqbWtVDcoNpITYqgf9zX7Q=;
+ b=aaYOWg8UhnzTtOGnFs2hp7StJeDCNhGQr6xy4QpQ60Dd7oS3BcIBfZXARFD6b+Gzax
+ QYXOG/NTV1V3HeZ/qnMGKuQpF8I6h8xnpigWJKAsTunFgSJQtVkrRSu+zX3MkSth0Kt+
+ 0DBQS01cPQ0Ykn4AD5OTU85kesN7JctwKTpBda/X3yXtAUsU82PXuRZMpzAFXcTFogQC
+ U5ihbkaVZOSaBzOfugXNLB4T3WmzvNVDagPWLVcPqYGTdexlQSsogRrMnPJZToK/7pvX
+ J6yyVQ0qIuRWELM8ZgMSZJ9xoUq/IPqq2fU61rgXXRBOTiaNvUw3YgLzYQoMK14Oy4VK
+ O8QA==
+X-Gm-Message-State: AOJu0Yz9WiZOfwvwwCureJv7DrRHVrBNNZWYCwDySs5v5HvskoXo+3Ox
+ xrxXdoYvw2qNc6EAHuK2APNxSN4734VsjeN6843UiBpyU7AR/cR1r+X12wY0S38W51dlgDcFgZS
+ JoXg=
+X-Gm-Gg: ASbGncu1QQNaR9ZwFI5ZDl/eUipHWeYmlDCKx+lVIoqkK9rtYWxwzdCzA/dPLpUsXzc
+ Gf4jRllqx1XRnLzWubCOY4mFdRp97uxFEkBIAkghYfAywjo5l/42IxHRtg+qE5Uv5Ou6z1Cm4Hr
+ nOqjIilCYHo6tHwqpdhCKK+jRzs2wYF16k+72zBR1bfLhn9wP/vDhXpDSbupIDa/nhsF44U4p1+
+ onPX/vcYpQR4kJ6V5lZkXz1tOg6R6OwQ8GHkeNmGjycrgA7lBimvl6QxOy7GqZZI/BBBPVhRR0Z
+ lOAo2j5IyGHYRdefvG/HOjCKIKyAtrJgbUYdkeA5msvkIQGiHrvuAxBQE3Pie5Un2z4fg2c=
+X-Google-Smtp-Source: AGHT+IEYQAYtDN6LNxaoqBIIuYAaq409qqUDrrCdqGiB3mJOl5DXL8EAn8jFbIQqurfd4jWnQ+03aA==
+X-Received: by 2002:a05:600c:34cf:b0:431:3bf9:3ebb with SMTP id
+ 5b1f17b1804b1-439581b2618mr36292205e9.24.1739375035466; 
+ Wed, 12 Feb 2025 07:43:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dd9c48173sm10137892f8f.37.2025.02.12.07.43.49
+ ffacd0b85a97d-38deb4f7bacsm2120986f8f.58.2025.02.12.07.43.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Feb 2025 07:43:49 -0800 (PST)
+ Wed, 12 Feb 2025 07:43:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -67,10 +67,9 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, Rob Herring <robh@kernel.org>,
  Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/8] hw/arm/realview: Specify explicitly the GIC has 64
- external IRQs
-Date: Wed, 12 Feb 2025 16:43:28 +0100
-Message-ID: <20250212154333.28644-4-philmd@linaro.org>
+Subject: [PATCH v2 4/8] hw/arm/xilinx_zynq: Replace IRQ_OFFSET -> GIC_INTERNAL
+Date: Wed, 12 Feb 2025 16:43:29 +0100
+Message-ID: <20250212154333.28644-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250212154333.28644-1-philmd@linaro.org>
 References: <20250212154333.28644-1-philmd@linaro.org>
@@ -85,7 +84,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,55 +100,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When not specified, Cortex-A9MP configures its GIC with 64 external
-IRQs (see commit a32134aad89 "arm:make the number of GIC interrupts
-configurable"). Add the GIC_EXT_IRQS definition (with a comment)
-to make that explicit.
-
-Except explicitly setting a property value to its same implicit
-value, there is no logical change intended.
+We already have a definition to distinct GIC internal
+IRQs versus external ones, use it. No logical changes.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/realview.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/arm/xilinx_zynq.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-index 9900a98f3b8..e50f687227c 100644
---- a/hw/arm/realview.c
-+++ b/hw/arm/realview.c
-@@ -35,6 +35,8 @@
- #define SMP_BOOT_ADDR 0xe0000000
- #define SMP_BOOTREG_ADDR 0x10000030
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 8477b828745..18051458945 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -54,8 +54,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
+ #define FLASH_SIZE (64 * 1024 * 1024)
+ #define FLASH_SECTOR_SIZE (128 * 1024)
  
-+#define GIC_EXT_IRQS 64 /* Realview PBX-A9 development board */
-+
- /* Board init.  */
+-#define IRQ_OFFSET 32 /* pic interrupts start from index 32 */
+-
+ #define MPCORE_PERIPHBASE 0xF8F00000
+ #define ZYNQ_BOARD_MIDR 0x413FC090
  
- static struct arm_boot_info realview_binfo = {
-@@ -185,7 +187,12 @@ static void realview_init(MachineState *machine,
-     sysbus_mmio_map(SYS_BUS_DEVICE(sysctl), 0, 0x10000000);
- 
-     if (is_mpcore) {
--        dev = qdev_new(is_pb ? TYPE_A9MPCORE_PRIV : "realview_mpcore");
-+        if (is_pb) {
-+            dev = qdev_new(TYPE_A9MPCORE_PRIV);
-+            qdev_prop_set_uint32(dev, "num-irq", GIC_EXT_IRQS + GIC_INTERNAL);
-+        } else {
-+            dev = qdev_new("realview_mpcore");
-+        }
-         qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
-         busdev = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(busdev, &error_fatal);
-@@ -201,7 +208,7 @@ static void realview_init(MachineState *machine,
-         /* For now just create the nIRQ GIC, and ignore the others.  */
-         dev = sysbus_create_simple(TYPE_REALVIEW_GIC, gic_addr, cpu_irq[0]);
-     }
--    for (n = 0; n < 64; n++) {
-+    for (n = 0; n < GIC_EXT_IRQS; n++) {
+@@ -281,12 +279,12 @@ static void zynq_init(MachineState *machine)
          pic[n] = qdev_get_gpio_in(dev, n);
      }
  
+-    n = zynq_init_spi_flashes(0xE0006000, pic[58 - IRQ_OFFSET], false, 0);
+-    n = zynq_init_spi_flashes(0xE0007000, pic[81 - IRQ_OFFSET], false, n);
+-    n = zynq_init_spi_flashes(0xE000D000, pic[51 - IRQ_OFFSET], true, n);
++    n = zynq_init_spi_flashes(0xE0006000, pic[58 - GIC_INTERNAL], false, 0);
++    n = zynq_init_spi_flashes(0xE0007000, pic[81 - GIC_INTERNAL], false, n);
++    n = zynq_init_spi_flashes(0xE000D000, pic[51 - GIC_INTERNAL], true, n);
+ 
+-    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0002000, pic[53 - IRQ_OFFSET]);
+-    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0003000, pic[76 - IRQ_OFFSET]);
++    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0002000, pic[53 - GIC_INTERNAL]);
++    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0003000, pic[76 - GIC_INTERNAL]);
+ 
+     dev = qdev_new(TYPE_CADENCE_UART);
+     busdev = SYS_BUS_DEVICE(dev);
+@@ -295,7 +293,7 @@ static void zynq_init(MachineState *machine)
+                           qdev_get_clock_out(slcr, "uart0_ref_clk"));
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, 0xE0000000);
+-    sysbus_connect_irq(busdev, 0, pic[59 - IRQ_OFFSET]);
++    sysbus_connect_irq(busdev, 0, pic[59 - GIC_INTERNAL]);
+     dev = qdev_new(TYPE_CADENCE_UART);
+     busdev = SYS_BUS_DEVICE(dev);
+     qdev_prop_set_chr(dev, "chardev", serial_hd(1));
+@@ -303,15 +301,15 @@ static void zynq_init(MachineState *machine)
+                           qdev_get_clock_out(slcr, "uart1_ref_clk"));
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, 0xE0001000);
+-    sysbus_connect_irq(busdev, 0, pic[82 - IRQ_OFFSET]);
++    sysbus_connect_irq(busdev, 0, pic[82 - GIC_INTERNAL]);
+ 
+     sysbus_create_varargs("cadence_ttc", 0xF8001000,
+-            pic[42-IRQ_OFFSET], pic[43-IRQ_OFFSET], pic[44-IRQ_OFFSET], NULL);
++            pic[42-GIC_INTERNAL], pic[43-GIC_INTERNAL], pic[44-GIC_INTERNAL], NULL);
+     sysbus_create_varargs("cadence_ttc", 0xF8002000,
+-            pic[69-IRQ_OFFSET], pic[70-IRQ_OFFSET], pic[71-IRQ_OFFSET], NULL);
++            pic[69-GIC_INTERNAL], pic[70-GIC_INTERNAL], pic[71-GIC_INTERNAL], NULL);
+ 
+-    gem_init(0xE000B000, pic[54 - IRQ_OFFSET]);
+-    gem_init(0xE000C000, pic[77 - IRQ_OFFSET]);
++    gem_init(0xE000B000, pic[54 - GIC_INTERNAL]);
++    gem_init(0xE000C000, pic[77 - GIC_INTERNAL]);
+ 
+     for (n = 0; n < 2; n++) {
+         int hci_irq = n ? 79 : 56;
+@@ -330,7 +328,7 @@ static void zynq_init(MachineState *machine)
+         qdev_prop_set_uint64(dev, "capareg", ZYNQ_SDHCI_CAPABILITIES);
+         sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, hci_addr);
+-        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[hci_irq - IRQ_OFFSET]);
++        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[hci_irq - GIC_INTERNAL]);
+ 
+         di = drive_get(IF_SD, 0, n);
+         blk = di ? blk_by_legacy_dinfo(di) : NULL;
+@@ -343,7 +341,7 @@ static void zynq_init(MachineState *machine)
+     dev = qdev_new(TYPE_ZYNQ_XADC);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0xF8007100);
+-    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[39-IRQ_OFFSET]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[39-GIC_INTERNAL]);
+ 
+     dev = qdev_new("pl330");
+     object_property_set_link(OBJECT(dev), "memory",
+@@ -363,15 +361,15 @@ static void zynq_init(MachineState *machine)
+     busdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, 0xF8003000);
+-    sysbus_connect_irq(busdev, 0, pic[45-IRQ_OFFSET]); /* abort irq line */
++    sysbus_connect_irq(busdev, 0, pic[45-GIC_INTERNAL]); /* abort irq line */
+     for (n = 0; n < ARRAY_SIZE(dma_irqs); ++n) { /* event irqs */
+-        sysbus_connect_irq(busdev, n + 1, pic[dma_irqs[n] - IRQ_OFFSET]);
++        sysbus_connect_irq(busdev, n + 1, pic[dma_irqs[n] - GIC_INTERNAL]);
+     }
+ 
+     dev = qdev_new("xlnx.ps7-dev-cfg");
+     busdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+-    sysbus_connect_irq(busdev, 0, pic[40 - IRQ_OFFSET]);
++    sysbus_connect_irq(busdev, 0, pic[40 - GIC_INTERNAL]);
+     sysbus_mmio_map(busdev, 0, 0xF8007000);
+ 
+     /*
 -- 
 2.47.1
 
