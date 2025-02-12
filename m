@@ -2,85 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98354A324F5
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 12:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EDFA327CD
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 14:58:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiAx5-0007nX-1P; Wed, 12 Feb 2025 06:30:47 -0500
+	id 1tiDF7-0003ih-Jd; Wed, 12 Feb 2025 08:57:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=131cd17d8=graf@amazon.de>)
- id 1tiAww-0007i7-Kg; Wed, 12 Feb 2025 06:30:40 -0500
-Received: from smtp-fw-6002.amazon.com ([52.95.49.90])
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tiCTm-0001g8-Pb
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 08:08:38 -0500
+Received: from mailout3.samsung.com ([203.254.224.33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=131cd17d8=graf@amazon.de>)
- id 1tiAwt-00077v-Hv; Wed, 12 Feb 2025 06:30:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1739359835; x=1770895835;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=wPowBh902/NMkf3e0FAdBuDE1qyjSLGuJyPelB6y2Tk=;
- b=VyUhhZKM2euf3UkMEFdRiUaFYRDbIBX9KeZrSFsVLUumVsWtrRw4jcLg
- ookxL13H6QKJG7ZxUTzXEssS1bG/ncZyHTfJbjc9qqEmvTf5kc1jOlLKD
- ENPWHA/OpHIlHFpEJ5eWXImbYLFIjUxDDyB90Lzr0b9V0y0ajwXBt7KIQ Y=;
-X-IronPort-AV: E=Sophos;i="6.13,279,1732579200"; d="scan'208";a="471510023"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
- by smtp-border-fw-6002.iad6.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 11:30:27 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:26382]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.9.187:2525]
- with esmtp (Farcaster)
- id 7912e840-784c-440e-9d98-5fc2e8379b8f; Wed, 12 Feb 2025 11:30:26 +0000 (UTC)
-X-Farcaster-Flow-ID: 7912e840-784c-440e-9d98-5fc2e8379b8f
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 12 Feb 2025 11:30:26 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39; Wed, 12 Feb 2025
- 11:30:23 +0000
-Message-ID: <ea1d355b-7e56-47ef-b1e7-158003b6d85f@amazon.com>
-Date: Wed, 12 Feb 2025 12:30:20 +0100
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tiCTg-0000aB-Ty
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 08:08:38 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20250212130822epoutp03548f28e4f09c7bcefaf985513ed2f1cf~jd_QPSV3p2021220212epoutp03F
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 13:08:22 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20250212130822epoutp03548f28e4f09c7bcefaf985513ed2f1cf~jd_QPSV3p2021220212epoutp03F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1739365702;
+ bh=JIUR12aJIEknI+U+0TzpDBbOGwe2AgNlCVW2ch5zdKM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=CCEDaWY7qWm8YazmM0g7MW7J+KK3QYIIRFzx4fDT+UIt90tQ9YVaCo+f4fb7TRe1s
+ n2CD2M6a6V1nfOoq0sjdqe8in1vQaMPXJgs23TGdlBxEj9uP1DXa6o15gJ/Ks+1iPQ
+ f6YQ0OiWdxTL3jeAIEm+kDDPz14rS2ElfCU5a0S8=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+ 20250212130822epcas5p37d1dde1a418af459a90c4726a719f0d8~jd_P7O8fN2137521375epcas5p3j;
+ Wed, 12 Feb 2025 13:08:22 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.174]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4YtJXN6Pnwz4x9Px; Wed, 12 Feb
+ 2025 13:08:20 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+ epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 28.14.19710.44D9CA76; Wed, 12 Feb 2025 22:08:20 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250212113110epcas5p341b05ca64d755d4ff4042233de731d6b~jcpY4hXWH0678206782epcas5p3w;
+ Wed, 12 Feb 2025 11:31:10 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250212113110epsmtrp100ecdcd5d1ea5a1e59424eee45eb2ee8~jcpY3zPLx0202502025epsmtrp1K;
+ Wed, 12 Feb 2025 11:31:10 +0000 (GMT)
+X-AuditID: b6c32a44-36bdd70000004cfe-8c-67ac9d44702f
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ D2.E2.23488.E768CA76; Wed, 12 Feb 2025 20:31:10 +0900 (KST)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+ epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250212113109epsmtip1b47a0036d61e1682723fa2233d26d837~jcpXZu9Yy0638906389epsmtip1A;
+ Wed, 12 Feb 2025 11:31:08 +0000 (GMT)
+Date: Wed, 12 Feb 2025 17:00:57 +0530
+From: Arpit Kumar <arpit1.kumar@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, gost.dev@samsung.com, linux-cxl@vger.kernel.org,
+ nifan.cxl@gmail.com, dave@stgolabs.net, vishak.g@samsung.com,
+ krish.reddy@samsung.com, a.manzanares@samsung.com, alok.rathore@samsung.com
+Subject: Re: [PATCH 1/3] hw/cxl/cxl-mailbox-utils.c: Added support for Get
+ Log Capabilities (Opcode 0402h)
+Message-ID: <20250212113012.datt6a7sddkbli25@test-PowerEdge-R740xd>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/23] hw/uefi: add var-service-core.c
-To: Gerd Hoffmann <kraxel@redhat.com>
-CC: <qemu-devel@nongnu.org>, Eric Blake <eblake@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Thomas Huth
- <thuth@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, <qemu-arm@nongnu.org>, Michael Roth
- <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Ard Biesheuvel
- <ardb@kernel.org>
-References: <20250211092324.965440-1-kraxel@redhat.com>
- <20250211092324.965440-10-kraxel@redhat.com>
- <da0ac9ed-fdca-433e-b793-5423f430a852@amazon.com>
- <iuwaykfdm7bwtvblyz7lkew3em2ksi5xeztdphqjdv7tsp2ejw@s6j64y3lfmrw>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <iuwaykfdm7bwtvblyz7lkew3em2ksi5xeztdphqjdv7tsp2ejw@s6j64y3lfmrw>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Received-SPF: pass client-ip=52.95.49.90;
- envelope-from=prvs=131cd17d8=graf@amazon.de; helo=smtp-fw-6002.amazon.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
+In-Reply-To: <20250204102820.000047fb@huawei.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEJsWRmVeSWpSXmKPExsWy7bCmhq7L3DXpBhtnG1tMP6xo8eX0HjaL
+ 1TfXMFrcPLCTyWLVwmtsFgs3LmOyOD/rFIvF3217GS2O9+5gAXLnsDtweeycdZfdo+XIW1aP
+ J9c2M3n0bVnF6DF1dr3H501yAWxR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbm
+ Sgp5ibmptkouPgG6bpk5QIcpKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgpMCvSK
+ E3OLS/PS9fJSS6wMDQyMTIEKE7IzLm9sZy+Y4ldxcu8X9gbGhdZdjJwcEgImEi0nLzB1MXJx
+ CAnsZpS48raFESQhJPCJUeLsdk0I+xujxKreHJiG5xveskA07GWUuP7uIyOEA9RwYtoZdpAq
+ FgFViSWfLjOB2GwCOhLnb89lA7FFBIwk3t2YBNbALHCTUaJx0jOwhLBAjsTzb3+ZQWxeAWeJ
+ B7vfM0LYghInZz5hAbE5BQwlTvTcBFstIdDKITFj2RkmiJtcJPrvLmGDsIUlXh3fwg5hS0m8
+ 7G+DsrMl/sxvh6opkFj0cyZU3F6i9VQ/2GJmgQyJ1hMdzBBxWYmpp9YxQcT5JHp/P4HaxSux
+ Yx6MrSbRvmM+1BwZiTe/FkPN95C4N2cuMyRYPjBKtFzYxjaBUW4WkodmIdkHYVtJdH5oYp3F
+ yAFkS0ss/8cBYWpKrN+lv4CRdRWjZGpBcW56arJpgWFeajk8lpPzczcxghOrlssOxhvz/+kd
+ YmTiYDzEKMHBrCTCKzFtTboQb0piZVVqUX58UWlOavEhRlNgDE1klhJNzgem9rySeEMTSwMT
+ MzMzE0tjM0Mlcd7mnS3pQgLpiSWp2ampBalFMH1MHJxSDUzP2G/+dbgeElNn18h7qv5EnU6W
+ 698/fHvajy7W0DVWDKuaG/KWz8Tk9L6SHbW1039UymzIuLie9+nSqt9mV1z/66yafu6AVn5P
+ dbmQQYdI0LvK50f8LyxUfFQeGdCR/HDtfqMSk9T+PilZAeN4y8L5fHZBDisY/S9OuFZfoW+a
+ m/dE4So7r5q/qYf3oqnVxlNWuAaqrv1auiWqVGZ6pV0hs1mox9c7GzZb6fSu41qdNr+D5d2B
+ BwnZKQHBf4VzzhQL+a4//m7D8iu8mQZ3P+4OFtfIym3itNjmfTCo8HeR/pStDp6OO6/usTrI
+ c+69yY7JgutKL2VtWdr/UkBhorrqpZv+5xZcXrl9dVlKohJLcUaioRZzUXEiAJkTdLc1BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCLMWRmVeSWpSXmKPExsWy7bCSnG5d25p0g/UTFSymH1a0+HJ6D5vF
+ 6ptrGC1uHtjJZLFq4TU2i4UblzFZnJ91isXi77a9jBbHe3ewALlz2B24PHbOusvu0XLkLavH
+ k2ubmTz6tqxi9Jg6u97j8ya5ALYoLpuU1JzMstQifbsEroy2+RvYCo55V9zaI9jA+Naii5GT
+ Q0LAROL5hrcsXYxcHEICuxklPsxeygSRkJG4OPMxC4QtLLHy33N2iKIPjBLLWj6CJVgEVCWW
+ fLoM1sAmoCNx/vZcNhBbRMBI4t2NSYwgDcwCtxklfu++B9YgLJAj8fzbX2YQm1fAWeLB7veM
+ cFOPtd1kgkgISpyc+QSsgVnATGLe5odADRxAtrTE8n8cIGFOAUOJEz03WSYwCsxC0jELSccs
+ hI4FjMyrGCVTC4pz03OTDQsM81LL9YoTc4tL89L1kvNzNzGCI0JLYwfju29N+ocYmTgYDzFK
+ cDArifCaLFyRLsSbklhZlVqUH19UmpNafIhRmoNFSZx3pWFEupBAemJJanZqakFqEUyWiYNT
+ qoEpzO56QuSiirQnzqe3fD7Z+HnOZ3t+gRW9imxdXBbvzktp6E7znfdhs5/fi0flHy5y1TH+
+ 7T7LpN96QTzbQ/3s9aTXS90+/bgh67cg+Yf8xweK6x6liUl95j1aqRDTG7vwd1y17uOyWVNd
+ PTxsvt27eUCxbsbEJ+aVrIy82oUf9n/t3THtPlPPT1OP6zdZXWZ9zrGpOZ1TM2fWM33bWwxX
+ t++Qz5plXeEwp2S3qVHh+8NBPmWzdKuET3EJVgacniX4mP2S4D/JFZOmXX3VYbW2un7GiYxt
+ 5zoTNjamnba0EhIyDo75usri9vMN5Rcs+NhfJF4sfLtm7YvmDcyd61hMsh4ltc5+dshhVfZb
+ /8kmSizFGYmGWsxFxYkA1TNxkfcCAAA=
+X-CMS-MailID: 20250212113110epcas5p341b05ca64d755d4ff4042233de731d6b
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+ boundary="----souVHaJ2v40ysJO-goJgDtKdm5PFoGmT3TNK2tOxyR5.xT_N=_4c199_"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250203060051epcas5p350b7b24d3b5fcff25bc30e1acccd8121
+References: <20250203055950.2126627-1-arpit1.kumar@samsung.com>
+ <CGME20250203060051epcas5p350b7b24d3b5fcff25bc30e1acccd8121@epcas5p3.samsung.com>
+ <20250203055950.2126627-2-arpit1.kumar@samsung.com>
+ <20250204102820.000047fb@huawei.com>
+Received-SPF: pass client-ip=203.254.224.33;
+ envelope-from=arpit1.kumar@samsung.com; helo=mailout3.samsung.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
 X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 12 Feb 2025 08:57:28 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,87 +139,310 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+------souVHaJ2v40ysJO-goJgDtKdm5PFoGmT3TNK2tOxyR5.xT_N=_4c199_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-On 12.02.25 11:24, Gerd Hoffmann wrote:
->    Hi,
+On 04/02/25 10:28AM, Jonathan Cameron wrote:
+>On Mon,  3 Feb 2025 11:29:48 +0530
+>Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 >
->>> +    /* read header */
->>> +    dma_memory_read(&address_space_memory, dma,
->>> +                    uv->buffer, sizeof(*mhdr),
->>> +                    MEMTXATTRS_UNSPECIFIED);
->> Depending on DMA sounds appealing at first, but can fall apart in corner
->> cases. I know of 2 cases where DMA failed for me in the EC2 equivalent of
->> this:
+>Please add some descriptive teext here.
+>
+Sure, will append here in V2 patch.
+
+>> Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
+>> Reviewed-by: Alok Rathore <alok.rathore@samsung.com>
+>> Reviewed-by: Krishna Kanth Reddy <krish.reddy@samsung.com>
+>
+>Hi Arpit,
+>
+>Whilst it is good to do internal reviews, I'd prefer to see feedback
+>on the mailing list if possible.  Hard for a maintainer to tell
+>what a RB tag given before posting means unfortunately so in most
+>cases preference is to not add RB tags based on internal review.
+>If your colleagues have greatly affected the code, a
+>Co-developed-by: and additional sign off may be a good way to
+>reflect that.
+>
+>Great to have you working on these features. Some comments inline.
+>Main ones are around naming (always tricky!) and suggestion to
+>handle the arrays of log capabilities as static const pointers.
+>
+>Thanks,
+>
+>Jonathan
+>
+Thanks for the review Jonathan, will make changes accordingly in the
+next iteration-V2 of the patch.
+>
+>> ---
+>>  hw/cxl/cxl-mailbox-utils.c   | 55 ++++++++++++++++++++++++++++++++++++
+>>  include/hw/cxl/cxl_device.h  | 31 ++++++++++++++++++++
+>>  include/hw/cxl/cxl_mailbox.h |  5 ++++
+>>  3 files changed, 91 insertions(+)
 >>
->> 1) SEV-SNP. If you want the hypervisor to implement UEFI variable services
->> for you, the buffer region must always be in shared state. Ensuring that
->> during boot time is tricky but doable. At runtime you no longer really have
->> control over the sharability of pages.
-> With SEV-SNP I don't see the point in using this.
+>> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>> index 9c7ea5bc35..3d66a425a9 100644
+>> --- a/hw/cxl/cxl-mailbox-utils.c
+>> +++ b/hw/cxl/cxl-mailbox-utils.c
+>> @@ -76,6 +76,7 @@ enum {
+>>      LOGS        = 0x04,
+>>          #define GET_SUPPORTED 0x0
+>>          #define GET_LOG       0x1
+>> +        #define GET_LOG_CAPABILITIES   0x2
+>>      FEATURES    = 0x05,
+>>          #define GET_SUPPORTED 0x0
+>>          #define GET_FEATURE   0x1
+>> @@ -1075,6 +1076,45 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
+>>      return CXL_MBOX_SUCCESS;
+>>  }
+>>
+>> +static int32_t valid_log_check(QemuUUID *uuid, CXLCCI *cci)
 >
-> Why do you use confidential computing in the first place if you trust
-> the host with your EFI variables?  I'd rather see something simliar
-> running under guest control, in svsm context.
+>Perhaps find_log_index() or something like that?
+>I would return &ccx->supported_log_cap[i] / NULL if not found
+>as then can avoid long reference into array below.
+>
+okay, got it.
 
+>> +{
+>> +    int32_t id = -1;
+>> +    for (int i = CEL; i < MAX_LOG_TYPE; i++) {
+>> +        if (qemu_uuid_is_equal(uuid,
+>> +            &cci->supported_log_cap[i].uuid)) {
+>> +            id = i;
+>> +            break;
+>> +        }
+>> +    }
+>> +    return id;
+>> +}
+>> +
+>> +/* CXL r3.1 Section 8.2.9.5.3: Get Log Capabilities (Opcode 0402h) */
+>
+>For new documentation please use latest spec.
+>This is a bit different to many other spec where the request is the
+>earliest one. That is due to the consortium only making the latest
+>version available (currently r3.2)
+>
+okay
 
-That depends heavily on your threat model. You can use a host provided 
-variable store to gain variable persistence for things like boot 
-variables and then have an ephemeral SVSM based TPM that you use to 
-measure the loaded payloads. A malicious host can already replace your 
-root volume, so extending the threat to variables is not the end of the 
-world.
+>> +static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_cmd *cmd,
+>> +                                                uint8_t *payload_in,
+>> +                                                size_t len_in,
+>> +                                                uint8_t *payload_out,
+>> +                                                size_t *len_out,
+>> +                                                CXLCCI *cci)
+>> +{
+>> +    int32_t cap_id;
+>> +    struct {
+>> +        QemuUUID uuid;
+>> +    } QEMU_PACKED QEMU_ALIGNED(8) * get_log_capabilities_in = (void *)payload_in;
+>> +
+>> +    CXLParamFlags *get_log_capabilities_out = (void *)payload_out;
+>> +
+>> +    cap_id = valid_log_check(&get_log_capabilities_in->uuid, cci);
+>    CXLLogCapabilities *cap;
+>
+>    cap = find_log_cap(&get_log_capabilities_in->uuid, cci);
+>    if (!cap) {
+>        return CXL_MBOX_INVALID_LOG);
+>    }
+>
+>    mempcy(get_log_capabilities_out, cap->param_flags.pflags,
+>           sizeof(cap->param_flags.pflags));
+>...
 
+got it.
 
 >
->> 2) Mac OS X. MacOS is the only OS I'm aware of that really makes use of
->> relocation. They move your physical pages to random locations, give you a
->> non-1:1 mapping to that and once you're in real OS land, you have no more
->> knowledge at all about the physical location of anything.
-> On the host side you have no insight into this indeed.
+>> +    if (cap_id == -1) {
+>> +        return CXL_MBOX_INVALID_LOG;
+>> +    }
+>> +
+>> +    memcpy(get_log_capabilities_out, &cci->supported_log_cap[cap_id].param_flags.pflags,
+>> +           sizeof(CXLParamFlags));
+>> +    *len_out = sizeof(*get_log_capabilities_out);
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>>  /* CXL r3.1 section 8.2.9.6: Features */
+>>  /*
+>>   * Get Supported Features output payload
+>> @@ -2840,6 +2880,8 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>>      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
+>>                                0, 0 },
+>>      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+>> +    [LOGS][GET_LOG_CAPABILITIES] = { "LOGS_GET_LOG_CAPABILITIES",
+>> +                                     cmd_logs_get_log_capabilities, 0x10, 0 },
+>>      [FEATURES][GET_SUPPORTED] = { "FEATURES_GET_SUPPORTED",
+>>                                    cmd_features_get_supported, 0x8, 0 },
+>>      [FEATURES][GET_FEATURE] = { "FEATURES_GET_FEATURE",
+>> @@ -3084,10 +3126,23 @@ static void cxl_rebuild_cel(CXLCCI *cci)
+>>      }
+>>  }
+>>
+>> +static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
+>> +    [CEL] = {.param_flags.pflags = CXL_LOG_CAP_CLEAR | CXL_LOG_CAP_POPULATE,
+>> +             .uuid = cel_uuid},
+>> +};
+>> +
+>> +static void cxl_init_get_log(CXLCCI *cci)
+>> +{
+>> +    for (int set = CEL; set < MAX_LOG_TYPE; set++) {
+>> +        cci->supported_log_cap[set] = cxl_get_log_cap[set];
 >
-> The firmware knows all this very well though.  The OS passes a mapping
-> table to the firmware, efi runtime drivers can subscribe to mapping
-> updates and can use RT->ConvertPointer to translate addresses from
-> physical to virtual.
+>As below. Can we just use a static const pointer in cci?
+
+static const pointer in cci gives compilation error as it used below
+to assign value:
+     cci->supported_log_cap[set] = cxl_get_log_cap[set];
+
+>Seems relatively unlikely we'll have lots of different log combinations
+>depending on runtime configuration.  So may be better to just pick
+>between a few const arrays like cxl_get_log_cap.
 >
-> The edk2 code (https://github.com/tianocore/edk2/pull/10695) does
-> exactly that.
+okay, will fix it in V2 patch.
+
+>Good to also store the length of that log or use a terminating entry
+>of some type so that we don't need to iterate over empty entries.
 >
-> I see your driver does that too, so in theory it should work just fine.
-> I'm wondering what exactly the problem with macOS is?
+okay, will use terminating entry for the same.
 
-
-You get to know the new virtual address, but ConvertPointer never tells 
-you what the new *physical* address is. That means you have no idea 
-where to DMA from once you're in virtual land. Most OSs just keep a 1:1 
-map of virtual to physical, but MacOS does not.
-
-
->> Also, I'm surprised you cut the variable service off at the SMM boundary
->> instead of the RTS callback boundary. Why is that cleaner/better than
->> implementing variables completely in QEMU?
-> Well, the variable service /is/ completely in qemu.  See patch #6 which
-> implements getvariable & friends.  edk2 serializes the variable calls
-> into a buffer and sends them over to the SMM side (or to qemu with the
-> patches).
+>> +    }
+>> +}
+>> +
+>>  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+>>  {
+>>      cci->payload_max = payload_max;
+>>      cxl_rebuild_cel(cci);
+>> +    cxl_init_get_log(cci);
+>>
+>>      cci->bg.complete_pct = 0;
+>>      cci->bg.starttime = 0;
+>> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+>> index a64739be25..e7cb99a1d2 100644
+>> --- a/include/hw/cxl/cxl_device.h
+>> +++ b/include/hw/cxl/cxl_device.h
+>> @@ -164,6 +164,18 @@ typedef enum {
+>>      CXL_MBOX_MAX = 0x20
+>>  } CXLRetCode;
+>>
+>> +/* types of logs */
+>> +enum Logs {
 >
-> I didn't feel like inventing a new serialization protocol if we already
-> have a proven one in the edk2 code base.  Also it is possible to send
-> over more than just the variable call.  There is a variable policy
-> protocol implementation (patch #8), and we also get some events
-> forwarded.  More can easily be added should the need for that arise.
+>For things in the header please prefix with CXL.  The chances
+>of a naming clash in future drivers that include this is too high
+>without that!
 >
->> It would be nice to agree on a single external variable store implementation
->> :).
-> It would be nice to have nitro support merged upstream,
-> especially with BYOF coming.
+>Also QEMU tends to use typedefs for enums
+>
+okay
+
+>typedef enum {
+>	CXL_LOG_CEL,
+>	CXL_LOG_VENDOR,
+>} CXLLogType;
+>or something like that.
+>
+>Some of these abbreviations are a bit too compact and
+>don't line up with spec like CEL does.,
+>
+okay, will update the abbreviations as per your suggestion in
+V2 patch.
+
+>
+>
+>
+>> +    CEL,
+>> +    VDL,
+>> +    CSDL,
+>CXL_LOG_COMPONENT_STATE_DUMP,
+>> +    ECSL,
+>CXL_LOG_ECS, //this one is standard acronym
+>> +    MTCL,
+>CXL_LOG_MEDIA_TEST_CAP
+>> +    MTRSL,
+>CXL_LOG_MEDIA_TEST_SHORT
+>> +    MTRLL,
+>CXL_LOG_MEDIA_TEST_LONG
+>
+>perhaps?
+>> +    MAX_LOG_TYPE
+>> +};
+>> +
+>>  typedef struct CXLCCI CXLCCI;
+>>  typedef struct cxl_device_state CXLDeviceState;
+>>  struct cxl_cmd;
+>> @@ -194,6 +206,22 @@ typedef struct CXLEventLog {
+>>      QSIMPLEQ_HEAD(, CXLEvent) events;
+>>  } CXLEventLog;
+>>
+>> +typedef struct CXLParamFlags {
+>> +    union {
+>
+>Unless I'm reading this wrong this is a union of lots of flags
+>on top of each other.
+>
+>Also, don't use bitfields. They don't play well with
+>different endian architectures.
+>Defines for the various bits are a more reliable solution.
+>Similar to the ones you have below in cxl_mailbox.h
+>
+okay, will fix this in V2 patch.
+
+>
+>> +        uint32_t clear_log_supported:1;
+>> +        uint32_t populate_log_supported:1;
+>> +        uint32_t auto_populate_supported:1;
+>> +        uint32_t persistent_across_cold_reset:1;
+>> +        uint32_t reserved:28;
+>> +        uint32_t pflags;
+>> +    };
+>> +} CXLParamFlags;
+>> +
+>> +typedef struct CXLLogCapabilities {
+>> +    CXLParamFlags param_flags;
+>> +    QemuUUID uuid;
+>> +} CXLLogCapabilities;
+>> +
+>>  typedef struct CXLCCI {
+>>      struct cxl_cmd cxl_cmd_set[256][256];
+>>      struct cel_log {
+>> @@ -202,6 +230,9 @@ typedef struct CXLCCI {
+>>      } cel_log[1 << 16];
+>>      size_t cel_size;
+>>
+>> +    /* get log capabilities */
+>> +    CXLLogCapabilities supported_log_cap[MAX_LOG_TYPE];
+>Perhaps a const pointer is appropriate?
+
+const pointer here gives compilation error as it is used below 
+to assign value:
+     cci->supported_log_cap[set] = cxl_get_log_cap[set];
+>> +
+>>      /* background command handling (times in ms) */
+>>      struct {
+>>          uint16_t opcode;
+>> diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
+>> index 9008402d1c..f3502c3f68 100644
+>> --- a/include/hw/cxl/cxl_mailbox.h
+>> +++ b/include/hw/cxl/cxl_mailbox.h
+>> @@ -16,4 +16,9 @@
+>>  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
+>>  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
+>>
+>> +#define CXL_LOG_CAP_CLEAR 1
+>> +#define CXL_LOG_CAP_POPULATE (1 << 1)
+>> +#define CXL_LOG_CAP_AUTO_POPULATE (1 << 2)
+>> +#define CXL_LOG_CAP_PERSISTENT_COLD_RESET (1 << 3)
+>> +
+>>  #endif
+>
+
+------souVHaJ2v40ysJO-goJgDtKdm5PFoGmT3TNK2tOxyR5.xT_N=_4c199_
+Content-Type: text/plain; charset="utf-8"
 
 
-Yes. Or converge on this protocol instead to simplify the firmware 
-implementation so we don't create needless work if someone wants to do 
-an actually trivial (and reusable?) UEFI firmware for BYOF.
-
-
-Alex
-
+------souVHaJ2v40ysJO-goJgDtKdm5PFoGmT3TNK2tOxyR5.xT_N=_4c199_--
 
