@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10F7A32530
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 12:42:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E93A32527
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 12:40:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiB65-0002JR-Sq; Wed, 12 Feb 2025 06:40:05 -0500
+	id 1tiB67-0002L2-Do; Wed, 12 Feb 2025 06:40:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiB64-0002J7-4e
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:40:04 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiB65-0002JT-7B
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:40:05 -0500
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiB5x-0000ft-G7
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:40:03 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiB5y-0000k7-E2
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:40:04 -0500
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38dd14c9a66so2047628f8f.0
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 03:39:52 -0800 (PST)
+ ffacd0b85a97d-38dc33931d3so3007944f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 03:39:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739360390; x=1739965190; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739360395; x=1739965195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BnA6bbjEyVqBso4cbRaO3wDSvFIUbqXqzqoiCcLIb3A=;
- b=wL4Gfl70fAf0Lu9uAS0xegvzZBfCWKfFGRL7DMevXm08Hp9pupXs++yKN+Ggw3zxAP
- eXcmS/6FOQ6geLR2dMOJsI5eJvOoRJ02N4dnaKXPSOERYhXVYx1/ttcGtodApdZ4qvzk
- HfpUmke9lLVpIfJb5MG8fMuAX5dwYvJfDT+6bbICOH55KddiBJW8js4TAfpNMtj6dLKZ
- VbzNqXV2jYiKXmtK1bqQ0FErBwMACu6YPAWhNL5hlNFUNtJxkabL9wq7STo8LqXHZenx
- rgtbPfRDx/Pz9vK/pDTHkw+AZdX6BK7wpNLdYqD83okn6N4W+q14sSlnxgddIJYrnU1h
- 98LA==
+ bh=/lnuOrrxbUSsaSab52olqEN/RXFUH57MkuMIqAsCkZo=;
+ b=PaWW6vcML2v/AvWInuS73asjXgaw1QZ3Z1vUQ7sPr6BY58LiOo4jSJbq40Pqaz4ahZ
+ RvC+aeu2JD1suGNnJFYBT/dR0TDXxYJEYsEtpTpcNt8s/xlw4QWSGTO54GMsVMGPo0S6
+ 8SI+WBcwWB5zu+yBlHHobMJ4/TgtdRnPOqG+FoxX7YMXfKu/GrPaQa/EuvSmbiRrNgK7
+ NnNiVo+ujGT20gZEsvgRrsbUxc+/z28QO552fFfoS7BSEyJDDGTqfxyfpKGtkEkxIuZt
+ InSiDlCpAtknMLwk+6uITWYqSCpqSb2ZFgRKGanwwcEIOzIeAJlxhVmqzC+cwcScyv8P
+ MIkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739360390; x=1739965190;
+ d=1e100.net; s=20230601; t=1739360395; x=1739965195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BnA6bbjEyVqBso4cbRaO3wDSvFIUbqXqzqoiCcLIb3A=;
- b=GXSshSRzCfXcpMrFjj2UyWz/yt+iwlgFVV/0gael5VXEwFwdJRJ9JpJJDlzv77qsI2
- z2a1N1SKmYjsL2DdMoGtFJ7xuAOiLNYpn1P7lZcrCFoKwo7eHdH/17jIIscrDCCCDQ+s
- U5FY8KOiE+gOav59yynscRjsPXjboE8e8787S7m3Dv40UFyKZEaHEtAI9mVZMyqMS3Im
- U2btd81cBv0t2weQTUaYFtFObQcD4Hty8uWfUSyXoBBsO8j4sAX1d3pGRuJXJJ4rJmCO
- kh7jPMAbsRZMP4mOaUfMtgNauYNAeShQm4zdx3k2aJVcdGyu6DoPup19g6zw2tQ28j0C
- LdCw==
-X-Gm-Message-State: AOJu0YzFyC0gYvXnKfwE0MKt94iSjMAU76pAIapKXwYGC8UYWWpjJAAs
- LFY0G6Yxy+goCogotN0/rGBh7xfMB/V/zYM9CdITR8z5HvQ7G7lblWm9iVPqn4YYRWFwX6Ay5BO
- Ti4E=
-X-Gm-Gg: ASbGncvboCxu97tU2D8u68CidU57aSwCmSFrtMvJMOzf6CIOQ1tjXZmVDl8J65b4Ydb
- yi2NW9g6yDrnhynW1/fiqa+PEpwS1CJtaoHaSHUtlZhvI3g2yNUoCll6VZkry6f1jrN02SRejGp
- /hEczRxfnWNNEY1IBcz/WPgJPFdo5DzR9EEbbsGQphWe4G6QpdLxVSEcp028ztQOzJyIhei17lg
- ZDYAcLq+t6mt8ZoB5gEQfORw82JbzIo2lwZWBpNF2hSwE+qk5LT3ATa0cUmgb9IlziWdEyhkF4R
- J0b7ezvW8bVGyOUXyTZMvqQ/apamxlyHUwNxGg8lngD/gHcYmbDcVJwS2AaiCF3Aqw==
-X-Google-Smtp-Source: AGHT+IFFHjadMzwcsibwqusSkTajkLBZKUry+cKF2CQjo5NjWiQE0iW8MiDmQJ249dDv5YuC163EDg==
-X-Received: by 2002:a5d:664f:0:b0:38d:e57e:d21 with SMTP id
- ffacd0b85a97d-38dea290b69mr1804312f8f.30.1739360390141; 
- Wed, 12 Feb 2025 03:39:50 -0800 (PST)
+ bh=/lnuOrrxbUSsaSab52olqEN/RXFUH57MkuMIqAsCkZo=;
+ b=iLd5gT2goOMEL+DIwCbBp0NVfRjij6aUx8mW3VWGpdXgYs1Ven43kfps3vmXeciizn
+ HQDPdLkQE+RncLD/uowUX8Xhlm9WX7OE3QRUvdhA2zIjC6BMmaYlEDIwaazoFTXIXMNE
+ /F67MPXoGLYNllGEH4/cxTtg9Ljzqk2gFtUwmlKoWJTPMjkX5GRVbShrLM8ijW5WyHXZ
+ rlEGO/gTX17CbnbTcxbHEcKJscv0KdzmSw2JqJRZ94GAf2BGBp9+StGPKnMWsb1+nhiV
+ 8oAHoLhktboyN+gPAPBruc8OzB2uT4D6q3x3XTOrbopbY8oH1glkEXEFEwelx0ca+cxD
+ bksg==
+X-Gm-Message-State: AOJu0YxnA+rsWgOBFl/mirxvmIyNc6e0rM44uZ15jlUcu4bWOTiA32Qw
+ IftWQ572YBLIIptjRfjn8LLGZlVwOnNDgSCgWsVZraY1+K1nDJll/AKpNv74b71ZsM1dto6b0BN
+ vcvE=
+X-Gm-Gg: ASbGnctq60wyunD5gyL6dlKmx4bKwSNuTfrueabuhCibcILS8TOGGhGMb8bblSPVOqp
+ /Vw3Yd5V4OTKQDXY8hVkqyflswm9wksHlWmDkEKelhXVzkLLLk4Z1xMAwvoWm8esu+fKbSDmsuE
+ tHKJYGMxanV9IJvsfxTACij6WRDz7GdTuMyLBhpTgWwkFHGfAgR6RjMLK7BPmTbd3h30eNIughd
+ ZmXUJsKXF5CKJSEeSQw3mpHxWmyMcZrh0dore8RIyY1EC2CXnOFdhc+1vl63rlqmDw4Z/T2y/0p
+ z6yzo6wEj3qFgVdT6ltaaTTzwyeWkP0ijII2jAOr8qAgJ73Epy5LjseMfk6DFuNKQw==
+X-Google-Smtp-Source: AGHT+IFpCgVnslnqMK8CyUwlyYytAiqmjP5ad+0n33alxtHrUPlNe4kvk0qN+ZqDYo9HSjkEjcpw/g==
+X-Received: by 2002:a05:6000:4029:b0:38b:f44b:8663 with SMTP id
+ ffacd0b85a97d-38dea2e0aa4mr2536329f8f.55.1739360394937; 
+ Wed, 12 Feb 2025 03:39:54 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dd4342502sm11666896f8f.26.2025.02.12.03.39.49
+ 5b1f17b1804b1-4395a055859sm17379705e9.10.2025.02.12.03.39.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Feb 2025 03:39:49 -0800 (PST)
+ Wed, 12 Feb 2025 03:39:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Burton <paulburton@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
@@ -73,9 +73,10 @@ Cc: Paul Burton <paulburton@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Alistair Francis <alistair@alistair23.me>,
  Jason Wang <jasowang@redhat.com>,
  Niek Linnenbank <nieklinnenbank@gmail.com>
-Subject: [PATCH 2/5] hw/mips: Mark Boston machine devices as little-endian
-Date: Wed, 12 Feb 2025 12:39:35 +0100
-Message-ID: <20250212113938.38692-3-philmd@linaro.org>
+Subject: [PATCH 3/5] hw/mips: Mark Loonson3 Virt machine devices as
+ little-endian
+Date: Wed, 12 Feb 2025 12:39:36 +0100
+Message-ID: <20250212113938.38692-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250212113938.38692-1-philmd@linaro.org>
 References: <20250212113938.38692-1-philmd@linaro.org>
@@ -84,12 +85,13 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::431;
  envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,47 +107,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Boston machine is only built as little-endian.
+The Loonson3 Virt machine is only built as little-endian.
 Therefore the DEVICE_NATIVE_ENDIAN definition expand to
 DEVICE_LITTLE_ENDIAN (besides, the DEVICE_BIG_ENDIAN case
 isn't tested). Simplify directly using DEVICE_LITTLE_ENDIAN.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/boston.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/mips/loongson3_virt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mips/boston.c b/hw/mips/boston.c
-index 364c328032a..4690b254dda 100644
---- a/hw/mips/boston.c
-+++ b/hw/mips/boston.c
-@@ -220,7 +220,7 @@ static void boston_lcd_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps boston_lcd_ops = {
-     .read = boston_lcd_read,
-     .write = boston_lcd_write,
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 831fddb1bd7..db1cc513147 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -144,7 +144,7 @@ static void loongson3_pm_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps loongson3_pm_ops = {
+     .read  = loongson3_pm_read,
+     .write = loongson3_pm_write,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
- };
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 1
+@@ -560,7 +560,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
  
- static uint64_t boston_platreg_read(void *opaque, hwaddr addr,
-@@ -299,7 +299,7 @@ static void boston_platreg_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps boston_platreg_ops = {
-     .read = boston_platreg_read,
-     .write = boston_platreg_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
+     serial_mm_init(address_space_mem, virt_memmap[VIRT_UART].base, 0,
+                    qdev_get_gpio_in(liointc, UART_IRQ), 115200, serial_hd(0),
+-                   DEVICE_NATIVE_ENDIAN);
++                   DEVICE_LITTLE_ENDIAN);
  
- static void mips_boston_instance_init(Object *obj)
-@@ -758,7 +758,7 @@ static void boston_mach_init(MachineState *machine)
- 
-     s->uart = serial_mm_init(sys_mem, boston_memmap[BOSTON_UART].base, 2,
-                              get_cps_irq(&s->cps, 3), 10000000,
--                             serial_hd(0), DEVICE_NATIVE_ENDIAN);
-+                             serial_hd(0), DEVICE_LITTLE_ENDIAN);
- 
-     lcd = g_new(MemoryRegion, 1);
-     memory_region_init_io(lcd, NULL, &boston_lcd_ops, s, "boston-lcd", 0x8);
+     sysbus_create_simple("goldfish_rtc", virt_memmap[VIRT_RTC].base,
+                          qdev_get_gpio_in(liointc, RTC_IRQ));
 -- 
 2.47.1
 
