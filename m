@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2675BA331DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 23:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524E6A3320A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 23:06:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiKo8-0006po-QS; Wed, 12 Feb 2025 17:02:12 -0500
+	id 1tiKsG-0005PH-MB; Wed, 12 Feb 2025 17:06:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tiKo2-0006nJ-M1
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:02:06 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1tiKsD-0005OE-D0
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:06:25 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tiKo0-0004TQ-O2
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:02:06 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2f9f6a2fa8dso385368a91.1
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 14:02:04 -0800 (PST)
+ id 1tiKsB-0005SA-Iw
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:06:25 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-21f62cc4088so2537065ad.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 14:06:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739397723; x=1740002523; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VtWffR29W1lq+y/owEw/cHjeXtzTBtEfWnTjBGb0sKA=;
- b=yXM1i+HQuFXu8WNXPotrVlc6u4IzdciHjd2O0Eq7jXcq9XyhAARSyuUFBI2BEfUDzA
- NrD2tVILzTIIXu7NEBLFNN4uY0unes76UNTfXN8QHir7Cb2gDuRgxho2Sz4pi/HDOylY
- uHc6ismWbV+CIwBLtJJRHaAoOglP5+lgFm5YlnchE71cgy3AjfxcPKV9ecJXs/qR/xOp
- 2d/09JENJFMATw8VevQXeym5KEy/wSol1N8/QlhbT2HanSpes4kYyvBv87/ubfAZ7qM1
- DIIDS5t34Q3ygTwhnK2exQwpS/vbl3q0wr475T0kmsHlSRaJ0AclHNLm04+orlt/5Yy7
- j14w==
+ d=linaro.org; s=google; t=1739397982; x=1740002782; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DERoppQqTIjOit5tmDK3Rfvv0jRIEQPA5BBJGAT1YAY=;
+ b=uDag+2pTSaK/AsTUYeNM21Ckx2KAD55ovu9Xy+DWaEFT5TAZcZT0XWVnj0kARYdcE5
+ 6FjiR78pfIni91Ibr6ipVwKy/AkYSSeJEx4dNcJmh741gbtXJMoNeRNFyjOHlvfQb8wN
+ hrTIc1d1kJgv1SUmQYK/W8xAM5qLOAKTP9ncEkLlzGnGKvttEc+eZlmKXdKQEzeFGOw5
+ ERTr30GnYTgNpU7dJfwKp1bBSkRm7JoKj7maJGBW0Yw3xKHXzqx2NzZnFFVwr4mDsPtH
+ VMRv1B10fH4FbzoPuRIDyPZauIqne09S0AFvVAwgxIZ4S0WF9yKhGvzc3EdMB/0evlCG
+ 4HtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739397723; x=1740002523;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VtWffR29W1lq+y/owEw/cHjeXtzTBtEfWnTjBGb0sKA=;
- b=GE4+dVGhAaxpQajYkoAgncIf/KN3ccgSWyjO8XeeQKtPs97WwFykv/4+WY4bGsNvpB
- lO6muOkke9iM6HS5ZnERKXZeC/1ZK5jJMGUOh3CiBf7a5ALZwYo84O98gpduP97qjNu1
- mXB6k1KSCimRqQUyScc4bwE2cgDV6tThw96CDJzcSD4Q9flGJ12kVnn9zsgpdhk/NSeq
- 1XLY12sHFq0frL+HECGIIfH/IPE0Bqo4n9UYcP7pvgsXwCs01wRy0LqZwgXvG3Lvp8fM
- jB7ePGE0nLzSUCSB/he+l4Mgkk43dPJ4rW7W7Yr57yM/DBRPSrZNghYVZKvMcf0a6rwQ
- PPGg==
-X-Gm-Message-State: AOJu0YxShRqhSM2JP3hOBYNkxECdbZboABcZr55pc9o1pR+I5vG/rYFL
- 49gNh74Zb0JryVOFy7vdICW29LuJiNfNG5orVw50lhATCTrF2+65H0nLUzLvR+04c68qkm3P1EU
- u
-X-Gm-Gg: ASbGncuK7KsUxE2pDaR6cp4cJ3DGeGxAsKSE6mwGuZCO4rXTf6cNObYLmCskEIVQ1nM
- /d1K2Z5ARkdGKUqTi8Bp410jK48r/K9zHjBN5j8cBYLJ54dWo+8HWyiwYYberAI2l/f6taVlXGK
- eqEs33R+ExbmpHHttsoLVCwABF4vlWwiifBiwTYiUcpQ+s71YQX5M/9nu+cC3qKACUrZL3X7M3D
- ei/XfBx7kpBWH4s5PWbXcO9WUvRmXV9adf1ek5Tso9w9TW2uFZw++ysaeKJvFzMuh392AV2YLck
- rZbN1xZX58JPl81+mOEmmj1NDmuBZ0VCDTFI9RgEHWdG85s=
-X-Google-Smtp-Source: AGHT+IGft4rV9jvl9sq3NbDFnE0+RDbuPHrHsX814KP8PX/t2Ge5z+GmHLySvXkb4aQKcj9bYZiVCw==
-X-Received: by 2002:a17:90a:e185:b0:2ee:8430:b831 with SMTP id
- 98e67ed59e1d1-2fbf5bc0249mr8048022a91.2.1739397723371; 
- Wed, 12 Feb 2025 14:02:03 -0800 (PST)
-Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ d=1e100.net; s=20230601; t=1739397982; x=1740002782;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DERoppQqTIjOit5tmDK3Rfvv0jRIEQPA5BBJGAT1YAY=;
+ b=wl+Go8pxO/tGFvTTQErrLs+ml09sRottyccIE8jy/MCx65mpfCZBxVqYfYXmQevzTK
+ 60nnvD4lIbSWHPmmCftamTTxYxDKGd4yaJSKAG8r4wv4dUsr/YzTUrp9L3KzzzirckFv
+ vnXPbnI+4VwSlzGwn5Ns1E4VRRwFK799wvx3bHuUOKZkXKjdOqyCQOEnmMZElS9xrqyp
+ 3Z2OI/kk06MB/1+4cNwjRi2oF7MZ+ruTESnk6dLnq7JAtltyBNDiDPwGN/XDHPAFLz7a
+ PS4Q1rNJNxb4ua/VuR2A2m3j01LKksNDvcLNMmEz+m7CMkZpzl96bskfy04BYngF5/45
+ M49g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCQikgsOsimJUi3PiAdl2dfc1LShTk8zFuLDFP5Yx7v93SfnoHBVkzTXD1VNKMbTP8cZJccVrKhYiN@nongnu.org
+X-Gm-Message-State: AOJu0YyArBgNQue4EKjI8nETx2mR7pIhrYIpj2pf0swY/Xmdubs5RZxn
+ u9hnyGPc8/A6EGvcImvA/FgMpo+ia5vagFWC1zaEWdnd9nqySFygGfckFjfr5CE=
+X-Gm-Gg: ASbGnct7KhdHCbxapxtuu61SNof6fwVSgKF936VWSvMoDB6rxFEK5kYMyUZJi3a+IQv
+ pqaWfYTX808MgQZukHL1fKaL1logu6FpkQUKV64lpec3fPOclQpEJk745MzMuxtnTHcVGp3zJcx
+ SCKJx8PCBzWGEk4EDSuSNgNf//YjGfP+1QyIICsskjRvjpoKpzUBRjAbboCJCHqVscYEcl06i3p
+ rj2tXzMmVh9/DWoa0wCOw5SbPyWb6XqvJ+RwT1ubZavlRZedOm6oFQju29yH8hXJssaW7O8aNiG
+ lPACEB6j86/tWBc/co1y5l/QIFSFdhk5utipw87J0ubCUt/5QtWPFHY=
+X-Google-Smtp-Source: AGHT+IFS0L4cHtFtEcaXoe3+4xTGWGV8P0eBfzhgIQ+7dmw3FDshKVlELvYHkTb398b/BL4A+J4qrg==
+X-Received: by 2002:a05:6a00:3d03:b0:730:74f8:25b6 with SMTP id
+ d2e1a72fcca58-7323c1128e4mr953159b3a.6.1739397982049; 
+ Wed, 12 Feb 2025 14:06:22 -0800 (PST)
+Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fbf98b4c52sm1964837a91.4.2025.02.12.14.02.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Feb 2025 14:02:03 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: edgar.iglesias@gmail.com,
-	philmd@linaro.org
-Subject: [PATCH 9/9] target/microblaze: Simplify compute_ldst_addr_type{a,b}
-Date: Wed, 12 Feb 2025 14:01:55 -0800
-Message-ID: <20250212220155.1147144-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250212220155.1147144-1-richard.henderson@linaro.org>
-References: <20250212220155.1147144-1-richard.henderson@linaro.org>
+ d2e1a72fcca58-73085c8360asm6959458b3a.132.2025.02.12.14.06.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Feb 2025 14:06:21 -0800 (PST)
+Message-ID: <30874eaf-c286-4a44-abd6-8fc2d3c8c5bb@linaro.org>
+Date: Wed, 12 Feb 2025 14:06:20 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/19] hw/virtio/virtio-pci: Always allocate QOM type
+ base_name
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20250212213249.45574-1-philmd@linaro.org>
+ <20250212213249.45574-13-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250212213249.45574-13-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,70 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Require TCGv_i32 and TCGv be identical, so drop
-the extensions.  Return constants when possible
-instead of a mov into a temporary.  Return register
-inputs unchanged when possible.
+On 2/12/25 13:32, Philippe Mathieu-Daudé wrote:
+> Introduce 'single_generic_device' boolean for clarity.
+> Allocate base_name on entry. Replace the g_free() call
+> by g_autofree qualifier. Use g_strconcat() instead of
+> g_strdup_printf().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/virtio/virtio-pci.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index a72f878e949..15383570c91 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -2469,7 +2469,12 @@ static void virtio_pci_non_transitional_instance_init(Object *obj)
+>   
+>   void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+>   {
+> -    char *base_name = NULL;
+> +    /* No base type -> register a single generic device type */
+> +    bool single_generic_device = !t->base_name;
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/microblaze/translate.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+If you're going to introduce this name, you should use it beyond just the next line.
+Most of the rest of the function could use this instead of repeated checks against 
+t->base_name.
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 5750c45dac..5f3b94e683 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -612,19 +612,18 @@ DO_TYPEBI(xori, false, tcg_gen_xori_i32)
- 
- static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
- {
--    TCGv ret = tcg_temp_new();
-+    TCGv ret;
- 
-     /* If any of the regs is r0, set t to the value of the other reg.  */
-     if (ra && rb) {
--        TCGv_i32 tmp = tcg_temp_new_i32();
--        tcg_gen_add_i32(tmp, cpu_R[ra], cpu_R[rb]);
--        tcg_gen_extu_i32_tl(ret, tmp);
-+        ret = tcg_temp_new_i32();
-+        tcg_gen_add_i32(ret, cpu_R[ra], cpu_R[rb]);
-     } else if (ra) {
--        tcg_gen_extu_i32_tl(ret, cpu_R[ra]);
-+        ret = cpu_R[ra];
-     } else if (rb) {
--        tcg_gen_extu_i32_tl(ret, cpu_R[rb]);
-+        ret = cpu_R[rb];
-     } else {
--        tcg_gen_movi_tl(ret, 0);
-+        ret = tcg_constant_i32(0);
-     }
- 
-     if ((ra == 1 || rb == 1) && dc->cfg->stackprot) {
-@@ -635,15 +634,16 @@ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
- 
- static TCGv compute_ldst_addr_typeb(DisasContext *dc, int ra, int imm)
- {
--    TCGv ret = tcg_temp_new();
-+    TCGv ret;
- 
-     /* If any of the regs is r0, set t to the value of the other reg.  */
--    if (ra) {
--        TCGv_i32 tmp = tcg_temp_new_i32();
--        tcg_gen_addi_i32(tmp, cpu_R[ra], imm);
--        tcg_gen_extu_i32_tl(ret, tmp);
-+    if (ra && imm) {
-+        ret = tcg_temp_new_i32();
-+        tcg_gen_addi_i32(ret, cpu_R[ra], imm);
-+    } else if (ra) {
-+        ret = cpu_R[ra];
-     } else {
--        tcg_gen_movi_tl(ret, (uint32_t)imm);
-+        ret = tcg_constant_i32(imm);
-     }
- 
-     if (ra == 1 && dc->cfg->stackprot) {
--- 
-2.43.0
+
+r~
+
+> +    /* use intermediate %s-base-type to add generic device props */
+> +    g_autofree char *base_name = single_generic_device
+> +                                 ? g_strconcat(t->generic_name, "-base-type", NULL)
+> +                                 : NULL;
+>       TypeInfo base_type_info = {
+>           .name          = t->base_name,
+>           .parent        = t->parent ? t->parent : TYPE_VIRTIO_PCI,
+> @@ -2492,9 +2497,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+>       };
+>   
+>       if (!base_type_info.name) {
+> -        /* No base type -> register a single generic device type */
+> -        /* use intermediate %s-base-type to add generic device props */
+> -        base_name = g_strdup_printf("%s-base-type", t->generic_name);
+>           base_type_info.name = base_name;
+>           base_type_info.class_init = virtio_pci_generic_class_init;
+>   
+> @@ -2544,7 +2546,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+>           };
+>           type_register_static(&transitional_type_info);
+>       }
+> -    g_free(base_name);
+>   }
+>   
+>   unsigned virtio_pci_optimal_num_queues(unsigned fixed_queues)
 
 
