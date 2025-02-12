@@ -2,148 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DD8A32409
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 11:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E48A324E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 12:29:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiAOj-0002FA-T2; Wed, 12 Feb 2025 05:55:17 -0500
+	id 1tiAr3-0005xL-RG; Wed, 12 Feb 2025 06:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiAOh-0002El-7D
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:55:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiAOd-0005qo-Uj
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:55:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739357710;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+7HVAjvcdoiZAG2veGP/ShmxXBVO5/tTP0TRXXk3Erc=;
- b=JMC6HtBGkFpZg6HzAr26RzNLYDM9yqpE0l2P6Z3fbFIVTdihmrnID8X5NT6O4PpAIphNWV
- PAMKukCf5VkFQIT98UPhJxSQOm7XXQq2SpCgXdD3S+qRffLeIrh4poNEmcYeDxORC8r6Kc
- gMV4nEcaHh/EMkGhfdaLk+3n2MfcDK0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-muleNfhKOVuejgGWWVXIvA-1; Wed, 12 Feb 2025 05:55:08 -0500
-X-MC-Unique: muleNfhKOVuejgGWWVXIvA-1
-X-Mimecast-MFC-AGG-ID: muleNfhKOVuejgGWWVXIvA
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38dc709f938so412361f8f.0
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 02:55:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiAqr-0005vv-Pz
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:24:23 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiAqo-0004Qa-6E
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 06:24:21 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-38dc73cc5acso486170f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 03:24:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739359456; x=1739964256; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=v0lKQ188Fqhtlt77kv+yVBP0rRi7j4Hamor1/xZAokE=;
+ b=gAwVzIzm5gnWRoCysx51Ed6LxyK59i4FNfe88/Tb6hJm+b3jEUzbWgmcPjQVZTvr5V
+ jGiQliCe/Xg+4aNq6eooCiqZ6yybj8wH3hEQJqw/nI6OucuMME7ObncYLmNdT4wi23W3
+ EWbCevenrOp6D1SUD7S9z+XapemJvoeS12OAPk3cbXTJaMTCMcBOzZloj9nq7qFfCBiK
+ fvv3J4AyYPivrHcQDTvSP0V/gxJ3Cwed2XQ1voGfp4PWSSMjZUWQhBlkt5tHf8f3nx5x
+ 9l1qCEte0ukd3V4ZoO5ZX9gaZ4nYjh/Np4oLQRE58Pc5RWOPfLgqsIg2oSOuQPawuiXP
+ io5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739357707; x=1739962507;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+7HVAjvcdoiZAG2veGP/ShmxXBVO5/tTP0TRXXk3Erc=;
- b=fFkZsUVKjRx9a1zqc6Mfn+TNHBeE7ghSpARmCA5kZzqQqvs4jBguOsTJpgaPgbouLk
- QmeXPd5ktTCONk3aR120wsdPqqf8HNNZzztoXwH4Qac5ciqOCTxPuIOQ5eQ/X8P27V3Z
- cz9VtAiwNCRWPDjiG2h2KCIowY3Kek/u/dD9z1YJttVw2HHZr3Z7fmFOXNrS2m+dBwh3
- pVEqMjAWeIhqPcRPBHKVpuYcD9HuBICZ5t5oW+pHpC+VpzHL8K3spmtPk38qPgEQTWtv
- 9xOCNNCPIWq+ZY+EQNgMFtIcSc7NkjvyoTTP2fojydX6ZTU6g4ekqP9ibh+353iAPrWM
- nDNQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+n10qYK+Fi+IMdFJmOFgHeYGp5NOq7jfP68yRK45sQMt0oCSBd0TuE8ZCx2unN3XTE+5purE93zM1@nongnu.org
-X-Gm-Message-State: AOJu0Yzd1+lNsXgSQy0LNcBAuf+gV72nuouDTx9CJlXo1auNaTB/Antg
- Cb4pgWlxMycyHv5sF1JYz84cu7GrZ1wyGpzmDkLi5EOw+wk2SSwB2e6FLBUMJHvdG5jywQqJTtG
- +XHqdzGKV9DrSSClt2UzRYQkYy3IRJzF/Mxs0rrfHpDEkHUCMnW1J
-X-Gm-Gg: ASbGncvBQohbJoz6w5e/eZqP46KYausTe0fPHucE5O9qOgmTCgzz7ssqZDjDdBQACik
- JDqtu9eq/JaP8uvlnBbFT8whhv3FY6eFAg+kaiHE/I5brj7ZDdqHoHCMwe6YRSX+D+lUwBMa2sK
- VF0w7/CVuF/gzLnArtjR8wL/o63CqqV/RK60vaPpDGfHdnVemYVe8jd6f6AF0ztWR4sJBvHMXxV
- SB6DGrC0AzuFe18OMjii8zlsH2LNCnxl0qov32rIzd3aqXdVeFogycN0RM/mBQgNcf+0GGM5Slo
- mSUP0BhPXUSrAjb4XjYf8NzcQH41nRCK3sW8d1WOZXc=
-X-Received: by 2002:a5d:6d0b:0:b0:38d:dfdc:c874 with SMTP id
- ffacd0b85a97d-38de439d620mr5482678f8f.10.1739357707118; 
- Wed, 12 Feb 2025 02:55:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IECMpZpoWdaiZ+5WNLYqXyU/ZrCdBcQWSQMXEYIMx+Qtwkc1ZxpN0JHuEYOFCjavuwlsifa5w==
-X-Received: by 2002:a5d:6d0b:0:b0:38d:dfdc:c874 with SMTP id
- ffacd0b85a97d-38de439d620mr5482645f8f.10.1739357706679; 
- Wed, 12 Feb 2025 02:55:06 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:ecac:5b28:cd98:868a?
- ([2a01:e0a:280:24f0:ecac:5b28:cd98:868a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4395a0711c1sm16035585e9.28.2025.02.12.02.55.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Feb 2025 02:55:05 -0800 (PST)
-Message-ID: <6c337aec-d004-4ede-a86b-0c934b275fa9@redhat.com>
-Date: Wed, 12 Feb 2025 11:55:04 +0100
+ d=1e100.net; s=20230601; t=1739359456; x=1739964256;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=v0lKQ188Fqhtlt77kv+yVBP0rRi7j4Hamor1/xZAokE=;
+ b=E0ygWh/7GAGmHqwTDgZ7TvFiLCNoxVcWQI8VuX+6HM5tbzdfvJx+c322rUVxtlYd5h
+ lWyv9r4sx7w1upw9IIKweYxhgMwbDej6dv0EWaKY3MqqjcfTwfq4mVJ1U+W4JYp6CTka
+ W5jhtTlSkdGsif8GVj4EasHa0ATbTJM9PE2Fsnl9wGiqgJ2eEen90E4XTR/8M5D8L4L6
+ Xe28R9ebRkSxjhg6L9MsO/GTTwmzbZNtQo4zTjDgVAePMP/PS3ldrgUssmWLodzD64R3
+ d4UNKByqTjpePIe2W+5MxKRzdPhaD/17PsLMQRDYsCvWEXpRpsTL9x/rkl2GSkPHKP7w
+ SQwA==
+X-Gm-Message-State: AOJu0YyDjigLOuvOiYLWN+YuCthoDs85PqD3HP2h12pp3wFzWr2XDzmb
+ eOXW5XNlo/W+NUnY0qOpT8Zi0E+MC5ueAaSRX0zn/CtYaOf9LGx1lhCeQJaiRlUXO8vbcFq3u1B
+ 4QJs=
+X-Gm-Gg: ASbGncvUSFj0TE3AYdr5KxTWv5UikoLtqWOczkZUQ79BaDhVf/Q6Ek4L6qXUO2dgNRJ
+ 49wvMPNb5aXFlQSUCWHQ0he4MoB+svonIgd1fE0BTLWPQLkSrEutcEMnvdiTvLyFTsxYktj3RL/
+ UaiOBfxMdLf/dy7KeU4O2VLtncLfuT87tgDdL95mXtz24rySQwVTlV9ZFPXgN050Ka2gXuZHKjC
+ 3F6YcJTdpLTPpEn8+5jY3CoNg/LJ0vjGBdhPwbMN2b8Nw8eFOIwLMvRQtRqpyypVj6PDZgD61k9
+ BNeyFwoLl5PF+ZOosiQsjl8B2o8R5dKX10f2vlJkk6KM2uvo8Zb86tu9/j4j8glZJg==
+X-Google-Smtp-Source: AGHT+IF2VLYNunMdGJM9wNvjFIRaZCxwqlhfznh5xn9UtRNMURCV5RQsXh4acio9lR0xkETVdST4NA==
+X-Received: by 2002:a5d:5885:0:b0:38d:dcbe:91fd with SMTP id
+ ffacd0b85a97d-38de43c7377mr6776481f8f.22.1739359455994; 
+ Wed, 12 Feb 2025 03:24:15 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4395a1b8397sm16584455e9.36.2025.02.12.03.24.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 12 Feb 2025 03:24:15 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 00/11] hw/microblaze: Allow running cross-endian vCPUs
+Date: Wed, 12 Feb 2025 12:24:02 +0100
+Message-ID: <20250212112413.37553-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 26/33] vfio/migration: Multifd device state transfer
- support - receive init/cleanup
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <1fcf182307e8e1f67a3c226e62d26cad3a2f60d0.1738171076.git.maciej.szmigiero@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1fcf182307e8e1f67a3c226e62d26cad3a2f60d0.1738171076.git.maciej.szmigiero@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,156 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/30/25 11:08, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-> 
-> Add support for VFIOMultifd data structure that will contain most of the
-> receive-side data together with its init/cleanup methods.
-> 
-> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> ---
->   hw/vfio/migration.c           | 52 +++++++++++++++++++++++++++++++++--
->   include/hw/vfio/vfio-common.h |  5 ++++
->   2 files changed, 55 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 3211041939c6..bcdf204d5cf4 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -300,6 +300,9 @@ typedef struct VFIOStateBuffer {
->       size_t len;
->   } VFIOStateBuffer;
->   
-> +typedef struct VFIOMultifd {
-> +} VFIOMultifd;
-> +
->   static void vfio_state_buffer_clear(gpointer data)
->   {
->       VFIOStateBuffer *lb = data;
-> @@ -398,6 +401,18 @@ static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
->       return qemu_file_get_error(f);
->   }
->   
-> +static VFIOMultifd *vfio_multifd_new(void)
-> +{
-> +    VFIOMultifd *multifd = g_new(VFIOMultifd, 1);
-> +
-> +    return multifd;
-> +}
-> +
-> +static void vfio_multifd_free(VFIOMultifd *multifd)
-> +{
-> +    g_free(multifd);
-> +}
-> +
->   static void vfio_migration_cleanup(VFIODevice *vbasedev)
->   {
->       VFIOMigration *migration = vbasedev->migration;
-> @@ -785,14 +800,47 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
->   static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
->   {
->       VFIODevice *vbasedev = opaque;
-> +    VFIOMigration *migration = vbasedev->migration;
-> +    int ret;
-> +
-> +    /*
-> +     * Make a copy of this setting at the start in case it is changed
-> +     * mid-migration.
-> +     */
-> +    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
-> +        migration->multifd_transfer = vfio_multifd_transfer_supported();
+Since v5:
+- Introduce QAPI EndianMode
+- Update RISCV machine while rebasing
+- Fixed INTC use on PPC (Thomas)
+- Dropped patch adding more machines (Daniel)
 
-Attribute "migration->multifd_transfer" is not necessary. It can be
-replaced by a small inline helper testing pointer migration->multifd
-and this routine can use a local variable instead.
+Since v4 & v3:
+- Addressed Thomas review comments
 
-I don't think the '_transfer' suffix adds much to the understanding.
+Since v2:
+- Addressed Richard's review comments
 
-> +    } else {
-> +        migration->multifd_transfer =
-> +            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
-> +    }
-> +
-> +    if (migration->multifd_transfer && !vfio_multifd_transfer_supported()) {
-> +        error_setg(errp,
-> +                   "%s: Multifd device transfer requested but unsupported in the current config",
-> +                   vbasedev->name);
-> +        return -EINVAL;
-> +    }
+Since v1:
+- Make device endianness configurable (Edgar)
+- Convert more Xilinx devices
+- Avoid preprocessor #if (Richard)
+- Add R-b tags
 
-The above checks are also introduced in vfio_save_setup(). Please
-implement a common routine vfio_multifd_is_enabled() or some other
-name.
+Philippe Mathieu-Daudé (11):
+  hw/qdev-properties-system: Introduce EndianMode QAPI enum
+  hw/intc/xilinx_intc: Make device endianness configurable
+  hw/net/xilinx_ethlite: Make device endianness configurable
+  hw/timer/xilinx_timer: Make device endianness configurable
+  hw/char/xilinx_uartlite: Make device endianness configurable
+  hw/ssi/xilinx_spi: Make device endianness configurable
+  tests/functional: Avoid using www.qemu-advent-calendar.org URL
+  tests/functional: Explicit endianness of microblaze assets
+  tests/functional: Allow microblaze tests to take a machine name
+    argument
+  tests/functional: Remove sleep() kludges from microblaze tests
+  tests/functional: Have microblaze tests inherit common parent class
 
-> +    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
-> +                                   migration->device_state, errp);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    if (migration->multifd_transfer) {
-> +        assert(!migration->multifd);
-> +        migration->multifd = vfio_multifd_new();
-> +    }
->   
-> -    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
-> -                                    vbasedev->migration->device_state, errp);
-> +    return 0;
->   }
->   
->   static int vfio_load_cleanup(void *opaque)
->   {
->       VFIODevice *vbasedev = opaque;
-> +    VFIOMigration *migration = vbasedev->migration;
-> +
-> +    g_clear_pointer(&migration->multifd, vfio_multifd_free);
+ qapi/common.json                              | 16 +++++
+ include/hw/qdev-properties-system.h           |  7 +++
+ hw/char/xilinx_uartlite.c                     | 34 +++++++----
+ hw/core/qdev-properties-system.c              | 11 ++++
+ hw/intc/xilinx_intc.c                         | 60 ++++++++++++++-----
+ hw/microblaze/petalogix_ml605_mmu.c           |  3 +
+ hw/microblaze/petalogix_s3adsp1800_mmu.c      |  6 ++
+ hw/net/xilinx_ethlite.c                       | 27 +++++++--
+ hw/ppc/virtex_ml507.c                         |  2 +
+ hw/riscv/microblaze-v-generic.c               |  5 ++
+ hw/ssi/xilinx_spi.c                           | 32 +++++++---
+ hw/timer/xilinx_timer.c                       | 43 +++++++++----
+ .../functional/test_microblaze_s3adsp1800.py  | 35 +++++++++--
+ .../test_microblazeel_s3adsp1800.py           | 32 ++--------
+ 14 files changed, 229 insertions(+), 84 deletions(-)
 
-please add a vfio_multifd_cleanup() routine.
-
-
->       vfio_migration_cleanup(vbasedev);
->       trace_vfio_load_cleanup(vbasedev->name);
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 153d03745dc7..c0c9c0b1b263 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -61,6 +61,8 @@ typedef struct VFIORegion {
->       uint8_t nr; /* cache the region number for debug */
->   } VFIORegion;
->   
-> +typedef struct VFIOMultifd VFIOMultifd;
-> +
->   typedef struct VFIOMigration {
->       struct VFIODevice *vbasedev;
->       VMChangeStateEntry *vm_state;
-> @@ -72,6 +74,8 @@ typedef struct VFIOMigration {
->       uint64_t mig_flags;
->       uint64_t precopy_init_size;
->       uint64_t precopy_dirty_size;
-> +    bool multifd_transfer;
-> +    VFIOMultifd *multifd;
->       bool initial_data_sent;
->   
->       bool event_save_iterate_started;
-> @@ -133,6 +137,7 @@ typedef struct VFIODevice {
->       bool no_mmap;
->       bool ram_block_discard_allowed;
->       OnOffAuto enable_migration;
-> +    OnOffAuto migration_multifd_transfer;
-
-This property should be added at the end of the series, with documentation,
-and used in the vfio_multifd_some_name() routine I mentioned above.
-
-
-Thanks,
-
-C.
-
-
-
->       OnOffAuto migration_load_config_after_iter;
->       bool migration_events;
->       VFIODeviceOps *ops;
-> 
+-- 
+2.47.1
 
 
