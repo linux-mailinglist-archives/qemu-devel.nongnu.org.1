@@ -2,71 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F08A3262D
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 13:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D224DA3265F
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 13:57:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiC99-0007CC-6O; Wed, 12 Feb 2025 07:47:19 -0500
+	id 1tiCHu-0000sz-JV; Wed, 12 Feb 2025 07:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tiC95-0007Bt-RF
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 07:47:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tiCHm-0000rh-JB; Wed, 12 Feb 2025 07:56:15 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tiC93-00047d-Se
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 07:47:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739364432;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Xsh7VanH7sfiVHMO9rLV1PJGWwOQ3kk5zetFTpIjnWo=;
- b=A0AobQazGXScmtx5hOVIg0106XVb6CFJ5LlgUUZe83GWDc4Wjka5GrLOriNrY7idBkSaWl
- O32IPs4Otik4gVWehG/d6uo92GFzkIZHpj6H+2F4Y+Sqyhu3DLOMo9w+bw0DPvAyhEvGyA
- GNXekpetc0HTJQvHur5giJB6/nScFZo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-hj7In-5SPOeRCSfrPFY9KQ-1; Wed,
- 12 Feb 2025 07:47:10 -0500
-X-MC-Unique: hj7In-5SPOeRCSfrPFY9KQ-1
-X-Mimecast-MFC-AGG-ID: hj7In-5SPOeRCSfrPFY9KQ_1739364429
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 10B2F195608B; Wed, 12 Feb 2025 12:47:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.168])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D8D3D3001D19; Wed, 12 Feb 2025 12:47:04 +0000 (UTC)
-Date: Wed, 12 Feb 2025 13:47:02 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com,
- manos.pitsidianakis@linaro.org, qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 04/11] rust/qemu-api: Add wrappers to run futures in QEMU
-Message-ID: <Z6yYRrp4KTjveCHg@redhat.com>
-References: <20250211214328.640374-1-kwolf@redhat.com>
- <20250211214328.640374-5-kwolf@redhat.com>
- <533ac9c1-7486-4b1b-af9a-ed4a864727de@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tiCHk-0005un-HT; Wed, 12 Feb 2025 07:56:14 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 107734E6019;
+ Wed, 12 Feb 2025 13:56:03 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id QFPQKJGT4X-Q; Wed, 12 Feb 2025 13:56:01 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 1B4624E6014; Wed, 12 Feb 2025 13:56:01 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 18F3674577C;
+ Wed, 12 Feb 2025 13:56:01 +0100 (CET)
+Date: Wed, 12 Feb 2025 13:56:01 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Alistair Francis <alistair@alistair23.me>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH v6 01/11] hw/qdev-properties-system: Introduce EndianMode
+ QAPI enum
+In-Reply-To: <50ba4e4b-4124-46bb-bb84-4758ce9c5e66@linaro.org>
+Message-ID: <3b3baed4-0d79-3a28-40cd-e1835e078863@eik.bme.hu>
+References: <20250212112413.37553-1-philmd@linaro.org>
+ <20250212112413.37553-2-philmd@linaro.org>
+ <cb828dd8-25f6-47c6-9ac7-cae5b0d0932e@redhat.com>
+ <50ba4e4b-4124-46bb-bb84-4758ce9c5e66@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <533ac9c1-7486-4b1b-af9a-ed4a864727de@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-533999827-1739364961=:31598"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,91 +71,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 12.02.2025 um 10:28 hat Paolo Bonzini geschrieben:
-> On 2/11/25 22:43, Kevin Wolf wrote:
-> > +/// Use QEMU's event loops to run a Rust [`Future`] to completion and return its result.
-> > +///
-> > +/// This function must be called in coroutine context. If the future isn't ready yet, it yields.
-> > +pub fn qemu_co_run_future<F: Future>(future: F) -> F::Output {
-> > +    let waker = Arc::new(RunFutureWaker {
-> > +        co: unsafe { bindings::qemu_coroutine_self() },
-> > +    })
-> > +    .into();
-> 
-> into what? :)  Maybe you can add the type to the "let" for clarity.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Into Waker. Do we have any idea yet how explicit we want to be with type
-annotations that aren't strictly necessary? I didn't think of making it
-explicit here because the only thing that is done with it is building a
-Context from it, so it seemed obvious enough.
+--3866299591-533999827-1739364961=:31598
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-If you think that being explicit is better, then Waker::from() might
-be better than adding a type name to let and keeping .into().
+On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
+> On 12/2/25 12:37, Thomas Huth wrote:
+>> On 12/02/2025 12.24, Philippe Mathieu-Daudé wrote:
+>>> Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
+>>> Endianness can be BIG, LITTLE or unspecified (default).
+>>> 
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   qapi/common.json                    | 16 ++++++++++++++++
+>>>   include/hw/qdev-properties-system.h |  7 +++++++
+>>>   hw/core/qdev-properties-system.c    | 11 +++++++++++
+>>>   3 files changed, 34 insertions(+)
+>>> 
+>>> diff --git a/qapi/common.json b/qapi/common.json
+>>> index 6ffc7a37890..217feaaf683 100644
+>>> --- a/qapi/common.json
+>>> +++ b/qapi/common.json
+>>> @@ -212,3 +212,19 @@
+>>>   ##
+>>>   { 'struct': 'HumanReadableText',
+>>>     'data': { 'human-readable-text': 'str' } }
+>>> +
+>>> +##
+>>> +# @EndianMode:
+>>> +#
+>>> +# An enumeration of three options: little, big, and unspecified
+>>> +#
+>>> +# @little: Little endianness
+>>> +#
+>>> +# @big: Big endianness
+>>> +#
+>>> +# @unspecified: Endianness not specified
+>>> +#
+>>> +# Since: 10.0
+>>> +##
+>>> +{ 'enum': 'EndianMode',
+>>> +  'data': [ 'little', 'big', 'unspecified' ] }
+>> 
+>> Should 'unspecified' come first? ... so that it gets the value 0, i.e. when 
+>> someone forgets to properly initialize a related variable, the chances are 
+>> higher that it ends up as "unspecified" than as "little" ?
+>
+> Hmm but then in this series the dual-endianness regions are defined as:
+>
+> +static const MemoryRegionOps pic_ops[2] = {
+> +    [0 ... 1] = {
 
-> > +    let mut cx = Context::from_waker(&waker);
-> > +
-> > +    let mut pinned_future = std::pin::pin!(future);
-> > +    loop {
-> > +        match pinned_future.as_mut().poll(&mut cx) {
-> > +            Poll::Ready(res) => return res,
-> 
-> Alternatively, "break res" (matter of taste).
-> 
-> > +            Poll::Pending => unsafe {
-> > +                bindings::qemu_coroutine_yield();
-> > +            },
-> > +        }
-> > +    }
-> > +}
-> > +/// Wrapper around [`qemu_co_run_future`] that can be called from C.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// `future` must be a valid pointer to an owned `F` (it will be freed in this function).  `output`
-> > +/// must be a valid pointer representing a mutable reference to an `F::Output` where the result can
-> > +/// be stored.
-> > +unsafe extern "C" fn rust_co_run_future<F: Future>(
-> > +    future: *mut bindings::RustBoxedFuture,
-> > +    output: *mut c_void,
-> > +) {
-> > +    let future = unsafe { Box::from_raw(future.cast::<F>()) };
-> > +    let output = output.cast::<F::Output>();
-> > +    let ret = qemu_co_run_future(*future);
-> > +    unsafe {
-> > +        *output = ret;
-> 
-> This should use output.write(ret), to ensure that the output is written
-> without dropping the previous value.
+This is already confusing as you'd have to know that 0 and 1 here means 
+ENDIAN_MODE_LITTLE and ENDIAN_MODE_BIG (using those constants here as well 
+might be clearer). It's easy to miss what this does so maybe repeating the 
+definitions for each case would be longer but less confusing and then it 
+does not matter what the values are.
 
-Oops, thanks. I need to learn that unsafe Rust still isn't C. :-)
+Or what uses the ops.endianness now should look at the property introduced 
+by this patch to avoid having to propagate it like below and drop the 
+ops.endianness? Or it should move to the memory region and set when the 
+ops are assigned?
 
-> Also, would qemu_co_run_future() and qemu_run_future() become methods on an
-> Executor later?  Maybe it make sense to have already something like
-> 
-> pub trait QemuExecutor {
->     fn run_until<F: Future>(future: F) -> F::Output;
-> }
-> 
-> pub struct Executor;
-> pub struct CoExecutor;
-> 
-> and pass an executor to Rust functions (&Executor for no_coroutine_fn,
-> &CoExecutor for coroutine_fn, &dyn QemuExecutor for mixed).  Or would that
-> be premature in your opinion?
+Regards,
+BALATON Zoltan
 
-If we could get bindgen to actually do that for the C interface, then
-this could be interesting, though for most functions it also would
-remain unused boilerplate. If we have to get the executor manually on
-the Rust side for each function, that's probably the same function that
-will want to execute the future - in which case it just can directly
-call the correct function.
-
-The long term idea should be anyway that C coroutines disappear from the
-path and we integrate an executor into the QEMU main loop. But as long
-as the block layer core is written in C and uses coroutines and we want
-Rust futures to be able to call into coroutine_fns, that's still a long
-way to go.
-
-Kevin
-
+> +        .read = pic_read,
+> +        .write = pic_write,
+> +        .endianness = DEVICE_BIG_ENDIAN,
+> +        .impl = {
+> +            .min_access_size = 4,
+> +            .max_access_size = 4,
+> +        },
+> +        .valid = {
+> +            /*
+> +             * All XPS INTC registers are accessed through the PLB 
+> interface.
+> +             * The base address for these registers is provided by the
+> +             * configuration parameter, C_BASEADDR. Each register is 32 bits
+> +             * although some bits may be unused and is accessed on a 4-byte
+> +             * boundary offset from the base address.
+> +             */
+> +            .min_access_size = 4,
+> +            .max_access_size = 4,
+> +        },
+>     },
+> -    .valid = {
+> -        .min_access_size = 4,
+> -        .max_access_size = 4
+> -    }
+> +    [ENDIAN_MODE_BIG].endianness = DEVICE_BIG_ENDIAN,
+> +    [ENDIAN_MODE_LITTLE].endianness = DEVICE_LITTLE_ENDIAN,
+> };
+>
+> We could declare the array using the confusing __MAX definition
+> (at the price of wasting the ENDIAN_MODE_UNSPECIFIED entry) as:
+>
+> static const MemoryRegionOps pic_ops[ENDIAN_MODE__MAX - 1] { }
+>
+> WDYT?
+>
+>> Apart from that:
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> 
+>
+> Thanks!
+>
+>
+--3866299591-533999827-1739364961=:31598--
 
