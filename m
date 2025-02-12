@@ -2,87 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799FFA31DB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008C6A31E2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:46:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ti4w2-0004UL-95; Wed, 12 Feb 2025 00:05:18 -0500
+	id 1ti5Ys-0002u0-UV; Wed, 12 Feb 2025 00:45:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1ti4vj-0004TK-0z
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:04:59 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1ti4vg-0004Kf-UU
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:04:58 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-21f5268cf50so70051375ad.1
- for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 21:04:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739336695; x=1739941495; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vhiJos3NyChxzeYINVp45yOD0HybRIiXzqJ2nZlxZvs=;
- b=egN8tw1oELLjMnWaljNWOfrJhk8l3h95ayzupT2mZeUbBA9uzMSszKTRLMdY7jx3jy
- UyIYNgbs08gEhj6LMSR01b0+nXXgytuqJj0WcFfDCdrn7BAwnQH5jKrBjK1L7W7tEbH5
- dehOO2cjc4eDzw/cPya917/S5O3mfcshrmHeTX1wj4iSr1YYBhsAQJIWih/gChWgmAeI
- NKaC2FHOydkjshS7jw7443Y9kphqQ3Ja6f0rgzxKnY8+99DVDxfkVkNr1Pv62VPoVmi0
- pa3Sp8bjICtT5eA6hCBc3UJ49YBGtAQxFcRymQgUgJDWyPjfyc+eJML3H1meQI9EMwin
- n6SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739336695; x=1739941495;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vhiJos3NyChxzeYINVp45yOD0HybRIiXzqJ2nZlxZvs=;
- b=w+xqrKANm9TS1qkZ0QEbJKXXwsFVjqHF7mA7lVaHLsW1UwWas6qBH24VWb2+RyptKW
- CAI97w2iFjI8Bckm+4BIJky7UB3KwzEWvU475ttfkbQDTwLaqw92KSmL16fkVf32JB1T
- QYI4TRJ1iaV8tuicDB0UTz3Ady68tt2Y2xdDCxnTyqrmDujuaRKBT9z9Z1snV3rnpO+C
- /+A14DRfpl0Y0UJjutmShZqjatN1/IQ+356zVefwBmS4sdGu1b9vFokfqWwb+0PqPucK
- RCQu2Td7RIjUCx6PYnB+JFs1w4dcKJILIITPm8AH9/KTXbvh++kguCxe/KuxNMqaB7KD
- 77eA==
-X-Gm-Message-State: AOJu0YxAr4gDCuBamfAohbM77QJhNAMTwxvIUQrwubQhRLaE2UbZPZRi
- A7YCBeCEPRDHymslWD4E130wAdDGUvHBhFS0w85oCwNOmyaX2b67
-X-Gm-Gg: ASbGncvu+8amk1yB0qKgatPZGqq5Ogd7tVB3Vqv9fQ6YMRdwWEn3V8Ggl/HgFS57Xwk
- +31yRn/LbST4ExWPRuroRZR2MWHkQHck1FOm9ReODblHFgz9rgCsIDxAqzB4JO6xLqGYar9yyak
- sGFKtdIGthacTR1OSWIPf40bGLB/yoyQ18wKsTjm7g87m5FWlLIfmy/VPTFydOI3DalvvAKki7X
- i0lKvakmjYA1IzLxb7yfuqxW21k2dDorkXoSAlkUOynzP9ntokoryAV5INTog1ATFlSIzIKfpNq
- M17J6NAVuDiQVDOrXosDXg==
-X-Google-Smtp-Source: AGHT+IEUcVqTCqa89stONZidG9PDTbuMuSRa/RI+jkqD2wusZxlrO4WT7kWdgcZBcmGeaLzhFSKqVw==
-X-Received: by 2002:a05:6a21:e85:b0:1e1:f281:8d07 with SMTP id
- adf61e73a8af0-1ee5e550b25mr1940373637.10.1739336695037; 
- Tue, 11 Feb 2025 21:04:55 -0800 (PST)
-Received: from jeuk-MS-7D42.. ([175.119.5.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73048bf1421sm10480602b3a.101.2025.02.11.21.04.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Feb 2025 21:04:54 -0800 (PST)
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-X-Google-Original-From: Jeuk Kim <jeuk20.kim@samsung.com>
-To: jeuk20.kim@samsung.com, farosas@suse.de, lvivier@redhat.com,
- pbonzini@redhat.com
-Cc: qemu-devel@nongnu.org, j-young.choi@samsung.com, keosung.park@samsung.com
-Subject: [PATCH 3/3] tests/qtest/ufs-test: Add test code for MCQ functionality
-Date: Wed, 12 Feb 2025 14:04:21 +0900
-Message-ID: <6f1a8e7f4542f24972f3e0ce4872574b83a515c9.1739336154.git.jeuk20.kim@samsung.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1739336154.git.jeuk20.kim@samsung.com>
-References: <cover.1739336154.git.jeuk20.kim@samsung.com>
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1ti5Yq-0002tk-3h
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:45:24 -0500
+Received: from mail-dm6nam12on2060f.outbound.protection.outlook.com
+ ([2a01:111:f403:2417::60f]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1ti5Yn-0006F3-2Q
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:45:23 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xN6zbXew1PTt6krJPV9xhnr77bE0Pt5nqETdpTQyimNFNnxccM1JfAE/FOhORKIfYCLdAUFTco4GF+rWK5nh5RH3DqdY+/TM2B0h2V7GNoJ+3hCaSDaKsjzAjSJdey1AMfra1lFTsVoUo8kOxbUBdJHrRB9d1AulhXvJmrRKcRfvR8pPR+oPUvwqWxBZnR46JtUFdSOccCB+RB9J2hysir51EJ13mGu5EZabNASjoN40gBOnHizYRCp89z0OiOIwRnMnambioBgVvbUk5JrMB5FLVHpMheN4aGRSXQvjdlG8hYan0Ep+fE4O3gRB3q0dgzgca+7lEyz0oFzvJvgF1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yrCBlaDTedrbNoEEl4PLIt8TgKUaLzlW+96P+qQmdwY=;
+ b=CjDBnxY7BcWhcQH/IORB5f3ssi0kYlcf06ZSGUFV+WSMyZCFch672rKqRWhkfNs8mgkyASBxJsI1PZaTQtO+JfmnQMDdG6+Kea4BZTMR91vcy+OmmWqepZ0/YRKWWxpNCjXBF3u44ZstMiKJRhG6rPQsM4DsUM7fOiKlzozkvGzmZiJLVuTJJ0RHBV8OeMkm5C7Rsu1fCZZpMglf+0mqKvtDPqzI8Fb5SWpLAbm0wb/gvSkm60NoayHsbPwR2HT34Dn2tQ2qYY3ptD9tMn5Fkkyho035ar9sJ6FqMyteTbdv/eYkVXNnRtqgSRrp0DkurPJLktauhcZNbTRUpcsZtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yrCBlaDTedrbNoEEl4PLIt8TgKUaLzlW+96P+qQmdwY=;
+ b=PN7ng6qAVb9ZK/F4W3UE7sjitJGmJJLjXtjw912ePtBU3a/sHgX6uknw8RAQF20+7rVXo1b3B/NOq/O36fPGHTIC91wHJNsdZcRPUMQo+bdHB4EyjkLvubfePYE/YRThvajcIDj1NCcLRWF6OzH7Tyf59Y0Wj8BLuiHujMh5McI=
+Received: from SA0PR11CA0190.namprd11.prod.outlook.com (2603:10b6:806:1bc::15)
+ by SJ0PR12MB8090.namprd12.prod.outlook.com (2603:10b6:a03:4ea::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Wed, 12 Feb
+ 2025 05:45:13 +0000
+Received: from SN1PEPF0002BA4C.namprd03.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::2a) by SA0PR11CA0190.outlook.office365.com
+ (2603:10b6:806:1bc::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.31 via Frontend Transport; Wed,
+ 12 Feb 2025 05:45:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002BA4C.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8445.10 via Frontend Transport; Wed, 12 Feb 2025 05:45:12 +0000
+Received: from purico-ed03host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 11 Feb
+ 2025 23:45:07 -0600
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <mst@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <jon.grimm@amd.com>, <santosh.shukla@amd.com>,
+ <vasant.hegde@amd.com>, <Wei.Huang2@amd.com>, <bsd@redhat.com>,
+ <berrange@redhat.com>, <joao.m.martins@oracle.com>,
+ <alejandro.j.jimenez@oracle.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>
+Subject: [PATCH v3 0/2] hw/i386/amd_iommu: Add migration support
+Date: Wed, 12 Feb 2025 05:44:48 +0000
+Message-ID: <20250212054450.578449-1-suravee.suthikulpanit@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4C:EE_|SJ0PR12MB8090:EE_
+X-MS-Office365-Filtering-Correlation-Id: 700a9b4d-d431-4028-df6e-08dd4b286afa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|376014|36860700013|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?emF6eWJONzcrZ0lYeHZ0cXIyNlJ0TUw3T0J3RUNtcldaM3M5ZHhCQXd6RmVL?=
+ =?utf-8?B?SGltdnY3VDFuclRWWHpUTkt2K0xtakVGckREMTZUK3dsYng5bnNFNlRuMDBC?=
+ =?utf-8?B?REFJR3dYSW5ERktWeEVYOS9DS1hneENqTUhXSFNueGRDT3Q0aEtGc1F2SHV5?=
+ =?utf-8?B?dEVYVEhidGZSYm5FMkRLQVFoL2JLZ0ZQL1hUcm85U3crb21kQmxQMk5ad0JO?=
+ =?utf-8?B?YlduNG45NUs2ME54Q2pMY0MwUmdKeWQ1SHhydUdTTXM4dDdVU3MvL1J3aWw4?=
+ =?utf-8?B?clZiYU1iSVFWb1h1TG43SEo3NTJlUTNLd2lpcFdkeERGUW9YcUlmZ1BNeG9G?=
+ =?utf-8?B?bkcyRStERUcyaytUOG5YTDBCQW1qdnhsdk1ZNUtoQnZDRUJyUXRCNXRwM21H?=
+ =?utf-8?B?UDBMT1JZVm1IWlE1TEMvcHRFRGphQlJCZTBkZ1dIS3Yvb3dNVGxRbVZXYTJS?=
+ =?utf-8?B?Q3BFd0ZRdi9nb2I1dm5uMzJXZTU2NW5YT2FNaVZlRVp4c0JBdTA4MVJ6b0NB?=
+ =?utf-8?B?TjVJaW1CMHNNOVZwL1ZIaVFhVk9DeEkvSlpNcW1XeUdPWGZTWFBaRzVXYUNv?=
+ =?utf-8?B?YzMxS1QrS2k2TFoxcTB5RkVZbTJ4MWF6b2Y3RURkTis1aXA1Q1dnVXVFUXhr?=
+ =?utf-8?B?QmxITWdQYUtwV2s4WTM2THN0RHB1TjlvNTd5K0grUzBuM2Y0dXJxM3NqOUZr?=
+ =?utf-8?B?ZGVtaHpCN0FpVnl5blRuV0lWa0w1V2taWWRQbk1OcnlDMTUvMVFPQVNreWoy?=
+ =?utf-8?B?eE9WZWswQWxyU1Z1dzZaR0JZa0hpdWsvNWl1ZDhXcFk5NXk1RTUvVEM2ZW50?=
+ =?utf-8?B?a3U4c0J1eHpxVXVML3VXRG1FQUdsNCtJcGJBZFN2c00zWEdwOE5vNE15MWJC?=
+ =?utf-8?B?Ukx1elUvNDJjR3p2elBkSUFVSmtxSm1PZXhvbjhQNm05K285RElwSnlOR0NY?=
+ =?utf-8?B?WWRIa2gxR3c3QlU2SGROajJJRmMzSWRWKzJiUXp0dzFqSlpyVkV6MnhhZVEw?=
+ =?utf-8?B?eEFjVUtNRSt1bmhnV21uSGFqNndaK0dPWVdPblFYMG9uM1VxckJNaVdteldl?=
+ =?utf-8?B?cFZNczB6MUR2NWJnYkkrZzdmM0tuVUcxckhhME5nZFYzTjVmcE5XbmZndUN4?=
+ =?utf-8?B?aU8zak1Bc3RpMk4vb01DTlE3UnhuRUhiTC9yT0FaUWU0WHJiRFR0eVA3WTRZ?=
+ =?utf-8?B?WWxLeEFtbkZtZEJNTkpaRlIvVkNJcWoyYy9HV0syM1M3OXdYajY4aFIvQzNP?=
+ =?utf-8?B?MVV1OXAxTVJQNHJvUkNTcWFHcHlSVzYyVm5KeHd4NjIrcFlQRXZ3N1RTbVpD?=
+ =?utf-8?B?VW1BQzhncXRmM2Qwc2Vrbnc4UDhQaWMrdEF6Uk5oZ0w1TnZVb1FFYXVjSUFH?=
+ =?utf-8?B?dWNjbzhnTTc4SjQrU2lFek81dzB0Vk5GMXlZUjI1NnpNVnFKT1BHTlhJeW5P?=
+ =?utf-8?B?V2VuSGV3eCtYRzE5OTl2L2llZHBFSkNWbjc1aFVPdlFKYjlrSU5nY3BSNWxl?=
+ =?utf-8?B?SnZhRXJOQWhLbVY2cCt1cERoMkR2U2FpN2g0cVFMYlo3TlU1ZHJ2OWEydVlC?=
+ =?utf-8?B?SDYzZlhjL0dEbWtJa0hkSVlvUDdrZkFSTTB4a3RUd0VwQWFFVFIvWjJIeGd5?=
+ =?utf-8?B?MjAwOUEzNUlOMU42MkNSYUh5RVJVamtDcVNvY2pqOWxqY3J6OVVRZHdZMENn?=
+ =?utf-8?B?YWcvZmFpWUxMT1I1bFVqdjlkVENjRzV5TzBRdThIV0p5MUxFZVJBMFdMd0Ny?=
+ =?utf-8?B?UnBZbCs4L2htY2dhVzlkRHNwVVhHVitCQjlETXVRWmxJUERkdm9JNGxUcy8y?=
+ =?utf-8?B?ZlNncGxkeitSQnRWYzRXdVVMNUJYTVVZYnkvWW1zVnBGZjNpcXN3aWd6RmpP?=
+ =?utf-8?B?UkZNdkM4bUpHNDBiQzNqQkpzVTFjd2J5VmJDVUtUWUJkWERoeHRvRDNKbk91?=
+ =?utf-8?B?bFp4NmN0QTNQeWZ6YWw2d1o3TTZsZHBVb3VyK0xHNFF4N2tTQTgzcFlMY3dr?=
+ =?utf-8?Q?DjgsRQ2pE+jzjmzYSlKSI384uEIR2A=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 05:45:12.1298 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 700a9b4d-d431-4028-df6e-08dd4b286afa
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4C.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8090
+Received-SPF: permerror client-ip=2a01:111:f403:2417::60f;
+ envelope-from=Suravee.Suthikulpanit@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,284 +157,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch tests whether MCQ initialization and basic read-write
-operations work correctly when the MCQ parameter of hw/ufs is enabled.
+Currently, amd-iommu device does not support migration. This series addresses
+an issue due hidden AMDVI-PCI device enumeration. Then introduces migratable
+VMStateDescription, which saves necessary parameters for the device.
 
-Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
----
- tests/qtest/ufs-test.c | 171 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 142 insertions(+), 29 deletions(-)
+Changes from v2:
+(https://lore.kernel.org/all/20250206051856.323651-1-suravee.suthikulpanit@amd.com)
+  * Add patch 1/2
 
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index f5b311554b..d5076bdeb5 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -15,6 +15,7 @@
- #include "block/ufs.h"
- #include "qemu/bitmap.h"
- 
-+#define DWORD_BYTE 4
- /* Test images sizes in Bytes */
- #define TEST_IMAGE_SIZE (64 * 1024 * 1024)
- /* Timeout for various operations, in seconds. */
-@@ -28,6 +29,10 @@
- #define UTP_PRDT_UPIU_OFFSET 2048
- #define UTRD_TEST_SLOT 0
- #define UFS_MAX_CMD_DESC 32
-+/* Constants for MCQ */
-+#define TEST_QID 0
-+#define QUEUE_SIZE 32
-+#define UFS_MCQ_MAX_QNUM 32
- 
- typedef struct QUfs QUfs;
- 
-@@ -36,12 +41,22 @@ struct QUfs {
-     QPCIDevice dev;
-     QPCIBar bar;
- 
--    uint64_t utrlba;
-     DECLARE_BITMAP(cmd_desc_bitmap, UFS_MAX_CMD_DESC);
-     uint64_t cmd_desc_addr;
-     uint64_t data_buffer_addr;
- 
-     bool enabled;
-+    bool support_mcq;
-+
-+    /* for legacy doorbell mode */
-+    uint64_t utrlba;
-+
-+    /* for mcq mode */
-+    uint32_t maxq;
-+    uint64_t sqlba[UFS_MCQ_MAX_QNUM];
-+    uint64_t cqlba[UFS_MCQ_MAX_QNUM];
-+    uint64_t sqdao[UFS_MCQ_MAX_QNUM];
-+    uint64_t cqdao[UFS_MCQ_MAX_QNUM];
- };
- 
- static inline uint32_t ufs_rreg(QUfs *ufs, size_t offset)
-@@ -106,31 +121,67 @@ static UtpTransferReqDesc ufs_build_req_utrd(uint64_t command_desc_base_addr,
- }
- 
- static enum UtpOcsCodes
--ufs_send_transfer_request_sync(QUfs *ufs, uint8_t lun,
--                               const UtpTransferReqDesc *utrd)
-+__ufs_send_transfer_request_doorbell(QUfs *ufs, uint8_t lun,
-+                                     const UtpTransferReqDesc *utrd)
- {
--    UtpTransferReqDesc utrd_result;
--    /*
--     * Currently, the transfer request is sent synchronously, so UTRD_TEST_SLOT
--     * is fixed to 0. If asynchronous testing is added in the future, this value
--     * should be adjusted dynamically.
--     */
-     uint64_t utrd_addr =
-         ufs->utrlba + UTRD_TEST_SLOT * sizeof(UtpTransferReqDesc);
-+    UtpTransferReqDesc utrd_result;
-+
-     qtest_memwrite(ufs->dev.bus->qts, utrd_addr, utrd, sizeof(*utrd));
- 
--    /* Ring Doorbell */
-+    /* Ring the doorbell */
-     ufs_wreg(ufs, A_UTRLDBR, 1);
-     ufs_wait_for_irq(ufs);
-     g_assert_true(FIELD_EX32(ufs_rreg(ufs, A_IS), IS, UTRCS));
-     ufs_wreg(ufs, A_IS, FIELD_DP32(0, IS, UTRCS, 1));
- 
-+    /* Handle completed command */
-     qtest_memread(ufs->dev.bus->qts, utrd_addr, &utrd_result,
-                   sizeof(utrd_result));
--
-     return le32_to_cpu(utrd_result.header.dword_2) & 0xf;
- }
- 
-+static enum UtpOcsCodes
-+__ufs_send_transfer_request_mcq(QUfs *ufs, uint8_t lun,
-+                                const UtpTransferReqDesc *utrd)
-+{
-+    uint32_t sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    uint64_t utrd_addr = ufs->sqlba[TEST_QID] + sqtp;
-+    uint32_t cqhp;
-+    uint64_t cqentry_addr;
-+    UfsCqEntry cqentry;
-+
-+    qtest_memwrite(ufs->dev.bus->qts, utrd_addr, utrd, sizeof(*utrd));
-+
-+    /* Insert a new entry into the submission queue */
-+    sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    sqtp = (sqtp + sizeof(UfsSqEntry)) % (QUEUE_SIZE * sizeof(UfsSqEntry));
-+    ufs_wreg(ufs, ufs->sqdao[TEST_QID] + 0x4, sqtp);
-+    ufs_wait_for_irq(ufs);
-+    g_assert_true(FIELD_EX32(ufs_rreg(ufs, A_IS), IS, CQES));
-+    ufs_wreg(ufs, A_IS, FIELD_DP32(0, IS, CQES, 1));
-+
-+    /* Handle the completed command from the completion queue */
-+    cqhp = ufs_rreg(ufs, ufs->cqdao[TEST_QID]);
-+    cqentry_addr = ufs->cqlba[TEST_QID] + cqhp;
-+    qtest_memread(ufs->dev.bus->qts, cqentry_addr, &cqentry, sizeof(cqentry));
-+    ufs_wreg(ufs, ufs->cqdao[TEST_QID], cqhp);
-+
-+    return cqentry.status;
-+}
-+
-+static enum UtpOcsCodes
-+ufs_send_transfer_request_sync(QUfs *ufs, uint8_t lun,
-+                               const UtpTransferReqDesc *utrd)
-+{
-+    if (ufs->support_mcq) {
-+        return __ufs_send_transfer_request_mcq(ufs, lun, utrd);
-+    }
-+
-+    return __ufs_send_transfer_request_doorbell(ufs, lun, utrd);
-+}
-+
- static enum UtpOcsCodes ufs_send_nop_out(QUfs *ufs, UtpUpiuRsp *rsp_out)
- {
-     int cmd_desc_slot = alloc_cmd_desc_slot(ufs);
-@@ -342,6 +393,10 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     g_assert_true(FIELD_EX32(hcs, HCS, UTRLRDY));
-     g_assert_true(FIELD_EX32(hcs, HCS, UCRDY));
- 
-+    /* Check MCQ support */
-+    cap = ufs_rreg(ufs, A_CAP);
-+    ufs->support_mcq = FIELD_EX32(cap, CAP, MCQS);
-+
-     /* Enable all interrupt functions */
-     ie = FIELD_DP32(ie, IE, UTRCE, 1);
-     ie = FIELD_DP32(ie, IE, UEE, 1);
-@@ -354,21 +409,66 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     ie = FIELD_DP32(ie, IE, HCFEE, 1);
-     ie = FIELD_DP32(ie, IE, SBFEE, 1);
-     ie = FIELD_DP32(ie, IE, CEFEE, 1);
-+    if (ufs->support_mcq) {
-+        ie = FIELD_DP32(ie, IE, CQEE, 1);
-+    }
-     ufs_wreg(ufs, A_IE, ie);
-     ufs_wreg(ufs, A_UTRIACR, 0);
- 
-     /* Enable transfer request */
--    cap = ufs_rreg(ufs, A_CAP);
--    nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
-     ufs->cmd_desc_addr =
-         guest_alloc(alloc, UFS_MAX_CMD_DESC * UTP_COMMAND_DESCRIPTOR_SIZE);
-     ufs->data_buffer_addr =
-         guest_alloc(alloc, MAX_PRD_ENTRY_COUNT * PRD_ENTRY_DATA_SIZE);
--    ufs->utrlba = guest_alloc(alloc, nutrs * sizeof(UtpTransferReqDesc));
- 
--    ufs_wreg(ufs, A_UTRLBA, ufs->utrlba & 0xffffffff);
--    ufs_wreg(ufs, A_UTRLBAU, ufs->utrlba >> 32);
--    ufs_wreg(ufs, A_UTRLRSR, 1);
-+    if (ufs->support_mcq) {
-+        uint32_t mcqcap, qid, qcfgptr, mcq_reg_offset;
-+        uint32_t cqattr = 0, sqattr = 0;
-+
-+        mcqcap = ufs_rreg(ufs, A_MCQCAP);
-+        qcfgptr = FIELD_EX32(mcqcap, MCQCAP, QCFGPTR);
-+        ufs->maxq = FIELD_EX32(mcqcap, MCQCAP, MAXQ) + 1;
-+        for (qid = 0; qid < ufs->maxq; ++qid) {
-+            ufs->sqlba[qid] =
-+                guest_alloc(alloc, QUEUE_SIZE * sizeof(UtpTransferReqDesc));
-+            ufs->cqlba[qid] =
-+                guest_alloc(alloc, QUEUE_SIZE * sizeof(UtpTransferReqDesc));
-+            mcq_reg_offset = qcfgptr * 0x200 + qid * 0x40;
-+
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQLBA,
-+                     ufs->sqlba[qid] & 0xffffffff);
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQUBA, ufs->sqlba[qid] >> 32);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQLBA,
-+                     ufs->cqlba[qid] & 0xffffffff);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQUBA, ufs->cqlba[qid] >> 32);
-+
-+            /* Enable Completion Queue */
-+            cqattr = FIELD_DP32(cqattr, CQATTR, CQEN, 1);
-+            cqattr = FIELD_DP32(cqattr, CQATTR, SIZE,
-+                                QUEUE_SIZE * sizeof(UtpTransferReqDesc) /
-+                                    DWORD_BYTE);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQATTR, cqattr);
-+
-+            /* Enable Submission Queue */
-+            sqattr = FIELD_DP32(sqattr, SQATTR, SQEN, 1);
-+            sqattr = FIELD_DP32(sqattr, SQATTR, SIZE,
-+                                QUEUE_SIZE * sizeof(UtpTransferReqDesc) /
-+                                    DWORD_BYTE);
-+            sqattr = FIELD_DP32(sqattr, SQATTR, CQID, qid);
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQATTR, sqattr);
-+
-+            /* Cache head & tail pointer */
-+            ufs->sqdao[qid] = ufs_rreg(ufs, mcq_reg_offset + A_SQDAO);
-+            ufs->cqdao[qid] = ufs_rreg(ufs, mcq_reg_offset + A_CQDAO);
-+        }
-+    } else {
-+        nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
-+        ufs->utrlba = guest_alloc(alloc, nutrs * sizeof(UtpTransferReqDesc));
-+
-+        ufs_wreg(ufs, A_UTRLBA, ufs->utrlba & 0xffffffff);
-+        ufs_wreg(ufs, A_UTRLBAU, ufs->utrlba >> 32);
-+        ufs_wreg(ufs, A_UTRLRSR, 1);
-+    }
- 
-     /* Send nop out to test transfer request */
-     ocs = ufs_send_nop_out(ufs, &rsp_upiu);
-@@ -402,7 +502,15 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
- static void ufs_exit(QUfs *ufs, QGuestAllocator *alloc)
- {
-     if (ufs->enabled) {
--        guest_free(alloc, ufs->utrlba);
-+        if (ufs->support_mcq) {
-+            for (uint32_t qid = 0; qid < ufs->maxq; ++qid) {
-+                guest_free(alloc, ufs->sqlba[qid]);
-+                guest_free(alloc, ufs->cqlba[qid]);
-+            }
-+        } else {
-+            guest_free(alloc, ufs->utrlba);
-+        }
-+
-         guest_free(alloc, ufs->cmd_desc_addr);
-         guest_free(alloc, ufs->data_buffer_addr);
-     }
-@@ -966,12 +1074,16 @@ static void ufs_register_nodes(void)
-     QOSGraphEdgeOptions edge_opts = {
-         .before_cmd_line = "-blockdev null-co,node-name=drv0,read-zeroes=on",
-         .after_cmd_line = "-device ufs-lu,bus=ufs0,drive=drv0,lun=0",
--        .extra_device_opts = "addr=04.0,id=ufs0,nutrs=32,nutmrs=8"
-+        .extra_device_opts = "addr=04.0,id=ufs0"
-     };
- 
--    QOSGraphTestOptions io_test_opts = {
--        .before = ufs_blk_test_setup,
--    };
-+    QOSGraphTestOptions io_test_opts = { .before = ufs_blk_test_setup,
-+                                         .edge.extra_device_opts =
-+                                             "mcq=false,nutrs=32,nutmrs=8" };
-+
-+    QOSGraphTestOptions mcq_test_opts = { .before = ufs_blk_test_setup,
-+                                          .edge.extra_device_opts =
-+                                              "mcq=true,mcq-maxq=1" };
- 
-     add_qpci_address(&edge_opts, &(QPCIAddress){ .devfn = QPCI_DEVFN(4, 0) });
- 
-@@ -991,13 +1103,14 @@ static void ufs_register_nodes(void)
-         return;
-     }
-     qos_add_test("init", "ufs", ufstest_init, NULL);
--    qos_add_test("read-write", "ufs", ufstest_read_write, &io_test_opts);
--    qos_add_test("flag read-write", "ufs",
--                 ufstest_query_flag_request, &io_test_opts);
--    qos_add_test("attr read-write", "ufs",
--                 ufstest_query_attr_request, &io_test_opts);
--    qos_add_test("desc read-write", "ufs",
--                 ufstest_query_desc_request, &io_test_opts);
-+    qos_add_test("legacy-read-write", "ufs", ufstest_read_write, &io_test_opts);
-+    qos_add_test("mcq-read-write", "ufs", ufstest_read_write, &mcq_test_opts);
-+    qos_add_test("query-flag", "ufs", ufstest_query_flag_request,
-+                 &io_test_opts);
-+    qos_add_test("query-attribute", "ufs", ufstest_query_attr_request,
-+                 &io_test_opts);
-+    qos_add_test("query-desciptor", "ufs", ufstest_query_desc_request,
-+                 &io_test_opts);
- }
- 
- libqos_init(ufs_register_nodes);
+Suravee Suthikulpanit (2):
+  hw/i386/amd_iommu: Isolate AMDVI-PCI from amd-iommu device to allow
+    full control over the PCI device creation
+  hw/i386/amd_iommu: Allow migration when explicitly create the
+    AMDVI-PCI device
+
+ hw/i386/acpi-build.c |   8 ++--
+ hw/i386/amd_iommu.c  | 111 +++++++++++++++++++++++++++++++++----------
+ hw/i386/amd_iommu.h  |   3 +-
+ 3 files changed, 91 insertions(+), 31 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
 
