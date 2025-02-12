@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8464A331A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 22:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E67A331A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 22:37:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiKN6-000422-N1; Wed, 12 Feb 2025 16:34:17 -0500
+	id 1tiKN4-0003u6-LA; Wed, 12 Feb 2025 16:34:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiKMp-0003b7-DF
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 16:34:00 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiKMu-0003kf-1E
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 16:34:06 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiKMn-0000Xl-QF
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 16:33:59 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4394036c0efso1234285e9.2
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 13:33:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiKMs-0000YC-E1
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 16:34:03 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38f22fe8762so71242f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 13:34:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739396036; x=1740000836; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739396040; x=1740000840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vdFpkqfd4B+rA0TtuwX6WnKMXV9HddDmN8ccU2WMJQw=;
- b=zK0+oije8isd9oOLy0H+mFcsypRoG7+ddoKPRq5M+fI/0+KRBDRT/6pkm7pEGNnVQ6
- SLe1HUSXcDIC+duJufYb7DTLBRQvjlqkt7JC1KPkvf/mkP09NbChaXbYG69NDmBclZ6i
- uPIIjH6xwGt6GMJ+5iX0icIS7aJ3JIG4QDbmaZ9xxI+OTvjF2QonDgqto8tnRG104sdQ
- RBGwnUL+O6Vlup1GiPl6Pa0izmhlQhFLG+GkDZr7RsTxykKWaY1+ybSBCSTyx/2stC1Q
- 06rUQzDO9vWtF+tUjQazq8BD8NHJy+EuIPOak56XHWMv5vHFiFX/nzag5g0ysvijn9YC
- Zy6g==
+ bh=sGz7ndjNtFhvcqsdb3cBe+6raTEmZAEhsP/1+wNKBtU=;
+ b=zM4mqLMk2RzXVtrvZXcEi4UDQF5PXyH+YTJzFcIS0cErE66Y5Gz9pdKnBwHyqoM7KB
+ +P9JajUirNFKTDmG071Aw/s4NCHeNaMhRAUC3YNbMSo8Mc6qg/ASMfPRkIlEzgVFFjGH
+ 8UTlAKBAUHZhjQ6iA9jf1SvYTt16xAhvyFU2GTffkYcIHF6a/2vfyP2aZQjq9Iem5C6C
+ d0woltJT8f+FEWZjlpF6S6yEz1TxxoFd2yOMbCTVcQx2OwOvVSV1j6scp8it9wtn5FWR
+ JWNUjIiyEzK+nsFg3gQhtSNMpaLFARvbKYNYC+BKNkPEZlzU31Sy1KtSesmGt1qsp7oB
+ b07w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739396036; x=1740000836;
+ d=1e100.net; s=20230601; t=1739396040; x=1740000840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vdFpkqfd4B+rA0TtuwX6WnKMXV9HddDmN8ccU2WMJQw=;
- b=V+L9CJYk7acXfIE2OeuqeMUhcJOkv4HAgIfroPboJhmRHOgigMDVzVdDYxD/37+RmX
- eJ7bi7Yj71toXE0TtGPbImTiPdcxNHBMnXHwEfyDlGt3YdEEB0T9uLAx7eaOjDdT3Vk9
- JCJm8H7tyvzPCltq/HWbJufUCvbR5MjtBKGc2ciUiBWOl8hLktpHlZAJ0r8nZYLqDPGv
- grayDbxUyoJD/fdvDoE6FfM6uiHEGmnxJnJlt8QCI9gG7z+1TzrA5yzQDyLZYBc0V/mL
- G8bahtntHtczxjG1m2QnY+gqdqT4tUirE6jb0T3mS2jnBTRk9kUluZDm5b0E/ONo32NB
- 6S+g==
-X-Gm-Message-State: AOJu0YwgyMTcVFVoJFYUlVathzZVRRjwULXvrhQI4iidSMNla5UegQgz
- se3ZMRkD5m/VwHN5ondFJFEQHvJpACpnznUvrZ+wMxvlsc+l529yOplzTVJg4OvaDzAS+OPgJEp
- RV6Y=
-X-Gm-Gg: ASbGncsqVWye7UXqwmNKPt9ntkfDHr+cFHpL01Rj5T9r61HcRc6WsZowfOd1/AjTRqG
- JUokGJTHZPG701Svlmw19dxztz55Lrm8vUGKHCHhI8CA9G0NxQH5mKUbDUzX/msA37OX/oR95Ld
- VKuUl8DdbukZif4qOT/mzNWaZYBp9aOUDT2XbD7GQYx0UBH7Yb7UtknXPzCk0tdF96K5PSlwBoC
- K9KuayCUKXrmB5BSEyWxQTYex0spATeciLetMCh+Ql1o24Ut9xbyOw7uebBLfDy8PKEB3I7JodY
- Cr9swt0qOUIE01nGcX/sM4ZSMH5aFfoHRoYOrrmuPJo+HHsWz25CTJVYT8HWNHSSjQ==
-X-Google-Smtp-Source: AGHT+IF4xILXPfhsfqGiPijUunnlxzjPtHU5wrtcrk7nT/RaRP1WGuO5VyqUocNnledxgA+VmlEpqw==
-X-Received: by 2002:a05:600c:4fc9:b0:431:547e:81d0 with SMTP id
- 5b1f17b1804b1-4395816a6bfmr62224215e9.11.1739396035785; 
- Wed, 12 Feb 2025 13:33:55 -0800 (PST)
+ bh=sGz7ndjNtFhvcqsdb3cBe+6raTEmZAEhsP/1+wNKBtU=;
+ b=UOZo2AeWjWsC+X727+4M5ZgYX1nQZsY/2DRv9k88s0q/QOjmhpobQ9Wpkr0oO80lB8
+ yZYAdPjNpjcxW5hLvrjfti06YPcsN2NG8K+ecwmq4o5Rit+g1u1bantOHzb03wTpmSSf
+ 4Gmt/zG5kEZT0ceUscLrtAP3UnILwNO6lJA0w63iG0gtgQZVyJgk3W/TuqkrTPYBNLbm
+ W5m0KZin1Kxblb6UnLUggytXlMwgXQAyWB8I0YLVLdd9rZXVGfDp1Ep3uPkfyxG+jMl6
+ 0kKXTvybXNP5VHHbprmUNb1YNPTkkUbJ8hjie0Twzgc4Ru4SsExznXtlO686U4kp28Gv
+ nnCw==
+X-Gm-Message-State: AOJu0Yywp06oVtu1LhIeyRLNi49DHo5KUs0cUl8+b5hF5p8CX+mHkETf
+ gG3AferWEDY6aZbKilWO7znjDFmiN6fquqp/T95vJ4KlcFuybKmCcLsrL4NEq1qDNdmYRm2CQlt
+ EEBA=
+X-Gm-Gg: ASbGncuFNJrYZaf3aWEnOPBR1UItPX9Oot8XDePCZC62H5ZRHCCEJOBLNVHgUdGfVXy
+ ehaqAeEMmgqWGbMLpCZrMH2TZ+i8lBIrbPebEDS6KhcJv8sHPhu6IZ6HGC2EAn4het9qGXd8c6u
+ hXbSPOeoWdt9bUuCa+4uDhqtAKNlmKauxsWlAltUQFn6UMrrQr1XLeXeg3bWSgz38umfiOkZdOZ
+ XFaI7nlkImmc5+JZ9SGIWYk+jtCwpDWUNWt8jNEILUUqoNOLPHns0x/uFPFPJmtGJUWnhyRzoAY
+ k9jHhupSi8LOp5WlRNtDI5WIg6IMs5aX+bBflBlKT0vpiizr+xd5/f7uhM9JklFirA==
+X-Google-Smtp-Source: AGHT+IGrlqe4ceJGm+2bzwi8vlAOGqHM3iBT8ZOCyRqRvxWveUUtITBxDWg+lqD/zpa/hKW2PMZ6gw==
+X-Received: by 2002:a5d:598d:0:b0:38d:cf33:31d6 with SMTP id
+ ffacd0b85a97d-38dea3c30d5mr4651328f8f.3.1739396040467; 
+ Wed, 12 Feb 2025 13:34:00 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4395a056151sm31283875e9.16.2025.02.12.13.33.54
+ ffacd0b85a97d-38f259d5ee2sm23054f8f.80.2025.02.12.13.33.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Feb 2025 13:33:55 -0800 (PST)
+ Wed, 12 Feb 2025 13:33:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 12/19] hw/virtio/virtio-pci: Always allocate QOM type
- base_name
-Date: Wed, 12 Feb 2025 22:32:42 +0100
-Message-ID: <20250212213249.45574-13-philmd@linaro.org>
+Subject: [PATCH v3 13/19] hw/virtio/virtio-pci: Assert before registering QOM
+ types
+Date: Wed, 12 Feb 2025 22:32:43 +0100
+Message-ID: <20250212213249.45574-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250212213249.45574-1-philmd@linaro.org>
 References: <20250212213249.45574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,52 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce 'single_generic_device' boolean for clarity.
-Allocate base_name on entry. Replace the g_free() call
-by g_autofree qualifier. Use g_strconcat() instead of
-g_strdup_printf().
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/virtio/virtio-pci.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/virtio/virtio-pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index a72f878e949..15383570c91 100644
+index 15383570c91..ad1d164421d 100644
 --- a/hw/virtio/virtio-pci.c
 +++ b/hw/virtio/virtio-pci.c
-@@ -2469,7 +2469,12 @@ static void virtio_pci_non_transitional_instance_init(Object *obj)
- 
- void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
- {
--    char *base_name = NULL;
-+    /* No base type -> register a single generic device type */
-+    bool single_generic_device = !t->base_name;
-+    /* use intermediate %s-base-type to add generic device props */
-+    g_autofree char *base_name = single_generic_device
-+                                 ? g_strconcat(t->generic_name, "-base-type", NULL)
-+                                 : NULL;
-     TypeInfo base_type_info = {
-         .name          = t->base_name,
-         .parent        = t->parent ? t->parent : TYPE_VIRTIO_PCI,
-@@ -2492,9 +2497,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+@@ -2496,6 +2496,9 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         },
      };
  
++    assert(t->base_name || !t->non_transitional_name);
++    assert(t->base_name || !t->transitional_name);
++
      if (!base_type_info.name) {
--        /* No base type -> register a single generic device type */
--        /* use intermediate %s-base-type to add generic device props */
--        base_name = g_strdup_printf("%s-base-type", t->generic_name);
          base_type_info.name = base_name;
          base_type_info.class_init = virtio_pci_generic_class_init;
- 
-@@ -2544,7 +2546,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
-         };
-         type_register_static(&transitional_type_info);
-     }
--    g_free(base_name);
- }
- 
- unsigned virtio_pci_optimal_num_queues(unsigned fixed_queues)
+@@ -2503,9 +2506,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         generic_type_info.parent = base_name;
+         generic_type_info.class_init = virtio_pci_base_class_init;
+         generic_type_info.class_data = t;
+-
+-        assert(!t->non_transitional_name);
+-        assert(!t->transitional_name);
+     } else {
+         base_type_info.class_init = virtio_pci_base_class_init;
+         base_type_info.class_data = t;
 -- 
 2.47.1
 
