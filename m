@@ -2,59 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2C7A31DD5
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:24:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4DDA31DB4
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 06:06:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ti5CN-0000CT-Re; Wed, 12 Feb 2025 00:22:11 -0500
+	id 1ti4vV-0004S6-OI; Wed, 12 Feb 2025 00:04:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <egqac@eldondev.com>)
- id 1ti5CK-0000CL-NU
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:22:08 -0500
-Received: from npcomp.net ([69.61.8.91])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <egqac@eldondev.com>)
- id 1ti5CB-0000Oz-V5
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:22:08 -0500
-Received: by npcomp.net (Postfix, from userid 1000)
- id 89EB0577611; Wed, 12 Feb 2025 04:45:02 +0000 (-00)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=eldondev.com;
- s=eldondev; t=1739335502;
- bh=5gjepeYeBtgkaTgcVDwMqVq14MjNklcXADaVgI6i4cY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=KTjpiH7t6hg9JFsd2wEZAecj6lL/7hjrTuRH+yc3fIJ70iXjqWlY4ASw6nQ06zQWm
- Ha35sk0mZud/NZtGsrWGlP1AAlMXXjs1vP/DmnccN2hLG1CNh92d5CubFYboKtCaUQ
- 3vm6Zw3CKZ+w2f+qz3OVjbYVqbsAizX7+H+usK5A=
-Date: Wed, 12 Feb 2025 04:45:02 +0000
-From: Eldon Stegall <egqac@eldondev.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PULL 00/32] Misc HW patches for 2025-02-10
-Message-ID: <Z6wnTouJXLr-bbo5@localhost>
-References: <20250210204204.54407-1-philmd@linaro.org>
- <CAJSP0QWH2+sLaNGwwLTQr5Kud6kKLML_Y24M=Kz1GSX9yRxDQw@mail.gmail.com>
- <f28e0b87-9bb2-4bb3-8c10-1f3ff0f784c2@linaro.org>
- <1ddb567a-7261-4831-9f46-7c247969a86d@linaro.org>
- <39314f09-268f-48b8-add5-95366c254f81@linaro.org>
- <6e62808e-0fc2-4de0-a732-621e81f1937e@redhat.com>
- <82b70c1e-fc21-47b1-bfcc-167399af1882@redhat.com>
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1ti4vU-0004Rq-Ax
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:04:44 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1ti4vS-0004J4-Lx
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 00:04:44 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-219f8263ae0so113014015ad.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 21:04:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739336681; x=1739941481; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=by2a8C4n90HLKjPeUFHtKFDY0AFdblPaapYJ1v5EzU8=;
+ b=JW/FZgHjx8ibG3jJBGhmrKrThdP06eorLs5n0czNlKMWbxh2stwhqS2Z1YKZ+V/E0I
+ 7bAfaIsif1FkJMJW3kKgJAdcZufFPXCd7VE5zcg8FfwfCHdIZad6m+Zg7L4Upge8gNwG
+ SKmXMR6lftYfYyDXmtk3bw7TpSwuIZQ6I1sfJvW90kIr2TboK+f5eIwiwBpZbPbe7SaX
+ 7Pgf7C2TULoZWu7ohWHIkSTjNmhGf0SW57/gTU6hQvWxi8PMTm+zFl3N7z5IjA6pxYnL
+ LwvSXvkgiSqC7KxRgKMADB2NKtiQVMLuyT17Na+KFG/nasQ86Z8nAa1rs7zNUs8Xcud/
+ EGng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739336681; x=1739941481;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=by2a8C4n90HLKjPeUFHtKFDY0AFdblPaapYJ1v5EzU8=;
+ b=VbfEWoP6r4kPgJSOf95xs+WeawYz9PIthxw5QMLnT6x6Qut/DXVo8583/YZxulSXHs
+ VaVZyA2xgFJv7cDRRB9aJ87rOK5E/cDG1ZDyIVIugudTUP5YOfa3dyGKp0arlyR5lyhA
+ jh6bTueR8ybXcIRA8eUM9kRsh3Et0WMk6R1vaYWNulaIaiwzIZMdkShcl/Cw1oYlUK5G
+ IgcdYyRs6lbIwC90YTQo63Q2jKkCqV/fFAWhOpgL7uZAARrMwckaFpEfxifmEkgCAIPI
+ +4/n3N3yfkXWVZwLC2nz/Zhk1+TXbW83Bnrue05HW5J2Q2OC2BqziejkGvd2TOz2vuMi
+ rq2A==
+X-Gm-Message-State: AOJu0Yy5HXV5tBiL0KzEoz3ubOKbf+COmY3PEj+MaBYk4EBVtM4d4cQL
+ T9HlGIvCML4NVyvrXPGsNMIJqZhp5Xk35FUur1nC2CnQQcX/z3pB
+X-Gm-Gg: ASbGncus46OdcLvpqko+1vUh0ANnGKFQC4rq6aBNE1hYrzPaaq3lq3OuDScgZwp0xUf
+ I0g/XNyq8z4HUMS22t1SF4ChCaq8trYWneX68D9A+IS6AhGLRJ07L+WX0DOgAdEWxGlRB6HO2HY
+ oNjPQdpekr2aIzy90I14ZOZIZi8fNMZZ6zl9JeJFQB/ceOzj3Pwe0fD/kd3XcEu2dTk1f4PReiW
+ XpcLzQiFLNwXLiXRMbwlAxBK2K1RzXZ+isz7aZqwjHQCyJeeqernH7QS0MWcNRIbdHV6xypkb1Z
+ e0TEJAxDDMzA9BQSQhmPpQ==
+X-Google-Smtp-Source: AGHT+IFVHLG9dw+GA1jQjJe0j9S+oRGr6vO1QVPfnLq5gL90WZguVi8QYARxxeWCoMxHWj+LNH2lZA==
+X-Received: by 2002:a05:6a21:164e:b0:1e0:ca1c:8581 with SMTP id
+ adf61e73a8af0-1ee5c775f1dmr3647443637.21.1739336680562; 
+ Tue, 11 Feb 2025 21:04:40 -0800 (PST)
+Received: from jeuk-MS-7D42.. ([175.119.5.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73048bf1421sm10480602b3a.101.2025.02.11.21.04.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Feb 2025 21:04:40 -0800 (PST)
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+X-Google-Original-From: Jeuk Kim <jeuk20.kim@samsung.com>
+To: jeuk20.kim@samsung.com, farosas@suse.de, lvivier@redhat.com,
+ pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org, j-young.choi@samsung.com, keosung.park@samsung.com
+Subject: [PATCH 0/3] tests/qtest/ufs-test: Add MCQ tests
+Date: Wed, 12 Feb 2025 14:04:18 +0900
+Message-ID: <cover.1739336154.git.jeuk20.kim@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <82b70c1e-fc21-47b1-bfcc-167399af1882@redhat.com>
-Received-SPF: pass client-ip=69.61.8.91; envelope-from=egqac@eldondev.com;
- helo=npcomp.net
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,141 +95,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 12, 2025 at 02:39:16AM +0100, Thomas Huth wrote:
-> On 12/02/2025 01.41, Thomas Huth wrote:
-> > On 11/02/2025 20.03, Philippe Mathieu-Daudé wrote:
-> >> On 11/2/25 19:53, Philippe Mathieu-Daudé wrote:
-> >>> On 11/2/25 19:48, Philippe Mathieu-Daudé wrote:
-> >>>> On 11/2/25 19:26, Stefan Hajnoczi wrote:
-> >>>>> On Mon, Feb 10, 2025 at 3:43 PM Philippe Mathieu-Daudé
-> >>>>> <philmd@linaro.org> wrote:
-> >>>>>>
-> >>>>>> The following changes since commit 
-> >>>>>> 54e91d1523b412b4cff7cb36c898fa9dc133e886:
-> >>>>>>
-> >>>>>>    Merge tag 'pull-qapi-2025-02-10-v2' of https://repo.or.cz/qemu/ 
-> >>>>>> armbru into staging (2025-02-10 10:47:31 -0500)
-> >>>>>>
-> >>>>>> are available in the Git repository at:
-> >>>>>>
-> >>>>>>    https://github.com/philmd/qemu.git tags/hw-misc-20250210
-> >>>>>>
-> >>>>>> for you to fetch changes up to 1078a376932cc1d1c501ee3643fef329da6a189a:
-> >>>>>>
-> >>>>>>    hw/net/smc91c111: Ignore attempt to pop from empty RX fifo 
-> >>>>>> (2025-02-10 21:30:44 +0100)
-> >>>>>>
-> >>>>>> ----------------------------------------------------------------
-> >>>>>> Misc HW patches
-> >>>>>>
-> >>>>>> - Use qemu_hexdump_line() in TPM backend (Philippe)
-> >>>>>> - Make various Xilinx devices endianness configurable (Philippe)
-> >>>>>> - Remove magic number in APIC (Phil)
-> >>>>>> - Disable thread-level cache topology (Zhao)
-> >>>>>> - Xen QOM style cleanups (Bernhard)
-> >>>>>> - Introduce TYPE_DYNAMIC_SYS_BUS_DEVICE (Philippe)
-> >>>>>> - Invert logic of machine no_sdcard flag (Philippe)
-> >>>>>> - Housekeeping in MicroBlaze functional tests (Philippe)
-> >>>>>
-> >>>>> Please take a look at this CI failure:
-> >>>>> https://gitlab.com/qemu-project/qemu/-/jobs/9106591368
-> >>>>
-> >>>> Hmm I can not reproduce locally this error:
-> >>>>
-> >>>>    Exception: Asset cache is invalid and downloads disabled
-> >>>
-> >>> OK, I could reproduce by blowing my cache away.
-> >>>
-> >>> The problem seems in the "tests/functional: Have microblaze tests
-> >>> inherit common parent class" patch, which does:
-> >>>
-> >>> -class MicroblazeelMachine(QemuSystemTest):
-> >>> +class MicroblazeLittleEndianMachine(MicroblazeMachine):
-> >>>
-> >>> I presume, since MicroblazeLittleEndianMachine is no more a direct
-> >>> child of QemuSystemTest, then the ASSET_IMAGE_* aren't automatically
-> >>> downloaded.
-> >>
-> >> Well, apparently related to network failure:
-> >>
-> >> INFO:qemu-test:Downloading http://www.qemu-advent-calendar.org/2023/ 
-> >> download/day13.tar.gz to /Users/philmd/.cache/qemu/download/ 
-> >> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22...
-> >> ERROR:qemu-test:Unable to download http://www.qemu-advent- 
-> >> calendar.org/2023/ download/day13.tar.gz: HTTP Error 403: Forbidden
-> >>
-> >> $ curl -v http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz
-> >>  > GET /2023/download/day13.tar.gz HTTP/1.1
-> >> < HTTP/1.1 301 Moved Permanently
-> >> < Location: https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz
-> >>
-> >> Using:
-> >>
-> >> -- >8 --
-> >> diff --git a/tests/functional/test_microblaze_s3adsp1800.py b/tests/ 
-> >> functional/test_microblaze_s3adsp1800.py
-> >> index 177c8a685bc..949e627c84a 100755
-> >> --- a/tests/functional/test_microblaze_s3adsp1800.py
-> >> +++ b/tests/functional/test_microblaze_s3adsp1800.py
-> >> @@ -24,3 +24,3 @@ class MicroblazeMachine(QemuSystemTest):
-> >>       ASSET_IMAGE_LE = Asset(
-> >> -        ('http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
-> >> + ('https://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
-> >>
-> >> 'b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22')
-> >> ---
-> >>
-> >> I still get:
-> >>
-> >> INFO:qemu-test:Downloading https://www.qemu-advent-calendar.org/2023/ 
-> >> download/day13.tar.gz to /Users/philmd/.cache/qemu/download/ 
-> >> b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22...
-> >>
-> >> However:
-> >>
-> >> $ curl --http1.0 -v https://www.qemu-advent-calendar.org/2023/download/ 
-> >> day13.tar.gz
-> >>  > GET /2023/download/day13.tar.gz HTTP/1.0
-> >> < HTTP/1.0 200 OK
-> >> < Content-Length: 4752277
-> >> < Content-Type: application/gzip
-> >>
-> >> So I'm confused...
-> > 
-> > Looks like this also happens in test runs without your patches:
-> > 
-> >   https://gitlab.com/qemu-project/qemu/-/jobs/9108828196#L844
-> > 
-> > The test then silently gets skipped there (since we only fail hard for a 404 
-> > error now).
-> > 
-> > Maybe Eldon could comment why the downloads are blocked for python scripts 
-> > but not for curl downloads?
-> > 
-> > I the worst case, we have to mirror the asset to another place, I guess...
-> 
-> Ok, I've now also put the image here:
-> 
->   https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day05.tar.xz
-> 
-> (just had to use a different day number there since 13 was an image that I 
-> did not want to sacrifice in the best-of roaster).
-> 
-> So if the qemu-advent-calendar.org server keeps refusing the downloads, you 
-> should be able to use the mirrored tarball instead.
-> 
->   HTH,
->    Thomas
-> 
->
+This series adds test support for UFS Multi-Circular Queue (MCQ) mode in QEMU.  
+It includes MCQ initialization tests, a bitmap-based slot allocation method,  
+and cleanup of unused code.
 
-Hello! I recently switched some of the underlying object storage for
-sites including the advent calendar, and this was a (very) unintended
-consequence. I have now switched to a good old apache upstream for
-these, so I would not expect this error to recur. Also, looking to make
-another attempt at a calendar for 2025 (end of 2024 was a complicated
-time for me). Let me know if you'd like to produce/contribute!
+Jeuk Kim (3):
+  tests/qtest/ufs-test: Cleanup unused code
+  tests/qtest/ufs-test: Prepare for MCQ test
+  tests/qtest/ufs-test: Add test code for MCQ functionality
 
-Thanks,
-Eldon
+ tests/qtest/ufs-test.c | 724 ++++++++++++++++++++++++-----------------
+ 1 file changed, 428 insertions(+), 296 deletions(-)
+
+-- 
+2.43.0
+
 
