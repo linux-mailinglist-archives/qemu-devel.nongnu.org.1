@@ -2,142 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45ADBA32372
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 11:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DD8A32409
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 11:56:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ti9vH-0001wI-At; Wed, 12 Feb 2025 05:24:51 -0500
+	id 1tiAOj-0002FA-T2; Wed, 12 Feb 2025 05:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ti9vE-0001vw-PV
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:24:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiAOh-0002El-7D
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:55:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ti9vB-0004zI-Rc
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:24:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiAOd-0005qo-Uj
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 05:55:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739355883;
+ s=mimecast20190719; t=1739357710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WB/yorcb8gycBiUHOiayVlA2poLr2ZbQ700ZfcKxQNA=;
- b=W8KU95xy1l7EjPYHH9GZO40G0YFtDU5e43beLgc1PmjC7/eHBClz5PyuEenvZvraKQmkVc
- afdm22D1NMhTChPWY1j56wjVMdz9C9pRgZZMJU5C3IX32xH3hWil/jDVhVvf2IclTan4Ei
- h0cqEzJUzWvj433r22TcmFe7WTw91DQ=
+ bh=+7HVAjvcdoiZAG2veGP/ShmxXBVO5/tTP0TRXXk3Erc=;
+ b=JMC6HtBGkFpZg6HzAr26RzNLYDM9yqpE0l2P6Z3fbFIVTdihmrnID8X5NT6O4PpAIphNWV
+ PAMKukCf5VkFQIT98UPhJxSQOm7XXQq2SpCgXdD3S+qRffLeIrh4poNEmcYeDxORC8r6Kc
+ gMV4nEcaHh/EMkGhfdaLk+3n2MfcDK0=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-kp_X4k4wP5ij514BinnwTw-1; Wed, 12 Feb 2025 05:24:39 -0500
-X-MC-Unique: kp_X4k4wP5ij514BinnwTw-1
-X-Mimecast-MFC-AGG-ID: kp_X4k4wP5ij514BinnwTw
+ us-mta-356-muleNfhKOVuejgGWWVXIvA-1; Wed, 12 Feb 2025 05:55:08 -0500
+X-MC-Unique: muleNfhKOVuejgGWWVXIvA-1
+X-Mimecast-MFC-AGG-ID: muleNfhKOVuejgGWWVXIvA
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38dd533dad0so2520413f8f.0
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 02:24:39 -0800 (PST)
+ ffacd0b85a97d-38dc709f938so412361f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 02:55:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739355878; x=1739960678;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WB/yorcb8gycBiUHOiayVlA2poLr2ZbQ700ZfcKxQNA=;
- b=g5e1p1CrDvT3uRL7Z+YBllw+kOHqo0N42XL+qTXbEvynZS7v7016WhiYZQllLZlzFN
- ZWw7d2A5mopBF8QS7S+2o2b1FX+QIldWjtpduoigd+PN6fSSX51IzvcJu5+UXUqL1nRp
- 86KF/E7XHo8X9bdifD047kvTdQtW7plICA26PGtWAVbD+Cd51l/rg1K5Jc6zn30AlFdw
- nHpKgEi6CijvmhnNQ96ox2aKT8kRPRLZZKdcz1Av+7XjAEV6arNw6eoOxREvK8tNSWOG
- wFbb5+SOx9qV8zkEWW8UmaoDRfQh5g7y9YayfR0xlKdETRj5UQ2omOgMgWPv+x2qOuXj
- xcSQ==
+ d=1e100.net; s=20230601; t=1739357707; x=1739962507;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+7HVAjvcdoiZAG2veGP/ShmxXBVO5/tTP0TRXXk3Erc=;
+ b=fFkZsUVKjRx9a1zqc6Mfn+TNHBeE7ghSpARmCA5kZzqQqvs4jBguOsTJpgaPgbouLk
+ QmeXPd5ktTCONk3aR120wsdPqqf8HNNZzztoXwH4Qac5ciqOCTxPuIOQ5eQ/X8P27V3Z
+ cz9VtAiwNCRWPDjiG2h2KCIowY3Kek/u/dD9z1YJttVw2HHZr3Z7fmFOXNrS2m+dBwh3
+ pVEqMjAWeIhqPcRPBHKVpuYcD9HuBICZ5t5oW+pHpC+VpzHL8K3spmtPk38qPgEQTWtv
+ 9xOCNNCPIWq+ZY+EQNgMFtIcSc7NkjvyoTTP2fojydX6ZTU6g4ekqP9ibh+353iAPrWM
+ nDNQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCViEVzcfMqt0r52n6PBhTfBK4RpKzMu7LxuuYNDCGeqMNwr+VpswOJYIVnH8KWS4lHS1QKYEgKli4u4@nongnu.org
-X-Gm-Message-State: AOJu0YzyhWJyLNTMv9Uq9SCbrk3z9+WqmUU7RvjtRpdELoYE03VmWXFi
- H3kbfaMufZ1qBu+QMY5TJdiYBFFgaJgCDTJhh3PKHNTouUabAnBdb//bA6JdHgr8/yhAm5JKIE1
- 1dkuNC4zqvuwJNYUXa7yrZY2Nsei4Q8TRN6Rh/OI1lWP+PnVDLVPC
-X-Gm-Gg: ASbGncsIF6RwEVckBK14Y/E+KI83zQtDMhwQRcQV5gvUk5gbRjFqQiX0+E48YW/wlGE
- slEXnGYA7ssbsy95Yrg17orxOGwkhAvzVln/i8fLRmFuKahmqpmeMH4ly+xyovfOR+8oy2QVsAq
- PW/0gbHUf21uEH8xAwbHHa/R+D48Dkinx5YIGkAapjHmGrI+DmYhFOlDBU30kAo1Eou16Xv5o2c
- r/JhzifEcvbM/hm7bWJ/KLt88R9qU7UtnK9b8Owaku7qKxTyxMqENt+/FJe/N4yxak2rWxBsr9X
- hzElBSg2e48UJDv/22L8wnwZRYxZlP7gWQ==
-X-Received: by 2002:a05:6000:1863:b0:38b:d9a3:6cff with SMTP id
- ffacd0b85a97d-38dea26e512mr2380693f8f.16.1739355878248; 
- Wed, 12 Feb 2025 02:24:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHCjyZ4EHvu4xYI3Xgg6rPPKltuW6y3b6iNwVNSrYGqE6YhCjuSRKPtcWCqUa0Ooc0Uv+XVtQ==
-X-Received: by 2002:a05:6000:1863:b0:38b:d9a3:6cff with SMTP id
- ffacd0b85a97d-38dea26e512mr2380656f8f.16.1739355877802; 
- Wed, 12 Feb 2025 02:24:37 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-48-37.web.vodafone.de. [109.42.48.37])
+ AJvYcCW+n10qYK+Fi+IMdFJmOFgHeYGp5NOq7jfP68yRK45sQMt0oCSBd0TuE8ZCx2unN3XTE+5purE93zM1@nongnu.org
+X-Gm-Message-State: AOJu0Yzd1+lNsXgSQy0LNcBAuf+gV72nuouDTx9CJlXo1auNaTB/Antg
+ Cb4pgWlxMycyHv5sF1JYz84cu7GrZ1wyGpzmDkLi5EOw+wk2SSwB2e6FLBUMJHvdG5jywQqJTtG
+ +XHqdzGKV9DrSSClt2UzRYQkYy3IRJzF/Mxs0rrfHpDEkHUCMnW1J
+X-Gm-Gg: ASbGncvBQohbJoz6w5e/eZqP46KYausTe0fPHucE5O9qOgmTCgzz7ssqZDjDdBQACik
+ JDqtu9eq/JaP8uvlnBbFT8whhv3FY6eFAg+kaiHE/I5brj7ZDdqHoHCMwe6YRSX+D+lUwBMa2sK
+ VF0w7/CVuF/gzLnArtjR8wL/o63CqqV/RK60vaPpDGfHdnVemYVe8jd6f6AF0ztWR4sJBvHMXxV
+ SB6DGrC0AzuFe18OMjii8zlsH2LNCnxl0qov32rIzd3aqXdVeFogycN0RM/mBQgNcf+0GGM5Slo
+ mSUP0BhPXUSrAjb4XjYf8NzcQH41nRCK3sW8d1WOZXc=
+X-Received: by 2002:a5d:6d0b:0:b0:38d:dfdc:c874 with SMTP id
+ ffacd0b85a97d-38de439d620mr5482678f8f.10.1739357707118; 
+ Wed, 12 Feb 2025 02:55:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECMpZpoWdaiZ+5WNLYqXyU/ZrCdBcQWSQMXEYIMx+Qtwkc1ZxpN0JHuEYOFCjavuwlsifa5w==
+X-Received: by 2002:a5d:6d0b:0:b0:38d:dfdc:c874 with SMTP id
+ ffacd0b85a97d-38de439d620mr5482645f8f.10.1739357706679; 
+ Wed, 12 Feb 2025 02:55:06 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:ecac:5b28:cd98:868a?
+ ([2a01:e0a:280:24f0:ecac:5b28:cd98:868a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dcd21fe18sm13960414f8f.91.2025.02.12.02.24.37
+ 5b1f17b1804b1-4395a0711c1sm16035585e9.28.2025.02.12.02.55.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Feb 2025 02:24:37 -0800 (PST)
-Message-ID: <1a4dc9cf-69bb-4a9e-bd07-e50070fcf9a9@redhat.com>
-Date: Wed, 12 Feb 2025 11:24:36 +0100
+ Wed, 12 Feb 2025 02:55:05 -0800 (PST)
+Message-ID: <6c337aec-d004-4ede-a86b-0c934b275fa9@redhat.com>
+Date: Wed, 12 Feb 2025 11:55:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 04/32] hw/timer/xilinx_timer: Make device endianness
- configurable
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Subject: Re: [PATCH v4 26/33] vfio/migration: Multifd device state transfer
+ support - receive init/cleanup
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20250210204204.54407-1-philmd@linaro.org>
- <20250210204204.54407-5-philmd@linaro.org>
- <678561c5-4d06-494a-b12c-6013b07f3b05@redhat.com>
- <03446903-2100-4981-831e-7ee4741ffead@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <03446903-2100-4981-831e-7ee4741ffead@linaro.org>
+References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
+ <1fcf182307e8e1f67a3c226e62d26cad3a2f60d0.1738171076.git.maciej.szmigiero@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <1fcf182307e8e1f67a3c226e62d26cad3a2f60d0.1738171076.git.maciej.szmigiero@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.54,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -155,85 +159,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/02/2025 10.19, Philippe Mathieu-Daudé wrote:
-> On 12/2/25 09:27, Thomas Huth wrote:
->> On 10/02/2025 21.41, Philippe Mathieu-Daudé wrote:
->>> Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair
->>> of DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
->>> Add the "little-endian" property to select the device
->>> endianness, defaulting to little endian.
->>> Set the proper endianness for each machine using the device.
->>>
->>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> Message-Id: <20250206131052.30207-5-philmd@linaro.org>
->>> ---
->>>   hw/microblaze/petalogix_ml605_mmu.c      |  1 +
->>>   hw/microblaze/petalogix_s3adsp1800_mmu.c |  1 +
->>>   hw/ppc/virtex_ml507.c                    |  1 +
->>>   hw/timer/xilinx_timer.c                  | 35 +++++++++++++++---------
->>>   4 files changed, 25 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/ 
->>> petalogix_ml605_mmu.c
->>> index cf3b9574db3..bbda70aa93b 100644
->>> --- a/hw/microblaze/petalogix_ml605_mmu.c
->>> +++ b/hw/microblaze/petalogix_ml605_mmu.c
->>> @@ -127,6 +127,7 @@ petalogix_ml605_init(MachineState *machine)
->>>       /* 2 timers at irq 2 @ 100 Mhz.  */
->>>       dev = qdev_new("xlnx.xps-timer");
->>> +    qdev_prop_set_bit(dev, "little-endian", true);
->>>       qdev_prop_set_uint32(dev, "one-timer-only", 0);
->>>       qdev_prop_set_uint32(dev, "clock-frequency", 100 * 1000000);
->>>       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->>> diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/ 
->>> petalogix_s3adsp1800_mmu.c
->>> index fbf52ba8f2f..9d4316b4036 100644
->>> --- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
->>> +++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
->>> @@ -114,6 +114,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
->>>       /* 2 timers at irq 2 @ 62 Mhz.  */
->>>       dev = qdev_new("xlnx.xps-timer");
->>> +    qdev_prop_set_bit(dev, "little-endian", !TARGET_BIG_ENDIAN);
->>>       qdev_prop_set_uint32(dev, "one-timer-only", 0);
->>>       qdev_prop_set_uint32(dev, "clock-frequency", 62 * 1000000);
->>>       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->>> diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
->>> index 23238119273..f87c221d076 100644
->>> --- a/hw/ppc/virtex_ml507.c
->>> +++ b/hw/ppc/virtex_ml507.c
->>> @@ -230,6 +230,7 @@ static void virtex_init(MachineState *machine)
->>>       /* 2 timers at irq 2 @ 62 Mhz.  */
->>>       dev = qdev_new("xlnx.xps-timer");
->>> +    qdev_prop_set_bit(dev, "little-endian", false);
->>>       qdev_prop_set_uint32(dev, "one-timer-only", 0);
->>>       qdev_prop_set_uint32(dev, "clock-frequency", 62 * 1000000);
->>>       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->>
->>   Hi,
->>
->> with this patch applied, the ppc_virtex_ml507 functional test is now 
->> failing for me ... could you please double-check whether "make check- 
->> functional-ppc" still works for you?
+On 1/30/25 11:08, Maciej S. Szmigiero wrote:
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 > 
-> Thanks, not this patch problem, but patch #2 misses:
+> Add support for VFIOMultifd data structure that will contain most of the
+> receive-side data together with its init/cleanup methods.
 > 
-> -- >8 --
-> diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-> index 23238119273..723f62c904b 100644
-> --- a/hw/ppc/virtex_ml507.c
-> +++ b/hw/ppc/virtex_ml507.c
-> @@ -219,2 +219,3 @@ static void virtex_init(MachineState *machine)
->       dev = qdev_new("xlnx.xps-intc");
-> +    qdev_prop_set_bit(dev, "little-endian", false);
->       qdev_prop_set_uint32(dev, "kind-of-intr", 0);
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 > ---
+>   hw/vfio/migration.c           | 52 +++++++++++++++++++++++++++++++++--
+>   include/hw/vfio/vfio-common.h |  5 ++++
+>   2 files changed, 55 insertions(+), 2 deletions(-)
 > 
-> Why is my CI green?
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 3211041939c6..bcdf204d5cf4 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -300,6 +300,9 @@ typedef struct VFIOStateBuffer {
+>       size_t len;
+>   } VFIOStateBuffer;
+>   
+> +typedef struct VFIOMultifd {
+> +} VFIOMultifd;
+> +
+>   static void vfio_state_buffer_clear(gpointer data)
+>   {
+>       VFIOStateBuffer *lb = data;
+> @@ -398,6 +401,18 @@ static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
+>       return qemu_file_get_error(f);
+>   }
+>   
+> +static VFIOMultifd *vfio_multifd_new(void)
+> +{
+> +    VFIOMultifd *multifd = g_new(VFIOMultifd, 1);
+> +
+> +    return multifd;
+> +}
+> +
+> +static void vfio_multifd_free(VFIOMultifd *multifd)
+> +{
+> +    g_free(multifd);
+> +}
+> +
+>   static void vfio_migration_cleanup(VFIODevice *vbasedev)
+>   {
+>       VFIOMigration *migration = vbasedev->migration;
+> @@ -785,14 +800,47 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
+>   static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
+>   {
+>       VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +    int ret;
+> +
+> +    /*
+> +     * Make a copy of this setting at the start in case it is changed
+> +     * mid-migration.
+> +     */
+> +    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
+> +        migration->multifd_transfer = vfio_multifd_transfer_supported();
 
-Looking at https://gitlab.com/philmd/qemu/-/pipelines/1664238124 it seems 
-like you did not start the functional test jobs?
+Attribute "migration->multifd_transfer" is not necessary. It can be
+replaced by a small inline helper testing pointer migration->multifd
+and this routine can use a local variable instead.
 
-  Thomas
+I don't think the '_transfer' suffix adds much to the understanding.
+
+> +    } else {
+> +        migration->multifd_transfer =
+> +            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
+> +    }
+> +
+> +    if (migration->multifd_transfer && !vfio_multifd_transfer_supported()) {
+> +        error_setg(errp,
+> +                   "%s: Multifd device transfer requested but unsupported in the current config",
+> +                   vbasedev->name);
+> +        return -EINVAL;
+> +    }
+
+The above checks are also introduced in vfio_save_setup(). Please
+implement a common routine vfio_multifd_is_enabled() or some other
+name.
+
+> +    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
+> +                                   migration->device_state, errp);
+> +    if (ret) {
+> +        return ret;
+> +    }
+> +
+> +    if (migration->multifd_transfer) {
+> +        assert(!migration->multifd);
+> +        migration->multifd = vfio_multifd_new();
+> +    }
+>   
+> -    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
+> -                                    vbasedev->migration->device_state, errp);
+> +    return 0;
+>   }
+>   
+>   static int vfio_load_cleanup(void *opaque)
+>   {
+>       VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +
+> +    g_clear_pointer(&migration->multifd, vfio_multifd_free);
+
+please add a vfio_multifd_cleanup() routine.
+
+
+>       vfio_migration_cleanup(vbasedev);
+>       trace_vfio_load_cleanup(vbasedev->name);
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 153d03745dc7..c0c9c0b1b263 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -61,6 +61,8 @@ typedef struct VFIORegion {
+>       uint8_t nr; /* cache the region number for debug */
+>   } VFIORegion;
+>   
+> +typedef struct VFIOMultifd VFIOMultifd;
+> +
+>   typedef struct VFIOMigration {
+>       struct VFIODevice *vbasedev;
+>       VMChangeStateEntry *vm_state;
+> @@ -72,6 +74,8 @@ typedef struct VFIOMigration {
+>       uint64_t mig_flags;
+>       uint64_t precopy_init_size;
+>       uint64_t precopy_dirty_size;
+> +    bool multifd_transfer;
+> +    VFIOMultifd *multifd;
+>       bool initial_data_sent;
+>   
+>       bool event_save_iterate_started;
+> @@ -133,6 +137,7 @@ typedef struct VFIODevice {
+>       bool no_mmap;
+>       bool ram_block_discard_allowed;
+>       OnOffAuto enable_migration;
+> +    OnOffAuto migration_multifd_transfer;
+
+This property should be added at the end of the series, with documentation,
+and used in the vfio_multifd_some_name() routine I mentioned above.
+
+
+Thanks,
+
+C.
+
+
+
+>       OnOffAuto migration_load_config_after_iter;
+>       bool migration_events;
+>       VFIODeviceOps *ops;
+> 
 
 
