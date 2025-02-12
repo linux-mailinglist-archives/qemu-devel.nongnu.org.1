@@ -2,93 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8456A3293B
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 15:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AE9A3295B
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 15:59:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiE94-0002AM-TL; Wed, 12 Feb 2025 09:55:22 -0500
+	id 1tiECM-0003W3-OU; Wed, 12 Feb 2025 09:58:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiE93-0002AD-5C
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:55:21 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiECL-0003VO-0m
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:58:45 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiE91-0003bA-87
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:55:20 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-38dcae0d6dcso3182639f8f.1
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 06:55:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiECJ-0003sd-0c
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:58:44 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4394829ef0fso6160795e9.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 06:58:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739372117; x=1739976917; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739372321; x=1739977121; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Mt2icEd3aQS0C2Ql9TphBzrjfFN9naLhSkQ/xtNrwNU=;
- b=QUplkvn6ZMx32EyCOntK8Zti60IUoST6mRhNvzgqbrymjR1U4ZjqKooG+WijrgZ1tQ
- 9lzvwz5zSl55J1UphCkCkTXUUUpPQFGilC2ZsVgUjBN3Afv57pSHNIbr47zgNpKsHaQg
- 0oj2LBUukPOMYYSHMQ8Cak7np+P4bsa7R7gOlWxQAiOyXbuWP28DIsXa4MBLjT8Z1dQ7
- 9K8vB4T8+zxzaM6dj4zxeixy9Ya1nWA7yTWQYH+hq6KwAhpw7lSNgZkJxI+2/1rmtuRR
- e27R3xQCsdhQ7FoesxNKEckOxd8ZjoziXYr1fiKo3PJp5bW3yCzR+pvrRhzwYIch7+3f
- 4smw==
+ bh=y0cXZBivovxP8ijksatPfPKzIFHRx4Z7abcU1oSJGVA=;
+ b=AV+1q7H5+LyDbwnvguY4bK5W5QxZJZSxE4bgZ6IhTJTtt56CKTD275UiVLH4kcTsFX
+ XS0jbxaRonhlla8OkoY+PY9LBygNAvtf1cORAmqSR34FdgAjEjXBnqzDJIYcQUQ8sGtz
+ Nu9ZaZegQbeTjK/upnkFWw1288ql143aHebpo6j6CppCS6hZkeyUFH9jOi2C9D95k+9G
+ VmqF3PUvISN6XKmN3LjegFBQzGA88syOq1ZzBPYrN/VM7korOgzkekT9wYNPfZ1xl11x
+ DGr4nDSwjB/FGosMFoY098wPjgr/LUflzoRNZlUoR7HrzQX8wfV0jqjaxzKHO5VNAzqb
+ pcFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739372117; x=1739976917;
+ d=1e100.net; s=20230601; t=1739372321; x=1739977121;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mt2icEd3aQS0C2Ql9TphBzrjfFN9naLhSkQ/xtNrwNU=;
- b=oPow9GQgE8K85FfOzVnQ8sKS+2Q5QpOA0VFKTsjyovprN0e5cb7clN8XJrKjmpkJv6
- 0tnzAfXHciTeo5W8aLe7oZJUVq+c6lEHRnWcENRDWuNcNy/5oTVYGuXIJ7aO3SbBEj/p
- wXkFU3eiXtsZTv1jWx5e2NgC5YdsQBuIRPbnrEj3MOUgFeJ8XadgmzJM8O6xChZClZg0
- wIYDHLh5yrh9k1xCQLc2TIWbDQ6PUzc7xzlSPt5unmavCmS5yPdGWQB8svQki2DBYsf6
- LTYjAS2g3jJFXK++p6ZlMMWvB365YCFvLvPY+cmEzzIKh7buNO3IULwen3zQj2qN/XIm
- n+sw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX+J39XrsWfp48/yv34luWUH2WLsENNaravluGbzboqaJrdC69nFKul7z+hvGaIPXCjfu0So+wM+Js1@nongnu.org
-X-Gm-Message-State: AOJu0YwoYH0A8v/5jzMEFiouSMMNyFgCemWiayxkmb7PRu9N4QaWTVkX
- VG5oRbXlf0H53plm4pI89gjjEWwdx7F4DWOOsDH1xcE8s0UFJpVPSgIq6kUn9U8=
-X-Gm-Gg: ASbGnctnr7/IESplj5tyM8MEFH1AkzNlIKmhSMBP5Nd5Nfd81lhZD5tyqzbPRfrZxGT
- UrV8bTKihCfdj5+q5Pck3Db4B3cDWEPBdNvH7QPp9xCkfT5Qmn2hUeh3OUXjXloR0uRXGhyWG4y
- Oln/h++2ocoRusWbEQ5WwEfVgTjKgxsPPdJ5VGoviz4rXUjbUI9y9nwQApOjbDnUC8dZ12sOoMQ
- xxCsiAhBQ0KP86DapCC3ndSa7zJ4S2Q4f/dWWE54Y+yIn6+9syBpoU0BgNahta9H1vKOVKrtRCu
- Kg5x2Q7NOf1K068Nr3hIPAXpIsHbOghIa6NpgAi/lomRENMsPAT8Msy4EQU=
-X-Google-Smtp-Source: AGHT+IGcbXDMCFB7ZO7WBaDSgAwiISuYmGN61nYQxvl2wKaSHMmQ5JTYca+TK6LoDSAbZPAzXf/2SA==
-X-Received: by 2002:a05:6000:400f:b0:38d:e572:4db4 with SMTP id
- ffacd0b85a97d-38dea2e6942mr2917434f8f.43.1739372117112; 
- Wed, 12 Feb 2025 06:55:17 -0800 (PST)
+ bh=y0cXZBivovxP8ijksatPfPKzIFHRx4Z7abcU1oSJGVA=;
+ b=LBoOrusFWUDc0BP6uh88Naq6Smay0j3gEOyRNn2iKxnrAbXcHCTCwTclqQnyWRHiKc
+ rhG3Sd56lUjBBuKXlaKUiHO++KSkR5hJ2+ZWJ7adUeE/96BEzXiu3KRUg8XT7TNxOQwk
+ WAY+WR0ow6sfmMBr6r4OYXNecgQjEmQjEp3IuS02vvNpLzj7ObIIIO9Jxqc9UjisXuVn
+ 5n+xuCGatYIX79ozKTZ/VNPuJVPwaGw0Qy+AFJqH/jhKZO9sIkmvskqCR3UP22DQ05dg
+ BQeVlyPtOPwDwHn8XE7vUXYRlO2BXpV34jpnivu4APb5RGG1IX1S7EokXj2OXb2Gy3Vm
+ +s0g==
+X-Gm-Message-State: AOJu0Yw+qJMzO2GNSaTa3gfrIrl7CIeNlTdImEWhYTmxDpWk1QlA862i
+ JljZHIfnf7HrR2x+HVk+yvZ7PiWd9c2w2SQxCIfLNSaHTreHyUP/IOm4U4n84fuq4G4CIgUsEKn
+ 08Wk=
+X-Gm-Gg: ASbGncsUfhqOsVZDSZXa/YLL+NEy0dupyic/Dl6fCI9RpLR911ZEwJsvwEfjxZApF5A
+ HizHKIax2UZdrvPfhwrFgdJ7K7rVUGuDk043RMMf2G4twuRhiRa/lU4UfRrDV3yqBIJSDY8h0f5
+ 4yS37SqsuAOgKKP4inRpImXJ+mf07wAeD3EDW3sgLiEFje752MlC5mtiVR9OFjqJvQNDyRhhh8N
+ pd4umZp1X+oPq9DZlw61q2VaO6YjzdTQzxMaZ+yOfFIlPfC7Cq43ULgONvUxaHaM+wspnInnoRg
+ 1JRNY92SQVQRVXB5CG+F7cTr0GMMRLzMQwVlicnhEQ+npfNbWNTIZA4kxaE=
+X-Google-Smtp-Source: AGHT+IGa4d2gp8gQYkknmdWFTOiB1lnIJwNN/E9J3WJm88c2c3WCBSXNdjgEky76h9tBuM7BDbJBLw==
+X-Received: by 2002:a05:600c:468c:b0:434:ff08:202e with SMTP id
+ 5b1f17b1804b1-439583b4d4bmr30639625e9.8.1739372321223; 
+ Wed, 12 Feb 2025 06:58:41 -0800 (PST)
 Received: from [192.168.69.196] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4395cf084d5sm8941445e9.1.2025.02.12.06.55.16
+ 5b1f17b1804b1-4395a1aa7bcsm21972115e9.28.2025.02.12.06.58.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Feb 2025 06:55:16 -0800 (PST)
-Message-ID: <518aa8ee-ccd7-411f-9ec7-2b09a791156b@linaro.org>
-Date: Wed, 12 Feb 2025 15:55:15 +0100
+ Wed, 12 Feb 2025 06:58:40 -0800 (PST)
+Message-ID: <824c0c10-8aba-4778-b653-d0e2eb6115ea@linaro.org>
+Date: Wed, 12 Feb 2025 15:58:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] os: add an ability to lock memory on_fault
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Stefan Weil <sw@weilnetz.de>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-devel@nongnu.org
-References: <20250212143920.1269754-1-d-tatianin@yandex-team.ru>
- <20250212143920.1269754-2-d-tatianin@yandex-team.ru>
- <8099a911-88a1-4eed-a17c-5a18e25b4d68@linaro.org>
- <be37d63c-b1c3-4c76-8113-0bad556aef37@yandex-team.ru>
+Subject: Re: [PATCH 3/8] hw/arm/realview: Explicit number of GIC external IRQs
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
+ Alistair Francis <alistair@alistair23.me>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>
+References: <20250130182441.40480-1-philmd@linaro.org>
+ <20250130182441.40480-4-philmd@linaro.org>
+ <CAFEAcA_PFSBdB0Uhb8K5aog0kj-HN=s_EBL=pQCkkNLuwUO42g@mail.gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <be37d63c-b1c3-4c76-8113-0bad556aef37@yandex-team.ru>
+In-Reply-To: <CAFEAcA_PFSBdB0Uhb8K5aog0kj-HN=s_EBL=pQCkkNLuwUO42g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,45 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/2/25 15:51, Daniil Tatianin wrote:
-> On 2/12/25 5:48 PM, Philippe Mathieu-Daudé wrote:
-> 
->> Hi Daniil,
+On 30/1/25 19:36, Peter Maydell wrote:
+> On Thu, 30 Jan 2025 at 18:25, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
 >>
->> On 12/2/25 15:39, Daniil Tatianin wrote:
->>> This will be used in the following commits to make it possible to only
->>> lock memory on fault instead of right away.
->>>
->>> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
->>> ---
->>>   include/system/os-posix.h |  2 +-
->>>   include/system/os-win32.h |  3 ++-
->>>   meson.build               |  6 ++++++
->>>   migration/postcopy-ram.c  |  2 +-
->>>   os-posix.c                | 14 ++++++++++++--
->>>   system/vl.c               |  2 +-
->>>   6 files changed, 23 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/include/system/os-posix.h b/include/system/os-posix.h
->>> index b881ac6c6f..ce5b3bccf8 100644
->>> --- a/include/system/os-posix.h
->>> +++ b/include/system/os-posix.h
->>> @@ -53,7 +53,7 @@ bool os_set_runas(const char *user_id);
->>>   void os_set_chroot(const char *path);
->>>   void os_setup_limits(void);
->>>   void os_setup_post(void);
->>> -int os_mlock(void);
->>> +int os_mlock(bool on_fault);
+>> When not specified, Cortex-A9MP configures its GIC with 64 external
+>> IRQs (see commit a32134aad89 "arm:make the number of GIC interrupts
+>> configurable"). Add the GIC_EXT_IRQS definition (with a comment)
+>> to make that explicit.
 >>
->> If we need to support more flag, is your plan to add more arguments?
->> Otherwise, why not use a 'int flags' argument, and have the callers
->> pass MCL_ONFAULT?
+>> Except explicitly setting a property value to its same implicit
+>> value, there is no logical change intended.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/arm/realview.c | 17 +++++++++++++++--
+>>   1 file changed, 15 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+>> index 9900a98f3b8..4a62c83506b 100644
+>> --- a/hw/arm/realview.c
+>> +++ b/hw/arm/realview.c
+>> @@ -35,6 +35,14 @@
+>>   #define SMP_BOOT_ADDR 0xe0000000
+>>   #define SMP_BOOTREG_ADDR 0x10000030
+>>
+>> +/*
+>> + * The Cortex-A9MP may have anything from 0 to 224 external interrupt
+>> + * IRQ lines (with another 32 internal). We default to 64+32, which
+>> + * is the number provided by the Cortex-A9MP test chip in the
+>> + * Realview PBX-A9 and Versatile Express A9 development boards.
+>> + */
 > 
-> Hi!
+> On the other hand, this really *is* the Realview PBX-A9
+> development board. So we can just say that that's the right
+> number (and the vexpress is irrelevant, and the range of
+> settings the CPU itself can have isn't very important either).
 > 
-> I chose this approach because MCL_ONFAULT is a POSIX/linux-specific 
-> flag, and this function is called in places that are platform-agnostic, 
-> thus a bool flag seemed more fitting.
+> (PS: there's no verb "to explicit" in English (ignoring some
+> obscure obsolete ones); French "expliciter" => English "to make
+> explicit"; or you in the case of the subject line here,
+> "specify explicitly" is probably most natural.)
 
-OK then.
+TIL, thanks :)
+
 
