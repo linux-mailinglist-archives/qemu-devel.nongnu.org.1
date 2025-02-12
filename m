@@ -2,52 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60665A31C9D
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 04:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B22AA31D0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 04:47:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ti3FA-0000g9-7E; Tue, 11 Feb 2025 22:16:56 -0500
+	id 1ti3i5-00009o-PN; Tue, 11 Feb 2025 22:46:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1ti3F4-0000e4-RV
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 22:16:50 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1ti3F0-00017Q-3F
- for qemu-devel@nongnu.org; Tue, 11 Feb 2025 22:16:50 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxrOKZEqxnfshyAA--.29641S3;
- Wed, 12 Feb 2025 11:16:41 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxPseSEqxnkg0NAA--.51828S8;
- Wed, 12 Feb 2025 11:16:41 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Subject: [PULL 6/6] hw/loongarch/virt: CPU irq line connection improvement
-Date: Wed, 12 Feb 2025 11:16:33 +0800
-Message-Id: <20250212031633.3548108-7-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250212031633.3548108-1-maobibo@loongson.cn>
-References: <20250212031633.3548108-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ti3hf-00008t-Hv
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 22:46:23 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ti3hd-0001Zj-1V
+ for qemu-devel@nongnu.org; Tue, 11 Feb 2025 22:46:23 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-220bff984a0so3916085ad.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Feb 2025 19:46:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739331979; x=1739936779; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cdsZUFhW1GSa3hHfShsopl5Q9pSd86BGZIew4a00dDE=;
+ b=AS+0hMipEI/q29VH1YYTR+8jfbPdMF+9oO+0McqIloHh/Rc7LKsReGfOTQT3xrRPpw
+ 7nZhpQpYuTuyiWMN4nqr73AEMhFyCXQKeiDLyanzL0iuvN9JPF9FOuHwbVX8xUpmArxC
+ qII8bTIeYGujV0T+KmVvpBhyELFvYh2W1sv6oOgaPxWMfL3n7vEaXvsVj0hio3RTlV/a
+ u8CKhCmlGcFRmhoWeWC/zqf2t/USUY1RjphZ+c4MVlugVN4Mw91j22bU3Li2g382NzAj
+ GQ9IM0pn4X8G8GT3UN/VgyU9vwbEEwNC8GFJBuATk1NowOFOkoJy8kL/dgnLmvbxOik7
+ lCig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739331979; x=1739936779;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cdsZUFhW1GSa3hHfShsopl5Q9pSd86BGZIew4a00dDE=;
+ b=ltfhbJGT63HTeK8eC49zef1U4V5vqp5sv9YfZD8fnhC5OKvDKljnQYqp1uO76KMS0c
+ QcZzBBnCSFlWpx39IP77d4kjNxcSqoiW4cW2PVJTryQy9Qq6J26N8Wmey8/idS9ZHmbH
+ 3KjnEcAYGiAUShjkQsugHbIZ3g8pkY05CWHNEMr/NYpXTPQ/NAXyxoTStZZzlDXIMQcw
+ MR5jWdeesSsIRV2J6z0rLt4DF7pIWNdjnG6izUO8QE8UxfMue6Bfl8U/qovStkpfVTCS
+ jh7wAeJPNLBUxfizIrFMNatcuCxu9FVMb2J/XxM9/5H4LzAc9JwdS1TvOnU+Xbbgw77v
+ xGug==
+X-Gm-Message-State: AOJu0YwMNRrTdlQuzn/0PtJkzrJBLUaBXVn1K6G6G40LvNToT0DSeEIu
+ 0q9xgZ6QTQBgk2LWFGiTzrJmOUqJNPtNI9u0Ae4jsBZMu2NhU3Lcn/naxE6KGAT+tYol/J3ie5E
+ A
+X-Gm-Gg: ASbGnctm8JMmlSxk7VZ0KGXmSADBCWBkPvl06bj7bXktFtDx8LedSASFs+eBGdSTbfp
+ kKiYbs5LMl8mI/P3SvttTBlHKb+zk0Ze3qvLkud/coCLT9WbzEnfzshZRnNQB2cBdLjS/6ZHiOg
+ OwaEJKLsLbFQ5PfPGZMZW5ZKTaxkLVONOipdN/PmW/hjSBEFhsZe+QYuNmCWcot989VFvYyij6K
+ MioktVUxgLYQ+WK79Ev2x6qpN9V97m8IG/yoHlYg1/jd746V0SYxRhKIB9lzKfBUUW3HZtpkgcS
+ 9Y4jDFi3SfAs9YJtbgtvEMIwMjg9M2pNv5FpfyYh7RQQNNE=
+X-Google-Smtp-Source: AGHT+IF2/1VLxr8vi5EDzWTJPYhXvQbxDOawM4jGXyFI4W2zNvpGa/RK3Sn7JxWIpsfqRtMhoUaFJA==
+X-Received: by 2002:a05:6a00:2e28:b0:730:8526:5db0 with SMTP id
+ d2e1a72fcca58-7322c3fe428mr2714807b3a.22.1739331979109; 
+ Tue, 11 Feb 2025 19:46:19 -0800 (PST)
+Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-730992eba96sm3482569b3a.126.2025.02.11.19.46.18
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Feb 2025 19:46:18 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/6] tcg: Introduce constraint for zero register
+Date: Tue, 11 Feb 2025 19:46:11 -0800
+Message-ID: <20250212034617.1079324-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxPseSEqxnkg0NAA--.51828S8
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,129 +93,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Interrupt controller extioi and ipi connect to CPU with irq line method.
-With command -smp x, -device la464-loongarch-cpu, smp.cpus is not
-accurate for all possible CPU objects, possible_cpu_arch_ids() is used.
+Based-on: 20250205040341.2056361-1-richard.henderson@linaro.org
+("[PATCH 00/11] tcg: Cleanups after disallowing 64-on-32")
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/loongarch/virt.c         | 60 ++++++++++++++++++++++---------------
- include/hw/loongarch/virt.h |  2 ++
- 2 files changed, 38 insertions(+), 24 deletions(-)
+Introduce a new general-purpose constraint which maps 0
+to TCG_REG_ZERO, if defined.  This differs from existing
+constant constraints in that const_arg[*] is recorded as
+false, indicating that the value is in a register.
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index da98b21c58..f2aa0a9782 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -318,14 +318,43 @@ static void virt_devices_init(DeviceState *pch_pic,
-     lvms->platform_bus_dev = create_platform_bus(pch_pic);
- }
- 
--static void virt_irq_init(LoongArchVirtMachineState *lvms)
-+static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
- {
-+    int num, pin;
-     MachineState *ms = MACHINE(lvms);
--    DeviceState *pch_pic, *pch_msi, *cpudev;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-+    const CPUArchIdList *possible_cpus;
-+    CPUState *cs;
-+
-+    /* cpu nodes */
-+    possible_cpus = mc->possible_cpu_arch_ids(ms);
-+    for (num = 0; num < possible_cpus->len; num++) {
-+        cs = possible_cpus->cpus[num].cpu;
-+        if (cs == NULL) {
-+            continue;
-+        }
-+
-+        /* connect ipi irq to cpu irq */
-+        qdev_connect_gpio_out(lvms->ipi, num,
-+                              qdev_get_gpio_in(DEVICE(cs), IRQ_IPI));
-+
-+        /*
-+         * connect ext irq to the cpu irq
-+         * cpu_pin[9:2] <= intc_pin[7:0]
-+         */
-+        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
-+            qdev_connect_gpio_out(lvms->extioi, (num * LS3A_INTC_IP + pin),
-+                                  qdev_get_gpio_in(DEVICE(cs), pin + 2));
-+        }
-+    }
-+}
-+
-+static void virt_irq_init(LoongArchVirtMachineState *lvms)
-+{
-+    DeviceState *pch_pic, *pch_msi;
-     DeviceState *ipi, *extioi;
-     SysBusDevice *d;
--    CPUState *cpu_state;
--    int cpu, pin, i, start, num;
-+    int i, start, num;
- 
-     /*
-      * Extended IRQ model.
-@@ -373,6 +402,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
- 
-     /* Create IPI device */
-     ipi = qdev_new(TYPE_LOONGARCH_IPI);
-+    lvms->ipi = ipi;
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
- 
-     /* IPI iocsr memory region */
-@@ -381,16 +411,9 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     memory_region_add_subregion(&lvms->system_iocsr, MAIL_SEND_ADDR,
-                    sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
- 
--    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
--        cpu_state = qemu_get_cpu(cpu);
--        cpudev = DEVICE(cpu_state);
--
--        /* connect ipi irq to cpu irq */
--        qdev_connect_gpio_out(ipi, cpu, qdev_get_gpio_in(cpudev, IRQ_IPI));
--    }
--
-     /* Create EXTIOI device */
-     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
-+    lvms->extioi = extioi;
-     if (virt_is_veiointc_enabled(lvms)) {
-         qdev_prop_set_bit(extioi, "has-virtualization-extension", true);
-     }
-@@ -402,18 +425,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-                     sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 1));
-     }
- 
--    /*
--     * connect ext irq to the cpu irq
--     * cpu_pin[9:2] <= intc_pin[7:0]
--     */
--    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
--        cpudev = DEVICE(qemu_get_cpu(cpu));
--        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
--            qdev_connect_gpio_out(extioi, (cpu * 8 + pin),
--                                  qdev_get_gpio_in(cpudev, pin + 2));
--        }
--    }
--
-+    virt_cpu_irq_init(lvms);
-     pch_pic = qdev_new(TYPE_LOONGARCH_PIC);
-     num = VIRT_PCH_PIC_IRQ_NUM;
-     qdev_prop_set_uint32(pch_pic, "pch_pic_irq_num", num);
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index f01350017b..661efae61d 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -60,6 +60,8 @@ struct LoongArchVirtMachineState {
-     MemoryRegion iocsr_mem;
-     AddressSpace as_iocsr;
-     struct loongarch_boot_info bootinfo;
-+    DeviceState *ipi;
-+    DeviceState *extioi;
- };
- 
- #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+This doesn't make much difference to the current tree, but as a
+prelude to [1], where small output functions are categorized by
+register vs immediate arguments, then this provides a way to
+send a constant zero as a register argument.
+
+
+r~
+
+
+[1] https://patchew.org/QEMU/20250107080112.1175095-1-richard.henderson@linaro.org/
+
+Richard Henderson (6):
+  tcg: Introduce the 'z' constraint for a hardware zero register
+  tcg/aarch64: Use 'z' constraint
+  tcg/loongarch64: Use 'z' constraint
+  tcg/mips: Use 'z' constraint
+  tcg/riscv: Use 'z' constraint
+  tcg/sparc64: Use 'z' constraint
+
+ include/tcg/tcg.h                    |  3 +-
+ tcg/aarch64/tcg-target-con-set.h     | 12 ++++----
+ tcg/aarch64/tcg-target.h             |  2 ++
+ tcg/loongarch64/tcg-target-con-set.h | 15 +++++----
+ tcg/loongarch64/tcg-target-con-str.h |  1 -
+ tcg/loongarch64/tcg-target.h         |  2 ++
+ tcg/mips/tcg-target-con-set.h        | 26 ++++++++--------
+ tcg/mips/tcg-target-con-str.h        |  1 -
+ tcg/mips/tcg-target.h                |  2 ++
+ tcg/riscv/tcg-target-con-set.h       | 10 +++---
+ tcg/riscv/tcg-target-con-str.h       |  1 -
+ tcg/riscv/tcg-target.h               |  2 ++
+ tcg/sparc64/tcg-target-con-set.h     | 12 ++++----
+ tcg/sparc64/tcg-target-con-str.h     |  1 -
+ tcg/sparc64/tcg-target.h             |  3 +-
+ tcg/tcg.c                            | 29 +++++++++++++-----
+ docs/devel/tcg-ops.rst               |  4 ++-
+ tcg/aarch64/tcg-target.c.inc         | 46 ++++++++++++----------------
+ tcg/loongarch64/tcg-target.c.inc     | 32 +++++++++----------
+ tcg/mips/tcg-target.c.inc            | 44 +++++++++++---------------
+ tcg/riscv/tcg-target.c.inc           | 12 ++++----
+ tcg/sparc64/tcg-target.c.inc         | 12 ++++----
+ 22 files changed, 138 insertions(+), 134 deletions(-)
+
 -- 
-2.43.5
+2.43.0
 
 
