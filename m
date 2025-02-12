@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CABA3279A
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 14:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819C4A327F5
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 15:05:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiDAz-00029C-I5; Wed, 12 Feb 2025 08:53:17 -0500
+	id 1tiDLB-0006pc-At; Wed, 12 Feb 2025 09:03:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiDAq-0001z9-Ou
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 08:53:10 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiDL7-0006oZ-Gg
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:03:46 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiDAn-0004UD-BR
- for qemu-devel@nongnu.org; Wed, 12 Feb 2025 08:53:08 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-38dcb7122c1so4565764f8f.2
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 05:53:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiDL5-0006XS-FX
+ for qemu-devel@nongnu.org; Wed, 12 Feb 2025 09:03:45 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38dd935a267so3126096f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 06:03:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739368382; x=1739973182; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zfbyxcqWj/UiN856rWG2h1KLNYBYxW0dhw/bjjl2hE0=;
- b=aYMeakJWs/OmTBwXGYTQIOS3fnmd2DDTL9fXfNxZpZTHJ3d5qLkv5REWRdHsf14iOV
- p6KvwAeuyCyHzBfauGVUdwSDnAPpYzAl5xGtmxj/B4lpeVoajb5TdwYzE2ZEHgUeFH75
- K2D2HKWl5V2CKqNNsH/FBVBeY/ZXfedFqD7rllAWQGejDGtVi4Q4HdkT4qmLfCnBdsYD
- ocg3iS1zNlqkRqWVJh0xGgMwwPfRakFKDSX//mNtwPqUDrujVHCBg5x5poOpEpRV1zsa
- dPG/iqtLVwT03vQ1vb65gLpCQbDJ01U+SGK3iWcwOix8c9+FNgSZKoiTjN2wvKjcT/rg
- aAIA==
+ d=linaro.org; s=google; t=1739369022; x=1739973822; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kAH2qclmGgBA3ka8vJzUEw7N4C7mBg3fIza94AFCUGI=;
+ b=UbkiZW39MrY0A/jnjsPCqfVFfhFXyM/hjOB2w+7c1WQwVm5ege+38p3A+SdVKNrb0n
+ uH5fSq7LITLpNbWOA8vPFX638penPK1iqJKhSlXK8qvfTwmiWSVrdyHcaL2mGtjUonZs
+ jAlveIy8l+mXrbWmjqw4iqCERwRRzzwXbtvz9iLIrk2c0JxOxJUXEaOJwor9SlCH8FTM
+ fKanWyyGwKqAnnZlgzEob7SZXVWavRz1EBGr3ffzfJawPJF7+hy6w6vRPfIsvr9nYgvf
+ fDqWfKwTm+X7c2ErvpDW1/rjPIyqAVLa/m2mkbINjxA1bO2PKMT1vajm5vzMabEDSNfD
+ 5tqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739368382; x=1739973182;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1739369022; x=1739973822;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zfbyxcqWj/UiN856rWG2h1KLNYBYxW0dhw/bjjl2hE0=;
- b=f1IZXty/l3QVcrz7YpGqEbHM+furNj+CiCRKizpwVI9ShmHp3/HNtgv6YOLVin8SAz
- xyTQTgWcz7AF1XH8/WDcFad/7KuOt9gJXtxAdDNf6Pv951pv9mNDj+AL7WFsAMui+F8L
- 4LLDA9spBOaw35hI0fIVs4z8Dlu4D9bhf2s911bArf+Ip7Uc0HJs/4hh1240priztF5F
- vHHAybaruafR3/LRaj/fBAl2VwDXAraGq0JWcs5BshOqLbzcG28+/wre8SuTWV/GbHIi
- 5GzYd4kYAKRTujC61kil6HLQC79/awCqBw0npJ6e3pdbCYFv3hWkc9RpOBdG4fMmF6ba
- Q22A==
+ bh=kAH2qclmGgBA3ka8vJzUEw7N4C7mBg3fIza94AFCUGI=;
+ b=jLDo2t0S/GPAGklCiToNTdCxZSjzwdksV0v3q3KOGZpwJq7Q+iwC1I4bPeBHbi1CWb
+ MnkgAaQ2r4IXKOW20OgFCDItqhrPv9zpWSzpwP63VdfEVaRI9zvZPqPlt2Xx9zqucpor
+ mh5pYDzXHnSp+n6LvNv36xoOKVFJcU1DxtsRW2aqrZzpX+gao8iE0SqadRQqI2jvc4xB
+ VD0tK+HlYhLF+mKetCE0tfYcyKsdtO+gKUsIH1jXpxQz8JNUT9YRj5YnhFwRkwhnHFnU
+ mSWm2VggIzt5nuqWE6wy0SdJyJRYm6foMufqJSKqW5slwFd2N9SSJiPkJyAMqMIYxr3o
+ Vm3w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVtF8to8gqC1dJufEAW0Xn/GUrpnw7Sv8K0R3H2JbJiqFTyl+PnI52PxYmc7eOxjtIo2kYejYgOt53s@nongnu.org
-X-Gm-Message-State: AOJu0YxNJXqoq3aRMB4sFQiFyU/6F5ecamyx+M7QbyRz71AsIJkzYqDo
- 5pig7S1/3dH9fTFvQw2nDvd8d8CgyT6jDSU+1enrJ33IFMqhar48vW5wW1kV/BXWFCESP7eI1FN
- /pWw=
-X-Gm-Gg: ASbGnct++GWBOQNNQ2jfnXCWBUeNoeYGaqnBJXlY81S9lfrvHQiPELMjrSVhMcJneXK
- DHXBBSfACpXZZV8zBf/S2eAkHxAuVgYI4i1z5/DzOMfSZg/HvwI4X0di4gG54DYSXWB9MgwQ2MQ
- MIyZv0h21pQQ8aTIb3k5tORYGtjqh/D1E587KlRTVjLTxoJp/DNoEi3U1fAg7W1lloYkjLTOEeQ
- kG3i3EcAGR2Jqev+biAgkm1Ij62M928TgvvIWbUDXC3OsdOfgKWJ5HEQhIV0kWbUsSU0cvyjaQm
- Zen9EI2XId3IZ3ia3sLC0dxtZMSfBXjqpIDznF34/GTZ85nqSmExZUeYcvg=
-X-Google-Smtp-Source: AGHT+IG/lfKP5G5CHY8c8pWMzE2yIWajKjW/XutuPwpU8TFbNmxnOtW2rm8Qjh6SBqJv2JE67Z8zcg==
-X-Received: by 2002:a05:6000:bd2:b0:38d:dc0d:8f4c with SMTP id
- ffacd0b85a97d-38dea270ec9mr2169095f8f.20.1739368382142; 
- Wed, 12 Feb 2025 05:53:02 -0800 (PST)
+ AJvYcCWvADL2aSA5qdmLAbSnMluymUst6rCS8hvfZZe8V1COKZ/BUmT/17PYwEfmQas6gdstN3+JueJSIfLo@nongnu.org
+X-Gm-Message-State: AOJu0YwzqsDOOqHgbRZS2DtolB8Skam/l+Ko/nTAUV/M0Tpyy24Cm+oS
+ dEUMIfhPtPVYrZg5WBdIzxjc4CsZ2BUgtIKakLqJI9MhrqVbzD96Z0PCFZwGoWA=
+X-Gm-Gg: ASbGncsrDUeg91jVEROO6tuMh3q+yj0XSUoggTX4i5NAjapVYm17RcWUagdmvf8+DU1
+ yz7rDIiWpBItS1MeYlMtXu4Td+Og94QJvZFa7LiH+052g9wviDgiM/HSA0wTsTsLGC7DjETRL1+
+ G/E5wFnMxuQy7B0KLWysraNND7ouKSDXasU3M0bvmHRu6KURxlmRDB83LWPsXRbP6E6lKETMBUn
+ qe4auohZO9j/3TAgdr6+auhiMh9d9lD0gOfNLYK5GdhXM5MaufD0HKTo/Rjmc+72Ejg/6dInDAh
+ jo4dYx19zldipSshTF/zLwYFyJs3iL27y36JSpt61jDvWGkS9btsc90awrQ=
+X-Google-Smtp-Source: AGHT+IGEf2YuUGY1vo8xQmGC8IuKzzqXdWx4AHY5ax9Y3JFPirG0TdNyckGhDpiEc1MuI0gcWZtlTw==
+X-Received: by 2002:a05:6000:184:b0:38d:b448:8ffc with SMTP id
+ ffacd0b85a97d-38dea28eb1cmr2337831f8f.27.1739369021551; 
+ Wed, 12 Feb 2025 06:03:41 -0800 (PST)
 Received: from [192.168.69.198] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38dc33939f3sm16776390f8f.17.2025.02.12.05.53.00
+ 5b1f17b1804b1-4395a1b84bcsm21489225e9.40.2025.02.12.06.03.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Feb 2025 05:53:01 -0800 (PST)
-Message-ID: <6e707c7f-b94c-47ef-83ab-795605e27963@linaro.org>
-Date: Wed, 12 Feb 2025 14:53:00 +0100
+ Wed, 12 Feb 2025 06:03:40 -0800 (PST)
+Message-ID: <a3608e43-79ce-403d-8ba7-6735fde66759@linaro.org>
+Date: Wed, 12 Feb 2025 15:03:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 01/11] hw/qdev-properties-system: Introduce EndianMode
  QAPI enum
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: BALATON Zoltan <balaton@eik.bme.hu>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -81,20 +81,20 @@ References: <20250212112413.37553-1-philmd@linaro.org>
  <cb828dd8-25f6-47c6-9ac7-cae5b0d0932e@redhat.com>
  <50ba4e4b-4124-46bb-bb84-4758ce9c5e66@linaro.org>
  <3b3baed4-0d79-3a28-40cd-e1835e078863@eik.bme.hu>
+ <6e707c7f-b94c-47ef-83ab-795605e27963@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <3b3baed4-0d79-3a28-40cd-e1835e078863@eik.bme.hu>
+In-Reply-To: <6e707c7f-b94c-47ef-83ab-795605e27963@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,65 +110,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/2/25 13:56, BALATON Zoltan wrote:
-> On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
->> On 12/2/25 12:37, Thomas Huth wrote:
->>> On 12/02/2025 12.24, Philippe Mathieu-Daudé wrote:
->>>> Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
->>>> Endianness can be BIG, LITTLE or unspecified (default).
+On 12/2/25 14:53, Philippe Mathieu-Daudé wrote:
+> On 12/2/25 13:56, BALATON Zoltan wrote:
+>> On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
+>>> On 12/2/25 12:37, Thomas Huth wrote:
+>>>> On 12/02/2025 12.24, Philippe Mathieu-Daudé wrote:
+>>>>> Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
+>>>>> Endianness can be BIG, LITTLE or unspecified (default).
+>>>>>
+>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>> ---
+>>>>>   qapi/common.json                    | 16 ++++++++++++++++
+>>>>>   include/hw/qdev-properties-system.h |  7 +++++++
+>>>>>   hw/core/qdev-properties-system.c    | 11 +++++++++++
+>>>>>   3 files changed, 34 insertions(+)
+>>>>>
+>>>>> diff --git a/qapi/common.json b/qapi/common.json
+>>>>> index 6ffc7a37890..217feaaf683 100644
+>>>>> --- a/qapi/common.json
+>>>>> +++ b/qapi/common.json
+>>>>> @@ -212,3 +212,19 @@
+>>>>>   ##
+>>>>>   { 'struct': 'HumanReadableText',
+>>>>>     'data': { 'human-readable-text': 'str' } }
+>>>>> +
+>>>>> +##
+>>>>> +# @EndianMode:
+>>>>> +#
+>>>>> +# An enumeration of three options: little, big, and unspecified
+>>>>> +#
+>>>>> +# @little: Little endianness
+>>>>> +#
+>>>>> +# @big: Big endianness
+>>>>> +#
+>>>>> +# @unspecified: Endianness not specified
+>>>>> +#
+>>>>> +# Since: 10.0
+>>>>> +##
+>>>>> +{ 'enum': 'EndianMode',
+>>>>> +  'data': [ 'little', 'big', 'unspecified' ] }
 >>>>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>   qapi/common.json                    | 16 ++++++++++++++++
->>>>   include/hw/qdev-properties-system.h |  7 +++++++
->>>>   hw/core/qdev-properties-system.c    | 11 +++++++++++
->>>>   3 files changed, 34 insertions(+)
->>>>
->>>> diff --git a/qapi/common.json b/qapi/common.json
->>>> index 6ffc7a37890..217feaaf683 100644
->>>> --- a/qapi/common.json
->>>> +++ b/qapi/common.json
->>>> @@ -212,3 +212,19 @@
->>>>   ##
->>>>   { 'struct': 'HumanReadableText',
->>>>     'data': { 'human-readable-text': 'str' } }
->>>> +
->>>> +##
->>>> +# @EndianMode:
->>>> +#
->>>> +# An enumeration of three options: little, big, and unspecified
->>>> +#
->>>> +# @little: Little endianness
->>>> +#
->>>> +# @big: Big endianness
->>>> +#
->>>> +# @unspecified: Endianness not specified
->>>> +#
->>>> +# Since: 10.0
->>>> +##
->>>> +{ 'enum': 'EndianMode',
->>>> +  'data': [ 'little', 'big', 'unspecified' ] }
+>>>> Should 'unspecified' come first? ... so that it gets the value 0, 
+>>>> i.e. when someone forgets to properly initialize a related variable, 
+>>>> the chances are higher that it ends up as "unspecified" than as 
+>>>> "little" ?
 >>>
->>> Should 'unspecified' come first? ... so that it gets the value 0, 
->>> i.e. when someone forgets to properly initialize a related variable, 
->>> the chances are higher that it ends up as "unspecified" than as 
->>> "little" ?
+>>> Hmm but then in this series the dual-endianness regions are defined as:
+>>>
+>>> +static const MemoryRegionOps pic_ops[2] = {
+>>> +    [0 ... 1] = {
 >>
->> Hmm but then in this series the dual-endianness regions are defined as:
->>
->> +static const MemoryRegionOps pic_ops[2] = {
->> +    [0 ... 1] = {
-> 
-> This is already confusing as you'd have to know that 0 and 1 here means 
-> ENDIAN_MODE_LITTLE and ENDIAN_MODE_BIG (using those constants here as 
-> well might be clearer). It's easy to miss what this does so maybe 
-> repeating the definitions for each case would be longer but less 
-> confusing and then it does not matter what the values are.
-> 
-> Or what uses the ops.endianness now should look at the property 
-> introduced by this patch to avoid having to propagate it like below and 
-> drop the ops.endianness? Or it should move to the memory region and set 
-> when the ops are assigned?
+>> This is already confusing as you'd have to know that 0 and 1 here 
+>> means ENDIAN_MODE_LITTLE and ENDIAN_MODE_BIG (using those constants 
+>> here as well might be clearer). It's easy to miss what this does so 
 
-I'm not understanding well what you ask, but maybe the answer is in v7 :)
+At this point 0 / 1 only mean "from the index #0 included to the index
+#1 included", 0 being the first one and 1 the last one.
+
+>> maybe repeating the definitions for each case would be longer but less 
+>> confusing and then it does not matter what the values are.
+
+This is what I tried to do with:
+
++    [ENDIAN_MODE_BIG].endianness = DEVICE_BIG_ENDIAN,
++    [ENDIAN_MODE_LITTLE].endianness = DEVICE_LITTLE_ENDIAN,
+};
+
+but in v7 we are back of picking an arbitrary value.
+
+>> Or what uses the ops.endianness now should look at the property 
+>> introduced by this patch to avoid having to propagate it like below 
+>> and drop the ops.endianness? Or it should move to the memory region 
+>> and set when the ops are assigned?
+> 
+> I'm not understanding well what you ask, but maybe the answer is in v7 :)
+
 
