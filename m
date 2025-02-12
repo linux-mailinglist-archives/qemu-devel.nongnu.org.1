@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE808A331E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 23:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B9A331DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Feb 2025 23:03:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiKnz-0006le-VM; Wed, 12 Feb 2025 17:02:03 -0500
+	id 1tiKnz-0006kp-1j; Wed, 12 Feb 2025 17:02:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tiKnw-0006kO-Tl
+ id 1tiKnx-0006kP-3D
  for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:02:01 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tiKnv-0004Rm-7M
+ id 1tiKnv-0004Rq-64
  for qemu-devel@nongnu.org; Wed, 12 Feb 2025 17:02:00 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2fa1a3c88c5so379561a91.3
- for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 14:01:57 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-220c92c857aso3359015ad.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Feb 2025 14:01:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1739397717; x=1740002517; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FRdibRr3bWgokhcsRDmew5ps8NNqBgIggeIaYEH1m2c=;
- b=lmMrFAzg6zgicUah8USLbf/sNq/IATuDu132P1VpsuzokONhZTMHg4BIi6nThobDI5
- fnWJXLuY6yUk1BSfNkxUsJYqxpKVvifmMV10c8yfSJLArd5U7elCP6LyE2obRg+KXKrA
- Ng+gMPcdRs6lbUfJ1hYzfyGBWhqqaxp+YJUWaUwgwc9xGVJLa0jjzhBed5aBjfLmsTWu
- fEf7mtEjceyjGrgdKnHYad9yL5J9vGwnQRIE89ZJMYCQ9+08qyJ7Tf2vawgPe2Kcfsd5
- f68GYQqjz2ILNoG4A/noKKZ+bfW3ClotMyNgQaR3ms1pCtYN+auJWxQZIJ2ISzHcpOdH
- 3MUQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Uc/r3YpfA3pdOgGMQeJPypU7HcgcUgMjDmFPlunSy+A=;
+ b=zUkcIZCQDDmVkKI1VYWMZD6KAKYDUFvXSSEZOTL4v6T+8XnS59XSWjCEUPUCs/ZnSq
+ 7/BZj6e4+Wj3/0NRZO9FC97CpcDIrNInIH5UK2eEpw+FuhFjyv27jrGjfGyC2RgndPYc
+ ipxBbaN2cEdLTcsXaeI1rqb2GHOjSwMXGAeFxk62N9sOHSvGr5u009NxtKgdk4PyndW7
+ T8XE9DntV/RumD16G/T73PkXPjv7hSq/5wicL6niVdi844S1gNy5HB3AIP3bTEoMn3cO
+ vvx06AWuSHTACC8OfY3xbB+0xbKgo1N67BRAF/Q7WetepIe1cvnmm+dasl09AW0jOhnW
+ VKeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1739397717; x=1740002517;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FRdibRr3bWgokhcsRDmew5ps8NNqBgIggeIaYEH1m2c=;
- b=ITU61/bv2mpt00LFwSAFXcwGXBXW1zdRxYkzNNVb7BAjkHjbUnEnKMt6gzsVlukfiC
- 4BqzIf9q+keGFlitXCDBWxccee39joqdzodgSSqSH8nQu+2xguDshoYBDyhi6JQRZRMP
- 9K6/Edr1cjbUHdhqvsqlFHOqhq5GI9k+IklxWvXLEjIO0yQB21vr7xQ/MJL5uEjd9jEN
- OmfRffQWIOkHYdra/deqYa5BWOZyAp+mWvK8UqNQ0rjMQBfPo1/+Mb3govx2jfL0nGa4
- sZg1RcHYRFgldq4ehBVUGHNuMFHSEOmralAnMvSLR2BWjfvx/Caag9IKkytYjPHJZbeb
- FwdA==
-X-Gm-Message-State: AOJu0Yzgy/rLw6Bl3cyr6B0u4Z6eyPnI8OVcKhj5n66ttuyFPzmasyGe
- 3KSSElsBmhjX5ngHEfxUnDD3OK+6Qdqr0e+TzZgdUV8wQUqBpX8mptLxgaBdiyocWTw15BSh/bo
- C
-X-Gm-Gg: ASbGncsfkEwX9dJn8iumJj8RqQX+ljDTiWRUagsZhQn+Kt+stg51j9lqOjhokMuAKtJ
- 7+kSRrGCGP3Gfvvd4KWLAN8dmaMSAEPpad5oeBq6G6lvldAANYzvESW4OGd5cRfKNRQwEiReyQx
- rTC+iXLI41p3CrDZcGwKlDS7Fe6dAIZd8pCmjfGJiB5yx94nzlTlGgGYjq0zVXobuHuqYi2GqgR
- hflJ5ywrn9wZzQHLgwRUCCF//v4GOqUz0UEtNnhDbe+k4KEai6d+W36UkCgOhf6TwxS0nwS9OVn
- 1g0uIyKx+9UgPl8rIJu/rOoS3WDQfQfLDzwQLPt6pCH7/bI=
-X-Google-Smtp-Source: AGHT+IEU4v/elpIKtwSbGCYXuyo0KFg1lUWuU7v2aEYUy/CCW4XUxO6m4GChxw7H5s8piLEMKZ40Sg==
-X-Received: by 2002:a17:90b:3583:b0:2ee:d824:b559 with SMTP id
- 98e67ed59e1d1-2fbf9106ac7mr6055690a91.28.1739397716809; 
- Wed, 12 Feb 2025 14:01:56 -0800 (PST)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Uc/r3YpfA3pdOgGMQeJPypU7HcgcUgMjDmFPlunSy+A=;
+ b=QcPxF+gPejAqxCq1wNP8IFfXpjOF2l97PyMAqHV0ABQAK59KfRhAjL4x9pT6ZI5oVR
+ yS4JUhaboSUlUFLqcwX9dBAuCBCqj94+UMNqGphRUzTmEQu0g5zgJcJ9lWZhlcQJKcv+
+ NiWV7FLPZTklZHzPSC+VbTgwmqRV4pJ+NepNvy0enp9xgSWBd+yn4lZqn3DY5CYEy3YK
+ y71XudaMdf73NATOurqy1qR3WPkm5H3YKt/q9QYWUlMNscLRXvSDqp1RP66nXDY37Yzu
+ XRX1j8o0eKkOZggpTzFyoUd9jSVFN3DWAQWJ6Q0XsoQpAQ+UF41o5hQ66TRptsACkNaV
+ Dy5g==
+X-Gm-Message-State: AOJu0YwxLM5yteywcueHULtVgsILDxVFbhRT6xM9LCVOYBUTl9RKkq8n
+ HWHQXvzV/VT/Az3LEGzJOKMZoHJ6/CG8D8MKJ/RPIFgFWdhx6j5Q4YZIvSmzv5aUIi3aJI/fvWs
+ P
+X-Gm-Gg: ASbGncurOjvVUdxloKKMosUSiVx+Hb/Bh+0S5R7yodHYm3njOflmU+E/QVCamjc2B7L
+ dybduVJrYMomzp8hS28iPOAlJ/iHn7U/B+kMJTkA5l7+6GjhgrhpG0TcZzIP0shQbsrBGlaf/5C
+ PmhaCWSpszqY+LguW68j/woIA329O02W4cfrjTPu2/arqdntAcSSIA5Y3PlwFSZ4JjIKLlDo7ZO
+ otMgkKuhxq/0NRtTNl97Icr+nyDDASQbs6X0hdoweYQ5eS4LcZWsw76Io8IJkZlBZDMN8X/Tdf/
+ AsGz7Xj4SCyQiZM8xHXKOCFtM9UgYuz4oxzLfgje6RQ5dcA=
+X-Google-Smtp-Source: AGHT+IHkF3pe5pFq8b6E9PGR59TOs+alcKe8dGX+5TgWXEwRRQW22k3sKQqDT3ra9NaTHdqq+UFCXQ==
+X-Received: by 2002:a17:902:d506:b0:21f:3a7b:f4e6 with SMTP id
+ d9443c01a7336-220d35b4944mr9847825ad.23.1739397717533; 
+ Wed, 12 Feb 2025 14:01:57 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fbf98b4c52sm1964837a91.4.2025.02.12.14.01.56
+ 98e67ed59e1d1-2fbf98b4c52sm1964837a91.4.2025.02.12.14.01.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Feb 2025 14:01:56 -0800 (PST)
+ Wed, 12 Feb 2025 14:01:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: edgar.iglesias@gmail.com,
 	philmd@linaro.org
-Subject: [PATCH 0/9] target/microblaze: Always use TARGET_LONG_BITS == 32
-Date: Wed, 12 Feb 2025 14:01:46 -0800
-Message-ID: <20250212220155.1147144-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/9] target/microblaze: Split out mb_unaligned_access_internal
+Date: Wed, 12 Feb 2025 14:01:47 -0800
+Message-ID: <20250212220155.1147144-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250212220155.1147144-1-richard.henderson@linaro.org>
+References: <20250212220155.1147144-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use out-of-line helpers to implement extended address memory ops.
-With this, we can reduce TARGET_LONG_BITS to the more natural 32
-for this 32-bit cpu.
+Use an explicit 64-bit type for the address to store in EAR.
 
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/microblaze/cpu.h    |  3 +++
+ target/microblaze/helper.c | 25 ++++++++++++++++---------
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
-r~
-
-
-Richard Henderson (9):
-  target/microblaze: Split out mb_unaligned_access_internal
-  target/microblaze: Split out mb_transaction_failed_internal
-  target/microblaze: Implement extended address load/store out of line
-  target/microblaze: Use uint64_t for CPUMBState.ear
-  target/microblaze: Use TCGv_i64 for compute_ldst_addr_ea
-  target/microblaze: Fix printf format in mmu_translate
-  target/microblaze: Use TARGET_LONG_BITS == 32 for system mode
-  target/microblaze: Drop DisasContext.r0
-  target/microblaze: Simplify compute_ldst_addr_type{a,b}
-
- target/microblaze/cpu.h                  |   5 +-
- target/microblaze/helper.h               |  16 ++-
- target/microblaze/helper.c               |  25 ++--
- target/microblaze/mmu.c                  |   3 +-
- target/microblaze/op_helper.c            | 157 +++++++++++++++++++----
- target/microblaze/translate.c            | 118 +++++++++--------
- configs/targets/microblaze-softmmu.mak   |   4 +-
- configs/targets/microblazeel-softmmu.mak |   4 +-
- 8 files changed, 228 insertions(+), 104 deletions(-)
-
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index f6879eee35..45f7f49809 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -372,6 +372,9 @@ bool mb_cpu_exec_interrupt(CPUState *cs, int int_req);
+ hwaddr mb_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+                                         MemTxAttrs *attrs);
+ #endif /* !CONFIG_USER_ONLY */
++G_NORETURN void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
++                                             MMUAccessType access_type,
++                                             uintptr_t retaddr);
+ G_NORETURN void mb_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
+                                            MMUAccessType access_type,
+                                            int mmu_idx, uintptr_t retaddr);
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index 5d3259ce31..8b096e3e58 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -268,20 +268,20 @@ bool mb_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ 
+ #endif /* !CONFIG_USER_ONLY */
+ 
+-void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+-                                MMUAccessType access_type,
+-                                int mmu_idx, uintptr_t retaddr)
++G_NORETURN
++void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
++                                  MMUAccessType access_type, uintptr_t retaddr)
+ {
+-    MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
++    CPUMBState *env = cpu_env(cs);
+     uint32_t esr, iflags;
+ 
+     /* Recover the pc and iflags from the corresponding insn_start.  */
+     cpu_restore_state(cs, retaddr);
+-    iflags = cpu->env.iflags;
++    iflags = env->iflags;
+ 
+     qemu_log_mask(CPU_LOG_INT,
+-                  "Unaligned access addr=" TARGET_FMT_lx " pc=%x iflags=%x\n",
+-                  (target_ulong)addr, cpu->env.pc, iflags);
++                  "Unaligned access addr=0x%" PRIx64 " pc=%x iflags=%x\n",
++                  addr, env->pc, iflags);
+ 
+     esr = ESR_EC_UNALIGNED_DATA;
+     if (likely(iflags & ESR_ESS_FLAG)) {
+@@ -290,8 +290,15 @@ void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+         qemu_log_mask(LOG_UNIMP, "Unaligned access without ESR_ESS_FLAG\n");
+     }
+ 
+-    cpu->env.ear = addr;
+-    cpu->env.esr = esr;
++    env->ear = addr;
++    env->esr = esr;
+     cs->exception_index = EXCP_HW_EXCP;
+     cpu_loop_exit(cs);
+ }
++
++void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
++                                MMUAccessType access_type,
++                                int mmu_idx, uintptr_t retaddr)
++{
++    mb_unaligned_access_internal(cs, addr, access_type, retaddr);
++}
 -- 
 2.43.0
 
