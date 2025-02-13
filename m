@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8BEA34CE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 19:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04831A34D05
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 19:07:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tidZc-0001x9-61; Thu, 13 Feb 2025 13:04:28 -0500
+	id 1tidZy-0003LU-VP; Thu, 13 Feb 2025 13:04:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tidWT-0007qZ-RI
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 13:01:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tidWU-0007rp-RX
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 13:01:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tidWR-0006SU-6A
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 13:01:12 -0500
+ id 1tidWR-0006SY-EN
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 13:01:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1739469670;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6hDIk/GCeH0GyjCAVJxPnfpp/0/yWj+uRBsdKeWULGI=;
- b=APW7OVYQhIinXbicEYi8y+WloopJ4b70UYOHSy8QMZyvIvsCSJpqot8MRks7Uf4ofCVeCB
- aPhWBEXFC6PWoqn8w/5HXNilrj7HU2rwYlWpGTwAuvffOe0ocFEJnlVEP3TyxABJDaZSBm
- /6gyRowIOw5P2D68B85EE4E8lvzyWSk=
+ bh=M2VgBaY3utP/3uyyKQSfSGynGD4UcStG0re8c3gJylE=;
+ b=Aak95n2MKW9rxp91Y250vOamD5tRklVVdHrUrgEPgQSD6a3FgJZCzM0PEqBkHxtLFlZXcm
+ bPjKcIsFuqEywq3sMrC3+W1QxrCAJyABksZ6WEaxbbLG3GM/oJXKYPd4+ZKL6aiIAgHZw6
+ ZH+LoPtoZl3BfbxvsC3IVdg9VGcYtic=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-131-ae-7-2iPPmSctw8YyUmdmQ-1; Thu,
- 13 Feb 2025 13:01:05 -0500
-X-MC-Unique: ae-7-2iPPmSctw8YyUmdmQ-1
-X-Mimecast-MFC-AGG-ID: ae-7-2iPPmSctw8YyUmdmQ_1739469664
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-350-VRFTym_PPeaN-ZL0yZFDUA-1; Thu,
+ 13 Feb 2025 13:01:07 -0500
+X-MC-Unique: VRFTym_PPeaN-ZL0yZFDUA-1
+X-Mimecast-MFC-AGG-ID: VRFTym_PPeaN-ZL0yZFDUA_1739469666
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00F2819373DC; Thu, 13 Feb 2025 18:01:04 +0000 (UTC)
+ id 3B7771975AFC; Thu, 13 Feb 2025 18:01:06 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.157])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 926AF1800359; Thu, 13 Feb 2025 18:01:02 +0000 (UTC)
+ id 99BC61800360; Thu, 13 Feb 2025 18:01:05 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -54,24 +54,24 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  David Hildenbrand <david@redhat.com>, pkrempa@redhat.com,
  Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 06/12] virtio-scsi: protect events_dropped field
-Date: Thu, 13 Feb 2025 13:00:37 -0500
-Message-ID: <20250213180043.713434-7-stefanha@redhat.com>
+Subject: [PATCH 07/12] virtio-scsi: perform TMFs in appropriate AioContexts
+Date: Thu, 13 Feb 2025 13:00:38 -0500
+Message-ID: <20250213180043.713434-8-stefanha@redhat.com>
 In-Reply-To: <20250213180043.713434-1-stefanha@redhat.com>
 References: <20250213180043.713434-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,90 +87,395 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The block layer can invoke the resize callback from any AioContext that
-is processing requests. The virtqueue is already protected but the
-events_dropped field also needs to be protected against races. Cover it
-using the event virtqueue lock because it is closely associated with
-accesses to the virtqueue.
+With IOThread Virtqueue Mapping there will be multiple AioContexts
+processing SCSI requests. scsi_req_cancel() and other SCSI request
+operations must be performed from the AioContext where the request is
+running.
+
+Introduce a virtio_scsi_defer_tmf_to_aio_context() function and the
+necessary VirtIOSCSIReq->remaining refcount infrastructure to move the
+TMF code into the AioContext where the request is running.
+
+For the time being there is still just one AioContext: the main loop or
+the IOThread. When the iothread-vq-mapping parameter is added in a later
+patch this will be changed to per-virtqueue AioContexts.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- include/hw/virtio/virtio-scsi.h |  3 ++-
- hw/scsi/virtio-scsi.c           | 29 ++++++++++++++++++++---------
- 2 files changed, 22 insertions(+), 10 deletions(-)
+ hw/scsi/virtio-scsi.c | 296 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 219 insertions(+), 77 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index 4ee98ebf63..7b7e3ced7a 100644
---- a/include/hw/virtio/virtio-scsi.h
-+++ b/include/hw/virtio/virtio-scsi.h
-@@ -82,10 +82,11 @@ struct VirtIOSCSI {
- 
-     SCSIBus bus;
-     int resetting; /* written from main loop thread, read from any thread */
-+
-+    QemuMutex event_lock; /* protects event_vq and events_dropped */
-     bool events_dropped;
- 
-     QemuMutex ctrl_lock; /* protects ctrl_vq */
--    QemuMutex event_lock; /* protects event_vq */
- 
-     /*
-      * TMFs deferred to main loop BH. These fields are protected by
 diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 073ccd3d5b..2d796a861b 100644
+index 2d796a861b..2045d27289 100644
 --- a/hw/scsi/virtio-scsi.c
 +++ b/hw/scsi/virtio-scsi.c
-@@ -948,7 +948,10 @@ static void virtio_scsi_reset(VirtIODevice *vdev)
+@@ -47,7 +47,7 @@ typedef struct VirtIOSCSIReq {
+     /* Used for two-stage request submission and TMFs deferred to BH */
+     QTAILQ_ENTRY(VirtIOSCSIReq) next;
  
-     vs->sense_size = VIRTIO_SCSI_SENSE_DEFAULT_SIZE;
-     vs->cdb_size = VIRTIO_SCSI_CDB_DEFAULT_SIZE;
--    s->events_dropped = false;
+-    /* Used for cancellation of request during TMFs */
++    /* Used for cancellation of request during TMFs. Atomic. */
+     int remaining;
+ 
+     SCSIRequest *sreq;
+@@ -298,19 +298,23 @@ typedef struct {
+     VirtIOSCSIReq  *tmf_req;
+ } VirtIOSCSICancelNotifier;
+ 
++static void virtio_scsi_tmf_dec_remaining(VirtIOSCSIReq *tmf)
++{
++    if (qatomic_fetch_dec(&tmf->remaining) == 1) {
++        trace_virtio_scsi_tmf_resp(virtio_scsi_get_lun(tmf->req.tmf.lun),
++                                   tmf->req.tmf.tag, tmf->resp.tmf.response);
 +
-+    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
-+        s->events_dropped = false;
++        virtio_scsi_complete_req(tmf, &tmf->dev->ctrl_lock);
 +    }
++}
++
+ static void virtio_scsi_cancel_notify(Notifier *notifier, void *data)
+ {
+     VirtIOSCSICancelNotifier *n = container_of(notifier,
+                                                VirtIOSCSICancelNotifier,
+                                                notifier);
+ 
+-    if (--n->tmf_req->remaining == 0) {
+-        VirtIOSCSIReq *req = n->tmf_req;
+-
+-        trace_virtio_scsi_tmf_resp(virtio_scsi_get_lun(req->req.tmf.lun),
+-                                   req->req.tmf.tag, req->resp.tmf.response);
+-        virtio_scsi_complete_req(req, &req->dev->ctrl_lock);
+-    }
++    virtio_scsi_tmf_dec_remaining(n->tmf_req);
+     g_free(n);
  }
  
- typedef struct {
-@@ -978,14 +981,16 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
+@@ -416,7 +420,7 @@ static void virtio_scsi_reset_tmf_bh(VirtIOSCSI *s)
      }
+ }
  
-     req = virtio_scsi_pop_req(s, vs->event_vq, &s->event_lock);
--    if (!req) {
--        s->events_dropped = true;
--        return;
--    }
-+    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
-+        if (!req) {
-+            s->events_dropped = true;
-+            return;
-+        }
- 
--    if (s->events_dropped) {
--        event |= VIRTIO_SCSI_T_EVENTS_MISSED;
--        s->events_dropped = false;
-+        if (s->events_dropped) {
-+            event |= VIRTIO_SCSI_T_EVENTS_MISSED;
-+            s->events_dropped = false;
-+        }
-     }
- 
-     if (virtio_scsi_parse_req(req, 0, sizeof(VirtIOSCSIEvent))) {
-@@ -1014,7 +1019,13 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
- 
- static void virtio_scsi_handle_event_vq(VirtIOSCSI *s, VirtQueue *vq)
+-static void virtio_scsi_defer_tmf_to_bh(VirtIOSCSIReq *req)
++static void virtio_scsi_defer_tmf_to_main_loop(VirtIOSCSIReq *req)
  {
--    if (s->events_dropped) {
-+    bool events_dropped;
+     VirtIOSCSI *s = req->dev;
+ 
+@@ -430,6 +434,137 @@ static void virtio_scsi_defer_tmf_to_bh(VirtIOSCSIReq *req)
+     }
+ }
+ 
++static void virtio_scsi_tmf_cancel_req(VirtIOSCSIReq *tmf, SCSIRequest *r)
++{
++    VirtIOSCSICancelNotifier *notifier;
 +
-+    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
-+        events_dropped = s->events_dropped;
++    assert(r->ctx == qemu_get_current_aio_context());
++
++    /* Decremented in virtio_scsi_cancel_notify() */
++    qatomic_inc(&tmf->remaining);
++
++    notifier = g_new(VirtIOSCSICancelNotifier, 1);
++    notifier->notifier.notify = virtio_scsi_cancel_notify;
++    notifier->tmf_req = tmf;
++    scsi_req_cancel_async(r, &notifier->notifier);
++}
++
++/* Execute a TMF on the requests in the current AioContext */
++static void virtio_scsi_do_tmf_aio_context(void *opaque)
++{
++    AioContext *ctx = qemu_get_current_aio_context();
++    VirtIOSCSIReq *tmf = opaque;
++    VirtIOSCSI *s = tmf->dev;
++    SCSIDevice *d = virtio_scsi_device_get(s, tmf->req.tmf.lun);
++    SCSIRequest *r;
++    bool match_tag;
++
++    if (!d) {
++        tmf->resp.tmf.response = VIRTIO_SCSI_S_BAD_TARGET;
++        virtio_scsi_tmf_dec_remaining(tmf);
++        return;
 +    }
 +
-+    if (events_dropped) {
-         VirtIOSCSIEventInfo info = {
-             .event = VIRTIO_SCSI_T_NO_EVENT,
-         };
++    /*
++     * This function could handle other subtypes that need to be processed in
++     * the request's AioContext in the future, but for now only request
++     * cancelation subtypes are performed here.
++     */
++    switch (tmf->req.tmf.subtype) {
++    case VIRTIO_SCSI_T_TMF_ABORT_TASK:
++        match_tag = true;
++        break;
++    case VIRTIO_SCSI_T_TMF_ABORT_TASK_SET:
++    case VIRTIO_SCSI_T_TMF_CLEAR_TASK_SET:
++        match_tag = false;
++        break;
++    default:
++        g_assert_not_reached();
++    }
++
++    WITH_QEMU_LOCK_GUARD(&d->requests_lock) {
++        QTAILQ_FOREACH(r, &d->requests, next) {
++            VirtIOSCSIReq *cmd_req = r->hba_private;
++            assert(cmd_req); /* request has hba_private while enqueued */
++
++            if (r->ctx != ctx) {
++                continue;
++            }
++            if (match_tag && cmd_req->req.cmd.tag != tmf->req.tmf.tag) {
++                continue;
++            }
++            virtio_scsi_tmf_cancel_req(tmf, r);
++        }
++    }
++
++    /* Incremented by virtio_scsi_do_tmf() */
++    virtio_scsi_tmf_dec_remaining(tmf);
++
++    object_unref(d);
++}
++
++static void dummy_bh(void *opaque)
++{
++    /* Do nothing */
++}
++
++/*
++ * Wait for pending virtio_scsi_defer_tmf_to_aio_context() BHs.
++ */
++static void virtio_scsi_flush_defer_tmf_to_aio_context(VirtIOSCSI *s)
++{
++    GLOBAL_STATE_CODE();
++
++    assert(!s->dataplane_started);
++
++    if (s->ctx) {
++        /* Our BH only runs after previously scheduled BHs */
++        aio_wait_bh_oneshot(s->ctx, dummy_bh, NULL);
++    }
++}
++
++/*
++ * Run the TMF in a specific AioContext, handling only requests in that
++ * AioContext. This is necessary because requests can run in different
++ * AioContext and it is only possible to cancel them from the AioContext where
++ * they are running.
++ */
++static void virtio_scsi_defer_tmf_to_aio_context(VirtIOSCSIReq *tmf,
++                                                 AioContext *ctx)
++{
++    /* Decremented in virtio_scsi_do_tmf_aio_context() */
++    qatomic_inc(&tmf->remaining);
++
++    /* See virtio_scsi_flush_defer_tmf_to_aio_context() cleanup during reset */
++    aio_bh_schedule_oneshot(ctx, virtio_scsi_do_tmf_aio_context, tmf);
++}
++
++/*
++ * Returns the AioContext for a given TMF's tag field or NULL. Note that the
++ * request identified by the tag may have completed by the time you can execute
++ * a BH in the AioContext, so don't assume the request still exists in your BH.
++ */
++static AioContext *find_aio_context_for_tmf_tag(SCSIDevice *d,
++                                                VirtIOSCSIReq *tmf)
++{
++    WITH_QEMU_LOCK_GUARD(&d->requests_lock) {
++        SCSIRequest *r;
++        SCSIRequest *next;
++
++        QTAILQ_FOREACH_SAFE(r, &d->requests, next, next) {
++            VirtIOSCSIReq *cmd_req = r->hba_private;
++
++            /* hba_private is non-NULL while the request is enqueued */
++            assert(cmd_req);
++
++            if (cmd_req->req.cmd.tag == tmf->req.tmf.tag) {
++                return r->ctx;
++            }
++        }
++    }
++    return NULL;
++}
++
+ /* Return 0 if the request is ready to be completed and return to guest;
+  * -EINPROGRESS if the request is submitted and will be completed later, in the
+  *  case of async cancellation. */
+@@ -437,6 +572,7 @@ static int virtio_scsi_do_tmf(VirtIOSCSI *s, VirtIOSCSIReq *req)
+ {
+     SCSIDevice *d = virtio_scsi_device_get(s, req->req.tmf.lun);
+     SCSIRequest *r, *next;
++    AioContext *ctx;
+     int ret = 0;
+ 
+     virtio_scsi_ctx_check(s, d);
+@@ -454,7 +590,22 @@ static int virtio_scsi_do_tmf(VirtIOSCSI *s, VirtIOSCSIReq *req)
+                               req->req.tmf.tag, req->req.tmf.subtype);
+ 
+     switch (req->req.tmf.subtype) {
+-    case VIRTIO_SCSI_T_TMF_ABORT_TASK:
++    case VIRTIO_SCSI_T_TMF_ABORT_TASK: {
++        if (!d) {
++            goto fail;
++        }
++        if (d->lun != virtio_scsi_get_lun(req->req.tmf.lun)) {
++            goto incorrect_lun;
++        }
++
++        ctx = find_aio_context_for_tmf_tag(d, req);
++        if (ctx) {
++            virtio_scsi_defer_tmf_to_aio_context(req, ctx);
++            ret = -EINPROGRESS;
++        }
++        break;
++    }
++
+     case VIRTIO_SCSI_T_TMF_QUERY_TASK:
+         if (!d) {
+             goto fail;
+@@ -462,82 +613,72 @@ static int virtio_scsi_do_tmf(VirtIOSCSI *s, VirtIOSCSIReq *req)
+         if (d->lun != virtio_scsi_get_lun(req->req.tmf.lun)) {
+             goto incorrect_lun;
+         }
+-        QTAILQ_FOREACH_SAFE(r, &d->requests, next, next) {
+-            VirtIOSCSIReq *cmd_req = r->hba_private;
+-            if (cmd_req && cmd_req->req.cmd.tag == req->req.tmf.tag) {
+-                break;
++
++        WITH_QEMU_LOCK_GUARD(&d->requests_lock) {
++            QTAILQ_FOREACH(r, &d->requests, next) {
++                VirtIOSCSIReq *cmd_req = r->hba_private;
++                assert(cmd_req); /* request has hba_private while enqueued */
++
++                if (cmd_req->req.cmd.tag == req->req.tmf.tag) {
++                    /*
++                     * "If the specified command is present in the task set,
++                     * then return a service response set to FUNCTION
++                     * SUCCEEDED".
++                     */
++                    req->resp.tmf.response = VIRTIO_SCSI_S_FUNCTION_SUCCEEDED;
++                }
+             }
+         }
+-        if (r) {
+-            /*
+-             * Assert that the request has not been completed yet, we
+-             * check for it in the loop above.
+-             */
+-            assert(r->hba_private);
+-            if (req->req.tmf.subtype == VIRTIO_SCSI_T_TMF_QUERY_TASK) {
+-                /* "If the specified command is present in the task set, then
++        break;
++
++    case VIRTIO_SCSI_T_TMF_LOGICAL_UNIT_RESET:
++    case VIRTIO_SCSI_T_TMF_I_T_NEXUS_RESET:
++        virtio_scsi_defer_tmf_to_main_loop(req);
++        ret = -EINPROGRESS;
++        break;
++
++    case VIRTIO_SCSI_T_TMF_ABORT_TASK_SET:
++    case VIRTIO_SCSI_T_TMF_CLEAR_TASK_SET: {
++        if (!d) {
++            goto fail;
++        }
++        if (d->lun != virtio_scsi_get_lun(req->req.tmf.lun)) {
++            goto incorrect_lun;
++        }
++
++        qatomic_inc(&req->remaining);
++
++        ctx = s->ctx ?: qemu_get_aio_context();
++        virtio_scsi_defer_tmf_to_aio_context(req, ctx);
++
++        virtio_scsi_tmf_dec_remaining(req);
++        ret = -EINPROGRESS;
++        break;
++    }
++
++    case VIRTIO_SCSI_T_TMF_QUERY_TASK_SET:
++        if (!d) {
++            goto fail;
++        }
++        if (d->lun != virtio_scsi_get_lun(req->req.tmf.lun)) {
++            goto incorrect_lun;
++        }
++
++        WITH_QEMU_LOCK_GUARD(&d->requests_lock) {
++            QTAILQ_FOREACH_SAFE(r, &d->requests, next, next) {
++                /* Request has hba_private while enqueued */
++                assert(r->hba_private);
++
++                /*
++                 * "If there is any command present in the task set, then
+                  * return a service response set to FUNCTION SUCCEEDED".
+                  */
+                 req->resp.tmf.response = VIRTIO_SCSI_S_FUNCTION_SUCCEEDED;
+-            } else {
+-                VirtIOSCSICancelNotifier *notifier;
+-
+-                req->remaining = 1;
+-                notifier = g_new(VirtIOSCSICancelNotifier, 1);
+-                notifier->tmf_req = req;
+-                notifier->notifier.notify = virtio_scsi_cancel_notify;
+-                scsi_req_cancel_async(r, &notifier->notifier);
+-                ret = -EINPROGRESS;
++                break;
+             }
+         }
+         break;
+ 
+-    case VIRTIO_SCSI_T_TMF_LOGICAL_UNIT_RESET:
+-    case VIRTIO_SCSI_T_TMF_I_T_NEXUS_RESET:
+-        virtio_scsi_defer_tmf_to_bh(req);
+-        ret = -EINPROGRESS;
+-        break;
+-
+-    case VIRTIO_SCSI_T_TMF_ABORT_TASK_SET:
+-    case VIRTIO_SCSI_T_TMF_CLEAR_TASK_SET:
+-    case VIRTIO_SCSI_T_TMF_QUERY_TASK_SET:
+-        if (!d) {
+-            goto fail;
+-        }
+-        if (d->lun != virtio_scsi_get_lun(req->req.tmf.lun)) {
+-            goto incorrect_lun;
+-        }
+-
+-        /* Add 1 to "remaining" until virtio_scsi_do_tmf returns.
+-         * This way, if the bus starts calling back to the notifiers
+-         * even before we finish the loop, virtio_scsi_cancel_notify
+-         * will not complete the TMF too early.
+-         */
+-        req->remaining = 1;
+-        QTAILQ_FOREACH_SAFE(r, &d->requests, next, next) {
+-            if (r->hba_private) {
+-                if (req->req.tmf.subtype == VIRTIO_SCSI_T_TMF_QUERY_TASK_SET) {
+-                    /* "If there is any command present in the task set, then
+-                     * return a service response set to FUNCTION SUCCEEDED".
+-                     */
+-                    req->resp.tmf.response = VIRTIO_SCSI_S_FUNCTION_SUCCEEDED;
+-                    break;
+-                } else {
+-                    VirtIOSCSICancelNotifier *notifier;
+-
+-                    req->remaining++;
+-                    notifier = g_new(VirtIOSCSICancelNotifier, 1);
+-                    notifier->notifier.notify = virtio_scsi_cancel_notify;
+-                    notifier->tmf_req = req;
+-                    scsi_req_cancel_async(r, &notifier->notifier);
+-                }
+-            }
+-        }
+-        if (--req->remaining > 0) {
+-            ret = -EINPROGRESS;
+-        }
+-        break;
+-
+     case VIRTIO_SCSI_T_TMF_CLEAR_ACA:
+     default:
+         req->resp.tmf.response = VIRTIO_SCSI_S_FUNCTION_REJECTED;
+@@ -941,6 +1082,7 @@ static void virtio_scsi_reset(VirtIODevice *vdev)
+     assert(!s->dataplane_started);
+ 
+     virtio_scsi_reset_tmf_bh(s);
++    virtio_scsi_flush_defer_tmf_to_aio_context(s);
+ 
+     qatomic_inc(&s->resetting);
+     bus_cold_reset(BUS(&s->bus));
 -- 
 2.48.1
 
