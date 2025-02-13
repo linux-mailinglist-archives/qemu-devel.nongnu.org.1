@@ -2,67 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59E2A33B78
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5C6A33B76
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 10:43:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiVjH-0001EX-Pe; Thu, 13 Feb 2025 04:41:55 -0500
+	id 1tiVjC-0001Dd-N9; Thu, 13 Feb 2025 04:41:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tiVj3-00018i-7p
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 04:41:41 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tiVj0-0002vF-OD
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 04:41:41 -0500
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxnmtMvq1naAN0AA--.5244S3;
- Thu, 13 Feb 2025 17:41:33 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBx3MRJvq1nn7cPAA--.58422S3;
- Thu, 13 Feb 2025 17:41:32 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: Add full type support for
- query-cpu-model-expansion
-From: bibo mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20250213091626.3650603-1-maobibo@loongson.cn>
-Message-ID: <3a1f0744-4795-8f07-7258-0922745906ac@loongson.cn>
-Date: Thu, 13 Feb 2025 17:40:56 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tiVix-00017y-Kq
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 04:41:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tiVis-0002uY-5u
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 04:41:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739439688;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=dhNM2XS2aMoLSfuWj7PxKqJ+8mLVG9Kal2ka5HJ22aY=;
+ b=FxXN59sFbnw8euh7FFn1bbGuYx7TpP3IUGW/759GQjtKHWhnudgCjft9nPI646w44EG71H
+ jt84pm/UA9BJK6h1ZZi0SBLYjto88k80oucHcjSOOXbl6qff7Q2U303bKj4ah8Pmp99iON
+ YTFn8ItoQA3UbrPxPMv6PJcNCUH9bVQ=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-cwv_Q1MOPhmWMxC0XQMUvQ-1; Thu, 13 Feb 2025 04:41:26 -0500
+X-MC-Unique: cwv_Q1MOPhmWMxC0XQMUvQ-1
+X-Mimecast-MFC-AGG-ID: cwv_Q1MOPhmWMxC0XQMUvQ
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2fa166cf656so1623379a91.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 01:41:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739439685; x=1740044485;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dhNM2XS2aMoLSfuWj7PxKqJ+8mLVG9Kal2ka5HJ22aY=;
+ b=RMXooKLhp37s7EzlWTOt6/JanASrl+UoavC8x8AM5GOSu3x9tLi+qVMq5Tpfibe4je
+ oGON8jnj1QE9Qwla/fV9EOPxg5WeUXd2/JRIjvjsNG9THuCnl08Pxx05FiL+Z7UTm9Ef
+ p5wmUZB/kudrfYS9yNOX1jDn6Km/0cN/wPF0Y+wDu2XrlWd44uzUSbJSUbvaccRgqHiG
+ s/GMptvUDCIi6JHSfzSxsK7fYXPxRxjknCu3rivHbvOn/bT5xGwLJFd8EYmmQ718y+Dk
+ n9Hd/NmwBjwONfn17Q395VZvDgqB8YSEj4FzXToXBkhfzSWbimxGmoJxfjNjNpeNg6pq
+ KVNQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW98diyT+x7ygu65jD7T6YbYMwh6NlW28/rdDvAmgmkLF2OWAupCKt3bwD4g2ijpIsB/20stw4rk8nN@nongnu.org
+X-Gm-Message-State: AOJu0YyjzaUcNpsyX0P5s+X2f3OlyzZbvNQ9tK4ck0shmkh2SpPOxC9L
+ rrzcixJBsgSgaF6PlKBSg+Ht5TgnxRn1pvvm7Q/DQ2s4FVzWSmsPqs9d5IzE7tn9RoQ4stKCIC3
+ nzOssbVOXZ0td7CBpS7UaLSRHuFwyprWnSip+caWebTcWDcifKWm2
+X-Gm-Gg: ASbGncu30yKWBFAAsgjYcVFBm4a822kuElVfCbhdcvzoybViGBrB8Rku4h6UVd3virC
+ tuVrceCs0zMRK1dBnAp9TGqHKNWN8ro34p9kxVSXK171XCvbxKOAqa7IHqUkxHascvUL7kgXjD6
+ lonj4cTeAAVo1uEWTlAtCOMc0MDatpPL1t1RiCqS+y3W+aC8dE/YxGe1SjxcrwU6GGE/Tdl2UgX
+ 5gD1nwGklBYR0OGyeiXfYwXhjNbU95SWe+yQflIwpUjLShvIYKCARCjBAtgv/nJU6ZeFMDcZlnC
+ 4GsT+UZ72U7BIJszco3w2cyyfK9+
+X-Received: by 2002:a17:90b:3a89:b0:2f4:423a:8fb2 with SMTP id
+ 98e67ed59e1d1-2fc0e98dd17mr3553901a91.20.1739439685164; 
+ Thu, 13 Feb 2025 01:41:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+NzP2XAk1pJAMNmfBevYWFmx7nvWvOMHQvQBeDfQYrS2LJR1w31cD7PARTcNFSmMzZ3R2kQ==
+X-Received: by 2002:a17:90b:3a89:b0:2f4:423a:8fb2 with SMTP id
+ 98e67ed59e1d1-2fc0e98dd17mr3553877a91.20.1739439684792; 
+ Thu, 13 Feb 2025 01:41:24 -0800 (PST)
+Received: from localhost.localdomain ([116.72.129.244])
+ by smtp.googlemail.com with ESMTPSA id
+ 98e67ed59e1d1-2fbf9ab0233sm2912289a91.44.2025.02.13.01.41.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Feb 2025 01:41:24 -0800 (PST)
+From: Ani Sinha <anisinha@redhat.com>
+To: Sergio Lopez <slp@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>
+Cc: Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH] microvm: do not use the lastest cpu version
+Date: Thu, 13 Feb 2025 15:11:00 +0530
+Message-ID: <20250213094100.129358-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-In-Reply-To: <20250213091626.3650603-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBx3MRJvq1nn7cPAA--.58422S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJrWDZryfKw4DXr4kAw4DJrc_yoW8Ar45pF
- W7Ar4UJFZxJF17Ja48uFyYqr1IvrnrGrW2gasxWryqyrnaqr13Zr1xtayqvFy3Z3yrW3yY
- qwn5Kw1Yva1xXwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.157,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,49 +108,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-please discard this patch :(
+Microvm machines are not versioned and therefore there is no requirement to use
+the latest cpu model by default. Let microvms use the non-versioned cpu model.
+Those users who need spefific cpu versions can use explicit commandline to
+select the cpu version desired.
 
-libvirt uses static type already on LoongArch platform, there is 
-compatibility issue. Static type cannot be removed, although I do
-not know the difference between static type and full type.
+CC: imammedo@redhat.com
+CC: zhao1.liu@intel.com
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/i386/microvm.c |  2 +-
+ target/i386/cpu.c | 15 ---------------
+ target/i386/cpu.h |  4 ----
+ 3 files changed, 1 insertion(+), 20 deletions(-)
 
-Regards
-Bibo Mao
+Pipeline passes:
+https://gitlab.com/anisinha/qemu/-/pipelines/1669159835
+See also Igor's comment on
+https://patchwork.ozlabs.org/project/qemu-devel/patch/20250128035526.3750043-1-anisinha@redhat.com/
 
-On 2025/2/13 下午5:16, Bibo Mao wrote:
-> With full type for query-cpu-model-expansion qmp command, it shows that
-> it is not supported. For instance,
->    query-cpu-model-expansion type=full model={"name":"max"}
-> 
-> Here is is output,
->    {"error": {"class": "GenericError", "desc": "The requested expansion type is not supported"}}
-> 
-> Since full type is not supported and only static type is supported, Here
-> replace static type with full type for command query-cpu-model-expansion.
-> 
-> And there is result with this patch,
->    {"return": {"model": {"name": "max", "props": {"lbt": true, "lasx": true, "pmu": true, "lsx": true}}}}
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   target/loongarch/loongarch-qmp-cmds.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-> index 3fde5a5a20..429c6d35fd 100644
-> --- a/target/loongarch/loongarch-qmp-cmds.c
-> +++ b/target/loongarch/loongarch-qmp-cmds.c
-> @@ -56,7 +56,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
->       const char *name;
->       int i;
->   
-> -    if (type != CPU_MODEL_EXPANSION_TYPE_STATIC) {
-> +    if (type != CPU_MODEL_EXPANSION_TYPE_FULL) {
->           error_setg(errp, "The requested expansion type is not supported");
->           return NULL;
->       }
-> 
-> base-commit: de278e54aefed143526174335f8286f7437d20be
-> 
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index a8d354aabe..b8be1542ff 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -458,7 +458,7 @@ static void microvm_machine_state_init(MachineState *machine)
+ 
+     microvm_memory_init(mms);
+ 
+-    x86_cpus_init(x86ms, CPU_VERSION_LATEST);
++    x86_cpus_init(x86ms, 1);
+ 
+     microvm_devices_init(mms);
+ }
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index b5dd60d281..6d251c0025 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5513,18 +5513,6 @@ void x86_cpu_set_default_version(X86CPUVersion version)
+     default_cpu_version = version;
+ }
+ 
+-static X86CPUVersion x86_cpu_model_last_version(const X86CPUModel *model)
+-{
+-    int v = 0;
+-    const X86CPUVersionDefinition *vdef =
+-        x86_cpu_def_get_versions(model->cpudef);
+-    while (vdef->version) {
+-        v = vdef->version;
+-        vdef++;
+-    }
+-    return v;
+-}
+-
+ /* Return the actual version being used for a specific CPU model */
+ static X86CPUVersion x86_cpu_model_resolve_version(const X86CPUModel *model)
+ {
+@@ -5532,9 +5520,6 @@ static X86CPUVersion x86_cpu_model_resolve_version(const X86CPUModel *model)
+     if (v == CPU_VERSION_AUTO) {
+         v = default_cpu_version;
+     }
+-    if (v == CPU_VERSION_LATEST) {
+-        return x86_cpu_model_last_version(model);
+-    }
+     return v;
+ }
+ 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c67b42d34f..71f150a05f 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2701,10 +2701,6 @@ void apic_handle_tpr_access_report(DeviceState *d, target_ulong ip,
+                                    TPRAccess access);
+ 
+ /* Special values for X86CPUVersion: */
+-
+-/* Resolve to latest CPU version */
+-#define CPU_VERSION_LATEST -1
+-
+ /*
+  * Resolve to version defined by current machine type.
+  * See x86_cpu_set_default_version()
+-- 
+2.45.2
 
 
