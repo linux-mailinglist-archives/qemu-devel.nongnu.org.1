@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7D9A33F04
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 13:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39618A33F0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 13:24:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiYEk-0001zC-T1; Thu, 13 Feb 2025 07:22:34 -0500
+	id 1tiYEt-00025O-C8; Thu, 13 Feb 2025 07:22:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiYEc-0001yj-HK
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:22:26 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiYEm-00022G-84
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:22:36 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiYEZ-0002T3-Gk
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:22:26 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-aaf0f1adef8so159140066b.3
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 04:22:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiYEh-0002U2-1I
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:22:33 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-aaf0f1adef8so159164666b.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 04:22:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739449341; x=1740054141; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7wSgwIZJNS5wWvbHzf6KxQQFZR0DskwF9SNahv2jROc=;
- b=i662A7aLptifJBx3QrXlvQoAykt3nAK7M52Lik+r4rrykk1aowUksff7QDRhId53y7
- xoIBlncILrfPNzN+XkKx2IZW08bHABLASLAzefTaGDVY4Pp6JKEANHc5QCTgwSckTKd3
- YRdkMjHpb74BQJQBOkW5OPtVIrOvbke7qCetZwon6qntSJDRB30m/NgsE28n7OA1Rlq+
- fdo6WNlNx+42l7PZvYzdjme+r/yTPF64JfhYKcSTqpci//9541KCRFdLqaS5AGHe0W07
- 91txf0/wZJBwMT2P1Ua9Z4U1rN17RmqScED0pNvBIwwI6/Cg87WykD+vqzpm+UYBc8HC
- 4zTw==
+ d=linaro.org; s=google; t=1739449348; x=1740054148; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=a0QIUZ9G9ceuu7BOeFAVNnHGygrUdl1K5aeRH+HplWk=;
+ b=Wj28MKwQjCLsaCYr0OPKaCevm2TVyfbZqzveO0WvPlt8+TxlJAUji1141zrGwpoahS
+ l/zIIQeVXN68kXcYgx9EkxmwmNOCPBHUKCKH4iJMwiToY69GcfGU/mYTt4qI86W26YYX
+ PRswk59ilZopiS1T+VzVpNfOXS/vWuDxussSEen4wF6pDd9p9KOnU0r2LxXViRgwcqxT
+ V5bRCmlnS2+WexzqVoamHSFtsCL/28iQOuuzTNigwR3OUkLRvF90GlL8i+hMwzBOhZzu
+ +cBAKy8VJVuVe3qIU828cpz9rEhzGdRw/OWzwAEmYzSe1zjz4/m1S4/095YeunaE1FQF
+ UWNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739449341; x=1740054141;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7wSgwIZJNS5wWvbHzf6KxQQFZR0DskwF9SNahv2jROc=;
- b=IpuUfXfsP33hvSd0BL04xe4dtUCw46vJreCltPMzObM15WPU5qlsmsUhLKi1XPGN9P
- Pw9DURxG5PvLYL7x3h4BViVHBnrNA6syW//7NoJH4EeP0zwXiwMN3H1kFh0QkVbEtg/2
- 5Le1XMPOqG4lQt2d2dleRB7qqNB3VcOUDGNtmdG0xKS13HH/LZ1M8CYEZ4QrR8V31NOU
- ukNEfThbcMxY/FoMduS4Y1FtrsxagTRq92OvQdFP+Tv1g2Kn5+3cT5ny0Uz9n6mujn98
- DdlD9jgEdFyYIZWBAs+gSdtJKsRgk8VUtiBJqua+yJmnpFHJqg89JCQHGBX3K2h5qef4
- gxDw==
-X-Gm-Message-State: AOJu0Yx+amp1RUf/+x3oSF+mjy5J8rTqBTWOze7KqBXz0ocp88usng7s
- a0WGLXHSxdFg9M6zI16xLmNtQmFV346cQZyo6eQKpl1yAWXGyxRE1YNuhnmE8qxVeK5J6MlRgZ+
- fetY=
-X-Gm-Gg: ASbGncusscstwvi7QChW3BxSC/LbYCi2uemyQ/4geWoRwHrlJ5RvQKhqOeJf4jiBsO7
- grF4DEarEETklTuwWlW4UzKlBjKpfquk7N3rJZrNdWq+/zYhIO6HYzX0yszDtVd1Pz/a+mvbPnb
- FJS+z4IK47CLMHwInfPBENbDTjqwD2oYBv7Zu2ZWI6JFe2y6P8ASipVw7W4JszJaynkD4TmoF3c
- Grji4WVpWXfnEAzPbkzMfMtldjxt8gTMNiUCdb/tZVawakzIuv2CRbESdKD4KvN7eOJ5zqTFj/2
- eHYsDATaqG4V0zCgt1s8qXFM7tmJQAD5relCEBXf4AksJZkr+YuHlOhMD8mr
-X-Google-Smtp-Source: AGHT+IEShprbey5/yy6IiNK+WOto7g5nqUk3ldvlAZ/dqFDaTv0yRduBDi4IkAcE2yNN3VkXMB+BXw==
-X-Received: by 2002:a17:907:7f27:b0:aa6:a7ef:7f1f with SMTP id
- a640c23a62f3a-ab7f3325255mr651627466b.11.1739449341337; 
- Thu, 13 Feb 2025 04:22:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739449348; x=1740054148;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=a0QIUZ9G9ceuu7BOeFAVNnHGygrUdl1K5aeRH+HplWk=;
+ b=kz+YLsPGSxvy1giSVroAVfMU1OO8xjSqZk/AgDqrvqH/0D6kqh5O23D7sfqLZe7gaI
+ VYmgmk56UuR1GJ662pPE/olUbrzhssSIB30OLsgpdG/jwKWmOOQBRkJvXL29CNLBoZ/Y
+ 0TgwNQ6NjPdGDjwzRR3GnmpTyZt6hNtMoG1UDtYq2QjAugnsKljDYWh084WmUJWzTMuK
+ FKo3eaP0eJHXKrRlDljQyF0YqzFzaChKxue+IrQXTRKSi0VK5VuP7mCfChed/T8xJfbE
+ ukVyZEAnoCKSxLGJgM+fHyeC2MMu+3PS3GLrMHrq+9/RuepW9jNfLyY+bVFI1pxafFIm
+ CzPw==
+X-Gm-Message-State: AOJu0YzCQUL/VPkim806D84Lga2gBXmhVQuze5c7midLZPYnI2M50psg
+ XAcXiu+5cOIKV/IjEQUX+d8OPT4rRMq/t1avP8poEoBCec/6MzBZD61MEG9oQCCHxTRAIuwGzIX
+ 7aQ0=
+X-Gm-Gg: ASbGncsWwhz7ubedPhxDEOABmlVTopRTrzkSCaAPpX/VROS4FeZGMObPPY2vFxlHTMY
+ urb9tjYM5VbFQdDhHWD1L8HpqosLgg0keA2OiX1HVCSsqoUh+rUcbxiKk21N0TbuagoYv4M/NuB
+ BX0ApmId2mCEivmCJPtgt2VFTMugBfesLI+lsJzw0Fjy9ZhwMuY25f3Oh0K+fQ66Zi4wUfeOdku
+ hRy4h9rJGsUzKoivIK4fyj3cXgGSHSL5hlIqybUYcm3l0gk0pthEh1M14s0A/+l8TTKFS15Ox1B
+ q06otcmpGvdRsDJEuCOqw+9y46S3kQwAPzupuHdzT0IaeiIWfugkxHvsG+Ma
+X-Google-Smtp-Source: AGHT+IFcEI4Fc9o0XGrsqIZqGPhP/I7pfT2aGbeUUlm6vNF4JlElm+h+q368itYh4zUDnRMPZVR7Cw==
+X-Received: by 2002:a17:907:3da2:b0:a9e:b2da:b4a3 with SMTP id
+ a640c23a62f3a-ab7f347dc2bmr670610566b.42.1739449347940; 
+ Thu, 13 Feb 2025 04:22:27 -0800 (PST)
 Received: from localhost.localdomain (6.170.88.92.rev.sfr.net. [92.88.170.6])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aba53284042sm120308366b.82.2025.02.13.04.22.19
+ a640c23a62f3a-aba5325ac21sm122673766b.73.2025.02.13.04.22.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 13 Feb 2025 04:22:20 -0800 (PST)
+ Thu, 13 Feb 2025 04:22:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v8 0/6] hw/microblaze: Allow running cross-endian vCPUs
-Date: Thu, 13 Feb 2025 13:22:11 +0100
-Message-ID: <20250213122217.62654-1-philmd@linaro.org>
+Subject: [PATCH v8 1/6] hw/qdev-properties-system: Introduce EndianMode QAPI
+ enum
+Date: Thu, 13 Feb 2025 13:22:12 +0100
+Message-ID: <20250213122217.62654-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250213122217.62654-1-philmd@linaro.org>
+References: <20250213122217.62654-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,56 +99,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(series fully reviewed)
+Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
+Endianness can be BIG, LITTLE or unspecified (default).
 
-Since v7:
-- Corrected commit descriptions
-- Consider TARGET_BIG_ENDIAN for petalogix-ml605 machine (Thomas)
-- Remove pointless QAPI description (Markus)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ qapi/common.json                    | 14 ++++++++++++++
+ include/hw/qdev-properties-system.h |  7 +++++++
+ hw/core/qdev-properties-system.c    | 11 +++++++++++
+ 3 files changed, 32 insertions(+)
 
-Since v6:
-- Simplify MemoryRegionOps indexing (Thomas)
-
-Since v5:
-- Introduce QAPI EndianMode
-- Update RISCV machine while rebasing
-- Fixed INTC use on PPC (Thomas)
-- Dropped patch adding more machines (Daniel)
-
-Since v4 & v3:
-- Addressed Thomas review comments
-
-Since v2:
-- Addressed Richard's review comments
-
-Since v1:
-- Make device endianness configurable (Edgar)
-- Convert more Xilinx devices
-- Avoid preprocessor #if (Richard)
-- Add R-b tags
-
-Philippe Mathieu-Daudé (6):
-  hw/qdev-properties-system: Introduce EndianMode QAPI enum
-  hw/intc/xilinx_intc: Make device endianness configurable
-  hw/net/xilinx_ethlite: Make device endianness configurable
-  hw/timer/xilinx_timer: Make device endianness configurable
-  hw/char/xilinx_uartlite: Make device endianness configurable
-  hw/ssi/xilinx_spi: Make device endianness configurable
-
- qapi/common.json                         | 14 ++++++
- include/hw/qdev-properties-system.h      |  7 +++
- hw/char/xilinx_uartlite.c                | 34 +++++++++-----
- hw/core/qdev-properties-system.c         | 11 +++++
- hw/intc/xilinx_intc.c                    | 59 ++++++++++++++++++------
- hw/microblaze/petalogix_ml605_mmu.c      |  5 ++
- hw/microblaze/petalogix_s3adsp1800_mmu.c |  6 +++
- hw/net/xilinx_ethlite.c                  | 29 +++++++++---
- hw/ppc/virtex_ml507.c                    |  2 +
- hw/riscv/microblaze-v-generic.c          |  5 ++
- hw/ssi/xilinx_spi.c                      | 32 +++++++++----
- hw/timer/xilinx_timer.c                  | 43 +++++++++++------
- 12 files changed, 194 insertions(+), 53 deletions(-)
-
+diff --git a/qapi/common.json b/qapi/common.json
+index 6ffc7a37890..0e3a0bbbfb0 100644
+--- a/qapi/common.json
++++ b/qapi/common.json
+@@ -212,3 +212,17 @@
+ ##
+ { 'struct': 'HumanReadableText',
+   'data': { 'human-readable-text': 'str' } }
++
++##
++# @EndianMode:
++#
++# @unspecified: Endianness not specified
++#
++# @little: Little endianness
++#
++# @big: Big endianness
++#
++# Since: 10.0
++##
++{ 'enum': 'EndianMode',
++  'data': [ 'unspecified', 'little', 'big' ] }
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 7ec37f6316c..ead4dfc2f02 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -30,6 +30,7 @@ extern const PropertyInfo qdev_prop_pcie_link_speed;
+ extern const PropertyInfo qdev_prop_pcie_link_width;
+ extern const PropertyInfo qdev_prop_cpus390entitlement;
+ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
++extern const PropertyInfo qdev_prop_endian_mode;
+ 
+ #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+@@ -97,4 +98,10 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+     DEFINE_PROP(_name, _state, _field, qdev_prop_iothread_vq_mapping_list, \
+                 IOThreadVirtQueueMappingList *)
+ 
++#define DEFINE_PROP_ENDIAN(_name, _state, _field, _default) \
++    DEFINE_PROP_UNSIGNED(_name, _state, _field, _default, \
++                         qdev_prop_endian_mode, EndianMode)
++#define DEFINE_PROP_ENDIAN_NODEFAULT(_name, _state, _field) \
++    DEFINE_PROP_ENDIAN(_name, _state, _field, ENDIAN_MODE_UNSPECIFIED)
++
+ #endif
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index a96675beb0d..89f954f569e 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -1283,3 +1283,14 @@ const PropertyInfo qdev_prop_iothread_vq_mapping_list = {
+     .set = set_iothread_vq_mapping_list,
+     .release = release_iothread_vq_mapping_list,
+ };
++
++/* --- Endian modes */
++
++const PropertyInfo qdev_prop_endian_mode = {
++    .name = "EndianMode",
++    .description = "Endian mode, big/little/unspecified",
++    .enum_table = &EndianMode_lookup,
++    .get = qdev_propinfo_get_enum,
++    .set = qdev_propinfo_set_enum,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
 -- 
 2.47.1
 
