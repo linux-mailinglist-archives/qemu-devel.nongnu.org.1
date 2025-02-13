@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A970A34904
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 17:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6140AA3490B
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 17:08:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tibey-0000yP-Lg; Thu, 13 Feb 2025 11:01:52 -0500
+	id 1tiber-0000vt-UH; Thu, 13 Feb 2025 11:01:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tibeJ-0000oq-Ja
+ id 1tibeJ-0000op-JW
  for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:01:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tibeC-0005Oj-4y
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:01:09 -0500
+ id 1tibeD-0005PM-JT
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:01:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739462462;
+ s=mimecast20190719; t=1739462464;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=zcjBoC1B+j7HYq04KLSZk9SffU753eljHxo8vUNW3qE=;
- b=XgumIok61zEr+rE/McW41bRj+e1CtuD9gbmZgb9o2zwEjp2z8m7/Zb8qTRUkgQKKNiQGnk
- tOWrvP60s6Lq/GhFk+U7TZ1HUCAIA3vkMmQ7j8bP8nfkh53xgEc2LMQPXb/ByVC4TLk194
- 8FqXa5AmvmQAPqpF76tgXR2rFqx6GLc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WszW0NxKZSYHFFSiUB5cJcU961As2uXrLrk50UN0l2U=;
+ b=ZL92n1OJJupYecXua3K6tOmQDfE1EBXS/9Egz5xhhZTmGj4FjMWUcXs9U4lyrMdgxTc+Zd
+ kszC4U6QeMTD9Jd5KaWnJNLz+w7f/zZ5EOIR8PMdkZov+tmq3jYXhx0VUzwKLmXmL2HoZC
+ EKSoWqCwwemRRa/nE8hyPT1mwyrjdAY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-3Y2G7hTvMOiYg9ys1UOkjA-1; Thu, 13 Feb 2025 11:01:00 -0500
-X-MC-Unique: 3Y2G7hTvMOiYg9ys1UOkjA-1
-X-Mimecast-MFC-AGG-ID: 3Y2G7hTvMOiYg9ys1UOkjA
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38de0a98043so613704f8f.3
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 08:01:00 -0800 (PST)
+ us-mta-549-vHSMizb1NX6hT6xb5joKng-1; Thu, 13 Feb 2025 11:01:02 -0500
+X-MC-Unique: vHSMizb1NX6hT6xb5joKng-1
+X-Mimecast-MFC-AGG-ID: vHSMizb1NX6hT6xb5joKng
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43941ad86d4so8422565e9.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 08:01:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739462459; x=1740067259;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zcjBoC1B+j7HYq04KLSZk9SffU753eljHxo8vUNW3qE=;
- b=pPvGn0dFwp9XX35E1eoawZ+gi40sg5Okfa5dhx9ZD2NuJ6GRk6HlgDcqG4PPzyQJze
- HvUydITv1aYSudsF1gPz4MpLjX3SXttZP/HzYSsUhRVsPN1tLNEjz7G5jyg44z5eCyZE
- GuqKMvnJkUU//QvhjpTqTvn2eP2jPk6kz4QFat5HzRP4CBd8bD2ZbkIFd51PKeNv94b3
- xpU5HecI0a91jxNy1zTW1PwYI4qOPrhfVMSPVmMosqFYca/7AID5ROwFqcsFdGDsbEPf
- 9G1kM7J3bPM8rKRjBi7N5to6jEr0quguYwG9OP3SHuxYOzVgCEU2TVVpMulLNq3APVGY
- krYw==
-X-Gm-Message-State: AOJu0Yz0jYCn9dfryouiUp4OdB9n72fh5wf26fNMbUp5akSNhJxdmyO5
- 9S0CYX6yp9jkG7BH02T5wya1gKHM+2K9SBUlIMk21psnPRIYOwG/gabWBeKynyI9lLBXP7K4uuD
- 2F87kf6j7+GcdvbO5UESOT5+BvgjhkQ19tEl8X+ivEX63fDw2YYcZ9hiIp5iK4haBh6o/m06/yf
- aZiX/HhD4QW2a+XQYOKpqLLLRBI/QYCabTwBbk+QU=
-X-Gm-Gg: ASbGnctq1WbA6qQVhtbzR/B3ZnUoBg7iW9ewQNdGzBssqnqJCN3Le1zk9MPaUcSKohG
- 8Gg6eexIG1LznWoloTIZguc/2i+Y2+ozpjujT2zPTdIliEes9lnd7D+zO5Dt8LB1BT44B4TSkUl
- vh6CUgqXz8fY6hcHAFddjvIH7lozHkrSBF51dTWYNb0RTXcJ3GX2VUtaichpCneFqGAZlgeMIdP
- owPz3boG4kpwCJk1YKWrDUdfw7kDYjW4Q4p7cBxERLWqmzUeMBmylvAsAljZCB+CvL3yGV0aZta
- fiOlW23BdW1hfi65y9F1yQ9g/D7efK17Oquy2cKVl70qDg==
-X-Received: by 2002:a5d:5889:0:b0:38f:24f4:93b9 with SMTP id
- ffacd0b85a97d-38f24f49436mr3758624f8f.28.1739462458860; 
- Thu, 13 Feb 2025 08:00:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxYpaoSpx8w5fgA+mrSz/ITH9U0Js+Q68cjABmBpGgKhxA6GE4J5H51+Txp99xTs9wlDpTKQ==
-X-Received: by 2002:a5d:5889:0:b0:38f:24f4:93b9 with SMTP id
- ffacd0b85a97d-38f24f49436mr3758525f8f.28.1739462457788; 
- Thu, 13 Feb 2025 08:00:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739462461; x=1740067261;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WszW0NxKZSYHFFSiUB5cJcU961As2uXrLrk50UN0l2U=;
+ b=uyHngAvOp/AcAyKb3Iwh2mgORbmH/85dRKXAwqh47UrZ3hpLOOFUOstylkcC8jwGW5
+ 9Cg5MLSOJ2B+8HTBJH0VOf+A7/b4T0AnPAkFgO9H8cYvQDwGU6RVQRYSnECUJzktzR6V
+ C1rSBpx6xWDoYClp5Hitluinek4cp1+t8FCGjbJVPBeTe4YnWeo/QhKn++cZl+83Fanh
+ 1/VIYerzEr/t/x2pwg8GX9cHXs8dBJpI873Q86/Bx+Hu/iS9aXEzTyU1yL61opB84Nsz
+ HzuaDyKJpihWe1qUoYmgUCOQq3VQfMfgHvT6OdfZQgL+NbsW78tMfALLi3ajH+kpBZEQ
+ I2Hw==
+X-Gm-Message-State: AOJu0Yx6lztEu+OuW3G1acnmfovlWyzOvQMfy+VDLHe4dm/fD27D0TNl
+ hAtTwdUaL9zVVQ4s24d2ea1HxWAJQvriAQTKTSaKlheqmGtRR5d1NmBocblHp3Dw8wjC1kpLq2T
+ OGZOWMeDy4iSc7s8DVROdzz5dwEwGAG2y4u91T5Id3mSg6JgbF4TZEqFCnRrCv/P+dRpS55zj6E
+ YVa02MTthQLPgL75HniypraHehn5YgPVra7Ls8FjA=
+X-Gm-Gg: ASbGncu9XeXH1nfQ5c+1IisnsXOMn988Go0v9orxuxOWRA320clSVGngRHGjCXGinQf
+ 3Hj1fyicCTCCZ7vKvP9Gj+pmgm+OmxCiuHBAb8T6klw8RNibWwUorVQ2sh92jGWJ4uzFX62JroM
+ vL1H83CqaeCbFNIv862mpJZqgu6GhM2lhOkJwKT++bF+6EfjaLr+xzuN+52ZTZ7tmHc5CQvlaU5
+ xavVr723WLYsit3SSxoiFrZSVN69gFuiPtESee2MnnH8pJzaO6OxoZ93fuE+uTu7JNJgVYBWpcW
+ TqGOHx2OydkTQSF5nIgzZNtaRcpo5Ews4Br87uJbGVacIw==
+X-Received: by 2002:a5d:598e:0:b0:38f:21ce:aa28 with SMTP id
+ ffacd0b85a97d-38f21ceb0famr6167230f8f.36.1739462460311; 
+ Thu, 13 Feb 2025 08:01:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGV2iV679sLK2Kn6isMwwx8W+PjBeaDA8rvAcFeN/A8HvlbVfbSMlvN/1+ih+wfA+QMrBd4FQ==
+X-Received: by 2002:a5d:598e:0:b0:38f:21ce:aa28 with SMTP id
+ ffacd0b85a97d-38f21ceb0famr6167121f8f.36.1739462459383; 
+ Thu, 13 Feb 2025 08:00:59 -0800 (PST)
 Received: from [192.168.126.123] (93-38-211-213.ip72.fastwebnet.it.
  [93.38.211.213]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d8e62sm2235630f8f.71.2025.02.13.08.00.57
+ ffacd0b85a97d-38f258ccd2csm2318611f8f.30.2025.02.13.08.00.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Feb 2025 08:00:57 -0800 (PST)
+ Thu, 13 Feb 2025 08:00:58 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/27] rust, Windows patches for 2025-02-13
-Date: Thu, 13 Feb 2025 17:00:27 +0100
-Message-ID: <20250213160054.3937012-1-pbonzini@redhat.com>
+Subject: [PULL 01/27] rust: docs: document naming convention
+Date: Thu, 13 Feb 2025 17:00:28 +0100
+Message-ID: <20250213160054.3937012-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250213160054.3937012-1-pbonzini@redhat.com>
+References: <20250213160054.3937012-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -103,115 +106,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit de278e54aefed143526174335f8286f7437d20be:
+As agreed in the "vtables and procedural macros" thread on
+the mailing list.
 
-  Merge tag 'pull-loongarch-20250212' of https://gitlab.com/bibo-mao/qemu into staging (2025-02-12 09:16:36 -0500)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/devel/rust.rst | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to 4dafba778aa3e5f5fd3b2c6333afd7650dcf54e2:
-
-  ui/sdl2: reenable the SDL2 Windows keyboard hook procedure (2025-02-13 13:50:45 +0100)
-
-----------------------------------------------------------------
-* rust: more qdev bindings
-* rust: HPET device model with timer and GPIO bindings
-* rust: small cleanups and fixes; run doctests during CI
-* ui/sdl2: reenable the SDL2 Windows keyboard hook procedure
-
-----------------------------------------------------------------
-Paolo Bonzini (16):
-      rust: docs: document naming convention
-      rust: qom: add reference counting functionality
-      rust: qom: add object creation functionality
-      rust: callbacks: allow passing optional callbacks as ()
-      rust: qdev: add clock creation
-      rust: qom: allow initializing interface vtables
-      rust: qdev: make ObjectImpl a supertrait of DeviceImpl
-      rust: qdev: switch from legacy reset to Resettable
-      rust: bindings: add Send and Sync markers for types that have bindings
-      rust: bindings for MemoryRegionOps
-      rust: irq: define ObjectType for IRQState
-      rust: chardev, qdev: add bindings to qdev_prop_set_chr
-      rust: pl011: convert pl011_create to safe Rust
-      rust: qemu_api: add a documentation header for all modules
-      rust: vmstate: remove redundant link targets
-      rust: fix doctests
-
-Volker Rümelin (1):
-      ui/sdl2: reenable the SDL2 Windows keyboard hook procedure
-
-Zhao Liu (10):
-      i386/fw_cfg: move hpet_cfg definition to hpet.c
-      rust/qdev: add the macro to define bit property
-      rust/irq: Add a helper to convert [InterruptSource] to pointer
-      rust: add bindings for gpio_{in|out} initialization
-      rust: add bindings for memattrs
-      rust: add bindings for timer
-      rust/timer/hpet: define hpet_fw_cfg
-      rust/timer/hpet: add basic HPET timer and HPETState
-      rust/timer/hpet: add qom and qdev APIs support
-      i386: enable rust hpet for pc when rust is enabled
-
- docs/devel/rust.rst                      |  46 ++
- configs/devices/i386-softmmu/default.mak |   1 +
- meson.build                              |   8 +
- include/hw/timer/hpet.h                  |   2 +-
- rust/wrapper.h                           |   3 +
- hw/i386/fw_cfg.c                         |   6 +-
- hw/i386/pc.c                             |   2 +-
- hw/timer/hpet.c                          |  16 +-
- ui/sdl2.c                                |  26 -
- .gitlab-ci.d/buildtest.yml               |   6 +
- hw/timer/Kconfig                         |   2 +-
- rust/Cargo.lock                          |   8 +
- rust/Cargo.toml                          |   1 +
- rust/hw/Kconfig                          |   1 +
- rust/hw/char/pl011/src/device.rs         | 121 +++--
- rust/hw/char/pl011/src/lib.rs            |   1 -
- rust/hw/char/pl011/src/memory_ops.rs     |  34 --
- rust/hw/meson.build                      |   1 +
- rust/hw/timer/Kconfig                    |   2 +
- rust/hw/timer/hpet/Cargo.toml            |  18 +
- rust/hw/timer/hpet/meson.build           |  18 +
- rust/hw/timer/hpet/src/fw_cfg.rs         |  69 +++
- rust/hw/timer/hpet/src/hpet.rs           | 889 +++++++++++++++++++++++++++++++
- rust/hw/timer/hpet/src/lib.rs            |  15 +
- rust/hw/timer/meson.build                |   1 +
- rust/qemu-api/meson.build                |   3 +
- rust/qemu-api/src/assertions.rs          |   4 +
- rust/qemu-api/src/bindings.rs            |  48 ++
- rust/qemu-api/src/c_str.rs               |   8 +
- rust/qemu-api/src/callbacks.rs           |  97 ++++
- rust/qemu-api/src/chardev.rs             |  19 +
- rust/qemu-api/src/irq.rs                 |  23 +-
- rust/qemu-api/src/lib.rs                 |   3 +
- rust/qemu-api/src/memory.rs              | 203 +++++++
- rust/qemu-api/src/offset_of.rs           |   7 +
- rust/qemu-api/src/prelude.rs             |   6 +
- rust/qemu-api/src/qdev.rs                | 276 +++++++++-
- rust/qemu-api/src/qom.rs                 | 226 +++++++-
- rust/qemu-api/src/sysbus.rs              |  41 +-
- rust/qemu-api/src/timer.rs               |  98 ++++
- rust/qemu-api/src/vmstate.rs             |  13 +-
- rust/qemu-api/src/zeroable.rs            |  12 +-
- rust/qemu-api/tests/tests.rs             |  45 +-
- tests/qtest/meson.build                  |   3 +-
- ui/meson.build                           |   4 -
- 45 files changed, 2232 insertions(+), 204 deletions(-)
- delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
- create mode 100644 rust/hw/timer/Kconfig
- create mode 100644 rust/hw/timer/hpet/Cargo.toml
- create mode 100644 rust/hw/timer/hpet/meson.build
- create mode 100644 rust/hw/timer/hpet/src/fw_cfg.rs
- create mode 100644 rust/hw/timer/hpet/src/hpet.rs
- create mode 100644 rust/hw/timer/hpet/src/lib.rs
- create mode 100644 rust/hw/timer/meson.build
- create mode 100644 rust/qemu-api/src/chardev.rs
- create mode 100644 rust/qemu-api/src/memory.rs
- create mode 100644 rust/qemu-api/src/timer.rs
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index 390aae43866..8cccca7a734 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -194,6 +194,50 @@ module           status
+   interface either.  Also, ``unsafe`` interfaces may be replaced by safe interfaces
+   later.
+ 
++Naming convention
++'''''''''''''''''
++
++C function names usually are prefixed according to the data type that they
++apply to, for example ``timer_mod`` or ``sysbus_connect_irq``.  Furthermore,
++both function and structs sometimes have a ``qemu_`` or ``QEMU`` prefix.
++Generally speaking, these are all removed in the corresponding Rust functions:
++``QEMUTimer`` becomes ``timer::Timer``, ``timer_mod`` becomes ``Timer::modify``,
++``sysbus_connect_irq`` becomes ``SysBusDeviceMethods::connect_irq``.
++
++Sometimes however a name appears multiple times in the QOM class hierarchy,
++and the only difference is in the prefix.  An example is ``qdev_realize`` and
++``sysbus_realize``.  In such cases, whenever a name is not unique in
++the hierarchy, always add the prefix to the classes that are lower in
++the hierarchy; for the top class, decide on a case by case basis.
++
++For example:
++
++========================== =========================================
++``device_cold_reset()``    ``DeviceMethods::cold_reset()``
++``pci_device_reset()``     ``PciDeviceMethods::pci_device_reset()``
++``pci_bridge_reset()``     ``PciBridgeMethods::pci_bridge_reset()``
++========================== =========================================
++
++Here, the name is not exactly the same, but nevertheless ``PciDeviceMethods``
++adds the prefix to avoid confusion, because the functionality of
++``device_cold_reset()`` and ``pci_device_reset()`` is subtly different.
++
++In this case, however, no prefix is needed:
++
++========================== =========================================
++``device_realize()``       ``DeviceMethods::realize()``
++``sysbus_realize()``       ``SysbusDeviceMethods::sysbus_realize()``
++``pci_realize()``          ``PciDeviceMethods::pci_realize()``
++========================== =========================================
++
++Here, the lower classes do not add any functionality, and mostly
++provide extra compile-time checking; the basic *realize* functionality
++is the same for all devices.  Therefore, ``DeviceMethods`` does not
++add the prefix.
++
++Whenever a name is unique in the hierarchy, instead, you should
++always remove the class name prefix.
++
+ Common pitfalls
+ '''''''''''''''
+ 
 -- 
 2.48.1
 
