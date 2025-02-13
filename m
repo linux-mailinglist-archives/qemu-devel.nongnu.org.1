@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2394A3362E
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C085FA33625
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:37:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiQ1e-0007J8-VT; Wed, 12 Feb 2025 22:36:30 -0500
+	id 1tiQ1M-0007Eu-UZ; Wed, 12 Feb 2025 22:36:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ14-0007A9-RW; Wed, 12 Feb 2025 22:35:54 -0500
+ id 1tiQ16-0007Aa-Li; Wed, 12 Feb 2025 22:35:56 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ13-0000hG-I8; Wed, 12 Feb 2025 22:35:54 -0500
+ id 1tiQ14-0000gz-Qh; Wed, 12 Feb 2025 22:35:56 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Feb
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 06/28] hw/intc/aspeed: Support different memory region ops
-Date: Thu, 13 Feb 2025 11:35:09 +0800
-Message-ID: <20250213033531.3367697-7-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 07/28] hw/intc/aspeed: Rename num_ints to num_inpins for
+ clarity
+Date: Thu, 13 Feb 2025 11:35:10 +0800
+Message-ID: <20250213033531.3367697-8-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
 References: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
@@ -63,64 +64,159 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous implementation set the "aspeed_intc_ops" struct, containing read
-and write callbacks, to be used when I/O is performed on the INTC region.
-Both "aspeed_intc_read" and "aspeed_intc_write" callback functions were used
-for INTC (CPU Die).
-
-To support the INTCIO (IO Die) model, introduces a new "reg_ops" class
-attribute. This allows setting different memory region operations to support
-different INTC models.
-
-Will introduce "aspeed_intcio_read" and "aspeed_intcio_write" callback
-functions are used for INTCIO.
+To support AST2700 A1, some registers of the INTC(CPU Die) support one input
+pin to multiple output pins. Renamed "num_ints" to "num_inpins" in the INTC
+controller code for better clarity and consistency in naming conventions.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/intc/aspeed_intc.c         | 5 ++++-
- include/hw/intc/aspeed_intc.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ hw/arm/aspeed_ast27x0.c       |  2 +-
+ hw/intc/aspeed_intc.c         | 31 +++++++++++++++++--------------
+ include/hw/intc/aspeed_intc.h | 11 ++++++-----
+ 3 files changed, 24 insertions(+), 20 deletions(-)
 
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 4862b215c1..18e14a7914 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -520,7 +520,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+                     sc->memmap[ASPEED_DEV_INTC]);
+ 
+     /* GICINT orgates -> INTC -> GIC */
+-    for (i = 0; i < ic->num_ints; i++) {
++    for (i = 0; i < ic->num_inpins; i++) {
+         qdev_connect_gpio_out(DEVICE(&a->intc.orgates[i]), 0,
+                                 qdev_get_gpio_in(DEVICE(&a->intc), i));
+         sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc), i,
 diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index 91d8edb261..cc2426fbac 100644
+index cc2426fbac..95b40e1935 100644
 --- a/hw/intc/aspeed_intc.c
 +++ b/hw/intc/aspeed_intc.c
-@@ -340,7 +340,7 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
+@@ -41,8 +41,9 @@ static void aspeed_intc_update(AspeedINTCState *s, int irq, int level)
+     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
+     const char *name = object_get_typename(OBJECT(s));
  
-     sysbus_init_mmio(sbd, &s->iomem_container);
+-    if (irq >= aic->num_ints) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
++    if (irq >= aic->num_inpins) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid input pin index: %d\n",
+                       __func__, irq);
+         return;
+     }
+@@ -54,7 +55,7 @@ static void aspeed_intc_update(AspeedINTCState *s, int irq, int level)
+ /*
+  * The address of GICINT128 to GICINT136 are from 0x1000 to 0x1804.
+  * Utilize "address & 0x0f00" to get the irq and irq output pin index
+- * The value of irq should be 0 to num_ints.
++ * The value of irq should be 0 to num_inpins.
+  * The irq 0 indicates GICINT128, irq 1 indicates GICINT129 and so on.
+  */
+ static void aspeed_intc_set_irq(void *opaque, int irq, int level)
+@@ -67,8 +68,8 @@ static void aspeed_intc_set_irq(void *opaque, int irq, int level)
+     uint32_t enable;
+     int i;
  
--    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
-+    memory_region_init_io(&s->iomem, OBJECT(s), aic->reg_ops, s,
-                           TYPE_ASPEED_INTC ".regs", aic->reg_size);
+-    if (irq >= aic->num_ints) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
++    if (irq >= aic->num_inpins) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid input pin index: %d\n",
+                       __func__, irq);
+         return;
+     }
+@@ -128,8 +129,9 @@ static void aspeed_intc_enable_handler(AspeedINTCState *s, hwaddr offset,
+ 
+     irq = (offset & 0x0f00) >> 8;
+ 
+-    if (irq >= aic->num_ints) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
++    if (irq >= aic->num_inpins) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid input pin index: %d\n",
+                       __func__, irq);
+         return;
+     }
+@@ -184,8 +186,9 @@ static void aspeed_intc_status_handler(AspeedINTCState *s, hwaddr offset,
+ 
+     irq = (offset & 0x0f00) >> 8;
+ 
+-    if (irq >= aic->num_ints) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
++    if (irq >= aic->num_inpins) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid input pin index: %d\n",
+                       __func__, irq);
+         return;
+     }
+@@ -309,8 +312,8 @@ static void aspeed_intc_instance_init(Object *obj)
+     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
+     int i;
+ 
+-    assert(aic->num_ints <= ASPEED_INTC_NR_INTS);
+-    for (i = 0; i < aic->num_ints; i++) {
++    assert(aic->num_inpins <= ASPEED_INTC_MAX_INPINS);
++    for (i = 0; i < aic->num_inpins; i++) {
+         object_initialize_child(obj, "intc-orgates[*]", &s->orgates[i],
+                                 TYPE_OR_IRQ);
+         object_property_set_int(OBJECT(&s->orgates[i]), "num-lines",
+@@ -345,9 +348,9 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
  
      memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
-@@ -358,11 +358,14 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
- static void aspeed_intc_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
  
-     dc->desc = "ASPEED INTC Controller";
-     dc->realize = aspeed_intc_realize;
-     device_class_set_legacy_reset(dc, aspeed_intc_reset);
-     dc->vmsd = NULL;
-+
-+    aic->reg_ops = &aspeed_intc_ops;
+-    qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_ints);
++    qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_inpins);
+ 
+-    for (i = 0; i < aic->num_ints; i++) {
++    for (i = 0; i < aic->num_inpins; i++) {
+         if (!qdev_realize(DEVICE(&s->orgates[i]), NULL, errp)) {
+             return;
+         }
+@@ -385,7 +388,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
+ 
+     dc->desc = "ASPEED 2700 INTC Controller";
+     aic->num_lines = 32;
+-    aic->num_ints = 9;
++    aic->num_inpins = 9;
+     aic->mem_size = 0x4000;
+     aic->reg_size = 0x2000;
  }
- 
- static const TypeInfo aspeed_intc_info = {
 diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-index ecaeb15aea..749d7c55be 100644
+index 749d7c55be..5f0429c7f9 100644
 --- a/include/hw/intc/aspeed_intc.h
 +++ b/include/hw/intc/aspeed_intc.h
-@@ -43,6 +43,7 @@ struct AspeedINTCClass {
-     uint32_t num_ints;
-     uint64_t mem_size;
-     uint64_t reg_size;
-+    const MemoryRegionOps *reg_ops;
+@@ -18,6 +18,7 @@ OBJECT_DECLARE_TYPE(AspeedINTCState, AspeedINTCClass, ASPEED_INTC)
+ 
+ #define ASPEED_INTC_NR_REGS (0x2000 >> 2)
+ #define ASPEED_INTC_NR_INTS 9
++#define ASPEED_INTC_MAX_INPINS 9
+ 
+ struct AspeedINTCState {
+     /*< private >*/
+@@ -28,19 +29,19 @@ struct AspeedINTCState {
+     MemoryRegion iomem_container;
+ 
+     uint32_t regs[ASPEED_INTC_NR_REGS];
+-    OrIRQState orgates[ASPEED_INTC_NR_INTS];
++    OrIRQState orgates[ASPEED_INTC_MAX_INPINS];
+     qemu_irq output_pins[ASPEED_INTC_NR_INTS];
+ 
+-    uint32_t enable[ASPEED_INTC_NR_INTS];
+-    uint32_t mask[ASPEED_INTC_NR_INTS];
+-    uint32_t pending[ASPEED_INTC_NR_INTS];
++    uint32_t enable[ASPEED_INTC_MAX_INPINS];
++    uint32_t mask[ASPEED_INTC_MAX_INPINS];
++    uint32_t pending[ASPEED_INTC_MAX_INPINS];
  };
  
- #endif /* ASPEED_INTC_H */
+ struct AspeedINTCClass {
+     SysBusDeviceClass parent_class;
+ 
+     uint32_t num_lines;
+-    uint32_t num_ints;
++    uint32_t num_inpins;
+     uint64_t mem_size;
+     uint64_t reg_size;
+     const MemoryRegionOps *reg_ops;
 -- 
 2.34.1
 
