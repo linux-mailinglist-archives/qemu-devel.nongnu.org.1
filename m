@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C828AA340C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 14:52:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E394EA3411D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 15:00:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiZcj-0001dz-E4; Thu, 13 Feb 2025 08:51:25 -0500
+	id 1tiZkg-000566-7b; Thu, 13 Feb 2025 08:59:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiZcM-0001cH-In
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 08:51:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tiZkd-00055j-Fz; Thu, 13 Feb 2025 08:59:35 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiZcK-0001Hl-0S
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 08:51:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739454658;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=yOTP4HCl10E8Zq1FSR3FG3ay94aanKqPSltmI5qk5Kc=;
- b=bLSWuyik7N0jW8164AGkVywagKngvCfO2KbyyI+NoYTshkEr65fwrTfZ+6eRg1GWlJWRKI
- aK1fgDVHMgNUi7nsr+90Zb/ioqee8Zm86Ii2LUGP6M/C+9HN2uP9b8q0GmlaLd1KmNr8JW
- gSginl/U2OdC5SQBPhV6cxqRTf5ZO8E=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-8gcSUn8bN2uOwggpbInktw-1; Thu,
- 13 Feb 2025 08:50:56 -0500
-X-MC-Unique: 8gcSUn8bN2uOwggpbInktw-1
-X-Mimecast-MFC-AGG-ID: 8gcSUn8bN2uOwggpbInktw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 38FD319783B4; Thu, 13 Feb 2025 13:50:55 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.224.39])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C9660300019F; Thu, 13 Feb 2025 13:50:52 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v2] vfio: Add property documentation
-Date: Thu, 13 Feb 2025 14:50:50 +0100
-Message-ID: <20250213135050.1426258-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tiZka-0002XJ-Ef; Thu, 13 Feb 2025 08:59:35 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3C6954E602A;
+ Thu, 13 Feb 2025 14:59:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id XJ0WleSlwnnq; Thu, 13 Feb 2025 14:59:23 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 362304E6019; Thu, 13 Feb 2025 14:59:23 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 33B1674577D;
+ Thu, 13 Feb 2025 14:59:23 +0100 (CET)
+Date: Thu, 13 Feb 2025 14:59:23 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Thomas Huth <thuth@redhat.com>
+cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Alistair Francis <alistair@alistair23.me>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH v6 01/11] hw/qdev-properties-system: Introduce EndianMode
+ QAPI enum
+In-Reply-To: <0f7ea6d6-8476-4ba6-9d4f-eeb76aed04fa@redhat.com>
+Message-ID: <9e121e62-8e6e-61d6-dbfb-4dfda469acc5@eik.bme.hu>
+References: <20250212112413.37553-1-philmd@linaro.org>
+ <20250212112413.37553-2-philmd@linaro.org>
+ <cb828dd8-25f6-47c6-9ac7-cae5b0d0932e@redhat.com>
+ <50ba4e4b-4124-46bb-bb84-4758ce9c5e66@linaro.org>
+ <3b3baed4-0d79-3a28-40cd-e1835e078863@eik.bme.hu>
+ <6e707c7f-b94c-47ef-83ab-795605e27963@linaro.org>
+ <a3608e43-79ce-403d-8ba7-6735fde66759@linaro.org>
+ <e1436061-a840-0942-2c2c-4f49bfb932b8@eik.bme.hu>
+ <672045c1-9b09-4b7b-9bed-fa990129ce2c@linaro.org>
+ <fb7045a4-20f6-a52d-5531-2410fc803bb4@eik.bme.hu>
+ <0f7ea6d6-8476-4ba6-9d4f-eeb76aed04fa@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-291458086-1739455163=:73770"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,266 +79,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Investigate the git history to uncover when and why the VFIO
-properties were introduced and update the models. This is mostly
-targeting vfio-pci device, since vfio-plateform, vfio-ap and vfio-ccw
-devices are simpler.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Organize the vfio-pci properties in topics. It would be great to have
-a way to do the same for the output.
+--3866299591-291458086-1739455163=:73770
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Cc: Tony Krowiak <akrowiak@linux.ibm.com>
-Cc: Eric Farman <farman@linux.ibm.com>
-Cc: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
+On Thu, 13 Feb 2025, Thomas Huth wrote:
+> On 12/02/2025 23.34, BALATON Zoltan wrote:
+>> On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
+>>> On 12/2/25 17:23, BALATON Zoltan wrote:
+>>>> On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
+>>>>> On 12/2/25 14:53, Philippe Mathieu-Daudé wrote:
+>>>>>> On 12/2/25 13:56, BALATON Zoltan wrote:
+>>>>>>> On Wed, 12 Feb 2025, Philippe Mathieu-Daudé wrote:
+>>>>>>>> On 12/2/25 12:37, Thomas Huth wrote:
+>>>>>>>>> On 12/02/2025 12.24, Philippe Mathieu-Daudé wrote:
+>>>>>>>>>> Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
+>>>>>>>>>> Endianness can be BIG, LITTLE or unspecified (default).
+>>>>>>>>>> 
+>>>>>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>>>>>>> ---
+>>>>>>>>>>   qapi/common.json                    | 16 ++++++++++++++++
+>>>>>>>>>>   include/hw/qdev-properties-system.h |  7 +++++++
+>>>>>>>>>>   hw/core/qdev-properties-system.c    | 11 +++++++++++
+>>>>>>>>>>   3 files changed, 34 insertions(+)
+>>> 
+>>> 
+>>>>>>>>>> +{ 'enum': 'EndianMode',
+>>>>>>>>>> +  'data': [ 'little', 'big', 'unspecified' ] }
+>>>>>>>>> 
+>>>>>>>>> Should 'unspecified' come first? ... so that it gets the value 0, 
+>>>>>>>>> i.e. when someone forgets to properly initialize a related variable, 
+>>>>>>>>> the chances are higher that it ends up as "unspecified" than as 
+>>>>>>>>> "little" ?
+>>>>>>>> 
+>>>>>>>> Hmm but then in this series the dual-endianness regions are defined 
+>>>>>>>> as:
+>>>>>>>> 
+>>>>>>>> +static const MemoryRegionOps pic_ops[2] = {
+>>>>>>>> +    [0 ... 1] = {
+>>>>>>> 
+>>>>>>> This is already confusing as you'd have to know that 0 and 1 here 
+>>>>>>> means ENDIAN_MODE_LITTLE and ENDIAN_MODE_BIG (using those constants 
+>>>>>>> here as well might be clearer). It's easy to miss what this does so 
+>>>>> 
+>>>>> At this point 0 / 1 only mean "from the index #0 included to the index
+>>>>> #1 included", 0 being the first one and 1 the last one.
+>>>>> 
+>>>>>>> maybe repeating the definitions for each case would be longer but less 
+>>>>>>> confusing and then it does not matter what the values are.
+>>>>> 
+>>>>> This is what I tried to do with:
+>>>>> 
+>>>>> +    [ENDIAN_MODE_BIG].endianness = DEVICE_BIG_ENDIAN,
+>>>>> +    [ENDIAN_MODE_LITTLE].endianness = DEVICE_LITTLE_ENDIAN,
+>>>>> };
+>>>>> 
+>>>>> but in v7 we are back of picking an arbitrary value.
+>>>>> 
+>>>>>>> Or what uses the ops.endianness now should look at the property 
+>>>>>>> introduced by this patch to avoid having to propagate it like below 
+>>>>>>> and drop the ops.endianness? Or it should move to the memory region 
+>>>>>>> and set when the ops are assigned?
+>>>>>> 
+>>>>>> I'm not understanding well what you ask, but maybe the answer is in v7 
+>>>>>> :)
+>>>> 
+>>>> I'm not sure I understand it well either. I think what I was asking about 
+>>>> is the same as what Thomas asked if this could be avoided to make it 
+>>>> necessary to allocate two separate ops for this. Looks like from now on 
+>>>> this ops struct should really loose the endianness value and this should 
+>>>> be assigned when the ops is added to the io region because that's where 
+>>>> it decides which endianness is it based on the property added in this 
+>>>> series. But I don't know if that could be done or would need deeper 
+>>>> changes as what later uses this ops struct might not have access to the 
+>>>> property and if we have a single ops struct it may need to be copied to 
+>>>> set different endianness intstead of just referencing it. So I'm not sure 
+>>>> there's a better way but I think this change makes an already cryptic 
+>>>> boiler plate even more confusing for people less knowledgeable about QEMU 
+>>>> and C programming so it makes even harder to write devices. But as long 
+>>>> as it's just a few devices that need to work with different endianness 
+>>>> then it might be OK. But wasn't that what NATIVE_ENDIAN was meant for? 
+>>>> What can't that be kept then?
+>>> 
+>>> Moving toward a single binary able to run heterogeneous machines, we
+>>> can't rely on a particular target endianness, so we need to remove
+>>> DEVICE_NATIVE_ENDIAN. The endianness is a property a device / machine,
+>>> not of the binary.
+>> 
+>> So then can the behaviour of NATIVE_ENDIAN be changed to look at the 
+>> machine endianness instead of replacing it with a constant?
+>
+> No, that does not work. First, the machine knows about its devices, but a 
+> device should not know about the wiring of the global machine (just like in 
+> real life).
 
- Changes in v2:
+That means all devices should be either big or little endian and there 
+should be no native endian ones. Why do we have those then? That's why 
+this endianness property should either be removed from ops and only 
+attached to it when added to a machine if needed or kept to show which 
+machines it can be attached to: only big, little or both endian which is 
+what it seems to be doing now.
 
- - Fixed version numbers
- - Fixed #ifdef in vfio/ccw.c
- - Addressed vfio-pci-nohotplug
- - Organize the vfio-pci properties in topics
+> Second, imagine a board with e.g. a big endian main CPU and a 
+> little endian service processor - how should a device know the right 
+> endianness here?
 
- hw/vfio/ap.c       |   9 +++
- hw/vfio/ccw.c      |  15 +++++
- hw/vfio/pci.c      | 134 +++++++++++++++++++++++++++++++++++++++++++++
- hw/vfio/platform.c |  23 ++++++++
- 4 files changed, 181 insertions(+)
+How would that work with this series? So the proposed solution is to 
+double the devices now marked as NATIVE_ENDIAN to have a big and a little 
+endian variant for them so the board can choose? That does not exist in 
+real as you wrote, there's only one device so then this is probably not 
+the right way to model it.
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 30b08ad375d5ecae886c5000fbaa364799fe76d0..ec1150e5d627fce83a5a6319af471fd0aa45ae9b 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -257,6 +257,15 @@ static void vfio_ap_class_init(ObjectClass *klass, void *data)
-     dc->hotpluggable = true;
-     device_class_set_legacy_reset(dc, vfio_ap_reset);
-     dc->bus_type = TYPE_AP_BUS;
-+
-+    object_class_property_set_description(klass, /* 3.1 */
-+                                          "sysfsdev",
-+                                          "Host sysfs path of assigned device");
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_set_description(klass, /* 9.0 */
-+                                          "iommufd",
-+                                          "Set host IOMMUFD backend device ");
-+#endif
- }
- 
- static const TypeInfo vfio_ap_info = {
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 67bc137f9be6d43c5970c6271f3cdbfffd8a32de..242dc39660fcd028722093d637b7b64440649863 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -717,6 +717,21 @@ static void vfio_ccw_class_init(ObjectClass *klass, void *data)
-     cdc->handle_halt = vfio_ccw_handle_halt;
-     cdc->handle_clear = vfio_ccw_handle_clear;
-     cdc->handle_store = vfio_ccw_handle_store;
-+
-+    object_class_property_set_description(klass, /* 2.10 */
-+                                          "sysfsdev",
-+                                          "Host sysfs path of assigned device");
-+    object_class_property_set_description(klass, /* 3.0 */
-+                                          "force-orb-pfch",
-+                                          "Force unlimited prefetch");
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_set_description(klass, /* 9.0 */
-+                                          "iommufd",
-+                                          "Set host IOMMUFD backend device ");
-+#endif
-+    object_class_property_set_description(klass, /* 9.2 */
-+                                          "loadparm",
-+                                          "Define which devices that can be used for booting");
- }
- 
- static const TypeInfo vfio_ccw_info = {
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 9a55e7b77324babf7295132b08e3ba23b482a291..fbd8cf566b1cfd508ccb0042a395e3b79ba781c0 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3433,6 +3433,133 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
-     pdc->exit = vfio_exitfn;
-     pdc->config_read = vfio_pci_read_config;
-     pdc->config_write = vfio_pci_write_config;
-+
-+    object_class_property_set_description(klass, /* 1.3 */
-+                                          "host",
-+                                          "Host PCI address [domain:]<bus:slot.function> of assigned device");
-+    object_class_property_set_description(klass, /* 2.6 */
-+                                          "sysfsdev",
-+                                          "Host sysfs path of assigned device");
-+    /*
-+     * Display
-+     */
-+
-+    object_class_property_set_description(klass, /* 1.5 */
-+                                          "x-vga",
-+                                          "Add support for VGA MMIO and I/O port access");
-+    object_class_property_set_description(klass, /* 2.12 */
-+                                          "display",
-+                                          "Add display support");
-+    object_class_property_set_description(klass, /* 3.2 */
-+                                          "xres",
-+                                          "Set X display resolution the vgpu should use");
-+    object_class_property_set_description(klass, /* 3.2 */
-+                                          "yres",
-+                                          "Set Y display resolution the vgpu should use");
-+
-+    /*
-+     * IGD
-+     */
-+
-+    object_class_property_set_description(klass, /* 2.7 */
-+                                          "x-igd-opregion",
-+                                          "Add IGD OpRegion support for (headless system)");
-+    object_class_property_set_description(klass, /* 2.7 (See c4c45e943e51) */
-+                                          "x-igd-gms",
-+                                          "Add Intel graphics legacy mode device assignment support. "
-+                                          "Assign 00:02.0 from the host to 00:02.0 in the VM");
-+
-+    /*
-+     * NVIDIA
-+     */
-+    object_class_property_set_description(klass, /* 2.12 */
-+                                          "x-no-geforce-quirks",
-+                                          "Disable GeForce quirks (for NVIDIA Quadro/GRID/Tesla). Improves performance");
-+    object_class_property_set_description(klass, /* 3.0 */
-+                                          "x-no-kvm-ioeventfd",
-+                                          "Disable ioeventfd quirk (NVIDIA)");
-+    object_class_property_set_description(klass, /* 3.0 */
-+                                          "x-no-vfio-ioeventfd",
-+                                          "Enable ioeventfd quirks to be handled by VFIO directly. Improves performance");
-+    object_class_property_set_description(klass, /* 2.11 */
-+                                          "x-nv-gpudirect-clique",
-+                                          "Add NVIDIA GPUDirect Cliques support");
-+
-+    /*
-+     * Migration support
-+     */
-+    object_class_property_set_description(klass, /* 5.2 */
-+                                          "x-pre-copy-dirty-page-tracking",
-+                                          "Disable dirty pages tracking during iterative phase");
-+    object_class_property_set_description(klass, /* 9.1 */
-+                                          "x-device-dirty-page-tracking",
-+                                          "Disable device dirty page tracking and use container-based dirty page tracking");
-+    object_class_property_set_description(klass, /* 5.2, 8.0 non-experimetal */
-+                                          "enable-migration",
-+                                          "Enale device migration. Also requires a host VFIO PCI variant "
-+                                          "driver with migration support enabled");
-+    object_class_property_set_description(klass, /* 9.1 */
-+                                          "migration-events",
-+                                          "Emit VFIO migration QAPI event when a VFIO device changes its migration "
-+                                          "state. For management applications");
-+    object_class_property_set_description(klass, /* 9.1 */
-+                                          "skip-vsc-check",
-+                                          "Skip config space check for Vendor Specific Capability. Useful for "
-+                                          "NVIDIA vGPU driver migration");
-+
-+    /*
-+     * debug, tracing
-+     */
-+    object_class_property_set_description(klass, /* 2.4 and 2.5 */
-+                                          "x-no-mmap",
-+                                          "Disable MMAP for device. Allows to trace MMIO accesses");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-no-kvm-intx",
-+                                          "Bypass INTx interrupts. Allows interrupt tracing");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-no-kvm-msi",
-+                                          "Bypass MSI interrupts. Allows interrupt tracing");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-no-kvm-msix",
-+                                          "Bypass MSIx interrupts. Allows interrupt tracing");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-pci-vendor-id",
-+                                          "Set emulated PCI Vendor ID. Allows testing quirks");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-pci-device-id",
-+                                          "Set emulated PCI device ID. Allows testing quirks");
-+
-+    /*
-+     * other
-+     */
-+    object_class_property_set_description(klass, /* 8.1 */
-+                                          "vf-token",
-+                                          "Add support for VF token among PF and VFs (Linux 5.7+)");
-+    object_class_property_set_description(klass, /* 1.3 */
-+                                          "x-intx-mmap-timeout-ms",
-+                                          "Timeout value in milliseconds to re-enable BAR mapping when under "
-+                                          "INTx interrupts. Improves performance");
-+    object_class_property_set_description(klass, /* 2.3 */
-+                                          "x-req",
-+                                          "Add device request notification support (Linux 4.0+)");
-+    object_class_property_set_description(klass, /* 3.1 */
-+                                          "x-balloon-allowed",
-+                                          "Allow devices to opt-in for ballooning");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-pci-sub-vendor-id",
-+                                          "Set emulated PCI Sub-vendor ID");
-+    object_class_property_set_description(klass, /* 2.5 */
-+                                          "x-pci-sub-device-id",
-+                                          "Set emulated PCI Sub-device ID");
-+    object_class_property_set_description(klass, /* 2.12 */
-+                                          "x-msix-relocation",
-+                                          "Allow relocating MSI-X MMIO on systems which page size is larger "
-+                                          "than the PCI spec recommendation. Mostly for sPAPR");
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_set_description(klass, /* 9.0 */
-+                                          "iommufd",
-+                                          "Set host IOMMUFD backend device ");
-+#endif
- }
- 
- static const TypeInfo vfio_pci_dev_info = {
-@@ -3461,6 +3588,13 @@ static void vfio_pci_nohotplug_dev_class_init(ObjectClass *klass, void *data)
- 
-     device_class_set_props(dc, vfio_pci_dev_nohotplug_properties);
-     dc->hotpluggable = false;
-+    object_class_property_set_description(klass, /* 3.1 */
-+                                          "ramfb",
-+                                          "Add ramfb support");
-+    object_class_property_set_description(klass, /* 8.2 */
-+                                          "x-ramfb-migrate",
-+                                          "Add ramfb migration support");
-+
- }
- 
- static const TypeInfo vfio_pci_nohotplug_dev_info = {
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 1070a2113a17edb9ebafb5066e51ee2bc52a767d..8e646e543692221e86b16fecd8bf40316f064a7d 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -674,6 +674,29 @@ static void vfio_platform_class_init(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     /* Supported by TYPE_VIRT_MACHINE */
-     dc->user_creatable = true;
-+
-+    object_class_property_set_description(klass, /* 2.4 */
-+                                          "host",
-+                                          "Host device name of assigned device");
-+    object_class_property_set_description(klass, /* 2.6 */
-+                                          "sysfsdev",
-+                                          "Host sysfs path of assigned device");
-+    object_class_property_set_description(klass, /* 2.4 and 2.5 */
-+                                          "x-no-mmap",
-+                                          "Disable MMAP for device. Allows to trace MMIO accesses");
-+    object_class_property_set_description(klass, /* 2.4 */
-+                                          "mmap-timeout-ms",
-+                                          "Timeout value in milliseconds to re-enable BAR mapping");
-+    object_class_property_set_description(klass, /* 2.4 */
-+                                          "x-irqfd",
-+                                          "Use irqfd for IRQ handling");
-+
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_set_description(klass, /* 9.0 */
-+                                          "iommufd",
-+                                          "Set host IOMMUFD backend device ");
-+#endif
-+
- }
- 
- static const TypeInfo vfio_platform_dev_info = {
--- 
-2.48.1
+>> Or would that be too much overhead? If always looking up the endianness is 
+>> not wanted could the ops declaration keep NATIVE_ENDIAN 
+>
+> IMHO we should get rid of NATIVE_ENDIAN completely since there is no "native" 
+> endian in multi-CPU boards.
 
+If we say NATIVE_ENDIAN means that the device can be attached to either 
+big or little endian machine then we can keep this constant but when 
+adding the ops to a memory region the board has to then decide which 
+endianness it is and replace it with either big or little. Then we don't 
+need two versions of the same device and NATIVE_ENDIAN means that the 
+device can be used in both machines.
+
+In real life probably all devices can be used with either CPU and if they 
+are accessed in little or big endian is only determinded by how they are 
+wired on the board. So the device endianness only means what endianness 
+the device expects for something (what exactly? e.g. a video chip may have 
+a frame buffer and a registers area with different endianness). So this 
+should be the board that decides this not the device. Therefore it may not 
+need to be defined when MemoryRegionOps is defined at all (or only as a 
+hint to show what the device expects normally) and then 
+memory_region_init_io which takes the MemoryRegionOps should also take an 
+endianness corresponding the board and set it at that point. It can warn 
+if the device endianness does not match what the board sets but you can 
+still connect a big endian device to a little endian CPU as long as the 
+drivers write the right values or the data lines are connected the right 
+way, the latter of which corresponds to NATIVE_ENDIAN now as the 
+conversion is done by the wiring so drivers don't need to care.
+
+But if it's simpler to just double the few devices that need to be used 
+this way then it's a possible solution but if there's a cleaner one with 
+not much more complexity then maybe that should be considered, because the 
+way to define these doubled devices is a bit confusing for new people (on 
+top of that defining devices is already confusing with the lot of boiler 
+plate code needed). So if this could be kept simpler that would be a good 
+thing IMO.
+
+Regards,
+BALATON Zoltan
+--3866299591-291458086-1739455163=:73770--
 
