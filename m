@@ -2,92 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9280A34B7D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 18:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E46AA34CA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 19:00:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ticow-0000MM-7R; Thu, 13 Feb 2025 12:16:14 -0500
+	id 1tidUw-0005xq-NJ; Thu, 13 Feb 2025 12:59:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ticoj-0000L5-Ii
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:16:06 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tidUu-0005x9-Bk
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:59:36 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ticof-0000NI-FM
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:16:00 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-21f3c119fe6so27638215ad.0
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 09:15:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739466953; x=1740071753; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=WTBB/vDcJh45xA1W/jxGX2kDziq1ZpAFCHIvpkCApvo=;
- b=TGoLguuaMjJcHxE8f2BUw08ZXAUt3CRCtNkwRYBvFLs44NACTh+dWmJnFLwUD/zYZT
- ErohILnrJyCuWJAU3yJAnGSFSz8R7HsyQgoF369Ho8Rfy9APP6PFdgCjjTFu4aUzJPxW
- dcmGBHddeUYrdAB6P58OdtRuC2T067GMBswFLm+3s2qd9KqycD257p9Jp3LkC0+56xC0
- 6Hg9ess07KXywVbKDEkgfCA4kHzLqWyLtl2FXUJ9mS/d118aMJXA+Hv8bGoiri+UMlJa
- j/wcdP6SAALndKXDssbOtelP8e52+ZkxYg5qdLEBl+c6ftnKxf2u4cbUAkfbKckz+QTp
- vEDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739466953; x=1740071753;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WTBB/vDcJh45xA1W/jxGX2kDziq1ZpAFCHIvpkCApvo=;
- b=hHjpQ3vVrb2XI3+eNntiakS3JadmLEre6I++QevNQrzbjVuG/1ezM9CYqM2xo1FBDi
- +VQx6ViKGXiOWCxOFdZxIIHNIHuiV+CIUoE8aZ9XvEvOzeNhmGRdVa+cQDFAcWFEFGP0
- mzbYLlgfVv5361CqxVXGAzDEcxQJcSk5iLM0aLzRfBTgleu4JF/KB6YekR19u3VDQgAk
- mMMbjSVVVZv/928HFwn52NtPxVQX5hTmv1hDPIWtOcXJq3/jNbnz5robFKdYTOs0dFHZ
- bgbur/3C1VmAwCMsVYtoY+3dCZrH4llRQB5IcAWELBjwJ+fovJJpeNSebBMv3rNdimJT
- XiaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV4c329syNLr9e5mjmBqiLugVekpKVVFTPN48T1YfBWv6cLLxtLAX+RbdZsnLcHjYcU/xzDYgtaH4AE@nongnu.org
-X-Gm-Message-State: AOJu0Yxv4UF60V8pIEzqPVRl5oAc6KkmCt58rrZoSctXs4G6strIb18S
- QPde0K3Uo8535WwSLiDWHxAx/HNer3sgi7g287DYCCQp29GlwOmv3oxo5yRGngjEUNbiJZdzHJ8
- N
-X-Gm-Gg: ASbGnctTTP5FqvmHlsbdL31hV0zqn1Dp95+5vS0aieW3BkhmEMjgNf6+ABw2cVFC672
- wbmhChfV1DhFmBHpX9jZVtNCz4eL80M7E8f+MURfb6V7R+h/BH69CztsDEA8xOtDADmFJ6eEEy8
- Vz1PKphCw8HTkl9oYngY6Rx7zGu53UTSVppM/mGoJPsJWguJUVzFTG26CGEy0g0/4mYsKxkj/GG
- GXjikJcCeENc7bjmRJy3cCWTjsCq2N360jUvMqxC6C2VF2N+Ohj4Sw2EpYSPYEoadxRFKUUuHe1
- 2O6DH9muJTUEAI24xqahLPgaXmC81L9/Ishu8DqMw2dSCkgHxaTqHi0=
-X-Google-Smtp-Source: AGHT+IE4pq2fkIEnK+/uMTDOWUKBwE9MnldKJAiBOoNG7TN3rbfSUJ/nayx2yl3fcOHkt/gOpZxv6A==
-X-Received: by 2002:a05:6a00:6c8f:b0:72d:9b11:1ebb with SMTP id
- d2e1a72fcca58-7322c385000mr15955885b3a.8.1739466953050; 
- Thu, 13 Feb 2025 09:15:53 -0800 (PST)
-Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7324273eac4sm1514322b3a.113.2025.02.13.09.15.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Feb 2025 09:15:52 -0800 (PST)
-Message-ID: <4863b4e6-8ce3-4f37-b339-837faf759efb@linaro.org>
-Date: Thu, 13 Feb 2025 09:15:51 -0800
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tidUs-00065y-8y
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:59:36 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 980A31F795;
+ Thu, 13 Feb 2025 17:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1739469571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=djC6rIHdadrMr4Tm7Al+qAjWiiJXFuuplbMdnpAx310=;
+ b=Z1EM0nN63Y/4J8ZNPNq6LhT6V6MIhrPogDOUPqqlU8qp8t89UlIyt3m4xjZEunWMFBhnnI
+ oAI9h1XgNmmcISY0M/3kzHUVZXLJaAxdCZxqYpwHai8VJpYyEWETkm6aeM584ef7TmHqFc
+ wW2xaYYfYcci6vCWw5z93US9fCBGnX4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1739469571;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=djC6rIHdadrMr4Tm7Al+qAjWiiJXFuuplbMdnpAx310=;
+ b=Fnr/uJ5UV11OkrXoExWaqk0kL8mcFTbFfy8KLOcmiwnUcyxW5UN6SeMsRlr6Az0/LlI50e
+ KUPwi/3X0RQjmKDw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z1EM0nN6;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Fnr/uJ5U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1739469571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=djC6rIHdadrMr4Tm7Al+qAjWiiJXFuuplbMdnpAx310=;
+ b=Z1EM0nN63Y/4J8ZNPNq6LhT6V6MIhrPogDOUPqqlU8qp8t89UlIyt3m4xjZEunWMFBhnnI
+ oAI9h1XgNmmcISY0M/3kzHUVZXLJaAxdCZxqYpwHai8VJpYyEWETkm6aeM584ef7TmHqFc
+ wW2xaYYfYcci6vCWw5z93US9fCBGnX4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1739469571;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=djC6rIHdadrMr4Tm7Al+qAjWiiJXFuuplbMdnpAx310=;
+ b=Fnr/uJ5UV11OkrXoExWaqk0kL8mcFTbFfy8KLOcmiwnUcyxW5UN6SeMsRlr6Az0/LlI50e
+ KUPwi/3X0RQjmKDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 433A213874;
+ Thu, 13 Feb 2025 17:59:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id xmewAAIzrmfqMgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 13 Feb 2025 17:59:30 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 0/9] migration: Fix issues during qmp_migrate_cancel
+Date: Thu, 13 Feb 2025 14:59:18 -0300
+Message-Id: <20250213175927.19642-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] tcg: Introduce the 'z' constraint for a hardware zero
- register
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20250212034617.1079324-1-richard.henderson@linaro.org>
- <20250212034617.1079324-2-richard.henderson@linaro.org>
- <59d1bd38-2b0f-413a-a6ff-28f8a055dad0@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <59d1bd38-2b0f-413a-a6ff-28f8a055dad0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Rspamd-Queue-Id: 980A31F795
+X-Spam-Score: -3.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,55 +123,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/13/25 07:45, Philippe Mathieu-Daudé wrote:
-> On 12/2/25 04:46, Richard Henderson wrote:
->> For loongarch, mips, riscv and sparc, a zero register is
->> available all the time.  For aarch64, register index 31
->> depends on context: sometimes it is the stack pointer,
->> and sometimes it is the zero register.
->>
->> Introduce a new general-purpose constraint which maps 0
->> to TCG_REG_ZERO, if defined.  This differs from existing
->> constant constraints in that const_arg[*] is recorded as
->> false, indicating that the value is in a register.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   include/tcg/tcg.h            |  3 ++-
->>   tcg/aarch64/tcg-target.h     |  2 ++
->>   tcg/loongarch64/tcg-target.h |  2 ++
->>   tcg/mips/tcg-target.h        |  2 ++
->>   tcg/riscv/tcg-target.h       |  2 ++
->>   tcg/sparc64/tcg-target.h     |  3 ++-
->>   tcg/tcg.c                    | 29 ++++++++++++++++++++++-------
->>   docs/devel/tcg-ops.rst       |  4 +++-
->>   8 files changed, 37 insertions(+), 10 deletions(-)
-> 
-> 
->> diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
->> index 6608a29376..75acb4bd32 100644
->> --- a/docs/devel/tcg-ops.rst
->> +++ b/docs/devel/tcg-ops.rst
->> @@ -927,7 +927,9 @@ operation uses a constant input constraint which does not allow all
->>   constants, it must also accept registers in order to have a fallback.
->>   The constraint '``i``' is defined generically to accept any constant.
->>   The constraint '``r``' is not defined generically, but is consistently
->> -used by each backend to indicate all registers.
->> +used by each backend to indicate all registers.  If ``TCG_REG_ZERO``
->> +is defined by the backend, the constraint '``z``' is defined generically
-> 
-> and/to?
-> 
->> +map 0 to the hardware zero register.
+changes from v2:
 
-Indeed, this was not grammatical.  Fixed as
+Added more if != CANCELLING where it was missing. We have other work
+[1] pending around migration states, so I've kept this simple for
+correctness only.
 
-... the constraint '``z``' is defined generically
-to map constant 0 to the hardware zero register.
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1670135398
 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+1- https://lore.kernel.org/r/20250110100707.4805-1-shivam.kumar1@nutanix.com
 
-Thanks.
+v2:
+https://lore.kernel.org/r/20250211150136.6781-1-farosas@suse.de
+v1:
+https://lore.kernel.org/r/20241202220137.32584-1-farosas@suse.de
 
-r~
+While working on downstream issues with postcopy, I ended up writing a
+set of tests for issuing qmp_migrate_cancel() at various points during
+the migration. That exposed some bugs, which this series attempts to
+fix.
+
+There is also a fix for the issue Daniel found:
+
+https://gitlab.com/qemu-project/qemu/-/issues/2633
+
+I'm also sending the test code. It creates one test per
+MIGRATION_STATUS_ state. Each test starts a migration, waits for that
+specific state to be reached, issues qmp_migrate_cancel() and checks
+that the migration state changes to cancelled (for now only cancelling
+migration from the source side).
+
+I was initially worried that this would be too racy, but so far each
+test has survived 1000 iterations. I'm thinking it's worth merging,
+specially because even after working on this I haven't been able to
+clear the questions we have in our todo list [1], so we'll probably
+need more work around this area in the future.
+
+1- https://wiki.qemu.org/ToDo/LiveMigration#Migration_cancel_concurrency
+
+Fabiano Rosas (9):
+  migration: Set migration error outside of migrate_cancel
+  migration: Unify migration_cancel and migrate_fd_cancel
+  migration: Change migrate_fd_ to migration_
+  migration: Fix hang after error in destination setup phase
+  migration: Reject qmp_migrate_cancel after postcopy
+  migration: Don't set FAILED state when cancelling
+  tests/qtest/migration: Introduce migration_test_add_suffix
+  tests/qtest/migration: Add a cancel test
+  migration: Update migrate_cancel documentation
+
+ migration/channel.c                    |   9 +-
+ migration/migration.c                  |  81 +++++++-----
+ migration/migration.h                  |   4 +-
+ migration/multifd.c                    |   2 +-
+ migration/ram.c                        |   4 +-
+ migration/rdma.c                       |   2 +-
+ migration/trace-events                 |   4 +-
+ qapi/migration.json                    |   4 +-
+ tests/qtest/migration/migration-util.c |  24 ++++
+ tests/qtest/migration/migration-util.h |   2 +
+ tests/qtest/migration/precopy-tests.c  | 176 +++++++++++++++++++++++++
+ 11 files changed, 267 insertions(+), 45 deletions(-)
+
+-- 
+2.35.3
+
 
