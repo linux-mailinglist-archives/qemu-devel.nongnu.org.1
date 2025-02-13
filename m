@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A34A33645
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B42A33638
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:39:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiQ2a-0000aL-69; Wed, 12 Feb 2025 22:37:28 -0500
+	id 1tiQ2U-0000Ni-3d; Wed, 12 Feb 2025 22:37:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ2H-0008KZ-BW; Wed, 12 Feb 2025 22:37:10 -0500
+ id 1tiQ2J-0008N2-Hk; Wed, 12 Feb 2025 22:37:12 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ2F-0000nL-Tb; Wed, 12 Feb 2025 22:37:09 -0500
+ id 1tiQ2I-0000nL-8j; Wed, 12 Feb 2025 22:37:11 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Feb
@@ -29,9 +29,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 19/28] hw/misc/aspeed_hace: Fix coding style
-Date: Thu, 13 Feb 2025 11:35:22 +0800
-Message-ID: <20250213033531.3367697-20-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 20/28] hw/misc/aspeed_hace: Add AST2700 support
+Date: Thu, 13 Feb 2025 11:35:23 +0800
+Message-ID: <20250213033531.3367697-21-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
 References: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
@@ -63,43 +63,64 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style issues from checkpatch.pl.
+Introduce a new ast2700 class to support AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- hw/misc/aspeed_hace.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ hw/misc/aspeed_hace.c         | 20 ++++++++++++++++++++
+ include/hw/misc/aspeed_hace.h |  1 +
+ 2 files changed, 21 insertions(+)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index e3f7df2e86..18b85081c7 100644
+index 18b85081c7..86422cb3be 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -75,9 +75,12 @@ static const struct {
-     { HASH_ALGO_SHA1, QCRYPTO_HASH_ALGO_SHA1 },
-     { HASH_ALGO_SHA224, QCRYPTO_HASH_ALGO_SHA224 },
-     { HASH_ALGO_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512, QCRYPTO_HASH_ALGO_SHA512 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384, QCRYPTO_HASH_ALGO_SHA384 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512,
-+      QCRYPTO_HASH_ALGO_SHA512 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384,
-+      QCRYPTO_HASH_ALGO_SHA384 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256,
-+      QCRYPTO_HASH_ALGO_SHA256 },
+@@ -552,12 +552,32 @@ static const TypeInfo aspeed_ast1030_hace_info = {
+     .class_init = aspeed_ast1030_hace_class_init,
  };
  
- static int hash_algo_lookup(uint32_t reg)
-@@ -201,7 +204,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             haddr = address_space_map(&s->dram_as, addr, &plen, false,
-                                       MEMTXATTRS_UNSPECIFIED);
-             if (haddr == NULL) {
--                qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: qcrypto failed\n", __func__);
-                 return;
-             }
-             iov[i].iov_base = haddr;
++static void aspeed_ast2700_hace_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedHACEClass *ahc = ASPEED_HACE_CLASS(klass);
++
++    dc->desc = "AST2700 Hash and Crypto Engine";
++
++    ahc->src_mask = 0x7FFFFFFF;
++    ahc->dest_mask = 0x7FFFFFF8;
++    ahc->key_mask = 0x7FFFFFF8;
++    ahc->hash_mask = 0x00147FFF;
++}
++
++static const TypeInfo aspeed_ast2700_hace_info = {
++    .name = TYPE_ASPEED_AST2700_HACE,
++    .parent = TYPE_ASPEED_HACE,
++    .class_init = aspeed_ast2700_hace_class_init,
++};
++
+ static void aspeed_hace_register_types(void)
+ {
+     type_register_static(&aspeed_ast2400_hace_info);
+     type_register_static(&aspeed_ast2500_hace_info);
+     type_register_static(&aspeed_ast2600_hace_info);
+     type_register_static(&aspeed_ast1030_hace_info);
++    type_register_static(&aspeed_ast2700_hace_info);
+     type_register_static(&aspeed_hace_info);
+ }
+ 
+diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
+index 4af9919195..d13fd3da07 100644
+--- a/include/hw/misc/aspeed_hace.h
++++ b/include/hw/misc/aspeed_hace.h
+@@ -18,6 +18,7 @@
+ #define TYPE_ASPEED_AST2500_HACE TYPE_ASPEED_HACE "-ast2500"
+ #define TYPE_ASPEED_AST2600_HACE TYPE_ASPEED_HACE "-ast2600"
+ #define TYPE_ASPEED_AST1030_HACE TYPE_ASPEED_HACE "-ast1030"
++#define TYPE_ASPEED_AST2700_HACE TYPE_ASPEED_HACE "-ast2700"
+ 
+ OBJECT_DECLARE_TYPE(AspeedHACEState, AspeedHACEClass, ASPEED_HACE)
+ 
 -- 
 2.34.1
 
