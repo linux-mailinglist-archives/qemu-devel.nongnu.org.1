@@ -2,77 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F914A34166
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 15:11:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 501D3A33EE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 13:16:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiZuY-0007ve-Rs; Thu, 13 Feb 2025 09:09:50 -0500
+	id 1tiY7x-0000NC-2u; Thu, 13 Feb 2025 07:15:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <meowthink@gmail.com>)
- id 1tiY5F-0007l5-5o
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:12:45 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiY7j-0000GB-IX
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:15:24 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <meowthink@gmail.com>)
- id 1tiY5D-000198-Ai
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:12:44 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5450cf0cb07so710968e87.0
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 04:12:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tiY7d-0001bW-7x
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 07:15:15 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4395f66a639so5147885e9.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 04:15:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739448760; x=1740053560; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=lxLNETzfoF2TNi1qd/UMpr9bz81cwKQa7/s2UhKkFXk=;
- b=a6BL7MwmqH5JHL2bmPsJN1IMOm7x5El2YH6de81fIUSX30E8rX216Lty5ise6RfQbz
- WwlyNlDMm5E7vUmz8Ju/AIYuqTRTkcpQYerHhmD88cih0gbpE2imtlfrLS5Iv4oUGfEb
- eXLRLdepLyOqCiwHysxm2PeQYKzLuUJTWZmv02QdQRlUWgCnny39nCmdvwqjCSnzje05
- HuOcO8bICZk7uiG03EEcLKPc1aYUuhHnFZUNckodgjFF/g32T9a9qA0ktJ/WU78nBllL
- Lww/zTPZ3k99hvgxEdekk7uf/3MWOdGWaNA8qddCFKD/RYOdF6f7L2umeScB4eJ+Y14K
- 3V1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739448760; x=1740053560;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1739448911; x=1740053711; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lxLNETzfoF2TNi1qd/UMpr9bz81cwKQa7/s2UhKkFXk=;
- b=VjrskaTviJN+7jTp2xpbjyS6SBc9PZq60og7R0JSdGmrE/TdWdsaLGSUtFEZSNJTdI
- StoXBtR5Q66V9RGDelksD++mu1eg+jWw8gfdrMiost9VjVFCHP5OpkKwgOXkgbtqyYA2
- a15/MI1EmBgJ4/ntmk8h0wHpZGwhcRUihECBjwu6m773SKjCsZdxr8EjA5STB2GH13w7
- 3KHsRNC/QTIyXPykNKMKinrLTmL1VhdiruismgF2ENh+n1XsSsEmYJIkcqGPflfRGfgt
- iLCdnoJzYUJcfT8NF2IyoW4LZJ0IkQ5WHgM1xMa6ArVQwCVT/3icidUwSGtuKtHzcAJU
- 91MA==
-X-Gm-Message-State: AOJu0YyYp3nr3CE5iB8Z5nisuDLDDJSC8BV3JNq4OI3rvsHoxadlniqr
- qJOjR+i9DUYR3B5KCXc6Ejd9CqiwYPg9lDDHNKVQh3yJu5bPQnUtY6PlrnSfmvatceuMeI3IWKv
- N20dO4LJ5I7ECGHjUjQDcZ3ihOz+l9mRH
-X-Gm-Gg: ASbGncs0S8yxPWZSEd9361zIKfoKwT7IV8ivJ6pVO8AbYH4y1l1r5PMALFUa1YWCado
- 16DZmUwT6gYbO06xRNUXJcFkaQzuTgl+/MlgBrqVEHZ9yEw6RFkASfkXWFv7WHZfn4y4ZsSL4og
- ==
-X-Google-Smtp-Source: AGHT+IFniNnFpcAPTSeycDLvYaIjh8qi6xLHYy6Tp3b5zW33mIH3XZE+Ier+7mMf3jefORg0VrN/MK8LhfAcr5Ij9rI=
-X-Received: by 2002:ac2:4e04:0:b0:542:2e09:639a with SMTP id
- 2adb3069b0e04-545180ea26dmr2065406e87.10.1739448759820; Thu, 13 Feb 2025
- 04:12:39 -0800 (PST)
+ bh=vzaZlFcD7N8Wjjl/eyiqiLniNbSdtEp+pnDniDyde9g=;
+ b=Pg3FHKISHaAtXrGWtFVY08TIL9aysYhOYseQmcTFL8CK2Eno5IVrGE5PCwC/2AhwWo
+ 5BOHM7y+9q1djsgMw9Up3FQARK7f+666Qvs7AKlyIGbbLbnBY2fvvMcIVPWKeAJKN8HZ
+ Val2BwDAiFFmx9a7ntb6nizQYrG+TEFo6VfTnekbXJ3d+viBk6L8z525voyeWozQE7OA
+ kIaVZHhSzJgTquFRCMFpV7MKIT6/OF/lpgiOYhe1gaMlMbq1uEj4olGPOdijo78k1x+b
+ Xdss8pQb3GuvdA+I3hWniuPOXKufIemugpilf+Rcl2zJispv9gqiD+33+S4zXlo9g4bB
+ TSxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739448911; x=1740053711;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vzaZlFcD7N8Wjjl/eyiqiLniNbSdtEp+pnDniDyde9g=;
+ b=CtCXUYDmOnNCY/2vI8S+WKQhBCbuuyKyrK+Ac7f7+IJmBJjROZnHQeHzIdOwFFI38z
+ HkfcR475+IjwC9g1UfeFjQXXtiVaiU+Koz4Bb37sUda2W5Jst3L4aS2/A7q0iPoHHrAa
+ WgDBmPFafqyKD2kmNhzOB4ohVWsTOF3Ed9Nn8E/4nw+OJSN/To11tiHcEYbg6S6Fusy+
+ YhG3xVUTibVSuBVU9XZdymM40sRDykJ7S6baIaGV/72QfgE5/sPEksUGvzI3KBXD6oQ8
+ JPlw8QRkdoqIP+Dbf0sHrVlS016S/i30kHdt8mndsy+HP++ILAXG3zzfhHH7YgClPJrC
+ cMag==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOVGJ4VUknLh8sLgQygdmlM4GNQ6ugn0rq/LwpQmAvpuvzoO09d79bWVWYQm7if9Iv6hWbAG+tg0MC@nongnu.org
+X-Gm-Message-State: AOJu0YxUdWXg/FIyX2Z4GqplPzwffTHPRU+lfPeOhJweOMRBh+ZEF0MK
+ Ye5um1/VaXaXwCKzXsvaCrbJlBmpVTHhn6LLPabqIjpAX+ccWOwHMxD8dFA4M9U=
+X-Gm-Gg: ASbGncsjq3uAVn9M2JdzWVq52WhkVDRLYug9fY/jYevVBrlrZymP8GC50afQ+Ld4b0X
+ 2fBkA+mn8oLPMaA5qzzQghZW3KZmPchL83BKkaheZRQMBlFSHWYlbkXp/w9wInUNZw+FsDk0H/j
+ Qrzbv+g+ABTWqS0shIlP/43Cf/yqK5MfxXlTHJ7ejn7pIF0wdmwUY61HX2JaehKtohRXryrQz3n
+ 8Q72Mkze3KpANPrdvyvm6eoJpPcqwGWKJoEGf9Bf8AosyrBn++esDIqWIetqfT1gWmywr/+BHNY
+ e9sDzIOBNWxyp76tw9s0e1ry0majGs51evaEHSkAGfXoOfw=
+X-Google-Smtp-Source: AGHT+IFVSdY4A8hl0J8R1xzffZyqo2EGtj4UJhs4TdlGadkWQGH3lOBL4wCLTSkruaWT1uY1DCXCSw==
+X-Received: by 2002:a05:600c:444d:b0:439:5529:33e0 with SMTP id
+ 5b1f17b1804b1-439581bf09fmr64411835e9.27.1739448910744; 
+ Thu, 13 Feb 2025 04:15:10 -0800 (PST)
+Received: from [10.223.46.213] (6.170.88.92.rev.sfr.net. [92.88.170.6])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4394f2c2c41sm63499255e9.1.2025.02.13.04.15.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Feb 2025 04:15:10 -0800 (PST)
+Message-ID: <57ab57e3-65cc-4301-922f-87dbaaf85d8b@linaro.org>
+Date: Thu, 13 Feb 2025 13:15:07 +0100
 MIME-Version: 1.0
-From: Meowthink <meowthink@gmail.com>
-Date: Thu, 13 Feb 2025 20:12:26 +0800
-X-Gm-Features: AWEUYZl6mDQopNWDMq02U84VeR9wEbm_aIpnlS1Uh_x4axoTIkDITOQvWyHlL1w
-Message-ID: <CABnABob99XZCBwsWYQKKjT3aMWzodAzmTMM6AB7utVz_un_9gQ@mail.gmail.com>
-Subject: [PATCH] bsd-user: freebsd/os-stat: fix getdents(2)
-To: qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=meowthink@gmail.com; helo=mail-lf1-x133.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 02/10] hw/intc/xilinx_intc: Make device endianness
+ configurable
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250212123659.52764-1-philmd@linaro.org>
+ <20250212123659.52764-3-philmd@linaro.org>
+ <8e5050d7-2792-44af-8317-2dd6948f72c7@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <8e5050d7-2792-44af-8317-2dd6948f72c7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 13 Feb 2025 09:09:44 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,29 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Syscall getdents(2) has been historically mistaken the pointer in the
-loop. This influences aarch64 python3.12 built by cosmopolitan
-/superconfigure thus been found out.
+On 12/2/25 13:56, Thomas Huth wrote:
+> On 12/02/2025 13.36, Philippe Mathieu-Daudé wrote:
+>> Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair
+>> of DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
+>> Add the "little-endian" property to select the device
+>> endianness, defaulting to little endian.
+>> Set the proper endianness for each machine using the device.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+> ...
+>> diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/ 
+>> petalogix_ml605_mmu.c
+>> index 8b44be75a22..55398cc67d1 100644
+>> --- a/hw/microblaze/petalogix_ml605_mmu.c
+>> +++ b/hw/microblaze/petalogix_ml605_mmu.c
+>> @@ -111,6 +111,7 @@ petalogix_ml605_init(MachineState *machine)
+>>       dev = qdev_new("xlnx.xps-intc");
+>> +    qdev_prop_set_enum(dev, "endianness", ENDIAN_MODE_LITTLE);
+> 
+> Do we still need a TARGET_BIG_ENDIAN ?: check here, too? ... the 
+> petalogix_ml605_machine_init() code still contains it, though big endian 
+> is marked as deprecated and untested ...
 
-Signed-off-by: Meowthink <meowthink@googlemail.com>
----
- bsd-user/freebsd/os-stat.h | 1 +
- 1 file changed, 1 insertion(+)
+Oops, I guess my mind already discarded it...
 
-diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 3bdc66aa98..5e14331e0b 100644
---- a/bsd-user/freebsd/os-stat.h
-+++ b/bsd-user/freebsd/os-stat.h
-@@ -475,6 +475,7 @@ static inline abi_long do_freebsd11_getdents(abi_long arg1,
-             de->d_reclen = tswap16(reclen);
-             de->d_fileno = tswap32(de->d_fileno);
-             len -= reclen;
-+            de = (struct freebsd11_dirent *)((void *)de + reclen);
-         }
-     }
-     return ret;
+> Anyway, assuming that nobody uses this in big endian anymore:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-base-commit: de278e54aefed143526174335f8286f7437d20be
---
-2.42.0
+Thanks!
 
