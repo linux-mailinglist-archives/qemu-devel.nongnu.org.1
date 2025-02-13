@@ -2,147 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CCCA33A47
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 09:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D76BA35A7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 10:37:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiUu6-0006vZ-Fa; Thu, 13 Feb 2025 03:49:02 -0500
+	id 1tis7T-00041o-30; Fri, 14 Feb 2025 04:36:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiUu4-0006v8-Vb
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 03:49:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
+ id 1tis7C-00041D-5K
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 04:36:06 -0500
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiUu3-0003ZW-HK
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 03:49:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739436537;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pOizDvXY8xfHCsjpgTE0/j4XDFbaGySN/Cy4GDyZ8bE=;
- b=V0xAVoACYEQ3mcWt83Z4IGy371GoI8knlIQPOoM+PJwWetwvjvYVaLo3bWfzeIv/rxBCJd
- aOD4DP+pyrMSI7fhVIal8DLPOpeo3pmypcvPZIxz07B/uBQGE5+SG9Bp5wqk0VTj4+k1nd
- 25ZlitzDiVsZArWIgARz0NvMY8nIR8o=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-X2BtRjkIOkOfLmUB60fnlA-1; Thu, 13 Feb 2025 03:48:56 -0500
-X-MC-Unique: X2BtRjkIOkOfLmUB60fnlA-1
-X-Mimecast-MFC-AGG-ID: X2BtRjkIOkOfLmUB60fnlA
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-38ddf4fa345so404712f8f.2
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 00:48:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739436535; x=1740041335;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pOizDvXY8xfHCsjpgTE0/j4XDFbaGySN/Cy4GDyZ8bE=;
- b=cAwRoWqbIiXh5BVtke9yBAOScAhW0P2rXQ6DWDZXued86zcoyotuf5vYCzsXptdIpl
- Z3qO54XWbOogFHed8AAhOzmApkS3Y4k0pY4fCSTscxTsiMGZtY4xRtxdbJg1tZ2lrBt7
- ABt4puh4U4YVpRt9xS9x7Q/gsvU8elir/KloD2Y9WahKN/qUtZ3ME6u9g14royozGQN4
- IjV5DEKrsYyHRfEQRywzeXJgkb73DlyuyInioLOIdtyVR8GJK7LUPT531UY2k0P/VbMk
- 2anHfW2xc9l5+qsgQZtPYv0ImjNBVQ2szgFGV8Qsu/iESxIK8s7z51l+xwWLSRRUXzEg
- vkSA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVX5yvjLhdFthUNvww9EjSszdFDWM9J1GmDDmhtc9I9ZY1gfC8WbbN7CpCogesNTqbB6rKlws1NNM/3@nongnu.org
-X-Gm-Message-State: AOJu0YwqKTjkZ+b11M5i+vVZBwo5Riu1Y1BJ1YkfsPefLYVmK34jUSHU
- cg4IKMqsOKc7E4CNjakg+SzQXw0G5952J8uLSp85k1zPvrSDkMJ0NQXeN8/gJiVEpgNJk8JqJ/9
- W6uftG2ri4smozBwF7U4X7nMJvr4h3Kb9574v5SU5vR45VuqHh1zh
-X-Gm-Gg: ASbGnctJWLp3vTcNvvSQef7k9Q/nrktKbvAnRX89vCC+KZMM8kgJRwaxyp86OymAu7S
- 2NfL3EfXIwrqLEc2X33blQ2wsKlJT2CaMe6NV5AW1z7mbKNRpVBWSswgF61JvE6HqdnLHqYquBE
- SIKobLBn+9yY1+Q8qXw+Lovwr7872yerLDwQ/rp4l5FOepCxnvJ9v4TKpJJTDPEXmE99Wnvl/Uu
- R/RuwcAoDL2JvJppQC76P/YRoJ7aLtM6kz5vsmHYzX+vapsGCqzrOSxZawqBcqvpbqWu32KYblN
- QNARBBcJ8lMVpWFFFaJCQoZX0LAcnURJqkIXnKCnkv8=
-X-Received: by 2002:a5d:584b:0:b0:38f:287a:43d9 with SMTP id
- ffacd0b85a97d-38f287a467bmr434649f8f.52.1739436534960; 
- Thu, 13 Feb 2025 00:48:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFXx1IDz6FAl2lDuJpx/92JRjgpTNS3h6aam0nafiJpXGfIVDHotmrQ6tHg1axhEHPNngPfTg==
-X-Received: by 2002:a5d:584b:0:b0:38f:287a:43d9 with SMTP id
- ffacd0b85a97d-38f287a467bmr434624f8f.52.1739436534631; 
- Thu, 13 Feb 2025 00:48:54 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:ecac:5b28:cd98:868a?
- ([2a01:e0a:280:24f0:ecac:5b28:cd98:868a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d5ee2sm1211253f8f.80.2025.02.13.00.48.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Feb 2025 00:48:54 -0800 (PST)
-Message-ID: <a26dfa93-439a-476f-bb47-2f0ddf2d2487@redhat.com>
-Date: Thu, 13 Feb 2025 09:48:53 +0100
+ (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
+ id 1tis76-0001cV-55
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 04:36:05 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20250214093547epoutp045999e4a19de7f364949fd0b5287c4508~kCXNhyn-K2640926409epoutp04x
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 09:35:47 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20250214093547epoutp045999e4a19de7f364949fd0b5287c4508~kCXNhyn-K2640926409epoutp04x
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1739525747;
+ bh=6u2ec4HZlFgEdfaEdHv9kpNbb1MXfilSNcxiYqMArPE=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=MZ2kjvFDL0+QeeApPnyDBjoC6bLTULLn/iGQlf9yX/E7v5genTskOQoHOSR2nGY7j
+ coCZu3Tue46znXlBLmsQsoHPYfMJe6HMVp2R3yBOzOTvxREG/dowIJvHwrA1CPHkW1
+ ydhkCGhiRntLVpEf4u2INL57PT9H3DU45gOu6i1U=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+ 20250214093546epcas5p26f3bfda81550485851792a747b1bc52b~kCXMso-5p2589725897epcas5p29;
+ Fri, 14 Feb 2025 09:35:46 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.178]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4YvRk82Yncz4x9Px; Fri, 14 Feb
+ 2025 09:35:44 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+ epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ B5.DC.19710.07E0FA76; Fri, 14 Feb 2025 18:35:44 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250213091628epcas5p31ec87df7fc4ce2d47db40b693239d7ad~judDp1wSH1363713637epcas5p3G;
+ Thu, 13 Feb 2025 09:16:28 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250213091628epsmtrp1a59b67dfe448d52937837bd6f64e0b73~judDpJg4k2265622656epsmtrp1Y;
+ Thu, 13 Feb 2025 09:16:28 +0000 (GMT)
+X-AuditID: b6c32a44-363dc70000004cfe-ae-67af0e704e7b
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ DC.CC.23488.B68BDA76; Thu, 13 Feb 2025 18:16:27 +0900 (KST)
+Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
+ by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250213091626epsmtip183dcd405a89a1af930b9313be2e2944b~judCM2YZ82148921489epsmtip1W;
+ Thu, 13 Feb 2025 09:16:26 +0000 (GMT)
+From: Vinayak Holikatti <vinayak.kh@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
+ dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
+ a.manzanares@samsung.com, alok.rathore@samsung.com, Vinayak Holikatti
+ <vinayak.kh@samsung.com>
+Subject: [PATCH v2 0/3] CXL CCI Media Operations
+Date: Thu, 13 Feb 2025 14:45:55 +0530
+Message-Id: <20250213091558.2294806-1-vinayak.kh@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 05/12] vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Eric Auger
- <eric.auger@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20250211143340.787996-1-clg@redhat.com>
- <20250211143340.787996-6-clg@redhat.com>
- <9c31241e-96d0-4014-b9ce-42362ea10eaf@tls.msk.ru>
- <7d076159-d3c9-4b38-bb8c-40645098e28a@redhat.com>
- <8b54ad8d-9698-4687-a925-d971779dea6c@tls.msk.ru>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <8b54ad8d-9698-4687-a925-d971779dea6c@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAJsWRmVeSWpSXmKPExsWy7bCmlm4B3/p0g28TBC2mH1a0+HJ6D5vF
+ 6ptrGC1uHtjJZLFw4zImi/OzTrFY/N22l9HieO8OFosTJ7ezA8XmsDtweeycdZfd48m1zUwe
+ fVtWMXpMnV3v8XmTXABrVLZNRmpiSmqRQmpecn5KZl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJu
+ qq2Si0+ArltmDtBNSgpliTmlQKGAxOJiJX07m6L80pJUhYz84hJbpdSClJwCkwK94sTc4tK8
+ dL281BIrQwMDI1OgwoTsjKMT37MUzOGo2HHzJksD4w22LkZODgkBE4kzM6azdjFycQgJ7GaU
+ eHngHzOE84lR4szmnSwQzjdGib7GM6wwLcumToNq2csoMfd7C1RLA5PE/1ntYFVsAgYSD5qP
+ s4PYIgKSEr+7TjOD2MwCHxglFj3VBbGFgWqmP9sHFmcRUJV4v2MmWC+vgK3E9FkdUAfKS+w/
+ eJYZIi4ocXLmExaIOfISzVtngy2WELjFLtG65TELRIOLxMc1L6FsYYlXx7ewQ9hSEi/726Ds
+ YolzFz8xQtg1Eq+7VjBD2PYSraf6gWwOoAWaEut36UOEZSWmnlrHBLGXT6L39xMmiDivxI55
+ IDYHkK0isfRtJsymL8+aoaZ7SLzvmQt2jZBArETL5w2sExjlZyH5ZhaSb2YhLF7AyLyKUTK1
+ oDg3PTXZtMAwL7UcHrHJ+bmbGMFJU8tlB+ON+f/0DjEycTAeYpTgYFYS4ZWYtiZdiDclsbIq
+ tSg/vqg0J7X4EKMpMIgnMkuJJucD03ZeSbyhiaWBiZmZmYmlsZmhkjhv886WdCGB9MSS1OzU
+ 1ILUIpg+Jg5OqQYm/eKp+vYM2tMN9hj82im8bckO2x75/jUiYtmL+d+etbKV2fVvxa/NXuxX
+ Lq0V/fzwALfEGh/9lbUCnMoVG89HrFuimfuOd3kGm6p1s8i1xbv6RVKE5pYbvHLcG9L565Pm
+ 72yZn7xXpD9c3nRXT+fwUZ+7SqlHjZv9y4WWb0i7p/yIxbTa2TApeqnzlxPTN/jsUTtXYZP9
+ 6MnuVbVv7SMb2Oastz9dE7LNXvHBrkyHectbLjw5vdK56nB18KXpf14F8dpt2sel5NYW4WTl
+ p+b9c8vxVJHU9/vC/xk7MpjzJ3jfM771yy7wg1JL0PR9q9N6rB/NPv5DfN0z7rYk+fQ1nzSc
+ /NV3nUvcbCXBNve1EktxRqKhFnNRcSIAJT9XviMEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLLMWRmVeSWpSXmKPExsWy7bCSnG72jrXpBpMWmltMP6xo8eX0HjaL
+ 1TfXMFrcPLCTyWLhxmVMFudnnWKx+LttL6PF8d4dLBYnTm5nB4rNYXfg8tg56y67x5Nrm5k8
+ +rasYvSYOrve4/MmuQDWKC6blNSczLLUIn27BK6MoxPfsxTM4ajYcfMmSwPjDbYuRk4OCQET
+ iWVTp7F2MXJxCAnsZpTYtm4OI0RCSuLYzp9QRcISK/89Z4co+scoMePMA3aQBJuAgcSD5uNg
+ toiApMTvrtPMIEXMAr8YJZ7uvg+WEAYqmv5sHzOIzSKgKvF+x0xWEJtXwFZi+qwOqA3yEvsP
+ nmWGiAtKnJz5hAXEZgaKN2+dzTyBkW8WktQsJKkFjEyrGCVTC4pz03OTDQsM81LL9YoTc4tL
+ 89L1kvNzNzGCQ1hLYwfju29N+ocYmTgYDzFKcDArifBKTFuTLsSbklhZlVqUH19UmpNafIhR
+ moNFSZx3pWFEupBAemJJanZqakFqEUyWiYNTqoEpgJ+zvlv31WkRlT4u474wSdU6vf9J9vUV
+ gUpTWqacnpOwx8Xfm4mhQUFi455yq+RixbqU/j6mhKw7bw4+3r7MwWxJ14yioqlP088rejCo
+ TL077dAELRnheZnHU/IK9lYp75cLfZwoacDw0/iumNAt3k7GXO+f66+WfLlyQE6mxuPRSv4c
+ lVOGO3bxsMyPWXlop/Xh4EKPy6IxrNkLgpZmXQuZuujMfNXIKqmpbWstHrw9WzXx7Rn7bcXO
+ daVHF0+8YldzhnXbz4M3eALvO1ocE/Gok6u8cEikaE7+68XBBdF5tzrNpjLMFLtV//FWQcnM
+ Gb/KmIuDyu3lNaRlEmvZSm8KT0l7fsrPO+7sRSWW4oxEQy3mouJEAGpgwvLQAgAA
+X-CMS-MailID: 20250213091628epcas5p31ec87df7fc4ce2d47db40b693239d7ad
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250213091628epcas5p31ec87df7fc4ce2d47db40b693239d7ad
+References: <CGME20250213091628epcas5p31ec87df7fc4ce2d47db40b693239d7ad@epcas5p3.samsung.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=vinayak.kh@samsung.com; helo=mailout4.samsung.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,32 +134,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/13/25 07:42, Michael Tokarev wrote:
-> 13.02.2025 09:32, Cédric Le Goater wrote:
-> ..
->>> This seems to be a qemu-stable material (for 9.2).
->>> Please let me know if it is not.
->>
->> For 9.0 and above. It applies cleanly.
-> 
-> Yup, - I thought it wont be clear.
-> 
-> 9.0 & 9.1 are end-of-line at this point, only 9.2 is relevant now.
+CXL CCI media operations commands implmented as per CXL Specification
+3.1 8.2.9.9.5.3
+1) General(00h) - Discovery (00h)
+2) Sanitize(01h - Sanitize (00h)
+                  Write zeros (01h)
 
-ok. I didn't know or missed the information.
+The patches are generated against the Johnathan's tree
+https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
 
-> Also 7.2 and 8.2 are sort of "LTS" (not for this change though).
-> 
-> /mjt
-  
-Is there a stable planning page on the wiki or equivalent else where ?
+Changes V1->V2
+1) Addressed the review comments from Jonathan Cameron.
 
+2) Modularied the media operations class & subclass handling
+into separate functions.
 
-Thanks,
+Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
 
-C.
+Vinayak Holikatti (3):
+  hw/cxl/cxl-mailbox-utils: Add support for Media operations discovery
+    commands (8.2.9.9.5.3)
+  hw/cxl: factor out calculation of sanitize duration from
+    cmd_santize_overwrite
+  hw/cxl/cxl-mailbox-utils: Add support for Media operations Sanitize
+    and Write Zeros commands (8.2.9.9.5.3)
 
+ hw/cxl/cxl-mailbox-utils.c  | 404 +++++++++++++++++++++++++++++++++---
+ include/hw/cxl/cxl_device.h |   4 +
+ 2 files changed, 382 insertions(+), 26 deletions(-)
 
-
+-- 
+2.34.1
 
 
