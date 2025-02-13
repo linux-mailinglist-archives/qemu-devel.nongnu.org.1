@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD328A33642
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:41:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB03A33647
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:42:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiQ2n-0002AT-Lw; Wed, 12 Feb 2025 22:37:41 -0500
+	id 1tiQ2r-0002N7-CG; Wed, 12 Feb 2025 22:37:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ2j-0001wE-D1; Wed, 12 Feb 2025 22:37:37 -0500
+ id 1tiQ2n-0002FZ-Al; Wed, 12 Feb 2025 22:37:41 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ2h-0000nL-Rp; Wed, 12 Feb 2025 22:37:37 -0500
+ id 1tiQ2l-0000pw-N5; Wed, 12 Feb 2025 22:37:41 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Feb
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 22/28] hw/arm/aspeed_ast27x0: Add HACE support for AST2700
-Date: Thu, 13 Feb 2025 11:35:25 +0800
-Message-ID: <20250213033531.3367697-23-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 23/28] test/functional/aspeed: Introduce new function to
+ fetch assets
+Date: Thu, 13 Feb 2025 11:35:26 +0800
+Message-ID: <20250213033531.3367697-24-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
 References: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
@@ -63,56 +64,38 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HACE controller between AST2600 and AST2700 are almost identical.
-The HACE controller registers base address starts at 0x1207_0000 and
-its alarm interrupt is connected to GICINT4.
+This method simplifies the process of fetching and extracting assets from the
+Aspeed GitHub repository.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- hw/arm/aspeed_ast27x0.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/functional/test_aarch64_aspeed.py | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 926b4c3e76..dc535c92c9 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -68,6 +68,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_SDHCI]     =  0x14080000,
-     [ASPEED_DEV_TIMER1]    =  0x12C10000,
-     [ASPEED_DEV_INTCIO]    =  0x14C18000,
-+    [ASPEED_DEV_HACE]      =  0x12070000,
- };
+diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
+index 9595498ace..f3d7c8331a 100755
+--- a/tests/functional/test_aarch64_aspeed.py
++++ b/tests/functional/test_aarch64_aspeed.py
+@@ -27,14 +27,15 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
+         wait_for_console_pattern(self, 'Starting kernel ...')
  
- #define AST2700_MAX_IRQ 256
-@@ -480,6 +481,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+-    ASSET_SDK_V903_AST2700 = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.03/ast2700-default-obmc.tar.gz',
+-            '91225f50d255e2905ba8d8e0c80b71b9d157c3609770c7a740cd786370d85a77')
++    def extra_aspeed_archive(self, version, file, checksum):
++        url = 'https://github.com/AspeedTech-BMC/openbmc/releases/download'
++        self.archive_extract(Asset(f'{url}/{version}/{file}', f'{checksum}'))
  
-     snprintf(typename, sizeof(typename), "aspeed.timer-%s", socname);
-     object_initialize_child(obj, "timerctrl", &s->timerctrl, typename);
-+
-+    snprintf(typename, sizeof(typename), "aspeed.hace-%s", socname);
-+    object_initialize_child(obj, "hace", &s->hace, typename);
- }
+     def test_aarch64_ast2700_evb_sdk_v09_03(self):
+         self.set_machine('ast2700-evb')
  
- /*
-@@ -849,6 +853,17 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
-     }
+-        self.archive_extract(self.ASSET_SDK_V903_AST2700)
++        self.extra_aspeed_archive('v09.03', 'ast2700-default-obmc.tar.gz',
++            '91225f50d255e2905ba8d8e0c80b71b9d157c3609770c7a740cd786370d85a77')
  
-+    /* HACE */
-+    object_property_set_link(OBJECT(&s->hace), "dram", OBJECT(s->dram_mr),
-+                             &error_abort);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->hace), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->hace), 0,
-+                    sc->memmap[ASPEED_DEV_HACE]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
-+
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
+         num_cpu = 4
+         uboot_size = os.path.getsize(self.scratch_file('ast2700-default',
 -- 
 2.34.1
 
