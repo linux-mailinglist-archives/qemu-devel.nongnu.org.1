@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D44A3362D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D316A3362A
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 04:37:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiQ1l-0007ZR-96; Wed, 12 Feb 2025 22:36:37 -0500
+	id 1tiQ1n-0007dq-Is; Wed, 12 Feb 2025 22:36:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ1h-0007SI-UK; Wed, 12 Feb 2025 22:36:34 -0500
+ id 1tiQ1k-0007az-RY; Wed, 12 Feb 2025 22:36:36 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tiQ1g-0000l1-Ic; Wed, 12 Feb 2025 22:36:33 -0500
+ id 1tiQ1j-0000l1-2p; Wed, 12 Feb 2025 22:36:36 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Feb
@@ -29,10 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 14/28] hw/misc/aspeed_scu: Add Support for AST2700/AST2750
- A1 Silicon Revisions
-Date: Thu, 13 Feb 2025 11:35:17 +0800
-Message-ID: <20250213033531.3367697-15-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 15/28] hw/misc/aspeed_scu: Fix the revision ID cannot be
+ set in the SOC layer for AST2700
+Date: Thu, 13 Feb 2025 11:35:18 +0800
+Message-ID: <20250213033531.3367697-16-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
 References: <20250213033531.3367697-1-jamin_lin@aspeedtech.com>
@@ -64,41 +64,58 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added new definitions for AST2700_A1_SILICON_REV and AST2750_A1_SILICON_REV to
-identify the A1 silicon revisions.
+According to the design of the AST2600, it has a Silicon Revision ID Register,
+specifically SCU004 and SCU014, to set the Revision ID for the AST2600.
+For the AST2600 A3, SCU004 is set to 0x05030303 and SCU014 is set to 0x05030303.
+In the "aspeed_ast2600_scu_reset" function, the hardcoded value
+"AST2600_A3_SILICON_REV" is set in SCU004, and "s->silicon_rev" is set in
+SCU014. The value of "s->silicon_rev" is set by the SOC layer via the
+"silicon-rev" property.
+
+However, the design of the AST2700 is different. There are two SCU controllers:
+SCU0 (CPU Die) and SCU1 (IO Die). In the AST2700, the firmware reads the
+SCU Silicon Revision ID register (SCU0_000) and the SCUIO Silicon Revision ID
+register (SCU1_000) and combines them into a 64-bit value.
+The combined value of SCU0_000[23:16] and SCU1_000[23:16] represents the silicon
+revision. For example, the AST2700-A1 revision is "0x0601010306010103", where
+SCU0_000 should be 06010103 and SCU1_000 should be 06010103.
+
+Reference:
+https://github.com/AspeedTech-BMC/u-boot/blob/aspeed-master-v2023.10/arch/arm/mach-aspeed/ast2700/cpu-info.c
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_scu.c         | 2 ++
- include/hw/misc/aspeed_scu.h | 2 ++
- 2 files changed, 4 insertions(+)
+ hw/misc/aspeed_scu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index bac1441b06..2d9fe78926 100644
+index 2d9fe78926..b45a36a555 100644
 --- a/hw/misc/aspeed_scu.c
 +++ b/hw/misc/aspeed_scu.c
-@@ -559,6 +559,8 @@ static uint32_t aspeed_silicon_revs[] = {
-     AST2700_A0_SILICON_REV,
-     AST2720_A0_SILICON_REV,
-     AST2750_A0_SILICON_REV,
-+    AST2700_A1_SILICON_REV,
-+    AST2750_A1_SILICON_REV,
+@@ -911,7 +911,6 @@ static const MemoryRegionOps aspeed_ast2700_scu_ops = {
  };
  
- bool is_supported_silicon_rev(uint32_t silicon_rev)
-diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
-index 356be95e45..684b48b722 100644
---- a/include/hw/misc/aspeed_scu.h
-+++ b/include/hw/misc/aspeed_scu.h
-@@ -54,6 +54,8 @@ struct AspeedSCUState {
- #define AST2700_A0_SILICON_REV   0x06000103U
- #define AST2720_A0_SILICON_REV   0x06000203U
- #define AST2750_A0_SILICON_REV   0x06000003U
-+#define AST2700_A1_SILICON_REV   0x06010103U
-+#define AST2750_A1_SILICON_REV   0x06010003U
+ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
+-    [AST2700_SILICON_REV]           = AST2700_A0_SILICON_REV,
+     [AST2700_HW_STRAP1]             = 0x00000800,
+     [AST2700_HW_STRAP1_CLR]         = 0xFFF0FFF0,
+     [AST2700_HW_STRAP1_LOCK]        = 0x00000FFF,
+@@ -940,6 +939,7 @@ static void aspeed_ast2700_scu_reset(DeviceState *dev)
+     AspeedSCUClass *asc = ASPEED_SCU_GET_CLASS(dev);
  
- #define ASPEED_IS_AST2500(si_rev)     ((((si_rev) >> 24) & 0xff) == 0x04)
+     memcpy(s->regs, asc->resets, asc->nr_regs * 4);
++    s->regs[AST2700_SILICON_REV] = s->silicon_rev;
+ }
  
+ static void aspeed_2700_scu_class_init(ObjectClass *klass, void *data)
+@@ -1032,7 +1032,6 @@ static const MemoryRegionOps aspeed_ast2700_scuio_ops = {
+ };
+ 
+ static const uint32_t ast2700_a0_resets_io[ASPEED_AST2700_SCU_NR_REGS] = {
+-    [AST2700_SILICON_REV]               = 0x06000003,
+     [AST2700_HW_STRAP1]                 = 0x00000504,
+     [AST2700_HW_STRAP1_CLR]             = 0xFFF0FFF0,
+     [AST2700_HW_STRAP1_LOCK]            = 0x00000FFF,
 -- 
 2.34.1
 
