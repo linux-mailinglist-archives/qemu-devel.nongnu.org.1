@@ -2,97 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601DFA3491F
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 17:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A84A3493E
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 17:12:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tibfh-0001SK-3i; Thu, 13 Feb 2025 11:02:37 -0500
+	id 1tibom-0006CQ-0F; Thu, 13 Feb 2025 11:12:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tibfU-00019R-Bl
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:02:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tibfR-0005ga-5E
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:02:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739462540;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kAa0SpJOhaviYKcQwZDtYWFA+1EBiCd0TLgglhF27bI=;
- b=fJxDxCMwUo+vESqIeRd3oiOI9dr45hC/9/oOL35EN+Y1KhY10mXp0H5F7fRcp6XdfvvGfL
- PRnupgglG21tlvePBtEs3rDjP3CKi2BfkVXWerps0cj4dsJ57GRiNynihy0Wn1DCR4mweN
- M1yBRKijbo66+jGi9EBlkBWeBBnoOJA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-Y4heQnClOlG8JmTaVcZQrQ-1; Thu, 13 Feb 2025 11:02:18 -0500
-X-MC-Unique: Y4heQnClOlG8JmTaVcZQrQ-1
-X-Mimecast-MFC-AGG-ID: Y4heQnClOlG8JmTaVcZQrQ_1739462538
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38dd533dae6so476084f8f.2
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 08:02:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tiboR-0005na-2w
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:11:41 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tiboO-0007CX-Rc
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:11:38 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-220bff984a0so18603885ad.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 08:11:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739463094; x=1740067894; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=97F4M5gBh8WaJTSAqlKUeUulEnWrYq+Z0LMs9GpeJT8=;
+ b=JQ3+3dFu172dw2iqwQ1hokxjGCaiSO7heBst33aDzMHxFQUskNdLE1boG9DYCZSVRd
+ zRHxVg/puifGknjhEHNTjbUzKos96aL175uM3VEtGsZIUNvvLMEyHb0hjJSpnq90u1Hu
+ Y5DIwNTJR0kpKDy4IDYWA1VgE1TS2n4r/0Pg5kPiKxGNmpxqQPgkfh0DJ7Dyx6NTZSyK
+ GMGRntePCfDOuUuqMUaWOew5a1tjOW1prYGH7NT7IrfxzwIo+NWXqn6dp/XtHP7/5iIP
+ nc8iBcYUDUuI/HnIywyfW9tN6ye38y3PIXIIrJepzlp2SjCFFfl4s8DvrfNTkReEsLMS
+ N3uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739462537; x=1740067337;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kAa0SpJOhaviYKcQwZDtYWFA+1EBiCd0TLgglhF27bI=;
- b=u+VORsuWz23HXTy4LwKjrJPYQBTpDPgx3TP1ACSQy0GB8wzNpbuZCAYtnlRcS8XW7Z
- QnP1N0MFurTWBNi5t6rJfSF0n5YbkLXJitU38GQGLCRXqIKPrJtVCtBOdEdQIChs5kMM
- oK+idBA1GsKkWrVYCJvzzGUI8GmHkK6BaiCaP6xO4YZ0bpDRVdR5nC2c5CT14vgyZz8X
- kWXuX2H3/96eOAwM/wL4SvjCJRC51q1lTJZhMAhdU/wwaufl81kN4HdB6Eo/tT4d2Wwb
- cjTe0/Yo5604lzx7OLthWYHQoEAwlL2CnKz8D9/WVp1FYecFE9wxDIF1jluNthXN0bKd
- DxLA==
-X-Gm-Message-State: AOJu0YyebYFHJBOVCLoGIiakMC02Rlw5zKeiMb77EtNLixV3pNBD4N1F
- Y9rMrPglS/qnCQrL4AX5bhkE73KiYg2UO93M4MchCchMYKfnuT7JYy0LqXuagVZvWsyWsWNd+PN
- dR2RYwFSGkh+l4nSD+grOTT1Huq3SU06mESF35+JWdjqWp+ssYeVug0Ljrk4nvs7lD+JM7opLjE
- RpSGEIbHjjCNIGjyME2gO7auywwQhpWraGXrT4SEk=
-X-Gm-Gg: ASbGncv78HtK7dqkqNGB+miA9mO3oQj2Vr/X13qcQw1swu/M35W8aBkaOqZcJ/Bp1Q5
- FJCmY1vSDJhOrDdrH5J4RPC8Y3xhd1aBWuyGnmA30jeclHLqaXCd8hjlOe93rT2DedAo0x1a+Hi
- ysAOYJgjbQTdWiSsb7uMaX7fMSTbV8hgm3yRU1IDXaYlzChe/ConhK9y5Zgu0sF19P6cLE3Aoj4
- 3DI+QlwH7sS+VrrKEISTJRva8H3qWykv1j+6/zdtLi23EQDHWNMPDuevpNdmLgbAYUOa6jwk+lw
- 7oz4/UknaRTvXXaUXAP3dQcQ12CeNRqQF9a9MvxeDSSGRQ==
-X-Received: by 2002:a5d:5f55:0:b0:38d:b0fe:8c99 with SMTP id
- ffacd0b85a97d-38dea2ebbd1mr8558459f8f.48.1739462535699; 
- Thu, 13 Feb 2025 08:02:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH05DZOGx7lO/0Wri7A8Tlyc31kB2zVkd29y1pQEpDWm9DlXIKKsWEZCIbncTUQp/sjVPKzQA==
-X-Received: by 2002:a5d:5f55:0:b0:38d:b0fe:8c99 with SMTP id
- ffacd0b85a97d-38dea2ebbd1mr8558151f8f.48.1739462533427; 
- Thu, 13 Feb 2025 08:02:13 -0800 (PST)
-Received: from [192.168.126.123] (93-38-211-213.ip72.fastwebnet.it.
- [93.38.211.213]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d8dd6sm2270907f8f.62.2025.02.13.08.02.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Feb 2025 08:02:11 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: [PULL 27/27] ui/sdl2: reenable the SDL2 Windows keyboard hook
- procedure
-Date: Thu, 13 Feb 2025 17:00:54 +0100
-Message-ID: <20250213160054.3937012-28-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213160054.3937012-1-pbonzini@redhat.com>
-References: <20250213160054.3937012-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1739463094; x=1740067894;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=97F4M5gBh8WaJTSAqlKUeUulEnWrYq+Z0LMs9GpeJT8=;
+ b=mSnTDLC3t5FHO3aO/eNI1++LGv9oBY04HTGUi6xCPJokA5t5uI8A/XjX9re+D42lT7
+ 36xfIeKYpE0kRPQass5XTDeCqtbgVQ0mWjDCYulqJan9bT7rdTq8jg2Bt3c1WvximWvu
+ 6waQncV7eBLG9bOaznxdKhJxvAZpsni9TXdbbUmyNTQzb1s0uGJnAnyaGmrmK/eki32d
+ OrX5GWxpH/aO1CKGBa+VSucYh/+TSeUC4+p3kkq50KLTflE/aiFYhkdrwvxfUF2VEF6n
+ 8Ch6KM90aJj/LWdtz18tkkZHiej/asSujvL7p9Ri8gi8wBw/TQV1itXKjBk7jYwMUSFH
+ ALJw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWRDUglcV0dqytptZUC2LB8rVrM38uW39VNPB7X8xtQMblM957/+RyvX1LZ3EdlNNLilVObfLM+77Ef@nongnu.org
+X-Gm-Message-State: AOJu0Ywt6mHNkcxZMD+F9dp/uXWP1omH3Z/a7Z+6D44fvxkxv5V8qjRh
+ QtaeHeDcCQxjwC+q/p4pSdcX/1IYCdMHr3mgXw8gLupBnL4MYHM2EktiVTio9QU=
+X-Gm-Gg: ASbGncvQWxilQgbPnHmH23uQIiaUKZSQuOsmNd0mr6NP0sluZYdPk6jTfl1vwhIYZw3
+ Eh7aOYpQ/pbLNGbEgG3H5HLBjLiAFwlJLZO0NqmVsPEIZvOpUff6zGy8Fn95ZrcxneLtuB0inUe
+ 2QSF/Pw1XPMq3bPiNClWMTtWkaKeagJtmZ6vKjTPnuPGzLZY9tglAwe/ha4iNqEpfLjH1aSaDx7
+ S3fIc/GzfHW8PRbhwdv5vxw1Vc4aCSEqbIuUM8Z8FZEIg/45xh2jes9kugNoKDeU3OW24D6DOTH
+ fXCdJfGvCWeSpW4PTPzkxij9OPRXV7VTJsVP3NVLUVp7e/2aS4TGiEg=
+X-Google-Smtp-Source: AGHT+IE4MBEOSqtNF+ko3GkgpFItyWHwntKb+IbjjZy4YjSTeDrmxnaoFT1jBDXCjHmg46PF+GO+mA==
+X-Received: by 2002:a17:903:2f89:b0:21f:3abc:b9e8 with SMTP id
+ d9443c01a7336-220d215943dmr60677805ad.43.1739463094621; 
+ Thu, 13 Feb 2025 08:11:34 -0800 (PST)
+Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d5348f7asm14357665ad.23.2025.02.13.08.11.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Feb 2025 08:11:34 -0800 (PST)
+Message-ID: <9dbc295d-9c9a-47d0-8a97-7619b84c5b46@linaro.org>
+Date: Thu, 13 Feb 2025 08:11:31 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/9] target/microblaze: Use uint64_t for CPUMBState.ear
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: edgar.iglesias@gmail.com, Anton Johansson <anjo@rev.ng>
+References: <20250212220155.1147144-1-richard.henderson@linaro.org>
+ <20250212220155.1147144-5-richard.henderson@linaro.org>
+ <5b0a2b4c-7c70-4d3d-96ce-855feced435f@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <5b0a2b4c-7c70-4d3d-96ce-855feced435f@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,126 +103,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+On 2/13/25 04:42, Philippe Mathieu-Daudé wrote:
+> On 12/2/25 23:01, Richard Henderson wrote:
+>> Use an explicit 64-bit type for EAR.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/microblaze/cpu.h       | 2 +-
+>>   target/microblaze/translate.c | 2 +-
+>>   2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+>> index 45f7f49809..01571d4f86 100644
+>> --- a/target/microblaze/cpu.h
+>> +++ b/target/microblaze/cpu.h
+>> @@ -248,7 +248,7 @@ struct CPUArchState {
+>>       uint32_t pc;
+>>       uint32_t msr;    /* All bits of MSR except MSR[C] and MSR[CC] */
+>>       uint32_t msr_c;  /* MSR[C], in low bit; other bits must be 0 */
+>> -    target_ulong ear;
+>> +    uint64_t ear;
+>>       uint32_t esr;
+>>       uint32_t fsr;
+>>       uint32_t btr;
+>> diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+>> index d5c5e650e0..549013d25e 100644
+>> --- a/target/microblaze/translate.c
+>> +++ b/target/microblaze/translate.c
+>> @@ -1842,7 +1842,7 @@ void mb_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+>>       }
+>>       qemu_fprintf(f, "\nesr=0x%04x fsr=0x%02x btr=0x%08x edr=0x%x\n"
+>> -                 "ear=0x" TARGET_FMT_lx " slr=0x%x shr=0x%x\n",
+>> +                 "ear=0x%" PRIx64 " slr=0x%x shr=0x%x\n",
+>>                    env->esr, env->fsr, env->btr, env->edr,
+>>                    env->ear, env->slr, env->shr);
+> 
+> So IIUC no need to worry about the upper 32-bits as Anton
+> suggested in my RFC:
+> https://lore.kernel.org/qemu-devel/ 
+> rbczkcp7whvovj55htcvongsc45xyhia5sgckqunszldag3iey@4vsbsjak4wr2/
 
-Windows only:
+The upper 32 bits can only be written by the 64-bit "extended address" instructions, which 
+are supervisor only.  So certainly the upper 32-bits are not relevant to linux-user.
 
-The libSDL2 Windows message loop needs the libSDL2 Windows low
-level keyboard hook procedure to grab the left and right Windows
-keys correctly. Reenable the SDL2 Windows keyboard hook procedure.
+We are not currently, but *should* be writing to ear from linux-user so that ear gets 
+populated in the signal context.  We're missing a record_sigsegv hook.
 
-Since SDL2 2.30.4 the SDL2 keyboard hook procedure also filters
-out the special left Control key event for every Alt Gr key event
-on keyboards with an international layout. This means the QEMU low
-level keyboard hook procedure is no longer needed. Remove the QEMU
-Windows keyboard hook procedure.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2139
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2323
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Link: https://lore.kernel.org/r/20241231115950.6732-1-vr_qemu@t-online.de
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- ui/sdl2.c      | 26 --------------------------
- ui/meson.build |  4 ----
- 2 files changed, 30 deletions(-)
-
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 445eb1dd9f9..cda4293a53e 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -32,7 +32,6 @@
- #include "system/runstate.h"
- #include "system/runstate-action.h"
- #include "system/system.h"
--#include "ui/win32-kbd-hook.h"
- #include "qemu/log.h"
- #include "qemu-main.h"
- 
-@@ -263,7 +262,6 @@ static void sdl_grab_start(struct sdl2_console *scon)
-     }
-     SDL_SetWindowGrab(scon->real_window, SDL_TRUE);
-     gui_grab = 1;
--    win32_kbd_set_grab(true);
-     sdl_update_caption(scon);
- }
- 
-@@ -271,7 +269,6 @@ static void sdl_grab_end(struct sdl2_console *scon)
- {
-     SDL_SetWindowGrab(scon->real_window, SDL_FALSE);
-     gui_grab = 0;
--    win32_kbd_set_grab(false);
-     sdl_show_cursor(scon);
-     sdl_update_caption(scon);
- }
-@@ -372,19 +369,6 @@ static int get_mod_state(void)
-     }
- }
- 
--static void *sdl2_win32_get_hwnd(struct sdl2_console *scon)
--{
--#ifdef CONFIG_WIN32
--    SDL_SysWMinfo info;
--
--    SDL_VERSION(&info.version);
--    if (SDL_GetWindowWMInfo(scon->real_window, &info)) {
--        return info.info.win.window;
--    }
--#endif
--    return NULL;
--}
--
- static void handle_keydown(SDL_Event *ev)
- {
-     int win;
-@@ -609,10 +593,6 @@ static void handle_windowevent(SDL_Event *ev)
-         sdl2_redraw(scon);
-         break;
-     case SDL_WINDOWEVENT_FOCUS_GAINED:
--        win32_kbd_set_grab(gui_grab);
--        if (qemu_console_is_graphic(scon->dcl.con)) {
--            win32_kbd_set_window(sdl2_win32_get_hwnd(scon));
--        }
-         /* fall through */
-     case SDL_WINDOWEVENT_ENTER:
-         if (!gui_grab && (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled)) {
-@@ -628,9 +608,6 @@ static void handle_windowevent(SDL_Event *ev)
-         scon->ignore_hotkeys = get_mod_state();
-         break;
-     case SDL_WINDOWEVENT_FOCUS_LOST:
--        if (qemu_console_is_graphic(scon->dcl.con)) {
--            win32_kbd_set_window(NULL);
--        }
-         if (gui_grab && !gui_fullscreen) {
-             sdl_grab_end(scon);
-         }
-@@ -870,10 +847,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
- #ifdef SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR /* only available since SDL 2.0.8 */
-     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
- #endif
--#ifndef CONFIG_WIN32
--    /* QEMU uses its own low level keyboard hook procedure on Windows */
-     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
--#endif
- #ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
-     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
- #endif
-diff --git a/ui/meson.build b/ui/meson.build
-index 28c7381dd10..35fb04cadf3 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -120,10 +120,6 @@ if gtk.found()
- endif
- 
- if sdl.found()
--  if host_os == 'windows'
--    system_ss.add(files('win32-kbd-hook.c'))
--  endif
--
-   sdl_ss = ss.source_set()
-   sdl_ss.add(sdl, sdl_image, pixman, glib, files(
-     'sdl2-2d.c',
--- 
-2.48.1
-
+r~
 
