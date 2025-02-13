@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCE2A33C03
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 11:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEBFA33C15
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 11:08:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiW5s-0007Ug-Gq; Thu, 13 Feb 2025 05:05:16 -0500
+	id 1tiW8G-0000SW-9U; Thu, 13 Feb 2025 05:07:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1tiW5n-0007T3-H4
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 05:05:11 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1tiW5k-0005pq-WF
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 05:05:11 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxyuDJw61nSwh0AA--.5063S3;
- Thu, 13 Feb 2025 18:04:57 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMDxH+XGw61nZsIPAA--.61918S3;
- Thu, 13 Feb 2025 18:04:57 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: Add full type support for
- query-cpu-model-expansion
-To: Bibo Mao <maobibo@loongson.cn>, Markus Armbruster <armbru@redhat.com>
-References: <20250213091626.3650603-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Cc: QEMU devel <qemu-devel@nongnu.org>
-Message-ID: <30c1c330-32d1-fa36-c0ca-670c94a06736@loongson.cn>
-Date: Thu, 13 Feb 2025 18:07:06 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tiW86-0000GK-SK
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 05:07:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tiW7x-0006IO-8p
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 05:07:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739441238;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PZ5dQ17ExUMRMSZCCTuNeXqQv6ynn2YMpbqFuGpGZEI=;
+ b=LV8ZUz4az/mApP70sMTHbH8LmFPzehtRxq80rkOXfBQnnag5/kPWQiFj8vUJSrWr/8M/IU
+ hPRBo+ugxmbkVkbLj3DBlJavQOoTo59YpR0msyndlwCgcQdwEkKmkh/BxZSCJg3VwQkXa8
+ cYHAGVB1q8RH4PjWtyNrIL2riUKayiU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-437-3CTGlvS7MCO7iOfvmpGg2A-1; Thu,
+ 13 Feb 2025 05:07:15 -0500
+X-MC-Unique: 3CTGlvS7MCO7iOfvmpGg2A-1
+X-Mimecast-MFC-AGG-ID: 3CTGlvS7MCO7iOfvmpGg2A
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 93F2218D95DC; Thu, 13 Feb 2025 10:07:13 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 00ACB18004A7; Thu, 13 Feb 2025 10:07:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3C34521E6A28; Thu, 13 Feb 2025 11:07:10 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-riscv@nongnu.org,  Thomas Huth
+ <thuth@redhat.com>,  qemu-arm@nongnu.org,  Richard Henderson
+ <richard.henderson@linaro.org>,  qemu-ppc@nongnu.org,  Sai Pavan Boddu
+ <sai.pavan.boddu@amd.com>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Alistair Francis <alistair.francis@wdc.com>,
+ Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v7 01/10] hw/qdev-properties-system: Introduce
+ EndianMode QAPI enum
+In-Reply-To: <20250212123659.52764-2-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 12 Feb 2025 13:36:50
+ +0100")
+References: <20250212123659.52764-1-philmd@linaro.org>
+ <20250212123659.52764-2-philmd@linaro.org>
+Date: Thu, 13 Feb 2025 11:07:10 +0100
+Message-ID: <87zfiqi2ep.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-In-Reply-To: <20250213091626.3650603-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMDxH+XGw61nZsIPAA--.61918S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7KFy8KF47JryfAF1kZr18JFc_yoW8WrWDpr
- WxArWUtrZxGFnrJFy8CFyYgr1SvrnxGrWIg3ZxWry8trnaqr1fZr1ktayqvFy3Xw48W3yY
- q3s5Kw1Yqa1xXwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.157, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,49 +92,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: Markus
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-hi, Markus
-
-What is the difference between CPU_MODEL_EXPANSION_TYPE_STATIC and 
-CPU_MODEL_EXPANSION_TYPE_FULL?
-
-thanks.
-Song Gao.
-
-ÔÚ 2025/2/13 ÏÂÎç5:16, Bibo Mao Ð´µÀ:
-> With full type for query-cpu-model-expansion qmp command, it shows that
-> it is not supported. For instance,
->    query-cpu-model-expansion type=full model={"name":"max"}
+> Introduce the EndianMode type and the DEFINE_PROP_ENDIAN() macros.
+> Endianness can be BIG, LITTLE or unspecified (default).
 >
-> Here is is output,
->    {"error": {"class": "GenericError", "desc": "The requested expansion type is not supported"}}
->
-> Since full type is not supported and only static type is supported, Here
-> replace static type with full type for command query-cpu-model-expansion.
->
-> And there is result with this patch,
->    {"return": {"model": {"name": "max", "props": {"lbt": true, "lasx": true, "pmu": true, "lsx": true}}}}
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   target/loongarch/loongarch-qmp-cmds.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  qapi/common.json                    | 16 ++++++++++++++++
+>  include/hw/qdev-properties-system.h |  7 +++++++
+>  hw/core/qdev-properties-system.c    | 11 +++++++++++
+>  3 files changed, 34 insertions(+)
 >
-> diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-> index 3fde5a5a20..429c6d35fd 100644
-> --- a/target/loongarch/loongarch-qmp-cmds.c
-> +++ b/target/loongarch/loongarch-qmp-cmds.c
-> @@ -56,7 +56,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
->       const char *name;
->       int i;
->   
-> -    if (type != CPU_MODEL_EXPANSION_TYPE_STATIC) {
-> +    if (type != CPU_MODEL_EXPANSION_TYPE_FULL) {
->           error_setg(errp, "The requested expansion type is not supported");
->           return NULL;
->       }
->
-> base-commit: de278e54aefed143526174335f8286f7437d20be
+> diff --git a/qapi/common.json b/qapi/common.json
+> index 6ffc7a37890..33d8df19f67 100644
+> --- a/qapi/common.json
+> +++ b/qapi/common.json
+> @@ -212,3 +212,19 @@
+>  ##
+>  { 'struct': 'HumanReadableText',
+>    'data': { 'human-readable-text': 'str' } }
+> +
+> +##
+> +# @EndianMode:
+> +#
+> +# An enumeration of three options: little, big, and unspecified
+
+Not sure this sentence is worth its keep.  It's consistent with existing
+practice in this file, though.
+
+> +#
+> +# @unspecified: Endianness not specified
+> +#
+> +# @little: Little endianness
+> +#
+> +# @big: Big endianness
+> +#
+> +# Since: 10.0
+> +##
+> +{ 'enum': 'EndianMode',
+> +  'data': [ 'unspecified', 'little', 'big' ] }
+
+Acked-by: Markus Armbruster <armbru@redhat.com>
+
+[...]
 
 
