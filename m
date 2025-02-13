@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D50CA34B10
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 17:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF96EA34B2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Feb 2025 18:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ticXR-0006QX-FF; Thu, 13 Feb 2025 11:58:09 -0500
+	id 1ticbk-00088D-6v; Thu, 13 Feb 2025 12:02:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ticXP-0006QD-1X
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:58:07 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1ticaX-0007vI-Pf
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:01:24 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ticXN-0005nG-F3
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 11:58:06 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-219f8263ae0so18846655ad.0
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 08:58:04 -0800 (PST)
+ id 1ticaV-0006Xx-To
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 12:01:21 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-21f78b1fb7dso19264035ad.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 09:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739465883; x=1740070683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739466078; x=1740070878; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yLSbzG6ML45iHZ+vj4SzYhnUOLaM3mfQ4WRjmCJ8nII=;
- b=nKPMDaX9/zxch8zD5eb8NnBA1kjQ0//ToyiBrVlU9oPE16zr6F2En/1HFju7LoCjit
- I6nh2My+KdTlyiDPuonZryTIEzRLsxy3wZO+pqUx7uQQrOefcOYENLIFAmrA/Sggd+td
- DOLQ1ZoG56IdTIWSv4pH0mgKShQq9L8wYlejDO0PvFK1EL/8gmOIW7Enh41Skguo7Wvq
- cPpmz3xOv6kal1gOhDmj1f8QfDuF2A59sn/N8+jnlCMBt6a9eBAMz4qhEKKHDYdUTVNi
- EMw//njL8+LphAsStVO3dRjYUKyhEJhPRamVfmKoBi+0EHeYzhL1+gX3jyfjbnzdbw+0
- nK4A==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=i0GnvwYOIWLSQrskx04NfY5AicyRrWaJKwfVxy9bfdE=;
+ b=ycZMyc1WlEf6PjdsZCbCx+p0vG31cBm7w5S+71Sb+I03S4TbKtUaWqrqEDECVui1gw
+ csJktmcxbzemv2VCGHep0M3TNqYw3eafkYokn3ycOHiDHJCgiGZhWOaml7ZC13G5zG2l
+ wdGR6YOh32av+rsR/y+aq2ur+zspTiXbp590j4Px1aMjCHV26A9gVzwGfcFRdalii8sd
+ hn8f6SJl5kpTteT1rRRVUfVMU52cO0S6UhMFILQicunBXZJjHahvNtWI1fr3ispYoTXV
+ 0AoNXHfvpY6V5DybofJu3+Drq2GKs5JuP858F+xvDduId97Ob48la1gFG1fWPuyjGmfA
+ jtfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739465883; x=1740070683;
+ d=1e100.net; s=20230601; t=1739466078; x=1740070878;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yLSbzG6ML45iHZ+vj4SzYhnUOLaM3mfQ4WRjmCJ8nII=;
- b=oHAaUvBEUWi3rcMSUnzU9GEMU1c/V9G6rjXB+R3XhwZ89YttOFOsqXGbJsx4b1t9uy
- k6Hhs6dxJfYfzSqg1bAV6OoDSQIesQSjCvv9uH5KUSmHPrmNRiGOzEjtMNjBBZykbh3i
- rralEQnMzJ2LjD5cya9GOaiN6sJQg033DdAMiwwVz0LvkYWcTzks2w2EIdJZVgm1Fewt
- +cJsKaD4YSfxRfHqyeXGrj2hFUfRTYO7f/JR8uzBPfdoLzkuRzuTFu+tDoGeHoa8nAKJ
- FReriOvDh93NoJuNIdhS2RDXTxCnJwQ9iXNVp/PYXUQJ6cw0PsCRO+RT7nRlRtTNKEeh
- ym3Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVDchOOMGEMVROSQp3T7Kz/b42UiU3C2zEdIQqTd8GittwLNy9G1BmAzd2iH6ZPHbDXS9yHvLrIyTFj@nongnu.org
-X-Gm-Message-State: AOJu0YwXvOyBmeVBNfwBam9dOU+YMtn2YLYCTr7d4B3J1yFwvQfl6G6q
- FW3dwQHLaLsnKZCAQbYWUc7rmc3/zcKSJDzVh01TaC5lKD09glIwNb4NpvByHl8=
-X-Gm-Gg: ASbGnctEU/gC3dNXAzCsct3YafoelUS6v8db3xxGxAKK1kEHNZjmCvS0MHYnvvD7GDx
- ooJf7BiXf2vHMkOpVw7MwmXYxYQFdrybxqlkT97V544zgX8NDUubBr7MkoVqOwBiDFNlLKj5zRy
- UbXf0feI2j58L8MqUGx/r0TH8mnCuy9I5Fq7F5IsNPmrSQL/9jjufCPOKajUuKTFaZIVok5Hpf9
- 1WUGhg5RdCSyk9eU+7wcRmCIrbybsLd+ZOP3ol9p5vR0K1rOeyo4OjLbJmHx4Mowx5+q7BLfS5F
- uJ2XjluIvMXeuAWc1anQs1WU81OQFjwTBoq1PnBEhLGWj7y307Z2JNU=
-X-Google-Smtp-Source: AGHT+IHoKu9no66LZzBuMHWqarQg68mxx1/eK3mwTwqAWk1/9HVKJdT6WG0srm4lhBHXA5H8SgwS7w==
-X-Received: by 2002:a17:902:d543:b0:216:501e:e314 with SMTP id
- d9443c01a7336-220bbafa000mr128534615ad.20.1739465881759; 
- Thu, 13 Feb 2025 08:58:01 -0800 (PST)
+ bh=i0GnvwYOIWLSQrskx04NfY5AicyRrWaJKwfVxy9bfdE=;
+ b=JbM0pzWY803byJuqle711W5HnS4q3S+mbR+dzyWpOBC6heLk92LTbKcAcKfiQFqlh+
+ kHfRNg7oaYX8+tUrZhjFsSc1ByGQa2PutaZllp1sCPbYNc4vgajlc+X65PiXmSc5vvd+
+ fJouEkNWlK+7FEdhENcrX1c+X0HSafuPigcA3HZ7paI4LhYOZHaWwieWU7cYG6Q8kQcF
+ 8WmEvUQw6UeICbNejXw56jbAtISvTRYAy21jcocutnl2l1YcpZG58qaMVX6jivaXU8BW
+ RWMxJjs9jvD1RfNxjkGBLOjTp413sOfV+pv2G174jLP/Ya72W2ulGqabHE0WbIfSJU15
+ UFnw==
+X-Gm-Message-State: AOJu0YxnKLeYe4Imc/oB407mnnSBHTEIluYsc/mjCisBsuDcvzO5bHTP
+ +0XQPvPUEWyfRoRK9cXHKuCUPqYMs2DYRNYzHVi4Lx1MSYIZ8SCMKikbLMJTOeJqAmWhlFNBUQs
+ A
+X-Gm-Gg: ASbGnctNawxvnsm1oHzs91bu9lFprYCIa1rekjWMNd+1BsuHXysKHWqPeviHPWhHH1i
+ H4q+PLj1AmL0Y1yzOXbcU5IbA3/QvQNyfiEUzQ2pB1PGWsfaz6Vu+M+LlCztfGRvgKLL7Igr4aS
+ VtD63QOlmyr3PY3FR2e2KtJJumvT2Xmn4ZvCJvc2Li77bqtnl4TkjnPIjGOSe9VF0ZHzB6chFY7
+ /tu9fB5HQ79vEclTPq7iFRG3m9ByD6OYK00jcRIhRzG78iDH+Cjbk4e+0vr0Aeq29e6H/yrtY/N
+ r0cTY205YTeljl4yqUVHzzUUC8d7K4nse8ULZWAVZpCYtXu9mVlaX5Y=
+X-Google-Smtp-Source: AGHT+IFpt4iQClQbeMi7QcPIfprDiEidUCs/e0gUOvgz9hB15JWm9nJlN57i00IVRwe2KnccC9jZDg==
+X-Received: by 2002:a05:6a00:3029:b0:732:1ffc:36fa with SMTP id
+ d2e1a72fcca58-7322c37860amr11363026b3a.4.1739466078095; 
+ Thu, 13 Feb 2025 09:01:18 -0800 (PST)
 Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d53499fesm14632425ad.34.2025.02.13.08.58.01
+ 41be03b00d2f7-adbf21517eesm565415a12.13.2025.02.13.09.01.17
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Feb 2025 08:58:01 -0800 (PST)
-Message-ID: <ddc4ca31-22ab-4818-88d9-08f299559945@linaro.org>
-Date: Thu, 13 Feb 2025 08:57:59 -0800
+ Thu, 13 Feb 2025 09:01:17 -0800 (PST)
+Message-ID: <8e6c8b1a-a7ea-4bd9-97c3-2f671fd40b83@linaro.org>
+Date: Thu, 13 Feb 2025 09:01:14 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/sparc: Fix gdbstub incorrectly handling registers
- f32-f62
-To: Mikael Szreder <git@miszr.win>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20250203145056.83567-1-git@miszr.win>
+Subject: Re: [PATCH v8 2/6] hw/intc/xilinx_intc: Make device endianness
+ configurable
+To: qemu-devel@nongnu.org
+References: <20250213122217.62654-1-philmd@linaro.org>
+ <20250213122217.62654-3-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250203145056.83567-1-git@miszr.win>
+In-Reply-To: <20250213122217.62654-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,51 +101,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/3/25 06:50, Mikael Szreder wrote:
-> The gdbstub implementation for the Sparc architecture would incorectly
->   calculate the the floating point register offset.
-> This would cause register pairs(eg f32,f33) to point to the same value.
+On 2/13/25 04:22, Philippe Mathieu-Daudé wrote:
+> Replace the DEVICE_NATIVE_ENDIAN MemoryRegionOps by a pair of
+> DEVICE_LITTLE_ENDIAN / DEVICE_BIG_ENDIAN.
 > 
-> Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
-> Signed-off-by: Mikael Szreder <git@miszr.win>
+> Add the "endianness" property to select the device endianness.
+> This property is unspecified by default, and machines need to
+> make it explicit.
+> 
+> Set the proper endianness for each machine using the device.
+> 
+> Reviewed-by: Thomas Huth<thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/sparc/gdbstub.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-> index ec0036e9ef..5578fa9813 100644
-> --- a/target/sparc/gdbstub.c
-> +++ b/target/sparc/gdbstub.c
-> @@ -80,7 +80,7 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
->       }
->       if (n < 80) {
->           /* f32-f62 (double width, even numbers only) */
-> -        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
-> +        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
+>   hw/intc/xilinx_intc.c                    | 59 ++++++++++++++++++------
+>   hw/microblaze/petalogix_ml605_mmu.c      |  3 ++
+>   hw/microblaze/petalogix_s3adsp1800_mmu.c |  3 ++
+>   hw/ppc/virtex_ml507.c                    |  1 +
+>   hw/riscv/microblaze-v-generic.c          |  1 +
+>   5 files changed, 53 insertions(+), 14 deletions(-)
 
-I don't understand your issue with f33, since there is no such thing.  Sparc v9 has f0, 
-f1, ... f31, then f32, f34, ... f62.  The odd numbers above 32 do not exist.
-
-Certainly the indexing is incorrect afterward.
-
-Originally,
-
-   f32 = 64 -> (64 - 32) / 2 = 16
-   f34 = 66 -> (66 - 32) / 2 = 17
-
-whereas your replacement gives
-
-   f34 = 66 -> (66 - 64) + 16 = 18.
-
-One could rewrite this as
-
-   (n - 64) / 2 + 16
-
-but that's algebraically identical to what we have now, so I don't see the point.
-
-One plausible adjustment in this area would be to reject odd numbers from this block and 
-let them fall through to 'return 0' at the end.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
