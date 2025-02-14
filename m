@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA959A36051
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943AAA35FFB
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:15:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwT6-0004pV-7U; Fri, 14 Feb 2025 09:15:00 -0500
+	id 1tiwT9-000538-61; Fri, 14 Feb 2025 09:15:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwT3-0004kl-GK
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:57 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1tiwT5-0004rm-7I
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:59 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwT1-0004Tx-Up
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:57 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtTl1001915;
- Fri, 14 Feb 2025 14:14:53 GMT
+ id 1tiwT3-0004U8-FW
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:58 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECu5LQ019631;
+ Fri, 14 Feb 2025 14:14:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=ndZ8Cn9lMpheRCsaXrX8Fh4pS07p8vIhpbsG5gRn4uc=; b=
- cDVgnDQG+peFIcKXakDm5uaocPcTm6OQWDZqA+puyvYD35aWEhK2cDYd4FcbSZDT
- znKSGMZA5Ezg2Q44LLeUUi+auTVhALLxJ2JpMkvx42n1nIPdE+FQIrkVIfTLvqDt
- bEXrjzwZXnkBaV5fyd24qF6XxkVhW0JQMMfkZIMqorMHRHD672GNbcHFNpvnflfG
- ciLx6v8zgD4eqCxdNYaZH+U0DVy8W6omVT12fqtrzPP0yFzM8tPj56r0kGTEffaj
- 41yo5mUxRluhVACqaMqgMra2b0ffNK+aV1F8JDNNvfgbmCxVJn7ZXe45QjCtnpw5
- TQELILrV+ZBemP3xkKQf/Q==
+ corp-2023-11-20; bh=ko8/DK9KUJwwd4C3swGa6X4nnN0vZ6lduituR25pmU8=; b=
+ U79z/icnWhCTC0mt/IiliUJOKu/NKyRUPpVhj/H8pNFvcDz9hM6HtyTsxsUsMcn4
+ 8cLZPXzb/JmL9LTcF6ws8ba36bPKyNTanXtHmbW5OOI6x5AtroWzNHMTGBMfDA1E
+ D7GTDyiQhNWj9o5GQ9oj9ePCGnR/XLebhk0oTiQTaPoTIMc8HpcpQBPxcspEbaqD
+ +41BoW/c58+KOWyhKZt/I2WmysDxqCD/neqKcthaNGB13F2pJGgbsSTAMDz9Wzhn
+ VWLDgLBUjcyPJqHTFhMnOEIdmbkBdB1Ikx2teEayGBVs20jXLfs6WlfR2NiiVrgS
+ Q1jaaa39jqgxf1KTvmgD2A==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qyusvp-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0t4bmuu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:52 +0000 (GMT)
+ Fri, 14 Feb 2025 14:14:55 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51ECSfbh025328; Fri, 14 Feb 2025 14:14:52 GMT
+ with ESMTP id 51ECelZ1025288; Fri, 14 Feb 2025 14:14:53 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqksge6-1
+ 44nwqksgeq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:52 +0000
+ Fri, 14 Feb 2025 14:14:53 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPl006920;
- Fri, 14 Feb 2025 14:14:51 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPn006920;
+ Fri, 14 Feb 2025 14:14:53 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-18; Fri, 14 Feb 2025 14:14:51 +0000
+ ESMTP id 44nwqksg2h-19; Fri, 14 Feb 2025 14:14:53 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 17/45] vfio-pci: skip reset during cpr
-Date: Fri, 14 Feb 2025 06:13:59 -0800
-Message-Id: <1739542467-226739-18-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 18/45] vfio/pci: vfio_vector_init
+Date: Fri, 14 Feb 2025 06:14:00 -0800
+Message-Id: <1739542467-226739-19-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
@@ -75,16 +75,16 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-ORIG-GUID: LJYNiIca4hX00iG9zTBfqxk8iJHfuvSO
-X-Proofpoint-GUID: LJYNiIca4hX00iG9zTBfqxk8iJHfuvSO
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: 7kznKiFb5N7AsgH2z8Rhi9HQq1yJ0gY0
+X-Proofpoint-GUID: 7kznKiFb5N7AsgH2z8Rhi9HQq1yJ0gY0
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,98 +102,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not reset a vfio-pci device during CPR, and do not complain if the
-kernel's PCI config space changes for non-emulated bits between the
-vmstate save and load, which can happen due to ongoing interrupt activity.
+Extract a subroutine vfio_vector_init.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/cpr.c              | 31 +++++++++++++++++++++++++++++++
- hw/vfio/pci.c              |  6 ++++++
- include/hw/vfio/vfio-cpr.h |  2 ++
- 3 files changed, 39 insertions(+)
+ hw/vfio/pci.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index 6790f8a..8268c0c 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -8,6 +8,8 @@
- #include "qemu/osdep.h"
- #include "hw/vfio/vfio-common.h"
- #include "hw/vfio/vfio-cpr.h"
-+#include "hw/vfio/pci.h"
-+#include "migration/cpr.h"
- #include "qapi/error.h"
- #include "system/runstate.h"
- 
-@@ -37,3 +39,32 @@ void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
- {
-     migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
- }
-+
-+/*
-+ * The kernel may change non-emulated config bits.  Exclude them from the
-+ * changed-bits check in get_pci_config_device.
-+ */
-+static int vfio_cpr_pci_pre_load(void *opaque)
-+{
-+    VFIOPCIDevice *vdev = opaque;
-+    PCIDevice *pdev = &vdev->pdev;
-+    int size = MIN(pci_config_size(pdev), vdev->config_size);
-+    int i;
-+
-+    for (i = 0; i < size; i++) {
-+        pdev->cmask[i] &= vdev->emulated_config_bits[i];
-+    }
-+
-+    return 0;
-+}
-+
-+const VMStateDescription vfio_cpr_pci_vmstate = {
-+    .name = "vfio-cpr-pci",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .pre_load = vfio_cpr_pci_pre_load,
-+    .needed = cpr_needed_for_reuse,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 89d900e..bd080ea 100644
+index bd080ea..883257a 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3294,6 +3294,11 @@ static void vfio_pci_reset(DeviceState *dev)
- {
-     VFIOPCIDevice *vdev = VFIO_PCI(dev);
+@@ -511,6 +511,22 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+     kvm_irqchip_commit_routes(kvm_state);
+ }
  
-+    /* Do not reset the device during qemu_system_reset prior to cpr load */
-+    if (vdev->vbasedev.cpr.reused) {
-+        return;
++static void vfio_vector_init(VFIOPCIDevice *vdev, int nr)
++{
++    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
++    PCIDevice *pdev = &vdev->pdev;
++
++    vector->vdev = vdev;
++    vector->virq = -1;
++    if (event_notifier_init(&vector->interrupt, 0)) {
++        error_report("vfio: Error: event_notifier_init failed");
 +    }
++    vector->use = true;
++    if (vdev->interrupt == VFIO_INT_MSIX) {
++        msix_vector_use(pdev, nr);
++    }
++}
 +
-     trace_vfio_pci_reset(vdev->vbasedev.name);
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
+ {
+@@ -524,13 +540,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+     vector = &vdev->msi_vectors[nr];
  
-     vfio_pci_pre_reset(vdev);
-@@ -3427,6 +3432,7 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
- #ifdef CONFIG_IOMMUFD
-     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
- #endif
-+    dc->vmsd = &vfio_cpr_pci_vmstate;
-     dc->desc = "VFIO-based PCI device assignment";
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     pdc->realize = vfio_realize;
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index 40d4f06..f5480de 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -43,4 +43,6 @@ void vfio_cpr_giommu_remap(struct VFIOContainerBase *bcontainer,
+     if (!vector->use) {
+-        vector->vdev = vdev;
+-        vector->virq = -1;
+-        if (event_notifier_init(&vector->interrupt, 0)) {
+-            error_report("vfio: Error: event_notifier_init failed");
+-        }
+-        vector->use = true;
+-        msix_vector_use(pdev, nr);
++        vfio_vector_init(vdev, nr);
+     }
  
- bool vfio_cpr_register_ram_discard_listener(
-     struct VFIOContainerBase *bcontainer, MemoryRegionSection *section);
-+
-+extern const VMStateDescription vfio_cpr_pci_vmstate;
- #endif
+     qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
 -- 
 1.8.3.1
 
