@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA25A366E3
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:31:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B5EA366F9
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:37:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2K8-00043g-7v; Fri, 14 Feb 2025 15:30:08 -0500
+	id 1tj2KE-000471-5E; Fri, 14 Feb 2025 15:30:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2K6-00041h-13
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:06 -0500
+ id 1tj2KA-00045E-MG
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2K3-0001lb-1R
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:04 -0500
+ id 1tj2K8-0001yO-0i
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739565001;
+ s=mimecast20190719; t=1739565007;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xqYsVDH8oWpPyMWyIgRluzniD956Fyoitoj7hGAZ6g=;
- b=NZzJt339NpG1VuE6YMIrezkEMHQnUZpa+HP/RDxHeI7eIvAYGN8zvkJlboh3Wp2xRhe4L8
- tKHixpMMcZVQfkH9nElSW+GqYNVJrEmBK/nnhWq7ik9XJecFenodlJmCtyF6pLtlq07b3+
- 6mOOReHbJhiB/GSmEHnUHLxCER8BIyk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4n33rQfGaBnwnQltob59qtttUzejZbi5C/XifU+Ps0I=;
+ b=I8yuLUJI9TvP2YPx1rC7hko73Nkrv1rrGSau5QBIEvOic1b77Ou1gGM19oAss0yAlsRmVn
+ qzuSYjYQg+ee9ONMhLXDXbBMDJtvTGjoXxvABQH3zFJtOlVXs1ZAeAHZygBwVMJq8wyGSv
+ DQyGfYkI+R+BWj0Yz+PU4fMEkUh7lvs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-4pNR8iaUMoqsSa4XiRNFYw-1; Fri,
- 14 Feb 2025 15:29:59 -0500
-X-MC-Unique: 4pNR8iaUMoqsSa4XiRNFYw-1
-X-Mimecast-MFC-AGG-ID: 4pNR8iaUMoqsSa4XiRNFYw_1739564998
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-zxSZQKp0P46P0RH8ZeDzDA-1; Fri,
+ 14 Feb 2025 15:30:02 -0500
+X-MC-Unique: zxSZQKp0P46P0RH8ZeDzDA-1
+X-Mimecast-MFC-AGG-ID: zxSZQKp0P46P0RH8ZeDzDA_1739565001
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D514218004A7
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:29:58 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D0F5B180087C
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:30:01 +0000 (UTC)
 Received: from tapioca.redhat.com (unknown [10.44.32.23])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9186A1800352; Fri, 14 Feb 2025 20:29:56 +0000 (UTC)
+ id 8B39B180056F; Fri, 14 Feb 2025 20:29:59 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v4 02/11] qapi: golang: Generate enum type
-Date: Fri, 14 Feb 2025 21:29:35 +0100
-Message-ID: <20250214202944.69897-3-victortoso@redhat.com>
+Subject: [PATCH v4 03/11] qapi: golang: Generate alternate types
+Date: Fri, 14 Feb 2025 21:29:36 +0100
+Message-ID: <20250214202944.69897-4-victortoso@redhat.com>
 In-Reply-To: <20250214202944.69897-1-victortoso@redhat.com>
 References: <20250214202944.69897-1-victortoso@redhat.com>
 MIME-Version: 1.0
@@ -84,281 +84,540 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch handles QAPI enum types and generates its equivalent in Go.
-We sort the output based on enum's type name.
+This patch handles QAPI alternate types and generates data structures
+in Go that handles it.
 
-Enums are being handled as strings in Golang.
+Alternate types are similar to Union but without a discriminator that
+can be used to identify the underlying value on the wire.
 
-1. For each QAPI enum, we will define a string type in Go to be the
-   assigned type of this specific enum.
+1. Over the wire, we need to infer underlying value by its type
 
-2. Naming: CamelCase will be used in any identifier that we want to
-   export, which is everything.
+2. Pointer to types are mapped as optional. Absent value can be a
+   valid value.
 
-Example:
+3. We use Go's standard 'encoding/json' library with its Marshal
+   and Unmarshal interfaces.
+
+4. As an exceptional but valid case, there are types that accept
+   JSON NULL as value. Due to limitations with Go's standard library
+   (point 3) combined with Absent being a possibility (point 2), we
+   translante NULL values to a boolean field called 'IsNull'. See the
+   second example and docs/devel/qapi-golang-code-gen.rst under
+   Alternate section.
+
+* First example:
 
 qapi:
   | ##
-  | # @DisplayProtocol:
+  | # @BlockdevRef:
   | #
-  | # Display protocols which support changing password options.
+  | # Reference to a block device.
   | #
-  | # Since: 7.0
+  | # @definition: defines a new block device inline
+  | #
+  | # @reference: references the ID of an existing block device
+  | #
+  | # Since: 2.9
   | ##
-  | { 'enum': 'DisplayProtocol',
-  |   'data': [ 'vnc', 'spice' ] }
+  | { 'alternate': 'BlockdevRef',
+  |   'data': { 'definition': 'BlockdevOptions',
+  |             'reference': 'str' } }
 
 go:
-  | // Display protocols which support changing password options.
+  | // Reference to a block device.
   | //
-  | // Since: 7.0
-  | type DisplayProtocol string
+  | // Since: 2.9
+  | type BlockdevRef struct {
+  | 	// defines a new block device inline
+  | 	Definition *BlockdevOptions
+  | 	// references the ID of an existing block device
+  | 	Reference *string
+  | }
   |
-  | const (
-  | 	DisplayProtocolVnc   DisplayProtocol = "vnc"
-  | 	DisplayProtocolSpice DisplayProtocol = "spice"
-  | )
+  | func (s BlockdevRef) MarshalJSON() ([]byte, error) {
+  |     ...
+  | }
+  |
+  | func (s *BlockdevRef) UnmarshalJSON(data []byte) error {
+  |     ...
+  | }
+
+usage:
+  | input := `{"driver":"qcow2","data-file":"/some/place/my-image"}`
+  | k := BlockdevRef{}
+  | err := json.Unmarshal([]byte(input), &k)
+  | if err != nil {
+  |     panic(err)
+  | }
+  | // *k.Definition.Qcow2.DataFile.Reference == "/some/place/my-image"
+
+* Second example:
+
+qapi:
+ | { 'alternate': 'StrOrNull',
+ |   'data': { 's': 'str',
+ |             'n': 'null' } }
+
+  | // This is a string value or the explicit lack of a string (null
+  | // pointer in C).  Intended for cases when 'optional absent' already
+  | // has a different meaning.
+  | //
+  | // Since: 2.10
+  | type StrOrNull struct {
+  | 	// the string value
+  | 	S *string
+  | 	// no string value
+  | 	IsNull bool
+  | }
+  |
+  | // Helper function to get its underlying Go value or absent of value
+  | func (s *StrOrNull) ToAnyOrAbsent() (any, bool) {
+  |     ...
+  | }
+  |
+  | func (s StrOrNull) MarshalJSON() ([]byte, error) {
+  |     ...
+  | }
+  |
+  | func (s *StrOrNull) UnmarshalJSON(data []byte) error {
+  |     ...
+  | }
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
- scripts/qapi/golang/golang.py | 185 +++++++++++++++++++++++++++++++++-
- 1 file changed, 183 insertions(+), 2 deletions(-)
+ scripts/qapi/golang/golang.py | 306 +++++++++++++++++++++++++++++++++-
+ scripts/qapi/golang/utils.go  |  26 +++
+ 2 files changed, 329 insertions(+), 3 deletions(-)
+ create mode 100644 scripts/qapi/golang/utils.go
 
 diff --git a/scripts/qapi/golang/golang.py b/scripts/qapi/golang/golang.py
-index 333741b47b..f074ec1f6f 100644
+index f074ec1f6f..aa1a18a501 100644
 --- a/scripts/qapi/golang/golang.py
 +++ b/scripts/qapi/golang/golang.py
-@@ -13,7 +13,7 @@
- # Just for type hint on self
+@@ -14,10 +14,11 @@
  from __future__ import annotations
  
--import os, shutil
-+import os, shutil, textwrap
- from typing import List, Optional
+ import os, shutil, textwrap
+-from typing import List, Optional
++from typing import List, Optional, Tuple
  
  from ..schema import (
-@@ -30,6 +30,65 @@
+     QAPISchema,
++    QAPISchemaAlternateType,
+     QAPISchemaBranches,
+     QAPISchemaEnumMember,
+     QAPISchemaFeature,
+@@ -30,6 +31,8 @@
  )
  from ..source import QAPISourceInfo
  
-+TEMPLATE_GENERATED_HEADER = """
-+/*
-+ * Copyright 2025 Red Hat, Inc.
-+ * SPDX-License-Identifier: (MIT-0 and GPL-2.0-or-later)
-+ */
++FOUR_SPACES = "    "
 +
-+/****************************************************************************
-+ * THIS CODE HAS BEEN GENERATED. DO NOT CHANGE IT DIRECTLY                  *
-+ ****************************************************************************/
-+package {package_name}
+ TEMPLATE_GENERATED_HEADER = """
+ /*
+  * Copyright 2025 Red Hat, Inc.
+@@ -56,6 +59,57 @@
+ )
+ """
+ 
++TEMPLATE_ALTERNATE_CHECK_INVALID_JSON_NULL = """
++    // Check for json-null first
++    if string(data) == "null" {{
++        return errors.New(`null not supported for {name}`)
++    }}"""
++
++TEMPLATE_ALTERNATE_NULLABLE_CHECK = """
++        }} else if s.{var_name} != nil {{
++            return *s.{var_name}, false"""
++
++TEMPLATE_ALTERNATE_MARSHAL_CHECK = """
++    if s.{var_name} != nil {{
++        return json.Marshal(s.{var_name})
++    }} else """
++
++TEMPLATE_ALTERNATE_UNMARSHAL_CHECK = """
++    // Check for {var_type}
++    {{
++        s.{var_name} = new({var_type})
++        if err := strictDecode(s.{var_name}, data); err == nil {{
++            return nil
++        }}
++        s.{var_name} = nil
++    }}
++
 +"""
 +
-+TEMPLATE_GO_IMPORTS = """
-+import (
-+{imports}
-+)
++TEMPLATE_ALTERNATE_NULLABLE_MARSHAL_CHECK = """
++    if s.IsNull {
++        return []byte("null"), nil
++    } else """
++
++TEMPLATE_ALTERNATE_NULLABLE_UNMARSHAL_CHECK = """
++    // Check for json-null first
++    if string(data) == "null" {
++        s.IsNull = true
++        return nil
++    }"""
++
++TEMPLATE_ALTERNATE_METHODS = """
++func (s {name}) MarshalJSON() ([]byte, error) {{
++{marshal_check_fields}
++    return {marshal_return_default}
++}}
++
++func (s *{name}) UnmarshalJSON(data []byte) error {{
++{unmarshal_check_fields}
++    return fmt.Errorf("Can't convert to {name}: %s", string(data))
++}}
 +"""
-+
-+TEMPLATE_ENUM = """
-+type {name} string
-+
-+const (
-+{fields}
-+)
-+"""
-+
-+
-+# Takes the documentation object of a specific type and returns
-+# that type's documentation and its member's docs.
-+def qapi_to_golang_struct_docs(doc: QAPIDoc) -> (str, Dict[str, str]):
-+    if doc is None:
-+        return "", {}
-+
-+    cmt = "// "
-+    fmt = textwrap.TextWrapper(
-+        width=70, initial_indent=cmt, subsequent_indent=cmt
-+    )
-+    main = fmt.fill(doc.body.text)
-+
-+    for section in doc.sections:
-+        # TODO is not a relevant section to Go applications
-+        if section.tag in ["TODO"]:
-+            continue
-+
-+        if main != "":
-+            # Give empty line as space for the tag.
-+            main += "\n//\n"
-+
-+        tag = "" if section.tag is None else f"{section.tag}: "
-+        text = section.text.replace("  ", " ")
-+        main += fmt.fill(f"{tag}{text}")
-+
-+    fields = {}
-+    for key, value in doc.args.items():
-+        if len(value.text) > 0:
-+            fields[key] = " ".join(value.text.replace("\n", " ").split())
-+
-+    return main, fields
 +
  
- def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
-     vis = QAPISchemaGenGolangVisitor(prefix)
-@@ -37,20 +96,90 @@ def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
+ # Takes the documentation object of a specific type and returns
+ # that type's documentation and its member's docs.
+@@ -96,10 +150,88 @@ def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
      vis.write(output_dir)
  
  
-+def qapi_to_field_name_enum(name: str) -> str:
-+    return name.title().replace("-", "")
++def qapi_to_field_name(name: str) -> str:
++    return name.title().replace("_", "").replace("-", "")
 +
 +
-+def fetch_indent_blocks_over_enum_with_docs(
-+    name: str, members: List[QAPISchemaEnumMember], docfields: Dict[str, str]
-+) -> Tuple[int]:
-+    maxname = 0
-+    blocks: List[int] = [0]
-+    for member in members:
-+        # For simplicity, every time we have doc, we add a new indent block
-+        hasdoc = member.name is not None and member.name in docfields
+ def qapi_to_field_name_enum(name: str) -> str:
+     return name.title().replace("-", "")
+ 
+ 
++def qapi_schema_type_to_go_type(qapitype: str) -> str:
++    schema_types_to_go = {
++        "str": "string",
++        "null": "nil",
++        "bool": "bool",
++        "number": "float64",
++        "size": "uint64",
++        "int": "int64",
++        "int8": "int8",
++        "int16": "int16",
++        "int32": "int32",
++        "int64": "int64",
++        "uint8": "uint8",
++        "uint16": "uint16",
++        "uint32": "uint32",
++        "uint64": "uint64",
++        "any": "any",
++        "QType": "QType",
++    }
 +
-+        enum_name = f"{name}{qapi_to_field_name_enum(member.name)}"
-+        maxname = (
-+            max(maxname, len(enum_name)) if not hasdoc else len(enum_name)
-+        )
++    prefix = ""
++    if qapitype.endswith("List"):
++        prefix = "[]"
++        qapitype = qapitype[:-4]
 +
-+        if hasdoc:
-+            blocks.append(maxname)
-+        else:
-+            blocks[-1] = maxname
-+
-+    return blocks
++    qapitype = schema_types_to_go.get(qapitype, qapitype)
++    return prefix + qapitype
 +
 +
-+def generate_content_from_dict(data: dict[str, str]) -> str:
-+    content = ""
++# Helper for Alternate generation
++def qapi_field_to_alternate_go_field(
++    member_name: str, type_name: str
++) -> Tuple[str, str, str]:
++    # Nothing to generate on null types. We update some
++    # variables to handle json-null on marshalling methods.
++    if type_name == "null":
++        return "IsNull", "bool", ""
 +
-+    for name in sorted(data):
-+        content += data[name]
-+
-+    return content.replace("\n\n\n", "\n\n")
-+
-+
-+def generate_template_imports(words: List[str]) -> str:
-+    if len(words) == 0:
-+        return ""
-+
-+    if len(words) == 1:
-+        return '\nimport "{words[0]}"\n'
-+
-+    return TEMPLATE_GO_IMPORTS.format(
-+        imports="\n".join(f'\t"{w}"' for w in words)
++    # On Alternates, fields are optional represented in Go as pointer
++    return (
++        qapi_to_field_name(member_name),
++        qapi_schema_type_to_go_type(type_name),
++        "*",
 +    )
 +
 +
- class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
++def fetch_indent_blocks_over_args(
++    args: List[dict[str:str]],
++) -> Tuple[int, int]:
++    maxname, maxtype = 0, 0
++    blocks: tuple(int, int) = []
++    for arg in args:
++        if "comment" in arg or "doc" in arg:
++            blocks.append((maxname, maxtype))
++            maxname, maxtype = 0, 0
++
++            if "comment" in arg:
++                # They are single blocks
++                continue
++
++        if "type" not in arg:
++            # Embed type are on top of the struct and the following
++            # fields do not consider it for formatting
++            blocks.append((maxname, maxtype))
++            maxname, maxtype = 0, 0
++            continue
++
++        maxname = max(maxname, len(arg.get("name", "")))
++        maxtype = max(maxtype, len(arg.get("type", "")))
++
++    blocks.append((maxname, maxtype))
++    return blocks
++
++
+ def fetch_indent_blocks_over_enum_with_docs(
+     name: str, members: List[QAPISchemaEnumMember], docfields: Dict[str, str]
+ ) -> Tuple[int]:
+@@ -122,6 +254,137 @@ def fetch_indent_blocks_over_enum_with_docs(
+     return blocks
+ 
+ 
++# Helper function for boxed or self contained structures.
++def generate_struct_type(
++    type_name,
++    type_doc: str = "",
++    args: List[dict[str:str]] = None,
++    indent: int = 0,
++) -> str:
++    base_indent = FOUR_SPACES * indent
++
++    with_type = ""
++    if type_name != "":
++        with_type = f"\n{base_indent}type {type_name}"
++
++    if type_doc != "":
++        # Append line jump only if type_doc exists
++        type_doc = f"\n{type_doc}"
++
++    if args is None:
++        # No args, early return
++        return f"""{type_doc}{with_type} struct{{}}"""
++
++    # The logic below is to generate fields of the struct.
++    # We have to be mindful of the different indentation possibilities between
++    # $var_name $var_type $var_tag that are vertically indented with gofmt.
++    #
++    # So, we first have to iterate over all args and find all indent blocks
++    # by calculating the spaces between (1) member and type and between (2)
++    # the type and tag. (1) and (2) is the tuple present in List returned
++    # by the helper function fetch_indent_blocks_over_args.
++    inner_indent = base_indent + FOUR_SPACES
++    doc_indent = inner_indent + "// "
++    fmt = textwrap.TextWrapper(
++        width=70, initial_indent=doc_indent, subsequent_indent=doc_indent
++    )
++
++    indent_block = iter(fetch_indent_blocks_over_args(args))
++    maxname, maxtype = next(indent_block)
++    members = " {\n"
++    for index, arg in enumerate(args):
++        if "comment" in arg:
++            maxname, maxtype = next(indent_block)
++            members += f"""    // {arg["comment"]}\n"""
++            # comments are single blocks, so we can skip to next arg
++            continue
++
++        name2type = ""
++        if "doc" in arg:
++            maxname, maxtype = next(indent_block)
++            members += fmt.fill(arg["doc"])
++            members += "\n"
++
++        name = arg["name"]
++        if "type" in arg:
++            namelen = len(name)
++            name2type = " " * max(1, (maxname - namelen + 1))
++
++        type2tag = ""
++        if "tag" in arg:
++            typelen = len(arg["type"])
++            type2tag = " " * max(1, (maxtype - typelen + 1))
++
++        gotype = arg.get("type", "")
++        tag = arg.get("tag", "")
++        members += (
++            f"""{inner_indent}{name}{name2type}{gotype}{type2tag}{tag}\n"""
++        )
++
++    members += f"{base_indent}}}\n"
++    return f"""{type_doc}{with_type} struct{members}"""
++
++
++def generate_template_alternate(
++    self: QAPISchemaGenGolangVisitor,
++    name: str,
++    variants: Optional[QAPISchemaVariants],
++) -> str:
++    args: List[dict[str:str]] = []
++    nullable = name in self.accept_null_types
++    if nullable:
++        # Examples in QEMU QAPI schema: StrOrNull and BlockdevRefOrNull
++        marshal_return_default = """[]byte("{}"), nil"""
++        marshal_check_fields = TEMPLATE_ALTERNATE_NULLABLE_MARSHAL_CHECK[1:]
++        unmarshal_check_fields = TEMPLATE_ALTERNATE_NULLABLE_UNMARSHAL_CHECK
++    else:
++        marshal_return_default = f'nil, errors.New("{name} has empty fields")'
++        marshal_check_fields = ""
++        unmarshal_check_fields = (
++            TEMPLATE_ALTERNATE_CHECK_INVALID_JSON_NULL.format(name=name)
++        )
++
++    doc = self.docmap.get(name, None)
++    content, docfields = qapi_to_golang_struct_docs(doc)
++    if variants:
++        for var in variants.variants:
++            var_name, var_type, isptr = qapi_field_to_alternate_go_field(
++                var.name, var.type.name
++            )
++            args.append(
++                {
++                    "name": f"{var_name}",
++                    "type": f"{isptr}{var_type}",
++                    "doc": docfields.get(var.name, ""),
++                }
++            )
++            # Null is special, handled first
++            if var.type.name == "null":
++                assert nullable
++                continue
++
++            skip_indent = 1 + len(FOUR_SPACES)
++            if marshal_check_fields == "":
++                skip_indent = 1
++            marshal_check_fields += TEMPLATE_ALTERNATE_MARSHAL_CHECK[
++                skip_indent:
++            ].format(var_name=var_name)
++            unmarshal_check_fields += TEMPLATE_ALTERNATE_UNMARSHAL_CHECK[
++                :-1
++            ].format(var_name=var_name, var_type=var_type)
++
++    content += string_to_code(generate_struct_type(name, args=args))
++    content += string_to_code(
++        TEMPLATE_ALTERNATE_METHODS.format(
++            name=name,
++            marshal_check_fields=marshal_check_fields[:-6],
++            marshal_return_default=marshal_return_default,
++            unmarshal_check_fields=unmarshal_check_fields[1:],
++        )
++    )
++    return "\n" + content
++
++
+ def generate_content_from_dict(data: dict[str, str]) -> str:
+     content = ""
+ 
+@@ -131,6 +394,25 @@ def generate_content_from_dict(data: dict[str, str]) -> str:
+     return content.replace("\n\n\n", "\n\n")
+ 
+ 
++def string_to_code(text: str) -> str:
++    DOUBLE_BACKTICK = "``"
++    result = ""
++    for line in text.splitlines():
++        # replace left four spaces with tabs
++        limit = len(line) - len(line.lstrip())
++        result += line[:limit].replace(FOUR_SPACES, "\t")
++
++        # work with the rest of the line
++        if line[limit : limit + 2] == "//":
++            # gofmt tool does not like comments with backticks.
++            result += line[limit:].replace(DOUBLE_BACKTICK, '"')
++        else:
++            result += line[limit:]
++        result += "\n"
++
++    return result
++
++
+ def generate_template_imports(words: List[str]) -> str:
+     if len(words) == 0:
+         return ""
+@@ -147,9 +429,10 @@ class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
      # pylint: disable=too-many-arguments
      def __init__(self, _: str):
          super().__init__()
-         gofiles = ("protocol.go",)
-+        # Map each qapi type to the necessary Go imports
-+        types = {
-+            "enum": [],
-+        }
-+
-         self.schema: QAPISchema
+-        gofiles = ("protocol.go",)
++        gofiles = ("protocol.go", "utils.go")
+         # Map each qapi type to the necessary Go imports
+         types = {
++            "alternate": ["encoding/json", "errors", "fmt"],
+             "enum": [],
+         }
+ 
+@@ -157,6 +440,8 @@ def __init__(self, _: str):
          self.golang_package_name = "qapi"
          self.duplicate = list(gofiles)
-+        self.enums: dict[str, str] = {}
-+        self.docmap = {}
-+
-+        self.types = dict.fromkeys(types, "")
-+        self.types_import = types
+         self.enums: dict[str, str] = {}
++        self.alternates: dict[str, str] = {}
++        self.accept_null_types = []
+         self.docmap = {}
  
+         self.types = dict.fromkeys(types, "")
+@@ -165,6 +450,17 @@ def __init__(self, _: str):
      def visit_begin(self, schema: QAPISchema) -> None:
          self.schema = schema
  
-+        # iterate once in schema.docs to map doc objects to its name
-+        for doc in schema.docs:
-+            if doc.symbol is None:
++        # We need to be aware of any types that accept JSON NULL
++        for name, entity in self.schema._entity_dict.items():
++            if not isinstance(entity, QAPISchemaAlternateType):
++                # Assume that only Alternate types accept JSON NULL
 +                continue
-+            self.docmap[doc.symbol] = doc
 +
-+        for qapitype, imports in self.types_import.items():
-+            self.types[qapitype] = TEMPLATE_GENERATED_HEADER[1:].format(
-+                package_name=self.golang_package_name
-+            )
-+            self.types[qapitype] += generate_template_imports(imports)
++            for var in entity.alternatives.variants:
++                if var.type.name == "null":
++                    self.accept_null_types.append(name)
++                    break
 +
+         # iterate once in schema.docs to map doc objects to its name
+         for doc in schema.docs:
+             if doc.symbol is None:
+@@ -180,6 +476,7 @@ def visit_begin(self, schema: QAPISchema) -> None:
      def visit_end(self) -> None:
          del self.schema
-+        self.types["enum"] += generate_content_from_dict(self.enums)
+         self.types["enum"] += generate_content_from_dict(self.enums)
++        self.types["alternate"] += generate_content_from_dict(self.alternates)
  
      def visit_object_type(
          self,
-@@ -83,7 +212,51 @@ def visit_enum_type(
-         members: List[QAPISchemaEnumMember],
-         prefix: Optional[str],
+@@ -201,7 +498,10 @@ def visit_alternate_type(
+         features: List[QAPISchemaFeature],
+         variants: QAPISchemaVariants,
      ) -> None:
 -        pass
-+        assert name not in self.enums
-+        doc = self.docmap.get(name, None)
-+        maindoc, docfields = qapi_to_golang_struct_docs(doc)
-+
-+        # The logic below is to generate QAPI enums as blocks of Go consts
-+        # each with its own type for type safety inside Go applications.
-+        #
-+        # Block of const() blocks are vertically indented so we have to
-+        # first iterate over all names to calculate space between
-+        # $var_name and $var_type. This is achieved by helper function
-+        # @fetch_indent_blocks_over_enum_with_docs()
-+        #
-+        # A new indentation block is defined by empty line or a comment.
-+
-+        indent_block = iter(
-+            fetch_indent_blocks_over_enum_with_docs(name, members, docfields)
-+        )
-+        maxname = next(indent_block)
-+        fields = ""
-+        for index, member in enumerate(members):
-+            # For simplicity, every time we have doc, we go to next indent block
-+            hasdoc = member.name is not None and member.name in docfields
-+
-+            if hasdoc:
-+                maxname = next(indent_block)
-+
-+            enum_name = f"{name}{qapi_to_field_name_enum(member.name)}"
-+            name2type = " " * (maxname - len(enum_name) + 1)
-+
-+            if hasdoc:
-+                docstr = (
-+                    textwrap.TextWrapper(width=80)
-+                    .fill(docfields[member.name])
-+                    .replace("\n", "\n\t// ")
-+                )
-+                fields += f"""\t// {docstr}\n"""
-+
-+            fields += f"""\t{enum_name}{name2type}{name} = "{member.name}"\n"""
-+
-+        if maindoc != "":
-+            maindoc = f"\n{maindoc}"
-+
-+        self.enums[name] = maindoc + TEMPLATE_ENUM.format(
-+            name=name, fields=fields[:-1]
++        assert name not in self.alternates
++        self.alternates[name] = generate_template_alternate(
++            self, name, variants
 +        )
  
-     def visit_array_type(
+     def visit_enum_type(
          self,
-@@ -133,3 +306,11 @@ def write(self, outdir: str) -> None:
-             srcpath = os.path.join(srcdir, filename)
-             dstpath = os.path.join(targetpath, filename)
-             shutil.copyfile(srcpath, dstpath)
+diff --git a/scripts/qapi/golang/utils.go b/scripts/qapi/golang/utils.go
+new file mode 100644
+index 0000000000..f00c0a5d83
+--- /dev/null
++++ b/scripts/qapi/golang/utils.go
+@@ -0,0 +1,26 @@
++/*
++ * Copyright 2025 Red Hat, Inc.
++ * SPDX-License-Identifier: MIT-0
++ *
++ * Authors:
++ *  Victor Toso <victortoso@redhat.com>
++ */
++package qapi
 +
-+        # Types to be generated
-+        for qapitype, content in self.types.items():
-+            gofile = f"gen_type_{qapitype}.go"
-+            pathname = os.path.join(targetpath, gofile)
++import (
++	"encoding/json"
++	"strings"
++)
 +
-+            with open(pathname, "w", encoding="utf8") as outfile:
-+                outfile.write(content)
++// Creates a decoder that errors on unknown Fields
++// Returns nil if successfully decoded @from payload to @into type
++// Returns error if failed to decode @from payload to @into type
++func strictDecode(into interface{}, from []byte) error {
++	dec := json.NewDecoder(strings.NewReader(string(from)))
++	dec.DisallowUnknownFields()
++
++	if err := dec.Decode(into); err != nil {
++		return err
++	}
++	return nil
++}
 -- 
 2.48.1
 
