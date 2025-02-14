@@ -2,137 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E0CA3638F
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 17:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C86C4A36391
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 17:50:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiysG-0003zU-2J; Fri, 14 Feb 2025 11:49:08 -0500
+	id 1tiysa-00040x-6F; Fri, 14 Feb 2025 11:49:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiysE-0003zD-6Q
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:49:06 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tiysV-00040h-Hv
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:49:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tiysC-0004wD-Ls
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:49:05 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tiysU-0004yO-1f
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:49:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739551742;
+ s=mimecast20190719; t=1739551761;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vomPoaYFGhtXjNxuNc4pRAjPLS0bKTTHRuaypjGeGzg=;
- b=a7XWQjtNgyaWRjXFDVHvsiCX+50vGvnQ+IelpSVpU0FKyDYt3KO2J7GyqZL4wKOI+ZEJEv
- 9tTpwefXLgpat8JP6oAIx37oGeIw5BfyUQ1X5HF6XsKBRzpC8H4Op+L7000AtPSRtACnj2
- 6/2Xwf/fKQWjQHgNjH1mncKOwdXq4W8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=lP62UzwsOEehw0OUMf7oKY2kIRtLSJvyU2NsQ2A6NwM=;
+ b=AlPbwyFFVZra/cMtgltShCDjRU3pvBPpT98F1vqN2hs8x8WiPfvFuDFkh/pvRR2r9clZ48
+ vgXWFRrOPydQ1se5LZaWSvUFF3mI5KFhPD82f6xYJ0YMjg9vDtn6BBjJ9paBK9zSffuqr5
+ SJrb/DuY1qM9GA14L/MZiYAKfTrqMW0=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-jkp3Hx7fPtOkUTotsdxBpQ-1; Fri, 14 Feb 2025 11:48:57 -0500
-X-MC-Unique: jkp3Hx7fPtOkUTotsdxBpQ-1
-X-Mimecast-MFC-AGG-ID: jkp3Hx7fPtOkUTotsdxBpQ_1739551737
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4395586f952so12311765e9.2
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 08:48:57 -0800 (PST)
+ us-mta-447-hDkyIXSlOgmSZaethHkHWw-1; Fri, 14 Feb 2025 11:49:19 -0500
+X-MC-Unique: hDkyIXSlOgmSZaethHkHWw-1
+X-Mimecast-MFC-AGG-ID: hDkyIXSlOgmSZaethHkHWw_1739551758
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7c07249127bso394948985a.2
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 08:49:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739551736; x=1740156536;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1739551758; x=1740156558;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vomPoaYFGhtXjNxuNc4pRAjPLS0bKTTHRuaypjGeGzg=;
- b=OZIDz9pPYwP0vykPhJv9ijl5AXc//3AaHl9778R9QX6KUzz/IlKgm+gTNFtwQS7qCA
- wXNbxwYxiZ1KmdqUxbTvHdfaHHsVi2IrKcl/VL8lRFWNVwadEx/AiJ59oT1vQBN9GY3X
- K9FQtiuh1KaED2js/o86bbD28FE69kFzifM03XFk663tfGuAPLwX5yVinR2PlbtcDUvS
- gJuK6YK2bMlvHCDLKttzsKJTXMe0DB4/VoihdArc76SsVKjLTCKeRTu6xcfI0YostHQb
- 5HU6Ljbn8BJ6S5y7WsKMBYFE1lX53onzYNP9QCzoxMJfQ3ZUwtmViPiQtvriT/a2Y7Ia
- 8HvQ==
-X-Gm-Message-State: AOJu0YznLlyNZN6CGZp1Aq35bY7+6UyS36pXjbImhuzGp1r/YdIhawj3
- PY9LqD6mZOPX9nkyNMuz3DjB1HlJwSggpYPWHhpFvdnMZoHKyx5bNfsnnZ5+Cz5Lh6RVfPBhz3K
- HIM/ZP7bnYc3mHx2+yG5rSPDtcPQbzumKDsvqtZ/qxtdgc3e0ofO/
-X-Gm-Gg: ASbGnct+8k+9LnyJyv56T0p240QUfZsmXxx+VaYp76N+LiRMTH/FguJRL0WcgbnnQvf
- +6GNq8f/lYbkPCGCb5aW6nuJVFEcMK4WJnDbn8eMYyptghazGLDYGzvPpB7IeyIc0ERQasEfWeg
- /6JbJyM/O8hAZBuDH0bBQgMYcEiCi2REal4bj1qqervCYy8gM4MyBHMcq1GQ1DR8xMcIFPILX9+
- CjY9IX4dAFQgyUfdanh6fP6D/7IBhPEpCT7wP/52GLtnMXu654TMDZiS53FEdKI01qdP2bs3DU7
- pP3D1eogwu6WoiX5X5e3gRYWBtFAh/9pPbAgszmv2tE=
-X-Received: by 2002:a5d:5f4b:0:b0:38d:d99d:d221 with SMTP id
- ffacd0b85a97d-38f244d54fdmr10506290f8f.1.1739551736545; 
- Fri, 14 Feb 2025 08:48:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGrEqw4BZ5q/wDHG8pUnLLoprdtfAWaHzy5KJ1/ZpCYStlZ0Tto5PsKzUKn726TMcDQIu8yHQ==
-X-Received: by 2002:a5d:5f4b:0:b0:38d:d99d:d221 with SMTP id
- ffacd0b85a97d-38f244d54fdmr10506243f8f.1.1739551736169; 
- Fri, 14 Feb 2025 08:48:56 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=lP62UzwsOEehw0OUMf7oKY2kIRtLSJvyU2NsQ2A6NwM=;
+ b=RusZ5ghpbxzTFRM9cfRqfCO/SZDpGiu9+6wnw82BG9eLFT6B74zY/J/+gLnZkoOwiN
+ fv5ypFFy94ZBH1sWI5nkAhzfV58dl7RCyRrKbPmY/Zd7hAJB3NmmW7GSgJYkFLhAfMx7
+ bf3ObtDJOMREB3Nui6o69ytS341rOFxFzY9Z0WfVnSSdIQi/o8ZvoBf6obH/l1MEVVaO
+ cr4iHZDlU+DWwR4N5I4MkiIQ7CBaxWK8m8S7miGbOTORa2/vbwfBJna+diGmJll4c/0a
+ ZsiseAAGpRfSjbfupIMGShPlLZe68Uxzgu72NaCfkFSlwA2Ub1ddoL5lAwlvdn9eowO2
+ e+iQ==
+X-Gm-Message-State: AOJu0Yz2MYecW1H7Sb0v+iOJrRd/z8u9M+HvhGx6chpkQsXUsh9MJ21S
+ siUK7IhyDhGxphMUT8GYD3deBwZsFHRrWIz1lPDBrFEaGUkioZeKOTQfioWXxqklV4TZcUJzCOR
+ Az/WIvr1UGGS4VgVoueSWxunCRlLe9fesN4JtTHLbBHb0BsELrFVk
+X-Gm-Gg: ASbGncsTK/akx9ufbCJrVN/hhK4YYfNS5GQTPdBC4SCgSr5inIXBrjmnbvvGz6Nqwvo
+ FbBhITLdlJ4pbgZfS5L7gvt78YCfjFlC0AoxQrrjt+BNvxYG2etsMIvltepLHsxfhb9wZV8lhJi
+ a1Zc9+uLjNLWa194WYr9tIqcLViQK+xRrYAkKpIdNLcqKfgYsTAfrfR40YK9iYYFTHNkcnMJYiR
+ RFgiQJkIDP+rP9l1JaegMhYUA+n4WgUbLK3+Gb3q/FLxmMXYp7hLiihtus=
+X-Received: by 2002:a05:620a:1a9e:b0:7b6:7850:21d4 with SMTP id
+ af79cd13be357-7c08aa9fcd7mr4618385a.52.1739551758394; 
+ Fri, 14 Feb 2025 08:49:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+FbKVHqWc9SZ0jd56ooQ480DuI4pfomb3aQLTK9bZrkAeHgDYDDR3vD5XbOCrADjKyxHLkw==
+X-Received: by 2002:a05:620a:1a9e:b0:7b6:7850:21d4 with SMTP id
+ af79cd13be357-7c08aa9fcd7mr4616285a.52.1739551758174; 
+ Fri, 14 Feb 2025 08:49:18 -0800 (PST)
+Received: from x1.local ([2604:7a40:2041:2b00::1000])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b44a7sm5168769f8f.12.2025.02.14.08.48.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Feb 2025 08:48:55 -0800 (PST)
-Message-ID: <725bba32-9d33-4f26-8891-8c44ec4e3b16@redhat.com>
-Date: Fri, 14 Feb 2025 17:48:54 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 00/45] Live update: vfio and iommufd
-To: Steven Sistare <steven.sistare@oracle.com>, Peter Xu <peterx@redhat.com>
+ af79cd13be357-7c07c61748esm222279885a.60.2025.02.14.08.49.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 14 Feb 2025 08:49:17 -0800 (PST)
+Date: Fri, 14 Feb 2025 11:49:14 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH V2 32/45] physmem: qemu_ram_get_fd_offset
+Message-ID: <Z690Clvqwoq50Dxl@x1.local>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
- <45420461-ead5-4b72-8f84-cddf53e2b95b@oracle.com> <Z69qDWTaNCQobUiq@x1.local>
- <8b30c6b4-1c5f-4bb0-9a85-e364ad2840cd@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <8b30c6b4-1c5f-4bb0-9a85-e364ad2840cd@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ <1739542467-226739-33-git-send-email-steven.sistare@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1739542467-226739-33-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -157,41 +108,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/14/25 17:20, Steven Sistare wrote:
-> On 2/14/2025 11:06 AM, Peter Xu wrote:
->> On Fri, Feb 14, 2025 at 10:56:02AM -0500, Steven Sistare wrote:
->>> Hi all, it would be nice to get this into qemu 10.0.  Without it, the
->>> basic support for cpr-transfer already in 10.0 is much less interesting.
->>
->> True..
->>
->>> Soft feature freeze is 2024-03-12.
->>
->> Said that, targeting 10.0 for such a huge series across multiple modules,>> and especially during the time VFIO review is on heavy load.. may not be>> easily achievable.  It might be more practical, IMHO, to target this 10.1.
->> Review can still happen during / after soft-freeze.
+On Fri, Feb 14, 2025 at 06:14:14AM -0800, Steve Sistare wrote:
+> Define qemu_ram_get_fd_offset, so CPR can map a memory region using
+> IOMMU_IOAS_MAP_FILE in a subsequent patch.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-yes. It is *very* optimistic and it is also a question of stability and
-maintenance. One "big" feature per release is more than enough. "multifd
-support for VFIO migration" is the next candidate.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-And I am sorry Steve, I still haven't looked at your answers on v1 ...
-They are next on my TODO list.
-
-> Understood.  Let me know if I can do anything to help.
-
-Well, what bothers me today is that we have been adding a lot of new features
-in the VFIO subsystem these last years (migration, IOMMUFD, etc) and we still
-lack decent documentation in QEMU. That would be a great addition. For the
-series "multifd support for VFIO  migration" too.
-
-> BTW, the series is less huge than it looks.  I divided it into small patches
-> as requested.
-
-That's better. May be we can merge cleanup patches preparing ground for the
-larger series.
-
-Thanks,
-
-C.
+-- 
+Peter Xu
 
 
