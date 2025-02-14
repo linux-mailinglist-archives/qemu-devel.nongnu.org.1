@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A727A35BFF
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6FDA35C00
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 11:57:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1titNE-0003Ed-3w; Fri, 14 Feb 2025 05:56:44 -0500
+	id 1titNG-0003FP-F6; Fri, 14 Feb 2025 05:56:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1titNB-0003EU-Q7
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:41 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1titNE-0003Et-FI
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:44 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1titNA-00069M-24
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:41 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-21c2f1b610dso44373565ad.0
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 02:56:39 -0800 (PST)
+ id 1titNC-00069d-Kd
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:44 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-220ec47991aso9439135ad.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 02:56:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1739530598; x=1740135398;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1739530601; x=1740135401;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vjFJmABBgiPrIkJaTy2ViAXPV7FmihtNfTlnacdhu6U=;
- b=jlk7r2bPyjec5AOI7fPNuCO3TacszgcaJO6TRWh13W6DDW78oe9U5SQFWloCJO/4Qq
- u52z1DsMJSM3BDObBXECUMQlvga0wKFsxzJZwWGiw3IjLBQei7GVXXiJVW7/7Md5upmK
- UhVKT5VnrAzhOKUIc8egOPIT4T8KPh7KLfglxstDoViV2QoguRMmSDxraNeW0/OwOUiG
- FAWWxFAjl81U4PDTnDl/aDewTbOL40rI16o3+1F/Rr6odaGyE1S+i+VkVIkZ7rQeL1Wo
- LaIqKm9TigVgLyti53FDgo67++SQL9U0W8+bb2UXaFtasSKzZFKDx80Up++aYN3ucWg5
- 1iyg==
+ bh=ZVFXlsrJ6uqFDQzwPn+Dorbteo5aZgEE94Bb7QudTvo=;
+ b=dgZo/Nt5YdrkQTHGKxUbgFjuw0RG0glfXLoT/qzrABKh/ANW8Uyh6Sr/hE6AVlSuQz
+ lSOWqcZ3/byYHX9UInIOSGebyjHUiWvCRAaNNc+mHYbTdsFaPbqxW9kFVb2ZwDMCQzeU
+ s0zkoxuO7BUZhLMfTstfJVBYkpIXBpLWBO3vNrQQT91k56FX/JgCe7t+D7YFebM7ZDv4
+ eyPMXBUq1k1F0SrnLQabGwmZItSYOjzqO0kHlF8wYD7EbaSWCRcy2Hj4fUNPv4qB9yNp
+ FcL/TFGk6Y+W4BYnmhSHA2ACxVJvUnPNF2d2vggkacu94+q+Vbyww6b78hkgjS+e1lAc
+ 42FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739530598; x=1740135398;
+ d=1e100.net; s=20230601; t=1739530601; x=1740135401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vjFJmABBgiPrIkJaTy2ViAXPV7FmihtNfTlnacdhu6U=;
- b=RWEn5o0QDVoYo8J4LXxSc4zGKhx6YsErsA6hcbw8y77LCQNGfhNlK0eBSF4dSr0qbN
- 0cHrPS85ePEzKREFF7sgImXqrmgjIBaVDIYwIMvlAp0PxbYlpL6MOOJwAxuW5ZxOIVOD
- lVc3q7QzmhrcRajWlEeyphNLY4DEmkeIudmwhRYUCqSUvd/K1Y73NLFEaSRBdiKGey+o
- oxKZYm2gtc12VtSrlIxq+19P2RgxmvDWJV5LKvH9F+Uv+pmFkqzFA7z6QO1T9LWfbd5H
- /Gm5PjN+ya1V6+Qpraldc4wt9osnyIuR4erIkfXpH9R+C7W6qCB+Wsves+ORas7ORL1u
- /nHQ==
-X-Gm-Message-State: AOJu0Yz2mUh9HYboiRg5KrNsBb1o6A24BMeYjA3JcwxqUIU12/Tb2jEd
- tLiaRlPvGDYn0hlxqNejDtWm3Hp0PbIW+/44oeCIk/MFE/V1k4RBhBLqAdiDXxEpEc95Oop4bNV
- 4cXKE9Q==
-X-Gm-Gg: ASbGncvVxqpX6t0VzI6P+Xxu4rNlQ7KkTlK5AF3wf3aA4FIE9Pb+hWciYl//FDAreFL
- xz+96pei7CNuqt/B97v2+H3gxdTSkank1ITV8z7CfXuWQ6os6eecbDloqBLL4Vb2AHjUx4BImka
- 7Whhirzpdm9njBFBXQPTORjAuGHUkhilCa7OhroytrP8QgUmaOOcoG543ohxB6Rpho9Xx3OOF3U
- WJV9I0F5myIM0JwM374uKA2vDwJzt2Q7wxEFZ7dKCdsHIhAHyPw+RTTXnMqDdnJ+eFPtDNKiOB3
- vwrXNnTWEXnT9AqYX0RJzdgFcF7ZFKpimsbuTQqX
-X-Google-Smtp-Source: AGHT+IG6jNR0H6w6GosfWcxY0VwoBz2CaMesZp6jDcxNqw5iBi6cOd//L6JE8++6h/+pQAUCzXvPmw==
-X-Received: by 2002:a05:6a21:3a93:b0:1ea:db1d:99b with SMTP id
- adf61e73a8af0-1ee6b30cf39mr13911908637.3.1739530598324; 
- Fri, 14 Feb 2025 02:56:38 -0800 (PST)
+ bh=ZVFXlsrJ6uqFDQzwPn+Dorbteo5aZgEE94Bb7QudTvo=;
+ b=nJfGJu/bjYERoVDr0A8uV8ASKxWpvTGGnfhx69L6LVE84ziS8a2boVkEDy2zmKgCgg
+ u8KXkNLXK12abQKGDAxF+I/eJvqxeWhTv52Cny7sG4Jyr3O13WqWDW02zmbaZpOAKxI7
+ SOTGHO23wlPBu382AJDIBd+pQx9aVfYROsutmtuqZj7XOCpy3fgeBDoEQRfUPJCCdcSd
+ c2BpTZrMrOoroGmh4r4XwqkWm8KqZEM4vxpTGTf4EQum61mFFNhYWrflWY9mgTbgNr+9
+ VPzjvNZAKsArqLViTkYDIxewdU+9a5aCf8wbUmGhaxhouUjDKpYRdOhWjrGx+9IbAEAF
+ bPWg==
+X-Gm-Message-State: AOJu0Yya0k029fmTU1k1ejlzcHQidIC6M0ms9uIa+ABddG5q4aNWvWx2
+ 6D5fPL3bCtfRPhUAF34QYRqh1iD4rj3w4GWkemdc9QE8bwSAyrpr/0Y5Ra5dP7iH4SfFEhDoWih
+ vFtv3PA==
+X-Gm-Gg: ASbGncuVpBHe/SW0NHp0UyMHHDLfyHkZqPQ4jYRfvN//Gzoe1C0CxFrq9ke8ayXX0JP
+ uTnFq08mm7FUDRgeTmH1adiAmLwRqF710Vh6v9kidP4uiHg4WtGbFJCQKLl9lfQOLPJl45dLElo
+ it22WA69lpVQFTMgNcO2mX2rJJGl71LsSYY2tupJxtlrWvQdGMrl0v6v45YKcwuaSBLt5AdABZL
+ kiv9ILlJaaBz745300jmwO9N/TLYrFr0tSHdaRCVEkyRzH0MYM/Y5B5v4HuswIp0MU8cxa6mEoE
+ K6ySZcHa0B4gigJOAly20oUij50+3ZoiN7+sKAjZ
+X-Google-Smtp-Source: AGHT+IG7qDL6HFucRj/cfgbNRg6VneqkP4zmomZUyyp/wyuyUvPtqsICTm2cDY9Wg8rZ/Rs2HH4bNw==
+X-Received: by 2002:a05:6a21:32a4:b0:1ee:7c01:d20 with SMTP id
+ adf61e73a8af0-1ee7c01118emr7104340637.31.1739530601003; 
+ Fri, 14 Feb 2025 02:56:41 -0800 (PST)
 Received: from Hyman-Dev-Euler.zelin.local ([154.64.226.178])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-add0987b223sm535013a12.17.2025.02.14.02.56.36
+ 41be03b00d2f7-add0987b223sm535013a12.17.2025.02.14.02.56.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Feb 2025 02:56:38 -0800 (PST)
+ Fri, 14 Feb 2025 02:56:40 -0800 (PST)
 From: yong.huang@smartx.com
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>
-Subject: [PATCH v4 RESEND 3/4] guestperf: Introduce multifd compression option
-Date: Fri, 14 Feb 2025 18:55:25 +0800
-Message-Id: <c0e3313d81e8130f8119ef4f242e4625886278cf.1739530098.git.yong.huang@smartx.com>
+Subject: [PATCH v4 RESEND 4/4] guestperf: Add test result data into report
+Date: Fri, 14 Feb 2025 18:55:26 +0800
+Message-Id: <6303400c2983ffe5647f07caa6406f00ceae4581.1739530098.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1739530098.git.yong.huang@smartx.com>
 References: <cover.1739530098.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,153 +101,118 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-Guestperf tool does not cover the multifd compression option
-currently, it is worth supporting so that developers can
-analysis the migration performance with different
-compression algorithms.
-
-Multifd support 4 compression algorithms currently:
-zlib, zstd, qpl, uadk
-
-To request that multifd with the specified compression
-algorithm such as zlib:
-$ ./tests/migration-stress/guestperf.py \
-    --multifd --multifd-channels 4 --multifd-compression zlib \
-    --output output.json
-
-To run the entire standardized set of multifd compression
-comparisons, with unix migration:
-$ ./tests/migration-stress/guestperf-batch.py \
-    --dst-host localhost --transport unix \
-    --filter compr-multifd-compression* --output outputdir
+The migration result data is not included in the guestperf
+report information; include the result as a report entry
+so the developer can check whether the migration was successful
+after running guestperf.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/migration-stress/guestperf/comparison.py | 13 +++++++++++++
- tests/migration-stress/guestperf/engine.py     | 14 ++++++++++++++
- tests/migration-stress/guestperf/scenario.py   |  7 +++++--
- tests/migration-stress/guestperf/shell.py      |  3 +++
- 4 files changed, 35 insertions(+), 2 deletions(-)
+ tests/migration-stress/guestperf/engine.py | 10 ++++++++--
+ tests/migration-stress/guestperf/report.py | 20 ++++++++++++++++++++
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/tests/migration-stress/guestperf/comparison.py b/tests/migration-stress/guestperf/comparison.py
-index 40e9d2eb1d..dee3ac25e4 100644
---- a/tests/migration-stress/guestperf/comparison.py
-+++ b/tests/migration-stress/guestperf/comparison.py
-@@ -158,4 +158,17 @@ def __init__(self, name, scenarios):
-         Scenario("compr-dirty-limit-50MB",
-                  dirty_limit=True, vcpu_dirty_limit=50),
-     ]),
-+
-+    # Looking at effect of multifd with
-+    # different compression algorithms
-+    Comparison("compr-multifd-compression", scenarios = [
-+        Scenario("compr-multifd-compression-zlib",
-+                 multifd=True, multifd_channels=2, multifd_compression="zlib"),
-+        Scenario("compr-multifd-compression-zstd",
-+                 multifd=True, multifd_channels=2, multifd_compression="zstd"),
-+        Scenario("compr-multifd-compression-qpl",
-+                 multifd=True, multifd_channels=2, multifd_compression="qpl"),
-+        Scenario("compr-multifd-compression-uadk",
-+                 multifd=True, multifd_channels=2, multifd_compression="uadk"),
-+    ]),
- ]
 diff --git a/tests/migration-stress/guestperf/engine.py b/tests/migration-stress/guestperf/engine.py
-index 4b15322e8d..e11f6a8496 100644
+index e11f6a8496..d8462db765 100644
 --- a/tests/migration-stress/guestperf/engine.py
 +++ b/tests/migration-stress/guestperf/engine.py
-@@ -31,6 +31,8 @@
-                              '..', '..', '..', 'python'))
- from qemu.machine import QEMUMachine
+@@ -24,7 +24,7 @@
+ import time
  
-+# multifd supported compression algorithms
-+MULTIFD_CMP_ALGS = ("zlib", "zstd", "qpl", "uadk")
+ from guestperf.progress import Progress, ProgressStats
+-from guestperf.report import Report
++from guestperf.report import Report, ReportResult
+ from guestperf.timings import TimingRecord, Timings
  
- class Engine(object):
+ sys.path.append(os.path.join(os.path.dirname(__file__),
+@@ -276,7 +276,11 @@ def _migrate(self, hardware, scenario, src,
+                         src_vcpu_time.extend(self._vcpu_timing(src_pid, src_threads))
+                         sleep_secs -= 1
  
-@@ -191,6 +193,12 @@ def _migrate(self, hardware, scenario, src,
-                                scenario._compression_xbzrle_cache))
- 
-         if scenario._multifd:
-+            if (scenario._multifd_compression and
-+                (scenario._multifd_compression not in MULTIFD_CMP_ALGS)):
-+                    raise Exception("unsupported multifd compression "
-+                                    "algorithm: %s" %
-+                                    scenario._multifd_compression)
+-                return [progress_history, src_qemu_time, src_vcpu_time]
++                result = ReportResult()
++                if progress._status == "completed" and not paused:
++                    result = ReportResult(True)
 +
-             resp = src.cmd("migrate-set-capabilities",
-                            capabilities = [
-                                { "capability": "multifd",
-@@ -206,6 +214,12 @@ def _migrate(self, hardware, scenario, src,
-             resp = dst.cmd("migrate-set-parameters",
-                            multifd_channels=scenario._multifd_channels)
++                return [progress_history, src_qemu_time, src_vcpu_time, result]
  
-+            if scenario._multifd_compression:
-+                resp = src.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
-+                resp = dst.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
+             if self._verbose and (loop % 20) == 0:
+                 print("Iter %d: remain %5dMB of %5dMB (total %5dMB @ %5dMb/sec)" % (
+@@ -490,6 +494,7 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
+             progress_history = ret[0]
+             qemu_timings = ret[1]
+             vcpu_timings = ret[2]
++            result = ret[3]
+             if uri[0:5] == "unix:" and os.path.exists(uri[5:]):
+                 os.remove(uri[5:])
+ 
+@@ -509,6 +514,7 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
+                           Timings(self._get_timings(src) + self._get_timings(dst)),
+                           Timings(qemu_timings),
+                           Timings(vcpu_timings),
++                          result,
+                           self._binary, self._dst_host, self._kernel,
+                           self._initrd, self._transport, self._sleep)
+         except Exception as e:
+diff --git a/tests/migration-stress/guestperf/report.py b/tests/migration-stress/guestperf/report.py
+index 1efd40c868..e135e01be6 100644
+--- a/tests/migration-stress/guestperf/report.py
++++ b/tests/migration-stress/guestperf/report.py
+@@ -24,6 +24,22 @@
+ from guestperf.progress import Progress
+ from guestperf.timings import Timings
+ 
++class ReportResult(object):
 +
-         if scenario._dirty_limit:
-             if not hardware._dirty_ring_size:
-                 raise Exception("dirty ring size must be configured when "
-diff --git a/tests/migration-stress/guestperf/scenario.py b/tests/migration-stress/guestperf/scenario.py
-index 154c4f5d5f..4be7fafebf 100644
---- a/tests/migration-stress/guestperf/scenario.py
-+++ b/tests/migration-stress/guestperf/scenario.py
-@@ -30,7 +30,7 @@ def __init__(self, name,
-                  auto_converge=False, auto_converge_step=10,
-                  compression_mt=False, compression_mt_threads=1,
-                  compression_xbzrle=False, compression_xbzrle_cache=10,
--                 multifd=False, multifd_channels=2,
-+                 multifd=False, multifd_channels=2, multifd_compression="",
-                  dirty_limit=False, x_vcpu_dirty_limit_period=500,
-                  vcpu_dirty_limit=1):
++    def __init__(self, success=False):
++        self._success = success
++
++    def serialize(self):
++        return {
++            "success": self._success,
++        }
++
++    @classmethod
++    def deserialize(cls, data):
++        return cls(
++            data["success"])
++
++
+ class Report(object):
  
-@@ -61,6 +61,7 @@ def __init__(self, name,
- 
-         self._multifd = multifd
-         self._multifd_channels = multifd_channels
-+        self._multifd_compression = multifd_compression
- 
-         self._dirty_limit = dirty_limit
-         self._x_vcpu_dirty_limit_period = x_vcpu_dirty_limit_period
-@@ -85,6 +86,7 @@ def serialize(self):
-             "compression_xbzrle_cache": self._compression_xbzrle_cache,
-             "multifd": self._multifd,
-             "multifd_channels": self._multifd_channels,
-+            "multifd_compression": self._multifd_compression,
-             "dirty_limit": self._dirty_limit,
-             "x_vcpu_dirty_limit_period": self._x_vcpu_dirty_limit_period,
-             "vcpu_dirty_limit": self._vcpu_dirty_limit,
-@@ -109,4 +111,5 @@ def deserialize(cls, data):
-             data["compression_xbzrle"],
-             data["compression_xbzrle_cache"],
-             data["multifd"],
--            data["multifd_channels"])
-+            data["multifd_channels"],
-+            data["multifd_compression"])
-diff --git a/tests/migration-stress/guestperf/shell.py b/tests/migration-stress/guestperf/shell.py
-index 046afeb84e..63bbe3226c 100644
---- a/tests/migration-stress/guestperf/shell.py
-+++ b/tests/migration-stress/guestperf/shell.py
-@@ -131,6 +131,8 @@ def __init__(self):
-                             action="store_true")
-         parser.add_argument("--multifd-channels", dest="multifd_channels",
-                             default=2, type=int)
-+        parser.add_argument("--multifd-compression", dest="multifd_compression",
-+                            default="")
- 
-         parser.add_argument("--dirty-limit", dest="dirty_limit", default=False,
-                             action="store_true")
-@@ -167,6 +169,7 @@ def get_scenario(self, args):
- 
-                         multifd=args.multifd,
-                         multifd_channels=args.multifd_channels,
-+                        multifd_compression=args.multifd_compression,
- 
-                         dirty_limit=args.dirty_limit,
-                         x_vcpu_dirty_limit_period=\
+     def __init__(self,
+@@ -33,6 +49,7 @@ def __init__(self,
+                  guest_timings,
+                  qemu_timings,
+                  vcpu_timings,
++                 result,
+                  binary,
+                  dst_host,
+                  kernel,
+@@ -46,6 +63,7 @@ def __init__(self,
+         self._guest_timings = guest_timings
+         self._qemu_timings = qemu_timings
+         self._vcpu_timings = vcpu_timings
++        self._result = result
+         self._binary = binary
+         self._dst_host = dst_host
+         self._kernel = kernel
+@@ -61,6 +79,7 @@ def serialize(self):
+             "guest_timings": self._guest_timings.serialize(),
+             "qemu_timings": self._qemu_timings.serialize(),
+             "vcpu_timings": self._vcpu_timings.serialize(),
++            "result": self._result.serialize(),
+             "binary": self._binary,
+             "dst_host": self._dst_host,
+             "kernel": self._kernel,
+@@ -78,6 +97,7 @@ def deserialize(cls, data):
+             Timings.deserialize(data["guest_timings"]),
+             Timings.deserialize(data["qemu_timings"]),
+             Timings.deserialize(data["vcpu_timings"]),
++            ReportResult.deserialize(data["result"]),
+             data["binary"],
+             data["dst_host"],
+             data["kernel"],
 -- 
 2.27.0
 
