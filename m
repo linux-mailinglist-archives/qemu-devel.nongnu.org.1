@@ -2,146 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B705A35B64
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 11:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D938A35C01
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 11:57:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tismq-0005aY-EE; Fri, 14 Feb 2025 05:19:08 -0500
+	id 1titN7-0003DY-R6; Fri, 14 Feb 2025 05:56:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tisml-0005a4-Sb
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:19:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tismj-0007Et-Of
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:19:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739528339;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vWsZAmVt/ayC/zlDSnFOsriQQwG+k+2D4Q0xaZbSRHE=;
- b=fmdm56YlW4itrrABhjoffs/K7SOB52CB5SMAwkN6IxS7/byTeGsUvGCH20fR3UQjWX3A9Z
- F1UK3bwzRIxn9e4vcB18afxwzpV839+vcI5UVnChtd6pxukYOc2uvfOi056utWaN8Sjmst
- D1uMvUowEkeiBY7nsYT4rXAN5j40v48=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-6JpeE2IpPRmmQq6t34QN9g-1; Fri, 14 Feb 2025 05:18:58 -0500
-X-MC-Unique: 6JpeE2IpPRmmQq6t34QN9g-1
-X-Mimecast-MFC-AGG-ID: 6JpeE2IpPRmmQq6t34QN9g_1739528337
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-438e4e9a53fso14080135e9.1
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 02:18:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1titN5-0003D7-Hy
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:35 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1titN3-00067e-2C
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 05:56:35 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2fc1c80cdc8so2272084a91.2
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 02:56:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1739530590; x=1740135390;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/zk84E3VOndU9iCHGxi7vjLZZ+ayxet22f2jMNf26vM=;
+ b=DRNSuUftK6SBuctgOBPazNa2AMutprknAyG5uu7xsi/LHUHcHoGbQyOp0uHyc42/Yu
+ dd1v0xUMW9Trj+DQE//mHmQwJcVUgywqX9v4L+U4odl/HKsGHqaIuPeibA5dDdJILkFr
+ jyioVQnebMb75E5e9E2uyHwDo9saAbszzpFeyFQk1qg28YPrcNsXQLaYjnB2XsbK5YG/
+ Hwon4LW5yt5RdYW1s9DqaGNZvOErDhtKc9nReil8EIDQXi0FRx1JYPPUYhVMaIof70cd
+ G0E4YCx7/cd6o+w86LwfRCxfkvLpqntqDMGRKG013NT4K00DxujusDRDtIER/SVTaU++
+ x/ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739528337; x=1740133137;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vWsZAmVt/ayC/zlDSnFOsriQQwG+k+2D4Q0xaZbSRHE=;
- b=jPZf8jLwBId+dkiROSjZ8rT6tR771rzNc1I86EIzSKVrgNtxQeFaUVHdTQf9sXUOQJ
- VVNpsxGBzrGaQXyQmZq3HMmCGrvHFktF8WKzLT9K9OAm0mbnEoZYUIiBnGtwuUTv+pGw
- HQwkKRRqaHtlZkIrZaKCM6FVmfoGsHIvHrOyq+RJTpDeZVwUoSB3GdXUfyEQLsSpVX18
- pX6w61aHIJrkoem42uaKIks+OnQWIawqixl6sNIxjcWEwDvBeTtb5GTM8hEbSdqN8vYV
- JM6YeTPOrYyW/OZI+X5cSDvgRkKPq8mbdrDU91bww53Yr5GLulCu9YFgIvBgD2NWrYfq
- Yx/A==
-X-Gm-Message-State: AOJu0YybsXh4obnBhNYvEcmmhWbIaDtS0gkH6c5yLcJDK+FRpRM52Fas
- LN6kN6yoN8L/4Iwl+24RI8xupLWDt2cFKq9wT+7lAUxpq3GGOm0wuTzIENwCSfNQi6Gprxjrc0D
- 3i5+9aD6fkyTzRSXzxbswmOIcmvza4hccFAmVlu4AjpirOf0627MY
-X-Gm-Gg: ASbGncs+9VktLFz2ClnyARQ/rrp5g91z+cJX6I0rrYTQrCD968Do+1vM0XtExScRvV0
- rv7RFgIVT5O7AtaZx4ZSceoxrzae8g5rayB92DJhSXdrFi7b8qcWBR7CHKhjYAKEFK45lGsb+gO
- qqRTpiTW7+Qk4QVevJVDPueGxoVe8FkT7wogyItKzcC3JV4Ke5gf9bjdiv8A551yx474+WgUIKH
- ZwsJ/ooQShYW+2K/hhDYf3xDbLWi2SX2hGz7cvzv9WPt9MKxCWWmadcAGBNyWlTn54nkd4le6uD
- zavEnrrgTTYMKq3hxfRzifY5ZuJQZLtV1qYalV3IPRI=
-X-Received: by 2002:a05:600c:4ecd:b0:439:6b12:e8b1 with SMTP id
- 5b1f17b1804b1-4396b12ea01mr5829945e9.9.1739528336907; 
- Fri, 14 Feb 2025 02:18:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHAcmByNMwXvoeIDjoefBnh67AMUJP04xg1ROFo19qBkasCV/snSroDXLh70gqmzjkOG6VTKg==
-X-Received: by 2002:a05:600c:4ecd:b0:439:6b12:e8b1 with SMTP id
- 5b1f17b1804b1-4396b12ea01mr5829645e9.9.1739528336506; 
- Fri, 14 Feb 2025 02:18:56 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
- ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
+ d=1e100.net; s=20230601; t=1739530590; x=1740135390;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/zk84E3VOndU9iCHGxi7vjLZZ+ayxet22f2jMNf26vM=;
+ b=GIZt24fqSkg+peQObwg4Ea6Af25bxKVCNKuKUmd+jXWxPArPC8D1a4wdt+P3vD3/tg
+ /4FxXWPj/c1mZUhwzmZCJmw3fE/8oyZUBcS82dINhvFbECa1uVTsvo99sUjXagoCdl4P
+ gCl0WnL8d/G7/dm10KVkBuqIG34/W9YRb6FdXHRvHbyc6KN7dUM4Pch86dUIM10aHOxX
+ 214UUOsr3ZDFbyjTD4pikwQkarxLQkRE3zkIyZVMJYc5ShfIRTO1i3ieHDROA1t47oi7
+ Pez6ESBwk1J50KqM4p3zsOd2iFspeJsVrHQPj5U8Icsjzr03iuX0jEhZ3Us+56m7j9Zv
+ N/ig==
+X-Gm-Message-State: AOJu0Yz8iIBpTue3cbJTwABg5rOd5lU3MLNpdFg6MOpxoM9Qs7guNPjX
+ ydlDd2umVkiNmsDXuBzSf6qapbi/QrEEC8iqfP/SEHfpvemSz0WqyrJP9WCRdq4CxmIvU7GVFxv
+ PveqdJw==
+X-Gm-Gg: ASbGnctG9uqFC/caEj9XFZKWq9YQi87qxAbJ9QCId+C15BQRPDYvK/fqSdLoqKK3rR1
+ aUR7x1Bj7dizhK034x2j5h9dVe4XQ+K0bSl5+OWljv9Z/UYn3h6kyoXhl/kN0iO/G1bz5PJjku/
+ Px3X3LFYh5tIawXGmpVZiGlsxV/BAgd7+vtW9nrxM8joTq2FaTnOr19OQ9OvaeTWj5bNNEt2ycn
+ jFwfsyca/B/A1dsv1XYOOI5BY/fr+I7WMX3ybLzDy/mhiu8uxYf6b8vj8CpScs2brzenu00T9w4
+ hkFE97ilAkK0zxZlgHJdd1P4ivjXl/L1TSDqJvnH
+X-Google-Smtp-Source: AGHT+IG/XugB6plzXkQfc2ntaLgPv9ZcBY5gSLrPQy7yaPktyNKb6I8w/e2786Zgq7tDntoHhNyO0w==
+X-Received: by 2002:a05:6a00:3d46:b0:730:76a1:3935 with SMTP id
+ d2e1a72fcca58-7322c383f82mr16676111b3a.6.1739530590160; 
+ Fri, 14 Feb 2025 02:56:30 -0800 (PST)
+Received: from Hyman-Dev-Euler.zelin.local ([154.64.226.178])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43961884251sm39822255e9.31.2025.02.14.02.18.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Feb 2025 02:18:56 -0800 (PST)
-Message-ID: <2c5358eb-1abe-4fce-8b28-7935c71f1cff@redhat.com>
-Date: Fri, 14 Feb 2025 11:18:55 +0100
+ 41be03b00d2f7-add0987b223sm535013a12.17.2025.02.14.02.56.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 14 Feb 2025 02:56:29 -0800 (PST)
+From: yong.huang@smartx.com
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>
+Subject: [PATCH v4 RESEND 0/4] Guestperf: miscellaneous refinement and
+ enrichment
+Date: Fri, 14 Feb 2025 18:55:22 +0800
+Message-Id: <cover.1739530098.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: vhost-user: add QAPI events to report connection
- state
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Eric Blake <eblake@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Laine Stump <laine@redhat.com>, Stefano Brivio <sbrivio@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20250214072629.1033314-1-lvivier@redhat.com>
- <871pw07sdy.fsf@pond.sub.org>
-Content-Language: en-US
-From: Laurent Vivier <lvivier@redhat.com>
-Autocrypt: addr=lvivier@redhat.com; keydata=
- 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
-In-Reply-To: <871pw07sdy.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,57 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/02/2025 11:06, Markus Armbruster wrote:
-> Laurent Vivier <lvivier@redhat.com> writes:
-> 
->> The netdev reports NETDEV_VHOST_USER_CONNECTED event when
->> the chardev is connected, and NETDEV_VHOST_USER_DISCONNECTED
->> when it is disconnected.
->>
->> The NETDEV_VHOST_USER_CONNECTED event includes the ChardevInfo
->> (label, filename and frontend_open).
->>
->> This allows a system manager like libvirt to detect when the server
->> fails.
->>
->> For instance with passt:
->>
->> { 'execute': 'qmp_capabilities' }
->> { "return": { } }
->>
->> [killing passt here]
->>
->> { "timestamp": { "seconds": 1739517243, "microseconds": 115081 },
->>    "event": "NETDEV_VHOST_USER_DISCONNECTED",
->>    "data": { "netdev-id": "netdev0" } }
->>
->> [automatic reconnection with reconnect-ms]
->>
->> { "timestamp": { "seconds": 1739517290, "microseconds": 343777 },
->>    "event": "NETDEV_VHOST_USER_CONNECTED",
->>    "data": { "netdev-id": "netdev0",
->>              "info": { "frontend-open": true,
->>                        "filename": "unix:",
->>                        "label": "chr0" } } }
->>
->> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> 
-> Standard question for events: if a management application misses an
-> event, say because it restarts and reconnects, is there a way to obtain
-> the missed information with a query command?
-> 
+From: Hyman Huang <yong.huang@smartx.com>
 
-query-chardev could help but it doesn't provide the netdev id.
+v4:
+1. rebase v3 patchset on master
+2. build initrd-stress.img manually like before as suggested by Peter and Fabiano
+3. drop the [PATCH v3 1/5], [PATCH v3 2/5] patches
+4. add an extra patch: [PATCH v4 4/4] guestperf: Add test result data into report
 
-in HMP, "info network" has the information, but for QMP we had a try with a query-netdev 
-in the past but the series has been reverted.
+Please review, thanks
+Yong
 
-f9bb0c1f9862 ("Revert "qapi: net: Add query-netdev command"")
-d32ad10a14d4 ("qapi: net: Add query-netdev command")
+v3:
+1. Remove the two redundant assignments in [PATCH v2 2/5] suggested by Daniel
 
-Thanks,
-Laurent
-Thanks
-Laurent
+v2:
+1. Update the MAINTAINERS section suggested by Fabiano Rosas
+2. Ensure the dependencies when build the initrd-stress.img suggested by Daniel
+3. Fix some bugs
+
+v1:
+The previous patchset:
+https://lore.kernel.org/qemu-devel/cover.1722957352.git.yong.huang@smartx.com/
+does not made the necessary changes and tests for the upstream version.
+
+This patchset works for that:
+1. Move the guestperf to scripts directory suggested by Fabiano Rosas
+2. Make initrd-stress.img built by default suggested by Fabiano Rosas
+3. Make the necessary changes to adapt the latest multifd behavior
+4. A nitpick for multifd migration
+5. Support multifd compression option
+
+Hyman Huang (4):
+  guestperf: Support deferred migration for multifd
+  guestperf: Nitpick the inconsistent parameters
+  guestperf: Introduce multifd compression option
+  guestperf: Add test result data into report
+
+ .../migration-stress/guestperf/comparison.py  | 15 ++++++-
+ tests/migration-stress/guestperf/engine.py    | 43 ++++++++++++++++---
+ tests/migration-stress/guestperf/report.py    | 20 +++++++++
+ tests/migration-stress/guestperf/scenario.py  |  7 ++-
+ tests/migration-stress/guestperf/shell.py     |  3 ++
+ 5 files changed, 79 insertions(+), 9 deletions(-)
+
+-- 
+2.27.0
 
 
