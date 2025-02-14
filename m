@@ -2,105 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FC9A36B2C
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB50FA36B2F
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:40:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj74z-000471-El; Fri, 14 Feb 2025 20:34:49 -0500
+	id 1tj750-0004Bh-N9; Fri, 14 Feb 2025 20:34:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2NI-0007Cn-O6
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:26 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2NO-0007TM-SQ
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:32 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2NG-0002IB-Ca
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:24 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2NM-0002IX-P0
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:30 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8231221181;
- Fri, 14 Feb 2025 20:32:41 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 5F3D421182;
+ Fri, 14 Feb 2025 20:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1739565163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eQh8sI+kCzbFwwHvCWXBzG2ovyzZMFf40klEDt6MXs8=;
- b=0yMoyLeK28ggmzI+vAbJ/gpZqNFXqs8lYtQQOTXGegPIquP8ORqzYvx1KdKgN0zegegnGf
- 5bWLj5+VKJ0Wa4K++gVgKqwxKFNW8NYKD8kK/JhHZonHL2ts2sGPskpQ7cgG3TduXWjc8U
- qU1L7Z09PQenNoRIfSnW/M2g2S9Y+XM=
+ bh=4seZA57hu09V3I00/1rURrrFtCTriO0ttU2uqwkIA2Q=;
+ b=UizfHk1PIeSVPvWoiuBEgY9S7zcqOokx8t5eCpY+Amc2bXvf9EuB9LaQM4YYRzTcE7Ulz9
+ DehyeK/ssOHaOtkfP6+D0Dk83B+dru7aT02ttmc/YNMnEm0c7s7Fzdvhz0iDv8jhVtZXf9
+ NL87GexbzAeeNny57iFsYzW2tKhWU5Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565161;
+ s=susede2_ed25519; t=1739565163;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eQh8sI+kCzbFwwHvCWXBzG2ovyzZMFf40klEDt6MXs8=;
- b=pAKE+b+//bndH2c1MefjpXtTs9b2NfK8sNh+B0R6JDNJJ3QhtAB62EDhCUNQNFqzXycY+K
- ds68H9VSMZyMTdDA==
+ bh=4seZA57hu09V3I00/1rURrrFtCTriO0ttU2uqwkIA2Q=;
+ b=JR35HAL7BL4s2VgQoWW1b/GQEQJ/HH95YwfVx6HbvDhJhdp/tkpnOIt4dNDeoZRGYwS1nw
+ HBzjOWfT4OsBquDQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1739565163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eQh8sI+kCzbFwwHvCWXBzG2ovyzZMFf40klEDt6MXs8=;
- b=0yMoyLeK28ggmzI+vAbJ/gpZqNFXqs8lYtQQOTXGegPIquP8ORqzYvx1KdKgN0zegegnGf
- 5bWLj5+VKJ0Wa4K++gVgKqwxKFNW8NYKD8kK/JhHZonHL2ts2sGPskpQ7cgG3TduXWjc8U
- qU1L7Z09PQenNoRIfSnW/M2g2S9Y+XM=
+ bh=4seZA57hu09V3I00/1rURrrFtCTriO0ttU2uqwkIA2Q=;
+ b=UizfHk1PIeSVPvWoiuBEgY9S7zcqOokx8t5eCpY+Amc2bXvf9EuB9LaQM4YYRzTcE7Ulz9
+ DehyeK/ssOHaOtkfP6+D0Dk83B+dru7aT02ttmc/YNMnEm0c7s7Fzdvhz0iDv8jhVtZXf9
+ NL87GexbzAeeNny57iFsYzW2tKhWU5Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565161;
+ s=susede2_ed25519; t=1739565163;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eQh8sI+kCzbFwwHvCWXBzG2ovyzZMFf40klEDt6MXs8=;
- b=pAKE+b+//bndH2c1MefjpXtTs9b2NfK8sNh+B0R6JDNJJ3QhtAB62EDhCUNQNFqzXycY+K
- ds68H9VSMZyMTdDA==
+ bh=4seZA57hu09V3I00/1rURrrFtCTriO0ttU2uqwkIA2Q=;
+ b=JR35HAL7BL4s2VgQoWW1b/GQEQJ/HH95YwfVx6HbvDhJhdp/tkpnOIt4dNDeoZRGYwS1nw
+ HBzjOWfT4OsBquDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DAB9C13AEB;
- Fri, 14 Feb 2025 20:32:39 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C91013AEB;
+ Fri, 14 Feb 2025 20:32:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GJyoJWeor2cgEgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:39 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id SP6KLmmor2cgEgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 21/22] guestperf: Introduce multifd compression option
-Date: Fri, 14 Feb 2025 17:31:58 -0300
-Message-Id: <20250214203159.30168-22-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>,
+	Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 22/22] guestperf: Add test result data into report
+Date: Fri, 14 Feb 2025 17:31:59 -0300
+Message-Id: <20250214203159.30168-23-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250214203159.30168-1-farosas@suse.de>
 References: <20250214203159.30168-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[4];
- FROM_HAS_DN(0.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Score: -3.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,155 +120,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-Guestperf tool does not cover the multifd compression option
-currently, it is worth supporting so that developers can
-analysis the migration performance with different
-compression algorithms.
-
-Multifd support 4 compression algorithms currently:
-zlib, zstd, qpl, uadk
-
-To request that multifd with the specified compression
-algorithm such as zlib:
-$ ./tests/migration-stress/guestperf.py \
-    --multifd --multifd-channels 4 --multifd-compression zlib \
-    --output output.json
-
-To run the entire standardized set of multifd compression
-comparisons, with unix migration:
-$ ./tests/migration-stress/guestperf-batch.py \
-    --dst-host localhost --transport unix \
-    --filter compr-multifd-compression* --output outputdir
+The migration result data is not included in the guestperf
+report information; include the result as a report entry
+so the developer can check whether the migration was successful
+after running guestperf.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <c0e3313d81e8130f8119ef4f242e4625886278cf.1739530098.git.yong.huang@smartx.com>
+Message-ID: <6303400c2983ffe5647f07caa6406f00ceae4581.1739530098.git.yong.huang@smartx.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/migration-stress/guestperf/comparison.py | 13 +++++++++++++
- tests/migration-stress/guestperf/engine.py     | 14 ++++++++++++++
- tests/migration-stress/guestperf/scenario.py   |  7 +++++--
- tests/migration-stress/guestperf/shell.py      |  3 +++
- 4 files changed, 35 insertions(+), 2 deletions(-)
+ tests/migration-stress/guestperf/engine.py | 10 ++++++++--
+ tests/migration-stress/guestperf/report.py | 20 ++++++++++++++++++++
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/tests/migration-stress/guestperf/comparison.py b/tests/migration-stress/guestperf/comparison.py
-index 40e9d2eb1d..dee3ac25e4 100644
---- a/tests/migration-stress/guestperf/comparison.py
-+++ b/tests/migration-stress/guestperf/comparison.py
-@@ -158,4 +158,17 @@ def __init__(self, name, scenarios):
-         Scenario("compr-dirty-limit-50MB",
-                  dirty_limit=True, vcpu_dirty_limit=50),
-     ]),
-+
-+    # Looking at effect of multifd with
-+    # different compression algorithms
-+    Comparison("compr-multifd-compression", scenarios = [
-+        Scenario("compr-multifd-compression-zlib",
-+                 multifd=True, multifd_channels=2, multifd_compression="zlib"),
-+        Scenario("compr-multifd-compression-zstd",
-+                 multifd=True, multifd_channels=2, multifd_compression="zstd"),
-+        Scenario("compr-multifd-compression-qpl",
-+                 multifd=True, multifd_channels=2, multifd_compression="qpl"),
-+        Scenario("compr-multifd-compression-uadk",
-+                 multifd=True, multifd_channels=2, multifd_compression="uadk"),
-+    ]),
- ]
 diff --git a/tests/migration-stress/guestperf/engine.py b/tests/migration-stress/guestperf/engine.py
-index 4b15322e8d..e11f6a8496 100644
+index e11f6a8496..d8462db765 100644
 --- a/tests/migration-stress/guestperf/engine.py
 +++ b/tests/migration-stress/guestperf/engine.py
-@@ -31,6 +31,8 @@
-                              '..', '..', '..', 'python'))
- from qemu.machine import QEMUMachine
+@@ -24,7 +24,7 @@
+ import time
  
-+# multifd supported compression algorithms
-+MULTIFD_CMP_ALGS = ("zlib", "zstd", "qpl", "uadk")
+ from guestperf.progress import Progress, ProgressStats
+-from guestperf.report import Report
++from guestperf.report import Report, ReportResult
+ from guestperf.timings import TimingRecord, Timings
  
- class Engine(object):
+ sys.path.append(os.path.join(os.path.dirname(__file__),
+@@ -276,7 +276,11 @@ def _migrate(self, hardware, scenario, src,
+                         src_vcpu_time.extend(self._vcpu_timing(src_pid, src_threads))
+                         sleep_secs -= 1
  
-@@ -191,6 +193,12 @@ def _migrate(self, hardware, scenario, src,
-                                scenario._compression_xbzrle_cache))
- 
-         if scenario._multifd:
-+            if (scenario._multifd_compression and
-+                (scenario._multifd_compression not in MULTIFD_CMP_ALGS)):
-+                    raise Exception("unsupported multifd compression "
-+                                    "algorithm: %s" %
-+                                    scenario._multifd_compression)
+-                return [progress_history, src_qemu_time, src_vcpu_time]
++                result = ReportResult()
++                if progress._status == "completed" and not paused:
++                    result = ReportResult(True)
 +
-             resp = src.cmd("migrate-set-capabilities",
-                            capabilities = [
-                                { "capability": "multifd",
-@@ -206,6 +214,12 @@ def _migrate(self, hardware, scenario, src,
-             resp = dst.cmd("migrate-set-parameters",
-                            multifd_channels=scenario._multifd_channels)
++                return [progress_history, src_qemu_time, src_vcpu_time, result]
  
-+            if scenario._multifd_compression:
-+                resp = src.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
-+                resp = dst.cmd("migrate-set-parameters",
-+                    multifd_compression=scenario._multifd_compression)
+             if self._verbose and (loop % 20) == 0:
+                 print("Iter %d: remain %5dMB of %5dMB (total %5dMB @ %5dMb/sec)" % (
+@@ -490,6 +494,7 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
+             progress_history = ret[0]
+             qemu_timings = ret[1]
+             vcpu_timings = ret[2]
++            result = ret[3]
+             if uri[0:5] == "unix:" and os.path.exists(uri[5:]):
+                 os.remove(uri[5:])
+ 
+@@ -509,6 +514,7 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
+                           Timings(self._get_timings(src) + self._get_timings(dst)),
+                           Timings(qemu_timings),
+                           Timings(vcpu_timings),
++                          result,
+                           self._binary, self._dst_host, self._kernel,
+                           self._initrd, self._transport, self._sleep)
+         except Exception as e:
+diff --git a/tests/migration-stress/guestperf/report.py b/tests/migration-stress/guestperf/report.py
+index 1efd40c868..e135e01be6 100644
+--- a/tests/migration-stress/guestperf/report.py
++++ b/tests/migration-stress/guestperf/report.py
+@@ -24,6 +24,22 @@
+ from guestperf.progress import Progress
+ from guestperf.timings import Timings
+ 
++class ReportResult(object):
 +
-         if scenario._dirty_limit:
-             if not hardware._dirty_ring_size:
-                 raise Exception("dirty ring size must be configured when "
-diff --git a/tests/migration-stress/guestperf/scenario.py b/tests/migration-stress/guestperf/scenario.py
-index 154c4f5d5f..4be7fafebf 100644
---- a/tests/migration-stress/guestperf/scenario.py
-+++ b/tests/migration-stress/guestperf/scenario.py
-@@ -30,7 +30,7 @@ def __init__(self, name,
-                  auto_converge=False, auto_converge_step=10,
-                  compression_mt=False, compression_mt_threads=1,
-                  compression_xbzrle=False, compression_xbzrle_cache=10,
--                 multifd=False, multifd_channels=2,
-+                 multifd=False, multifd_channels=2, multifd_compression="",
-                  dirty_limit=False, x_vcpu_dirty_limit_period=500,
-                  vcpu_dirty_limit=1):
++    def __init__(self, success=False):
++        self._success = success
++
++    def serialize(self):
++        return {
++            "success": self._success,
++        }
++
++    @classmethod
++    def deserialize(cls, data):
++        return cls(
++            data["success"])
++
++
+ class Report(object):
  
-@@ -61,6 +61,7 @@ def __init__(self, name,
- 
-         self._multifd = multifd
-         self._multifd_channels = multifd_channels
-+        self._multifd_compression = multifd_compression
- 
-         self._dirty_limit = dirty_limit
-         self._x_vcpu_dirty_limit_period = x_vcpu_dirty_limit_period
-@@ -85,6 +86,7 @@ def serialize(self):
-             "compression_xbzrle_cache": self._compression_xbzrle_cache,
-             "multifd": self._multifd,
-             "multifd_channels": self._multifd_channels,
-+            "multifd_compression": self._multifd_compression,
-             "dirty_limit": self._dirty_limit,
-             "x_vcpu_dirty_limit_period": self._x_vcpu_dirty_limit_period,
-             "vcpu_dirty_limit": self._vcpu_dirty_limit,
-@@ -109,4 +111,5 @@ def deserialize(cls, data):
-             data["compression_xbzrle"],
-             data["compression_xbzrle_cache"],
-             data["multifd"],
--            data["multifd_channels"])
-+            data["multifd_channels"],
-+            data["multifd_compression"])
-diff --git a/tests/migration-stress/guestperf/shell.py b/tests/migration-stress/guestperf/shell.py
-index 046afeb84e..63bbe3226c 100644
---- a/tests/migration-stress/guestperf/shell.py
-+++ b/tests/migration-stress/guestperf/shell.py
-@@ -131,6 +131,8 @@ def __init__(self):
-                             action="store_true")
-         parser.add_argument("--multifd-channels", dest="multifd_channels",
-                             default=2, type=int)
-+        parser.add_argument("--multifd-compression", dest="multifd_compression",
-+                            default="")
- 
-         parser.add_argument("--dirty-limit", dest="dirty_limit", default=False,
-                             action="store_true")
-@@ -167,6 +169,7 @@ def get_scenario(self, args):
- 
-                         multifd=args.multifd,
-                         multifd_channels=args.multifd_channels,
-+                        multifd_compression=args.multifd_compression,
- 
-                         dirty_limit=args.dirty_limit,
-                         x_vcpu_dirty_limit_period=\
+     def __init__(self,
+@@ -33,6 +49,7 @@ def __init__(self,
+                  guest_timings,
+                  qemu_timings,
+                  vcpu_timings,
++                 result,
+                  binary,
+                  dst_host,
+                  kernel,
+@@ -46,6 +63,7 @@ def __init__(self,
+         self._guest_timings = guest_timings
+         self._qemu_timings = qemu_timings
+         self._vcpu_timings = vcpu_timings
++        self._result = result
+         self._binary = binary
+         self._dst_host = dst_host
+         self._kernel = kernel
+@@ -61,6 +79,7 @@ def serialize(self):
+             "guest_timings": self._guest_timings.serialize(),
+             "qemu_timings": self._qemu_timings.serialize(),
+             "vcpu_timings": self._vcpu_timings.serialize(),
++            "result": self._result.serialize(),
+             "binary": self._binary,
+             "dst_host": self._dst_host,
+             "kernel": self._kernel,
+@@ -78,6 +97,7 @@ def deserialize(cls, data):
+             Timings.deserialize(data["guest_timings"]),
+             Timings.deserialize(data["qemu_timings"]),
+             Timings.deserialize(data["vcpu_timings"]),
++            ReportResult.deserialize(data["result"]),
+             data["binary"],
+             data["dst_host"],
+             data["kernel"],
 -- 
 2.35.3
 
