@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C11A353EB
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 02:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4BEA353EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 02:56:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tikun-0006bF-Rm; Thu, 13 Feb 2025 20:54:49 -0500
+	id 1tikup-0006bT-HR; Thu, 13 Feb 2025 20:54:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tikul-0006aX-00
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 20:54:47 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tikun-0006bH-2W
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 20:54:49 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tikuj-0004NF-00
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 20:54:46 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-220d398bea9so21093085ad.3
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 17:54:44 -0800 (PST)
+ id 1tikul-0004NW-Am
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 20:54:48 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-220e989edb6so14517545ad.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 17:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1739498083; x=1740102883;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1739498085; x=1740102885;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NdqCgSxKf8rhz7PsW2KR1K7z/q/nMu6KnVnCzC9I9Hc=;
- b=kzPXP/K1+CdZlIC6hoGTRXeE7zW/j5t1zU+eACV7LmhUuMxkCgWSyvJdaqMumZfz7b
- IwRJy1JzJdJfBv5nbgj+ax2m0Cs+9RudAF/KSwvwE50HJ0+DBbsbI1jNsArmXISVZleF
- UXkF3gXHxCgRgvkSoyEhmXNdtdNEDMGHCc5i6PM1e+GCvaQ2LYleuAkvz9IE7kXVQdVU
- OIzMGTyr9LSd7vnpMuPZ8g184Ow/P//UwCpTcWuuoLCwk4E/hnnlfrG48Bh3U1cJQTru
- ITq1ZWYDp1UiCYZJWpj4Cy8UKUqupQ/JptsvinS7gHtwsZ1rfE5niqKHu1AOVJ3nYdPg
- m8Lg==
+ bh=a9RC6MJMkMFddmaETe/J83cE8JOgsz6X2WCSfCIYCZQ=;
+ b=PIAzLM4WLO0dG7s4KOPz8L6Qucw827qdZyYW9WlfNZ4jUyT7EzOyJ/Shuuo6m/k/8N
+ vIFM5aac3J8OCnzMC5M7oMY56Bs079NZfL4gGV/eB6c4zemKttC4bdsYlp33gAm3JQAj
+ ghUuICpspPnoFf7MEl6VUW319+KD1WcqfIYzT6oQYz2wI6YXRRahJpiGh24Lvb5gycT9
+ jYV5vWmqS1Zo+bvCLbxbZfTe/5BZkodc9J8U5qOkgInJ6ueDaKsrmuaLoIBa1GnurLXE
+ ZVzr9UYFu40jRs66kI8zXx8S7RLi5Sf0pmKaguzzLsfojIeOjF0wxeNUy1vw3PDjbvMz
+ flEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739498083; x=1740102883;
+ d=1e100.net; s=20230601; t=1739498085; x=1740102885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NdqCgSxKf8rhz7PsW2KR1K7z/q/nMu6KnVnCzC9I9Hc=;
- b=rLBPWY9QvwlrHx2yq18qeJNdVzMDUJkWtn/lzBxApuM61M1QP0c4il8rQbAZPUcdgR
- LgI4+OifungEzZvHDSEodXaHLzI7xd9wFWR6MHSP2H3YntGBQ4F2fSijW/CNzJkLbmlJ
- mR0dJ2oRVxtiVvIwS3vmd2RI1HOk0c/4H1ePloyfdt+Lj4qCRp3npDSqBXjXA6MLpB/l
- PipWWd/cryf9QYiuiHAUedrzV64Jo/D10x3KmzqQgz6bESRRTCxhHl3agpkMgU+nxe7F
- G1ake0ySzqQZBnhlE76jkYdvcA5/X4jMnki70qb40QbTuFlu//CmO+XLwffQMZAivtYV
- oYug==
-X-Gm-Message-State: AOJu0YyQh/JHZikghF51NsbkoJb/mqK2Qc52GHPfop6YJDsdiVxcpcQD
- sR12K6Mu2u3Iw65pyUuWUFbVZx8dop0BukD3XghP73StmN0yRvpd/9mW07q0y7BGM9JEeQ4GW6b
- AJUzpN2hq
-X-Gm-Gg: ASbGnctgH/2toUdpPf+5knM9+T5aRsf1/Z+O+DuK/umVA8o42vBe3DrD7Ctt9j7EMIl
- ryGaSj8telQDzUzUGsNHiAg8QivI6y5nvlCZ5egTYhWDRr0RvfmMMrBawTiJb5kKbo9r7vhhdT8
- 1ArsK4sUUbMmHl3JeYNwl/5jBmgZvgiCGe+ayrthDeC0Z1xdJOGhVSrjMbe4xGa/1T2rLNFsaQj
- ktfjEFSv7dKfk+6KIGxIkaMSEiUsPedJDsQD6BQm/YvlYKrw1e9FgwSxFH+zEgPS65MAXI8icza
- iLprOnqpYiv+aTQPLE9ill7g+3MnfFEc3+gfnZn6
-X-Google-Smtp-Source: AGHT+IHV8wdPMGuQjFRK0boX5C7OVrhUUpz62b/tGTU0/evOQeUUbE0pzPKqderg0FdTnK91IJk64Q==
-X-Received: by 2002:a17:903:18e:b0:220:ea90:191e with SMTP id
- d9443c01a7336-220ea901a6emr29415115ad.4.1739498082595; 
- Thu, 13 Feb 2025 17:54:42 -0800 (PST)
+ bh=a9RC6MJMkMFddmaETe/J83cE8JOgsz6X2WCSfCIYCZQ=;
+ b=AG93knN83ASl2X8S2d5DgJMDhMhhYSJHb3VuoQ93dhN4g3S07wAMKeP9hKnTUSvjEg
+ uw34GYVfzGRCb9HYQU8QQG2iUJ6PsDMQFDa5ja71OK1plX87CGcuF0mxRGJ8vOnFzOA3
+ Bi0VCzC9Cx4/L+1vyqNoVpZbzO7xuHpNV3vD3NvdXH1WZnIOt98Sn7PxAFUGBfGVG1+1
+ iPZtv1E3cPm7l0ODpnP8dzTDCxv/P3tgSH6zDfp5TQ75ggzY6GZV1fxlEwAtKyeOJJ6g
+ LZOe0DqyfhYtWE/iTaNWrX+BDZNAx9CtP6NNzc69xCeZ1hhwPGm1Wk55HaL7Ftb7JBIT
+ 8ocQ==
+X-Gm-Message-State: AOJu0Ywf72wQi1YC1sf3PmK/WVEtdzEFQnSS2LRPJI4L622OG4rvM4bj
+ W1WFzO2UkEB2/aPRZmd2/bud4FyySlV7ckV36BPrzETu51Z//MRyGusQYj5HqlCmSd4PYLXkqmE
+ BetQnPStF
+X-Gm-Gg: ASbGncvjNHwpQP+bJ5HCJPd+y68BrIn6gwe9YjXtNjqNworzLkl/DtHhJRb3OQf0zsA
+ yPaOdy3xO8tABRzwbZaE/HgDIsANtGZv8Hgl/gLhxrSH/96fCMrDEOwwo5xDDjFNpqyoxKPfHR9
+ MFEnHN7ksxlwLLPbjLLeXasqp2bYs5TcMd5IMT/WYlazldPy8vnxE7fxvUnjG39il94udyFXxcw
+ BehNS/Z9reYtuVP/kpH7gGNxC6PDoUrCmf3VSJE2E5/tdVntt3kLVqhzj/ArB8aXWoQh/Ev1oS1
+ F2E0pgNfB4oGr8/Z0M4KdZEZFLG0qBDDAtXu71Q2
+X-Google-Smtp-Source: AGHT+IGDuncs+s7Lnxw3U/Ztn+70I3oPVHtrCX7o9uswgNFjSa8XyUvknA4tgckxkiAdU2cx1I09TA==
+X-Received: by 2002:a17:902:c952:b0:21f:85ee:f2df with SMTP id
+ d9443c01a7336-220d1ed85famr97543505ad.15.1739498085351; 
+ Thu, 13 Feb 2025 17:54:45 -0800 (PST)
 Received: from Hyman-Dev-Euler.zelin.local ([154.64.226.178])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d545d67fsm18831515ad.143.2025.02.13.17.54.40
+ d9443c01a7336-220d545d67fsm18831515ad.143.2025.02.13.17.54.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Feb 2025 17:54:42 -0800 (PST)
+ Thu, 13 Feb 2025 17:54:45 -0800 (PST)
 From: yong.huang@smartx.com
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 1/4] guestperf: Support deferred migration for multifd
-Date: Fri, 14 Feb 2025 09:53:33 +0800
-Message-Id: <8874e170f890ce0bc6f25cb0d9b9ae307ce2e070.1739497707.git.yong.huang@smartx.com>
+Subject: [PATCH v4 2/4] guestperf: Nitpick the inconsistent parameters
+Date: Fri, 14 Feb 2025 09:53:34 +0800
+Message-Id: <c8e3768c0d21b47456ad80376ddee63122d60cf7.1739497707.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1739497707.git.yong.huang@smartx.com>
 References: <cover.1739497707.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,97 +102,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-The way to enable multifd migration has been changed by commit,
-82137e6c8c (migration: enforce multifd and postcopy preempt to
-be set before incoming), and guestperf has not made the
-necessary changes. If multifd migration had been enabled in the
-previous manner, the following error would have occurred:
-Multifd must be set before incoming starts
-
-Supporting deferred migration will fix it.
-
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/migration-stress/guestperf/engine.py | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ tests/migration-stress/guestperf/comparison.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/migration-stress/guestperf/engine.py b/tests/migration-stress/guestperf/engine.py
-index 608d7270f6..4b15322e8d 100644
---- a/tests/migration-stress/guestperf/engine.py
-+++ b/tests/migration-stress/guestperf/engine.py
-@@ -106,7 +106,8 @@ def _migrate_progress(self, vm):
-             info.get("dirty-limit-ring-full-time", 0),
-         )
- 
--    def _migrate(self, hardware, scenario, src, dst, connect_uri):
-+    def _migrate(self, hardware, scenario, src,
-+                 dst, connect_uri, defer_migrate):
-         src_qemu_time = []
-         src_vcpu_time = []
-         src_pid = src.get_pid()
-@@ -220,6 +221,8 @@ def _migrate(self, hardware, scenario, src, dst, connect_uri):
-             resp = src.cmd("migrate-set-parameters",
-                            vcpu_dirty_limit=scenario._vcpu_dirty_limit)
- 
-+        if defer_migrate:
-+            resp = dst.cmd("migrate-incoming", uri=connect_uri)
-         resp = src.cmd("migrate", uri=connect_uri)
- 
-         post_copy = False
-@@ -373,11 +376,14 @@ def _get_common_args(self, hardware, tunnelled=False):
-     def _get_src_args(self, hardware):
-         return self._get_common_args(hardware)
- 
--    def _get_dst_args(self, hardware, uri):
-+    def _get_dst_args(self, hardware, uri, defer_migrate):
-         tunnelled = False
-         if self._dst_host != "localhost":
-             tunnelled = True
-         argv = self._get_common_args(hardware, tunnelled)
-+
-+        if defer_migrate:
-+            return argv + ["-incoming", "defer"]
-         return argv + ["-incoming", uri]
- 
-     @staticmethod
-@@ -424,6 +430,7 @@ def _get_timings(self, vm):
- 
-     def run(self, hardware, scenario, result_dir=os.getcwd()):
-         abs_result_dir = os.path.join(result_dir, scenario._name)
-+        defer_migrate = False
- 
-         if self._transport == "tcp":
-             uri = "tcp:%s:9000" % self._dst_host
-@@ -439,6 +446,9 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
-             except:
-                 pass
- 
-+        if scenario._multifd:
-+            defer_migrate = True
-+
-         if self._dst_host != "localhost":
-             dstmonaddr = ("localhost", 9001)
-         else:
-@@ -452,7 +462,7 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
-                           monitor_address=srcmonaddr)
- 
-         dst = QEMUMachine(self._binary,
--                          args=self._get_dst_args(hardware, uri),
-+                          args=self._get_dst_args(hardware, uri, defer_migrate),
-                           wrapper=self._get_dst_wrapper(hardware),
-                           name="qemu-dst-%d" % os.getpid(),
-                           monitor_address=dstmonaddr)
-@@ -461,7 +471,8 @@ def run(self, hardware, scenario, result_dir=os.getcwd()):
-             src.launch()
-             dst.launch()
- 
--            ret = self._migrate(hardware, scenario, src, dst, uri)
-+            ret = self._migrate(hardware, scenario, src,
-+                                dst, uri, defer_migrate)
-             progress_history = ret[0]
-             qemu_timings = ret[1]
-             vcpu_timings = ret[2]
+diff --git a/tests/migration-stress/guestperf/comparison.py b/tests/migration-stress/guestperf/comparison.py
+index 42cc0372d1..40e9d2eb1d 100644
+--- a/tests/migration-stress/guestperf/comparison.py
++++ b/tests/migration-stress/guestperf/comparison.py
+@@ -127,7 +127,7 @@ def __init__(self, name, scenarios):
+     # varying numbers of channels
+     Comparison("compr-multifd", scenarios = [
+         Scenario("compr-multifd-channels-4",
+-                 multifd=True, multifd_channels=2),
++                 multifd=True, multifd_channels=4),
+         Scenario("compr-multifd-channels-8",
+                  multifd=True, multifd_channels=8),
+         Scenario("compr-multifd-channels-32",
 -- 
 2.27.0
 
