@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA83A354B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 03:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A5FA355A5
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 05:18:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tilNy-0004Rd-Nb; Thu, 13 Feb 2025 21:24:59 -0500
+	id 1tin8X-0005Ti-4E; Thu, 13 Feb 2025 23:17:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1tilNt-0004RF-Gu
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 21:24:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1tin8U-0005TD-V9
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 23:17:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1tilNr-0008PD-Rq
- for qemu-devel@nongnu.org; Thu, 13 Feb 2025 21:24:53 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1tin8T-0002Zi-8k
+ for qemu-devel@nongnu.org; Thu, 13 Feb 2025 23:17:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739499888;
+ s=mimecast20190719; t=1739506622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wfMNsQOirfeeK8d6OAbiJWrNzoRQSMyo0LtZU3GIisw=;
- b=esBDu7SYvRB4KlZnkRjNZVqaMCxR2AUOcIiWaVnA7RLkHE1QZGGhO6dIw0q2btCLZ6eP6d
- dUkTVb1aKHA98YizfFfQyudCn25+mDqeY/xx4B7FMd34asWclOpKAnKb5KzYKL4XRzF0Rf
- ZZ+6utcC8UF0OfuabXjoDa6mEe0SQKg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-IpzgBT0RMSmYv38G6agufQ-1; Thu, 13 Feb 2025 21:24:45 -0500
-X-MC-Unique: IpzgBT0RMSmYv38G6agufQ-1
-X-Mimecast-MFC-AGG-ID: IpzgBT0RMSmYv38G6agufQ_1739499885
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-ab77e03f2c0so155965266b.3
- for <qemu-devel@nongnu.org>; Thu, 13 Feb 2025 18:24:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739499884; x=1740104684;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wfMNsQOirfeeK8d6OAbiJWrNzoRQSMyo0LtZU3GIisw=;
- b=Rxgygog6faaJFKWK7GR5begh4Qexn0GmwKKJw4m7yTKbIBob30WZhRGxXug2P/jaPK
- v0kL7vihdM6zPm74p4v4auZtrx/ymWVLfQbin20WcE994epcdAazcSbqjtbWM6FEtCcF
- 91lZQ56dh2Vsgq2oaAectyMUtwhE8KECkMhKzrCYidxpGeP7ik6uC3U8iuLlwd0QODqm
- XLBwcfvXSVNR0O+bIHv/pJtmFLeCJnZAY05oSnl4J9haQjyymDowtu19uFQwWJzpKsPX
- U3oKC9PO3+Z3L3oWWssHn2DcFewbAPA7/AAo7R5JlHYTFROhopOcP21sbN0lhmLXIdwr
- hxBg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXRdP8R5Mm68KH6BwGtUPlnu0rlbdWL5Y7hOhlc3BXxkNP7EWQYnijSirplQyQhZ+DuZR0bAGKRFUGt@nongnu.org
-X-Gm-Message-State: AOJu0Yw5iwpsx263gbYCW4SYNv6FUUH7X7mzcLcqkHk/EWoIcw2soY7u
- xQpg+TkRKZZeUQ+Ii/da8MsM6e+y1rMatm0tzan49EumjSpJPQYRx1jylVEV18lVqZi8qrLCXiX
- hsZuQ5f9lb8TGTlaxhD0Ycg5MaXe6lrL1xRCDYo6txhUZFmK73k9HT7TvMb/ZxvZPXtuxcAHAGa
- J5aAqKN6TzDZYaaBtNLMrHIaXBQDM=
-X-Gm-Gg: ASbGncuzTl1JDlKAwgaIT+rhSAbG7uZlsXt2B1kUICoWMnjwXEPr2p8KnjrrRe1VSiE
- b/DyQtswIwhd+T1ATgWavI2irbWKtp5sLyIgS1BW04OzBKNkwzi+16Nq4QKiYmp4=
-X-Received: by 2002:a17:907:7285:b0:ab7:9bea:4e04 with SMTP id
- a640c23a62f3a-ab7f33a3b2emr920057966b.15.1739499884549; 
- Thu, 13 Feb 2025 18:24:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzstluxwzRv147YHjc69e6NAwoeOELKdCIHfbUQ1UBfqRnjwRQdoPzEvW32+ICR23WkXSysu6gJgO7Y9U4kAE=
-X-Received: by 2002:a17:907:7285:b0:ab7:9bea:4e04 with SMTP id
- a640c23a62f3a-ab7f33a3b2emr920056366b.15.1739499884158; Thu, 13 Feb 2025
- 18:24:44 -0800 (PST)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Y6woE6YZq7PxsN07Vv6kJjlWyQ8cfuZEwVw6wv2u9y8=;
+ b=BdrsoehABM/RNdnEocbonSG19vqg6Af0DbRUP6EaRTSxIQDWtBTLY44ufrIh5YqQtugSy6
+ 2o3RSQ2TpSBtHDfDnPdg+7TVuKYnd8wnzZZu7hBSAj2WYv9sDgde+H2SN9wr6P+SYSG+Ke
+ GS/mY3I55j+dfmJ5lJ6yEi0aVDgIJdU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-afE9I8VNMNWDmJZGxkU22g-1; Thu,
+ 13 Feb 2025 23:16:58 -0500
+X-MC-Unique: afE9I8VNMNWDmJZGxkU22g-1
+X-Mimecast-MFC-AGG-ID: afE9I8VNMNWDmJZGxkU22g
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2BFCA19373D9; Fri, 14 Feb 2025 04:16:57 +0000 (UTC)
+Received: from gshan-thinkpadx1nanogen2.remote.csb (unknown [10.64.136.82])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7DE4319373C4; Fri, 14 Feb 2025 04:16:51 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, mst@redhat.com, imammedo@redhat.com,
+ anisinha@redhat.com, gengdongjiu1@gmail.com, peter.maydell@linaro.org,
+ pbonzini@redhat.com, shan.gavin@gmail.com
+Subject: [PATCH 0/4] target/arm: Improvement on memory error handling
+Date: Fri, 14 Feb 2025 14:16:31 +1000
+Message-ID: <20250214041635.608012-1-gshan@redhat.com>
 MIME-Version: 1.0
-References: <20250212164923.1971538-1-kshk@linux.ibm.com>
- <CAJaqyWeHB_+ATn3cvtVrpiFp4NjNLoKpPP1ijs4C7eyRL7gpKQ@mail.gmail.com>
-In-Reply-To: <CAJaqyWeHB_+ATn3cvtVrpiFp4NjNLoKpPP1ijs4C7eyRL7gpKQ@mail.gmail.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Fri, 14 Feb 2025 10:24:07 +0800
-X-Gm-Features: AWEUYZmh8iDM239Zu9p1kJcmkoAMzLas5F0vusBla0Y5fAiI5AdCTj_oSWyPhRc
-Message-ID: <CAPpAL=w-0kgngVYiep2+K_WEGnuv1T_mTFTUbz9JPmH93HHzBg@mail.gmail.com>
-Subject: Re: [PATCH v2] vdpa: Fix endian bugs in shadow virtqueue
-To: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Cc: mst@redhat.com, sgarzare@redhat.com, 
- Eugenio Perez Martin <eperezma@redhat.com>, mjrosato@linux.ibm.com,
- qemu-devel@nongnu.org, 
- Sahil <icegambit91@gmail.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.495,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,122 +79,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I tested this patch with vdpa's regression tests, everything works fine.
+Currently, there is only one CPER buffer (entry), meaning only one
+memory error can be reported. In extreme case, multiple memory errors
+can be raised on different vCPUs. For example, a singile memory error
+on a 64KB page of the host can results in 16 memory errors to 4KB
+pages of the guest. Unfortunately, the virtual machine is simply aborted
+by multiple concurrent memory errors, as the following call trace shows.
+A SEA exception is injected to the guest so that the CPER buffer can
+be claimed if the error is successfully pushed by acpi_ghes_memory_errors(),
+Otherwise, abort() is triggered to crash the virtual machine.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+  kvm_vcpu_thread_fn
+    kvm_cpu_exec
+      kvm_arch_on_sigbus_vcpu
+        kvm_cpu_synchronize_state
+        acpi_ghes_memory_errors         (a)
+        kvm_inject_arm_sea | abort
 
-On Thu, Feb 13, 2025 at 2:51=E2=80=AFPM Eugenio Perez Martin
-<eperezma@redhat.com> wrote:
->
-> On Wed, Feb 12, 2025 at 5:49=E2=80=AFPM Konstantin Shkolnyy <kshk@linux.i=
-bm.com> wrote:
-> >
-> > VDPA didn't work on a big-endian machine due to missing/incorrect
-> > CPU<->LE data format conversions.
-> >
->
-> Fixes: 10857ec0ad ("vhost: Add VhostShadowVirtqueue")
->
-> > Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
->
-> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
->
-> Thanks!
->
-> > ---
-> > Changes in v2: Change desc_next[] from LE format to "CPU".
-> >
-> >  hw/virtio/vhost-shadow-virtqueue.c | 18 ++++++++++--------
-> >  1 file changed, 10 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shado=
-w-virtqueue.c
-> > index 37aca8b431..4af0d7c669 100644
-> > --- a/hw/virtio/vhost-shadow-virtqueue.c
-> > +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> > @@ -165,10 +165,10 @@ static bool vhost_svq_vring_write_descs(VhostShad=
-owVirtqueue *svq, hwaddr *sg,
-> >          descs[i].len =3D cpu_to_le32(iovec[n].iov_len);
-> >
-> >          last =3D i;
-> > -        i =3D cpu_to_le16(svq->desc_next[i]);
-> > +        i =3D svq->desc_next[i];
-> >      }
-> >
-> > -    svq->free_head =3D le16_to_cpu(svq->desc_next[last]);
-> > +    svq->free_head =3D svq->desc_next[last];
-> >      return true;
-> >  }
-> >
-> > @@ -228,10 +228,12 @@ static void vhost_svq_kick(VhostShadowVirtqueue *=
-svq)
-> >      smp_mb();
-> >
-> >      if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
-> > -        uint16_t avail_event =3D *(uint16_t *)(&svq->vring.used->ring[=
-svq->vring.num]);
-> > +        uint16_t avail_event =3D le16_to_cpu(
-> > +                *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]))=
-;
-> >          needs_kick =3D vring_need_event(avail_event, svq->shadow_avail=
-_idx, svq->shadow_avail_idx - 1);
-> >      } else {
-> > -        needs_kick =3D !(svq->vring.used->flags & VRING_USED_F_NO_NOTI=
-FY);
-> > +        needs_kick =3D
-> > +                !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO=
-_NOTIFY));
-> >      }
-> >
-> >      if (!needs_kick) {
-> > @@ -365,7 +367,7 @@ static bool vhost_svq_more_used(VhostShadowVirtqueu=
-e *svq)
-> >          return true;
-> >      }
-> >
-> > -    svq->shadow_used_idx =3D cpu_to_le16(*(volatile uint16_t *)used_id=
-x);
-> > +    svq->shadow_used_idx =3D le16_to_cpu(*(volatile uint16_t *)used_id=
-x);
-> >
-> >      return svq->last_used_idx !=3D svq->shadow_used_idx;
-> >  }
-> > @@ -383,7 +385,7 @@ static bool vhost_svq_enable_notification(VhostShad=
-owVirtqueue *svq)
-> >  {
-> >      if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
-> >          uint16_t *used_event =3D (uint16_t *)&svq->vring.avail->ring[s=
-vq->vring.num];
-> > -        *used_event =3D svq->shadow_used_idx;
-> > +        *used_event =3D cpu_to_le16(svq->shadow_used_idx);
-> >      } else {
-> >          svq->vring.avail->flags &=3D ~cpu_to_le16(VRING_AVAIL_F_NO_INT=
-ERRUPT);
-> >      }
-> > @@ -408,7 +410,7 @@ static uint16_t vhost_svq_last_desc_of_chain(const =
-VhostShadowVirtqueue *svq,
-> >                                               uint16_t num, uint16_t i)
-> >  {
-> >      for (uint16_t j =3D 0; j < (num - 1); ++j) {
-> > -        i =3D le16_to_cpu(svq->desc_next[i]);
-> > +        i =3D svq->desc_next[i];
-> >      }
-> >
-> >      return i;
-> > @@ -683,7 +685,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, Vir=
-tIODevice *vdev,
-> >      svq->desc_state =3D g_new0(SVQDescState, svq->vring.num);
-> >      svq->desc_next =3D g_new0(uint16_t, svq->vring.num);
-> >      for (unsigned i =3D 0; i < svq->vring.num - 1; i++) {
-> > -        svq->desc_next[i] =3D cpu_to_le16(i + 1);
-> > +        svq->desc_next[i] =3D i + 1;
-> >      }
-> >  }
-> >
-> > --
-> > 2.34.1
-> >
->
->
+It's arguably to crash the virtual machine in this case. The better
+behaviour would be to retry on pushing the memory errors, to keep the
+virtual machine alive so that the administrator has chance to chime
+in, for example to dump the important data with luck. This series
+adds one more parameter to acpi_ghes_memory_errors() so that it will
+be tried to push the memory error until it succeeds.
+
+Gavin Shan (4):
+  acpi/ghes: Make ghes_record_cper_errors() static
+  acpi/ghes: Use error_report() in ghes_record_cper_errors()
+  acpi/ghes: Allow retry to write CPER errors
+  target/arm: Retry pushing CPER error if necessary
+
+ hw/acpi/ghes-stub.c    |  3 ++-
+ hw/acpi/ghes.c         | 45 +++++++++++++++++++++---------------------
+ include/hw/acpi/ghes.h |  5 ++---
+ target/arm/kvm.c       | 31 +++++++++++++++++++++++------
+ 4 files changed, 51 insertions(+), 33 deletions(-)
+
+-- 
+2.48.1
 
 
