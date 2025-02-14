@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E81A36042
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CDBA36036
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:20:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwUt-0000Zp-5d; Fri, 14 Feb 2025 09:16:51 -0500
+	id 1tiwUd-0007gV-ND; Fri, 14 Feb 2025 09:16:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTp-0006P4-3U
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:47 -0500
+ id 1tiwTj-0006F8-II
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:40 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTa-0004j2-9G
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:36 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtRB2011445;
+ id 1tiwTa-0004iy-5K
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:33 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtSpa006439;
  Fri, 14 Feb 2025 14:15:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=zurSjh+ycUk+qDKlD1hF4rXDMsLxZM0vRjOuN/brrwY=; b=
- fk/a4MZZGuMbCrSxeosBSjyAMdsF/l2zc7m/FBWNuwdoGLQ3W7lA9SPfNQwzEM1m
- Fv0cy9boUQPapFDi0eF9bYgIDaSdFT1X6R1TwIEf2HpHrlUaJHvcDLSAJbH/Zymv
- kDO/K8QRxwRlnonVb0GRW1OLXg0OMI9lk5mLfYodpZSCifAxCv76bTjSqwOyAoZb
- Gp5mh7ZFValnr3C8FrFH2dYQQ4wA1guIq3dZUS1wl0Ol0NogGnnlNllhw6Hepoyu
- hh/vXWEsBoIX7MVFvyVTJycqY/+aA1+pO+to7zXnx8b90Sc/X/AuPUwyGFGSREOg
- fywTinP9eoBivzNrVOJMBg==
+ corp-2023-11-20; bh=jivM27DVJP4ghdtnYsoXrniOA5k7eFfXLtJN3lmwVyg=; b=
+ UkDLvw3VaPX4/9N5766hVYUhRp/X2eEasQtSfVj2nDV4HOmv2ncusCF7uWyOfXXq
+ wlMFiARWfuEOjFp/W0hTg7wUjZrYHKXJGh/xG+IVVxmsS8IdXMMQXtZZrpQxM49a
+ Zv3jGR4oB1T4sja2qwMoWOHDMMgO5MXTqQVZYC0HiMyqnTYyWAuzViNvoZbhpCfg
+ Ic35FPPsD++IDeFdnvdVq+CZiB6Wv/1tIH0zjjeNLs9LHnsqbRSSRgnVD+0PVlTZ
+ 71CESpKTrMN9N96pCClrKDb/WrDajbc4ZcXn4F4s160O/S+dL5pAHAa4OFSMMg7l
+ 416socZP3PIJ9E4dhcyw6Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0sqbwnp-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qaknwv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:16 +0000 (GMT)
+ Fri, 14 Feb 2025 14:15:17 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51ECZ4jA025433; Fri, 14 Feb 2025 14:15:15 GMT
+ with ESMTP id 51ED5ZWp025287; Fri, 14 Feb 2025 14:15:16 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqksh08-1
+ 44nwqksh1j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:15 +0000
+ Fri, 14 Feb 2025 14:15:16 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETQL006920;
- Fri, 14 Feb 2025 14:15:14 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETQN006920;
+ Fri, 14 Feb 2025 14:15:16 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-35; Fri, 14 Feb 2025 14:15:14 +0000
+ ESMTP id 44nwqksg2h-36; Fri, 14 Feb 2025 14:15:16 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 34/45] vfio/iommufd: export iommufd_cdev_get_info_iova_range
-Date: Fri, 14 Feb 2025 06:14:16 -0800
-Message-Id: <1739542467-226739-35-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 35/45] vfio/iommufd: define hwpt constructors
+Date: Fri, 14 Feb 2025 06:14:17 -0800
+Message-Id: <1739542467-226739-36-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
@@ -75,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-ORIG-GUID: kT9CuHhFyKTZH1ZSyTtmrRJNEp-9WHlI
-X-Proofpoint-GUID: kT9CuHhFyKTZH1ZSyTtmrRJNEp-9WHlI
+X-Proofpoint-GUID: wAB1pfZegL2um3YpEQbuh-fDj_0WoFOd
+X-Proofpoint-ORIG-GUID: wAB1pfZegL2um3YpEQbuh-fDj_0WoFOd
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,44 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Export iommufd_cdev_get_info_iova_range, for use by CPR in a subsequent
-patch to reconstruct the userland device state.  No functional change.
+Extract hwpt creation code from iommufd_cdev_autodomains_get into the
+helpers iommufd_cdev_set_hwpt and iommufd_cdev_make_hwpt.  These will
+be used by CPR in a subsequent patch.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/iommufd.c             | 4 ++--
- include/hw/vfio/vfio-common.h | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ hw/vfio/iommufd.c | 52 ++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
 
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index ea40da5..a6e24a7 100644
+index a6e24a7..7c0cdd7 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -429,8 +429,8 @@ static int iommufd_cdev_ram_block_discard_disable(bool state)
-     return ram_block_uncoordinated_discard_disable(state);
+@@ -287,6 +287,34 @@ static bool iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
+     return true;
  }
  
--static bool iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
--                                             uint32_t ioas_id, Error **errp)
-+bool iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
-+                                      uint32_t ioas_id, Error **errp)
- {
-     VFIOContainerBase *bcontainer = &container->bcontainer;
-     g_autofree struct iommu_ioas_iova_ranges *info = NULL;
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 78e4f12..9ca40d0 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -264,6 +264,9 @@ void vfio_kvm_device_close(void);
- bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
- void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
- 
-+bool iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
-+                                      uint32_t ioas_id, Error **errp);
++static void iommufd_cdev_set_hwpt(VFIODevice *vbasedev, VFIOIOASHwpt *hwpt)
++{
++    vbasedev->hwpt = hwpt;
++    vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
++    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
++}
 +
- extern const MemoryRegionOps vfio_region_ops;
- typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
- typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
++static VFIOIOASHwpt *iommufd_cdev_make_hwpt(VFIODevice *vbasedev,
++                                            VFIOIOMMUFDContainer *container,
++                                            uint32_t hwpt_id)
++{
++    VFIOIOASHwpt *hwpt = g_malloc0(sizeof(*hwpt));
++    uint32_t flags = 0;
++
++    if (vbasedev->hiod->caps.hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING) {
++        flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
++    }
++
++    hwpt->hwpt_id = hwpt_id;
++    hwpt->hwpt_flags = flags;
++    QLIST_INIT(&hwpt->device_list);
++
++    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
++    container->bcontainer.dirty_pages_supported |=
++                                vbasedev->iommu_dirty_tracking;
++    return hwpt;
++}
++
+ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+                                          VFIOIOMMUFDContainer *container,
+                                          Error **errp)
+@@ -316,13 +344,10 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+ 
+             return false;
+         } else {
+-            vbasedev->hwpt = hwpt;
+-            QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
+-            vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
++            iommufd_cdev_set_hwpt(vbasedev, hwpt);
+             return true;
+         }
+     }
+-
+     /*
+      * This is quite early and VFIO Migration state isn't yet fully
+      * initialized, thus rely only on IOMMU hardware capabilities as to
+@@ -341,24 +366,15 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+         return false;
+     }
+ 
+-    hwpt = g_malloc0(sizeof(*hwpt));
+-    hwpt->hwpt_id = hwpt_id;
+-    hwpt->hwpt_flags = flags;
+-    QLIST_INIT(&hwpt->device_list);
+-
+-    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
++    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
+     if (ret) {
+-        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
+-        g_free(hwpt);
++        iommufd_backend_free_id(container->be, hwpt_id);
+         return false;
+     }
+ 
+-    vbasedev->hwpt = hwpt;
+-    vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
+-    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
+-    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
+-    container->bcontainer.dirty_pages_supported |=
+-                                vbasedev->iommu_dirty_tracking;
++    hwpt = iommufd_cdev_make_hwpt(vbasedev, container, hwpt_id);
++    iommufd_cdev_set_hwpt(vbasedev, hwpt);
++
+     if (container->bcontainer.dirty_pages_supported &&
+         !vbasedev->iommu_dirty_tracking) {
+         warn_report("IOMMU instance for device %s doesn't support dirty tracking",
 -- 
 1.8.3.1
 
