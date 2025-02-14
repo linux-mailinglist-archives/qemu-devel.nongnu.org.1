@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FE2A366E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5974EA366E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:33:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2Lk-0004xK-IG; Fri, 14 Feb 2025 15:31:49 -0500
+	id 1tj2M2-0005lh-8Q; Fri, 14 Feb 2025 15:32:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2KU-00049S-RD
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:50 -0500
+ id 1tj2Kc-00049t-27
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2KT-00022R-84
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:30 -0500
+ id 1tj2KX-00022v-Js
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739565028;
+ s=mimecast20190719; t=1739565032;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OOU0wCWpbF8Ks7g7EwMzl8CZelbsnNtS6EUVGTCCun4=;
- b=BfI0R9sM69FQB2cES1uYnVm/t3ldUoV1d9HSpVgXJaJvjIM+yNbWBhz6gO78iz2toxoiV1
- 4kl0N5qsW+Chi0r/nR+P9jNjYaJeElz9Y7d75nPlfKZpeNcAK205ZpY7lWgSETDL2IJKri
- 2//bdRjq+4k8cex5/7X+Ylh5NqEp7do=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JSUGq8fLUZu8+pIjnKvOSl0XeErVHPfIKfXGs8FYWoc=;
+ b=BGSpwnxQRdHfQBsGyBYgYfVBPb+WHLkM0CJvWVQQj3GFMh+RRDXDqg2CWuMU2vtBAbXorB
+ A1XPTTdapR3Ygw33BkBUahPhsn43jMVkMLPIHUknzj5hHtyMFXqAacjF9cgQU1DyGioDFv
+ +dYIdDGuEE+DWwdKXjdDpbhvBoeym3c=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-X8iRNArFPJa5ArR-eIyVQg-1; Fri,
- 14 Feb 2025 15:30:26 -0500
-X-MC-Unique: X8iRNArFPJa5ArR-eIyVQg-1
-X-Mimecast-MFC-AGG-ID: X8iRNArFPJa5ArR-eIyVQg_1739565025
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-hHUX8muSNG-VTszRJqRU2g-1; Fri,
+ 14 Feb 2025 15:30:31 -0500
+X-MC-Unique: hHUX8muSNG-VTszRJqRU2g-1
+X-Mimecast-MFC-AGG-ID: hHUX8muSNG-VTszRJqRU2g_1739565030
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 62E0019039C8
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:30:25 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B951B196E078
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:30:30 +0000 (UTC)
 Received: from tapioca.redhat.com (unknown [10.44.32.23])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 49BD41800352; Fri, 14 Feb 2025 20:30:21 +0000 (UTC)
+ id 26147180056F; Fri, 14 Feb 2025 20:30:25 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v4 10/11] qapi: golang: Generate Command sync/async interfaces
-Date: Fri, 14 Feb 2025 21:29:43 +0100
-Message-ID: <20250214202944.69897-11-victortoso@redhat.com>
+Subject: [PATCH v4 11/11] docs: add notes on Golang code generator
+Date: Fri, 14 Feb 2025 21:29:44 +0100
+Message-ID: <20250214202944.69897-12-victortoso@redhat.com>
 In-Reply-To: <20250214202944.69897-1-victortoso@redhat.com>
 References: <20250214202944.69897-1-victortoso@redhat.com>
 MIME-Version: 1.0
@@ -84,124 +84,453 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Command interface is an abstraction that can be used by client and
-server to the manager the Command types albeit with a different
-implementation for sending and receiving.
-
-The proposal for Sync is defined as Command while the Async is named
-CommandAsync.
-
-The implementation of client/server is not part of this series.
+The goal of this patch is converge discussions into a documentation,
+to make it easy and explicit design decisions, known issues and what
+else might help a person interested in how the Go module is generated.
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
- scripts/qapi/golang/golang.py | 56 +++++++++++++++++++++++++++++++----
- 1 file changed, 50 insertions(+), 6 deletions(-)
+ docs/devel/index-build.rst          |   1 +
+ docs/devel/qapi-golang-code-gen.rst | 420 ++++++++++++++++++++++++++++
+ 2 files changed, 421 insertions(+)
+ create mode 100644 docs/devel/qapi-golang-code-gen.rst
 
-diff --git a/scripts/qapi/golang/golang.py b/scripts/qapi/golang/golang.py
-index a14970fb1f..0b7dadff41 100644
---- a/scripts/qapi/golang/golang.py
-+++ b/scripts/qapi/golang/golang.py
-@@ -235,6 +235,20 @@
- }}
- """
- 
-+TEMPLATE_COMMAND = """
-+// Synchronous interface of all available commands
-+type Commands interface {{
-+{methods}
-+}}
+diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
+index 0745c81a26..13cc0646c6 100644
+--- a/docs/devel/index-build.rst
++++ b/docs/devel/index-build.rst
+@@ -12,4 +12,5 @@ some of the basics if you are adding new files and targets to the build.
+    kconfig
+    docs
+    qapi-code-gen
++   qapi-golang-code-gen
+    control-flow-integrity
+diff --git a/docs/devel/qapi-golang-code-gen.rst b/docs/devel/qapi-golang-code-gen.rst
+new file mode 100644
+index 0000000000..b39c14cfd5
+--- /dev/null
++++ b/docs/devel/qapi-golang-code-gen.rst
+@@ -0,0 +1,420 @@
++==========================
++QAPI Golang code generator
++==========================
 +
-+{callbacks}
++..
++   Copyright (C) 2025 Red Hat, Inc.
 +
-+// Asynchronous interface of all available commands
-+type CommandsAsync interface {{
-+{async_methods}
-+}}
-+"""
++   This work is licensed under the terms of the GNU GPL, version 2 or
++   later.  See the COPYING file in the top-level directory.
 +
- 
- # Takes the documentation object of a specific type and returns
- # that type's documentation and its member's docs.
-@@ -1009,13 +1023,37 @@ def generate_template_alternate(
-     return "\n" + content
- 
- 
--def generate_template_command(commands: dict[str, Tuple[str, str]]) -> str:
-+def generate_template_command(
-+    commands: dict[str, Tuple[str, str, str]]
-+) -> (str, str):
-     content = ""
-+    methods = ""
-+    async_methods = ""
-+    callbacks = ""
 +
-     for name in sorted(commands):
--        type_name, gocode = commands[name]
-+        type_name, gocode, retarg = commands[name]
-         content += gocode
- 
--    return content
-+        name = type_name[:-7]
-+        cbname = f"{name}Complete"
-+        syncret = "error"
-+        cbarg = "error"
-+        if retarg != "":
-+            cbarg = f"{retarg}, error"
-+            syncret = f"({retarg}, error)"
-+        methods += f"\t{name}({type_name}) {syncret}\n"
-+        async_methods += f"\t{name}({type_name}, {cbname}) error\n"
-+        callbacks += f"type {cbname} func({cbarg})\n"
++Introduction
++============
 +
-+    iface = string_to_code(
-+        TEMPLATE_COMMAND.format(
-+            methods=methods[:-1],
-+            callbacks=callbacks[:-1],
-+            async_methods=async_methods[:-1],
-+        )
++This document provides information of how the generated Go code maps
++with the QAPI specification, clarifying design decisions when needed.
++
++
++Scope of the generated Go code
++==============================
++
++The scope is to provide data structures that can interpret and be used
++to generate valid QMP messages. These data structures are generated
++from a QAPI schema and should be able to handle QMP messages from the
++same schema.
++
++We also provide interfaces for Commands and Events which allows an
++abstraction for client and server applications with the possibility of
++custom back end implantations.
++
++The generated Go code is a Go module with data structs that uses Go
++standard library ``encoding/json``, implementing its field tags and
++Marshal interface whenever needed.
++
++
++QAPI Documentation
++==================
++
++The documentation included in QAPI schema such as type and type's
++fields information, comments, examples and more, they are converted
++and embed in the Go generated source code. Metadata information that
++might not be relevant to developers are excluded (e.g: TODOs)
++
++
++QAPI types to Go structs
++========================
++
++Enum
++----
++
++Enums are mapped as strings in Go, using a specified string type per
++Enum to help with type safety in the Go application.
++
++::
++
++    { 'enum': 'HostMemPolicy',
++      'data': [ 'default', 'preferred', 'bind', 'interleave' ] }
++
++.. code-block:: go
++
++    // Host memory policy types
++    //
++    // Since: 2.1
++    type HostMemPolicy string
++
++    const (
++        // restore default policy, remove any nondefault policy
++        HostMemPolicyDefault HostMemPolicy = "default"
++        // set the preferred host nodes for allocation
++        HostMemPolicyPreferred HostMemPolicy = "preferred"
++        // a strict policy that restricts memory allocation to the host nodes specified
++        HostMemPolicyBind HostMemPolicy = "bind"
++        // memory allocations are interleaved across the set of host nodes specified
++        HostMemPolicyInterleave HostMemPolicy = "interleave"
 +    )
-+    return content, iface
- 
- 
- def generate_template_event(events: dict[str, Tuple[str, str]]) -> (str, str):
-@@ -1085,12 +1123,13 @@ def __init__(self, _: str):
-             "union": ["encoding/json", "errors", "fmt"],
-         }
-         interfaces = {
-+            "command": [],
-             "event": ["time"],
-         }
- 
-         self.schema: QAPISchema
-         self.events: dict[str, Tuple[str, str]] = {}
--        self.commands: dict[str, Tuple[str, str]] = {}
-+        self.commands: dict[str, Tuple[str, str, str]] = {}
-         self.golang_package_name = "qapi"
-         self.duplicate = list(gofiles)
-         self.enums: dict[str, str] = {}
-@@ -1151,7 +1190,9 @@ def visit_end(self) -> None:
-         self.types["event"] += evtype
-         self.interfaces["event"] += eviface
- 
--        self.types["command"] += generate_template_command(self.commands)
-+        cmdtype, cmdiface = generate_template_command(self.commands)
-+        self.types["command"] += cmdtype
-+        self.interfaces["command"] += cmdiface
- 
-     def visit_object_type(
-         self,
-@@ -1334,7 +1375,10 @@ def visit_command(
-                 )
-             )
- 
--        self.commands[name] = (type_name, content)
-+        retarg = ""
-+        if ret_type:
-+            retarg = qapi_schema_type_to_go_type(ret_type.name)
-+        self.commands[name] = (type_name, content, retarg)
- 
-     def visit_event(
-         self,
++
++
++Struct
++------
++
++The mapping between a QAPI struct in Go struct is very straightforward.
++ - Each member of the QAPI struct has its own field in a Go struct.
++ - Optional members are pointers type with 'omitempty' field tag set
++
++One important design decision was to _not_ embed base struct, copying
++the base members to the original struct. This reduces the complexity
++for the Go application.
++
++::
++
++    { 'struct': 'BlockExportOptionsNbdBase',
++      'data': { '*name': 'str', '*description': 'str' } }
++
++    { 'struct': 'BlockExportOptionsNbd',
++      'base': 'BlockExportOptionsNbdBase',
++      'data': { '*bitmaps': ['BlockDirtyBitmapOrStr'],
++                '*allocation-depth': 'bool' } }
++
++.. code-block:: go
++
++    // An NBD block export (distinct options used in the NBD branch of
++    // block-export-add).
++    //
++    // Since: 5.2
++    type BlockExportOptionsNbd struct {
++        // Export name. If unspecified, the @device parameter is used as
++        // the export name. (Since 2.12)
++        Name *string `json:"name,omitempty"`
++        // Free-form description of the export, up to 4096 bytes. (Since
++        // 5.0)
++        Description *string `json:"description,omitempty"`
++        // Also export each of the named dirty bitmaps reachable from
++        // @device, so the NBD client can use NBD_OPT_SET_META_CONTEXT
++        // with the metadata context name "qemu:dirty-bitmap:BITMAP" to
++        // inspect each bitmap. Since 7.1 bitmap may be specified by
++        // node/name pair.
++        Bitmaps []BlockDirtyBitmapOrStr `json:"bitmaps,omitempty"`
++        // Also export the allocation depth map for @device, so the NBD
++        // client can use NBD_OPT_SET_META_CONTEXT with the metadata
++        // context name "qemu:allocation-depth" to inspect allocation
++        // details. (since 5.2)
++        AllocationDepth *bool `json:"allocation-depth,omitempty"`
++    }
++
++
++Union
++-----
++
++Unions in QAPI are bounded to a Enum type which provides all possible
++branches of the union. The most important caveat here is that the Union
++does not need to have a complex type implemented for all possible
++branches of the Enum. Receiving a enum value of a empty branch is valid.
++
++The generated Go struct will then define a field for each
++Enum value. The type for Enum values of empty branch is bool. Only one
++field can be set at time.
++
++::
++
++    { 'union': 'ImageInfoSpecificQCow2Encryption',
++      'base': 'ImageInfoSpecificQCow2EncryptionBase',
++      'discriminator': 'format',
++      'data': { 'luks': 'QCryptoBlockInfoLUKS' } }
++
++    { 'struct': 'ImageInfoSpecificQCow2EncryptionBase',
++      'data': { 'format': 'BlockdevQcow2EncryptionFormat'}}
++
++    { 'enum': 'BlockdevQcow2EncryptionFormat',
++      'data': [ 'aes', 'luks' ] }
++
++.. code-block:: go
++
++    type ImageInfoSpecificQCow2Encryption struct {
++        // Variants fields
++        Luks *QCryptoBlockInfoLUKS `json:"-"`
++        // Empty branched enum fields
++        Aes bool `json:"-"`
++    }
++
++    func (s ImageInfoSpecificQCow2Encryption) MarshalJSON() ([]byte, error) {
++        // ...
++        // Logic for branched Enum
++        if s.Luks != nil && err == nil {
++            if len(bytes) != 0 {
++                err = errors.New(`multiple variant fields set`)
++            } else if err = unwrapToMap(m, s.Luks); err == nil {
++                m["format"] = BlockdevQcow2EncryptionFormatLuks
++                bytes, err = json.Marshal(m)
++            }
++        }
++
++        // Logic for unbranched Enum
++        if s.Aes && err == nil {
++            if len(bytes) != 0 {
++                err = errors.New(`multiple variant fields set`)
++            } else {
++                m["format"] = BlockdevQcow2EncryptionFormatAes
++                bytes, err = json.Marshal(m)
++            }
++        }
++
++        // ...
++        // Handle errors
++    }
++
++
++    func (s *ImageInfoSpecificQCow2Encryption) UnmarshalJSON(data []byte) error {
++        // ...
++
++        switch tmp.Format {
++        case BlockdevQcow2EncryptionFormatLuks:
++            s.Luks = new(QCryptoBlockInfoLUKS)
++            if err := json.Unmarshal(data, s.Luks); err != nil {
++                s.Luks = nil
++                return err
++            }
++        case BlockdevQcow2EncryptionFormatAes:
++            s.Aes = true
++
++        default:
++            return fmt.Errorf("error: unmarshal: ImageInfoSpecificQCow2Encryption: received unrecognized value: '%s'",
++                tmp.Format)
++        }
++        return nil
++    }
++
++
++Alternate
++---------
++
++Like Unions, alternates can have branches. Unlike Unions, they don't
++have a discriminator field and each branch should be a different class
++of Type entirely (e.g: You can't have two branches of type int in one
++Alternate).
++
++While the marshalling is similar to Unions, the unmarshalling uses a
++try-and-error approach, trying to fit the data payload in one of the
++Alternate fields.
++
++The biggest caveat is handling Alternates that can take JSON Null as
++value. The issue lies on ``encoding/json`` library limitation where
++unmarshalling JSON Null data to a Go struct which has the 'omitempty'
++field as it will bypass the Marshal interface. The same happens when
++marshalling, if the field tag 'omitempty' is used, a nil pointer would
++never be translated to null JSON value. The problem here is that we do
++use pointer to type plus ``omitempty`` field to express a QAPI
++optional member.
++
++In order to handle JSON Null, the generator needs to do the following:
++  - Read the QAPI schema prior to generate any code and cache
++    all alternate types that can take JSON Null
++  - For all Go structs that should be considered optional and they type
++    are one of those alternates, do not set ``omitempty`` and implement
++    Marshal interface for this Go struct, to properly handle JSON Null
++  - In the Alternate, uses a boolean 'IsNull' to express a JSON Null
++    and implement the AbsentAlternate interface, to help structs know
++    if a given Alternate type should be considered Absent (not set) or
++    any other possible Value, including JSON Null.
++
++::
++
++    { 'alternate': 'BlockdevRefOrNull',
++      'data': { 'definition': 'BlockdevOptions',
++                'reference': 'str',
++                'null': 'null' } }
++
++.. code-block:: go
++
++    // Reference to a block device.
++    //
++    // Since: 2.9
++    type BlockdevRefOrNull struct {
++        // defines a new block device inline
++        Definition *BlockdevOptions
++        // references the ID of an existing block device. An empty string
++        // means that no block device should be referenced. Deprecated;
++        // use null instead.
++        Reference *string
++        // No block device should be referenced (since 2.10)
++        IsNull bool
++    }
++
++    func (s *BlockdevRefOrNull) ToAnyOrAbsent() (any, bool) {
++        if s != nil {
++            if s.IsNull {
++                return nil, false
++            } else if s.Definition != nil {
++                return *s.Definition, false
++            } else if s.Reference != nil {
++                return *s.Reference, false
++            }
++        }
++
++        return nil, true
++    }
++
++    func (s BlockdevRefOrNull) MarshalJSON() ([]byte, error) {
++        if s.IsNull {
++            return []byte("null"), nil
++        } else if s.Definition != nil {
++            return json.Marshal(s.Definition)
++        } else if s.Reference != nil {
++            return json.Marshal(s.Reference)
++        }
++        return []byte("{}"), nil
++    }
++
++    func (s *BlockdevRefOrNull) UnmarshalJSON(data []byte) error {
++        // Check for json-null first
++        if string(data) == "null" {
++            s.IsNull = true
++            return nil
++        }
++        // Check for BlockdevOptions
++        {
++            s.Definition = new(BlockdevOptions)
++            if err := StrictDecode(s.Definition, data); err == nil {
++                return nil
++            }
++            s.Definition = nil
++        }
++
++        // Check for string
++        {
++            s.Reference = new(string)
++            if err := StrictDecode(s.Reference, data); err == nil {
++                return nil
++            }
++            s.Reference = nil
++        }
++
++        return fmt.Errorf("Can't convert to BlockdevRefOrNull: %s", string(data))
++    }
++
++
++Event
++-----
++
++Each event is mapped to its own struct with.
++
++::
++
++    { 'event': 'SHUTDOWN',
++      'data': { 'guest': 'bool',
++                'reason': 'ShutdownCause' } }
++
++.. code-block:: go
++
++    // Emitted when the virtual machine has shut down, indicating that
++    // qemu is about to exit.
++    //
++    // .. note:: If the command-line option "-no-shutdown" has been
++    // specified, qemu will not exit, and a STOP event will eventually
++    // follow the SHUTDOWN event.
++    //
++    // Since: 0.12
++    //
++    // .. qmp-example::    <- { "event": "SHUTDOWN",      "data": {
++    // "guest": true, "reason": "guest-shutdown" },      "timestamp": {
++    // "seconds": 1267040730, "microseconds": 682951 } }
++    type ShutdownEvent struct {
++        // If true, the shutdown was triggered by a guest request (such as
++        // a guest-initiated ACPI shutdown request or other hardware-
++        // specific action) rather than a host request (such as sending
++        // qemu a SIGINT). (since 2.10)
++        Guest bool `json:"guest"`
++        // The @ShutdownCause which resulted in the SHUTDOWN. (since 4.0)
++        Reason ShutdownCause `json:"reason"`
++    }
++
++
++Command
++-------
++
++Each commands is mapped to its own struct. If the command has a boxed
++data struct, the option struct will be embed in the command struct.
++
++The return value is always a well defined type and it is part of first
++layer unmarshalling type, Message.
++
++::
++
++   { 'command': 'set_password',
++     'boxed': true,
++     'data': 'SetPasswordOptions' }
++     
++    { 'union': 'SetPasswordOptions',
++      'base': { 'protocol': 'DisplayProtocol',
++                'password': 'str',
++                '*connected': 'SetPasswordAction' },
++      'discriminator': 'protocol',
++      'data': { 'vnc': 'SetPasswordOptionsVnc' } }
++
++.. code-block:: go
++
++    // Set the password of a remote display server.
++    // Errors:   - If Spice is not enabled, DeviceNotFound
++    //
++    // Since: 0.14
++    //
++    // .. qmp-example::    -> { "execute": "set_password", "arguments": {
++    // "protocol": "vnc",                           "password": "secret" }
++    // }   <- { "return": {} }
++    type SetPasswordCommand struct {
++        SetPasswordOptions
++    }
++
++Now an example of a command without boxed type.
++
++::
++
++    { 'command': 'set_link',
++      'data': {'name': 'str', 'up': 'bool'} }
++
++.. code-block:: go
++
++    // Sets the link status of a virtual network adapter.
++    //
++    // Errors:   - If @name is not a valid network device, DeviceNotFound
++    //
++    // Since: 0.14
++    //
++    // .. note:: Not all network adapters support setting link status.
++    // This command will succeed even if the network adapter does not
++    // support link status notification.  .. qmp-example::    -> {
++    // "execute": "set_link",      "arguments": { "name": "e1000.0", "up":
++    // false } }   <- { "return": {} }
++    type SetLinkCommand struct {
++        // the device name of the virtual network adapter
++        Name string `json:"name"`
++        // true to set the link status to be up
++        Up bool `json:"up"`
++    }
++
++Known issues
++============
++
++- Type names might not follow proper Go convention. Andrea suggested an
++  annotation to the QAPI schema that could solve it.
++  https://lists.gnu.org/archive/html/qemu-devel/2022-05/msg00127.html
 -- 
 2.48.1
 
