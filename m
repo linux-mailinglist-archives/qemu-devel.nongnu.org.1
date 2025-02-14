@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A15A356A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 06:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07404A356A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 06:56:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiofm-0000aQ-2d; Fri, 14 Feb 2025 00:55:34 -0500
+	id 1tiofo-0000bB-MM; Fri, 14 Feb 2025 00:55:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tiofi-0000Ym-CY; Fri, 14 Feb 2025 00:55:30 -0500
+ id 1tiofl-0000aq-Ni; Fri, 14 Feb 2025 00:55:33 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tiofg-00084F-Pv; Fri, 14 Feb 2025 00:55:30 -0500
+ id 1tiofk-00084f-3G; Fri, 14 Feb 2025 00:55:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C37DAEAB0E;
+ by isrv.corpit.ru (Postfix) with ESMTP id C7B2AEAB0F;
  Fri, 14 Feb 2025 08:55:12 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C2B461B5FC4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C6BF81B5FC5;
  Fri, 14 Feb 2025 08:55:20 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id ADEFC53464; Fri, 14 Feb 2025 08:55:20 +0300 (MSK)
+ id B08B453466; Fri, 14 Feb 2025 08:55:20 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Rob Bradford <rbradford@rivosinc.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 3/4] target/riscv: Fix minor whitespace issue in
- riscv_cpu_properties
-Date: Fri, 14 Feb 2025 08:55:19 +0300
-Message-Id: <20250214055520.3159764-4-mjt@tls.msk.ru>
+Cc: Michael Roth <michael.roth@amd.com>, qemu-trivial@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-stable@nongnu.org
+Subject: [PULL 4/4] make-release: don't rely on $CWD when excluding subproject
+ directories
+Date: Fri, 14 Feb 2025 08:55:20 +0300
+Message-Id: <20250214055520.3159764-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250214055520.3159764-1-mjt@tls.msk.ru>
 References: <20250214055520.3159764-1-mjt@tls.msk.ru>
@@ -60,35 +61,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Michael Roth <michael.roth@amd.com>
 
-The mvendorid/mimpid/marchid properties have the wrong amount of
-whitespace ahead of them.
+The current logic scans qemu.git/subprojects/ from *.wrap files to
+determine whether or not to include the associated directories in the
+release tarballs. However, the script assumes that it is being run from
+the top-level of the source directory, which may not always be the case.
+In particular, when generating releases via, e.g.:
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+  make qemu-9.2.1.tar.xz
+
+the $CWD will either be an arbitrary external build directory, or
+qemu.git/build, and the exclusions will not be processed as expected.
+Fix this by using the $src parameter passed to the script as the root
+directory for the various subproject/ paths referenced by this logic.
+
+Also, the error case at the beginning of the subproject_dir() will not
+result in the error message being printed, and will instead produce an
+error message about "error" not being a valid command. Fix this by using
+basic shell commands.
+
+Fixes: be27b5149c86 ("make-release: only leave tarball of wrap-file subprojects")
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/riscv/cpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/make-release | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 3d4bd157d2..cca24b9f1f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2844,9 +2844,9 @@ static const Property riscv_cpu_properties[] = {
-     {.name = "cbop_blocksize", .info = &prop_cbop_blksize},
-     {.name = "cboz_blocksize", .info = &prop_cboz_blksize},
+diff --git a/scripts/make-release b/scripts/make-release
+index 2885e87210..1b89b3423a 100755
+--- a/scripts/make-release
++++ b/scripts/make-release
+@@ -11,8 +11,9 @@
+ # See the COPYING file in the top-level directory.
  
--     {.name = "mvendorid", .info = &prop_mvendorid},
--     {.name = "mimpid", .info = &prop_mimpid},
--     {.name = "marchid", .info = &prop_marchid},
-+    {.name = "mvendorid", .info = &prop_mvendorid},
-+    {.name = "mimpid", .info = &prop_mimpid},
-+    {.name = "marchid", .info = &prop_marchid},
+ function subproject_dir() {
+-    if test ! -f "subprojects/$1.wrap"; then
+-      error "scripts/archive-source.sh should only process wrap subprojects"
++    if test ! -f "$src/subprojects/$1.wrap"; then
++      echo "scripts/archive-source.sh should only process wrap subprojects"
++      exit 1
+     fi
  
- #ifndef CONFIG_USER_ONLY
-     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
+     # Print the directory key of the wrap file, defaulting to the
+@@ -26,7 +27,7 @@ function subproject_dir() {
+       -e    's///p' \
+       -e    'q' \
+       -e '}' \
+-      "subprojects/$1.wrap")
++      "$src/subprojects/$1.wrap")
+ 
+     echo "${dir:-$1}"
+ }
+@@ -76,7 +77,7 @@ popd
+ exclude=(--exclude=.git)
+ # include the tarballs in subprojects/packagecache but not their expansion
+ for sp in $SUBPROJECTS; do
+-    if grep -xqF "[wrap-file]" subprojects/$sp.wrap; then
++    if grep -xqF "[wrap-file]" $src/subprojects/$sp.wrap; then
+       exclude+=(--exclude=subprojects/"$(subproject_dir $sp)")
+     fi
+ done
 -- 
 2.39.5
 
