@@ -2,124 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A104A361EF
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 16:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A262A35F85
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 14:56:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tixm4-0007Aq-9z; Fri, 14 Feb 2025 10:38:40 -0500
+	id 1tiw9W-0003Jl-Vg; Fri, 14 Feb 2025 08:54:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
- id 1tixm0-0007Ai-OV
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:38:36 -0500
-Received: from mailout3.samsung.com ([203.254.224.33])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tiw9U-0003JY-1M
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 08:54:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
- id 1tixlv-0002ww-II
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:38:36 -0500
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20250214153823epoutp037c13602dc8eb5544e0f0b92ddc696c61~kHTzPG5r61677716777epoutp03G
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 15:38:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20250214153823epoutp037c13602dc8eb5544e0f0b92ddc696c61~kHTzPG5r61677716777epoutp03G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1739547503;
- bh=E1aP9RKpBHNGwpMkk0EF5JxcX1s1gfUwARLKxmP4nxo=;
- h=From:To:Cc:Subject:Date:References:From;
- b=N4V4UqE4Pw1szV10FrqX3IzT8/c51ngoA0Xgt9/dVaySuLuysgUAWNCXYbxMHgf1Z
- 0eDgtWq2gPa9EcTeunBy3LPoqMUW0zryEyYUbJkYGq1Uu9yMwfO2SjL2oSoYyQ3orr
- cPjEXLA6C5A8YMh+3Sby0tLqZmNnW2BffQTyPSKc=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
- epcas5p1.samsung.com (KnoxPortal) with ESMTP id
- 20250214153822epcas5p1a22cc8fa4fe0014a305504dbb7ee2f77~kHTy60w2F2356723567epcas5p1P;
- Fri, 14 Feb 2025 15:38:22 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.182]) by
- epsnrtp1.localdomain (Postfix) with ESMTP id 4YvbmX4l4nz4x9Pr; Fri, 14 Feb
- 2025 15:38:20 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
- epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 0C.22.29212.C636FA76; Sat, 15 Feb 2025 00:38:20 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
- 20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b~kFd2MO7nR2344923449epcas5p3Z;
- Fri, 14 Feb 2025 13:23:17 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
- epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20250214132317epsmtrp167415ff88f8fbee2afc993a76db24d3c~kFd2IGKSG0681306813epsmtrp1h;
- Fri, 14 Feb 2025 13:23:17 +0000 (GMT)
-X-AuditID: b6c32a50-7ebff7000000721c-19-67af636c8a8a
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 08.78.18949.5C34FA76; Fri, 14 Feb 2025 22:23:17 +0900 (KST)
-Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
- by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20250214132315epsmtip2b28d51ba4e78bc3c1b5357d8f8d0b8ce~kFd0kiHky0884608846epsmtip2T;
- Fri, 14 Feb 2025 13:23:15 +0000 (GMT)
-From: Sweta Kumari <s5.kumari@samsung.com>
-To: qemu-devel@nongnu.org
-Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
- dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
- a.manzanares@samsung.com, alok.rathore@samsung.com, Sweta Kumari
- <s5.kumari@samsung.com>
-Subject: [PATCH v2] CXL CCI Get/Set Alert Configuration commands implmented
- as per CXL Specification 3.2 section 8.2.10.9.3
-Date: Fri, 14 Feb 2025 18:52:11 +0530
-Message-Id: <20250214132211.528019-1-s5.kumari@samsung.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tiw9R-00010X-Mv
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 08:54:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739541280;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CdQQ3IW6vQcL1egE3OIOS4WQdVEXI858c2F8SSryLGU=;
+ b=HJqj8pO3xjCW6p8uwr2CT5ju/VoAdzwL/vmu5gpw3HbrTxHDNRTocvvEyh7YYcw46+ho6f
+ T3BOyXDJxeOrAsoltsbESw8z7VuGaCWiQj7bVKHrVAE1mVQ0mBMfhnEGE0n+9id+EVIl0I
+ qaZkhoAtP6O1XI04YS7k4nfTB+AJJ/I=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-pqv_MmbxPJ6_SvHQyp67iQ-1; Fri,
+ 14 Feb 2025 08:54:38 -0500
+X-MC-Unique: pqv_MmbxPJ6_SvHQyp67iQ-1
+X-Mimecast-MFC-AGG-ID: pqv_MmbxPJ6_SvHQyp67iQ_1739541277
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B2E11955F28
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 13:54:36 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.22])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 53A691800352
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 13:54:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C067F21E6A28; Fri, 14 Feb 2025 14:54:33 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Laine Stump <laine@redhat.com>,  Stefano
+ Brivio <sbrivio@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH] net: vhost-user: add QAPI events to report connection
+ state
+In-Reply-To: <2c5358eb-1abe-4fce-8b28-7935c71f1cff@redhat.com> (Laurent
+ Vivier's message of "Fri, 14 Feb 2025 11:18:55 +0100")
+References: <20250214072629.1033314-1-lvivier@redhat.com>
+ <871pw07sdy.fsf@pond.sub.org>
+ <2c5358eb-1abe-4fce-8b28-7935c71f1cff@redhat.com>
+Date: Fri, 14 Feb 2025 14:54:33 +0100
+Message-ID: <87a5ao3a3q.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIJsWRmVeSWpSXmKPExsWy7bCmhm5O8vp0gxs/lCymH1a0+HJ6D5vF
- 6ptrGC1uHtjJZLFw4zImi/OzTrFY/N22l9HieO8OFos15z6zAMXmsDtweeycdZfd48m1zUwe
- fVtWMXpMnV3v8XmTXABrVLZNRmpiSmqRQmpecn5KZl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJu
- qq2Si0+ArltmDtBNSgpliTmlQKGAxOJiJX07m6L80pJUhYz84hJbpdSClJwCkwK94sTc4tK8
- dL281BIrQwMDI1OgwoTsjOtrp7AUNPlVfFnTwd7AuN66i5GTQ0LARGLz/elMXYxcHEICexgl
- ujb/hnI+MUp8mrcPyvnGKLH4xBl2mJaL3Q/AbCGBvYwSC7eEQBQ1MEncvnyXBSTBJqAl8ePz
- A2YQW0RAUuJ312lmkCJmgVeMEhs3tLKBJIQFaiUa9j9hArFZBFQlvnw8B2bzClhLdJxsZ4PY
- Ji+x/+BZZoi4oMTJmU/AFjADxZu3zgYbKiFwi12iYfUBoGYOIMdF4vu7UIheYYlXx7dAXS0l
- 8bK/DcrOlri7tRNqfonEh9u7mSBse4nWU/3MIGOYBTQl1u/ShwjLSkw9tY4JYi2fRO/vJ1Dl
- vBI75sHYyhJb/i1nhbAlJVZ8XgJle0hc/7iMBRJYsRJNJxvZJjDKz0LyzSwk38xC2LyAkXkV
- o1RqQXFuemqyaYGhbl5qOTxmk/NzNzGC06ZWwA7G1Rv+6h1iZOJgPMQowcGsJMIrMW1NuhBv
- SmJlVWpRfnxRaU5q8SFGU2AYT2SWEk3OBybuvJJ4QxNLAxMzMzMTS2MzQyVx3uadLelCAumJ
- JanZqakFqUUwfUwcnFINTM3Ou3uUw3ndJyhI+nHO/Ca3Zx7rz5iS3IuH5/jtMeqP570kXD7x
- wtlJXVZ56vM1p5pMenD9e86sBz63SqecvbDvpZHaL3Wd6eWNASazytbOZOpWart9qyzhlqyK
- Utams4dfT36qKnfHbuarwk717blnTkR8FeHe88Pu3wYmVc+fNxnnNzfvKb8l6NzVqbrp19G8
- v7e7rvce1A7Y95i7I3zKmet+3rZKt4schXcImDveZ1j2tTRY8Lnoz7v/86fGSqdOCdm9+03n
- lGU39+ybmj+9NK5q0ZvcuZaLe3yMPVWuOb5kNb1wsCzznk6/aPW/B/O0Kqtbluqpulw/UFEh
- L31j0zI2NYezEaXbH66IXanEUpyRaKjFXFScCAAGuUlNJAQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLLMWRmVeSWpSXmKPExsWy7bCSvO5R5/XpBj8fcltMP6xo8eX0HjaL
- 1TfXMFrcPLCTyWLhxmVMFudnnWKx+LttL6PF8d4dLBZrzn1mAYrNYXfg8tg56y67x5Nrm5k8
- +rasYvSYOrve4/MmuQDWKC6blNSczLLUIn27BK6M62unsBQ0+VV8WdPB3sC43rqLkZNDQsBE
- 4mL3A/YuRi4OIYHdjBJtP3rYIRKSEm/PXGKEsIUlVv57DlX0j1Hi9a9eZpAEm4CWxI/PD8Bs
- EaCG312nmUGKmAW+MEpMafjKBJIQFqiWuL+8BWwqi4CqxJeP58DivALWEh0n29kgNshL7D94
- lhkiLihxcuYTFhCbGSjevHU28wRGvllIUrOQpBYwMq1ilEwtKM5Nzy02LDDKSy3XK07MLS7N
- S9dLzs/dxAgOYS2tHYx7Vn3QO8TIxMF4iFGCg1lJhFdi2pp0Id6UxMqq1KL8+KLSnNTiQ4zS
- HCxK4rzfXvemCAmkJ5akZqemFqQWwWSZODilGpjqA3e/NtHg8lS8K9MdJX/qytKXHJzfjHe1
- J/1NfML+ms1o9qfPSlE+kUH2y5M/BTowTym/vWJXuymjRI9tg19M1qoChXNrFvM+jri/UKkn
- 6fSWZzNiRPeejCi/Y58++fs9l0XGlgHbeKYn6epbpfKsOyC+UtxqT9W0u2sCY7/pP9lT2lBu
- H3Fwxwy5xbtXFHpUX8xmtXDh/mq1w1IoJ0IgNbzjuruuYdG3268b/OK9Jsmn342a+lnPrvFW
- jm+iwQ3+i7r6dufO5ir7KmatLRMqlRMr8LKSUPx0JfNctOpEWeXJeuU+XLcmn/Jau+X/zFeb
- +V69umQ3df+LuIm/sxXOfpjWPEFz8gdZtmTveUosxRmJhlrMRcWJAE/TDIXQAgAA
-X-CMS-MailID: 20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b
-References: <CGME20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b@epcas5p3.samsung.com>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=s5.kumari@samsung.com; helo=mailout3.samsung.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -135,245 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1)get alert configuration(Opcode 4201h)
-2)set alert configuration(Opcode 4202h)
+Laurent Vivier <lvivier@redhat.com> writes:
 
-This v2 patch addresses the feedback from the v1 patch and include some minor new changes.
+> On 14/02/2025 11:06, Markus Armbruster wrote:
+>> Laurent Vivier <lvivier@redhat.com> writes:
+>> 
+>>> The netdev reports NETDEV_VHOST_USER_CONNECTED event when
+>>> the chardev is connected, and NETDEV_VHOST_USER_DISCONNECTED
+>>> when it is disconnected.
+>>>
+>>> The NETDEV_VHOST_USER_CONNECTED event includes the ChardevInfo
+>>> (label, filename and frontend_open).
+>>>
+>>> This allows a system manager like libvirt to detect when the server
+>>> fails.
+>>>
+>>> For instance with passt:
+>>>
+>>> { 'execute': 'qmp_capabilities' }
+>>> { "return": { } }
+>>>
+>>> [killing passt here]
+>>>
+>>> { "timestamp": { "seconds": 1739517243, "microseconds": 115081 },
+>>>    "event": "NETDEV_VHOST_USER_DISCONNECTED",
+>>>    "data": { "netdev-id": "netdev0" } }
+>>>
+>>> [automatic reconnection with reconnect-ms]
+>>>
+>>> { "timestamp": { "seconds": 1739517290, "microseconds": 343777 },
+>>>    "event": "NETDEV_VHOST_USER_CONNECTED",
+>>>    "data": { "netdev-id": "netdev0",
+>>>              "info": { "frontend-open": true,
+>>>                        "filename": "unix:",
+>>>                        "label": "chr0" } } }
+>>>
+>>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+>> 
+>> Standard question for events: if a management application misses an
+>> event, say because it restarts and reconnects, is there a way to obtain
+>> the missed information with a query command?
+>
+> query-chardev could help but it doesn't provide the netdev id.
+>
+> in HMP, "info network" has the information, but for QMP we had a try with a query-netdev in the past but the series has been reverted.
+>
+> f9bb0c1f9862 ("Revert "qapi: net: Add query-netdev command"")
+> d32ad10a14d4 ("qapi: net: Add query-netdev command")
 
-Changes in V2:
-- Removed cover letter as it's a single patch
-- Added latest spec reference
-- Fixed alignment issues
-- Updated shorter variable names to be more descriptive
-- Replaced field-by-field initialization in 'init_alert_config' with structured initialization for improved readability.
-- Replaced bit fields with 'uint8_t' and added defines for individual bits.
-
-The patch is generated against the Johnathan's tree
-https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
-
-Signed-off-by: Sweta Kumari <s5.kumari@samsung.com>
----
- hw/cxl/cxl-mailbox-utils.c  | 116 ++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3.c          |  16 +++++
- include/hw/cxl/cxl_device.h |  15 +++++
- 3 files changed, 147 insertions(+)
-
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 9c7ea5bc35..105c63fdec 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -28,6 +28,11 @@
- #define CXL_DC_EVENT_LOG_SIZE 8
- #define CXL_NUM_EXTENTS_SUPPORTED 512
- #define CXL_NUM_TAGS_SUPPORTED 0
-+#define CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD (1 << 0)
-+#define CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD (1 << 1)
-+#define CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD (1 << 2)
-+#define CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD (1 << 3)
-+#define CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD (1 << 4)
- 
- /*
-  * How to add a new command, example. The command set FOO, with cmd BAR.
-@@ -86,6 +91,9 @@ enum {
-         #define GET_PARTITION_INFO     0x0
-         #define GET_LSA       0x2
-         #define SET_LSA       0x3
-+    HEALTH_INFO_ALERTS = 0x42,
-+        #define GET_ALERT_CONFIGURATION 0x1
-+        #define SET_ALERT_CONFIGURATION 0x2
-     SANITIZE    = 0x44,
-         #define OVERWRITE     0x0
-         #define SECURE_ERASE  0x1
-@@ -1625,6 +1633,110 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
-+/* CXL r3.2 Section 8.2.10.9.3.2 Get Alert Configuration (Opcode 4201h) */
-+static CXLRetCode cmd_get_alert_config(const struct cxl_cmd *cmd,
-+                                       uint8_t *payload_in,
-+                                       size_t len_in,
-+                                       uint8_t *payload_out,
-+                                       size_t *len_out,
-+                                       CXLCCI *cci)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    CXLAlertConfig *out = (void *)payload_out;
-+
-+    memcpy(out, &ct3d->alert_config, sizeof(ct3d->alert_config));
-+    *len_out = sizeof(ct3d->alert_config);
-+
-+    return CXL_MBOX_SUCCESS;
-+}
-+
-+/* CXL r3.2 Section 8.2.10.9.3.3 Set Alert Configuration (Opcode 4202h) */
-+static CXLRetCode cmd_set_alert_config(const struct cxl_cmd *cmd,
-+                                       uint8_t *payload_in,
-+                                       size_t len_in,
-+                                       uint8_t *payload_out,
-+                                       size_t *len_out,
-+                                       CXLCCI *cci)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    CXLAlertConfig *alert_config = &ct3d->alert_config;
-+    struct {
-+        uint8_t valid_alert_actions;
-+        uint8_t enable_alert_actions;
-+        uint8_t life_used_warning_threshold;
-+        uint8_t rsvd;
-+        uint16_t device_over_temperature_warning_threshold;
-+        uint16_t device_under_temperature_warning_threshold;
-+        uint16_t Corrected_volatile_memory_error_warning_threshold;
-+        uint16_t Corrected_persistent_memory_error_warning_threshold;
-+    } QEMU_PACKED *in = (void *)payload_in;
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD) {
-+        /*
-+         * CXL 3.2 Table 8-149 The life used warning threshold shall be
-+         * less than the life used critical alert value.
-+         */
-+        if (in->life_used_warning_threshold >=
-+            alert_config->life_used_critical_alert_threshold) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->life_used_warning_threshold =
-+            in->life_used_warning_threshold;
-+        alert_config->enable_alerts |= CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD;
-+    }
-+
-+    if (in->valid_alert_actions &
-+        CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD) {
-+        /*
-+         * CXL 3.2 Table 8-149 The Device Over-Temperature Warning Threshold
-+         * shall be less than the the Device Over-Temperature Critical
-+         * Alert Threshold.
-+         */
-+        if (in->device_over_temperature_warning_threshold >=
-+            alert_config->device_over_temperature_critical_alert_threshold) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->device_over_temperature_warning_threshold =
-+            in->device_over_temperature_warning_threshold;
-+        alert_config->enable_alerts |=
-+            CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD;
-+    }
-+
-+    if (in->valid_alert_actions &
-+        CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD) {
-+        /*
-+         * CXL 3.2 Table 8-149 The Device Under-Temperature Warning Threshold
-+         * shall be higher than the the Device Under-Temperature Critical
-+         * Alert Threshold.
-+         */
-+        if (in->device_under_temperature_warning_threshold <=
-+            alert_config->device_under_temperature_critical_alert_threshold) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->device_under_temperature_warning_threshold =
-+            in->device_under_temperature_warning_threshold;
-+        alert_config->enable_alerts |=
-+            CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD;
-+    }
-+
-+    if (in->valid_alert_actions &
-+        CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD) {
-+        alert_config->Corrected_volatile_memory_error_warning_threshold =
-+            in->Corrected_volatile_memory_error_warning_threshold;
-+        alert_config->enable_alerts |=
-+            CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD;
-+    }
-+
-+    if (in->valid_alert_actions &
-+        CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD) {
-+        alert_config->Corrected_persistent_memory_error_warning_threshold =
-+            in->Corrected_persistent_memory_error_warning_threshold;
-+        alert_config->enable_alerts |=
-+            CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD;
-+    }
-+    return CXL_MBOX_SUCCESS;
-+}
-+
- /* Perform the actual device zeroing */
- static void __do_sanitization(CXLType3Dev *ct3d)
- {
-@@ -2859,6 +2971,10 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
-     [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
-         ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
-+    [HEALTH_INFO_ALERTS][GET_ALERT_CONFIGURATION] = {"GET_ALERT_CONFIGURATION",
-+        cmd_get_alert_config, 0, 0 },
-+    [HEALTH_INFO_ALERTS][SET_ALERT_CONFIGURATION] = {"SET_ALERT_CONFIGURATION",
-+        cmd_set_alert_config, 12, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
-     [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
-         (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-          CXL_MBOX_SECURITY_STATE_CHANGE |
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 5f365afb4d..5f01684ffc 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -956,6 +956,21 @@ static DOEProtocol doe_comp_prot[] = {
-     { }
- };
- 
-+/*
-+ * Initialize CXL device alerts with default threshold values.
-+ */
-+static void init_alert_config(CXLType3Dev *ct3d)
-+{
-+    ct3d->alert_config = (CXLAlertConfig) {
-+        .life_used_critical_alert_threshold = 75,
-+        .life_used_warning_threshold = 40,
-+        .device_over_temperature_critical_alert_threshold = 35,
-+        .device_under_temperature_critical_alert_threshold = 10,
-+        .device_over_temperature_warning_threshold = 25,
-+        .device_under_temperature_warning_threshold = 20
-+    };
-+}
-+
- void ct3_realize(PCIDevice *pci_dev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -1030,6 +1045,7 @@ void ct3_realize(PCIDevice *pci_dev, Error **errp)
-         goto err_free_special_ops;
-     }
- 
-+    init_alert_config(ct3d);
-     pcie_cap_deverr_init(pci_dev);
-     /* Leave a bit of room for expansion */
-     rc = pcie_aer_init(pci_dev, PCI_ERR_VER, 0x200, PCI_ERR_SIZEOF, NULL);
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index a64739be25..1da23bf553 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -581,6 +581,19 @@ typedef struct CXLSetFeatureInfo {
-     size_t data_size;
- } CXLSetFeatureInfo;
- 
-+typedef struct CXLAlertConfig {
-+    uint8_t valid_alerts;
-+    uint8_t enable_alerts;
-+    uint8_t life_used_critical_alert_threshold;
-+    uint8_t life_used_warning_threshold;
-+    uint16_t device_over_temperature_critical_alert_threshold;
-+    uint16_t device_under_temperature_critical_alert_threshold;
-+    uint16_t device_over_temperature_warning_threshold;
-+    uint16_t device_under_temperature_warning_threshold;
-+    uint16_t Corrected_volatile_memory_error_warning_threshold;
-+    uint16_t Corrected_persistent_memory_error_warning_threshold;
-+} QEMU_PACKED CXLAlertConfig;
-+
- struct CXLType3Dev {
-     /* Private */
-     PCIDevice parent_obj;
-@@ -605,6 +618,8 @@ struct CXLType3Dev {
-     CXLCCI vdm_fm_owned_ld_mctp_cci;
-     CXLCCI ld0_cci;
- 
-+    CXLAlertConfig alert_config;
-+
-     /* PCIe link characteristics */
-     PCIExpLinkSpeed speed;
-     PCIExpLinkWidth width;
--- 
-2.34.1
+Hmm.  Can management applications use these events without a matching
+query?
 
 
