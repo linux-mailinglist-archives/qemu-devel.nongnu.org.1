@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4B2A361A9
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 16:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A280A36274
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 16:58:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tixaC-0003eA-Ab; Fri, 14 Feb 2025 10:26:24 -0500
+	id 1tiy5D-0005Gl-Rw; Fri, 14 Feb 2025 10:58:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tixa9-0003dz-Qf
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:26:21 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tixa8-0000gx-0h
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:26:21 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1739546772; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=SXWPm/Wkz2mWgRLiJk/vbg5jJRBuGpL+8qMbdhzPvywSenPtT/uBJIr20TMrDnpaWOKb8jZjIWlqiMNtStqG5C0fTt0tQeJPc/qbQVkgHPGdAKnVGTfvIrheOOX0eEiHmm0c7nJ6/vGSxq05f2YTRJ4+wNzhl9mKUI8qo3HK09Q=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1739546772;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=AtUm2Q6q6TdJOR+h+LFGHNYqGkxytbKOgqxen7dZHRM=; 
- b=irwFtz5/DHdNcEIBMZUbqWWVDMlVMFd+vzp46lekM1BsD7FliW2dgyUtdqt0aJuUEKiG+g0lJ6gyfJm/8VkH0avN34WCTz7FtZ6c1BGut5iP1jQYbUQFeQI+3P6Srbgcn/sC51IZty3VyFP94EiB/Owkl0zcWY8aHl5PIqssZ9M=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739546772; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=AtUm2Q6q6TdJOR+h+LFGHNYqGkxytbKOgqxen7dZHRM=;
- b=AKNwV7tpNYiN8BHB7geGvDPlrpsp5kI7uOQeYcDqB+MhlhKE/AZGE+V1/RFyJvuI
- DSZbXYrLtCtNhDDbwRR2lHeVwPPUPoos0jhaQt2mMaOcYb/ZMyg9s5OjP6t55Lfi+MW
- YKtxh25UvUEdx/2gf6eEmEfPSwm9IDHR0HJCeT1w=
-Received: by mx.zohomail.com with SMTPS id 1739546769779125.19517826859078;
- Fri, 14 Feb 2025 07:26:09 -0800 (PST)
-Message-ID: <657183a6-5c0e-4bfd-9b83-1fa98946c330@collabora.com>
-Date: Fri, 14 Feb 2025 18:26:06 +0300
+ (Exim 4.90_1) (envelope-from <thenesk@gmail.com>) id 1tixfp-00055y-KG
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:32:13 -0500
+Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <thenesk@gmail.com>) id 1tixfo-0001yU-4M
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 10:32:13 -0500
+Received: by mail-yb1-xb36.google.com with SMTP id
+ 3f1490d57ef6-e53ef7462b6so1750921276.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 07:32:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739547130; x=1740151930; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=k+b9fkI4aWeF+Pn0Mb6Tuc/RCZqY3ta9PW40+82HCgk=;
+ b=Xw1dZz07+YbJ8Q0MTGKeWV/hhLvTSJUZJ5//e07LtrIXJRB0OpK07N5g9o9UsBNBkM
+ lOvggWyCasJoSiSMbDXTByR4G+Y1Eu+MjzAYgI5kiI4vtohGzrpl1FGsJtJLYq3170Qh
+ NSYCFkjgGNWm0I7C88F349mTZxFVHmxMa8SVKBeSbxWh7bDpHI2wT3WhJGYjbzoUF7MI
+ Zg8/WyHwFfdRdakTd/yBtE0Nf6qWMKHowt0InecY5WWfDcsGC1M1pM5ebkfQk1DRd0d8
+ Mcinz9PR+GjTC1f9EQTNpvqTbLVQUz02PJYp29KYtBDeMfvdNj3y8lryfkm+7Vr+ifNN
+ mczQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739547130; x=1740151930;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=k+b9fkI4aWeF+Pn0Mb6Tuc/RCZqY3ta9PW40+82HCgk=;
+ b=AGd4tbJbMV4duUwJbLAW5T+h0KeN9TbqqT121n/EBd7l87bEprl4fqelaoRUsM6shb
+ mNPai2le8cayKM/t3EugcHqUAmDMPzaraMMFcYGhVIdcMqXBOyPc3ppMv9xLL/EeZUOf
+ ZanhrrjPU5miSIb43d52DBo85rG1uVT/pemk/QM8d94Emyq9lWytMLjC+LVauozMCT9i
+ DUJr1QscNvznxWrg7lDjLxNk87yqX0HVXqoucdHAfflgCRMChEqxGgxq4x4vX1TbtkNY
+ lNF4++obPe7Du32SFQ9NiwKF2uxcHgQDq1SBQnPWV4mGmGu8zmkv8pvPgjMumz6Lu6YD
+ 3G1A==
+X-Gm-Message-State: AOJu0YzHSCfW3pRDh8ivID79RHui7nWyrlxjWjEnUpmDdHfexzxdU8DQ
+ Ftqh9zxYxrV1ZozEaZDLzLcNCGSRKY9Ih0tJD/eqhM3VlRfzrqOntw1kesJjwi5ZvwBfUUTiAZg
+ RqsJ1uaqzze/CqD1keRQ4pWqn/ciCaA==
+X-Gm-Gg: ASbGnctaR3/YBfo+uPsy1zrCxEc6dlNjWDutrUOQQEHS5ZznRkmHPon01Lpos/EFrwB
+ ryRjOV+200mxfeL+T2iiu9Qbtk47XjJNPn4L0YCkXXPlR1gBzQbMO+GhWniZshw9SGdhDw05R
+X-Google-Smtp-Source: AGHT+IGGnU7umG0BoJtiZIXh0zDlT8jUY8CPLi9hqDnsXRmd3tVEZWinasepTTwZ1QDTPDSr581Vn+ZB2zehj2RtRcU=
+X-Received: by 2002:a05:6902:2383:b0:e5b:248a:bf3a with SMTP id
+ 3f1490d57ef6-e5da81e6c47mr6710597276.30.1739547130223; Fri, 14 Feb 2025
+ 07:32:10 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/gtk-gl-area: Remove extra draw call in refresh
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dongwon Kim <dongwon.kim@intel.com>
-Cc: qemu-devel@nongnu.org
-References: <20250206225304.1739418-1-dongwon.kim@intel.com>
- <878qq8pqmk.fsf@draig.linaro.org>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <878qq8pqmk.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+From: Mark Nesky <thenesk@gmail.com>
+Date: Fri, 14 Feb 2025 10:31:59 -0500
+X-Gm-Features: AWEUYZlT5ImWwPFsfEDENvaLihpqV31h0FQzCf3TaweToz-TehJz6U6f5_XaM6s
+Message-ID: <CADQ=JkR046QnzWVV2=VshuS14r86riXUzLb3eh+Qer69N1rp0Q@mail.gmail.com>
+Subject: Question: how to add CLI options for custom hw model
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000c4711c062e1be01a"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
+ envelope-from=thenesk@gmail.com; helo=mail-yb1-xb36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 14 Feb 2025 10:58:19 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,52 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/14/25 17:06, Alex Bennée wrote:
-> dongwon.kim@intel.com writes:
-> 
->> From: Dongwon Kim <dongwon.kim@intel.com>
->>
->> This partially reverts commit 77bf310084dad38b3a2badf01766c659056f1cf2
->> which causes some guest display corruption when gtk-gl-area
->> is used for GTK rendering (e.g. Wayland Compositor) possibly due to
->> simulataneous accesses on the guest frame buffer by host compositor
->> and the guest.
->>
->> Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Reported-by: Alex Bennée <alex.bennee@linaro.org>
->> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
->> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
->> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-> 
-> This certainly fixes the corruption I was seeing while testing Dimitry's
-> native context patches and doesn't seem to affect the venus test modes.
-> 
-> So:
-> 
-> Tested-by: Alex Bennée <alex.bennee@linaro.org>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> 
->> ---
->>  ui/gtk-gl-area.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
->> index 2c9a0db425..9f7dc697f2 100644
->> --- a/ui/gtk-gl-area.c
->> +++ b/ui/gtk-gl-area.c
->> @@ -129,7 +129,6 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
->>  
->>      if (vc->gfx.guest_fb.dmabuf &&
->>          qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
->> -        gd_gl_area_draw(vc);
->>          return;
->>      }
-> 
+--000000000000c4711c062e1be01a
+Content-Type: text/plain; charset="UTF-8"
 
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Hello,
 
--- 
-Best regards,
-Dmitry
+I am new to the QEMU code base and I am working on a project involving a
+custom hardware model representing a customized ppc board.  What is the
+best way to add command line arguments applicable to my model?
+
+I see options in qemu-options.hx + vl.c, but I am not sure if that is the
+right place for arguments that only apply to one model, and I am not sure
+how to access those options from my model.
+
+I also see the function qemu_opts_create which looks like it can add
+command line arguments at runtime, but I am not sure where to use this in
+my model since it seems like my model code (machine state, class, and
+instance functions) does not run when invoking "qemu-system-ppc -machine
+mymodel -help".
+
+If there is some good documentation or examples, please point me in the
+right direction.
+
+thanks for your help,
+Mark
+
+--000000000000c4711c062e1be01a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello,</div><div><br></div><div>I am new to the QEMU =
+code base and I am working on a project involving a custom hardware model r=
+epresenting a customized ppc board.=C2=A0 What is the best way to add comma=
+nd line arguments applicable to my model?=C2=A0=C2=A0</div><div><br></div><=
+div>I see options in qemu-options.hx + vl.c, but I am not sure if that is t=
+he right place for arguments that only apply to one model, and I am not sur=
+e how to access those options from my model.=C2=A0=C2=A0</div><div><br></di=
+v><div>I also see the function qemu_opts_create which looks like it can add=
+ command line arguments at runtime, but I am not sure where to use this in =
+my model since it seems like my model code (machine state, class, and insta=
+nce functions) does not run when invoking &quot;qemu-system-ppc -machine my=
+model -help&quot;.</div><div><br></div><div>If there is some good documenta=
+tion or examples, please point me in the right direction.</div><div><br></d=
+iv><div>thanks for your help,</div><div>Mark</div></div>
+
+--000000000000c4711c062e1be01a--
 
