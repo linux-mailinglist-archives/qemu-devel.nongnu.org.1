@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5306BA366E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA0A366E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:31:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2K0-0003yH-4J; Fri, 14 Feb 2025 15:30:00 -0500
+	id 1tj2K2-0003ye-Cu; Fri, 14 Feb 2025 15:30:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2Jy-0003xk-HI
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:29:58 -0500
+ id 1tj2K0-0003yO-ML
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2Jv-0001kt-My
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:29:58 -0500
+ id 1tj2Jy-0001lB-RU
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739564993;
+ s=mimecast20190719; t=1739564998;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=LzSHb2x/9f2qW53Eiict+VmmIHHo5p8WxF8q8pZJvks=;
- b=FYP7CIKzp90AL10DtkMmZGO8g/wkJ0lX0fFd5l4P+5fLwn/C4w+0aEX2zF1XW2xdwElDHU
- ux2cPKOA/gBqjkPUsEDK9/4VpGXX4JRDZMaVAl0alPekLQBdaeUoRBiZQBwEWfrJtDUZ4N
- TRDO+l84V9j3NCoXu5KfdfDzdiF+ZZE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=z9tecBY1ateQFfirQNGI5dKfCjw9CG3z9DtUVhLANyg=;
+ b=e7Cj5yJVrQk3XhFFYnswPP/rnWISGC4ONTGoU3YXWD/bJc4QnEaLfUnQcpT97WgVjHNMJs
+ nFIsAhpYADnRkfLfne3S5EXxGkmJRXgIv0q3ueb1DX1O3TLGuxJWy/QZ2QINynooNXW6BI
+ I7RlxvQPdLoH41HBXKUGruBCBzRWtDw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-fkXnZ_VhM9qg69lfidfhzg-1; Fri,
- 14 Feb 2025 15:29:52 -0500
-X-MC-Unique: fkXnZ_VhM9qg69lfidfhzg-1
-X-Mimecast-MFC-AGG-ID: fkXnZ_VhM9qg69lfidfhzg_1739564991
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-o1ciReYhPh2am_39yQfxUw-1; Fri,
+ 14 Feb 2025 15:29:56 -0500
+X-MC-Unique: o1ciReYhPh2am_39yQfxUw-1
+X-Mimecast-MFC-AGG-ID: o1ciReYhPh2am_39yQfxUw_1739564995
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 53EA11800360
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:29:51 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB960180036F
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:29:55 +0000 (UTC)
 Received: from tapioca.redhat.com (unknown [10.44.32.23])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A487C1800358; Fri, 14 Feb 2025 20:29:47 +0000 (UTC)
+ id D6E3C180056F; Fri, 14 Feb 2025 20:29:51 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v4 00/11] 
-Date: Fri, 14 Feb 2025 21:29:33 +0100
-Message-ID: <20250214202944.69897-1-victortoso@redhat.com>
+Subject: [PATCH v4 01/11] qapi: golang: first level unmarshalling type
+Date: Fri, 14 Feb 2025 21:29:34 +0100
+Message-ID: <20250214202944.69897-2-victortoso@redhat.com>
+In-Reply-To: <20250214202944.69897-1-victortoso@redhat.com>
+References: <20250214202944.69897-1-victortoso@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
@@ -81,134 +84,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi again,
+This first patch introduces protocol.go. It introduces the Message Go
+struct type that can unmarshall any QMP message.
 
-This patch series intent is to introduce a generator that produces a Go
-module for Go applications to interact over QMP with QEMU.
+It does not handle deeper than 1st layer of the JSON object, that is,
+with:
 
-Previous version (10 Jan 2025)
-    https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg01530.html
+ 1. {
+      "execute": "query-machines",
+      "arguments": { "compat-props": true }
+    }
 
-The generated code was mostly tested using existing examples in the QAPI
-documentation, 192 instances that might have multiple QMP messages each.
+ 2. {
+      "event": "BALLOON_CHANGE",
+      "data": { "actual": 944766976 },
+      "timestamp": {
+        "seconds": 1267020223,
+        "microseconds": 435656
+      }
+    }
 
-You can find the the tests and the generated code in my personal repo,
-main branch:
+We will be able to know it is a query-machine command or a
+balloon-change event. Specific data type to handle arguments/data will
+be introduced further in the series.
 
-    https://gitlab.com/victortoso/qapi-go
+This patch also introduces the Visitor skeleton with a proper write()
+function to copy-over the protocol.go to the target destination.
 
-If you want to see the generated code from QEMU's master but per patch:
+Note, you can execute any patch of this series with:
 
-    https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v4-by-patch
+    python3 ./scripts/qapi-gen.py -o /tmp/out qapi/qapi-schema.json
 
-If you rather see the diff between v9.1.0, v9.2.0 and latest:
-
-    https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v4-by-tags
-
-
-#################
-# Changes in v4 #
-#################
-
-1. Daniel wrote a demo on top of v3 and proposed changes that would
-   result in more interesting module to build on top:
-   https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg03052.html
-   
-   I've implemented all the suggestions that are relevant for this
-   introductory series, they are:
-
-  a. New struct type Message, that shall be used for a 1st level
-     unmarshalling of the JSON message.
-  b. Removal of Marshal/Unmarshal code in both Events and Comands,
-     together with utility code that is not relevant anymore.
-  c. Declaration of 3 new interfaces:
-    i.   Events
-    ii.  Commands
-    iii. CommandsAsync
-
-2. I've moved the code to a new folder: scripts/qapi/golang. This
-   allowed me to move templates out of golang.py, keeping go related
-   code self-contained in the new directory.
-
-3. As mentioned in (2), created protocol.go and utils.go that are 100%
-   hand generated Go code. Message mentioned in (1a) is under
-   protocol.go
-
-4. Defined license using SPDX-License-Identifier.
-  a. Every Go source code written by hand is 100% MIT-0
-  b. Every Go source code generated is dual licensed as MIT-0 and
-     GPL-2.0-or-later
-  c. The binary code is expected to be MIT-0 only but not really
-     relevant for this series.
-
-  If you want more information, please check the thread:
-  https://lists.gnu.org/archive/html/qemu-devel/2024-11/msg01621.html
-
-5. I've renamed the generated files.
-  a. Any type related file is now prefixed with "gen_type_"
-  b. Any interface related file is prefixed as "gen_iface_"
-
-6. Relevant changes were made to the doc but it is not complete. I plan
-   that follow-up proposals would add to the documentation.
-
-7. Improvements to the generator were made to.
-
-8. Also worth to mention that resulting generated code does not have any
-   diff with gofmt and goimport tools, as requested in the past.
-
-################
-# Expectations #
-################
-
-As is, this still is a PoC that works. I'd like to have the generated
-code included in QEMU's gitlab [0] in order to write library and tools
-on top. Initial version should be considered alpha. Moving to
-beta/stable would require functional libraries and tools, but this work
-needs to be merged before one commit to that.
-
-[0] https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg07024.html
-
-
-##################
-# Follow-up work #
-##################
-
-When this is merged we would need to:
- 1. Create gitlab's repo
- 2. Add unit test and CI to new repos
- 3. Have first alpha relase/tag
- 4. Start working on top :)
-
-
-Thanks for the time looking at this. I appreciate it.
-
-Victor Toso (11):
-  qapi: golang: first level unmarshalling type
-  qapi: golang: Generate enum type
-  qapi: golang: Generate alternate types
-  qapi: golang: Generate struct types
-  qapi: golang: structs: Address nullable members
-  qapi: golang: Generate union type
-  qapi: golang: Generate event type
-  qapi: golang: Generate Event interface
-  qapi: golang: Generate command type
-  qapi: golang: Generate Command sync/async interfaces
-  docs: add notes on Golang code generator
-
- docs/devel/index-build.rst          |    1 +
- docs/devel/qapi-golang-code-gen.rst |  420 ++++++++
- scripts/qapi/golang/__init__.py     |    0
- scripts/qapi/golang/golang.py       | 1444 +++++++++++++++++++++++++++
- scripts/qapi/golang/protocol.go     |   48 +
- scripts/qapi/golang/utils.go        |   38 +
- scripts/qapi/main.py                |    2 +
- 7 files changed, 1953 insertions(+)
- create mode 100644 docs/devel/qapi-golang-code-gen.rst
+Signed-off-by: Victor Toso <victortoso@redhat.com>
+---
+ scripts/qapi/golang/__init__.py |   0
+ scripts/qapi/golang/golang.py   | 135 ++++++++++++++++++++++++++++++++
+ scripts/qapi/golang/protocol.go |  48 ++++++++++++
+ scripts/qapi/main.py            |   2 +
+ 4 files changed, 185 insertions(+)
  create mode 100644 scripts/qapi/golang/__init__.py
  create mode 100644 scripts/qapi/golang/golang.py
  create mode 100644 scripts/qapi/golang/protocol.go
- create mode 100644 scripts/qapi/golang/utils.go
 
+diff --git a/scripts/qapi/golang/__init__.py b/scripts/qapi/golang/__init__.py
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/scripts/qapi/golang/golang.py b/scripts/qapi/golang/golang.py
+new file mode 100644
+index 0000000000..333741b47b
+--- /dev/null
++++ b/scripts/qapi/golang/golang.py
+@@ -0,0 +1,135 @@
++"""
++Golang QAPI generator
++"""
++
++# Copyright (c) 2025 Red Hat Inc.
++#
++# Authors:
++#  Victor Toso <victortoso@redhat.com>
++#
++# This work is licensed under the terms of the GNU GPL, version 2.
++# See the COPYING file in the top-level directory.
++
++# Just for type hint on self
++from __future__ import annotations
++
++import os, shutil
++from typing import List, Optional
++
++from ..schema import (
++    QAPISchema,
++    QAPISchemaBranches,
++    QAPISchemaEnumMember,
++    QAPISchemaFeature,
++    QAPISchemaIfCond,
++    QAPISchemaObjectType,
++    QAPISchemaObjectTypeMember,
++    QAPISchemaType,
++    QAPISchemaVariants,
++    QAPISchemaVisitor,
++)
++from ..source import QAPISourceInfo
++
++
++def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
++    vis = QAPISchemaGenGolangVisitor(prefix)
++    schema.visit(vis)
++    vis.write(output_dir)
++
++
++class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
++    # pylint: disable=too-many-arguments
++    def __init__(self, _: str):
++        super().__init__()
++        gofiles = ("protocol.go",)
++        self.schema: QAPISchema
++        self.golang_package_name = "qapi"
++        self.duplicate = list(gofiles)
++
++    def visit_begin(self, schema: QAPISchema) -> None:
++        self.schema = schema
++
++    def visit_end(self) -> None:
++        del self.schema
++
++    def visit_object_type(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        features: List[QAPISchemaFeature],
++        base: Optional[QAPISchemaObjectType],
++        members: List[QAPISchemaObjectTypeMember],
++        branches: Optional[QAPISchemaBranches],
++    ) -> None:
++        pass
++
++    def visit_alternate_type(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        features: List[QAPISchemaFeature],
++        variants: QAPISchemaVariants,
++    ) -> None:
++        pass
++
++    def visit_enum_type(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        features: List[QAPISchemaFeature],
++        members: List[QAPISchemaEnumMember],
++        prefix: Optional[str],
++    ) -> None:
++        pass
++
++    def visit_array_type(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        element_type: QAPISchemaType,
++    ) -> None:
++        pass
++
++    def visit_command(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        features: List[QAPISchemaFeature],
++        arg_type: Optional[QAPISchemaObjectType],
++        ret_type: Optional[QAPISchemaType],
++        gen: bool,
++        success_response: bool,
++        boxed: bool,
++        allow_oob: bool,
++        allow_preconfig: bool,
++        coroutine: bool,
++    ) -> None:
++        pass
++
++    def visit_event(
++        self,
++        name: str,
++        info: Optional[QAPISourceInfo],
++        ifcond: QAPISchemaIfCond,
++        features: List[QAPISchemaFeature],
++        arg_type: Optional[QAPISchemaObjectType],
++        boxed: bool,
++    ) -> None:
++        pass
++
++    def write(self, outdir: str) -> None:
++        godir = "go"
++        targetpath = os.path.join(outdir, godir)
++        os.makedirs(targetpath, exist_ok=True)
++
++        # Content to be copied over
++        srcdir = os.path.dirname(os.path.realpath(__file__))
++        for filename in self.duplicate:
++            srcpath = os.path.join(srcdir, filename)
++            dstpath = os.path.join(targetpath, filename)
++            shutil.copyfile(srcpath, dstpath)
+diff --git a/scripts/qapi/golang/protocol.go b/scripts/qapi/golang/protocol.go
+new file mode 100644
+index 0000000000..4ff8d2f3fb
+--- /dev/null
++++ b/scripts/qapi/golang/protocol.go
+@@ -0,0 +1,48 @@
++/*
++ * Copyright 2025 Red Hat, Inc.
++ * SPDX-License-Identifier: MIT-0
++ *
++ * Authors:
++ *  Victor Toso <victortoso@redhat.com>
++ *  Daniel P. Berrange <berrange@redhat.com>
++ */
++package qapi
++
++import (
++	"encoding/json"
++	"time"
++)
++
++/* Union of data for command, response, error, or event,
++ * since when receiving we don't know upfront which we
++ * must deserialize */
++type Message struct {
++	QMP       *json.RawMessage `json:"QMP,omitempty"`
++	Execute   string           `json:"execute,omitempty"`
++	ExecOOB   string           `json:"exec-oob,omitempty"`
++	Event     string           `json:"event,omitempty"`
++	Error     *json.RawMessage `json:"error,omitempty"`
++	Return    *json.RawMessage `json:"return,omitempty"`
++	ID        string           `json:"id,omitempty"`
++	Timestamp *Timestamp       `json:"timestamp,omitempty"`
++	Data      *json.RawMessage `json:"data,omitempty"`
++	Arguments *json.RawMessage `json:"arguments,omitempty"`
++}
++
++type QAPIError struct {
++	Class       string `json:"class"`
++	Description string `json:"desc"`
++}
++
++func (err *QAPIError) Error() string {
++	return err.Description
++}
++
++type Timestamp struct {
++	Seconds      int `json:"seconds"`
++	MicroSeconds int `json:"microseconds"`
++}
++
++func (t *Timestamp) AsTime() time.Time {
++	return time.Unix(int64(t.Seconds), int64(t.MicroSeconds)*1000)
++}
+diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+index 324081b9fc..af315c1ad1 100644
+--- a/scripts/qapi/main.py
++++ b/scripts/qapi/main.py
+@@ -16,6 +16,7 @@
+ from .error import QAPIError
+ from .events import gen_events
+ from .features import gen_features
++from .golang import golang
+ from .introspect import gen_introspect
+ from .schema import QAPISchema
+ from .types import gen_types
+@@ -55,6 +56,7 @@ def generate(schema_file: str,
+     gen_commands(schema, output_dir, prefix, gen_tracing)
+     gen_events(schema, output_dir, prefix)
+     gen_introspect(schema, output_dir, prefix, unmask)
++    golang.gen_golang(schema, output_dir, prefix)
+ 
+ 
+ def main() -> int:
 -- 
 2.48.1
 
