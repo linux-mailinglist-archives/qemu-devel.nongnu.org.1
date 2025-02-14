@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366C3A3602F
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9000A3603C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:22:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwUs-0000Uh-Qp; Fri, 14 Feb 2025 09:16:51 -0500
+	id 1tiwVc-0002Yx-Gw; Fri, 14 Feb 2025 09:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTu-0006hP-Lk
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:51 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tiwVS-0002Tz-MD
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:17:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTs-0004l0-PD
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:50 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtbTH028581;
- Fri, 14 Feb 2025 14:15:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=M6n/2Nrdcr6vRHr8XUEc17Yekxu0kEsI+9Zq6TKtWq0=; b=
- JG7CUaXki6ZzNCFwIu9kluH3hvQ1Dc4Ok6lBzkVt5B7Gt34PYOVs3Ml9SHmGjg6U
- 4re9OxMQ5iFcuN3H+JZBjb/I+THaPsUOgWKhyoO6tOF2X7MUINL4lQBX8NdYyc9f
- kFnsM/wh8v27zhvKszhSccrjw0OhnmbHFqzxZx1PIRPbt63VRs96klBIVkrzRGlI
- 6Whn0teJ80zF8zc7hCGzVAe8TE9n00x4RNQLxKTlEihkqQemEYiffNwef7ec+kcu
- jsY8lTvD660Pj06XOv/nM8gWLNh2vWOMg4r//T3LvsQSmOqqUErq1tv1tKd6EZT9
- 8LBmdIRZeCo680SeftawJQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0tnbnq2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:31 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51ED0mAi025265; Fri, 14 Feb 2025 14:15:30 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqkshd1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:30 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETQh006920;
- Fri, 14 Feb 2025 14:15:30 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-46; Fri, 14 Feb 2025 14:15:29 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 45/45] vfio/container: delete old cpr register
-Date: Fri, 14 Feb 2025 06:14:27 -0800
-Message-Id: <1739542467-226739-46-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
-References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_06,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-GUID: CJmXIRXS5C3Ek-7Fo7vn5CkIMpFItB2r
-X-Proofpoint-ORIG-GUID: CJmXIRXS5C3Ek-7Fo7vn5CkIMpFItB2r
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tiwVM-0004xP-U0
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:17:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739542639;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rv2W2LfFlKyt7tQHeo3XVObgcyNEjRJHMjOl/SRINPc=;
+ b=G/Gj5A5ZYgQnQUT60K+ZK0OoNBEx0Ql8l5vzB9wNuo8wZ9OZkTFLwq8cQ24aWp7TK10ZU2
+ zZ2OzPS338BQRmAEa1EEPoYtR+R719q2Nw8AFtjybDU5AVMfpNODcu7kH4Y+N/JZ1+eqFi
+ wlCeXx+nnRcFwlMgmQ8g5y+VC/tg044=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-tDlkmhYPNuy5zGDZG9Zk6w-1; Fri, 14 Feb 2025 09:17:16 -0500
+X-MC-Unique: tDlkmhYPNuy5zGDZG9Zk6w-1
+X-Mimecast-MFC-AGG-ID: tDlkmhYPNuy5zGDZG9Zk6w_1739542635
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4394c489babso12081385e9.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 06:17:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739542635; x=1740147435;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rv2W2LfFlKyt7tQHeo3XVObgcyNEjRJHMjOl/SRINPc=;
+ b=Mxgh0YGpxg+RjLPT2MrRYPV6DxwgO3ED6IUgTSMxx+IljGIsWgDB3xyAIcp6vLcsF/
+ IYV51x0WUy5rvrCyih9bIyc9xSDNPcq7tjAXimlG8KGudoPMbwA1p/g3nLGX0qmXt7uC
+ LNQMtSxoxfV2DV8oktuoGK4nChJL/1hU55/8x2zir6KkvafUjV7FSgrjtY2P2y6nJzzK
+ 8iZVi9n9InD9JLnj/oPvp2gF6+fl6wYcPixYauEP9pXI/64lOzXbbY/bnciLpDXbFJMo
+ ZkWYeJJXcpmHx6aBbPNqlzhEIL/MUDQWbj+B+pdkLRd1bEQFs37feoT6fyOk/SSLkJwb
+ 4cBA==
+X-Gm-Message-State: AOJu0YyQ+IbBn/BAxvo3FTbFwb18wB1t42K98dKrVGgSVfGLiS8eatul
+ X3ORtO2arhedJJaWW6oNglaoFZSQ3KwKClxpePc1EZZgnfJeABakQbA/CuBkJQbQnGe8t612k5s
+ /08orwBUfti3hmNjbPs2vtezjMUBCyEVd4DrbKaxAyYqt0O9Hhv4edUGrC5hHZtyAfsrH7s1XUp
+ dQcNqtW8+/EWtgdhotFc4jG+LouBE=
+X-Gm-Gg: ASbGncsGsLMLaILeMJrAU46N5wUiQSE+kdLR3tivz8QPbV+4qj6zR4QF0Fdf1u7hBVm
+ 9gbDGojQK8ZsEFwl2wciNw3FK+K9ud4i4vmGZuPxrunz+szGNc4mharMTdg5fjMg=
+X-Received: by 2002:a05:600c:46cc:b0:439:54d3:d076 with SMTP id
+ 5b1f17b1804b1-439601694e7mr80498735e9.1.1739542635131; 
+ Fri, 14 Feb 2025 06:17:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE6G7zw7tqBlE3GAP76Pmg5POhLGPjr3k1mhKuDviOi58LL/EmcL4AZj4MgsjCrExr6r5q63PZQnIUgLobc9HI=
+X-Received: by 2002:a05:600c:46cc:b0:439:54d3:d076 with SMTP id
+ 5b1f17b1804b1-439601694e7mr80498445e9.1.1739542634787; Fri, 14 Feb 2025
+ 06:17:14 -0800 (PST)
+MIME-Version: 1.0
+References: <20250214135822.4076174-1-pbonzini@redhat.com>
+ <Z69MxsDrLUwOxtuD@redhat.com>
+In-Reply-To: <Z69MxsDrLUwOxtuD@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 14 Feb 2025 15:17:02 +0100
+X-Gm-Features: AWEUYZliU0-NP3A6tIAeQEr6O2NwqpEc5yXG57IoySb-qyq2namsTE0GyYyUP_g
+Message-ID: <CABgObfZg=su=k4T5Xf=cOig7MF7beQ7bof84gUWqpD5-Cv_T9g@mail.gmail.com>
+Subject: Re: [PATCH] rust: tests: do not import bindings::*
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,62 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_cpr_[un]register_container is no longer used since they were
-subsumed by container type-specific registration.  Delete them.
+First of all, thanks for taking a look!!
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- hw/vfio/cpr.c                 | 14 --------------
- include/hw/vfio/vfio-common.h |  3 ---
- 2 files changed, 17 deletions(-)
+> >      prelude::*,
+>
+> Should this be expanded too if we want to discourage wildcard imports ?
 
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index e3ea2bf..5387b31 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -6,7 +6,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/vfio/vfio-common.h"
- #include "hw/vfio/vfio-cpr.h"
- #include "hw/vfio/pci.h"
- #include "hw/pci/msix.h"
-@@ -30,19 +29,6 @@ int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-     return 0;
- }
- 
--bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
--{
--    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
--                                vfio_cpr_reboot_notifier,
--                                MIG_MODE_CPR_REBOOT);
--    return true;
--}
--
--void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
--{
--    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
--}
--
- #define STRDUP_VECTOR_FD_NAME(vdev, name)   \
-     g_strdup_printf("%s_%s", (vdev)->vbasedev.name, (name))
- 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 00831b7..d8c6510 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -262,9 +262,6 @@ int vfio_kvm_device_add_fd(int fd, Error **errp);
- int vfio_kvm_device_del_fd(int fd, Error **errp);
- void vfio_kvm_device_close(void);
- 
--bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
--void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
--
- void iommufd_cdev_rebuild_hwpt(VFIODevice *vbasedev,
-                                VFIOIOMMUFDContainer *container);
- bool iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
--- 
-1.8.3.1
+The prelude is a bit special; it provides a subset of items that most
+users will want to include into the namespace. You're right that it
+goes against the rule of discouraging wildcard imports, and in fact
+that's why it almost entirely consists of extension traits (e.g.
+DeviceMethods, SysBusDeviceMethods, ObjectCast, ObjectDeref,
+ObjectClassMethods). You shouldn't have to name the traits at all if
+the API works, and having them in the prelude lowers the cognitive
+load.
+
+There are a few more symbols that are imported in the prelude: for
+example the BqlCell and BqlRefCell, the ObjectType and IsA traits, or
+the qom_isa macro; those will be used almost everywhere.
+
+The exact shape of the prelude might change in the future, since
+qemu_api might get split into separate crates to enable using Rust in
+tools (which do not have qdev). For example there could be separate
+block, qdev and qom preludes.
+
+In any case, it's an exception and for this reason the amount of
+non-extension-traits symbols that it includes should be limited.
+
+> >      qdev::{DeviceClass, DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
+> >      qom::{ClassInitImpl, ObjectImpl, ParentField},
+> > +    sysbus::SysBusDevice,
+>
+> This addition seems distinct from the bindings::* removal. Should it
+> have been a separate patch ?
+
+SysBusDevice is re-exported from sysbus, similar to DeviceState or
+VMStateDescription that you see in the context. This is done because
+in general using "bindings" is an anti-pattern; you should use APIs
+that have been wrapped properly as is the case for SysBusDevice.
+
+The tests use some "bindings::foo" symbols either because they're
+setting up the test environment (module_call_init) or because they're
+intentionally bypassing the high-level API (object_new/unref). The
+only case where something isn't yet covered by safe wrappers is
+qdev_prop_bool.
+
+In fact, a lot of the structs that the tests need were imported twice,
+once from bindings and once from e.g. qdev or vmstate. SysBusDevice
+was the odd one out that was imported only from bindings, so it has
+added.
+
+Paolo
+
+> >      vmstate::VMStateDescription,
+> >      zeroable::Zeroable,
+> >  };
+>
+> With regards,
+> Daniel
 
 
