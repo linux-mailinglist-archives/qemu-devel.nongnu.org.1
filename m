@@ -2,116 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9DAA36702
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE855A36B10
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:36:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2PL-0001Ba-Mm; Fri, 14 Feb 2025 15:35:32 -0500
+	id 1tj75B-0004RM-7o; Fri, 14 Feb 2025 20:35:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2Mz-0006er-N7
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:08 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2N4-0006fn-Nv
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:12 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2Mx-0002Fg-05
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:04 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2My-0002Fm-3x
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:05 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5E5471F395;
- Fri, 14 Feb 2025 20:32:26 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BD06F21183;
+ Fri, 14 Feb 2025 20:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
  t=1739565149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9jMS6Erz+zBLxX49XMODJ4Sas/Uf3cEfXpntQP6Ber8=;
- b=ddDHfPnw9ssBREw5EPpIglL9RqyBFCdlzBHhfLVNiOj8tBoe0QejsgFBn8uzYuYnP7+Cwq
- YDG0gQKFrI8gWBpEexAhEmFCaTMSadKahf1cR7EHgcirUyJSYOpK0AgzPV6jXG07ODSXWt
- hlnfq7Fd+F3S4QHhD3y8vhGXPpHGY1c=
+ bh=9xdmOVwEfRUQTZUGLfmBpKaelqOYaisFx/30xx8tRag=;
+ b=MGnlELpBac+onkjQXQqdblyjqzv8EKy4Yvmw+fcD78PCLPmD/u5R8zg1lAR7/U63esWgT+
+ 9gy3qmFlhbamE+0RDVL7SJa4SgOtcIoxa+wUor8QLP2Ib+g4Z5rAWHd700N95tudekIuP/
+ KqI0GOAcgFN66f5jcFdqS3n8kpzRDrQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
  s=susede2_ed25519; t=1739565149;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9jMS6Erz+zBLxX49XMODJ4Sas/Uf3cEfXpntQP6Ber8=;
- b=rsK5QbMUKdQKCc2fRKEkc+FqGhMVGZdlQ9g/C+snJF9ZokKMTueP4e/bso2FcGjWmbGICz
- 3fybGHjUYfPnEsAg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IAemkKhP;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u7FlOXD3
+ bh=9xdmOVwEfRUQTZUGLfmBpKaelqOYaisFx/30xx8tRag=;
+ b=GcafPsLw64ccvnNQ2Az1j0gxlB2TRmtVMQ63n4OZrOgZJgymlbDfxWS9flfpicM3sRPWKf
+ AaZx3UV6ky+Xz4Dg==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1739565149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9jMS6Erz+zBLxX49XMODJ4Sas/Uf3cEfXpntQP6Ber8=;
- b=IAemkKhPvNxZYcxp3eU85xpLSABlcqsXcJgiI0KtT1yUn/u79hmakVVg+YL5EjUjEEfq6b
- IeSeB42Ri18SlV93MahgfdqhNWetO5U+vtaSLXKToEi/9Xf1aP/wWokjHZP0XTJVwxYXaL
- Re5rkfYw77QR2cExUPol9P8xUSiYECo=
+ bh=9xdmOVwEfRUQTZUGLfmBpKaelqOYaisFx/30xx8tRag=;
+ b=MGnlELpBac+onkjQXQqdblyjqzv8EKy4Yvmw+fcD78PCLPmD/u5R8zg1lAR7/U63esWgT+
+ 9gy3qmFlhbamE+0RDVL7SJa4SgOtcIoxa+wUor8QLP2Ib+g4Z5rAWHd700N95tudekIuP/
+ KqI0GOAcgFN66f5jcFdqS3n8kpzRDrQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565146;
+ s=susede2_ed25519; t=1739565149;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9jMS6Erz+zBLxX49XMODJ4Sas/Uf3cEfXpntQP6Ber8=;
- b=u7FlOXD3Kzqp1HkVSolvswJyTgnqw3N3n/qooud3cHbUzKwILrHzc4WAvdC7pj2APIBA/h
- XKiu+x3ZlKJ+iPBQ==
+ bh=9xdmOVwEfRUQTZUGLfmBpKaelqOYaisFx/30xx8tRag=;
+ b=GcafPsLw64ccvnNQ2Az1j0gxlB2TRmtVMQ63n4OZrOgZJgymlbDfxWS9flfpicM3sRPWKf
+ AaZx3UV6ky+Xz4Dg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41EAF13AFC;
- Fri, 14 Feb 2025 20:32:25 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D279E13B02;
+ Fri, 14 Feb 2025 20:32:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id OMwUAFmor2cgEgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:25 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EPiXI1qor2cgEgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:26 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 13/22] migration: Reject qmp_migrate_cancel after postcopy
-Date: Fri, 14 Feb 2025 17:31:50 -0300
-Message-Id: <20250214203159.30168-14-farosas@suse.de>
+Subject: [PULL 14/22] migration: Don't set FAILED state when cancelling
+Date: Fri, 14 Feb 2025 17:31:51 -0300
+Message-Id: <20250214203159.30168-15-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250214203159.30168-1-farosas@suse.de>
 References: <20250214203159.30168-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5E5471F395
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[]; ARC_NA(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- MIME_TRACE(0.00)[0:+];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RBL_NIXSPAM_FAIL(0.00)[2a07:de40:b281:104:10:150:64:97:server fail];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,43 +116,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After postcopy has started, it's not possible to recover the source
-machine in case a migration error occurs because the destination has
-already been changing the state of the machine. For that same reason,
-it doesn't make sense to try to cancel the migration after postcopy
-has started. Reject the cancel command during postcopy.
+The expected outcome from qmp_migrate_cancel() is that the source
+migration goes to the terminal state
+MIGRATION_STATUS_CANCELLED. Anything different from this is a bug when
+cancelling.
 
+Make sure there is never a state transition from an unspecified state
+into FAILED. Code that sets FAILED, should always either make sure
+that the old state is not CANCELLING or specify the old state.
+
+Note that the destination is allowed to go into FAILED, so there's no
+issue there.
+
+(I don't think this is relevant as a backport because cancelling does
+work, it just doesn't show the right state at the end)
+
+Fixes: 3dde8fdbad ("migration: Merge precopy/postcopy on switchover start")
+Fixes: d0edb8a173 ("migration: Create the postcopy preempt channel asynchronously")
+Fixes: 8518278a6a ("migration: implementation of background snapshot thread")
+Fixes: bf78a046b9 ("migration: refactor migrate_fd_connect failures")
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20250213175927.19642-6-farosas@suse.de>
+Message-ID: <20250213175927.19642-7-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ migration/migration.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index c39cedef3b..48c9ad3c96 100644
+index 48c9ad3c96..c597aa707e 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2251,7 +2251,18 @@ static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
+@@ -2648,7 +2648,10 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+     if (migrate_postcopy_preempt()) {
+         migration_wait_main_channel(ms);
+         if (postcopy_preempt_establish_channel(ms)) {
+-            migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
++            if (ms->state != MIGRATION_STATUS_CANCELLING) {
++                migrate_set_state(&ms->state, ms->state,
++                                  MIGRATION_STATUS_FAILED);
++            }
+             error_setg(errp, "%s: Failed to establish preempt channel",
+                        __func__);
+             return -1;
+@@ -2986,7 +2989,9 @@ fail:
+         error_free(local_err);
+     }
  
- void qmp_migrate_cancel(Error **errp)
- {
--    migration_cancel(NULL);
-+    /*
-+     * After postcopy migration has started, the source machine is not
-+     * recoverable in case of a migration error. This also means the
-+     * cancel command cannot be used as cancel should allow the
-+     * machine to continue operation.
-+     */
-+    if (migration_in_postcopy()) {
-+        error_setg(errp, "Postcopy migration in progress, cannot cancel.");
-+        return;
+-    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
++    if (s->state != MIGRATION_STATUS_CANCELLING) {
++        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
 +    }
-+
-+    migration_cancel();
  }
  
- void qmp_migrate_continue(MigrationStatus state, Error **errp)
+ /**
+@@ -3009,7 +3014,7 @@ static void bg_migration_completion(MigrationState *s)
+         qemu_put_buffer(s->to_dst_file, s->bioc->data, s->bioc->usage);
+         qemu_fflush(s->to_dst_file);
+     } else if (s->state == MIGRATION_STATUS_CANCELLING) {
+-        goto fail;
++        return;
+     }
+ 
+     if (qemu_file_get_error(s->to_dst_file)) {
+@@ -3953,7 +3958,9 @@ void migration_connect(MigrationState *s, Error *error_in)
+ 
+ fail:
+     migrate_set_error(s, local_err);
+-    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
++    if (s->state != MIGRATION_STATUS_CANCELLING) {
++        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
++    }
+     error_report_err(local_err);
+     migration_cleanup(s);
+ }
 -- 
 2.35.3
 
