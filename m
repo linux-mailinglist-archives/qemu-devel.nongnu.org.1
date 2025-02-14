@@ -2,97 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6909FA36B0D
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F78A36B26
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:39:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj759-0004DX-0B; Fri, 14 Feb 2025 20:34:59 -0500
+	id 1tj75i-0004fV-Bf; Fri, 14 Feb 2025 20:35:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2lW-0003n1-Ow
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:58:26 -0500
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tj38G-00078i-Ce
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 16:21:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2lU-00051g-4s
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:58:26 -0500
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2lO-00000007HpC-1Eyv; Fri, 14 Feb 2025 21:58:18 +0100
-Message-ID: <50715039-1eb8-454b-9ab7-fb1490e27841@maciej.szmigiero.name>
-Date: Fri, 14 Feb 2025 21:58:13 +0100
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tj38D-00085m-UZ
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 16:21:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739568109;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=WTA93GBQYjzWQv0sdzCiO4meUgBl6OZnMg+W7LgSu/8=;
+ b=eU2z0L+GFMCPeK9RPMQvABW3a9EC3x94Jfd8sxxX3WfgqKdXuq+sQtPZiNLHiACb3eyzAB
+ x1fBRhEWAORCXinnzoMI5G8hX559C3PY3kiolyGd8c+zK6C9kmzhfCuiUGfKPd6Z6nzzFY
+ yLeP366xp+ufs8n70xeAza5f2OsKvCI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-euMGxkXcPuG5SKvM5SHWGg-1; Fri, 14 Feb 2025 16:21:47 -0500
+X-MC-Unique: euMGxkXcPuG5SKvM5SHWGg-1
+X-Mimecast-MFC-AGG-ID: euMGxkXcPuG5SKvM5SHWGg_1739568106
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4394b2c19ccso20479545e9.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 13:21:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739568106; x=1740172906;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=WTA93GBQYjzWQv0sdzCiO4meUgBl6OZnMg+W7LgSu/8=;
+ b=W9Q8091psFcH+lI0xz4UoV9n39nfjU5zo92y5GeALFPcSLz+ieVtFXvIdy4tbFAuV+
+ YBzcqCwtwg/CP2AB25flH+/Muig+7vsSTiAM80+EytrJX0SvwkM8ZcD89vXHDhVy+7l1
+ tAJXIH6M8/xTad/WrXxxcPdNHE2dqjRYquxCTs8yPTxgN8X30Z8s4vmhN8uxYMUzQc45
+ UtYZYVNKfE+hgzicBRw4DZGrdlY3YbpTgGAymqa63bcXEec3+tuJGpqpGp0ALiLdQi/3
+ EF2nzNfsVeAyEXCqZOcSOFwRzvYn0MhWMwvvJLuK5fKUZa58ZVxu0mQUd/5TBHiechRb
+ qDgQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXP7YmGCjcdYF8SXxiHxhjuxC4NhSOiLvhQuSyqhse6jk4OyAKbMnVj4Z1ejQuykDqfDo5hvveT6Cgu@nongnu.org
+X-Gm-Message-State: AOJu0Yy8+S0U+6ldFls1aBZXHGOhM3oyLBChF189K7GU6bGWnbX5rLFJ
+ 7oZFHreM283sZZuHK+V7gAqlT+m8lEJAnHLovYWI0eENYWMk7KBAHhfLp29lCyxnL9dQmmV+qsY
+ iNcJq4mMeitWl1QT75kgwhv/iwK6/HQ4tiwxOGsNQAvDFagZWG0WE
+X-Gm-Gg: ASbGncsHC55VhrwRp/3PF+Z08jfKCvzU2qND1PeoJBg2qsShmp3i9AaPY7RKjiizGNl
+ t2jYCMmoPnMk2u+zBqN6Be6GU4u8mSagaPdpOyh1d/yAtIjSWA4UNS4xt3IKVnuY3kL51UtkawD
+ HJlJXAaRJSbfvdmVncFblju+s6Ok8OED2qA0jBrLhJqWDTKafW1OArKd7CwzjO6ZEYaoXg4u+hl
+ oF5JE7aF1PnJl9tVo64KycBlfNRaPsbA13mhz9hAwXobcyeeFgtHzoqYtwdk529obqFNRBCQN75
+ kb8YKXwaHJAJPNnt52+vVLJ5iOD1doNp+S75exErt0c52pd8ST9tDKfCDOkBBgKC8DDfkKTM64z
+ 1VfXoRZwpb4Qs90CeQ+X11laE8EZvRv3G
+X-Received: by 2002:a05:600c:4fce:b0:439:3d5c:8c19 with SMTP id
+ 5b1f17b1804b1-4396e717094mr9590615e9.24.1739568106453; 
+ Fri, 14 Feb 2025 13:21:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHrFlxs5Fv0UIa6Gyrf16YvheVIe82Lidc8cDz9HjUkcMF4z1GXBLnwWI3GzYN0WYsaLyzXHw==
+X-Received: by 2002:a05:600c:4fce:b0:439:3d5c:8c19 with SMTP id
+ 5b1f17b1804b1-4396e717094mr9590445e9.24.1739568106089; 
+ Fri, 14 Feb 2025 13:21:46 -0800 (PST)
+Received: from ?IPV6:2003:d8:2f22:1000:d72d:fd5f:4118:c70b?
+ (p200300d82f221000d72dfd5f4118c70b.dip0.t-ipconnect.de.
+ [2003:d8:2f22:1000:d72d:fd5f:4118:c70b])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-439617da784sm55519205e9.5.2025.02.14.13.21.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Feb 2025 13:21:44 -0800 (PST)
+Message-ID: <7e781592-ea91-4a3a-9855-8e5479e0b61e@redhat.com>
+Date: Fri, 14 Feb 2025 22:21:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 27/33] vfio/migration: Multifd device state transfer
- support - received buffers queuing
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <74c4bbaaccd81e883504ae478e84394ddd96bbae.1738171076.git.maciej.szmigiero@oracle.com>
- <1b708674-e14d-46c2-8373-a0b12cf08b10@redhat.com>
-Content-Language: en-US, pl-PL
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
- 6oJdk+jpvKiyzlbKqlDtw/Y2Ob24tg1g/zvkHn8AVUwX+ZWWewSZ0vcwp7u/LvA+w2nJbIL1
- N0/QUUdmxfkWTHhNqgkNX5hEmYqhwUPozFR0zblfD/6+XFR7VM9yT0fZPLqYLNOmGfqAXlxY
- m8nWmi+lxkd/PYqQQwOq6GQwxjRFEvSc09m/YPYo9hxh7a6s8hAP88YOf2PD8oBB1r5E7KGb
- Fv10Qss4CU/3zaiyRTExWwOJnTQdzSbtnM3S8/ZO/sL0FY/b4VLtlZzERAraxHdnPn8GgxYk
- oPtAqoyf52RkCabL9dsXPWYQjkwG8WEUPScHDy8Uoo6imQujshG23A99iPuXcWc/5ld9mIo/
- Ee7kN50MOXwS4vCJSv0cMkVhh77CmGUv5++E/rPcbXPLTPeRVy6SHgdDhIj7elmx2Lgo0cyh
- uyxyBKSuzPvb61nh5EKAGL7kPqflNw7LJkInzHqKHDNu57rVuCHEx4yxcKNB4pdE2SgyPxs9
- 9W7Cz0q2Hd7Yu8GOXvMfQfrBiEV4q4PzidUtV6sLqVq0RMK7LEi0RiZpthwxz0IUFwRw2KS/
- 9Kgs9LmOXYimodrV0pMxpVqcyTepmDSoWzyXNP2NL1+GuQtaTQARAQABzTBNYWNpZWogUy4g
- U3ptaWdpZXJvIDxtYWlsQG1hY2llai5zem1pZ2llcm8ubmFtZT7CwZQEEwEIAD4CGwMFCwkI
- BwIGFQoJCAsCBBYCAwECHgECF4AWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZdEV4gUJDWuO
- nQAKCRCEf143kM4JdyzED/0Qwk2KVsyNwEukYK2zbJPHp7CRbXcpCApgocVwtmdabAubtHej
- 7owLq89ibmkKT0gJxc6OfJJeo/PWTJ/Qo/+db48Y7y03Xl+rTbFyzsoTyZgdR21FQGdgNRG9
- 3ACPDpZ0UlEwA4VdGT+HKfu0X8pVb0G0D44DjIeHC7lBRzzE5JXJUGUVUd2FiyUqMFqZ8xP3
- wp53ekB5p5OstceqyZIq+O/r1pTgGErZ1No80JrnVC/psJpmMpw1Q56t88JMaHIe+Gcnm8fB
- k3LyWNr7gUwVOus8TbkP3TOx/BdS/DqkjN3GvXauhVXfGsasmHHWEFBE0ijNZi/tD63ZILRY
- wUpRVRU2F0UqI+cJvbeG3c+RZ7jqMAAZj8NB8w6iviX1XG3amlbJgiyElxap6Za1SQ3hfTWf
- c6gYzgaNOFRh77PQbzP9BcAVDeinOqXg2IkjWQ89o0YVFKXiaDHKw7VVld3kz2FQMI8PGfyn
- zg5vyd9id1ykISCQQUQ4Nw49tqYoSomLdmIgPSfXDDMOvoDoENWDXPiMGOgDS2KbqRNYCNy5
- KGQngJZNuDicDBs4r/FGt9/xg2uf8M5lU5b8vC78075c4DWiKgdqaIhqhSC+n+qcHX0bAl1L
- me9DMNm0NtsVw+mk65d7cwxHmYXKEGgzBcbVMa5C+Yevv+0GPkkwccIvps7AzQRaRrwiAQwA
- xnVmJqeP9VUTISps+WbyYFYlMFfIurl7tzK74bc67KUBp+PHuDP9p4ZcJUGC3UZJP85/GlUV
- dE1NairYWEJQUB7bpogTuzMI825QXIB9z842HwWfP2RW5eDtJMeujzJeFaUpmeTG9snzaYxY
- N3r0TDKj5dZwSIThIMQpsmhH2zylkT0jH7kBPxb8IkCQ1c6wgKITwoHFjTIO0B75U7bBNSDp
- XUaUDvd6T3xd1Fz57ujAvKHrZfWtaNSGwLmUYQAcFvrKDGPB5Z3ggkiTtkmW3OCQbnIxGJJw
- /+HefYhB5/kCcpKUQ2RYcYgCZ0/WcES1xU5dnNe4i0a5gsOFSOYCpNCfTHttVxKxZZTQ/rxj
- XwTuToXmTI4Nehn96t25DHZ0t9L9UEJ0yxH2y8Av4rtf75K2yAXFZa8dHnQgCkyjA/gs0ujG
- wD+Gs7dYQxP4i+rLhwBWD3mawJxLxY0vGwkG7k7npqanlsWlATHpOdqBMUiAR22hs02FikAo
- iXNgWTy7ABEBAAHCwXwEGAEIACYCGwwWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZdEWBwUJ
- DWuNXAAKCRCEf143kM4Jd5OdD/0UXMpMd4eDWvtBBQkoOcz2SqsWwMj+vKPJS0BZ33MV/wXT
- PaTbzAFy23/JXbyBPcb0qgILCmoimBNiXDzYBfcwIoc9ycNwCMBBN47Jxwb8ES5ukFutjS4q
- +tPcjbPYu+hc9qzodl1vjAhaWjgqY6IzDGe4BAmM+L6UUID4Vr46PPN02bpm4UsL31J6X+lA
- Vj5WbY501vKMvTAiF1dg7RkHPX7ZVa0u7BPLjBLqu6NixNkpSRts8L9G4QDpIGVO7sOC9oOU
- 2h99VYY1qKml0qJ9SdTwtDj+Yxz+BqW7O4nHLsc4FEIjILjwF71ZKY/dlTWDEwDl5AJR7bhy
- HXomkWae2nBTzmWgIf9fJ2ghuCIjdKKwOFkDbFUkSs8HjrWymvMM22PHLTTGFx+0QbjOstEh
- 9i56FZj3DoOEfVKvoyurU86/4sxjIbyhqL6ZiTzuZAmB0RICOIGilm5x03ESkDztiuCtQL2u
- xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
- ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
- WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <1b708674-e14d-46c2-8373-a0b12cf08b10@redhat.com>
+Subject: Re: [PATCH V2] migration: ram block cpr blockers
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <1739563953-227207-1-git-send-email-steven.sistare@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <1739563953-227207-1-git-send-email-steven.sistare@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,285 +158,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.02.2025 14:47, Cédric Le Goater wrote:
-> On 1/30/25 11:08, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> The multifd received data needs to be reassembled since device state
->> packets sent via different multifd channels can arrive out-of-order.
->>
->> Therefore, each VFIO device state packet carries a header indicating its
->> position in the stream.
->> The raw device state data is saved into a VFIOStateBuffer for later
->> in-order loading into the device.
->>
->> The last such VFIO device state packet should have
->> VFIO_DEVICE_STATE_CONFIG_STATE flag set and carry the device config state.
->>
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->> ---
->>   hw/vfio/migration.c           | 116 ++++++++++++++++++++++++++++++++++
->>   hw/vfio/pci.c                 |   2 +
->>   hw/vfio/trace-events          |   1 +
->>   include/hw/vfio/vfio-common.h |   1 +
->>   4 files changed, 120 insertions(+)
->>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index bcdf204d5cf4..0c0caec1bd64 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -301,6 +301,12 @@ typedef struct VFIOStateBuffer {
->>   } VFIOStateBuffer;
->>   typedef struct VFIOMultifd {
->> +    VFIOStateBuffers load_bufs;
->> +    QemuCond load_bufs_buffer_ready_cond;
->> +    QemuMutex load_bufs_mutex; /* Lock order: this lock -> BQL */
->> +    uint32_t load_buf_idx;
->> +    uint32_t load_buf_idx_last;
->> +    uint32_t load_buf_queued_pending_buffers;
->>   } VFIOMultifd;
->>   static void vfio_state_buffer_clear(gpointer data)
->> @@ -346,6 +352,103 @@ static VFIOStateBuffer *vfio_state_buffers_at(VFIOStateBuffers *bufs, guint idx)
->>       return &g_array_index(bufs->array, VFIOStateBuffer, idx);
->>   }
-> Each routine executed from a migration thread should have a preliminary
-> comment saying from which context it is called: migration or VFIO
-
-Do you mean like whether it is called from the code in qemu/migration/
-directory or the code in hw/vfio/ directory?
-
-What about internal linkage ("static") functions?
-Do they need such comment too? That would actually decrease the readability
-of these one-or-two line helpers due to high comment-to-code ratio.
-
-As far as I can see, pretty much no existing VFIO migration function
-has such comment.
-
->> +static bool vfio_load_state_buffer_insert(VFIODevice *vbasedev,
->> +                                          VFIODeviceStatePacket *packet,
->> +                                          size_t packet_total_size,
->> +                                          Error **errp)
->> +{
->> +    VFIOMigration *migration = vbasedev->migration;
->> +    VFIOMultifd *multifd = migration->multifd;
->> +    VFIOStateBuffer *lb;
->> +
->> +    vfio_state_buffers_assert_init(&multifd->load_bufs);
->> +    if (packet->idx >= vfio_state_buffers_size_get(&multifd->load_bufs)) {
->> +        vfio_state_buffers_size_set(&multifd->load_bufs, packet->idx + 1);
->> +    }
->> +
->> +    lb = vfio_state_buffers_at(&multifd->load_bufs, packet->idx);
->> +    if (lb->is_present) {
->> +        error_setg(errp, "state buffer %" PRIu32 " already filled",
->> +                   packet->idx);
->> +        return false;
->> +    }
->> +
->> +    assert(packet->idx >= multifd->load_buf_idx);
->> +
->> +    multifd->load_buf_queued_pending_buffers++;
->> +    if (multifd->load_buf_queued_pending_buffers >
->> +        vbasedev->migration_max_queued_buffers) {
->> +        error_setg(errp,
->> +                   "queuing state buffer %" PRIu32 " would exceed the max of %" PRIu64,
->> +                   packet->idx, vbasedev->migration_max_queued_buffers);
->> +        return false;
->> +    }
+On 14.02.25 21:12, Steve Sistare wrote:
+> Unlike cpr-reboot mode, cpr-transfer mode cannot save volatile ram blocks
+> in the migration stream file and recreate them later, because the physical
+> memory for the blocks is pinned and registered for vfio.  Add a blocker
+> for volatile ram blocks.
 > 
-> AFAICT, attributes multifd->load_buf_queued_pending_buffers and
-> vbasedev->migration_max_queued_buffers are not strictly necessary.
-> They allow to count buffers and check an arbitrary limit, which
-> is UINT64_MAX today. It makes me wonder how useful they are.
-
-You are right they aren't strictly necessary and in fact they weren't
-there in early versions of this patch set.
-
-It was introduced upon Peter's request since otherwise the source
-could theoretically cause the target QEMU to allocate unlimited
-amounts of memory for buffers-in-flight:
-https://lore.kernel.org/qemu-devel/9e85016e-ac72-4207-8e69-8cba054cefb7@maciej.szmigiero.name/
-(scroll to the "Risk of OOM on unlimited VFIO buffering" section).
-
-If that's an actual risk in someone's use case then that person
-could lower that limit from UINT64_MAX to, for example, 10 buffers.
-
-> Please introduce them in a separate patch at the end of the series,
-> adding documentation on the "x-migration-max-queued-buffers" property
-> and also general documentation on why and how to use it.
-
-I can certainly move it to the end of the series - done now.
-
->> +
->> +    lb->data = g_memdup2(&packet->data, packet_total_size - sizeof(*packet));
->> +    lb->len = packet_total_size - sizeof(*packet);
->> +    lb->is_present = true;
->> +
->> +    return true;
->> +}
->> +
->> +static bool vfio_load_state_buffer(void *opaque, char *data, size_t data_size,
->> +                                   Error **errp)
->> +{
->> +    VFIODevice *vbasedev = opaque;
->> +    VFIOMigration *migration = vbasedev->migration;
->> +    VFIOMultifd *multifd = migration->multifd;
->> +    VFIODeviceStatePacket *packet = (VFIODeviceStatePacket *)data;
->> +
->> +    /*
->> +     * Holding BQL here would violate the lock order and can cause
->> +     * a deadlock once we attempt to lock load_bufs_mutex below.
->> +     */
->> +    assert(!bql_locked());
->> +
->> +    if (!migration->multifd_transfer) {
->> +        error_setg(errp,
->> +                   "got device state packet but not doing multifd transfer");
->> +        return false;
->> +    }
->> +
->> +    assert(multifd);
->> +
->> +    if (data_size < sizeof(*packet)) {
->> +        error_setg(errp, "packet too short at %zu (min is %zu)",
->> +                   data_size, sizeof(*packet));
->> +        return false;
->> +    }
->> +
->> +    if (packet->version != 0) {
+> Also add a blocker for RAM_GUEST_MEMFD.  Preserving guest_memfd may be
+> sufficient for CPR, but it has not been tested yet.
 > 
-> Please add a define for version, even if 0.
-
-I've introduced a new define VFIO_DEVICE_STATE_PACKET_VER_CURRENT.
-
->> +        error_setg(errp, "packet has unknown version %" PRIu32,
->> +                   packet->version);
->> +        return false;
->> +    }
->> +
->> +    if (packet->idx == UINT32_MAX) {
->> +        error_setg(errp, "packet has too high idx %" PRIu32,
->> +                   packet->idx);
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   include/exec/memory.h   |  3 +++
+>   include/exec/ramblock.h |  1 +
+>   migration/savevm.c      |  2 ++
+>   system/physmem.c        | 68 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 74 insertions(+)
 > 
-> I don't think printing out packet->idx is useful here.
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 9f73b59..ea5d33a 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -3184,6 +3184,9 @@ bool ram_block_discard_is_disabled(void);
+>    */
+>   bool ram_block_discard_is_required(void);
+>   
+> +void ram_block_add_cpr_blocker(RAMBlock *rb, Error **errp);
+> +void ram_block_del_cpr_blocker(RAMBlock *rb);
+> +
+>   #endif
+>   
+>   #endif
+> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+> index 0babd10..64484cd 100644
+> --- a/include/exec/ramblock.h
+> +++ b/include/exec/ramblock.h
+> @@ -39,6 +39,7 @@ struct RAMBlock {
+>       /* RCU-enabled, writes protected by the ramlist lock */
+>       QLIST_ENTRY(RAMBlock) next;
+>       QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+> +    Error *cpr_blocker;
+>       int fd;
+>       uint64_t fd_offset;
+>       int guest_memfd;
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index bc375db..85a3559 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -3315,12 +3315,14 @@ void vmstate_register_ram(MemoryRegion *mr, DeviceState *dev)
+>       qemu_ram_set_idstr(mr->ram_block,
+>                          memory_region_name(mr), dev);
+>       qemu_ram_set_migratable(mr->ram_block);
+> +    ram_block_add_cpr_blocker(mr->ram_block, &error_fatal);
+>   }
+>   
+>   void vmstate_unregister_ram(MemoryRegion *mr, DeviceState *dev)
+>   {
+>       qemu_ram_unset_idstr(mr->ram_block);
+>       qemu_ram_unset_migratable(mr->ram_block);
+> +    ram_block_del_cpr_blocker(mr->ram_block);
+>   }
+>   
+>   void vmstate_register_ram_global(MemoryRegion *mr)
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 67c9db9..c416068 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -70,7 +70,10 @@
+>   
+>   #include "qemu/pmem.h"
+>   
+> +#include "qapi/qapi-types-migration.h"
+> +#include "migration/blocker.h"
+>   #include "migration/cpr.h"
+> +#include "migration/options.h"
+>   #include "migration/vmstate.h"
+>   
+>   #include "qemu/range.h"
+> @@ -1899,6 +1902,14 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+>               qemu_mutex_unlock_ramlist();
+>               goto out_free;
+>           }
+> +
+> +        error_setg(&new_block->cpr_blocker,
+> +                   "Memory region %s uses guest_memfd, "
+> +                   "which is not supported with CPR.",
+> +                   memory_region_name(new_block->mr));
+> +        migrate_add_blocker_modes(&new_block->cpr_blocker, errp,
+> +                                  MIG_MODE_CPR_TRANSFER,
+> +                                  -1);
+>       }
+>   
+>       ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
+> @@ -4059,3 +4070,60 @@ bool ram_block_discard_is_required(void)
+>       return qatomic_read(&ram_block_discard_required_cnt) ||
+>              qatomic_read(&ram_block_coordinated_discard_required_cnt);
+>   }
+> +
+> +/*
+> + * Return true if ram contents would be lost during CPR.  Do not exclude rom,
+> + * because the rom file could change in new QEMU.
+> + */
+> +static bool ram_is_volatile(RAMBlock *rb)
 
-Yeah, it's unlikely that the value of UINT32_MAX will ever change :)
+Can we call this
 
-Removed now.
+ram_is_cpr_compatible() / ram_is_cpr_incompatible() or sth. instead?
 
->> +        return false;
->> +    }
->> +
->> +    trace_vfio_load_state_device_buffer_incoming(vbasedev->name, packet->idx);
-> 
-> I wonder if we can add thread ids to trace events. It would be useful.
+Talking about RAM and "volatile" is misleading, and the function is 
+specific to CPR already (e.g., comment :) ).
 
-load_state_buffer is called from multifd channel receive threads
-so passing multifd channel id there would require adding this multifd-specific
-parameter to qemu_loadvm_load_state_buffer() and load_state_buffer
-SaveVMHandler.
 
->> +
->> +    QEMU_LOCK_GUARD(&multifd->load_bufs_mutex);
->> +
->> +    /* config state packet should be the last one in the stream */
->> +    if (packet->flags & VFIO_DEVICE_STATE_CONFIG_STATE) {
->> +        multifd->load_buf_idx_last = packet->idx;
->> +    }
->> +
->> +    if (!vfio_load_state_buffer_insert(vbasedev, packet, data_size, errp)) {
-> 
-> So the migration thread calling multifd_device_state_recv() will
-> exit 
+-- 
+Cheers,
 
-The thread is calling multifd_device_state_recv() is a multifd
-channel receive thread.
-
-> and the vfio thread loading the state into the device will
-> hang until its aborted ?
-
-In the normal (successful) migration flow the vfio_load_bufs_thread()
-will exit after loading (write()'ing) all buffers into the device
-and then loading its config state.
-
-In the aborted/error/unsuccessful migration flow it will get
-terminated from vfio_load_cleanup() -> vfio_multifd_free() ->
-vfio_load_cleanup_load_bufs_thread().
-
-vfio_load_cleanup_load_bufs_thread() will signal
-load_bufs_buffer_ready_cond and load_bufs_iter_done_cond since
-the load thread indeed could be waiting on them.
-
-> 
-> This sequence is expected to be called to release the vfio thread
-> 
->         while (multifd->load_bufs_thread_running) {
->              multifd->load_bufs_thread_want_exit = true;
-> 
->              qemu_cond_signal(&multifd->load_bufs_buffer_ready_cond);
->          ...
->         }
-> 
-> right ?
-
-Right, that's a part of the code in vfio_load_cleanup_load_bufs_thread().
-
-> 
-> The way the series is presented makes it a bit complex to follow the
-> proposition, especially regarding the creation and termination of
-> threads, something the reader should be aware of.
-> 
-> As an initial step in clarifying the design, I would have preferred
-> a series of patches introducing the various threads, migration threads
-> and VFIO threads, without any workload. Once the creation and termination
-> points are established I would then introduce the work load for each
-> thread.
-
-When I am doing review of anything more complex (though it's not usually
-in QEMU) I mainly follow the final code flow as an operation is handled
-since looking just from top to down at individual commits rarely gives
-enough context to see how every part interacts together.
-
-But for this the reviewer needs to see the whole code for the logical
-operation, rather than just a part of it.
-
-I think that adding the load operation in parts doesn't really
-help since the reason why things are done such way in earlier patches
-are only apparent in later patches and the earlier parts doesn't
-really have much sense on their own.
-Not to mention extra code churn when rebasing/reworking that increases
-chance of a typo or a copy-paste mistake happening at some point.
-
-I also see that in comments to a later patch you dislike that
-a dummy vfio_load_bufs_thread_load_config() gets added in one patch
-then immediately replaced by the real implementation in the next patch.
-Previously, you also said that vfio_load_config_after_iter() seems
-to be unused in the patch that adds it - that's exactly the kind of
-issues that bringing the complete operation in one patch avoids.
-
-I agree that, for example, x-migration-load-config-after-iter feature
-could be a separate patch as it is a relatively simple change.
-
-Same goes for x-migration-max-queued-buffers checking/enforcement,
-compat changes, exporting existing settings (variables) as properties
-or adding a g_autoptr() cleanup function for an existing type.
-
-That's why originally the VFIO part of the series was divided into two
-parts - receive and send, since these are two separate, yet internally
-complete operations.
-
-I also export the whole series (including the current WiP state, with
-code moved to migration-multifd.{c,h} files, etc.) as a git tree at
-https://gitlab.com/maciejsszmigiero/qemu/-/commits/multifd-device-state-transfer-vfio
-since this way it can be easily seen how the QEMU code currently
-looks after the whole patch set or set of patches there.
-
-> 
-> Thanks,
-> 
-> C.
-
-Thanks,
-Maciej
+David / dhildenb
 
 
