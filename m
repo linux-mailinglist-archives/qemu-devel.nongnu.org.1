@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D50DA36045
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59290A36010
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:17:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwSn-0004Kp-Lb; Fri, 14 Feb 2025 09:14:41 -0500
+	id 1tiwSo-0004M1-Ot; Fri, 14 Feb 2025 09:14:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwSk-0004IU-7a
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:38 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1tiwSl-0004K5-E4
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:39 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwSi-0004Qk-0g
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:37 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtS7f028514;
- Fri, 14 Feb 2025 14:14:33 GMT
+ id 1tiwSj-0004Qw-Jz
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:39 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECu2MM018730;
+ Fri, 14 Feb 2025 14:14:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=mEVPWwF+UfGeyFbKqf1xWpPBvuAXnhWIm3FJAkaKpMI=; b=
- kFDbSWYruligitQdjUU2emtdLh9rtr5G69DwQoTUNDMmLbeMWQRHYP+dNCuQyqx6
- xila1niW4Out3nzVpo4LlnOq7Q8iR/9cuIOT1YE74UHX2R+ZeKqJ6jke0Q74QeR4
- /f+iw885AwryjNzoZkJQTwKB8CeeHS6iIOqHCS2avb+60++feGZG2fb/h8ZMlasC
- rSxzMIY5dmwK6kOUNj7W2S+S3BcQc+/aHIuiE4oMT8jwiley8PG11F0GtYXPTipS
- gLuyUkthP2/bzG4IK/2Z5vy+F5CFJyBsp3fsLliRZESms6B29BP1hWclHR6XBpyA
- R9WqUWjZD90COfjG9pXMaw==
+ corp-2023-11-20; bh=1oM7G1hEz2luvuleMT7bb9H1E+mKvfumKezqrbdtfqc=; b=
+ kLgXisjQT5DsvAie+WtY2EMJCyytCb3swAbunCuRQ5IX3uz/yie/036q/mkoXnpa
+ ejiV/FVDjhKaxkYzuSN0kdy6EGaIm+5PQk+JcRgq0b08l6u9XULKQ5wp9Cke3EJh
+ TcPUXsObSN5eT33hTpojBcp+HGbXDeXPnvtLVY8PFs/ooCEaUCU+Kb7iu1sFbH4P
+ jt7PSYRzUTkfr77LzFt3kScCJK8rdm3BjOLMw7qcs6QdNgPquS684nbSUI4zt+/c
+ uLzn5hddACbVOueGmVLJ5kV20XxmB+G8q1DFW4qtVDRlvTvHl70GvfmE8V1cbgAp
+ NpItPetFsE1I8Z/dJvyMlQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0tnbnmm-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0tgbtvq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:33 +0000 (GMT)
+ Fri, 14 Feb 2025 14:14:35 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51EC9vVV025116; Fri, 14 Feb 2025 14:14:32 GMT
+ with ESMTP id 51EDSoBA025143; Fri, 14 Feb 2025 14:14:34 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqksg4c-1
+ 44nwqksg4t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:32 +0000
+ Fri, 14 Feb 2025 14:14:33 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPH006920;
- Fri, 14 Feb 2025 14:14:32 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPJ006920;
+ Fri, 14 Feb 2025 14:14:33 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-3; Fri, 14 Feb 2025 14:14:31 +0000
+ ESMTP id 44nwqksg2h-4; Fri, 14 Feb 2025 14:14:33 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 02/45] migration: cpr helpers
-Date: Fri, 14 Feb 2025 06:13:44 -0800
-Message-Id: <1739542467-226739-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 03/45] migration: lower handler priority
+Date: Fri, 14 Feb 2025 06:13:45 -0800
+Message-Id: <1739542467-226739-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
@@ -75,16 +75,16 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-GUID: ynDWCEE5sMpbu2o6pTGYT7jDRpIrL9QG
-X-Proofpoint-ORIG-GUID: ynDWCEE5sMpbu2o6pTGYT7jDRpIrL9QG
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: TJVbJn3ViBuJ2eksh1wFmteaUrIilX_a
+X-Proofpoint-ORIG-GUID: TJVbJn3ViBuJ2eksh1wFmteaUrIilX_a
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,107 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add cpr_needed_for_reuse, cpr_resave_fd helpers, cpr_is_incoming, and
-cpr_open_fd, for use when adding cpr support for vfio and iommufd.
+Define a vmstate priority that is lower than the default, so its handlers
+run after all default priority handlers.  Since 0 is no longer the default
+priority, translate an uninitialized priority of 0 to MIG_PRI_DEFAULT.
+
+CPR for vfio will use this to install handlers for containers that run
+after handlers for the devices that they contain.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/migration/cpr.h |  6 ++++++
- migration/cpr.c         | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+ include/migration/vmstate.h | 6 +++++-
+ migration/savevm.c          | 4 ++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index 3a6deb7..6ad04d4 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -18,15 +18,21 @@
- void cpr_save_fd(const char *name, int id, int fd);
- void cpr_delete_fd(const char *name, int id);
- int cpr_find_fd(const char *name, int id);
-+void cpr_resave_fd(const char *name, int id, int fd);
-+int cpr_open_fd(const char *path, int flags, const char *name, int id,
-+                bool *reused, Error **errp);
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index a1dfab4..1ff7bd9 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -155,7 +155,11 @@ enum VMStateFlags {
+ };
  
- MigMode cpr_get_incoming_mode(void);
- void cpr_set_incoming_mode(MigMode mode);
-+bool cpr_is_incoming(void);
+ typedef enum {
+-    MIG_PRI_DEFAULT = 0,
++    MIG_PRI_UNINITIALIZED = 0,  /* An uninitialized priority field maps to */
++                                /* MIG_PRI_DEFAULT in save_state_priority */
++
++    MIG_PRI_LOW,                /* Must happen after default */
++    MIG_PRI_DEFAULT,
+     MIG_PRI_IOMMU,              /* Must happen before PCI devices */
+     MIG_PRI_PCI_BUS,            /* Must happen before IOMMU */
+     MIG_PRI_VIRTIO_MEM,         /* Must happen before IOMMU */
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 85a3559..7eee90d 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -232,7 +232,7 @@ typedef struct SaveState {
  
- int cpr_state_save(MigrationChannel *channel, Error **errp);
- int cpr_state_load(MigrationChannel *channel, Error **errp);
- void cpr_state_close(void);
- struct QIOChannel *cpr_state_ioc(void);
+ static SaveState savevm_state = {
+     .handlers = QTAILQ_HEAD_INITIALIZER(savevm_state.handlers),
+-    .handler_pri_head = { [MIG_PRI_DEFAULT ... MIG_PRI_MAX] = NULL },
++    .handler_pri_head = { [0 ... MIG_PRI_MAX] = NULL },
+     .global_section_id = 0,
+ };
  
-+bool cpr_needed_for_reuse(void *opaque);
-+
- QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
- QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
+@@ -704,7 +704,7 @@ static int calculate_compat_instance_id(const char *idstr)
  
-diff --git a/migration/cpr.c b/migration/cpr.c
-index 584b0b9..12c489b 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -95,6 +95,39 @@ int cpr_find_fd(const char *name, int id)
-     trace_cpr_find_fd(name, id, fd);
-     return fd;
- }
-+
-+void cpr_resave_fd(const char *name, int id, int fd)
-+{
-+    CprFd *elem = find_fd(&cpr_state.fds, name, id);
-+    int old_fd = elem ? elem->fd : -1;
-+
-+    if (old_fd < 0) {
-+        cpr_save_fd(name, id, fd);
-+    } else if (old_fd != fd) {
-+        error_setg(&error_fatal,
-+                   "internal error: cpr fd '%s' id %d value %d "
-+                   "already saved with a different value %d",
-+                   name, id, fd, old_fd);
-+    }
-+}
-+
-+int cpr_open_fd(const char *path, int flags, const char *name, int id,
-+                bool *reused, Error **errp)
-+{
-+    int fd = cpr_find_fd(name, id);
-+
-+    if (reused) {
-+        *reused = (fd >= 0);
-+    }
-+    if (fd < 0) {
-+        fd = qemu_open(path, flags, errp);
-+        if (fd >= 0) {
-+            cpr_save_fd(name, id, fd);
-+        }
-+    }
-+    return fd;
-+}
-+
- /*************************************************************************/
- #define CPR_STATE "CprState"
- 
-@@ -128,6 +161,11 @@ void cpr_set_incoming_mode(MigMode mode)
-     incoming_mode = mode;
- }
- 
-+bool cpr_is_incoming(void)
-+{
-+    return incoming_mode != MIG_MODE_NONE;
-+}
-+
- int cpr_state_save(MigrationChannel *channel, Error **errp)
+ static inline MigrationPriority save_state_priority(SaveStateEntry *se)
  {
-     int ret;
-@@ -222,3 +260,9 @@ void cpr_state_close(void)
-         cpr_state_file = NULL;
+-    if (se->vmsd) {
++    if (se->vmsd && se->vmsd->priority) {
+         return se->vmsd->priority;
      }
- }
-+
-+bool cpr_needed_for_reuse(void *opaque)
-+{
-+    MigMode mode = migrate_mode();
-+    return mode == MIG_MODE_CPR_TRANSFER;
-+}
+     return MIG_PRI_DEFAULT;
 -- 
 1.8.3.1
 
