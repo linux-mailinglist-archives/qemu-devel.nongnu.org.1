@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4B2A3570D
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 07:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B99BA3570C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 07:26:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tip8L-0006z8-Je; Fri, 14 Feb 2025 01:25:05 -0500
+	id 1tip8L-0006zT-Pf; Fri, 14 Feb 2025 01:25:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tip8H-0006wD-Du
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 01:25:01 -0500
+ id 1tip8I-0006wb-OT
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 01:25:02 -0500
 Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tip8F-0003CZ-Gx
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 01:25:01 -0500
+ id 1tip8F-0003E3-ND
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 01:25:02 -0500
 Received: from sslproxy07.your-server.de ([78.47.199.104])
  by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tip8D-000LLu-0R; Fri, 14 Feb 2025 07:24:57 +0100
+ id 1tip8E-000LMW-1k; Fri, 14 Feb 2025 07:24:58 +0100
 Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
  by sslproxy07.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tip8C-000NG2-0w; Fri, 14 Feb 2025 07:24:57 +0100
+ id 1tip8D-000NPw-2G; Fri, 14 Feb 2025 07:24:58 +0100
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 97473480167;
- Fri, 14 Feb 2025 07:24:56 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 05AAB480059;
+ Fri, 14 Feb 2025 07:24:58 +0100 (CET)
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id PRYR3uq4cS3R; Fri, 14 Feb 2025 07:24:56 +0100 (CET)
+ with ESMTP id XwlX5RJEqUwX; Fri, 14 Feb 2025 07:24:57 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 4D049480160;
- Fri, 14 Feb 2025 07:24:56 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id B0CE5480160;
+ Fri, 14 Feb 2025 07:24:57 +0100 (CET)
 X-Virus-Scanned: amavis at zimbra.eb.localhost
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id Ysra6XruGnxq; Fri, 14 Feb 2025 07:24:56 +0100 (CET)
+ with ESMTP id OQ2dZpyjfJPe; Fri, 14 Feb 2025 07:24:57 +0100 (CET)
 Received: from zimbra.eb.localhost (unknown [10.10.171.10])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 255D3480059;
- Fri, 14 Feb 2025 07:24:54 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id 95BA6480059;
+ Fri, 14 Feb 2025 07:24:56 +0100 (CET)
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 To: qemu-devel@nongnu.org
 Cc: Conor Dooley <conor.dooley@microchip.com>,
  Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH 3/5] hw/riscv: Make FDT optional for MPFS
-Date: Fri, 14 Feb 2025 07:24:40 +0100
-Message-ID: <20250214062443.9936-4-sebastian.huber@embedded-brains.de>
+Subject: [PATCH 4/5] hw/riscv: Allow direct start of kernel for MPFS
+Date: Fri, 14 Feb 2025 07:24:41 +0100
+Message-ID: <20250214062443.9936-5-sebastian.huber@embedded-brains.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250214062443.9936-1-sebastian.huber@embedded-brains.de>
 References: <20250214062443.9936-1-sebastian.huber@embedded-brains.de>
@@ -79,123 +79,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Real-time kernels such as RTEMS or Zephyr may use a static device tree
-built into the kernel image.  Do not require to use the -dtb option if
--kernel is used for the microchip-icicle-kit machine.
+Further customize the -bios and -kernel options behaviour for the
+microchip-icicle-kit machine.  If "-bios none -kernel filename" is
+specified, then do not load a firmware and instead only load and start
+the kernel image.
 
 Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
 ---
- hw/riscv/microchip_pfsoc.c | 53 ++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 28 deletions(-)
+ hw/riscv/microchip_pfsoc.c | 56 ++++++++++++++++++++++++++------------
+ 1 file changed, 39 insertions(+), 17 deletions(-)
 
 diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index 2ddc3464bb..f9e256df52 100644
+index f9e256df52..76a2c56419 100644
 --- a/hw/riscv/microchip_pfsoc.c
 +++ b/hw/riscv/microchip_pfsoc.c
-@@ -516,7 +516,6 @@ static void microchip_icicle_kit_machine_init(Machine=
-State *machine)
-     uint64_t mem_low_size, mem_high_size;
-     hwaddr firmware_load_addr;
-     const char *firmware_name;
--    bool kernel_as_payload =3D false;
-     target_ulong firmware_end_addr, kernel_start_addr;
-     uint64_t kernel_entry;
-     uint64_t fdt_load_addr;
-@@ -589,25 +588,12 @@ static void microchip_icicle_kit_machine_init(Machi=
+@@ -578,29 +578,44 @@ static void microchip_icicle_kit_machine_init(Machi=
 neState *machine)
-      *
-      * This ensures backwards compatibility with how we used to expose -=
-bios
-      * to users but allows them to run through direct kernel booting as =
-well.
--     *
--     * When -kernel is used for direct boot, -dtb must be present to pro=
-vide
--     * a valid device tree for the board, as we don't generate device tr=
-ee.
-      */
+     }
 =20
--    if (machine->kernel_filename && machine->dtb) {
--        int fdt_size;
--        machine->fdt =3D load_device_tree(machine->dtb, &fdt_size);
--        if (!machine->fdt) {
--            error_report("load_device_tree() failed");
--            exit(1);
--        }
--
-+    if (machine->kernel_filename) {
-         firmware_name =3D RISCV64_BIOS_BIN;
-         firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
--        kernel_as_payload =3D true;
--    }
--
--    if (!kernel_as_payload) {
-+    } else {
-         firmware_name =3D BIOS_FILENAME;
+     /*
+-     * We follow the following table to select which payload we execute.
++     * We follow the following table to select which firmware we use.
+      *
+-     *  -bios |    -kernel | payload
+-     * -------+------------+--------
+-     *      N |          N | HSS
+-     *      Y | don't care | HSS
+-     *      N |          Y | kernel
+-     *
+-     * This ensures backwards compatibility with how we used to expose -=
+bios
+-     * to users but allows them to run through direct kernel booting as =
+well.
++     * -bios         | -kernel    | firmware
++     * --------------+------------+--------
++     * none          |          N | error
++     * none          |          Y | kernel
++     * NULL, default |          N | BIOS_FILENAME
++     * NULL, default |          Y | RISCV64_BIOS_BIN
++     * other         | don't care | other
+      */
++    if (machine->firmware && !strcmp(machine->firmware, "none")) {
++        if (!machine->kernel_filename) {
++            error_report("for -bios none, a kernel is required");
++            exit(1);
++        }
+=20
+-    if (machine->kernel_filename) {
+-        firmware_name =3D RISCV64_BIOS_BIN;
+-        firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
++        firmware_name =3D NULL;
++        firmware_load_addr =3D RESET_VECTOR;
++    } else if (!machine->firmware || !strcmp(machine->firmware, "default=
+")) {
++        if (machine->kernel_filename) {
++            firmware_name =3D RISCV64_BIOS_BIN;
++            firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
++        } else {
++            firmware_name =3D BIOS_FILENAME;
++            firmware_load_addr =3D RESET_VECTOR;
++        }
+     } else {
+-        firmware_name =3D BIOS_FILENAME;
++        firmware_name =3D machine->firmware;
          firmware_load_addr =3D RESET_VECTOR;
      }
-@@ -617,7 +603,7 @@ static void microchip_icicle_kit_machine_init(Machine=
-State *machine)
-                                                      &firmware_load_addr=
+=20
+-    /* Load the firmware */
+-    firmware_end_addr =3D riscv_find_and_load_firmware(machine, firmware=
+_name,
+-                                                     &firmware_load_addr=
 , NULL);
++    /* Load the firmware if necessary */
++    if (firmware_name) {
++        firmware_end_addr =3D riscv_load_firmware(firmware_name,
++                                                &firmware_load_addr, NUL=
+L);
++    } else {
++        firmware_end_addr =3D firmware_load_addr;
++    }
 =20
      riscv_boot_info_init(&boot_info, &s->soc.u_cpus);
--    if (kernel_as_payload) {
-+    if (machine->kernel_filename) {
-         kernel_start_addr =3D riscv_calc_kernel_start_addr(&boot_info,
-                                                          firmware_end_ad=
-dr);
-=20
-@@ -625,19 +611,30 @@ static void microchip_icicle_kit_machine_init(Machi=
-neState *machine)
-                           true, NULL);
-         kernel_entry =3D boot_info.image_low_addr;
-=20
--        /* Compute the fdt load address in dram */
--        hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
--        hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].size;
--
--        if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
--            kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base;
--            kernel_ram_size =3D mem_high_size;
-+        if (machine->dtb) {
-+            int fdt_size;
-+            machine->fdt =3D load_device_tree(machine->dtb, &fdt_size);
-+            if (!machine->fdt) {
-+                error_report("load_device_tree() failed");
-+                exit(1);
-+            }
-+
-+            /* Compute the FDT load address in DRAM */
-+            hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].b=
-ase;
-+            hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].s=
-ize;
-+
-+            if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
-+                kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base=
-;
-+                kernel_ram_size =3D mem_high_size;
-+            }
-+
-+            fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, ke=
-rnel_ram_size,
-+                                                   machine, &boot_info);
-+            riscv_load_fdt(fdt_load_addr, machine->fdt);
-+        } else {
-+            fdt_load_addr =3D 0;
+     if (machine->kernel_filename) {
+@@ -635,8 +650,15 @@ static void microchip_icicle_kit_machine_init(Machin=
+eState *machine)
+             fdt_load_addr =3D 0;
          }
 =20
--        fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, kernel=
-_ram_size,
--                                               machine, &boot_info);
--        riscv_load_fdt(fdt_load_addr, machine->fdt);
--
++        hwaddr start_addr;
++        if (firmware_name) {
++            start_addr =3D firmware_load_addr;
++        } else {
++            start_addr =3D kernel_entry;
++        }
++
          /* Load the reset vector */
-         riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, firmware_load=
+-        riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, firmware_load=
 _addr,
++        riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, start_addr,
                                    memmap[MICROCHIP_PFSOC_ENVM_DATA].base=
 ,
+                                   memmap[MICROCHIP_PFSOC_ENVM_DATA].size=
+,
+                                   kernel_entry, fdt_load_addr);
 --=20
 2.43.0
 
