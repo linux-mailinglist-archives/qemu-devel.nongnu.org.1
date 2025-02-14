@@ -2,67 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC91A36354
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 17:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA01AA3638E
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 17:50:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiylc-0001Js-PM; Fri, 14 Feb 2025 11:42:16 -0500
+	id 1tiysA-0003yn-3V; Fri, 14 Feb 2025 11:49:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tiyla-0001HZ-51
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:42:14 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tiys7-0003yN-Bs
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:48:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tiylX-00041z-Si
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:42:13 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1739551325; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=Dgjfv2r92Rsh2m+UpZNtCJ25yJeGS5OkrXvsqO3PurwwwWuRxPsy80Zj3mKRe46Knn8jXleWRQSkMrOoQy12JhAmva9vRLs/v9jOCmfZLJEalFhpaMq0BaTFroyWkxg5wkUm9EmLpFlJm8hSMGBscNQ5ULH7rLRJPfGmqMOjZqk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1739551325;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=QgmrKJdzqk2r43GXIETwRI4R4YAzfhHMJ/bV0OVmiCc=; 
- b=hrI1dMUk2/lNZWtlejdxYYvyEcg2TY9PxWIBJyi/NZtMrQmr+YQUznl4iwrIXSSFzZDwuWrkAayPt0zp41GHnBweWAx5JwzbC9CiZo1kG12BIxwu6RuiGVqbVzG3g2KgHwrW+WvcuHDf2KdDBdSPSWxCpTVpYK8i2rRfbqoQjDo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739551325; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=QgmrKJdzqk2r43GXIETwRI4R4YAzfhHMJ/bV0OVmiCc=;
- b=Ebtb7/g0KUIvqYBdoGRvNjnS72t7/ANRoWGAUdCEGRWB+cNYPo9mLhQ2kmky6NvR
- nGsZr+DX0gmjZEF+zI42XCpJiS3QJxHaHm7axz4ejvFQgBnihCuAh0lN0zQOAxCYc/r
- xk7M5wSfaso+dfgUKSP7r5IRJdWoNXZmfl5VJTqg=
-Received: by mx.zohomail.com with SMTPS id 1739551322436727.316081658748;
- Fri, 14 Feb 2025 08:42:02 -0800 (PST)
-Message-ID: <a3361068-5522-42b3-8da2-260821d5fb2a@collabora.com>
-Date: Fri, 14 Feb 2025 19:41:59 +0300
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tiys4-0004qk-9Z
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 11:48:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739551734;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9mGVllckroo7rM7NYtqXLiiVLkAvmo5PwYA8r4ryeOg=;
+ b=eR+oyQ9jw4nZ5p20T2YyYMD4+aavXSttgjLv6RGazYx/G1vS0nZ/gnwftWFX+A+/MHuvgw
+ evg97KoAKLTtPj73HX+XIYE7OQbyap5L4YkRAK9T9+HgOeM8hBmWVIaxtdQ4mnGJTpB4Ya
+ waaYF3jymY3O7pV8ZJ/LHjn1cdtkPgg=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-wNMyjE_gOWWX1lFoLYiR2Q-1; Fri, 14 Feb 2025 11:48:52 -0500
+X-MC-Unique: wNMyjE_gOWWX1lFoLYiR2Q-1
+X-Mimecast-MFC-AGG-ID: wNMyjE_gOWWX1lFoLYiR2Q_1739551732
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-471d2e94d0eso8605481cf.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 08:48:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739551732; x=1740156532;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9mGVllckroo7rM7NYtqXLiiVLkAvmo5PwYA8r4ryeOg=;
+ b=wA1Hz9xVo72AEDSDIj8OPSNvKEPSYKRDWy5KoF4mpIsy4tWvMOX9yY2CpWQnQju0n2
+ LhAJRIzWcz5Exo28IE7VNj7rKb+wR/nU0N9jZmjJ2PLqJ8ig3GAguPBIrXnPLCQ2SQY0
+ KGiyz0dJx0zJN0zevvWjw/vIrMHTCLBgdJZuC9f4WcoZefcmQNUs2dhNFkVINtfOzDc8
+ WqdasKubPyJeSgSutnV0/t9X0wrDAjP9j8K38Mm2qWjFwEB3ejXtJfyiiEMAO2QE69GQ
+ FJ2zQqW321dXtluTv8wVOF2eMeWzAxteGt1jpGLRxdyK2IxQDVr0vZ5XmoLpO3ESKfC9
+ /5OA==
+X-Gm-Message-State: AOJu0YzvTMEn8bPbyMi9+Y8IwF71U0EjohxcXWvlnteBgxAMjknY9C0T
+ Mu6UGdboaVZ1OAq4rS8sgtfgBxfDAY9/+68fn0yuwERSUs0vj4z4FDI8ndc4bK6iCUnm+GXt8RN
+ 9BsHycZJap58y0HUDbiGhDI7C7W2leM0iXQ1qdQviSdPnFMmtxqnF
+X-Gm-Gg: ASbGncuHbfVY0sITPrmDZWAF5B19uFfPOGwCLJXEwFnY99vb8vKDWds4uTDQoBBLugQ
+ ylDMuMsw0WCX9wzgPPkqGbVQXu8OWz85WaI3EplGcTLRRUif+gSHUevzdog4ImqAm0xln3/tbL9
+ cLSLuTBl0VbrfwRxeNoPQRVbYPUwzd8ADR7+2DpS6FUqF8bmx5ykr6HOo1Nl091u0LDsQ4+8y2H
+ VayU+pd/t4PEBxKHLlsMW407XE+OQ9elESuxUx+avE8F+LhcwLXJlKmUTU=
+X-Received: by 2002:a05:622a:6f15:b0:471:d41f:c636 with SMTP id
+ d75a77b69052e-471d41fc71cmr20275631cf.34.1739551731830; 
+ Fri, 14 Feb 2025 08:48:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEjBSI7QOL5x/XwCJ2o0ybMZS1MyVkSv7Y9L8CCcfS9uIInP21EZG5664nDDdbcZdHCuiJSwQ==
+X-Received: by 2002:a05:622a:6f15:b0:471:d41f:c636 with SMTP id
+ d75a77b69052e-471d41fc71cmr20275351cf.34.1739551731440; 
+ Fri, 14 Feb 2025 08:48:51 -0800 (PST)
+Received: from x1.local ([2604:7a40:2041:2b00::1000])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-471c29e97f1sm19533541cf.14.2025.02.14.08.48.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 14 Feb 2025 08:48:50 -0800 (PST)
+Date: Fri, 14 Feb 2025 11:48:42 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH V2 28/45] vfio: return mr from vfio_get_xlat_addr
+Message-ID: <Z69z6oTtaGOC287O@x1.local>
+References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
+ <1739542467-226739-29-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/gtk-gl-area: Remove extra draw call in refresh
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dongwon Kim <dongwon.kim@intel.com>
-Cc: qemu-devel@nongnu.org
-References: <20250206225304.1739418-1-dongwon.kim@intel.com>
- <878qq8pqmk.fsf@draig.linaro.org>
- <657183a6-5c0e-4bfd-9b83-1fa98946c330@collabora.com>
-Content-Language: en-US
-In-Reply-To: <657183a6-5c0e-4bfd-9b83-1fa98946c330@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1739542467-226739-29-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -81,60 +108,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/14/25 18:26, Dmitry Osipenko wrote:
-> On 2/14/25 17:06, Alex Bennée wrote:
->> dongwon.kim@intel.com writes:
->>
->>> From: Dongwon Kim <dongwon.kim@intel.com>
->>>
->>> This partially reverts commit 77bf310084dad38b3a2badf01766c659056f1cf2
->>> which causes some guest display corruption when gtk-gl-area
->>> is used for GTK rendering (e.g. Wayland Compositor) possibly due to
->>> simulataneous accesses on the guest frame buffer by host compositor
->>> and the guest.
->>>
->>> Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->>> Reported-by: Alex Bennée <alex.bennee@linaro.org>
->>> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
->>> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
->>> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
->>
->> This certainly fixes the corruption I was seeing while testing Dimitry's
->> native context patches and doesn't seem to affect the venus test modes.
->>
->> So:
->>
->> Tested-by: Alex Bennée <alex.bennee@linaro.org>
->> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
->>
->>> ---
->>>  ui/gtk-gl-area.c | 1 -
->>>  1 file changed, 1 deletion(-)
->>>
->>> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
->>> index 2c9a0db425..9f7dc697f2 100644
->>> --- a/ui/gtk-gl-area.c
->>> +++ b/ui/gtk-gl-area.c
->>> @@ -129,7 +129,6 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
->>>  
->>>      if (vc->gfx.guest_fb.dmabuf &&
->>>          qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
->>> -        gd_gl_area_draw(vc);
->>>          return;
->>>      }
->>
+On Fri, Feb 14, 2025 at 06:14:10AM -0800, Steve Sistare wrote:
+> Modify memory_get_xlat_addr and vfio_get_xlat_addr to return the memory
+> region that the translated address is found in.  This will be needed by
+> CPR in a subsequent patch to map blocks using IOMMU_IOAS_MAP_FILE.
 > 
-> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Also return the xlat offset, so we can simplify the interface by removing
+> the out parameters that can be trivially derived from mr and xlat.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>  hw/vfio/common.c       | 21 ++++++++++++++-------
+>  hw/virtio/vhost-vdpa.c |  8 ++++++--
+>  include/exec/memory.h  |  6 +++---
+>  system/memory.c        | 19 ++++---------------
+>  4 files changed, 27 insertions(+), 27 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index c536698..3b0c520 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -246,14 +246,13 @@ static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+>  }
+>  
+>  /* Called with rcu_read_lock held.  */
+> -static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                               ram_addr_t *ram_addr, bool *read_only,
+> -                               Error **errp)
+> +static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, MemoryRegion **mr_p,
+> +                               hwaddr *xlat_p, Error **errp)
+>  {
+>      bool ret, mr_has_discard_manager;
+>  
+> -    ret = memory_get_xlat_addr(iotlb, vaddr, ram_addr, read_only,
+> -                               &mr_has_discard_manager, errp);
+> +    ret = memory_get_xlat_addr(iotlb, &mr_has_discard_manager, mr_p, xlat_p,
+> +                               errp);
+>      if (ret && mr_has_discard_manager) {
+>          /*
+>           * Malicious VMs might trigger discarding of IOMMU-mapped memory. The
+> @@ -281,6 +280,8 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
+>      VFIOContainerBase *bcontainer = giommu->bcontainer;
+>      hwaddr iova = iotlb->iova + giommu->iommu_offset;
+> +    MemoryRegion *mr;
+> +    hwaddr xlat;
+>      void *vaddr;
+>      int ret;
+>      Error *local_err = NULL;
+> @@ -300,10 +301,13 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+>          bool read_only;
+>  
+> -        if (!vfio_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, &local_err)) {
+> +        if (!vfio_get_xlat_addr(iotlb, &mr, &xlat, &local_err)) {
+>              error_report_err(local_err);
+>              goto out;
+>          }
+> +        vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> +        read_only = !(iotlb->perm & IOMMU_WO) || mr->readonly;
+> +
+>          /*
+>           * vaddr is only valid until rcu_read_unlock(). But after
+>           * vfio_dma_map has set up the mapping the pages will be
+> @@ -1259,6 +1263,8 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      ram_addr_t translated_addr;
+>      Error *local_err = NULL;
+>      int ret = -EINVAL;
+> +    MemoryRegion *mr;
+> +    ram_addr_t xlat;
+>  
+>      trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
+>  
+> @@ -1269,10 +1275,11 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      }
+>  
+>      rcu_read_lock();
+> -    if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
+> +    if (!vfio_get_xlat_addr(iotlb, &mr, &xlat, &local_err)) {
+>          error_report_err(local_err);
+>          goto out_unlock;
+>      }
+> +    translated_addr = memory_region_get_ram_addr(mr) + xlat;
+>  
+>      ret = vfio_get_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+>                                  translated_addr, &local_err);
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 3cdaa12..5dfe51e 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -209,6 +209,8 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      int ret;
+>      Int128 llend;
+>      Error *local_err = NULL;
+> +    MemoryRegion *mr;
+> +    hwaddr xlat;
+>  
+>      if (iotlb->target_as != &address_space_memory) {
+>          error_report("Wrong target AS \"%s\", only system memory is allowed",
+> @@ -228,11 +230,13 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>      if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+>          bool read_only;
+>  
+> -        if (!memory_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, NULL,
+> -                                  &local_err)) {
+> +        if (!memory_get_xlat_addr(iotlb, NULL, &mr, &xlat, &local_err)) {
+>              error_report_err(local_err);
+>              return;
+>          }
+> +        vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> +        read_only = !(iotlb->perm & IOMMU_WO) || mr->readonly;
+> +
+>          ret = vhost_vdpa_dma_map(s, VHOST_VDPA_GUEST_PA_ASID, iova,
+>                                   iotlb->addr_mask + 1, vaddr, read_only);
+>          if (ret) {
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index ea5d33a..8590838 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -747,13 +747,13 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+>   * @read_only: indicates if writes are allowed
+>   * @mr_has_discard_manager: indicates memory is controlled by a
+>   *                          RamDiscardManager
 
-I now noticed that the fixes tag is missing in the commit message. It
-should be added as described in [1]. Also, use the get_maintainers.pl
-script to CC all interested people. Submitting patches to QEMU works
-same like in Linux kernel.
+(some prior fields are prone to removal))
 
-[1] https://www.qemu.org/docs/master/devel/submitting-a-patch.html
+> + * @mr_p: return the MemoryRegion containing the @iotlb translated addr
+>   * @errp: pointer to Error*, to store an error if it happens.
+>   *
+>   * Return: true on success, else false setting @errp with error.
+>   */
+> -bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                          ram_addr_t *ram_addr, bool *read_only,
+> -                          bool *mr_has_discard_manager, Error **errp);
+> +bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, bool *mr_has_discard_manager,
+> +                          MemoryRegion **mr_p, hwaddr *xlat_p, Error **errp);
+>  
+>  typedef struct CoalescedMemoryRange CoalescedMemoryRange;
+>  typedef struct MemoryRegionIoeventfd MemoryRegionIoeventfd;
+> diff --git a/system/memory.c b/system/memory.c
+> index 4c82979..755eafe 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -2183,9 +2183,8 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+>  }
+>  
+>  /* Called with rcu_read_lock held.  */
+> -bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                          ram_addr_t *ram_addr, bool *read_only,
+> -                          bool *mr_has_discard_manager, Error **errp)
+> +bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, bool *mr_has_discard_manager,
+> +                          MemoryRegion **mr_p, hwaddr *xlat_p, Error **errp)
+
+If we're going to return the MR anyway, probably we can drop
+mr_has_discard_manager altogether..
+
+>  {
+>      MemoryRegion *mr;
+>      hwaddr xlat;
+> @@ -2238,18 +2237,8 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>          return false;
+>      }
+>  
+> -    if (vaddr) {
+> -        *vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> -    }
+> -
+> -    if (ram_addr) {
+> -        *ram_addr = memory_region_get_ram_addr(mr) + xlat;
+> -    }
+> -
+> -    if (read_only) {
+> -        *read_only = !writable || mr->readonly;
+> -    }
+> -
+> +    *xlat_p = xlat;
+> +    *mr_p = mr;
+
+I suppose current use on the callers are still under RCU so looks ok, but
+that'll need to be rich-documented.
+
+Better way is always taking a MR reference when the MR pointer is returned,
+with memory_region_ref().  Then it is even valid if by accident accessed
+after rcu_read_unlock(), and caller should unref() after use.
+
+>      return true;
+>  }
+>  
+> -- 
+> 1.8.3.1
+> 
 
 -- 
-Best regards,
-Dmitry
+Peter Xu
+
 
