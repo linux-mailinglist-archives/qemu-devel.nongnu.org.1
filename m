@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6462EA36B0F
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D06EA366FA
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:37:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj75C-0004S8-6F; Fri, 14 Feb 2025 20:35:05 -0500
+	id 1tj2OS-0000Ky-FO; Fri, 14 Feb 2025 15:34:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2MO-0006Zu-IS
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:29 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2Mx-0006dV-3y
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:33:04 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2ML-0002BD-9c
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:27 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2Mg-0002Di-3t
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:47 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8873C1F385;
- Fri, 14 Feb 2025 20:32:16 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 21D242117F;
+ Fri, 14 Feb 2025 20:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1739565138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EreF25kc6nSEuxn/0QNex6SABRxl5LZSTkVEq4Kjkcs=;
- b=rGC07swBvHiYdrnnQDYewM1S7ZHE6USotY/iFL6uA1ZWYHhURBrrOVmiHcQ33S6g0FfIXs
- LqekafVoDOGIJ0BUcyzaTe6du+UHM0GFpUanDunqJtOXS9yXhiX7Pu8ptwqvtnRmDTQ+Xw
- mIK4QBV9Rl+m8QiialHE+g7AS/Ms2ME=
+ bh=Or5Q2taU0JJOy4kx/aSofCBfoPw3/iRdmtT6ZDFZIP4=;
+ b=TC3dBARz2Mm9R8S9an4u+mNUQWOD6EL7eydAbWdF4NvzwExpEn68eMqfByiCLprZsMaOqB
+ f0amvmIypLSuSaZS68XwqweMv5QFRe9Na9Q0DExdB7bg27wtZaHFGzlmWTp7pSHXNZZtCi
+ F1Vm05YIEcAXyTtJfQsThMmWllGiZU4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565136;
+ s=susede2_ed25519; t=1739565138;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EreF25kc6nSEuxn/0QNex6SABRxl5LZSTkVEq4Kjkcs=;
- b=zvmGLWQGJ44q2wMVhOzPQI11iw8/jn0TS1bWRuzskrwpDPCMyL2qJ+nzdWv+RaqYhhwwCO
- U5PS21PK2icldtBQ==
-Authentication-Results: smtp-out2.suse.de;
+ bh=Or5Q2taU0JJOy4kx/aSofCBfoPw3/iRdmtT6ZDFZIP4=;
+ b=uyUgfHF8/f9tYnrXQvaOJc/O4pj6dDS3UIsyKE5/+cWQvmSng63Y9ogXlQhoAAFoNcjCui
+ wDjPPiZGlSVJM0Cg==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1739565138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EreF25kc6nSEuxn/0QNex6SABRxl5LZSTkVEq4Kjkcs=;
- b=rGC07swBvHiYdrnnQDYewM1S7ZHE6USotY/iFL6uA1ZWYHhURBrrOVmiHcQ33S6g0FfIXs
- LqekafVoDOGIJ0BUcyzaTe6du+UHM0GFpUanDunqJtOXS9yXhiX7Pu8ptwqvtnRmDTQ+Xw
- mIK4QBV9Rl+m8QiialHE+g7AS/Ms2ME=
+ bh=Or5Q2taU0JJOy4kx/aSofCBfoPw3/iRdmtT6ZDFZIP4=;
+ b=TC3dBARz2Mm9R8S9an4u+mNUQWOD6EL7eydAbWdF4NvzwExpEn68eMqfByiCLprZsMaOqB
+ f0amvmIypLSuSaZS68XwqweMv5QFRe9Na9Q0DExdB7bg27wtZaHFGzlmWTp7pSHXNZZtCi
+ F1Vm05YIEcAXyTtJfQsThMmWllGiZU4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565136;
+ s=susede2_ed25519; t=1739565138;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EreF25kc6nSEuxn/0QNex6SABRxl5LZSTkVEq4Kjkcs=;
- b=zvmGLWQGJ44q2wMVhOzPQI11iw8/jn0TS1bWRuzskrwpDPCMyL2qJ+nzdWv+RaqYhhwwCO
- U5PS21PK2icldtBQ==
+ bh=Or5Q2taU0JJOy4kx/aSofCBfoPw3/iRdmtT6ZDFZIP4=;
+ b=uyUgfHF8/f9tYnrXQvaOJc/O4pj6dDS3UIsyKE5/+cWQvmSng63Y9ogXlQhoAAFoNcjCui
+ wDjPPiZGlSVJM0Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 68AE613AFC;
- Fri, 14 Feb 2025 20:32:15 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 058E213285;
+ Fri, 14 Feb 2025 20:32:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aFLrCU+or2cgEgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:15 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EBZXLVCor2cgEgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:16 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 07/22] migration/multifd: Add a compat property for TLS
- termination
-Date: Fri, 14 Feb 2025 17:31:44 -0300
-Message-Id: <20250214203159.30168-8-farosas@suse.de>
+Subject: [PULL 08/22] migration: Check migration error after loadvm
+Date: Fri, 14 Feb 2025 17:31:45 -0300
+Message-Id: <20250214203159.30168-9-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250214203159.30168-1-farosas@suse.de>
 References: <20250214203159.30168-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
@@ -94,8 +93,8 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -119,156 +118,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're currently changing the way the source multifd migration handles
-the shutdown of the multifd channels when TLS is in use to perform a
-clean termination by calling gnutls_bye().
+We're currently only checking the QEMUFile error after
+qemu_loadvm_state(). This was causing a TLS termination error from
+multifd recv threads to be ignored.
 
-Older src QEMUs will always close the channel without terminating the
-TLS session. New dst QEMUs treat an unclean termination as an error.
+Start checking the migration error as well to avoid missing further
+errors.
 
-Add multifd_clean_tls_termination (default true) that can be switched
-on the destination whenever a src QEMU <= 9.2 is in use.
-
-(Note that the compat property is only strictly necessary for src
-QEMUs older than 9.1. Due to synchronization coincidences, src QEMUs
-9.1 and 9.2 can put the destination in a condition where it doesn't
-see the unclean termination. Still, make the property more inclusive
-to facilitate potential backports.)
+Regarding compatibility concerning the TLS termination error that was
+being ignored, for QEMUs <= 9.2 - if the old QEMU is being used as
+migration source - the recently added migration property
+multifd-tls-clean-termination needs to be set to OFF in the
+*destination* machine.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- hw/core/machine.c     |  1 +
- migration/migration.h | 33 +++++++++++++++++++++++++++++++++
- migration/multifd.c   | 14 ++++++++++++--
- migration/multifd.h   |  2 ++
- migration/options.c   |  2 ++
- 5 files changed, 50 insertions(+), 2 deletions(-)
+ migration/savevm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 254cc20c4c..02cff735b3 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -42,6 +42,7 @@ GlobalProperty hw_compat_9_2[] = {
-     { "virtio-balloon-pci-transitional", "vectors", "0" },
-     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
-     { "virtio-mem-pci", "vectors", "0" },
-+    { "migration", "multifd-clean-tls-termination", "false" },
- };
- const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index bc375db282..4046faf009 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2940,7 +2940,11 @@ int qemu_loadvm_state(QEMUFile *f)
  
-diff --git a/migration/migration.h b/migration/migration.h
-index eaebcc2042..eb84f75b4a 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -443,6 +443,39 @@ struct MigrationState {
-      * Default value is false. (since 8.1)
-      */
-     bool multifd_flush_after_each_section;
-+
-+    /*
-+     * This variable only makes sense when set on the machine that is
-+     * the destination of a multifd migration with TLS enabled. It
-+     * affects the behavior of the last send->recv iteration with
-+     * regards to termination of the TLS session.
-+     *
-+     * When set:
-+     *
-+     * - the destination QEMU instance can expect to never get a
-+     *   GNUTLS_E_PREMATURE_TERMINATION error. Manifested as the error
-+     *   message: "The TLS connection was non-properly terminated".
-+     *
-+     * When clear:
-+     *
-+     * - the destination QEMU instance can expect to see a
-+     *   GNUTLS_E_PREMATURE_TERMINATION error in any multifd channel
-+     *   whenever the last recv() call of that channel happens after
-+     *   the source QEMU instance has already issued shutdown() on the
-+     *   channel.
-+     *
-+     *   Commit 637280aeb2 (since 9.1) introduced a side effect that
-+     *   causes the destination instance to not be affected by the
-+     *   premature termination, while commit 1d457daf86 (since 10.0)
-+     *   causes the premature termination condition to be once again
-+     *   reachable.
-+     *
-+     * NOTE: Regardless of the state of this option, a premature
-+     * termination of the TLS connection might happen due to error at
-+     * any moment prior to the last send->recv iteration.
-+     */
-+    bool multifd_clean_tls_termination;
-+
+     /* When reaching here, it must be precopy */
+     if (ret == 0) {
+-        ret = qemu_file_get_error(f);
++        if (migrate_has_error(migrate_get_current())) {
++            ret = -EINVAL;
++        } else {
++            ret = qemu_file_get_error(f);
++        }
+     }
+ 
      /*
-      * This decides the size of guest memory chunk that will be used
-      * to track dirty bitmap clearing.  The size of memory chunk will
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 0296758c08..554035e095 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1151,6 +1151,7 @@ void multifd_recv_sync_main(void)
- 
- static void *multifd_recv_thread(void *opaque)
- {
-+    MigrationState *s = migrate_get_current();
-     MultiFDRecvParams *p = opaque;
-     Error *local_err = NULL;
-     bool use_packets = multifd_use_packets();
-@@ -1159,18 +1160,27 @@ static void *multifd_recv_thread(void *opaque)
-     trace_multifd_recv_thread_start(p->id);
-     rcu_register_thread();
- 
-+    if (!s->multifd_clean_tls_termination) {
-+        p->read_flags = QIO_CHANNEL_READ_FLAG_RELAXED_EOF;
-+    }
-+
-     while (true) {
-         uint32_t flags = 0;
-         bool has_data = false;
-         p->normal_num = 0;
- 
-         if (use_packets) {
-+            struct iovec iov = {
-+                .iov_base = (void *)p->packet,
-+                .iov_len = p->packet_len
-+            };
-+
-             if (multifd_recv_should_exit()) {
-                 break;
-             }
- 
--            ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
--                                           p->packet_len, &local_err);
-+            ret = qio_channel_readv_full_all_eof(p->c, &iov, 1, NULL, NULL,
-+                                                 p->read_flags, &local_err);
-             if (!ret) {
-                 /* EOF */
-                 assert(!local_err);
-diff --git a/migration/multifd.h b/migration/multifd.h
-index bd785b9873..cf408ff721 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -244,6 +244,8 @@ typedef struct {
-     uint32_t zero_num;
-     /* used for de-compression methods */
-     void *compress_data;
-+    /* Flags for the QIOChannel */
-+    int read_flags;
- } MultiFDRecvParams;
- 
- typedef struct {
-diff --git a/migration/options.c b/migration/options.c
-index 4db340b502..bb259d192a 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -99,6 +99,8 @@ const Property migration_properties[] = {
-                       clear_bitmap_shift, CLEAR_BITMAP_SHIFT_DEFAULT),
-     DEFINE_PROP_BOOL("x-preempt-pre-7-2", MigrationState,
-                      preempt_pre_7_2, false),
-+    DEFINE_PROP_BOOL("multifd-clean-tls-termination", MigrationState,
-+                     multifd_clean_tls_termination, true),
- 
-     /* Migration parameters */
-     DEFINE_PROP_UINT8("x-throttle-trigger-threshold", MigrationState,
 -- 
 2.35.3
 
