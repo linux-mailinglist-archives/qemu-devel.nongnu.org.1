@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95021A36706
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FE2A366E7
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:32:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2M0-0005Z7-UL; Fri, 14 Feb 2025 15:32:05 -0500
+	id 1tj2Lk-0004xK-IG; Fri, 14 Feb 2025 15:31:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2KT-00049H-Ez
+ id 1tj2KU-00049S-RD
  for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tj2KP-000225-59
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:28 -0500
+ id 1tj2KT-00022R-84
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:30:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739565024;
+ s=mimecast20190719; t=1739565028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N3SVrTqLq8tuMrJJ7lHZyUbVQuh8koYYjB5pQtXNihI=;
- b=alvB0Xohjj9M+/Q8tmvz+cq4D+UvetVULyws+shWYO/+CuEb4mWJh8fLr0GXRq7Aklg6DE
- FKv7Wq2lP/E+S8J3Fd2QrpeFQa2Q2CUdrvB2XtHQNVDXYNBSLpcqZzgCIKdvzby3gwBu7p
- F1avZ/S5tqXmS8wmpWJqMMOs9cz0+CI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OOU0wCWpbF8Ks7g7EwMzl8CZelbsnNtS6EUVGTCCun4=;
+ b=BfI0R9sM69FQB2cES1uYnVm/t3ldUoV1d9HSpVgXJaJvjIM+yNbWBhz6gO78iz2toxoiV1
+ 4kl0N5qsW+Chi0r/nR+P9jNjYaJeElz9Y7d75nPlfKZpeNcAK205ZpY7lWgSETDL2IJKri
+ 2//bdRjq+4k8cex5/7X+Ylh5NqEp7do=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-rePO_smrPnONYfBgBjPnWA-1; Fri,
- 14 Feb 2025 15:30:22 -0500
-X-MC-Unique: rePO_smrPnONYfBgBjPnWA-1
-X-Mimecast-MFC-AGG-ID: rePO_smrPnONYfBgBjPnWA_1739565021
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-X8iRNArFPJa5ArR-eIyVQg-1; Fri,
+ 14 Feb 2025 15:30:26 -0500
+X-MC-Unique: X8iRNArFPJa5ArR-eIyVQg-1
+X-Mimecast-MFC-AGG-ID: X8iRNArFPJa5ArR-eIyVQg_1739565025
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9879118EB2C6
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:30:21 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62E0019039C8
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 20:30:25 +0000 (UTC)
 Received: from tapioca.redhat.com (unknown [10.44.32.23])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 513D91800358; Fri, 14 Feb 2025 20:30:18 +0000 (UTC)
+ id 49BD41800352; Fri, 14 Feb 2025 20:30:21 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v4 09/11] qapi: golang: Generate command type
-Date: Fri, 14 Feb 2025 21:29:42 +0100
-Message-ID: <20250214202944.69897-10-victortoso@redhat.com>
+Subject: [PATCH v4 10/11] qapi: golang: Generate Command sync/async interfaces
+Date: Fri, 14 Feb 2025 21:29:43 +0100
+Message-ID: <20250214202944.69897-11-victortoso@redhat.com>
 In-Reply-To: <20250214202944.69897-1-victortoso@redhat.com>
 References: <20250214202944.69897-1-victortoso@redhat.com>
 MIME-Version: 1.0
@@ -84,170 +84,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch handles QAPI command types and generates data structures in
-Go that handles it.
+The Command interface is an abstraction that can be used by client and
+server to the manager the Command types albeit with a different
+implementation for sending and receiving.
 
-Note that command's id is part of the first layer of unmarshal, so it
-is a member of protocol.go's Message type.
+The proposal for Sync is defined as Command while the Async is named
+CommandAsync.
 
-qapi:
- | ##
- | # @add-fd:
- | #
- | # Add a file descriptor, that was passed via SCM rights, to an fd set.
- | #
- | # @fdset-id: The ID of the fd set to add the file descriptor to.
- | #
- | # @opaque: A free-form string that can be used to describe the fd.
- | #
- | # Returns:
- | #     @AddfdInfo
- | #
- | # Errors:
- | #     - If file descriptor was not received, GenericError
- | #     - If @fdset-id is a negative value, GenericError
- | #
- | # .. note:: The list of fd sets is shared by all monitor connections.
- | #
- | # .. note:: If @fdset-id is not specified, a new fd set will be
- | #    created.
- | #
- | # Since: 1.2
- | #
- | # .. qmp-example::
- | #
- | #     -> { "execute": "add-fd", "arguments": { "fdset-id": 1 } }
- | #     <- { "return": { "fdset-id": 1, "fd": 3 } }
- | ##
- | { 'command': 'add-fd',
- |   'data': { '*fdset-id': 'int',
- |             '*opaque': 'str' },
- |   'returns': 'AddfdInfo' }
-
-go:
- | // Add a file descriptor, that was passed via SCM rights, to an fd
- | // set.
- | //
- | // Returns:   @AddfdInfo
- | //
- | // Errors:   - If file descriptor was not received, GenericError   -
- | // If @fdset-id is a negative value, GenericError
- | //
- | // .. note:: The list of fd sets is shared by all monitor connections.
- | // .. note:: If @fdset-id is not specified, a new fd set will be
- | // created.
- | //
- | // Since: 1.2
- | //
- | // .. qmp-example::    -> { "execute": "add-fd", "arguments": {
- | // "fdset-id": 1 } }   <- { "return": { "fdset-id": 1, "fd": 3 } }
- | type AddFdCommand struct {
- | 	// The ID of the fd set to add the file descriptor to.
- | 	FdsetId *int64 `json:"fdset-id,omitempty"`
- | 	// A free-form string that can be used to describe the fd.
- | 	Opaque *string `json:"opaque,omitempty"`
- | }
+The implementation of client/server is not part of this series.
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
- scripts/qapi/golang/golang.py | 52 +++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ scripts/qapi/golang/golang.py | 56 +++++++++++++++++++++++++++++++----
+ 1 file changed, 50 insertions(+), 6 deletions(-)
 
 diff --git a/scripts/qapi/golang/golang.py b/scripts/qapi/golang/golang.py
-index b9a2c47137..a14970fb1f 100644
+index a14970fb1f..0b7dadff41 100644
 --- a/scripts/qapi/golang/golang.py
 +++ b/scripts/qapi/golang/golang.py
-@@ -316,7 +316,7 @@ def qapi_to_go_type_name(name: str, meta: Optional[str] = None) -> str:
-     name += "".join(word.title() for word in words[1:])
+@@ -235,6 +235,20 @@
+ }}
+ """
  
-     # Handle specific meta suffix
--    types = ["event"]
-+    types = ["event", "command"]
-     if meta in types:
-         name = name[:-3] if name.endswith("Arg") else name
-         name += meta.title().replace(" ", "")
-@@ -1009,6 +1009,15 @@ def generate_template_alternate(
++TEMPLATE_COMMAND = """
++// Synchronous interface of all available commands
++type Commands interface {{
++{methods}
++}}
++
++{callbacks}
++
++// Asynchronous interface of all available commands
++type CommandsAsync interface {{
++{async_methods}
++}}
++"""
++
+ 
+ # Takes the documentation object of a specific type and returns
+ # that type's documentation and its member's docs.
+@@ -1009,13 +1023,37 @@ def generate_template_alternate(
      return "\n" + content
  
  
-+def generate_template_command(commands: dict[str, Tuple[str, str]]) -> str:
-+    content = ""
-+    for name in sorted(commands):
-+        type_name, gocode = commands[name]
-+        content += gocode
-+
-+    return content
-+
-+
- def generate_template_event(events: dict[str, Tuple[str, str]]) -> (str, str):
+-def generate_template_command(commands: dict[str, Tuple[str, str]]) -> str:
++def generate_template_command(
++    commands: dict[str, Tuple[str, str, str]]
++) -> (str, str):
      content = ""
-     methods = ""
-@@ -1069,6 +1078,7 @@ def __init__(self, _: str):
-         # Map each qapi type to the necessary Go imports
-         types = {
-             "alternate": ["encoding/json", "errors", "fmt"],
++    methods = ""
++    async_methods = ""
++    callbacks = ""
++
+     for name in sorted(commands):
+-        type_name, gocode = commands[name]
++        type_name, gocode, retarg = commands[name]
+         content += gocode
+ 
+-    return content
++        name = type_name[:-7]
++        cbname = f"{name}Complete"
++        syncret = "error"
++        cbarg = "error"
++        if retarg != "":
++            cbarg = f"{retarg}, error"
++            syncret = f"({retarg}, error)"
++        methods += f"\t{name}({type_name}) {syncret}\n"
++        async_methods += f"\t{name}({type_name}, {cbname}) error\n"
++        callbacks += f"type {cbname} func({cbarg})\n"
++
++    iface = string_to_code(
++        TEMPLATE_COMMAND.format(
++            methods=methods[:-1],
++            callbacks=callbacks[:-1],
++            async_methods=async_methods[:-1],
++        )
++    )
++    return content, iface
+ 
+ 
+ def generate_template_event(events: dict[str, Tuple[str, str]]) -> (str, str):
+@@ -1085,12 +1123,13 @@ def __init__(self, _: str):
+             "union": ["encoding/json", "errors", "fmt"],
+         }
+         interfaces = {
 +            "command": [],
-             "enum": [],
-             "event": [],
-             "struct": ["encoding/json"],
-@@ -1080,6 +1090,7 @@ def __init__(self, _: str):
+             "event": ["time"],
+         }
  
          self.schema: QAPISchema
          self.events: dict[str, Tuple[str, str]] = {}
-+        self.commands: dict[str, Tuple[str, str]] = {}
+-        self.commands: dict[str, Tuple[str, str]] = {}
++        self.commands: dict[str, Tuple[str, str, str]] = {}
          self.golang_package_name = "qapi"
          self.duplicate = list(gofiles)
          self.enums: dict[str, str] = {}
-@@ -1140,6 +1151,8 @@ def visit_end(self) -> None:
+@@ -1151,7 +1190,9 @@ def visit_end(self) -> None:
          self.types["event"] += evtype
          self.interfaces["event"] += eviface
  
-+        self.types["command"] += generate_template_command(self.commands)
-+
+-        self.types["command"] += generate_template_command(self.commands)
++        cmdtype, cmdiface = generate_template_command(self.commands)
++        self.types["command"] += cmdtype
++        self.interfaces["command"] += cmdiface
+ 
      def visit_object_type(
          self,
-         name: str,
-@@ -1286,7 +1299,42 @@ def visit_command(
-         allow_preconfig: bool,
-         coroutine: bool,
-     ) -> None:
--        pass
-+        assert name == info.defn_name
-+        assert name not in self.commands
-+
-+        type_name = qapi_to_go_type_name(name, info.defn_meta)
-+
-+        doc = self.docmap.get(name, None)
-+        type_doc, _ = qapi_to_golang_struct_docs(doc)
-+
-+        content = ""
-+        if boxed or not arg_type or not qapi_name_is_object(arg_type.name):
-+            args: List[dict[str:str]] = []
-+            if arg_type:
-+                args.append(
-+                    {
-+                        "name": f"{arg_type.name}",
-+                    }
-+                )
-+            content += string_to_code(
-+                generate_struct_type(type_name, type_doc=type_doc, args=args)
-+            )
-+        else:
-+            assert isinstance(arg_type, QAPISchemaObjectType)
-+            content += string_to_code(
-+                qapi_to_golang_struct(
-+                    self,
-+                    name,
-+                    arg_type.info,
-+                    arg_type.ifcond,
-+                    arg_type.features,
-+                    arg_type.base,
-+                    arg_type.members,
-+                    arg_type.branches,
-+                )
-+            )
-+
-+        self.commands[name] = (type_name, content)
+@@ -1334,7 +1375,10 @@ def visit_command(
+                 )
+             )
+ 
+-        self.commands[name] = (type_name, content)
++        retarg = ""
++        if ret_type:
++            retarg = qapi_schema_type_to_go_type(ret_type.name)
++        self.commands[name] = (type_name, content, retarg)
  
      def visit_event(
          self,
