@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6B6A36053
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D342A36030
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:20:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwUg-0007zk-OI; Fri, 14 Feb 2025 09:16:39 -0500
+	id 1tiwUc-0007e3-G9; Fri, 14 Feb 2025 09:16:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTr-0006UR-Ku
+ id 1tiwTq-0006UD-QM
  for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:47 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwTk-0004kZ-Le
+ id 1tiwTo-0004kk-W0
  for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:15:46 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtfkF011618;
- Fri, 14 Feb 2025 14:15:27 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECteQH002102;
+ Fri, 14 Feb 2025 14:15:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=JiVpgb+Q1o93jKYbFztC7nGqDo9Po9K1XF/ulP7GSAI=; b=
- CVM+qVCk/o1VUHQnmvJCHfcFFFhgh3RYRKKI8JWTNtTUCmcaWBhmaVmPfYj9EdOg
- GKJowPDVnVc4rGctzH2kpz5exiUavXbRyy2Y82b1cTwuKsU+lYG0EYHhmuUStpPU
- Vh56512bN+ZNB6ZpbazsnQhy9FUxRX7A24Kxs4Tpbu3jLy4WEpcNvrk/C0yl7hip
- Y3m/I0SJr0Zis6gCyTbq2juX0bSF8yo+X0PsgH/PpwTYWOFmZwq8zE/Y5fb+Qm5X
- iWPpoj7qx2EA+PBk5BM+hL3e8Y/CnjnonV55Wl8wXp9/ezPcECqqvULSoRiFXbMu
- gU5yp286d1+WekC2uyuMNw==
+ corp-2023-11-20; bh=r90gFQ21+yS0UTC/7EKonJwYjp5Qncpmusv/+zV/X8U=; b=
+ J6eSLpIl/m0gtI+JzepFY821BnCiw263wwZ1gA5MbX6tud9F22ynOQVQXJ3HieOW
+ NgxP5ipkGn3SPitE+kuwv3xw88u1a7BO4EcaWiBOvSUSSH3/YX2y4zde8r5uEquC
+ LgbkiPmKKMyZbOYqRaCP4TmnHB7R+bDsDyy9fwGmwWAJVczQT/2pPF3BXjYtH0G1
+ pKHp9XtHp2lNu3CRES4l2H9ypQX1xjp8xET3K5D951VXXvWFDplOlcsuT64bE97c
+ nPjr+84Ioy26cpKXYynhtaWYoX04hS9UWN1RGTS/9HdwmRRHizHq7XiZbUeTpFAi
+ XDwfg21OUG2I22MY80Z/Eg==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0sqbwp3-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qyusx7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:26 +0000 (GMT)
+ Fri, 14 Feb 2025 14:15:28 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51ECSkjj025168; Fri, 14 Feb 2025 14:15:26 GMT
+ with ESMTP id 51ED8Y7f025427; Fri, 14 Feb 2025 14:15:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqksh9j-1
+ 44nwqkshap-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:15:26 +0000
+ Fri, 14 Feb 2025 14:15:27 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETQb006920;
- Fri, 14 Feb 2025 14:15:25 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETQd006920;
+ Fri, 14 Feb 2025 14:15:27 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-43; Fri, 14 Feb 2025 14:15:25 +0000
+ ESMTP id 44nwqksg2h-44; Fri, 14 Feb 2025 14:15:27 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 42/45] vfio/iommufd: reconstruct hwpt
-Date: Fri, 14 Feb 2025 06:14:24 -0800
-Message-Id: <1739542467-226739-43-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 43/45] vfio/iommufd: change process
+Date: Fri, 14 Feb 2025 06:14:25 -0800
+Message-Id: <1739542467-226739-44-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
@@ -75,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-ORIG-GUID: hym0yEbttVOxLou658T3fB4gzoH4Ncjm
-X-Proofpoint-GUID: hym0yEbttVOxLou658T3fB4gzoH4Ncjm
+X-Proofpoint-ORIG-GUID: fIQyY0rxt566jGcpq5Gc6POoDXJg4lnY
+X-Proofpoint-GUID: fIQyY0rxt566jGcpq5Gc6POoDXJg4lnY
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,121 +102,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Save the hwpt_id in vmstate.  In realize, skip its allocation from
-iommufd_cdev_attach -> iommufd_cdev_attach_container ->
-iommufd_cdev_autodomains_get.  Rebuild userland structures to hold
-hwpt_id by calling iommufd_cdev_rebuild_hwpt at post load time.
-This depends on hw_caps, which was restored by the post_load call to
-vfio_device_hiod_realize.
+Finish CPR by change the owning process of the iommufd device in
+post load.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/cpr-iommufd.c         |  7 +++++++
- hw/vfio/iommufd.c             | 19 +++++++++++++++++++
- hw/vfio/trace-events          |  1 +
- include/hw/vfio/vfio-common.h |  2 ++
- include/hw/vfio/vfio-cpr.h    |  1 +
- 5 files changed, 30 insertions(+)
+ hw/vfio/cpr-iommufd.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
-index a1ac517..4b78ebf 100644
+index 4b78ebf..92b101d 100644
 --- a/hw/vfio/cpr-iommufd.c
 +++ b/hw/vfio/cpr-iommufd.c
-@@ -108,6 +108,12 @@ static int vfio_device_post_load(void *opaque, int version_id)
-         error_report_err(err);
-         return false;
-     }
-+    if (!vbasedev->mdev) {
-+        VFIOIOMMUFDContainer *container = container_of(vbasedev->bcontainer,
-+                                                       VFIOIOMMUFDContainer,
-+                                                       bcontainer);
-+        iommufd_cdev_rebuild_hwpt(vbasedev, container);
-+    }
-     return true;
+@@ -46,10 +46,27 @@ static int vfio_container_post_load(void *opaque, int version_id)
+     return 0;
  }
  
-@@ -119,6 +125,7 @@ static const VMStateDescription vfio_device_vmstate = {
-     .needed = cpr_needed_for_reuse,
-     .fields = (VMStateField[]) {
-         VMSTATE_INT32(devid, VFIODevice),
-+        VMSTATE_UINT32(cpr.hwpt_id, VFIODevice),
-         VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 693ed19..cf92c96 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -298,6 +298,7 @@ static bool iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, Error **errp)
- static void iommufd_cdev_set_hwpt(VFIODevice *vbasedev, VFIOIOASHwpt *hwpt)
- {
-     vbasedev->hwpt = hwpt;
-+    vbasedev->cpr.hwpt_id = hwpt->hwpt_id;
-     vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-     QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
- }
-@@ -323,6 +324,24 @@ static VFIOIOASHwpt *iommufd_cdev_make_hwpt(VFIODevice *vbasedev,
-     return hwpt;
- }
- 
-+void iommufd_cdev_rebuild_hwpt(VFIODevice *vbasedev,
-+                               VFIOIOMMUFDContainer *container)
++static int vfio_container_pre_save(void *opaque)
 +{
-+    VFIOIOASHwpt *hwpt;
-+    int hwpt_id = vbasedev->cpr.hwpt_id;
++    VFIOIOMMUFDContainer *container = opaque;
++    Error *err = NULL;
 +
-+    trace_iommufd_cdev_rebuild_hwpt(container->be->fd, hwpt_id);
-+
-+    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-+        if (hwpt->hwpt_id == hwpt_id) {
-+            iommufd_cdev_set_hwpt(vbasedev, hwpt);
-+            return;
-+        }
++    /*
++     * The process has not changed yet, but proactively call the ioctl,
++     * and it will fail if any DMA mappings are not supported.
++     */
++    if (!iommufd_change_process(container->be, &err)) {
++        error_report_err(err);
++        return -1;
 +    }
-+    hwpt = iommufd_cdev_make_hwpt(vbasedev, container, hwpt_id);
-+    iommufd_cdev_set_hwpt(vbasedev, hwpt);
++    return 0;
 +}
 +
- static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-                                          VFIOIOMMUFDContainer *container,
-                                          Error **errp)
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index cab1cf1..25ff04c 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -176,6 +176,7 @@ iommufd_cdev_connect_and_bind(int iommufd, const char *name, int devfd, int devi
- iommufd_cdev_getfd(const char *dev, int devfd) " %s (fd=%d)"
- iommufd_cdev_attach_ioas_hwpt(int iommufd, const char *name, int devfd, int id) " [iommufd=%d] Successfully attached device %s (%d) to id=%d"
- iommufd_cdev_detach_ioas_hwpt(int iommufd, const char *name) " [iommufd=%d] Successfully detached %s"
-+iommufd_cdev_rebuild_hwpt(int iommufd, int hwpt_id) " [iommufd=%d] hwpt %d"
- iommufd_cdev_fail_attach_existing_container(const char *msg) " %s"
- iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new IOMMUFD container with ioasid=%d"
- iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 6701393..00831b7 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -265,6 +265,8 @@ void vfio_kvm_device_close(void);
- bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
- void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+ static const VMStateDescription vfio_container_vmstate = {
+     .name = "vfio-iommufd-container",
+     .version_id = 0,
+     .minimum_version_id = 0,
++    .pre_save = vfio_container_pre_save,
+     .post_load = vfio_container_post_load,
+     .needed = cpr_needed_for_reuse,
+     .fields = (VMStateField[]) {
+@@ -58,10 +75,23 @@ static const VMStateDescription vfio_container_vmstate = {
+     }
+ };
  
-+void iommufd_cdev_rebuild_hwpt(VFIODevice *vbasedev,
-+                               VFIOIOMMUFDContainer *container);
- bool iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
-                                       uint32_t ioas_id, Error **errp);
- 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index fa4b928..d195ce6 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -23,6 +23,7 @@ typedef struct VFIODeviceCPR {
-     bool reused;
-     Error *mdev_blocker;
-     Error *id_blocker;
-+    uint32_t hwpt_id;
- } VFIODeviceCPR;
- 
- struct VFIOContainer;
++static int iommufd_cpr_post_load(void *opaque, int version_id)
++{
++     IOMMUFDBackend *be = opaque;
++     Error *err = NULL;
++
++     if (!iommufd_change_process(be, &err)) {
++        error_report_err(err);
++        return -1;
++     }
++     return 0;
++}
++
+ static const VMStateDescription iommufd_cpr_vmstate = {
+     .name = "iommufd",
+     .version_id = 0,
+     .minimum_version_id = 0,
++    .post_load = iommufd_cpr_post_load,
+     .needed = cpr_needed_for_reuse,
+     .fields = (VMStateField[]) {
+         VMSTATE_END_OF_LIST()
 -- 
 1.8.3.1
 
