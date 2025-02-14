@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82089A36B0B
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2A6A36B1E
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:37:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj74p-000447-Vc; Fri, 14 Feb 2025 20:34:40 -0500
+	id 1tj765-0005GE-CQ; Fri, 14 Feb 2025 20:36:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2jK-0003fW-Oa
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:56:10 -0500
+ id 1tj2jW-0003gJ-CT
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:56:22 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2jI-0004tH-6y
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:56:10 -0500
+ id 1tj2jU-0004u2-B4
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:56:22 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tj2j2-00000007HoU-34vJ; Fri, 14 Feb 2025 21:55:52 +0100
-Message-ID: <1ab2d96f-f37d-466e-83db-0e3d39581bc7@maciej.szmigiero.name>
-Date: Fri, 14 Feb 2025 21:55:47 +0100
+ id 1tj2jQ-00000007Hog-2I1G; Fri, 14 Feb 2025 21:56:16 +0100
+Message-ID: <8e177cb3-500d-4ada-88c8-64e837a2b9c1@maciej.szmigiero.name>
+Date: Fri, 14 Feb 2025 21:56:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 26/33] vfio/migration: Multifd device state transfer
- support - receive init/cleanup
+Subject: Re: [PATCH v4 32/33] vfio/migration: Add x-migration-multifd-transfer
+ VFIO property
 To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
- <1fcf182307e8e1f67a3c226e62d26cad3a2f60d0.1738171076.git.maciej.szmigiero@oracle.com>
- <6c337aec-d004-4ede-a86b-0c934b275fa9@redhat.com>
+ <e28bae7b59f576136e945663a3b8c78441049e9a.1738171076.git.maciej.szmigiero@oracle.com>
+ <b50ca5f8-6bf3-4db2-adb3-8f1bc51e22e7@redhat.com>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -81,7 +81,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <6c337aec-d004-4ede-a86b-0c934b275fa9@redhat.com>
+In-Reply-To: <b50ca5f8-6bf3-4db2-adb3-8f1bc51e22e7@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=145.239.82.108;
@@ -108,164 +108,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.02.2025 11:55, Cédric Le Goater wrote:
+On 12.02.2025 18:10, Cédric Le Goater wrote:
 > On 1/30/25 11:08, Maciej S. Szmigiero wrote:
 >> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> Add support for VFIOMultifd data structure that will contain most of the
->> receive-side data together with its init/cleanup methods.
+>> This property allows configuring at runtime whether to transfer the
+>> particular device state via multifd channels when live migrating that
+>> device.
+>>
+>> It defaults to AUTO, which means that VFIO device state transfer via
+>> multifd channels is attempted in configurations that otherwise support it.
 >>
 >> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 >> ---
->>   hw/vfio/migration.c           | 52 +++++++++++++++++++++++++++++++++--
->>   include/hw/vfio/vfio-common.h |  5 ++++
->>   2 files changed, 55 insertions(+), 2 deletions(-)
+>>   hw/vfio/pci.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
 >>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index 3211041939c6..bcdf204d5cf4 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -300,6 +300,9 @@ typedef struct VFIOStateBuffer {
->>       size_t len;
->>   } VFIOStateBuffer;
->> +typedef struct VFIOMultifd {
->> +} VFIOMultifd;
->> +
->>   static void vfio_state_buffer_clear(gpointer data)
->>   {
->>       VFIOStateBuffer *lb = data;
->> @@ -398,6 +401,18 @@ static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
->>       return qemu_file_get_error(f);
+>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>> index 2700b355ecf1..cd24f386aaf9 100644
+>> --- a/hw/vfio/pci.c
+>> +++ b/hw/vfio/pci.c
+>> @@ -3353,6 +3353,8 @@ static void vfio_instance_init(Object *obj)
+>>       pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
 >>   }
->> +static VFIOMultifd *vfio_multifd_new(void)
->> +{
->> +    VFIOMultifd *multifd = g_new(VFIOMultifd, 1);
+>> +static PropertyInfo qdev_prop_on_off_auto_mutable;
 >> +
->> +    return multifd;
->> +}
->> +
->> +static void vfio_multifd_free(VFIOMultifd *multifd)
->> +{
->> +    g_free(multifd);
->> +}
->> +
->>   static void vfio_migration_cleanup(VFIODevice *vbasedev)
+>>   static const Property vfio_pci_dev_properties[] = {
+>>       DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
+>>       DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
+>> @@ -3377,6 +3379,10 @@ static const Property vfio_pci_dev_properties[] = {
+>>                       VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
+>>       DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
+>>                               vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
+>> +    DEFINE_PROP("x-migration-multifd-transfer", VFIOPCIDevice,
+>> +                vbasedev.migration_multifd_transfer,
+>> +                qdev_prop_on_off_auto_mutable, OnOffAuto,
+>> +                .set_default = true, .defval.i = ON_OFF_AUTO_AUTO),
+>>       DEFINE_PROP_ON_OFF_AUTO("x-migration-load-config-after-iter", VFIOPCIDevice,
+>>                               vbasedev.migration_load_config_after_iter,
+>>                               ON_OFF_AUTO_AUTO),
+>> @@ -3477,6 +3483,9 @@ static const TypeInfo vfio_pci_nohotplug_dev_info = {
+>>   static void register_vfio_pci_dev_type(void)
 >>   {
->>       VFIOMigration *migration = vbasedev->migration;
->> @@ -785,14 +800,47 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
->>   static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
->>   {
->>       VFIODevice *vbasedev = opaque;
->> +    VFIOMigration *migration = vbasedev->migration;
->> +    int ret;
+>> +    qdev_prop_on_off_auto_mutable = qdev_prop_on_off_auto;
+>> +    qdev_prop_on_off_auto_mutable.realized_set_allowed = true;
 >> +
->> +    /*
->> +     * Make a copy of this setting at the start in case it is changed
->> +     * mid-migration.
->> +     */
->> +    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
->> +        migration->multifd_transfer = vfio_multifd_transfer_supported();
-> 
-> Attribute "migration->multifd_transfer" is not necessary. It can be
-> replaced by a small inline helper testing pointer migration->multifd
-> and this routine can use a local variable instead.
-
-It's necessary for the send side since it does not need/allocate VFIOMultifd
-at migration->multifd, so this (receive) side can use it for commonality too.
-
-> I don't think the '_transfer' suffix adds much to the understanding.
-
-The migration->multifd was already taken by VFIOMultifd struct, but
-it could use other name (migration->multifd_switch? migration->multifd_on?).
-
->> +    } else {
->> +        migration->multifd_transfer =
->> +            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
->> +    }
->> +
->> +    if (migration->multifd_transfer && !vfio_multifd_transfer_supported()) {
->> +        error_setg(errp,
->> +                   "%s: Multifd device transfer requested but unsupported in the current config",
->> +                   vbasedev->name);
->> +        return -EINVAL;
->> +    }
-> 
-> The above checks are also introduced in vfio_save_setup(). Please
-> implement a common routine vfio_multifd_is_enabled() or some other
-> name.
-
-Done (as common vfio_multifd_transfer_setup()).
-
->> +    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
->> +                                   migration->device_state, errp);
->> +    if (ret) {
->> +        return ret;
->> +    }
->> +
->> +    if (migration->multifd_transfer) {
->> +        assert(!migration->multifd);
->> +        migration->multifd = vfio_multifd_new();
->> +    }
->> -    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
->> -                                    vbasedev->migration->device_state, errp);
->> +    return 0;
+>>       type_register_static(&vfio_pci_dev_info);
+>>       type_register_static(&vfio_pci_nohotplug_dev_info);
 >>   }
->>   static int vfio_load_cleanup(void *opaque)
->>   {
->>       VFIODevice *vbasedev = opaque;
->> +    VFIOMigration *migration = vbasedev->migration;
->> +
->> +    g_clear_pointer(&migration->multifd, vfio_multifd_free);
+>>
 > 
-> please add a vfio_multifd_cleanup() routine.
+> This looks wrong. Why not define the property simply with
 > 
+>     DEFINE_PROP("x-migration-multifd-transfer", VFIOPCIDevice,
+>                  vbasedev.migration_multifd_transfer, ON_OFF_AUTO_AUTO)
+> ?
 
-Done.
+I already explained the reason why I'm not using DEFINE_PROP_ON_OFF_AUTO()
+here during the previous version review:
+https://lore.kernel.org/qemu-devel/3ba62755-6f36-4707-8c18-8803dbd4f55b@maciej.szmigiero.name/
 
->>       vfio_migration_cleanup(vbasedev);
->>       trace_vfio_load_cleanup(vbasedev->name);
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index 153d03745dc7..c0c9c0b1b263 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -61,6 +61,8 @@ typedef struct VFIORegion {
->>       uint8_t nr; /* cache the region number for debug */
->>   } VFIORegion;
->> +typedef struct VFIOMultifd VFIOMultifd;
->> +
->>   typedef struct VFIOMigration {
->>       struct VFIODevice *vbasedev;
->>       VMChangeStateEntry *vm_state;
->> @@ -72,6 +74,8 @@ typedef struct VFIOMigration {
->>       uint64_t mig_flags;
->>       uint64_t precopy_init_size;
->>       uint64_t precopy_dirty_size;
->> +    bool multifd_transfer;
->> +    VFIOMultifd *multifd;
->>       bool initial_data_sent;
->>       bool event_save_iterate_started;
->> @@ -133,6 +137,7 @@ typedef struct VFIODevice {
->>       bool no_mmap;
->>       bool ram_block_discard_allowed;
->>       OnOffAuto enable_migration;
->> +    OnOffAuto migration_multifd_transfer;
-> 
-> This property should be added at the end of the series, with documentation,
-> and used in the vfio_multifd_some_name() routine I mentioned above.
-> 
+> Also "x-migration-multifd" should be enough.
 
-The property behind this variable *is* in fact introduced at the end of the series -
-in a commit called "vfio/migration: Add x-migration-multifd-transfer VFIO property"
-after which there are only commits adding the related compat entry and a VFIO
-developer doc update.
-
-The variable itself needs to be introduced earlier since various newly
-introduced code blocks depend on its value to only get activated when multifd
-transfer is enabled.
+I can change it to this shorter name if that's preferred.
 
 > Thanks,
 > 
 > C.
+> 
 
 Thanks,
 Maciej
