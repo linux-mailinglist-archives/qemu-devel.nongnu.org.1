@@ -2,99 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044BDA366F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:35:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46DEA366FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 21:37:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj2N5-0006Zg-Ai; Fri, 14 Feb 2025 15:33:12 -0500
+	id 1tj2ND-0006nF-79; Fri, 14 Feb 2025 15:33:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2M5-0006Ec-Lv
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:11 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2MG-0006Xg-Ho
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:23 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2M3-0002A6-DG
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:09 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tj2MD-0002Ai-MZ
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 15:32:19 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0DB7A1F381;
- Fri, 14 Feb 2025 20:32:04 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D448E2117B;
+ Fri, 14 Feb 2025 20:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1739565130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=90B7p/Ym/HeTBXN7OpyW3lFyc2jjlpHhDDJgfh1BI5A=;
- b=ww4uMZu1KkuTyGajEULFdzQDQbj20lDnW/jodkHTqe8V812WKKcDcgoYD5mXmQihKPAJAT
- 5A5yuSnJY+6uDeeAZB2cZnezO+yx6niVAjaT4CvI9KQxgA2kDJ8IZ5iQ8Vtqihm24+RWsg
- ljHgHICOb/CZPXKIHkhEN4+K5CieIac=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PVxj42U3UKLWZOHOIiboU+09gvm3ush/5GP9gtnQ7Xk=;
+ b=N0Lqg794flM4udPWm8Os8gg7DKXcj0LBbI8qd1t9lJJ8/0LRfeNPEfLhv8Z3k3YV4Ihd3D
+ dobNj/vnf4G2rVnIMvHaSz+P22WNnfvJTwjqOdZR8ZUn/eH2/hkLVcoIbhi766b0B+ZWFS
+ qTcAa/Acc9XDWKRCODcJfNu7mSci3Z8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565124;
+ s=susede2_ed25519; t=1739565130;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=90B7p/Ym/HeTBXN7OpyW3lFyc2jjlpHhDDJgfh1BI5A=;
- b=BXOrN79TO/JQ0bqOiYHQLNNzMGTaBdeavEkTb5LoFZmJYo6pvfZpEY1WJWzqGuHP/bjmSi
- SOZ5j5R0XRiw0xAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PVxj42U3UKLWZOHOIiboU+09gvm3ush/5GP9gtnQ7Xk=;
+ b=UQP4oIiVLcVbRsfhosUGUrqhr4HM7Opj5xJFQv68gh09MwrZ5ZQapyCuSr5mqZeOJBlJbT
+ SUouswNdftEfIkBg==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GWH4eZIr;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EoAEGiUk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1739565124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1739565125; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=90B7p/Ym/HeTBXN7OpyW3lFyc2jjlpHhDDJgfh1BI5A=;
- b=ww4uMZu1KkuTyGajEULFdzQDQbj20lDnW/jodkHTqe8V812WKKcDcgoYD5mXmQihKPAJAT
- 5A5yuSnJY+6uDeeAZB2cZnezO+yx6niVAjaT4CvI9KQxgA2kDJ8IZ5iQ8Vtqihm24+RWsg
- ljHgHICOb/CZPXKIHkhEN4+K5CieIac=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PVxj42U3UKLWZOHOIiboU+09gvm3ush/5GP9gtnQ7Xk=;
+ b=GWH4eZIrxyX8OvyzOIyEjrn3dOtN/1I7t+1avvzcVspqfRDHPERw44xQHPJTkPMqnIL+Qo
+ E/nXH3O8FZF5KPbiofYehbiQy/x7dq5FILOkGe4SAwKHAibq+24OCoaWYYuF92EhQQXULc
+ bv+Axk74R7QVKL+rqH+0Io5Gys95ADo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1739565124;
+ s=susede2_ed25519; t=1739565125;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=90B7p/Ym/HeTBXN7OpyW3lFyc2jjlpHhDDJgfh1BI5A=;
- b=BXOrN79TO/JQ0bqOiYHQLNNzMGTaBdeavEkTb5LoFZmJYo6pvfZpEY1WJWzqGuHP/bjmSi
- SOZ5j5R0XRiw0xAw==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PVxj42U3UKLWZOHOIiboU+09gvm3ush/5GP9gtnQ7Xk=;
+ b=EoAEGiUkr9wT7YDNnmQXGaptuYUqFBb/B6TlzSVdbcDL0oItVYY0IpSg2FxrdZxRSmzv4g
+ +55hSfPbwYeJF6Ag==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DCBA213285;
- Fri, 14 Feb 2025 20:32:02 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E1EF13285;
+ Fri, 14 Feb 2025 20:32:04 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gMFYJUKor2cgEgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:02 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KHatDkSor2cgEgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Feb 2025 20:32:04 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 00/22] Migration patches for 2025-02-14
-Date: Fri, 14 Feb 2025 17:31:37 -0300
-Message-Id: <20250214203159.30168-1-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 01/22] crypto: Allow gracefully ending the TLS session
+Date: Fri, 14 Feb 2025 17:31:38 -0300
+Message-Id: <20250214203159.30168-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250214203159.30168-1-farosas@suse.de>
+References: <20250214203159.30168-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: D448E2117B
+X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FUZZY_BLOCKED(0.00)[rspamd.com];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RBL_NIXSPAM_FAIL(0.00)[2a07:de40:b281:104:10:150:64:97:server fail];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,92 +128,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 495de0fd82d8bb2d7035f82d9869cfeb48de2f9e:
+QEMU's TLS session code provides no way to call gnutls_bye() to
+terminate a TLS session. Callers of qcrypto_tls_session_read() can
+choose to ignore a GNUTLS_E_PREMATURE_TERMINATION error by setting the
+gracefulTermination argument.
 
-  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2025-02-14 08:19:05 -0500)
+The QIOChannelTLS ignores the premature termination error whenever
+shutdown() has already been issued. This was found to be not enough for
+the migration code because shutdown() might not have been issued before
+the connection is terminated.
 
-are available in the Git repository at:
+Add support for calling gnutls_bye() in the tlssession layer so users
+of QIOChannelTLS can clearly identify the end of a TLS session.
 
-  https://gitlab.com/farosas/qemu.git tags/migration-20250214-pull-request
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ crypto/tlssession.c         | 41 +++++++++++++++++++++++++++++++++++++
+ include/crypto/tlssession.h | 22 ++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-for you to fetch changes up to 5984870e02aa6cf471bc9225ae91640b544b31c8:
-
-  guestperf: Add test result data into report (2025-02-14 15:19:07 -0300)
-
-----------------------------------------------------------------
-Migration pull request
-
-- Proper TLS termination for multifd
-- Fixes for bugs while cancelling migration
-- Fix for a hang after migration failure (#2633)
-- Tests for qmp_migrate_cancel
-- Fix for CID 1590980
-- Fixes and improvements to guestperf.py
-
-----------------------------------------------------------------
-
-Fabiano Rosas (17):
-  crypto: Allow gracefully ending the TLS session
-  io: tls: Add qio_channel_tls_bye
-  crypto: Remove qcrypto_tls_session_get_handshake_status
-  io: Add flags argument to qio_channel_readv_full_all_eof
-  io: Add a read flag for relaxed EOF
-  migration/multifd: Terminate the TLS connection
-  migration/multifd: Add a compat property for TLS termination
-  migration: Check migration error after loadvm
-  migration: Set migration error outside of migrate_cancel
-  migration: Unify migration_cancel and migrate_fd_cancel
-  migration: Change migrate_fd_ to migration_
-  migration: Fix hang after error in destination setup phase
-  migration: Reject qmp_migrate_cancel after postcopy
-  migration: Don't set FAILED state when cancelling
-  tests/qtest/migration: Introduce migration_test_add_suffix
-  tests/qtest/migration: Add a cancel test
-  migration: Update migrate_cancel documentation
-
-Hyman Huang (4):
-  guestperf: Support deferred migration for multifd
-  guestperf: Nitpick the inconsistent parameters
-  guestperf: Introduce multifd compression option
-  guestperf: Add test result data into report
-
-Steve Sistare (1):
-  migration: use parameters.mode in cpr_state_save
-
- crypto/tlssession.c                           |  96 ++++++----
- hw/core/machine.c                             |   1 +
- hw/remote/mpqemu-link.c                       |   2 +-
- include/crypto/tlssession.h                   |  46 +++--
- include/io/channel-tls.h                      |  12 ++
- include/io/channel.h                          |   3 +
- io/channel-tls.c                              |  92 ++++++++-
- io/channel.c                                  |   9 +-
- io/trace-events                               |   5 +
- migration/channel.c                           |   9 +-
- migration/cpr.c                               |   1 +
- migration/migration.c                         |  81 ++++----
- migration/migration.h                         |  37 +++-
- migration/multifd.c                           |  54 +++++-
- migration/multifd.h                           |   2 +
- migration/options.c                           |   2 +
- migration/ram.c                               |   4 +-
- migration/rdma.c                              |   2 +-
- migration/savevm.c                            |   6 +-
- migration/tls.c                               |   5 +
- migration/tls.h                               |   2 +-
- migration/trace-events                        |   4 +-
- qapi/migration.json                           |   4 +-
- .../migration-stress/guestperf/comparison.py  |  15 +-
- tests/migration-stress/guestperf/engine.py    |  43 ++++-
- tests/migration-stress/guestperf/report.py    |  20 ++
- tests/migration-stress/guestperf/scenario.py  |   7 +-
- tests/migration-stress/guestperf/shell.py     |   3 +
- tests/qtest/migration/migration-util.c        |  24 +++
- tests/qtest/migration/migration-util.h        |   2 +
- tests/qtest/migration/precopy-tests.c         | 176 ++++++++++++++++++
- tests/unit/test-crypto-tlssession.c           |  12 +-
- 32 files changed, 651 insertions(+), 130 deletions(-)
-
+diff --git a/crypto/tlssession.c b/crypto/tlssession.c
+index 77286e23f4..d769d7a304 100644
+--- a/crypto/tlssession.c
++++ b/crypto/tlssession.c
+@@ -585,6 +585,40 @@ qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *session)
+     }
+ }
+ 
++int
++qcrypto_tls_session_bye(QCryptoTLSSession *session, Error **errp)
++{
++    int ret;
++
++    if (!session->handshakeComplete) {
++        return 0;
++    }
++
++    ret = gnutls_bye(session->handle, GNUTLS_SHUT_WR);
++
++    if (!ret) {
++        return QCRYPTO_TLS_BYE_COMPLETE;
++    }
++
++    if (ret == GNUTLS_E_INTERRUPTED || ret == GNUTLS_E_AGAIN) {
++        int direction = gnutls_record_get_direction(session->handle);
++        return direction ? QCRYPTO_TLS_BYE_SENDING : QCRYPTO_TLS_BYE_RECVING;
++    }
++
++    if (session->rerr || session->werr) {
++        error_setg(errp, "TLS termination failed: %s: %s", gnutls_strerror(ret),
++                   error_get_pretty(session->rerr ?
++                                    session->rerr : session->werr));
++    } else {
++        error_setg(errp, "TLS termination failed: %s", gnutls_strerror(ret));
++    }
++
++    error_free(session->rerr);
++    error_free(session->werr);
++    session->rerr = session->werr = NULL;
++
++    return -1;
++}
+ 
+ int
+ qcrypto_tls_session_get_key_size(QCryptoTLSSession *session,
+@@ -699,6 +733,13 @@ qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *sess)
+ }
+ 
+ 
++int
++qcrypto_tls_session_bye(QCryptoTLSSession *session, Error **errp)
++{
++    return QCRYPTO_TLS_BYE_COMPLETE;
++}
++
++
+ int
+ qcrypto_tls_session_get_key_size(QCryptoTLSSession *sess,
+                                  Error **errp)
+diff --git a/include/crypto/tlssession.h b/include/crypto/tlssession.h
+index f694a5c3c5..c0f64ce989 100644
+--- a/include/crypto/tlssession.h
++++ b/include/crypto/tlssession.h
+@@ -323,6 +323,28 @@ typedef enum {
+ QCryptoTLSSessionHandshakeStatus
+ qcrypto_tls_session_get_handshake_status(QCryptoTLSSession *sess);
+ 
++typedef enum {
++    QCRYPTO_TLS_BYE_COMPLETE,
++    QCRYPTO_TLS_BYE_SENDING,
++    QCRYPTO_TLS_BYE_RECVING,
++} QCryptoTLSSessionByeStatus;
++
++/**
++ * qcrypto_tls_session_bye:
++ * @session: the TLS session object
++ * @errp: pointer to a NULL-initialized error object
++ *
++ * Start, or continue, a TLS termination sequence. If the underlying
++ * data channel is non-blocking, then this method may return control
++ * before the termination is complete. The return value will indicate
++ * whether the termination has completed, or is waiting to send or
++ * receive data. In the latter cases, the caller should setup an event
++ * loop watch and call this method again once the underlying data
++ * channel is ready to read or write again.
++ */
++int
++qcrypto_tls_session_bye(QCryptoTLSSession *session, Error **errp);
++
+ /**
+  * qcrypto_tls_session_get_key_size:
+  * @sess: the TLS session object
 -- 
 2.35.3
 
