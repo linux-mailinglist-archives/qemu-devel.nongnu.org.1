@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17212A36046
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283B5A3605C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Feb 2025 15:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tiwSs-0004No-Rd; Fri, 14 Feb 2025 09:14:46 -0500
+	id 1tiwSt-0004OV-9B; Fri, 14 Feb 2025 09:14:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwSp-0004Mv-Mp
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:43 -0500
+ id 1tiwSq-0004NV-QK
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:44 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tiwSo-0004Ro-03
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:43 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtUQu017777;
- Fri, 14 Feb 2025 14:14:40 GMT
+ id 1tiwSo-0004Rx-Tm
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 09:14:44 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECtqaR022708;
+ Fri, 14 Feb 2025 14:14:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=kea8JUzvCW8nODhxeDL5w/7NENARlC44BW5O1/xjKAQ=; b=
- ZPkNqfDro0sxe9XlgaYO+UnqgWV2RAgwQX91nsDvKfnzKvR2ilhn5Y8VYDqQdjyi
- RV/gT6Jw1KhlRQ3z6+1/yS0iMp6PxqfrFjffxokJT16DvB9z5mpIi1CUyP196qey
- YLTwgzL0Rzp/YcWD0KhDqaQBza9PfwfDyAQ+gPNmZJGSMKlRa4DB4arzML/TK9eL
- PhIsLtGaYbh/CYqtmV2lLATedG29Re+fw+Nw6M6zcbDyuCUKE3hr7VW1wL20gCPa
- 61Dxfg2VZGi5cC17Vnx6qj1HMM6Df828SaMpby15zproUICKtK99Wjaaz8UojAU9
- ABKgaIk/C1O4qowFwDacMA==
+ corp-2023-11-20; bh=BI7xHpN3QRFQfxooh96sk1xXdkB6bvKSbO1XC86F69Q=; b=
+ N6KDb12HyhiQy3ccdt7YHvQi0sBQAGyCECtK73voIbZq/8WA3igA6gCuMh5lcWJw
+ 4A3AP7m5jFzZd72PCU14yd/4PcxfwGgP9m3VtcbGmX/Wie1yJV5bX20QNNOk1bEn
+ 7+Vlc7/2pReQLnIU+fmtHBhDO5edcd72M09EbNQ8b1cnexFmhdvmJay48YimcLR4
+ XjK4pwFPWldbwt431giMKR615GyY5dat113uiUn64zhiH9f5ZjIKfqREWmp31DbA
+ ZX+XrMNlUajSDCJR2Th4IoYxJs+zQunUYaEGZMKcWmkKYnpubADVyTVNFxxtlE+L
+ VwfkaFJyy6kYfdUc/+7STQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0tgbtvu-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0s43q6h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:39 +0000 (GMT)
+ Fri, 14 Feb 2025 14:14:40 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 51ECP2ko025273; Fri, 14 Feb 2025 14:14:37 GMT
+ with ESMTP id 51ECwW5o025139; Fri, 14 Feb 2025 14:14:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 44nwqksg6j-1
+ 44nwqksg76-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2025 14:14:37 +0000
+ Fri, 14 Feb 2025 14:14:39 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPP006920;
- Fri, 14 Feb 2025 14:14:37 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51EEETPR006920;
+ Fri, 14 Feb 2025 14:14:38 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 44nwqksg2h-7; Fri, 14 Feb 2025 14:14:37 +0000
+ ESMTP id 44nwqksg2h-8; Fri, 14 Feb 2025 14:14:38 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 06/45] vfio/container: reform vfio_connect_container cleanup
-Date: Fri, 14 Feb 2025 06:13:48 -0800
-Message-Id: <1739542467-226739-7-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 07/45] vfio/container: vfio_container_group_add
+Date: Fri, 14 Feb 2025 06:13:49 -0800
+Message-Id: <1739542467-226739-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
 References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
@@ -75,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2501170000 definitions=main-2502140104
-X-Proofpoint-GUID: DbU7bNdqkoIU_LdU3eSd9mOTzVOnn6xN
-X-Proofpoint-ORIG-GUID: DbU7bNdqkoIU_LdU3eSd9mOTzVOnn6xN
+X-Proofpoint-GUID: YKVcgwofVQIBWbk4x06DcaBUnYSsZKpN
+X-Proofpoint-ORIG-GUID: YKVcgwofVQIBWbk4x06DcaBUnYSsZKpN
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,140 +102,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the proliferation of exit labels in vfio_connect_container with
-conditionals for cleaning each piece of state.  No functional change.
+Add vfio_container_group_add to de-dup some code.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/container.c | 61 +++++++++++++++++++++++++++++------------------------
- 1 file changed, 33 insertions(+), 28 deletions(-)
+ hw/vfio/container.c | 47 +++++++++++++++++++++++++----------------------
+ 1 file changed, 25 insertions(+), 22 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 0f17d53..c668d07 100644
+index c668d07..c5bbb03 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -587,9 +587,12 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+@@ -582,6 +582,26 @@ static bool vfio_attach_discard_disable(VFIOContainer *container,
+     return !ret;
+ }
+ 
++static bool vfio_container_group_add(VFIOContainer *container, VFIOGroup *group,
++                                     Error **errp)
++{
++    if (!vfio_attach_discard_disable(container, group, errp)) {
++        return false;
++    }
++    group->container = container;
++    QLIST_INSERT_HEAD(&container->group_list, group, container_next);
++    vfio_kvm_device_add_group(group);
++    return true;
++}
++
++static void vfio_container_group_del(VFIOContainer *container, VFIOGroup *group)
++{
++    QLIST_REMOVE(group, container_next);
++    group->container = NULL;
++    vfio_kvm_device_del_group(group);
++    vfio_ram_block_discard_disable(container, false);
++}
++
+ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+                                    Error **errp)
  {
-     VFIOContainer *container;
-     VFIOContainerBase *bcontainer;
--    int ret, fd;
-+    int ret, fd = -1;
-     VFIOAddressSpace *space;
--    VFIOIOMMUClass *vioc;
-+    VFIOIOMMUClass *vioc = NULL;
-+    bool new_container = false;
-+    bool group_was_added = false;
-+    bool discard_disabled = false;
+@@ -592,20 +612,13 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     VFIOIOMMUClass *vioc = NULL;
+     bool new_container = false;
+     bool group_was_added = false;
+-    bool discard_disabled = false;
  
      space = vfio_get_address_space(as);
  
-@@ -608,35 +611,37 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
- 
-     fd = qemu_open("/dev/vfio/vfio", O_RDWR, errp);
-     if (fd < 0) {
--        goto put_space_exit;
-+        goto fail;
+     QLIST_FOREACH(bcontainer, &space->containers, next) {
+         container = container_of(bcontainer, VFIOContainer, bcontainer);
+         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
+-            if (!vfio_attach_discard_disable(container, group, errp)) {
+-                return false;
+-            }
+-            group->container = container;
+-            QLIST_INSERT_HEAD(&container->group_list, group, container_next);
+-            vfio_kvm_device_add_group(group);
+-            return true;
++            return vfio_container_group_add(container, group, errp);
+         }
      }
  
-     ret = ioctl(fd, VFIO_GET_API_VERSION);
-     if (ret != VFIO_API_VERSION) {
-         error_setg(errp, "supported vfio version: %d, "
-                    "reported version: %d", VFIO_API_VERSION, ret);
--        goto close_fd_exit;
-+        goto fail;
+@@ -632,11 +645,6 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+         goto fail;
      }
  
-     container = vfio_create_container(fd, group, errp);
-     if (!container) {
--        goto close_fd_exit;
-+        goto fail;
-     }
-+    new_container = true;
-     bcontainer = &container->bcontainer;
- 
-     if (!vfio_cpr_register_container(bcontainer, errp)) {
--        goto free_container_exit;
-+        goto fail;
-     }
- 
-     if (!vfio_attach_discard_disable(container, group, errp)) {
--        goto unregister_container_exit;
-+        goto fail;
-     }
-+    discard_disabled = true;
- 
+-    if (!vfio_attach_discard_disable(container, group, errp)) {
+-        goto fail;
+-    }
+-    discard_disabled = true;
+-
      vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
      assert(vioc->setup);
  
-     if (!vioc->setup(bcontainer, errp)) {
--        goto enable_discards_exit;
-+        goto fail;
+@@ -644,12 +652,11 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+         goto fail;
      }
  
-     vfio_kvm_device_add_group(group);
-@@ -645,6 +650,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+-    vfio_kvm_device_add_group(group);
+-
+     vfio_address_space_insert(space, bcontainer);
  
-     group->container = container;
-     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
-+    group_was_added = true;
+-    group->container = container;
+-    QLIST_INSERT_HEAD(&container->group_list, group, container_next);
++    if (!vfio_container_group_add(container, group, errp)) {
++        goto fail;
++    }
+     group_was_added = true;
  
      bcontainer->listener = vfio_memory_listener;
-     memory_listener_register(&bcontainer->listener, bcontainer->space->as);
-@@ -652,35 +658,34 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     if (bcontainer->error) {
-         error_propagate_prepend(errp, bcontainer->error,
-             "memory listener initialization failed: ");
--        goto listener_release_exit;
-+        goto fail;
-     }
- 
-     bcontainer->initialized = true;
- 
-     return true;
--listener_release_exit:
--    QLIST_REMOVE(group, container_next);
--    vfio_kvm_device_del_group(group);
-+
-+fail:
+@@ -669,15 +676,11 @@ fail:
      memory_listener_unregister(&bcontainer->listener);
--    if (vioc->release) {
-+
-+    if (group_was_added) {
-+        QLIST_REMOVE(group, container_next);
-+        vfio_kvm_device_del_group(group);
-+    }
-+    if (vioc && vioc->release) {
+ 
+     if (group_was_added) {
+-        QLIST_REMOVE(group, container_next);
+-        vfio_kvm_device_del_group(group);
++        vfio_container_group_del(container, group);
+     }
+     if (vioc && vioc->release) {
          vioc->release(bcontainer);
      }
--
--enable_discards_exit:
--    vfio_ram_block_discard_disable(container, false);
--
--unregister_container_exit:
--    vfio_cpr_unregister_container(bcontainer);
--
--free_container_exit:
--    object_unref(container);
--
--close_fd_exit:
--    close(fd);
--
--put_space_exit:
-+    if (discard_disabled) {
-+        vfio_ram_block_discard_disable(container, false);
-+    }
-+    if (new_container) {
-+        vfio_cpr_unregister_container(bcontainer);
-+        object_unref(container);
-+    }
-+    if (fd >= 0) {
-+        close(fd);
-+    }
-     vfio_put_address_space(space);
--
-     return false;
- }
- 
+-    if (discard_disabled) {
+-        vfio_ram_block_discard_disable(container, false);
+-    }
+     if (new_container) {
+         vfio_cpr_unregister_container(bcontainer);
+         object_unref(container);
 -- 
 1.8.3.1
 
