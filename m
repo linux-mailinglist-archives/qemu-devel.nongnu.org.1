@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895BAA36E12
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 13:33:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB96A36E80
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 14:33:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjHLC-00066k-22; Sat, 15 Feb 2025 07:32:14 -0500
+	id 1tjIGX-0008OE-K5; Sat, 15 Feb 2025 08:31:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tjHKy-00065A-50
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 07:32:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deniz.eren@icloud.com>)
+ id 1tjIGV-0008Nv-7I
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 08:31:27 -0500
+Received: from mr85p00im-hyfv06021301.me.com ([17.58.23.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tjHKv-0002pM-Ex
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 07:31:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739622716;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xW/oi6Gxop3g0IdpDTZKixwh9RwaV8vJ8X83N82Jv78=;
- b=E1cwTbC1O23EneLS+vcCJpgW0aZUuJ6Xnji5KeUGhipFu2FqI/5/vTeeoqK0UgECqck2Tm
- hpfFZdNPpIBk8A1V4yRI5bsxRQUXHOZNF9E7Y2bG6Ox2fyq6opGs+KC3T/5D8QQ4UD2Kmm
- uMzDaYLcf3hHg+2Iae80WX/Dr//1PUQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-BJqoBmwaPpuiYXO-Wj4JoA-1; Sat,
- 15 Feb 2025 07:31:51 -0500
-X-MC-Unique: BJqoBmwaPpuiYXO-Wj4JoA-1
-X-Mimecast-MFC-AGG-ID: BJqoBmwaPpuiYXO-Wj4JoA_1739622710
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A720D1975AFC; Sat, 15 Feb 2025 12:31:50 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.74.16.149])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 222FD1800360; Sat, 15 Feb 2025 12:31:46 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v6 4/4] tests/qtest/migration: add postcopy tests with multifd
-Date: Sat, 15 Feb 2025 18:01:19 +0530
-Message-ID: <20250215123119.814345-5-ppandit@redhat.com>
-In-Reply-To: <20250215123119.814345-1-ppandit@redhat.com>
-References: <20250215123119.814345-1-ppandit@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.195,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <deniz.eren@icloud.com>)
+ id 1tjIGT-0001R5-73
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 08:31:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+ s=1a1hai; bh=Y+ImUibxXZBEHCKRTzvnIDHlX9xlCTF8Kj/d7ujCD1k=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=fUcgUvHgN40X7ok1mkfWebIzeojuUqUMfM7EtgDxuKCrLCSIPCsIy7jdeeMVSa173
+ WxJuFeAaFOA92n0ax99UjopfNao9CQvryDKAuyX3NKn68nyvgioly4B+WEicpVbUYr
+ qwe0b1v+qHBjfb5ojP/OKcQ/efwv/Le2J2t0Jg1FkFEjCFViHiXTxUhtsBdNkSzvV0
+ hgqqEBWkGYe9Qcab2YajodFUsaqT9oogReujZR6rjEjoxal3SIxiWJKNLqi16d8cJe
+ XCKjWNnjC9kgw8ZSZiwaeVXnBiwY7zpvG6hWcadYJauF8S0f+NOZkbojx3WpQqQuZW
+ fEi6N6GkXFKwQ==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.152.18])
+ by mr85p00im-hyfv06021301.me.com (Postfix) with ESMTPSA id 45A982150B17;
+ Sat, 15 Feb 2025 13:31:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary=Apple-Mail-9E098B3B-9F35-42DB-9EAF-97F1CC0EBFD8
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v2 7/7] hw/net/can: Correct Kconfig dependencies after
+ switch to meson build.
+From: Deniz Eren <deniz.eren@icloud.com>
+In-Reply-To: <202009232013.52889.pisa@cmp.felk.cvut.cz>
+Date: Sun, 16 Feb 2025 00:30:58 +1100
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Marek Vasut <marex@denx.de>, Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Jiri Novak <jnovak@fel.cvut.cz>, Stefan Hajnoczi <stefanha@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Frederic Konrad <frederic.konrad@adacore.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Jan Charvat <charvj10@fel.cvut.cz>,
+ Oliver Hartkopp <socketcan@hartkopp.net>,
+ Ondrej Ille <ondrej.ille@gmail.com>
+Message-Id: <3A8C14E4-3709-4866-B547-7AC621F5C368@icloud.com>
+References: <202009232013.52889.pisa@cmp.felk.cvut.cz>
+To: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+X-Mailer: iPhone Mail (22D72)
+X-Proofpoint-ORIG-GUID: kS8KJIzi110gv5DJf_eKqf8-xDyGyOEk
+X-Proofpoint-GUID: kS8KJIzi110gv5DJf_eKqf8-xDyGyOEk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-15_06,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0 bulkscore=0
+ phishscore=0 adultscore=0 clxscore=1011 malwarescore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2502150120
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Received-SPF: pass client-ip=17.58.23.188; envelope-from=deniz.eren@icloud.com;
+ helo=mr85p00im-hyfv06021301.me.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, MIME_QP_LONG_LINE=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,251 +90,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
 
-Add new qtests to run postcopy migration with multifd
-channels enabled.
+--Apple-Mail-9E098B3B-9F35-42DB-9EAF-97F1CC0EBFD8
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- tests/qtest/migration/compression-tests.c | 13 ++++++++
- tests/qtest/migration/framework.c         |  4 +++
- tests/qtest/migration/postcopy-tests.c    | 23 +++++++++++++
- tests/qtest/migration/precopy-tests.c     | 19 +++++++++++
- tests/qtest/migration/tls-tests.c         | 40 +++++++++++++++++++++++
- 5 files changed, 99 insertions(+)
+Hello,
 
-v6:
-- Reorder, make this the second patch in this series.
+I have implemented support for PCI MSI capability CANbus card support; fully=
+ tested using QNX operating system guest image. How can I go about contribut=
+ing this to the main repo:
 
-v5:
-- https://lore.kernel.org/qemu-devel/20250205122712.229151-1-ppandit@redhat.com/T/#t
+https://github.com/Deniz-Eren/qemu/blob/feature/can-sja100-pci-msi-support/h=
+w/net/can/can_pcm26d2ca_pci.c
 
-diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
-index 4558a7b9ff..d4d6b3c4de 100644
---- a/tests/qtest/migration/compression-tests.c
-+++ b/tests/qtest/migration/compression-tests.c
-@@ -40,6 +40,17 @@ static void test_multifd_tcp_zstd(void)
-     };
-     test_precopy_common(&args);
- }
-+
-+static void test_multifd_postcopy_tcp_zstd(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true,
-+        .start_hook = migrate_hook_start_precopy_tcp_multifd_zstd,
-+    };
-+
-+    test_precopy_common(&args);
-+}
- #endif /* CONFIG_ZSTD */
- 
- #ifdef CONFIG_QATZIP
-@@ -172,6 +183,8 @@ void migration_test_add_compression(MigrationTestEnv *env)
- #ifdef CONFIG_ZSTD
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
-+    migration_test_add("/migration/multifd+postcopy/tcp/plain/zstd",
-+                       test_multifd_postcopy_tcp_zstd);
- #endif
- 
- #ifdef CONFIG_QATZIP
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 82aaa13e85..2396405b51 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -469,6 +469,10 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     args->caps[MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME] = true;
-     args->caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
-     set_migration_capabilities(from, to, args);
-+    if (args->caps[MIGRATION_CAPABILITY_MULTIFD]) {
-+        migrate_set_parameter_int(from, "multifd-channels", 8);
-+        migrate_set_parameter_int(to, "multifd-channels", 8);
-+    }
- 
-     migrate_ensure_non_converge(from);
-     migrate_prepare_for_dirty_mem(from);
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
-index b0e70a6367..32fe7b0324 100644
---- a/tests/qtest/migration/postcopy-tests.c
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -90,6 +90,25 @@ static void migration_test_add_postcopy_smoke(MigrationTestEnv *env)
-     }
- }
- 
-+static void test_multifd_postcopy(void)
-+{
-+    MigrateCommon args = {
-+        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+    };
-+
-+    test_postcopy_common(&args);
-+}
-+
-+static void test_multifd_postcopy_preempt(void)
-+{
-+    MigrateCommon args = {
-+        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
-+    };
-+
-+    test_postcopy_common(&args);
-+}
-+
- void migration_test_add_postcopy(MigrationTestEnv *env)
- {
-     migration_test_add_postcopy_smoke(env);
-@@ -110,6 +129,10 @@ void migration_test_add_postcopy(MigrationTestEnv *env)
-             "/migration/postcopy/recovery/double-failures/reconnect",
-             test_postcopy_recovery_fail_reconnect);
- 
-+        migration_test_add("/migration/multifd+postcopy/plain",
-+                           test_multifd_postcopy);
-+        migration_test_add("/migration/multifd+postcopy/preempt/plain",
-+                           test_multifd_postcopy_preempt);
-         if (env->is_x86) {
-             migration_test_add("/migration/postcopy/suspend",
-                                test_postcopy_suspend);
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index e5d8c49dbe..2126cb8e2c 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -33,6 +33,7 @@
- #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
- 
- static char *tmpfs;
-+static bool postcopy_ram = false;
- 
- static void test_precopy_unix_plain(void)
- {
-@@ -465,6 +466,11 @@ static void test_multifd_tcp_cancel(void)
-     migrate_ensure_non_converge(from);
-     migrate_prepare_for_dirty_mem(from);
- 
-+    if (postcopy_ram) {
-+        migrate_set_capability(from, "postcopy-ram", true);
-+        migrate_set_capability(to, "postcopy-ram", true);
-+    }
-+
-     migrate_set_parameter_int(from, "multifd-channels", 16);
-     migrate_set_parameter_int(to, "multifd-channels", 16);
- 
-@@ -506,6 +512,10 @@ static void test_multifd_tcp_cancel(void)
-         return;
-     }
- 
-+    if (postcopy_ram) {
-+        migrate_set_capability(to2, "postcopy-ram", true);
-+    }
-+
-     migrate_set_parameter_int(to2, "multifd-channels", 16);
- 
-     migrate_set_capability(to2, "multifd", true);
-@@ -529,6 +539,13 @@ static void test_multifd_tcp_cancel(void)
-     migrate_end(from, to2, true);
- }
- 
-+static void test_multifd_postcopy_tcp_cancel(void)
-+{
-+    postcopy_ram = true;
-+    test_multifd_tcp_cancel();
-+    postcopy_ram = false;
-+}
-+
- static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
- {
-     qtest_qmp_assert_success(who,
-@@ -1001,6 +1018,8 @@ void migration_test_add_precopy(MigrationTestEnv *env)
-                        test_multifd_tcp_zero_page_legacy);
-     migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
-                        test_multifd_tcp_no_zero_page);
-+    migration_test_add("migration/multifd+postcopy/tcp/plain/cancel",
-+                       test_multifd_postcopy_tcp_cancel);
-     if (g_str_equal(env->arch, "x86_64")
-         && env->has_kvm && env->has_dirty_ring) {
- 
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index 30ab79e058..ce57f0cb5d 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -393,6 +393,17 @@ static void test_postcopy_recovery_tls_psk(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_multifd_postcopy_recovery_tls_psk(void)
-+{
-+    MigrateCommon args = {
-+        .start_hook = migrate_hook_start_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
- /* This contains preempt+recovery+tls test altogether */
- static void test_postcopy_preempt_all(void)
- {
-@@ -405,6 +416,17 @@ static void test_postcopy_preempt_all(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_multifd_postcopy_preempt_recovery_tls_psk(void)
-+{
-+    MigrateCommon args = {
-+        .start_hook = migrate_hook_start_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
- static void test_precopy_unix_tls_psk(void)
- {
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-@@ -651,6 +673,18 @@ static void test_multifd_tcp_tls_psk_mismatch(void)
-     test_precopy_common(&args);
- }
- 
-+static void test_multifd_postcopy_tcp_tls_psk_match(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        .start_hook = migrate_hook_start_multifd_tcp_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+    };
-+
-+    test_precopy_common(&args);
-+}
-+
- #ifdef CONFIG_TASN1
- static void test_multifd_tcp_tls_x509_default_host(void)
- {
-@@ -762,6 +796,10 @@ void migration_test_add_tls(MigrationTestEnv *env)
-                            test_postcopy_preempt_tls_psk);
-         migration_test_add("/migration/postcopy/preempt/recovery/tls/psk",
-                            test_postcopy_preempt_all);
-+        migration_test_add("/migration/multifd+postcopy/recovery/tls/psk",
-+                           test_multifd_postcopy_recovery_tls_psk);
-+        migration_test_add("/migration/multifd+postcopy/preempt/recovery/tls/psk",
-+                           test_multifd_postcopy_preempt_recovery_tls_psk);
-     }
- #ifdef CONFIG_TASN1
-     migration_test_add("/migration/precopy/unix/tls/x509/default-host",
-@@ -793,6 +831,8 @@ void migration_test_add_tls(MigrationTestEnv *env)
-                        test_multifd_tcp_tls_psk_match);
-     migration_test_add("/migration/multifd/tcp/tls/psk/mismatch",
-                        test_multifd_tcp_tls_psk_mismatch);
-+    migration_test_add("/migration/multifd+postcopy/tcp/tls/psk/match",
-+                       test_multifd_postcopy_tcp_tls_psk_match);
- #ifdef CONFIG_TASN1
-     migration_test_add("/migration/multifd/tcp/tls/x509/default-host",
-                        test_multifd_tcp_tls_x509_default_host);
---
-2.48.1
 
+
+Sent from my iPhone
+
+Deniz Eren
++61 405 194 317
+
+> On 24 Sep 2020, at 4:15=E2=80=AFam, Pavel Pisa <pisa@cmp.felk.cvut.cz> wro=
+te:
+>=20
+> =EF=BB=BFHello Paolo,
+>=20
+>> On Wednesday 23 of September 2020 20:11:08 Paolo Bonzini wrote:
+>>> On 23/09/20 19:44, Pavel Pisa wrote:
+>>> If you have not pushed code to the mainline yet,
+>>> consider v3 which should follow better actual
+>>> mainline state. The list of updates to v3 follows.
+>>=20
+>> I actually queued v3 (I just use patchew to queue patches).
+>=20
+> That is great.
+>=20
+> Thanks,
+>=20
+> Pavel
+>=20
+> --
+>                Pavel Pisa
+>    e-mail:     pisa@cmp.felk.cvut.cz
+>    Department of Control Engineering FEE CVUT
+>    Karlovo namesti 13, 121 35, Prague 2
+>    university: http://dce.fel.cvut.cz/
+>    personal:   http://cmp.felk.cvut.cz/~pisa
+>    projects:   https://www.openhub.net/accounts/ppisa
+>    CAN related:http://canbus.pages.fel.cvut.cz/
+>=20
+
+--Apple-Mail-9E098B3B-9F35-42DB-9EAF-97F1CC0EBFD8
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto">Hello,<div><br></div><div>I have implemente=
+d support for PCI MSI capability CANbus card support; fully tested using QNX=
+ operating system guest image. How can I go about contributing this to the m=
+ain repo:</div><div><br></div><div><div><a href=3D"https://github.com/Deniz-=
+Eren/qemu/blob/feature/can-sja100-pci-msi-support/hw/net/can/can_pcm26d2ca_p=
+ci.c">https://github.com/Deniz-Eren/qemu/blob/feature/can-sja100-pci-msi-sup=
+port/hw/net/can/can_pcm26d2ca_pci.c</a></div><div><br></div><div><br></div><=
+div><br id=3D"lineBreakAtBeginningOfSignature"><div dir=3D"ltr">Sent from my=
+ iPhone<div><br></div><div>Deniz Eren</div><div>+61 405 194 317</div></div><=
+div dir=3D"ltr"><br><blockquote type=3D"cite">On 24 Sep 2020, at 4:15=E2=80=AF=
+am, Pavel Pisa &lt;pisa@cmp.felk.cvut.cz&gt; wrote:<br><br></blockquote></di=
+v><blockquote type=3D"cite"><div dir=3D"ltr">=EF=BB=BF<span>Hello Paolo,</sp=
+an><br><span></span><br><span>On Wednesday 23 of September 2020 20:11:08 Pao=
+lo Bonzini wrote:</span><br><blockquote type=3D"cite"><span>On 23/09/20 19:4=
+4, Pavel Pisa wrote:</span><br></blockquote><blockquote type=3D"cite"><block=
+quote type=3D"cite"><span>If you have not pushed code to the mainline yet,</=
+span><br></blockquote></blockquote><blockquote type=3D"cite"><blockquote typ=
+e=3D"cite"><span>consider v3 which should follow better actual</span><br></b=
+lockquote></blockquote><blockquote type=3D"cite"><blockquote type=3D"cite"><=
+span>mainline state. The list of updates to v3 follows.</span><br></blockquo=
+te></blockquote><blockquote type=3D"cite"><span></span><br></blockquote><blo=
+ckquote type=3D"cite"><span>I actually queued v3 (I just use patchew to queu=
+e patches).</span><br></blockquote><span></span><br><span>That is great.</sp=
+an><br><span></span><br><span>Thanks,</span><br><span></span><br><span>Pavel=
+</span><br><span></span><br><span>-- </span><br><span> &nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pavel P=
+isa</span><br><span> &nbsp;&nbsp;&nbsp;e-mail: &nbsp;&nbsp;&nbsp;&nbsp;pisa@=
+cmp.felk.cvut.cz</span><br><span> &nbsp;&nbsp;&nbsp;Department of Control En=
+gineering FEE CVUT</span><br><span> &nbsp;&nbsp;&nbsp;Karlovo namesti 13, 12=
+1 35, Prague 2</span><br><span> &nbsp;&nbsp;&nbsp;university: http://dce.fel=
+.cvut.cz/</span><br><span> &nbsp;&nbsp;&nbsp;personal: &nbsp;&nbsp;http://cm=
+p.felk.cvut.cz/~pisa</span><br><span> &nbsp;&nbsp;&nbsp;projects: &nbsp;&nbs=
+p;https://www.openhub.net/accounts/ppisa</span><br><span> &nbsp;&nbsp;&nbsp;=
+CAN related:http://canbus.pages.fel.cvut.cz/</span><br><span></span><br></di=
+v></blockquote></div></div></body></html>=
+
+--Apple-Mail-9E098B3B-9F35-42DB-9EAF-97F1CC0EBFD8--
 
