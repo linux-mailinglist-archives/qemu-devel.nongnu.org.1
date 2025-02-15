@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2494A37008
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 19:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E29A3701E
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 19:13:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjMRX-0007wZ-MX; Sat, 15 Feb 2025 12:59:07 -0500
+	id 1tjMec-0001N9-ET; Sat, 15 Feb 2025 13:12:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjMRT-0007ul-0y
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 12:59:03 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tjMeZ-0001Mw-6w
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 13:12:35 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjMRR-0007rB-24
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 12:59:02 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-221057b6ac4so10640205ad.2
- for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 09:58:59 -0800 (PST)
+ id 1tjMeX-000115-4Y
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 13:12:34 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-220bfdfb3f4so64895745ad.2
+ for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 10:12:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739642339; x=1740247139; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739643151; x=1740247951; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HuUZGJlz7fsLnNXiRXyUJUAUWT8LSchwOnIGXmCtzGs=;
- b=N3PcErosLzy7gGk97EiJ/1XpAS8QbnuK3XG/FMq7ZouOFkWvxN89ukh9Y28jXCJ+OL
- hgnTQvm55AVnZhFJHug2KCjcixzZ53ZaEIKhR+trk6oVuz6ZEsSDGLjplBpp0cOphGVn
- uI5UnVL0vDMzdXjlleSUyRnAvnWQt/iNBEf1+oV1kE1Z1dHZtr8qjjkTZKjvc7auOFdn
- A4wCXq5vVmKf/M1jROLbqGLvoVTgTgi2ieM8VK9O41mSKRoWW3R/gGN818ka5OlFWHfZ
- a2X/qMc1VWhk71M8OR0g5T+6YmN790ig1CLAgigSpWaeZgFFl+xyalfkN1z2uWFIYRxc
- jbDw==
+ bh=7dpdecLhwAdixda/HffUvO6S89/lsR9AkyMowtcLARE=;
+ b=LgEdqCPe73jmd6IWUXQtmpXkQ6APRncus4r+nUMFE3dkmBl5SZACHWtpWt7Ziu0CLK
+ lJv4UNTVz54SdhtGHNEQ3PqtUSVLjTyPVO85Bqbdt8sntVgIyRkDNYaPtabSVgz9I3gV
+ xUvuiGttx/dhC50dLlDv0QZukaLNDqRgPecVI4NeU77QB8ClOO4E/NV7zIDy98dOGRd8
+ uf7fuIf6UHNUpZdJ1Rcp+JMYcYx56rRrURPraCHnypUcFIU1AKm0Hfw4437XngiyPFyQ
+ 7lCZ4FKiUucdsNTUoXaFbk/M7SK5sUFf0YeqNCN3mhTxXyzt0Q275xi5kCxJ8iCBVfQB
+ 14zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739642339; x=1740247139;
+ d=1e100.net; s=20230601; t=1739643151; x=1740247951;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HuUZGJlz7fsLnNXiRXyUJUAUWT8LSchwOnIGXmCtzGs=;
- b=uUsV13vQUHR8jOBQOYg9/HU8Y1gXS1Muce0J+a8vv14RniF0BLzL79d9sltId7gMjH
- BM+S9tmPzrH7lXn8mZePT/IxuokwpCnW5KnTQujJlv8FULJHZ209Mw7WmkS8iLVYtbI/
- 4FAgOFSze0pUjZyF5BGA1MRk8tnjcj37crP1xzCEymlB6YSRTKCy+us2EazdG86N52WO
- 9Z7YFYjOO9ueHvObapS43cY/9OuTdDHkMjjkYzu5oS1n00NS+k/Y2AjmpBGV/j4pFC9q
- Ywb+IIs9QP5XxkmzWCtc7jPdzxnnGSYwf2zywHxPlFrN3dPn3bh3mzPCNi6c9nph0gtc
- N0UA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXy263l2GPg2lydyaILH4I1cxvwpRLy8shXAMAJSOyomTqQNIW0u+5NHQN6RC0imQeIWyk1B48QHQeL@nongnu.org
-X-Gm-Message-State: AOJu0Yxpbv3ixDeZYY5r4xoJkLDHjDI53U8nw/TQceQCOPSOVrephzbL
- BXD1zuHzDOrnDtiS4CJkHO1/4NTzfpZ0rWeNeKSwsF3p5szn0AjTAgKOrQEClIk=
-X-Gm-Gg: ASbGncungKary5W40+nps90z5nCWB4qITdEN4Cm4qXy+5Y+5S4x/WbIHweLy9QKadUt
- vUF3oCYHGkiIz1dE9dq2tvaVsLsVKDi4gd28It3yY6PHLuBYYxGkE4C/dhg4Lsxf0pJvjl0PNFM
- pCbTTJC3e5oAvPMHJBk3y9vLvFGKM6gSlXzLpMoxcjIbk09ruXSjteDeflaG/bwyLrGkUjcO6I1
- nwUiBqv7oVNJMGqhjyHD/F1G0w8QB/1mynpEWuANNRZT4/DZIxg2iSwOqc3bD/6pIbjEClk1Y0T
- Nl2bBbhemSZzSKj4HroUYaDiBZ0UwDPOoXiFdbaW/bEG3gufktCfnFM=
-X-Google-Smtp-Source: AGHT+IEQy6z65bbcamaqqgMICfN57MfShDYRkl9SpGxnxOB9aak2x3l+q0dW4FXRRDvx6ieNmNEcAg==
-X-Received: by 2002:a17:902:d507:b0:216:2dc4:50ab with SMTP id
- d9443c01a7336-22103efc1d9mr59280025ad.2.1739642338778; 
- Sat, 15 Feb 2025 09:58:58 -0800 (PST)
+ bh=7dpdecLhwAdixda/HffUvO6S89/lsR9AkyMowtcLARE=;
+ b=kOcWY362kF+5hag5b/zSjeeSHkK0YKa4ufRos2EdJ6in9mXAlqGN++xOqkyg0V+Xif
+ UFYnx/5uwFMmiRhj7Eh6bpMQnsOpsMDskSg8syud96w5O4iHmLARsXWZSmtsmTsPYiaN
+ zAxgPxCjaCTv7QGbrfqBqdIuHlvATyp33OQW8rG0Sx7XNvl5asHPRlGUM330aASvWh5D
+ n9jPQ/3kuCe+zV5hFVT2LfRONlEKDAcpumTr6d+L58LD22MlnM1Q5j+8+Cs7A1cYVGxT
+ i0M3O6DazYNjDMavL0qTsJaqR+nhs8xM3o7eDJ9IAVLYV9/+HKkdnz6cLK7yCWRC2toU
+ qTSQ==
+X-Gm-Message-State: AOJu0YxYuE1uxeEPDVTm4xwiDg3iHvxjIQ46h9CMH5p8oI66zNpmwwgl
+ jOlAjCBNafUBT6fzQf7LcdkwXxcLrFIvcVcyHQp6hj6lJxBmyiTK/FVKD3kLZgCZNN+QD6P11UU
+ e
+X-Gm-Gg: ASbGnctb5Wa9nV1adzmsEI9VR5dGfEORnuiFHkf6EZzCkID3BqJ083sqmJgzEf9flCb
+ UZ7Q3hADBEfV5aZBKc8asdJMrtO45zBnlFiLbr9LoC62bO70vYcBEfCrhr15Jrl6BR9WB5OJ8PR
+ GUrpjMFED5pO4IudveP/utPjUjM1i4drtOF3Mv+MGGXZvw1lwQY9uzdsKQIGoPX8HNkBCu7kHaE
+ /ZJm/a0XmJoc3rXKxKhx1/+y+yGzh2mTrLGbFCjeSnXJGUR02vQ6CNyfd8Eq6FgyZCA9me+zlwG
+ /mPWd4cRIunMyRGlVwEm9l4PtDpn9uAAMs2rajm6fziQw62S7sxE394=
+X-Google-Smtp-Source: AGHT+IHHEB1Jv9zRcZmLGjijI9mFsLXHN89zha2I5S6FRasEN6+aEfR+GFpEKIxkEQ0G2dqVoHUF5A==
+X-Received: by 2002:a05:6a20:e30b:b0:1ee:88d2:f0a7 with SMTP id
+ adf61e73a8af0-1ee8cad2b95mr7517935637.12.1739643150946; 
+ Sat, 15 Feb 2025 10:12:30 -0800 (PST)
 Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d5349056sm46763935ad.22.2025.02.15.09.58.58
+ d2e1a72fcca58-7326a38ff76sm986724b3a.160.2025.02.15.10.12.30
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 15 Feb 2025 09:58:58 -0800 (PST)
-Message-ID: <a62ee246-4249-458c-9f9b-bad79816ce5e@linaro.org>
-Date: Sat, 15 Feb 2025 09:58:56 -0800
+ Sat, 15 Feb 2025 10:12:30 -0800 (PST)
+Message-ID: <3ef573fa-2aea-41c1-be17-cdf30e38ed57@linaro.org>
+Date: Sat, 15 Feb 2025 10:12:29 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg: refactor pool data for simplicity and comprehension
-To: Michael Clark <michael@anarch128.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250215021120.1647083-1-michael@anarch128.org>
+Subject: Re: [PATCH 2/5] target/rx: Set exception vector base to 0xffffff80
+To: qemu-devel@nongnu.org
+References: <20250215021654.1786679-1-keithp@keithp.com>
+ <20250215021654.1786679-3-keithp@keithp.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250215021120.1647083-1-michael@anarch128.org>
+In-Reply-To: <20250215021654.1786679-3-keithp@keithp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,68 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/14/25 18:11, Michael Clark wrote:
-> the intent of this patch is more conventional nomenclature
-> but the constant pool data code is also simplified a little.
+On 2/14/25 18:16, Keith Packard via wrote:
+> The documentation says the vector is at 0xffffff80, instead of the
+> previous value of 0xffffffc0. That value must have been a bug because
+> the standard vector values (20, 21, 23, 25, 30) were all
+> past the end of the array.
 > 
-> - merge new_pool_{alloc,insert} -> new_pool_data.
-> - rename TCGLabelPoolData -> TCGData.
-> - rename pool_labels -> pool_data.
-> - rename macro TCG_TARGET_NEED_POOL_DATA.
-> - move TCGData struct definition into tcg.h.
-> - comment translation block epilogue members.
-
-You can see from this list that this should be multiple patches.
-
-> TCGLabelPoolData is ambiguous and asks for potential confusion
-> with the unrelated TCGLabel type. there is no label in the sense
-> of TCGLabel.
-
-Fair.
-
-> the label member is merely a pointer to the instruction text to
-> be updated with the relative address of the constant, the primary
-> data is the constant data pool at the end of translation blocks.
-> this relates more closely to .data sections in offline codegen
-> if we were to imagine a translation block has .text and .data.
-
-No, it doesn't.  It relates most closely to data emitted within .text, accessed via 
-pc-relative instructions with limited offsets.
-
-This isn't a thing you'd have ever seen on x86 or x86_64, but it is quite common for arm32 
-(12-bit offsets), sh4 (8-bit offsets), m68k (16-bit offsets) and such.  Because the 
-offsets are so small, they could even be placed *within* functions not just between them.
-
-> thus TCGData is more succinct and more reflective of what the
-> structure contains; data emitted in the constant data pool at
-> the end of translation blocks. also, pool_labels is renamed to
-> pool_data as the primary contents of the list is constant data.
-
-I guess.  TCGData is perhaps too short, but we can certainly avoid the confusion of "labels".
-
+> Signed-off-by: Keith Packard <keithp@keithp.com>
+> ---
+>   target/rx/helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> finally, new_pool_alloc and new_pool_insert are merged into a
-> single function named new_pool_data, which moves nlongs to the
-> end of the parameter list with varargs to allocate, copy, and
-> insert constant data items to simplify new_pool_label et al.
-> a successive step would be to collapse callers into calling
-> new_pool_data and remove a layer of indirection.
-
-Why?  varargs generally produces horrible code.
-The split between alloc and insert was intentional to avoid this.
-
-> diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
-> index a9ca493d20f6..448c2330ef0f 100644
-> --- a/tcg/tci/tcg-target.h
-> +++ b/tcg/tci/tcg-target.h
-> @@ -72,6 +72,6 @@ typedef enum {
->   } TCGReg;
+> diff --git a/target/rx/helper.c b/target/rx/helper.c
+> index 80912e8dcb..55e2ae4a11 100644
+> --- a/target/rx/helper.c
+> +++ b/target/rx/helper.c
+> @@ -90,7 +90,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+>           cpu_stl_data(env, env->isp, env->pc);
 >   
->   #define HAVE_TCG_QEMU_TB_EXEC
-> -#define TCG_TARGET_NEED_POOL_LABELS
-> +#define TCG_TARGET_NEED_POOL_DATA
+>           if (vec < 0x100) {
+> -            env->pc = cpu_ldl_data(env, 0xffffffc0 + vec * 4);
+> +            env->pc = cpu_ldl_data(env, 0xffffff80 + vec * 4);
+>           } else {
+>               env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
+>           }
 
-Oops, this should have been removed with a417ef83.
+This does appear to match the unnamed constants used as operands to raise_exception, 
+comparing to the vector addresses in the manual: (0xffffffd0, etc).
+
+It would be nice to have them named, e.g. per the named list in rx_cpu_do_interrupt.  The 
+0x100 constant would probably be better numbered 32, so that
+
+   vec < 0x100
+
+checks themselves don't imply wraparound from 0xffffff80.
 
 
 r~
