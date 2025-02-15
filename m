@@ -2,99 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE52A36B23
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 02:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 998BDA36B51
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 03:13:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj74W-0003yP-6Q; Fri, 14 Feb 2025 20:34:23 -0500
+	id 1tj7fN-00036U-DM; Fri, 14 Feb 2025 21:12:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tj4OT-00017X-Rx
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 17:42:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1tj7fL-00036M-D2
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:12:23 -0500
+Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tj4OR-0000jH-2F
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 17:42:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739572957;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=og9kfRCOmDbydRkUH4+UsuoDJALXoSYCWQnHUxcgqlo=;
- b=O87orPuRI9P25xyV8dlCv1/1J9cIVqmKyR/1fRlrI8EZFLbVDk0clZR1c9kO3o62SjEUCH
- jYYWBl7sKyL34H1brhQ9al1UdzGz+b55Qt3I89uqlfh+gWaNLGSpNbhVWjjQmGIugncYyt
- 15F3kQgaF8wA3aBGBCI7boCtiVycPH8=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-266-JqhVEL2-PyC5uH7T5jRwZQ-1; Fri, 14 Feb 2025 17:42:35 -0500
-X-MC-Unique: JqhVEL2-PyC5uH7T5jRwZQ-1
-X-Mimecast-MFC-AGG-ID: JqhVEL2-PyC5uH7T5jRwZQ_1739572954
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6e64dac8126so37438056d6.3
- for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 14:42:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739572954; x=1740177754;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=og9kfRCOmDbydRkUH4+UsuoDJALXoSYCWQnHUxcgqlo=;
- b=BzuRFt74HHDwReXwGLKI+SocRlsdtfaeAkuLphhzPaKp2ZH7ub54OQND66kVGTgktW
- f8y1+7yL4rfpcVTMokmNlSzcF17xX3GkJ/aQOYXcuDhpkVhmAyMax4xnLOCmEBAQKgDm
- EEORWbI4CTjf4NPkxA7I0td/66KWudcL7JZ1HCf18El8XDNS3Ps/XC2W+e/wLsueCGV/
- /dsWDBFyK7arfBgP8LxMqkk49aLrGNt+oE386BZJ0bk/6J+GniwgbUWgtMrBxf9hsTvX
- FX9RBKDTgG6QZcUD4O0uHKuxzU8PHXy9lN6uGx1/NnL47XBjiuulSxNsZrti3NRaey+M
- PyPQ==
-X-Gm-Message-State: AOJu0YxZMYlgKrvIcyUpvtFwZ/P6SE9cxPXGpmM8LzxuS5/HXmITrJ2Z
- vZ+qSrIBb7Yw2QymmounMH7NzCEmjQUAxu463d+cIF7q0wH3OH31jSjE25oEDaryAV7l67LUyio
- Gy7AqbsO5BkTrHeBdbXEUG+zJdHQCCnQJ8AQMilNGy4vF49lmz65k
-X-Gm-Gg: ASbGnct2SRZNy1F2X6tZ79f1kegMV5a/EKJDl2hVyODQwfwgFtTZJYAFrQf8rF29zZY
- 5JrlRr/vj1JudIyW8w0sOzkf9ncMy23jOMwQESG56GB99dF91EIiBFKxA236rwG9LyZoQPPC15S
- Q9Yz9IUdTtNR8LgYy/s4DJ9t4WC2x9Wwo+V0lJ32hl4u20trtEBnJ+OMf2u/SK5dfKyd8YPSNPT
- MhizUu+lZwXNvWYjX5BP8ReRDBrMD4cOeJtwTw+qIyZ4UXbFQc5RV3zaO4=
-X-Received: by 2002:a05:6214:5085:b0:6d8:ada3:26c9 with SMTP id
- 6a1803df08f44-6e66cca5592mr17730206d6.10.1739572954430; 
- Fri, 14 Feb 2025 14:42:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFneiRaUO2+wpyMufKb5oiF3fm53iWpDqSSIhIiR0Q3WM24OCq6jw+l19WSQUo/YekY6gD/2w==
-X-Received: by 2002:a05:6214:5085:b0:6d8:ada3:26c9 with SMTP id
- 6a1803df08f44-6e66cca5592mr17730006d6.10.1739572954118; 
- Fri, 14 Feb 2025 14:42:34 -0800 (PST)
-Received: from x1.local ([2604:7a40:2041:2b00::1000])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e65d7793c3sm25988526d6.17.2025.02.14.14.42.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Feb 2025 14:42:33 -0800 (PST)
-Date: Fri, 14 Feb 2025 17:42:30 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH V2 28/45] vfio: return mr from vfio_get_xlat_addr
-Message-ID: <Z6_G1rF7x2Nbzpl4@x1.local>
-References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
- <1739542467-226739-29-git-send-email-steven.sistare@oracle.com>
- <Z69z6oTtaGOC287O@x1.local>
- <b6e19df6-cb38-4576-bdd0-6278997e402e@oracle.com>
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1tj7fJ-0006Gx-6b
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:12:23 -0500
+Received: from localhost.localdomain (dynamic-cpe-pool.orcon.net.nz
+ [121.99.116.25] (may be forged)) (authenticated bits=0)
+ by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
+ 51F2C2mw3738646
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+ Sat, 15 Feb 2025 02:12:07 GMT
+Authentication-Results: anarch128.org; auth=pass;
+ dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
+ header.i=@anarch128.org header.b=W8Y57oVc header.a=rsa-sha256 header.s=100003;
+ x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org); 
+ x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
+ s=100003; t=1739585529;
+ bh=uXHzRMjEpLGuTGUlrGl4EFfcfWanv9s/K+av2UjFd4g=;
+ h=From:To:Cc:Subject:Date:From;
+ b=W8Y57oVc8YecjRwVrcRLIXxXolplHi6gtBn956wrm2QamGWvrd8YI4ZvV+1ucI/30
+ 9yEZC2w7wSwwrcQ+gfHWjxqKG4aqmPucewo/2sShekNjuLxkB/56oUD/2sWgkh4X83
+ VO0FuPWnjeGfIwn1BuYOx+0+AkKNgb7bym2t9ouEIrCLwOHkV1r02aWAR7wJDFVXOG
+ fW6RVIpCipZsHxgfoM3GCaYCS8hZkjNQpYn9qf9yDkbB26+ks+4sNBAUOu01a0j0jX
+ ihrXTAnFOO/UhgmqOTS7JDuqKhPt2XmH4Y879guMU5xSoZ3KO4gnjHFRRLEAgMAq7h
+ rW+2Ulr1AjpTQ==
+From: Michael Clark <michael@anarch128.org>
+To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Michael Clark <michael@anarch128.org>
+Subject: [PATCH] tcg: refactor pool data for simplicity and comprehension
+Date: Sat, 15 Feb 2025 15:11:20 +1300
+Message-ID: <20250215021120.1647083-1-michael@anarch128.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b6e19df6-cb38-4576-bdd0-6278997e402e@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.732,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
+ envelope-from=michael@anarch128.org; helo=anarch128.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,70 +74,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 14, 2025 at 03:40:57PM -0500, Steven Sistare wrote:
-> > > diff --git a/system/memory.c b/system/memory.c
-> > > index 4c82979..755eafe 100644
-> > > --- a/system/memory.c
-> > > +++ b/system/memory.c
-> > > @@ -2183,9 +2183,8 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
-> > >   }
-> > >   /* Called with rcu_read_lock held.  */
-> > > -bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
-> > > -                          ram_addr_t *ram_addr, bool *read_only,
-> > > -                          bool *mr_has_discard_manager, Error **errp)
-> > > +bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, bool *mr_has_discard_manager,
-> > > +                          MemoryRegion **mr_p, hwaddr *xlat_p, Error **errp)
-> > 
-> > If we're going to return the MR anyway, probably we can drop
-> > mr_has_discard_manager altogether..
-> 
-> To hoist mr_has_discard_manager to the vfio caller, I would need to return len.
-> Your call.
+the intent of this patch is more conventional nomenclature
+but the constant pool data code is also simplified a little.
 
-I meant only dropping mr_has_discard_manager parameter from the function
-interface, not the ram_discard_manager_is_populated() check.
+- merge new_pool_{alloc,insert} -> new_pool_data.
+- rename TCGLabelPoolData -> TCGData.
+- rename pool_labels -> pool_data.
+- rename macro TCG_TARGET_NEED_POOL_DATA.
+- move TCGData struct definition into tcg.h.
+- comment translation block epilogue members.
 
-> 
-> > >   {
-> > >       MemoryRegion *mr;
-> > >       hwaddr xlat;
-> > > @@ -2238,18 +2237,8 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
-> > >           return false;
-> > >       }
-> > > -    if (vaddr) {
-> > > -        *vaddr = memory_region_get_ram_ptr(mr) + xlat;
-> > > -    }
-> > > -
-> > > -    if (ram_addr) {
-> > > -        *ram_addr = memory_region_get_ram_addr(mr) + xlat;
-> > > -    }
-> > > -
-> > > -    if (read_only) {
-> > > -        *read_only = !writable || mr->readonly;
-> > > -    }
-> > > -
-> > > +    *xlat_p = xlat;
-> > > +    *mr_p = mr;
-> > 
-> > I suppose current use on the callers are still under RCU so looks ok, but
-> > that'll need to be rich-documented.
-> 
-> I can do that, or ...
-> 
-> > Better way is always taking a MR reference when the MR pointer is returned,
-> > with memory_region_ref().  Then it is even valid if by accident accessed
-> > after rcu_read_unlock(), and caller should unref() after use.
-> 
-> I can do that, but it would add cycles.  Is this considered a high performance
-> path that may be called frequently?
+TCGLabelPoolData is ambiguous and asks for potential confusion
+with the unrelated TCGLabel type. there is no label in the sense
+of TCGLabel. the structure contains data to be emitted at the end
+of translation blocks at data_gen_ptr in tcg_out_pool_finalize.
+rtype and label save emitting a seperate TCGRelocation which
+would be a more conventional but slightly more costly approach.
 
-AFAICT, any vIOMMU mapping isn't high perf path.  In this specific path,
-the refcount op should be buried in any dma map operations..
+the label member is merely a pointer to the instruction text to
+be updated with the relative address of the constant, the primary
+data is the constant data pool at the end of translation blocks.
+this relates more closely to .data sections in offline codegen
+if we were to imagine a translation block has .text and .data.
 
-Personally I slightly prefer this one because it's always safer to take a
-refcount along with a pointer.. easier to follow.
+thus TCGData is more succinct and more reflective of what the
+structure contains; data emitted in the constant data pool at
+the end of translation blocks. also, pool_labels is renamed to
+pool_data as the primary contents of the list is constant data.
 
+finally, new_pool_alloc and new_pool_insert are merged into a
+single function named new_pool_data, which moves nlongs to the
+end of the parameter list with varargs to allocate, copy, and
+insert constant data items to simplify new_pool_label et al.
+a successive step would be to collapse callers into calling
+new_pool_data and remove a layer of indirection.
+
+Signed-off-by: Michael Clark <michael@anarch128.org>
+---
+ include/tcg/tcg.h    | 16 ++++++++--
+ tcg/tcg.c            | 72 ++++++++++++++------------------------------
+ tcg/tci/tcg-target.h |  2 +-
+ 3 files changed, 37 insertions(+), 53 deletions(-)
+
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 1d1d668f527b..df0b4a36adb9 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -118,6 +118,15 @@ struct TCGLabel {
+     QSIMPLEQ_ENTRY(TCGLabel) next;
+ };
+ 
++typedef struct TCGData {
++    struct TCGData *next;
++    tcg_insn_unit *label;
++    intptr_t addend;
++    int rtype;
++    unsigned nlong;
++    tcg_target_ulong data[];
++} TCGData;
++
+ typedef struct TCGPool {
+     struct TCGPool *next;
+     int size;
+@@ -392,10 +401,13 @@ struct TCGContext {
+     /* Track which vCPU triggers events */
+     CPUState *cpu;                      /* *_trans */
+ 
+-    /* These structures are private to tcg-target.c.inc.  */
++    /* load store slow path emitted at the end of translation blocks */
+     QSIMPLEQ_HEAD(, TCGLabelQemuLdst) ldst_labels;
+-    struct TCGLabelPoolData *pool_labels;
+ 
++    /* labled constant data emitted at the end of translation blocks */
++    TCGData *pool_data;
++
++    /* labeled exit request emitted at the end of translation blocks */
+     TCGLabel *exitreq_label;
+ 
+ #ifdef CONFIG_PLUGIN
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 43b6712286c3..4a84fc8adc04 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -657,38 +657,29 @@ static TCGLabelQemuLdst *new_ldst_label(TCGContext *s)
+ }
+ 
+ /*
+- * Allocate new constant pool entries.
++ * Create new constant pool data and insert into the pool.
+  */
+ 
+-typedef struct TCGLabelPoolData {
+-    struct TCGLabelPoolData *next;
+-    tcg_insn_unit *label;
+-    intptr_t addend;
+-    int rtype;
+-    unsigned nlong;
+-    tcg_target_ulong data[];
+-} TCGLabelPoolData;
+-
+-static TCGLabelPoolData *new_pool_alloc(TCGContext *s, int nlong, int rtype,
+-                                        tcg_insn_unit *label, intptr_t addend)
++static void new_pool_data(TCGContext *s, int rtype, tcg_insn_unit *label,
++                          intptr_t addend, int nlong, ...)
+ {
+-    TCGLabelPoolData *n = tcg_malloc(sizeof(TCGLabelPoolData)
+-                                     + sizeof(tcg_target_ulong) * nlong);
++    TCGData *n, *i, **pp;
++    va_list ap;
++
++    n = tcg_malloc(sizeof(TCGData) + sizeof(tcg_target_ulong) * nlong);
+ 
+     n->label = label;
+     n->addend = addend;
+     n->rtype = rtype;
+     n->nlong = nlong;
+-    return n;
+-}
+ 
+-static void new_pool_insert(TCGContext *s, TCGLabelPoolData *n)
+-{
+-    TCGLabelPoolData *i, **pp;
+-    int nlong = n->nlong;
++    va_start(ap, nlong);
++    for(size_t l = 0; l < nlong; l++) {
++        n->data[l] = va_arg(ap, tcg_target_ulong);
++    }
+ 
+     /* Insertion sort on the pool.  */
+-    for (pp = &s->pool_labels; (i = *pp) != NULL; pp = &i->next) {
++    for (pp = &s->pool_data; (i = *pp) != NULL; pp = &i->next) {
+         if (nlong > i->nlong) {
+             break;
+         }
+@@ -708,9 +699,7 @@ __attribute__((unused))
+ static void new_pool_label(TCGContext *s, tcg_target_ulong d, int rtype,
+                            tcg_insn_unit *label, intptr_t addend)
+ {
+-    TCGLabelPoolData *n = new_pool_alloc(s, 1, rtype, label, addend);
+-    n->data[0] = d;
+-    new_pool_insert(s, n);
++    new_pool_data(s, rtype, label, addend, 1, d);
+ }
+ 
+ /* For v64 or v128, depending on the host.  */
+@@ -719,10 +708,7 @@ static void new_pool_l2(TCGContext *s, int rtype, tcg_insn_unit *label,
+                         intptr_t addend, tcg_target_ulong d0,
+                         tcg_target_ulong d1)
+ {
+-    TCGLabelPoolData *n = new_pool_alloc(s, 2, rtype, label, addend);
+-    n->data[0] = d0;
+-    n->data[1] = d1;
+-    new_pool_insert(s, n);
++    new_pool_data(s, rtype, label, addend, 2, d0, d1);
+ }
+ 
+ /* For v128 or v256, depending on the host.  */
+@@ -732,12 +718,7 @@ static void new_pool_l4(TCGContext *s, int rtype, tcg_insn_unit *label,
+                         tcg_target_ulong d1, tcg_target_ulong d2,
+                         tcg_target_ulong d3)
+ {
+-    TCGLabelPoolData *n = new_pool_alloc(s, 4, rtype, label, addend);
+-    n->data[0] = d0;
+-    n->data[1] = d1;
+-    n->data[2] = d2;
+-    n->data[3] = d3;
+-    new_pool_insert(s, n);
++    new_pool_data(s, rtype, label, addend, 4, d0, d1, d2, d3);
+ }
+ 
+ /* For v256, for 32-bit host.  */
+@@ -749,16 +730,7 @@ static void new_pool_l8(TCGContext *s, int rtype, tcg_insn_unit *label,
+                         tcg_target_ulong d5, tcg_target_ulong d6,
+                         tcg_target_ulong d7)
+ {
+-    TCGLabelPoolData *n = new_pool_alloc(s, 8, rtype, label, addend);
+-    n->data[0] = d0;
+-    n->data[1] = d1;
+-    n->data[2] = d2;
+-    n->data[3] = d3;
+-    n->data[4] = d4;
+-    n->data[5] = d5;
+-    n->data[6] = d6;
+-    n->data[7] = d7;
+-    new_pool_insert(s, n);
++    new_pool_data(s, rtype, label, addend, 8, d0, d1, d2, d3, d4, d5, d6, d7);
+ }
+ 
+ /*
+@@ -792,8 +764,8 @@ static int tcg_out_ldst_finalize(TCGContext *s)
+ 
+ static int tcg_out_pool_finalize(TCGContext *s)
+ {
+-    TCGLabelPoolData *p = s->pool_labels;
+-    TCGLabelPoolData *l = NULL;
++    TCGData *p = s->pool_data;
++    TCGData *l = NULL;
+     void *a;
+ 
+     if (p == NULL) {
+@@ -1598,15 +1570,15 @@ void tcg_prologue_init(void)
+     tcg_qemu_tb_exec = (tcg_prologue_fn *)tcg_splitwx_to_rx(s->code_ptr);
+ #endif
+ 
+-#ifdef TCG_TARGET_NEED_POOL_LABELS
+-    s->pool_labels = NULL;
++#ifdef TCG_TARGET_NEED_POOL_DATA
++    s->pool_data = NULL;
+ #endif
+ 
+     qemu_thread_jit_write();
+     /* Generate the prologue.  */
+     tcg_target_qemu_prologue(s);
+ 
+-#ifdef TCG_TARGET_NEED_POOL_LABELS
++#ifdef TCG_TARGET_NEED_POOL_DATA
+     /* Allow the prologue to put e.g. guest_base into a pool entry.  */
+     {
+         int result = tcg_out_pool_finalize(s);
+@@ -6407,7 +6379,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+     s->data_gen_ptr = NULL;
+ 
+     QSIMPLEQ_INIT(&s->ldst_labels);
+-    s->pool_labels = NULL;
++    s->pool_data = NULL;
+ 
+     start_words = s->insn_start_words;
+     s->gen_insn_data =
+diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
+index a9ca493d20f6..448c2330ef0f 100644
+--- a/tcg/tci/tcg-target.h
++++ b/tcg/tci/tcg-target.h
+@@ -72,6 +72,6 @@ typedef enum {
+ } TCGReg;
+ 
+ #define HAVE_TCG_QEMU_TB_EXEC
+-#define TCG_TARGET_NEED_POOL_LABELS
++#define TCG_TARGET_NEED_POOL_DATA
+ 
+ #endif /* TCG_TARGET_H */
 -- 
-Peter Xu
+2.43.0
 
 
