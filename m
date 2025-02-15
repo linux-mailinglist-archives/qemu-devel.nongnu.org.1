@@ -2,63 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998BDA36B51
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 03:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A43E5A36B65
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Feb 2025 03:18:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tj7fN-00036U-DM; Fri, 14 Feb 2025 21:12:25 -0500
+	id 1tj7k3-0004GZ-HO; Fri, 14 Feb 2025 21:17:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tj7fL-00036M-D2
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:12:23 -0500
-Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tj7jz-0004F5-E0
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:17:11 -0500
+Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tj7fJ-0006Gx-6b
- for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:12:23 -0500
-Received: from localhost.localdomain (dynamic-cpe-pool.orcon.net.nz
- [121.99.116.25] (may be forged)) (authenticated bits=0)
- by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
- 51F2C2mw3738646
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Sat, 15 Feb 2025 02:12:07 GMT
-Authentication-Results: anarch128.org; auth=pass;
- dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
- header.i=@anarch128.org header.b=W8Y57oVc header.a=rsa-sha256 header.s=100003;
- x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org); 
- x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
- s=100003; t=1739585529;
- bh=uXHzRMjEpLGuTGUlrGl4EFfcfWanv9s/K+av2UjFd4g=;
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tj7jw-0006dD-Fd
+ for qemu-devel@nongnu.org; Fri, 14 Feb 2025 21:17:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1739585823; bh=xwnweW21dRad/7sKoMcG8gqMmvOWqaVF1Wl/xjaIWB0=;
  h=From:To:Cc:Subject:Date:From;
- b=W8Y57oVc8YecjRwVrcRLIXxXolplHi6gtBn956wrm2QamGWvrd8YI4ZvV+1ucI/30
- 9yEZC2w7wSwwrcQ+gfHWjxqKG4aqmPucewo/2sShekNjuLxkB/56oUD/2sWgkh4X83
- VO0FuPWnjeGfIwn1BuYOx+0+AkKNgb7bym2t9ouEIrCLwOHkV1r02aWAR7wJDFVXOG
- fW6RVIpCipZsHxgfoM3GCaYCS8hZkjNQpYn9qf9yDkbB26+ks+4sNBAUOu01a0j0jX
- ihrXTAnFOO/UhgmqOTS7JDuqKhPt2XmH4Y879guMU5xSoZ3KO4gnjHFRRLEAgMAq7h
- rW+2Ulr1AjpTQ==
-From: Michael Clark <michael@anarch128.org>
-To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Clark <michael@anarch128.org>
-Subject: [PATCH] tcg: refactor pool data for simplicity and comprehension
-Date: Sat, 15 Feb 2025 15:11:20 +1300
-Message-ID: <20250215021120.1647083-1-michael@anarch128.org>
-X-Mailer: git-send-email 2.43.0
+ b=TlNToTgB6MSKxMjFV0VBBP1VU7U2Truo026rAt5njzWDGSf91As6b62+QQUBFzwND
+ NMmT5WkHkWUQjuWLW0neHt93zKNhthYLY3KdprPI25UFrsMFyWeAZ5GR4ERxg3vpT7
+ KW+CHAIseyXXQTqXzRHnIzpy237fik9e7u9Qg73H+emJd4ScVzDXyzqZJppANHyg5b
+ bdQbYZHW+JZmVqOc5NafiOffgmQiP5LaM/D6ViIXeoMKpeq4EzMeMhFxb5fR5mvFsC
+ HOPlhebEfRaUrpd1dKwTKJDuRZzh9vK8JQ/IvQsYJVpV4oBjuuOmUldk77pFQmYoY7
+ HmQnBka2/ELSA==
+Received: from localhost (localhost [127.0.0.1])
+ by elaine.keithp.com (Postfix) with ESMTP id 749913F22BFA
+ for <qemu-devel@nongnu.org>; Fri, 14 Feb 2025 18:17:03 -0800 (PST)
+X-Virus-Scanned: Debian amavis at keithp.com
+Received: from elaine.keithp.com ([127.0.0.1])
+ by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
+ id E-lwy7D3nP-7; Fri, 14 Feb 2025 18:17:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1739585822; bh=xwnweW21dRad/7sKoMcG8gqMmvOWqaVF1Wl/xjaIWB0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=W3UH4xw07B7ieELbbTACsvIQjE/J2iQ8uINnGiuzmsyMq6WVVbNQHAHLYhmqNu7Yo
+ 6/NDXatUYi3wAdo78/EWw1KfsaMX0xtk7ts0gljFWTgzw1Nj7b09wNfTuI9R+uW+z2
+ RnjCPtBXj3vWSA4o2+Q6kGsjjAQOu292bPGzFm+06+xKs9YlrdI1JYxef7/2yysGUU
+ 4FO73sFCxwjv0b5n9nFbNgmGJG27Ib62OvTBtx4jzXi/iiMmLZvyrRZ2xL+O40VytN
+ 2ssqAUwW79pd1fnCVV70kFPH0IykTRflQ/Q4jmDwda5iyXGg4EHpMhuNpa6GGlw+4H
+ gjBYkp5BtE0Zg==
+Received: from keithp.com (koto.keithp.com [192.168.11.2])
+ by elaine.keithp.com (Postfix) with ESMTPSA id 909C93F22BE0;
+ Fri, 14 Feb 2025 18:17:02 -0800 (PST)
+Received: by keithp.com (Postfix, from userid 1000)
+ id 544DD1E60096; Fri, 14 Feb 2025 18:17:02 -0800 (PST)
+To: qemu-devel@nongnu.org
+Cc: Keith Packard <keithp@keithp.com>
+Subject: [PATCH 0/5] Renesas RX target fixes
+Date: Fri, 14 Feb 2025 18:16:49 -0800
+Message-ID: <20250215021654.1786679-1-keithp@keithp.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
- envelope-from=michael@anarch128.org; helo=anarch128.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
+ helo=elaine.keithp.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,249 +75,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Keith Packard <keithp@keithp.com>
+From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-the intent of this patch is more conventional nomenclature
-but the constant pool data code is also simplified a little.
+I'm getting a Renesas toolchain working and found a couple of bugs
+and a few fixes in the qemu target code for this device.
 
-- merge new_pool_{alloc,insert} -> new_pool_data.
-- rename TCGLabelPoolData -> TCGData.
-- rename pool_labels -> pool_data.
-- rename macro TCG_TARGET_NEED_POOL_DATA.
-- move TCGData struct definition into tcg.h.
-- comment translation block epilogue members.
+The two critical bugs which are fixed:
 
-TCGLabelPoolData is ambiguous and asks for potential confusion
-with the unrelated TCGLabel type. there is no label in the sense
-of TCGLabel. the structure contains data to be emitted at the end
-of translation blocks at data_gen_ptr in tcg_out_pool_finalize.
-rtype and label save emitting a seperate TCGRelocation which
-would be a more conventional but slightly more costly approach.
+ 1. Exception vector base address is incorrect. The
+    right value is 0xffffff80.
 
-the label member is merely a pointer to the instruction text to
-be updated with the relative address of the constant, the primary
-data is the constant data pool at the end of translation blocks.
-this relates more closely to .data sections in offline codegen
-if we were to imagine a translation block has .text and .data.
+ 2. A bunch of opcode helper functions are incorrectly labeled as
+    TCG_CALL_NO_WG. These helpers read and write virtual registers out
+    of the global environment and so must not be marked with this flag.
 
-thus TCGData is more succinct and more reflective of what the
-structure contains; data emitted in the constant data pool at
-the end of translation blocks. also, pool_labels is renamed to
-pool_data as the primary contents of the list is constant data.
+The other changes included are sufficient to use qemu without needing
+to start gdb as well, starting the machine using the reset vector
+found in the exception table and then re-loading that vector during
+subsequent reset operations.
 
-finally, new_pool_alloc and new_pool_insert are merged into a
-single function named new_pool_data, which moves nlongs to the
-end of the parameter list with varargs to allocate, copy, and
-insert constant data items to simplify new_pool_label et al.
-a successive step would be to collapse callers into calling
-new_pool_data and remove a layer of indirection.
+With these fixes, the picolibc CI tests are now passing.
 
-Signed-off-by: Michael Clark <michael@anarch128.org>
----
- include/tcg/tcg.h    | 16 ++++++++--
- tcg/tcg.c            | 72 ++++++++++++++------------------------------
- tcg/tci/tcg-target.h |  2 +-
- 3 files changed, 37 insertions(+), 53 deletions(-)
+Keith Packard (5):
+  hw/rx: Allow execution without either bios or kernel
+  target/rx: Set exception vector base to 0xffffff80
+  target/rx: Reset the CPU at qemu reset time
+  target/rx: Load reset vector from memory after first run
+  target/rx: Remove TCG_CALL_NO_WG from helpers which write env
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 1d1d668f527b..df0b4a36adb9 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -118,6 +118,15 @@ struct TCGLabel {
-     QSIMPLEQ_ENTRY(TCGLabel) next;
- };
- 
-+typedef struct TCGData {
-+    struct TCGData *next;
-+    tcg_insn_unit *label;
-+    intptr_t addend;
-+    int rtype;
-+    unsigned nlong;
-+    tcg_target_ulong data[];
-+} TCGData;
-+
- typedef struct TCGPool {
-     struct TCGPool *next;
-     int size;
-@@ -392,10 +401,13 @@ struct TCGContext {
-     /* Track which vCPU triggers events */
-     CPUState *cpu;                      /* *_trans */
- 
--    /* These structures are private to tcg-target.c.inc.  */
-+    /* load store slow path emitted at the end of translation blocks */
-     QSIMPLEQ_HEAD(, TCGLabelQemuLdst) ldst_labels;
--    struct TCGLabelPoolData *pool_labels;
- 
-+    /* labled constant data emitted at the end of translation blocks */
-+    TCGData *pool_data;
-+
-+    /* labeled exit request emitted at the end of translation blocks */
-     TCGLabel *exitreq_label;
- 
- #ifdef CONFIG_PLUGIN
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 43b6712286c3..4a84fc8adc04 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -657,38 +657,29 @@ static TCGLabelQemuLdst *new_ldst_label(TCGContext *s)
- }
- 
- /*
-- * Allocate new constant pool entries.
-+ * Create new constant pool data and insert into the pool.
-  */
- 
--typedef struct TCGLabelPoolData {
--    struct TCGLabelPoolData *next;
--    tcg_insn_unit *label;
--    intptr_t addend;
--    int rtype;
--    unsigned nlong;
--    tcg_target_ulong data[];
--} TCGLabelPoolData;
--
--static TCGLabelPoolData *new_pool_alloc(TCGContext *s, int nlong, int rtype,
--                                        tcg_insn_unit *label, intptr_t addend)
-+static void new_pool_data(TCGContext *s, int rtype, tcg_insn_unit *label,
-+                          intptr_t addend, int nlong, ...)
- {
--    TCGLabelPoolData *n = tcg_malloc(sizeof(TCGLabelPoolData)
--                                     + sizeof(tcg_target_ulong) * nlong);
-+    TCGData *n, *i, **pp;
-+    va_list ap;
-+
-+    n = tcg_malloc(sizeof(TCGData) + sizeof(tcg_target_ulong) * nlong);
- 
-     n->label = label;
-     n->addend = addend;
-     n->rtype = rtype;
-     n->nlong = nlong;
--    return n;
--}
- 
--static void new_pool_insert(TCGContext *s, TCGLabelPoolData *n)
--{
--    TCGLabelPoolData *i, **pp;
--    int nlong = n->nlong;
-+    va_start(ap, nlong);
-+    for(size_t l = 0; l < nlong; l++) {
-+        n->data[l] = va_arg(ap, tcg_target_ulong);
-+    }
- 
-     /* Insertion sort on the pool.  */
--    for (pp = &s->pool_labels; (i = *pp) != NULL; pp = &i->next) {
-+    for (pp = &s->pool_data; (i = *pp) != NULL; pp = &i->next) {
-         if (nlong > i->nlong) {
-             break;
-         }
-@@ -708,9 +699,7 @@ __attribute__((unused))
- static void new_pool_label(TCGContext *s, tcg_target_ulong d, int rtype,
-                            tcg_insn_unit *label, intptr_t addend)
- {
--    TCGLabelPoolData *n = new_pool_alloc(s, 1, rtype, label, addend);
--    n->data[0] = d;
--    new_pool_insert(s, n);
-+    new_pool_data(s, rtype, label, addend, 1, d);
- }
- 
- /* For v64 or v128, depending on the host.  */
-@@ -719,10 +708,7 @@ static void new_pool_l2(TCGContext *s, int rtype, tcg_insn_unit *label,
-                         intptr_t addend, tcg_target_ulong d0,
-                         tcg_target_ulong d1)
- {
--    TCGLabelPoolData *n = new_pool_alloc(s, 2, rtype, label, addend);
--    n->data[0] = d0;
--    n->data[1] = d1;
--    new_pool_insert(s, n);
-+    new_pool_data(s, rtype, label, addend, 2, d0, d1);
- }
- 
- /* For v128 or v256, depending on the host.  */
-@@ -732,12 +718,7 @@ static void new_pool_l4(TCGContext *s, int rtype, tcg_insn_unit *label,
-                         tcg_target_ulong d1, tcg_target_ulong d2,
-                         tcg_target_ulong d3)
- {
--    TCGLabelPoolData *n = new_pool_alloc(s, 4, rtype, label, addend);
--    n->data[0] = d0;
--    n->data[1] = d1;
--    n->data[2] = d2;
--    n->data[3] = d3;
--    new_pool_insert(s, n);
-+    new_pool_data(s, rtype, label, addend, 4, d0, d1, d2, d3);
- }
- 
- /* For v256, for 32-bit host.  */
-@@ -749,16 +730,7 @@ static void new_pool_l8(TCGContext *s, int rtype, tcg_insn_unit *label,
-                         tcg_target_ulong d5, tcg_target_ulong d6,
-                         tcg_target_ulong d7)
- {
--    TCGLabelPoolData *n = new_pool_alloc(s, 8, rtype, label, addend);
--    n->data[0] = d0;
--    n->data[1] = d1;
--    n->data[2] = d2;
--    n->data[3] = d3;
--    n->data[4] = d4;
--    n->data[5] = d5;
--    n->data[6] = d6;
--    n->data[7] = d7;
--    new_pool_insert(s, n);
-+    new_pool_data(s, rtype, label, addend, 8, d0, d1, d2, d3, d4, d5, d6, d7);
- }
- 
- /*
-@@ -792,8 +764,8 @@ static int tcg_out_ldst_finalize(TCGContext *s)
- 
- static int tcg_out_pool_finalize(TCGContext *s)
- {
--    TCGLabelPoolData *p = s->pool_labels;
--    TCGLabelPoolData *l = NULL;
-+    TCGData *p = s->pool_data;
-+    TCGData *l = NULL;
-     void *a;
- 
-     if (p == NULL) {
-@@ -1598,15 +1570,15 @@ void tcg_prologue_init(void)
-     tcg_qemu_tb_exec = (tcg_prologue_fn *)tcg_splitwx_to_rx(s->code_ptr);
- #endif
- 
--#ifdef TCG_TARGET_NEED_POOL_LABELS
--    s->pool_labels = NULL;
-+#ifdef TCG_TARGET_NEED_POOL_DATA
-+    s->pool_data = NULL;
- #endif
- 
-     qemu_thread_jit_write();
-     /* Generate the prologue.  */
-     tcg_target_qemu_prologue(s);
- 
--#ifdef TCG_TARGET_NEED_POOL_LABELS
-+#ifdef TCG_TARGET_NEED_POOL_DATA
-     /* Allow the prologue to put e.g. guest_base into a pool entry.  */
-     {
-         int result = tcg_out_pool_finalize(s);
-@@ -6407,7 +6379,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-     s->data_gen_ptr = NULL;
- 
-     QSIMPLEQ_INIT(&s->ldst_labels);
--    s->pool_labels = NULL;
-+    s->pool_data = NULL;
- 
-     start_words = s->insn_start_words;
-     s->gen_insn_data =
-diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
-index a9ca493d20f6..448c2330ef0f 100644
---- a/tcg/tci/tcg-target.h
-+++ b/tcg/tci/tcg-target.h
-@@ -72,6 +72,6 @@ typedef enum {
- } TCGReg;
- 
- #define HAVE_TCG_QEMU_TB_EXEC
--#define TCG_TARGET_NEED_POOL_LABELS
-+#define TCG_TARGET_NEED_POOL_DATA
- 
- #endif /* TCG_TARGET_H */
+ hw/rx/rx-gdbsim.c  |  3 ---
+ target/rx/cpu.c    | 35 +++++++++++++++++++++++++++++------
+ target/rx/helper.c |  2 +-
+ target/rx/helper.h | 14 +++++++-------
+ 4 files changed, 37 insertions(+), 17 deletions(-)
+
 -- 
-2.43.0
+2.47.2
 
 
