@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103CAA3717D
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB21A37174
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:04:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjS6d-0007iN-8j; Sat, 15 Feb 2025 19:01:55 -0500
+	id 1tjS6e-0007kL-1F; Sat, 15 Feb 2025 19:01:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjS6K-0007eZ-6f
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:36 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tjS6L-0007fh-SC
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:37 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjS6G-0006I7-RG
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:35 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-220f4dd756eso30974835ad.3
+ id 1tjS6I-0006IL-5X
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:37 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2fbfa8c73a6so6105073a91.2
  for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 16:01:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739664086; x=1740268886; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739664087; x=1740268887; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CLskJS7NaQB4gx7iCFIleGp2eUUyNj3sDlYnjboU4bU=;
- b=jWBv824fIeNLyTXucb/O1HaH7jFYgwyIbs4ASkkgf9hQz88+IOKCDk9DDKgokd6kw7
- tKnkwYY5gAFjx8/O7GkveqztjnSOrgi4sLe/26h7hYLltuyTwwl+4yBrZ0T49pAlFGsB
- PnXW0pXXzWqE/qU3vja+ZHOrUSzt4wMXYxAA7qsPdaVKiZrwxHCgg0LXJ36FmAlZkP4A
- 8gUbrfaxVuCe58S/OdXOD1VZItjj29F1xLv+/jDEJXSxBvfaIwFEe8Zsv8kOwcw/+NSI
- hh/FXmkOY9gDZGcK+pTbmT8dcQL7r63NbirnpRnusDuYRvYF54VV3lIS3JE+OsOitQtz
- KjPQ==
+ bh=rHMuLXwDxnjUgeWyF7p2JwNyxJ+JG8MBxC5p4lqjmmU=;
+ b=qrA5O42a2L2yJmd4NdJIRNq9ZDFnSrmdKPXflGH7CELNLUvgjIKSIgb1uHmaqBQZrn
+ Zqgn+MKfumyCR7oppzY0SPh71cL5DHnnwkJrgUiPa7qx8cCzAaqsj4CQIDPchC4bX0ls
+ VHfUBIQxG98a5RFFyo7DugJFy+xebhGRad0N6gtU3gE5oFM0dq0dTap/bz6Rp4ytP2H7
+ MrZAu5nlFrDYNChTp+ThvQidOZBsBnpl2f1VxygbvzeXvyyK8MdMWQs/4s2icZ2AZCq5
+ imGbDbAbRB0Z9/mp8r69ghDJtphOR12u0TOSLXjLym0AT+J4FnRNRQnwOqt7+h7P3kHt
+ y6YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739664086; x=1740268886;
+ d=1e100.net; s=20230601; t=1739664087; x=1740268887;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CLskJS7NaQB4gx7iCFIleGp2eUUyNj3sDlYnjboU4bU=;
- b=BQxwqU8A/1ex5AyjvOcu7y10ORnwJFGROuHlehmCNpeDwdCkqbmQKq4tUA0S6MIFmK
- sHqPp6bFxVtSx+6AX8GQuY0m/oV6oXJs+OgyeUZWzDFPWewnehi4aKv+BdTXX4eCQdYN
- 8gQE4xCmgsax+KnVUTsALosnwJ8FgConlNfcyy+hqxw9uQz/o9+plogLAO+hHiq7EkfN
- hXoeXnNXz/HtedojpxJr3JXyCKdtOyiQ2uOFVGgnml+LZ+2nSofcFnaV+X0lxdzmqjmj
- 2GgNY2JEijQ2iSVHqTYLBAyJIVbZSWfubR9KQH2gpXAg/YYuutNc56CR2jyGFT5uAaCF
- 8jRQ==
-X-Gm-Message-State: AOJu0YykyDyZha4mg31Ke4LhhOwS5bpB6X52D4jdSVfFV7D9CUMzJeVe
- HFofVbPBU08/2sbs+XTxJhxabmGUaurjBkHV7UFNw5HmwYvlPC0eaZLzb9izQgOBrZNfgQa29CV
- h
-X-Gm-Gg: ASbGncuR0O+YkhL3luCbi+7JEXofLixVjhcSS40pVuBUeq5Qa9jvVSB6znSPYKpgKFJ
- cJ+ykf1l43JOjyFjBqwmJUsAutOVuB0HAwwrW+wV+4C5dI9eTaAqYubaTfG2IMPIL3musJ34f/U
- OAVLTt02mlH0t81svzV9Uu3h5bf5V+XWHYG+NRfDMG9bdQTuYzSFRzuDV9MyTMMzTAuyVcX6aP+
- YWWRmkt6vvy9ra9IG8bHwo3pr/BhHd68QQn19DFqAKwov5Uj74ZZvuI7WHe+OVL7Q6juooaI3yZ
- 1kgPbk6X9ouOnXHKBvhxAv8d7kboUDWMOWdFysQVWvjCjTM=
-X-Google-Smtp-Source: AGHT+IHE7R5w2ZmAwwZwqF4WPcVfH2i4DZ9DLzoEsrSbgXWAt1ARAnQRAxOVcAhxLMSfzc9zrIK4iw==
-X-Received: by 2002:a17:902:f64a:b0:21f:6c3:aefb with SMTP id
- d9443c01a7336-221040bd763mr83141795ad.35.1739664086205; 
+ bh=rHMuLXwDxnjUgeWyF7p2JwNyxJ+JG8MBxC5p4lqjmmU=;
+ b=ewsdW/xJmlyjYC4t5OT9yuwqAonLTHHdjsBKoAXjfDs1D4kuUNN15dGI4Jhq/px8Dd
+ pVTrYWwyP2THSdY4Ng7yjBlo7Lla7SsDpueIntFqYsHRrnxiF3xvCNl8TN3NoundwCFT
+ eI1SYVVhgjlrex362mO76LwGCzzU0TyhhlEfoHpst+h5ssZgvlxE1R6TUJMqjeVkP/Jn
+ ARSaY+ROoXd6NzV+pmN92y3H8p7kgdPNe5PgCyRBhxfHrTxFG3zkqRfNplhqKGfGvZHa
+ 32vYUCiOxUUrjsdacGkCjsbeEJ6LRjSg4IkQYVgmadD0xvZIQS7AHYRFp8ziX9slh/1T
+ Jrlg==
+X-Gm-Message-State: AOJu0Yw15Nn3QVGh1DR6jG3mn6PelG7wbN6BCWvEhkkjGvhqanPHgaG6
+ k/XRr3E5cfQh/MkdhscyGrq92Ohjw3hWnHm9ANmGuf00kLEqGTh0k3l/pFwmpki3C6F3ve7vsDn
+ o
+X-Gm-Gg: ASbGncsAUO9/jNbHvpglqQzB1Fx+Aejot/SpfNiOz1VYYzxs6oHkFRAarx0qG9454E3
+ zt0RZX0aTa2rnN9XYbc4tDSGZKkmjOGh13jdfyGwKjtpXc/WQGXw9vRCk8jCHzj1Ehx/p4URWpV
+ usFbP0cW0MZiNsiKYuZsE6Wq6e1DhVrohGnks72nU2ktqMoArKzo21rOm22G/2yvFOwQlkRPEkf
+ sO8L38jQx/ALoEAwm7PWeULzmDr9R/5rJV3sBJ297Dk2kxSVURAtJ5H02AmuyXB8AodziLHl8D5
+ KkqYyWmK2WO0lQOkV/7+zrQLzqPKY5SEczkc/ILp6ulpVlA=
+X-Google-Smtp-Source: AGHT+IH63vR5vjT1605TlOQm5MtggkDS9t/+4busfoWLMstKovdyccV38xPmpQb8KqE29zreVY7cTQ==
+X-Received: by 2002:a17:90b:1e02:b0:2ee:c4f2:a76d with SMTP id
+ 98e67ed59e1d1-2fc40f21e2cmr6199252a91.21.1739664086911; 
  Sat, 15 Feb 2025 16:01:26 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d5366729sm48960315ad.79.2025.02.15.16.01.25
+ d9443c01a7336-220d5366729sm48960315ad.79.2025.02.15.16.01.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Feb 2025 16:01:25 -0800 (PST)
+ Sat, 15 Feb 2025 16:01:26 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 20/24] elfload: Fix alignment when unmapping excess reservation
-Date: Sat, 15 Feb 2025 16:01:04 -0800
-Message-ID: <20250216000109.2606518-21-richard.henderson@linaro.org>
+Cc: Andreas Schwab <schwab@suse.de>,
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: [PULL 21/24] linux-user: Move TARGET_SA_RESTORER out of
+ generic/signal.h
+Date: Sat, 15 Feb 2025 16:01:05 -0800
+Message-ID: <20250216000109.2606518-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250216000109.2606518-1-richard.henderson@linaro.org>
 References: <20250216000109.2606518-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,40 +100,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Andreas Schwab <schwab@suse.de>
 
-When complying with the alignment requested in the ELF and unmapping
-the excess reservation, having align_end not aligned to the guest page
-causes the unmap to be rejected by the alignment check at
-target_munmap and later brk adjustments hit an EEXIST.
+SA_RESTORER and the associated sa_restorer field of struct sigaction are
+an obsolete feature, not expected to be used by future architectures.
+They are also absent on RISC-V, LoongArch, Hexagon and OpenRISC, but
+defined due to their use of generic/signal.h.  This leads to corrupted
+data and out-of-bounds accesses.
 
-Fix by aligning the start of region to be unmapped.
+Move the definition of TARGET_SA_RESTORER out of generic/signal.h into the
+target_signal.h files that need it.  Note that m68k has the sa_restorer
+field, but does not use it and does not define SA_RESTORER.
 
-Fixes: c81d1fafa6 ("linux-user: Honor elf alignment when placing images")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1913
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-[rth: Align load_end as well.]
+Reported-by: Thomas Weißschuh <thomas@t-8ch.de>
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+Reviewed-by: Thomas Weißschuh <thomas@t-8ch.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250213143558.10504-1-farosas@suse.de>
+Message-ID: <mvmed060xc9.fsf@suse.de>
 ---
- linux-user/elfload.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/aarch64/target_signal.h    | 2 ++
+ linux-user/arm/target_signal.h        | 2 ++
+ linux-user/generic/signal.h           | 1 -
+ linux-user/i386/target_signal.h       | 2 ++
+ linux-user/m68k/target_signal.h       | 1 +
+ linux-user/microblaze/target_signal.h | 2 ++
+ linux-user/ppc/target_signal.h        | 2 ++
+ linux-user/s390x/target_signal.h      | 2 ++
+ linux-user/sh4/target_signal.h        | 2 ++
+ linux-user/x86_64/target_signal.h     | 2 ++
+ linux-user/xtensa/target_signal.h     | 2 ++
+ 11 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a2c152e5ad..8799e4ea27 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3351,8 +3351,8 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+diff --git a/linux-user/aarch64/target_signal.h b/linux-user/aarch64/target_signal.h
+index 40e399d990..6f66a50bfd 100644
+--- a/linux-user/aarch64/target_signal.h
++++ b/linux-user/aarch64/target_signal.h
+@@ -3,6 +3,8 @@
  
-     if (align_size != reserve_size) {
-         abi_ulong align_addr = ROUND_UP(load_addr, align);
--        abi_ulong align_end = align_addr + reserve_size;
--        abi_ulong load_end = load_addr + align_size;
-+        abi_ulong align_end = TARGET_PAGE_ALIGN(align_addr + reserve_size);
-+        abi_ulong load_end = TARGET_PAGE_ALIGN(load_addr + align_size);
+ #include "../generic/signal.h"
  
-         if (align_addr != load_addr) {
-             target_munmap(load_addr, align_addr - load_addr);
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_SEGV_MTEAERR  8  /* Asynchronous ARM MTE error */
+ #define TARGET_SEGV_MTESERR  9  /* Synchronous ARM MTE exception */
+ 
+diff --git a/linux-user/arm/target_signal.h b/linux-user/arm/target_signal.h
+index 0e6351d9f7..ff1810b1fe 100644
+--- a/linux-user/arm/target_signal.h
++++ b/linux-user/arm/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+diff --git a/linux-user/generic/signal.h b/linux-user/generic/signal.h
+index 6fd05b77bb..b34740258e 100644
+--- a/linux-user/generic/signal.h
++++ b/linux-user/generic/signal.h
+@@ -15,7 +15,6 @@
+ #define TARGET_SA_RESTART       0x10000000
+ #define TARGET_SA_NODEFER       0x40000000
+ #define TARGET_SA_RESETHAND     0x80000000
+-#define TARGET_SA_RESTORER      0x04000000
+ 
+ #define TARGET_SIGHUP            1
+ #define TARGET_SIGINT            2
+diff --git a/linux-user/i386/target_signal.h b/linux-user/i386/target_signal.h
+index 9315cba241..eee792ef63 100644
+--- a/linux-user/i386/target_signal.h
++++ b/linux-user/i386/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+diff --git a/linux-user/m68k/target_signal.h b/linux-user/m68k/target_signal.h
+index 6e0f4b74e3..b05b9303b0 100644
+--- a/linux-user/m68k/target_signal.h
++++ b/linux-user/m68k/target_signal.h
+@@ -3,6 +3,7 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_ARCH_HAS_SA_RESTORER 1
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+diff --git a/linux-user/microblaze/target_signal.h b/linux-user/microblaze/target_signal.h
+index 7dc5c45f00..ffe4442213 100644
+--- a/linux-user/microblaze/target_signal.h
++++ b/linux-user/microblaze/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+ #endif /* MICROBLAZE_TARGET_SIGNAL_H */
+diff --git a/linux-user/ppc/target_signal.h b/linux-user/ppc/target_signal.h
+index 5be24e152b..53fae473f3 100644
+--- a/linux-user/ppc/target_signal.h
++++ b/linux-user/ppc/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #if !defined(TARGET_PPC64)
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #endif
+diff --git a/linux-user/s390x/target_signal.h b/linux-user/s390x/target_signal.h
+index 41e0e34a55..738e0673f4 100644
+--- a/linux-user/s390x/target_signal.h
++++ b/linux-user/s390x/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+diff --git a/linux-user/sh4/target_signal.h b/linux-user/sh4/target_signal.h
+index eee6a1a7cd..0bde417fd1 100644
+--- a/linux-user/sh4/target_signal.h
++++ b/linux-user/sh4/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SETUP_FRAME
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+diff --git a/linux-user/x86_64/target_signal.h b/linux-user/x86_64/target_signal.h
+index 9d9717406f..0af100c661 100644
+--- a/linux-user/x86_64/target_signal.h
++++ b/linux-user/x86_64/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ /* For x86_64, use of SA_RESTORER is mandatory. */
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
+ 
+diff --git a/linux-user/xtensa/target_signal.h b/linux-user/xtensa/target_signal.h
+index e4b1bea5cb..8a198bf8ac 100644
+--- a/linux-user/xtensa/target_signal.h
++++ b/linux-user/xtensa/target_signal.h
+@@ -3,6 +3,8 @@
+ 
+ #include "../generic/signal.h"
+ 
++#define TARGET_SA_RESTORER      0x04000000
++
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+ 
+ #endif
 -- 
 2.43.0
 
