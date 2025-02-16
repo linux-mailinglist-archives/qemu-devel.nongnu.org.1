@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F351A37158
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 00:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F74A3717A
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:06:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjRnD-00052Y-Oj; Sat, 15 Feb 2025 18:41:51 -0500
+	id 1tjS6L-0007eR-P5; Sat, 15 Feb 2025 19:01:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjRnB-00052L-NC
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 18:41:49 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1tjS5z-0007aK-2S
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:15 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjRn9-0004F2-PW
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 18:41:49 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2fc3fa00323so2045561a91.3
- for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 15:41:45 -0800 (PST)
+ id 1tjS5w-0006F0-LV
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:14 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2fc32756139so2375877a91.1
+ for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 16:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739662904; x=1740267704; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mHWx0lGotZYCRZn+/Owj8m9dq6Cj0zq2Tl4Nnc72hVs=;
- b=VR6kyjSrkza6cgWg/qCEnkd7H9oXMJXIfvYND1L+dkIuMGQmSg6LBUclQndHUlQi5I
- 94I80KmCZSeL2v3dI7LG/ngRJ90kOtBlSrsV+jOJVqe8YnlnZILr4O1legqh7frE22mO
- TKn0aLV/7aZ9muSITSaro9i6QnlzoP/a1+rlMySeZhN/A/J874Lmq1U7vmf+PvoTTKdz
- sqxKDR3s1Ud5HKYCfjqJoJmZmZDxX/LoMaBntFcv2cjWZXBFgUtl7JUYkigrOGm2ajLT
- Tfc2MlELSbTQTVgfNse/B7QJ+p11oC175y04OZSPeyE2Kf33Jas49vVnK+gmdtDd8DLX
- aQhg==
+ d=linaro.org; s=google; t=1739664071; x=1740268871; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4I9Ub8xov2qHlCWqjvABuHSTVCrjKnAAT3Fdj+wxB7E=;
+ b=sX6Y2OOsGothMNbf2Ip39ygDLMuyja4EcOq2JBErkRcpvFQCFj365G80RjYYyuLK/N
+ jg5axv985vMSFOfdTMAOD1pUmDXgkDEf1beoLAI1EwUX05wwwFM5OtoDNBdgIoHJUcoV
+ PSUicc316Nzkhq9pv9cFd5GM7GDIlm5d0R//pODHHdo997BUQM5PgWhapGx6nWGHiApl
+ lugSxkiB0r1fWGdJPzzTkb2orbbHbzALB7UlkiNCdLrOIA69JYAud70Z/zpr/E83ZyAJ
+ 073C5EKWCCeFGxV8M9EfDxLYcYVsPPv+CnSs12YIelvcbSia4R5M4F0v0BYQZCklxWYj
+ DQDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739662904; x=1740267704;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mHWx0lGotZYCRZn+/Owj8m9dq6Cj0zq2Tl4Nnc72hVs=;
- b=eDzu3UB3d7InVS59r3NwYNZ0Wqvsue/lPO8mXBDos5KAofQwwvGEOAQU/0+s7GHXZG
- GZ1J9l9aIsAOsl4y0sW/mMGd5P1YJwn4kSK2b7srX3znwSRROmrpo4ZVDeND3ArzR2LQ
- rm7LdERxVqxlWRKE7yBAzg3upN3QLYg4oTwT8iLvG9b3TIA//9+XaiGcl2UZXyCG7B1K
- V5MvrXaweF9536Q12kqLlTi7/fEB76iHK+eVyZ6lnb0AH8g2w2Ub414ZxyItJrKzeIaX
- dPgAqQgwjvbh6DeGpTGeOBVHqO84VY4iYIQUvK9EQo3gBxsqW+9d3yA1MKerJftPSiBO
- Pi0w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUNxAY1noOoH8RgsFRX0p2VdnUXwb/AGNzO1tFhrCBjX31i4LkqtJh+bK82Syrr4D4ktobaJrdeotqs@nongnu.org
-X-Gm-Message-State: AOJu0YyxXwqAxTghsW+z0E5t+Wner5Uny2k0n7Vw3pH+X0CW/CvMk+Mn
- 5K2NI3FKjv7hLnK7jUkFkWlntmq7AogHjOxAnw2dWHceGPrldvSMgtdKIQzQU8b5Dui+F+hUHLU
- O
-X-Gm-Gg: ASbGncuPGLhbKjx3AJcX3HSDcj478NyqJRGbqdstkLjSWcUJFZEFwPjhjED3N0WBWMR
- 6P3vB/VfB5xYbyr8h3rc3J4Lw+IMUinu4xjyL8m9oRelU5ccY/b7CrgvwaQeiI7MDy4jY1na9ut
- Gn0EBh9iS3xZ6/QzaxL4ZRnw3ayyIZmTWLH3ufzm/OuyKKfD0HCX3S1eFj+rieLJExfoPUPw5i5
- Tj+GALwSgRCtf8WLL+2TbWZWEAcF/l65bK2Qtu0fB0IzURMCQyDNn/m/HFttcmsHnLorwRdL8R/
- LgPFgNPtthZRwHBShAzr0ZkN3khiy14VnI6DqcxloWjAQupDAuzc8hQ=
-X-Google-Smtp-Source: AGHT+IEYrJgJJM9v3/QqI7S21zB2XoVzqRC4zelFm0zceG/3TfRm9yvH2vmJgEEpdVN5WC7nVk9Qhg==
-X-Received: by 2002:a05:6a00:1746:b0:730:9752:d02a with SMTP id
- d2e1a72fcca58-7326177574cmr7041140b3a.4.1739662904546; 
- Sat, 15 Feb 2025 15:41:44 -0800 (PST)
-Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ d=1e100.net; s=20230601; t=1739664071; x=1740268871;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4I9Ub8xov2qHlCWqjvABuHSTVCrjKnAAT3Fdj+wxB7E=;
+ b=r14blemllB89AZEw9PCWLxIjkV6OGIFIpPYYQO18ZNr1vNduQ06Yo1hTXrkwWPw5ly
+ YllLtE4ddFd6LymRSBRac5ylmBd7uAStc/sHe24WB6xZzjSuHDgMHo1ZH1KI9qWgO5pH
+ +BwdhXlB6RehJjJctxS6J/VjZB+EHJSbMxKE51zlDAVjmlGwDYWJh6X8B6qeZ6mPkO9f
+ uN4C+Bz1a6urgoi65OcoNYQfVC/NvyFMNGnCIByY+03mqP4XulJFVOotzx0NtTKzh7Xg
+ nkrTnk3mSUX0jCGbe2BByB0koShFb9ewG6EdcCzJYaK8RHavdxyxuAsGgWqolm7qLu9m
+ I4FA==
+X-Gm-Message-State: AOJu0Yy9siAEaSE3ZSkxn3LQM0OQKHs77YW6tH4RDyP/BmTFbR4wLNJx
+ B6hhGloa1r4MANLKpCoZYdNnUDSTDUv25DTW/dUt4RidJWSAKxuQ20J6zz7t45GBF7GwOE1rLrh
+ L
+X-Gm-Gg: ASbGnctvk++F6LdAVeO67j5W+RJpkVChzq28sSMSuddcW8msAbms7Ms80orzfc8eiEU
+ gzevigIg1j6reoHtnH7pJDHfZbeAFTMzw8CTJfmcAvtKWiS/nVdjR4HNEWxaTPfr9qPf5qYnbE6
+ V5yAWRod0Jwb+1JN0AAxe6I1NW8vvRn6HUPX+sdNOshdpH8g7E9OF6d2jLlgH7kx9ndut6PooXc
+ B00Yc+eo64loX7+LEEv0a5TBa0tmGXrZ0DcSEMOkbpQnskFGsNJ2QdMLWR1JTsJme4M/MQsN7yI
+ MVToN8hhvdWf9Xq1Yd5PEZkZoxBFMd+Ky3U8jGunzCgneRg=
+X-Google-Smtp-Source: AGHT+IE6kWk/VxxNZucZ2DiXdDU3vVJl7T6ckA77WqoSxPmjzu8mg6ye51rdW5RzaGQbMhodwLL2Bg==
+X-Received: by 2002:a17:90b:4a49:b0:2f2:a796:26b with SMTP id
+ 98e67ed59e1d1-2fc40d14ad0mr6874063a91.1.1739664070652; 
+ Sat, 15 Feb 2025 16:01:10 -0800 (PST)
+Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73242569673sm5623622b3a.51.2025.02.15.15.41.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 15 Feb 2025 15:41:44 -0800 (PST)
-Message-ID: <0ec10457-0461-46e7-95df-a5d1552ab722@linaro.org>
-Date: Sat, 15 Feb 2025 15:41:42 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg: refactor pool data for simplicity and comprehension
-To: Michael Clark <michael@anarch128.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250215021120.1647083-1-michael@anarch128.org>
- <a62ee246-4249-458c-9f9b-bad79816ce5e@linaro.org>
- <8f107cd4-f5a2-4d3e-b023-5e53225511d4@anarch128.org>
- <38bfbaac-329c-45c8-a672-68cad965201b@linaro.org>
- <6b9d6600-d430-4bcc-9f37-8d8d96d31e06@anarch128.org>
-Content-Language: en-US
+ d9443c01a7336-220d5366729sm48960315ad.79.2025.02.15.16.01.09
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 15 Feb 2025 16:01:10 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <6b9d6600-d430-4bcc-9f37-8d8d96d31e06@anarch128.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/24] tcg patch queue
+Date: Sat, 15 Feb 2025 16:00:44 -0800
+Message-ID: <20250216000109.2606518-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,31 +94,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/15/25 14:40, Michael Clark wrote:
-> On 2/16/25 10:50, Richard Henderson wrote:
->> On 2/15/25 12:24, Michael Clark wrote:
->>>> Why?  varargs generally produces horrible code.
->>>> The split between alloc and insert was intentional to avoid this.
->>>
->>> it's pretty good code on SysV because it goes via registers except for perhaps 
->>> new_pool_l8 which will spill to stack and get copied unless the inliner can eliminate 
->>> the copies. maybe windows has bad varargs. but I like the style better than deeper 
->>> layers of wrapper functions. they should fix the compiler so that it produces better code.
->>
->> varargs will generally prevent inlining.
->>
->> Indeed, just a quick look at aarch64 tcg_out_movi shows that without your change, 
->> new_pool_label, new_pool_data and new_pool_insert are all inlined.  With your change, 
->> new_pool_data is not inlined, all the argument regs are dumped to the stack, etc.
->>
->> I don't think this is a good change to make.
-> 
-> fixing varargs codegen in GCC/Clang would be a good change. count based varargs can be 
-> reasoned about statically relatively easily. what is it like with an explicit inline as 
-> opposed to just static?
-
-Inline will still be rejected.
-
+With a couple of linux-user and target/sparc patches thrown in for good measure.
 
 r~
+
+
+The following changes since commit 495de0fd82d8bb2d7035f82d9869cfeb48de2f9e:
+
+  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2025-02-14 08:19:05 -0500)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20250215
+
+for you to fetch changes up to 2132751069134114814c7e1609e9cf644f077aad:
+
+  target/sparc: fake UltraSPARC T1 PCR and PIC registers (2025-02-15 12:04:13 -0800)
+
+----------------------------------------------------------------
+tcg: Remove last traces of TCG_TARGET_NEED_POOL_LABELS
+tcg: Cleanups after disallowing 64-on-32
+tcg: Introduce constraint for zero register
+linux-user: Move TARGET_SA_RESTORER out of generic/signal.h
+linux-user: Fix alignment when unmapping excess reservation
+target/sparc: Fix register selection for all F*TOx and FxTO* instructions
+target/sparc: Fix gdbstub incorrectly handling registers f32-f62
+target/sparc: fake UltraSPARC T1 PCR and PIC registers
+
+----------------------------------------------------------------
+Andreas Schwab (1):
+      linux-user: Move TARGET_SA_RESTORER out of generic/signal.h
+
+Artyom Tarasenko (1):
+      target/sparc: fake UltraSPARC T1 PCR and PIC registers
+
+Fabiano Rosas (1):
+      elfload: Fix alignment when unmapping excess reservation
+
+Mikael Szreder (2):
+      target/sparc: Fix register selection for all F*TOx and FxTO* instructions
+      target/sparc: Fix gdbstub incorrectly handling registers f32-f62
+
+Richard Henderson (19):
+      tcg: Remove last traces of TCG_TARGET_NEED_POOL_LABELS
+      tcg: Remove TCG_OVERSIZED_GUEST
+      tcg: Drop support for two address registers in gen_ldst
+      tcg: Merge INDEX_op_qemu_*_{a32,a64}_*
+      tcg/arm: Drop addrhi from prepare_host_addr
+      tcg/i386: Drop addrhi from prepare_host_addr
+      tcg/mips: Drop addrhi from prepare_host_addr
+      tcg/ppc: Drop addrhi from prepare_host_addr
+      tcg: Replace addr{lo,hi}_reg with addr_reg in TCGLabelQemuLdst
+      plugins: Fix qemu_plugin_read_memory_vaddr parameters
+      accel/tcg: Fix tlb_set_page_with_attrs, tlb_set_page
+      include/exec: Change vaddr to uintptr_t
+      include/exec: Use uintptr_t in CPUTLBEntry
+      tcg: Introduce the 'z' constraint for a hardware zero register
+      tcg/aarch64: Use 'z' constraint
+      tcg/loongarch64: Use 'z' constraint
+      tcg/mips: Use 'z' constraint
+      tcg/riscv: Use 'z' constraint
+      tcg/sparc64: Use 'z' constraint
+
+ include/exec/tlb-common.h             |  10 +-
+ include/exec/vaddr.h                  |  16 ++--
+ include/qemu/atomic.h                 |  18 +---
+ include/tcg/oversized-guest.h         |  23 -----
+ include/tcg/tcg-opc.h                 |  28 ++----
+ include/tcg/tcg.h                     |   3 +-
+ linux-user/aarch64/target_signal.h    |   2 +
+ linux-user/arm/target_signal.h        |   2 +
+ linux-user/generic/signal.h           |   1 -
+ linux-user/i386/target_signal.h       |   2 +
+ linux-user/m68k/target_signal.h       |   1 +
+ linux-user/microblaze/target_signal.h |   2 +
+ linux-user/ppc/target_signal.h        |   2 +
+ linux-user/s390x/target_signal.h      |   2 +
+ linux-user/sh4/target_signal.h        |   2 +
+ linux-user/x86_64/target_signal.h     |   2 +
+ linux-user/xtensa/target_signal.h     |   2 +
+ tcg/aarch64/tcg-target-con-set.h      |  12 +--
+ tcg/aarch64/tcg-target.h              |   2 +
+ tcg/loongarch64/tcg-target-con-set.h  |  15 ++-
+ tcg/loongarch64/tcg-target-con-str.h  |   1 -
+ tcg/loongarch64/tcg-target.h          |   2 +
+ tcg/mips/tcg-target-con-set.h         |  26 +++---
+ tcg/mips/tcg-target-con-str.h         |   1 -
+ tcg/mips/tcg-target.h                 |   2 +
+ tcg/riscv/tcg-target-con-set.h        |  10 +-
+ tcg/riscv/tcg-target-con-str.h        |   1 -
+ tcg/riscv/tcg-target.h                |   2 +
+ tcg/sparc64/tcg-target-con-set.h      |  12 +--
+ tcg/sparc64/tcg-target-con-str.h      |   1 -
+ tcg/sparc64/tcg-target.h              |   3 +-
+ tcg/tci/tcg-target.h                  |   1 -
+ accel/tcg/cputlb.c                    |  32 ++-----
+ accel/tcg/tcg-all.c                   |   9 +-
+ linux-user/elfload.c                  |   4 +-
+ plugins/api.c                         |   2 +-
+ target/arm/ptw.c                      |  34 -------
+ target/riscv/cpu_helper.c             |  13 +--
+ target/sparc/gdbstub.c                |  18 +++-
+ target/sparc/translate.c              |  19 ++++
+ tcg/optimize.c                        |  21 ++---
+ tcg/tcg-op-ldst.c                     | 103 +++++----------------
+ tcg/tcg.c                             |  97 +++++++++----------
+ tcg/tci.c                             | 119 +++++-------------------
+ docs/devel/multi-thread-tcg.rst       |   1 -
+ docs/devel/tcg-ops.rst                |   4 +-
+ target/sparc/insns.decode             |  19 ++--
+ tcg/aarch64/tcg-target.c.inc          |  86 +++++++----------
+ tcg/arm/tcg-target.c.inc              | 104 ++++++---------------
+ tcg/i386/tcg-target.c.inc             | 125 +++++++------------------
+ tcg/loongarch64/tcg-target.c.inc      |  72 ++++++---------
+ tcg/mips/tcg-target.c.inc             | 169 +++++++++++-----------------------
+ tcg/ppc/tcg-target.c.inc              | 164 ++++++++-------------------------
+ tcg/riscv/tcg-target.c.inc            |  56 +++++------
+ tcg/s390x/tcg-target.c.inc            |  40 +++-----
+ tcg/sparc64/tcg-target.c.inc          |  45 ++++-----
+ tcg/tci/tcg-target.c.inc              |  60 +++---------
+ 57 files changed, 536 insertions(+), 1089 deletions(-)
+ delete mode 100644 include/tcg/oversized-guest.h
 
