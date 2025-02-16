@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802B9A37897
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 00:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC90A378BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 00:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjnuz-0006bI-Rt; Sun, 16 Feb 2025 18:19:22 -0500
+	id 1tjnx9-0004gi-CF; Sun, 16 Feb 2025 18:21:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjntT-00036F-Af
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:17:47 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1tjnwS-000410-Ln
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:20:54 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjntR-00066U-1h
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:17:46 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-221050f3f00so23673385ad.2
- for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 15:17:44 -0800 (PST)
+ id 1tjnwM-0006Q2-JG
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:20:51 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2fa7465baceso7723717a91.0
+ for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 15:20:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739747863; x=1740352663; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739748044; x=1740352844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eDymodH705VRogHr7TocuN2Q0xAtx3kY8pVYWMShWME=;
- b=nKP4Yg5DxPDqV2cRA5cB4aFVryUE2Y0+IRYc+BhGpoKna7vtKa0gI9jYu4bpT1bGua
- 2cQByqLYdE64PVccyOrLw6ln8w3VT5PMCwNFG8ccm/IZXG3ozOfsZ8DV48zHhtlIqis9
- l23yoEKtK9ESkaboexOOUwumOrkm97if6l5z/aZZbLDi5qzWXaFd1p+ZqtsLQjtOwFCu
- NqijKz1bfToV8nGQawPD+22boPBhUHyqLrNmYGsG72tbBIlfYgZJ0o1nJFbrIy58oAH1
- Tzz3kQkZaN747qQXuwQIp+zZzCzGVNbRrSwbbBJvcd81huyA9Z8EZUMe+pq4/FALmYEe
- y5gA==
+ :reply-to; bh=9L+VCsm6q14T7WiV7P5yZL5eDQKyDiz96yYz7K4dJKU=;
+ b=kLsn8V325fp6m7rWdf9Kce2fnCkpuH1MA/LZBGnnT7+1/wb6oTzXCDgotx9fWXd1j+
+ 3bc4vCsh6STTHgihZOst1KiTisa80eLqJymVkVrx9SXPB5tvGiIRXAqAtzSIxcZDljzO
+ 6041PMDaYAHfTRJbOsa7xlFai8kmG3xSgxTba9hqkRJV4WPvEY/WIo4RdH2F8+puZvJv
+ DU9esay/DU49wqbG+92vjOoXhD4wGu93I1ALg+yn+t6Q4xUkOHzqDmBRhNsgLXRb2AQn
+ r8ixZHcg8d/reGUjMqy5cPWiVBg3aupfJc993WiOKcWOWnSbFTWPNu59veExchqjqu+J
+ t3/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739747863; x=1740352663;
+ d=1e100.net; s=20230601; t=1739748044; x=1740352844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eDymodH705VRogHr7TocuN2Q0xAtx3kY8pVYWMShWME=;
- b=QzX376daNqLNGU8hGbVNhhuLSDWXl9h6mtnzTfA8V8c5ph9exbK8W88rpAZiayvTFQ
- f+neDkz6oDtA/Ba6NbJVmBlt9I+HJ5QulUCyEXTzwnIT0TPMrsgGyjAucaHUlGIOkWXV
- 1kitYNJP71hsUrPD23WGjmPCZ/CrsUBt4Vlbun9yOujXiALiP1INZ04Hp6fIRhJ2W9km
- 8CgUxTwIUJNhfkzXc3/JWZqLmochBFVCQm/PXwBeoVzPJvY7cwVOovu8RvOzCArzJ9Aa
- RddfM28VJDMY4g1qNzllv4MzmpQrequC3vp4lYTyAdHRnXGL2sOFnMquQaPfL015xPA3
- AeaA==
-X-Gm-Message-State: AOJu0Yy+mWVIDY0OJjqa/iroYpNkf4AqjViGKJ77Oo2Fni7FXp/MJ+fV
- FD6so7j1hOJSwVtsfsNNAbTZSs5L//kRA+PvzuEd4Ljw44xbNR4Kk68V9AoTg0ZUp+8FFdtvkek
- L
-X-Gm-Gg: ASbGnctBhG1Hyg31r5ld+wFznP0e9/iQxaH+lO2kALk5nB/pr/iMce6/GKNSYtGL/+k
- 1iH3HLzn3EI+oZsLb2xW5CQxoRv10wVruo84qiC7xyiIjuYWibnS2WhmpyapeqmlahC2zEOT+KV
- zD75/TK8Rf/A1LPgBcIMOyDSPk/6cttLlWXLnK31ByzoZV5KcXK7xgky5snAe2r5a3279/0etwD
- RDP4B6vq2Kc/mGwhJXtrv9u/WOcoVILGCzkw/DkNNx0+fgNrof98P7Hp4ozrKd6KPNI4AO5bKwz
- GqhocIqVG8X9Eb/6WNm3JVTZH0switwFfCZoDnYZgjCxBK4=
-X-Google-Smtp-Source: AGHT+IG8uLJigv9gpAzkzXRGauVGJcGHm/3NbtFQY2emcd/5t79bbeJCHkANYWWxh9YnKttuc5zccg==
-X-Received: by 2002:a17:902:cccc:b0:220:e04e:7213 with SMTP id
- d9443c01a7336-22104042474mr123055665ad.25.1739747863463; 
- Sun, 16 Feb 2025 15:17:43 -0800 (PST)
+ bh=9L+VCsm6q14T7WiV7P5yZL5eDQKyDiz96yYz7K4dJKU=;
+ b=L8tOxgEWfFaa4esJ1uD/jY1M9I4RtFyYHSPru/rTdHDOWoJ+eo5/5CZALABqGkZF4E
+ 3D9B81XypoU300gDu1qGNHKMPDBdvNyX6XmmJPGpevJGLSFhWRvO9CzD2wNy4hwU9SVN
+ mGBlFH5Dy/aX6KayGwWQY5xvltSqiJ5LVQSctxRwXVSP/DgGzyGn9jR4s2RFxqDi4BgK
+ TgXN326B4XZkfxfj/oaWLi0gvektXTopr51EgNCkh6omxqDtyidMO3TQClpN1VUvbJc5
+ SR4EfH6lhk4FGOf2Yh9Zx84pE47n4X8Hi8cGfzVrjgfeoJPyRVv9js8gC99MFFfVJajN
+ hd5w==
+X-Gm-Message-State: AOJu0YyWbOfgVWihUgtgNrWKW8LNEG962WbPNF5WmAlbIq/v0aGWIJ9S
+ ZiQVzjIrnuSoMXtGFxvW7qOhPLOQ3H/325mMZvvhWDq3aHmG3geQDg5x74A8omP3NoL7d1rdmrI
+ F
+X-Gm-Gg: ASbGncv/khwR8ic6kke/wdkjiQ1H6FiwPMw4IRSBTHlJaYMAFsN4RJlDnBzPUEihZP2
+ xY8IH0li/7Q/aChj+UYE7DwDL28uwI0MVXnppXW8iL5zG+mIXG/8yH9oVluYBFXLxjFbKdxbtN7
+ 8+G5Q84Me2amEEk354ESbry1Snaju0oha6vIwfQxPpIxn/VU/4+BX8PxwpoWQYOQ+UXNxC6uoLW
+ KysYGXzlIoRKcf66+7uL7kFVP2FtG+8VrsIBNLmXW6vknNxq8XY4a0OogbB8gz1E2N+8U56LFSI
+ M/36zPfHhaSnJfyQbBoCT/xXEoZFZ+cCq/kDNYBRydip154=
+X-Google-Smtp-Source: AGHT+IHys5pNkUqLh0lgPCc9pEDhCR6OijbRMPTPngzJfaXi9iI6UC6KBsVyAbl671ofb0A+o/mywA==
+X-Received: by 2002:a17:90b:4b91:b0:2f9:9e64:37b1 with SMTP id
+ 98e67ed59e1d1-2fc41040fd9mr11332875a91.28.1739748044622; 
+ Sun, 16 Feb 2025 15:20:44 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2213394d6c8sm5449885ad.181.2025.02.16.15.17.42
+ 98e67ed59e1d1-2fc13ad4391sm6783744a91.27.2025.02.16.15.20.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Feb 2025 15:17:43 -0800 (PST)
+ Sun, 16 Feb 2025 15:20:44 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 119/162] tcg/i386: Implement add/sub carry opcodes
-Date: Sun, 16 Feb 2025 15:09:28 -0800
-Message-ID: <20250216231012.2808572-120-richard.henderson@linaro.org>
+Subject: [PATCH v3 120/162] tcg/i386: Remove support for add2/sub2
+Date: Sun, 16 Feb 2025 15:09:29 -0800
+Message-ID: <20250216231012.2808572-121-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250216231012.2808572-1-richard.henderson@linaro.org>
 References: <20250216231012.2808572-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,144 +98,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 86 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 72 insertions(+), 14 deletions(-)
+ tcg/i386/tcg-target-con-set.h |  1 -
+ tcg/i386/tcg-target-has.h     |  8 ++++----
+ tcg/i386/tcg-target.c.inc     | 31 -------------------------------
+ 3 files changed, 4 insertions(+), 36 deletions(-)
 
+diff --git a/tcg/i386/tcg-target-con-set.h b/tcg/i386/tcg-target-con-set.h
+index 0ae9775944..85c93836bb 100644
+--- a/tcg/i386/tcg-target-con-set.h
++++ b/tcg/i386/tcg-target-con-set.h
+@@ -57,4 +57,3 @@ C_O2_I1(r, r, L)
+ C_O2_I2(a, d, a, r)
+ C_O2_I2(r, r, L, L)
+ C_O2_I3(a, d, 0, 1, r)
+-C_N1_O1_I4(r, r, 0, 1, re, re)
+diff --git a/tcg/i386/tcg-target-has.h b/tcg/i386/tcg-target-has.h
+index 0328102c2a..a984a6af2e 100644
+--- a/tcg/i386/tcg-target-has.h
++++ b/tcg/i386/tcg-target-has.h
+@@ -26,14 +26,14 @@
+ #define have_avx512vbmi2  ((cpuinfo & CPUINFO_AVX512VBMI2) && have_avx512vl)
+ 
+ /* optional instructions */
+-#define TCG_TARGET_HAS_add2_i32         1
+-#define TCG_TARGET_HAS_sub2_i32         1
++#define TCG_TARGET_HAS_add2_i32         0
++#define TCG_TARGET_HAS_sub2_i32         0
+ 
+ #if TCG_TARGET_REG_BITS == 64
+ /* Keep 32-bit values zero-extended in a register.  */
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+-#define TCG_TARGET_HAS_add2_i64         1
+-#define TCG_TARGET_HAS_sub2_i64         1
++#define TCG_TARGET_HAS_add2_i64         0
++#define TCG_TARGET_HAS_sub2_i64         0
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ #else
+ #define TCG_TARGET_HAS_qemu_st8_i32     1
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index cbe67102aa..524e288f26 100644
+index 524e288f26..ef5f9e3f48 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -424,6 +424,7 @@ static bool tcg_target_const_match(int64_t val, int ct,
- #define OPC_SHLX        (0xf7 | P_EXT38 | P_DATA16)
- #define OPC_SHRX        (0xf7 | P_EXT38 | P_SIMDF2)
- #define OPC_SHRD_Ib     (0xac | P_EXT)
-+#define OPC_STC         (0xf9)
- #define OPC_TESTB	(0x84)
- #define OPC_TESTL	(0x85)
- #define OPC_TZCNT       (0xbc | P_EXT | P_SIMDF3)
-@@ -2629,21 +2630,55 @@ static const TCGOutOpBinary outop_add = {
-     .out_rri = tgen_addi,
- };
+@@ -3479,31 +3479,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
+         tcg_out_qemu_st(s, a0, a1, a2, args[3], TCG_TYPE_I128);
+         break;
  
-+static void tgen_addco(TCGContext *s, TCGType type,
-+                       TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithr(s, ARITH_ADD + rexw, a0, a2);
-+}
-+
-+static void tgen_addco_imm(TCGContext *s, TCGType type,
-+                           TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithi(s, ARITH_ADD + rexw, a0, a2, true);
-+}
-+
- static const TCGOutOpBinary outop_addco = {
--    .base.static_constraint = C_NotImplemented,
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_addco,
-+    .out_rri = tgen_addco_imm,
-+};
-+
-+static void tgen_addcio(TCGContext *s, TCGType type,
-+                        TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithr(s, ARITH_ADC + rexw, a0, a2);
-+}
-+
-+static void tgen_addcio_imm(TCGContext *s, TCGType type,
-+                            TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithi(s, ARITH_ADC + rexw, a0, a2, true);
-+}
-+
-+static const TCGOutOpBinary outop_addcio = {
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_addcio,
-+    .out_rri = tgen_addcio_imm,
- };
- 
- static const TCGOutOpAddSubCarry outop_addci = {
--    .base.static_constraint = C_NotImplemented,
--};
+-    OP_32_64(add2):
+-        if (const_args[4]) {
+-            tgen_arithi(s, ARITH_ADD + rexw, a0, args[4], 1);
+-        } else {
+-            tgen_arithr(s, ARITH_ADD + rexw, a0, args[4]);
+-        }
+-        if (const_args[5]) {
+-            tgen_arithi(s, ARITH_ADC + rexw, a1, args[5], 1);
+-        } else {
+-            tgen_arithr(s, ARITH_ADC + rexw, a1, args[5]);
+-        }
+-        break;
+-    OP_32_64(sub2):
+-        if (const_args[4]) {
+-            tgen_arithi(s, ARITH_SUB + rexw, a0, args[4], 1);
+-        } else {
+-            tgen_arithr(s, ARITH_SUB + rexw, a0, args[4]);
+-        }
+-        if (const_args[5]) {
+-            tgen_arithi(s, ARITH_SBB + rexw, a1, args[5], 1);
+-        } else {
+-            tgen_arithr(s, ARITH_SBB + rexw, a1, args[5]);
+-        }
+-        break;
 -
--static const TCGOutOpBinary outop_addcio = {
--    .base.static_constraint = C_NotImplemented,
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_addcio,
-+    .out_rri = tgen_addcio_imm,
- };
+ #if TCG_TARGET_REG_BITS == 64
+     case INDEX_op_ld32s_i64:
+         tcg_out_modrm_offset(s, OPC_MOVSLQ, a0, a1, a2);
+@@ -4109,12 +4084,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_st_i64:
+         return C_O0_I2(re, r);
  
- static void tcg_out_set_carry(TCGContext *s)
- {
--    g_assert_not_reached();
-+    tcg_out8(s, OPC_STC);
- }
+-    case INDEX_op_add2_i32:
+-    case INDEX_op_add2_i64:
+-    case INDEX_op_sub2_i32:
+-    case INDEX_op_sub2_i64:
+-        return C_N1_O1_I4(r, r, 0, 1, re, re);
+-
+     case INDEX_op_qemu_ld_i32:
+         return C_O1_I1(r, L);
  
- static void tgen_and(TCGContext *s, TCGType type,
-@@ -3060,7 +3095,7 @@ static const TCGOutOpBinary outop_shr = {
- };
- 
- static void tgen_sub(TCGContext *s, TCGType type,
--                      TCGReg a0, TCGReg a1, TCGReg a2)
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
- {
-     int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-     tgen_arithr(s, ARITH_SUB + rexw, a0, a2);
-@@ -3071,21 +3106,44 @@ static const TCGOutOpSubtract outop_sub = {
-     .out_rrr = tgen_sub,
- };
- 
-+static void tgen_subbo_rri(TCGContext *s, TCGType type,
-+                           TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithi(s, ARITH_SUB + rexw, a0, a2, 1);
-+}
-+
- static const TCGOutOpAddSubCarry outop_subbo = {
--    .base.static_constraint = C_NotImplemented,
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_sub,
-+    .out_rri = tgen_subbo_rri,
- };
- 
--static const TCGOutOpAddSubCarry outop_subbi = {
--    .base.static_constraint = C_NotImplemented,
--};
-+static void tgen_subbio_rrr(TCGContext *s, TCGType type,
-+                            TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithr(s, ARITH_SBB + rexw, a0, a2);
-+}
-+
-+static void tgen_subbio_rri(TCGContext *s, TCGType type,
-+                            TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithi(s, ARITH_SBB + rexw, a0, a2, 1);
-+}
- 
- static const TCGOutOpAddSubCarry outop_subbio = {
--    .base.static_constraint = C_NotImplemented,
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_subbio_rrr,
-+    .out_rri = tgen_subbio_rri,
- };
- 
-+#define outop_subbi  outop_subbio
-+
- static void tcg_out_set_borrow(TCGContext *s)
- {
--    g_assert_not_reached();
-+    tcg_out8(s, OPC_STC);
- }
- 
- static void tgen_xor(TCGContext *s, TCGType type,
 -- 
 2.43.0
 
