@@ -2,71 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA08A37189
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA26A371E2
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 03:48:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjSqD-0000bQ-Ds; Sat, 15 Feb 2025 19:49:01 -0500
+	id 1tjUgj-00051I-KA; Sat, 15 Feb 2025 21:47:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tjSq4-0000bA-1L
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:48:53 -0500
-Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tjSq1-00045u-Qv
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:48:51 -0500
-Received: from [192.168.1.5] (dynamic-cpe-pool.orcon.net.nz [121.99.116.25]
- (may be forged)) (authenticated bits=0)
- by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
- 51G0mh1K3803070
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
- Sun, 16 Feb 2025 00:48:45 GMT
-Authentication-Results: anarch128.org; auth=pass;
- dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
- header.i=@anarch128.org header.b=J6r7kKDs header.a=rsa-sha256 header.s=100003;
- x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org); 
- x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
- s=100003; t=1739666927;
- bh=LGeBEfmEXXAc6/1O/een5ohfK467K2NaIv88ONr8cP4=;
- h=Date:Subject:To:References:From:In-Reply-To:From;
- b=J6r7kKDsvOtCObKrUrRMZOh+CVKECjTozxWwO/kwSnnIYeUyVE+BzlCUFD82ARvyH
- kB4lA7pe/BgTosbXi6MVpOZVJJfqjK8YjmIZ4BHAuDOGMpKpvj+/CHwHZN1BtijhOs
- b6P8TH2iCSiWYR2IGfMURIGWNh55nB+03L387C9QACGMs8BrnVzn8sLgkb/4d0EK0v
- 2FHXKb0A5Ayybz9K0i3iFQK70K1ggf1JgpzrwMx18m/9bWYRd3ZdPFFf6CbXPqA0zP
- dazBxCuNTcRiyp/9sHiH7i64OHPC22T2owBOlPbuz6IsjjPuil09QLMFROdh7vWH9+
- JMDvKAPSpBwNA==
-Message-ID: <cc1d4961-286d-4478-aa3b-344ad970ae99@anarch128.org>
-Date: Sun, 16 Feb 2025 13:48:37 +1300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tjUgc-00050C-Qq
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 21:47:15 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tjUgb-0002CU-2c
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 21:47:14 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2fc11834404so4429121a91.0
+ for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 18:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739674031; x=1740278831; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mjBDQgKSnPpdtaSu85xia3xVzxjiSK0IUYjLZJGHYqM=;
+ b=t+/pCjnD4LtaJ34JjgWCEi9YuG94mQOLlCUwhHQQ6ld412731PdJVW2eJX11FnyoE8
+ /AVz0MFCy2TUPhkyfXD5KmPhgHEjgD39EpCM2eEDZPv65iqgL+8z8nh4fVkWfk+jCM/5
+ xOywBkqsj1imj5yE3Wzr4TXdGYdisedsBR+vYMBfj4Z9GFTx6sgVNzbSutDht4BxS5+g
+ il3nvlqXDpar1WkYFo3Oz3vnsyFQZs0iiVMpV6mI2X1P9FdIOMmSzLoU4YJDYuilpBzf
+ zi0zXA6VNoFj7Lb/dTpWj/cCFw+Pn+UiBDmJuTfoa6x3+EiEaiAHXpOZhQG4QFYwNGY0
+ fuXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739674031; x=1740278831;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mjBDQgKSnPpdtaSu85xia3xVzxjiSK0IUYjLZJGHYqM=;
+ b=YtOA4E1K7R/t8E7IVbTMN6MewMpHS8sUBS2n7SzqlxxD1RkiW1x0gvZ51h978n6fN2
+ NGWJ0aJLRXv8BzoMfBQqLwQ8TsoYfMy9mXAhFFsKZ/ilBN3VamzgllFjRfUB/FhIhV4I
+ qgt5Dggevg0ZAKKi9CghKaIt2BjgsVV7y5zP7UKby1f3ttzwy2x1XaBg/7v6rWl6EXeJ
+ 8SJ/+i5gvLN2/a91sFpwi/UnknOKWBL39XldTMWB8wdhT2equYcapYxZBDagfv78yIsY
+ sXc0sSlpNAouNkodlLKq8PJeRii1RI++wVoK8ESJasUOiA7mYP3cuQ81YLvdCIC/Q09a
+ gNCg==
+X-Gm-Message-State: AOJu0YzTdlWcgdsu32KS1xNw63O1xYd3llp42+jxn5++tZFu1KJf0kGv
+ qwDUB28PnaB+iobAAAiRNNBxGZj2tueoLM4KA6HdMzt5iYWMvfLiG7ONNkYSau7qwQwbawcM7g/
+ A
+X-Gm-Gg: ASbGncuApyUCcdLhCr87zrtetxCn0fvWLYszWNGdKworukpowADJGNpFy3KRNfdb4rr
+ 4gbAZ21tJYLCQQSh+5nIxUWxQCy8AaIP3yoqR1wbnvf+MvhREf+awLtZ4CRgOqR8LezRDMzMtoe
+ rmnjY5RDD9d84GKe36pX/qZf7DH1JOV/xkq/ln6elQ/XrCimGIOEuMCqTYOYmyFFVcqFG5E7Hg8
+ vZYC9BSYhXjUIh8XOEZTtFe7iCty1ePU0ziwi796abxPdsXmopAPMQ2K7vUuzsLKtx0CRzmut7j
+ Ew011y90HO6r78QfyMSHHNqsBCpAdi5PmAagT9PVt0kDYdg=
+X-Google-Smtp-Source: AGHT+IHr6t0biU24iwQ4g+Ct2I3mJ+vv//asa8xbubujrIKZd7yh5bRxsCt3OmQjP0USawd25Lw9aw==
+X-Received: by 2002:a17:90b:1b46:b0:2ee:edae:780 with SMTP id
+ 98e67ed59e1d1-2fc40f22bd3mr7294803a91.15.1739674031012; 
+ Sat, 15 Feb 2025 18:47:11 -0800 (PST)
+Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2fbf9ab0233sm7701710a91.44.2025.02.15.18.47.10
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 15 Feb 2025 18:47:10 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/2] tcg: minor cleanups
+Date: Sat, 15 Feb 2025 18:47:07 -0800
+Message-ID: <20250216024709.2624325-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg: refactor pool data for simplicity and comprehension
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250215021120.1647083-1-michael@anarch128.org>
- <a62ee246-4249-458c-9f9b-bad79816ce5e@linaro.org>
- <8f107cd4-f5a2-4d3e-b023-5e53225511d4@anarch128.org>
- <38bfbaac-329c-45c8-a672-68cad965201b@linaro.org>
- <6b9d6600-d430-4bcc-9f37-8d8d96d31e06@anarch128.org>
- <0ec10457-0461-46e7-95df-a5d1552ab722@linaro.org>
-Content-Language: en-US
-From: Michael Clark <michael@anarch128.org>
-In-Reply-To: <0ec10457-0461-46e7-95df-a5d1552ab722@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
- envelope-from=michael@anarch128.org; helo=anarch128.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,20 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/16/25 12:41, Richard Henderson wrote:
->>> I don't think this is a good change to make.
->>
->> fixing varargs codegen in GCC/Clang would be a good change. count 
->> based varargs can be reasoned about statically relatively easily. what 
->> is it like with an explicit inline as opposed to just static?
-> 
-> Inline will still be rejected.
+Two minor patches extracted from a larger set.
 
-oh wow. fair enough. I didn't know varargs was so broken. Clang even 
-appears to be emitting weird extern functions with inline varargs that 
-change when another invocation is added. taking away inline fixes it. 
-this is unusual and I think this is a Clang compiler bug. flip the #if. 
-code seems to be conforming or is it a bug? might post to Clang folks.
+r~
 
-https://godbolt.org/z/WsEPfdfbE
+Richard Henderson (2):
+  tcg/i386: Use tcg_{high,unsigned}_cond in tcg_out_brcond2
+  tcg: Remove TCG_TARGET_HAS_{br,set}cond2 from riscv and loongarch64
+
+ tcg/loongarch64/tcg-target-has.h |  2 -
+ tcg/riscv/tcg-target-has.h       |  2 -
+ tcg/i386/tcg-target.c.inc        | 65 ++++----------------------------
+ 3 files changed, 8 insertions(+), 61 deletions(-)
+
+-- 
+2.43.0
+
 
