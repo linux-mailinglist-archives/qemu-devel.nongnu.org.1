@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED28A37176
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA08A37189
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 01:50:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjS6h-0007mH-L3; Sat, 15 Feb 2025 19:01:59 -0500
+	id 1tjSqD-0000bQ-Ds; Sat, 15 Feb 2025 19:49:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjS6L-0007fW-RS
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:37 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjS6J-0006Ik-NN
- for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:01:37 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-221206dbd7eso1308555ad.2
- for <qemu-devel@nongnu.org>; Sat, 15 Feb 2025 16:01:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739664089; x=1740268889; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
- b=Du3YMUDDAU9DHfAYt+BZigKH+MB0+ix3jczOLTtlya4pEGPQDfYgfxtlKoFVzeLbyC
- sXGLPSXseRkifvZSye8y982p3JBorLEVENCPbDBK5WqLlJoEt9AFMHwIXxajRWNyhAFx
- yQed3YCwggUKEcYMy8qK6s5bH7WNA609lys5myRHcGGLo14YKcqFtOIariv1bktSjy5Z
- rAU8SuW4FwB7hBuswAuiLWecUUzq7JQOfnS3olxtz3CEouJRFRv3WVvLL5QmbTi276Cg
- WO23XEvUhGyHQnFLiw/Ex+9/BmAGPOvIIyZF7K9qIL8CGSm4gsZoccr2gYEYc8f2clTa
- OIdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739664089; x=1740268889;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
- b=u9QmtcYuABt5Me8jlw7kmLdRj3ba6Ad+5w7Lz7pmGn7104+HEvbvnxiJkcwzbb4ayW
- inCp0aNCufD/86Uwu+xAcr2oQYcW0o78SI9BLCWcNOQY08MZ3KWOGloPJCxENT6qZJgr
- RkoI7mAkyEPb5TXSkHvnsJdWI4yAzqg+XququYTBPcnmY58vy1w8C1uvN8e9k6RfMSr9
- +87UKXftZLNKWvRPWI4tD1fdcizy8Nkva8Wdm3Tr7x7FfKhThNbGat8wQBE0u9mbicuP
- +BbJ+7R2y/y4dBH9aAF4lLyGs+4Acz7szfWduInPJEFfDuXRhRuO19+Zpx/+kA/Exi88
- nAlw==
-X-Gm-Message-State: AOJu0Yyn+0QQbEij0LbgiNPlmMpHX7NHYNF8m85AWWWeuV4zj1r9a5Gf
- xKfjR8k+YbeiMFQ3mhqcn6Xmo6BXTCqWjpJ9dnbodlLn/dPDoSeJTYjIcGZMeuEzuLsRFdcrUfA
- X
-X-Gm-Gg: ASbGnctqxM3nrs6IaETQvj2x2Gy6Il26XtroM6UecY0YXg8gVm7aO4d+4lijNejPOSL
- rEsMznO6+ZGsX0QRK7jlH0xa9qdi4GDCZuTA/WHOr6BSxzKSqRpXQCodXy8FBG6hiDIB8Gfz1/H
- XgerIblhWN/+YEDmds0r/96ojwx9D/wTf0VuJsHFjFQtF2TCgieAgzhOqaJCSx1sUy+LcTtSdHo
- FXSUiZPgo6y6xlVhhPUtsGrMm9HwhkTyCUk8VNZA5xSn18+f+0DQyzzQl7F/EVbdDKW2D+ughyT
- V8nf1kyLNzAAfrOwmT+wuhJJF9yNc6rFQa6x0nSq+PLTxkc=
-X-Google-Smtp-Source: AGHT+IEgmlM7dSBRSe+FEzP7ch77BG1EulgN0F9u7MqTNzIYkQxXVfxcLZQ7t7mogSb2zXsd7iyvlg==
-X-Received: by 2002:a17:902:fc4e:b0:216:7926:8d69 with SMTP id
- d9443c01a7336-2210409d456mr80105305ad.47.1739664089098; 
- Sat, 15 Feb 2025 16:01:29 -0800 (PST)
-Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d5366729sm48960315ad.79.2025.02.15.16.01.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Feb 2025 16:01:28 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 24/24] target/sparc: fake UltraSPARC T1 PCR and PIC registers
-Date: Sat, 15 Feb 2025 16:01:08 -0800
-Message-ID: <20250216000109.2606518-25-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250216000109.2606518-1-richard.henderson@linaro.org>
-References: <20250216000109.2606518-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1tjSq4-0000bA-1L
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:48:53 -0500
+Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
+ id 1tjSq1-00045u-Qv
+ for qemu-devel@nongnu.org; Sat, 15 Feb 2025 19:48:51 -0500
+Received: from [192.168.1.5] (dynamic-cpe-pool.orcon.net.nz [121.99.116.25]
+ (may be forged)) (authenticated bits=0)
+ by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
+ 51G0mh1K3803070
+ (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+ Sun, 16 Feb 2025 00:48:45 GMT
+Authentication-Results: anarch128.org; auth=pass;
+ dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
+ header.i=@anarch128.org header.b=J6r7kKDs header.a=rsa-sha256 header.s=100003;
+ x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org); 
+ x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
+ s=100003; t=1739666927;
+ bh=LGeBEfmEXXAc6/1O/een5ohfK467K2NaIv88ONr8cP4=;
+ h=Date:Subject:To:References:From:In-Reply-To:From;
+ b=J6r7kKDsvOtCObKrUrRMZOh+CVKECjTozxWwO/kwSnnIYeUyVE+BzlCUFD82ARvyH
+ kB4lA7pe/BgTosbXi6MVpOZVJJfqjK8YjmIZ4BHAuDOGMpKpvj+/CHwHZN1BtijhOs
+ b6P8TH2iCSiWYR2IGfMURIGWNh55nB+03L387C9QACGMs8BrnVzn8sLgkb/4d0EK0v
+ 2FHXKb0A5Ayybz9K0i3iFQK70K1ggf1JgpzrwMx18m/9bWYRd3ZdPFFf6CbXPqA0zP
+ dazBxCuNTcRiyp/9sHiH7i64OHPC22T2owBOlPbuz6IsjjPuil09QLMFROdh7vWH9+
+ JMDvKAPSpBwNA==
+Message-ID: <cc1d4961-286d-4478-aa3b-344ad970ae99@anarch128.org>
+Date: Sun, 16 Feb 2025 13:48:37 +1300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg: refactor pool data for simplicity and comprehension
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250215021120.1647083-1-michael@anarch128.org>
+ <a62ee246-4249-458c-9f9b-bad79816ce5e@linaro.org>
+ <8f107cd4-f5a2-4d3e-b023-5e53225511d4@anarch128.org>
+ <38bfbaac-329c-45c8-a672-68cad965201b@linaro.org>
+ <6b9d6600-d430-4bcc-9f37-8d8d96d31e06@anarch128.org>
+ <0ec10457-0461-46e7-95df-a5d1552ab722@linaro.org>
+Content-Language: en-US
+From: Michael Clark <michael@anarch128.org>
+In-Reply-To: <0ec10457-0461-46e7-95df-a5d1552ab722@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
+ envelope-from=michael@anarch128.org; helo=anarch128.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,89 +82,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Artyom Tarasenko <atar4qemu@gmail.com>
+On 2/16/25 12:41, Richard Henderson wrote:
+>>> I don't think this is a good change to make.
+>>
+>> fixing varargs codegen in GCC/Clang would be a good change. count 
+>> based varargs can be reasoned about statically relatively easily. what 
+>> is it like with an explicit inline as opposed to just static?
+> 
+> Inline will still be rejected.
 
-Fake access to
-   PCR Performance Control Register
-and
-   PIC Performance Instrumentation Counter.
+oh wow. fair enough. I didn't know varargs was so broken. Clang even 
+appears to be emitting weird extern functions with inline varargs that 
+change when another invocation is added. taking away inline fixes it. 
+this is unusual and I think this is a Clang compiler bug. flip the #if. 
+code seems to be conforming or is it a bug? might post to Clang folks.
 
-Ignore writes in privileged mode, and return 0 on reads.
-
-This allows booting Tribblix, MilaX and v9os under Niagara target.
-
-Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250209211248.50383-1-atar4qemu@gmail.com>
----
- target/sparc/translate.c  | 19 +++++++++++++++++++
- target/sparc/insns.decode |  7 ++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7e5c7351cb..bfe63649db 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -2882,6 +2882,14 @@ static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
- 
- TRANS(RDASR17, ASR17, do_rd_special, true, a->rd, do_rd_leon3_config)
- 
-+static TCGv do_rdpic(DisasContext *dc, TCGv dst)
-+{
-+    return tcg_constant_tl(0);
-+}
-+
-+TRANS(RDPIC, HYPV, do_rd_special, supervisor(dc), a->rd, do_rdpic)
-+
-+
- static TCGv do_rdccr(DisasContext *dc, TCGv dst)
- {
-     gen_helper_rdccr(dst, tcg_env);
-@@ -3315,6 +3323,17 @@ static void do_wrfprs(DisasContext *dc, TCGv src)
- 
- TRANS(WRFPRS, 64, do_wr_special, a, true, do_wrfprs)
- 
-+static bool do_priv_nop(DisasContext *dc, bool priv)
-+{
-+    if (!priv) {
-+        return raise_priv(dc);
-+    }
-+    return advance_pc(dc);
-+}
-+
-+TRANS(WRPCR, HYPV, do_priv_nop, supervisor(dc))
-+TRANS(WRPIC, HYPV, do_priv_nop, supervisor(dc))
-+
- static void do_wrgsr(DisasContext *dc, TCGv src)
- {
-     gen_trap_ifnofpu(dc);
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index cfcdf6690e..9e39d23273 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -96,7 +96,10 @@ CALL    01 i:s30
-     RDTICK          10 rd:5  101000 00100 0 0000000000000
-     RDPC            10 rd:5  101000 00101 0 0000000000000
-     RDFPRS          10 rd:5  101000 00110 0 0000000000000
--    RDASR17         10 rd:5  101000 10001 0 0000000000000
-+    {
-+      RDASR17       10 rd:5  101000 10001 0 0000000000000
-+      RDPIC         10 rd:5  101000 10001 0 0000000000000
-+    }
-     RDGSR           10 rd:5  101000 10011 0 0000000000000
-     RDSOFTINT       10 rd:5  101000 10110 0 0000000000000
-     RDTICK_CMPR     10 rd:5  101000 10111 0 0000000000000
-@@ -114,6 +117,8 @@ CALL    01 i:s30
-     WRCCR           10 00010 110000 ..... . .............  @n_r_ri
-     WRASI           10 00011 110000 ..... . .............  @n_r_ri
-     WRFPRS          10 00110 110000 ..... . .............  @n_r_ri
-+    WRPCR           10 10000 110000 01000 0 0000000000000
-+    WRPIC           10 10001 110000 01000 0 0000000000000
-     {
-       WRGSR         10 10011 110000 ..... . .............  @n_r_ri
-       WRPOWERDOWN   10 10011 110000 ..... . .............  @n_r_ri
--- 
-2.43.0
-
+https://godbolt.org/z/WsEPfdfbE
 
