@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C3AA378B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 00:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7513A378FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 00:39:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjnml-0005ej-7L; Sun, 16 Feb 2025 18:10:51 -0500
+	id 1tjnmV-0005Yb-Av; Sun, 16 Feb 2025 18:10:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjnmK-0005Ua-N8
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:10:24 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tjnmL-0005V6-9s
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:10:25 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tjnmH-0005Cu-MS
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:10:24 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-220e6028214so58311885ad.0
+ id 1tjnmI-0005Cz-IK
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 18:10:25 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2fa8ac56891so5355276a91.2
  for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 15:10:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739747420; x=1740352220; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739747421; x=1740352221; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=72cGlcfTXUkZ8eDE1OmXiJGkbM/2dDEjFpS0ZCtWDGw=;
- b=AJSS+QEho2l5gj3AQvD+iGHECMXM+llz20oEcFAWjEcFumthtxccGiRSfAPZW44ZZk
- MPdbK4XnjPafNz343EhP1H5Rlnbi6bRi3n+ey2lgTJ7thlGOOb2Kq5HrYI1hHyYIrxDt
- YE3U6qqDzNERBa7syth4sAoLfzhr/1YcyFhwjIV7HaVfpjI5nR83OldX1gDaOIiAgxgG
- mtfEHjy50c4vl38ZK1+kmkkWggtIA8tnC2mZs2X0Tbr9SocwZR2pdPAtEocCbwQ5XaaQ
- P3OPlRn64Fu953JPy9tR9YcVOdZZeh+idlS2n53Dgs2EgQZ9ObkJAu74Q7DTZyF4GHLn
- s+IQ==
+ bh=e3efgV/pEu80aXE8j5/SUl3haOtWo5u+W7F4cNHVCaw=;
+ b=MVPp10NQ6h9DXxeAYQpEwMEs9CFbO2dlz+ywoUX2nlm7FvXAav3eiJN9cHuuB837Em
+ 4qJNLA6RgCCKEn/PtBWxricWVq4fJhYg/dMMvtygOGc52HMewUn8cAD90ObTrRPjQLf7
+ Uvvj9YreEl1sNrnD00Pn/yillOe2leXusnRKL5E0fc57DarwPc1isDyDceBf9HpvojQf
+ asWP3ez6G3Yz06ugfGHPkOOJ3mXN92xn6qR+9rc74154PDR2JIzGMFH0+srkBmY8lcTt
+ 8Z7SgT1CcTvRBKQGmuEU+vJatRT2FSg5d30rIZWa+M4Z03WGBoROFmvES4fUaxTe7HIl
+ 7o9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739747420; x=1740352220;
+ d=1e100.net; s=20230601; t=1739747421; x=1740352221;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=72cGlcfTXUkZ8eDE1OmXiJGkbM/2dDEjFpS0ZCtWDGw=;
- b=orHOxibl7mWcg0vOjPZgkKJJzhqeCgZNvoaBf0QmjTuCRVuHF7549V+OZBDwy/jjCC
- g3ZUVr7nxWRuNSKiSRsYHe6+8C0Brxo2MSZmf/FtBrdzX110dYtKTsHLwMU1Cipwea9S
- XPPpFoaaArJwvE0sMXCn5LJL0qK3hhLVM42em/p1bTbpbAL95oDoHVgGi2c+uKGnOcFF
- SG1XbFcyGkXu824tdQa4IFMFWNyyYYvJq3OW91lJXLSqL3Bo7HwZZDH1+lkJLf+5IeYq
- o8ME2OCjd3DGeTkWoO6p394b2iKl4yU8xcxf0rETGzpB76B4yAXjtJ5C/nSBMH+jjppk
- Rpjw==
-X-Gm-Message-State: AOJu0Yz014b1TL2JpeO1gtD0Rq5fKFW8YCnJ5ksFNEdfxN+m3kw2soce
- Vs3sKNo1ouckNthjwts9RXCzRpsr5m5BkKXr0pSS+VovrAJQPW+i5XxawzRefbG6g3l91ahqDRR
- v
-X-Gm-Gg: ASbGncvTU5eXCJbABw+jpoIb83z9CG/IFFOPwTfJQRdW5YHrFvdzvegy92ngM+nK4ZU
- ue2G6QEuRoJt1XeWAnRukegYUGlHRD6HXZm8h6yr8l9DvxUhX/3fSFpBiHVLHSZZe2nUo1rUKEw
- y2AZC7HHdTTX5kdD/gO+KjEoy9hM4GN/ZWsVMT73dkg/ltUgZmAg2zOO4tJmA8w8+r5TE2EugtH
- dGeEgUpumjy8UstX4UNqY1K/TbjFDdzuRlT1PQ/DatvT5+0A0BxSeU4T1K8+j2opK0hcjWuLQpv
- MKZUGtZaTQ/36WCINwh6/l3lvUnl69QbOtC4q0O7XFcOGoE=
-X-Google-Smtp-Source: AGHT+IFi6eOlncgQR+7P7zryqxpn47nQrfPYl7p4V2KEl9FyebH3uP5Kunf7z1Btw2Ef7Hwn4mvXJA==
-X-Received: by 2002:a17:903:2312:b0:215:8847:435c with SMTP id
- d9443c01a7336-22103f12d37mr124956735ad.12.1739747420320; 
- Sun, 16 Feb 2025 15:10:20 -0800 (PST)
+ bh=e3efgV/pEu80aXE8j5/SUl3haOtWo5u+W7F4cNHVCaw=;
+ b=G8EcUN/WTkWrCR+5a48AOnM5PDOBDTu70OXYdqy2jAas6Axj7X5IWCN/YwMBYOr7jx
+ yuw5I3VmGDsZ19leonRyarejSfPHVeZU+/64axvpD4pvtYjmLrpc4RmfLg9/UQ2Og+B0
+ 9JkWl+NTEWtWIZI7O+WsjxuYbGzKkKLPeqSr/OmgXpymScWmcyoDN4Kvp79bdmT65DfR
+ dpmMV9GmLTeAvKZzemY6ZN4jaqJexle0g9mkO3k/458Z8j1dhSdlC1Hp8KUaqWwFPIhV
+ uEfoJ9+HFd52fTbbiaaTNbRJ/qeXCEUq25lurpDWRXxZBEKbL4YvAd9RcLiwZDArxUyJ
+ nLSw==
+X-Gm-Message-State: AOJu0YztZClhCk2m8KK9xCjv88WauiND+em/BN/u+s+89OZor/9BHX2E
+ Mh/Wd7zwbo0+cSmiXb8uZqC9fnzvg2oOvU4oypnP+lv4/X4d39Za50tJNq4+myvm4nCuItc2tig
+ g
+X-Gm-Gg: ASbGncs8KnALqSZfXXvfwoRpF2k4KS/IDuGWpeEE98UeYMoeWYZ+/HJgz6BxlS+JKpd
+ P6Yk0mEtXnVT9HEPfct/VZy3vbmS79l1ggwXs36lIZ+NDN134zZCRfbJ3EQb8PWWdy7i1JjRdSR
+ Pl6GBl13xIpP5jYK12LazuMaujTVEWyvea35rpPVZB9rM9uCasws4O2lBAAeM2yvrWkNvWjBuTm
+ R1nmCItxb4UB3Rrao4xHtxCMlDwfNochvs9NVJmiPlx6xnt3AVEHOusxmjuL6tvd75xcP/tzwOG
+ AJPrNr2BMPDEUZ28mQr+A6b8iMGl2Q63ivYmH2LehXMfXhk=
+X-Google-Smtp-Source: AGHT+IFKYezl1K/GhXgf5CZ62pfRjsF12y/IoN+HA0GOY55AmEiemWJqdZpt0Ppnb/o6o9VsPkPJ9A==
+X-Received: by 2002:a17:90b:3ec5:b0:2fa:12be:f16a with SMTP id
+ 98e67ed59e1d1-2fc4116a9c9mr12348585a91.29.1739747421016; 
+ Sun, 16 Feb 2025 15:10:21 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d5596115sm60198415ad.258.2025.02.16.15.10.19
+ d9443c01a7336-220d5596115sm60198415ad.258.2025.02.16.15.10.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Feb 2025 15:10:19 -0800 (PST)
+ Sun, 16 Feb 2025 15:10:20 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 008/162] tcg/optimize: Fold andc with immediate to and
-Date: Sun, 16 Feb 2025 15:07:37 -0800
-Message-ID: <20250216231012.2808572-9-richard.henderson@linaro.org>
+Subject: [PATCH v3 009/162] tcg/optimize: Emit add r, r,
+ -1 in fold_setcond_tst_pow2
+Date: Sun, 16 Feb 2025 15:07:38 -0800
+Message-ID: <20250216231012.2808572-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250216231012.2808572-1-richard.henderson@linaro.org>
 References: <20250216231012.2808572-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,42 +99,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We canonicalize subtract with constant to add with constant.
+Fix this missed instance.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tcg/optimize.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index f217ed9366..0b84d97051 100644
+index 0b84d97051..f0aeb10d07 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -1331,6 +1331,25 @@ static bool fold_andc(OptContext *ctx, TCGOp *op)
-     t2 = arg_info(op->args[2]);
-     z_mask = t1->z_mask;
+@@ -2289,7 +2289,7 @@ static int fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
  
-+    if (ti_is_const(t2)) {
-+        /* Fold andc r,x,i to and r,x,~i. */
-+        switch (ctx->type) {
-+        case TCG_TYPE_I32:
-+        case TCG_TYPE_I64:
-+            op->opc = INDEX_op_and;
-+            break;
-+        case TCG_TYPE_V64:
-+        case TCG_TYPE_V128:
-+        case TCG_TYPE_V256:
-+            op->opc = INDEX_op_and_vec;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        op->args[2] = arg_new_constant(ctx, ~ti_const_val(t2));
-+        return fold_and(ctx, op);
-+    }
-+
-     /*
-      * Known-zeros does not imply known-ones.  Therefore unless
-      * arg2 is constant, we can't infer anything from it.
+ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+ {
+-    TCGOpcode sub_opc, xor_opc, neg_opc, shr_opc;
++    TCGOpcode xor_opc, neg_opc, shr_opc;
+     TCGOpcode uext_opc = 0, sext_opc = 0;
+     TCGCond cond = op->args[3];
+     TCGArg ret, src1, src2;
+@@ -2311,7 +2311,6 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+ 
+     switch (ctx->type) {
+     case TCG_TYPE_I32:
+-        sub_opc = INDEX_op_sub_i32;
+         xor_opc = INDEX_op_xor_i32;
+         shr_opc = INDEX_op_shr_i32;
+         neg_opc = INDEX_op_neg_i32;
+@@ -2323,7 +2322,6 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+         }
+         break;
+     case TCG_TYPE_I64:
+-        sub_opc = INDEX_op_sub_i64;
+         xor_opc = INDEX_op_xor_i64;
+         shr_opc = INDEX_op_shr_i64;
+         neg_opc = INDEX_op_neg_i64;
+@@ -2367,10 +2365,10 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+     }
+ 
+     if (neg && inv) {
+-        op2 = tcg_op_insert_after(ctx->tcg, op, sub_opc, 3);
++        op2 = tcg_op_insert_after(ctx->tcg, op, INDEX_op_add, 3);
+         op2->args[0] = ret;
+         op2->args[1] = ret;
+-        op2->args[2] = arg_new_constant(ctx, 1);
++        op2->args[2] = arg_new_constant(ctx, -1);
+     } else if (inv) {
+         op2 = tcg_op_insert_after(ctx->tcg, op, xor_opc, 3);
+         op2->args[0] = ret;
 -- 
 2.43.0
 
