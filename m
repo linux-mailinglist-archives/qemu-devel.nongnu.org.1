@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9A5A377AA
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 22:02:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233B5A377A8
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Feb 2025 22:02:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjlmG-0003cy-IO; Sun, 16 Feb 2025 16:02:12 -0500
+	id 1tjlmJ-0003gT-Ot; Sun, 16 Feb 2025 16:02:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjlm4-0003S5-HD
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 16:02:01 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjlm9-0003YO-2S
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 16:02:08 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjlm2-0007xK-P6
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 16:02:00 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38dcac27bcbso2857593f8f.0
- for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 13:01:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjlm7-0007xk-IX
+ for qemu-devel@nongnu.org; Sun, 16 Feb 2025 16:02:04 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-38dcac27bcbso2857620f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 13:02:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739739716; x=1740344516; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739739722; x=1740344522; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EoUEir+L/Lwibe4TspeNvCoRQYIzBlRMRbwzJOivCrE=;
- b=pZQItYlDfY0i7Rp6xKgQ4nIRWGQ4AxBdeQ0P//K6pVbg5dU1ohsRFewWGWQ/0JrJG0
- NfQxCQBK7e/gxAskdQAcLt3vm8GBJSSuUPLXidwqoV2HxxO4Gjzt20+HZsLXDcNzy+Ir
- vrUiW0R5obtrR/tIT5erXhehXmC6K3YBe1v4rSwP83J6OODjLvKiyOVp8YI7KrbqmUSy
- qhX2bvNXBsJ1bMWKpytRf+QKc2O/943G5bNYl0Y8ssHNtX+ze49okJKAZSJhSq9wFrZM
- yMF/AXSp4j2DdlnmSrorBUyRW8SXSWk8SGOx81lfdHNREnGz4iiveR5rcCHCy1aiDvxC
- mJdA==
+ bh=mX8deahLJd9g/czOO8F+DTVRecS9AsmpyHYz1+koZZ0=;
+ b=ZzxqfvIwCUff/A50ax3KHIBt7kzq1SvTXvItWtY8Y3YAeJzfUDADS2s+gx3I381DT3
+ JGdFG/jehFiQXygr5patrWhIFvaMuovAyVmFkEuhr4wWuy2zcQ4WEAbSDW7XaSxKaXYo
+ jB9h73aMZIP/ksw062MAipbdPIIvPT8LkZBNYXe1Ro881Pl27cgS3kpBTyO/fqbO4iG5
+ 8Ekp1bPuG1pmFa36boNbhbuJWcvmwIi1bE8RSzCRGdm3tEQx2Ty8B4SOpEoOCwRbe5tN
+ lprTxMSgINDlaFrrs4NKSYqYWeDnwsOtRjlbWf2swwLX3BNnyl41yhS24LSBMlIa6A9a
+ 73EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739739716; x=1740344516;
+ d=1e100.net; s=20230601; t=1739739722; x=1740344522;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EoUEir+L/Lwibe4TspeNvCoRQYIzBlRMRbwzJOivCrE=;
- b=RgtHMJMLPjAIAcy1zaDiuEj4Lg/sjk2+OIS2dfKmOIvdlCqSeTpg/ENGtEVWyUYWZM
- K7lUUCSiQYGsncNLgLdQoZjULMNZVVu6u2jV3HkTbGIEcyq/X5eo9VkryYyeCytekrF9
- vy7muTfQ1iFT/bH3TqUGOKeNqPzmhvZCIzPp7xSKSYg5d+FFofQY+vUUL/KTKT/U6/8z
- x/VgQRD70Cdkb0qXOMy/mS8/cH2sES4VDghnKcv5IC5/unL6BB8sDq7ZIq8Nns252LQB
- LCSAczTFDv1xCWj4iRNbn0N28JE7Qf258hAfjmkP8hDkp3AtkDAHO62932lUsX8OyBhE
- gVeg==
-X-Gm-Message-State: AOJu0YwAT/Z7+2ZwXh4DoDLSKkfoiPh41v8I7pdwP8FmG04vUL6lv6k4
- zMJ2Wr/+2HxTXPRoafRo7/pipVv8KqgxWfzENQZAAp9icu+ZR0gV2PmCejC1oL7YuosknEE6lNR
- ziz4=
-X-Gm-Gg: ASbGncuyulWrY5Ud9n5MQLmBDcsant2eaMiUePpk3MLmmHik1ins52VoKvxJdOMAKyL
- nroEBGQaWIWPbmqEQwxx0i9cUZrbUursfDjVL2LJ7+crVuOCa31K9nu1u0Rw/bDVTIoexjmVsAl
- Yq9XpL9oCbuDlhN3pZHOtNMstBeTwuy5D3IHWCVuScZgqZnDszxZFSstoyNMv/D6qgwo99XROPG
- DjfHQzz743JCYSXtlQScv2AfuAR2KvZ6AjS2zap6a3YIFyqD61HgXQC3VbaZ4uk+7wJTt19Pxg1
- 7rqbELUG6z8IDY81vax3NBTjzMzy+MvsFk6d/GpDGpAJlCpBTqlZY/3FZm7EgGdi1pbO6rI=
-X-Google-Smtp-Source: AGHT+IE6dykI484uJsqmaKwZf+SdzfeGN1sqv/JuhTYA4j6X4SeL9SrWzL8Lcb4Lm7AhTj1+nLJb+Q==
-X-Received: by 2002:a05:6000:1f8d:b0:38d:b028:d906 with SMTP id
- ffacd0b85a97d-38f33c20f7cmr6473292f8f.21.1739739716276; 
- Sun, 16 Feb 2025 13:01:56 -0800 (PST)
+ bh=mX8deahLJd9g/czOO8F+DTVRecS9AsmpyHYz1+koZZ0=;
+ b=YaNsJA+gdJeqD2Hk16u+UADXP8J4OuJ8RFedoZvup8q/+g/gyzY2WRXUc9TJGJ2ZK7
+ jECAjGuaTYijzDGDCHhrfnKc1BS3mZsRm3kNFMScgWAeZpXa0gHeIUh1YcIDSLqIBHlW
+ X81e1gAs/h4Uy+imqGDQ3EbF7qxeFZh+r3qCBz5dV6bEmRpWFSEMubzspOvO12kY3Qtt
+ YNc0YByHep1M+8O0A4LYL4mY6m10bMPJ+NLCIpr5MoKyBpFtN+fG1rx/DEYABH3qg6Qi
+ H4KYXVpAW5Z1jdFv7YjCTDw7lRAFYgqRpylyIxDneYn/ZuHYVi9zGaxKRU7avun3hFbr
+ TZsA==
+X-Gm-Message-State: AOJu0YzM5ZUKW3kE0iwPlu7/3nWqXErrhEmxsxhA64lKaMsjYVPUtLpC
+ ObDLDE6j9Pi2imtiwncHOl9lLptiegFXRN+ys/JIMtUzmpHcedQ7XYL1saKTq1tbenanhMLbSyd
+ bo4A=
+X-Gm-Gg: ASbGnctxG5cyC9hQ5S0cR+2zgsS9V+tWCke5pXf4YR3FVRe+QYXdiR17xA8wxzk+9u8
+ m5EUofp8PWfpJbXUP1NZo5aobZcFmBbenflcFNsm1jiGLg4VSuejVMNyBNq43q/WKRDlc0X7+4I
+ Cgvx3P1yFliFur2O0Wpo4QcHKnr+8pe069n4ELUiwYo/bmmjbQIO+BlNsWw0s5aD+OntWwuwEVv
+ 0LExpmV8QMJy6dkQ0BBIoNzLhEWbk7+V3Z5ZHdArt/z40bF24BJkAOmUKnrDlwkuI312WpcNaPP
+ Sk4dobsLs9/6BDhGkX0kAoXL25cn009uyDoN3puoSRWkOrFGSDQtj+hDQyTHiIZOYrwDHtY=
+X-Google-Smtp-Source: AGHT+IFQo9SGkpWDZBdZBKoF59I+BynJ+8ezYFrY5v3y8IG8Qo9MHc0lShH7uNs+f8bJTd6SKmr2hw==
+X-Received: by 2002:a5d:5889:0:b0:38d:b8fd:591f with SMTP id
+ ffacd0b85a97d-38f24ce76d0mr16806733f8f.5.1739739721676; 
+ Sun, 16 Feb 2025 13:02:01 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d65bcsm10498204f8f.65.2025.02.16.13.01.55
+ ffacd0b85a97d-38f259f8115sm10579717f8f.92.2025.02.16.13.02.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 16 Feb 2025 13:01:55 -0800 (PST)
+ Sun, 16 Feb 2025 13:02:01 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 38/39] hw/pci-host: Mark versatile regions as little-endian
-Date: Sun, 16 Feb 2025 22:01:02 +0100
-Message-ID: <20250216210103.70235-11-philmd@linaro.org>
+Cc: Keith Packard <keithp@keithp.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 39/39] hw/rx: Allow execution without either bios or kernel
+Date: Sun, 16 Feb 2025 22:01:03 +0100
+Message-ID: <20250216210103.70235-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250216210103.70235-1-philmd@linaro.org>
 References: <20250216210103.70235-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,41 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This device is only used by the ARM targets, which are only
-built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
-definition expand to DEVICE_LITTLE_ENDIAN (besides, the
-DEVICE_BIG_ENDIAN case isn't tested). Simplify directly
-using DEVICE_LITTLE_ENDIAN.
+From: Keith Packard <keithp@keithp.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Users can use -device loader to get an ELF file loaded to
+memory, so we don't need to require one of these options.
+
+Signed-off-by: Keith Packard <keithp@keithp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250212113938.38692-5-philmd@linaro.org>
+Message-ID: <20250215021654.1786679-2-keithp@keithp.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/versatile.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/rx/rx-gdbsim.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/hw/pci-host/versatile.c b/hw/pci-host/versatile.c
-index c3fbf4cbf94..33a8ceb3b54 100644
---- a/hw/pci-host/versatile.c
-+++ b/hw/pci-host/versatile.c
-@@ -246,7 +246,7 @@ static uint64_t pci_vpb_reg_read(void *opaque, hwaddr addr,
- static const MemoryRegionOps pci_vpb_reg_ops = {
-     .read = pci_vpb_reg_read,
-     .write = pci_vpb_reg_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -312,7 +312,7 @@ static uint64_t pci_vpb_config_read(void *opaque, hwaddr addr,
- static const MemoryRegionOps pci_vpb_config_ops = {
-     .read = pci_vpb_config_read,
-     .write = pci_vpb_config_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
+diff --git a/hw/rx/rx-gdbsim.c b/hw/rx/rx-gdbsim.c
+index 88c8f12c101..4afd77efd56 100644
+--- a/hw/rx/rx-gdbsim.c
++++ b/hw/rx/rx-gdbsim.c
+@@ -110,9 +110,6 @@ static void rx_gdbsim_init(MachineState *machine)
+     if (!kernel_filename) {
+         if (machine->firmware) {
+             rom_add_file_fixed(machine->firmware, RX62N_CFLASH_BASE, 0);
+-        } else if (!qtest_enabled()) {
+-            error_report("No bios or kernel specified");
+-            exit(1);
+         }
+     }
  
- static int pci_vpb_map_irq(PCIDevice *d, int irq_num)
 -- 
 2.47.1
 
