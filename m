@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD2CA38C81
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8DFA38C7E
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:34:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pj-0002Wo-DM; Mon, 17 Feb 2025 14:31:11 -0500
+	id 1tk6pn-0002mx-9t; Mon, 17 Feb 2025 14:31:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6pC-0001zW-4l
+ id 1tk6pC-0001zV-4u
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:45 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6p7-0008RJ-WA
+ id 1tk6p8-0008RT-02
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:37 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-2210d92292eso55117045ad.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:32 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-220dc3831e3so66724015ad.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739820631; x=1740425431; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739820632; x=1740425432; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
- b=py3+qOk7syXPF+Vx8Yd9T7Jc2VAx+HQzwY9K9G+ICJYyFYTI3MSoY0231at7mUpISc
- zoAST2QxxB2Pfb5tUY63OhibXzvA7/4P7+trJXUiD4jDhvWcBiqlR82Uaxub3MW8ni+v
- QBcSQCW4R10lo7daNCSJs6a2P2VIVYgZmnZApIuZvIpZl0AEv9w+8tflEHoiEG8JcJah
- O/um5DdoCSxPguxUr7bLTqUFjxYxQvjyr8JEZb9x5DO/T5SQ0B3DaroparLMvb/8z7hY
- VKkkdtEK9OCktClLCu0GPet9/yLByLSQ1onlxDvd+knpDG+lMDU6TRGlFWb0MsDvpm4F
- ts8g==
+ bh=d1zb22AyjlqmHw+UQQqRIL7eiAR7k2i23HZM7g6s8GU=;
+ b=OquQvsvn/+GYRvFyn+egjNMJQeba5IZ6E+iNUEV7zHNkXK1898FNytiOfQABDaePZD
+ tlXpKYaJL9zUNMuRzKVLyC1MJ754Mi7H1a/bPANBtwdZh8rE5MMQrth+i1HqPRAbs8m8
+ YX05OX6gE7Ghzxm6vcP2hJBOWxV8teJnSsh4+1EGZ74D7uKJvdNSkJfCSyREwSf5EiaK
+ pbOxI08P0+Frw0B00zS/pituRRaCJxBFdB8NOknsPDyP8k5H1n3/VLvNxm5HgGuLTGtD
+ TA59lNV7T0XZcutfgBk2Mb3Ci7pub/y2IDdLxlcM1O+GtzPt5cvNRfVHU8QX8krW+Di0
+ YuIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739820631; x=1740425431;
+ d=1e100.net; s=20230601; t=1739820632; x=1740425432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
- b=SFjRj9WRU/dmciCUsPwj/4DQBGtsx7mi5AUHpvRUIQXfGJcxjIw+k8IvwLxkW56CLY
- pVowv36C9SNPI/bRf+qxCB6WcLBL0vC4KJiYBteYGlBFqDW2IeGzIQd9wTtkwz9yMkJA
- QGzP/5HF9I2Q373AGrSFT1tSc0S7Tiq3/EnM9RELLUBoaYE1JPl/8eT2Lommike4VCAX
- 3B/+qbiUu8g26+xqbDZ6jhYsWGfDl5ChiYgCLWA/ipXttIzaLiNHYjcM1KK6OkERhjTI
- r6U7B5tKxAjPKUUSHAuTAv7uLXJVDURlEaJlq2OS5kN095vhrertO11sb1f2TEeqmOZp
- 2c7g==
-X-Gm-Message-State: AOJu0YyRO/VIOPfROQvRx5MToSLfoo07Bb3zkVZXmGXBq3Erbi5oI07X
- F8T3cBmB3rwdFvzs3k+6495in3fkK5IOlRbckJSN9L9gf8fq3j4/FgihC0H3cXnx2dmNrZzuWtn
- +
-X-Gm-Gg: ASbGnctMcxeu1hdJPJ7+xz6s+hhvLFxlKDhvwyHnPyb72x6vaWzvF16vMoqvLt/Ll+I
- VIlhjp4Ttuzdq2opdX0Ere/XcLHvXJRE2u+xjh/PnxjeS7/BBTe3aa9ctp3IgW2PXxdPWeYhaH7
- 3YgAkFPsNxNgezP8VyhbbiJJ9WqnI1b/YfeZdmk2kx4Jb6iFvDOKoqcYUPRX9nJ7iVqVxeDhk56
- rik1iZ1GLM0EdrKU4HYqr2N8t4ExwdP+ApiXNkLhRMhs4+EGElL7iezBLLtUNAZOIh3fZ2P6/Sa
- kQqd1XEsOnzFC2xqKnOYpq3gIRGZlcrHD2o3ozVaJb+qYgM=
-X-Google-Smtp-Source: AGHT+IHrWc0FTXB1+oHnU5YY/o7KhQhHBKN6AFcNMEVrvrf/KGVXTU91Va1YimTyAtkvWKOfhyqLQg==
-X-Received: by 2002:a05:6a21:999e:b0:1ee:3b8e:3439 with SMTP id
- adf61e73a8af0-1ee8cbe597cmr20099790637.38.1739820631380; 
+ bh=d1zb22AyjlqmHw+UQQqRIL7eiAR7k2i23HZM7g6s8GU=;
+ b=wwZETN/j+ug7iV6xPYcnOM/9EdW9yizdRGqMLeTNa4iuPdblCTTNCI3541F9VwsFZT
+ tULh6FYFPYZljCGzvvgG4PAecMT6FA1aTcyd7I3vM2MgchLewc5ACbwndGB8qZb09xrC
+ 2oBCNzQfJxy+bWo4KQsSRGkjLbDs37y/ITnMsMac5Xvpjs/708z70aG8Prt9a7VF4WWP
+ LxoNO2psvPfYTAuy7LnG1PskA3R0SCy6axKxQIkpl0qCI5ytbyM4RC1q9Bb3RGmWrIEd
+ Ytdv8YQX7GB4PwuiLdeE1EP52+u7PpLQURjgY1bZrcGp7BAghnr3O27s9E7mF7Yf4C8+
+ IT3A==
+X-Gm-Message-State: AOJu0YwBSGm2+HmSfYd35CJSgl7CMOenFE3gQ0+V7LGpFYs6nmak4xPE
+ omzAlDJzuLNPSTpoMfnHNYVRK+1UajOGbIiXHFY9WopFfrspSTvTTL7/C2BsSwPAEHq8f0/Lpvv
+ 9
+X-Gm-Gg: ASbGncttZC9/HFdssXLDwTZp0OPHL7OB05WfgApn12Uz2z9pUBzIuhU3TTod3KHb+Yx
+ yM3b8JwRQZobIYxkfpTFokpTZGwUplNB5AZZGDaHPWrq7QbNbrke3rwbmL3ZE/idLg5+P5iscUs
+ b4S3EL8XnDM4fN77aRLTLjmPn859/Y9FWqLHgKBiXaVSotZ+papkGvArQ5ie3ypCXMAi4L2A9sQ
+ 6qiGzZ9RKO8TO+t4SLUyjqsvTK3Nk76o3PBKlSZfHG5zsc/MCQppO/kQypwoHVGIS561EvNnNmz
+ iz2Ttv5oNweDuCHF7CLDNVx2GWbYxy26bxCF7EVW/BZuvyo=
+X-Google-Smtp-Source: AGHT+IG6FhL9GJFL8+DIF3H88xaThTVcronUGyLZuFH+4tQou1WNp4L8e7i8zikp5D70i/PUk6bEyA==
+X-Received: by 2002:a05:6a00:4fd2:b0:730:949d:2d52 with SMTP id
+ d2e1a72fcca58-73262158ademr17638718b3a.3.1739820631952; 
  Mon, 17 Feb 2025 11:30:31 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.30
+ d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 17 Feb 2025 11:30:31 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL v2 25/27] target/sparc: fake UltraSPARC T1 PCR and PIC registers
-Date: Mon, 17 Feb 2025 11:30:06 -0800
-Message-ID: <20250217193009.2873875-26-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 26/27] tcg/i386: Use tcg_{high,
+ unsigned}_cond in tcg_out_brcond2
+Date: Mon, 17 Feb 2025 11:30:07 -0800
+Message-ID: <20250217193009.2873875-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,88 +99,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Artyom Tarasenko <atar4qemu@gmail.com>
+Eliminate code repetition by using the appropriate helpers.
 
-Fake access to
-   PCR Performance Control Register
-and
-   PIC Performance Instrumentation Counter.
-
-Ignore writes in privileged mode, and return 0 on reads.
-
-This allows booting Tribblix, MilaX and v9os under Niagara target.
-
-Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250209211248.50383-1-atar4qemu@gmail.com>
 ---
- target/sparc/translate.c  | 19 +++++++++++++++++++
- target/sparc/insns.decode |  7 ++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ tcg/i386/tcg-target.c.inc | 65 +++++----------------------------------
+ 1 file changed, 8 insertions(+), 57 deletions(-)
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7e5c7351cb..bfe63649db 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -2882,6 +2882,14 @@ static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
- 
- TRANS(RDASR17, ASR17, do_rd_special, true, a->rd, do_rd_leon3_config)
- 
-+static TCGv do_rdpic(DisasContext *dc, TCGv dst)
-+{
-+    return tcg_constant_tl(0);
-+}
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index cfea4c496d..33d303a123 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1658,6 +1658,7 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
+         tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
+                        label_this, small);
+         break;
 +
-+TRANS(RDPIC, HYPV, do_rd_special, supervisor(dc), a->rd, do_rdpic)
+     case TCG_COND_NE:
+     case TCG_COND_TSTNE:
+         tcg_out_brcond(s, 0, cond, args[0], args[2], const_args[2],
+@@ -1665,64 +1666,14 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
+         tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
+                        label_this, small);
+         break;
+-    case TCG_COND_LT:
+-        tcg_out_brcond(s, 0, TCG_COND_LT, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_LTU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_LE:
+-        tcg_out_brcond(s, 0, TCG_COND_LT, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_LEU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_GT:
+-        tcg_out_brcond(s, 0, TCG_COND_GT, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_GTU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_GE:
+-        tcg_out_brcond(s, 0, TCG_COND_GT, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_GEU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_LTU:
+-        tcg_out_brcond(s, 0, TCG_COND_LTU, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_LTU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_LEU:
+-        tcg_out_brcond(s, 0, TCG_COND_LTU, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_LEU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_GTU:
+-        tcg_out_brcond(s, 0, TCG_COND_GTU, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_GTU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
+-    case TCG_COND_GEU:
+-        tcg_out_brcond(s, 0, TCG_COND_GTU, args[1], args[3], const_args[3],
+-                       label_this, small);
+-        tcg_out_jxx(s, JCC_JNE, label_next, 1);
+-        tcg_out_brcond(s, 0, TCG_COND_GEU, args[0], args[2], const_args[2],
+-                       label_this, small);
+-        break;
 +
-+
- static TCGv do_rdccr(DisasContext *dc, TCGv dst)
- {
-     gen_helper_rdccr(dst, tcg_env);
-@@ -3315,6 +3323,17 @@ static void do_wrfprs(DisasContext *dc, TCGv src)
- 
- TRANS(WRFPRS, 64, do_wr_special, a, true, do_wrfprs)
- 
-+static bool do_priv_nop(DisasContext *dc, bool priv)
-+{
-+    if (!priv) {
-+        return raise_priv(dc);
-+    }
-+    return advance_pc(dc);
-+}
-+
-+TRANS(WRPCR, HYPV, do_priv_nop, supervisor(dc))
-+TRANS(WRPIC, HYPV, do_priv_nop, supervisor(dc))
-+
- static void do_wrgsr(DisasContext *dc, TCGv src)
- {
-     gen_trap_ifnofpu(dc);
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index cfcdf6690e..9e39d23273 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -96,7 +96,10 @@ CALL    01 i:s30
-     RDTICK          10 rd:5  101000 00100 0 0000000000000
-     RDPC            10 rd:5  101000 00101 0 0000000000000
-     RDFPRS          10 rd:5  101000 00110 0 0000000000000
--    RDASR17         10 rd:5  101000 10001 0 0000000000000
-+    {
-+      RDASR17       10 rd:5  101000 10001 0 0000000000000
-+      RDPIC         10 rd:5  101000 10001 0 0000000000000
-+    }
-     RDGSR           10 rd:5  101000 10011 0 0000000000000
-     RDSOFTINT       10 rd:5  101000 10110 0 0000000000000
-     RDTICK_CMPR     10 rd:5  101000 10111 0 0000000000000
-@@ -114,6 +117,8 @@ CALL    01 i:s30
-     WRCCR           10 00010 110000 ..... . .............  @n_r_ri
-     WRASI           10 00011 110000 ..... . .............  @n_r_ri
-     WRFPRS          10 00110 110000 ..... . .............  @n_r_ri
-+    WRPCR           10 10000 110000 01000 0 0000000000000
-+    WRPIC           10 10001 110000 01000 0 0000000000000
-     {
-       WRGSR         10 10011 110000 ..... . .............  @n_r_ri
-       WRPOWERDOWN   10 10011 110000 ..... . .............  @n_r_ri
+     default:
+-        g_assert_not_reached();
++        tcg_out_brcond(s, 0, tcg_high_cond(cond), args[1],
++                       args[3], const_args[3], label_this, small);
++        tcg_out_jxx(s, JCC_JNE, label_next, 1);
++        tcg_out_brcond(s, 0, tcg_unsigned_cond(cond), args[0],
++                       args[2], const_args[2], label_this, small);
++        break;
+     }
+     tcg_out_label(s, label_next);
+ }
 -- 
 2.43.0
 
