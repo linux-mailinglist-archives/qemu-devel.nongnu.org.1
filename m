@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2239A38305
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8435CA38378
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:53:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk0F2-0006PO-2F; Mon, 17 Feb 2025 07:28:52 -0500
+	id 1tk0b5-0001gs-Rl; Mon, 17 Feb 2025 07:51:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk0F0-0006PC-Mm
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:28:50 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tk0aZ-0001bi-Eh
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:09 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk0Ey-0007Pt-HI
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:28:50 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43948021a45so44632895e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:28:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tk0aT-0002Eb-Ah
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:05 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43971025798so10033255e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:50:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739795326; x=1740400126; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n9pR11CqElgBkGL518PlgwWMuY2BtIqMUUGOLOFfaMs=;
- b=sj5KGchPjcOwr8tUf84N/4XgC3LwLPpeJbpt6qGcj8HMEk4HWPHG5+hp95WS/R2Bcj
- YtWtYCLwzwUYhnTd6/zrvZMDqoiz6jRtsOWTsmjN+hW9DXwG/uQyTrTs8k/bBG5IpYjz
- E2j2OM5u7Xd//tp8yVEUxlMdY6tHKH0hWvZD1sce/j5IeJQJlsl4detur6ePs906eFAL
- 2VHizYm6NqT6HrI1Nriyr9R8LeInbyGcJ/Pn6G5AF11bskiS9A8aNwVtsYBpYERIWUme
- N366ASRRLTOP/XssjhO5PzZjlj/PuRN0HP+6QRgOwA0SOU58t+1YSoVDbfEdPVcIU7ul
- GsoQ==
+ d=linaro.org; s=google; t=1739796658; x=1740401458; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9ud18g85fOzOYfo/x43I9RD+IvZLBcjEbmt+1jX8zBw=;
+ b=jKg5IILBsGj8+QMXYNQ1kKy8CRZo8EBGSCJiQlXTxoLN9szRvD4wtJcox0MGordiqT
+ w36QB6j5dZxVx3ovSN2t7hR0o6SLwwwwt9spqrL3Omb+LkJK77lHoG/USiAm9oSGk+pU
+ s4jTluc7uIiB1oVf7Z2ZIYa0yWdx0uWQmNm6lWzJLP/Wm7R3Yeo80rjSAkKCALu5qIw5
+ M5hYabTpSHF5zxRETjfA6xOP3qgmANmnIv0Z20L/POiNaXn8C0S4iRtuHlc+kJdBp7SM
+ 9ehRlRPpuLvGaIoE2hWg/gw8hvTdb+UkmD2+V6NQM+Vn34I4E4SwB6BCVesKtoHZtbvd
+ aFIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739795326; x=1740400126;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n9pR11CqElgBkGL518PlgwWMuY2BtIqMUUGOLOFfaMs=;
- b=aARpsL0jF6baxeoWYf0NDQ67dElkaKIvSbEDJmmVjRrxLoo8yRhmUcgtyL/N5eeuYx
- KGayaAGJktPHNAG2owLMHf2WLtHKQchpVdE2p58+h0WPGW5JH18qujGfHdX8iJCoYPzt
- FrfviawaEv6JTbFKCuAXXa4YTxZDGBenmUpaHtuwf7cMp9bIjNdc1iYzEBjsuZKWxogz
- 2TIcA4pfOaugLNXaJTROpyuzLXHKbgPPZYKgh7QdUfU7IqS1opmhVJ5fNAeVIjmqAaQ2
- ke3lVs1qMcCJwoW134GhVZYb3Jg4szTgoXLQQY/6MsUQCA+Q1w4q3f1xCuaiOACOFTmq
- vNXQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU0vjAUWa/O9Xi80OMYcFoInya9+l400FvWSAOdmNCDkBsSm9i6Hc6N2f7utsGZZFT24xnF/Ir+rtUR@nongnu.org
-X-Gm-Message-State: AOJu0Yw8+3NLvj1IGiWoCTQUkr+/Z4e+4DY3r4gNeJ/aasJQw+1q5Q3L
- 4161yhmNkXqFbwNjhHOzSGoJsXWM1+wK7NMNweAhkg5XxGkYRl0amqWcQ0un4lI=
-X-Gm-Gg: ASbGncv8DScUJOg+X0TRNhW+Z1J3Y+YWmp5kzxXxrt16st8/pCcSWAQnz5K+H5VEEBM
- bn50MB9kwdzN8o8s6jlbBLG/Kw7YHjMbPfc4cnv+qfgW3YE9cdKsz9sbgc8CAUyHEq2jT8XgWs+
- LKr1zPB9cpbzx+ErXpz7yEE1SA9nOb1C8odqK4Cs/ztFiiINw2mVGRheLdFrYcK/fCo5AC7fjOI
- 9QbrpPsenobc1WDGBUe+9sAjFfNF6PldWnv82+fP8lzZn6FX9Yirnfj/z7ShwIlhugEyHs61WZk
- 2mJBSVuL/NI7B4eWPYDXw7U5v6u0hoBS28I=
-X-Google-Smtp-Source: AGHT+IHDM++yfLfonwXfte8D9fUTHHCdi1GORP0f/fZvACbx3IbqhzOo46EwgHIcdZW9LWqNOacc0w==
-X-Received: by 2002:a05:600c:190b:b0:439:8ef6:5782 with SMTP id
- 5b1f17b1804b1-4398ef65927mr1335245e9.10.1739795326036; 
- Mon, 17 Feb 2025 04:28:46 -0800 (PST)
-Received: from [192.168.1.121] ([176.167.144.216])
+ d=1e100.net; s=20230601; t=1739796658; x=1740401458;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9ud18g85fOzOYfo/x43I9RD+IvZLBcjEbmt+1jX8zBw=;
+ b=eIh50jo7S6ouunbWM8uZptd3w+vC4/qjoKe1k0zmyEpbnb6IOG1tnlXcZXnVVG1yda
+ rK20GpOBxKKpJ2SRpwyI+WWwBlyW7twt9NbpNp4ynQ2usYHBcIDDYBmuiR2x//ImV4jf
+ fx88tqUGbobp9xtVV//6g7WVJ9ANGvFXRh1Dnywv3/rCHRAI4YDcO0xa/ymLnL+8Cbqp
+ oasX+/EVxeucLKDumusumvopnz6qtEtPrW3mIk241kgkvikgNxRRJQw7eNrQ2Ak+FCor
+ M2zE77cgSScnnnzxjJiEkby+mFHOro2xPUGtZDwxqKAKvXuV8YbnuJrX57/44fvuIMuA
+ uwsw==
+X-Gm-Message-State: AOJu0YxsNgf7OW7srKKQKi0zGgbHDdlrt1yhQJ8wSPuq+1oLE9lqKOwg
+ RjCvyHs3hmNMCtiJwZP5zaHclGSZSixJPT5d3rqxttcQCv6M1a8LIrerJ7wuLwCvLr6HN56lxJa
+ n
+X-Gm-Gg: ASbGnctqsE+XDKe5lrFmnGHGDHgFZvFxYItB3sE2VYVOCacmSB4M5G8oCc7qL75KY/0
+ HI/JHi/4252E7/rZ9go7fuSXybTPGocvi9uN0lvvUfdvDPIERnNxzKRzconSIB7fzMqZLyhl3/y
+ AyWyGt13n0YPlxli4T93BPIcOOP2wvwMKeZDmIpkir1mrWKXzgVWVWJNSw7G2DZNd0P9YOvU/hc
+ 05c7y2G3Ab2OLJ83IpyzIZf97UfKmSQuNWbSZo4tT1Yf9mHjwBMe/BI1ljthBE1mXGaxE1N/k+x
+ qVdtjYNWj9t6fRX5dU9PYg==
+X-Google-Smtp-Source: AGHT+IFI5/nQQLrAQs+P+H1J91bTfvKcs6gdXbZzFtmbxOlji0ZT3OxH7AK6/yDmUyAiWq3jmEJ8pw==
+X-Received: by 2002:a05:600c:4ecd:b0:434:a468:4a57 with SMTP id
+ 5b1f17b1804b1-4396e750885mr70858545e9.26.1739796658128; 
+ Mon, 17 Feb 2025 04:50:58 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439617da91asm122701335e9.2.2025.02.17.04.28.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 04:28:45 -0800 (PST)
-Message-ID: <051e10cb-7cb1-430d-956d-b508b7f7db5a@linaro.org>
-Date: Mon, 17 Feb 2025 13:28:43 +0100
+ 5b1f17b1804b1-4398e84efb9sm3562455e9.10.2025.02.17.04.50.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Feb 2025 04:50:57 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH 00/10] fpu: Remove remaining target ifdefs and build only once
+Date: Mon, 17 Feb 2025 12:50:45 +0000
+Message-ID: <20250217125055.160887-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] physmem: replace assertion with error
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-stable@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Brijesh Singh
- <brijesh.singh@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>
-References: <20250217120812.396522-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250217120812.396522-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,62 +97,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+The work I needed to do to make various softfloat emulation behaviours
+runtime-selectable for Arm FEAT_AFP has left the fpu code with very
+few remaning target ifdefs. So this series turns the last remaning
+ones into runtime behaviour choices and switches the fpu code into
+"build once" rather than "build per target". The main driver of this
+is that we're going to want to do this for the "multiple targets in
+one binary" work.
 
-On 17/2/25 13:08, Paolo Bonzini wrote:
-> It is possible to start QEMU with a confidential-guest-support object
-> even in TCG mode.  While there is already a check in qemu_machine_creation_done:
-> 
->      if (machine->cgs && !machine->cgs->ready) {
->          error_setg(errp, "accelerator does not support confidential guest %s",
->                     object_get_typename(OBJECT(machine->cgs)));
->          exit(1);
->      }
-> 
-> the creation of RAMBlocks happens earlier, in qemu_init_board(), if
-> the command line does not override the default memory backend with
-> -M memdev.  Then the RAMBlock will try to use guest_memfd (because
-> machine_require_guest_memfd correctly returns true; at least correctly
-> according to the current implementation) and trigger the assertion
-> failure for kvm_enabled().  This happend with a command line as
-> simple as the following:
-> 
->      qemu-system-x86_64 -m 512 -nographic -object sev-snp-guest,reduced-phys-bits=48,id=sev0 \
->         -M q35,kernel-irqchip=split,confidential-guest-support=sev0
->      qemu-system-x86_64: ../system/physmem.c:1871: ram_block_add: Assertion `kvm_enabled()' failed.
+The remaining fpu target ifdefs fall into two categories:
 
-I'd expect sev-snp-guest to bail out early enough.
+(1) floatx80 behaviours
 
-Is a KVM-enabled check in sev_snp_guest_instance_init() missing?
+Two QEMU targets implement floatx80: x86 and m68k. (PPC also has one
+use in the xsrqpxp round-to-80-bit-precision operation, and the
+Linux-user NWFPE emulation nominally supports it, but these are
+minor.) x86 and m68k disagree about some of the corner cases of
+floatx80 where the value has the explicit Integer bit wrongly set.  At
+the moment the fpu code defaults to "floatx80 behaves like x86", with
+TARGET_M68K ifdefs to get the other option.
 
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   system/physmem.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 67c9db9daad..1ddf9fb10d0 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -1882,7 +1882,11 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
->       if (new_block->flags & RAM_GUEST_MEMFD) {
->           int ret;
->   
-> -        assert(kvm_enabled());
-> +        if (!kvm_enabled()) {
-> +            error_setg(errp, "cannot set up private guest memory for %s: KVM required",
-> +                       object_get_typename(OBJECT(current_machine->cgs)));
+The first six patches in this series remove those ifdefs, replacing
+them with a floatx80_behaviour field in float_status which can have
+various flags set to select the individual behaviours. The default is
+"like x86", which allows us to set these only for m68k and not worry
+about the minor "technically makes some use of floatx80" cases.
 
-Common code should be SW vs HW accel, so IMHO your check
-should go within sev_snp_guest_instance_init(), removing
-the assertion here. That said I have no clue about SEV.
+I do have a question about whether I've correctly understood what we
+do (or don't do) for handling input pseudo-denormals, which we
+currently do via the FloatFmt::m68k_denormal flag; see patch 6.  I'm
+confident that the patch is correct, in the sense of not being a
+behaviour change, but less sure about whether the TODO comment I've
+added about existing incorrect handling is right.
 
-> +            goto out_free;
-> +        }
->           assert(new_block->guest_memfd < 0);
->   
->           ret = ram_block_discard_require(true);
+(2) simple optimizations
+
+A handful of the target ifdefs are making compile-time choices that
+can trivially be pushed back to runtime by deleting the ifdef.
+Patches 7-9 do these changes.
+
+Then patch 10 can update the meson.build file to "build once".
+
+Tested with 'make check-tcg' and 'make check-functional'; the
+series is supposed to not have any behaviour changes.
+
+thanks
+-- PMM
+
+Peter Maydell (10):
+  fpu: Make targets specify floatx80 default Inf at runtime
+  target/m68k: Avoid using floatx80_infinity global const
+  target/i386: Avoid using floatx80_infinity global const
+  fpu: Make targets specify whether floatx80 Inf can have Int bit clear
+  fpu: Make floatx80 invalid encoding settable at runtime
+  fpu: Move m68k_denormal fmt flag into floatx80_behaviour
+  fpu: Always decide no_signaling_nans() at runtime
+  fpu: Always decide snan_bit_is_one() at runtime
+  fpu: Don't compile-time disable hardfloat for PPC targets
+  fpu: Build only once
+
+ include/fpu/softfloat-helpers.h | 12 +++++
+ include/fpu/softfloat-types.h   | 42 +++++++++++++++
+ include/fpu/softfloat.h         | 91 ++++++++++++++++++---------------
+ fpu/softfloat.c                 | 23 +++------
+ target/hppa/fpu_helper.c        |  1 +
+ target/i386/tcg/fpu_helper.c    | 51 +++++++++---------
+ target/m68k/cpu.c               | 35 +++++++++++++
+ target/m68k/fpu_helper.c        |  2 +-
+ target/m68k/softfloat.c         | 47 ++++++-----------
+ target/sh4/cpu.c                |  1 +
+ fpu/softfloat-parts.c.inc       | 20 ++++++--
+ fpu/softfloat-specialize.c.inc  | 29 ++++-------
+ fpu/meson.build                 |  2 +-
+ 13 files changed, 220 insertions(+), 136 deletions(-)
+
+-- 
+2.43.0
 
 
