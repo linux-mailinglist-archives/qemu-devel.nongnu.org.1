@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE64A38379
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0432BA38377
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:53:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk0b3-0001fC-1R; Mon, 17 Feb 2025 07:51:37 -0500
+	id 1tk0b4-0001gN-PY; Mon, 17 Feb 2025 07:51:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk0ae-0001cc-KW
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:17 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tk0ae-0001ca-Jc
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:16 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk0ac-0002Gh-5Q
+ id 1tk0ac-0002H4-6L
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:11 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43967004304so19677045e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:51:07 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38f265c6cb0so1919682f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739796667; x=1740401467; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739796668; x=1740401468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0bvvc3Enq3kGNn8bnjLiI+WAHa6xgA+KATFzJxNZXkg=;
- b=yp9GJhgWrBvnRBugMDnIvPpbhlKYh0pPOEB5gl2j5xBkLZFw68WezlxSP6EhLMXX2U
- GXXfmhpecuwS8Krvk34+wUrPvqpkAavfADZBFrCiXGjoM4i+KNqV6ERase0rnxHs43o3
- vMIqIz6Q+nbhSd6fBgBE1YZNJhUV07LpKV1Td0zSKKgpBsVPDnc0yuzXATOzQl5Dzp5l
- JWtmIFB2rBVKdi6WZcESRwKccYwDqFIm/Vx/lPSvLfwS8Yed7eQmx1sQGGeu4hHp6vS4
- RTpWs5ygPMKC1Wjxa8X8XTg2/6WYuk+zOg7/gXBiMLykcQ2jR+L0dHmfchSXAlkfr3id
- 5kRw==
+ bh=+Cujq0JdaQMnA+2txZe7tmirzkEMEUejhzVFg8j4HZI=;
+ b=h8hR6dXdj27ac+naQgTSuJwxhf4pe6F2W/Cl+sqjqJyCfjJkJ/m5sp7hET/AUsYyzc
+ BP4ecWM53qceYD7b5mdSmLxkxex2Lhpm+vlwjaqbyhmQ6De7zLn79sg51JCPeANpyPat
+ bunoxcwYdUOGJ4u3TYNsV9JSARVu0aKV+CwwOQCfmVQuuU91UPdpWctEs5xQz8rFX2je
+ cI1yE0rQm4SBHdbQD8ewhwb/UHOpSdtz4s0w5bnQYiJOYTvrxq6k/xbYJDKizWlRfvp9
+ +dzjy5cQWPvbJktrJ50re+8vPlyqy73zRFvPAstXZf9y8uN8jmh5Vgj91xs8w0d2JxJV
+ WzOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739796667; x=1740401467;
+ d=1e100.net; s=20230601; t=1739796668; x=1740401468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0bvvc3Enq3kGNn8bnjLiI+WAHa6xgA+KATFzJxNZXkg=;
- b=uk04he4BpkyidTZWR6SwjRXZ8TQrAObCHYgorAJh6liPFhYzYNBz5ytXIqy6NTVyWu
- C9EfWrYAEzmTwZFti+XeG8/pxpAMe5OeJNh97C+/4arPk9EWf39CnUiNSrJ6njT9Pa5L
- TnftX7qAvZ5EXbO8gQlfRZh6Anl2gt0mq/iFVudziAr2x44YXoSPIL7gtqC3pbbcpE5z
- HQH2DHo1VmdurxcysctFNEptczafWVWi7qUJE7uPu0eS5MokD/XCFwUTFm/kv1xZ949l
- BuwA3ePRxtMlMfcfjwwytzjNN9s7GNcZhMs1jXFBaUB6cVc87YXmSlAdXot/Iz894Zdw
- M5Cw==
-X-Gm-Message-State: AOJu0Yz6g2DGQ/A5dorPzF65uBYUZJc54L6e4DCXrUtGy+VyOYlkGVYD
- VmjU9ujJxTlQXyP7wPhWmfa7O+CXdv0d3LFi/gG2+u6PDi7Wad6RE89vxpHZTTYHcpy5g8x4bKF
- z
-X-Gm-Gg: ASbGnctQfcaN1OJXPtyZIdkrELaolswx9WfSVccQfXQ6wUgAmrhE+jZtTUNJovy70wO
- Q9147CeiXshsfxzJrlCTI4bHWLm0wvk4QA4vYfTtUBDNCVACNPaps1T9w9P8rlBR60qmtuKVZ8l
- geviBQkyw1JlhN++y+cPAHuJFYI8L+pOySTTMv/b5nNhG7bs1UCrt3u65DlNpBFmsQl/Jo18+/3
- kbxKIOFATa3SuukFE/ExJ/Hiu0uWUgQL5IvTiiOU8GS0OZznUu6XgdImw1EY13k5UWoIhIfam40
- faV4R1BSH9Wx/tOrXAwVmQ==
-X-Google-Smtp-Source: AGHT+IHHr/C9u41NmZE6ncQEk5MCcDIglHvZ2OQdFIo+cLKsjW3sJDHNpaBWKZLSScnCW7tlUkbL0Q==
-X-Received: by 2002:a05:600c:3585:b0:439:5b36:b4e3 with SMTP id
- 5b1f17b1804b1-4396e6e19abmr80561085e9.12.1739796666736; 
- Mon, 17 Feb 2025 04:51:06 -0800 (PST)
+ bh=+Cujq0JdaQMnA+2txZe7tmirzkEMEUejhzVFg8j4HZI=;
+ b=KqKxDc7FcL1YjIXpYbAw3naUJPEZxTl5hbx/T+FXvlmnisqfrFliHPj9levj1pH2lW
+ pbncMFdKY4hUOEqr6nG5AGjy1f6Fb46vAd/W1HKjj4ZdyBc/STaj5FK5bwCupydbGw/R
+ onzuDGh+f/Z3Cv0y6/z3koOic0K1QwzSsmVLVfzciPSc4sU084LKQd46Je2iesau/bFx
+ YeruI8Curyrc+3MnGYpVgV1ZhdxUn4Ta4eyHZZzQEkbrcNYavsnC5ICZQgadP1MUTDEn
+ uYgvJgYSMLa2ZvKyn0F5D3eyumG4DjKDBIolk8KZZMZsTWglsKuA/I6MUfVMMnmxipFS
+ JMBw==
+X-Gm-Message-State: AOJu0Yz7X0c0KXiEy2H0vVfZ6XVCXPOvv16LX1JJpvgcaoIOmL6Qxodh
+ 1glXS5DjYcyrcKgFPiQVLjvvu/wA1GReJtb4ozGQSiAXWhZgUhkeeyMTKABm5DmmcwkZXRTgmrE
+ O
+X-Gm-Gg: ASbGncsDZ16q83r8JVafHDuwMnVXCM28nss8FwoydxpCrnBF7PorRxXJSdr4sXVsmRv
+ 1M87erxa1gDaQoIdlD0b6uNJ5EbShtAE8crHKeSq5zuqnL8MtyV35Rlb+gmJgdsJIU9ChLDfYZH
+ fV8+zH606yY/9FGEbZD/ha9lEMWnZ9tB8cCu150V+LRM9ywTJxXJ6mnk72xr4DFpJ0UB0HCHUpx
+ E3POHKOT+WDN4wYLT2w4R5+Yb6GsQiYzB159ituggO9mkn5/H186c/U9QQIE4bQfHPCv8sNDLMd
+ HQc86Nj0NEyHKAzhg1qbjQ==
+X-Google-Smtp-Source: AGHT+IEpBsbtY0Aem+F0l68jtu6VlQLwA+tIq8owsFtd2HUh4YIGGsgGTjOrHvWeq3/orQdGdckEFw==
+X-Received: by 2002:a05:6000:1f87:b0:38f:23f4:2d7a with SMTP id
+ ffacd0b85a97d-38f33f43751mr9201569f8f.40.1739796667646; 
+ Mon, 17 Feb 2025 04:51:07 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4398e84efb9sm3562455e9.10.2025.02.17.04.51.05
+ 5b1f17b1804b1-4398e84efb9sm3562455e9.10.2025.02.17.04.51.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 04:51:06 -0800 (PST)
+ Mon, 17 Feb 2025 04:51:07 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 09/10] fpu: Don't compile-time disable hardfloat for PPC
- targets
-Date: Mon, 17 Feb 2025 12:50:54 +0000
-Message-ID: <20250217125055.160887-10-peter.maydell@linaro.org>
+Subject: [PATCH 10/10] fpu: Build only once
+Date: Mon, 17 Feb 2025 12:50:55 +0000
+Message-ID: <20250217125055.160887-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217125055.160887-1-peter.maydell@linaro.org>
 References: <20250217125055.160887-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +100,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We happen to know that for the PPC target the FP status flags (and in
-particular float_flag_inexact) will always be cleared before a
-floating point operation, and so can_use_fpu() will always return
-false.  So we speed things up a little by forcing QEMU_NO_HARDFLOAT
-to true on that target.
-
-We would like to build softfloat once for all targets; that means
-removing target-specific ifdefs.  Remove the check for TARGET_PPC;
-this won't change behaviour because can_use_fpu() will see that
-float_flag_inexact is clear and take the softfloat path anyway.
+Now we have removed all the target-specifics from the softfloat code,
+we can switch to building it once for the whole system rather than
+once per target.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat.c | 2 --
- 1 file changed, 2 deletions(-)
+ fpu/softfloat.c | 3 ---
+ fpu/meson.build | 2 +-
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index b299cfaf860..b38eea8d879 100644
+index b38eea8d879..34c962d6bd9 100644
 --- a/fpu/softfloat.c
 +++ b/fpu/softfloat.c
-@@ -220,11 +220,9 @@ GEN_INPUT_FLUSH3(float64_input_flush3, float64)
-  * the use of hardfloat, since hardfloat relies on the inexact flag being
-  * already set.
+@@ -79,9 +79,6 @@ this code that are retained.
+  * version 2 or later. See the COPYING file in the top-level directory.
   */
--#if defined(TARGET_PPC) || defined(__FAST_MATH__)
- # if defined(__FAST_MATH__)
- #  warning disabling hardfloat due to -ffast-math: hardfloat requires an exact \
-     IEEE implementation
--# endif
- # define QEMU_NO_HARDFLOAT 1
- # define QEMU_SOFTFLOAT_ATTR QEMU_FLATTEN
- #else
+ 
+-/* softfloat (and in particular the code in softfloat-specialize.h) is
+- * target-dependent and needs the TARGET_* macros.
+- */
+ #include "qemu/osdep.h"
+ #include <math.h>
+ #include "qemu/bitops.h"
+diff --git a/fpu/meson.build b/fpu/meson.build
+index 1a9992ded56..646c76f0c69 100644
+--- a/fpu/meson.build
++++ b/fpu/meson.build
+@@ -1 +1 @@
+-specific_ss.add(when: 'CONFIG_TCG', if_true: files('softfloat.c'))
++common_ss.add(when: 'CONFIG_TCG', if_true: files('softfloat.c'))
 -- 
 2.43.0
 
