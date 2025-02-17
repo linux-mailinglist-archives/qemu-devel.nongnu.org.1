@@ -2,62 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF1AA3877D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E3EA38802
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:47:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk2zf-0000to-6B; Mon, 17 Feb 2025 10:25:13 -0500
+	id 1tk3K0-0008GZ-3b; Mon, 17 Feb 2025 10:46:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tk2zZ-0000qS-L1; Mon, 17 Feb 2025 10:25:06 -0500
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
+ id 1tk3Jx-0008GC-21; Mon, 17 Feb 2025 10:46:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tk2zW-0001Z7-4X; Mon, 17 Feb 2025 10:25:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739805902; x=1771341902;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=65SZffwoMTSntLiIhNbwF6RI3IKpjp+8ZDZjNVWEOpc=;
- b=QqerKs6nuRf/ykNFu6cNZvCli01lBU1W7HIUvtsl0idYl2b3ApGXlLr4
- 6pd2e6tGPMGsE1HtwbfH7pXNNd0A3N98GDHCrrxU7+ewXTNQp0uCVcizp
- lZ7+eqYzmeAuMFn4I63IarXrMLPih63TRjct+b7xtcuyrzatLkPcCnYSN
- 6n7sfCuiASZGBPmIJ8MOhBsFr/jq1jHcwz2w5TJVi0epCz7nIiv4CfQ5O
- U35c1Zi8W5RkXXSh3Uc3L1cnEvuTEoL+mkfCJ1fquIFOnzLjKq0JLeIr1
- PRkvPJ/G4qPb39dHiBh8WCCds0Hrr56gcf5VaIyfXws/0shQqeOcu1nN/ Q==;
-X-CSE-ConnectionGUID: zLNwCCMIQ7K7LQ+EZTIi1w==
-X-CSE-MsgGUID: Q4jTZbstTZG8EyJUeQL9Ng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39720960"
-X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; d="scan'208";a="39720960"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 07:24:58 -0800
-X-CSE-ConnectionGUID: qLLzdg8/TJG3C2bryaSVAA==
-X-CSE-MsgGUID: eebk0HSxQw6T/rNprmKaQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="115038418"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 17 Feb 2025 07:24:57 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] i386: Fix the missing Rust HPET configuration option
-Date: Mon, 17 Feb 2025 23:44:16 +0800
-Message-Id: <20250217154416.3144571-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <dantan@linux.ibm.com>)
+ id 1tk3Js-0005Ha-Jx; Mon, 17 Feb 2025 10:46:08 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HAYUKi029535;
+ Mon, 17 Feb 2025 15:45:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=nY02Z9
+ unjNhlICgDCQWo0N7MdIljjOyUwb6lt3AU0Fk=; b=NW+xzMc/YG9YKDBYaHioh+
+ 0j3BaGJuALzw9pwLQwQ//IIq9UWkaSEtck+h5VM5CY7j9xbFgH3VcnjRyBpxzHaB
+ 55BaKXmYo7TrEuOMHnlOWwKW5EcX330P/5nhlsC4epJV8qZdExPPjOjsbiXuPz2x
+ 4kLjxgx1PhvWLanLBFrYhh4paSYkmuYH0zFs0udNQDfQssoS8SoPYtziGJi99hAC
+ m0ibFLu8eciPA5l6tBxLmtWQfXR/ZuB0nxaLW5BFVXTIJSvL9oUtplSF4fKVYPHZ
+ mfqhlu4JldAflQondZOBe2pWQYtCWsU0EzP//urDptjjkBMU3qGQKEczHpyvTt8w
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44us5a4696-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Feb 2025 15:45:57 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51HDXq78032427;
+ Mon, 17 Feb 2025 15:45:56 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u6rkpntx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Feb 2025 15:45:56 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51HFjtjv36176472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Feb 2025 15:45:55 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 92D3858055;
+ Mon, 17 Feb 2025 15:45:55 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2BBB958059;
+ Mon, 17 Feb 2025 15:45:55 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Feb 2025 15:45:55 +0000 (GMT)
 MIME-Version: 1.0
+Date: Mon, 17 Feb 2025 09:45:54 -0600
+From: dan tan <dantan@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
+ farosas@suse.de, lvivier@redhat.com
+Subject: Re: [PATCH v9 1/3] tpm/tpm_tis_spi: Support TPM for SPI (Serial
+ Peripheral Interface)
+In-Reply-To: <b13a02f2-c41f-4d51-8f60-5c97cd96c488@linaro.org>
+References: <20250216221155.30013-1-dantan@linux.vnet.ibm.com>
+ <20250216221155.30013-2-dantan@linux.vnet.ibm.com>
+ <b13a02f2-c41f-4d51-8f60-5c97cd96c488@linaro.org>
+Message-ID: <7a2d40456f37459e00e7d69bea27b342@linux.ibm.com>
+X-Sender: dantan@linux.ibm.com
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ga1WCOPW7N4YmqXcidWecd27drQPQ3Hj
+X-Proofpoint-GUID: Ga1WCOPW7N4YmqXcidWecd27drQPQ3Hj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-17_06,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 impostorscore=0 bulkscore=0
+ spamscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502170129
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=dantan@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,33 +111,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The configuration option of Rust HPET is missing, so that PC machine
-can't boot with "hpet=on" when QEMU Rust support is enabled.
+Yes, good point, Philippe!
 
-Add the Rust HPET configuration option.
+I will send an update in a few days in case there are additional
+changes to be made.
 
-Fixes: d128c341a744 ("i386: enable rust hpet for pc when rust is enabled")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+thank you,
 ---
- hw/timer/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+dan tan
+power simulation
+phone:+1.7373.099.138
+email:dantan@linux.ibm.com
 
-diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
-index 9ac008453408..c051597180f4 100644
---- a/hw/timer/Kconfig
-+++ b/hw/timer/Kconfig
-@@ -13,6 +13,10 @@ config HPET
-     bool
-     default y if PC && !HAVE_RUST
- 
-+config X_HPET_RUST
-+    bool
-+    default y if PC && HAVE_RUST
-+
- config I8254
-     bool
-     depends on ISA_BUS
--- 
-2.34.1
 
+On 2025-02-17 01:31, Philippe Mathieu-Daudé wrote:
+> Hi,
+> 
+> On 16/2/25 23:11, dan tan wrote:
+>> Implement support for TPM via SPI interface. The SPI bus master
+>> is provided by PowerNV SPI device which is an SSI peripheral.
+>> It can uses the tpm_emulator driver backend with the external
+>> swtpm.
+>> 
+>> Signed-off-by: dan tan <dantan@linux.ibm.com>
+>> ---
+>> 
+>> v3:
+>> - moved variable tis_addr from TPMStateSPI struct to local
+>> - added the VM suspend/resume support:
+>>    - added vmstate_tpm_tis_spi declaration
+>>    - added tpm_tis_spi_pre_save() function
+>> - fixed trace formatting string
+>> 
+>> v4:
+>> - git commit amend only
+>> 
+>> v5:
+>> - removed DEFINE_PROP_UINT32("irq", TPMStateSPI, tpm_state.irq_num, 0)
+>>    from tpm_tis_spi_properties
+>> - In tpm.rst document, under section 'The QEMU TPM emulator device',
+>>    moved the 'PowerNV machine' section to immeidately below 'pSeriese
+>>    machine'.
+>> 
+>> v6:
+>> - amend commit description
+>> - amend hw/tpm/tpm_tis_spi.c prolog to reflect the generic nature
+>>    of the implementation
+>> - remove irrelevant define of IBM_PONQ
+>> - correct the function names to comply with the convention of
+>>    beginning with tpm_tis_spi_xxxx()
+>> 
+>> v7:
+>> - Reduce SPI wait states to improve performace.
+>>    Although the real SPI buses have four wait states to accomodate
+>>    the timing of various slave devices, there is no need to emulate
+>>    that for this behavior model.
+>> 
+>> v8:
+>> - re-package the email to comply with the convention.
+>> 
+>> v9:
+>> - conform with the latest device property definition after rebase
+>> 
+>> ---
+>>   docs/specs/tpm.rst   |  15 ++
+>>   include/system/tpm.h |   3 +
+>>   hw/tpm/tpm_tis_spi.c | 358 
+>> +++++++++++++++++++++++++++++++++++++++++++
+>>   hw/tpm/Kconfig       |   6 +
+>>   hw/tpm/meson.build   |   1 +
+>>   hw/tpm/trace-events  |   7 +
+>>   6 files changed, 390 insertions(+)
+>>   create mode 100644 hw/tpm/tpm_tis_spi.c
+> 
+> 
+>> diff --git a/hw/tpm/Kconfig b/hw/tpm/Kconfig
+>> index a46663288c..5951c225cc 100644
+>> --- a/hw/tpm/Kconfig
+>> +++ b/hw/tpm/Kconfig
+>> @@ -5,6 +5,12 @@ config TPM_TIS_I2C
+>>       select I2C
+>>       select TPM_TIS
+>>   +config TPM_TIS_SPI
+>> +    bool
+>> +    depends on TPM
+>> +    select TPM_BACKEND
+>> +    select TPM_TIS
+> 
+>        depends on SSI?
+> 
+>>   config TPM_TIS_ISA
+>>       bool
+>>       depends on TPM && ISA_BUS
 
