@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9754A37C0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:21:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC94A37C16
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:21:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjvQ8-0000xz-IT; Mon, 17 Feb 2025 02:20:01 -0500
+	id 1tjvQE-00014G-6y; Mon, 17 Feb 2025 02:20:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tjvQ3-0000wR-BH; Mon, 17 Feb 2025 02:19:55 -0500
+ id 1tjvQ9-00012h-SG; Mon, 17 Feb 2025 02:20:01 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tjvQ1-0002p6-9z; Mon, 17 Feb 2025 02:19:55 -0500
+ id 1tjvQ3-0002pJ-B3; Mon, 17 Feb 2025 02:19:56 -0500
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GMiUBd022928;
- Mon, 17 Feb 2025 07:19:52 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GIExT7031181;
+ Mon, 17 Feb 2025 07:19:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=gISwMQNNGzZLUhzNn
- af+nj06ef9jK+nXr2lbvZ2tKmc=; b=sbb/SnMFnFPr/G+XfZ4SrMet1iJ6yHQ8P
- Ib+vto7Ju+j8wQiYwyyCS2qIQXBbuY/R2EWAEjA1Bnk9Styp8i78o12Ai5u547Ip
- 71FkGQBI68ZuJGw/ChMmpVrYue/RmdYUVViP5XN42f8Lrfu69P/cGoTr+fCrb+nB
- 57IN+i0H4wjgRPu4+dBOZtKkMXnwj/Vn3CjXwNFxPTsjHhED4BhNKyRawpVtRadb
- cA3hi40SP6gexHqfl1SyNUTHW7IhQ5C+ph2CfGH/K8lmXRwZu019twyUdqh5wxL8
- QfqNINyMNhekxjMqftDNOGCg3N9eqRDcxM35dOAPqbC/im6c5T5GQ==
+ :mime-version:references:subject:to; s=pp1; bh=NldQSP9WnDUrMLhCd
+ NwPeo0DkCRDHEj87PEOHYkHKGw=; b=U8QZqUwDz++UEAw9oz9yD4DipW4DImBLO
+ pge6bP8fk5xpGC81V2bnlJgq1pkeXpFcR0aBSBKvc6C6lScZiv7LpSv6YhXDFUtu
+ zM7qVSGInPYHe/DnFz4vamX739fW/k0sOK8PQ4JCV1s94qIUW7HrK7rESfOXfRMQ
+ 2vRnOqxvt6ccPsLmwJ+9yunZH0jFBq3HIbHZwpYLfZ3QWPr4xBA6LlNTYdQRvWfZ
+ +uSNZwpCgXtWC1pwu+0ntTfIAPK6c1Mfv76C7kkw2Dqi6Rat9yXp6Sa57eT857i6
+ BwwpUq2zSDfC1KcTUKXQIWIJ0HQhXGKvM0u9rqRHbVpjxj4tbZIjg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnuyex-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnuyf3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:51 +0000 (GMT)
+ Mon, 17 Feb 2025 07:19:53 +0000 (GMT)
 Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51H7D09A016672;
- Mon, 17 Feb 2025 07:19:51 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnuyev-1
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51H7JrwS031028;
+ Mon, 17 Feb 2025 07:19:53 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnuyf1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:51 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H3MBXD001599;
- Mon, 17 Feb 2025 07:19:50 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u5myn350-1
+ Mon, 17 Feb 2025 07:19:53 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H4VLKZ000498;
+ Mon, 17 Feb 2025 07:19:52 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u6rkmvn0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:50 +0000
+ Mon, 17 Feb 2025 07:19:52 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51H7Jkw534210196
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51H7JnN856230370
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Feb 2025 07:19:47 GMT
+ Mon, 17 Feb 2025 07:19:49 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D03132004D;
- Mon, 17 Feb 2025 07:19:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id ECC732004B;
+ Mon, 17 Feb 2025 07:19:48 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6138120040;
- Mon, 17 Feb 2025 07:19:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1F8E320040;
+ Mon, 17 Feb 2025 07:19:47 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
  [9.109.199.160])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 17 Feb 2025 07:19:45 +0000 (GMT)
+ Mon, 17 Feb 2025 07:19:46 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -70,18 +70,17 @@ Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH 2/7] hw/ppc: Implement S0 SBE interrupt as cpu_pause then host
- reset
-Date: Mon, 17 Feb 2025 12:49:29 +0530
-Message-ID: <20250217071934.86131-3-adityag@linux.ibm.com>
+Subject: [PATCH 3/7] hw/ppc: Handle stash command in PowerNV SBE
+Date: Mon, 17 Feb 2025 12:49:30 +0530
+Message-ID: <20250217071934.86131-4-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217071934.86131-1-adityag@linux.ibm.com>
 References: <20250217071934.86131-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: U45Gh5xxbGdH7hd6O7ESbWFtYCZmcM9K
-X-Proofpoint-ORIG-GUID: wyRwL7lxm6UzpvVce63ymStO0c7dAxNQ
+X-Proofpoint-GUID: 6wY_fItFNPK-jBm_uTvrMfMXPb-MYnWv
+X-Proofpoint-ORIG-GUID: kqtqYAR6KnuDlgrnr7b3sVsibkZyQauC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-17_03,2025-02-13_01,2024-11-22_01
@@ -116,112 +115,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SBE's implementation of S0 seems to be basically "stop all clocks" and
-then "host reset"
+Earlier since the SBE_CMD_STASH_MPIPL_CONFIG command was not handled, so
+skiboot used to not get any response from SBE:
 
-Nearest equivalent to the stop clocks seems to be 'pause_all_vcpus' in
-QEMU,
+    [  106.350742821,3] SBE: Message timeout [chip id = 0], cmd = d7, subcmd = 7
+    [  106.352067746,3] SBE: Failed to send stash MPIPL config [chip id = 0x0, rc = 254]
 
-Then reset the host, which is 'SHUTDOWN_CAUSE_GUEST_RESET' in QEMU.
+Fix this by handling the command in PowerNV SBE, and sending a response so
+skiboot knows SBE has handled the STASH command
 
-Implement the S0 interrupt as pause_vcpus + guest_reset
+The stashed skiboot base is later used to access the relocated MDST/MDDT
+tables when MPIPL is implemented.
 
-See 'stopClocksS0' in SBE source code for more information.
+The purpose of stashing relocated base address is explained in following
+skiboot commit:
+
+    author Vasant Hegde <hegdevasant@linux.vnet.ibm.com> Fri Jul 12 16:47:51 2019 +0530
+    committer Oliver O'Halloran <oohall@gmail.com> Thu Aug 15 17:53:39 2019 +1000
+
+    SBE: Send OPAL relocated base address to SBE
+
+      OPAL relocates itself during boot. During memory preserving IPL hostboot needs
+      to access relocated OPAL base address to get MDST, MDDT tables. Hence send
+      relocated base address to SBE via 'stash MPIPL config' chip-op. During next
+      IPL SBE will send stashed data to hostboot... so that hostboot can access
+      these data.
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv_sbe.c | 50 +++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 9 deletions(-)
+ hw/ppc/pnv_sbe.c         | 25 +++++++++++++++++++++++++
+ include/hw/ppc/pnv_sbe.h |  3 +++
+ 2 files changed, 28 insertions(+)
 
 diff --git a/hw/ppc/pnv_sbe.c b/hw/ppc/pnv_sbe.c
-index 62c94a04a2df..a6bf13650f2d 100644
+index a6bf13650f2d..79818177fc36 100644
 --- a/hw/ppc/pnv_sbe.c
 +++ b/hw/ppc/pnv_sbe.c
-@@ -21,6 +21,8 @@
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-+#include "system/cpus.h"
-+#include "system/runstate.h"
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "hw/ppc/pnv.h"
-@@ -80,6 +82,15 @@
+@@ -82,6 +82,8 @@
  #define SBE_CONTROL_REG_S0              PPC_BIT(14)
  #define SBE_CONTROL_REG_S1              PPC_BIT(15)
  
-+static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
-+{
-+    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
-+    sbe->host_doorbell = val;
++static uint64_t mpipl_skiboot_base = 0x30000000 /*default SKIBOOT_BASE*/;
 +
-+    trace_pnv_sbe_reg_set_host_doorbell(val);
-+    qemu_set_irq(sbe->psi_irq, !!val);
-+}
-+
- struct sbe_msg {
-     uint64_t reg[4];
- };
-@@ -104,6 +115,7 @@ static uint64_t pnv_sbe_power9_xscom_ctrl_read(void *opaque, hwaddr addr,
- static void pnv_sbe_power9_xscom_ctrl_write(void *opaque, hwaddr addr,
-                                        uint64_t val, unsigned size)
+ static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
  {
-+    PnvSBE *sbe = opaque;
-     uint32_t offset = addr >> 3;
- 
-     trace_pnv_sbe_xscom_ctrl_write(addr, val);
-@@ -113,6 +125,35 @@ static void pnv_sbe_power9_xscom_ctrl_write(void *opaque, hwaddr addr,
-         switch (val) {
-         case SBE_CONTROL_REG_S0:
-             qemu_log_mask(LOG_UNIMP, "SBE: S0 Interrupt triggered\n");
-+
-+            pnv_sbe_set_host_doorbell(sbe, sbe->host_doorbell | SBE_HOST_RESPONSE_MASK);
-+
-+            /*
-+             * Looks like, SBE stops clocks for all cores in S0.
-+             * See 'stopClocksS0' in SBE source code.
-+             * Nearest equivalent in QEMU seems to be 'pause_all_vcpus'
-+             */
-+            pause_all_vcpus();
+     val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
+@@ -281,6 +283,29 @@ static void do_sbe_msg(PnvSBE *sbe)
+             timer_del(sbe->timer);
+         }
+         break;
++    case SBE_CMD_STASH_MPIPL_CONFIG:
++        /* key = sbe->mbox[1] */
++        switch (sbe->mbox[1]) {
++        case SBE_STASH_KEY_SKIBOOT_BASE:
++            mpipl_skiboot_base = sbe->mbox[2];
++            qemu_log_mask(LOG_UNIMP,
++                "Stashing skiboot base: 0x%lx\n", mpipl_skiboot_base);
 +
 +            /*
-+             * TODO: Pass `mpipl` node in device tree to signify next
-+             * boot is an MPIPL boot
++             * Set the response register.
++             *
++             * Currently setting the same sequence number in
++             * response as we got in the request.
 +             */
++            sbe->mbox[4] = sbe->mbox[0];    /* sequence number */
++            pnv_sbe_set_host_doorbell(sbe,
++                    sbe->host_doorbell | SBE_HOST_RESPONSE_WAITING);
 +
-+            /* Then do a guest reset */
-+            /*
-+             * Requirement:
-+             * This guest reset should not clear the memory (which is
-+             * the case when this is merged)
-+             */
-+            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+
-+            /*
-+             * XXX: Does SBE really do system reset or only stop
-+             * clocks ? OPAL seems to think that control will not come
-+             * to it after it has triggered S0 interrupt.
-+             */
-+
-             break;
-         case SBE_CONTROL_REG_S1:
-             qemu_log_mask(LOG_UNIMP, "SBE: S1 Interrupt triggered\n");
-@@ -138,15 +179,6 @@ static const MemoryRegionOps pnv_sbe_power9_xscom_ctrl_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
++            break;
++        default:
++            qemu_log_mask(LOG_UNIMP, "SBE Unimplemented command: 0x%x\n", cmd);
++        }
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "SBE Unimplemented command: 0x%x\n", cmd);
+     }
+diff --git a/include/hw/ppc/pnv_sbe.h b/include/hw/ppc/pnv_sbe.h
+index b6b378ad14c7..f6cbcf990ed9 100644
+--- a/include/hw/ppc/pnv_sbe.h
++++ b/include/hw/ppc/pnv_sbe.h
+@@ -53,4 +53,7 @@ struct PnvSBEClass {
+     const MemoryRegionOps *xscom_mbox_ops;
  };
  
--static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
--{
--    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
--    sbe->host_doorbell = val;
--
--    trace_pnv_sbe_reg_set_host_doorbell(val);
--    qemu_set_irq(sbe->psi_irq, !!val);
--}
--
- /* SBE Target Type */
- #define SBE_TARGET_TYPE_PROC            0x00
- #define SBE_TARGET_TYPE_EX              0x01
++/* Helper to access stashed SKIBOOT_BASE */
++bool pnv_sbe_mpipl_skiboot_base(void);
++
+ #endif /* PPC_PNV_SBE_H */
 -- 
 2.48.1
 
