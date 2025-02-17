@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329E3A38056
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 11:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BFFA380B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 11:50:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjyUT-00015s-92; Mon, 17 Feb 2025 05:36:41 -0500
+	id 1tjyge-0003SZ-UC; Mon, 17 Feb 2025 05:49:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjyUP-00015L-VU
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:36:38 -0500
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjyUN-0000fm-Kt
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:36:37 -0500
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2f83a8afcbbso6426864a91.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 02:36:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739788594; x=1740393394; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VZaQA6oY1zAQN3KDt3w+Eb4KY8WFms2yXCHu4yTJQ4s=;
- b=h+Dy7YweuxN08wjsrBWfE8huPKH1STn/WCDbHzxKVwtkWY7UHbkVxHDV/m3EdbeIZN
- Afn4dy8QwbeEFdpkzSOBwx6/T3dMPYkCYyPe22tv5Ghu0/zd+xK+CLFJsnUI1zccfHFJ
- hOQ8YdW2zIbzy4/OSEpF/58y7pyMSbCaPljC6+IfFG68TANhciFMWRpVt9Qp8RF6xYKe
- LmywtScWGt+0ycwWFENoXplG+R/xDaA//uCVsr+FrxlHhb4/8rlEZA9xDhx7IIoJBzdg
- hUXZ0Mo5IjG0imNznrrN91OzoVenJxTJ8HXzbnhx2no1pr76aXmc++dXu+o0Y7Wfl7JW
- XXvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739788594; x=1740393394;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VZaQA6oY1zAQN3KDt3w+Eb4KY8WFms2yXCHu4yTJQ4s=;
- b=u4glx4QvyWt+kP291R34ckSzDt1IK3dWU3rZJmbKYCOzsFsZB02konFGzXIx+ydDpY
- 8jeRpEFkl38iF16nPLTdL8KBv7egzFaMnwxxc7xvxZvKmwRN1DCDQVede7lvxEhPAaea
- 0ZUl7N6D/Tt3tFM4Xou9XFqy688xSbj2XRWmW9H8oA+DAd34PhjCQ27AZM3aRFD8nyzY
- rVKOPBGxMshrczh++gzWlyFUm/5F2er5czJO84ob6MVO3pse56uFuXtLtoZHYGSRGYvZ
- P9ZTvwZzf4EjUfq2IYYWm1/IkVskNKXxgjdI4qgcdmBygC+BY9zqRcRFq9nvThVSjJp0
- mRmA==
-X-Gm-Message-State: AOJu0Yz4B6N7grtbmpcAexpkWBHcoIqQcjVnZynrdBZ9OMf846d6iegl
- 5pJ4nHQEFgpbDa+JatCct7t/X1T6HUPExccFepLMYYFMQv57szhj3AYoT5yB2H4SC4pLLUKOgtl
- IlOs=
-X-Gm-Gg: ASbGncuN2golPWK4hZZLrkRZ9vTkWk0m5MbtQSdoCcIA0Or4h53ntwOCdQZsENW78/4
- X23FdYbFxbZwk5InO42beypaWGqtOgmC8e8DiSH22Fw33S8aQLLLaEHH+KCzoPOdgARxIlfdDgw
- dgserSEoOf2xwowXv81w4PpueLyyr6zUxhshatqp3r+hnu4cDHNZen4Z6U1RaLSo34doiog7nJJ
- ERtsDJw2XWbKhlgNUSpEOYHgo9LDuTvpFcCfI4Mtj/e/gaLdgGms4pvqvGnMdrehHq7n6EgBQ4a
- lzJ2Oi5Vqga/rAprVvchuRT+pYoEsC2xCYA=
-X-Google-Smtp-Source: AGHT+IES+rDfV9ffiOceN6o8qUivKnir1ZgNdL3BxTNxyizQHU2bwU8wigF0FGAJbnBITx/XfBDLYQ==
-X-Received: by 2002:a17:90b:4a42:b0:2fa:3174:e344 with SMTP id
- 98e67ed59e1d1-2fc0fa49d92mr27696481a91.14.1739788593848; 
- Mon, 17 Feb 2025 02:36:33 -0800 (PST)
-Received: from [192.168.1.121] ([176.167.144.216])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fc7e9325fesm1550248a91.46.2025.02.17.02.36.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 02:36:33 -0800 (PST)
-Message-ID: <efcfc900-c928-4cdb-aca8-f187f18ef1fb@linaro.org>
-Date: Mon, 17 Feb 2025 11:36:24 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tjygc-0003SA-1l
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:49:14 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tjygZ-0001qg-VB
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:49:13 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GModuX030494;
+ Mon, 17 Feb 2025 10:49:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=XkLxPGhf9nzTPiaSG8chHe9qdg6Vun0AVSHRG71PH
+ Ew=; b=EsvgxXk+clHnO4PeI+8DE3TJgMw7+u9h600wI2AGG4Deaf7t1D4MpUZSC
+ j8iT8t5oN3MNSZUMT5s3Ce7ics/pBv7ARYOoD4dkZxNGUmbBhjDj9QO0zcDV3Oa2
+ XC0hYEvfV1K0WPFT6wVaelOoA04Aoosu+IFvSv4wa0894+KU0lrJuLj6BolQmtrW
+ gJVAjqthQyhK8exDdHBi+EWAlDBjMknWJx3+dnkoVwEenDzZG7tlmVdjUwPrvu76
+ Uc1f/fEoPzxC3RyZwW3YO5g7vOxX4Y/fEVRwo87aHeCYZbF9CoTOPTpl9NP63tks
+ 0jJSmm1D+O9eveQVRkopYBJVo0LYA==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44us5a2qpv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Feb 2025 10:49:07 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51HA51MC013271;
+ Mon, 17 Feb 2025 10:49:07 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u7fkdfq1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Feb 2025 10:49:06 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51HAn5Vn42795348
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Feb 2025 10:49:05 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34DDE20043;
+ Mon, 17 Feb 2025 10:49:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C916D20040;
+ Mon, 17 Feb 2025 10:49:04 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.82.227])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Feb 2025 10:49:04 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] stub: Remove monitor-fd.c
+Date: Mon, 17 Feb 2025 11:48:49 +0100
+Message-ID: <20250217104900.230122-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] qemu/compiler: Absorb 'clang-tsa.h'
-To: qemu-devel@nongnu.org
-Cc: Kyle Evans <kevans@freebsd.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20250117170201.91182-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250117170201.91182-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x1031.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OlR2iECsCV-SZvgzqSeP3451sm1fXuxx
+X-Proofpoint-GUID: OlR2iECsCV-SZvgzqSeP3451sm1fXuxx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-17_05,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ mlxlogscore=821 suspectscore=0 phishscore=0 impostorscore=0 bulkscore=0
+ spamscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502170092
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,30 +103,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/1/25 18:02, Philippe Mathieu-Daudé wrote:
-> We already have "qemu/compiler.h" for compiler-specific arrangements,
-> automatically included by "qemu/osdep.h" for each source file. No
-> need to explicitly include a header for a Clang particularity.
-> 
-> Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   bsd-user/qemu.h                  |   1 -
->   include/block/block_int-common.h |   1 -
->   include/block/graph-lock.h       |   2 -
->   include/exec/page-protection.h   |   2 -
->   include/qemu/clang-tsa.h         | 114 -------------------------------
->   include/qemu/compiler.h          |  87 +++++++++++++++++++++++
->   include/qemu/thread.h            |   1 -
->   block/create.c                   |   1 -
->   tests/unit/test-bdrv-drain.c     |   1 -
->   tests/unit/test-block-iothread.c |   1 -
->   util/qemu-thread-posix.c         |   1 -
->   11 files changed, 87 insertions(+), 125 deletions(-)
->   delete mode 100644 include/qemu/clang-tsa.h
+Both monitor-fd.c and monitor-internal.c contain a stub for
+monitor_get_fd(), which causes a duplicate symbol linker error when
+linking rust-qemu-api-integration. Use monitor-internal.c instead of
+monitor-fd.c and remove the latter.
 
-Patch queued, thanks.
+Reported-by: Zhao Liu <zhao1.liu@intel.com>
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Fixes: fccb744f41c6 ("gdbstub: Try unlinking the unix socket before binding")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ stubs/meson.build  | 2 +-
+ stubs/monitor-fd.c | 9 ---------
+ 2 files changed, 1 insertion(+), 10 deletions(-)
+ delete mode 100644 stubs/monitor-fd.c
+
+diff --git a/stubs/meson.build b/stubs/meson.build
+index b0fee37e059..63392f5e785 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -62,7 +62,7 @@ if have_user
+     stub_ss.add(files('qdev.c'))
+   endif
+ 
+-  stub_ss.add(files('monitor-fd.c'))
++  stub_ss.add(files('monitor-internal.c'))
+ endif
+ 
+ if have_system
+diff --git a/stubs/monitor-fd.c b/stubs/monitor-fd.c
+deleted file mode 100644
+index 9bb67498850..00000000000
+--- a/stubs/monitor-fd.c
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-#include "qemu/osdep.h"
+-#include "monitor/monitor.h"
+-
+-int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
+-{
+-    abort();
+-}
+-- 
+2.48.1
+
 
