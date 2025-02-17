@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F99A38B20
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 19:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8691A38B35
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 19:22:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk5cF-0006fV-5W; Mon, 17 Feb 2025 13:13:11 -0500
+	id 1tk5kZ-0000KM-IC; Mon, 17 Feb 2025 13:21:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk5cC-0006f7-5f
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:13:08 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk5c8-0006Jg-C2
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:13:07 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-221057b6ac4so34298165ad.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 10:13:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739815982; x=1740420782; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MumVYAqw8hG2ePHGTquJb8dqbtWe+33qkK+LWjfDdVg=;
- b=JysZhXjmfIgxtB49ZbmZQVGuG6KufXp/f456rtIzlpgJUXBmC+z2oXGv87BmBUj/Zb
- ACbRYeQokexlhhkI+NWlXC7E6I+g6s/o77AYmzL9kq78UZ2EIxOLAjGqarwPwyrbuCAu
- dPR4Vn5KYO4ZWtQFjaodKEjteBzLbtNXs3SKM/o+h9eKFwR5Swf3aqSs6kzBeCQjHZre
- 5Gx7gjb/4B9tyLK68R2EwK+j7jEZpeTO/fE/B9JJFrgQ6y5BSY6xIBubX7KUOLw7L8A8
- rJO4csjSwIBaIJNJCTcE6GI2SNmcGh3JhZTV9ic2NqVPp1KNm5ezSw2/fXVRurxpG3Aa
- YnFw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tk5kW-0000K0-86
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:21:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tk5kT-0007Vw-Vu
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:21:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739816500;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DmTfIjYa8W/pUXR6/zrhtiA4VXAb0ZsGxMxrab5xcWQ=;
+ b=DwtMRD2amgHYVFdE1Simt7Q5OhMRmE+HNEyNVzOxPburQB3AxDyOYs5/e7ehM2kgsmZBHR
+ zAD+S1tGbCHfEs3lZZil4aGjpJ1OHFXFmHa3K30KWYE8Egu++0iTlAum1FWoFhS+A1jsGh
+ JJQIbMSr0O5FdXmHOsqzSlPaoh8MJcM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512-Bx7SSSRDMKGwQfeM_ie4EQ-1; Mon, 17 Feb 2025 13:21:38 -0500
+X-MC-Unique: Bx7SSSRDMKGwQfeM_ie4EQ-1
+X-Mimecast-MFC-AGG-ID: Bx7SSSRDMKGwQfeM_ie4EQ_1739816497
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4394c747c72so24981685e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 10:21:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739815982; x=1740420782;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MumVYAqw8hG2ePHGTquJb8dqbtWe+33qkK+LWjfDdVg=;
- b=XqsWdfBs2imVZ/WDUc1AdPLjgIBr8svvrS1H6FPYMmssX8rn/HwkXNh7o5DxD1bhd0
- pwDTJP4w3odGuWcRtrYQApeItMaTsGLSbflmrwP7BCjxbhEAythpfXsdTtr/eAnlvgub
- Wt1sFQgU3RCqmrmtNhgcFOGVrV8ItZbhVHvK4O+1njXJc6JXS0fOapK1s1H13v7mR3Vq
- T1TNeq1od29mTgv2J5ftXVP0b+3GiQ22Jnik8FVncC44tMAwcReq/kX7Nq5aXBJlZup7
- vpSzMqEm4iok/Rm4TCiA9H2Hs55rk3aX2sCfoUk71+ciVFZt9R+osUsnUjNg46aux/h3
- LBOA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUjcYqQEX2StKgQL/uhsnbDI6iYN0+0I6Ebu3bTIL9nk3embYcPy0D10RWwzmXaRosqGyGOQkjpe3UH@nongnu.org
-X-Gm-Message-State: AOJu0YysmtCNRFGD8YHJfRPcLDRwjzyz3N2XevlBkmpvG9FoKXN+l2j+
- VK7CaHu0UxI336RBwfNqhZ+qNZnqMyPxGHaTJTpxqL7txJHxZJJZjJTD4VWQvT8=
-X-Gm-Gg: ASbGncu8F2InahZf0jCR520zOf07mJjWi6Bgo4A5VqcXhEmvtQhHrvlDAXKl+bGcu7K
- troKlcbHC9y/6MaIAbvdvwflhv9NYsKxN6CQrCuSPYHYiB3+sWKhSDe0lhw81MHh9gPJXytdc0S
- tRWOnt7ZXPvoFwUDs6PrLWTDcPF9wMpn8YDblAlrAJNOTKQKoaRuADlrZPyU8IuHJor8CwWuT8r
- qwncbgkbJ27plf2YKxgN/reYcAQjUB8hIFQ4RmmOMYosbfTUfEx0ZgVWRBQ4jZLSuHoCCqlAtZU
- DNongKLJGXXjWUAsmZLDUKktYz0e35Xm2KLcBINlV9Sjxl8vtxLWm/M=
-X-Google-Smtp-Source: AGHT+IEHqivoQ2h4oI5HCAYdJcZQatAGwdTyYBRbomnGlZ8Fxuq9kK85PlKvtSUWbGPjnTtoFDTrng==
-X-Received: by 2002:a05:6a00:1882:b0:730:957d:a80f with SMTP id
- d2e1a72fcca58-7326177625dmr18516465b3a.2.1739815982666; 
- Mon, 17 Feb 2025 10:13:02 -0800 (PST)
-Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73242761962sm8789458b3a.135.2025.02.17.10.13.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 10:13:02 -0800 (PST)
-Message-ID: <f6708ee2-74e1-4ea3-9fa7-ca4d43ad7e36@linaro.org>
-Date: Mon, 17 Feb 2025 10:13:00 -0800
+ d=1e100.net; s=20230601; t=1739816496; x=1740421296;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DmTfIjYa8W/pUXR6/zrhtiA4VXAb0ZsGxMxrab5xcWQ=;
+ b=Cp/ZXDMNtwEue2PHECtljhPCI9KgIN9vEIPP46EscRol+dSsiLceWlIOtqjd3qEHTD
+ S1PTsxe6JDCrpZ7T2jrtD+XA3pkprFbNl6RwcHASs2oUAn618bTH2N9+JnPHmkOJU4Cu
+ 5gxD8IYxyeIu/QB/92DFp2IxFQjfOyKeqUfiwm4NU9SPHeaPLJYLvA0wOz8MS6dfxiyw
+ YCHTBoSod1wkjEKIlU3jwhg1TZM17ddPiMYDAdi8Y16TRVTiilSnbAVqRnEfUMwI+IvX
+ Q+VGlMHgfnkQRYM+tNdRC0TNPmoniIJG1hWjxCabPwCoow4GhTroRz9S49QhHI0moraz
+ cLmg==
+X-Gm-Message-State: AOJu0Yx2oG4DQXTMyoES+ubNjKT/D3aXqwdCDht5PeolxST/CCcrmJJ/
+ ElAsgMWw0VwU2f4UHeHS2h/hRpikD0h+tWCZM/c1YQiINfESLYEWaVmZp1dnN+C7OsCDtGjdNfD
+ iafsWOEdSMZu/OiRILIegiz3byWqJkCqi3io0Z/JICke1WeRs7TnFAxkGCWLWOGJ6uGG3YI1fdE
+ cuMGzPQ9ID4pcvFGNi2rh4ECUMXkFaIthEFYefcw==
+X-Gm-Gg: ASbGncuYFBl70CI1gFAXi2L/VcBkIvLBVDdYFFvlledHFn/as1xTN0QEvNSPa6VSmcX
+ oQGPItq0oACa8gJvuaJErLuFrxpVTkd8l5jhsDBgZ3dv7qjhLS1cikJVlWstovyCA
+X-Received: by 2002:a05:600c:a384:b0:439:88bb:d017 with SMTP id
+ 5b1f17b1804b1-43988bbd458mr33548265e9.6.1739816496455; 
+ Mon, 17 Feb 2025 10:21:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHcOV4q/dZDWDmMClnSsdy6bhqFe68DH8161viXGV/8z4kVHffnKTwJaDr9Z/VxHoSD6FVudfOElqosfzaM+Mo=
+X-Received: by 2002:a05:600c:a384:b0:439:88bb:d017 with SMTP id
+ 5b1f17b1804b1-43988bbd458mr33548125e9.6.1739816496157; Mon, 17 Feb 2025
+ 10:21:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/10] fpu: Make targets specify whether floatx80 Inf can
- have Int bit clear
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Laurent Vivier <laurent@vivier.eu>
-References: <20250217125055.160887-1-peter.maydell@linaro.org>
- <20250217125055.160887-5-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250217125055.160887-5-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+References: <20250213160054.3937012-1-pbonzini@redhat.com>
+ <20250213160054.3937012-28-pbonzini@redhat.com>
+ <a826f77b-1abd-4706-82f1-854cfe9fc54a@tls.msk.ru>
+In-Reply-To: <a826f77b-1abd-4706-82f1-854cfe9fc54a@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 17 Feb 2025 19:21:24 +0100
+X-Gm-Features: AWEUYZksgUqfBwePMPcxcK0Koscq0djmyRRKC_H5Mdu50gwWuRuIL-wjkKYiuSc
+Message-ID: <CABgObfZc2QYFKxf3Lb3hz69BBmCyBSqSnH1H1jT-F=GXT=H3Bw@mail.gmail.com>
+Subject: Re: [PULL 27/27] ui/sdl2: reenable the SDL2 Windows keyboard hook
+ procedure
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>, 
+ Bernhard Beschow <shentey@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,30 +104,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/17/25 04:50, Peter Maydell wrote:
-> In Intel terminology, a floatx80 Infinity with the explicit integer
-> bit clear is a "pseudo-infinity"; for x86 these are not valid
-> infinity values.  m68k is looser and does not care whether the
-> Integer bit is set or clear in an infinity.
-> 
-> Move this setting to runtime rather than using an ifdef in
-> floatx80_is_infinity().  (This requires us to pass in the
-> float_status to that function now.)
-> 
-> Since this was the last use of the floatx80_infinity global constant,
-> we remove it and its definition here.
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   include/fpu/softfloat-types.h  |  5 +++++
->   include/fpu/softfloat.h        | 20 ++++++++++++--------
->   target/i386/tcg/fpu_helper.c   | 20 +++++++++++---------
->   target/m68k/cpu.c              |  4 +++-
->   target/m68k/fpu_helper.c       |  2 +-
->   fpu/softfloat-specialize.c.inc | 10 ----------
->   6 files changed, 32 insertions(+), 29 deletions(-)
+On Sat, Feb 15, 2025 at 6:36=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
+> This looks like a qemu-stable material.  Please let me know if it is not.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Yes, that makes sense. Thanks Michael.
 
-r~
+Paolo
+
 
