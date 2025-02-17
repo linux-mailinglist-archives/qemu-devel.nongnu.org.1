@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC974A37C0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B5DA37C14
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:21:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjvQF-00016U-NU; Mon, 17 Feb 2025 02:20:07 -0500
+	id 1tjvQc-0001NU-5s; Mon, 17 Feb 2025 02:20:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tjvQB-00014L-FL; Mon, 17 Feb 2025 02:20:03 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1tjvQK-00018v-58; Mon, 17 Feb 2025 02:20:14 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tjvQ7-0002pZ-Tl; Mon, 17 Feb 2025 02:20:03 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51H5OItP031818;
- Mon, 17 Feb 2025 07:19:57 GMT
+ id 1tjvQI-000331-96; Mon, 17 Feb 2025 02:20:11 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GHvKc7032695;
+ Mon, 17 Feb 2025 07:20:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=Q9VJZ9RgtDrYNWKFC
- 44lJWZUr97xxWcHOMX96rcJaw0=; b=Pfu2xQby0yNInZWdb4dYffh6wCDeqZHg6
- 7lHesE5W+RZIyTzoy3OuTilRKg+7K9ZPv4XJ8r3dIIuvs4vTWpqvjVMg9SxkTqAD
- aqqsgjQ4sg1GAcgIvk/BZT54jr43LsdOQu2eLDa4ifaWv9Z0sEJYRWqF59c1cMNp
- OAc+9mX9CDeMVGAC9gebhM3tz52Oi8wd71n8OZwX6UdSfhSaWMCv52iCr8jCA+2M
- KpapRIwoJkyYZhZhBZ1Do2VqMXysC6/gXhzblkP6zuW3H9GDCQZoauaFx81qWNBj
- nssSdyZBQU8TzHly+y7cLO7Fsz/tj6cVQ8WjVJ+aLn/wLCUshl6jQ==
+ :mime-version:references:subject:to; s=pp1; bh=adBYsQsQWRqFnYk0f
+ +THBCOSWhZrn3RbPVoZE2cbUWA=; b=XoRA0lxeTPs2SBU0W3Ojxe8BGUJstQur/
+ DLUyVF9d7wWwoqB3YgCj5DUHTnY4BTf8991SyoqdHQvReMOc209ET1s6x9NEuUwq
+ VJ7c9s5cesk2XbPTfAmalKylvaffc+4AJr5j+8VdP07MbFeLdTRW9QbvgXnclFFP
+ RT+iqot+eivz5UOl4XiHVoWZMCpTpZ5aREE+Xs+O9DBq3PCf5uqPi0vczQrKoo7x
+ I3UsHpwpDW3LUKIo93V5ZC5hQvZuCiKjmxBjBAZEpPVSlt2FSfaoGmpMsGjva63P
+ 6czuOkEj4euTiZvbN4TvPXFgSbFdLRg7LZsxCH/A1R9kp3Nm8f78g==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44uxx7rfec-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ujutjna1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:56 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51H7F5fF006121;
- Mon, 17 Feb 2025 07:19:56 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44uxx7rfe7-1
+ Mon, 17 Feb 2025 07:20:08 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51H7I2bk019775;
+ Mon, 17 Feb 2025 07:20:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ujutjn9w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:56 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H4BCv4032435;
- Mon, 17 Feb 2025 07:19:55 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u6rkmvn5-1
+ Mon, 17 Feb 2025 07:20:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H65iwf024844;
+ Mon, 17 Feb 2025 07:20:07 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u7y1cmrj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 07:19:54 +0000
+ Mon, 17 Feb 2025 07:20:07 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51H7JpSp59703656
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51H7K36e47251900
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Feb 2025 07:19:51 GMT
+ Mon, 17 Feb 2025 07:20:04 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27C072004D;
+ by IMSVA (Postfix) with ESMTP id D35D42004E;
+ Mon, 17 Feb 2025 07:20:03 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 77F052004B;
  Mon, 17 Feb 2025 07:19:51 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 489032004B;
- Mon, 17 Feb 2025 07:19:49 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
  [9.109.199.160])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 17 Feb 2025 07:19:49 +0000 (GMT)
+ Mon, 17 Feb 2025 07:19:51 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -70,28 +70,28 @@ Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH 4/7] hw/ppc: Add MDST/MDDT/MDRT table structures and offsets
-Date: Mon, 17 Feb 2025 12:49:31 +0530
-Message-ID: <20250217071934.86131-5-adityag@linux.ibm.com>
+Subject: [PATCH 5/7] hw/ppc: Preserve Memory Regions as per MDST/MDDT tables
+Date: Mon, 17 Feb 2025 12:49:32 +0530
+Message-ID: <20250217071934.86131-6-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217071934.86131-1-adityag@linux.ibm.com>
 References: <20250217071934.86131-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AAMw5POJWzgvuHWJueigvGTyHie0tNn-
-X-Proofpoint-ORIG-GUID: J0RXqs7L38oA89wzl0eimTSQoLFKNbD6
+X-Proofpoint-ORIG-GUID: MymzkJHbb2ogkKB_PGepZQCw6Q6YmNd7
+X-Proofpoint-GUID: gpRa-Ee8ui76RuS_MDzVlmw-_faZEKXk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-17_03,2025-02-13_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- adultscore=0 bulkscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 mlxscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 spamscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=965
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2501170000 definitions=main-2502170060
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -115,143 +115,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the MDST, MDDT, MDRT tables offsets and structures as per current
-skiboot upstream:
+When MPIPL is used, OPAL/Linux registers memory regions to be preserved
+on a Memory-Preserving boot ('crashkernel boot').
 
-    commit bc7b85db1e7e ("opal-ci: Remove centos7")
+The regions are added to two tables: MDST and MDDT (source and
+destination tables)
 
-These structures will be later populated when preserving memory regions
-for MPIPL
+The MDST contains the start address of the region, and size of region
+
+The MDDT contains the destination address where the region should be
+copied (and size of region which will be same as in MDST entry)
+
+Then after a crash, when hostboot (pnv_sbe.c in case of QEMU)
+preserves the memory region, it adds the details of preserved regions to
+MDRT (results table)
+
+Copy memory regions mentioned in MDST to addresses mentioned in MDDT.
+And accordingly update the copied region details in MDRT table.
+
+Note: If we did not preserve the regions, and MDRT is empty then OPAL
+simply logs "OPAL dump is not available", while kernel will assume that
+firmware would have preserved the regions, and export /proc/vmcore, but
+the vmcore won't have most basic kernel structures hence crash will be
+unable to analyse the vmcore
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv_sbe.c | 113 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
+ hw/ppc/pnv_sbe.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
 diff --git a/hw/ppc/pnv_sbe.c b/hw/ppc/pnv_sbe.c
-index 79818177fc36..361a3854307d 100644
+index 361a3854307d..ee905df4e0a6 100644
 --- a/hw/ppc/pnv_sbe.c
 +++ b/hw/ppc/pnv_sbe.c
-@@ -84,6 +84,119 @@
+@@ -227,6 +227,60 @@ static uint64_t pnv_sbe_power9_xscom_ctrl_read(void *opaque, hwaddr addr,
+     return val;
+ }
  
- static uint64_t mpipl_skiboot_base = 0x30000000 /*default SKIBOOT_BASE*/;
- 
-+/* Following offsets are copied from Skiboot source code */
-+/* Use 768 bytes for SPIRAH */
-+#define SPIRAH_OFF      0x00010000
-+#define SPIRAH_SIZE     0x300
++static void pnv_mpipl_preserve_mem(void)
++{
++    /* Get access to metadata */
++    struct mpipl_metadata *metadata = malloc(DUMP_METADATA_AREA_SIZE);
++    struct mdst_table *mdst = malloc(MDST_TABLE_SIZE);
++    struct mddt_table *mddt = malloc(MDDT_TABLE_SIZE);
++    struct mdrt_table *mdrt = malloc(MDRT_TABLE_SIZE);
++    __be64 source_addr, dest_addr, bytes_to_copy;
++    uint8_t *copy_buffer;
 +
-+/* Use 256 bytes for processor dump area */
-+#define PROC_DUMP_AREA_OFF  (SPIRAH_OFF + SPIRAH_SIZE)
-+#define PROC_DUMP_AREA_SIZE 0x100
++    cpu_physical_memory_read(DUMP_METADATA_AREA_BASE, metadata, DUMP_METADATA_AREA_SIZE);
++    cpu_physical_memory_read(MDST_TABLE_BASE, mdst, MDST_TABLE_SIZE);
++    cpu_physical_memory_read(MDDT_TABLE_BASE, mddt, MDDT_TABLE_SIZE);
 +
-+#define PROCIN_OFF      (PROC_DUMP_AREA_OFF + PROC_DUMP_AREA_SIZE)
-+#define PROCIN_SIZE     0x800
++    /* HRMOR_BIT copied from skiboot */
++    #define HRMOR_BIT (1ul << 63)
 +
-+/* Offsets of MDST and MDDT tables from skiboot base */
-+#define MDST_TABLE_OFF      (PROCIN_OFF + PROCIN_SIZE)
-+#define MDST_TABLE_SIZE     0x400
++    for (int i = 0;; ++i) {
++        /* NOTE: Assuming uninitialised will be all zeroes */
++        if ((mdst[i].addr == 0) && (mdst[i].size == 0)) {
++            break;
++        }
 +
-+#define MDDT_TABLE_OFF      (MDST_TABLE_OFF + MDST_TABLE_SIZE)
-+#define MDDT_TABLE_SIZE     0x400
++        if (mdst[i].size != mddt[i].size) {
++            qemu_log_mask(LOG_TRACE,
++                    "Warning: Invalid entry, size mismatch in MDST & MDDT\n");
++            continue;
++        }
 +
-+#define CPU_CTL_OFF         (MDDT_TABLE_OFF + MDDT_TABLE_SIZE)
-+#define CPU_CTL_SIZE        0x2000
++        if (mdst[i].data_region != mddt[i].data_region) {
++            qemu_log_mask(LOG_TRACE,
++                    "Warning: Invalid entry, region mismatch in MDST & MDDT\n");
++            continue;
++        }
 +
-+/* MPIPL reserved regions (offset by skiboot_base to access) */
-+#define MDST_TABLE_BASE     (mpipl_skiboot_base + MDST_TABLE_OFF)
-+#define MDDT_TABLE_BASE     (mpipl_skiboot_base + MDDT_TABLE_OFF)
-+#define PROC_DUMP_AREA_BASE (mpipl_skiboot_base + PROC_DUMP_AREA_OFF)
++        mdrt[i].src_addr = mdst[i].addr;
++        mdrt[i].dest_addr = mddt[i].addr;
++        mdrt[i].size = mdst[i].size;
++        mdrt[i].data_region = mdst[i].data_region;
 +
-+#define __packed             __attribute__((packed))
++        source_addr = cpu_to_be64(mdst[i].addr) & ~HRMOR_BIT;
++        dest_addr = cpu_to_be64(mddt[i].addr) & ~HRMOR_BIT;
++        bytes_to_copy = cpu_to_be32(mddt[i].size);
 +
-+/* Metadata to capture before triggering MPIPL */
-+struct mpipl_metadata {
-+    /* Crashing PIR is required to create OPAL dump */
-+    uint32_t    crashing_pir;
-+    /* Kernel expects OPAL to presrve tag and pass it back via OPAL API */
-+    uint64_t    kernel_tag;
-+    /* Post MPIPL kernel boot memory size */
-+    uint64_t    boot_mem_size;
-+} __packed;
++        /* XXX: Am i assuming we are in big endian mode ? */
++        copy_buffer = malloc(bytes_to_copy);
++        cpu_physical_memory_read(source_addr, copy_buffer, bytes_to_copy);
++        cpu_physical_memory_write(dest_addr,  copy_buffer, bytes_to_copy);
++        free(copy_buffer);
++    }
 +
-+/* Structure version */
-+#define OPAL_MPIPL_VERSION  0x01
++    cpu_physical_memory_write(MDRT_TABLE_BASE, mdrt, MDRT_TABLE_SIZE);
++}
 +
-+/* Preserved memory details */
-+struct opal_mpipl_region {
-+    __be64  src;
-+    __be64  dest;
-+    __be64  size;
-+};
-+
-+struct opal_mpipl_fadump {
-+    uint8_t version;
-+    uint8_t reserved[7];
-+    __be32  crashing_pir;    /* OPAL crashing CPU PIR */
-+    __be32  cpu_data_version;
-+    __be32  cpu_data_size;
-+    __be32  region_cnt;
-+    struct  opal_mpipl_region *region;
-+};
-+
-+/*
-+ * This is our dump result table after MPIPL. Hostboot will write to this
-+ * memory after moving memory content from source to destination memory.
-+ */
-+#define MDRT_TABLE_BASE        (mpipl_skiboot_base + 0x01c00000)
-+#define MDRT_TABLE_SIZE        0x00008000
-+
-+/*
-+ * This is our dump metadata area. We will use this memory to save metadata
-+ * (like crashing CPU details, payload tags) before triggering MPIPL.
-+ */
-+#define DUMP_METADATA_AREA_BASE    (mpipl_skiboot_base + 0x01c08000)
-+#define DUMP_METADATA_AREA_SIZE    0x8000
-+
-+/*
-+ *  Memory Dump Source Table
-+ *
-+ * Format of this table is same as Memory Dump Source Table (MDST)
-+ * defined in HDAT spec.
-+ */
-+struct mdst_table {
-+    __be64  addr;
-+    uint8_t data_region;    /* DUMP_REGION_* */
-+    uint8_t dump_type;    /* DUMP_TYPE_* */
-+    __be16  reserved;
-+    __be32  size;
-+} __packed;
-+
-+/* Memory dump destination table (MDDT) */
-+struct mddt_table {
-+    __be64  addr;
-+    uint8_t data_region;
-+    uint8_t dump_type;
-+    __be16  reserved;
-+    __be32  size;
-+} __packed;
-+
-+/*
-+ * Memory dump result table (MDRT)
-+ *
-+ * List of the memory ranges that have been included in the dump. This table is
-+ * filled by hostboot and passed to OPAL on second boot. OPAL/payload will use
-+ * this table to extract the dump.
-+ */
-+struct mdrt_table {
-+    __be64  src_addr;
-+    __be64  dest_addr;
-+    uint8_t data_region;
-+    uint8_t dump_type;  /* unused */
-+    __be16  reserved;   /* unused */
-+    __be32  size;
-+    __be64  padding;    /* unused */
-+} __packed;
-+
- static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
+ static void pnv_sbe_power9_xscom_ctrl_write(void *opaque, hwaddr addr,
+                                        uint64_t val, unsigned size)
  {
-     val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
+@@ -250,6 +304,9 @@ static void pnv_sbe_power9_xscom_ctrl_write(void *opaque, hwaddr addr,
+              */
+             pause_all_vcpus();
+ 
++            /* Preserve the memory locations registered for MPIPL */
++            pnv_mpipl_preserve_mem();
++
+             /*
+              * TODO: Pass `mpipl` node in device tree to signify next
+              * boot is an MPIPL boot
 -- 
 2.48.1
 
