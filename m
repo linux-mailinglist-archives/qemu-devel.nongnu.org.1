@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF9BA38083
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 11:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCD9A38171
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 12:17:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjybx-0002Js-Us; Mon, 17 Feb 2025 05:44:25 -0500
+	id 1tjz6S-0000du-CM; Mon, 17 Feb 2025 06:15:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tjybt-0002J7-UY
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:44:22 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1tjz67-0000dO-E3
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 06:15:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tjybq-0001Jr-K4
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 05:44:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739789058; x=1771325058;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+RDQH78CtgRQ49m39KFNNaJo1U2umPFWTQamXO4LqnM=;
- b=brqW4XGwLC56IEz9gRxN36EzabFh/Bk8ytd44Mg58GBLmD7FXHnfAu3U
- arKa+zEXcuMlnR/rOvbLIL2DXgTWF1us39hLoIdTGYag3dBv9k6oNCrt7
- xBHeGqfBko56JgAeO2RUX5GVxhN9BV6iJppJNZuHfT37Wg/nlUNVaz5oL
- xrwu3jVIJMg/Vqk+eqIBEFEi2nfG/5EXVdzPJQpeGjuUpRNkUEhlci2uH
- pg7/iAO1MPVBLum2ZcCDWQ1Pgweko2L48xExcyTp4HtLPapVQLURbBEfk
- sh8OOnl9oF4oaxdyetxLF7QvLnvZQwePKuPJvHu5e7t/PqHLOWU1u0Ms4 g==;
-X-CSE-ConnectionGUID: 51BXG3zYTuyuqAP1iZG1Sg==
-X-CSE-MsgGUID: Ht5j8mI7Q1ehehyWyAxcZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="40602440"
-X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; d="scan'208";a="40602440"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 02:44:14 -0800
-X-CSE-ConnectionGUID: ZAG0oCmkTl2lqQtjhzgLkA==
-X-CSE-MsgGUID: U9TVD2pbSCmD6okJ8nlw8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118721057"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 17 Feb 2025 02:44:13 -0800
-Date: Mon, 17 Feb 2025 19:03:47 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 23/27] i386: enable rust hpet for pc when rust is enabled
-Message-ID: <Z7MXkxoMC/xpLiL2@intel.com>
-References: <20250213160054.3937012-1-pbonzini@redhat.com>
- <20250213160054.3937012-24-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1tjz63-0004h2-RE
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 06:15:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739790927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZDaAFZjYp6krCLrGEEqbGU8z4vy7L6m7xm4a2izfV/A=;
+ b=RSNdn61GFSRfz57Zt6rhuw9A2YHQKHU8y0FYNectdSvPKCKzcKSiZPoBgumSIvbbfTA+Ij
+ GFY0kcO/JHzLeGhRb2/ESS8+q0do0W/etanmIMs2GmUAgHXuTjb2SNQqonl7g17t37i24X
+ uf5p7P6vxgg5f+vXpoqWlIyN1XdOqKg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-357--LOL1UssPDurLgOXyf9UlQ-1; Mon,
+ 17 Feb 2025 06:15:25 -0500
+X-MC-Unique: -LOL1UssPDurLgOXyf9UlQ-1
+X-Mimecast-MFC-AGG-ID: -LOL1UssPDurLgOXyf9UlQ_1739790925
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D4DE019373D9; Mon, 17 Feb 2025 11:15:24 +0000 (UTC)
+Received: from localhost (unknown [10.45.242.7])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 89F171800360; Mon, 17 Feb 2025 11:15:22 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: pierre-eric.pelloux-prayer@amd.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH] ui/sdl: only compile dmabuf support if CONFIG_GBM
+Date: Mon, 17 Feb 2025 15:15:18 +0400
+Message-ID: <20250217111518.93617-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213160054.3937012-24-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.382,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.382,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,31 +81,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-> --- a/hw/timer/Kconfig
-> +++ b/hw/timer/Kconfig
-> @@ -11,7 +11,7 @@ config A9_GTIMER
->  
->  config HPET
->      bool
-> -    default y if PC
-> +    default y if PC && !HAVE_RUST
+Fix SDL backend compilation for win32.
 
-+
-+config X_HPET_RUST
-+    bool
-+    default y if PC && HAVE_RUST
+Fixes: commit 31287d1af4 ("ui/sdl2: Implement dpy dmabuf functions")
 
->  config I8254
->      bool
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ ui/sdl2-gl.c | 2 ++
+ ui/sdl2.c    | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-This patch doesn't enable the configuration option of Rust HPET for PC.
-
-Is it because the Rust HPET would break live migration, so we have to
-disable it?
-
-Thanks,
-Zhao
+diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+index 31f8fbe032..6bceeed565 100644
+--- a/ui/sdl2-gl.c
++++ b/ui/sdl2-gl.c
+@@ -251,6 +251,7 @@ void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
+     SDL_GL_SwapWindow(scon->real_window);
+ }
+ 
++#ifdef CONFIG_GBM
+ void sdl2_gl_scanout_dmabuf(DisplayChangeListener *dcl,
+                             QemuDmaBuf *dmabuf)
+ {
+@@ -312,3 +313,4 @@ void sdl2_gl_console_init(struct sdl2_console *scon)
+     scon->surface = NULL;
+     scon->hidden = hidden;
+ }
++#endif /* CONFIG_GBM */
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 9439745443..8c9df23343 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -806,9 +806,11 @@ static const DisplayChangeListenerOps dcl_gl_ops = {
+     .dpy_gl_scanout_texture  = sdl2_gl_scanout_texture,
+     .dpy_gl_update           = sdl2_gl_scanout_flush,
+ 
++#ifdef CONFIG_GBM
+     .dpy_gl_scanout_dmabuf   = sdl2_gl_scanout_dmabuf,
+     .dpy_gl_release_dmabuf   = sdl2_gl_release_dmabuf,
+     .dpy_has_dmabuf          = sdl2_gl_has_dmabuf,
++#endif
+ };
+ 
+ static bool
+@@ -939,7 +941,9 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+         sdl2_console[i].kbd = qkbd_state_init(con);
+         if (display_opengl) {
+             qemu_console_set_display_gl_ctx(con, &sdl2_console[i].dgc);
++#ifdef CONFIG_GBM
+             sdl2_gl_console_init(&sdl2_console[i]);
++#endif
+         }
+         register_displaychangelistener(&sdl2_console[i].dcl);
+ 
+-- 
+2.47.0
 
 
