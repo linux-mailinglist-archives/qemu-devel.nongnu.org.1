@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF39A389C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:43:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB6FA389CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:43:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk4CO-0004ed-3q; Mon, 17 Feb 2025 11:42:24 -0500
+	id 1tk4CR-0004gM-0y; Mon, 17 Feb 2025 11:42:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1tk4CI-0004cB-VW
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:18 -0500
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1tk4CN-0004dB-0Z
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1tk4CG-0007z9-3r
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:18 -0500
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1tk4CL-00080b-GQ
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739810535;
+ s=mimecast20190719; t=1739810540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rrOHEASD5ETftMjnPAsJydFA8UyEJ3azffjK7xeCoRc=;
- b=CH2Z1DMfPwMUgMpbnoUTHU0NjABD2fOR6NnI7fZfqRqv7jD1xqrUgZbmlBUZ/5YxyNFFDF
- k/TuogsPG97Nv1UFLgYYDe1DeEENkzByRgHnAko+5pkwVOyITpZl+tsiMS5OC7YDjdUzBM
- DfkZnsF9JQXXYuJne6FR2fZ7QVIA09M=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XbkIoklqqdbuIOGIReku3lHEr+KYa4uqc8v7BThesjM=;
+ b=SDVZTsYQMZSLijn3vMdNdqERqBsoPizqyePbsAV4bN+KoF3GKIZ+WHkkASEiFNsWw8GrH7
+ ClCOINzWeYWlEqbtPK/YLS7Um6zSOaojYbR0ox6oQTPArorIRupKrA6sj7ivH9/UdpQj8A
+ zXtoH6e+WaeAgiSfrcDrfK9gwABnH4k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-Ghl4AiDdM6Wz8Gl_v4r54Q-1; Mon,
- 17 Feb 2025 11:41:07 -0500
-X-MC-Unique: Ghl4AiDdM6Wz8Gl_v4r54Q-1
-X-Mimecast-MFC-AGG-ID: Ghl4AiDdM6Wz8Gl_v4r54Q_1739810466
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-j4sB0fCTMsO_KX5yRpATvw-1; Mon,
+ 17 Feb 2025 11:42:15 -0500
+X-MC-Unique: j4sB0fCTMsO_KX5yRpATvw-1
+X-Mimecast-MFC-AGG-ID: j4sB0fCTMsO_KX5yRpATvw_1739810533
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AFE121801A13; Mon, 17 Feb 2025 16:41:06 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.225.252])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 42A8D1800352; Mon, 17 Feb 2025 16:41:01 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: slp@redhat.com, stevensd@chromium.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, stefanha@redhat.com,
- david@redhat.com, hi@alyssa.is, mst@redhat.com, jasowang@redhat.com,
- Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH v4 9/9] vhost_user.rst: Add MEM_READ/WRITE messages
-Date: Mon, 17 Feb 2025 17:40:12 +0100
-Message-ID: <20250217164012.246727-10-aesteve@redhat.com>
-In-Reply-To: <20250217164012.246727-1-aesteve@redhat.com>
-References: <20250217164012.246727-1-aesteve@redhat.com>
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4235F1800878; Mon, 17 Feb 2025 16:42:12 +0000 (UTC)
+Received: from gezellig (unknown [10.44.32.23])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 100F0300018D; Mon, 17 Feb 2025 16:41:59 +0000 (UTC)
+Date: Mon, 17 Feb 2025 22:11:55 +0530
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, maz@kernel.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Yi Liu <yi.l.liu@intel.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Alistair Francis <alistair@alistair23.me>,
+ Tyrone Ting <kfting@nuvoton.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ qemu-arm@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>,
+ Joel Stanley <joel@jms.id.au>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Hao Wu <wuhaotsh@google.com>, sebott@redhat.com,
+ Eric Auger <eric.auger@redhat.com>, Ninad Palsule <ninad@linux.ibm.com>
+Subject: Re: [PATCH v2 0/3] docs: Small changes to system/arm/cpu-features
+ and more
+Message-ID: <Z7Nm03NCxsCGPTe6@gezellig>
+References: <20250213084219.2975727-1-kchamart@redhat.com>
+ <CAFEAcA9MgeaCQspu=4dCusTQVP3KOvpze55vshPJCaNS_E43yg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA9MgeaCQspu=4dCusTQVP3KOvpze55vshPJCaNS_E43yg@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kchamart@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,7 +80,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,66 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add MEM_READ/WRITE request to the vhost-user
-spec documentation.
+On Mon, Feb 17, 2025 at 01:23:51PM +0000, Peter Maydell wrote:
+> On Thu, 13 Feb 2025 at 08:44, Kashyap Chamarthy <kchamart@redhat.com> wrote:
+> >
+> > In v2:
+> >
+> >   - Add live-migration context to the PAuth docs (Marc Zyngier)
+> >
+> >   - Fix the Arm capitlalization (Peter Maydell)
+> >     - Context here:
+> >       (https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg05137.html)
+> 
+> 
+> > Kashyap Chamarthy (3):
+> 
+> Hi -- it looks like only patches 1 and 2 ever made it to
+> the list. Would you mind resending, please?
 
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- docs/interop/vhost-user.rst | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+It's strange, but as you pointed out on IRC: occasionally the list "eats
+an email for no clear reason".
 
-diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-index 96156f1900..9f7a2c4cf7 100644
---- a/docs/interop/vhost-user.rst
-+++ b/docs/interop/vhost-user.rst
-@@ -391,6 +391,7 @@ In QEMU the vhost-user message is implemented with the following struct:
-           VhostUserTransferDeviceState transfer_state;
-           VhostUserMMap mmap;
-           VhostUserShMemConfig shmem;
-+          VhostUserMemRWMsg mem_rw;
-       };
-   } QEMU_PACKED VhostUserMsg;
- 
-@@ -1938,6 +1939,38 @@ is sent by the front-end.
-   given range shall correspond to the entirety of a valid mapped region.
-   A reply is generated indicating whether unmapping succeeded.
- 
-+``VHOST_USER_BACKEND_MEM_READ``
-+  :id: 11
-+  :equivalent ioctl: N/A
-+  :request payload: ``struct VhostUserMemRWMsg``
-+  :reply payload: N/A
-+
-+  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-+  successfully negotiated, this message can be submitted by the backends to
-+  read a memory region that has failed to resolve a translation due to an
-+  incomplete memory table, after another device called
-+  ``VHOST_USER_BACKEND_SHMEM_MAP`` for the same region on a shared
-+  descriptor file.
-+
-+  This mechanism works as a fallback for resolving those memory
-+  accesses and ensure that DMA works with Shared Memory Regions.
-+
-+``VHOST_USER_BACKEND_MEM_WRITE``
-+  :id: 12
-+  :equivalent ioctl: N/A
-+  :request payload: ``struct VhostUserMemRWMsg``
-+  :reply payload: N/A
-+
-+  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-+  successfully negotiated, this message can be submitted by the backends to
-+  write a memory region that has failed due to resolve a translation an
-+  incomplete memory table  after another device called
-+  ``VHOST_USER_BACKEND_SHMEM_MAP`` for the same region on a shared
-+  descriptor file.
-+
-+  This mechanism works as a fallback for resolving those memory
-+  accesses and ensure that DMA works with Shared Memory Regions.
-+
- .. _reply_ack:
- 
- VHOST_USER_PROTOCOL_F_REPLY_ACK
+Now sent a v2, with a note at the top of the cover-letter.
+
+> >   docs/cpu-features: Consistently use vCPU instead of VCPU
+> >   docs/cpu-features: Update "PAuth" (Pointer Authentication) details
+> >   docs: Fix "Arm" capitaliaztion
+> 
+> (nit: "capitalization")
+
+Fixed in the re-sent v2.
+
 -- 
-2.48.1
+/kashyap
 
 
