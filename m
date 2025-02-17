@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A933A389C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758C4A389D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:44:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk4Cv-000630-Sp; Mon, 17 Feb 2025 11:42:57 -0500
+	id 1tk4ES-00025Q-RN; Mon, 17 Feb 2025 11:44:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk4Cs-0005rh-9a
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:54 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1tk4EE-0001tt-Pf
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:44:21 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk4Cp-00084Z-B0
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:42:52 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5deb1266031so8022251a12.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 08:42:50 -0800 (PST)
+ id 1tk4EB-0008B4-Cm
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:44:17 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5ded1395213so7132531a12.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 08:44:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739810569; x=1740415369; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739810654; x=1740415454; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kvaAb01HNcWfLd6UopGyk/zXIjjv/WR9CTT4cfI1NWc=;
- b=kMQE+vxy/zm3zrr0Oseh7lIjOun7CGZMiTUNEPyz7VX0sfqqdOUx+k6iykFTHTRt8a
- 9qAipRcr461s5dz0xngS4OagYplhAzBDhewg5mHxzyeHIEOCyxANeoX98ajsiJutjKdp
- BSfV22GoScjuW1Bk0mbLgwyj5aI1tTfMitlgIYvynKFpAppMGoG7nxQ732Mb2xFicHX+
- rripUGPpRN+QPZZjovkQPmw1r3pOy1rAmpjbX0BUJwXgeYV7HliLx4TsCDnGXfzLvYG7
- fctNruWb1+uwlFa9Y2J6KwBv58wGGXjCZl+FlqkKs9bkcI5Bqoa6Kow70mzbB+yC6aX3
- a1+w==
+ bh=3FHUaz8ZQxfTEz+ywIpzuVfvUH6DLK/X9OlNeD6XI5Q=;
+ b=rM7Xn8Z8js4ZBqat6W2jD+mWcUJJYe/ogBHtoHV80l1VcIp/bUIuX6CVydA3Pml18c
+ 7WiKK0IsUufEWQa4hu0BcgO02MwMOO91O4z43mJhPIVxiGG/NmqPjvhXUsMAzWF3tuDw
+ Q4o5jtE8OLgfLau8svGHZ1zYdfjQYfhqGXurnNxltJAYlyaRHkIbo5ZzCYRjNHI0nA9D
+ KOxpyejxnyeUZK8FerDCNzGkrKDgZrq28oFarg5G1HVxTb1T1uFpeZnj4m3EfE1I3RdK
+ glXf2pJBB8PrXCm9HBYT1xF3MlFRVecG4VA5QjMrpFjQ7wA5DcP7prtMU09/omN6qAJa
+ MYng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739810569; x=1740415369;
+ d=1e100.net; s=20230601; t=1739810654; x=1740415454;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kvaAb01HNcWfLd6UopGyk/zXIjjv/WR9CTT4cfI1NWc=;
- b=rL97nDYtWTatpw4PrGEepT6Up1GN5w9LCd8Y2mb0Hy/E5OI9di7n/te0gHzHkgY10F
- rNwUqNH3rKbD05C0OCgh+iF8RoaCqj3K3SnE8l2h7Di/pOVw1EIeG42ZpNV3DWkUZp1N
- INUwM6dx2woFzzyL0Gax0NWvXfelkk2Uw3tsMGs78onNQYlj4UU6mkh+cIjx9MtXH92H
- qAz2HAifPfrqzlCulOGt6hV5lmqUwQcsBMFETw7y4Y4+Zknffv+m4XCVn0J8ZdbmHxEa
- D0tu4cN0qONism2nqKD3KrV7jt76LcBfKDRhWVdB8C3F5IbFR+ywzCv5jioceq9/uZxv
- vIcQ==
-X-Gm-Message-State: AOJu0YwQEvJ5gLrXGE8NMhEV8PFkT15Tqutg9WSpxBv+yQcSXbxjFJa/
- BoMew2EhM2dGbMCdkOQYyjuiuoNa7pw+OfbWSiDjsmvhmd8NI7UMsQ5s/jt5tGBkpL65kOO5nyt
- niwqNy+3Y/KjNX5n5gFL2bLH9lYse5+CvLG7FYQ==
-X-Gm-Gg: ASbGncsTVuhmDBsS15+AprqilIJVF7vaMN/47AqlFgwZPt9Zn7ri8EuYtZgcOfV5lYm
- mRTgDpMB9A/YdDfv974HUZqhdIEEmeX1Mi0pgEApkyndHnavNYoioIRNnBrp/M11RRlM00qwl0A
+ bh=3FHUaz8ZQxfTEz+ywIpzuVfvUH6DLK/X9OlNeD6XI5Q=;
+ b=QFR58DomwmNG+1zjmlipOon9eCN8iFTiHo/XRscY+2ch/KVxoZ5Gj1SAoFFLtCwZ9a
+ w5DqAx4RcPFGieEAruIYARcxlCCiiJ7Ho4UbISpw31MtQd8FIAlmCx4uCmaESoYGnTBJ
+ t8kyypqTrdnXuvuF3q6s4RNiN0ec3mgVXG7dy73RkDgqWDKqPPhXGXMLrv6F4vFaqVdY
+ 8q0WW5Njnn5xopmclTLsgixAaYdNZIHLnnrGiCgNVDfkbQDEO7Re/klCaqQgM9iwZQ8q
+ IsiinwcJGNeQkmrDF28Znnh0jTZvWzmtbWD6Yr5m1Og2Im2B7D6qHUnQ12jG72Kbc1Sp
+ S2IQ==
+X-Gm-Message-State: AOJu0YyWZuvtlXcU3JmC+kFUdFy0HQiuYnZZfW0nrLo+Gjz4V/oMuFJz
+ 76IDGqdiYKXIOwYKHoM3PLQMEb83pIQ9pdfzqFHkA2W2MI31hFh+MgxNR8dDYpHDn0pxB8Tlrwb
+ w8Ec+B+nZ9rsY0qT4kk6RPBbgSpbg1ouBZZ1Srg==
+X-Gm-Gg: ASbGncuN70BTyLf0X9GyutttunRPcqkTz5oqeySnJtfd8oBA0zF71iP8gtMIYIz9GLR
+ M7+YSCKfdTZGtzZ40AH+qlAb3DIygX9i8HwA66mbbm8GcinduSEbh1LKnKI69aKCbmZnmp/VpcQ
  ==
-X-Google-Smtp-Source: AGHT+IHoMKEPnQMcZ6g6C4eU29ISG06R9rnydYXJ22WGEag3wC7aIn5aF5iOWnlQXeAkwmghWmroZgs09EjzSZARe60=
-X-Received: by 2002:a05:6402:4609:b0:5de:3747:cddf with SMTP id
- 4fb4d7f45d1cf-5e036044232mr9774962a12.7.1739810569122; Mon, 17 Feb 2025
- 08:42:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2z0Tn106JwfTcbTOA8ob1xJk3Nzd1r8r28ml+1/7h8E8YoLHQcQF1OiE2O94pGUXHt/b9leat+umNKo4ICJo=
+X-Received: by 2002:a05:6402:3488:b0:5dc:a44f:6ec4 with SMTP id
+ 4fb4d7f45d1cf-5e036092b01mr11041093a12.13.1739810653589; Mon, 17 Feb 2025
+ 08:44:13 -0800 (PST)
 MIME-Version: 1.0
 References: <20250217163732.3718617-1-kchamart@redhat.com>
- <20250217163732.3718617-2-kchamart@redhat.com>
-In-Reply-To: <20250217163732.3718617-2-kchamart@redhat.com>
+ <20250217163732.3718617-4-kchamart@redhat.com>
+In-Reply-To: <20250217163732.3718617-4-kchamart@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Feb 2025 16:42:32 +0000
-X-Gm-Features: AWEUYZmsWoTAkpuHOEcSF_yIx1KWwvcDMOBoK627n6UBb0N5ZDDqj8z_1CqHpuo
-Message-ID: <CAFEAcA_bg-KdNV52oD55YrbzF8z0-i0nJPbhFgzKW-5AfdfvoQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] docs/cpu-features: Consistently use vCPU instead
- of VCPU
+Date: Mon, 17 Feb 2025 16:44:00 +0000
+X-Gm-Features: AWEUYZkA--iZUaOyUegiY0uWHGnZA28MagWGT1ImgXRuF2Ab4cbzkvy7fM5jJho
+Message-ID: <CAFEAcA89YVi-0WTD=9=-nvK2-kr859VAtxgmvyhfTDNx3TvERw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] docs: Fix "Arm" capitalization
 To: Kashyap Chamarthy <kchamart@redhat.com>
 Cc: qemu-devel@nongnu.org, Ninad Palsule <ninad@linux.ibm.com>,
  sebott@redhat.com, 
@@ -79,15 +78,15 @@ Cc: qemu-devel@nongnu.org, Ninad Palsule <ninad@linux.ibm.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>, Yi Liu <yi.l.liu@intel.com>,
  qemu-arm@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,10 +104,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 17 Feb 2025 at 16:38, Kashyap Chamarthy <kchamart@redhat.com> wrote:
 >
+> This is based on Peter's suggestion here[1].
+>
+> I simply addrressed the occurrences that I found with `git grep "ARM "`
+> in the docs/ directory.  I didn't touch stuff like these "StrongARM",
+> ARM926EJ-S, ARM1176JZS, etc.  Related commit[2].
+>
+> [1] https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg05137.html
+>     - docs/cpu-features: Update "PAuth" (Pointer Authentication) details
+>
+> [2] 6fe6d6c9a9 (docs: Be consistent about capitalization of 'Arm',
+>     2020-03-09)
+>
 > Signed-off-by: Kashyap Chamarthy <kchamart@redhat.com>
 > ---
->  docs/system/arm/cpu-features.rst | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
