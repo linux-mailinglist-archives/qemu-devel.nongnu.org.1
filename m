@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACC5A387EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:45:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF1AA3877D
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:25:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk3Hv-0007SW-4s; Mon, 17 Feb 2025 10:44:03 -0500
+	id 1tk2zf-0000to-6B; Mon, 17 Feb 2025 10:25:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk3Ht-0007Rz-3q
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:44:01 -0500
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk3Hr-0004no-8T
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:44:00 -0500
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e5ddd781316so998793276.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 07:43:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739807037; x=1740411837; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0ZhaA44eEXDUwObb4QOA7d1Iu1Es0Cz6k4D4/ctTUhI=;
- b=D19EaSY0qL4+yihXocJrg8CWNrlDwO+f4EvqCWsfbvI+sryKlJLGNu7vpYGuIxTTaS
- QAAmwqh7vBvcly+yT2vMY6P3otNpj92Wz5ZMt5pwh4CXrYcg3cicSXAoXKth9TKCOsJK
- OgthU3xroMr3k/qbUAMZMDaKkckg6YkNlNQA+mp45QNUaMNEB7X2GTj9pERTir5RWDTd
- w/0cm3wweb8ZFpfIq97n0oH0ML224ljWG/FmATDTt2soJHL6CaDcCbRNrEKIPL2z9hg+
- oWs8dkYcto+pxIQbxJX8ocl9V8gJPZKYJphQpwix3o5ZUclbfsnz1uysvdExAX6yHhoj
- LC5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739807037; x=1740411837;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0ZhaA44eEXDUwObb4QOA7d1Iu1Es0Cz6k4D4/ctTUhI=;
- b=ipSNF4jynTlQjsTISgYrQsWvhmVtMa4w526jiI78BAHZMQEbdVBBHTmKIZdW1RCUMO
- +xOeoMgsYG2rpTRhvnw3/VvacRkF09PBMjwrgZmYpiB7J1bmi7iK/LuMrISnXIimPDW0
- 7eVPhPuvz0iXGpyXRh+B49jBSh6tWPhohAGlM4l86DP12jE+GGCxVa0o5A1UZKlWlsXs
- SpjZGklivoyzhZF/dVO/oZhiG06ZkHo2cYvUAs0svGqYHI8OUJ9Lh8dnvQMQ9YXkJYAx
- JSOobP2+e0kjhVvlF0MfShSvbNGGIXrqKJ3seB8O5YmMfmLORUlFnb43xJD7S81epZ7a
- 2PJg==
-X-Gm-Message-State: AOJu0YwB3FMwJsVQ/cxaKt/li+5WhRCs8lPVK2E+l+lPCehoHVhdgqma
- cUaAlJ/brm1d81/j82d06r0A960WYz/7dee1HQv5kAv1vGu2YJfMaPwoHF+7JlDOW4KNj8htjpz
- fHNKfM9hGPIvxUSpDneZhjh04igxVlhFfg5suJg==
-X-Gm-Gg: ASbGnctAKlwjX6aOo8qD/IbbKWS2pxrquuiu0QgYjVIP1zmy+KRD5mT/b+d8JQ7kcUH
- SKRkKL1lvao6hUSyEGKId9JMHElT+TY+YjeeJrg/CI+Mr5uXhLv9fmEiblOzUQe5JytlJoAlYsA
- ==
-X-Google-Smtp-Source: AGHT+IGOzWVXwFQJA/8baRe/V5gOSsryBdIDyXfPSKlkbFCaL2kHImxuthotVbLHymUVk9X4Go+8iQqiNy+TPl2ZkYY=
-X-Received: by 2002:a05:6902:230f:b0:e58:dbf:ed09 with SMTP id
- 3f1490d57ef6-e5dc9038eaamr8213890276.3.1739807037523; Mon, 17 Feb 2025
- 07:43:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tk2zZ-0000qS-L1; Mon, 17 Feb 2025 10:25:06 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tk2zW-0001Z7-4X; Mon, 17 Feb 2025 10:25:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739805902; x=1771341902;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=65SZffwoMTSntLiIhNbwF6RI3IKpjp+8ZDZjNVWEOpc=;
+ b=QqerKs6nuRf/ykNFu6cNZvCli01lBU1W7HIUvtsl0idYl2b3ApGXlLr4
+ 6pd2e6tGPMGsE1HtwbfH7pXNNd0A3N98GDHCrrxU7+ewXTNQp0uCVcizp
+ lZ7+eqYzmeAuMFn4I63IarXrMLPih63TRjct+b7xtcuyrzatLkPcCnYSN
+ 6n7sfCuiASZGBPmIJ8MOhBsFr/jq1jHcwz2w5TJVi0epCz7nIiv4CfQ5O
+ U35c1Zi8W5RkXXSh3Uc3L1cnEvuTEoL+mkfCJ1fquIFOnzLjKq0JLeIr1
+ PRkvPJ/G4qPb39dHiBh8WCCds0Hrr56gcf5VaIyfXws/0shQqeOcu1nN/ Q==;
+X-CSE-ConnectionGUID: zLNwCCMIQ7K7LQ+EZTIi1w==
+X-CSE-MsgGUID: Q4jTZbstTZG8EyJUeQL9Ng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39720960"
+X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; d="scan'208";a="39720960"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2025 07:24:58 -0800
+X-CSE-ConnectionGUID: qLLzdg8/TJG3C2bryaSVAA==
+X-CSE-MsgGUID: eebk0HSxQw6T/rNprmKaQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="115038418"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa008.jf.intel.com with ESMTP; 17 Feb 2025 07:24:57 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] i386: Fix the missing Rust HPET configuration option
+Date: Mon, 17 Feb 2025 23:44:16 +0800
+Message-Id: <20250217154416.3144571-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250212154333.28644-1-philmd@linaro.org>
-In-Reply-To: <20250212154333.28644-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Feb 2025 15:43:46 +0000
-X-Gm-Features: AWEUYZl_10_fWPu_ufGPbFmphxTHwnwPtq3k43WitvsAD-kUI4E1WUYoZZo1HWk
-Message-ID: <CAFEAcA-4rdTWsBYKL05OKBQc2pLWoPsYm+Qdhb-ZD0qs0t8MQA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] hw/arm: Explicit number of GIC external IRQs for
- Cortex A9/A15 MPCore
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Alistair Francis <alistair@alistair23.me>, Rob Herring <robh@kernel.org>, 
- Igor Mitsyanko <i.mitsyanko@gmail.com>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,31 +75,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 12 Feb 2025 at 15:43, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Some boards based on Cortex-A9MP / Cortex-A15MP do not explicit
-> the number of external GIC IRQs, using some (implicit) default value,
-> not always trivial to figure out. Change that by removing the default
-> value, requiring MPCore objects to be created with the "num-irq" set.
->
-> Since v1:
-> - Remove generic comments (Peter)
->
-> Philippe Mathieu-Daud=C3=A9 (8):
->   hw/arm/exynos4210: Replace magic 32 by proper 'GIC_INTERNAL'
->     definition
->   hw/arm/exynos4210: Specify explicitly the GIC has 64 external IRQs
->   hw/arm/realview: Specify explicitly the GIC has 64 external IRQs
->   hw/arm/xilinx_zynq: Replace IRQ_OFFSET -> GIC_INTERNAL
->   hw/arm/xilinx_zynq: Specify explicitly the GIC has 64 external IRQs
->   hw/arm/vexpress: Specify explicitly the GIC has 64 external IRQs
->   hw/arm/highbank: Specify explicitly the GIC has 128 external IRQs
->   hw/cpu/arm_mpcore: Remove default values for GIC external IRQs
+The configuration option of Rust HPET is missing, so that PC machine
+can't boot with "hpet=on" when QEMU Rust support is enabled.
 
+Add the Rust HPET configuration option.
 
+Fixes: d128c341a744 ("i386: enable rust hpet for pc when rust is enabled")
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ hw/timer/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Applied to target-arm.next, thanks.
+diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
+index 9ac008453408..c051597180f4 100644
+--- a/hw/timer/Kconfig
++++ b/hw/timer/Kconfig
+@@ -13,6 +13,10 @@ config HPET
+     bool
+     default y if PC && !HAVE_RUST
+ 
++config X_HPET_RUST
++    bool
++    default y if PC && HAVE_RUST
++
+ config I8254
+     bool
+     depends on ISA_BUS
+-- 
+2.34.1
 
--- PMM
 
