@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D404A38C84
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF80BA38C72
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:32:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pd-0002I9-59; Mon, 17 Feb 2025 14:31:05 -0500
+	id 1tk6ph-0002UH-N2; Mon, 17 Feb 2025 14:31:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6ow-0001uZ-B2
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:22 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tk6oy-0001vY-0u
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:28 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6ou-0008MY-M8
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:22 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-221206dbd7eso26586585ad.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:19 -0800 (PST)
+ id 1tk6ov-0008Mo-1V
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:23 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-220ca204d04so61620385ad.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1739820619; x=1740425419; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=K2WH4FlAMIZ4FEc2EEi85vRc1c0fQFd97dzVfYF6JEw=;
- b=neJJdwk4UPYsY3t45/cP8QwB2AF+ECfpIH9S+ZN5wQgVOLiH3pkLP34hgVBRinnc2f
- gz+7r3cz6fGRhIuIqD/TWV0/GwMaK50aVBECCCZ5ZKw+CV+DWRvDrewq57nF1oGd7FF2
- kyQDcX6WbKjbgb4DjY7GIJQtQTL6y1Pwp6y4qRH8Pyw2Ho9djH+iAU5UHnJJF+4mSdWk
- 9t9beeu2zvzn0OiobjZAxn+VY8KZnRA/Yc75Dgj9dNZW3sC2UFpxXbqFsxlHpJJUl6L5
- 7E/0m+j2p+VGNBH/TElpyOWvbAlY1kKWjtnQufTUsfLK0EyzjPcKDhC/FtxqglqaeSVj
- rPkQ==
+ :reply-to; bh=oS5Y9/paa9jMbBQhn+BAkk9Qf6Zlh0Z5idEcCp0uG9E=;
+ b=NSIlwrO6Gb7iq9o0U9UAonbiOpLYoffOoy3VuxwarABg6WcIPeRa+20wNIt6ZxPrpG
+ ppBm3vOSU+cUUyJbfNFydqlVtI0YODhbHxy+9ABj318/dd4UoEfWr4dgEeofF51MlK7B
+ fUcbuzc0jix11zscP0/XjFWyrArKY1RbgxSf1W7jgTUnEs0hjiIZSMqbK+/hbgrzT36K
+ d8R7NvDhGEJzvA2YmUm5j2rBJE5idz/r3WnVA/R6UyblxltSTvzWHHmsGc+M/q6fBDIz
+ rUwVSUOAmG+PEQ4zrs1xtX+fwGQ7alsbwdsVsA7LJQFeX9QchUxq4vyfsIVKajr63ZJs
+ A+RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1739820619; x=1740425419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K2WH4FlAMIZ4FEc2EEi85vRc1c0fQFd97dzVfYF6JEw=;
- b=iJCQy/+MZ3GYTgQUB41CjDQqVv0n36nRmw56wONTQg/sBRSaq21wjlgWwvKCVjOhoO
- y0fa+8muPDKNhmSHV1/pfyQG6aIyro6oGDmjyKAsK/wZxj9Kg4a8cKEtQsLFfrZgxa6O
- AIEYaJMdgwQcZKWdM4Q+irEDWuLmJzN4y0+9sX9sjgOyRXxRClyb425RFasr1y9Aesyb
- eHl9riqW6j0P/qCQY4MYHSdaRFwTaEkdlOkvcaTwnqswgq2gRxdGQAkGfYSzPKrMTPoa
- ENETNTm/QZV7d4elyn5hlcg/FAbEz0EgYpu0y+x9rPqur48Wd3WnY/p39/iSPSV8TJcN
- 4sqg==
-X-Gm-Message-State: AOJu0YwOeJN5CUiovt2QYIdEqSv3ncCSb5aDmb5X2Z+SHD1mMDotFYq8
- eYdB5QJmixrbkbUelOH1QVuUHzZvELsWVeoFqgF0qUoIjgu8EhW8A1HgM6o5E78P+q31wpmHgA1
- q
-X-Gm-Gg: ASbGncurA6RJ2YUpOFiVeUhbh5p6/uVo7CIrq4ryytQ8yVXdX74nMdtvuY98X0l8qxU
- edZU4LLZnVatIAZ+cJBAfAc7fcYT8uzk4pbOfWUAUe/l6jRiKjYFX/BftfneemVjfXi16TjEzaA
- 3XJ1HDrploqTgWfk/1h+hBs7cK5SO4v63zfkYhbMG4uz4m66WISZ8vAaqV8c7K5hzcISDGoJvyC
- xWwrWbElW6LcZRmePuJy3M7xFh55wCguWB0hV+f0dEMkslERY57MSV//jtxV6gU4hkCDytnutuA
- yKMc2/iIITDClGHMzTQWtCHf6RQ2gRDL5mVkmBBZ4+Y/1Cc=
-X-Google-Smtp-Source: AGHT+IGNDsAlWok9C/CMHiwXzRn2ZIVl3zZf9cKF+amhuQnuo+wGYnSD/i23zgeb6BRsICgXXHGtpw==
-X-Received: by 2002:a05:6a20:9145:b0:1ee:c1b2:76c8 with SMTP id
- adf61e73a8af0-1eec1b277fcmr2181528637.37.1739820618829; 
- Mon, 17 Feb 2025 11:30:18 -0800 (PST)
+ bh=oS5Y9/paa9jMbBQhn+BAkk9Qf6Zlh0Z5idEcCp0uG9E=;
+ b=KIlluHIbZwpfeEJRXQL04p0U23o5+V3L4+Vg3NHP8YaKJsHP4KjLdnsfOVCImkaqSc
+ J6aFKr19kWWPoifJl1g+xHRD8fKJDpGEYL23Z8AxWOkakjP3UTOr1Zb5K4SYyKGL484e
+ Bg+pCSsJin0xOIlqyvw+SQqZxG+nbiqFqN2dtO+nd9jwO450OQX7+uQ8Fe3krGSasmai
+ lJQSx6qDcLH+gMjpi9LkAiNw5yAjKuY77jMT4W1f0TYG/s3vYUvXbkqfF27HU+es5ABB
+ oZP9kRa0uC0n7vdyRcG+xmPqmSba+ryV02XKYnlyAMNkopLhDRRVz8Dxc8jhhPZZR63O
+ zNhg==
+X-Gm-Message-State: AOJu0YzV4Nu8X8YJ+hRx7yf6eBhC/snJpK4/O3DB/cSaTwBTzvvKf8dt
+ qo8I+0gbRTkH6gzjmY4j2xIQtEB/7q3+OOk1MtuE+LoTUh5O34KN+SSyajqKaXLCOK26wR2cyvb
+ 7
+X-Gm-Gg: ASbGncsZcGeGU708lH0synUj6hcKziJJoh2AEuyxPewR5X3NZ9IJMrQJJnaL6zi1XVR
+ UP/TA/LXjGLBpAzj5m2DkWu8F6khYp5lHd28DRm/fs0rdROrHJvhOFoUyECEDAQqwBYJKnJ43Zy
+ GlLYyBzHv9vxi/gmC9rrCOvcrNy3aFBL+FMfF7oebm0AiwayNzQGze6OVyap9ZvIvsUHgUvWGs2
+ MqtrYdpIY6lhg7KHH/kvhFfQRR5oBmGXeT8MTTVqjeinTnlP2KE8pvdqXxwIei4xMrL0wKjB59/
+ oQjDFZTF0yP5IvrUQNTHnHmKX7b7PN9Vw+LILpHAcO4OvMI=
+X-Google-Smtp-Source: AGHT+IEEjVJ/kWBfynp0EQUl53uERQFDTLOp1xHgMCvZRu+Lnf0SqzG/1efzi3fCqeVJxWQzDaoVrw==
+X-Received: by 2002:a05:6a00:3d0f:b0:732:4c47:f807 with SMTP id
+ d2e1a72fcca58-732618fa196mr14649336b3a.21.1739820619502; 
+ Mon, 17 Feb 2025 11:30:19 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.18
+ d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:30:18 -0800 (PST)
+ Mon, 17 Feb 2025 11:30:19 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 11/27] accel/tcg: Fix tlb_set_page_with_attrs, tlb_set_page
-Date: Mon, 17 Feb 2025 11:29:52 -0800
-Message-ID: <20250217193009.2873875-12-richard.henderson@linaro.org>
+Subject: [PULL v2 12/27] target/loongarch: Use VADDR_PRIx for logging pc_next
+Date: Mon, 17 Feb 2025 11:29:53 -0800
+Message-ID: <20250217193009.2873875-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,35 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The declarations use vaddr for size.
+DisasContextBase.pc_next has type vaddr; use the correct log format.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/loongarch/tcg/translate.c                   | 2 +-
+ target/loongarch/tcg/insn_trans/trans_atomic.c.inc | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 17e2251695..75d075d044 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1193,7 +1193,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
+index 3480f54c71..e59e4ed25b 100644
+--- a/target/loongarch/tcg/translate.c
++++ b/target/loongarch/tcg/translate.c
+@@ -289,7 +289,7 @@ static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
  
- void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
-                              hwaddr paddr, MemTxAttrs attrs, int prot,
--                             int mmu_idx, uint64_t size)
-+                             int mmu_idx, vaddr size)
- {
-     CPUTLBEntryFull full = {
-         .phys_addr = paddr,
-@@ -1208,7 +1208,7 @@ void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
- 
- void tlb_set_page(CPUState *cpu, vaddr addr,
-                   hwaddr paddr, int prot,
--                  int mmu_idx, uint64_t size)
-+                  int mmu_idx, vaddr size)
- {
-     tlb_set_page_with_attrs(cpu, addr, paddr, MEMTXATTRS_UNSPECIFIED,
-                             prot, mmu_idx, size);
+     if (!decode(ctx, ctx->opcode)) {
+         qemu_log_mask(LOG_UNIMP, "Error: unknown opcode. "
+-                      TARGET_FMT_lx ": 0x%x\n",
++                      "0x%" VADDR_PRIx ": 0x%x\n",
+                       ctx->base.pc_next, ctx->opcode);
+         generate_exception(ctx, EXCCODE_INE);
+     }
+diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+index 974bc2a70f..3d70d75941 100644
+--- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+@@ -56,7 +56,7 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+     if (a->rd != 0 && (a->rj == a->rd || a->rk == a->rd)) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "Warning: source register overlaps destination register"
+-                      "in atomic insn at pc=0x" TARGET_FMT_lx "\n",
++                      "in atomic insn at pc=0x%" VADDR_PRIx "\n",
+                       ctx->base.pc_next - 4);
+         return false;
+     }
 -- 
 2.43.0
 
