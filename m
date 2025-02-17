@@ -2,74 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAF2A37D00
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 09:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95FA37D11
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 09:21:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjwLc-0003fT-2w; Mon, 17 Feb 2025 03:19:24 -0500
+	id 1tjwM4-0005au-Qe; Mon, 17 Feb 2025 03:19:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1tjwLP-0003NR-IH
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:19:12 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1tjwLN-00016Q-HP
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:19:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739780349; x=1771316349;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=E5Ngw7fVDUDC+t1CAmd5+sTvqe9bA5/nLMHz0pQXMco=;
- b=Iq9wxP/T2WX7P4qibw9sMwOQLSkHo+sz60PDMMeTugtiGZa4pL62Sczl
- EU4bxdx1wlAFu4hL8YR30/amx7KUQ6o6RYyK3OUMsKztT2z4kjk7Jtr09
- uztR3FkHDXCQa6nDOJJ2iwC8eKLnuSbMbCvwO8+ZOtWb+9B05kC+7UoG3
- +VBxVturt1awWGJXFcoEvkcXsUS1e5PDFAo361aEZ8+qwVE7PC60T3gZO
- v6J0KUBTQjjO2B2oAauJFd/6YSxfo9L/rAAfbHSleYnWoP2coxa1QdEGf
- aBRlX9+4DVUX9WqtbHXmoy3Ty++9tw5P4s62RvlKHoiD5kzeFAxoAEg0e w==;
-X-CSE-ConnectionGUID: vEqp5VWzQ8OipB15yttzqQ==
-X-CSE-MsgGUID: aLFJXWmoSWOUyWYzOeasmA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="50669014"
-X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; d="scan'208";a="50669014"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 00:19:07 -0800
-X-CSE-ConnectionGUID: 3PtVm0eITQy1Op+8wtRspw==
-X-CSE-MsgGUID: 20dN3Mz6Qqm1GqR+j0/lpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118690267"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 00:19:05 -0800
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v2 6/6] RAMBlock: Make guest_memfd require coordinate discard
-Date: Mon, 17 Feb 2025 16:18:25 +0800
-Message-ID: <20250217081833.21568-7-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250217081833.21568-1-chenyi.qiang@intel.com>
-References: <20250217081833.21568-1-chenyi.qiang@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11;
- envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.382,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
+ id 1tjwLu-0005MU-2h
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:19:42 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
+ id 1tjwLs-000172-2U
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:19:41 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-220ca204d04so53324435ad.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 00:19:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1739780378; x=1740385178; darn=nongnu.org;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gDAvIEmpWpFT/aa/l7nf99wPxKKGcDh5A57FUObLhds=;
+ b=KoM7RZqNHShrN3jS+aIKXF1/YSryOE6kWlNvcCP8DpFQjpt6JmbH1/++eulYj7gxsI
+ zNb6rRK+SG380ikdjfpZjYSunwftz0DbO6H48qfuL+8JiIb3NkwQe53/oAureB+59Y1S
+ 5xDL4KPX+87Zc4JjVrlQIfogf6+6aQ+TpL33nPLP6ON6a3/UwEjzKa/rKNCtMgcCc8XM
+ w1Q/K7xTjdfStRrnt343Y0bqDm2cVjthO+2mMfDO8vnu97jOuHkS9MVDFKOcAp3gImN0
+ iHHubp4Ro6KImAgV/drhwd2mlGgbspp6Dnxj8nWOM0GurHGkgBpLN2Jjycdo3JKurvwq
+ kinA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739780378; x=1740385178;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gDAvIEmpWpFT/aa/l7nf99wPxKKGcDh5A57FUObLhds=;
+ b=B8ePtNFUiM+sDTg+lkgrwU6+lnq+7MNFmk9/xFofAka1KN6IwJN/sRncATSOi4OZmX
+ id4u2nvc6+7XUoWuNofIivI9HIzX3SrErhSwBXhcSGrK0cQjzbiR/SDX8M3r2Gq6Y/Yt
+ deDRy81+U2mTY0L5KPrpiqdKLIhgAAYKdsnTZATRTo+GFwDIDyyEksSHxHjDK/x+CE6J
+ v+hw0Y8rHomhZmRZ+f9xqBBae89ZnNZDVcmkNeD23V4p2z0yZRFO7s8jSn6uvu22u4mM
+ PivXDkyYq6+ldZQReNfPXmjwFodJx9KMgf4dV/FnoOIj0b89BhYE6MLj1idl8/RBw5zp
+ 7TMw==
+X-Gm-Message-State: AOJu0YyTCGqTm6KocM1yQ9bqu77ucycZrPt7S/WbAVvXtCu1e5x7nwWD
+ 4imS0orN0bcub8KvVI8FVqJlXUz7G/5qG7FcTON7DQ7CLERmGs6yLmYj6L/KRXLR1SQ9BKLwe+V
+ z/3WfLHqCOWkK12ZONhFgYOV3083flaXDmVkUJvASgTZxoG/+Xuo5+8NCepBc6TSZc/q8KxvftC
+ /brR2IyvwmT6Eee/jb8tDYpmZxcFxVPYVsgHcg6SRTnA==
+X-Gm-Gg: ASbGnctk5zuuhU5W5hD+ELtlib0kQmMf/+8Zt/UKn5b0uinbZ899dC2q/cA1wpT62BF
+ DLY6zLa6olCg85tK8OMo9VB80JRf3mUDblvIC6mAqcbJWDDwzwW/ptguhIHjvX2CHiZSpb0TIbM
+ HzfspMRIgkJnskervKDK/G7mCo8+qlnjKlA9ZoryKXwYgXqDFsIzOCby+yDlbjCasWAifFceTc+
+ 3KVWTZXk6Nar2NjAUTDRnxiiSG+Gr/AmI/ZC09CXliUbzSu8cNIqdFMP9EhALF65Rh4mBNl3WaH
+ rOWVsoU/+xYkT/40uzKXH096bHhQkbCiPwS8D0KNlfkZMA==
+X-Google-Smtp-Source: AGHT+IGVSAgiuDdPJw7fIZgiH+FLHuDrK75AnVxFL2DNppjkS8MubIX1kmvusJ8RTG+hRgPXGNC8nw==
+X-Received: by 2002:a17:902:e88d:b0:220:cab1:810e with SMTP id
+ d9443c01a7336-22103ef206cmr134473255ad.6.1739780376631; 
+ Mon, 17 Feb 2025 00:19:36 -0800 (PST)
+Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d556d5e6sm66023445ad.173.2025.02.17.00.19.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Feb 2025 00:19:36 -0800 (PST)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, frank.chang@sifive.com,
+ jim.shu@sifive.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH 0/4] riscv: AIA: refinement for KVM acceleration
+Date: Mon, 17 Feb 2025 16:19:22 +0800
+Message-Id: <20250217081927.10613-1-yongxuan.wang@sifive.com>
+X-Mailer: git-send-email 2.17.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=yongxuan.wang@sifive.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,50 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As guest_memfd is now managed by memory_attribute_manager with
-RamDiscardManager, only block uncoordinated discard.
+Reorder the code to reduce the conditional checking and remove
+unnecessary resource setting when using in-kernl AIA irqchip.
 
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
----
-Changes in v2:
-    - Change the ram_block_discard_require(false) to
-      ram_block_coordinated_discard_require(false).
----
- system/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Yong-Xuan Wang (4):
+  hw/riscv/virt: KVM AIA refinement
+  hw/intc/imsic: refine the IMSIC realize
+  hw/intc/aplic: refine the APLIC realize
+  hw/intc/aplic: refine kvm_msicfgaddr
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 0ed394c5d2..a30cdd43ee 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1872,7 +1872,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         assert(kvm_enabled());
-         assert(new_block->guest_memfd < 0);
- 
--        ret = ram_block_discard_require(true);
-+        ret = ram_block_coordinated_discard_require(true);
-         if (ret < 0) {
-             error_setg_errno(errp, -ret,
-                              "cannot set up private guest memory: discard currently blocked");
-@@ -1892,7 +1892,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-             error_setg(errp, "Failed to realize memory attribute manager");
-             object_unref(OBJECT(new_block->memory_attribute_manager));
-             close(new_block->guest_memfd);
--            ram_block_discard_require(false);
-+            ram_block_coordinated_discard_require(false);
-             qemu_mutex_unlock_ramlist();
-             goto out_free;
-         }
-@@ -2152,7 +2152,7 @@ static void reclaim_ramblock(RAMBlock *block)
-         memory_attribute_manager_unrealize(block->memory_attribute_manager);
-         object_unref(OBJECT(block->memory_attribute_manager));
-         close(block->guest_memfd);
--        ram_block_discard_require(false);
-+        ram_block_coordinated_discard_require(false);
-     }
- 
-     g_free(block);
+ hw/intc/riscv_aplic.c | 73 ++++++++++++++++++++-------------------
+ hw/intc/riscv_imsic.c | 47 +++++++++++++------------
+ hw/riscv/virt.c       | 79 ++++++++++++++++++++-----------------------
+ 3 files changed, 102 insertions(+), 97 deletions(-)
+
 -- 
-2.43.5
+2.17.1
 
 
