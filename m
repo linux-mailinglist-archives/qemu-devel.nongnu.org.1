@@ -2,96 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604C6A38D0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 21:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDEBA38D3F
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 21:23:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk7U6-0006N4-46; Mon, 17 Feb 2025 15:12:54 -0500
+	id 1tk7e0-0000PS-3a; Mon, 17 Feb 2025 15:23:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1tk7U3-0006MC-SQ; Mon, 17 Feb 2025 15:12:51 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1tk7Ty-0006As-R9; Mon, 17 Feb 2025 15:12:51 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HFdnIN020381;
- Mon, 17 Feb 2025 20:12:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Zb0fZ9
- ioi9EjTr2Dp2IEaoK9/DTDWNcgE8RHEsteMgU=; b=dMbegbqpDhxcD0/TqOI+iL
- tvM6SNs8IPgVbPYBWpqPfSNKL9ecY2vz3iXTXZQN1JQXcpxbkm9WJzjyravR61Wu
- 8QBXy+hBJxXNJ/h2/kc9uoHF7dkLi9jZNWJt+X7oX/hJD5bCArTYZEFcVyhoD5iG
- YJJisFvSGRd9dPa6E7dE5XG6eianPa8alUmsfM050jgIz5P7+thDh1LsJhxCIfVN
- niFlD3ZpZP9EUewi10xI82OHiM/h6ZKZ6Qa1ZJUPnan7g2hS0Y6ESje06qRPRJAU
- iP5B2XWAOk3oDLdsYuWtOjRNsIUQXXloKCYvfAQl7nm3m3HROewFbtKDIkIoLWgg
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v7xu965e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 20:12:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51HGF9TM008171;
- Mon, 17 Feb 2025 20:12:41 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u58tfwhe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2025 20:12:41 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51HKCe1K27198122
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Feb 2025 20:12:41 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A647958043;
- Mon, 17 Feb 2025 20:12:40 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 393B058059;
- Mon, 17 Feb 2025 20:12:40 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 17 Feb 2025 20:12:40 +0000 (GMT)
-Message-ID: <413fd61d-a30d-4061-bc71-d0efe92e625f@linux.ibm.com>
-Date: Mon, 17 Feb 2025 15:12:39 -0500
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tk7dv-0000Ox-05
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 15:23:03 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tk7ds-0007d2-Eg
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 15:23:01 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5e0452f859cso2849744a12.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 12:23:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739823779; x=1740428579; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3TYWyrchUK6/kz4m4SFvU74GuvLK7pWit2+MOlwNuSA=;
+ b=jY20xu/fiibJ/zmEqkLHemg6yk9BJ8QHzj4yV9swow98Ps3eF0P6KYTXVeKXJJfCUw
+ gdUExsz2ppeH+/llqR9T9Qjg/GMWPhYw+yAXrB2fDy6SwXlJ5893KDhdAsaj/mZtJUYq
+ RQaAK6+i00kue1Mze1VTF6xe+gCoFX3gml8FsFOJ0cOzPbKNEetwiLkCEpBC8h452AS0
+ C0/4X7PSV17jCAnN2J7DSIDPIf4UjROk7meatXD4Cc8YUR+aivESKnBqV+i3b1pTivZQ
+ Z39hG5gMhOkCIwzjBpJ0tmxd5xTGF1WJEkeraGR3Nv+GkEnB4rU7rbkXDXvEPs55EsnT
+ ab+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739823779; x=1740428579;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3TYWyrchUK6/kz4m4SFvU74GuvLK7pWit2+MOlwNuSA=;
+ b=E9hno8cXWU4Mqpo4NrnfhgTo73FU2UFDkLMG/c9SytcuzvcFTvWupIncHhTLxTXBp4
+ EimLLKO7wb2EndrhlKeX8UPsv335XHh9TsRH4QGRUoTK5rWJes7XnhyDUlvw4f3UsWEL
+ au/J9ajRLj1WbyiV7ZAyE3K1GieiiBUudTmB/8x+pswH1sA/RpjKHJWU5ltPocuNCfmO
+ 2I/gGgpkqEMASGYqgWrMrIV/di+6awWLr21X4s7lukAxOmA+4OOJ3/NQRz7Ncxrpyw6W
+ nJOu+zBzPjUh8ft8ZPGtsVo61KEAl+YT4q0ttwF3aqIl0gDpJKS7xVLkS1LctHex9CUu
+ VlwQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUzUuC2wpu7w0e7a5uVXD3lrBwibjRCwU0Tj4oV+6Us252oGkV2JI5Qc22dvs20kiI6zloLFRAX/xP2@nongnu.org
+X-Gm-Message-State: AOJu0Yxm1yPQTShE6zwsV3fxjlDVCL82TKRECIu3Tm7y8qaQxkEKAXWG
+ nzlFd8hkZZIDY/2MqCp2+DQVeGUesg7QigGxW9VCd0BT4tpTGAtQ
+X-Gm-Gg: ASbGncvmg2OveHjBFppkCvzE4B39kRnxt/eFWNh+PifP//JoWbg50Gud4i2OTL85EWs
+ o3qqkNFbGhOF3KV55U2ZQcsl7ruSuQj4h205fu2Rm0+MiQvMgbBw0sLbN/HLTYgGx+I/9PRLBm8
+ q2kRx+epwyJ0MaXB/rYVtpYtE3QraODRQw9fILdA0XcOY32FIajONoFz6xVsI2sxjuloz6ESIhP
+ wmf87XSrgaASmqRDN+4vW+9BuHjybFfyXQaGO+7pgj4WXmOdCVAInVD953j30UGZLdvmTg8ng7K
+ Fa4AnN5ghD96UREjy/HYJWSFaPU2ExKJcSmasj4sJ93F2JRBpykMU1Q6dlPpAORtB7E=
+X-Google-Smtp-Source: AGHT+IFYlYu4n9DPiLospEBVzR1cxAjCdB2K96I8AOXpD/QX6t23P40cdu5FS9Vn6t0Jxo1Lc1x1kQ==
+X-Received: by 2002:a05:6402:13cf:b0:5e0:7199:5495 with SMTP id
+ 4fb4d7f45d1cf-5e071995c7cmr1913816a12.6.1739823778583; 
+ Mon, 17 Feb 2025 12:22:58 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-191-175-027.77.191.pool.telefonica.de.
+ [77.191.175.27]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5dece1d3693sm7609593a12.39.2025.02.17.12.22.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Feb 2025 12:22:58 -0800 (PST)
+Date: Mon, 17 Feb 2025 20:22:56 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 0/2] Move Fuloong2e PCI IRQ mapping to board code
+In-Reply-To: <ba385271-bad2-9df2-e3e0-9f7018a77b81@linaro.org>
+References: <20230105154440.259361-1-shentey@gmail.com>
+ <ba385271-bad2-9df2-e3e0-9f7018a77b81@linaro.org>
+Message-ID: <F7FB9E8F-6DC5-4DB0-A82E-0D7E1ADF851B@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/3] TPM TIS SPI Support
-To: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, stefanb@linux.vnet.ibm.com, pbonzini@redhat.com,
- farosas@suse.de, lvivier@redhat.com, dantan@linux.ibm.com
-References: <20250216221155.30013-1-dantan@linux.vnet.ibm.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20250216221155.30013-1-dantan@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jeyLBupiHaMShg3zB--BPjjk2c1y6iyq
-X-Proofpoint-GUID: jeyLBupiHaMShg3zB--BPjjk2c1y6iyq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-17_08,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 priorityscore=1501
- spamscore=0 adultscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502170157
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,16 +101,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 2/16/25 5:11 PM, dan tan wrote:
-> *** BLURB HERE ***
-> 
-> Version 9 summary:
->      1/3 tpm/tpm_tis_spi: Support TPM for SPI
->          - rebased with the master, and conform with the latest
->            device property definition
->      3/3 tests/qtest/tpm: add unit test to tis-spi
->          - remove unnecessary tpm-tis-spi qtest start parameters
+Am 16=2E Oktober 2023 09:05:00 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
+philmd@linaro=2Eorg>:
+>On 5/1/23 16:44, Bernhard Beschow wrote:
+>
+>> Bernhard Beschow (2):
+>>    hw/pci-host/bonito: Inline pci_register_root_bus()
+>>    hw/pci-host/bonito: Map PCI IRQs in board code
+>
+>Thanks, queued to mips-next=2E
 
-Were you able to test it with Linux now?
-
+Ping=2E I think it's not merged into master yet, is it?
 
