@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46DDA38C87
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB96A38C8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:37:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6tx-00082t-9G; Mon, 17 Feb 2025 14:35:33 -0500
+	id 1tk6vC-00021Y-SP; Mon, 17 Feb 2025 14:36:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6tQ-0007iB-Vy
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:35:02 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tk6v2-00020T-Uu
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:36:41 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6tO-0000Pe-MT
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:35:00 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-220d39a5627so67779735ad.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:34:57 -0800 (PST)
+ id 1tk6v1-0000jP-Da
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:36:40 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2fa7465baceso9471462a91.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:36:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739820896; x=1740425696; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=4KAxsTWm6v4s+2jcR+PITVinek53Ik16QQwGPW+9US8=;
- b=FNb3Y5J8R7NprigDgciDJqa7nJS53Rz6LDlmzLYK7BXLpiSFU4FRwZgnf9/livS0J2
- C/lfROnYsQtQyAlrBuOWL8yGEKVbbsIGQ0nPNXCMu8CZBvLYHSMd7l3STJ6r44pe/LgL
- d4RFgV/H4MC5kVUHc6/4dsEoo44YWoiJLePTfCzql6/ip5Dhrd3pnDG3i/Q2ZirloUBQ
- ULo9CznTpK0bicxK6rO/xDECXCJveJXrUVbN4vT53of0VqrjXGh3dez9dP0dQDHHK3lO
- ctnVpmOaI5+9nMW/65f4TBlZwNBWeQpAWspRO+oOGFvjmF89emodx53rh3W+WEytcKfo
- 78Bg==
+ d=linaro.org; s=google; t=1739820997; x=1740425797; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9+xnPYV/Y2GCTN+4P+3j7PfZxpOj4ENew8IpS/+IoKE=;
+ b=RxndN6m/V/p3JmMvHbt3QK9jfMJvpyzMyDQGm//pt5eynbulyne92NBh1c79A1/hQn
+ bHEnbYYPWau5kQns0Nl0u0LILs7HCx2kKzBGA9+M4fUsVB2KwaarySZyKb8C1/RnH0aG
+ 6Md2ELJp4vrAwO8E9bQRUIX3Gqk0n4hDL3Ab42zmzxS0fJGSFap08YWmB8geTBqUS4GP
+ cNFWJNVt32gcMTqAx+xRoiiOBQRpvd4wM81+GCXLJ8vwBd/+S+JpohdnyfVTh8g7aZsq
+ CBONVz/BZljhm66M3jR502BPvdC3+fg5iqyQWn0xzSBM/lxz87stspHrjVV6BlnvIIY6
+ 788Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739820896; x=1740425696;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4KAxsTWm6v4s+2jcR+PITVinek53Ik16QQwGPW+9US8=;
- b=GeFFVhZ/r8pMNoNWWmXAYQWtwV9PY/bYRZseAVcJYGL5MEwo3DHJRZILGPg9lbwLAQ
- ZpGXzSly7ceImC4Z/l0p4IX8n3IFv1lwo9swo2LvkTE56q7genZhYp0qVJaT3hAd9qlN
- b1JdYtaTb+fzDLr8sNqsF92NN08nOXbp2h1n4HV2NbUFc5gz6QuIS5edxWo0pyhpQBr6
- KrEF4+mbv6mD82VM4Xep2QXFzUjSad3lyksIDbzx+/2e+ZZC0JjxQMmzsT6DkHgNgSXd
- qsLkvL484mox417H4HPPqE0I8XJ7Hvi9tsIMlEd4AxdO10a1D4+F9WpeHtSR+WPJDQYr
- tzYg==
-X-Gm-Message-State: AOJu0Yx+PlCk4zrql4QGYwxS2miMjYd0adqZcW+qVcmGmYC3PFSZBs/V
- vuJ/i0/jaaDs4j1jd0N4eJo3pnP7Y9qNAyyCqSS3IbCXcaLoT87DQ2OXF/+GBUhUuHdkzc10m6F
- V
-X-Gm-Gg: ASbGncvNuazo7CkYRzWKTnoe/qTkeUuicT/4daFxu9YyxR+E2vBEoBQDhUUzXVOVqg5
- a+aW9eM/G5wyF+QxdvEVUXB63SXtcFsWHlUVcqb8xX632PYT2sa34JMiG1Mew9TFsQTVkNOB8Qj
- OVyND4ANtcKVwUZ70pcX+WZzEwZiBGaDDYAZJXvR8VTKiSEA8N+rnCJqRB5/dHH3ir3JrINmkwo
- YaJLu/zgwQPMWnPIdZxSrN9w+1Ry/xBfnBQ2APX1ahnMIzPiqsTUJUD8vmVrsXpaiwclGZU8hNa
- Pl7waW16BulwZeiTW3Ifnlke1ZY5S8o77whrElvKpJlfbKU=
-X-Google-Smtp-Source: AGHT+IF3d0yBeZhXpy3QxhUYY2rW8hsr3452fHOV1CnTO2ea09ywQMmrsEdCiwC1qguXOK0gl7QpAg==
-X-Received: by 2002:a05:6a21:6e47:b0:1e0:d1c3:97d1 with SMTP id
- adf61e73a8af0-1ee8cc03463mr22437807637.29.1739820894841; 
- Mon, 17 Feb 2025 11:34:54 -0800 (PST)
-Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
+ d=1e100.net; s=20230601; t=1739820997; x=1740425797;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9+xnPYV/Y2GCTN+4P+3j7PfZxpOj4ENew8IpS/+IoKE=;
+ b=dWd7z4NAE0fzfRS7lIZY0YQS8csvOE5rJA3tlla275a20UCW+f+CGAX/Fbriz1EbZ7
+ 8coOoq+P9qVdJm8TFftzCzZK1iW1oyY85hR6AiAg/LKiYObBczgRrleCn/DJ/crZtgAb
+ neF1BzHRIarBoBUxb9hDbWYxetrQQj6xXwBBApPySPf7leKXZHof5n49jzHxSpevBy2e
+ lvlzvl/xtR4gAg2DQhomn1sDxTaUyVI8zTRjs2yAB23c4Tk2/PrcUoo76JF1DiVfiLSE
+ ijEs+P7nrGNP3z4ld9tY0s9atQ7JRyHt+JR+JNpqpnE6Rke2F9zEiP5rntnl9M3bHEZr
+ Bzkg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmeOMOE9Qb1S80Z3uC/HphPTvKoGdE8C/oYGP+WIwa5Mjv7EOux3Rqa4eA6wUM5dUacK1oawdShFYl@nongnu.org
+X-Gm-Message-State: AOJu0Yz1x5Syp8GgZZqeUJM1QE0fIN+F4GlY0bgBHcxZnSgXsTK6n4Qt
+ +qZzWyMbrJoCIxd74ncIUFf6sWjgpeou3TDPpCDlyxHt+p/gWv+5Mn0ONfDfa4A=
+X-Gm-Gg: ASbGnctFy/T9i5QaUW45dS8AZCryLt4DenjagusptIkRo4FyhaOkEFTv3xlQ/Feaos1
+ 1Zn5j7Tnc5Fs7/H/tSVUjD8SOI/sRnVpW94SZel8qmBbHfu/gtyKnrMf1hljjJPP6Ly0TYtBAIw
+ vfMIEJt5EsNdmqgLTJKAStEjcNKnaqKdZyHXFOgrPBOuV9lgIhYMaSuI3xdiTfsD4H50JN/2Opa
+ IATn7+BfwFwn4afBo/c/ix+Z9ACDyvpFo4snbQ6jfeCF9oHoRDH9JtxvBWfYWADf1sAbZ6Z4fNo
+ 1gTWKNuQa81o4tqhrEUDVStuEx4f1iRF2bJonsPt+0JdfmaOWPns2eY=
+X-Google-Smtp-Source: AGHT+IFtyK2Sz0sNntUpl8+tHHKVorMnT+4XRRSRe7K5GlSsGwObTmtlANrqU1BWebvUP2ew0zk+Lw==
+X-Received: by 2002:a17:90b:1e46:b0:2ee:db1a:2e3c with SMTP id
+ 98e67ed59e1d1-2fc40c1b98emr17124630a91.1.1739820997569; 
+ Mon, 17 Feb 2025 11:36:37 -0800 (PST)
+Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326c87a86esm4128653b3a.132.2025.02.17.11.34.54
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:34:54 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL v2.5 00/27] tcg patch queue
-Date: Mon, 17 Feb 2025 11:34:53 -0800
-Message-ID: <20250217193453.2874125-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ d9443c01a7336-220d5590770sm74660925ad.231.2025.02.17.11.36.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Feb 2025 11:36:37 -0800 (PST)
+Message-ID: <67c6879d-6213-4204-9dff-183c831f11a2@linaro.org>
+Date: Mon, 17 Feb 2025 11:36:35 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] accel/tcg: Include missing bswap headers in
+ user-exec.c
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Riku Voipio <riku.voipio@iki.fi>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20250217130610.18313-1-philmd@linaro.org>
+ <20250217130610.18313-3-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250217130610.18313-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,137 +106,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: Fix target/loongarch printf formats for vaddr
-    Include two more reviewed patches.
+On 2/17/25 05:06, Philippe Mathieu-Daudé wrote:
+> Commit 35c653c4029 ("tcg: Add 128-bit guest memory
+> primitives") introduced the use of bswap128() which is
+> declared in "qemu/int128.h", commit de95016dfbf ("accel/tcg:
+> Implement helper_{ld,st}*_mmu for user-only") introduced the
+> other bswap*() uses, which are declared in "qemu/bswap.h".
+> Include the missing headers.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   accel/tcg/user-exec.c | 2 ++
+>   1 file changed, 2 insertions(+)
 
-This time with actual pull urls.  :-/
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
-
-
-The following changes since commit db7aa99ef894e88fc5eedf02ca2579b8c344b2ec:
-
-  Merge tag 'hw-misc-20250216' of https://github.com/philmd/qemu into staging (2025-02-16 20:48:06 -0500)
-
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20250215-2
-
-for you to fetch changes up to a39bdd0f4ba96fcbb6b5bcb6e89591d2b24f52eb:
-
-  tcg: Remove TCG_TARGET_HAS_{br,set}cond2 from riscv and loongarch64 (2025-02-17 09:52:07 -0800)
-
-----------------------------------------------------------------
-tcg: Remove last traces of TCG_TARGET_NEED_POOL_LABELS
-tcg: Cleanups after disallowing 64-on-32
-tcg: Introduce constraint for zero register
-tcg: Remove TCG_TARGET_HAS_{br,set}cond2 from riscv and loongarch64
-tcg/i386: Use tcg_{high,unsigned}_cond in tcg_out_brcond2
-linux-user: Move TARGET_SA_RESTORER out of generic/signal.h
-linux-user: Fix alignment when unmapping excess reservation
-target/sparc: Fix register selection for all F*TOx and FxTO* instructions
-target/sparc: Fix gdbstub incorrectly handling registers f32-f62
-target/sparc: fake UltraSPARC T1 PCR and PIC registers
-
-----------------------------------------------------------------
-Andreas Schwab (1):
-      linux-user: Move TARGET_SA_RESTORER out of generic/signal.h
-
-Artyom Tarasenko (1):
-      target/sparc: fake UltraSPARC T1 PCR and PIC registers
-
-Fabiano Rosas (1):
-      elfload: Fix alignment when unmapping excess reservation
-
-Mikael Szreder (2):
-      target/sparc: Fix register selection for all F*TOx and FxTO* instructions
-      target/sparc: Fix gdbstub incorrectly handling registers f32-f62
-
-Richard Henderson (22):
-      tcg: Remove last traces of TCG_TARGET_NEED_POOL_LABELS
-      tcg: Remove TCG_OVERSIZED_GUEST
-      tcg: Drop support for two address registers in gen_ldst
-      tcg: Merge INDEX_op_qemu_*_{a32,a64}_*
-      tcg/arm: Drop addrhi from prepare_host_addr
-      tcg/i386: Drop addrhi from prepare_host_addr
-      tcg/mips: Drop addrhi from prepare_host_addr
-      tcg/ppc: Drop addrhi from prepare_host_addr
-      tcg: Replace addr{lo,hi}_reg with addr_reg in TCGLabelQemuLdst
-      plugins: Fix qemu_plugin_read_memory_vaddr parameters
-      accel/tcg: Fix tlb_set_page_with_attrs, tlb_set_page
-      target/loongarch: Use VADDR_PRIx for logging pc_next
-      include/exec: Change vaddr to uintptr_t
-      include/exec: Use uintptr_t in CPUTLBEntry
-      tcg: Introduce the 'z' constraint for a hardware zero register
-      tcg/aarch64: Use 'z' constraint
-      tcg/loongarch64: Use 'z' constraint
-      tcg/mips: Use 'z' constraint
-      tcg/riscv: Use 'z' constraint
-      tcg/sparc64: Use 'z' constraint
-      tcg/i386: Use tcg_{high,unsigned}_cond in tcg_out_brcond2
-      tcg: Remove TCG_TARGET_HAS_{br,set}cond2 from riscv and loongarch64
-
- include/exec/tlb-common.h                          |  10 +-
- include/exec/vaddr.h                               |  16 +-
- include/qemu/atomic.h                              |  18 +-
- include/tcg/oversized-guest.h                      |  23 ---
- include/tcg/tcg-opc.h                              |  28 +--
- include/tcg/tcg.h                                  |   3 +-
- linux-user/aarch64/target_signal.h                 |   2 +
- linux-user/arm/target_signal.h                     |   2 +
- linux-user/generic/signal.h                        |   1 -
- linux-user/i386/target_signal.h                    |   2 +
- linux-user/m68k/target_signal.h                    |   1 +
- linux-user/microblaze/target_signal.h              |   2 +
- linux-user/ppc/target_signal.h                     |   2 +
- linux-user/s390x/target_signal.h                   |   2 +
- linux-user/sh4/target_signal.h                     |   2 +
- linux-user/x86_64/target_signal.h                  |   2 +
- linux-user/xtensa/target_signal.h                  |   2 +
- tcg/aarch64/tcg-target-con-set.h                   |  12 +-
- tcg/aarch64/tcg-target.h                           |   2 +
- tcg/loongarch64/tcg-target-con-set.h               |  15 +-
- tcg/loongarch64/tcg-target-con-str.h               |   1 -
- tcg/loongarch64/tcg-target-has.h                   |   2 -
- tcg/loongarch64/tcg-target.h                       |   2 +
- tcg/mips/tcg-target-con-set.h                      |  26 +--
- tcg/mips/tcg-target-con-str.h                      |   1 -
- tcg/mips/tcg-target.h                              |   2 +
- tcg/riscv/tcg-target-con-set.h                     |  10 +-
- tcg/riscv/tcg-target-con-str.h                     |   1 -
- tcg/riscv/tcg-target-has.h                         |   2 -
- tcg/riscv/tcg-target.h                             |   2 +
- tcg/sparc64/tcg-target-con-set.h                   |  12 +-
- tcg/sparc64/tcg-target-con-str.h                   |   1 -
- tcg/sparc64/tcg-target.h                           |   3 +-
- tcg/tci/tcg-target.h                               |   1 -
- accel/tcg/cputlb.c                                 |  32 +---
- accel/tcg/tcg-all.c                                |   9 +-
- linux-user/elfload.c                               |   4 +-
- plugins/api.c                                      |   2 +-
- target/arm/ptw.c                                   |  34 ----
- target/loongarch/tcg/translate.c                   |   2 +-
- target/riscv/cpu_helper.c                          |  13 +-
- target/sparc/gdbstub.c                             |  18 +-
- target/sparc/translate.c                           |  19 +++
- tcg/optimize.c                                     |  21 +--
- tcg/tcg-op-ldst.c                                  | 103 +++--------
- tcg/tcg.c                                          |  97 +++++------
- tcg/tci.c                                          | 119 +++----------
- docs/devel/multi-thread-tcg.rst                    |   1 -
- docs/devel/tcg-ops.rst                             |   4 +-
- target/loongarch/tcg/insn_trans/trans_atomic.c.inc |   2 +-
- target/sparc/insns.decode                          |  19 ++-
- tcg/aarch64/tcg-target.c.inc                       |  86 ++++------
- tcg/arm/tcg-target.c.inc                           | 114 ++++---------
- tcg/i386/tcg-target.c.inc                          | 190 +++++----------------
- tcg/loongarch64/tcg-target.c.inc                   |  72 +++-----
- tcg/mips/tcg-target.c.inc                          | 169 ++++++------------
- tcg/ppc/tcg-target.c.inc                           | 164 +++++-------------
- tcg/riscv/tcg-target.c.inc                         |  56 +++---
- tcg/s390x/tcg-target.c.inc                         |  40 ++---
- tcg/sparc64/tcg-target.c.inc                       |  45 ++---
- tcg/tci/tcg-target.c.inc                           |  60 ++-----
- 61 files changed, 548 insertions(+), 1160 deletions(-)
- delete mode 100644 include/tcg/oversized-guest.h
 
