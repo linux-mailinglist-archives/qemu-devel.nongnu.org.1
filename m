@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DDEA38C67
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D404A38C84
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:35:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pZ-0002A3-Eg; Mon, 17 Feb 2025 14:31:01 -0500
+	id 1tk6pd-0002I9-59; Mon, 17 Feb 2025 14:31:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6ow-0001ua-Be
+ id 1tk6ow-0001uZ-B2
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:22 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6ou-0008Lj-Eu
+ id 1tk6ou-0008MY-M8
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:22 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2fc0026eb79so8738460a91.0
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-221206dbd7eso26586585ad.2
  for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739820618; x=1740425418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739820619; x=1740425419; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qBwpUjrpRy3DP9hoK1GLQ8GO+p0lkCqNn69gucYO0P8=;
- b=px07RPkaOXNtP8tenxaiCEW4LiWNmO9Wfat5fz2KlMT6OnWMfvQAYgfIXVgOTAt1ON
- j6Q+sp7syfA0TZJwlGvXcH0tYya87lyd+G3V/w/+AlzlFSePldFJjR7mrQX/x3Lfiba9
- Zp0FfVTlSgnFG6QAsV6r+NE+qUXgn9JuL8U8ZjInu9M+8qcbWzJ4626wKaRtTS+utJtu
- CvIxw6d2barlwFeRcWrEfV0fCStyWOkTAHjTYKAnr+8v4FR4PLeILiOZGQyMcMEEyM18
- s5Rq+sR18vGK6JDELKeISa05apdoC1XvpKoGvL0DR8tX2iGMC6Z60eTH3HXOoeBxOQnI
- wcRQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=K2WH4FlAMIZ4FEc2EEi85vRc1c0fQFd97dzVfYF6JEw=;
+ b=neJJdwk4UPYsY3t45/cP8QwB2AF+ECfpIH9S+ZN5wQgVOLiH3pkLP34hgVBRinnc2f
+ gz+7r3cz6fGRhIuIqD/TWV0/GwMaK50aVBECCCZ5ZKw+CV+DWRvDrewq57nF1oGd7FF2
+ kyQDcX6WbKjbgb4DjY7GIJQtQTL6y1Pwp6y4qRH8Pyw2Ho9djH+iAU5UHnJJF+4mSdWk
+ 9t9beeu2zvzn0OiobjZAxn+VY8KZnRA/Yc75Dgj9dNZW3sC2UFpxXbqFsxlHpJJUl6L5
+ 7E/0m+j2p+VGNBH/TElpyOWvbAlY1kKWjtnQufTUsfLK0EyzjPcKDhC/FtxqglqaeSVj
+ rPkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739820618; x=1740425418;
+ d=1e100.net; s=20230601; t=1739820619; x=1740425419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qBwpUjrpRy3DP9hoK1GLQ8GO+p0lkCqNn69gucYO0P8=;
- b=Wjr12EY5M+orbKIy27yda6JapLs1S4f4Po/0c3IuNcbKMflZGJdPDnz+siCyqRVjce
- toeOjzxFVTDRIm2U6L7CB9fk6YjqqqWWH7r6TWGkU5HvIcmWGc/gJxaMDNjkznAmI9p9
- O4+t7hZ0acSn1k3s2XJ8TEpW5K4+ZHmuf3LiL54xkHkhl8XcwHAw6QND81BhI0D0NV3K
- CU9bWByjk8gWnqShtQf2SuBdncpnkgreQhwA9WOq95wBk31MyvRxdIjH//wtqiQPsmG6
- NbzZ056EUuEwCzFmJ2Vqi0TaXG5HHWe6T/LUlPyViK1mzVNZno3FMPnAWzDhElbyFvBK
- dkyQ==
-X-Gm-Message-State: AOJu0Yx5vPLWQJbIWJvmEbQnPej3S17ny3vpZlx84wpKtK/DHBdGuURx
- o41Y/7KU5UkJwCg7O6GmPGFmkYpwKwcCZiWn0t/yr9BCjqcZiglGFcJzuIwY+3hDSKTALHFlm7H
- 7
-X-Gm-Gg: ASbGnct5ygpwFuVgSa7fN8I20+5SND94qCFJu9RzQoGKnyBbxKbWSEU945EII/8MQ7o
- 71tNwh+EUK6B6AGy3vsH7nphtFTrZ/Iw5Gq0WplNW4GLrjNNJmLkrFGAfsGt96PBuiMc0aBtQo9
- TWnSXGlgQKo7pnunuxMLwb9GoYuSi52MydVy95I8NAr7k276WuowagCbGhcAukQsZKIj54RAa7F
- cOpTU4bKHR2q7wAhDPj73+JxUgs8Pzlh0WnBbIJvlcz8JQ0SIqacK2CUMwQCvhi1fiIoijywyHJ
- cVAJ0ttxydqkmcwpqxE6/tEuxhCm/xQKXX7b/iLE/t55gTI=
-X-Google-Smtp-Source: AGHT+IEt6eezSndiz5usoA/WWFi19VrFU/wIhn9aW/B8MvbY4+rFzpk1BoWh3Jgg5Mi+owZpeQLftA==
-X-Received: by 2002:a05:6a00:2d9d:b0:730:95a6:3761 with SMTP id
- d2e1a72fcca58-7326177e484mr20681206b3a.3.1739820618236; 
+ bh=K2WH4FlAMIZ4FEc2EEi85vRc1c0fQFd97dzVfYF6JEw=;
+ b=iJCQy/+MZ3GYTgQUB41CjDQqVv0n36nRmw56wONTQg/sBRSaq21wjlgWwvKCVjOhoO
+ y0fa+8muPDKNhmSHV1/pfyQG6aIyro6oGDmjyKAsK/wZxj9Kg4a8cKEtQsLFfrZgxa6O
+ AIEYaJMdgwQcZKWdM4Q+irEDWuLmJzN4y0+9sX9sjgOyRXxRClyb425RFasr1y9Aesyb
+ eHl9riqW6j0P/qCQY4MYHSdaRFwTaEkdlOkvcaTwnqswgq2gRxdGQAkGfYSzPKrMTPoa
+ ENETNTm/QZV7d4elyn5hlcg/FAbEz0EgYpu0y+x9rPqur48Wd3WnY/p39/iSPSV8TJcN
+ 4sqg==
+X-Gm-Message-State: AOJu0YwOeJN5CUiovt2QYIdEqSv3ncCSb5aDmb5X2Z+SHD1mMDotFYq8
+ eYdB5QJmixrbkbUelOH1QVuUHzZvELsWVeoFqgF0qUoIjgu8EhW8A1HgM6o5E78P+q31wpmHgA1
+ q
+X-Gm-Gg: ASbGncurA6RJ2YUpOFiVeUhbh5p6/uVo7CIrq4ryytQ8yVXdX74nMdtvuY98X0l8qxU
+ edZU4LLZnVatIAZ+cJBAfAc7fcYT8uzk4pbOfWUAUe/l6jRiKjYFX/BftfneemVjfXi16TjEzaA
+ 3XJ1HDrploqTgWfk/1h+hBs7cK5SO4v63zfkYhbMG4uz4m66WISZ8vAaqV8c7K5hzcISDGoJvyC
+ xWwrWbElW6LcZRmePuJy3M7xFh55wCguWB0hV+f0dEMkslERY57MSV//jtxV6gU4hkCDytnutuA
+ yKMc2/iIITDClGHMzTQWtCHf6RQ2gRDL5mVkmBBZ4+Y/1Cc=
+X-Google-Smtp-Source: AGHT+IGNDsAlWok9C/CMHiwXzRn2ZIVl3zZf9cKF+amhuQnuo+wGYnSD/i23zgeb6BRsICgXXHGtpw==
+X-Received: by 2002:a05:6a20:9145:b0:1ee:c1b2:76c8 with SMTP id
+ adf61e73a8af0-1eec1b277fcmr2181528637.37.1739820618829; 
  Mon, 17 Feb 2025 11:30:18 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.17
+ d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.18
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:30:17 -0800 (PST)
+ Mon, 17 Feb 2025 11:30:18 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 10/27] plugins: Fix qemu_plugin_read_memory_vaddr parameters
-Date: Mon, 17 Feb 2025 11:29:51 -0800
-Message-ID: <20250217193009.2873875-11-richard.henderson@linaro.org>
+Subject: [PULL v2 11/27] accel/tcg: Fix tlb_set_page_with_attrs, tlb_set_page
+Date: Mon, 17 Feb 2025 11:29:52 -0800
+Message-ID: <20250217193009.2873875-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,28 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The declaration uses uint64_t for addr.
+The declarations use vaddr for size.
 
-Fixes: 595cd9ce2ec ("plugins: add plugin API to read guest memory")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- plugins/api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/cputlb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/plugins/api.c b/plugins/api.c
-index 4110cfaa23..cf8cdf076a 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -561,7 +561,7 @@ GArray *qemu_plugin_get_registers(void)
-     return create_register_handles(regs);
- }
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 17e2251695..75d075d044 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1193,7 +1193,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
  
--bool qemu_plugin_read_memory_vaddr(vaddr addr, GByteArray *data, size_t len)
-+bool qemu_plugin_read_memory_vaddr(uint64_t addr, GByteArray *data, size_t len)
+ void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
+                              hwaddr paddr, MemTxAttrs attrs, int prot,
+-                             int mmu_idx, uint64_t size)
++                             int mmu_idx, vaddr size)
  {
-     g_assert(current_cpu);
+     CPUTLBEntryFull full = {
+         .phys_addr = paddr,
+@@ -1208,7 +1208,7 @@ void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
  
+ void tlb_set_page(CPUState *cpu, vaddr addr,
+                   hwaddr paddr, int prot,
+-                  int mmu_idx, uint64_t size)
++                  int mmu_idx, vaddr size)
+ {
+     tlb_set_page_with_attrs(cpu, addr, paddr, MEMTXATTRS_UNSPECIFIED,
+                             prot, mmu_idx, size);
 -- 
 2.43.0
 
