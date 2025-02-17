@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3405DA38C79
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE66AA38C68
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:31:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pr-0002vm-71; Mon, 17 Feb 2025 14:31:19 -0500
+	id 1tk6pr-0002yp-WB; Mon, 17 Feb 2025 14:31:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6pA-0001zN-UX
+ id 1tk6pA-0001zM-Qc
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:44 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6p6-0008Qq-CN
+ id 1tk6p6-0008R5-CN
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:36 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2fc32756139so4467831a91.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:30 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-221206dbd7eso26589065ad.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1739820630; x=1740425430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fAxPDj0myQVPp6aikkb7gZtJzw/Id1WCci49i4T0v4I=;
- b=GeXO26s8uJhbbhZSp3x+v8iU+EBwRbUQSZmng7epZ/3OgIKmYymvrcT+QPuvZdg08z
- WSI0saCze5buXYI6CtAJewLhKQ+0GCj+WJLLk70hr+ODfDaQmNgZiexY0mStOkT/5Hlr
- mWZpYcOsE8pDaasFT32VKHxqsrbv1/YMjBXzyy7y1VuNJR6pFI9UgioRBIMngDvhIFZS
- 8xlKmbKbKtaiIL4WDDumvLp56o/kI/9lX520VIgamzwszPTmgLymzF9PeqGpRmpij23x
- qSB9JrwIErW0jyuypmQPUG9ZAnElt6kMSqW58eYvsa1V4rPoOGKCRY8EJ30O+DbpdCzF
- RISA==
+ bh=ZoiLt3pf8hgXu53AUbpJI+JmE6qkg40H4RF3hXdm60A=;
+ b=r6Qn65mCal8xE383Ihe+VFdEu/bYDCXXiY56rCmWjSqYest3ZGD2irU2NNkfsMgZe2
+ uI7YXiOvM014ZMSnB7HWzgJ/RJy3xzqucoc3Nmez2TTOfjCXnsrr2xYPA0YmwZSNOZrq
+ pyiK4jif37KRWF16ZXAaeKdWUe22HKKAmBZ3LHrFqUUQvnkzaAjypNTUoCd10Nx2NKQw
+ HoNxS1gFRG2MzmWjkyvSMiGl3l4fOqVryNGi4cSeLlJR+uwHAN3rk4vdma3705PA4jHe
+ RjRrSzTCkAe7bY2a4JAoSiqtv/1vYW3PnbzJnHlPtgCtX0nkDDjQ6OZD/IOr5hNRC5ES
+ On6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1739820630; x=1740425430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fAxPDj0myQVPp6aikkb7gZtJzw/Id1WCci49i4T0v4I=;
- b=sOf5sw8xbwCu6bKqjqXLzujPqZxEHc4gMhyOz6tYL9eJLZfHZYHNZ/WbPWGMqg4rVn
- bMEhKiVoVHISPbfwWSJyre1gARjUrNI4lss6UjUB4QDhF3rZnnzH0NI6OTr9gkvJtmTx
- vDpPI7c5gYw6yZpGnGFsHBC7EYmOh+iFrDQJ7qk8YHQRtPOsUembT8xRrN/G8tuD+Dxb
- cMqZ/UR5Z+ih/rRE6DfFlcjzgYnMdLwqnj/vCvTX8FkmSy2nL7B1ps001ngewoq/0G00
- EuuLmnqtz7try9oBq03hnriP2ENG7eqocUJgD2i+4O030xx8Zns4+K9RD26y5CCOg8Ny
- xPIw==
-X-Gm-Message-State: AOJu0Yx/ZToo4bGetZTnfkKQQeD0NZxX6GBxWT9AOVwgwakFhYeYzbX/
- 0291r4YzBIEIOI8chjY/RwXw5OOe2jnPGgIIeFFx6mjfdzII5S4pNKT5AY70V1x+Q3uY2HVmDsN
- +
-X-Gm-Gg: ASbGncuUiFfHM187zlSdpXDxs/trNNgz84tQ9iCR5DzxUK/u8XzjjVKOHipqPDgFu1Z
- EQ+7s61F5bke8IH6wy0PR1yO7M/aaSzzaXN23tzAXx9l5icH132QaO7m5itzHY1dOPodjrHfoAk
- H4h1kjrlERyfy4tQ6W+M3qJhsR4Pi1Z3dJgJWI0EfkJ9n/R5hWp2uyj5d1utpEljG7e9ZfC9NNn
- wcoPsZBwQZGenJ3dcvFL5rcDeBudeU9niUQ3szyuPnUoDdXT1RM/3tMAh2cYzN0FRIz7/9t8DNo
- 7azUH0lhsHPS63fIxn/HjTxYMJtQjk6/9blr/1lJdoEVHSE=
-X-Google-Smtp-Source: AGHT+IFOJme4EDaf3qGSdffzK2Gk/xlW8pCGzRgLsNWPNc4qdtPVhp58YS3Okv4G852zwheljegutQ==
-X-Received: by 2002:a05:6a00:139d:b0:730:87b2:e839 with SMTP id
- d2e1a72fcca58-732618f564cmr18316945b3a.21.1739820629737; 
- Mon, 17 Feb 2025 11:30:29 -0800 (PST)
+ bh=ZoiLt3pf8hgXu53AUbpJI+JmE6qkg40H4RF3hXdm60A=;
+ b=nwvq4pfXZxE2RPOWvfXTSv1ZGOG27lHujker6iAfogVTX0dyweufsioZen33l1mWsm
+ EkGDN6SnlVpshbd2GX9ldUPKFdcEDGHEvB1QhhwjQTMIqXBcHUOzqIo86yN/Ig5KrF6y
+ BY3D+p5eLG71/AaN6eAkC5gGReZxKl4VXFmRKJKOj6hFBUQeyvksfwh+5ByKlRKeoRtT
+ BtfeObZMx1q6fT2qZ9ch9TKoPSnkeCUAxHFqsSg+SspSYKPrw6bM9U06ApevwUrZOWXe
+ rai4n6G3DXRQaMA3MdryjllpYIKLz6jsC4zFsiT5kwtiDy/3J+w5Kr8rXUc4VUWcNn+y
+ H1Og==
+X-Gm-Message-State: AOJu0YzAH2NF8cEPCOd824y43whf412A4XT5Rg7lb1eGULIyzvLUA+vU
+ QHBTHjpsHgwqpBdC4lobXoaO2j/X+Il6go5BcCiuk0SmEvgjl+ViFltLSG8ytYSdIBwLTtflFGx
+ w
+X-Gm-Gg: ASbGncuOunLNRu2hxIq98PAORaxco5kHEPFBvwwjIIfyfYrSOCuFQtGkPQV1fjSVTPP
+ UdgOuYEx/Lw+GBpE+S4moYZO9uRPTC1n9dOmxla7fq0QsOnayIVnFkvVUcuRZUop52lus1XDmOB
+ WjcWP5hSFrZGofxuHPu014+iKkSzmGuQ+h9eTRvC4OFCjzsB/WPoG7Ttk/klncFqLVUkbYQhqDX
+ CnIC/3LW4zg+pMbHEiyI4GJv7SVxf0YyL+XYlpN35XUJ0VH/uNLaNQM55HxRjDBtvfIt+dh2caa
+ sfLVmoJ4enXvvmrCgzSSn5I8Ab+d87QRdQxsBXaQnulP00E=
+X-Google-Smtp-Source: AGHT+IHIawPzs9+cqCzHj2zDg7TipA5DNpduJdML6R3d7m9168qKfxZ4toug6a5JfFQZVjm1q5QQEQ==
+X-Received: by 2002:a05:6a00:2d9d:b0:730:f1b7:9bc4 with SMTP id
+ d2e1a72fcca58-73261779914mr17984780b3a.4.1739820630568; 
+ Mon, 17 Feb 2025 11:30:30 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.29
+ d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:30:29 -0800 (PST)
+ Mon, 17 Feb 2025 11:30:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mikael Szreder <git@miszr.win>, qemu-stable@nongnu.org,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL v2 23/27] target/sparc: Fix register selection for all F*TOx
- and FxTO* instructions
-Date: Mon, 17 Feb 2025 11:30:04 -0800
-Message-ID: <20250217193009.2873875-24-richard.henderson@linaro.org>
+Cc: Mikael Szreder <git@miszr.win>,
+	qemu-stable@nongnu.org
+Subject: [PULL v2 24/27] target/sparc: Fix gdbstub incorrectly handling
+ registers f32-f62
+Date: Mon, 17 Feb 2025 11:30:05 -0800
+Message-ID: <20250217193009.2873875-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,45 +101,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mikael Szreder <git@miszr.win>
 
-A bug was introduced in commit 0bba7572d40d which causes the fdtox
-and fqtox instructions to incorrectly select the destination registers.
-More information and a test program can be found in issue #2802.
+The gdbstub implementation for the Sparc architecture would
+incorrectly calculate the the floating point register offset.
+This resulted in, for example, registers f32 and f34 to point to
+the same value.
+
+The issue was caused by the confusion between even register numbers
+and even register indexes. For example, the register index of f32 is 64
+and f34 is 65.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 0bba7572d40d ("target/sparc: Perform DFPREG/QFPREG in decodetree")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2802
+Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
 Signed-off-by: Mikael Szreder <git@miszr.win>
-Acked-by: Artyom Tarasenko <atar4qemu@gmail.com>
-[rth: Squash patches together, since the second fixes a typo in the first.]
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250205090333.19626-3-git@miszr.win>
+Message-ID: <20250214070343.11501-1-git@miszr.win>
 ---
- target/sparc/insns.decode | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/sparc/gdbstub.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 989c20b44a..cfcdf6690e 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -321,12 +321,12 @@ FdMULq      10 ..... 110100 ..... 0 0110 1110 .....        @q_d_d
- FNHADDs     10 ..... 110100 ..... 0 0111 0001 .....        @r_r_r
- FNHADDd     10 ..... 110100 ..... 0 0111 0010 .....        @d_d_d
- FNsMULd     10 ..... 110100 ..... 0 0111 1001 .....        @d_r_r
--FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @r_r2
--FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @r_d2
--FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @r_q2
--FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_r2
--FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_r2
--FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_r2
-+FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @d_r2
-+FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @d_d2
-+FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @d_q2
-+FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_d2
-+FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_d2
-+FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_d2
- FiTOs       10 ..... 110100 00000 0 1100 0100 .....        @r_r2
- FdTOs       10 ..... 110100 00000 0 1100 0110 .....        @r_d2
- FqTOs       10 ..... 110100 00000 0 1100 0111 .....        @r_q2
+diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
+index ec0036e9ef..134617fb23 100644
+--- a/target/sparc/gdbstub.c
++++ b/target/sparc/gdbstub.c
+@@ -79,8 +79,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+         }
+     }
+     if (n < 80) {
+-        /* f32-f62 (double width, even numbers only) */
+-        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
++        /* f32-f62 (16 double width registers, even register numbers only)
++         * n == 64: f32 : env->fpr[16]
++         * n == 65: f34 : env->fpr[17]
++         * etc...
++         * n == 79: f62 : env->fpr[31]
++         */
++        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
+     }
+     switch (n) {
+     case 80:
+@@ -173,8 +178,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         }
+         return 4;
+     } else if (n < 80) {
+-        /* f32-f62 (double width, even numbers only) */
+-        env->fpr[(n - 32) / 2].ll = tmp;
++        /* f32-f62 (16 double width registers, even register numbers only)
++         * n == 64: f32 : env->fpr[16]
++         * n == 65: f34 : env->fpr[17]
++         * etc...
++         * n == 79: f62 : env->fpr[31]
++         */
++        env->fpr[(n - 64) + 16].ll = tmp;
+     } else {
+         switch (n) {
+         case 80:
 -- 
 2.43.0
 
