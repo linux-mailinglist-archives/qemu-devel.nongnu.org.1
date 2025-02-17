@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8435CA38378
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:53:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3280BA38372
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 13:52:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk0b5-0001gs-Rl; Mon, 17 Feb 2025 07:51:39 -0500
+	id 1tk0b2-0001e6-2P; Mon, 17 Feb 2025 07:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk0aZ-0001bi-Eh
+ id 1tk0aZ-0001bh-EF
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:09 -0500
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tk0aT-0002Eb-Ah
+ id 1tk0aT-0002Em-Ak
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 07:51:05 -0500
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43971025798so10033255e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:50:59 -0800 (PST)
+ 5b1f17b1804b1-4395f66a639so25705735e9.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 04:51:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739796658; x=1740401458; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9ud18g85fOzOYfo/x43I9RD+IvZLBcjEbmt+1jX8zBw=;
- b=jKg5IILBsGj8+QMXYNQ1kKy8CRZo8EBGSCJiQlXTxoLN9szRvD4wtJcox0MGordiqT
- w36QB6j5dZxVx3ovSN2t7hR0o6SLwwwwt9spqrL3Omb+LkJK77lHoG/USiAm9oSGk+pU
- s4jTluc7uIiB1oVf7Z2ZIYa0yWdx0uWQmNm6lWzJLP/Wm7R3Yeo80rjSAkKCALu5qIw5
- M5hYabTpSHF5zxRETjfA6xOP3qgmANmnIv0Z20L/POiNaXn8C0S4iRtuHlc+kJdBp7SM
- 9ehRlRPpuLvGaIoE2hWg/gw8hvTdb+UkmD2+V6NQM+Vn34I4E4SwB6BCVesKtoHZtbvd
- aFIw==
+ d=linaro.org; s=google; t=1739796659; x=1740401459; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VhkrrKr5aoJgI3TCTwPvD+jLLmD4exjdwbCTWx+8ueQ=;
+ b=fxOnWblf3UGGliTyEYEcvYrhjYyDhIB3pLi+scSJoapK8o6pUFTiFPd8wj0Gm5EXZq
+ HwirPlAX/9nYGFLjBZqcgAaWkGqHf2t8IO0RzNDb8Scx0SvmkVmwTdV4g3bv0ivdDDAr
+ SVA37fFUZzTEnuIF+kTjUQeqCovwgFdc2NJk/1iyCXI6QDmpy0dqicSZV/JlT0agJDoQ
+ hUKvFEVZwPgUiLyzaYMOcG+hhhANVhT084xdPzIecvpeEbQ8NH/KX788zlWvV4av99TX
+ EvSJDlvsCOofQPozG1VL7BK0podVGkjLoviZT46Jhawfhfzi1oiQVzxEcKx4fFUWveVc
+ h7jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739796658; x=1740401458;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9ud18g85fOzOYfo/x43I9RD+IvZLBcjEbmt+1jX8zBw=;
- b=eIh50jo7S6ouunbWM8uZptd3w+vC4/qjoKe1k0zmyEpbnb6IOG1tnlXcZXnVVG1yda
- rK20GpOBxKKpJ2SRpwyI+WWwBlyW7twt9NbpNp4ynQ2usYHBcIDDYBmuiR2x//ImV4jf
- fx88tqUGbobp9xtVV//6g7WVJ9ANGvFXRh1Dnywv3/rCHRAI4YDcO0xa/ymLnL+8Cbqp
- oasX+/EVxeucLKDumusumvopnz6qtEtPrW3mIk241kgkvikgNxRRJQw7eNrQ2Ak+FCor
- M2zE77cgSScnnnzxjJiEkby+mFHOro2xPUGtZDwxqKAKvXuV8YbnuJrX57/44fvuIMuA
- uwsw==
-X-Gm-Message-State: AOJu0YxsNgf7OW7srKKQKi0zGgbHDdlrt1yhQJ8wSPuq+1oLE9lqKOwg
- RjCvyHs3hmNMCtiJwZP5zaHclGSZSixJPT5d3rqxttcQCv6M1a8LIrerJ7wuLwCvLr6HN56lxJa
- n
-X-Gm-Gg: ASbGnctqsE+XDKe5lrFmnGHGDHgFZvFxYItB3sE2VYVOCacmSB4M5G8oCc7qL75KY/0
- HI/JHi/4252E7/rZ9go7fuSXybTPGocvi9uN0lvvUfdvDPIERnNxzKRzconSIB7fzMqZLyhl3/y
- AyWyGt13n0YPlxli4T93BPIcOOP2wvwMKeZDmIpkir1mrWKXzgVWVWJNSw7G2DZNd0P9YOvU/hc
- 05c7y2G3Ab2OLJ83IpyzIZf97UfKmSQuNWbSZo4tT1Yf9mHjwBMe/BI1ljthBE1mXGaxE1N/k+x
- qVdtjYNWj9t6fRX5dU9PYg==
-X-Google-Smtp-Source: AGHT+IFI5/nQQLrAQs+P+H1J91bTfvKcs6gdXbZzFtmbxOlji0ZT3OxH7AK6/yDmUyAiWq3jmEJ8pw==
-X-Received: by 2002:a05:600c:4ecd:b0:434:a468:4a57 with SMTP id
- 5b1f17b1804b1-4396e750885mr70858545e9.26.1739796658128; 
- Mon, 17 Feb 2025 04:50:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1739796659; x=1740401459;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VhkrrKr5aoJgI3TCTwPvD+jLLmD4exjdwbCTWx+8ueQ=;
+ b=cYvdlFMWMzHQinyLX1v4kCAbGRaHunqyhYedWItN+tFMoAA2uO8OdGYCB7FHjc8H7d
+ ix3zCIgB6jUkdTE+O+QfsFSIfZ78p8CqAG0E5H1JtSQLlZWkwtjvB4SpKmjJX5Gyh0UR
+ Mh3iLBS7oGwSBy7Zs8GoKVf/ZDp8iI7bqclxNAiA+6oRGkNuBVNCPwr0G0hO65uR6PBf
+ eoI1YDA+0jEcgdQZUgCfGAk7LeqYqzvL8FhjfBWzegvErwUoHPvz6Q8vSLqA0UT6UBew
+ x8D7bu8QRKwyXmpfqxtiQOshIVn5xel2/dRyVma7XCyrGS/VQD58ISeeIV0rK/ucHmYV
+ qhhQ==
+X-Gm-Message-State: AOJu0Yyj3pIrieeoq+Xurrr1NEWb/0klhxd9jwSJZVI4G70hOWUFSOMm
+ LlmOlF0brP579PmX1rMPej9J/N1gSD6ZHTuY01NxkNzdM10g5UoPV5Cb4X/m/TjMCpAb3E8gxKs
+ d
+X-Gm-Gg: ASbGncvjruwog8MJ1Yt+PCDazYKsySRPW0auqtz7CrK0X1/FU6AmS/JJxo6huMLYU2K
+ C+5BA5S0VYEgi56Pyyo7JQYHBvIWdAeXPM7THAZur1S/U0VXhLUkiJWEd1347UePC6WMj5CEoVc
+ 6jY4T2xSTCNnNSlhlpdl80xX9FA/WFPFYxF4dgWNqT0Pv2PyICJtKTcmYRyS9xC0bYJeKRSPuhs
+ 2RsPHf5+ZhQeYwxVNUwW3Q8CnaTa7hda9kw2ZC+oXT6y0uRn6TVWZ1mfWIqQ7CacustJ5XIj29M
+ 889rdgkK7rfVOsJ4s2XLRQ==
+X-Google-Smtp-Source: AGHT+IHMdjRhMyxhRgSoN3sTNSkzdY9HmOcrVeEOoqTyP3g0RSb7w3rESHDAf8DBoggSDmp7VJRjgw==
+X-Received: by 2002:a05:600c:1c97:b0:439:403a:6b77 with SMTP id
+ 5b1f17b1804b1-4396e6c944dmr91964765e9.10.1739796659037; 
+ Mon, 17 Feb 2025 04:50:59 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4398e84efb9sm3562455e9.10.2025.02.17.04.50.56
+ 5b1f17b1804b1-4398e84efb9sm3562455e9.10.2025.02.17.04.50.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 04:50:57 -0800 (PST)
+ Mon, 17 Feb 2025 04:50:58 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 00/10] fpu: Remove remaining target ifdefs and build only once
-Date: Mon, 17 Feb 2025 12:50:45 +0000
-Message-ID: <20250217125055.160887-1-peter.maydell@linaro.org>
+Subject: [PATCH 01/10] fpu: Make targets specify floatx80 default Inf at
+ runtime
+Date: Mon, 17 Feb 2025 12:50:46 +0000
+Message-ID: <20250217125055.160887-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250217125055.160887-1-peter.maydell@linaro.org>
+References: <20250217125055.160887-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::329;
@@ -97,80 +101,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The work I needed to do to make various softfloat emulation behaviours
-runtime-selectable for Arm FEAT_AFP has left the fpu code with very
-few remaning target ifdefs. So this series turns the last remaning
-ones into runtime behaviour choices and switches the fpu code into
-"build once" rather than "build per target". The main driver of this
-is that we're going to want to do this for the "multiple targets in
-one binary" work.
+Currently we hardcode at compile time whether the floatx80 default
+Infinity value has the explicit integer bit set or not (x86 sets it;
+m68k does not).  To be able to compile softfloat once for all targets
+we'd like to move this setting to runtime.
 
-The remaining fpu target ifdefs fall into two categories:
+Define a new FloatX80Behaviour enum which is a set of flags that
+define the target's floatx80 handling.  Initially we define just one
+flag, for whether the default Infinity has the Integer bit set or
+not, but we will expand this in future commits to cover the other
+floatx80 target specifics that we currently make compile-time
+settings.
 
-(1) floatx80 behaviours
+Define a new function floatx80_default_inf() which returns the
+appropriate default Infinity value of the given sign, and use it in
+the code that was previously directly using the compile-time constant
+floatx80_infinity_{low,high} values when packing an infinity into a
+floatx80.
 
-Two QEMU targets implement floatx80: x86 and m68k. (PPC also has one
-use in the xsrqpxp round-to-80-bit-precision operation, and the
-Linux-user NWFPE emulation nominally supports it, but these are
-minor.) x86 and m68k disagree about some of the corner cases of
-floatx80 where the value has the explicit Integer bit wrongly set.  At
-the moment the fpu code defaults to "floatx80 behaves like x86", with
-TARGET_M68K ifdefs to get the other option.
+Since floatx80 is highly unlikely to be supported in any new
+architecture, and the existing code is generally written as "default
+to like x87, with an ifdef for m68k", we make the default value for
+the floatx80 behaviour flags be "what x87 does".  This means we only
+need to change the m68k target to specify the behaviour flags.
 
-The first six patches in this series remove those ifdefs, replacing
-them with a floatx80_behaviour field in float_status which can have
-various flags set to select the individual behaviours. The default is
-"like x86", which allows us to set these only for m68k and not worry
-about the minor "technically makes some use of floatx80" cases.
+(Other users of floatx80 are the Arm NWFPE emulation, which is
+obsolete and probably not actually doing the right thing anyway, and
+the PPC xsrqpxp insn.  Making the default be "like x87" avoids our
+needing to review and test for behaviour changes there.)
 
-I do have a question about whether I've correctly understood what we
-do (or don't do) for handling input pseudo-denormals, which we
-currently do via the FloatFmt::m68k_denormal flag; see patch 6.  I'm
-confident that the patch is correct, in the sense of not being a
-behaviour change, but less sure about whether the TODO comment I've
-added about existing incorrect handling is right.
+We will clean up the remaining uses of the floatx80_infinity global
+constant in subsequent commits.
 
-(2) simple optimizations
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/fpu/softfloat-helpers.h | 12 ++++++++++++
+ include/fpu/softfloat-types.h   | 13 +++++++++++++
+ include/fpu/softfloat.h         |  1 +
+ fpu/softfloat.c                 |  7 +++----
+ target/m68k/cpu.c               |  6 ++++++
+ fpu/softfloat-specialize.c.inc  | 10 ++++++++++
+ 6 files changed, 45 insertions(+), 4 deletions(-)
 
-A handful of the target ifdefs are making compile-time choices that
-can trivially be pushed back to runtime by deleting the ifdef.
-Patches 7-9 do these changes.
-
-Then patch 10 can update the meson.build file to "build once".
-
-Tested with 'make check-tcg' and 'make check-functional'; the
-series is supposed to not have any behaviour changes.
-
-thanks
--- PMM
-
-Peter Maydell (10):
-  fpu: Make targets specify floatx80 default Inf at runtime
-  target/m68k: Avoid using floatx80_infinity global const
-  target/i386: Avoid using floatx80_infinity global const
-  fpu: Make targets specify whether floatx80 Inf can have Int bit clear
-  fpu: Make floatx80 invalid encoding settable at runtime
-  fpu: Move m68k_denormal fmt flag into floatx80_behaviour
-  fpu: Always decide no_signaling_nans() at runtime
-  fpu: Always decide snan_bit_is_one() at runtime
-  fpu: Don't compile-time disable hardfloat for PPC targets
-  fpu: Build only once
-
- include/fpu/softfloat-helpers.h | 12 +++++
- include/fpu/softfloat-types.h   | 42 +++++++++++++++
- include/fpu/softfloat.h         | 91 ++++++++++++++++++---------------
- fpu/softfloat.c                 | 23 +++------
- target/hppa/fpu_helper.c        |  1 +
- target/i386/tcg/fpu_helper.c    | 51 +++++++++---------
- target/m68k/cpu.c               | 35 +++++++++++++
- target/m68k/fpu_helper.c        |  2 +-
- target/m68k/softfloat.c         | 47 ++++++-----------
- target/sh4/cpu.c                |  1 +
- fpu/softfloat-parts.c.inc       | 20 ++++++--
- fpu/softfloat-specialize.c.inc  | 29 ++++-------
- fpu/meson.build                 |  2 +-
- 13 files changed, 220 insertions(+), 136 deletions(-)
-
+diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
+index 8983c2748ec..90862f5cd22 100644
+--- a/include/fpu/softfloat-helpers.h
++++ b/include/fpu/softfloat-helpers.h
+@@ -75,6 +75,12 @@ static inline void set_floatx80_rounding_precision(FloatX80RoundPrec val,
+     status->floatx80_rounding_precision = val;
+ }
+ 
++static inline void set_floatx80_behaviour(FloatX80Behaviour b,
++                                          float_status *status)
++{
++    status->floatx80_behaviour = b;
++}
++
+ static inline void set_float_2nan_prop_rule(Float2NaNPropRule rule,
+                                             float_status *status)
+ {
+@@ -151,6 +157,12 @@ get_floatx80_rounding_precision(const float_status *status)
+     return status->floatx80_rounding_precision;
+ }
+ 
++static inline FloatX80Behaviour
++get_floatx80_behaviour(const float_status *status)
++{
++    return status->floatx80_behaviour;
++}
++
+ static inline Float2NaNPropRule
+ get_float_2nan_prop_rule(const float_status *status)
+ {
+diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
+index 53d5eb85210..dd22ecdbe60 100644
+--- a/include/fpu/softfloat-types.h
++++ b/include/fpu/softfloat-types.h
+@@ -320,6 +320,18 @@ typedef enum __attribute__((__packed__)) {
+     float_ftz_before_rounding = 1,
+ } FloatFTZDetection;
+ 
++/*
++ * floatx80 is primarily used by x86 and m68k, and there are
++ * differences in the handling, largely related to the explicit
++ * Integer bit which floatx80 has and the other float formats do not.
++ * These flag values allow specification of the target's requirements
++ * and can be ORed together to set floatx80_behaviour.
++ */
++typedef enum __attribute__((__packed__)) {
++    /* In the default Infinity value, is the Integer bit 0 ? */
++    floatx80_default_inf_int_bit_is_zero = 1,
++} FloatX80Behaviour;
++
+ /*
+  * Floating Point Status. Individual architectures may maintain
+  * several versions of float_status for different functions. The
+@@ -331,6 +343,7 @@ typedef struct float_status {
+     uint16_t float_exception_flags;
+     FloatRoundMode float_rounding_mode;
+     FloatX80RoundPrec floatx80_rounding_precision;
++    FloatX80Behaviour floatx80_behaviour;
+     Float2NaNPropRule float_2nan_prop_rule;
+     Float3NaNPropRule float_3nan_prop_rule;
+     FloatInfZeroNaNRule float_infzeronan_rule;
+diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
+index 09a40b43106..afae3906024 100644
+--- a/include/fpu/softfloat.h
++++ b/include/fpu/softfloat.h
+@@ -961,6 +961,7 @@ float128 floatx80_to_float128(floatx80, float_status *status);
+ | The pattern for an extended double-precision inf.
+ *----------------------------------------------------------------------------*/
+ extern const floatx80 floatx80_infinity;
++floatx80 floatx80_default_inf(bool zSign, float_status *status);
+ 
+ /*----------------------------------------------------------------------------
+ | Software IEC/IEEE extended double-precision operations.
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index f4fed9bfda9..b12ad2b42a9 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -1860,7 +1860,8 @@ static floatx80 floatx80_round_pack_canonical(FloatParts128 *p,
+ 
+     case float_class_inf:
+         /* x86 and m68k differ in the setting of the integer bit. */
+-        frac = floatx80_infinity_low;
++        frac = s->floatx80_behaviour & floatx80_default_inf_int_bit_is_zero ?
++            0 : (1ULL << 63);
+         exp = fmt->exp_max;
+         break;
+ 
+@@ -5144,9 +5145,7 @@ floatx80 roundAndPackFloatx80(FloatX80RoundPrec roundingPrecision, bool zSign,
+                ) {
+                 return packFloatx80( zSign, 0x7FFE, ~ roundMask );
+             }
+-            return packFloatx80(zSign,
+-                                floatx80_infinity_high,
+-                                floatx80_infinity_low);
++            return floatx80_default_inf(zSign, status);
+         }
+         if ( zExp <= 0 ) {
+             isTiny = status->tininess_before_rounding
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 41dfdf58045..df66e8ba22a 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -107,6 +107,12 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
+     set_float_2nan_prop_rule(float_2nan_prop_ab, &env->fp_status);
+     /* Default NaN: sign bit clear, all frac bits set */
+     set_float_default_nan_pattern(0b01111111, &env->fp_status);
++    /*
++     * m68k-specific floatx80 behaviour:
++     *  * default Infinity values have a zero Integer bit
++     */
++    set_floatx80_behaviour(floatx80_default_inf_int_bit_is_zero,
++                           &env->fp_status);
+ 
+     nan = floatx80_default_nan(&env->fp_status);
+     for (i = 0; i < 8; i++) {
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index cbbbab52ba3..73789e97d77 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -227,6 +227,16 @@ floatx80 floatx80_default_nan(float_status *status)
+ | The pattern for a default generated extended double-precision inf.
+ *----------------------------------------------------------------------------*/
+ 
++floatx80 floatx80_default_inf(bool zSign, float_status *status)
++{
++    /*
++     * Whether the Integer bit is set in the default Infinity is
++     * target dependent.
++     */
++    bool z = status->floatx80_behaviour & floatx80_default_inf_int_bit_is_zero;
++    return packFloatx80(zSign, 0x7fff, z ? 0 : (1ULL << 63));
++}
++
+ #define floatx80_infinity_high 0x7FFF
+ #if defined(TARGET_M68K)
+ #define floatx80_infinity_low  UINT64_C(0x0000000000000000)
 -- 
 2.43.0
 
