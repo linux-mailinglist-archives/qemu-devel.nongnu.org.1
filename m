@@ -2,98 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843DCA3842F
+	by mail.lfdr.de (Postfix) with ESMTPS id 606E9A3842E
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 14:14:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk0vz-00062k-Fk; Mon, 17 Feb 2025 08:13:17 -0500
+	id 1tk0w5-00063R-R7; Mon, 17 Feb 2025 08:13:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1tk0vp-000623-7P
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1tk0vn-00062C-2a
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739797980;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=DlqQ3uBHgTWfPPrHtLWbuiQ4oCE7jE+CS/eG0yKen/M=;
- b=E0BtbtzJ51MihBgmvwxbcpi4z8/c/dXoy7tykxmWk4bTlrt0ZXvKLwjSpkyJ98tUEE7fFd
- JnzzLPgchNxQA3UHhpfD2FFiq8tX+2mo8YpC35/LdjNv31FUyEoN60b3VN0Wah8QioVRwj
- PE3u26YTNje7NoOIogkrLr6QA5Y/hvc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-11ykxxSmPLCiOvlwazp6fA-1; Mon, 17 Feb 2025 08:12:58 -0500
-X-MC-Unique: 11ykxxSmPLCiOvlwazp6fA-1
-X-Mimecast-MFC-AGG-ID: 11ykxxSmPLCiOvlwazp6fA_1739797978
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43935bcec0aso35161235e9.3
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 05:12:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk0vr-00062L-JA
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:08 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk0vp-00062v-R6
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:07 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4393dc02b78so28656085e9.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 05:13:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739797984; x=1740402784; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GQFPpqikWGLZdZt+Ak+vVpSJS+vmERD2ytvbDps7YB0=;
+ b=Fek0DcnOCLaHw3pBwzJeeLS3pX7eC8q5WXNPXxAsn5pjg55F8fopnVsjUgfPGGs9hT
+ uLtii4yd5AI+HoEmt0YsSI89w7Safg2P6Wa7fToXmuPJeg+f7wx14ulTXBuILN2BxDJR
+ nqG9mKQ8ERxLwaD1RV4gRTwngatjeewbmju5NWF96DI6iFSVsmXCvOXirgvloa6BjXk5
+ 7AMfDvhNQP+PuhL6vhCMJd9pTSKtjPe67T+qwyhCjpLeJogEBBl5EIiUtqRbQ6gBql6t
+ 3o7YYPlmUTwMDkBKhl1tGlHXuU9ZHspzYrqXJ/bo3TsgdQ+k9OYwEoGAEHEdk9DEmjse
+ e+yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739797977; x=1740402777;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DlqQ3uBHgTWfPPrHtLWbuiQ4oCE7jE+CS/eG0yKen/M=;
- b=u8ESJAJTBzbfXGMk4MOHu07MVrTdkbsDaSr5r0LSrZtIRt5P271D7aWEmO95+HXCSJ
- +jLuSlAUwQ48TOlJL/m0orfEMuG0WTVO02/OundIwY7gXxvoFcKIpixSWMFxvhG2+AWw
- r1VlF3guGFTHUqdpefEqbWWVWNGm5e/IgiJ+TmIxS8AENytmKU8ARbI0QGYwsBaV4Yd4
- VZC+l1RBlGEhkqyI7W00Nk9IexYG63L2M5P2YYj0bzCKP85Ff3y6w/pVLNWQIabwYUJE
- czN78UsFOh70/i70Bh4Y30zRu76L8DiAZMMT6LTX1f3Yhj8nVhDAQPzRYTpF1UXO360a
- gn4w==
-X-Gm-Message-State: AOJu0YyNrKpleG45X6zjUizeXLL0Li+2LHWxjjly1mLpBz9bT3UinvOH
- Hd57ORLUgxY1+jdmB7eGI8Fh6bBf7V6aLvoMhC4OUYr3WNzVvze/HH/BmmhDGE8V6FdEwGMkp3b
- PxpSAEIQX/JxXkVIRbL4UkXkNRiWDN/PexBOayZTI3WOmaCuo08wICZLCY2Iqtrc65pwPl9aOIR
- UNKYV1wEKoU41XtKg35Hzz0XA1KwCuCMbfdiqa
-X-Gm-Gg: ASbGncuzFgMB11yfIapXL8e5SoflSwLA6XQ+8aVZEIwXDiP+XrOQWAcP4kFovq0Uadr
- GO3TyT55h32Zjjguqtkoje2eMvUiTHbLTYgMgTC6kUpa9PS3EV8kUNlqIW+q1Jy2XJ2YUoZ5F5y
- KuaESQllkohlaGCe9N0y2iJwc5e1O01Rl4TLYWCSZS1c1Rcky0SIgdhGw+9tGah4Q9HJTtpE0K7
- X6MgIRnIPg3QD1Stc3ywI862MaXejk6qKjUiy3ilSfVNzENyy7hUkqOinXma7TtgVY2iu8JHZZh
- kzjgpkzr
-X-Received: by 2002:a5d:5f4a:0:b0:38f:4244:68cb with SMTP id
- ffacd0b85a97d-38f42446bfbmr3931378f8f.12.1739797976818; 
- Mon, 17 Feb 2025 05:12:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGP8+aGi0L6I+IR6Yutrd+OtI/EySe+9HZGMNtU34qhBiVC/oWP4OBchWXWZhRI6vT0O+zOgw==
-X-Received: by 2002:a5d:5f4a:0:b0:38f:4244:68cb with SMTP id
- ffacd0b85a97d-38f42446bfbmr3931328f8f.12.1739797976379; 
- Mon, 17 Feb 2025 05:12:56 -0800 (PST)
-Received: from localhost ([2a01:e0a:257:8c60:80f1:cdf8:48d0:b0a1])
+ d=1e100.net; s=20230601; t=1739797984; x=1740402784;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GQFPpqikWGLZdZt+Ak+vVpSJS+vmERD2ytvbDps7YB0=;
+ b=q2QS+rO3ymQTyXRZiA5OLT4o6bdq0knXNHnQFSk6V4rmK6/l18+4V3Zi0RVV6YgWPi
+ Wc+cp5Yb0A2A3ptMZl/bbuzY98K6iW3CLI1B1z02ZkxtT+yBmLp/c4U94AUGU/tuWtmz
+ ZOvh4cQty71/lI37B78ERU47iQ0ZEMCqRacUTrZlmgSBGw4kB6nubmVT/CrOR6PasrUj
+ o1vn1O5bNE7JRWA68wmxvF7FJdzxNyy+Op1DfSHR+T5S8U3y8VBtsWAYTTO2otl5ohG8
+ iOZhJ6PTyd+Zjkb6nd1GfEoilCNgDypQppj2UsmwTo+nJxLbbEo1Xx+AtlqnxeCZC+II
+ +sFg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXfT/vTZwh5u7qTzqjFSLxrZc391HJeSmkvfKpNJPd42I0pWlyo0IXzW7mvrvDOvBz6SmSAi5qMn10q@nongnu.org
+X-Gm-Message-State: AOJu0YycGXIpcyZVCpDkG5d6E0s7F2TXCmdEp4iKyU5cq0sjPnRalrUd
+ v+r2sNy15Q+Wz/6DRGCscWqnFXC5bN34RrjjEybh8L1heJvOHsASFsJopBGo+GI=
+X-Gm-Gg: ASbGncsWp8pYZCOwZUXmqrQ3npP1D32jinId4WXjm/t0hppGoK3RC2BbPUaMMZirl6K
+ wvKoGbsr8tLRJ6qHXmLLrHxuz1vvc28LcMM3bv8+8haQKv9Mo6CXShSVI2myADAoOkjWs6KS89m
+ Jp+iHnfHuBXItb/s20cOg29feTVOsjqfbKxbNyBlRYhdJnnI/gjZ6jWOPYt88+aEIxX3YEa9Xbk
+ Yr+imixW41XfOSbc6hw1c60ajN27+zfPRZYvRE1Hu1uvgSGlcNq4W1yIZZugIZkuOtUeB/+Xpse
+ J8h9Ptzkd3eyOO1SDGyuNJzU6Ay7bcboWcw=
+X-Google-Smtp-Source: AGHT+IF+JRPnhOXlj87lM4ecO9V/c5QbaHzF/37+6VtXX7GL50353vyPYZcng3igfI7nmcy9Y8gklA==
+X-Received: by 2002:a05:600c:19d0:b0:439:66ba:bc07 with SMTP id
+ 5b1f17b1804b1-4396e5bae17mr112750605e9.0.1739797983841; 
+ Mon, 17 Feb 2025 05:13:03 -0800 (PST)
+Received: from [192.168.1.121] ([176.167.144.216])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b44b2sm12070898f8f.20.2025.02.17.05.12.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 05:12:56 -0800 (PST)
-From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Matias Ezequiel Vara Larsen <mvaralar@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] vhost-user-snd: correct the calculation of config_size
-Date: Mon, 17 Feb 2025 14:12:55 +0100
-Message-ID: <20250217131255.829892-1-mvaralar@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ 5b1f17b1804b1-4395a06cf2fsm151357575e9.19.2025.02.17.05.13.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Feb 2025 05:13:03 -0800 (PST)
+Message-ID: <2ef616dd-b50e-406e-aac9-0afe59654af4@linaro.org>
+Date: Mon, 17 Feb 2025 14:13:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] fpu: Always decide no_signaling_nans() at runtime
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20250217125055.160887-1-peter.maydell@linaro.org>
+ <20250217125055.160887-8-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250217125055.160887-8-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvaralar@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,83 +102,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use virtio_get_config_size() rather than sizeof(struct
-virtio_snd_config) for the config_size in the vhost-user-snd frontend.
-The frontend shall rely on device features for the size of the device
-configuration space. The presence of `controls` in the config space
-depends on VIRTIO_SND_F_CTLS according to the specification (v1.3):
-`
-5.14.4 Device Configuration Layout
-...
+On 17/2/25 13:50, Peter Maydell wrote:
+> Currently we have a compile-time shortcut where we
+> return false from no_signaling_nans() on everything except
+> Xtensa, because we know that's the only target that
+> might ever set status->no_signaling_nans.
+> 
+> Remove the ifdef, so we always look at the status flag;
+> this has no behavioural change, but will be necessary
+> if we want to build softfloat once for all targets.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   fpu/softfloat-specialize.c.inc | 4 ----
+>   1 file changed, 4 deletions(-)
 
-controls
-(driver-read-only) indicates a total number of all available control
-elements if VIRTIO_SND_F_CTLS has been negotiated.
-`
-This fixes an issue introduced by commit ab0c7fb2 ("linux-headers:
-update to current kvm/next") in which the optional field `controls` is
-added to the virtio_snd_config structure. This breaks vhost-user-device
-backends that do not implement the `controls` field.
-
-Fixes: ab0c7fb22b ("linux-headers: update to current kvm/next")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2805
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
----
-Changes in v2: 
- - Addressed comments from Stefano Garzarella about commit msg and the
-   property name. 
----
- hw/virtio/vhost-user-snd.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/hw/virtio/vhost-user-snd.c b/hw/virtio/vhost-user-snd.c
-index 8610370af8..b414c75c06 100644
---- a/hw/virtio/vhost-user-snd.c
-+++ b/hw/virtio/vhost-user-snd.c
-@@ -16,6 +16,18 @@
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/virtio_snd.h"
- 
-+static const VirtIOFeature feature_sizes[] = {
-+    {.flags = 1ULL << VIRTIO_SND_F_CTLS,
-+    .end = endof(struct virtio_snd_config, controls)},
-+    {}
-+};
-+
-+static const VirtIOConfigSizeParams cfg_size_params = {
-+    .min_size = endof(struct virtio_snd_config, chmaps),
-+    .max_size = sizeof(struct virtio_snd_config),
-+    .feature_sizes = feature_sizes
-+};
-+
- static const VMStateDescription vu_snd_vmstate = {
-     .name = "vhost-user-snd",
-     .unmigratable = 1,
-@@ -23,16 +35,20 @@ static const VMStateDescription vu_snd_vmstate = {
- 
- static const Property vsnd_properties[] = {
-     DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_BIT64("controls", VHostUserBase,
-+                      parent_obj.host_features, VIRTIO_SND_F_CTLS, false),
- };
- 
- static void vu_snd_base_realize(DeviceState *dev, Error **errp)
- {
-     VHostUserBase *vub = VHOST_USER_BASE(dev);
-     VHostUserBaseClass *vubs = VHOST_USER_BASE_GET_CLASS(dev);
-+    VirtIODevice *vdev = &vub->parent_obj;
- 
-     vub->virtio_id = VIRTIO_ID_SOUND;
-     vub->num_vqs = 4;
--    vub->config_size = sizeof(struct virtio_snd_config);
-+    vub->config_size = virtio_get_config_size(&cfg_size_params,
-+                                              vdev->host_features);
-     vub->vq_size = 64;
- 
-     vubs->parent_realize(dev, errp);
--- 
-2.42.0
 
 
