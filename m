@@ -2,109 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD2CA3876F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAE8A3879A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 16:34:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk2xL-00007s-D7; Mon, 17 Feb 2025 10:22:47 -0500
+	id 1tk37V-0002KX-Vw; Mon, 17 Feb 2025 10:33:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tk2xF-00006t-AX
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:22:42 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tk37S-0002K1-Pn
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:33:16 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tk2xD-0001Qh-3l
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:22:41 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-abb8d63b447so167427266b.0
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 07:22:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739805757; x=1740410557; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+WWGKNxiozGh75XkklhUkHM2qBIGifIFRLsE6JUAYtc=;
- b=v5nkVGWXeh5HK0NyHPe4Z2VN69FhrMWZe3ASgS8m8Bqgusbv3Ee1gWx+WEDH6oSSZ2
- qkbU3FY7ntyB7mxMRKG9fmTyfAaBcQha7m3bs7/8RN9BtFnHsmjk73OFA8oNWbDzMpOX
- pp6wYlgbhC4CLhGk9Vx5z7duGn8f9G2WCqZJx2klzEfCXJiqwdkiF5aFP/6P1lG0woti
- jbALcTSy5XuBpuBurtn2DFbP5rWx/f+GPT3/cp6FtZ1eBCaywpaj9WIsCPXvsWWgmR6F
- xXj9PBnBIT2GNmWXvvCbN5mxkaK2mdJD5N+0+Mf0TmwvI4FjGFHDmBBEnYn+k/c0bjm+
- h81A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739805757; x=1740410557;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+WWGKNxiozGh75XkklhUkHM2qBIGifIFRLsE6JUAYtc=;
- b=RVS8mP5z0gUHhV7c+fgWtFze0clVhOdSkpqySKQjKKjKUjX0wLcFnyfJkLHPZvzyDl
- 1SQsJu2qV/6rGcOduPD5/bXoJSuJJIBgMDIxfb92oOTEU2t2tAx0DWc37yw8TRouq0DT
- 4K/c5Nnns/kRWwHuBz0cwicvKWJN0OJW97Fw6l25pS3rz96AFzfmeQjzbqS5biHI7wXR
- zEM6l1/Cmgfc/3gfrOlu+g+Gc8+T6ztSUFqLAd7uuWEwaPqsHhEH5BTEKkZD8QGLAg35
- 54ftA4Av4FohdJdv+TmgrYDZ1Y61pc9994A/ACqwgIq2UsbjYdGObMfXVgqTydoy/xCV
- jLbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXs0CvNZn0llwWIP+q4GI5tfYcTmoPVBpHzJugEXMAxWY/SJHCaL3r6eBdTy5yALt7ltmZi7/FAsadL@nongnu.org
-X-Gm-Message-State: AOJu0Yy3S3NttnqEg5k++twSJjEXxoNohyZeaCmlhF+L5NbNZ80G2fQp
- a8XFD224Gvv7p0zO+rVlIzZX63qLNAJKe2Vwnl6cCJfiQHv0cMeZscZZTp1WCoQ=
-X-Gm-Gg: ASbGnctY1Hs3HhRWkbmOZlUeqFINr+gRfjJJZQX+r6YTjPAsAanO67CAy2P1TjeslMV
- upgPtyNfB75ffgN5PlrYOWGzrOma15JOET+MCKh9kv519cHZaf+dRNVE3uAlxxTR2MgJX0n1WAf
- pxL+Jfk1gVWx6oi7Qwu7xYfpX8H5xjoQBuhQB8Kj2OuXJgPKwLt5rsP/XTyghwDtvH/8fcbQ5uA
- Ld9YkYrhAeb2QjaPHNMalICAfLhpWwW+xPegqw5yTGKWN/q62PLsT8HQRcDP5iwje4Q1NUYlD1q
- LFAqIjJcN0X1YP17qg==
-X-Google-Smtp-Source: AGHT+IGBU8JyPxlo67GfMYxtmsxmejrUaTtVzeau0aOtFEo0gAPGM/4o5qeLPaAoaS6zwz+HmHmnoQ==
-X-Received: by 2002:a17:906:6a02:b0:ab7:e1d5:d0c3 with SMTP id
- a640c23a62f3a-abb70e3fc7fmr992525766b.51.1739805756572; 
- Mon, 17 Feb 2025 07:22:36 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abb804fc0b3sm434856366b.11.2025.02.17.07.22.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 07:22:36 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4F4E45F936;
- Mon, 17 Feb 2025 15:22:35 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  Huang Rui
- <ray.huang@amd.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
- <kraxel@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Gert Wollny <gert.wollny@collabora.com>,
- qemu-devel@nongnu.org,  Gurchetan Singh <gurchetansingh@chromium.org>,
- Alyssa Ross <hi@alyssa.is>,  Roger Pau =?utf-8?Q?Monn=C3=A9?=
- <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,  Stefano Stabellini
- <stefano.stabellini@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,  Pierre-Eric Pelloux-Prayer
- <pierre-eric.pelloux-prayer@amd.com>,  Honglei Huang
- <honglei1.huang@amd.com>,  Julia Zhang <julia.zhang@amd.com>,  Chen Jiqian
- <Jiqian.Chen@amd.com>,  Rob Clark <robdclark@gmail.com>,  Yiwei Zhang
- <zzyiwei@chromium.org>,  Sergio Lopez Pascual <slp@redhat.com>
-Subject: Re: [PATCH v6 00/10] Support virtio-gpu DRM native context
-In-Reply-To: <f58d250d-3831-4ff1-a018-f62f9aeb2527@collabora.com> (Dmitry
- Osipenko's message of "Fri, 14 Feb 2025 19:03:44 +0300")
-References: <20250126201121.470990-1-dmitry.osipenko@collabora.com>
- <8734ggpped.fsf@draig.linaro.org>
- <f58d250d-3831-4ff1-a018-f62f9aeb2527@collabora.com>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Mon, 17 Feb 2025 15:22:35 +0000
-Message-ID: <87bjv0lhok.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tk37O-0003Bk-6k
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 10:33:12 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D47EE21167;
+ Mon, 17 Feb 2025 15:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1739806386; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q3No0asvmWbPmMJaDRuUacl1UCbWpTNF1eoo1H4DdLI=;
+ b=g36JL4xEWM7dCh9ExSdZ96cusijhOUAVLqzrjN/RVjbnGjs+KW8WklP6LQ0bgtTkeg5cxX
+ Ug7Q4z2F0y09eFtgH7H8TMzGbNzfQ1KZlOTfSGHUD1vWvad0vX5njpdX+UZsNrP0tDTSL7
+ 0qgYie+9U9cJafvIZ1no1PmECnRocWI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1739806386;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q3No0asvmWbPmMJaDRuUacl1UCbWpTNF1eoo1H4DdLI=;
+ b=TRvvCwWEQjGABWOrlg5sP3j4jYwP1NeDGFFtjMBc7iUXbbcsInTRC1Jyo2dOewDHt1pKRw
+ yTnPrKmhqZh4PmAA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=op5IY5V3;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rDUKI0Rl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1739806385; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q3No0asvmWbPmMJaDRuUacl1UCbWpTNF1eoo1H4DdLI=;
+ b=op5IY5V3ajRsMsIcBaLFLJRymAmcS42Wx/d6o1Fpe4U47Hn487fSar11jXa4FlBkAXk5/3
+ LcEWdhNZ1/7hssLzAjhAjvyir1v1wroWOxQK5rxQ09rFdRFARAgScPYxFSnaB7aEp3PvWP
+ bZJDfyGOBUEXU+Tgp/pfgL+afQkC/UE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1739806385;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q3No0asvmWbPmMJaDRuUacl1UCbWpTNF1eoo1H4DdLI=;
+ b=rDUKI0Rl7LqxyQLdu3NeXCqxb3pgI4gvK9QnYfcE+TOEREM26LPWTPHJ1I+XzuIU7sCD/H
+ Jk7DmqsyPwCyUGBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 45A281379D;
+ Mon, 17 Feb 2025 15:33:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id h9aEAbFWs2esOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 17 Feb 2025 15:33:05 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, berrange@redhat.com, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH v6 4/4] tests/qtest/migration: add postcopy tests with
+ multifd
+In-Reply-To: <20250215123119.814345-5-ppandit@redhat.com>
+References: <20250215123119.814345-1-ppandit@redhat.com>
+ <20250215123119.814345-5-ppandit@redhat.com>
+Date: Mon, 17 Feb 2025 12:33:02 -0300
+Message-ID: <871pvwvb69.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Queue-Id: D47EE21167
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,156 +121,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+Prasad Pandit <ppandit@redhat.com> writes:
 
-> On 2/14/25 17:33, Alex Benn=C3=A9e wrote:
->> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
->>=20
->>> This patchset adds DRM native context support to VirtIO-GPU on Qemu.
->>>
->>> Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
->>> DRM native context [1] mediates lower level kernel driver UAPI, which
->>> reflects in a less CPU overhead and less/simpler code needed to support=
- it.
->>> DRM context consists of a host and guest parts that have to be implemen=
-ted
->>> for each GPU driver. On a guest side, DRM context presents a virtual GP=
-U as
->>> a real/native host GPU device for GL/VK applications.
->>>
->> <snip>
->>=20
->> So first the good news. I can now get this up and running (x86/kvm guest
->> with Intel graphics) and as far as I can tell the native context mode is
->> working. With Dongwon Kim's patch the mirroring/corruption I was seeing
->> is gone.
->>=20
->> I can successfully run glmark2-wayland (although see bellow) but vkmark
->> completely fails to start reporting:
->>=20
->>   MESA: info: virtgpu backend not enabling VIRTGPU_PARAM_CREATE_FENCE_PA=
-SSING
->>   MESA: info: virtgpu backend not enabling VIRTGPU_PARAM_CREATE_GUEST_HA=
-NDLE
->>   MESA: error: DRM_IOCTL_VIRTGPU_GET_CAPS failed with Invalid argument
->>   MESA: error: DRM_IOCTL_VIRTGPU_CONTEXT_INIT failed with Invalid argume=
-nt, continuing without context...
->>   MESA: error: DRM_VIRTGPU_RESOURCE_CREATE_BLOB failed with No space lef=
-t on device
->>   MESA: error: Failed to create virtgpu AddressSpaceStream
->>   MESA: error: vulkan: Failed to get host connection
->>   MESA: error: DRM_VIRTGPU_RESOURCE_CREATE_BLOB failed with No space lef=
-t on device
->>   MESA: error: Failed to create virtgpu AddressSpaceStream
->>   MESA: error: vulkan: Failed to get host connection
->>   MESA: error: DRM_VIRTGPU_RESOURCE_CREATE_BLOB failed with No space lef=
-t on device
->>   MESA: error: Failed to create virtgpu AddressSpaceStream
->>   MESA: error: vulkan: Failed to get host connection
->>   MESA: warning: ../src/gfxstream/guest/vulkan/gfxstream_vk_device.cpp:6=
-81: VK_ERROR_DEVICE_LOST
->>   MESA: error: DRM_VIRTGPU_RESOURCE_CREATE_BLOB failed with No space lef=
-t on device
->>   MESA: error: Failed to create virtgpu AddressSpaceStream
->>   MESA: error: vulkan: Failed to get host connection
->>   MESA: warning: ../src/gfxstream/guest/vulkan/gfxstream_vk_device.cpp:3=
-32: VK_ERROR_DEVICE_LOST
->>   =3D=3D=3D Physical Device 0 =3D=3D=3D
->>       Vendor ID:      0x8086
->>       Device ID:      0xA780
->>       Device Name:    Intel(R) Graphics (RPL-S)
->>       Driver Version: 101068899
->>       Device UUID:    b39e1cf39b101489e3c6039406f78d6c
->>=20
->> I was booting with 4G of shared memory.
+> From: Prasad Pandit <pjp@fedoraproject.org>
 >
-> Thanks for the testing.
+> Add new qtests to run postcopy migration with multifd
+> channels enabled.
 >
-> I assume all these errors are generated by the failing gfxstream. Hence,
-> may ignore them since you don't have enabled gfxstream.
+> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+> ---
+>  tests/qtest/migration/compression-tests.c | 13 ++++++++
+>  tests/qtest/migration/framework.c         |  4 +++
+>  tests/qtest/migration/postcopy-tests.c    | 23 +++++++++++++
+>  tests/qtest/migration/precopy-tests.c     | 19 +++++++++++
+>  tests/qtest/migration/tls-tests.c         | 40 +++++++++++++++++++++++
+>  5 files changed, 99 insertions(+)
 >
->> Later versions of vkmark (2025.01) fail due to missing the
->> VK_KHR_display extension required as of
->> https://github.com/vkmark/vkmark/commit/7c3189c6482cb84c3c0e69d6dabb9d80=
-e0c0092a
+> v6:
+> - Reorder, make this the second patch in this series.
 >
-> This VK_KHR_display problem is only reproducible with your rootfs that
-> you shared with me. It could be a trouble with your build configs or a
-> buggy package version used by your rootfs build, more likely the
-> former.
-
-So you have built that latest vkmark? This is a recent addition to
-vkmark for the 2025.1 release.
-
-Does vulkaninfo --summary show the extension available for you? It is
-certainly available on the host side:
-
-VK_KHR_display                         : extension revision 23
-
->>> # Note about known performance problem in Qemu:
->>>
->>> DRM contexts are mapping host blobs extensively and these mapping
->>> operations work slowly in Qemu. Exact reason is unknown. Mappings work
->>> fast on Crosvm For DRM contexts this problem is more visible than for
->>> Venus/Virgl.
->>=20
->> And how!
->>=20
->> With drm_native I get a lot of stutter while running and barely 100FPS
->> (compared to ~8000 on pure venus). IMHO we need to figure out why there
->> is such a discrepancy before merging because currently it makes more
->> sense to use=20
-> If you'd run with Xorg/Wayland directly without a DE, then it should
-> work okay. This should be a problem with unmapping performance that I'm
-> thinking about.
+> v5:
+> - https://lore.kernel.org/qemu-devel/20250205122712.229151-1-ppandit@redhat.com/T/#t
 >
-> That unmapping problem is partially understood. Unmapping code works
-> correctly, but we'll need to optimize the flatview code to perform
-> unmapping immediately.
-
-Why immediately? Surely if we are unmapping we can defer it. Or is this
-a case of having stale mappings making the life of new allocations
-harder?
-
-> Meanwhile, you may apply the QEMU hack below, it
-> should resolve most of the stutter, please let me know if it helps.
->
-> There is also a pending Mesa intel-virtio blob mapping optimization that
-> currently isn't available in my gitlab code, I'll refresh that feature
-> and then ask you to try it.
->
-> Could be that there is more to the unmapping perf issue in QEMU. I'm
-> investigating.
->
-> AMDGPU nctx is less affected by the bad unmapping performance. I expect
-> it will work well for you.
->
->
->
-> diff --git a/util/rcu.c b/util/rcu.c
-> index fa32c942e4bb..aac3522c323c 100644
-> --- a/util/rcu.c
-> +++ b/util/rcu.c
-> @@ -174,7 +174,7 @@ void synchronize_rcu(void)
+> diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
+> index 4558a7b9ff..d4d6b3c4de 100644
+> --- a/tests/qtest/migration/compression-tests.c
+> +++ b/tests/qtest/migration/compression-tests.c
+> @@ -40,6 +40,17 @@ static void test_multifd_tcp_zstd(void)
+>      };
+>      test_precopy_common(&args);
 >  }
->
->
-> -#define RCU_CALL_MIN_SIZE        30
-> +#define RCU_CALL_MIN_SIZE        1
->
->  /* Multi-producer, single-consumer queue based on urcu/static/wfqueue.h
->   * from liburcu.  Note that head is only used by the consumer.
-> @@ -267,7 +267,7 @@ static void *call_rcu_thread(void *opaque)
->           * added before synchronize_rcu() starts.
->           */
->          while (n =3D=3D 0 || (n < RCU_CALL_MIN_SIZE && ++tries <=3D 5)) {
-> -            g_usleep(10000);
-> +            g_usleep(1000);
->              if (n =3D=3D 0) {
->                  qemu_event_reset(&rcu_call_ready_event);
->                  n =3D qatomic_read(&rcu_call_count);
+> +
+> +static void test_multifd_postcopy_tcp_zstd(void)
+> +{
+> +    MigrateCommon args = {
+> +        .listen_uri = "defer",
+> +        .caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true,
+> +        .start_hook = migrate_hook_start_precopy_tcp_multifd_zstd,
+> +    };
+> +
+> +    test_precopy_common(&args);
+> +}
+>  #endif /* CONFIG_ZSTD */
+>  
+>  #ifdef CONFIG_QATZIP
+> @@ -172,6 +183,8 @@ void migration_test_add_compression(MigrationTestEnv *env)
+>  #ifdef CONFIG_ZSTD
+>      migration_test_add("/migration/multifd/tcp/plain/zstd",
+>                         test_multifd_tcp_zstd);
+> +    migration_test_add("/migration/multifd+postcopy/tcp/plain/zstd",
+> +                       test_multifd_postcopy_tcp_zstd);
+>  #endif
+>  
+>  #ifdef CONFIG_QATZIP
+> diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
+> index 82aaa13e85..2396405b51 100644
+> --- a/tests/qtest/migration/framework.c
+> +++ b/tests/qtest/migration/framework.c
+> @@ -469,6 +469,10 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
+>      args->caps[MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME] = true;
+>      args->caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
+>      set_migration_capabilities(from, to, args);
+> +    if (args->caps[MIGRATION_CAPABILITY_MULTIFD]) {
+> +        migrate_set_parameter_int(from, "multifd-channels", 8);
+> +        migrate_set_parameter_int(to, "multifd-channels", 8);
+> +    }
+>  
+>      migrate_ensure_non_converge(from);
+>      migrate_prepare_for_dirty_mem(from);
+> diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
+> index b0e70a6367..32fe7b0324 100644
+> --- a/tests/qtest/migration/postcopy-tests.c
+> +++ b/tests/qtest/migration/postcopy-tests.c
+> @@ -90,6 +90,25 @@ static void migration_test_add_postcopy_smoke(MigrationTestEnv *env)
+>      }
+>  }
+>  
+> +static void test_multifd_postcopy(void)
+> +{
+> +    MigrateCommon args = {
+> +        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
+> +    };
+> +
+> +    test_postcopy_common(&args);
+> +}
+> +
+> +static void test_multifd_postcopy_preempt(void)
+> +{
+> +    MigrateCommon args = {
+> +        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
+> +        .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
+> +    };
+> +
+> +    test_postcopy_common(&args);
+> +}
+> +
+>  void migration_test_add_postcopy(MigrationTestEnv *env)
+>  {
+>      migration_test_add_postcopy_smoke(env);
+> @@ -110,6 +129,10 @@ void migration_test_add_postcopy(MigrationTestEnv *env)
+>              "/migration/postcopy/recovery/double-failures/reconnect",
+>              test_postcopy_recovery_fail_reconnect);
+>  
+> +        migration_test_add("/migration/multifd+postcopy/plain",
+> +                           test_multifd_postcopy);
+> +        migration_test_add("/migration/multifd+postcopy/preempt/plain",
+> +                           test_multifd_postcopy_preempt);
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+For postcopy-tests.c I'd use /migration/postcopy/multifd so we can run
+them all via command-line. These are also the only ones actually doing
+postcopy migration. We need to distinguish multifd+postcopy proper from
+merely postcopy-ram=true.
+
+>          if (env->is_x86) {
+>              migration_test_add("/migration/postcopy/suspend",
+>                                 test_postcopy_suspend);
+> diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+> index e5d8c49dbe..2126cb8e2c 100644
+> --- a/tests/qtest/migration/precopy-tests.c
+> +++ b/tests/qtest/migration/precopy-tests.c
+> @@ -33,6 +33,7 @@
+>  #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
+>  
+>  static char *tmpfs;
+> +static bool postcopy_ram = false;
+>  
+>  static void test_precopy_unix_plain(void)
+>  {
+> @@ -465,6 +466,11 @@ static void test_multifd_tcp_cancel(void)
+>      migrate_ensure_non_converge(from);
+>      migrate_prepare_for_dirty_mem(from);
+>  
+> +    if (postcopy_ram) {
+> +        migrate_set_capability(from, "postcopy-ram", true);
+> +        migrate_set_capability(to, "postcopy-ram", true);
+> +    }
+> +
+>      migrate_set_parameter_int(from, "multifd-channels", 16);
+>      migrate_set_parameter_int(to, "multifd-channels", 16);
+>  
+> @@ -506,6 +512,10 @@ static void test_multifd_tcp_cancel(void)
+>          return;
+>      }
+>  
+> +    if (postcopy_ram) {
+> +        migrate_set_capability(to2, "postcopy-ram", true);
+> +    }
+> +
+>      migrate_set_parameter_int(to2, "multifd-channels", 16);
+>  
+>      migrate_set_capability(to2, "multifd", true);
+> @@ -529,6 +539,13 @@ static void test_multifd_tcp_cancel(void)
+>      migrate_end(from, to2, true);
+>  }
+>  
+> +static void test_multifd_postcopy_tcp_cancel(void)
+> +{
+> +    postcopy_ram = true;
+> +    test_multifd_tcp_cancel();
+> +    postcopy_ram = false;
+
+You could pass this in, there's just one other caller.
+
+> +}
+> +
+>  static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
+>  {
+>      qtest_qmp_assert_success(who,
+> @@ -1001,6 +1018,8 @@ void migration_test_add_precopy(MigrationTestEnv *env)
+>                         test_multifd_tcp_zero_page_legacy);
+>      migration_test_add("/migration/multifd/tcp/plain/zero-page/none",
+>                         test_multifd_tcp_no_zero_page);
+> +    migration_test_add("migration/multifd+postcopy/tcp/plain/cancel",
+> +                       test_multifd_postcopy_tcp_cancel);
+>      if (g_str_equal(env->arch, "x86_64")
+>          && env->has_kvm && env->has_dirty_ring) {
+>  
+> diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
+> index 30ab79e058..ce57f0cb5d 100644
+> --- a/tests/qtest/migration/tls-tests.c
+> +++ b/tests/qtest/migration/tls-tests.c
+> @@ -393,6 +393,17 @@ static void test_postcopy_recovery_tls_psk(void)
+>      test_postcopy_recovery_common(&args);
+>  }
+>  
+> +static void test_multifd_postcopy_recovery_tls_psk(void)
+> +{
+> +    MigrateCommon args = {
+> +        .start_hook = migrate_hook_start_tls_psk_match,
+> +        .end_hook = migrate_hook_end_tls_psk,
+> +        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
+> +    };
+> +
+> +    test_postcopy_recovery_common(&args);
+> +}
+> +
+>  /* This contains preempt+recovery+tls test altogether */
+>  static void test_postcopy_preempt_all(void)
+>  {
+> @@ -405,6 +416,17 @@ static void test_postcopy_preempt_all(void)
+>      test_postcopy_recovery_common(&args);
+>  }
+>  
+> +static void test_multifd_postcopy_preempt_recovery_tls_psk(void)
+> +{
+> +    MigrateCommon args = {
+> +        .start_hook = migrate_hook_start_tls_psk_match,
+> +        .end_hook = migrate_hook_end_tls_psk,
+> +        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
+> +    };
+> +
+> +    test_postcopy_recovery_common(&args);
+> +}
+> +
+>  static void test_precopy_unix_tls_psk(void)
+>  {
+>      g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+> @@ -651,6 +673,18 @@ static void test_multifd_tcp_tls_psk_mismatch(void)
+>      test_precopy_common(&args);
+>  }
+>  
+> +static void test_multifd_postcopy_tcp_tls_psk_match(void)
+> +{
+> +    MigrateCommon args = {
+> +        .listen_uri = "defer",
+> +        .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
+> +        .start_hook = migrate_hook_start_multifd_tcp_tls_psk_match,
+> +        .end_hook = migrate_hook_end_tls_psk,
+> +    };
+> +
+> +    test_precopy_common(&args);
+> +}
+> +
+>  #ifdef CONFIG_TASN1
+>  static void test_multifd_tcp_tls_x509_default_host(void)
+>  {
+> @@ -762,6 +796,10 @@ void migration_test_add_tls(MigrationTestEnv *env)
+>                             test_postcopy_preempt_tls_psk);
+>          migration_test_add("/migration/postcopy/preempt/recovery/tls/psk",
+>                             test_postcopy_preempt_all);
+> +        migration_test_add("/migration/multifd+postcopy/recovery/tls/psk",
+> +                           test_multifd_postcopy_recovery_tls_psk);
+> +        migration_test_add("/migration/multifd+postcopy/preempt/recovery/tls/psk",
+> +                           test_multifd_postcopy_preempt_recovery_tls_psk);
+>      }
+>  #ifdef CONFIG_TASN1
+>      migration_test_add("/migration/precopy/unix/tls/x509/default-host",
+> @@ -793,6 +831,8 @@ void migration_test_add_tls(MigrationTestEnv *env)
+>                         test_multifd_tcp_tls_psk_match);
+>      migration_test_add("/migration/multifd/tcp/tls/psk/mismatch",
+>                         test_multifd_tcp_tls_psk_mismatch);
+> +    migration_test_add("/migration/multifd+postcopy/tcp/tls/psk/match",
+> +                       test_multifd_postcopy_tcp_tls_psk_match);
+>  #ifdef CONFIG_TASN1
+>      migration_test_add("/migration/multifd/tcp/tls/x509/default-host",
+>                         test_multifd_tcp_tls_x509_default_host);
+> --
+> 2.48.1
 
