@@ -2,88 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A360CA37E70
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 10:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D271BA37ED0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 10:40:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjxQY-0001pf-5y; Mon, 17 Feb 2025 04:28:34 -0500
+	id 1tjxb3-0006x6-5F; Mon, 17 Feb 2025 04:39:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1tjxQU-0001o8-CR; Mon, 17 Feb 2025 04:28:30 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1tjxQS-0000uh-8M; Mon, 17 Feb 2025 04:28:30 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-220d28c215eso57676015ad.1; 
- Mon, 17 Feb 2025 01:28:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739784506; x=1740389306; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F7k9xy97KVspCgOHJ8VeGnGCHWrmII8BOuhEsECDFsI=;
- b=kP7tERMxDKqTtWvmzX6UZEmfxXqDuoa1UQUKV9c/J1u9Ab9KTQtPh7MfTniofGBU5e
- IRpNSWtFYSjsIRo52WY4sQy2aXzrWhU7qOQL84iZIhp6t2E7xE1a1imQg39wUxSE7Rvc
- rQI4ezx8L+3N94LD6LVvIWbRb7YA2+WXW1DCXlcm1CmxYg9mQAGbWyv2io3Zp3N8tN7I
- 6XSbFZI2kzz3nayba0po3rUYv4gcTI8Xb8xtAl6TCQ01ucvz3OMT/8uY0S1kO3erLn/y
- ItrEJTFp0EgGDWrt+RtnGAdFHNnGjF+/4kIJ88cJ7NFnvrVDqs4Zj9Xe4DLHagk0bFV3
- OR9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739784506; x=1740389306;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F7k9xy97KVspCgOHJ8VeGnGCHWrmII8BOuhEsECDFsI=;
- b=EMGabM06Uogq0s2MS2UpLGzFFZopFjmxxqUSNEXPANvyK9py2q19H9v9G0+aK8GAqh
- HjVMDytPeM+OH6rkvRE6CAY+Gw5ZUw9CBzwaD/EcMZCCiPU61nm3R1i5ow80nJeXvwxm
- Q9mRuNkk4D3vLB2f1BQjTqeb6n3qRW14U5TxP7RDo0lBCJ/deXpVcAX+QKKSnVhGysEF
- joGDHU8RYSIzsiDgz7V6gz5O5Sk5Z0zC7zLrp35T188ENIerrYbIL/w6jKlLZ4jrop26
- Vc4+37V3/hN4NFoJr3uj9B8+YwzHGjk1ytyZY95xER/xjFmk0mxqw8W7OF+QF6g3kEQu
- vtTw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWr6EQOpBc2Y5uJQxv1XUWwRgtuuzqhEwGOiBgJSWgipx7gBZRKK0nmhKTXOrBDpTSgF7bQE5IizNDe@nongnu.org
-X-Gm-Message-State: AOJu0Yzgu2PcbwCyD2rn0gfDNusSmLJ9AuBp/fXaaZjycLAykk7nEMTq
- rRbjok6QzHXTOhRQbwZBeTYFNW6TeczYaOpy+WAikrVvVH9AyXgX8qxacQ==
-X-Gm-Gg: ASbGnct6sve0wCAw41bBK8hGAnYIW52aZzF7zgdMyfpu77LVl6hOZALO2sU3WVGQfoE
- QaMBYwQyoSvQx1DTS9G1eZVanMAyPwnFRVl4wYCqPZ/0nGRZ7CL/q34MMp25EgK6qeBtNWb6zdL
- mIc8zmwWFdb7D7hf3VNuQY8A/usS/+XzK+JJVNhZmirkCuqxcHZ9AVb1+Ke0uS3J4M9A7lt4mjk
- n9s/C0c8YuKfrCKuCMfNzTJtxWJQec5ZLxhmAyQaXditJ6vjclNH+ojqo0cMM57yqXWnZUrMro+
- oDjiI8Fvsla/Br3dbu4=
-X-Google-Smtp-Source: AGHT+IFxXWVdjaZTuUts7kZiRTGZWgWV8H05jVfg5jRBJ7i97LexP8tZkLplgZHdn3utNy/uKQhARQ==
-X-Received: by 2002:a05:6a00:995:b0:730:949d:2d3f with SMTP id
- d2e1a72fcca58-732617a0c39mr14752226b3a.7.1739784505679; 
- Mon, 17 Feb 2025 01:28:25 -0800 (PST)
-Received: from jeuk-MS-7D42.. ([175.119.5.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73265f98e18sm4152940b3a.106.2025.02.17.01.28.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 01:28:25 -0800 (PST)
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-To: qemu-devel@nongnu.org,
-	stefanha@redhat.com
-Cc: pbonzini@redhat.com, qemu-block@nongnu.org, jeuk20.kim@samsung.com,
- j-young.choi@samsung.com, farosas@suse.de, lvivier@redhat.com,
- Jeuk Kim <jeuk20.kim@gmail.com>
-Subject: [PULL 4/4] tests/qtest/ufs-test: Add test code for MCQ functionality
-Date: Mon, 17 Feb 2025 18:27:55 +0900
-Message-ID: <a54596a96006096798b172a368ae952a231f9f72.1739784105.git.jeuk20.kim@samsung.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1739784105.git.jeuk20.kim@samsung.com>
-References: <cover.1739784105.git.jeuk20.kim@samsung.com>
+ (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
+ id 1tjxau-0006ww-L4
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 04:39:17 -0500
+Received: from mailout3.samsung.com ([203.254.224.33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
+ id 1tjxao-0002JM-Jx
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 04:39:16 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20250217093859epoutp032304a269b723d3a3089c0a070d9669eb~k9V3cGvP53159631596epoutp03h
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 09:38:59 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20250217093859epoutp032304a269b723d3a3089c0a070d9669eb~k9V3cGvP53159631596epoutp03h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1739785139;
+ bh=sy6dlm46RivPu+uzqtCThlfV9c35JXwDl1zw0oX06cw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=e09cMCFO6ni8nebAAf79mOjrR3QZw8hGmP/44ZGvnwDC6MY+u1/+JTptccy/h9f80
+ /mj8S/ijxfZFyK7L1kLy4Wp7ghxz6BiElkt3+tZ/CfS7hBfawR4zgCvL3nppslx777
+ ylO8vJ+GgYq7jW2jXIhiNZXm88Tum8wT5pYuBBE0=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+ 20250217093859epcas5p18de803dc50e596673f94a72fe71e844a~k9V28VKxr2060920609epcas5p1G;
+ Mon, 17 Feb 2025 09:38:59 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.178]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4YxHfT0DLGz4x9Py; Mon, 17 Feb
+ 2025 09:38:57 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+ epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ BF.D4.29212.0B303B76; Mon, 17 Feb 2025 18:38:56 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250217093732epcas5p34a9841ca77c60e02522232f00090074b~k9Ul_Kzke0862108621epcas5p3O;
+ Mon, 17 Feb 2025 09:37:32 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250217093732epsmtrp16ed253934e606437dd030b0528ecf98e~k9Ul9HHEa2392023920epsmtrp1Q;
+ Mon, 17 Feb 2025 09:37:32 +0000 (GMT)
+X-AuditID: b6c32a50-801fa7000000721c-5c-67b303b0afda
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+ epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ F2.56.18729.B5303B76; Mon, 17 Feb 2025 18:37:31 +0900 (KST)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+ epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250217093729epsmtip2f9f3c6d990ce9ebf70633cc86f0e27da~k9Uj7XLXr0985409854epsmtip2N;
+ Mon, 17 Feb 2025 09:37:29 +0000 (GMT)
+Date: Mon, 17 Feb 2025 15:07:24 +0530
+From: Sweta Kumari <s5.kumari@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, gost.dev@samsung.com, linux-cxl@vger.kernel.org,
+ nifan.cxl@gmail.com, dave@stgolabs.net, vishak.g@samsung.com,
+ krish.reddy@samsung.com, a.manzanares@samsung.com, alok.rathore@samsung.com
+Subject: Re: CXL CCI Get/Set Alert Configuration commands implmented as per
+ CXL Specification 3.2 section 8.2.10.9.3
+Message-ID: <20250217093724.f64zqdhk727bhk5b@test-PowerEdge-R740xd>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250214174359.0000368a@huawei.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCJsWRmVeSWpSXmKPExsWy7bCmuu4G5s3pBhMum1lMP6xo8eX0HjaL
+ 1TfXMFrcPLCTyWLVwmtsFgs3LmOyOD/rFIvF3217GS2O9+5gAXLnsDtweeycdZfdo+XIW1aP
+ J9c2M3n0bVnF6DF1dr3H501yAWxR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbm
+ Sgp5ibmptkouPgG6bpk5QIcpKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgpMCvSK
+ E3OLS/PS9fJSS6wMDQyMTIEKE7IzZj+ZwlxwKrziwguVBsZu5y5GTg4JAROJTxsOsHYxcnEI
+ CexhlLg57SI7hPOJUaKpoZEZwvnGKHHk9F4WmJZbS9vZIBJ7GSV2Lu9kgWv58+A2M0gVi4Cq
+ xNfH3WAdbAJaEj8+PwCLiwgYSby7MYkRpIFZ4CajROOkZ2wgCWGBMomuGQvAGngFnCXWXVjC
+ BmELSpyc+QQszilgKPFnM8SBEgK9HBLNPz+zQdzkIjH15mwmCFtY4tXxLewQtpTEy/42KDtb
+ 4u7WTqj6EokPt3dD1dtLtJ7qB7uOWSBD4v+iZ6wQcVmJqafWMUHE+SR6fz+BqueV2DEPxlaW
+ 2PJvOVS9pMSKz0ugbA+J6x+XQYNlG6PEpgl32Ccwys1C8tAsJPsgbCuJzg9NQDYHkC0tsfwf
+ B4SpKbF+l/4CRtZVjFKpBcW56anJpgWGunmp5fB4Ts7P3cQITq5aATsYV2/4q3eIkYmD8RCj
+ BAezkgjvoa4N6UK8KYmVValF+fFFpTmpxYcYTYFRNJFZSjQ5H5je80riDU0sDUzMzMxMLI3N
+ DJXEeZt3tqQLCaQnlqRmp6YWpBbB9DFxcEo1MEV++f+f36C8/MEzDY7blvNW35K+aV2umOLw
+ qlk0kqWjSqhiNXfysqhJR868lOM68Oh5xusyJT2tyQvSJjQUaB0/rNDedytt80m5XRcW8hpa
+ f37BJDato/hQXc0ytsnnpqXvfy+YbLfctvlCa+qc3IAikWWrs0Inu3YFtk6QWbdr0V4+Lj6+
+ 0A+aN9s+tig1eEi8/2Bf/8FuldC0vghPTsE9Oj8ZwhX47PZvsEhYsuPvjw++HwLSNnQvfvC+
+ 0cTg06ocvj+5FRvSXi3Vi500tfvXqtgbuxim/NbRv5H701n0z03Dte1+MskvUwvby1TMmO9Y
+ sbyTPWYUoefWWbYlYcbMea/frBZ2/mQ/UZupX4mlOCPRUIu5qDgRAOrfB9Q3BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCLMWRmVeSWpSXmKPExsWy7bCSvG408+Z0gzvXLC2mH1a0+HJ6D5vF
+ 6ptrGC1uHtjJZLFq4TU2i4UblzFZnJ91isXi77a9jBbHe3ewALlz2B24PHbOusvu0XLkLavH
+ k2ubmTz6tqxi9Jg6u97j8ya5ALYoLpuU1JzMstQifbsErow5j68zF/wJqXh6/zBbA+N1hy5G
+ Tg4JAROJW0vb2boYuTiEBHYzSjx+8ZsdIiEp8fbMJUYIW1hi5b/n7BBFHxgldi5YAVbEIqAq
+ 8fVxNwuIzSagJfHj8wNmEFtEwEji3Y1JjCANzAK3GSV+774HViQsUCbRNWMBmM0r4Cyx7sIS
+ NhBbSGAbo8S6e4UQcUGJkzOfgNUwC5hJzNv8EGgoB5AtLbH8HwdImFPAUOLP5ovsExgFZiHp
+ mIWkYxZCxwJG5lWMkqkFxbnpucWGBYZ5qeV6xYm5xaV56XrJ+bmbGMERoaW5g3H7qg96hxiZ
+ OBgPMUpwMCuJ8B7q2pAuxJuSWFmVWpQfX1Sak1p8iFGag0VJnFf8RW+KkEB6YklqdmpqQWoR
+ TJaJg1OqgSm62Lno74SUTobvq5a+LGV2SlnhO9dMVfnDVJuA+KX3vRdszD35xUBbucJ433ep
+ 7R2VS2/oyhex/S/6o+9sfPpDrEKQQr/HJin9NWvja+ZezFvSNSd/eYlG4o7jsS+/T48+dGXZ
+ SZcHrmui7h9T3ND3b2psbJDE0Q93L20+JOqgqpsrGM27MJKjbllR+E/33hNWV/qqLi+uCZV/
+ ccHz/umvF3SinaUdzfYuf7Foxu3UjB/ez5JqvnuJiuQw1f2zqOtZNHl/qugc+xmuSk/T7j9k
+ uDuzOOH2vGePNu0XuPv91amDrh+ythxbuCds2veKCjueScEfZ+4z0V9dUrxn2aK2TuNZF5Y3
+ Sy56zB9ktjtFiaU4I9FQi7moOBEAUaeNffcCAAA=
+X-CMS-MailID: 20250217093732epcas5p34a9841ca77c60e02522232f00090074b
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+ boundary="----MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_5ebd2_"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b
+References: <CGME20250214132317epcas5p3732f86a4aa3cee5c396e18c2bf98a82b@epcas5p3.samsung.com>
+ <20250214132211.528019-1-s5.kumari@samsung.com>
+ <20250214174359.0000368a@huawei.com>
+Received-SPF: pass client-ip=203.254.224.33;
+ envelope-from=s5.kumari@samsung.com; helo=mailout3.samsung.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.382,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,285 +137,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch tests whether MCQ initialization and basic read-write
-operations work correctly when the MCQ parameter of hw/ufs is enabled.
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_5ebd2_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
----
- tests/qtest/ufs-test.c | 171 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 142 insertions(+), 29 deletions(-)
+On 14/02/25 05:43PM, Jonathan Cameron wrote:
+>On Fri, 14 Feb 2025 18:52:11 +0530
+>Sweta Kumari <s5.kumari@samsung.com> wrote:
+>
+>> 1)get alert configuration(Opcode 4201h)
+>> 2)set alert configuration(Opcode 4202h)
+>
+>Move the change log to below the ---
+>The key thing being git then doesn't pick it up whilst applying the patch.
+>Whilst changed logs are very useful during the review process we don't
+>typically want to keep them in the git history for ever!
+>
+>Otherwise, main comment here is shorten more names.
+>
+>Jonathan
+>
+Thank you for the feedback, will make the changes accordingly in the v3
+patch.
+>>
+>> This v2 patch addresses the feedback from the v1 patch and include some minor new changes.
+>>
+>> Changes in V2:
+>> - Removed cover letter as it's a single patch
+>> - Added latest spec reference
+>> - Fixed alignment issues
+>> - Updated shorter variable names to be more descriptive
+>> - Replaced field-by-field initialization in 'init_alert_config' with structured initialization for improved readability.
+>> - Replaced bit fields with 'uint8_t' and added defines for individual bits.
+>>
+>> The patch is generated against the Johnathan's tree
+>> https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
+>>
+>> Signed-off-by: Sweta Kumari <s5.kumari@samsung.com>
+>> ---
+>>  hw/cxl/cxl-mailbox-utils.c  | 116 ++++++++++++++++++++++++++++++++++++
+>>  hw/mem/cxl_type3.c          |  16 +++++
+>>  include/hw/cxl/cxl_device.h |  15 +++++
+>>  3 files changed, 147 insertions(+)
+>>
+>> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>> index 9c7ea5bc35..105c63fdec 100644
+>> --- a/hw/cxl/cxl-mailbox-utils.c
+>> +++ b/hw/cxl/cxl-mailbox-utils.c
+>> @@ -28,6 +28,11 @@
+>>  #define CXL_DC_EVENT_LOG_SIZE 8
+>>  #define CXL_NUM_EXTENTS_SUPPORTED 512
+>>  #define CXL_NUM_TAGS_SUPPORTED 0
+>> +#define CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD (1 << 0)
+>> +#define CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD (1 << 1)
+>> +#define CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD (1 << 2)
+>> +#define CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD (1 << 3)
+>> +#define CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD (1 << 4)
+>Let's shorten these as they are very ugly to use when a line long!
+>
+>#define CXL_ALERTS_OVER_TEMP_WARN_THRESH
+>etc. Similar to comments below.
+>
+Ok, will shorten the macro names as suggested in v3 patch.
+>>
+>>  /*
+>>   * How to add a new command, example. The command set FOO, with cmd BAR.
+>> @@ -86,6 +91,9 @@ enum {
+>>          #define GET_PARTITION_INFO     0x0
+>>          #define GET_LSA       0x2
+>>          #define SET_LSA       0x3
+>> +    HEALTH_INFO_ALERTS = 0x42,
+>> +        #define GET_ALERT_CONFIGURATION 0x1
+>> +        #define SET_ALERT_CONFIGURATION 0x2
+>CONFIG maybe enough?
+>
+Okay.
+>>      SANITIZE    = 0x44,
+>>          #define OVERWRITE     0x0
+>>          #define SECURE_ERASE  0x1
+>> @@ -1625,6 +1633,110 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
+>>      return CXL_MBOX_SUCCESS;
+>>  }
+>>
+>> +/* CXL r3.2 Section 8.2.10.9.3.2 Get Alert Configuration (Opcode 4201h) */
+>> +static CXLRetCode cmd_get_alert_config(const struct cxl_cmd *cmd,
+>> +                                       uint8_t *payload_in,
+>> +                                       size_t len_in,
+>> +                                       uint8_t *payload_out,
+>> +                                       size_t *len_out,
+>> +                                       CXLCCI *cci)
+>> +{
+>> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>> +    CXLAlertConfig *out = (void *)payload_out;
+>
+>In this case we can cast to the right type (can't do that if we don't
+>name that type which happens in a lot these structures). So prefer
+>    CXLAlertConfig *out = (CXLAlertConfig *)payload_out;
+>
+>
+Okay, will fix this in v3 patch
+>> +
+>> +    memcpy(out, &ct3d->alert_config, sizeof(ct3d->alert_config));
+>> +    *len_out = sizeof(ct3d->alert_config);
+>> +
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>> +/* CXL r3.2 Section 8.2.10.9.3.3 Set Alert Configuration (Opcode 4202h) */
+>> +static CXLRetCode cmd_set_alert_config(const struct cxl_cmd *cmd,
+>> +                                       uint8_t *payload_in,
+>> +                                       size_t len_in,
+>> +                                       uint8_t *payload_out,
+>> +                                       size_t *len_out,
+>> +                                       CXLCCI *cci)
+>> +{
+>> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>> +    CXLAlertConfig *alert_config = &ct3d->alert_config;
+>> +    struct {
+>> +        uint8_t valid_alert_actions;
+>> +        uint8_t enable_alert_actions;
+>> +        uint8_t life_used_warning_threshold;
+>> +        uint8_t rsvd;
+>> +        uint16_t device_over_temperature_warning_threshold;
+>> +        uint16_t device_under_temperature_warning_threshold;
+>> +        uint16_t Corrected_volatile_memory_error_warning_threshold;
+>> +        uint16_t Corrected_persistent_memory_error_warning_threshold;
+>
+>Shorten these as well. Similar to suggestions below.  They are
+>just too long to make for nice code!
+>
+Got it.
+>> +    } QEMU_PACKED *in = (void *)payload_in;
+>> +
+>> +    if (in->valid_alert_actions & CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD) {
+>> +        /*
+>> +         * CXL 3.2 Table 8-149 The life used warning threshold shall be
+>> +         * less than the life used critical alert value.
+>> +         */
+>> +        if (in->life_used_warning_threshold >=
+>> +            alert_config->life_used_critical_alert_threshold) {
+>> +            return CXL_MBOX_INVALID_INPUT;
+>> +        }
+>> +        alert_config->life_used_warning_threshold =
+>> +            in->life_used_warning_threshold;
+>> +        alert_config->enable_alerts |= CXL_ALERTS_LIFE_USED_WARNING_THRESHOLD;
+>> +    }
+>> +
+>> +    if (in->valid_alert_actions &
+>> +        CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD) {
+>> +        /*
+>> +         * CXL 3.2 Table 8-149 The Device Over-Temperature Warning Threshold
+>> +         * shall be less than the the Device Over-Temperature Critical
+>> +         * Alert Threshold.
+>> +         */
+>> +        if (in->device_over_temperature_warning_threshold >=
+>> +            alert_config->device_over_temperature_critical_alert_threshold) {
+>> +            return CXL_MBOX_INVALID_INPUT;
+>> +        }
+>> +        alert_config->device_over_temperature_warning_threshold =
+>> +            in->device_over_temperature_warning_threshold;
+>> +        alert_config->enable_alerts |=
+>> +            CXL_ALERTS_DEVICE_OVER_TEMP_WARNING_THRESHOLD;
+>> +    }
+>> +
+>> +    if (in->valid_alert_actions &
+>> +        CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD) {
+>> +        /*
+>> +         * CXL 3.2 Table 8-149 The Device Under-Temperature Warning Threshold
+>> +         * shall be higher than the the Device Under-Temperature Critical
+>> +         * Alert Threshold.
+>> +         */
+>> +        if (in->device_under_temperature_warning_threshold <=
+>> +            alert_config->device_under_temperature_critical_alert_threshold) {
+>> +            return CXL_MBOX_INVALID_INPUT;
+>> +        }
+>> +        alert_config->device_under_temperature_warning_threshold =
+>> +            in->device_under_temperature_warning_threshold;
+>> +        alert_config->enable_alerts |=
+>> +            CXL_ALERTS_DEVICE_UNDER_TEMP_WARNING_THRESHOLD;
+>> +    }
+>> +
+>> +    if (in->valid_alert_actions &
+>> +        CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD) {
+>> +        alert_config->Corrected_volatile_memory_error_warning_threshold =
+>> +            in->Corrected_volatile_memory_error_warning_threshold;
+>> +        alert_config->enable_alerts |=
+>> +            CXL_ALERTS_CORRECTED_VOLATILE_MEMORY_ERROR_WARNING_THRESHOLD;
+>> +    }
+>> +
+>> +    if (in->valid_alert_actions &
+>> +        CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD) {
+>> +        alert_config->Corrected_persistent_memory_error_warning_threshold =
+>> +            in->Corrected_persistent_memory_error_warning_threshold;
+>> +        alert_config->enable_alerts |=
+>> +            CXL_ALERTS_CORRECTED_PERSISTENT_MEMORY_ERROR_WARNING_THRESHOLD;
+>> +    }
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>>  /* Perform the actual device zeroing */
+>>  static void __do_sanitization(CXLType3Dev *ct3d)
+>>  {
+>> @@ -2859,6 +2971,10 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>>      [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
+>>      [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
+>>          ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
+>> +    [HEALTH_INFO_ALERTS][GET_ALERT_CONFIGURATION] = {"GET_ALERT_CONFIGURATION",
+>
+>Space after { to match local style.
+>
+Ok, will address this in v3 patch.
+>> +        cmd_get_alert_config, 0, 0 },
+>> +    [HEALTH_INFO_ALERTS][SET_ALERT_CONFIGURATION] = {"SET_ALERT_CONFIGURATION",
+>> +        cmd_set_alert_config, 12, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
+>>      [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
+>>          (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
+>>           CXL_MBOX_SECURITY_STATE_CHANGE |
+>
+>> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+>> index a64739be25..1da23bf553 100644
+>> --- a/include/hw/cxl/cxl_device.h
+>> +++ b/include/hw/cxl/cxl_device.h
+>> @@ -581,6 +581,19 @@ typedef struct CXLSetFeatureInfo {
+>>      size_t data_size;
+>>  } CXLSetFeatureInfo;
+>>
+>> +typedef struct CXLAlertConfig {
+>> +    uint8_t valid_alerts;
+>> +    uint8_t enable_alerts;
+>> +    uint8_t life_used_critical_alert_threshold;
+>> +    uint8_t life_used_warning_threshold;
+>> +    uint16_t device_over_temperature_critical_alert_threshold;
+>I think we can shorten these at least a bit without lost of meaning!
+>It's on a device so can drop that entirely. Perhaps
+>
+>    uint8_t life_used_crit_alert_thresh;
+>    uint8_t life_used_warn_thresh;
+>    uint16_t over_temp_crit_alert_thresh;
+>    uint16_t under_temp_crit_alert_thresh;
+>    uint16_t over_temp_warn_thresh;
+>    uint16_t under_temp_warn_thresh;
+>    uint16_t cor_volatile_mem_err_warn_thresh;
+>    uint16_t cor_persistent_mem_err_warn_thresh;
+>
+Ok, will shorten the field names as suggested.
+>> +    uint16_t device_under_temperature_critical_alert_threshold;
+>> +    uint16_t device_over_temperature_warning_threshold;
+>> +    uint16_t device_under_temperature_warning_threshold;
+>> +    uint16_t Corrected_volatile_memory_error_warning_threshold;
+>Capital in just this one doesn't make much sense.
+>> +    uint16_t Corrected_persistent_memory_error_warning_threshold;
+>> +} QEMU_PACKED CXLAlertConfig;
+>
+>
 
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index f5b311554b..d5076bdeb5 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -15,6 +15,7 @@
- #include "block/ufs.h"
- #include "qemu/bitmap.h"
- 
-+#define DWORD_BYTE 4
- /* Test images sizes in Bytes */
- #define TEST_IMAGE_SIZE (64 * 1024 * 1024)
- /* Timeout for various operations, in seconds. */
-@@ -28,6 +29,10 @@
- #define UTP_PRDT_UPIU_OFFSET 2048
- #define UTRD_TEST_SLOT 0
- #define UFS_MAX_CMD_DESC 32
-+/* Constants for MCQ */
-+#define TEST_QID 0
-+#define QUEUE_SIZE 32
-+#define UFS_MCQ_MAX_QNUM 32
- 
- typedef struct QUfs QUfs;
- 
-@@ -36,12 +41,22 @@ struct QUfs {
-     QPCIDevice dev;
-     QPCIBar bar;
- 
--    uint64_t utrlba;
-     DECLARE_BITMAP(cmd_desc_bitmap, UFS_MAX_CMD_DESC);
-     uint64_t cmd_desc_addr;
-     uint64_t data_buffer_addr;
- 
-     bool enabled;
-+    bool support_mcq;
-+
-+    /* for legacy doorbell mode */
-+    uint64_t utrlba;
-+
-+    /* for mcq mode */
-+    uint32_t maxq;
-+    uint64_t sqlba[UFS_MCQ_MAX_QNUM];
-+    uint64_t cqlba[UFS_MCQ_MAX_QNUM];
-+    uint64_t sqdao[UFS_MCQ_MAX_QNUM];
-+    uint64_t cqdao[UFS_MCQ_MAX_QNUM];
- };
- 
- static inline uint32_t ufs_rreg(QUfs *ufs, size_t offset)
-@@ -106,31 +121,67 @@ static UtpTransferReqDesc ufs_build_req_utrd(uint64_t command_desc_base_addr,
- }
- 
- static enum UtpOcsCodes
--ufs_send_transfer_request_sync(QUfs *ufs, uint8_t lun,
--                               const UtpTransferReqDesc *utrd)
-+__ufs_send_transfer_request_doorbell(QUfs *ufs, uint8_t lun,
-+                                     const UtpTransferReqDesc *utrd)
- {
--    UtpTransferReqDesc utrd_result;
--    /*
--     * Currently, the transfer request is sent synchronously, so UTRD_TEST_SLOT
--     * is fixed to 0. If asynchronous testing is added in the future, this value
--     * should be adjusted dynamically.
--     */
-     uint64_t utrd_addr =
-         ufs->utrlba + UTRD_TEST_SLOT * sizeof(UtpTransferReqDesc);
-+    UtpTransferReqDesc utrd_result;
-+
-     qtest_memwrite(ufs->dev.bus->qts, utrd_addr, utrd, sizeof(*utrd));
- 
--    /* Ring Doorbell */
-+    /* Ring the doorbell */
-     ufs_wreg(ufs, A_UTRLDBR, 1);
-     ufs_wait_for_irq(ufs);
-     g_assert_true(FIELD_EX32(ufs_rreg(ufs, A_IS), IS, UTRCS));
-     ufs_wreg(ufs, A_IS, FIELD_DP32(0, IS, UTRCS, 1));
- 
-+    /* Handle completed command */
-     qtest_memread(ufs->dev.bus->qts, utrd_addr, &utrd_result,
-                   sizeof(utrd_result));
--
-     return le32_to_cpu(utrd_result.header.dword_2) & 0xf;
- }
- 
-+static enum UtpOcsCodes
-+__ufs_send_transfer_request_mcq(QUfs *ufs, uint8_t lun,
-+                                const UtpTransferReqDesc *utrd)
-+{
-+    uint32_t sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    uint64_t utrd_addr = ufs->sqlba[TEST_QID] + sqtp;
-+    uint32_t cqhp;
-+    uint64_t cqentry_addr;
-+    UfsCqEntry cqentry;
-+
-+    qtest_memwrite(ufs->dev.bus->qts, utrd_addr, utrd, sizeof(*utrd));
-+
-+    /* Insert a new entry into the submission queue */
-+    sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    sqtp = (sqtp + sizeof(UfsSqEntry)) % (QUEUE_SIZE * sizeof(UfsSqEntry));
-+    ufs_wreg(ufs, ufs->sqdao[TEST_QID] + 0x4, sqtp);
-+    ufs_wait_for_irq(ufs);
-+    g_assert_true(FIELD_EX32(ufs_rreg(ufs, A_IS), IS, CQES));
-+    ufs_wreg(ufs, A_IS, FIELD_DP32(0, IS, CQES, 1));
-+
-+    /* Handle the completed command from the completion queue */
-+    cqhp = ufs_rreg(ufs, ufs->cqdao[TEST_QID]);
-+    cqentry_addr = ufs->cqlba[TEST_QID] + cqhp;
-+    qtest_memread(ufs->dev.bus->qts, cqentry_addr, &cqentry, sizeof(cqentry));
-+    ufs_wreg(ufs, ufs->cqdao[TEST_QID], cqhp);
-+
-+    return cqentry.status;
-+}
-+
-+static enum UtpOcsCodes
-+ufs_send_transfer_request_sync(QUfs *ufs, uint8_t lun,
-+                               const UtpTransferReqDesc *utrd)
-+{
-+    if (ufs->support_mcq) {
-+        return __ufs_send_transfer_request_mcq(ufs, lun, utrd);
-+    }
-+
-+    return __ufs_send_transfer_request_doorbell(ufs, lun, utrd);
-+}
-+
- static enum UtpOcsCodes ufs_send_nop_out(QUfs *ufs, UtpUpiuRsp *rsp_out)
- {
-     int cmd_desc_slot = alloc_cmd_desc_slot(ufs);
-@@ -342,6 +393,10 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     g_assert_true(FIELD_EX32(hcs, HCS, UTRLRDY));
-     g_assert_true(FIELD_EX32(hcs, HCS, UCRDY));
- 
-+    /* Check MCQ support */
-+    cap = ufs_rreg(ufs, A_CAP);
-+    ufs->support_mcq = FIELD_EX32(cap, CAP, MCQS);
-+
-     /* Enable all interrupt functions */
-     ie = FIELD_DP32(ie, IE, UTRCE, 1);
-     ie = FIELD_DP32(ie, IE, UEE, 1);
-@@ -354,21 +409,66 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     ie = FIELD_DP32(ie, IE, HCFEE, 1);
-     ie = FIELD_DP32(ie, IE, SBFEE, 1);
-     ie = FIELD_DP32(ie, IE, CEFEE, 1);
-+    if (ufs->support_mcq) {
-+        ie = FIELD_DP32(ie, IE, CQEE, 1);
-+    }
-     ufs_wreg(ufs, A_IE, ie);
-     ufs_wreg(ufs, A_UTRIACR, 0);
- 
-     /* Enable transfer request */
--    cap = ufs_rreg(ufs, A_CAP);
--    nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
-     ufs->cmd_desc_addr =
-         guest_alloc(alloc, UFS_MAX_CMD_DESC * UTP_COMMAND_DESCRIPTOR_SIZE);
-     ufs->data_buffer_addr =
-         guest_alloc(alloc, MAX_PRD_ENTRY_COUNT * PRD_ENTRY_DATA_SIZE);
--    ufs->utrlba = guest_alloc(alloc, nutrs * sizeof(UtpTransferReqDesc));
- 
--    ufs_wreg(ufs, A_UTRLBA, ufs->utrlba & 0xffffffff);
--    ufs_wreg(ufs, A_UTRLBAU, ufs->utrlba >> 32);
--    ufs_wreg(ufs, A_UTRLRSR, 1);
-+    if (ufs->support_mcq) {
-+        uint32_t mcqcap, qid, qcfgptr, mcq_reg_offset;
-+        uint32_t cqattr = 0, sqattr = 0;
-+
-+        mcqcap = ufs_rreg(ufs, A_MCQCAP);
-+        qcfgptr = FIELD_EX32(mcqcap, MCQCAP, QCFGPTR);
-+        ufs->maxq = FIELD_EX32(mcqcap, MCQCAP, MAXQ) + 1;
-+        for (qid = 0; qid < ufs->maxq; ++qid) {
-+            ufs->sqlba[qid] =
-+                guest_alloc(alloc, QUEUE_SIZE * sizeof(UtpTransferReqDesc));
-+            ufs->cqlba[qid] =
-+                guest_alloc(alloc, QUEUE_SIZE * sizeof(UtpTransferReqDesc));
-+            mcq_reg_offset = qcfgptr * 0x200 + qid * 0x40;
-+
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQLBA,
-+                     ufs->sqlba[qid] & 0xffffffff);
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQUBA, ufs->sqlba[qid] >> 32);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQLBA,
-+                     ufs->cqlba[qid] & 0xffffffff);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQUBA, ufs->cqlba[qid] >> 32);
-+
-+            /* Enable Completion Queue */
-+            cqattr = FIELD_DP32(cqattr, CQATTR, CQEN, 1);
-+            cqattr = FIELD_DP32(cqattr, CQATTR, SIZE,
-+                                QUEUE_SIZE * sizeof(UtpTransferReqDesc) /
-+                                    DWORD_BYTE);
-+            ufs_wreg(ufs, mcq_reg_offset + A_CQATTR, cqattr);
-+
-+            /* Enable Submission Queue */
-+            sqattr = FIELD_DP32(sqattr, SQATTR, SQEN, 1);
-+            sqattr = FIELD_DP32(sqattr, SQATTR, SIZE,
-+                                QUEUE_SIZE * sizeof(UtpTransferReqDesc) /
-+                                    DWORD_BYTE);
-+            sqattr = FIELD_DP32(sqattr, SQATTR, CQID, qid);
-+            ufs_wreg(ufs, mcq_reg_offset + A_SQATTR, sqattr);
-+
-+            /* Cache head & tail pointer */
-+            ufs->sqdao[qid] = ufs_rreg(ufs, mcq_reg_offset + A_SQDAO);
-+            ufs->cqdao[qid] = ufs_rreg(ufs, mcq_reg_offset + A_CQDAO);
-+        }
-+    } else {
-+        nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
-+        ufs->utrlba = guest_alloc(alloc, nutrs * sizeof(UtpTransferReqDesc));
-+
-+        ufs_wreg(ufs, A_UTRLBA, ufs->utrlba & 0xffffffff);
-+        ufs_wreg(ufs, A_UTRLBAU, ufs->utrlba >> 32);
-+        ufs_wreg(ufs, A_UTRLRSR, 1);
-+    }
- 
-     /* Send nop out to test transfer request */
-     ocs = ufs_send_nop_out(ufs, &rsp_upiu);
-@@ -402,7 +502,15 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
- static void ufs_exit(QUfs *ufs, QGuestAllocator *alloc)
- {
-     if (ufs->enabled) {
--        guest_free(alloc, ufs->utrlba);
-+        if (ufs->support_mcq) {
-+            for (uint32_t qid = 0; qid < ufs->maxq; ++qid) {
-+                guest_free(alloc, ufs->sqlba[qid]);
-+                guest_free(alloc, ufs->cqlba[qid]);
-+            }
-+        } else {
-+            guest_free(alloc, ufs->utrlba);
-+        }
-+
-         guest_free(alloc, ufs->cmd_desc_addr);
-         guest_free(alloc, ufs->data_buffer_addr);
-     }
-@@ -966,12 +1074,16 @@ static void ufs_register_nodes(void)
-     QOSGraphEdgeOptions edge_opts = {
-         .before_cmd_line = "-blockdev null-co,node-name=drv0,read-zeroes=on",
-         .after_cmd_line = "-device ufs-lu,bus=ufs0,drive=drv0,lun=0",
--        .extra_device_opts = "addr=04.0,id=ufs0,nutrs=32,nutmrs=8"
-+        .extra_device_opts = "addr=04.0,id=ufs0"
-     };
- 
--    QOSGraphTestOptions io_test_opts = {
--        .before = ufs_blk_test_setup,
--    };
-+    QOSGraphTestOptions io_test_opts = { .before = ufs_blk_test_setup,
-+                                         .edge.extra_device_opts =
-+                                             "mcq=false,nutrs=32,nutmrs=8" };
-+
-+    QOSGraphTestOptions mcq_test_opts = { .before = ufs_blk_test_setup,
-+                                          .edge.extra_device_opts =
-+                                              "mcq=true,mcq-maxq=1" };
- 
-     add_qpci_address(&edge_opts, &(QPCIAddress){ .devfn = QPCI_DEVFN(4, 0) });
- 
-@@ -991,13 +1103,14 @@ static void ufs_register_nodes(void)
-         return;
-     }
-     qos_add_test("init", "ufs", ufstest_init, NULL);
--    qos_add_test("read-write", "ufs", ufstest_read_write, &io_test_opts);
--    qos_add_test("flag read-write", "ufs",
--                 ufstest_query_flag_request, &io_test_opts);
--    qos_add_test("attr read-write", "ufs",
--                 ufstest_query_attr_request, &io_test_opts);
--    qos_add_test("desc read-write", "ufs",
--                 ufstest_query_desc_request, &io_test_opts);
-+    qos_add_test("legacy-read-write", "ufs", ufstest_read_write, &io_test_opts);
-+    qos_add_test("mcq-read-write", "ufs", ufstest_read_write, &mcq_test_opts);
-+    qos_add_test("query-flag", "ufs", ufstest_query_flag_request,
-+                 &io_test_opts);
-+    qos_add_test("query-attribute", "ufs", ufstest_query_attr_request,
-+                 &io_test_opts);
-+    qos_add_test("query-desciptor", "ufs", ufstest_query_desc_request,
-+                 &io_test_opts);
- }
- 
- libqos_init(ufs_register_nodes);
--- 
-2.43.0
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_5ebd2_
+Content-Type: text/plain; charset="utf-8"
 
+
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_5ebd2_--
 
