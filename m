@@ -2,93 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DF8A3897A
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE52EA389BC
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 17:42:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk47v-0008Vt-Vu; Mon, 17 Feb 2025 11:37:48 -0500
+	id 1tk4Bm-0004MO-3J; Mon, 17 Feb 2025 11:41:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tk47u-0008Vb-TI
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:37:46 -0500
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tk47s-0007CV-UX
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:37:46 -0500
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2fc0d44a876so6465220a91.3
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 08:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1739810263; x=1740415063; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QJAnQ6KSRQeLxo5DrQ1/+9lnEZmxA9TeBMNZXMAlfU0=;
- b=lYMAMOo1PDKIprCi+ln56C8KezYkmuTof5syGHbP3RySZBJNgS/wgNdHPkVp9BDeu8
- ebVg/Uq8fIuMXhOTUgiWn7hMKrVB7AShppijPlXeH52IGZAvKC3ukqq3Oql0ca3RG0xe
- yaRwyPYrWcltan65T7P0fgbEEByukEKJHeoPFzDRe2rioK99JDZsgIvMFcw+wGnwMVwH
- nkKTRZQVnY1osHO4AX18Km9Rzah0ABbnVc89dabRq7YSk8+lbqznBotd9mFe5TjUxvDx
- m+FC44f6UY5q2zLvEHxBfPKAcR2Q8h0EX+hSDslydfB7DUcMaBgwINa1/nUFjDQj6T9g
- ZRNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739810263; x=1740415063;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QJAnQ6KSRQeLxo5DrQ1/+9lnEZmxA9TeBMNZXMAlfU0=;
- b=uYntY2MB562gZhGuCf/lvk2+erPNJx8oiHvL2jd3OZg3pmmbwXf9eaTsHYLU6kfB6P
- vhq+61f/R284MpKACPz6UpewY/UC5hj+DD4HtirsuInz030YfZ2Hn/BTEC866EfTfrIT
- Hf88DGwV3FoU/W7oWQNn6Btwlib9IQ2w/piArB2Mr5iGCV7ihlFlHAwtCaoAfUTZAQAu
- izT4jA6azcYrZ0hzXu5jN9GKbz8SzbWIx2yHG4vSvkK7Yl9WMtA6KyxTTWKEcb1BwkkM
- jg6eyaqwaVeojiFOzecPbmVmL3GRvUTDjgLjwUngSRx/cboIktUCv5WV7SrUIaiNEm4g
- oMDg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1WISwIBM0280hqll5TNMWNaKNQ12DBwE5UMfKujsBl45WjNpIb6T+SyjrM2z7Uls8eFnAWpoz5Fqs@nongnu.org
-X-Gm-Message-State: AOJu0Ywa6LNHoEeKSwRfW2HzFcFPzMgMnyIfmYAo0nseHDUC1BpjMH5Q
- XQl/bXVaz0i/PqwsJRK5p3IDaxwoAY9gd1Mhi6hJbuBfJvN30qpRu4EbRDLOj34=
-X-Gm-Gg: ASbGncv9FhVXzcr1bwnncgrejpRaZ1NM3V78KilYLMdraoVvrtFHA7vKTYagisW5hbB
- f3wCkf/uS5vC95IQnVzYUxrexhi8fj+141XcbKlQmvfTTYcrMkjo+9DnLgk297p1oCV+uvo2uq6
- SbAf68WH01smTc39yJqc9SnbuFy/7shyrqe3MIQOqQT+Z34zmxip6eg0eNbm0aP1tPf/ERE9v6E
- YOa+DLdDq2OYrU3+NdzkVhOUHbrQbYnDLhiLl+aOhQRB081ht4+3PWPZyihQlWaqUlQZg8P5kqE
- GpZOhfq7yFLL5GrEiyZk0j935HOrx/sJfkOBlcVPl2AI32hBHp3TVALUvcCaVRAT
-X-Google-Smtp-Source: AGHT+IH825bkQck0StXWlhdENnRDaIpTJwiimi1Dj/JaAOoL82WE1H6EdtnQ4gFWPg4gqpDGSSMl3g==
-X-Received: by 2002:a17:90b:2e46:b0:2ee:b6c5:1def with SMTP id
- 98e67ed59e1d1-2fc40f0f46dmr14739663a91.8.1739810262960; 
- Mon, 17 Feb 2025 08:37:42 -0800 (PST)
-Received: from [192.168.68.110] (201-68-240-180.dsl.telesp.net.br.
- [201.68.240.180]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fc13ac19aesm8301249a91.17.2025.02.17.08.37.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 08:37:42 -0800 (PST)
-Message-ID: <ca0c6853-2968-4e3c-84ef-6656b33a51e2@ventanamicro.com>
-Date: Mon, 17 Feb 2025 13:37:37 -0300
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1tk4Bf-0004Ln-If
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:41:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1tk4BZ-0007ss-Tt
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 11:41:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739810491;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sg2lkku03GRDUzTf6xQC4Gtad59C5/+VDo1OvyFCd5A=;
+ b=XHqGkhzSCp7lZXt6HWlwelU0Hk88X9zWBELVOG9HkAuyTghz5LAwsERJZYLccH/4cLRhkB
+ qDPuTK8jhODcAFVF2DsD7T84Xe9ZiC++xtsF8Mx5k1XMOciQEc+0EJq5usmKb2r9vv6MDr
+ qCbEsXHNhqcKdMEU1vT1hAGY1zyYuDY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-tIuEfYs_ODCBDMp1V-gBTA-1; Mon,
+ 17 Feb 2025 11:40:20 -0500
+X-MC-Unique: tIuEfYs_ODCBDMp1V-gBTA-1
+X-Mimecast-MFC-AGG-ID: tIuEfYs_ODCBDMp1V-gBTA_1739810419
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 462F6180087C; Mon, 17 Feb 2025 16:40:19 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.252])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0A564180056F; Mon, 17 Feb 2025 16:40:13 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: slp@redhat.com, stevensd@chromium.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, stefanha@redhat.com,
+ david@redhat.com, hi@alyssa.is, mst@redhat.com, jasowang@redhat.com,
+ Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH v4 0/9] vhost-user: Add SHMEM_MAP/UNMAP requests
+Date: Mon, 17 Feb 2025 17:40:03 +0100
+Message-ID: <20250217164012.246727-1-aesteve@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: Respect mseccfg.RLB bit for TOR mode PMP
- entry
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, qemu-riscv@nongnu.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20250210153713.343626-1-rbradford@rivosinc.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20250210153713.343626-1-rbradford@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102b.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,38 +83,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,
 
+v3->v4
+- Change mmap strategy to use RAM blocks
+  and subregions.
+- Add new bitfield to qmp feature map
+- Followed most review comments from
+  last iteration.
+- Merged documentation patch again with
+  this one. Makes more sense to
+  review them together after all.
+- Add documentation for MEM_READ/WRITE
+  messages.
 
-On 2/10/25 12:37 PM, Rob Bradford wrote:
-> When running in TOR mode (Top of Range) the next PMP entry controls
-> whether the entry is locked. However simply checking if the PMP_LOCK bit
-> is set is not sufficient with the Smepmp extension which now provides a
-> bit (mseccfg.RLB (Rule Lock Bypass)) to disregard the lock bits. In
-> order to respect this bit use the convenience pmp_is_locked() function
-> rather than directly checking PMP_LOCK since this function checks
-> mseccfg.RLB.
-> 
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
+The goal of this patch is to support
+dynamic fd-backed memory maps initiated
+from vhost-user backends.
+There are many devices that could already
+benefit of this feature, e.g.,
+virtiofs or virtio-gpu.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+After receiving the SHMEM_MAP/UNMAP request,
+the frontend creates the RAMBlock form the
+fd and maps it by adding it as a subregion
+of the shared memory region container.
 
+The VIRTIO Shared Memory Region list is
+declared in the `VirtIODevice` struct
+to make it generic.
 
->   target/riscv/pmp.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index a185c246d6..85ab270dad 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -524,7 +524,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
->               uint8_t pmp_cfg = env->pmp_state.pmp[addr_index + 1].cfg_reg;
->               is_next_cfg_tor = PMP_AMATCH_TOR == pmp_get_a_field(pmp_cfg);
->   
-> -            if (pmp_cfg & PMP_LOCK && is_next_cfg_tor) {
-> +            if (pmp_is_locked(env, addr_index + 1) && is_next_cfg_tor) {
->                   qemu_log_mask(LOG_GUEST_ERROR,
->                                 "ignoring pmpaddr write - pmpcfg + 1 locked\n");
->                   return;
+TODO: There was a conversation on the
+previous version around adding tests
+to the patch (which I have acknowledged).
+However, given the numerous changes
+that the patch already has, I have
+decided to send it early and collect
+some feedback while I work on the
+tests for the next iteration.
+Given that I have been able to
+test the implementation with
+my local setup, I am more or less
+confident that, at least, the code
+is in a relatively sane state
+so that no reviewing time is
+wasted on broken patches.
+
+This patch also includes:
+- SHMEM_CONFIG frontend request that is
+specifically meant to allow generic
+vhost-user-device frontend to be able to
+query VIRTIO Shared Memory settings from the
+backend (as this device is generic and agnostic
+of the actual backend configuration).
+
+- MEM_READ/WRITE backend requests are
+added to deal with a potential issue when having
+multiple backends sharing a file descriptor.
+When a backend calls SHMEM_MAP it makes
+accessing to the region fail for other
+backend as it is missing from their translation
+table. So these requests are a fallback
+for vhost-user memory translation fails.
+
+Albert Esteve (9):
+  vhost-user: Add VirtIO Shared Memory map request
+  vhost_user.rst: Align VhostUserMsg excerpt members
+  vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
+  vhost_user: Add frontend get_shmem_config command
+  vhost_user.rst: Add GET_SHMEM_CONFIG message
+  qmp: add shmem feature map
+  vhost-user-devive: Add shmem BAR
+  vhost_user: Add mem_read/write backend requests
+  vhost_user.rst: Add MEM_READ/WRITE messages
+
+ docs/interop/vhost-user.rst               | 110 +++++++++
+ hw/virtio/vhost-user-base.c               |  47 +++-
+ hw/virtio/vhost-user-device-pci.c         |  36 ++-
+ hw/virtio/vhost-user.c                    | 272 ++++++++++++++++++++--
+ hw/virtio/virtio-qmp.c                    |   3 +
+ hw/virtio/virtio.c                        |  81 +++++++
+ include/hw/virtio/vhost-backend.h         |   9 +
+ include/hw/virtio/vhost-user.h            |   1 +
+ include/hw/virtio/virtio.h                |  29 +++
+ subprojects/libvhost-user/libvhost-user.c | 160 +++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  92 ++++++++
+ 11 files changed, 813 insertions(+), 27 deletions(-)
+
+-- 
+2.48.1
 
 
