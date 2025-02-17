@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE66AA38C68
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD2CA38C81
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:34:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pr-0002yp-WB; Mon, 17 Feb 2025 14:31:20 -0500
+	id 1tk6pj-0002Wo-DM; Mon, 17 Feb 2025 14:31:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6pA-0001zM-Qc
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:44 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tk6pC-0001zW-4l
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:45 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6p6-0008R5-CN
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:36 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-221206dbd7eso26589065ad.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:31 -0800 (PST)
+ id 1tk6p7-0008RJ-WA
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:37 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2210d92292eso55117045ad.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739820630; x=1740425430; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739820631; x=1740425431; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZoiLt3pf8hgXu53AUbpJI+JmE6qkg40H4RF3hXdm60A=;
- b=r6Qn65mCal8xE383Ihe+VFdEu/bYDCXXiY56rCmWjSqYest3ZGD2irU2NNkfsMgZe2
- uI7YXiOvM014ZMSnB7HWzgJ/RJy3xzqucoc3Nmez2TTOfjCXnsrr2xYPA0YmwZSNOZrq
- pyiK4jif37KRWF16ZXAaeKdWUe22HKKAmBZ3LHrFqUUQvnkzaAjypNTUoCd10Nx2NKQw
- HoNxS1gFRG2MzmWjkyvSMiGl3l4fOqVryNGi4cSeLlJR+uwHAN3rk4vdma3705PA4jHe
- RjRrSzTCkAe7bY2a4JAoSiqtv/1vYW3PnbzJnHlPtgCtX0nkDDjQ6OZD/IOr5hNRC5ES
- On6A==
+ bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
+ b=py3+qOk7syXPF+Vx8Yd9T7Jc2VAx+HQzwY9K9G+ICJYyFYTI3MSoY0231at7mUpISc
+ zoAST2QxxB2Pfb5tUY63OhibXzvA7/4P7+trJXUiD4jDhvWcBiqlR82Uaxub3MW8ni+v
+ QBcSQCW4R10lo7daNCSJs6a2P2VIVYgZmnZApIuZvIpZl0AEv9w+8tflEHoiEG8JcJah
+ O/um5DdoCSxPguxUr7bLTqUFjxYxQvjyr8JEZb9x5DO/T5SQ0B3DaroparLMvb/8z7hY
+ VKkkdtEK9OCktClLCu0GPet9/yLByLSQ1onlxDvd+knpDG+lMDU6TRGlFWb0MsDvpm4F
+ ts8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739820630; x=1740425430;
+ d=1e100.net; s=20230601; t=1739820631; x=1740425431;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZoiLt3pf8hgXu53AUbpJI+JmE6qkg40H4RF3hXdm60A=;
- b=nwvq4pfXZxE2RPOWvfXTSv1ZGOG27lHujker6iAfogVTX0dyweufsioZen33l1mWsm
- EkGDN6SnlVpshbd2GX9ldUPKFdcEDGHEvB1QhhwjQTMIqXBcHUOzqIo86yN/Ig5KrF6y
- BY3D+p5eLG71/AaN6eAkC5gGReZxKl4VXFmRKJKOj6hFBUQeyvksfwh+5ByKlRKeoRtT
- BtfeObZMx1q6fT2qZ9ch9TKoPSnkeCUAxHFqsSg+SspSYKPrw6bM9U06ApevwUrZOWXe
- rai4n6G3DXRQaMA3MdryjllpYIKLz6jsC4zFsiT5kwtiDy/3J+w5Kr8rXUc4VUWcNn+y
- H1Og==
-X-Gm-Message-State: AOJu0YzAH2NF8cEPCOd824y43whf412A4XT5Rg7lb1eGULIyzvLUA+vU
- QHBTHjpsHgwqpBdC4lobXoaO2j/X+Il6go5BcCiuk0SmEvgjl+ViFltLSG8ytYSdIBwLTtflFGx
- w
-X-Gm-Gg: ASbGncuOunLNRu2hxIq98PAORaxco5kHEPFBvwwjIIfyfYrSOCuFQtGkPQV1fjSVTPP
- UdgOuYEx/Lw+GBpE+S4moYZO9uRPTC1n9dOmxla7fq0QsOnayIVnFkvVUcuRZUop52lus1XDmOB
- WjcWP5hSFrZGofxuHPu014+iKkSzmGuQ+h9eTRvC4OFCjzsB/WPoG7Ttk/klncFqLVUkbYQhqDX
- CnIC/3LW4zg+pMbHEiyI4GJv7SVxf0YyL+XYlpN35XUJ0VH/uNLaNQM55HxRjDBtvfIt+dh2caa
- sfLVmoJ4enXvvmrCgzSSn5I8Ab+d87QRdQxsBXaQnulP00E=
-X-Google-Smtp-Source: AGHT+IHIawPzs9+cqCzHj2zDg7TipA5DNpduJdML6R3d7m9168qKfxZ4toug6a5JfFQZVjm1q5QQEQ==
-X-Received: by 2002:a05:6a00:2d9d:b0:730:f1b7:9bc4 with SMTP id
- d2e1a72fcca58-73261779914mr17984780b3a.4.1739820630568; 
- Mon, 17 Feb 2025 11:30:30 -0800 (PST)
+ bh=jFWOgm7cwZ/f43Ltoxf8K/SGg9Wf6xR2m2O9XTNwnuM=;
+ b=SFjRj9WRU/dmciCUsPwj/4DQBGtsx7mi5AUHpvRUIQXfGJcxjIw+k8IvwLxkW56CLY
+ pVowv36C9SNPI/bRf+qxCB6WcLBL0vC4KJiYBteYGlBFqDW2IeGzIQd9wTtkwz9yMkJA
+ QGzP/5HF9I2Q373AGrSFT1tSc0S7Tiq3/EnM9RELLUBoaYE1JPl/8eT2Lommike4VCAX
+ 3B/+qbiUu8g26+xqbDZ6jhYsWGfDl5ChiYgCLWA/ipXttIzaLiNHYjcM1KK6OkERhjTI
+ r6U7B5tKxAjPKUUSHAuTAv7uLXJVDURlEaJlq2OS5kN095vhrertO11sb1f2TEeqmOZp
+ 2c7g==
+X-Gm-Message-State: AOJu0YyRO/VIOPfROQvRx5MToSLfoo07Bb3zkVZXmGXBq3Erbi5oI07X
+ F8T3cBmB3rwdFvzs3k+6495in3fkK5IOlRbckJSN9L9gf8fq3j4/FgihC0H3cXnx2dmNrZzuWtn
+ +
+X-Gm-Gg: ASbGnctMcxeu1hdJPJ7+xz6s+hhvLFxlKDhvwyHnPyb72x6vaWzvF16vMoqvLt/Ll+I
+ VIlhjp4Ttuzdq2opdX0Ere/XcLHvXJRE2u+xjh/PnxjeS7/BBTe3aa9ctp3IgW2PXxdPWeYhaH7
+ 3YgAkFPsNxNgezP8VyhbbiJJ9WqnI1b/YfeZdmk2kx4Jb6iFvDOKoqcYUPRX9nJ7iVqVxeDhk56
+ rik1iZ1GLM0EdrKU4HYqr2N8t4ExwdP+ApiXNkLhRMhs4+EGElL7iezBLLtUNAZOIh3fZ2P6/Sa
+ kQqd1XEsOnzFC2xqKnOYpq3gIRGZlcrHD2o3ozVaJb+qYgM=
+X-Google-Smtp-Source: AGHT+IHrWc0FTXB1+oHnU5YY/o7KhQhHBKN6AFcNMEVrvrf/KGVXTU91Va1YimTyAtkvWKOfhyqLQg==
+X-Received: by 2002:a05:6a21:999e:b0:1ee:3b8e:3439 with SMTP id
+ adf61e73a8af0-1ee8cbe597cmr20099790637.38.1739820631380; 
+ Mon, 17 Feb 2025 11:30:31 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:30:30 -0800 (PST)
+ Mon, 17 Feb 2025 11:30:31 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mikael Szreder <git@miszr.win>,
-	qemu-stable@nongnu.org
-Subject: [PULL v2 24/27] target/sparc: Fix gdbstub incorrectly handling
- registers f32-f62
-Date: Mon, 17 Feb 2025 11:30:05 -0800
-Message-ID: <20250217193009.2873875-25-richard.henderson@linaro.org>
+Cc: Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL v2 25/27] target/sparc: fake UltraSPARC T1 PCR and PIC registers
+Date: Mon, 17 Feb 2025 11:30:06 -0800
+Message-ID: <20250217193009.2873875-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,63 +97,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mikael Szreder <git@miszr.win>
+From: Artyom Tarasenko <atar4qemu@gmail.com>
 
-The gdbstub implementation for the Sparc architecture would
-incorrectly calculate the the floating point register offset.
-This resulted in, for example, registers f32 and f34 to point to
-the same value.
+Fake access to
+   PCR Performance Control Register
+and
+   PIC Performance Instrumentation Counter.
 
-The issue was caused by the confusion between even register numbers
-and even register indexes. For example, the register index of f32 is 64
-and f34 is 65.
+Ignore writes in privileged mode, and return 0 on reads.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
-Signed-off-by: Mikael Szreder <git@miszr.win>
+This allows booting Tribblix, MilaX and v9os under Niagara target.
+
+Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250214070343.11501-1-git@miszr.win>
+Message-ID: <20250209211248.50383-1-atar4qemu@gmail.com>
 ---
- target/sparc/gdbstub.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ target/sparc/translate.c  | 19 +++++++++++++++++++
+ target/sparc/insns.decode |  7 ++++++-
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index ec0036e9ef..134617fb23 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -79,8 +79,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         }
-     }
-     if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
-     }
-     switch (n) {
-     case 80:
-@@ -173,8 +178,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         }
-         return 4;
-     } else if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        env->fpr[(n - 32) / 2].ll = tmp;
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        env->fpr[(n - 64) + 16].ll = tmp;
-     } else {
-         switch (n) {
-         case 80:
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 7e5c7351cb..bfe63649db 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -2882,6 +2882,14 @@ static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
+ 
+ TRANS(RDASR17, ASR17, do_rd_special, true, a->rd, do_rd_leon3_config)
+ 
++static TCGv do_rdpic(DisasContext *dc, TCGv dst)
++{
++    return tcg_constant_tl(0);
++}
++
++TRANS(RDPIC, HYPV, do_rd_special, supervisor(dc), a->rd, do_rdpic)
++
++
+ static TCGv do_rdccr(DisasContext *dc, TCGv dst)
+ {
+     gen_helper_rdccr(dst, tcg_env);
+@@ -3315,6 +3323,17 @@ static void do_wrfprs(DisasContext *dc, TCGv src)
+ 
+ TRANS(WRFPRS, 64, do_wr_special, a, true, do_wrfprs)
+ 
++static bool do_priv_nop(DisasContext *dc, bool priv)
++{
++    if (!priv) {
++        return raise_priv(dc);
++    }
++    return advance_pc(dc);
++}
++
++TRANS(WRPCR, HYPV, do_priv_nop, supervisor(dc))
++TRANS(WRPIC, HYPV, do_priv_nop, supervisor(dc))
++
+ static void do_wrgsr(DisasContext *dc, TCGv src)
+ {
+     gen_trap_ifnofpu(dc);
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index cfcdf6690e..9e39d23273 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -96,7 +96,10 @@ CALL    01 i:s30
+     RDTICK          10 rd:5  101000 00100 0 0000000000000
+     RDPC            10 rd:5  101000 00101 0 0000000000000
+     RDFPRS          10 rd:5  101000 00110 0 0000000000000
+-    RDASR17         10 rd:5  101000 10001 0 0000000000000
++    {
++      RDASR17       10 rd:5  101000 10001 0 0000000000000
++      RDPIC         10 rd:5  101000 10001 0 0000000000000
++    }
+     RDGSR           10 rd:5  101000 10011 0 0000000000000
+     RDSOFTINT       10 rd:5  101000 10110 0 0000000000000
+     RDTICK_CMPR     10 rd:5  101000 10111 0 0000000000000
+@@ -114,6 +117,8 @@ CALL    01 i:s30
+     WRCCR           10 00010 110000 ..... . .............  @n_r_ri
+     WRASI           10 00011 110000 ..... . .............  @n_r_ri
+     WRFPRS          10 00110 110000 ..... . .............  @n_r_ri
++    WRPCR           10 10000 110000 01000 0 0000000000000
++    WRPIC           10 10001 110000 01000 0 0000000000000
+     {
+       WRGSR         10 10011 110000 ..... . .............  @n_r_ri
+       WRPOWERDOWN   10 10011 110000 ..... . .............  @n_r_ri
 -- 
 2.43.0
 
