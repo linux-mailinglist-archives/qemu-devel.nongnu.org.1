@@ -2,89 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A41A37C23
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AE2A37C43
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 08:32:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjvXH-0006ng-UV; Mon, 17 Feb 2025 02:27:24 -0500
+	id 1tjvbe-0007m1-Th; Mon, 17 Feb 2025 02:31:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjvWv-0006mE-5O
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 02:27:02 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjvWs-0003kx-Jn
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 02:27:00 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43932b9b09aso42844675e9.3
- for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 23:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739777216; x=1740382016; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UVbVeK9AKAsRavh71VAB7hZ4oZ4YjMZXGKKRgd33qIk=;
- b=RvnPrpSo1OpJAyXhVxfaKYdST0/JNvsDYk488nIWCWNXPoCb0mZgaBwvYmBey21/dP
- J34UqGBVnwuTH96K1dlQUyVBWtsE3ZczZ0g8IMUaoRrvNKTng2eal/WYnwTgkBPr/YYi
- 1NOoo2Jsod8lUJOzlRzhdgJ6uIwGhnfLScyVJqU099AQ7VmaAEV3Lbd/Y+W+g3Vc9W9H
- r3D0mJfyqH/Y79H4yHkLvaxTgz3zPT6CLFuN18LGdhcxYy3ssfvYTDVKK6rsBU9Zs9cX
- KV77QU6vfmqUo/l4k3rSUE0kCMuhu3pylUdJjh+ChTzbFcppe7ny/H40cOXdjBZRKWeq
- 4+2A==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tjvbG-0007kU-1g
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 02:31:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tjvbC-0004SI-Hl
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 02:31:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739777483;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1mgPwNvFo80Y/h1i6hS2G2/GiYmVIt1qcN3yJXz5F+s=;
+ b=GpvL5OR2DWEvXgTMh7WDqw/lj3NN8SOhQqwaMACA6cF8aw+cdKIHc2CkTul5ofEzVaZ4fA
+ 2MBsLveWLQRoRWZ97Ab5cGY/2/pZvUJ1Eo98D/DLjFmwTx4h6vbad81xdLNpE0VHMb8Awy
+ kGrXnWdEvLJRiL7ESAhhj74r9SG/Tas=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81--WUD5pBIMWqiv9avCdEtRA-1; Mon, 17 Feb 2025 02:31:20 -0500
+X-MC-Unique: -WUD5pBIMWqiv9avCdEtRA-1
+X-Mimecast-MFC-AGG-ID: -WUD5pBIMWqiv9avCdEtRA_1739777480
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4393b6763a3so21270475e9.2
+ for <qemu-devel@nongnu.org>; Sun, 16 Feb 2025 23:31:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739777216; x=1740382016;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UVbVeK9AKAsRavh71VAB7hZ4oZ4YjMZXGKKRgd33qIk=;
- b=wDe/nYEahiuy7fo4tubtr3QkiNUiKxnNFGMtaFD9M8KsVBe6viLA/jLmUMH5ng8Jhi
- 3azxgDXSOibZYyiB25KNY36n/ZaEfoX0O6i1HkvLJpYD9htnMQt9vEzVmae73TqGXMom
- Vm3nksEll8xpU3NFg1NWrLyv/WRcEHcZshs8Q2U5X2T9Gv+G6CKBImUrAslsP+i+Z4Rk
- x6nQKaApaq0UeF/TwMHMpx7iQ070tMOQfXYLgLMncH+eFosAZUugeYZbQjJc333zWkwV
- WcEd0o+luAlSmu6zG6pDoUKUUe74WlGkXle+QAOUKfyMTXn2Eb+6mKj1viuKdq5lKS9P
- ZJWA==
+ d=1e100.net; s=20230601; t=1739777480; x=1740382280;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1mgPwNvFo80Y/h1i6hS2G2/GiYmVIt1qcN3yJXz5F+s=;
+ b=rpc9VzUNrQUlLwn/K9xzwY6feH+OYF6i7xZ6BWiyVZwNOTdqeNntewZgctzmgd55G6
+ sEkpkKdkGS5oR1oSWR4EkfKeMtfudOVFQUytGqO+M/tWZ0fTD73L2EjuWzTrS7aauJ21
+ Wem3fdQqb8HA+w4LoWhPNON0KQrH0A7SMkrgEcowuRdb+MgB1vkOgMH+HkAgU3b6jVW2
+ PIDjQIVPS3LuK16SGSTpAAO7ibM/dDeHIonoLjS+SI8+sTfdYbpI1CmdYkbZ9ZV5PAGU
+ 9FJQGIrPq2Zx2DHyydN4h9oyfbWvTjltS65uqB1NTSpJjLU5CJ/BKsa57Li9Z9Wa3rla
+ ybYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVm9J+ko4fkC6ffQM3r6Onxg9hO/GN+Srfay/dg+QrXZIRTmD59daSFUUEIDzwIL022tVUV7L5GXAWu@nongnu.org
-X-Gm-Message-State: AOJu0YxrQOVPZThdXUZd0nyV0o80N4iW5aXpwA+YzWNHaNytb4ceSASD
- GmtKuRLD3EAC77xD3mnHByANOK4n60sOWi0UlyrmUAhcVZsjOnpaphD21YjCfNM=
-X-Gm-Gg: ASbGnct+kE1xPjiOId6Jajp12FqhFIKON9NUOnlTc1VKuPY/l3iGygsfLoMw2iBtP3w
- rnHi2PLC9Dya3lQ3rbbC/meWF265tUQuBGgcec+e7DPSnzZf2FLQ94w6MWpeINWJyx3b4Xw9oZq
- 11iSakulELj7dUWg8C7gKOR/fPOSjgM8MPbkcCSVNOMC/wetIfS5fa2v55iSXx/FhDcMcqJb5YM
- okJFdUeMREuUfO1IGSAzWhN2CR3ZtkCoriV89afrJck8P3uF2IDs6Z/2d7QRXD1qhIAEZnqe/qL
- vXOj3x/RJQZp59AKTiEisDml3+HNP6a6UHc=
-X-Google-Smtp-Source: AGHT+IHJjsl9QlulRLU+hpLQWuR81aH+BgzQ+Rkx+WD5jG2XkxS8WyeCZUh/znvJysyumABRmND+4w==
-X-Received: by 2002:a05:6000:1f84:b0:38d:d9e4:9ba0 with SMTP id
- ffacd0b85a97d-38f33f308d9mr9275415f8f.25.1739777216433; 
- Sun, 16 Feb 2025 23:26:56 -0800 (PST)
-Received: from [192.168.1.121] ([176.167.144.216])
+ AJvYcCXgiR1RLmUV1NRi1Hf+IpqFgYnHhRYpEZ6jetQOFPwzHNiK7sK10SYYjuQMMrjbH4aAsasM3goCtwIq@nongnu.org
+X-Gm-Message-State: AOJu0Yy8DqlJs/xIjotfL7U8KrGJ5HbfTKCcq8yjKa4CPlavtL5km7ba
+ TqIdB0ooXXojequ7TIQ8S+F4q6d6tbQfWENHDaQh/Q+agwNOO+tg1rgt+EpJKyCCchY6UI/X1vv
+ TJwQV0NWaFbg8QjaaV6Nxaf0V+m/m/DyiARA+sNvNdhycbEYagQcL
+X-Gm-Gg: ASbGncsVJueTD/5dcJrxhy0YhSDKrmCtANRhMZh+rjZLEpgNvPbp+yA9Rz+ohO9FAfQ
+ HXzA6kn3Zinnt6dT4aeIwB5knJoJiiaFweZJparZ2F95n0v5HEXg/rR/S9G1XtM/75c5ObtUQuY
+ Qgq+lLObQZ+Y0hUAj/VsfCm3IH2Neg7Kfd7//QG44lFu7ML5Zcp3xPDOD7eBifcO1HAfn21cCpW
+ j2gzH8542+j+g4aJueK/gLdFVxsUjUaJgci1R5SFER21vrlFZDOVSb0Ei+KTqYAEuFg/n/fw9aW
+ Zu4bIRs9396Irg0wvcjsWK07NJo4JmDplV31zxtRq4e37n7YRR3T
+X-Received: by 2002:a05:600c:1c21:b0:439:45e2:897f with SMTP id
+ 5b1f17b1804b1-4396e6e32a7mr99796815e9.11.1739777479745; 
+ Sun, 16 Feb 2025 23:31:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzlycmL13mme1B4nuzhQWUAK2Zqbv6n6wVgbWxBL4hko8tk2yjvXZ7CDP+VvHw0xxBhFaKIg==
+X-Received: by 2002:a05:600c:1c21:b0:439:45e2:897f with SMTP id
+ 5b1f17b1804b1-4396e6e32a7mr99796535e9.11.1739777479386; 
+ Sun, 16 Feb 2025 23:31:19 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ccef7sm11672668f8f.31.2025.02.16.23.26.54
+ 5b1f17b1804b1-4396b0aa4e9sm74734875e9.16.2025.02.16.23.31.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 16 Feb 2025 23:26:55 -0800 (PST)
-Message-ID: <5a220564-313a-44e9-8ae9-a2faec14ebb5@linaro.org>
-Date: Mon, 17 Feb 2025 08:26:53 +0100
+ Sun, 16 Feb 2025 23:31:18 -0800 (PST)
+Message-ID: <ad754ae8-0d0d-4a19-bde7-b3df1e56546c@redhat.com>
+Date: Mon, 17 Feb 2025 08:31:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/i386/amd_iommu: Don't leak memory in
- amdvi_update_iotlb()
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20240731170019.3590563-1-peter.maydell@linaro.org>
+Subject: Re: [PATCH 3/5] hw/i386/intel_iommu: Tear down address spaces before
+ IOMMU reset
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240731170019.3590563-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "ddutile@redhat.com" <ddutile@redhat.com>
+References: <20250206142307.921070-1-eric.auger@redhat.com>
+ <20250206142307.921070-4-eric.auger@redhat.com>
+ <SJ0PR11MB67444138EAFE0660733B315D92FB2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB67444138EAFE0660733B315D92FB2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.382,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,53 +121,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/7/24 19:00, Peter Maydell wrote:
-> In amdvi_update_iotlb() we will only put a new entry in the hash
-> table if to_cache.perm is not IOMMU_NONE.  However we allocate the
-> memory for the new AMDVIIOTLBEntry and for the hash table key
-> regardless.  This means that in the IOMMU_NONE case we will leak the
-> memory we alloacted.
-> 
-> Move the allocations into the if() to the point where we know we're
-> going to add the item to the hash table.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2452
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> Tested with 'make check' and 'make check-avocado' only, but the
-> bug and fix seem straightforward...
+Hi Zhenzhong,
 
-Oh now I remembered:
-https://lore.kernel.org/qemu-devel/CACGkMEtjmpX8G9HYZ0r3n5ErhAENKhQ81f4ocfCYrh=XoF=5hw@mail.gmail.com/
 
-> ---
->   hw/i386/amd_iommu.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 6d4fde72f9b..87643d28917 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -357,12 +357,12 @@ static void amdvi_update_iotlb(AMDVIState *s, uint16_t devid,
->                                  uint64_t gpa, IOMMUTLBEntry to_cache,
->                                  uint16_t domid)
->   {
-> -    AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
-> -    uint64_t *key = g_new(uint64_t, 1);
-> -    uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
-> -
->       /* don't cache erroneous translations */
->       if (to_cache.perm != IOMMU_NONE) {
-> +        AMDVIIOTLBEntry *entry = g_new(AMDVIIOTLBEntry, 1);
-> +        uint64_t *key = g_new(uint64_t, 1);
-> +        uint64_t gfn = gpa >> AMDVI_PAGE_SHIFT_4K;
-> +
->           trace_amdvi_cache_update(domid, PCI_BUS_NUM(devid), PCI_SLOT(devid),
->                   PCI_FUNC(devid), gpa, to_cache.translated_addr);
->   
+On 2/17/25 4:02 AM, Duan, Zhenzhong wrote:
+> Hi Eric,
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Subject: [PATCH 3/5] hw/i386/intel_iommu: Tear down address spaces before
+>> IOMMU reset
+>>
+>> From: Peter Xu <peterx@redhat.com>
+>>
+>> No bug report for this, but logically tearing down of existing address
+>> space should happen before reset of IOMMU state / registers, because the
+>> current address spaces may still rely on those information.
+>>
+>> Signed-off-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>> ---
+>> hw/i386/intel_iommu.c | 2 +-
+>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+>> index 21a8bf45f8..1bd9ae403b 100644
+>> --- a/hw/i386/intel_iommu.c
+>> +++ b/hw/i386/intel_iommu.c
+>> @@ -4702,8 +4702,8 @@ static void vtd_reset_exit(Object *obj, ResetType type)
+>>     IntelIOMMUState *s = INTEL_IOMMU_DEVICE(obj);
+>>
+>>     trace_vtd_reset_exit();
+>> -    vtd_init(s);
+>>     vtd_address_space_refresh_all(s);
+>> +    vtd_init(s);
+> I'm not sure if we should have this change. vtd_switch_address_space() checks s->dmar_enabled and vtd_init() updates s->dmar_enabled. With this change, will we leave stale mapping there after reset?
+Yes I do agree. This could break the as switch. I will remove this patch.
+
+Eric
+>
+> Thanks
+> Zhenzhong
+>
+>> }
+>>
+>> static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int
+>> devfn)
+>> --
+>> 2.47.1
 
 
