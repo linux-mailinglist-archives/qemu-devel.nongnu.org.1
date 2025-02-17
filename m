@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3624A37AA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 05:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D28A37AC0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 06:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjtA0-0003h9-4o; Sun, 16 Feb 2025 23:55:12 -0500
+	id 1tjtMQ-0005yG-2g; Mon, 17 Feb 2025 00:08:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=ae45=VI=miszr.win=git@fe-bounces.miszr.win>)
- id 1tjt9t-0003gm-9p
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 23:55:05 -0500
-Received: from smtp.forwardemail.net ([121.127.44.73])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tjtLs-0005xC-An; Mon, 17 Feb 2025 00:07:31 -0500
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <SRS0=ae45=VI=miszr.win=git@fe-bounces.miszr.win>)
- id 1tjt9q-0004l0-V9
- for qemu-devel@nongnu.org; Sun, 16 Feb 2025 23:55:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=miszr.win;
- h=Content-Transfer-Encoding: Content-Type: MIME-Version: Message-ID:
- References: In-Reply-To: Subject: CC: To: From: Date; q=dns/txt;
- s=fe-257304d8b2; t=1739768098;
- bh=ugKhaarWZtOlGe1Ks8zorRMcgrLsdI+SxA4cyhH4+5U=;
- b=FUBLR1ppluk8Bny8M5X1xDH0nzOwjKOeN0BAk4KTiFqZ8gTQCVkJ6k9y5KjquhkmSfE+Kfswy
- Fb/Rtxt+0n72PDwpDEKNp270hBTIIprLQYPd9AAq277C4QfFtdz1OJ9eB4IxU1j4r3gDy1cXe6x
- Ki+aVTKeZclQXMLtiPqke9A=
-X-Forward-Email-ID: 67b2c11f2860b3d889bd3d18
-X-Forward-Email-Sender: rfc822; git@miszr.win, smtp.forwardemail.net,
- 121.127.44.73
-X-Forward-Email-Version: 0.4.40
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Date: Mon, 17 Feb 2025 05:54:41 +0100
-From: Mikael Szreder <git@miszr.win>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-CC: Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_target/sparc=3A_Fix_gdbstu?=
- =?US-ASCII?Q?b_incorrectly_handling_registers_f32-f62?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <5e9d9e51-1950-45d5-9580-9f1072e3b1b4@linaro.org>
-References: <20250214070343.11501-1-git@miszr.win>
- <5e9d9e51-1950-45d5-9580-9f1072e3b1b4@linaro.org>
-Message-ID: <49B12FB6-60E2-49AD-A832-1D8D7B25F9B2@miszr.win>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tjtLq-0005zl-Nj; Mon, 17 Feb 2025 00:07:28 -0500
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-4bbdf3081acso2622426137.2; 
+ Sun, 16 Feb 2025 21:07:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739768845; x=1740373645; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ijyBLFWKZgoxP19ZwyN1K2uMa26g+cJPr9CkxbwnzRI=;
+ b=MHbweBWQ99d/f04kj9OGD+f4bHiinvsgL++aWmj++XqWX2KkfbI1zgalw9rhdDydBj
+ laVtq0yLv5UeNlfdDy1LvPYE1ewYl9jLDEYspJ3bQEzsRSAldE7AgxL1paKo70gf9slu
+ UsdS5IT1rxkanHHaTjLmq22DXIpZ75prvopMwu0JpWa5ZCX74pgHUOBpbU5mnEa2pocj
+ RhsghWHP5/CQBpFW0igiUgcgKHxwN0LwHaV5XVq4Tug6TzJQM41t/7jXvX1FaRNXhwyq
+ 6NqqsG+McOis+EcpA3wEOARtvGrtqqNgvcSJ/hdaDQTgW01yrfIYXjdsNXuQUIy+Qtst
+ lECw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739768845; x=1740373645;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ijyBLFWKZgoxP19ZwyN1K2uMa26g+cJPr9CkxbwnzRI=;
+ b=K+oZ0D3M55m5J28RKEpXeCVSVAPZZDe0W0jiTMLlnDtIUHPAXGRZIaHxgT/9FmzlVm
+ wrGTR65KnU1h2kPIbflG5xgnrrHC5iAga/w9hBca266ASRroU85WlC+aP5+kVMBF+DQe
+ gxDjPIrLBpXe4msd68YEGj1diHiHBy66CR4ua/ZvoIqllUv82x9A07/9R/fR52amT79D
+ dDbaIY7X4hpko86+EVwQ1tVnhmOBtYRAyDowj/RmhoNx7Z9IWM+/P9Ak1q0e1kuy8EPF
+ NL31DhMdJU+z/1JUPl6u+8+SHS6GS6uLMzBCLowPNjHKnJ9fF381Jg8xZh74W49744Fo
+ 0nng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNKO76cDlHzblxKn7kFX1abVrifypYqFTbBIwFn4ZX0ibr/8poLBUxyYeW2WAZusdiqojR9/+HoAE3@nongnu.org
+X-Gm-Message-State: AOJu0YwxYXOozrUs36B/bmS5jJuxrf/Y4/btInTZLZmVhs+mFPwewbpE
+ nF3DqJ0CNcJD4nTuEIzk4w1jbCtGV9Io01ffihPVfbaOExzAbqBwk9dxOccTvHkbfA44uFWGtuE
+ WBU3VtUC3I21aaHvlHnoihXNTT/Q=
+X-Gm-Gg: ASbGncu/5HLPyA3x2urBeOy2BThzUTwmHAcMDXiU2cvkA85MVMAI+zJNsRnz7o6fyM5
+ KEsQPDFYYpjY0hfRx0J5JiOgTj5CMrTD+NUFQQygO/o1eRm3bZYM70ZmvGfEWJvA2nFxJqJXL1t
+ 6Lr3wnWna4LvL+E3L8W0Q970zKcw==
+X-Google-Smtp-Source: AGHT+IFct2DkbsZCPKDCg0t0DiOeeju7mNwaBiP9AUiFTtSZ7BH6N28hLWG2vAEU/Dor58MCQec7oAV/HI2NTu7tyiw=
+X-Received: by 2002:a05:6102:150f:b0:4bb:cf34:3757 with SMTP id
+ ada2fe7eead31-4bd3ff3f0a5mr4197766137.17.1739768843470; Sun, 16 Feb 2025
+ 21:07:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250213145640.117275-1-cleger@rivosinc.com>
+In-Reply-To: <20250213145640.117275-1-cleger@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 17 Feb 2025 15:06:57 +1000
+X-Gm-Features: AWEUYZmAEOz5xs-fTwXRo1R-m7E6K8Tz73ur-lg9XHTKbSDnL_av8OYu2CQSIyE
+Message-ID: <CAKmqyKP++TPfVbvD0M3vtb4RPYd21NHe1z0-R32RsY60Owj=oQ@mail.gmail.com>
+Subject: Re: [PATCH v2] target/riscv: remove warnings about Smdbltrp/Smrnmi
+ being disabled
+To: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=121.127.44.73;
- envelope-from=SRS0=ae45=VI=miszr.win=git@fe-bounces.miszr.win;
- helo=smtp.forwardemail.net
-X-Spam_score_int: -12
-X-Spam_score: -1.3
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_FMBLA_NEWDOM28=0.8, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,75 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch should be applicable to the stable releases as well, as the issu=
-e has existed since a while back=2E
+On Fri, Feb 14, 2025 at 12:57=E2=80=AFAM Cl=C3=A9ment L=C3=A9ger <cleger@ri=
+vosinc.com> wrote:
+>
+> As raised by Richard Henderson, these warnings are displayed in user
+> only as well. Since they aren't really useful for the end-user, remove
+> them and add a "TODO" note in the leading comments.
+>
+> Signed-off-by: Cl=C3=A9ment L=C3=A9ger <cleger@rivosinc.com>
 
-Best regards
-Mikael Szreder
+Thanks!
 
-On February 15, 2025 8:58:09 PM GMT+01:00, Richard Henderson <richard=2Ehe=
-nderson@linaro=2Eorg> wrote:
->On 2/13/25 23:03, Mikael Szreder wrote:
->> The gdbstub implementation for the Sparc architecture would
->> incorrectly calculate the the floating point register offset=2E
->> This resulted in, for example, registers f32 and f34 to point to
->> the same value=2E
->>=20
->> The issue was caused by the confusion between even register numbers
->> and even register indexes=2E For example, the register index of f32 is =
-64
->> and f34 is 65=2E
->>=20
->> Fixes: 30038fd81808 ("target-sparc: Change fpr representation to double=
-s=2E")
->> Signed-off-by: Mikael Szreder <git@miszr=2Ewin>
->> ---
->>   target/sparc/gdbstub=2Ec | 18 ++++++++++++++----
->>   1 file changed, 14 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/target/sparc/gdbstub=2Ec b/target/sparc/gdbstub=2Ec
->> index ec0036e9ef=2E=2E134617fb23 100644
->> --- a/target/sparc/gdbstub=2Ec
->> +++ b/target/sparc/gdbstub=2Ec
->> @@ -79,8 +79,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteA=
-rray *mem_buf, int n)
->>           }
->>       }
->>       if (n < 80) {
->> -        /* f32-f62 (double width, even numbers only) */
->> -        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2]=2Ell);
->> +        /* f32-f62 (16 double width registers, even register numbers o=
-nly)
->> +         * n =3D=3D 64: f32 : env->fpr[16]
->> +         * n =3D=3D 65: f34 : env->fpr[17]
->> +         * etc=2E=2E=2E
->> +         * n =3D=3D 79: f62 : env->fpr[31]
->> +         */
->> +        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16]=2Ell);
->>       }
->>       switch (n) {
->>       case 80:
->> @@ -173,8 +178,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uin=
-t8_t *mem_buf, int n)
->>           }
->>           return 4;
->>       } else if (n < 80) {
->> -        /* f32-f62 (double width, even numbers only) */
->> -        env->fpr[(n - 32) / 2]=2Ell =3D tmp;
->> +        /* f32-f62 (16 double width registers, even register numbers o=
-nly)
->> +         * n =3D=3D 64: f32 : env->fpr[16]
->> +         * n =3D=3D 65: f34 : env->fpr[17]
->> +         * etc=2E=2E=2E
->> +         * n =3D=3D 79: f62 : env->fpr[31]
->> +         */
->> +        env->fpr[(n - 64) + 16]=2Ell =3D tmp;
->>       } else {
->>           switch (n) {
->>           case 80:
+Applied to riscv-to-apply.next
+
+Alistair
+
+> ---
 >
->Queued, thanks=2E
+> v2:
+>  - Remove Tommy bouncing mail from the recipient list
+>  - Entirely remove warnings and add "TODO" in the leading comments
+>
+>  target/riscv/tcg/tcg-cpu.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 0a137281de..94bfafd7db 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -1432,22 +1432,20 @@ static void riscv_init_max_cpu_extensions(Object =
+*obj)
+>      }
+>
+>      /*
+> -     * ext_smrnmi requires OpenSBI changes that our current
+> +     * TODO: ext_smrnmi requires OpenSBI changes that our current
+>       * image does not have. Disable it for now.
+>       */
+>      if (cpu->cfg.ext_smrnmi) {
+>          isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smrnmi), false);
+> -        qemu_log("Smrnmi is disabled in the 'max' type CPU\n");
+>      }
+>
+>      /*
+> -     * ext_smdbltrp requires the firmware to clear MSTATUS.MDT on startu=
+p to
+> -     * avoid generating a double trap. OpenSBI does not currently suppor=
+t it,
+> +     * TODO: ext_smdbltrp requires the firmware to clear MSTATUS.MDT on =
+startup
+> +     * to avoid generating a double trap. OpenSBI does not currently sup=
+port it,
+>       * disable it for now.
+>       */
+>      if (cpu->cfg.ext_smdbltrp) {
+>          isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smdbltrp), false)=
+;
+> -        qemu_log("Smdbltrp is disabled in the 'max' type CPU\n");
+>      }
+>  }
+>
+> --
+> 2.47.2
 >
 >
->r~
 
