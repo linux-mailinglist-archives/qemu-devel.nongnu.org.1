@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AE2A37CE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 09:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34206A37CEE
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 09:18:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tjwJ2-0001LE-6w; Mon, 17 Feb 2025 03:16:44 -0500
+	id 1tjwK4-0001xQ-JH; Mon, 17 Feb 2025 03:17:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjwIQ-0001Ji-6A
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:16:07 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
+ id 1tjwK1-0001wt-Tw
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:17:45 -0500
+Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tjwIO-0000so-Ht
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:16:05 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-439714a799aso15154895e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 00:16:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
+ id 1tjwK0-0000yi-D9
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 03:17:45 -0500
+Received: by mail-qk1-x729.google.com with SMTP id
+ af79cd13be357-7c08f9d0ef3so55294585a.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 00:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739780163; x=1740384963; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Tpt3csQymDzpjZwPWVQpGAlJ20epg3gwDh7rDL6Eq0Q=;
- b=Uodqe/olZkYiRELypR58zSVKIPSy3aPULEsoXMkw9ANJh2t/mBpeigBltFNhjUkWqB
- 7JIfRFUzBKOllHfnYU+UW8kcQ0Br5jU12Ap0V0fxnFt0N/u8TiibKVsIMc/rN1wrY3VS
- HF7G97ru/wlRz6pdqmkIRCCDvEU81D2fAW9jXYZNqap2Gli1lcSTgZMZXSfkkeKxN+Lk
- QwgU20TkL5pBNeE7kC3UhM+L05gXbp7qWopW05zVd74KnqDtQ9mRr1nWb3DoT5z0bdQt
- 43EaeGcAyxfvDba+dFx9ajxb6Kv+Dj4TD0H0P1pgdTgkXw50wK7+Cfd3rk5qDCFaeTfs
- 7UGw==
+ d=sifive.com; s=google; t=1739780263; x=1740385063; darn=nongnu.org;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ca383jZ9H/7hPjftb6ykvA59uZ+joaH9NqOxjYmz17w=;
+ b=lw4quyXZg1GxyxL/XGGyiGmOubyU1XPxlGwT2n31yAngq3P44BBb2GSbNcZDzzqGMe
+ B7A8eaBKfwyN04Mq+2dpDKjijjbkh93QNIAdSD7iS0HjqF4b2I227Vbw4LHooEcpuW56
+ p4M8PVooTiugXvyJHWIGZm8IHNrtO8cIALyrlnd62ZQ6trELamggD5H+up70JpVq2+BS
+ vaR0HkA3mWGVxTdXtes9W3t1eGm17auiRs3DUnx4meslvIop0Im/dh93pE1l58502cuB
+ ycf/s2St6Utz+rKPhPX+DWg9hAkq1j22WQdWrrBzXp6kYgJLR3scETDKQzWgf0tmLAEN
+ l8mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739780163; x=1740384963;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Tpt3csQymDzpjZwPWVQpGAlJ20epg3gwDh7rDL6Eq0Q=;
- b=QrCHzXGc38eJlfnSNIwoFm2cGgNQejt5nP0205I2XK/G6+CZL5IPD0mW6SHcB4DHGY
- h/iFc8wirVocWW57NbVD5H1IGotUcTZUvN30M1NTvWGLFop+1j9IY69Oqd6MENz31aCa
- 5nIQjDrQ0xxe3AWM/kJuHW6h3uGYpvS4V7Cz9M2xyUSCxQBaB/0AG6x1hvk6JWJFQ4m1
- jPN3EXGzMp4wba2lTjXLghwwH76ZH6eqht0D8KtzYTi/EQV/yGMg/BNTpXfTfGLs+v3G
- SauQPgHUp6Mgxk0W0L8HjClNHM84jWWZl/YtrWkLAUC5C/L147XV4OTN6N70OCf9ydXy
- m6mg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWxNZDMY0/lk5tQmXUOCUsmV1sHWU7ar4nEvQBNgwXt/HVe5+qZku2BHnjOMND2BTIlnF8YoNybPF3l@nongnu.org
-X-Gm-Message-State: AOJu0YzFogVbmOZtPe3u+NHHccySeteUs9Jk3Hdq4tOMxIUkEHnS+kqe
- opCSq/Sr5WsCMsWPAuOpGg0q+N8QHGK8IhQvjsgEL5vwNonDVtyXDJ2G2HxBtDY=
-X-Gm-Gg: ASbGncuDkeN5KyDlaUv6eVoLkOgGLzuH6IY61oz7obHw5snb+oPyX5CDbVKckn6eDTy
- 7lONQxFA2P7mnX18aBYFkg4PI42lmc9m8Be5x61YEPm1we0Tqca+VsF2CPJpSIJD2Rq9kNpKLTF
- 61R4IqWto1fSjk7KuKzADsZ4Zb/vNz45x0bYU93d5m89YLN67Y8Zyn5blCo/BB1llpE0JflI2bG
- cjcHO+ms4fekyuI40Y0/tg+8OJvNxws9o0DBbjNq0O0eY2z+wXP9hEKr++pvz3pE12GJo137qbW
- SFyR2AqoMNDE7i+EAra5FYxWuhhXLg==
-X-Google-Smtp-Source: AGHT+IHm9yzz3oK/Cy3aySwW3EAoGqLUU3Gm12kccX9Yrk3QQkRVCgsqdjbq7rwsiBVyhbuA8jo2SQ==
-X-Received: by 2002:a05:6000:1209:b0:38a:87cc:fb42 with SMTP id
- ffacd0b85a97d-38f33f2a33cmr7899756f8f.21.1739780162777; 
- Mon, 17 Feb 2025 00:16:02 -0800 (PST)
-Received: from [192.168.1.121] ([176.167.144.216])
+ d=1e100.net; s=20230601; t=1739780263; x=1740385063;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ca383jZ9H/7hPjftb6ykvA59uZ+joaH9NqOxjYmz17w=;
+ b=Sl6dXe35AHpzaOBf49gZUaUKYkjrI4HkUH37QQgRf/1C5MVDDJMerl/+DZ769pNK9P
+ o1IkhSImDbtBmNO+JjZnkj7BDSAlscNaoK2RbIxLnbGo9WHYpEnLGu2smmm+yY140Vnc
+ klqrUW8un03fOsz9zD2LFMPd0eK19f1WWbSX06OnbOFj/UedaxdQBepjY43si8x1ofwb
+ xTK3dCTikCEHzq9RTOvfG5xTgXh4BJ/BZCHjLTThhaZSSs3rvkEsjSwJ907UDlOrYfhG
+ pCNpGjPjI44QZ73xlFT7tRWhCPjQQAULqcVIElt1hfPT0g2R+IcbtN6crHQ2fz86FNu/
+ av6g==
+X-Gm-Message-State: AOJu0YzoUz2fnZlTN/ZIYTqC6msgr09VdCmIeHJaKbEtTrvCJf+SpKgY
+ 9AtJaYdu7RTvzsWBc45pBnegKDoO15XyZ0uWkntK++3RHg0tlJYoiYFFJGGSEB3hCmkbOX7Sil3
+ N70B4x3on8y/013Nf4Q0eCgUY8vVqAY+8+U+CHRuYwim8rHJrJX17aYj3SrSz+CurrRBBhpF2fX
+ otuIJJiPfz7Lknb3MVJqIT8SqOt5EhV+EeuyPwmzwh5g==
+X-Gm-Gg: ASbGncv44tVzT93Skw+THub/NSpX8DUWwAe2r5GnUIQhBOn4qxNQcmUHnJtt+Y+r5wi
+ SHaSt6NrQrHPKPPe7ZSNCLi39i3K0+9IozlwroXrtrc6rffJSyhSv5oE37Xoe25YsLsNLO8fdEA
+ r5uu+MbLFLVoUGjA14tsWDXZ5V5YbWxlxc/ySIZtikp95smimRa/3mKOQ4r0HvipBuRzWZha7/Q
+ Ty8vcrFMecNTiw2Nabg4fcJ7aUkKi4ij1OoVa5tuwBU149A6Gn55kHOeVmxsqckLIgFNzDV39v7
+ 8MHCFcERcShqeESFr9gIBR9QrKb7wAC8dHe/j7qU3nTNnA==
+X-Google-Smtp-Source: AGHT+IFon/KRqEXx9zUKG3ffSrWw3wcDga3m5+1eOtEvhAiSiK++jGGkL5Vf1Wqvpags1k8e8hZXmg==
+X-Received: by 2002:a05:6214:20a6:b0:6e4:3c52:d684 with SMTP id
+ 6a1803df08f44-6e66cce6bb7mr146057156d6.19.1739780262693; 
+ Mon, 17 Feb 2025 00:17:42 -0800 (PST)
+Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ccda0sm11582618f8f.27.2025.02.17.00.16.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 00:16:02 -0800 (PST)
-Message-ID: <f46dc7ac-8604-4dd1-b462-6342a70e34b2@linaro.org>
-Date: Mon, 17 Feb 2025 09:16:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 104/162] tcg: Merge INDEX_op_extract2_{i32,i64}
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250216231012.2808572-1-richard.henderson@linaro.org>
- <20250216231012.2808572-105-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250216231012.2808572-105-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+ 6a1803df08f44-6e65d9f38absm49673346d6.88.2025.02.17.00.17.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Feb 2025 00:17:42 -0800 (PST)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, frank.chang@sifive.com,
+ jim.shu@sifive.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH 0/8] riscv: AIA: kernel-irqchip=off support
+Date: Mon, 17 Feb 2025 16:17:20 +0800
+Message-Id: <20250217081730.9000-1-yongxuan.wang@sifive.com>
+X-Mailer: git-send-email 2.17.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
+ envelope-from=yongxuan.wang@sifive.com; helo=mail-qk1-x729.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,17 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/2/25 00:09, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg-opc.h      |  5 +----
->   tcg/optimize.c             | 10 +++++-----
->   tcg/tcg-op.c               | 16 ++++++++--------
->   tcg/tcg.c                  |  6 ++----
->   docs/devel/tcg-ops.rst     |  4 ++--
->   target/i386/tcg/emit.c.inc | 12 +-----------
->   6 files changed, 19 insertions(+), 34 deletions(-)
+This series introduces the user-space AIA MSI emulation when using KVM
+acceleration.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+After this series, RISC-V QEMU virt machine with KVM acceleration has
+3 parameters to control the type of irqchip and its emulation method:
+- Machine prop "aia" controls the type of irqchip
+  - none: use PLIC and emulated in user-space
+  - aplic: use AIA wired and emulated in user-space
+  - aplic-imsic: use AIA MSI, emulation mode is determined by
+    "kernel-irqchip" and "riscv-imsic"
+- Accel prop "kernel-irqchip", effective with AIA MSI
+  - on: in-kernel APLIC and in-kernel IMSIC
+  - off: user-space APLIC and user-space IMSIC
+  - split: user-space APLIC and in-kernel IMSIC
+- Accel prop "kernel-irqchip", effective with in-kernel IMSIC
+  - emul: use MRIF as in-kernel IMSIC
+  - hw: use hardware guest IMSIC file as in-kernel IMSIC
+  - auto: use the hardware guest IMSICs whenever available otherwise
+    fallback to MRIF
+
+Yong-Xuan Wang (8):
+  target/riscv/kvm: rewrite get/set for KVM_REG_RISCV_CSR
+  target/riscv/kvm: add KVM_REG_RISCV_CSR_AIA
+  target/riscv/kvm: add KVM_REG_RISCV_CSR_SMSTATEEN
+  target/riscv: add helper to get CSR name
+  target/riscv/kvm: rewrite kvm_riscv_handle_csr
+  target/riscv/kvm: add CSR_SIREG and CSR_STOPEI emulation
+  target/riscv/kvm: rename riscv-aia to riscv-imsic
+  docs: update the description about RISC-V AIA
+
+ docs/specs/riscv-aia.rst   |  24 +++-
+ docs/system/riscv/virt.rst |  10 +-
+ target/riscv/cpu.h         |   8 +-
+ target/riscv/csr.c         |  30 ++--
+ target/riscv/kvm/kvm-cpu.c | 287 +++++++++++++++++++++++++++++--------
+ 5 files changed, 266 insertions(+), 93 deletions(-)
+
+-- 
+2.17.1
 
 
