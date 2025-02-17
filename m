@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19128A3842D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 14:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B67D6A3843A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 14:14:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk0wG-00066u-Of; Mon, 17 Feb 2025 08:13:32 -0500
+	id 1tk0xF-0007jF-OA; Mon, 17 Feb 2025 08:14:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tk0w2-00064T-FC
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tk0vz-00064L-Sb
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:13:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739797995;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=vu27oeaNtRXeUmurY1gbWdovJB6GwFsj2ieju83i+Pg=;
- b=Eu4mtMzGVzSFe0Z9oL+Ivj8eErmWMfM7E7AfJq1Y8+MjlLsRaVBv/VeyBayOk8pWEY6pUN
- rDAYvZ72oS1t79eaWMADOt0N4sebQaFvrOhiv+IoBn1Rjsq/5+Q4XrOu0x7ijIz5FLs1ya
- uCGxPCLAFdBK5F1Guk6lgYygO4d+u4E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-nQpZJNglO2Sd0PNFpmo1Nw-1; Mon,
- 17 Feb 2025 08:13:13 -0500
-X-MC-Unique: nQpZJNglO2Sd0PNFpmo1Nw-1
-X-Mimecast-MFC-AGG-ID: nQpZJNglO2Sd0PNFpmo1Nw_1739797993
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BFDA918D95EE
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 13:13:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.176])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BDB731956048; Mon, 17 Feb 2025 13:13:10 +0000 (UTC)
-Date: Mon, 17 Feb 2025 13:13:06 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>, Andrea Bolognani <abologna@redhat.com>
-Subject: Re: [PATCH v4 00/11]
-Message-ID: <Z7M14rif3RGFOXbM@redhat.com>
-References: <20250214202944.69897-1-victortoso@redhat.com>
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tk0xB-0007dv-MR
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:14:29 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tk0x9-0006B1-Rm
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 08:14:29 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aaec61d0f65so901809766b.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 05:14:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1739798066; x=1740402866; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=4zL5WLM+XGGKQbx+Kuz56TgLIbD4ufsTEuFj/QwjWEM=;
+ b=jyaxn8/BPkeif1DfN7vyaSEdS8CrUbPwOXyzZfyfPmTuYWnQycVpnXN65WM8mXr4+I
+ q5/v0u40QmNp1yzt541KBpPrdosFaXsv7PozCh/iWMBZGs+f9K7eATyN/Oc5+E4NuTaR
+ VT3zficITxg+T0vpGAfiPS2kn87B1+++MHuKk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739798066; x=1740402866;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4zL5WLM+XGGKQbx+Kuz56TgLIbD4ufsTEuFj/QwjWEM=;
+ b=pAP7s8FFadkyXUoTbtQMwLLQK8oDpoUeCuwzJvtpoaTn4QvQVzi5Cgh5AkK8OatIXD
+ DWlWjGOz2Av10kdH7sOl3nyD6lHpCMRfwrN+DDzxQMWsVfaZsN21KEYqH8zNTXOFXHKd
+ QBuBLhkY68kaoqEMnIV0RpxYMQjqEQoiG65iovYhcMWEaVUaEjlYuvBcr5wnDL2ab2oE
+ mFImPVzrSiVfbMoSlUJGruZ4MP5hjgYpy7rMJSCSbHPpC+RgGbV8O//MmNjC8Pzc2LlO
+ 8iyxmSrxk96gLS+MxRkugH8OMmIszQ9C/YSp6BUF3Ueb3irWlR7ZaoiivzmOWGGwIbrx
+ niRA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVE2UhOV+lv7/AQAt6g2K/lMtW+lhHfZxY+Et41lAVp24BmUQ4r6VH7oyMHbV7nKinuG/Gf0Aizs4Yf@nongnu.org
+X-Gm-Message-State: AOJu0YxV3MpGolzy5kL59SDcTDjgSqNqh8q9nJiQIY7Hjrc1A27nIFEh
+ vM/zGDKac5FuQWfM3Jq3HxpRX2B6fwRd6mSkfk+vqFv5RR/+4WiKLAkJreaWoBj+DXPygW80X3n
+ N+YkL0ux9OBbV5mcIG0nRbK3qFNSk8FGVBWgv
+X-Gm-Gg: ASbGncsDQTNiLeFruJ7vW9TCtT1mgtehLS1RTz7yFOf/IxFk8SZjFH/lpqCZGmy9Gz3
+ q2l8+PlSlTZJaFDTLSK6jh02pnluj5oxiKjPWV1+Qg58aOnMQZPIbjQ04VvSenqdYZIKPzDRaDw
+ ==
+X-Google-Smtp-Source: AGHT+IF/1iySFLb/kDUQfPf8UNpTdOkk2BDD7dsLGOxxYAC6p1ZDdCRdBybZifO/RAfR1VF2Hil7XBIQDR0v21votOM=
+X-Received: by 2002:a17:907:86a1:b0:ab7:cc43:c51e with SMTP id
+ a640c23a62f3a-abb70cbbcf2mr866851866b.13.1739798064479; Mon, 17 Feb 2025
+ 05:14:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250214202944.69897-1-victortoso@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250216204421.3560012-1-sjg@chromium.org>
+ <20250216215738.GF1233568@bill-the-cat>
+In-Reply-To: <20250216215738.GF1233568@bill-the-cat>
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 17 Feb 2025 06:14:12 -0700
+X-Gm-Features: AWEUYZmUIzyYmihCb9G0hTZMkSSZaMXJeifIx5Ci_JOZ4oG1tkt8BoAi4q1MRs4
+Message-ID: <CAFLszTjtgMT6Pd9_MG8t4irU-jyoHTd40MwX5m1iqj4rjVED3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 00/28] x86: Improve operation under QEMU
+To: Tom Rini <trini@konsulko.com>
+Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Bin Meng <bmeng.cn@gmail.com>, 
+ Andrew Goodbody <andrew.goodbody@linaro.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Angelo Dureghello <angelo@kernel-space.org>, Love Kumar <love.kumar@amd.com>, 
+ Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+ Philip Oberfichtner <pro@denx.de>, 
+ Stephen Warren <swarren@nvidia.com>, Stephen Warren <swarren@wwwdotorg.org>,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=sjg@chromium.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,132 +91,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 14, 2025 at 09:29:33PM +0100, Victor Toso wrote:
-> Hi again,
-> 
-> This patch series intent is to introduce a generator that produces a Go
-> module for Go applications to interact over QMP with QEMU.
-> 
-> Previous version (10 Jan 2025)
->     https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg01530.html
-> 
-> The generated code was mostly tested using existing examples in the QAPI
-> documentation, 192 instances that might have multiple QMP messages each.
+Hi Tom,
 
-snip
+On Sun, 16 Feb 2025 at 14:57, Tom Rini <trini@konsulko.com> wrote:
+>
+> On Sun, Feb 16, 2025 at 01:43:45PM -0700, Simon Glass wrote:
+>
+> > U-Boot can start and boot an OS in both qemu-x86 and qemu-x86_64 but it
+> > is not perfect.
+> >
+> > With both builds, executing the VESA ROM causes an intermittent hang, at
+> > least on some AMD CPUs.
+> >
+> > With qemu-x86_64 kvm cannot be used since the move to long mode (64-bit)
+> > is done in a way that works on real hardware but not with QEMU. This
+> > means that performance is 4-5x slower than it could be, at least on my
+> > CPU.
+> >
+> > We can work around the first problem by using Bochs, which is anyway a
+> > better choice than VESA for QEMU. The second can be addressed by using
+> > the same descriptor across the jump to long mode.
+> >
+> > With an MTRR fix this allows booting into Ubuntu on qemu-x86_64
+>
+> This seems needlessly not against mainline.
 
-> 1. Daniel wrote a demo on top of v3 and proposed changes that would
->    result in more interesting module to build on top:
->    https://lists.gnu.org/archive/html/qemu-devel/2025-01/msg03052.html
->    
->    I've implemented all the suggestions that are relevant for this
->    introductory series, they are:
-> 
->   a. New struct type Message, that shall be used for a 1st level
->      unmarshalling of the JSON message.
->   b. Removal of Marshal/Unmarshal code in both Events and Comands,
->      together with utility code that is not relevant anymore.
->   c. Declaration of 3 new interfaces:
->     i.   Events
->     ii.  Commands
->     iii. CommandsAsync
-> 
-> 2. I've moved the code to a new folder: scripts/qapi/golang. This
->    allowed me to move templates out of golang.py, keeping go related
->    code self-contained in the new directory.
+I just tried it and yes there is a very small delta. I can resend it
+rebased to -next if you like. I'd really like to get some OS-booting
+tests into CI.
 
-When I think about the code generator and how this will all
-evolve over time, I have a strong feeling that none of this
-should be in qemu.git.
-
-Taking those three interfaces in (1)(c), when we come to actually
-generate implementations of them, the generated code is going to
-be intimately tied to the client/server API framework we need to
-plumb into.
-
-IMHO qemu.git should not have any knowledge of this, as it will
-create a bidirectional dependency betweeen qemu.git and the
-qemu-go.git repo, requiring them to evolve in lockstep.
-
-We'll need 3 releases of the Go code per year, to match the
-introduction the new QAPI schema versions, but outside that I
-think there ought to be the freedom to have other Go releases
-independently.
-
-The need for this to be part of qemu.git is fairly narrow. It
-provides a new hook into the QAPI generator code, and the QAPI
-generator is not installed by 'make install', it is in-tree
-only.
-
-Can we solve this linkage ? We would need to be able to:
-
- * Have a mechanism for the QAPI code generator to load
-   new genrator backends
- * Have a mechanism to tell the QAPI code generator to
-   only run a single backend.
- * Have a mechanism to consume the QAPI code genrfator
-   from outside qemu.git
-
-The first point there could be addressable using the python "entry-points"
-concept
-
-  https://packaging.python.org/en/latest/specifications/entry-points/
-  https://setuptools.pypa.io/en/latest/pkg_resources.html#entry-points
-
-Or, alternatively by passing the name of a python module on the CLI.
-
-The second point is just a bit of glue code to wire up a new CLI arg
-
-The third point either involves having 'make install' put the QAPI
-code generator into /usr/share/qemu, or /usr/lib/python3.x. The
-latter would be if QAPI code generator were a formally release python
-module on pypi. The former would be if we're just trying a QAPI code
-generator as a local tool, not for pypi. A fallback would be to
-consume qemu.git as a git submodule from qapi-go.git. The gitmodule
-commit would not have to match the version of the QAPI schema we are
-generating code for.
-
-The least effort approach would be making QAPI code genrator accept
-a python module name, and call it via a git submodule. This would
-avoid declaring a long term support policy for the QAPI code gen
-python APIs as a blocker.
-
-> 
-> 3. As mentioned in (2), created protocol.go and utils.go that are 100%
->    hand generated Go code. Message mentioned in (1a) is under
->    protocol.go
-> 
-> 4. Defined license using SPDX-License-Identifier.
->   a. Every Go source code written by hand is 100% MIT-0
->   b. Every Go source code generated is dual licensed as MIT-0 and
->      GPL-2.0-or-later
->   c. The binary code is expected to be MIT-0 only but not really
->      relevant for this series.
-> 
->   If you want more information, please check the thread:
->   https://lists.gnu.org/archive/html/qemu-devel/2024-11/msg01621.html
-> 
-> 5. I've renamed the generated files.
->   a. Any type related file is now prefixed with "gen_type_"
->   b. Any interface related file is prefixed as "gen_iface_"
-> 
-> 6. Relevant changes were made to the doc but it is not complete. I plan
->    that follow-up proposals would add to the documentation.
-> 
-> 7. Improvements to the generator were made to.
-> 
-> 8. Also worth to mention that resulting generated code does not have any
->    diff with gofmt and goimport tools, as requested in the past.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Regards,
+Simon
 
