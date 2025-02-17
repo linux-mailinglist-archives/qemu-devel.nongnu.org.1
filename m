@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CBDA38C7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BF0A38C78
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 20:33:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk6pn-0002mz-Az; Mon, 17 Feb 2025 14:31:15 -0500
+	id 1tk6pb-0002CY-8p; Mon, 17 Feb 2025 14:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6ov-0001uL-1M
+ id 1tk6ou-0001uD-R1
  for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:22 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk6oq-0008I0-0R
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:19 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22100006bc8so42904835ad.0
+ id 1tk6oq-0008I9-1b
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 14:30:18 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-220e6028214so75943245ad.0
  for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 11:30:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739820612; x=1740425412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739820613; x=1740425413; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0D+qkdUAnGyLEvzj5WsailDQ6IwrMLobTEZGdeMA0tw=;
- b=f+sm5OkzHhy+j5Xuc2P9wtYXlwxoHbSNFvqLuyQS1FicdAcUsgxWAduwJuHMbBe+F3
- gmvEaXHah/TPlkPx0hFhjn3fj0nmHRJXodg2idIHkn9C1Wl7yXRL05m335uWWdl9F/AT
- 0oIL3hptyI2y94ywNjDQP+MsI6NhUJ3w4eMFQswsNzKUcIxHu65xHVP/xeLzbIHnSqDR
- nAHVq1Ts8fE6Ve38RSrbpNT+wz4uFWIQKsKtoYXtBSCyGZnocOFQqIh1Jog0t71GFj6o
- ekgoPpuCiV//Sh2qbrW4cT+6cZFMlxaKdKMcF+gMtOzdoYngPwX8r06VtYB8TQ3seIC6
- /L9g==
+ bh=CoSz+0yLhVK3dbyvfDxsdAZSwsgZvLHw47U3xK2XgEE=;
+ b=DiD6SrzGktzOiJznQQL1Soh4UqqMB1xL3FQw/v6xhjL0aBPGMg6A/ox4CaofNSxjnz
+ viac39LzLiPFWafDjgJYizmAnLoXCQ0w9fd42ov8h3RHjGu3A0ioyAsR5V8aQ7XhfurR
+ KLNlK13MP48CO2eT+4QSVsZAVA4YwpndbE3Zbo4kBF7Pr8yvW01x7GKT2g2oGie9Ev6B
+ /7W/rOytXMt1Ia2yHmMrq7gRU0nj5CTWDS+0rkZlHSkw6KMUeYnN2/YDDVWfpvw2yvtJ
+ kQoD1dsQGPAi7qSAwqgwbAI2c8vOh2JiAr+hg+MVNJ/BMcO8R9XBqhI07655SdpN4Q8o
+ n0wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739820612; x=1740425412;
+ d=1e100.net; s=20230601; t=1739820613; x=1740425413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0D+qkdUAnGyLEvzj5WsailDQ6IwrMLobTEZGdeMA0tw=;
- b=EY7WQJDDVYyZF9/iNneYaQOfVcwNjYgKwUo8axLD9JCs0fnGbdCaco299zGYlEN6S8
- 39127ujBDEc7uZ6/69ZCTGz/N55r3WJs0L0Fz78Czy/r9Vr76wEAgndae9aoQxtJPKBo
- JSGF1NPKKJ/eiNzyYT4acpu9Z108InT2fwThGRIIyqPVdnOfTZ7nOeVjX0rJXhEp1qBa
- TUkMOGu2B4qsP8fUTkrRHaRx2jJSud9wkmXtiAaDVj1My+TmymvaleSJ/JrSaMOpgrbT
- Pc+XFwQ01u3dNdW72znXHF6OJ2lSO2xkiqO36bioWaQtpESQXq24KlpaxB0jUg6JlWD8
- J5NQ==
-X-Gm-Message-State: AOJu0Yyz9hJqvnftrmw/DaBCcm8slUv+4y3vGQk6vzjl9xKYmxGJXXIN
- Eu0bQk7cQ8SMDx7kYK+dKPv/LKhM3gILHZihYMQdpDVtFfrzYUfIfJTROSdD/1C8y2S19gKc4ls
- m
-X-Gm-Gg: ASbGncvz739KsAr5RB66+lJSFnE8vqcaH/irPLF9yU35WsY9fjP+4qSrMxpD1AOilgz
- 40Tp8UeFQXw7mVuu2KuMf+wSG0uPaNLDOUSbpaxjGVw1imZDx9ab3sZEkGvvM2ZZ4qUSr+4LrYP
- Ed9/89AyHyKqGp3cVHZEFm8krZr5ABXy1vOviTh5LMwQtYzXlIJQ5zqWWEHLn0dWSHTLQW1SrCf
- GjRNghjfw0J+RhiqOLzLqh7hJvxi7qkvWBSfotdnw8CmixDsbGcbMywIXgl/QN6niKAvPTGmgIp
- GJKUtGYPJ9iYnlyUPcfr4s9S3p2Zqmf5ZACwtVHfXw3VLhE=
-X-Google-Smtp-Source: AGHT+IG4gMXaWhZzx8c3IyMTNk7KIy0pZiPLoLhTZu/lrsYUaogh/VzxWeGbgmDEC7hMLyfLdq6+Lg==
-X-Received: by 2002:a05:6a20:6a1e:b0:1e1:b727:1801 with SMTP id
- adf61e73a8af0-1ee8cbc1aeamr18592428637.27.1739820612222; 
+ bh=CoSz+0yLhVK3dbyvfDxsdAZSwsgZvLHw47U3xK2XgEE=;
+ b=qV6TUNEWu6SIcfgdwETKXe71w1y+pa+k0GufGcuzpinw87AkHysaEQmxhrkW0xTVXa
+ Sea7NUCUWf4lP6ubjYrbLucY6r4l/2m9EnQUeM1jk8zioIe52l7vBZO8wXXbnuj27b3V
+ 2H6BEM2R7QO4BwJtD007NHHX6krapSLImROn6ZFcP1wK3BIu4lia/UHJudnGvIXcTb2y
+ 08iGo1Emg01AF501DZbn4bOsd0vm+a1nijXMQ3R68E+o3m7gImFBlXnjtyWX4L56k/4p
+ ywhq5/rpB0NT/AdoRZrowp9wYYgtcO0PG5TqakNu/S/ST4nPrpH7P1QC/QUJL/tnXDkB
+ Oqug==
+X-Gm-Message-State: AOJu0Ywz2HmIYNMRQ+wR7L+qdbTzCLFzUVkAdvamqi2zQjqctFWIiWHI
+ k/WvMJkcqDpedOiEnxDZF9iarf9dmITxMNlvxutBrPIONB7XSyjZnMme60z2fBjlX/v5fMjBqZf
+ J
+X-Gm-Gg: ASbGnct3ebTJKycu1KjrUvQuypdrQxHzu14ZJgo7voisubUT37gobgAjEftt4Q3aZmh
+ dyhNeqANa+5yzXF3BicH4svphZvVsh8RJyXhOD9xzeDj1MCgb6Z7cSp/5tBmWTeo9l5SOcatcXG
+ nqgJwY8P52HmigyYJcZ44Cc93K7eZzTLxv/TJ/1TQQRhavsx1vy+1kSsW7jmOIAiRGA1fvavgU3
+ ME0wL53+OP55pPe5sTshT4XUxjK7am/HeOMqwFkeSr8wsN4SgWVur4zLaLrpPt96UcKlm0hBP5e
+ KLMSK+5/8YDiT+QMLrapjHhH9zBrM/hN457UYRsGWNFxMo0=
+X-Google-Smtp-Source: AGHT+IEQXiO90AqAnghkhW5ubAGjaT4AbcUesjHkuzGwbTHfPshSM7019osp70VmEHHqNQqWD+Ao+g==
+X-Received: by 2002:a05:6a21:6da7:b0:1ee:5d05:a18f with SMTP id
+ adf61e73a8af0-1ee8cc25a7cmr19924143637.35.1739820612937; 
  Mon, 17 Feb 2025 11:30:12 -0800 (PST)
 Received: from stoup.. (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.11
+ d2e1a72fcca58-7326a38ff76sm4347164b3a.160.2025.02.17.11.30.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Feb 2025 11:30:11 -0800 (PST)
+ Mon, 17 Feb 2025 11:30:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v2 02/27] tcg: Remove TCG_OVERSIZED_GUEST
-Date: Mon, 17 Feb 2025 11:29:43 -0800
-Message-ID: <20250217193009.2873875-3-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 03/27] tcg: Drop support for two address registers in
+ gen_ldst
+Date: Mon, 17 Feb 2025 11:29:44 -0800
+Message-ID: <20250217193009.2873875-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250217193009.2873875-1-richard.henderson@linaro.org>
 References: <20250217193009.2873875-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,274 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is now prohibited in configuration.
-
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/atomic.h           | 18 +++--------------
- include/tcg/oversized-guest.h   | 23 ----------------------
- accel/tcg/cputlb.c              |  7 -------
- accel/tcg/tcg-all.c             |  9 ++++-----
- target/arm/ptw.c                | 34 ---------------------------------
- target/riscv/cpu_helper.c       | 13 +------------
- docs/devel/multi-thread-tcg.rst |  1 -
- 7 files changed, 8 insertions(+), 97 deletions(-)
- delete mode 100644 include/tcg/oversized-guest.h
+ tcg/tcg-op-ldst.c | 21 +++------------------
+ tcg/tcg.c         |  4 +---
+ 2 files changed, 4 insertions(+), 21 deletions(-)
 
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index 7a3f2e6576..f80cba24cf 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -56,25 +56,13 @@
-  */
- #define signal_barrier()    __atomic_signal_fence(__ATOMIC_SEQ_CST)
- 
--/* Sanity check that the size of an atomic operation isn't "overly large".
-+/*
-+ * Sanity check that the size of an atomic operation isn't "overly large".
-  * Despite the fact that e.g. i686 has 64-bit atomic operations, we do not
-  * want to use them because we ought not need them, and this lets us do a
-  * bit of sanity checking that other 32-bit hosts might build.
-- *
-- * That said, we have a problem on 64-bit ILP32 hosts in that in order to
-- * sync with TCG_OVERSIZED_GUEST, this must match TCG_TARGET_REG_BITS.
-- * We'd prefer not want to pull in everything else TCG related, so handle
-- * those few cases by hand.
-- *
-- * Note that x32 is fully detected with __x86_64__ + _ILP32, and that for
-- * Sparc we always force the use of sparcv9 in configure. MIPS n32 (ILP32) &
-- * n64 (LP64) ABIs are both detected using __mips64.
-  */
--#if defined(__x86_64__) || defined(__sparc__) || defined(__mips64)
--# define ATOMIC_REG_SIZE  8
--#else
--# define ATOMIC_REG_SIZE  sizeof(void *)
--#endif
-+#define ATOMIC_REG_SIZE  sizeof(void *)
- 
- /* Weak atomic operations prevent the compiler moving other
-  * loads/stores past the atomic operation load/store. However there is
-diff --git a/include/tcg/oversized-guest.h b/include/tcg/oversized-guest.h
-deleted file mode 100644
-index 641b9749ff..0000000000
---- a/include/tcg/oversized-guest.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define TCG_OVERSIZED_GUEST
-- * Copyright (c) 2008 Fabrice Bellard
-- */
+diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
+index 77271e0193..7ba9a3ef7e 100644
+--- a/tcg/tcg-op-ldst.c
++++ b/tcg/tcg-op-ldst.c
+@@ -91,25 +91,10 @@ static MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
+ static void gen_ldst(TCGOpcode opc, TCGType type, TCGTemp *vl, TCGTemp *vh,
+                      TCGTemp *addr, MemOpIdx oi)
+ {
+-    if (TCG_TARGET_REG_BITS == 64 || tcg_ctx->addr_type == TCG_TYPE_I32) {
+-        if (vh) {
+-            tcg_gen_op4(opc, type, temp_arg(vl), temp_arg(vh),
+-                        temp_arg(addr), oi);
+-        } else {
+-            tcg_gen_op3(opc, type, temp_arg(vl), temp_arg(addr), oi);
+-        }
++    if (vh) {
++        tcg_gen_op4(opc, type, temp_arg(vl), temp_arg(vh), temp_arg(addr), oi);
+     } else {
+-        /* See TCGV_LOW/HIGH. */
+-        TCGTemp *al = addr + HOST_BIG_ENDIAN;
+-        TCGTemp *ah = addr + !HOST_BIG_ENDIAN;
 -
--#ifndef EXEC_TCG_OVERSIZED_GUEST_H
--#define EXEC_TCG_OVERSIZED_GUEST_H
--
--#include "tcg-target-reg-bits.h"
--#include "cpu-param.h"
--
--/*
-- * Oversized TCG guests make things like MTTCG hard
-- * as we can't use atomics for cputlb updates.
-- */
--#if TARGET_LONG_BITS > TCG_TARGET_REG_BITS
--#define TCG_OVERSIZED_GUEST 1
--#else
--#define TCG_OVERSIZED_GUEST 0
--#endif
--
--#endif
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b4ccf0cdcb..17e2251695 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -47,7 +47,6 @@
- #include "qemu/plugin-memory.h"
- #endif
- #include "tcg/tcg-ldst.h"
--#include "tcg/oversized-guest.h"
- 
- /* DEBUG defines, enable DEBUG_TLB_LOG to log to the CPU_LOG_MMU target */
- /* #define DEBUG_TLB */
-@@ -118,12 +117,8 @@ static inline uint64_t tlb_read_idx(const CPUTLBEntry *entry,
-     return qatomic_read(ptr);
- #else
-     const uint64_t *ptr = &entry->addr_idx[access_type];
--# if TCG_OVERSIZED_GUEST
--    return *ptr;
--# else
-     /* ofs might correspond to .addr_write, so use qatomic_read */
-     return qatomic_read(ptr);
--# endif
- #endif
+-        if (vh) {
+-            tcg_gen_op5(opc, type, temp_arg(vl), temp_arg(vh),
+-                        temp_arg(al), temp_arg(ah), oi);
+-        } else {
+-            tcg_gen_op4(opc, type, temp_arg(vl),
+-                        temp_arg(al), temp_arg(ah), oi);
+-        }
++        tcg_gen_op3(opc, type, temp_arg(vl), temp_arg(addr), oi);
+     }
  }
  
-@@ -908,8 +903,6 @@ static void tlb_reset_dirty_range_locked(CPUTLBEntry *tlb_entry,
-             uint32_t *ptr_write = (uint32_t *)&tlb_entry->addr_write;
-             ptr_write += HOST_BIG_ENDIAN;
-             qatomic_set(ptr_write, *ptr_write | TLB_NOTDIRTY);
--#elif TCG_OVERSIZED_GUEST
--            tlb_entry->addr_write |= TLB_NOTDIRTY;
- #else
-             qatomic_set(&tlb_entry->addr_write,
-                         tlb_entry->addr_write | TLB_NOTDIRTY);
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index 95adaacee8..c1a30b0121 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -28,7 +28,6 @@
- #include "exec/replay-core.h"
- #include "system/cpu-timers.h"
- #include "tcg/startup.h"
--#include "tcg/oversized-guest.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/accel.h"
-@@ -41,6 +40,8 @@
- #include "hw/boards.h"
- #endif
- #include "internal-common.h"
-+#include "cpu-param.h"
-+
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 53de13df71..14c2d38160 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1690,9 +1690,7 @@ void tcg_func_start(TCGContext *s)
+     s->emit_before_op = NULL;
+     QSIMPLEQ_INIT(&s->labels);
  
- struct TCGState {
-     AccelState parent_obj;
-@@ -72,7 +73,7 @@ DECLARE_INSTANCE_CHECKER(TCGState, TCG_STATE,
- 
- static bool default_mttcg_enabled(void)
- {
--    if (icount_enabled() || TCG_OVERSIZED_GUEST) {
-+    if (icount_enabled()) {
-         return false;
-     }
- #ifdef TARGET_SUPPORTS_MTTCG
-@@ -145,9 +146,7 @@ static void tcg_set_thread(Object *obj, const char *value, Error **errp)
-     TCGState *s = TCG_STATE(obj);
- 
-     if (strcmp(value, "multi") == 0) {
--        if (TCG_OVERSIZED_GUEST) {
--            error_setg(errp, "No MTTCG when guest word size > hosts");
--        } else if (icount_enabled()) {
-+        if (icount_enabled()) {
-             error_setg(errp, "No MTTCG when icount is enabled");
-         } else {
- #ifndef TARGET_SUPPORTS_MTTCG
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 64bb6878a4..4330900348 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -16,9 +16,6 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "idau.h"
--#ifdef CONFIG_TCG
--# include "tcg/oversized-guest.h"
--#endif
- 
- typedef struct S1Translate {
-     /*
-@@ -840,7 +837,6 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-         ptw->out_rw = true;
-     }
- 
--#ifdef CONFIG_ATOMIC64
-     if (ptw->out_be) {
-         old_val = cpu_to_be64(old_val);
-         new_val = cpu_to_be64(new_val);
-@@ -852,36 +848,6 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-         cur_val = qatomic_cmpxchg__nocheck((uint64_t *)host, old_val, new_val);
-         cur_val = le64_to_cpu(cur_val);
-     }
--#else
--    /*
--     * We can't support the full 64-bit atomic cmpxchg on the host.
--     * Because this is only used for FEAT_HAFDBS, which is only for AA64,
--     * we know that TCG_OVERSIZED_GUEST is set, which means that we are
--     * running in round-robin mode and could only race with dma i/o.
--     */
--#if !TCG_OVERSIZED_GUEST
--# error "Unexpected configuration"
--#endif
--    bool locked = bql_locked();
--    if (!locked) {
--        bql_lock();
--    }
--    if (ptw->out_be) {
--        cur_val = ldq_be_p(host);
--        if (cur_val == old_val) {
--            stq_be_p(host, new_val);
--        }
--    } else {
--        cur_val = ldq_le_p(host);
--        if (cur_val == old_val) {
--            stq_le_p(host, new_val);
--        }
--    }
--    if (!locked) {
--        bql_unlock();
--    }
--#endif
+-    tcg_debug_assert(s->addr_type == TCG_TYPE_I32 ||
+-                     s->addr_type == TCG_TYPE_I64);
 -
-     return cur_val;
- #else
-     /* AArch32 does not have FEAT_HADFS; non-TCG guests only use debug-mode. */
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index e1dfc4ecbf..8ff6d900f2 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -32,7 +32,6 @@
- #include "system/cpu-timers.h"
- #include "cpu_bits.h"
- #include "debug.h"
--#include "tcg/oversized-guest.h"
- #include "pmp.h"
++    tcg_debug_assert(s->addr_type <= TCG_TYPE_REG);
+     tcg_debug_assert(s->insn_start_words > 0);
+ }
  
- int riscv_env_mmu_index(CPURISCVState *env, bool ifetch)
-@@ -1167,9 +1166,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     hwaddr pte_addr;
-     int i;
- 
--#if !TCG_OVERSIZED_GUEST
--restart:
--#endif
-+ restart:
-     for (i = 0; i < levels; i++, ptshift -= ptidxbits) {
-         target_ulong idx;
-         if (i == 0) {
-@@ -1388,13 +1385,6 @@ restart:
-                                      false, MEMTXATTRS_UNSPECIFIED);
-         if (memory_region_is_ram(mr)) {
-             target_ulong *pte_pa = qemu_map_ram_ptr(mr->ram_block, addr1);
--#if TCG_OVERSIZED_GUEST
--            /*
--             * MTTCG is not enabled on oversized TCG guests so
--             * page table updates do not need to be atomic
--             */
--            *pte_pa = pte = updated_pte;
--#else
-             target_ulong old_pte;
-             if (riscv_cpu_sxl(env) == MXL_RV32) {
-                 old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
-@@ -1405,7 +1395,6 @@ restart:
-                 goto restart;
-             }
-             pte = updated_pte;
--#endif
-         } else {
-             /*
-              * Misconfigured PTE in ROM (AD bits are not preset) or
-diff --git a/docs/devel/multi-thread-tcg.rst b/docs/devel/multi-thread-tcg.rst
-index 7fd0a07633..b0f473961d 100644
---- a/docs/devel/multi-thread-tcg.rst
-+++ b/docs/devel/multi-thread-tcg.rst
-@@ -37,7 +37,6 @@ if:
- 
- * forced by --accel tcg,thread=single
- * enabling --icount mode
--* 64 bit guests on 32 bit hosts (TCG_OVERSIZED_GUEST)
- 
- In the general case of running translated code there should be no
- inter-vCPU dependencies and all vCPUs should be able to run at full
 -- 
 2.43.0
 
