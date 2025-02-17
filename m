@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0653CA38B2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 19:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A41D6A38B19
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 19:11:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk5f7-0007ZW-LM; Mon, 17 Feb 2025 13:16:09 -0500
+	id 1tk5aC-0005DH-4y; Mon, 17 Feb 2025 13:11:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk5ex-0007Yy-Qk
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:16:00 -0500
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1tk5Zk-000560-RP
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:10:37 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tk5es-0006qT-LD
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:15:56 -0500
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-2bcceee7b40so665261fac.3
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 10:15:53 -0800 (PST)
+ id 1tk5Zi-00063N-At
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 13:10:36 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-220e83d65e5so68737785ad.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 10:10:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739816151; x=1740420951; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739815833; x=1740420633; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=e5Un0T/zEiFdIeFsrjeVvWkExkzImpvTYSRLVRI62W0=;
- b=OXRBdpCJcBTz9DslEHV1nq5dTghg0DYyG+0Jg0Poi4hV5RpmtRJOzFws/x5Tgt7JdC
- UFQWrReFnFp+yri+1DzhyzMSpEHJzctPuVhHMke5o1tx4h2oQtnitJQYPDEJLYXrrd5u
- FgXUzPEFrK1qqXjOG0mtjAswkMG6UBTPg2Kq1S/kXcaAO5sc2SN2UkZGzUcuHWCIZYS1
- 3AKIWfyTrp/817pMt65ROmmEGjB78P50pLJi8PttoSKJAjlusE6b+oFf3nhaFZNTY/jU
- FhRRFpqlyzMYBReCODufvGuLwfU0lmSpw2O3qOU3oyi1LBZSFw+kmCnbKmb5WQc9F35A
- UqdQ==
+ bh=OcunpXZEDVw2rmp9mUhdoB/SS2eJArS+5xk/Ou/G9fA=;
+ b=BBUuus4iQH7f241VQM+twFqfo2SRNC6LiyQYzv4BmatiZFBg7i5yofTMSIKfcJ6mF9
+ badvrWzuf3LxN1m0G2PVX53ZOqD54Wct+PXYzD3VrihiUvUhrN1tLqwHFMr9gbQeI+oK
+ kHHvS+jJxnhif+9X80zEUh3mC6SMFLdiSxl/uWnvmw+9Z5sbxJiTs6Qxr96vaDU92vC/
+ AuuqpKUD5rqOlweg84ze68IVceiKHJlWBe7RRXkDeyHW+Qr1MPopKLCpXvRxLS1+9tDb
+ 4WikGzjfuXSB+Y0W7wW5vsJzWjgmDLkYocWu628POhn2NPWcBNW88GbKKteusd95UEz5
+ 3+Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739816151; x=1740420951;
+ d=1e100.net; s=20230601; t=1739815833; x=1740420633;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e5Un0T/zEiFdIeFsrjeVvWkExkzImpvTYSRLVRI62W0=;
- b=BSbeEGKj1VDvM8Guf16U2+zNYD6+kpNjnQuQ4Jvn/7CgiixFEJ/S76IU9dj5ELaimK
- fPiUcPw+QBrcrpCCcmKtRZsKOdf98Fubwp8vqfa2CRaA7uT4mTfyjjlHY239LhqgwvRm
- zi1FR6HXT9jaoW/4LAahFzya3hNciFAEM6P5HGFuxj7gbsLHSlXTvpMxxCs+RMefcbn8
- YaC33rSxZrsstMyZwGdFfNb6H6qw7aS63HYhdvgZ30MmosPIFkezTd1X/+0thwzMUkXV
- yBAKO0FqhnkhEnv+pUaTZWGykUROXlnxb4mntCLNKxwLFRytKViohk5vqo1HAkkgD9np
- ieXA==
+ bh=OcunpXZEDVw2rmp9mUhdoB/SS2eJArS+5xk/Ou/G9fA=;
+ b=G5Voukm9O74eYgLh7gjUdV8y9nijQtsiwPwBiVBcgD6rMkvQgEozYn030Gj2+6GXhf
+ i7nobVx+t7vW1MGd7ZBgy2VMvhBHI/ZaYy2vVMgOIGxdt1GDTgWxfixDYy+0820M5pDK
+ BPkjKLM0BTa9fpKdeAa8a+3EAYycTQ26gfBgB1L/QYm2AutKfvRG7oLKuMaKX+2mtOJ8
+ jD4Y4XYLnzmJpXfKVn14X1tU3WowiTyYzW7YS6Ape8l2CsFCBFPank2tHNYPu2uWqjR9
+ mXoI6ifk1/D1K77BV23iKjQUBu88qNrtgi02Y6hcTsEFeNlnoFqx5MaQfzPtKjRi7i61
+ ye/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUncJVOsJpl3Z36lSZ05pshjVuwArgjotLafmE+gEPD7BHuWjtSOEaYG5KgbbK25mOI7tVML+qZWi9d@nongnu.org
-X-Gm-Message-State: AOJu0YwE3rjixbZqCMny9ZLEhpIkurhskWA+eaG6AfS0T8TG2i9D9F4D
- 8PcBdWMokyP3RMu+f0UKdN6uOgE5C+HK/FQIgYWTlQaymGVKmk8DORcwXvuCAlvm9Lp+HRQe2Uj
- Y
-X-Gm-Gg: ASbGncsYAiFr8xT1/EceqshMjPgDkgj23VdHaQxiidUIhgx//6SJb3Dxr1TA/fBNiuo
- AYHRPgOJ2GW4b77GGXm7qaWiuBow1sN2VcvgtglEtfr+pk3vMsMZeoEZLMz7aqnXNW2Y+ZvSnW8
- Z2/TolX+Cwm5G5bJGk7/cE0y0ob3So03fG3g3HjafdBxmt6DaIJaQ2dusMUSBk047WT0uBkCCK3
- pgEo1Ma50IAzEa2gE8WNma8iDXr8wSXV9Ts4z75JGsH1rSyT0tXIhgAiXU2AKPX7s5hd/wQXApG
- cVVy6fdHVx5mJspfje8oDA68BX/kY0K/vIA5duTDNP4iZmWGefUyuQg=
-X-Google-Smtp-Source: AGHT+IHTDMIDVqvM4meGRGqfOGj0KAsa4akeAVOBYrl4fOELwz7P1MNbIi2xdM20w2ubLMl6U8dg3w==
-X-Received: by 2002:a17:90b:39cc:b0:2ee:e18b:c1fa with SMTP id
- 98e67ed59e1d1-2fc410429aamr16083307a91.28.1739815812859; 
- Mon, 17 Feb 2025 10:10:12 -0800 (PST)
+ AJvYcCWsRsHc2xtqleRplJqg2WSQHgvgmyTGqoq0Ycr6eGbmi3lv6fqh1/NkVLCuSCJ7lLKUaLrzzOkG8wIw@nongnu.org
+X-Gm-Message-State: AOJu0Ywt0630ywnAOGTYY4LyPYMU4+nZgh3+T5jRMfzXWBVHKsMlDjaf
+ Z6Z3S7cZK8Owf7v2nURhSF56c+7oeRlLjN/Cy368phPVSFLOZLFQg+wn2uYliTw=
+X-Gm-Gg: ASbGnctiAz+gKV3yGcu+jHUnq6IfTY0i1EP3S4gWXUnhtRMvKsERe/nWs5rCRBmIH/P
+ jRisVVvMzM3KffKH6AhLx8HEWtA3q7TwDnXRJIgFmYO6HddHsH/iDJoNxxmbU1bMXr9dg5fcPeQ
+ CHUTH3GuKpBneoGfO9s5bOwP6JMp9GqT2+VhZW2+x5W+uzD/t3pIY+DdJjCUKh26KlMoLLAtQPL
+ u667nTaMKaiNu3HFfVhx2tHKyrpKvxGq7STmAUhNySnGmofdTNWtK3Kl73LOgLU6Z40GWQByeMI
+ dtZLVcd5cinCE1GkRg49guXNCJLxaIJAYzEwXxcJu8flJt/+QpbCjDY=
+X-Google-Smtp-Source: AGHT+IE43fOy0UQCt3rzryo47l75gDBtTcJT79k9Qw1LGwcp3O+rm47WiTAvLLO98jRQq59yQYg8iA==
+X-Received: by 2002:a05:6a00:18a4:b0:730:9567:c3d4 with SMTP id
+ d2e1a72fcca58-7326177fc46mr21673375b3a.3.1739815832731; 
+ Mon, 17 Feb 2025 10:10:32 -0800 (PST)
 Received: from [192.168.0.4] (71-212-39-66.tukw.qwest.net. [71.212.39.66])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d537d0f2sm74762485ad.105.2025.02.17.10.10.12
+ d2e1a72fcca58-732550dca17sm6416480b3a.46.2025.02.17.10.10.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 10:10:12 -0800 (PST)
-Message-ID: <a1b54d6d-7aaa-4306-94d5-ad45e6a66258@linaro.org>
-Date: Mon, 17 Feb 2025 10:10:11 -0800
+ Mon, 17 Feb 2025 10:10:31 -0800 (PST)
+Message-ID: <a61915c5-0b8e-4887-b1ff-eb7fd83be2db@linaro.org>
+Date: Mon, 17 Feb 2025 10:10:30 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/10] target/m68k: Avoid using floatx80_infinity global
+Subject: Re: [PATCH 03/10] target/i386: Avoid using floatx80_infinity global
  const
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Laurent Vivier <laurent@vivier.eu>
 References: <20250217125055.160887-1-peter.maydell@linaro.org>
- <20250217125055.160887-3-peter.maydell@linaro.org>
+ <20250217125055.160887-4-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250217125055.160887-3-peter.maydell@linaro.org>
+In-Reply-To: <20250217125055.160887-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,13 +112,13 @@ On 2/17/25 04:50, Peter Maydell wrote:
 > continue to use a single global whose value needs to be different
 > between targets.
 > 
-> Replace the direct uses of floatx80_infinity in target/m68k with
+> Replace the direct uses of floatx80_infinity in target/i386 with
 > calls to the new floatx80_default_inf() function.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/m68k/softfloat.c | 47 ++++++++++++++---------------------------
->   1 file changed, 16 insertions(+), 31 deletions(-)
+>   target/i386/tcg/fpu_helper.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
