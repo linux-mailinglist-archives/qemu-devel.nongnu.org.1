@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6263A386DE
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 15:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95D5A386EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Feb 2025 15:51:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tk2Np-00046I-Cy; Mon, 17 Feb 2025 09:46:05 -0500
+	id 1tk2RV-0005i2-Mv; Mon, 17 Feb 2025 09:49:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk2Nl-00045T-QS
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 09:46:01 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tk2Ni-0004uC-Un
- for qemu-devel@nongnu.org; Mon, 17 Feb 2025 09:46:00 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4398e839cd4so1886345e9.0
- for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 06:45:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739803556; x=1740408356; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y5dcl97+R9ZvlvmhWi8vj8stXbph2OUxTVkLSpaI3GU=;
- b=nByUPg1Eves69ISs2U4zw7McXlUiEM+ibSCyR3Ku/IpBV6aoUDQ57p1rm9UlR3XfI7
- UXe3CzOYflZX5eKLNM8PnyQ7taNsfpOJJfBvNusu0/NiZOvrjI61djAxpJMVS2v6e39f
- PII0V6UpS+7Cekg6Zf9vcj3ocDiO5QirEwN01uQ7Iw0uu4qlxI7fcyD+66xJ4YHAM6Dn
- BQHg2Fbo4kL4LQjJrYc6fLA00YqWztDLIyBvGAykaUPGLknU0l6gZ2xj8Cc13rEvgVae
- EMkJz6hoyv5X6rtcqjnWRnq89256w45P0QdNiv8HT1TrRgcgpYz/4C134HQEbXUAlf+v
- 9+3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739803556; x=1740408356;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y5dcl97+R9ZvlvmhWi8vj8stXbph2OUxTVkLSpaI3GU=;
- b=THxj2gia9lLyYUlwRFLi0141ABNuOwz4uPb+YMEodvShaVnphNmLrWARbBsB6EpgD3
- BWMtHGixNMKYMAAWU4EhgcAuJuizXSZfe3izZhRMOTwWQ8RIw/PC/rKaCo/gbzpGjq/6
- PiqXXUgnQUY4ondNcq9PK+ROFIf6ryeU5/fuUz3BnOp+La5a0thzWV1eeAyt7MfDryXF
- yhCdIhY+BhCooEwVvZbXbJUbZrH/C4StK2CtHhMlrccexOWDTyL+wMREztX7M1/mAWCu
- W+VXv1K77hXGbWZuLP1Z/2AfKnXJStksjh/A5jQjsbAOyJU4QnQMV3aUiWGvAyWpCwTd
- 7qfw==
-X-Gm-Message-State: AOJu0YyZnTWgbgb2NcQyYMEIEAm/RZ+jT5mCEG+sb/C//rDffqDTdRcT
- bR9nTNC8XD6EZrfkAEt5RT8z6L+gkOjoK6yhzcfx0LIqoU1OIc7l66R49Wkldkk=
-X-Gm-Gg: ASbGncsv1M7PQWYZBRs4LexhHW6sVsiSqij/ADThIQQbanprHokwx5JK/LyUlGmTsJF
- H0A/HPW2506ig9FL3rNvIkBsNgnph7/4/gaL81vDfZwKm+XThI+eGXPgnGCmOV60OHX/61PKuK9
- hkOJXlROXVCZzqlBG/GnDCu+HY4yuGwRYR8WeIArPj7N0dz67XrkWWGeqtOi0MM5dLozVzOzwt0
- xpKM5U5y/PYPpWo1Z4NJVZ9f+DO96Jn0GBQTIdrGxgoc4aqSDcOddysFQfMzqnW7goA6tPWA253
- /RVAXSdnPXuNl3LDeom10cPl+ZcPvdBsrYE=
-X-Google-Smtp-Source: AGHT+IGiZCOT4kWCD8sJLEoL3o4iHw3Z3wI/vp8OkstOwVhDGGBN+DxGJkpaozJ5yg5lWCMHEBJ1hw==
-X-Received: by 2002:a05:600c:5124:b0:434:f9ad:7222 with SMTP id
- 5b1f17b1804b1-4396ec31d4amr87754755e9.7.1739803556598; 
- Mon, 17 Feb 2025 06:45:56 -0800 (PST)
-Received: from [192.168.1.121] ([176.167.144.216])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4395a1aa7bcsm154096515e9.28.2025.02.17.06.45.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Feb 2025 06:45:56 -0800 (PST)
-Message-ID: <b8377b2b-8924-40ef-904f-dce0b01e5bb6@linaro.org>
-Date: Mon, 17 Feb 2025 15:45:53 +0100
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tk2RR-0005h3-U0
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 09:49:49 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tk2RP-0005ES-Nj
+ for qemu-devel@nongnu.org; Mon, 17 Feb 2025 09:49:49 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HEMas1014857;
+ Mon, 17 Feb 2025 14:49:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2023-11-20; bh=bVeb2OuVpEQjmByD
+ L49EeSN8AlA7sbV/R9EYnQ07y7g=; b=H/9mkqnQny2oXHuwqJgiQaS67KhKU9Fr
+ hNDpuk2UHY9raTfPkv7VRbUoJK49s3oByUpn9p2n03ijf9MehFLvLdmlDfNR19/q
+ 2yuVS9wrotFmY9Dj2faLG9Cd2QZb7jnibFx95LRkW4zjihpZRNlCVbsII6IAvO7G
+ 8q28gOrdvAYQ2qfZW1S9xbut8kYKDD/af9WO/D+bA/2/9WY48cvllrzV95GCj1Q/
+ jchsFYJjsfWjnJNfY0aMGHlF5Q65HyLyTILZSO/m5FUl4qu/y1FzbxjPBFTCu/uw
+ qOjKzW04uOL4QsnHihVBgMCDARDtGJ54htucSOP1BAyI/oh8kIQ5DQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44thh04fd2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Feb 2025 14:49:41 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 51HDWlDX025013; Mon, 17 Feb 2025 14:49:40 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 44thc8035g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Feb 2025 14:49:40 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51HEndFY020797;
+ Mon, 17 Feb 2025 14:49:39 GMT
+Received: from jonah-ol8.us.oracle.com
+ (dhcp-10-43-68-193.usdhcp.oraclecorp.com [10.43.68.193])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 44thc8033q-1; Mon, 17 Feb 2025 14:49:39 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: eperezma@redhat.com, mst@redhat.com, leiyang@redhat.com, peterx@redhat.com,
+ dtatulea@nvidia.com, jasowang@redhat.com, si-wei.liu@oracle.com,
+ boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [PATCH v2 0/3] Handling aliased guest memory maps in vhost-vDPA SVQs
+Date: Mon, 17 Feb 2025 09:49:31 -0500
+Message-ID: <20250217144936.3589907-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] hw/char/pl011: Trace FIFO enablement
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20250208163911.54522-1-philmd@linaro.org>
- <20250208163911.54522-5-philmd@linaro.org>
- <CAFEAcA-tQUL2Rt4Y_eNFxCFXzNXupzQz3qYdEupB6Bb3HFyhfw@mail.gmail.com>
- <CAFEAcA_66f2t2UQv5eKwspDTBs+kfvpGsMPG6f31aqs6FWMx=w@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_66f2t2UQv5eKwspDTBs+kfvpGsMPG6f31aqs6FWMx=w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-17_06,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ adultscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
+ definitions=main-2502170125
+X-Proofpoint-ORIG-GUID: eJCBV3vYH-jtkp8GWlZ9tv1lIr7z0o43
+X-Proofpoint-GUID: eJCBV3vYH-jtkp8GWlZ9tv1lIr7z0o43
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,46 +99,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/2/25 15:39, Peter Maydell wrote:
-> On Mon, 17 Feb 2025 at 14:27, Peter Maydell <peter.maydell@linaro.org> wrote:
->>
->> On Sat, 8 Feb 2025 at 16:39, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   hw/char/pl011.c      | 4 +++-
->>>   hw/char/trace-events | 2 ++
->>>   2 files changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/hw/char/pl011.c b/hw/char/pl011.c
->>> index b9c9e5b5983..447f185e2d5 100644
->>> --- a/hw/char/pl011.c
->>> +++ b/hw/char/pl011.c
->>> @@ -148,6 +148,7 @@ static bool pl011_loopback_enabled(PL011State *s)
->>>
->>>   static bool pl011_is_fifo_enabled(PL011State *s)
->>>   {
->>> +    trace_pl011_fifo_is_enabled((s->lcr & LCR_FEN) != 0);
->>>       return (s->lcr & LCR_FEN) != 0;
->>
->> Might be neater having a local variable rather than
->> repeating the expression twice.
-> 
-> I'll squash in this tweak:
-> 
-> --- a/hw/char/pl011.c
-> +++ b/hw/char/pl011.c
-> @@ -148,8 +148,10 @@ static bool pl011_loopback_enabled(PL011State *s)
-> 
->   static bool pl011_is_fifo_enabled(PL011State *s)
->   {
-> -    trace_pl011_fifo_is_enabled((s->lcr & LCR_FEN) != 0);
-> -    return (s->lcr & LCR_FEN) != 0;
-> +    bool enabled = (s->lcr & LCR_FEN) != 0;
-> +
-> +    trace_pl011_fifo_is_enabled(enabled);
-> +    return enabled;
->   }
+An issue arises from aliased memory mappings in the guest, where
+different GPAs map to the same HVA. For example:
 
-Thank you :)
+ - GPA1->HVA1
+ - GPA2->HVA1
+
+When these mappings exist in the IOVA->HVA tree, a lookup by an HVA
+backed by guest memory results in ambiguities because the same HVA could
+correspond to multiple GPAs. This duplication causes issues in managing
+IOVA trees for SVQs in vDPA, leading to incorrect behavior.
+
+For example, consider these mapped guest memory regions:
+
+              HVA                            GPA                         IOVA
+-------------------------------  --------------------------- ----------------------------
+[0x7f7903e00000, 0x7f7983e00000) [0x0, 0x80000000)           [0x1000, 0x80000000)
+[0x7f7983e00000, 0x7f9903e00000) [0x100000000, 0x2080000000) [0x80001000, 0x2000001000)
+[0x7f7903ea0000, 0x7f7903ec0000) [0xfeda0000, 0xfedc0000)    [0x2000001000, 0x2000021000)
+
+The last HVA range [0x7f7903ea0000, 0x7f7903ec0000) is contained within
+the first HVA range [0x7f7903e00000, 0x7f7983e00000). Despite this, the
+GPA ranges for the first and third mappings do not overlap, so the guest
+sees them as distinct physical memory regions.
+
+Now consider an operation to unmap the mapping associated with HVA
+0x7f7903eb0000. This HVA fits into both the first and third HVA ranges.
+
+When searching the HVA->IOVA tree, the search stops at the first
+matching HVA range [0x7f7903e00000, 0x7f7983e00000) due to the behavior
+of the red-black tree (GTree). However, the correct mapping to remove is
+the third mappings, as the HVA translates to GPA 0xfedb0000, which only
+fits in the third mapping's GPA range.
+
+To address this, we implement a GPA->IOVA tree and use the GPAs of
+descriptors backed by guest memory when translating to IOVA.
+
+When a descriptor's GPA is used for translation, the GPA->IOVA tree
+ensures that each GPA maps to exactly one IOVA, regardless of any
+overlapping HVAs. This guarantees that operations such as unmapping or
+accessing a descriptor correctly targets the intended memory region in
+the guest's address space.
+
+For descriptors not backed by guest memory, the existing IOVA->HVA tree
+is still used.
+
+GPAs are unique and non-overlapping within the guest's address space. By
+translating GPAs to IOVAs, the ambiguity caused by multiple GPAs mapping
+to the same HVA is avoided.
+
+--------
+This series is a different approach of [1] and is based off of [2],
+where this issue was originally discovered.
+
+Patch v2:
+---------
+ * Squashed "Support translations via GPAs in vhost_svq_translate_addr" 
+   into "Implement GPA->IOVA & partial IOVA->HVA trees".
+ * Added signatures to commit messages where appropriate.
+
+Patch v1:
+---------
+ * Created separate alloc functions for guest-backed and host-only
+   memory.
+ * Alloc functions also insert mappings to their respective trees.
+ * Make patches self-contained and functional to prevent breakage during
+   bisection.
+ * Don't move range checks from alloc functions.
+ * Use existing VirtQueueElement members 'in_addr' & 'out_addr' instead
+   of creating custom 'in_xlat_addr' & 'out_xlat_addr' members.
+ * Move documentation changes to separate patch.
+
+RFC v3:
+-------
+ * Decouple the IOVA allocator to support a SVQ IOVA->HVA tree for
+   host-only mappings.
+ * Move range check for IOVA allocator to its own patch.
+ * Implement a GPA->IOVA tree alongside the SVQ IOVA->HVA & IOVA-only
+   trees.
+ * Add in_xlat_addr & out_xlat_addr VirtQueueElement members to hold the
+   GPAs of an element's input/output descriptors (to be used during
+   translation).
+
+RFC v2:
+-------
+ * Don't decouple IOVA allocator.
+ * Build a IOVA->GPA tree (instead of GPA->IOVA tree).
+ * Remove IOVA-only tree and keep the full IOVA->HVA tree.
+ * Only search through RAMBlocks when we know the HVA is backed by
+   guest memory.
+ * Slight rewording of function names.
+
+RFC v1:
+-------
+ * Alternative approach of [1].
+ * First attempt to address this issue found in [2].
+
+[1] https://lore.kernel.org/qemu-devel/20240410100345.389462-1-eperezma@redhat.com
+[2] https://lore.kernel.org/qemu-devel/20240201180924.487579-1-eperezma@redhat.com
+
+Jonah Palmer (3):
+  vhost-iova-tree: Implement an IOVA-only tree
+  vhost-iova-tree, svq: Implement GPA->IOVA & partial IOVA->HVA trees
+  vhost-iova-tree: Update documentation
+
+ hw/virtio/vhost-iova-tree.c        | 115 ++++++++++++++++++++++++-----
+ hw/virtio/vhost-iova-tree.h        |   8 +-
+ hw/virtio/vhost-shadow-virtqueue.c |  55 +++++++++-----
+ hw/virtio/vhost-shadow-virtqueue.h |   5 +-
+ hw/virtio/vhost-vdpa.c             |  40 ++++++----
+ include/qemu/iova-tree.h           |  22 ++++++
+ net/vhost-vdpa.c                   |  12 ++-
+ util/iova-tree.c                   |  46 ++++++++++++
+ 8 files changed, 248 insertions(+), 55 deletions(-)
+
+-- 
+2.43.5
+
 
