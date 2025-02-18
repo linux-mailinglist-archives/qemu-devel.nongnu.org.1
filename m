@@ -2,74 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEC7A3929F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 06:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE590A392F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 06:47:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkG8L-0005dg-2V; Tue, 18 Feb 2025 00:27:01 -0500
+	id 1tkGS2-0001hx-Bb; Tue, 18 Feb 2025 00:47:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tkG8F-0005d8-Th
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 00:26:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
+ id 1tkGS0-0001he-Ah
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 00:47:20 -0500
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tkG8D-0007oK-Kc
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 00:26:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739856411;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eUPK//D9Ljjy1m+eIH7lGh/bfFuM5HKiMsFhxgxXTW4=;
- b=LT7cpiKJ3zTEiZjz7WLYURfxZU6dgjuHijBEoXgYkpwfLGiY6x36nYPhYK7PA6z27xg9xZ
- 6TgMsyH9eF5S9/jBTubJa3DxQ1Tdnliw7nnJ5qFG7huGXGrDoUe+ITMyPvQphE5Z6vethT
- 6ZrzZ1a2Kss8tduaPsffBpMHSQm59aw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-222-qyC-pvbWNaOj0sK_YZA9eQ-1; Tue,
- 18 Feb 2025 00:26:47 -0500
-X-MC-Unique: qyC-pvbWNaOj0sK_YZA9eQ-1
-X-Mimecast-MFC-AGG-ID: qyC-pvbWNaOj0sK_YZA9eQ_1739856406
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 55FF4196E078; Tue, 18 Feb 2025 05:26:46 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.60])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 11FBD1956094; Tue, 18 Feb 2025 05:26:44 +0000 (UTC)
-Date: Tue, 18 Feb 2025 13:26:42 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, Ilya Dryomov <idryomov@gmail.com>
-Subject: Re: [PATCH] block/rbd: Do not use BDS's AioContext
-Message-ID: <20250218052642.GC10767@fedora>
-References: <20250212093238.32312-1-hreitz@redhat.com>
- <Z6yhczeIJ1XIej3M@redhat.com>
- <807a4908-d087-4c69-ba56-07c60545405e@redhat.com>
+ (Exim 4.90_1) (envelope-from <s5.kumari@samsung.com>)
+ id 1tkGRu-00012H-48
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 00:47:20 -0500
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20250218054703epoutp04f0d1bcecb1eb884342c78717fa01d357~lN0pht9cx2314023140epoutp04J
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 05:47:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20250218054703epoutp04f0d1bcecb1eb884342c78717fa01d357~lN0pht9cx2314023140epoutp04J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1739857623;
+ bh=OhDGtxEtqMboNDEnDtHKf6de49csfyXC2Q6EUnrKIdg=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=qp91sVxCBIOzE1GMuq7iohy88wO3S3K7MdrBh4PT6X2uNK529BonO+jd1cchLLf2r
+ uy9K0kQNVgSAvEqpWv/SAaGxPa4F5y6uxXrGvNCEJi8V6pAcTicG4+NTI0Nfg4C1xD
+ AVm0QYUBEY67MCqjz2gIIsXflxvp8l79n+qhnM3g=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+ 20250218054703epcas5p23c025dcd905809e506186e35d27cac7b~lN0pDX2Te0575405754epcas5p2V;
+ Tue, 18 Feb 2025 05:47:03 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.178]) by
+ epsnrtp1.localdomain (Postfix) with ESMTP id 4YxpSP0g3sz4x9Q2; Tue, 18 Feb
+ 2025 05:47:01 +0000 (GMT)
+Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
+ epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ AD.CA.29212.3DE14B76; Tue, 18 Feb 2025 14:46:59 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250218052813epcas5p2834e4e039b4aa130af45b90459e14881~lNkMjPYkx2994529945epcas5p2z;
+ Tue, 18 Feb 2025 05:28:13 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20250218052813epsmtrp249ebac93ad71bd3df1af19d98154c739~lNkMhwlzj2736827368epsmtrp2n;
+ Tue, 18 Feb 2025 05:28:12 +0000 (GMT)
+X-AuditID: b6c32a50-801fa7000000721c-76-67b41ed3a3ac
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+ epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 89.69.18729.C6A14B76; Tue, 18 Feb 2025 14:28:12 +0900 (KST)
+Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
+ by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250218052811epsmtip2303007b70f71098f2fa69b3f69035f40~lNkK_-q-w1360313603epsmtip2e;
+ Tue, 18 Feb 2025 05:28:11 +0000 (GMT)
+From: Sweta Kumari <s5.kumari@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
+ dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
+ a.manzanares@samsung.com, alok.rathore@samsung.com, Sweta Kumari
+ <s5.kumari@samsung.com>
+Subject: [PATCH v3] hw/cxl/cxl-mailbox-utils: CXL CCI Get/Set alert config
+ commands implmented as per CXL Specification 3.2 section 8.2.10.9.3
+Date: Tue, 18 Feb 2025 10:58:00 +0530
+Message-Id: <20250218052800.134176-1-s5.kumari@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="DL/1+4ovpPWirJRJ"
-Content-Disposition: inline
-In-Reply-To: <807a4908-d087-4c69-ba56-07c60545405e@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEJsWRmVeSWpSXmKPExsWy7bCmpu5luS3pBovXm1hMP6xo8eX0HjaL
+ 1TfXMFrcPLCTyWLhxmVMFudnnWKx+LttL6PF8d4dLBZrzn1mAYrNYXfg8tg56y67x5Nrm5k8
+ +rasYvSYOrve4/MmuQDWqGybjNTElNQihdS85PyUzLx0WyXv4HjneFMzA0NdQ0sLcyWFvMTc
+ VFslF58AXbfMHKCblBTKEnNKgUIBicXFSvp2NkX5pSWpChn5xSW2SqkFKTkFJgV6xYm5xaV5
+ 6Xp5qSVWhgYGRqZAhQnZGT8bXrMVrHer+LXnDlsD422TLkZODgkBE4mrX/ezdTFycQgJ7GGU
+ +DGhhRXC+cQocXfdY1aQKiGBb4wSO05XwXTsf9zGCFG0l1HiSf8lFgingUni66xbYB1sAloS
+ Pz4/YAaxRQQkJX53nWYGKWIWeMUosXFDK9hCYYEJjBLH3n9iA6liEVCV+NS2HqyDV8Ba4ljT
+ CjaIffIS+w+ehYoLSpyc+YQFxGYGijdvnQ02VULgEbtE/6+dUA0uEq/2HGOBsIUlXh3fwg5h
+ S0l8frcXqiZb4u7WTii7ROLD7d1MELa9ROupfqChHEALNCXW79KHCMtKTD21jgliL59E7+8n
+ UOW8EjvmwdjKElv+LWeFsCUlVnxeAmV7SHx/u4MFZKSQQKxEy3GdCYzys5B8MwvJN7MQFi9g
+ ZF7FKJVaUJybnppsWmCom5daDo/a5PzcTYzgxKkVsINx9Ya/eocYmTgYDzFKcDArifAe6tqQ
+ LsSbklhZlVqUH19UmpNafIjRFBjGE5mlRJPzgak7ryTe0MTSwMTMzMzE0tjMUEmct3lnS7qQ
+ QHpiSWp2ampBahFMHxMHp1QDk/6xnNjk5o12CZmrPY6dkpmbnGwyoyfTiO/0oqaPohfC/vg7
+ n3DQ/z7DXFaGpf3nLc+srJsJvDlKe2tCn7n/eJvTeMHhUdIk/f2vz07gutLHJ9krcMT7bKN0
+ wZ5eq8xXmZ+eTj3OOuvbvNyas3wW00MDRQ4oPRacxNpn9HaTomPvlDz1o2Vxpf8+cW9T883g
+ d1xzy/eT1v3utyLSk0tOhkTE79j90mrxXIXzNy85HNo3zSzZ6sHHwOQgHRax5uC7nAJ39gVs
+ nn50UuuHNaXbuV76i7/4K6uUta/t69r5NlqGVzfYbFm4qW+GjbKauphuTVGLrcPlXZo8HZNM
+ 0x0j308ROyr55P6sSZLzbpk7KbEUZyQaajEXFScCAHd1nNwlBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLLMWRmVeSWpSXmKPExsWy7bCSvG6O1JZ0gyNXDSymH1a0+HJ6D5vF
+ 6ptrGC1uHtjJZLFw4zImi/OzTrFY/N22l9HieO8OFos15z6zAMXmsDtweeycdZfd48m1zUwe
+ fVtWMXpMnV3v8XmTXABrFJdNSmpOZllqkb5dAlfGz4bXbAXr3Sp+7bnD1sB426SLkZNDQsBE
+ Yv/jNsYuRi4OIYHdjBKrVr9gh0hISrw9c4kRwhaWWPnvOVhcSOAfo8TaTl0Qm01AS+LH5wfM
+ ILYIUP3vrtPMIIOYBb4wSkxp+MoE4ggL9DFKXFnfAzaJRUBV4lPberAOXgFriWNNK9ggNshL
+ 7D94FiouKHFy5hMWEJsZKN68dTbzBEa+WUhSs5CkFjAyrWKUTC0ozk3PLTYsMMxLLdcrTswt
+ Ls1L10vOz93ECA5hLc0djNtXfdA7xMjEwXiIUYKDWUmE91DXhnQh3pTEyqrUovz4otKc1OJD
+ jNIcLErivOIvelOEBNITS1KzU1MLUotgskwcnFINTOn3OZQ/CuVr9jFece3833z40frf+ySr
+ Hs51WVV8YsmKmf9ufvSrbM28FThTrVra1Fbk6O/n7t0XKz6uYd4qzCNc8j++JTm88mXX57Wi
+ qWw64pprPM4ZVh/nfutX4pkhd2v78m8KX240brMW22njs1t7x90n4irPmJqu8vb6fry0LXpX
+ a/DdSUuTMli83e70PS7ZsSVX99dc6X6hyPYAx4ZJIW9nSq+tqZ17OfpZ33yPDTahj3ifq0+c
+ e+hV2V7tdXOz1s6NE4v7cOwFl1dyRnUe3/e0WHX1Z5M27HGXWl/2uYv5nVDmj4UJ6Yrb/M2T
+ NOws9lhe+fjHMHHaj+v9K5a7/9/y73LNzaKXz48osSixFGckGmoxFxUnAgBU0p/s0AIAAA==
+X-CMS-MailID: 20250218052813epcas5p2834e4e039b4aa130af45b90459e14881
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250218052813epcas5p2834e4e039b4aa130af45b90459e14881
+References: <CGME20250218052813epcas5p2834e4e039b4aa130af45b90459e14881@epcas5p2.samsung.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=s5.kumari@samsung.com; helo=mailout4.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,150 +135,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+1)get alert configuration(Opcode 4201h)
+2)set alert configuration(Opcode 4202h)
 
---DL/1+4ovpPWirJRJ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch is generated against the Johnathan's tree
+https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
 
-On Wed, Feb 12, 2025 at 03:27:26PM +0100, Hanna Czenczek wrote:
-> On 12.02.25 14:26, Kevin Wolf wrote:
-> > Am 12.02.2025 um 10:32 hat Hanna Czenczek geschrieben:
-> > > RBD schedules the request completion code (qemu_rbd_finish_bh()) to r=
-un
-> > > in the BDS's AioContext.  The intent seems to be to run it in the same
-> > > context that the original request coroutine ran in, i.e. the thread on
-> > > whose stack the RBDTask object exists (see qemu_rbd_start_co()).
-> > >=20
-> > > However, with multiqueue, that thread is not necessarily the same as =
-the
-> > > BDS's AioContext.  Instead, we need to remember the actual AioContext
-> > > and schedule the completion BH there.
-> > >=20
-> > > Buglink:https://issues.redhat.com/browse/RHEL-67115
-> > Please add a short summary of what actually happens to the commit
-> > message. I had to check the link to remember what the symptoms are.
->=20
-> Sure.=C2=A0 The problem is, I don=E2=80=99t know exactly what=E2=80=99s g=
-oing wrong (looked like
-> a coroutine being rescheduled after it was already done), and I don=E2=80=
-=99t know
-> how this fixes it.
->=20
-> > > Reported-by: Junyao Zhao<junzhao@redhat.com>
-> > > Signed-off-by: Hanna Czenczek<hreitz@redhat.com>
-> > > ---
-> > > I think I could also drop RBDTask.ctx and just use
-> > > `qemu_coroutine_get_aio_context(RBDTask.co)` instead, but this is the
-> > > version of the patch that was tested and confirmed to fix the issue (I
-> > > don't have a local reproducer), so I thought I'll post this first.
-> > Did  you figure out why it even makes a difference in which thread
-> > qemu_rbd_finish_bh() runs? For context:
-> >=20
-> >      static void qemu_rbd_finish_bh(void *opaque)
-> >      {
-> >          RBDTask *task =3D opaque;
-> >          task->complete =3D true;
-> >          aio_co_wake(task->co);
-> >      }
-> >=20
-> > This looks as if it should be working in any thread, except maybe for a
-> > missing barrier after updating task->complete - but I think the failure
-> > mode for that would be a hang in qemu_rbd_start_co().
->=20
-> Yes, I thought the same thing.=C2=A0 All I could imagine was that maybe r=
-eading
-> task->co returns the wrong result, but given how long ago that must have
-> been set, it seems quite unlikely (to say the least).=C2=A0 In addition,
-> qemu_rbd_completion_cb() already reads the object from a different thread,
-> and that seems to work fine.
->=20
-> Really, all I know is that the notion of a BDS=E2=80=99s AioContext no lo=
-nger makes
-> sense in a multiqueue I/O path, so this should be scheduled in the I/O=E2=
-=80=99s
-> AioContext (just conceptually speaking), and that this seems to fix the b=
-ug.
+Signed-off-by: Sweta Kumari <s5.kumari@samsung.com>
+---
+Changes in V2:
+- Removed cover letter as it's a single patch
+- Added latest spec reference
+- Fixed alignment issues
+- Updated shorter variable names to be more descriptive
+- Replaced field-by-field initialization in 'init_alert_config' with structured initialization for improved readability.
+- Replaced bit fields with 'uint8_t' and added defines for individual bits.
 
-Scheduling the BH directly in the task's AioContext should help
-performance, so I think this patch makes sense irrespective of the bug.
-Performance results would be needed to justify that though.
+Changes in v3:
+- Addressed the review comments from Jonathan Cameron.
+- Shortened macro and field names for improved readability.
 
-With regards to the bug, I'm also not sure where the issue lies. The
-root cause needs to be understood so that we can be sure that this patch
-is really a fix and not just papering over a bug that is still reachable
-in other ways.
+ hw/cxl/cxl-mailbox-utils.c  | 105 ++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  16 ++++++
+ include/hw/cxl/cxl_device.h |  15 ++++++
+ 3 files changed, 136 insertions(+)
 
->=20
-> > >   block/rbd.c | 10 ++++++----
-> > >   1 file changed, 6 insertions(+), 4 deletions(-)
-> > >=20
-> > > diff --git a/block/rbd.c b/block/rbd.c
-> > > index af984fb7db..9d4e0817e0 100644
-> > > --- a/block/rbd.c
-> > > +++ b/block/rbd.c
-> > > @@ -102,7 +102,7 @@ typedef struct BDRVRBDState {
-> > >   } BDRVRBDState;
-> > >   typedef struct RBDTask {
-> > > -    BlockDriverState *bs;
-> > > +    AioContext *ctx;
-> > >       Coroutine *co;
-> > >       bool complete;
-> > >       int64_t ret;
-> > > @@ -1269,8 +1269,7 @@ static void qemu_rbd_completion_cb(rbd_completi=
-on_t c, RBDTask *task)
-> > >   {
-> > >       task->ret =3D rbd_aio_get_return_value(c);
-> > >       rbd_aio_release(c);
-> > > -    aio_bh_schedule_oneshot(bdrv_get_aio_context(task->bs),
-> > > -                            qemu_rbd_finish_bh, task);
-> > > +    aio_bh_schedule_oneshot(task->ctx, qemu_rbd_finish_bh, task);
-> > >   }
-> > >   static int coroutine_fn qemu_rbd_start_co(BlockDriverState *bs,
-> > > @@ -1281,7 +1280,10 @@ static int coroutine_fn qemu_rbd_start_co(Bloc=
-kDriverState *bs,
-> > >                                             RBDAIOCmd cmd)
-> > >   {
-> > >       BDRVRBDState *s =3D bs->opaque;
-> > > -    RBDTask task =3D { .bs =3D bs, .co =3D qemu_coroutine_self() };
-> > > +    RBDTask task =3D {
-> > > +        .ctx =3D qemu_get_current_aio_context(),
-> > > +        .co =3D qemu_coroutine_self(),
-> > > +    };
-> > >       rbd_completion_t c;
-> > >       int r;
-> > Nothing wrong I can see about the change, but I don't understand why it
-> > fixes the problem.
->=20
-> Me neither.=C2=A0 But if this patch had been part of one of the original
-> multiqueue series (without pointing out the linked bug), would there have
-> been any argument against it?
->=20
-> Indeed it is a problem that I don=E2=80=99t understand what=E2=80=99s hap=
-pening. But even
-> more honestly, I=E2=80=99ll have to admit I can=E2=80=99t ever claim to u=
-nderstand what=E2=80=99s
-> happening in a multi-threaded asynchronous C environment; even more so wh=
-en
-> the reproducer is installing Windows on RBD.
->=20
-> Hanna
-
---DL/1+4ovpPWirJRJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAme0GhIACgkQnKSrs4Gr
-c8h9OAf/T8aCZtPFKvTYVUwu/WOzn7FOjRM/FQBoc3yoBp9EGgrR57LG4PDWvaoU
-iktWeG8lowYsrp3wWE3yvwKhNpUAJCBzMKHgykG6ZiAGBstRhKH8j7gaTv9Gzya+
-xwTy3YY2ddWjFDwuNHlYBG9RsASqBUeM/zyeTE3vVWDLzioUYMAnWw+BAHlxFNXb
-0j3EMBBMV/qe3ZqIVQ50w0V7Z8QIkNELLDh8yPYX/KwuL01PE3SA8wk5Oivkn8SG
-PPUFmlO9MPINU2noLWPSXftuX0cCBow11dfyVrMhFP9rQVZ59kcmyPsMLMaMhDDr
-+9QpqCMnG22X05wX2J04dwoUDcde3g==
-=iRVr
------END PGP SIGNATURE-----
-
---DL/1+4ovpPWirJRJ--
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 9c7ea5bc35..5187f1605e 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -28,6 +28,11 @@
+ #define CXL_DC_EVENT_LOG_SIZE 8
+ #define CXL_NUM_EXTENTS_SUPPORTED 512
+ #define CXL_NUM_TAGS_SUPPORTED 0
++#define CXL_ALERTS_LIFE_USED_WARN_THRESH (1 << 0)
++#define CXL_ALERTS_OVER_TEMP_WARN_THRESH (1 << 1)
++#define CXL_ALERTS_UNDER_TEMP_WARN_THRESH (1 << 2)
++#define CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH (1 << 3)
++#define CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH (1 << 4)
+ 
+ /*
+  * How to add a new command, example. The command set FOO, with cmd BAR.
+@@ -86,6 +91,9 @@ enum {
+         #define GET_PARTITION_INFO     0x0
+         #define GET_LSA       0x2
+         #define SET_LSA       0x3
++    HEALTH_INFO_ALERTS = 0x42,
++        #define GET_ALERT_CONFIG 0x1
++        #define SET_ALERT_CONFIG 0x2
+     SANITIZE    = 0x44,
+         #define OVERWRITE     0x0
+         #define SECURE_ERASE  0x1
+@@ -1625,6 +1633,97 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
+     return CXL_MBOX_SUCCESS;
+ }
+ 
++/* CXL r3.2 Section 8.2.10.9.3.2 Get Alert Configuration (Opcode 4201h) */
++static CXLRetCode cmd_get_alert_config(const struct cxl_cmd *cmd,
++                                       uint8_t *payload_in,
++                                       size_t len_in,
++                                       uint8_t *payload_out,
++                                       size_t *len_out,
++                                       CXLCCI *cci)
++{
++    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    CXLAlertConfig *out = (CXLAlertConfig *)payload_out;
++
++    memcpy(out, &ct3d->alert_config, sizeof(ct3d->alert_config));
++    *len_out = sizeof(ct3d->alert_config);
++
++    return CXL_MBOX_SUCCESS;
++}
++
++/* CXL r3.2 Section 8.2.10.9.3.3 Set Alert Configuration (Opcode 4202h) */
++static CXLRetCode cmd_set_alert_config(const struct cxl_cmd *cmd,
++                                       uint8_t *payload_in,
++                                       size_t len_in,
++                                       uint8_t *payload_out,
++                                       size_t *len_out,
++                                       CXLCCI *cci)
++{
++    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    CXLAlertConfig *alert_config = &ct3d->alert_config;
++    struct {
++        uint8_t valid_alert_actions;
++        uint8_t enable_alert_actions;
++        uint8_t life_used_warn_thresh;
++        uint8_t rsvd;
++        uint16_t over_temp_warn_thresh;
++        uint16_t under_temp_warn_thresh;
++        uint16_t cor_vmem_err_warn_thresh;
++        uint16_t cor_pmem_err_warn_thresh;
++    } QEMU_PACKED *in = (void *)payload_in;
++
++    if (in->valid_alert_actions & CXL_ALERTS_LIFE_USED_WARN_THRESH) {
++        /*
++         * CXL 3.2 Table 8-149 The life used warning threshold shall be
++         * less than the life used critical alert value.
++         */
++        if (in->life_used_warn_thresh >=
++            alert_config->life_used_crit_alert_thresh) {
++            return CXL_MBOX_INVALID_INPUT;
++        }
++        alert_config->life_used_warn_thresh = in->life_used_warn_thresh;
++        alert_config->enable_alerts |= CXL_ALERTS_LIFE_USED_WARN_THRESH;
++    }
++
++    if (in->valid_alert_actions & CXL_ALERTS_OVER_TEMP_WARN_THRESH) {
++        /*
++         * CXL 3.2 Table 8-149 The Device Over-Temperature Warning Threshold
++         * shall be less than the the Device Over-Temperature Critical
++         * Alert Threshold.
++         */
++        if (in->over_temp_warn_thresh >=
++            alert_config->over_temp_crit_alert_thresh) {
++            return CXL_MBOX_INVALID_INPUT;
++        }
++        alert_config->over_temp_warn_thresh = in->over_temp_warn_thresh;
++        alert_config->enable_alerts |= CXL_ALERTS_OVER_TEMP_WARN_THRESH;
++    }
++
++    if (in->valid_alert_actions & CXL_ALERTS_UNDER_TEMP_WARN_THRESH) {
++        /*
++         * CXL 3.2 Table 8-149 The Device Under-Temperature Warning Threshold
++         * shall be higher than the the Device Under-Temperature Critical
++         * Alert Threshold.
++         */
++        if (in->under_temp_warn_thresh <=
++            alert_config->under_temp_crit_alert_thresh) {
++            return CXL_MBOX_INVALID_INPUT;
++        }
++        alert_config->under_temp_warn_thresh = in->under_temp_warn_thresh;
++        alert_config->enable_alerts |= CXL_ALERTS_UNDER_TEMP_WARN_THRESH;
++    }
++
++    if (in->valid_alert_actions & CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH) {
++        alert_config->cor_vmem_err_warn_thresh = in->cor_vmem_err_warn_thresh;
++        alert_config->enable_alerts |= CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH;
++    }
++
++    if (in->valid_alert_actions & CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH) {
++        alert_config->cor_pmem_err_warn_thresh = in->cor_pmem_err_warn_thresh;
++        alert_config->enable_alerts |= CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH;
++    }
++    return CXL_MBOX_SUCCESS;
++}
++
+ /* Perform the actual device zeroing */
+ static void __do_sanitization(CXLType3Dev *ct3d)
+ {
+@@ -2859,6 +2958,12 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+     [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
+     [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
+         ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
++    [HEALTH_INFO_ALERTS][GET_ALERT_CONFIG] = {
++        "HEALTH_INFO_ALERTS_GET_ALERT_CONFIG",
++        cmd_get_alert_config, 0, 0 },
++    [HEALTH_INFO_ALERTS][SET_ALERT_CONFIG] = {
++        "HEALTH_INFO_ALERTS_SET_ALERT_CONFIG",
++        cmd_set_alert_config, 12, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
+     [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
+         (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
+          CXL_MBOX_SECURITY_STATE_CHANGE |
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 5f365afb4d..ecbaa60210 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -956,6 +956,21 @@ static DOEProtocol doe_comp_prot[] = {
+     { }
+ };
+ 
++/*
++ * Initialize CXL device alerts with default threshold values.
++ */
++static void init_alert_config(CXLType3Dev *ct3d)
++{
++    ct3d->alert_config = (CXLAlertConfig) {
++        .life_used_crit_alert_thresh = 75,
++        .life_used_warn_thresh = 40,
++        .over_temp_crit_alert_thresh = 35,
++        .under_temp_crit_alert_thresh = 10,
++        .over_temp_warn_thresh = 25,
++        .under_temp_warn_thresh = 20
++    };
++}
++
+ void ct3_realize(PCIDevice *pci_dev, Error **errp)
+ {
+     ERRP_GUARD();
+@@ -1030,6 +1045,7 @@ void ct3_realize(PCIDevice *pci_dev, Error **errp)
+         goto err_free_special_ops;
+     }
+ 
++    init_alert_config(ct3d);
+     pcie_cap_deverr_init(pci_dev);
+     /* Leave a bit of room for expansion */
+     rc = pcie_aer_init(pci_dev, PCI_ERR_VER, 0x200, PCI_ERR_SIZEOF, NULL);
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index a64739be25..7f96bd8637 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -581,6 +581,19 @@ typedef struct CXLSetFeatureInfo {
+     size_t data_size;
+ } CXLSetFeatureInfo;
+ 
++typedef struct CXLAlertConfig {
++    uint8_t valid_alerts;
++    uint8_t enable_alerts;
++    uint8_t life_used_crit_alert_thresh;
++    uint8_t life_used_warn_thresh;
++    uint16_t over_temp_crit_alert_thresh;
++    uint16_t under_temp_crit_alert_thresh;
++    uint16_t over_temp_warn_thresh;
++    uint16_t under_temp_warn_thresh;
++    uint16_t cor_vmem_err_warn_thresh;
++    uint16_t cor_pmem_err_warn_thresh;
++} QEMU_PACKED CXLAlertConfig;
++
+ struct CXLType3Dev {
+     /* Private */
+     PCIDevice parent_obj;
+@@ -605,6 +618,8 @@ struct CXLType3Dev {
+     CXLCCI vdm_fm_owned_ld_mctp_cci;
+     CXLCCI ld0_cci;
+ 
++    CXLAlertConfig alert_config;
++
+     /* PCIe link characteristics */
+     PCIExpLinkSpeed speed;
+     PCIExpLinkWidth width;
+-- 
+2.34.1
 
 
