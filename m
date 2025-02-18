@@ -2,67 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0923AA3937B
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 07:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841A5A39371
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 07:36:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkHD2-0005AP-Vm; Tue, 18 Feb 2025 01:35:57 -0500
+	id 1tkHCU-0004xD-JR; Tue, 18 Feb 2025 01:35:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tkHCu-00058C-Ez
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 01:35:49 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tkHCl-0005Wp-A9
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 01:35:45 -0500
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8Bx12kwKrRnEIZ5AA--.13296S3;
- Tue, 18 Feb 2025 14:35:28 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBxb8ctKrRn_MgZAA--.32810S3;
- Tue, 18 Feb 2025 14:35:28 +0800 (CST)
-Subject: Re: [PATCH 1/1] target/loongarch: fix 'make check-functional failed'
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org
-Cc: richard.henderson@linaro.org, yangxiaojuan@loongson.cn
-References: <20250217005439.249587-1-gaosong@loongson.cn>
-From: bibo mao <maobibo@loongson.cn>
-Message-ID: <2a05b1a2-ac29-ac39-d96f-3ed9fa046f29@loongson.cn>
-Date: Tue, 18 Feb 2025 14:34:52 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkHCF-0004uE-CQ
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 01:35:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkHCC-0005IM-CE
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 01:35:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739860501;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=x5AhtQ12gH8aBCtU16EhV/9L7NlWQ+Hp7XX+wS4vcjM=;
+ b=K10RU+ymUG2y9cULph4JuUJna3rE/wtm95Bcr7HNs9DGu7AHNq9bSMhPxb4emoM1Slob3h
+ IZgaZQm8ufsGJKQnaeyq2uXqcC15J+fWExeFzC2cEiKzOtOh93scu4gbHQOgNeTV+ACRtn
+ wYiWYDLIoVPuAngdugQrf9mXJX6K/n4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-510-poiVdFiwMFeDDqSGkj-wxQ-1; Tue, 18 Feb 2025 01:34:58 -0500
+X-MC-Unique: poiVdFiwMFeDDqSGkj-wxQ-1
+X-Mimecast-MFC-AGG-ID: poiVdFiwMFeDDqSGkj-wxQ_1739860497
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43947a0919aso40718355e9.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 22:34:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739860497; x=1740465297;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x5AhtQ12gH8aBCtU16EhV/9L7NlWQ+Hp7XX+wS4vcjM=;
+ b=U//Cu+Lv9w9DOw2EzQ6sdBazQvtxTUT4dl4LXmJzWhicqKQxzoFRuZIqgGE6vfZ2uM
+ ipPTryonRDtgTcGkJcA1A/uWIkHdwPkDwc8+lZitkIeAIDMxYxslknCnPTgXuJbydiOH
+ S8CHoC4lqUeLLim2mqClPzmrq3/RL/MifffykrfwLOsruKsGgAznytJtiN5Rpdt2HZV7
+ HFCSChNCoAryXBq4A7GWzNiCy/E7xcnhWddJ9R/6fb1dRPh9dTCefd3ZtBei+Q1SqYHC
+ 1ql5Bxx/SerZAl6gstyM2lelog0fl5fHS5ioSmUNZcWpzgvtRvT88MiP2RD4eGIb2knV
+ 9Yuw==
+X-Gm-Message-State: AOJu0YzEeLJQ1Yo5diYjt/4cD1VPOlTuyYn1H5RU/nv4pGGCW8WbvtJf
+ jQcN3S8NQ2L58TAXDU/2+gv1CVPCNeIL8/SodBFXm6gXwzo3NBc/RW5zP8dEMJdYZ095SItOkd8
+ zhxJRMnrk9P7kbKXLOJCu+fiMxckqk2einj2ZEXv3TgG1WIyw1RAr
+X-Gm-Gg: ASbGncuGLUWrTUdBN6xbWmY8NH22wrLZioewIXhoZ/eIj9Qtdy9pDiQ00UBErGbgIlH
+ e4FN0MTTOs3Wh4aUJwAEaAcn52/vu8PJ9FRUh+3heWxJvhdPZrs5eDCy2L6oGJZ3Mme/kXokbQ/
+ UEKSkUY6X/rUqmACyN8JedngkGu5V1upDWSFAns+sG+VMwbZ4mp6P/KaTh1KphU5v6ZFBLzigYk
+ hCpluMOwjag7reNa7SJPdsc/Vh2TMiP46bSmNxSnMKq8NYHKfAIOKlq7fJBG+utV0823e7OQGlY
+ gG4kaoGDEysKSjudhUtiMRAQxWHY9yEyfGDt
+X-Received: by 2002:a05:600c:1910:b0:439:96aa:e502 with SMTP id
+ 5b1f17b1804b1-43996aae68amr3182655e9.12.1739860497283; 
+ Mon, 17 Feb 2025 22:34:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxINo9OVYzVxnB39Sku8KHCuIQ8/pkmEA+NAPaRNTubF7xuEfqIJKpy2lSK+Jc8hWn0e/IIw==
+X-Received: by 2002:a05:600c:1910:b0:439:96aa:e502 with SMTP id
+ 5b1f17b1804b1-43996aae68amr3182435e9.12.1739860496843; 
+ Mon, 17 Feb 2025 22:34:56 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-157.web.vodafone.de.
+ [109.42.51.157]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4395a1b824dsm171358935e9.34.2025.02.17.22.34.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Feb 2025 22:34:55 -0800 (PST)
+Message-ID: <6d1cad85-4824-4912-b209-60a8070c59af@redhat.com>
+Date: Tue, 18 Feb 2025 07:34:53 +0100
 MIME-Version: 1.0
-In-Reply-To: <20250217005439.249587-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 23/32] tests/functional: extend test_aarch64_virt with
+ vulkan test
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, "open list:Virt" <qemu-arm@nongnu.org>
+References: <20250110131754.2769814-1-alex.bennee@linaro.org>
+ <20250110131754.2769814-24-alex.bennee@linaro.org>
+ <CAFEAcA8Kf4eF-nxEsxhPZnV3pwU+9kXLq1zXDi61ODQEQXaAYw@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAFEAcA8Kf4eF-nxEsxhPZnV3pwU+9kXLq1zXDi61ODQEQXaAYw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxb8ctKrRn_MgZAA--.32810S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxtF47Wr1UKF43KF45Jr1rZrc_yoW7Zr1rpF
- W7CrWqkFW8KrZ7A3WSq3W5tr1DZw4UKw4xZan3K34FkanxXrZ7XrWvq3sIgF1kJ3y5WF1I
- vF1vyry8uFW5XacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.369,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,161 +152,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 2025/2/17 上午8:54, Song Gao wrote:
-> For LoongArch th min tlb_ps is 12(4KB), for TLB code,
-> the tlb_ps may be 0,this may case UndefinedBehavior
-> Add a check-tlb_ps fuction to check tlb_ps, when use
-> csrwr insn to write CRMD PG=1, check the tlb_ps, and when
-> use csrwr insn to write STLBPS, check the tlb_ps value.
+On 17/02/2025 17.30, Peter Maydell wrote:
+> On Fri, 10 Jan 2025 at 13:23, Alex Bennée <alex.bennee@linaro.org> wrote:
+>> Now that we have virtio-gpu Vulkan support, let's add a test for it.
+>> Currently this is using images build by buildroot:
+>>
+>>    https://lists.buildroot.org/pipermail/buildroot/2024-December/768196.html
+>>
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> Message-Id: <20250108121054.1126164-24-alex.bennee@linaro.org>
 > 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/helper.h                     |  2 +
->   target/loongarch/internals.h                  |  1 +
->   target/loongarch/tcg/csr_helper.c             | 52 +++++++++++++++++++
->   .../tcg/insn_trans/trans_privileged.c.inc     |  2 +
->   target/loongarch/tcg/tlb_helper.c             |  4 ++
->   5 files changed, 61 insertions(+)
+> Hi; this test currently fails for me with a clang sanitizer
+> build (ubuntu 24.04 host). It seems to run weston in the guest,
+> which fails with:
 > 
-> diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-> index 943517b5f2..4f1490a465 100644
-> --- a/target/loongarch/helper.h
-> +++ b/target/loongarch/helper.h
-> @@ -100,6 +100,8 @@ DEF_HELPER_1(rdtime_d, i64, env)
->   DEF_HELPER_1(csrrd_pgd, i64, env)
->   DEF_HELPER_1(csrrd_cpuid, i64, env)
->   DEF_HELPER_1(csrrd_tval, i64, env)
-> +DEF_HELPER_2(csrwr_crmd, i64, env,tl)
-> +DEF_HELPER_2(csrwr_stlbps, i64, env, tl)
->   DEF_HELPER_2(csrwr_estat, i64, env, tl)
->   DEF_HELPER_2(csrwr_asid, i64, env, tl)
->   DEF_HELPER_2(csrwr_tcfg, i64, env, tl)
-> diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-> index 7b254c5f49..bb1644f0a0 100644
-> --- a/target/loongarch/internals.h
-> +++ b/target/loongarch/internals.h
-> @@ -43,6 +43,7 @@ enum {
->       TLBRET_PE = 7,
->   };
->   
-> +void check_tlb_ps(CPULoongArchState *env);
->   extern const VMStateDescription vmstate_loongarch_cpu;
->   
->   void loongarch_cpu_set_irq(void *opaque, int irq, int level);
-> diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-> index 6c95be9910..32c9716f42 100644
-> --- a/target/loongarch/tcg/csr_helper.c
-> +++ b/target/loongarch/tcg/csr_helper.c
-> @@ -97,6 +97,58 @@ target_ulong helper_csrwr_ticlr(CPULoongArchState *env, target_ulong val)
->       return old_v;
->   }
->   
-> +void check_tlb_ps(CPULoongArchState *env)
-> +{
-> +    for (int i=0; i<LOONGARCH_TLB_MAX; i++)
-> +    {
-> +        LoongArchTLB*tlb =&env->tlb[i];
-> +        uint8_t tlb_ps;
-> +        if(i >= LOONGARCH_STLB) {
-> +            tlb_ps = FIELD_EX64(tlb->tlb_misc,TLB_MISC,PS);
-It is strange why tlb entries is check here? If I am understanding 
-right, TLB page size should comes from these two areas:
-    FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE); or
-    FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS,PS);
-
-If page size of CSR_PWCL is equal to CSR_STLBPS, it is put to STLB, else 
-it is put to MTLB. If so, it will be ok if these CSR registers are checked.
-    FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE)
-    FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS,PS)
-
-And when system is set with Page-mode by writing CRMD register, TLB 
-entry should be empty in theory.
-
-> +	    if (tlb_ps < 12) {
-> +                tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, 12);
-> +            }
-> +        } else {
-> +            tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS,PS);
-> +            if (tlb_ps < 12) {
-> +               env->CSR_STLBPS= FIELD_DP64(env->CSR_STLBPS, CSR_STLBPS, PS, 12);
-> +           }
-> +       }
-> +    }
-> +}
-> +
-> +target_ulong helper_csrwr_crmd(CPULoongArchState *env, target_ulong val)
-> +{
-> +    uint8_t pg;
-> +    int64_t old_v = env->CSR_CRMD;
-> +
-> +    pg = FIELD_EX64(val, CSR_CRMD, PG);
-Do you mean that it is the first time that Page-mode is set. If so, it 
-had better be:
-        old = FIELD_EX64(old_v, CSR_CRMD, PG);
-        if (pg && !old) {
-
-Regards
-Bibo Mao
-> +    if (pg) {
-> +        check_tlb_ps(env);
-> +    }
-> +    env->CSR_CRMD = val;
-> +    return old_v;
-> +}
-> +
-> +target_ulong helper_csrwr_stlbps(CPULoongArchState *env, target_ulong val)
-> +{
-> +    uint8_t tlb_ps;
-> +    int64_t old_v = env->CSR_STLBPS;
-> +
-> +    /*
-> +     * The real hardware only supports the min tlb_ps is 12
-> +     * tlb_ps=0 may cause undefined-behavior.
-> +     */
-> +    tlb_ps = FIELD_EX64(val, CSR_STLBPS, PS);
-> +    if (tlb_ps  < 12) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "Attempted set ps %d\n",tlb_ps);
-> +        val = FIELD_DP64(val, CSR_STLBPS, PS, 12);
-> +    }
-> +    env->CSR_STLBPS = val;
-> +    return old_v;
-> +}
-> +
->   target_ulong helper_csrwr_pwcl(CPULoongArchState *env, target_ulong val)
->   {
->       int shift;
-> diff --git a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-> index 3afa23af79..d6b1f8319f 100644
-> --- a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-> +++ b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-> @@ -74,6 +74,8 @@ static bool set_csr_trans_func(unsigned int csr_num, GenCSRRead readfn,
->   
->   void loongarch_csr_translate_init(void)
->   {
-> +    SET_CSR_FUNC(CRMD, NULL,gen_helper_csrwr_crmd);
-> +    SET_CSR_FUNC(STLBPS, NULL,gen_helper_csrwr_stlbps);
->       SET_CSR_FUNC(ESTAT, NULL, gen_helper_csrwr_estat);
->       SET_CSR_FUNC(ASID,  NULL, gen_helper_csrwr_asid);
->       SET_CSR_FUNC(PGD,   gen_helper_csrrd_pgd, NULL);
-> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-> index a323606e5a..fc9c7823e7 100644
-> --- a/target/loongarch/tcg/tlb_helper.c
-> +++ b/target/loongarch/tcg/tlb_helper.c
-> @@ -449,7 +449,11 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
->                                     target_ulong info, target_ulong addr)
->   {
->       uint16_t asid = info & 0x3ff;
-> +    uint8_t pg = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG);
->   
-> +    if (!pg) {
-> +        return;
-> +    }
->       for (int i = 0; i < LOONGARCH_TLB_MAX; i++) {
->           LoongArchTLB *tlb = &env->tlb[i];
->           uint8_t tlb_g = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, G);
+> 2025-02-17 16:11:10,218: [16:11:10.672] Command line: weston -B
+> headless --renderer gl --shell kiosk -- vkmark -b:duration=1.0
+> 2025-02-17 16:11:10,224: [16:11:10.675] OS: Linux, 6.11.10, #2 SMP Thu
+> Dec  5 16:27:12 GMT 2024, aarch64
+> 2025-02-17 16:11:10,225: [16:11:10.680] Flight recorder: enabled
+> 2025-02-17 16:11:10,226: [16:11:10.681] warning: XDG_RUNTIME_DIR
+> "/tmp" is not configured
+> 2025-02-17 16:11:10,226: correctly.  Unix access mode must be 0700
+> (current mode is 0777),
+> 2025-02-17 16:11:10,226: and must be owned by the user UID 0 (current
+> owner is UID 0).
+> 2025-02-17 16:11:10,227: Refer to your distribution on how to get it, or
+> 2025-02-17 16:11:10,227:
+> http://www.freedesktop.org/wiki/Specifications/basedir-spec
+> 2025-02-17 16:11:10,228: on how to implement it.
+> 2025-02-17 16:11:10,240: [16:11:10.695] Starting with no config file.
+> 2025-02-17 16:11:10,253: [16:11:10.707] Output repaint window is 7 ms maximum.
+> 2025-02-17 16:11:10,262: [16:11:10.716] Loading module
+> '/usr/lib/libweston-14/headless-backend.so'
+> 2025-02-17 16:11:10,313: [16:11:10.768] Loading module
+> '/usr/lib/libweston-14/gl-renderer.so'
+> 2025-02-17 16:11:21,858: libEGL warning: egl: failed to create dri2 screen
+> 2025-02-17 16:11:21,959: libEGL warning: egl: failed to create dri2 screen
+> 2025-02-17 16:11:22,023: libEGL warning: egl: failed to create dri2 screen
+> 2025-02-17 16:11:22,032: [16:11:22.486] failed to initialize display
+> 2025-02-17 16:11:22,033: [16:11:22.488] EGL error state:
+> EGL_NOT_INITIALIZED (0x3001)
+> 2025-02-17 16:11:22,036: [16:11:22.490] fatal: failed to create
+> compositor backend
 > 
+> Then eventually the test framework times it ou and sends it
+> a SIGTERM, and QEMU SEGVs inside libEGL trying to run an
+> exit handler:
+> 
+> qemu-system-aarch64: terminating on signal 15 from pid 242824
+> (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/pyvenv/bin/python3)
+> UndefinedBehaviorSanitizer:DEADLYSIGNAL
+> ==243045==ERROR: UndefinedBehaviorSanitizer: SEGV on unknown address
+> 0x73fbfefe6a31 (pc 0x73fbba9788e9 bp 0x73fbbbe0af80 sp 0x7ffd676fbfe0
+> T243045)
+> ==243045==The signal is caused by a READ memory access.
+>      #0 0x73fbba9788e9
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x15788e9)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #1 0x73fbbaafc178
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x16fc178)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #2 0x73fbba62564f
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x122564f)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #3 0x73fbbab067d7
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x17067d7)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #4 0x73fbba63b786
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x123b786)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #5 0x73fbba96290a
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x156290a)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #6 0x73fbba941c5c
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x1541c5c)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+>      #7 0x73fbc2041f20
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0x41f20) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #8 0x73fbc2041f68
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0x41f68) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #9 0x73fbc2034ca9
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0x34ca9) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #10 0x73fbc203ae90
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0x3ae90) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #11 0x73fbc203aeda
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0x3aeda) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #12 0x73fbc20a45f5
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0xa45f5) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #13 0x73fbc20a2bfc
+> (/lib/x86_64-linux-gnu/libEGL_nvidia.so.0+0xa2bfc) (BuildId:
+> 6cd9e3e571aa104d4fa5512a5c7196617fea6b51)
+>      #14 0x73fbd3047a75 in __run_exit_handlers stdlib/exit.c:108:8
+>      #15 0x73fbd3047bbd in exit stdlib/exit.c:138:3
+>      #16 0x5a5bab5e3fdb in qemu_default_main
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/../../system/main.c:52:5
+>      #17 0x5a5bab5e3f9e in main
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/../../system/main.c:76:9
+>      #18 0x73fbd302a1c9 in __libc_start_call_main
+> csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+>      #19 0x73fbd302a28a in __libc_start_main csu/../csu/libc-start.c:360:3
+>      #20 0x5a5ba9c5b554 in _start
+> (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang/qemu-system-aarch64+0x15dc554)
+> (BuildId: 8efda3601b42aa2644dde35d1d63f7b22b649a33)
+> 
+> UndefinedBehaviorSanitizer can not provide additional info.
+> SUMMARY: UndefinedBehaviorSanitizer: SEGV
+> (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x15788e9)
+> (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
+> ==243045==ABORTING
+
+FWIW, I just saw this test also failing in a normal clang build (without 
+sanitizers enabled). In the console log:
+
+2025-02-18 07:08:47,497: [06:08:47.588] Loading module 
+'/usr/lib/weston/kiosk-shell.so'
+2025-02-18 07:08:47,914: =======================================================
+2025-02-18 07:08:47,915: vkmark 2017.08
+2025-02-18 07:08:47,915: =======================================================
+2025-02-18 07:08:47,915: Vendor ID:      0x8086
+2025-02-18 07:08:47,915: Device ID:      0x9A60
+2025-02-18 07:08:47,916: Device Name:    Virtio-GPU Venus (Intel(R) UHD 
+Graphics (TGL GT1))
+2025-02-18 07:08:47,916: Driver Version: 100675584
+2025-02-18 07:08:47,916: Device UUID:    c5930b2b12677aad53343f8a072209af
+2025-02-18 07:08:47,916: =======================================================
+2025-02-18 07:08:52,277: [vertex] device-local=true:MESA-VIRTIO: debug: 
+stuck in fence wait with iter at 1024
+2025-02-18 07:09:03,142: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 2048
+2025-02-18 07:09:24,640: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 3072
+2025-02-18 07:09:46,192: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 4096
+2025-02-18 07:10:28,665: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 5120
+2025-02-18 07:11:11,067: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 6144
+2025-02-18 07:11:53,619: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 7168
+2025-02-18 07:12:36,397: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 8192
+2025-02-18 07:14:01,431: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 9216
+2025-02-18 07:15:26,387: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 10240
+2025-02-18 07:16:51,349: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 11264
+2025-02-18 07:18:16,409: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 12288
+2025-02-18 07:19:41,439: MESA-VIRTIO: debug: stuck in fence wait with iter 
+at 13312
+
+Should we maybe mark it as flaky for the time being?
+
+  Thomas
 
 
