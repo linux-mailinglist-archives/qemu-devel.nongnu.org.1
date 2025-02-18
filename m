@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05B4A3A551
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 19:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5286DA3A53D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 19:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkSF0-0007mJ-8s; Tue, 18 Feb 2025 13:22:42 -0500
+	id 1tkSEK-0006IB-Fx; Tue, 18 Feb 2025 13:22:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDG-0005yC-53
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:20:55 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDI-0005yy-Ad
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:21:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDA-0007Zp-Jl
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:20:51 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDG-0007aS-9a
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:20:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739902848;
+ s=mimecast20190719; t=1739902852;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jMQenbHLn/1pZniLXOVbC7HAYOgpvtVLQZY6e2XjTLM=;
- b=JOojkbg99d5EoLMDsEhLQ4eeww6/Sj9OXl/60ztJeiavKEkG9tLGR7nna2Eo/x1Kf9+Y2e
- F+Do7NZBwdIff0+XnCq/X4Ek2E4rzGkCVapqWX2eEiS0Fq5fGt4niUBhGN9erQcMBBE1Fg
- iLIMqGIP96VQHlXcXKvogKecwflboe4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=/OWHn8YVudrVjD30pFiw9gzLSOJXgZ2dezAHaj9jIKU=;
+ b=GOCotALaDZ0BwpSYlRzV/eqGWiYbzfn2cgaq8nHSerNu9+ExwITsMG8GQud6AiMoYZFJSg
+ FUgEp9GYo7g8Zjo/pfeGiaIA2fL65yqlqPzWp5UC1DF9xwJ8vJYIjacZmGUN55aisONG9/
+ vx1TTrgJL1GhxnjkzU4U1mnuEmDc7lU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-224-TnjzJrzRNm6PKoSkgdXdEA-1; Tue,
- 18 Feb 2025 13:20:45 -0500
-X-MC-Unique: TnjzJrzRNm6PKoSkgdXdEA-1
-X-Mimecast-MFC-AGG-ID: TnjzJrzRNm6PKoSkgdXdEA_1739902843
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-u6Si5Hh1PAOtsAnuOkKAlA-1; Tue,
+ 18 Feb 2025 13:20:48 -0500
+X-MC-Unique: u6Si5Hh1PAOtsAnuOkKAlA-1
+X-Mimecast-MFC-AGG-ID: u6Si5Hh1PAOtsAnuOkKAlA_1739902847
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D23C6190F9CB; Tue, 18 Feb 2025 18:20:43 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 040C71801A2F; Tue, 18 Feb 2025 18:20:47 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.45.226.66])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4CD0C1800358; Tue, 18 Feb 2025 18:20:41 +0000 (UTC)
+ id 544951800358; Tue, 18 Feb 2025 18:20:44 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
  manos.pitsidianakis@linaro.org, philmd@linaro.org, qemu-devel@nongnu.org,
  qemu-rust@nongnu.org
-Subject: [PATCH v2 05/11] rust/block: Add empty crate
-Date: Tue, 18 Feb 2025 19:20:13 +0100
-Message-ID: <20250218182019.111467-6-kwolf@redhat.com>
+Subject: [PATCH v2 06/11] rust/block: Add I/O buffer traits
+Date: Tue, 18 Feb 2025 19:20:14 +0100
+Message-ID: <20250218182019.111467-7-kwolf@redhat.com>
 In-Reply-To: <20250218182019.111467-1-kwolf@redhat.com>
 References: <20250218182019.111467-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,141 +81,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Types that implement IoBuffer can be used with safe I/O functions.
+
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- MAINTAINERS            |  1 +
- rust/Cargo.lock        |  8 ++++++++
- rust/Cargo.toml        |  1 +
- rust/block/Cargo.toml  | 16 ++++++++++++++++
- rust/block/README.md   |  3 +++
- rust/block/meson.build | 20 ++++++++++++++++++++
- rust/block/src/lib.rs  |  1 +
- rust/meson.build       |  1 +
- 8 files changed, 51 insertions(+)
- create mode 100644 rust/block/Cargo.toml
- create mode 100644 rust/block/README.md
- create mode 100644 rust/block/meson.build
- create mode 100644 rust/block/src/lib.rs
+ rust/block/src/iobuffer.rs | 94 ++++++++++++++++++++++++++++++++++++++
+ rust/block/src/lib.rs      |  2 +
+ 2 files changed, 96 insertions(+)
+ create mode 100644 rust/block/src/iobuffer.rs
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3848d37a38..97cc04ae32 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2874,6 +2874,7 @@ S: Supported
- F: block*
- F: block/
- F: hw/block/
-+F: rust/block/
- F: qapi/block*.json
- F: qapi/transaction.json
- F: include/block/
-diff --git a/rust/Cargo.lock b/rust/Cargo.lock
-index 2ebf0a11ea..a2525052dd 100644
---- a/rust/Cargo.lock
-+++ b/rust/Cargo.lock
-@@ -31,6 +31,14 @@ dependencies = [
-  "syn",
- ]
- 
-+[[package]]
-+name = "block"
-+version = "0.1.0"
-+dependencies = [
-+ "libc",
-+ "qemu_api",
-+]
-+
- [[package]]
- name = "either"
- version = "1.12.0"
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 5041d6291f..2135273dfb 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -3,6 +3,7 @@ resolver = "2"
- members = [
-     "qemu-api-macros",
-     "qemu-api",
-+    "block",
-     "hw/char/pl011",
-     "hw/timer/hpet",
- ]
-diff --git a/rust/block/Cargo.toml b/rust/block/Cargo.toml
+diff --git a/rust/block/src/iobuffer.rs b/rust/block/src/iobuffer.rs
 new file mode 100644
-index 0000000000..fbc2f2d6ef
+index 0000000000..d61370c961
 --- /dev/null
-+++ b/rust/block/Cargo.toml
-@@ -0,0 +1,16 @@
-+[package]
-+name = "block"
-+version = "0.1.0"
-+edition = "2021"
-+authors = ["Kevin Wolf <kwolf@redhat.com>"]
-+license = "GPL-2.0-or-later"
-+readme = "README.md"
-+description = "Block backends for QEMU"
-+repository = "https://gitlab.com/qemu-project/qemu/"
-+publish = false
-+keywords = []
-+categories = []
++++ b/rust/block/src/iobuffer.rs
+@@ -0,0 +1,94 @@
++// Copyright Red Hat Inc.
++// Author(s): Kevin Wolf <kwolf@redhat.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+[dependencies]
-+qemu_api = { path = "../qemu-api" }
-+libc = "0.2.162"
-diff --git a/rust/block/README.md b/rust/block/README.md
-new file mode 100644
-index 0000000000..debcc9d815
---- /dev/null
-+++ b/rust/block/README.md
-@@ -0,0 +1,3 @@
-+# QEMU block backends
++use std::mem::MaybeUninit;
 +
-+This library implements block drivers for QEMU.
-diff --git a/rust/block/meson.build b/rust/block/meson.build
-new file mode 100644
-index 0000000000..ca93afd939
---- /dev/null
-+++ b/rust/block/meson.build
-@@ -0,0 +1,20 @@
-+_block_rs = static_library(
-+  'block',
-+  files('src/lib.rs'),
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  dependencies: [
-+    qemu_api_tools,
-+    qemu_api_macros,
-+    libc_dep,
-+  ],
-+  rust_dependency_map: {'qemu_api_tools': 'qemu_api'},
-+)
++/// Types that implement IoBuffer can be used with safe I/O functions.
++///
++/// # Safety
++///
++/// `buffer_ptr()` and `buffer_mut_ptr()` must return pointers to the address of the same I/O
++/// buffer with the size returned by `buffer_len()` which remain valid for the lifetime of the
++/// object. It must be safe for the I/O buffer to contain any byte patterns.
++pub unsafe trait IoBuffer {
++    /// Returns a const pointer to be used as a raw I/O buffer
++    fn buffer_ptr(&self) -> *const u8;
 +
-+rust_block_ss.add(if_true: [declare_dependency(
-+  link_whole: [_block_rs],
-+  # Putting proc macro crates in `dependencies` is necessary for Meson to find
-+  # them when compiling the root per-target static rust lib.
-+  dependencies: [qemu_api_macros],
-+  variables: {'crate': 'block'},
-+)])
++    /// Returns a mutable pointer to be used as a raw I/O buffer
++    fn buffer_mut_ptr(&mut self) -> *mut u8;
++
++    /// Returns the length in bytes for the raw I/O buffer returned by [`buffer_ptr`] and
++    /// [`buffer_mut_ptr`]
++    ///
++    /// [`buffer_ptr`]: IoBuffer::buffer_ptr
++    /// [`buffer_mut_ptr`]: IoBuffer::buffer_mut_ptr
++    fn buffer_len(&self) -> usize;
++}
++
++/// Implementing `SizedIoBuffer` provides an implementation for [`IoBuffer`] without having to
++/// implement any functions manually.
++///
++/// # Safety
++///
++/// Types implementing `SizedIoBuffer` guarantee that the whole object can be accessed as an I/O
++/// buffer that is safe to contain any byte patterns.
++pub unsafe trait SizedIoBuffer: Sized {
++    /// Safely converts a byte slice into a shared reference to the type implementing
++    /// `SizedIoBuffer`
++    fn from_byte_slice(buf: &[u8]) -> Option<&Self> {
++        if buf.len() < std::mem::size_of::<Self>() {
++            return None;
++        }
++
++        let ptr = buf.as_ptr() as *const Self;
++
++        // TODO Use ptr.is_aligned() when MSRV is updated to at least 1.79.0
++        if (ptr as usize) % std::mem::align_of::<Self>() != 0 {
++            return None;
++        }
++
++        // SAFETY: This function checked that the byte slice is large enough and aligned.
++        // Implementing SizedIoBuffer promises that any byte pattern is valid for the type.
++        Some(unsafe { &*ptr })
++    }
++}
++
++unsafe impl<T: SizedIoBuffer> IoBuffer for T {
++    fn buffer_ptr(&self) -> *const u8 {
++        self as *const Self as *const u8
++    }
++
++    fn buffer_mut_ptr(&mut self) -> *mut u8 {
++        self as *mut Self as *mut u8
++    }
++
++    fn buffer_len(&self) -> usize {
++        std::mem::size_of::<Self>()
++    }
++}
++
++unsafe impl<T: SizedIoBuffer> IoBuffer for [T] {
++    fn buffer_ptr(&self) -> *const u8 {
++        self.as_ptr() as *const u8
++    }
++
++    fn buffer_mut_ptr(&mut self) -> *mut u8 {
++        self.as_mut_ptr() as *mut u8
++    }
++
++    fn buffer_len(&self) -> usize {
++        std::mem::size_of_val(self)
++    }
++}
++
++unsafe impl<T: SizedIoBuffer> SizedIoBuffer for MaybeUninit<T> {}
++
++unsafe impl SizedIoBuffer for u8 {}
++unsafe impl SizedIoBuffer for u16 {}
++unsafe impl SizedIoBuffer for u32 {}
++unsafe impl SizedIoBuffer for u64 {}
++unsafe impl SizedIoBuffer for i8 {}
++unsafe impl SizedIoBuffer for i16 {}
++unsafe impl SizedIoBuffer for i32 {}
++unsafe impl SizedIoBuffer for i64 {}
 diff --git a/rust/block/src/lib.rs b/rust/block/src/lib.rs
-new file mode 100644
-index 0000000000..8b13789179
---- /dev/null
+index 8b13789179..1c03549821 100644
+--- a/rust/block/src/lib.rs
 +++ b/rust/block/src/lib.rs
-@@ -0,0 +1 @@
-+
-diff --git a/rust/meson.build b/rust/meson.build
-index 50eb23b072..d959809fda 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -1,6 +1,7 @@
- subdir('qemu-api-macros')
- subdir('qemu-api')
+@@ -1 +1,3 @@
++mod iobuffer;
  
-+subdir('block')
- subdir('hw')
- 
- cargo = find_program('cargo', required: false)
++pub use iobuffer::{IoBuffer, SizedIoBuffer};
 -- 
 2.48.1
 
