@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB87A3A743
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 20:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F9A3A8B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 21:24:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkTA9-0000uZ-OZ; Tue, 18 Feb 2025 14:21:45 -0500
+	id 1tkU91-0002Dr-6J; Tue, 18 Feb 2025 15:24:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tkTA7-0000tM-6W
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 14:21:43 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tkTA5-0006Dh-Lt
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 14:21:42 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43996e95114so6854085e9.3
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 11:21:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739906499; x=1740511299; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
- :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
- :reply-to; bh=yeownKEZiIC47+N7MKi3dyYleDIO1KUAMDqBvvd4FqQ=;
- b=ILT1FR39WBsfprUZ2NcICF/LwP8wmmdi55VMLliWXYMY2dKIOIgwNqRjsmc7zvbyo7
- gT4y94+NVCj6B7nvbBmy+zeV+npmIxFqRyIEQ8EL5PlhS1jFcav1Bireu5hnxV+nmX+Q
- X/1/YlhcoTrgWe5CdbS1ZX62sN/ZCb/Bk6Q1v8TBJdlymH4/twl5ytK5Dlykma587nv5
- q2gCz+Z1nPfIoFL11fOvpqxe5AHVrVchvo4h+7PMhocoEXE6IXzYAU1zUmFgd6RPQqrp
- V7DaQjzSBmHD26+RH+ekrFYpDOmi064TOEO9sWNK490rPF8KU66F+jgBJ/Gj70sBsUEE
- drag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739906499; x=1740511299;
- h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
- :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=yeownKEZiIC47+N7MKi3dyYleDIO1KUAMDqBvvd4FqQ=;
- b=vvVQlQicXLbEqErJzAgVULHS2UQIjIEjuefOy0zZb4wr3rrNzYjMfOqXkgyJMung1/
- h+8656t+lqX8sVMAn4bDXURnwSLNNPUz22GJ8OE4BOWckmYM+lHhAZir0FX18xzfqDEQ
- eMAy8bO/lF+TwczB+ykI4QxQhun1P5tmzn/jmBBhesrK+FxsyfGFGcEugYghDkAk7sAS
- EVNHIQAbNqARH6Ei138F/hnYLAlSSbbUqoeN7HJ7yMVAmvCiRxEVTHl0Jiw841PGLlVZ
- 4Qz4DpRsRWQ7Vbd2ecWC3MNEPeRevHER8mk5eNOFnN9mTUTTLYUBV5tkFZ2Ik3ithEig
- jSVg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXhQXyzY74EXlMUicuPmIqtUJ1jkUAraCUne+ezE/sxK2OoaSkQr6h55FspQNgx6v9RgVTt8DDAvnEF@nongnu.org
-X-Gm-Message-State: AOJu0YyHcMSauxTpkWIYfmyK6ZkZt4OKd2z1Xl49G47fXyf8muQm66CR
- kOAvdEP7H5goUljNp4cOvCIx9qKEYxbirMJswxEO0isVaQx93sGf
-X-Gm-Gg: ASbGncsF5O5pXUMVF9sTTX+LNGZp7HvvOfTntalPICnP0zHVLYXcuWaeAKtoPjKspkB
- OrxyM8uFTKatC1KDrPasBxjnOFBTmDH4v7EQNyGLeF1WkxYIHMvTrvjaB2WDiE/xL1VbvOcGiJ4
- OY9QUSklwX/Lp/RE99GlkevgANarf3TYepXeOwHUm5kS0ZM7miw83vQS21tFjJwAm1DHQt4ClRn
- CBRdtRGba+T9nsCjPXkDxDH9YrQSbr8SIweU6g5UFwANK7g3PUtiE4yYwR1Y5sphSmfIVEjQnff
- iMYXceN5JKfirE3iCj0an6fwFyWjZoH24c1LEflTm+N4fZjs1L7ftFhuLnRb4z2/QtX1Zw==
-X-Google-Smtp-Source: AGHT+IHPqTa+zTfXkXh4LXzcP3343zLQclkxofCCboW6w8kCrp+5klrwxGvzJ1HyUAjEAhqNN/AXYg==
-X-Received: by 2002:a05:600c:19c9:b0:439:6a24:1067 with SMTP id
- 5b1f17b1804b1-4396e6fae48mr154981015e9.16.1739906499229; 
- Tue, 18 Feb 2025 11:21:39 -0800 (PST)
-Received: from ?IPv6:2001:b07:5d29:f42d:5912:494:2baa:19e8?
- ([2001:b07:5d29:f42d:5912:494:2baa:19e8])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43989087517sm57185545e9.8.2025.02.18.11.21.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 11:21:38 -0800 (PST)
-Message-ID: <08bf7f3061459af5f05fabf0d3796b77d8034587.camel@gmail.com>
-Subject: Re: [PATCH v7 05/52] i386/tdx: Get tdx_capabilities via
- KVM_TDX_CAPABILITIES
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: xiaoyao.li@intel.com
-Cc: armbru@redhat.com, berrange@redhat.com, chenhuacai@kernel.org, 
- eblake@redhat.com, francescolavra.fl@gmail.com, imammedo@redhat.com, 
- kvm@vger.kernel.org, mst@redhat.com, mtosatti@redhat.com,
- pbonzini@redhat.com,  peter.maydell@linaro.org, philmd@linaro.org,
- qemu-devel@nongnu.org,  rick.p.edgecombe@intel.com, zhao1.liu@intel.com
-Date: Tue, 18 Feb 2025 20:21:37 +0100
-In-Reply-To: <20250124132048.3229049-6-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tkU8w-0002Da-U1
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:24:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tkU8u-00043g-5C
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:24:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739910270;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=ZZ/t/8/FZmKqnWA3kAbRbMXw7cqMzx1tsylUiw4pJLs=;
+ b=NdxadgQN35UZ2EiaGtrLmwm8ClW4mbPrdg3St16+hBKM/ZLPEVrLOIAf7uk5YVKnWvrwlc
+ pCUdS8+ywJNCKYno8yMSybdPRaPOcwKEmTIyOf3fzfCOsgTjg+ABZwvUPKrCi4Y99Y3pi2
+ jiHxs0Uf81gkr14X+rwKj1tjECxkvvg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-OmL61PJqOn-p5YmNzuoUiA-1; Tue,
+ 18 Feb 2025 15:24:28 -0500
+X-MC-Unique: OmL61PJqOn-p5YmNzuoUiA-1
+X-Mimecast-MFC-AGG-ID: OmL61PJqOn-p5YmNzuoUiA_1739910267
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C9F111801A10; Tue, 18 Feb 2025 20:24:26 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 71BE4300019F; Tue, 18 Feb 2025 20:24:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2240821E6A28; Tue, 18 Feb 2025 21:24:23 +0100 (CET)
+Resent-To: qemu-devel@nongnu.org, yong.huang@smartx.com, farosas@suse.de
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Tue, 18 Feb 2025 21:24:23 +0100
+Resent-Message-ID: <878qq39f2g.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: yong.huang@smartx.com,  qemu-devel@nongnu.org,  Fabiano Rosas
+ <farosas@suse.de>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [RFC] migration: Introduce migration throttle event
+In-Reply-To: <Z7TOXfn6BQBhS5uG@x1.local> (Peter Xu's message of "Tue, 18 Feb
+ 2025 13:15:57 -0500")
+References: <4df13a8005170ad42cbbc883a0a8fdbb1ab94ac1.1739846274.git.yong.huang@smartx.com>
+ <Z7TOXfn6BQBhS5uG@x1.local>
+Date: Tue, 18 Feb 2025 20:21:59 +0100
+Message-ID: <87jz9n9hyg.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=francescolavra.fl@gmail.com; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+Lines: 21
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,25 +89,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Jan 2025 08:20:01 -0500, Xiaoyao Li wrote:
-> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index 4ff94860815d..bd212abab865 100644
-> --- a/target/i386/kvm/tdx.c
-> +++ b/target/i386/kvm/tdx.c
-> @@ -10,17 +10,122 @@
->   */
-> =20
->  #include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "qapi/error.h"
->  #include "qom/object_interfaces.h"
-> =20
->  #include "hw/i386/x86.h"
->  #include "kvm_i386.h"
->  #include "tdx.h"
-> =20
-> +static struct kvm_tdx_capabilities *tdx_caps;
+Peter Xu <peterx@redhat.com> writes:
 
-Instead of a static variable, this should be a member of the TdxGuest
-struct.
+> On Tue, Feb 18, 2025 at 10:39:55AM +0800, yong.huang@smartx.com wrote:
+>> From: Hyman Huang <yong.huang@smartx.com>
+>> 
+>> When the developer is examining the time distribution of
+>> the migration, it is useful to record the migration throttle
+>> timestamp. Consequently, include the migration throttle event.
+>
+> Would trace_cpu_throttle_set() work too?  That can provide a timestamp and
+> also the new percentage of throttle.
+>
+> I don't feel strongly that we must not introduce qmp events for debugging,
+> but allowing that to happen means we can get tons of events at last.. as
+> people can start requesting many more events, and we'll need one way to
+> justify them at last.
+>
+> One way to justify events can be that it could be consumed by mgmt.  On
+> that, this one I'm not yet sure.. so ideally tracepoints could work already.
+
+Good point.
+
 
