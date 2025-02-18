@@ -2,72 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6589EA393D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461B6A393B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:19:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkI9F-0005vV-7K; Tue, 18 Feb 2025 02:36:05 -0500
+	id 1tkHrm-0002Uy-Hk; Tue, 18 Feb 2025 02:18:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tkI9B-0005uZ-RC
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:36:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkHrf-0002Sg-2j
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:17:55 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tkI99-0004fa-M8
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:36:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739864156;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=8umlkfTIf0Wkn2ZiQljLCMhn6js0QWLR8+Nou1ET7jw=;
- b=S509KbHk5j2WZE1E8HMCuQbxQIjJva8HXv4/Wu2HI6CLTRoL94rL88rK8hGhFbdKukct23
- BY3WSPFqHtK8B1og0h7X3OGx1mfeCZ1yD8ejbBescMv5K6h1aW8CYymRaGNjUMdUIcR1pD
- aehYuh0XM8eZ92nx4DC66itDX9eb5M4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-6bWX6XIjOmqUVf0ieea9NA-1; Tue,
- 18 Feb 2025 02:35:51 -0500
-X-MC-Unique: 6bWX6XIjOmqUVf0ieea9NA-1
-X-Mimecast-MFC-AGG-ID: 6bWX6XIjOmqUVf0ieea9NA_1739864149
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 400D91800570; Tue, 18 Feb 2025 07:35:48 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.224.52])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CB3C11956048; Tue, 18 Feb 2025 07:35:37 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] aspeed: Remove duplicate typename in AspeedSoCClass
-Date: Tue, 18 Feb 2025 08:35:34 +0100
-Message-ID: <20250218073534.585066-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkHrX-0002g2-TR
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:17:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739863068; x=1771399068;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2pFVw/1jpooTFlIFglBnN9lZHev1m8x4A6ddS5fJGN0=;
+ b=lnjjABHfXAuSHe00oi41tX/Jl6mqu5657XNbVDMw1/ovfzBrL/50I3kD
+ Jki6RuddCua4tBBcOEfF3RadKdh1AR1wEwxMxRNg8EB8ws2p1OEwtcFYq
+ YkXffEzAOXmEBtNtqVbPAdBLusIFfz79miMoUIL6d3c7QHFdVZNR+9PoV
+ MBw901ILBrpOMS4J7dKKBgg5CPE+I0hIOKYTxldWhaWZ0dEPYSUdMW/VT
+ EB73Yibc5OqSrlniK6oLcBICZX4Z1RlAKYQRkiM/DOYnYgBSAHAQCw/JR
+ j1cSIMifq07rssE1pxJGe+SsuKAQdCLRITwMXPCFTxsHDPm12Q8yP3tsr A==;
+X-CSE-ConnectionGUID: vIs5ru6NQaCegU+J2uiItQ==
+X-CSE-MsgGUID: nfF6AiMfQNKE958a4Kdlcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39781788"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="39781788"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2025 23:17:38 -0800
+X-CSE-ConnectionGUID: cHL6iajgQACMB7kqpu4SlA==
+X-CSE-MsgGUID: I/6/NutbRQeaQo0CexVnaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="114511854"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 17 Feb 2025 23:17:36 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] hw/timer/hpet: Detect invalid access to TN registers
+Date: Tue, 18 Feb 2025 15:37:02 +0800
+Message-Id: <20250218073702.3299300-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,123 +77,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SoC type name is stored under AspeedSoCClass which is
-redundant. Use object_get_typename() instead where needed.
+"addr & 0x18" ignores invalid address, so that the trace in default
+branch (trace_hpet_ram_{read|write}_invalid()) doesn't work.
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Mask addr by "0x1f & ~4", in which 0x1f means to get the complete TN
+registers access and ~4 means to keep any invalid address offset.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/arm/aspeed_soc.h | 1 -
- hw/arm/aspeed_ast10x0.c     | 3 +--
- hw/arm/aspeed_ast2400.c     | 4 +---
- hw/arm/aspeed_ast2600.c     | 3 +--
- hw/arm/aspeed_ast27x0.c     | 3 +--
- 5 files changed, 4 insertions(+), 10 deletions(-)
+ * Note: This patch applies the changes from Rust HPET [*] to C HPET to
+   ensure logic consistency.
+   [*]: The original comment should use "(0x1f & ~4)":
+        https://lore.kernel.org/qemu-devel/Z6edKxYFzA6suDlj@intel.com/
+---
+ hw/timer/hpet.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index e1cb9d5cc32c..96459d02a9bf 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -158,7 +158,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(Aspeed10x0SoCState, ASPEED10X0_SOC)
- struct AspeedSoCClass {
-     DeviceClass parent_class;
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index dcff18a9871d..0f786047e54f 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -455,7 +455,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
+             return 0;
+         }
  
--    const char *name;
-     /** valid_cpu_types: NULL terminated array of a single CPU type. */
-     const char * const *valid_cpu_types;
-     uint32_t silicon_rev;
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index e76c7100a1d2..ec329f4991c9 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -116,7 +116,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
-     char typename[64];
-     int i;
- 
--    if (sscanf(sc->name, "%7s", socname) != 1) {
-+    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
-         g_assert_not_reached();
-     }
- 
-@@ -428,7 +428,6 @@ static void aspeed_soc_ast1030_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = false;
-     dc->realize = aspeed_soc_ast1030_realize;
- 
--    sc->name = "ast1030-a1";
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev = AST1030_A1_SILICON_REV;
-     sc->sram_size = 0xc0000;
-diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
-index 57540c7b2cbb..6e756fa23e61 100644
---- a/hw/arm/aspeed_ast2400.c
-+++ b/hw/arm/aspeed_ast2400.c
-@@ -157,7 +157,7 @@ static void aspeed_ast2400_soc_init(Object *obj)
-     char socname[8];
-     char typename[64];
- 
--    if (sscanf(sc->name, "%7s", socname) != 1) {
-+    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
-         g_assert_not_reached();
-     }
- 
-@@ -564,7 +564,6 @@ static void aspeed_soc_ast2400_class_init(ObjectClass *oc, void *data)
-     /* Reason: Uses serial_hds and nd_table in realize() directly */
-     dc->user_creatable = false;
- 
--    sc->name         = "ast2400-a1";
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev  = AST2400_A1_SILICON_REV;
-     sc->sram_size    = 0x8000;
-@@ -593,7 +592,6 @@ static void aspeed_soc_ast2500_class_init(ObjectClass *oc, void *data)
-     /* Reason: Uses serial_hds and nd_table in realize() directly */
-     dc->user_creatable = false;
- 
--    sc->name         = "ast2500-a1";
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev  = AST2500_A1_SILICON_REV;
-     sc->sram_size    = 0x9000;
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 45cc3da39bcc..faebb2ef14a9 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -167,7 +167,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
-     char socname[8];
-     char typename[64];
- 
--    if (sscanf(sc->name, "%7s", socname) != 1) {
-+    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
-         g_assert_not_reached();
-     }
- 
-@@ -773,7 +773,6 @@ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
-     /* Reason: The Aspeed SoC can only be instantiated from a board */
-     dc->user_creatable = false;
- 
--    sc->name         = "ast2600-a3";
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev  = AST2600_A3_SILICON_REV;
-     sc->sram_size    = 0x16400;
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 3e373f966b5f..6506bdfdff68 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -316,7 +316,7 @@ static void aspeed_soc_ast2700_init(Object *obj)
-     char socname[8];
-     char typename[64];
- 
--    if (sscanf(sc->name, "%7s", socname) != 1) {
-+    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
-         g_assert_not_reached();
-     }
- 
-@@ -757,7 +757,6 @@ static void aspeed_soc_ast2700_class_init(ObjectClass *oc, void *data)
-     dc->user_creatable = false;
-     dc->realize      = aspeed_soc_ast2700_realize;
- 
--    sc->name         = "ast2700-a0";
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev  = AST2700_A0_SILICON_REV;
-     sc->sram_size    = 0x20000;
+-        switch (addr & 0x18) {
++        switch (addr & (0x1f & ~4)) {
+         case HPET_TN_CFG: // including interrupt capabilities
+             return timer->config >> shift;
+         case HPET_TN_CMP: // comparator register
+@@ -511,7 +511,8 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+             trace_hpet_timer_id_out_of_range(timer_id);
+             return;
+         }
+-        switch (addr & 0x18) {
++
++        switch (addr & (0x1f & ~4)) {
+         case HPET_TN_CFG:
+             trace_hpet_ram_write_tn_cfg(addr & 4);
+             old_val = timer->config;
 -- 
-2.48.1
+2.34.1
 
 
