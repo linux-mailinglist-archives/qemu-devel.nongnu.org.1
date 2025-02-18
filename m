@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D960A3A2F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C082A3A308
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:40:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkQas-00059Q-9G; Tue, 18 Feb 2025 11:37:11 -0500
+	id 1tkQcj-0006ps-Q2; Tue, 18 Feb 2025 11:39:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tkQaW-00056S-RC
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:36:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tkQaU-0002Cv-3v
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:36:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739896603;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6B3dpA5+FyAf3b1nXZlew/K+efL2wlMhh7BQM1SzDbY=;
- b=ViuRtQeizy18fP39m/jQcV4ZoO89yl5/016Vfs8EdkSu+reHVbe2AfbObBVJbIiz8d361T
- YP/niQm8lOh3KOsCG/jo2I38hUbtXoraLIMoAf8sgHP5UZ6X+ZIL3+j0vvNDRSc98CeSyh
- KnoYU43xN1DbgaclB3FWlk7ZKOKAF4Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-448-MWvgu0Y6OFKBVLq39tlFJQ-1; Tue,
- 18 Feb 2025 11:36:40 -0500
-X-MC-Unique: MWvgu0Y6OFKBVLq39tlFJQ-1
-X-Mimecast-MFC-AGG-ID: MWvgu0Y6OFKBVLq39tlFJQ_1739896599
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D188A19373DC; Tue, 18 Feb 2025 16:36:38 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.158])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9369819560AA; Tue, 18 Feb 2025 16:36:35 +0000 (UTC)
-Date: Tue, 18 Feb 2025 16:36:31 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PULL v2 11/14] os: add an ability to lock memory on_fault
-Message-ID: <Z7S3D_JYdayPhVVd@redhat.com>
-References: <20250212173823.214429-1-peterx@redhat.com>
- <20250212173823.214429-3-peterx@redhat.com>
- <Z6ze_muL8OkkuAFr@redhat.com> <Z6zg3jr4IUiIdHKG@x1.local>
- <Z6zicnbD1RRYfC3R@redhat.com> <Z60TvzQZQW3j4tiY@x1.local>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tkQch-0006pZ-LW
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:39:03 -0500
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tkQcf-0002Kl-TA
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:39:03 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2fc6272259cso3657052a91.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 08:39:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1739896740; x=1740501540; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fl0Tqxaz2PzXbJb4Af+tTD/1mJfnRKKhXco3/bT6eew=;
+ b=XZjgaGbSxwHa3BQ4+RurtXz7UeGxaVYKiICFK4tKleBo7EJjd9Tz6QSb5Hk68xeIMC
+ P6bydfHOBivy/mT2GPryuwbGZTz6Y4B6pk6ZNyKBX9AF84cUsfEcOdF/Ex+lUyQ+9eP+
+ z1ZHG24DZ2pIUQipjnYOltXwxS7hbOCjOY+kZrfIsIIY3LIAB6TfzaEfygV0aaoy5TKZ
+ 3vTGtfAd1yQg0FtbSzPgLsYDjcE24csEy3jRlFMKQrX8dYrVOiMrg8LBL1BcRCh2fdZS
+ XsbgyoQAkoNi7IwvGZ9heCCXQ+yas7n0vdRQ0SijYa4gSvmwG5A42wL1f7zY8RV9UGL4
+ t8OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739896740; x=1740501540;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fl0Tqxaz2PzXbJb4Af+tTD/1mJfnRKKhXco3/bT6eew=;
+ b=tJ9lhHg0IThvCZ6kymIc92dT/+Tggd7jBkKQssWvDDlassmwA9yeBIelfWqNIHxWx6
+ RGQKZa0m/y0C3cealnKBEx7MS+KSlUgeJPzNYA+ez/brTt+cw4UV4FV236PrJjcFBpjB
+ awts7Y0uyLS3yGCI2Kfiy4LfcKAkyh8hBQyvGppm4V5PJlkBp2y96Kb0PGCLcq1YjnV8
+ LUWEgog0tA1mhX2WChz3zW72gugjhtIAWeTMnRlCnW/BDeqzPzd8baGe5pudkCc54QQt
+ EKfN4a+UE2X9eHgDaJCufnC41hxOxTLAqieb26v+sWi+IKwfBwNxmIcLi5pJn7WjWqHA
+ Gj5w==
+X-Gm-Message-State: AOJu0YzJdB468sLWoqYDo7OPmLe4hnRxh4QuOAe93w/po43cxEkvlGhV
+ LhEVoCQ5wvijesUnucv4iRUpJZzSHTPyUudMkmmJZCp7n7gXQkiPpNf6yHo0sv3FoaFQImiVvi2
+ M
+X-Gm-Gg: ASbGnctuGdIeoToDBjGezvWuALhuI1eRT+u32TnS5TKc7v0iE6sFuMSc3JLGwXgbAIV
+ oYUAGkoQ5pZquCvCKk3ekG3UdPWqVJOg1ZdkM0/yetn89rS/UuMNafygqYUDg5Du/on14wTd9b6
+ pTITJsMQZWx1MaIRKgKFZZ+JtB58M262sdzymFMy4JQi99iGEDIsabdYOfq1EjuvbVhGqRz4hpo
+ RbbddcRjUCsmBNd+nfHwKbaAWXZA4DFBuU81ouTVhlbadVQ3Czs4yOlYOc4BDInIh6iwEY8i2LA
+ PKb4MCvMmJgA4nydBWLt6w+Lf5yNs6VlvVJwW5vW/YNa7OT74E+k
+X-Google-Smtp-Source: AGHT+IHh3YcraYbvA5G21lrqSIFtbb1CCWYTmRYBZgcHd+isrt09zo8zmW4gZfKOccAPag8L7jfTDw==
+X-Received: by 2002:a05:6a00:3a07:b0:732:5b10:572b with SMTP id
+ d2e1a72fcca58-732617bd3c5mr21617989b3a.10.1739896739947; 
+ Tue, 18 Feb 2025 08:38:59 -0800 (PST)
+Received: from grind.. (201-68-240-180.dsl.telesp.net.br. [201.68.240.180])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73278d09228sm4595533b3a.117.2025.02.18.08.38.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Feb 2025 08:38:59 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/3] target/riscv/kvm: update to Linux 6.14-rc3
+Date: Tue, 18 Feb 2025 13:38:51 -0300
+Message-ID: <20250218163854.425607-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z60TvzQZQW3j4tiY@x1.local>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,130 +93,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 12, 2025 at 04:33:51PM -0500, Peter Xu wrote:
-> On Wed, Feb 12, 2025 at 06:03:30PM +0000, Daniel P. Berrangé wrote:
-> > On Wed, Feb 12, 2025 at 12:56:46PM -0500, Peter Xu wrote:
-> > > On Wed, Feb 12, 2025 at 05:48:46PM +0000, Daniel P. Berrangé wrote:
-> > > > On Wed, Feb 12, 2025 at 12:38:23PM -0500, Peter Xu wrote:
-> > > > > From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-> > > > > 
-> > > > > This will be used in the following commits to make it possible to only
-> > > > > lock memory on fault instead of right away.
-> > > > > 
-> > > > > Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-> > > > > Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > > > > Link: https://lore.kernel.org/r/20250212143920.1269754-2-d-tatianin@yandex-team.ru
-> > > > > [peterx: fail os_mlock(on_fault=1) when not supported]
-> > > > > [peterx: use G_GNUC_UNUSED instead of "(void)on_fault", per Dan]
-> > > > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > > > > ---
-> > > > >  meson.build               |  6 ++++++
-> > > > >  include/system/os-posix.h |  2 +-
-> > > > >  include/system/os-win32.h |  2 +-
-> > > > >  migration/postcopy-ram.c  |  2 +-
-> > > > >  os-posix.c                | 15 +++++++++++++--
-> > > > >  system/vl.c               |  2 +-
-> > > > >  6 files changed, 23 insertions(+), 6 deletions(-)
-> > > > > 
-> > > > > diff --git a/meson.build b/meson.build
-> > > > > index 18cf9e2913..59953cbe6b 100644
-> > > > > --- a/meson.build
-> > > > > +++ b/meson.build
-> > > > > @@ -2885,6 +2885,12 @@ config_host_data.set('HAVE_MLOCKALL', cc.links(gnu_source_prefix + '''
-> > > > >      return mlockall(MCL_FUTURE);
-> > > > >    }'''))
-> > > > >  
-> > > > > +config_host_data.set('HAVE_MLOCK_ONFAULT', cc.links(gnu_source_prefix + '''
-> > > > > +  #include <sys/mman.h>
-> > > > > +  int main(void) {
-> > > > > +      return mlockall(MCL_FUTURE | MCL_ONFAULT);
-> > > > > +  }'''))
-> > > > > +
-> > > > >  have_l2tpv3 = false
-> > > > >  if get_option('l2tpv3').allowed() and have_system
-> > > > >    have_l2tpv3 = cc.has_type('struct mmsghdr',
-> > > > > diff --git a/include/system/os-posix.h b/include/system/os-posix.h
-> > > > > index b881ac6c6f..ce5b3bccf8 100644
-> > > > > --- a/include/system/os-posix.h
-> > > > > +++ b/include/system/os-posix.h
-> > > > > @@ -53,7 +53,7 @@ bool os_set_runas(const char *user_id);
-> > > > >  void os_set_chroot(const char *path);
-> > > > >  void os_setup_limits(void);
-> > > > >  void os_setup_post(void);
-> > > > > -int os_mlock(void);
-> > > > > +int os_mlock(bool on_fault);
-> > > > >  
-> > > > >  /**
-> > > > >   * qemu_alloc_stack:
-> > > > > diff --git a/include/system/os-win32.h b/include/system/os-win32.h
-> > > > > index b82a5d3ad9..bc623061d8 100644
-> > > > > --- a/include/system/os-win32.h
-> > > > > +++ b/include/system/os-win32.h
-> > > > > @@ -123,7 +123,7 @@ static inline bool is_daemonized(void)
-> > > > >      return false;
-> > > > >  }
-> > > > >  
-> > > > > -static inline int os_mlock(void)
-> > > > > +static inline int os_mlock(bool on_fault G_GNUC_UNUSED)
-> > > > 
-> > > > So did this actually generate a warning ? We don' even need
-> > > > G_GNUC_UNUSED unless we're actually seeing warnings about this.
-> > > 
-> > > I didn't try to hit a warning without it, as we can use different compilers
-> > > and I thought the results could be different, even if I try it and it
-> > > didn't raise a warning?
-> > 
-> > We strictly only permit use of clang & gcc.
-> 
-> I meant I am also not sure whether the versions could matter.. Totally not
-> expert on compilers.  Hence I chose to be safe with the attribute applied,
-> because I know it'll always be safe when with it.
-> 
-> I tried to grep QEMU code base:
-> 
-> $ git grep unused-parameter
-> $ git grep -w Wall
-> pc-bios/optionrom/Makefile:override CFLAGS += -march=i486 -Wall $(EXTRA_CFLAGS) -m16
-> pc-bios/s390-ccw/Makefile:EXTRA_CFLAGS += -Wall
-> tests/multiboot/Makefile:CCFLAGS=-m32 -Wall -Wextra -Werror -fno-stack-protector -nostdinc -fno-builtin
-> tests/tcg/Makefile.target:CFLAGS+=-Wall -Werror -O0 -g -fno-strict-aliasing
-> tests/tcg/mips/user/isa/r5900/Makefile:CFLAGS  = -Wall -mabi=32 -march=r5900 -static
-> 
-> We don't seem to have explicit requirement on that (as I grepped nothing
-> for "unused-parameter"), meanwhile indeed we also seem to have zero usage
-> at least in qemu root with enabling -Wall.  I'm not sure whether other
-> compiler option could matter here.
-> 
-> Can this be justifed as we can safely drop G_GNUC_UNUSED in this patch?
-> 
-> OTOH:
-> 
-> $ git grep G_GNUC_UNUSED | wc -l
-> 169
-> 
-> So we have 169 existing such use cases.  Does it also mean we could
-> potentially drop all of them?
+Hi,
 
-Yes, or actually turn on the warning about unused params and mark
-the rest. It is initially noisey, but IME does end up flagging
-real problems periodically. Anyway, given we're inconsistent already
-there's no need to respin this series.
+I'm sending our usual KVM capabilities update, following an update on
+linux-headers.
 
-> 
-> It'll definitely be easier for me (and hopefully Stefan too..) if this can
-> be done later, but I'm OK respin v3.
-> 
-> Dan, do you have any preference / suggestion?
+This time I had to include an extra patch (patch 2) because KVM is
+exporting ziccrse to be enabled/disabled by users, while our current
+implementation treats the ext as always enabled in TCG.
 
-With regards,
-Daniel
+Daniel Henrique Barboza (3):
+  linux-headers: Update to Linux v6.14-rc3
+  target/riscv/cpu.c: create flag for ziccrse
+  target/riscv/kvm: add extensions after 6.14-rc3 update
+
+ include/standard-headers/linux/ethtool.h      |  4 +
+ include/standard-headers/linux/fuse.h         | 76 ++++++++++++++++++-
+ .../linux/input-event-codes.h                 |  1 +
+ include/standard-headers/linux/pci_regs.h     | 16 ++--
+ include/standard-headers/linux/virtio_pci.h   | 14 ++++
+ linux-headers/asm-arm64/kvm.h                 |  3 -
+ linux-headers/asm-loongarch/kvm_para.h        |  1 +
+ linux-headers/asm-riscv/kvm.h                 |  7 +-
+ linux-headers/asm-x86/kvm.h                   |  1 +
+ linux-headers/linux/iommufd.h                 | 35 ++++++---
+ linux-headers/linux/kvm.h                     |  8 +-
+ linux-headers/linux/stddef.h                  | 13 +++-
+ linux-headers/linux/vduse.h                   |  2 +-
+ target/riscv/cpu.c                            |  5 ++
+ target/riscv/cpu_cfg.h                        |  3 +
+ target/riscv/kvm/kvm-cpu.c                    |  3 +
+ 16 files changed, 157 insertions(+), 35 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
 
 
