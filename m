@@ -2,78 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F9A3A8B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 21:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCE1A3A792
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 20:32:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkU91-0002Dr-6J; Tue, 18 Feb 2025 15:24:39 -0500
+	id 1tkTIo-0005ZG-Gk; Tue, 18 Feb 2025 14:30:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tkU8w-0002Da-U1
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:24:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1tkTIU-0005WW-Ep; Tue, 18 Feb 2025 14:30:23 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tkU8u-00043g-5C
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:24:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739910270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=ZZ/t/8/FZmKqnWA3kAbRbMXw7cqMzx1tsylUiw4pJLs=;
- b=NdxadgQN35UZ2EiaGtrLmwm8ClW4mbPrdg3St16+hBKM/ZLPEVrLOIAf7uk5YVKnWvrwlc
- pCUdS8+ywJNCKYno8yMSybdPRaPOcwKEmTIyOf3fzfCOsgTjg+ABZwvUPKrCi4Y99Y3pi2
- jiHxs0Uf81gkr14X+rwKj1tjECxkvvg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-OmL61PJqOn-p5YmNzuoUiA-1; Tue,
- 18 Feb 2025 15:24:28 -0500
-X-MC-Unique: OmL61PJqOn-p5YmNzuoUiA-1
-X-Mimecast-MFC-AGG-ID: OmL61PJqOn-p5YmNzuoUiA_1739910267
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C9F111801A10; Tue, 18 Feb 2025 20:24:26 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 71BE4300019F; Tue, 18 Feb 2025 20:24:26 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2240821E6A28; Tue, 18 Feb 2025 21:24:23 +0100 (CET)
-Resent-To: qemu-devel@nongnu.org, yong.huang@smartx.com, farosas@suse.de
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Tue, 18 Feb 2025 21:24:23 +0100
-Resent-Message-ID: <878qq39f2g.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: yong.huang@smartx.com,  qemu-devel@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [RFC] migration: Introduce migration throttle event
-In-Reply-To: <Z7TOXfn6BQBhS5uG@x1.local> (Peter Xu's message of "Tue, 18 Feb
- 2025 13:15:57 -0500")
-References: <4df13a8005170ad42cbbc883a0a8fdbb1ab94ac1.1739846274.git.yong.huang@smartx.com>
- <Z7TOXfn6BQBhS5uG@x1.local>
-Date: Tue, 18 Feb 2025 20:21:59 +0100
-Message-ID: <87jz9n9hyg.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1tkTIR-0007J3-Ll; Tue, 18 Feb 2025 14:30:22 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 8D0DF5C544A;
+ Tue, 18 Feb 2025 19:29:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3091AC4CEE2;
+ Tue, 18 Feb 2025 19:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1739907014;
+ bh=D0SmKXnflUF1ENknpmghSoPwbGW+dV6iEGQTiKLiGkM=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=Q9b0bNzo2GKJ3P5Xaenndxxjunnkiowf73I3YoZMkGzz/9m3DI5W6nlgJZbijiPdE
+ y05lVFMBHQkfh29eo3Hia6sY/NC6jyoMwGGIS4ox0x1aA9txS0r3CSNtf47kb7XXn3
+ 2jw0eyggkxm0fYjvyx72eXB8AzDztykIyjtKjKH3IH6K+v4fMajnUj6LQJ1OXH5JTH
+ PSwyUXYMNnC71CMOUmru8M9Q8+uBE5k5nGif0Wl9US2432af4b9M1yHqUyJ7WRhu03
+ ZA/NlJiRNrF5IKgzuIDvdc+iGOLJFcUhQEGwjz/Pk1FsfXo0Mz0T6lvieZMho5k24X
+ jVzw/uqhFU4WA==
+Date: Tue, 18 Feb 2025 11:30:10 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, 
+ Paul Durrant <paul@xen.org>, Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony@xenproject.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Thomas Huth <thuth@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-arm <qemu-arm@nongnu.org>, 
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PULL 3/9] meson: Disallow 64-bit on 32-bit Xen emulation
+In-Reply-To: <9b22d0ff-5902-4ec7-ae54-e974482ebd87@citrix.com>
+Message-ID: <alpine.DEB.2.22.394.2502181120100.1085376@ubuntu-linux-20-04-desktop>
+References: <20250208205725.568631-1-richard.henderson@linaro.org>
+ <20250208205725.568631-4-richard.henderson@linaro.org>
+ <aeaf0f19-0f14-4a02-9c51-09521e7c75e1@linaro.org>
+ <9b22d0ff-5902-4ec7-ae54-e974482ebd87@citrix.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 21
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+Content-Type: multipart/mixed;
+ BOUNDARY="8323329-1975763779-1739906423=:1085376"
+Content-ID: <alpine.DEB.2.22.394.2502181121020.1085376@ubuntu-linux-20-04-desktop>
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -74
+X-Spam_score: -7.5
+X-Spam_bar: -------
+X-Spam_report: (-7.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,26 +84,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> On Tue, Feb 18, 2025 at 10:39:55AM +0800, yong.huang@smartx.com wrote:
->> From: Hyman Huang <yong.huang@smartx.com>
->> 
->> When the developer is examining the time distribution of
->> the migration, it is useful to record the migration throttle
->> timestamp. Consequently, include the migration throttle event.
->
-> Would trace_cpu_throttle_set() work too?  That can provide a timestamp and
-> also the new percentage of throttle.
->
-> I don't feel strongly that we must not introduce qmp events for debugging,
-> but allowing that to happen means we can get tons of events at last.. as
-> people can start requesting many more events, and we'll need one way to
-> justify them at last.
->
-> One way to justify events can be that it could be consumed by mgmt.  On
-> that, this one I'm not yet sure.. so ideally tracepoints could work already.
+--8323329-1975763779-1739906423=:1085376
+Content-Type: text/plain; CHARSET=UTF-8
+Content-Transfer-Encoding: 8BIT
+Content-ID: <alpine.DEB.2.22.394.2502181121021.1085376@ubuntu-linux-20-04-desktop>
 
-Good point.
+On Tue, 18 Feb 2025, Andrew Cooper wrote:
+> On 18/02/2025 11:20 am, Philippe Mathieu-Daudé wrote:
+> > Hi,
+> >
+> > Adding Xen community.
+> >
+> > On 8/2/25 21:57, Richard Henderson wrote:
+> >> Require a 64-bit host binary to spawn a 64-bit guest.
+> >>
+> >> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> >> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> >> ---
+> >>   meson.build | 9 +++++++--
+> >>   1 file changed, 7 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/meson.build b/meson.build
+> >> index 1af8aeb194..911955cfa8 100644
+> >> --- a/meson.build
+> >> +++ b/meson.build
+> >> @@ -304,9 +304,14 @@ else
+> >>   endif
+> >>   accelerator_targets = { 'CONFIG_KVM': kvm_targets }
+> >>   -if cpu in ['x86', 'x86_64']
+> >> +if cpu == 'x86'
+> >> +  xen_targets = ['i386-softmmu']
+> >> +elif cpu == 'x86_64'
+> >>     xen_targets = ['i386-softmmu', 'x86_64-softmmu']
+> >> -elif cpu in ['arm', 'aarch64']
+> >> +elif cpu == 'arm'
+> >> +  # i386 emulator provides xenpv machine type for multiple
+> >> architectures
+> >> +  xen_targets = ['i386-softmmu']
+> >
+> > Is actually someone *testing* this config? I'm having hard time building
+> > it, so am very suspicious about how it runs, and start to wonder if I'm
+> > not just wasting my time (as could be our CI).
+> 
+> It was intentional.  I believe it was Stefano (CC'd) who introduced it.
+> 
+> Xen uses qemu-system-i386 everywhere because qemu-system-x86_64 doesn't
+> make compatible VMs.  I'm not sure why; I suspect it's bugs in the Xen
+> machine types, but I don't know QEMU well enough to be sure.
+> 
+> Another thing that (at least, was) tied to qemu-system-i386 was using
+> Qemu as a XenBlk <-> QCOW adapter, at which point it wasn't even really
+> a system emulator, just a paravirtual disk implementation.
+> 
+> This is, AIUI, what ARM wants with the xenpv machine.  If there's a
+> better way to do this, please do say.
+> 
+> 
+> Looking through Xen's CI, I can't see any of the ARM builds building
+> QEMU at all.  I think it's quite possible it's not tested any more.
 
+Hi all,
+
+I answered on a similar question recently:
+https://marc.info/?l=qemu-devel&m=173862237031104&w=2
+
+In short, while QEMU for x86 HVM guest is required, QEMU is not required
+for x86 PVH guests, and ARM guests. The model is different and QEMU is
+only providing PV backends or virtio backends if the VM is configured
+that way. You can have a fully functional VM without QEMU (or other
+virtio backends provider).
+
+In this context, the original integration of QEMU for Xen on ARM was
+done reusing the qemu-system-i386 target. But Edgar recently upstreamed
+a much better newer machine that is cleaner, simpler and faster: XenPVH
+(see hw/arm/xen-pvh.c and hw/i386/xen/xen-pvh.c). So we don't need
+qemu-system-i386 on either ARM32 or ARM64 anymore.
+
+Moreover, for ARM32 specifically, I think it would be OK to remove QEMU
+support for ARM32 Xen machines in general because of the reasons I wrote
+in the other email and above here.
+--8323329-1975763779-1739906423=:1085376--
 
