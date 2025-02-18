@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFA6A39E0A
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E22A39E0B
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:56:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkO4Z-0005zS-5z; Tue, 18 Feb 2025 08:55:39 -0500
+	id 1tkO4b-00060d-Q0; Tue, 18 Feb 2025 08:55:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <1058183524@qq.com>) id 1tkHxW-00049C-2C
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:23:58 -0500
-Received: from out203-205-221-192.mail.qq.com ([203.205.221.192])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <1058183524@qq.com>) id 1tkHxR-0003EP-Rn
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:23:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1739863423; bh=gB6NppJyFdV7HnXW69F6s3qqjG41vmtV3bwZKea47lU=;
- h=From:To:Subject:Date;
- b=sr106cr9MMG0gQY4qL05XGJS4bKcEwH5lnlNILlHuboYwElGbZYS5iUchhE9xcCZB
- cmcrWW9uSk7dDpH6y3/l34oCjB8dlgEA0jeJ/nQStQO6JxA9UErZ7goO7EF6KLbuDI
- ZJNrwX8YeqH1qvesxqsSA3tesYwvi/zjRFhOEUaE=
-X-QQ-FEAT: Xqh9UYnCrXCgeKC+InpiQr4XE5GGFGxU
-X-QQ-SSF: 0000000000000080000000000000
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-XMAILINFO: MGu0d518fybeO0G/dMmjlVJGY/9/ZHQTsXcdbM9AoMxQf5QFSiV7PAeuVe4dSk
- RD1U9yo91z3T5U35BNc3vXy8iswLDmnavgvFDO1oEfZxAB+bJsOVR4ynHOdSQt0QWtUEkRohQZPzc
- pMxEsfmwhMyWNetTGBBjfDJkaqahBcV/kb5Z/pqPr912J6ZcPEGsMoAzh/2dkCJVbfOJmHLQSV/e7
- 5rBzHMR8Iapx8poTbJRyDx/8QFImqBVx1TJXXTaCsK0T4+DA+Ezzn/EU3bL2GEZ0pTGWCezG6XfVm
- F47nB7wbkgOF29VdEDepjJBXeTMvByjh2WN2rXLTQY1DpCXfmgnyDohWXLQ0M15jCmM+iBCYOS7vs
- iQebP0ZjMzBRBURh8AqSgMJoABBPtW+axG4mAJklDchMMjF5wtns6ktef/i0iSuhFcJLBkSkFxURU
- nOjvNr58J1RZeyq5uX0s7vHqpbVbxId5aOTxO4Y0Fr+PAXlAUt3xOUKLU5lNZX5VZ54vwa6kTDi3t
- aRtwdWRt27H6i6WgQE2WXUqhbxsRjeyzmw4bXdC9OlBwguRnFR3oEoof6HpPcmCjl5ZdyvfZkvDqG
- 56xyUNgV0AU2bkQQJaO2arvTJqAkKIck4EdtCIFId2+UYrc4KhT5qYktRjweHgq65wIcNSo4lWYzr
- KiF3k6Dhxi3UEAyk4k37dh7+2aRp3H0CMAkBHGsIoOk9yO2Hxct6Y4wy/qubY0HfM5tV4qycc9rHL
- +jnnNODFj69uDUfjBufb4UF7NMD/rjgOX6t8TuPeJ9zkUvB/+3goFsurQ8V0u00/I1hZbjKWFvv2p
- VCPtP/FIliS+Tx4+/n32j4uApINuozgKKVNyrOZhbIucR6mlVN5I1FsLW/Z3rQlOeeCfS4K3w3m20
- 8FbLpTozo0A2p0gkHk5YYvE9fzNrjJ/901IbDuJ5oIXT6Aw2Zkizoz9DtALbHfVNtj8yFUCGtht1g
- Ml8EdAWlIbj2EwKDzY
-X-HAS-ATTACH: no
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 210.40.230.67
-X-QQ-STYLE: 
-X-QQ-mid: webmail369t1739862432t202164
-From: "=?gb18030?B?wLbJq7XEw87P6w==?=" <1058183524@qq.com>
-To: "=?gb18030?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>
-Subject: Perf in QEMU
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="----=_NextPart_67B431A0_172BA910_69A52103"
-Content-Transfer-Encoding: 8Bit
-Date: Tue, 18 Feb 2025 15:07:12 +0800
-X-Priority: 3
-Message-ID: <tencent_308D5C2C7DFE0CDC38AD1906113460287F05@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-Received-SPF: pass client-ip=203.205.221.192; envelope-from=1058183524@qq.com;
- helo=out203-205-221-192.mail.qq.com
-X-Spam_score_int: 67
-X-Spam_score: 6.7
-X-Spam_bar: ++++++
-X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- HELO_DYNAMIC_IPADDR=1.951, HTML_MESSAGE=0.001, MIME_CHARSET_FARAWAY=2.45,
- NO_FM_NAME_IP_HOSTN=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
-X-Spam_action: reject
-X-Mailman-Approved-At: Tue, 18 Feb 2025 08:55:35 -0500
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>) id 1tkJ2o-0004qn-RR
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:33:30 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>) id 1tkJ2n-0002bL-58
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:33:30 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-220c92c857aso80900285ad.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 00:33:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1739867607; x=1740472407; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SOltQryFNQSMGMN53NvBCGByy/u489tUeoJSX0NlizI=;
+ b=CrWJqe2Ld+w9qxjaKg4lWG6pnR8DHx9A1I0MkfE1xjiv+d3wQ/M+LVaPWQUAtPpeHn
+ Yx8SjhdapUARjXe65BojPTRUw/osn32ACGcPuPcEvkSA4XLEPBgyug81qttFCMmIrDPB
+ JKHTMdYhGV4CEVzsgK7kAb8lb/4I9WHdSvxgcIp75i8hbBSUrSkr8eWUdbllfSC1Sazh
+ J+dn5HSfQf+fx4unJPEeTsHN5fPtvm9Q0ZhnfwN/kWyhzkYJ/AWOraiVyrGZ6cAB9y/Z
+ q/6gzJBUo8G/nyIBAHx3fo1iq+iXUOS8T5h1MDunlvfc+WApzU2S7hFKgyIGTdf9JCtg
+ yfSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739867607; x=1740472407;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SOltQryFNQSMGMN53NvBCGByy/u489tUeoJSX0NlizI=;
+ b=nKsfHRBGHj0TI9FOgGkVZWBZ87RnM94E4uLBSyWvlHu79sjH9mlpO0WQFMxvAuZ5vC
+ ljUn6gO9WqJQO+tJMTM2ZQpMH5G3l5S6YVhhfJZgbLeEWYZ8ShXm4qTUXSTnfqm8bK3X
+ skVrFVT0iy7mDQYtxhGX60etPVV1PBGOVlzwB754xQYnIbMMtvlcTkHCPlKHp5b1GiBp
+ dsRhYEo+ra6MiCM9zUQPxpWTnyqwHz/pIJ/xGbdP+t8yYBUNxUk4iOAYAjDOh7EHQIvc
+ OSXKf8PESjXrJ55A+hWSDegODTe5BIl35M0bgxC4oc7yvoUs7rG0prYqRUoQ9kTp8i9j
+ 0HTw==
+X-Gm-Message-State: AOJu0Yz8Sv1yaRksDqIKURf5ngXxcxmaqtKxpEBfwb6UTgMClQfoEN/X
+ XiVvOUGAaROE6yOmPZbFBEgCcaB4PClvRc8UeNl5S9cniYUc5opp
+X-Gm-Gg: ASbGncu4dLOTLjwk7Pp5PnjHUZF5HZqiuuW/uNJ6pZjze4FQ88/GZkbSum7AcjKTS96
+ ylnzi87cz3q/j1V7+3h2KCH84VQInQuzpL/bFkQfw04lUf0FNE34voTj8NiKMxRUE2UpZIbZMkj
+ Ti+uSGVtE0lqDqYSan21qEzBYGDxBzQxNW0RnY1IvFoBOFjYg52vHSW0W6ZXkyZ0si9czvEVGFg
+ ul3m0HXyNbFg0gYodz/Np2eyH6grw9f/9yMt9B2MRT5UO6TxTmM6p6l1acjiKOioAIW2J3cE56t
+ bGWB6Y6tAiNBkURpdqYatlcYdOfIdJA749OKlK6tOuOPkz7rPJfCjoP8Nn1r2TVhseOzR3Oauw=
+ =
+X-Google-Smtp-Source: AGHT+IF9n5luPvR4x3NZzuzbiZfJ8ovT5kJVjcYGbVtt947882dUEVF4zKTz1Hmh+rBG+6e2QrqhYQ==
+X-Received: by 2002:a17:902:f60b:b0:21f:2e:4e4e with SMTP id
+ d9443c01a7336-221043951bbmr180884075ad.5.1739867606991; 
+ Tue, 18 Feb 2025 00:33:26 -0800 (PST)
+Received: from localhost.localdomain (172-234-80-15.ip.linodeusercontent.com.
+ [172.234.80.15]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d545c8d1sm83315925ad.113.2025.02.18.00.33.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Feb 2025 00:33:26 -0800 (PST)
+From: oenhan@gmail.com
+X-Google-Original-From: hanht2@chinatelecom.cn
+To: mst@redhat.com,
+	sgarzare@redhat.com
+Cc: qemu-devel@nongnu.org, Huaitong Han <hanht2@chinatelecom.cn>,
+ Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
+Subject: [PATCH] vhost: Don't set vring call if guest notifier is disabled
+Date: Tue, 18 Feb 2025 16:32:08 +0800
+Message-ID: <20250218083208.78465-1-hanht2@chinatelecom.cn>
+X-Mailer: git-send-email 2.43.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=oenhan@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 18 Feb 2025 08:55:39 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,48 +96,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
+From: Huaitong Han <hanht2@chinatelecom.cn>
 
-------=_NextPart_67B431A0_172BA910_69A52103
-Content-Type: text/plain;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+The vring call fd is set even when the guest does not use MSIX (e.g., virtio
+PMD). This results in unnecessary CPU overhead for handling virtio interrupts.
+The previous patch only optimized the condition when query_queue_notifier was
+enabled and the vector was unset. However, if query_queue_notifier is disabled,
+the vring call FD should also be unset to avoid this inefficiency.
 
-SGVsbG8hDQoNCiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFtIGEgZ3JhZHVhdGUgc3R1ZGVudCBj
-dXJyZW50bHkgc3R1ZHlpbmcgaW4gc2Nob29sLiBSZWNlbnRseSwgSSB1c2VkIFFFTVUgOS4w
-LjIgdG8gY3JlYXRlIHZpcnR1YWwgbWFjaGluZXMgd2l0aCBBUk0sIHg4NiwgYW5kIFJJU0Mt
-ViBhcmNoaXRlY3R1cmVzIGZvciBleHBlcmltZW50cy4gRHVyaW5nIHRoZSBwcm9jZXNzLCBJ
-IGZvdW5kIHRoYXQgdGhlIKGucGVyZiBzdGF0oa8gY29tbWFuZCBkb2VzIG5vdCBzdXBwb3J0
-IHRoZSBjb2xsZWN0aW9uIG9mIGNlcnRhaW4gbWV0cmljcywgc3VjaCBhczogaW5zdHJ1Y3Rp
-b25zLCBjYWNoZS1taXNzZXMsIGNhY2hlLXJlZmVyZW5jZXMsIGV0Yy4gSSBhbSB1bnN1cmUg
-d2hldGhlciB0aGlzIGlzc3VlIGlzIGR1ZSB0byBteSBvcGVyYXRpb25zIG9yIGlmIFFFTVUg
-aXRzZWxmIGRvZXMgbm90IHN1cHBvcnQgdGhlc2UgbWV0cmljcy4gDQoNCiZuYnNwOyZuYnNw
-OyZuYnNwOyBUaGVyZWZvcmUsIEkgd291bGQgbGlrZSB0byBhc2sgeW91IHdoZXRoZXIgUUVN
-VSB2aXJ0dWFsIG1hY2hpbmVzIHN1cHBvcnQgdGhlIGNvbGxlY3Rpb24gb2YgdGhlIGFib3Zl
-IG1ldHJpY3MuDQoNCiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFwb2xvZ2l6ZSBmb3IgYm90aGVy
-aW5nIHlvdSwgYW5kIEkgaG9wZSB5b3Ugd2lsbCBiZSBhYmxlIHRvIHJlcGx5IGF0IHlvdXIg
-Y29udmVuaWVuY2UuIFRoYW5rIHlvdSB2ZXJ5IG11Y2gh
+Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
+Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
+---
+ hw/virtio/vhost.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-------=_NextPart_67B431A0_172BA910_69A52103
-Content-Type: text/html;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
-
-SGVsbG8hPGJyPjxicj4mbmJzcDsmbmJzcDsmbmJzcDsgSSBhbSBhIGdyYWR1YXRlIHN0dWRl
-bnQgY3VycmVudGx5IHN0dWR5aW5nIGluIHNjaG9vbC4gUmVjZW50bHksIEkgdXNlZCBRRU1V
-IDkuMC4yIHRvIGNyZWF0ZSB2aXJ0dWFsIG1hY2hpbmVzIHdpdGggQVJNLCB4ODYsIGFuZCBS
-SVNDLVYgYXJjaGl0ZWN0dXJlcyBmb3IgZXhwZXJpbWVudHMuIER1cmluZyB0aGUgcHJvY2Vz
-cywgSSBmb3VuZCB0aGF0IHRoZSChrnBlcmYgc3RhdKGvIGNvbW1hbmQgZG9lcyBub3Qgc3Vw
-cG9ydCB0aGUgY29sbGVjdGlvbiBvZiBjZXJ0YWluIG1ldHJpY3MsIHN1Y2ggYXM6IGluc3Ry
-dWN0aW9ucywgY2FjaGUtbWlzc2VzLCBjYWNoZS1yZWZlcmVuY2VzLCBldGMuIEkgYW0gdW5z
-dXJlIHdoZXRoZXIgdGhpcyBpc3N1ZSBpcyBkdWUgdG8gbXkgb3BlcmF0aW9ucyBvciBpZiBR
-RU1VIGl0c2VsZiBkb2VzIG5vdCBzdXBwb3J0IHRoZXNlIG1ldHJpY3MuIDxicj48YnI+Jm5i
-c3A7Jm5ic3A7Jm5ic3A7IFRoZXJlZm9yZSwgSSB3b3VsZCBsaWtlIHRvIGFzayB5b3Ugd2hl
-dGhlciBRRU1VIHZpcnR1YWwgbWFjaGluZXMgc3VwcG9ydCB0aGUgY29sbGVjdGlvbiBvZiB0
-aGUgYWJvdmUgbWV0cmljcy48YnI+PGJyPiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFwb2xvZ2l6
-ZSBmb3IgYm90aGVyaW5nIHlvdSwgYW5kIEkgaG9wZSB5b3Ugd2lsbCBiZSBhYmxlIHRvIHJl
-cGx5IGF0IHlvdXIgY29udmVuaWVuY2UuIFRoYW5rIHlvdSB2ZXJ5IG11Y2ghPGJyPjxicj4=
-
-------=_NextPart_67B431A0_172BA910_69A52103--
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 6aa72fd434..d17e7cc6fe 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1342,8 +1342,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+     }
+ 
+     if (k->query_guest_notifiers &&
+-        k->query_guest_notifiers(qbus->parent) &&
+-        virtio_queue_vector(vdev, idx) == VIRTIO_NO_VECTOR) {
++        (!k->query_guest_notifiers(qbus->parent) ||
++            virtio_queue_vector(vdev, idx) == VIRTIO_NO_VECTOR)) {
+         file.fd = -1;
+         r = dev->vhost_ops->vhost_set_vring_call(dev, &file);
+         if (r) {
+-- 
+2.43.5
 
 
