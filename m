@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C675A3AAC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 22:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E70C1A3AACC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 22:23:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkV2F-00032b-8c; Tue, 18 Feb 2025 16:21:43 -0500
+	id 1tkV2I-00034A-VG; Tue, 18 Feb 2025 16:21:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2D-00032M-FX
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:41 -0500
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2E-00032m-Nr
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:42 -0500
 Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2A-00033B-Sh
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:41 -0500
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2B-00033S-V3
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739913697; bh=teoTsh+CvtnyfxlQFH0EO7DMOroSayuJqtpkRTSKTfg=;
+ t=1739913698; bh=86QjUrEhAuhhbXN0b8DnVM4v1JDgzxiyHIi3K8dZDjA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=n3NvL8NiPH/rHw8FKMJbdXIIFYgY/Dn/528dNZloXwAR0nZk7aqo4EQNDLQAT5qYO
- oDcrJt1ge11oux8z2WSAzNC2H5woJhxDudH50rTicVRO5LM8hTVQgSB9h6FpbH6Coh
- oHj+sRo98S9Bg0R6t3WA2nIz2dOm888vUldBemsRzUM89N6d96jnaNjiH2C48LhGtU
- yzEzApIseB0Putu4AOwbMCnOB5/bmxWl4qDsFLg9SM2Ql9EspwcGTNszhe8xz06grq
- W/1HcVZURLsE09jiluxgsBP/RQhRuBCPyKYSEvxEiagwkdL0AshxlMjjUSnKcNo4nK
- zCMzyas+cdiyg==
+ b=Uub6E4KCzOJqh67mOc6PRlNn2CRUdj/jntCwFdwF0mcqloJDQ7uR1dTGAofYOdaR1
+ /QHt5N7LkAEZK2vIWk9J2KO04GbswweA6iIObJEchfAbhxLh8suWK4/kV3hdcR+50a
+ LyZyJYLRs2wMPQO+kZqyOQtKZ/z0vdL3aTDh0i8/t7L+zY6TZRHwo+n8nTsO+VAcx0
+ 1vHnRIGsyesvILOXUVYvDnIf9TP8Ejbxz9G/hE+Ph0o+VmmX7Ajans6IrTXD7e+Vhd
+ 9us0yEVCMiTEDftbJoeMryoMDiZOYI/ZSwgVhMdUBc81n+NgipY6YDcuLTQ2Oyvfgy
+ 3mcWKv9KmBwrg==
 Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id 428253F20D3C
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 13:21:37 -0800 (PST)
+ by elaine.keithp.com (Postfix) with ESMTP id BBC813F20C61
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 13:21:38 -0800 (PST)
 X-Virus-Scanned: Debian amavis at keithp.com
 Received: from elaine.keithp.com ([127.0.0.1])
  by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id kI16fiP6pMAe; Tue, 18 Feb 2025 13:21:36 -0800 (PST)
+ id iT7caFC17IXn; Tue, 18 Feb 2025 13:21:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739913694; bh=teoTsh+CvtnyfxlQFH0EO7DMOroSayuJqtpkRTSKTfg=;
+ t=1739913694; bh=86QjUrEhAuhhbXN0b8DnVM4v1JDgzxiyHIi3K8dZDjA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=K2w1gBLPfGrank0tzejcTv8+SNqFbR80HEIxJXYTmi+ZZhpROaKFjVScIn0DID26Q
- 0lYczHqQthQebWpzUNqV8eY32wLg/NfqoDsqvNA3aHHF9NRaqGdq3pA4ZuECLcBLXb
- V3hrCRCvJDKkjgPMhx0P0//bVsEXqOFwS1e1TZu3iSLgM6LfedQr1YSp78ymffHzVU
- msFeuns179kYgC/LGzzqYFgkoDxLPOFkaOjvYh8nwvmG7GoAXgf3lN6gOX9T9jJYbm
- iQMpkUaiL02nQ8d+CIXCl6g/m15195BPJLTrOFKU/kWPtrTBLRYO1rmT2TIcXxvy5o
- Kz2jGhVZYVHVA==
+ b=WAUVOqTsOyKQla6hHO/qlMj3gZi1+LoGo6453tTBprxpUglA1GtsygF3+yCu6cSDl
+ XrOLgKIZnV+VHB/Xn9cCGdMRUnPtGdCZLADUGuXQ6+JQMGpxYo118PQAB/flEuM+tb
+ qvg2g+s473eu0EWle7uQi87QgxwTRW/hEsPbjUeHHm+GxCWXtce+UrGZgrlvwiT+Bb
+ iO3e4fkjCDhopZ0N5jUr8hKfDGEW9EbAwS6E/asG5BkKeZN5bHaqvFwRnkoMJ02Uw5
+ KjcpJbs6NrxurZbs1wXh9DbCb218yPis3P96hLUNFDIHHsD4JVBg6YaezJ9jMpN3LE
+ qv1DnTo4aqbBw==
 Received: from keithp.com (koto.keithp.com [192.168.11.2])
- by elaine.keithp.com (Postfix) with ESMTPSA id E7EBE3F20DB1;
+ by elaine.keithp.com (Postfix) with ESMTPSA id EDC3E3F22241;
  Tue, 18 Feb 2025 13:21:34 -0800 (PST)
 Received: by keithp.com (Postfix, from userid 1000)
- id BDBC21E6009E; Tue, 18 Feb 2025 13:21:34 -0800 (PST)
+ id C0ADE1E6009F; Tue, 18 Feb 2025 13:21:34 -0800 (PST)
 To: qemu-devel@nongnu.org
 Cc: Keith Packard <keithp@keithp.com>
-Subject: [PATCH 3/4] hw/rx: Reset the CPU at qemu reset time
-Date: Tue, 18 Feb 2025 13:21:02 -0800
-Message-ID: <20250218212103.2024039-4-keithp@keithp.com>
+Subject: [PATCH 4/4] rx: Support loading of ELF files too
+Date: Tue, 18 Feb 2025 13:21:03 -0800
+Message-ID: <20250218212103.2024039-5-keithp@keithp.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250218212103.2024039-1-keithp@keithp.com>
 References: <20250215021654.1786679-1-keithp@keithp.com>
@@ -83,146 +83,77 @@ From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This ensure that the CPU gets reset every time QEMU resets. Use either
-the kernel entry point or the reset vector if no kernel was loaded.
+The existing loader supports raw binary blobs with the entry point
+defined as the start of the blob. Add support for loading ELF files by
+first checking if the provided filename has a valid ELF header,
+falling back to the existing loader code when that fails.
 
 Signed-off-by: Keith Packard <keithp@keithp.com>
 ---
- hw/rx/rx-gdbsim.c | 36 +++++++++++++++++++++++++++++++++++-
- target/rx/cpu.c   |  9 ++-------
- target/rx/cpu.h   |  3 +++
- 3 files changed, 40 insertions(+), 8 deletions(-)
+ hw/rx/rx-gdbsim.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
 diff --git a/hw/rx/rx-gdbsim.c b/hw/rx/rx-gdbsim.c
-index 4afd77efd5..9e395ae345 100644
+index 9e395ae345..58492b713f 100644
 --- a/hw/rx/rx-gdbsim.c
 +++ b/hw/rx/rx-gdbsim.c
-@@ -22,6 +22,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/units.h"
- #include "qapi/error.h"
-+#include "exec/cpu_ldst.h"
+@@ -25,6 +25,7 @@
+ #include "exec/cpu_ldst.h"
  #include "hw/loader.h"
  #include "hw/rx/rx62n.h"
++#include "elf.h"
  #include "system/qtest.h"
-@@ -56,6 +57,34 @@ DECLARE_OBJ_CHECKERS(RxGdbSimMachineState, RxGdbSimMachineClass,
-                      RX_GDBSIM_MACHINE, TYPE_RX_GDBSIM_MACHINE)
+ #include "system/device_tree.h"
+ #include "system/reset.h"
+@@ -85,6 +86,37 @@ static void rx_cpu_reset(void *opaque)
+     }
+ }
  
- 
-+static void rx_cpu_reset(void *opaque)
++static bool rx_load_elf(RXCPU *cpu, const char *filename)
 +{
-+    RXCPU *cpu = opaque;
 +    CPUState *cs = CPU(cpu);
-+    CPURXState *env = cpu_env(cs);
++    Elf32_Ehdr elf_header;
++    bool elf_is64;
++    Error *err = NULL;
++    uint64_t lowaddr, highaddr, entry;
++    ssize_t ret;
 +
-+    cpu_reset(cs);
-+
-+    if (env->use_reset_pc) {
-+        /*
-+         * Load the PC with the starting address for the kernel
-+         */
-+        env->pc = env->reset_pc;
-+    } else {
-+        /*
-+         * Load the initial PC from the reset vector. If there is
-+         * a ROM containing that vector use that, otherwise read
-+         * it from target memory.
-+         */
-+        uint32_t *resetvec_p = rom_ptr_for_as(cs->as, 0xfffffffc, 4);
-+        if (resetvec_p) {
-+            env->pc = ldl_p(resetvec_p);
-+        } else {
-+            env->pc = cpu_ldl_data(env, 0xfffffffc);
-+        }
++    load_elf_hdr(filename, &elf_header, &elf_is64, &err);
++    if (err) {
++        error_free(err);
++        return false;
 +    }
++
++    ret = load_elf_as(filename, NULL, NULL, NULL,
++                      &entry, &lowaddr, &highaddr, NULL, false,
++                      EM_RX, 1, 0, cs->as);
++
++    if (ret <= 0) {
++        /* The header loaded but the image didn't */
++        error_report("qemu: could not load elf '%s': %s",
++                     filename, load_elf_strerror(ret));
++        exit(1);
++    }
++
++    cpu->env.reset_pc = entry;
++    cpu->env.use_reset_pc = true;
++    return true;
 +}
 +
  static void rx_load_image(RXCPU *cpu, const char *filename,
                            uint32_t start, uint32_t size)
  {
-@@ -68,7 +97,8 @@ static void rx_load_image(RXCPU *cpu, const char *filename,
-         fprintf(stderr, "qemu: could not load kernel '%s'\n", filename);
-         exit(1);
-     }
--    cpu->env.pc = start;
-+    cpu->env.reset_pc = start;
-+    cpu->env.use_reset_pc = true;
+@@ -92,6 +124,10 @@ static void rx_load_image(RXCPU *cpu, const char *filename,
+     long kernel_size;
+     int i;
  
-     /* setup exception trap trampoline */
-     /* linux kernel only works little-endian mode */
-@@ -87,6 +117,7 @@ static void rx_gdbsim_init(MachineState *machine)
-     const char *kernel_filename = machine->kernel_filename;
-     const char *dtb_filename = machine->dtb;
-     uint8_t rng_seed[32];
-+    CPUState *cs;
- 
-     if (machine->ram_size < mc->default_ram_size) {
-         char *sz = size_to_str(mc->default_ram_size);
-@@ -153,6 +184,9 @@ static void rx_gdbsim_init(MachineState *machine)
-             s->mcu.cpu.env.regs[1] = SDRAM_BASE + dtb_offset;
-         }
-     }
-+    for (cs = first_cpu; cs; cs = CPU_NEXT(cs)) {
-+        qemu_register_reset(rx_cpu_reset, RX_CPU(cs));
++    if (rx_load_elf(cpu, filename)) {
++        return;
 +    }
- }
- 
- static void rx_gdbsim_class_init(ObjectClass *oc, void *data)
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 37a6fdd569..528cda486c 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -76,7 +76,6 @@ static void rx_cpu_reset_hold(Object *obj, ResetType type)
-     CPUState *cs = CPU(obj);
-     RXCPUClass *rcc = RX_CPU_GET_CLASS(obj);
-     CPURXState *env = cpu_env(cs);
--    uint32_t *resetvec;
- 
-     if (rcc->parent_phases.hold) {
-         rcc->parent_phases.hold(obj, type);
-@@ -84,11 +83,6 @@ static void rx_cpu_reset_hold(Object *obj, ResetType type)
- 
-     memset(env, 0, offsetof(CPURXState, end_reset_fields));
- 
--    resetvec = rom_ptr(0xfffffffc, 4);
--    if (resetvec) {
--        /* In the case of kernel, it is ignored because it is not set. */
--        env->pc = ldl_p(resetvec);
--    }
-     rx_cpu_unpack_psw(env, 0, 1);
-     env->regs[0] = env->isp = env->usp = 0;
-     env->fpsw = 0;
-@@ -142,7 +136,6 @@ static void rx_cpu_realize(DeviceState *dev, Error **errp)
-     }
- 
-     qemu_init_vcpu(cs);
--    cpu_reset(cs);
- 
-     rcc->parent_realize(dev, errp);
- }
-@@ -189,6 +182,8 @@ static void rx_cpu_init(Object *obj)
- {
-     RXCPU *cpu = RX_CPU(obj);
- 
-+    cpu->env.reset_pc = 0;
-+    cpu->env.use_reset_pc = false;
-     qdev_init_gpio_in(DEVICE(cpu), rx_cpu_set_irq, 2);
- }
- 
-diff --git a/target/rx/cpu.h b/target/rx/cpu.h
-index 5ba1874bd7..c42a03efb3 100644
---- a/target/rx/cpu.h
-+++ b/target/rx/cpu.h
-@@ -98,6 +98,9 @@ typedef struct CPUArchState {
-     uint32_t ack_ipl;           /* execute ipl */
-     float_status fp_status;
-     qemu_irq ack;               /* Interrupt acknowledge */
 +
-+    bool use_reset_pc;          /* Use reset_pc instead of reset vector */
-+    uint32_t reset_pc;          /* PC reset value when use_reset_pc */
- } CPURXState;
- 
- /*
+     kernel_size = load_image_targphys(filename, start, size);
+     if (kernel_size < 0) {
+         fprintf(stderr, "qemu: could not load kernel '%s'\n", filename);
 -- 
 2.47.2
 
