@@ -2,64 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E78FA39658
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 10:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA48BA396B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 10:16:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkJUF-00038A-Ip; Tue, 18 Feb 2025 04:01:51 -0500
+	id 1tkJgk-0005z0-Op; Tue, 18 Feb 2025 04:14:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkJU8-00037K-AC; Tue, 18 Feb 2025 04:01:46 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tkJgh-0005yB-1c
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:43 -0500
+Received: from mailout3.samsung.com ([203.254.224.33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkJU5-0005WF-DS; Tue, 18 Feb 2025 04:01:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739869302; x=1771405302;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=qIHNCAX6kyKPE7zvr1dVSW7aT1fzA5e5v+pzLCf8QME=;
- b=IQkyFaL5s8npnsc+blO0iEHLoZgN/Rb3eJhPtr2KFznTgsOOW10wg4qN
- DldTiidRdYbmRDdQ7tfuuNaa+MohlxHhq3Zh+rUX67nK1yaLPAQya8vaR
- I+V5nWxchFYcGEuL566qOu5Xw2VwCmFXgajO0bLNBjr8l6C8RXYaBgMhi
- gR4CmNTSm0YSRH3iTVKQxqOBl8pi3ohZhZ9uoeDdZgqPxRWR0UjygF7Ro
- g/oKggVJ5S1I2dOnzqDX2Ptst+D4zIZlPC5ViiFyJP6vvLGysHYoKpA4V
- rBFs5FL6+Z0BG1vLWcS3xFcJFfXAoeD3q2MBaoDx1f3u4Lf42qewgRZ+m w==;
-X-CSE-ConnectionGUID: EjqdGlEURqKcsg3lJ2a0Sw==
-X-CSE-MsgGUID: bOBQnGiXQueXUKITpNX9zQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51176438"
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="51176438"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 01:01:36 -0800
-X-CSE-ConnectionGUID: GeGp+u36RumwEyYKVKywCw==
-X-CSE-MsgGUID: BGd/NjZ/Q06CLpCe5nFYgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118973143"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 18 Feb 2025 01:01:35 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] rust: Fix the typos in doc
-Date: Tue, 18 Feb 2025 17:21:08 +0800
-Message-Id: <20250218092108.3347963-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tkJgb-0006hV-O6
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:42 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20250218091428epoutp035c9d54be3df7cfa3198563c276c29cb8~lQpvzRjTC0064600646epoutp03f
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 09:14:28 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20250218091428epoutp035c9d54be3df7cfa3198563c276c29cb8~lQpvzRjTC0064600646epoutp03f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1739870068;
+ bh=h1bwEdr1e1HxH8m7hOirkZz1UbVnQfD+YMJM86ENTwY=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=S3IfXngGAdgvcBMz89+wdDzbRQzHuCK42tPx1KGy18PNUyy4pWCFKVAhnFzUlB/HN
+ Tkq2mhTCAuw2D/xt0EpNoBqG6vb6YUb6onzlb1bTaKq7GEK5TDV5wsriaPjMTSdy8y
+ 3dOiMeEeRhIQAOHycFTuuOr7b+cB25YWsJN9qZzc=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+ 20250218091428epcas5p4f51a4b14f86dbaf3bb031ac9676047c7~lQpva95582298422984epcas5p4P;
+ Tue, 18 Feb 2025 09:14:28 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.179]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4Yxv3f5f3Wz4x9QB; Tue, 18 Feb
+ 2025 09:14:22 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+ epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 2C.79.29212.D6F44B76; Tue, 18 Feb 2025 18:14:21 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710~lQbfiwxdH1165411654epcas5p3z;
+ Tue, 18 Feb 2025 08:58:09 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250218085809epsmtrp162440506b74db4ea10b1f1d06817db8a~lQbfiAbvR0197301973epsmtrp1F;
+ Tue, 18 Feb 2025 08:58:09 +0000 (GMT)
+X-AuditID: b6c32a50-801fa7000000721c-ab-67b44f6d8c35
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ EB.E6.23488.0AB44B76; Tue, 18 Feb 2025 17:58:08 +0900 (KST)
+Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
+ by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250218085807epsmtip111b5730951297720722c39b280630de1~lQbeIVmIg1080010800epsmtip1r;
+ Tue, 18 Feb 2025 08:58:07 +0000 (GMT)
+From: Arpit Kumar <arpit1.kumar@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
+ dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
+ a.manzanares@samsung.com, alok.rathore@samsung.com, Arpit Kumar
+ <arpit1.kumar@samsung.com>
+Subject: [PATCH v2 0/3] CXL CCI Log Commands implementation
+Date: Tue, 18 Feb 2025 14:27:28 +0530
+Message-Id: <20250218085731.550029-1-arpit1.kumar@samsung.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIJsWRmVeSWpSXmKPExsWy7bCmum6u/5Z0g4Uv+CymH1a0+HJ6D5tF
+ 7+IlrBarb65htLh5YCeTxcKNy5gszs86xWLxd9teRovjvTtYgNw57A5cHjtn3WX3eHJtM5NH
+ 35ZVjB5TZ9d7fN4kF8AalW2TkZqYklqkkJqXnJ+SmZduq+QdHO8cb2pmYKhraGlhrqSQl5ib
+ aqvk4hOg65aZA3STkkJZYk4pUCggsbhYSd/Opii/tCRVISO/uMRWKbUgJafApECvODG3uDQv
+ XS8vtcTK0MDAyBSoMCE748jvhWwFvzgrGtoXMjUwTuHoYuTkkBAwkZjXs4Cpi5GLQ0hgD6PE
+ xclH2EESQgKfGCV6j0tAJL4xSvTteQeU4ADr+PEjCCK+l1Fi+eMrzBBOA5PE5sW7WUG62QR0
+ JM7fnssGYosISEr87joNVsQs8IZR4sHVBcwgCWEBa4m9syezgNgsAqoSx372MYHYvAJ2Ei9n
+ TGaDuE9eYv/Bs8wQcUGJkzOfgNUzA8Wbt84GGyohcI9dYtrWP6wQDS4S2z5PYYawhSVeHd/C
+ DmFLSbzsb4OysyX+zG+HWlAgsejnTKi4vUTrqX5mkDeZBTQl1u/ShwjLSkw9tY4JYi+fRO/v
+ J0wQcV6JHfNgbDWJ9h3zocbISLz5tRhqvIfElCcnoEEaK9G3v4l1AqP8LCTvzELyziyEzQsY
+ mVcxSqUWFOempyabFhjq5qWWw2M2OT93EyM4bWoF7GBcveGv3iFGJg7GQ4wSHMxKIryHujak
+ C/GmJFZWpRblxxeV5qQWH2I0BQbyRGYp0eR8YOLOK4k3NLE0MDEzMzOxNDYzVBLnbd7Zki4k
+ kJ5YkpqdmlqQWgTTx8TBKdXAtDVvrlhUw4P5sy7H/ezweN5RP/PYdg21uFQnLp/fPnufO64/
+ fuzilBqn5d9+bPj6xrUv7b3wgS3Ks9y53lxWi9Z6fffoM/b7EQE3Gm6ceW+l5Mb3/0KJZd+s
+ Sal/LK6l7lezutaz0mhfyEW3z4ePTP2vmrrV0Jp/16OSwn2N55TdYnOM5sROvsjyksVyX1ra
+ HpZ1TVq/k49zBHkGrzNbM+0L47tqvYksVUnLjF5o7NHW3G60pMyOw+LR49AvkVGhl05xxKxo
+ XNdo1Wmj/a5YN0//25dlOlM9v5fftM6eprYveu237SZnKl0uHfy+9ZaEc1XAqs8Llmi65ExJ
+ 9lQ+kBy8II61ZJbFvx2fgtJfMiixFGckGmoxFxUnAgAi/lgmJAQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFLMWRmVeSWpSXmKPExsWy7bCSnO5C7y3pBue9LKYfVrT4cnoPm0Xv
+ 4iWsFqtvrmG0uHlgJ5PFwo3LmCzOzzrFYvF3215Gi+O9O1iA3DnsDlweO2fdZfd4cm0zk0ff
+ llWMHlNn13t83iQXwBrFZZOSmpNZllqkb5fAlXHk90K2gl+cFQ3tC5kaGKdwdDFycEgImEj8
+ +BHUxcjFISSwm1Fi+YsjbF2MnEBxGYmLMx+zQNjCEiv/PWcHsYUE/jFKHOzhArHZBHQkzt+e
+ C1YvIiAp8bvrNDPIIGaBb4wSc269YAVJCAtYS+ydPRlsEIuAqsSxn31MIDavgJ3EyxmToZbJ
+ S+w/eJYZIi4ocXLmE7B6ZqB489bZzBMY+WYhSc1CklrAyLSKUTK1oDg3PTfZsMAwL7Vcrzgx
+ t7g0L10vOT93EyM4eLU0djC++9akf4iRiYPxEKMEB7OSCO+hrg3pQrwpiZVVqUX58UWlOanF
+ hxilOViUxHlXGkakCwmkJ5akZqemFqQWwWSZODilGphMvs7naL8RP0sy9P3arZ+9e9/bp6Sq
+ vbWtEjJxjAlpeXuW42rVORfRJcvTJqT9cHozubb3bLVDOYtaq+OX1uevGa0in9yUzVi+YWfE
+ eZXFh9/2xF9nPVaWM82ZK9PP+kufX2X5so6DxbyGh9cfL5+9QX9peWSsj3X3QyPOv9ZuPzQf
+ CbBlvVkYc2Izz7UkXyZtjZ6rZwPlr5t2Ku4R2h6iOP/11U7Xf4Xz7FJTnlyS/6Jzcwsft/wi
+ 26K2pRP+Vu425TszJU9mY1dCUlH/vd/7Lyrybj0yo8Xs+9/yt9KMIeuenzM9e9HShY/tgtPh
+ usb4Rgtm5gBn9u5gya2q35/PT3e3fH69J0vxq9pVXyWW4oxEQy3mouJEAMEst2PNAgAA
+X-CMS-MailID: 20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710
+References: <CGME20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710@epcas5p3.samsung.com>
+Received-SPF: pass client-ip=203.254.224.33;
+ envelope-from=arpit1.kumar@samsung.com; helo=mailout3.samsung.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,57 +134,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These typos are found by "cargo spellcheck". Though it outputs a lot of
-noise and false positives, there still are some real typos.
+CXL CCI log commands implmented as per CXL Specification 3.2 8.2.10.5
+1) get_log_capabilities (Opcode 0402h)
+2) clear_log (Opcode 0403h)
+3) populate_log (Opcode 0404h)
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- rust/hw/char/pl011/src/device.rs | 4 ++--
- rust/qemu-api/src/qom.rs         | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+This v2 patch addresses the feedback from the v1 patch and include some new changes.
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index fe73771021e7..e064da31be96 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -477,13 +477,13 @@ pub fn post_load(&mut self) -> Result<(), ()> {
- }
- 
- impl PL011State {
--    /// Initializes a pre-allocated, unitialized instance of `PL011State`.
-+    /// Initializes a pre-allocated, uninitialized instance of `PL011State`.
-     ///
-     /// # Safety
-     ///
-     /// `self` must point to a correctly sized and aligned location for the
-     /// `PL011State` type. It must not be called more than once on the same
--    /// location/instance. All its fields are expected to hold unitialized
-+    /// location/instance. All its fields are expected to hold uninitialized
-     /// values with the sole exception of `parent_obj`.
-     unsafe fn init(&mut self) {
-         static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 3d5ab2d90186..72e637868a9e 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -245,7 +245,7 @@ fn as_object(&self) -> &Object {
-     }
- 
-     /// Return the receiver as a const raw pointer to Object.
--    /// This is preferrable to `as_object_mut_ptr()` if a C
-+    /// This is preferable to `as_object_mut_ptr()` if a C
-     /// function only needs a `const Object *`.
-     fn as_object_ptr(&self) -> *const Object {
-         self.as_ptr().cast()
-@@ -517,7 +517,7 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
-     /// `INSTANCE_INIT` functions have been called.
-     const INSTANCE_POST_INIT: Option<fn(&Self)> = None;
- 
--    /// Called on descendent classes after all parent class initialization
-+    /// Called on descendant classes after all parent class initialization
-     /// has occurred, but before the class itself is initialized.  This
-     /// is only useful if a class is not a leaf, and can be used to undo
-     /// the effects of copying the contents of the parent's class struct
+Changes in from v1 to v2:
+- Added descriptive text for each patches
+- Added reference from CXL spec 3.2
+- Updated naming for better comprehension
+- Modified find_log_index() to return supported log
+- Handled array of log capabilities as static const pointers
+- Replaced bit fields for param_flags with defines for individual bits
+- Disabled support of clear & populate log command for command effect log
+
+The patches are generated against the Johnathan's tree
+https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
+
+Arpit Kumar (3):
+  hw/cxl/cxl-mailbox-utils.c: Added support for Get Log Capabilities
+    (Opcode 0402h)
+  hw/cxl/cxl-mailbox-utils.c: Added support for Clear Log (Opcode 0403h)
+  hw/cxl/cxl-mailbox-utils.c: Added support for Populate Log (Opcode
+    0404h)
+
+ hw/cxl/cxl-mailbox-utils.c   | 100 +++++++++++++++++++++++++++++++++++
+ include/hw/cxl/cxl_device.h  |  20 +++++++
+ include/hw/cxl/cxl_mailbox.h |   5 ++
+ 3 files changed, 125 insertions(+)
+
 -- 
 2.34.1
 
