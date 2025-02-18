@@ -2,97 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95AF0A39D43
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6398A39D70
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:30:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkNWm-0007lk-2F; Tue, 18 Feb 2025 08:20:44 -0500
+	id 1tkNfJ-0001Tc-Ev; Tue, 18 Feb 2025 08:29:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkNWg-0007lJ-Pj
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:20:39 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkNWe-00065Y-S6
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:20:38 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38f29a1a93bso3497996f8f.1
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 05:20:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739884835; x=1740489635; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=vC3MmtES1R3kkG1nVWHLeiRBuKWybO9xGwH1FF01u2M=;
- b=dmULQ4Yz1rXh73V2ziPqQ33nOVzOWPYFclw4noD7lQFEapYR70qEwDhtZyPoqBi1aB
- bBbblfskZpR9LahK3q7K/WoGIJtUy5+pgRMAsOuq0rRaTMdHcMSTTEC4gMRftTo5sqLP
- r8D7UKylKILUtXIQc9vEB7YptsmShkz4ZxP4KmEXxfL7Jys3pHT+8TnYtOzs7ovXpxSq
- nP8fsn8HyNy1tXUnW4p5YtO7FaZMRAXAOBuwOsnN2cCiQ36UL6OQFQSNLhGaqwun7NS+
- A7gk23jg2FIUjiFalglyhMhG/gEGNbWSlYHlbISBkX8LUcfBycK2Jd5/8qx8KWk5PlPF
- XXQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739884835; x=1740489635;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vC3MmtES1R3kkG1nVWHLeiRBuKWybO9xGwH1FF01u2M=;
- b=Y0x7iHZICZRiDUqwr94I3z1B7DVXVHE8dSC7iaTCISLwu7/aylt7ghYeyLy/uMSosF
- BICosf6wnNKngNhsnmhG85qtqUH21Q8PpuBKG5usNlHZeB9DEspUDmD8rLAmj9zt7qrP
- 7Xc6KJVA+o3gLgP6aOQMofbmxqBHosKMLzv0y4XKFP+lYVl6kcrKi0YsokfrMlID0p6y
- gqMpoy5C6mWCk9vHswKZG+ygY0NWJq8ma07aL7pEuIvhZ51kWVPfo2GBekM3PMCy279j
- WN4DESNeivxB4YrS7zpKj4ZdWpBh71IrOY+8eZNUnedgys7/oVLYUP/J6x3PBJEwwZ0l
- S7cA==
-X-Gm-Message-State: AOJu0YyZWHQBlXV/rpxavpLvG478+Mip9chO1ridRx++W1K2Ugern0di
- pm9YoC3ULueqgz+XJE4hZy+A0zbujSpHlKZxeP/ObYRC5SETzmC130aMzEXoGoSnkoi0bqhXisr
- UBKk=
-X-Gm-Gg: ASbGncuF4lRuUcqIhOjcw+E27S7pgaQBC2gThccb6uVU7R1VbAy0uw9BWA61nxG5eZ8
- aIK6mxylrUfoTxG6FGlOXrVuTUbfE7KcDuyK40Tdj0Tyit80ux0ZNaZwaInHRrj39zGAlmMOf2/
- xgI9LPd5QaV52fmexWGFfYtLmA1n4WjSzC4wpH9Pb1QpnZWuQDdWEXM7rRPuEaL0dVoOjhVjluT
- U+h++LkzvasWIgLCVJLxheTOdUDzhOGGSWWnA4WDihVbEaxm/eeaNIh5a17otEZ9mokOmKmW6JM
- 9Wdpvq4wetO1w5XJGGX+1XacMqqv9QpcSyUhKbSoU2l8FudpobJz+0ex7Cg=
-X-Google-Smtp-Source: AGHT+IForCtadydOvVhTNjd9ECIey58DSMhrG0QgWU5N7F/lu9Reb+pwn3DxvYQ/N+/It+4SLbTErg==
-X-Received: by 2002:a05:6000:156c:b0:38f:2ddd:a1bb with SMTP id
- ffacd0b85a97d-38f33f10603mr11940369f8f.8.1739884834689; 
- Tue, 18 Feb 2025 05:20:34 -0800 (PST)
-Received: from [192.168.69.196] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4395a1b824dsm181005315e9.34.2025.02.18.05.20.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Feb 2025 05:20:33 -0800 (PST)
-Message-ID: <2691328e-09db-496f-975a-c4f61e358f92@linaro.org>
-Date: Tue, 18 Feb 2025 14:20:32 +0100
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tkNfI-0001TQ-0y
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:29:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tkNfF-00078v-59
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:29:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739885366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=X3AIpFMd4JJU2+UhTVJtkJ0tyhc383x4G16IJtfpa2E=;
+ b=LaUMKwFPp0ITJXxfdLJkjb87LPsjHyUvuASK70azX6aJTSnGlFRowPPVja8xmKYM2TlNr4
+ ffSjM9iROTrptPXksEqb+ODtxvxdb8pj8hclv6tkJSaQ84pqlnsZ5MqjJhtGqdk0sOlYRQ
+ Thbh/pQj3PkxU2rAeKLmqVbdxvkEyr0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-Z7enATAsNjK9b5NctcjEYg-1; Tue,
+ 18 Feb 2025 08:29:21 -0500
+X-MC-Unique: Z7enATAsNjK9b5NctcjEYg-1
+X-Mimecast-MFC-AGG-ID: Z7enATAsNjK9b5NctcjEYg_1739885360
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 13F3E1800876; Tue, 18 Feb 2025 13:29:20 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.111])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 339B11800352; Tue, 18 Feb 2025 13:29:17 +0000 (UTC)
+Date: Tue, 18 Feb 2025 21:25:16 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, slp@redhat.com, stevensd@chromium.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, david@redhat.com,
+ hi@alyssa.is, mst@redhat.com, jasowang@redhat.com
+Subject: Re: [PATCH v4 7/9] vhost-user-devive: Add shmem BAR
+Message-ID: <20250218132516.GA28047@fedora>
+References: <20250217164012.246727-1-aesteve@redhat.com>
+ <20250217164012.246727-8-aesteve@redhat.com>
+ <20250218104116.GK10767@fedora>
+ <CADSE00+-uisJfHWCe0sFTy1fXrqB7K_yWnm-xZSxAmf1=fVpAA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 3/9] meson: Disallow 64-bit on 32-bit Xen emulation
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
- Paul Durrant <paul@xen.org>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-arm <qemu-arm@nongnu.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20250208205725.568631-1-richard.henderson@linaro.org>
- <20250208205725.568631-4-richard.henderson@linaro.org>
- <aeaf0f19-0f14-4a02-9c51-09521e7c75e1@linaro.org>
- <dc24cf43-b6a1-42b6-ac93-4128f2c03684@linaro.org>
-Content-Language: en-US
-In-Reply-To: <dc24cf43-b6a1-42b6-ac93-4128f2c03684@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="MmHLaugt0pq71LVJ"
+Content-Disposition: inline
+In-Reply-To: <CADSE00+-uisJfHWCe0sFTy1fXrqB7K_yWnm-xZSxAmf1=fVpAA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,61 +88,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/2/25 14:19, Philippe Mathieu-Daudé wrote:
-> On 18/2/25 12:20, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> Adding Xen community.
->>
->> On 8/2/25 21:57, Richard Henderson wrote:
->>> Require a 64-bit host binary to spawn a 64-bit guest.
->>>
->>> Reviewed-by: Thomas Huth <thuth@redhat.com>
->>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>   meson.build | 9 +++++++--
->>>   1 file changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/meson.build b/meson.build
->>> index 1af8aeb194..911955cfa8 100644
->>> --- a/meson.build
->>> +++ b/meson.build
->>> @@ -304,9 +304,14 @@ else
->>>   endif
->>>   accelerator_targets = { 'CONFIG_KVM': kvm_targets }
->>> -if cpu in ['x86', 'x86_64']
->>> +if cpu == 'x86'
->>> +  xen_targets = ['i386-softmmu']
->>> +elif cpu == 'x86_64'
->>>     xen_targets = ['i386-softmmu', 'x86_64-softmmu']
->>> -elif cpu in ['arm', 'aarch64']
->>> +elif cpu == 'arm'
->>> +  # i386 emulator provides xenpv machine type for multiple 
->>> architectures
->>> +  xen_targets = ['i386-softmmu']
->>
->> Is actually someone *testing* this config? I'm having hard time building
->> it, so am very suspicious about how it runs, and start to wonder if I'm
->> not just wasting my time (as could be our CI).
-> 
-> This config is not tested and not functional. I'll post a patch
-> removing it.
 
-(thus no need to follow the deprecation policy).
+--MmHLaugt0pq71LVJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
->>
->>> +elif cpu == 'aarch64'
->>>     # i386 emulator provides xenpv machine type for multiple 
->>> architectures
->>>     xen_targets = ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu']
->>>   else
->>
->> Regards,
->>
->> Phil.
->>
-> 
+On Tue, Feb 18, 2025 at 11:55:33AM +0100, Albert Esteve wrote:
+> On Tue, Feb 18, 2025 at 11:41=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat=
+=2Ecom> wrote:
+> >
+> > On Mon, Feb 17, 2025 at 05:40:10PM +0100, Albert Esteve wrote:
+> > > Add a shmem BAR block in the vhost-user-device,
+> > > which files can be directly mapped into.
+> > >
+> > > The number, shmid, and size of the VIRTIO Shared
+> > > Memory subregions is retrieved through a
+> > > get_shmem_config message sent by the
+> > > vhost-user-base module on the realize step,
+> > > after virtio_init().
+> > >
+> > > By default, if VHOST_USER_PROTOCOL_F_SHMEM
+> > > feature is not supported by the backend,
+> > > there is no cache.
+> > >
+> > > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > > ---
+> > >  hw/virtio/vhost-user-base.c       | 47 +++++++++++++++++++++++++++++=
+--
+> > >  hw/virtio/vhost-user-device-pci.c | 36 +++++++++++++++++++++--
+> > >  2 files changed, 78 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+> > > index 2bc3423326..8d4bca98a8 100644
+> > > --- a/hw/virtio/vhost-user-base.c
+> > > +++ b/hw/virtio/vhost-user-base.c
+> > > @@ -16,6 +16,7 @@
+> > >  #include "hw/virtio/virtio-bus.h"
+> > >  #include "hw/virtio/vhost-user-base.h"
+> > >  #include "qemu/error-report.h"
+> > > +#include "migration/blocker.h"
+> > >
+> > >  static void vub_start(VirtIODevice *vdev)
+> > >  {
+> > > @@ -271,7 +272,8 @@ static void vub_device_realize(DeviceState *dev, =
+Error **errp)
+> > >  {
+> > >      VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> > >      VHostUserBase *vub =3D VHOST_USER_BASE(dev);
+> > > -    int ret;
+> > > +    uint64_t memory_sizes[VIRTIO_MAX_SHMEM_REGIONS];
+> > > +    int i, ret, nregions;
+> > >
+> > >      if (!vub->chardev.chr) {
+> > >          error_setg(errp, "vhost-user-base: missing chardev");
+> > > @@ -314,7 +316,7 @@ static void vub_device_realize(DeviceState *dev, =
+Error **errp)
+> > >
+> > >      /* Allocate queues */
+> > >      vub->vqs =3D g_ptr_array_sized_new(vub->num_vqs);
+> > > -    for (int i =3D 0; i < vub->num_vqs; i++) {
+> > > +    for (i =3D 0; i < vub->num_vqs; i++) {
+> > >          g_ptr_array_add(vub->vqs,
+> > >                          virtio_add_queue(vdev, vub->vq_size,
+> > >                                           vub_handle_output));
+> > > @@ -328,11 +330,50 @@ static void vub_device_realize(DeviceState *dev=
+, Error **errp)
+> > >                           VHOST_BACKEND_TYPE_USER, 0, errp);
+> > >
+> > >      if (ret < 0) {
+> > > -        do_vhost_user_cleanup(vdev, vub);
+> > > +        goto err;
+> > > +    }
+> > > +
+> > > +    ret =3D vub->vhost_dev.vhost_ops->vhost_get_shmem_config(&vub->v=
+host_dev,
+> > > +                                                           &nregions,
+> > > +                                                           memory_si=
+zes,
+> > > +                                                           errp);
+> > > +
+> > > +    if (ret < 0) {
+> > > +        goto err;
+> > > +    }
+> > > +
+> > > +    for (i =3D 0; i < nregions; i++) {
+> > > +        if (memory_sizes[i]) {
+> > > +            if (vub->vhost_dev.migration_blocker =3D=3D NULL) {
+> > > +                error_setg(&vub->vhost_dev.migration_blocker,
+> > > +                       "Migration disabled: devices with VIRTIO Shar=
+ed Memory "
+> > > +                       "Regions do not support migration yet.");
+> > > +                ret =3D migrate_add_blocker_normal(
+> > > +                    &vub->vhost_dev.migration_blocker,
+> > > +                    errp);
+> > > +
+> > > +                if (ret < 0) {
+> > > +                    goto err;
+> > > +                }
+> > > +            }
+> > > +
+> > > +            if (memory_sizes[i] % qemu_real_host_page_size() !=3D 0)=
+ {
+> > > +                error_setg(errp, "Shared memory %d size must be a po=
+wer of 2 "
+> > > +                                 "no smaller than the page size", i);
+> > > +                goto err;
+> > > +            }
+> > > +
+> > > +            memory_region_init(virtio_new_shmem_region(vdev)->mr,
+> >
+> > Does this code support non-contiguous shmids? For example, if a device
+> > has two Shared Memory Regions defined in its spec but the first one is
+> > optional, then the device might have memory_sizes[0] =3D=3D 0 and
+> > memory_sizes[1] > 0. In that case the Shared Memory Region must have
+> > shmid 1 and not shmid 0.
+>=20
+> Yes, it does. That is guarded by ` if (memory_sizes[i]) {`, which only
+> initializes the region if memory_sizes[i] > 0. The main downsize of
+> that, is that it requires to send as many `memory_sizes` elements as
+> the highest shmid for the device. But as it is, it is supported by
+> this code.
+
+shmids are not preserved when there are gaps:
+
+  for (i =3D 0; i < vdev->n_shmem_regions; i++) {
+      memory_region_add_subregion(&dev->shmembar, offset, mr);
+      virtio_pci_add_shm_cap(vpci_dev, VIRTIO_DEVICE_PCI_SHMEM_BAR,
+                             offset, mr->size, i);
+			                       ^
+
+vdev->n_shmem_regions is incremented by virtio_new_shmem_region().
+virtio_new_shmem_region() is only called on non-empty Shared Memory
+Regions.
+
+In the example I gave with empty shmid 0 and non-empty shmid 1 I think
+we end up with vdev->n_shmem_regions =3D=3D 1. shmdid 1 is exposed to the
+guest with shmid 0.
+
+Have I missed something?
+
+> >
+> > > +                               OBJECT(vdev), "vub-shm-" + i,
+> > > +                               memory_sizes[i]);
+> > > +        }
+> > >      }
+> > >
+> > >      qemu_chr_fe_set_handlers(&vub->chardev, NULL, NULL, vub_event, N=
+ULL,
+> > >                               dev, NULL, true);
+> > > +    return;
+> > > +err:
+> > > +    do_vhost_user_cleanup(vdev, vub);
+> > >  }
+> > >
+> > >  static void vub_device_unrealize(DeviceState *dev)
+> > > diff --git a/hw/virtio/vhost-user-device-pci.c b/hw/virtio/vhost-user=
+-device-pci.c
+> > > index efaf55d3dd..f215cae925 100644
+> > > --- a/hw/virtio/vhost-user-device-pci.c
+> > > +++ b/hw/virtio/vhost-user-device-pci.c
+> > > @@ -8,14 +8,18 @@
+> > >   */
+> > >
+> > >  #include "qemu/osdep.h"
+> > > +#include "qapi/error.h"
+> > >  #include "hw/qdev-properties.h"
+> > >  #include "hw/virtio/vhost-user-base.h"
+> > >  #include "hw/virtio/virtio-pci.h"
+> > >
+> > > +#define VIRTIO_DEVICE_PCI_SHMEM_BAR 2
+> > > +
+> > >  struct VHostUserDevicePCI {
+> > >      VirtIOPCIProxy parent_obj;
+> > >
+> > >      VHostUserBase vub;
+> > > +    MemoryRegion shmembar;
+> > >  };
+> > >
+> > >  #define TYPE_VHOST_USER_DEVICE_PCI "vhost-user-device-pci-base"
+> > > @@ -25,10 +29,38 @@ OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VH=
+OST_USER_DEVICE_PCI)
+> > >  static void vhost_user_device_pci_realize(VirtIOPCIProxy *vpci_dev, =
+Error **errp)
+> > >  {
+> > >      VHostUserDevicePCI *dev =3D VHOST_USER_DEVICE_PCI(vpci_dev);
+> > > -    DeviceState *vdev =3D DEVICE(&dev->vub);
+> > > +    DeviceState *dev_state =3D DEVICE(&dev->vub);
+> > > +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev_state);
+> > > +    MemoryRegion *mr;
+> > > +    uint64_t offset =3D 0, shmem_size =3D 0;
+> > > +    int i;
+> > >
+> > >      vpci_dev->nvectors =3D 1;
+> > > -    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
+> > > +    qdev_realize(dev_state, BUS(&vpci_dev->bus), errp);
+> > > +
+> > > +    for (i =3D 0; i < vdev->n_shmem_regions; i++) {
+> > > +        mr =3D vdev->shmem_list[i].mr;
+> > > +        if (mr->size > UINT64_MAX - shmem_size) {
+> > > +            error_setg(errp, "Total shared memory required overflow"=
+);
+> > > +            return;
+> > > +        }
+> > > +        shmem_size =3D shmem_size + mr->size;
+> > > +    }
+> > > +    if (shmem_size) {
+> > > +        memory_region_init(&dev->shmembar, OBJECT(vpci_dev),
+> > > +                           "vhost-device-pci-shmembar", shmem_size);
+> > > +        for (i =3D 0; i < vdev->n_shmem_regions; i++) {
+> > > +            memory_region_add_subregion(&dev->shmembar, offset, mr);
+> > > +            virtio_pci_add_shm_cap(vpci_dev, VIRTIO_DEVICE_PCI_SHMEM=
+_BAR,
+> > > +                                   offset, mr->size, i);
+> > > +            offset =3D offset + mr->size;
+> > > +        }
+> > > +        pci_register_bar(&vpci_dev->pci_dev, VIRTIO_DEVICE_PCI_SHMEM=
+_BAR,
+> > > +                        PCI_BASE_ADDRESS_SPACE_MEMORY |
+> > > +                        PCI_BASE_ADDRESS_MEM_PREFETCH |
+> > > +                        PCI_BASE_ADDRESS_MEM_TYPE_64,
+> > > +                        &dev->shmembar);
+> > > +    }
+> > >  }
+> > >
+> > >  static void vhost_user_device_pci_class_init(ObjectClass *klass, voi=
+d *data)
+> > > --
+> > > 2.48.1
+> > >
+>=20
+
+--MmHLaugt0pq71LVJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAme0ijwACgkQnKSrs4Gr
+c8hIYgf/ReXKr50DystLpeb9xil2dFbTru61Cvph2cgEVZJtIDeUYAsGrxDt9XwU
+S7uIhy3L1RSblRp6vbBq2FOSS1pTPDmImjXI8s7ueTqv2RZlsoCAJy4Cp/SgnHx/
+JAjbo8SwDqkXiNBVlzMiFYE3YQUwd7TmFIblfCIlleteDzOByB8ILCFLKK/sCqsq
+p9BJWBIX1gtgrUow/bb76ggzzbWlgc6LT1JMnfoaY9+tpzMDpzoQSidDbfXzRWSy
+HXHkiSR3iNnjT0RlNV64vRR36giYhTEpesrb75CfYyJDNuPFmPa/Ph8ucCxZrTZ7
+HT2ybRg2MMj4To5Sr23ua0HXXjKZqA==
+=0+25
+-----END PGP SIGNATURE-----
+
+--MmHLaugt0pq71LVJ--
 
 
