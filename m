@@ -2,101 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1811BA3A2BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C789A3A2C3
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkQRA-0005bo-MT; Tue, 18 Feb 2025 11:27:08 -0500
+	id 1tkQRD-0005dj-Gx; Tue, 18 Feb 2025 11:27:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkQR8-0005Yu-IP
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:27:06 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkQR6-0000oT-Pn
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:27:06 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4398e3dfc66so16163555e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 08:27:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739896023; x=1740500823; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C8Njo+qOXhV4Sx/ta7KiauuSaoi71X4Ex5TI1JyVyyI=;
- b=JJlkYZjDHy1SyWYNS0ofTXuL3jnbHk9TyGp+zaNdP+RZnPMhUf9uF9vncrgpTt8293
- jrNPP78tE9nFy66qTC6ONF8xRcNDNQuv0azituwdkofRsH1QR0ENwxD0t2ud1eA8/ox5
- P0hYjnKwlxfMPMWT6j/0JEgxcmkfUAQHhoOJ1CftW3FhqwhcpjIFKFB22p8SDRyX0K6o
- MXAdmT2PYpCdwWlyJqFpgwLxaCPetRfUk06OgfxE4ErFC6oj/f+aE4lyZsSmP+6GUlHE
- PHOACDuDDZPSuyALXI9/fKzuQ3y+W/uj36+NTVTk1aM3imZX9rntSY38g4WUezERfzL7
- DeZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739896023; x=1740500823;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C8Njo+qOXhV4Sx/ta7KiauuSaoi71X4Ex5TI1JyVyyI=;
- b=uxJlYv7mO46OkVTBVMVA9soUKCP1bHtaP7pjDzfkAJtdvRy08A0lg47TQ0YNdr4x1L
- r25aRSXyscjb4VwSdLZ4FSkIsaDmvmaeX0cqE0bmhzAYW2YwJRArSh0k12+jFohoWxaW
- vudkatD92Aq4KrayDX5jX+xk9upVuEtlh8Tttah91zjiIqqcoMFW5slGfExtbbid/SOJ
- IV6F3RHXqcy7+qaFPMCGlPA1OkwhNRyGVjSkmHy7BAZZQP767fB/CNiZQeVR361GFHRG
- SyD/TIVpsj6PF+3LnRmm35VDzuYx0wdjp/buomvuGbG8YOv/hFHWARExwAb7CTyoYbgL
- tV3g==
-X-Gm-Message-State: AOJu0YxxZKFzHbec582wo2NkPNhK1IA/ytI2Opi1ksmPY6u2u+wKvYX7
- gvuPpp4Z7l/ZaQ0WTmGIeKweUsNEE8IPiuXrKXoOmbaQh5TtmDuKOSukTip0QaLDG4pyS2F5etb
- PN3g=
-X-Gm-Gg: ASbGnctWUbX9FA9eZ8sRKS1dUYseiVtYVmaz3Tblww1mQxKMds2aKXmBsi7zNcWFUBm
- snPtbqqE4oKwZn9AvkoMNgTfOmDwzgAaj7w4rewcrqgW2bRFNlpC8WFzwQK6kn23gFSWvgIchp6
- eFYsbKLsxQ58jn8AVASHmK/E3XCSrN1vo9BeV1wI07EYRyfbr6eI/5eshPU2t+ItYSvk3JBvhro
- Igbp3Hu1f2nrDS7Am4XDzA5Z2U7aGcI4spexexBmNPJoiaC9d7c5eBL64hQwV8kS4yR9r7aAKSI
- VROnE2GPUSPh7wOnpvyCvWRxrm5GVBh7m8k8HwTvCZ8wwWDf3RWsueHM3LCDof1Jeg==
-X-Google-Smtp-Source: AGHT+IHNicWVQy20xmctK+WaMFhMn6/Qp3O5JrlTfAC9l8cTOsGhr1pxbbnLyADgvxXG36sDv5n1uQ==
-X-Received: by 2002:a05:600c:4f55:b0:439:95b9:91fc with SMTP id
- 5b1f17b1804b1-43999d8b49dmr3064455e9.12.1739896023034; 
- Tue, 18 Feb 2025 08:27:03 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4398a44264csm48848305e9.25.2025.02.18.08.27.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Feb 2025 08:27:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- xen-devel@lists.xenproject.org, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anthony PERARD <anthony@xenproject.org>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Juergen Gross <jgross@suse.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tkQRA-0005cF-8S
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:27:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tkQR7-0000oW-St
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:27:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739896024;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ki5DTZ2UY6CcSa730fZlVMvx8PLyDNT1AsfFh/7Ol6U=;
+ b=aKPnyZl+cKucMrAd0EdXuyNwIIYWhG07yUM8qKvxk02fdUg2KtpPN3E3miE5VGR7sEI7Nx
+ IxOwXHKzRnpl/GCDYNZ7wKnJkAPBuR6p2B71D2kKRnE1U8Ch4FXO7ziV9CWv3/5tgdNHUi
+ rd8JrTzpB/mj0zyS0U8nDK2XJkOh/78=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-tYqkRCFYPh6VeYHVdBbfjg-1; Tue,
+ 18 Feb 2025 11:27:00 -0500
+X-MC-Unique: tYqkRCFYPh6VeYHVdBbfjg-1
+X-Mimecast-MFC-AGG-ID: tYqkRCFYPh6VeYHVdBbfjg_1739896019
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 86BB21800873; Tue, 18 Feb 2025 16:26:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.158])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 18EEA1800357; Tue, 18 Feb 2025 16:26:52 +0000 (UTC)
+Date: Tue, 18 Feb 2025 16:26:49 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Brian Cain <brian.cain@oss.qualcomm.com>,
+ Stefan Weil <stefan.weil@weilnetz.de>, qemu-devel@nongnu.org,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Vikram Garhwal <vikram.garhwal@bytedance.com>,
- Thomas Huth <thuth@redhat.com>, Jan Beulich <jbeulich@suse.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 8/8] meson: Remove support for Xen on 32-bit ARM hosts
-Date: Tue, 18 Feb 2025 17:26:18 +0100
-Message-ID: <20250218162618.46167-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250218162618.46167-1-philmd@linaro.org>
-References: <20250218162618.46167-1-philmd@linaro.org>
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>
+Subject: Re: [PATCH v4 0/3] Enable clang build on Windows
+Message-ID: <Z7S0yRtvX4VJboy1@redhat.com>
+References: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
+ <b3ef0b9f-df09-4444-b0aa-3b2a36f7cd3a@weilnetz.de>
+ <4e788add-ee40-4d98-b065-6745e6e2fce5@oss.qualcomm.com>
+ <71254e1d-3e17-4082-968f-db7fe6cea590@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <71254e1d-3e17-4082-968f-db7fe6cea590@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,65 +95,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per Stefano:
+On Tue, Feb 18, 2025 at 08:22:14AM -0800, Pierrick Bouvier wrote:
+> Hi Brian,
+> 
+> On 2/17/25 20:11, Brian Cain wrote:
+> > 
+> > On 1/11/2025 4:08 PM, Stefan Weil via wrote:
+> > > Am 10.01.25 um 21:33 schrieb Pierrick Bouvier:
+> > > > For now, it was only possible to build plugins using GCC on Windows.
+> > > > However,
+> > > > windows-aarch64 only supports Clang.
+> > > > This biggest roadblock was to get rid of gcc_struct attribute, which
+> > > > is not
+> > > > supported by Clang. After investigation, we proved it was safe to
+> > > > drop it.
+> > > > 
+> > > > Built and tested on Windows (all msys env)/Linux/MacOS for x86_64 and
+> > > > aarch64
+> > > > hosts.
+> > > > 
+> > > > v1 contained warning fixes and various bits that have been upstreamed
+> > > > already.
+> > > > The only bits left in this series are the gcc_struct removal, and
+> > > > fixing the
+> > > > plugins build with clang.
+> > > > 
+> > > > This series is for 10.0, as we decided to not include the gcc_struct
+> > > > removal is
+> > > > 9.2 release.
+> > > > 
+> > > > All patches are now reviewed, so this series can be pulled. I'll
+> > > > report that to
+> > > > MSYS2 too, so we can enable clang environments for QEMU.
+> > > > 
+> > > > v1:
+> > > > https://patchew.org/QEMU/20241031040426.772604-1-pierrick.bouvier@linaro.org/
+> > > > 
+> > > > v2:
+> > > > - drop attribute gcc_struct instead of using -mno-ms-bitfields option
+> > > > - add a section about bitfields in documentation
+> > > > 
+> > > > v3:
+> > > > - explain why gcc_struct attribute matters in packed structs in
+> > > > commit message
+> > > > - reword the bitfields documentation with suggestions given
+> > > > 
+> > > > v4:
+> > > > - edit for bitfields doc requested by Philippe
+> > > > 
+> > > > Pierrick Bouvier (3):
+> > > >     win32: remove usage of attribute gcc_struct
+> > > >     docs/devel/style: add a section about bitfield, and disallow them for
+> > > >       packed structures
+> > > >     plugins: enable linking with clang/lld
+> > > > 
+> > > >    docs/devel/style.rst                      | 20 +++++++++++++++++++
+> > > >    meson.build                               |  6 +++---
+> > > >    include/qemu/compiler.h                   |  7 +------
+> > > >    scripts/cocci-macro-file.h                |  6 +-----
+> > > >    subprojects/libvhost-user/libvhost-user.h |  6 +-----
+> > > >    contrib/plugins/meson.build               |  2 +-
+> > > >    plugins/meson.build                       | 24 +++++++++++++++++++----
+> > > >    tests/tcg/plugins/meson.build             |  3 +--
+> > > >    8 files changed, 48 insertions(+), 26 deletions(-)
+> > > 
+> > > This nice series allows building QEMU for Windows with the LLVM cross
+> > > compiler on my ARM64 machine, so you can add
+> > 
+> > Is this toolchain available publicly or did you build it yourself?  It
+> > would be handy if there were a linux x86_64 hosted cross-toolchain that
+> > can target Windows-aarch64.  Or linux aarch64 hosted would be pretty
+> > good, too.
+> > 
+> 
+> At the moment, the only open source toolchain supporting windows-arm64 is
+> llvm-mingw (https://github.com/mstorsjo/llvm-mingw).
+> There is some progress on gcc, but it is not yet fully upstream.
+> MSYS2 uses llvm-mingw for windows-arm64 environment.
+> 
+> On my side, I used a windows-arm64 machine with MSYS2 native environment.
+> 
+> It would be handy to cross compile, and the problem is not really QEMU
+> itself, but to cross compile all the dependencies.
+> For x86_64, we use fedora, which provides convenient precompiled mingw
+> packages for dependencies.
+> It's definitely not impossible to do the same for windows-arm64, but it just
+> takes much more effort.
 
-  For ARM 32-bit, I do not think we ever had many deployments,
-  as most are 64-bit. Even when there are deployments, they do
-  not typically use QEMU, as QEMU is less important for Xen on
-  ARM compared to x86.
+Once GCC supports arm64 for mingw, we could propose enabling
+this in Fedora and enabling the it in the build deps.  Not a
+terribly complex bit of work, but probably a bit of a time
+sink to get all the pieces sorted. If this is important to
+QEMU long term though, it'l be worth the effort, as the
+Fedora mingw containers are what everyone is used to for
+testing Windows buildability.
 
-The QEMU project only test to cross-build Xen on Aarch64 hosts
-(see 84eda110792 ("gitlab-ci: Add Xen cross-build jobs").
-Since 32-bit host aren't tested, simply remove the support there.
 
-[*] https://lore.kernel.org/qemu-devel/alpine.DEB.2.22.394.2502031438170.11632@ubuntu-linux-20-04-desktop/
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-While apparently running Xen on 32-bit hosts isn't straighforward
-anymore (see [x]), we don't need to remove it ASAP, it is already
-in the deprecation queue since commit 6d701c9bac1 ("meson:
-Deprecate 32-bit host support").
-
-[x] https://lore.kernel.org/qemu-devel/173d18bf-f68c-4bd5-b822-abb1c1f0c51b@suse.com/
----
- docs/about/removed-features.rst | 5 +++++
- meson.build                     | 3 ---
- 2 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index c6616ce05e5..f6ea53acc8b 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -969,6 +969,11 @@ MIPS "Trap-and-Emulate" KVM support (removed in 8.0)
- The MIPS "Trap-and-Emulate" KVM host and guest support was removed
- from Linux in 2021, and is not supported anymore by QEMU either.
- 
-+Xen on 32-bit ARM hosts (removed in 10.0)
-+'''''''''''''''''''''''''''''''''''''''''
-+
-+Untested for more than 4 years.
-+
- System emulator machines
- ------------------------
- 
-diff --git a/meson.build b/meson.build
-index 8ed10b6624e..7b80d8dff09 100644
---- a/meson.build
-+++ b/meson.build
-@@ -308,9 +308,6 @@ if cpu == 'x86'
-   xen_targets = ['i386-softmmu']
- elif cpu == 'x86_64'
-   xen_targets = ['i386-softmmu', 'x86_64-softmmu']
--elif cpu == 'arm'
--  # i386 emulator provides xenpv machine type for multiple architectures
--  xen_targets = ['i386-softmmu']
- elif cpu == 'aarch64'
-   # i386 emulator provides xenpv machine type for multiple architectures
-   xen_targets = ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu']
+With regards,
+Daniel
 -- 
-2.47.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
