@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0C6A3A139
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F8CA3A142
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:31:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkPXi-0000f7-CL; Tue, 18 Feb 2025 10:29:51 -0500
+	id 1tkPXI-00005g-6s; Tue, 18 Feb 2025 10:29:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWK-00084b-4G
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWK-00084d-Fi
  for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWG-0008BX-Iq
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:23 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWH-0008Ad-2h
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739892498;
+ s=mimecast20190719; t=1739892497;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5LgHzhzSfarKUxhDqL2Bjy+KrTB4K289wOQ1/7TM0XI=;
- b=QtTnFoOzjoc15m+CTga8ZjPgle1XGTwLbHJyy7QfG82JXd8pGbaZa3xLeYUXPSfiW7LIh3
- UqIz9GOO2iHTVjTcPZr2DqozOMu9HsOSEc5pwYzrMk6oUdV01JVNk7G0620TTxalWUARNu
- lKhMfZpQnfn+Jy/O9w4TCZ/R42Gl6ec=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=QOB/6AkfGcNXLVdMjutsg1iZQdwIO8zRaHjb2AJm3FQ=;
+ b=FtafTdr8ApfIaL3W42jQtYHnSx1MlHcGD9SKgtX62tS21HmFRZ18KayPx1aW6PpyC/I60o
+ GMq3AwhyVwiUBsgnikC4yQZo1wQfxySX1eDZXDNQ+IkYMGGZdKY8aQXVHXRtW0L2vBEmRo
+ F/PzsmGyH/D2wNJ4l75M39aMNVAwUTQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-leztxot4MdGWgoQm7sYA4A-1; Tue,
- 18 Feb 2025 10:28:13 -0500
-X-MC-Unique: leztxot4MdGWgoQm7sYA4A-1
-X-Mimecast-MFC-AGG-ID: leztxot4MdGWgoQm7sYA4A_1739892492
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-YdqyhELzPtCYvwP5Wb9dyg-1; Tue,
+ 18 Feb 2025 10:28:16 -0500
+X-MC-Unique: YdqyhELzPtCYvwP5Wb9dyg-1
+X-Mimecast-MFC-AGG-ID: YdqyhELzPtCYvwP5Wb9dyg_1739892495
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 64F2519783B7; Tue, 18 Feb 2025 15:28:12 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F9C6190F9C8; Tue, 18 Feb 2025 15:28:15 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.187])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5B6C3180035F; Tue, 18 Feb 2025 15:28:10 +0000 (UTC)
+ id F22C51800361; Tue, 18 Feb 2025 15:28:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 08/14] tests/functional: Convert the m68k replay avocado tests
-Date: Tue, 18 Feb 2025 16:27:38 +0100
-Message-ID: <20250218152744.228335-9-thuth@redhat.com>
+Subject: [PATCH 09/14] tests/functional: Convert the arm replay avocado tests
+Date: Tue, 18 Feb 2025 16:27:39 +0100
+Message-ID: <20250218152744.228335-10-thuth@redhat.com>
 In-Reply-To: <20250218152744.228335-1-thuth@redhat.com>
 References: <20250218152744.228335-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,78 +87,122 @@ framework, each file is run with one specific qemu-system-* binary).
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/replay_kernel.py       | 29 -------------------
- tests/functional/meson.build         |  1 +
- tests/functional/test_m68k_replay.py | 42 ++++++++++++++++++++++++++++
- 3 files changed, 43 insertions(+), 29 deletions(-)
- create mode 100755 tests/functional/test_m68k_replay.py
+ tests/avocado/replay_kernel.py      | 74 -----------------------------
+ tests/functional/meson.build        |  1 +
+ tests/functional/test_arm_replay.py | 69 +++++++++++++++++++++++++++
+ 3 files changed, 70 insertions(+), 74 deletions(-)
+ create mode 100755 tests/functional/test_arm_replay.py
 
 diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index b2097afc302..4bd48878b7e 100644
+index 4bd48878b7e..02bd868a429 100644
 --- a/tests/avocado/replay_kernel.py
 +++ b/tests/avocado/replay_kernel.py
-@@ -242,24 +242,6 @@ def test_alpha_clipper(self):
-         self.run_rr(uncompressed_kernel, kernel_command_line, console_pattern, shift=9,
-             args=('-nodefaults', ))
+@@ -162,54 +162,6 @@ def test_aarch64_virt(self):
  
--    def test_m68k_q800(self):
+         self.run_rr(kernel_path, kernel_command_line, console_pattern)
+ 
+-    def test_arm_virt(self):
 -        """
--        :avocado: tags=arch:m68k
--        :avocado: tags=machine:q800
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:virt
 -        """
--        deb_url = ('https://snapshot.debian.org/archive/debian-ports'
--                   '/20191021T083923Z/pool-m68k/main'
--                   '/l/linux/kernel-image-5.3.0-1-m68k-di_5.3.7-1_m68k.udeb')
--        deb_hash = '044954bb9be4160a3ce81f8bc1b5e856b75cccd1'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinux-5.3.0-1-m68k')
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+-                      '/linux/releases/29/Everything/armhfp/os/images/pxeboot'
+-                      '/vmlinuz')
+-        kernel_hash = 'e9826d741b4fb04cadba8d4824d1ed3b7fb8b4d4'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
 -
 -        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyS0 vga=off')
--        console_pattern = 'No filesystem could mount root'
--        self.run_rr(kernel_path, kernel_command_line, console_pattern)
+-                               'console=ttyAMA0')
+-        console_pattern = 'VFS: Cannot open root device'
 -
-     def do_test_advcal_2018(self, file_path, kernel_name, args=None):
-         archive.extract(file_path, self.workdir)
- 
-@@ -285,14 +267,3 @@ def test_arm_vexpressa9(self):
-         dtb_path = self.workdir + '/day16/vexpress-v2p-ca9.dtb'
-         self.do_test_advcal_2018(file_path, 'winter.zImage',
-                                  args=('-dtb', dtb_path))
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1)
 -
--    def test_m68k_mcf5208evb(self):
+-    def test_arm_cubieboard_initrd(self):
 -        """
--        :avocado: tags=arch:m68k
--        :avocado: tags=machine:mcf5208evb
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:cubieboard
 -        """
--        tar_hash = 'ac688fd00561a2b6ce1359f9ff6aa2b98c9a570c'
+-        deb_url = ('https://apt.armbian.com/pool/main/l/'
+-                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
+-        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path,
+-                                            '/boot/vmlinuz-6.6.16-current-sunxi')
+-        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
+-        dtb_path = self.extract_from_deb(deb_path, dtb_path)
+-        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
+-                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
+-                      'arm/rootfs-armv5.cpio.gz')
+-        initrd_hash = '2b50f1873e113523967806f4da2afe385462ff9b'
+-        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+-        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
+-        archive.gzip_uncompress(initrd_path_gz, initrd_path)
+-
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'console=ttyS0,115200 '
+-                               'usbcore.nousb '
+-                               'panic=-1 noreboot')
+-        console_pattern = 'Boot successful.'
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1,
+-                    args=('-dtb', dtb_path,
+-                          '-initrd', initrd_path,
+-                          '-no-reboot'))
+-
+     def test_s390x_s390_ccw_virtio(self):
+         """
+         :avocado: tags=arch:s390x
+@@ -241,29 +193,3 @@ def test_alpha_clipper(self):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.run_rr(uncompressed_kernel, kernel_command_line, console_pattern, shift=9,
+             args=('-nodefaults', ))
+-
+-    def do_test_advcal_2018(self, file_path, kernel_name, args=None):
+-        archive.extract(file_path, self.workdir)
+-
+-        for entry in os.scandir(self.workdir):
+-            if entry.name.startswith('day') and entry.is_dir():
+-                kernel_path = os.path.join(entry.path, kernel_name)
+-                break
+-
+-        kernel_command_line = ''
+-        console_pattern = 'QEMU advent calendar'
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern,
+-                    args=args)
+-
+-    def test_arm_vexpressa9(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:vexpress-a9
+-        """
+-        tar_hash = '32b7677ce8b6f1471fb0059865f451169934245b'
 -        tar_url = ('https://qemu-advcal.gitlab.io'
--                   '/qac-best-of-multiarch/download/day07.tar.xz')
+-                   '/qac-best-of-multiarch/download/day16.tar.xz')
 -        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        self.do_test_advcal_2018(file_path, 'sanity-clause.elf')
+-        dtb_path = self.workdir + '/day16/vexpress-v2p-ca9.dtb'
+-        self.do_test_advcal_2018(file_path, 'winter.zImage',
+-                                 args=('-dtb', dtb_path))
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index d59ac2be9da..7af43dbdcfc 100644
+index 7af43dbdcfc..815aefc14cd 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -147,6 +147,7 @@ tests_loongarch64_system_thorough = [
- tests_m68k_system_thorough = [
-   'm68k_mcf5208evb',
-   'm68k_nextcube',
-+  'm68k_replay',
-   'm68k_q800',
-   'm68k_tuxrun',
- ]
-diff --git a/tests/functional/test_m68k_replay.py b/tests/functional/test_m68k_replay.py
+@@ -113,6 +113,7 @@ tests_arm_system_thorough = [
+   'arm_orangepi',
+   'arm_quanta_gsj',
+   'arm_raspi2',
++  'arm_replay',
+   'arm_smdkc210',
+   'arm_sx1',
+   'arm_vexpress',
+diff --git a/tests/functional/test_arm_replay.py b/tests/functional/test_arm_replay.py
 new file mode 100755
-index 00000000000..18c1db539c5
+index 00000000000..e002e6a2647
 --- /dev/null
-+++ b/tests/functional/test_m68k_replay.py
-@@ -0,0 +1,42 @@
++++ b/tests/functional/test_arm_replay.py
+@@ -0,0 +1,69 @@
 +#!/usr/bin/env python3
 +#
-+# Replay test that boots a Linux kernel on an m68k machine
-+# and checks the console
++# Replay test that boots a Linux kernel on arm machines and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
@@ -166,33 +210,61 @@ index 00000000000..18c1db539c5
 +from replay_kernel import ReplayKernelBase
 +
 +
-+class M68kReplay(ReplayKernelBase):
++class ArmReplay(ReplayKernelBase):
 +
-+    ASSET_Q800 = Asset(
-+        ('https://snapshot.debian.org/'
-+         'archive/debian-ports/20191021T083923Z/pool-m68k/main/l/linux/'
-+         'kernel-image-5.3.0-1-m68k-di_5.3.7-1_m68k.udeb'),
-+        '949e50d74d4b9bc15d26c06d402717b7a4c0e32ff8100014f5930d8024de7b73')
++    ASSET_VIRT = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
++         'releases/29/Everything/armhfp/os/images/pxeboot/vmlinuz'),
++        '18dd5f1a9a28bd539f9d047f7c0677211bae528e8712b40ca5a229a4ad8e2591')
 +
-+    def test_q800(self):
-+        self.set_machine('q800')
-+        kernel_path = self.archive_extract(self.ASSET_Q800,
-+                                           member='boot/vmlinux-5.3.0-1-m68k')
++    def test_virt(self):
++        self.set_machine('virt')
++        kernel_path = self.ASSET_VIRT.fetch()
 +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0 vga=off')
-+        console_pattern = 'No filesystem could mount root'
-+        self.run_rr(kernel_path, kernel_command_line, console_pattern)
++                               'console=ttyAMA0')
++        console_pattern = 'VFS: Cannot open root device'
++        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1)
 +
-+    ASSET_MCF5208 = Asset(
-+       'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day07.tar.xz',
-+       '753c2f3837126b7c6ba92d0b1e0b156e8a2c5131d2d576bb0b9a763fae73c08a')
++    ASSET_CUBIE_KERNEL = Asset(
++        ('https://apt.armbian.com/pool/main/l/linux-6.6.16/'
++         'linux-image-current-sunxi_24.2.1_armhf_'
++         '_6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb'),
++        '3d968c15b121ede871dce49d13ee7644d6f74b6b121b84c9a40f51b0c80d6d22')
 +
-+    def test_mcf5208evb(self):
-+        self.set_machine('mcf5208evb')
-+        kernel_path = self.archive_extract(self.ASSET_MCF5208,
-+                                           member='day07/sanity-clause.elf')
-+        self.run_rr(kernel_path, self.KERNEL_COMMON_COMMAND_LINE,
-+                    'QEMU advent calendar')
++    ASSET_CUBIE_INITRD = Asset(
++        ('https://github.com/groeck/linux-build-test/raw/'
++         '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/arm/rootfs-armv5.cpio.gz'),
++        '334b8d256db67a3f2b3ad070aa08b5ade39624e0e7e35b02f4359a577bc8f39b')
++
++    def test_cubieboard(self):
++        self.set_machine('cubieboard')
++        kernel_path = self.archive_extract(self.ASSET_CUBIE_KERNEL,
++            member='boot/vmlinuz-6.6.16-current-sunxi')
++        dtb_path = self.archive_extract(self.ASSET_CUBIE_KERNEL,
++            member='usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb')
++        initrd_path = self.uncompress(self.ASSET_CUBIE_INITRD)
++
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0,115200 '
++                               'usbcore.nousb '
++                               'panic=-1 noreboot')
++        console_pattern = 'Boot successful.'
++        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1,
++                    args=('-dtb', dtb_path,
++                          '-initrd', initrd_path,
++                          '-no-reboot'))
++
++    ASSET_DAY16 = Asset(
++        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day16.tar.xz',
++        '63311adb2d4c4e7a73214a86d29988add87266a909719c56acfadd026b4110a7')
++
++    def test_vexpressa9(self):
++        self.set_machine('vexpress-a9')
++        self.archive_extract(self.ASSET_DAY16)
++        kernel_path = self.scratch_file('day16', 'winter.zImage')
++        dtb_path = self.scratch_file('day16', 'vexpress-v2p-ca9.dtb')
++        self.run_rr(kernel_path, self.REPLAY_KERNEL_COMMAND_LINE,
++                    'QEMU advent calendar', args=('-dtb', dtb_path))
 +
 +
 +if __name__ == '__main__':
