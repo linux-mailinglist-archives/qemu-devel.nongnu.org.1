@@ -2,78 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1308FA39394
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 07:53:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85155A393C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:25:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkHTQ-0003dA-Td; Tue, 18 Feb 2025 01:52:53 -0500
+	id 1tkHyK-0004CX-59; Tue, 18 Feb 2025 02:24:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tkHTE-0003cS-5a; Tue, 18 Feb 2025 01:52:40 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tkHyH-0004CD-8U
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:24:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tkHTB-0007TL-Il; Tue, 18 Feb 2025 01:52:39 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yxqrw2mHsz6M4P2;
- Tue, 18 Feb 2025 14:49:52 +0800 (CST)
-Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
- by mail.maildlp.com (Postfix) with ESMTPS id 906881400DA;
- Tue, 18 Feb 2025 14:52:26 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 18 Feb 2025 07:52:26 +0100
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Tue, 18 Feb 2025 07:52:26 +0100
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, Nicolin Chen
- <nicolinc@nvidia.com>, Donald Dutile <ddutile@redhat.com>
-CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>,
- =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
- <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
- <zhangfei.gao@linaro.org>, "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rLkOMCAgAAM2QCAAAz2gIAEhqeggCVVAYCAAxlYAIAS3VEAgABWAvCAACxmsIAnKXxwgAFsm4A=
-Date: Tue, 18 Feb 2025 06:52:26 +0000
-Message-ID: <c975f6dfaa9243c5a2db9e37d592ea51@huawei.com>
-References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
- <Z1wh69_gZ9izr1iU@redhat.com> <Z1wsslDnwlth3A8+@nvidia.com>
- <CAFEAcA8TW2RKyFnh-TZRpfaKfZipHD5TZy_hymUr41GJ4rs4xA@mail.gmail.com>
- <329445b2f68a47269292aefb34584375@huawei.com>
- <Z39Ugx2M+FRFVVpB@Asurada-Nvidia>
- <568014f5-25fd-439b-b70c-9cf50f31255b@redhat.com>
- <Z5HBJOgO4tUJApY+@nvidia.com> <8fe09b60e6f04cc6aec99b72b46b2fb3@huawei.com>
- <SJ0PR11MB6744943702EB5798EC9B3B9992E02@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <SJ0PR11MB6744B3D96A98584525B0401292FB2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-In-Reply-To: <SJ0PR11MB6744B3D96A98584525B0401292FB2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.156.112]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tkHyF-0003IL-0h
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:24:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739863481;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kxCCkdRmXeLy1Nydo7YHZSrx6nZc3sBidRkQdw6j4Aw=;
+ b=be0P/0daRmLndK0JPOfGL5lBwQMNQgKmn2uMGVOL1pQQ5ZoBdzVgNQ0fmjr5+URUs6+MJS
+ /mdNTvfMOQEQC/qSS6Pmq4AK4xIWV55CzyXmIbVHRg+QKdwgby08RgoPBFjyoJXSiPQFUD
+ W8x9/mBGH/FVziIdEVHCw3W+3oiv1ms=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-V6DwTWekNaSL7JfEYBewhQ-1; Tue, 18 Feb 2025 02:24:39 -0500
+X-MC-Unique: V6DwTWekNaSL7JfEYBewhQ-1
+X-Mimecast-MFC-AGG-ID: V6DwTWekNaSL7JfEYBewhQ_1739863478
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-439868806bbso7323515e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Feb 2025 23:24:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739863478; x=1740468278;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kxCCkdRmXeLy1Nydo7YHZSrx6nZc3sBidRkQdw6j4Aw=;
+ b=DG3BJYQeSQnmLWMyfHshBBFnzXzz4LZPHLIglbnIeeJEisnuik5mlHQ/NQTmxllwb5
+ AmCrOOnvBYuUZbt9VPj1PAFbhTR/HfiLLJIIkrmbicndg8LngY83U0SR1uNNfMYeaKfX
+ G4bGGWwLQ7MTZaFS2v6rMAZX5nULcEJkncPu1rTopn0bGBEQIFTshHINup4PR+XmBgra
+ OF2VV59r055oJocV7BU82au+TK+SWgjXNO99bXeFwW8nmVg56s7nOameNhDiTlmSc4mC
+ mviQLTxDJ3LhAX/jYOrduPzJZxcYuVjzQi065ObKWVx+L4CRXmw51RuEIGygW7OZ3m+M
+ uAQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUTGGZoy9F4c1CaycAktMinAaHu1dICmdSBvwWUxjFVxqOtaTLcjHJnidT8OckJMtz7tKZKQZfbYvOx@nongnu.org
+X-Gm-Message-State: AOJu0YwoLcWobyFva4mE/f6fBG/XVsIuLngcH9hg5XIJVvTCW6tu/Sk5
+ Du3YB2qi4wI1rO+SvdUrT/IrI2/ll87MC64QHqoEyXPlUMccAZugRbsGEESnOpwijqZOycgXTEG
+ ciLs+QrvV7bu6iBZxO2JmMAayRKNNHc2oPGI2qUvfgqsS788QSCx0
+X-Gm-Gg: ASbGnctR+lA3tyLtMkZH5jEAsDlW+ATw8iMpUjoJLDg6wekGBslhZcH6AWhDUwYkO35
+ l9Po2/+AYnHivIOSzEyCl2b9ZZJQOjFkmJPX65+t/4EFKhvxFYAX3yuPT7Q7mArtZ5Q/QtDZgcd
+ LVOUl2uzDDsOb/aW8Ww0NPbVfaUcSva4iDWawlMAmOJS4bcQVUW9iVQR43cJ6HqD3gMysQQdolZ
+ 0rjdrBkNFJG8YxQ2AVaFmTsbbFSreNdedd1bcN8T/BE1i/X95Wl+v4kmhTHj2A/Mgj+h00cXqJ4
+ 6UTxm0bX0uieNptVbGxuDVBQwtJQiB50ANEukusGPx4oUpM2UsCI
+X-Received: by 2002:a5d:6c66:0:b0:388:c61d:4415 with SMTP id
+ ffacd0b85a97d-38f33c20aa7mr10663869f8f.18.1739863478072; 
+ Mon, 17 Feb 2025 23:24:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEE1Wc4tUgTsc01rFK9TjzILbz6gihOAOlXWQ+WRRzNECKSmVSHs37IYYOqTAwvM2NSk+DY1A==
+X-Received: by 2002:a5d:6c66:0:b0:388:c61d:4415 with SMTP id
+ ffacd0b85a97d-38f33c20aa7mr10663851f8f.18.1739863477730; 
+ Mon, 17 Feb 2025 23:24:37 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38f25915719sm14344352f8f.60.2025.02.17.23.24.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Feb 2025 23:24:36 -0800 (PST)
+Message-ID: <88169d47-f3a1-4dbe-aa9e-9ca3617adca8@redhat.com>
+Date: Tue, 18 Feb 2025 08:24:33 +0100
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] Fix vIOMMU reset order
+Content-Language: en-US
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "ddutile@redhat.com" <ddutile@redhat.com>
+References: <20250217133746.6801-1-eric.auger@redhat.com>
+ <SJ0PR11MB67449A41C11701DC5719A63292FA2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB67449A41C11701DC5719A63292FA2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,70 +119,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi Zhenzhong,
 
-> -----Original Message-----
-> From: Duan, Zhenzhong <zhenzhong.duan@intel.com>
-> Sent: Monday, February 17, 2025 9:17 AM
-> To: Shameerali Kolothum Thodi
-> <shameerali.kolothum.thodi@huawei.com>; Nicolin Chen
-> <nicolinc@nvidia.com>; Donald Dutile <ddutile@redhat.com>
-> Cc: eric.auger@redhat.com; Peter Maydell <peter.maydell@linaro.org>;
-> Jason Gunthorpe <jgg@nvidia.com>; Daniel P. Berrang=E9
-> <berrange@redhat.com>; qemu-arm@nongnu.org; qemu-
-> devel@nongnu.org; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
-> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
-> Jonathan Cameron <jonathan.cameron@huawei.com>;
-> zhangfei.gao@linaro.org; Peng, Chao P <chao.p.peng@intel.com>
-> Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
-> nested SMMUv3
->=20
-> Hi Shameer, Nicolin,
->=20
-[...]
+On 2/18/25 4:32 AM, Duan, Zhenzhong wrote:
+> Hi Eric,
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Subject: [PATCH v2 0/5] Fix vIOMMU reset order
+>>
+>> With current reset scheme, DMA capable devices are reset before
+> s/before/after
+ugh definitively! :-)
+>
+>> the vIOMMU which translate them. This holds for the different
+>> IOMMUs and various DMA capable devices such as virtio devices
+>> and VFIO ones. With virtio devices spurious traces can be
+>> observed at qemu level such as "virtio: zero sized buffers are
+>> not allowed" while for VFIO devices, translation faults can be
+>> observed at host level.
+>>
+>> Virtio devices use 3 phase reset and virtio-pci devices are reset
+>> in the 'hold' phase. VFIO device reset are registered using
+>> qemu_register_reset() and as a consequence they are also reset
+>> on 'hold' phase.
+>>
+>> Note that the tree of QOM devices resets depth-first but it does
+>> so while enforcing the 3 phases. First the tree is traversed doing
+>> the 'enter' phase, then the 'hold' phase and eventually the 'exit'
+>> phase.
+>>
+>> However the QOM hierarchy is not built so that vIOMMUs get reset
+>> before the DMA capable devices (IOMMUs are using either legacy reset
+> s/before/after
 
-> >>Hi Zhenzhong,
-> >>
-> >>Just wondering what your plans are for the above patches.  If it make
-> sense and
-> >>you
-> >>are fine with it, I think it is a good idea one of us can pick up those=
- from
-> that
-> >>series
-> >>and sent out separately so that it can get some review and take it
-> forward.
-> >
-> >Emulated series is merged, I plan to send Intel pass-through series afte=
-r
-> >Chinese festival vacation, but at least half a month later. So feel free=
- to
-> >pick those patches you need and send for comments.
->=20
-> I plan to send vtd nesting series out this week and want to ask about sta=
-tus
-> of "1) HWPT uAPI patches in backends/iommufd.c" series.
->=20
-> If you had sent it out, I will do a rebase and bypass them to avoid dupli=
-cate
-> review effort in community. Or I can send them in vtd nesting series if y=
-ou
-> not yet.
 
-No. It is not send out yet. Please include it in your vtd nesting series. T=
-hanks.
+>
+>> scheme or hold phase). Changing the QOM hierarchy does not sound
+>> trivial while forcing the vIOMMUs to be reset on 'exit' phase
+>> sounds reasonable and much simpler. Obviously this relies on the
+>> assumption that all DMA capable devices quiesce their DMA before
+>> (ie. during 'enter' or hold' phase).
+>>
+>> This was tested with qmp system_reset and virsh reset.
+> For the whole series,
+>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Thanks!
 
-I am currently working on refactoring the SMMUv3 accel series and the
-"Add HW accelerated nesting support for arm SMMUv3" series
-from Nicolin.
-
-Thanks,
-Shameer.
-
+Eric
+>
+> Thanks
+> Zhenzhong
 
 
