@@ -2,72 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5081CA3A8A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 21:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCABDA3A908
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 21:31:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkU6s-0001XF-JO; Tue, 18 Feb 2025 15:22:26 -0500
+	id 1tkUEf-0004Z2-QS; Tue, 18 Feb 2025 15:30:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkU6n-0001Wf-5H
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:22:21 -0500
-Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tkUEb-0004YV-6Z
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:30:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkU6k-0003xd-Ak
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:22:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739910135; bh=5DJYctcBOU4hdUoWUSfAKVatoqUDQyn3Z45VnZ/hBN4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=HNk7FNRxcKwuOaXchJc9qEjGXZzkQAl9QeRVNQavH7PfwTFQyfay/2vlMnbFJ3tY4
- CvxFu0t0vvEQqNr9iFRRepP8cJ4V+lrbM9u93EQnlgKroSAJojJ7O8zYP34gox909u
- GlvsmMFdd7fBR0pPaCNMlU/YUbDNE6us6NOYYoLA5Y9WvwM+OJSZ6QkqOYeh+gpqz6
- f4add8zXuE3Nr9cEpfoNOeNGtigZWAL4q9hQQMHiXBhckyWoSCr9FrcsP3dGeKStHU
- SdwJxGiIacugpF26kvB5Rav/zWXHh+HvchPi5oAhdHhypzyu+mRJigYCqV5rMaPuKV
- dHo/EBPGy6Qjg==
-Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id 9C3693F20D3C;
- Tue, 18 Feb 2025 12:22:15 -0800 (PST)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id jGQo3uLbV8_e; Tue, 18 Feb 2025 12:22:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739910134; bh=5DJYctcBOU4hdUoWUSfAKVatoqUDQyn3Z45VnZ/hBN4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RU8U9jzw7WEhGxQdwLA1I1dweIWqp6ZCYebRcuyUB8wGBGkNnHv3Gl1jA14qlsqY9
- LowSnTM95crrlbcpJiK7QhGWQilpJlxg2DVcynEqy3riAlRhrae6cBHmjXvaVxPpH7
- E5F9pKl288tMSIU+P9RsW1dYxVDgsrHm8owl8jk45ZPr5RyFkxccPUUTbAlm1hOM+y
- I2tQUo4s5o9oEGOUduv4/uMEfbqnjNGW+c6MI06mLTVSjaEYldtEP/zXzxl9kOY5kK
- wrQRZQMpRfAaEOWiyrnHjcK/L8l+RqxhxMmofAsiJfh/Y+qjFyWUaoELUX0vfysfaG
- JPz50d8EgiLUw==
-Received: from keithp.com (koto.keithp.com [192.168.11.2])
- by elaine.keithp.com (Postfix) with ESMTPSA id 0DDBB3F20C61;
- Tue, 18 Feb 2025 12:22:14 -0800 (PST)
-Received: by keithp.com (Postfix, from userid 1000)
- id E62521E60096; Tue, 18 Feb 2025 12:22:13 -0800 (PST)
-To: Peter Maydell <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 4/5] target/rx: Load reset vector from memory after
- first run
-In-Reply-To: <CAFEAcA9uGeJoVGpHBU=830ZrNBojsVT6fER6OBkDw0vDfxXU8g@mail.gmail.com>
-References: <20250215021654.1786679-1-keithp@keithp.com>
- <20250215021654.1786679-5-keithp@keithp.com>
- <f7c1e671-f114-40a6-a02b-575bde2de4c4@linaro.org>
- <CAFEAcA9uGeJoVGpHBU=830ZrNBojsVT6fER6OBkDw0vDfxXU8g@mail.gmail.com>
-Date: Tue, 18 Feb 2025 12:22:13 -0800
-Message-ID: <87ldu3ype2.fsf@keithp.com>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tkUEX-0004tc-Mk
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 15:30:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739910619;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qjcaFs3P9y2rTI+as9MOd9bu+8o5FaW2DnorXb4G4CY=;
+ b=IR2azarYLj1An1mYnfn9/CEnwG5AQUftInScYhArJQAq9Khi2m4UhWwPET1g6G8ttrTJ2u
+ VU2LHuCAWKfFCQgeoXdB6OP5js4d4DG4e6ZEw9XYBQaPNzk5WdDl/ptbAts3KNy3F8JgSP
+ d9sRYwS0l0v1LAqh/YkBGIHDHoakNDQ=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-Z4yvZwV7O1GxiChCCByM_g-1; Tue, 18 Feb 2025 15:30:18 -0500
+X-MC-Unique: Z4yvZwV7O1GxiChCCByM_g-1
+X-Mimecast-MFC-AGG-ID: Z4yvZwV7O1GxiChCCByM_g_1739910617
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-22126a488d7so59336955ad.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 12:30:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739910617; x=1740515417;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qjcaFs3P9y2rTI+as9MOd9bu+8o5FaW2DnorXb4G4CY=;
+ b=pGrEzGg/x3CwlqffK6pBicxjoT3g0E1gWB2W4lNoTKtrCJtoUMdRhfnZ5EA3F7lon4
+ 9c4cgvTLu2bthzQs41xl2njWzCzlhOEwak1rq5ddlZgBe1/a58kghGQFDNTiPTRlhh+f
+ 6htcmONMeSK9DP6aNfHVyg89wdqG9NnSAv1g0f+JCqAgjhZ5uWDvQ1GfpL8A4CgtgTq4
+ 9KZk2cbd1Nd5daI8FkRHYwxSJL3h0IR0AwYog/hWM688T9V25BBGMgVtLv4LaLM0i2oo
+ 08NAqItE5PJk7AxrYicTdkzi1QKSFeZDbGGe9pwRSSnstoglOzYKuBrYzVcqz17VdilX
+ yKUg==
+X-Gm-Message-State: AOJu0YyoH+2aFIqrSzCTPz+OwqURbbvYOrg/6QlW65aeiGQW1adpjYQH
+ 470OnsgqZtyeEfFcN0kRXn7+RbDB6HznsCE1Zd68dpfPX92Bt/t0aO2ofyH71WddJpIa6+Xn3lm
+ mnqfOHBCi6XCkYyPEHOf8TZy7Mgrp9RHrOJV4ugCollbEtx8dHn2WTv4Q/XbSEF0SSWobD1MJ48
+ F3KLoTf+Ae66navgvdG1dYeg96z5Y=
+X-Gm-Gg: ASbGncsEuauZmi0yGk9cI2JajKT9an+W5JGtZKJEur7AgsX9h7OXjDwE0dy0A5Rark9
+ meeaiIiD1EoYRqTjRHMsjk2nvoRcTIiRhkPqrIk28Wg+rBwTiC3U+DHBFwpvSW321PLm60AnJOI
+ IuL30ESUXVV3tA+Q1nRw==
+X-Received: by 2002:a17:902:e850:b0:21f:90ae:bf83 with SMTP id
+ d9443c01a7336-221040d75d2mr232506265ad.44.1739910616868; 
+ Tue, 18 Feb 2025 12:30:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeny3QiJXWLSLHq0TbsWXJ6KIdFfZtYN+UlgeRjTE7hbquYOnRGOnvhlgkBS+m0xNS398LHHCGfH6DRCubn3w=
+X-Received: by 2002:a17:902:e850:b0:21f:90ae:bf83 with SMTP id
+ d9443c01a7336-221040d75d2mr232505555ad.44.1739910616425; Tue, 18 Feb 2025
+ 12:30:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
- helo=elaine.keithp.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250205231208.1480762-1-jsnow@redhat.com>
+ <20250205231208.1480762-28-jsnow@redhat.com>
+ <87frkkttl2.fsf@pond.sub.org>
+In-Reply-To: <87frkkttl2.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 18 Feb 2025 15:30:04 -0500
+X-Gm-Features: AWEUYZkPpqrKZUC4y0Wq252TueZGPiuzZS0IohimNw85C9lM0Nkbqp04TloawbI
+Message-ID: <CAFn=p-YTNKHC6Y1O0Q7s+VZPpE0WDTeyzL8tF8JRd3Acz7Z5ug@mail.gmail.com>
+Subject: Re: [PATCH 27/42] qapi: differentiate "intro" and "detail" sections
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Yanan Wang <wangyanan55@huawei.com>, 
+ Fabiano Rosas <farosas@suse.de>, Zhao Liu <zhao1.liu@intel.com>, 
+ Lukas Straub <lukasstraub2@web.de>, Eduardo Habkost <eduardo@habkost.net>, 
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000003bcf7c062e708244"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,59 +105,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Keith Packard <keithp@keithp.com>
-From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
+--0000000000003bcf7c062e708244
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 11, 2025 at 10:00=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
+om>
+wrote:
 
-> So I'm OK with this patch doing this the way it does,
-> except that I have one question: what's that
-> process_queued_cpu_work() call doing? We don't need
-> that on the Arm equivalent...
+> John Snow <jsnow@redhat.com> writes:
+>
+> > This patch begins distinguishing "Plain" sections as being either
+> > "Intro" or "Details" sections for the purpose of knowing when and where
+> > to inline those sections.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+>
+> [...]
+>
+> > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> > index a8b30ae1a4b..b2f77ffdd7a 100644
+> > --- a/scripts/qapi/parser.py
+> > +++ b/scripts/qapi/parser.py
+>
+> [...]
+>
+> > @@ -584,14 +584,20 @@ def get_doc(self) -> 'QAPIDoc':
+> >                      if text:
+> >                          doc.append_line(text)
+> >                      line =3D self.get_doc_indented(doc)
+> > -                    no_more_args =3D True
+> > +                    have_tagged =3D True
+> >                  elif line.startswith('=3D'):
+> >                      raise QAPIParseError(
+> >                          self,
+> >                          "unexpected '=3D' markup in definition
+> documentation")
+> >                  else:
+> >                      # plain paragraph(s)
+> > -                    doc.ensure_untagged_section(self.info)
+> > +                    if have_tagged:
+> > +                        no_more_tags =3D True
+>
+> @no_more_tags is not used in this patch.  Does the conditional
+> assignment belong to the next patch?
+>
 
-Yup, I needed that because I was running this bit at cpu_reset_hold
-time, not waiting until after cpu reset was finished. At cpu_reset_hold
-time, the re-initialization of memory_dispatch hadn't been executed yet,
-so attempts to resolve addresses crashed unless I synchronously flushed
-the work queue where the call to tcg_commit_cpu was pending.
+Yep, oopsie. Refactor blunder.
 
-All fixed now that I'm setting the pc after the call to cpu_reset has
-completed.
+--js
 
-> Also, if() statements always have braces in QEMU, even
-> if the body of the if is a single statement. But since
-> if you don't set env->pc it is zero anyway, you don't
-> need the if() at all I think and can directly set
-> env->pc unconditionally.
+--0000000000003bcf7c062e708244
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the formatting advice; I'll get it cleaned up.
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 11,=
+ 2025 at 10:00=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@re=
+dhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com=
+" target=3D"_blank">jsnow@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; This patch begins distinguishing &quot;Plain&quot; sections as being e=
+ither<br>
+&gt; &quot;Intro&quot; or &quot;Details&quot; sections for the purpose of k=
+nowing when and where<br>
+&gt; to inline those sections.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank">jsnow@redhat.com</a>&gt;<br>
+<br>
+[...]<br>
+<br>
+&gt; diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py<br>
+&gt; index a8b30ae1a4b..b2f77ffdd7a 100644<br>
+&gt; --- a/scripts/qapi/parser.py<br>
+&gt; +++ b/scripts/qapi/parser.py<br>
+<br>
+[...]<br>
+<br>
+&gt; @@ -584,14 +584,20 @@ def get_doc(self) -&gt; &#39;QAPIDoc&#39;:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 if text:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 doc.append_line(text)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 line =3D self.get_doc_indented(doc)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ no_more_args =3D True<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ have_tagged =3D True<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 elif lin=
+e.startswith(&#39;=3D&#39;):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 raise QAPIParseError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 self,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 &quot;unexpected &#39;=3D&#39; markup in definition do=
+cumentation&quot;)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 else:<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 # plain paragraph(s)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ doc.ensure_untagged_section(<a href=3D"http://self.info" rel=3D"noreferrer=
+" target=3D"_blank">self.info</a>)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ if have_tagged:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 no_more_tags =3D True<br>
+<br>
+@no_more_tags is not used in this patch.=C2=A0 Does the conditional<br>
+assignment belong to the next patch?<br></blockquote><div><br></div><div>Ye=
+p, oopsie. Refactor blunder.</div><div><br></div><div>--js</div></div></div=
+>
 
-=2D-=20
-=2Dkeith
+--0000000000003bcf7c062e708244--
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAme06/UACgkQ2yIaaQAA
-ABHpHg//eWZbl6s119sIzYYk1oqLHs3VsGSkcL04T7FDqEhX814tbOXX73djx2Xy
-Omf4zMo+g3iajQh3e+bd72N930hyj9JZyHYFcWeTV3j6DOqPeZWdMm0BdgTkS1+e
-4Ls+qi+9q2McN0cXsmCJrC18G4UZcNlUdsEw/gTZpU71+c0olzckdIY+KQRQ6V5D
-sWXDei+Vsc9OlzVdQ7FgoZE0Hv70fYnLAwBjUG2i/gyO6tXq52aiPN7L4rG8TEuW
-D3FrlBHuIK7SF3XxhwCwpxsknabq9OFRR4G6O6aw8kSCaskZKcZm7VIVv0V9Fip7
-UawnRSofQzJXcCtuxzXjV5Brs3Cx5uJgbvkwC6a3qsqjKyyYQb9I4TbTCBfAwXBl
-X2Z9ZGbKvsQ6yh7M0Jipvl7ILtqzBrDQ479YASSPgFeDPcikrhrlNSwThXwQtdbS
-4JAMoxc2blASAuCZbS/LpABVgXiLF+/yF2n9nyW/Pz7rH+MBigWiuTru+rX5qiD3
-hcukzsm3imbX9wYDkVJRsnVfRVLw3/+0MxoI7SDowmtfBMeAtpDVw4yrdpqUV33O
-m0IWtAeZOhIAeHpwsWFpzmVfdUmo/691mvJYR90Pte2KDJ1oL3JxkfZuPVxHb3wB
-6wL4zs4h13PGPjCqHT/2ynhUJgIdejY9DJishgVr0E+bw1+M3Mc=
-=eTqX
------END PGP SIGNATURE-----
---=-=-=--
 
