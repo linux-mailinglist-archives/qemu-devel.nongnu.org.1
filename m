@@ -2,89 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80EEAA394F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 09:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60419A3950E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 09:21:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkInz-0000FO-Lp; Tue, 18 Feb 2025 03:18:11 -0500
+	id 1tkIrF-00021I-Qq; Tue, 18 Feb 2025 03:21:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tkInx-0000F9-3G
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:18:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vaibhav@linux.ibm.com>)
+ id 1tkIrC-00020O-LZ; Tue, 18 Feb 2025 03:21:30 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tkInu-0000eQ-IB
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:18:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739866684;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gyr1Th+AZhXNEnzRoSww1Kztm72rQ8icw2TNOJaGX+Y=;
- b=b6W6b3Wrw9RmBKGD2PvZ4mgFqx0huvsMJXvBjFkX4zYqaj47LJfwJxIPIHGMc6DctsxKN0
- 7GiMnW6naeBVunOIRK+YobTzL4NIykT9hAbnIOECNmxjA2XZKsZzimNpH2LaZLsUx79CMh
- dF2TIiMP3E7sxBjYE4dB9ZhE+rKdlz4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-odYEN20fNu60VXuRI0tagA-1; Tue, 18 Feb 2025 03:18:02 -0500
-X-MC-Unique: odYEN20fNu60VXuRI0tagA-1
-X-Mimecast-MFC-AGG-ID: odYEN20fNu60VXuRI0tagA_1739866682
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43961fb0bafso26319815e9.2
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 00:18:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739866681; x=1740471481;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gyr1Th+AZhXNEnzRoSww1Kztm72rQ8icw2TNOJaGX+Y=;
- b=jk7E5R8gO2z9GyhKBhUchbcRITIxJQjsPmQ501bTZpUZQBI5rFSoj8GPRxk2EkX9Gv
- v/4Qe0PYGu6/hHJ1KA6LKHjGZQDwSMpujzhQt1nce0z+DyFKbcUnFu3A06ZEPgWey2xB
- Hki24oJL9lCNZBHxtdjh6gHJiMZpMpqPtvlbApaLSbc/kS3XG6v15UsOnSmkfeudThPC
- ep0v1AIMa9vlITh92dkfE7NMfabw47jVJ+8N/D2Id9D0xPYQvQIUKGNOspwuFu/ytANx
- KZQV0cLSxUpE9eKzL1fBKa8/ol6sB93eyqcAalXgml+nVgjx0NdXCGWIFg2BtvcKZREY
- /k1A==
-X-Gm-Message-State: AOJu0Yzfe25lu4xQbaw5Xc6jCEfBVWmq1+IsQnHykbt7vO+LjImvEI7o
- esLIwXSkLzwYDkp7ItkIQeVXnUjMHaPSCNM8eVXqMnMv8X4cKzTPyeObJaoH6/wB4LqvVu/bImX
- qoVcoKJ7EOKXzyJ//WUsb7LS6M41Ev7auf6T8NYX6ZJ7EnwJV7idKyXzGsLWqMhH/wKg5hxYjUI
- Jgycb0NxbBDZEXPhrqQ3o/kbL2HVQ=
-X-Gm-Gg: ASbGncvQMgenK7PuwjQV9q5eFlbd8TIvFUBv+23DKOV8bpzibNlDc4539XipoZ28npQ
- r5UN0lAv39QB9f7hAHgKduVn1HhIuknpc++qjZVD3vQ5RvLu+ShLN3pYm0FRFA7l/
-X-Received: by 2002:a05:600c:4ecd:b0:434:a468:4a57 with SMTP id
- 5b1f17b1804b1-4396e750885mr94485215e9.26.1739866681361; 
- Tue, 18 Feb 2025 00:18:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFH9twl6v2islD9zMRzfmcPUoEZyuw5ucIPojDQ7b3ohe3Mv6XNvyNbEWnDNtZc/L8eBNwyB9rLOxU6cc6UEpo=
-X-Received: by 2002:a05:600c:4ecd:b0:434:a468:4a57 with SMTP id
- 5b1f17b1804b1-4396e750885mr94485025e9.26.1739866680961; Tue, 18 Feb 2025
- 00:18:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <vaibhav@linux.ibm.com>)
+ id 1tkIr9-00017M-RO; Tue, 18 Feb 2025 03:21:30 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I20ZZo000597;
+ Tue, 18 Feb 2025 08:21:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=pp1; bh=D1I3EWcDyxpBUYW/UG8xM+PDk/+hHD
+ 8VXFla7sYl5TQ=; b=RyVSbbmFEZ9X1fYTicJNAl5Psy14TXLzpuFC0sCsqtElhe
+ mGN1cV5RYLvGajtA1D85KIZj3j8ZOSbZqb+Us6Uvf5nyox+Z1390ck/DF/etUk70
+ MAXLHSqWDTCpV+XisKVQQ08FXfNZlZtEMVQgMZRqe3yhC8urs2MNI90numzC35+2
+ xLoMSiI7BhZzGxXxXKx9dqM/fnAYjgn/RjBbVLFaw19iD0Lbs7AWd/usBrG1Omre
+ 4skS0Cb55VGU4ldSwG2khH+sm9LFGrMdzHE6yWCmyqJKwgEeO9HPVUBbV744d0VP
+ iS7iVHxRNNaEsiauDID7QTu+I68MIekHsA38EJiw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vh201ar1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Feb 2025 08:21:24 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51I8BMCv028751;
+ Tue, 18 Feb 2025 08:21:24 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vh201aqx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Feb 2025 08:21:24 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51I634Yd001623;
+ Tue, 18 Feb 2025 08:21:23 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u5myt56y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Feb 2025 08:21:23 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51I8LLqT52756948
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Feb 2025 08:21:21 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B5CBF20043;
+ Tue, 18 Feb 2025 08:21:21 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 362372004D;
+ Tue, 18 Feb 2025 08:21:19 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.28.10])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+ Tue, 18 Feb 2025 08:21:18 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation);
+ Tue, 18 Feb 2025 13:51:17 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ kvm-ppc@vger.kernel.org, qemu-ppc@nongnu.org
+Cc: harshpb@linux.ibm.com, shivaprasadbhat@gmail.com
+Subject: Re: [PATCH v3] spapr: nested: Add support for reporting Hostwide
+ state counter
+In-Reply-To: <D7OG0Z86JLDP.3JUMXAPUOD7GC@gmail.com>
+References: <20250203100912.82560-1-vaibhav@linux.ibm.com>
+ <D7OG0Z86JLDP.3JUMXAPUOD7GC@gmail.com>
+Date: Tue, 18 Feb 2025 13:51:17 +0530
+Message-ID: <87y0y3ek8y.fsf@vajain21.in.ibm.com>
 MIME-Version: 1.0
-References: <20250215123119.814345-1-ppandit@redhat.com>
- <20250215123119.814345-3-ppandit@redhat.com>
- <87y0y4tf5q.fsf@suse.de>
-In-Reply-To: <87y0y4tf5q.fsf@suse.de>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 18 Feb 2025 13:47:44 +0530
-X-Gm-Features: AWEUYZluINzzamuIO63tVQAfDFo3u-0w4S8AJBBErFcMAYsHFfGQ8CzO-UtbDB8
-Message-ID: <CAE8KmOxYE=10+xjMjH5ZhbMmRJHgxJKHj2wH-nB-qiBSHEVh1w@mail.gmail.com>
-Subject: Re: [PATCH v6 2/4] migration: enable multifd and postcopy together
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com, 
- Prasad Pandit <pjp@fedoraproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dqiIiWS_1Ewchr7uGw5uNemtxajSBvwD
+X-Proofpoint-ORIG-GUID: JbH83gokNNEGJ5ohq1J3F8t-qIrN-RNS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-18_03,2025-02-18_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015
+ spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ phishscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502180061
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=vaibhav@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,231 +114,395 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Fabiano,
 
-On Tue, 18 Feb 2025 at 03:20, Fabiano Rosas <farosas@suse.de> wrote:
-> > -static bool migration_should_start_incoming(bool main_channel)
-> > +static bool migration_has_main_and_multifd_channels(void)
-> >  {
-...
-> > +    /* main channel and all multifd channels are established */
-> >      return true;
-> >  }
+Hi Nic,
+
+Thanks for reviewing this patch. My responses to review comments inline
+below:
+
+
+"Nicholas Piggin" <npiggin@gmail.com> writes:
+
+> On Mon Feb 3, 2025 at 8:09 PM AEST, Vaibhav Jain wrote:
+>> Add support for reporting Hostwide state counters for nested KVM pseries
 >
-> How will this avoid peeking the preempt channel? You're assuming preempt
-> is mutually exclusive with multifd it seems. Otherwise you could get the
-> preempt channel creation racing with multifd channels creation.
-
-* IIUC postcopy preempt channel is created towards the end of the
-migration when the Postcopy phase starts. At that time, the 'main' and
-'multifd' channels are already established and working. Having the
-'main' and when multifd is enabled 'multifd' channels in place is a
-requirement for starting new migration. So when both the 'main' and
-'multifd' channels are established, the new incoming connection is
-seen as the 'postcopy' one; And it falls to the 'else' block of the
-'if' conditional ->  if (!migration_has_main_and_multifd_channels()) {
-
-* When does postcopy preempt channel creation race with the multifd
-channel creation?
-
-> > @@ -989,13 +983,12 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-> > +    if (!migration_has_main_and_multifd_channels()) {
-> I'm not entirely sure we need these checks here. They will happen anyway
-> later. Could this be replaced by migration_needs_multiple_sockets()
-> instead?
-
-* migration_needs_multiple_sockets() => return migrate_multifd() ||
-migrate_postcopy_preempt();
-
-* That logical OR should have been AND, no? It returns true even when
-one of them is true. That's not multiple types (multifd/postcopy) of
-sockets. I don't think it helps much.
-
-* Let's try this:
-    - First differentiation: peekable Vs non-peekable channels
-    - Peekable channels
-         - Main
-         - Multifd
-    - Non-peekable channels
-         - Postcopy preempt
-         - TLS
-         - File/mapped_ram
-
-    if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK))
-    {
-            if (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC)) {
-                channel = CH_MAIN;
-            } else if (channel_magic == cpu_to_be32(MULTIFD_MAGIC)) {
-                channel = CH_MULTIFD;
-    } else {
-            if (!strcmp(ioc->name, "migration-tls-incoming")
-                || !strcmp(ioc->name, "migration-file-incoming"))) {
-               channel = CH_MULTIFD;
-            } else {
-               channel = CH_POSTCOPY;
-            }
-    }
-
-* With above, the 'main' channel shall have to send 'magic value' even
-for reconnection during the postcopy recovery phase. If all channels
-were consistent and sent a magic value, this code would be much
-simpler and we may not have to care/worry about the _order_ in which
-these connections are made.
-
-   if (channel == 'main')
-       process_main_channel()
-   else if (channel == 'multifd')
-       process_multifd_channel()
-   else if (channel == 'tls')
-       process_tls_channel()
-    else if (channel == 'file')
-       process_file_channel()
-    else if (channel == 'postcopy')
-       process_postcopy_channel()
-
-> And I'd put this whole channel discovery business in channel.c since
-> it's encoding several assumptions about channels. Some helpers used here
-> might need to be exported, but that's ok.
+> I'd add a brief first paragraph that just describe the concept of
+> "hostwide state counters" without going into any spec.
 >
-> Also, please make a separate patch, we need to be really confident that
-> changing the discovery code around won't introduce any regression, and
-> if it does, we'll want it separate from the postcopy+multifd
-> enablement. It's ok if you have the patch assume that multifd+postcopy
-> will happen later in the series.
-
-* TBH, I think we have complicated this whole thing with multiple
-channel types, their inconsistent behaviour and dependence on the
-_order_ in which connections are made. Do we really need channel
-types? Could we consider rationalising them?
-
-> > +        if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-> >          /*
-> >           * With multiple channels, it is possible that we receive channels
-> >           * out of order on destination side, causing incorrect mapping of
-> > @@ -1006,42 +999,58 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-> >           * tls handshake while initializing main channel so with tls this
-> >           * issue is not possible.
-> >           */
+>   Hostwide state counters are statistics about the L0 hypervisor's
+>   part in the operation of L2 guests, which are accessible by the
+>   L1 via hcalls to the L0. These statistics don't necessarily apply
+>   to any particular L2, and can be relevant even when there are no
+>   L2 guests in the system at all.
 >
-> This comment block needs to be indented properly.
->
-> > -        ret = migration_channel_read_peek(ioc, (void *)&channel_magic,
-> > -                                          sizeof(channel_magic), errp);
-> > +            ret = migration_channel_read_peek(ioc, (void *)&channel_magic,
-> > +                                              sizeof(channel_magic), errp);
-> > +            if (ret != 0) {
-> > +                return;
-> > +            }
-> >
-> > -        if (ret != 0) {
-> > -            return;
-> > +            if (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC)) {
-> > +                channel = CH_MAIN;
-> > +            } else if (channel_magic == cpu_to_be32(MULTIFD_MAGIC)) {
-> > +                channel = CH_MULTIFD;
-> > +            } else if (!mis->from_src_file
-> > +                        && mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
->
-> The usual style is to keep the && on the previous line.
->
-> > +                /* reconnect default channel for postcopy recovery */
->
-> s/default/main/
-
-* Okay, will fix these.
-
-
-> > +                channel = CH_MAIN;
-> > +            } else {
-> > +                error_report("%s: unknown channel magic: %u",
-> > +                                __func__, channel_magic);
-> > +                return;
->
-> This needs to set errp instead of reporting.
-
-* Okay.
-
-> > +            }
-> > +        } else if (mis->from_src_file
-> > +                && (!strcmp(ioc->name, "migration-tls-incoming")
-> > +                || !strcmp(ioc->name, "migration-file-incoming"))) {
-> > +            channel = CH_MULTIFD;
->
-> This is quite misleading. These channels are used without multifd as
-> well. For instance, file-backed fd migration goes past this because
-> !mis->from_src_file but it still uses the file channel.
->
-> I agree with Peter that checking for channel names is not ideal. I don't
-> see an alternative at the moment (hiding the assumption is of course not
-> a fix). Maybe check migrate_multifd() here and explain in a comment that
-> at the moment, the non-peekable channels happen to be used with multifd
-> only.
-
-* The first paragraph says these channels are used without
-migrate_multifd(); And the second paragraph says they are used with
-migrate_multifd() only....??
-===
-} else {
-        /* Multiple connections */
-        assert(migration_needs_multiple_sockets());
-        if (migrate_multifd()) {
-            multifd_recv_new_channel(ioc, &local_err);
-        } else {
-            assert(migrate_postcopy_preempt());
-            f = qemu_file_new_input(ioc);
-            postcopy_preempt_new_channel(mis, f);
-        }
-===
-* IIUC in the current code, when migrate_multifd() is true, these
-channels get processed via - multifd_recv_new_channel(). And when
-migrate_multifd() is false, it falls to postcopy_preempt_new_channel()
-part. Not sure if/how that works really. It is possible that currently
-these (tls/file) channels are used only with migrate_multifd() enabled
-and so are processed with multifd_recv_new_channel() function. The
-current patch handles them the same way.
-
-* About checking channel names, in the non-peekable category above,
-how do we differentiate between 'TLS', 'File' and 'Postcopy' channels?
-Without magic values, we don't have much choice really.  And seeing
-those names in the code also tells the reader that 'TLS' and 'File'
-channels are processed as CH_MULTIFD via - multifd_recv_new_channel().
-
-> No else clause here and in the rest of the patch makes this is as opaque
-> as the previous version, IMO. We need to define what's supposed to
-> happen whenever the conditionals don't match. Is it an error,
-> g_assert_not_reached(), a fallthrough? Better to set CH_MAIN explicitly
-> wherenever that's the case.
-
-* I'd say let's treat unmatched conditions as an error and return.
-
-> > -        default_channel = (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC));
-> > -    } else {
-> > -        default_channel = !mis->from_src_file;
-> > +    } else if (mis->from_src_file) {
-> > +        channel = CH_POSTCOPY;
-> >      }
->
-> Same here.
-
-* Here final else means the main channel (mis->from_src_file) is not
-established, so it defaults to CH_MAIN.
+> Something like that?
+Thanks, I will add a similar preemble to the v4 patch description.
 
 >
-> You could check CH_POSTCOPY first in the block above this one and return
-> early.
+>> guests running with 'cap-nested-papr' on Qemu-TCG acting as
+>> L0-hypervisor. sPAPR supports reporting various stats counters for
+>> Guest-Management-Area(GMA) thats owned by L0-Hypervisor and are documented
+>> at [1]. These stats counters are exposed via a new bit-flag named
+>> 'getHostWideState' for the H_GUEST_GET_STATE hcall. Once this flag is set
+>> the hcall should populate the Guest-State-Elements in the requested GSB
+>> with the stat counter values. Currently following five counters are
+>> supported:
+>>
+>> * host_heap		: The currently used bytes in the
+>> 			  Hypervisor's Guest Management Space
+>> 			  associated with the Host Partition.
+>> * host_heap_max		: The maximum bytes available in the
+>> 			  Hypervisor's Guest Management Space
+>> 			  associated with the Host Partition.
+>> * host_pagetable	: The currently used bytes in the
+>> 			  Hypervisor's Guest Page Table Management
+>> 			  Space associated with the Host Partition.
+>> * host_pagetable_max	: The maximum bytes available in the
+>> 			  Hypervisor's Guest Page Table Management
+>> 			  Space associated with the Host Partition.
+>> * host_pagetable_reclaim: The amount of space in bytes that has
+>> 			  been reclaimed due to overcommit in the
+>> 			  Hypervisor's Guest Page Table Management
+>> 			  Space associated with the Host Partition.
+>
+> Rather than list these out in the changelog, could they go into a
+> doc or at least code comment?
+>
+Yes, they are already described in the proposed kernel documentation
+changes at
+https://lore.kernel.org/all/20241222140247.174998-2-vaibhav@linux.ibm.com
+
+I will also add above descriptions to new members documentation for 'struct
+SpaprMachineStateNested'
+
+
+>> At the moment '0' is being reported for all these counters as these
+>> counters doesnt align with how L0-Qemu manages Guest memory.
+>>
+>> The patch implements support for these counters by adding new members to
+>> the 'struct SpaprMachineStateNested'. These new members are then plugged
+>> into the existing 'guest_state_element_types[]' with the help of a new
+>> macro 'GSBE_NESTED_MACHINE_DW' together with a new helper
+>> 'get_machine_ptr()'. guest_state_request_check() is updated to ensure
+>> correctness of the requested GSB and finally h_guest_getset_state() is
+>> updated to handle the newly introduced flag
+>> 'GUEST_STATE_REQUEST_HOST_WIDE'.
+>>
+>> This patch is tested with the proposed linux-kernel implementation to
+>> expose these stat-counter as perf-events at [2].
+>>
+>> [1]
+>> https://lore.kernel.org/all/20241222140247.174998-2-vaibhav@linux.ibm.com
+>>
+>> [2]
+>> https://lore.kernel.org/all/20241222140247.174998-1-vaibhav@linux.ibm.com
+>>
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>> Changelog:
+>>
+>> v2->v1:
+>> * Fixed minor nits suggested [Harsh]
+>> * s/GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE/GUEST_STATE_REQUEST_HOST_WIDE/
+>> in guest_state_request_check() [Harsh]
+>> * MInor change in the order of comparision in h_guest_getset_state()
+>> [Harsh]
+>> * Added reviewed-by of Harsh
+>>
+>> v1->v2:
+>> * Introduced new flags to correctly compare hcall flags
+>>   for H_GUEST_{GET,SET}_STATE [Harsh]
+>> * Fixed ordering of new GSB elements in spapr_nested.h [Harsh]
+>> * s/GSBE_MACHINE_NESTED_DW/GSBE_NESTED_MACHINE_DW/
+>> * Minor tweaks to patch description
+>> * Updated recipients list
+>> ---
+>>  hw/ppc/spapr_nested.c         | 82 ++++++++++++++++++++++++++---------
+>>  include/hw/ppc/spapr_nested.h | 39 ++++++++++++++---
+>>  2 files changed, 96 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+>> index 7def8eb73b..d1aa6fc866 100644
+>> --- a/hw/ppc/spapr_nested.c
+>> +++ b/hw/ppc/spapr_nested.c
+>> @@ -64,10 +64,9 @@ static
+>>  SpaprMachineStateNestedGuest *spapr_get_nested_guest(SpaprMachineState *spapr,
+>>                                                       target_ulong guestid)
+>>  {
+>> -    SpaprMachineStateNestedGuest *guest;
+>> -
+>> -    guest = g_hash_table_lookup(spapr->nested.guests, GINT_TO_POINTER(guestid));
+>> -    return guest;
+>> +    return spapr->nested.guests ?
+>> +        g_hash_table_lookup(spapr->nested.guests,
+>> +                            GINT_TO_POINTER(guestid)) : NULL;
+>>  }
+>
+> Is this a bug-fix that should go in first? What if L1 makes hcall with
+> no L2 created today?
+>
+Yes this is a bug fix but it got only exposed with this patch as
+hostwide counters can be requested without creating any guests. Without
+this change qemu emmits an assert failure when trying to lookup
+NULL==spapr->nested.guests hashtable via g_hash_table_lookup(). The
+hashtable spapr->nested.guests is only allocated when first guest is
+created.
+
+>>  
+>>  bool spapr_get_pate_nested_papr(SpaprMachineState *spapr, PowerPCCPU *cpu,
+>> @@ -613,6 +612,13 @@ static void *get_guest_ptr(SpaprMachineStateNestedGuest *guest,
+>>      return guest; /* for GSBE_NESTED */
+>>  }
+>>  
+>> +static void *get_machine_ptr(SpaprMachineStateNestedGuest *guest,
+>> +                             target_ulong vcpuid)
+>> +{
+>> +    SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
+>> +    return &spapr->nested;
+>> +}
+>
+> It would be nicer if the .location op could instead be changed to take
+> SpaprMachineState * pointer as well, instead of using
+> qdev_get_machine(). guest could be NULL if none exists.
+>
+I tried implementing this change i.e adding a 'SpaprMachineState *' but
+this needs more changes to getset_state() which is relatively
+extensively used outside the h_guest_get_state(). Wanted to avoid too
+many changes to the existing code for this relatively small feature.
+
+If you feel this is a must have I will comeup with a relatively large v4
+with this change.
+
+>> +
+>>  /*
+>>   * set=1 means the L1 is trying to set some state
+>>   * set=0 means the L1 is trying to get some state
+>> @@ -1012,7 +1018,12 @@ struct guest_state_element_type guest_state_element_types[] = {
+>>      GSBE_NESTED_VCPU(GSB_VCPU_OUT_BUFFER, 0x10, runbufout,   copy_state_runbuf),
+>>      GSBE_NESTED_VCPU(GSB_VCPU_OUT_BUF_MIN_SZ, 0x8, runbufout, out_buf_min_size),
+>>      GSBE_NESTED_VCPU(GSB_VCPU_HDEC_EXPIRY_TB, 0x8, hdecr_expiry_tb,
+>> -                     copy_state_hdecr)
+>> +                     copy_state_hdecr),
+>> +    GSBE_NESTED_MACHINE_DW(GSB_GUEST_HEAP, current_guest_heap),
+>> +    GSBE_NESTED_MACHINE_DW(GSB_GUEST_HEAP_MAX, max_guest_heap),
+>> +    GSBE_NESTED_MACHINE_DW(GSB_GUEST_PGTABLE_SIZE, current_pgtable_size),
+>> +    GSBE_NESTED_MACHINE_DW(GSB_GUEST_PGTABLE_SIZE_MAX, max_pgtable_size),
+>> +    GSBE_NESTED_MACHINE_DW(GSB_GUEST_PGTABLE_RECLAIM, pgtable_reclaim_size),
+>>  };
+>>  
+>>  void spapr_nested_gsb_init(void)
+>> @@ -1030,8 +1041,12 @@ void spapr_nested_gsb_init(void)
+>>          else if (type->id >= GSB_VCPU_IN_BUFFER)
+>>              /* 0x0c00 - 0xf000 Thread + RW */
+>>              type->flags = 0;
+>> +        else if (type->id >= GSB_GUEST_HEAP)
+>> +            /*0x0800 - 0x0804 Hostwide Counters + RO */
+>
+>                  ^ put a space there
+>
+Will be addressed in v4
+>> +            type->flags = GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE |
+>> +                          GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY;
+>>          else if (type->id >= GSB_VCPU_LPVR)
+>> -            /* 0x0003 - 0x0bff Guest + RW */
+>> +            /* 0x0003 - 0x07ff Guest + RW */
+>>              type->flags = GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE;
+>>          else if (type->id >= GSB_HV_VCPU_STATE_SIZE)
+>>              /* 0x0001 - 0x0002 Guest + RO */
+>> @@ -1138,18 +1153,26 @@ static bool guest_state_request_check(struct guest_state_request *gsr)
+>>              return false;
+>>          }
+>>  
+>> -        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
+>> +        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE) {
+>> +            /* Hostwide elements cant be clubbed with other types */
+>> +            if (!(gsr->flags & GUEST_STATE_REQUEST_HOST_WIDE)) {
+>> +                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a host wide "
+>> +                              "Element ID:%04x.\n", id);
+>> +                return false;
+>> +            }
+>> +        } else  if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
+>>              /* guest wide element type */
+>>              if (!(gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE)) {
+>> -                qemu_log_mask(LOG_GUEST_ERROR, "trying to set a guest wide "
+>> +                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a guest wide "
+>>                                "Element ID:%04x.\n", id);
+>>                  return false;
+>>              }
+>>          } else {
+>>              /* thread wide element type */
+>> -            if (gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE) {
+>> -                qemu_log_mask(LOG_GUEST_ERROR, "trying to set a thread wide "
+>> -                              "Element ID:%04x.\n", id);
+>> +            if (gsr->flags & (GUEST_STATE_REQUEST_GUEST_WIDE |
+>> +                              GUEST_STATE_REQUEST_HOST_WIDE)) {
+>> +                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a thread wide"
+>> +                            " Element ID:%04x.\n", id);
+>>                  return false;
+>>              }
+>>          }
+>> @@ -1509,25 +1532,44 @@ static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
+>>      target_ulong buf = args[3];
+>>      target_ulong buflen = args[4];
+>>      struct guest_state_request gsr;
+>> -    SpaprMachineStateNestedGuest *guest;
+>> +    SpaprMachineStateNestedGuest *guest = NULL;
+>>  
+>> -    guest = spapr_get_nested_guest(spapr, lpid);
+>> -    if (!guest) {
+>> -        return H_P2;
+>> -    }
+>>      gsr.buf = buf;
+>>      assert(buflen <= GSB_MAX_BUF_SIZE);
+>>      gsr.len = buflen;
+>>      gsr.flags = 0;
+>> -    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+>> +
+>> +    /* Works for both get/set state */
+>> +    if ((flags & H_GUEST_GET_STATE_FLAGS_GUEST_WIDE) ||
+>> +        (flags & H_GUEST_SET_STATE_FLAGS_GUEST_WIDE)) {
+>>          gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
+>>      }
+>> -    if (flags & ~H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+>> -        return H_PARAMETER; /* flag not supported yet */
+>> -    }
+>>  
+>>      if (set) {
+>> +        if (flags & ~H_GUEST_SET_STATE_FLAGS_MASK) {
+>> +            return H_PARAMETER;
+>> +        }
+>>          gsr.flags |= GUEST_STATE_REQUEST_SET;
+>> +    } else {
+>> +        /*
+>> +         * No reserved fields to be set in flags nor both
+>> +         * GUEST/HOST wide bits
+>> +         */
+>> +        if ((flags & ~H_GUEST_GET_STATE_FLAGS_MASK) ||
+>> +            (flags == H_GUEST_GET_STATE_FLAGS_MASK)) {
+>> +            return H_PARAMETER;
+>> +        }
+>> +
+>> +        if (flags & H_GUEST_GET_STATE_FLAGS_HOST_WIDE) {
+>> +            gsr.flags |= GUEST_STATE_REQUEST_HOST_WIDE;
+>> +        }
+>> +    }
+>> +
+>> +    if (!(gsr.flags & GUEST_STATE_REQUEST_HOST_WIDE)) {
+>> +        guest = spapr_get_nested_guest(spapr, lpid);
+>> +        if (!guest) {
+>> +            return H_P2;
+>> +        }
+>>      }
+>>      return map_and_getset_state(cpu, guest, vcpuid, &gsr);
+>>  }
+>> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+>> index e420220484..217376a979 100644
+>> --- a/include/hw/ppc/spapr_nested.h
+>> +++ b/include/hw/ppc/spapr_nested.h
+>> @@ -11,7 +11,13 @@
+>>  #define GSB_TB_OFFSET           0x0004 /* Timebase Offset */
+>>  #define GSB_PART_SCOPED_PAGETBL 0x0005 /* Partition Scoped Page Table */
+>>  #define GSB_PROCESS_TBL         0x0006 /* Process Table */
+>> -                    /* RESERVED 0x0007 - 0x0BFF */
+>> +                    /* RESERVED 0x0007 - 0x07FF */
+>> +#define GSB_GUEST_HEAP          0x0800 /* Guest Management Heap Size */
+>> +#define GSB_GUEST_HEAP_MAX      0x0801 /* Guest Management Heap Max Size */
+>> +#define GSB_GUEST_PGTABLE_SIZE  0x0802 /* Guest Pagetable Size */
+>> +#define GSB_GUEST_PGTABLE_SIZE_MAX   0x0803 /* Guest Pagetable Max Size */
+>> +#define GSB_GUEST_PGTABLE_RECLAIM    0x0804 /* Pagetable Reclaim in bytes */
+>
+> Could these names be changed so it's a bit more obvious that they
+> are "hostwide" stats? GSB_L0_GUEST_MAX, for example?
+>
+> Also maybe call them GSB_L0_GUEST_HEAP_INUSE, PGTABLE_SIZE_INUSE,
+> and PGTABLE_RECLAIMED to be slightly clearer about them.
+>
+Sure and thanks for the suggestion. I have renamed them in v4
+>> +                    /* RESERVED 0x0805 - 0xBFF */
+>>  #define GSB_VCPU_IN_BUFFER      0x0C00 /* Run VCPU Input Buffer */
+>>  #define GSB_VCPU_OUT_BUFFER     0x0C01 /* Run VCPU Out Buffer */
+>>  #define GSB_VCPU_VPA            0x0C02 /* HRA to Guest VCPU VPA */
+>> @@ -196,6 +202,13 @@ typedef struct SpaprMachineStateNested {
+>>  #define NESTED_API_PAPR    2
+>>      bool capabilities_set;
+>>      uint32_t pvr_base;
+>> +    /* Hostwide counters */
+>> +    uint64_t current_guest_heap;
+>> +    uint64_t max_guest_heap;
+>> +    uint64_t current_pgtable_size;
+>> +    uint64_t max_pgtable_size;
+>> +    uint64_t pgtable_reclaim_size;
+>
+> Similar for these names, I would keep them relatively
+> consistent with the #define names unless there is a
+> reason to change.
+>
+> guest_heap_inuse, guest_heap_max, etc.
+>
+Sure and thanks for the suggestion. I have renamed them in v4 as well
+added more extensive comments documentating these counters.
+
+> Looks pretty good though.
+Thanks
+
+>
+> Thanks,
+> Nick
+>
+>> +
+>>      GHashTable *guests;
+>>  } SpaprMachineStateNested;
+>>  
+>> @@ -229,9 +242,15 @@ typedef struct SpaprMachineStateNestedGuest {
+>>  #define HVMASK_HDEXCR                 0x00000000FFFFFFFF
+>>  #define HVMASK_TB_OFFSET              0x000000FFFFFFFFFF
+>>  #define GSB_MAX_BUF_SIZE              (1024 * 1024)
+>> -#define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000
+>> -#define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
+>> -#define GUEST_STATE_REQUEST_SET              0x2
+>> +#define H_GUEST_GET_STATE_FLAGS_MASK   0xC000000000000000ULL
+>> +#define H_GUEST_SET_STATE_FLAGS_MASK   0x8000000000000000ULL
+>> +#define H_GUEST_SET_STATE_FLAGS_GUEST_WIDE 0x8000000000000000ULL
+>> +#define H_GUEST_GET_STATE_FLAGS_GUEST_WIDE 0x8000000000000000ULL
+>> +#define H_GUEST_GET_STATE_FLAGS_HOST_WIDE  0x4000000000000000ULL
+>> +
+>> +#define GUEST_STATE_REQUEST_GUEST_WIDE     0x1
+>> +#define GUEST_STATE_REQUEST_HOST_WIDE      0x2
+>> +#define GUEST_STATE_REQUEST_SET            0x4
+>>  
+>>  /*
+>>   * As per ISA v3.1B, following bits are reserved:
+>> @@ -251,6 +270,15 @@ typedef struct SpaprMachineStateNestedGuest {
+>>      .copy = (c)                                    \
+>>  }
+>>  
+>> +#define GSBE_NESTED_MACHINE_DW(i, f)  {                             \
+>> +        .id = (i),                                                  \
+>> +        .size = 8,                                                  \
+>> +        .location = get_machine_ptr,                                \
+>> +        .offset = offsetof(struct SpaprMachineStateNested, f),     \
+>> +        .copy = copy_state_8to8,                                    \
+>> +        .mask = HVMASK_DEFAULT                                      \
+>> +}
+>> +
+>>  #define GSBE_NESTED(i, sz, f, c) {                             \
+>>      .id = (i),                                                 \
+>>      .size = (sz),                                              \
+>> @@ -509,7 +537,8 @@ struct guest_state_element_type {
+>>      uint16_t id;
+>>      int size;
+>>  #define GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE 0x1
+>> -#define GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY  0x2
+>> +#define GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE 0x2
+>> +#define GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY 0x4
+>>     uint16_t flags;
+>>      void *(*location)(SpaprMachineStateNestedGuest *, target_ulong);
+>>      size_t offset;
+>
 >
 
-* Okay.
-
-* My request is the same - let's think about having consistent channel
-behaviour. The restructuring and overhauling of the channel processing
-part could be done separately, outside the current scope of enabling
-multifd+postcopy together with this series. Let's not try to fix
-everything in one go, in one series.
-
-
-Thank you.
----
-  - Prasad
-
+-- 
+Cheers
+~ Vaibhav
 
