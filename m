@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2D9A3A149
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A6BA3A155
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkPXm-0000nt-OL; Tue, 18 Feb 2025 10:29:55 -0500
+	id 1tkPXP-0000Gg-Ro; Tue, 18 Feb 2025 10:29:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWT-0008A9-3H
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWT-0008AG-WD
  for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWQ-0008GX-Fa
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:32 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWR-0008Gx-H8
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739892509;
+ s=mimecast20190719; t=1739892510;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3ouCq6T4HtFXqmTe8P3qq45JLeOUeZ8y1OjZj55ei1g=;
- b=HQ641NXlxVR8nDzZ5nOxN0yfwykDLytBXVBlji8EgLkbngEWs1qKd8jTE3mfp+2rp5iihz
- 8N0FVGeaXGsA46FuDlimFO/ekEKRMY9aVTh4vTVfakucEI+gyX/e2J06K+WOIDjpWWyZEn
- rBnQ+sroOWjo49HonH9C8IVkmiEZZMI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=qNBL2oKH1CUiue7VLjb7VFcZSXQyug26lDfg6D9Ytvc=;
+ b=PqE0pSk9rUTpk+3e2PsoyEwOYBoC0cCz1BB98N0gKl10GVEkIsKjZxbnZ4xEw7utNWxfvS
+ guyz6kPPwHK+oCX9X82a72nbuUDa4NugIKs2yRNuvTYva6x9jezSSS1xBgg10f7rJ+JCWs
+ 5ZYCZS+EGT2yvk2UiYHP+ukLeBI5KxU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-wnxKVU2vNxaPg_68gq4vkA-1; Tue,
- 18 Feb 2025 10:28:23 -0500
-X-MC-Unique: wnxKVU2vNxaPg_68gq4vkA-1
-X-Mimecast-MFC-AGG-ID: wnxKVU2vNxaPg_68gq4vkA_1739892503
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-vQQoJIxCN3CwdCMabECGMQ-1; Tue,
+ 18 Feb 2025 10:28:26 -0500
+X-MC-Unique: vQQoJIxCN3CwdCMabECGMQ-1
+X-Mimecast-MFC-AGG-ID: vQQoJIxCN3CwdCMabECGMQ_1739892505
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0041E1800872; Tue, 18 Feb 2025 15:28:23 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B1CAD18EAB38; Tue, 18 Feb 2025 15:28:25 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.187])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E8956180036E; Tue, 18 Feb 2025 15:28:20 +0000 (UTC)
+ id 8B4C11800361; Tue, 18 Feb 2025 15:28:23 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 12/14] tests/functional: Convert the aarch64 replay avocado
+Subject: [PATCH 13/14] tests/functional: Convert the x86_64 replay avocado
  tests
-Date: Tue, 18 Feb 2025 16:27:42 +0100
-Message-ID: <20250218152744.228335-13-thuth@redhat.com>
+Date: Tue, 18 Feb 2025 16:27:43 +0100
+Message-ID: <20250218152744.228335-14-thuth@redhat.com>
 In-Reply-To: <20250218152744.228335-1-thuth@redhat.com>
 References: <20250218152744.228335-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,84 +86,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Put the tests into a separate file now (in the functional framework,
 each file is run with one specific qemu-system-* binary).
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com
 ---
- tests/avocado/replay_kernel.py          | 18 ---------------
- tests/functional/meson.build            |  1 +
- tests/functional/test_aarch64_replay.py | 30 +++++++++++++++++++++++++
- 3 files changed, 31 insertions(+), 18 deletions(-)
- create mode 100755 tests/functional/test_aarch64_replay.py
+ tests/avocado/replay_kernel.py         | 35 --------------------------
+ tests/functional/meson.build           |  2 ++
+ tests/functional/test_x86_64_replay.py | 35 ++++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+), 35 deletions(-)
+ create mode 100755 tests/functional/test_x86_64_replay.py
 
 diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 49543604613..dffced62aa2 100644
+index dffced62aa2..35515323723 100644
 --- a/tests/avocado/replay_kernel.py
 +++ b/tests/avocado/replay_kernel.py
-@@ -143,21 +143,3 @@ def test_x86_64_q35(self):
+@@ -108,38 +108,3 @@ def test_i386_pc(self):
          console_pattern = 'VFS: Cannot open root device'
  
          self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
 -
--    def test_aarch64_virt(self):
+-    # See https://gitlab.com/qemu-project/qemu/-/issues/2094
+-    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'pc machine is unstable with replay')
+-    def test_x86_64_pc(self):
 -        """
--        :avocado: tags=arch:aarch64
--        :avocado: tags=machine:virt
--        :avocado: tags=cpu:cortex-a53
+-        :avocado: tags=arch:x86_64
+-        :avocado: tags=machine:pc
+-        :avocado: tags=flaky
 -        """
 -        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
--                      '/linux/releases/29/Everything/aarch64/os/images/pxeboot'
+-                      '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
 -                      '/vmlinuz')
--        kernel_hash = '8c73e469fc6ea06a58dc83a628fc695b693b8493'
+-        kernel_hash = '23bebd2680757891cf7adedb033532163a792495'
 -        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
 -
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyAMA0')
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
 -        console_pattern = 'VFS: Cannot open root device'
 -
--        self.run_rr(kernel_path, kernel_command_line, console_pattern)
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+-
+-    def test_x86_64_q35(self):
+-        """
+-        :avocado: tags=arch:x86_64
+-        :avocado: tags=machine:q35
+-        """
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+-                      '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
+-                      '/vmlinuz')
+-        kernel_hash = '23bebd2680757891cf7adedb033532163a792495'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
+-        console_pattern = 'VFS: Cannot open root device'
+-
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 24cd0746b6e..85abac6b93d 100644
+index 85abac6b93d..3054aa18570 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -70,6 +70,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_aspeed',
-   'aarch64_raspi3',
-   'aarch64_raspi4',
-+  'aarch64_replay',
-   'aarch64_reverse_debugging',
-   'aarch64_rme_virt',
-   'aarch64_rme_sbsaref',
-diff --git a/tests/functional/test_aarch64_replay.py b/tests/functional/test_aarch64_replay.py
+@@ -48,6 +48,7 @@ test_timeouts = {
+   's390x_ccw_virtio' : 420,
+   'sh4_tuxrun' : 240,
+   'x86_64_kvm_xen' : 180,
++  'x86_64_replay' : 480,
+ }
+ 
+ tests_generic_system = [
+@@ -302,6 +303,7 @@ tests_x86_64_system_thorough = [
+   'x86_64_hotplug_blk',
+   'x86_64_hotplug_cpu',
+   'x86_64_kvm_xen',
++  'x86_64_replay',
+   'x86_64_reverse_debugging',
+   'x86_64_tuxrun',
+ ]
+diff --git a/tests/functional/test_x86_64_replay.py b/tests/functional/test_x86_64_replay.py
 new file mode 100755
-index 00000000000..04cde433bcf
+index 00000000000..180f23a60c5
 --- /dev/null
-+++ b/tests/functional/test_aarch64_replay.py
-@@ -0,0 +1,30 @@
++++ b/tests/functional/test_x86_64_replay.py
+@@ -0,0 +1,35 @@
 +#!/usr/bin/env python3
 +#
-+# Replay test that boots a Linux kernel on an aarch64 machine
++# Replay test that boots a Linux kernel on x86_64 machines
 +# and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+from qemu_test import Asset
++from qemu_test import Asset, skipFlakyTest
 +from replay_kernel import ReplayKernelBase
 +
 +
-+class Aarch64Replay(ReplayKernelBase):
++class X86Replay(ReplayKernelBase):
 +
 +    ASSET_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-+         'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-+        '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
++         ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
++          '/releases/29/Everything/x86_64/os/images/pxeboot/vmlinuz'),
++        '8f237d84712b1b411baf3af2aeaaee10b9aae8e345ec265b87ab3a39639eb143')
 +
-+    def test_aarch64_virt(self):
-+        self.set_machine('virt')
-+        self.cpu = 'cortex-a53'
++    def do_test_x86(self, machine):
++        self.set_machine(machine)
 +        kernel_path = self.ASSET_KERNEL.fetch()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyAMA0')
++        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
 +        console_pattern = 'VFS: Cannot open root device'
-+        self.run_rr(kernel_path, kernel_command_line, console_pattern)
++        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
++
++    @skipFlakyTest('https://gitlab.com/qemu-project/qemu/-/issues/2094')
++    def test_pc(self):
++        self.do_test_x86('pc')
++
++    def test_q35(self):
++        self.do_test_x86('q35')
 +
 +
 +if __name__ == '__main__':
