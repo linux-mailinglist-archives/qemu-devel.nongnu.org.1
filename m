@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4C2A3AAC5
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5BEA3AAC6
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 22:22:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkV2H-00033q-B9; Tue, 18 Feb 2025 16:21:45 -0500
+	id 1tkV2J-00034J-Na; Tue, 18 Feb 2025 16:21:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2E-00032f-Ii
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2E-00032z-Tz
  for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:42 -0500
 Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2A-000335-RP
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1tkV2B-00033L-LQ
  for qemu-devel@nongnu.org; Tue, 18 Feb 2025 16:21:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739913696; bh=hEdGGrdRnyKcM0NWUuU9kjR/8KwYnsAxspFYskjaN3Q=;
+ t=1739913697; bh=rseh06rZwnj1XEKSik48UBym2dlowjYs00+a91IMU/Q=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ZM6lnfK4B8qYV33BPavYbeZ4Ok/JALi4AFz4TL8hLKSQEq57zzncuvGxlJk6YkVN0
- Sraejzp1ZOcZgmG5GXkCPWHD1cPaCmA+YGs4IAujWknJBUL4d5kDHWiqlDYGZuSVNE
- gc4L8ZaAe8GtdpEKk6kYgfcXe0Icm62t6sKX8yuVEEEoXkJZc1TXSH3TzVYZDxDs0f
- Lu1zb+bugpS+TLy2uZUJ+PcuVyYW98d/hNFtIh44n2/2AODgrgnFwfwmAA0YFaDKPN
- 0ZdHZxKZDZ0kMhmPolEimSLcWB7E4QnThjOxK5/xddgmHU4QIkxTGXnbqqVY3gi1+D
- FCLnJhm67KF3g==
+ b=pPyVDpbilkb/Lg87lqPdvESOf7R6IernWyIfrys9+F8ybiZPtQn/KOiGR9eCzitaV
+ XP4G7+4VmuLwFa24EfadqwFnkzMjtdDTqJoXjOIJDVYb/EPaV2SKVLMOR8XvaMUDI9
+ BUCdedCH/bWoOl+L3g2x9itiOqy+slNTW2vcTYS+Eveo41UtfohIIUsvl2lOqwNmQW
+ wwydC3Yj8LjloV2QV3F+NlW3ptefB3E7A8ySAQhr4eftdhb7CEVbEPmsRf/Ew2jjxG
+ C0qUJP4bK9GertIf12m0ose74JKejvkTsFmX6ZEA6YbD5yyTETHmdvV1GiiBEenvWb
+ pUeR02TpqH+hQ==
 Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id 5178C3F22879
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 13:21:36 -0800 (PST)
+ by elaine.keithp.com (Postfix) with ESMTP id ECF073F20DB1
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 13:21:37 -0800 (PST)
 X-Virus-Scanned: Debian amavis at keithp.com
 Received: from elaine.keithp.com ([127.0.0.1])
  by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id ThcbEjBnbYD7; Tue, 18 Feb 2025 13:21:34 -0800 (PST)
+ id 0UXT2VrVZUh2; Tue, 18 Feb 2025 13:21:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1739913694; bh=hEdGGrdRnyKcM0NWUuU9kjR/8KwYnsAxspFYskjaN3Q=;
+ t=1739913694; bh=rseh06rZwnj1XEKSik48UBym2dlowjYs00+a91IMU/Q=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MJSt5ORqY3ukYJWqkUsjCvT5dAnv3rLwlZFvw3YIZf1JT2etDza8VtZ+8PPVl3XmI
- hAQnMiO4z5UIpMmmRA7AMvfaxVnd5KRni25VIpGKuwU+pgK//ipeM1zL8HZwRn3dj0
- HMHK7Cm/8oaMn+nfD7h32tHzD8LOsQ1d0/6iq9I1UaurX0YMtYZYljVS33OsGGSA04
- q/YTlYIBzA8pLPlWzy9wWRXGOHvgo3NAApKFnOnV+YGFJErq9jGPdUbAPasgyi6awv
- Q9VLwwc/uFoknJTztTKd2Kb3nVXpw2OmMML2jeqJcTMWZz4GXNazS0RyuFa5YISu1X
- kWERFAAsL3RBQ==
+ b=wMFItj/5ACqrAqmuVNiG8L9uwxpcVyUlUSrfdAMBRau7AteCr7S4+vHZmLmPmpDUX
+ HdZPKt2cBxGj6AiKbPgNM/e/DVqpcLBUusrVeHXFFKxkdy3ZGwZadCpQhZsghxIRI4
+ E31jChVom6NpQm1nu5cKEoTzUNfGuRd2qFC8NuMhs/qtaKFhSD21dELC14eJU8UvEQ
+ 0Kg021iSmExX9XEScKcMzWEaE8a1VsRAlZ5iELoyZXWrdtrf4tsrz51ngd2xCDLcWy
+ iIvtlK+ELgCr6MfE/+PDOTfk/9ydSjYYJ3kXPjV3gDj0zd8OsiFsC+pFWy1tx/j1BM
+ e2mF3fXGXpqZA==
 Received: from keithp.com (koto.keithp.com [192.168.11.2])
- by elaine.keithp.com (Postfix) with ESMTPSA id E155B3F20D3C;
+ by elaine.keithp.com (Postfix) with ESMTPSA id DD39E3F20C61;
  Tue, 18 Feb 2025 13:21:34 -0800 (PST)
 Received: by keithp.com (Postfix, from userid 1000)
- id B79FE1E6007A; Tue, 18 Feb 2025 13:21:34 -0800 (PST)
+ id BAAFB1E6009D; Tue, 18 Feb 2025 13:21:34 -0800 (PST)
 To: qemu-devel@nongnu.org
 Cc: Keith Packard <keithp@keithp.com>
-Subject: [PATCH 1/4] target/rx: Set exception vector base to 0xffffff80
-Date: Tue, 18 Feb 2025 13:21:00 -0800
-Message-ID: <20250218212103.2024039-2-keithp@keithp.com>
+Subject: [PATCH 2/4] target/rx: Remove TCG_CALL_NO_WG from helpers which write
+ env
+Date: Tue, 18 Feb 2025 13:21:01 -0800
+Message-ID: <20250218212103.2024039-3-keithp@keithp.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250218212103.2024039-1-keithp@keithp.com>
 References: <20250215021654.1786679-1-keithp@keithp.com>
@@ -83,29 +84,67 @@ From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The documentation says the vector is at 0xffffff80, instead of the
-previous value of 0xffffffc0. That value must have been a bug because
-the standard vector values (20, 21, 23, 25, 30) were all
-past the end of the array.
+Functions which modify virtual machine state (such as virtual
+registers stored in memory) must not be marked TCG_CALL_NO_WG as that
+tells the optimizer that virtual registers values already loaded in
+machine registers are still valid, hence discards any changes which
+these helpers may have made. This seems to also mean that functions which
+set condition codes may also not use this flag
 
 Signed-off-by: Keith Packard <keithp@keithp.com>
 ---
- target/rx/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/rx/helper.h | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index 80912e8dcb..55e2ae4a11 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -90,7 +90,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         cpu_stl_data(env, env->isp, env->pc);
- 
-         if (vec < 0x100) {
--            env->pc = cpu_ldl_data(env, 0xffffffc0 + vec * 4);
-+            env->pc = cpu_ldl_data(env, 0xffffff80 + vec * 4);
-         } else {
-             env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
-         }
+diff --git a/target/rx/helper.h b/target/rx/helper.h
+index ebb4739474..8cc38b0cb7 100644
+--- a/target/rx/helper.h
++++ b/target/rx/helper.h
+@@ -4,27 +4,27 @@ DEF_HELPER_1(raise_privilege_violation, noreturn, env)
+ DEF_HELPER_1(wait, noreturn, env)
+ DEF_HELPER_2(rxint, noreturn, env, i32)
+ DEF_HELPER_1(rxbrk, noreturn, env)
+-DEF_HELPER_FLAGS_3(fadd, TCG_CALL_NO_WG, f32, env, f32, f32)
+-DEF_HELPER_FLAGS_3(fsub, TCG_CALL_NO_WG, f32, env, f32, f32)
+-DEF_HELPER_FLAGS_3(fmul, TCG_CALL_NO_WG, f32, env, f32, f32)
+-DEF_HELPER_FLAGS_3(fdiv, TCG_CALL_NO_WG, f32, env, f32, f32)
+-DEF_HELPER_FLAGS_3(fcmp, TCG_CALL_NO_WG, void, env, f32, f32)
+-DEF_HELPER_FLAGS_2(ftoi, TCG_CALL_NO_WG, i32, env, f32)
+-DEF_HELPER_FLAGS_2(round, TCG_CALL_NO_WG, i32, env, f32)
+-DEF_HELPER_FLAGS_2(itof, TCG_CALL_NO_WG, f32, env, i32)
++DEF_HELPER_3(fadd, f32, env, f32, f32)
++DEF_HELPER_3(fsub, f32, env, f32, f32)
++DEF_HELPER_3(fmul, f32, env, f32, f32)
++DEF_HELPER_3(fdiv, f32, env, f32, f32)
++DEF_HELPER_3(fcmp, void, env, f32, f32)
++DEF_HELPER_2(ftoi, i32, env, f32)
++DEF_HELPER_2(round, i32, env, f32)
++DEF_HELPER_2(itof, f32, env, i32)
+ DEF_HELPER_2(set_fpsw, void, env, i32)
+-DEF_HELPER_FLAGS_2(racw, TCG_CALL_NO_WG, void, env, i32)
+-DEF_HELPER_FLAGS_2(set_psw_rte, TCG_CALL_NO_WG, void, env, i32)
+-DEF_HELPER_FLAGS_2(set_psw, TCG_CALL_NO_WG, void, env, i32)
++DEF_HELPER_2(racw, void, env, i32)
++DEF_HELPER_2(set_psw_rte, void, env, i32)
++DEF_HELPER_2(set_psw, void, env, i32)
+ DEF_HELPER_1(pack_psw, i32, env)
+-DEF_HELPER_FLAGS_3(div, TCG_CALL_NO_WG, i32, env, i32, i32)
+-DEF_HELPER_FLAGS_3(divu, TCG_CALL_NO_WG, i32, env, i32, i32)
+-DEF_HELPER_FLAGS_1(scmpu, TCG_CALL_NO_WG, void, env)
++DEF_HELPER_3(div, i32, env, i32, i32)
++DEF_HELPER_3(divu, i32, env, i32, i32)
++DEF_HELPER_1(scmpu, void, env)
+ DEF_HELPER_1(smovu, void, env)
+ DEF_HELPER_1(smovf, void, env)
+ DEF_HELPER_1(smovb, void, env)
+ DEF_HELPER_2(sstr, void, env, i32)
+-DEF_HELPER_FLAGS_2(swhile, TCG_CALL_NO_WG, void, env, i32)
+-DEF_HELPER_FLAGS_2(suntil, TCG_CALL_NO_WG, void, env, i32)
+-DEF_HELPER_FLAGS_2(rmpa, TCG_CALL_NO_WG, void, env, i32)
++DEF_HELPER_2(swhile, void, env, i32)
++DEF_HELPER_2(suntil, void, env, i32)
++DEF_HELPER_2(rmpa, void, env, i32)
+ DEF_HELPER_1(satr, void, env)
 -- 
 2.47.2
 
