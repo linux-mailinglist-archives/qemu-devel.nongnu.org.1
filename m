@@ -2,99 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06022A3A2B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BA3A3A2CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 17:28:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkQQa-0004oh-NQ; Tue, 18 Feb 2025 11:26:32 -0500
+	id 1tkQQd-0004qC-DM; Tue, 18 Feb 2025 11:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tkQQU-0004nm-AF
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:26:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tkQQO-0000g6-BE
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:26:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739895970;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uavT6ke0J/Cha3gANcNa3suBK9qxNe2HKl0rgsg+kBo=;
- b=jWmIEWEK/1P2UZWhf3AVZfYdL4Vnl0zPXRWFxP1s1u1qmv4LsZecfEICdLiA6pgUEZ/r2q
- o7zlzH/O8HuytfHoGObt0DUwPq4QDdnnjZL5e3ZityAnJ9LS44S8WXDgn1Q0QfT94pcUPe
- EZpQHQUAq6AX+ezT1InDh+Pj1W9uGBI=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-auFYr9xaNIWK5edXmjSmFg-1; Tue, 18 Feb 2025 11:26:09 -0500
-X-MC-Unique: auFYr9xaNIWK5edXmjSmFg-1
-X-Mimecast-MFC-AGG-ID: auFYr9xaNIWK5edXmjSmFg_1739895968
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3f40e8dabdbso63791b6e.2
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 08:26:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkQQV-0004o5-TP
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:26:28 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkQQR-0000hM-7Z
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 11:26:25 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43948021a45so58911095e9.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 08:26:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739895981; x=1740500781; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2VWhH/aV83Ufh8SIHunv7uipo1SrYPllVbk9DR0oCs0=;
+ b=jngmf6FgsDsaIZNkVE3eal+FekeQi0Jau72wW6qz/pbof99WH5mIPYvY9WtBcScT6N
+ kWTtJRLTI69mE5LCjBLA9yegSCjkb68uOF+cPzCT8vpHM8cJLpc9DLMYDJ56aB7a4z4k
+ rPjp7vtfzRCwL3q26y7JUBV93AyjlM1/bpUqZ0JyPycPrRM53ev59pVS8ooxhy8XC7Zy
+ dTMqDjX5rB7ARPlbY4uro1Wqn40iHbBnG+zZtPNVx2lbU7TwYb+5fEjF5IuHEuZ4p2Ii
+ PIq9XE20m4640EQ+Jrds3uihz18xUYx7xYaymr0ZwIQY+6oCGSaFuQdHDBSxT+7xFplG
+ TNcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739895968; x=1740500768;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uavT6ke0J/Cha3gANcNa3suBK9qxNe2HKl0rgsg+kBo=;
- b=C4sZq1pb0qds6WKNlaAtGalASnjeSzq/duaaEcWnbzv7mGsLGVX8GZYKxXVq97UBn2
- njDRgYE0GRN8mFK3Lx56qMyARNwSqtQKDBTkztbeHUCrW6ob6lHrWIUoZA7tgFMx8eVq
- p2RZPDjRfYkv+zQSfNu4pP6SszFws21F98HNA0o216qH/+O2U0rrXab/cgDnfJxlEXsA
- 9F41weYhb45Som9J74o+icKAbmLCB+Aq4gkvDZNpZpxmjoCCvEIwP01cpQ8aJo1Ge792
- T05R9SB73NK/0Vt/Rug9d/szytksxIIOz+nZQKZRIH9YUnsRKzFKBg253gj2c1bqKVbi
- dAUQ==
-X-Gm-Message-State: AOJu0YyV8CnpPAnsG982tgwNqJ7iGdao9GtRZsVlKWLjxtu+l+PjbfXR
- /VITr3SD+24y4gISyp2s7w6vxY7MXQ4FY6DGgLs/qIiBdnWXForNtMbDj9HFMqBdxLYtxy2PstO
- HdE4YN1F+2rbiqtoJ58F3/CmbPJ7bIZ86MKAPKN90328POVWFE3zE
-X-Gm-Gg: ASbGnctO5PH6/pvnNs2aC09L2lfh58cC+tkME7mEwZT5u75xEqCGm8wIzwqq0JlmFu6
- ovz0S1bN31B7wzt2zVIzOcutBf/pO/kei0G1IIFNUrOE2oYRW8wdmpZo8BmuRuFVOyZHyyF8qzJ
- 6YT1XttsivTBUMi0B4jWWXZbzlqytLsammphO7e4OcGW7YQW/PsCSVEA8G4/fc9513bgrft6GZA
- iLS5jqdIiTx3SCWQB8HituhLT52dBNhWnrN9mJ54sO7W4dyicd5G19CAI8=
-X-Received: by 2002:a05:6808:1b08:b0:3f4:ad3:d666 with SMTP id
- 5614622812f47-3f40ad3d850mr1902125b6e.21.1739895968265; 
- Tue, 18 Feb 2025 08:26:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHA2EUJP2VAnOKsJeknxOF8RtMHYdINLCw8IrWZucbm9qF11cMEO9eWUd+sc2YHn/yWbGbc6g==
-X-Received: by 2002:a05:6808:1b08:b0:3f4:ad3:d666 with SMTP id
- 5614622812f47-3f40ad3d850mr1902098b6e.21.1739895967906; 
- Tue, 18 Feb 2025 08:26:07 -0800 (PST)
-Received: from x1.local ([2604:7a40:2041:2b00::1000])
- by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5fcb16e0458sm3609565eaf.20.2025.02.18.08.26.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 08:26:07 -0800 (PST)
-Date: Tue, 18 Feb 2025 11:26:03 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ d=1e100.net; s=20230601; t=1739895981; x=1740500781;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2VWhH/aV83Ufh8SIHunv7uipo1SrYPllVbk9DR0oCs0=;
+ b=bik5c8L36iyfhpum3oKdVQywigI7BFeg/0z42zJLfhkqw0H03j7vST5x80n8SShyjn
+ JD31QRRwugwrqafW6wjhROauV/y9gEhZYJLIqdUX0qRpOD5tXCpV4dFL3y/h4jRcuK1c
+ +pfU60AToZS+LiUWrSvqmhqZovQySL6yZGAsgtmLxFmlWp56vKUZKu5Chrv+35HslJyh
+ yXQ/P/vSTxwhCexVZetI1WZef+WYPLgwYYRCPbVAW5R7U5ykjo0NU+LdYrP3bjbpxssY
+ 5dIfL6smfir3gt06QY6cHFk6aAaDtW3jQtbo86ucjt1SyoGhTesRARZ1B9MEOGSO4bsh
+ l2QA==
+X-Gm-Message-State: AOJu0YxsxnzrcCqH1kZKTa6vSj0DrzCrHCS5iXvKSm0yrOQLuLV/OzO5
+ R8lF7+Xw2+jTeGd91mctruVGRICjPvfMNVMu6UTj3pLUDb72J23ZvxLqJSck07yhlQ99BcYOEwM
+ 80Pg=
+X-Gm-Gg: ASbGnctxAs+ANj3HUKeCJoRBB0eAW6NjcE7nUKy1OZTrAy1uqvbhFWYLcgvEQzPFqtB
+ coOv24BTSTk2lsIT6vgbcGtqPQ3G+x703fhXZ5HXLelP90qDAxf28W3aSHIFTHIKeOeBRAsWk7b
+ EsyrH7WSEDzBlfi0oT/msjkwislWnqmW7A+i4JpPkcXnEnTqeCPCBXpGnhJuO/WTrK8qw2Z4soe
+ JxvSwWJSxO+wVXTJ5sUfOzWeKZMZx8N/ZlJMD/djvwxHR26D/rKhUUF/06W266Z1YwvXyaplRiK
+ vuNDXUh3xq0bBw94H8pE3bTVO4U1Ui2Kp6f7KaonBF9JG5UdLuVWQAlV2mU68uTIVQ==
+X-Google-Smtp-Source: AGHT+IFltgIW1pf2A6pUM0b/oA9q9b3pyi2cmLiOj30p5/uqeQ9g6h67rtI/kDn+UE0OnBoMAdnj3g==
+X-Received: by 2002:a05:6000:1565:b0:38f:3e39:20a1 with SMTP id
+ ffacd0b85a97d-38f58782cb8mr86075f8f.11.1739895980927; 
+ Tue, 18 Feb 2025 08:26:20 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38f258dd5acsm15632990f8f.35.2025.02.18.08.26.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 18 Feb 2025 08:26:20 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>, Juergen Gross <jgross@suse.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH V2 02/45] migration: cpr helpers
-Message-ID: <Z7S0m1dnIv674huu@x1.local>
-References: <1739542467-226739-1-git-send-email-steven.sistare@oracle.com>
- <1739542467-226739-3-git-send-email-steven.sistare@oracle.com>
- <Z69xPYAJcOjlSpff@x1.local>
- <ee12d6ec-13fa-4e66-ba27-97fdb1f49f74@oracle.com>
+ David Woodhouse <dwmw2@infradead.org>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Thomas Huth <thuth@redhat.com>, Jan Beulich <jbeulich@suse.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 0/8] xen: Build fixes and dust removal
+Date: Tue, 18 Feb 2025 17:26:10 +0100
+Message-ID: <20250218162618.46167-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ee12d6ec-13fa-4e66-ba27-97fdb1f49f74@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,91 +109,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 14, 2025 at 03:31:29PM -0500, Steven Sistare wrote:
-> On 2/14/2025 11:37 AM, Peter Xu wrote:
-> > On Fri, Feb 14, 2025 at 06:13:44AM -0800, Steve Sistare wrote:
-> > > Add cpr_needed_for_reuse, cpr_resave_fd helpers, cpr_is_incoming, and
-> > > cpr_open_fd, for use when adding cpr support for vfio and iommufd.
-> > > 
-> > > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> > > ---
-> > >   include/migration/cpr.h |  6 ++++++
-> > >   migration/cpr.c         | 44 ++++++++++++++++++++++++++++++++++++++++++++
-> > >   2 files changed, 50 insertions(+)
-> > > 
-> > > diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-> > > index 3a6deb7..6ad04d4 100644
-> > > --- a/include/migration/cpr.h
-> > > +++ b/include/migration/cpr.h
-> > > @@ -18,15 +18,21 @@
-> > >   void cpr_save_fd(const char *name, int id, int fd);
-> > >   void cpr_delete_fd(const char *name, int id);
-> > >   int cpr_find_fd(const char *name, int id);
-> > > +void cpr_resave_fd(const char *name, int id, int fd);
-> > > +int cpr_open_fd(const char *path, int flags, const char *name, int id,
-> > > +                bool *reused, Error **errp);
-> > >   MigMode cpr_get_incoming_mode(void);
-> > >   void cpr_set_incoming_mode(MigMode mode);
-> > > +bool cpr_is_incoming(void);
-> > >   int cpr_state_save(MigrationChannel *channel, Error **errp);
-> > >   int cpr_state_load(MigrationChannel *channel, Error **errp);
-> > >   void cpr_state_close(void);
-> > >   struct QIOChannel *cpr_state_ioc(void);
-> > > +bool cpr_needed_for_reuse(void *opaque);
-> > > +
-> > >   QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
-> > >   QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
-> > > diff --git a/migration/cpr.c b/migration/cpr.c
-> > > index 584b0b9..12c489b 100644
-> > > --- a/migration/cpr.c
-> > > +++ b/migration/cpr.c
-> > > @@ -95,6 +95,39 @@ int cpr_find_fd(const char *name, int id)
-> > >       trace_cpr_find_fd(name, id, fd);
-> > >       return fd;
-> > >   }
-> > > +
-> > > +void cpr_resave_fd(const char *name, int id, int fd)
-> > > +{
-> > > +    CprFd *elem = find_fd(&cpr_state.fds, name, id);
-> > > +    int old_fd = elem ? elem->fd : -1;
-> > > +
-> > > +    if (old_fd < 0) {
-> > > +        cpr_save_fd(name, id, fd);
-> > > +    } else if (old_fd != fd) {
-> > > +        error_setg(&error_fatal,
-> > > +                   "internal error: cpr fd '%s' id %d value %d "
-> > > +                   "already saved with a different value %d",
-> > > +                   name, id, fd, old_fd);
-> > 
-> > How bad it is to trigger this?
-> 
-> Bad, cpr will likely fail the next time it is used.
-> I suppose I could add a blocker instead of using error_fatal.
-> But, fundamentally something unknown has gone wrong, like for
-> any assertion failure, so continuing to run in an uncertain
-> state seems unwise.
-> 
-> I have only ever seen this during development after adding buggy code.
-> 
-> > I wonder if cpr_save_fd() should have checked this already on duplicated
-> > entries; it looks risky there too if this happens to existing cpr_save_fd()
-> > callers.
-> 
-> Yes, I could check for dups in cpr_save_fd, though it would cost O(N) instead
-> of O(1).  That seems like overkill for a bug that should only bite during new
-> code development.
-> 
-> cpr_resave_fd is O(N), but not for error checking.  Callers use it when they
-> know the fd was (or may have been) already created.  It is a programming
-> convenience that simplifies the call sites.
+Hi,
 
-If the caller know the fd was created, then IIUC the caller shouldn't
-invoke the call.
+While preparing another pull request I wanted to run my changes
+with Xen and failed at testing on a 32-bit ARM host. Apparently
+the config isn't used (at least we don't test it at all since
+more than 4 years). Therefore I'm directly dropping it.
+The rest are #include and Kconfig cleanups.
 
-For the other case, could you give an example when the caller may have been
-created, but maybe not?  I'm a bit surprised we have such use case.
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (8):
+  accel/Kconfig: Link XenPVH with GPEX PCIe bridge
+  hw/arm: Do not expose the virt machine on Xen-only binary
+  hw/arm/xen-pvh: Do not allow specifying any CPU type
+  hw/xen/xen-pvh: Reduce included headers
+  hw/xen/xen-hvm: Reduce included headers
+  hw/xen/xen-bus: Reduce included headers
+  hw/xen/xen-legacy-backend: Remove unused 'net/net.h' header
+  meson: Remove support for Xen on 32-bit ARM hosts
+
+ docs/about/removed-features.rst     |  5 +++++
+ meson.build                         |  3 ---
+ include/hw/xen/xen-bus.h            |  3 ++-
+ include/hw/xen/xen-hvm-common.h     | 14 +++-----------
+ include/hw/xen/xen-legacy-backend.h |  1 -
+ include/hw/xen/xen-pvh-common.h     |  8 ++++----
+ hw/arm/xen-pvh.c                    |  2 ++
+ hw/arm/xen-stubs.c                  |  5 ++---
+ hw/i386/xen/xen-hvm.c               |  5 +++++
+ hw/i386/xen/xen-pvh.c               |  1 +
+ hw/xen/xen-hvm-common.c             |  6 ++++++
+ hw/xen/xen-pvh-common.c             |  6 ++----
+ accel/Kconfig                       |  1 +
+ hw/arm/Kconfig                      |  1 +
+ 14 files changed, 34 insertions(+), 27 deletions(-)
 
 -- 
-Peter Xu
+2.47.1
 
 
