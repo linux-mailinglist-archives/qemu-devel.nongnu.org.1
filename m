@@ -2,102 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AF7A39D62
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABF1A39E09
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:56:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkNdO-0000oy-AE; Tue, 18 Feb 2025 08:27:34 -0500
+	id 1tkO4A-0005mH-4a; Tue, 18 Feb 2025 08:55:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1tkNdG-0000ob-SS
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:27:26 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1tkNdD-0006ib-BF
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:27:26 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I4NKja020052;
- Tue, 18 Feb 2025 13:27:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=f/dT0a
- 8LJwYzI3B48llDEmai87VpP40VH5N2mWbOkqI=; b=Am92s4QmAioH09aOe7Hxqv
- 4KuHg64E6I2J3yf5/9oA4DPDYU7qstCmuydUBQ3boK6NLKkVfa66wqPhfL7o8HUa
- OuIeP56qWWpha+7SCjmfczUMonoGaNpmCyhSkuAW0ZRQrwCf6kWrG2JDlwXWRH50
- Ap/+FdKxaopdz0ccRy6NlNRU6g1kFyFS/if3tVEu25VYJ18h3QeIXEsOGkzsueBt
- wbI7BUJn6LUJ+o3gYxzFb4Oqchb6sLilwwpFDOrUL1QivDvJcDKBg6n86rLSW/D4
- iO8wzdjSddVeJMe7IAT2OdgA+lFQRK4qecZYwAvz3I1KMeq7Vns+3FsZNdTU+Luw
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tkO46-0005kt-S2
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:55:11 -0500
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tkO45-0001gL-1u
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:55:10 -0500
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-6f972c031efso54095547b3.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 05:55:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739886907; x=1740491707; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=39fn1BS3vuf40TnRJ0SE8lCne6FUxR6xiuWLRie0Qos=;
+ b=bNjaeLvB4PxaLI1f3flawagnnuieDjeeYJdt+cBnVAzqHwKuf9gnny9LZVVf2WMJEW
+ lcYkKkHWoWm60fWTAFxacbAEyTtWH+siuf1Al3MgVSsz+i1o7JCK9ngxSwCjYGgKp9BT
+ qFCwaDxfZdKu+dPFVgmvtWLugH2fQ/Ftqu9+Qv4MGH/IFhNgM1syZzW1ytGWRokftehS
+ obeWGmwNKyw8G+yhRCQggp2knqfAljl529hVw/EwAaemfZMZA4OtUruvM23crtbx3/YI
+ MQvPObaHQe6P983Sj9gZuBP5Evp6Fd11LDBuHR5pzH4vd/F0A4tLxyTvo5NOTDQwCBX3
+ USyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739886907; x=1740491707;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=39fn1BS3vuf40TnRJ0SE8lCne6FUxR6xiuWLRie0Qos=;
+ b=Z16YtDR17SykF19Aw50qI3AmxpIvMVm83vYh1FFB1zdCieqrniCHMZUjEm7k4qQB5W
+ sKh+aJYdDXrgGxythy0MlB/hr3K3gf1PQCW9YnjafKNbSZqXqu7IlTukwZBVD+Gh6LRE
+ TfJatahBtcKCtgPiflIA29ZJf0a663ENcQnYKEZFvKFocsp2WX6Vpy2quClzullGGJMj
+ 3H0p8IcYnUF5FFdNc50RfCJk0WaePz3bE7c/RGD4VU/dwCgJ8EXp2fch4Lb9TPqjlF+h
+ e2mn3O75CXV4SXKadsyyoQTDcdqIsZ+uVF4rr/weU3CXDRWImhaHyxROh75BLyFbXdfI
+ BSGQ==
+X-Gm-Message-State: AOJu0YxQNep+gKCgg1/Adh9mlfUYCU6GIroH9llLj2dm8mJqaK9C41RS
+ plsmLzNvIRdphnw+Ze+Q6KW2+bNz6gX2QlDvmbLQ1zS4LQ32i2zjH1h1vsvpnoDHoEvxlmriDYt
+ e/dVLHvmJzGoxOPMCZjmmzHYcm3dfGZ8Yrra4bA==
+X-Gm-Gg: ASbGncsBVXwV7B6RADM/jJ0Ltf/xFr2NbwjC3w/qp1tAdClL53sw9441BFpgDX8e1Le
+ COMtI3W9E33Hqh69NuHVveq4/sxdqdrsGqscKUlNEbUmrqSS+riDqjGlj4zgA6V09REDxheFtNg
  ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v7xucy68-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Feb 2025 13:27:18 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51IAAFfg003926;
- Tue, 18 Feb 2025 13:27:17 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u68nubb1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Feb 2025 13:27:17 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51IDRHWY7537256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Feb 2025 13:27:17 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25D9858058;
- Tue, 18 Feb 2025 13:27:17 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E4BA858057;
- Tue, 18 Feb 2025 13:27:16 +0000 (GMT)
-Received: from [9.41.104.243] (unknown [9.41.104.243])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 18 Feb 2025 13:27:16 +0000 (GMT)
-Message-ID: <5e8b3f72-d29b-4b19-a00f-a1bd5125ec7c@linux.ibm.com>
-Date: Tue, 18 Feb 2025 07:27:16 -0600
+X-Google-Smtp-Source: AGHT+IGVCuthWFQAA8eqh0bykJgVjjswKOY+Z0sUC4HSC9ekQacmG8hCajtYaV/IzJ3UQLdLUTaTpYlud97iDLd85Nw=
+X-Received: by 2002:a05:6902:c06:b0:e5b:3d71:bff1 with SMTP id
+ 3f1490d57ef6-e5da9eb14f1mr17190459276.0.1739886907134; Tue, 18 Feb 2025
+ 05:55:07 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vdpa: Allow vDPA to work on big-endian machine
-Content-Language: en-US
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>
-Cc: mst@redhat.com, sgarzare@redhat.com, mjrosato@linux.ibm.com,
- qemu-devel@nongnu.org
-References: <20250211161923.1477960-1-kshk@linux.ibm.com>
- <bbee3d53-ac82-407b-91a5-b7e4c3f464bf@linaro.org>
- <23d119e5-ea42-4b0b-a491-0fb7b8c4dfb4@linux.ibm.com>
- <07a8be9a-d99e-4d02-b475-671435c11396@linaro.org>
- <90adacff-9409-44f2-9ae6-9e01c8dc6e5c@linux.ibm.com>
-In-Reply-To: <90adacff-9409-44f2-9ae6-9e01c8dc6e5c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: taxviAaywVt4e1D6nfugLMRgkz4ixjXG
-X-Proofpoint-GUID: taxviAaywVt4e1D6nfugLMRgkz4ixjXG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_05,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 priorityscore=1501
- spamscore=0 adultscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180100
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kshk@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250208163911.54522-1-philmd@linaro.org>
+ <CAFEAcA8PYv3-JX66THwj-mDM0es6V5gVVWJsHTqkd9wTEVor4A@mail.gmail.com>
+In-Reply-To: <CAFEAcA8PYv3-JX66THwj-mDM0es6V5gVVWJsHTqkd9wTEVor4A@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 18 Feb 2025 13:54:55 +0000
+X-Gm-Features: AWEUYZnAZ3KPEu27SvYRa3093KcYYrD48TSXN3xhNyE1aBE_lWOl7Fze5E7ctQE
+Message-ID: <CAFEAcA-ioFgThGJ70cyhe7rA0kbnDULsr-BuAqE+3b3TE0BGwg@mail.gmail.com>
+Subject: Re: [PATCH v6 0/7] hw/char/pl011: Implement TX (async) FIFO to avoid
+ blocking the main loop
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,83 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/12/2025 14:01, Konstantin Shkolnyy wrote:
-> On 2/12/2025 12:07, Philippe Mathieu-Daudé wrote:
->> On 12/2/25 18:24, Konstantin Shkolnyy wrote:
->>> On 2/12/2025 08:52, Philippe Mathieu-Daudé wrote:
->>>> On 11/2/25 17:19, Konstantin Shkolnyy wrote:
->>>>> Add .set_vnet_le() function that always returns success, assuming that
->>>>> vDPA h/w always implements LE data format. Otherwise, QEMU disables 
->>>>> vDPA and
->>>>> outputs the message:
->>>>> "backend does not support LE vnet headers; falling back on 
->>>>> userspace virtio"
->>>>>
->>>>> Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
->>>>> ---
->>>>>   net/vhost-vdpa.c | 6 ++++++
->>>>>   1 file changed, 6 insertions(+)
->>>>>
->>>>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->>>>> index 231b45246c..7219aa2eee 100644
->>>>> --- a/net/vhost-vdpa.c
->>>>> +++ b/net/vhost-vdpa.c
->>>>> @@ -270,6 +270,11 @@ static bool vhost_vdpa_has_ufo(NetClientState 
->>>>> *nc)
->>>>>   }
->>>>> +static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool is_le)
->>>>> +{
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>>   static bool vhost_vdpa_check_peer_type(NetClientState *nc, 
->>>>> ObjectClass *oc,
->>>>>                                          Error **errp)
->>>>>   {
->>>>> @@ -437,6 +442,7 @@ static NetClientInfo net_vhost_vdpa_info = {
->>>>>           .cleanup = vhost_vdpa_cleanup,
->>>>>           .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
->>>>>           .has_ufo = vhost_vdpa_has_ufo,
->>>>> +        .set_vnet_le = vhost_vdpa_set_vnet_le,
->>>>
->>>> Dubious mismatch with set_vnet_be handler.
->>>
->>> I'm not sure what you are suggesting...
->>
->> Implement set_vnet_le for parity?
-> 
-> To my (very limited) knowledge, kernel's vhost_vdpa that QEMU talks to 
-> doesn't have an API to "change h/w endianness". If so, 
-> vDPA's .set_vnet_le/be(), as well as qemu_set_vnet_le/be() have very 
-> limited choices. qemu_set_vnet_le/be() behavior with vDPA was to simply 
-> assume that h/w endianness by default matches host's. This assumption is 
-> valid for other types of "NetClients" which are implemented in s/w. 
-> However, I suspect, vDPA h/w might all be going to be LE, to match 
-> virtio 1.0. Such is the NIC I'm dealing with.
-> 
-> My patch is only fixing a specific use case. Perhaps, for a complete 
-> fix, qemu_set_vnet_be() also shouldn't unconditionally return success on 
-> big endian machines, but always call .set_vnet_be() so that vDPA could 
-> fail it? But then it would start calling .set_vnet_be() on other 
-> "NetClients" where it didn't before.
-> 
-> That's why I don't want to just add a .set_vnet_be(), before someone 
-> here even confirms that vDPA h/w is indeed assumed LE, and, hence, what 
-> the right path is to a complete solution...
-> 
-> int qemu_set_vnet_be(NetClientState *nc, bool is_be)
-> {
-> #if HOST_BIG_ENDIAN
->      return 0;
-> #else
->      if (!nc || !nc->info->set_vnet_be)
->          return -ENOSYS;
-> 
->      return nc->info->set_vnet_be(nc, is_be);
-> #endif
-> }
-> 
+On Mon, 17 Feb 2025 at 14:55, Peter Maydell <peter.maydell@linaro.org> wrot=
+e:
+>
+> On Sat, 8 Feb 2025 at 16:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
+rg> wrote:
+> >
+> > Hi,
+> >
+> > This series add support for (async) FIFO on the transmit path
+> > of the PL011 UART.
+> >
+>
+> Applied to target-arm.next, thanks (with a couple of minor
+> tweaks to two of the patches).
 
-Does anyone have any answers/suggestions?
+Unfortunately I seem to get failures in 'make check-functional'
+with the last patch of this series applied. This is with a
+clang sanitizer build on ubuntu 24.04:
+'../../configure' '--cc=3Dclang' '--cxx=3Dclang++' '--enable-ubsan'
+'--target-list=3Darm-softmmu,arm-linux-user,aarch64-softmmu,aarch64-linux-u=
+ser'
 
+and the tests that fail are:
+42/44 qemu:func-thorough+func-aarch64-thorough+thorough /
+func-aarch64-aarch64_xlnx_versal     TIMEOUT          90.01s   killed
+by signal 15 SIGTERM
+43/44 qemu:func-thorough+func-aarch64-thorough+thorough /
+func-aarch64-aarch64_raspi4          TIMEOUT         480.01s   killed
+by signal 15 SIGTERM
+44/44 qemu:func-thorough+func-aarch64-thorough+thorough /
+func-aarch64-aarch64_virt            TIMEOUT         720.01s   killed
+by signal 15 SIGTERM
+
+Looking at the test logs it looks like the test framework
+starts QEMU but there is never any output from the guest
+console.
+
+I've dropped the patchset from target-arm.next for the moment.
+
+thanks
+-- PMM
 
