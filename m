@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461B6A393B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:19:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF67AA393EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkHrm-0002Uy-Hk; Tue, 18 Feb 2025 02:18:02 -0500
+	id 1tkIFU-0007BG-Sz; Tue, 18 Feb 2025 02:42:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkHrf-0002Sg-2j
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:17:55 -0500
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1tkIFR-0007B4-UJ
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:42:29 -0500
+Received: from esa3.hc1455-7.c3s2.iphmx.com ([207.54.90.49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkHrX-0002g2-TR
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:17:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739863068; x=1771399068;
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1tkIFP-0005GM-Vc
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:42:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+ t=1739864548; x=1771400548;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=2pFVw/1jpooTFlIFglBnN9lZHev1m8x4A6ddS5fJGN0=;
- b=lnjjABHfXAuSHe00oi41tX/Jl6mqu5657XNbVDMw1/ovfzBrL/50I3kD
- Jki6RuddCua4tBBcOEfF3RadKdh1AR1wEwxMxRNg8EB8ws2p1OEwtcFYq
- YkXffEzAOXmEBtNtqVbPAdBLusIFfz79miMoUIL6d3c7QHFdVZNR+9PoV
- MBw901ILBrpOMS4J7dKKBgg5CPE+I0hIOKYTxldWhaWZ0dEPYSUdMW/VT
- EB73Yibc5OqSrlniK6oLcBICZX4Z1RlAKYQRkiM/DOYnYgBSAHAQCw/JR
- j1cSIMifq07rssE1pxJGe+SsuKAQdCLRITwMXPCFTxsHDPm12Q8yP3tsr A==;
-X-CSE-ConnectionGUID: vIs5ru6NQaCegU+J2uiItQ==
-X-CSE-MsgGUID: nfF6AiMfQNKE958a4Kdlcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39781788"
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="39781788"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2025 23:17:38 -0800
-X-CSE-ConnectionGUID: cHL6iajgQACMB7kqpu4SlA==
-X-CSE-MsgGUID: I/6/NutbRQeaQo0CexVnaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="114511854"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa008.fm.intel.com with ESMTP; 17 Feb 2025 23:17:36 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] hw/timer/hpet: Detect invalid access to TN registers
-Date: Tue, 18 Feb 2025 15:37:02 +0800
-Message-Id: <20250218073702.3299300-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ bh=WCqnUjd5oll7mPcm5XczAQ+EKeWGdIxE1HaRweDdfFM=;
+ b=EmViTFyqrtYIIi4Q7+bS2yrY0h9yLKdmgVef5MnneaI6gYiDPfPMqRvi
+ pbM7Zt1a+XkaIM5bsC34AZLx6o6fyvl0UsOrUqP5fKcGv8mzjGZgQAk6T
+ f7frgsrulLGgxCz9UkQUsNTr+W2uT4hYNtxxyMoMHhICMkqgsuXMazofP
+ ZJjTf47fx/aP/eGVPhAWyQjtM3wGwivniofJf+ZaKOh5BRBGT333Z+7up
+ gKp7p9FYBEgZ549hp0dwKRSiIR6Y4ycbTISzJVQvDDF87SJQedBm/aR5s
+ CF0f3mtMMHz5iuh6e5FjqHx0leG29BmZKESvdep9oIkDiBe/zym8sp2QB Q==;
+X-CSE-ConnectionGUID: /EmTYLTWRXyfgkk6MNWwWA==
+X-CSE-MsgGUID: S82Ohc8hQXKNlQQNiUFo3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="190317210"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732546800"; d="scan'208";a="190317210"
+Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
+ by esa3.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2025 16:42:24 +0900
+Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
+ [192.168.87.59])
+ by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 898BADBB94
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 16:42:21 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 4A47BBF4B5
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 16:42:21 +0900 (JST)
+Received: from iaas-rdma.. (unknown [10.167.135.44])
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 8C7B71A000B;
+ Tue, 18 Feb 2025 15:42:20 +0800 (CST)
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Li Zhijian <lizhijian@fujitsu.com>
+Subject: [PATCH 1/2] migration: Prioritize RDMA in ram_save_target_page()
+Date: Tue, 18 Feb 2025 15:43:44 +0800
+Message-ID: <20250218074345.638203-1-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
+Received-SPF: pass client-ip=207.54.90.49; envelope-from=lizhijian@fujitsu.com;
+ helo=esa3.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,49 +79,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Li Zhijian <lizhijian@fujitsu.com>
+From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"addr & 0x18" ignores invalid address, so that the trace in default
-branch (trace_hpet_ram_{read|write}_invalid()) doesn't work.
+Address an error in RDMA-based migration by ensuring RDMA is prioritized
+when saving pages in `ram_save_target_page()`.
 
-Mask addr by "0x1f & ~4", in which 0x1f means to get the complete TN
-registers access and ~4 means to keep any invalid address offset.
+Previously, the RDMA protocol's page-saving step was placed after other
+protocols due to a refactoring in commit bc38dc2f5f3. This led to migration
+failures characterized by unknown control messages and state loading errors
+destination:
+(qemu) qemu-system-x86_64: Unknown control message QEMU FILE
+qemu-system-x86_64: error while loading state section id 1(ram)
+qemu-system-x86_64: load of migration failed: Operation not permitted
+source:
+(qemu) qemu-system-x86_64: RDMA is in an error state waiting migration to abort!
+qemu-system-x86_64: failed to save SaveStateEntry with id(name): 1(ram): -1
+qemu-system-x86_64: rdma migration: recv polling control error!
+qemu-system-x86_64: warning: Early error. Sending error.
+qemu-system-x86_64: warning: rdma migration: send polling control error
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+RDMA migration implemented its own protocol/method to send pages to
+destination side, hand over to RDMA first to prevent pages being saved by
+other protocol.
+
+Fixes: bc38dc2f5f3 ("migration: refactor ram_save_target_page functions")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- * Note: This patch applies the changes from Rust HPET [*] to C HPET to
-   ensure logic consistency.
-   [*]: The original comment should use "(0x1f & ~4)":
-        https://lore.kernel.org/qemu-devel/Z6edKxYFzA6suDlj@intel.com/
----
- hw/timer/hpet.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ migration/ram.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index dcff18a9871d..0f786047e54f 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -455,7 +455,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-             return 0;
-         }
+diff --git a/migration/ram.c b/migration/ram.c
+index 6f460fd22d2..635a2fe443a 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1964,6 +1964,11 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
+     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
+     int res;
  
--        switch (addr & 0x18) {
-+        switch (addr & (0x1f & ~4)) {
-         case HPET_TN_CFG: // including interrupt capabilities
-             return timer->config >> shift;
-         case HPET_TN_CMP: // comparator register
-@@ -511,7 +511,8 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             trace_hpet_timer_id_out_of_range(timer_id);
-             return;
-         }
--        switch (addr & 0x18) {
++    /* Hand over to RDMA first */
++    if (control_save_page(pss, offset, &res)) {
++        return res;
++    }
 +
-+        switch (addr & (0x1f & ~4)) {
-         case HPET_TN_CFG:
-             trace_hpet_ram_write_tn_cfg(addr & 4);
-             old_val = timer->config;
+     if (!migrate_multifd()
+         || migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
+         if (save_zero_page(rs, pss, offset)) {
+@@ -1976,10 +1981,6 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
+         return ram_save_multifd_page(block, offset);
+     }
+ 
+-    if (control_save_page(pss, offset, &res)) {
+-        return res;
+-    }
+-
+     return ram_save_page(rs, pss);
+ }
+ 
 -- 
-2.34.1
+2.44.0
 
 
