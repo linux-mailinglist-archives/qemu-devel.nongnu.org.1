@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EFFA3A130
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D737DA3A14C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 16:33:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkPWK-0007zO-95; Tue, 18 Feb 2025 10:28:26 -0500
+	id 1tkPXI-00005H-6v; Tue, 18 Feb 2025 10:29:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPW5-0007ur-Mo
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:10 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWJ-00084V-4t
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPW3-00083G-KM
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:09 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tkPWG-0008AZ-8K
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 10:28:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739892486;
+ s=mimecast20190719; t=1739892497;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fRfKvGR+8jAFT6+AmAAHyKeK5vSHfj38tAANfksM8iE=;
- b=OHZf3w9fepxwKuskfiVeonsQlPj5CNut1+g9z9RR2SZ5uCZAWbZ/WrQ2mfA+60eqQf2sQ+
- j5dVRhVBShsPT4TCwYvDbfJduwva5M+ghvuJs2LaPZRM05pBact7KtIaaewhuZYa93HogQ
- hUTdvhu8HiIrV+B32E4Mj7/MapLi0Ss=
+ bh=xtRYsFYzDorC87+C3I+37TZhssiVs7RVySk+kixGxdg=;
+ b=B/3qNX7RCJN0kMZPHxNHqHlMgSxex2Fi0/8O9GVdwraWI2nxOIQ0A66RHcaVqSw90vy+Kg
+ 7pA5BkwIMBsQPJ7yHiFjHtZML7e5RyPACfAokpEkjQqbVosnDPG/9700nx9vu6UHPXFW7U
+ GoSq8JLdQIuVmHEefypATFHiTsdm6ZY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-gk-WQ32mP4WZrsM-vUhuTA-1; Tue,
- 18 Feb 2025 10:28:03 -0500
-X-MC-Unique: gk-WQ32mP4WZrsM-vUhuTA-1
-X-Mimecast-MFC-AGG-ID: gk-WQ32mP4WZrsM-vUhuTA_1739892482
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-J0B06tXVPV-f9UUMNyT09Q-1; Tue,
+ 18 Feb 2025 10:28:05 -0500
+X-MC-Unique: J0B06tXVPV-f9UUMNyT09Q-1
+X-Mimecast-MFC-AGG-ID: J0B06tXVPV-f9UUMNyT09Q_1739892484
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 758C31801A17; Tue, 18 Feb 2025 15:28:01 +0000 (UTC)
+ id 927A81801A17; Tue, 18 Feb 2025 15:28:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.187])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0F83D1800359; Tue, 18 Feb 2025 15:27:57 +0000 (UTC)
+ id 083B11800362; Tue, 18 Feb 2025 15:28:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/14] tests/functional: Convert the 32-bit ppc replay avocado
- tests
-Date: Tue, 18 Feb 2025 16:27:34 +0100
-Message-ID: <20250218152744.228335-5-thuth@redhat.com>
+Subject: [PATCH 05/14] tests/functional: Convert the or1k replay avocado tests
+Date: Tue, 18 Feb 2025 16:27:35 +0100
+Message-ID: <20250218152744.228335-6-thuth@redhat.com>
 In-Reply-To: <20250218152744.228335-1-thuth@redhat.com>
 References: <20250218152744.228335-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -88,65 +87,53 @@ framework, each file is run with one specific qemu-system-* binary).
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/replay_kernel.py      | 24 --------------------
- tests/functional/meson.build        |  1 +
- tests/functional/test_ppc_replay.py | 34 +++++++++++++++++++++++++++++
- 3 files changed, 35 insertions(+), 24 deletions(-)
- create mode 100755 tests/functional/test_ppc_replay.py
+ tests/avocado/replay_kernel.py       | 11 -----------
+ tests/functional/meson.build         |  1 +
+ tests/functional/test_or1k_replay.py | 27 +++++++++++++++++++++++++++
+ 3 files changed, 28 insertions(+), 11 deletions(-)
+ create mode 100755 tests/functional/test_or1k_replay.py
 
 diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 412bf9e06e1..89ba6bb3e8b 100644
+index 89ba6bb3e8b..ef72b1622e4 100644
 --- a/tests/avocado/replay_kernel.py
 +++ b/tests/avocado/replay_kernel.py
-@@ -363,27 +363,3 @@ def test_or1k_sim(self):
-                    '/qac-best-of-multiarch/download/day20.tar.xz')
+@@ -352,14 +352,3 @@ def test_ppc64_e500(self):
+                    '/qac-best-of-multiarch/download/day19.tar.xz')
          file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'vmlinux')
+         self.do_test_advcal_2018(file_path, 'uImage')
 -
--    def test_ppc_g3beige(self):
+-    def test_or1k_sim(self):
 -        """
--        :avocado: tags=arch:ppc
--        :avocado: tags=machine:g3beige
+-        :avocado: tags=arch:or1k
+-        :avocado: tags=machine:or1k-sim
 -        """
--        tar_hash = 'e0b872a5eb8fdc5bed19bd43ffe863900ebcedfc'
+-        tar_hash = '20334cdaf386108c530ff0badaecc955693027dd'
 -        tar_url = ('https://qemu-advcal.gitlab.io'
--                   '/qac-best-of-multiarch/download/day15.tar.xz')
+-                   '/qac-best-of-multiarch/download/day20.tar.xz')
 -        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        self.do_test_advcal_2018(file_path, 'invaders.elf',
--                                 args=('-M', 'graphics=off'))
--
--    def test_ppc_mac99(self):
--        """
--        :avocado: tags=arch:ppc
--        :avocado: tags=machine:mac99
--        """
--        tar_hash = 'e0b872a5eb8fdc5bed19bd43ffe863900ebcedfc'
--        tar_url = ('https://qemu-advcal.gitlab.io'
--                   '/qac-best-of-multiarch/download/day15.tar.xz')
--        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        self.do_test_advcal_2018(file_path, 'invaders.elf',
--                                 args=('-M', 'graphics=off'))
+-        self.do_test_advcal_2018(file_path, 'vmlinux')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index fec140ee1fe..15ead47769c 100644
+index 15ead47769c..1c9fe67f037 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -199,6 +199,7 @@ tests_ppc_system_thorough = [
-   'ppc_bamboo',
-   'ppc_mac',
-   'ppc_mpc8544ds',
-+  'ppc_replay',
-   'ppc_sam460ex',
-   'ppc_tuxrun',
-   'ppc_virtex_ml507',
-diff --git a/tests/functional/test_ppc_replay.py b/tests/functional/test_ppc_replay.py
+@@ -184,6 +184,7 @@ tests_mips64el_system_thorough = [
+ ]
+ 
+ tests_or1k_system_thorough = [
++  'or1k_replay',
+   'or1k_sim',
+ ]
+ 
+diff --git a/tests/functional/test_or1k_replay.py b/tests/functional/test_or1k_replay.py
 new file mode 100755
-index 00000000000..8382070abd1
+index 00000000000..2b60a9372c5
 --- /dev/null
-+++ b/tests/functional/test_ppc_replay.py
-@@ -0,0 +1,34 @@
++++ b/tests/functional/test_or1k_replay.py
+@@ -0,0 +1,27 @@
 +#!/usr/bin/env python3
 +#
-+# Replay tests for ppc machines
++# Replay test that boots a Linux kernel on an OpenRISC-1000 SIM machine
++# and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
@@ -154,26 +141,18 @@ index 00000000000..8382070abd1
 +from replay_kernel import ReplayKernelBase
 +
 +
-+class PpcReplay(ReplayKernelBase):
++class Or1kReplay(ReplayKernelBase):
 +
-+    ASSET_DAY15 = Asset(
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day15.tar.xz',
-+        '03e0757c131d2959decf293a3572d3b96c5a53587165bf05ce41b2818a2bccd5')
++    ASSET_DAY20 = Asset(
++        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day20.tar.xz',
++        'ff9d7dd7c6bdba325bd85ee85c02db61ff653e129558aeffe6aff55bffb6763a')
 +
-+    def do_day15_test(self):
-+        self.require_accelerator("tcg")
-+        kernel_path = self.archive_extract(self.ASSET_DAY15,
-+                                           member='day15/invaders.elf')
++    def test_sim(self):
++        self.set_machine('or1k-sim')
++        kernel_path = self.archive_extract(self.ASSET_DAY20,
++                                           member='day20/vmlinux')
 +        self.run_rr(kernel_path, self.REPLAY_KERNEL_COMMAND_LINE,
-+                    'QEMU advent calendar', args=('-M', 'graphics=off'))
-+
-+    def test_g3beige(self):
-+        self.set_machine('g3beige')
-+        self.do_day15_test()
-+
-+    def test_mac99(self):
-+        self.set_machine('mac99')
-+        self.do_day15_test()
++                    'QEMU advent calendar')
 +
 +
 +if __name__ == '__main__':
