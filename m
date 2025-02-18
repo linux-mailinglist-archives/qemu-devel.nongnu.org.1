@@ -2,94 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79E2A39C8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 13:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFA6A39E0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:56:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkN4M-0000M1-2t; Tue, 18 Feb 2025 07:51:22 -0500
+	id 1tkO4Z-0005zS-5z; Tue, 18 Feb 2025 08:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1tkN4H-0000La-UZ
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 07:51:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <1058183524@qq.com>) id 1tkHxW-00049C-2C
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:23:58 -0500
+Received: from out203-205-221-192.mail.qq.com ([203.205.221.192])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1tkN4D-0002Ke-TJ
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 07:51:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739883071;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=E966tUCzb93DdcPEPakY8jUq0GfbJmwSIRkuaR+TsOg=;
- b=B2Vagl2ps7DsCe717KusAXvyadwqjNaOSipZ1/7m3hJREsnGXfort1B9YoHLXvev+Ei/1G
- QR2DOZgNPmXucalQqNro6OCZRa5rGtbycyFTwC8OHlhlHn5/SwrKIt/yFk+SbsjOwt7Hzw
- mgkI02l3KcPA40NQeGC93uBsH+g9XCQ=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-SBxpG5Z4MkKHcKqnOpFNTQ-1; Tue, 18 Feb 2025 07:51:09 -0500
-X-MC-Unique: SBxpG5Z4MkKHcKqnOpFNTQ-1
-X-Mimecast-MFC-AGG-ID: SBxpG5Z4MkKHcKqnOpFNTQ_1739883068
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2fbff6426f5so11057388a91.3
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 04:51:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739883068; x=1740487868;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E966tUCzb93DdcPEPakY8jUq0GfbJmwSIRkuaR+TsOg=;
- b=MS7dCfwxmh586GgZa0BjePB2ZKcgnhmde+09gbIRhUM5pCQMyAXqgv64ZDT9Cuj/ip
- eTgrMZ7F/SRb9yOQBpLKsx5TCjtqUdECWLGbRrGu1I3l99XLARfyzQUPBLUUbkpgvZiD
- w8ubSFAM8kDv3LMGZQJWbVl2NIOWAieUjh+hzcVOckbo8YyFpbT9jvVh411UY+Mnh12z
- yC7gWb8w2XNQIs0RU+a3iEKUL/kh5ZdHIN4LmUWLo+zZwgHs4HZ8CdezaFUD8Qt/nWFZ
- 5U52bAUBU/U1B2UJRig5aa7H06Bk8l958K3yjrgDZu3WzqfqvGMi9CvFAQMH2PjbtgAf
- nvGQ==
-X-Gm-Message-State: AOJu0Yzzpw148Jx467TysMutElq+rHYoswq1o1TsMRbhNdZXT0qczKGL
- an4uiM8gxkPpJ7ZinyNOz4Yk7Cw5k1ruKvLjUIFMnzadN8qcQfYtWZfQXFSlKpojrtZ+hKQxY0u
- 09ke5xmyhf/T6MWUyuM9aDupGEPv4QAIAKR6UcX/fBjSDKsEn3tAbg0UzoDqJGfOLLZwOQ4qzFV
- ihiqWlFYNqpghdgr3JqGQSKs4n1kI=
-X-Gm-Gg: ASbGncsLgW/X0zIRDZzeSOIZzSybv1hnhFgg0sIWQm/rKHEjtoLkdpF6+lPZ8IlRj6g
- v0tLS3G2DBEOiE3BWYmgfNQAGyviyQJppWayA73dI65UnzwYnLQnVlHgguPXMRKwF
-X-Received: by 2002:a17:90b:1e05:b0:2fa:1e3e:9be5 with SMTP id
- 98e67ed59e1d1-2fc407915edmr25809399a91.0.1739883068194; 
- Tue, 18 Feb 2025 04:51:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6BP9I/JWOp93ZM6EXZbLVx7xFRe2L2x8tle/ypQn7aft8yzmFk0FuI8pEgkaQGk9UL7KNnkw5FMXnrCC5QGY=
-X-Received: by 2002:a17:90b:1e05:b0:2fa:1e3e:9be5 with SMTP id
- 98e67ed59e1d1-2fc407915edmr25809354a91.0.1739883067745; Tue, 18 Feb 2025
- 04:51:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20250217164012.246727-1-aesteve@redhat.com>
- <20250217164012.246727-10-aesteve@redhat.com>
- <20250218110017.GM10767@fedora>
-In-Reply-To: <20250218110017.GM10767@fedora>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Tue, 18 Feb 2025 13:50:55 +0100
-X-Gm-Features: AWEUYZkEKLLYUy2ki-twyEHWP-5_CNrrveISawGEPY7FgRdt24tvnqwQ_2C_cC4
-Message-ID: <CADSE00JGA2cbBwLRbMMujv3m36Jop6u=tcSDHXm_PJoehM=BEQ@mail.gmail.com>
-Subject: Re: [PATCH v4 9/9] vhost_user.rst: Add MEM_READ/WRITE messages
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, slp@redhat.com, stevensd@chromium.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Stefano Garzarella <sgarzare@redhat.com>, david@redhat.com, hi@alyssa.is,
- mst@redhat.com, jasowang@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ (Exim 4.90_1) (envelope-from <1058183524@qq.com>) id 1tkHxR-0003EP-Rn
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 02:23:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1739863423; bh=gB6NppJyFdV7HnXW69F6s3qqjG41vmtV3bwZKea47lU=;
+ h=From:To:Subject:Date;
+ b=sr106cr9MMG0gQY4qL05XGJS4bKcEwH5lnlNILlHuboYwElGbZYS5iUchhE9xcCZB
+ cmcrWW9uSk7dDpH6y3/l34oCjB8dlgEA0jeJ/nQStQO6JxA9UErZ7goO7EF6KLbuDI
+ ZJNrwX8YeqH1qvesxqsSA3tesYwvi/zjRFhOEUaE=
+X-QQ-FEAT: Xqh9UYnCrXCgeKC+InpiQr4XE5GGFGxU
+X-QQ-SSF: 0000000000000080000000000000
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-XMAILINFO: MGu0d518fybeO0G/dMmjlVJGY/9/ZHQTsXcdbM9AoMxQf5QFSiV7PAeuVe4dSk
+ RD1U9yo91z3T5U35BNc3vXy8iswLDmnavgvFDO1oEfZxAB+bJsOVR4ynHOdSQt0QWtUEkRohQZPzc
+ pMxEsfmwhMyWNetTGBBjfDJkaqahBcV/kb5Z/pqPr912J6ZcPEGsMoAzh/2dkCJVbfOJmHLQSV/e7
+ 5rBzHMR8Iapx8poTbJRyDx/8QFImqBVx1TJXXTaCsK0T4+DA+Ezzn/EU3bL2GEZ0pTGWCezG6XfVm
+ F47nB7wbkgOF29VdEDepjJBXeTMvByjh2WN2rXLTQY1DpCXfmgnyDohWXLQ0M15jCmM+iBCYOS7vs
+ iQebP0ZjMzBRBURh8AqSgMJoABBPtW+axG4mAJklDchMMjF5wtns6ktef/i0iSuhFcJLBkSkFxURU
+ nOjvNr58J1RZeyq5uX0s7vHqpbVbxId5aOTxO4Y0Fr+PAXlAUt3xOUKLU5lNZX5VZ54vwa6kTDi3t
+ aRtwdWRt27H6i6WgQE2WXUqhbxsRjeyzmw4bXdC9OlBwguRnFR3oEoof6HpPcmCjl5ZdyvfZkvDqG
+ 56xyUNgV0AU2bkQQJaO2arvTJqAkKIck4EdtCIFId2+UYrc4KhT5qYktRjweHgq65wIcNSo4lWYzr
+ KiF3k6Dhxi3UEAyk4k37dh7+2aRp3H0CMAkBHGsIoOk9yO2Hxct6Y4wy/qubY0HfM5tV4qycc9rHL
+ +jnnNODFj69uDUfjBufb4UF7NMD/rjgOX6t8TuPeJ9zkUvB/+3goFsurQ8V0u00/I1hZbjKWFvv2p
+ VCPtP/FIliS+Tx4+/n32j4uApINuozgKKVNyrOZhbIucR6mlVN5I1FsLW/Z3rQlOeeCfS4K3w3m20
+ 8FbLpTozo0A2p0gkHk5YYvE9fzNrjJ/901IbDuJ5oIXT6Aw2Zkizoz9DtALbHfVNtj8yFUCGtht1g
+ Ml8EdAWlIbj2EwKDzY
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 210.40.230.67
+X-QQ-STYLE: 
+X-QQ-mid: webmail369t1739862432t202164
+From: "=?gb18030?B?wLbJq7XEw87P6w==?=" <1058183524@qq.com>
+To: "=?gb18030?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>
+Subject: Perf in QEMU
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="----=_NextPart_67B431A0_172BA910_69A52103"
+Content-Transfer-Encoding: 8Bit
+Date: Tue, 18 Feb 2025 15:07:12 +0800
+X-Priority: 3
+Message-ID: <tencent_308D5C2C7DFE0CDC38AD1906113460287F05@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+Received-SPF: pass client-ip=203.205.221.192; envelope-from=1058183524@qq.com;
+ helo=out203-205-221-192.mail.qq.com
+X-Spam_score_int: 67
+X-Spam_score: 6.7
+X-Spam_bar: ++++++
+X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ HELO_DYNAMIC_IPADDR=1.951, HTML_MESSAGE=0.001, MIME_CHARSET_FARAWAY=2.45,
+ NO_FM_NAME_IP_HOSTN=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_action: reject
+X-Mailman-Approved-At: Tue, 18 Feb 2025 08:55:35 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,89 +86,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 18, 2025 at 12:00=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
->
-> On Mon, Feb 17, 2025 at 05:40:12PM +0100, Albert Esteve wrote:
-> > Add MEM_READ/WRITE request to the vhost-user
-> > spec documentation.
-> >
-> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> > ---
-> >  docs/interop/vhost-user.rst | 33 +++++++++++++++++++++++++++++++++
-> >  1 file changed, 33 insertions(+)
-> >
-> > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> > index 96156f1900..9f7a2c4cf7 100644
-> > --- a/docs/interop/vhost-user.rst
-> > +++ b/docs/interop/vhost-user.rst
-> > @@ -391,6 +391,7 @@ In QEMU the vhost-user message is implemented with =
-the following struct:
-> >            VhostUserTransferDeviceState transfer_state;
-> >            VhostUserMMap mmap;
-> >            VhostUserShMemConfig shmem;
-> > +          VhostUserMemRWMsg mem_rw;
->
-> Is this struct defined anywhere in the spec?
+This is a multi-part message in MIME format.
 
-Ah, no, right. I did not see all the other structs defined, so I
-assumed some were just to be found in the code. But then it wouldn't
-serve as a specification... I realized I was not looking at the right
-section.
+------=_NextPart_67B431A0_172BA910_69A52103
+Content-Type: text/plain;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
 
-VhostUserMMap is also missing, then. I will add them in the next
-iteration in their respective commits.
+SGVsbG8hDQoNCiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFtIGEgZ3JhZHVhdGUgc3R1ZGVudCBj
+dXJyZW50bHkgc3R1ZHlpbmcgaW4gc2Nob29sLiBSZWNlbnRseSwgSSB1c2VkIFFFTVUgOS4w
+LjIgdG8gY3JlYXRlIHZpcnR1YWwgbWFjaGluZXMgd2l0aCBBUk0sIHg4NiwgYW5kIFJJU0Mt
+ViBhcmNoaXRlY3R1cmVzIGZvciBleHBlcmltZW50cy4gRHVyaW5nIHRoZSBwcm9jZXNzLCBJ
+IGZvdW5kIHRoYXQgdGhlIKGucGVyZiBzdGF0oa8gY29tbWFuZCBkb2VzIG5vdCBzdXBwb3J0
+IHRoZSBjb2xsZWN0aW9uIG9mIGNlcnRhaW4gbWV0cmljcywgc3VjaCBhczogaW5zdHJ1Y3Rp
+b25zLCBjYWNoZS1taXNzZXMsIGNhY2hlLXJlZmVyZW5jZXMsIGV0Yy4gSSBhbSB1bnN1cmUg
+d2hldGhlciB0aGlzIGlzc3VlIGlzIGR1ZSB0byBteSBvcGVyYXRpb25zIG9yIGlmIFFFTVUg
+aXRzZWxmIGRvZXMgbm90IHN1cHBvcnQgdGhlc2UgbWV0cmljcy4gDQoNCiZuYnNwOyZuYnNw
+OyZuYnNwOyBUaGVyZWZvcmUsIEkgd291bGQgbGlrZSB0byBhc2sgeW91IHdoZXRoZXIgUUVN
+VSB2aXJ0dWFsIG1hY2hpbmVzIHN1cHBvcnQgdGhlIGNvbGxlY3Rpb24gb2YgdGhlIGFib3Zl
+IG1ldHJpY3MuDQoNCiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFwb2xvZ2l6ZSBmb3IgYm90aGVy
+aW5nIHlvdSwgYW5kIEkgaG9wZSB5b3Ugd2lsbCBiZSBhYmxlIHRvIHJlcGx5IGF0IHlvdXIg
+Y29udmVuaWVuY2UuIFRoYW5rIHlvdSB2ZXJ5IG11Y2gh
 
->
-> >        };
-> >    } QEMU_PACKED VhostUserMsg;
-> >
-> > @@ -1938,6 +1939,38 @@ is sent by the front-end.
-> >    given range shall correspond to the entirety of a valid mapped regio=
-n.
-> >    A reply is generated indicating whether unmapping succeeded.
-> >
-> > +``VHOST_USER_BACKEND_MEM_READ``
-> > +  :id: 11
-> > +  :equivalent ioctl: N/A
-> > +  :request payload: ``struct VhostUserMemRWMsg``
-> > +  :reply payload: N/A
-> > +
-> > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> > +  successfully negotiated, this message can be submitted by the backen=
-ds to
-> > +  read a memory region that has failed to resolve a translation due to=
- an
-> > +  incomplete memory table, after another device called
-> > +  ``VHOST_USER_BACKEND_SHMEM_MAP`` for the same region on a shared
-> > +  descriptor file.
-> > +
-> > +  This mechanism works as a fallback for resolving those memory
-> > +  accesses and ensure that DMA works with Shared Memory Regions.
-> > +
-> > +``VHOST_USER_BACKEND_MEM_WRITE``
-> > +  :id: 12
-> > +  :equivalent ioctl: N/A
-> > +  :request payload: ``struct VhostUserMemRWMsg``
-> > +  :reply payload: N/A
-> > +
-> > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> > +  successfully negotiated, this message can be submitted by the backen=
-ds to
-> > +  write a memory region that has failed due to resolve a translation a=
-n
-> > +  incomplete memory table  after another device called
-> > +  ``VHOST_USER_BACKEND_SHMEM_MAP`` for the same region on a shared
-> > +  descriptor file.
-> > +
-> > +  This mechanism works as a fallback for resolving those memory
-> > +  accesses and ensure that DMA works with Shared Memory Regions.
-> > +
-> >  .. _reply_ack:
-> >
-> >  VHOST_USER_PROTOCOL_F_REPLY_ACK
-> > --
-> > 2.48.1
-> >
+------=_NextPart_67B431A0_172BA910_69A52103
+Content-Type: text/html;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
+
+SGVsbG8hPGJyPjxicj4mbmJzcDsmbmJzcDsmbmJzcDsgSSBhbSBhIGdyYWR1YXRlIHN0dWRl
+bnQgY3VycmVudGx5IHN0dWR5aW5nIGluIHNjaG9vbC4gUmVjZW50bHksIEkgdXNlZCBRRU1V
+IDkuMC4yIHRvIGNyZWF0ZSB2aXJ0dWFsIG1hY2hpbmVzIHdpdGggQVJNLCB4ODYsIGFuZCBS
+SVNDLVYgYXJjaGl0ZWN0dXJlcyBmb3IgZXhwZXJpbWVudHMuIER1cmluZyB0aGUgcHJvY2Vz
+cywgSSBmb3VuZCB0aGF0IHRoZSChrnBlcmYgc3RhdKGvIGNvbW1hbmQgZG9lcyBub3Qgc3Vw
+cG9ydCB0aGUgY29sbGVjdGlvbiBvZiBjZXJ0YWluIG1ldHJpY3MsIHN1Y2ggYXM6IGluc3Ry
+dWN0aW9ucywgY2FjaGUtbWlzc2VzLCBjYWNoZS1yZWZlcmVuY2VzLCBldGMuIEkgYW0gdW5z
+dXJlIHdoZXRoZXIgdGhpcyBpc3N1ZSBpcyBkdWUgdG8gbXkgb3BlcmF0aW9ucyBvciBpZiBR
+RU1VIGl0c2VsZiBkb2VzIG5vdCBzdXBwb3J0IHRoZXNlIG1ldHJpY3MuIDxicj48YnI+Jm5i
+c3A7Jm5ic3A7Jm5ic3A7IFRoZXJlZm9yZSwgSSB3b3VsZCBsaWtlIHRvIGFzayB5b3Ugd2hl
+dGhlciBRRU1VIHZpcnR1YWwgbWFjaGluZXMgc3VwcG9ydCB0aGUgY29sbGVjdGlvbiBvZiB0
+aGUgYWJvdmUgbWV0cmljcy48YnI+PGJyPiZuYnNwOyZuYnNwOyZuYnNwOyBJIGFwb2xvZ2l6
+ZSBmb3IgYm90aGVyaW5nIHlvdSwgYW5kIEkgaG9wZSB5b3Ugd2lsbCBiZSBhYmxlIHRvIHJl
+cGx5IGF0IHlvdXIgY29udmVuaWVuY2UuIFRoYW5rIHlvdSB2ZXJ5IG11Y2ghPGJyPjxicj4=
+
+------=_NextPart_67B431A0_172BA910_69A52103--
 
 
