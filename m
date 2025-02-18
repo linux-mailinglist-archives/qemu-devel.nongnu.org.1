@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33822A3A53C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 19:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E74BA3A591
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 19:29:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkSEw-0007Lg-5e; Tue, 18 Feb 2025 13:22:38 -0500
+	id 1tkSLF-0006sC-Tg; Tue, 18 Feb 2025 13:29:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDX-000645-5t
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:21:12 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tkSL6-0006lw-74
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:29:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkSDU-0007da-Nl
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:21:10 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tkSL4-0000BR-Cz
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 13:28:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739902868;
+ s=mimecast20190719; t=1739903337;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qbJRLhkTHhbgND2eqUgNnvV/fnQHqoFQy8tGkOv51fc=;
- b=KDHzY5dwIVwOO6YRR+keyiES0s9kjr1LTCzt89bOoqz/U+rtJNS4ymkZ83Ou68vauEkKc7
- m0HxVm2U4CSZnSwfdN6pADlsk60gmaYRAtrM4iNKxQQ6mtPnyY7wWYlWadAxmXnU/Dz46B
- OM1wEiNoAr+oM2kR6YOZJwuZ2JP85xw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5ic1kQ00SjPC9W6tRUPbS8TZMhDToAtjvooCcGHwTDs=;
+ b=Zd/Vu3ijZGLV96vt+i41e1SvwZzCJf2DM14VbJSABl7eXNd45eejA9cLqa5v/L5PIaaPxd
+ PNcCvKhlTgEPwPIUuohaT4glH4glGo1ah6C71XBxmnIWUxT4Ff1Cl3bJq2aaRbV+whOk8r
+ R59BnQG4obxQMyrMxFmoqHrK4jr4q1w=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-8myATExoOACfc_2Jg-DQmA-1; Tue,
- 18 Feb 2025 13:21:03 -0500
-X-MC-Unique: 8myATExoOACfc_2Jg-DQmA-1
-X-Mimecast-MFC-AGG-ID: 8myATExoOACfc_2Jg-DQmA_1739902862
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-v5mwcotOOpOGzQB94y49xw-1; Tue,
+ 18 Feb 2025 13:27:47 -0500
+X-MC-Unique: v5mwcotOOpOGzQB94y49xw-1
+X-Mimecast-MFC-AGG-ID: v5mwcotOOpOGzQB94y49xw_1739903266
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B14F196E078; Tue, 18 Feb 2025 18:21:02 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.45.226.66])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ACA2E180034D; Tue, 18 Feb 2025 18:20:59 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
- manos.pitsidianakis@linaro.org, philmd@linaro.org, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org
-Subject: [PATCH v2 11/11] rust/block: Add format probing
-Date: Tue, 18 Feb 2025 19:20:19 +0100
-Message-ID: <20250218182019.111467-12-kwolf@redhat.com>
-In-Reply-To: <20250218182019.111467-1-kwolf@redhat.com>
-References: <20250218182019.111467-1-kwolf@redhat.com>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1F32F1800872; Tue, 18 Feb 2025 18:27:46 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.45.224.254])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 43D841800373; Tue, 18 Feb 2025 18:27:39 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org, mst@redhat.com,
+ jasowang@redhat.com, imammedo@redhat.com, peterx@redhat.com,
+ alex.williamson@redhat.com, clg@redhat.com, philmd@linaro.org,
+ zhenzhong.duan@intel.com, ddutile@redhat.com
+Subject: [PATCH v3 0/5] Fix vIOMMU reset order
+Date: Tue, 18 Feb 2025 19:25:30 +0100
+Message-ID: <20250218182737.76722-1-eric.auger@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
@@ -81,107 +82,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds format probing both to the BlockDriver trait and the bochs-rs
-block driver. With this, bochs-rs achieves feature parity with its C
-counterpart. Its probe function returns a higher priority so that it is
-preferred when both drivers are available.
+With current reset scheme, DMA capable devices are reset after
+the vIOMMU which translate them. This holds for the different
+IOMMUs and various DMA capable devices such as virtio devices
+and VFIO ones. With virtio devices, spurious traces can be
+observed at qemu level such as "virtio: zero sized buffers are
+not allowed" while for VFIO devices, translation faults can be
+observed at host level.
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- rust/block/src/bochs.rs  | 20 ++++++++++++++++++++
- rust/block/src/driver.rs | 26 +++++++++++++++++++++++++-
- 2 files changed, 45 insertions(+), 1 deletion(-)
+Virtio devices use 3 phase reset and virtio-pci devices are reset
+in the 'hold' phase. VFIO device reset are registered using
+qemu_register_reset() and as a consequence they are also reset
+on 'hold' phase.
 
-diff --git a/rust/block/src/bochs.rs b/rust/block/src/bochs.rs
-index 9dd84446e1..b1247a6bd5 100644
---- a/rust/block/src/bochs.rs
-+++ b/rust/block/src/bochs.rs
-@@ -188,6 +188,26 @@ pub async fn new(file: BdrvChild) -> io::Result<Self> {
- impl BlockDriver for BochsImage {
-     type Options = bindings::BlockdevOptionsGenericFormat;
- 
-+    fn probe(buf: &[u8], _filename: &str) -> u16 {
-+        let header = match BochsHeader::from_byte_slice(buf) {
-+            Some(header) => header,
-+            None => return 0,
-+        };
-+
-+        if header.magic != HEADER_MAGIC
-+            || header.imgtype != HEADER_TYPE_REDOLOG
-+            || header.subtype != HEADER_SUBTYPE_GROWING
-+        {
-+            return 0;
-+        }
-+
-+        // This driver is better than the C one which returns 100, give it priority
-+        match header.version {
-+            HEADER_VERSION | HEADER_V1 => 200,
-+            _ => 0,
-+        }
-+    }
-+
-     unsafe fn parse_options(
-         v: &mut bindings::Visitor,
-         opts: &mut *mut Self::Options,
-diff --git a/rust/block/src/driver.rs b/rust/block/src/driver.rs
-index baeaf47eda..1b132bc8de 100644
---- a/rust/block/src/driver.rs
-+++ b/rust/block/src/driver.rs
-@@ -7,7 +7,7 @@
- use qemu_api::errno::Errno;
- use qemu_api::futures::qemu_co_run_future;
- use std::cmp::min;
--use std::ffi::c_void;
-+use std::ffi::{c_void, CStr};
- use std::io::{self, Error, ErrorKind};
- use std::mem::MaybeUninit;
- use std::ptr;
-@@ -65,6 +65,16 @@ unsafe fn open(
-         errp: *mut *mut bindings::Error,
-     ) -> std::os::raw::c_int;
- 
-+    /// Returns the image format probing priority of this block driver for disk images starting
-+    /// with the byte sequence in `buf`. Probing selects the driver that returns the highest
-+    /// number.
-+    ///
-+    /// If the driver doesn't support images starting with `buf`, 0 is returned.
-+    fn probe(buf: &[u8], filename: &str) -> u16 {
-+        let _ = (buf, filename);
-+        0
-+    }
-+
-     /// Returns the size of the image in bytes
-     fn size(&self) -> u64;
- 
-@@ -161,6 +171,19 @@ pub async fn read_uninit<T: SizedIoBuffer>(
-     }
- }
- 
-+#[doc(hidden)]
-+pub unsafe extern "C" fn bdrv_probe<D: BlockDriver>(
-+    buf: *const u8,
-+    buf_size: std::os::raw::c_int,
-+    filename: *const std::os::raw::c_char,
-+) -> std::os::raw::c_int {
-+    let buf = unsafe { std::slice::from_raw_parts(buf, buf_size as usize) };
-+    match unsafe { CStr::from_ptr(filename) }.to_str() {
-+        Ok(filename) => D::probe(buf, filename).into(),
-+        Err(_) => 0,
-+    }
-+}
-+
- #[doc(hidden)]
- pub unsafe extern "C" fn bdrv_open<D: BlockDriver>(
-     bs: *mut bindings::BlockDriverState,
-@@ -266,6 +289,7 @@ macro_rules! block_driver {
-                 ::qemu_api::bindings::BlockDriver {
-                     format_name: ::qemu_api::c_str!($fmtname).as_ptr(),
-                     instance_size: ::std::mem::size_of::<$typ>() as i32,
-+                    bdrv_probe: Some($crate::driver::bdrv_probe::<$typ>),
-                     bdrv_open: Some($crate::driver::bdrv_open::<$typ>),
-                     bdrv_close: Some($crate::driver::bdrv_close::<$typ>),
-                     bdrv_co_preadv_part: Some($crate::driver::bdrv_co_preadv_part::<$typ>),
+Note that the tree of QOM devices resets depth-first but it does
+so while enforcing the 3 phases. First the tree is traversed doing
+the 'enter' phase, then the 'hold' phase and eventually the 'exit'
+phase.
+
+However the QOM hierarchy is not built so that vIOMMUs get reset
+after the DMA capable devices (IOMMUs are using either legacy reset
+scheme or hold phase). Changing the QOM hierarchy does not sound
+trivial while forcing the vIOMMUs to be reset on 'exit' phase
+sounds reasonable and much simpler. Obviously this relies on the
+assumption that all DMA capable devices quiesce their DMA before
+(ie. during 'enter' or hold' phase).
+
+This was tested with qmp system_reset and virsh reset.
+
+Best Regards
+
+Eric
+
+This series can be found at:
+https://github.com/eauger/qemu/tree/viommu-3phase-reset-v2
+
+History:
+v2 -> v3:
+- Collected R-bs and A-bs from Zhenzhong and Jason
+- fixed the cover letter (Zhenzhong)
+- no code change
+
+v1 -> v2:
+- Removed hw/i386/intel_iommu: Tear down address spaces before
+  IOMMU reset
+- Also move SMMU base class reset to exit reset. This was an
+  oversight from v1
+- Add last patch documenting expectations in terms of DMA reset
+- Improved commit messages and cover letter
+- dared to keep Michael's A-b for the patches whose code was
+  not altered
+
+References:
+[1] [PATCH 0/4] intel_iommu: Reset vIOMMU after all the rest of devices
+https://lore.kernel.org/all/20240117091559.144730-1-peterx@redhat.com/
+
+Eric Auger (5):
+  hw/virtio/virtio-iommu: Migrate to 3-phase reset
+  hw/i386/intel-iommu: Migrate to 3-phase reset
+  hw/arm/smmuv3: Move reset to exit phase
+  hw/vfio/common: Add a trace point in vfio_reset_handler
+  docs/devel/reset: Document reset expectations for DMA and IOMMU
+
+ docs/devel/reset.rst     |  5 +++++
+ hw/arm/smmu-common.c     |  9 +++++++--
+ hw/arm/smmuv3.c          | 14 ++++++++++----
+ hw/i386/intel_iommu.c    | 12 +++++++++---
+ hw/vfio/common.c         |  1 +
+ hw/virtio/virtio-iommu.c | 14 ++++++++++----
+ hw/arm/trace-events      |  1 +
+ hw/i386/trace-events     |  1 +
+ hw/vfio/trace-events     |  1 +
+ hw/virtio/trace-events   |  2 +-
+ 10 files changed, 46 insertions(+), 14 deletions(-)
+
 -- 
-2.48.1
+2.47.1
 
 
