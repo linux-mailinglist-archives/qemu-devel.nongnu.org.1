@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABF1A39E09
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31421A39E19
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkO4A-0005mH-4a; Tue, 18 Feb 2025 08:55:14 -0500
+	id 1tkO7M-0000da-EQ; Tue, 18 Feb 2025 08:58:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tkO46-0005kt-S2
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:55:11 -0500
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tkO45-0001gL-1u
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:55:10 -0500
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-6f972c031efso54095547b3.1
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 05:55:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739886907; x=1740491707; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=39fn1BS3vuf40TnRJ0SE8lCne6FUxR6xiuWLRie0Qos=;
- b=bNjaeLvB4PxaLI1f3flawagnnuieDjeeYJdt+cBnVAzqHwKuf9gnny9LZVVf2WMJEW
- lcYkKkHWoWm60fWTAFxacbAEyTtWH+siuf1Al3MgVSsz+i1o7JCK9ngxSwCjYGgKp9BT
- qFCwaDxfZdKu+dPFVgmvtWLugH2fQ/Ftqu9+Qv4MGH/IFhNgM1syZzW1ytGWRokftehS
- obeWGmwNKyw8G+yhRCQggp2knqfAljl529hVw/EwAaemfZMZA4OtUruvM23crtbx3/YI
- MQvPObaHQe6P983Sj9gZuBP5Evp6Fd11LDBuHR5pzH4vd/F0A4tLxyTvo5NOTDQwCBX3
- USyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739886907; x=1740491707;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=39fn1BS3vuf40TnRJ0SE8lCne6FUxR6xiuWLRie0Qos=;
- b=Z16YtDR17SykF19Aw50qI3AmxpIvMVm83vYh1FFB1zdCieqrniCHMZUjEm7k4qQB5W
- sKh+aJYdDXrgGxythy0MlB/hr3K3gf1PQCW9YnjafKNbSZqXqu7IlTukwZBVD+Gh6LRE
- TfJatahBtcKCtgPiflIA29ZJf0a663ENcQnYKEZFvKFocsp2WX6Vpy2quClzullGGJMj
- 3H0p8IcYnUF5FFdNc50RfCJk0WaePz3bE7c/RGD4VU/dwCgJ8EXp2fch4Lb9TPqjlF+h
- e2mn3O75CXV4SXKadsyyoQTDcdqIsZ+uVF4rr/weU3CXDRWImhaHyxROh75BLyFbXdfI
- BSGQ==
-X-Gm-Message-State: AOJu0YxQNep+gKCgg1/Adh9mlfUYCU6GIroH9llLj2dm8mJqaK9C41RS
- plsmLzNvIRdphnw+Ze+Q6KW2+bNz6gX2QlDvmbLQ1zS4LQ32i2zjH1h1vsvpnoDHoEvxlmriDYt
- e/dVLHvmJzGoxOPMCZjmmzHYcm3dfGZ8Yrra4bA==
-X-Gm-Gg: ASbGncsBVXwV7B6RADM/jJ0Ltf/xFr2NbwjC3w/qp1tAdClL53sw9441BFpgDX8e1Le
- COMtI3W9E33Hqh69NuHVveq4/sxdqdrsGqscKUlNEbUmrqSS+riDqjGlj4zgA6V09REDxheFtNg
- ==
-X-Google-Smtp-Source: AGHT+IGVCuthWFQAA8eqh0bykJgVjjswKOY+Z0sUC4HSC9ekQacmG8hCajtYaV/IzJ3UQLdLUTaTpYlud97iDLd85Nw=
-X-Received: by 2002:a05:6902:c06:b0:e5b:3d71:bff1 with SMTP id
- 3f1490d57ef6-e5da9eb14f1mr17190459276.0.1739886907134; Tue, 18 Feb 2025
- 05:55:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkO7J-0000dN-Ne
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:58:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tkO7I-0001sT-7y
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 08:58:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739887107;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+pOSX5NIHHMPhAaq+sG4UYAAQKCwNrzbgBJkeM7u56w=;
+ b=hZp37o29y1Z5Td9vtOawY6inmo3Jgyr4D4fEjS8yY/zkU1Zz4v5AOMz4L3Lym9fP7pNzdE
+ vAM/QwYPJRif+yd8A+FlLGFPhQAbSj2MCVJEObnzp8VOkLmy9PYtUOK/fLgn3Jqsxv8U0y
+ lcXbJo6hBFqdsSAMBldRmcUiOS3Kmdw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-wQ_QSqnHP2el5GHZEKCSow-1; Tue,
+ 18 Feb 2025 08:57:20 -0500
+X-MC-Unique: wQ_QSqnHP2el5GHZEKCSow-1
+X-Mimecast-MFC-AGG-ID: wQ_QSqnHP2el5GHZEKCSow_1739887039
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EF0181800264; Tue, 18 Feb 2025 13:57:17 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.226.66])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 27E8A300018D; Tue, 18 Feb 2025 13:57:14 +0000 (UTC)
+Date: Tue, 18 Feb 2025 14:57:12 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, qemu-block@nongnu.org
+Subject: Re: [PATCH 2/2] rust: add module to convert between -errno and
+ io::Error
+Message-ID: <Z7SRuD9Wob8wQK1z@redhat.com>
+References: <20250213143216.3910163-1-pbonzini@redhat.com>
+ <20250213143216.3910163-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250208163911.54522-1-philmd@linaro.org>
- <CAFEAcA8PYv3-JX66THwj-mDM0es6V5gVVWJsHTqkd9wTEVor4A@mail.gmail.com>
-In-Reply-To: <CAFEAcA8PYv3-JX66THwj-mDM0es6V5gVVWJsHTqkd9wTEVor4A@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Feb 2025 13:54:55 +0000
-X-Gm-Features: AWEUYZnAZ3KPEu27SvYRa3093KcYYrD48TSXN3xhNyE1aBE_lWOl7Fze5E7ctQE
-Message-ID: <CAFEAcA-ioFgThGJ70cyhe7rA0kbnDULsr-BuAqE+3b3TE0BGwg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/7] hw/char/pl011: Implement TX (async) FIFO to avoid
- blocking the main loop
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213143216.3910163-3-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Feb 2025 at 14:55, Peter Maydell <peter.maydell@linaro.org> wrot=
-e:
->
-> On Sat, 8 Feb 2025 at 16:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
-rg> wrote:
-> >
-> > Hi,
-> >
-> > This series add support for (async) FIFO on the transmit path
-> > of the PL011 UART.
-> >
->
-> Applied to target-arm.next, thanks (with a couple of minor
-> tweaks to two of the patches).
+Am 13.02.2025 um 15:32 hat Paolo Bonzini geschrieben:
+> It is a common convention in QEMU to return a positive value in case of
+> success, and a negated errno value in case of error.  Unfortunately,
+> using errno portably in Rust is a bit complicated; on Unix the errno
+> values are supported natively by io::Error, but on Windows they are not;
+> so, use the libc crate.
+> 
+> This is a set of utility functions that are used by both chardev and
+> block layer bindings.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Unfortunately I seem to get failures in 'make check-functional'
-with the last patch of this series applied. This is with a
-clang sanitizer build on ubuntu 24.04:
-'../../configure' '--cc=3Dclang' '--cxx=3Dclang++' '--enable-ubsan'
-'--target-list=3Darm-softmmu,arm-linux-user,aarch64-softmmu,aarch64-linux-u=
-ser'
+In my series, this allows a simplification of sorts:
 
-and the tests that fail are:
-42/44 qemu:func-thorough+func-aarch64-thorough+thorough /
-func-aarch64-aarch64_xlnx_versal     TIMEOUT          90.01s   killed
-by signal 15 SIGTERM
-43/44 qemu:func-thorough+func-aarch64-thorough+thorough /
-func-aarch64-aarch64_raspi4          TIMEOUT         480.01s   killed
-by signal 15 SIGTERM
-44/44 qemu:func-thorough+func-aarch64-thorough+thorough /
-func-aarch64-aarch64_virt            TIMEOUT         720.01s   killed
-by signal 15 SIGTERM
+     let mapping = match qemu_co_run_future(s.map(&req)) {
+         Ok(mapping) => mapping,
+-        Err(e) => {
+-            return -e
+-                .raw_os_error()
+-                .unwrap_or(bindings::EIO as std::os::raw::c_int)
+-        }
++        Err(e) => return -i32::from(Errno::from(e).0),
+     };
 
-Looking at the test logs it looks like the test framework
-starts QEMU but there is never any output from the guest
-console.
+Not really nice yet, though.
 
-I've dropped the patchset from target-arm.next for the moment.
+> +pub fn into_neg_errno<T: MergeErrno, E: Into<Errno>>(value: Result<T, E>) -> T::Out {
+> +    match value {
+> +        Ok(x) => x.map_ok(),
+> +        Err(err) => -T::Out::from(err.into().0),
+> +    }
+> +}
 
-thanks
--- PMM
+How about making this a method of a trait that is implemented for
+Result<T, E> similar to what you already have, but also directly for
+io::Error (or actually E: Into<Errno>)?
+
+Then the above could become:
+
+     let mapping = match qemu_co_run_future(s.map(&req)) {
+         Ok(mapping) => mapping,
+         Err(e) => return e.into_neg_errno(),
+     };
+
+Kevin
+
 
