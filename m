@@ -2,119 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE847A396B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 10:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA9CA396AE
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 10:15:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkJgj-0005yf-FV; Tue, 18 Feb 2025 04:14:45 -0500
+	id 1tkJgk-0005yl-Hv; Tue, 18 Feb 2025 04:14:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
- id 1tkJgg-0005y3-8U
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:42 -0500
-Received: from mailout3.samsung.com ([203.254.224.33])
+ id 1tkJgi-0005ya-64
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:44 -0500
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
- id 1tkJgb-0006hS-M9
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:42 -0500
+ id 1tkJgd-0006hX-E2
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:14:43 -0500
 Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20250218091427epoutp030f890a1fe74d65eda4c49883ef3cd6d0~lQpvG-Dee0064600646epoutp03c
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 09:14:27 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20250218091427epoutp030f890a1fe74d65eda4c49883ef3cd6d0~lQpvG-Dee0064600646epoutp03c
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20250218091430epoutp04c796d3f0215da74558be90f80dc6700d~lQpxVh8lw0650906509epoutp04P
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 09:14:30 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20250218091430epoutp04c796d3f0215da74558be90f80dc6700d~lQpxVh8lw0650906509epoutp04P
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1739870067;
- bh=s8YhuUluRgNIJWlfbH0fQz1EsKw8ZflNWmxB30V49Lg=;
+ s=mail20170921; t=1739870070;
+ bh=HcZHltFL7jn1Mql4lVVdvfwYZ6LbevSpFPN2Ve7VETM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bEAWePt/RTm9KmEPOEV1UPGyFCopjewpARAgqpcWUw9KL17WsVRvlOGYpc4frYJZr
- gpDSeQdyHorK2054AJfnUdajtJbSYfPnixHpQXDX5Ad3ePjt3N/wCis9jE2KUy5qvD
- phCN4lns0ghLuhhCNvXvW38mHb8p0oRclSmiH0jk=
+ b=JXFdg4GjQH05gQKB4S1QA9/lRWC+g7FS6Xgr/HPWcNUwY/IX5CmmLIQkgYRZvpEK7
+ x2EVC2hxpWm5C0qIpQPWJvqk4kRdEoDuHOeCqEqtpdJWt0whqUSiW1SksygySYheTx
+ Ln9eBwqMzk+pIxzQ965gHdgePKhf7KTrRZIS75ao=
 Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
- epcas5p4.samsung.com (KnoxPortal) with ESMTP id
- 20250218091427epcas5p41de951f23f8ce9fcc5400f8d36014cd4~lQpu4CtgA0646206462epcas5p4E;
- Tue, 18 Feb 2025 09:14:27 +0000 (GMT)
-Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.178]) by
- epsnrtp1.localdomain (Postfix) with ESMTP id 4Yxv3h3npxz4x9Pv; Tue, 18 Feb
- 2025 09:14:24 +0000 (GMT)
+ epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+ 20250218091429epcas5p24e55180c10ec70523481cda98af26100~lQpw_uew31780717807epcas5p2k;
+ Tue, 18 Feb 2025 09:14:29 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.175]) by
+ epsnrtp1.localdomain (Postfix) with ESMTP id 4Yxv3l1hjnz4x9Q7; Tue, 18 Feb
+ 2025 09:14:27 +0000 (GMT)
 Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
  epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
- FE.6E.19710.07F44B76; Tue, 18 Feb 2025 18:14:24 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
- epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
- 20250218085810epcas5p42b0e96fff3fff297a1e7334cc7feae9f~lQbhF0u-e0753707537epcas5p4t;
- Tue, 18 Feb 2025 08:58:10 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
- epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20250218085810epsmtrp24ab3b9a61c7b6517f6c12273dab424d0~lQbhFEPSM2184521845epsmtrp2K;
- Tue, 18 Feb 2025 08:58:10 +0000 (GMT)
-X-AuditID: b6c32a44-36bdd70000004cfe-34-67b44f70620d
+ 60.7E.19710.37F44B76; Tue, 18 Feb 2025 18:14:27 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250218085812epcas5p3981d9649c89f876d59724a24c0ed8d80~lQbipeBry1166411664epcas5p3n;
+ Tue, 18 Feb 2025 08:58:12 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20250218085812epsmtrp18f0c5a59d732f9358b2a8cf5bdc9fcf6~lQbiorSRH0197301973epsmtrp1R;
+ Tue, 18 Feb 2025 08:58:12 +0000 (GMT)
+X-AuditID: b6c32a44-363dc70000004cfe-3b-67b44f739f8b
 Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
- epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
- 62.DC.33707.2AB44B76; Tue, 18 Feb 2025 17:58:10 +0900 (KST)
+ epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ DC.0E.18949.4AB44B76; Tue, 18 Feb 2025 17:58:12 +0900 (KST)
 Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
  by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
- 20250218085809epsmtip13f77c85799bfe0e8c6ad7c859181449d~lQbfqHevn1080210802epsmtip1e;
- Tue, 18 Feb 2025 08:58:09 +0000 (GMT)
+ 20250218085810epsmtip17068f6c2cd445cd3b5c4c724710cda67~lQbhMmSLW1084010840epsmtip1Y;
+ Tue, 18 Feb 2025 08:58:10 +0000 (GMT)
 From: Arpit Kumar <arpit1.kumar@samsung.com>
 To: qemu-devel@nongnu.org
 Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
  dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
  a.manzanares@samsung.com, alok.rathore@samsung.com, Arpit Kumar
  <arpit1.kumar@samsung.com>
-Subject: [PATCH v2 1/3] hw/cxl/cxl-mailbox-utils.c: Added support for Get
- Log Capabilities (Opcode 0402h)
-Date: Tue, 18 Feb 2025 14:27:29 +0530
-Message-Id: <20250218085731.550029-2-arpit1.kumar@samsung.com>
+Subject: [PATCH v2 2/3] hw/cxl/cxl-mailbox-utils.c: Added support for Clear
+ Log (Opcode 0403h)
+Date: Tue, 18 Feb 2025 14:27:30 +0530
+Message-Id: <20250218085731.550029-3-arpit1.kumar@samsung.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250218085731.550029-1-arpit1.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHJsWRmVeSWpSXmKPExsWy7bCmpm6B/5Z0g96HkhbTDytafDm9h82i
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDJsWRmVeSWpSXmKPExsWy7bCmpm6x/5Z0g96D3BbTDytafDm9h82i
  d/ESVovVN9cwWtw8sJPJYuHGZUwW52edYrH4u20vo8Xx3h0sQO4cdgcuj52z7rJ7PLm2mcmj
  b8sqRo+ps+s9Pm+SC2CNyrbJSE1MSS1SSM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xN
  tVVy8QnQdcvMAbpJSaEsMacUKBSQWFyspG9nU5RfWpKqkJFfXGKrlFqQklNgUqBXnJhbXJqX
- rpeXWmJlaGBgZApUmJCdsez3NpaCZ5oV35qXszcwTpLvYuTkkBAwkZjQc4a9i5GLQ0hgN6PE
- t8df2SCcT4wSh/e/ZYdz9r/vYIJpWf9zAStEYiejxLoft5ggnAYmiVl3jjODVLEJ6Eicvz2X
- DcQWEZCU+N11mhmkiFngDaPEg6sLwIqEBbIlmtu72EFsFgFViVe/j4DZvAJ2EqunPGaEWCcv
- sf/gWbB6TgF7idvvv0PVCEqcnPmEBcRmBqpp3jobbIGEwE92iWub17BDNLtIbHm9ghXCFpZ4
- dXwLVFxK4vO7vWwQdrbEn/ntUHaBxKKfM6Fq7CVaT/UDDeUAWqApsX6XPkRYVmLqqXVMEHv5
- JHp/P4EGC6/EjnkwtppE+475UGNkJN78Wgw13kPi2MmvYH8JCUwChvasnAmMCrOQvDMLyTuz
- EDYvYGRexSiZWlCcm56abFpgmJdaDo/m5PzcTYzghKrlsoPxxvx/eocYmTgYDzFKcDArifAe
- 6tqQLsSbklhZlVqUH19UmpNafIjRFBjeE5mlRJPzgSk9ryTe0MTSwMTMzMzE0tjMUEmct3ln
- S7qQQHpiSWp2ampBahFMHxMHp1QDk/NnNq9dna+7hLKPFD3psGCc//GQl9Eqhgemr+PDZ243
- 2lm1PPmTcF/k/fxvgbl2bIf0f9hxPkho29rnZpb24GThtQ9mD5MVTuZEpTPmuD319Mu8MO/k
- AaVUrv4pwgkbT9fV3T60oOGuyDSllHDleqXmwz9KHpw3LOs7H9l370B8K++kg1pbZ5iUHAhS
- qViTpiD1Z6/vvFr1C8sEOY7V9dkkLbOSrOebujCG+4b1/oQ0m+zf3zfc2dj8m3+eIr+YTvDz
- dDZR/zsMczXEDlVNWpF2zvvQ84vFYXf87J4edNaebfGwWK6dSe2W645TNZP9FxXXXjQzf9In
- f/Fo0fQ57HzVzQv4vsdy/omtfNqlxFKckWioxVxUnAgA1ibEtzEEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrILMWRmVeSWpSXmKPExsWy7bCSnO4i7y3pBqf2aVhMP6xo8eX0HjaL
+ rpeXWmJlaGBgZApUmJCd8fDRA5aCV0IVT5cuZ29g7OXtYuTgkBAwkWg4I9vFyMUhJLCbUWJx
+ 8wEmCOcTo8Tl2TOYIZxvjBI7Tv8EcjjBOq4sWgqV2Mso8eDGD7CEkEADk0TPbCkQm01AR+L8
+ 7blsILaIgKTE767TYA3MAm+AGq4uAGsQFkiQ+DfpApjNIqAq8e38JVYQm1fATuLB5CYWiG3y
+ EvsPngWr4RSwl7j9/js7RI2gxMmZT8BqmIFqmrfOhrruJ7vE18cxELaLxK3Nv1khbGGJV8e3
+ sEPYUhIv+9ug7GyJP/Pb2SDsAolFP2dCxe0lWk/1M4PCiFlAU2L9Ln2IsKzE1FPrmCDW8kn0
+ /n7CBBHnldgxD8ZWk2jfMR9qjIzEm1+LocZ7SDzZ188ICbhJjBLzX69insCoMAvJO7OQvDML
+ YfUCRuZVjJKpBcW56anJpgWGeanl8EhOzs/dxAhOplouOxhvzP+nd4iRiYPxEKMEB7OSCO+h
+ rg3pQrwpiZVVqUX58UWlOanFhxhNgeE9kVlKNDkfmM7zSuINTSwNTMzMzEwsjc0MlcR5m3e2
+ pAsJpCeWpGanphakFsH0MXFwSjUwBSWyi2bI3+w1ezXJJOV+ns7E961cP24dYPlv9OMV36Q7
+ ebKZEtO0TrX/4zZtCA5mSli63io7J6zyhNQ8R8GsopjVXD80/FfK6/y1V8+PsPf559hkOPXi
+ iukvPXl+MPtc+atq4SEnp514+3vUg/X71uimvMtPqPr9UNNBeWLw5sRgjZ/3n+0w3/BlpV7B
+ Mp3c8N43qkGMHUmqWT5XGp4tCd/gy9304UoWS0z1lZ/6UcdPPC6wlhDc1q598Rv3E4s/6vPm
+ cQi9FxbcpvzkRcRGn8Aix9JH4qw+j9w0yta/DpkZ/2/HhirjVbsdGiXWlRS9DuHol+rSEeAN
+ +zDN4vU+p+vbJ9Xd7j3QLcjKe0KJpTgj0VCLuag4EQB1PDuwLwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMLMWRmVeSWpSXmKPExsWy7bCSnO4S7y3pBot+CFlMP6xo8eX0HjaL
  3sVLWC1W31zDaHHzwE4mi4UblzFZnJ91isXi77a9jBbHe3ewALlz2B24PHbOusvu8eTaZiaP
- vi2rGD2mzq73+LxJLoA1issmJTUnsyy1SN8ugStj2e9tLAXPNCu+NS9nb2CcJN/FyMkhIWAi
- sf7nAtYuRi4OIYHtjBIf/85ihEjISFyc+ZgFwhaWWPnvOTtE0T9GibWzr4Il2AR0JM7fnssG
- YosISEr87jrNDFLELPCNUWLOrResIAlhgUyJi2sngNksAqoSr34fYQexeQXsJFZPeQy1TV5i
- /8GzzCA2p4C9xO3338FqhIBqNnT9ZYSoF5Q4OfMJ2GJmoPrmrbOZJzAKzEKSmoUktYCRaRWj
- aGpBcW56bnKBoV5xYm5xaV66XnJ+7iZGcKhrBe1gXLb+r94hRiYOxkOMEhzMSiK8h7o2pAvx
- piRWVqUW5ccXleakFh9ilOZgURLnVc7pTBESSE8sSc1OTS1ILYLJMnFwSjUwbTv/TyT8/t1v
- nR/FxbgkF+i+evico78lU+24iFW31ZmmVaXizrd4WOOErkRtnXrA3DQzIexkcspBq7O7ltYx
- uE5vsD25Pn8a06zvPx6bamkf/b3p2dfrQSkdu5Y5LWCcuPTJa1WNdTr1rCeTFi848He3ItPu
- nzlX9/08tULeU/1/klhAQjFnWMdCK8eHJZvuJTrFVr1QEpoxZcqSGe8+tew6saqy7d1epWsb
- XZkOpKxPWeAlcTTL7pbfr8w5H0QLNn07a2o+pSTBMmy7bO7i7pYz8V+nSu21/2VzdcnckljB
- m8tqX01kfHdvikP82aUev+d/lGSR13frac/wvVN1NVfo9umQnvCNtiL3BARmr1FiKc5INNRi
- LipOBACtoqY/5AIAAA==
-X-CMS-MailID: 20250218085810epcas5p42b0e96fff3fff297a1e7334cc7feae9f
+ vi2rGD2mzq73+LxJLoA1issmJTUnsyy1SN8ugSvj4aMHLAWvhCqeLl3O3sDYy9vFyMkhIWAi
+ cWXRUuYuRi4OIYHdjBIHrn1lhUjISFyc+ZgFwhaWWPnvOTuILSTwj1FiyXo2EJtNQEfi/O25
+ YLaIgKTE767TYIOYBb4xSsy59QJoEAeHsECcxK0TKiA1LAKqEt/OXwKbzytgJ/FgchPUfHmJ
+ /QfPMoPYnAL2Erfff4faZSexoesvI0S9oMTJmU/A6pmB6pu3zmaewCgwC0lqFpLUAkamVYyS
+ qQXFuem5xYYFRnmp5XrFibnFpXnpesn5uZsYweGupbWDcc+qD3qHGJk4GA8xSnAwK4nwHura
+ kC7Em5JYWZValB9fVJqTWnyIUZqDRUmc99vr3hQhgfTEktTs1NSC1CKYLBMHp1QD0yaWc+F8
+ vdYKbPUBC77WzDzB8PHEw83LQsUSVVxXCv3sNb5682vZpFKp7asiHVTC5wTXSAR+qPNteXpX
+ Wirg69vCm7syZE2OLtzzXU7UoFDX/kJYVC2TdP372YY3Bb/dW/SGgfdM6Xq2tCt8p5/fnvaP
+ 5zPvsc9Lqn9GshsX/DvdMiWnqzyKe4OftOjTNu71l+YsbXOU+HZp587I4IwvPocM7u182xH+
+ 3rfTjUs21mWTqsh0m4fHG7z5ed+/bOblOqk7O7hay+Ok2sOV7p3GOTab+BsYjq1PVWS1PFR+
+ pt9rz86ly2//rq8MfL79fDX3JkHDZWvmchq7flyhm7Q3m3XfN/Ygo6R5isb7j8VfVWIpzkg0
+ 1GIuKk4EAOGfQoXmAgAA
+X-CMS-MailID: 20250218085812epcas5p3981d9649c89f876d59724a24c0ed8d80
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: REQ_APPROVE
 CMS-TYPE: 105P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250218085810epcas5p42b0e96fff3fff297a1e7334cc7feae9f
+X-CMS-RootMailID: 20250218085812epcas5p3981d9649c89f876d59724a24c0ed8d80
 References: <20250218085731.550029-1-arpit1.kumar@samsung.com>
- <CGME20250218085810epcas5p42b0e96fff3fff297a1e7334cc7feae9f@epcas5p4.samsung.com>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=arpit1.kumar@samsung.com; helo=mailout3.samsung.com
+ <CGME20250218085812epcas5p3981d9649c89f876d59724a24c0ed8d80@epcas5p3.samsung.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=arpit1.kumar@samsung.com; helo=mailout4.samsung.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -138,156 +138,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CXL spec 3.2 section 8.2.10.5.3 describes Get Log Capabilities.
-It provides log capabilities supported by specified log.
+CXL spec 3.2 section 8.2.10.5.4 describes clear log.
+It clears the content of the specified log.
 
 Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
 ---
- hw/cxl/cxl-mailbox-utils.c   | 45 ++++++++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_device.h  | 20 ++++++++++++++++
- include/hw/cxl/cxl_mailbox.h |  5 ++++
- 3 files changed, 70 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 9c7ea5bc35..5b0f793ac5 100644
+index 5b0f793ac5..1caee3f058 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -76,6 +76,7 @@ enum {
-     LOGS        = 0x04,
+@@ -77,6 +77,7 @@ enum {
          #define GET_SUPPORTED 0x0
          #define GET_LOG       0x1
-+        #define GET_LOG_CAPABILITIES   0x2
+         #define GET_LOG_CAPABILITIES   0x2
++        #define CLEAR_LOG     0x3
      FEATURES    = 0x05,
          #define GET_SUPPORTED 0x0
          #define GET_FEATURE   0x1
-@@ -1075,6 +1076,43 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
+@@ -1113,6 +1114,30 @@ static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_cmd *cmd,
      return CXL_MBOX_SUCCESS;
  }
  
-+static const struct CXLLogCapabilities *find_log_index(QemuUUID *uuid, CXLCCI *cci)
-+{
-+    for (int i = CXL_LOG_COMMAND_EFFECT; i < MAX_LOG_TYPE; i++) {
-+        if (qemu_uuid_is_equal(uuid,
-+            &cci->supported_log_cap[i].uuid)) {
-+                return &cci->supported_log_cap[i];
-+        }
-+    }
-+    return NULL;
-+}
-+
-+/* CXL r3.2 Section 8.2.10.5.3: Get Log Capabilities (Opcode 0402h) */
-+static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_cmd *cmd,
-+                                                uint8_t *payload_in,
-+                                                size_t len_in,
-+                                                uint8_t *payload_out,
-+                                                size_t *len_out,
-+                                                CXLCCI *cci)
++/* CXL r3.2 Section 8.2.10.5.4: Clear Log (Opcode 0403h) */
++static CXLRetCode cmd_logs_clear_log(const struct cxl_cmd *cmd,
++                                     uint8_t *payload_in,
++                                     size_t len_in,
++                                     uint8_t *payload_out,
++                                     size_t *len_out,
++                                     CXLCCI *cci)
 +{
 +    const CXLLogCapabilities *cap;
 +    struct {
 +        QemuUUID uuid;
-+    } QEMU_PACKED QEMU_ALIGNED(8) * get_log_capabilities_in = (void *)payload_in;
++    } QEMU_PACKED QEMU_ALIGNED(8) * clear_log = (void *)payload_in;
 +
-+    uint32_t *get_log_capabilities_out = (uint32_t *)payload_out;
-+
-+    cap = find_log_index(&get_log_capabilities_in->uuid, cci);
++    cap = find_log_index(&clear_log->uuid, cci);
 +    if (!cap) {
 +        return CXL_MBOX_INVALID_LOG;
 +    }
 +
-+    memcpy(get_log_capabilities_out, &cap->param_flags,
-+           sizeof(cap->param_flags));
-+    *len_out = sizeof(*get_log_capabilities_out);
++    if (!(cap->param_flags & CXL_LOG_CAP_CLEAR_SUPPORTED)) {
++        return CXL_MBOX_UNSUPPORTED;
++    }
 +    return CXL_MBOX_SUCCESS;
 +}
 +
  /* CXL r3.1 section 8.2.9.6: Features */
  /*
   * Get Supported Features output payload
-@@ -2840,6 +2878,8 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
-                               0, 0 },
+@@ -2880,6 +2905,8 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-+    [LOGS][GET_LOG_CAPABILITIES] = { "LOGS_GET_LOG_CAPABILITIES",
-+                                     cmd_logs_get_log_capabilities, 0x10, 0 },
+     [LOGS][GET_LOG_CAPABILITIES] = { "LOGS_GET_LOG_CAPABILITIES",
+                                      cmd_logs_get_log_capabilities, 0x10, 0 },
++    [LOGS][CLEAR_LOG] = { "LOGS_CLEAR_LOG", cmd_logs_clear_log, 0x10,
++                          CXL_MBOX_IMMEDIATE_LOG_CHANGE},
      [FEATURES][GET_SUPPORTED] = { "FEATURES_GET_SUPPORTED",
                                    cmd_features_get_supported, 0x8, 0 },
      [FEATURES][GET_FEATURE] = { "FEATURES_GET_FEATURE",
-@@ -3084,10 +3124,15 @@ static void cxl_rebuild_cel(CXLCCI *cci)
-     }
- }
- 
-+static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
-+    [CXL_LOG_COMMAND_EFFECT] = {.param_flags = 0, .uuid = cel_uuid},
-+};
-+
- void cxl_init_cci(CXLCCI *cci, size_t payload_max)
- {
-     cci->payload_max = payload_max;
-     cxl_rebuild_cel(cci);
-+    cci->supported_log_cap = cxl_get_log_cap;
- 
-     cci->bg.complete_pct = 0;
-     cci->bg.starttime = 0;
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index a64739be25..23f6f4ed17 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -164,6 +164,18 @@ typedef enum {
-     CXL_MBOX_MAX = 0x20
- } CXLRetCode;
- 
-+/* types of logs */
-+typedef enum {
-+    CXL_LOG_COMMAND_EFFECT,
-+    CXL_LOG_VENDOR_DEBUG,
-+    CXL_LOG_COMPONENT_STATE_DUMP,
-+    CXL_LOG_ERROR_CHECK_SCRUB,
-+    CXL_LOG_MEDIA_TEST_CAPABILITY,
-+    CXL_LOG_MEDIA_TEST_RESULTS_SHORT,
-+    CXL_LOG_MEDIA_TEST_RESULTS_LONG,
-+    MAX_LOG_TYPE
-+} CXLLogType;
-+
- typedef struct CXLCCI CXLCCI;
- typedef struct cxl_device_state CXLDeviceState;
- struct cxl_cmd;
-@@ -194,6 +206,11 @@ typedef struct CXLEventLog {
-     QSIMPLEQ_HEAD(, CXLEvent) events;
- } CXLEventLog;
- 
-+typedef struct CXLLogCapabilities {
-+    uint32_t param_flags;
-+    QemuUUID uuid;
-+} CXLLogCapabilities;
-+
- typedef struct CXLCCI {
-     struct cxl_cmd cxl_cmd_set[256][256];
-     struct cel_log {
-@@ -202,6 +219,9 @@ typedef struct CXLCCI {
-     } cel_log[1 << 16];
-     size_t cel_size;
- 
-+    /* get log capabilities */
-+    const CXLLogCapabilities *supported_log_cap;
-+
-     /* background command handling (times in ms) */
-     struct {
-         uint16_t opcode;
-diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-index 9008402d1c..8e1c7c5f15 100644
---- a/include/hw/cxl/cxl_mailbox.h
-+++ b/include/hw/cxl/cxl_mailbox.h
-@@ -16,4 +16,9 @@
- #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
- #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
- 
-+#define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
-+#define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
-+#define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
-+#define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
-+
- #endif
 -- 
 2.34.1
 
