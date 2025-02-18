@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E882A39E42
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 15:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF1DA39E0C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 14:56:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkOEl-0002qD-IH; Tue, 18 Feb 2025 09:06:11 -0500
+	id 1tkO4l-00062W-1X; Tue, 18 Feb 2025 08:55:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zeff@altlinux.org>) id 1tkJT0-0002ws-8u
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:00:35 -0500
-Received: from air.basealt.ru ([193.43.8.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zeff@altlinux.org>) id 1tkJSx-0005ME-Gq
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 04:00:33 -0500
-Received: from happy.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
- (Authenticated sender: sergeevdv)
- by air.basealt.ru (Postfix) with ESMTPSA id 48904233BC;
- Tue, 18 Feb 2025 12:00:22 +0300 (MSK)
-From: zeff@altlinux.org
-To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
- peter.maydell@linaro.org, sdl.qemu@linuxtesting.org,
- e.bykhanova@fobos-nt.ru, sergeevdv@basealt.ru,
- Denis Sergeev <zeff@altlinux.org>
-Subject: [sdl-qemu] [PATCH] disas/sparc: Fix integer overflow in
- compare_opcodes()
-Date: Tue, 18 Feb 2025 11:58:35 +0300
-Message-ID: <20250218085835.64928-1-zeff@altlinux.org>
-X-Mailer: git-send-email 2.42.4
+ (Exim 4.90_1) (envelope-from <solemnwarning@solemnwarning.net>)
+ id 1tkLpb-00017l-RY
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 06:32:09 -0500
+Received: from chulak.solemnwarning.net ([50.116.12.208])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <solemnwarning@solemnwarning.net>) id 1tkLpZ-00086V-3C
+ for qemu-devel@nongnu.org; Tue, 18 Feb 2025 06:32:03 -0500
+Received: from gandalf.solemnwarning.net (82-71-51-99.dsl.in-addr.zen.co.uk
+ [82.71.51.99])
+ by chulak.solemnwarning.net (Postfix) with ESMTPSA id 11E741DE5C
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 11:31:54 +0000 (GMT)
+Received: from [172.24.128.21] (infinity.magi.local [172.24.128.21])
+ by gandalf.solemnwarning.net (Postfix) with ESMTPSA id 6F7FD202D4
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 11:31:51 +0000 (GMT)
+Message-ID: <73cc235e-6401-426e-b02e-e5a72ae8059f@solemnwarning.net>
+Date: Tue, 18 Feb 2025 11:31:51 +0000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+From: Daniel Collins <solemnwarning@solemnwarning.net>
+Subject: Strange floating-point behaviour with some CPU models
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=193.43.8.18; envelope-from=zeff@altlinux.org;
- helo=air.basealt.ru
+Received-SPF: pass client-ip=50.116.12.208;
+ envelope-from=solemnwarning@solemnwarning.net; helo=chulak.solemnwarning.net
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -42,7 +43,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 18 Feb 2025 09:06:04 -0500
+X-Mailman-Approved-At: Tue, 18 Feb 2025 08:55:48 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,47 +58,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Denis Sergeev <zeff@altlinux.org>
+Hello all,
 
-Fix an integer overflow issue caused by a left shift operation (1 << i)
-on an int literal. For i >= 31, this could lead to undefined behavior by
-exceeding the 32-bit range.
+I'm encountering a very weird bug with some floating-point maths code, but only under very specific configurations. First I thought it was a Clang bug, but then further digging eventually showed it to only occur under Windows VMs with specific QEMU CPU options, I'm not certain whether it is a QEMU/KVM bug or a Windows bug, but thought starting here would be easiest.
 
-To prevent this, explicitly cast the literal to an unsigned long int
-(1UL << i), ensuring the shift operation is performed safely.
+When compiled under MSVC Clang with modern CPU instructions disabled (e.g. -march=pentium3 or -march=pentium-mmx), the floorf() call in the following program always returns 0.0, while the truncation works correctly:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2618
-Reported-by: E. Bykhanova <e.bykhanova@fobos-nt.ru>
-Signed-off-by: Denis Sergeev <zeff@altlinux.org>
----
- disas/sparc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+int main(int argc, char **argv)
+{
+     float n = atof(argv[1]);
+     printf("n = %f\n", n);
 
-diff --git a/disas/sparc.c b/disas/sparc.c
-index 5689533ce1..92b9ac754f 100644
---- a/disas/sparc.c
-+++ b/disas/sparc.c
-@@ -2515,7 +2515,7 @@ compare_opcodes (const void * a, const void * b)
-      another, it is important to order the opcodes in the right order.  */
-   for (i = 0; i < 32; ++i)
-     {
--      unsigned long int x = 1 << i;
-+      unsigned long int x = 1UL << i;
-       int x0 = (match0 & x) != 0;
-       int x1 = (match1 & x) != 0;
- 
-@@ -2525,7 +2525,7 @@ compare_opcodes (const void * a, const void * b)
- 
-   for (i = 0; i < 32; ++i)
-     {
--      unsigned long int x = 1 << i;
-+      unsigned long int x = 1UL << i;
-       int x0 = (lose0 & x) != 0;
-       int x1 = (lose1 & x) != 0;
- 
--- 
-2.42.4
+     float f = floorf(n);
+     printf("f = %f\n", f);
+
+     float c = (int)(n);
+     printf("c = %f\n", c);
+
+     return 0;
+}
+
+Example output on an affected VM:
+
+C:\Users\Administrator> floorf-p3.exe 10
+n = 10.000000
+f = 0.000000
+c = 10.000000
+
+C:\Users\Administrator> floorf-p4.exe 10
+n = 10.000000
+f = 10.000000
+c = 10.000000
+
+(floorf-p3.exe was compiled with -march=pentium3 and floorf-p4.exe with -march=pentium4 above)
+
+I've tried a few QEMU CPU models on a variety of Intel/AMD VM hosts and two different Windows versions (10 and Server 2022), and observed the following:
+
+host-passthrough: works (on AMD and Intel hosts)
+qemu64: broken
+EPYC-Milan: works
+Westmere: works
+Penryn: broken
+
+Happy to provide executables and/or disassembly to aid in debugging this.
+
+Daniel
 
 
