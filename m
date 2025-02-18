@@ -2,92 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D8AA3947A
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 09:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CD7A3941C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Feb 2025 08:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkIbU-0005Ma-1D; Tue, 18 Feb 2025 03:05:16 -0500
+	id 1tkIM2-0000Li-4t; Tue, 18 Feb 2025 02:49:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tkIbQ-0005Lx-Ru
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:05:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkILw-0000LE-B5; Tue, 18 Feb 2025 02:49:12 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tkIbK-0007j3-Mh
- for qemu-devel@nongnu.org; Tue, 18 Feb 2025 03:05:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739865904;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=rRHv0VAGXKvzhgsoXOj/6ynjCFigFeP4/lBHiQ/K8J0=;
- b=PImpy4RqRhE2gnXj3pY0dRtgYWJJYAgfZnWoWxta66OqMHUkkuBokM+6YM4O+Mx1iK/J08
- 17VfkKdj9zTByLaM6zXhVQVzY3tkKpxN/jEZMHzy2feApEFPq4rY4pnaIDwkPQGeXT/ShO
- eWCXCY85EzQof1BdYQtJgJXGUBI1ApU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-UaMaoc1XNbu8hIycntdA5Q-1; Tue, 18 Feb 2025 03:05:02 -0500
-X-MC-Unique: UaMaoc1XNbu8hIycntdA5Q-1
-X-Mimecast-MFC-AGG-ID: UaMaoc1XNbu8hIycntdA5Q_1739865901
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38f4e3e9c70so510134f8f.1
- for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 00:05:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739865900; x=1740470700;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rRHv0VAGXKvzhgsoXOj/6ynjCFigFeP4/lBHiQ/K8J0=;
- b=YH6a+DMgMBCShbMAyeDP+FKJjRONko3ZhK4LpBV5rDHal4MgFN6yHLauY+3Ok6Ca9x
- Pfe3T+Tr3gdxOp0EyaNFb7go/KuCqzZzM0XUytVzUw2qHC9wPahiXFR5lyj46OdXkLhV
- Zswhtxt8hIJkoIXrJEBRGMlbqE+iaR0CAHoX3uuYlDWQiFzT+6SQv8HANv+4sTG+XSCe
- eovyVDjIl7igdxk2cPPKi4SPlFzdo8hT0EEYAOlpBAsxQ+kflCg8ctd+1kotJte9PF/e
- h46AMYJsAuuOv9Cvngn/bLoV7y/Z1dhJfK3w/ee6Ur1L0Or1UkyJ+UlBpj30j2JhSJAO
- BzZA==
-X-Gm-Message-State: AOJu0YwlvU+XqytzbKUKo9r1Zgm84zSSr1bp5a0xsFiqlG8BMRnjNnfo
- 7Lzk6dT+Lv09QMM712sHlPZn8G8SLveMqwzPnEUyd5Yq2o1vpIKy1hRbsZcg3/DZAL7185wULlc
- zHt2YW4na1pAG7yShNacPj9vzmiJaUh4FV2K+Ahf08WUSQVNc6tSfLCxjANKYVt6GLa22gy/dLt
- wsb0l8gLOxvXUwX6ligz7v8KkopXNQ9gkGiuArmzc=
-X-Gm-Gg: ASbGncsGP/kjq31cOf/dOq/o8pgrF/f3FmMvf17GtVTC37Mt/xSlZNtLbIO2JpTEHYd
- my63GIfLuuH7Dyo1K1nVTkVuICBi9m/4zhOi1hvU9H/yRAitBTfVomCDk4d02aiJnumcdtx6qfE
- LfaHN1FFQ9xjURNBOtZCYls2+pl9xGp/kTqM9Nf5oZMwZc1ohKwVerNncBk95Ltk1pRClHkPsas
- /HJqdizSq/LYN2hbSIugU9xeZE2Oc9GdrX3bTynvgCgmJHyuVBIK/jYUWY7eSHM+26TWaLu/Q52
- YYgy1r3TBbw=
-X-Received: by 2002:a05:6000:71c:b0:38f:2b64:5327 with SMTP id
- ffacd0b85a97d-38f2b6457ccmr12524038f8f.24.1739865900561; 
- Tue, 18 Feb 2025 00:05:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExdTXtJsJlWpXL8sWoHyZsgMcjfgiDRw9KCtr6MC9mkHmwCs3Q1dxFw7+DOnfgc7MecXG+gw==
-X-Received: by 2002:a05:6000:71c:b0:38f:2b64:5327 with SMTP id
- ffacd0b85a97d-38f2b6457ccmr12524011f8f.24.1739865900115; 
- Tue, 18 Feb 2025 00:05:00 -0800 (PST)
-Received: from [192.168.10.48] ([176.206.122.109])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b4118sm14650555f8f.18.2025.02.18.00.04.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2025 00:04:59 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH] docs: rust: fix typos
-Date: Tue, 18 Feb 2025 09:04:58 +0100
-Message-ID: <20250218080458.426402-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkILs-0005uX-Oo; Tue, 18 Feb 2025 02:49:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1739864949; x=1771400949;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xbrKOGJ3m9gms1trzv21PXPE753tlMOzvuu2KDFvoZk=;
+ b=TU6fr4TtpQAYNOso7ntK3cjOrPRPh+rWa4zU/NT3YEcdSDxjb7eJZkc1
+ FM3rB2AOeB3RTYRMvYanNVFW77W83aG8vWhwn1iMs/AW3pzQYs9oV0qnm
+ dJNA6iNALO10yBwlawpbiLbKKA16VbC7gbTNXbNAkjtIH7a/JjtUBt0LT
+ /qw2nk135o/dUdoPSMD0mn8yhsK4O/nt1ciSRDP0FddV5qoHZPkh8soaC
+ a9Nru8WJFT3SrOjCl2iSkk2AD2Ra9gSGqw2tERnBPbCZ4SOlX2PTB+Uyj
+ 1YhlqqYIMzDPHxle1DufkqotZV5jeg2WwXlphxXpKKAECHofKygFGmp3T w==;
+X-CSE-ConnectionGUID: qS/7g2SkQlKKgXyY7rc2mA==
+X-CSE-MsgGUID: zpnkbZCSSuiNWT5INAkAxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51190819"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; d="scan'208";a="51190819"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2025 23:49:05 -0800
+X-CSE-ConnectionGUID: c5vcaEq6QXOozNFMZRIeww==
+X-CSE-MsgGUID: b58VZPcnTGuQ9e9woxbVMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119529994"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa005.jf.intel.com with ESMTP; 17 Feb 2025 23:49:04 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] rust: Prefer std::ptr over core::ptr
+Date: Tue, 18 Feb 2025 16:08:35 +0800
+Message-Id: <20250218080835.3341082-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,34 +75,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/rust.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The std::ptr is same as core::ptr, but std has already been used in many
+cases and there's no need to choose non-std library.
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 90958e5a306..7964e1fd327 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -293,7 +293,7 @@ to a Rust mutable reference, and use a shared reference instead.  Rust code
- will then have to use QEMU's ``BqlRefCell`` and ``BqlCell`` type, which
- enforce that locking rules for the "Big QEMU Lock" are respected.  These cell
- types are also known to the ``vmstate`` crate, which is able to "look inside"
--them when building an in-memory representation of a ``struct``s layout.
-+them when building an in-memory representation of a ``struct``'s layout.
- Note that the same is not true of a ``RefCell`` or ``Mutex``.
+So, use std::ptr directly to make the used ptr library as consistent as
+possible.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ rust/hw/char/pl011/src/device.rs       | 2 +-
+ rust/hw/char/pl011/src/device_class.rs | 6 ++++--
+ rust/qemu-api/src/irq.rs               | 3 +--
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index fe73771021e7..59a689fdcd77 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -2,10 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
- In the future, similar cell types might also be provided for ``AioContext``-based
-@@ -349,7 +349,7 @@ Writing procedural macros
- '''''''''''''''''''''''''
+-use core::ptr::{addr_of, addr_of_mut, NonNull};
+ use std::{
+     ffi::CStr,
+     os::raw::{c_int, c_void},
++    ptr::{addr_of, addr_of_mut, NonNull},
+ };
  
- By conventions, procedural macros are split in two functions, one
--returning ``Result<proc_macro2::TokenStream, MacroError>` with the body of
-+returning ``Result<proc_macro2::TokenStream, MacroError>`` with the body of
- the procedural macro, and the second returning ``proc_macro::TokenStream``
- which is the actual procedural macro.  The former's name is the same as
- the latter with the ``_or_error`` suffix.  The code for the latter is more
+ use qemu_api::{
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index dbef93f6cb3e..0b2076ddaa0f 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -2,8 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use core::ptr::NonNull;
+-use std::os::raw::{c_int, c_void};
++use std::{
++    os::raw::{c_int, c_void},
++    ptr::NonNull,
++};
+ 
+ use qemu_api::{
+     bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
+diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
+index d1c9dc96eff3..34c19263c233 100644
+--- a/rust/qemu-api/src/irq.rs
++++ b/rust/qemu-api/src/irq.rs
+@@ -4,8 +4,7 @@
+ 
+ //! Bindings for interrupt sources
+ 
+-use core::ptr;
+-use std::{ffi::CStr, marker::PhantomData, os::raw::c_int};
++use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr};
+ 
+ use crate::{
+     bindings::{self, qemu_set_irq},
 -- 
-2.48.1
+2.34.1
 
 
