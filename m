@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E4EA3C9F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9CEA3C9EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:35:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqme-0000hl-9n; Wed, 19 Feb 2025 15:35:04 -0500
+	id 1tkqml-0000xA-3f; Wed, 19 Feb 2025 15:35:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmb-0000hE-3P
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:01 -0500
+ id 1tkqmg-0000pq-Mu
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:06 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmZ-0004TH-FL
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:00 -0500
+ id 1tkqme-0004b8-TZ
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:06 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmV-00000007VSL-2N1X; Wed, 19 Feb 2025 21:34:55 +0100
+ id 1tkqma-00000007VSV-2wOD; Wed, 19 Feb 2025 21:35:00 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 06/36] migration: Add qemu_loadvm_load_state_buffer() and
- its handler
-Date: Wed, 19 Feb 2025 21:33:48 +0100
-Message-ID: <584b497e20a19fa97b0af25dace9254bbb5f31e9.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 07/36] migration: postcopy_ram_listen_thread() should take
+ BQL for some calls
+Date: Wed, 19 Feb 2025 21:33:49 +0100
+Message-ID: <c331cfc5c87a33df856e58c203d3c1d7e39fc1c1.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -66,89 +66,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-qemu_loadvm_load_state_buffer() and its load_state_buffer
-SaveVMHandler allow providing device state buffer to explicitly
-specified device via its idstr and instance id.
+All callers to migration_incoming_state_destroy() other than
+postcopy_ram_listen_thread() do this call with BQL held.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Since migration_incoming_state_destroy() ultimately calls "load_cleanup"
+SaveVMHandlers and it will soon call BQL-sensitive code it makes sense
+to always call that function under BQL rather than to have it deal with
+both cases (with BQL and without BQL).
+Add the necessary bql_lock() and bql_unlock() to
+postcopy_ram_listen_thread().
+
+qemu_loadvm_state_main() in postcopy_ram_listen_thread() could call
+"load_state" SaveVMHandlers that are expecting BQL to be held.
+
+In principle, the only devices that should be arriving on migration
+channel serviced by postcopy_ram_listen_thread() are those that are
+postcopiable and whose load handlers are safe to be called without BQL
+being held.
+
+But nothing currently prevents the source from sending data for "unsafe"
+devices which would cause trouble there.
+Add a TODO comment there so it's clear that it would be good to improve
+handling of such (erroneous) case in the future.
+
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/register.h | 15 +++++++++++++++
- migration/savevm.c           | 23 +++++++++++++++++++++++
- migration/savevm.h           |  3 +++
- 3 files changed, 41 insertions(+)
+ migration/savevm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index ff0faf5f68c8..58891aa54b76 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -229,6 +229,21 @@ typedef struct SaveVMHandlers {
-      */
-     int (*load_state)(QEMUFile *f, void *opaque, int version_id);
- 
-+    /**
-+     * @load_state_buffer (invoked outside the BQL)
-+     *
-+     * Load device state buffer provided to qemu_loadvm_load_state_buffer().
-+     *
-+     * @opaque: data pointer passed to register_savevm_live()
-+     * @buf: the data buffer to load
-+     * @len: the data length in buffer
-+     * @errp: pointer to Error*, to store an error if it happens.
-+     *
-+     * Returns true to indicate success and false for errors.
-+     */
-+    bool (*load_state_buffer)(void *opaque, char *buf, size_t len,
-+                              Error **errp);
-+
-     /**
-      * @load_setup
-      *
 diff --git a/migration/savevm.c b/migration/savevm.c
-index faebf47ef51f..7c1aa8ad7b9d 100644
+index 7c1aa8ad7b9d..3e86b572cfa8 100644
 --- a/migration/savevm.c
 +++ b/migration/savevm.c
-@@ -3060,6 +3060,29 @@ int qemu_loadvm_approve_switchover(void)
-     return migrate_send_rp_switchover_ack(mis);
- }
+@@ -1986,6 +1986,8 @@ static void *postcopy_ram_listen_thread(void *opaque)
+      * in qemu_file, and thus we must be blocking now.
+      */
+     qemu_file_set_blocking(f, true);
++
++    /* TODO: sanity check that only postcopiable data will be loaded here */
+     load_res = qemu_loadvm_state_main(f, mis);
  
-+bool qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                   char *buf, size_t len, Error **errp)
-+{
-+    SaveStateEntry *se;
-+
-+    se = find_se(idstr, instance_id);
-+    if (!se) {
-+        error_setg(errp,
-+                   "Unknown idstr %s or instance id %u for load state buffer",
-+                   idstr, instance_id);
-+        return false;
-+    }
-+
-+    if (!se->ops || !se->ops->load_state_buffer) {
-+        error_setg(errp,
-+                   "idstr %s / instance %u has no load state buffer operation",
-+                   idstr, instance_id);
-+        return false;
-+    }
-+
-+    return se->ops->load_state_buffer(se->opaque, buf, len, errp);
-+}
-+
- bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-                   bool has_devices, strList *devices, Error **errp)
- {
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 58f871a7ed9c..cb58434a9437 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -71,4 +71,7 @@ int qemu_loadvm_approve_switchover(void);
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-         bool in_postcopy);
+     /*
+@@ -2046,7 +2048,9 @@ static void *postcopy_ram_listen_thread(void *opaque)
+      * (If something broke then qemu will have to exit anyway since it's
+      * got a bad migration state).
+      */
++    bql_lock();
+     migration_incoming_state_destroy();
++    bql_unlock();
  
-+bool qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                   char *buf, size_t len, Error **errp);
-+
- #endif
+     rcu_unregister_thread();
+     mis->have_listen_thread = false;
 
