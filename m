@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012D7A3CA1F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765DCA3C9FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:36:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqnA-0001RR-I9; Wed, 19 Feb 2025 15:35:36 -0500
+	id 1tkqnE-0001sR-9G; Wed, 19 Feb 2025 15:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmq-0001Es-Us
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:17 -0500
+ id 1tkqmt-0001RQ-NC
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:26 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmo-0004g8-OC
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:16 -0500
+ id 1tkqmr-0004gS-SZ
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:35:19 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmk-00000007VSp-47F7; Wed, 19 Feb 2025 21:35:10 +0100
+ id 1tkqmq-00000007VSz-0aAD; Wed, 19 Feb 2025 21:35:16 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 09/36] migration: Add thread pool of optional load threads
-Date: Wed, 19 Feb 2025 21:33:51 +0100
-Message-ID: <6064c605594064123809ca7c5fd3fa406531d8d5.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 10/36] migration/multifd: Split packet into header and RAM
+ data
+Date: Wed, 19 Feb 2025 21:33:52 +0100
+Message-ID: <c56bc0b20ced802c1f25a6320447a429aba31b07.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -65,251 +66,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Some drivers might want to make use of auxiliary helper threads during VM
-state loading, for example to make sure that their blocking (sync) I/O
-operations don't block the rest of the migration process.
+Read packet header first so in the future we will be able to
+differentiate between a RAM multifd packet and a device state multifd
+packet.
 
-Add a migration core managed thread pool to facilitate this use case.
-
-The migration core will wait for these threads to finish before
-(re)starting the VM at destination.
+Since these two are of different size we can't read the packet body until
+we know which packet type it is.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/misc.h |  3 ++
- include/qemu/typedefs.h  |  2 +
- migration/migration.c    |  2 +-
- migration/migration.h    |  5 +++
- migration/savevm.c       | 89 +++++++++++++++++++++++++++++++++++++++-
- migration/savevm.h       |  2 +-
- 6 files changed, 99 insertions(+), 4 deletions(-)
+ migration/multifd.c | 55 ++++++++++++++++++++++++++++++++++++---------
+ migration/multifd.h |  5 +++++
+ 2 files changed, 49 insertions(+), 11 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index c660be80954a..4c171f4e897e 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -45,9 +45,12 @@ bool migrate_ram_is_ignored(RAMBlock *block);
- /* migration/block.c */
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 215ad0414a79..3b47e63c2c4a 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -209,10 +209,10 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
  
- AnnounceParameters *migrate_announce_params(void);
-+
- /* migration/savevm.c */
+     memset(packet, 0, p->packet_len);
  
- void dump_vmstate_json_to_file(FILE *out_fp);
-+void qemu_loadvm_start_load_thread(MigrationLoadThread function,
-+                                   void *opaque);
+-    packet->magic = cpu_to_be32(MULTIFD_MAGIC);
+-    packet->version = cpu_to_be32(MULTIFD_VERSION);
++    packet->hdr.magic = cpu_to_be32(MULTIFD_MAGIC);
++    packet->hdr.version = cpu_to_be32(MULTIFD_VERSION);
  
- /* migration/migration.c */
- void migration_object_init(void);
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 3d84efcac47a..fd23ff7771b1 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -131,5 +131,7 @@ typedef struct IRQState *qemu_irq;
-  * Function types
-  */
- typedef void (*qemu_irq_handler)(void *opaque, int n, int level);
-+typedef bool (*MigrationLoadThread)(void *opaque, bool *should_quit,
-+                                    Error **errp);
+-    packet->flags = cpu_to_be32(p->flags);
++    packet->hdr.flags = cpu_to_be32(p->flags);
+     packet->next_packet_size = cpu_to_be32(p->next_packet_size);
  
- #endif /* QEMU_TYPEDEFS_H */
-diff --git a/migration/migration.c b/migration/migration.c
-index 9e9db26667f1..40e1c92a6c30 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -406,7 +406,7 @@ void migration_incoming_state_destroy(void)
-      * RAM state cleanup needs to happen after multifd cleanup, because
-      * multifd threads can use some of its states (receivedmap).
-      */
--    qemu_loadvm_state_cleanup();
-+    qemu_loadvm_state_cleanup(mis);
- 
-     if (mis->to_src_file) {
-         /* Tell source that we are done */
-diff --git a/migration/migration.h b/migration/migration.h
-index 7b4278e2a32b..d53f7cad84d8 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -43,6 +43,7 @@
- #define  MIGRATION_THREAD_DST_PREEMPT       "mig/dst/preempt"
- 
- struct PostcopyBlocktimeContext;
-+typedef struct ThreadPool ThreadPool;
- 
- #define  MIGRATION_RESUME_ACK_VALUE  (1)
- 
-@@ -187,6 +188,10 @@ struct MigrationIncomingState {
-     Coroutine *colo_incoming_co;
-     QemuSemaphore colo_incoming_sem;
- 
-+    /* Optional load threads pool and its thread exit request flag */
-+    ThreadPool *load_threads;
-+    bool load_threads_abort;
-+
-     /*
-      * PostcopyBlocktimeContext to keep information for postcopy
-      * live migration, to calculate vCPU block time
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 3e86b572cfa8..e412d05657a1 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -54,6 +54,7 @@
- #include "qemu/job.h"
- #include "qemu/main-loop.h"
- #include "block/snapshot.h"
-+#include "block/thread-pool.h"
- #include "qemu/cutils.h"
- #include "io/channel-buffer.h"
- #include "io/channel-file.h"
-@@ -131,6 +132,35 @@ static struct mig_cmd_args {
-  * generic extendable format with an exception for two old entities.
-  */
- 
-+/***********************************************************/
-+/* Optional load threads pool support */
-+
-+static void qemu_loadvm_thread_pool_create(MigrationIncomingState *mis)
-+{
-+    assert(!mis->load_threads);
-+    mis->load_threads = thread_pool_new();
-+    mis->load_threads_abort = false;
-+}
-+
-+static void qemu_loadvm_thread_pool_destroy(MigrationIncomingState *mis)
-+{
-+    qatomic_set(&mis->load_threads_abort, true);
-+
-+    bql_unlock(); /* Load threads might be waiting for BQL */
-+    g_clear_pointer(&mis->load_threads, thread_pool_free);
-+    bql_lock();
-+}
-+
-+static bool qemu_loadvm_thread_pool_wait(MigrationState *s,
-+                                         MigrationIncomingState *mis)
-+{
-+    bql_unlock(); /* Let load threads do work requiring BQL */
-+    thread_pool_wait(mis->load_threads);
-+    bql_lock();
-+
-+    return !migrate_has_error(s);
-+}
-+
- /***********************************************************/
- /* savevm/loadvm support */
- 
-@@ -2783,16 +2813,62 @@ static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
-     return 0;
+     packet_num = qatomic_fetch_inc(&multifd_send_state->packet_num);
+@@ -228,12 +228,12 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
+                             p->flags, p->next_packet_size);
  }
  
--void qemu_loadvm_state_cleanup(void)
-+struct LoadThreadData {
-+    MigrationLoadThread function;
-+    void *opaque;
-+};
-+
-+static int qemu_loadvm_load_thread(void *thread_opaque)
-+{
-+    struct LoadThreadData *data = thread_opaque;
-+    MigrationIncomingState *mis = migration_incoming_get_current();
-+    g_autoptr(Error) local_err = NULL;
-+
-+    if (!data->function(data->opaque, &mis->load_threads_abort, &local_err)) {
-+        MigrationState *s = migrate_get_current();
-+
-+        assert(local_err);
-+
-+        /*
-+         * In case of multiple load threads failing which thread error
-+         * return we end setting is purely arbitrary.
-+         */
-+        migrate_set_error(s, local_err);
-+    }
+-static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
++static int multifd_recv_unfill_packet_header(MultiFDRecvParams *p,
++                                             const MultiFDPacketHdr_t *hdr,
++                                             Error **errp)
+ {
+-    const MultiFDPacket_t *packet = p->packet;
+-    uint32_t magic = be32_to_cpu(packet->magic);
+-    uint32_t version = be32_to_cpu(packet->version);
+-    int ret = 0;
++    uint32_t magic = be32_to_cpu(hdr->magic);
++    uint32_t version = be32_to_cpu(hdr->version);
+ 
+     if (magic != MULTIFD_MAGIC) {
+         error_setg(errp, "multifd: received packet magic %x, expected %x",
+@@ -247,7 +247,16 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+         return -1;
+     }
+ 
+-    p->flags = be32_to_cpu(packet->flags);
++    p->flags = be32_to_cpu(hdr->flags);
 +
 +    return 0;
 +}
 +
-+void qemu_loadvm_start_load_thread(MigrationLoadThread function,
-+                                   void *opaque)
++static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
 +{
-+    MigrationIncomingState *mis = migration_incoming_get_current();
-+    struct LoadThreadData *data;
++    const MultiFDPacket_t *packet = p->packet;
++    int ret = 0;
 +
-+    /* We only set it from this thread so it's okay to read it directly */
-+    assert(!mis->load_threads_abort);
-+
-+    data = g_new(struct LoadThreadData, 1);
-+    data->function = function;
-+    data->opaque = opaque;
-+
-+    thread_pool_submit_immediate(mis->load_threads, qemu_loadvm_load_thread,
-+                                 data, g_free);
-+}
-+
-+void qemu_loadvm_state_cleanup(MigrationIncomingState *mis)
- {
-     SaveStateEntry *se;
- 
-     trace_loadvm_state_cleanup();
-+
-     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-         if (se->ops && se->ops->load_cleanup) {
-             se->ops->load_cleanup(se->opaque);
-         }
-     }
-+
-+    qemu_loadvm_thread_pool_destroy(mis);
- }
- 
- /* Return true if we should continue the migration, or false. */
-@@ -2943,6 +3019,7 @@ out:
- 
- int qemu_loadvm_state(QEMUFile *f)
- {
-+    MigrationState *s = migrate_get_current();
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     Error *local_err = NULL;
-     int ret;
-@@ -2952,6 +3029,8 @@ int qemu_loadvm_state(QEMUFile *f)
-         return -EINVAL;
+     p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+     p->packet_num = be64_to_cpu(packet->packet_num);
+     p->packets_recved++;
+@@ -1165,14 +1174,18 @@ static void *multifd_recv_thread(void *opaque)
      }
  
-+    qemu_loadvm_thread_pool_create(mis);
+     while (true) {
++        MultiFDPacketHdr_t hdr;
+         uint32_t flags = 0;
+         bool has_data = false;
++        uint8_t *pkt_buf;
++        size_t pkt_len;
 +
-     ret = qemu_loadvm_state_header(f);
-     if (ret) {
-         return ret;
-@@ -2983,12 +3062,18 @@ int qemu_loadvm_state(QEMUFile *f)
+         p->normal_num = 0;
  
-     /* When reaching here, it must be precopy */
-     if (ret == 0) {
--        if (migrate_has_error(migrate_get_current())) {
-+        if (migrate_has_error(migrate_get_current()) ||
-+            !qemu_loadvm_thread_pool_wait(s, mis)) {
-             ret = -EINVAL;
-         } else {
-             ret = qemu_file_get_error(f);
-         }
-     }
-+    /*
-+     * Set this flag unconditionally so we'll catch further attempts to
-+     * start additional threads via an appropriate assert()
-+     */
-+    qatomic_set(&mis->load_threads_abort, true);
+         if (use_packets) {
+             struct iovec iov = {
+-                .iov_base = (void *)p->packet,
+-                .iov_len = p->packet_len
++                .iov_base = (void *)&hdr,
++                .iov_len = sizeof(hdr)
+             };
  
-     /*
-      * Try to read in the VMDESC section as well, so that dumping tools that
-diff --git a/migration/savevm.h b/migration/savevm.h
-index cb58434a9437..138c39a7f9f9 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -64,7 +64,7 @@ void qemu_savevm_live_state(QEMUFile *f);
- int qemu_save_device_state(QEMUFile *f);
+             if (multifd_recv_should_exit()) {
+@@ -1191,6 +1204,26 @@ static void *multifd_recv_thread(void *opaque)
+                 break;
+             }
  
- int qemu_loadvm_state(QEMUFile *f);
--void qemu_loadvm_state_cleanup(void);
-+void qemu_loadvm_state_cleanup(MigrationIncomingState *mis);
- int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis);
- int qemu_load_device_state(QEMUFile *f);
- int qemu_loadvm_approve_switchover(void);
++            ret = multifd_recv_unfill_packet_header(p, &hdr, &local_err);
++            if (ret) {
++                break;
++            }
++
++            pkt_buf = (uint8_t *)p->packet + sizeof(hdr);
++            pkt_len = p->packet_len - sizeof(hdr);
++
++            ret = qio_channel_read_all_eof(p->c, (char *)pkt_buf, pkt_len,
++                                           &local_err);
++            if (!ret) {
++                /* EOF */
++                error_setg(&local_err, "multifd: unexpected EOF after packet header");
++                break;
++            }
++
++            if (ret == -1) {
++                break;
++            }
++
+             qemu_mutex_lock(&p->mutex);
+             ret = multifd_recv_unfill_packet(p, &local_err);
+             if (ret) {
+diff --git a/migration/multifd.h b/migration/multifd.h
+index cf408ff72140..f7156f66c0f6 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -69,6 +69,11 @@ typedef struct {
+     uint32_t magic;
+     uint32_t version;
+     uint32_t flags;
++} __attribute__((packed)) MultiFDPacketHdr_t;
++
++typedef struct {
++    MultiFDPacketHdr_t hdr;
++
+     /* maximum number of allocated pages */
+     uint32_t pages_alloc;
+     /* non zero pages */
 
