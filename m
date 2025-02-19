@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA0AA3B3AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564C6A3B3A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfPb-0005SX-9L; Wed, 19 Feb 2025 03:26:31 -0500
+	id 1tkfPa-0005SL-04; Wed, 19 Feb 2025 03:26:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPW-0005S1-UG
+ id 1tkfPW-0005S2-UN
  for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:27 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPS-0004ZM-R7
+ id 1tkfPU-0004Zq-2F
  for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953583; x=1771489583;
+ t=1739953584; x=1771489584;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=H45ctgYIUrvH9KPj2VkTio9PfTeWbUSQHoamcNdQlrs=;
- b=EW/u+OCvHEa390I4IRsI/8aiLLXLJQ78A/uV8be4pgtZW6D569vqpKne
- H+JZUTb4JCgQlH9jHWRTDLAZaqpb6VXeb6W6jecZJSmcnHr5+GM0Pfl/6
- IkJV4XCtuNAY6iT7SIWhqJTTmcR0VaWcYXGfy/kPPxPP/x3AkgvHixShH
- /Qug9kPn3Gl6+fyJ5hMKf7KC+Wz9f5UQcIF+xYdTFDk/nhmJhTovDQEZ0
- HjcDWlgse18iGsXsvvwaSRUbj7b8dXf7ldsP05SWaqyqhmAI1UdQ+MZhS
- ye/+ST1ZdON5ozwkn4jCUCGa5LbvKTd6c7UBtnrLJCFvP1RuJZlnoOasv Q==;
-X-CSE-ConnectionGUID: QVlOIY0KTgiAyX3SF6i9ag==
-X-CSE-MsgGUID: XBIl4ZI3R7W+wE92cTffOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544076"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544076"
+ bh=Y3if1GlQNkp7W4HQVB5jdhNRUVirRmci7xxwosuRS/Y=;
+ b=ZF/mcAERzRkU1WmNjOM8mCC+bCgrlkDp42UqTvfHgX/9k8m9HuxvePZ3
+ X22SyvXFaHIL4Vwfkex7CSM5zkbsu7/EWsbkvKRcmHL1Xk9X99jT70L3M
+ T7jCJ53BxHvL6yRUCx1Tn+Bc9c/lMP1N16FeF3rcebxDylke/fFgDQecv
+ VbnKTmYJOqJA1FWqCtl64DURBBSChZthP7SJ6hdqmPs/vJhi65Wa3N7Ps
+ MEKFwmGZ6uZm4uWQj962A3R+rxrbrRRKbfRa/5WiyIhoGcGUB1fUUti0D
+ 8Nkv2U7hLh7NGIxZtUYP3gjv28cmB0s1PDMfI45ySKese9bZpjGzn7sns A==;
+X-CSE-ConnectionGUID: POQMg3NwS5yeU00AkcL27g==
+X-CSE-MsgGUID: J5y/9BuiTkuKitiERF+DAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544086"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544086"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:18 -0800
-X-CSE-ConnectionGUID: ryudde52TiSc6eS/a4d2lw==
-X-CSE-MsgGUID: 8NtVIyRkQN+n9KvOZB0gCg==
+ 19 Feb 2025 00:26:23 -0800
+X-CSE-ConnectionGUID: 4lcLPtHAQSiWyV/wGuxT8Q==
+X-CSE-MsgGUID: tB+6zdv7QI2UEqyiJCSk9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850916"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850973"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:14 -0800
+ 19 Feb 2025 00:26:18 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv2 03/20] HostIOMMUDevice: Introduce realize_late callback
-Date: Wed, 19 Feb 2025 16:22:11 +0800
-Message-Id: <20250219082228.3303163-4-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv2 04/20] vfio/iommufd: Implement
+ HostIOMMUDeviceClass::realize_late() handler
+Date: Wed, 19 Feb 2025 16:22:12 +0800
+Message-Id: <20250219082228.3303163-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
 References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
@@ -85,90 +86,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have realize() callback which is called before attachment.
-But there are still some elements e.g., hwpt_id is not ready before
-attachment. So we need a realize_late() callback to further initialize
-them.
-
-Currently, this callback is only useful for iommufd backend. For legacy
-backend nothing needs to be initialized after attachment.
+There are three iommufd related elements iommufd handle, devid and
+hwpt_id. hwpt_id is ready only after VFIO device attachment. Device
+id and iommufd handle are ready before attachment, but they are all
+iommufd related stuff, initialize them together with hwpt_id.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/system/host_iommu_device.h | 17 +++++++++++++++++
- hw/vfio/common.c                   | 17 ++++++++++++++---
- 2 files changed, 31 insertions(+), 3 deletions(-)
+ hw/vfio/iommufd.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
-index 809cced4ba..df782598f2 100644
---- a/include/system/host_iommu_device.h
-+++ b/include/system/host_iommu_device.h
-@@ -66,6 +66,23 @@ struct HostIOMMUDeviceClass {
-      * Returns: true on success, false on failure.
-      */
-     bool (*realize)(HostIOMMUDevice *hiod, void *opaque, Error **errp);
-+    /**
-+     * @realize_late: initialize host IOMMU device instance after attachment,
-+     *                some elements e.g., ioas are ready only after attachment.
-+     *                This callback initialize them.
-+     *
-+     * Optional callback.
-+     *
-+     * @hiod: pointer to a host IOMMU device instance.
-+     *
-+     * @opaque: pointer to agent device of this host IOMMU device,
-+     *          e.g., VFIO base device or VDPA device.
-+     *
-+     * @errp: pass an Error out when realize fails.
-+     *
-+     * Returns: true on success, false on failure.
-+     */
-+    bool (*realize_late)(HostIOMMUDevice *hiod, void *opaque, Error **errp);
-     /**
-      * @get_cap: check if a host IOMMU device capability is supported.
-      *
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index abbdc56b6d..e198b1e5a2 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1550,6 +1550,7 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
-     const VFIOIOMMUClass *ops =
-         VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
-     HostIOMMUDevice *hiod = NULL;
-+    HostIOMMUDeviceClass *hiod_ops = NULL;
- 
-     if (vbasedev->iommufd) {
-         ops = VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
-@@ -1560,16 +1561,26 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
- 
-     if (!vbasedev->mdev) {
-         hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
-+        hiod_ops = HOST_IOMMU_DEVICE_GET_CLASS(hiod);
-         vbasedev->hiod = hiod;
-     }
- 
-     if (!ops->attach_device(name, vbasedev, as, errp)) {
--        object_unref(hiod);
--        vbasedev->hiod = NULL;
--        return false;
-+        goto err_attach;
-+    }
-+
-+    if (hiod_ops && hiod_ops->realize_late &&
-+        !hiod_ops->realize_late(hiod, vbasedev, errp)) {
-+        ops->detach_device(vbasedev);
-+        goto err_attach;
-     }
- 
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index df61edffc0..53639bf88b 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -828,6 +828,19 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
      return true;
-+
-+err_attach:
-+    object_unref(hiod);
-+    vbasedev->hiod = NULL;
-+    return false;
  }
  
- void vfio_detach_device(VFIODevice *vbasedev)
++static bool hiod_iommufd_vfio_realize_late(HostIOMMUDevice *hiod, void *opaque,
++                                           Error **errp)
++{
++    VFIODevice *vdev = opaque;
++    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
++
++    idev->iommufd = vdev->iommufd;
++    idev->devid = vdev->devid;
++    idev->hwpt_id = vdev->hwpt->hwpt_id;
++
++    return true;
++}
++
+ static GList *
+ hiod_iommufd_vfio_get_iova_ranges(HostIOMMUDevice *hiod)
+ {
+@@ -852,6 +865,7 @@ static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
+     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
+ 
+     hiodc->realize = hiod_iommufd_vfio_realize;
++    hiodc->realize_late = hiod_iommufd_vfio_realize_late;
+     hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
+     hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
+ };
 -- 
 2.34.1
 
