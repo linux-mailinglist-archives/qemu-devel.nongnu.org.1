@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53803A3C9F4
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A903A3C9F3
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:36:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqmU-0000fu-PB; Wed, 19 Feb 2025 15:34:54 -0500
+	id 1tkqmZ-0000gf-Tw; Wed, 19 Feb 2025 15:35:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmQ-0000eU-Tn
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:50 -0500
+ id 1tkqmX-0000gR-NA
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:57 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmO-0004Pu-NS
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:50 -0500
+ id 1tkqmV-0004SC-39
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:57 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmL-00000007VS0-1ErT; Wed, 19 Feb 2025 21:34:45 +0100
+ id 1tkqmQ-00000007VSA-1mMk; Wed, 19 Feb 2025 21:34:50 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 04/36] thread-pool: Implement generic (non-AIO) pool support
-Date: Wed, 19 Feb 2025 21:33:46 +0100
-Message-ID: <e526d29079bd85474f33c9a43eccb0e22c4927e8.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 05/36] migration: Add MIG_CMD_SWITCHOVER_START and its load
+ handler
+Date: Wed, 19 Feb 2025 21:33:47 +0100
+Message-ID: <8ee9980979d618262ebf6368babba177c86a3571.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -65,219 +66,302 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Migration code wants to manage device data sending threads in one place.
+This QEMU_VM_COMMAND sub-command and its switchover_start SaveVMHandler is
+used to mark the switchover point in main migration stream.
 
-QEMU has an existing thread pool implementation, however it is limited
-to queuing AIO operations only and essentially has a 1:1 mapping between
-the current AioContext and the AIO ThreadPool in use.
+It can be used to inform the destination that all pre-switchover main
+migration stream data has been sent/received so it can start to process
+post-switchover data that it might have received via other migration
+channels like the multifd ones.
 
-Implement generic (non-AIO) ThreadPool by essentially wrapping Glib's
-GThreadPool.
-
-This brings a few new operations on a pool:
-* thread_pool_wait() operation waits until all the submitted work requests
-have finished.
-
-* thread_pool_set_max_threads() explicitly sets the maximum thread count
-in the pool.
-
-* thread_pool_adjust_max_threads_to_work() adjusts the maximum thread count
-in the pool to equal the number of still waiting in queue or unfinished work.
+Add also the relevant MigrationState bit stream compatibility property and
+its hw_compat entry.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Zhang Chen <zhangckid@gmail.com> # for the COLO part
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/block/thread-pool.h |  51 ++++++++++++++++
- util/thread-pool.c          | 119 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 170 insertions(+)
+ hw/core/machine.c                  |  1 +
+ include/migration/client-options.h |  4 +++
+ include/migration/register.h       | 12 +++++++++
+ migration/colo.c                   |  3 +++
+ migration/migration-hmp-cmds.c     |  2 ++
+ migration/migration.c              |  2 ++
+ migration/migration.h              |  2 ++
+ migration/options.c                |  9 +++++++
+ migration/savevm.c                 | 39 ++++++++++++++++++++++++++++++
+ migration/savevm.h                 |  1 +
+ migration/trace-events             |  1 +
+ scripts/analyze-migration.py       | 11 +++++++++
+ 12 files changed, 87 insertions(+)
 
-diff --git a/include/block/thread-pool.h b/include/block/thread-pool.h
-index 6f27eb085b45..dd48cf07e85f 100644
---- a/include/block/thread-pool.h
-+++ b/include/block/thread-pool.h
-@@ -38,5 +38,56 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
- int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg);
- void thread_pool_update_params(ThreadPoolAio *pool, struct AioContext *ctx);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 02cff735b3fb..21c3bde92f08 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -43,6 +43,7 @@ GlobalProperty hw_compat_9_2[] = {
+     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
+     { "virtio-mem-pci", "vectors", "0" },
+     { "migration", "multifd-clean-tls-termination", "false" },
++    { "migration", "send-switchover-start", "off"},
+ };
+ const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
  
-+/* ------------------------------------------- */
-+/* Generic thread pool types and methods below */
-+typedef struct ThreadPool ThreadPool;
-+
-+/* Create a new thread pool. Never returns NULL. */
-+ThreadPool *thread_pool_new(void);
-+
-+/*
-+ * Free the thread pool.
-+ * Waits for all the previously submitted work to complete before performing
-+ * the actual freeing operation.
-+ */
-+void thread_pool_free(ThreadPool *pool);
-+
-+/*
-+ * Submit a new work (task) for the pool.
-+ *
-+ * @opaque_destroy is an optional GDestroyNotify for the @opaque argument
-+ * to the work function at @func.
-+ */
-+void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
-+                        void *opaque, GDestroyNotify opaque_destroy);
-+
-+/*
-+ * Submit a new work (task) for the pool, making sure it starts getting
-+ * processed immediately, launching a new thread for it if necessary.
-+ *
-+ * @opaque_destroy is an optional GDestroyNotify for the @opaque argument
-+ * to the work function at @func.
-+ */
-+void thread_pool_submit_immediate(ThreadPool *pool, ThreadPoolFunc *func,
-+                                  void *opaque, GDestroyNotify opaque_destroy);
-+
-+/*
-+ * Wait for all previously submitted work to complete before returning.
-+ *
-+ * Can be used as a barrier between two sets of tasks executed on a thread
-+ * pool without destroying it or in a performance sensitive path where the
-+ * caller just wants to wait for all tasks to complete while deferring the
-+ * pool free operation for later, less performance sensitive time.
-+ */
-+void thread_pool_wait(ThreadPool *pool);
-+
-+/* Set the maximum number of threads in the pool. */
-+bool thread_pool_set_max_threads(ThreadPool *pool, int max_threads);
-+
-+/*
-+ * Adjust the maximum number of threads in the pool to give each task its
-+ * own thread (exactly one thread per task).
-+ */
-+bool thread_pool_adjust_max_threads_to_work(ThreadPool *pool);
+diff --git a/include/migration/client-options.h b/include/migration/client-options.h
+index 59f4b55cf4f7..289c9d776221 100644
+--- a/include/migration/client-options.h
++++ b/include/migration/client-options.h
+@@ -10,6 +10,10 @@
+ #ifndef QEMU_MIGRATION_CLIENT_OPTIONS_H
+ #define QEMU_MIGRATION_CLIENT_OPTIONS_H
  
- #endif
-diff --git a/util/thread-pool.c b/util/thread-pool.c
-index 908194dc070f..d2ead6b72857 100644
---- a/util/thread-pool.c
-+++ b/util/thread-pool.c
-@@ -374,3 +374,122 @@ void thread_pool_free_aio(ThreadPoolAio *pool)
-     qemu_mutex_destroy(&pool->lock);
-     g_free(pool);
++
++/* properties */
++bool migrate_send_switchover_start(void);
++
+ /* capabilities */
+ 
+ bool migrate_background_snapshot(void);
+diff --git a/include/migration/register.h b/include/migration/register.h
+index 0b0292738320..ff0faf5f68c8 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -279,6 +279,18 @@ typedef struct SaveVMHandlers {
+      * otherwise
+      */
+     bool (*switchover_ack_needed)(void *opaque);
++
++    /**
++     * @switchover_start
++     *
++     * Notifies that the switchover has started. Called only on
++     * the destination.
++     *
++     * @opaque: data pointer passed to register_savevm_live()
++     *
++     * Returns zero to indicate success and negative for error
++     */
++    int (*switchover_start)(void *opaque);
+ } SaveVMHandlers;
+ 
+ /**
+diff --git a/migration/colo.c b/migration/colo.c
+index 9a8e5fbe9b94..c976b3ff344d 100644
+--- a/migration/colo.c
++++ b/migration/colo.c
+@@ -452,6 +452,9 @@ static int colo_do_checkpoint_transaction(MigrationState *s,
+         bql_unlock();
+         goto out;
+     }
++
++    qemu_savevm_maybe_send_switchover_start(s->to_dst_file);
++
+     /* Note: device state is saved into buffer */
+     ret = qemu_save_device_state(fb);
+ 
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 3347e34c4891..49c26daed359 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -46,6 +46,8 @@ static void migration_global_dump(Monitor *mon)
+                    ms->send_configuration ? "on" : "off");
+     monitor_printf(mon, "send-section-footer: %s\n",
+                    ms->send_section_footer ? "on" : "off");
++    monitor_printf(mon, "send-switchover-start: %s\n",
++                   ms->send_switchover_start ? "on" : "off");
+     monitor_printf(mon, "clear-bitmap-shift: %u\n",
+                    ms->clear_bitmap_shift);
  }
+diff --git a/migration/migration.c b/migration/migration.c
+index c597aa707e57..9e9db26667f1 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2891,6 +2891,8 @@ static bool migration_switchover_start(MigrationState *s, Error **errp)
+ 
+     precopy_notify_complete();
+ 
++    qemu_savevm_maybe_send_switchover_start(s->to_dst_file);
 +
-+struct ThreadPool {
-+    GThreadPool *t;
-+    size_t cur_work;
-+    QemuMutex cur_work_lock;
-+    QemuCond all_finished_cond;
-+};
-+
-+typedef struct {
-+    ThreadPoolFunc *func;
-+    void *opaque;
-+    GDestroyNotify opaque_destroy;
-+} ThreadPoolElement;
-+
-+static void thread_pool_func(gpointer data, gpointer user_data)
+     return true;
+ }
+ 
+diff --git a/migration/migration.h b/migration/migration.h
+index 4639e2a7e42f..7b4278e2a32b 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -400,6 +400,8 @@ struct MigrationState {
+     bool send_configuration;
+     /* Whether we send section footer during migration */
+     bool send_section_footer;
++    /* Whether we send switchover start notification during migration */
++    bool send_switchover_start;
+ 
+     /* Needed by postcopy-pause state */
+     QemuSemaphore postcopy_pause_sem;
+diff --git a/migration/options.c b/migration/options.c
+index bb259d192a93..b0ac2ea4083f 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -93,6 +93,8 @@ const Property migration_properties[] = {
+                      send_configuration, true),
+     DEFINE_PROP_BOOL("send-section-footer", MigrationState,
+                      send_section_footer, true),
++    DEFINE_PROP_BOOL("send-switchover-start", MigrationState,
++                     send_switchover_start, true),
+     DEFINE_PROP_BOOL("multifd-flush-after-each-section", MigrationState,
+                       multifd_flush_after_each_section, false),
+     DEFINE_PROP_UINT8("x-clear-bitmap-shift", MigrationState,
+@@ -209,6 +211,13 @@ bool migrate_auto_converge(void)
+     return s->capabilities[MIGRATION_CAPABILITY_AUTO_CONVERGE];
+ }
+ 
++bool migrate_send_switchover_start(void)
 +{
-+    ThreadPool *pool = user_data;
-+    g_autofree ThreadPoolElement *el = data;
++    MigrationState *s = migrate_get_current();
 +
-+    el->func(el->opaque);
-+
-+    if (el->opaque_destroy) {
-+        el->opaque_destroy(el->opaque);
-+    }
-+
-+    QEMU_LOCK_GUARD(&pool->cur_work_lock);
-+
-+    assert(pool->cur_work > 0);
-+    pool->cur_work--;
-+
-+    if (pool->cur_work == 0) {
-+        qemu_cond_signal(&pool->all_finished_cond);
-+    }
++    return s->send_switchover_start;
 +}
 +
-+ThreadPool *thread_pool_new(void)
+ bool migrate_background_snapshot(void)
+ {
+     MigrationState *s = migrate_get_current();
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 4046faf0091e..faebf47ef51f 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -90,6 +90,7 @@ enum qemu_vm_cmd {
+     MIG_CMD_ENABLE_COLO,       /* Enable COLO */
+     MIG_CMD_POSTCOPY_RESUME,   /* resume postcopy on dest */
+     MIG_CMD_RECV_BITMAP,       /* Request for recved bitmap on dst */
++    MIG_CMD_SWITCHOVER_START,  /* Switchover start notification */
+     MIG_CMD_MAX
+ };
+ 
+@@ -109,6 +110,7 @@ static struct mig_cmd_args {
+     [MIG_CMD_POSTCOPY_RESUME]  = { .len =  0, .name = "POSTCOPY_RESUME" },
+     [MIG_CMD_PACKAGED]         = { .len =  4, .name = "PACKAGED" },
+     [MIG_CMD_RECV_BITMAP]      = { .len = -1, .name = "RECV_BITMAP" },
++    [MIG_CMD_SWITCHOVER_START] = { .len =  0, .name = "SWITCHOVER_START" },
+     [MIG_CMD_MAX]              = { .len = -1, .name = "MAX" },
+ };
+ 
+@@ -1201,6 +1203,19 @@ void qemu_savevm_send_recv_bitmap(QEMUFile *f, char *block_name)
+     qemu_savevm_command_send(f, MIG_CMD_RECV_BITMAP, len + 1, (uint8_t *)buf);
+ }
+ 
++static void qemu_savevm_send_switchover_start(QEMUFile *f)
 +{
-+    ThreadPool *pool = g_new(ThreadPool, 1);
-+
-+    pool->cur_work = 0;
-+    qemu_mutex_init(&pool->cur_work_lock);
-+    qemu_cond_init(&pool->all_finished_cond);
-+
-+    pool->t = g_thread_pool_new(thread_pool_func, pool, 0, TRUE, NULL);
-+    /*
-+     * g_thread_pool_new() can only return errors if initial thread(s)
-+     * creation fails but we ask for 0 initial threads above.
-+     */
-+    assert(pool->t);
-+
-+    return pool;
++    trace_savevm_send_switchover_start();
++    qemu_savevm_command_send(f, MIG_CMD_SWITCHOVER_START, 0, NULL);
 +}
 +
-+void thread_pool_free(ThreadPool *pool)
++void qemu_savevm_maybe_send_switchover_start(QEMUFile *f)
 +{
-+    /*
-+     * With _wait = TRUE this effectively waits for all
-+     * previously submitted work to complete first.
-+     */
-+    g_thread_pool_free(pool->t, FALSE, TRUE);
-+
-+    qemu_cond_destroy(&pool->all_finished_cond);
-+    qemu_mutex_destroy(&pool->cur_work_lock);
-+
-+    g_free(pool);
-+}
-+
-+void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
-+                        void *opaque, GDestroyNotify opaque_destroy)
-+{
-+    ThreadPoolElement *el = g_new(ThreadPoolElement, 1);
-+
-+    el->func = func;
-+    el->opaque = opaque;
-+    el->opaque_destroy = opaque_destroy;
-+
-+    WITH_QEMU_LOCK_GUARD(&pool->cur_work_lock) {
-+        pool->cur_work++;
-+    }
-+
-+    /*
-+     * Ignore the return value since this function can only return errors
-+     * if creation of an additional thread fails but even in this case the
-+     * provided work is still getting queued (just for the existing threads).
-+     */
-+    g_thread_pool_push(pool->t, el, NULL);
-+}
-+
-+void thread_pool_submit_immediate(ThreadPool *pool, ThreadPoolFunc *func,
-+                                  void *opaque, GDestroyNotify opaque_destroy)
-+{
-+    thread_pool_submit(pool, func, opaque, opaque_destroy);
-+    thread_pool_adjust_max_threads_to_work(pool);
-+}
-+
-+void thread_pool_wait(ThreadPool *pool)
-+{
-+    QEMU_LOCK_GUARD(&pool->cur_work_lock);
-+
-+    while (pool->cur_work > 0) {
-+        qemu_cond_wait(&pool->all_finished_cond,
-+                       &pool->cur_work_lock);
++    if (migrate_send_switchover_start()) {
++        qemu_savevm_send_switchover_start(f);
 +    }
 +}
 +
-+bool thread_pool_set_max_threads(ThreadPool *pool,
-+                                 int max_threads)
+ bool qemu_savevm_state_blocked(Error **errp)
+ {
+     SaveStateEntry *se;
+@@ -1687,6 +1702,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+ 
+     ret = qemu_file_get_error(f);
+     if (ret == 0) {
++        qemu_savevm_maybe_send_switchover_start(f);
+         qemu_savevm_state_complete_precopy(f, false);
+         ret = qemu_file_get_error(f);
+     }
+@@ -2383,6 +2399,26 @@ static int loadvm_process_enable_colo(MigrationIncomingState *mis)
+     return ret;
+ }
+ 
++static int loadvm_postcopy_handle_switchover_start(void)
 +{
-+    assert(max_threads > 0);
++    SaveStateEntry *se;
 +
-+    return g_thread_pool_set_max_threads(pool->t, max_threads, NULL);
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        int ret;
++
++        if (!se->ops || !se->ops->switchover_start) {
++            continue;
++        }
++
++        ret = se->ops->switchover_start(se->opaque);
++        if (ret < 0) {
++            return ret;
++        }
++    }
++
++    return 0;
 +}
 +
-+bool thread_pool_adjust_max_threads_to_work(ThreadPool *pool)
-+{
-+    QEMU_LOCK_GUARD(&pool->cur_work_lock);
+ /*
+  * Process an incoming 'QEMU_VM_COMMAND'
+  * 0           just a normal return
+@@ -2481,6 +2517,9 @@ static int loadvm_process_command(QEMUFile *f)
+ 
+     case MIG_CMD_ENABLE_COLO:
+         return loadvm_process_enable_colo(mis);
 +
-+    return thread_pool_set_max_threads(pool, pool->cur_work);
-+}
++    case MIG_CMD_SWITCHOVER_START:
++        return loadvm_postcopy_handle_switchover_start();
+     }
+ 
+     return 0;
+diff --git a/migration/savevm.h b/migration/savevm.h
+index 7957460062ca..58f871a7ed9c 100644
+--- a/migration/savevm.h
++++ b/migration/savevm.h
+@@ -53,6 +53,7 @@ void qemu_savevm_send_postcopy_listen(QEMUFile *f);
+ void qemu_savevm_send_postcopy_run(QEMUFile *f);
+ void qemu_savevm_send_postcopy_resume(QEMUFile *f);
+ void qemu_savevm_send_recv_bitmap(QEMUFile *f, char *block_name);
++void qemu_savevm_maybe_send_switchover_start(QEMUFile *f);
+ 
+ void qemu_savevm_send_postcopy_ram_discard(QEMUFile *f, const char *name,
+                                            uint16_t len,
+diff --git a/migration/trace-events b/migration/trace-events
+index 58c0f07f5b2d..c506e11a2e1d 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -39,6 +39,7 @@ savevm_send_postcopy_run(void) ""
+ savevm_send_postcopy_resume(void) ""
+ savevm_send_colo_enable(void) ""
+ savevm_send_recv_bitmap(char *name) "%s"
++savevm_send_switchover_start(void) ""
+ savevm_state_setup(void) ""
+ savevm_state_resume_prepare(void) ""
+ savevm_state_header(void) ""
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index 8e1fbf4c9d9f..67631ac43e9f 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -620,7 +620,9 @@ class MigrationDump(object):
+     QEMU_VM_SUBSECTION    = 0x05
+     QEMU_VM_VMDESCRIPTION = 0x06
+     QEMU_VM_CONFIGURATION = 0x07
++    QEMU_VM_COMMAND       = 0x08
+     QEMU_VM_SECTION_FOOTER= 0x7e
++    QEMU_MIG_CMD_SWITCHOVER_START = 0x0b
+ 
+     def __init__(self, filename):
+         self.section_classes = {
+@@ -685,6 +687,15 @@ def read(self, desc_only = False, dump_memory = False,
+             elif section_type == self.QEMU_VM_SECTION_PART or section_type == self.QEMU_VM_SECTION_END:
+                 section_id = file.read32()
+                 self.sections[section_id].read()
++            elif section_type == self.QEMU_VM_COMMAND:
++                command_type = file.read16()
++                command_data_len = file.read16()
++                if command_type != self.QEMU_MIG_CMD_SWITCHOVER_START:
++                    raise Exception("Unknown QEMU_VM_COMMAND: %x" %
++                                    (command_type))
++                if command_data_len != 0:
++                    raise Exception("Invalid SWITCHOVER_START length: %x" %
++                                    (command_data_len))
+             elif section_type == self.QEMU_VM_SECTION_FOOTER:
+                 read_section_id = file.read32()
+                 if read_section_id != section_id:
 
