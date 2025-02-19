@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77A9A3B23C
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65E9A3B217
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:16:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkeKo-0005tL-GP; Wed, 19 Feb 2025 02:17:36 -0500
+	id 1tkeJe-0003jw-W5; Wed, 19 Feb 2025 02:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIV-0002MW-34
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeId-0002RH-Gw
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIS-00054b-5V
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:06 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIS-00054j-VM
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1739949302;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=loo2zssc2j3ps7Smpw66veyrAHv0c4aw0wHxTSlHobg=;
- b=WyP3qqLsw50qrFbQo6QaMWjIQ4ZAHOoVj052QRyKjW9HLfZd+wqxvA/GbTsBr87LqvZWg3
- DAofy94CMkN0ottmfakH3r6reK2Z84POAn4dxDtgFGZ8m8+2+e6Z4GvP4HLvPz1NLgyLrv
- 0x6igN2hz6GYGxA8H3OtBQm6jzdrtPc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=UV88xJJUfAvrw/fc/mg8vRoOkEyBrTNQ3OXAJ9SV/Ic=;
+ b=FnTWE0/KgvG0kbfE1VFurCEEJ+bdzySwDmbwyjcDpvUplIYg+2uV+0FbWyVMDsY0nysWFq
+ R3f8ufh5jRvTBkHh8aRIBJbDLxG5wZRM4aZxaIaPQ0SgrASwfnYvlePXAQlUoePKCQNwAs
+ utqfG6egwOaAWLz5pYYEjzPtihTEXpw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-xmw1ZQGaN1-JOA7u3goVig-1; Wed,
- 19 Feb 2025 02:14:55 -0500
-X-MC-Unique: xmw1ZQGaN1-JOA7u3goVig-1
-X-Mimecast-MFC-AGG-ID: xmw1ZQGaN1-JOA7u3goVig_1739949294
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-cYZLCYcZOg6Iq_j37Ze-VA-1; Wed,
+ 19 Feb 2025 02:14:56 -0500
+X-MC-Unique: cYZLCYcZOg6Iq_j37Ze-VA-1
+X-Mimecast-MFC-AGG-ID: cYZLCYcZOg6Iq_j37Ze-VA_1739949295
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3C6B4190F9C8; Wed, 19 Feb 2025 07:14:54 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 559BA18004A7; Wed, 19 Feb 2025 07:14:55 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.78])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A3D3E1800940; Wed, 19 Feb 2025 07:14:53 +0000 (UTC)
+ id 814691800940; Wed, 19 Feb 2025 07:14:54 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 997F71801A95; Wed, 19 Feb 2025 08:14:32 +0100 (CET)
+ id AB3DF1801A99; Wed, 19 Feb 2025 08:14:32 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -59,22 +59,22 @@ Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  graf@amazon.com, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v4 10/24] hw/uefi: add var-service-core.c
-Date: Wed, 19 Feb 2025 08:14:12 +0100
-Message-ID: <20250219071431.50626-11-kraxel@redhat.com>
+Subject: [PATCH v4 11/24] hw/uefi: add var-service-pkcs7.c
+Date: Wed, 19 Feb 2025 08:14:13 +0100
+Message-ID: <20250219071431.50626-12-kraxel@redhat.com>
 In-Reply-To: <20250219071431.50626-1-kraxel@redhat.com>
 References: <20250219071431.50626-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -92,342 +92,456 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the core code for guest <-> host communication.  This accepts
-request messages from the guest, dispatches them to the service called,
-and sends back the response message.
+This implements pkcs7 signature verification using gnutls.
+Needed to check authenticated variable updates.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/uefi/var-service-core.c | 321 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 321 insertions(+)
- create mode 100644 hw/uefi/var-service-core.c
+ hw/uefi/var-service-pkcs7.c | 436 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 436 insertions(+)
+ create mode 100644 hw/uefi/var-service-pkcs7.c
 
-diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+diff --git a/hw/uefi/var-service-pkcs7.c b/hw/uefi/var-service-pkcs7.c
 new file mode 100644
-index 000000000000..8ed8378ab991
+index 000000000000..32accf4e44e0
 --- /dev/null
-+++ b/hw/uefi/var-service-core.c
-@@ -0,0 +1,321 @@
++++ b/hw/uefi/var-service-pkcs7.c
+@@ -0,0 +1,436 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * uefi vars device
++ * uefi vars device - pkcs7 verification
 + */
 +#include "qemu/osdep.h"
-+#include "qemu/crc32c.h"
++#include "qemu/error-report.h"
 +#include "system/dma.h"
-+#include "migration/vmstate.h"
++
++#include <gnutls/gnutls.h>
++#include <gnutls/pkcs7.h>
++#include <gnutls/crypto.h>
 +
 +#include "hw/uefi/var-service.h"
-+#include "hw/uefi/var-service-api.h"
-+#include "hw/uefi/var-service-edk2.h"
 +
-+#include "trace/trace-hw_uefi.h"
++#define AUTHVAR_DIGEST_ALGO GNUTLS_DIG_SHA256
++#define AUTHVAR_DIGEST_SIZE 32
 +
-+static int uefi_vars_pre_load(void *opaque)
++/*
++ * Replicate the signed data for signature verification.
++ */
++static gnutls_datum_t *build_signed_data(mm_variable_access *va, void *data)
 +{
-+    uefi_vars_state *uv = opaque;
++    variable_auth_2 *auth = data;
++    uint64_t data_offset = sizeof(efi_time) + auth->hdr_length;
++    uint16_t *name = (void *)va + sizeof(mm_variable_access);
++    gnutls_datum_t *sdata;
++    uint64_t pos = 0;
 +
-+    uefi_vars_clear_all(uv);
-+    uefi_vars_policies_clear(uv);
-+    g_free(uv->buffer);
++    sdata = g_new(gnutls_datum_t, 1);
++    sdata->size = (va->name_size - 2
++                   + sizeof(QemuUUID)
++                   + sizeof(va->attributes)
++                   + sizeof(auth->timestamp)
++                   + va->data_size - data_offset);
++    sdata->data = g_malloc(sdata->size);
++
++    /* Variable Name (without terminating \0) */
++    memcpy(sdata->data + pos, name, va->name_size - 2);
++    pos += va->name_size - 2;
++
++    /* Variable Namespace Guid */
++    memcpy(sdata->data + pos, &va->guid, sizeof(va->guid));
++    pos += sizeof(va->guid);
++
++    /* Attributes */
++    memcpy(sdata->data + pos, &va->attributes, sizeof(va->attributes));
++    pos += sizeof(va->attributes);
++
++    /* TimeStamp */
++    memcpy(sdata->data + pos, &auth->timestamp, sizeof(auth->timestamp));
++    pos += sizeof(auth->timestamp);
++
++    /* Variable Content */
++    memcpy(sdata->data + pos, data + data_offset, va->data_size - data_offset);
++    pos += va->data_size - data_offset;
++
++    assert(pos == sdata->size);
++    return sdata;
++}
++
++/*
++ * See WrapPkcs7Data() in edk2.
++ *
++ * UEFI spec allows pkcs7 signatures being used without the envelope which
++ * identifies them as pkcs7 signatures.  openssl and gnutls will not parse them
++ * without the envelope though.  So add it if needed.
++ */
++static void wrap_pkcs7(gnutls_datum_t *pkcs7)
++{
++    static uint8_t signed_data_oid[9] = {
++        0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x07, 0x02
++    };
++    gnutls_datum_t wrap;
++
++    if (pkcs7->data[4] == 0x06 &&
++        pkcs7->data[5] == 0x09 &&
++        memcmp(pkcs7->data + 6, signed_data_oid, sizeof(signed_data_oid)) == 0 &&
++        pkcs7->data[15] == 0x0a &&
++        pkcs7->data[16] == 0x82) {
++        return;
++    }
++
++    wrap.size = pkcs7->size + 19;
++    wrap.data = g_malloc(wrap.size);
++
++    wrap.data[0] = 0x30;
++    wrap.data[1] = 0x82;
++    wrap.data[2] = (wrap.size - 4) >> 8;
++    wrap.data[3] = (wrap.size - 4) & 0xff;
++    wrap.data[4] = 0x06;
++    wrap.data[5] = 0x09;
++    memcpy(wrap.data + 6, signed_data_oid, sizeof(signed_data_oid));
++
++    wrap.data[15] = 0xa0;
++    wrap.data[16] = 0x82;
++    wrap.data[17] = pkcs7->size >> 8;
++    wrap.data[18] = pkcs7->size & 0xff;
++    memcpy(wrap.data + 19, pkcs7->data, pkcs7->size);
++
++    g_free(pkcs7->data);
++    *pkcs7 = wrap;
++}
++
++static gnutls_datum_t *build_pkcs7(void *data)
++{
++    variable_auth_2 *auth = data;
++    gnutls_datum_t *pkcs7;
++
++    pkcs7 = g_new(gnutls_datum_t, 1);
++    pkcs7->size = auth->hdr_length - 24;
++    pkcs7->data = g_malloc(pkcs7->size);
++    memcpy(pkcs7->data, data + 16 + 24, pkcs7->size);
++
++    wrap_pkcs7(pkcs7);
++
++    return pkcs7;
++}
++
++/*
++ * Read UEFI signature database, store x509 all certificates found in
++ * gnutls_x509_trust_list_t.
++ */
++static gnutls_x509_trust_list_t build_trust_list_sb(uefi_variable *var)
++{
++    gnutls_x509_trust_list_t tlist;
++    gnutls_datum_t cert_data;
++    gnutls_x509_crt_t cert;
++    uefi_vars_siglist siglist;
++    uefi_vars_cert *c;
++    int rc;
++
++    rc = gnutls_x509_trust_list_init(&tlist, 0);
++    if (rc < 0) {
++        warn_report("gnutls_x509_trust_list_init error: %s",
++                     gnutls_strerror(rc));
++        return NULL;
++    }
++
++    uefi_vars_siglist_init(&siglist);
++    uefi_vars_siglist_parse(&siglist, var->data, var->data_size);
++
++    QTAILQ_FOREACH(c, &siglist.x509, next) {
++        cert_data.size = c->size;
++        cert_data.data = c->data;
++
++        rc = gnutls_x509_crt_init(&cert);
++        if (rc < 0) {
++            warn_report("gnutls_x509_crt_init error: %s", gnutls_strerror(rc));
++            break;
++        }
++        rc = gnutls_x509_crt_import(cert, &cert_data, GNUTLS_X509_FMT_DER);
++        if (rc < 0) {
++            warn_report("gnutls_x509_crt_import error: %s",
++                        gnutls_strerror(rc));
++            gnutls_x509_crt_deinit(cert);
++            break;
++        }
++        rc = gnutls_x509_trust_list_add_cas(tlist, &cert, 1, 0);
++        if (rc < 0) {
++            warn_report("gnutls_x509_crt_import error: %s",
++                        gnutls_strerror(rc));
++            gnutls_x509_crt_deinit(cert);
++            break;
++        }
++    }
++
++    uefi_vars_siglist_free(&siglist);
++
++    return tlist;
++}
++
++static int build_digest_authvar(gnutls_x509_crt_t signer,
++                                gnutls_x509_crt_t root,
++                                uint8_t *hash_digest)
++{
++    char *cn;
++    size_t cn_size = 0;
++    uint8_t fp[AUTHVAR_DIGEST_SIZE];
++    size_t fp_size = sizeof(fp);
++    gnutls_hash_hd_t hash;
++    int rc;
++
++    /* get signer CN */
++    rc = gnutls_x509_crt_get_dn_by_oid(signer, GNUTLS_OID_X520_COMMON_NAME,
++                                       0, 0, NULL, &cn_size);
++    if (rc != GNUTLS_E_SHORT_MEMORY_BUFFER) {
++        warn_report("gnutls_x509_crt_get_dn_by_oid error #1: %s",
++                    gnutls_strerror(rc));
++        return rc;
++    }
++
++    cn = g_malloc(cn_size);
++    rc = gnutls_x509_crt_get_dn_by_oid(signer, GNUTLS_OID_X520_COMMON_NAME,
++                                       0, 0, cn, &cn_size);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_get_dn_by_oid error #2: %s",
++                    gnutls_strerror(rc));
++        goto err;
++    }
++
++    /* get root certificate fingerprint */
++    rc = gnutls_x509_crt_get_fingerprint(root, AUTHVAR_DIGEST_ALGO,
++                                         fp, &fp_size);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_get_fingerprint error: %s",
++                    gnutls_strerror(rc));
++        goto err;
++    }
++
++    /* digest both items */
++    rc = gnutls_hash_init(&hash, AUTHVAR_DIGEST_ALGO);
++    if (rc < 0) {
++        warn_report("gnutls_hash_init error: %s",
++                    gnutls_strerror(rc));
++        goto err;
++    }
++    rc = gnutls_hash(hash, cn, cn_size);
++    if (rc < 0) {
++        warn_report("gnutls_hash error: %s",
++                    gnutls_strerror(rc));
++        goto err;
++    }
++    rc = gnutls_hash(hash, fp, fp_size);
++    if (rc < 0) {
++        warn_report("gnutls_hash error: %s",
++                    gnutls_strerror(rc));
++        goto err;
++    }
++    gnutls_hash_deinit(hash, hash_digest);
++
 +    return 0;
++
++err:
++    g_free(cn);
++    return rc;
 +}
 +
-+static int uefi_vars_post_load(void *opaque, int version_id)
++/*
++ * uefi spec 2.9, section 8.2.2
++ *
++ * For EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS variables which are
++ * NOT secure boot variables we should track the root certificate of the trust
++ * chain, and the subject CN of the signer certificate.
++ *
++ * So we'll go store a digest of these two items so we can verify this.  Also
++ * create a gnutls_x509_trust_list_t with the root certificate, so
++ * gnutls_pkcs7_verify() will pass (assuming the signature is otherwise
++ * correct).
++ */
++static gnutls_x509_trust_list_t build_trust_list_authvar(gnutls_pkcs7_t pkcs7,
++                                                         uint8_t *hash_digest)
 +{
-+    uefi_vars_state *uv = opaque;
++    gnutls_datum_t signer_data = { 0 };
++    gnutls_datum_t root_data = { 0 };
++    gnutls_x509_crt_t signer = NULL;
++    gnutls_x509_crt_t root = NULL;
++    gnutls_x509_trust_list_t tlist = NULL;
++    int n, rc;
 +
-+    uefi_vars_update_storage(uv);
-+    uv->buffer = g_malloc(uv->buf_size);
-+    return 0;
-+}
++    n = gnutls_pkcs7_get_crt_count(pkcs7);
 +
-+const VMStateDescription vmstate_uefi_vars = {
-+    .name = "uefi-vars",
-+    .pre_load = uefi_vars_pre_load,
-+    .post_load = uefi_vars_post_load,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT16(sts, uefi_vars_state),
-+        VMSTATE_UINT32(buf_size, uefi_vars_state),
-+        VMSTATE_UINT32(buf_addr_lo, uefi_vars_state),
-+        VMSTATE_UINT32(buf_addr_hi, uefi_vars_state),
-+        VMSTATE_UINT32(pio_xfer_offset, uefi_vars_state),
-+        VMSTATE_VBUFFER_ALLOC_UINT32(pio_xfer_buffer, uefi_vars_state,
-+                                     0, NULL, buf_size),
-+        VMSTATE_BOOL(end_of_dxe, uefi_vars_state),
-+        VMSTATE_BOOL(ready_to_boot, uefi_vars_state),
-+        VMSTATE_BOOL(exit_boot_service, uefi_vars_state),
-+        VMSTATE_BOOL(policy_locked, uefi_vars_state),
-+        VMSTATE_UINT64(used_storage, uefi_vars_state),
-+        VMSTATE_QTAILQ_V(variables, uefi_vars_state, 0,
-+                         vmstate_uefi_variable, uefi_variable, next),
-+        VMSTATE_QTAILQ_V(var_policies, uefi_vars_state, 0,
-+                         vmstate_uefi_var_policy, uefi_var_policy, next),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
-+{
-+    hwaddr    dma;
-+    mm_header *mhdr;
-+    uint64_t  size;
-+    uint32_t  retval;
-+
-+    dma = uv->buf_addr_lo | ((hwaddr)uv->buf_addr_hi << 32);
-+    mhdr = (mm_header *) uv->buffer;
-+
-+    if (!uv->buffer || uv->buf_size < sizeof(*mhdr)) {
-+        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
++    /* first is signer certificate */
++    rc = gnutls_pkcs7_get_crt_raw2(pkcs7, 0, &signer_data);
++    if (rc < 0) {
++        warn_report("gnutls_pkcs7_get_crt_raw2(0) error: %s",
++                    gnutls_strerror(rc));
++        goto done;
++    }
++    rc = gnutls_x509_crt_init(&signer);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_init error: %s", gnutls_strerror(rc));
++        goto done;
++    }
++    rc = gnutls_x509_crt_import(signer, &signer_data, GNUTLS_X509_FMT_DER);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_import error: %s",
++                    gnutls_strerror(rc));
++        gnutls_x509_crt_deinit(signer);
++        goto done;
 +    }
 +
-+    /* read header */
-+    if (dma_mode) {
-+        dma_memory_read(&address_space_memory, dma,
-+                        uv->buffer, sizeof(*mhdr),
-+                        MEMTXATTRS_UNSPECIFIED);
++    /* last is root-of-trust certificate (can be identical to signer) */
++    rc = gnutls_pkcs7_get_crt_raw2(pkcs7, n - 1, &root_data);
++    if (rc < 0) {
++        warn_report("gnutls_pkcs7_get_crt_raw2(%d) error: %s",
++                    n - 1, gnutls_strerror(rc));
++        goto done;
++    }
++    rc = gnutls_x509_crt_init(&root);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_init error: %s", gnutls_strerror(rc));
++        goto done;
++    }
++    rc = gnutls_x509_crt_import(root, &root_data, GNUTLS_X509_FMT_DER);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_import error: %s",
++                    gnutls_strerror(rc));
++        goto done;
++    }
++
++    /* calc digest for signer CN + root cert */
++    rc = build_digest_authvar(signer, root, hash_digest);
++    if (rc < 0) {
++        goto done;
++    }
++
++    /* add root to trust list */
++    rc = gnutls_x509_trust_list_init(&tlist, 0);
++    if (rc < 0) {
++        warn_report("gnutls_x509_trust_list_init error: %s",
++                    gnutls_strerror(rc));
++        goto done;
++    }
++    rc = gnutls_x509_trust_list_add_cas(tlist, &root, 1, 0);
++    if (rc < 0) {
++        warn_report("gnutls_x509_crt_import error: %s",
++                    gnutls_strerror(rc));
++        gnutls_x509_trust_list_deinit(tlist, 1);
++        tlist = NULL;
++        goto done;
 +    } else {
-+        memcpy(uv->buffer, uv->pio_xfer_buffer, sizeof(*mhdr));
++        /* ownership passed to tlist */
++        root = NULL;
 +    }
 +
-+    if (uadd64_overflow(sizeof(*mhdr), mhdr->length, &size)) {
-+        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
++done:
++    if (signer_data.data) {
++        gnutls_free(signer_data.data);
 +    }
-+    if (uv->buf_size < size) {
-+        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
++    if (root_data.data) {
++        gnutls_free(root_data.data);
++    }
++    if (signer) {
++        gnutls_x509_crt_deinit(signer);
++    }
++    if (root) {
++        gnutls_x509_crt_deinit(root);
++    }
++    return tlist;
++}
++
++static void free_datum(gnutls_datum_t *ptr)
++{
++    if (!ptr) {
++        return;
++    }
++    g_free(ptr->data);
++    g_free(ptr);
++}
++
++static void gnutls_log_stderr(int level, const char *msg)
++{
++    if (strncmp(msg, "ASSERT:", 7) == 0) {
++        return;
++    }
++    fprintf(stderr, "    %d: %s", level, msg);
++}
++
++/*
++ * pkcs7 signature verification (EFI_VARIABLE_AUTHENTICATION_2).
++ */
++efi_status uefi_vars_check_pkcs7_2(uefi_variable *siglist,
++                                   void **digest, uint32_t *digest_size,
++                                   mm_variable_access *va, void *data)
++{
++    gnutls_x509_trust_list_t tlist = NULL;
++    gnutls_datum_t *signed_data = NULL;
++    gnutls_datum_t *pkcs7_data = NULL;
++    gnutls_pkcs7_t pkcs7 = NULL;
++    efi_status status = EFI_SECURITY_VIOLATION;
++    int rc;
++
++    if (0) {
++        /* gnutls debug logging */
++        static bool first = true;
++
++        if (first) {
++            first = false;
++            gnutls_global_set_log_function(gnutls_log_stderr);
++            gnutls_global_set_log_level(99);
++        }
 +    }
 +
-+    /* read buffer (excl header) */
-+    if (dma_mode) {
-+        dma_memory_read(&address_space_memory, dma + sizeof(*mhdr),
-+                        uv->buffer + sizeof(*mhdr), mhdr->length,
-+                        MEMTXATTRS_UNSPECIFIED);
++    signed_data = build_signed_data(va, data);
++    pkcs7_data = build_pkcs7(data);
++
++    rc = gnutls_pkcs7_init(&pkcs7);
++    if (rc < 0) {
++        warn_report("gnutls_pkcs7_init error: %s", gnutls_strerror(rc));
++        goto out;
++    }
++
++    rc = gnutls_pkcs7_import(pkcs7, pkcs7_data, GNUTLS_X509_FMT_DER);
++    if (rc < 0) {
++        warn_report("gnutls_pkcs7_import error: %s", gnutls_strerror(rc));
++        goto out;
++    }
++
++    if (siglist) {
++        /* secure boot variables */
++        tlist = build_trust_list_sb(siglist);
++    } else if (digest && digest_size) {
++        /* other authenticated variables */
++        *digest_size = AUTHVAR_DIGEST_SIZE;
++        *digest = g_malloc(*digest_size);
++        tlist = build_trust_list_authvar(pkcs7, *digest);
 +    } else {
-+        memcpy(uv->buffer + sizeof(*mhdr),
-+               uv->pio_xfer_buffer + sizeof(*mhdr),
-+               mhdr->length);
-+    }
-+    memset(uv->buffer + size, 0, uv->buf_size - size);
-+
-+    /* dispatch */
-+    if (qemu_uuid_is_equal(&mhdr->guid, &EfiSmmVariableProtocolGuid)) {
-+        retval = uefi_vars_mm_vars_proto(uv);
-+
-+    } else if (qemu_uuid_is_equal(&mhdr->guid, &VarCheckPolicyLibMmiHandlerGuid)) {
-+        retval = uefi_vars_mm_check_policy_proto(uv);
-+
-+    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEndOfDxeEventGroupGuid)) {
-+        trace_uefi_event("end-of-dxe");
-+        uv->end_of_dxe = true;
-+        retval = UEFI_VARS_STS_SUCCESS;
-+
-+    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventReadyToBootGuid)) {
-+        trace_uefi_event("ready-to-boot");
-+        uv->ready_to_boot = true;
-+        retval = UEFI_VARS_STS_SUCCESS;
-+
-+    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventExitBootServicesGuid)) {
-+        trace_uefi_event("exit-boot-service");
-+        uv->exit_boot_service = true;
-+        retval = UEFI_VARS_STS_SUCCESS;
-+
-+    } else {
-+        retval = UEFI_VARS_STS_ERR_NOT_SUPPORTED;
++        /* should not happen */
++        goto out;
 +    }
 +
-+    /* write buffer */
-+    if (dma_mode) {
-+        dma_memory_write(&address_space_memory, dma,
-+                         uv->buffer, sizeof(*mhdr) + mhdr->length,
-+                         MEMTXATTRS_UNSPECIFIED);
-+    } else {
-+        memcpy(uv->pio_xfer_buffer + sizeof(*mhdr),
-+               uv->buffer + sizeof(*mhdr),
-+               sizeof(*mhdr) + mhdr->length);
++    rc = gnutls_pkcs7_verify(pkcs7, tlist,
++                             NULL, 0,
++                             0, signed_data,
++                             GNUTLS_VERIFY_DISABLE_TIME_CHECKS |
++                             GNUTLS_VERIFY_DISABLE_TRUSTED_TIME_CHECKS);
++    if (rc < 0) {
++        warn_report("gnutls_pkcs7_verify error: %s", gnutls_strerror(rc));
++        goto out;
 +    }
 +
-+    return retval;
-+}
++    /* check passed */
++    status = EFI_SUCCESS;
 +
-+static void uefi_vars_soft_reset(uefi_vars_state *uv)
-+{
-+    g_free(uv->buffer);
-+    uv->buffer = NULL;
-+    uv->buf_size = 0;
-+    uv->buf_addr_lo = 0;
-+    uv->buf_addr_hi = 0;
-+}
-+
-+void uefi_vars_hard_reset(uefi_vars_state *uv)
-+{
-+    trace_uefi_hard_reset();
-+    uefi_vars_soft_reset(uv);
-+
-+    uv->end_of_dxe        = false;
-+    uv->ready_to_boot     = false;
-+    uv->exit_boot_service = false;
-+    uv->policy_locked     = false;
-+
-+    uefi_vars_clear_volatile(uv);
-+    uefi_vars_policies_clear(uv);
-+    uefi_vars_auth_init(uv);
-+}
-+
-+static uint32_t uefi_vars_cmd(uefi_vars_state *uv, uint32_t cmd)
-+{
-+    switch (cmd) {
-+    case UEFI_VARS_CMD_RESET:
-+        uefi_vars_soft_reset(uv);
-+        return UEFI_VARS_STS_SUCCESS;
-+    case UEFI_VARS_CMD_DMA_MM:
-+        return uefi_vars_cmd_mm(uv, true);
-+    case UEFI_VARS_CMD_PIO_MM:
-+        return uefi_vars_cmd_mm(uv, false);
-+    case UEFI_VARS_CMD_PIO_ZERO_OFFSET:
-+        uv->pio_xfer_offset = 0;
-+        return UEFI_VARS_STS_SUCCESS;
-+    default:
-+        return UEFI_VARS_STS_ERR_NOT_SUPPORTED;
++out:
++    free_datum(signed_data);
++    free_datum(pkcs7_data);
++    if (tlist) {
++        gnutls_x509_trust_list_deinit(tlist, 1);
 +    }
-+}
-+
-+static uint64_t uefi_vars_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uefi_vars_state *uv = opaque;
-+    uint64_t retval = -1;
-+    void *xfer_ptr;
-+
-+    trace_uefi_reg_read(addr, size);
-+
-+    switch (addr) {
-+    case UEFI_VARS_REG_MAGIC:
-+        retval = UEFI_VARS_MAGIC_VALUE;
-+        break;
-+    case UEFI_VARS_REG_CMD_STS:
-+        retval = uv->sts;
-+        break;
-+    case UEFI_VARS_REG_BUFFER_SIZE:
-+        retval = uv->buf_size;
-+        break;
-+    case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
-+        retval = uv->buf_addr_lo;
-+        break;
-+    case UEFI_VARS_REG_DMA_BUFFER_ADDR_HI:
-+        retval = uv->buf_addr_hi;
-+        break;
-+    case UEFI_VARS_REG_PIO_BUFFER_TRANSFER:
-+        if (uv->pio_xfer_offset + size > uv->buf_size) {
-+            retval = 0;
-+            break;
-+        }
-+        xfer_ptr = uv->pio_xfer_buffer + uv->pio_xfer_offset;
-+        switch (size) {
-+        case 1:
-+            retval = *(uint8_t *)xfer_ptr;
-+            break;
-+        case 2:
-+            retval = *(uint16_t *)xfer_ptr;
-+            break;
-+        case 4:
-+            retval = *(uint32_t *)xfer_ptr;
-+            break;
-+        case 8:
-+            retval = *(uint64_t *)xfer_ptr;
-+            break;
-+        }
-+        uv->pio_xfer_offset += size;
-+        break;
-+    case UEFI_VARS_REG_PIO_BUFFER_CRC32C:
-+        retval = crc32c(0xffffffff, uv->pio_xfer_buffer, uv->pio_xfer_offset);
-+        break;
-+    case UEFI_VARS_REG_FLAGS:
-+        retval = 0;
-+        if (uv->use_pio) {
-+            retval |= UEFI_VARS_FLAG_USE_PIO;
-+        }
++    if (pkcs7) {
++        gnutls_pkcs7_deinit(pkcs7);
 +    }
-+    return retval;
-+}
-+
-+static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
-+{
-+    uefi_vars_state *uv = opaque;
-+    void *xfer_ptr;
-+
-+    trace_uefi_reg_write(addr, val, size);
-+
-+    switch (addr) {
-+    case UEFI_VARS_REG_CMD_STS:
-+        uv->sts = uefi_vars_cmd(uv, val);
-+        break;
-+    case UEFI_VARS_REG_BUFFER_SIZE:
-+        if (val > MAX_BUFFER_SIZE) {
-+            val = MAX_BUFFER_SIZE;
-+        }
-+        uv->buf_size = val;
-+        g_free(uv->buffer);
-+        g_free(uv->pio_xfer_buffer);
-+        uv->buffer = g_malloc(uv->buf_size);
-+        uv->pio_xfer_buffer = g_malloc(uv->buf_size);
-+        break;
-+    case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
-+        uv->buf_addr_lo = val;
-+        break;
-+    case UEFI_VARS_REG_DMA_BUFFER_ADDR_HI:
-+        uv->buf_addr_hi = val;
-+        break;
-+    case UEFI_VARS_REG_PIO_BUFFER_TRANSFER:
-+        if (uv->pio_xfer_offset + size > uv->buf_size) {
-+            break;
-+        }
-+        xfer_ptr = uv->pio_xfer_buffer + uv->pio_xfer_offset;
-+        switch (size) {
-+        case 1:
-+            *(uint8_t *)xfer_ptr = val;
-+            break;
-+        case 2:
-+            *(uint16_t *)xfer_ptr = val;
-+            break;
-+        case 4:
-+            *(uint32_t *)xfer_ptr = val;
-+            break;
-+        case 8:
-+            *(uint64_t *)xfer_ptr = val;
-+            break;
-+        }
-+        uv->pio_xfer_offset += size;
-+        break;
-+    case UEFI_VARS_REG_PIO_BUFFER_CRC32C:
-+    case UEFI_VARS_REG_FLAGS:
-+    default:
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps uefi_vars_ops = {
-+    .read = uefi_vars_read,
-+    .write = uefi_vars_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl = {
-+        .min_access_size = 2,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+void uefi_vars_init(Object *obj, uefi_vars_state *uv)
-+{
-+    QTAILQ_INIT(&uv->variables);
-+    QTAILQ_INIT(&uv->var_policies);
-+    uv->jsonfd = -1;
-+    memory_region_init_io(&uv->mr, obj, &uefi_vars_ops, uv,
-+                          "uefi-vars", UEFI_VARS_REGS_SIZE);
-+}
-+
-+void uefi_vars_realize(uefi_vars_state *uv, Error **errp)
-+{
-+    uefi_vars_json_init(uv, errp);
-+    uefi_vars_json_load(uv, errp);
++    return status;
 +}
 -- 
 2.48.1
