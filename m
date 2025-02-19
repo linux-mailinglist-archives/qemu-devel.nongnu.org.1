@@ -2,69 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CADA3B1A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 07:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEDDA3B1EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:03:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkdXt-0001KO-AO; Wed, 19 Feb 2025 01:26:57 -0500
+	id 1tke60-0006zs-Jb; Wed, 19 Feb 2025 02:02:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkdXp-0001Ji-Ql; Wed, 19 Feb 2025 01:26:54 -0500
-Received: from mgamail.intel.com ([198.175.65.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tkdXj-0006el-PC; Wed, 19 Feb 2025 01:26:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739946407; x=1771482407;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xk2ZrkVGusRUrEcnU0dHUcdxXlH+QkgE9K1coBzLX9Q=;
- b=CXRZmeazIaMc0iQXriKtPpkiKVQ75JN6PhUGXm6luE2SxDSrcIgPtivp
- GVhshdvLy4sTT4X3f9XtKEbZZAkHx1rUQXoTIeTnbiVBm5Y4udlpGxkMr
- GuzrCHOYAOFUu0dX9vIpwOu2j8tzW2BTmEeAe+BP21FSVWcl0hkZlgp25
- blUhgDG5wKchyDhgzR21l75I30RogeNT9o+dKPQ20/ITeXRKuWnn0sz+c
- BqnZ0uL5y1exRjbOUB8bVwM90acbFYyqPb4R/l9oLmIKwX0bdnCM9GHby
- ZffUeJnR/Rn+W5qSvihQ8vTfxQW+Zr7Y5Mngy0O5GmgQKQakGV5yqnzuR w==;
-X-CSE-ConnectionGUID: dxVOhoD1SPKrX36m2DheyQ==
-X-CSE-MsgGUID: Ybb6FhJ3Q2WzbAbj3hgJ5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40528228"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40528228"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2025 22:26:42 -0800
-X-CSE-ConnectionGUID: M31E44ljRm+zp3vhwI5gbw==
-X-CSE-MsgGUID: +0rudihzRmeoaRm/u/zoWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119270260"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 18 Feb 2025 22:26:40 -0800
-Date: Wed, 19 Feb 2025 14:46:15 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
- manos.pitsidianakis@linaro.org, philmd@linaro.org,
- qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 05/11] rust/block: Add empty crate
-Message-ID: <Z7V+N/0AKw7qBQ63@intel.com>
-References: <20250218182019.111467-1-kwolf@redhat.com>
- <20250218182019.111467-6-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tke5n-0006zD-Dj
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:02:01 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tke5k-0002vU-SR
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:01:58 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-221057b6ac4so66082765ad.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Feb 2025 23:01:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739948515; x=1740553315; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JzHJszk2+xbU0C0JuY567d7xVowlu4qN92xhcGFKBbM=;
+ b=jjSGvLwyrlBxHdLo+JLwNNZuzDQWmKb95e2biR+22SrK1jCckMD2CZQtCXHQo2WHwp
+ HoY6sjdhOL92vMdDpK1catEEz2iO80Dw2esXTSs1Id5C/ZZMYmtjkW7BTDWdRQRiJOAq
+ 1Q08c6V/yldffTyAtEKSTIrfu9m/lnbFW8DP6gqookksKpqWfIPNj97QhYCieTj5KB/Q
+ ilW1LnA33UDlo3UlkpFLWPnO0dgRCTWALdOxp5lzFvsbLbkYzZFcsxAyqKIebMQ/yVjd
+ VevYcLHwiQIB4Ku0Gj0ofRLYDbl7bV/uHGiQcaBa0sNo4adFfswJZafTuLERG/LlOgPi
+ AcYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739948515; x=1740553315;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JzHJszk2+xbU0C0JuY567d7xVowlu4qN92xhcGFKBbM=;
+ b=RV+mpFU+JBiqlUOTMqiRSmBa64QjVZqqq61FPY91VZqJq1AO10MNEbB23LutN8BRl8
+ 0pY/VPoWlo4f3sEVVpWS8rkq72WKrArOb3oFX7C/hqWbpqGK/ax9W6SUkDlYi/lXCiEY
+ yzBa84QPLn/L633PAW23SIRGT8Ptb5/FpoS4nV0BpzD0eSVqZdXGwi9WPt3GPQ5b0Isl
+ 8+2/dW4WTe4JraZRfXXaCFrgtLM6Y51SyLfcAhcmlZHwVlmx/+JX27ubNh6FJP7cE1hV
+ cjdlFV0oaeVRTmZY7y1UeTwt1tyzF6LBBFOatvRgPsqt8NbvpykbBWjCzoCImSwOm1SJ
+ Wa8Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVcR2EVYrhhMeyt81z/mkXt0lUs8iR1GFvTq5EeJ1gF30nfZxYGVN++3xThA2ODNZQd7GkIn0rm7zUx@nongnu.org
+X-Gm-Message-State: AOJu0YzqRA17W4rzDPrc7N+qSOqgOrh09ngxpext7cKnwwJzUCQ0B31R
+ Ksc/FvtCvniXnSfSarqFkkNReBSZ25wWU8V3FIn4+IIAH4TVfGevbO9PsJgfz3Y=
+X-Gm-Gg: ASbGncsY+qqAHCXTJ9F5qtEeVGJURHl8QUhJKn5GaO4LGsElJfvU+b1vx7qf9CVS2Fv
+ 6uDPCyN7k8leljkSvQ0BZTg/YgKTWO96AkhzHYs21c4k7aNOx0avEVHmceEvrUIQ8vRPMr93WKR
+ nj3yJ2iX4FRDeuqvUJm6sJPb8zxwZib0Rrgs+SDI6ZrYNpdFGAk3TgWSZSG7fifgupvlr9U/VxY
+ h7/ZY+3p//0suDEafvm3fy4vEyEaQPV07HMJhNkvhf9baBfp7nJJdt2gxqo6fClLDgLAyBZGFEg
+ BIZQ/vjsewwO+CTF8V3gW2R3KjVw
+X-Google-Smtp-Source: AGHT+IGUgR2brSnlcGlJsMS/bXjXvVj/Ondxs/AVBPTgOe7066P8nO4hvdmmfOspovsbt7piGFPMGQ==
+X-Received: by 2002:a05:6a20:2589:b0:1ee:d384:7553 with SMTP id
+ adf61e73a8af0-1eed3847728mr4903273637.30.1739948515125; 
+ Tue, 18 Feb 2025 23:01:55 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73275ee19b7sm6009821b3a.105.2025.02.18.23.01.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Feb 2025 23:01:54 -0800 (PST)
+Message-ID: <290b3ab2-70a2-4846-a53e-ec18f848d1c9@linaro.org>
+Date: Tue, 18 Feb 2025 23:01:53 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218182019.111467-6-kwolf@redhat.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] Enable clang build on Windows
+To: Stefan Weil <sw@weilnetz.de>, Brian Cain <brian.cain@oss.qualcomm.com>,
+ qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>
+References: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
+ <b3ef0b9f-df09-4444-b0aa-3b2a36f7cd3a@weilnetz.de>
+ <4e788add-ee40-4d98-b065-6745e6e2fce5@oss.qualcomm.com>
+ <71254e1d-3e17-4082-968f-db7fe6cea590@linaro.org>
+ <4e36d996-7446-4bca-8699-063c3c6d91fc@weilnetz.de>
+ <845d324d-833a-4d48-a78e-d384002b17af@linaro.org>
+ <dc259719-c030-4c71-bf31-c505ca66bb48@weilnetz.de>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <dc259719-c030-4c71-bf31-c505ca66bb48@weilnetz.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,73 +116,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/rust/block/Cargo.toml b/rust/block/Cargo.toml
-> new file mode 100644
-> index 0000000000..fbc2f2d6ef
-> --- /dev/null
-> +++ b/rust/block/Cargo.toml
-> @@ -0,0 +1,16 @@
-> +[package]
-> +name = "block"
-> +version = "0.1.0"
-> +edition = "2021"
-> +authors = ["Kevin Wolf <kwolf@redhat.com>"]
-> +license = "GPL-2.0-or-later"
-> +readme = "README.md"
-> +description = "Block backends for QEMU"
-> +repository = "https://gitlab.com/qemu-project/qemu/"
-> +publish = false
-> +keywords = []
-> +categories = []
+On 2/18/25 22:39, Stefan Weil wrote:
+> Am 19.02.25 um 00:17 schrieb Pierrick Bouvier:
+> 
+>> On 2/18/25 12:59, Stefan Weil wrote:
+>>>
+>>> I could run a QEMU cross compile on Debian with the llvm toolchain and
+>>> msys2 clangarm64 packages installed with pacman. The resulting installer
+>>> is here:
+>>>
+>>
+>> Have you installed the msys2 clangarm64 packages on a windows machine
+>> first, and then copy them to your Debian machine?
+> 
+> 
+> No, the packages were directly installed on Linux like in this older
+> script which shows how this can be done for i686 and x86-64::
+> 
+> https://github.com/stweil/qemu/blob/master/.github/workflows/pacman.sh
+> 
+> Newer Debian distributions already provide a package for pacman which
+> simply needs the right configuration. For older distributions I had to
+> build pacman first.
+> 
+> I should also have noted that I used a Linux aarch64 build host, so its
+> binutils were able to find the DLL dependencies. This requirement will
+> be fixed with a pure Python script for the same purpose.
+> 
 
-Per the commit f26137893b98 ("rust: remove unnecessary Cargo.toml
-metadata"), readme & repository are not necessary. :-)
+Oh excellent! I wondered if it was possible or not to do this (didn't 
+know if some post install hooks try to execute native code).
+Thanks for the link.
 
-And rust-version is needed (since the commit 669fab6a1f3e).
-
-> +[dependencies]
-> +qemu_api = { path = "../qemu-api" }
-> +libc = "0.2.162"
-
-I think it's necessary add the lints section to apply workspace's lint
-configurations:
-
-[lints]
-workspace = true
-
-> diff --git a/rust/block/README.md b/rust/block/README.md
-> new file mode 100644
-> index 0000000000..debcc9d815
-> --- /dev/null
-> +++ b/rust/block/README.md
-> @@ -0,0 +1,3 @@
-> +# QEMU block backends
-> +
-> +This library implements block drivers for QEMU.
-
-And doc can be updated in docs/devel/rust.rst, like Paolo's patch:
-
-https://lore.kernel.org/qemu-devel/20250218080455.426383-1-pbonzini@redhat.com/
-
-> diff --git a/rust/block/meson.build b/rust/block/meson.build
-> new file mode 100644
-> index 0000000000..ca93afd939
-> --- /dev/null
-> +++ b/rust/block/meson.build
-> @@ -0,0 +1,20 @@
-> +_block_rs = static_library(
-> +  'block',
-> +  files('src/lib.rs'),
-> +  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-> +  rust_abi: 'rust',
-> +  dependencies: [
-> +    qemu_api_tools,
-> +    qemu_api_macros,
-
-I'm unsure without testing, the dependencies here looks different with
-the Cargo.toml?
-
-Regards,
-Zhao
+> 
+>>
+>>> https://qemu.weilnetz.de/aarch64/
+>>>
+>>> The only tool which was missing and which I had to build before running
+>>> the QEMU build is aarch64-w64-mingw32-windmc.
+>>>
+>>> It looks like the NSIS installer is i386 code, so I don't know whether
+>>> it can be used on Windows for aarch64.
+>>>
+>>> I also have no suitable Windows host for testing the binaries, so no
+>>> test was done.
 
 
