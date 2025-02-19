@@ -2,84 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5602AA3CA15
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E901A3C9DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:32:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqo5-0006Jn-7b; Wed, 19 Feb 2025 15:36:33 -0500
+	id 1tkqim-0006nM-8R; Wed, 19 Feb 2025 15:31:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1tkqns-0005bz-Gf
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:20 -0500
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1tkqnp-0004mx-Le
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:20 -0500
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 4A148436F1
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 20:36:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1739997375;
- bh=x6L/IAYWzprOZHSypC2sCJRM1QiXmyyq4DrMipzkFZg=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=XumnW8sSu85GrXs6YcZTFHUIZ7gIjS0iHq7Rk13wNj0yLxn5isK7PLjr6zC5ZDLu8
- k6QtxlgiEeF/FGNPCNe/FeE1zeK9M3wIC+eHhV94U5CpRRxw5Ak/lgTlr+CyykhLIx
- KZ4XjCHkJ5z5ht9SwgDEBSKLflrRP9L2WK7dPfIDf15GX0OPkW79LL8o0jGES5401g
- mjS/LX8CTuQU5l2wwrRjrvh1Spad7aczunybu3OsaKgBqYApCjxQMfZQJ5P7H2/a5P
- yrAIbSBejur5PXF2nKffzFVT5A7HlFT6KnqXkKKOo7OCAXl365AdO/P5Qy9vmAj5Sn
- cBDKjd5MlQrZg==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 39E7D7E87B
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 20:36:15 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tkqii-0006n8-TS
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:31:00 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tkqie-0003y3-MP
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:30:58 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-22128b7d587so2456905ad.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 12:30:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1739997054; x=1740601854; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6WAAKDWmb1N8KnurhDiK6oIeTxnxeVoBs0P8C/U/vtw=;
+ b=Kd93bkVPEUkv4seelEC92u3I9AeFbtGlk4NarkuJUIjoneWmkE5Poew4X7EvsYWshA
+ BWTpWJWixZkpcO3vCXgIySkdLjXKJZcjJofzVYd/B00CS9qJz6YR3u0Z7cXGiq01ALGP
+ FfB6/8sjIgwNcPgzDwG0gUPcpVnlWmQ3Q/bpImYpT1+CNHnhh5S+TFs1fWCm4EMfjWWI
+ nvMJY+ukXcgxyktyKlPg96FjIb/vR9SPd3ss4n27sCk3+mWocgZ4QkMqpvQlY3oBK28Q
+ 1lIVmMZmLhwvTK8bPgkBZPkahtTC0W+RF95WhYvMCPOCxaNeNUKaMBQq/uHaIXeyIHfU
+ T4Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1739997054; x=1740601854;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6WAAKDWmb1N8KnurhDiK6oIeTxnxeVoBs0P8C/U/vtw=;
+ b=Ld0TWxWrcKfsnBNftkusr3X5o9cXIePGvfJwquCAPrHmHgUo58diuEN2RauN+sTUXV
+ 4vfseNHbeA0CHf8Km9Ykz69LO3d1m0+RCE8nwHC55Xe/l0hYXVMcN8Td8SA7J6cuI2Zu
+ CEiYLsQFNO7tOcSy9ezD+mxhA8V5BriFgrsYhkuAG0mc7wTG437oo/XWN0Pynr77Eqbc
+ pgkvEnUIHjyukiWKo1C4sYNCIMAo4LOaz0yMht5lviVhHB1HrgpcwAtyyDYLmLcfLmVY
+ bED57hc0gRTiAxMloLm4jquccKBqIuRidqLqbhz8yqR1sUQGcvnUk3UeWDODDUk87nlH
+ H4wg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWamd4tj8N4Nw+GDB7KbjFubT8qIQBuiJMk9xuxUxG4GVxRcqbGDgurWnBBT2hy7VoaTuUAiWqNlwAp@nongnu.org
+X-Gm-Message-State: AOJu0YwoeN+YvGv3MKMwQQSGaT2yM7sBnfYhuySG0d+iPN3xwpsbnDB4
+ D9j3EFQGTEI4fhNwdrb8ml4DglunwMZnnhXCS5MZsskt142Xytkn5caM3Dn8gqY=
+X-Gm-Gg: ASbGncs+HctK27l9rORaoBA4tPwZ2gXWuMqP4M+T/dExiFPnd5s6TcY0lS5swcfDKnW
+ ZLzHyp2AU883beK6wvfHXShGWPwr4Pr/XlXKzTGXkkS8oxUChkO0w7nQ0Gmv1QF1TW2ihNBOMAX
+ iSt4cZOonCY6QU5sBBZ7GMrRu8ErAahww6kbY7WJElxxEoBr9XbgszX9SsTXSU28Q2qi7WBmwS+
+ VFV32MVNufb7LryjD2ksYaGHSVDI+PXAiJ7bYLzhnnCW+6Y0ORlpS3Dphf67F0c8b4yMJMEAJlE
+ Hgp3VmpLHTCWreldaF/HEerPxUbJ
+X-Google-Smtp-Source: AGHT+IErgvxR9qUOC3Nvr29K26sr4D8Eo0iJ7JOJao919xu6sBvmC0y3CLzSrG1RF+XugZJuNXzWMg==
+X-Received: by 2002:a17:903:19c4:b0:215:b058:289c with SMTP id
+ d9443c01a7336-2217055dbf2mr74970755ad.8.1739997054503; 
+ Wed, 19 Feb 2025 12:30:54 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d556c704sm110453025ad.164.2025.02.19.12.30.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Feb 2025 12:30:54 -0800 (PST)
+Message-ID: <19fb735c-6e0e-4ae2-a553-fbfcba15b3b7@linaro.org>
+Date: Wed, 19 Feb 2025 12:30:53 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 19 Feb 2025 20:29:13 -0000
-From: Ubuntu Foundations Team Bug Bot <2072564@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Unknown;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=Triaged; importance=Undecided; assignee=lukas.maerdian@canonical.com; 
-X-Launchpad-Bug-Tags: patch
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: crichton dimitry.unified-streaming.com michal.fita
- paelzer sergiodj thir820
-X-Launchpad-Bug-Reporter: Dimitry Andric (dimitry.unified-streaming.com)
-X-Launchpad-Bug-Modifier: Ubuntu Foundations Team Bug Bot (crichton)
-References: <172053137048.3332067.13534832802726064667.malonedeb@juju-98d295-prod-launchpad-7>
-Message-Id: <173999695317.3579016.8413926819741849336.malone@juju-98d295-prod-launchpad-7>
-Subject: [Bug 2072564] Re: qemu-aarch64-static segfaults running ldconfig.real
- (amd64 host)
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="78860d903de6d6d7dd5a0ade63efaca45d3467e2";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 7d78c11983ba60f7ecfb1db52762eccb83348bc3
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] tests/functional: Allow running TCG plugins tests on
+ macOS
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Yonggang Luo <luoyonggang@gmail.com>
+References: <20250219192340.92240-1-philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250219192340.92240-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -88,86 +104,121 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2072564 <2072564@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The attachment "Fix qemu-aarch64-static segfaults" seems to be a patch.
-If it isn't, please remove the "patch" flag from the attachment, remove
-the "patch" tag, and if you are a member of the ~ubuntu-reviewers,
-unsubscribe the team.
-
-[This is an automated message performed by a Launchpad user owned by
-~brian-murray, for any issues please contact him.]
-
-** Tags added: patch
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2072564
-
-Title:
-  qemu-aarch64-static segfaults running ldconfig.real (amd64 host)
-
-Status in QEMU:
-  Fix Released
-Status in qemu package in Ubuntu:
-  Triaged
-
-Bug description:
-  This affects the qemu-user-static 1:8.2.2+ds-0ubuntu1 package on
-  Ubuntu 24.04, running on a amd64 host.
-
-  When running docker containers with Ubuntu 22.04 in them, emulating
-  arm64 with qemu-aarch64-static, invocations of ldconfig (actually
-  ldconfig.real) segfault. For example:
-
-  $ docker run -ti --platform linux/arm64/v8 ubuntu:22.04=20
-  root@8861ff640a1c:/# /sbin/ldconfig.real
-  Segmentation fault
-
-  If you copy the ldconfig.real binary to the host, and run it directly
-  via qemu-aarch64-static:
-
-  $ gdb --args qemu-aarch64-static ./ldconfig.real=20
-  GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
-  Copyright (C) 2024 Free Software Foundation, Inc.
-  License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.h=
-tml>
-  This is free software: you are free to change and redistribute it.
-  There is NO WARRANTY, to the extent permitted by law.
-  Type "show copying" and "show warranty" for details.
-  This GDB was configured as "x86_64-linux-gnu".
-  Type "show configuration" for configuration details.
-  For bug reporting instructions, please see:
-  <https://www.gnu.org/software/gdb/bugs/>.
-  Find the GDB manual and other documentation resources online at:
-      <http://www.gnu.org/software/gdb/documentation/>.
-
-  For help, type "help".
-  Type "apropos word" to search for commands related to "word"...
-  Reading symbols from qemu-aarch64-static...
-  Reading symbols from /home/dim/.cache/debuginfod_client/86579812b213be096=
-4189499f62f176bea817bf2/debuginfo...
-  (gdb) r
-  Starting program: /usr/bin/qemu-aarch64-static ./ldconfig.real
-  [Thread debugging using libthread_db enabled]
-  Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
-  [New Thread 0x7ffff76006c0 (LWP 28378)]
-
-  Thread 1 "qemu-aarch64-st" received signal SIGSEGV, Segmentation fault.
-  0x00007fffe801645b in ?? ()
-  (gdb) disassemble=20
-  No function contains program counter for selected frame.
-
-  It looks like this is a known qemu regression after v8.1.1:
-  https://gitlab.com/qemu-project/qemu/-/issues/1913
-
-  Downgrading the package to qemu-user-
-  static_8.0.4+dfsg-1ubuntu3_amd64.deb fixes the segfault.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2072564/+subscriptions
-
+SGkgUGhpbGlwcGUsDQoNCk9uIDIvMTkvMjUgMTE6MjMsIFBoaWxpcHBlIE1hdGhpZXUtRGF1
+ZMOpIHdyb3RlOg0KPiBQaWVycmljayBraW5kbHkgaGVscGVkIG1lIHRvIHJlc29sdmUgdGhp
+cyBpc3N1ZSB3aGljaCBlbmRlZA0KPiBiZWluZyB0cml2aWFsICh0byBoaW0hKS4gTm90IHRl
+c3RlZCBvbiBXaW5kb3dzIHNvIGZhci4NCj4gDQo+IEknbSBzdGlsbCBoYXZpbmcgc29tZSBt
+ZXNvbiBkZXBlbmRlbmN5IHByb2JsZW0sIGV2ZW4gb24gTGludXg6DQo+IA0KPiAgICAkIG1h
+a2UgY2hlY2stZnVuY3Rpb25hbC1hYXJjaDY0DQo+ICAgIC4uLg0KPiAgICBUcmFjZWJhY2sg
+KG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1w
+L3Byb3RvY29sLnB5IiwgbGluZSA4MzQsIGluIF9iaF9jbG9zZV9zdHJlYW0NCj4gICAgICAg
+IGF3YWl0IHdhaXRfY2xvc2VkKHNlbGYuX3dyaXRlcikNCj4gICAgICBGaWxlICJweXRob24v
+cWVtdS9xbXAvdXRpbC5weSIsIGxpbmUgMTMwLCBpbiB3YWl0X2Nsb3NlZA0KPiAgICAgICAg
+YXdhaXQgd3JpdGVyLndhaXRfY2xvc2VkKCkNCj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRo
+b24zLjEwL2FzeW5jaW8vc3RyZWFtcy5weSIsIGxpbmUgMzQzLCBpbiB3YWl0X2Nsb3NlZA0K
+PiAgICAgICAgYXdhaXQgc2VsZi5fcHJvdG9jb2wuX2dldF9jbG9zZV93YWl0ZXIoc2VsZikN
+Cj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRob24zLjEwL2FzeW5jaW8vc2VsZWN0b3JfZXZl
+bnRzLnB5IiwgbGluZSA4NjIsIGluIF9yZWFkX3JlYWR5X19kYXRhX3JlY2VpdmVkDQo+ICAg
+ICAgICBkYXRhID0gc2VsZi5fc29jay5yZWN2KHNlbGYubWF4X3NpemUpDQo+ICAgIENvbm5l
+Y3Rpb25SZXNldEVycm9yOiBbRXJybm8gMTA0XSBDb25uZWN0aW9uIHJlc2V0IGJ5IHBlZXIN
+Cj4gDQo+ICAgIFRoZSBhYm92ZSBleGNlcHRpb24gd2FzIHRoZSBkaXJlY3QgY2F1c2Ugb2Yg
+dGhlIGZvbGxvd2luZyBleGNlcHRpb246DQo+IA0KPiAgICBUcmFjZWJhY2sgKG1vc3QgcmVj
+ZW50IGNhbGwgbGFzdCk6DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvbWFjaGluZS9tYWNo
+aW5lLnB5IiwgbGluZSA0NDgsIGluIGxhdW5jaA0KPiAgICAgICAgc2VsZi5fbGF1bmNoKCkN
+Cj4gICAgICBGaWxlICJweXRob24vcWVtdS9tYWNoaW5lL21hY2hpbmUucHkiLCBsaW5lIDQ5
+NywgaW4gX2xhdW5jaA0KPiAgICAgICAgc2VsZi5fcG9zdF9sYXVuY2goKQ0KPiAgICAgIEZp
+bGUgInB5dGhvbi9xZW11L21hY2hpbmUvbWFjaGluZS5weSIsIGxpbmUgMzgxLCBpbiBfcG9z
+dF9sYXVuY2gNCj4gICAgICAgIHNlbGYuX3FtcC5jb25uZWN0KCkNCj4gICAgICBGaWxlICJw
+eXRob24vcWVtdS9xbXAvbGVnYWN5LnB5IiwgbGluZSAxNTMsIGluIGNvbm5lY3QNCj4gICAg
+ICAgIHNlbGYuX3N5bmMoDQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1wL2xlZ2FjeS5w
+eSIsIGxpbmUgMTAyLCBpbiBfc3luYw0KPiAgICAgICAgcmV0dXJuIHNlbGYuX2Fsb29wLnJ1
+bl91bnRpbF9jb21wbGV0ZSgNCj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRob24zLjEwL2Fz
+eW5jaW8vYmFzZV9ldmVudHMucHkiLCBsaW5lIDY0OSwgaW4gcnVuX3VudGlsX2NvbXBsZXRl
+DQo+ICAgICAgICByZXR1cm4gZnV0dXJlLnJlc3VsdCgpDQo+ICAgICAgRmlsZSAiL3Vzci9s
+aWIvcHl0aG9uMy4xMC9hc3luY2lvL3Rhc2tzLnB5IiwgbGluZSA0MDgsIGluIHdhaXRfZm9y
+DQo+ICAgICAgICByZXR1cm4gYXdhaXQgZnV0DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUv
+cW1wL3Byb3RvY29sLnB5IiwgbGluZSAzODIsIGluIGNvbm5lY3QNCj4gICAgICAgIGF3YWl0
+IHNlbGYuX3Nlc3Npb25fZ3VhcmQoDQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1wL3By
+b3RvY29sLnB5IiwgbGluZSA0NTYsIGluIF9zZXNzaW9uX2d1YXJkDQo+ICAgICAgICByYWlz
+ZSBDb25uZWN0RXJyb3IoZW1zZywgZXJyKSBmcm9tIGVycg0KPiAgICBxZW11LnFtcC5wcm90
+b2NvbC5Db25uZWN0RXJyb3I6IEZhaWxlZCB0byBlc3RhYmxpc2ggc2Vzc2lvbjogW0Vycm5v
+IDEwNF0gQ29ubmVjdGlvbiByZXNldCBieSBwZWVyDQo+IA0KPiAgICBUaGUgYWJvdmUgZXhj
+ZXB0aW9uIHdhcyB0aGUgZGlyZWN0IGNhdXNlIG9mIHRoZSBmb2xsb3dpbmcgZXhjZXB0aW9u
+Og0KPiANCj4gICAgVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOg0KPiAgICAg
+IEZpbGUgInRlc3RzL2Z1bmN0aW9uYWwvdGVzdF9hYXJjaDY0X3RjZ19wbHVnaW5zLnB5Iiwg
+bGluZSA4MCwgaW4gdGVzdF9hYXJjaDY0X3ZpcnRfaW5zbg0KPiAgICAgICAgc2VsZi5ydW5f
+dm0oa2VybmVsX3BhdGgsIGtlcm5lbF9jb21tYW5kX2xpbmUsDQo+ICAgICAgRmlsZSAidGVz
+dHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfdGNnX3BsdWdpbnMucHkiLCBsaW5lIDUyLCBp
+biBydW5fdm0NCj4gICAgICAgIHJhaXNlIGV4Y3ANCj4gICAgICBGaWxlICJ0ZXN0cy9mdW5j
+dGlvbmFsL3Rlc3RfYWFyY2g2NF90Y2dfcGx1Z2lucy5weSIsIGxpbmUgNDYsIGluIHJ1bl92
+bQ0KPiAgICAgICAgdm0ubGF1bmNoKCkNCj4gICAgICBGaWxlICJweXRob24vcWVtdS9tYWNo
+aW5lL21hY2hpbmUucHkiLCBsaW5lIDQ2MSwgaW4gbGF1bmNoDQo+ICAgICAgICByYWlzZSBW
+TUxhdW5jaEZhaWx1cmUoDQo+ICAgIHFlbXUubWFjaGluZS5tYWNoaW5lLlZNTGF1bmNoRmFp
+bHVyZTogQ29ubmVjdEVycm9yOiBGYWlsZWQgdG8gZXN0YWJsaXNoIHNlc3Npb246IFtFcnJu
+byAxMDRdIENvbm5lY3Rpb24gcmVzZXQgYnkgcGVlcg0KPiAgICAgICAgRXhpdCBjb2RlOiAx
+DQo+ICAgICAgICBDb21tYW5kOiBidWlsZC9wbHVnaW5zL3FlbXUtc3lzdGVtLWFhcmNoNjQg
+LWRpc3BsYXkgbm9uZSAtdmdhIG5vbmUgLWNoYXJkZXYgc29ja2V0LGlkPW1vbixmZD02IC1t
+b24gY2hhcmRldj1tb24sbW9kZT1jb250cm9sIC1tYWNoaW5lIHZpcnQgLWNoYXJkZXYgc29j
+a2V0LGlkPWNvbnNvbGUsZmQ9MTEgLXNlcmlhbCBjaGFyZGV2OmNvbnNvbGUgLWNwdSBjb3J0
+ZXgtYTUzIC1rZXJuZWwgL2hvbWUvcGhpbGlwcGUubWF0aGlldS1kYXVkZS8uY2FjaGUvcWVt
+dS9kb3dubG9hZC9jZTk1YTcxMDFhNWZlY2ViZTBmZTYzMGRlZWU2YmQ5N2IzMmJhNDFiYzg3
+NTQwOTBlOWFkODk2MWVhODY3NGM3IC1hcHBlbmQgcHJpbnRrLnRpbWU9MSBwYW5pYz0tMSBj
+b25zb2xlPXR0eUFNQTAgLXBsdWdpbiB0ZXN0cy90Y2cvcGx1Z2lucy9saWJpbnNuLnNvIC1k
+IHBsdWdpbiAtRCAvdG1wL3BsdWdpbmkzNnVhaWx2LmxvZyAtbmV0IG5vbmUgLW5vLXJlYm9v
+dA0KPiAgICAgICAgT3V0cHV0OiBxZW11LXN5c3RlbS1hYXJjaDY0OiBDb3VsZCBub3QgbG9h
+ZCBwbHVnaW4gdGVzdHMvdGNnL3BsdWdpbnMvbGliaW5zbi5zbzogdGVzdHMvdGNnL3BsdWdp
+bnMvbGliaW5zbi5zbzogY2Fubm90IG9wZW4gc2hhcmVkIG9iamVjdCBmaWxlOiBObyBzdWNo
+IGZpbGUgb3IgZGlyZWN0b3J5DQo+ICAgIG1ha2VbMV06ICoqKiBbTWFrZWZpbGUubXRlc3Q6
+MjY6IGRvLW1lc29uLWNoZWNrXSBFcnJvciAxDQo+IA0KPiBJIGRvbid0IG1pbmQgbXVjaCBi
+dWlsZGluZyB0aGUgcGx1Z2lucyBtYW51YWxseToNCj4gDQo+ICAgICQgbWFrZSB0ZXN0cy90
+Y2cvcGx1Z2lucy9saWJpbnNuLnNvDQo+ICAgIFsxLzJdIENvbXBpbGluZyBDIG9iamVjdCB0
+ZXN0cy90Y2cvcGx1Z2lucy9saWJpbnNuLnNvLnAvaW5zbi5jLm8NCj4gICAgWzIvMl0gTGlu
+a2luZyB0YXJnZXQgdGVzdHMvdGNnL3BsdWdpbnMvbGliaW5zbi5zbw0KPiANCg0KTWVzb24g
+dGVzdHMgZGVwZW5kZW5jeSBpcyBtaXNzaW5nIGZvciBwbHVnaW5zLCBzbyB3ZSBuZWVkIHRv
+IGFkZCBpdC4NCg0KQnkgcnVubmluZzogbWFrZSBjaGVjay1mdW5jdGlvbmFsLWFhcmNoNjQg
+Vj0xLCB5b3UgY2FuIHNlZSBpdCdzIG9ubHkgDQpidWlsZGluZyBxZW11LWltZywgcWVtdS1z
+eXN0ZW0gYW5kIHJvbXMgZmlsZXMuDQoNCllvdSBjYW4gaW50ZWdyYXRlIHRoaXMgcGF0Y2gg
+aW4geW91ciBzZXJpZXM6DQoNCmNvbW1pdCBhMzc1ZTliNTYwNjg1YmY0Y2NkNjMzMmNjMjNj
+ZTY4NTBlYzJmYmJlDQpBdXRob3I6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZp
+ZXJAbGluYXJvLm9yZz4NCkRhdGU6ICAgV2VkIEZlYiAxOSAxMjoyNjo1MyAyMDI1IC0wODAw
+DQoNCiAgICAgcGx1Z2luczogYWRkIGV4cGxpY2l0IGRlcGVuZGVuY3kgaW4gZnVuY3Rpb25h
+bCB0ZXN0cw0KDQogICAgIC4vdGVzdHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfdGNnX3Bs
+dWdpbnMucHkgbmVlZHMgdG8gaGF2ZSBwbHVnaW4NCiAgICAgbGliaW5zbiBidWlsdC4gSG93
+ZXZlciwgaXQncyBub3QgbGlzdGVkIGFzIGEgZGVwZW5kZW5jeSwgc28gbWVzb24gY2FuJ3QN
+CiAgICAga25vdyBpdCBuZWVkcyB0byBiZSBidWlsdC4NCg0KICAgICBUaHVzLCB3ZSBrZWVw
+IHRyYWNrIG9mIGFsbCBwbHVnaW5zLCBhbmQgYWRkIHRoZW0gYXMgYW4gZXhwbGljaXQNCiAg
+ICAgZGVwZW5kZW5jeS4NCg0KICAgICBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2aWVy
+IDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQoNCmRpZmYgLS1naXQgYS9tZXNvbi5i
+dWlsZCBiL21lc29uLmJ1aWxkDQppbmRleCAxOGI0MGEyMWE1YS4uODBiOWM4ZWRkNzEgMTAw
+NjQ0DQotLS0gYS9tZXNvbi5idWlsZA0KKysrIGIvbWVzb24uYnVpbGQNCkBAIC0zNjU4LDYg
+KzM2NTgsNyBAQCBxdGVzdF9tb2R1bGVfc3MgPSBzcy5zb3VyY2Vfc2V0KCkNCg0KICBtb2R1
+bGVzID0ge30NCiAgdGFyZ2V0X21vZHVsZXMgPSB7fQ0KK3BsdWdpbl9tb2R1bGVzID0gW10N
+CiAgaHdfYXJjaCA9IHt9DQogIHRhcmdldF9hcmNoID0ge30NCiAgdGFyZ2V0X3N5c3RlbV9h
+cmNoID0ge30NCmRpZmYgLS1naXQgYS9jb250cmliL3BsdWdpbnMvbWVzb24uYnVpbGQgYi9j
+b250cmliL3BsdWdpbnMvbWVzb24uYnVpbGQNCmluZGV4IGM0ZjUwNjFhN2IzLi4zMjdiNDhj
+ODg4NiAxMDA2NDQNCi0tLSBhL2NvbnRyaWIvcGx1Z2lucy9tZXNvbi5idWlsZA0KKysrIGIv
+Y29udHJpYi9wbHVnaW5zL21lc29uLmJ1aWxkDQpAQCAtMjcsMyArMjcsNSBAQCBpZiB0Lmxl
+bmd0aCgpID4gMA0KICBlbHNlDQogICAgcnVuX3RhcmdldCgnY29udHJpYi1wbHVnaW5zJywg
+Y29tbWFuZDogZmluZF9wcm9ncmFtKCd0cnVlJykpDQogIGVuZGlmDQorDQorcGx1Z2luX21v
+ZHVsZXMgKz0gdA0KZGlmZiAtLWdpdCBhL3Rlc3RzL2Z1bmN0aW9uYWwvbWVzb24uYnVpbGQg
+Yi90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQppbmRleCAyMWM3ZTIwODdlOS4uZGNl
+YTVkNDFlMTAgMTAwNjQ0DQotLS0gYS90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQor
+KysgYi90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQpAQCAtMzY0LDcgKzM2NCw3IEBA
+IGZvcmVhY2ggc3BlZWQgOiBbJ3F1aWNrJywgJ3Rob3JvdWdoJ10NCiAgICAgICAgIyAncnVu
+X3RhcmdldCcgbG9naWMgYmVsb3cgJiBpbiBNYWtlZmlsZS5pbmNsdWRlDQogICAgICAgIHRl
+c3QoJ2Z1bmMtJyArIHRlc3RuYW1lLA0KICAgICAgICAgICAgIHB5dGhvbiwNCi0gICAgICAg
+ICAgIGRlcGVuZHM6IFt0ZXN0X2RlcHMsIHRlc3RfZW11bGF0b3IsIGVtdWxhdG9yX21vZHVs
+ZXNdLA0KKyAgICAgICAgICAgZGVwZW5kczogW3Rlc3RfZGVwcywgdGVzdF9lbXVsYXRvciwg
+ZW11bGF0b3JfbW9kdWxlcywgDQpwbHVnaW5fbW9kdWxlc10sDQogICAgICAgICAgICAgZW52
+OiB0ZXN0X2VudiwNCiAgICAgICAgICAgICBhcmdzOiBbdGVzdHBhdGhdLA0KICAgICAgICAg
+ICAgIHByb3RvY29sOiAndGFwJywNCmRpZmYgLS1naXQgYS90ZXN0cy90Y2cvcGx1Z2lucy9t
+ZXNvbi5idWlsZCBiL3Rlc3RzL3RjZy9wbHVnaW5zL21lc29uLmJ1aWxkDQppbmRleCA3Zjky
+NzM1NzQyMS4uMGU0ZDRmNWQ2YWYgMTAwNjQ0DQotLS0gYS90ZXN0cy90Y2cvcGx1Z2lucy9t
+ZXNvbi5idWlsZA0KKysrIGIvdGVzdHMvdGNnL3BsdWdpbnMvbWVzb24uYnVpbGQNCkBAIC0x
+OSwzICsxOSw1IEBAIGlmIHQubGVuZ3RoKCkgPiAwDQogIGVsc2UNCiAgICBydW5fdGFyZ2V0
+KCd0ZXN0LXBsdWdpbnMnLCBjb21tYW5kOiBmaW5kX3Byb2dyYW0oJ3RydWUnKSkNCiAgZW5k
+aWYNCisNCitwbHVnaW5fbW9kdWxlcyArPSB0DQoNCg==
 
