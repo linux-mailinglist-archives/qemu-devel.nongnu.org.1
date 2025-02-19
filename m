@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19790A3B3A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEE1A3B3A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:27:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfPX-0005Rz-Mb; Wed, 19 Feb 2025 03:26:27 -0500
+	id 1tkfPU-0005Ra-Kd; Wed, 19 Feb 2025 03:26:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPS-0005R8-AH
+ id 1tkfPR-0005R0-R9
  for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:22 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPO-0004ZM-AV
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:22 -0500
+ id 1tkfPP-0004Za-Ic
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953578; x=1771489578;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=n3G2+rZVAYvBLJBr7bDcazXKtkXOmjpxxwyVK8RE6fo=;
- b=Vl6diWRwWauWfr4Sm2Zik0kZMZe7roLn7j/fVFFFrByxrg1D1hQOLqhW
- lY2pM5iOP9CiQXto2HGZZOghm0HOQErL0SB97/2nHCrDNMACx+kt0+ueF
- 4SiZLg7ltXcmRtfmFMmaGTqlCQrvY5k3czpZm1bdyRL0mx2iuiVWC43bi
- wQLj8zf6KgUieSI2jXY8hSavL9GxvYm+uVplvUTCk0XtDqvGBF05TnLS9
- 7p5FII/JO1AHtLTOfYmtmN918ssJMfgFMFSlWGitHExlCV4V97d3jPvyz
- YedRfyY3tvbgoPdqVaIjJzMgHZyE1zxa72mPyQcB0OzkgbviAEx1o26Lx Q==;
-X-CSE-ConnectionGUID: GQ6YicxnRQm29TQ5GO/NHA==
-X-CSE-MsgGUID: PLL/9RU3T6OzNvbjFC/j7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544029"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544029"
+ t=1739953580; x=1771489580;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=BBos9TMEnyoSZ/PC59m1etHG0x5EWREqcsDCxiYnHsk=;
+ b=jkayOLn/ILNYCQ+cIG9oLtKnSucCFnmXPBMbRjpLUodt1IIcypdgZxUf
+ /tVdZtzh2cXOgQBagj7+XiSm3TkEKy9/gcqEH0SsUHJG1l5eHqvdAjshv
+ ffn3a9LFetGTSnR7LHhx4NxCGBpq0iofn8xpByMzyUy8cIBZu0l+SNVaG
+ xSyPSovKYGWu8I2JuxzlWecj1LMifUg7nG93pKACtec9H1fH9azmvyDVN
+ hCaID0BulwlWJNco/Yy3Mh6S0eo8NtXt+uqA2C5L5bsMejS0WeudSyLuw
+ +9IOiS5mOSokyMMuNyBiAGj2/Tpw66o1PdmXDApvKuwJgq7W45vnRlzYL A==;
+X-CSE-ConnectionGUID: QAMNEVJTQD6xP3WyVUofxw==
+X-CSE-MsgGUID: q/mo3sKyQIuyUMN7Xal9kw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544042"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544042"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:05 -0800
-X-CSE-ConnectionGUID: SIX45rcyRym96KeumX6aww==
-X-CSE-MsgGUID: dYk0yXssTXS+0LZ6dj5K6Q==
+ 19 Feb 2025 00:26:09 -0800
+X-CSE-ConnectionGUID: uGqC7U+UTVq/HngNGwYrhw==
+X-CSE-MsgGUID: rTyTWlLASpCovG4yNCQEtQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850762"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850808"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:01 -0800
+ 19 Feb 2025 00:26:05 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,11 +52,13 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv2 00/20] intel_iommu: Enable stage-1 translation for
- passthrough device
-Date: Wed, 19 Feb 2025 16:22:08 +0800
-Message-Id: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv2 01/20] backends/iommufd: Add helpers for invalidating
+ user-managed HWPT
+Date: Wed, 19 Feb 2025 16:22:09 +0800
+Message-Id: <20250219082228.3303163-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
+References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.17;
@@ -84,205 +86,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ include/system/iommufd.h |  3 +++
+ backends/iommufd.c       | 30 ++++++++++++++++++++++++++++++
+ backends/trace-events    |  1 +
+ 3 files changed, 34 insertions(+)
 
-Per Jason Wang's suggestion, iommufd nesting series[1] is split into
-"Enable stage-1 translation for emulated device" series and
-"Enable stage-1 translation for passthrough device" series.
-
-This series is 2nd part focusing on passthrough device. We don't do
-shadowing of guest page table for passthrough device but pass stage-1
-page table to host side to construct a nested domain. There was some
-effort to enable this feature in old days, see [2] for details.
-
-The key design is to utilize the dual-stage IOMMU translation
-(also known as IOMMU nested translation) capability in host IOMMU.
-As the below diagram shows, guest I/O page table pointer in GPA
-(guest physical address) is passed to host and be used to perform
-the stage-1 address translation. Along with it, modifications to
-present mappings in the guest I/O page table should be followed
-with an IOTLB invalidation.
-
-        .-------------.  .---------------------------.
-        |   vIOMMU    |  | Guest I/O page table      |
-        |             |  '---------------------------'
-        .----------------/
-        | PASID Entry |--- PASID cache flush --+
-        '-------------'                        |
-        |             |                        V
-        |             |           I/O page table pointer in GPA
-        '-------------'
-    Guest
-    ------| Shadow |---------------------------|--------
-          v        v                           v
-    Host
-        .-------------.  .------------------------.
-        |   pIOMMU    |  |  FS for GIOVA->GPA     |
-        |             |  '------------------------'
-        .----------------/  |
-        | PASID Entry |     V (Nested xlate)
-        '----------------\.----------------------------------.
-        |             |   | SS for GPA->HPA, unmanaged domain|
-        |             |   '----------------------------------'
-        '-------------'
-Where:
- - FS = First stage page tables
- - SS = Second stage page tables
-<Intel VT-d Nested translation>
-
-There are some interactions between VFIO and vIOMMU
-* vIOMMU registers PCIIOMMUOps [set|unset]_iommu_device to PCI
-  subsystem. VFIO calls them to register/unregister HostIOMMUDevice
-  instance to vIOMMU at vfio device realize stage.
-* vIOMMU calls HostIOMMUDeviceIOMMUFD interface [at|de]tach_hwpt
-  to bind/unbind device to IOMMUFD backed domains, either nested
-  domain or not.
-
-See below diagram:
-
-        VFIO Device                                 Intel IOMMU
-    .-----------------.                         .-------------------.
-    |                 |                         |                   |
-    |       .---------|PCIIOMMUOps              |.-------------.    |
-    |       | IOMMUFD |(set_iommu_device)       || Host IOMMU  |    |
-    |       | Device  |------------------------>|| Device list |    |
-    |       .---------|(unset_iommu_device)     |.-------------.    |
-    |                 |                         |       |           |
-    |                 |                         |       V           |
-    |       .---------|  HostIOMMUDeviceIOMMUFD |  .-------------.  |
-    |       | IOMMUFD |            (attach_hwpt)|  | Host IOMMU  |  |
-    |       | link    |<------------------------|  |   Device    |  |
-    |       .---------|            (detach_hwpt)|  .-------------.  |
-    |                 |                         |       |           |
-    |                 |                         |       ...         |
-    .-----------------.                         .-------------------.
-
-Based on Yi's suggestion, this design is optimal in sharing ioas/hwpt
-whenever possible and create new one on demand, also supports multiple
-iommufd objects and ERRATA_772415.
-
-E.g., Stage-2 page table could be shared by different devices if there
-is no conflict and devices link to same iommufd object, i.e. devices
-under same host IOMMU can share same stage-2 page table. If there is
-conflict, i.e. there is one device under non cache coherency mode
-which is different from others, it requires a separate stage-2 page
-table in non-CC mode.
-
-SPR platform has ERRATA_772415 which requires no readonly mappings
-in stage-2 page table. This series supports creating VTDIOASContainer
-with no readonly mappings. If there is a rare case that some IOMMUs
-on a multiple IOMMU host have ERRATA_772415 and others not, this
-design can still survive.
-
-See below example diagram for a full view:
-
-      IntelIOMMUState
-             |
-             V
-    .------------------.    .------------------.    .-------------------.
-    | VTDIOASContainer |--->| VTDIOASContainer |--->| VTDIOASContainer  |-->...
-    | (iommufd0,RW&RO) |    | (iommufd1,RW&RO) |    | (iommufd0,RW only)|
-    .------------------.    .------------------.    .-------------------.
-             |                       |                              |
-             |                       .-->...                        |
-             V                                                      V
-      .-------------------.    .-------------------.          .---------------.
-      |   VTDS2Hwpt(CC)   |--->| VTDS2Hwpt(non-CC) |-->...    | VTDS2Hwpt(CC) |-->...
-      .-------------------.    .-------------------.          .---------------.
-          |            |               |                            |
-          |            |               |                            |
-    .-----------.  .-----------.  .------------.              .------------.
-    | IOMMUFD   |  | IOMMUFD   |  | IOMMUFD    |              | IOMMUFD    |
-    | Device(CC)|  | Device(CC)|  | Device     |              | Device(CC) |
-    | (iommufd0)|  | (iommufd0)|  | (non-CC)   |              | (errata)   |
-    |           |  |           |  | (iommufd0) |              | (iommufd0) |
-    .-----------.  .-----------.  .------------.              .------------.
-
-This series is also a prerequisite work for vSVA, i.e. Sharing
-guest application address space with passthrough devices.
-
-To enable stage-1 translation, only need to add "x-scalable-mode=on,x-flts=on".
-i.e. -device intel-iommu,x-scalable-mode=on,x-flts=on...
-
-Passthrough device should use iommufd backend to work with stage-1 translation.
-i.e. -object iommufd,id=iommufd0 -device vfio-pci,iommufd=iommufd0,...
-
-If host doesn't support nested translation, qemu will fail with an unsupported
-report.
-
-Test done:
-- VFIO devices hotplug/unplug
-- different VFIO devices linked to different iommufds
-- vhost net device ping test
-
-PATCH1-8:  Add HWPT-based nesting infrastructure support
-PATCH9-10: Some cleanup work
-PATCH11:   cap/ecap related compatibility check between vIOMMU and Host IOMMU
-PATCH12-19:Implement stage-1 page table for passthrough device
-PATCH20:   Enable stage-1 translation for passthrough device
-
-Qemu code can be found at [3]
-
-TODO:
-- RAM discard
-- dirty tracking on stage-2 page table
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
-[2] https://patchwork.kernel.org/project/kvm/cover/20210302203827.437645-1-yi.l.liu@intel.com/
-[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
-
-Thanks
-Zhenzhong
-
-Changelog:
-rfcv2:
-- Drop VTDPASIDAddressSpace and use VTDAddressSpace (Eric, Liuyi)
-- Move HWPT uAPI patches ahead(patch1-8) so arm nesting could easily rebase
-- add two cleanup patches(patch9-10)
-- VFIO passes iommufd/devid/hwpt_id to vIOMMU instead of iommufd/devid/ioas_id
-- add vtd_as_[from|to]_iommu_pasid() helper to translate between vtd_as and
-  iommu pasid, this is important for dropping VTDPASIDAddressSpace
-
-Yi Liu (3):
-  intel_iommu: Replay pasid binds after context cache invalidation
-  intel_iommu: Propagate PASID-based iotlb invalidation to host
-  intel_iommu: Refresh pasid bind when either SRTP or TE bit is changed
-
-Zhenzhong Duan (17):
-  backends/iommufd: Add helpers for invalidating user-managed HWPT
-  vfio/iommufd: Add properties and handlers to
-    TYPE_HOST_IOMMU_DEVICE_IOMMUFD
-  HostIOMMUDevice: Introduce realize_late callback
-  vfio/iommufd: Implement HostIOMMUDeviceClass::realize_late() handler
-  vfio/iommufd: Implement [at|de]tach_hwpt handlers
-  host_iommu_device: Define two new capabilities
-    HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP]
-  iommufd: Implement query of HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP]
-  iommufd: Implement query of HOST_IOMMU_DEVICE_CAP_ERRATA
-  intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
-    vtd_ce_get_pasid_entry
-  intel_iommu: Optimize context entry cache utilization
-  intel_iommu: Check for compatibility with IOMMUFD backed device when
-    x-flts=on
-  intel_iommu: Introduce a new structure VTDHostIOMMUDevice
-  intel_iommu: Add PASID cache management infrastructure
-  intel_iommu: Bind/unbind guest page table to host
-  intel_iommu: ERRATA_772415 workaround
-  intel_iommu: Bypass replay in stage-1 page table mode
-  intel_iommu: Enable host device when x-flts=on in scalable mode
-
- hw/i386/intel_iommu_internal.h     |   56 +
- include/hw/i386/intel_iommu.h      |   33 +-
- include/system/host_iommu_device.h |   40 +
- include/system/iommufd.h           |   53 +
- backends/iommufd.c                 |   58 +
- hw/i386/intel_iommu.c              | 1660 ++++++++++++++++++++++++----
- hw/vfio/common.c                   |   17 +-
- hw/vfio/iommufd.c                  |   48 +
- backends/trace-events              |    1 +
- hw/i386/trace-events               |   13 +
- 10 files changed, 1776 insertions(+), 203 deletions(-)
-
+diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+index cbab75bfbf..5d02e9d148 100644
+--- a/include/system/iommufd.h
++++ b/include/system/iommufd.h
+@@ -61,6 +61,9 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
+                                       uint64_t iova, ram_addr_t size,
+                                       uint64_t page_size, uint64_t *data,
+                                       Error **errp);
++int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
++                                     uint32_t data_type, uint32_t entry_len,
++                                     uint32_t *entry_num, void *data_ptr);
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index d57da44755..fc32aad5cb 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -311,6 +311,36 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+     return true;
+ }
+ 
++int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
++                                     uint32_t data_type, uint32_t entry_len,
++                                     uint32_t *entry_num, void *data_ptr)
++{
++    int ret, fd = be->fd;
++    struct iommu_hwpt_invalidate cache = {
++        .size = sizeof(cache),
++        .hwpt_id = hwpt_id,
++        .data_type = data_type,
++        .entry_len = entry_len,
++        .entry_num = *entry_num,
++        .data_uptr = (uintptr_t)data_ptr,
++    };
++
++    ret = ioctl(fd, IOMMU_HWPT_INVALIDATE, &cache);
++
++    trace_iommufd_backend_invalidate_cache(fd, hwpt_id, data_type, entry_len,
++                                           *entry_num, cache.entry_num,
++                                           (uintptr_t)data_ptr, ret);
++    if (ret) {
++        *entry_num = cache.entry_num;
++        error_report("IOMMU_HWPT_INVALIDATE failed: %s", strerror(errno));
++        ret = -errno;
++    } else {
++        g_assert(*entry_num == cache.entry_num);
++    }
++
++    return ret;
++}
++
+ static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+ {
+     HostIOMMUDeviceCaps *caps = &hiod->caps;
+diff --git a/backends/trace-events b/backends/trace-events
+index 40811a3162..5a23db6c8a 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -18,3 +18,4 @@ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_
+ iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+ iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
+ iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
++iommufd_backend_invalidate_cache(int iommufd, uint32_t hwpt_id, uint32_t data_type, uint32_t entry_len, uint32_t entry_num, uint32_t done_num, uint64_t data_ptr, int ret) " iommufd=%d hwpt_id=%u data_type=%u entry_len=%u entry_num=%u done_num=%u data_ptr=0x%"PRIx64" (%d)"
 -- 
 2.34.1
 
