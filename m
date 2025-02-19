@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2428BA3CB10
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 22:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B2EA3CB12
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 22:12:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkrJM-0001lg-2b; Wed, 19 Feb 2025 16:08:52 -0500
+	id 1tkrJO-0001mj-SN; Wed, 19 Feb 2025 16:08:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJJ-0001l0-IS
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:08:49 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJM-0001mC-NV
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:08:52 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJF-0008U4-To
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:08:48 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-438a39e659cso1172385e9.2
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 13:08:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJL-0008Ud-66
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:08:52 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43996e95114so1159785e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 13:08:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739999324; x=1740604124; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jwfRzD6O0YD7j2pvGbQ4kMoFWL7J1bU250ClTlckFJs=;
- b=auIL0L6EMoge4FRVEoJwJtaW419HAAV4xXsocHwfUz4vRl41We3XWvkKrQPBL4DSPi
- 5ydS6wtoMELji4s9aYeiAFvNsnO1AK7kGCZUprS1Y9wUj3Whwg3jRNhB1Qx5jjhL9QUh
- zf7dRhbPPLwRbnBsgZuk8cTmDT2gRNHRV0MdKu4DLAkwCVRE8UJ3xalw0sSt5NDSvjPu
- EPhavCjJ/pDeqmExvC28lIAfuSJkX517aW/kZGBQXu+SmgHcGDGAEm2QEd5DlRHwhYPh
- +0gIQah+FjhfI6oon4jMDtZU97k34k2YLwwwvUMLjBKrKmA23qD8LJzMAGl6U0KyCZZJ
- QinA==
+ d=linaro.org; s=google; t=1739999329; x=1740604129; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pnDfQ0pDNHjagyoidO1nQy0wbrzE23spPhP9nSEJCp0=;
+ b=vBLZ1eD/MQanhYw83jq+bbRduIN0Y7xLqD3aOhQJ1ImC+yS3pj021HFrUecMntM1Av
+ A/CAXJPfP/a4jw0T5hAgJ6MJeKnITnQFKTR8mf0cmQH7SvR+yqStu49QwSqTN49hiKzg
+ 43GI2hdohHoAfuoTe8zQL+uKj+pCsrQ6SCbqo+5z+pqQUB+9zrxJ4kkkvW9CVykjl53D
+ cAxbuz+O00rYnjMBv8s45r9ujrtfDtRgV8Z+Nc2+aJd3I9NFuxAYag0tR4ACB0LBq8IN
+ 5u8Sohkc2sqOugSBHzhWrYtOFnuQGuEd/yVdx9qbVwx+nmNZpABDRr9FBO14aVgWgFlu
+ U7TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739999324; x=1740604124;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jwfRzD6O0YD7j2pvGbQ4kMoFWL7J1bU250ClTlckFJs=;
- b=JT+Gj2yTHQrC0I94emN10xxbgumQQSxpFkJz7OJjfeLyvbnfhCeHyv2f5o1d2bekOY
- 9t6rlK/5jM9Cpks9LWOzM+f/jNWt6bz+fgNvDQRWWAP8sJkUTlUcnxVCY+pwLeHiA01Q
- cLQ6uOogSE781bBeBIxuDlwDTXKmeZxh2uHCe81pKDw3bjfuGLoKFLhPNoCKMUg6IALy
- 3d1vGcFkk8+/dF1fMSYP5ZiXRBT5K1OPXCGihbb6fMDqzwF8HprXW85pFc0HTXYY8Qwt
- oC/++2iyaTehjaaLkuP2etNy18FVZ5MGEDjaOd0l0k72GXU6Z7jQA1d7WuPIlQyt5qOz
- 52eQ==
+ d=1e100.net; s=20230601; t=1739999329; x=1740604129;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pnDfQ0pDNHjagyoidO1nQy0wbrzE23spPhP9nSEJCp0=;
+ b=mojrPp37fns/+ScsEHQHTzhcDioCnUkhVI+kS35Qj+FtVA170psXrsFhEN7ABjZXoP
+ f1FQooNzYMsyBorPhzj1rV7iVN7ITLuz5XDa78cnn5eFLuSHu5PeTHSwwIIvgGqC7tQV
+ oeCfvciYqrFqJHBX4xeHQQqi376/9A8h3Y0P5zNNbM42ViyEa6SghGjx+wQWpg9ZJSDw
+ cgV4/P01dYjqoIc0zK3YRPliex2PQGd2iUc1L3Wq5frzwvTBEqDRWAnoxcspguaRQxRA
+ bFPVIwHa+fIxE0x02pYicj+Xt5HvkpX+REM2HyufYGHtL7emUxoiJYT2+n6OuM0amMoE
+ u1mA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX0P88kulCWvY1UUh7Gy3RkTzBsPb6zqXhoR4gv1wIqt6meY8syox9Wk4PsO4ikyEhnIQBSwBYwMP5H@nongnu.org
-X-Gm-Message-State: AOJu0YyOba6BJfu6mrZeMs7vTJdu36Ih7UwE1TXubyEpH0Dsa+MGajFN
- w7s6mJ48IxZpsq1AQ5Kn0idDxZc/2F+11dPzLBdMn9S4yim70zF60lPxPhjjq0g=
-X-Gm-Gg: ASbGncsiYjv5RSW5sRGJNa34ItdQk56jZPeMSUCKdwdh835OKa1dr51zKvtqA+S302q
- A3kd9JY9EIyn1Fna7QDriu5Ot2c7jkfufqeoA+VBYp08vzdVwYn1eYMROzCuC1f4P/sw4zVzKBL
- 2cz9fDyrxsnbifp3xbdCUegrZJ4H0ee8hT70lgK210ZBxsHNWSvZ7LjpYZYK5itVqVqOsTv5Ceu
- VK5lo40p46qXPsY3exsSGQ7rO4Uw5JFfDi+yde/VaWYsNtHFV+Na+gc1LrtR3EL9OWwqZzBLvP5
- n9PjELWTg+vItZhgd9iPw/7sqW5zTOMTfJzn5+cp4ppY2Bb8GZDFeo88slh/iq9WCA==
-X-Google-Smtp-Source: AGHT+IHduT0jWPJt3zNktPcWix1/Gcy05r8JAStrmmJCQqNFsZzmjva+oAwjfboNVKcjEzXFxBoaNw==
-X-Received: by 2002:a05:600c:444e:b0:439:9f42:8652 with SMTP id
- 5b1f17b1804b1-4399f428858mr26436395e9.17.1739999323712; 
- Wed, 19 Feb 2025 13:08:43 -0800 (PST)
+ AJvYcCWrnggGxvQ40jCD1nHpePnElgVfMWe8kphafn/iJLvYl+MUfbgDbqH43/wvj+XGU5BlisMAzdyAjBye@nongnu.org
+X-Gm-Message-State: AOJu0YwtVSgSCaUt3EYgEL7K7EXjpkUsDGdAUfzxLzyiGF6sIvpRC+Kg
+ SpgAFtqQgqwyQHYn64coAW69t8RlmUJQ+dwu2Nmcc0N2baRYyqlm8uopLIWwGLU=
+X-Gm-Gg: ASbGncsuzTyG/VwmJ3IVwfSEmMexlEoxYXUPpoynZWXs7I+HVGAHV8LJRi9bC9qiZmR
+ SoVzrgEiJMkwYHreChvEua/ypHv8WH4JkN4gCWWfB8XxeSTyNAex2Iuk5+p47uGyiFY/f1mV0jn
+ 0a9srhGNLWtEiTxkavYvw/rnwShdDdNFXb6sOYpC2J1gDbCxLwY0TdyQD1JL9jMajahO6ytXk04
+ V6AhJZ5ESgWcP3V0U1E9XJ6oDFSRjakkR6V+uWHQsqA3p5S0/qtFafRsoqQf7dwxjbe4AWYBnr2
+ tWb76VlQK225XePhPXcumItLg8iT9V12uEXBQ5E84A/CNnimYaX4eVEIv6MAcE9hfg==
+X-Google-Smtp-Source: AGHT+IFkA47+n1j1DG2COTtp0KDSYC++hjSRKaos4pqLnwlps7JbruZUJquCqI0DxmNT/FpiZUB9lQ==
+X-Received: by 2002:a05:600c:1ca8:b0:439:8a44:1e65 with SMTP id
+ 5b1f17b1804b1-4398a441f98mr114220365e9.7.1739999329390; 
+ Wed, 19 Feb 2025 13:08:49 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439872b59e9sm90926805e9.31.2025.02.19.13.08.42
+ 5b1f17b1804b1-4399b430912sm30933125e9.0.2025.02.19.13.08.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Feb 2025 13:08:43 -0800 (PST)
+ Wed, 19 Feb 2025 13:08:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
@@ -73,16 +74,18 @@ Cc: Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
  Thomas Huth <huth@tuxfamily.org>,
  Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org
-Subject: [PATCH 0/9] hw/char: Improve RX FIFO depth uses
-Date: Wed, 19 Feb 2025 22:08:32 +0100
-Message-ID: <20250219210841.94797-1-philmd@linaro.org>
+ qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 1/9] hw/char/pl011: Warn when using disabled receiver
+Date: Wed, 19 Feb 2025 22:08:33 +0100
+Message-ID: <20250219210841.94797-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250219210841.94797-1-philmd@linaro.org>
+References: <20250219210841.94797-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,35 +108,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some UART devices implement a RX FIFO but their code
-(via IOCanReadHandler) only return a size of 1 element,
-while we can receive more chars.
+We shouldn't receive characters when the full UART or its
+receiver is disabled. However we don't want to break the
+possibly incomplete "my first bare metal assembly program"s,
+so we choose to simply display a warning when this occurs.
 
-This series takes advantage of the full depth.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/char/pl011.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Inspired by pm215 chat comment on yesterday's community
-meeting on the PL011 Rust implementation description by
-Paolo :)
-
-Philippe Mathieu-Daudé (9):
-  hw/char/pl011: Warn when using disabled receiver
-  hw/char/pl011: Simplify a bit pl011_can_receive()
-  hw/char/pl011: Improve RX flow tracing events
-  hw/char/pl011: Really use RX FIFO depth
-  hw/char/bcm2835_aux: Really use RX FIFO depth
-  hw/char/imx_serial: Really use RX FIFO depth
-  hw/char/mcf_uart: Use FIFO_DEPTH definition instead of magic values
-  hw/char/mcf_uart: Really use RX FIFO depth
-  hw/char/sh_serial: Return correct number of empty RX FIFO elements
-
- hw/char/bcm2835_aux.c |  6 ++++--
- hw/char/imx_serial.c  |  8 ++++++--
- hw/char/mcf_uart.c    | 16 +++++++++++-----
- hw/char/pl011.c       | 28 ++++++++++++++++++++--------
- hw/char/sh_serial.c   | 30 ++++++++++++++----------------
- hw/char/trace-events  |  7 ++++---
- 6 files changed, 59 insertions(+), 36 deletions(-)
-
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 06ce851044d..60cea1d9a16 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -85,6 +85,7 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ #define CR_OUT1     (1 << 12)
+ #define CR_RTS      (1 << 11)
+ #define CR_DTR      (1 << 10)
++#define CR_RXE      (1 << 9)
+ #define CR_TXE      (1 << 8)
+ #define CR_LBE      (1 << 7)
+ #define CR_UARTEN   (1 << 0)
+@@ -487,6 +488,12 @@ static int pl011_can_receive(void *opaque)
+     PL011State *s = (PL011State *)opaque;
+     int r;
+ 
++    if (!(s->cr & CR_UARTEN)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "PL011 reading data on disabled UART\n");
++    }
++    if (!(s->cr & CR_RXE)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "PL011 reading data on disabled TX UART\n");
++    }
+     r = s->read_count < pl011_get_fifo_depth(s);
+     trace_pl011_can_receive(s->lcr, s->read_count, r);
+     return r;
 -- 
 2.47.1
 
