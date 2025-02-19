@@ -2,95 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E901A3C9DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D3CA3C9F1
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:35:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqim-0006nM-8R; Wed, 19 Feb 2025 15:31:04 -0500
+	id 1tkqmK-0000Zg-2V; Wed, 19 Feb 2025 15:34:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tkqii-0006n8-TS
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:31:00 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tkqie-0003y3-MP
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:30:58 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-22128b7d587so2456905ad.3
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 12:30:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739997054; x=1740601854; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6WAAKDWmb1N8KnurhDiK6oIeTxnxeVoBs0P8C/U/vtw=;
- b=Kd93bkVPEUkv4seelEC92u3I9AeFbtGlk4NarkuJUIjoneWmkE5Poew4X7EvsYWshA
- BWTpWJWixZkpcO3vCXgIySkdLjXKJZcjJofzVYd/B00CS9qJz6YR3u0Z7cXGiq01ALGP
- FfB6/8sjIgwNcPgzDwG0gUPcpVnlWmQ3Q/bpImYpT1+CNHnhh5S+TFs1fWCm4EMfjWWI
- nvMJY+ukXcgxyktyKlPg96FjIb/vR9SPd3ss4n27sCk3+mWocgZ4QkMqpvQlY3oBK28Q
- 1lIVmMZmLhwvTK8bPgkBZPkahtTC0W+RF95WhYvMCPOCxaNeNUKaMBQq/uHaIXeyIHfU
- T4Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739997054; x=1740601854;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6WAAKDWmb1N8KnurhDiK6oIeTxnxeVoBs0P8C/U/vtw=;
- b=Ld0TWxWrcKfsnBNftkusr3X5o9cXIePGvfJwquCAPrHmHgUo58diuEN2RauN+sTUXV
- 4vfseNHbeA0CHf8Km9Ykz69LO3d1m0+RCE8nwHC55Xe/l0hYXVMcN8Td8SA7J6cuI2Zu
- CEiYLsQFNO7tOcSy9ezD+mxhA8V5BriFgrsYhkuAG0mc7wTG437oo/XWN0Pynr77Eqbc
- pgkvEnUIHjyukiWKo1C4sYNCIMAo4LOaz0yMht5lviVhHB1HrgpcwAtyyDYLmLcfLmVY
- bED57hc0gRTiAxMloLm4jquccKBqIuRidqLqbhz8yqR1sUQGcvnUk3UeWDODDUk87nlH
- H4wg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWamd4tj8N4Nw+GDB7KbjFubT8qIQBuiJMk9xuxUxG4GVxRcqbGDgurWnBBT2hy7VoaTuUAiWqNlwAp@nongnu.org
-X-Gm-Message-State: AOJu0YwoeN+YvGv3MKMwQQSGaT2yM7sBnfYhuySG0d+iPN3xwpsbnDB4
- D9j3EFQGTEI4fhNwdrb8ml4DglunwMZnnhXCS5MZsskt142Xytkn5caM3Dn8gqY=
-X-Gm-Gg: ASbGncs+HctK27l9rORaoBA4tPwZ2gXWuMqP4M+T/dExiFPnd5s6TcY0lS5swcfDKnW
- ZLzHyp2AU883beK6wvfHXShGWPwr4Pr/XlXKzTGXkkS8oxUChkO0w7nQ0Gmv1QF1TW2ihNBOMAX
- iSt4cZOonCY6QU5sBBZ7GMrRu8ErAahww6kbY7WJElxxEoBr9XbgszX9SsTXSU28Q2qi7WBmwS+
- VFV32MVNufb7LryjD2ksYaGHSVDI+PXAiJ7bYLzhnnCW+6Y0ORlpS3Dphf67F0c8b4yMJMEAJlE
- Hgp3VmpLHTCWreldaF/HEerPxUbJ
-X-Google-Smtp-Source: AGHT+IErgvxR9qUOC3Nvr29K26sr4D8Eo0iJ7JOJao919xu6sBvmC0y3CLzSrG1RF+XugZJuNXzWMg==
-X-Received: by 2002:a17:903:19c4:b0:215:b058:289c with SMTP id
- d9443c01a7336-2217055dbf2mr74970755ad.8.1739997054503; 
- Wed, 19 Feb 2025 12:30:54 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d556c704sm110453025ad.164.2025.02.19.12.30.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Feb 2025 12:30:54 -0800 (PST)
-Message-ID: <19fb735c-6e0e-4ae2-a553-fbfcba15b3b7@linaro.org>
-Date: Wed, 19 Feb 2025 12:30:53 -0800
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tkqmH-0000YO-ER
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:41 -0500
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tkqmE-0004K9-Sy
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:41 -0500
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tkqm0-00000007VRQ-34s5; Wed, 19 Feb 2025 21:34:24 +0100
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: Peter Xu <peterx@redhat.com>,
+	Fabiano Rosas <farosas@suse.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Subject: [PATCH v5 00/36] =?UTF-8?q?Multifd=20=F0=9F=94=80=20device=20stat?=
+ =?UTF-8?q?e=20transfer=20support=20with=20VFIO=20consumer?=
+Date: Wed, 19 Feb 2025 21:33:42 +0100
+Message-ID: <cover.1739994627.git.maciej.szmigiero@oracle.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] tests/functional: Allow running TCG plugins tests on
- macOS
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Yonggang Luo <luoyonggang@gmail.com>
-References: <20250219192340.92240-1-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250219192340.92240-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,118 +63,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgUGhpbGlwcGUsDQoNCk9uIDIvMTkvMjUgMTE6MjMsIFBoaWxpcHBlIE1hdGhpZXUtRGF1
-ZMOpIHdyb3RlOg0KPiBQaWVycmljayBraW5kbHkgaGVscGVkIG1lIHRvIHJlc29sdmUgdGhp
-cyBpc3N1ZSB3aGljaCBlbmRlZA0KPiBiZWluZyB0cml2aWFsICh0byBoaW0hKS4gTm90IHRl
-c3RlZCBvbiBXaW5kb3dzIHNvIGZhci4NCj4gDQo+IEknbSBzdGlsbCBoYXZpbmcgc29tZSBt
-ZXNvbiBkZXBlbmRlbmN5IHByb2JsZW0sIGV2ZW4gb24gTGludXg6DQo+IA0KPiAgICAkIG1h
-a2UgY2hlY2stZnVuY3Rpb25hbC1hYXJjaDY0DQo+ICAgIC4uLg0KPiAgICBUcmFjZWJhY2sg
-KG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1w
-L3Byb3RvY29sLnB5IiwgbGluZSA4MzQsIGluIF9iaF9jbG9zZV9zdHJlYW0NCj4gICAgICAg
-IGF3YWl0IHdhaXRfY2xvc2VkKHNlbGYuX3dyaXRlcikNCj4gICAgICBGaWxlICJweXRob24v
-cWVtdS9xbXAvdXRpbC5weSIsIGxpbmUgMTMwLCBpbiB3YWl0X2Nsb3NlZA0KPiAgICAgICAg
-YXdhaXQgd3JpdGVyLndhaXRfY2xvc2VkKCkNCj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRo
-b24zLjEwL2FzeW5jaW8vc3RyZWFtcy5weSIsIGxpbmUgMzQzLCBpbiB3YWl0X2Nsb3NlZA0K
-PiAgICAgICAgYXdhaXQgc2VsZi5fcHJvdG9jb2wuX2dldF9jbG9zZV93YWl0ZXIoc2VsZikN
-Cj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRob24zLjEwL2FzeW5jaW8vc2VsZWN0b3JfZXZl
-bnRzLnB5IiwgbGluZSA4NjIsIGluIF9yZWFkX3JlYWR5X19kYXRhX3JlY2VpdmVkDQo+ICAg
-ICAgICBkYXRhID0gc2VsZi5fc29jay5yZWN2KHNlbGYubWF4X3NpemUpDQo+ICAgIENvbm5l
-Y3Rpb25SZXNldEVycm9yOiBbRXJybm8gMTA0XSBDb25uZWN0aW9uIHJlc2V0IGJ5IHBlZXIN
-Cj4gDQo+ICAgIFRoZSBhYm92ZSBleGNlcHRpb24gd2FzIHRoZSBkaXJlY3QgY2F1c2Ugb2Yg
-dGhlIGZvbGxvd2luZyBleGNlcHRpb246DQo+IA0KPiAgICBUcmFjZWJhY2sgKG1vc3QgcmVj
-ZW50IGNhbGwgbGFzdCk6DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvbWFjaGluZS9tYWNo
-aW5lLnB5IiwgbGluZSA0NDgsIGluIGxhdW5jaA0KPiAgICAgICAgc2VsZi5fbGF1bmNoKCkN
-Cj4gICAgICBGaWxlICJweXRob24vcWVtdS9tYWNoaW5lL21hY2hpbmUucHkiLCBsaW5lIDQ5
-NywgaW4gX2xhdW5jaA0KPiAgICAgICAgc2VsZi5fcG9zdF9sYXVuY2goKQ0KPiAgICAgIEZp
-bGUgInB5dGhvbi9xZW11L21hY2hpbmUvbWFjaGluZS5weSIsIGxpbmUgMzgxLCBpbiBfcG9z
-dF9sYXVuY2gNCj4gICAgICAgIHNlbGYuX3FtcC5jb25uZWN0KCkNCj4gICAgICBGaWxlICJw
-eXRob24vcWVtdS9xbXAvbGVnYWN5LnB5IiwgbGluZSAxNTMsIGluIGNvbm5lY3QNCj4gICAg
-ICAgIHNlbGYuX3N5bmMoDQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1wL2xlZ2FjeS5w
-eSIsIGxpbmUgMTAyLCBpbiBfc3luYw0KPiAgICAgICAgcmV0dXJuIHNlbGYuX2Fsb29wLnJ1
-bl91bnRpbF9jb21wbGV0ZSgNCj4gICAgICBGaWxlICIvdXNyL2xpYi9weXRob24zLjEwL2Fz
-eW5jaW8vYmFzZV9ldmVudHMucHkiLCBsaW5lIDY0OSwgaW4gcnVuX3VudGlsX2NvbXBsZXRl
-DQo+ICAgICAgICByZXR1cm4gZnV0dXJlLnJlc3VsdCgpDQo+ICAgICAgRmlsZSAiL3Vzci9s
-aWIvcHl0aG9uMy4xMC9hc3luY2lvL3Rhc2tzLnB5IiwgbGluZSA0MDgsIGluIHdhaXRfZm9y
-DQo+ICAgICAgICByZXR1cm4gYXdhaXQgZnV0DQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUv
-cW1wL3Byb3RvY29sLnB5IiwgbGluZSAzODIsIGluIGNvbm5lY3QNCj4gICAgICAgIGF3YWl0
-IHNlbGYuX3Nlc3Npb25fZ3VhcmQoDQo+ICAgICAgRmlsZSAicHl0aG9uL3FlbXUvcW1wL3By
-b3RvY29sLnB5IiwgbGluZSA0NTYsIGluIF9zZXNzaW9uX2d1YXJkDQo+ICAgICAgICByYWlz
-ZSBDb25uZWN0RXJyb3IoZW1zZywgZXJyKSBmcm9tIGVycg0KPiAgICBxZW11LnFtcC5wcm90
-b2NvbC5Db25uZWN0RXJyb3I6IEZhaWxlZCB0byBlc3RhYmxpc2ggc2Vzc2lvbjogW0Vycm5v
-IDEwNF0gQ29ubmVjdGlvbiByZXNldCBieSBwZWVyDQo+IA0KPiAgICBUaGUgYWJvdmUgZXhj
-ZXB0aW9uIHdhcyB0aGUgZGlyZWN0IGNhdXNlIG9mIHRoZSBmb2xsb3dpbmcgZXhjZXB0aW9u
-Og0KPiANCj4gICAgVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOg0KPiAgICAg
-IEZpbGUgInRlc3RzL2Z1bmN0aW9uYWwvdGVzdF9hYXJjaDY0X3RjZ19wbHVnaW5zLnB5Iiwg
-bGluZSA4MCwgaW4gdGVzdF9hYXJjaDY0X3ZpcnRfaW5zbg0KPiAgICAgICAgc2VsZi5ydW5f
-dm0oa2VybmVsX3BhdGgsIGtlcm5lbF9jb21tYW5kX2xpbmUsDQo+ICAgICAgRmlsZSAidGVz
-dHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfdGNnX3BsdWdpbnMucHkiLCBsaW5lIDUyLCBp
-biBydW5fdm0NCj4gICAgICAgIHJhaXNlIGV4Y3ANCj4gICAgICBGaWxlICJ0ZXN0cy9mdW5j
-dGlvbmFsL3Rlc3RfYWFyY2g2NF90Y2dfcGx1Z2lucy5weSIsIGxpbmUgNDYsIGluIHJ1bl92
-bQ0KPiAgICAgICAgdm0ubGF1bmNoKCkNCj4gICAgICBGaWxlICJweXRob24vcWVtdS9tYWNo
-aW5lL21hY2hpbmUucHkiLCBsaW5lIDQ2MSwgaW4gbGF1bmNoDQo+ICAgICAgICByYWlzZSBW
-TUxhdW5jaEZhaWx1cmUoDQo+ICAgIHFlbXUubWFjaGluZS5tYWNoaW5lLlZNTGF1bmNoRmFp
-bHVyZTogQ29ubmVjdEVycm9yOiBGYWlsZWQgdG8gZXN0YWJsaXNoIHNlc3Npb246IFtFcnJu
-byAxMDRdIENvbm5lY3Rpb24gcmVzZXQgYnkgcGVlcg0KPiAgICAgICAgRXhpdCBjb2RlOiAx
-DQo+ICAgICAgICBDb21tYW5kOiBidWlsZC9wbHVnaW5zL3FlbXUtc3lzdGVtLWFhcmNoNjQg
-LWRpc3BsYXkgbm9uZSAtdmdhIG5vbmUgLWNoYXJkZXYgc29ja2V0LGlkPW1vbixmZD02IC1t
-b24gY2hhcmRldj1tb24sbW9kZT1jb250cm9sIC1tYWNoaW5lIHZpcnQgLWNoYXJkZXYgc29j
-a2V0LGlkPWNvbnNvbGUsZmQ9MTEgLXNlcmlhbCBjaGFyZGV2OmNvbnNvbGUgLWNwdSBjb3J0
-ZXgtYTUzIC1rZXJuZWwgL2hvbWUvcGhpbGlwcGUubWF0aGlldS1kYXVkZS8uY2FjaGUvcWVt
-dS9kb3dubG9hZC9jZTk1YTcxMDFhNWZlY2ViZTBmZTYzMGRlZWU2YmQ5N2IzMmJhNDFiYzg3
-NTQwOTBlOWFkODk2MWVhODY3NGM3IC1hcHBlbmQgcHJpbnRrLnRpbWU9MSBwYW5pYz0tMSBj
-b25zb2xlPXR0eUFNQTAgLXBsdWdpbiB0ZXN0cy90Y2cvcGx1Z2lucy9saWJpbnNuLnNvIC1k
-IHBsdWdpbiAtRCAvdG1wL3BsdWdpbmkzNnVhaWx2LmxvZyAtbmV0IG5vbmUgLW5vLXJlYm9v
-dA0KPiAgICAgICAgT3V0cHV0OiBxZW11LXN5c3RlbS1hYXJjaDY0OiBDb3VsZCBub3QgbG9h
-ZCBwbHVnaW4gdGVzdHMvdGNnL3BsdWdpbnMvbGliaW5zbi5zbzogdGVzdHMvdGNnL3BsdWdp
-bnMvbGliaW5zbi5zbzogY2Fubm90IG9wZW4gc2hhcmVkIG9iamVjdCBmaWxlOiBObyBzdWNo
-IGZpbGUgb3IgZGlyZWN0b3J5DQo+ICAgIG1ha2VbMV06ICoqKiBbTWFrZWZpbGUubXRlc3Q6
-MjY6IGRvLW1lc29uLWNoZWNrXSBFcnJvciAxDQo+IA0KPiBJIGRvbid0IG1pbmQgbXVjaCBi
-dWlsZGluZyB0aGUgcGx1Z2lucyBtYW51YWxseToNCj4gDQo+ICAgICQgbWFrZSB0ZXN0cy90
-Y2cvcGx1Z2lucy9saWJpbnNuLnNvDQo+ICAgIFsxLzJdIENvbXBpbGluZyBDIG9iamVjdCB0
-ZXN0cy90Y2cvcGx1Z2lucy9saWJpbnNuLnNvLnAvaW5zbi5jLm8NCj4gICAgWzIvMl0gTGlu
-a2luZyB0YXJnZXQgdGVzdHMvdGNnL3BsdWdpbnMvbGliaW5zbi5zbw0KPiANCg0KTWVzb24g
-dGVzdHMgZGVwZW5kZW5jeSBpcyBtaXNzaW5nIGZvciBwbHVnaW5zLCBzbyB3ZSBuZWVkIHRv
-IGFkZCBpdC4NCg0KQnkgcnVubmluZzogbWFrZSBjaGVjay1mdW5jdGlvbmFsLWFhcmNoNjQg
-Vj0xLCB5b3UgY2FuIHNlZSBpdCdzIG9ubHkgDQpidWlsZGluZyBxZW11LWltZywgcWVtdS1z
-eXN0ZW0gYW5kIHJvbXMgZmlsZXMuDQoNCllvdSBjYW4gaW50ZWdyYXRlIHRoaXMgcGF0Y2gg
-aW4geW91ciBzZXJpZXM6DQoNCmNvbW1pdCBhMzc1ZTliNTYwNjg1YmY0Y2NkNjMzMmNjMjNj
-ZTY4NTBlYzJmYmJlDQpBdXRob3I6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZp
-ZXJAbGluYXJvLm9yZz4NCkRhdGU6ICAgV2VkIEZlYiAxOSAxMjoyNjo1MyAyMDI1IC0wODAw
-DQoNCiAgICAgcGx1Z2luczogYWRkIGV4cGxpY2l0IGRlcGVuZGVuY3kgaW4gZnVuY3Rpb25h
-bCB0ZXN0cw0KDQogICAgIC4vdGVzdHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfdGNnX3Bs
-dWdpbnMucHkgbmVlZHMgdG8gaGF2ZSBwbHVnaW4NCiAgICAgbGliaW5zbiBidWlsdC4gSG93
-ZXZlciwgaXQncyBub3QgbGlzdGVkIGFzIGEgZGVwZW5kZW5jeSwgc28gbWVzb24gY2FuJ3QN
-CiAgICAga25vdyBpdCBuZWVkcyB0byBiZSBidWlsdC4NCg0KICAgICBUaHVzLCB3ZSBrZWVw
-IHRyYWNrIG9mIGFsbCBwbHVnaW5zLCBhbmQgYWRkIHRoZW0gYXMgYW4gZXhwbGljaXQNCiAg
-ICAgZGVwZW5kZW5jeS4NCg0KICAgICBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2aWVy
-IDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQoNCmRpZmYgLS1naXQgYS9tZXNvbi5i
-dWlsZCBiL21lc29uLmJ1aWxkDQppbmRleCAxOGI0MGEyMWE1YS4uODBiOWM4ZWRkNzEgMTAw
-NjQ0DQotLS0gYS9tZXNvbi5idWlsZA0KKysrIGIvbWVzb24uYnVpbGQNCkBAIC0zNjU4LDYg
-KzM2NTgsNyBAQCBxdGVzdF9tb2R1bGVfc3MgPSBzcy5zb3VyY2Vfc2V0KCkNCg0KICBtb2R1
-bGVzID0ge30NCiAgdGFyZ2V0X21vZHVsZXMgPSB7fQ0KK3BsdWdpbl9tb2R1bGVzID0gW10N
-CiAgaHdfYXJjaCA9IHt9DQogIHRhcmdldF9hcmNoID0ge30NCiAgdGFyZ2V0X3N5c3RlbV9h
-cmNoID0ge30NCmRpZmYgLS1naXQgYS9jb250cmliL3BsdWdpbnMvbWVzb24uYnVpbGQgYi9j
-b250cmliL3BsdWdpbnMvbWVzb24uYnVpbGQNCmluZGV4IGM0ZjUwNjFhN2IzLi4zMjdiNDhj
-ODg4NiAxMDA2NDQNCi0tLSBhL2NvbnRyaWIvcGx1Z2lucy9tZXNvbi5idWlsZA0KKysrIGIv
-Y29udHJpYi9wbHVnaW5zL21lc29uLmJ1aWxkDQpAQCAtMjcsMyArMjcsNSBAQCBpZiB0Lmxl
-bmd0aCgpID4gMA0KICBlbHNlDQogICAgcnVuX3RhcmdldCgnY29udHJpYi1wbHVnaW5zJywg
-Y29tbWFuZDogZmluZF9wcm9ncmFtKCd0cnVlJykpDQogIGVuZGlmDQorDQorcGx1Z2luX21v
-ZHVsZXMgKz0gdA0KZGlmZiAtLWdpdCBhL3Rlc3RzL2Z1bmN0aW9uYWwvbWVzb24uYnVpbGQg
-Yi90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQppbmRleCAyMWM3ZTIwODdlOS4uZGNl
-YTVkNDFlMTAgMTAwNjQ0DQotLS0gYS90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQor
-KysgYi90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQpAQCAtMzY0LDcgKzM2NCw3IEBA
-IGZvcmVhY2ggc3BlZWQgOiBbJ3F1aWNrJywgJ3Rob3JvdWdoJ10NCiAgICAgICAgIyAncnVu
-X3RhcmdldCcgbG9naWMgYmVsb3cgJiBpbiBNYWtlZmlsZS5pbmNsdWRlDQogICAgICAgIHRl
-c3QoJ2Z1bmMtJyArIHRlc3RuYW1lLA0KICAgICAgICAgICAgIHB5dGhvbiwNCi0gICAgICAg
-ICAgIGRlcGVuZHM6IFt0ZXN0X2RlcHMsIHRlc3RfZW11bGF0b3IsIGVtdWxhdG9yX21vZHVs
-ZXNdLA0KKyAgICAgICAgICAgZGVwZW5kczogW3Rlc3RfZGVwcywgdGVzdF9lbXVsYXRvciwg
-ZW11bGF0b3JfbW9kdWxlcywgDQpwbHVnaW5fbW9kdWxlc10sDQogICAgICAgICAgICAgZW52
-OiB0ZXN0X2VudiwNCiAgICAgICAgICAgICBhcmdzOiBbdGVzdHBhdGhdLA0KICAgICAgICAg
-ICAgIHByb3RvY29sOiAndGFwJywNCmRpZmYgLS1naXQgYS90ZXN0cy90Y2cvcGx1Z2lucy9t
-ZXNvbi5idWlsZCBiL3Rlc3RzL3RjZy9wbHVnaW5zL21lc29uLmJ1aWxkDQppbmRleCA3Zjky
-NzM1NzQyMS4uMGU0ZDRmNWQ2YWYgMTAwNjQ0DQotLS0gYS90ZXN0cy90Y2cvcGx1Z2lucy9t
-ZXNvbi5idWlsZA0KKysrIGIvdGVzdHMvdGNnL3BsdWdpbnMvbWVzb24uYnVpbGQNCkBAIC0x
-OSwzICsxOSw1IEBAIGlmIHQubGVuZ3RoKCkgPiAwDQogIGVsc2UNCiAgICBydW5fdGFyZ2V0
-KCd0ZXN0LXBsdWdpbnMnLCBjb21tYW5kOiBmaW5kX3Byb2dyYW0oJ3RydWUnKSkNCiAgZW5k
-aWYNCisNCitwbHVnaW5fbW9kdWxlcyArPSB0DQoNCg==
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+
+This is an updated v5 patch series of the v4 series located here:
+https://lore.kernel.org/qemu-devel/cover.1738171076.git.maciej.szmigiero@oracle.com/
+
+Changes from v3:
+* Use "unsigned long" for VFIO bytes transferred counter to fixes
+test issues on 32-bit platforms.
+
+* Instead of adding BQL holding around qemu_loadvm_state_main() in
+postcopy_ram_listen_thread() just add a TODO comment there.
+
+* Drop patches for gracefully handling improperly terminated TLS session
+and rely on recent Fabiano's changes to handle this case instead.
+
+* Adapt how MULTIFD_FLAG_DEVICE_STATE value is defined for consistency with
+neighboring flags.
+
+* Return Error type and use migrate_set_error() to set it also for save
+threads, much like it was previously done for load threads.
+
+* Export SaveLiveCompletePrecopyThreadData and make save threads
+take it directly instead of passing individual parameters stored there
+to a thread entry point.
+
+* Group all multifd device state save variables in
+multifd_send_device_state variable allocated on demand instead of
+using multifd-device-state.c globals.
+
+* Export save threads abort flag via
+multifd_device_state_save_thread_should_exit() getter function rather
+than passing it directly.
+
+* Separate VFIO multifd stuff into migration-multifd.{c,h} files.
+Needed moving VFIO migration channel flags to vfio-common.h header file.
+
+* Move x-migration-load-config-after-iter feature to a separate patch near
+the end of the series.
+
+* Move x-migration-max-queued-buffers feature to a yet another separate
+patch near the end of the series.
+
+* Introduce save/load common vfio_multifd_transfer_setup() and a getter
+function for multifd transfer switch called vfio_multifd_transfer_enabled().
+
+* Move introduction of VFIOMigration->multifd_transfer and
+VFIODevice->migration_multifd_transfer into the very patch that introduces
+the x-migration-multifd-transfer property.
+
+* Introduce vfio_multifd_cleanup() for clearing migration->multifd.
+
+* Split making x-migration-multifd-transfer mutable at runtime into
+a separate patch.
+
+* Rename vfio_switchover_start() to vfio_multifd_switchover_start() and
+add a new vfio_switchover_start() in migration.c that calls that
+vfio_multifd_switchover_start().
+
+* Introduce VFIO_DEVICE_STATE_PACKET_VER_CURRENT.
+
+* Don't print UINT32_MAX value in vfio_load_state_buffer().
+
+* Introduce a new routine for parsing VFIO_MIG_FLAG_DEV_CONFIG_LOAD_READY.
+
+* Add an Error parameter to vfio_save_complete_precopy_thread_config_state()
+and propagate it from vfio_save_device_config_state() function that it calls.
+
+* Update the VFIO developer doc in docs/devel/migration/vfio.rst.
+
+* Add comments about how VFIO multifd threads are launched and from where
+this happens. Also add comments how they are terminated.
+
+* Other small changes, like renamed functions, added review tags, code
+formatting, rebased on top of the latest QEMU git master, etc.
+
+========================================================================
+
+This patch set is targeting QEMU 10.0.
+
+========================================================================
+
+Maciej S. Szmigiero (35):
+  migration: Clarify that {load,save}_cleanup handlers can run without
+    setup
+  thread-pool: Remove thread_pool_submit() function
+  thread-pool: Rename AIO pool functions to *_aio() and data types to
+    *Aio
+  thread-pool: Implement generic (non-AIO) pool support
+  migration: Add MIG_CMD_SWITCHOVER_START and its load handler
+  migration: Add qemu_loadvm_load_state_buffer() and its handler
+  migration: postcopy_ram_listen_thread() should take BQL for some calls
+  error: define g_autoptr() cleanup function for the Error type
+  migration: Add thread pool of optional load threads
+  migration/multifd: Split packet into header and RAM data
+  migration/multifd: Device state transfer support - receive side
+  migration/multifd: Make multifd_send() thread safe
+  migration/multifd: Add an explicit MultiFDSendData destructor
+  migration/multifd: Device state transfer support - send side
+  migration/multifd: Add multifd_device_state_supported()
+  migration: Add save_live_complete_precopy_thread handler
+  vfio/migration: Add load_device_config_state_start trace event
+  vfio/migration: Convert bytes_transferred counter to atomic
+  vfio/migration: Add vfio_add_bytes_transferred()
+  vfio/migration: Move migration channel flags to vfio-common.h header
+    file
+  vfio/migration: Multifd device state transfer support - basic types
+  vfio/migration: Multifd device state transfer support -
+    VFIOStateBuffer(s)
+  vfio/migration: Multifd device state transfer - add support checking
+    function
+  vfio/migration: Multifd device state transfer support - receive
+    init/cleanup
+  vfio/migration: Multifd device state transfer support - received
+    buffers queuing
+  vfio/migration: Multifd device state transfer support - load thread
+  vfio/migration: Multifd device state transfer support - config loading
+    support
+  migration/qemu-file: Define g_autoptr() cleanup function for QEMUFile
+  vfio/migration: Multifd device state transfer support - send side
+  vfio/migration: Add x-migration-multifd-transfer VFIO property
+  vfio/migration: Make x-migration-multifd-transfer VFIO property
+    mutable
+  hw/core/machine: Add compat for x-migration-multifd-transfer VFIO
+    property
+  vfio/migration: Max in-flight VFIO device state buffer count limit
+  vfio/migration: Add x-migration-load-config-after-iter VFIO property
+  vfio/migration: Update VFIO migration documentation
+
+Peter Xu (1):
+  migration/multifd: Make MultiFDSendData a struct
+
+ docs/devel/migration/vfio.rst      |  80 ++-
+ hw/core/machine.c                  |   2 +
+ hw/vfio/meson.build                |   1 +
+ hw/vfio/migration-multifd.c        | 757 +++++++++++++++++++++++++++++
+ hw/vfio/migration-multifd.h        |  38 ++
+ hw/vfio/migration.c                | 119 +++--
+ hw/vfio/pci.c                      |  14 +
+ hw/vfio/trace-events               |  11 +-
+ include/block/aio.h                |   8 +-
+ include/block/thread-pool.h        |  62 ++-
+ include/hw/vfio/vfio-common.h      |  36 ++
+ include/migration/client-options.h |   4 +
+ include/migration/misc.h           |  25 +
+ include/migration/register.h       |  52 +-
+ include/qapi/error.h               |   2 +
+ include/qemu/typedefs.h            |   5 +
+ migration/colo.c                   |   3 +
+ migration/meson.build              |   1 +
+ migration/migration-hmp-cmds.c     |   2 +
+ migration/migration.c              |   4 +-
+ migration/migration.h              |   7 +
+ migration/multifd-device-state.c   | 202 ++++++++
+ migration/multifd-nocomp.c         |  30 +-
+ migration/multifd.c                | 246 ++++++++--
+ migration/multifd.h                |  74 ++-
+ migration/options.c                |   9 +
+ migration/qemu-file.h              |   2 +
+ migration/savevm.c                 | 190 +++++++-
+ migration/savevm.h                 |   6 +-
+ migration/trace-events             |   1 +
+ scripts/analyze-migration.py       |  11 +
+ tests/unit/test-thread-pool.c      |   6 +-
+ util/async.c                       |   6 +-
+ util/thread-pool.c                 | 184 +++++--
+ util/trace-events                  |   6 +-
+ 35 files changed, 2039 insertions(+), 167 deletions(-)
+ create mode 100644 hw/vfio/migration-multifd.c
+ create mode 100644 hw/vfio/migration-multifd.h
+ create mode 100644 migration/multifd-device-state.c
+
 
