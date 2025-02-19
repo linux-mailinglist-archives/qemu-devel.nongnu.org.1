@@ -2,86 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B540CA3C7E9
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 19:48:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1108BA3C82B
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 20:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkp6e-0003yQ-T9; Wed, 19 Feb 2025 13:47:37 -0500
+	id 1tkpHf-00080I-LT; Wed, 19 Feb 2025 13:58:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3HCe2ZwgKCoc75slz43srzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--wuhaotsh.bounces.google.com>)
- id 1tkp68-00038c-Cs
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:47:10 -0500
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3HCe2ZwgKCoc75slz43srzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--wuhaotsh.bounces.google.com>)
- id 1tkp63-0004qO-0d
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:47:03 -0500
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-220bf94cb40so794675ad.0
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:46:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1739990813; x=1740595613; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=pqoQYyAvlYbvoO5CKrUwqrjyMLnIsAG6oK22Xi4In1A=;
- b=Dn+b7jKwHYJgnzO5Dba0CKciEZhbRUydFW/K3Yim+0nC+rRlrr1GIQbZ/LTeXszLPT
- LHx+tGhgTWqHsnl9kYqaKROehdDHC2po7tf5BQSAAI7fSnUUqYyfDq4kKE2x0WSbdPcR
- Pgeirawthyw0xdk/2Gw2XblzcNl5QtUD4bNnEfq437xNcYPk/tB38+sAXvjQ2yGjZxGP
- pxHRQCfbjx/GZ2KWOZ9UsWP/+qCxmLa5LhniB1IlFNxzkt4diz2TdVYDJKRLih+E0P4C
- uAlJfgWJO5Gcj7LLSBhXKbSf04UnCn/wSDJT3CKEbow8OJMfiLMIgoW90pCNftu43/I3
- o63A==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tkpHd-0007zu-HE
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:58:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tkpHb-000786-Cp
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:58:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1739991533;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gZ/ma8ZU2lNoh2I96AVFwFLpkIjrtQUTOPW5IwaPdi4=;
+ b=QU5HVbZIpLz2PpIZP0g21njqqb0kAM/TOdKGDZisLYfkqfGy4QdQghpONxi8Ua6gN2WtLd
+ sNCFxqXO+bRkGDxvUnsqJQ7DQJuunrAHLQpAr5Uuiz+rSNUwSbNE8ccibl9Hp359k6REkB
+ sO2PYG8aw4Thf7BkSF+OxJCT24Ijx6o=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-gqgDGo4VNNCdLjbzJGf28g-1; Wed, 19 Feb 2025 13:58:51 -0500
+X-MC-Unique: gqgDGo4VNNCdLjbzJGf28g-1
+X-Mimecast-MFC-AGG-ID: gqgDGo4VNNCdLjbzJGf28g_1739991531
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-855902600b5so685139f.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:58:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739990813; x=1740595613;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pqoQYyAvlYbvoO5CKrUwqrjyMLnIsAG6oK22Xi4In1A=;
- b=nDM57zeYrUJX7S3pCML2VDaCKLCV7RpMQDeEhhpTIoUzQfZcSrD9yXZuofqaiSEsC2
- E2TZ8Psu+ROOnwZ/xEDFr38HGD9K89GICzeFS9IYSdL0hEESwODl0m3AczaWfNqDVyKo
- 9B+dNi0ECVyan13ISP4lmvgE7hjGgdIJKs/u5/Wzh+WVJPJ0f/8fz9VFcihuS9nVqvDj
- P7QQS9mpmdkFK2+IcFQuKQmLnakLz7uTsBQLHupb/SiPANPFINI9CTTiaPGr4WZ9dxra
- d+WdWPOluVvD2kLdAwI5HxmedB28oyEKu15Y9Q589XPVH0zJrpyvJtwbWyU1YZxBf/kY
- Kd5A==
+ d=1e100.net; s=20230601; t=1739991531; x=1740596331;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gZ/ma8ZU2lNoh2I96AVFwFLpkIjrtQUTOPW5IwaPdi4=;
+ b=YnYtzUcOxzftv3uITUgyAViNUJCtKjYhMgXNyjX0Z7GDlIsU2mGWeDHUGIRgNOVLVR
+ SMlBkMbEMV5zyGto2nEdqPJCuT+6fbz+FFMEo9kHWWHNoNHBsNUx1JE2BglvNHhSvBUe
+ 6WRwF6nLXsQZD9aNOhYco4qbt3VNIwF4vvUKbuHBp1pXX89mrsTPbueirWjamWCnrEYF
+ 1ao92TcpJleLcIVcPN5PgVQxk4w7KW1ZWnn7wVglGHHBbR4T9buFVi52QSGLxoPLzuxg
+ yPtmYAWbiq3o9mfIgf7IZs5gg3C/auCrBmmBc6yT1Nk9YT0AFNa8QsAfQKhasg3KDEtd
+ zQsw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDdEkeKWdqRIkoaHFHEqHplikGseGtHI3Rc9EcsUhbp7bikusIXXgiz47Uk+YThjeNGHTwE95WRWx5@nongnu.org
-X-Gm-Message-State: AOJu0YwQIu1uaAz1LfTqI/tGxTMV82E0o6qG+ck2/SwUZV+Y0CiL2j9F
- K7/4JRauq9wKfj6WoLI8r2QFK10epwn5PGBz0GORNEdnWt82aiebaXDKa/xiJP+ygAtND1vF8+2
- 8vDfvXm/uYw==
-X-Google-Smtp-Source: AGHT+IF9Y0EIB8mXu7WtYeeVCduDwsK3aDp1M1D2MJS65KhlIvYWhQuH/KCp951ietvNOHsAQHNlFK0OlJHhoQ==
-X-Received: from pgbcr11.prod.google.com
- ([2002:a05:6a02:410b:b0:adc:ba1b:f94f])
- (user=wuhaotsh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:a108:b0:1ee:8a68:f83e with SMTP id
- adf61e73a8af0-1eed4ed2b12mr8096653637.20.1739990812748; 
- Wed, 19 Feb 2025 10:46:52 -0800 (PST)
-Date: Wed, 19 Feb 2025 10:46:08 -0800
-In-Reply-To: <20250219184609.1839281-1-wuhaotsh@google.com>
-Mime-Version: 1.0
-References: <20250219184609.1839281-1-wuhaotsh@google.com>
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250219184609.1839281-18-wuhaotsh@google.com>
-Subject: [PATCH v5 17/17] docs/system/arm: Add Description for NPCM8XX SoC
-From: Hao Wu <wuhaotsh@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com, 
- venture@google.com, Avi.Fishman@nuvoton.com, kfting@nuvoton.com, 
- hskinnemoen@google.com, titusr@google.com, 
- chli30@nuvoton.corp-partner.google.com, pbonzini@redhat.com, 
- jasowang@redhat.com, alistair@alistair23.me, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3HCe2ZwgKCoc75slz43srzzrwp.nzx1px5-op6pwyzyry5.z2r@flex--wuhaotsh.bounces.google.com;
- helo=mail-pl1-x649.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ AJvYcCUeL6teXIC9xuOfPXvEFD2GunSW9DXurl6/94L8UJmkPBZR8NHnmCp3f/VjYz1a1OTksAmiT7kUE+TM@nongnu.org
+X-Gm-Message-State: AOJu0YwHhjJOM6RZTjfhjJtizuHouY3CzyMw4yTzy7qhkh7nCQuuTSA1
+ R3Q7y7LvAsKGRA8gmHI+8d+sMLzCLwkLPLUjCuyrOuFJ1R1sMu1jdUFw0yZ6W8eLFt7j2RDrPnt
+ DlLTZwvFW8uz/r5CZ2s1+qsVct8Sg30vhRTMcXWkSbU5/sSFAXfMm
+X-Gm-Gg: ASbGncuTQAMRHj1Amnemhw/pSLvKjEW2GtYztO5OXtg/g9bBXoe14FeeNd3ziqIvU4L
+ FIlLEqFkHLbJBhYTkX7S6v5KOSYg7KnQhbniJ657xNFoJcMQlIaJj6W6gUXxZd7653zKynt4rSJ
+ xY1cPrlkO4DX13rr19A48DU8QefXfveDHOpxe1VYpNVUXtQSWFoxuD3QGOWy5dLlTBH+Lzp/4Vn
+ prb1dXUVFU/7XRqV7N0VoSv9jtFF7S2xOGPYfPMKM20E+KGsKCgestiZ8LjgQr3tyU1FNhr90L6
+ b6Am+MsV
+X-Received: by 2002:a05:6e02:1805:b0:3d1:3d56:d15d with SMTP id
+ e9e14a558f8ab-3d280935057mr49049565ab.5.1739991531132; 
+ Wed, 19 Feb 2025 10:58:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4ouS3cXetRF3Hh63qBAwJ/0rYMso1UHS/DwzmJd8hJS64g33fAIDmSJ0w910nfXL5D1/nGw==
+X-Received: by 2002:a05:6e02:1805:b0:3d1:3d56:d15d with SMTP id
+ e9e14a558f8ab-3d280935057mr49049515ab.5.1739991530800; 
+ Wed, 19 Feb 2025 10:58:50 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3d18fb56f99sm29796085ab.50.2025.02.19.10.58.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Feb 2025 10:58:47 -0800 (PST)
+Date: Wed, 19 Feb 2025 11:58:44 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, clg@redhat.com,
+ zhenzhong.duan@intel.com
+Subject: Re: [RFC 0/2] hw/vfio/pci: Prevent BARs from being dma mapped in
+ d3hot state
+Message-ID: <20250219115844.062c5513.alex.williamson@redhat.com>
+In-Reply-To: <20250219175941.135390-1-eric.auger@redhat.com>
+References: <20250219175941.135390-1-eric.auger@redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,90 +110,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NPCM8XX SoC is the successor of the NPCM7XX. It features quad-core
-Cortex-A35 (Armv8, 64-bit) CPUs and some additional peripherals.
+On Wed, 19 Feb 2025 18:58:58 +0100
+Eric Auger <eric.auger@redhat.com> wrote:
 
-This document describes the NPCM8XX SoC and an evaluation board
-(NPCM 845 EVB).
+> Since kernel commit:
+> 2b2c651baf1c ("vfio/pci: Invalidate mmaps and block the access
+> in D3hot power state")
+> any attempt to do an mmap access to a BAR when the device is in d3hot
+> state will generate a fault.
+> 
+> On system_powerdown, if the VFIO device is translated by an IOMMU,
+> the device is moved to D3hot state and then the vIOMMU gets disabled
+> by the guest. As a result of this later operation, the address space is
+> swapped from translated to untranslated. When re-enabling the aliased
+> regions, the RAM regions are dma-mapped again and this causes DMA_MAP
+> faults when attempting the operation on BARs.
+> 
+> To avoid doing the remap on those BARs, we compute whether the
+> device is in D3hot state and if so, skip the DMA MAP.
 
-Signed-off-by: Hao Wu <wuhaotsh@google.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/nuvoton.rst | 27 ++++++++++++++++++++-------
- hw/arm/npcm8xx_boards.c     |  1 +
- 2 files changed, 21 insertions(+), 7 deletions(-)
+Thinking on this some more, QEMU PCI code already manages the device
+BARs appearing in the address space based on the memory enable bit in
+the command register.  Should we do the same for PM state?
 
-diff --git a/docs/system/arm/nuvoton.rst b/docs/system/arm/nuvoton.rst
-index 05059378e5..e4827fb43a 100644
---- a/docs/system/arm/nuvoton.rst
-+++ b/docs/system/arm/nuvoton.rst
-@@ -1,12 +1,13 @@
--Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``)
--=====================================================================================================
-+Nuvoton iBMC boards (``kudo-bmc``, ``mori-bmc``, ``npcm750-evb``, ``quanta-gbs-bmc``, ``quanta-gsj``, ``npcm845-evb``)
-+======================================================================================================================
- 
--The `Nuvoton iBMC`_ chips (NPCM7xx) are a family of ARM-based SoCs that are
-+The `Nuvoton iBMC`_ chips are a family of Arm-based SoCs that are
- designed to be used as Baseboard Management Controllers (BMCs) in various
--servers. They all feature one or two ARM Cortex-A9 CPU cores, as well as an
--assortment of peripherals targeted for either Enterprise or Data Center /
--Hyperscale applications. The former is a superset of the latter, so NPCM750 has
--all the peripherals of NPCM730 and more.
-+servers. Currently there are two families: NPCM7XX series and
-+NPCM8XX series. NPCM7XX series feature one or two Arm Cortex-A9 CPU cores,
-+while NPCM8XX feature 4 Arm Cortex-A35 CPU cores. Both series contain a
-+different assortment of peripherals targeted for either Enterprise or Data
-+Center / Hyperscale applications.
- 
- .. _Nuvoton iBMC: https://www.nuvoton.com/products/cloud-computing/ibmc/
- 
-@@ -27,6 +28,11 @@ There are also two more SoCs, NPCM710 and NPCM705, which are single-core
- variants of NPCM750 and NPCM730, respectively. These are currently not
- supported by QEMU.
- 
-+The NPCM8xx SoC is the successor of the NPCM7xx SoC. It has 4 Cortex-A35 cores.
-+The following machines are based on this chip :
-+
-+- ``npcm845-evb``       Nuvoton NPCM845 Evaluation board
-+
- Supported devices
- -----------------
- 
-@@ -62,6 +68,8 @@ Missing devices
-    * System Wake-up Control (SWC)
-    * Shared memory (SHM)
-    * eSPI slave interface
-+   * Block-transfer interface (8XX only)
-+   * Virtual UART (8XX only)
- 
-  * Ethernet controller (GMAC)
-  * USB device (USBD)
-@@ -76,6 +84,11 @@ Missing devices
-  * Video capture
-  * Encoding compression engine
-  * Security features
-+ * I3C buses (8XX only)
-+ * Temperature sensor interface (8XX only)
-+ * Virtual UART (8XX only)
-+ * Flash monitor (8XX only)
-+ * JTAG master (8XX only)
- 
- Boot options
- ------------
-diff --git a/hw/arm/npcm8xx_boards.c b/hw/arm/npcm8xx_boards.c
-index 19610483f9..3fb8478e72 100644
---- a/hw/arm/npcm8xx_boards.c
-+++ b/hw/arm/npcm8xx_boards.c
-@@ -17,6 +17,7 @@
- #include "qemu/osdep.h"
- 
- #include "chardev/char.h"
-+#include "hw/boards.h"
- #include "hw/arm/npcm8xx.h"
- #include "hw/core/cpu.h"
- #include "hw/loader.h"
--- 
-2.48.1.601.g30ceb7b040-goog
+IOW, the device going into low power state should remove the BARs from
+the AddressSpace and waking the device should re-add them.  The BAR DMA
+mapping should then always be consistent, whereas here nothing would
+remap the BARs when the device is woken.
+
+I imagine we'd need an interface to register the PM capability with the
+core QEMU PCI code, where address space updates are performed relative
+to both memory enable and power status.  There might be a way to
+implement this just for vfio-pci devices by toggling the enable state
+of the BAR mmaps relative to PM state, but doing it at the PCI core
+level seems like it'd provide behavior more true to physical hardware.
+Thanks,
+
+Alex
 
 
