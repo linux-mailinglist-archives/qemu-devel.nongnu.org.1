@@ -2,69 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5012CA3C326
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 16:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A920A3C49C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 17:14:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tklg6-0001Zo-CZ; Wed, 19 Feb 2025 10:07:58 -0500
+	id 1tkmgq-0002Fg-QQ; Wed, 19 Feb 2025 11:12:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tklfw-0001Wf-Vp; Wed, 19 Feb 2025 10:07:50 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tklfr-00030y-Ty; Wed, 19 Feb 2025 10:07:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739977664; x=1771513664;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U3wn+MW8ZT2M11WwpMQPtb9IohNZRvnc1fQ+1XY91kU=;
- b=byKmlPN1tdU2r6STfeat5lR8Wl07b8w6zTHPerlV4yI/Kscy6RNpmpIt
- pVQJhKadOirgf4ZLjafB0MAUcaA1KpcW/4X6fWmQZ/DOFXuzoWIhcbWom
- f1HE8p9qQZIhEiatTRn1QozCjJSAYSbkjLBRbA9yZevCSar/4J0l+5Z6k
- Ra84fDSH9H2lWCILBKfSM1rZP8hYGO8+RIZByj/kKL8LLzJyqslgAI5Pk
- Kw4+m/ZNdJ2+Lnji9uUrWppMWa2HBxfxqyjhmzir1W/M3DDy9YXphYVkS
- nf1GKxVrwPuJODIg1/DDMn4n734DoFlYhNsKcsrKUHQySEmdUxJ35Fayz g==;
-X-CSE-ConnectionGUID: L8KmINi0Ti+XU2f9qPKA8A==
-X-CSE-MsgGUID: 9dK0UZgnSYO0TBXSD+UOIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="51699124"
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; d="scan'208";a="51699124"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 07:07:40 -0800
-X-CSE-ConnectionGUID: L1ajwwN0Tri0Isd3azaVeQ==
-X-CSE-MsgGUID: z5S7vVhNQxiGR9PrbtUtTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; d="scan'208";a="114673177"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 19 Feb 2025 07:07:38 -0800
-Date: Wed, 19 Feb 2025 23:27:13 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, kwolf@redhat.com,
- qemu-block@nongnu.org
-Subject: Re: [PATCH 1/2] rust: subprojects: add libc crate
-Message-ID: <Z7X4UVQYiT26oWO0@intel.com>
-References: <20250213143216.3910163-1-pbonzini@redhat.com>
- <20250213143216.3910163-2-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mordan@ispras.ru>) id 1tkmgo-0002FM-NK
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 11:12:46 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mordan@ispras.ru>) id 1tkmgl-0003fP-PE
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 11:12:46 -0500
+Received: from Neilbrown.intra.ispras.ru (unknown [10.10.2.179])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 5AD7D407851F;
+ Wed, 19 Feb 2025 16:12:37 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5AD7D407851F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1739981557;
+ bh=uqIoSnKH103eFzVm2nfh1pMTVXziDfv19fsVMIGilXQ=;
+ h=From:To:Cc:Subject:Date:From;
+ b=UPAlDjJakiEEFgEXjYuy8ZtEbU08zS/PhO0hvheqlXaFsNfoAPg5RR0Wgs2gei0Am
+ 3CnlPnBGGrvWytaU3uQbBMtk+fGAPriQH/6jFUbwdfKLJoLW2XcW6tFp7KHHSIG+ip
+ JraDfmRRht0b2/+SmYTl4sMeQdWAcKBcWnVEBHSw=
+From: Vitalii Mordan <mordan@ispras.ru>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Vitalii Mordan <mordan@ispras.ru>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ sdl.qemu@linuxtesting.org, Vadim Mutilin <mutilin@ispras.ru>,
+ Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH] Fix data race with the state Field of ThreadPoolElement
+Date: Wed, 19 Feb 2025 19:12:23 +0300
+Message-Id: <20250219161223.3340431-1-mordan@ispras.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213143216.3910163-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=83.149.199.84; envelope-from=mordan@ispras.ru;
+ helo=mail.ispras.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,28 +65,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 13, 2025 at 03:32:15PM +0100, Paolo Bonzini wrote:
-> Date: Thu, 13 Feb 2025 15:32:15 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 1/2] rust: subprojects: add libc crate
-> X-Mailer: git-send-email 2.48.1
-> 
-> This allows access to errno values.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/Cargo.lock                               |  7 ++++
->  rust/qemu-api/Cargo.toml                      |  1 +
->  scripts/archive-source.sh                     |  2 +-
->  scripts/make-release                          |  2 +-
->  subprojects/libc-0.2-rs.wrap                  |  7 ++++
->  .../packagefiles/libc-0.2-rs/meson.build      | 36 +++++++++++++++++++
->  6 files changed, 53 insertions(+), 2 deletions(-)
->  create mode 100644 subprojects/libc-0.2-rs.wrap
->  create mode 100644 subprojects/packagefiles/libc-0.2-rs/meson.build
+TSAN reports a potential data race on the state field of
+ThreadPoolElement. This is fixed by using atomic access to the field.
 
-Missing to update subprojects/.gitignore. With this nit fixed,
+Fixes: d354c7eccf ("aio: add generic thread-pool facility")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2822
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+---
+ util/thread-pool.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index 27eb777e85..6c5f4d085b 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -111,9 +111,8 @@ static void *worker_thread(void *opaque)
+         ret = req->func(req->arg);
+ 
+         req->ret = ret;
+-        /* Write ret before state.  */
+-        smp_wmb();
+-        req->state = THREAD_DONE;
++        /* Atomically update state after setting ret.  */
++        qatomic_store_release(&req->state, THREAD_DONE);
+ 
+         qemu_bh_schedule(pool->completion_bh);
+         qemu_mutex_lock(&pool->lock);
+@@ -180,7 +179,7 @@ static void thread_pool_completion_bh(void *opaque)
+ 
+ restart:
+     QLIST_FOREACH_SAFE(elem, &pool->head, all, next) {
+-        if (elem->state != THREAD_DONE) {
++        if (qatomic_load_acquire(&elem->state) != THREAD_DONE) {
+             continue;
+         }
+ 
+@@ -223,12 +222,12 @@ static void thread_pool_cancel(BlockAIOCB *acb)
+     trace_thread_pool_cancel(elem, elem->common.opaque);
+ 
+     QEMU_LOCK_GUARD(&pool->lock);
+-    if (elem->state == THREAD_QUEUED) {
++    if (qatomic_load_acquire(&elem->state) == THREAD_QUEUED) {
+         QTAILQ_REMOVE(&pool->request_list, elem, reqs);
+         qemu_bh_schedule(pool->completion_bh);
+ 
+-        elem->state = THREAD_DONE;
+         elem->ret = -ECANCELED;
++        qatomic_store_release(&elem->state, THREAD_DONE);
+     }
+ 
+ }
+@@ -251,8 +250,8 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
+     req = qemu_aio_get(&thread_pool_aiocb_info, NULL, cb, opaque);
+     req->func = func;
+     req->arg = arg;
+-    req->state = THREAD_QUEUED;
+     req->pool = pool;
++    qatomic_store_release(&req->state, THREAD_QUEUED);
+ 
+     QLIST_INSERT_HEAD(&pool->head, req, all);
+ 
+-- 
+2.34.1
 
 
