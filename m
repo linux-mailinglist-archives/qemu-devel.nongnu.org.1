@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5841A3CA2A
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1161AA3CA38
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:42:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqoy-0000rf-R4; Wed, 19 Feb 2025 15:37:28 -0500
+	id 1tkqp6-0001aj-R5; Wed, 19 Feb 2025 15:37:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqou-0000lg-VN
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:25 -0500
+ id 1tkqoz-00014x-91
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:29 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqot-0004td-AP
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:24 -0500
+ id 1tkqox-0004u9-DM
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:29 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqof-00000007VWl-13CA; Wed, 19 Feb 2025 21:37:09 +0100
+ id 1tkqok-00000007VWv-1gOL; Wed, 19 Feb 2025 21:37:14 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 32/36] vfio/migration: Make x-migration-multifd-transfer
- VFIO property mutable
-Date: Wed, 19 Feb 2025 21:34:14 +0100
-Message-ID: <f558685fa2b2d82220d65120fb4bd9c77e28e2d4.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 33/36] hw/core/machine: Add compat for
+ x-migration-multifd-transfer VFIO property
+Date: Wed, 19 Feb 2025 21:34:15 +0100
+Message-ID: <57d0b587299e27bd022ee2a04660a44868f5be06.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -66,58 +66,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-DEFINE_PROP_ON_OFF_AUTO() property isn't runtime-mutable so using it
-would mean that the source VM would need to decide upfront at startup
-time whether it wants to do a multifd device state transfer at some
-point.
-
-Source VM can run for a long time before being migrated so it is
-desirable to have a fallback mechanism to the old way of transferring
-VFIO device state if it turns to be necessary.
-
-This brings this property to the same mutability level as ordinary
-migration parameters, which too can be adjusted at the run time.
+Add a hw_compat entry for recently added x-migration-multifd-transfer VFIO
+property.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/pci.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ hw/core/machine.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 184ff882f9d1..9111805ae06c 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3353,6 +3353,8 @@ static void vfio_instance_init(Object *obj)
-     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
- }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 21c3bde92f08..d0a87f5ccbaa 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -44,6 +44,7 @@ GlobalProperty hw_compat_9_2[] = {
+     { "virtio-mem-pci", "vectors", "0" },
+     { "migration", "multifd-clean-tls-termination", "false" },
+     { "migration", "send-switchover-start", "off"},
++    { "vfio-pci", "x-migration-multifd-transfer", "off" },
+ };
+ const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
  
-+static PropertyInfo qdev_prop_on_off_auto_mutable;
-+
- static const Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
-     DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
-@@ -3377,9 +3379,10 @@ static const Property vfio_pci_dev_properties[] = {
-                     VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
-     DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
-                             vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
--    DEFINE_PROP_ON_OFF_AUTO("x-migration-multifd-transfer", VFIOPCIDevice,
--                            vbasedev.migration_multifd_transfer,
--                            ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP("x-migration-multifd-transfer", VFIOPCIDevice,
-+                vbasedev.migration_multifd_transfer,
-+                qdev_prop_on_off_auto_mutable, OnOffAuto,
-+                .set_default = true, .defval.i = ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
-                      vbasedev.migration_events, false),
-     DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
-@@ -3475,6 +3478,9 @@ static const TypeInfo vfio_pci_nohotplug_dev_info = {
- 
- static void register_vfio_pci_dev_type(void)
- {
-+    qdev_prop_on_off_auto_mutable = qdev_prop_on_off_auto;
-+    qdev_prop_on_off_auto_mutable.realized_set_allowed = true;
-+
-     type_register_static(&vfio_pci_dev_info);
-     type_register_static(&vfio_pci_nohotplug_dev_info);
- }
 
