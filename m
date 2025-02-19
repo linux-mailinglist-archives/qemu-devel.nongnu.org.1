@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DD0A3B239
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381BEA3B22C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:20:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkeLY-00078X-O0; Wed, 19 Feb 2025 02:18:17 -0500
+	id 1tkeKU-00055Z-TZ; Wed, 19 Feb 2025 02:17:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIo-0002aB-PO
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIq-0002bT-U3
  for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIk-0005Kv-6d
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:26 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIo-0005M8-I5
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739949313;
+ s=mimecast20190719; t=1739949317;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qvorbgiHjRAcQNyyKsR/FLp8f9h6za5NToARgffqtJo=;
- b=PS8EuHr/5wpyi4OLjCzyb/qbWZ7BJOBh1fMfw/hOvNGhEHsI8eo30wcjiaJs1ce6qRCGB/
- bdqbHvRauQFRar6Js7bDNTXsFPfPEDt5KBH65EaagVs6vt1CqGXzdwPZJi6A+gSLHw3Rvz
- 7RMFgGSzwkM+nm11cjV7ZFdw5Tf0zbI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=9zXi8ePcLudFZrqpdShmQBohG79pDZImwm/7Uyu89uM=;
+ b=SZFG2bm4IC18MgdhmELlhGARi3pGeXJUkGJpeeoDlou3nzyIPNkvcIcPTOLjYz30ukLB/+
+ Bimkm7lpWbCqCtvaKK2ulBvZXOv5zZIhcyGBc9qxVItdapF8hbvttU1Cue1PhF49hMlh5t
+ fM1Lvthzf3HlG/HEwPtjiZQIeBnCE3Q=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-2ThRjEXJMFuT6S9uqlTFGQ-1; Wed,
- 19 Feb 2025 02:15:10 -0500
-X-MC-Unique: 2ThRjEXJMFuT6S9uqlTFGQ-1
-X-Mimecast-MFC-AGG-ID: 2ThRjEXJMFuT6S9uqlTFGQ_1739949308
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-78-NB__LR88OamIaonzzkpiJw-1; Wed,
+ 19 Feb 2025 02:15:13 -0500
+X-MC-Unique: NB__LR88OamIaonzzkpiJw-1
+X-Mimecast-MFC-AGG-ID: NB__LR88OamIaonzzkpiJw_1739949311
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 75A4E180036F; Wed, 19 Feb 2025 07:15:08 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 382A51800360; Wed, 19 Feb 2025 07:15:11 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.78])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E56F21800947; Wed, 19 Feb 2025 07:15:07 +0000 (UTC)
+ id 9DB78180087E; Wed, 19 Feb 2025 07:15:10 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 4B6541801B01; Wed, 19 Feb 2025 08:14:33 +0100 (CET)
+ id 5AA131801B04; Wed, 19 Feb 2025 08:14:33 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -59,9 +59,9 @@ Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  graf@amazon.com, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v4 19/24] hw/uefi-vars-sysbus: qemu platform bus support
-Date: Wed, 19 Feb 2025 08:14:21 +0100
-Message-ID: <20250219071431.50626-20-kraxel@redhat.com>
+Subject: [PATCH v4 20/24] hw/uefi-vars-sysbus: add x64 variant
+Date: Wed, 19 Feb 2025 08:14:22 +0100
+Message-ID: <20250219071431.50626-21-kraxel@redhat.com>
 In-Reply-To: <20250219071431.50626-1-kraxel@redhat.com>
 References: <20250219071431.50626-1-kraxel@redhat.com>
 MIME-Version: 1.0
@@ -92,76 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add and register function to create an device tree entry when
-the device is added to the qemu platform bus.
+The x86 variant of the device is mapped on the fixed address 0xfef10000
+and uses etc/hardware-info instead of FDT to pass the mapping location
+to the edk2 firmware.  The latter allows to move the device to a
+different location should that turn out to be necessary in the future.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/core/sysbus-fdt.c         | 24 ++++++++++++++++++++++++
- hw/uefi/var-service-sysbus.c |  1 +
- 2 files changed, 25 insertions(+)
+ hw/uefi/var-service-sysbus.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/hw/core/sysbus-fdt.c b/hw/core/sysbus-fdt.c
-index 774c0aed41b5..e85066b90563 100644
---- a/hw/core/sysbus-fdt.c
-+++ b/hw/core/sysbus-fdt.c
-@@ -36,6 +36,7 @@
- #include "hw/vfio/vfio-calxeda-xgmac.h"
- #include "hw/vfio/vfio-amd-xgbe.h"
- #include "hw/display/ramfb.h"
-+#include "hw/uefi/var-service-api.h"
- #include "hw/arm/fdt.h"
- 
- /*
-@@ -471,6 +472,28 @@ static int add_tpm_tis_fdt_node(SysBusDevice *sbdev, void *opaque)
- }
- #endif
- 
-+static int add_uefi_vars_node(SysBusDevice *sbdev, void *opaque)
-+{
-+    PlatformBusFDTData *data = opaque;
-+    PlatformBusDevice *pbus = data->pbus;
-+    const char *parent_node = data->pbus_node_name;
-+    void *fdt = data->fdt;
-+    uint64_t mmio_base;
-+    char *nodename;
-+
-+    mmio_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
-+    nodename = g_strdup_printf("%s/%s@%" PRIx64, parent_node,
-+                               UEFI_VARS_FDT_NODE, mmio_base);
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_string(fdt, nodename,
-+                            "compatible", UEFI_VARS_FDT_COMPAT);
-+    qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
-+                                 1, mmio_base,
-+                                 1, UEFI_VARS_REGS_SIZE);
-+    g_free(nodename);
-+    return 0;
-+}
-+
- static int no_fdt_node(SysBusDevice *sbdev, void *opaque)
- {
-     return 0;
-@@ -495,6 +518,7 @@ static const BindingEntry bindings[] = {
-     TYPE_BINDING(TYPE_TPM_TIS_SYSBUS, add_tpm_tis_fdt_node),
- #endif
-     TYPE_BINDING(TYPE_RAMFB_DEVICE, no_fdt_node),
-+    TYPE_BINDING(TYPE_UEFI_VARS_SYSBUS, add_uefi_vars_node),
-     TYPE_BINDING("", NULL), /* last element */
- };
- 
 diff --git a/hw/uefi/var-service-sysbus.c b/hw/uefi/var-service-sysbus.c
-index 60072c8815cd..28572981c2af 100644
+index 28572981c2af..d953ed8a86d9 100644
 --- a/hw/uefi/var-service-sysbus.c
 +++ b/hw/uefi/var-service-sysbus.c
-@@ -69,6 +69,7 @@ static void uefi_vars_sysbus_class_init(ObjectClass *klass, void *data)
+@@ -9,6 +9,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/sysbus.h"
  
-     dc->realize = uefi_vars_sysbus_realize;
-     dc->vmsd = &vmstate_uefi_vars_sysbus;
-+    dc->user_creatable = true;
-     device_class_set_legacy_reset(dc, uefi_vars_sysbus_reset);
-     device_class_set_props(dc, uefi_vars_sysbus_properties);
++#include "hw/uefi/hardware-info.h"
+ #include "hw/uefi/var-service.h"
+ #include "hw/uefi/var-service-api.h"
+ 
+@@ -75,6 +76,7 @@ static void uefi_vars_sysbus_class_init(ObjectClass *klass, void *data)
      set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+ }
+ 
++/* generic: hardware discovery via FDT */
+ static const TypeInfo uefi_vars_sysbus_info = {
+     .name          = TYPE_UEFI_VARS_SYSBUS,
+     .parent        = TYPE_SYS_BUS_DEVICE,
+@@ -84,9 +86,39 @@ static const TypeInfo uefi_vars_sysbus_info = {
+ };
+ module_obj(TYPE_UEFI_VARS_SYSBUS);
+ 
++static void uefi_vars_x64_realize(DeviceState *dev, Error **errp)
++{
++    HARDWARE_INFO_SIMPLE_DEVICE hwinfo = {
++        .mmio_address = 0xfef10000,
++    };
++    SysBusDevice *sysbus = SYS_BUS_DEVICE(dev);
++
++    uefi_vars_sysbus_realize(dev, errp);
++
++    hardware_info_register(HardwareInfoQemuUefiVars,
++                           &hwinfo, sizeof(hwinfo));
++    sysbus_mmio_map(sysbus, 0, hwinfo.mmio_address);
++}
++
++static void uefi_vars_x64_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->realize = uefi_vars_x64_realize;
++}
++
++/* x64: hardware discovery via etc/hardware-info fw_cfg */
++static const TypeInfo uefi_vars_x64_info = {
++    .name          = TYPE_UEFI_VARS_X64,
++    .parent        = TYPE_UEFI_VARS_SYSBUS,
++    .class_init    = uefi_vars_x64_class_init,
++};
++module_obj(TYPE_UEFI_VARS_X64);
++
+ static void uefi_vars_sysbus_register_types(void)
+ {
+     type_register_static(&uefi_vars_sysbus_info);
++    type_register_static(&uefi_vars_x64_info);
+ }
+ 
+ type_init(uefi_vars_sysbus_register_types)
 -- 
 2.48.1
 
