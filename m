@@ -2,98 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C3BA3C7D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 19:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2904AA3C7F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 19:49:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkp0K-0001aD-Cv; Wed, 19 Feb 2025 13:41:04 -0500
+	id 1tkp5l-00030B-SE; Wed, 19 Feb 2025 13:46:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tkp0H-0001Zq-SB
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:41:01 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from
+ <3_ya2ZwgKCmoecPIWbaPOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--wuhaotsh.bounces.google.com>)
+ id 1tkp5b-0002wR-5C
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:46:35 -0500
+Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tkp0G-0003L1-58
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:41:01 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38f378498b0so111734f8f.0
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:40:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3_ya2ZwgKCmoecPIWbaPOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--wuhaotsh.bounces.google.com>)
+ id 1tkp5Y-0004gC-1K
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:46:30 -0500
+Received: by mail-pj1-x1049.google.com with SMTP id
+ 98e67ed59e1d1-2fc0bc05afdso386273a91.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:46:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1739990458; x=1740595258; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ d=google.com; s=20230601; t=1739990784; x=1740595584; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=/OtqSjXbagUnsCid0/oHn9PhLNKMS6msEvvBfVR4XB4=;
- b=TX0uxCbSpn7NfwwMhX3idX1nJkCD2wCrUvR+3tpk9xrUKgB1jHebUifOfjZhoEP2LO
- ZiLB0dq4/koC8Wa0SmqCtqMiHmJAqo5xYUuWwFOGN1EPHV028yYjX+ht2WJrq/cvLRSp
- GG7OspGQ5DLwa5JY1H4Eszrm5VaKBM8ZWZXvMy9BO1V++6CcZRAosZ4JiHyFdNR/MkWD
- ogmGB3wB4mAywlMM5ovHlltUOAGNtObEFlpRgqmlwQW3mXnU9m4LfR2/LvyuesMCdra0
- p+OIP07ERUAKTkNO6eGINAlyg+htHPzgLowvKoruDEftD18kTueFNOQpF6nakHUTmcBh
- A2SQ==
+ bh=YRjQoDBiw6x1CeKFLUk8y/8E5FWr/phQtEIRRCz8Jjc=;
+ b=Zes3eIb10iKKuiZ+TtH5O96d+PG20CBSF3tWp/M3HMgSxah4s5N39VHyvEdUVb9+MV
+ LThU3UNiC9XukfFkMZ7IY3MAbbEBPB3i2I/B0eUauvAQ1UU9BdrZrug4wvWz0nM69zXy
+ tqa+g5D8qvEB+STLU22PBI6/CnIceHwyL7eCanV3QDQIav+AUtiPvYGBEboPhlWzoDCp
+ eQThkcFBEldqpbiGqIVZUmnNz6BEdUb9xQrTV3LG9ZL8H6KTHkaGOHQw3FTcqWps9sqd
+ y8pTUpLepohAJ16izHCblfPnlovdGAoovxpStUWVFQmGG5cLYzqIgyN25LBX/QBYBZUm
+ DkLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739990458; x=1740595258;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ d=1e100.net; s=20230601; t=1739990784; x=1740595584;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/OtqSjXbagUnsCid0/oHn9PhLNKMS6msEvvBfVR4XB4=;
- b=fXX11e+hiLi/GboMZDwQ+fXMjuyBFcWD63R594z7tOxyOzjNuaOZzG+N2hE3SmAV4R
- OX3pRKP7Pryl6ZPvpnYQQxCAI4tlGijVS1dO8n2SifJjk0RQL27dkM2lwp58GA9571Qj
- ++mRf4TmzyiDoypa5FeMMjX5ZwjsvBFPKkX+pp5hdZsnMJLRkjJB0/3eNuR9qQvAXnIl
- niTelBwpbtb0H4AoNo6qmNNQHEs9uxv1WsqfRCfiZymFsOvIB7jFaw+WZTDliZt2Bldf
- DTLZpp5DjDiT1ag0Ceqy71a1i6+uWovTe4F9njVgTuvF8Niu5O55ODAjsXECJ6zb3fbF
- oNEw==
+ bh=YRjQoDBiw6x1CeKFLUk8y/8E5FWr/phQtEIRRCz8Jjc=;
+ b=iQ6d0YjeNp3N6Mc9KuNheGu3AdY9GGOSmXit8G9NYpkzstLHYJa4zDwn9qPNOPauBt
+ C05sTnqCvPOAW6TCA24TqsQDw7uOqr01Ddygh0de76w/OfpafYv59OThVTm938EqU6HO
+ 9opM/hoLKXKJA5pfzuA6pjJYyQ5U2b85NQiaHEGmJOI29XCCu6JivnX2FjvDbdDyOHyn
+ 75AfeP6FF2ydRgNzSHLiaZ1EQqBRqOWpTcmLOtN7Dhl7/rJTGpZEL4tL+mtfyche7CoQ
+ qvDC5g6P9RduRmhYGiCTWAt6L8mITPagIqCIEG+9mN1d1yY3/J3sEuNNMG4N+KZHgQCi
+ OIEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWgpd1sJNVCgrmjQ7aFQ85EkmNE+0JNj3g4SJAv8lOprhUjF/UwY1xiDOK8w+PuVmiUVteceWFour9N@nongnu.org
-X-Gm-Message-State: AOJu0YxNpUJyd5JDjYWLNIig2J+AjE4lr1IVxFMDoma52VGACMQbyaG0
- fVaZWMeHKy7DH+XqKVyaGeKimxll/TW3XsVC+xFBUpJL8/mMh8Ru
-X-Gm-Gg: ASbGncsfriw2uDQeCxA8alXGfsvpqu1Buqr7yZBnZT6E/XCEM/212ahgv7Bh3D9irZ2
- er9mR35x8bWvqMvPUkXRC4AJiK268tZu056o3CQIjWKeuwaLp7FfFj2+pvCXzXEXyUyOxjYD3vG
- WzjP/IVn+2rA8BTPf+L8QeX8biZV4IyycO/M1orZjUldw46stfAsoBV0KHUeTeBxcxFotVgGCvh
- AvHMvcfqOx3nPGRZOP3BCM4N+yBxFdxm8A6fhdsN2pDYTYtpxQbyTwxWhvImSeTlCS6NGMLmGY5
- LcogjnbSx+n4fbLOsqZ3/d0lI4M4YZbpfK2YQaJ7Ft/ojNaskwnr7tCc36M7WznW9Iw3q6bQ
-X-Google-Smtp-Source: AGHT+IHNWff6bm6fcfE+5ecgPtRmmGb/q23mIiPvzoYQd4Fg1YiKPesnVQ/LkhSh+kZVSeG/Z0273g==
-X-Received: by 2002:a05:6000:1bc1:b0:38f:31b6:4f30 with SMTP id
- ffacd0b85a97d-38f587ca52bmr4213709f8f.35.1739990458369; 
- Wed, 19 Feb 2025 10:40:58 -0800 (PST)
-Received: from ?IPv6:2001:b07:5d29:f42d:ee78:9ac0:bfb1:1189?
- ([2001:b07:5d29:f42d:ee78:9ac0:bfb1:1189])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b4118sm19010299f8f.18.2025.02.19.10.40.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Feb 2025 10:40:58 -0800 (PST)
-Message-ID: <4ec0652b387427cfadaef796ae9162921115bf43.camel@gmail.com>
-Subject: Re: [PATCH v7 19/52] i386/tdx: Track mem_ptr for each firmware
- entry of TDVF
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Igor Mammedov <imammedo@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Marcelo Tosatti
- <mtosatti@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>,  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Date: Wed, 19 Feb 2025 19:40:56 +0100
-In-Reply-To: <20250124132048.3229049-20-xiaoyao.li@intel.com>
-References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
- <20250124132048.3229049-20-xiaoyao.li@intel.com>
+ AJvYcCX9xhhR+619tFNWiKHfvXsY9eedPwtsz3znPL2PqhMmzI0GdXbIxsFW/u0P+F28zNjhhJxLjwvq58pv@nongnu.org
+X-Gm-Message-State: AOJu0Yxyq3zTzigWkER2PE6wXFpq4SwWHiVdeKelEhK5FLharNc9cpL0
+ D6jj994EACpi151GFBdylpWD8cNJMZUGitT7iageJ3qwhsWivH9yT6vV3y+fsPZM8xFu1vs94LY
+ cBWjS470ttA==
+X-Google-Smtp-Source: AGHT+IFXPBoIcPC7UnSVqcojLE/ljzick9VL921d/WGYTikIS/K4P0KWVqAuBEzxcSh5WZArKnqNjahEPiOZww==
+X-Received: from pjbnd5.prod.google.com ([2002:a17:90b:4cc5:b0:2e9:38ea:ca0f])
+ (user=wuhaotsh job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2789:b0:2ee:f80c:6889 with SMTP id
+ 98e67ed59e1d1-2fc4116bc28mr32224508a91.33.1739990783747; 
+ Wed, 19 Feb 2025 10:46:23 -0800 (PST)
+Date: Wed, 19 Feb 2025 10:45:51 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250219184609.1839281-1-wuhaotsh@google.com>
+Subject: [PATCH v5 00/17] hw/arm: Add NPCM8XX Support
+From: Hao Wu <wuhaotsh@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com, 
+ venture@google.com, Avi.Fishman@nuvoton.com, kfting@nuvoton.com, 
+ hskinnemoen@google.com, titusr@google.com, 
+ chli30@nuvoton.corp-partner.google.com, pbonzini@redhat.com, 
+ jasowang@redhat.com, alistair@alistair23.me, philmd@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=francescolavra.fl@gmail.com; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
+ envelope-from=3_ya2ZwgKCmoecPIWbaPOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--wuhaotsh.bounces.google.com;
+ helo=mail-pj1-x1049.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,24 +94,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2025-01-24 at 08:20 -0500, Xiaoyao Li wrote:
-> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index 73f90b0a2217..8564b3ae905d 100644
-> --- a/target/i386/kvm/tdx.c
-> +++ b/target/i386/kvm/tdx.c
-> @@ -12,10 +12,14 @@
-> =C2=A0#include "qemu/osdep.h"
-> =C2=A0#include "qemu/error-report.h"
-> =C2=A0#include "qemu/base64.h"
-> +#include "qemu/mmap-alloc.h"
-> =C2=A0#include "qapi/error.h"
-> =C2=A0#include "qom/object_interfaces.h"
-> =C2=A0#include "crypto/hash.h"
-> +#include "system/system.h"
-> =C2=A0
-> +#include "hw/i386/x86.h"
-> +#include "hw/i386/tdvf.h"
-> =C2=A0#include "hw/i386/x86.h"
+Changes since v4:
 
-Duplicated include
+1. Bump vmstate versions on NPCM CLK and GCR modules.
+2. Remove "hw/boards.h" include in npcm8xx.h and add it in npcm8xx*.c
+3. Use cpu_to_le32 instead of tswap32 in npcm8xx.c
+
+Changes since v3:
+
+1. Removed REGS_END constants according to code review.
+2. Added a few asserts according to code review.
+3. A few minor style changes.
+
+Changes since v2:
+
+1. Update doc to include npcm845-evb description
+2. Add g_assert for register size in CLK and GCR enter_reset function
+3. Fix various 8xx SoC and board file issues.
+
+Changes since v1:
+
+1. Updated vbootrom and pc-bios
+2. Split out CLK/GCR patches into refactoring and adding new features
+3. Fixed a few misc items from the patches.
+
+---
+
+NPCM8XX BMCs are the successors of the NPCM7XX BMCs. They feature
+quad-core ARM Cortex A35 that supports both 32 bits and 64 bits
+operations. This patch set aims to support basic functionalities
+of the NPCM7XX BMCs. The patch set includes:
+
+1. We derive most devices from the 7XX models and
+made some modifications.
+2. We have constructed a minimum vBootROM similar to the 7XX one at
+https://github.com/google/vbootrom/tree/master/npcm8xx
+and included it in the patch set.
+3.  We added a new NPCM8XX SOC and an evaluation
+board machine npcm845-evb.
+
+The OpenBMC for NPCM845 evaluation board can be found at:
+https://github.com/Nuvoton-Israel/openbmc/tree/npcm-v2.10/meta-evb/meta-evb-nuvoton/meta-evb-npcm845
+
+The patch set can boot the evaluation board image built from the source
+above to login prompt.
+
+Hao Wu (17):
+  roms: Update vbootrom to 1287b6e
+  pc-bios: Add NPCM8XX vBootrom
+  hw/ssi: Make flash size a property in NPCM7XX FIU
+  hw/misc: Rename npcm7xx_gcr to npcm_gcr
+  hw/misc: Move NPCM7XX GCR to NPCM GCR
+  hw/misc: Add nr_regs and cold_reset_values to NPCM GCR
+  hw/misc: Add support for NPCM8XX GCR
+  hw/misc: Store DRAM size in NPCM8XX GCR Module
+  hw/misc: Support 8-bytes memop in NPCM GCR module
+  hw/misc: Rename npcm7xx_clk to npcm_clk
+  hw/misc: Move NPCM7XX CLK to NPCM CLK
+  hw/misc: Add nr_regs and cold_reset_values to NPCM CLK
+  hw/misc: Support NPCM8XX CLK Module Registers
+  hw/net: Add NPCM8XX PCS Module
+  hw/arm: Add NPCM8XX SoC
+  hw/arm: Add NPCM845 Evaluation board
+  docs/system/arm: Add Description for NPCM8XX SoC
+
+ MAINTAINERS                                   |   1 +
+ configs/devices/aarch64-softmmu/default.mak   |   1 +
+ docs/system/arm/nuvoton.rst                   |  27 +-
+ hw/arm/Kconfig                                |  13 +
+ hw/arm/meson.build                            |   1 +
+ hw/arm/npcm7xx.c                              |   6 +
+ hw/arm/npcm8xx.c                              | 805 ++++++++++++++++++
+ hw/arm/npcm8xx_boards.c                       | 254 ++++++
+ hw/misc/meson.build                           |   4 +-
+ hw/misc/npcm7xx_gcr.c                         | 264 ------
+ hw/misc/{npcm7xx_clk.c => npcm_clk.c}         | 235 +++--
+ hw/misc/npcm_gcr.c                            | 482 +++++++++++
+ hw/misc/trace-events                          |  12 +-
+ hw/net/meson.build                            |   1 +
+ hw/net/npcm_pcs.c                             | 410 +++++++++
+ hw/net/trace-events                           |   4 +-
+ hw/ssi/npcm7xx_fiu.c                          |  16 +-
+ include/hw/arm/npcm7xx.h                      |   8 +-
+ include/hw/arm/npcm8xx.h                      | 127 +++
+ include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} |  43 +-
+ include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} |  29 +-
+ include/hw/net/npcm_pcs.h                     |  42 +
+ include/hw/ssi/npcm7xx_fiu.h                  |   1 +
+ pc-bios/README                                |   8 +-
+ pc-bios/meson.build                           |   1 +
+ pc-bios/npcm7xx_bootrom.bin                   | Bin 768 -> 768 bytes
+ pc-bios/npcm8xx_bootrom.bin                   | Bin 0 -> 608 bytes
+ roms/Makefile                                 |   6 +
+ roms/vbootrom                                 |   2 +-
+ 29 files changed, 2434 insertions(+), 369 deletions(-)
+ create mode 100644 hw/arm/npcm8xx.c
+ create mode 100644 hw/arm/npcm8xx_boards.c
+ delete mode 100644 hw/misc/npcm7xx_gcr.c
+ rename hw/misc/{npcm7xx_clk.c => npcm_clk.c} (82%)
+ create mode 100644 hw/misc/npcm_gcr.c
+ create mode 100644 hw/net/npcm_pcs.c
+ create mode 100644 include/hw/arm/npcm8xx.h
+ rename include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} (83%)
+ rename include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} (76%)
+ create mode 100644 include/hw/net/npcm_pcs.h
+ create mode 100644 pc-bios/npcm8xx_bootrom.bin
+
+-- 
+2.48.1.601.g30ceb7b040-goog
+
 
