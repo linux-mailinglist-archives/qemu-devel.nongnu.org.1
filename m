@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B7DA3C7E8
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 19:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBB3A3C7FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 19:50:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkp5k-0002yR-6F; Wed, 19 Feb 2025 13:46:40 -0500
+	id 1tkp5l-00030A-Rc; Wed, 19 Feb 2025 13:46:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3Aie2ZwgKCm0hfSLZedSRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--wuhaotsh.bounces.google.com>)
- id 1tkp5d-0002wX-Fv
+ <3BCe2ZwgKCm8jhUNbgfUTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--wuhaotsh.bounces.google.com>)
+ id 1tkp5d-0002wb-Ty
  for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:46:35 -0500
-Received: from mail-pl1-x64a.google.com ([2607:f8b0:4864:20::64a])
+Received: from mail-pj1-x104a.google.com ([2607:f8b0:4864:20::104a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3Aie2ZwgKCm0hfSLZedSRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--wuhaotsh.bounces.google.com>)
- id 1tkp5a-0004gt-3w
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:46:32 -0500
-Received: by mail-pl1-x64a.google.com with SMTP id
- d9443c01a7336-220ee2e7746so744715ad.2
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:46:28 -0800 (PST)
+ <3BCe2ZwgKCm8jhUNbgfUTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--wuhaotsh.bounces.google.com>)
+ id 1tkp5c-0004hP-1T
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 13:46:33 -0500
+Received: by mail-pj1-x104a.google.com with SMTP id
+ 98e67ed59e1d1-2fc1cb0c2cbso341590a91.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 10:46:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1739990787; x=1740595587; darn=nongnu.org;
+ d=google.com; s=20230601; t=1739990789; x=1740595589; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=Z1Ln4707tX2136OTJ3dVAu/2OMhEvp/vGQL0FoGY3R8=;
- b=oHEXhPHoil3TdToYN8dD/2FJt3tc86RZXaeLGN10E1Xb/hLNrfPim+jpsWr+PV9Gd2
- eRjgLAVEL0aguTKnM/TFU/fKtJnnsslQfY6OONGxzM7lVgiZXXgugskKNC1E3SyglsXE
- 6pFePZM2D/6Cd5/1jAkZGkFqEimFN3OF0Rq5UMvSAHZWWWqtaBcIbj0fdVe2S5D55n/1
- 6t2jyH9AsaFmPPXRQeoyUVJA9D1ub99LPoC46Kl5GZl/Xmt67tiKXLdj5KIEHs+onTfD
- AIYcDmwbh/Y0m8QlaXmneauR//aUSX7CgbJrV/1MO5EpTPXd3b2kjK1YC09VyLuXTcNx
- U5DQ==
+ bh=z8xVoS50d7e+ciafSSflJFcc3kwT94nPrc7QEj/k7Ig=;
+ b=qj27K2MouanphIYUuHBeYNF2VZf/wpKDKEE/DsgsKXzelhnmG+LiG6bldEi5Q/2Ybd
+ NLlQhR0yg/uVh1dqrdKp7GObV9hYsZbcIFfrHHlAw86RhXEbpgTkVmLZfE4dYQfUC7Hd
+ LIVExTpwwGjh5L2z0N0dU+QoXXBz599h5rpixaEki8DpqgRRcT6PlaL7Fg1UK/azBnkS
+ 3L/puJSGSTqr+gJ8xYEKqV1h/3k/93LWDi5i1NUa6M/EuQ7sTXz+Nc2pe52APD/7yBG4
+ iomgNdiXE6PvPwEDQf3uYce7NJowm9ZtvRPUcWN67szcLqaY/CzASQ+7C61FQmzuyL4t
+ 4uSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739990787; x=1740595587;
+ d=1e100.net; s=20230601; t=1739990789; x=1740595589;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z1Ln4707tX2136OTJ3dVAu/2OMhEvp/vGQL0FoGY3R8=;
- b=ZRuqkKBjHfdyUZepQuPz1ljE2uNYP7VSqd0Ayylx48kx6DBSVc3ZhqlfGDpVJasL0h
- +T73oZcHWaZtEgcCV8W7tbHIqT0uT0n8PpCFfN7ssE4Gs0H4jQTVmTF8/mxX8nAcI2II
- 3RaS9ttc9WuLosFHO7K95vCzN6bJT2qpopV6oUpg5+ke8YjXST1FDgqpTNXrsIrlmHho
- 5rIvKA8BmjkyNznQs5etfOK7fEFjsxLoogF7s0uVRe/MfV2R/B+QfbLFwHVLyLsLEnVK
- 4JcaBagwLyd+gz3Vxj5+W2cNhPZBsGI2m5Tae7WT5io+QUq7q/8n9qp+kPDyMB67jUnR
- GPZg==
+ bh=z8xVoS50d7e+ciafSSflJFcc3kwT94nPrc7QEj/k7Ig=;
+ b=OgC4O1zaSr886GE0OD1mfww1ys+EVD3ohdtAMNbaoT5E2Cm9i3jTchnfr3UuEF8xXn
+ jgyioIPGCb6tDyB3vUNOzWwRDmO9u51FMnlo8lcBQOiEVtYb9/lcTp6VukfJwucTupH1
+ XWpy9ckjCA6UH6Zmw9Usce3GgR6xpnkFVWeXLMiKwd+5AdrjUTFjje9mvZvUh9bAJW47
+ m7Bzvd9LTqfcu8t4uwH1knPbsD3CU8GeQi+fqK2MJCqRNx+oq65cYLuptxkGJ1g9aN3W
+ 5EfEmvz2Pin5sGnh44mlbvbTI+s9FeJAfpGf8xNQ0yHYocwopd7ZnhFBOowwR4RvFzoJ
+ 3i9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX9m6eDzHypqDEnTA2qnkA/diD7EMNN/kFNjEPd7PLknIcnb+XQftqV+QdY+4T7qb4VzeZyy814Q1yB@nongnu.org
-X-Gm-Message-State: AOJu0YxAkG6/qYM/+oroA3NZEkdZeoIBPqzkNoFTVrv4JmUxqWg0UFCg
- xb+O2HKqXDdQT/7SdWnWEv3GIoa3kMyI63hpCIiwMizQhBSJ1PtJ5QEO+rsO9cbL31wUuJZhYXh
- e7AlNn2iSnQ==
-X-Google-Smtp-Source: AGHT+IFw424r3EKmbo8QY57An+82j5xe+Ql3a5Wiz9KSOq4+MOMrDbHdMbS7empyVQhuFht61ogMU6BnnUnrJg==
-X-Received: from plbbe12.prod.google.com ([2002:a17:902:aa0c:b0:220:e56f:4b97])
+ AJvYcCVlfx+UrnS46pR5P2n1IMCqcCSuzPLrHeJRzqceI6zo1pPzuz72NyYnS57wJR7Z/b+38vcLRcLziVr6@nongnu.org
+X-Gm-Message-State: AOJu0YyIl18t4T89pp9W/ubrQk31AR2TyyrPZRYIu3JgnwjfJPm7U7zS
+ 7X6jGtkxCaBueqcXnHoZRESaZdPvKr5hNB78m4oZeyMWYAdPgO15tEv5C4oXUI+hLeWEzgg6voa
+ kfGXRUeekNQ==
+X-Google-Smtp-Source: AGHT+IEhnVD/C6y1czfHbEvLB1OrW26ZZEbL7drDRZUQMJJFXfCy+ANO+o44qHmtJkmzPoLd3xM0FlIh4YceYQ==
+X-Received: from pjbsg13.prod.google.com ([2002:a17:90b:520d:b0:2fa:1b0c:4150])
  (user=wuhaotsh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:32c5:b0:220:c2a8:6fbc with SMTP id
- d9443c01a7336-221711a75camr79582505ad.34.1739990786841; 
- Wed, 19 Feb 2025 10:46:26 -0800 (PST)
-Date: Wed, 19 Feb 2025 10:45:53 -0800
+ 2002:a17:90b:3c50:b0:2f5:88bb:12f with SMTP id
+ 98e67ed59e1d1-2fc40f22a40mr26221701a91.21.1739990788827; 
+ Wed, 19 Feb 2025 10:46:28 -0800 (PST)
+Date: Wed, 19 Feb 2025 10:45:54 -0800
 In-Reply-To: <20250219184609.1839281-1-wuhaotsh@google.com>
 Mime-Version: 1.0
 References: <20250219184609.1839281-1-wuhaotsh@google.com>
 X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250219184609.1839281-3-wuhaotsh@google.com>
-Subject: [PATCH v5 02/17] pc-bios: Add NPCM8XX vBootrom
+Message-ID: <20250219184609.1839281-4-wuhaotsh@google.com>
+Subject: [PATCH v5 03/17] hw/ssi: Make flash size a property in NPCM7XX FIU
 From: Hao Wu <wuhaotsh@google.com>
 To: peter.maydell@linaro.org
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com, 
@@ -71,9 +71,9 @@ Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com,
  chli30@nuvoton.corp-partner.google.com, pbonzini@redhat.com, 
  jasowang@redhat.com, alistair@alistair23.me, philmd@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::64a;
- envelope-from=3Aie2ZwgKCm0hfSLZedSRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--wuhaotsh.bounces.google.com;
- helo=mail-pl1-x64a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::104a;
+ envelope-from=3BCe2ZwgKCm8jhUNbgfUTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--wuhaotsh.bounces.google.com;
+ helo=mail-pj1-x104a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -96,111 +96,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bootrom is a minimal bootrom used to load an NPCM8XX image.
-The source code is located in the same repo as the NPCM7XX one:
-github.com/google/vbootrom/tree/master/npcm8xx.
+This allows different FIUs to have different flash sizes, useful
+in NPCM8XX which has multiple different sized FIU modules.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Hao Wu <wuhaotsh@google.com>
+Reviewed-by: Philippe Mathieu-Daude <philmd@linaro.org>
 ---
- MAINTAINERS                 |   1 +
- pc-bios/README              |   8 ++++----
- pc-bios/meson.build         |   1 +
- pc-bios/npcm8xx_bootrom.bin | Bin 0 -> 608 bytes
- roms/Makefile               |   6 ++++++
- 5 files changed, 12 insertions(+), 4 deletions(-)
- create mode 100644 pc-bios/npcm8xx_bootrom.bin
+ hw/arm/npcm7xx.c             |  6 ++++++
+ hw/ssi/npcm7xx_fiu.c         | 16 ++++++++++++++--
+ include/hw/ssi/npcm7xx_fiu.h |  1 +
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3848d37a38..e145017d53 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -878,6 +878,7 @@ F: include/hw/*/npcm*
- F: tests/qtest/npcm*
- F: tests/qtest/adm1266-test.c
- F: pc-bios/npcm7xx_bootrom.bin
-+F: pc-bios/npcm8xx_bootrom.bin
- F: roms/vbootrom
- F: docs/system/arm/nuvoton.rst
- F: tests/functional/test_arm_quanta_gsj.py
-diff --git a/pc-bios/README b/pc-bios/README
-index 7ffb2f43a4..700dcaab52 100644
---- a/pc-bios/README
-+++ b/pc-bios/README
-@@ -70,10 +70,10 @@
-   source code also contains code reused from other projects described here:
-   https://github.com/riscv/opensbi/blob/master/ThirdPartyNotices.md.
- 
--- npcm7xx_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for Nuvoton
--  NPCM7xx BMC devices. It currently implements the bare minimum to load, parse,
--  initialize and run boot images stored in SPI flash, but may grow more
--  features over time as needed. The source code is available at:
-+- npcm{7xx,8xx}_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
-+  Nuvoton NPCM7xx/8xx BMC devices. It currently implements the bare minimum to
-+  load, parse, initialize and run boot images stored in SPI flash, but may grow
-+  more features over time as needed. The source code is available at:
-   https://github.com/google/vbootrom
- 
- - hppa-firmware.img (32-bit) and hppa-firmware64.img (64-bit) are firmware
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index b68b29cc7d..51e95cc903 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -80,6 +80,7 @@ blobs = [
-   'opensbi-riscv32-generic-fw_dynamic.bin',
-   'opensbi-riscv64-generic-fw_dynamic.bin',
-   'npcm7xx_bootrom.bin',
-+  'npcm8xx_bootrom.bin',
-   'vof.bin',
-   'vof-nvram.bin',
- ]
-diff --git a/pc-bios/npcm8xx_bootrom.bin b/pc-bios/npcm8xx_bootrom.bin
-new file mode 100644
-index 0000000000000000000000000000000000000000..6370d6475635c4d445d2b927311edcd591949c82
-GIT binary patch
-literal 608
-zcmdUrKTE?<6vfX=0{*3B5ET?nwWA^;qEk()n=Xb9-4dxoSBrz#p|QJQL~zokn{Eyc
-z?PBXUkU+aB?k?IbNQftG5ej|*FC2c{bKkr7zLy3jhNxj`gc_y5h&V=Ru)PgZC)Y`f
-zTqA9Am28qL<U6@cMtA>Hlr*^&hT#;re-)dpxT0U42|O+cWOcx=B;{6xXH04vx?cjm
-z+%U{oFx!aPpV3>ZKz0i$XA-yq{f}<H?{MHBq+VwIvR9WmcL(xr1vuIRGELcRC-S+P
-zl3%RlR5(6+1;xg_<~xR#bPItDN1*Hp^{JyNs7o*BMq0Q9q1#>x4;|pb<NWIbQ8wb1
-zTac^<ebj^E^Ig<?U?(PO-w>w;l#@9zGd|z-rs*H@V-o%PEV)D-)8n2%DyH5@w_^Y8
-LH5R3RMV#gjxYTW}
-
-literal 0
-HcmV?d00001
-
-diff --git a/roms/Makefile b/roms/Makefile
-index 31e4b97c98..beff58d9d5 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -34,6 +34,7 @@ find-cross-gcc = $(firstword $(wildcard $(patsubst %ld,%gcc,$(call find-cross-ld
- # finally strip off path + toolname so we get the prefix
- find-cross-prefix = $(subst gcc,,$(notdir $(call find-cross-gcc,$(1))))
- 
-+aarch64_cross_prefix := $(call find-cross-prefix,aarch64)
- arm_cross_prefix := $(call find-cross-prefix,arm)
- powerpc64_cross_prefix := $(call find-cross-prefix,powerpc64)
- powerpc_cross_prefix := $(call find-cross-prefix,powerpc)
-@@ -66,6 +67,7 @@ default help:
- 	@echo "  u-boot.e500        -- update u-boot.e500"
- 	@echo "  u-boot.sam460      -- update u-boot.sam460"
- 	@echo "  npcm7xx_bootrom    -- update vbootrom for npcm7xx"
-+	@echo "  npcm8xx_bootrom    -- update vbootrom for npcm8xx"
- 	@echo "  efi                -- update UEFI (edk2) platform firmware"
- 	@echo "  opensbi32-generic  -- update OpenSBI for 32-bit generic machine"
- 	@echo "  opensbi64-generic  -- update OpenSBI for 64-bit generic machine"
-@@ -194,6 +196,10 @@ npcm7xx_bootrom:
- 	$(MAKE) -C vbootrom CROSS_COMPILE=$(arm_cross_prefix)
- 	cp vbootrom/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
- 
-+npcm8xx_bootrom:
-+	$(MAKE) -C vbootrom CROSS_COMPILE=$(aarch64_cross_prefix)
-+	cp vbootrom/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
+diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+index 386b2c35e9..2d6e08b72b 100644
+--- a/hw/arm/npcm7xx.c
++++ b/hw/arm/npcm7xx.c
+@@ -292,17 +292,21 @@ static const struct {
+     hwaddr regs_addr;
+     int cs_count;
+     const hwaddr *flash_addr;
++    size_t flash_size;
+ } npcm7xx_fiu[] = {
+     {
+         .name = "fiu0",
+         .regs_addr = 0xfb000000,
+         .cs_count = ARRAY_SIZE(npcm7xx_fiu0_flash_addr),
+         .flash_addr = npcm7xx_fiu0_flash_addr,
++        .flash_size = 128 * MiB,
 +
- hppa-firmware:
- 	$(MAKE) -C seabios-hppa parisc
- 	cp seabios-hppa/out/hppa-firmware.img      ../pc-bios/
+     }, {
+         .name = "fiu3",
+         .regs_addr = 0xc0000000,
+         .cs_count = ARRAY_SIZE(npcm7xx_fiu3_flash_addr),
+         .flash_addr = npcm7xx_fiu3_flash_addr,
++        .flash_size = 128 * MiB,
+     },
+ };
+ 
+@@ -735,6 +739,8 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
+ 
+         object_property_set_int(OBJECT(sbd), "cs-count",
+                                 npcm7xx_fiu[i].cs_count, &error_abort);
++        object_property_set_int(OBJECT(sbd), "flash-size",
++                                npcm7xx_fiu[i].flash_size, &error_abort);
+         sysbus_realize(sbd, &error_abort);
+ 
+         sysbus_mmio_map(sbd, 0, npcm7xx_fiu[i].regs_addr);
+diff --git a/hw/ssi/npcm7xx_fiu.c b/hw/ssi/npcm7xx_fiu.c
+index 21fc489038..8df4bec3f1 100644
+--- a/hw/ssi/npcm7xx_fiu.c
++++ b/hw/ssi/npcm7xx_fiu.c
+@@ -29,7 +29,7 @@
+ #include "trace.h"
+ 
+ /* Up to 128 MiB of flash may be accessed directly as memory. */
+-#define NPCM7XX_FIU_FLASH_WINDOW_SIZE (128 * MiB)
++#define NPCM7XX_FIU_MAX_FLASH_WINDOW_SIZE (128 * MiB)
+ 
+ /* Each module has 4 KiB of register space. Only a fraction of it is used. */
+ #define NPCM7XX_FIU_CTRL_REGS_SIZE (4 * KiB)
+@@ -507,6 +507,17 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    if (s->flash_size == 0) {
++        error_setg(errp, "%s: flash size must be set", dev->canonical_path);
++        return;
++    }
++
++    if (s->flash_size > NPCM7XX_FIU_MAX_FLASH_WINDOW_SIZE) {
++        error_setg(errp, "%s: flash size should not exceed 128 MiB",
++                   dev->canonical_path);
++        return;
++    }
++
+     s->spi = ssi_create_bus(dev, "spi");
+     s->cs_lines = g_new0(qemu_irq, s->cs_count);
+     qdev_init_gpio_out_named(DEVICE(s), s->cs_lines, "cs", s->cs_count);
+@@ -525,7 +536,7 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
+         flash->fiu = s;
+         memory_region_init_io(&flash->direct_access, OBJECT(s),
+                               &npcm7xx_fiu_flash_ops, &s->flash[i], "flash",
+-                              NPCM7XX_FIU_FLASH_WINDOW_SIZE);
++                              s->flash_size);
+         sysbus_init_mmio(sbd, &flash->direct_access);
+     }
+ }
+@@ -543,6 +554,7 @@ static const VMStateDescription vmstate_npcm7xx_fiu = {
+ 
+ static const Property npcm7xx_fiu_properties[] = {
+     DEFINE_PROP_INT32("cs-count", NPCM7xxFIUState, cs_count, 0),
++    DEFINE_PROP_SIZE("flash-size", NPCM7xxFIUState, flash_size, 0),
+ };
+ 
+ static void npcm7xx_fiu_class_init(ObjectClass *klass, void *data)
+diff --git a/include/hw/ssi/npcm7xx_fiu.h b/include/hw/ssi/npcm7xx_fiu.h
+index a3a1704289..1785ea16f4 100644
+--- a/include/hw/ssi/npcm7xx_fiu.h
++++ b/include/hw/ssi/npcm7xx_fiu.h
+@@ -60,6 +60,7 @@ struct NPCM7xxFIUState {
+     int32_t cs_count;
+     int32_t active_cs;
+     qemu_irq *cs_lines;
++    size_t flash_size;
+     NPCM7xxFIUFlash *flash;
+ 
+     SSIBus *spi;
 -- 
 2.48.1.601.g30ceb7b040-goog
 
