@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEE1A3B3A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB32A3B3A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfPU-0005Ra-Kd; Wed, 19 Feb 2025 03:26:24 -0500
+	id 1tkfPf-0005Sm-7o; Wed, 19 Feb 2025 03:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPR-0005R0-R9
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:22 -0500
+ id 1tkfPY-0005SK-KZ
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:28 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPP-0004Za-Ic
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:21 -0500
+ id 1tkfPS-0004Za-9F
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953580; x=1771489580;
+ t=1739953582; x=1771489582;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BBos9TMEnyoSZ/PC59m1etHG0x5EWREqcsDCxiYnHsk=;
- b=jkayOLn/ILNYCQ+cIG9oLtKnSucCFnmXPBMbRjpLUodt1IIcypdgZxUf
- /tVdZtzh2cXOgQBagj7+XiSm3TkEKy9/gcqEH0SsUHJG1l5eHqvdAjshv
- ffn3a9LFetGTSnR7LHhx4NxCGBpq0iofn8xpByMzyUy8cIBZu0l+SNVaG
- xSyPSovKYGWu8I2JuxzlWecj1LMifUg7nG93pKACtec9H1fH9azmvyDVN
- hCaID0BulwlWJNco/Yy3Mh6S0eo8NtXt+uqA2C5L5bsMejS0WeudSyLuw
- +9IOiS5mOSokyMMuNyBiAGj2/Tpw66o1PdmXDApvKuwJgq7W45vnRlzYL A==;
-X-CSE-ConnectionGUID: QAMNEVJTQD6xP3WyVUofxw==
-X-CSE-MsgGUID: q/mo3sKyQIuyUMN7Xal9kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544042"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544042"
+ bh=XVdv5gWUOU2aVOqYrjh81efF2mZVpI8Jj4EkhPdEab8=;
+ b=DaIcN+ZjxsaL0MEyS2RwGQW8L8jWsYnlS4FIuizK5a6v8+YSvkDFIYRO
+ Lt/kCeJtj4Pim/LNwtSH/YaS5XihFj+HHlVdDDXny3TqydGn/jBhv2ya1
+ 4uYG0AdAPG5BjFkHCIbNM0oa2xDdyuBeGELGYXdLWnSpMw/JYoASKPMcl
+ PvWUL4WFl3D+jRjWy7GPiUlk2a2LDrYjC/LAlaSt/iyDcO6IPNuQW3U9o
+ AEioAKyUicF4jtRxpCJJhpVyR+Ijej6JAzHn0vB+rsETZ3q6Fv7U0tNWk
+ 3qwU7FjDHW1L2sx/nZAku9Hxq5UDAi1HzL2w3zdHQi2892viX0jsFCmQq w==;
+X-CSE-ConnectionGUID: KzBuC2lBTbmCz/KWWDlfjw==
+X-CSE-MsgGUID: Wq1qZlXOSDqGLAGjtjsw9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544064"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544064"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:09 -0800
-X-CSE-ConnectionGUID: uGqC7U+UTVq/HngNGwYrhw==
-X-CSE-MsgGUID: rTyTWlLASpCovG4yNCQEtQ==
+ 19 Feb 2025 00:26:14 -0800
+X-CSE-ConnectionGUID: pipGzqtCR76Z9rAxOAnUvw==
+X-CSE-MsgGUID: L0b805NbSMmHlrDb1/kuIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850808"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119850861"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:05 -0800
+ 19 Feb 2025 00:26:10 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,10 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv2 01/20] backends/iommufd: Add helpers for invalidating
- user-managed HWPT
-Date: Wed, 19 Feb 2025 16:22:09 +0800
-Message-Id: <20250219082228.3303163-2-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv2 02/20] vfio/iommufd: Add properties and handlers to
+ TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+Date: Wed, 19 Feb 2025 16:22:10 +0800
+Message-Id: <20250219082228.3303163-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
 References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
@@ -86,78 +86,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+New added properties include IOMMUFD handle, devid and hwpt_id.
+IOMMUFD handle and devid are used to allocate/free ioas and hwpt.
+hwpt_id is used to re-attach IOMMUFD backed device to its default
+VFIO sub-system created hwpt, i.e., when vIOMMU is disabled by
+guest. These properties are initialized in .realize_late() handler.
+
+New added handlers include [at|de]tach_hwpt. They are used to
+attach/detach hwpt. VFIO and VDPA have different way to attach
+and detach, so implementation will be in sub-class instead of
+HostIOMMUDeviceIOMMUFD.
+
+Add two wrappers host_iommu_device_iommufd_[at|de]tach_hwpt to
+wrap the two handlers.
+
+This is a prerequisite patch for following ones.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/system/iommufd.h |  3 +++
- backends/iommufd.c       | 30 ++++++++++++++++++++++++++++++
- backends/trace-events    |  1 +
- 3 files changed, 34 insertions(+)
+ include/system/iommufd.h | 50 ++++++++++++++++++++++++++++++++++++++++
+ backends/iommufd.c       | 22 ++++++++++++++++++
+ 2 files changed, 72 insertions(+)
 
 diff --git a/include/system/iommufd.h b/include/system/iommufd.h
-index cbab75bfbf..5d02e9d148 100644
+index 5d02e9d148..a871601df5 100644
 --- a/include/system/iommufd.h
 +++ b/include/system/iommufd.h
-@@ -61,6 +61,9 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-                                       uint64_t iova, ram_addr_t size,
-                                       uint64_t page_size, uint64_t *data,
-                                       Error **errp);
-+int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint32_t data_type, uint32_t entry_len,
-+                                     uint32_t *entry_num, void *data_ptr);
+@@ -66,4 +66,54 @@ int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
+                                      uint32_t *entry_num, void *data_ptr);
  
  #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
++OBJECT_DECLARE_TYPE(HostIOMMUDeviceIOMMUFD, HostIOMMUDeviceIOMMUFDClass,
++                    HOST_IOMMU_DEVICE_IOMMUFD)
++
++/* Abstract of host IOMMU device with iommufd backend */
++struct HostIOMMUDeviceIOMMUFD {
++    HostIOMMUDevice parent_obj;
++
++    IOMMUFDBackend *iommufd;
++    uint32_t devid;
++    uint32_t hwpt_id;
++};
++
++struct HostIOMMUDeviceIOMMUFDClass {
++    HostIOMMUDeviceClass parent_class;
++
++    /**
++     * @attach_hwpt: attach host IOMMU device to IOMMUFD hardware page table.
++     * VFIO and VDPA device can have different implementation.
++     *
++     * Mandatory callback.
++     *
++     * @idev: host IOMMU device backed by IOMMUFD backend.
++     *
++     * @hwpt_id: ID of IOMMUFD hardware page table.
++     *
++     * @errp: pass an Error out when attachment fails.
++     *
++     * Returns: true on success, false on failure.
++     */
++    bool (*attach_hwpt)(HostIOMMUDeviceIOMMUFD *idev, uint32_t hwpt_id,
++                        Error **errp);
++    /**
++     * @detach_hwpt: detach host IOMMU device from IOMMUFD hardware page table.
++     * VFIO and VDPA device can have different implementation.
++     *
++     * Mandatory callback.
++     *
++     * @idev: host IOMMU device backed by IOMMUFD backend.
++     *
++     * @errp: pass an Error out when attachment fails.
++     *
++     * Returns: true on success, false on failure.
++     */
++    bool (*detach_hwpt)(HostIOMMUDeviceIOMMUFD *idev, Error **errp);
++};
++
++bool host_iommu_device_iommufd_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           uint32_t hwpt_id, Error **errp);
++bool host_iommu_device_iommufd_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           Error **errp);
  #endif
 diff --git a/backends/iommufd.c b/backends/iommufd.c
-index d57da44755..fc32aad5cb 100644
+index fc32aad5cb..574f330c27 100644
 --- a/backends/iommufd.c
 +++ b/backends/iommufd.c
-@@ -311,6 +311,36 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
-     return true;
+@@ -341,6 +341,26 @@ int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
+     return ret;
  }
  
-+int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint32_t data_type, uint32_t entry_len,
-+                                     uint32_t *entry_num, void *data_ptr)
++bool host_iommu_device_iommufd_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           uint32_t hwpt_id, Error **errp)
 +{
-+    int ret, fd = be->fd;
-+    struct iommu_hwpt_invalidate cache = {
-+        .size = sizeof(cache),
-+        .hwpt_id = hwpt_id,
-+        .data_type = data_type,
-+        .entry_len = entry_len,
-+        .entry_num = *entry_num,
-+        .data_uptr = (uintptr_t)data_ptr,
-+    };
++    HostIOMMUDeviceIOMMUFDClass *idevc =
++        HOST_IOMMU_DEVICE_IOMMUFD_GET_CLASS(idev);
 +
-+    ret = ioctl(fd, IOMMU_HWPT_INVALIDATE, &cache);
++    g_assert(idevc->attach_hwpt);
++    return idevc->attach_hwpt(idev, hwpt_id, errp);
++}
 +
-+    trace_iommufd_backend_invalidate_cache(fd, hwpt_id, data_type, entry_len,
-+                                           *entry_num, cache.entry_num,
-+                                           (uintptr_t)data_ptr, ret);
-+    if (ret) {
-+        *entry_num = cache.entry_num;
-+        error_report("IOMMU_HWPT_INVALIDATE failed: %s", strerror(errno));
-+        ret = -errno;
-+    } else {
-+        g_assert(*entry_num == cache.entry_num);
-+    }
++bool host_iommu_device_iommufd_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           Error **errp)
++{
++    HostIOMMUDeviceIOMMUFDClass *idevc =
++        HOST_IOMMU_DEVICE_IOMMUFD_GET_CLASS(idev);
 +
-+    return ret;
++    g_assert(idevc->detach_hwpt);
++    return idevc->detach_hwpt(idev, errp);
 +}
 +
  static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
  {
      HostIOMMUDeviceCaps *caps = &hiod->caps;
-diff --git a/backends/trace-events b/backends/trace-events
-index 40811a3162..5a23db6c8a 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -18,3 +18,4 @@ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_
- iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
- iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
- iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
-+iommufd_backend_invalidate_cache(int iommufd, uint32_t hwpt_id, uint32_t data_type, uint32_t entry_len, uint32_t entry_num, uint32_t done_num, uint64_t data_ptr, int ret) " iommufd=%d hwpt_id=%u data_type=%u entry_len=%u entry_num=%u done_num=%u data_ptr=0x%"PRIx64" (%d)"
+@@ -379,6 +399,8 @@ static const TypeInfo types[] = {
+     }, {
+         .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
+         .parent = TYPE_HOST_IOMMU_DEVICE,
++        .instance_size = sizeof(HostIOMMUDeviceIOMMUFD),
++        .class_size = sizeof(HostIOMMUDeviceIOMMUFDClass),
+         .class_init = hiod_iommufd_class_init,
+         .abstract = true,
+     }
 -- 
 2.34.1
 
