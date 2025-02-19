@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E84A3CA19
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F7A3CA05
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:38:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqpG-00025f-K5; Wed, 19 Feb 2025 15:37:46 -0500
+	id 1tkqpX-0002Li-PM; Wed, 19 Feb 2025 15:38:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqpC-000200-AQ
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:42 -0500
+ id 1tkqpG-0002Ao-6V
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:46 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqp9-0004vS-Or
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:41 -0500
+ id 1tkqpE-0004vg-4X
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:37:45 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqou-00000007VXF-2xTY; Wed, 19 Feb 2025 21:37:24 +0100
+ id 1tkqoz-00000007VXR-3Z4V; Wed, 19 Feb 2025 21:37:29 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 35/36] vfio/migration: Add
- x-migration-load-config-after-iter VFIO property
-Date: Wed, 19 Feb 2025 21:34:17 +0100
-Message-ID: <ac49874d02a104262995a282e12e9516856a0723.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 36/36] vfio/migration: Update VFIO migration documentation
+Date: Wed, 19 Feb 2025 21:34:18 +0100
+Message-ID: <2031790b755aa95b61470b286fa787b78be08107.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -66,245 +65,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This property allows configuring whether to start the config load only
-after all iterables were loaded.
-Such interlocking is required for ARM64 due to this platform VFIO
-dependency on interrupt controller being loaded first.
-
-The property defaults to AUTO, which means ON for ARM, OFF for other
-platforms.
+Update the VFIO documentation at docs/devel/migration describing the
+changes brought by the multifd device state transfer.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration-multifd.c   | 92 +++++++++++++++++++++++++++++++++++
- hw/vfio/migration-multifd.h   |  3 ++
- hw/vfio/migration.c           | 10 +++-
- hw/vfio/pci.c                 |  3 ++
- include/hw/vfio/vfio-common.h |  2 +
- 5 files changed, 109 insertions(+), 1 deletion(-)
+ docs/devel/migration/vfio.rst | 80 +++++++++++++++++++++++++++++++----
+ 1 file changed, 71 insertions(+), 9 deletions(-)
 
-diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 04aa3f4a6596..ebb19f746f27 100644
---- a/hw/vfio/migration-multifd.c
-+++ b/hw/vfio/migration-multifd.c
-@@ -31,6 +31,31 @@ typedef struct VFIODeviceStatePacket {
-     uint8_t data[0];
- } QEMU_PACKED VFIODeviceStatePacket;
+diff --git a/docs/devel/migration/vfio.rst b/docs/devel/migration/vfio.rst
+index c49482eab66d..d9b169d29921 100644
+--- a/docs/devel/migration/vfio.rst
++++ b/docs/devel/migration/vfio.rst
+@@ -16,6 +16,37 @@ helps to reduce the total downtime of the VM. VFIO devices opt-in to pre-copy
+ support by reporting the VFIO_MIGRATION_PRE_COPY flag in the
+ VFIO_DEVICE_FEATURE_MIGRATION ioctl.
  
-+bool vfio_load_config_after_iter(VFIODevice *vbasedev)
-+{
-+    if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_ON) {
-+        return true;
-+    } else if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_OFF) {
-+        return false;
-+    }
++Starting from QEMU version 10.0 there's a possibility to transfer VFIO device
++_STOP_COPY state via multifd channels. This helps reduce downtime - especially
++with multiple VFIO devices or with devices having a large migration state.
++As an additional benefit, setting the VFIO device to _STOP_COPY state and
++saving its config space is also parallelized (run in a separate thread) in
++such migration mode.
 +
-+    assert(vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_AUTO);
++The multifd VFIO device state transfer is controlled by
++"x-migration-multifd-transfer" VFIO device property. This property defaults to
++AUTO, which means that VFIO device state transfer via multifd channels is
++attempted in configurations that otherwise support it.
 +
-+    /*
-+     * Starting the config load only after all iterables were loaded is required
-+     * for ARM64 due to this platform VFIO dependency on interrupt controller
-+     * being loaded first.
-+     *
-+     * See commit d329f5032e17 ("vfio: Move the saving of the config space to
-+     * the right place in VFIO migration").
-+     */
-+#if defined(TARGET_ARM)
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
++Since the target QEMU needs to load device state buffers in-order it needs to
++queue incoming buffers until they can be loaded into the device.
++This means that a malicious QEMU source could theoretically cause the target
++QEMU to allocate unlimited amounts of memory for such buffers-in-flight.
 +
- /* type safety */
- typedef struct VFIOStateBuffers {
-     GArray *array;
-@@ -47,6 +72,9 @@ typedef struct VFIOMultifd {
-     bool load_bufs_thread_running;
-     bool load_bufs_thread_want_exit;
++The "x-migration-max-queued-buffers" property allows capping the maximum count
++of these VFIO device state buffers queued at the destination.
++
++Because a malicious QEMU source causing OOM on the target is not expected to be
++a realistic threat in most of VFIO live migration use cases and the right value
++depends on the particular setup by default this queued buffers limit is
++disabled by setting it to UINT64_MAX.
++
++Some host platforms (like ARM64) require that VFIO device config is loaded only
++after all iterables were loaded.
++Such interlocking is controlled by "x-migration-load-config-after-iter" VFIO
++device property, which in its default setting (AUTO) does so only on platforms
++that actually require it.
++
+ When pre-copy is supported, it's possible to further reduce downtime by
+ enabling "switchover-ack" migration capability.
+ VFIO migration uAPI defines "initial bytes" as part of its pre-copy data stream
+@@ -67,14 +98,39 @@ VFIO implements the device hooks for the iterative approach as follows:
+ * A ``switchover_ack_needed`` function that checks if the VFIO device uses
+   "switchover-ack" migration capability when this capability is enabled.
  
-+    bool load_bufs_iter_done;
-+    QemuCond load_bufs_iter_done_cond;
+-* A ``save_state`` function to save the device config space if it is present.
+-
+-* A ``save_live_complete_precopy`` function that sets the VFIO device in
+-  _STOP_COPY state and iteratively copies the data for the VFIO device until
+-  the vendor driver indicates that no data remains.
+-
+-* A ``load_state`` function that loads the config section and the data
+-  sections that are generated by the save functions above.
++* A ``switchover_start`` function that in the multifd mode starts a thread that
++  reassembles the multifd received data and loads it in-order into the device.
++  In the non-multifd mode this function is a NOP.
 +
-     VFIOStateBuffers load_bufs;
-     QemuCond load_bufs_buffer_ready_cond;
-     QemuCond load_bufs_thread_finished_cond;
-@@ -394,6 +422,23 @@ static bool vfio_load_bufs_thread(void *opaque, bool *should_quit, Error **errp)
-         multifd->load_buf_idx++;
-     }
- 
-+    if (vfio_load_config_after_iter(vbasedev)) {
-+        while (!multifd->load_bufs_iter_done) {
-+            qemu_cond_wait(&multifd->load_bufs_iter_done_cond,
-+                           &multifd->load_bufs_mutex);
++* A ``save_state`` function to save the device config space if it is present
++  in the non-multifd mode.
++  In the multifd mode it just emits either a dummy EOS marker or
++  "all iterables were loaded" flag for configurations that need to defer
++  loading device config space after them.
 +
-+            /*
-+             * Need to re-check cancellation immediately after wait in case
-+             * cond was signalled by vfio_load_cleanup_load_bufs_thread().
-+             */
-+            if (vfio_load_bufs_thread_want_exit(multifd, should_quit)) {
-+                error_setg(errp, "operation cancelled");
-+                ret = false;
-+                goto ret_signal;
-+            }
-+        }
-+    }
++* A ``save_live_complete_precopy`` function that in the non-multifd mode sets
++  the VFIO device in _STOP_COPY state and iteratively copies the data for the
++  VFIO device until the vendor driver indicates that no data remains.
++  In the multifd mode it just emits a dummy EOS marker.
 +
-     config_ret = vfio_load_bufs_thread_load_config(vbasedev);
-     if (config_ret) {
-         error_setg(errp, "load config state failed: %d", config_ret);
-@@ -411,6 +456,48 @@ ret_signal:
-     return ret;
- }
- 
-+int vfio_load_state_config_load_ready(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+    VFIOMultifd *multifd = migration->multifd;
-+    int ret = 0;
++* A ``save_live_complete_precopy_thread`` function that in the multifd mode
++  provides thread handler performing multifd device state transfer.
++  It sets the VFIO device to _STOP_COPY state, iteratively reads the data
++  from the VFIO device and queues it for multifd transmission until the vendor
++  driver indicates that no data remains.
++  After that, it saves the device config space and queues it for multifd
++  transfer too.
++  In the non-multifd mode this thread is a NOP.
 +
-+    if (!vfio_multifd_transfer_enabled(vbasedev)) {
-+        error_report("%s: got DEV_CONFIG_LOAD_READY outside multifd transfer",
-+                     vbasedev->name);
-+        return -EINVAL;
-+    }
++* A ``load_state`` function that loads the data sections that are generated
++  by the main migration channel save functions above.
++  In the non-multifd mode it also loads the config section, while in the
++  multifd mode it handles the optional "all iterables were loaded" flag if
++  it is in use.
 +
-+    if (!vfio_load_config_after_iter(vbasedev)) {
-+        error_report("%s: got DEV_CONFIG_LOAD_READY but was disabled",
-+                     vbasedev->name);
-+        return -EINVAL;
-+    }
-+
-+    assert(multifd);
-+
-+    /* The lock order is load_bufs_mutex -> BQL so unlock BQL here first */
-+    bql_unlock();
-+    WITH_QEMU_LOCK_GUARD(&multifd->load_bufs_mutex) {
-+        if (multifd->load_bufs_iter_done) {
-+            /* Can't print error here as we're outside BQL */
-+            ret = -EINVAL;
-+            break;
-+        }
-+
-+        multifd->load_bufs_iter_done = true;
-+        qemu_cond_signal(&multifd->load_bufs_iter_done_cond);
-+    }
-+    bql_lock();
-+
-+    if (ret) {
-+        error_report("%s: duplicate DEV_CONFIG_LOAD_READY",
-+                     vbasedev->name);
-+    }
-+
-+    return ret;
-+}
-+
- VFIOMultifd *vfio_multifd_new(void)
- {
-     VFIOMultifd *multifd = g_new(VFIOMultifd, 1);
-@@ -424,6 +511,9 @@ VFIOMultifd *vfio_multifd_new(void)
-     multifd->load_buf_queued_pending_buffers = 0;
-     qemu_cond_init(&multifd->load_bufs_buffer_ready_cond);
++* A ``load_state_buffer`` function that loads the device state and the device
++  config that arrived via multifd channels.
++  It's used only in the multifd mode.
  
-+    multifd->load_bufs_iter_done = false;
-+    qemu_cond_init(&multifd->load_bufs_iter_done_cond);
-+
-     multifd->load_bufs_thread_running = false;
-     multifd->load_bufs_thread_want_exit = false;
-     qemu_cond_init(&multifd->load_bufs_thread_finished_cond);
-@@ -447,6 +537,7 @@ static void vfio_load_cleanup_load_bufs_thread(VFIOMultifd *multifd)
-             multifd->load_bufs_thread_want_exit = true;
- 
-             qemu_cond_signal(&multifd->load_bufs_buffer_ready_cond);
-+            qemu_cond_signal(&multifd->load_bufs_iter_done_cond);
-             qemu_cond_wait(&multifd->load_bufs_thread_finished_cond,
-                            &multifd->load_bufs_mutex);
-         }
-@@ -459,6 +550,7 @@ void vfio_multifd_free(VFIOMultifd *multifd)
-     vfio_load_cleanup_load_bufs_thread(multifd);
- 
-     qemu_cond_destroy(&multifd->load_bufs_thread_finished_cond);
-+    qemu_cond_destroy(&multifd->load_bufs_iter_done_cond);
-     vfio_state_buffers_destroy(&multifd->load_bufs);
-     qemu_cond_destroy(&multifd->load_bufs_buffer_ready_cond);
-     qemu_mutex_destroy(&multifd->load_bufs_mutex);
-diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
-index 79780d7b5392..414f2bc2ece9 100644
---- a/hw/vfio/migration-multifd.h
-+++ b/hw/vfio/migration-multifd.h
-@@ -22,9 +22,12 @@ bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev);
- 
- bool vfio_multifd_transfer_setup(VFIODevice *vbasedev, Error **errp);
- 
-+bool vfio_load_config_after_iter(VFIODevice *vbasedev);
- bool vfio_load_state_buffer(void *opaque, char *data, size_t data_size,
-                             Error **errp);
- 
-+int vfio_load_state_config_load_ready(VFIODevice *vbasedev);
-+
- void vfio_multifd_emit_dummy_eos(VFIODevice *vbasedev, QEMUFile *f);
- 
- bool vfio_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 69dcf2dac2fa..c6f04f9756aa 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -671,7 +671,11 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
-     int ret;
- 
-     if (vfio_multifd_transfer_enabled(vbasedev)) {
--        vfio_multifd_emit_dummy_eos(vbasedev, f);
-+        if (vfio_load_config_after_iter(vbasedev)) {
-+            qemu_put_be64(f, VFIO_MIG_FLAG_DEV_CONFIG_LOAD_READY);
-+        } else {
-+            vfio_multifd_emit_dummy_eos(vbasedev, f);
-+        }
-         return;
-     }
- 
-@@ -791,6 +795,10 @@ static int vfio_load_state(QEMUFile *f, void *opaque, int version_id)
- 
-             return ret;
-         }
-+        case VFIO_MIG_FLAG_DEV_CONFIG_LOAD_READY:
-+        {
-+            return vfio_load_state_config_load_ready(vbasedev);
-+        }
-         default:
-             error_report("%s: Unknown tag 0x%"PRIx64, vbasedev->name, data);
-             return -EINVAL;
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 247418f0fce2..9ca33b49421c 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3383,6 +3383,9 @@ static const Property vfio_pci_dev_properties[] = {
-                 vbasedev.migration_multifd_transfer,
-                 qdev_prop_on_off_auto_mutable, OnOffAuto,
-                 .set_default = true, .defval.i = ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP_ON_OFF_AUTO("x-migration-load-config-after-iter", VFIOPCIDevice,
-+                            vbasedev.migration_load_config_after_iter,
-+                            ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_UINT64("x-migration-max-queued-buffers", VFIOPCIDevice,
-                        vbasedev.migration_max_queued_buffers, UINT64_MAX),
-     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 30a5bb9af61b..bd3b0a29ecf2 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -52,6 +52,7 @@
- #define VFIO_MIG_FLAG_DEV_SETUP_STATE   (0xffffffffef100003ULL)
- #define VFIO_MIG_FLAG_DEV_DATA_STATE    (0xffffffffef100004ULL)
- #define VFIO_MIG_FLAG_DEV_INIT_DATA_SENT (0xffffffffef100005ULL)
-+#define VFIO_MIG_FLAG_DEV_CONFIG_LOAD_READY (0xffffffffef100006ULL)
- 
- enum {
-     VFIO_DEVICE_TYPE_PCI = 0,
-@@ -155,6 +156,7 @@ typedef struct VFIODevice {
-     bool ram_block_discard_allowed;
-     OnOffAuto enable_migration;
-     OnOffAuto migration_multifd_transfer;
-+    OnOffAuto migration_load_config_after_iter;
-     uint64_t migration_max_queued_buffers;
-     bool migration_events;
-     VFIODeviceOps *ops;
+ * ``cleanup`` functions for both save and load that perform any migration
+   related cleanup.
+@@ -176,8 +232,11 @@ Live migration save path
+                 Then the VFIO device is put in _STOP_COPY state
+                      (FINISH_MIGRATE, _ACTIVE, _STOP_COPY)
+          .save_live_complete_precopy() is called for each active device
+-      For the VFIO device, iterate in .save_live_complete_precopy() until
++              For the VFIO device: in the non-multifd mode iterate in
++                        .save_live_complete_precopy() until
+                                pending data is 0
++	          In the multifd mode this iteration is done in
++	          .save_live_complete_precopy_thread() instead.
+                                       |
+                      (POSTMIGRATE, _COMPLETED, _STOP_COPY)
+             Migraton thread schedules cleanup bottom half and exits
+@@ -194,6 +253,9 @@ Live migration resume path
+                           (RESTORE_VM, _ACTIVE, _STOP)
+                                       |
+      For each device, .load_state() is called for that device section data
++                 transmitted via the main migration channel.
++     For data transmitted via multifd channels .load_state_buffer() is called
++                                   instead.
+                         (RESTORE_VM, _ACTIVE, _RESUMING)
+                                       |
+   At the end, .load_cleanup() is called for each device and vCPUs are started
 
