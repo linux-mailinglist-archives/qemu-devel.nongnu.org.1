@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FD2A3CB07
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 22:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9BEA3CAF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 22:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkrJa-0001va-MF; Wed, 19 Feb 2025 16:09:06 -0500
+	id 1tkrJl-00020T-IU; Wed, 19 Feb 2025 16:09:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJX-0001sY-Ez
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:09:03 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJd-0001wV-84
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:09:09 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJV-0008Vj-Nf
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:09:03 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4393dc02b78so1202525e9.3
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 13:09:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkrJb-00004u-Dl
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 16:09:08 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-38f2cb1ba55so182299f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 13:09:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739999340; x=1740604140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1739999346; x=1740604146; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4FHsuKvW5lxqHnKhRd7Yijx1j/tjAzvjfWfwUFBfXHI=;
- b=AI6drNCz+OCGWjvsJ1ELqWheL4gN7Wzs1Bu97iNgZrjU5E5w6o9cqdRwQlhbXQEhA8
- 5jbS1GY9pqwtmFOPnPc29miT5yTomY3Me3bs9Zg3MulUpe+wtK092iP07eUE3vo9SFsQ
- tnvNqAjn32miITLYjuoyyzkmM0hJFw4ga3CehxQd6WqcH9oB1KPEfnVffA3VKaGSddBL
- CmK1c7Gn8xqijJTUsgFvGMc8p0dDwOqdhbT+vqzSB9Bs49eOYIq5ZZUEzgLDHNDNj5gE
- sajESgQ7tRCU8hqpUlP/nig3RGCIzSoWIEeD9dC1oGSlcPJ06BfvZO0voL5xc2W/aHzy
- SWuw==
+ bh=fSZGsSKza9FznsLK+BKXxumGhe4yyrC/EclHmT2ykjo=;
+ b=S4cwFKccf3iM87a3oolHfT9KUL99dAyHKSV7Ulpl4G33Fzpnfno7J7RRqcg6g47QkD
+ Dq1oxFfcFtoHUuze45ndyTq1JfETrIA/TG4zsoEsT4z6BYY2qbcPjFl2umpKoGo6JMgv
+ iv5frpGcAlJFN7KdmsEYLDYXzRbo0SyVnjSi7NSZNKy3uGO3IK0E4kbycqzr1bIj+R8b
+ nSbvXoJNEJbxt6BqAlsMU3sIzlvNqOx+GFH/kHTXAsaVHgiDIxgL4t4DpnOyCpsF5quz
+ zlWbh5YiHa/8FMXCtOd6T4dGwCSIvRFCfVOBNlSFwxvQPfbFcf6XuyPEnw0UYnQILhXU
+ acZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739999340; x=1740604140;
+ d=1e100.net; s=20230601; t=1739999346; x=1740604146;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4FHsuKvW5lxqHnKhRd7Yijx1j/tjAzvjfWfwUFBfXHI=;
- b=N/2WC8IRjJEXbdh3lwiRw2I9Si7O+Ih3HLG3tXxdOBySMGw8/YE/6iXNNghXzTEtcS
- Dw48umHcqImbT+ZKLKpDVki7rUMWXtSUxflIbJdU+XNe7Pw5sYzJigLy0pAUfwChkkZz
- NLaiRLGKgr8NGRAEtLmrCr2xpb26WcYz7QdM12HvsbGHIskQWhSvBXJPduz7AZV+JoWH
- +pKnRvRpQBYrwVoCCHPg42NBTxU4Ub/iggG4hE0aEejZbYXiLVYFInFi/DUBi0HGo6i6
- K5UpUmLvtCZSEhAWinMiNdtEdAsNkemz5kYMJZjKDAreFhhwqaOnU8ybZeDDOpIs3TjQ
- dMpQ==
+ bh=fSZGsSKza9FznsLK+BKXxumGhe4yyrC/EclHmT2ykjo=;
+ b=n7IoA0UieiCrHA6WUG83G+LcKUJQPGIahn5ggUmaH7QZM+/qlevv/9YHIJymJuBblo
+ Pf1rUIARWRRSaMwwatHYBlI8nAeuJmfHZesXkP+94HkliieRjmzXeueEh9ifYPxq7JPi
+ 4ms46d7bDhZo8Y4W1QPc4dAHybHVst6jtwM23LsVYBXyB67Lz8pDbNr7xYbOpurdk/KN
+ MQ2kuPRdrPvgCDHX1UqXXkZYIYgaIzTZhUs0Nradzx9cVbqzYBSL8tW3QpHPC2kjxFKv
+ +x9T/YwfxrLNpUJhTcplttEiu/ac/mKlKEyZAisv7Rb/7KHF9LEfgrUH0NOOrYCWGQyP
+ iTuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwaHmIBJnTxDa5uSpWeyEpVKfRnT/NFfBcGESmHrn55uDPZ3HRFMx7syQC0otsBQKyLwyUxRavz4ZJ@nongnu.org
-X-Gm-Message-State: AOJu0YyHYqYUhbbRtcfPxykSizBI2shOKrxNEs+iiJaDixRKPMtnI99+
- 59rVpObIwwXPRd5v7bgHsPb6mzRpc+Jw7O/r5++MBTDTeQDi5a+wr0WrbjwD/82E6DvL8M/Sb0Y
- ImzQ=
-X-Gm-Gg: ASbGncvh1qoTCQSlVRZje7xuMLXuhS8aTZA6AKji6oDgaFjQl37MVJJmpvy4wuWIGlU
- brPnwiVXeAu/l7aCJbb+1kXQbvNpEylzOfgXSJLmv0sFGuzXK61Zo8uiJYV8922znZHSDDWQtWm
- Sgw16OqmebIF06pj4iZIvwdS1b6rUkpjSklbZvw6AsyKY56agJfFGAccKZN/N8hBsNVAu8w6kR7
- DwcmuqkuDZBNcOGl95gF2hH7gaWBZ3H5mtddqJf/2I7jQtv4uGKTQP7pMnkriQALwew9GZTRK4f
- F5mpKn2KxwR+u1QIlS1+cVDE3dM0WzuMuDFrgakV/zVdSUZi6gvTviusrw/tnoDw6g==
-X-Google-Smtp-Source: AGHT+IERTR1XiiAxvQUqcL7HgCAWEcqCxi9fc99r9lHG3vrUskwUdQLOHiIzY3gm4LBo+mMusZ7Jww==
-X-Received: by 2002:a05:600c:3b1a:b0:439:9274:81ed with SMTP id
- 5b1f17b1804b1-439927483e2mr72162935e9.1.1739999340068; 
- Wed, 19 Feb 2025 13:09:00 -0800 (PST)
+ AJvYcCUVJW0CrqdZlFFpDVWdrMrubdAbKj98bI7kXc5JlvPI+MPlpmItW7F2czRAxWC97Q00kohE4Avi60p5@nongnu.org
+X-Gm-Message-State: AOJu0Yy8O9kKEzPCkRoDrQuQOsTBuvwbLpImpDOvjesQu3iB4b3CBk8T
+ nvYCWU52AJInHTNT4UNCdfSgZBVlXzasMS2s4dHF0R9UwDaPdSivazlmb6ObrQ4=
+X-Gm-Gg: ASbGnctxkov9LsslKXgdR5ADK6XcG79VQREv+7uGZhGUgpuq47mfL9zKd1RjYdNptlz
+ 3CsZY0X8XWPocmAiZUVxZe+Ig3/KwPGZXsTBN0fMShOqgD1wCSuQ5ErdZ06sQdd2eoFggAVVSPl
+ NB1pFL5Wl+BZvDbDPNlQpUseidcLg7b9Mi7p8YN3+tOOjiTo/LMybeEwUFrKdwh3omdaQjBO73e
+ wi/llq/AvtUo6G3qPWhJ/A71E+ctHt8UzVskAPRYq8TuytpOVGOarfC+uGMO5PZkUvwP4e1mZ5J
+ RdyacKxqi6ogadOnZAhQiKgFDcqPl9GH89CiN7TMOYD5CKaTS7OCLhYjhZVmFtDjVg==
+X-Google-Smtp-Source: AGHT+IH8vWve1zzP4GhRmEIzBXAdPoQ6GxQ483+xddSgCnCPWr2rFU7i87czS1ardmTIRDJw8prvFA==
+X-Received: by 2002:a05:6000:196b:b0:38a:8ec6:f46f with SMTP id
+ ffacd0b85a97d-38f587f184cmr4267743f8f.53.1739999345774; 
+ Wed, 19 Feb 2025 13:09:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259f8730sm19267996f8f.93.2025.02.19.13.08.58
+ 5b1f17b1804b1-43992ad82cfsm64238765e9.37.2025.02.19.13.09.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Feb 2025 13:08:59 -0800 (PST)
+ Wed, 19 Feb 2025 13:09:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
@@ -76,24 +75,24 @@ Cc: Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
  Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-arm@nongnu.org
-Subject: [PATCH 3/9] hw/char/pl011: Improve RX flow tracing events
-Date: Wed, 19 Feb 2025 22:08:35 +0100
-Message-ID: <20250219210841.94797-4-philmd@linaro.org>
+Subject: [PATCH 4/9] hw/char/pl011: Really use RX FIFO depth
+Date: Wed, 19 Feb 2025 22:08:36 +0100
+Message-ID: <20250219210841.94797-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250219210841.94797-1-philmd@linaro.org>
 References: <20250219210841.94797-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,87 +108,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Log FIFO use (availability and depth).
+While we model a 16-elements RX FIFO since the PL011 model was
+introduced in commit cdbdb648b7c ("ARM Versatile Platform Baseboard
+emulation"), we only read 1 char at a time!
 
+Have the IOCanReadHandler handler return how many elements are
+available, and use that in the IOReadHandler handler.
+
+Example of FIFO better used by enabling the pl011 tracing events
+and running the tests/functional/test_aarch64_virt.py tests:
+
+  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
+  pl011_receive recv 5 chars
+  pl011_fifo_rx_put RX FIFO push char [0x72] 1/16 depth used
+  pl011_irq_state irq state 1
+  pl011_fifo_rx_put RX FIFO push char [0x6f] 2/16 depth used
+  pl011_fifo_rx_put RX FIFO push char [0x6f] 3/16 depth used
+  pl011_fifo_rx_put RX FIFO push char [0x74] 4/16 depth used
+  pl011_fifo_rx_put RX FIFO push char [0x0d] 5/16 depth used
+  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
+  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
+  pl011_write addr 0x038 value 0x00000050 reg IMSC
+  pl011_irq_state irq state 1
+  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
+  pl011_read addr 0x03c value 0x00000030 reg RIS
+  pl011_write addr 0x044 value 0x00000000 reg ICR
+  pl011_irq_state irq state 1
+  pl011_read addr 0x018 value 0x00000080 reg FR
+  pl011_read_fifo RX FIFO read, used 4/16
+  pl011_irq_state irq state 1
+  pl011_read addr 0x000 value 0x00000072 reg DR
+  pl011_can_receive LCR 0x70, RX FIFO used 4/16, can_receive 12 chars
+  pl011_read addr 0x018 value 0x00000080 reg FR
+  pl011_read_fifo RX FIFO read, used 3/16
+  pl011_irq_state irq state 1
+  pl011_read addr 0x000 value 0x0000006f reg DR
+  pl011_can_receive LCR 0x70, RX FIFO used 3/16, can_receive 13 chars
+  pl011_read addr 0x018 value 0x00000080 reg FR
+  pl011_read_fifo RX FIFO read, used 2/16
+  pl011_irq_state irq state 1
+  pl011_read addr 0x000 value 0x0000006f reg DR
+  pl011_can_receive LCR 0x70, RX FIFO used 2/16, can_receive 14 chars
+  pl011_read addr 0x018 value 0x00000080 reg FR
+  pl011_read_fifo RX FIFO read, used 1/16
+  pl011_irq_state irq state 1
+  pl011_read addr 0x000 value 0x00000074 reg DR
+  pl011_can_receive LCR 0x70, RX FIFO used 1/16, can_receive 15 chars
+  pl011_read addr 0x018 value 0x00000080 reg FR
+  pl011_read_fifo RX FIFO read, used 0/16
+  pl011_irq_state irq state 0
+  pl011_read addr 0x000 value 0x0000000d reg DR
+  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
+  pl011_read addr 0x018 value 0x00000090 reg FR
+  pl011_read addr 0x03c value 0x00000020 reg RIS
+  pl011_write addr 0x038 value 0x00000050 reg IMSC
+  pl011_irq_state irq state 0
+  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
+  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
+  pl011_read addr 0x018 value 0x00000090 reg FR
+  pl011_write addr 0x000 value 0x00000072 reg DR
+
+Inspired-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/pl011.c      | 10 ++++++----
- hw/char/trace-events |  7 ++++---
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ hw/char/pl011.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index bcd516d682d..148a7d0dc60 100644
+index 148a7d0dc60..57d293d1e3a 100644
 --- a/hw/char/pl011.c
 +++ b/hw/char/pl011.c
-@@ -185,7 +185,7 @@ static void pl011_fifo_rx_put(void *opaque, uint32_t value)
-     s->read_fifo[slot] = value;
-     s->read_count++;
-     s->flags &= ~PL011_FLAG_RXFE;
--    trace_pl011_fifo_rx_put(value, s->read_count);
-+    trace_pl011_fifo_rx_put(value, s->read_count, pipe_depth);
-     if (s->read_count == pipe_depth) {
-         trace_pl011_fifo_rx_full();
-         s->flags |= PL011_FLAG_RXFF;
-@@ -248,12 +248,13 @@ static void pl011_write_txdata(PL011State *s, uint8_t data)
- static uint32_t pl011_read_rxdata(PL011State *s)
- {
-     uint32_t c;
-+    unsigned fifo_depth = pl011_get_fifo_depth(s);
+@@ -489,7 +489,6 @@ static int pl011_can_receive(void *opaque)
+     PL011State *s = (PL011State *)opaque;
+     unsigned fifo_depth = pl011_get_fifo_depth(s);
+     unsigned fifo_available = fifo_depth - s->read_count;
+-    int r = fifo_available ? 1 : 0;
  
-     s->flags &= ~PL011_FLAG_RXFF;
-     c = s->read_fifo[s->read_pos];
-     if (s->read_count > 0) {
-         s->read_count--;
--        s->read_pos = (s->read_pos + 1) & (pl011_get_fifo_depth(s) - 1);
-+        s->read_pos = (s->read_pos + 1) & (fifo_depth - 1);
-     }
-     if (s->read_count == 0) {
-         s->flags |= PL011_FLAG_RXFE;
-@@ -261,7 +262,7 @@ static uint32_t pl011_read_rxdata(PL011State *s)
-     if (s->read_count == s->read_trigger - 1) {
-         s->int_level &= ~INT_RX;
-     }
--    trace_pl011_read_fifo(s->read_count);
-+    trace_pl011_read_fifo(s->read_count, fifo_depth);
-     s->rsr = c >> 8;
-     pl011_update(s);
-     qemu_chr_fe_accept_input(&s->chr);
-@@ -496,12 +497,13 @@ static int pl011_can_receive(void *opaque)
-     if (!(s->cr & CR_RXE)) {
+     if (!(s->cr & CR_UARTEN)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "PL011 reading data on disabled UART\n");
+@@ -498,7 +497,8 @@ static int pl011_can_receive(void *opaque)
          qemu_log_mask(LOG_GUEST_ERROR, "PL011 reading data on disabled TX UART\n");
      }
--    trace_pl011_can_receive(s->lcr, s->read_count, r);
-+    trace_pl011_can_receive(s->lcr, s->read_count, fifo_depth, fifo_available);
-     return r;
+     trace_pl011_can_receive(s->lcr, s->read_count, fifo_depth, fifo_available);
+-    return r;
++
++    return fifo_available;
  }
  
  static void pl011_receive(void *opaque, const uint8_t *buf, int size)
- {
-+    trace_pl011_receive(size);
-     /*
-      * In loopback mode, the RX input signal is internally disconnected
-      * from the entire receiving logics; thus, all inputs are ignored,
-diff --git a/hw/char/trace-events b/hw/char/trace-events
-index b2e3d25ae34..05a33036c12 100644
---- a/hw/char/trace-events
-+++ b/hw/char/trace-events
-@@ -60,12 +60,13 @@ imx_serial_put_data(const char *chrname, uint32_t value) "%s: 0x%" PRIx32
- # pl011.c
- pl011_irq_state(int level) "irq state %d"
- pl011_read(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x value 0x%08x reg %s"
--pl011_read_fifo(int read_count) "FIFO read, read_count now %d"
-+pl011_read_fifo(unsigned rx_fifo_used, size_t rx_fifo_depth) "RX FIFO read, used %u/%zu"
- pl011_write(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x value 0x%08x reg %s"
--pl011_can_receive(uint32_t lcr, int read_count, int r) "LCR 0x%08x read_count %d returning %d"
--pl011_fifo_rx_put(uint32_t c, int read_count) "new char 0x%02x read_count now %d"
-+pl011_can_receive(uint32_t lcr, unsigned rx_fifo_used, size_t rx_fifo_depth, unsigned rx_fifo_available) "LCR 0x%02x, RX FIFO used %u/%zu, can_receive %u chars"
-+pl011_fifo_rx_put(uint32_t c, unsigned read_count, size_t rx_fifo_depth) "RX FIFO push char [0x%02x] %d/%zu depth used"
- pl011_fifo_rx_full(void) "RX FIFO now full, RXFF set"
- pl011_baudrate_change(unsigned int baudrate, uint64_t clock, uint32_t ibrd, uint32_t fbrd) "new baudrate %u (clk: %" PRIu64 "hz, ibrd: %" PRIu32 ", fbrd: %" PRIu32 ")"
-+pl011_receive(int size) "recv %d chars"
+@@ -513,7 +513,9 @@ static void pl011_receive(void *opaque, const uint8_t *buf, int size)
+         return;
+     }
  
- # cmsdk-apb-uart.c
- cmsdk_apb_uart_read(uint64_t offset, uint64_t data, unsigned size) "CMSDK APB UART read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
+-    pl011_fifo_rx_put(opaque, *buf);
++    for (int i = 0; i < size; i++) {
++        pl011_fifo_rx_put(opaque, buf[i]);
++    }
+ }
+ 
+ static void pl011_event(void *opaque, QEMUChrEvent event)
 -- 
 2.47.1
 
