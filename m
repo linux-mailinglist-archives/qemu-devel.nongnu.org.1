@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89961A3B235
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C77A9A3B23C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 08:22:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkeJv-0003wn-PU; Wed, 19 Feb 2025 02:16:36 -0500
+	id 1tkeKo-0005tL-GP; Wed, 19 Feb 2025 02:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIS-0002Ky-Dl
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:06 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIV-0002MW-34
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIM-000531-VI
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:02 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tkeIS-00054b-5V
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 02:15:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1739949297;
+ s=mimecast20190719; t=1739949302;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BCLfLdIyU5h8aJAtrpTHMjCTBxXmVNQYO3j6Jg+QOrY=;
- b=OXQHUUhXYiTvfIXCUKZCo1Z59ZbedG7QchLGeXChHXm3FmUJIWNBMhoPhSWsBCF4sfS/x2
- 3NUPd1hjdhp+p+asldOv6o5LuSecPyHjPfEwu8yHwfY0AtYQXd95cp4I9XpI5fXuMadOat
- BC6e2rBQTquRMPxkyrYCamjxTBJAWzg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=loo2zssc2j3ps7Smpw66veyrAHv0c4aw0wHxTSlHobg=;
+ b=WyP3qqLsw50qrFbQo6QaMWjIQ4ZAHOoVj052QRyKjW9HLfZd+wqxvA/GbTsBr87LqvZWg3
+ DAofy94CMkN0ottmfakH3r6reK2Z84POAn4dxDtgFGZ8m8+2+e6Z4GvP4HLvPz1NLgyLrv
+ 0x6igN2hz6GYGxA8H3OtBQm6jzdrtPc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-Cat-URVxOuexovM-FfVWIA-1; Wed,
- 19 Feb 2025 02:14:53 -0500
-X-MC-Unique: Cat-URVxOuexovM-FfVWIA-1
-X-Mimecast-MFC-AGG-ID: Cat-URVxOuexovM-FfVWIA_1739949292
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-xmw1ZQGaN1-JOA7u3goVig-1; Wed,
+ 19 Feb 2025 02:14:55 -0500
+X-MC-Unique: xmw1ZQGaN1-JOA7u3goVig-1
+X-Mimecast-MFC-AGG-ID: xmw1ZQGaN1-JOA7u3goVig_1739949294
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 391F71800874; Wed, 19 Feb 2025 07:14:52 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C6B4190F9C8; Wed, 19 Feb 2025 07:14:54 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.78])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DA7C190C544; Wed, 19 Feb 2025 07:14:51 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3D3E1800940; Wed, 19 Feb 2025 07:14:53 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 887251801A94; Wed, 19 Feb 2025 08:14:32 +0100 (CET)
+ id 997F71801A95; Wed, 19 Feb 2025 08:14:32 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -59,15 +59,14 @@ Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  graf@amazon.com, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v4 09/24] hw/uefi: add var-service-policy.c
-Date: Wed, 19 Feb 2025 08:14:11 +0100
-Message-ID: <20250219071431.50626-10-kraxel@redhat.com>
+Subject: [PATCH v4 10/24] hw/uefi: add var-service-core.c
+Date: Wed, 19 Feb 2025 08:14:12 +0100
+Message-ID: <20250219071431.50626-11-kraxel@redhat.com>
 In-Reply-To: <20250219071431.50626-1-kraxel@redhat.com>
 References: <20250219071431.50626-1-kraxel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -77,7 +76,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,32 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement variable policies (Edk2VariablePolicyProtocol).
-
-This EFI protocol allows to define restrictions for variables.
-It also allows to lock down variables (disallow write access).
+This is the core code for guest <-> host communication.  This accepts
+request messages from the guest, dispatches them to the service called,
+and sends back the response message.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/uefi/var-service-policy.c | 370 +++++++++++++++++++++++++++++++++++
- 1 file changed, 370 insertions(+)
- create mode 100644 hw/uefi/var-service-policy.c
+ hw/uefi/var-service-core.c | 321 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 321 insertions(+)
+ create mode 100644 hw/uefi/var-service-core.c
 
-diff --git a/hw/uefi/var-service-policy.c b/hw/uefi/var-service-policy.c
+diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
 new file mode 100644
-index 000000000000..3b1155fe4ea1
+index 000000000000..8ed8378ab991
 --- /dev/null
-+++ b/hw/uefi/var-service-policy.c
-@@ -0,0 +1,370 @@
++++ b/hw/uefi/var-service-core.c
+@@ -0,0 +1,321 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * uefi vars device - VarCheckPolicyLibMmiHandler implementation
-+ *
-+ * variable policy specs:
-+ * https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Library/VariablePolicyLib/ReadMe.md
++ * uefi vars device
 + */
 +#include "qemu/osdep.h"
++#include "qemu/crc32c.h"
 +#include "system/dma.h"
 +#include "migration/vmstate.h"
 +
@@ -128,357 +124,310 @@ index 000000000000..3b1155fe4ea1
 +
 +#include "trace/trace-hw_uefi.h"
 +
-+static void calc_policy(uefi_var_policy *pol);
-+
-+static int uefi_var_policy_post_load(void *opaque, int version_id)
++static int uefi_vars_pre_load(void *opaque)
 +{
-+    uefi_var_policy *pol = opaque;
++    uefi_vars_state *uv = opaque;
 +
-+    calc_policy(pol);
++    uefi_vars_clear_all(uv);
++    uefi_vars_policies_clear(uv);
++    g_free(uv->buffer);
 +    return 0;
 +}
 +
-+const VMStateDescription vmstate_uefi_var_policy = {
-+    .name = "uefi-var-policy",
-+    .post_load = uefi_var_policy_post_load,
++static int uefi_vars_post_load(void *opaque, int version_id)
++{
++    uefi_vars_state *uv = opaque;
++
++    uefi_vars_update_storage(uv);
++    uv->buffer = g_malloc(uv->buf_size);
++    return 0;
++}
++
++const VMStateDescription vmstate_uefi_vars = {
++    .name = "uefi-vars",
++    .pre_load = uefi_vars_pre_load,
++    .post_load = uefi_vars_post_load,
 +    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32(entry_size, uefi_var_policy),
-+        VMSTATE_VBUFFER_ALLOC_UINT32(entry, uefi_var_policy,
-+                                     0, NULL, entry_size),
++        VMSTATE_UINT16(sts, uefi_vars_state),
++        VMSTATE_UINT32(buf_size, uefi_vars_state),
++        VMSTATE_UINT32(buf_addr_lo, uefi_vars_state),
++        VMSTATE_UINT32(buf_addr_hi, uefi_vars_state),
++        VMSTATE_UINT32(pio_xfer_offset, uefi_vars_state),
++        VMSTATE_VBUFFER_ALLOC_UINT32(pio_xfer_buffer, uefi_vars_state,
++                                     0, NULL, buf_size),
++        VMSTATE_BOOL(end_of_dxe, uefi_vars_state),
++        VMSTATE_BOOL(ready_to_boot, uefi_vars_state),
++        VMSTATE_BOOL(exit_boot_service, uefi_vars_state),
++        VMSTATE_BOOL(policy_locked, uefi_vars_state),
++        VMSTATE_UINT64(used_storage, uefi_vars_state),
++        VMSTATE_QTAILQ_V(variables, uefi_vars_state, 0,
++                         vmstate_uefi_variable, uefi_variable, next),
++        VMSTATE_QTAILQ_V(var_policies, uefi_vars_state, 0,
++                         vmstate_uefi_var_policy, uefi_var_policy, next),
 +        VMSTATE_END_OF_LIST()
 +    },
 +};
 +
-+static void print_policy_entry(variable_policy_entry *pe)
++static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
 +{
-+    uint16_t *name = (void *)pe + pe->offset_to_name;
++    hwaddr    dma;
++    mm_header *mhdr;
++    uint64_t  size;
++    uint32_t  retval;
 +
-+    fprintf(stderr, "%s:\n", __func__);
++    dma = uv->buf_addr_lo | ((hwaddr)uv->buf_addr_hi << 32);
++    mhdr = (mm_header *) uv->buffer;
 +
-+    fprintf(stderr, "    name ´");
-+    while (*name) {
-+        fprintf(stderr, "%c", *name);
-+        name++;
-+    }
-+    fprintf(stderr, "', version=%d.%d, size=%d\n",
-+            pe->version >> 16, pe->version & 0xffff, pe->size);
-+
-+    if (pe->min_size) {
-+        fprintf(stderr, "    size min=%d\n", pe->min_size);
-+    }
-+    if (pe->max_size != UINT32_MAX) {
-+        fprintf(stderr, "    size max=%u\n", pe->max_size);
-+    }
-+    if (pe->attributes_must_have) {
-+        fprintf(stderr, "    attr must=0x%x\n", pe->attributes_must_have);
-+    }
-+    if (pe->attributes_cant_have) {
-+        fprintf(stderr, "    attr cant=0x%x\n", pe->attributes_cant_have);
-+    }
-+    if (pe->lock_policy_type) {
-+        fprintf(stderr, "    lock policy type %d\n", pe->lock_policy_type);
-+    }
-+}
-+
-+static gboolean wildcard_str_equal(uefi_var_policy *pol,
-+                                   uefi_variable *var)
-+{
-+    return uefi_str_equal_ex(pol->name, pol->name_size,
-+                             var->name, var->name_size,
-+                             true);
-+}
-+
-+static uefi_var_policy *find_policy(uefi_vars_state *uv, QemuUUID guid,
-+                                    uint16_t *name, uint64_t name_size)
-+{
-+    uefi_var_policy *pol;
-+
-+    QTAILQ_FOREACH(pol, &uv->var_policies, next) {
-+        if (!qemu_uuid_is_equal(&pol->entry->namespace, &guid)) {
-+            continue;
-+        }
-+        if (!uefi_str_equal(pol->name, pol->name_size,
-+                            name, name_size)) {
-+            continue;
-+        }
-+        return pol;
-+    }
-+    return NULL;
-+}
-+
-+static uefi_var_policy *wildcard_find_policy(uefi_vars_state *uv,
-+                                             uefi_variable *var)
-+{
-+    uefi_var_policy *pol;
-+
-+    QTAILQ_FOREACH(pol, &uv->var_policies, next) {
-+        if (!qemu_uuid_is_equal(&pol->entry->namespace, &var->guid)) {
-+            continue;
-+        }
-+        if (!wildcard_str_equal(pol, var)) {
-+            continue;
-+        }
-+        return pol;
-+    }
-+    return NULL;
-+}
-+
-+static void calc_policy(uefi_var_policy *pol)
-+{
-+    variable_policy_entry *pe = pol->entry;
-+    unsigned int i;
-+
-+    pol->name = (void *)pol->entry + pe->offset_to_name;
-+    pol->name_size = pe->size - pe->offset_to_name;
-+
-+    for (i = 0; i < pol->name_size / 2; i++) {
-+        if (pol->name[i] == '#') {
-+            pol->hashmarks++;
-+        }
-+    }
-+}
-+
-+uefi_var_policy *uefi_vars_add_policy(uefi_vars_state *uv,
-+                                      variable_policy_entry *pe)
-+{
-+    uefi_var_policy *pol, *p;
-+
-+    pol = g_new0(uefi_var_policy, 1);
-+    pol->entry = g_malloc(pe->size);
-+    memcpy(pol->entry, pe, pe->size);
-+    pol->entry_size = pe->size;
-+
-+    calc_policy(pol);
-+
-+    /* keep list sorted by priority, add to tail of priority group */
-+    QTAILQ_FOREACH(p, &uv->var_policies, next) {
-+        if ((p->hashmarks > pol->hashmarks) ||
-+            (!p->name_size && pol->name_size)) {
-+            QTAILQ_INSERT_BEFORE(p, pol, next);
-+            return pol;
-+        }
-+    }
-+
-+    QTAILQ_INSERT_TAIL(&uv->var_policies, pol, next);
-+    return pol;
-+}
-+
-+efi_status uefi_vars_policy_check(uefi_vars_state *uv,
-+                                  uefi_variable *var,
-+                                  gboolean is_newvar)
-+{
-+    uefi_var_policy *pol;
-+    variable_policy_entry *pe;
-+    variable_lock_on_var_state *lvarstate;
-+    uint16_t *lvarname;
-+    size_t lvarnamesize;
-+    uefi_variable *lvar;
-+
-+    if (!uv->end_of_dxe) {
-+        return EFI_SUCCESS;
-+    }
-+
-+    pol = wildcard_find_policy(uv, var);
-+    if (!pol) {
-+        return EFI_SUCCESS;
-+    }
-+    pe = pol->entry;
-+
-+    uefi_trace_variable(__func__, var->guid, var->name, var->name_size);
-+    print_policy_entry(pe);
-+
-+    if ((var->attributes & pe->attributes_must_have) != pe->attributes_must_have) {
-+        trace_uefi_vars_policy_deny("must-have-attr");
-+        return EFI_INVALID_PARAMETER;
-+    }
-+    if ((var->attributes & pe->attributes_cant_have) != 0) {
-+        trace_uefi_vars_policy_deny("cant-have-attr");
-+        return EFI_INVALID_PARAMETER;
-+    }
-+
-+    if (var->data_size < pe->min_size) {
-+        trace_uefi_vars_policy_deny("min-size");
-+        return EFI_INVALID_PARAMETER;
-+    }
-+    if (var->data_size > pe->max_size) {
-+        trace_uefi_vars_policy_deny("max-size");
-+        return EFI_INVALID_PARAMETER;
-+    }
-+
-+    switch (pe->lock_policy_type) {
-+    case VARIABLE_POLICY_TYPE_NO_LOCK:
-+        break;
-+
-+    case VARIABLE_POLICY_TYPE_LOCK_NOW:
-+        trace_uefi_vars_policy_deny("lock-now");
-+        return EFI_WRITE_PROTECTED;
-+
-+    case VARIABLE_POLICY_TYPE_LOCK_ON_CREATE:
-+        if (!is_newvar) {
-+            trace_uefi_vars_policy_deny("lock-on-create");
-+            return EFI_WRITE_PROTECTED;
-+        }
-+        break;
-+
-+    case VARIABLE_POLICY_TYPE_LOCK_ON_VAR_STATE:
-+        lvarstate    = (void *)pol->entry + sizeof(*pe);
-+        lvarname     = (void *)pol->entry + sizeof(*pe) + sizeof(*lvarstate);
-+        lvarnamesize = pe->offset_to_name - sizeof(*pe) - sizeof(*lvarstate);
-+
-+        uefi_trace_variable(__func__, lvarstate->namespace,
-+                            lvarname, lvarnamesize);
-+        lvar = uefi_vars_find_variable(uv, lvarstate->namespace,
-+                                          lvarname, lvarnamesize);
-+        if (lvar && lvar->data_size == 1) {
-+            uint8_t *value = lvar->data;
-+            if (lvarstate->value == *value) {
-+                return EFI_WRITE_PROTECTED;
-+            }
-+        }
-+        break;
-+    }
-+
-+    return EFI_SUCCESS;
-+}
-+
-+void uefi_vars_policies_clear(uefi_vars_state *uv)
-+{
-+    uefi_var_policy *pol;
-+
-+    while (!QTAILQ_EMPTY(&uv->var_policies)) {
-+        pol = QTAILQ_FIRST(&uv->var_policies);
-+        QTAILQ_REMOVE(&uv->var_policies, pol, next);
-+        g_free(pol->entry);
-+        g_free(pol);
-+    }
-+}
-+
-+static size_t uefi_vars_mm_policy_error(mm_header *mhdr,
-+                                        mm_check_policy *mchk,
-+                                        uint64_t status)
-+{
-+    mchk->result = status;
-+    return sizeof(*mchk);
-+}
-+
-+static uint32_t uefi_vars_mm_check_policy_is_enabled(uefi_vars_state *uv,
-+                                                     mm_header       *mhdr,
-+                                                     mm_check_policy *mchk,
-+                                                     void            *func)
-+{
-+    mm_check_policy_is_enabled *mpar = func;
-+    size_t length;
-+
-+    length = sizeof(*mchk) + sizeof(*mpar);
-+    if (mhdr->length < length) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+
-+    mpar->state  = TRUE;
-+    mchk->result = EFI_SUCCESS;
-+    return sizeof(*mchk);
-+}
-+
-+static uint32_t uefi_vars_mm_check_policy_register(uefi_vars_state *uv,
-+                                                   mm_header       *mhdr,
-+                                                   mm_check_policy *mchk,
-+                                                   void            *func)
-+{
-+    variable_policy_entry *pe = func;
-+    uefi_var_policy *pol;
-+    uint64_t length;
-+
-+    if (uadd64_overflow(sizeof(*mchk), pe->size, &length)) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+    if (mhdr->length < length) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+    if (pe->size < sizeof(*pe)) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+    if (pe->offset_to_name < sizeof(*pe)) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+
-+    if (pe->lock_policy_type == VARIABLE_POLICY_TYPE_LOCK_ON_VAR_STATE &&
-+        pe->offset_to_name < sizeof(*pe) + sizeof(variable_lock_on_var_state)) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+
-+    /* check space for minimum string length */
-+    if (pe->size < (size_t)pe->offset_to_name) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_BAD_BUFFER_SIZE);
-+    }
-+
-+    if (!uefi_str_is_valid((void *)pe + pe->offset_to_name,
-+                           pe->size - pe->offset_to_name,
-+                           false)) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_INVALID_PARAMETER);
-+    }
-+
-+    pol = find_policy(uv, pe->namespace,
-+                      (void *)pe + pe->offset_to_name,
-+                      pe->size - pe->offset_to_name);
-+    if (pol) {
-+        return uefi_vars_mm_policy_error(mhdr, mchk, EFI_ALREADY_STARTED);
-+    }
-+
-+    uefi_vars_add_policy(uv, pe);
-+
-+    mchk->result = EFI_SUCCESS;
-+    return sizeof(*mchk);
-+}
-+
-+uint32_t uefi_vars_mm_check_policy_proto(uefi_vars_state *uv)
-+{
-+    static const char *fnames[] = {
-+        "zero",
-+        "disable",
-+        "is-enabled",
-+        "register",
-+        "dump",
-+        "lock",
-+    };
-+    const char      *fname;
-+    mm_header       *mhdr = (mm_header *) uv->buffer;
-+    mm_check_policy *mchk = (mm_check_policy *) (uv->buffer + sizeof(*mhdr));
-+    void            *func = (uv->buffer + sizeof(*mhdr) + sizeof(*mchk));
-+
-+    if (mhdr->length < sizeof(*mchk)) {
++    if (!uv->buffer || uv->buf_size < sizeof(*mhdr)) {
 +        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
 +    }
 +
-+    fname = mchk->command < ARRAY_SIZE(fnames)
-+        ? fnames[mchk->command]
-+        : "unknown";
-+    trace_uefi_vars_policy_cmd(fname);
-+
-+    switch (mchk->command) {
-+    case VAR_CHECK_POLICY_COMMAND_DISABLE:
-+        mchk->result = EFI_UNSUPPORTED;
-+        break;
-+    case VAR_CHECK_POLICY_COMMAND_IS_ENABLED:
-+        uefi_vars_mm_check_policy_is_enabled(uv, mhdr, mchk, func);
-+        break;
-+    case VAR_CHECK_POLICY_COMMAND_REGISTER:
-+        if (uv->policy_locked) {
-+            mchk->result = EFI_WRITE_PROTECTED;
-+        } else {
-+            uefi_vars_mm_check_policy_register(uv, mhdr, mchk, func);
-+        }
-+        break;
-+    case VAR_CHECK_POLICY_COMMAND_LOCK:
-+        uv->policy_locked = true;
-+        mchk->result = EFI_SUCCESS;
-+        break;
-+    default:
-+        mchk->result = EFI_UNSUPPORTED;
-+        break;
++    /* read header */
++    if (dma_mode) {
++        dma_memory_read(&address_space_memory, dma,
++                        uv->buffer, sizeof(*mhdr),
++                        MEMTXATTRS_UNSPECIFIED);
++    } else {
++        memcpy(uv->buffer, uv->pio_xfer_buffer, sizeof(*mhdr));
 +    }
 +
-+    uefi_trace_status(__func__, mchk->result);
-+    return UEFI_VARS_STS_SUCCESS;
++    if (uadd64_overflow(sizeof(*mhdr), mhdr->length, &size)) {
++        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
++    }
++    if (uv->buf_size < size) {
++        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
++    }
++
++    /* read buffer (excl header) */
++    if (dma_mode) {
++        dma_memory_read(&address_space_memory, dma + sizeof(*mhdr),
++                        uv->buffer + sizeof(*mhdr), mhdr->length,
++                        MEMTXATTRS_UNSPECIFIED);
++    } else {
++        memcpy(uv->buffer + sizeof(*mhdr),
++               uv->pio_xfer_buffer + sizeof(*mhdr),
++               mhdr->length);
++    }
++    memset(uv->buffer + size, 0, uv->buf_size - size);
++
++    /* dispatch */
++    if (qemu_uuid_is_equal(&mhdr->guid, &EfiSmmVariableProtocolGuid)) {
++        retval = uefi_vars_mm_vars_proto(uv);
++
++    } else if (qemu_uuid_is_equal(&mhdr->guid, &VarCheckPolicyLibMmiHandlerGuid)) {
++        retval = uefi_vars_mm_check_policy_proto(uv);
++
++    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEndOfDxeEventGroupGuid)) {
++        trace_uefi_event("end-of-dxe");
++        uv->end_of_dxe = true;
++        retval = UEFI_VARS_STS_SUCCESS;
++
++    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventReadyToBootGuid)) {
++        trace_uefi_event("ready-to-boot");
++        uv->ready_to_boot = true;
++        retval = UEFI_VARS_STS_SUCCESS;
++
++    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventExitBootServicesGuid)) {
++        trace_uefi_event("exit-boot-service");
++        uv->exit_boot_service = true;
++        retval = UEFI_VARS_STS_SUCCESS;
++
++    } else {
++        retval = UEFI_VARS_STS_ERR_NOT_SUPPORTED;
++    }
++
++    /* write buffer */
++    if (dma_mode) {
++        dma_memory_write(&address_space_memory, dma,
++                         uv->buffer, sizeof(*mhdr) + mhdr->length,
++                         MEMTXATTRS_UNSPECIFIED);
++    } else {
++        memcpy(uv->pio_xfer_buffer + sizeof(*mhdr),
++               uv->buffer + sizeof(*mhdr),
++               sizeof(*mhdr) + mhdr->length);
++    }
++
++    return retval;
++}
++
++static void uefi_vars_soft_reset(uefi_vars_state *uv)
++{
++    g_free(uv->buffer);
++    uv->buffer = NULL;
++    uv->buf_size = 0;
++    uv->buf_addr_lo = 0;
++    uv->buf_addr_hi = 0;
++}
++
++void uefi_vars_hard_reset(uefi_vars_state *uv)
++{
++    trace_uefi_hard_reset();
++    uefi_vars_soft_reset(uv);
++
++    uv->end_of_dxe        = false;
++    uv->ready_to_boot     = false;
++    uv->exit_boot_service = false;
++    uv->policy_locked     = false;
++
++    uefi_vars_clear_volatile(uv);
++    uefi_vars_policies_clear(uv);
++    uefi_vars_auth_init(uv);
++}
++
++static uint32_t uefi_vars_cmd(uefi_vars_state *uv, uint32_t cmd)
++{
++    switch (cmd) {
++    case UEFI_VARS_CMD_RESET:
++        uefi_vars_soft_reset(uv);
++        return UEFI_VARS_STS_SUCCESS;
++    case UEFI_VARS_CMD_DMA_MM:
++        return uefi_vars_cmd_mm(uv, true);
++    case UEFI_VARS_CMD_PIO_MM:
++        return uefi_vars_cmd_mm(uv, false);
++    case UEFI_VARS_CMD_PIO_ZERO_OFFSET:
++        uv->pio_xfer_offset = 0;
++        return UEFI_VARS_STS_SUCCESS;
++    default:
++        return UEFI_VARS_STS_ERR_NOT_SUPPORTED;
++    }
++}
++
++static uint64_t uefi_vars_read(void *opaque, hwaddr addr, unsigned size)
++{
++    uefi_vars_state *uv = opaque;
++    uint64_t retval = -1;
++    void *xfer_ptr;
++
++    trace_uefi_reg_read(addr, size);
++
++    switch (addr) {
++    case UEFI_VARS_REG_MAGIC:
++        retval = UEFI_VARS_MAGIC_VALUE;
++        break;
++    case UEFI_VARS_REG_CMD_STS:
++        retval = uv->sts;
++        break;
++    case UEFI_VARS_REG_BUFFER_SIZE:
++        retval = uv->buf_size;
++        break;
++    case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
++        retval = uv->buf_addr_lo;
++        break;
++    case UEFI_VARS_REG_DMA_BUFFER_ADDR_HI:
++        retval = uv->buf_addr_hi;
++        break;
++    case UEFI_VARS_REG_PIO_BUFFER_TRANSFER:
++        if (uv->pio_xfer_offset + size > uv->buf_size) {
++            retval = 0;
++            break;
++        }
++        xfer_ptr = uv->pio_xfer_buffer + uv->pio_xfer_offset;
++        switch (size) {
++        case 1:
++            retval = *(uint8_t *)xfer_ptr;
++            break;
++        case 2:
++            retval = *(uint16_t *)xfer_ptr;
++            break;
++        case 4:
++            retval = *(uint32_t *)xfer_ptr;
++            break;
++        case 8:
++            retval = *(uint64_t *)xfer_ptr;
++            break;
++        }
++        uv->pio_xfer_offset += size;
++        break;
++    case UEFI_VARS_REG_PIO_BUFFER_CRC32C:
++        retval = crc32c(0xffffffff, uv->pio_xfer_buffer, uv->pio_xfer_offset);
++        break;
++    case UEFI_VARS_REG_FLAGS:
++        retval = 0;
++        if (uv->use_pio) {
++            retval |= UEFI_VARS_FLAG_USE_PIO;
++        }
++    }
++    return retval;
++}
++
++static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
++{
++    uefi_vars_state *uv = opaque;
++    void *xfer_ptr;
++
++    trace_uefi_reg_write(addr, val, size);
++
++    switch (addr) {
++    case UEFI_VARS_REG_CMD_STS:
++        uv->sts = uefi_vars_cmd(uv, val);
++        break;
++    case UEFI_VARS_REG_BUFFER_SIZE:
++        if (val > MAX_BUFFER_SIZE) {
++            val = MAX_BUFFER_SIZE;
++        }
++        uv->buf_size = val;
++        g_free(uv->buffer);
++        g_free(uv->pio_xfer_buffer);
++        uv->buffer = g_malloc(uv->buf_size);
++        uv->pio_xfer_buffer = g_malloc(uv->buf_size);
++        break;
++    case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
++        uv->buf_addr_lo = val;
++        break;
++    case UEFI_VARS_REG_DMA_BUFFER_ADDR_HI:
++        uv->buf_addr_hi = val;
++        break;
++    case UEFI_VARS_REG_PIO_BUFFER_TRANSFER:
++        if (uv->pio_xfer_offset + size > uv->buf_size) {
++            break;
++        }
++        xfer_ptr = uv->pio_xfer_buffer + uv->pio_xfer_offset;
++        switch (size) {
++        case 1:
++            *(uint8_t *)xfer_ptr = val;
++            break;
++        case 2:
++            *(uint16_t *)xfer_ptr = val;
++            break;
++        case 4:
++            *(uint32_t *)xfer_ptr = val;
++            break;
++        case 8:
++            *(uint64_t *)xfer_ptr = val;
++            break;
++        }
++        uv->pio_xfer_offset += size;
++        break;
++    case UEFI_VARS_REG_PIO_BUFFER_CRC32C:
++    case UEFI_VARS_REG_FLAGS:
++    default:
++        break;
++    }
++}
++
++static const MemoryRegionOps uefi_vars_ops = {
++    .read = uefi_vars_read,
++    .write = uefi_vars_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl = {
++        .min_access_size = 2,
++        .max_access_size = 4,
++    },
++};
++
++void uefi_vars_init(Object *obj, uefi_vars_state *uv)
++{
++    QTAILQ_INIT(&uv->variables);
++    QTAILQ_INIT(&uv->var_policies);
++    uv->jsonfd = -1;
++    memory_region_init_io(&uv->mr, obj, &uefi_vars_ops, uv,
++                          "uefi-vars", UEFI_VARS_REGS_SIZE);
++}
++
++void uefi_vars_realize(uefi_vars_state *uv, Error **errp)
++{
++    uefi_vars_json_init(uv, errp);
++    uefi_vars_json_load(uv, errp);
 +}
 -- 
 2.48.1
