@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FD7A3C9FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7B1A3CA21
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:40:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqnl-0004nF-Cp; Wed, 19 Feb 2025 15:36:13 -0500
+	id 1tkqnr-0005Hl-Sd; Wed, 19 Feb 2025 15:36:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqnf-0004dT-U2
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:08 -0500
+ id 1tkqnm-00055I-6W
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:14 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqne-0004ls-Bj
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:07 -0500
+ id 1tkqnj-0004mO-C0
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:13 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqna-00000007VUS-1e9d; Wed, 19 Feb 2025 21:36:02 +0100
+ id 1tkqnf-00000007VUd-2CrC; Wed, 19 Feb 2025 21:36:07 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 19/36] vfio/migration: Convert bytes_transferred counter to
- atomic
-Date: Wed, 19 Feb 2025 21:34:01 +0100
-Message-ID: <dbb9b1047aca873a5ee0a91f352f282fe1004a15.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 20/36] vfio/migration: Add vfio_add_bytes_transferred()
+Date: Wed, 19 Feb 2025 21:34:02 +0100
+Message-ID: <e2983df564f37f346d0a9413bf602856249bb3b3.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -66,55 +65,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-So it can be safety accessed from multiple threads.
-
-This variable type needs to be changed to unsigned long since
-32-bit host platforms lack the necessary addition atomics on 64-bit
-variables.
-
-Using 32-bit counters on 32-bit host platforms should not be a problem
-in practice since they can't realistically address more memory anyway.
+This way bytes_transferred can also be incremented in other translation
+units than migration.c.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/migration.c           | 7 ++++++-
+ include/hw/vfio/vfio-common.h | 1 +
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 03890eaa48a9..5532787be63b 100644
+index 5532787be63b..e9645cb9d088 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -55,7 +55,7 @@
-  */
- #define VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE (1 * MiB)
- 
--static int64_t bytes_transferred;
-+static unsigned long bytes_transferred;
- 
- static const char *mig_state_to_str(enum vfio_device_mig_state state)
- {
 @@ -391,7 +391,7 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
      qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE);
      qemu_put_be64(f, data_size);
      qemu_put_buffer(f, migration->data_buffer, data_size);
--    bytes_transferred += data_size;
-+    qatomic_add(&bytes_transferred, data_size);
+-    qatomic_add(&bytes_transferred, data_size);
++    vfio_add_bytes_transferred(data_size);
  
      trace_vfio_save_block(migration->vbasedev->name, data_size);
  
-@@ -1013,12 +1013,12 @@ static int vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
- 
- int64_t vfio_mig_bytes_transferred(void)
- {
--    return bytes_transferred;
-+    return MIN(qatomic_read(&bytes_transferred), INT64_MAX);
+@@ -1021,6 +1021,11 @@ void vfio_reset_bytes_transferred(void)
+     qatomic_set(&bytes_transferred, 0);
  }
  
- void vfio_reset_bytes_transferred(void)
- {
--    bytes_transferred = 0;
-+    qatomic_set(&bytes_transferred, 0);
- }
- 
++void vfio_add_bytes_transferred(unsigned long val)
++{
++    qatomic_add(&bytes_transferred, val);
++}
++
  /*
+  * Return true when either migration initialized or blocker registered.
+  * Currently only return false when adding blocker fails which will
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index ac35136a1105..70f2a1891ed1 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -274,6 +274,7 @@ void vfio_unblock_multiple_devices_migration(void);
+ bool vfio_viommu_preset(VFIODevice *vbasedev);
+ int64_t vfio_mig_bytes_transferred(void);
+ void vfio_reset_bytes_transferred(void);
++void vfio_add_bytes_transferred(unsigned long val);
+ bool vfio_device_state_is_running(VFIODevice *vbasedev);
+ bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
+ 
 
