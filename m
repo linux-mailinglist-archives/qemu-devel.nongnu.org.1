@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96920A3CA00
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83368A3CA2D
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:41:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqoF-0007El-I1; Wed, 19 Feb 2025 15:36:43 -0500
+	id 1tkqoK-0007rV-AH; Wed, 19 Feb 2025 15:36:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqoB-00076W-4o
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:39 -0500
+ id 1tkqoF-0007dD-R9
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:43 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqo8-0004oI-KL
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:38 -0500
+ id 1tkqoE-0004p2-A1
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:36:43 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqnu-00000007VV7-40D4; Wed, 19 Feb 2025 21:36:22 +0100
+ id 1tkqo0-00000007VVI-0SRV; Wed, 19 Feb 2025 21:36:28 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 23/36] vfio/migration: Multifd device state transfer
- support - VFIOStateBuffer(s)
-Date: Wed, 19 Feb 2025 21:34:05 +0100
-Message-ID: <96303daed289e9c7a3261590027d18e425ea07c2.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 24/36] vfio/migration: Multifd device state transfer - add
+ support checking function
+Date: Wed, 19 Feb 2025 21:34:06 +0100
+Message-ID: <8e7f0082551182e8372269e1eceae9ba4029a4a2.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -66,76 +66,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Add VFIOStateBuffer(s) types and the associated methods.
-
-These store received device state buffers and config state waiting to get
-loaded into the device.
+Add vfio_multifd_transfer_supported() function that tells whether the
+multifd device state transfer is supported.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration-multifd.c | 54 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ hw/vfio/migration-multifd.c | 6 ++++++
+ hw/vfio/migration-multifd.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 0c3185a26242..760b110a39b9 100644
+index 760b110a39b9..7328ad8e925c 100644
 --- a/hw/vfio/migration-multifd.c
 +++ b/hw/vfio/migration-multifd.c
-@@ -29,3 +29,57 @@ typedef struct VFIODeviceStatePacket {
-     uint32_t flags;
-     uint8_t data[0];
- } QEMU_PACKED VFIODeviceStatePacket;
+@@ -83,3 +83,9 @@ static VFIOStateBuffer *vfio_state_buffers_at(VFIOStateBuffers *bufs, guint idx)
+ {
+     return &g_array_index(bufs->array, VFIOStateBuffer, idx);
+ }
 +
-+/* type safety */
-+typedef struct VFIOStateBuffers {
-+    GArray *array;
-+} VFIOStateBuffers;
-+
-+typedef struct VFIOStateBuffer {
-+    bool is_present;
-+    char *data;
-+    size_t len;
-+} VFIOStateBuffer;
-+
-+static void vfio_state_buffer_clear(gpointer data)
++bool vfio_multifd_transfer_supported(void)
 +{
-+    VFIOStateBuffer *lb = data;
-+
-+    if (!lb->is_present) {
-+        return;
-+    }
-+
-+    g_clear_pointer(&lb->data, g_free);
-+    lb->is_present = false;
++    return multifd_device_state_supported() &&
++        migrate_send_switchover_start();
 +}
+diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
+index 64d117b27210..8fe004c1da81 100644
+--- a/hw/vfio/migration-multifd.h
++++ b/hw/vfio/migration-multifd.h
+@@ -12,4 +12,6 @@
+ 
+ #include "hw/vfio/vfio-common.h"
+ 
++bool vfio_multifd_transfer_supported(void);
 +
-+static void vfio_state_buffers_init(VFIOStateBuffers *bufs)
-+{
-+    bufs->array = g_array_new(FALSE, TRUE, sizeof(VFIOStateBuffer));
-+    g_array_set_clear_func(bufs->array, vfio_state_buffer_clear);
-+}
-+
-+static void vfio_state_buffers_destroy(VFIOStateBuffers *bufs)
-+{
-+    g_clear_pointer(&bufs->array, g_array_unref);
-+}
-+
-+static void vfio_state_buffers_assert_init(VFIOStateBuffers *bufs)
-+{
-+    assert(bufs->array);
-+}
-+
-+static guint vfio_state_buffers_size_get(VFIOStateBuffers *bufs)
-+{
-+    return bufs->array->len;
-+}
-+
-+static void vfio_state_buffers_size_set(VFIOStateBuffers *bufs, guint size)
-+{
-+    g_array_set_size(bufs->array, size);
-+}
-+
-+static VFIOStateBuffer *vfio_state_buffers_at(VFIOStateBuffers *bufs, guint idx)
-+{
-+    return &g_array_index(bufs->array, VFIOStateBuffer, idx);
-+}
+ #endif
 
