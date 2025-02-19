@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B5FA3B3C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:29:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B323A3B3BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:29:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfQs-0006br-Rj; Wed, 19 Feb 2025 03:27:50 -0500
+	id 1tkfQq-0006K2-5t; Wed, 19 Feb 2025 03:27:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfQg-00066W-QD
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:41 -0500
+ id 1tkfQk-000691-Sp
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:43 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfQe-0004ge-VL
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:38 -0500
+ id 1tkfQj-0004ge-2b
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953657; x=1771489657;
+ t=1739953661; x=1771489661;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Dh29gxAI0UuaBsVzjJ/FGrKdWjQRK2XyNd4DnP/LCxE=;
- b=Ibk4kxka8y8BbrXv3yWlWulcrgk5TkIQ6IvLTv8vI6sZ02wbxaWvhQt6
- wAhgqVNpKrdWF7xQC9UB65yjfBkN+Rc2TXiJq7R0sGhpr1LtMM6lEZi99
- 7+GVdcmVpXldM/EM6kAOZTu89gJkFhn1T0QnSOZW/V0SqN5ENgW/jjutj
- OQdOaHDkdluRFLFzxRi1LBm+FwlR0LPRAviD+AZgavOE68bBIA2fd7W3q
- OQ8AOpeqXC2FsgT6PFAnQcf/2ohCTXVF8Fs2NDGlmzf2doXjArA/efoJq
- DkVZL9FjQdGDny3t6Vr1jDFB1jV7BvQoE4IRvn281IFmytUtbHdNjFU3/ w==;
-X-CSE-ConnectionGUID: Q5tAOMqXQh2Gz99MCtnFcg==
-X-CSE-MsgGUID: My3WnW/2SUO3iwnLclp3xg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544313"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544313"
+ bh=OA1DA9tb9D+FuuGPsY1Kf6tlYXcvdCgV9qaFOVXTlBY=;
+ b=djohVP2bOpOdnLWah2pkd5PGT9rNadZ5HJnI1hKi6vC2DdZeU3H7JcKe
+ oV2/uAQMPKa4iYAWGY1bfAhn4uV2lpEbNjEegKUrAX4PtGABMkQXtQg9Y
+ 3jy96Q/i4F1i0vd0EQHkB47AOK5bhn180Uilw6lSyiGg62Gn+GjGVKTPg
+ xUfBSF/ZFSGYA1K72vgmCWtCiAb/XsPoK6lh8rYugt3l0RnyubCHrUErD
+ 0xDv2kt0VfaKixRXugNm1WBmpkAV9CZ4YaFNZpqxVRkqaU/Q+kgpyHHss
+ w2mHiK8bylKGTV1Bu0k/McMVHZUbEYMmqVGFrmCoc3ksyJtk01mZiGV5c Q==;
+X-CSE-ConnectionGUID: xIcxOOMuQCS9MOOuunDNLw==
+X-CSE-MsgGUID: MSmNk24ETmm9V8WUv5BwDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544329"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544329"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:27:35 -0800
-X-CSE-ConnectionGUID: fTxj8ptnTo+W/tUYy5wWkg==
-X-CSE-MsgGUID: 1OcJ0nzZSoaYoFplt1NM1g==
+ 19 Feb 2025 00:27:40 -0800
+X-CSE-ConnectionGUID: DYzE6qIGTFKbry88xqHU1w==
+X-CSE-MsgGUID: t6XifuAgTAOhfzlcU27WIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119851437"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119851461"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:27:30 -0800
+ 19 Feb 2025 00:27:35 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,14 +52,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH rfcv2 18/20] intel_iommu: Refresh pasid bind when either SRTP
- or TE bit is changed
-Date: Wed, 19 Feb 2025 16:22:26 +0800
-Message-Id: <20250219082228.3303163-19-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH rfcv2 19/20] intel_iommu: Bypass replay in stage-1 page table
+ mode
+Date: Wed, 19 Feb 2025 16:22:27 +0800
+Message-Id: <20250219082228.3303163-20-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
 References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
@@ -90,76 +90,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+VFIO utilizes replay to setup initial shadow iommu mappings.
+But when stage-1 page table is configured, it is passed to
+host to construct nested page table, there is no replay needed.
 
-When either 'Set Root Table Pointer' or 'Translation Enable' bit is changed,
-the pasid bindings on host side become stale and need to be updated.
-
-Introduce a helper function vtd_refresh_pasid_bind() for that purpose.
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ hw/i386/intel_iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 8f7fb473f5..225e332132 100644
+index 225e332132..e4b83cbe50 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -89,6 +89,7 @@ struct vtd_iotlb_key {
+@@ -5743,6 +5743,14 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
+     VTDContextEntry ce;
+     DMAMap map = { .iova = 0, .size = HWADDR_MAX };
  
- static void vtd_address_space_refresh_all(IntelIOMMUState *s);
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n);
-+static void vtd_refresh_pasid_bind(IntelIOMMUState *s);
- 
- static void vtd_pasid_cache_reset(IntelIOMMUState *s);
- static void vtd_pasid_cache_sync(IntelIOMMUState *s,
-@@ -3366,6 +3367,7 @@ static void vtd_handle_gcmd_srtp(IntelIOMMUState *s)
-     vtd_set_clear_mask_long(s, DMAR_GSTS_REG, 0, VTD_GSTS_RTPS);
-     vtd_reset_caches(s);
-     vtd_address_space_refresh_all(s);
-+    vtd_refresh_pasid_bind(s);
- }
- 
- /* Set Interrupt Remap Table Pointer */
-@@ -3400,6 +3402,7 @@ static void vtd_handle_gcmd_te(IntelIOMMUState *s, bool en)
- 
-     vtd_reset_caches(s);
-     vtd_address_space_refresh_all(s);
-+    vtd_refresh_pasid_bind(s);
- }
- 
- /* Handle Interrupt Remap Enable/Disable */
-@@ -4109,6 +4112,28 @@ static void vtd_replay_guest_pasid_bindings(IntelIOMMUState *s,
-     }
- }
- 
-+static void vtd_refresh_pasid_bind(IntelIOMMUState *s)
-+{
-+    VTDPASIDCacheInfo pc_info = { .error_happened = false,
-+                                  .type = VTD_PASID_CACHE_GLOBAL_INV };
-+
 +    /*
-+     * Only when dmar is enabled, should pasid bindings replayed,
-+     * otherwise no need to replay.
++     * Replay on stage-1 page table is meaningless as stage-1 page table
++     * is passthroughed to host to construct nested page table
 +     */
-+    if (!s->dmar_enabled) {
++    if (s->flts && s->root_scalable) {
 +        return;
 +    }
 +
-+    if (!s->flts || !s->root_scalable) {
-+        return;
-+    }
-+
-+    vtd_iommu_lock(s);
-+    vtd_replay_guest_pasid_bindings(s, &pc_info);
-+    vtd_iommu_unlock(s);
-+}
-+
- /*
-  * This function syncs the pasid bindings between guest and host.
-  * It includes updating the pasid cache in vIOMMU and updating the
+     /* replay is protected by BQL, page walk will re-setup it safely */
+     iova_tree_remove(vtd_as->iova_tree, map);
+ 
 -- 
 2.34.1
 
