@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6058A3C9ED
+	by mail.lfdr.de (Postfix) with ESMTPS id B673DA3C9EC
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 21:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkqmK-0000aU-RU; Wed, 19 Feb 2025 15:34:45 -0500
+	id 1tkqmJ-0000Yw-JJ; Wed, 19 Feb 2025 15:34:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmI-0000Yu-7W
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:42 -0500
+ id 1tkqmH-0000Y9-0M
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:41 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqmF-0004LU-Fn
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:41 -0500
+ id 1tkqmF-0004NS-E2
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 15:34:40 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tkqm5-00000007VRS-3bzC; Wed, 19 Feb 2025 21:34:29 +0100
+ id 1tkqmB-00000007VRe-03F7; Wed, 19 Feb 2025 21:34:35 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5 01/36] migration: Clarify that {load,
- save}_cleanup handlers can run without setup
-Date: Wed, 19 Feb 2025 21:33:43 +0100
-Message-ID: <9a4425b29ba41fae02a58f226545c78e389115d2.1739994627.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v5 02/36] thread-pool: Remove thread_pool_submit() function
+Date: Wed, 19 Feb 2025 21:33:44 +0100
+Message-ID: <1a80a5abad5a77a95a0129a4e02ba1a1644b412c.1739994627.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739994627.git.maciej.szmigiero@oracle.com>
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
@@ -67,47 +66,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-It's possible for {load,save}_cleanup SaveVMHandlers to get called without
-the corresponding {load,save}_setup handler being called first.
+This function name conflicts with one used by a future generic thread pool
+function and it was only used by one test anyway.
 
-One such example is if {load,save}_setup handler of a proceeding device
-returns error.
-In this case the migration core cleanup code will call all corresponding
-cleanup handlers, even for these devices which haven't had its setup
-handler called.
+Update the trace event name in thread_pool_submit_aio() accordingly.
 
-Since this behavior can generate some surprises let's clearly document it
-in these SaveVMHandlers description.
-
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Acked-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/register.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/block/thread-pool.h   | 3 +--
+ tests/unit/test-thread-pool.c | 6 +++---
+ util/thread-pool.c            | 7 +------
+ util/trace-events             | 2 +-
+ 4 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index f60e797894e5..0b0292738320 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -69,7 +69,9 @@ typedef struct SaveVMHandlers {
-     /**
-      * @save_cleanup
-      *
--     * Uninitializes the data structures on the source
-+     * Uninitializes the data structures on the source.
-+     * Note that this handler can be called even if save_setup
-+     * wasn't called earlier.
-      *
-      * @opaque: data pointer passed to register_savevm_live()
-      */
-@@ -244,6 +246,8 @@ typedef struct SaveVMHandlers {
-      * @load_cleanup
-      *
-      * Uninitializes the data structures on the destination.
-+     * Note that this handler can be called even if load_setup
-+     * wasn't called earlier.
-      *
-      * @opaque: data pointer passed to register_savevm_live()
-      *
+diff --git a/include/block/thread-pool.h b/include/block/thread-pool.h
+index 948ff5f30c31..4f6694026123 100644
+--- a/include/block/thread-pool.h
++++ b/include/block/thread-pool.h
+@@ -30,13 +30,12 @@ ThreadPool *thread_pool_new(struct AioContext *ctx);
+ void thread_pool_free(ThreadPool *pool);
+ 
+ /*
+- * thread_pool_submit* API: submit I/O requests in the thread's
++ * thread_pool_submit_{aio,co} API: submit I/O requests in the thread's
+  * current AioContext.
+  */
+ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
+                                    BlockCompletionFunc *cb, void *opaque);
+ int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg);
+-void thread_pool_submit(ThreadPoolFunc *func, void *arg);
+ 
+ void thread_pool_update_params(ThreadPool *pool, struct AioContext *ctx);
+ 
+diff --git a/tests/unit/test-thread-pool.c b/tests/unit/test-thread-pool.c
+index 1483e53473db..33407b595d35 100644
+--- a/tests/unit/test-thread-pool.c
++++ b/tests/unit/test-thread-pool.c
+@@ -43,10 +43,10 @@ static void done_cb(void *opaque, int ret)
+     active--;
+ }
+ 
+-static void test_submit(void)
++static void test_submit_no_complete(void)
+ {
+     WorkerTestData data = { .n = 0 };
+-    thread_pool_submit(worker_cb, &data);
++    thread_pool_submit_aio(worker_cb, &data, NULL, NULL);
+     while (data.n == 0) {
+         aio_poll(ctx, true);
+     }
+@@ -236,7 +236,7 @@ int main(int argc, char **argv)
+     ctx = qemu_get_current_aio_context();
+ 
+     g_test_init(&argc, &argv, NULL);
+-    g_test_add_func("/thread-pool/submit", test_submit);
++    g_test_add_func("/thread-pool/submit-no-complete", test_submit_no_complete);
+     g_test_add_func("/thread-pool/submit-aio", test_submit_aio);
+     g_test_add_func("/thread-pool/submit-co", test_submit_co);
+     g_test_add_func("/thread-pool/submit-many", test_submit_many);
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index 27eb777e855b..2f751d55b33f 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -256,7 +256,7 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
+ 
+     QLIST_INSERT_HEAD(&pool->head, req, all);
+ 
+-    trace_thread_pool_submit(pool, req, arg);
++    trace_thread_pool_submit_aio(pool, req, arg);
+ 
+     qemu_mutex_lock(&pool->lock);
+     if (pool->idle_threads == 0 && pool->cur_threads < pool->max_threads) {
+@@ -290,11 +290,6 @@ int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg)
+     return tpc.ret;
+ }
+ 
+-void thread_pool_submit(ThreadPoolFunc *func, void *arg)
+-{
+-    thread_pool_submit_aio(func, arg, NULL, NULL);
+-}
+-
+ void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
+ {
+     qemu_mutex_lock(&pool->lock);
+diff --git a/util/trace-events b/util/trace-events
+index 49a4962e1886..5be12d7fab89 100644
+--- a/util/trace-events
++++ b/util/trace-events
+@@ -14,7 +14,7 @@ aio_co_schedule_bh_cb(void *ctx, void *co) "ctx %p co %p"
+ reentrant_aio(void *ctx, const char *name) "ctx %p name %s"
+ 
+ # thread-pool.c
+-thread_pool_submit(void *pool, void *req, void *opaque) "pool %p req %p opaque %p"
++thread_pool_submit_aio(void *pool, void *req, void *opaque) "pool %p req %p opaque %p"
+ thread_pool_complete(void *pool, void *req, void *opaque, int ret) "pool %p req %p opaque %p ret %d"
+ thread_pool_cancel(void *req, void *opaque) "req %p opaque %p"
+ 
 
