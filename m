@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF7BA3B39F
+	by mail.lfdr.de (Postfix) with ESMTPS id E3754A3B3A2
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfPg-0005Tp-FB; Wed, 19 Feb 2025 03:26:36 -0500
+	id 1tkfPi-0005UU-NU; Wed, 19 Feb 2025 03:26:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPb-0005Sw-VM
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:32 -0500
+ id 1tkfPe-0005TY-5K
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:34 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfPY-0004aU-Jt
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:31 -0500
+ id 1tkfPc-0004Za-43
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:26:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953589; x=1771489589;
+ t=1739953592; x=1771489592;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DwB7fnwqRjP31Cbn8rb1uxbObLpHT+AdggbslqZmPsU=;
- b=nBsJXM1L0IVCzgBXFISNKdtwpuV3zVdenXeKBg0xbq/IzKSE9mNuO16x
- c1t+VUR1gcueakh+pUu/jVJMJv4Mt83Ry5oxz+NBXgJ/Tw/MFnJU5mtMp
- hB8TBWZd03NpXpQIVKk+LSTMlJKVSmMjbqij/aquRtKZ26Nyiu8xiIMqj
- xn5rtDwrIPgdjCUUOeNbVGYlLdIaYjvziQaUe2ao7B9F6wJL3CFB/K6kM
- 4AJCSOwZ4/FHRp+wi+SbhSKzC0Rh3/gn5cw7dVqR+uEYOpQbsTW9bbBQu
- ejw65CERcUoB+LiLwPuQdTdY1tCDiUoqa1WQOpjPw44a8hkWIyy99TRvd g==;
-X-CSE-ConnectionGUID: qrZancl4TtKo7JIiI6KoOg==
-X-CSE-MsgGUID: luorRDEZRRmF4NbjF/mKiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544098"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544098"
+ bh=yY0Gz0Q42ysq6vk2ZY5+LCBjvrX+hXo/OD6lHeKpxl0=;
+ b=VZJ9YCfes6WCyzx2CIQ9AwzZhTULfIqEod3wzorwVfz05B5kVyDgt3BK
+ /ioJZju35XK3MiJA/+ll7ZB14IL/Ebt9ftF+PV/WuP0JCBswPTsnJI/im
+ 2pnrGBdnHFZuCE96JYZyv4y41caTbrtPuITwFFRu6xND4oUN+uCKRxB3s
+ oDhu99/q8PVrxyhkrLkxQR56eIKkD1O9jUfv6E/S8vEjtfGbos7QEiCs5
+ BJNJVONl5l9kwJTFe7Bpd1qr3Ze2hW7qywxy2xYeVE0u6Ket4qjBvXQKH
+ u7T3Ye1XHrIEgvJVHA1DHZwrvSLPZ/Bu4azA3tcV8738wx3AeTNRRU+Gl g==;
+X-CSE-ConnectionGUID: hOMrjjKoSPKnJqht6Q969w==
+X-CSE-MsgGUID: mLepFD5XS+26L6AZGEq/4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544110"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544110"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:27 -0800
-X-CSE-ConnectionGUID: /PW0ZOciRkmss4EAucLceA==
-X-CSE-MsgGUID: iXWbtxWUTN6qeovslgMyog==
+ 19 Feb 2025 00:26:32 -0800
+X-CSE-ConnectionGUID: CwNuqpgnRyms8A2SBZhgyg==
+X-CSE-MsgGUID: eKpwg1SZSeuGEnW4klmXKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119851023"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119851049"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:26:23 -0800
+ 19 Feb 2025 00:26:27 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv2 05/20] vfio/iommufd: Implement [at|de]tach_hwpt handlers
-Date: Wed, 19 Feb 2025 16:22:13 +0800
-Message-Id: <20250219082228.3303163-6-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv2 06/20] host_iommu_device: Define two new capabilities
+ HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP]
+Date: Wed, 19 Feb 2025 16:22:14 +0800
+Message-Id: <20250219082228.3303163-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
 References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
@@ -85,60 +86,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement [at|de]tach_hwpt handlers in VFIO subsystem. vIOMMU
-utilizes them to attach to or detach from hwpt on host side.
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ include/system/host_iommu_device.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 53639bf88b..175c4fe1f4 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -802,6 +802,24 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
-     vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
- };
+diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
+index df782598f2..18f8b5e5cf 100644
+--- a/include/system/host_iommu_device.h
++++ b/include/system/host_iommu_device.h
+@@ -22,10 +22,16 @@
+  *
+  * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this represents
+  *           the @out_capabilities value returned from IOMMU_GET_HW_INFO ioctl)
++ *
++ * @nesting: nesting page table support.
++ *
++ * @fs1gp: first stage(a.k.a, Stage-1) 1GB huge page support.
+  */
+ typedef struct HostIOMMUDeviceCaps {
+     uint32_t type;
+     uint64_t hw_caps;
++    bool nesting;
++    bool fs1gp;
+ } HostIOMMUDeviceCaps;
  
-+static bool
-+host_iommu_device_iommufd_vfio_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
-+                                           uint32_t hwpt_id, Error **errp)
-+{
-+    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
-+
-+    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
-+}
-+
-+static bool
-+host_iommu_device_iommufd_vfio_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
-+                                           Error **errp)
-+{
-+    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
-+
-+    return iommufd_cdev_detach_ioas_hwpt(vbasedev, errp);
-+}
-+
- static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-                                       Error **errp)
- {
-@@ -863,11 +881,15 @@ hiod_iommufd_vfio_get_page_size_mask(HostIOMMUDevice *hiod)
- static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
- {
-     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
-+    HostIOMMUDeviceIOMMUFDClass *idevc = HOST_IOMMU_DEVICE_IOMMUFD_CLASS(oc);
+ #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
+@@ -122,6 +128,8 @@ struct HostIOMMUDeviceClass {
+  */
+ #define HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE        0
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS           1
++#define HOST_IOMMU_DEVICE_CAP_NESTING           2
++#define HOST_IOMMU_DEVICE_CAP_FS1GP             3
  
-     hiodc->realize = hiod_iommufd_vfio_realize;
-     hiodc->realize_late = hiod_iommufd_vfio_realize_late;
-     hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
-     hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
-+
-+    idevc->attach_hwpt = host_iommu_device_iommufd_vfio_attach_hwpt;
-+    idevc->detach_hwpt = host_iommu_device_iommufd_vfio_detach_hwpt;
- };
- 
- static const TypeInfo types[] = {
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX       64
+ #endif
 -- 
 2.34.1
 
