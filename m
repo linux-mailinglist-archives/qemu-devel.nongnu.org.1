@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFA8A3B3CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80EC4A3B456
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 09:41:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkfQx-00071J-DV; Wed, 19 Feb 2025 03:27:55 -0500
+	id 1tkfcM-0003Rq-55; Wed, 19 Feb 2025 03:39:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfQt-0006oL-WA
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:52 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkfcJ-0003RL-1g
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:39:39 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tkfQo-0004ge-Li
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:27:51 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tkfcG-0005rq-6I
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 03:39:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1739953667; x=1771489667;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0qmvEU6XCMXu31ihN2FZGKqfkGmXtaFOTK6nWdoHSus=;
- b=PzAFbHgAQcncvfg33S90Y4h7IAQ7o9nXXdGLCIvHaxe6ztA9xhTFTR6z
- OQPDDwio6IOvqVdLddroR+RhRg1qw/1zEZxZXrjSm36l9GCatP+P58w5t
- C4zEtqBqXv5LLC4OhzQjv6FN+a30brsEsWC7/TX30zuXRIn/fLGhU42h7
- ZyDVuh0guUBJOB5AbPIm6pqeRiO4NertLN/I56Aq0jXbvLgmHze+Md1KJ
- pQDeWkE6z6iimKuu50UybMGz+5XjjEh5EVuvVNFFtT1zWwjO7Ce35kRpU
- e2tsD+HrJqtJBbiwyvUkM3RTm2GJIuRlXG1g0p4Hk4nqzt93frTCqp9Zz Q==;
-X-CSE-ConnectionGUID: cNbFuY/aQsC47BX+UbUENg==
-X-CSE-MsgGUID: l7qHe+9lSbKBz5esp45yIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40544345"
-X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="40544345"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:27:46 -0800
-X-CSE-ConnectionGUID: HP5HhGKbQbG4ocpl8CByxQ==
-X-CSE-MsgGUID: PTdAgokAQv65nHUNicTE3Q==
+ t=1739954376; x=1771490376;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0YMoMndJuWKKyb7v6FgnrYSG+SGFwDrJuHUS/mMRlTg=;
+ b=BAreybdeqbFSRMFUlv5d5FfaiXufKuFcPNZiG8/gvjTjN2hb+qjEe51W
+ TJYyF/1cngYZYxEL57bC89N3AEOtmXCacTVDhFQa76lMLxwMtORDLxc3U
+ caB11AZAltDytIRXfnrwukm7+AnMCTYV9+OTY9Ve19iFSDlXSsNvImrWG
+ bNNv6woEwmKc21DybRuSJCT8py3pAtq1j1v/60V/8g7zHO4WB8f6eRPdG
+ cBD7Ow1RPCih4a4itz5Trhnv9e91/s6Q5wk/XlMwEM6JXQb164TBxWV2R
+ vCg9SLDaMHzjjlMOfguI5nSwmRA10VJ5tNPghVd+uLTRAgQKrmbA1CZFN Q==;
+X-CSE-ConnectionGUID: BiYHYWJKQUqnXL1stFD/+g==
+X-CSE-MsgGUID: zKG8ybklRQOwQNZFLhnpXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51299259"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; d="scan'208";a="51299259"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2025 00:39:33 -0800
+X-CSE-ConnectionGUID: adEyG1G2RVmLADIDWYWipQ==
+X-CSE-MsgGUID: IfAHvtMlRIm7RQS8p4Cruw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119851479"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2025 00:27:40 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
- joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH rfcv2 20/20] intel_iommu: Enable host device when x-flts=on in
- scalable mode
-Date: Wed, 19 Feb 2025 16:22:28 +0800
-Message-Id: <20250219082228.3303163-21-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
-References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="115552413"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa008.jf.intel.com with ESMTP; 19 Feb 2025 00:39:32 -0800
+Date: Wed, 19 Feb 2025 16:59:06 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v7 RESEND 0/5] i386: Support SMP Cache Topology
+Message-ID: <Z7WdWiSEiVTyyAhF@intel.com>
+References: <20250110145115.1574345-1-zhao1.liu@intel.com>
+ <Z6R+/R66Gs2uNBez@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.17;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6R+/R66Gs2uNBez@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.423,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,29 +82,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all infrastructures of supporting passthrough device running
-with stage-1 translation are there, enable it now.
+Hi Paolo,
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+A gentle poke. I plan to add cache models for Intel CPUs and extend
+this smp_cache interface after this series. :-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index e4b83cbe50..908c28f9be 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -5583,8 +5583,7 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-     }
-     vtd_hiod->errata = ret;
- 
--    error_setg(errp, "host device is uncompatible with stage-1 translation");
--    return false;
-+    return true;
- }
- 
- static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
--- 
-2.34.1
+(The 1st patch of general machine has been picked by Phili.)
 
+Thanks,
+Zhao
+
+> > Alireza Sanaee (1):
+> >   i386/cpu: add has_caches flag to check smp_cache configuration
+> > 
+> > Zhao Liu (4):
+> >   hw/core/machine: Reject thread level cache
+> >   i386/cpu: Support module level cache topology
+> >   i386/cpu: Update cache topology with machine's configuration
+> >   i386/pc: Support cache topology in -machine for PC machine
+> > 
+> >  hw/core/machine-smp.c |  9 ++++++
+> >  hw/i386/pc.c          |  4 +++
+> >  include/hw/boards.h   |  3 ++
+> >  qemu-options.hx       | 30 +++++++++++++++++-
+> >  target/i386/cpu.c     | 71 ++++++++++++++++++++++++++++++++++++++++++-
+> >  5 files changed, 115 insertions(+), 2 deletions(-)
+> > 
+> > -- 
+> > 2.34.1
+> > 
+> 
 
