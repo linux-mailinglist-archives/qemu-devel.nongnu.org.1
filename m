@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598F9A3C884
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 20:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAB1A3C8A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Feb 2025 20:29:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tkpg6-00042W-0c; Wed, 19 Feb 2025 14:24:14 -0500
+	id 1tkpkJ-0006ya-TH; Wed, 19 Feb 2025 14:28:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkpfp-0003zV-NE
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 14:23:59 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tkpkI-0006yI-7S
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 14:28:34 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tkpfm-0002PD-NY
- for qemu-devel@nongnu.org; Wed, 19 Feb 2025 14:23:56 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38f1e8efe82so187538f8f.0
- for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 11:23:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tkpkG-0003L7-7s
+ for qemu-devel@nongnu.org; Wed, 19 Feb 2025 14:28:33 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-21f2339dcfdso3194715ad.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Feb 2025 11:28:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1739993033; x=1740597833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dpCypAtbAdRfHr1nP5vbTeramo1Dr981PUBxWlWPTN0=;
- b=lxuIgT16SpXPlM/5NfOLFvVtmZcXIKdD8+9kfVD6Vf3fqpZxVOpBaegi+Eot4eNzLx
- 4UbOSCIk9KmW99F/wMjkcZ2aFtG0tjyBPqkLeGUMeYWb/46g52bdi71dxhraOSeWlOxW
- 8gV4WNpVSjR7kkZqGsIcDeETcuahCdeUlKVgen3kIL1TNZbEMMF1RUzvg4tczmU28yDu
- jsfh16tPY/2yG+ZWJU7NOO06cIANc3JSVGxPFuEn9jcBHYEKNvXTFjCoxwSXiRvuO8ms
- Y4Y7CeTEpjax5EatdJbIvKutAfY5gjolGT2Ytzb9TaxDXf88hl2humDYiFUkTEtxG8mV
- RckQ==
+ d=linaro.org; s=google; t=1739993310; x=1740598110; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y8qFNOJCSSM15gz+34oqzZxpU1C4/gMczfNovDPOQSc=;
+ b=mqVpSieMZeltmD5AjptEhIO4zL7q907p6ijfn+99+WjcGcvvkuAabqTnXqD8K0EuoG
+ ISBf22Lwh9f23U84UdOicc61LCpT0CtxXk/lCsGoUqfLOahSbxNMXDeTRmIOppgjEnfO
+ i6w0FJ9b1e4VT/4F2FM0vcs3OUdh1V+xDevIADpSk//HsLAEWZP7jVPoXzUIC8awoM1y
+ szuk08J1HHSSd7/pqRPD7tqkJ1P+3cCXxL2+rDUFE5t8ogZihblmoDBm+xZDuJcfZeKx
+ LePXgEq/N6np4IQ5q7MINNDN2fzeGU7LHuXD0TX9rdgwhW8sTl8zMdTIWMWjxHYeFMKp
+ x/rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1739993033; x=1740597833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dpCypAtbAdRfHr1nP5vbTeramo1Dr981PUBxWlWPTN0=;
- b=P0tV4lDp3GpLsT/mawVv4ZTWhV9uhpHCmuKbc6flDCY2eUS2VBCzSHfQ8wUNSpQG3p
- mN+UCh7B6rXGjPySVpaFY5vBSxqh8QfObY039Xtw3hmYdKC8+8M+InDjJu/Eyyme53Wg
- 4MS/Nd1B/6LBiFzuEp7UDIWyHHZkH8k4XaPdc0XfvtvEWG0TRfaxKfn94szf7zDcNf5z
- uxSNtvUiNQAjMd2aYwZ+Ro5bJe04DT+2TdRt9FRspO3SFIpRLzQzvRw4i8eTzptq+CcO
- D0cQkMTWoceSVOG+AmcaosTcvR1rfPwaaiuECwvdbVG1ZpOPpNNxsx98fyFlPmHDtXAb
- yWfQ==
-X-Gm-Message-State: AOJu0YxOutJmO8wzoqoP4bXgOU88Gh78CAabTa1+Yyd/dTdihBd5uKvh
- DnHj+a2sE4JMauP/Bzc3CKcUOddKh3Zx099+Mw04FDUQ9DK7IT+t7dgeiNTWalWzpj1G8JlTxli
- toyU=
-X-Gm-Gg: ASbGncvKWSfWTl+YJNHgUKQPf5HP/SbpxUs/mDnStYtTBd/gytNkE5SJ0WdkNvkOtTM
- L8TClDrSVD31/5mGlWWRkC4O7/BMoeUGz77jKLpqmyWP9zBEU7WJxJKVrf2AYXjaj+fUnBqxNUE
- S2UhyJkyJ52gQQxtrP/c3IRtMtt8A5ytA7BlFl393hVFqGpAzd4aY2fX0SBrme0QTmrg/LZBE+3
- YpAfDFCcAIIxxv4ZRLHnRh252sJaAe3qSISZSL2O3fyTqNhzQQd5zn/A8lFtplcQr8Vw4SeukGB
- ZUr2XozZsUSULPnmhiSSlX5+AP249yRFWs5a94De17XBxssVxYEpeShQ0QIEP1sgOg==
-X-Google-Smtp-Source: AGHT+IEDmHfCKkm/pw/w9ptMt13XYdS6/32Np9zwYkINtLaBDp/CTK/rNyfM3NNbaui8T/u439M+gA==
-X-Received: by 2002:a05:6000:11d0:b0:38d:af14:cb1 with SMTP id
- ffacd0b85a97d-38f33f58dbdmr15159987f8f.54.1739993032672; 
- Wed, 19 Feb 2025 11:23:52 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b44b2sm18385648f8f.20.2025.02.19.11.23.51
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Feb 2025 11:23:52 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ d=1e100.net; s=20230601; t=1739993310; x=1740598110;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y8qFNOJCSSM15gz+34oqzZxpU1C4/gMczfNovDPOQSc=;
+ b=wYpEEQ4cTQ9Gy4OhdFPR9WxtvwyaIvJwaaujXN8vAASmI9df1hRQws4gYXAzp7oxTS
+ 7Z1xx7WSr7+71TaCDYKtQov99sH2ojZ08dwfagHUyG9II39BSotpgfE2pvNaDlSdQegB
+ jWX/z2qJNgKWSGdaQvyP3Jk63hN3U84wk5R97UKAQofuy9N8N6H+scDwqDZ6aTYLHvd6
+ vWttLKTlclBPRWWkvl1IKf+bvJfx24ZSUGt467zLr7LgZEng5yHI+ARojaS80j5qbz4J
+ LN0013nmUV114FVj48G6j6+kU9q6A/oQDMwo5GhPjuf5jC2uyOfHVwC3iXcRkX+Gfa5r
+ CNUw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVWqME8Kz3PCqlV4Bb4Hl/FVCzxcLnlR/eD+ytUXU2hRsbFplpsj/rLbO1Tfe0nyUbw8cTI6/t9vD5q@nongnu.org
+X-Gm-Message-State: AOJu0YyBFbK3doDbQXyUDET3201pc5/FuaURbW8QsvaE9I5Fdz5MXxbe
+ 9wzCbxXe7vC5UfxitDuPRgX/yR6maMbc8OZNKfPIYMKzP+mIUc/r8UFwjRyupXo=
+X-Gm-Gg: ASbGnctDWToLgvGLJxeAiLukAumz2OzZBMtRqvE2qHWO/YsVUfeNMs7TTK5fAASSjOA
+ M3BiErNQhoYiD7H1tZz0Sx75e89oECM10sIfZxU07rrO3RMAmHt3OCbMv0k4Bk+LqbZnPi7mHiZ
+ 2xbOQ/XVYw833T3g6RYaXhA6GXqpIBhkQ7Rwk7LzQGSbkLXrq1by73sQSGnSJut0n5PZ92Nfemx
+ n0ghLgWZUb1jsrxlFTJ7VtS47uynwb+Bse9yb+4As2Iw2//whOWcu8m2G5dYd9q6CW+HptuP6r9
+ u7PR4NMtltuxWa9lMlPKyPj8h4EW
+X-Google-Smtp-Source: AGHT+IEP2iu5q4c9Wi0B3UxFEniYrn/JHLn9UHDL9hfngIQxOR7jJsKiLHcw94+Eh7CUisM6chpr5g==
+X-Received: by 2002:a17:902:d54e:b0:21f:3d0d:2408 with SMTP id
+ d9443c01a7336-2218c3e3876mr8310185ad.10.1739993308726; 
+ Wed, 19 Feb 2025 11:28:28 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2210005641dsm80027525ad.210.2025.02.19.11.28.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Feb 2025 11:28:28 -0800 (PST)
+Message-ID: <6159c3ef-c2b4-48cf-b853-5b02be7d013b@linaro.org>
+Date: Wed, 19 Feb 2025 11:28:27 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] tests/functional: Introduce the dso_suffix() helper
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Alexandre Iooss <erdnaxe@crans.org>, Yonggang Luo <luoyonggang@gmail.com>
-Subject: [PATCH 2/2] tests/functional: Allow running TCG plugins tests on
- non-Linux/BSD hosts
-Date: Wed, 19 Feb 2025 20:23:40 +0100
-Message-ID: <20250219192340.92240-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250219192340.92240-1-philmd@linaro.org>
 References: <20250219192340.92240-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+ <20250219192340.92240-2-philmd@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250219192340.92240-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,61 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not all platforms use the '.so' suffix for shared libraries,
-which is how plugins are built. Use the recently introduced
-dso_suffix() helper to get the proper host suffix.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2804
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/functional/test_aarch64_tcg_plugins.py | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/tests/functional/test_aarch64_tcg_plugins.py b/tests/functional/test_aarch64_tcg_plugins.py
-index 7e8beacc833..306e46c7972 100755
---- a/tests/functional/test_aarch64_tcg_plugins.py
-+++ b/tests/functional/test_aarch64_tcg_plugins.py
-@@ -16,7 +16,7 @@
- import re
- 
- from qemu.machine.machine import VMLaunchFailure
--from qemu_test import LinuxKernelTest, Asset
-+from qemu_test import LinuxKernelTest, Asset, dso_suffix
- 
- 
- class PluginKernelBase(LinuxKernelTest):
-@@ -62,6 +62,10 @@ class PluginKernelNormal(PluginKernelBase):
-         ('https://storage.tuxboot.com/20230331/arm64/Image'),
-         'ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7')
- 
-+    def plugin_file(self, plugin_name):
-+        suffix = dso_suffix()
-+        return f'tests/tcg/plugins/{plugin_name}.{suffix}'
-+
-     def test_aarch64_virt_insn(self):
-         self.set_machine('virt')
-         self.cpu='cortex-a53'
-@@ -74,7 +78,7 @@ def test_aarch64_virt_insn(self):
-                                                  suffix=".log")
- 
-         self.run_vm(kernel_path, kernel_command_line,
--                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
-+                    self.plugin_file('libinsn'), plugin_log.name,
-                     console_pattern)
- 
-         with plugin_log as lf, \
-@@ -100,7 +104,7 @@ def test_aarch64_virt_insn_icount(self):
-                                                  suffix=".log")
- 
-         self.run_vm(kernel_path, kernel_command_line,
--                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
-+                    self.plugin_file('libinsn'), plugin_log.name,
-                     console_pattern,
-                     args=('-icount', 'shift=1'))
- 
--- 
-2.47.1
-
+T24gMi8xOS8yNSAxMToyMywgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IElu
+dHJvZHVjZSBhIGhlbHBlciB0byBnZXQgdGhlIGRlZmF1bHQgc2hhcmVkIGxpYnJhcnkNCj4g
+c3VmZml4IHVzZWQgb24gdGhlIGhvc3QuDQo+IA0KPiBTdWdnZXN0ZWQtYnk6IFBpZXJyaWNr
+IEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZz4NCj4gU2lnbmVkLW9mZi1i
+eTogUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8ub3JnPg0KPiAtLS0N
+Cj4gICB0ZXN0cy9mdW5jdGlvbmFsL3FlbXVfdGVzdC9fX2luaXRfXy5weSB8IDIgKy0NCj4g
+ICB0ZXN0cy9mdW5jdGlvbmFsL3FlbXVfdGVzdC9jbWQucHkgICAgICB8IDYgKysrKysrDQo+
+ICAgMiBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4g
+DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9mdW5jdGlvbmFsL3FlbXVfdGVzdC9fX2luaXRfXy5w
+eSBiL3Rlc3RzL2Z1bmN0aW9uYWwvcWVtdV90ZXN0L19faW5pdF9fLnB5DQo+IGluZGV4IDVj
+OTcyODQzYTZkLi5lMjUzMjg4ZWU3ZiAxMDA2NDQNCj4gLS0tIGEvdGVzdHMvZnVuY3Rpb25h
+bC9xZW11X3Rlc3QvX19pbml0X18ucHkNCj4gKysrIGIvdGVzdHMvZnVuY3Rpb25hbC9xZW11
+X3Rlc3QvX19pbml0X18ucHkNCj4gQEAgLTgsNyArOCw3IEBADQo+ICAgDQo+ICAgZnJvbSAu
+YXNzZXQgaW1wb3J0IEFzc2V0DQo+ICAgZnJvbSAuY29uZmlnIGltcG9ydCBCVUlMRF9ESVIN
+Cj4gLWZyb20gLmNtZCBpbXBvcnQgaXNfcmVhZGFibGVfZXhlY3V0YWJsZV9maWxlLCBcDQo+
+ICtmcm9tIC5jbWQgaW1wb3J0IGlzX3JlYWRhYmxlX2V4ZWN1dGFibGVfZmlsZSwgZHNvX3N1
+ZmZpeCwgXA0KPiAgICAgICBpbnRlcnJ1cHRfaW50ZXJhY3RpdmVfY29uc29sZV91bnRpbF9w
+YXR0ZXJuLCB3YWl0X2Zvcl9jb25zb2xlX3BhdHRlcm4sIFwNCj4gICAgICAgZXhlY19jb21t
+YW5kLCBleGVjX2NvbW1hbmRfYW5kX3dhaXRfZm9yX3BhdHRlcm4sIGdldF9xZW11X2ltZywg
+d2hpY2gNCj4gICBmcm9tIC50ZXN0Y2FzZSBpbXBvcnQgUWVtdUJhc2VUZXN0LCBRZW11VXNl
+clRlc3QsIFFlbXVTeXN0ZW1UZXN0DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9mdW5jdGlvbmFs
+L3FlbXVfdGVzdC9jbWQucHkgYi90ZXN0cy9mdW5jdGlvbmFsL3FlbXVfdGVzdC9jbWQucHkN
+Cj4gaW5kZXggZGM1ZjQyMmI3N2QuLmM0NzA0ZGZiN2JjIDEwMDY0NA0KPiAtLS0gYS90ZXN0
+cy9mdW5jdGlvbmFsL3FlbXVfdGVzdC9jbWQucHkNCj4gKysrIGIvdGVzdHMvZnVuY3Rpb25h
+bC9xZW11X3Rlc3QvY21kLnB5DQo+IEBAIC0xNCw2ICsxNCwxMiBAQA0KPiAgIGltcG9ydCBs
+b2dnaW5nDQo+ICAgaW1wb3J0IG9zDQo+ICAgaW1wb3J0IG9zLnBhdGgNCj4gK2ltcG9ydCBw
+bGF0Zm9ybQ0KPiArDQo+ICtkZWYgZHNvX3N1ZmZpeCgpOg0KPiArICAgICcnJ1JldHVybiB0
+aGUgZHluYW1pYyBsaWJyYXJpZXMgc3VmZml4IGZvciB0aGUgY3VycmVudCBwbGF0Zm9ybScn
+Jw0KPiArICAgIERTT19TVUZGSVhFUyA9IHsgJ0xpbnV4JzogJ3NvJywgJ0Rhcndpbic6ICdk
+eWxpYicsICdXaW5kb3dzJzogJ2RsbCcgfQ0KPiArICAgIHJldHVybiBEU09fU1VGRklYRVNb
+cGxhdGZvcm0uc3lzdGVtKCldDQo+ICAgDQo+ICAgDQo+ICAgZGVmIHdoaWNoKHRvb2wpOg0K
+DQpSZXZpZXdlZC1ieTogUGllcnJpY2sgQm91dmllciA8cGllcnJpY2suYm91dmllckBsaW5h
+cm8ub3JnPg0KDQo=
 
