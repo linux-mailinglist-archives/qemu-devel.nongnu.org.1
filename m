@@ -2,61 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837D7A3DDE2
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 16:10:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81460A3DE1F
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 16:18:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl8C7-0001Ew-Gi; Thu, 20 Feb 2025 10:10:31 -0500
+	id 1tl8IZ-0003PZ-9u; Thu, 20 Feb 2025 10:17:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tl8C5-0001Em-5I
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 10:10:29 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tl8IX-0003PH-Df
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 10:17:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tl8C2-0006Hj-Ly
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 10:10:28 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YzGpN2rHlz6GBRV;
- Thu, 20 Feb 2025 23:07:40 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 4D682140119;
- Thu, 20 Feb 2025 23:10:18 +0800 (CST)
-Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 20 Feb
- 2025 16:10:17 +0100
-Date: Thu, 20 Feb 2025 15:10:16 +0000
-To: Vinayak Holikatti <vinayak.kh@samsung.com>
-CC: <qemu-devel@nongnu.org>, <gost.dev@samsung.com>,
- <linux-cxl@vger.kernel.org>, <nifan.cxl@gmail.com>, <dave@stgolabs.net>,
- <vishak.g@samsung.com>, <krish.reddy@samsung.com>,
- <a.manzanares@samsung.com>, <alok.rathore@samsung.com>
-Subject: Re: [PATCH v3 1/3] hw/cxl/cxl-mailbox-utils: Add support for Media
- operations discovery commands cxl r3.2 (8.2.10.9.5.3)
-Message-ID: <20250220151016.00002536@huawei.com>
-In-Reply-To: <20250220052724.1256642-2-vinayak.kh@samsung.com>
-References: <20250220052724.1256642-1-vinayak.kh@samsung.com>
- <CGME20250220052734epcas5p2c0e082880350b5fa314c9062294bbc80@epcas5p2.samsung.com>
- <20250220052724.1256642-2-vinayak.kh@samsung.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tl8IV-00072r-NA
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 10:17:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740064625;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xdCCz4QYW+5j11g7MngUMnMM6DzUJyBM74yKX8wMrXE=;
+ b=MsbBRMrZ4+GomCFbDWdxkFDqkz/jIz8Zs1dLhr+elYfG2AGAc5J1xV1uYjFlsouXR3ltad
+ pbb0Z9HhTMU4fq953Grna7C6mLghrJ5nDQQBTH0YZ9dR3sZifCys/fHDrwuy6EOXq9SgKk
+ dWlwZaYhlohUuPU/COQbKbcZBo7SWew=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-aM9ISr7nPmSRr6IDDB6Y5A-1; Thu, 20 Feb 2025 10:17:03 -0500
+X-MC-Unique: aM9ISr7nPmSRr6IDDB6Y5A-1
+X-Mimecast-MFC-AGG-ID: aM9ISr7nPmSRr6IDDB6Y5A_1740064622
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-439858c5911so5921455e9.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 07:17:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740064622; x=1740669422;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xdCCz4QYW+5j11g7MngUMnMM6DzUJyBM74yKX8wMrXE=;
+ b=WX9Kpw/larhTtUXrsv8mRl2n1Htwp4VdJoQnMcpXbAkkEVcdCQ1QaAGOc3Xj35BLi9
+ TkNGfF5u1gXlyOEcsIgfjEl22d/9qaTDyZEJLH2xJhyRt21usXMYCMFVQ+qgTaN88mKE
+ yqscUZjkF0b3c9ybzwOEqIrl6840pSY4dg9HTirU/bTJCsGR39ZodZpE73qYSezmKboq
+ IcuPQXc+hImlLjldLbWDDFiM5LmVOtQSr5V0irvvllwthNe1luFtKyPMPoY1kHbCKQsa
+ 5RS7m+n0/mLvn3WJ7YyxRMCW9Ra1TLhnhsuEgkEPlGxfTSyE7ZFW4pealCo/p04xYomp
+ XeDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVLtlVbnhtqQyot0m/NKSFn44CFjPXNgzB3pIQgdp3z5OqoA9Z9gXCKJODNTDSkBGwBbGoNboDOrEyf@nongnu.org
+X-Gm-Message-State: AOJu0YyZs7F8wzyAN2Fp2KVxQg0e2Px6Twu5OehsZIZhG+MSJZILtM4Z
+ wpN7tsONeLMWHyHdthst39WmjOqOQhb+NlSQs2pUkaU4bmI8CuIShK5/aa2KR/gEjD9pxB1IeKN
+ RwruNpg+xeduKjLay7YGzdSw1Y/VC3qAWX1V5kRMJ/LRcUzhjqbWP
+X-Gm-Gg: ASbGncvdSm/R9NLS3WXLGCL3iEZCyTiQMrz4Du7jREutXzkYtan5GMHgfsuXJavkAwQ
+ z+30NZa7CVsJTn+i1Ntv0F7pBFwUrYRFf+ptebiysYjGyJK2BNmEqaNqsGt41mRHkgAwAVP7Fm+
+ ineXKBzMyojsnUSd9Kub2tyqpEOIOdJhRJ6D81wZobkFxUCq8dcVSG9iTBnrgXynFTZb3BwOqhk
+ srk5awvJuH1ApxNdmSGhGWulLxvrNLVHMZHeNUmKvs32CysywwDMya49tpxsVg3dQwN8Q==
+X-Received: by 2002:a05:6402:3493:b0:5d3:cff5:634f with SMTP id
+ 4fb4d7f45d1cf-5e089cff723mr7756040a12.24.1740064622396; 
+ Thu, 20 Feb 2025 07:17:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHds1nwlwml4RO4XRCbt7rK/gWD49hFqVnf7/a5gsGU4/FblvwVy2R/Vshc2NYMbSrd8x5V2Q==
+X-Received: by 2002:a05:6402:3493:b0:5d3:cff5:634f with SMTP id
+ 4fb4d7f45d1cf-5e089cff723mr7755996a12.24.1740064621876; 
+ Thu, 20 Feb 2025 07:17:01 -0800 (PST)
+Received: from redhat.com ([2.55.163.174]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5dece288e2dsm12241365a12.80.2025.02.20.07.16.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Feb 2025 07:17:01 -0800 (PST)
+Date: Thu, 20 Feb 2025 10:16:56 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=C3?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH RESEND] i386: Only configure HPET firmware info when HPET
+ is enabled
+Message-ID: <20250220101525-mutt-send-email-mst@kernel.org>
+References: <20250121140121.84550-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250121140121.84550-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,275 +106,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Feb 2025 10:57:22 +0530
-Vinayak Holikatti <vinayak.kh@samsung.com> wrote:
-
-> CXL spec 3.2 section 8.2.10.9.5.3 describes media operations commands.
-> CXL devices supports media operations discovery command.
+On Tue, Jan 21, 2025 at 10:01:21PM +0800, Zhao Liu wrote:
+> At present, the hpet_cfg is written unconditionally since 40ac17cd56eb
+> ("pass info about hpets to seabios.]"), because it concerns ACPI HPET is
+> created unconditionally.
 > 
-> Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
-Hi Vinayak,
+> But that fact has changed since 51124bbfd2ea ("i386: acpi: Don't build
+> HPET ACPI entry if HPET is disabled") and ACPI checks if HPET device
+> exists in (hw/i386/acpi-build.c).
+> 
+> Therefore, configure HPET firmware information if and only if HPET is
+> enabled.
+>
 
-Rather than go around again, I've applied this to my CXL staging tree
-with the following diff (comments inline below!)
+and what is the gain from this change? just a cleanup?
 
-Let me know if I messed up the changes (it wouldn't be the first time :()
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> Resend:
+>  * Resend the patch since it was missed on https://lore.kernel.org/qemu-devel/.
 
-Jonathan
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index d401c68a38..167a87a7b1 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1709,7 +1709,6 @@ enum {
-     MEDIA_OP_CLASS_SANITIZE = 0x1,
-         #define MEDIA_OP_SAN_SUBC_SANITIZE 0x0
-         #define MEDIA_OP_SAN_SUBC_ZERO 0x1
--    MEDIA_OP_CLASS_MAX
- };
 
- struct media_op_supported_list_entry {
-@@ -1745,31 +1744,25 @@ static CXLRetCode media_operations_discovery(uint8_t *payload_in,
-             uint16_t num_ops;
-         } discovery_osa;
-     } QEMU_PACKED *media_op_in_disc_pl = (void *)payload_in;
-+    struct media_op_discovery_out_pl *media_out_pl =
-+        (struct media_op_discovery_out_pl *)payload_out;
-+    int num_ops, start_index, i;
-     int count = 0;
--    int num_ops = 0;
--    int start_index = 0;
--    int i = 0;
--    uint32_t dpa_range_count = 0;
--    struct media_op_discovery_out_pl *media_out_pl = NULL;
-
-     if (len_in < sizeof(*media_op_in_disc_pl)) {
-         return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-     }
-
--    media_out_pl = (struct media_op_discovery_out_pl *)payload_out;
-     num_ops = media_op_in_disc_pl->discovery_osa.num_ops;
-     start_index = media_op_in_disc_pl->discovery_osa.start_index;
--    dpa_range_count = media_op_in_disc_pl->dpa_range_count;
-
-     /*
--     * As per spec CXL 3.2 8.2.10.9.5.3 dpa_range_count
--     * should be zero for discovery sub class command
-+     * As per spec CXL r3.2 8.2.10.9.5.3 dpa_range_count should be zero and start
-+     * index should not exceed the total number of entries for discovery sub
-+     * class command.
-      */
--    if (dpa_range_count) {
--        return CXL_MBOX_INVALID_INPUT;
--    }
--
--    if (start_index + num_ops > ARRAY_SIZE(media_op_matrix)) {
-+    if (media_op_in_disc_pl->dpa_range_count ||
-+        start_index > ARRAY_SIZE(media_op_matrix)) {
-         return CXL_MBOX_INVALID_INPUT;
-     }
-
-@@ -1790,8 +1783,7 @@ static CXLRetCode media_operations_discovery(uint8_t *payload_in,
-     }
-
-     media_out_pl->num_of_supported_operations = count;
--    *len_out = sizeof(struct media_op_discovery_out_pl) +
--        (sizeof(struct media_op_supported_list_entry) * count);
-+    *len_out = sizeof(*media_out_pl) + count * sizeof(*media_out_pl->entry);
-     return CXL_MBOX_SUCCESS;
- }
 
 > ---
->  hw/cxl/cxl-mailbox-utils.c | 133 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 133 insertions(+)
+>  hw/i386/fw_cfg.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 9c7ea5bc35..f55a2fe614 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -89,6 +89,7 @@ enum {
->      SANITIZE    = 0x44,
->          #define OVERWRITE     0x0
->          #define SECURE_ERASE  0x1
-> +        #define MEDIA_OPERATIONS 0x2
->      PERSISTENT_MEM = 0x45,
->          #define GET_SECURITY_STATE     0x0
->      MEDIA_AND_POISON = 0x43,
-> @@ -1721,6 +1722,134 @@ static CXLRetCode cmd_sanitize_overwrite(const struct cxl_cmd *cmd,
->      return CXL_MBOX_BG_STARTED;
->  }
+> diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+> index 91bf1df0f2e4..d2cb08715a21 100644
+> --- a/hw/i386/fw_cfg.c
+> +++ b/hw/i386/fw_cfg.c
+> @@ -149,7 +149,14 @@ FWCfgState *fw_cfg_arch_create(MachineState *ms,
+>  #endif
+>      fw_cfg_add_i32(fw_cfg, FW_CFG_IRQ0_OVERRIDE, 1);
 >  
-> +enum {
-> +    MEDIA_OP_CLASS_GENERAL  = 0x0,
-> +        #define MEDIA_OP_GEN_SUBC_DISCOVERY 0x0
-> +    MEDIA_OP_CLASS_SANITIZE = 0x1,
-> +        #define MEDIA_OP_SAN_SUBC_SANITIZE 0x0
-> +        #define MEDIA_OP_SAN_SUBC_ZERO 0x1
-> +    MEDIA_OP_CLASS_MAX
-Not used.  So I'll drop this last entry.  We can bring it back
-easily when we need it.
-> +};
-> +
-> +struct media_op_supported_list_entry {
-> +    uint8_t media_op_class;
-> +    uint8_t media_op_subclass;
-> +};
-> +
-> +struct media_op_discovery_out_pl {
-> +    uint64_t dpa_range_granularity;
-> +    uint16_t total_supported_operations;
-> +    uint16_t num_of_supported_operations;
-> +    struct media_op_supported_list_entry entry[];
-> +} QEMU_PACKED;
-> +
-> +static const struct media_op_supported_list_entry media_op_matrix[] = {
-> +    { MEDIA_OP_CLASS_GENERAL, MEDIA_OP_GEN_SUBC_DISCOVERY },
-> +    { MEDIA_OP_CLASS_SANITIZE, MEDIA_OP_SAN_SUBC_SANITIZE },
-> +    { MEDIA_OP_CLASS_SANITIZE, MEDIA_OP_SAN_SUBC_ZERO },
-> +};
-> +
-> +static CXLRetCode media_operations_discovery(uint8_t *payload_in,
-> +                                             size_t len_in,
-> +                                             uint8_t *payload_out,
-> +                                             size_t *len_out)
-> +{
-> +    struct {
-> +        uint8_t media_operation_class;
-> +        uint8_t media_operation_subclass;
-> +        uint8_t rsvd[2];
-> +        uint32_t dpa_range_count;
-> +        struct {
-> +            uint16_t start_index;
-> +            uint16_t num_ops;
-> +        } discovery_osa;
-> +    } QEMU_PACKED *media_op_in_disc_pl = (void *)payload_in;
-> +    int count = 0;
-> +    int num_ops = 0;
-> +    int start_index = 0;
-> +    int i = 0;
-These values are always overwritten so no need to init.
-
-> +    uint32_t dpa_range_count = 0;
-This one is only used once so I'll switch to just using the
-data directly.
-
-> +    struct media_op_discovery_out_pl *media_out_pl = NULL;
-Might as well set this initially.
-> +
-> +    if (len_in < sizeof(*media_op_in_disc_pl)) {
-> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> -    fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_cfg, sizeof(hpet_cfg));
+> +#ifdef CONFIG_HPET
+> +    PCMachineState *pcms =
+> +        (PCMachineState *)object_dynamic_cast(OBJECT(ms), TYPE_PC_MACHINE);
+> +    if (pcms && pcms->hpet_enabled) {
+> +        fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_cfg, sizeof(hpet_cfg));
 > +    }
+> +#endif
 > +
-> +    media_out_pl = (struct media_op_discovery_out_pl *)payload_out;
-> +    num_ops = media_op_in_disc_pl->discovery_osa.num_ops;
-> +    start_index = media_op_in_disc_pl->discovery_osa.start_index;
-> +    dpa_range_count = media_op_in_disc_pl->dpa_range_count;
-> +
-> +    /*
-> +     * As per spec CXL 3.2 8.2.10.9.5.3 dpa_range_count
 
-For local consistency used r3.2 
-I theory the spec has a revision and a version though published
-specs are all version 1.0
 
-> +     * should be zero for discovery sub class command
-> +     */
-> +    if (dpa_range_count) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    if (start_index + num_ops > ARRAY_SIZE(media_op_matrix)) {
-> +        return CXL_MBOX_INVALID_INPUT;
+Hmm. Wouldn't this break cross version migration? I suspect we need
+a compat tweak if we do this. Might not be worth it ...
 
-I've read the spec again and think I was wrong last time :(
-I believe it is only the start_index that we need to check.,
-If the end is beyond what was requested we just return fewer.
-Sorry about that!
 
-I'll fix that up and change the comment above to also talk about this.
-As these two checks are based on same sentence in the spec I'll
-combine them using ||
-
-> +    }
-> +
-> +    media_out_pl->dpa_range_granularity = CXL_CACHE_LINE_SIZE;
-> +    media_out_pl->total_supported_operations =
-> +                                     ARRAY_SIZE(media_op_matrix);
-> +    if (num_ops > 0) {
-> +        for (i = start_index; i < start_index + num_ops; i++) {
-> +            media_out_pl->entry[count].media_op_class =
-> +                    media_op_matrix[i].media_op_class;
-> +            media_out_pl->entry[count].media_op_subclass =
-> +                        media_op_matrix[i].media_op_subclass;
-> +            count++;
-> +            if (count == num_ops) {
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    media_out_pl->num_of_supported_operations = count;
-> +    *len_out = sizeof(struct media_op_discovery_out_pl) +
-> +        (sizeof(struct media_op_supported_list_entry) * count);
-For this we can use the more compact
-   *len_out = sizeof(*media_out_pl) + sizeof(*media_out_pl->entry) * count;
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
-> +static CXLRetCode cmd_media_operations(const struct cxl_cmd *cmd,
-> +                                       uint8_t *payload_in,
-> +                                       size_t len_in,
-> +                                       uint8_t *payload_out,
-> +                                       size_t *len_out,
-> +                                       CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint8_t media_operation_class;
-> +        uint8_t media_operation_subclass;
-> +        uint8_t rsvd[2];
-> +        uint32_t dpa_range_count;
-> +    } QEMU_PACKED *media_op_in_common_pl = (void *)payload_in;
-> +    uint8_t media_op_cl = 0;
-> +    uint8_t media_op_subclass = 0;
-> +
-> +    if (len_in < sizeof(*media_op_in_common_pl)) {
-> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> +    }
-> +
-> +    media_op_cl = media_op_in_common_pl->media_operation_class;
-> +    media_op_subclass = media_op_in_common_pl->media_operation_subclass;
-> +
-> +    switch (media_op_cl) {
-> +    case MEDIA_OP_CLASS_GENERAL:
-> +        if (media_op_subclass != MEDIA_OP_GEN_SUBC_DISCOVERY) {
-> +            return CXL_MBOX_UNSUPPORTED;
-> +        }
-> +
-> +        return media_operations_discovery(payload_in, len_in, payload_out,
-> +                                             len_out);
-> +    default:
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +}
-> +
->  static CXLRetCode cmd_get_security_state(const struct cxl_cmd *cmd,
->                                           uint8_t *payload_in,
->                                           size_t len_in,
-> @@ -2864,6 +2993,10 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
->           CXL_MBOX_SECURITY_STATE_CHANGE |
->           CXL_MBOX_BACKGROUND_OPERATION |
->           CXL_MBOX_BACKGROUND_OPERATION_ABORT)},
-> +    [SANITIZE][MEDIA_OPERATIONS] = { "MEDIA_OPERATIONS", cmd_media_operations,
-> +        ~0,
-> +        (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-> +         CXL_MBOX_BACKGROUND_OPERATION)},
->      [PERSISTENT_MEM][GET_SECURITY_STATE] = { "GET_SECURITY_STATE",
->          cmd_get_security_state, 0, 0 },
->      [MEDIA_AND_POISON][GET_POISON_LIST] = { "MEDIA_AND_POISON_GET_POISON_LIST",
+>      /* allocate memory for the NUMA channel: one (64bit) word for the number
+>       * of nodes, one word for each VCPU->node and one word for each node to
+>       * hold the amount of memory.
+> -- 
+> 2.34.1
 
 
