@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAF1A3E016
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C674A3E01A
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:14:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9B1-0008JN-FX; Thu, 20 Feb 2025 11:13:27 -0500
+	id 1tl9B5-0008LF-Jo; Thu, 20 Feb 2025 11:13:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tl9Ay-0008Io-9A
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:24 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tl9B3-0008Kh-Rz
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:29 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tl9Aw-0007GV-Cl
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:24 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-21c2f1b610dso31010445ad.0
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:13:21 -0800 (PST)
+ id 1tl9Az-0007Gr-3M
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:29 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-220d601886fso17655185ad.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:13:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1740068000; x=1740672800; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7Ck7MJOclZqyIS84CjNJrs3Sgsjto5PQUBo0xY8ziJc=;
- b=Go85vb28q9UCIX6pg7MeHqBv0Rq3ZXDyGJsszU7piTnIlt3csUK6IjL9SzpHOwHGMR
- vD/Rzi7lqZUDkvhAQngyMxjNYEofM0h8E+N4NKidmcyFO5+jsYAxQy4mC9Q6xtV5/bwR
- KlnXwYe6fSmZHwr+xqnOWtZVg4EFdXdRuWrzuYixlObBOiSLT1nS2+IQ4PAYP3Kd1oft
- Lt23z/eNCYFd2KvzoX4HNsRHs0URjGWhN2UbZXsl1d2lkC5ju8bG0FN+VT5lIeJtqqOg
- 8OAcEPHGWOcKTtA5d/nUKkA5wC2V09G4LJ2IVSRj/nbfbC39AjtS6dt0s+3SCt3xZA3U
- fx0A==
+ d=ventanamicro.com; s=google; t=1740068003; x=1740672803; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=J6hKjm1PNeQza0PKd959xqXDq72ucY0kQWVFSTPldi8=;
+ b=acfTUL+ahD7wdDwNu/yID027a5J4Nl9xfnLt8gyhRlT+yOKSnYbeR7mGnEGYo+QHt8
+ FecvjMiD6vilS4p7oshBae8sWJkx/j4ZYhKWlUNUyiP9U2uBRW7PBra+o9N2fLPECmng
+ IuOqqC8W02PKNsccO7HSxECHrlXobfdzO9F5AUfFJQN9QeJExFqsw4w7WVQgivt4KMAm
+ VVsMPxj4fpyFfgHF4erTOR0REThcXXDPakRd8xLqJ8+8IrbHsuJZvuGO7iUogFIrRM5N
+ WQwHVy/lDmiuLbLeQnZDn7IP9MUHu4dlJA5dAiKcmy+GzsJwXqwVGR3yIvoTOjous3oC
+ o1Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068000; x=1740672800;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7Ck7MJOclZqyIS84CjNJrs3Sgsjto5PQUBo0xY8ziJc=;
- b=Wid0FtZ6u6WUtrcpWudQvgEx5+KoshNg9ZSjM5XKZDK4JkwwWofZAtrce2M2vshLLu
- J942OyPJwIALPKXxF2i7yMNvXTFIqmmzrRO1Anq1JRQi/PMthFA5vBtK+ld2KbQpPMdh
- /qMGm/SmBfvQobSN7zC9TRO0PfkfWuhckMYX295uj1sB/3Uv8ahohkPv1P/EecrW80Fx
- cJZgLoimLgeJ+yvXGT6ZvO7axZ6pGa77Q1KGcWCX2KYZaieTlnmJrmKnM0zSAnPSZc7Q
- iDnrOLlt0b+lDbfNAUfgdQhYY4tEMX64Hf/9yuEfSpk0SOeSo7DQl45tt9urXK4h6o5V
- PUIw==
-X-Gm-Message-State: AOJu0YyBz9Nwkph1lagJyPgE+yuiehXZ4OCGB1e+GpTIpu+McBK1fwxZ
- VX6/dcgkHcnLj6RXiTeFiT2RmyZOn3s02FR2JYjFjVQkPcIVrwn13Qk50pnCyckUQgpDri6hKnr
- +
-X-Gm-Gg: ASbGncvO2zfgKPKVWnsHpE0LWr8e0UeHx/mCL5esu2gRB0jiEYsMiRPf2XfU5+EC0hj
- m36huIsNR1e3fn7h6O54xYikKJV8eat/9glFz5SGPA+WsGoB0CDYqYgikfT3Me+zgGoCBPgF7Ed
- GPbvBTLc1V+bDthgE19kWAA64G5ryAmZdunQnBnywe0p9dyyw3xFpIexVaLaCuU+SaygEsN9p2W
- 4/oqANZCo31TaPjs17+ZmF3/Zoqz/Pfm3WjPsKbFV/ehZDlBAYXcGpudFiNj0hjg5rDEgG8A9cf
- C63o1GuMOmsVVrSknw==
-X-Google-Smtp-Source: AGHT+IGWzi9DNMtGAayI0jz+aQP5i71EE7FqN8pNCdywt0kWtOATv25G6oSzKh0i8bHefdVpQNJ7VQ==
-X-Received: by 2002:a05:6a00:cd4:b0:725:9d70:6ace with SMTP id
- d2e1a72fcca58-73261798a0amr36651902b3a.6.1740067999826; 
- Thu, 20 Feb 2025 08:13:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740068003; x=1740672803;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J6hKjm1PNeQza0PKd959xqXDq72ucY0kQWVFSTPldi8=;
+ b=opQGDdIxFEvs6Leb3MTvtQ1TeJCXFrnHQ77qXSrtGsN95wWzVSP4PdzLQ9hTZCH1a9
+ bFEgvzm1G/Yja9m+tjHnVE0zK6gScSrCK6JL3uC3S+78qZeBV6Sy+JKDWPSQAHdgpXz9
+ A20oWmty7mluAXvlu19Gbv4wuECQUNryn4AxWX+JLtsGFvmdNGCkw7BX6Y3NP2IqPQTq
+ LdfzXHNHIXPWrzk3ZcWCHSGwAILMxoameS/e+bW0awCzs7qoY+EztFl+GzOMZD6g0jgF
+ wx+y1Uy67Trv1h/nOXuTQf177GItvFotCwnpQ2NKr6Yoyv/9m91NHSsG1Ubw0EnUc3e4
+ 07mg==
+X-Gm-Message-State: AOJu0Yx1HiSN9+aQK/PAozOLIFnQtitVDCTsBluPYcDh91rOl4P4l9b3
+ zsx2+P0yEee8BpdvLCdQ/fyXKe1pCm9o8KrUcdOuIpGtkGqIDN15hn98WuOgR1j0Lr+azrXWDnc
+ W
+X-Gm-Gg: ASbGncslW0lrHzOdNGSlKR/BxnEzVz6MRu6hVDY7ss7lyL5KDldMqXhiHbxrJIKiFmu
+ uvtu1QMXvBI8QaMXBI9ZNL4UWTm3TZjDhu8AMU8uN0GlnGw8PEKGaUoGchIAyo69aMlUTYuLe7t
+ al2DXrO1phFl0lUyCi43YHndHd9QoC9eerdUTyqpjItSxEjyIY8XXj+/k0ucRm6evWEdLRRDZ15
+ ywbiBCpjUN1PoEHC2nYvDOuQ7a8hnRO+bHUQvMs3ORpk0qorrzDrr1Gw+FQvMI+D7LozPfAuvZQ
+ swvBJX0wUUhykf6A5g==
+X-Google-Smtp-Source: AGHT+IH9nnmLwB722yY0ER4TU1940DB85PnQdq1rKn7khu8sEUt1a7TFfJUT+JnR7OwzrN+eu7EaDQ==
+X-Received: by 2002:a05:6a00:99a:b0:72d:710d:611c with SMTP id
+ d2e1a72fcca58-732618fb538mr36899182b3a.20.1740068003153; 
+ Thu, 20 Feb 2025 08:13:23 -0800 (PST)
 Received: from grind.. ([187.11.154.120]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7324254618dsm14074072b3a.26.2025.02.20.08.13.16
+ d2e1a72fcca58-7324254618dsm14074072b3a.26.2025.02.20.08.13.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:13:18 -0800 (PST)
+ Thu, 20 Feb 2025 08:13:22 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 0/3] target/riscv/kvm: reset time changes
-Date: Thu, 20 Feb 2025 13:13:10 -0300
-Message-ID: <20250220161313.127376-1-dbarboza@ventanamicro.com>
+Subject: [PATCH 1/3] target/riscv/cpu: ignore TCG init for KVM CPUs in
+ reset_hold
+Date: Thu, 20 Feb 2025 13:13:11 -0300
+Message-ID: <20250220161313.127376-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250220161313.127376-1-dbarboza@ventanamicro.com>
+References: <20250220161313.127376-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+riscv_cpu_reset_hold() does a lot of TCG-related initializations that
+aren't relevant for KVM, but nevertheless are impacting the reset state
+of KVM vcpus.
 
-These patches were done in the context of gitlab #2573 [1]. The gitlab
-entry per se will probably be closed as a guest software bug, but while
-working on it I noticed that we're writing a TCG-initialized
-env->mstatus in KVM.
+When running a KVM guest, kvm_riscv_reset_vcpu() is called at the end of
+reset_hold(). At that point env->mstatus is initialized to a non-zero
+value, and it will be use to write 'sstatus' in the vcpu
+(kvm_arch_put_registers() then kvm_riscv_put_regs_csr()).
 
-This is happening because riscv_cpu_reset_hold() is doing all TCG
-related initialization first, and then calling kvm_riscv_reset_vcpu() in
-the end. For example, we're writing '0xa0000000' in 'sstatus' because
-TCG is setting env->mstatus = 0xa0000000.
+Do an early exit in riscv_cpu_reset_hold() if we're running KVM. All the
+KVM reset procedure will be centered in kvm_riscv_reset_vcpu().
 
-First patch separates KVM vcpu initialization from TCG, centering all
-KVM reset procedure into kvm_riscv_reset_vcpu(). Patches 2 and 3 are
-small improvements made around get/put KVM csr regs. 
+While we're at it, remove the kvm_enabled() check in
+kvm_riscv_reset_vcpu() since it's already being gated in
+riscv_cpu_reset_hold().
 
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2573
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c         | 9 +++++----
+ target/riscv/kvm/kvm-cpu.c | 3 ---
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-Daniel Henrique Barboza (3):
-  target/riscv/cpu: ignore TCG init for KVM CPUs in reset_hold
-  target/riscv/kvm: use env->sie to read/write 'sie' CSR
-  target/riscv/kvm: reset all available KVM CSRs in kvm_reset()
-
- target/riscv/cpu.c         |  9 +++++----
- target/riscv/kvm/kvm-cpu.c | 15 ++++++++++-----
- 2 files changed, 15 insertions(+), 9 deletions(-)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 522d6584e4..8e6e629ec4 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1050,6 +1050,11 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+         mcc->parent_phases.hold(obj, type);
+     }
+ #ifndef CONFIG_USER_ONLY
++    if (kvm_enabled()) {
++        kvm_riscv_reset_vcpu(cpu);
++        return;
++    }
++
+     env->misa_mxl = mcc->misa_mxl_max;
+     env->priv = PRV_M;
+     env->mstatus &= ~(MSTATUS_MIE | MSTATUS_MPRV);
+@@ -1146,10 +1151,6 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+         env->rnmip = 0;
+         env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
+     }
+-
+-    if (kvm_enabled()) {
+-        kvm_riscv_reset_vcpu(cpu);
+-    }
+ #endif
+ }
+ 
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 23ce779359..484b6afe7c 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1603,9 +1603,6 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+     CPURISCVState *env = &cpu->env;
+     int i;
+ 
+-    if (!kvm_enabled()) {
+-        return;
+-    }
+     for (i = 0; i < 32; i++) {
+         env->gpr[i] = 0;
+     }
 -- 
 2.48.1
 
