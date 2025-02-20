@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E43A3E014
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D89A3E01F
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:15:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9B9-0008OW-PL; Thu, 20 Feb 2025 11:13:36 -0500
+	id 1tl9CU-0002Sw-Tx; Thu, 20 Feb 2025 11:14:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tl9B7-0008NQ-LR
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:33 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1tl9CT-0002SR-4e
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:14:57 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tl9B6-0007Hp-2e
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:13:33 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-220c8cf98bbso23964735ad.1
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:13:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1tl9CR-0007Lf-F1
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:14:56 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-38f5fc33602so661699f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1740068010; x=1740672810; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qnvQ9cuHygS6JjjK+o31ZflMYYOqbA8EhtHcyFl2E2k=;
- b=Ntx62Sinjob2m1IBvn5xAFVsUrYShegpQW1YPNa4KRwpt24GWbCwxStJG5UBac6gC/
- 76Oox1VCcg2kQyWlSTBAyMxixHgZbufVDL0SS4uX4HHOkvXUP9VekpISTKVjwA/j/iTV
- MMyeo2lOIIkcXxinLgeJr34w5Su8TX7HClIY9NHMqNudy/htcfK6Z4b8cR+yW/Nl18Qk
- A56qwnggS6ymJhfCLU7CwB7xdct8Zx1YsJEGQSixfT44U0pwUR8VtMkDQK/r3ehTPDrn
- 5/IDpzF/6guxLgZI6LGeXACNjyFPCYJqxrEie7ntTpjBIQhQ4FkfwawBAJBuRB+hKWjh
- dLfA==
+ d=linaro.org; s=google; t=1740068093; x=1740672893; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Smdb1C+s1cDlSOZsrFF86ZErHElhYVQWrEWtL0Vg7k=;
+ b=G/ngnFDJm8tF7rnO5I0w0iHO3WuYzmFUCU1cj8ngQBnbWaSnZ0q5M3UWA40nmeijNl
+ FljwJ0xIks3xwD1XBFUN0XsB4nnmAlB/ZRo1atD/pAuY8J2J2ZMZWLrqM3PSfoWYVeVd
+ vxHqnSn34vpHNYs77AgOqRMSli9vmfr1kGrRtVAs0nXMpe01oc1RcpuNwVz+sKtUoQaM
+ FrTIYbhYRsP8b7H3YJD+RbYwve6lbVwXxrCEW2qkmKC1asloVd4OchVtacrkRqg10Vgm
+ G3eLYi4UgcFqHxSVgkzuaOQlek+MX7yoJxdenbJgFWua2kv8XG/UBcO5ybQdnFCZd9sP
+ g5BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068010; x=1740672810;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qnvQ9cuHygS6JjjK+o31ZflMYYOqbA8EhtHcyFl2E2k=;
- b=ZGufNMpsuxmRFZuyMyRv1cW+w8xlfRw04JjrBcUiwiz9gYSQzm1rlY414L3+R9SnfC
- bvKCRyYElEig5TQjaYKCouYJysQCmSxvz+Zh5CvOn/OQbUI8Vl/99+UQ5iHsYuKDcud9
- AAq+fkBwJQeLq2i2WKHI36ODULKsl8sm/aNWugg78c2oETcBgElRtY7hjBUE1BpsKLCw
- lVwgLDLYIF8YZ3MtO6XcA0/Xta83Pa/9Cibb6WQTALEH/nfCBCv2NQoPlCbNMPexPDS9
- UWcgvDt9jx8NrY4V63AREmdqd+jcjepJaQWKsDK7Eowq4yuL6OrUoEWrwl7kpwip55+D
- JiBg==
-X-Gm-Message-State: AOJu0YwwPFeWYHZ2hgT1/sWwWKyn460ntH3YUV0E6QseJ+QgrGwWlYg4
- K6OLWyoRtvdXS0b4yRolh3w1BKUcNALtOqbCtKYdhSmEMGxkrL0YOxlAvbdGzCDY65gT8Jugtg7
- S
-X-Gm-Gg: ASbGncsXUyqS656TDpY2c0Un52ss3ublpV+se2QJYbU576XCR6YuPPjN9Nj6KbOWGoq
- M0INRG59uniZEc9atOPkbl+xWW9210AtKZ9RuXGjvM8IuE9ZOTcvQqQRF8Nxv38xRyiR+wDqN4i
- mu2yJ2rdaxHxpA9gm2gNMJzPXKVwLqfp5Ec4pEJXIbnrEDohbPfsRI1xLrfwtxxK9q3BkvMfDA7
- +C9o0K1Lrr81FPWbpQYZgl82NOqDDY3RBDQRA0du2g12TNBZ21+wsZ+WJbqk0KRFLZjCY/dikV2
- tet9nJU2Xl3M9bgwtA==
-X-Google-Smtp-Source: AGHT+IF7qg/nAKrRf2bIhKIIaR+koI+Ix4VMnGxIXEdT5Nrhvr5j22A1Wl4ahx+4+d8PloaCKM6x6Q==
-X-Received: by 2002:a05:6a21:6004:b0:1ee:e4f0:62a with SMTP id
- adf61e73a8af0-1eee4f008a3mr6193126637.20.1740068010195; 
- Thu, 20 Feb 2025 08:13:30 -0800 (PST)
-Received: from grind.. ([187.11.154.120]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7324254618dsm14074072b3a.26.2025.02.20.08.13.26
+ d=1e100.net; s=20230601; t=1740068093; x=1740672893;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Smdb1C+s1cDlSOZsrFF86ZErHElhYVQWrEWtL0Vg7k=;
+ b=Y0H/yRqf3B8qkyf2nOJronDk9mhpwUWq9RGwL0riEx5U+Qph7Ut+6lbrJ7SI6rqG9B
+ vr2SyrCB+n7my+HcmH2xnUu/IaY/S6g6F3OCG6KI4LZMly6oWD55FEMMMcHtVGiJN0C1
+ ps6okfLWMcpzHCRFmfMrJD9uXll0dpaIucNPbUxKwxGfVRu9ZSMmOajXjFhmJrjvR1NB
+ FGd+NTARzzDviQtgyYqro8L8041grGRZJo4xqHn5sHJuRVrHwpNHkGxdlL4TjTzX+K0W
+ CdBCzGoypSO5BjwTyNORCc96VrnnxjljOE2CDxlyF42PV9x0WeLPruzU0QIlSVDuvfkI
+ OcTA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWV8bXSCvenVvwRdTQ8KjZx3mB85JQvb+6BX+jSx+gafXbYIDekO2N8PyUD2OZ8Hk4XNBlod25EJC4V@nongnu.org
+X-Gm-Message-State: AOJu0YyP5z1BWtTnOOAkNISiroCGny8WsUXgPSlMxD1dFSMpnUcbKU+q
+ X/i0x9IpyOE+rzDa0DU1DypMcF4PXCKONwtWLT6+QhU811UCrqT+J3suJalvYt4=
+X-Gm-Gg: ASbGncsofcCoJMjINkvhsHc8L8wkt6/1v151EpRONDQEcoB1ETGEs+/GxP7gLUs22Wa
+ gBPAujFBmj1eZv/A1GqwmR9/m4WBXxe/cOI68KOeRoGvxSybVyI8NaCjU2mKbbEWtPOESvAlMK9
+ 7pmGTOPfjkXeZygxGGm/ihws5Flrpav7MmuvfTMIjZ4TJ118iUCFNiE9OV+JLho4O2h+rw/etow
+ EXrxd2hRj1nElzxPCz+Efv78WNV/DE1Fyl+0Xl8nCBfa9JIn0v6MnAI7WyV4AYyca68EerbOrKe
+ oH3+lZuVsF3gg0Kh14PmBejsstrkhl+QcA==
+X-Google-Smtp-Source: AGHT+IHhMB1hyD+8SJCCK9pT6NAfUhdwnO4Geme4sMgSP+BQ/IagJLwc+6WG7lYF4Z3nWZO5tAO/Dw==
+X-Received: by 2002:a5d:648a:0:b0:38d:ae1e:2f3c with SMTP id
+ ffacd0b85a97d-38f6160772amr4419616f8f.25.1740068093003; 
+ Thu, 20 Feb 2025 08:14:53 -0800 (PST)
+Received: from localhost.localdomain ([2.221.137.100])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38f259fe1efsm21197741f8f.97.2025.02.20.08.14.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:13:29 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 3/3] target/riscv/kvm: reset all available KVM CSRs in
- kvm_reset()
-Date: Thu, 20 Feb 2025 13:13:13 -0300
-Message-ID: <20250220161313.127376-4-dbarboza@ventanamicro.com>
+ Thu, 20 Feb 2025 08:14:52 -0800 (PST)
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: philmd@linaro.org, david@redhat.com, peterx@redhat.com,
+ pbonzini@redhat.com, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [RFC 0/2] arm: Add DMA remapping for CCA
+Date: Thu, 20 Feb 2025 16:13:19 +0000
+Message-ID: <20250220161320.518450-2-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250220161313.127376-1-dbarboza@ventanamicro.com>
-References: <20250220161313.127376-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,58 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Explictly reset env->mstatus and env->sie. Add a comment about env->mip
-being read/written into KVM 'sip' CSR.
+These two patches will be included in the series that adds support for
+Arm CCA guests to QEMU, which isn't ready to be merged [1], but I'm sending
+them as RFC first to seek advice about the best way to implement this.
 
-We're also not read/writing 'scounteren' which is available in the KVM
-UAPI. Add it in kvm_reset() and get/put_regs_csr().
+There is a breaking change to CCA guests, where DMA addresses now have
+the "shared" top bit set. The VMM needs to strip the address before
+accessing memory. See more details on patch 2 of this RFC and on the
+Linux change:
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/kvm/kvm-cpu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+https://lore.kernel.org/all/20250219220751.1276854-1-suzuki.poulose@arm.com/
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index fea03f3657..ee7a9295b4 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -618,6 +618,7 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
-     KVM_RISCV_GET_CSR(cs, env, stval, env->stval);
-     KVM_RISCV_GET_CSR(cs, env, sip, env->mip);
-     KVM_RISCV_GET_CSR(cs, env, satp, env->satp);
-+    KVM_RISCV_GET_CSR(cs, env, scounteren, env->scounteren);
- 
-     return 0;
- }
-@@ -635,6 +636,7 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-     KVM_RISCV_SET_CSR(cs, env, stval, env->stval);
-     KVM_RISCV_SET_CSR(cs, env, sip, env->mip);
-     KVM_RISCV_SET_CSR(cs, env, satp, env->satp);
-+    KVM_RISCV_SET_CSR(cs, env, scounteren, env->scounteren);
- 
-     return 0;
- }
-@@ -1609,6 +1611,10 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
-     env->pc = cpu->env.kernel_addr;
-     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
-     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
-+
-+    /* sstatus is read/written into mstatus */
-+    env->mstatus = 0;
-+    env->sie = 0;
-     env->satp = 0;
-     env->mie = 0;
-     env->stvec = 0;
-@@ -1616,7 +1622,9 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
-     env->sepc = 0;
-     env->scause = 0;
-     env->stval = 0;
-+    /* sip is read/written into mip */
-     env->mip = 0;
-+    env->scounteren = 0;
- }
- 
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+Patch 2 inserts an IOMMUMemoryRegion on the DMA path, so all DMA
+accesses get the top bit stripped. It also adds RAM discard listeners
+(guest_memfd -> IOMMU notifiers) so that we can create VFIO mappings in
+the top half of the guest address space. Patch 1 is a hack to support
+GPA->VA translation during the discard_populate notification.
+
+I'm testing VFIO support using Chenyi Qiang's series for shared device
+assignment [2]
+
+[1] https://lore.kernel.org/qemu-devel/20241125195626.856992-2-jean-philippe@linaro.org/
+[2] https://lore.kernel.org/qemu-devel/20250217081833.21568-1-chenyi.qiang@intel.com/
+
+Jean-Philippe Brucker (2):
+  system/memory: Allow creating IOMMU mappings from RAM discard populate
+    notifiers
+  target/arm/kvm-rme: Add DMA remapping for the shared memory region
+
+ include/exec/memory.h |   5 +
+ target/arm/kvm_arm.h  |  15 +++
+ hw/arm/virt.c         |   2 +
+ system/memory.c       |   3 +-
+ target/arm/kvm-rme.c  | 220 ++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 244 insertions(+), 1 deletion(-)
+
 -- 
 2.48.1
 
