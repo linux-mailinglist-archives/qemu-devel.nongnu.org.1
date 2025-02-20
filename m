@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A80A3E088
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAA9A3E080
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:23:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JE-00074T-8v; Thu, 20 Feb 2025 11:21:56 -0500
+	id 1tl9JE-000748-2J; Thu, 20 Feb 2025 11:21:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JA-00070B-05
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:52 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tl9JB-00070i-0R
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:53 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9J8-0008Dg-6T
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:51 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4398c8c8b2cso11627715e9.2
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:49 -0800 (PST)
+ id 1tl9J9-0008Do-9g
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:52 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-439a1e8ba83so11053335e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068509; x=1740673309; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068510; x=1740673310; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7ZK/UAwAiiXexiYgh++fSpDts9LOc2NmPvR8jt53MdU=;
- b=Hseh6pQ7HpooBATOqKZfsNgL6T+WR+RyZH28NWFT2z38x75cBDDJV5XNgncLlkKVzI
- jkXfkaxSVTKn5kwVRnCfbcbZjf3iIeawH37gBJzAI5cdyOCiRSEJ9GVjYyNmsBqJyMRX
- QndKiUUWIfXnW8xDZ4Igf64Sx7Jctc6cuNrxPyBkfcli5eQoEqx1pm1lE3pziOBctrVW
- Yf3eaDca+GXwlMt/j0fbfcFoAooLNmAuVq6ev6mJRJfq9YbrbqIyOtAIFgKWCthVnN7h
- pLRRA3IZYRf9Fk1UDo7HORoJpRzI33Kse1cqFwEKN0OcQ9AYXCyeUzXOh4uzInPBKZNi
- EygQ==
+ :reply-to; bh=2xzlx3968bfdrpUp2Jk8ctNVyMvRf/G0SSZ1PJAAEec=;
+ b=PP0EEca3MtJMh7jJhT8V0T9Wp27rwr8f8gpE4EOAYwCjpejPZC0apXcUxNckm4kdQY
+ jwDPf0Yuv8G5pg9qPY6NKcTXwuZziJoafopSm1WvC2dHl7HgSXF3enIX/xx4BNmYKwiE
+ wNs1ScAgfjfbuCbPcdqq+A7eMjzHZ4YJr8uICJVybxbcRJOyT0yW5DKLY31UDscL2CCv
+ CQT8r+rAgHBsBTGy7qtg8RCIJFWnGoTPiKwXmuRPVBBPpO+FfbtmkTAhcIMHeHgDtwc1
+ 7YR+gkBUbIu2gac/4FUaJMWMbLX1tzvtrQx1T83ey0h3QCUrORdzNIr2fhuNzr34piF5
+ 1FPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068509; x=1740673309;
+ d=1e100.net; s=20230601; t=1740068510; x=1740673310;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7ZK/UAwAiiXexiYgh++fSpDts9LOc2NmPvR8jt53MdU=;
- b=pNOv6z+qD3aNnyqGmrGrgk4bb8QL8spJcip8mVZMjnRTnzhHPGV7Wd/aQJgPS1oMPl
- KNFMFDVbM3EIELDQPydlUMRYZ8JTOcb2d7bd7ZJUDc3qUScOUBVztniAiG1meX5ntwGb
- BvF3yvpESSKDQTwyLU+8UjvGpqHgrMzQnsVCnXI2jFnBz/5orCKCHf+9OrbkD5gqh1ps
- iKn/oV+p8UpmqqagZvnhM53GtvKVIkrJ6F8nJ1drSCBszcXTZPvs8oHxf0ey3/yMvGJ0
- GtogX/T1zfOGGX2BNLQ8Q77e5aSGKgDnRef3kC7+562TgYmL+krCt+/2Ptf5x1Rvejci
- QFsg==
-X-Gm-Message-State: AOJu0Ywnpbw3CWBxIK3gkZvUw9wRhN04p2ASJAklcY9jZixmH2HGzyzy
- ir4/PXmTmEZgUxB3DcYYZZ1hx8i3czraqYbu0ETUQ5r2h+m6+CYJgI7aW9wAEWYJUOgc+3NPUxZ
- a
-X-Gm-Gg: ASbGncub7T/XH7nyIz8v+lpVaDTaTXzZVnH8zlWZciz8McInqUcLTKt85hj8Ziq3aS7
- FBzxKPo6aXIO5IahBfLVHoz1fyKixv9NiPeCKMJh2GLMwwU8PLot7HPuFs33rUZWKffWAnREIld
- pqgh6cEix9dMlBXyfn7V5KK5nHBJ/sSupLojC+tz3MoxBBTXT9pgoH4yG7UVXpwXKtSBqmxiMaJ
- 8m8Z/MKjDRYMriFDaUikB8WE3jNgqPYq5YTH42qe/kOK3zFdvX0HNHw3lXkJdXVkUU3bomjVgeF
- C+hPm8A63aAChvu8QHWHSA==
-X-Google-Smtp-Source: AGHT+IHkh9aICFvDR7ULGqcE6cXMY1KJl/fSAurBQn0M+mkVP0Tng6YdL9ccitMN32rEGrAM1tWQJw==
-X-Received: by 2002:a05:600c:1910:b0:439:96aa:e502 with SMTP id
- 5b1f17b1804b1-43996aae68amr126423965e9.12.1740068508736; 
- Thu, 20 Feb 2025 08:21:48 -0800 (PST)
+ bh=2xzlx3968bfdrpUp2Jk8ctNVyMvRf/G0SSZ1PJAAEec=;
+ b=FOo/+0O+vBt8yU6Xu27lhhK7w79zy5ytPSx5liGVjmPGteRqsA4akkdgVLoFA+pkV2
+ L70VfeCKJHFP/bgHT3QtzRxpEMQwj8LUozyFWeRNHMdalpAICfpq3T7k5+37Tk7IhGkn
+ 5yF4Lz+dxXU661Xqg28tR589bFd8q1yEK81ShlWmEr44BI8h2oa2xNtJy2Hrh5b91umf
+ 7Et5/PTTpt17lPV7w859U6UseB6TZCBRrSI8tKpy6eMvrRHqqkaTHMcU7AaaMTHQXuT3
+ Ov5u/8JETo4whJb++uTDKBsbE5fH6w8+K+5R8KNd0tCKj43r7IkMucxbXat+p6dexEyp
+ IS6Q==
+X-Gm-Message-State: AOJu0Yz3BHYUljT91KfT2TXP8en1h6GTEntHrZjetf1gVAUEIbCqNKbw
+ IPNtmKNEieLV4cDdlYoXqOCYZ16n/XClMqYVGe53vw6ZBYCfJi/SWTVbIazCR3Qd8UQ6TwCkHN/
+ H
+X-Gm-Gg: ASbGncuv4B/7nOFD2DULJlaG611NjjutJFhTtP1LPeB5STjvWVMI6yD+pER5oWh94Su
+ o+G91o8PVVs2SSETyZA+dbDWKvGbv31dfUW0DKUdaS10NRPRZn4iaF+u3pIr3c2iwUqFM1k3EZn
+ 2UlooL6xuHMSRuy02N5CAImM1MuDMyfeohY++IVKZWNwgYZ0v7UcsGtLlYjRYObYj2uSCeTFBMi
+ ngb5SUmVrEE/W6d6Gv2En9QhV1oOvah3LxAT3d8oDN60anFeAW+CCTnJdTRy2OnlS37QW4EcSfL
+ Yjj8PS4F7nRMpmpTL5MHQQ==
+X-Google-Smtp-Source: AGHT+IGyl1UzFofGQlFjoPOORT3KqH3oKWOyVEIqVCSjQfeMtvqn0MI7+QrL5MqI6CQiH+zGWnqZFg==
+X-Received: by 2002:a05:600c:1e11:b0:439:86fb:7326 with SMTP id
+ 5b1f17b1804b1-43986fb7498mr141178345e9.22.1740068509560; 
+ Thu, 20 Feb 2025 08:21:49 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.47
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:47 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/41] hw/arm/xilinx_zynq: Replace IRQ_OFFSET -> GIC_INTERNAL
-Date: Thu, 20 Feb 2025 16:20:59 +0000
-Message-ID: <20250220162123.626941-19-peter.maydell@linaro.org>
+Subject: [PULL 19/41] hw/arm/xilinx_zynq: Specify explicitly the GIC has 64
+ external IRQs
+Date: Thu, 20 Feb 2025 16:21:00 +0000
+Message-ID: <20250220162123.626941-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,116 +100,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We already have a definition to distinct GIC internal
-IRQs versus external ones, use it. No logical changes.
+Looking at the Zynq 7000 SoC Technical Reference Manual (UG585 v1.14)
+on Appendix A: Register Details, the mpcore Interrupt Controller Type
+Register (ICDICTR) has the IT_Lines_Number field read-only with value
+0x2, described as:
+
+  IT_Lines_Number
+
+          b00010 = the distributor provides 96 interrupts,
+                   64 external interrupt lines.
+
+Add a GIC_EXT_IRQS definition (with a comment) to make the number of
+GIC external IRQs explicit.
+
+Except explicitly setting a property value to its same implicit
+value, there is no logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-5-philmd@linaro.org
+Message-id: 20250212154333.28644-6-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xilinx_zynq.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ hw/arm/xilinx_zynq.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 3c6a4604cc9..22c0bb17262 100644
+index 22c0bb17262..b8916665ed6 100644
 --- a/hw/arm/xilinx_zynq.c
 +++ b/hw/arm/xilinx_zynq.c
-@@ -54,8 +54,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
- #define FLASH_SIZE (64 * 1024 * 1024)
- #define FLASH_SECTOR_SIZE (128 * 1024)
- 
--#define IRQ_OFFSET 32 /* pic interrupts start from index 32 */
--
+@@ -57,6 +57,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
  #define MPCORE_PERIPHBASE 0xF8F00000
  #define ZYNQ_BOARD_MIDR 0x413FC090
  
-@@ -281,12 +279,12 @@ static void zynq_init(MachineState *machine)
++#define GIC_EXT_IRQS 64 /* Zynq 7000 SoC */
++
+ static const int dma_irqs[8] = {
+     46, 47, 48, 49, 72, 73, 74, 75
+ };
+@@ -205,7 +207,7 @@ static void zynq_init(MachineState *machine)
+     MemoryRegion *ocm_ram = g_new(MemoryRegion, 1);
+     DeviceState *dev, *slcr;
+     SysBusDevice *busdev;
+-    qemu_irq pic[64];
++    qemu_irq pic[GIC_EXT_IRQS];
+     int n;
+     unsigned int smp_cpus = machine->smp.cpus;
+ 
+@@ -261,6 +263,7 @@ static void zynq_init(MachineState *machine)
+ 
+     dev = qdev_new(TYPE_A9MPCORE_PRIV);
+     qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
++    qdev_prop_set_uint32(dev, "num-irq", GIC_EXT_IRQS + GIC_INTERNAL);
+     busdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
+@@ -275,7 +278,7 @@ static void zynq_init(MachineState *machine)
+                            qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
+     }
+ 
+-    for (n = 0; n < 64; n++) {
++    for (n = 0; n < GIC_EXT_IRQS; n++) {
          pic[n] = qdev_get_gpio_in(dev, n);
      }
  
--    n = zynq_init_spi_flashes(0xE0006000, pic[58 - IRQ_OFFSET], false, 0);
--    n = zynq_init_spi_flashes(0xE0007000, pic[81 - IRQ_OFFSET], false, n);
--    n = zynq_init_spi_flashes(0xE000D000, pic[51 - IRQ_OFFSET], true, n);
-+    n = zynq_init_spi_flashes(0xE0006000, pic[58 - GIC_INTERNAL], false, 0);
-+    n = zynq_init_spi_flashes(0xE0007000, pic[81 - GIC_INTERNAL], false, n);
-+    n = zynq_init_spi_flashes(0xE000D000, pic[51 - GIC_INTERNAL], true, n);
- 
--    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0002000, pic[53 - IRQ_OFFSET]);
--    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0003000, pic[76 - IRQ_OFFSET]);
-+    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0002000, pic[53 - GIC_INTERNAL]);
-+    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0003000, pic[76 - GIC_INTERNAL]);
- 
-     dev = qdev_new(TYPE_CADENCE_UART);
-     busdev = SYS_BUS_DEVICE(dev);
-@@ -295,7 +293,7 @@ static void zynq_init(MachineState *machine)
-                           qdev_get_clock_out(slcr, "uart0_ref_clk"));
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, 0xE0000000);
--    sysbus_connect_irq(busdev, 0, pic[59 - IRQ_OFFSET]);
-+    sysbus_connect_irq(busdev, 0, pic[59 - GIC_INTERNAL]);
-     dev = qdev_new(TYPE_CADENCE_UART);
-     busdev = SYS_BUS_DEVICE(dev);
-     qdev_prop_set_chr(dev, "chardev", serial_hd(1));
-@@ -303,15 +301,15 @@ static void zynq_init(MachineState *machine)
-                           qdev_get_clock_out(slcr, "uart1_ref_clk"));
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, 0xE0001000);
--    sysbus_connect_irq(busdev, 0, pic[82 - IRQ_OFFSET]);
-+    sysbus_connect_irq(busdev, 0, pic[82 - GIC_INTERNAL]);
- 
-     sysbus_create_varargs("cadence_ttc", 0xF8001000,
--            pic[42-IRQ_OFFSET], pic[43-IRQ_OFFSET], pic[44-IRQ_OFFSET], NULL);
-+            pic[42-GIC_INTERNAL], pic[43-GIC_INTERNAL], pic[44-GIC_INTERNAL], NULL);
-     sysbus_create_varargs("cadence_ttc", 0xF8002000,
--            pic[69-IRQ_OFFSET], pic[70-IRQ_OFFSET], pic[71-IRQ_OFFSET], NULL);
-+            pic[69-GIC_INTERNAL], pic[70-GIC_INTERNAL], pic[71-GIC_INTERNAL], NULL);
- 
--    gem_init(0xE000B000, pic[54 - IRQ_OFFSET]);
--    gem_init(0xE000C000, pic[77 - IRQ_OFFSET]);
-+    gem_init(0xE000B000, pic[54 - GIC_INTERNAL]);
-+    gem_init(0xE000C000, pic[77 - GIC_INTERNAL]);
- 
-     for (n = 0; n < 2; n++) {
-         int hci_irq = n ? 79 : 56;
-@@ -330,7 +328,7 @@ static void zynq_init(MachineState *machine)
-         qdev_prop_set_uint64(dev, "capareg", ZYNQ_SDHCI_CAPABILITIES);
-         sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, hci_addr);
--        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[hci_irq - IRQ_OFFSET]);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[hci_irq - GIC_INTERNAL]);
- 
-         di = drive_get(IF_SD, 0, n);
-         blk = di ? blk_by_legacy_dinfo(di) : NULL;
-@@ -343,7 +341,7 @@ static void zynq_init(MachineState *machine)
-     dev = qdev_new(TYPE_ZYNQ_XADC);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0xF8007100);
--    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[39-IRQ_OFFSET]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[39-GIC_INTERNAL]);
- 
-     dev = qdev_new("pl330");
-     object_property_set_link(OBJECT(dev), "memory",
-@@ -363,15 +361,15 @@ static void zynq_init(MachineState *machine)
-     busdev = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, 0xF8003000);
--    sysbus_connect_irq(busdev, 0, pic[45-IRQ_OFFSET]); /* abort irq line */
-+    sysbus_connect_irq(busdev, 0, pic[45-GIC_INTERNAL]); /* abort irq line */
-     for (n = 0; n < ARRAY_SIZE(dma_irqs); ++n) { /* event irqs */
--        sysbus_connect_irq(busdev, n + 1, pic[dma_irqs[n] - IRQ_OFFSET]);
-+        sysbus_connect_irq(busdev, n + 1, pic[dma_irqs[n] - GIC_INTERNAL]);
-     }
- 
-     dev = qdev_new("xlnx.ps7-dev-cfg");
-     busdev = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(busdev, &error_fatal);
--    sysbus_connect_irq(busdev, 0, pic[40 - IRQ_OFFSET]);
-+    sysbus_connect_irq(busdev, 0, pic[40 - GIC_INTERNAL]);
-     sysbus_mmio_map(busdev, 0, 0xF8007000);
- 
-     /*
+@@ -458,7 +461,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+     };
+     MachineClass *mc = MACHINE_CLASS(oc);
+     ObjectProperty *prop;
+-    mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
++    mc->desc = "Xilinx Zynq 7000 Platform Baseboard for Cortex-A9";
+     mc->init = zynq_init;
+     mc->max_cpus = ZYNQ_MAX_CPUS;
+     mc->ignore_memory_transaction_failures = true;
 -- 
 2.43.0
 
