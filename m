@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABA8A3E089
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291B1A3E093
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:26:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JC-00070t-SC; Thu, 20 Feb 2025 11:21:54 -0500
+	id 1tl9JA-000709-Ba; Thu, 20 Feb 2025 11:21:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9J6-0006sd-Sa
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:48 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tl9J8-0006tf-7s
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:50 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9J5-0008Cu-64
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:48 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38f265c6cb0so620023f8f.2
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:46 -0800 (PST)
+ id 1tl9J6-0008DB-Kx
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:49 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43937cf2131so8106425e9.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068506; x=1740673306; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068507; x=1740673307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=t+hteArCDvNDkEWIdPPQmXbS1r+mwmrCAQ+A+iGKN+k=;
- b=pnFkhKtO3jdUoJYRl2MeQTDxQfMcQCJxHx0pjgy2Xfa7lMzuqnfuf4Ph32UbdqncRB
- AxHXis5mTMas2Od6DUXrD3w91z9kGVnivzI8vi47rijas7k0u5/8FFWbaxieja6h861R
- +6fS+UJ2wJuTKx7kBTEsmxsR854RP0/bQp1iiv6eeYjAasmIojyfaBYQENh6VVNWfv4z
- DrGrdbuEJp4lxRWSN8MMqceTdwK8d9Qj+LUcwabwXWYTJgz1klhOMbJyXjm9w5LYu5XI
- vw+3iu+f3IvLYGacWTWZ/x/7ETFNhGsCyv7QpKZSpSSSW/XSrYyjQapcCgndCj7ITa6y
- Fwzg==
+ :reply-to; bh=zk2Wwmj50vab5H1dzXTziBrSoLjKSd8C4jY0u7/h7Jk=;
+ b=Y/FH3fcg+ZbQbkL2gUlSsC9tkK62oy7O1hYPUD5O+j7CKXxXOhRD5LmPe0gRJF7I09
+ XHbGhwi8Mwz1e40wvv39yQd21EL2e8ySlSmBPR1YZyA+fS2mEsNivleRhIcKl5W3wECi
+ vCp7O2yTasTSFZu7/4HdD4akokFbEy+pSeS4z64qu8cqJuOem8EFW2A3nbePbIvfdP4O
+ KN24C1D3wWeDPRBll1Oorc4IsOxSSlR/oAg5qd5gFv3vgJRuOkJl8V8Hdwc15X3uLF6B
+ uEhOu+6x2jr/jxb+UB+LxuBimHV3dPkO8uBjCR+ntrrUOO+p4cSspIEBXzx0VKKTFYvY
+ WWLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068506; x=1740673306;
+ d=1e100.net; s=20230601; t=1740068507; x=1740673307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t+hteArCDvNDkEWIdPPQmXbS1r+mwmrCAQ+A+iGKN+k=;
- b=DltKj9u7M4g135rkli5rDMSILcQNXFNV9g0uvggLQiVvny0Co34OTaB400DN9B74kf
- psENdBQ8P2JUqWOkVcJF/2rSPqRZZ1aeHctDs9zuwwrINvg7n+MJ8Yx3bdazQ8R8XNw8
- 2QgjkonGsEZPFoodR5n/LksOdHc5ARYaDrl3Y8AxX/RYBYPkYDSozipgD3LeYZn2KAw1
- LeYESKWfFlspRKIg4qxSETZRUHqAJTs7MGZIFnpsJgvbPzVFjYrdaXfVVNovZBYVZi9M
- +W+WyJZ4UgduFZHBMonzJJ4t99rEhD2xW5vi63IEnbq0mNHt+Zs02KTwiofaO9BL2By1
- KVKg==
-X-Gm-Message-State: AOJu0YyTZe3LhIySF9tB64s8PsAG83sruUkDhmcjffME3TI3BagBBXjy
- 17cTbJCXXy+AX68FllB3qopN5/fT3GWA8ZW2NYokguENHyCybJl8FTdlcklQdVIvNdBV/xaNwT2
- U
-X-Gm-Gg: ASbGncupFzHX6dxdr9Wnk6O8JX65/RpZJh8YxoTqCAEMjSwkB1YNhpOnMQMhEU173J5
- 7QdV+wTf25Poa4zWTFlnbMoW6Ahw6Q7QmyEQDgrEXnIisKFFPnXwu+j6npxkJWaIdemAKo+sems
- yortJxVtcObMaloL60iPcUdV3cFBbHmXfwChJNGHVPG6P6ycte3311SyU4lXhdtYgEpxaGQO1r5
- eTU3HAm73U4TgHZvz5ucy1cfuGrgu5y/BpmbWE8CddURV2D63iyWT4f/y1DHZJPJFgzzH43wI6s
- hVqHbhKv1cqc8atEZc5K+g==
-X-Google-Smtp-Source: AGHT+IG5deF+/kMARB3TEorYJtMxsNeqJnSLf5C8GywNWV0x6Ex+M1dKElThAli38gOvvrR6cPqL6w==
-X-Received: by 2002:a5d:47ce:0:b0:38f:3a89:fdae with SMTP id
- ffacd0b85a97d-38f3a8a019emr17408965f8f.46.1740068505719; 
- Thu, 20 Feb 2025 08:21:45 -0800 (PST)
+ bh=zk2Wwmj50vab5H1dzXTziBrSoLjKSd8C4jY0u7/h7Jk=;
+ b=UVDhyzG6h4Fk9kZSQLLTElawPCOqMFqYcOAQGgZqNzTk9UZFVAl6my4/GrbQzy0J7o
+ 9hErLRzbFzjUlx4duABLku/2er/Bs9uiqkadLSfToLB/eUgJ8KIzMFpCWMmGIEa5wF7Q
+ 1mdYRQP/4ckTdT3uaiINMLLJDkPDwZhqgghFzWM1kDfKuvXISWeKtrQyleun81HUP20F
+ TcCHjQxXKTPmHUp8wE9MCQTHnr4xxSOObY3q6ilwDXog8G1CywZGSZgWcKAHB2ZCfRdY
+ UCoUbbarsFP+gOXNzRNYRInYW3exw9eY/e+jlkFzsvJagQxviYlTuhvFutmxFSgXo3cY
+ utsg==
+X-Gm-Message-State: AOJu0Yx/iiyZQh0hsPk29lwJhLjkimC24Kj6zohCipsIOSaVsyvcUgp4
+ Rs9MbeTo0EANh2ZRNMpQIS1SSm0X/68aOu3d3CACfRk8wtVyKeQ3w1OcAE00F/n7VXWBF1LGAfn
+ J
+X-Gm-Gg: ASbGncv7Ow7e42fPjM0da1pe9o9QxlfwCzwNH97ZkclFpFuucBSs1CHk+9OmpUViCw1
+ 77VKeg0yF94iHbeZZ5WwHQ74XRbNhW0Cb24Q8ZOOlaM25yoXSwp9YqhiGwLicuiaiXr4uKUL26X
+ 9uD787a9R+P+eyC7/lbssUAKIjrVjJkGILfMXe/x1n+z4rwDcc7/yZcb39Ugb0GxORrgXyPHWNY
+ Wo3uupWfmTvsAKQ+IarTuHOaB7dihS2ThOxy4I2mrxrTPacbybXtOHXyCGe/UCFaYCrX67CEeIp
+ GIMcMQ9RjDiPOzV8QaI2dQ==
+X-Google-Smtp-Source: AGHT+IG+KQerkKSmFYWIzUk7v9AemI0FugGSWJgPmR5TKaBvnNx8C9doghAMmt8Db/Ic8AA9BXVHYg==
+X-Received: by 2002:a05:600c:4510:b0:439:a25b:e7d3 with SMTP id
+ 5b1f17b1804b1-439a4ac4534mr31066075e9.14.1740068507203; 
+ Thu, 20 Feb 2025 08:21:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.44
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:44 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/41] hw/arm/exynos4210: Specify explicitly the GIC has 64
+Subject: [PULL 17/41] hw/arm/realview: Specify explicitly the GIC has 64
  external IRQs
-Date: Thu, 20 Feb 2025 16:20:57 +0000
-Message-ID: <20250220162123.626941-17-peter.maydell@linaro.org>
+Date: Thu, 20 Feb 2025 16:20:58 +0000
+Message-ID: <20250220162123.626941-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,34 +110,48 @@ value, there is no logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-3-philmd@linaro.org
+Message-id: 20250212154333.28644-4-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/exynos4210.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/arm/realview.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
-index b6537a2d64a..b452470598b 100644
---- a/hw/arm/exynos4210.c
-+++ b/hw/arm/exynos4210.c
-@@ -103,6 +103,8 @@
- #define EXYNOS4210_PL330_BASE1_ADDR         0x12690000
- #define EXYNOS4210_PL330_BASE2_ADDR         0x12850000
+diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+index 436eef816ed..008eeaf049a 100644
+--- a/hw/arm/realview.c
++++ b/hw/arm/realview.c
+@@ -35,6 +35,8 @@
+ #define SMP_BOOT_ADDR 0xe0000000
+ #define SMP_BOOTREG_ADDR 0x10000030
  
-+#define GIC_EXT_IRQS 64 /* FIXME: verify for this SoC */
++#define GIC_EXT_IRQS 64 /* Realview PBX-A9 development board */
 +
- enum ExtGicId {
-     EXT_GIC_ID_MDMA_LCD0 = 66,
-     EXT_GIC_ID_PDMA0,
-@@ -588,6 +590,8 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
+ /* Board init.  */
  
-     /* Private memory region and Internal GIC */
-     qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "num-cpu", EXYNOS4210_NCPUS);
-+    qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "num-irq",
-+                         GIC_EXT_IRQS + GIC_INTERNAL);
-     busdev = SYS_BUS_DEVICE(&s->a9mpcore);
-     sysbus_realize(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, EXYNOS4210_SMP_PRIVATE_BASE_ADDR);
+ static struct arm_boot_info realview_binfo = {
+@@ -185,7 +187,12 @@ static void realview_init(MachineState *machine,
+     sysbus_mmio_map(SYS_BUS_DEVICE(sysctl), 0, 0x10000000);
+ 
+     if (is_mpcore) {
+-        dev = qdev_new(is_pb ? TYPE_A9MPCORE_PRIV : "realview_mpcore");
++        if (is_pb) {
++            dev = qdev_new(TYPE_A9MPCORE_PRIV);
++            qdev_prop_set_uint32(dev, "num-irq", GIC_EXT_IRQS + GIC_INTERNAL);
++        } else {
++            dev = qdev_new("realview_mpcore");
++        }
+         qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
+         busdev = SYS_BUS_DEVICE(dev);
+         sysbus_realize_and_unref(busdev, &error_fatal);
+@@ -201,7 +208,7 @@ static void realview_init(MachineState *machine,
+         /* For now just create the nIRQ GIC, and ignore the others.  */
+         dev = sysbus_create_simple(TYPE_REALVIEW_GIC, gic_addr, cpu_irq[0]);
+     }
+-    for (n = 0; n < 64; n++) {
++    for (n = 0; n < GIC_EXT_IRQS; n++) {
+         pic[n] = qdev_get_gpio_in(dev, n);
+     }
+ 
 -- 
 2.43.0
 
