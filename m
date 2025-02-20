@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FB6A3E05D
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9811A3E060
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9Ip-0006f5-K0; Thu, 20 Feb 2025 11:21:31 -0500
+	id 1tl9Ir-0006fy-8z; Thu, 20 Feb 2025 11:21:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9In-0006eh-Bw
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:29 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1tl9Io-0006f6-Q4
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:30 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9Il-00089j-Qw
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:29 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43995b907cfso7345175e9.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:27 -0800 (PST)
+ id 1tl9Im-00089s-QB
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:30 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-439a2780b44so7529685e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068486; x=1740673286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068487; x=1740673287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8FCRx4JR1iGsDp4qI/IJ+hntWqJQNK3GsLMOm2F/CHw=;
- b=G/KFCgmPne9fe9Yd0KLU8KyA9cYrxfDMmRMmtNj0QCaPflaLOLW2C8oWMAgPWU1ad+
- nJ90chlfBhQTqk4Z5DNQMU3jImYn86O0jKceyRJetYVYVOYAZvZ4Inyct0BANpgAHE7m
- Md5rm4VEQDTurONyYiiJAEeNgJZBDp4KExzLpOJ6Hhu40qrhUO8p1/tJ74XJNvsOVvmZ
- iAAUsHgEuFVHnMBspSO+Fst7/WKzJHFATcK5y+pwaAITp2rIKi7c8DROYizi70lz9snT
- B8DEBvQ0WA5OFCrgSGnhL9mTHmSNLFqbZJ+DhgOFwW8IDVON/pAapSdcH0p9YK/Kil/r
- RIgA==
+ :reply-to; bh=jB2UFgD3gahxB9+AXRMer3XyJKB38VfWjr05bKCnF+Q=;
+ b=ElTP32d+KKkqdEMd3LvYYwOGb6W4GlataZCLt4ZsGeAmuQEagw0+MtWqe8WO57hQxO
+ I5Oki1wjK5p6KJwvKtKoCrGJCPY6BUlIdbFcgl70S4xscw4wOo3jaXmgtLc53j9msXgK
+ JPhHvWr8V7be2ESTm1dryboI2xwi8CXOIXZSvf3rtiuuISC05fyW4Hy8xrnzaIafZmVZ
+ qG6FSJtQiFFhrn1wt0h72+nV0TzvrNsmWf2Qh+6iQZcHGAGSaXn5Acnq3bYKR6m30a3N
+ BmOn9Xf3t/QmUShHYsoJHMKeccrgX8QfnaIGS6Tr/Pn+MUBqSq4Ah9J2fFGREtWwEjsz
+ SZxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068486; x=1740673286;
+ d=1e100.net; s=20230601; t=1740068487; x=1740673287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8FCRx4JR1iGsDp4qI/IJ+hntWqJQNK3GsLMOm2F/CHw=;
- b=u7e55COcGKq6xcCNMMRBBTpGU2t9iPRNa9y6kv03xr5dbIGYzUvxAV0debrkd/IA8D
- KieEoWrtZ8TJjIDxNJdVl2Rm3JMg8/NROEFQH1oCWCQdWAoAoYR3L7Wd+Db4CBb7sbhI
- yfbF+oZ+LuinNWSRXv5L/lWG6Q8xmCpAtNw0KEmEXz6/8uvhLMak3ngYwO6Xwz4OabcM
- rW9A+FMD2i0wAI5FrsJYb3B66vyGlS37pAtCEuT0MkQNz960isDkwxSRhGO20jafg1JB
- E6+xHKub3pyGsjUlNgOHJvrqpuWayswAr55HmVwCxPPbefcDLgcCuLXF/7ZOgOsz/HpM
- usXg==
-X-Gm-Message-State: AOJu0Yy2rN+UJmuv9kxSH+IRuUH/64bM2vgRpZ8bgobNCxtX033E8YTI
- GRegtVhfB0EXAVPrG8fWUlJNOdbUtQHe9Eedmj+10oyvJBKRY+uUPR/1lgAJ1ntP+tYhXrX99B4
- x
-X-Gm-Gg: ASbGncsSTph93e7BVvlV4+pOE9GvoS0Mu7JhciWGuyaZVAwiRdzXFWHLznsh7ULuVLt
- iwlaXujMeQB7AsEEY+uOwrz1VF28cwU5ENk1MqVlgD7aNUOrMuUIQqX2V+MZXZkD49LzJOmXzTM
- bfvLpQONBSAsKwpaoFQ0yJd343ADPHE4gcN8wPEsUkDzOR+Y3wQI+sNep4cIsltkRZhyJBzNokw
- Pe+3BcHOsPJwN1OFRKBh5KYFBMM5vra6BtpH78ICBau9uUv9ylgqfYhrVxY9Nz5wF0vxELvJtrG
- 2yNdG4cK8rGulrGO32bHoQ==
-X-Google-Smtp-Source: AGHT+IF1m6mhX8bYv1onVMNnnCNdNTgMv4s6MVv9sqEvzJd3KtwRGf1W4RAe8Ku7kWXj2yFBBK6N6w==
-X-Received: by 2002:a05:600c:314d:b0:439:9898:f18c with SMTP id
- 5b1f17b1804b1-4399898f441mr80145145e9.26.1740068486232; 
- Thu, 20 Feb 2025 08:21:26 -0800 (PST)
+ bh=jB2UFgD3gahxB9+AXRMer3XyJKB38VfWjr05bKCnF+Q=;
+ b=vRLScmo0H7T9+p/fcOKszUvRR/MhBxoVFLG+xge3N6HhhFasuwQ/TNhThen+Q/K6SE
+ HLKKpizn72hhExypUzngpSBUT7ENcobN3Gh33C9GzXhfvoRVcSvnqEgkG9Fszz8wOKdN
+ 2IS0kqmWAz38vPVfhhboGl+/Oz2GcbW0bMjkDdzf8p9MX5+s63ygKA4S/fGRHEy3KCPt
+ ZR65unIiJJPxB6I+KNNye0pt7cbjcN1BlIfQOssL+dNbk+kkHKugt8qL5QZIlJc2RozR
+ pstFUExlBbec90OMLmPNWk5cSZEkgvMn3nMiNfL1yZZJOip5bXYEPKrk2yNrGLOkCEPN
+ ZeWg==
+X-Gm-Message-State: AOJu0YwIREWWtwdt3k7Vt5DnLKSMbwUuU4Jl++Xby3XsTjaDU1udtl5N
+ YyfPJPSLiRQ0j0dGUp7cZ/mnBprcKs9G+leEM+kGCC8s7jJo5g3N+DjaMv+YZG5PixINtneOTc2
+ v
+X-Gm-Gg: ASbGnctI/b5Ky+6jPjv7tbEpr+GZFZa03//kGgfmhrh2V00fkpswykhSOIeVZysRhN4
+ n7Eq3B0CMZ6h4pAf5K32AQOVa0Ai11da763520Wym+j/dSqw4ahVLYcLur47MVuyLSbQVkklrIg
+ kNvqRLuEdPiqMJqyxqBYDZ1NerxussNyT3mMP6YgCZ53eRDccwA0KCQQSQ5M50FwlgolD4/u+fy
+ 2N70SzRFXXYLQjtzGkV3ngSTbIPYU5cFDuT5vC/OsZ5Wl37egsNp5MVwiE44Y3U2aZGftKN9D8j
+ he8KrINlfxSy6YS8cnvoJw==
+X-Google-Smtp-Source: AGHT+IEXK7GNikoePYVeAOwjVjx3LllgWRmUTEihB9l9YozHlyCE4QF11Xnb1q8Qy0lJ/MbWs062ow==
+X-Received: by 2002:a05:600c:45ca:b0:439:967b:46f4 with SMTP id
+ 5b1f17b1804b1-43999ddb0c7mr67140615e9.26.1740068487379; 
+ Thu, 20 Feb 2025 08:21:27 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.25
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:25 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:26 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/41] target/arm: Report correct syndrome for UNDEFINED
- CNTPS_*_EL1 from EL2 and NS EL1
-Date: Thu, 20 Feb 2025 16:20:42 +0000
-Message-ID: <20250220162123.626941-2-peter.maydell@linaro.org>
+Subject: [PULL 02/41] target/arm: Report correct syndrome for UNDEFINED AT ops
+ with wrong NSE, NS
+Date: Thu, 20 Feb 2025 16:20:43 +0000
+Message-ID: <20250220162123.626941-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The access pseudocode for the CNTPS_TVAL_EL1, CNTPS_CTL_EL1 and
-CNTPS_CVAL_EL1 secure timer registers says that they are UNDEFINED
-from EL2 or NS EL1.  We incorrectly return CP_ACCESS_TRAP from the
-access function in these cases, which means that we report the wrong
-syndrome value to the target EL.
-
-Use CP_ACCESS_TRAP_UNCATEGORIZED, which reports the correct syndrome
-value for an UNDEFINED instruction.
+R_NYXTL says that these AT insns should be UNDEFINED if they
+would operate on an EL lower than EL3 and SCR_EL3.{NSE,NS} is
+set to the Reserved {1, 0}. We were incorrectly reporting
+them with the wrong syndrome; use CP_ACCESS_TRAP_UNCATEGORIZED
+so they are reported as UNDEFINED.
 
 Cc: qemu-stable@nongnu.org
-Fixes: b4d3978c2fd ("target-arm: Add the AArch64 view of the Secure physical timer")
+Fixes: 1acd00ef1410 ("target/arm/helper: Check SCR_EL3.{NSE, NS} encoding for AT instructions")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250130182309.717346-2-peter.maydell@linaro.org
+Message-id: 20250130182309.717346-3-peter.maydell@linaro.org
 ---
- target/arm/helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 7d95eae9971..b7d6afe0a1a 100644
+index b7d6afe0a1a..9ed1a67b767 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -2385,7 +2385,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
-     switch (arm_current_el(env)) {
-     case 1:
-         if (!arm_is_secure(env)) {
--            return CP_ACCESS_TRAP;
-+            return CP_ACCESS_TRAP_UNCATEGORIZED;
-         }
-         if (!(env->cp15.scr_el3 & SCR_ST)) {
-             return CP_ACCESS_TRAP_EL3;
-@@ -2393,7 +2393,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
-         return CP_ACCESS_OK;
-     case 0:
-     case 2:
+@@ -3601,7 +3601,7 @@ static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
+      * scr_write() ensures that the NSE bit is not set otherwise.
+      */
+     if ((env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
 -        return CP_ACCESS_TRAP;
 +        return CP_ACCESS_TRAP_UNCATEGORIZED;
-     case 3:
-         return CP_ACCESS_OK;
-     default:
+     }
+     return CP_ACCESS_OK;
+ }
 -- 
 2.43.0
 
