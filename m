@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA97AA3D7B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0EE6A3D7BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:07:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl4NJ-0003G9-Cy; Thu, 20 Feb 2025 06:05:49 -0500
+	id 1tl4OJ-0004Ey-VJ; Thu, 20 Feb 2025 06:06:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1tl4ND-0003Cd-OS
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:05:44 -0500
-Received: from mout.kundenserver.de ([212.227.17.10])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1tl4O5-0004A3-Md
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:06:38 -0500
+Received: from mout.kundenserver.de ([217.72.192.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1tl4NB-0002hn-7r
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:05:43 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1tl4O3-0002sE-Po
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:06:37 -0500
 Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
  (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1M9Frd-1telEv0JeR-006usl; Thu, 20 Feb 2025 12:05:34 +0100
-Message-ID: <14906c81-a057-4de4-a34b-a5ea6fb5803b@vivier.eu>
-Date: Thu, 20 Feb 2025 12:05:32 +0100
+ 1MlNgx-1t43aX3R5Z-00izXL; Thu, 20 Feb 2025 12:06:32 +0100
+Message-ID: <04cc2da6-ceb2-4795-8abb-4b3079d74a1f@vivier.eu>
+Date: Thu, 20 Feb 2025 12:06:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] binfmt: Normalize host CPU architecture
+Subject: Re: [PATCH v2 3/3] binfmt: Add --ignore-family option
 To: Andrea Bolognani <abologna@redhat.com>, qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair23@gmail.com>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  David Abdurachmanov <davidlt@rivosinc.com>
 References: <20250127182924.103510-1-abologna@redhat.com>
- <20250127182924.103510-3-abologna@redhat.com>
+ <20250127182924.103510-4-abologna@redhat.com>
 Content-Language: fr
 From: Laurent Vivier <laurent@vivier.eu>
 Autocrypt: addr=laurent@vivier.eu; keydata=
@@ -74,34 +74,34 @@ Autocrypt: addr=laurent@vivier.eu; keydata=
  OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
  JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
  ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <20250127182924.103510-3-abologna@redhat.com>
+In-Reply-To: <20250127182924.103510-4-abologna@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:qmQRK4OhQ70VJ20z/SGV4a+umVAYMeyWJbvRsr4RKbQy4PVeBGh
- j0REPBKi8n8QOFrcExjbXJ+1NqG6bB/phF5f0Gb6nfNUTB9KRYEGIbhQCP/pGgMuuprUjpC
- Ns1lrculrFznoD5j+Ts3dVCybg1HG8LmlkYGpYDEvoVKdWHGJ6oO3gcTGuGQkArF/AMe1IG
- c+GW6Y9hdweUzsenW40XA==
-UI-OutboundReport: notjunk:1;M01:P0:Y39oyGafjLw=;rJJpa7oFUrPgVno6p9uzM+bUD0Z
- 6myvoI0VvKyVgk/StYxjMmwsBKxVdazIbyl41HtirEvvRGyW96WhSk9hIGtvv3Tzd7joW8oh2
- IMzh0CrnGXVnCEmPFMCX6htVV+ooeku6TwgnrDYiGylQQDjj4zw2YPVMm06ghuosxgCbgfugk
- uSGOIWjxFuzWBFzSIump2hnsNvRYpVAJCpngVFXfTDE1vulXn9DYJU6rQH7uSgVvNQ39DWeFJ
- u1YJ8wF4SazasqpLYDzcC0T+nQJd8q/NEXzGtJLDZRfdGrNSl2AwzxDAsIIW+xtYBtsCN0jYY
- wvkrnyD1CXzekgRPrs5K0jWSgBtQlfkN2TnugtCJSEJoqahRHD8Mx4JQQZ8vNSRymSwM0zH5y
- swlodOiet1KgBpAwIrBD+hCIjIv19rYpRNuGwZwJShFyQ/f2Seyccuwkax4r59g8gjs2LPwYk
- 9QhBecXLxyQ3283RP4dXBOcCVp653eBPCmj0AMbf87VGzCM6c3MO69PzMQJBbJkx6CjGBPrlN
- VuFLjq3IEmVTksf8gb2GWV5CWYbZejeYj+IrCLi7xEiPvg6zYbX55NG3ykcv81hWcTZ4oBP/U
- GA8ZQ2tRIqrQ6CqXSfmIRoDTVUSpgJMllW65gJCcA/pPDzOEgwK4by4XyLmUi0izyuVo15Lp3
- 9nRmScBRa7+CoLsBKZ6jBMWdj7E9FitHXBkuVtIjTWz/L/qLdhjG5cuNvAqhm+wFdoKBmZ27a
- w5HFQHtsRSA8b8ccew+wci1uSl1uUSgqEEOSxido0KOnF8sBiSB38nzsw9uvEcujcHsqjhTQU
- ho01M4Alo7Y4iADiZ5b/AOR3Ywy5gYHXhuD3Ouy2jptPGyOAlFNoqBTsem5R+HEiL38MgYyED
- +Pnn8JQXJ8Md+63SYJM61cH/fDfQgUKgZhpISNxGmJc/l5ooj63cHqOalalxGQs/SEqYZpNF/
- p5XzHlXzI5HLxj41JBiFW7vsr0oZh9SMYCWYRWS5E30mL78QoJqprWIC1rNfw6gweQdkFrKfS
- dtrS1Oi6geIH2+M21tUzamqyX0Kz+gfDuw3+HktKLyyEPPTPxsFsdHiOLgDt25zVqPH2xU4Ix
- 3BIUguwb1VF5Ji/7Ys13X+Rv/7+bIPW7KWMH4YenL3CJRhgIFg1w8CZkE6CeVvELVrJ/aHOSx
- lUh0RWLrmfkpXLNQZ+yUB6Lg9q6uoH4wn5OriVf2KF+eAt+f4IlKg4iWbwZVz+QqHTDBout9h
- QjoDF85fkeEUhZ/wuVZQF0BhCnmkxxgUN4EbkgnX/zmblzwm3je5XCT2RgmOaCJalkfVp26bF
- akRtk50jqXxTr6GoSbkSO2W00/kMWkCoL4EUC2+aIQsjUmkmxr5Q+zpQKVpZnb8WnVV
-Received-SPF: pass client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:Xj23iby/1tOjKzV220LrZR6/VEMTRo8TrD1WZ0E36qLqBkkFE2E
+ qv2UY5qpg6mlWGAhEuSZ83ESjn2a6tKq5WJomdYunsaRUViJ9mYnBl+c6VsIg0QmX6whuP4
+ jnExAOT7ytmFtPJ5utTpksFSmWqB5lP+ejVWQ82vO6QBCfgWOJ0CDLm0luISr6qQS5xbpo5
+ 9M6wIvXeW9nDTzERH6S6Q==
+UI-OutboundReport: notjunk:1;M01:P0:pPgqzNZ12Zc=;kB+ALGVHjlxs2CUTsc+4u72nHSi
+ jN6j6qmZjqMnilNvbgISl1f+q8PRSGMMNWrQgxaRAOjCBPG7WfeaB4XpxU8VwB/hKDloocgh+
+ zy98cia8YLsyBitUW3rvAluKEkb/Z3FcYyby5g8ybi9O7DWP0LVm/So6uYmVdyEY+SVdo9KFT
+ Fe2UIqjRyyvTTUgHl0j1TQHxRgiV6Gk6g5WjtlhmmM2Ns0AEhvYSkhQuF/vjXzQp/p5kL2ICv
+ GhWa1oaWI5brgC48lAUim9dnsnCeR2qSxfgollif60sSq4ZyIo+SBLoNWyouxGKhVeva4TPlt
+ +Iats6GopWZ12JYrLuKUdlzjTdhWMNX63wBIuNqkck2ZZWHaHbpG23iTwQEmbljYN3JGy9bMK
+ /DTfMhAbo1npy3K8uhzntCaqj313kiOB1NP0bWgmvRzeqw4BYchGIelecTu8m4m1AM5sIKAqM
+ SO2mfkBCajv3CpRPztBV8IRxEjpZENdj9SK+uWv20hJHasSEKM6EDcMD3iXRTyf3ZVneCwbBj
+ zZzAfSyExj/1UlQq2q53dDeMKmSuy2itzGz9ibfj0DjWXrk87l+w41qbLOOeRNfCz2YMNyDoC
+ kq+G4nBsOYFJfBTMVfdmVXytyv8AVdM6Do534qTSTTqgbw8YXQGLFji1m2/6HTSUXxWERpd7R
+ sPE9p5y5dp6Qej0uxAIEBP4+qtHTEo+EVL/hhYugavywq3bXXXiu1skxGE+ryaG3qwfFRtYPF
+ TMO6BJOWWi+sSL1nwd7tzjlIBNwc/zcRT0XRcrIK/jzt/NuJwnWIq/6BVUqil/b50mmP86VLM
+ 6YXnxUOUae3vcq6b7RBn5mD80iuOzndTXCdLWUMT8vmILA+N6yfIdYNfUK0QLPmYPuL8M0vC/
+ dIzhCt+lRgBOVUHAgCBfawMXpW1c6pbMrWfwropNFfX21Xv6dXJv93Mfs9AyhurNzoZa73dfm
+ 4cSPzC9eDx3MfOpd8YXhyC8CtT88AjxRJb7/l5Q4AtDxXu025tI/J+HQUOYqWaVNPozPICu5e
+ 2ool3Y8CeDvPJMxEl4R/jSvM1ldK+EfLXGlY3avHSSfym1AdZHScyoKied5r6L5FY+3Gz/oVU
+ ag8YcXXDNI7nv+TltTtGvVUGFeaCWY53c1wAzfXpvJmHtl2d58VroEXn2QGEbgRxaE01qePwn
+ 0KgSUkOE0F5zdpBdyzYg/9GjPFoM1OWa8+PCSuHyZFtKMdovuslxrewJShzY1aXHuLyyLbFLY
+ 9nn3e1+hsiGiyAX4xyT/u3o5pbSBgTGBV0XHNLMqJJRX8QXhYmNMr6aTMl2kxn8Y2jvqja6gC
+ LsNWwS5qjXb5oU3pnZcLWzfqZdO2xL9RYD95XFqhx6h1meykgrt7/+fwHXn0r1WkQ4n
+Received-SPF: pass client-ip=217.72.192.75; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -126,111 +126,89 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 27/01/2025 à 19:29, Andrea Bolognani a écrit :
-> Right now information regarding the family each CPU type belongs
-> to is recorded in two places: the large data table at the top of
-> the script, and the qemu_host_family() function.
+> Until now, the script has worked under the assumption that a
+> host CPU can run binaries targeting any CPU in the same family.
+> That's a fair enough assumption when it comes to running i386
+> binaries on x86_64, but it doesn't quite apply in the general
+> case.
 > 
-> We can make things better by mapping host CPU architecture to
-> QEMU target in the few cases where the two don't already match
-> and then using the data table to look up the family, same as
-> we're already doing for the guest CPU architecture.
+> For example, while riscv64 CPUs could theoretically run riscv32
+> applications natively, in practice there exist few (if any?)
+> CPUs that implement the necessary silicon; moreover, even if you
+> had one such CPU, your host OS would most likely not have
+> enabled the necessary kernel bits.
 > 
-> Being able to reason in terms of QEMU target regardless of
-> whether we're looking at the host or guest CPU architecture will
-> come in handy to implement upcoming changes.
+> This new option gives distro packagers the ability to opt out of
+> the assumption, likely on a per-architecture basis, and make
+> things work out of the box for a larger fraction of their user
+> base.
 > 
-> A couple of entries are dropped in the process: BePC and Power
-> Macintosh. I'm quite certain neither of those have ever been
-> reported as CPU architectures by Linux. I believe many more of
-> the entries that are carried forward could be dropped as well,
-> but I don't have the same level of confidence there so I
-> decided to play it safe just in case.
+> As an interesting side effect, this makes it possible to enable
+> execution of 64-bit binaries on 32-bit CPUs of the same family,
+> which is a perfectly valid use case that apparently hadn't been
+> considered until now.
 > 
+> Link: https://src.fedoraproject.org/rpms/qemu/pull-request/72
+> Thanks: David Abdurachmanov <davidlt@rivosinc.com>
+> Thanks: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Andrea Bolognani <abologna@redhat.com>
 > ---
->   scripts/qemu-binfmt-conf.sh | 44 +++++++++++++++++++++----------------
->   1 file changed, 25 insertions(+), 19 deletions(-)
+>   scripts/qemu-binfmt-conf.sh | 19 ++++++++++++++++---
+>   1 file changed, 16 insertions(+), 3 deletions(-)
 > 
 > diff --git a/scripts/qemu-binfmt-conf.sh b/scripts/qemu-binfmt-conf.sh
-> index 426f075e31..8d9136a29f 100755
+> index 8d9136a29f..5fd462b1d1 100755
 > --- a/scripts/qemu-binfmt-conf.sh
 > +++ b/scripts/qemu-binfmt-conf.sh
-> @@ -144,35 +144,35 @@ loongarch64_magic='\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x
->   loongarch64_mask='\xff\xff\xff\xff\xff\xff\xff\xfc\x00\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'
->   loongarch64_family=loongarch
+> @@ -205,6 +205,9 @@ Usage: qemu-binfmt-conf.sh [--qemu-path PATH][--debian][--systemd CPU]
+>          --persistent:    if yes, the interpreter is loaded when binfmt is
+>                           configured and remains in memory. All future uses
+>                           are cloned from the open file.
+> +       --ignore-family: if yes, it is assumed that the host CPU (e.g. riscv64)
+> +                        can't natively run programs targeting a CPU that is
+> +                        part of the same family (e.g. riscv32).
+>          --preserve-argv0 preserve argv[0]
 >   
-> -qemu_get_family() {
-> -    cpu=${HOST_ARCH:-$(uname -m)}
-> +# Converts the name of a host CPU architecture to the corresponding QEMU
-> +# target.
-> +#
-> +# FIXME: This can probably be simplified a lot by dropping most entries.
-> +#        Remember that the script is only used on Linux, so we only need to
-> +#        handle the strings Linux uses to report the host CPU architecture.
-> +qemu_normalize() {
-> +    cpu="$1"
->       case "$cpu" in
-> -    amd64|i386|i486|i586|i686|i86pc|BePC|x86_64)
-> +    i[3-6]86)
->           echo "i386"
+>       To import templates with update-binfmts, use :
+> @@ -337,7 +340,12 @@ qemu_set_binfmts() {
+>           fi
+>   
+>           if [ "$host_family" = "$family" ] ; then
+> -            continue
+> +            # When --ignore-family is used, we have to generate rules even
+> +            # for targets that are in the same family as the host CPU. The
+> +            # only exception is of course when the CPU types exactly match
+> +            if [ "$target" = "$host_cpu" ] || [ "$IGNORE_FAMILY" = "no" ] ; then
+> +                continue
+> +            fi
+>           fi
+>   
+>           $BINFMT_SET
+> @@ -355,10 +363,11 @@ CREDENTIAL=no
+>   PERSISTENT=no
+>   PRESERVE_ARG0=no
+>   QEMU_SUFFIX=""
+> +IGNORE_FAMILY=no
+>   
+>   _longopts="debian,systemd:,qemu-path:,qemu-suffix:,exportdir:,help,credential:,\
+> -persistent:,preserve-argv0:"
+> -options=$(getopt -o ds:Q:S:e:hc:p:g:F: -l ${_longopts} -- "$@")
+> +persistent:,preserve-argv0:,ignore-family:"
+> +options=$(getopt -o ds:Q:S:e:hc:p:g:F:i: -l ${_longopts} -- "$@")
+>   eval set -- "$options"
+>   
+>   while true ; do
+> @@ -418,6 +427,10 @@ while true ; do
+>           shift
+>           PRESERVE_ARG0="$1"
 >           ;;
-> -    mips*)
-> -        echo "mips"
-> +    amd64)
-> +        echo "x86_64"
->           ;;
-> -    "Power Macintosh"|ppc64|powerpc|ppc)
-
-I don't know why we have "Power Macintosh" as a valid value for "uname -m".
-I think it's a good idea to remove it.
-It's here from the beginning
-08785f48b73c ("updated so that PPC/ARM/SPARC executables are automatically launched when invoked")
-Perhaps it's a value coming from the OpenFirmware or MkLinux.
-
-> +    powerpc)
->           echo "ppc"
->           ;;
-> -    ppc64el|ppc64le)
-> -        echo "ppcle"
-> +    ppc64el)
-> +        echo "ppc64le"
->           ;;
-> -    arm|armel|armhf|arm64|armv[4-9]*l|aarch64)
-> +    armel|armhf|armv[4-9]*l)
->           echo "arm"
->           ;;
-> -    armeb|armv[4-9]*b|aarch64_be)
-> +    armv[4-9]*b)
->           echo "armeb"
->           ;;
-> -    sparc*)
-> -        echo "sparc"
-> -        ;;
-> -    riscv*)
-> -        echo "riscv"
-> -        ;;
-> -    loongarch*)
-> -        echo "loongarch"
-> +    arm64)
-> +        echo "aarch64"
->           ;;
+> +    -i|--ignore-family)
+> +        shift
+> +        IGNORE_FAMILY="$1"
+> +        ;;
 >       *)
->           echo "$cpu"
-> @@ -309,7 +309,13 @@ EOF
->   
->   qemu_set_binfmts() {
->       # probe cpu type
-> -    host_family=$(qemu_get_family)
-> +    host_cpu=$(qemu_normalize ${HOST_ARCH:-$(uname -m)})
-> +    host_family=$(eval echo \$${host_cpu}_family)
-> +
-> +    if [ "$host_family" = "" ] ; then
-> +        echo "INTERNAL ERROR: unknown host cpu $host_cpu" 1>&2
-> +        exit 1
-> +    fi
->   
->       # register the interpreter for each cpu except for the native one
->   
+>           break
+>           ;;
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
