@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41ED0A3E095
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABA8A3E089
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:25:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9J6-0006sP-Tg; Thu, 20 Feb 2025 11:21:48 -0500
+	id 1tl9JC-00070t-SC; Thu, 20 Feb 2025 11:21:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9J5-0006re-FI
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:47 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1tl9J6-0006sd-Sa
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:48 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9J3-0008Cg-Qq
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:47 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4397e5d5d99so7421675e9.1
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:45 -0800 (PST)
+ id 1tl9J5-0008Cu-64
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:48 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38f265c6cb0so620023f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068504; x=1740673304; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068506; x=1740673306; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hBoWtrDVPyHDSzSg/OfocB1lL8MLVaKLbdNJpvgSmCI=;
- b=TroAq0+MacuGRAkJON4DydToWFddUKqax5+UCOcGqrXV7Z+EgYXpK0ki4zWkGiWIxc
- YaoQs2WADz5NSDJIBWP7h3KOE5lbWaAP7f5rUB6r5dC4pMtDDSEDMj6bE+2SpM+XnXLd
- akx1VnMID8gynk1wWnKLvJ1T+MzefeWlf0NCvwu1G1Zv71XVJjDLBji/+ATQutCuEBuO
- dEJdXLGxDnuGGJ3N85Kf5YpZKyqra1bxM/m7mECWiw7Ne65FDF0kX2SvtiwhBwP1NuUq
- nL5HHAHBUXLI7gAT9sKUOfOWa7GCno/Fv/Ugj57XgbbHparryMNpdBGmJ1EOYk5c2lDy
- 10IQ==
+ :reply-to; bh=t+hteArCDvNDkEWIdPPQmXbS1r+mwmrCAQ+A+iGKN+k=;
+ b=pnFkhKtO3jdUoJYRl2MeQTDxQfMcQCJxHx0pjgy2Xfa7lMzuqnfuf4Ph32UbdqncRB
+ AxHXis5mTMas2Od6DUXrD3w91z9kGVnivzI8vi47rijas7k0u5/8FFWbaxieja6h861R
+ +6fS+UJ2wJuTKx7kBTEsmxsR854RP0/bQp1iiv6eeYjAasmIojyfaBYQENh6VVNWfv4z
+ DrGrdbuEJp4lxRWSN8MMqceTdwK8d9Qj+LUcwabwXWYTJgz1klhOMbJyXjm9w5LYu5XI
+ vw+3iu+f3IvLYGacWTWZ/x/7ETFNhGsCyv7QpKZSpSSSW/XSrYyjQapcCgndCj7ITa6y
+ Fwzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068504; x=1740673304;
+ d=1e100.net; s=20230601; t=1740068506; x=1740673306;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hBoWtrDVPyHDSzSg/OfocB1lL8MLVaKLbdNJpvgSmCI=;
- b=bzzrv9n/sUo1M8xo1iKPOjuZu593ecmHRQG2yVG/VplWl+cFiVJeuBrhFF4UagU0/v
- Pau245f1exL6MT7Fboi5rpbmiu4WLOA0VD2GxR+xBQDxN+QyQJ1PDf+Ru4gw1Rt26hqV
- jbsHy3O3yj5C24/8juRMUUN6YUsUfgo8+yvXc0eMkI7u9yBm/NCcfcKJKWr2FUghYwJG
- zlWdC5A+eQZisAyJD+fbi2tJnJioYdOxXb6jTbk7yya8o6QujUoVlRjZKCDKc20KT8RV
- I6x5zxY+zWCqjtU48ti+yGjYohFBxUItmZRHUOxUInTJYzf71Wd3Gam34bClqzq1SjEs
- kCCA==
-X-Gm-Message-State: AOJu0YzpzqSf0XTU27Mq+v0cylSsP0cgirqPX6wwoMiwf9vklbz0GPjg
- E4YIgtvKctKIvmoLjBdxRHy6SAjO0g3TtSDi9ERmTip/IId+HfEK1q85E7YqM374jGMy65OOspP
- u
-X-Gm-Gg: ASbGncu/Q7ZBr2yseWA8k64kYE9EHIeA9vxE7/+Jh1b2E3waQxQw0TwMPvAYNZ8Z1sT
- sBJLaLm3BoNOJA1vkpASvZIKmJCJz1QkDi1yR7AD13S2W1oB5w5PZWEfSK3Zu+II7L04Ls8L6PH
- GRb3cIO9fT/C1xeSQV2ihFqFWA8QVI5SGEfbtxq67Le5V4s01w8D0HR+hccYqQjcgo/saHsEhVZ
- mVRnQlwd3KGR/B06SO7qWDWUt3oxEGmg/xkiYbYFrL0c/0iWLchNfV2/jo+Q3hPAxbg64kJQH3i
- UH8wjLsdVt+I3norXPlO5A==
-X-Google-Smtp-Source: AGHT+IE90AnGM4oZ+oRC4LfY5zDILW1K7llDQXLD6welc6HfwdFeG0/dkNvk7Bx6eZZw7UsnDWVbfA==
-X-Received: by 2002:a05:600c:154e:b0:439:a88f:8538 with SMTP id
- 5b1f17b1804b1-439a88f85bcmr27774735e9.5.1740068504165; 
- Thu, 20 Feb 2025 08:21:44 -0800 (PST)
+ bh=t+hteArCDvNDkEWIdPPQmXbS1r+mwmrCAQ+A+iGKN+k=;
+ b=DltKj9u7M4g135rkli5rDMSILcQNXFNV9g0uvggLQiVvny0Co34OTaB400DN9B74kf
+ psENdBQ8P2JUqWOkVcJF/2rSPqRZZ1aeHctDs9zuwwrINvg7n+MJ8Yx3bdazQ8R8XNw8
+ 2QgjkonGsEZPFoodR5n/LksOdHc5ARYaDrl3Y8AxX/RYBYPkYDSozipgD3LeYZn2KAw1
+ LeYESKWfFlspRKIg4qxSETZRUHqAJTs7MGZIFnpsJgvbPzVFjYrdaXfVVNovZBYVZi9M
+ +W+WyJZ4UgduFZHBMonzJJ4t99rEhD2xW5vi63IEnbq0mNHt+Zs02KTwiofaO9BL2By1
+ KVKg==
+X-Gm-Message-State: AOJu0YyTZe3LhIySF9tB64s8PsAG83sruUkDhmcjffME3TI3BagBBXjy
+ 17cTbJCXXy+AX68FllB3qopN5/fT3GWA8ZW2NYokguENHyCybJl8FTdlcklQdVIvNdBV/xaNwT2
+ U
+X-Gm-Gg: ASbGncupFzHX6dxdr9Wnk6O8JX65/RpZJh8YxoTqCAEMjSwkB1YNhpOnMQMhEU173J5
+ 7QdV+wTf25Poa4zWTFlnbMoW6Ahw6Q7QmyEQDgrEXnIisKFFPnXwu+j6npxkJWaIdemAKo+sems
+ yortJxVtcObMaloL60iPcUdV3cFBbHmXfwChJNGHVPG6P6ycte3311SyU4lXhdtYgEpxaGQO1r5
+ eTU3HAm73U4TgHZvz5ucy1cfuGrgu5y/BpmbWE8CddURV2D63iyWT4f/y1DHZJPJFgzzH43wI6s
+ hVqHbhKv1cqc8atEZc5K+g==
+X-Google-Smtp-Source: AGHT+IG5deF+/kMARB3TEorYJtMxsNeqJnSLf5C8GywNWV0x6Ex+M1dKElThAli38gOvvrR6cPqL6w==
+X-Received: by 2002:a5d:47ce:0:b0:38f:3a89:fdae with SMTP id
+ ffacd0b85a97d-38f3a8a019emr17408965f8f.46.1740068505719; 
+ Thu, 20 Feb 2025 08:21:45 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.43
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:43 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/41] hw/arm/exynos4210: Replace magic 32 by proper
- 'GIC_INTERNAL' definition
-Date: Thu, 20 Feb 2025 16:20:56 +0000
-Message-ID: <20250220162123.626941-16-peter.maydell@linaro.org>
+Subject: [PULL 16/41] hw/arm/exynos4210: Specify explicitly the GIC has 64
+ external IRQs
+Date: Thu, 20 Feb 2025 16:20:57 +0000
+Message-ID: <20250220162123.626941-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,42 +100,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The 32 IRQ lines skipped are the GIC internal ones.
-Use the GIC_INTERNAL definition for clarity.
-No logical change.
+When not specified, Cortex-A9MP configures its GIC with 64 external
+IRQs (see commit a32134aad89 "arm:make the number of GIC interrupts
+configurable"). Add the GIC_EXT_IRQS definition (with a comment)
+to make that explicit.
+
+Except explicitly setting a property value to its same implicit
+value, there is no logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-2-philmd@linaro.org
+Message-id: 20250212154333.28644-3-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/exynos4210.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/arm/exynos4210.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
-index dd0edc81d5c..b6537a2d64a 100644
+index b6537a2d64a..b452470598b 100644
 --- a/hw/arm/exynos4210.c
 +++ b/hw/arm/exynos4210.c
-@@ -394,7 +394,8 @@ static void exynos4210_init_board_irqs(Exynos4210State *s)
-         }
-         if (irq_id) {
-             qdev_connect_gpio_out(splitter, splitin,
--                                  qdev_get_gpio_in(extgicdev, irq_id - 32));
-+                                  qdev_get_gpio_in(extgicdev,
-+                                                   irq_id - GIC_INTERNAL));
-         }
-     }
-     for (; n < EXYNOS4210_MAX_INT_COMBINER_IN_IRQ; n++) {
-@@ -421,7 +422,8 @@ static void exynos4210_init_board_irqs(Exynos4210State *s)
-             s->irq_table[n] = qdev_get_gpio_in(splitter, 0);
-             qdev_connect_gpio_out(splitter, 0, qdev_get_gpio_in(intcdev, n));
-             qdev_connect_gpio_out(splitter, 1,
--                                  qdev_get_gpio_in(extgicdev, irq_id - 32));
-+                                  qdev_get_gpio_in(extgicdev,
-+                                                   irq_id - GIC_INTERNAL));
-         } else {
-             s->irq_table[n] = qdev_get_gpio_in(intcdev, n);
-         }
+@@ -103,6 +103,8 @@
+ #define EXYNOS4210_PL330_BASE1_ADDR         0x12690000
+ #define EXYNOS4210_PL330_BASE2_ADDR         0x12850000
+ 
++#define GIC_EXT_IRQS 64 /* FIXME: verify for this SoC */
++
+ enum ExtGicId {
+     EXT_GIC_ID_MDMA_LCD0 = 66,
+     EXT_GIC_ID_PDMA0,
+@@ -588,6 +590,8 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
+ 
+     /* Private memory region and Internal GIC */
+     qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "num-cpu", EXYNOS4210_NCPUS);
++    qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "num-irq",
++                         GIC_EXT_IRQS + GIC_INTERNAL);
+     busdev = SYS_BUS_DEVICE(&s->a9mpcore);
+     sysbus_realize(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, EXYNOS4210_SMP_PRIVATE_BASE_ADDR);
 -- 
 2.43.0
 
