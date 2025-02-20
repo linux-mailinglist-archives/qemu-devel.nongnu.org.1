@@ -2,149 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB60A3E53E
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 20:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 912F7A3E578
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 21:01:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlCP0-00026s-R2; Thu, 20 Feb 2025 14:40:06 -0500
+	id 1tlCih-0007fh-Kh; Thu, 20 Feb 2025 15:00:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tlCOy-00024K-8j
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 14:40:04 -0500
+ (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
+ id 1tlCiY-0007fC-0p
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 15:00:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tlCOw-00058G-5h
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 14:40:03 -0500
+ (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
+ id 1tlCiV-0008Ot-Ud
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 15:00:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740080399;
+ s=mimecast20190719; t=1740081612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=xCmbmGEnPivhT04E5H1R7HKWMm3JkdNClqaUPWHdI2s=;
- b=P0LEic0p1hjFw3DkzM4SUjMvE7/M/A6HTV/0CKo9aP76y9uwvGSkYUU3aix25SXD6TZ/E+
- xOa/tGMDQmYkxKk8K9vbGpYGCOymCvr4uxV9CZuRDtnC8wF+RKUQ1DT2+io35YcoxkHEai
- jkI1z+goeufxJI4tRgMpdoJy2U/0C/A=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=BmKzjaNSRadRsfGvVd28eze2sxG/mnoDMm0RrSy2xVI=;
+ b=ZDpBez535IJnZZAE2nT8XHRhW9BjIG2Y5MxCNW1UrVLvE9G6er4sLg4Q2gHohlmCKG85M5
+ W6K1IgxopHXG+SKN4vvOkLSQSnbFkatfk8GV5NzwCz2bS15KMQtnolS/EA3U77MjLxIPWZ
+ f5BQ4a0ipJPhypZhhnYP6/XPR+Orld0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-q6Xfil-QM1uTiX7xoEtw4A-1; Thu, 20 Feb 2025 14:39:58 -0500
-X-MC-Unique: q6Xfil-QM1uTiX7xoEtw4A-1
-X-Mimecast-MFC-AGG-ID: q6Xfil-QM1uTiX7xoEtw4A_1740080397
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38f2cefb154so1119844f8f.0
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 11:39:58 -0800 (PST)
+ us-mta-79-3kyoHDVdPQ6Z7UwPE-y1yA-1; Thu, 20 Feb 2025 15:00:09 -0500
+X-MC-Unique: 3kyoHDVdPQ6Z7UwPE-y1yA-1
+X-Mimecast-MFC-AGG-ID: 3kyoHDVdPQ6Z7UwPE-y1yA_1740081608
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-38f2ef5f0dbso578153f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 12:00:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740080397; x=1740685197;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=xCmbmGEnPivhT04E5H1R7HKWMm3JkdNClqaUPWHdI2s=;
- b=rIDcEXawJQk0plVNqhIYaQwm+i3xTsNDzGymOG2JjNbHNvVO17aNYMfwyrUNYrdOX+
- O+1kAY3Ie8rYrKLeZlXxzwQ8QInHFvsyaG1XK76xRNYh5BnbXKXeWmi4dz1FiAhHoNN1
- FkDGIsY2QkJmq1rXj8g3/+LmQyZjZCQ/V/oHLYeUKnjRM9hG+UdrwOUs+OF6zrQGKD+m
- qeE1pBNFZw1VWVGCBvuano4FRHYZzeWMeZhju7Umxxa+U+wuBhzqsoUxfeqfdzIUnpxi
- FHjfac5PUZLIYXUbSKYI5U5YVQlrpD8DcXtYjw31AtmCQbjU7dbZ4gsXfZKiJbV9RLhJ
- Nklg==
+ d=1e100.net; s=20230601; t=1740081608; x=1740686408;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BmKzjaNSRadRsfGvVd28eze2sxG/mnoDMm0RrSy2xVI=;
+ b=RQVj28qTfJEYa2n6Vm9uv70w0PxpxA3wnFCwScB8cciHqt4Ajd1R8gRwVsfjybOSgj
+ rK+2LXbf4Sk6PhzFXXHtsORSxMnby+Et4tjK+Cdx8hKzALfS3RLqAtLSXqGVN7DRirr4
+ q0dqrvzMSAkTwfiirjCJxCfXc2xy4EcXq5A97/lLgH4nl2kEDZhqB7Vni73e9dRS0iFv
+ EE9jZvzVrJ4OKK55tv2ExQ8i7G3XT0/T3SrxZnuU5Xkp2c/jWWAgD0KKHgGIwJJTOi5F
+ Ah4yDvA3fwM2Cby3EM6qteYaIQ4YL+My2Px2FImTQ8vg6IQ45nHjd8nXN6mc1pdHLhRO
+ /8Zg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX72otz5WBZMETnfz/cYJSl2lYEXAJicI3267LOR01eAcjScCv1XPSdLViy4vDKkivJsSFdHg3iZU4Q@nongnu.org
-X-Gm-Message-State: AOJu0YybaegOXKikbDLwd3G+b2difmGAfaeQukYxRpIINpfrQiQHWlWn
- rlBFU4snajohWeH41V8sYGAxnUEH8cKqAtE9LXFgewQxACRcRtyBRrJfje8s09CVPTs4D2+Tl4R
- fs9mzFxwQjShmxdqFqTEdQfXCLrp3vwDDfY8+fpoLTa8f35eHai2Y
-X-Gm-Gg: ASbGncs0rSNQzXnCKRXhH/XYP7FuMe4fKgVqb9PO5nN5BC3PX5O0wA4p+181B/d+kU4
- G1ZqUoGeftQVh+XIPOHhPm+5cCfK1XnH6S2HbY8cVHCro1LlfrvfD24CvOH+8J1/vscS/5Uef2Q
- 6buKoLWVYUSwGqcg3q1TdTggUGUHeE7C1hk9BslimgQDyutbS7yTK1p76JNO7K7UP6B2ury4zU5
- Q5WSu+Nh3JndLEugGLD/LJsv/4dlXcIUigxsaWt6RjYoFXG72qfeHmYMA7l5dg/4LGSS7Pq/fcp
- a2H5vSdRgksFc960ha0tNMytILrFJXaS9ODFTdjE0wzrcGilyrzKGWXaEsBuTeXVEAwP2D4Fsxi
- d2L62IcWOdwnxnmn4CuzZ9TQMmzcsTQ==
-X-Received: by 2002:a5d:6d07:0:b0:38d:dc57:855d with SMTP id
- ffacd0b85a97d-38f6f0b0129mr544465f8f.35.1740080397115; 
- Thu, 20 Feb 2025 11:39:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFKbeHhwcwohivideRNFnZxEqSMXbhBgWzcrF1rSLQXCp4yeKMAwN2Eq6db6ITy/WR7fXwZYA==
-X-Received: by 2002:a5d:6d07:0:b0:38d:dc57:855d with SMTP id
- ffacd0b85a97d-38f6f0b0129mr544446f8f.35.1740080396700; 
- Thu, 20 Feb 2025 11:39:56 -0800 (PST)
-Received: from ?IPV6:2003:cb:c706:2000:e44c:bc46:d8d3:be5?
- (p200300cbc7062000e44cbc46d8d30be5.dip0.t-ipconnect.de.
- [2003:cb:c706:2000:e44c:bc46:d8d3:be5])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d5923sm21604078f8f.74.2025.02.20.11.39.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Feb 2025 11:39:55 -0800 (PST)
-Message-ID: <0d761daf-174d-487f-80fe-09b04902006f@redhat.com>
-Date: Thu, 20 Feb 2025 20:39:53 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] system/memory: Allow creating IOMMU mappings from RAM
- discard populate notifiers
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>, philmd@linaro.org,
- peterx@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20250220161320.518450-2-jean-philippe@linaro.org>
- <20250220161320.518450-3-jean-philippe@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
+ AJvYcCXIaWIDQxaJSTOd/PvmHl4bgAQCQkRd+PM/5y9wLozw8Ub8kCHNk3s/JpvCLZXoPRoNwKlQk78EjpcX@nongnu.org
+X-Gm-Message-State: AOJu0Yz0YCPOYyNgM3BrACAzhru8YfqDohmXSzNGY8Q/4fXyO2btiqmW
+ xxNUkSclkdgEyG1VMGdbiT6V9oHVo8tBRcLNQ7fqFsYeONL5uoaMgjyybYBDMc6206cZl+QfdXF
+ jA3egz1fYQDpQKVUwhnDdDgkc0xps+aLzwxWfUrMXXNMRyYP1utUJ
+X-Gm-Gg: ASbGncujYVhjsh1pvvCd43Do8v7waf+aHT4TFlH3W4j0ulEQpshwPJLZ1+J5AheOsW2
+ D/JX15ccohUMtfkw/6cXPbx5xhd9QeagCvHApy/bvy0BcHIa4cY+GEJOtj/N9JswnUtNw4qgdpo
+ YErV/JOJsnSTlywfWDq5eqqR2UnBLAKdFausM9Vjmg65u1KWLX/KbNJcjYzfrhZp5Lyxx1uMwV/
+ /d15rzKqLKog7dfV23oI8eDY3WyEjVJ0HTIRMndMmBjGnF0Bi/lsgFyg8u7hXHDAnEMNivJkzaQ
+ R8ccMjdkgTQW6fuq
+X-Received: by 2002:a5d:6e8a:0:b0:38d:e378:20f7 with SMTP id
+ ffacd0b85a97d-38f6f09749emr383724f8f.41.1740081606926; 
+ Thu, 20 Feb 2025 12:00:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFN25ewCrDeKdO6CyYofac833fmpaFVzpZN+Dcbc8gkUPeJ5sMiH4fXMvaNJip1VHnYf4RyZw==
+X-Received: by 2002:a5d:6e8a:0:b0:38d:e378:20f7 with SMTP id
+ ffacd0b85a97d-38f6f09749emr383696f8f.41.1740081606453; 
+ Thu, 20 Feb 2025 12:00:06 -0800 (PST)
+Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud.
+ [2a10:fc81:a806:d6a9::1]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4399c5f901bsm29518775e9.3.2025.02.20.12.00.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Feb 2025 12:00:06 -0800 (PST)
+Date: Thu, 20 Feb 2025 21:00:04 +0100
+From: Stefano Brivio <sbrivio@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, qemu-devel@nongnu.org, Jason Wang
+ <jasowang@redhat.com>, Thibaut Collet <thibaut.collet@6wind.com>
+Subject: Re: [PATCH] vhost-user: Silence unsupported
+ VHOST_USER_PROTOCOL_F_RARP error
+Message-ID: <20250220210004.1501dd86@elisabeth>
+In-Reply-To: <20250220131932-mutt-send-email-mst@kernel.org>
+References: <20250121100029.1106973-1-lvivier@redhat.com>
+ <3mcx7u456pawkgz4dgf6tvk7izczuy55guipqacqkl66jhtltq@fofd5u3el4nj>
+ <20250122085828-mutt-send-email-mst@kernel.org>
+ <bfc3rstsxuapkjlea4lia3bn44rt7hhsf6kagtkltfssqynx6z@4dodvso73pel>
+ <044af96f-791b-471f-ae90-c17597445fd3@redhat.com>
+ <kt2sdfv3wg3raylqfmphrdbc2isex2q3jtmgw7oems5xysex4f@lnp3ulutpt6f>
+ <20250124170327.448805ad@elisabeth>
+ <20250220102724-mutt-send-email-mst@kernel.org>
+ <20250220175910.25688823@elisabeth>
+ <20250220131932-mutt-send-email-mst@kernel.org>
 Organization: Red Hat
-In-Reply-To: <20250220161320.518450-3-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sbrivio@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ PDS_OTHER_BAD_TLD=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,127 +122,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.02.25 17:13, Jean-Philippe Brucker wrote:
-> For Arm CCA we'd like the guest_memfd discard notifier to call the IOMMU
-> notifiers and create e.g. VFIO mappings. The default VFIO discard
-> notifier isn't sufficient for CCA because the DMA addresses need a
-> translation (even without vIOMMU).
+On Thu, 20 Feb 2025 13:21:33 -0500
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
+
+> On Thu, Feb 20, 2025 at 05:59:10PM +0100, Stefano Brivio wrote:
+> > On Thu, 20 Feb 2025 10:28:20 -0500
+> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> >   
+> > > On Fri, Jan 24, 2025 at 05:03:27PM +0100, Stefano Brivio wrote:  
+> > > > But I don't understand why we're leaving this as it is.    
+> > > 
+> > > So that people notice if there's some backend problem and
+> > > announcements are not going out. should help debug migration
+> > > issues. which we had, so we added this :)  
+> > 
+> > The message mentions that the back-end fails to do something it didn't
+> > and can't even do, that's (one reason) why it's wrong (and confusing)
+> > and this patch is obviously correct.
+> > 
+> > Perhaps the commit title isn't entirely accurate (it should say "when
+> > unsupported", I guess) but it's somewhat expected to sacrifice detail
+> > in the name of brevity, there. A glimpse at the message is enough.
+> > 
+> > Laurent now added a workaround in passt to pretend that we support
+> > VHOST_USER_PROTOCOL_F_RARP by doing nothing in the callback, report
+> > success, and silence the warning:
+> > 
+> >   https://passt.top/passt/commit/?id=dd6a6854c73a09c4091c1776ee7f349d1e1f966c
+> > 
+> > but having to do this kind of stuff is a bit unexpected while
+> > interacting with another opensource project.
+> > 
+> > -- 
+> > Stefano  
 > 
-> At the moment:
-> * guest_memfd_state_change() calls the populate() notifier
-> * the populate notifier() calls IOMMU notifiers
-> * the IOMMU notifier handler calls memory_get_xlat_addr() to get a VA
-> * it calls ram_discard_manager_is_populated() which fails.
 > 
-> guest_memfd_state_change() only changes the section's state after
-> calling the populate() notifier. We can't easily invert the order of
-> operation because it uses the old state bitmap to know which pages need
-> the populate() notifier.
-
-I assume we talk about this code: [1]
-
-[1] https://lkml.kernel.org/r/20250217081833.21568-1-chenyi.qiang@intel.com
-
-
-+static int memory_attribute_state_change(MemoryAttributeManager *mgr, uint64_t offset,
-+                                         uint64_t size, bool shared_to_private)
-+{
-+    int block_size = memory_attribute_manager_get_block_size(mgr);
-+    int ret = 0;
-+
-+    if (!memory_attribute_is_valid_range(mgr, offset, size)) {
-+        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
-+                     __func__, offset, size);
-+        return -1;
-+    }
-+
-+    if ((shared_to_private && memory_attribute_is_range_discarded(mgr, offset, size)) ||
-+        (!shared_to_private && memory_attribute_is_range_populated(mgr, offset, size))) {
-+        return 0;
-+    }
-+
-+    if (shared_to_private) {
-+        memory_attribute_notify_discard(mgr, offset, size);
-+    } else {
-+        ret = memory_attribute_notify_populate(mgr, offset, size);
-+    }
-+
-+    if (!ret) {
-+        unsigned long first_bit = offset / block_size;
-+        unsigned long nbits = size / block_size;
-+
-+        g_assert((first_bit + nbits) <= mgr->bitmap_size);
-+
-+        if (shared_to_private) {
-+            bitmap_clear(mgr->shared_bitmap, first_bit, nbits);
-+        } else {
-+            bitmap_set(mgr->shared_bitmap, first_bit, nbits);
-+        }
-+
-+        return 0;
-+    }
-+
-+    return ret;
-+}
-
-Then, in memory_attribute_notify_populate(), we walk the bitmap again.
-
-Why?
-
-We just checked that it's all in the expected state, no?
-
-
-virtio-mem doesn't handle it that way, so I'm curious why we would have to do it here?
-
-
+> let me explain. historically backends did not support migration.
+> then migration was added. as it was assumed RARP is required,
+> we did not add a feature flag for "supports migration" and
+> instead just assumed that VHOST_USER_PROTOCOL_F_RARP is that.
 > 
-> For now add a flag to the IOMMU notifier to tell memory_get_xlat_addr()
-> that we're aware of the RAM discard manager state.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
-> 
-> Definitely not the prettiest hack, any idea how to do this cleanly?
-> ---
->   include/exec/memory.h | 5 +++++
->   system/memory.c       | 3 ++-
->   2 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> index 9f73b59867..6fcd98fe58 100644
-> --- a/include/exec/memory.h
-> +++ b/include/exec/memory.h
-> @@ -116,6 +116,11 @@ typedef enum {
->       IOMMU_RO   = 1,
->       IOMMU_WO   = 2,
->       IOMMU_RW   = 3,
-> +    /*
-> +     * Allow mapping a discarded page, because we're in the process of
-> +     * populating it.
-> +     */
-> +    IOMMU_POPULATING = 4,
->   } IOMMUAccessFlags;
->   
->   #define IOMMU_ACCESS_FLAG(r, w) (((r) ? IOMMU_RO : 0) | ((w) ? IOMMU_WO : 0))
-> diff --git a/system/memory.c b/system/memory.c
-> index 4c829793a0..8e884f9c15 100644
-> --- a/system/memory.c
-> +++ b/system/memory.c
-> @@ -2221,7 +2221,8 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
->            * Disallow that. vmstate priorities make sure any RamDiscardManager
->            * were already restored before IOMMUs are restored.
->            */
-> -        if (!ram_discard_manager_is_populated(rdm, &tmp)) {
-> +        if (!(iotlb->perm & IOMMU_POPULATING) &&
-> +            !ram_discard_manager_is_populated(rdm, &tmp)) {
->               error_setg(errp, "iommu map to discarded memory (e.g., unplugged"
->                            " via virtio-mem): %" HWADDR_PRIx "",
->                            iotlb->translated_addr);
+> If you silence the warning you silence it for old backends
+> with no migration support.
 
+Thanks for the explanation. I'm struggling to grasp this. So if a
+back-end doesn't support migration, because VHOST_USER_PROTOCOL_F_RARP
+is not present in the features flag, migration is done anyway, but then
+this is printed:
+
+  Vhost user backend fails to broadcast fake RARP
+
+with the meaning of:
+
+  We did migration even if the back-end doesn't support it, whoops
+
+?
+
+Note that the message is printed *after* the migration and the flag is
+*not* checked before.
+
+> If you want a new flag "migration with no RARP", be my
+> guest and add it.
+
+That would actually make more sense than the existing situation I
+think. VHOST_USER_PROTOCOL_F_NO_RARP?
+
+I didn't understand, yet, what the exact meaning would be, though.
+
+> Or if you want to add documentation explaining the meaning
+> better and clarifying the message.
+
+I'm still in the phase where I'm trying to understand the role of the
+message :) ...I have to say this is fairly different now from what was
+mentioned on the thread so far.
 
 -- 
-Cheers,
-
-David / dhildenb
+Stefano
 
 
