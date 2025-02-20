@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68CAA3E068
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FB6A3E05D
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9Iq-0006fV-79; Thu, 20 Feb 2025 11:21:32 -0500
+	id 1tl9Ip-0006f5-K0; Thu, 20 Feb 2025 11:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9In-0006eo-Ig
+ id 1tl9In-0006eh-Bw
  for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:29 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9Il-00089g-EK
+ id 1tl9Il-00089j-Qw
  for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:29 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-439946a49e1so7618725e9.0
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:26 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43995b907cfso7345175e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068485; x=1740673285; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Q/ix9M9Uf7tMBPn78g6Olaq1AkEsI02MI9sVn7yq9CE=;
- b=exQyl630IIBWoVWoa7wo56808cFImikVMETDtU7WyEQxvkbGNED2ygYZ1q12j4xMqF
- 4yZCBIm31iHb3pDsKv127nnPZ43sGRV/1g9xemmgG16fuBIYxGODHLttiEQ0PkeeF+wo
- NL4d3NtwUfJHUGZEd9FOlYh1TchbGLd8XVDzMDHMFCZ07sb/Wopuf2xWdCb/1jQoVz+R
- Ex+5nafYIwDvhx7PEAJhgBpkrK6QNGW+uOlvrlxs3OdfNSYmjfk1OxmxkHMuVuf4U8xn
- kauOlf3tEhc4voYcfTBKte7g4Rx5uGv7x8Yduj9DAe8HxNT44+S/3LUrOPgEHC0MaxSz
- FyMg==
+ d=linaro.org; s=google; t=1740068486; x=1740673286; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=8FCRx4JR1iGsDp4qI/IJ+hntWqJQNK3GsLMOm2F/CHw=;
+ b=G/KFCgmPne9fe9Yd0KLU8KyA9cYrxfDMmRMmtNj0QCaPflaLOLW2C8oWMAgPWU1ad+
+ nJ90chlfBhQTqk4Z5DNQMU3jImYn86O0jKceyRJetYVYVOYAZvZ4Inyct0BANpgAHE7m
+ Md5rm4VEQDTurONyYiiJAEeNgJZBDp4KExzLpOJ6Hhu40qrhUO8p1/tJ74XJNvsOVvmZ
+ iAAUsHgEuFVHnMBspSO+Fst7/WKzJHFATcK5y+pwaAITp2rIKi7c8DROYizi70lz9snT
+ B8DEBvQ0WA5OFCrgSGnhL9mTHmSNLFqbZJ+DhgOFwW8IDVON/pAapSdcH0p9YK/Kil/r
+ RIgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068485; x=1740673285;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q/ix9M9Uf7tMBPn78g6Olaq1AkEsI02MI9sVn7yq9CE=;
- b=YAyBleSIokLRslhkAozmEILrfutI0rELdNvz+3vV4M4Tt4+hCb6wPuPYh9LZWvTLBX
- uUs58Khm3uL4wloF6e2t4qZDolmBXMUXnErCwwj0lFLLnmhW6DoecmMCM63S2AebziBe
- 5xdGrNRp51p7HaKG193btxXXtZSiLXPbMOdBoYfAYMhF4rQqY64q2zaaSm1HCn36Y+Uy
- SNVZyEEN13PQzYi43xkw+KGVeVxtpEjUBy9+CSKoUYTO1LT7j13ICXaEbd+sAcIS5QSN
- WGdxroCYcfWTnMyVlf5w99SJtULoBA3iA3emIgTUgkI9iTSzaPsDhFiMKfKVWp1C+9VW
- xtsg==
-X-Gm-Message-State: AOJu0YynBZTh6HXaecjA+hJRQwIOefpcvLQTga/TTJjcghPjOLJAbu70
- SusG1Bo86YO2V82nESHfvqVYj0pl4GvTUqdNv5RYLrFwUFu93pjcihSAMGxjTOzSPdk8+Vky27J
- j
-X-Gm-Gg: ASbGncvzxq+kAotsOgktVeAai2Lip2cl6Enie2GOklv42eCKODpStJG9UB7oiJwsUj3
- lSdv0XL5xe1vQirYVeKmGMc0gUn/cMFW0/Hu1unfs+p8gnestwKI1r+4qTJG0fHWp7ngC96azqF
- 2/EtIEThr9LCuHZPg/ixJxYjZ+w5gIEm/lskIaM7+SZ4oGr+lDTxG7eNidB6G4XhWbLsKzJ9ALZ
- 8WTeGVi1mO9Hld9ZmKMmqOdU55yzx4yODgUITCn5FRQXvy0iyIbAyZdzPBz2dkFAFYFlcRMWg0t
- eRovRKCW4z8ESDs55MIyBA==
-X-Google-Smtp-Source: AGHT+IEtCpUXpqyhKtN3EyhJxDrEpXvhTsfoi4aIIBUQqvpELfKBpTTowhLF6RfMnrd2fkFVQCp4dw==
-X-Received: by 2002:a05:600c:1c90:b0:439:96b2:e8f with SMTP id
- 5b1f17b1804b1-43999ddb0f4mr74734205e9.28.1740068485396; 
- Thu, 20 Feb 2025 08:21:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740068486; x=1740673286;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8FCRx4JR1iGsDp4qI/IJ+hntWqJQNK3GsLMOm2F/CHw=;
+ b=u7e55COcGKq6xcCNMMRBBTpGU2t9iPRNa9y6kv03xr5dbIGYzUvxAV0debrkd/IA8D
+ KieEoWrtZ8TJjIDxNJdVl2Rm3JMg8/NROEFQH1oCWCQdWAoAoYR3L7Wd+Db4CBb7sbhI
+ yfbF+oZ+LuinNWSRXv5L/lWG6Q8xmCpAtNw0KEmEXz6/8uvhLMak3ngYwO6Xwz4OabcM
+ rW9A+FMD2i0wAI5FrsJYb3B66vyGlS37pAtCEuT0MkQNz960isDkwxSRhGO20jafg1JB
+ E6+xHKub3pyGsjUlNgOHJvrqpuWayswAr55HmVwCxPPbefcDLgcCuLXF/7ZOgOsz/HpM
+ usXg==
+X-Gm-Message-State: AOJu0Yy2rN+UJmuv9kxSH+IRuUH/64bM2vgRpZ8bgobNCxtX033E8YTI
+ GRegtVhfB0EXAVPrG8fWUlJNOdbUtQHe9Eedmj+10oyvJBKRY+uUPR/1lgAJ1ntP+tYhXrX99B4
+ x
+X-Gm-Gg: ASbGncsSTph93e7BVvlV4+pOE9GvoS0Mu7JhciWGuyaZVAwiRdzXFWHLznsh7ULuVLt
+ iwlaXujMeQB7AsEEY+uOwrz1VF28cwU5ENk1MqVlgD7aNUOrMuUIQqX2V+MZXZkD49LzJOmXzTM
+ bfvLpQONBSAsKwpaoFQ0yJd343ADPHE4gcN8wPEsUkDzOR+Y3wQI+sNep4cIsltkRZhyJBzNokw
+ Pe+3BcHOsPJwN1OFRKBh5KYFBMM5vra6BtpH78ICBau9uUv9ylgqfYhrVxY9Nz5wF0vxELvJtrG
+ 2yNdG4cK8rGulrGO32bHoQ==
+X-Google-Smtp-Source: AGHT+IF1m6mhX8bYv1onVMNnnCNdNTgMv4s6MVv9sqEvzJd3KtwRGf1W4RAe8Ku7kWXj2yFBBK6N6w==
+X-Received: by 2002:a05:600c:314d:b0:439:9898:f18c with SMTP id
+ 5b1f17b1804b1-4399898f441mr80145145e9.26.1740068486232; 
+ Thu, 20 Feb 2025 08:21:26 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.24
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:24 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:25 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/41] target-arm queue
-Date: Thu, 20 Feb 2025 16:20:41 +0000
-Message-ID: <20250220162123.626941-1-peter.maydell@linaro.org>
+Subject: [PULL 01/41] target/arm: Report correct syndrome for UNDEFINED
+ CNTPS_*_EL1 from EL2 and NS EL1
+Date: Thu, 20 Feb 2025 16:20:42 +0000
+Message-ID: <20250220162123.626941-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
+References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,141 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; this pullreq contains a new board model npcm845-evb, plus some
-more minor cleanups, refactorings and a few bugfixes.
+The access pseudocode for the CNTPS_TVAL_EL1, CNTPS_CTL_EL1 and
+CNTPS_CVAL_EL1 secure timer registers says that they are UNDEFINED
+from EL2 or NS EL1.  We incorrectly return CP_ACCESS_TRAP from the
+access function in these cases, which means that we report the wrong
+syndrome value to the target EL.
 
-thanks
--- PMM
+Use CP_ACCESS_TRAP_UNCATEGORIZED, which reports the correct syndrome
+value for an UNDEFINED instruction.
 
-The following changes since commit 40efe733e10cc00e4fb4f9f5790a28e744e63c62:
+Cc: qemu-stable@nongnu.org
+Fixes: b4d3978c2fd ("target-arm: Add the AArch64 view of the Secure physical timer")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250130182309.717346-2-peter.maydell@linaro.org
+---
+ target/arm/helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  Merge tag 'pull-tcg-20250215-3' of https://gitlab.com/rth7680/qemu into staging (2025-02-19 08:36:45 +0800)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 7d95eae9971..b7d6afe0a1a 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2385,7 +2385,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+     switch (arm_current_el(env)) {
+     case 1:
+         if (!arm_is_secure(env)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_UNCATEGORIZED;
+         }
+         if (!(env->cp15.scr_el3 & SCR_ST)) {
+             return CP_ACCESS_TRAP_EL3;
+@@ -2393,7 +2393,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+         return CP_ACCESS_OK;
+     case 0:
+     case 2:
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_UNCATEGORIZED;
+     case 3:
+         return CP_ACCESS_OK;
+     default:
+-- 
+2.43.0
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20250220
-
-for you to fetch changes up to 1c3169179b8242866316108386800379c4e22974:
-
-  docs/system/arm: Add Description for NPCM8XX SoC (2025-02-20 15:22:22 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * Fix some incorrect syndrome values in various sysreg traps
- * Clean up sysreg trap code to avoid similar future bugs
- * Make boards/SoCs using a9mpcore and a15mpcore objects specify
-   number of GIC interrupts explicitly
- * Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
- * target/arm: Use uint32_t in t32_expandimm_imm()
- * New board model: NPCM845 Evaluation board "npcm845-evb"
-
-----------------------------------------------------------------
-Bernhard Beschow (1):
-      Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
-
-Hao Wu (17):
-      roms: Update vbootrom to 1287b6e
-      pc-bios: Add NPCM8XX vBootrom
-      hw/ssi: Make flash size a property in NPCM7XX FIU
-      hw/misc: Rename npcm7xx_gcr to npcm_gcr
-      hw/misc: Move NPCM7XX GCR to NPCM GCR
-      hw/misc: Add nr_regs and cold_reset_values to NPCM GCR
-      hw/misc: Add support for NPCM8XX GCR
-      hw/misc: Store DRAM size in NPCM8XX GCR Module
-      hw/misc: Support 8-bytes memop in NPCM GCR module
-      hw/misc: Rename npcm7xx_clk to npcm_clk
-      hw/misc: Move NPCM7XX CLK to NPCM CLK
-      hw/misc: Add nr_regs and cold_reset_values to NPCM CLK
-      hw/misc: Support NPCM8XX CLK Module Registers
-      hw/net: Add NPCM8XX PCS Module
-      hw/arm: Add NPCM8XX SoC
-      hw/arm: Add NPCM845 Evaluation board
-      docs/system/arm: Add Description for NPCM8XX SoC
-
-Peter Maydell (14):
-      target/arm: Report correct syndrome for UNDEFINED CNTPS_*_EL1 from EL2 and NS EL1
-      target/arm: Report correct syndrome for UNDEFINED AT ops with wrong NSE, NS
-      target/arm: Report correct syndrome for UNDEFINED S1E2 AT ops at EL3
-      target/arm: Report correct syndrome for UNDEFINED LOR sysregs when NS=0
-      target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3 be Monitor traps
-      hw/intc/arm_gicv3_cpuif: Don't downgrade monitor traps for AArch32 EL3
-      target/arm: Honour SDCR.TDCC and SCR.TERR in AArch32 EL3 non-Monitor modes
-      hw/intc/arm_gicv3_cpuif(): Remove redundant tests of is_a64()
-      target/arm: Support CP_ACCESS_TRAP_EL1 as a CPAccessResult
-      target/arm: Use CP_ACCESS_TRAP_EL1 for traps that are always to EL1
-      target/arm: Use TRAP_UNCATEGORIZED for XScale CPAR traps
-      target/arm: Remove CP_ACCESS_TRAP handling
-      target/arm: Rename CP_ACCESS_TRAP_UNCATEGORIZED to CP_ACCESS_UNDEFINED
-      target/arm: Correct errors in WFI/WFE trapping
-
-Philippe Mathieu-Daudé (8):
-      hw/arm/exynos4210: Replace magic 32 by proper 'GIC_INTERNAL' definition
-      hw/arm/exynos4210: Specify explicitly the GIC has 64 external IRQs
-      hw/arm/realview: Specify explicitly the GIC has 64 external IRQs
-      hw/arm/xilinx_zynq: Replace IRQ_OFFSET -> GIC_INTERNAL
-      hw/arm/xilinx_zynq: Specify explicitly the GIC has 64 external IRQs
-      hw/arm/vexpress: Specify explicitly the GIC has 64 external IRQs
-      hw/arm/highbank: Specify explicitly the GIC has 128 external IRQs
-      hw/cpu/arm_mpcore: Remove default values for GIC external IRQs
-
-Stephen Longfield (1):
-      target/arm: Use uint32_t in t32_expandimm_imm()
-
- MAINTAINERS                                   |   1 +
- docs/system/arm/nuvoton.rst                   |  27 +-
- configs/devices/aarch64-softmmu/default.mak   |   1 +
- include/hw/arm/npcm7xx.h                      |   8 +-
- include/hw/arm/npcm8xx.h                      | 127 ++++
- include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} |  47 +-
- include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} |  29 +-
- include/hw/net/npcm_pcs.h                     |  42 ++
- include/hw/ssi/npcm7xx_fiu.h                  |   1 +
- target/arm/cpregs.h                           |  15 +-
- target/arm/cpu.h                              |   6 +
- hw/arm/exynos4210.c                           |  10 +-
- hw/arm/highbank.c                             |   8 +-
- hw/arm/npcm7xx.c                              |   6 +
- hw/arm/npcm8xx.c                              | 805 ++++++++++++++++++++++++++
- hw/arm/npcm8xx_boards.c                       | 254 ++++++++
- hw/arm/realview.c                             |  11 +-
- hw/arm/vexpress.c                             |   7 +-
- hw/arm/xilinx_zynq.c                          |  43 +-
- hw/cpu/a15mpcore.c                            |  18 +-
- hw/cpu/a9mpcore.c                             |  18 +-
- hw/intc/arm_gicv3_cpuif.c                     |  15 +-
- hw/misc/npcm7xx_gcr.c                         | 264 ---------
- hw/misc/{npcm7xx_clk.c => npcm_clk.c}         | 235 ++++++--
- hw/misc/npcm_gcr.c                            | 482 +++++++++++++++
- hw/net/npcm_pcs.c                             | 410 +++++++++++++
- hw/ssi/npcm7xx_fiu.c                          |  16 +-
- target/arm/debug_helper.c                     |   5 +-
- target/arm/helper.c                           |  75 ++-
- target/arm/tcg/op_helper.c                    |  71 ++-
- target/arm/tcg/translate.c                    |   2 +-
- hw/arm/Kconfig                                |  19 +-
- hw/arm/meson.build                            |   1 +
- hw/misc/meson.build                           |   4 +-
- hw/misc/trace-events                          |  12 +-
- hw/net/meson.build                            |   1 +
- hw/net/trace-events                           |   4 +-
- hw/usb/Kconfig                                |   4 +
- hw/usb/meson.build                            |   2 +-
- pc-bios/README                                |   8 +-
- pc-bios/meson.build                           |   1 +
- pc-bios/npcm7xx_bootrom.bin                   | Bin 768 -> 768 bytes
- pc-bios/npcm8xx_bootrom.bin                   | Bin 0 -> 608 bytes
- roms/Makefile                                 |   6 +
- roms/vbootrom                                 |   2 +-
- 45 files changed, 2626 insertions(+), 497 deletions(-)
- create mode 100644 include/hw/arm/npcm8xx.h
- rename include/hw/misc/{npcm7xx_clk.h => npcm_clk.h} (83%)
- rename include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} (76%)
- create mode 100644 include/hw/net/npcm_pcs.h
- create mode 100644 hw/arm/npcm8xx.c
- create mode 100644 hw/arm/npcm8xx_boards.c
- delete mode 100644 hw/misc/npcm7xx_gcr.c
- rename hw/misc/{npcm7xx_clk.c => npcm_clk.c} (82%)
- create mode 100644 hw/misc/npcm_gcr.c
- create mode 100644 hw/net/npcm_pcs.c
- create mode 100644 pc-bios/npcm8xx_bootrom.bin
 
