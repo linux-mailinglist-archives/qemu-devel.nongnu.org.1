@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CEAA3E09D
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC11A3E06F
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JM-00079T-5T; Thu, 20 Feb 2025 11:22:04 -0500
+	id 1tl9JN-0007Bf-0J; Thu, 20 Feb 2025 11:22:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JJ-00077e-Na
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:22:01 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tl9JK-000784-CL
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:22:02 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JH-0008FV-Rt
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:22:01 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43937cf2131so8109515e9.2
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:59 -0800 (PST)
+ id 1tl9JI-0008Ff-NN
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:22:02 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4398c8c8b2cso11630775e9.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068518; x=1740673318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068519; x=1740673319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Wggfv0k+p5R2XRH3NT8ACUO9zXhFgQXepjXDV5fdS5M=;
- b=NejflO1RlNn2YfaTDKbagaEWcn9R4BtDxC3aVFNS3UeYwxSubFuAngOMXRpdnDMsM3
- nZrKPdRpioqR6CxLIdyCpkvJF9ItixlXotwcQdM9OX3u4Dlxf0nveqbB5IzN/DY2HlQX
- oGhh64HNcAN3Fq11+r5W628wPJ1za13wXRkR1EDrvMPep9bv8B73OFnybq9BH4vWDu+e
- 3qQlG/UzzZBuoGOEBCGLjOm2dLwo7BvXperCAvAFRIEln+BUzwBbxjtGejPbqbahMtMC
- mcayU9g8njB5+x/roK9XsW17USYCvbpLvFpqhVVSs3qznFhAa4FXN2Usnp4vVQbG2J3t
- Xr+A==
+ :reply-to; bh=en6YocqtrS/0yWND16m0Wy3DxaXuYWGQFBD5//8sF1E=;
+ b=ROC+IosCo5Fs48id/5SFEGYdSANElVs4XCi0Ptob1lfrRJrK23Gvg194c58kE8T3iJ
+ dnMf6ZRkeaXJmqM8GyPM4zZ8RJksxwS26Q+CytWOcXN2/Y6syr4ds34zXR14KuzBmbkV
+ WWUtwzMFWV9zzStmR7D31fzGJSZ8MEwyxq3HasNcvfQchIr9EejW1yJv/CWzXBdjjI9a
+ i+0vJlQDb0UWBvXzwMQ0FizKbsx/q+FoBh/VO92K4X1NKZ2het1ZLorV8i68YnBEOTZX
+ tdZ6msckCJ/15WO1XD+46EVE9hl9IW2OkqYhQ9leLKUBYoQfFsVuiUpit8V9uCSrDNs7
+ sO/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068518; x=1740673318;
+ d=1e100.net; s=20230601; t=1740068519; x=1740673319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wggfv0k+p5R2XRH3NT8ACUO9zXhFgQXepjXDV5fdS5M=;
- b=FjxTAsdfNT6STWBCukOaPO4d7Ym1CgoEq+EE05m2RmljgqSbrYKOcvRMTuVBMaGzyz
- coeFycZAJvOwoK54UuwhNcED6sRsiBA97qMVvCG6s71gRQxRlwoL/US4i5dVAa7MNNU0
- DySgLUwTE0CPnRMDXe5qOS3Kp/gYT3gBLnQ2uo3evpFYMUB/q5oyPrd82k8vdJUx9kRs
- YZ1vrUHhyhr/rRLEEyEKBYYW9aKj9ZFq/h+/umesnBkXfx80tOX3KdCdJKeLVnXLPNzk
- ZlmUl6R0gSqq1F3XZpdsxcvpMwLfnPtExpezGJE4e88XsKp9rKS6Dl5F7WD0020v5099
- stGA==
-X-Gm-Message-State: AOJu0YzJcJKeI9N/7QpAhtF8qescn7R15mYGyIVCWt4J2iLKlLh/vNes
- uJdsGikp5ADHlyZeVMDxk09OI7eEYxiJskyJKT8LARt1/drf9i5FP/qiFhh8j4PIibmbxGXnQjZ
- I
-X-Gm-Gg: ASbGncuVU9IR5aZOnu3pS9IU9uncMupLa6OkAhQQm3n4Et6oAyxqrfwjKeMqvDf4f8/
- 6DFF/XW4FWybJicWB6/BwMI8qHL77p90pYdNew+rgvHGUj6hN/+hZe6mgpA5P89M4EMeqtrbbvS
- 8HbaNyqB92bucTztZzeyrXCibqsRcmshaieRaPsoYG3IJGOhGRhxuC3x+BmfpjkCcuJvhVfKztK
- 48FTDEWbbqhBp4f1jYQ37YrvxbJhQPSAoFmHwRTI+Lrvq4IPGqpI002FA9NYVYIBH4S1DgmSXkX
- NgN7SZyfH1jlk++tKVV7bQ==
-X-Google-Smtp-Source: AGHT+IHrWNpl+S8FW0aXyWDPfstqXdyaxBZ4WO5x/TkjjJYQ4VWkN86md1p9WBNeh5bfYrwMjfgmJA==
-X-Received: by 2002:a05:600c:4f95:b0:439:8c80:6af4 with SMTP id
- 5b1f17b1804b1-439a4baf45bmr23268575e9.19.1740068518336; 
- Thu, 20 Feb 2025 08:21:58 -0800 (PST)
+ bh=en6YocqtrS/0yWND16m0Wy3DxaXuYWGQFBD5//8sF1E=;
+ b=Z7/Kfo1+tX4RYp22NkYqzY0zCOQBpXhsfkcmghFlP0tXtP/vGsZbX5WDMpuPGmROpO
+ jkk3dIO1tgWDwzflIIXnv6VbHYGlZgtNRzX10tLslla2V3GFExNSVwO0JgRThPfKtK5w
+ 2t6yZyMcVG7kAbQ662RET5WCa9s2LwpKp2k54/CH5G9DE7TJ0WG+BZebMbWicehbSk4E
+ GhxHJgQ08gXZrMoQh5FOrYpFKIy+piYMBDiLp8UB5JwGIV0I9782ZCvafY6COxVOsyqI
+ 1rn0mxYxjhJwMy2OqkaWO2kB2FMY6Ds68N+XVXVV8nAbbuTGHH571LxH69uYuPbVoLEy
+ 0jkA==
+X-Gm-Message-State: AOJu0YxGTMAmXiprrNuufFgrXBHRIreGgutWkmyfYKgfHvnqd/tqYVQW
+ HZufUxyeoKw9FSuqzxsVH9tDrMWfQAtiN3md7iqUue+t+UdNurqItl/y1MpYYUMRe/X3AAr0ChO
+ p
+X-Gm-Gg: ASbGnctjDY3bKj8F314sCr981cqdRiNiFxfFR+phZC6c1Nd1yz036v0urPY36SJn3tf
+ qwN7dCYrrGP1oUfP5EYY0OJURQ6z9yYSmXSEopkrBsXKp/sUMya8NzilNDTh/rtLfLCRo3IQG30
+ 6sXMPVgo0D0LsH++NDrweSkGUGsEPROqG4eC49UktkeNt25Z8AOfU5QoVr+caJZBhHvtPqeW7Hl
+ aUmz97rH3n75KP2B4D+P3+1luijSM6bbpRYjHbyTkbQl96G6sq3YXaj+ap5pJwTLvRLFFdpl8VN
+ tOZDF0X+CmT7zfL6Bkiq7w==
+X-Google-Smtp-Source: AGHT+IHZpq98AqE5SNm7tYlKu0RpO8n8EyL5zAsgdYQHwVep6XtX/n/oIG51S4XrFT2QCRsPJ2XN9A==
+X-Received: by 2002:a05:600c:154c:b0:439:89d1:30dc with SMTP id
+ 5b1f17b1804b1-43989d1328bmr176267825e9.10.1740068519221; 
+ Thu, 20 Feb 2025 08:21:59 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.57
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:57 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:58 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/41] hw/ssi: Make flash size a property in NPCM7XX FIU
-Date: Thu, 20 Feb 2025 16:21:08 +0000
-Message-ID: <20250220162123.626941-28-peter.maydell@linaro.org>
+Subject: [PULL 28/41] hw/misc: Rename npcm7xx_gcr to npcm_gcr
+Date: Thu, 20 Feb 2025 16:21:09 +0000
+Message-ID: <20250220162123.626941-29-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,116 +98,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Wu <wuhaotsh@google.com>
 
-This allows different FIUs to have different flash sizes, useful
-in NPCM8XX which has multiple different sized FIU modules.
+NPCM7XX and NPCM8XX have a different set of GCRs and the GCR module
+needs to fit both. This commit changes the name of the GCR module.
+Future commits will add the support for NPCM8XX GCRs.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Hao Wu <wuhaotsh@google.com>
-Reviewed-by: Philippe Mathieu-Daude <philmd@linaro.org>
-Message-id: 20250219184609.1839281-4-wuhaotsh@google.com
-[PMM: flash_size must be a uint64_t to build on 32-bit hosts]
+Message-id: 20250219184609.1839281-5-wuhaotsh@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/ssi/npcm7xx_fiu.h |  1 +
- hw/arm/npcm7xx.c             |  6 ++++++
- hw/ssi/npcm7xx_fiu.c         | 16 ++++++++++++++--
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ include/hw/arm/npcm7xx.h                      | 2 +-
+ include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} | 6 +++---
+ hw/misc/{npcm7xx_gcr.c => npcm_gcr.c}         | 2 +-
+ hw/misc/meson.build                           | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+ rename include/hw/misc/{npcm7xx_gcr.h => npcm_gcr.h} (96%)
+ rename hw/misc/{npcm7xx_gcr.c => npcm_gcr.c} (99%)
 
-diff --git a/include/hw/ssi/npcm7xx_fiu.h b/include/hw/ssi/npcm7xx_fiu.h
-index a3a17042896..7ebd422ca6c 100644
---- a/include/hw/ssi/npcm7xx_fiu.h
-+++ b/include/hw/ssi/npcm7xx_fiu.h
-@@ -60,6 +60,7 @@ struct NPCM7xxFIUState {
-     int32_t cs_count;
-     int32_t active_cs;
-     qemu_irq *cs_lines;
-+    uint64_t flash_size;
-     NPCM7xxFIUFlash *flash;
+diff --git a/include/hw/arm/npcm7xx.h b/include/hw/arm/npcm7xx.h
+index 4e0d2101885..510170471e0 100644
+--- a/include/hw/arm/npcm7xx.h
++++ b/include/hw/arm/npcm7xx.h
+@@ -24,7 +24,7 @@
+ #include "hw/i2c/npcm7xx_smbus.h"
+ #include "hw/mem/npcm7xx_mc.h"
+ #include "hw/misc/npcm7xx_clk.h"
+-#include "hw/misc/npcm7xx_gcr.h"
++#include "hw/misc/npcm_gcr.h"
+ #include "hw/misc/npcm7xx_mft.h"
+ #include "hw/misc/npcm7xx_pwm.h"
+ #include "hw/misc/npcm7xx_rng.h"
+diff --git a/include/hw/misc/npcm7xx_gcr.h b/include/hw/misc/npcm_gcr.h
+similarity index 96%
+rename from include/hw/misc/npcm7xx_gcr.h
+rename to include/hw/misc/npcm_gcr.h
+index c0bbdda77e5..9b4998950cc 100644
+--- a/include/hw/misc/npcm7xx_gcr.h
++++ b/include/hw/misc/npcm_gcr.h
+@@ -13,8 +13,8 @@
+  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  */
+-#ifndef NPCM7XX_GCR_H
+-#define NPCM7XX_GCR_H
++#ifndef NPCM_GCR_H
++#define NPCM_GCR_H
  
-     SSIBus *spi;
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index 386b2c35e9b..2d6e08b72ba 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -292,17 +292,21 @@ static const struct {
-     hwaddr regs_addr;
-     int cs_count;
-     const hwaddr *flash_addr;
-+    size_t flash_size;
- } npcm7xx_fiu[] = {
-     {
-         .name = "fiu0",
-         .regs_addr = 0xfb000000,
-         .cs_count = ARRAY_SIZE(npcm7xx_fiu0_flash_addr),
-         .flash_addr = npcm7xx_fiu0_flash_addr,
-+        .flash_size = 128 * MiB,
-+
-     }, {
-         .name = "fiu3",
-         .regs_addr = 0xc0000000,
-         .cs_count = ARRAY_SIZE(npcm7xx_fiu3_flash_addr),
-         .flash_addr = npcm7xx_fiu3_flash_addr,
-+        .flash_size = 128 * MiB,
-     },
- };
+ #include "exec/memory.h"
+ #include "hw/sysbus.h"
+@@ -70,4 +70,4 @@ struct NPCM7xxGCRState {
+ #define TYPE_NPCM7XX_GCR "npcm7xx-gcr"
+ OBJECT_DECLARE_SIMPLE_TYPE(NPCM7xxGCRState, NPCM7XX_GCR)
  
-@@ -735,6 +739,8 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
+-#endif /* NPCM7XX_GCR_H */
++#endif /* NPCM_GCR_H */
+diff --git a/hw/misc/npcm7xx_gcr.c b/hw/misc/npcm_gcr.c
+similarity index 99%
+rename from hw/misc/npcm7xx_gcr.c
+rename to hw/misc/npcm_gcr.c
+index 07464a4dc93..826fd41123b 100644
+--- a/hw/misc/npcm7xx_gcr.c
++++ b/hw/misc/npcm_gcr.c
+@@ -16,7 +16,7 @@
  
-         object_property_set_int(OBJECT(sbd), "cs-count",
-                                 npcm7xx_fiu[i].cs_count, &error_abort);
-+        object_property_set_int(OBJECT(sbd), "flash-size",
-+                                npcm7xx_fiu[i].flash_size, &error_abort);
-         sysbus_realize(sbd, &error_abort);
+ #include "qemu/osdep.h"
  
-         sysbus_mmio_map(sbd, 0, npcm7xx_fiu[i].regs_addr);
-diff --git a/hw/ssi/npcm7xx_fiu.c b/hw/ssi/npcm7xx_fiu.c
-index 21fc4890383..8df4bec3f17 100644
---- a/hw/ssi/npcm7xx_fiu.c
-+++ b/hw/ssi/npcm7xx_fiu.c
-@@ -29,7 +29,7 @@
- #include "trace.h"
- 
- /* Up to 128 MiB of flash may be accessed directly as memory. */
--#define NPCM7XX_FIU_FLASH_WINDOW_SIZE (128 * MiB)
-+#define NPCM7XX_FIU_MAX_FLASH_WINDOW_SIZE (128 * MiB)
- 
- /* Each module has 4 KiB of register space. Only a fraction of it is used. */
- #define NPCM7XX_FIU_CTRL_REGS_SIZE (4 * KiB)
-@@ -507,6 +507,17 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (s->flash_size == 0) {
-+        error_setg(errp, "%s: flash size must be set", dev->canonical_path);
-+        return;
-+    }
-+
-+    if (s->flash_size > NPCM7XX_FIU_MAX_FLASH_WINDOW_SIZE) {
-+        error_setg(errp, "%s: flash size should not exceed 128 MiB",
-+                   dev->canonical_path);
-+        return;
-+    }
-+
-     s->spi = ssi_create_bus(dev, "spi");
-     s->cs_lines = g_new0(qemu_irq, s->cs_count);
-     qdev_init_gpio_out_named(DEVICE(s), s->cs_lines, "cs", s->cs_count);
-@@ -525,7 +536,7 @@ static void npcm7xx_fiu_realize(DeviceState *dev, Error **errp)
-         flash->fiu = s;
-         memory_region_init_io(&flash->direct_access, OBJECT(s),
-                               &npcm7xx_fiu_flash_ops, &s->flash[i], "flash",
--                              NPCM7XX_FIU_FLASH_WINDOW_SIZE);
-+                              s->flash_size);
-         sysbus_init_mmio(sbd, &flash->direct_access);
-     }
- }
-@@ -543,6 +554,7 @@ static const VMStateDescription vmstate_npcm7xx_fiu = {
- 
- static const Property npcm7xx_fiu_properties[] = {
-     DEFINE_PROP_INT32("cs-count", NPCM7xxFIUState, cs_count, 0),
-+    DEFINE_PROP_SIZE("flash-size", NPCM7xxFIUState, flash_size, 0),
- };
- 
- static void npcm7xx_fiu_class_init(ObjectClass *klass, void *data)
+-#include "hw/misc/npcm7xx_gcr.h"
++#include "hw/misc/npcm_gcr.h"
+ #include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+ #include "qapi/error.h"
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 55f493521be..554eb8df5bc 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -70,7 +70,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
+ ))
+ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files(
+   'npcm7xx_clk.c',
+-  'npcm7xx_gcr.c',
++  'npcm_gcr.c',
+   'npcm7xx_mft.c',
+   'npcm7xx_pwm.c',
+   'npcm7xx_rng.c',
 -- 
 2.43.0
 
