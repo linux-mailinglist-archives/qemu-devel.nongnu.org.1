@@ -2,72 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C502A3D7C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:07:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081B0A3D8A5
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:30:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl4Ox-0004TU-EB; Thu, 20 Feb 2025 06:07:33 -0500
+	id 1tl4kD-0002f8-4K; Thu, 20 Feb 2025 06:29:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl4OR-0004LD-29
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:06:59 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tl4k5-0002eQ-AR
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:29:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl4ON-0002tp-Ei
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:06:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740049616; x=1771585616;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ajeAZBlPYk2/mVr6+dIxx2jF+Qx8akOXbX7dEAQPtyY=;
- b=eVCas2dq5bxBxFXlTFHXHBTYVaidh+RWzgAQ7/sj0dVdL6Y8yvnID1cJ
- B/uPRr7A+rkhWxaAwKYnCM1mMh5AoexW63wNcEM5ojVGzj0rVylYdbSaF
- 0XGw9I+hAdANbcIjbA4t7OEO4Bw0I5KcDSrr4tHHQGgdiXQDoqFk0611C
- JOH/mcL95dg8viN01wvknQnhzYSv5YuCOuAXH9Y4B5rq0KymX6T7Nxnpe
- 6o3LhKg6Me3tjXyBwrQo7+tRf7Qaaf9CdCe81UmYMv6n583ztKKLbm4Ze
- LATbCfsGVmFp5UNpRmM7w277AIV4QMNeXXTZs3p5Lcoey42qq1t6VGXoE w==;
-X-CSE-ConnectionGUID: AYEJ7UJDRvuDhi2EXVQmLA==
-X-CSE-MsgGUID: DkTV8VYjRXu0pqY/uuSpcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41027807"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41027807"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 03:06:52 -0800
-X-CSE-ConnectionGUID: 1RVwLXHETwqFtWo0m7PmjQ==
-X-CSE-MsgGUID: Z5ptAAJuSYa5jaFwSbyzTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="114989214"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 20 Feb 2025 03:06:50 -0800
-Date: Thu, 20 Feb 2025 19:26:25 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
- davydov-max@yandex-team.ru
-Subject: Re: [PATCH v5 3/6] target/i386: Update EPYC-Milan CPU model for
- Cache property, RAS, SVM feature bits
-Message-ID: <Z7cRYbhxviv1wNyD@intel.com>
-References: <cover.1738869208.git.babu.moger@amd.com>
- <e1aeb2a8d03cd47da7b9684183df06ec73136f87.1738869208.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tl4k1-0008Fo-Ff
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:29:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740050955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S1q11+8OULlJzjXxJu+62x1kawbZPib2TIjL8eJAys0=;
+ b=VgXi5+O1zPx+//ZZFqLfW4M2S8Ug5QkR0JmoeI7EX4HXqZEp8hARELqNlBtzzXeDxcIr3l
+ oIHcZuTfGb/hcAmbGJfQyvr9J8b0fObfa9ePYlrhEfhBL9xUm7dFsSkHgq6FDdh9V8kZ2l
+ ke/uxhX9Bz1gYqDcaLze97XDkRAsBpw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-280-26pWaIwFPbumOMXGQxSdag-1; Thu,
+ 20 Feb 2025 06:29:11 -0500
+X-MC-Unique: 26pWaIwFPbumOMXGQxSdag-1
+X-Mimecast-MFC-AGG-ID: 26pWaIwFPbumOMXGQxSdag_1740050950
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DCE77193578F; Thu, 20 Feb 2025 11:29:08 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.78])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0DEBC1956094; Thu, 20 Feb 2025 11:29:03 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 95577180078D; Thu, 20 Feb 2025 12:28:58 +0100 (CET)
+Date: Thu, 20 Feb 2025 12:28:58 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ QEMU Developers <qemu-devel@nongnu.org>, Laurent Vivier <laurent@vivier.eu>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Markus Armbruster <armbru@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: Any plan for command line '-g' option (graphical resolution and
+ depth)?
+Message-ID: <r5meqdelakahx74pn7iqrb6lkcunh7uifecm2jitfqvnogzsjy@czooelkacrl2>
+References: <97e66ba5-488f-4246-b4d9-466d29a86dff@linaro.org>
+ <e514d6db-781d-4afe-b057-9046c70044dc@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e1aeb2a8d03cd47da7b9684183df06ec73136f87.1738869208.git.babu.moger@amd.com>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
+In-Reply-To: <e514d6db-781d-4afe-b057-9046c70044dc@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,35 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> +static const CPUCaches epyc_milan_v3_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+  Hi,
 
-true.
+> Yes, we should have an easy way for machine to allow, in addition to -M
+> graphics=BOOLEAN, the structured property -M
+> graphics.{width,height,depth,enabled}. Then '-g' can desugar to -M
+> graphics.width=WW,graphics.height=HH,graphics.depth=BB.
+> 
+> > It is also used to set TYPE_NUBUS_MACFB properties in hw/m68k/q800.c.
+> > Here i suppose we could directly use '-global nubus-macfb.width=value'
+> > etc. although I'm not sure it is the recommended way.
+> > > Should we start deprecating '-g' as a whole?
+> 
+> Only if it's unused/useless.  If the option is useful it could also be used
+> for EDID, for example (adding Gerd).
 
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+Most but not all display devices have xres + yres properties which are
+communicated to the guest some way.  In case of the stdvga it's edid
+indeed.  So, yes, having '-g WxH' set these properties makes sense.  The
+depth can not be configured though.
 
-true.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+take care,
+  Gerd
 
 
