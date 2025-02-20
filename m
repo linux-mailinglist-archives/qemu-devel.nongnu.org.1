@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CE6A3D2BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 09:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98291A3D2C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 09:04:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl1W4-0005nK-D4; Thu, 20 Feb 2025 03:02:40 -0500
+	id 1tl1XU-000823-G4; Thu, 20 Feb 2025 03:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1W1-0005mx-Uf
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:37 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1XR-00081X-Cb
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:04:05 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1Vz-00051U-Mx
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:37 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-439a88f1ac3so554755e9.1
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 00:02:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1XP-0005Kj-EX
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:04:05 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38f2b7ce2e5so313418f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 00:04:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740038554; x=1740643354; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=j4DV4bwYDzD/6WGFZCg3Abji/qGxRMmfgA7ru0ZFgPo=;
- b=rajXhVzIBTdEsUjD91hc/g4CN0N1k8KoxlG22cRYW07d5d1nbJ84ul0s5XnS4acnfe
- 2eF9/RKQD047EvQ/dHF6Sw/nUMMVSYUEwql9rdbV6b301Mfp1uxcRbqv97Wt280mH9xK
- f9HH3esjLKFpjMPo8OSmdv0Ensur3XWrw5qlRCShNZU+YAin0pxEOSiSuPxm/Ot1VqBE
- zhJhj19c41I5OfkVOQqAT/dYfh+xv0sgcp87SpFCGfHDr3zTwyc5YgKevs9VFLUmIb2a
- iXn+sKtJM7Mb9ZplyFp8vEf8puf6wp5S9DjmyrX/1vp8bPR2o/N7omkBNDCUHoQ7Dqix
- 4T4g==
+ d=linaro.org; s=google; t=1740038641; x=1740643441; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hxc3I3KJ4nhtdJiy3WdkftvN3k6H2z+mwMoCNlYxIGk=;
+ b=kseRZXpWbzVWBV0cRGWmOrp4uv0OmeaZQVqLApu+wR5EuOws4E24r3obMdvhI4M+UT
+ o9uCtMxhRqOkL5ljx2dNXO1bxhpdmjP/1sflOVmWI49Og2dO22JUCpClARbiwCO4N3mk
+ dIcV+6y1aahySWQUq4Tlu4KQbCvDr1CODSGXUU2MmwDFtVe5zTgNJ6+qmhIeSpf5h1ag
+ NQaeqHICpADTQXrqyyI/S68WYbmWRBsxOZfKV03DebrToIJKJdDE6yqhI9YudUMIAd6d
+ KE8OT8VZ8HWzGZ5ERTr0OUdn3v0yhNnzS0jI1+jCqq9AU9BoaqPsikqqbaFvBAzavZzq
+ k/IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740038554; x=1740643354;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j4DV4bwYDzD/6WGFZCg3Abji/qGxRMmfgA7ru0ZFgPo=;
- b=c0Mx6oYhPHsrefPcyr+yoGlPLyPe1YRq7qPvVNNvx4KVElYHnCILECizwMqfYd5nGG
- 8auQPzTEeccdP0TqjXpeCe+p81H2BKm6mgUjCCZDkB5r0D/hWdevuIFrc9jfdKVnH0x0
- Nr2y2vGhD8lIuVwfj7aao7y5cupowQlm3fZ+mkGcwlA0yVKVIgualwPyUewj/JQPRECP
- kg+GRCdfVg00/2K1K4aN7Pad9dgqOgBNo5NhKfDZ2A9UfTl05dXQaUUsAdvV4VJtF/8G
- Z9FZA5rdsCVrO/7YCFDKCMjAXvhdNmeuuooyc4hXktg5vstJX9LnuJCyTBuUB/KHdSVp
- GVyQ==
-X-Gm-Message-State: AOJu0YzUw+shTXKeKzdwmVureW6B3+5vAVbogEF4kDqTc1W8/UOBBwY8
- hsM7bhtZx/ZC2KtvKeQaQZcAO4vCvMt5ADSnw4W/WO5gJ7pYcDtpUUnt6Q4E26GSi49JMI6VzfB
- mh7k=
-X-Gm-Gg: ASbGncudwrLkrWZnQewzLIJbQ5VJASkyCHaqbSeqlojBQcpVDYO5pJ8allWpsRwZP0p
- dhN38C2ltuIrV4VBWdMeov3Zcn+ChjMb3J8m7463YrgPLeLESv6nvPEwTTXMhEGKi7thc5xVHFU
- uVbwbyLuUtM/rlKp/cHDw69BFHCfXozx9/zajc++zskF8Uu/XDGUy+FQ4xccJySBzXT4yfxsMf8
- CWm+KrjFFmZJXnhmbxYdQVq2AofYL4mmyRUoHdTXjtV/Zf1PLbTfoKkzfYnYP9gEeq6yUawac3J
- uMc01j756B/lk7A5DHCnNYvZljyFVFcmpPCmoYUKfxBxafr+ZAhaATM1p7f+/nluZQ==
-X-Google-Smtp-Source: AGHT+IHd27ti1rt/9WvV0n+3JbvFoVxqVqgNm3kdwP2ib7RSWfPmRBKDe0n4+CcrUwDQiw4qZG6ZWA==
-X-Received: by 2002:a05:600c:354f:b0:439:9f97:7d67 with SMTP id
- 5b1f17b1804b1-4399f977ee1mr39770305e9.16.1740038553692; 
- Thu, 20 Feb 2025 00:02:33 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1740038641; x=1740643441;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hxc3I3KJ4nhtdJiy3WdkftvN3k6H2z+mwMoCNlYxIGk=;
+ b=Ga3HlKjQrYX/82MvDQLm8fjCNR5Stkn754jkAA/mXAIP7AYnw3Z6GuUJVHOT4nCy6Z
+ cHGLUdiWB5WxO7KoyC6T6lMgbdJheWY+8W/KSovepYF9Yxs+tFRynjin0KWsxKGf5Tj1
+ K1jmZWmloe7mhpc1Pid5ab6jd5Pc68xg3F+vNWq2DoWTBgX2FprlYyH9h0UM7k0KFTAT
+ SSC2AMcTNmxxnqQEpRjzv0O1McxSbw2xp8fDL6MAMaqNpiIAJE1PqC6J6jVhH/PCgZB8
+ WfTrRlxvXDJpgUv6grAxol1DN4XwPDmzYZqmd+sR45fTSXJYZuflErZccl5olnS62mQI
+ L2hg==
+X-Gm-Message-State: AOJu0YwCTVGZdP+2JJ5dP+RqiVenEGYxywUmEegUePojnt++KSfJBAnJ
+ imBYsDq5VJnqgyb1OZ5yzSZ8WND84YZA0wXl5mJYKK3Aam4xGfNYHZ6meVv+yanqufpEyUavcfv
+ 3RL4=
+X-Gm-Gg: ASbGncvQ6QrWpWHxDXyCNy0+jIUSa6cPHuFeDPGAwRiuRQC+TCwn2ztYH74ESODGjL/
+ xGEHF+lu3Bu5eL0nTL2R5KcR6jM3KPgBjfwGn/3hHhE6f7zwfiKwOjnKV7+xAvLORvRO36Qk/EX
+ PHOnRfAB3wjXkQTTSjzMKzFaFb4Ax/+ugFke96oF8bjQFzvkFWo7gc9eM4h5T9TA98vMDyi6Trt
+ KeWtbo+W0L+I6htHG3o79yVaqsUgQOhyordJ+AOLXaqV9RGZ13Fykv4zFipkmKVh2M9ci6Y16MS
+ 4f96u7nhagxfMr0wyZd5AUe/fDAPi6lX7NBZ9rPPNBG2IBbmdQKDdDDnAbQ=
+X-Google-Smtp-Source: AGHT+IFcRdEYMj0aVA31qnlXEI9zPnC0rseq9tkBFr76Wxa5b+la9+kgQ/elMARGJG44qUeZgR+IPA==
+X-Received: by 2002:a5d:6d09:0:b0:38d:e3e2:27c9 with SMTP id
+ ffacd0b85a97d-38f33f37422mr17282017f8f.8.1740038641134; 
+ Thu, 20 Feb 2025 00:04:01 -0800 (PST)
+Received: from [192.168.69.196] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439872b59e9sm101938055e9.31.2025.02.20.00.02.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 20 Feb 2025 00:02:33 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ 5b1f17b1804b1-4395a1aa7c7sm236392945e9.27.2025.02.20.00.04.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Feb 2025 00:04:00 -0800 (PST)
+Message-ID: <3390aa1d-2505-414d-afc7-92df46d445c4@linaro.org>
+Date: Thu, 20 Feb 2025 09:03:59 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] tests/functional: Introduce the dso_suffix() helper
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 3/3] tests/functional: Allow running TCG plugins tests on
- non-Linux/BSD hosts
-Date: Thu, 20 Feb 2025 09:02:15 +0100
-Message-ID: <20250220080215.49165-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250220080215.49165-1-philmd@linaro.org>
 References: <20250220080215.49165-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250220080215.49165-3-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250220080215.49165-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,66 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not all platforms use the '.so' suffix for shared libraries,
-which is how plugins are built. Use the recently introduced
-dso_suffix() helper to get the proper host suffix.
+On 20/2/25 09:02, Philippe Mathieu-Daudé wrote:
+> Introduce a helper to get the default shared library
+> suffix used on the host.
+> 
+> Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   tests/functional/qemu_test/__init__.py | 2 +-
+>   tests/functional/qemu_test/cmd.py      | 1 -
+>   tests/functional/qemu_test/config.py   | 6 ++++++
+>   3 files changed, 7 insertions(+), 2 deletions(-)
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2804
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- tests/functional/test_aarch64_tcg_plugins.py | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_tcg_plugins.py b/tests/functional/test_aarch64_tcg_plugins.py
-index 7e8beacc833..5736b60545a 100755
---- a/tests/functional/test_aarch64_tcg_plugins.py
-+++ b/tests/functional/test_aarch64_tcg_plugins.py
-@@ -13,10 +13,11 @@
- 
- import tempfile
- import mmap
-+import os
- import re
- 
- from qemu.machine.machine import VMLaunchFailure
--from qemu_test import LinuxKernelTest, Asset
-+from qemu_test import LinuxKernelTest, Asset, dso_suffix
- 
- 
- class PluginKernelBase(LinuxKernelTest):
-@@ -62,6 +63,10 @@ class PluginKernelNormal(PluginKernelBase):
-         ('https://storage.tuxboot.com/20230331/arm64/Image'),
-         'ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7')
- 
-+    def plugin_file(self, plugin_name):
-+        sfx = dso_suffix()
-+        return os.path.join('tests', 'tcg', 'plugins', f'{plugin_name}.{sfx}')
-+
-     def test_aarch64_virt_insn(self):
-         self.set_machine('virt')
-         self.cpu='cortex-a53'
-@@ -74,7 +79,7 @@ def test_aarch64_virt_insn(self):
-                                                  suffix=".log")
- 
-         self.run_vm(kernel_path, kernel_command_line,
--                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
-+                    self.plugin_file('libinsn'), plugin_log.name,
-                     console_pattern)
- 
-         with plugin_log as lf, \
-@@ -100,7 +105,7 @@ def test_aarch64_virt_insn_icount(self):
-                                                  suffix=".log")
- 
-         self.run_vm(kernel_path, kernel_command_line,
--                    "tests/tcg/plugins/libinsn.so", plugin_log.name,
-+                    self.plugin_file('libinsn'), plugin_log.name,
-                     console_pattern,
-                     args=('-icount', 'shift=1'))
- 
--- 
-2.47.1
+> diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
+> index dc5f422b77d..254e23ef748 100644
+> --- a/tests/functional/qemu_test/cmd.py
+> +++ b/tests/functional/qemu_test/cmd.py
+> @@ -15,7 +15,6 @@
+>   import os
+>   import os.path
+>   
+> -
 
+Oops, Alex, should I respin a v3 removing this change?
+
+>   def which(tool):
+>       """ looks up the full path for @tool, returns None if not found
+>           or if @tool does not have executable permissions.
 
