@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E26A3D790
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 11:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC01A3D7B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:06:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl4Gc-00016l-10; Thu, 20 Feb 2025 05:58:54 -0500
+	id 1tl4Mi-0002wM-FV; Thu, 20 Feb 2025 06:05:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl4Ga-00016d-2o
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:58:52 -0500
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl4GX-0001jT-63
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:58:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740049129; x=1771585129;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=peXBWKLlJoZ0te86jGaqhSVx6k4fQXBrx/kZt4Y3dFo=;
- b=LFaPhyO3d7SLDyjEN7V3kA6T5WJGmxEXuCxOkf4G5clr2hetICinOHTP
- D/HExG6ziMN/XETPC3lBynBYibn8aJCv8wQWbPQh9XB/o2feOO80EfOiU
- vqAknK7ZL7aTp7V4pAIx0FnnW5EkP/zqsX5dIi0o0b/7wCYG3F6J0UemM
- aSiVAiP+7ze74Mp5HpholGvuYGF3/IniH681mDV8Z0dudNHozs3htTu4X
- oo5TtHtxa1zoZrh1xrHJ2UxGdgfW5VWUzzKb7ZBftrPgYOWjo5sbVNsAu
- tLFkIFvnD8XjP133S8tFFX/dN6XQDohEW3NM9Zak8MfLQ0BOJIqRH0sXT A==;
-X-CSE-ConnectionGUID: CMuedAkKRxmeA1D/tyerbQ==
-X-CSE-MsgGUID: vg+DloBkQu2eh7WaMgzuDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40959993"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="40959993"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 02:58:46 -0800
-X-CSE-ConnectionGUID: X65XWnxYRJ6my0mf/THp2Q==
-X-CSE-MsgGUID: XqCrPXq5T1uDp7bf4/7ASQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="114737261"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 20 Feb 2025 02:58:45 -0800
-Date: Thu, 20 Feb 2025 19:18:19 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
- davydov-max@yandex-team.ru
-Subject: Re: [PATCH v5 2/6] target/i386: Update EPYC-Rome CPU model for Cache
- property, RAS, SVM feature bits
-Message-ID: <Z7cPeyLAuNDL0Oc4@intel.com>
-References: <cover.1738869208.git.babu.moger@amd.com>
- <8e40e18b433d2d152433724a15bddcacdecbf154.1738869208.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tl4Mg-0002vi-5d
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:05:10 -0500
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tl4Me-0002X6-39
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 06:05:09 -0500
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-6fb73240988so5021077b3.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 03:05:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740049507; x=1740654307; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EYdJeJG+A3qoQT6NxoCYcF2tRFQaYTlQIoqqfDLP8NA=;
+ b=KPFOqdtAhCWeoZ2FUuxlu45bFv11zJWiR7UUfp1lGrUnsTqSrlmfRWf/OpUR4l1xrQ
+ Bd9LAkrn8P+7tta/0Xu/fmdLZS14wUSVVc8fyuMTLGMckrD3TIF/3zjQ+RqzY3IthLNM
+ v9kMXQqAsfMSIcSstf5FqTCiKfvbNZewa7Ns+tdRcdMF6FmwgP7GGp1AlyyP4bI+QYTq
+ yz/2SNnsfy7rNFrs6KYT4CG76djjA3W+txMfHlVyRV6ka5z9gADSBJLlZGDPS2quoZaq
+ m3L/4ll266J3F6cq/uHlduGli/7WUD1byKzetUyYG55baW7dV7FUlEIv3RZq14SMIjyt
+ DlDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740049507; x=1740654307;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EYdJeJG+A3qoQT6NxoCYcF2tRFQaYTlQIoqqfDLP8NA=;
+ b=AgBunYrnB85YHmAE8npaSg9QUCDocVG043hEWFkQt3sfRrpn8jm1vF9eKCmAqtqY9B
+ Qd8hhRSpiV8YSu1Mcrp3UF/RK69REVP+OUIVKkAX8tihoqkLo3X576/JLVJMHGorKp2+
+ hH9SRDuSSZvv5+SeetULL9blTOTBFdKpeBqf6itRKPr3K9Rp9pKfhCxHsQlJEyVkJnIF
+ SartU13d7g5lgfgZzy2tGoVY3vyJIqvOaOCBwa+5iMpgU8yKr5PMrQMMxjFUL9Eayz9p
+ o+QyhPvbBrZZlfzxyZl8v22HYlJT7Wd26VYYbrXBw7lidhcyoc3reIMJTqe8ZHsWYauT
+ WrCA==
+X-Gm-Message-State: AOJu0YzOXztmBNPZ1JRbWkb03dCnambL3jklQN0fKqpfJLny+Meo3HJ8
+ 1+d7+zWYL7SLYmamuAlslkmSFUPuAFGu1djTIb2Ktz+fQJU1yHfi2f5ZEujNKvtPaqPxyrrGs60
+ f0Gj41wjzGTHL2aPQI8qnjoEf6iYrKwPxemTneg==
+X-Gm-Gg: ASbGncuzmcMJgDdJwxbqbOC2TamnCu1P6l2Rv3s/sUjqtM76sRDCjkDa+pVC8B3pd70
+ ih4jWFeu99hIn4Ss2z1VvpHyV5gLyQkobVTwirB49TXkWwBlTzHbMmCexRtiK9ygiBG+/ZM5IIQ
+ ==
+X-Google-Smtp-Source: AGHT+IFRzFNTI4lNM501OJddrzMjnncdSjAsLfOYPFOf/JjbCQEA+JtQEZ6y8dy2c6OSiCpu06tZZHXUV6XuVwY0x3o=
+X-Received: by 2002:a05:690c:9c09:b0:6ef:4cb2:8b4c with SMTP id
+ 00721157ae682-6fba579e7b8mr68444527b3.23.1740049506700; Thu, 20 Feb 2025
+ 03:05:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e40e18b433d2d152433724a15bddcacdecbf154.1738869208.git.babu.moger@amd.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250208163911.54522-1-philmd@linaro.org>
+ <CAFEAcA8PYv3-JX66THwj-mDM0es6V5gVVWJsHTqkd9wTEVor4A@mail.gmail.com>
+ <CAFEAcA-ioFgThGJ70cyhe7rA0kbnDULsr-BuAqE+3b3TE0BGwg@mail.gmail.com>
+ <CAFEAcA-fZakXqgDV72fE5sFJv7ah=bvoXYpGqXZZzGutxt7r+A@mail.gmail.com>
+ <CAFEAcA-UP5VcDokb11KfpmQztRnWFS9pLcMZ5_2pe=BBKEv7Fg@mail.gmail.com>
+In-Reply-To: <CAFEAcA-UP5VcDokb11KfpmQztRnWFS9pLcMZ5_2pe=BBKEv7Fg@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Feb 2025 11:04:55 +0000
+X-Gm-Features: AWEUYZmnHuUcS6GYlyYoxVfkOnMcx_1hdfv7x-M395WG2X8YB9mIfJWWyZIJKxc
+Message-ID: <CAFEAcA_PUcnpwti4m1MgGbcVBFFHv1DSvNrzchkqTW5TVMU2pw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/7] hw/char/pl011: Implement TX (async) FIFO to avoid
+ blocking the main loop
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,91 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 06, 2025 at 01:28:35PM -0600, Babu Moger wrote:
-> Date: Thu, 6 Feb 2025 13:28:35 -0600
-> From: Babu Moger <babu.moger@amd.com>
-> Subject: [PATCH v5 2/6] target/i386: Update EPYC-Rome CPU model for Cache
->  property, RAS, SVM feature bits
-> X-Mailer: git-send-email 2.34.1
-> 
-> Found that some of the cache properties are not set correctly for EPYC models.
-> 
-> l1d_cache.no_invd_sharing should not be true.
-> l1i_cache.no_invd_sharing should not be true.
-> 
-> L2.self_init should be true.
-> L2.inclusive should be true.
-> 
-> L3.inclusive should not be true.
-> L3.no_invd_sharing should be true.
-> 
-> Fix these cache properties.
-> 
-> Also add the missing RAS and SVM features bits on AMD EPYC-Rome. The SVM
-> feature bits are used in nested guests.
-> 
-> succor		: Software uncorrectable error containment and recovery capability.
-> overflow-recov	: MCA overflow recovery support.
-> lbrv		: LBR virtualization
-> tsc-scale	: MSR based TSC rate control
-> vmcb-clean	: VMCB clean bits
-> flushbyasid	: Flush by ASID
-> pause-filter	: Pause intercept filter
-> pfthreshold	: PAUSE filter threshold
-> v-vmsave-vmload	: Virtualized VMLOAD and VMSAVE
-> vgif		: Virtualized GIF
-> 
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
-> ---
->  target/i386/cpu.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 94292bfaa2..e2c3c797ed 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -2342,6 +2342,60 @@ static const CPUCaches epyc_rome_v3_cache_info = {
->      },
->  };
->  
-> +static const CPUCaches epyc_rome_v5_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+On Thu, 20 Feb 2025 at 10:52, Peter Maydell <peter.maydell@linaro.org> wrot=
+e:
+>
+> On Thu, 20 Feb 2025 at 10:43, Peter Maydell <peter.maydell@linaro.org> wr=
+ote:
+> >
+> > On Tue, 18 Feb 2025 at 13:54, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+> > >
+> > > On Mon, 17 Feb 2025 at 14:55, Peter Maydell <peter.maydell@linaro.org=
+> wrote:
+> > > >
+> > > > On Sat, 8 Feb 2025 at 16:39, Philippe Mathieu-Daud=C3=A9 <philmd@li=
+naro.org> wrote:
+> > > > >
+> > > > > Hi,
+> > > > >
+> > > > > This series add support for (async) FIFO on the transmit path
+> > > > > of the PL011 UART.
+> > > > >
+> > > >
+> > > > Applied to target-arm.next, thanks (with a couple of minor
+> > > > tweaks to two of the patches).
+> > >
+> > > Unfortunately I seem to get failures in 'make check-functional'
+> > > with the last patch of this series applied.
+> >
+> > I had a look at this this morning because I wondered if it
+> > was a mistake in the style fixups I'd applied to the patches
+> > on my end, and I found the bug fairly quickly. The problem is
+> > that pl011_xmit() doesn't update the TXFE and TXFF FIFO empty/full
+> > status flag bits when it removes characters from the FIFO.
+> > So the guest kernel spins forever because TXFF is never unset.
+> >
+> > The following patch fixes this for me (and also makes us not
+> > set INT_TX for the case where we couldn't send any bytes to
+> > the chardev, which I noticed reading the code rather than
+> > because it had any visible bad effects):
+>
+> Hmm, but that's clearly not the only problem -- it fixed the
+> "no output at all issue", but now I see a test failure because
+> of garbled console output:
 
-This field could be true,
+> I also noticed that pl011_write_txdata() doesn't clear TXFE
+> when it puts a byte into the fifo -- I'm testing to see if
+> fixing that helps.
 
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+Yes, with this patch also:
 
-ditto,
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -330,6 +330,7 @@ static void pl011_write_txdata(PL011State *s, uint8_t d=
+ata)
+     if (pl011_is_tx_fifo_full(s)) {
+         s->flags |=3D PL011_FLAG_TXFF;
+     }
++    s->flags &=3D ~PL011_FLAG_TXFE;
 
-Compared to the previous cache model version, the differences can be
-checked. I feel that in the future, when we introduce a new cache model,
-it's better to avoid omitting items that default to false. This way, the
-cache model can correspond to the output of the cpuid tool, making it
-easier to compare and check.
+     pl011_xmit(NULL, G_IO_OUT, s);
+ }
 
-Overall, LGTM,
+this remaining failure is fixed and I get a clean pass (other than
+the gpu test failure, but that's not related to the pl011).
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+-- PMM
 
