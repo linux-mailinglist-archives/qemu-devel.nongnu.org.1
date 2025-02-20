@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6570A3E090
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9E9A3E06D
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JH-00076K-EC; Thu, 20 Feb 2025 11:21:59 -0500
+	id 1tl9JJ-000770-8f; Thu, 20 Feb 2025 11:22:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JF-00075d-Cl
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:57 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tl9JG-00076H-LG
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:58 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JD-0008EL-M8
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:57 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43995b907cfso7348385e9.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:54 -0800 (PST)
+ id 1tl9JE-0008Ee-6U
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:58 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38f2f783e4dso1015675f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068513; x=1740673313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068514; x=1740673314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QZTc2oPY4YllPwFk3F0ukTxoRIP/o83PipGK8tU/N6c=;
- b=L01YHopCG24y9H9ovaqcsEwxg800rryQVlvzGUojdEIzKHjbwPcZoC6AU9hvQ9KBH1
- gJgK4I58ZWtX1KstJizF682byhcqdKX03CjmsOBu29wLoCrO2YRia93GDgF5S9w+biRw
- sfKHZUaByhF3EMe66/0Lhen/XtFemxtfo6Zd8hAFYqLlHNp5oLyztg7fdXoCskfYwuYi
- eAiKHoMAyIfC+6Nq2E/TznUyQkFvXw+vwY+Ce7n9sJD8J1pxF9NwhMrd/oofO/LG2c6x
- S1pos+F3X83CeOkPw0KzpA+6P1cARgZw2mjajAXmEpfYHuysTXsqqg2gC1tXSx1bq98i
- vgHQ==
+ :reply-to; bh=3YcYYepdVZAM4ELbnew2IIQe2TLsAeYlAjh/W6oMXKo=;
+ b=CyXVwHJl3PwTAnXE5iI72AKvROAjbUPCGqiiUKBpdA4iAsnB0hpqrZoro4bclhGYCF
+ kC7OcUb06QnLtpU2BvghrVhYhi6HjFXRN3EtgRcoS16MLS6wRJS+PH6fD1t49knPvP09
+ YBanw3N7Kva4wIddujbP3ZIv030fCEC+REgvdK88xPWmUxfkGWVlrgHQ54Feqv34DSt1
+ 2zVI8T/CSNqyGNiHW9KQCWlBxgASaQ+hpHmwZmCgFGAdKBUzffb2hT5vOLA7Ev3L8GWN
+ uyeMG5zNIHmTcoh0rB3sQI7gzZfLwhH6xN06ipQCfSedn3ixrtnhYHrLqf4jyHSuPp8p
+ /xYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068513; x=1740673313;
+ d=1e100.net; s=20230601; t=1740068514; x=1740673314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QZTc2oPY4YllPwFk3F0ukTxoRIP/o83PipGK8tU/N6c=;
- b=jitpgH3xsoC3CI2t47syZq6EP0CbIZtuCL4HnE60VDOMINwf9XZKJ4F/ZoSXzkhHt7
- TBmGdvMerXLF5jhOHcCMEx8KAUG1LX07kEsxb6bTgKpgy0NFy0MY8aTFcCudC8LzsMTx
- +44byL2UZSEj5OKWAZNNdP7YFdkU0wwsReCeKsjW8eaOiuxVlkqEAulII9pPF7fY+GYU
- xyemdnDnbLiyit4DdjtAgeQMoCwCDPygTAX28VLUv8B1RlAOPC05QzFdP1VaELF4SrZD
- 6hONzStlizD5RVJAFD8jOcfXeKiKh3pIqYYGvxDTQ749AR1eMmX64WgScUwfAtecFsTE
- qs9A==
-X-Gm-Message-State: AOJu0YzDDilNX+qqeAJAmI14QadGu9s5jAbtQwS5NAmBhrMptq6zFIZG
- BiKOA/mnQVHDGifVt94y1e5iw9/AvDUCwwA6Iv6E8Yo7oZow8Npgdt3Cq7r4lsON7Db/nM77/hZ
- u
-X-Gm-Gg: ASbGncs+K1/M6TWE+uHpTgh9wVY0a9VOoRDRcTwiAuDJiSJPoImtq78UNuCoBGM7S/I
- jRSxcdJ1lgiP8sVHUeA2I32Ymgv0nJK7qzXgJLvEkrrjLzNaPJBbu+wgV/KNszaBWajku45eOeo
- Bjl7cVQBie9qncvd5iA54gWt1p6wxhkhhEKn7szK5mOD+iL6L54f2rVgngKgRCc0dkV9lCquhuw
- oqEpE2Qupdd3DqKmSr09Xjl7vn/CGg/OwgoJuGNCC5YJmgn/R5Eb5+KNabUYj5z7ai4SpJiKfqp
- oXNa7Kb3sC0P3x5QE/AIyw==
-X-Google-Smtp-Source: AGHT+IFcnYuvEI4lPkQMdPwpLVQWwBwPOvRL4014g2Wjg6zPGRMjp+6Ys7PWJtuDtsHTJphqMyncdw==
-X-Received: by 2002:a05:600c:154e:b0:439:a88f:8538 with SMTP id
- 5b1f17b1804b1-439a88f85bcmr27780345e9.5.1740068513021; 
- Thu, 20 Feb 2025 08:21:53 -0800 (PST)
+ bh=3YcYYepdVZAM4ELbnew2IIQe2TLsAeYlAjh/W6oMXKo=;
+ b=d91Os/dP0dU2KBtOU5LYexUEAZnMahqQAyyuaq/uX5J4ZxtCdQMpFPsIMUzXa449hB
+ sPdfT//zxDqpLuck40mMSmXWlaSLS9ZyuvV+TQAHssYpT+zVT01BYgGnuQBhVoNPmIrE
+ Dqb67rzQ7b2zp+ZAhSYPyjDeL20QrI5pPE+8nor2612ueFb/sdPLT60j7z+ndrJlA68Y
+ rAKbyZpEUHY+XfYqfCAvPmS2uXYhqgPgpzY9zdWjIs3UrYno7R5BuucijerkTwir/XQU
+ UPXR2GTZtEJS+0oRyvAUvMHXccg3dIkY5c4MDE+AfdrFdTzXVSOiB71OFODfctzb8LUd
+ Ma9w==
+X-Gm-Message-State: AOJu0YzA1oQR1tnb5oqee25ee+zp0JAkaP08she4x6w+fxxxIWioK9cb
+ 3Jrm0BltZjtRZmNcg0JVgTV8ZGjXUselmSSHTlPm6z6xO61WgRNjSWICPQXkPZS3Lg2kL+Z7w9o
+ 5
+X-Gm-Gg: ASbGncuZCLBFIXkak+xi8NnMUhI9UKlFd2L9ZrUURGJE1+DgLwqRgyG3sieWTGrdhQK
+ RZqMDKd1wg/fmXIQEYV/nnozOooJNY0iTkpOd4reurpBym4AqBaHrAm/4W753+2MWYqpj3AaCTX
+ 6h6ym8KiE0IOhJVi0oCWWlW/TvGKCOKndVki88vYJ3XKVzfriYhuFi1hj+lysTufvmkba92DPiJ
+ DqZk5nOF1ToC4HajoYmnc0ElHZAcpPaUm7vGkImGToEilbJkh7AtezDuhaXv519lY/lJ2kgjUdn
+ KBK/V3Fhx93/qvtXgRHyng==
+X-Google-Smtp-Source: AGHT+IEKo+axCqEKC2pyTUx+fbnxOk1wdgV5jjJitH6nUCHx6aa9anrIBLmzZ3xs2bRT8PmU0Is0Jg==
+X-Received: by 2002:a5d:4002:0:b0:38f:31fe:6d4f with SMTP id
+ ffacd0b85a97d-38f587ca5dfmr6060572f8f.34.1740068514504; 
+ Thu, 20 Feb 2025 08:21:54 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.52
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:52 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:53 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/41] Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
-Date: Thu, 20 Feb 2025 16:21:04 +0000
-Message-ID: <20250220162123.626941-24-peter.maydell@linaro.org>
+Subject: [PULL 24/41] target/arm: Use uint32_t in t32_expandimm_imm()
+Date: Thu, 20 Feb 2025 16:21:05 +0000
+Message-ID: <20250220162123.626941-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,96 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Stephen Longfield <slongfield@google.com>
 
-TYPE_CHIPIDEA models an IP block which is also used in TYPE_ZYNQ_MACHINE which
-itself is not an IMX device. CONFIG_ZYNQ selects CONFIG_USB_EHCI_SYSBUS while
-TYPE_CHIPIDEA is a separate compilation unit, so only works by accident if
-CONFIG_IMX is given. Fix that by extracting CONFIG_USB_CHIPIDEA from CONFIG_IMX.
+In t32_expandimm_imm(), we take an 8 bit value XY and construct a
+32-bit value which might be of the form XY, 00XY00XY, XY00XY00, or
+XYXYXYXY.  We do this with multiplications, and we use an 'int' type.
+For the cases where we're setting the high byte of the 32-bit value
+to XY, this means that we do an integer multiplication that might
+overflow, and rely on the -fwrapv semantics to keep this from being
+undefined behaviour.
 
-cc: qemu-stable@nongnu.org
-Fixes: 616ec12d0fcc "hw/arm/xilinx_zynq: Fix USB port instantiation"
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250209103604.29545-1-shentey@gmail.com
+It's clearer to use an unsigned type here, because we're really
+doing operations on the value considered as a set of bits. The
+result is the same.
+
+The return value from the function remains 'int', because this
+is a decodetree !function function, and follows the API for those
+functions.
+
+Signed-off-by: Stephen Longfield <slongfield@google.com>
+Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
+Message-id: 20250219165534.3387376-1-slongfield@google.com
+[PMM: Rewrote the commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/Kconfig     | 6 +++++-
- hw/usb/Kconfig     | 4 ++++
- hw/usb/meson.build | 2 +-
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ target/arm/tcg/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 256013ca808..7eab3914d4b 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -303,7 +303,7 @@ config ZYNQ
-     select PL330
-     select SDHCI
-     select SSI_M25P80
--    select USB_EHCI_SYSBUS
-+    select USB_CHIPIDEA
-     select XILINX # UART
-     select XILINX_AXI
-     select XILINX_SPI
-@@ -489,6 +489,7 @@ config FSL_IMX25
-     select IMX
-     select IMX_FEC
-     select IMX_I2C
-+    select USB_CHIPIDEA
-     select WDT_IMX2
-     select SDHCI
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 68ac3934153..d8225b77c8c 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -3510,7 +3510,7 @@ static int t32_expandimm_rot(DisasContext *s, int x)
+ /* Return the unrotated immediate from T32ExpandImm.  */
+ static int t32_expandimm_imm(DisasContext *s, int x)
+ {
+-    int imm = extract32(x, 0, 8);
++    uint32_t imm = extract32(x, 0, 8);
  
-@@ -516,6 +517,7 @@ config FSL_IMX6
-     select PL310  # cache controller
-     select PCI_EXPRESS_DESIGNWARE
-     select SDHCI
-+    select USB_CHIPIDEA
-     select OR_IRQ
- 
- config ASPEED_SOC
-@@ -576,6 +578,7 @@ config FSL_IMX7
-     select SDHCI
-     select OR_IRQ
-     select UNIMP
-+    select USB_CHIPIDEA
- 
- config ARM_SMMUV3
-     bool
-@@ -591,6 +594,7 @@ config FSL_IMX6UL
-     select IMX_I2C
-     select WDT_IMX2
-     select SDHCI
-+    select USB_CHIPIDEA
-     select UNIMP
- 
- config MICROBIT
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 5fbecd2f43b..69c663be52f 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -143,3 +143,7 @@ config USB_DWC3
- config XLNX_USB_SUBSYS
-     bool
-     select USB_DWC3
-+
-+config USB_CHIPIDEA
-+    bool
-+    select USB_EHCI_SYSBUS
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 1b4d1507e41..17360a5b5a4 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -25,8 +25,8 @@ system_ss.add(when: 'CONFIG_USB_XHCI_SYSBUS', if_true: files('hcd-xhci-sysbus.c'
- system_ss.add(when: 'CONFIG_USB_XHCI_NEC', if_true: files('hcd-xhci-nec.c'))
- system_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
- system_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
-+system_ss.add(when: 'CONFIG_USB_CHIPIDEA', if_true: files('chipidea.c'))
- 
--system_ss.add(when: 'CONFIG_IMX', if_true: files('chipidea.c'))
- system_ss.add(when: 'CONFIG_IMX_USBPHY', if_true: files('imx-usb-phy.c'))
- system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686-uhci-pci.c'))
- system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-usb2-ctrl-regs.c'))
+     switch (extract32(x, 8, 4)) {
+     case 0: /* XY */
 -- 
 2.43.0
 
