@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FEBA3D2B9
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA99A3D2B8
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 09:03:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl1Vp-0005lK-9b; Thu, 20 Feb 2025 03:02:25 -0500
+	id 1tl1Vu-0005lx-7p; Thu, 20 Feb 2025 03:02:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1Vn-0005lA-AI
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:23 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1Vs-0005lo-Nf
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:29 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1Vl-0004zg-4g
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:23 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43994ef3872so3223505e9.2
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 00:02:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl1Vq-00050H-Q1
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 03:02:28 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-439a2780b44so3459995e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 00:02:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740038538; x=1740643338; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lO29zjEhlgqAi2HWARIys8eJMBOQ5ZBkoeYW9tDGzQA=;
- b=P2Dk90wU+2PbOAhh2rLJdE6z9WEfmkEvp9Xpwpgl6p+EA3FKHYde1G8SELxjX/GPyY
- Tx8n7JQDk3FnqxesHMDGGoGEnojaOlihJ/5fEqQVstz9DF7kab6N0ZVuaxmb0iWdO1Gz
- ikMeiJshbZn7njNwxSD5jaaKTnfUAQDxyQysdnT14NcpQRuRwFZTe4qOUmhW4yR8oNtN
- h5xxU4HmUdtuqwRTnNxf8fwvgnLK1j8NugpGsxcRoSg3Uz+uzOAPt/i21nSHJ5NAVWJz
- iGQjhMeXp1fz+rWtNs456K+J4V+1dUf5yxww9RWgSyH1kU3t+xYKxyt3KKUrxS7GAisI
- 8EfA==
+ d=linaro.org; s=google; t=1740038544; x=1740643344; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FS7o0D5fLSCXS8ZwtnjjXhADHES9mreJS2p3qJ4gTp4=;
+ b=S+1oOcltdGGsWtIJIc/OThBGblzDq0yFBqXST9Px6ekGUCkD13i6y01/l0ZoKc2dJY
+ 6B3m1hzH3LEIdjLP0gPLs7T31dWNRB4xpdyOkiq4Yos0Vi7e5cYtDok75nxAb2GS+/iT
+ VXcBQ70z2qir1iHGpHQWwddeSIfwf/FSVRTfLUThDnE8qOfB6cL45fBDo8c/IeGqz8tt
+ ymFvHoTMUpqgkZNf4lHNgaTtDdzmXBZcCJOvrS71nXqBm1IykBGgsJoBzrfJBENVetwg
+ uGGcnzo4Z9hRBwPC53cuLkEmWXambMggvtL36GaqbwmbGq83Y05JesrpXbjqYNzYjfNu
+ /XZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740038538; x=1740643338;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lO29zjEhlgqAi2HWARIys8eJMBOQ5ZBkoeYW9tDGzQA=;
- b=A/NVXKyQMzpclOOnemnOqj8S0y0SOxsNR88Tw03+DT17bn+EZuIguM/1gVUYhe226y
- TOBSECaIj0fpG9UvD5CyVzfBZawbsStsyyXFewtW43su12x9sfbBLwrtnqGQATIP6fo/
- 2+z5NHhycJ7+lJDoWad3J37tzbmkw6brxnzoulIyCqYCKa1VXQaGRXCGy7gq2Gz+Tlvz
- 9NMRfAwiqr2LIGu7BD5832b67K8LiQYZCvrYi/Z1PjJYLtAYGpyZ9Lpt2yF5dDJtl2wn
- SY2y4DMsHMGRr9SNbLZA6bQIBJUhb4gIfGOJU1XIFbDdnielVMQ9ptNQ4k1Z8++fexos
- WPmA==
-X-Gm-Message-State: AOJu0Yxu08K44lS3U7UZAxpvEWhAf6GPkAVbAgst4rIawqXUdYijHJ6y
- TFM5ghUzGsMCkbmZUMjgLFbk1A5zkk+gbvzsd5rFiznn71UN58YBX9ODc+LduV3lmMQ63JhIjlD
- W1Zc=
-X-Gm-Gg: ASbGncvMVYrf1fymVj9bSakwQgAhsV9dYen1Fg1h++vyblL3e0TSjCaIg86EFqM85nt
- QnjEUp7sHpZe/eQHNeCWbDA+71njaThZ6TlCiZnXsCZvGe62KwWu4H7Gdpgdo6keE/iI+L4sFUT
- QF8HS0LPVX356/RRbyJp+JDoEKSESGHyDuvq0i+1tpJHCuyUUX3YL9V4VWZM2+z/2bk+aRjqBy0
- 8GB40iV7MyJCL246cj/yOfxgkdNVX623+O8l/GzjgXElu5ityL5Bxys7tjMExLjD2gj9MvgEJMS
- 6wPscVwu1vKFX2+fUo3wHz7AWSboQDH9K9JYKd0qbq0vnrlIQD893ukyWkNXnjlzJA==
-X-Google-Smtp-Source: AGHT+IGztvpmqgblnb31fv1D9H/XzDSwSA+cOgkjIpbAKtbpyImWPXW8fTD94ikQ8RMAh5Qe6th7Gw==
-X-Received: by 2002:a05:600c:154e:b0:439:8c80:6b02 with SMTP id
- 5b1f17b1804b1-4398c806e08mr120335935e9.31.1740038538680; 
- Thu, 20 Feb 2025 00:02:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740038544; x=1740643344;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FS7o0D5fLSCXS8ZwtnjjXhADHES9mreJS2p3qJ4gTp4=;
+ b=GcuKFa4udI6HoDpo01glSdZqu9QJ6zsiScTyq4AgTwuh2HmXldDGVaGlmmja41iSya
+ BeMZzUoTCNqiSEO1ecZjSTcI8psnJqHqqlRk3X/FHJAuZG23TZO7mFgc/mwnd4iQoMki
+ 5ugzHKsdC42ogYl3JJc26jVygjkzVHQXy3s9JAa62lHmYbkmPpaK871aEHE8N+pDeakQ
+ zKCUiaOhNxVwoP7Yi9MwWv9CJWlQrZ8cS4ay5JM3Il0dZ3rS24l18XgdLXweP27RxKIk
+ f+s0OV1ZGlTsv0DtduigL9Ypr94q/kc7LTpFd9sDdoFPVTA7qcB+s5hRorCK574joUEt
+ JJDA==
+X-Gm-Message-State: AOJu0Yz5NQbmSsPXYqsQj38rWKD1mU4U5FiKaNcEIRJmWqjk4VfBzvfi
+ P9G9FlNT6JiBpfKfl2antxuAh8yKpFvv+WO4feX/EAAu3pAgWFRDH56ILwF1kanpGPOw11rJUVZ
+ a2Cg=
+X-Gm-Gg: ASbGncuc0JnewKzxdUgUbxk7rpVTlZ+H+OXgNqD+exbTKjuR+VnWvTpsL584/G3Wjw5
+ QaIHuc4heu1hlfTm7bQoFWMpSgqi3Thwlwi8Qve8T3Q4uAsYeSoqlDq2iMjnh7ne39kTY6gwdDD
+ 6+/oA5nAhYCXlw0Dl89r1anA8pXL5COdjtJ8b5fGzqxybpudz85BHg6/+q4FyIeMoZwIv9CrkxN
+ W/LtZhOWjA7+OoX9oNqkxPN2URFWY2rbZZ37Si5miIaOx59Fgd7i9+okgD/U2gjuXBYdH3WCytO
+ 2951n8/hAeq1E4FvcWYWHUc/T2Kd243IJQvgO5JhAJHpy5nBW5JcLzsJDV4b77c33Q==
+X-Google-Smtp-Source: AGHT+IHue+mbCMrY9B4kzdkCP6NYsQ23UhHbSOD2mSDmA0XgRe5GA7szSsowdBXA7HkL/sB72Sk/kQ==
+X-Received: by 2002:a05:600c:3501:b0:439:955d:7ad9 with SMTP id
+ 5b1f17b1804b1-43999da89c7mr70299325e9.14.1740038544102; 
+ Thu, 20 Feb 2025 00:02:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439872b5a46sm101409425e9.32.2025.02.20.00.02.16
+ 5b1f17b1804b1-439930a9966sm74391905e9.15.2025.02.20.00.02.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 20 Feb 2025 00:02:18 -0800 (PST)
+ Thu, 20 Feb 2025 00:02:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
@@ -71,16 +72,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Thomas Huth <thuth@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 0/3] tests/functional: Allow running TCG plugins tests on
- macOS
-Date: Thu, 20 Feb 2025 09:02:12 +0100
-Message-ID: <20250220080215.49165-1-philmd@linaro.org>
+Subject: [PATCH v2 1/3] plugins: add explicit dependency in functional tests
+Date: Thu, 20 Feb 2025 09:02:13 +0100
+Message-ID: <20250220080215.49165-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250220080215.49165-1-philmd@linaro.org>
+References: <20250220080215.49165-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,31 +105,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick kindly helped me to resolve this issue which ended
-being trivial (to him!). Not tested on Windows so far.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Since v1:
-- Include Pierrick's meson fix patch (adding Fixes: tag)
-- Addressed Thomas review comments (config.py, os.path.join)
+./tests/functional/test_aarch64_tcg_plugins.py needs to have plugin
+libinsn built. However, it's not listed as a dependency, so meson can't
+know it needs to be built.
 
-Philippe Mathieu-Daudé (2):
-  tests/functional: Introduce the dso_suffix() helper
-  tests/functional: Allow running TCG plugins tests on non-Linux/BSD
-    hosts
+Thus, we keep track of all plugins, and add them as an explicit
+dependency.
 
-Pierrick Bouvier (1):
-  plugins: add explicit dependency in functional tests
+Fixes: 4c134d07b9e ("tests: add a new set of tests to exercise plugins")
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ meson.build                   | 1 +
+ contrib/plugins/meson.build   | 2 ++
+ tests/functional/meson.build  | 2 +-
+ tests/tcg/plugins/meson.build | 2 ++
+ 4 files changed, 6 insertions(+), 1 deletion(-)
 
- meson.build                                  |  1 +
- contrib/plugins/meson.build                  |  2 ++
- tests/functional/meson.build                 |  2 +-
- tests/functional/qemu_test/__init__.py       |  2 +-
- tests/functional/qemu_test/cmd.py            |  1 -
- tests/functional/qemu_test/config.py         |  6 ++++++
- tests/functional/test_aarch64_tcg_plugins.py | 11 ++++++++---
- tests/tcg/plugins/meson.build                |  2 ++
- 8 files changed, 21 insertions(+), 6 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index 0ee79c664d3..4588bfd8642 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3657,6 +3657,7 @@ qtest_module_ss = ss.source_set()
+ 
+ modules = {}
+ target_modules = {}
++plugin_modules = []
+ hw_arch = {}
+ target_arch = {}
+ target_system_arch = {}
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index 484b9a808c8..fa8a426c8b5 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -26,3 +26,5 @@ if t.length() > 0
+ else
+   run_target('contrib-plugins', command: find_program('true'))
+ endif
++
++plugin_modules += t
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index b516d21cba1..2d41908c0a8 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -362,7 +362,7 @@ foreach speed : ['quick', 'thorough']
+       # 'run_target' logic below & in Makefile.include
+       test('func-' + testname,
+            python,
+-           depends: [test_deps, test_emulator, emulator_modules],
++           depends: [test_deps, test_emulator, emulator_modules, plugin_modules],
+            env: test_env,
+            args: [testpath],
+            protocol: 'tap',
+diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
+index 87a17d67bd4..c8cb0626a6d 100644
+--- a/tests/tcg/plugins/meson.build
++++ b/tests/tcg/plugins/meson.build
+@@ -19,3 +19,5 @@ if t.length() > 0
+ else
+   run_target('test-plugins', command: find_program('true'))
+ endif
++
++plugin_modules += t
 -- 
 2.47.1
 
