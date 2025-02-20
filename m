@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1FAA3D4C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 10:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5A6A3D4C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 10:31:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl2t8-0000rj-6J; Thu, 20 Feb 2025 04:30:35 -0500
+	id 1tl2tR-0001KJ-CM; Thu, 20 Feb 2025 04:30:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl2sv-0000Zq-UT
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 04:30:22 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl2tC-00018w-Hc
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 04:30:40 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl2st-0003lA-CX
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 04:30:21 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2f9d3d0f55dso1064016a91.1
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 01:30:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tl2t9-0003nq-Ik
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 04:30:38 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-220d39a5627so10011875ad.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 01:30:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740043818; x=1740648618; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740043834; x=1740648634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XvVsiU9gHWUTHtLBaCZuBn83g9TL7f813w+LHlaQeOA=;
- b=TKvcOZhL1f2Ri8icb+KZTXIiYzEOWqglsWUVncYMVmyN1+ZoMhqMbxU+IchVkDOP4A
- gbkZTRtMO2qZPaTRDpWDyhx6TBL7fnRyafsIpIaZMX6xL0JKJqZtTpI9NMtXF8KbUtdI
- RBF5JxT+aNKEzoMyzbbGogl3c7hq63st4HVXDJuRMiWlYpjM8TvuzRJ/l0sF8g6yb7fn
- oPVy0MYgwP9VTm1RF29qUUsZc54YwVNH5SqiD3afcUketqu2ek1LfqV9stF7nT3dgXY8
- 4bStXaNNbraoP6S5vpZvZY+ko9ujG4hhGcm5TOSSWiuuAXvl55CFW/RSVfVXrrRu7kct
- CSvA==
+ bh=GNUu0QLM1jJD6vp7svI4zxOCu3a+5YIL+dQ3Ih3Jc18=;
+ b=ccJG7RB/NrTPd4A8fwkC2nq6Of9c6sb9+p/yQVWN96xxDew2qKj+P+uVtGMnVq8TYH
+ Rxjs1mNByDoR8ze1hOedHRN8Hoe1t1pmLeafIPHWjMYiO+fVN6IPiqFNV22UGuiJ2I/2
+ v2Iw27Cr9iQQJK4w2U3V5JmQ+QdXLvykSd9leyP8S8a9FtJoZhVl8qKm1QQnTPMBYCLr
+ 19rhS2v3B85+F0Pz18FfgvSiFOoCMFHeBuRUlRBRzPoo/6bmGpF2KV/DhWRRHpmpXTrK
+ BTushJ+NIfwABfK35YQMZF/g0FG5DsOovewhJytWeVR2q7nZptjJ+rLr40izusOxoGCM
+ HJpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740043818; x=1740648618;
+ d=1e100.net; s=20230601; t=1740043834; x=1740648634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XvVsiU9gHWUTHtLBaCZuBn83g9TL7f813w+LHlaQeOA=;
- b=ku0qMN2eNPBc6CWidYSI+WBxFlBjnFdG4ku13fSYDajjuhtJLbrgn5mUtcN6+6i8L/
- Ahl8thLbOweyGce8UdfwppAb5VryfBE3NmPg2q3YEbFWyNK1tf6CxzhzBQGm5fms7geW
- yg6/zYPb0+CnBxvGbyeiy4n1rJ52EZElKpnYdQMdpHhWI+O2nAUolG/ZbI6YkultdTA7
- 2ZLa8mvYCUfRDw55ceit+66LHRcbYxH9lR3EHpzidEb0Nnr/UKOhb9tZfycej5s3VLpk
- fxI1NM12LDFYKY4FN1Ty65CVpG2J1BQQnw3B1WG9QplKA34acdoWlyUPpxhV6QJ80wwE
- Qq8A==
-X-Gm-Message-State: AOJu0YwEwGNuC5RwPtAZbNz0p3RVNsPK5AUYvL5BQ6AjY3uC/w13i93x
- 2KiiZZiQa1zKTTvgPN75+9oBLMYBppz0IAETENZtNDEfGil80J8V+k6SZ071OzJpL/Lm5M70qoi
- dMI0=
-X-Gm-Gg: ASbGnctY27/L/RSJaNHpIVtQCvFoen8v5DmMo52saWXOFb6Bef3zD5KE3vQrFmo/xUD
- 1WSUPw1xJb87SNKkg7spIOxZkrWgwMRKU5A2JbHFOeUoXPpD/ly+VsnAgQEJv3i30SjLKXP5Eh6
- V/YumplQl7tR5Gv2Zc95Pk4ptufxuwAe8XVJ2Bwx0j8AGVnkhgSqCfurlG4wEkRIXE7sIhoiCob
- ghhpGpSXjOMFgQFpgipZXEkfjNHLlimAGhmqnsAEyuyVi1U7uqoZNZ4+jF3EG1mDeRkk1jfYqpM
- S+p+6QgNm8l4uRyt0xSb1Bs0w/4de5kJqLGlur1D/nnEcavu/oOoQ/+6WV0cO3O1Sg==
-X-Google-Smtp-Source: AGHT+IHzI2BhsfiokxmBSO07mnhrE1lfDAUfHI43hrZrrWil5lel1nwpv/KfiUdjZbefthfEcx4r8A==
-X-Received: by 2002:a17:90b:2e45:b0:2ee:cdea:ad91 with SMTP id
- 98e67ed59e1d1-2fcb5a3681dmr11780241a91.15.1740043817688; 
- Thu, 20 Feb 2025 01:30:17 -0800 (PST)
+ bh=GNUu0QLM1jJD6vp7svI4zxOCu3a+5YIL+dQ3Ih3Jc18=;
+ b=CL0fAvBbzebOpmFUT8Mi8lBOI7mP00gbbiJLc9/yqEKxS49DJxMgca7Zh11AN3U6gb
+ KcuqRbJ+UkjyxdhsoZeAEWz4gPmW38bha1ViPeu1PzfIte7cEqwKuxuJLFyyQiaVZ4Ei
+ t7AqlXpgHN+S2/89RL70tXQO2tEYGFV0KqOhNp5bcE2tMvAaW9I/gTuUlZQr8EaZM37B
+ DcMZlLwLzHdlPK7A7W9W++52yV/W5cRFgYSbg3Kgghj65urwvZl05T5CUuG9Ypp15gZY
+ p+zafHeQRqR/tzapvg+yinw+0o9I1wxOgf21/VTeO1XZZaR7REoRgliVJ7HHVsa22nF0
+ IGtQ==
+X-Gm-Message-State: AOJu0YyBmpmAikHXPMaudwLvkgGTdDvpceBCQmzffFMeRwWnCLJuluf8
+ iIFnU7qvN++ZgGkzD9IqRGhIAdiNYr+RPNmuvNnKkScIYVeFVreiteKXx3XOEziAv8oqpujH7lY
+ fIxM=
+X-Gm-Gg: ASbGncvWFUEzv0Af5aqxq+UsnwYx2qm6TBSrm8tH7qTI3a44cTFUqK9R03gntF6SwNG
+ iQSRbTHCC85RwlOjK0e+opGomke3GVgeIi93Xd1NO5CqOObyeSbLcfVY9DVnIclE1NA14hTh6bV
+ bntmnKmKqx3tz1peIK39UZOGEJD95wk9tjN7DHPysgokVNzP4/Qilr9V7t8b07c/a9vkUCZUb3w
+ V6VUECt4rSj4BialE9YffxeaP4rUdMM2nqL5hqErIlxPUcAHdZe43pmh0UuN/ZDdJYpUwteZdWY
+ gZWxETCTo5xEnrj8xZ0iULMkWSK2GrR0ScQKK7lIgq8jSdHqX9jmcs58W3pKUClESg==
+X-Google-Smtp-Source: AGHT+IHtCdGVpk6l604E32RACxb+nA/F1wtoRn4fYgBQOiATMnUaayVbCelxsQJslZPg5LYVQHWVoQ==
+X-Received: by 2002:a05:6a00:21cc:b0:730:4c55:4fdf with SMTP id
+ d2e1a72fcca58-7341725faf9mr2898714b3a.7.1740043833647; 
+ Thu, 20 Feb 2025 01:30:33 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fbf98b4c45sm15328183a91.2.2025.02.20.01.30.10
+ d2e1a72fcca58-7324273c8a4sm13283568b3a.85.2025.02.20.01.30.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 20 Feb 2025 01:30:17 -0800 (PST)
+ Thu, 20 Feb 2025 01:30:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
@@ -72,17 +72,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc.michel@amd.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH v2 4/9] hw/char/pl011: Really use RX FIFO depth
-Date: Thu, 20 Feb 2025 10:28:57 +0100
-Message-ID: <20250220092903.3726-5-philmd@linaro.org>
+Subject: [PATCH v2 5/9] hw/char/bcm2835_aux: Really use RX FIFO depth
+Date: Thu, 20 Feb 2025 10:28:58 +0100
+Message-ID: <20250220092903.3726-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250220092903.3726-1-philmd@linaro.org>
 References: <20250220092903.3726-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,106 +105,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we model a 16-elements RX FIFO since the PL011 model was
-introduced in commit cdbdb648b7c ("ARM Versatile Platform Baseboard
-emulation"), we only read 1 char at a time!
+While we model a 8-elements RX FIFO since the BCM2835 AUX model
+was introduced in commit 97398d900ca ("bcm2835_aux: add emulation
+of BCM2835 AUX block") we only read 1 char at a time!
 
 Have the IOCanReadHandler handler return how many elements are
 available, and use that in the IOReadHandler handler.
 
-Example of FIFO better used by enabling the pl011 tracing events
-and running the tests/functional/test_aarch64_virt.py tests:
-
-  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
-  pl011_receive recv 5 chars
-  pl011_fifo_rx_put RX FIFO push char [0x72] 1/16 depth used
-  pl011_irq_state irq state 1
-  pl011_fifo_rx_put RX FIFO push char [0x6f] 2/16 depth used
-  pl011_fifo_rx_put RX FIFO push char [0x6f] 3/16 depth used
-  pl011_fifo_rx_put RX FIFO push char [0x74] 4/16 depth used
-  pl011_fifo_rx_put RX FIFO push char [0x0d] 5/16 depth used
-  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
-  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
-  pl011_write addr 0x038 value 0x00000050 reg IMSC
-  pl011_irq_state irq state 1
-  pl011_can_receive LCR 0x70, RX FIFO used 5/16, can_receive 11 chars
-  pl011_read addr 0x03c value 0x00000030 reg RIS
-  pl011_write addr 0x044 value 0x00000000 reg ICR
-  pl011_irq_state irq state 1
-  pl011_read addr 0x018 value 0x00000080 reg FR
-  pl011_read_fifo RX FIFO read, used 4/16
-  pl011_irq_state irq state 1
-  pl011_read addr 0x000 value 0x00000072 reg DR
-  pl011_can_receive LCR 0x70, RX FIFO used 4/16, can_receive 12 chars
-  pl011_read addr 0x018 value 0x00000080 reg FR
-  pl011_read_fifo RX FIFO read, used 3/16
-  pl011_irq_state irq state 1
-  pl011_read addr 0x000 value 0x0000006f reg DR
-  pl011_can_receive LCR 0x70, RX FIFO used 3/16, can_receive 13 chars
-  pl011_read addr 0x018 value 0x00000080 reg FR
-  pl011_read_fifo RX FIFO read, used 2/16
-  pl011_irq_state irq state 1
-  pl011_read addr 0x000 value 0x0000006f reg DR
-  pl011_can_receive LCR 0x70, RX FIFO used 2/16, can_receive 14 chars
-  pl011_read addr 0x018 value 0x00000080 reg FR
-  pl011_read_fifo RX FIFO read, used 1/16
-  pl011_irq_state irq state 1
-  pl011_read addr 0x000 value 0x00000074 reg DR
-  pl011_can_receive LCR 0x70, RX FIFO used 1/16, can_receive 15 chars
-  pl011_read addr 0x018 value 0x00000080 reg FR
-  pl011_read_fifo RX FIFO read, used 0/16
-  pl011_irq_state irq state 0
-  pl011_read addr 0x000 value 0x0000000d reg DR
-  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
-  pl011_read addr 0x018 value 0x00000090 reg FR
-  pl011_read addr 0x03c value 0x00000020 reg RIS
-  pl011_write addr 0x038 value 0x00000050 reg IMSC
-  pl011_irq_state irq state 0
-  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
-  pl011_can_receive LCR 0x70, RX FIFO used 0/16, can_receive 16 chars
-  pl011_read addr 0x018 value 0x00000090 reg FR
-  pl011_write addr 0x000 value 0x00000072 reg DR
-
-Inspired-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
 ---
- hw/char/pl011.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ hw/char/bcm2835_aux.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index f7485e7c541..23a9db8c57c 100644
---- a/hw/char/pl011.c
-+++ b/hw/char/pl011.c
-@@ -489,7 +489,6 @@ static int pl011_can_receive(void *opaque)
-     PL011State *s = (PL011State *)opaque;
-     unsigned fifo_depth = pl011_get_fifo_depth(s);
-     unsigned fifo_available = fifo_depth - s->read_count;
--    int r = fifo_available ? 1 : 0;
+diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
+index 73ad5934067..c6e7eccf7dd 100644
+--- a/hw/char/bcm2835_aux.c
++++ b/hw/char/bcm2835_aux.c
+@@ -221,7 +221,7 @@ static int bcm2835_aux_can_receive(void *opaque)
+ {
+     BCM2835AuxState *s = opaque;
  
-     if (!(s->cr & CR_UARTEN)) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-@@ -500,7 +499,8 @@ static int pl011_can_receive(void *opaque)
-                       "PL011 receiving data on disabled RX UART\n");
-     }
-     trace_pl011_can_receive(s->lcr, s->read_count, fifo_depth, fifo_available);
--    return r;
-+
-+    return fifo_available;
+-    return s->read_count < BCM2835_AUX_RX_FIFO_LEN;
++    return BCM2835_AUX_RX_FIFO_LEN - s->read_count;
  }
  
- static void pl011_receive(void *opaque, const uint8_t *buf, int size)
-@@ -515,7 +515,9 @@ static void pl011_receive(void *opaque, const uint8_t *buf, int size)
-         return;
-     }
+ static void bcm2835_aux_put_fifo(void *opaque, uint8_t value)
+@@ -243,7 +243,9 @@ static void bcm2835_aux_put_fifo(void *opaque, uint8_t value)
  
--    pl011_fifo_rx_put(opaque, *buf);
+ static void bcm2835_aux_receive(void *opaque, const uint8_t *buf, int size)
+ {
+-    bcm2835_aux_put_fifo(opaque, *buf);
 +    for (int i = 0; i < size; i++) {
-+        pl011_fifo_rx_put(opaque, buf[i]);
++        bcm2835_aux_put_fifo(opaque, buf[i]);
 +    }
  }
  
- static void pl011_event(void *opaque, QEMUChrEvent event)
+ static const MemoryRegionOps bcm2835_aux_ops = {
 -- 
 2.47.1
 
