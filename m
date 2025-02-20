@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9E9A3E06D
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565AAA3E078
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:23:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JJ-000770-8f; Thu, 20 Feb 2025 11:22:01 -0500
+	id 1tl9JK-00077p-KN; Thu, 20 Feb 2025 11:22:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JG-00076H-LG
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:58 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tl9JI-00076b-1s
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:22:00 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JE-0008Ee-6U
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:58 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38f2f783e4dso1015675f8f.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:55 -0800 (PST)
+ id 1tl9JG-0008Ez-6V
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:59 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso7503045e9.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068514; x=1740673314; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068517; x=1740673317; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3YcYYepdVZAM4ELbnew2IIQe2TLsAeYlAjh/W6oMXKo=;
- b=CyXVwHJl3PwTAnXE5iI72AKvROAjbUPCGqiiUKBpdA4iAsnB0hpqrZoro4bclhGYCF
- kC7OcUb06QnLtpU2BvghrVhYhi6HjFXRN3EtgRcoS16MLS6wRJS+PH6fD1t49knPvP09
- YBanw3N7Kva4wIddujbP3ZIv030fCEC+REgvdK88xPWmUxfkGWVlrgHQ54Feqv34DSt1
- 2zVI8T/CSNqyGNiHW9KQCWlBxgASaQ+hpHmwZmCgFGAdKBUzffb2hT5vOLA7Ev3L8GWN
- uyeMG5zNIHmTcoh0rB3sQI7gzZfLwhH6xN06ipQCfSedn3ixrtnhYHrLqf4jyHSuPp8p
- /xYA==
+ :reply-to; bh=RN4feOr7qTvutqZQVG2BW1YcXuGPMb4XmE2WtQfDC0Q=;
+ b=QrkiL8nINFPvaXig7afB7ifx9fYNOxa1zhXQ9nqyU/dMc7tF4jEkGfO8aesJd1FUCV
+ C/b/lMr1Tmf5n4WY60YLMQyyE/cxOFDDb92pEVPImAWy1NYnkOA9Ifo9GvzaX9KklKOP
+ taeTXwCt/ge3ENSgHFKz891fmo3vXQPbGU/yvLW4oSMDqYX5+mpXQXdRRLIMKc/kKe6x
+ 9hvTQ9EKnJDGthwCQyYSs3orotIZ455iif70BSsiwZlj0EJTP8ubWV5e0umD43NWs7w6
+ W/v77RwiwH/3kY4aK2YoUWdV6iEk5zZPqzL9WjhFea6Lt2Lke2Ouj29+ScZwF4Xh66Ga
+ QPpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068514; x=1740673314;
+ d=1e100.net; s=20230601; t=1740068517; x=1740673317;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3YcYYepdVZAM4ELbnew2IIQe2TLsAeYlAjh/W6oMXKo=;
- b=d91Os/dP0dU2KBtOU5LYexUEAZnMahqQAyyuaq/uX5J4ZxtCdQMpFPsIMUzXa449hB
- sPdfT//zxDqpLuck40mMSmXWlaSLS9ZyuvV+TQAHssYpT+zVT01BYgGnuQBhVoNPmIrE
- Dqb67rzQ7b2zp+ZAhSYPyjDeL20QrI5pPE+8nor2612ueFb/sdPLT60j7z+ndrJlA68Y
- rAKbyZpEUHY+XfYqfCAvPmS2uXYhqgPgpzY9zdWjIs3UrYno7R5BuucijerkTwir/XQU
- UPXR2GTZtEJS+0oRyvAUvMHXccg3dIkY5c4MDE+AfdrFdTzXVSOiB71OFODfctzb8LUd
- Ma9w==
-X-Gm-Message-State: AOJu0YzA1oQR1tnb5oqee25ee+zp0JAkaP08she4x6w+fxxxIWioK9cb
- 3Jrm0BltZjtRZmNcg0JVgTV8ZGjXUselmSSHTlPm6z6xO61WgRNjSWICPQXkPZS3Lg2kL+Z7w9o
- 5
-X-Gm-Gg: ASbGncuZCLBFIXkak+xi8NnMUhI9UKlFd2L9ZrUURGJE1+DgLwqRgyG3sieWTGrdhQK
- RZqMDKd1wg/fmXIQEYV/nnozOooJNY0iTkpOd4reurpBym4AqBaHrAm/4W753+2MWYqpj3AaCTX
- 6h6ym8KiE0IOhJVi0oCWWlW/TvGKCOKndVki88vYJ3XKVzfriYhuFi1hj+lysTufvmkba92DPiJ
- DqZk5nOF1ToC4HajoYmnc0ElHZAcpPaUm7vGkImGToEilbJkh7AtezDuhaXv519lY/lJ2kgjUdn
- KBK/V3Fhx93/qvtXgRHyng==
-X-Google-Smtp-Source: AGHT+IEKo+axCqEKC2pyTUx+fbnxOk1wdgV5jjJitH6nUCHx6aa9anrIBLmzZ3xs2bRT8PmU0Is0Jg==
-X-Received: by 2002:a5d:4002:0:b0:38f:31fe:6d4f with SMTP id
- ffacd0b85a97d-38f587ca5dfmr6060572f8f.34.1740068514504; 
- Thu, 20 Feb 2025 08:21:54 -0800 (PST)
+ bh=RN4feOr7qTvutqZQVG2BW1YcXuGPMb4XmE2WtQfDC0Q=;
+ b=fHwAmAbAgqPU+nUJ4d96KDIznpCFDnJPiC/Cdj0g4cmDifni/XHeJBg2kJkRkWRbK9
+ cIWm4KDjuc8eYtDg64OP6/rw97jL24v0ZTCG7SYaTQoVgNIjf87RGWwDx3I9kR5s7EYM
+ qwCIFVkAEKoz7i1R10mQbFvgwGuFxOg445VKCX42VgBpDPMJt1NvJEoI3l6U5kswGrIk
+ vIjN55GJoS6VP5hpfUahXKe/p4x+SH/uPd8xniymOp3u73jFLoaWj08b2xnNDdb6ZtHW
+ lH34AOjMpcNtmv3RgCuIkSIKnOEzFQ7G2Szh5tVlAtYKArzPcopiKpgAqU63+qK/libm
+ XCxA==
+X-Gm-Message-State: AOJu0YzFtqGwdp4Q6qspegUGc+r1LO/Mo/5mdTIN2aruw0Kt6liosDB+
+ VBADxBCqpgkH0JevQFRVVKY2FgwbicOi38Z+cpgs1xmFHu5zjpuIeRMkB7UaFgxg1nKjo6UvgAg
+ E
+X-Gm-Gg: ASbGncve0kDSl0dKgWeTyCfip8WXpmEvsmdTS8MC/UT69W3o+4w0UJ21rGjmHdhL5yf
+ vpMjpYZZYcDZdcbHmG9sWUC11h+wRLwWUvXmM60mfjSZlWFBmGz3zEsxEIta01kAteXbCSKHtmP
+ 5cZO7hHHFruJQUBLZVtzC60QBiZdLTIsBr8kZJeMrF24PNBMQKw2wofDRRLNqAtki9uZ0cS1HNm
+ 4gHUTjTQXmTIGYyFWsDJY+SUmUuTQUkggcVTqlnbXPxntLz0B2qc8JozYtSgfY624lSoqAcg1dQ
+ 9HMLYp6/l/YnHrHWUNuFWg==
+X-Google-Smtp-Source: AGHT+IGwJbWcKPQr9p7wNn+1wchRr+P28IOXofDyAEFPPMT0A8mw1an7Gtd9q71ZQQcZmdUF7lVufw==
+X-Received: by 2002:a05:600c:354b:b0:439:9e13:2dd0 with SMTP id
+ 5b1f17b1804b1-4399e132f5dmr65697345e9.6.1740068516705; 
+ Thu, 20 Feb 2025 08:21:56 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.53
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:53 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:55 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/41] target/arm: Use uint32_t in t32_expandimm_imm()
-Date: Thu, 20 Feb 2025 16:21:05 +0000
-Message-ID: <20250220162123.626941-25-peter.maydell@linaro.org>
+Subject: [PULL 25/41] roms: Update vbootrom to 1287b6e
+Date: Thu, 20 Feb 2025 16:21:06 +0000
+Message-ID: <20250220162123.626941-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stephen Longfield <slongfield@google.com>
+From: Hao Wu <wuhaotsh@google.com>
 
-In t32_expandimm_imm(), we take an 8 bit value XY and construct a
-32-bit value which might be of the form XY, 00XY00XY, XY00XY00, or
-XYXYXYXY.  We do this with multiplications, and we use an 'int' type.
-For the cases where we're setting the high byte of the 32-bit value
-to XY, this means that we do an integer multiplication that might
-overflow, and rely on the -fwrapv semantics to keep this from being
-undefined behaviour.
+This newer vbootrom supports NPCM8xx. Similar to the NPCM7XX one
+it supports loading the UBoot from the SPI device and not more.
 
-It's clearer to use an unsigned type here, because we're really
-doing operations on the value considered as a set of bits. The
-result is the same.
+We updated the npcm7xx bootrom to be compiled from this version.
 
-The return value from the function remains 'int', because this
-is a decodetree !function function, and follows the API for those
-functions.
-
-Signed-off-by: Stephen Longfield <slongfield@google.com>
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Message-id: 20250219165534.3387376-1-slongfield@google.com
-[PMM: Rewrote the commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Hao Wu <wuhaotsh@google.com>
+Message-id: 20250219184609.1839281-2-wuhaotsh@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ pc-bios/npcm7xx_bootrom.bin | Bin 768 -> 768 bytes
+ roms/vbootrom               |   2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 68ac3934153..d8225b77c8c 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -3510,7 +3510,7 @@ static int t32_expandimm_rot(DisasContext *s, int x)
- /* Return the unrotated immediate from T32ExpandImm.  */
- static int t32_expandimm_imm(DisasContext *s, int x)
- {
--    int imm = extract32(x, 0, 8);
-+    uint32_t imm = extract32(x, 0, 8);
- 
-     switch (extract32(x, 8, 4)) {
-     case 0: /* XY */
+diff --git a/pc-bios/npcm7xx_bootrom.bin b/pc-bios/npcm7xx_bootrom.bin
+index 38f89d1b97b0c2e133af2a9fbed0521be132065b..903f126636f9ef5d1100c056656ccfb2b32e5e10 100644
+GIT binary patch
+delta 90
+zcmZo*Yhc^(l+nU*!D9x6DNkDr=09a-2ztoGz`#|*F#jn7L;r()|Np;c0m>C1$z?$0
+Ywog`Ma%Vh0Ig_b-VgU<}A_D>d06Rh+WdHyG
+
+delta 69
+zcmZo*Yhc^(lu^NO!D9x2$xoRb7CdZGnE#ZCA@Cs+0|QqL!~CZV4E+!GPG)41X52Pe
+SmdTy*+~icIZXQJj1ONb5*AzJb
+
+diff --git a/roms/vbootrom b/roms/vbootrom
+index 0c37a43527f..1287b6e42e8 160000
+--- a/roms/vbootrom
++++ b/roms/vbootrom
+@@ -1 +1 @@
+-Subproject commit 0c37a43527f0ee2b9584e7fb2fdc805e902635ac
++Subproject commit 1287b6e42e839ba2ab0f06268c5b53ae60df3537
 -- 
 2.43.0
 
