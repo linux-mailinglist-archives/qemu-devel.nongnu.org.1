@@ -2,72 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D18A3D6F6
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 11:41:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F3BA3D79C
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 12:00:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl3yt-00049z-Qg; Thu, 20 Feb 2025 05:40:35 -0500
+	id 1tl4HY-0001hb-Kq; Thu, 20 Feb 2025 05:59:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl3yX-00047N-4Z
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:40:14 -0500
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1tl4HW-0001gy-Dm
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:59:50 -0500
+Received: from fout-a7-smtp.messagingengine.com ([103.168.172.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tl3yT-0007WI-34
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:40:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740048009; x=1771584009;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=TdzYaPLHZ16bLzvmwwZ5c+AojcvTSJL6pVcmyKLeuvE=;
- b=MyfKFDuql709ZZuEvVk0S2QZxq9+LRvzXP8qjGyUlnKWWmhgDhYHOpib
- qTBSyLuzh6++W9U9bqV4CS/2bkadYR7h1eQamqexoXvH8LPR4i+5Xw+kM
- Y0B0OWL97iPvv2WA4QE7w7wVzhGThwiUGb0nfmKMl0y6zcgXpnb6I3R7b
- 9yMykQzUiAz88L7fqMZzB3KrZUZCoVbnuw/iA1F5pMAv6/5wLVdb0yppR
- eM7Sp0Cg0n/SpcDV2xZP69GRr0pKBrzJkE8hr0rEl7elxfyI8CbhpexW6
- p0ECWc46uEAbOOV3/vERsXwS8gGPawkhs7W+zhv3WCIzMeKsHhhfvdz+x w==;
-X-CSE-ConnectionGUID: RKCsUKGaS+S/Bt4ct2Xxrw==
-X-CSE-MsgGUID: fv2QgriTTl649X66m8K0Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="41076446"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; d="scan'208";a="41076446"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2025 02:40:02 -0800
-X-CSE-ConnectionGUID: 4Io3i1pjTgiuFU3HtpbDOw==
-X-CSE-MsgGUID: Yo7MKmgDTMi9F1FsY5heQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="114856938"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 20 Feb 2025 02:40:00 -0800
-Date: Thu, 20 Feb 2025 18:59:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
- davydov-max@yandex-team.ru
-Subject: Re: [PATCH v5 1/6] target/i386: Update EPYC CPU model for Cache
- property, RAS, SVM feature bits
-Message-ID: <Z7cLFrIPmrUGuqp4@intel.com>
-References: <cover.1738869208.git.babu.moger@amd.com>
- <c777bf763a636c8922164a174685b4f03864452f.1738869208.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1tl4HU-0001nE-Eb
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 05:59:50 -0500
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfout.phl.internal (Postfix) with ESMTP id E98971380A25;
+ Thu, 20 Feb 2025 05:59:45 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+ by phl-compute-06.internal (MEProxy); Thu, 20 Feb 2025 05:59:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm2; t=1740049185; x=1740135585; bh=N+dDY/2AGx
+ dycnIPXWfPFjiWgoo6WSgHy9EejcNRf/Y=; b=SvHSVZN6I0h68MSQ/2Pdl88Wn/
+ YGs1NpNsM+JJbkaJw+F8FYzJ6X2IfsQEWnOdibrC1z7eZaPLPmB6/E4O0Pq/KaSk
+ HmBDc3C2dAdgdPln/KX98nOcf2kD1UNZbSyFmvo1Pjdr0DgDt3cMM+6SodraIi7F
+ /2IvSs6bDV/d0X+gHfs5d0bbG4wz2u9ww4OtWeJ4+bd5B0O2lHLYgQfQCdiWAhXM
+ JyBi+J/r9QLwnGgF9cAPuJ881nypbcJ2z1smwvFLN4/f5SYtHyAwfoPwswNmbWix
+ 8iBn3DxUsETa8RP+oR4/hDv1CbqCDIHsou17siXqtIZklYdbdOBK6e08Vomg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+ 1740049185; x=1740135585; bh=N+dDY/2AGxdycnIPXWfPFjiWgoo6WSgHy9E
+ ejcNRf/Y=; b=bdHjmBjW9uz7pFXxsCGHGt3jSmwgMu9dGMusXP4vUVgbJ1tHihn
+ pKBWadu2wFZH7AVZHKvWcg1n/MIO3BC8AFIP/iUbghu81UZn7+j52+eg9F7ZqQhd
+ y7X6qqTU92b4eY0VJ2QGN0YGe1l8EiFrBbarfcspI2Qxfd61b+o6MH7RjbLheQc9
+ N9tbArz2WdgxkvXaINhkNlEbrahHt1omTP8GgwsGbXpMbx/DOgWnBeGobFDXgTEq
+ cyBDAMddhfxTOOVK0XwEAv/0T0LXPvooUbTgk8g3+/q3WMxybi9iumES4VAEbeSz
+ s/0ph12NAYntPeX17QKmCmaJwUtko5ldeHg==
+X-ME-Sender: <xms:IQu3Z_0xWstBc04sw0X0nOZCn9O6UJpG69dYxwYWhUco1mbswz1awg>
+ <xme:IQu3Z-GygmFttAHgZDRCmPjY8ll8POJJxCj8kDaSMlEaOX6r3m3nAOBXDVN6kjRC5
+ da26PnkPJ8pBfXj-w>
+X-ME-Received: <xmr:IQu3Z_6nKO4nGIH6QqgDjv9tzpNGdNo87mhiN4DfagPaD_3UhKGj9HrLPOOwlGg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiieeliecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+ uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+ hnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttden
+ ucfhrhhomheptehlhihsshgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecugg
+ ftrfgrthhtvghrnhepieduffeuieelgfetgfdttddtkeekheekgfehkedufeevteegfeei
+ ffetvdetueevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+ homhephhhisegrlhihshhsrgdrihhspdhnsggprhgtphhtthhopedutddpmhhouggvpehs
+ mhhtphhouhhtpdhrtghpthhtohepshhtvghvvghnshgusegthhhrohhmihhumhdrohhrgh
+ dprhgtphhtthhopegrlhgvgidrsggvnhhnvggvsehlihhnrghrohdrohhrghdprhgtphht
+ thhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtoheprggvsh
+ htvghvvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvughhrght
+ rdgtohhmpdhrtghpthhtohepjhgrshhofigrnhhgsehrvgguhhgrthdrtghomhdprhgtph
+ htthhopehmshhtsehrvgguhhgrthdrtghomhdprhgtphhtthhopehsghgrrhiirghrvges
+ rhgvughhrghtrdgtohhmpdhrtghpthhtohepshhlphesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:IQu3Z00nSVU_WDr77iOm6K2nLQvsIoDtpSy8FqEVjSDkjISm7tNlMw>
+ <xmx:IQu3ZyGutEaGqHkwi3mTavJIcpZASlH01axTXzxSZQwG1iMMaXUJ1Q>
+ <xmx:IQu3Z19mshRs_pelRgVAjAIkqiaBeAYAcbw5RaXmw15t9uOYDwDrAQ>
+ <xmx:IQu3Z_mBIEwsiq9w2Gk6g0_lnuf8yNtcPntLGciqYUkDH9f4T2oFPg>
+ <xmx:IQu3Z68KlzTQXRIqGaXDSem03Gs7Zw9qy9fbEWt_tr1TQgtCSlHFngWH>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Feb 2025 05:59:45 -0500 (EST)
+Received: by mbp.qyliss.net (Postfix, from userid 1000)
+ id 82703FC23; Thu, 20 Feb 2025 11:59:44 +0100 (CET)
+From: Alyssa Ross <hi@alyssa.is>
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: slp@redhat.com, stevensd@chromium.org, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Stefano Garzarella <sgarzare@redhat.com>,
+ stefanha@redhat.com, david@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH v4 1/9] vhost-user: Add VirtIO Shared Memory map request
+In-Reply-To: <20250217164012.246727-2-aesteve@redhat.com>
+References: <20250217164012.246727-1-aesteve@redhat.com>
+ <20250217164012.246727-2-aesteve@redhat.com>
+Date: Thu, 20 Feb 2025 11:59:42 +0100
+Message-ID: <875xl4g9up.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c777bf763a636c8922164a174685b4f03864452f.1738869208.git.babu.moger@amd.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.191,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=103.168.172.150; envelope-from=hi@alyssa.is;
+ helo=fout-a7-smtp.messagingengine.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,81 +113,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> +static CPUCaches epyc_v5_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-For consistency as the below parts, it's better to code `true` for all
-boolean types.
+Albert Esteve <aesteve@redhat.com> writes:
 
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 64 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 4,
-> +        .partitions = 1,
-> +        .sets = 256,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+> @@ -192,6 +194,24 @@ typedef struct VhostUserShared {
+>      unsigned char uuid[16];
+>  } VhostUserShared;
+>=20=20
+> +/* For the flags field of VhostUserMMap */
+> +#define VHOST_USER_FLAG_MAP_R (1u << 0)
+> +#define VHOST_USER_FLAG_MAP_W (1u << 1)
+> +
+> +typedef struct {
+> +    /* VIRTIO Shared Memory Region ID */
+> +    uint8_t shmid;
+> +    uint8_t padding[7];
+> +    /* File offset */
+> +    uint64_t fd_offset;
+> +    /* Offset within the VIRTIO Shared Memory Region */
+> +    uint64_t shm_offset;
+> +    /* Size of the mapping */
+> +    uint64_t len;
+> +    /* Flags for the mmap operation, from VHOST_USER_FLAG_* */
 
-ditto.
+Perhaps this should say VHOST_USER_FLAG_MAP_*?
 
-Others are fine for me, so,
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+-----BEGIN PGP SIGNATURE-----
 
-
-And one more thing :-) ...
-
->  static const CPUCaches epyc_rome_cache_info = {
->      .l1d_cache = &(CPUCacheInfo) {
->          .type = DATA_CACHE,
-> @@ -5207,6 +5261,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
->                  },
->                  .cache_info = &epyc_v4_cache_info
->              },
-> +            {
-> +                .version = 5,
-> +                .props = (PropValue[]) {
-> +                    { "overflow-recov", "on" },
-> +                    { "succor", "on" },
-
-When I checks the "overflow-recov" and "succor" enabling, I find these 2
-bits are set unconditionally.
-
-I'm not sure if all AMD platforms support both bits, do you think it's
-necessary to check the host support?
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c749d4ee812..03e463076632 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -555,7 +555,10 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-         cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
-         ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
-     } else if (function == 0x80000007 && reg == R_EBX) {
--        ret |= CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR;
-+        uint32_t ebx;
-+        host_cpuid(0x80000007, 0, &unused, &ebx, &unused, &unused);
-+
-+        ret |= ebx & (CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR);
-     } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
-         /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
-          * be enabled without the in-kernel irqchip
-
-Thanks,
-Zhao
-
-
+iHUEARYKAB0WIQRV/neXydHjZma5XLJbRZGEIw/wogUCZ7cLHgAKCRBbRZGEIw/w
+ovsoAQCxIVgK8Xu7gTQHiPNvEdXy2PiRgvXId1iLa0dsTb8vKgEAreWkqJhjCGqs
+Ma1YwlzhsSa0XDJM/Pl71xx/6S3D5QU=
+=eNch
+-----END PGP SIGNATURE-----
+--=-=-=--
 
