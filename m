@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA800A3E7C4
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C612A3E7C2
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 23:50:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlFMq-0000Yi-Ie; Thu, 20 Feb 2025 17:50:04 -0500
+	id 1tlFMr-0000Yy-F9; Thu, 20 Feb 2025 17:50:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tlFMk-0000XP-OV
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 17:49:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tlFMm-0000XY-RS
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 17:50:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tlFMf-0007hm-Dj
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 17:49:56 -0500
+ id 1tlFMh-0007hu-5P
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 17:49:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740091789;
+ s=mimecast20190719; t=1740091791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x4pil+FFOtCHQf6mgPot6uTTHB4hZ4tMdvTaFofwbSs=;
- b=Rt+LZWYcQHaXNgmMP2XzmTOXVjwkRzYEl1F2Ml4IYWVcKwTDfNVvNwPGxsTGWYL8YKSB54
- RFmIN0ybtPI7h9kdoyiX9ENew+n3o4QmxSQ4soiUQz/M5APurY9Ag+PxT6Fww//9tckGLm
- RrTMn8BGlfpOqNFMzYElYB7EkwEkRYg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=SdW+F9nLbuh43lolz8i1mClmo2y6BBEvnDC5JPHDA3M=;
+ b=aO47mdnHLJZrdv9JvltKIzflh1WTSQcCMly6uO+awdwKGMAtsXrD3dp+P/6f+kWO8UQrb8
+ CEfD+XRzPi+u5fq9hLwIy5fGtbswsKoXmUlol4jSYohci1H4fuo05EWGK+IL+2GhtmUbSx
+ Rg9/Zv69RSTHy2KUMMAAAbod9zc4CCA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-GlCbKZqyOyevru8S8ytbrw-1; Thu,
- 20 Feb 2025 17:49:45 -0500
-X-MC-Unique: GlCbKZqyOyevru8S8ytbrw-1
-X-Mimecast-MFC-AGG-ID: GlCbKZqyOyevru8S8ytbrw_1740091784
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-22JjGaJ4ObSKS6_Eq7GFZg-1; Thu,
+ 20 Feb 2025 17:49:48 -0500
+X-MC-Unique: 22JjGaJ4ObSKS6_Eq7GFZg-1
+X-Mimecast-MFC-AGG-ID: 22JjGaJ4ObSKS6_Eq7GFZg_1740091787
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C709C1800871; Thu, 20 Feb 2025 22:49:44 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E81BA1955F28; Thu, 20 Feb 2025 22:49:46 +0000 (UTC)
 Received: from omen.home.shazbot.org (unknown [10.22.88.77])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DF2D71944CC4; Thu, 20 Feb 2025 22:49:42 +0000 (UTC)
+ id 39F321955BCB; Thu, 20 Feb 2025 22:49:44 +0000 (UTC)
 From: Alex Williamson <alex.williamson@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>, eric.auger.pro@gmail.com,
  eric.auger@redhat.com, clg@redhat.com, zhenzhong.duan@intel.com,
  mst@redhat.com, marcel.apfelbaum@gmail.com
-Subject: [PATCH 3/5] vfio/pci: Delete local pm_cap
-Date: Thu, 20 Feb 2025 15:48:56 -0700
-Message-ID: <20250220224918.2520417-4-alex.williamson@redhat.com>
+Subject: [PATCH 4/5] pcie, virtio: Remove redundant pm_cap
+Date: Thu, 20 Feb 2025 15:48:57 -0700
+Message-ID: <20250220224918.2520417-5-alex.williamson@redhat.com>
 In-Reply-To: <20250220224918.2520417-1-alex.williamson@redhat.com>
 References: <20250220224918.2520417-1-alex.williamson@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -67,7 +66,7 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,61 +84,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is now redundant to PCIDevice.pm_cap.
+The pm_cap on the PCIExpressDevice object can be distilled down
+to the new instance on the PCIDevice object.
 
-Cc: Cédric Le Goater <clg@redhat.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/vfio/pci.c | 9 ++++-----
- hw/vfio/pci.h | 1 -
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ hw/pci-bridge/pcie_pci_bridge.c | 1 -
+ hw/virtio/virtio-pci.c          | 8 +++-----
+ include/hw/pci/pcie.h           | 2 --
+ 3 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 6903f831e45f..ba4ef65b16fa 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2215,7 +2215,6 @@ static bool vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
-         break;
-     case PCI_CAP_ID_PM:
-         vfio_check_pm_reset(vdev, pos);
--        vdev->pm_cap = pos;
-         ret = pci_pm_init(pdev, pos, errp) >= 0;
-         break;
-     case PCI_CAP_ID_AF:
-@@ -2407,17 +2406,17 @@ void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-     vfio_disable_interrupts(vdev);
+diff --git a/hw/pci-bridge/pcie_pci_bridge.c b/hw/pci-bridge/pcie_pci_bridge.c
+index 9fa656b43b42..2429503cfbbf 100644
+--- a/hw/pci-bridge/pcie_pci_bridge.c
++++ b/hw/pci-bridge/pcie_pci_bridge.c
+@@ -56,7 +56,6 @@ static void pcie_pci_bridge_realize(PCIDevice *d, Error **errp)
+     if (pos < 0) {
+         goto pm_error;
+     }
+-    d->exp.pm_cap = pos;
+     pci_set_word(d->config + pos + PCI_PM_PMC, 0x3);
  
-     /* Make sure the device is in D0 */
--    if (vdev->pm_cap) {
-+    if (pdev->pm_cap) {
-         uint16_t pmcsr;
-         uint8_t state;
+     pcie_cap_arifwd_init(d);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index afe8b5551c5c..3ca3f849d391 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2209,8 +2209,6 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+             return;
+         }
  
--        pmcsr = vfio_pci_read_config(pdev, vdev->pm_cap + PCI_PM_CTRL, 2);
-+        pmcsr = vfio_pci_read_config(pdev, pdev->pm_cap + PCI_PM_CTRL, 2);
-         state = pmcsr & PCI_PM_CTRL_STATE_MASK;
-         if (state) {
-             pmcsr &= ~PCI_PM_CTRL_STATE_MASK;
--            vfio_pci_write_config(pdev, vdev->pm_cap + PCI_PM_CTRL, pmcsr, 2);
-+            vfio_pci_write_config(pdev, pdev->pm_cap + PCI_PM_CTRL, pmcsr, 2);
-             /* vfio handles the necessary delay here */
--            pmcsr = vfio_pci_read_config(pdev, vdev->pm_cap + PCI_PM_CTRL, 2);
-+            pmcsr = vfio_pci_read_config(pdev, pdev->pm_cap + PCI_PM_CTRL, 2);
-             state = pmcsr & PCI_PM_CTRL_STATE_MASK;
-             if (state) {
-                 error_report("vfio: Unable to power on device, stuck in D%d",
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 43c166680abb..d638c781f6f1 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -160,7 +160,6 @@ struct VFIOPCIDevice {
-     int32_t bootindex;
-     uint32_t igd_gms;
-     OffAutoPCIBAR msix_relo;
+-        pci_dev->exp.pm_cap = pos;
+-
+         /*
+          * Indicates that this function complies with revision 1.2 of the
+          * PCI Power Management Interface Specification.
+@@ -2309,11 +2307,11 @@ static bool virtio_pci_no_soft_reset(PCIDevice *dev)
+ {
+     uint16_t pmcsr;
+ 
+-    if (!pci_is_express(dev) || !dev->exp.pm_cap) {
++    if (!pci_is_express(dev) || !(dev->cap_present & QEMU_PCI_CAP_PM)) {
+         return false;
+     }
+ 
+-    pmcsr = pci_get_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL);
++    pmcsr = pci_get_word(dev->config + dev->pm_cap + PCI_PM_CTRL);
+ 
+     /*
+      * When No_Soft_Reset bit is set and the device
+@@ -2342,7 +2340,7 @@ static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
+ 
+         if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
+             pci_word_test_and_clear_mask(
+-                dev->config + dev->exp.pm_cap + PCI_PM_CTRL,
++                dev->config + dev->pm_cap + PCI_PM_CTRL,
+                 PCI_PM_CTRL_STATE_MASK);
+         }
+     }
+diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
+index b8d59732bc63..70a5de09de39 100644
+--- a/include/hw/pci/pcie.h
++++ b/include/hw/pci/pcie.h
+@@ -58,8 +58,6 @@ typedef enum {
+ struct PCIExpressDevice {
+     /* Offset of express capability in config space */
+     uint8_t exp_cap;
+-    /* Offset of Power Management capability in config space */
 -    uint8_t pm_cap;
-     uint8_t nv_gpudirect_clique;
-     bool pci_aer;
-     bool req_enabled;
+ 
+     /* SLOT */
+     bool hpev_notified; /* Logical AND of conditions for hot plug event.
 -- 
 2.48.1
 
