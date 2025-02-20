@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D83A3E087
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C41CA3E05F
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JE-000756-Ka; Thu, 20 Feb 2025 11:21:56 -0500
+	id 1tl9JH-00076T-JY; Thu, 20 Feb 2025 11:21:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JC-000734-OE
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:54 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1tl9JD-00074f-Gl
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:55 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JA-0008E0-WE
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:54 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-38f2cb1ba55so925909f8f.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:52 -0800 (PST)
+ id 1tl9JB-0008E8-L3
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:55 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-439350f1a0bso7457865e9.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068511; x=1740673311; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068512; x=1740673312; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=opo/VbCWAt6C9nedTKj6phlEP8OT20gT2thgOlL0CK8=;
- b=AiEcP6hvs4ErkKNHAM6RNOj80kX+M+Weczi9O2+u0xWzGLNpPC/HhpHQ07aP915sAQ
- pVYEgWXDStjsfyRGn3BypfkTsX93w8BMVAIf8IJTnRCtc/AaeDo9eum2ObHB3PI4yGPz
- PIWNh4VyeNTWLzSlg5x+9oGChDnhZnyJPhcKKp2d79B+gERsH/7XguLwBmxLW4hTOVzj
- RM4kZTE83z7Zd1HUl9Fecy15tqQ93sps6dWiVvroRxZHAxJFnBVWD4RX+vYSQOGv7XMR
- FN+6tWG7r/CPz1XFVUtAVPa4c/KhKdtaiHEE+J6fsWJNUwzdOXDX6nKfBVD8mrEI+Fv4
- yKHg==
+ :reply-to; bh=O/XiTl783bAz5rJgPI//LorE7cXWW1yZR5SkkLi5r0c=;
+ b=ZCbGG3WdtrXRkojh2OLV18GgJT01AreRzVJjjS0MGsr2U4Y/2b16zui/P5PjGlxXaA
+ 93OXo5os50jgNQ9IIf6Mvm0AYsf385daNftsMXPGX7wp+SmnWmviu1rt+OTsw8/tZb9z
+ YaXySzIFe5kPQHB57edLUM9+0W1g4OtvU0s6UpUvE49WtGv5N19IUf2NAIm5ccztZNoM
+ 6i8rSzkC3TEYBvbI97QmADA0XWjwPrw9XW+VW394ymguuyHRUrdQ73oSW05P1upVShng
+ pJRXYWoScGrtIqf7vhQMoDlQ8AoKvfzS0+bXCPTik0kXjnDsXHhrzYIOnX43npELlQta
+ nYVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068511; x=1740673311;
+ d=1e100.net; s=20230601; t=1740068512; x=1740673312;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=opo/VbCWAt6C9nedTKj6phlEP8OT20gT2thgOlL0CK8=;
- b=F2D1W2PULFPqxbtFOf+rTR6Ke5reRoyNZ5T4SGNX7eml1UbfUNE5MpA8R7nc95io0I
- pzOB83cIWgHTAMhOb/Y2RyIW0ulsr517Mqx2Z1s1lezv00cS/Li6bjr0S23Lt5urxAGP
- F9S4rZFlu7VZ06Ai9Q+944Ng1mdvg8gHKYsbP0QPXtjHb/m0udviOoCR637DLOPa+p7d
- QJeH777msmguNyrs+8E/R4XKVGhSPXGOcM7wz+IWDd7HRuArAQ0TcBa3qBCDTt+z4zsI
- djvWPKWUBeJkfl1zC43hSDoDJ62CdaIAAB7w7RQGKDfI48kgf7NQAV8puOxLdMe9Wjjs
- r5/Q==
-X-Gm-Message-State: AOJu0YxXYVBg59wq4oAH9zKJ2EVF6rqXBJrpohvv36oj2ZyR/6qyP9f5
- 8n4NTFx0KhpEtTlUSZXhSuuYuvkdnZ7Zl8dl16Y2aLPbFCTDKlj1PY0rK/x9i2kVtcQ8XkIvxa+
- v
-X-Gm-Gg: ASbGncvcMjNj27KS066/UbR/W8lcUMKoaHWv6ziRifrHWQ5b2n9HdTMOXSQ5KNb0Ir6
- gkBlXuWDJZ6iZ22aY6pDgywwey6ZLR44gmVtACulmYr0E5UvrEFWE8xzOMvmWk464Vb9bPFaPqF
- 0BfKu6rVMxSnRKVvUWxI9s+yC/JXcLVkDTc3wXWV0kagP2ERgfCySwdDFsqC2ACAsvwa4cInzbS
- U/ji9wgLwe/dCbR4jpqb33sMenPh7xdj9O2rHrnYXrMQ++YyRd90TqU2PlIYU11kFP3zTkRif0U
- F0W8fim/NYY+waJLnbodXg==
-X-Google-Smtp-Source: AGHT+IEVYP+L2Tqrx++zuMfZ6tyhHK1j13yMBg3Dj4x3f+t544W2snF7w5+DPMAx0u8MHVWiG9/0Ug==
-X-Received: by 2002:a5d:6c68:0:b0:38f:4acd:975c with SMTP id
- ffacd0b85a97d-38f58795a45mr8216866f8f.27.1740068511263; 
- Thu, 20 Feb 2025 08:21:51 -0800 (PST)
+ bh=O/XiTl783bAz5rJgPI//LorE7cXWW1yZR5SkkLi5r0c=;
+ b=s+uFJafuzNGMDA7LLHNyk8yra6dtVZ4RvjI+SeguzWxIYxv63A28Hk6ro6MAqEsg88
+ wuIhAfTLpp2NTWq06JkO0rw+z1qiWf7vfv7Rn6qRtdBrCbrf6A6Ks+FRJh20fxc+ne5I
+ lcdBmaWC8+zY2NR1Q1ZAYMYsTmffRh8ragCCt5NYcpRAYRTRarcUTAKKHoynvPTEfBEK
+ B9Xq+RKBqtTbmxn60jvZyq47CD2nyKzR6H+PdJxIaIUoYnXHIKM4CEcMhlezobAgJRuJ
+ tu79OlzWH6dMj32hcX+4gd7VgqMP3MenREIf1qReygQyOxvRtShtRhIq7x/Li536Lqij
+ SnwA==
+X-Gm-Message-State: AOJu0YyUY4fsM/rONnM2K6YxqhSd90eBMocyGwQqeTU/BaeOhTt63XbP
+ ANl3BBpjbG+F5JPu54msIlT0kCbu1HD2nNJ8k6sVfG8xVSDSIZ4+CZCbHCxe1j1n1iuH4qXpEJw
+ J
+X-Gm-Gg: ASbGncvlHfMj05iYE2zgG9KhLXxYvHzK1EFakxifNKpwQVwZFF1KgDJDj0F3jcUQlVO
+ md6fbknDuJKgV4Eupq/w+b0cfJ4mKIx0W4Adjlr97hnFLvF/CIOrrpyvd16lrztUXMHDWHl/jAA
+ ICGZLk1aGsnipjdX4upR/wu+yI6/J4Izy4A1Fzd8NGZjKUpVq4mAeG8WSseswpPJqBvLxRwvsB6
+ NUKj/F1XPX/C6s5dPHggcBhxdw/Avu/hGfBarWFCkPEcCWL5Vt5usDUGVvmwV3b62reEfDJjQS7
+ PBuYnpUsziLhYqYhmmBcSA==
+X-Google-Smtp-Source: AGHT+IEz2s8zviSroup4BivEG5S0WFIPSumbSDYIO34E3MAeZMIvAz+7SsYWevatI9A02Eu4F+xaJQ==
+X-Received: by 2002:a05:600c:5246:b0:439:98fd:a4b6 with SMTP id
+ 5b1f17b1804b1-439a30e6a0dmr36494495e9.15.1740068512157; 
+ Thu, 20 Feb 2025 08:21:52 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.50
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:50 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:51 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/41] hw/arm/highbank: Specify explicitly the GIC has 128
+Subject: [PULL 22/41] hw/cpu/arm_mpcore: Remove default values for GIC
  external IRQs
-Date: Thu, 20 Feb 2025 16:21:02 +0000
-Message-ID: <20250220162123.626941-22-peter.maydell@linaro.org>
+Date: Thu, 20 Feb 2025 16:21:03 +0000
+Message-ID: <20250220162123.626941-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,66 +100,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-When not specified, Cortex-A9MP configures its GIC with 64 external
-IRQs, (see commit a32134aad89 "arm:make the number of GIC interrupts
-configurable"), and Cortex-15MP to 128 (see commit  528622421eb
-"hw/cpu/a15mpcore: Correct default value for num-irq").
-The Caldexa Highbank board however expects a fixed set of 128
-interrupts (see the fixed IRQ length when this board was added in
-commit 2488514cef2 ("arm: SoC model for Calxeda Highbank"). Add the
-GIC_EXT_IRQS definition (with a comment) to make that explicit.
-
-Except explicitly setting a property value to its same implicit
-value, there is no logical change intended.
+Implicit default values are often hard to figure out, better
+be explicit. Now that all boards explicitly set the number of
+GIC external IRQs, remove the default values (displaying an
+error message if it is out of range).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-8-philmd@linaro.org
+Message-id: 20250212154333.28644-9-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/highbank.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/cpu/a15mpcore.c | 18 ++++++++++++------
+ hw/cpu/a9mpcore.c  | 18 ++++++++++++------
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 495704d9726..0f3c207d548 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -45,7 +45,7 @@
- #define MVBAR_ADDR              0x200
- #define BOARD_SETUP_ADDR        (MVBAR_ADDR + 8 * sizeof(uint32_t))
+diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
+index d24ab0a6ab2..676f65a0af4 100644
+--- a/hw/cpu/a15mpcore.c
++++ b/hw/cpu/a15mpcore.c
+@@ -58,6 +58,11 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+     bool has_el2 = false;
+     Object *cpuobj;
  
--#define NIRQ_GIC                160
-+#define GIC_EXT_IRQS            128 /* EnergyCore ECX-1000 & ECX-2000 */
++    if (s->num_irq < 32 || s->num_irq > 256) {
++        error_setg(errp, "Property 'num-irq' must be between 32 and 256");
++        return;
++    }
++
+     gicdev = DEVICE(&s->gic);
+     qdev_prop_set_uint32(gicdev, "num-cpu", s->num_cpu);
+     qdev_prop_set_uint32(gicdev, "num-irq", s->num_irq);
+@@ -146,13 +151,14 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
  
- /* Board init.  */
+ static const Property a15mp_priv_properties[] = {
+     DEFINE_PROP_UINT32("num-cpu", A15MPPrivState, num_cpu, 1),
+-    /* The Cortex-A15MP may have anything from 0 to 224 external interrupt
+-     * IRQ lines (with another 32 internal). We default to 128+32, which
+-     * is the number provided by the Cortex-A15MP test chip in the
+-     * Versatile Express A15 development board.
+-     * Other boards may differ and should set this property appropriately.
++    /*
++     * The Cortex-A15MP may have anything from 0 to 224 external interrupt
++     * lines, plus always 32 internal IRQs. This property sets the total
++     * of internal + external, so the valid range is from 32 to 256.
++     * The board model must set this to whatever the configuration
++     * used for the CPU on that board or SoC is.
+      */
+-    DEFINE_PROP_UINT32("num-irq", A15MPPrivState, num_irq, 160),
++    DEFINE_PROP_UINT32("num-irq", A15MPPrivState, num_irq, 0),
+ };
  
-@@ -180,7 +180,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
- {
-     DeviceState *dev = NULL;
-     SysBusDevice *busdev;
--    qemu_irq pic[128];
-+    qemu_irq pic[GIC_EXT_IRQS];
-     int n;
-     unsigned int smp_cpus = machine->smp.cpus;
-     qemu_irq cpu_irq[4];
-@@ -260,7 +260,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
-         break;
-     }
-     qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
--    qdev_prop_set_uint32(dev, "num-irq", NIRQ_GIC);
-+    qdev_prop_set_uint32(dev, "num-irq", GIC_EXT_IRQS + GIC_INTERNAL);
-     busdev = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
-@@ -271,7 +271,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
-         sysbus_connect_irq(busdev, n + 3 * smp_cpus, cpu_vfiq[n]);
-     }
+ static void a15mp_priv_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
+index 25416c5032b..1b9f2bef93c 100644
+--- a/hw/cpu/a9mpcore.c
++++ b/hw/cpu/a9mpcore.c
+@@ -56,6 +56,11 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
+     CPUState *cpu0;
+     Object *cpuobj;
  
--    for (n = 0; n < 128; n++) {
-+    for (n = 0; n < GIC_EXT_IRQS; n++) {
-         pic[n] = qdev_get_gpio_in(dev, n);
-     }
++    if (s->num_irq < 32 || s->num_irq > 256) {
++        error_setg(errp, "Property 'num-irq' must be between 32 and 256");
++        return;
++    }
++
+     cpu0 = qemu_get_cpu(0);
+     cpuobj = OBJECT(cpu0);
+     if (strcmp(object_get_typename(cpuobj), ARM_CPU_TYPE_NAME("cortex-a9"))) {
+@@ -160,13 +165,14 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
  
+ static const Property a9mp_priv_properties[] = {
+     DEFINE_PROP_UINT32("num-cpu", A9MPPrivState, num_cpu, 1),
+-    /* The Cortex-A9MP may have anything from 0 to 224 external interrupt
+-     * IRQ lines (with another 32 internal). We default to 64+32, which
+-     * is the number provided by the Cortex-A9MP test chip in the
+-     * Realview PBX-A9 and Versatile Express A9 development boards.
+-     * Other boards may differ and should set this property appropriately.
++    /*
++     * The Cortex-A9MP may have anything from 0 to 224 external interrupt
++     * lines, plus always 32 internal IRQs. This property sets the total
++     * of internal + external, so the valid range is from 32 to 256.
++     * The board model must set this to whatever the configuration
++     * used for the CPU on that board or SoC is.
+      */
+-    DEFINE_PROP_UINT32("num-irq", A9MPPrivState, num_irq, 96),
++    DEFINE_PROP_UINT32("num-irq", A9MPPrivState, num_irq, 0),
+ };
+ 
+ static void a9mp_priv_class_init(ObjectClass *klass, void *data)
 -- 
 2.43.0
 
