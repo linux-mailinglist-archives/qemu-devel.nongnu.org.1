@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96272A3DB65
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D208A3DB66
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 14:35:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl6gY-0003eW-Tf; Thu, 20 Feb 2025 08:33:50 -0500
+	id 1tl6gY-0003eI-TG; Thu, 20 Feb 2025 08:33:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tl6g3-0003cH-8L
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 08:33:21 -0500
+ id 1tl6g4-0003cO-4p
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 08:33:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tl6fz-00081w-RH
+ id 1tl6fz-00081l-TM
  for qemu-devel@nongnu.org; Thu, 20 Feb 2025 08:33:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740058395;
+ s=mimecast20190719; t=1740058393;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=lyuyK4hJ50cNIkLA/9MKwa8uRRJk1MpmqfEcfpsnCFU=;
- b=BJmF57t2Ee8mSGwzikvkl2gC+whx3W3H7riTkBS7hZ5d7qiAnMiaq1eQCjBwobZ9q7iMTJ
- 089LZdtcD/0v83qA/AW2FCVihtyyUKJz7ohXdw4bjxDXGMDL3jn2NWXqgU3L+NkatLfSIl
- 3QIgjMqaTzgUjMIGMgoybxHqx8V1pIM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3r5BzHwwGLE8w4wpYRt2uj1rsGj25j/C0CBMCevqqBU=;
+ b=e6RHocxtb7EgRL0Zoed8KreXNyr2LLD8azXAL9FGwD2NqG0wo6pmR6KfCYCzNe5SB78KQq
+ QkXwTvJRbCb3CueC/Q3si0mDW4nzwLADMJflyq+m4W5mgTeYowZH6oohDKG00rJvfWakWw
+ EGj7hnv8ZNQ+cJ8JWf/7kCpaOSQ7Uj8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-112-M22d3_74Nl-Uawgs80c6dg-1; Thu, 20 Feb 2025 08:33:10 -0500
-X-MC-Unique: M22d3_74Nl-Uawgs80c6dg-1
-X-Mimecast-MFC-AGG-ID: M22d3_74Nl-Uawgs80c6dg_1740058389
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43943bd1409so6854705e9.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 05:33:10 -0800 (PST)
+ us-mta-136-aLWKjP00M52JCOtlYgq5vQ-1; Thu, 20 Feb 2025 08:33:12 -0500
+X-MC-Unique: aLWKjP00M52JCOtlYgq5vQ-1
+X-Mimecast-MFC-AGG-ID: aLWKjP00M52JCOtlYgq5vQ_1740058391
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-38f55ccb04bso628836f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 05:33:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740058389; x=1740663189;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lyuyK4hJ50cNIkLA/9MKwa8uRRJk1MpmqfEcfpsnCFU=;
- b=E7sb5kAdmXK3zy+mvFH/aqPNSlEPEZIoUfqDTIWDi1x9Sdf+3XJQg8jO1S9JVAfw8s
- Bx+rJiyJQJQch/L5uKTHp3NUydU0onnXpjprvt3KQRo4TjX0U71tfBnY+uFAxBJ6rNCN
- teMTNThwOTUMOstAfMQKkdT8HTYy3OqN9FoEcVzAKEM85ogGxFGpmG9b1XMlHRi3OYc9
- UzWlOYLm+PbFMY253gUU3z4YGSKGSfd8t9q7gxoSi2AfZb183wWGeolhHJ6YiKSu86n2
- JZFjB/OSZ8Zwabdg6Zp3hVlKa/bO+ZSPZZP1GU4YSkwtYn0NH4ZL9iBNdoRIwZmQKQpT
- T9rg==
-X-Gm-Message-State: AOJu0YxlLdVSn2d/uO4plVbQgH9QY2+Uxdd5bcUPwL1IZYhqmGyktUIf
- bTOia1vaWI57N0lETConW/xBtL5uiwU5olYWeM6UJTKnU3wv48hCSIDNZJxTulc77xqgVpj4bvP
- M7Y0MjF6K300us+iY7CsVPTFZQgpKwhMG2QCt9P9yyEWrwVKKjMo+rM8ywXLFtOSThFy0BJzam8
- 9fF+s49lTXn20O1rqVvAxS096ONimQMwClddJgDLg=
-X-Gm-Gg: ASbGnctS41elD2s0aTq5tr8cUH4eEh2quyENBToxxPZIa2MI7TDN5vf5F/z+oEEmYqw
- Wmb5ef/geZpSOk6A07OLTcSbiwY7HXSM1/Mc1kzMygZloQlOeNnRkJzqDxZLbkPjIPA1wfywGlu
- qw0R0mnBet8ZONOX6BOumj7CscGM6rT5lBYgin1WWeDrTp/esKlLt4XCOgPgi3I58kgiqKqJ1w3
- 6pxyLW5PMjQw0j5Vv/CCuVI1qUTyUMWdVUW9dNctepbtdUWCbZQb+zS1i9oLJCffgeUc/YrNP1z
- oaTLURnuYyY=
-X-Received: by 2002:a05:600c:1c86:b0:439:60bc:71e5 with SMTP id
- 5b1f17b1804b1-43999ddae58mr62157465e9.26.1740058388735; 
- Thu, 20 Feb 2025 05:33:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHLHAXYng+AacH326e9Y03iAZFow/FpP8oxdMgKefIh3rPh4hHUUr1syzC4TqENJgza3muNhg==
-X-Received: by 2002:a05:600c:1c86:b0:439:60bc:71e5 with SMTP id
- 5b1f17b1804b1-43999ddae58mr62157195e9.26.1740058388181; 
- Thu, 20 Feb 2025 05:33:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740058390; x=1740663190;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3r5BzHwwGLE8w4wpYRt2uj1rsGj25j/C0CBMCevqqBU=;
+ b=KMnCZqzqaex3BkChmRh+CDetfP49xHA9qjxWEq6Aw+6feqdHfRDsvj4DwD2+Govnk7
+ cAg2//NKkS0X7Fd1uMcm4nCkiDLoeWKGMeHZSCXTQAHrifdIN1TdSzb9t65IMcvZ0e/U
+ RhC5ZGhWLhNqryX4cCub7L1mqsLsetfXRQQ7TwkyShB9JnB3zqdDGuyybOGxRURHzIBM
+ gzALsWIbaPJFc1yRXkSfvQl4fIBgryZCTZnTz+X8BWeO+HTiKKrk37J3jBTTySZ87VkZ
+ 4Dmz6K60vEHLd0bWOk3F0fiPUskuoLaQO2HbPKzYOmnqRcwwF70iehKgw3IyI8MMLm/m
+ v4zQ==
+X-Gm-Message-State: AOJu0YxLWFvNXZO1qGZzeXMOalFqXI3R8b1XqV6xAw3kNuxnJ9ztUuqr
+ ap1s8R6qBlUc1SXPpw4SR6H/6LGt6hYNNBAijfdbSMb9Wovvwogq9PZVsdHD9rqflZIn9DFetev
+ C878bV/Fzl8Esy0pU/atOyLfx4HcjKGDp/YZ0kPsF71NWYNy6vW1mcIeP+978NpL4/4SRWU7Mfm
+ vifP9TxXRXQ1QLv4ajy+6pBl1uDrnqZ5HNriLcPY8=
+X-Gm-Gg: ASbGncuyd/DoEegwQlp5ZtFvHxy6XFFiLEIx/rSpE60P7q+BBYij1eIsQHqhmEIRzy3
+ aDM6VdMTzsTuKIs7I5SfVE1dUcUb7kkwyeC0/l4BOnSgRbrt2StR3NAnsnhITnNKAD45vYh3mjJ
+ P/Poywqc7f8qYFMBNgzP+wLY4sFrcLZ+KSVemVhW1BohYn3uBiLhMMgvCPkycyc3RsLJLWJ+jqf
+ VyYa/IUUt0+bJG4ur96Q9KhBA9p4KEk2jcOfaz4O/77gQX+KL9efenG3C0v8gG2A18V6JqNWzZQ
+ c8B4cWDNYwg=
+X-Received: by 2002:a05:6000:712:b0:38f:2766:759f with SMTP id
+ ffacd0b85a97d-38f587ca5c4mr6813248f8f.41.1740058389931; 
+ Thu, 20 Feb 2025 05:33:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHryIqD6TUAbszIvZ4RYaXVPLhzQGY+jeQeO5PavQqs2XJLBL+2C+bhCOeh/VCSeVXRL4nrMA==
+X-Received: by 2002:a05:6000:712:b0:38f:2766:759f with SMTP id
+ ffacd0b85a97d-38f587ca5c4mr6813221f8f.41.1740058389417; 
+ Thu, 20 Feb 2025 05:33:09 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.122.109])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43985c50397sm116057815e9.0.2025.02.20.05.33.07
+ ffacd0b85a97d-38f25914d73sm21010745f8f.54.2025.02.20.05.33.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 05:33:07 -0800 (PST)
+ Thu, 20 Feb 2025 05:33:08 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 0/2] pvg: clean up Kconfig
-Date: Thu, 20 Feb 2025 14:33:04 +0100
-Message-ID: <20250220133306.1104382-1-pbonzini@redhat.com>
+Subject: [PATCH 1/2] pvg: do not enable it on cross-architecture targets
+Date: Thu, 20 Feb 2025 14:33:05 +0100
+Message-ID: <20250220133306.1104382-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250220133306.1104382-1-pbonzini@redhat.com>
+References: <20250220133306.1104382-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -103,26 +106,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not enable Apple ParavirtualizedGraphics on cross-architecture targets,
-where it is not supported by the drivers, and add an option to configure it
-out just like most others external dependencies.
+PVG is not cross-architecture; the PVG guest drivers with x86-64 macOS do not give
+useful results with the aarch64 macOS host PVG framework, and vice versa.
+To express this repurpose CONFIG_MAC_PVG, making it true only if the target has
+the same architecture as the host.  Furthermore, remove apple-gfx.m unless
+one of the devices is actually present.
 
-Only compile-tested on non-Mac for now, but CI is in progress.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ meson.build            | 6 ++++++
+ Kconfig.host           | 3 +++
+ hw/display/Kconfig     | 4 ----
+ hw/display/meson.build | 9 +++------
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-Paolo
-
-Paolo Bonzini (2):
-  pvg: do not enable it on cross-architecture targets
-  pvg: add option to configure it out
-
- meson.build                   | 16 +++++++++++++---
- Kconfig.host                  |  3 +++
- hw/display/Kconfig            |  4 ----
- hw/display/meson.build        |  9 +++------
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 6 files changed, 24 insertions(+), 13 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index 0ee79c664d3..ad2c6b61930 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3367,6 +3367,12 @@ foreach target : target_dirs
+     target_kconfig += 'CONFIG_' + config_target['TARGET_ARCH'].to_upper() + '=y'
+     target_kconfig += 'CONFIG_TARGET_BIG_ENDIAN=' + config_target['TARGET_BIG_ENDIAN']
+ 
++    # PVG is not cross-architecture.  Use accelerator_targets as a proxy to
++    # figure out which target can support PVG on this host
++    if pvg.found() and target in accelerator_targets.get('CONFIG_HVF', [])
++      target_kconfig += 'CONFIG_MAC_PVG=y'
++    endif
++
+     config_input = meson.get_external_property(target, 'default')
+     config_devices_mak = target + '-config-devices.mak'
+     config_devices_mak = configure_file(
+diff --git a/Kconfig.host b/Kconfig.host
+index 842cbe0d6c5..933425c74b4 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -61,3 +61,6 @@ config HV_BALLOON_POSSIBLE
+ 
+ config HAVE_RUST
+     bool
++
++config MAC_PVG
++    bool
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index 2b53dfd7d26..1e95ab28ef4 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -141,10 +141,6 @@ config XLNX_DISPLAYPORT
+ config DM163
+     bool
+ 
+-config MAC_PVG
+-    bool
+-    default y
+-
+ config MAC_PVG_MMIO
+     bool
+     depends on MAC_PVG && AARCH64
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index 94f4f05d36f..b9bdf219103 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -61,12 +61,9 @@ system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+ 
+ system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
+ 
+-if host_os == 'darwin'
+-  system_ss.add(when: 'CONFIG_MAC_PVG',         if_true: [files('apple-gfx.m'), pvg, metal])
+-  system_ss.add(when: 'CONFIG_MAC_PVG_PCI',     if_true: [files('apple-gfx-pci.m'), pvg, metal])
+-  if cpu == 'aarch64'
+-    system_ss.add(when: 'CONFIG_MAC_PVG_MMIO',  if_true: [files('apple-gfx-mmio.m'), pvg, metal])
+-  endif
++if pvg.found()
++  system_ss.add(when: 'CONFIG_MAC_PVG_PCI',     if_true: [files('apple-gfx.m', 'apple-gfx-pci.m'), pvg, metal])
++  system_ss.add(when: 'CONFIG_MAC_PVG_MMIO',    if_true: [files('apple-gfx.m', 'apple-gfx-mmio.m'), pvg, metal])
+ endif
+ 
+ if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
 -- 
 2.48.1
 
