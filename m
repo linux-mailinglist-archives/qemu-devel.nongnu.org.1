@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C41CA3E05F
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6570A3E090
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JH-00076T-JY; Thu, 20 Feb 2025 11:21:59 -0500
+	id 1tl9JH-00076K-EC; Thu, 20 Feb 2025 11:21:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JD-00074f-Gl
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:55 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tl9JF-00075d-Cl
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:57 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JB-0008E8-L3
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:55 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-439350f1a0bso7457865e9.0
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:53 -0800 (PST)
+ id 1tl9JD-0008EL-M8
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:57 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43995b907cfso7348385e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068512; x=1740673312; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068513; x=1740673313; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=O/XiTl783bAz5rJgPI//LorE7cXWW1yZR5SkkLi5r0c=;
- b=ZCbGG3WdtrXRkojh2OLV18GgJT01AreRzVJjjS0MGsr2U4Y/2b16zui/P5PjGlxXaA
- 93OXo5os50jgNQ9IIf6Mvm0AYsf385daNftsMXPGX7wp+SmnWmviu1rt+OTsw8/tZb9z
- YaXySzIFe5kPQHB57edLUM9+0W1g4OtvU0s6UpUvE49WtGv5N19IUf2NAIm5ccztZNoM
- 6i8rSzkC3TEYBvbI97QmADA0XWjwPrw9XW+VW394ymguuyHRUrdQ73oSW05P1upVShng
- pJRXYWoScGrtIqf7vhQMoDlQ8AoKvfzS0+bXCPTik0kXjnDsXHhrzYIOnX43npELlQta
- nYVA==
+ :reply-to; bh=QZTc2oPY4YllPwFk3F0ukTxoRIP/o83PipGK8tU/N6c=;
+ b=L01YHopCG24y9H9ovaqcsEwxg800rryQVlvzGUojdEIzKHjbwPcZoC6AU9hvQ9KBH1
+ gJgK4I58ZWtX1KstJizF682byhcqdKX03CjmsOBu29wLoCrO2YRia93GDgF5S9w+biRw
+ sfKHZUaByhF3EMe66/0Lhen/XtFemxtfo6Zd8hAFYqLlHNp5oLyztg7fdXoCskfYwuYi
+ eAiKHoMAyIfC+6Nq2E/TznUyQkFvXw+vwY+Ce7n9sJD8J1pxF9NwhMrd/oofO/LG2c6x
+ S1pos+F3X83CeOkPw0KzpA+6P1cARgZw2mjajAXmEpfYHuysTXsqqg2gC1tXSx1bq98i
+ vgHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068512; x=1740673312;
+ d=1e100.net; s=20230601; t=1740068513; x=1740673313;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O/XiTl783bAz5rJgPI//LorE7cXWW1yZR5SkkLi5r0c=;
- b=s+uFJafuzNGMDA7LLHNyk8yra6dtVZ4RvjI+SeguzWxIYxv63A28Hk6ro6MAqEsg88
- wuIhAfTLpp2NTWq06JkO0rw+z1qiWf7vfv7Rn6qRtdBrCbrf6A6Ks+FRJh20fxc+ne5I
- lcdBmaWC8+zY2NR1Q1ZAYMYsTmffRh8ragCCt5NYcpRAYRTRarcUTAKKHoynvPTEfBEK
- B9Xq+RKBqtTbmxn60jvZyq47CD2nyKzR6H+PdJxIaIUoYnXHIKM4CEcMhlezobAgJRuJ
- tu79OlzWH6dMj32hcX+4gd7VgqMP3MenREIf1qReygQyOxvRtShtRhIq7x/Li536Lqij
- SnwA==
-X-Gm-Message-State: AOJu0YyUY4fsM/rONnM2K6YxqhSd90eBMocyGwQqeTU/BaeOhTt63XbP
- ANl3BBpjbG+F5JPu54msIlT0kCbu1HD2nNJ8k6sVfG8xVSDSIZ4+CZCbHCxe1j1n1iuH4qXpEJw
- J
-X-Gm-Gg: ASbGncvlHfMj05iYE2zgG9KhLXxYvHzK1EFakxifNKpwQVwZFF1KgDJDj0F3jcUQlVO
- md6fbknDuJKgV4Eupq/w+b0cfJ4mKIx0W4Adjlr97hnFLvF/CIOrrpyvd16lrztUXMHDWHl/jAA
- ICGZLk1aGsnipjdX4upR/wu+yI6/J4Izy4A1Fzd8NGZjKUpVq4mAeG8WSseswpPJqBvLxRwvsB6
- NUKj/F1XPX/C6s5dPHggcBhxdw/Avu/hGfBarWFCkPEcCWL5Vt5usDUGVvmwV3b62reEfDJjQS7
- PBuYnpUsziLhYqYhmmBcSA==
-X-Google-Smtp-Source: AGHT+IEz2s8zviSroup4BivEG5S0WFIPSumbSDYIO34E3MAeZMIvAz+7SsYWevatI9A02Eu4F+xaJQ==
-X-Received: by 2002:a05:600c:5246:b0:439:98fd:a4b6 with SMTP id
- 5b1f17b1804b1-439a30e6a0dmr36494495e9.15.1740068512157; 
- Thu, 20 Feb 2025 08:21:52 -0800 (PST)
+ bh=QZTc2oPY4YllPwFk3F0ukTxoRIP/o83PipGK8tU/N6c=;
+ b=jitpgH3xsoC3CI2t47syZq6EP0CbIZtuCL4HnE60VDOMINwf9XZKJ4F/ZoSXzkhHt7
+ TBmGdvMerXLF5jhOHcCMEx8KAUG1LX07kEsxb6bTgKpgy0NFy0MY8aTFcCudC8LzsMTx
+ +44byL2UZSEj5OKWAZNNdP7YFdkU0wwsReCeKsjW8eaOiuxVlkqEAulII9pPF7fY+GYU
+ xyemdnDnbLiyit4DdjtAgeQMoCwCDPygTAX28VLUv8B1RlAOPC05QzFdP1VaELF4SrZD
+ 6hONzStlizD5RVJAFD8jOcfXeKiKh3pIqYYGvxDTQ749AR1eMmX64WgScUwfAtecFsTE
+ qs9A==
+X-Gm-Message-State: AOJu0YzDDilNX+qqeAJAmI14QadGu9s5jAbtQwS5NAmBhrMptq6zFIZG
+ BiKOA/mnQVHDGifVt94y1e5iw9/AvDUCwwA6Iv6E8Yo7oZow8Npgdt3Cq7r4lsON7Db/nM77/hZ
+ u
+X-Gm-Gg: ASbGncs+K1/M6TWE+uHpTgh9wVY0a9VOoRDRcTwiAuDJiSJPoImtq78UNuCoBGM7S/I
+ jRSxcdJ1lgiP8sVHUeA2I32Ymgv0nJK7qzXgJLvEkrrjLzNaPJBbu+wgV/KNszaBWajku45eOeo
+ Bjl7cVQBie9qncvd5iA54gWt1p6wxhkhhEKn7szK5mOD+iL6L54f2rVgngKgRCc0dkV9lCquhuw
+ oqEpE2Qupdd3DqKmSr09Xjl7vn/CGg/OwgoJuGNCC5YJmgn/R5Eb5+KNabUYj5z7ai4SpJiKfqp
+ oXNa7Kb3sC0P3x5QE/AIyw==
+X-Google-Smtp-Source: AGHT+IFcnYuvEI4lPkQMdPwpLVQWwBwPOvRL4014g2Wjg6zPGRMjp+6Ys7PWJtuDtsHTJphqMyncdw==
+X-Received: by 2002:a05:600c:154e:b0:439:a88f:8538 with SMTP id
+ 5b1f17b1804b1-439a88f85bcmr27780345e9.5.1740068513021; 
+ Thu, 20 Feb 2025 08:21:53 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.51
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:51 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:52 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/41] hw/cpu/arm_mpcore: Remove default values for GIC
- external IRQs
-Date: Thu, 20 Feb 2025 16:21:03 +0000
-Message-ID: <20250220162123.626941-23-peter.maydell@linaro.org>
+Subject: [PULL 23/41] Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
+Date: Thu, 20 Feb 2025 16:21:04 +0000
+Message-ID: <20250220162123.626941-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,96 +96,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Implicit default values are often hard to figure out, better
-be explicit. Now that all boards explicitly set the number of
-GIC external IRQs, remove the default values (displaying an
-error message if it is out of range).
+TYPE_CHIPIDEA models an IP block which is also used in TYPE_ZYNQ_MACHINE which
+itself is not an IMX device. CONFIG_ZYNQ selects CONFIG_USB_EHCI_SYSBUS while
+TYPE_CHIPIDEA is a separate compilation unit, so only works by accident if
+CONFIG_IMX is given. Fix that by extracting CONFIG_USB_CHIPIDEA from CONFIG_IMX.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-9-philmd@linaro.org
+cc: qemu-stable@nongnu.org
+Fixes: 616ec12d0fcc "hw/arm/xilinx_zynq: Fix USB port instantiation"
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-id: 20250209103604.29545-1-shentey@gmail.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/cpu/a15mpcore.c | 18 ++++++++++++------
- hw/cpu/a9mpcore.c  | 18 ++++++++++++------
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ hw/arm/Kconfig     | 6 +++++-
+ hw/usb/Kconfig     | 4 ++++
+ hw/usb/meson.build | 2 +-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-index d24ab0a6ab2..676f65a0af4 100644
---- a/hw/cpu/a15mpcore.c
-+++ b/hw/cpu/a15mpcore.c
-@@ -58,6 +58,11 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
-     bool has_el2 = false;
-     Object *cpuobj;
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 256013ca808..7eab3914d4b 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -303,7 +303,7 @@ config ZYNQ
+     select PL330
+     select SDHCI
+     select SSI_M25P80
+-    select USB_EHCI_SYSBUS
++    select USB_CHIPIDEA
+     select XILINX # UART
+     select XILINX_AXI
+     select XILINX_SPI
+@@ -489,6 +489,7 @@ config FSL_IMX25
+     select IMX
+     select IMX_FEC
+     select IMX_I2C
++    select USB_CHIPIDEA
+     select WDT_IMX2
+     select SDHCI
  
-+    if (s->num_irq < 32 || s->num_irq > 256) {
-+        error_setg(errp, "Property 'num-irq' must be between 32 and 256");
-+        return;
-+    }
+@@ -516,6 +517,7 @@ config FSL_IMX6
+     select PL310  # cache controller
+     select PCI_EXPRESS_DESIGNWARE
+     select SDHCI
++    select USB_CHIPIDEA
+     select OR_IRQ
+ 
+ config ASPEED_SOC
+@@ -576,6 +578,7 @@ config FSL_IMX7
+     select SDHCI
+     select OR_IRQ
+     select UNIMP
++    select USB_CHIPIDEA
+ 
+ config ARM_SMMUV3
+     bool
+@@ -591,6 +594,7 @@ config FSL_IMX6UL
+     select IMX_I2C
+     select WDT_IMX2
+     select SDHCI
++    select USB_CHIPIDEA
+     select UNIMP
+ 
+ config MICROBIT
+diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
+index 5fbecd2f43b..69c663be52f 100644
+--- a/hw/usb/Kconfig
++++ b/hw/usb/Kconfig
+@@ -143,3 +143,7 @@ config USB_DWC3
+ config XLNX_USB_SUBSYS
+     bool
+     select USB_DWC3
 +
-     gicdev = DEVICE(&s->gic);
-     qdev_prop_set_uint32(gicdev, "num-cpu", s->num_cpu);
-     qdev_prop_set_uint32(gicdev, "num-irq", s->num_irq);
-@@ -146,13 +151,14 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
++config USB_CHIPIDEA
++    bool
++    select USB_EHCI_SYSBUS
+diff --git a/hw/usb/meson.build b/hw/usb/meson.build
+index 1b4d1507e41..17360a5b5a4 100644
+--- a/hw/usb/meson.build
++++ b/hw/usb/meson.build
+@@ -25,8 +25,8 @@ system_ss.add(when: 'CONFIG_USB_XHCI_SYSBUS', if_true: files('hcd-xhci-sysbus.c'
+ system_ss.add(when: 'CONFIG_USB_XHCI_NEC', if_true: files('hcd-xhci-nec.c'))
+ system_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
+ system_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
++system_ss.add(when: 'CONFIG_USB_CHIPIDEA', if_true: files('chipidea.c'))
  
- static const Property a15mp_priv_properties[] = {
-     DEFINE_PROP_UINT32("num-cpu", A15MPPrivState, num_cpu, 1),
--    /* The Cortex-A15MP may have anything from 0 to 224 external interrupt
--     * IRQ lines (with another 32 internal). We default to 128+32, which
--     * is the number provided by the Cortex-A15MP test chip in the
--     * Versatile Express A15 development board.
--     * Other boards may differ and should set this property appropriately.
-+    /*
-+     * The Cortex-A15MP may have anything from 0 to 224 external interrupt
-+     * lines, plus always 32 internal IRQs. This property sets the total
-+     * of internal + external, so the valid range is from 32 to 256.
-+     * The board model must set this to whatever the configuration
-+     * used for the CPU on that board or SoC is.
-      */
--    DEFINE_PROP_UINT32("num-irq", A15MPPrivState, num_irq, 160),
-+    DEFINE_PROP_UINT32("num-irq", A15MPPrivState, num_irq, 0),
- };
- 
- static void a15mp_priv_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
-index 25416c5032b..1b9f2bef93c 100644
---- a/hw/cpu/a9mpcore.c
-+++ b/hw/cpu/a9mpcore.c
-@@ -56,6 +56,11 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
-     CPUState *cpu0;
-     Object *cpuobj;
- 
-+    if (s->num_irq < 32 || s->num_irq > 256) {
-+        error_setg(errp, "Property 'num-irq' must be between 32 and 256");
-+        return;
-+    }
-+
-     cpu0 = qemu_get_cpu(0);
-     cpuobj = OBJECT(cpu0);
-     if (strcmp(object_get_typename(cpuobj), ARM_CPU_TYPE_NAME("cortex-a9"))) {
-@@ -160,13 +165,14 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
- 
- static const Property a9mp_priv_properties[] = {
-     DEFINE_PROP_UINT32("num-cpu", A9MPPrivState, num_cpu, 1),
--    /* The Cortex-A9MP may have anything from 0 to 224 external interrupt
--     * IRQ lines (with another 32 internal). We default to 64+32, which
--     * is the number provided by the Cortex-A9MP test chip in the
--     * Realview PBX-A9 and Versatile Express A9 development boards.
--     * Other boards may differ and should set this property appropriately.
-+    /*
-+     * The Cortex-A9MP may have anything from 0 to 224 external interrupt
-+     * lines, plus always 32 internal IRQs. This property sets the total
-+     * of internal + external, so the valid range is from 32 to 256.
-+     * The board model must set this to whatever the configuration
-+     * used for the CPU on that board or SoC is.
-      */
--    DEFINE_PROP_UINT32("num-irq", A9MPPrivState, num_irq, 96),
-+    DEFINE_PROP_UINT32("num-irq", A9MPPrivState, num_irq, 0),
- };
- 
- static void a9mp_priv_class_init(ObjectClass *klass, void *data)
+-system_ss.add(when: 'CONFIG_IMX', if_true: files('chipidea.c'))
+ system_ss.add(when: 'CONFIG_IMX_USBPHY', if_true: files('imx-usb-phy.c'))
+ system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686-uhci-pci.c'))
+ system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-usb2-ctrl-regs.c'))
 -- 
 2.43.0
 
