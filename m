@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82279A3E096
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D83A3E087
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Feb 2025 17:24:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tl9JG-000760-RF; Thu, 20 Feb 2025 11:21:58 -0500
+	id 1tl9JE-000756-Ka; Thu, 20 Feb 2025 11:21:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JB-00070s-Qf
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:53 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tl9JC-000734-OE
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:54 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tl9JA-0008Dt-23
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:53 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4398738217aso9972295e9.3
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:51 -0800 (PST)
+ id 1tl9JA-0008E0-WE
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 11:21:54 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-38f2cb1ba55so925909f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 08:21:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740068510; x=1740673310; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740068511; x=1740673311; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SYcSBjiSJfFe7ji/p5h+aB/WJAJaMBERE8TX+MuUUeE=;
- b=XM7MhztznmTkxP0W+ZLRTvzmOKgZ3dXXvBF4+hxzAtnpq5VRflRWOnDyZdMG3tOHsI
- 5ia2xLjJL+LDNTUl8Gig15Wr8WiVtI9Tj9XuJ2b+hLcZhx+4Btz9iMRl0xXlshGxeIj0
- nWWT0b2d11zBRFddjDQ6XQuvyO+6Di2gp0maAHaMSFshFbTF0VntoxUzaGLJzvw8tHeZ
- JTFrT8pgZTWjThh5m9e7uAPBf9J0uXdFoD9sLSHbsHLCnMLPxTzFB/yFh9Cls7Mu7LXF
- pM9R0a2ocN6plFVA6a+rURTWhWedzo0qfb2C1c2D+nXQ2L8CoZkJxl/Zo0K41XQQ6lqZ
- e6pA==
+ :reply-to; bh=opo/VbCWAt6C9nedTKj6phlEP8OT20gT2thgOlL0CK8=;
+ b=AiEcP6hvs4ErkKNHAM6RNOj80kX+M+Weczi9O2+u0xWzGLNpPC/HhpHQ07aP915sAQ
+ pVYEgWXDStjsfyRGn3BypfkTsX93w8BMVAIf8IJTnRCtc/AaeDo9eum2ObHB3PI4yGPz
+ PIWNh4VyeNTWLzSlg5x+9oGChDnhZnyJPhcKKp2d79B+gERsH/7XguLwBmxLW4hTOVzj
+ RM4kZTE83z7Zd1HUl9Fecy15tqQ93sps6dWiVvroRxZHAxJFnBVWD4RX+vYSQOGv7XMR
+ FN+6tWG7r/CPz1XFVUtAVPa4c/KhKdtaiHEE+J6fsWJNUwzdOXDX6nKfBVD8mrEI+Fv4
+ yKHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740068510; x=1740673310;
+ d=1e100.net; s=20230601; t=1740068511; x=1740673311;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SYcSBjiSJfFe7ji/p5h+aB/WJAJaMBERE8TX+MuUUeE=;
- b=fV6fcnTpo1afHjZny/6oT2jpQrL83qjlubL915RelrkmxX1RvCq8p4/oxT4WRqFIxg
- cI+6swLVdznzONYNi7bYlA8fUpQc+I4oPTYIwlqk0RpPdfuE5Zx9ZG3m671IBtZAsuUI
- VwQdkYhNX0cjhF09YoRgNpxcPI6+/5i7G/LsFvuiM8EjOqfbG+TmPOhgOjA03bs/sy0g
- Jo2lE6CbcGSyRscxIL/jXcnuDMDYrBhT29FtRtQUESzXHlnDG+g8I4DnIgjzoW5lRyzG
- F9wei7qAkl8vdTwMskSPkzo5C/G5INZ+1f8llkco/yl1hiFSr47pvJO51hrdXfnUcFJT
- UJ3w==
-X-Gm-Message-State: AOJu0YxvgmLsrpru1GTJM83FbTjrTPT8fuCBJ1ji8vbxKcvmIWTdNSAU
- iSCcgL8T+6VuBjbgTIJ0sei4A4cLXvwnGzhPgb1IU8JW3qvrMXlV0pZhVaNkp9iD1CSRjX4PNbt
- P
-X-Gm-Gg: ASbGncs6EZQTpdb4XrxLE83r81AgO7OWw/DMtTDbPRXutx57gkj8DSUTqPR0Nfq8kIU
- HkgHJB6kn119934NocQ5cVrXaLS30Qs4Dw74nL2NDUXJTkG5BjZEVwkp1GeVAg+0TMHYFafCRTv
- mttXBnrtB/0b1qCmONtyfHarF5nydUMpI1TLQVCPwrkG8/tMivtO2YsuJNKzjBcM1ss5WBgTBwG
- aDBxGf42WCZPg3+u981afwhvNp2sIu1ufUmxtfcYrCGKT02izmXq8M9Dhh1jT3w4vjLUztkXu4a
- po2xEMac+g4yK9oDQfqIpw==
-X-Google-Smtp-Source: AGHT+IFgxKBmAt48EdkiiGzHBOqUpSsNRxrPaURQMY07xkbeus+CzSk3kp/V+GgyoAN6x4VdApuAaA==
-X-Received: by 2002:a05:600c:3508:b0:439:689b:99eb with SMTP id
- 5b1f17b1804b1-43999d89710mr88503135e9.7.1740068510434; 
- Thu, 20 Feb 2025 08:21:50 -0800 (PST)
+ bh=opo/VbCWAt6C9nedTKj6phlEP8OT20gT2thgOlL0CK8=;
+ b=F2D1W2PULFPqxbtFOf+rTR6Ke5reRoyNZ5T4SGNX7eml1UbfUNE5MpA8R7nc95io0I
+ pzOB83cIWgHTAMhOb/Y2RyIW0ulsr517Mqx2Z1s1lezv00cS/Li6bjr0S23Lt5urxAGP
+ F9S4rZFlu7VZ06Ai9Q+944Ng1mdvg8gHKYsbP0QPXtjHb/m0udviOoCR637DLOPa+p7d
+ QJeH777msmguNyrs+8E/R4XKVGhSPXGOcM7wz+IWDd7HRuArAQ0TcBa3qBCDTt+z4zsI
+ djvWPKWUBeJkfl1zC43hSDoDJ62CdaIAAB7w7RQGKDfI48kgf7NQAV8puOxLdMe9Wjjs
+ r5/Q==
+X-Gm-Message-State: AOJu0YxXYVBg59wq4oAH9zKJ2EVF6rqXBJrpohvv36oj2ZyR/6qyP9f5
+ 8n4NTFx0KhpEtTlUSZXhSuuYuvkdnZ7Zl8dl16Y2aLPbFCTDKlj1PY0rK/x9i2kVtcQ8XkIvxa+
+ v
+X-Gm-Gg: ASbGncvcMjNj27KS066/UbR/W8lcUMKoaHWv6ziRifrHWQ5b2n9HdTMOXSQ5KNb0Ir6
+ gkBlXuWDJZ6iZ22aY6pDgywwey6ZLR44gmVtACulmYr0E5UvrEFWE8xzOMvmWk464Vb9bPFaPqF
+ 0BfKu6rVMxSnRKVvUWxI9s+yC/JXcLVkDTc3wXWV0kagP2ERgfCySwdDFsqC2ACAsvwa4cInzbS
+ U/ji9wgLwe/dCbR4jpqb33sMenPh7xdj9O2rHrnYXrMQ++YyRd90TqU2PlIYU11kFP3zTkRif0U
+ F0W8fim/NYY+waJLnbodXg==
+X-Google-Smtp-Source: AGHT+IEVYP+L2Tqrx++zuMfZ6tyhHK1j13yMBg3Dj4x3f+t544W2snF7w5+DPMAx0u8MHVWiG9/0Ug==
+X-Received: by 2002:a5d:6c68:0:b0:38f:4acd:975c with SMTP id
+ ffacd0b85a97d-38f58795a45mr8216866f8f.27.1740068511263; 
+ Thu, 20 Feb 2025 08:21:51 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.49
+ 5b1f17b1804b1-4399d55fc1asm48806415e9.35.2025.02.20.08.21.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 08:21:49 -0800 (PST)
+ Thu, 20 Feb 2025 08:21:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/41] hw/arm/vexpress: Specify explicitly the GIC has 64
+Subject: [PULL 21/41] hw/arm/highbank: Specify explicitly the GIC has 128
  external IRQs
-Date: Thu, 20 Feb 2025 16:21:01 +0000
-Message-ID: <20250220162123.626941-21-peter.maydell@linaro.org>
+Date: Thu, 20 Feb 2025 16:21:02 +0000
+Message-ID: <20250220162123.626941-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250220162123.626941-1-peter.maydell@linaro.org>
 References: <20250220162123.626941-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,62 +104,62 @@ When not specified, Cortex-A9MP configures its GIC with 64 external
 IRQs, (see commit a32134aad89 "arm:make the number of GIC interrupts
 configurable"), and Cortex-15MP to 128 (see commit  528622421eb
 "hw/cpu/a15mpcore: Correct default value for num-irq").
-The Versatile Express board however expects a fixed set of 64
+The Caldexa Highbank board however expects a fixed set of 128
 interrupts (see the fixed IRQ length when this board was added in
-commit 2055283bcc8 ("hw/vexpress: Add model of ARM Versatile Express
-board"). Add the GIC_EXT_IRQS definition (with a comment) to make
-that explicit.
+commit 2488514cef2 ("arm: SoC model for Calxeda Highbank"). Add the
+GIC_EXT_IRQS definition (with a comment) to make that explicit.
 
 Except explicitly setting a property value to its same implicit
 value, there is no logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250212154333.28644-7-philmd@linaro.org
+Message-id: 20250212154333.28644-8-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/vexpress.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ hw/arm/highbank.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
-index 48e18a49d54..76c6107766c 100644
---- a/hw/arm/vexpress.c
-+++ b/hw/arm/vexpress.c
-@@ -51,6 +51,8 @@
- #define VEXPRESS_FLASH_SIZE (64 * 1024 * 1024)
- #define VEXPRESS_FLASH_SECT_SIZE (256 * 1024)
+diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
+index 495704d9726..0f3c207d548 100644
+--- a/hw/arm/highbank.c
++++ b/hw/arm/highbank.c
+@@ -45,7 +45,7 @@
+ #define MVBAR_ADDR              0x200
+ #define BOARD_SETUP_ADDR        (MVBAR_ADDR + 8 * sizeof(uint32_t))
  
-+#define GIC_EXT_IRQS 64 /* Versatile Express A9 development board */
-+
- /* Number of virtio transports to create (0..8; limited by
-  * number of available IRQ lines).
-  */
-@@ -241,6 +243,7 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
-      */
-     dev = qdev_new(privdev);
+-#define NIRQ_GIC                160
++#define GIC_EXT_IRQS            128 /* EnergyCore ECX-1000 & ECX-2000 */
+ 
+ /* Board init.  */
+ 
+@@ -180,7 +180,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
+ {
+     DeviceState *dev = NULL;
+     SysBusDevice *busdev;
+-    qemu_irq pic[128];
++    qemu_irq pic[GIC_EXT_IRQS];
+     int n;
+     unsigned int smp_cpus = machine->smp.cpus;
+     qemu_irq cpu_irq[4];
+@@ -260,7 +260,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
+         break;
+     }
      qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
+-    qdev_prop_set_uint32(dev, "num-irq", NIRQ_GIC);
 +    qdev_prop_set_uint32(dev, "num-irq", GIC_EXT_IRQS + GIC_INTERNAL);
      busdev = SYS_BUS_DEVICE(dev);
      sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, periphbase);
-@@ -251,7 +254,7 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
-      * external interrupts starting from 32 (because there
-      * are internal interrupts 0..31).
-      */
--    for (n = 0; n < 64; n++) {
+     sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
+@@ -271,7 +271,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
+         sysbus_connect_irq(busdev, n + 3 * smp_cpus, cpu_vfiq[n]);
+     }
+ 
+-    for (n = 0; n < 128; n++) {
 +    for (n = 0; n < GIC_EXT_IRQS; n++) {
          pic[n] = qdev_get_gpio_in(dev, n);
      }
  
-@@ -543,7 +546,7 @@ static void vexpress_common_init(MachineState *machine)
-     VexpressMachineClass *vmc = VEXPRESS_MACHINE_GET_CLASS(machine);
-     VEDBoardInfo *daughterboard = vmc->daughterboard;
-     DeviceState *dev, *sysctl, *pl041;
--    qemu_irq pic[64];
-+    qemu_irq pic[GIC_EXT_IRQS];
-     uint32_t sys_id;
-     DriveInfo *dinfo;
-     PFlashCFI01 *pflash0;
 -- 
 2.43.0
 
