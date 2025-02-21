@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF9FA3F6C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56915A3F6AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:03:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlTbO-00008P-QU; Fri, 21 Feb 2025 09:02:04 -0500
+	id 1tlTbM-0008Od-IB; Fri, 21 Feb 2025 09:02:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tlOWf-0006Pv-CK
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:36:49 -0500
+ id 1tlOWi-0006RK-Jf
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:36:55 -0500
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tlOWc-00014w-VE
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:36:49 -0500
+ (envelope-from <liuwe@linux.microsoft.com>) id 1tlOWc-000150-VJ
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:36:52 -0500
 Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 54EE3204E5B5; Fri, 21 Feb 2025 00:36:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 54EE3204E5B5
+ id 61F46204E5B6; Fri, 21 Feb 2025 00:36:29 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 61F46204E5B6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1740126989;
- bh=pUwZ/dSr5gGrdQZ84seWR6a6C8sHhqS7bmH4ZAYmDHU=;
+ bh=Xu5uMVkqPXXOik9fNPZh9jORCU3wzqq5Gvflw/QcqSE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BqqD964wwMtTwbsqgUH7HpiUp6NzgWd+UawlSLcbTMHy5jW1GRKkHH6+yXZK+SGx4
- F9uhe0AUKOkQmMaOJNDaDngmtN+DoUGcpGLysE6136RkLFd4Ngu/iJBkB2BwPXL6nV
- czUtWPWjUySH1bSWW7kHOW/+53hZC7cKTth1ZDx8=
+ b=hLQ6sLfO+xMbPQ/VPPIcRUgqovvNdGaDEWJWWDsQ5N3lJZPpLlaM094LwXL1C/EBq
+ 0Dp7Kf3Je4wDSacHKRVTrrjk5mdep/kUEY+2Na2QCPoJbQtbmNVUnb36K7JTzj4hiq
+ Mj9KKfbBPxb5kak2noEHg42n83qTsgDZvF2TaoD0=
 From: Wei Liu <liuwe@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
@@ -35,10 +35,9 @@ Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
  mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
  prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
  Wei Liu <liuwe@linux.microsoft.com>
-Subject: [RFC PATCH v1 02/19] target/i386/hvf: fix the declaration of
- hvf_handle_io
-Date: Fri, 21 Feb 2025 00:36:10 -0800
-Message-Id: <1740126987-8483-3-git-send-email-liuwe@linux.microsoft.com>
+Subject: [RFC PATCH v1 03/19] target/i386/hvf: use x86_segment in x86_decode.c
+Date: Fri, 21 Feb 2025 00:36:11 -0800
+Message-Id: <1740126987-8483-4-git-send-email-liuwe@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1740126987-8483-1-git-send-email-liuwe@linux.microsoft.com>
 References: <1740126987-8483-1-git-send-email-liuwe@linux.microsoft.com>
@@ -52,7 +51,7 @@ X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Feb 2025 09:00:51 -0500
+X-Mailman-Approved-At: Fri, 21 Feb 2025 09:01:19 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,81 +66,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a conflicting declaration for hvf_handle_io in x86_emu.c.  The type of
-the first argument is wrong.  There has never been a problem because the first
-argument is not used in hvf_handle_io.
+Make the code to rely on the segment definition for checking cs.db.
+This allows removing HVF specific VMX related definition from the
+decoder.
 
-That being said, the code shouldn't contain such an error. Use the proper
-declaration from hvf-i386.h.
+Introduce a function for retrieving the CS descriptor.
 
-Take the chance to change the first argument's type to be CPUState.
+No functional change intended.
 
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
 ---
- target/i386/hvf/hvf-i386.h | 2 +-
- target/i386/hvf/hvf.c      | 6 +++---
- target/i386/hvf/x86_emu.c  | 4 +---
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ target/i386/hvf/x86_decode.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/target/i386/hvf/hvf-i386.h b/target/i386/hvf/hvf-i386.h
-index e99c02cd4b..046b681d13 100644
---- a/target/i386/hvf/hvf-i386.h
-+++ b/target/i386/hvf/hvf-i386.h
-@@ -18,7 +18,7 @@
+diff --git a/target/i386/hvf/x86_decode.c b/target/i386/hvf/x86_decode.c
+index a4a28f113f..d6d5894e54 100644
+--- a/target/i386/hvf/x86_decode.c
++++ b/target/i386/hvf/x86_decode.c
+@@ -1893,6 +1893,16 @@ static void decode_prefix(CPUX86State *env, struct x86_decode *decode)
+     }
+ }
  
- uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx, int reg);
- 
--void hvf_handle_io(CPUArchState *, uint16_t, void *, int, int, int);
-+void hvf_handle_io(CPUState *, uint16_t, void *, int, int, int);
- 
- /* Host specific functions */
- int hvf_inject_interrupt(CPUArchState *env, int vector);
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 353549fa77..1ecb6993ba 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -103,7 +103,7 @@ static void update_apic_tpr(CPUState *cpu)
- 
- #define VECTORING_INFO_VECTOR_MASK     0xff
- 
--void hvf_handle_io(CPUArchState *env, uint16_t port, void *buffer,
-+void hvf_handle_io(CPUState *env, uint16_t port, void *buffer,
-                   int direction, int size, int count)
++static struct x86_segment_descriptor get_cs_descriptor(CPUState *s)
++{
++    struct vmx_segment vmx_cs;
++    x86_segment_descriptor cs;
++    vmx_read_segment_descriptor(s, &vmx_cs, R_CS);
++    vmx_segment_to_x86_descriptor(s, &vmx_cs, &cs);
++
++    return cs;
++}
++
+ void set_addressing_size(CPUX86State *env, struct x86_decode *decode)
  {
-     int i;
-@@ -536,7 +536,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-             if (!string && in) {
-                 uint64_t val = 0;
-                 load_regs(cpu);
--                hvf_handle_io(env, port, &val, 0, size, 1);
-+                hvf_handle_io(env_cpu(env), port, &val, 0, size, 1);
-                 if (size == 1) {
-                     AL(env) = val;
-                 } else if (size == 2) {
-@@ -551,7 +551,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-                 break;
-             } else if (!string && !in) {
-                 RAX(env) = rreg(cpu->accel->fd, HV_X86_RAX);
--                hvf_handle_io(env, port, &RAX(env), 1, size, 1);
-+                hvf_handle_io(env_cpu(env), port, &RAX(env), 1, size, 1);
-                 macvm_set_rip(cpu, rip + ins_len);
-                 break;
-             }
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 69c61c9c07..2c7da10c1d 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -44,9 +44,7 @@
- #include "x86_flags.h"
- #include "vmcs.h"
- #include "vmx.h"
--
--void hvf_handle_io(CPUState *cs, uint16_t port, void *data,
--                   int direction, int size, uint32_t count);
-+#include "hvf-i386.h"
- 
- #define EXEC_2OP_FLAGS_CMD(env, decode, cmd, FLAGS_FUNC, save_res) \
- {                                                       \
+     decode->addressing_size = -1;
+@@ -1904,10 +1914,9 @@ void set_addressing_size(CPUX86State *env, struct x86_decode *decode)
+         }
+     } else if (!x86_is_long_mode(env_cpu(env))) {
+         /* protected */
+-        struct vmx_segment cs;
+-        vmx_read_segment_descriptor(env_cpu(env), &cs, R_CS);
++        x86_segment_descriptor cs = get_cs_descriptor(env_cpu(env));
+         /* check db */
+-        if ((cs.ar >> 14) & 1) {
++        if (cs.db) {
+             if (decode->addr_size_override) {
+                 decode->addressing_size = 2;
+             } else {
+@@ -1941,10 +1950,9 @@ void set_operand_size(CPUX86State *env, struct x86_decode *decode)
+         }
+     } else if (!x86_is_long_mode(env_cpu(env))) {
+         /* protected */
+-        struct vmx_segment cs;
+-        vmx_read_segment_descriptor(env_cpu(env), &cs, R_CS);
++        x86_segment_descriptor cs = get_cs_descriptor(env_cpu(env));
+         /* check db */
+-        if ((cs.ar >> 14) & 1) {
++        if (cs.db) {
+             if (decode->op_size_override) {
+                 decode->operand_size = 2;
+             } else{
 -- 
 2.39.5 (Apple Git-154)
 
