@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C524DA3F465
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:32:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D4CA3F452
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS51-0008Ae-12; Fri, 21 Feb 2025 07:24:31 -0500
+	id 1tlS4y-0007tU-2O; Fri, 21 Feb 2025 07:24:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4k-0007PL-GA
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4n-0007WU-5h
  for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4h-0007Ac-1a
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:12 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4k-0007Ap-72
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140650;
+ s=mimecast20190719; t=1740140653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dxfWHzt9iN+96ZxAmV4fASWczS4ot0QMavailc7mYDI=;
- b=DJgxk7Bohn9m7qvVVDwvRSuS1ZwSQRGDaiXcB5uQPGvdYRTZFWkkm8mf1bW12N9aN1LHcF
- 3h7W0y6M49zBcJ0mm8oHLn90dxhxjdz+NXgxqbi4qsADzkVbXXaWU/GYhX40icGabwswym
- ixc/Xs2E9+VxFZ6fF0ohWB85cIsZ0mk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=y55Lq3nnb4wo+Mep9PSIMyZizGYpu/mdV63SxawIIlg=;
+ b=aabNhQw8IMcm7+llcpSMw0oJIgJtoJLuVURlvy4YEIsWNzwTlWB03VLPptg9g0IbMcjMJn
+ b7WPd9eFW+LGm7qqOh1B7aEQ332xCT0Vl4yTaJLAtt+Qambnti4+/3nnh9ABxqbpbyfYud
+ 1Ep9xcCrQgCaROWP4BeoVwSzbSJA1gg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-MJjZAXcVNqK-qcN41WAz9w-1; Fri, 21 Feb 2025 07:24:08 -0500
-X-MC-Unique: MJjZAXcVNqK-qcN41WAz9w-1
-X-Mimecast-MFC-AGG-ID: MJjZAXcVNqK-qcN41WAz9w_1740140647
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43947a0919aso18741485e9.0
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:08 -0800 (PST)
+ us-mta-358-sPgT0ernO1WXshOxFlWDRQ-1; Fri, 21 Feb 2025 07:24:12 -0500
+X-MC-Unique: sPgT0ernO1WXshOxFlWDRQ-1
+X-Mimecast-MFC-AGG-ID: sPgT0ernO1WXshOxFlWDRQ_1740140651
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43942e82719so13917555e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140647; x=1740745447;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dxfWHzt9iN+96ZxAmV4fASWczS4ot0QMavailc7mYDI=;
- b=cltvu6UTGQflsOQh0bVhMCq9UOv5BIUTidmUoZjv3WyEd3Cgh3sJpBnje9vdOTB1lT
- GywPCn72XlO032takYvzrFyeN7os7EQpTou+LhrY2QNUUORL8yw9ImtFnLjtk1S+yJr6
- WQapSE4+0rzessnAkVune4ESoqu+TLA5ntrZFo/wE7PO5+tC1W+4oRtXj3aN/FGJJMI/
- i2ezG50ObICwksc24/NBnjgiOa9hYC6SSIyh1E3l6/tAbXn4/BX8qYhp1e9S/KRRNtzq
- MWhCYcr1oUD01BtJJe0f78KH/RIL704p9Lw5dQlNksJy6Dg1qaKD7J/6CN84aiCdxIHT
- wdJA==
-X-Gm-Message-State: AOJu0YwEFnxQ6uxa5MXuKBZH0d0No8gfJvCQVhXU9OG4I6mSxNjWxzae
- 8ggGaM4/7iUT6FXwX6DHG19Gko6HKYlbmn+1Gy0qGd3GDC9IUU+NEwrY9P4MBTE8dLfa3r0gC8X
- 0zxtcTLC8sWYLe6r5a9LeELj9WOd5KaaHjxfw09Kf4SMFxyFSFST8ntaFJZh+6kb/qbZcTTl+0o
- eZWc++aOyJX1OPtJmfWoKGTle5iRRrdw==
-X-Gm-Gg: ASbGncsLxeiywvQNETO9jbEFlgJuSRXaRuZSfKQPcV2CQBqkRzwPWwyutBRGIKDl/UT
- LLa538taNATk58T00cqpg1NGw0MCnf6Ul6SnKMVjHDYBzsMVtQp6+wl1aoIsFkg5QZaby1w1LM6
- YMlgcJSQ0rjs+ivZ80+M3RZFWLjv5dI3uXJFJwM+/gmi/rYjcYjm7V29+DEhcmA/KQFLrol+hBu
- Yk3KO33mM4J7MVxgZXXGTLTu+jWKHfxCm9urQRJz1JDwoe+1xX+IBFxTAdbB/FqKv9B4xgCUdhj
- bxbKoQ==
-X-Received: by 2002:a05:600c:45ca:b0:439:9a40:aa0b with SMTP id
- 5b1f17b1804b1-439ae21e36emr23933785e9.25.1740140646900; 
- Fri, 21 Feb 2025 04:24:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE++L12GzMimgissjFPBxz51sTR1njhnN+DcWPxHFC8BjJANAvKPaefWVIjCiSosjXHz8lRHg==
-X-Received: by 2002:a05:600c:45ca:b0:439:9a40:aa0b with SMTP id
- 5b1f17b1804b1-439ae21e36emr23933245e9.25.1740140646422; 
- Fri, 21 Feb 2025 04:24:06 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140650; x=1740745450;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y55Lq3nnb4wo+Mep9PSIMyZizGYpu/mdV63SxawIIlg=;
+ b=oy60sa0a/0BJ6GIDu8Wbvz/4Q/qwReJBnJVEktaw4ILhjLZ792LCmOVJ3cSAXogZbj
+ P/CcO+cjLKOndcpZw2a/L2x6dS7qXfSRkASlfchJMIqnH7ykW5LDly120hDCF5YlX8NU
+ xd7W4ULy+/yvtOu3l5ggYIs4w+EB4fE3grZIYaHJx8kV/0ZNIp35rHvg0jU4HLNlwsPv
+ ZVZS/nqK9YCcm/2DBFX0rJJWfN9S2my5Ab9zUC/5gHAux5ymcvLSfj4xRiC3AYMilsv1
+ ptViLcD6SC44UN2LkxtD5o4mLBDlvLm3I3OPBuhIAUXhCb4W8lxK33kLhggcepG1Q7JX
+ A2ZA==
+X-Gm-Message-State: AOJu0Yy+PMFEJaK4ND7LmQX+4iVoJswogwnMllKdk/R3i16YOk0mria8
+ L0h3Mng0YRQspCHhJf5fmzf/2OD3uZ91ylr7aTI538UfTUof2QaY70vFTXr3BU3pjP4zrDtQWfe
+ L0Vuuu3jXB0EqJkOqiLwCf5xp+dth7PU4mjBpgK5poNIyepO5QEXA7/Zr3WzTwvri7/ImjCzRui
+ uus/TOXoBojxMYbus1quCaM/gxWDtz4g==
+X-Gm-Gg: ASbGnctwfSuOfDL0lRrzsBus8gIB26nyorCJiAOtkRVphYFkULsacapJPOHxwTIlZJJ
+ UpZx/vwULeWxEMvHoCex6+9tqMPmoTaBSHR4K4eO26p17X3qJf9nV8yLw8ZjfgX6btgdEqxhOF9
+ 4I32i/B7amWpA98SbGpZMyJsAA4ATWlSQL7pPRCWKNHoE+WinX39EISZkputJh4Ce3kdsSjbcEG
+ zoysBKo8VWWgd6OCn1fIsmv499GTbq9ALM8lTtgOLqJ7XP3FVsZrYXvsLtZ/Yjr/5U6PQGe0QPz
+ QotRUw==
+X-Received: by 2002:a5d:47a9:0:b0:38f:3888:33bc with SMTP id
+ ffacd0b85a97d-38f6e755eebmr2956940f8f.10.1740140650247; 
+ Fri, 21 Feb 2025 04:24:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH1jDVsRMsGdie1M/p/c7fTH9AvdNu2+7DPqbDnkNGxE7mSHJYD/rRv7K8qAaHKQGbg3i0uWw==
+X-Received: by 2002:a5d:47a9:0:b0:38f:3888:33bc with SMTP id
+ ffacd0b85a97d-38f6e755eebmr2956895f8f.10.1740140649660; 
+ Fri, 21 Feb 2025 04:24:09 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce735sm15860915e9.3.2025.02.21.04.24.04
+ ffacd0b85a97d-38f258fc7ecsm22997792f8f.49.2025.02.21.04.24.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:24:05 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:24:03 -0500
+ Fri, 21 Feb 2025 04:24:09 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:24:06 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 27/41] amd_iommu: Use correct bitmask to set capability BAR
-Message-ID: <3684717b7407cc395dc9bf522e193dbc85293dee.1740140520.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 28/41] vhost-iova-tree: Implement an IOVA-only tree
+Message-ID: <92cf61e70838c20adc82daa3170fdbb9d174b508.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -109,52 +110,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Jonah Palmer <jonah.palmer@oracle.com>
 
-AMD IOMMU provides the base address of control registers through
-IVRS table and PCI capability. Since this base address is of 64 bit,
-use 32 bits mask (instead of 16 bits) to set BAR low and high.
+Creates and supports an IOVA-only tree to support a SVQ IOVA->HVA and
+GPA->IOVA tree for host-only and guest-backed memory, respectively, in
+the next patch.
 
-Fixes: d29a09ca68 ("hw/i386: Introduce AMD IOMMU")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250207045354.27329-3-sarunkod@amd.com>
+The IOVA allocator still allocates an IOVA range but now adds this range
+to the IOVA-only tree as well as to the full IOVA->HVA tree.
+
+In the next patch, the full IOVA->HVA tree will be split into a partial
+SVQ IOVA->HVA tree and a GPA->IOVA tree. The motivation behind having an
+IOVA-only tree was to have a single tree that would keep track of all
+allocated IOVA ranges between the partial SVQ IOVA->HVA and GPA->IOVA
+trees.
+
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Message-Id: <20250217144936.3589907-2-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.h | 2 +-
- hw/i386/amd_iommu.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/virtio/vhost-iova-tree.h |  3 ++-
+ hw/virtio/vhost-iova-tree.c | 26 ++++++++++++++++++++------
+ hw/virtio/vhost-vdpa.c      | 29 +++++++++++++++++++++--------
+ net/vhost-vdpa.c            | 10 ++++++++--
+ 4 files changed, 51 insertions(+), 17 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index e0dac4d9a9..28125130c6 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -187,7 +187,7 @@
-         AMDVI_CAPAB_FLAG_HTTUNNEL |  AMDVI_CAPAB_EFR_SUP)
+diff --git a/hw/virtio/vhost-iova-tree.h b/hw/virtio/vhost-iova-tree.h
+index 4adfd79ff0..525ce72b1d 100644
+--- a/hw/virtio/vhost-iova-tree.h
++++ b/hw/virtio/vhost-iova-tree.h
+@@ -21,7 +21,8 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(VhostIOVATree, vhost_iova_tree_delete);
  
- /* AMDVI default address */
--#define AMDVI_BASE_ADDR 0xfed80000
-+#define AMDVI_BASE_ADDR 0xfed80000ULL
+ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *iova_tree,
+                                         const DMAMap *map);
+-int vhost_iova_tree_map_alloc(VhostIOVATree *iova_tree, DMAMap *map);
++int vhost_iova_tree_map_alloc(VhostIOVATree *iova_tree, DMAMap *map,
++                              hwaddr taddr);
+ void vhost_iova_tree_remove(VhostIOVATree *iova_tree, DMAMap map);
  
- /* page management constants */
- #define AMDVI_PAGE_SHIFT 12
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 98f1209a38..044fe43256 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1593,9 +1593,9 @@ static void amdvi_pci_realize(PCIDevice *pdev, Error **errp)
-     /* reset AMDVI specific capabilities, all r/o */
-     pci_set_long(pdev->config + s->capab_offset, AMDVI_CAPAB_FEATURES);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
--                 AMDVI_BASE_ADDR & ~(0xffff0000));
-+                 AMDVI_BASE_ADDR & MAKE_64BIT_MASK(14, 18));
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
--                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
-+                AMDVI_BASE_ADDR >> 32);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_RANGE,
-                  0xff000000);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
+ #endif
+diff --git a/hw/virtio/vhost-iova-tree.c b/hw/virtio/vhost-iova-tree.c
+index 3d03395a77..216885aa3c 100644
+--- a/hw/virtio/vhost-iova-tree.c
++++ b/hw/virtio/vhost-iova-tree.c
+@@ -28,6 +28,9 @@ struct VhostIOVATree {
+ 
+     /* IOVA address to qemu memory maps. */
+     IOVATree *iova_taddr_map;
++
++    /* Allocated IOVA addresses */
++    IOVATree *iova_map;
+ };
+ 
+ /**
+@@ -44,6 +47,7 @@ VhostIOVATree *vhost_iova_tree_new(hwaddr iova_first, hwaddr iova_last)
+     tree->iova_last = iova_last;
+ 
+     tree->iova_taddr_map = iova_tree_new();
++    tree->iova_map = iova_tree_new();
+     return tree;
+ }
+ 
+@@ -53,6 +57,7 @@ VhostIOVATree *vhost_iova_tree_new(hwaddr iova_first, hwaddr iova_last)
+ void vhost_iova_tree_delete(VhostIOVATree *iova_tree)
+ {
+     iova_tree_destroy(iova_tree->iova_taddr_map);
++    iova_tree_destroy(iova_tree->iova_map);
+     g_free(iova_tree);
+ }
+ 
+@@ -75,6 +80,7 @@ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *tree,
+  *
+  * @tree: The iova tree
+  * @map: The iova map
++ * @taddr: The translated address (HVA)
+  *
+  * Returns:
+  * - IOVA_OK if the map fits in the container
+@@ -83,19 +89,26 @@ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *tree,
+  *
+  * It returns assignated iova in map->iova if return value is VHOST_DMA_MAP_OK.
+  */
+-int vhost_iova_tree_map_alloc(VhostIOVATree *tree, DMAMap *map)
++int vhost_iova_tree_map_alloc(VhostIOVATree *tree, DMAMap *map, hwaddr taddr)
+ {
++    int ret;
++
+     /* Some vhost devices do not like addr 0. Skip first page */
+     hwaddr iova_first = tree->iova_first ?: qemu_real_host_page_size();
+ 
+-    if (map->translated_addr + map->size < map->translated_addr ||
+-        map->perm == IOMMU_NONE) {
++    if (taddr + map->size < taddr || map->perm == IOMMU_NONE) {
+         return IOVA_ERR_INVALID;
+     }
+ 
+-    /* Allocate a node in IOVA address */
+-    return iova_tree_alloc_map(tree->iova_taddr_map, map, iova_first,
+-                               tree->iova_last);
++    /* Allocate a node in the IOVA-only tree */
++    ret = iova_tree_alloc_map(tree->iova_map, map, iova_first, tree->iova_last);
++    if (unlikely(ret != IOVA_OK)) {
++        return ret;
++    }
++
++    /* Insert a node in the IOVA->HVA tree */
++    map->translated_addr = taddr;
++    return iova_tree_insert(tree->iova_taddr_map, map);
+ }
+ 
+ /**
+@@ -107,4 +120,5 @@ int vhost_iova_tree_map_alloc(VhostIOVATree *tree, DMAMap *map)
+ void vhost_iova_tree_remove(VhostIOVATree *iova_tree, DMAMap map)
+ {
+     iova_tree_remove(iova_tree->iova_taddr_map, map);
++    iova_tree_remove(iova_tree->iova_map, map);
+ }
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 3cdaa12ed5..703dcfc929 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -360,14 +360,20 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+     llsize = int128_sub(llend, int128_make64(iova));
+     if (s->shadow_data) {
+         int r;
++        hwaddr hw_vaddr = (hwaddr)(uintptr_t)vaddr;
+ 
+-        mem_region.translated_addr = (hwaddr)(uintptr_t)vaddr,
+         mem_region.size = int128_get64(llsize) - 1,
+         mem_region.perm = IOMMU_ACCESS_FLAG(true, section->readonly),
+ 
+-        r = vhost_iova_tree_map_alloc(s->iova_tree, &mem_region);
++        r = vhost_iova_tree_map_alloc(s->iova_tree, &mem_region, hw_vaddr);
+         if (unlikely(r != IOVA_OK)) {
+             error_report("Can't allocate a mapping (%d)", r);
++
++            if (mem_region.translated_addr == hw_vaddr) {
++                error_report("Insertion to IOVA->HVA tree failed");
++                /* Remove the mapping from the IOVA-only tree */
++                goto fail_map;
++            }
+             goto fail;
+         }
+ 
+@@ -1142,16 +1148,23 @@ static void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
+  *
+  * @v: Vhost-vdpa device
+  * @needle: The area to search iova
++ * @taddr: The translated address (HVA)
+  * @errorp: Error pointer
+  */
+ static bool vhost_vdpa_svq_map_ring(struct vhost_vdpa *v, DMAMap *needle,
+-                                    Error **errp)
++                                    hwaddr taddr, Error **errp)
+ {
+     int r;
+ 
+-    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, needle);
++    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, needle, taddr);
+     if (unlikely(r != IOVA_OK)) {
+         error_setg(errp, "Cannot allocate iova (%d)", r);
++
++        if (needle->translated_addr == taddr) {
++            error_append_hint(errp, "Insertion to IOVA->HVA tree failed");
++            /* Remove the mapping from the IOVA-only tree */
++            vhost_iova_tree_remove(v->shared->iova_tree, *needle);
++        }
+         return false;
+     }
+ 
+@@ -1192,11 +1205,11 @@ static bool vhost_vdpa_svq_map_rings(struct vhost_dev *dev,
+     vhost_svq_get_vring_addr(svq, &svq_addr);
+ 
+     driver_region = (DMAMap) {
+-        .translated_addr = svq_addr.desc_user_addr,
+         .size = driver_size - 1,
+         .perm = IOMMU_RO,
+     };
+-    ok = vhost_vdpa_svq_map_ring(v, &driver_region, errp);
++    ok = vhost_vdpa_svq_map_ring(v, &driver_region, svq_addr.desc_user_addr,
++                                 errp);
+     if (unlikely(!ok)) {
+         error_prepend(errp, "Cannot create vq driver region: ");
+         return false;
+@@ -1206,11 +1219,11 @@ static bool vhost_vdpa_svq_map_rings(struct vhost_dev *dev,
+     addr->avail_user_addr = driver_region.iova + avail_offset;
+ 
+     device_region = (DMAMap) {
+-        .translated_addr = svq_addr.used_user_addr,
+         .size = device_size - 1,
+         .perm = IOMMU_RW,
+     };
+-    ok = vhost_vdpa_svq_map_ring(v, &device_region, errp);
++    ok = vhost_vdpa_svq_map_ring(v, &device_region, svq_addr.used_user_addr,
++                                 errp);
+     if (unlikely(!ok)) {
+         error_prepend(errp, "Cannot create vq device region: ");
+         vhost_vdpa_svq_unmap_ring(v, driver_region.translated_addr);
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 231b45246c..5a3a57203d 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -510,14 +510,20 @@ static int vhost_vdpa_cvq_map_buf(struct vhost_vdpa *v, void *buf, size_t size,
+                                   bool write)
+ {
+     DMAMap map = {};
++    hwaddr taddr = (hwaddr)(uintptr_t)buf;
+     int r;
+ 
+-    map.translated_addr = (hwaddr)(uintptr_t)buf;
+     map.size = size - 1;
+     map.perm = write ? IOMMU_RW : IOMMU_RO,
+-    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, &map);
++    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, &map, taddr);
+     if (unlikely(r != IOVA_OK)) {
+         error_report("Cannot map injected element");
++
++        if (map.translated_addr == taddr) {
++            error_report("Insertion to IOVA->HVA tree failed");
++            /* Remove the mapping from the IOVA-only tree */
++            goto dma_map_err;
++        }
+         return r;
+     }
+ 
 -- 
 MST
 
