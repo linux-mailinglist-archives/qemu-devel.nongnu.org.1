@@ -2,103 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AA2A3F70D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3FFA3F733
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:27:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlTs6-0002SJ-Nx; Fri, 21 Feb 2025 09:19:18 -0500
+	id 1tlTyK-0006IS-2M; Fri, 21 Feb 2025 09:25:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tlTrx-0002R6-I0
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:19:13 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tlTy7-0006Hu-Lo
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:25:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tlTru-00076o-2Q
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:19:07 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tlTy6-0000I1-3W
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:25:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740147543;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1740147928;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dIZvGJ9om15Atj2sx3YliQoL+eBXiISi2wgs2MUDwvY=;
- b=IY/kpLa92AlzFkx+3tDb0oiE58ZEUhtN/nHEiwjE0jEVY6fZznEv1O32ncy440lOiPJFmf
- 9j6Rp0NrPY29fjnA1Yg4Nr3jccQrzN599tdQx7tQ42xIQPpQLKgulGzXQy1eocJGKJZ6W9
- 1Cy9S6F0UgyKODyf9SMwjqYAIgP7Hyk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=vcaHqrRRq6tcYLUiQcJufhAfxjn15bqIY3uspjlXzIc=;
+ b=c5xWJkoslM8Cz3/6e1EjLf1NTP7sKVeauuBZQ7hwjLbeQSeSi289ZSVuFGFb0DRu6Bgo6A
+ uaPBPV2HcvRKrcJGkqh95XPBuLe0vbvIJBGvpgwqzwaYC1yHOKuD0n5BwFsG2HopYkimH0
+ 1AM9JxE6IzpiQ3fN9laaNxbpdh8Yxzs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-HaFKm9oANXO5rAffzNxHeA-1; Fri, 21 Feb 2025 09:19:02 -0500
-X-MC-Unique: HaFKm9oANXO5rAffzNxHeA-1
-X-Mimecast-MFC-AGG-ID: HaFKm9oANXO5rAffzNxHeA_1740147541
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38f3bac2944so980214f8f.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:19:02 -0800 (PST)
+ us-mta-83-exmCFxotOgmWhsIoyPJAMw-1; Fri, 21 Feb 2025 09:25:25 -0500
+X-MC-Unique: exmCFxotOgmWhsIoyPJAMw-1
+X-Mimecast-MFC-AGG-ID: exmCFxotOgmWhsIoyPJAMw_1740147925
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-439a0e28cfaso11678485e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:25:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740147541; x=1740752341;
- h=content-transfer-encoding:in-reply-to:references:reply-to:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dIZvGJ9om15Atj2sx3YliQoL+eBXiISi2wgs2MUDwvY=;
- b=Xdat2pjYKmCrAxjEA3smR+bj+xtT7GnYNsbBXlDcw9RkHOjME19d7V98/wQs7moxbV
- GHeQY3+e8RYemLOd+U+Xrb+IPkrKKJKSip17OBqwmzEPHyoz7Q+4vnm29wDNj9NxPRvL
- uLTlVAqKd2dbRH5F92nXfGANw2LHIgVl7petuJ8IxzIWneBOo4TveHfKYtMWld45WSw9
- hPj3wyBFYOLIDtIGUIoK+NADl4q63Avyl70JUuxEezg2SY3zbxJupOw7KDrC+YUbd4W5
- sEuf41FG/m0zieFeARgASh0twAlOB7WZfmtuTl3HqcEoucKmdarXA6ALBuuOcjrt0KVP
- aG5Q==
+ d=1e100.net; s=20230601; t=1740147925; x=1740752725;
+ h=content-transfer-encoding:in-reply-to:autocrypt:cc:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vcaHqrRRq6tcYLUiQcJufhAfxjn15bqIY3uspjlXzIc=;
+ b=HYbr3qWC3ymq8JbN/rVqmPF2+8gtpDMn1gxJK/cKqAfYVKRVSIauKraMCTKYf+KXjh
+ FeEh+cidwJCPbDYVgeXVQeTkUTxBmabi0K3nDqZzjeZ94qM20khzQ6oYuvB7xeizBc63
+ 6kPug6Dh1WGZh/2edJPZEr2WryV8vqZ9KAX3Os6uWxn+hkyyPSZQsR8TagsEYfmTQwGQ
+ pNbJReGEWGs70i8MbwN3M5HypmmLaxPxmBGpA2DM3OuWaQd9adg9y4wpsg/8cJujciSW
+ 7fvnF3nOQSc98vr6QOkDrDkY0VAdR1zhGKIelmttPlK/sMWrBtV26f5KfEzgHApFrVhj
+ yWIw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWxRJhSNgnSYAeWehLD0eNthIsvTDeNn4eoVKMIFLu67T+xvkYqlznbtZD9g4XKKKo98giDMZSdbUCB@nongnu.org
-X-Gm-Message-State: AOJu0YwW5+BavPbltbsMfyzoI+WmxmPcgcZNCNPAHMZMh4ZmgMHPBiti
- 1WK0p8KWXkbbtdRyoX6XfA6UAIshRcXQSwhwjLyb2OaGS8KioYJvUAPD3lXFuzRyxODuMvIuvif
- 7ZiCT59l4EZORwELEj4tCjwfilCbcly8oSffpcR1xkXsKVLB+FUi8
-X-Gm-Gg: ASbGncvA1IZ6gQXIQ0QTAiyE+QoK/pgiYhcTXvjTeP3LiHX0a2asxCMNk5kAv8I9Vn9
- aQlFb+EU7jcgeG+g4VrhJuhUtA8BzG/1jEXwPxLNu7FcggcOwVNRzh8JGWVky6cnzFlk6pyFQkm
- qeQh1O1hIykFVJUE/uXwncSs2O3MS/vza8v/F/tnz9iA+nRdfgu1lfLagZ7mnChNjesZmX5kIpb
- 2fwkG8/Rd6W2L4FtoK+2GGoSeY7Wlk8qZXHu+NoVi5AzD3QtDTDsNQEO5k73U1EX1AZbiVAdM+q
- W0Q7fvi6hDmwGP6z8Tbv4I9ANY5p0Rg0DQJwyzN9eYht2MEc7YqoYbh5KhDEx08=
-X-Received: by 2002:a05:6000:2:b0:38f:3392:9fd8 with SMTP id
- ffacd0b85a97d-38f6e95f455mr2844838f8f.18.1740147540574; 
- Fri, 21 Feb 2025 06:19:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtLrlQW55aWDncDkeZiZ6gphXb08mPBfz5rY97AvpAXflRJYikfZc6J9Af0WUikUTHxd5SZQ==
-X-Received: by 2002:a05:6000:2:b0:38f:3392:9fd8 with SMTP id
- ffacd0b85a97d-38f6e95f455mr2844789f8f.18.1740147540202; 
- Fri, 21 Feb 2025 06:19:00 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d5d8bsm23512951f8f.70.2025.02.21.06.18.58
+ AJvYcCWek8WoV2d5on2AyEUXYyMPaclJ8WCfzV3QgdnzT581cYA0glCIgSzuQFZBzdSkaypwf3tXkYYjTfKS@nongnu.org
+X-Gm-Message-State: AOJu0YwKrs2jCacJI5Z3DrUC4IpjI5HekYVYXepnvDZIV63YwAYP6Ob4
+ lyBUD0ECDglT4/VN6A7dcaztguc8pkSi+i5ZNLZVJC2Im75FqLwSO5SD7K+5q0SnBBmv8ryK9Zx
+ /27+z4a37ze8lsAf/HC6s8bG/+6SBgSmv7fMPbZ3hXuhpyXNUKO5M
+X-Gm-Gg: ASbGncsyBkrSvTHdB1E7t3pqOaxKx1DKX7DBcE4COIdjVbuUaF5YU5XfF56plA3bYcm
+ NGl8otykC/GLx++mincdjPMQP52Y1iFijM17e4up8rEQNYKnXBR2lFhEEnvcb1IBe8znlnVxQWZ
+ egTQbmCRqYGHr7DqjJ3ffju8+Sw7rdGFVTqItYQ6gKKaR3aXudN7XDvueLO1ifT0Z0p7nXXxw7X
+ tWU9ny/icYLSUnHhFuV8hAUJUcBsNuElFWBV3cNAiPWOJH572147M8SHEZsTOo4kpnFEHpjl5Mr
+ D4Z+0M6ToU966PohpAVJMVLHtWGL9TbsVai0ljqgZzIvkDE=
+X-Received: by 2002:a05:600c:1c1b:b0:439:942c:c1cd with SMTP id
+ 5b1f17b1804b1-439ae1f1991mr29895675e9.15.1740147924747; 
+ Fri, 21 Feb 2025 06:25:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGaKV9ADd7KA8gM4vs7ZHkhvAMEsnIexdQoOXC1Jl8v0MWv3X9P+k1tZsDPc4ciH+oTtKdXIA==
+X-Received: by 2002:a05:600c:1c1b:b0:439:942c:c1cd with SMTP id
+ 5b1f17b1804b1-439ae1f1991mr29895455e9.15.1740147924344; 
+ Fri, 21 Feb 2025 06:25:24 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-157.web.vodafone.de.
+ [109.42.51.157]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-439b030bd9csm18788735e9.28.2025.02.21.06.25.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Feb 2025 06:18:59 -0800 (PST)
-Message-ID: <6848480a-d588-4b81-a286-4bee983b7831@redhat.com>
-Date: Fri, 21 Feb 2025 15:18:57 +0100
+ Fri, 21 Feb 2025 06:25:23 -0800 (PST)
+Message-ID: <12ff6477-7cd5-4ada-b7a8-97a3add814c3@redhat.com>
+Date: Fri, 21 Feb 2025 15:25:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv2 11/20] intel_iommu: Check for compatibility with
- IOMMUFD backed device when x-flts=on
+Subject: Re: [PATCH] tests/functional: Bump some arm test timeouts
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250221140640.786341-1-peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Eric Auger <eric.auger@redhat.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- shameerali.kolothum.thodi@huawei.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
- <20250219082228.3303163-12-zhenzhong.duan@intel.com>
- <ba276dfd-fe0a-43ab-90bf-163e1ad76d06@redhat.com>
-In-Reply-To: <ba276dfd-fe0a-43ab-90bf-163e1ad76d06@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Cc: Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250221140640.786341-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
@@ -119,124 +150,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 2/21/25 1:49 PM, Eric Auger wrote:
-> Hi Zhenzhong,
+On 21/02/2025 15.06, Peter Maydell wrote:
+> On my local machine, for a debug build, sbsaref_alpine takes
+> nearly 900s:
 > 
+> $ (cd build/x86 && ./pyvenv/bin/meson test --setup thorough --suite func-thorough func-aarch64-aarch64_sbsaref_alpine
+> )
 > 
-> On 2/19/25 9:22 AM, Zhenzhong Duan wrote:
->> When vIOMMU is configured x-flts=on in scalable mode, stage-1 page table
->> is passed to host to construct nested page table. We need to check
->> compatibility of some critical IOMMU capabilities between vIOMMU and
->> host IOMMU to ensure guest stage-1 page table could be used by host.
->>
->> For instance, vIOMMU supports stage-1 1GB huge page mapping, but host
->> does not, then this IOMMUFD backed device should be failed.
-> is this 1GB huge page mapping a requiring for SIOV?
->>
->> Declare an enum type host_iommu_device_iommu_hw_info_type aliased to
->> iommu_hw_info_type which come from iommufd header file. This can avoid
-> s/come/comes
->> build failure on windows which doesn't support iommufd.
->>
->> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>  include/system/host_iommu_device.h | 13 ++++++++++++
->>  hw/i386/intel_iommu.c              | 34 ++++++++++++++++++++++++++++++
->>  2 files changed, 47 insertions(+)
->>
->> diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
->> index 250600fc1d..aa3885d7ee 100644
->> --- a/include/system/host_iommu_device.h
->> +++ b/include/system/host_iommu_device.h
->> @@ -133,5 +133,18 @@ struct HostIOMMUDeviceClass {
->>  #define HOST_IOMMU_DEVICE_CAP_FS1GP             3
->>  #define HOST_IOMMU_DEVICE_CAP_ERRATA            4
->>  
->> +/**
->> + * enum host_iommu_device_iommu_hw_info_type - IOMMU Hardware Info Types
->> + * @HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_NONE: Used by the drivers that do not
->> + *                                             report hardware info
->> + * @HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD: Intel VT-d iommu info type
->> + *
->> + * This is alias to enum iommu_hw_info_type but for general purpose.
->> + */
->> +enum host_iommu_device_iommu_hw_info_type {
->> +    HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_NONE,
->> +    HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD,
->> +};
->> +
->>  #define HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX       64
->>  #endif
->> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->> index 7709f55be5..9de60e607d 100644
->> --- a/hw/i386/intel_iommu.c
->> +++ b/hw/i386/intel_iommu.c
->> @@ -39,6 +39,7 @@
->>  #include "kvm/kvm_i386.h"
->>  #include "migration/vmstate.h"
->>  #include "trace.h"
->> +#include "system/iommufd.h"
->>  
->>  /* context entry operations */
->>  #define VTD_CE_GET_RID2PASID(ce) \
->> @@ -4346,6 +4347,39 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
->>          return true;
->>      }
->>  
->> +    /* Remaining checks are all stage-1 translation specific */
->> +    if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
->> +        error_setg(errp, "Need IOMMUFD backend when x-flts=on");
->> +        return false;
->> +    }
->> +
->> +    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE, errp);
->> +    if (ret < 0) {
->> +        return false;
-> Can't you simply rely on the check below?
->> +    }
->> +    if (ret != HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD) {
->> +        error_setg(errp, "Incompatible host platform IOMMU type %d", ret);
->> +        return false;
->> +    }
->> +
->> +    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_NESTING, errp);
->> +    if (ret < 0) {
->> +        return false;
->> +    }
-> same heere
->> +    if (ret != 1) {
->> +        error_setg(errp, "Host IOMMU doesn't support nested translation");
->> +        return false;
->> +    }
->> +
->> +    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_FS1GP, errp);
->> +    if (ret < 0) {
->> +        return false;
->> +    }
->> +    if (s->fs1gp && ret != 1) {
-> looking in the vtd spec I don't find FS1GP. Is it the same as FL1GP?
-I am now looking at spec rev from june 22 and it seems it has been
-renamed. So please ignore this comment
+> 1/1 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_sbsaref_alpine
+>                        OK 896.90s
+> 
+> arm_aspeed_rainier can also run close to its current timeout:
+>   6/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_rainier
+>                        OK 215.75s
+> 
+> and arm_aspeed_ast2500 and arm_aspeed_ast2600 can go over:
+> 13/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_ast2600
+>                        OK 792.94s
+> 
+> 27/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_ast2500
+>                   TIMEOUT 480.01s
+> 
+> The sx1 test fails not on the overall meson timeout but on the
+> 60 second timeout in some of the subtests.
+> 
+> Bump all these timeouts up a bit.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> This at least gets 'make -j4 check-functional' to passing for me
+> for an arm/aarch64 debug build, apart from the gpu test hang which
+> we're discussing in a different thread. Whole thing takes 25 mins...
+> ---
+>   tests/functional/meson.build     | 8 ++++----
+>   tests/functional/test_arm_sx1.py | 6 +++---
+>   2 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index b516d21cba1..effa31701cf 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -15,16 +15,16 @@ test_timeouts = {
+>     'aarch64_raspi4' : 480,
+>     'aarch64_rme_virt' : 1200,
+>     'aarch64_rme_sbsaref' : 1200,
+> -  'aarch64_sbsaref_alpine' : 720,
+> +  'aarch64_sbsaref_alpine' : 1200,
 
-Eric
-> Maybe I am not looking the correct spec though. Why do you need to check
-> both ret and fs1gp
-> Even why do you need a member to store the cap? Looks FL1GP can only
-> take 0 or 1 value?
->> +        error_setg(errp, "Stage-1 1GB huge page is unsupported by host IOMMU");
->> +        return false;
->> +    }
->> +
->>      error_setg(errp, "host device is uncompatible with stage-1 translation");
->>      return false;
->>  }
-> Eric
+I wonder whether we should disable that test with @skipSlowTest() by 
+default, since it's really very slow...?
+
+Anyway, for this patch here:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
