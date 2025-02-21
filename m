@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC27A3F466
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1852A3F423
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS3N-0004Qi-Rz; Fri, 21 Feb 2025 07:22:49 -0500
+	id 1tlS3R-0004Xz-Sy; Fri, 21 Feb 2025 07:22:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3G-0004Pg-3W
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:43 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3I-0004Pw-E3
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3E-0006zB-8C
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:41 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3G-0006zZ-F2
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140558;
+ s=mimecast20190719; t=1740140561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hoj9zHkQc68Myno7gmXyzMQyAEjnKBSFykdtmN9gSKo=;
- b=bhZCsDbXKJ2ZjOLk7KJidBIN+KlLOACNA4mPd2x+jZFfD7oHNi85CcwDNkMApnFasSFhY7
- HdnSTaRnMPjLb8Uf39zB2D9mH0SnM5ZBi3HFFi3KmbP1SlwxK1bSQevK/DGUJcMr9tdP7L
- abGqPdOn2nVjO0cn9SYsMNJKBJ6/jgI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2kxcyww6qI/yOi6ipYazJfpY4N/lEp2Wmj/5+d4jfT0=;
+ b=VXCxPDY2rD84uDwG9z9r3fkdxNgiMORBaF4KysjDScv2GLsUgs1sHZQz9vtE3H8o1nQzKK
+ FHW3W/EeSGTkT8TbhQVjUGSDkUNqmjyDM9+5S1+/GS3HQnoa7HebYYxbQidaKjGhgGAcZi
+ ZcrXOROHUsUbwY9e/RBmxz+tAhGIR5w=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-Bl5B60hUMK-I2o09nWKg5Q-1; Fri, 21 Feb 2025 07:22:37 -0500
-X-MC-Unique: Bl5B60hUMK-I2o09nWKg5Q-1
-X-Mimecast-MFC-AGG-ID: Bl5B60hUMK-I2o09nWKg5Q_1740140556
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-38f628ff78eso1073025f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:36 -0800 (PST)
+ us-mta-444-P_j2QwBLNd2MmVZXMN59Rw-1; Fri, 21 Feb 2025 07:22:40 -0500
+X-MC-Unique: P_j2QwBLNd2MmVZXMN59Rw-1
+X-Mimecast-MFC-AGG-ID: P_j2QwBLNd2MmVZXMN59Rw_1740140559
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4399a5afcb3so18577605e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140555; x=1740745355;
+ d=1e100.net; s=20230601; t=1740140559; x=1740745359;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hoj9zHkQc68Myno7gmXyzMQyAEjnKBSFykdtmN9gSKo=;
- b=BaTyJdA37j0aCMHpZMnFzhQU0saGadyXERRzIinWN4ZvHP735D4ekOgzXqKlO3/JwD
- xgxbW2c7o0QtkEI9+Wu7BYifM+TMj7tbCBCbYrKTATpiwBGGRgkZ5iChARnxUY8JGA05
- YVdEpjXw2X9OQI3IiM+aUs3QywzOMyJwo7JCY8hbvHM1Is80oTtxVmVadK8MgDMhCli+
- mkGkcRV6IJw2V5DpcW6sbkUkRFl5CNCMJz5ycCU8Yx170SwyaUwnJaP9bP4Vq8WT45HK
- CWtqFVg3ejSJFJuKtvfAEjEbNh6iR2HgS1DM0S0aiCwKxcNE/CZpQODB1pO3E8ABGNpZ
- XJgQ==
-X-Gm-Message-State: AOJu0Yz+NfjpGVxGQylLEQ+/p+Q15H5Re0yatMj1iO7D0/RdUjv7otxH
- OO7R0+3EmCzJj4cPjbr0rhbhNdwqToyRk98IOwNtl/SEQ25cJtoyRpor7IRtPV8KP5l8YRy2to9
- EwId9tRqqiDXYVNAl6DSshoZmAS+BAs94570ZEhax3qJ20N2rH0DD0y/bD9mHj8VJH9fTlgeNbX
- VyilJ7LRRusnF3wGnaLyCImBcF8E5bBw==
-X-Gm-Gg: ASbGnctK86j5zQuaihmzrlkbeaoc+nbE3tDoN24/G83ZSLxfwq9LjXlGWAah+MVvhzz
- Pw1AWj8tacJDA8IKNWEpgRs5o/qo36bMAv5jIvFEeLyOjI3jd1mOF6cfDVZW6SsiaFDzI+pWrRO
- V9Ni07pIBYurb1PHnHX1Jj4j+kV/mhhjrP0km/87wxddK1ayiSXHiCZ3QNgpQ5Q9J1JK8VkBZan
- VRT+hMjzewtUDErm7EwcUKuduoXnN4a/tVKB21qo9V7a2W8FvgfjheXCXhRJ/AJzmZYZ8SV9Zsn
- xHk2Ew==
-X-Received: by 2002:a5d:5f94:0:b0:38f:2b52:f059 with SMTP id
- ffacd0b85a97d-38f61633567mr6317272f8f.27.1740140555456; 
- Fri, 21 Feb 2025 04:22:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHC/lDqWS3/xYESMbj44WDsA1JtY2jXIJrcRr3bwF/vaBwluQWd2DmmHE+TCJQ3iIedZgijhA==
-X-Received: by 2002:a5d:5f94:0:b0:38f:2b52:f059 with SMTP id
- ffacd0b85a97d-38f61633567mr6317242f8f.27.1740140555036; 
- Fri, 21 Feb 2025 04:22:35 -0800 (PST)
+ bh=2kxcyww6qI/yOi6ipYazJfpY4N/lEp2Wmj/5+d4jfT0=;
+ b=rQZ+wA3ZFoklUTF6g51Lff3+j2ixtePsWVH9Pe1Q3wj0+BovV848DRA6Z8CFyB616+
+ g9Zm17gDaFic/5k7vURgRu9Ns3c0Mv32ywCUT39YKy+8s+eBhaO0vOxc/Qnm5lVHlSLY
+ Z4HXTATgnuwrYGiOxfCRzFh8Ff4gqt1SexwwY9ou/USkx8pVNfUiwC8FHOsGxp3NpT1A
+ X5JZ753vvgSCk8jtUev2uNATWynnJooyrozG3gkzpJLyLWWWo+5ucN6dfE5E15WL+foQ
+ 3nXtzhFheW22tCwXZkQwDV6v/IgNMGmDZjC1Pnzspe6iCqZMqkBBXL5DOWmMXyx3rOxx
+ 9oww==
+X-Gm-Message-State: AOJu0YyDwKr9dUX65lyLKkxc9yKa7IZx8Tg56MBJfL34AvV21QLwIN4U
+ D79/8p6CjepG26bAmHD9bsS2qBZQHuSmrVp6JhSxTBKv8biw8jcTm1NkaBLSm+nWOmGg012IXzj
+ GATKVFOhFnz7h11QFfgaa6QzH9MJfhNWmCRwFG12/pehpoepaet1V0NTFQIooHRZhNZvG/0GegF
+ aBhiGBJA6deA76CBgZX41B933oNlx0xw==
+X-Gm-Gg: ASbGnct2EWq7cg14ywmXv3V14UF8kG7aF8q1DdiopO0yVDU0bf1Nfuls33Ig4TL47A7
+ GNgZp9rtznqgS8WaXBXt1CFkhy+3I5bw7p+mKj2e2UR/BHcvWbI9/mcI7Qw7XPvLQdr13HOtF8f
+ LehEhPv2d4kl6m+BoKIj1dkAxOgR8nJNOL4DEyDRm/h+lTJtkh5C2aU90H8T6J//6Z6F0TYsp87
+ +B96R4J/zgusqFf2FpUliFCcZHck0HgtDFuo763KsopavZwHw9Jzj4S1/ULdp11M+yd7U8W3sQr
+ hB6bOA==
+X-Received: by 2002:a05:600c:3107:b0:439:98ca:e39b with SMTP id
+ 5b1f17b1804b1-439ae21e4bbmr26685075e9.29.1740140558725; 
+ Fri, 21 Feb 2025 04:22:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEN4YcJ9vKJa+eo1RGTH1NKKhEOeELWzpnWtdqCEJZ5+b9iJ2ykD60ZMRSsOBSq1sy22GS2Zg==
+X-Received: by 2002:a05:600c:3107:b0:439:98ca:e39b with SMTP id
+ 5b1f17b1804b1-439ae21e4bbmr26684715e9.29.1740140558292; 
+ Fri, 21 Feb 2025 04:22:38 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce65dsm15949635e9.1.2025.02.21.04.22.32
+ 5b1f17b1804b1-439b0371db0sm15456915e9.37.2025.02.21.04.22.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:22:34 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:22:31 -0500
+ Fri, 21 Feb 2025 04:22:37 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:22:35 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 02/41] hw/net: Fix NULL dereference with software RSS
-Message-ID: <bc82af6b0dcb0933e72640851fdd2594f822b23e.1740140520.git.mst@redhat.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Subject: [PULL 03/41] hw/ppc/spapr_pci: Do not create DT for disabled PCI
+ device
+Message-ID: <5731b005246297ab5b91975f52fcd525e08507cd.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -107,88 +112,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-When an eBPF program cannot be attached, virtio_net_load_ebpf() returns
-false, and virtio_net_device_realize() enters the code path to handle
-errors because of this, but it causes NULL dereference because no error
-is generated.
+Disabled means it is a disabled SR-IOV VF and hidden from the guest.
+Do not create DT when starting the system and also keep the disabled PCI
+device not linked to DRC, which generates DT in case of hotplug.
 
-Change virtio_net_load_ebpf() to return false only when a fatal error
-occurred.
-
-Fixes: b5900dff14e5 ("hw/net: report errors from failing to use eBPF RSS FDs")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250116-software-v1-1-9e5161b534d8@daynix.com>
+Reviewed-by: Shivaprasad G Bhat<sbhat@linux.ibm.com>
+Tested-by: Shivaprasad G Bhat<sbhat@linux.ibm.com>
+Message-Id: <20250116-reuse-v20-1-7cb370606368@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/net/virtio-net.c | 45 ++++++++++++++++++---------------------------
- 1 file changed, 18 insertions(+), 27 deletions(-)
+ hw/ppc/spapr_pci.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 85e14b788c..d64941bf8e 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1352,18 +1352,25 @@ exit:
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 904227d9aa..b94e4ba131 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -1283,8 +1283,7 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, PCIDevice *pdev,
+     PciWalkFdt *p = opaque;
+     int err;
  
- static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
- {
--    bool ret = false;
--
--    if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
--        trace_virtio_net_rss_load(n, n->nr_ebpf_rss_fds, n->ebpf_rss_fds);
--        if (n->ebpf_rss_fds) {
--            ret = virtio_net_load_ebpf_fds(n, errp);
--        } else {
--            ret = ebpf_rss_load(&n->ebpf_rss, errp);
--        }
-+    if (!virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
-+        return true;
+-    if (p->err) {
+-        /* Something's already broken, don't keep going */
++    if (p->err || !pdev->enabled) {
+         return;
      }
  
--    return ret;
-+    trace_virtio_net_rss_load(n, n->nr_ebpf_rss_fds, n->ebpf_rss_fds);
-+
+@@ -1572,6 +1571,14 @@ static void spapr_pci_plug(HotplugHandler *plug_handler,
+     SpaprDrc *drc = drc_from_dev(phb, pdev);
+     uint32_t slotnr = PCI_SLOT(pdev->devfn);
+ 
 +    /*
-+     * If user explicitly gave QEMU RSS FDs to use, then
-+     * failing to use them must be considered a fatal
-+     * error. If no RSS FDs were provided, QEMU is trying
-+     * eBPF on a "best effort" basis only, so report a
-+     * warning and allow fallback to software RSS.
++     * If DR or the PCI device is disabled we don't need to do anything
++     * in the case of hotplug or coldplug callbacks.
 +     */
-+    if (n->ebpf_rss_fds) {
-+        return virtio_net_load_ebpf_fds(n, errp);
++    if (!pdev->enabled) {
++        return;
 +    }
 +
-+    ebpf_rss_load(&n->ebpf_rss, &error_warn);
-+    return true;
- }
+     g_assert(drc);
  
- static void virtio_net_unload_ebpf(VirtIONet *n)
-@@ -3913,23 +3920,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     net_rx_pkt_init(&n->rx_pkt);
+     if (IS_PCI_BRIDGE(plugged_dev)) {
+@@ -1647,6 +1654,11 @@ static void spapr_pci_unplug_request(HotplugHandler *plug_handler,
+     SpaprDrc *drc = drc_from_dev(phb, pdev);
  
-     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        Error *err = NULL;
--        if (!virtio_net_load_ebpf(n, &err)) {
--            /*
--             * If user explicitly gave QEMU RSS FDs to use, then
--             * failing to use them must be considered a fatal
--             * error. If no RSS FDs were provided, QEMU is trying
--             * eBPF on a "best effort" basis only, so report a
--             * warning and allow fallback to software RSS.
--             */
--            if (n->ebpf_rss_fds) {
--                error_propagate(errp, err);
--            } else {
--                warn_report("unable to load eBPF RSS: %s",
--                            error_get_pretty(err));
--                error_free(err);
--            }
--        }
-+        virtio_net_load_ebpf(n, errp);
-     }
- }
+     g_assert(drc);
++
++    if (!drc->dev) {
++        return;
++    }
++
+     g_assert(drc->dev == plugged_dev);
  
+     if (!spapr_drc_unplug_requested(drc)) {
 -- 
 MST
 
