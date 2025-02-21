@@ -2,57 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31E9A3F6B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060F3A3F4E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 14:05:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlTbM-0008Sb-FP; Fri, 21 Feb 2025 09:02:00 -0500
+	id 1tlShG-0003JY-0l; Fri, 21 Feb 2025 08:04:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tlOX4-0006Xo-Qx
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:37:15 -0500
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tlOX1-00018Z-9o
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:37:13 -0500
-Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 3DF282054593; Fri, 21 Feb 2025 00:36:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3DF282054593
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1740126990;
- bh=/Q2sCDBVnhdLE0bPHid8ZnDApsB2tBkaKG720JHrJmU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bhLOm8MQdw/+qvNTlGB9D0Wp+N85uWzdR+4vkMVB28DN8NbJEw+o6zF022RfYSS48
- iW9nyMr+tdkgwyH/kMJN8hrLDnqepr9dUXq5i8bwiiQxJ21xiOzc/24aQ3fZWVccty
- t2kxpE7h928g+hb8jOwsEm0x4DjE82mbIUaeTaBw=
-From: Wei Liu <liuwe@linux.microsoft.com>
-To: qemu-devel@nongnu.org
-Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
- phil@philjordan.eu, jinankjain@linux.microsoft.com, liuwe@microsoft.com,
- muislam@microsoft.com, ziqiaozhou@microsoft.com,
- mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
- prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
- Wei Liu <liuwe@linux.microsoft.com>
-Subject: [RFC PATCH v1 19/19] target/i386: move x86 instruction emulator out
- of hvf
-Date: Fri, 21 Feb 2025 00:36:27 -0800
-Message-Id: <1740126987-8483-20-git-send-email-liuwe@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1740126987-8483-1-git-send-email-liuwe@linux.microsoft.com>
-References: <1740126987-8483-1-git-send-email-liuwe@linux.microsoft.com>
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=liuwe@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tlShB-0003J6-F5
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 08:03:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tlSh9-00048f-Fu
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 08:03:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740143032;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LFjHqFyAnv+78dDrlFr/ESysa443ItyqjogZyb4M6Nc=;
+ b=HC44a7psSDL1ysxXn2zRq0P4T6oLlMhPN0JsFAgiZoTf9q6/ZL3+A+dVbgq2HaRmZ6kW3/
+ D2MkbMOXG/1qGX/bVz9DQ+JT1XU1UtZ76OufFcrsuEL2UQwGpm19ZU9r+vuD5E+r37Ek8g
+ B/bjt/2W1WkGfRSiLvnkO0BLw/8iKb8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-UosEvuClNqeCf277N7Kxjg-1; Fri, 21 Feb 2025 08:03:51 -0500
+X-MC-Unique: UosEvuClNqeCf277N7Kxjg-1
+X-Mimecast-MFC-AGG-ID: UosEvuClNqeCf277N7Kxjg_1740143030
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-438da39bb69so14308855e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 05:03:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740143030; x=1740747830;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LFjHqFyAnv+78dDrlFr/ESysa443ItyqjogZyb4M6Nc=;
+ b=NOQrkkkRW87CA0zn4Qdqp32FOGNwkk1alyiZqefpICvEcH4D3/rQoB3m/dblJeEFaM
+ vmhTSCZbGXATAEKwbC2jtWKbEJ+LfOMT4Fj3OZAz0a3FZPIhiaRqwilxIVOj8IYcgJKn
+ bmBbEJBK6y4SENpb1N8dWbsXK/8Xx0a8sDLmNybDSs4QausrQ7hs4qC2bS79QBa9iJ08
+ yPAsXaxCg3hedkimX1wwDf69AsW35ZOqeBw7l8MGz+6+KCTwABm3Epn48F2RVDEB6BQN
+ tHb+IcBwoEXBwE+JWGkQ8Egw8NDlCqPLxB6jv5ZK+I5aSC9D5wKhh0Eoq8QoJ7FfzJEq
+ Tisw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXcBsM4pxKahXKX0acpmUQfbHxibtxpk4Hm+Y4TCScjvRE9enh/JvD/EmCO9jNxq+mZgyjdcFBrIur1@nongnu.org
+X-Gm-Message-State: AOJu0Yx2yQwKhsaRtaJwk53ByqegClNTh/vSH9QeURNJkm+b8RiWwH1T
+ iNqRCf9FxycybbEpxmGUPhx9W66PCtn5vP8BmO325mOGEkxi21O6zQlK1Owo1b7nV4h8pfPCrYB
+ rSq8WCBny0TztxTMhed87fPCDDXqenAdTzbMMbt2lCXcrZ2tdwzhF
+X-Gm-Gg: ASbGnctyy6XsSFu6f2zrLWvUF2q49snV7joV9K2ThtSlvwVK9BcZquCIO9J+6LCVTdk
+ x4teMX/3h2tAy5H9BIW2nj7nzSYK/KO7De2yUwwmrnB60f5K6iPNCh5dxIbxfrlYSEPY8iozKFP
+ Jqwg4F2Vx5Eav7nUUuA91jyTqWvdGyybtywKccXI0Dm4RYS/Vspczj3Lp+naPQkrz8buDMKVGd3
+ 9jyBkVzmGDBh1oEsa4zCaA3Owui0EkrswMNjqSLsKJH/5jAuGcOLsDrvdPDcQDDTMW9tnZMMaWh
+ tN1VEX6K8zJt3HckBCqHq7LKZowrpZY/dPpu8k+HqMOzBz6HnEheDU6Z27XkHPQ=
+X-Received: by 2002:a05:6000:18a9:b0:38f:30a3:51fe with SMTP id
+ ffacd0b85a97d-38f6f09c087mr3005088f8f.42.1740143029746; 
+ Fri, 21 Feb 2025 05:03:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGcqG8UheAlLpfAAmAxGbcS8S7rAApjYKwYnXm/Ez8Q+LIgfX6p/DKmIx9XsqG8LvAUhwzp5Q==
+X-Received: by 2002:a05:6000:18a9:b0:38f:30a3:51fe with SMTP id
+ ffacd0b85a97d-38f6f09c087mr3005017f8f.42.1740143029233; 
+ Fri, 21 Feb 2025 05:03:49 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38f25915785sm24012762f8f.58.2025.02.21.05.03.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Feb 2025 05:03:48 -0800 (PST)
+Message-ID: <d74a5804-4a93-4eb9-b8dd-62426663e8b2@redhat.com>
+Date: Fri, 21 Feb 2025 14:03:46 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfcv2 12/20] intel_iommu: Introduce a new structure
+ VTDHostIOMMUDevice
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ shameerali.kolothum.thodi@huawei.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
+ <20250219082228.3303163-13-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250219082228.3303163-13-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Feb 2025 09:01:15 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,214 +118,117 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move x86_decode, x86_emu, x86_flags and some headers to the new location.
-Fix up all the inclusion sites in hvf.
 
-Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
----
- target/i386/hvf/hvf.c                           | 8 ++++----
- target/i386/hvf/meson.build                     | 3 ---
- target/i386/hvf/vmx.h                           | 2 +-
- target/i386/hvf/x86.c                           | 4 ++--
- target/i386/hvf/x86_cpuid.c                     | 2 +-
- target/i386/hvf/x86_descr.h                     | 2 +-
- target/i386/hvf/x86_mmu.c                       | 2 +-
- target/i386/hvf/x86_task.c                      | 6 +++---
- target/i386/hvf/x86hvf.c                        | 2 +-
- target/i386/x86-insn-emul/meson.build           | 5 +++++
- target/i386/{hvf => x86-insn-emul}/x86.h        | 0
- target/i386/{hvf => x86-insn-emul}/x86_decode.c | 0
- target/i386/{hvf => x86-insn-emul}/x86_decode.h | 0
- target/i386/{hvf => x86-insn-emul}/x86_emu.c    | 0
- target/i386/{hvf => x86-insn-emul}/x86_emu.h    | 0
- target/i386/{hvf => x86-insn-emul}/x86_flags.c  | 0
- target/i386/{hvf => x86-insn-emul}/x86_flags.h  | 0
- 17 files changed, 19 insertions(+), 17 deletions(-)
- rename target/i386/{hvf => x86-insn-emul}/x86.h (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_decode.c (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_decode.h (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_emu.c (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_emu.h (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_flags.c (100%)
- rename target/i386/{hvf => x86-insn-emul}/x86_flags.h (100%)
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 57a8029cfa..aeef3dbde6 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -59,12 +59,12 @@
- #include "hvf-i386.h"
- #include "vmcs.h"
- #include "vmx.h"
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- #include "x86_descr.h"
--#include "x86_flags.h"
-+#include "x86-insn-emul/x86_flags.h"
- #include "x86_mmu.h"
--#include "x86_decode.h"
--#include "x86_emu.h"
-+#include "x86-insn-emul/x86_decode.h"
-+#include "x86-insn-emul/x86_emu.h"
- #include "x86_task.h"
- #include "x86hvf.h"
- 
-diff --git a/target/i386/hvf/meson.build b/target/i386/hvf/meson.build
-index 05c3c8cf18..519d190f0e 100644
---- a/target/i386/hvf/meson.build
-+++ b/target/i386/hvf/meson.build
-@@ -2,10 +2,7 @@ i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: files(
-   'hvf.c',
-   'x86.c',
-   'x86_cpuid.c',
--  'x86_decode.c',
-   'x86_descr.c',
--  'x86_emu.c',
--  'x86_flags.c',
-   'x86_mmu.c',
-   'x86_task.c',
-   'x86hvf.c',
-diff --git a/target/i386/hvf/vmx.h b/target/i386/hvf/vmx.h
-index 80ce26279b..d012781d46 100644
---- a/target/i386/hvf/vmx.h
-+++ b/target/i386/hvf/vmx.h
-@@ -29,7 +29,7 @@
- #include <Hypervisor/hv_vmx.h>
- #include "vmcs.h"
- #include "cpu.h"
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- #include "system/hvf.h"
- #include "system/hvf_int.h"
- 
-diff --git a/target/i386/hvf/x86.c b/target/i386/hvf/x86.c
-index a0ede13886..3b9d0716fe 100644
---- a/target/i386/hvf/x86.c
-+++ b/target/i386/hvf/x86.c
-@@ -19,8 +19,8 @@
- #include "qemu/osdep.h"
- 
- #include "cpu.h"
--#include "x86_decode.h"
--#include "x86_emu.h"
-+#include "x86-insn-emul/x86_decode.h"
-+#include "x86-insn-emul/x86_emu.h"
- #include "vmcs.h"
- #include "vmx.h"
- #include "x86_mmu.h"
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index ae836f65cc..1b7a3579c8 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -24,7 +24,7 @@
- #include "qemu/cpuid.h"
- #include "host/cpuinfo.h"
- #include "cpu.h"
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- #include "vmx.h"
- #include "system/hvf.h"
- #include "hvf-i386.h"
-diff --git a/target/i386/hvf/x86_descr.h b/target/i386/hvf/x86_descr.h
-index ce5de98349..2b403b36ce 100644
---- a/target/i386/hvf/x86_descr.h
-+++ b/target/i386/hvf/x86_descr.h
-@@ -19,7 +19,7 @@
- #ifndef HVF_X86_DESCR_H
- #define HVF_X86_DESCR_H
- 
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- 
- typedef struct vmx_segment {
-     uint16_t sel;
-diff --git a/target/i386/hvf/x86_mmu.c b/target/i386/hvf/x86_mmu.c
-index 579d0c3a4c..648ff6f7f2 100644
---- a/target/i386/hvf/x86_mmu.c
-+++ b/target/i386/hvf/x86_mmu.c
-@@ -19,7 +19,7 @@
- #include "qemu/osdep.h"
- #include "panic.h"
- #include "cpu.h"
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- #include "x86_mmu.h"
- #include "vmcs.h"
- #include "vmx.h"
-diff --git a/target/i386/hvf/x86_task.c b/target/i386/hvf/x86_task.c
-index 161217991f..88b1c0a8bf 100644
---- a/target/i386/hvf/x86_task.c
-+++ b/target/i386/hvf/x86_task.c
-@@ -14,11 +14,11 @@
- #include "hvf-i386.h"
- #include "vmcs.h"
- #include "vmx.h"
--#include "x86.h"
-+#include "x86-insn-emul/x86.h"
- #include "x86_descr.h"
- #include "x86_mmu.h"
--#include "x86_decode.h"
--#include "x86_emu.h"
-+#include "x86-insn-emul/x86_decode.h"
-+#include "x86-insn-emul/x86_emu.h"
- #include "x86_task.h"
- #include "x86hvf.h"
- 
-diff --git a/target/i386/hvf/x86hvf.c b/target/i386/hvf/x86hvf.c
-index 531a340b37..2c0d779bca 100644
---- a/target/i386/hvf/x86hvf.c
-+++ b/target/i386/hvf/x86hvf.c
-@@ -24,7 +24,7 @@
- #include "vmcs.h"
- #include "cpu.h"
- #include "x86_descr.h"
--#include "x86_decode.h"
-+#include "x86-insn-emul/x86_decode.h"
- #include "system/hw_accel.h"
- 
- #include "hw/i386/apic_internal.h"
-diff --git a/target/i386/x86-insn-emul/meson.build b/target/i386/x86-insn-emul/meson.build
-index e69de29bb2..4edd4f462f 100644
---- a/target/i386/x86-insn-emul/meson.build
-+++ b/target/i386/x86-insn-emul/meson.build
-@@ -0,0 +1,5 @@
-+i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: files(
-+  'x86_decode.c',
-+  'x86_emu.c',
-+  'x86_flags.c',
-+))
-diff --git a/target/i386/hvf/x86.h b/target/i386/x86-insn-emul/x86.h
-similarity index 100%
-rename from target/i386/hvf/x86.h
-rename to target/i386/x86-insn-emul/x86.h
-diff --git a/target/i386/hvf/x86_decode.c b/target/i386/x86-insn-emul/x86_decode.c
-similarity index 100%
-rename from target/i386/hvf/x86_decode.c
-rename to target/i386/x86-insn-emul/x86_decode.c
-diff --git a/target/i386/hvf/x86_decode.h b/target/i386/x86-insn-emul/x86_decode.h
-similarity index 100%
-rename from target/i386/hvf/x86_decode.h
-rename to target/i386/x86-insn-emul/x86_decode.h
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/x86-insn-emul/x86_emu.c
-similarity index 100%
-rename from target/i386/hvf/x86_emu.c
-rename to target/i386/x86-insn-emul/x86_emu.c
-diff --git a/target/i386/hvf/x86_emu.h b/target/i386/x86-insn-emul/x86_emu.h
-similarity index 100%
-rename from target/i386/hvf/x86_emu.h
-rename to target/i386/x86-insn-emul/x86_emu.h
-diff --git a/target/i386/hvf/x86_flags.c b/target/i386/x86-insn-emul/x86_flags.c
-similarity index 100%
-rename from target/i386/hvf/x86_flags.c
-rename to target/i386/x86-insn-emul/x86_flags.c
-diff --git a/target/i386/hvf/x86_flags.h b/target/i386/x86-insn-emul/x86_flags.h
-similarity index 100%
-rename from target/i386/hvf/x86_flags.h
-rename to target/i386/x86-insn-emul/x86_flags.h
--- 
-2.39.5 (Apple Git-154)
+
+On 2/19/25 9:22 AM, Zhenzhong Duan wrote:
+> Introduce a new structure VTDHostIOMMUDevice which replaces
+> HostIOMMUDevice to be stored in hash table.
+>
+> It includes a reference to HostIOMMUDevice and IntelIOMMUState,
+> also includes BDF information which will be used in future
+> patches.
+>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/i386/intel_iommu_internal.h |  7 +++++++
+>  include/hw/i386/intel_iommu.h  |  2 +-
+>  hw/i386/intel_iommu.c          | 14 ++++++++++++--
+>  3 files changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+> index 2cda744786..18bc22fc72 100644
+> --- a/hw/i386/intel_iommu_internal.h
+> +++ b/hw/i386/intel_iommu_internal.h
+> @@ -28,6 +28,7 @@
+>  #ifndef HW_I386_INTEL_IOMMU_INTERNAL_H
+>  #define HW_I386_INTEL_IOMMU_INTERNAL_H
+>  #include "hw/i386/intel_iommu.h"
+> +#include "system/host_iommu_device.h"
+>  
+>  /*
+>   * Intel IOMMU register specification
+> @@ -608,4 +609,10 @@ typedef struct VTDRootEntry VTDRootEntry;
+>  /* Bits to decide the offset for each level */
+>  #define VTD_LEVEL_BITS           9
+>  
+> +typedef struct VTDHostIOMMUDevice {
+> +    IntelIOMMUState *iommu_state;
+> +    PCIBus *bus;
+> +    uint8_t devfn;
+Just to make sure the parent
+
+HostIOMMUDevice has aliased_bus and aliased_devfn. Can you explain why do you need both aliased and non aliased info?
+
+Thanks
+
+Eric
+
+> +    HostIOMMUDevice *hiod;
+> +} VTDHostIOMMUDevice;
+>  #endif
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+> index e95477e855..50f9b27a45 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -295,7 +295,7 @@ struct IntelIOMMUState {
+>      /* list of registered notifiers */
+>      QLIST_HEAD(, VTDAddressSpace) vtd_as_with_notifiers;
+>  
+> -    GHashTable *vtd_host_iommu_dev;             /* HostIOMMUDevice */
+> +    GHashTable *vtd_host_iommu_dev;             /* VTDHostIOMMUDevice */
+>  
+>      /* interrupt remapping */
+>      bool intr_enabled;              /* Whether guest enabled IR */
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 9de60e607d..fafa199f52 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -281,7 +281,10 @@ static gboolean vtd_hiod_equal(gconstpointer v1, gconstpointer v2)
+>  
+>  static void vtd_hiod_destroy(gpointer v)
+>  {
+> -    object_unref(v);
+> +    VTDHostIOMMUDevice *vtd_hiod = v;
+> +
+> +    object_unref(vtd_hiod->hiod);
+> +    g_free(vtd_hiod);
+>  }
+>  
+>  static gboolean vtd_hash_remove_by_domain(gpointer key, gpointer value,
+> @@ -4388,6 +4391,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>                                       HostIOMMUDevice *hiod, Error **errp)
+>  {
+>      IntelIOMMUState *s = opaque;
+> +    VTDHostIOMMUDevice *vtd_hiod;
+>      struct vtd_as_key key = {
+>          .bus = bus,
+>          .devfn = devfn,
+> @@ -4404,6 +4408,12 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>          return false;
+>      }
+>  
+> +    vtd_hiod = g_malloc0(sizeof(VTDHostIOMMUDevice));
+> +    vtd_hiod->bus = bus;
+> +    vtd_hiod->devfn = (uint8_t)devfn;
+> +    vtd_hiod->iommu_state = s;
+> +    vtd_hiod->hiod = hiod;
+> +
+>      if (!vtd_check_hiod(s, hiod, errp)) {
+>          vtd_iommu_unlock(s);
+>          return false;
+> @@ -4414,7 +4424,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>      new_key->devfn = devfn;
+>  
+>      object_ref(hiod);
+> -    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, hiod);
+> +    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, vtd_hiod);
+>  
+>      vtd_iommu_unlock(s);
+>  
 
 
