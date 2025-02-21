@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBFBA3F432
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6EAA3F428
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS3Q-0004Un-Ds; Fri, 21 Feb 2025 07:22:52 -0500
+	id 1tlS3R-0004Y5-Sp; Fri, 21 Feb 2025 07:22:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3M-0004QQ-Hw
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3O-0004V3-Hn
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3K-0006zw-BN
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:47 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3M-00070Y-UZ
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140564;
+ s=mimecast20190719; t=1740140568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=0bNjdF5JuUjHCo2SOdNSUp94YzkHH1wWG4NRbjF7uhw=;
- b=H9LMrr/JY4vNmuJB4PfzmbDNwIOsm18uRiduTagVAH0bb0YYroPRsTGAkHLnAXcIJ63TT8
- C5IQrt++0vs49JyixOktfPK8E+/rgMU4u8nFKa7qOFI41xoHy/XkHILWbTJ1kWWubWprEc
- ubp+8pkRCU2Olou3vYm6F6fonTah5S4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7MQix8FGUYJVo/KUMfZ0aNvVpXePxV+3xwtbN+SCMWk=;
+ b=druYtbjCd6dpn4MzN5V6ALL23t789u46dl+xUwmsap7zsPyMgTRtLjW2dM9Ryn1qgfo4bB
+ m5aQmI+g4qvfC9ylWXjgnWCdSjDvKb/36u0gT26FSYuj17ND4C8HG+bEMrHYLPD1/SeTF+
+ A6VgzdYCO2FZKhlRq9Mk23HmUwBRVUg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-kc2rI-o0M7WvCS0-w1JoyA-1; Fri, 21 Feb 2025 07:22:43 -0500
-X-MC-Unique: kc2rI-o0M7WvCS0-w1JoyA-1
-X-Mimecast-MFC-AGG-ID: kc2rI-o0M7WvCS0-w1JoyA_1740140562
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38f628ff78eso1073118f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:43 -0800 (PST)
+ us-mta-677-FLsUqF-YOh2O203JQdHCbA-1; Fri, 21 Feb 2025 07:22:46 -0500
+X-MC-Unique: FLsUqF-YOh2O203JQdHCbA-1
+X-Mimecast-MFC-AGG-ID: FLsUqF-YOh2O203JQdHCbA_1740140566
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38f2f78aee1so940948f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140562; x=1740745362;
+ d=1e100.net; s=20230601; t=1740140565; x=1740745365;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0bNjdF5JuUjHCo2SOdNSUp94YzkHH1wWG4NRbjF7uhw=;
- b=AK2Tkx+MFT9xZolQbj5PkRBRUUouwIHTadAYaDGqB7PImHlOrWH52URVlR//MNuZ+2
- LKay9mr6qbLx+W6u+WoSxgGudKXam5h4uRE648kPiUn9b0oqqXW5AVJ30y5F39prqbb2
- +ECzCHSq7lN2zsBbSL0PbXMFLiSa/SVuNqs8TmwzmL8O2VnilZT0VtcsONDwEnJoJGHD
- 8AAVYQFDL96JN0xyCBSGMQKyM4DGqN7inR1SqvZr/jHfK4dQpX1wnNM1lsFSL65rECLp
- /a+LDtcMDBmRH/5Noe6HqV2+lnUeg3o5aqoKQRCGOt+I/DFn0U7Iy2Tttf/OYOKrr025
- i5Xg==
-X-Gm-Message-State: AOJu0YzFBLu7pIfeZVGZA1mhCR54sy0UuWNdDL3EwLR7XxeunIZnuAh7
- k4jNeUe/nr86MNMfMlHeliDV8cya3FrIHhhHUrl7KGnG+ggcmyUcFFD++ys5L19aRzrjPyi1Dxm
- 5OgfaETmvg+ER5e09Vdb+zXuqpRsObg4nPxmfzfpyTFrg9S9NQ+U7Y7V2+KAP+HRZhctF1LIGkm
- 34/KkILJBhGbXCROSgU98Ow17oQQNkIg==
-X-Gm-Gg: ASbGncvKxDzG2kCctOJQPbSg6FmVKJbqgdTyOxSNWJgEMWCKwMebG6pevyJ3oPGI9sK
- Vs3ebyxNQYfzRQlHRx6XCa7Y/hzb6/zNp/WrQ+kuvnHrgdRRBDk+CBIx6aM7wHwx9WOTzPaTjjo
- /q0QCs5Y/nCI9lfTkk19FXnvLdQYJfu4j+ViZygVuIbpsYS4XX0OG5zVdkxyCfMreCy4sMvshgJ
- TEMGn8ZCuVuK67PE1aPYYOiKPcG+50X94fJ9KGSWkNo8MGWCDTkD+MnSHYE8DkLLUsLdZbObH66
- 2s2dpw==
-X-Received: by 2002:a05:6000:1a87:b0:38f:3ec3:4801 with SMTP id
- ffacd0b85a97d-38f616323bamr6689937f8f.25.1740140561789; 
- Fri, 21 Feb 2025 04:22:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHP8Lu5T3G6KwX0s36LKuCZMOXl5Nr+A2vHjtWT0conKupsh+PZkNU9WdkcSKo3XX8Mqj+bOw==
-X-Received: by 2002:a05:6000:1a87:b0:38f:3ec3:4801 with SMTP id
- ffacd0b85a97d-38f616323bamr6689914f8f.25.1740140561459; 
- Fri, 21 Feb 2025 04:22:41 -0800 (PST)
+ bh=7MQix8FGUYJVo/KUMfZ0aNvVpXePxV+3xwtbN+SCMWk=;
+ b=Aa4ojany2VYTMi5XsVPEt4BNa5pcu42Z+8lnZpv/phl5yonmfMkmT6QVZvLcuH28s7
+ GCW2tlJ0g2+EhYu2Cq2pX26MeIwARSX9svygx3XVCEQINyaIoM6eSmUp/wTZHJZi8AID
+ dEPUQgu4cALpYPIbpfPpKG3MNhfdS3tM4Jot3swhxssxkmSKQ5A5plhd/bwXisxAwcYT
+ +U2DRAitIKcrRmIqM41FXMDHG42AD9nUXKFrfF91kVgEoqzEQYVqT/PfFv88OwDVg/WL
+ rm32sQJ91AjYBU+Ky7jfnKMzv+9g+f+7xcNOLC9fznkyrFxwcIkv1oXLzbqm++KKm1JV
+ F7zQ==
+X-Gm-Message-State: AOJu0YzZV7vUm/L50OHffgfvmNWfUEHEcL8JYMccl4lYYOkySjfgi3DB
+ Au+AUIv92LtVl3NFTjBhKMC1OiCWO5IVb2OL3MdvgQ9hDEDAFYehxhaDCWYT9AA0X3STckrFfRm
+ hS9NPDNxFRBov6gd9+a7GGMa6ViCXdOD+XOk57MstSY2KcYrVd3BPQkCKTNw/a1JzQDvrVlRcqs
+ 0zNtxwSg7JkgJApgKHaQB4iAriA1G96Q==
+X-Gm-Gg: ASbGncte/6iFha3WZSlew4hgEAUxJ4oPcoiMo5V4EFsBRRYBZs7Jh/Sm773hcnXXdX4
+ KussXvZvMFMfA9L8oh1OYitpH/rD3IWAE9RgdtPWK0f26f2wPje2cWyHLUOUwl7NIZG6C8llQUU
+ hzsYwbPvZT5HUf2yEyuyLe7R+tpOOFbmUhb5lhtzSQrYV1MJig9wg4pQryBMWOaufq0sc1TW/MV
+ 0A8JClbH9WsfXhmHJjxrkUlR9SfdA/bRbrlzETzI91RjqSkHHih7MGnV2+NxoBVBDjH9RGkbg8T
+ 3xvVyg==
+X-Received: by 2002:a05:6000:4601:b0:38d:e363:494b with SMTP id
+ ffacd0b85a97d-38f614b6e05mr5807387f8f.8.1740140565496; 
+ Fri, 21 Feb 2025 04:22:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGrAnCXaIYDuswyI624BgoJT7WSDuQgIwmDuFOSOQPkmR5Qq/oSSfJJ031qH7RaRMR3m2YJNw==
+X-Received: by 2002:a05:6000:4601:b0:38d:e363:494b with SMTP id
+ ffacd0b85a97d-38f614b6e05mr5807357f8f.8.1740140565134; 
+ Fri, 21 Feb 2025 04:22:45 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce404sm15950885e9.7.2025.02.21.04.22.39
+ ffacd0b85a97d-38f259f7987sm22856411f8f.87.2025.02.21.04.22.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:22:40 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:22:38 -0500
+ Fri, 21 Feb 2025 04:22:44 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:22:41 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [PULL 04/41] hw/ppc/spapr_pci: Do not reject VFs created after a PF
-Message-ID: <3bc31441ba31c94f12b7b96b1960abb4c1f21ee8.1740140520.git.mst@redhat.com>
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: [PULL 05/41] s390x/pci: Avoid creating zpci for VFs
+Message-ID: <b77a2778d9bbefc6119331ce3083d85d69d7a0c1.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -93,7 +96,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,33 +114,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A PF may automatically create VFs and the PF may be function 0.
+VFs are automatically created by PF, and creating zpci for them will
+result in unexpected usage of fids. Currently QEMU does not support
+multifunction for s390x so we don't need zpci for VFs anyway.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Tested-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Message-Id: <20250116-reuse-v20-2-7cb370606368@daynix.com>
+Message-Id: <20250116-reuse-v20-3-7cb370606368@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/ppc/spapr_pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/s390x/s390-pci-bus.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index b94e4ba131..e0a9d50edc 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1549,7 +1549,9 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
-      * hotplug, we do not allow functions to be hotplugged to a
-      * slot that already has function 0 present
-      */
--    if (plugged_dev->hotplugged && bus->devices[PCI_DEVFN(slotnr, 0)] &&
-+    if (plugged_dev->hotplugged &&
-+        !pci_is_vf(pdev) &&
-+        bus->devices[PCI_DEVFN(slotnr, 0)] &&
-         PCI_FUNC(pdev->devfn) != 0) {
-         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
-                    " additional functions can no longer be exposed to guest.",
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index eead269cc2..8c5eb69f7d 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -1080,6 +1080,16 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+ 
+         pbdev = s390_pci_find_dev_by_target(s, dev->id);
+         if (!pbdev) {
++            /*
++             * VFs are automatically created by PF, and creating zpci for them
++             * will result in unexpected usage of fids. Currently QEMU does not
++             * support multifunction for s390x so we don't need zpci for VFs
++             * anyway.
++             */
++            if (pci_is_vf(pdev)) {
++                return;
++            }
++
+             pbdev = s390_pci_device_new(s, dev->id, errp);
+             if (!pbdev) {
+                 return;
+@@ -1167,7 +1177,10 @@ static void s390_pcihost_unplug(HotplugHandler *hotplug_dev, DeviceState *dev,
+         int32_t devfn;
+ 
+         pbdev = s390_pci_find_dev_by_pci(s, PCI_DEVICE(dev));
+-        g_assert(pbdev);
++        if (!pbdev) {
++            g_assert(pci_is_vf(pci_dev));
++            return;
++        }
+ 
+         s390_pci_generate_plug_event(HP_EVENT_STANDBY_TO_RESERVED,
+                                      pbdev->fh, pbdev->fid);
+@@ -1206,7 +1219,11 @@ static void s390_pcihost_unplug_request(HotplugHandler *hotplug_dev,
+          * we've checked the PCI device already (to prevent endless recursion).
+          */
+         pbdev = s390_pci_find_dev_by_pci(s, PCI_DEVICE(dev));
+-        g_assert(pbdev);
++        if (!pbdev) {
++            g_assert(pci_is_vf(PCI_DEVICE(dev)));
++            return;
++        }
++
+         pbdev->pci_unplug_request_processed = true;
+         qdev_unplug(DEVICE(pbdev), errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_S390_PCI_DEVICE)) {
 -- 
 MST
 
