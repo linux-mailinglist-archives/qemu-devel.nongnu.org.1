@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AF9A3FDFC
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4A2A3FDE9
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXA2-0000pA-N1; Fri, 21 Feb 2025 12:50:02 -0500
+	id 1tlXA5-0000qt-9G; Fri, 21 Feb 2025 12:50:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA0-0000oc-Ln; Fri, 21 Feb 2025 12:50:00 -0500
+ id 1tlXA1-0000pQ-W2; Fri, 21 Feb 2025 12:50:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9z-0001bS-2f; Fri, 21 Feb 2025 12:50:00 -0500
+ id 1tlX9z-0001ba-Sa; Fri, 21 Feb 2025 12:50:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 361AEEFB67;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A6C2EFB68;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E2FD01BB583;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E72321BB584;
  Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D6C7553F81; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id D972053F83; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Khem Raj <raj.khem@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 04/14] linux-user: Do not define struct sched_attr if
- libc headers do
-Date: Fri, 21 Feb 2025 20:49:34 +0300
-Message-Id: <20250221174949.836197-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ jonah.palmer@oracle.com, aesteve@redhat.com, hreitz@redhat.com,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 05/14] qmp: update vhost-user protocol feature maps
+Date: Fri, 21 Feb 2025 20:49:35 +0300
+Message-Id: <20250221174949.836197-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
@@ -60,48 +60,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Khem Raj <raj.khem@gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-glibc 2.41+ has added [1] definitions for sched_setattr and
-sched_getattr functions and struct sched_attr.  Therefore, it needs
-to be checked for here as well before defining sched_attr, to avoid
-a compilation failure.
+Add VHOST_USER_PROTOCOL_F_SHARED_OBJECT and
+VHOST_USER_PROTOCOL_F_DEVICE_STATE protocol feature maps to
+the virtio introspection.
 
-Define sched_attr conditionally only when SCHED_ATTR_SIZE_VER0 is
-not defined.
-
-[1] https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=21571ca0d70302909cf72707b2a7736cf12190a0;hp=298bc488fdc047da37482f4003023cb9adef78f8
-
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2799
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 27a8d899c7a100fd5aa040a8b993bb257687c393)
+Cc: jonah.palmer@oracle.com
+Fixes: 160947666276 ("vhost-user: add shared_object msg")
+Cc: aesteve@redhat.com
+Fixes: cda83adc62b6 ("vhost-user: Interface for migration state transfer")
+Cc: hreitz@redhat.com
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 1e3d4d9a1a32ac6835f0d295a5117851c421fb5d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1ce4c79784..a407d4a023 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -358,7 +358,8 @@ _syscall3(int, sys_sched_getaffinity, pid_t, pid, unsigned int, len,
- #define __NR_sys_sched_setaffinity __NR_sched_setaffinity
- _syscall3(int, sys_sched_setaffinity, pid_t, pid, unsigned int, len,
-           unsigned long *, user_mask_ptr);
--/* sched_attr is not defined in glibc */
-+/* sched_attr is not defined in glibc < 2.41 */
-+#ifndef SCHED_ATTR_SIZE_VER0
- struct sched_attr {
-     uint32_t size;
-     uint32_t sched_policy;
-@@ -371,6 +372,7 @@ struct sched_attr {
-     uint32_t sched_util_min;
-     uint32_t sched_util_max;
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index cccc6fe761..8a32a3b105 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -121,6 +121,12 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
+     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
+             "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
+             "device status supported"),
++    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_SHARED_OBJECT, \
++            "VHOST_USER_PROTOCOL_F_SHARED_OBJECT: Backend shared object "
++            "supported"),
++    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_DEVICE_STATE, \
++            "VHOST_USER_PROTOCOL_F_DEVICE_STATE: Backend device state transfer "
++            "supported"),
+     { -1, "" }
  };
-+#endif
- #define __NR_sys_sched_getattr __NR_sched_getattr
- _syscall4(int, sys_sched_getattr, pid_t, pid, struct sched_attr *, attr,
-           unsigned int, size, unsigned int, flags);
+ 
 -- 
 2.39.5
 
