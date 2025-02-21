@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2E3A3F41E
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E2AA3F421
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS4U-0006ay-Sc; Fri, 21 Feb 2025 07:23:58 -0500
+	id 1tlS4Y-0006tu-Fp; Fri, 21 Feb 2025 07:24:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4R-0006RO-52
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4V-0006lU-GQ
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4P-00077W-9C
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4T-000783-QP
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140632;
+ s=mimecast20190719; t=1740140637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c79lvmIC7XDPg0zQTrgvrz5zU+cAN9dA2+2j0QFPSdk=;
- b=Flxpt4746WcjCc253L/Df3CT0ZV8OYmtNVm0auDyUfaN0i8B+ZTwNGTeD4s58pbDHFepld
- sVdQ+lqRV4CcPVl8/PC+wgBRMyEjq5lXrr50btJCV99NZjCZmySL0v4Xmc/A1nzww+WdZq
- HdROjyBIEzsn6IU7bOnyUNhN5SR6y8I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cvBWmFUXdZkhnxIEnnyEww3jMhD10rJHEduWob1P8ko=;
+ b=FeCZlR4ZTVhbT3x/wsXY4BB8NHwuqTn/HtX34BX2E3LtFNBxdzZU0lpmYKz0hugs6btrds
+ GLfvZCwidl3d8p+a91g8DbxrWQ08sO6VaJgVYHDqOLDCyArTMO07g8hujcMpWTNiBu1n/z
+ VXxH3DKrNi9n4aGYhKrQYELwlk//TOg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-jA0_JEeyOIqs4NYyvnzHGw-1; Fri, 21 Feb 2025 07:23:51 -0500
-X-MC-Unique: jA0_JEeyOIqs4NYyvnzHGw-1
-X-Mimecast-MFC-AGG-ID: jA0_JEeyOIqs4NYyvnzHGw_1740140630
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-38f3bac2944so926905f8f.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:50 -0800 (PST)
+ us-mta-226-ZvWvn7_aOqmdbfvw94YhIA-1; Fri, 21 Feb 2025 07:23:54 -0500
+X-MC-Unique: ZvWvn7_aOqmdbfvw94YhIA-1
+X-Mimecast-MFC-AGG-ID: ZvWvn7_aOqmdbfvw94YhIA_1740140633
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4394b8bd4e1so10341555e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140629; x=1740745429;
+ d=1e100.net; s=20230601; t=1740140633; x=1740745433;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c79lvmIC7XDPg0zQTrgvrz5zU+cAN9dA2+2j0QFPSdk=;
- b=CfZISjmOHpKlfbXXYfN7/QU0u+YOa9dZ0c6ahqckC+iKqhEU1l7fIwNSoiaCMXQdm0
- 5sp6ogx50HjuD5HeKd6O5NKBb0C4uHD72Rw/mFEBcez0NhgSQCYahoOSej6WhcPHINUu
- zPAm+lm3XIkQ/1MBXWVMBwKM1hvhn3+nJs5WzSf60QlB/xRyQM7WMO6BjO1Ye6+ZTGdQ
- oG1ax/n+bjl8cji49BsCW8lpmBpg9qhTZDOIqxQbVELbLXfJjgJxSQSlbVJaGTqsB5Cs
- 4IAmybenlgqQ33eP7xTnM60vD/pgFyPeu3e/yLm1X2xYwGUNGMzljGSheLtcPbIERifd
- 3YVA==
-X-Gm-Message-State: AOJu0Yx85q+Gm0RwVcyrSi32uF1KZ0GqukBtVTC1d252ZFDOuQw+NZqk
- F/2DrM9dP3rN7LyebadZpKcjUXiel29hMbhtckq5MzDUjGsgtLPSjnRU7su2UvqgIMrIZSiglqw
- ROde0E8BsCdmcaLcbhO/frMETpCRd+uXZ12I20ksOTaR4elBTTJX1rRl0V1xInYGN9mOqbEqUVB
- F2T8b0bEjXiEafDEA8jOJSixqtYcxzvQ==
-X-Gm-Gg: ASbGncs/SKDdf5ijFWvYV8V5Asufju5hOg9DP9eP0WU8SJfGol7jmDfUFohOPP01tbn
- uXzuToxlEamrbGoBNKJUYF4mKG0arsYeqDKACIkv29B+jL7OK/e4/B8wVKKNEcAs7Y5H6fCI3/N
- b53DWhbrI9/Ft5ojk3S2kt38giiSmRQq0Ub2aC+MRwDhgC9wy594LS6CELhN3XUkV/ilYkHGxLJ
- 1gYz/k9FCCD8WCLXrDFF9yCQH8ENmM8MdexnaJrWN74HPdnr8Rr06sayrU90yJa5nolL6OQm26s
- YhAnBg==
-X-Received: by 2002:a5d:5f52:0:b0:38d:d387:166 with SMTP id
- ffacd0b85a97d-38f6f0b17e2mr2388945f8f.34.1740140629686; 
- Fri, 21 Feb 2025 04:23:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IETYIuEHMaRoMdATYfo+tF0vwvnWwY+dv7D1Lu6nfQZJBD2wIWuRw/G0FlD/TkmWe8mw1DbCA==
-X-Received: by 2002:a5d:5f52:0:b0:38d:d387:166 with SMTP id
- ffacd0b85a97d-38f6f0b17e2mr2388922f8f.34.1740140629274; 
- Fri, 21 Feb 2025 04:23:49 -0800 (PST)
+ bh=cvBWmFUXdZkhnxIEnnyEww3jMhD10rJHEduWob1P8ko=;
+ b=udLBdeQk5dERLfZC3JQWfJRNIanG3t4eXaAAO+KZk57Cby2k+Wo93U2DjvCW4r6gtj
+ 5WyNVQ/wTEWyjCcSW5DLeR+jHVyPpjuNl9dj2Z+rLqEzY8GUN642nEMSi1vpYqmL2KGC
+ CAR0VuPVHTvCIvOJwM8PwkBO6mFjCxho87pNt/ilM36S0b3kS/KJG/rE9kr8OAmpS1DZ
+ Z+Tx5ZydYJVctYyphDfeQtsMKrAWbCgu51PQ6BNIMZyY6hHrC1pNHkQGXRJsGtqATOAM
+ b2w3XnPW8p3F+DHUtMxEKqoOEBJqvtBoSwAg0EDFzuoX16yF4ucQtYvQsfWMz3PPK3DN
+ Blug==
+X-Gm-Message-State: AOJu0Ywmd2BeOeo/816nLErp4lm9YviuB6FlPttGAlZJmnfwWsgcntA9
+ We3ChJuAEmh/HJPwlY0RwBuseuP1/070BzOlkym4CVSNxafRBg+vvReJuP6xVitTT+4VqovguRn
+ 9xHysDsRK0Vx9rsUmGTOWdjiczegGrzc4/gSPsLpM2vJErcPfNng2YDmtJ7YZepEBrCMiybEdnZ
+ tmj8VivLQtj1BEaHVPyYclCguhjZ8acA==
+X-Gm-Gg: ASbGnctxYsT4DeURFeGTpYDLWiGwYXQHgGw71/3yjZPjgK0C6o85lZAaRDSfC+zGiYg
+ KTXgv3rB8KtZeVD3q7qM5iOC9zlGZ1CMRmdx0lPBHIsi3RPPP57nqcrw6OPUeJulyXPK+HXpBQP
+ maDRSH1xxWAcweMF4nRm2nVhx2cNKlbtAZTstz3pfgB/PYdFSdZnwUkxQPwcBE8/SwSJOpDlaSS
+ jlSTLEuyrpYpk+cYEhMr5Zx6HDBAbPUS9sYVgvIWmwNWRjbRAwKxvf+dTkNR9WAi1eo+qyI+GHc
+ A4AeSg==
+X-Received: by 2002:a05:600c:350a:b0:439:8e3e:b0d6 with SMTP id
+ 5b1f17b1804b1-439aeb2ab04mr21261405e9.13.1740140632831; 
+ Fri, 21 Feb 2025 04:23:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXgxX+Us+Oq4NHZZ7PokBtBmgoOeq85WQiUNg/YON7wMRdu/OuvN5CwHTRnEPaU/P996S3+A==
+X-Received: by 2002:a05:600c:350a:b0:439:8e3e:b0d6 with SMTP id
+ 5b1f17b1804b1-439aeb2ab04mr21261225e9.13.1740140632493; 
+ Fri, 21 Feb 2025 04:23:52 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d5ee2sm22963814f8f.80.2025.02.21.04.23.47
+ 5b1f17b1804b1-439b02f24acsm15849555e9.21.2025.02.21.04.23.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:48 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:46 -0500
+ Fri, 21 Feb 2025 04:23:52 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:23:49 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,9 +75,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 22/41] hw/mem/cxl_type3: Fix special_ops memory leak on
- msix_init_exclusive_bar() failure
-Message-ID: <06953e7e5ea5e8fa0b7b704bdb66ab1e62f1f378.1740140520.git.mst@redhat.com>
+Subject: [PULL 23/41] hw/mem/cxl_type3: Ensure errp is set on realization
+ failure
+Message-ID: <d3c92cf6dcab028d05f306d4d50511aa805d2385.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -86,14 +86,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,58 +113,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Li Zhijian <lizhijian@fujitsu.com>
 
-Address a memory leak issue by ensuring `regs->special_ops` is freed when
-`msix_init_exclusive_bar()` encounters an error during CXL Type3 device
-initialization.
+Simply pass the errp to its callee which will set errp if needed, to
+enhance error reporting for CXL Type 3 device initialization by setting
+the errp when realization functions fail.
 
-Additionally, this patch renames err_address_space_free to err_msix_uninit
-for better clarity and logical flow
+Previously, failing to set `errp` could result in errors being overlooked,
+causing the system to mistakenly treat failure scenarios as successful and
+potentially leading to redundant cleanup operations in ct3_exit().
 
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20250203161908.145406-4-Jonathan.Cameron@huawei.com>
+Message-Id: <20250203161908.145406-5-Jonathan.Cameron@huawei.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/mem/cxl_type3.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/mem/cxl_type3.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 4775aab0d6..ff6861889b 100644
+index ff6861889b..d8b45f9bd1 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -893,7 +893,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+@@ -891,7 +891,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+                      &ct3d->cxl_dstate.device_registers);
+ 
      /* MSI(-X) Initialization */
-     rc = msix_init_exclusive_bar(pci_dev, CXL_T3_MSIX_VECTOR_NR, 4, NULL);
+-    rc = msix_init_exclusive_bar(pci_dev, CXL_T3_MSIX_VECTOR_NR, 4, NULL);
++    rc = msix_init_exclusive_bar(pci_dev, CXL_T3_MSIX_VECTOR_NR, 4, errp);
      if (rc) {
--        goto err_address_space_free;
-+        goto err_free_special_ops;
+         goto err_free_special_ops;
      }
-     for (i = 0; i < CXL_T3_MSIX_VECTOR_NR; i++) {
-         msix_vector_use(pci_dev, i);
-@@ -907,7 +907,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     cxl_cstate->cdat.free_cdat_table = ct3_free_cdat_table;
-     cxl_cstate->cdat.private = ct3d;
-     if (!cxl_doe_cdat_init(cxl_cstate, errp)) {
--        goto err_free_special_ops;
-+        goto err_msix_uninit;
-     }
+@@ -912,7 +912,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
  
      pcie_cap_deverr_init(pci_dev);
-@@ -943,10 +943,10 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
- 
- err_release_cdat:
-     cxl_doe_cdat_release(cxl_cstate);
--err_free_special_ops:
-+err_msix_uninit:
-     msix_uninit_exclusive_bar(pci_dev);
-+err_free_special_ops:
-     g_free(regs->special_ops);
--err_address_space_free:
-     if (ct3d->dc.host_dc) {
-         cxl_destroy_dc_regions(ct3d);
-         address_space_destroy(&ct3d->dc.host_dc_as);
+     /* Leave a bit of room for expansion */
+-    rc = pcie_aer_init(pci_dev, PCI_ERR_VER, 0x200, PCI_ERR_SIZEOF, NULL);
++    rc = pcie_aer_init(pci_dev, PCI_ERR_VER, 0x200, PCI_ERR_SIZEOF, errp);
+     if (rc) {
+         goto err_release_cdat;
+     }
 -- 
 MST
 
