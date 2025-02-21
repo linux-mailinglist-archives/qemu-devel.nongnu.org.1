@@ -2,89 +2,159 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5730DA3E935
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 01:39:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EF5A3E951
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 01:47:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlH3j-0000K9-4S; Thu, 20 Feb 2025 19:38:27 -0500
+	id 1tlHC0-0003Iu-Uk; Thu, 20 Feb 2025 19:47:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlH3f-0000JI-IJ
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 19:38:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tlHBy-0003FU-30
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 19:46:58 -0500
+Received: from mail-mw2nam12on2077.outbound.protection.outlook.com
+ ([40.107.244.77] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlH3c-00044u-TM
- for qemu-devel@nongnu.org; Thu, 20 Feb 2025 19:38:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740098298;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DTn1LCk4GJoiCgYp7w6Sb2gUH187SBZedw8U53PVVhA=;
- b=WhCDbQBZRkCOO/Ycbm4UrWWxtXbffcEwyphyMiMHJ6KLgsNLEWeMrTOuhox+2QreAo3x6S
- yuuoxIy9WCkuQ2vXTgrJ7mEJ64X5w9i345S78YNSsz//74NstpwzxPI+a92sJaToOksce1
- YcTAcF2qeCw3ZLAcetiXlPdxFhW6ojA=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-bXXfE9tWMMieoZBU0RjVJQ-1; Thu, 20 Feb 2025 19:38:16 -0500
-X-MC-Unique: bXXfE9tWMMieoZBU0RjVJQ-1
-X-Mimecast-MFC-AGG-ID: bXXfE9tWMMieoZBU0RjVJQ_1740098296
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-abb8e0944bfso159189866b.0
- for <qemu-devel@nongnu.org>; Thu, 20 Feb 2025 16:38:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740098293; x=1740703093;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DTn1LCk4GJoiCgYp7w6Sb2gUH187SBZedw8U53PVVhA=;
- b=b/uPHX+5CT9on/QhArrOXFuXYL0QRVyTBTYy/Apcf+nMrbL2UQj5gaUoLHE5caWR6d
- NLDs+IN9svJJSi/D/9FgEGoAjz+Ja/KLEo2RWpiLhgtQqmtFN4A2xiDDYZmwpEAJN2Vm
- NsCsUhpFvaacw4QglHcah3lKy7JDuTxC4kA1JC5cN5duDIs29fJRKIXpA8o1vjBQ3qNx
- 61NvBW5AXZkU6Os36yUsyWb1j9QvoTWLbi/axXzAnMUtTd4Qs6LW+8KWmQEvrlXXamAM
- HX2hMltM+JDl9hBE96KuB7Y3/98Xd4xYfOmIsR0eyj6yColptq9G/2EmEUzxvVHyg2Uz
- IIPA==
-X-Gm-Message-State: AOJu0Yw7fPl0eL5I3d2sCmjUjoO6yi1zQprjJJxGnO5OoVolkjO54Pr1
- 8ZHm1jpG+72mjg7ijvodxu3VE5v3diEbSlHPOcl1RDXvcXx/VXBGNgaoMj6HaL+/PDHFtMYRgsS
- 9/+vKfT5QhhWgaaFW5qHFDKFFDVYjINhqt+LyhTeyKmvRXEuvb+5b
-X-Gm-Gg: ASbGncsjETFmNlW+oSDdRIoExPiPQFIhpukxbHg9wa/sOr6Ka79zCVhNCUsXhXb9T3D
- 7DftiQK13Sh63AZ5T5hN/G3ukjGTYUxtEtrxWjuc5ttdn7PtXL2+O5eRU2DY/BYuGpfq1C4K0V3
- 017tazKIsgk/0Lytk3qIGZv6A3gQieHgMNZvZb1AVEWdv/2LLkr2tOVi7lKa4YlXpruJgwPmjSl
- /q07QHM/MRrPo/+6jWGTnAM2HmqjTnTZhQPqArbXPlkfZo6in+W/Zb2T21Rr+uG5QI+RA==
-X-Received: by 2002:a17:906:30cf:b0:ab7:d537:91cb with SMTP id
- a640c23a62f3a-abc099bc179mr113762566b.7.1740098292652; 
- Thu, 20 Feb 2025 16:38:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrZDtZAjXcbgai/8/Tb5Cbb2TeVjAErX3qnmlsZ4JlEA+OpoIupzba5AXHD+lxut0i61HrZw==
-X-Received: by 2002:a17:906:30cf:b0:ab7:d537:91cb with SMTP id
- a640c23a62f3a-abc099bc179mr113761466b.7.1740098292217; 
- Thu, 20 Feb 2025 16:38:12 -0800 (PST)
-Received: from redhat.com ([2.55.163.174]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abb4d3ef3c0sm1200446466b.41.2025.02.20.16.38.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2025 16:38:11 -0800 (PST)
-Date: Thu, 20 Feb 2025 19:38:07 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
- marcel.apfelbaum@gmail.com, jon.grimm@amd.com,
- santosh.shukla@amd.com, vasant.hegde@amd.com, Wei.Huang2@amd.com,
- bsd@redhat.com, berrange@redhat.com, joao.m.martins@oracle.com,
- alejandro.j.jimenez@oracle.com
-Subject: Re: [PATCH v3 1/2] hw/i386/amd_iommu: Isolate AMDVI-PCI from
- amd-iommu device to allow full control over the PCI device creation
-Message-ID: <20250220193726-mutt-send-email-mst@kernel.org>
-References: <20250212054450.578449-1-suravee.suthikulpanit@amd.com>
- <20250212054450.578449-2-suravee.suthikulpanit@amd.com>
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tlHBw-0004yh-6Z
+ for qemu-devel@nongnu.org; Thu, 20 Feb 2025 19:46:57 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MQxnXniyMwenl9i1LhyVMjD4l8hd8YWZWLXoXFt3JUqRrep+kRtKMWV4T5hoUnDGzm2BUNx3eOSyuEWuwF/N6e7xKNn9/I6KSFmHd7JZY6woS3U1AH3Mv1qT1jrLSAqFjFW4LEbpiq61V17aL1V4LH3PjonXMLY5uxQSi+C5zYzM2brN7sGOmyOeWka7uqhMj7SswYXzSGjx9LD+oVJ59+ToitFbd9UZEcwkdxqwsYl8j2HyaI2pp6oh4L52B3fxlIIMeb4SBwondFGZgABqC+NJUXuA1x48AgH+GGg2Ykfn7J9jyHWdkJSvgkVHet3kdkrOSNTzy1LNdsbDNF1AZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d5uNbvtmaC0ziHws7fp3f9VYVBqHRBgNhy5PDGXuj8g=;
+ b=LlpKVLq9aSAcYcApuqoHLnUpsHt/Tp9yOjqNtgiwLf2cPu3ljV8tCQzcZRtS3q4jbUwj/66E0rFsysM90T3sz9vKWi6sPPJRCySYOMnwQScg57vp1HlVpLbku1J2S38hQvMfPY1yawBLYXelQ5vHDSR/ODiHmHZVySa0jXSsAdSQuegnHwJ2N3TjbzAVEbNcVdBNGB5NSJY7asCHumW8Ftz56OBEJOWzkxNrNIjSioiLcZF/QQ7o5WBMHQt3cR5I8T/Kc7VVjKcAri48nKuy665yMj2LyIDNqbo6LSg8ShwX09tQNlLMSrefc43xH73nmzcU/U+rUpv80NsX2gV6wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d5uNbvtmaC0ziHws7fp3f9VYVBqHRBgNhy5PDGXuj8g=;
+ b=VjDwHUW0ZvgflfTJN+miw8eLbD7qsSSEnkdoe6LgcRLC5sXBi7RxQwy29DiL43+nhgysPdqGTTK/b9PWsDzL/tjnUZTayiON0vpKPc9gUZThphzJVi3y8hfzOBeapxY11muhw9tAsG7JSPrHxQPgpXAh1MKxjogHNvtoisYLKg8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by DS7PR12MB5743.namprd12.prod.outlook.com (2603:10b6:8:72::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.14; Fri, 21 Feb
+ 2025 00:41:49 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87%4]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
+ 00:41:49 +0000
+Message-ID: <7c7c27d5-679f-4f5c-9919-f8172d50ec3a@amd.com>
+Date: Thu, 20 Feb 2025 18:41:46 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/6] target/i386: Update EPYC-Rome CPU model for Cache
+ property, RAS, SVM feature bits
+To: Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ davydov-max@yandex-team.ru
+References: <cover.1738869208.git.babu.moger@amd.com>
+ <8e40e18b433d2d152433724a15bddcacdecbf154.1738869208.git.babu.moger@amd.com>
+ <Z7cPeyLAuNDL0Oc4@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <Z7cPeyLAuNDL0Oc4@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0078.namprd04.prod.outlook.com
+ (2603:10b6:806:121::23) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250212054450.578449-2-suravee.suthikulpanit@amd.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|DS7PR12MB5743:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54713038-9576-4d58-fc83-08dd521086bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?THFGN3VHUHoybHJnWTNUbk01S3NGaFFobndCaUcwS3MvakFFenRldzJNTmZS?=
+ =?utf-8?B?bDNORUJPempjUFcwTUdSL04wOXhyOExPb04xYW14OThodlMvQkVNeFhNV2c3?=
+ =?utf-8?B?NTlLSlNWakZzUE9jUUY0bysxdjBQQ2IycjRlbXZhTTc5WFFrR0lvc1pQc2xy?=
+ =?utf-8?B?YWtqUy9tcnU2ekl6TW41bU5tNHJSdnM5YU1oeWJmbjVtdmhUMG9Lb3Q1a3NO?=
+ =?utf-8?B?dGJtcFg4dzEzVGdXeTEzUEZwc090ZzFVUnBFVW9zaFhoZlM1NkJTMHlkUFhE?=
+ =?utf-8?B?REgwdkNQM1VGbEdlVHVaNkI1M3pYd1p4UlUxMnREZ2Fta3h4ZDZwakFwcG10?=
+ =?utf-8?B?eG5Oa2o4aHprSTE5U1J6K3RSMXFjYmdYZFBoc09XREs5RjVIV3NjblJoUkE5?=
+ =?utf-8?B?QlNqd2Mwc053Q1VFdEhjZTNoMkZjR1dWR05HNFlwbVJteHJCeXJlRlI1VTJZ?=
+ =?utf-8?B?V2FJM0U1dXRQaVJzOGt1WWJWSjFwVjl6ZVAyS05MalpGT0xmNDNMRDZvSER5?=
+ =?utf-8?B?Wkg5aE9ZYTZxVDVMWEVEcW9zWXc2UEl0SnN1SjFucEplZm0rU2pSVEdXbHpj?=
+ =?utf-8?B?OVEwVGpBVVhhczEwZ0JHSEtjSWdKdEpUTDVIamgzYlVocE5YbmtWSFk5cS9K?=
+ =?utf-8?B?NE1rNGNSaUtKeS82amZPZTlmT0Z2aVc5dER0ZjhUakJydnl5MkYrZGJCRGk4?=
+ =?utf-8?B?U0UxS1JldEpqSVpFbncyTHBLMkYzU3YxdlZKT3pmanVCMVd0emI1Y1FjMG9l?=
+ =?utf-8?B?S1F2Rkc5N0ovVks4d2VjbHU2dGtMTDZibms3Y3NpcGd5YS9kRVJIbW5zN1FD?=
+ =?utf-8?B?K2c4U3ZUVEVETVZaM0twR2tZVUY4WjBPMm9DVXRjbmpVQmhWUlU4OFFSRUNt?=
+ =?utf-8?B?SURmOG5mYjd5RU1jbFJaMURBK2VjcWVxV1kzSW9XdG9kRFdMMUtmaHNGWnE4?=
+ =?utf-8?B?ZElRTXhPZWp4ZngwV1pBbDNJeWU5bXVqaGMrUk0zc2lhRDAxcm4zdEc0bFBW?=
+ =?utf-8?B?SmVOL29hS2wyN0UyZ3hDWUhHMm55NFJzYzNaZGRRN1RiWGFubGNUQ1Nnd3lq?=
+ =?utf-8?B?V2pxRGxJSW9qV0E1QUpsL2RYL2xGTmNHKzhrRVRqWVhESG52NU1FRnJmdjhq?=
+ =?utf-8?B?SHBnbHQ1RTBHSlVKY1hpM2dLSXJYeTcrenlBYkIwSXl5ZkxWZTdkazJLMFdk?=
+ =?utf-8?B?UkxhQ01UMUYwSXRhV2hzdkdGbmtJYXpOeHdFRVFnQTNBb3c5cHlidURMRG1i?=
+ =?utf-8?B?ZDI5QkJGa1Q4d0ljbWs2VVlaYjB1cnZHS1VqOHBBV0VBUmI4MmFkckxHMkJQ?=
+ =?utf-8?B?RWxCSjNUR0gwMk5zOEI0MjhHWEVidS9IalNINnU0RWp5TDVIS1JBcThKbWJy?=
+ =?utf-8?B?ZW0va0JPaXgxRlZGaklDYTJUcjlPcEQwQXFwS1VncWlwa3Nld3B6SGJUOFQ3?=
+ =?utf-8?B?ZUlSTUg5czN5eHNHYXRyM0VBNHc2L3NlWjlvRncxYUQwSDBMd0tEOVR5d1Ar?=
+ =?utf-8?B?ZTM5S2hlbmFlbXFDeElwOWJOa1hlanl4cWpnQUVzUGlRaUVNay9xVW1kVnRn?=
+ =?utf-8?B?ZzRLZEFFRHlZSUlGenNKUlkwZVRXcXZoNXRTamIrdEVydGNBOW9RS1VHbWFQ?=
+ =?utf-8?B?cVVqZEw5eE1INTMvMlh3SitVWnBEZFlQcGpkWGRsQ1dsQVhUZEtRRHVMTThv?=
+ =?utf-8?B?eWhtZlRpa09sdjRJejRZS3pHQkQ2dzZLOHlXRXNSZzFUTC9VenJQL2JneHZG?=
+ =?utf-8?B?aDdYZ0xlOEhLM0NSTm9sR0RyQzRpUWJxNDZQajUvQXBQQURreDNrVjBlcHZP?=
+ =?utf-8?B?SUtWSnBKcDQ3ZkxrMGZDdDcrMmRXbTluL3I0dmJFUFRodE1Ka0FOYWk1ZzF5?=
+ =?utf-8?Q?F9BoaY3Ovhzq9?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YUxkNGlFOHE3TE9yQmtQYW91MGc4R2xxYkRwQzVCdDNSblMvZlVWb01SOTRG?=
+ =?utf-8?B?N1NUWTZyMWU0UlNreWFlTm9WZTNtZ1lOa0pyaDJzL3pPb2hoZ2RNdWpjbm5J?=
+ =?utf-8?B?aGpkUFh4Y2JVcDZIajcxcjZGRkZ5QmQrcEhTWXdVYnp1NTlxb3lCUlhGcUtM?=
+ =?utf-8?B?UTI0V0tvaGkrSGd1SHZ5cER1amQxUkxGTmcrZDNjRVBuMHkzdVFzbUN1dTZk?=
+ =?utf-8?B?OVlWMmJnK0hodEZoeE9yc3F4WlNxcG1DcjBhaXpEOHNBNmhiQ3VWUzhudVky?=
+ =?utf-8?B?VzQ4RVZLY2JlRGQ2by84SFlHTS9FYkRuK0dtTmYxOWVZajZpOVQvd00vNksr?=
+ =?utf-8?B?a21wVjZGeE9rQnVyNWJvK0pnYkZKdGNOZzQrTUh3Sk4vaFBGWUEwMGpvdjkw?=
+ =?utf-8?B?TWExYlB5M1M1K3BvVURrZllOSURNYmhnSnlMSWRMSUh4TWdzRzgvRm02eU5L?=
+ =?utf-8?B?RnZBdkQ5bnhEcjJjNGJTQjZWMkQ5bzd5MXFvZTBONlo1eEt1WEFwZkVxNXgx?=
+ =?utf-8?B?bmVvcms2cHcycHU0UHMxSk5YRW9kQU56TlU3eXpMaDdpRFQvakozMGdBSXp2?=
+ =?utf-8?B?S21WRjdGS2xPd1Z2YUdYV2lNYWgrRVNIc282VkZEaFJqK3kyd1JNRWIwTGZw?=
+ =?utf-8?B?eHcrQlZLRmdRMC80ZXRqUmwzNGF3c0dCaFBlc2w0WEwrRVJGMjVNK3ptRit4?=
+ =?utf-8?B?MmFESzMvT1NFNHgwY2FwQXhqdXd3NVljckxENktWd1didURob3FlUHJVQ1Vs?=
+ =?utf-8?B?VTlYQjNoT3pNN1dHcmRWYUNBQ2YyS2duR0FKV1RvbDEvdFA1ejdlNU5jbUcz?=
+ =?utf-8?B?UTNQOWlURTlxZzZxQ3VLc0IraEVtRjRkWXlxTWZIODExdzlGSVBIUTJ1eHpj?=
+ =?utf-8?B?UndvWmkvdHM4RHFuOVB2d0FyR3Z1d05HVlh2Z3E0Z3pCekhyS1A1QUdSVGV2?=
+ =?utf-8?B?K1dSY1ZRTXU1Tkwxem01bTZLbkhKOWpmUGkwWi93eGMrdkhRRzBqaFlHK1hp?=
+ =?utf-8?B?c2lqMm9saEh2RjB0aUNvTjhLYUVPbWFWcVhWOTcwN0ZQOFZtSmF5WkIvb1Ro?=
+ =?utf-8?B?TW1yaFFUV09MYXNJbVFPbHp3SmpMdk9rbzU0VkxVejVyZFRkb1poL25neGxJ?=
+ =?utf-8?B?VlNCSjdrSytncUNvckh5UTZOUnVzT2NGM2MyQnZMYVRMZTgwZW5wVVd3NWpH?=
+ =?utf-8?B?bFpPbGoyb1Z6ZE1pb3piY2RNNC91eGhITDBhcDlVemVpZ3RUenhUcE9HOUc5?=
+ =?utf-8?B?YUR0V2czWnppalcvbGxKb3hnRFcwSHdTR2diNm8xYlpmMTdwL3FEblZLMnJz?=
+ =?utf-8?B?b3NtbytRVWk0RDhySFQ0Vm1KdmZQdmc1VzU3MXl3TmxKajl2ZEZBVDI0WTBa?=
+ =?utf-8?B?SlVoU216TnY0REFUZ3pOMkxIV0I1bjk4Y2FQKzI0eGtlV0lubzdzbnU0Tytw?=
+ =?utf-8?B?ZHRLREJ3WnJqTTNadElHZWFYbFpXM1Z3cnd3aS9TSHN0Ym92OC85cDRXa1lv?=
+ =?utf-8?B?bktrZjZwOWpoMGFHTVBJY2pMY0JxOE9sNFh2clo2NWhPc1lRbUlUdXgyOVpo?=
+ =?utf-8?B?Nlc2WkdlaDZFUU1CeGFWZWF3ZFp2R1lXajl0Unh2ZHZQQmRsOTNHMy81Kys1?=
+ =?utf-8?B?dXlaQXJTdUJLZ05JOHVmd0xWZ0VFU0JsR3M2NlNOakhneUFqQkRyR29yYWFQ?=
+ =?utf-8?B?OWJxQk11MHBONFBNK3dUUThzZFl3UnhxNzhITWxFdWU5QWNhTkVFeERqd0N5?=
+ =?utf-8?B?L1lSajRqSmh2SStqVnBGQ3hoSDcwLzVucUJVY3VCS3I2VTZ2S0ozV1JPY2tN?=
+ =?utf-8?B?UzdiRnBRL0ZMdkZ4dE5VRC85WjdXYVBSYXdjL2tUekRXQ0Urb3BxQm52R3Ar?=
+ =?utf-8?B?RmhxTEFPdXJmNU02VzY1ZEN0d2FzSU9RS1hsM1VjRk9DcjE1QS92R3J2V1Bk?=
+ =?utf-8?B?OHAwNnhxeVRramR0amp5S2ZuQVZBZFV0cFU5S0YrdUxnc0lZMnZUN1RMVEky?=
+ =?utf-8?B?UWJvdEttVWdpUXp3WFF2VmpJNzg3TzNsMC92blBLUkNuK3NrbUJkWmVDTjJO?=
+ =?utf-8?B?RG42U0dFRllCOUFRZzFrTkRUMG85WTkxcXBvUmppaGFLQlQwcWpXdTJXV0RV?=
+ =?utf-8?Q?LPGg=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54713038-9576-4d58-fc83-08dd521086bd
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 00:41:49.2026 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YIJ8K6xD0SLrBANRpB8KXVs+s1RvrW1dm7zMgmpEvkalpbBDqUg5qaFasjGtpy8W
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5743
+Received-SPF: permerror client-ip=40.107.244.77;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
@@ -92,7 +162,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,264 +178,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 12, 2025 at 05:44:49AM +0000, Suravee Suthikulpanit wrote:
-> Current amd-iommu model internally creates an AMDVI-PCI device. Here is
-> a snippet from info qtree:
-> 
->   bus: main-system-bus
->     type System
->     dev: amd-iommu, id ""
->       xtsup = false
->       pci-id = ""
->       intremap = "on"
->       device-iotlb = false
->       pt = true
->     ...
->     dev: q35-pcihost, id ""
->       MCFG = -1 (0xffffffffffffffff)
->       pci-hole64-size = 34359738368 (32 GiB)
->       below-4g-mem-size = 134217728 (128 MiB)
->       above-4g-mem-size = 0 (0 B)
->       smm-ranges = true
->       x-pci-hole64-fix = true
->       x-config-reg-migration-enabled = true
->       bypass-iommu = false
->       bus: pcie.0
->         type PCIE
->         dev: AMDVI-PCI, id ""
->           addr = 01.0
->           romfile = ""
->           romsize = 4294967295 (0xffffffff)
->           rombar = -1 (0xffffffffffffffff)
->           multifunction = false
->           x-pcie-lnksta-dllla = true
->           x-pcie-extcap-init = true
->           failover_pair_id = ""
->           acpi-index = 0 (0x0)
->           x-pcie-err-unc-mask = true
->           x-pcie-ari-nextfn-1 = false
->           x-max-bounce-buffer-size = 4096 (4 KiB)
->           x-pcie-ext-tag = true
->           busnr = 0 (0x0)
->           class Class 0806, addr 00:01.0, pci id 1022:0000 (sub 1af4:1100)
-> 
-> This prohibits users from specifying the PCI topology for the amd-iommu device,
-> which becomes a problem when trying to support VM migration since it does not
-> guarantee the same enumeration of AMD IOMMU device.
-> 
-> Therfore, decouple the AMDVI-PCI from amd-iommu device and introduce pci-id
-> parameter to link between the two devices.
-> 
-> For example:
->   -device AMDVI-PCI,id=iommupci0,bus=pcie.0,addr=0x05 \
->   -device amd-iommu,intremap=on,pt=on,xtsup=on,pci-id=iommupci0 \
-> 
-> For backward-compatibility, internally create the AMDVI-PCI device if not
-> specified on the CLI.
-> 
-> Co-developed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Hi Zhao,
 
-
-breaks build:
-
-https://gitlab.com/mstredhat/qemu/-/jobs/9202802751
-
-	./hw/i386/amd_iommu.c: In function ‘amdvi_sysbus_realize’:
-../hw/i386/amd_iommu.c:1616:18: error: unused variable ‘dc’ [-Werror=unused-variable]
- 1616 |     DeviceClass *dc = (DeviceClass *) object_get_class(OBJECT(dev));
-      |                  ^~
-cc1: all warnings being treated as errors
-
-
-
-> ---
->  hw/i386/acpi-build.c |  8 +++----
->  hw/i386/amd_iommu.c  | 53 +++++++++++++++++++++++++++-----------------
->  hw/i386/amd_iommu.h  |  3 ++-
->  3 files changed, 39 insertions(+), 25 deletions(-)
+On 2/20/2025 5:18 AM, Zhao Liu wrote:
+> On Thu, Feb 06, 2025 at 01:28:35PM -0600, Babu Moger wrote:
+>> Date: Thu, 6 Feb 2025 13:28:35 -0600
+>> From: Babu Moger <babu.moger@amd.com>
+>> Subject: [PATCH v5 2/6] target/i386: Update EPYC-Rome CPU model for Cache
+>>   property, RAS, SVM feature bits
+>> X-Mailer: git-send-email 2.34.1
+>>
+>> Found that some of the cache properties are not set correctly for EPYC models.
+>>
+>> l1d_cache.no_invd_sharing should not be true.
+>> l1i_cache.no_invd_sharing should not be true.
+>>
+>> L2.self_init should be true.
+>> L2.inclusive should be true.
+>>
+>> L3.inclusive should not be true.
+>> L3.no_invd_sharing should be true.
+>>
+>> Fix these cache properties.
+>>
+>> Also add the missing RAS and SVM features bits on AMD EPYC-Rome. The SVM
+>> feature bits are used in nested guests.
+>>
+>> succor		: Software uncorrectable error containment and recovery capability.
+>> overflow-recov	: MCA overflow recovery support.
+>> lbrv		: LBR virtualization
+>> tsc-scale	: MSR based TSC rate control
+>> vmcb-clean	: VMCB clean bits
+>> flushbyasid	: Flush by ASID
+>> pause-filter	: Pause intercept filter
+>> pfthreshold	: PAUSE filter threshold
+>> v-vmsave-vmload	: Virtualized VMLOAD and VMSAVE
+>> vgif		: Virtualized GIF
+>>
+>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>> Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
+>> ---
+>>   target/i386/cpu.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 73 insertions(+)
+>>
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index 94292bfaa2..e2c3c797ed 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -2342,6 +2342,60 @@ static const CPUCaches epyc_rome_v3_cache_info = {
+>>       },
+>>   };
+>>   
+>> +static const CPUCaches epyc_rome_v5_cache_info = {
+>> +    .l1d_cache = &(CPUCacheInfo) {
+>> +        .type = DATA_CACHE,
+>> +        .level = 1,
+>> +        .size = 32 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 8,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+>> +        .self_init = 1,
 > 
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index 53b7306b43..e70eeaf577 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -2333,10 +2333,10 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->      build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
->      /* DeviceID */
->      build_append_int_noprefix(table_data,
-> -                              object_property_get_int(OBJECT(&s->pci), "addr",
-> +                              object_property_get_int(OBJECT(s->pci), "addr",
->                                                        &error_abort), 2);
->      /* Capability offset */
-> -    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-> +    build_append_int_noprefix(table_data, s->pci->capab_offset, 2);
->      /* IOMMU base address */
->      build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
->      /* PCI Segment Group */
-> @@ -2368,10 +2368,10 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->      build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
->      /* DeviceID */
->      build_append_int_noprefix(table_data,
-> -                              object_property_get_int(OBJECT(&s->pci), "addr",
-> +                              object_property_get_int(OBJECT(s->pci), "addr",
->                                                        &error_abort), 2);
->      /* Capability offset */
-> -    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-> +    build_append_int_noprefix(table_data, s->pci->capab_offset, 2);
->      /* IOMMU base address */
->      build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
->      /* PCI Segment Group */
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 6b13ce894b..0f552bafa0 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -167,11 +167,11 @@ static void amdvi_generate_msi_interrupt(AMDVIState *s)
->  {
->      MSIMessage msg = {};
->      MemTxAttrs attrs = {
-> -        .requester_id = pci_requester_id(&s->pci.dev)
-> +        .requester_id = pci_requester_id(&s->pci->dev)
->      };
->  
-> -    if (msi_enabled(&s->pci.dev)) {
-> -        msg = msi_get_message(&s->pci.dev, 0);
-> +    if (msi_enabled(&s->pci->dev)) {
-> +        msg = msi_get_message(&s->pci->dev, 0);
->          address_space_stl_le(&address_space_memory, msg.address, msg.data,
->                               attrs, NULL);
->      }
-> @@ -239,7 +239,7 @@ static void amdvi_page_fault(AMDVIState *s, uint16_t devid,
->      info |= AMDVI_EVENT_IOPF_I | AMDVI_EVENT_IOPF;
->      amdvi_encode_event(evt, devid, addr, info);
->      amdvi_log_event(s, evt);
-> -    pci_word_test_and_set_mask(s->pci.dev.config + PCI_STATUS,
-> +    pci_word_test_and_set_mask(s->pci->dev.config + PCI_STATUS,
->              PCI_STATUS_SIG_TARGET_ABORT);
->  }
->  /*
-> @@ -256,7 +256,7 @@ static void amdvi_log_devtab_error(AMDVIState *s, uint16_t devid,
->  
->      amdvi_encode_event(evt, devid, devtab, info);
->      amdvi_log_event(s, evt);
-> -    pci_word_test_and_set_mask(s->pci.dev.config + PCI_STATUS,
-> +    pci_word_test_and_set_mask(s->pci->dev.config + PCI_STATUS,
->              PCI_STATUS_SIG_TARGET_ABORT);
->  }
->  /* log an event trying to access command buffer
-> @@ -269,7 +269,7 @@ static void amdvi_log_command_error(AMDVIState *s, hwaddr addr)
->  
->      amdvi_encode_event(evt, 0, addr, info);
->      amdvi_log_event(s, evt);
-> -    pci_word_test_and_set_mask(s->pci.dev.config + PCI_STATUS,
-> +    pci_word_test_and_set_mask(s->pci->dev.config + PCI_STATUS,
->              PCI_STATUS_SIG_TARGET_ABORT);
->  }
->  /* log an illegal command event
-> @@ -310,7 +310,7 @@ static void amdvi_log_pagetab_error(AMDVIState *s, uint16_t devid,
->      info |= AMDVI_EVENT_PAGE_TAB_HW_ERROR;
->      amdvi_encode_event(evt, devid, addr, info);
->      amdvi_log_event(s, evt);
-> -    pci_word_test_and_set_mask(s->pci.dev.config + PCI_STATUS,
-> +    pci_word_test_and_set_mask(s->pci->dev.config + PCI_STATUS,
->               PCI_STATUS_SIG_TARGET_ABORT);
->  }
->  
-> @@ -1607,26 +1607,45 @@ static void amdvi_sysbus_reset(DeviceState *dev)
->  {
->      AMDVIState *s = AMD_IOMMU_DEVICE(dev);
->  
-> -    msi_reset(&s->pci.dev);
-> +    msi_reset(&s->pci->dev);
->      amdvi_init(s);
->  }
->  
->  static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->  {
-> +    DeviceClass *dc = (DeviceClass *) object_get_class(OBJECT(dev));
->      AMDVIState *s = AMD_IOMMU_DEVICE(dev);
->      MachineState *ms = MACHINE(qdev_get_machine());
->      PCMachineState *pcms = PC_MACHINE(ms);
->      X86MachineState *x86ms = X86_MACHINE(ms);
->      PCIBus *bus = pcms->pcibus;
->  
-> -    s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
-> -                                     amdvi_uint64_equal, g_free, g_free);
-> +    if (s->pci_id) {
-> +        PCIDevice *pdev = NULL;
-> +        int ret = pci_qdev_find_device(s->pci_id, &pdev);
->  
-> -    /* This device should take care of IOMMU PCI properties */
-> -    if (!qdev_realize(DEVICE(&s->pci), &bus->qbus, errp)) {
-> -        return;
-> +        if (ret) {
-> +            error_report("Cannot find PCI device '%s'", s->pci_id);
-> +            return;
-> +        }
-> +
-> +        if (!object_dynamic_cast(OBJECT(pdev), TYPE_AMD_IOMMU_PCI)) {
-> +            error_report("Device '%s' must be an AMDVI-PCI device type", s->pci_id);
-> +            return;
-> +        }
-> +
-> +        s->pci = AMD_IOMMU_PCI(pdev);
-> +    } else {
-> +        s->pci = AMD_IOMMU_PCI(object_new(TYPE_AMD_IOMMU_PCI));
-> +        /* This device should take care of IOMMU PCI properties */
-> +        if (!qdev_realize(DEVICE(s->pci), &bus->qbus, errp)) {
-> +            return;
-> +        }
->      }
->  
-> +    s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
-> +                                     amdvi_uint64_equal, g_free, g_free);
-> +
->      /* Pseudo address space under root PCI bus. */
->      x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
->  
-> @@ -1663,6 +1682,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->  
->  static const Property amdvi_properties[] = {
->      DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
-> +    DEFINE_PROP_STRING("pci-id", AMDVIState, pci_id),
->  };
->  
->  static const VMStateDescription vmstate_amdvi_sysbus = {
-> @@ -1670,12 +1690,6 @@ static const VMStateDescription vmstate_amdvi_sysbus = {
->      .unmigratable = 1
->  };
->  
-> -static void amdvi_sysbus_instance_init(Object *klass)
-> -{
-> -    AMDVIState *s = AMD_IOMMU_DEVICE(klass);
-> -
-> -    object_initialize(&s->pci, sizeof(s->pci), TYPE_AMD_IOMMU_PCI);
-> -}
->  
->  static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
->  {
-> @@ -1698,7 +1712,6 @@ static const TypeInfo amdvi_sysbus = {
->      .name = TYPE_AMD_IOMMU_DEVICE,
->      .parent = TYPE_X86_IOMMU_DEVICE,
->      .instance_size = sizeof(AMDVIState),
-> -    .instance_init = amdvi_sysbus_instance_init,
->      .class_init = amdvi_sysbus_class_init
->  };
->  
-> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-> index e0dac4d9a9..ece71ff0b6 100644
-> --- a/hw/i386/amd_iommu.h
-> +++ b/hw/i386/amd_iommu.h
-> @@ -315,7 +315,8 @@ struct AMDVIPCIState {
->  
->  struct AMDVIState {
->      X86IOMMUState iommu;        /* IOMMU bus device             */
-> -    AMDVIPCIState pci;          /* IOMMU PCI device             */
-> +    AMDVIPCIState *pci;         /* IOMMU PCI device             */
-> +    char *pci_id;               /* ID of AMDVI-PCI device, if user created */
->  
->      uint32_t version;
->  
-> -- 
-> 2.34.1
+> This field could be true,
+
+Sure.
+
+> 
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>> +    },
+>> +    .l1i_cache = &(CPUCacheInfo) {
+>> +        .type = INSTRUCTION_CACHE,
+>> +        .level = 1,
+>> +        .size = 32 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 8,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+>> +        .self_init = 1,
+> 
+> ditto,
+
+Sure.
+
+> 
+> Compared to the previous cache model version, the differences can be
+> checked. I feel that in the future, when we introduce a new cache model,
+> it's better to avoid omitting items that default to false. This way, the
+> cache model can correspond to the output of the cpuid tool, making it
+> easier to compare and check.
+
+Sounds good.
+
+> 
+> Overall, LGTM,
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> 
+Thanks
+Babu
 
 
