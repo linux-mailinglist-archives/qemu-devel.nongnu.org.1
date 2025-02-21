@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DC9A3F701
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:16:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989F5A3F70B
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:20:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlTng-0000po-TE; Fri, 21 Feb 2025 09:14:46 -0500
+	id 1tlTrm-0002NA-KJ; Fri, 21 Feb 2025 09:18:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tlTnM-0000nu-CN
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:14:24 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlTrb-0002Jf-Ia
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:18:49 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tlTnK-0005r7-DF
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:14:24 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-38f29a1a93bso1768797f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:14:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlTrX-000711-GC
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:18:46 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-220bfdfb3f4so47500475ad.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:18:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740147261; x=1740752061; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KSMUHQS/GTDe7M2xwkjMwMUEpaJHBy0e2fac14HmH6w=;
- b=BownUWFGWl8iJ8ztffazple/CNHKGVs+HYh/DLdI3ihERadZiB1El7BjKCbxAklGqL
- mmO9iZVyWN/J5xL0FklMmUukSOjl+AmWbT3aTQNONKUNOH2+hZqMxdysnPLJmrIYP6t2
- FkCBZus3YFIDWlLkuVo/HZp37OK94kxoNtB+Q5YAWToLTCIeSMgMIJVBy9oKTYJBx7P8
- pN6SZlGVrCw32pXMLRDIrYARXEq7+PnP8jzcDdft+8iSehhT/OyGu14FimCRQZa6moV6
- CmEyBigg3836KVR4ZY20pC07wQWo5p6zpSUt70J/qp/9r2/8wEZ2R/V0MCirv/MvMIj6
- lnhg==
+ d=ventanamicro.com; s=google; t=1740147521; x=1740752321; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=k/VJn4+bfvAbzxvfJCsuHgylQKpUn02K8uANEqSAyTk=;
+ b=TXGsR6fXxsPXBVOEBMDV+r2lU4Y1YBToa2bBJQXXbOA/vlmVcp85IWOzBe5CHFayuU
+ HAr0Re7NawuY4rIl7Vca8jySQkYLt4lj9VVfUUx350CmMVBAqWCbKdLGCjgdX57z5AeS
+ 34QeUN6gBTAZ3RKWDp01GkEJgSm+mD0drP696KbsCWXLTIAxilar1PAxVi+92tqNpyF7
+ johRgtfOtBh1859ESR7gOe6PgEuoHcv3yUBvf2Fwd4MKROM6gynA3cYFAEp+ACMVSoG3
+ HWZdeLVh/HBPIBFticXwSQD7FZLv+KaCiq/Ny9IceeA9pAxrmQiO7pzLJNcYqGWPXBaX
+ 0M/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740147261; x=1740752061;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KSMUHQS/GTDe7M2xwkjMwMUEpaJHBy0e2fac14HmH6w=;
- b=VJAvCjslnkcFy3jv28I4GQ+1Qyraf2S8bLAmoZO4fLx3hXFTgGLG3IZ9iLr1AtUB5n
- SG1LEz2w1ZpXwf/honcHhwxgY4MY3zblgcN6oaCNFrMNVWuahzyZkUszdPH0mhov5ri3
- aVXD1JU7vPjb7OkXIHa4yJnOMBITD+XHcB2kMPUm5cfqmcibYcSHCkyLfk+ccDP/Knj/
- IBmQqjZaFpOhf2DWLQqIRFyhE9xzNt+HIoAJGdbfoFSdHjBN2jjy6uQ1uYQeWC6xG1KR
- X3bG2mJoa1jTLvhavjfnnLp9szfsWWNarHJX24/cP/KCl0NykIopUAPFwnjb81dUBgKm
- H9Pw==
-X-Gm-Message-State: AOJu0Yx+lejwNKefZkrVxR32S5EfVhjwZdmUqUU+VlXiihEcX3cLKvNZ
- hs1/ySTeTeQkDuhce/9aYA+hs5KDuaLrFB8a00xlsUEFr45QmcNaRJ2fxg8dWSY=
-X-Gm-Gg: ASbGncuscGTbLZDE+Xg1xgOeY02Man2UJuXrCy2kQW/eOSS8p5duoOXnm+ggsXxfmlK
- NddQAsZfCBkEAt3acraEy5VuQM8szk8BmhJN4zJRtFpdCi3OWbZp9PfBbKfFN1II9xRxuR03R2B
- X9kBbtfrwyYp9BGpcrRM4MRdnItrvUByqDyNQRnxTf8Tiv0vT0iseDlQnxt2ILxb6iY2J39Oeny
- /1N2D8Tf3JeITXCJ+f/Gkshc78H/O7x6e2LQLSibxxuDwukGhTknGOl7b0zAtJV8aExQLuDdq8m
- cTXQLo46rTSiHoEh4zFqeZ5485pwlIgSJe3WTrNLdDuM2LOQhcxVd6tnTRhN7IlGSe2nlg==
-X-Google-Smtp-Source: AGHT+IFkb8y5Ttw8Vrqn88EyzkSiIrGktvG8jxZmTQI+yfVqkfGS7SALxxlw2iFCM1Qad++B2eNg6w==
-X-Received: by 2002:a5d:6c6f:0:b0:38f:2173:b7b7 with SMTP id
- ffacd0b85a97d-38f6e95c4a3mr3263167f8f.18.1740147260585; 
- Fri, 21 Feb 2025 06:14:20 -0800 (PST)
-Received: from [192.168.69.157] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f259d5e9esm23868019f8f.61.2025.02.21.06.14.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Feb 2025 06:14:20 -0800 (PST)
-Message-ID: <57c37ba2-bfe1-40ca-bbe2-79c6da4cb920@linaro.org>
-Date: Fri, 21 Feb 2025 15:14:19 +0100
+ d=1e100.net; s=20230601; t=1740147521; x=1740752321;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=k/VJn4+bfvAbzxvfJCsuHgylQKpUn02K8uANEqSAyTk=;
+ b=urgjQ+tw1qocCd8UJ7HhB55yTdrrBxyhXrSo8n6D0XB+TeUsuT6vrU98xt/AAoVrSb
+ HkFJbHDqV6FHQZAxrjprijfQ3jA8nCuEmw8kBx75zcEbmFOCXcag8IyVe1YZEUD6aqkP
+ ksfyVI/L9jj7u28InLnNJsfwDv70DLLFTsLb+HWhMfsW5O6WNbTkC0kKJlWl/AS1gej/
+ M7f5DvNQW2ERvHC4C9lIIH2SL2wNh/C5rzfu6nyuRB1nt6G6ssG/sXS/7TnzjHKo5tvO
+ uC9sXmfGqRAgYMDVEWsfT2xVoYU45Shi3BcbuE7j0zcDupj/rzil93IrVsxQXiXvk45W
+ PZ+g==
+X-Gm-Message-State: AOJu0YwXHrybJYlkOnvGssCDY8w9s1vdp+/8qm10YzAattjPUdUJlv1g
+ OwEn/YVuNTxUz0VzK3WUlRNSg5p/J1s9ze2Pexh2kOY4TBXA6G42RIGuIZxcXrEPQ7+qK3kqUYk
+ c
+X-Gm-Gg: ASbGncsTkbk5C5gvBhGUye4EtGAJ+N9IZdWVEgx7fkbx6HA+FCP9m3qw+qRwrQO+MYb
+ 97nX3DA/vdAQMBIHfY7A6ysvH7vnW/TK3hjheKOZFJCt73s31Al8wTVqrdRbwd48/K2rfb8A+8t
+ 5euaU69IpUTJvAl5gQNyw3TsFwo1kX2csgQQ0LJ3QwdkRy2Z2ZYIQnx5q6FLnscet2Z3YQgheCG
+ wmXEqBgen35ZL95gbM1OQHJokiZw8z+N/8nqr85QCOnzro5juEMGU6pQRuJnnuPiNKLMzUWxFlw
+ GJ/FZFnhhICPgkHSr84AFdV8jWWmkcHoHPFe1dX54DjAkR9tCAl8OA==
+X-Google-Smtp-Source: AGHT+IETohLqpIXjndlQWbgdmEUlVjq2knDwlKRHVUUH6Fnbmx6UXNpezJsiEPcDy23d2/codRaw4g==
+X-Received: by 2002:a05:6a00:928d:b0:72f:f872:30a7 with SMTP id
+ d2e1a72fcca58-73426ca8313mr5048857b3a.6.1740147521307; 
+ Fri, 21 Feb 2025 06:18:41 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([187.11.154.120])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-734300da098sm1150290b3a.129.2025.02.21.06.18.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Feb 2025 06:18:40 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/3] target/riscv/kvm: update to Linux 6.14-rc3
+Date: Fri, 21 Feb 2025 11:18:31 -0300
+Message-ID: <20250221141834.626722-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] fpu: Move m68k_denormal fmt flag into
- floatx80_behaviour
-To: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>
-References: <20250217125055.160887-1-peter.maydell@linaro.org>
- <20250217125055.160887-7-peter.maydell@linaro.org>
- <64deaf4f-b999-41aa-ae44-876a1860a10c@linaro.org>
- <CAFEAcA_upC=ty1PWXOSsHHgk67EoPi6rB2DhK2M5_q2mzUCW=Q@mail.gmail.com>
- <d7a0260d-5cdb-4e87-b12c-32e1dee4df1c@linaro.org>
- <CAFEAcA_uPWSgwpygQiSBzCLsBV+HH5Pun1E9RGw16Z3SMj4REQ@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_uPWSgwpygQiSBzCLsBV+HH5Pun1E9RGw16Z3SMj4REQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,76 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/2/25 19:54, Peter Maydell wrote:
-> On Thu, 20 Feb 2025 at 18:39, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> On 2/20/25 09:12, Peter Maydell wrote:
->>> That suggests that we are correctly implementing the x87
->>> required behaviour in QEMU, and so that the TODO comment
->>> I add in this patch isn't right. But then I'm a bit confused
->>> about what the code is actually doing. Why do we need to look
->>> at fmt->m68k_denormal in the input (canonicalize) code (i.e.
->>> to have different behaviour here for x86 and m68k), if
->>> both x86 and m68k accept these pseudodenormals as input?
->>>
->>> Is the difference that for x86 we accept but canonicalize
->>> into the equivalent normal number immediately on input,
->>> whereas for m68k we accept and leave the pseudodenormal
->>> as a pseudodenormal (well, m68k calls these a kind of
->>> normal number) ?
->> The difference is in interpretation: x86 ignores the explicit integer bit of the
->> pseudo-denormal, m68k considers it part of the input value.  This gives m68k one extra bit
->> of range in their denormal, which allows representation of smaller numbers.
-> 
-> Ah, I see. So I suppose:
-> 
-> (1) we should call the floatx80_status flag
-> "floatx80_pseudo_denormal_valid" since it affects both inputs
-> and outputs, and document it in the enum like:
-> 
-> +    /*
-> +     * If the exponent is 0 and the Integer bit is set, Intel call
-> +     * this a "pseudo-denormal"; x86 supports that only on input
-> +     * (treating them as denormals by ignoring the Integer bit).
-> +     * For m68k, the integer bit is considered validly part of the
-> +     * input value when the exponent is 0, and may be 0 or 1,
-> +     * giving extra range. They may also be generated as outputs.
-> +     * (The m68k manual actually calls these values part of the
-> +     * normalized number range, not the denormalized number range.)
-> +     *
-> +     * By default you get the Intel behaviour where the Integer
-> +     * bit is ignored; if this is set then the Integer bit value
-> +     * is honoured, m68k-style.
-> +     *
-> +     * Either way, floatx80_invalid_encoding() will always accept
-> +     * pseudo-denormals.
-> +     */
-> +    floatx80_pseudo_denormal_valid = 16,
-> 
-> 
-> (2) the comment I add in canonicalize should instead read:
-> 
-> +    /*
-> +     * It's target-dependent how to handle the case of exponent 0
-> +     * and Integer bit set. Intel calls these "pseudodenormals",
-> +     * and treats them as if the integer bit was 0, and never
-> +     * produces them on output. This is the default behaviour for QEMU.
-> +     * For m68k, the integer bit is considered validly part of the
-> +     * input value when the exponent is 0, and may be 0 or 1,
-> +     * giving extra range. They may also be generated as outputs.
-> +     * (The m68k manual actually calls these values part of the
-> +     * normalized number range, not the denormalized number range,
-> +     * but that distinction is not important for us, because
-> +     * m68k doesn't care about the input_denormal_used status flag.)
-> +     * floatx80_pseudo_denormal_valid selects the m68k behaviour,
-> +     * which changes both how we canonicalize such a value and
-> +     * how we uncanonicalize results.
-> +     */
+Hi,
 
-Both changes LGTM but I'm no expert here ;) To the best of my
-FPU knowledge:
+In this version all changes were made in patch 2. In the first posting I
+forgot to update how riscv,isa was going to be calculated when
+ext_ziccrse is set by KVM.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+A change was made in isa_edata_arr[] to use ext_ziccrse, instead of
+'has_priv_1_11', and TCG code were changed to set ext_ziccrse
+accordingly. 
+
+No other changes made. Patches based on alistair/riscv-to-apply.next.
+
+Changes from v1:
+- patch 2:
+  - use 'ext_ziccrse' instead of 'has_priv_1_11' in isa_edata_arr[]
+- v1 link: https://lore.kernel.org/qemu-riscv/20250218163854.425607-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (3):
+  linux-headers: Update to Linux v6.14-rc3
+  target/riscv/cpu.c: create flag for ziccrse
+  target/riscv/kvm: add extensions after 6.14-rc3 update
+
+ include/standard-headers/linux/ethtool.h      |  4 +
+ include/standard-headers/linux/fuse.h         | 76 ++++++++++++++++++-
+ .../linux/input-event-codes.h                 |  1 +
+ include/standard-headers/linux/pci_regs.h     | 16 ++--
+ include/standard-headers/linux/virtio_pci.h   | 14 ++++
+ linux-headers/asm-arm64/kvm.h                 |  3 -
+ linux-headers/asm-loongarch/kvm_para.h        |  1 +
+ linux-headers/asm-riscv/kvm.h                 |  7 +-
+ linux-headers/asm-x86/kvm.h                   |  1 +
+ linux-headers/linux/iommufd.h                 | 35 ++++++---
+ linux-headers/linux/kvm.h                     |  8 +-
+ linux-headers/linux/stddef.h                  | 13 +++-
+ linux-headers/linux/vduse.h                   |  2 +-
+ target/riscv/cpu.c                            |  3 +-
+ target/riscv/cpu_cfg.h                        |  3 +
+ target/riscv/kvm/kvm-cpu.c                    |  3 +
+ target/riscv/tcg/tcg-cpu.c                    |  2 +
+ 17 files changed, 156 insertions(+), 36 deletions(-)
+
+-- 
+2.48.1
 
 
