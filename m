@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E645A3FCAD
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45550A3FCBD
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlWRe-0006xA-Sh; Fri, 21 Feb 2025 12:04:10 -0500
+	id 1tlWRi-00078Y-Az; Fri, 21 Feb 2025 12:04:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRb-0006tg-MI
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tlWRe-0006xN-0L
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRZ-0001RN-6q
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:07 -0500
+ id 1tlWRb-0001Rq-0H
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740157444;
+ s=mimecast20190719; t=1740157446;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OFO/wWi78NoYeD+/g7iAizNX0tpa55cnNvmYXRSX970=;
- b=LjXDtUAnZZfnBkakorlwR4NJtVkVj8ByDQdBD1aUMIdgd4+JFZw3Z4EUriQts25SJ+VozC
- GtKgAKkytKD/SZRXPZO8o2jIHb4D399k4HtDHP2ZN0xn51D5un4TMCXkd5El5Vc64vrDV6
- s5JtsffNG7u9PFNdY5a/CuM5MhcBG3o=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IDuooerhK1to1+S4hiPVrqtGgOqxZ0Q0ElNK+Nffz5Y=;
+ b=J4FpUMnEPVv7tL3uH6C9rutlpdTk3pleKgtbtkWK30amdbcc2ZO7I5UBt5teBqQIK+4ubs
+ 7FWdNTzp+VNR/WU+SetxFr0QNoNphB1qLSdQC3V96e+gkNhX1ABZwDi9To7RewiKrmgyvD
+ rRzxkYZGUhWbSyXTFbWjlJ9yJkUhatI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-Tkbfi--nPrCKi-NGSj-2Bg-1; Fri, 21 Feb 2025 12:04:02 -0500
-X-MC-Unique: Tkbfi--nPrCKi-NGSj-2Bg-1
-X-Mimecast-MFC-AGG-ID: Tkbfi--nPrCKi-NGSj-2Bg_1740157441
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-38f32ac838cso1983890f8f.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:02 -0800 (PST)
+ us-mta-653-eYbs7Ut6P_yhmtPGDVGM-w-1; Fri, 21 Feb 2025 12:04:04 -0500
+X-MC-Unique: eYbs7Ut6P_yhmtPGDVGM-w-1
+X-Mimecast-MFC-AGG-ID: eYbs7Ut6P_yhmtPGDVGM-w_1740157443
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-38f37b4a72fso1741619f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740157440; x=1740762240;
+ d=1e100.net; s=20230601; t=1740157442; x=1740762242;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OFO/wWi78NoYeD+/g7iAizNX0tpa55cnNvmYXRSX970=;
- b=LGekUe5+64FM1QfH0UxuGKTCuVtJFDCOmGrWGFxImEVbIwyTTSZQ74faYbJqjlK/YV
- Nk9dVz9zsnXAyJRZb3c9AqUc5MHtytJuYLz7Mu9Z89kNJUrVNhGS715aREO6gTUKTFJz
- ZmYoyO/2FJNDLjDJnGDg9elf+dT18aWo9XssvcCJ2a6O8VcSd5cHwOzxMx5J2XGdCnTg
- kzWI/k2n1qhlEd+LBEFU5MFPy6ko7Mas/MrdGpFCbvFZyhpHb30SWxqdDG8YqY6aU2cy
- i10/bRbBsKB6313xmTa/wJ8lWA1W/WcwwO0mBRlHzyddwizLiuycB5x9cVanxZ5Oj0d/
- OEUg==
-X-Gm-Message-State: AOJu0Yz/gWFwOpu7mx9jv9OmMTOAYiXCFXAD3cPti0bCY6sAMLd0gV/+
- +ih08x5FxrXJ3/oqKg0HB7Y+FKhAzdpHDLmFCZ9FElyxl9Eo5kh3wmdgioTGMrc+yIGjg/WFEcW
- x8FkXrgOeEdWtoYXviBqUILqXqk7HX469dKq1+Y6w4QY6FEg/P+JtCzj8Nutvgt96psnqdznAsf
- IZVLdkUIIqgjqDDdoTN/fqau0rwCdFaQbXKRYtm3w=
-X-Gm-Gg: ASbGncsovMrhDvAO0tsVUhegmaTg3kxaNQpwp5UiFk8CbZmE8Apx6NHWkrVOTwxvQLK
- TRcIEIMCz59cQmWVEs1waCqkBwHLw0PlCwzA4sCa/juIbe+MtBdAW/2K+L2/0kT5lOEa8OlpWko
- eNEJp/pCT5IicRND1hF+hY1coIDK53w02KU7hE/EYCwdGIJrqH1hCPIF5qBwWJC8VNFA0ouzjFI
- HiatGactL2ZZXq53CPLjEqXQPVwelDjXEbGt4IZQMW6nnu6+ntR0GCzGPgU0T+pI8uAVBf1m5/b
- 2ASQpwzgg0ifILNL3Hg=
-X-Received: by 2002:a05:6000:4011:b0:38f:457e:3f2b with SMTP id
- ffacd0b85a97d-38f6e757322mr3655853f8f.6.1740157438177; 
- Fri, 21 Feb 2025 09:03:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFCmC3GeryJTAKucnbg/IrFfauD+bo6dzvuxUmb1fjIroP6Xc5RkPQ+sicZGJobs9sS7Yy5dA==
-X-Received: by 2002:a05:6000:4011:b0:38f:457e:3f2b with SMTP id
- ffacd0b85a97d-38f6e757322mr3655620f8f.6.1740157436059; 
- Fri, 21 Feb 2025 09:03:56 -0800 (PST)
+ bh=IDuooerhK1to1+S4hiPVrqtGgOqxZ0Q0ElNK+Nffz5Y=;
+ b=Osw/cwjd5RVJABmwzdjHTgCuQayFDmkwH0jqLCX1BOMH2+CUUQxaqLdJBCy/31DqW4
+ sW0TeYjHQQ0tpNXov8try0dNEN/QYW/y/dy8ro0cDuhuF48i3F0NZAF2nqVYZDWcABOz
+ B9SCdApshBr9bqXEyUcm+Wjxxiz0m9jRrYVnYxTt+iauOUBUPmR4ISA37VaQZf1mYC1I
+ vLiPB/Lx8c9/9OYo2ZFJtAw3OTEbogoEJ/uGuuxmBnvP+aiUHjyI1WswDdaS4tjFZnYw
+ 3dtT/3ZHcK2UZwm1arovuxrzLixBF1X4mMMmxVaRjDYQnrOjzBlY9tLNBAHstuAIwQ0y
+ tQhg==
+X-Gm-Message-State: AOJu0YxM5i6X2ce56nkPhm0GLhLx4P3f0W6uHgBRBbcchTlfP+AAvgP5
+ mCYG83SFQlkJe9ebp0JWJvIWG0/u8JYxdy0W6W87aHsEjutKavBsEA7cgqne3otAI37Kiiflt5a
+ uAG5Eait0z4O9PiQ13Ir9HuNEafcxQoXTicXGH1135nhppYpkf/V8MvlpcMPl5XmkY8uRIlTF+Q
+ MINmm4Uc9EAetlAkXe47C32IixvvLlm5fj+KwAFA8=
+X-Gm-Gg: ASbGncsmZGDBv+EDBguOnrATdOp2A8nvGvpG80/A5v9+28AoLweeFNpj75r0nDTcOJ1
+ 0zqD+l52RI/knNY9IhjItDFRJL6LKUuvu9zF+FKSx1+EnmM/+5ZtQbjrKvmb9QmqB3Aq4JG2i9w
+ jaskjB+eifMVDbaGjxBkUGT0bkME9bHQr7ppKElfOUVALCbYeN3jTMEn/QfHGBNJ2zIM9xOFBqp
+ MZmoQ7oLV64uNExTjoP9uWxVcpuWo70JvqMbsdJ+mMu//5G5NomZLVx2+nxRn8j/FrYgUsjfL6F
+ PXxAWsglBeordxAJj7Y=
+X-Received: by 2002:a05:6000:1ac7:b0:38d:ae1e:2f3c with SMTP id
+ ffacd0b85a97d-38f6f51db2cmr3652613f8f.25.1740157439997; 
+ Fri, 21 Feb 2025 09:03:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGjpFHc9uvNj7Nbzsa/WYamQ7zWK2mxWvP3dv2m49lIeaql26yFVY109MkBPpNu0D31mt2JuA==
+X-Received: by 2002:a05:6000:1ac7:b0:38d:ae1e:2f3c with SMTP id
+ ffacd0b85a97d-38f6f51db2cmr3652419f8f.25.1740157437844; 
+ Fri, 21 Feb 2025 09:03:57 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.61.185])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258dcc45sm24074742f8f.33.2025.02.21.09.03.52
+ ffacd0b85a97d-38f258b4314sm23666248f8f.9.2025.02.21.09.03.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 09:03:52 -0800 (PST)
+ Fri, 21 Feb 2025 09:03:56 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 05/15] rust: qom: get rid of ClassInitImpl
-Date: Fri, 21 Feb 2025 18:03:32 +0100
-Message-ID: <20250221170342.63591-6-pbonzini@redhat.com>
+Subject: [PATCH 06/15] rust: cell: add wrapper for FFI types
+Date: Fri, 21 Feb 2025 18:03:33 +0100
+Message-ID: <20250221170342.63591-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250221170342.63591-1-pbonzini@redhat.com>
 References: <20250221170342.63591-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,425 +106,303 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Complete the conversion from the ClassInitImpl trait to class_init() methods.
-This will provide more freedom to split the qemu_api crate in separate parts.
+Inspired by the same-named type in Linux.  This type provides the compiler
+with a correct view of what goes on with FFI types.  In addition, it
+separates the glue code from the bindgen-generated code, allowing
+traits such as Send, Sync or Zeroable to be specified independently
+for C and Rust structs.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs |   6 +-
- rust/hw/timer/hpet/src/hpet.rs   |   4 +-
- rust/qemu-api/src/qdev.rs        |  38 ++++---
- rust/qemu-api/src/qom.rs         | 164 +++++++++++++------------------
- rust/qemu-api/src/sysbus.rs      |  15 ++-
- rust/qemu-api/tests/tests.rs     |   4 +-
- 6 files changed, 101 insertions(+), 130 deletions(-)
+ docs/devel/rust.rst       |  34 +++++--
+ rust/qemu-api/src/cell.rs | 191 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 210 insertions(+), 15 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index fc1c8ec8d6a..6896b1026f6 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -19,8 +19,8 @@
-     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
-     prelude::*,
-     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
--    qom::{ClassInitImpl, ObjectImpl, Owned, ParentField},
--    sysbus::{SysBusDevice, SysBusDeviceClass, SysBusDeviceImpl},
-+    qom::{ObjectImpl, Owned, ParentField},
-+    sysbus::{SysBusDevice, SysBusDeviceImpl},
-     vmstate::VMStateDescription,
- };
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index e3f9e16aacb..9a621648e72 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -295,15 +295,33 @@ of ``&mut self``; access to internal fields must use *interior mutability*
+ to go from a shared reference to a ``&mut``.
  
-@@ -145,7 +145,7 @@ trait PL011Impl: SysBusDeviceImpl + IsA<PL011State> {
- impl PL011Class {
-     fn class_init<T: PL011Impl>(&mut self) {
-         self.device_id = T::DEVICE_ID;
--        <T as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut self.parent_class);
-+        self.parent_class.class_init::<T>();
-     }
- }
+ Whenever C code provides you with an opaque ``void *``, avoid converting it
+-to a Rust mutable reference, and use a shared reference instead.  Rust code
+-will then have to use QEMU's ``BqlRefCell`` and ``BqlCell`` type, which
+-enforce that locking rules for the "Big QEMU Lock" are respected.  These cell
+-types are also known to the ``vmstate`` crate, which is able to "look inside"
+-them when building an in-memory representation of a ``struct``'s layout.
+-Note that the same is not true of a ``RefCell`` or ``Mutex``.
++to a Rust mutable reference, and use a shared reference instead.  The
++``qemu_api::cell`` module provides wrappers that can be used to tell the
++Rust compiler about interior mutability, and optionally to enforce locking
++rules for the "Big QEMU Lock".  In the future, similar cell types might
++also be provided for ``AioContext``-based locking as well.
  
-diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
-index e01b4b67064..be27eb0eff4 100644
---- a/rust/hw/timer/hpet/src/hpet.rs
-+++ b/rust/hw/timer/hpet/src/hpet.rs
-@@ -21,7 +21,7 @@
-     },
-     prelude::*,
-     qdev::{DeviceImpl, DeviceMethods, DeviceState, Property, ResetType, ResettablePhasesImpl},
--    qom::{ClassInitImpl, ObjectImpl, ObjectType, ParentField},
-+    qom::{ObjectImpl, ObjectType, ParentField},
-     qom_isa,
-     sysbus::{SysBusDevice, SysBusDeviceImpl},
-     timer::{Timer, CLOCK_VIRTUAL},
-@@ -836,7 +836,7 @@ impl ObjectImpl for HPETState {
+-In the future, similar cell types might also be provided for ``AioContext``-based
+-locking as well.
++In particular, device code will usually rely on the ``BqlRefCell`` and
++``BqlCell`` type to ensure that data is accessed correctly under the
++"Big QEMU Lock".  These cell types are also known to the ``vmstate``
++crate, which is able to "look inside" them when building an in-memory
++representation of a ``struct``'s layout.  Note that the same is not true
++of a ``RefCell`` or ``Mutex``.
++
++Bindings code instead will usually use the ``Opaque`` type, which hides
++the contents of the underlying struct and can be easily converted to
++a raw pointer, for use in calls to C functions.  It can be used for
++example as follows::
++
++    #[repr(transparent)]
++    #[derive(Debug)]
++    pub struct Object(Opaque<bindings::Object>);
++
++The bindings will then manually check for the big QEMU lock with
++assertions, which allows the wrapper to be declared thread-safe::
++
++    unsafe impl Send for Object {}
++    unsafe impl Sync for Object {}
  
-     const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
-     const INSTANCE_POST_INIT: Option<fn(&Self)> = Some(Self::post_init);
--    const CLASS_INIT: fn(&mut Self::Class) = <Self as ClassInitImpl<Self::Class>>::class_init;
-+    const CLASS_INIT: fn(&mut Self::Class) = Self::Class::class_init::<Self>;
- }
+ Writing bindings to C code
+ ''''''''''''''''''''''''''
+diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
+index eae4e2ce786..84b9eb07467 100644
+--- a/rust/qemu-api/src/cell.rs
++++ b/rust/qemu-api/src/cell.rs
+@@ -27,7 +27,7 @@
+ // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ // DEALINGS IN THE SOFTWARE.
  
- // TODO: Make these properties user-configurable!
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index c4dd26b582c..c136457090c 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -19,7 +19,7 @@
-     chardev::Chardev,
-     irq::InterruptSource,
-     prelude::*,
--    qom::{ClassInitImpl, ObjectClass, ObjectImpl, Owned},
-+    qom::{ObjectClass, ObjectImpl, Owned},
-     vmstate::VMStateDescription,
- };
- 
-@@ -113,7 +113,7 @@ fn vmsd() -> Option<&'static VMStateDescription> {
- /// # Safety
- ///
- /// This function is only called through the QOM machinery and
--/// used by the `ClassInitImpl<DeviceClass>` trait.
-+/// used by `DeviceClass::class_init`.
- /// We expect the FFI user of this function to pass a valid pointer that
- /// can be downcasted to type `T`. We also expect the device is
- /// readable/writeable from one thread at any time.
-@@ -127,43 +127,41 @@ unsafe impl InterfaceType for ResettableClass {
-         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_RESETTABLE_INTERFACE) };
- }
- 
--impl<T> ClassInitImpl<ResettableClass> for T
--where
--    T: ResettablePhasesImpl,
--{
--    fn class_init(rc: &mut ResettableClass) {
-+impl ResettableClass {
-+    /// Fill in the virtual methods of `ResettableClass` based on the
-+    /// definitions in the `ResettablePhasesImpl` trait.
-+    pub fn class_init<T: ResettablePhasesImpl>(&mut self) {
-         if <T as ResettablePhasesImpl>::ENTER.is_some() {
--            rc.phases.enter = Some(rust_resettable_enter_fn::<T>);
-+            self.phases.enter = Some(rust_resettable_enter_fn::<T>);
-         }
-         if <T as ResettablePhasesImpl>::HOLD.is_some() {
--            rc.phases.hold = Some(rust_resettable_hold_fn::<T>);
-+            self.phases.hold = Some(rust_resettable_hold_fn::<T>);
-         }
-         if <T as ResettablePhasesImpl>::EXIT.is_some() {
--            rc.phases.exit = Some(rust_resettable_exit_fn::<T>);
-+            self.phases.exit = Some(rust_resettable_exit_fn::<T>);
-         }
-     }
- }
- 
--impl<T> ClassInitImpl<DeviceClass> for T
--where
--    T: ClassInitImpl<ObjectClass> + ClassInitImpl<ResettableClass> + DeviceImpl,
--{
--    fn class_init(dc: &mut DeviceClass) {
-+impl DeviceClass {
-+    /// Fill in the virtual methods of `DeviceClass` based on the definitions in
-+    /// the `DeviceImpl` trait.
-+    pub fn class_init<T: DeviceImpl>(&mut self) {
-         if <T as DeviceImpl>::REALIZE.is_some() {
--            dc.realize = Some(rust_realize_fn::<T>);
-+            self.realize = Some(rust_realize_fn::<T>);
-         }
-         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
--            dc.vmsd = vmsd;
-+            self.vmsd = vmsd;
-         }
-         let prop = <T as DeviceImpl>::properties();
-         if !prop.is_empty() {
-             unsafe {
--                bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
-+                bindings::device_class_set_props_n(self, prop.as_ptr(), prop.len());
-             }
-         }
- 
--        ResettableClass::interface_init::<T, DeviceState>(dc);
--        <T as ClassInitImpl<ObjectClass>>::class_init(&mut dc.parent_class);
-+        ResettableClass::cast::<DeviceState>(self).class_init::<T>();
-+        self.parent_class.class_init::<T>();
-     }
- }
- 
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index d821ac25acc..5488643a2fd 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -40,11 +40,6 @@
- //!   The traits have the appropriate specialization of `IsA<>` as a supertrait,
- //!   for example `IsA<DeviceState>` for `DeviceImpl`.
+-//! BQL-protected mutable containers.
++//! QEMU-specific mutable containers
  //!
--//! * an implementation of [`ClassInitImpl`], for example
--//!   `ClassInitImpl<DeviceClass>`. This fills the vtable in the class struct;
--//!   the source for this is the `*Impl` trait; the associated consts and
--//!   functions if needed are wrapped to map C types into Rust types.
--//!
- //! * a trait for instance methods, for example `DeviceMethods`. This trait is
- //!   automatically implemented for any reference or smart pointer to a device
- //!   instance.  It calls into the vtable provides access across all subclasses
-@@ -54,6 +49,48 @@
- //!   This provides access to class-wide functionality that doesn't depend on
- //!   instance data. Like instance methods, these are automatically inherited by
- //!   child classes.
+ //! Rust memory safety is based on this rule: Given an object `T`, it is only
+ //! possible to have one of the following:
+@@ -43,8 +43,10 @@
+ //! usually have their pointer shared with the "outside world very early in
+ //! their lifetime", for example when they create their
+ //! [`MemoryRegion`s](crate::bindings::MemoryRegion).  Therefore, individual
+-//! parts of a  device must be made mutable in a controlled manner through the
+-//! use of cell types.
++//! parts of a  device must be made mutable in a controlled manner; this module
++//! provides the tools to do so.
 +//!
-+//! # Class structures
++//! ## Cell types
+ //!
+ //! [`BqlCell<T>`] and [`BqlRefCell<T>`] allow doing this via the Big QEMU Lock.
+ //! While they are essentially the same single-threaded primitives that are
+@@ -71,7 +73,7 @@
+ //! QEMU device implementations is usually incorrect and can lead to
+ //! thread-safety issues.
+ //!
+-//! ## `BqlCell<T>`
++//! ### `BqlCell<T>`
+ //!
+ //! [`BqlCell<T>`] implements interior mutability by moving values in and out of
+ //! the cell. That is, an `&mut T` to the inner value can never be obtained as
+@@ -91,7 +93,7 @@
+ //!    - [`set`](BqlCell::set): this method replaces the interior value,
+ //!      dropping the replaced value.
+ //!
+-//! ## `BqlRefCell<T>`
++//! ### `BqlRefCell<T>`
+ //!
+ //! [`BqlRefCell<T>`] uses Rust's lifetimes to implement "dynamic borrowing", a
+ //! process whereby one can claim temporary, exclusive, mutable access to the
+@@ -111,13 +113,82 @@
+ //! Multiple immutable borrows are allowed via [`borrow`](BqlRefCell::borrow),
+ //! or a single mutable borrow via [`borrow_mut`](BqlRefCell::borrow_mut).  The
+ //! thread will panic if these rules are violated or if the BQL is not held.
 +//!
-+//! Each QOM class that has virtual methods describes them in a
-+//! _class struct_.  Class structs include a parent field corresponding
-+//! to the vtable of the parent class, all the way up to [`ObjectClass`].
++//! ## Opaque wrappers
 +//!
-+//! As mentioned above, virtual methods are defined via traits such as
-+//! `DeviceImpl`.  Class structs do not define any trait but, conventionally,
-+//! all of them have a `class_init` method to initialize the virtual methods
-+//! based on the trait and then call the same method on the superclass.
++//! The cell types from the previous section are useful at the boundaries
++//! of code that requires interior mutability.  When writing glue code that
++//! interacts directly with C structs, however, it is useful to operate
++//! at a lower level.
++//!
++//! C functions often violate Rust's fundamental assumptions about memory
++//! safety by modifying memory even if it is shared.  Furthermore, C structs
++//! often start their life uninitialized and may be populated lazily.
++//!
++//! For this reason, this module provides the [`Opaque<T>`] type to opt out
++//! of Rust's usual guarantees about the wrapped type. Access to the wrapped
++//! value is always through raw pointers, obtained via methods like
++//! [`as_mut_ptr()`](Opaque::as_mut_ptr) and [`as_ptr()`](Opaque::as_ptr). These
++//! pointers can then be passed to C functions or dereferenced; both actions
++//! require `unsafe` blocks, making it clear where safety guarantees must be
++//! manually verified. For example
 +//!
 +//! ```ignore
-+//! impl YourSubclassClass
-+//! {
-+//!     pub fn class_init<T: YourSubclassImpl>(&mut self) {
-+//!         ...
-+//!         klass.parent_class::class_init<T>();
++//! let state = Opaque::<MyStruct>::uninit();
++//! unsafe {
++//!     qemu_struct_init(state.as_mut_ptr());
++//! }
++//! ```
++//!
++//! [`Opaque<T>`] will usually be wrapped one level further, so that
++//! bridge methods can be added to the wrapper:
++//!
++//! ```ignore
++//! pub struct MyStruct(Opaque<bindings::MyStruct>);
++//!
++//! impl MyStruct {
++//!     fn new() -> Pin<Box<MyStruct>> {
++//!         let result = Box::pin(Opaque::uninit());
++//!         unsafe { qemu_struct_init(result.as_mut_ptr()) };
++//!         result
 +//!     }
 +//! }
 +//! ```
 +//!
-+//! If a class implements a QOM interface.  In that case, the function must
-+//! contain, for each interface, an extra forwarding call as follows:
++//! This pattern of wrapping bindgen-generated types in [`Opaque<T>`] provides
++//! several advantages:
 +//!
-+//! ```ignore
-+//! ResettableClass::cast::<Self>(self).class_init::<Self>();
-+//! ```
++//! * The choice of traits to be implemented is not limited by the
++//!   bindgen-generated code.  For example, [`Drop`] can be added without
++//!   disabling [`Copy`] on the underlying bindgen type
 +//!
-+//! These `class_init` functions are methods on the class rather than a trait,
-+//! because the bound on `T` (`DeviceImpl` in this case), will change for every
-+//! class struct.  The functions are pointed to by the
-+//! [`ObjectImpl::CLASS_INIT`] function pointer. While there is no default
-+//! implementation, in most cases it will be enough to write it as follows:
++//! * [`Send`] and [`Sync`] implementations can be controlled by the wrapper
++//!   type rather than being automatically derived from the C struct's layout
 +//!
-+//! ```ignore
-+//! const CLASS_INIT: fn(&mut Self::Class)> = Self::Class::class_init::<Self>;
-+//! ```
++//! * Methods can be implemented in a separate crate from the bindgen-generated
++//!   bindings
 +//!
-+//! This design incurs a small amount of code duplication but, by not using
-+//! traits, it allows the flexibility of implementing bindings in any crate,
-+//! without incurring into violations of orphan rules for traits.
++//! * [`Debug`](std::fmt::Debug) and [`Display`](std::fmt::Display)
++//!   implementations can be customized to be more readable than the raw C
++//!   struct representation
++//!
++//! The [`Opaque<T>`] type does not include BQL validation; it is possible to
++//! assert in the code that the right lock is taken, to use it together
++//! with a custom lock guard type, or to let C code take the lock, as
++//! appropriate.  It is also possible to use it with non-thread-safe
++//! types, since by default (unlike [`BqlCell`] and [`BqlRefCell`]
++//! it is neither `Sync` nor `Send`.
++//!
++//! While [`Opaque<T>`] is necessary for C interop, it should be used sparingly
++//! and only at FFI boundaries. For QEMU-specific types that need interior
++//! mutability, prefer [`BqlCell`] or [`BqlRefCell`].
  
  use std::{
-     ffi::CStr,
-@@ -279,19 +316,25 @@ pub unsafe trait InterfaceType: Sized {
-     /// for this interface.
-     const TYPE_NAME: &'static CStr;
- 
--    /// Initialize the vtable for the interface; the generic argument `T` is the
--    /// type being initialized, while the generic argument `U` is the type that
-+    /// Return the vtable for the interface; `U` is the type that
-     /// lists the interface in its `TypeInfo`.
-     ///
-+    /// # Examples
-+    ///
-+    /// This function is usually called by a `class_init` method in `U::Class`.
-+    /// For example, `DeviceClass::class_init<T>` initializes its `Resettable`
-+    /// interface as follows:
-+    ///
-+    /// ```ignore
-+    /// ResettableClass::cast::<DeviceState>(self).class_init::<T>();
-+    /// ```
-+    ///
-+    /// where `T` is the concrete subclass that is being initialized.
-+    ///
-     /// # Panics
-     ///
-     /// Panic if the incoming argument if `T` does not implement the interface.
--    fn interface_init<
--        T: ObjectType + ClassInitImpl<Self> + ClassInitImpl<U::Class>,
--        U: ObjectType,
--    >(
--        klass: &mut U::Class,
--    ) {
-+    fn cast<U: ObjectType>(klass: &mut U::Class) -> &mut Self {
-         unsafe {
-             // SAFETY: upcasting to ObjectClass is always valid, and the
-             // return type is either NULL or the argument itself
-@@ -300,8 +343,7 @@ fn interface_init<
-                 Self::TYPE_NAME.as_ptr(),
-             )
-             .cast();
--
--            <T as ClassInitImpl<Self>>::class_init(result.as_mut().unwrap())
-+            result.as_mut().unwrap()
-         }
-     }
- }
-@@ -558,87 +600,20 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
-     /// the default values coming from the parent classes; the function
-     /// can change them to override virtual methods of a parent class.
-     ///
--    /// Usually defined as `<Self as ClassInitImpl<Self::Class>::class_init`.
--    const CLASS_INIT: fn(&mut Self::Class);
--}
--
--/// Internal trait used to automatically fill in a class struct.
--///
--/// Each QOM class that has virtual methods describes them in a
--/// _class struct_.  Class structs include a parent field corresponding
--/// to the vtable of the parent class, all the way up to [`ObjectClass`].
--/// Each QOM type has one such class struct; this trait takes care of
--/// initializing the `T` part of the class struct, for the type that
--/// implements the trait.
--///
--/// Each struct will implement this trait with `T` equal to each
--/// superclass.  For example, a device should implement at least
--/// `ClassInitImpl<`[`DeviceClass`](crate::qdev::DeviceClass)`>` and
--/// `ClassInitImpl<`[`ObjectClass`]`>`.  Such implementations are made
--/// in one of two ways.
--///
--/// For most superclasses, `ClassInitImpl` is provided by the `qemu-api`
--/// crate itself.  The Rust implementation of methods will come from a
--/// trait like [`ObjectImpl`] or [`DeviceImpl`](crate::qdev::DeviceImpl),
--/// and `ClassInitImpl` is provided by blanket implementations that
--/// operate on all implementors of the `*Impl`* trait.  For example:
--///
--/// ```ignore
--/// impl<T> ClassInitImpl<DeviceClass> for T
--/// where
--///     T: ClassInitImpl<ObjectClass> + DeviceImpl,
--/// ```
--///
--/// The bound on `ClassInitImpl<ObjectClass>` is needed so that,
--/// after initializing the `DeviceClass` part of the class struct,
--/// the parent [`ObjectClass`] is initialized as well.
--///
--/// The other case is when manual implementation of the trait is needed.
--/// This covers the following cases:
--///
--/// * if a class implements a QOM interface, the Rust code _has_ to define its
--///   own class struct `FooClass` and implement `ClassInitImpl<FooClass>`.
--///   `ClassInitImpl<FooClass>`'s `class_init` method will then forward to
--///   multiple other `class_init`s, for the interfaces as well as the
--///   superclass. (Note that there is no Rust example yet for using interfaces).
--///
--/// * for classes implemented outside the ``qemu-api`` crate, it's not possible
--///   to add blanket implementations like the above one, due to orphan rules. In
--///   that case, the easiest solution is to implement
--///   `ClassInitImpl<YourSuperclass>` for each subclass and not have a
--///   `YourSuperclassImpl` trait at all.
--///
--/// ```ignore
--/// impl ClassInitImpl<YourSuperclass> for YourSubclass {
--///     fn class_init(klass: &mut YourSuperclass) {
--///         klass.some_method = Some(Self::some_method);
--///         <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
--///     }
--/// }
--/// ```
--///
--///   While this method incurs a small amount of code duplication,
--///   it is generally limited to the recursive call on the last line.
--///   This is because classes defined in Rust do not need the same
--///   glue code that is needed when the classes are defined in C code.
--///   You may consider using a macro if you have many subclasses.
--pub trait ClassInitImpl<T> {
--    /// Initialize `klass` to point to the virtual method implementations
--    /// for `Self`.  On entry, the virtual method pointers are set to
--    /// the default values coming from the parent classes; the function
--    /// can change them to override virtual methods of a parent class.
-+    /// Usually defined simply as `Self::Class::class_init::<Self>`;
-+    /// however a default implementation cannot be included here, because the
-+    /// bounds that the `Self::Class::class_init` method places on `Self` are
-+    /// not known in advance.
-     ///
--    /// The virtual method implementations usually come from another
--    /// trait, for example [`DeviceImpl`](crate::qdev::DeviceImpl)
--    /// when `T` is [`DeviceClass`](crate::qdev::DeviceClass).
-+    /// # Safety
-     ///
--    /// On entry, `klass`'s parent class is initialized, while the other fields
-+    /// While `klass`'s parent class is initialized on entry, the other fields
-     /// are all zero; it is therefore assumed that all fields in `T` can be
-     /// zeroed, otherwise it would not be possible to provide the class as a
-     /// `&mut T`.  TODO: add a bound of [`Zeroable`](crate::zeroable::Zeroable)
-     /// to T; this is more easily done once Zeroable does not require a manual
-     /// implementation (Rust 1.75.0).
--    fn class_init(klass: &mut T);
-+    const CLASS_INIT: fn(&mut Self::Class);
- }
- 
- /// # Safety
-@@ -651,13 +626,12 @@ pub trait ClassInitImpl<T> {
-     T::UNPARENT.unwrap()(unsafe { state.as_ref() });
- }
- 
--impl<T> ClassInitImpl<ObjectClass> for T
--where
--    T: ObjectImpl,
--{
--    fn class_init(oc: &mut ObjectClass) {
-+impl ObjectClass {
-+    /// Fill in the virtual methods of `ObjectClass` based on the definitions in
-+    /// the `ObjectImpl` trait.
-+    pub fn class_init<T: ObjectImpl>(&mut self) {
-         if <T as ObjectImpl>::UNPARENT.is_some() {
--            oc.unparent = Some(rust_unparent_fn::<T>);
-+            self.unparent = Some(rust_unparent_fn::<T>);
-         }
-     }
- }
-diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
-index fee2e3d478f..04821a2b9b3 100644
---- a/rust/qemu-api/src/sysbus.rs
-+++ b/rust/qemu-api/src/sysbus.rs
-@@ -14,8 +14,8 @@
-     irq::{IRQState, InterruptSource},
-     memory::MemoryRegion,
-     prelude::*,
--    qdev::{DeviceClass, DeviceImpl, DeviceState},
--    qom::{ClassInitImpl, Owned},
-+    qdev::{DeviceImpl, DeviceState},
-+    qom::Owned,
+     cell::{Cell, UnsafeCell},
+     cmp::Ordering,
+     fmt,
+-    marker::PhantomData,
+-    mem,
++    marker::{PhantomData, PhantomPinned},
++    mem::{self, MaybeUninit},
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
  };
- 
- unsafe impl ObjectType for SysBusDevice {
-@@ -28,12 +28,11 @@ unsafe impl ObjectType for SysBusDevice {
- // TODO: add virtual methods
- pub trait SysBusDeviceImpl: DeviceImpl + IsA<SysBusDevice> {}
- 
--impl<T> ClassInitImpl<SysBusDeviceClass> for T
--where
--    T: SysBusDeviceImpl + ClassInitImpl<DeviceClass>,
--{
--    fn class_init(sdc: &mut SysBusDeviceClass) {
--        <T as ClassInitImpl<DeviceClass>>::class_init(&mut sdc.parent_class);
-+impl SysBusDeviceClass {
-+    /// Fill in the virtual methods of `SysBusDeviceClass` based on the
-+    /// definitions in the `SysBusDeviceImpl` trait.
-+    pub fn class_init<T: SysBusDeviceImpl>(self: &mut SysBusDeviceClass) {
-+        self.parent_class.class_init::<T>();
+@@ -840,3 +911,109 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         (**self).fmt(f)
      }
  }
- 
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 93c5637bbc3..e3985782a38 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -14,7 +14,7 @@
-     declare_properties, define_property,
-     prelude::*,
-     qdev::{DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
--    qom::{ClassInitImpl, ObjectImpl, ParentField},
-+    qom::{ObjectImpl, ParentField},
-     sysbus::SysBusDevice,
-     vmstate::VMStateDescription,
-     zeroable::Zeroable,
-@@ -43,7 +43,7 @@ pub struct DummyClass {
- 
- impl DummyClass {
-     pub fn class_init<T: DeviceImpl>(self: &mut DummyClass) {
--        <T as ClassInitImpl<DeviceClass>>::class_init(&mut self.parent_class);
-+        self.parent_class.class_init::<T>();
-     }
- }
- 
++
++/// Stores an opaque value that is shared with C code.
++///
++/// Often, C structs can changed when calling a C function even if they are
++/// behind a shared Rust reference, or they can be initialized lazily and have
++/// invalid bit patterns (e.g. `3` for a [`bool`]).  This goes against Rust's
++/// strict aliasing rules, which normally prevent mutation through shared
++/// references.
++///
++/// Wrapping the struct with `Opaque<T>` ensures that the Rust compiler does not
++/// assume the usual constraints that Rust structs require, and allows using
++/// shared references on the Rust side.
++///
++/// `Opaque<T>` is `#[repr(transparent)]`, so that it matches the memory layout
++/// of `T`.
++#[repr(transparent)]
++pub struct Opaque<T> {
++    value: UnsafeCell<MaybeUninit<T>>,
++    // PhantomPinned also allows multiple references to the `Opaque<T>`, i.e.
++    // one `&mut Opaque<T>` can coexist with a `&mut T` or any number of `&T`;
++    // see https://docs.rs/pinned-aliasable/latest/pinned_aliasable/.
++    _pin: PhantomPinned,
++}
++
++impl<T> Opaque<T> {
++    /// Creates a new shared reference from a C pointer
++    ///
++    /// # Safety
++    ///
++    /// The pointer must be valid, though it need not point to a valid value.
++    pub unsafe fn from_raw<'a>(ptr: *mut T) -> &'a Self {
++        let ptr = NonNull::new(ptr).unwrap().cast::<Self>();
++        // SAFETY: Self is a transparent wrapper over T
++        unsafe { ptr.as_ref() }
++    }
++
++    /// Creates a new opaque object with uninitialized contents.
++    ///
++    /// # Safety
++    ///
++    /// Ultimately the pointer to the returned value will be dereferenced
++    /// in another unsafe block, for example when passing it to a C function.
++    /// However, this function is unsafe to "force" documenting who is going
++    /// to initialize and pin the value.
++    pub const unsafe fn uninit() -> Self {
++        Self {
++            value: UnsafeCell::new(MaybeUninit::uninit()),
++            _pin: PhantomPinned,
++        }
++    }
++
++    /// Creates a new opaque object with zeroed contents.
++    ///
++    /// # Safety
++    ///
++    /// Ultimately the pointer to the returned value will be dereferenced
++    /// in another unsafe block, for example when passing it to a C function.
++    /// However, this function is unsafe to "force" documenting whether a
++    /// zero value is safe.
++    pub const unsafe fn zeroed() -> Self {
++        Self {
++            value: UnsafeCell::new(MaybeUninit::uninit()),
++            _pin: PhantomPinned,
++        }
++    }
++
++    /// Returns a raw pointer to the opaque data.
++    pub const fn as_mut_ptr(&self) -> *mut T {
++        UnsafeCell::get(&self.value).cast()
++    }
++
++    /// Returns a raw pointer to the opaque data.
++    pub const fn as_ptr(&self) -> *const T {
++        self.as_mut_ptr() as *const _
++    }
++
++    /// Returns a raw pointer to the opaque data.
++    pub const fn as_void_ptr(&self) -> *mut std::ffi::c_void {
++        UnsafeCell::get(&self.value).cast()
++    }
++}
++
++impl<T> fmt::Debug for Opaque<T> {
++    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
++        let mut name: String = "Opaque<".to_string();
++        name += std::any::type_name::<T>();
++        name += ">";
++        f.debug_tuple(&name).field(&self.as_ptr()).finish()
++    }
++}
++
++impl<T: Default> Default for Opaque<T> {
++    fn default() -> Self {
++        Self {
++            value: UnsafeCell::new(MaybeUninit::new(T::default())),
++            _pin: PhantomPinned,
++        }
++    }
++}
++
++impl<T: Default> Opaque<T> {
++    /// Creates a new opaque object with default contents.
++    pub fn new() -> Self {
++        Self::default()
++    }
++}
 -- 
 2.48.1
 
