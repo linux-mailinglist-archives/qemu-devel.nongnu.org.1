@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1D1A3F42A
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D09A3F440
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:29:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS45-0005RF-9R; Fri, 21 Feb 2025 07:23:33 -0500
+	id 1tlS48-0005VU-UG; Fri, 21 Feb 2025 07:23:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS41-0005MZ-Q8
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:29 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS44-0005RR-Bf
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS40-000751-6J
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:29 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS42-00075N-SQ
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140607;
+ s=mimecast20190719; t=1740140610;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vVk3p3HEep2LyPnlOovtQs5KCaYeb3tyVgIY2zzDrbw=;
- b=JbQkl58x0gOei1g+BTXdnn8T2sIuDY5FnTqx+E/VjIq1Hn3iBWR31isyZ9XYMDWl1DC+wb
- +33llT3Tf33bEN4YTqO3hGatdvBwt64yfgCiMM1YvKZEH3FKNExjkBgNNxUuIvahT8fonE
- 34uWcZt+jwLeAj9VmcxQ1Fz19CsPtC8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aBBtVaw1c6M0PAlbeQ2HLOqmT0Z/NhHMcRyXtUTwOIA=;
+ b=IhBhVpuxXhrMmCQHBRnaCcASLbg3dSlSuD8WxSK6gFloCKVftGvuG/lZMwMjwgb9pLA3RK
+ 12KA2MD/xKcNj+bjSrSIgEcUGIhDRKA1QoH6B5JyH2h2eFr7OhIqIpFXiWPjXdLBF2E1aQ
+ UJF2pUddzE+zrwZRmPInhLP7nTgxIPo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-nGSEFI0FMl6MNVwitmIo1Q-1; Fri, 21 Feb 2025 07:23:26 -0500
-X-MC-Unique: nGSEFI0FMl6MNVwitmIo1Q-1
-X-Mimecast-MFC-AGG-ID: nGSEFI0FMl6MNVwitmIo1Q_1740140605
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43995bff469so22355325e9.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:25 -0800 (PST)
+ us-mta-104-ARkWdfcHNcGqD0AgIxqPtA-1; Fri, 21 Feb 2025 07:23:29 -0500
+X-MC-Unique: ARkWdfcHNcGqD0AgIxqPtA-1
+X-Mimecast-MFC-AGG-ID: ARkWdfcHNcGqD0AgIxqPtA_1740140608
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-38f2c0aa6d6so1468654f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140604; x=1740745404;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vVk3p3HEep2LyPnlOovtQs5KCaYeb3tyVgIY2zzDrbw=;
- b=RUWlVl3lLstytF9M78RMIfPkcMaJlVWJALBEWlgqgGxfEqUs7HEMy9t0HNUgY/Eybi
- 0POUPcnI9L5+Yp+Ply3KNsTBD6zV72180BZmwZCdZqvgw03syB2GiiK60+a99Lkqqq7v
- tGXnDJQ/PdNY7+i44r8sw0kebRWclQKmf2XTPsfPiHh/Xwul6bGyKFD/Pxgj5S9Own3V
- eoMIw0+I9vgenBYe5FACFOBw3VRYpec5cxiXq0tHuXyXJdMQVrwuMo3qkhIwY085o5ia
- LJ2EkuJi7zA8GN+txisv0p6NUd3YAxqqFgKvrs+n/Ni1UaaWpvXs9j2tuQw4uj5hP0ax
- GCvg==
-X-Gm-Message-State: AOJu0Yy8Iuzcda0DjWDqf/kEXMuR9+TpVs8TCyiCO85cDY0ewnhVJz7c
- xyREPKD+ejNYxi3NK4t5YE96b56wlsjCI7TZpz57mCl9nCN5I5Fq0gwzl2xu6NmtWwtvLykvcE4
- UDxgKhdAq0cPiGUw33AZAGHn+9oSLoxuDJt7mxRyp6GDfmTrbnXARjqIT9zZs+TmcyT+k7Avlyg
- I6uADt9kYe4z1OhFzezYFXYpZjy2Lcjw==
-X-Gm-Gg: ASbGncuAE2R6fOt6YXM9XzmbRqeL23+nOEcdAZswyAOoEjX5P1RnQjtaIUUBtrqlW3E
- LaVkhica9OFEjPaFTxz5IR+ep9thTwIPYjvqFbPqtakAGVx/rFvw36P4PVxDvggdUup71IIVUl6
- 9Pxr4EoToaXS8mDMv7SKNH//cLlhIt2ThdbcCPpK6dK5XRqCGM5USxQgA0fbTo3vxjonr+gXUFM
- GO0j+GVTUCGiIchkgkT/LVGcZc0F1EfXAJW9juo6xYFtqzpqdfJLwZpWGZk3iScPiWOcV+hL1+d
- JE66kQ==
-X-Received: by 2002:a05:600c:358c:b0:439:84ba:5760 with SMTP id
- 5b1f17b1804b1-439aeae1c8bmr23195015e9.5.1740140604437; 
- Fri, 21 Feb 2025 04:23:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7dZXy/S/F+QfB+XB0iaRszV02y5v1dVz9dhh8IXaoCTwnbIMIBkhRjQXTIxb1MVLGBGUMtA==
-X-Received: by 2002:a05:600c:358c:b0:439:84ba:5760 with SMTP id
- 5b1f17b1804b1-439aeae1c8bmr23194645e9.5.1740140603941; 
- Fri, 21 Feb 2025 04:23:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140607; x=1740745407;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aBBtVaw1c6M0PAlbeQ2HLOqmT0Z/NhHMcRyXtUTwOIA=;
+ b=dWpU7szLcbRuu/fMCh16u59JofwOnDrGSGm5mUZg9rs88+KxhW/rwUvP5tbjewcxvI
+ sB/9ut1GXh1aB7JxwyHiyL9T5BjAAu9vfQvRp9AnsjL4NFHA8XHdD6DKocW+muWztw0f
+ +Er5O00gJKID+r8jx3YRDUadV7iDu4yDXNQDCKzG2FQw1q2ualytnUaNKRo8GH0W6QLd
+ PgG5Fzx9zfTvUeA1vOWRW+8xeRECiRhx3Z2zcfEZHtsoMoPqW0cGS6hT4usfeLHmgdvZ
+ pmUIBs0gEIqsjEpxWCPlqdwQmVDYYJyJsyNK/R0mpI5B+Psf3/GR2YkQwbyqrDHFz30v
+ +hsw==
+X-Gm-Message-State: AOJu0Yxx+K8rWG2f7pd1Jzu4vScrzC+paPUymao0DnxD1TXuHeJh9PDD
+ /HKEKhSMx3v7TB4W8IFzNn2xS1uyOpd1ojPg6dQSn4sPBFkiXsSJwNGahI+SzjrP5kbUt3ueO+4
+ wcap2roXvEo3Xqhin1uzHVZCP+ZmKYgIqi+ENXwi8G6eSvICGZrvLnGr0va2gvbr/c2w2BhfnG1
+ tBAOY1Ue1eOhFf8/6AT9MRJRvueowX/w==
+X-Gm-Gg: ASbGncurWV1LWOExyHt+4cNCA2cNtWu4YNaNG+hhgSWJ4tmlR0AVxXzQJqrl7ABiUBR
+ rzoJHhFBRMTjRD1ImH+pwvMBsUxLe+9aWIh6PxyGyQpZddJb3tK2jIzffBVRgRErdD0Q80L02kh
+ OC7F+NGQSsfGKo+EUsXXLfCeVVjQslP8ANow9YiKbiPOAM9U70SNpPJiOkDRO03JcAuEjq+a0ve
+ xRPkluaMVKuTAyy9+4SzQYFM6+3qVZ+B8E9cY2TbWXGGmQ8+XxD7vZBI/lC4sEOOjR3RxfLl46G
+ zT5jfw==
+X-Received: by 2002:a5d:47c3:0:b0:38d:d59c:c9d6 with SMTP id
+ ffacd0b85a97d-38f61611400mr6413998f8f.21.1740140607484; 
+ Fri, 21 Feb 2025 04:23:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGAuxjCF3ZwRwvuDWVK/vDileVZBX1yVedjgRj6UPj+N98Yk4D2pum8pMv3NfyhVP6GacQS1g==
+X-Received: by 2002:a5d:47c3:0:b0:38d:d59c:c9d6 with SMTP id
+ ffacd0b85a97d-38f61611400mr6413967f8f.21.1740140607019; 
+ Fri, 21 Feb 2025 04:23:27 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce435sm16117715e9.3.2025.02.21.04.23.20
+ 5b1f17b1804b1-439b0372124sm15539275e9.39.2025.02.21.04.23.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:22 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:19 -0500
+ Fri, 21 Feb 2025 04:23:26 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:23:24 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 14/41] qtest/libqos/pci: Do not write to PBA memory
-Message-ID: <9e837c961a883392f8c4707a8d3d2e6c6aa793b6.1740140520.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PULL 15/41] hw/pci/msix: Warn on PBA writes
+Message-ID: <44ed44aefec571041fe3b3a8b6849613a74b520a.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -109,32 +115,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The PCI Local Bus Specification says the result of writes to MSI-X
-PBA memory is undefined. QEMU implements them as no-ops, so remove
-the pointless write from qpci_msix_pending().
+Of the MSI-X PBA pending bits, the PCI Local Bus Specification says:
 
+  Software should never write, and should only read
+  Pending Bits. If software writes to Pending Bits, the
+  result is undefined.
+
+Log a GUEST_ERROR message if the PBA is written to by software.
+
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
+Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20250117172244.406206-2-npiggin@gmail.com>
+Message-Id: <20250117172842.406338-2-npiggin@gmail.com>
+Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/libqos/pci.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/pci/msix.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
-index b23d72346b..a59197b992 100644
---- a/tests/qtest/libqos/pci.c
-+++ b/tests/qtest/libqos/pci.c
-@@ -328,8 +328,6 @@ bool qpci_msix_pending(QPCIDevice *dev, uint16_t entry)
+diff --git a/hw/pci/msix.c b/hw/pci/msix.c
+index 57ec7084a4..66f27b9d71 100644
+--- a/hw/pci/msix.c
++++ b/hw/pci/msix.c
+@@ -15,6 +15,7 @@
+  */
  
-     g_assert(dev->msix_enabled);
-     pba_entry = qpci_io_readl(dev, dev->msix_pba_bar, dev->msix_pba_off + off);
--    qpci_io_writel(dev, dev->msix_pba_bar, dev->msix_pba_off + off,
--                   pba_entry & ~(1 << bit_n));
-     return (pba_entry & (1 << bit_n)) != 0;
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
+ #include "hw/pci/msi.h"
+ #include "hw/pci/msix.h"
+ #include "hw/pci/pci.h"
+@@ -260,6 +261,14 @@ static uint64_t msix_pba_mmio_read(void *opaque, hwaddr addr,
+ static void msix_pba_mmio_write(void *opaque, hwaddr addr,
+                                 uint64_t val, unsigned size)
+ {
++    PCIDevice *dev = opaque;
++
++    qemu_log_mask(LOG_GUEST_ERROR,
++                  "PCI [%s:%02x:%02x.%x] attempt to write to MSI-X "
++                  "PBA at 0x%" FMT_PCIBUS ", ignoring.\n",
++                  pci_root_bus_path(dev), pci_dev_bus_num(dev),
++                  PCI_SLOT(dev->devfn), PCI_FUNC(dev->devfn),
++                  addr);
  }
  
+ static const MemoryRegionOps msix_pba_mmio_ops = {
 -- 
 MST
 
