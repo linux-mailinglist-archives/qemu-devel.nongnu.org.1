@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C74A3FDE7
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D693A3FDEA
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXAi-0001IC-JN; Fri, 21 Feb 2025 12:50:44 -0500
+	id 1tlXAe-0001FO-OV; Fri, 21 Feb 2025 12:50:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAY-0001D4-Sk; Fri, 21 Feb 2025 12:50:35 -0500
+ id 1tlXAa-0001Dt-9s; Fri, 21 Feb 2025 12:50:36 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAW-0001pa-AN; Fri, 21 Feb 2025 12:50:34 -0500
+ id 1tlXAY-0001px-0h; Fri, 21 Feb 2025 12:50:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 53175EFB6E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 577C5EFB6F;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0BE181BB58A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 100121BB58B;
  Fri, 21 Feb 2025 20:49:51 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id E8C3853F8F; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id EB60E53F91; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org, Mikael Szreder <git@miszr.win>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 11/14] elfload: Fix alignment when unmapping excess
- reservation
-Date: Fri, 21 Feb 2025 20:49:41 +0300
-Message-Id: <20250221174949.836197-11-mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 12/14] target/sparc: Fix register selection for all
+ F*TOx and FxTO* instructions
+Date: Fri, 21 Feb 2025 20:49:42 +0300
+Message-Id: <20250221174949.836197-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
@@ -61,39 +62,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Mikael Szreder <git@miszr.win>
 
-When complying with the alignment requested in the ELF and unmapping
-the excess reservation, having align_end not aligned to the guest page
-causes the unmap to be rejected by the alignment check at
-target_munmap and later brk adjustments hit an EEXIST.
+A bug was introduced in commit 0bba7572d40d which causes the fdtox
+and fqtox instructions to incorrectly select the destination registers.
+More information and a test program can be found in issue #2802.
 
-Fix by aligning the start of region to be unmapped.
-
-Fixes: c81d1fafa6 ("linux-user: Honor elf alignment when placing images")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1913
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-[rth: Align load_end as well.]
+Cc: qemu-stable@nongnu.org
+Fixes: 0bba7572d40d ("target/sparc: Perform DFPREG/QFPREG in decodetree")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2802
+Signed-off-by: Mikael Szreder <git@miszr.win>
+Acked-by: Artyom Tarasenko <atar4qemu@gmail.com>
+[rth: Squash patches together, since the second fixes a typo in the first.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250213143558.10504-1-farosas@suse.de>
-(cherry picked from commit 4b7b20a3b72c5000ea71bef505c16e6e628268b6)
+Message-ID: <20250205090333.19626-3-git@miszr.win>
+(cherry picked from commit 807c3ebd1e3fc2a1be6cdfc702ccea3fa0d2d9b2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 471a384b22..aa3607f3ac 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3349,8 +3349,8 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
- 
-     if (align_size != reserve_size) {
-         abi_ulong align_addr = ROUND_UP(load_addr, align);
--        abi_ulong align_end = align_addr + reserve_size;
--        abi_ulong load_end = load_addr + align_size;
-+        abi_ulong align_end = TARGET_PAGE_ALIGN(align_addr + reserve_size);
-+        abi_ulong load_end = TARGET_PAGE_ALIGN(load_addr + align_size);
- 
-         if (align_addr != load_addr) {
-             target_munmap(load_addr, align_addr - load_addr);
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 989c20b44a..cfcdf6690e 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -321,12 +321,12 @@ FdMULq      10 ..... 110100 ..... 0 0110 1110 .....        @q_d_d
+ FNHADDs     10 ..... 110100 ..... 0 0111 0001 .....        @r_r_r
+ FNHADDd     10 ..... 110100 ..... 0 0111 0010 .....        @d_d_d
+ FNsMULd     10 ..... 110100 ..... 0 0111 1001 .....        @d_r_r
+-FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @r_r2
+-FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @r_d2
+-FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @r_q2
+-FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_r2
+-FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_r2
+-FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_r2
++FsTOx       10 ..... 110100 00000 0 1000 0001 .....        @d_r2
++FdTOx       10 ..... 110100 00000 0 1000 0010 .....        @d_d2
++FqTOx       10 ..... 110100 00000 0 1000 0011 .....        @d_q2
++FxTOs       10 ..... 110100 00000 0 1000 0100 .....        @r_d2
++FxTOd       10 ..... 110100 00000 0 1000 1000 .....        @d_d2
++FxTOq       10 ..... 110100 00000 0 1000 1100 .....        @q_d2
+ FiTOs       10 ..... 110100 00000 0 1100 0100 .....        @r_r2
+ FdTOs       10 ..... 110100 00000 0 1100 0110 .....        @r_d2
+ FqTOs       10 ..... 110100 00000 0 1100 0111 .....        @r_q2
 -- 
 2.39.5
 
