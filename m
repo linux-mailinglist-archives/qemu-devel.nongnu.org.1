@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FC3A3F429
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C524DA3F465
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:32:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS4q-0007Y5-Ix; Fri, 21 Feb 2025 07:24:20 -0500
+	id 1tlS51-0008Ae-12; Fri, 21 Feb 2025 07:24:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4f-0007El-M8
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:11 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4k-0007PL-GA
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4e-00079v-5V
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:09 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4h-0007Ac-1a
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140646;
+ s=mimecast20190719; t=1740140650;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CxbSAxlMP5lXdwMUAFqhrkgFZvw7oxzLClb5NrCtOYk=;
- b=EcmK2z/leP29xhHFABrNFIwQFV6lgX0mlPrzQtUsN3lj92dnf1rr7AE7hS4jjZLn9d4nna
- xENr13yabIo2+w/8JXM0To/CGNt8CNIPyVcCJTJEsk9mOdjGeHZW7tNepTrPvqOX+dK4Yr
- 0Zya013SZs1KcXGJKqwvyHeIPdfzoxQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dxfWHzt9iN+96ZxAmV4fASWczS4ot0QMavailc7mYDI=;
+ b=DJgxk7Bohn9m7qvVVDwvRSuS1ZwSQRGDaiXcB5uQPGvdYRTZFWkkm8mf1bW12N9aN1LHcF
+ 3h7W0y6M49zBcJ0mm8oHLn90dxhxjdz+NXgxqbi4qsADzkVbXXaWU/GYhX40icGabwswym
+ ixc/Xs2E9+VxFZ6fF0ohWB85cIsZ0mk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-158-dsls1Pd9PJ6JwVsRxy50uQ-1; Fri, 21 Feb 2025 07:24:05 -0500
-X-MC-Unique: dsls1Pd9PJ6JwVsRxy50uQ-1
-X-Mimecast-MFC-AGG-ID: dsls1Pd9PJ6JwVsRxy50uQ_1740140644
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4399304b329so11188365e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:05 -0800 (PST)
+ us-mta-610-MJjZAXcVNqK-qcN41WAz9w-1; Fri, 21 Feb 2025 07:24:08 -0500
+X-MC-Unique: MJjZAXcVNqK-qcN41WAz9w-1
+X-Mimecast-MFC-AGG-ID: MJjZAXcVNqK-qcN41WAz9w_1740140647
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43947a0919aso18741485e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140644; x=1740745444;
+ d=1e100.net; s=20230601; t=1740140647; x=1740745447;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CxbSAxlMP5lXdwMUAFqhrkgFZvw7oxzLClb5NrCtOYk=;
- b=BWys0hF+ZFQT0u6hWGqBTMb0uDHhIW+0NNE9vBpt1xGHMTCuvKC6xKtDU/J5xyET8C
- 899CQZfMECimyXBwLi9PRc6cOD0mqeuVoYfU9YdLlZdEwtca9Urz5iLPs3LngrutrmWj
- RrAiLrMj31Ot93wap6omKcNVUYoCTIQ4DgXzrH9xfGPhWJUFwR7B20QD56Lat5niQw8w
- VspgjA4aSM1NsJDS8ELP8djguJgXJTPYWLj3TOYQRS36KdTRfjpbUBE1NII3ovLGyYiF
- 3mQ3kROc0FRNFzu3QRF8o2/cree5ePI3yL2fGHs7AIz6jRiyQ+72idPi8BtUuPQpfcNh
- f6gg==
-X-Gm-Message-State: AOJu0YxxlK7qvfWuvueBfqTGRrYCKsHjoglJQQC+wtONirzesCqXn/1E
- cziqFNSSO6FSI1BOeleQY1MobOpRYK3eKxdby4linf6hPpcHiqpwGMBmVKOLJpkmU4pA9HQqq6g
- l/MZbBftVr555LppshbduNtwBnC87tV1ICjJuu9hr5pcpb0nbqRFnmRz++0mQyOHobCBiiOEaa6
- c4wP9h+gT1srHPYIbsbF1s92fmJJExGw==
-X-Gm-Gg: ASbGncvcAPqMQoAP47y+Yqi48lGeeB10HaAc4oMQ/utBnx3mXo127JAX3q1uUpB0KlY
- zXRakU0m8bhI+KK1PmQjyVqtSs5McV4vkEZaCQMjNOIJa58o+UgomEViS/09lFAR1/XqFHf0XGw
- KLMDhs1gQYyesHD+vt4ZPmYE30pLX9bgP4GK3FMC/STf0InNJ8fXd3AjOK+NcXvRa7AJ1343A06
- k2qksoQgHB/uoGhy3t+od4IKRzHCOaehEWomIQvdT5fgLbnMFVXACY12SQLSsIsXdEk3UX+yMRi
- 2+5v8w==
-X-Received: by 2002:a05:600c:1991:b0:434:fb65:ebbb with SMTP id
- 5b1f17b1804b1-439ae1f15e5mr26765225e9.17.1740140643875; 
- Fri, 21 Feb 2025 04:24:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHPAfdQzI9E5KCm0GX6LhCTTel3l5yQewSOkc69pQNDuhY1Gv70HxVjO0WnyxWH4qUdJMrhTA==
-X-Received: by 2002:a05:600c:1991:b0:434:fb65:ebbb with SMTP id
- 5b1f17b1804b1-439ae1f15e5mr26764905e9.17.1740140643412; 
- Fri, 21 Feb 2025 04:24:03 -0800 (PST)
+ bh=dxfWHzt9iN+96ZxAmV4fASWczS4ot0QMavailc7mYDI=;
+ b=cltvu6UTGQflsOQh0bVhMCq9UOv5BIUTidmUoZjv3WyEd3Cgh3sJpBnje9vdOTB1lT
+ GywPCn72XlO032takYvzrFyeN7os7EQpTou+LhrY2QNUUORL8yw9ImtFnLjtk1S+yJr6
+ WQapSE4+0rzessnAkVune4ESoqu+TLA5ntrZFo/wE7PO5+tC1W+4oRtXj3aN/FGJJMI/
+ i2ezG50ObICwksc24/NBnjgiOa9hYC6SSIyh1E3l6/tAbXn4/BX8qYhp1e9S/KRRNtzq
+ MWhCYcr1oUD01BtJJe0f78KH/RIL704p9Lw5dQlNksJy6Dg1qaKD7J/6CN84aiCdxIHT
+ wdJA==
+X-Gm-Message-State: AOJu0YwEFnxQ6uxa5MXuKBZH0d0No8gfJvCQVhXU9OG4I6mSxNjWxzae
+ 8ggGaM4/7iUT6FXwX6DHG19Gko6HKYlbmn+1Gy0qGd3GDC9IUU+NEwrY9P4MBTE8dLfa3r0gC8X
+ 0zxtcTLC8sWYLe6r5a9LeELj9WOd5KaaHjxfw09Kf4SMFxyFSFST8ntaFJZh+6kb/qbZcTTl+0o
+ eZWc++aOyJX1OPtJmfWoKGTle5iRRrdw==
+X-Gm-Gg: ASbGncsLxeiywvQNETO9jbEFlgJuSRXaRuZSfKQPcV2CQBqkRzwPWwyutBRGIKDl/UT
+ LLa538taNATk58T00cqpg1NGw0MCnf6Ul6SnKMVjHDYBzsMVtQp6+wl1aoIsFkg5QZaby1w1LM6
+ YMlgcJSQ0rjs+ivZ80+M3RZFWLjv5dI3uXJFJwM+/gmi/rYjcYjm7V29+DEhcmA/KQFLrol+hBu
+ Yk3KO33mM4J7MVxgZXXGTLTu+jWKHfxCm9urQRJz1JDwoe+1xX+IBFxTAdbB/FqKv9B4xgCUdhj
+ bxbKoQ==
+X-Received: by 2002:a05:600c:45ca:b0:439:9a40:aa0b with SMTP id
+ 5b1f17b1804b1-439ae21e36emr23933785e9.25.1740140646900; 
+ Fri, 21 Feb 2025 04:24:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE++L12GzMimgissjFPBxz51sTR1njhnN+DcWPxHFC8BjJANAvKPaefWVIjCiSosjXHz8lRHg==
+X-Received: by 2002:a05:600c:45ca:b0:439:9a40:aa0b with SMTP id
+ 5b1f17b1804b1-439ae21e36emr23933245e9.25.1740140646422; 
+ Fri, 21 Feb 2025 04:24:06 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b030bdb4sm16054695e9.27.2025.02.21.04.24.01
+ 5b1f17b1804b1-439b02ce735sm15860915e9.3.2025.02.21.04.24.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:24:02 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:24:00 -0500
+ Fri, 21 Feb 2025 04:24:05 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:24:03 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,9 +75,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 26/41] amd_iommu: Use correct DTE field for interrupt
- passthrough
-Message-ID: <63dc0b8647391b372f3bb38ff1066f6b4a5e6ea1.1740140520.git.mst@redhat.com>
+Subject: [PULL 27/41] amd_iommu: Use correct bitmask to set capability BAR
+Message-ID: <3684717b7407cc395dc9bf522e193dbc85293dee.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -112,43 +111,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Interrupt passthrough is determine by the bits 191,190,187-184.
-These bits are part of the 3rd quad word (i.e. index 2) in DTE. Hence
-replace dte[3] by dte[2].
+AMD IOMMU provides the base address of control registers through
+IVRS table and PCI capability. Since this base address is of 64 bit,
+use 32 bits mask (instead of 16 bits) to set BAR low and high.
 
-Fixes: b44159fe0 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
+Fixes: d29a09ca68 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250207045354.27329-2-sarunkod@amd.com>
+Message-Id: <20250207045354.27329-3-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/i386/amd_iommu.h | 2 +-
+ hw/i386/amd_iommu.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index e0dac4d9a9..28125130c6 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -187,7 +187,7 @@
+         AMDVI_CAPAB_FLAG_HTTUNNEL |  AMDVI_CAPAB_EFR_SUP)
+ 
+ /* AMDVI default address */
+-#define AMDVI_BASE_ADDR 0xfed80000
++#define AMDVI_BASE_ADDR 0xfed80000ULL
+ 
+ /* page management constants */
+ #define AMDVI_PAGE_SHIFT 12
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 6b13ce894b..98f1209a38 100644
+index 98f1209a38..044fe43256 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1309,15 +1309,15 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-         ret = -AMDVI_IR_ERR;
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_NMI:
--        pass = dte[3] & AMDVI_DEV_NMI_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_NMI_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("nmi");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_INIT:
--        pass = dte[3] & AMDVI_DEV_INT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_INT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("init");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_EINT:
--        pass = dte[3] & AMDVI_DEV_EINT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_EINT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("eint");
-         break;
-     default:
+@@ -1593,9 +1593,9 @@ static void amdvi_pci_realize(PCIDevice *pdev, Error **errp)
+     /* reset AMDVI specific capabilities, all r/o */
+     pci_set_long(pdev->config + s->capab_offset, AMDVI_CAPAB_FEATURES);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
+-                 AMDVI_BASE_ADDR & ~(0xffff0000));
++                 AMDVI_BASE_ADDR & MAKE_64BIT_MASK(14, 18));
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
+-                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
++                AMDVI_BASE_ADDR >> 32);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_RANGE,
+                  0xff000000);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
 -- 
 MST
 
