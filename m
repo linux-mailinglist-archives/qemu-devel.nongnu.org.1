@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF08A3F439
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9BCA3F420
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS4Q-0006Is-8E; Fri, 21 Feb 2025 07:23:54 -0500
+	id 1tlS4T-0006RP-K6; Fri, 21 Feb 2025 07:23:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4J-0005ud-R2
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4N-0006A9-Jb
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4G-00076a-2J
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:46 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4L-000775-1v
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140623;
+ s=mimecast20190719; t=1740140628;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BmV9gn8eSSrkunnR1tfz+dt6M43eXodM12I1RMZXJ08=;
- b=VeCcMGUdiZJfh4pWADDbE+huoe15BxkQs3CGzhd8mE6f+AOVl8DoNKmASHwlbAS2LVtsnk
- VNft9rCCXEkFQ5szPAH19mZP9HAwmfAnUb/wk/cCb7Bnva28cTNCPdIDPHg/rL1am28WJ0
- 9JknAgFDPq5jLJiH3PUhmWNYFul30Bk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/kmJLONp2OhkpfuMOLSYnuEY7cqZckWFV/n/C9H76MQ=;
+ b=Upxms1YHOWG1HTX7YPWUx2MTcZGX8qcEK1fUFi+qU3usn/hiJi7D2L6cJ9Vp92vRaVY4v3
+ zYXr0vZJ1nIet28uXhRzPNFw6U2OqJtnxWJrT5eAm827ise80flb9OGM/eRBieDYSHR2Cd
+ jI6OMGlk3vUhrVvkfTkR8SZZB24itTE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-NkHcyx8dPXep6i9G9M482A-1; Fri, 21 Feb 2025 07:23:42 -0500
-X-MC-Unique: NkHcyx8dPXep6i9G9M482A-1
-X-Mimecast-MFC-AGG-ID: NkHcyx8dPXep6i9G9M482A_1740140621
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43995bff469so22357015e9.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:42 -0800 (PST)
+ us-mta-554-x8ONGrvdNPWE5i3WXFvBGA-1; Fri, 21 Feb 2025 07:23:45 -0500
+X-MC-Unique: x8ONGrvdNPWE5i3WXFvBGA-1
+X-Mimecast-MFC-AGG-ID: x8ONGrvdNPWE5i3WXFvBGA_1740140624
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-38f2c0aa6d6so1468734f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140621; x=1740745421;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BmV9gn8eSSrkunnR1tfz+dt6M43eXodM12I1RMZXJ08=;
- b=ZU3UTSEydbN36/oLZJ/GiweaEjTEX5W+ADw08BpNm3meLwMicgwY2gcLWebE9cBf8D
- XVgGL0d1hjW9zW6DNYj3drvHHRzcm8WV0sJetu3o4SFHBNHqg8YiUq0nFirCozCNnqxz
- WZzSVZlMRvVRViz4tGoyKJ2QsAV1jPkqd6tjJQ6Jt6SPHtywSy6vbS95yOxST/H9F0vu
- lNJFgtjAMHI9d78cZXzhXJye8DLzhri4MbmUqNoNjEHTqA6c5/KU05/kkrEG/jYzCenP
- Mi8AKSGqSdgBm66uxLG1wfS4+mILkwWN2qbJzI/jfbaNBlTXCiiV0kAHIJqwTvye54ef
- yfUg==
-X-Gm-Message-State: AOJu0YxJwbmVT7I5VTOBc1ySnrX/UEXaLWm5xUZC1XQMCrHA6WZpQdnQ
- Zj0HEmenYO3f+0nBR3Es6PTXnDxXXnccxOuXUYcGIEiTkDAsVLfDnw1NJzjsGHCT333rWAYC+zI
- b4ZkveBHMSvOGoIjxi3lFQzn1Dg1Uwxnlm1towcDGxgGemt2hsFjUXemKpRhSWs1oT2ZpzV0ID7
- srVRMuEj/HsFJ6sj6+S9OSLsftRiXcPw==
-X-Gm-Gg: ASbGncuFddbd0lhspw5QSvafZ2cGBVfQXRUQc7zV5b/lXuYrGtNFuQhip6q/+o/KvLm
- 6BjYutxsYkq+X7/Qzej/p3hopxZq2JVPI51ETrQCYGzkqLpEDejDTtJFpMASFZd5CiHiI+0nIgk
- HNAtsAm1FZLpJYEecJim08o8fpvDZGzhKWlK05Cf1nsGgiMtsI6PP/j/Crt1Fj0Fb3/1PvVLyTB
- WUtbUUz+neS1u7N0jo3PnHfMjSfMxN+JKCzeYYhq84rFRgfjwcdCJW1oUsVxRo8jBAqayB8ektG
- 6zZwqw==
-X-Received: by 2002:a05:600c:3149:b0:439:969e:d80f with SMTP id
- 5b1f17b1804b1-439aebe6b9bmr22320015e9.31.1740140620794; 
- Fri, 21 Feb 2025 04:23:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IECyBszWZ+AKTWGIva+rALczMJpq1e0vnMnV+nYXnKg6amFBca/x+CsyF1OZcMfkdhkG1aLKg==
-X-Received: by 2002:a05:600c:3149:b0:439:969e:d80f with SMTP id
- 5b1f17b1804b1-439aebe6b9bmr22319755e9.31.1740140620405; 
- Fri, 21 Feb 2025 04:23:40 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140624; x=1740745424;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/kmJLONp2OhkpfuMOLSYnuEY7cqZckWFV/n/C9H76MQ=;
+ b=r1x5dmhzirera+fKUDS2IZ9maeewJp1epaHKgQ2pG3zWyH2uFgMhQdNao4AwdxFZ43
+ cmRVXXZWZ5iR4eHd24SAyU9ti7wAsONLavFWilbaXyt4g0ZW99msJFXBzOmBch6Qv4Ul
+ gIDqfrfOYYWWV74rDiSGuxy2nmptcKVrC4EIkgsDIqfcK6KraQ0XBJtpKMdqZNpHKC/r
+ tx0hiN3Xh9LTfWbUzrVL8koyBklphZv9vj1mj+4wTK+OeSeLg8F53q1gs7UQSGFfVOr4
+ 2hCe3PVc1056CUFbl0lf8LgUhXd9arZBkJ/Z1UOBSD2ovDbuHGQnIUjRNOPeRoT8SPaw
+ bpxQ==
+X-Gm-Message-State: AOJu0YyqLepf9EWory3z+ZzLEfL09lj61juEV52sjC71xJkeA9WKi0wG
+ eNRKSeymjrxbTUqumsZ9r+AjBX5FvKjiEgWHtmKrNeI8zp+tVMMFaxbx0nobwdpe6d/oMmlah7w
+ /gcfuyTGEIVoQGWtXwxJB1cpWaiD9e+Qw86PQULioOkxNaW7xcOEWPUjBgIGchNBgIip8nGJkYj
+ jBBBZSRjzuHW6/gtOn4YLg7f8yg9Jx1A==
+X-Gm-Gg: ASbGnctylFVvilgCN9q7jxq59CCoYsDpHf120TjbsWcMfHT4AgSt3CWLlEpAP7lZZI1
+ 3nefuEN+6woB7FCfIR/9GNbK1yy7N9FINn8IokZQTKlTiDv9kjyqNF3VHdkLxwiYZAXAk8boPI2
+ InAHYTGQhFjMgO579en1luPezI6oz0QdhbPPtMLoI4IdE+tYyGVxhOE/o/qpwcb+227/yvTxqvk
+ 4Oe8mfeYpcuabarCsq8JkiqHKxDJea3P0lGBL+5E3bhgzQGFlM1MgpBZFdOkKW+CRlIBSkNBEy7
+ B3o9HA==
+X-Received: by 2002:a5d:584a:0:b0:38d:e0a9:7e5e with SMTP id
+ ffacd0b85a97d-38f614991f2mr6180249f8f.6.1740140623766; 
+ Fri, 21 Feb 2025 04:23:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFDL+zlxYKdIihf74iUeeE4fGEfxbyh9v74/Wv9N8hj3ncytNmdrEaDkcUWhVFnarzzBvS7g==
+X-Received: by 2002:a5d:584a:0:b0:38d:e0a9:7e5e with SMTP id
+ ffacd0b85a97d-38f614991f2mr6180221f8f.6.1740140623274; 
+ Fri, 21 Feb 2025 04:23:43 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02d624bsm15703225e9.15.2025.02.21.04.23.38
+ 5b1f17b1804b1-439b02ce435sm16127735e9.3.2025.02.21.04.23.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:39 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:37 -0500
+ Fri, 21 Feb 2025 04:23:42 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:23:40 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 19/41] tests/qtest/vhost-user-test: Use modern virtio for
- vhost-user tests
-Message-ID: <14998e50c3638b07946ebe5972a327cc26e9f03c.1740140520.git.mst@redhat.com>
+ Li Zhijian <lizhijian@fujitsu.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 20/41] hw/cxl: Introduce CXL_T3_MSIX_VECTOR enumeration
+Message-ID: <8f90a54cfafe8c93a71930a96a63ccbd074f4142.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,35 +108,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-All other vhost-user tests here use modern virtio, too, so let's
-adjust the vhost-user-net test accordingly.
+Introduce the `CXL_T3_MSIX_VECTOR` enumeration to specify MSIX vector
+assignments specific to the Type 3 (T3) CXL device.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250203124346.169607-1-thuth@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+The primary goal of this change is to encapsulate the MSIX vector uses
+that are unique to the T3 device within an enumeration, improving code
+readability and maintenance by avoiding magic numbers. This organizational
+change allows for more explicit references to each vector’s role, thereby
+reducing the potential for misconfiguration.
+
+It also modified `mailbox_reg_init_common` to accept the `msi_n` parameter,
+reflecting the new MSIX vector setup.
+
+This pertains to the T3 device privately; other endpoints should refrain from
+using it, despite its public accessibility to all of them.
+
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20250203161908.145406-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/vhost-user-test.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/hw/cxl/cxl_device.h |  4 ++--
+ hw/cxl/cxl-device-utils.c   | 12 +++++-------
+ hw/cxl/switch-mailbox-cci.c |  4 +++-
+ hw/mem/cxl_type3.c          | 20 ++++++++++++++------
+ 4 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 76d142a158..bd977ef28d 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -1043,7 +1043,8 @@ static void test_multiqueue(void *obj, void *arg, QGuestAllocator *alloc)
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 561b375dc8..3a0ee7e8e7 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -264,8 +264,8 @@ void cxl_device_register_block_init(Object *obj, CXLDeviceState *dev,
+ typedef struct CXLType3Dev CXLType3Dev;
+ typedef struct CSWMBCCIDev CSWMBCCIDev;
+ /* Set up default values for the register block */
+-void cxl_device_register_init_t3(CXLType3Dev *ct3d);
+-void cxl_device_register_init_swcci(CSWMBCCIDev *sw);
++void cxl_device_register_init_t3(CXLType3Dev *ct3d, int msi_n);
++void cxl_device_register_init_swcci(CSWMBCCIDev *sw, int msi_n);
  
- static uint64_t vu_net_get_features(TestServer *s)
+ /*
+  * CXL r3.1 Section 8.2.8.1: CXL Device Capabilities Array Register
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 035d034f6d..52ad1e4c3f 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -352,10 +352,8 @@ static void device_reg_init_common(CXLDeviceState *cxl_dstate)
+     }
+ }
+ 
+-static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
++static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate, int msi_n)
  {
--    uint64_t features = 0x1ULL << VHOST_F_LOG_ALL |
-+    uint64_t features = 0x1ULL << VIRTIO_F_VERSION_1 |
-+        0x1ULL << VHOST_F_LOG_ALL |
-         0x1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
+-    const uint8_t msi_n = 9;
+-
+     /* 2048 payload size */
+     ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+                      PAYLOAD_SIZE, CXL_MAILBOX_PAYLOAD_SHIFT);
+@@ -382,7 +380,7 @@ static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
+     cxl_dstate->memdev_status = memdev_status_reg;
+ }
  
-     if (s->queues > 1) {
+-void cxl_device_register_init_t3(CXLType3Dev *ct3d)
++void cxl_device_register_init_t3(CXLType3Dev *ct3d, int msi_n)
+ {
+     CXLDeviceState *cxl_dstate = &ct3d->cxl_dstate;
+     uint64_t *cap_h = cxl_dstate->caps_reg_state64;
+@@ -398,7 +396,7 @@ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+     device_reg_init_common(cxl_dstate);
+ 
+     cxl_device_cap_init(cxl_dstate, MAILBOX, 2, CXL_DEV_MAILBOX_VERSION);
+-    mailbox_reg_init_common(cxl_dstate);
++    mailbox_reg_init_common(cxl_dstate, msi_n);
+ 
+     cxl_device_cap_init(cxl_dstate, MEMORY_DEVICE, 0x4000,
+         CXL_MEM_DEV_STATUS_VERSION);
+@@ -408,7 +406,7 @@ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+                               CXL_MAILBOX_MAX_PAYLOAD_SIZE);
+ }
+ 
+-void cxl_device_register_init_swcci(CSWMBCCIDev *sw)
++void cxl_device_register_init_swcci(CSWMBCCIDev *sw, int msi_n)
+ {
+     CXLDeviceState *cxl_dstate = &sw->cxl_dstate;
+     uint64_t *cap_h = cxl_dstate->caps_reg_state64;
+@@ -423,7 +421,7 @@ void cxl_device_register_init_swcci(CSWMBCCIDev *sw)
+     device_reg_init_common(cxl_dstate);
+ 
+     cxl_device_cap_init(cxl_dstate, MAILBOX, 2, 1);
+-    mailbox_reg_init_common(cxl_dstate);
++    mailbox_reg_init_common(cxl_dstate, msi_n);
+ 
+     cxl_device_cap_init(cxl_dstate, MEMORY_DEVICE, 0x4000, 1);
+     memdev_reg_init_common(cxl_dstate);
+diff --git a/hw/cxl/switch-mailbox-cci.c b/hw/cxl/switch-mailbox-cci.c
+index 65cdac6cc1..833b824619 100644
+--- a/hw/cxl/switch-mailbox-cci.c
++++ b/hw/cxl/switch-mailbox-cci.c
+@@ -17,10 +17,12 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/cxl/cxl.h"
+ 
++#define CXL_SWCCI_MSIX_MBOX 3
++
+ static void cswmbcci_reset(DeviceState *dev)
+ {
+     CSWMBCCIDev *cswmb = CXL_SWITCH_MAILBOX_CCI(dev);
+-    cxl_device_register_init_swcci(cswmb);
++    cxl_device_register_init_swcci(cswmb, CXL_SWCCI_MSIX_MBOX);
+ }
+ 
+ static void cswbcci_realize(PCIDevice *pci_dev, Error **errp)
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 0ae1704a34..ebc0ec536e 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -30,6 +30,14 @@
+ #include "hw/cxl/cxl.h"
+ #include "hw/pci/msix.h"
+ 
++/* type3 device private */
++enum CXL_T3_MSIX_VECTOR {
++    CXL_T3_MSIX_PCIE_DOE_TABLE_ACCESS = 0,
++    CXL_T3_MSIX_EVENT_START = 2,
++    CXL_T3_MSIX_MBOX = CXL_T3_MSIX_EVENT_START + CXL_EVENT_TYPE_MAX,
++    CXL_T3_MSIX_VECTOR_NR
++};
++
+ #define DWORD_BYTE 4
+ #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
+ 
+@@ -843,7 +851,6 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+     ComponentRegisters *regs = &cxl_cstate->crb;
+     MemoryRegion *mr = &regs->component_registers;
+     uint8_t *pci_conf = pci_dev->config;
+-    unsigned short msix_num = 10;
+     int i, rc;
+     uint16_t count;
+ 
+@@ -884,16 +891,17 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+                      &ct3d->cxl_dstate.device_registers);
+ 
+     /* MSI(-X) Initialization */
+-    rc = msix_init_exclusive_bar(pci_dev, msix_num, 4, NULL);
++    rc = msix_init_exclusive_bar(pci_dev, CXL_T3_MSIX_VECTOR_NR, 4, NULL);
+     if (rc) {
+         goto err_address_space_free;
+     }
+-    for (i = 0; i < msix_num; i++) {
++    for (i = 0; i < CXL_T3_MSIX_VECTOR_NR; i++) {
+         msix_vector_use(pci_dev, i);
+     }
+ 
+     /* DOE Initialization */
+-    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true, 0);
++    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true,
++                  CXL_T3_MSIX_PCIE_DOE_TABLE_ACCESS);
+ 
+     cxl_cstate->cdat.build_cdat_table = ct3_build_cdat_table;
+     cxl_cstate->cdat.free_cdat_table = ct3_free_cdat_table;
+@@ -908,7 +916,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+     if (rc) {
+         goto err_release_cdat;
+     }
+-    cxl_event_init(&ct3d->cxl_dstate, 2);
++    cxl_event_init(&ct3d->cxl_dstate, CXL_T3_MSIX_EVENT_START);
+ 
+     /* Set default value for patrol scrub attributes */
+     ct3d->patrol_scrub_attrs.scrub_cycle_cap =
+@@ -1202,7 +1210,7 @@ static void ct3d_reset(DeviceState *dev)
+ 
+     pcie_cap_fill_link_ep_usp(PCI_DEVICE(dev), ct3d->width, ct3d->speed);
+     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
+-    cxl_device_register_init_t3(ct3d);
++    cxl_device_register_init_t3(ct3d, CXL_T3_MSIX_MBOX);
+ 
+     /*
+      * Bring up an endpoint to target with MCTP over VDM.
 -- 
 MST
 
