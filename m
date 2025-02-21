@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4A2A3FDE9
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12080A3FDEB
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXA5-0000qt-9G; Fri, 21 Feb 2025 12:50:05 -0500
+	id 1tlXA9-0000tG-D1; Fri, 21 Feb 2025 12:50:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA1-0000pQ-W2; Fri, 21 Feb 2025 12:50:02 -0500
+ id 1tlXA4-0000rP-LN; Fri, 21 Feb 2025 12:50:04 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9z-0001ba-Sa; Fri, 21 Feb 2025 12:50:01 -0500
+ id 1tlXA2-0001bz-FS; Fri, 21 Feb 2025 12:50:03 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3A6C2EFB68;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3FF97EFB69;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E72321BB584;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EB6E61BB585;
  Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D972053F83; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id DBE5353F85; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- jonah.palmer@oracle.com, aesteve@redhat.com, hreitz@redhat.com,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 05/14] qmp: update vhost-user protocol feature maps
-Date: Fri, 21 Feb 2025 20:49:35 +0300
-Message-Id: <20250221174949.836197-5-mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 06/14] gitlab-ci.d/cirrus: Update the FreeBSD job to
+ v14.2
+Date: Fri, 21 Feb 2025 20:49:36 +0300
+Message-Id: <20250221174949.836197-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,39 +62,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-Add VHOST_USER_PROTOCOL_F_SHARED_OBJECT and
-VHOST_USER_PROTOCOL_F_DEVICE_STATE protocol feature maps to
-the virtio introspection.
+The FreeBSD job started to fail since the 14-1 image disappeared
+from the cloud. Update the job to v14.2 to fix it.
 
-Cc: jonah.palmer@oracle.com
-Fixes: 160947666276 ("vhost-user: add shared_object msg")
-Cc: aesteve@redhat.com
-Fixes: cda83adc62b6 ("vhost-user: Interface for migration state transfer")
-Cc: hreitz@redhat.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 1e3d4d9a1a32ac6835f0d295a5117851c421fb5d)
+Message-ID: <20250211120817.35050-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 66a1b4991c32e370a4e0ddabf496aa1563aff286)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index cccc6fe761..8a32a3b105 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -121,6 +121,12 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
-     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
-             "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
-             "device status supported"),
-+    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_SHARED_OBJECT, \
-+            "VHOST_USER_PROTOCOL_F_SHARED_OBJECT: Backend shared object "
-+            "supported"),
-+    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_DEVICE_STATE, \
-+            "VHOST_USER_PROTOCOL_F_DEVICE_STATE: Backend device state transfer "
-+            "supported"),
-     { -1, "" }
- };
- 
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index a9e43e21d0..c43380ea3d 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -52,7 +52,7 @@ x64-freebsd-14-build:
+     NAME: freebsd-14
+     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
+     CIRRUS_VM_IMAGE_SELECTOR: image_family
+-    CIRRUS_VM_IMAGE_NAME: freebsd-14-1
++    CIRRUS_VM_IMAGE_NAME: freebsd-14-2
+     CIRRUS_VM_CPUS: 8
+     CIRRUS_VM_RAM: 8G
+     UPDATE_COMMAND: pkg update; pkg upgrade -y
 -- 
 2.39.5
 
