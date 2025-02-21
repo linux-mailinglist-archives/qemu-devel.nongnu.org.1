@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C041A3FA9A
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 17:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85784A3FAE1
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 17:21:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlVgD-0001oE-Nv; Fri, 21 Feb 2025 11:15:09 -0500
+	id 1tlVlg-0003Ky-T5; Fri, 21 Feb 2025 11:20:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tlVgB-0001mt-O3
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 11:15:07 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tlVlb-0003Jy-9E
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 11:20:43 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tlVg9-0007EQ-NE
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 11:15:07 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-aaedd529ba1so278360166b.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 08:15:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tlVlZ-0008AK-B5
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 11:20:42 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso14911235e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 08:20:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740154502; x=1740759302; darn=nongnu.org;
+ d=embecosm.com; s=google; t=1740154839; x=1740759639; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=AGFiFHnJkakYmzYx4CwkPAU1wVf8B/kVib84R8bcTN0=;
- b=K7DiuYKKvlPrWEb5JUvy2GWyTHM2q7g6qAa3XYsh8XtcMZQxXRcfS/hgSWC8m1IUar
- tFIzv1k8Lv3fETRmTWxvj56fnsHz/QbH4pfi7njvcmhwebzM9N12iN1GZvzIy78KO5Ru
- +emmq6Qzlte6UUFD214e71nPskNd435nvZpZ8NbeWRffjLfUIzc2RhaweT2wa3osXAvc
- EUzdF4Wic1g5mDUoF8b7sE/9JxikiUGwzs+81VvCPc0JFwe9a7wwAi7PCOdDvktiJmbM
- Upxpafb1eqRibhisXRoXBwzB4beeisqOGMJbDUJE+iOdFwx31LGiL21Gy/20PhRQutnK
- vryw==
+ bh=Cj6d8t8BKizy5ubP/JaWeJ4YqK80LLaBindVQUy1q1U=;
+ b=Rue6Mg4LepbERm2wG3n5ukHSMI0D74yjkVeKpTk1kbYJAkAdHy92Sq2gGNTg98pgCZ
+ KTo8RzoHBPBq1SK/+v3Sq7VV7kcC58XwsHWK0Pq35AP62Llv7I+aNkF8J653aV4ash3j
+ x70yFMLqARQNlZK31qjkSTDAS/fFmRqfeO088CwdOcKyD4lEc4miZ7GKxlRtrIaPt7+P
+ 9HJme/j+PHmm/xUcylwIngYAdsWKxLhFxT7LZqLPQrUH19MfneQDjwbYt71ac6Ihzonj
+ hE5ytngKefK4gU5frwwgFYih+FHZHIuycysh/oF/gbWGoK+xjjYdl2AcJ+ZXWJ+YrTdC
+ UzTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740154502; x=1740759302;
+ d=1e100.net; s=20230601; t=1740154839; x=1740759639;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AGFiFHnJkakYmzYx4CwkPAU1wVf8B/kVib84R8bcTN0=;
- b=FPTvU0ZeOSxhg9hnnpq7wE01j5gqiDqwBdmvAlW7uuXIZI7IwZLuqjtpd7JZRTcdoE
- ILWfw0n9T+7CilOSKIrPmbZXqOf22a4UGXU79hNGhOf9XZ0t12WS3ibCWhJGW8VoXAsh
- wtqc2x861qdfpLN7e3kE6WXb2YNbewgHyuBCCYTMK7yfq22aPWFpPYKHUtRdCm1u15b/
- Vz7TUbhusBTueTqoJdC6KS1g1rTs9vualRpLvDjR+cNEtBJzQfUh4xMgEk8V5lhlmK9o
- MHQsxb2rLTtI9q9PWoqBde2zL/GA0LKD84MSmmwQgmlBQzQ4rQe38KjHk/F6AIlCIZDd
- 0bRg==
-X-Gm-Message-State: AOJu0YwWz+Z1XqrPRZPFU2vgQdX1/rjfll419c/NYt23Iqdbt1rJSrmy
- hMgQjadTorAh7zEMhj0Ycv4DDQrjHBicLIQu1/pbg5SY4KTde5HVxXxgLw2ThbY68cvU21TI3xL
- kQKE=
-X-Gm-Gg: ASbGnct/x/jYjDnI0HX72M7ZWBoP7PQx4kL5nEHjrUCmlIz/ZKJ+YernEdqSlMu0bKn
- dZxjPaxVIF79CcaomYvPcg/YFig6bo+5yq2mr9otQqPfp9NyV0tjwu1Ja7PKRpPyWu55JlXstnX
- odcSyYJ3tVt8Ow3rX8p0BG5gFP0hJ30Gg7A1rQVbwjJyTyKAJV0zgkPkSQbIjMar8SzgQKuPs3i
- cs2FbrpajSmkaUJQ+lPbJMtqC4FwmXhj0O6wWjtVGjOvDkktygCMF0UwBAaGaahHsxrKmPKB+70
- QVsvQmKoS2YQ8mDdWtkNZ1JwJJ5I
-X-Google-Smtp-Source: AGHT+IEckjDTzXRn3jz6Kak4qUZrDdzOtPUZ+E4Ewi1aQOMiXkvH7fbt+Cg64gsRhKBiUIfC4g4BJw==
-X-Received: by 2002:a05:6402:268f:b0:5dc:6e27:e6e8 with SMTP id
- 4fb4d7f45d1cf-5e0b7252c81mr7818051a12.24.1740154502355; 
- Fri, 21 Feb 2025 08:15:02 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dece1c4483sm13967393a12.25.2025.02.21.08.15.00
+ bh=Cj6d8t8BKizy5ubP/JaWeJ4YqK80LLaBindVQUy1q1U=;
+ b=WRt6KCYpS9gu31EoXSul4S4s3YdrSuQnflBTJhD7jpri0UKajrxZdO+6ofcm3BgJ09
+ J9D9PKa3nVJUuBnp2SKElOEATlwfU9tpsEvXZ4aBIGiv/ipNPb6+shkcTU2cxeCALkno
+ M9mAh8Xi8Xcdk/lAOcw8Ti4D4UU3tvancTEOIVrqj1x1cLcjFaY/QHF3ZUhZLEBxkqQA
+ I4+/Uk0cdu5L6y1RxUlM5FlbVrP6DmWdpq3ubdlvESiFk0cKi6RK6YiVWrjO1xReGHx3
+ PQQ8sAAVpFAc903baY+XCeuoCAQuBsbbMMOSHVBDn/SkNY5hf8iMLCbWK3SaXyC12RHZ
+ VxYA==
+X-Gm-Message-State: AOJu0YyAEB/t16kfE8iG7s3FIgXxKHivTNZ9Nndm+ATnEE8dMq9BwFji
+ fEmfSWxPIWqASrlzufPPPQbhBkfovFExMUnnhay3C2M+0D6JCH1A7fc7GQZDuiRtajKRpomG6cq
+ eBN2rPA==
+X-Gm-Gg: ASbGncs1DKMdTBVZPQW3DW71BMFVmG1KapAZTmmNha8JJH61NyT3Pq0MzyGgejDGj+v
+ wzRm+Ma5dpjemJxkW1cuAdd2MbUphshFCf6B3a44copHIHyRh+xZWiK3xunESeT3CViynMf4Uqg
+ 2u94GNrXxacPlyaqBzhQvL73SWGC4oYImfHQyOFnnjT+i2Y0NrgYS4rWtf2BK/in4PkuUSMkoMX
+ K70YrdoaAhotfX1fnZgXY5bIXlOPJB3aeo6mMi+pFJI3kiyN4sj9mWgnX4nY4B4gsc2k3NNqda3
+ dWN+ru9J6Wv9kBSsdWre0Vy+y0NwoIOU8jrAEkLFIUUe
+X-Google-Smtp-Source: AGHT+IGlhA1OYklYI8W3TvhcwJWfhEyCmdHdWJ7oXVqqQX5x07qyoOlI6irMKuHH0x0C3rngALr0Kg==
+X-Received: by 2002:a05:600c:3515:b0:439:9f42:c137 with SMTP id
+ 5b1f17b1804b1-439ae1e6ee6mr38980045e9.11.1740154839303; 
+ Fri, 21 Feb 2025 08:20:39 -0800 (PST)
+Received: from paolo-laptop-amd.. ([2a0e:cb01:d3:f100:1f03:a9f0:23a0:9bda])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-439b02e4245sm21732575e9.18.2025.02.21.08.20.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 08:15:01 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 20E0C5F8C8;
- Fri, 21 Feb 2025 16:15:00 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH] MAINTAINERS: remove widely sanctioned entities
-Date: Fri, 21 Feb 2025 16:14:43 +0000
-Message-Id: <20250221161443.2321327-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
+ Fri, 21 Feb 2025 08:20:38 -0800 (PST)
+From: Paolo Savini <paolo.savini@embecosm.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Savini <paolo.savini@embecosm.com>,
+ Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>,
+ Jeremy Bennett <jeremy.bennett@embecosm.com>,
+ Craig Blackmore <craig.blackmore@embecosm.com>
+Subject: [PATCH 0/1] [RISC-V/RVV] use a single function to probe memory.
+Date: Fri, 21 Feb 2025 16:20:35 +0000
+Message-ID: <20250221162036.61521-1-paolo.savini@embecosm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=paolo.savini@embecosm.com; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,53 +105,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following organisations appear on the US sanctions list:
+This patch originates from the last comment of the following review:
 
-  Yadro: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=41125
-  ISPRAS: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50890
+https://lore.kernel.org/all/2df9ae98-afb8-4647-be80-12540a1c4612@ventanamicro.com/
 
-As a result maintainers interacting with such entities would face
-legal risk in a number of jurisdictions. To reduce the risk of
-inadvertent non-compliance remove entries from these organisations
-from the MAINTAINERS file.
+We call probe_pages to probe the memory before doing a memory operations or
+probe_access_flags to do the same while also obtaining probe flags and host
+address.
+This involves different calls to code that is almost the same.
 
-Mark the pcf8574 system as orphaned until someone volunteers to step
-up as a maintainer. Add myself as a second reviewer to record/replay
-so I can help with what odd fixes I can.
+This patch expands probe_pages to provide for both cases.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- MAINTAINERS | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+In the new version of probe_pages we don't have a return value to get the probe
+flags. We need instead to pass a pointer to such variable in order to get the
+flags.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3848d37a38..55b2ef219e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2523,8 +2523,7 @@ F: hw/i2c/i2c_mux_pca954x.c
- F: include/hw/i2c/i2c_mux_pca954x.h
- 
- pcf8574
--M: Dmitrii Sharikhin <d.sharikhin@yadro.com>
--S: Maintained
-+S: Orphaned
- F: hw/gpio/pcf8574.c
- F: include/gpio/pcf8574.h
- 
-@@ -3621,10 +3620,10 @@ F: net/filter-mirror.c
- F: tests/qtest/test-filter*
- 
- Record/replay
--M: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
- R: Paolo Bonzini <pbonzini@redhat.com>
-+R: Alex Bennée <alex.bennee@linaro.org>
- W: https://wiki.qemu.org/Features/record-replay
--S: Supported
-+S: Odd Fixes
- F: replay/*
- F: block/blkreplay.c
- F: net/filter-replay.c
+Cc: Richard Handerson <richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Helene Chelin <helene.chelin@embecosm.com>
+Cc: Nathan Egge <negge@google.com>
+Cc: Max Chou <max.chou@sifive.com>
+Cc: Jeremy Bennett <jeremy.bennett@embecosm.com>
+Cc: Craig Blackmore <craig.blackmore@embecosm.com>
+
+Paolo Savini (1):
+  [RISC-V/RVV] Expand the probe_pages helper function to handle probe
+    flags.
+
+ target/riscv/vector_helper.c | 57 +++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 20 deletions(-)
+
 -- 
-2.39.5
-
+2.34.1
 
