@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58677A3FCC9
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E645A3FCAD
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:04:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlWRZ-0006oZ-Mo; Fri, 21 Feb 2025 12:04:06 -0500
+	id 1tlWRe-0006xA-Sh; Fri, 21 Feb 2025 12:04:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRT-0006kt-6o
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:01 -0500
+ id 1tlWRb-0006tg-MI
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRR-0001Q2-Dl
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:03:58 -0500
+ id 1tlWRZ-0001RN-6q
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740157436;
+ s=mimecast20190719; t=1740157444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hJleYDBCD4SDSG2l2W+THx3Wzd2iHgM0lXz/mw911rM=;
- b=LGz/vxGIrOTJBAGueVC6IAMID1BV0/RI72jTQz0rswiMPollkrTRpcAL+VL0bWQe9zW6tP
- l+m3/hivGFNPP66K0pQhQ/pZ5dMoRvOBLKPQAiJe4mValwPVkH0RzqYy23OtGlY8xqLQQd
- WEpxSfLZzuCNfdWUeE+ll/AY9Cao3yc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OFO/wWi78NoYeD+/g7iAizNX0tpa55cnNvmYXRSX970=;
+ b=LjXDtUAnZZfnBkakorlwR4NJtVkVj8ByDQdBD1aUMIdgd4+JFZw3Z4EUriQts25SJ+VozC
+ GtKgAKkytKD/SZRXPZO8o2jIHb4D399k4HtDHP2ZN0xn51D5un4TMCXkd5El5Vc64vrDV6
+ s5JtsffNG7u9PFNdY5a/CuM5MhcBG3o=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-AHu6RGxDN0ymm-kyRxycTQ-1; Fri, 21 Feb 2025 12:03:55 -0500
-X-MC-Unique: AHu6RGxDN0ymm-kyRxycTQ-1
-X-Mimecast-MFC-AGG-ID: AHu6RGxDN0ymm-kyRxycTQ_1740157434
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4393b6763a3so10943955e9.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:03:55 -0800 (PST)
+ us-mta-68-Tkbfi--nPrCKi-NGSj-2Bg-1; Fri, 21 Feb 2025 12:04:02 -0500
+X-MC-Unique: Tkbfi--nPrCKi-NGSj-2Bg-1
+X-Mimecast-MFC-AGG-ID: Tkbfi--nPrCKi-NGSj-2Bg_1740157441
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38f32ac838cso1983890f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740157433; x=1740762233;
+ d=1e100.net; s=20230601; t=1740157440; x=1740762240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hJleYDBCD4SDSG2l2W+THx3Wzd2iHgM0lXz/mw911rM=;
- b=MEnjo01NJAOPXbVJIrah3Db5ETpwgbfbiDvNqh+VYXpt89IVkgdzqdL1GvKflodrB3
- oihZNX301dcJEijVY6gmzrshrEF9XShFQ/8SXnYkc8iFvrRhVKblmzgypjFLXyr3Exsv
- apfdKDmPFMJh7Zpg8i0E1TctXn/hIp5QyDavC16v3BWrxFQ5ZP1u3x5evoWJwiaxyjdO
- j7yS7VjLpPoGtTR1eNfNYWizprtQvCIZK/awHVwzsnWMOWmY9QvQeObXK36LsoCD5hIB
- ScRdxpYfNDDy+l7BQWKbdST44okoNXgPAugHM7DNFsfLjJnd3ZmtQ0rM6CaNkOMprqKS
- D0uQ==
-X-Gm-Message-State: AOJu0Yy6mttQcxO1B7sXICqKQFrWeBI46wS9IbHIMloKwS/y5irlguv1
- pCjDbSsBrK+na1Tk+vyiTqk8civKHFopyZ0OUZ7oLjEyQOc0Myj+Cfuot1rb5XpQ34Lv3wdZDbn
- 0/XAe+yrJYiFu462kpQmxCMmgp9T4wqYhQM8f3Gs0zbOY7EVxdXCNhF3iMwMVcahmfs8Y0q4GzV
- TxFbbeQqXK+dEv3/IYEZJitr4ndyxoMeU3PugxjPw=
-X-Gm-Gg: ASbGncvUkU42svnkaqgQcX2XPn6r1feUdXASzRSugiViXY7O0fz4R1JORL6Xrig0Qf9
- cICVwHizcifwAxmpPQjfCqxDvM+BSCVMF33JEGlJGZ7mXP2djmJ8fR65zMaH7fN4bof/9EBvIPH
- WBeRieWsPKlnMInx4cWy14bTDcSv2ESJ+MUrqGwJbD6i1w/UBoj+1cbrL3l0qwCIo5zg3k5xlYu
- t2Iq7JXnjzTd/hhAOP2rpURvFPNMFTr6EQpnWzEXkybwDACXRyD8gGYKYV3O+CZ4CX7aCBZSFsG
- W2JVBNUSawIUXaXh1qw=
-X-Received: by 2002:a05:600c:4ed1:b0:439:a155:549d with SMTP id
- 5b1f17b1804b1-439ae1eacfdmr37742825e9.12.1740157432579; 
- Fri, 21 Feb 2025 09:03:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHUJMLtPu1H85AOGMMT+HKTiV5g2ktjFALXblz6rsAXfbi9P1WnTKCL9dEoeEYDJBKe4bW0Uw==
-X-Received: by 2002:a05:600c:4ed1:b0:439:a155:549d with SMTP id
- 5b1f17b1804b1-439ae1eacfdmr37742105e9.12.1740157431971; 
- Fri, 21 Feb 2025 09:03:51 -0800 (PST)
+ bh=OFO/wWi78NoYeD+/g7iAizNX0tpa55cnNvmYXRSX970=;
+ b=LGekUe5+64FM1QfH0UxuGKTCuVtJFDCOmGrWGFxImEVbIwyTTSZQ74faYbJqjlK/YV
+ Nk9dVz9zsnXAyJRZb3c9AqUc5MHtytJuYLz7Mu9Z89kNJUrVNhGS715aREO6gTUKTFJz
+ ZmYoyO/2FJNDLjDJnGDg9elf+dT18aWo9XssvcCJ2a6O8VcSd5cHwOzxMx5J2XGdCnTg
+ kzWI/k2n1qhlEd+LBEFU5MFPy6ko7Mas/MrdGpFCbvFZyhpHb30SWxqdDG8YqY6aU2cy
+ i10/bRbBsKB6313xmTa/wJ8lWA1W/WcwwO0mBRlHzyddwizLiuycB5x9cVanxZ5Oj0d/
+ OEUg==
+X-Gm-Message-State: AOJu0Yz/gWFwOpu7mx9jv9OmMTOAYiXCFXAD3cPti0bCY6sAMLd0gV/+
+ +ih08x5FxrXJ3/oqKg0HB7Y+FKhAzdpHDLmFCZ9FElyxl9Eo5kh3wmdgioTGMrc+yIGjg/WFEcW
+ x8FkXrgOeEdWtoYXviBqUILqXqk7HX469dKq1+Y6w4QY6FEg/P+JtCzj8Nutvgt96psnqdznAsf
+ IZVLdkUIIqgjqDDdoTN/fqau0rwCdFaQbXKRYtm3w=
+X-Gm-Gg: ASbGncsovMrhDvAO0tsVUhegmaTg3kxaNQpwp5UiFk8CbZmE8Apx6NHWkrVOTwxvQLK
+ TRcIEIMCz59cQmWVEs1waCqkBwHLw0PlCwzA4sCa/juIbe+MtBdAW/2K+L2/0kT5lOEa8OlpWko
+ eNEJp/pCT5IicRND1hF+hY1coIDK53w02KU7hE/EYCwdGIJrqH1hCPIF5qBwWJC8VNFA0ouzjFI
+ HiatGactL2ZZXq53CPLjEqXQPVwelDjXEbGt4IZQMW6nnu6+ntR0GCzGPgU0T+pI8uAVBf1m5/b
+ 2ASQpwzgg0ifILNL3Hg=
+X-Received: by 2002:a05:6000:4011:b0:38f:457e:3f2b with SMTP id
+ ffacd0b85a97d-38f6e757322mr3655853f8f.6.1740157438177; 
+ Fri, 21 Feb 2025 09:03:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFCmC3GeryJTAKucnbg/IrFfauD+bo6dzvuxUmb1fjIroP6Xc5RkPQ+sicZGJobs9sS7Yy5dA==
+X-Received: by 2002:a05:6000:4011:b0:38f:457e:3f2b with SMTP id
+ ffacd0b85a97d-38f6e757322mr3655620f8f.6.1740157436059; 
+ Fri, 21 Feb 2025 09:03:56 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.61.185])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b030b347sm23028795e9.26.2025.02.21.09.03.48
+ ffacd0b85a97d-38f258dcc45sm24074742f8f.33.2025.02.21.09.03.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 09:03:48 -0800 (PST)
+ Fri, 21 Feb 2025 09:03:52 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 04/15] rust: pl011, qemu_api tests: do not use ClassInitImpl
-Date: Fri, 21 Feb 2025 18:03:31 +0100
-Message-ID: <20250221170342.63591-5-pbonzini@redhat.com>
+Subject: [PATCH 05/15] rust: qom: get rid of ClassInitImpl
+Date: Fri, 21 Feb 2025 18:03:32 +0100
+Message-ID: <20250221170342.63591-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250221170342.63591-1-pbonzini@redhat.com>
 References: <20250221170342.63591-1-pbonzini@redhat.com>
@@ -106,65 +106,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Outside the qemu_api crate, orphan rules make the usage of ClassInitImpl
-unwieldy.  Now that it is optional, do not use it.
-
-For PL011Class, this makes it easier to provide a PL011Impl trait similar
-to the ones in the qemu_api crate.  The device id consts are moved there.
+Complete the conversion from the ClassInitImpl trait to class_init() methods.
+This will provide more freedom to split the qemu_api crate in separate parts.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 38 ++++++++++++++++----------------
- rust/qemu-api/tests/tests.rs     | 33 ++++++++++-----------------
- 2 files changed, 31 insertions(+), 40 deletions(-)
+ rust/hw/char/pl011/src/device.rs |   6 +-
+ rust/hw/timer/hpet/src/hpet.rs   |   4 +-
+ rust/qemu-api/src/qdev.rs        |  38 ++++---
+ rust/qemu-api/src/qom.rs         | 164 +++++++++++++------------------
+ rust/qemu-api/src/sysbus.rs      |  15 ++-
+ rust/qemu-api/tests/tests.rs     |   4 +-
+ 6 files changed, 101 insertions(+), 130 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index a6da9db0bb0..fc1c8ec8d6a 100644
+index fc1c8ec8d6a..6896b1026f6 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -50,11 +50,6 @@ fn index(&self, idx: hwaddr) -> &Self::Output {
+@@ -19,8 +19,8 @@
+     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
+     prelude::*,
+     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
+-    qom::{ClassInitImpl, ObjectImpl, Owned, ParentField},
+-    sysbus::{SysBusDevice, SysBusDeviceClass, SysBusDeviceImpl},
++    qom::{ObjectImpl, Owned, ParentField},
++    sysbus::{SysBusDevice, SysBusDeviceImpl},
+     vmstate::VMStateDescription,
+ };
+ 
+@@ -145,7 +145,7 @@ trait PL011Impl: SysBusDeviceImpl + IsA<PL011State> {
+ impl PL011Class {
+     fn class_init<T: PL011Impl>(&mut self) {
+         self.device_id = T::DEVICE_ID;
+-        <T as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut self.parent_class);
++        self.parent_class.class_init::<T>();
      }
  }
  
--impl DeviceId {
--    const ARM: Self = Self(&[0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1]);
--    const LUMINARY: Self = Self(&[0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1]);
--}
--
- // FIFOs use 32-bit indices instead of usize, for compatibility with
- // the migration stream produced by the C version of this device.
- #[repr(transparent)]
-@@ -143,16 +138,24 @@ pub struct PL011Class {
-     device_id: DeviceId,
- }
- 
-+trait PL011Impl: SysBusDeviceImpl + IsA<PL011State> {
-+    const DEVICE_ID: DeviceId;
-+}
-+
-+impl PL011Class {
-+    fn class_init<T: PL011Impl>(&mut self) {
-+        self.device_id = T::DEVICE_ID;
-+        <T as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut self.parent_class);
-+    }
-+}
-+
- unsafe impl ObjectType for PL011State {
-     type Class = PL011Class;
-     const TYPE_NAME: &'static CStr = crate::TYPE_PL011;
- }
- 
--impl ClassInitImpl<PL011Class> for PL011State {
--    fn class_init(klass: &mut PL011Class) {
--        klass.device_id = DeviceId::ARM;
--        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
--    }
-+impl PL011Impl for PL011State {
-+    const DEVICE_ID: DeviceId = DeviceId(&[0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1]);
- }
- 
- impl ObjectImpl for PL011State {
-@@ -160,7 +163,7 @@ impl ObjectImpl for PL011State {
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index e01b4b67064..be27eb0eff4 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -21,7 +21,7 @@
+     },
+     prelude::*,
+     qdev::{DeviceImpl, DeviceMethods, DeviceState, Property, ResetType, ResettablePhasesImpl},
+-    qom::{ClassInitImpl, ObjectImpl, ObjectType, ParentField},
++    qom::{ObjectImpl, ObjectType, ParentField},
+     qom_isa,
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+     timer::{Timer, CLOCK_VIRTUAL},
+@@ -836,7 +836,7 @@ impl ObjectImpl for HPETState {
  
      const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
      const INSTANCE_POST_INIT: Option<fn(&Self)> = Some(Self::post_init);
@@ -172,107 +164,363 @@ index a6da9db0bb0..fc1c8ec8d6a 100644
 +    const CLASS_INIT: fn(&mut Self::Class) = Self::Class::class_init::<Self>;
  }
  
- impl DeviceImpl for PL011State {
-@@ -729,13 +732,6 @@ pub struct PL011Luminary {
-     parent_obj: ParentField<PL011State>,
- }
- 
--impl ClassInitImpl<PL011Class> for PL011Luminary {
--    fn class_init(klass: &mut PL011Class) {
--        klass.device_id = DeviceId::LUMINARY;
--        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
--    }
--}
--
- qom_isa!(PL011Luminary : PL011State, SysBusDevice, DeviceState, Object);
- 
- unsafe impl ObjectType for PL011Luminary {
-@@ -746,7 +742,11 @@ unsafe impl ObjectType for PL011Luminary {
- impl ObjectImpl for PL011Luminary {
-     type ParentType = PL011State;
- 
--    const CLASS_INIT: fn(&mut Self::Class) = <Self as ClassInitImpl<Self::Class>>::class_init;
-+    const CLASS_INIT: fn(&mut Self::Class) = Self::Class::class_init::<Self>;
-+}
-+
-+impl PL011Impl for PL011Luminary {
-+    const DEVICE_ID: DeviceId = DeviceId(&[0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1]);
- }
- 
- impl DeviceImpl for PL011Luminary {}
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 9546e9d7963..93c5637bbc3 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -13,7 +13,7 @@
-     cell::{self, BqlCell},
-     declare_properties, define_property,
+ // TODO: Make these properties user-configurable!
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index c4dd26b582c..c136457090c 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -19,7 +19,7 @@
+     chardev::Chardev,
+     irq::InterruptSource,
      prelude::*,
--    qdev::{DeviceClass, DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
-+    qdev::{DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
-     qom::{ClassInitImpl, ObjectImpl, ParentField},
-     sysbus::SysBusDevice,
+-    qom::{ClassInitImpl, ObjectClass, ObjectImpl, Owned},
++    qom::{ObjectClass, ObjectImpl, Owned},
      vmstate::VMStateDescription,
-@@ -41,6 +41,12 @@ pub struct DummyClass {
-     parent_class: <DeviceState as ObjectType>::Class,
+ };
+ 
+@@ -113,7 +113,7 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+ /// # Safety
+ ///
+ /// This function is only called through the QOM machinery and
+-/// used by the `ClassInitImpl<DeviceClass>` trait.
++/// used by `DeviceClass::class_init`.
+ /// We expect the FFI user of this function to pass a valid pointer that
+ /// can be downcasted to type `T`. We also expect the device is
+ /// readable/writeable from one thread at any time.
+@@ -127,43 +127,41 @@ unsafe impl InterfaceType for ResettableClass {
+         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_RESETTABLE_INTERFACE) };
  }
  
-+impl DummyClass {
-+    pub fn class_init<T: DeviceImpl>(self: &mut DummyClass) {
-+        <T as ClassInitImpl<DeviceClass>>::class_init(&mut self.parent_class);
-+    }
-+}
-+
- declare_properties! {
-     DUMMY_PROPERTIES,
-         define_property!(
-@@ -60,7 +66,7 @@ unsafe impl ObjectType for DummyState {
- impl ObjectImpl for DummyState {
-     type ParentType = DeviceState;
-     const ABSTRACT: bool = false;
--    const CLASS_INIT: fn(&mut DummyClass) = <Self as ClassInitImpl<DummyClass>>::class_init;
-+    const CLASS_INIT: fn(&mut DummyClass) = DummyClass::class_init::<Self>;
- }
- 
- impl ResettablePhasesImpl for DummyState {}
-@@ -74,14 +80,6 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+-impl<T> ClassInitImpl<ResettableClass> for T
+-where
+-    T: ResettablePhasesImpl,
+-{
+-    fn class_init(rc: &mut ResettableClass) {
++impl ResettableClass {
++    /// Fill in the virtual methods of `ResettableClass` based on the
++    /// definitions in the `ResettablePhasesImpl` trait.
++    pub fn class_init<T: ResettablePhasesImpl>(&mut self) {
+         if <T as ResettablePhasesImpl>::ENTER.is_some() {
+-            rc.phases.enter = Some(rust_resettable_enter_fn::<T>);
++            self.phases.enter = Some(rust_resettable_enter_fn::<T>);
+         }
+         if <T as ResettablePhasesImpl>::HOLD.is_some() {
+-            rc.phases.hold = Some(rust_resettable_hold_fn::<T>);
++            self.phases.hold = Some(rust_resettable_hold_fn::<T>);
+         }
+         if <T as ResettablePhasesImpl>::EXIT.is_some() {
+-            rc.phases.exit = Some(rust_resettable_exit_fn::<T>);
++            self.phases.exit = Some(rust_resettable_exit_fn::<T>);
+         }
      }
  }
  
--// `impl<T> ClassInitImpl<DummyClass> for T` doesn't work since it violates
--// orphan rule.
--impl ClassInitImpl<DummyClass> for DummyState {
--    fn class_init(klass: &mut DummyClass) {
--        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
--    }
--}
--
- #[derive(qemu_api_macros::offsets)]
- #[repr(C)]
- #[derive(qemu_api_macros::Object)]
-@@ -103,22 +101,15 @@ unsafe impl ObjectType for DummyChildState {
- impl ObjectImpl for DummyChildState {
-     type ParentType = DummyState;
-     const ABSTRACT: bool = false;
--    const CLASS_INIT: fn(&mut DummyChildClass) =
--        <Self as ClassInitImpl<DummyChildClass>>::class_init;
-+    const CLASS_INIT: fn(&mut DummyChildClass) = DummyChildClass::class_init::<Self>;
+-impl<T> ClassInitImpl<DeviceClass> for T
+-where
+-    T: ClassInitImpl<ObjectClass> + ClassInitImpl<ResettableClass> + DeviceImpl,
+-{
+-    fn class_init(dc: &mut DeviceClass) {
++impl DeviceClass {
++    /// Fill in the virtual methods of `DeviceClass` based on the definitions in
++    /// the `DeviceImpl` trait.
++    pub fn class_init<T: DeviceImpl>(&mut self) {
+         if <T as DeviceImpl>::REALIZE.is_some() {
+-            dc.realize = Some(rust_realize_fn::<T>);
++            self.realize = Some(rust_realize_fn::<T>);
+         }
+         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+-            dc.vmsd = vmsd;
++            self.vmsd = vmsd;
+         }
+         let prop = <T as DeviceImpl>::properties();
+         if !prop.is_empty() {
+             unsafe {
+-                bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
++                bindings::device_class_set_props_n(self, prop.as_ptr(), prop.len());
+             }
+         }
+ 
+-        ResettableClass::interface_init::<T, DeviceState>(dc);
+-        <T as ClassInitImpl<ObjectClass>>::class_init(&mut dc.parent_class);
++        ResettableClass::cast::<DeviceState>(self).class_init::<T>();
++        self.parent_class.class_init::<T>();
+     }
  }
  
- impl ResettablePhasesImpl for DummyChildState {}
- impl DeviceImpl for DummyChildState {}
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index d821ac25acc..5488643a2fd 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -40,11 +40,6 @@
+ //!   The traits have the appropriate specialization of `IsA<>` as a supertrait,
+ //!   for example `IsA<DeviceState>` for `DeviceImpl`.
+ //!
+-//! * an implementation of [`ClassInitImpl`], for example
+-//!   `ClassInitImpl<DeviceClass>`. This fills the vtable in the class struct;
+-//!   the source for this is the `*Impl` trait; the associated consts and
+-//!   functions if needed are wrapped to map C types into Rust types.
+-//!
+ //! * a trait for instance methods, for example `DeviceMethods`. This trait is
+ //!   automatically implemented for any reference or smart pointer to a device
+ //!   instance.  It calls into the vtable provides access across all subclasses
+@@ -54,6 +49,48 @@
+ //!   This provides access to class-wide functionality that doesn't depend on
+ //!   instance data. Like instance methods, these are automatically inherited by
+ //!   child classes.
++//!
++//! # Class structures
++//!
++//! Each QOM class that has virtual methods describes them in a
++//! _class struct_.  Class structs include a parent field corresponding
++//! to the vtable of the parent class, all the way up to [`ObjectClass`].
++//!
++//! As mentioned above, virtual methods are defined via traits such as
++//! `DeviceImpl`.  Class structs do not define any trait but, conventionally,
++//! all of them have a `class_init` method to initialize the virtual methods
++//! based on the trait and then call the same method on the superclass.
++//!
++//! ```ignore
++//! impl YourSubclassClass
++//! {
++//!     pub fn class_init<T: YourSubclassImpl>(&mut self) {
++//!         ...
++//!         klass.parent_class::class_init<T>();
++//!     }
++//! }
++//! ```
++//!
++//! If a class implements a QOM interface.  In that case, the function must
++//! contain, for each interface, an extra forwarding call as follows:
++//!
++//! ```ignore
++//! ResettableClass::cast::<Self>(self).class_init::<Self>();
++//! ```
++//!
++//! These `class_init` functions are methods on the class rather than a trait,
++//! because the bound on `T` (`DeviceImpl` in this case), will change for every
++//! class struct.  The functions are pointed to by the
++//! [`ObjectImpl::CLASS_INIT`] function pointer. While there is no default
++//! implementation, in most cases it will be enough to write it as follows:
++//!
++//! ```ignore
++//! const CLASS_INIT: fn(&mut Self::Class)> = Self::Class::class_init::<Self>;
++//! ```
++//!
++//! This design incurs a small amount of code duplication but, by not using
++//! traits, it allows the flexibility of implementing bindings in any crate,
++//! without incurring into violations of orphan rules for traits.
  
--impl ClassInitImpl<DummyClass> for DummyChildState {
--    fn class_init(klass: &mut DummyClass) {
--        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
--    }
+ use std::{
+     ffi::CStr,
+@@ -279,19 +316,25 @@ pub unsafe trait InterfaceType: Sized {
+     /// for this interface.
+     const TYPE_NAME: &'static CStr;
+ 
+-    /// Initialize the vtable for the interface; the generic argument `T` is the
+-    /// type being initialized, while the generic argument `U` is the type that
++    /// Return the vtable for the interface; `U` is the type that
+     /// lists the interface in its `TypeInfo`.
+     ///
++    /// # Examples
++    ///
++    /// This function is usually called by a `class_init` method in `U::Class`.
++    /// For example, `DeviceClass::class_init<T>` initializes its `Resettable`
++    /// interface as follows:
++    ///
++    /// ```ignore
++    /// ResettableClass::cast::<DeviceState>(self).class_init::<T>();
++    /// ```
++    ///
++    /// where `T` is the concrete subclass that is being initialized.
++    ///
+     /// # Panics
+     ///
+     /// Panic if the incoming argument if `T` does not implement the interface.
+-    fn interface_init<
+-        T: ObjectType + ClassInitImpl<Self> + ClassInitImpl<U::Class>,
+-        U: ObjectType,
+-    >(
+-        klass: &mut U::Class,
+-    ) {
++    fn cast<U: ObjectType>(klass: &mut U::Class) -> &mut Self {
+         unsafe {
+             // SAFETY: upcasting to ObjectClass is always valid, and the
+             // return type is either NULL or the argument itself
+@@ -300,8 +343,7 @@ fn interface_init<
+                 Self::TYPE_NAME.as_ptr(),
+             )
+             .cast();
+-
+-            <T as ClassInitImpl<Self>>::class_init(result.as_mut().unwrap())
++            result.as_mut().unwrap()
+         }
+     }
+ }
+@@ -558,87 +600,20 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
+     /// the default values coming from the parent classes; the function
+     /// can change them to override virtual methods of a parent class.
+     ///
+-    /// Usually defined as `<Self as ClassInitImpl<Self::Class>::class_init`.
+-    const CLASS_INIT: fn(&mut Self::Class);
 -}
 -
--impl ClassInitImpl<DummyChildClass> for DummyChildState {
--    fn class_init(klass: &mut DummyChildClass) {
--        <Self as ClassInitImpl<DummyClass>>::class_init(&mut klass.parent_class);
-+impl DummyChildClass {
-+    pub fn class_init<T: DeviceImpl>(self: &mut DummyChildClass) {
+-/// Internal trait used to automatically fill in a class struct.
+-///
+-/// Each QOM class that has virtual methods describes them in a
+-/// _class struct_.  Class structs include a parent field corresponding
+-/// to the vtable of the parent class, all the way up to [`ObjectClass`].
+-/// Each QOM type has one such class struct; this trait takes care of
+-/// initializing the `T` part of the class struct, for the type that
+-/// implements the trait.
+-///
+-/// Each struct will implement this trait with `T` equal to each
+-/// superclass.  For example, a device should implement at least
+-/// `ClassInitImpl<`[`DeviceClass`](crate::qdev::DeviceClass)`>` and
+-/// `ClassInitImpl<`[`ObjectClass`]`>`.  Such implementations are made
+-/// in one of two ways.
+-///
+-/// For most superclasses, `ClassInitImpl` is provided by the `qemu-api`
+-/// crate itself.  The Rust implementation of methods will come from a
+-/// trait like [`ObjectImpl`] or [`DeviceImpl`](crate::qdev::DeviceImpl),
+-/// and `ClassInitImpl` is provided by blanket implementations that
+-/// operate on all implementors of the `*Impl`* trait.  For example:
+-///
+-/// ```ignore
+-/// impl<T> ClassInitImpl<DeviceClass> for T
+-/// where
+-///     T: ClassInitImpl<ObjectClass> + DeviceImpl,
+-/// ```
+-///
+-/// The bound on `ClassInitImpl<ObjectClass>` is needed so that,
+-/// after initializing the `DeviceClass` part of the class struct,
+-/// the parent [`ObjectClass`] is initialized as well.
+-///
+-/// The other case is when manual implementation of the trait is needed.
+-/// This covers the following cases:
+-///
+-/// * if a class implements a QOM interface, the Rust code _has_ to define its
+-///   own class struct `FooClass` and implement `ClassInitImpl<FooClass>`.
+-///   `ClassInitImpl<FooClass>`'s `class_init` method will then forward to
+-///   multiple other `class_init`s, for the interfaces as well as the
+-///   superclass. (Note that there is no Rust example yet for using interfaces).
+-///
+-/// * for classes implemented outside the ``qemu-api`` crate, it's not possible
+-///   to add blanket implementations like the above one, due to orphan rules. In
+-///   that case, the easiest solution is to implement
+-///   `ClassInitImpl<YourSuperclass>` for each subclass and not have a
+-///   `YourSuperclassImpl` trait at all.
+-///
+-/// ```ignore
+-/// impl ClassInitImpl<YourSuperclass> for YourSubclass {
+-///     fn class_init(klass: &mut YourSuperclass) {
+-///         klass.some_method = Some(Self::some_method);
+-///         <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
+-///     }
+-/// }
+-/// ```
+-///
+-///   While this method incurs a small amount of code duplication,
+-///   it is generally limited to the recursive call on the last line.
+-///   This is because classes defined in Rust do not need the same
+-///   glue code that is needed when the classes are defined in C code.
+-///   You may consider using a macro if you have many subclasses.
+-pub trait ClassInitImpl<T> {
+-    /// Initialize `klass` to point to the virtual method implementations
+-    /// for `Self`.  On entry, the virtual method pointers are set to
+-    /// the default values coming from the parent classes; the function
+-    /// can change them to override virtual methods of a parent class.
++    /// Usually defined simply as `Self::Class::class_init::<Self>`;
++    /// however a default implementation cannot be included here, because the
++    /// bounds that the `Self::Class::class_init` method places on `Self` are
++    /// not known in advance.
+     ///
+-    /// The virtual method implementations usually come from another
+-    /// trait, for example [`DeviceImpl`](crate::qdev::DeviceImpl)
+-    /// when `T` is [`DeviceClass`](crate::qdev::DeviceClass).
++    /// # Safety
+     ///
+-    /// On entry, `klass`'s parent class is initialized, while the other fields
++    /// While `klass`'s parent class is initialized on entry, the other fields
+     /// are all zero; it is therefore assumed that all fields in `T` can be
+     /// zeroed, otherwise it would not be possible to provide the class as a
+     /// `&mut T`.  TODO: add a bound of [`Zeroable`](crate::zeroable::Zeroable)
+     /// to T; this is more easily done once Zeroable does not require a manual
+     /// implementation (Rust 1.75.0).
+-    fn class_init(klass: &mut T);
++    const CLASS_INIT: fn(&mut Self::Class);
+ }
+ 
+ /// # Safety
+@@ -651,13 +626,12 @@ pub trait ClassInitImpl<T> {
+     T::UNPARENT.unwrap()(unsafe { state.as_ref() });
+ }
+ 
+-impl<T> ClassInitImpl<ObjectClass> for T
+-where
+-    T: ObjectImpl,
+-{
+-    fn class_init(oc: &mut ObjectClass) {
++impl ObjectClass {
++    /// Fill in the virtual methods of `ObjectClass` based on the definitions in
++    /// the `ObjectImpl` trait.
++    pub fn class_init<T: ObjectImpl>(&mut self) {
+         if <T as ObjectImpl>::UNPARENT.is_some() {
+-            oc.unparent = Some(rust_unparent_fn::<T>);
++            self.unparent = Some(rust_unparent_fn::<T>);
+         }
+     }
+ }
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index fee2e3d478f..04821a2b9b3 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -14,8 +14,8 @@
+     irq::{IRQState, InterruptSource},
+     memory::MemoryRegion,
+     prelude::*,
+-    qdev::{DeviceClass, DeviceImpl, DeviceState},
+-    qom::{ClassInitImpl, Owned},
++    qdev::{DeviceImpl, DeviceState},
++    qom::Owned,
+ };
+ 
+ unsafe impl ObjectType for SysBusDevice {
+@@ -28,12 +28,11 @@ unsafe impl ObjectType for SysBusDevice {
+ // TODO: add virtual methods
+ pub trait SysBusDeviceImpl: DeviceImpl + IsA<SysBusDevice> {}
+ 
+-impl<T> ClassInitImpl<SysBusDeviceClass> for T
+-where
+-    T: SysBusDeviceImpl + ClassInitImpl<DeviceClass>,
+-{
+-    fn class_init(sdc: &mut SysBusDeviceClass) {
+-        <T as ClassInitImpl<DeviceClass>>::class_init(&mut sdc.parent_class);
++impl SysBusDeviceClass {
++    /// Fill in the virtual methods of `SysBusDeviceClass` based on the
++    /// definitions in the `SysBusDeviceImpl` trait.
++    pub fn class_init<T: SysBusDeviceImpl>(self: &mut SysBusDeviceClass) {
++        self.parent_class.class_init::<T>();
+     }
+ }
+ 
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 93c5637bbc3..e3985782a38 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -14,7 +14,7 @@
+     declare_properties, define_property,
+     prelude::*,
+     qdev::{DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
+-    qom::{ClassInitImpl, ObjectImpl, ParentField},
++    qom::{ObjectImpl, ParentField},
+     sysbus::SysBusDevice,
+     vmstate::VMStateDescription,
+     zeroable::Zeroable,
+@@ -43,7 +43,7 @@ pub struct DummyClass {
+ 
+ impl DummyClass {
+     pub fn class_init<T: DeviceImpl>(self: &mut DummyClass) {
+-        <T as ClassInitImpl<DeviceClass>>::class_init(&mut self.parent_class);
 +        self.parent_class.class_init::<T>();
      }
  }
