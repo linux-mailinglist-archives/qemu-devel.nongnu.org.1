@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12080A3FDEB
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A884A3FDED
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXA9-0000tG-D1; Fri, 21 Feb 2025 12:50:09 -0500
+	id 1tlXAB-0000vr-1U; Fri, 21 Feb 2025 12:50:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA4-0000rP-LN; Fri, 21 Feb 2025 12:50:04 -0500
+ id 1tlXA5-0000sM-BU; Fri, 21 Feb 2025 12:50:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA2-0001bz-FS; Fri, 21 Feb 2025 12:50:03 -0500
+ id 1tlXA3-0001ci-Cq; Fri, 21 Feb 2025 12:50:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3FF97EFB69;
+ by isrv.corpit.ru (Postfix) with ESMTP id 46365EFB6A;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB6E61BB585;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EF74A1BB586;
  Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id DBE5353F85; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id DE83B53F87; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: qemu-stable@nongnu.org, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 06/14] gitlab-ci.d/cirrus: Update the FreeBSD job to
- v14.2
-Date: Fri, 21 Feb 2025 20:49:36 +0300
-Message-Id: <20250221174949.836197-6-mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 07/14] vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
+Date: Fri, 21 Feb 2025 20:49:37 +0300
+Message-Id: <20250221174949.836197-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
@@ -62,30 +62,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-The FreeBSD job started to fail since the 14-1 image disappeared
-from the cloud. Update the job to v14.2 to fix it.
+When iommufd_cdev_ram_block_discard_disable() fails for whatever reason,
+errp should be set or else SIGSEV is triggered in vfio_realize() when
+error_prepend() is called.
 
-Message-ID: <20250211120817.35050-1-thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 66a1b4991c32e370a4e0ddabf496aa1563aff286)
+By this chance, use the same error message for both legacy and iommufd
+backend.
+
+Fixes: 5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20250116102307.260849-1-zhenzhong.duan@intel.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 7b3d5b84cbd742356a1afc6b0fa489d0663f235d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index a9e43e21d0..c43380ea3d 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -52,7 +52,7 @@ x64-freebsd-14-build:
-     NAME: freebsd-14
-     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
-     CIRRUS_VM_IMAGE_SELECTOR: image_family
--    CIRRUS_VM_IMAGE_NAME: freebsd-14-1
-+    CIRRUS_VM_IMAGE_NAME: freebsd-14-2
-     CIRRUS_VM_CPUS: 8
-     CIRRUS_VM_RAM: 8G
-     UPDATE_COMMAND: pkg update; pkg upgrade -y
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index e7bece4ea1..a60c899dc6 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -515,8 +515,8 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         } else {
+             ret = iommufd_cdev_ram_block_discard_disable(true);
+             if (ret) {
+-                error_setg(errp,
+-                              "Cannot set discarding of RAM broken (%d)", ret);
++                error_setg_errno(errp, -ret,
++                                 "Cannot set discarding of RAM broken");
+                 goto err_discard_disable;
+             }
+             goto found_container;
+@@ -544,6 +544,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+ 
+     ret = iommufd_cdev_ram_block_discard_disable(true);
+     if (ret) {
++        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
+         goto err_discard_disable;
+     }
+ 
 -- 
 2.39.5
 
