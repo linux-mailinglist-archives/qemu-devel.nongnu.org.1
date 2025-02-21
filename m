@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9BCA3F420
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3FFA3F43A
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:28:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS4T-0006RP-K6; Fri, 21 Feb 2025 07:23:57 -0500
+	id 1tlS5j-0003Ty-Kf; Fri, 21 Feb 2025 07:25:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4N-0006A9-Jb
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:51 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5Z-0003Gd-7F
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4L-000775-1v
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:51 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5X-0007Gh-5Y
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140628;
+ s=mimecast20190719; t=1740140702;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/kmJLONp2OhkpfuMOLSYnuEY7cqZckWFV/n/C9H76MQ=;
- b=Upxms1YHOWG1HTX7YPWUx2MTcZGX8qcEK1fUFi+qU3usn/hiJi7D2L6cJ9Vp92vRaVY4v3
- zYXr0vZJ1nIet28uXhRzPNFw6U2OqJtnxWJrT5eAm827ise80flb9OGM/eRBieDYSHR2Cd
- jI6OMGlk3vUhrVvkfTkR8SZZB24itTE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=21MZvzcuowvqSXzQXl2K9YuO6KQY2fQmr4euw2anaeY=;
+ b=PGfHx/39Br2NMlMKIG+sgtoVldWf7YSZRqdo9R8cv97PzesBmx8kVXv3ZS0oA/o1UTdBVP
+ hNOnlbLVbSKm/YW8YU66+lPoqn93fnwXitiwq+T36NsWHM9sgoxxVkTQ+ycf3fO1cr+A5L
+ 59SGnpFlpo0+t6FJaMNbHgu1QEo6y/c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-x8ONGrvdNPWE5i3WXFvBGA-1; Fri, 21 Feb 2025 07:23:45 -0500
-X-MC-Unique: x8ONGrvdNPWE5i3WXFvBGA-1
-X-Mimecast-MFC-AGG-ID: x8ONGrvdNPWE5i3WXFvBGA_1740140624
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38f2c0aa6d6so1468734f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:45 -0800 (PST)
+ us-mta-352-PytxyZotMneRmvC2W6923Q-1; Fri, 21 Feb 2025 07:23:48 -0500
+X-MC-Unique: PytxyZotMneRmvC2W6923Q-1
+X-Mimecast-MFC-AGG-ID: PytxyZotMneRmvC2W6923Q_1740140627
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38f32ac838cso1775796f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140624; x=1740745424;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/kmJLONp2OhkpfuMOLSYnuEY7cqZckWFV/n/C9H76MQ=;
- b=r1x5dmhzirera+fKUDS2IZ9maeewJp1epaHKgQ2pG3zWyH2uFgMhQdNao4AwdxFZ43
- cmRVXXZWZ5iR4eHd24SAyU9ti7wAsONLavFWilbaXyt4g0ZW99msJFXBzOmBch6Qv4Ul
- gIDqfrfOYYWWV74rDiSGuxy2nmptcKVrC4EIkgsDIqfcK6KraQ0XBJtpKMdqZNpHKC/r
- tx0hiN3Xh9LTfWbUzrVL8koyBklphZv9vj1mj+4wTK+OeSeLg8F53q1gs7UQSGFfVOr4
- 2hCe3PVc1056CUFbl0lf8LgUhXd9arZBkJ/Z1UOBSD2ovDbuHGQnIUjRNOPeRoT8SPaw
- bpxQ==
-X-Gm-Message-State: AOJu0YyqLepf9EWory3z+ZzLEfL09lj61juEV52sjC71xJkeA9WKi0wG
- eNRKSeymjrxbTUqumsZ9r+AjBX5FvKjiEgWHtmKrNeI8zp+tVMMFaxbx0nobwdpe6d/oMmlah7w
- /gcfuyTGEIVoQGWtXwxJB1cpWaiD9e+Qw86PQULioOkxNaW7xcOEWPUjBgIGchNBgIip8nGJkYj
- jBBBZSRjzuHW6/gtOn4YLg7f8yg9Jx1A==
-X-Gm-Gg: ASbGnctylFVvilgCN9q7jxq59CCoYsDpHf120TjbsWcMfHT4AgSt3CWLlEpAP7lZZI1
- 3nefuEN+6woB7FCfIR/9GNbK1yy7N9FINn8IokZQTKlTiDv9kjyqNF3VHdkLxwiYZAXAk8boPI2
- InAHYTGQhFjMgO579en1luPezI6oz0QdhbPPtMLoI4IdE+tYyGVxhOE/o/qpwcb+227/yvTxqvk
- 4Oe8mfeYpcuabarCsq8JkiqHKxDJea3P0lGBL+5E3bhgzQGFlM1MgpBZFdOkKW+CRlIBSkNBEy7
- B3o9HA==
-X-Received: by 2002:a5d:584a:0:b0:38d:e0a9:7e5e with SMTP id
- ffacd0b85a97d-38f614991f2mr6180249f8f.6.1740140623766; 
- Fri, 21 Feb 2025 04:23:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHFDL+zlxYKdIihf74iUeeE4fGEfxbyh9v74/Wv9N8hj3ncytNmdrEaDkcUWhVFnarzzBvS7g==
-X-Received: by 2002:a5d:584a:0:b0:38d:e0a9:7e5e with SMTP id
- ffacd0b85a97d-38f614991f2mr6180221f8f.6.1740140623274; 
- Fri, 21 Feb 2025 04:23:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140626; x=1740745426;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=21MZvzcuowvqSXzQXl2K9YuO6KQY2fQmr4euw2anaeY=;
+ b=EXf0dmXGq5d1RWBtPk3TqbCTJVTIsaJMZ0c5Fn7Cj0nAXtHFQ1EgjCfPF9qe2HDVOF
+ PivIf8l9tF7fphsSz7KREnyNpAyTPa018m9jT8rjiOODGp1G/KKhzqr8D1iqoOmbO6RK
+ QpTUI3x1qh8NpuVAsEwAYUEsyXkYjJOsHOqn1gSag0P5t5remXLDKm2s2BqW4CqMGJEM
+ xfcVU8+fBFxpHevGLBlpVjbAMy6tmJzmA4O4HCtsULc+AD6GhHQ0Yewzp0K6IdGaOKks
+ VkTkCzm49O+g/XpdghAuoaUKESEhKWIGeuiayIVaS5l/2N6bEyNlGr48/YQE6xa5zqbQ
+ 8K7Q==
+X-Gm-Message-State: AOJu0YyYHqF9p/ZL8Y51Qhc12ntdowyapWDq/ztlVihfbp/sYM/KP4CV
+ Gj7cpDiRBvBmXNnAhDA3L+PcNdqq16TQSuOKqerRbbe5gHEJQx/WxJ2uQou+okACFi2ZMaIIgLm
+ nM+8m4kb6O+FSOdNZGzUnLHMWY9ucyil0zcp0PbEJvSvfZY4XTSErUPEmc7aTvxKCMPHj8Vv6h1
+ BCNJsymrWMEQQ9ghLQgaa58VHFwGgXqw==
+X-Gm-Gg: ASbGnct5OdTECNF64/1sJcw1VwZhHmQgDPJFIVSZngcNTJ0cDYKucYaff0GuRNrKIF1
+ +MzhQTIyjL3vPAi3BGrhXZpLf9lx6G6gesk+GgqOGQRDPccYzq2VkBeKtMWTIKZmjm+oq1JUNzN
+ NcLqjVbhUH4JhkbvdL60aIVrc63E3R+pKEH6Q/WjeoNptAlWnyQxewUVzkzkfbq/YLbujMhk6MW
+ dL1hDRR3Mk/iOkwkkpBE4PGsBUkwirBcx+tbd0mWhFXAx+NJpNt1bJREHsM5uCW85rSA8jCY8Rm
+ cZClwQ==
+X-Received: by 2002:a05:6000:1f8f:b0:38d:d223:f8e6 with SMTP id
+ ffacd0b85a97d-38f6e4c20damr2693644f8f.0.1740140626489; 
+ Fri, 21 Feb 2025 04:23:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH2KGV9KW75NIzNkWG0SW6peFEkOFc/jU+KcSZPzdoAVv5xo2diToCCT3MD2+GZhM03uTHZcw==
+X-Received: by 2002:a05:6000:1f8f:b0:38d:d223:f8e6 with SMTP id
+ ffacd0b85a97d-38f6e4c20damr2693617f8f.0.1740140626064; 
+ Fri, 21 Feb 2025 04:23:46 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce435sm16127735e9.3.2025.02.21.04.23.41
+ ffacd0b85a97d-38f25915785sm23929271f8f.58.2025.02.21.04.23.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:42 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:40 -0500
+ Fri, 21 Feb 2025 04:23:45 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:23:43 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Li Zhijian <lizhijian@fujitsu.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 20/41] hw/cxl: Introduce CXL_T3_MSIX_VECTOR enumeration
-Message-ID: <8f90a54cfafe8c93a71930a96a63ccbd074f4142.1740140520.git.mst@redhat.com>
+Subject: [PULL 21/41] hw/mem/cxl_type3: Add paired
+ msix_uninit_exclusive_bar() call
+Message-ID: <0401c4328f4d18be540fd432c2bbacce4531d14f.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -110,184 +109,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Li Zhijian <lizhijian@fujitsu.com>
 
-Introduce the `CXL_T3_MSIX_VECTOR` enumeration to specify MSIX vector
-assignments specific to the Type 3 (T3) CXL device.
+msix_uninit_exclusive_bar() should be paired with msix_init_exclusive_bar()
 
-The primary goal of this change is to encapsulate the MSIX vector uses
-that are unique to the T3 device within an enumeration, improving code
-readability and maintenance by avoiding magic numbers. This organizational
-change allows for more explicit references to each vector’s role, thereby
-reducing the potential for misconfiguration.
-
-It also modified `mailbox_reg_init_common` to accept the `msi_n` parameter,
-reflecting the new MSIX vector setup.
-
-This pertains to the T3 device privately; other endpoints should refrain from
-using it, despite its public accessibility to all of them.
+Ensure proper resource cleanup by adding the missing
+`msix_uninit_exclusive_bar()` call for the Type3 CXL device.
 
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20250203161908.145406-2-Jonathan.Cameron@huawei.com>
+Message-Id: <20250203161908.145406-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h |  4 ++--
- hw/cxl/cxl-device-utils.c   | 12 +++++-------
- hw/cxl/switch-mailbox-cci.c |  4 +++-
- hw/mem/cxl_type3.c          | 20 ++++++++++++++------
- 4 files changed, 24 insertions(+), 16 deletions(-)
+ hw/mem/cxl_type3.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 561b375dc8..3a0ee7e8e7 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -264,8 +264,8 @@ void cxl_device_register_block_init(Object *obj, CXLDeviceState *dev,
- typedef struct CXLType3Dev CXLType3Dev;
- typedef struct CSWMBCCIDev CSWMBCCIDev;
- /* Set up default values for the register block */
--void cxl_device_register_init_t3(CXLType3Dev *ct3d);
--void cxl_device_register_init_swcci(CSWMBCCIDev *sw);
-+void cxl_device_register_init_t3(CXLType3Dev *ct3d, int msi_n);
-+void cxl_device_register_init_swcci(CSWMBCCIDev *sw, int msi_n);
- 
- /*
-  * CXL r3.1 Section 8.2.8.1: CXL Device Capabilities Array Register
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 035d034f6d..52ad1e4c3f 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -352,10 +352,8 @@ static void device_reg_init_common(CXLDeviceState *cxl_dstate)
-     }
- }
- 
--static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-+static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate, int msi_n)
- {
--    const uint8_t msi_n = 9;
--
-     /* 2048 payload size */
-     ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
-                      PAYLOAD_SIZE, CXL_MAILBOX_PAYLOAD_SHIFT);
-@@ -382,7 +380,7 @@ static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-     cxl_dstate->memdev_status = memdev_status_reg;
- }
- 
--void cxl_device_register_init_t3(CXLType3Dev *ct3d)
-+void cxl_device_register_init_t3(CXLType3Dev *ct3d, int msi_n)
- {
-     CXLDeviceState *cxl_dstate = &ct3d->cxl_dstate;
-     uint64_t *cap_h = cxl_dstate->caps_reg_state64;
-@@ -398,7 +396,7 @@ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
-     device_reg_init_common(cxl_dstate);
- 
-     cxl_device_cap_init(cxl_dstate, MAILBOX, 2, CXL_DEV_MAILBOX_VERSION);
--    mailbox_reg_init_common(cxl_dstate);
-+    mailbox_reg_init_common(cxl_dstate, msi_n);
- 
-     cxl_device_cap_init(cxl_dstate, MEMORY_DEVICE, 0x4000,
-         CXL_MEM_DEV_STATUS_VERSION);
-@@ -408,7 +406,7 @@ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
-                               CXL_MAILBOX_MAX_PAYLOAD_SIZE);
- }
- 
--void cxl_device_register_init_swcci(CSWMBCCIDev *sw)
-+void cxl_device_register_init_swcci(CSWMBCCIDev *sw, int msi_n)
- {
-     CXLDeviceState *cxl_dstate = &sw->cxl_dstate;
-     uint64_t *cap_h = cxl_dstate->caps_reg_state64;
-@@ -423,7 +421,7 @@ void cxl_device_register_init_swcci(CSWMBCCIDev *sw)
-     device_reg_init_common(cxl_dstate);
- 
-     cxl_device_cap_init(cxl_dstate, MAILBOX, 2, 1);
--    mailbox_reg_init_common(cxl_dstate);
-+    mailbox_reg_init_common(cxl_dstate, msi_n);
- 
-     cxl_device_cap_init(cxl_dstate, MEMORY_DEVICE, 0x4000, 1);
-     memdev_reg_init_common(cxl_dstate);
-diff --git a/hw/cxl/switch-mailbox-cci.c b/hw/cxl/switch-mailbox-cci.c
-index 65cdac6cc1..833b824619 100644
---- a/hw/cxl/switch-mailbox-cci.c
-+++ b/hw/cxl/switch-mailbox-cci.c
-@@ -17,10 +17,12 @@
- #include "hw/qdev-properties.h"
- #include "hw/cxl/cxl.h"
- 
-+#define CXL_SWCCI_MSIX_MBOX 3
-+
- static void cswmbcci_reset(DeviceState *dev)
- {
-     CSWMBCCIDev *cswmb = CXL_SWITCH_MAILBOX_CCI(dev);
--    cxl_device_register_init_swcci(cswmb);
-+    cxl_device_register_init_swcci(cswmb, CXL_SWCCI_MSIX_MBOX);
- }
- 
- static void cswbcci_realize(PCIDevice *pci_dev, Error **errp)
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 0ae1704a34..ebc0ec536e 100644
+index ebc0ec536e..4775aab0d6 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -30,6 +30,14 @@
- #include "hw/cxl/cxl.h"
- #include "hw/pci/msix.h"
+@@ -944,6 +944,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+ err_release_cdat:
+     cxl_doe_cdat_release(cxl_cstate);
+ err_free_special_ops:
++    msix_uninit_exclusive_bar(pci_dev);
+     g_free(regs->special_ops);
+ err_address_space_free:
+     if (ct3d->dc.host_dc) {
+@@ -967,6 +968,7 @@ static void ct3_exit(PCIDevice *pci_dev)
  
-+/* type3 device private */
-+enum CXL_T3_MSIX_VECTOR {
-+    CXL_T3_MSIX_PCIE_DOE_TABLE_ACCESS = 0,
-+    CXL_T3_MSIX_EVENT_START = 2,
-+    CXL_T3_MSIX_MBOX = CXL_T3_MSIX_EVENT_START + CXL_EVENT_TYPE_MAX,
-+    CXL_T3_MSIX_VECTOR_NR
-+};
-+
- #define DWORD_BYTE 4
- #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
- 
-@@ -843,7 +851,6 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     ComponentRegisters *regs = &cxl_cstate->crb;
-     MemoryRegion *mr = &regs->component_registers;
-     uint8_t *pci_conf = pci_dev->config;
--    unsigned short msix_num = 10;
-     int i, rc;
-     uint16_t count;
- 
-@@ -884,16 +891,17 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-                      &ct3d->cxl_dstate.device_registers);
- 
-     /* MSI(-X) Initialization */
--    rc = msix_init_exclusive_bar(pci_dev, msix_num, 4, NULL);
-+    rc = msix_init_exclusive_bar(pci_dev, CXL_T3_MSIX_VECTOR_NR, 4, NULL);
-     if (rc) {
-         goto err_address_space_free;
-     }
--    for (i = 0; i < msix_num; i++) {
-+    for (i = 0; i < CXL_T3_MSIX_VECTOR_NR; i++) {
-         msix_vector_use(pci_dev, i);
-     }
- 
-     /* DOE Initialization */
--    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true, 0);
-+    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true,
-+                  CXL_T3_MSIX_PCIE_DOE_TABLE_ACCESS);
- 
-     cxl_cstate->cdat.build_cdat_table = ct3_build_cdat_table;
-     cxl_cstate->cdat.free_cdat_table = ct3_free_cdat_table;
-@@ -908,7 +916,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     if (rc) {
-         goto err_release_cdat;
-     }
--    cxl_event_init(&ct3d->cxl_dstate, 2);
-+    cxl_event_init(&ct3d->cxl_dstate, CXL_T3_MSIX_EVENT_START);
- 
-     /* Set default value for patrol scrub attributes */
-     ct3d->patrol_scrub_attrs.scrub_cycle_cap =
-@@ -1202,7 +1210,7 @@ static void ct3d_reset(DeviceState *dev)
- 
-     pcie_cap_fill_link_ep_usp(PCI_DEVICE(dev), ct3d->width, ct3d->speed);
-     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
--    cxl_device_register_init_t3(ct3d);
-+    cxl_device_register_init_t3(ct3d, CXL_T3_MSIX_MBOX);
- 
-     /*
-      * Bring up an endpoint to target with MCTP over VDM.
+     pcie_aer_exit(pci_dev);
+     cxl_doe_cdat_release(cxl_cstate);
++    msix_uninit_exclusive_bar(pci_dev);
+     g_free(regs->special_ops);
+     if (ct3d->dc.host_dc) {
+         cxl_destroy_dc_regions(ct3d);
 -- 
 MST
 
