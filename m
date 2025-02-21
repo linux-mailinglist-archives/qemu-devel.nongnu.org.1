@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8EDA3F444
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC3BA3F44F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS5b-000387-Qv; Fri, 21 Feb 2025 07:25:08 -0500
+	id 1tlS5b-0003Ag-Q6; Fri, 21 Feb 2025 07:25:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5S-0002Ws-Kd
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:58 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5V-0002vz-Km
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5Q-0007Fx-5T
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:58 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5T-0007GH-RJ
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140695;
+ s=mimecast20190719; t=1740140699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7AoCeBbkagUX8Kyv4XqGNujI5QUp6oIuMdoxn2XTqVk=;
- b=ecqmbU6RdVHtJQGMKB//SKxDrfkBceXR2+v/64BkWBs874m6YA6oAxF16WnZORvWEo2/SM
- ECy3EDPsGsUAK49dvIeH2ib0KZZS6pQE6O3jBMXRamkBup6GvYid5O8pTe5JEPRVZN6MRc
- 5sNLhbcHjwjq2xG0xrpMf2zB9XeqmUg=
+ bh=I0OkFCZq8v0ezATiJzoCyWDoQl7Sr4+CP54xKEjqIMM=;
+ b=Ar84hrt6rRC0c7/4PeGtgtXSOXsHZXB0wx8tz6wcVVUBQcQGQ4d0POfBxiirqJMvWtqZAq
+ NCEPHkVbNc9n8ZaJSQH1XyZFrIECk8JxYEiSf1obEqMSZyjfKYS7k4sl/VD4+XkpJ3mHYi
+ YJNjn+5tm6Hkqx07s91xXm/PNKGHhZo=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-YnydFCNOOQSY8tgy7HAz9w-1; Fri, 21 Feb 2025 07:24:54 -0500
-X-MC-Unique: YnydFCNOOQSY8tgy7HAz9w-1
-X-Mimecast-MFC-AGG-ID: YnydFCNOOQSY8tgy7HAz9w_1740140693
+ us-mta-600-RKQWpiuiP4eTqM_CqD4sLA-1; Fri, 21 Feb 2025 07:24:57 -0500
+X-MC-Unique: RKQWpiuiP4eTqM_CqD4sLA-1
+X-Mimecast-MFC-AGG-ID: RKQWpiuiP4eTqM_CqD4sLA_1740140697
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4399a5afc72so10251115e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:53 -0800 (PST)
+ 5b1f17b1804b1-43943bd1409so14811695e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140692; x=1740745492;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7AoCeBbkagUX8Kyv4XqGNujI5QUp6oIuMdoxn2XTqVk=;
- b=GncP+wwrg4myeNus4i/D3VsOuZEsxn1HhuOcNP5c2iCbY0g6y6i7j8i6shrxAVcZRV
- 0Ka7IZ9Dl7zTYmSe8EH9Xz95PqLzCY9xa89VL7SAOri2Jo4PvBB7M7rqzANUfIJvRM/l
- cj/eoXV9mIT7tVc9Gh+bmROenElERpe8bjO4Djs6s1F7j8wrvP+AGaGqWYTreh7TgTzP
- xZdsk9qGwVIwJODQRjBZLBzHy3H1YhM940q/pMOAmCLfCu+KoZFpMotRoljW5vDmhZIt
- TrXuTi2WtCeSjVAu8vu9HzFUXAsk6nvlBzuFfYXK+dgS2S0EQ3rbqBtOCBl/eC2l4YDS
- ISfg==
-X-Gm-Message-State: AOJu0YwQ3zdSm7N+VjntN2xc7H8A2dVIoc+2PaIgivWRYB8eC3ndunNN
- nYeyRBU4jdA3W7nqRaAMSakJoky40c5XW8DTTbEqoLAiRnEFRravdjyyYhw/VnWnG3g3jCbz65S
- 7RB7RwsSlyIDPFQXEZLqbs7FPfz3mCRI670vr17dxtQdaR/D3HmsOaDuuBbIMzL9ELL0XQsl3/0
- st+cX99O8ULuo3WeQXQLYZsqpkaOh6Hg==
-X-Gm-Gg: ASbGnctZ0OsKBpkDJY2lSHFp6Bw3JmsH8FtLJruWIbB1ud4LNCaoKmGCPDIsKBw1iyn
- p2ankuLciYJQddJYcAbaqhmao/QqOtvx5CBIYaeod0UZ4DlW63bVpLTXK/uzgQUi1XHAFVnzPRU
- Hb9Y77VyP+mQ7aObmojyK3JUchXKWS2FM7N9xXp5SIb9YmNwLtRC5FN0KZ2KVk9SQ03RCShVPxi
- KsNpgy0Msjrig+WLkFMbvd7egRwGwh1xixey0Xt5s/Ffe8DV4H+WWOwpke7RWYqBjsGFFo7Cbh4
- j8nFhA==
-X-Received: by 2002:a05:600c:3548:b0:439:a138:1d with SMTP id
- 5b1f17b1804b1-439aebc2408mr18512765e9.22.1740140692570; 
- Fri, 21 Feb 2025 04:24:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEC1S3BVBIVp6Aq5M9p4iY9jtpnipohLmI5OfqtcZ9IuH+TJxJwTRR89FVJi6u+C4uJxcbysQ==
-X-Received: by 2002:a05:600c:3548:b0:439:a138:1d with SMTP id
- 5b1f17b1804b1-439aebc2408mr18512445e9.22.1740140692044; 
- Fri, 21 Feb 2025 04:24:52 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140696; x=1740745496;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=I0OkFCZq8v0ezATiJzoCyWDoQl7Sr4+CP54xKEjqIMM=;
+ b=nE/oDWe/KWKW8kT3OIDw1U0Br8YEzV74+uE9N7/M8nZT0wiBBrJkTVDFc9TIjo8pP7
+ rbVV5TU/M4NlrlZrVkc5GHKryPi9n2KT9bh74MHCMKrEh5WqBIO1gfOr77ZzY1FUTfly
+ 8KROW0rmrY9vYxztXPFRbO1l0r7GCJ+rJ5rk3U/9YARA+wHwILEf+bC2SIYy12h+ZtHt
+ mwxVUxdil/lqO/hI4mDfyPP0qCfJnCLemz8P31UCtq6lG0z84HeIjiu7v2o8pTzkpOhk
+ Qirjvq3CQGh6BpY7LSkkfz0GsASXNjBfaNIiwy3a3hxDMt2dnrNoQ4Gri5QS0qK29+QK
+ 2ZUQ==
+X-Gm-Message-State: AOJu0YwKZ/jbutESI4O95hJ5kdxGLl7QotQ4Xht20v1HSLQWI3ga1+v6
+ C5WJ6aUHyF4eINgzVNGVloeH51iT9rKAaPoNyWJnbndoOlTvNjZmxHR/Jeuy64nbCgEV8Iuql4Z
+ tyUCy7KjQsNzxm98ZyUH2CtaMMbSb/T0j+s+swdBsuyqyRWGwAM3lyA+5Jh6P0QWhVlY+jxnfI1
+ oZEywH2LsbHIsegq106kAfZ2Hv3spdPA==
+X-Gm-Gg: ASbGnctBLh0WpD0+6EaijCd92cgXWtE9OC39qS43w58vkOqyvlixkoPRjE31Q9LQMvM
+ 7rsdiM24cFkUAv9BgGvCxK1Q7EC3aHuC2/DTu73QyoHYQtPvtdnmorgWj3V5Bt36CgR6E/EmQay
+ XR2IWf8eX1PhGD4eipglTGSNoLXFIFEEj1fqld5HafYZX/Yv5DiNDG1eMaodAN/otwrZ/+eTUs1
+ Bi1WvRt9Gyei09S74Pk3s49R6aWgjaPoLOH5eIgkKttUwsYfV+I/KqBjNtDZy4ll0wbNsupC9aK
+ wsSanA==
+X-Received: by 2002:a05:6000:1865:b0:38f:32ac:7e53 with SMTP id
+ ffacd0b85a97d-38f6f0b189dmr2926310f8f.39.1740140695946; 
+ Fri, 21 Feb 2025 04:24:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF1VdlP3nDv9m/QVmbN66yECgtSWRc76CHq+MPgAz5kk0JJkt5SGKyisEDedvAy6RtJeKfIHQ==
+X-Received: by 2002:a05:6000:1865:b0:38f:32ac:7e53 with SMTP id
+ ffacd0b85a97d-38f6f0b189dmr2926280f8f.39.1740140695503; 
+ Fri, 21 Feb 2025 04:24:55 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02d8859sm15613625e9.16.2025.02.21.04.24.49
+ ffacd0b85a97d-38f258ccd51sm23265433f8f.29.2025.02.21.04.24.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:24:51 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:24:48 -0500
+ Fri, 21 Feb 2025 04:24:55 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:24:52 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eric Auger <eric.auger@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>, Peter Xu <peterx@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>
-Subject: [PULL 40/41] hw/vfio/common: Add a trace point in vfio_reset_handler
-Message-ID: <d410e709526d1cd4aa9085c6e254a622594a02a5.1740140520.git.mst@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Luc Michel <luc.michel@amd.com>
+Subject: [PULL 41/41] docs/devel/reset: Document reset expectations for DMA
+ and IOMMU
+Message-ID: <dd6d545e8f2d9a0e8a8c287ec16469f03ef5c198.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -112,46 +112,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-To ease the debug of reset sequence, let's add a trace point
-in vfio_reset_handler()
+To avoid any translation faults, the IOMMUs are expected to be
+reset after the devices they protect. Document that we expect
+DMA requests to be stopped during the 'enter' or 'hold' phase
+while IOMMUs should be reset during the 'exit' phase.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20250218182737.76722-5-eric.auger@redhat.com>
+Message-Id: <20250218182737.76722-6-eric.auger@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/vfio/common.c     | 1 +
- hw/vfio/trace-events | 1 +
- 2 files changed, 2 insertions(+)
+ docs/devel/reset.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index f7499a9b74..173fb3a997 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1386,6 +1386,7 @@ void vfio_reset_handler(void *opaque)
- {
-     VFIODevice *vbasedev;
+diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
+index adefd59ef9..0b8b2fa5f4 100644
+--- a/docs/devel/reset.rst
++++ b/docs/devel/reset.rst
+@@ -143,6 +143,11 @@ The *exit* phase is executed only when the last reset operation ends. Therefore
+ the object does not need to care how many of reset controllers it has and how
+ many of them have started a reset.
  
-+    trace_vfio_reset_handler();
-     QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
-         if (vbasedev->dev->realized) {
-             vbasedev->ops->vfio_compute_needs_reset(vbasedev);
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index cab1cf1de0..c5385e1a4f 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -120,6 +120,7 @@ vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype
- vfio_legacy_dma_unmap_overflow_workaround(void) ""
- vfio_get_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
- vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
-+vfio_reset_handler(void) ""
++DMA capable devices are expected to cancel all outstanding DMA operations
++during either 'enter' or 'hold' phases. IOMMUs are expected to reset during
++the 'exit' phase and this sequencing makes sure no outstanding DMA request
++will fault.
++
  
- # platform.c
- vfio_platform_realize(char *name, char *compat) "vfio device %s, compat = %s"
+ Handling reset in a resettable object
+ -------------------------------------
 -- 
 MST
 
