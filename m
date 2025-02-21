@@ -2,90 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58859A3F422
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5444CA3F445
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:29:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS3I-0004PK-3w; Fri, 21 Feb 2025 07:22:44 -0500
+	id 1tlS3M-0004Pu-CD; Fri, 21 Feb 2025 07:22:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS39-0004Ou-Ms
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3C-0004PD-UL
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS37-0006yi-Lp
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:35 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3B-0006yt-89
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:22:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140552;
+ s=mimecast20190719; t=1740140554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=OX+0VDZt+7Si5uzy6Q/j53hodSniUvH8WhlfBlxLdJM=;
- b=QvFbbTQGHe5WOoImYCSplgypeGW8+ZBwfQll5GFWwsQU4pBxMdLWyp8p74mkSPJuM88OdU
- XP2WJAa+7HOG0pFA3VaXkex4Gic8f3wmxjOYaP97OOYxODRkG4DzigjWV0DjYJbskoofOT
- Msp7tZ8u8RXtilMhAuXjUq3HeH45d10=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=aOcHI/6ihrxObB+6D978/KQRlCQdnjX6vRn12oDIrAY=;
+ b=PJlSV4gHVvRzP59pUiPVR8/8RSV+XZFFWyJGAIi1KZBFL6lxYF61H21aYhlzQLiaI64cTh
+ t2C4tOUz3NPTB2EV0n21M81Sy/3xV/n55wRieEp2JHLb//xBDf6j57EayNH/TciQSmQTo8
+ tRLRA4/bnVM/0CdwgFAfwgOGuflhVHA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-RlU6xmV8MtOuXoBRuEWEoA-1; Fri, 21 Feb 2025 07:22:30 -0500
-X-MC-Unique: RlU6xmV8MtOuXoBRuEWEoA-1
-X-Mimecast-MFC-AGG-ID: RlU6xmV8MtOuXoBRuEWEoA_1740140549
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43945f32e2dso18588225e9.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:29 -0800 (PST)
+ us-mta-635-qhjWwqXeO020XroAKl4-PQ-1; Fri, 21 Feb 2025 07:22:32 -0500
+X-MC-Unique: qhjWwqXeO020XroAKl4-PQ-1
+X-Mimecast-MFC-AGG-ID: qhjWwqXeO020XroAKl4-PQ_1740140551
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-38f255d44acso931277f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:22:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140548; x=1740745348;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OX+0VDZt+7Si5uzy6Q/j53hodSniUvH8WhlfBlxLdJM=;
- b=TiXnUQp2JjUImZft/uKuKbBJVI67UwJUFnPy9K0YiuVXBNpa4wQrAk0Mm2sZ9ffubC
- qeZ8ZP/HmPvCQJtVWey/bT36acSZePUUmZ3Nh0wrueKXgk5nh91SRG+S9qlAV30PIJuL
- DgXvvZuCVxJHrR88vKA8OQ+g1ujoNBcwWplWn3ZUK2A9D4mokU5N5iVu3zz4t1Gab5pb
- Dmd5GfEnyd533AL5GAabPwIsiwx5ETqo0Oc+nAwK23AUaOYcFGvn2rJV2nscvcLd5Ppl
- mfOok20Z+xudoJRjLxBNFS2NKSPThcNAVy9MMLsIAz+wIeRcEiKHFCXs2If5m4ggrVz0
- fBBg==
-X-Gm-Message-State: AOJu0YxWrnXI0jKkBGZUeGvBO6fFdpB8Vuv4UksM5GAXVfbOLwfRMROk
- edrii69HCKjOhdqmYAseqZieQwbsrx5L8az19RxNkOyPkoWTY4oGyJQeQj57/TB1D+ROarcDx71
- rS/+277ijRcPSdPz+yWLr2JY0oHARZYPW8LHzlkhHXohtU+ugyR83rfKMvYS0FZeAsjLXZgL8v1
- PRYMMh7DY7Nn7ouvD1NXcX6mvP0yV+ww==
-X-Gm-Gg: ASbGncsZB/RCXGfshnJ1oUTQCbdv+jNEq3yno6A4qIH4LTwmXoXcJwrZ+UMmJyJTWkq
- OTYeVDL0fOOzCdnrc/asQMR43DUvZrNsXLOShb8gRWMzTlNEQN0woojhzqZdhYVloYOScgzWa1E
- cnIsGsPoVcIs6mOy9cPRCDRr0vjhuFAfOu6EAtr+VfohMoI3Cgifx9pmfz3j0FrwTkRJDov8aW/
- nxtJLK4p8szz0hruFZ/9WYHakQdqiBwrW5tzg2xU57+LvY8/3kxg2VWYEd5hSaBIoNHckO4Tjqe
- PigopQ==
-X-Received: by 2002:a05:600c:46c9:b0:439:93d2:72b4 with SMTP id
- 5b1f17b1804b1-439ae1f159fmr34197775e9.16.1740140548192; 
- Fri, 21 Feb 2025 04:22:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlDOYXEsGHcE63Lf93Zi72b9FERKuBdC7b5FGGUemVa0khe17dlUdiueMXzfAt9iyLGFWynw==
-X-Received: by 2002:a05:600c:46c9:b0:439:93d2:72b4 with SMTP id
- 5b1f17b1804b1-439ae1f159fmr34197225e9.16.1740140547567; 
- Fri, 21 Feb 2025 04:22:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140551; x=1740745351;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aOcHI/6ihrxObB+6D978/KQRlCQdnjX6vRn12oDIrAY=;
+ b=wz9YneiDeLFZ3wvxITB6F5nhAlTbrAqFYlomWTaVpDC2Jvh+Ourlaa7m/yYzVlFMzl
+ Acu3xVOSpqZ+CHcItBabg5tUAcZL7RH8P5kzyUpoq/OteuZnkvlUyqxocJSKNl1GfsRE
+ OUSkHZI1bFFixH5XNS1yRyG5S+JGRGF58VumzD1z7BjrgQp32WVGBz7BYmDWhSvMifRV
+ j8R6Djrg8znTO7Q9dV2RE9/AmEhP1YvUgYrFbypZ0eNkXM3y0WC3+RttoltszCKyr+Ti
+ cxe2C+NQj2I3CfhIeUbb4qV1JB4zLp26/0fTC3PY7Bzv3TnKL4TnGK6ItEZA8gESmXkc
+ hJhg==
+X-Gm-Message-State: AOJu0YxU9DdHzOG6AjcFwTnF2haMbA1r42baVRFcBpugLsXrbKguHA5g
+ BF+TQ7Lq/gYswzd8EOWichQ3dW5DPsX2of8umacYVb9G87gaxahmAdrVCcFud3HQOS4AWpZgXuO
+ AFr2o1S4Ns/mGljOh2oDJpuh1hgBns6IX1j/DEjHcQHLCX6FtUCh0eKh5Ix1lIskUXYDSQdS/W5
+ 9wvqA++Wm8IW2xsAqZo/uYUalCslEBfQ==
+X-Gm-Gg: ASbGnctcGx82wMQByzeeP1dZoM6jRwsZNZHdOQY0U8ShwVl4YnqcsWFLTFt/FCEYVPd
+ oILpBXMWOTxFS8akVMs4+LouKkQwZqOvgo6mkUg3jFE4zzolegwzKP4j21gAY8oE+dooaAd9O1B
+ /BVZDvRRSTRlGq2MvU1H0um1OgohPhJNj64N36akLm+88cktukdF+ZVzugMgOvRFUypU+PiZT0r
+ 7sqzM9DI7bs8a4ptbU8M3WIu8kG09Vg5uGHHr7oKQQLTh28egR/rVBUhqTT/WJddl/pyZh1+IuN
+ JFPSLA==
+X-Received: by 2002:a05:6000:4025:b0:38b:d7c3:3768 with SMTP id
+ ffacd0b85a97d-38f6e946edbmr2026434f8f.12.1740140551153; 
+ Fri, 21 Feb 2025 04:22:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErmAESHos3VULoU2lru6dRQ25ywZWT3YY+u+cL68nfcp0ji68vis2RnXs9dmxkipZJXCg5cQ==
+X-Received: by 2002:a05:6000:4025:b0:38b:d7c3:3768 with SMTP id
+ ffacd0b85a97d-38f6e946edbmr2026414f8f.12.1740140550708; 
+ Fri, 21 Feb 2025 04:22:30 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258f5fabsm22968492f8f.45.2025.02.21.04.22.26
+ 5b1f17b1804b1-439b0371c67sm15582315e9.34.2025.02.21.04.22.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:22:26 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:22:23 -0500
+ Fri, 21 Feb 2025 04:22:30 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:22:27 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/41] virtio,pc,pci: features, fixes, cleanups
-Message-ID: <cover.1740140520.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ devel@lists.libvirt.org
+Subject: [PULL 01/41] docs/about: Change notes on x86 machine type
+ deprecation into a general one
+Message-ID: <6f9a1a01433738811c9795dcf29f299c60835558.1740140520.git.mst@redhat.com>
+References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,157 +107,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 4d5d933bbc7cc52f6cc6b9021f91fa06266222d5:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'pull-xenfv-20250116' of git://git.infradead.org/users/dwmw2/qemu into staging (2025-01-16 09:03:43 -0500)
+We now have a general note about versioned machine types getting
+deprecated and removed at the beginning of the deprecated.rst file,
+so we should also have a general note about this in removed-features.rst
+(which will also apply to versioned non-x86 machine types) instead of
+listing individual old machine types in the document.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to dd6d545e8f2d9a0e8a8c287ec16469f03ef5c198:
-
-  docs/devel/reset: Document reset expectations for DMA and IOMMU (2025-02-21 07:21:25 -0500)
-
-----------------------------------------------------------------
-virtio,pc,pci: features, fixes, cleanups
-
-Features:
-
-SR-IOV emulation for pci
-virtio-mem-pci support for s390
-interleave support for cxl
-big endian support for vdpa svq
-new QAPI events for vhost-user
-
-Also vIOMMU reset order fixups are in.
-Fixes, cleanups all over the place.
-
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250116064644.65670-1-thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ docs/about/deprecated.rst       |  7 -------
+ docs/about/removed-features.rst | 11 +++++------
+ 2 files changed, 5 insertions(+), 13 deletions(-)
 
-----------------------------------------------------------------
-Akihiko Odaki (12):
-      hw/net: Fix NULL dereference with software RSS
-      hw/ppc/spapr_pci: Do not create DT for disabled PCI device
-      hw/ppc/spapr_pci: Do not reject VFs created after a PF
-      s390x/pci: Avoid creating zpci for VFs
-      s390x/pci: Allow plugging SR-IOV devices
-      s390x/pci: Check for multifunction after device realization
-      pcie_sriov: Do not manually unrealize
-      pcie_sriov: Ensure VF addr does not overflow
-      pcie_sriov: Reuse SR-IOV VF device instances
-      pcie_sriov: Release VFs failed to realize
-      pcie_sriov: Remove num_vfs from PCIESriovPF
-      pcie_sriov: Register VFs after migration
-
-Alexander Graf (1):
-      hw/virtio/virtio-nsm: Respond with correct length
-
-Daniel P. Berrangé (1):
-      hw/virtio: reset virtio balloon stats on machine reset
-
-Eric Auger (5):
-      hw/virtio/virtio-iommu: Migrate to 3-phase reset
-      hw/i386/intel-iommu: Migrate to 3-phase reset
-      hw/arm/smmuv3: Move reset to exit phase
-      hw/vfio/common: Add a trace point in vfio_reset_handler
-      docs/devel/reset: Document reset expectations for DMA and IOMMU
-
-Jonah Palmer (3):
-      vhost-iova-tree: Implement an IOVA-only tree
-      vhost-iova-tree, svq: Implement GPA->IOVA & partial IOVA->HVA trees
-      vhost-iova-tree: Update documentation
-
-Konstantin Shkolnyy (1):
-      vdpa: Fix endian bugs in shadow virtqueue
-
-Laurent Vivier (1):
-      net: vhost-user: add QAPI events to report connection state
-
-Li Zhijian (4):
-      hw/cxl: Introduce CXL_T3_MSIX_VECTOR enumeration
-      hw/mem/cxl_type3: Add paired msix_uninit_exclusive_bar() call
-      hw/mem/cxl_type3: Fix special_ops memory leak on msix_init_exclusive_bar() failure
-      hw/mem/cxl_type3: Ensure errp is set on realization failure
-
-Matias Ezequiel Vara Larsen (1):
-      vhost-user-snd: correct the calculation of config_size
-
-Nicholas Piggin (3):
-      qtest/libqos/pci: Do not write to PBA memory
-      hw/pci/msix: Warn on PBA writes
-      hw/pci: Assert a bar is not registered multiple times
-
-Sairaj Kodilkar (2):
-      amd_iommu: Use correct DTE field for interrupt passthrough
-      amd_iommu: Use correct bitmask to set capability BAR
-
-Stefano Garzarella (2):
-      cryptodev/vhost: allocate CryptoDevBackendVhost using g_mem0()
-      MAINTAINERS: add more files to `vhost`
-
-Thomas Huth (4):
-      docs/about: Change notes on x86 machine type deprecation into a general one
-      hw/i386/pc: Fix crash that occurs when introspecting TYPE_PC_MACHINE machines
-      hw/i386/microvm: Fix crash that occurs when introspecting the microvm machine
-      tests/qtest/vhost-user-test: Use modern virtio for vhost-user tests
-
-Yao Xingtao (1):
-      mem/cxl_type3: support 3, 6, 12 and 16 interleave ways
-
- docs/pcie_sriov.txt                     |   8 +-
- qapi/net.json                           |  40 ++++++++
- hw/i386/amd_iommu.h                     |   2 +-
- hw/virtio/vhost-iova-tree.h             |   8 +-
- hw/virtio/vhost-shadow-virtqueue.h      |   5 +-
- include/hw/cxl/cxl_device.h             |   4 +-
- include/hw/pci/pcie_sriov.h             |   9 +-
- include/hw/virtio/virtio-balloon.h      |   4 +
- include/qemu/iova-tree.h                |  22 +++++
- backends/cryptodev-vhost.c              |   2 +-
- hw/arm/smmu-common.c                    |   9 +-
- hw/arm/smmuv3.c                         |  14 ++-
- hw/cxl/cxl-component-utils.c            |   9 +-
- hw/cxl/cxl-device-utils.c               |  12 +--
- hw/cxl/switch-mailbox-cci.c             |   4 +-
- hw/i386/amd_iommu.c                     |  10 +-
- hw/i386/intel_iommu.c                   |  12 ++-
- hw/i386/microvm.c                       |  66 ++++++-------
- hw/i386/pc.c                            |   6 +-
- hw/mem/cxl_type3.c                      |  45 ++++++---
- hw/net/igb.c                            |  10 +-
- hw/net/virtio-net.c                     |  45 ++++-----
- hw/nvme/ctrl.c                          |  22 +++--
- hw/pci/msix.c                           |   9 ++
- hw/pci/pci.c                            |  22 ++++-
- hw/pci/pcie_sriov.c                     | 159 +++++++++++++++++--------------
- hw/ppc/spapr_pci.c                      |  20 +++-
- hw/s390x/s390-pci-bus.c                 |  42 +++++++--
- hw/vfio/common.c                        |   1 +
- hw/virtio/vhost-iova-tree.c             | 115 +++++++++++++++++++----
- hw/virtio/vhost-shadow-virtqueue.c      |  73 ++++++++++-----
- hw/virtio/vhost-user-snd.c              |  18 +++-
- hw/virtio/vhost-vdpa.c                  |  40 +++++---
- hw/virtio/virtio-balloon.c              |  30 +++++-
- hw/virtio/virtio-iommu.c                |  14 ++-
- hw/virtio/virtio-nsm.c                  |   2 +-
- net/vhost-user.c                        |   3 +
- net/vhost-vdpa.c                        |  12 ++-
- tests/qtest/libqos/pci.c                |   2 -
- tests/qtest/vhost-user-test.c           |   3 +-
- util/iova-tree.c                        |  46 +++++++++
- MAINTAINERS                             |  11 ++-
- docs/about/deprecated.rst               |   7 --
- docs/about/removed-features.rst         |  11 +--
- docs/devel/reset.rst                    |   5 +
- hw/arm/trace-events                     |   1 +
- hw/i386/trace-events                    |   1 +
- hw/pci/trace-events                     |   2 +-
- hw/vfio/trace-events                    |   1 +
- hw/virtio/trace-events                  |   2 +-
- tests/functional/meson.build            |   2 +
- tests/functional/test_virtio_balloon.py | 161 ++++++++++++++++++++++++++++++++
- 52 files changed, 882 insertions(+), 301 deletions(-)
- create mode 100755 tests/functional/test_virtio_balloon.py
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 4a3c302962..7b42d6eecc 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -236,13 +236,6 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
+ 
+-``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-These old machine types are quite neglected nowadays and thus might have
+-various pitfalls with regards to live migration. Use a newer machine type
+-instead.
+-
+ PPC 405 ``ref405ep`` machine (since 9.1)
+ ''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index c6616ce05e..156c0c253c 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -972,6 +972,11 @@ from Linux in 2021, and is not supported anymore by QEMU either.
+ System emulator machines
+ ------------------------
+ 
++Note: Versioned machine types that have been introduced in a QEMU version
++that has initially been released more than 6 years before are considered
++obsolete and will be removed without further notice in this document.
++Please use newer machine types instead.
++
+ ``s390-virtio`` (removed in 2.6)
+ ''''''''''''''''''''''''''''''''
+ 
+@@ -1006,12 +1011,6 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-2.3`` (removed in 4.0 up to 9.0)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-These machine types were very old and likely could not be used for live
+-migration from old QEMU versions anymore. Use a newer machine type instead.
+-
+ Raspberry Pi ``raspi2`` and ``raspi3`` machines (removed in 6.2)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+-- 
+MST
 
 
