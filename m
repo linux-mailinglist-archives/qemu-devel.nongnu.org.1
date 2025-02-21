@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E65A3ECE5
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D770A3ECE8
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:36:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlMdB-0001Ux-Eq; Fri, 21 Feb 2025 01:35:25 -0500
+	id 1tlMd5-0001TP-Q7; Fri, 21 Feb 2025 01:35:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMd3-0001RT-Rz
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:17 -0500
-Received: from esa9.hc1455-7.c3s2.iphmx.com ([139.138.36.223])
+ id 1tlMd1-0001QE-3t
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:15 -0500
+Received: from esa8.hc1455-7.c3s2.iphmx.com ([139.138.61.253])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMd1-0003l4-MZ
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:17 -0500
+ id 1tlMcy-0003kN-6v
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1740119715; x=1771655715;
+ t=1740119712; x=1771655712;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Aq8SNc7rV72DFQv8V4a5SuEOqjhqhl4aZY+tkt+16uI=;
- b=MoZzumlSdZB2HV/Kk0f7WgZ0liQAKJ0mJBY3tjkZ+JV5i9Be/7qB5wCu
- TpN5HAYEi2QRfniy38Dk88EL9r0RBZoxgmOC1AFjeIWw603sWWe0zK8hL
- P1CN/6WKTzHLQhfnI5E9JRFL/l52BCUAeFcABm7PFnhaisvAxHIV22lJz
- r5B9KfU42iNKIT/xgYnTZ7UKgW+ekzwDv2hv/to0Fn7wz7wOZQCK6/jFg
- 69MQyuC3OFoTI+qfZg9JKnHJswgujBD/sFLvL78EpZu+X7oTTTe9RwY/s
- b9tS1Lff0Sm7iWtAVSmT1yPipFpRmSbj6S9s3hJjZ0DLZ9g01fUsHJ9r4 A==;
-X-CSE-ConnectionGUID: 35W+rgOgRaC9DXFAZqduzw==
-X-CSE-MsgGUID: hAFxGNyoSWOpCelzXfzbSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="179148616"
-X-IronPort-AV: E=Sophos;i="6.13,303,1732546800"; d="scan'208";a="179148616"
+ bh=k/LqOSlmor1UQwuRbxoZIb/A4xPPUncC4VvDl/x5/zc=;
+ b=MtmXkztnShLN/0Eb4cIxIq7Vwde83ErVa8TIxaW+Dv12HCHq5rXp0pS9
+ TjkxMXxeXxZwFMMLhkmMdoTExIInwb4D9axOKJQXl+eOxjjdQgQurU2De
+ hObzR+N3PViTiqpyoYt1JITxztkujoUDtZjaKtaJ/2QR9g/p+a5K/feaF
+ 1LCMj5X3ZEQLLIA/jMfefgRJpbYTTGsWsiIBF7skxbtsVcWgUhi/o6KdK
+ /wKKOfU8fmxvEB8cei3CI13n2aXhDgBRTghYRSUyriNzKOj11Sd5hziIc
+ 0Njiqdc88W32blOH5TNOmFokSyv+BFH7P85U8V6wxS7Zn4MKvm79HDAUx g==;
+X-CSE-ConnectionGUID: s81hMSPbRyq+mfbOKvPtkg==
+X-CSE-MsgGUID: hUt+Ac9BSQ+r88H12oKC+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="178755519"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732546800"; d="scan'208";a="178755519"
 Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
- by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 15:35:07 +0900
+ by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2025 15:35:08 +0900
 Received: from oym-m3.gw.nic.fujitsu.com (oym-nat-oym-m3.gw.nic.fujitsu.com
  [192.168.87.60])
- by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id C6CDEE60BF
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:05 +0900 (JST)
+ by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 7EB6BE60C5
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:06 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 8DA02D9A77
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:05 +0900 (JST)
+ by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 4480CD9A77
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:06 +0900 (JST)
 Received: from iaas-rdma.. (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id F0E1B1A000B;
- Fri, 21 Feb 2025 14:35:04 +0800 (CST)
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 69CDB1A006C;
+ Fri, 21 Feb 2025 14:35:05 +0800 (CST)
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2 4/8] migration: Integrate control_save_page() logic into
- ram_save_target_page()
-Date: Fri, 21 Feb 2025 14:36:08 +0800
-Message-ID: <20250221063612.695909-5-lizhijian@fujitsu.com>
+Subject: [PATCH v2 5/8] migration: Add
+ migration_capabilities_and_transport_compatible() helper
+Date: Fri, 21 Feb 2025 14:36:09 +0800
+Message-ID: <20250221063612.695909-6-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20250221063612.695909-1-lizhijian@fujitsu.com>
 References: <20250221063612.695909-1-lizhijian@fujitsu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.138.36.223;
- envelope-from=lizhijian@fujitsu.com; helo=esa9.hc1455-7.c3s2.iphmx.com
+Received-SPF: pass client-ip=139.138.61.253;
+ envelope-from=lizhijian@fujitsu.com; helo=esa8.hc1455-7.c3s2.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -87,67 +87,84 @@ From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor the page saving logic by integrating the control_save_page()
-function directly into ram_save_target_page(). This change consolidates the
-RDMA migration decision-making process into a single function, enhancing
-clarity and maintainability.
+Similar to migration_channels_and_transport_compatible(), introduce a
+new helper migration_capabilities_and_transport_compatible() to check if
+the capabilites is compatible with the transport.
+
+Currently, only move the capabilities vs RDMA transport to this
+function.
 
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/ram.c | 35 +++++++----------------------------
- 1 file changed, 7 insertions(+), 28 deletions(-)
+ migration/migration.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index b7157b9b175..e07651aee8d 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1143,33 +1143,6 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
-     return len;
+diff --git a/migration/migration.c b/migration/migration.c
+index c597aa707e5..2eacae25e0e 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -238,6 +238,30 @@ migration_channels_and_transport_compatible(MigrationAddress *addr,
+     return true;
  }
  
--/*
-- * @pages: the number of pages written by the control path,
-- *        < 0 - error
-- *        > 0 - number of pages written
-- *
-- * Return true if the pages has been saved, otherwise false is returned.
-- */
--static bool control_save_page(PageSearchStatus *pss,
--                              ram_addr_t offset, int *pages)
--{
--    int ret;
--
--    if (migrate_rdma() && !migration_in_postcopy()) {
--        ret = rdma_control_save_page(pss->pss_channel, pss->block->offset,
--                                     offset, TARGET_PAGE_SIZE);
--
--        if (ret == RAM_SAVE_CONTROL_DELAYED) {
--            *pages = 1;
--        } else {
--            *pages = ret;
--        }
--        return true;
--    }
--
--    return false;
--}
--
- /*
-  * directly send the page to the stream
-  *
-@@ -1966,7 +1939,13 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
-     int res;
- 
-     /* Hand over to RDMA first */
--    if (control_save_page(pss, offset, &res)) {
-+    if (migrate_rdma() && !migration_in_postcopy()) {
-+        res = rdma_control_save_page(pss->pss_channel, pss->block->offset,
-+                                     offset, TARGET_PAGE_SIZE);
-+
-+        if (res == RAM_SAVE_CONTROL_DELAYED) {
-+            res = 1;
++static bool
++migration_capabilities_and_transport_compatible(MigrationAddress *addr,
++                                                Error **errp)
++{
++    if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
++        if (migrate_xbzrle()) {
++            error_setg(errp, "RDMA and XBZRLE can't be used together");
++            return false;
 +        }
-         return res;
++        if (migrate_multifd()) {
++            error_setg(errp, "RDMA and multifd can't be used together");
++            return false;
++        }
++    }
++
++    return true;
++}
++
++static bool migration_transport_compatible(MigrationAddress *addr, Error **errp)
++{
++    return migration_channels_and_transport_compatible(addr, errp) &&
++           migration_capabilities_and_transport_compatible(addr, errp);
++}
++
+ static gint page_request_addr_cmp(gconstpointer ap, gconstpointer bp)
+ {
+     uintptr_t a = (uintptr_t) ap, b = (uintptr_t) bp;
+@@ -716,7 +740,7 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+-    if (!migration_channels_and_transport_compatible(addr, errp)) {
++    if (!migration_transport_compatible(addr, errp)) {
+         return;
+     }
+ 
+@@ -735,14 +759,6 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+         }
+ #ifdef CONFIG_RDMA
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
+-        if (migrate_xbzrle()) {
+-            error_setg(errp, "RDMA and XBZRLE can't be used together");
+-            return;
+-        }
+-        if (migrate_multifd()) {
+-            error_setg(errp, "RDMA and multifd can't be used together");
+-            return;
+-        }
+         rdma_start_incoming_migration(&addr->u.rdma, errp);
+ #endif
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
+@@ -2159,7 +2175,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+-    if (!migration_channels_and_transport_compatible(addr, errp)) {
++    if (!migration_transport_compatible(addr, errp)) {
+         return;
      }
  
 -- 
