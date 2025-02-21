@@ -2,93 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA417A3F431
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F6EA3F430
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:25:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS4k-00077d-D4; Fri, 21 Feb 2025 07:24:17 -0500
+	id 1tlS4p-0007XY-LF; Fri, 21 Feb 2025 07:24:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4Z-00072Z-LM
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4c-00077q-Tt
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4X-00078m-OB
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:03 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS4a-00079L-IO
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140641;
+ s=mimecast20190719; t=1740140643;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=htXrZRjJWy6jAGF8iFopXWg4nq3jbP1OW/HmNp/8W4o=;
- b=hZuCYZH6nCCNaIg3TRmGiJiuM34kNZUe6BUXK4z8ufcLRRuMOZOme9X/OeO9w7ywvvseJK
- mMbiKUJrlauJsj4X14c0ckgOXi2EfU1oO/ttigafnSZSCft9yt6M89xrORxpn03h5o/KbD
- BY9/1yO/n+gDOB3ULD62raRuFli6Oww=
+ bh=efArqX3wxrFLzxI2BnYAIchHDFGDYnrZNrftosICqWI=;
+ b=MpPgiqRaNsfloCCcj4Sl8kVaXns9Pt/CJ/NIuCN/wmBuoLAPeQGM9pPgw5V4+h4Z+0gMVp
+ cfu1vXcpEcEa3+FiNslNjVkn2yovAZd7UpqvtFG0GCPFbsVwAopd5NsZ9qWWHiA7XcZrLc
+ oens9hu89dczrGrIZT7uBJhvhtfy3T0=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-fEUT-AKfO3O5EDtbCDQ_Ng-1; Fri, 21 Feb 2025 07:23:59 -0500
-X-MC-Unique: fEUT-AKfO3O5EDtbCDQ_Ng-1
-X-Mimecast-MFC-AGG-ID: fEUT-AKfO3O5EDtbCDQ_Ng_1740140638
+ us-mta-227-24l28EmYPciw52PTCe4LvA-1; Fri, 21 Feb 2025 07:24:02 -0500
+X-MC-Unique: 24l28EmYPciw52PTCe4LvA-1
+X-Mimecast-MFC-AGG-ID: 24l28EmYPciw52PTCe4LvA_1740140641
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-38f2c0aa6d6so1468820f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:58 -0800 (PST)
+ ffacd0b85a97d-38f20b530dfso2862748f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140637; x=1740745437;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=htXrZRjJWy6jAGF8iFopXWg4nq3jbP1OW/HmNp/8W4o=;
- b=JC/BwKszLyT03LEw6G4ZtRSERsJ3mCLKVnSkZvKud4vZQS47PMgBYrurpEx5Dd/mto
- bP/tIpD8LBKdZFOJte44374vSmmU6FV0G5IYaUF9NluytqIIVpSb5uSM5wjETaBtx12N
- uk9MWJ68IJKobQGEUeymnVRiPHq5sNk9C/3V9Kh92hRRpILPCD3Iq10Ao+XTUXWiDUII
- somNWKKh30opd20vBA5IiyJpEryOuh7dT6e9dvG94u3Y9GiU41Brqitt5K/MDTFJuby0
- Mdzm6bPmNFiM321FPRpCkH9UhkbRwP8u6eQLAV2YzRU9CxT7iPU0yceVrXEdL343G+Y3
- qDZA==
-X-Gm-Message-State: AOJu0YxWhDk2mVqkNcvvc1zWo1/iX2BYK8StxQ4aCSLw3hKH7h0MF/Ko
- Lz0AEsHUAohJSRknGLW0FsAj4tfequa28fRapGch2Kq1gsDMXWM35n9UZXzNYGcRKLqKIaTeLUJ
- jXC6KV2gV34/fEYkJGPqdBmuPJ3BcbQvrU2A2pNi6gV/TGJrJ/2nzhx2hM7YCbt1isynb7G+wFD
- UB/DvRsYiAFzzayeeeHRHDc8ilVVP8sg==
-X-Gm-Gg: ASbGncvfM4y9RZvx/15FE42bD/7klPSoEbA09Tg8HkD7pJZqep8vRTzM8bgpzIKJ722
- h/W89lNxvje+L8g9+X8BDnO/sfc21e5N22lXxy73weHdaa3lzjTRZ7NY34lwCTAuxL6l2UQ5PN/
- o6/LnAOHwl7VF0SLhofLSAvaJUpkRRLj/cm2OIQBFxHgQuWJ3sGeJwYdYF8qbVNPGtYpQqajPQU
- yqA9iI+zz+ozVA/P3H3IFeMGLe3OqB6lKi0CCSQN+kndJJAvOsaFugeSgY9+s0cxp5q07i4oToc
- 3zPHBw==
-X-Received: by 2002:a05:6000:18a9:b0:38d:e3fd:1a1c with SMTP id
- ffacd0b85a97d-38f6f515202mr2711229f8f.23.1740140637437; 
- Fri, 21 Feb 2025 04:23:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEk3MwthKuYt50N4X+gNJoPR6Bsnka87p4Sfpx0EuJrucprl8bLCQE5TlFazLFd1IIkjbKcrA==
-X-Received: by 2002:a05:6000:18a9:b0:38d:e3fd:1a1c with SMTP id
- ffacd0b85a97d-38f6f515202mr2711197f8f.23.1740140636971; 
- Fri, 21 Feb 2025 04:23:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140641; x=1740745441;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=efArqX3wxrFLzxI2BnYAIchHDFGDYnrZNrftosICqWI=;
+ b=O+rvVp0Te7HXHyBYy9QJf/ewtGFp3bM4uVEl6DC+l4JkPIxhIH39pGtXqr485rLs32
+ SGJEiniZDO2zL/5lByjsl2E+JNPAIXO1mewi1Q7p8RdbzbFRKyRJO8QPf+h3i+fBxVHI
+ 4jMVsXqnTEPAOL4EOeJfjyr5hGV9hImLr9lPCol/tY412Oa/GMEVGDh0CMKPQz2LkQ91
+ +A+GsLfUZ3sfTMW8zc6FLxtgVHEC9quL0CmksN0Zw2Hl0FDOhwIBYNQ7meoCctN4zxjY
+ +fauyK6WE6GQKf2O0PPQ4u6qnfRsHuRFOxOi598Ujp8AGZwTLlAIkOPlnsqElgqWRqu+
+ vYkQ==
+X-Gm-Message-State: AOJu0YxTyCt8d3B9OmctVvP00oS0ybqi66yFtVLZX/fHkiGAqCBT0bb8
+ TId6zB4rEwBTs+ZGUcqoiMZxi+/YJpFoMGLmG+UQs6s+gk246ApaZvrT8Ij70axFKQeCfR18yZ1
+ fenv91t1H7jrME8r1/xWFaczPsrXn8sNWPQ27dwA311cwHGSsddleQ3K8g9NjzL45C/swXTKBYT
+ 4A47PTXYujrH+smUmwkXF1+pJNqLu8lQ==
+X-Gm-Gg: ASbGnctS3So6Abt41bhsWwJjxFQxg5Kll/V+Df7p4V1BeVRWO3jd8tt03w77V9xqEe2
+ EqKt8pvu87PEk48p+/pSJBQL0ZlTgmkhLquy9au6T/zCv314h4gdGzL1wOxhonYtu6T1IXmhQz+
+ U5n1GNEcDuObt+xk2xGNO9GzR3lo1P+68fWwdLQ/PeO1kCpH/CxZ7JieAjthCwGRa+wd2vHFCeQ
+ MaJP4o132JGQG46/Q1rRqBKRs06vPTudPnE2+GgvO+4zQIp61fDPfC5pOWXDJTATr/aX0fhu8pT
+ i+Q33g==
+X-Received: by 2002:a5d:5985:0:b0:38d:d3e2:db32 with SMTP id
+ ffacd0b85a97d-38f70783f03mr1630991f8f.7.1740140640579; 
+ Fri, 21 Feb 2025 04:24:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBcs0LLK9M/2eQd/v420ecawU/E6E9cWuNXscwVXqJLjISObGrjJp+2QPvcf0Jj6gPFCnmDQ==
+X-Received: by 2002:a5d:5985:0:b0:38d:d3e2:db32 with SMTP id
+ ffacd0b85a97d-38f70783f03mr1630967f8f.7.1740140640110; 
+ Fri, 21 Feb 2025 04:24:00 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f25a0fe5esm23510599f8f.99.2025.02.21.04.23.54
+ ffacd0b85a97d-38f258dcc50sm23682854f8f.34.2025.02.21.04.23.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:56 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:52 -0500
+ Fri, 21 Feb 2025 04:23:59 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:23:57 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Yao Xingtao <yaoxt.fnst@fujitsu.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 24/41] mem/cxl_type3: support 3, 6, 12 and 16 interleave ways
-Message-ID: <9ac2c42f43a536f53b3d4cad8a601ccb8640cbd8.1740140520.git.mst@redhat.com>
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 25/41] hw/virtio: reset virtio balloon stats on machine reset
+Message-ID: <1456e90653c46aceb3dd83a7b9889a32aad7700d.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,79 +108,355 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Since the kernel does not check the interleave capability, a
-3-way, 6-way, 12-way or 16-way region can be create normally.
+When a machine is first booted, all virtio balloon stats are initialized
+to their default value -1 (18446744073709551615 when represented as
+unsigned).
 
-Applications can access the memory of 16-way region normally because
-qemu can convert hpa to dpa correctly for the power of 2 interleave
-ways, after kernel implementing the check, this kind of region will
-not be created any more.
+They remain that way while the firmware is loading, and early phase of
+guest OS boot, until the virtio-balloon driver is activated. Thereafter
+the reported stats reflect the guest OS activity.
 
-For non power of 2 interleave ways, applications could not access the
-memory normally and may occur some unexpected behaviors, such as
-segmentation fault.
+When a machine reset is performed, however, the virtio-balloon stats are
+left unchanged by QEMU, despite the guest OS no longer updating them,
+nor indeed even still existing.
 
-So implements this feature is needed.
+IOW, the mgmt app keeps getting stale stats until the guest OS starts
+once more and loads the virtio-balloon driver (if ever). At that point
+the app will see a discontinuity in the reported values as they sudden
+jump from the stale value to the new value. This jump is indigituishable
+from a valid data update.
 
-Link: https://lore.kernel.org/linux-cxl/3e84b919-7631-d1db-3e1d-33000f3f3868@fujitsu.com/
-Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20250203161908.145406-6-Jonathan.Cameron@huawei.com>
+While there is an "last-updated" field to report on the freshness of
+the stats, that does not unambiguously tell the mgmt app whether the
+stats are still conceptually relevant to the current running workload.
+
+It is more conceptually useful to reset the stats to their default
+values on machine reset, given that the previous guest workload the
+stats reflect no longer exists. The mgmt app can now clearly identify
+that there are is no stats information available from the current
+executing workload.
+
+The 'last-updated' time is also reset back to 0.
+
+IOW, on every machine reset, the virtio stats are in the same clean
+state they were when the macine first powered on.
+
+A functional test is added to validate this behaviour with a real
+world guest OS.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20250204094202.2183262-1-berrange@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-component-utils.c |  9 +++++++--
- hw/mem/cxl_type3.c           | 15 +++++++++++----
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ include/hw/virtio/virtio-balloon.h      |   4 +
+ hw/virtio/virtio-balloon.c              |  30 ++++-
+ MAINTAINERS                             |   1 +
+ tests/functional/meson.build            |   2 +
+ tests/functional/test_virtio_balloon.py | 161 ++++++++++++++++++++++++
+ 5 files changed, 197 insertions(+), 1 deletion(-)
+ create mode 100755 tests/functional/test_virtio_balloon.py
 
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index cd116c0401..473895948b 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -243,8 +243,13 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_4K, 1);
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
-                      POISON_ON_ERR_CAP, 0);
--    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 3_6_12_WAY, 0);
--    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 16_WAY, 0);
-+    if (type == CXL2_TYPE3_DEVICE) {
-+        ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 3_6_12_WAY, 1);
-+        ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 16_WAY, 1);
-+    } else {
-+        ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 3_6_12_WAY, 0);
-+        ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 16_WAY, 0);
-+    }
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, UIO, 0);
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
-                      UIO_DECODER_COUNT, 0);
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index d8b45f9bd1..6fffa21ead 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1100,10 +1100,17 @@ static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
-             continue;
-         }
+diff --git a/include/hw/virtio/virtio-balloon.h b/include/hw/virtio/virtio-balloon.h
+index b12c18a43b..0456c211c6 100644
+--- a/include/hw/virtio/virtio-balloon.h
++++ b/include/hw/virtio/virtio-balloon.h
+@@ -16,6 +16,7 @@
+ #define QEMU_VIRTIO_BALLOON_H
  
--        *dpa = dpa_base +
--            ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
--             ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset)
--              >> iw));
-+        if (iw < 8) {
-+            *dpa = dpa_base +
-+                ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-+                 ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset)
-+                  >> iw));
-+        } else {
-+            *dpa = dpa_base +
-+                ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-+                 ((((MAKE_64BIT_MASK(ig + iw, 64 - ig - iw) & hpa_offset)
-+                   >> (ig + iw)) / 3) << (ig + 8)));
-+        }
+ #include "standard-headers/linux/virtio_balloon.h"
++#include "hw/resettable.h"
+ #include "hw/virtio/virtio.h"
+ #include "system/iothread.h"
+ #include "qom/object.h"
+@@ -71,6 +72,9 @@ struct VirtIOBalloon {
  
-         return true;
+     bool qemu_4_0_config_size;
+     uint32_t poison_val;
++
++    /* State of the resettable container */
++    ResettableState reset_state;
+ };
+ 
+ #endif
+diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+index ad05768ded..2eb5a14fa2 100644
+--- a/hw/virtio/virtio-balloon.c
++++ b/hw/virtio/virtio-balloon.c
+@@ -31,7 +31,7 @@
+ #include "trace.h"
+ #include "qemu/error-report.h"
+ #include "migration/misc.h"
+-
++#include "system/reset.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/virtio/virtio-access.h"
+ 
+@@ -910,6 +910,8 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
      }
+ 
+     reset_stats(s);
++    s->stats_last_update = 0;
++    qemu_register_resettable(OBJECT(dev));
+ }
+ 
+ static void virtio_balloon_device_unrealize(DeviceState *dev)
+@@ -917,6 +919,7 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VirtIOBalloon *s = VIRTIO_BALLOON(dev);
+ 
++    qemu_unregister_resettable(OBJECT(dev));
+     if (s->free_page_bh) {
+         qemu_bh_delete(s->free_page_bh);
+         object_unref(OBJECT(s->iothread));
+@@ -987,6 +990,27 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
+     }
+ }
+ 
++static ResettableState *virtio_balloon_get_reset_state(Object *obj)
++{
++    VirtIOBalloon *s = VIRTIO_BALLOON(obj);
++    return &s->reset_state;
++}
++
++static void virtio_balloon_reset_enter(Object *obj, ResetType type)
++{
++    VirtIOBalloon *s = VIRTIO_BALLOON(obj);
++
++    /*
++     * When waking up from standby/suspend-to-ram, do not reset stats.
++     */
++    if (type == RESET_TYPE_WAKEUP) {
++        return;
++    }
++
++    reset_stats(s);
++    s->stats_last_update = 0;
++}
++
+ static void virtio_balloon_instance_init(Object *obj)
+ {
+     VirtIOBalloon *s = VIRTIO_BALLOON(obj);
+@@ -1038,6 +1062,7 @@ static void virtio_balloon_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     device_class_set_props(dc, virtio_balloon_properties);
+     dc->vmsd = &vmstate_virtio_balloon;
+@@ -1050,6 +1075,9 @@ static void virtio_balloon_class_init(ObjectClass *klass, void *data)
+     vdc->get_features = virtio_balloon_get_features;
+     vdc->set_status = virtio_balloon_set_status;
+     vdc->vmsd = &vmstate_virtio_balloon_device;
++
++    rc->get_state = virtio_balloon_get_reset_state;
++    rc->phases.enter = virtio_balloon_reset_enter;
+ }
+ 
+ static const TypeInfo virtio_balloon_info = {
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a928ce3e41..013a57d5bf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2246,6 +2246,7 @@ F: include/hw/virtio/virtio-balloon.h
+ F: system/balloon.c
+ F: include/system/balloon.h
+ F: tests/qtest/virtio-balloon-test.c
++F: tests/functional/test_virtio_balloon.py
+ 
+ virtio-9p
+ M: Greg Kurz <groug@kaod.org>
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index cf80924ddc..2d399cc464 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -44,6 +44,7 @@ test_timeouts = {
+   'riscv64_tuxrun' : 120,
+   's390x_ccw_virtio' : 420,
+   'sh4_tuxrun' : 240,
++  'virtio_balloon': 120,
+ }
+ 
+ tests_generic_system = [
+@@ -242,6 +243,7 @@ tests_x86_64_system_thorough = [
+   'linux_initrd',
+   'multiprocess',
+   'netdev_ethtool',
++  'virtio_balloon',
+   'virtio_gpu',
+   'x86_64_hotplug_cpu',
+   'x86_64_tuxrun',
+diff --git a/tests/functional/test_virtio_balloon.py b/tests/functional/test_virtio_balloon.py
+new file mode 100755
+index 0000000000..67b48e1b4e
+--- /dev/null
++++ b/tests/functional/test_virtio_balloon.py
+@@ -0,0 +1,161 @@
++#!/usr/bin/env python3
++#
++# virtio-balloon tests
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++import time
++
++from qemu_test import QemuSystemTest, Asset
++from qemu_test import wait_for_console_pattern
++from qemu_test import exec_command_and_wait_for_pattern
++
++UNSET_STATS_VALUE = 18446744073709551615
++
++
++class VirtioBalloonx86(QemuSystemTest):
++
++    ASSET_KERNEL = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Server/x86_64/os/images/pxeboot/vmlinuz'),
++        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
++
++    ASSET_INITRD = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Server/x86_64/os/images/pxeboot/initrd.img'),
++        '277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b')
++
++    ASSET_DISKIMAGE = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Cloud/x86_64/images/Fedora-Cloud-Base-31-1.9.x86_64.qcow2'),
++        'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0')
++
++    DEFAULT_KERNEL_PARAMS = ('root=/dev/vda1 console=ttyS0 net.ifnames=0 '
++                             'rd.rescue')
++
++    def wait_for_console_pattern(self, success_message, vm=None):
++        wait_for_console_pattern(
++            self,
++            success_message,
++            failure_message="Kernel panic - not syncing",
++            vm=vm,
++        )
++
++    def mount_root(self):
++        self.wait_for_console_pattern('Entering emergency mode.')
++        prompt = '# '
++        self.wait_for_console_pattern(prompt)
++
++        exec_command_and_wait_for_pattern(self, 'mount /dev/vda1 /sysroot',
++                                          prompt)
++        exec_command_and_wait_for_pattern(self, 'chroot /sysroot',
++                                          prompt)
++        exec_command_and_wait_for_pattern(self, "modprobe virtio-balloon",
++                                          prompt)
++
++    def assert_initial_stats(self):
++        ret = self.vm.qmp('qom-get',
++                          {'path': '/machine/peripheral/balloon',
++                           'property': 'guest-stats'})['return']
++        when = ret.get('last-update')
++        assert when == 0
++        stats = ret.get('stats')
++        for name, val in stats.items():
++            assert val == UNSET_STATS_VALUE
++
++    def assert_running_stats(self, then):
++        ret = self.vm.qmp('qom-get',
++                          {'path': '/machine/peripheral/balloon',
++                           'property': 'guest-stats'})['return']
++        when = ret.get('last-update')
++        now = time.time()
++
++        assert when > then and when < now
++        stats = ret.get('stats')
++        # Stat we expect this particular Kernel to have set
++        expectData = [
++            "stat-available-memory",
++            "stat-disk-caches",
++            "stat-free-memory",
++            "stat-htlb-pgalloc",
++            "stat-htlb-pgfail",
++            "stat-major-faults",
++            "stat-minor-faults",
++            "stat-swap-in",
++            "stat-swap-out",
++            "stat-total-memory",
++        ]
++        for name, val in stats.items():
++            if name in expectData:
++                assert val != UNSET_STATS_VALUE
++            else:
++                assert val == UNSET_STATS_VALUE
++
++    def test_virtio_balloon_stats(self):
++        self.set_machine('q35')
++        kernel_path = self.ASSET_KERNEL.fetch()
++        initrd_path = self.ASSET_INITRD.fetch()
++        diskimage_path = self.ASSET_DISKIMAGE.fetch()
++
++        self.vm.set_console()
++        self.vm.add_args("-S")
++        self.vm.add_args("-cpu", "max")
++        self.vm.add_args("-m", "2G")
++        # Slow down BIOS phase with boot menu, so that after a system
++        # reset, we can reliably catch the clean stats again in BIOS
++        # phase before the guest OS launches
++        self.vm.add_args("-boot", "menu=on")
++        self.vm.add_args("-machine", "q35,accel=kvm:tcg")
++        self.vm.add_args("-device", "virtio-balloon,id=balloon")
++        self.vm.add_args('-drive',
++                         f'file={diskimage_path},if=none,id=drv0,snapshot=on')
++        self.vm.add_args('-device', 'virtio-blk-pci,bus=pcie.0,' +
++                         'drive=drv0,id=virtio-disk0,bootindex=1')
++
++        self.vm.add_args(
++            "-kernel",
++            kernel_path,
++            "-initrd",
++            initrd_path,
++            "-append",
++            self.DEFAULT_KERNEL_PARAMS
++        )
++        self.vm.launch()
++
++        # Poll stats at 100ms
++        self.vm.qmp('qom-set',
++                    {'path': '/machine/peripheral/balloon',
++                     'property': 'guest-stats-polling-interval',
++                     'value': 100 })
++
++        # We've not run any guest code yet, neither BIOS or guest,
++        # so stats should be all default values
++        self.assert_initial_stats()
++
++        self.vm.qmp('cont')
++
++        then = time.time()
++        self.mount_root()
++        self.assert_running_stats(then)
++
++        # Race window between these two commands, where we
++        # rely on '-boot menu=on' to (hopefully) ensure we're
++        # still executing the BIOS when QEMU processes the
++        # 'stop', and thus have not loaded the virtio-balloon
++        # driver in the guest
++        self.vm.qmp('system_reset')
++        self.vm.qmp('stop')
++
++        # If the above assumption held, we're in BIOS now and
++        # stats should be all back at their default values
++        self.assert_initial_stats()
++        self.vm.qmp('cont')
++
++        then = time.time()
++        self.mount_root()
++        self.assert_running_stats(then)
++
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 MST
 
