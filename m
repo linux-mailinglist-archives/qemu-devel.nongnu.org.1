@@ -2,97 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F197A3F427
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 954DCA3F451
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS5J-0001Bt-F1; Fri, 21 Feb 2025 07:24:49 -0500
+	id 1tlS5T-00028U-46; Fri, 21 Feb 2025 07:24:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5A-0000ou-MP
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5F-0001F2-4W
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS58-0007ED-UJ
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:40 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5C-0007EU-Bj
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:24:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140678;
+ s=mimecast20190719; t=1740140681;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qUA67lnlZ1kgDiClFh7mIAizVWuXk4KUx2uXWAEi+j8=;
- b=gfkt10voKh1mUR+42iI5bR0vW8/4pzXdd81+nzRbFO9eAF3/o5xRRAsinetD/YipH+N2fN
- 22yL6CGLxcPe5nMq14HOEuEI0zGDurq0nOC6GqrCgmXKjUb2wH4EAxtzH0lA38grIJPKI+
- UnC/sNKV37lxhjdBIOOPiGIH55dt370=
+ bh=y+Y5g8wbgtarePqnIrjsvz5QinXPsEQErGBVpb/bDhs=;
+ b=DaBHADIoPOLrGSjn5LmbojwpDnaw6sGtjRb6iH1edK0war9917uoImgYphiQFtwMBFg2U5
+ /7IY1WDKt0uzm1aa8p1oQVoNLw98joieGP3EoUVm75V5AnbcTK0oC5itVcChlBQhPFw4rz
+ mQwnj85FvOsM7m+gdfRqe3sz4Gy9GJg=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315-yb7I_n_fPLK_PvltGKh_Yw-1; Fri, 21 Feb 2025 07:24:36 -0500
-X-MC-Unique: yb7I_n_fPLK_PvltGKh_Yw-1
-X-Mimecast-MFC-AGG-ID: yb7I_n_fPLK_PvltGKh_Yw_1740140676
+ us-mta-138-I-tzmKEfOlK_MT18FABBQQ-1; Fri, 21 Feb 2025 07:24:40 -0500
+X-MC-Unique: I-tzmKEfOlK_MT18FABBQQ-1
+X-Mimecast-MFC-AGG-ID: I-tzmKEfOlK_MT18FABBQQ_1740140679
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4399a5afc72so10250195e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:36 -0800 (PST)
+ 5b1f17b1804b1-4399d2a1331so10852675e9.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140675; x=1740745475;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qUA67lnlZ1kgDiClFh7mIAizVWuXk4KUx2uXWAEi+j8=;
- b=GROT38UovHmNCJYFHBWvcI5XLBnnZelpxyg3Li+cazqzz0w/Dht9xN5uIEX29ZV+zA
- Sr/7fEPhhm2dghdvtn8Q1SuaBufdDxP4X9C86oMAkXmZu4ORv8VaCPJLVNiumJ7Bh8FR
- nsLcscFj8DApiz30nRIdET3LAjnfXva+KGlEUNkuSTKH5fz9l88gFg7fqkOUqH+HhC4w
- shB/iy2qGnS5aSzY2+sb658XtpaFRT1Q9vTY25i4CaE51JpDfNY+l2HMqyXnRivDYj7J
- pmHu5V7j8as2NyKM9jW7ZsuNYLe6LUxeCo9NHzWD+/d7a5RzLOjK3vFJbCjm4EE1HkYz
- cc4w==
-X-Gm-Message-State: AOJu0Yx/L4FeMJx6CRDe4optSPjP+2j5ZiYqUEBj0+gfxHyUNPXEg3jw
- JrIwyjUtbZHc2lZTOlShWmI+zIOY6XnrjjRGx0JJqzxDpZk5+6uyLOu36qFnd1uxb9dJwa/EIX2
- WwOoYT/Mlsc6RMR7hgOGOdEOMSNcFqUBodegxThIfdwAuVYiPrTaGVGwrKdZLhK0CrkC9i7En4V
- fG5Esf0eOClqODw5NnGScsnMJFEBUrtw==
-X-Gm-Gg: ASbGnctH2zKzz1fqhU1HxqTRAgEyKwjkvFgd9Lh8BdyTnrAgrkOKLnMS5Gmb7UyfSXP
- ScHcNPecwTdTsYzlU66EXUTfcLO4Y2XugRdOLEZfy1ljwWLpyknlYlcVo4TXIaxD4nH1uxm7S3m
- ijdqUjTT66MlHvwLcp9YWF6ndAAhXlosVTaXN4VkSefod0Q+m5OetkU9CyV3ZboijNSz4iew4WZ
- X5d6RmCZ6u8igK+TZxJK4cNVB/eQ7Jp48nj+BZ8gboZz0abkIl1+dC59CrfHoC7O5ien2Xv0eU7
- uJmRTQ==
-X-Received: by 2002:a05:600c:500e:b0:439:8e46:ee73 with SMTP id
- 5b1f17b1804b1-439aeb2b5d6mr21742975e9.15.1740140675316; 
- Fri, 21 Feb 2025 04:24:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFaeWRFRYfK0x7iyzRUjEsi1+KVod4N7DA9MqcsiQt7qtKUTUTdG4OFv4H8GnVPFQ1EiCCwVQ==
-X-Received: by 2002:a05:600c:500e:b0:439:8e46:ee73 with SMTP id
- 5b1f17b1804b1-439aeb2b5d6mr21742685e9.15.1740140674931; 
- Fri, 21 Feb 2025 04:24:34 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740140679; x=1740745479;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y+Y5g8wbgtarePqnIrjsvz5QinXPsEQErGBVpb/bDhs=;
+ b=Q8IWcMzrk1OXKcXQSB67SFNdstZlFvjGYf7xjrB2jiJHlVaZ7Y90g/Ghocdo36x4Vd
+ 74ZQvB9hNZYs9MJKp4HIbvK/rd8dSbHnqkE0O5lxeFAXIEzd+mY2us9jwqsFyfa31dVw
+ LAfcYEyRIyKZKW0PMg9dlChvjhkswCQJdmcrxbORPcs7aRLbMtSbrzsAzStWbC5yY1K2
+ 0osVsSyGmMbica1XxHszol71t3clfJPnSoAu6gJxuMC4tRnCeqL4QSyLU1B5vwNssk31
+ LnNFlKmUlvtninzmJ/MIobORMLs5OmZ6T/8vjJDIU9BjgEK0ptDv2E0vWThDaNTtAO3n
+ CWcg==
+X-Gm-Message-State: AOJu0Yy3YUK6zZOF/VO1Rp7uQi4Lq7bNUUY9kLlYJAyxHWLOU0Nk2K0p
+ JlwHFAmQRy8S23hnT3JGQFqlD0Vm9yshn4GXe3pfu3XxWiwbtpDi82MZK9PUuUYn6tAgzNvCk9K
+ xCo7qYfcS/CEYo6xQu9juy1Rw1BmbjMxPWhuWltsXTab7XGaa8D0RlEpOUM0OuvBF4Wh0BYnRKo
+ dUWreYaXGjtw3Esp/hBPHWhR4Z2df2Eg==
+X-Gm-Gg: ASbGnctmpgl/C9ZFvbFwx4djGFVY+hMibFfvridBJ42qshT77FOhjQ7YsEju7TaB5bB
+ PPO7fqDzUOZ2brp9nbWW5j3+WSfe9gm6eFLbUTQEg/V+MXnB/H6OeZ51lPtiUC3JOI05AZNZVAC
+ zUbET6rP6MQ3JithQA1kyDZ4mdG2qoZTe8Ew84hl+k68D+XE7B1OQp5MYFiUGgg2GQeYwGN8Mvc
+ PA3lFFlYn1OUqbckbkzaeEn2TfOToXPV/tUc/hfWCr5NVkc3OtVpHo2y1FFNwUoInYDFcFPkHgC
+ t0jcKA==
+X-Received: by 2002:a05:600c:6b66:b0:439:96a4:d2a8 with SMTP id
+ 5b1f17b1804b1-439a2fb2c41mr56334785e9.5.1740140678858; 
+ Fri, 21 Feb 2025 04:24:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBIYq7g/aIhnFqWv6GdVkr3BQpXbN/J9tjIC8IdZtcPFONd6G8oGq4LP5nOL6C9aWpvPQl+A==
+X-Received: by 2002:a05:600c:6b66:b0:439:96a4:d2a8 with SMTP id
+ 5b1f17b1804b1-439a2fb2c41mr56334425e9.5.1740140678405; 
+ Fri, 21 Feb 2025 04:24:38 -0800 (PST)
 Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b4118sm23865508f8f.18.2025.02.21.04.24.33
+ 5b1f17b1804b1-439b6f8b1fesm1528215e9.32.2025.02.21.04.24.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:24:34 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:24:30 -0500
+ Fri, 21 Feb 2025 04:24:37 -0800 (PST)
+Date: Fri, 21 Feb 2025 07:24:35 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Stefano Brivio <sbrivio@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 35/41] net: vhost-user: add QAPI events to report connection
- state
-Message-ID: <02fd9f8aeeb184276b283ae2f404bc3acf1e7b7a.1740140520.git.mst@redhat.com>
+ Matias Ezequiel Vara Larsen <mvaralar@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, qemu-stable@nongnu.org,
+ Dorinda Bassey <dbassey@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 36/41] vhost-user-snd: correct the calculation of config_size
+Message-ID: <e87b6efb11be9f5ff213461f5ecdbae47d9402b9.1740140520.git.mst@redhat.com>
 References: <cover.1740140520.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1740140520.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,121 +112,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
 
-The netdev reports NETDEV_VHOST_USER_CONNECTED event when
-the chardev is connected, and NETDEV_VHOST_USER_DISCONNECTED
-when it is disconnected.
+Use virtio_get_config_size() rather than sizeof(struct
+virtio_snd_config) for the config_size in the vhost-user-snd frontend.
+The frontend shall rely on device features for the size of the device
+configuration space. The presence of `controls` in the config space
+depends on VIRTIO_SND_F_CTLS according to the specification (v1.3):
+`
+5.14.4 Device Configuration Layout
+...
 
-The NETDEV_VHOST_USER_CONNECTED event includes the chardev id.
+controls
+(driver-read-only) indicates a total number of all available control
+elements if VIRTIO_SND_F_CTLS has been negotiated.
+`
+This fixes an issue introduced by commit ab0c7fb2 ("linux-headers:
+update to current kvm/next") in which the optional field `controls` is
+added to the virtio_snd_config structure. This breaks vhost-user-device
+backends that do not implement the `controls` field.
 
-This allows a system manager like libvirt to detect when the server
-fails.
-
-For instance with passt:
-
-{ 'execute': 'qmp_capabilities' }
-{ "return": { } }
-
-[killing passt here]
-
-{ "timestamp": { "seconds": 1739538634, "microseconds": 920450 },
-  "event": "NETDEV_VHOST_USER_DISCONNECTED",
-  "data": { "netdev-id": "netdev0" } }
-
-[automatic reconnection with reconnect-ms]
-
-{ "timestamp": { "seconds": 1739538638, "microseconds": 354181 },
-  "event": "NETDEV_VHOST_USER_CONNECTED",
-  "data": { "netdev-id": "netdev0", "chardev-id": "chr0" } }
-
-Tested-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Message-Id: <20250217092550.1172055-1-lvivier@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Fixes: ab0c7fb22b ("linux-headers: update to current kvm/next")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2805
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Message-Id: <20250217131255.829892-1-mvaralar@redhat.com>
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Dorinda Bassey <dbassey@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- qapi/net.json    | 40 ++++++++++++++++++++++++++++++++++++++++
- net/vhost-user.c |  3 +++
- 2 files changed, 43 insertions(+)
+ hw/virtio/vhost-user-snd.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/net.json b/qapi/net.json
-index 2739a2f423..310cc4fd19 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -1031,3 +1031,43 @@
- ##
- { 'event': 'NETDEV_STREAM_DISCONNECTED',
-   'data': { 'netdev-id': 'str' } }
-+
-+##
-+# @NETDEV_VHOST_USER_CONNECTED:
-+#
-+# Emitted when the vhost-user chardev is connected
-+#
-+# @netdev-id: QEMU netdev id that is connected
-+#
-+# @chardev-id: The character device id used by the QEMU netdev
-+#
-+# Since: 10.0
-+#
-+# .. qmp-example::
-+#
-+#     <- { "timestamp": {"seconds": 1739538638, "microseconds": 354181 },
-+#          "event": "NETDEV_VHOST_USER_CONNECTED",
-+#          "data": { "netdev-id": "netdev0", "chardev-id": "chr0" } }
-+#
-+##
-+{ 'event': 'NETDEV_VHOST_USER_CONNECTED',
-+  'data': { 'netdev-id': 'str', 'chardev-id': 'str' } }
-+
-+##
-+# @NETDEV_VHOST_USER_DISCONNECTED:
-+#
-+# Emitted when the vhost-user chardev is disconnected
-+#
-+# @netdev-id: QEMU netdev id that is disconnected
-+#
-+# Since: 10.0
-+#
-+# .. qmp-example::
-+#
-+#     <- { "timestamp": { "seconds": 1739538634, "microseconds": 920450 },
-+#          "event": "NETDEV_VHOST_USER_DISCONNECTED",
-+#          "data": { "netdev-id": "netdev0" } }
-+#
-+##
-+{ 'event': 'NETDEV_VHOST_USER_DISCONNECTED',
-+  'data': { 'netdev-id': 'str' } }
-diff --git a/net/vhost-user.c b/net/vhost-user.c
-index 12555518e8..0b235e50c6 100644
---- a/net/vhost-user.c
-+++ b/net/vhost-user.c
-@@ -16,6 +16,7 @@
- #include "chardev/char-fe.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-net.h"
-+#include "qapi/qapi-events-net.h"
- #include "qemu/config-file.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
-@@ -271,6 +272,7 @@ static void chr_closed_bh(void *opaque)
-     if (err) {
-         error_report_err(err);
-     }
-+    qapi_event_send_netdev_vhost_user_disconnected(name);
- }
+diff --git a/hw/virtio/vhost-user-snd.c b/hw/virtio/vhost-user-snd.c
+index 8610370af8..b414c75c06 100644
+--- a/hw/virtio/vhost-user-snd.c
++++ b/hw/virtio/vhost-user-snd.c
+@@ -16,6 +16,18 @@
+ #include "standard-headers/linux/virtio_ids.h"
+ #include "standard-headers/linux/virtio_snd.h"
  
- static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
-@@ -300,6 +302,7 @@ static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
-                                          net_vhost_user_watch, s);
-         qmp_set_link(name, true, &err);
-         s->started = true;
-+        qapi_event_send_netdev_vhost_user_connected(name, chr->label);
-         break;
-     case CHR_EVENT_CLOSED:
-         /* a close event may happen during a read/write, but vhost
++static const VirtIOFeature feature_sizes[] = {
++    {.flags = 1ULL << VIRTIO_SND_F_CTLS,
++    .end = endof(struct virtio_snd_config, controls)},
++    {}
++};
++
++static const VirtIOConfigSizeParams cfg_size_params = {
++    .min_size = endof(struct virtio_snd_config, chmaps),
++    .max_size = sizeof(struct virtio_snd_config),
++    .feature_sizes = feature_sizes
++};
++
+ static const VMStateDescription vu_snd_vmstate = {
+     .name = "vhost-user-snd",
+     .unmigratable = 1,
+@@ -23,16 +35,20 @@ static const VMStateDescription vu_snd_vmstate = {
+ 
+ static const Property vsnd_properties[] = {
+     DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
++    DEFINE_PROP_BIT64("controls", VHostUserBase,
++                      parent_obj.host_features, VIRTIO_SND_F_CTLS, false),
+ };
+ 
+ static void vu_snd_base_realize(DeviceState *dev, Error **errp)
+ {
+     VHostUserBase *vub = VHOST_USER_BASE(dev);
+     VHostUserBaseClass *vubs = VHOST_USER_BASE_GET_CLASS(dev);
++    VirtIODevice *vdev = &vub->parent_obj;
+ 
+     vub->virtio_id = VIRTIO_ID_SOUND;
+     vub->num_vqs = 4;
+-    vub->config_size = sizeof(struct virtio_snd_config);
++    vub->config_size = virtio_get_config_size(&cfg_size_params,
++                                              vdev->host_features);
+     vub->vq_size = 64;
+ 
+     vubs->parent_realize(dev, errp);
 -- 
 MST
 
