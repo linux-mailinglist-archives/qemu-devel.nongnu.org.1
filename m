@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCB2A3FDFF
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F95A3FDFD
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:52:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlX9y-0000me-3K; Fri, 21 Feb 2025 12:49:58 -0500
+	id 1tlXA0-0000nY-8n; Fri, 21 Feb 2025 12:50:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9u-0000lv-KK; Fri, 21 Feb 2025 12:49:54 -0500
+ id 1tlX9u-0000lt-Hw; Fri, 21 Feb 2025 12:49:54 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9s-0001aN-JJ; Fri, 21 Feb 2025 12:49:54 -0500
+ id 1tlX9s-0001aQ-Tr; Fri, 21 Feb 2025 12:49:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C14AEFB63;
- Fri, 21 Feb 2025 20:49:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A1E7EFB64;
+ Fri, 21 Feb 2025 20:49:30 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 10F601BB57F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E6B241BB580;
  Fri, 21 Feb 2025 20:49:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 0309553F79; Fri, 21 Feb 2025 20:49:49 +0300 (MSK)
+ id E183553F7B; Fri, 21 Feb 2025 20:49:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 00/14] Patch Round-up for stable 9.2.2,
- freeze on 2025-02-23
-Date: Fri, 21 Feb 2025 20:49:30 +0300
-Message-Id: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-rust@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 01/14] rust: add --rust-target option for bindgen
+Date: Fri, 21 Feb 2025 20:49:31 +0300
+Message-Id: <20250221174949.836197-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
+References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,58 +60,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.2.2:
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.2
+Without it, recent bindgen will give an error
 
-Patch freeze is 2025-02-23, and the release is planned for 2025-02-24:
+   error: extern block cannot be declared unsafe
 
-  https://wiki.qemu.org/Planning/9.2
+if rustc is not new enough to support the "unsafe extern" construct.
 
-This is a short-cycle release to fix issues with the uploaded 9.2.1
-tarball - due to some caching on the site and two versions of the
-9.2.1 tarball, there are some issues with signature verification.
-Since there were a few important patches already queued up, so I'm
-including these too.
+Cc: qemu-rust@nongnu.org
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20250206111514.2134895-1-pbonzini@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 131c58469f6fb68c89b38fee6aba8bbb20c7f4bf)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+diff --git a/meson.build b/meson.build
+index 7a3faca61d..7f6f638676 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4050,6 +4050,9 @@ if have_rust
+       bindgen_args += ['--formatter', 'none']
+     endif
+   endif
++  if bindgen.version().version_compare('>=0.66.0')
++    bindgen_args += ['--rust-target', '1.59']
++  endif
+   if bindgen.version().version_compare('<0.61.0')
+     # default in 0.61+
+     bindgen_args += ['--size_t-is-usize']
+-- 
+2.39.5
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 131c58469f6f Paolo Bonzini:
-   rust: add --rust-target option for bindgen
-02 23ea425c14d3 Fabiano Rosas:
-   block: Fix leak in send_qmp_error_event
-03 107c551de0d7 Peter Krempa:
-   block-backend: Fix argument order when calling 
-   'qapi_event_send_block_io_error()'
-04 27a8d899c7a1 Khem Raj:
-   linux-user: Do not define struct sched_attr if libc headers do
-05 1e3d4d9a1a32 Laurent Vivier:
-   qmp: update vhost-user protocol feature maps
-06 66a1b4991c32 Thomas Huth:
-   gitlab-ci.d/cirrus: Update the FreeBSD job to v14.2
-07 7b3d5b84cbd7 Zhenzhong Duan:
-   vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
-08 4dafba778aa3 Volker Rümelin:
-   ui/sdl2: reenable the SDL2 Windows keyboard hook procedure
-09 b79b05d1a06a Michael Roth:
-   make-release: don't rely on $CWD when excluding subproject directories
-10 937df81af675 Peter Maydell:
-   hw/net/smc91c111: Ignore attempt to pop from empty RX fifo
-11 4b7b20a3b72c Fabiano Rosas:
-   elfload: Fix alignment when unmapping excess reservation
-12 807c3ebd1e3f Mikael Szreder:
-   target/sparc: Fix register selection for all F*TOx and FxTO* instructions
-13 7a74e468089a Mikael Szreder:
-   target/sparc: Fix gdbstub incorrectly handling registers f32-f62
-14 f141caa270af Michael Tokarev:
-   net/slirp: libslirp 4.9.0 compatibility
 
