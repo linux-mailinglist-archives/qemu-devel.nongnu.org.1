@@ -2,99 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC3BA3F44F
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DB1A3F45F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:31:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS5b-0003Ag-Q6; Fri, 21 Feb 2025 07:25:08 -0500
+	id 1tlS7P-0006Ps-9O; Fri, 21 Feb 2025 07:27:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5V-0002vz-Km
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS5T-0007GH-RJ
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:25:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140699;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=I0OkFCZq8v0ezATiJzoCyWDoQl7Sr4+CP54xKEjqIMM=;
- b=Ar84hrt6rRC0c7/4PeGtgtXSOXsHZXB0wx8tz6wcVVUBQcQGQ4d0POfBxiirqJMvWtqZAq
- NCEPHkVbNc9n8ZaJSQH1XyZFrIECk8JxYEiSf1obEqMSZyjfKYS7k4sl/VD4+XkpJ3mHYi
- YJNjn+5tm6Hkqx07s91xXm/PNKGHhZo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-RKQWpiuiP4eTqM_CqD4sLA-1; Fri, 21 Feb 2025 07:24:57 -0500
-X-MC-Unique: RKQWpiuiP4eTqM_CqD4sLA-1
-X-Mimecast-MFC-AGG-ID: RKQWpiuiP4eTqM_CqD4sLA_1740140697
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43943bd1409so14811695e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:24:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlS72-0006CZ-Ed
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:26:37 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlS6z-0007YM-Oy
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:26:35 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-220ecbdb4c2so53971265ad.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:26:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1740140791; x=1740745591; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YlUi+5h+dTXEv6y1UjiRTHdMrFHrUViOPWH/ccJ3Rq4=;
+ b=SlJmIfaNOEFyWiv+w9voDsKCAA45VLhm+WfGNv4HvDGu6LreyJPPQCkAHRKzMg9+pz
+ HbPkfwyYlG9bFtuLOqnsWYZFc5ZsdpvK7AXBGhuvSSSVOYDFcYCYiWLwxdeWBjD1BGiB
+ lne/ZoW+Ld//c2w4sGFSW/Fml0Qfwwnojl6Syl3tJlyGeg6Yv53drAbTNJgPJVKh6u7t
+ 8t8+4Y7XTvIozIymYnTWEGktY5tFUFuomsRelpTBOgLjEJaJycP9QICkRptBlBlMiey6
+ OpxnRDts1qGktxgo6FM3fcJI8cromWlP0NsMdGxestONwQaPhFWg2jlYcIjSSAPdIYIT
+ ynUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140696; x=1740745496;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I0OkFCZq8v0ezATiJzoCyWDoQl7Sr4+CP54xKEjqIMM=;
- b=nE/oDWe/KWKW8kT3OIDw1U0Br8YEzV74+uE9N7/M8nZT0wiBBrJkTVDFc9TIjo8pP7
- rbVV5TU/M4NlrlZrVkc5GHKryPi9n2KT9bh74MHCMKrEh5WqBIO1gfOr77ZzY1FUTfly
- 8KROW0rmrY9vYxztXPFRbO1l0r7GCJ+rJ5rk3U/9YARA+wHwILEf+bC2SIYy12h+ZtHt
- mwxVUxdil/lqO/hI4mDfyPP0qCfJnCLemz8P31UCtq6lG0z84HeIjiu7v2o8pTzkpOhk
- Qirjvq3CQGh6BpY7LSkkfz0GsASXNjBfaNIiwy3a3hxDMt2dnrNoQ4Gri5QS0qK29+QK
- 2ZUQ==
-X-Gm-Message-State: AOJu0YwKZ/jbutESI4O95hJ5kdxGLl7QotQ4Xht20v1HSLQWI3ga1+v6
- C5WJ6aUHyF4eINgzVNGVloeH51iT9rKAaPoNyWJnbndoOlTvNjZmxHR/Jeuy64nbCgEV8Iuql4Z
- tyUCy7KjQsNzxm98ZyUH2CtaMMbSb/T0j+s+swdBsuyqyRWGwAM3lyA+5Jh6P0QWhVlY+jxnfI1
- oZEywH2LsbHIsegq106kAfZ2Hv3spdPA==
-X-Gm-Gg: ASbGnctBLh0WpD0+6EaijCd92cgXWtE9OC39qS43w58vkOqyvlixkoPRjE31Q9LQMvM
- 7rsdiM24cFkUAv9BgGvCxK1Q7EC3aHuC2/DTu73QyoHYQtPvtdnmorgWj3V5Bt36CgR6E/EmQay
- XR2IWf8eX1PhGD4eipglTGSNoLXFIFEEj1fqld5HafYZX/Yv5DiNDG1eMaodAN/otwrZ/+eTUs1
- Bi1WvRt9Gyei09S74Pk3s49R6aWgjaPoLOH5eIgkKttUwsYfV+I/KqBjNtDZy4ll0wbNsupC9aK
- wsSanA==
-X-Received: by 2002:a05:6000:1865:b0:38f:32ac:7e53 with SMTP id
- ffacd0b85a97d-38f6f0b189dmr2926310f8f.39.1740140695946; 
- Fri, 21 Feb 2025 04:24:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1VdlP3nDv9m/QVmbN66yECgtSWRc76CHq+MPgAz5kk0JJkt5SGKyisEDedvAy6RtJeKfIHQ==
-X-Received: by 2002:a05:6000:1865:b0:38f:32ac:7e53 with SMTP id
- ffacd0b85a97d-38f6f0b189dmr2926280f8f.39.1740140695503; 
- Fri, 21 Feb 2025 04:24:55 -0800 (PST)
-Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ccd51sm23265433f8f.29.2025.02.21.04.24.53
+ d=1e100.net; s=20230601; t=1740140791; x=1740745591;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YlUi+5h+dTXEv6y1UjiRTHdMrFHrUViOPWH/ccJ3Rq4=;
+ b=cKXPaIF8vyxRuU0rHyEDM81X0zYtXiJwggheRg679EPHx8dExUhkIUFwaGrBgrnLQY
+ F0kX6b2s5kP0yuQAjCMBG/GeA/G8nRSJj27I0eb6VeBsLaRNZWpnxmwEpRDQvG1Bviw4
+ wMeKIXLVTeCQFph8YicJqFrYxvGgHaJQ9zIjX21L0KbQOYHaUHhgltJduQtGiHmqJGpi
+ Hw540GwD6x4J9x6d1XGuR9FrYz/v7KAtue1V0MgTZngF14IG3xcMZpoYc67qcfHFg8Zh
+ Lm+l/BLEE9eXbuiMKO9hi7OEkyf5skT4SZWJ1GhsJciF7y5u3YHcsQq3QpF2lIpl5nx9
+ 1GTg==
+X-Gm-Message-State: AOJu0Yy0MABpnZnTJXQnsrWrOud/ZZ4SOV5eVQ5g3D0oyEn8Pd5wwn1s
+ AAY5y2Giey26xfgl3mWYh3o3+s0FwLRdHFoB6aRb0oBObpl+1iqylxRik2vzchmOxpk85jWFzUY
+ H
+X-Gm-Gg: ASbGncsBU6krbGKxDBeWoPnfo7uABdjymWMVrmlVHDDEFiImAnShNjnLTUKYPy+4zf9
+ f5CpMkJYoMuX/IQ/kIWTSjHVfqCijZXjTwGy5RTm+vQiz2xb5CZn0UZz293rjnWDo5aLj+AYBjZ
+ eC1NR0qtVnhjAMoAz5f8XECNqns1KTPtlXJGT3CG4qN2Z1aiJ/sPY4V07MbuwwWq3ATatuRtKR3
+ wO96bNRR0yC3nGTwDeMdfH3tmWmsmCyHtdAzPNi4qZNeViHEB2rUYnKGnydBJNlhMMV11SUXwiC
+ KblSBvi2EC6o937YwLcGifImLp4BPpomuGM/YYz7hFHkUrgyjtUCuA==
+X-Google-Smtp-Source: AGHT+IFs+lcVpRK96QUKNEET6MbFYyxW+cnk2RRwLTjgmka03HhHmE+oqXYsBQoOzNPeF5bu43uJ9g==
+X-Received: by 2002:a17:903:228d:b0:21f:1bd:efd4 with SMTP id
+ d9443c01a7336-221a0ed7e4cmr43304115ad.19.1740140790922; 
+ Fri, 21 Feb 2025 04:26:30 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([187.11.154.120])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d545e39bsm137349855ad.124.2025.02.21.04.26.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:24:55 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:24:52 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
+ Fri, 21 Feb 2025 04:26:30 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Luc Michel <luc.michel@amd.com>
-Subject: [PULL 41/41] docs/devel/reset: Document reset expectations for DMA
- and IOMMU
-Message-ID: <dd6d545e8f2d9a0e8a8c287ec16469f03ef5c198.1740140520.git.mst@redhat.com>
-References: <cover.1740140520.git.mst@redhat.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/3] target/riscv/kvm: reset time changes
+Date: Fri, 21 Feb 2025 09:26:20 -0300
+Message-ID: <20250221122623.495188-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1740140520.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,40 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+Hi,
 
-To avoid any translation faults, the IOMMUs are expected to be
-reset after the devices they protect. Document that we expect
-DMA requests to be stopped during the 'enter' or 'hold' phase
-while IOMMUs should be reset during the 'exit' phase.
+In this version the following changes were made, based on feedback from
+Drew in v1:
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20250218182737.76722-6-eric.auger@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- docs/devel/reset.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+- patch 2: reworked. Instead of using a different existing 'env' field
+  to get/put the 'sie' CSR, we're adding a new helper that contains all
+  reset vals for the KVM CSRs we support
+- patch 3: reworked. Add two KVM CSRs from the KVM UAPI that we're not
+  using.
 
-diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-index adefd59ef9..0b8b2fa5f4 100644
---- a/docs/devel/reset.rst
-+++ b/docs/devel/reset.rst
-@@ -143,6 +143,11 @@ The *exit* phase is executed only when the last reset operation ends. Therefore
- the object does not need to care how many of reset controllers it has and how
- many of them have started a reset.
- 
-+DMA capable devices are expected to cancel all outstanding DMA operations
-+during either 'enter' or 'hold' phases. IOMMUs are expected to reset during
-+the 'exit' phase and this sequencing makes sure no outstanding DMA request
-+will fault.
-+
- 
- Handling reset in a resettable object
- -------------------------------------
+Link to v1: https://lore.kernel.org/qemu-riscv/20250220161313.127376-1-dbarboza@ventanamicro.com/ 
+
+Patches based on alistair/riscv-to-apply.next. 
+
+Daniel Henrique Barboza (3):
+  target/riscv/cpu: ignore TCG init for KVM CPUs in reset_hold
+  target/riscv/kvm: add kvm_riscv_reset_regs_csr()
+  target/riscv/kvm: add missing KVM CSRs
+
+ target/riscv/cpu.c         |  9 +++++----
+ target/riscv/kvm/kvm-cpu.c | 32 +++++++++++++++++++++-----------
+ 2 files changed, 26 insertions(+), 15 deletions(-)
+
 -- 
-MST
+2.48.1
 
 
