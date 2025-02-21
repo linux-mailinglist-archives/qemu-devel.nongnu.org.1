@@ -2,49 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888B5A3FDF9
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:52:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B63A3FE1C
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 19:03:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXAl-0001L4-Ie; Fri, 21 Feb 2025 12:50:47 -0500
+	id 1tlXM9-0004gT-K6; Fri, 21 Feb 2025 13:02:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAe-0001I1-4m; Fri, 21 Feb 2025 12:50:40 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAb-0001tC-Qo; Fri, 21 Feb 2025 12:50:39 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5FBBDEFB71;
- Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 186FE1BB58D;
- Fri, 21 Feb 2025 20:49:51 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id F065E53F95; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [Stable-9.2.2 14/14] net/slirp: libslirp 4.9.0 compatibility
-Date: Fri, 21 Feb 2025 20:49:44 +0300
-Message-Id: <20250221174949.836197-14-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
-References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tlXM5-0004g6-6d
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 13:02:29 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tlXM3-0003dL-8m
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 13:02:28 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aaecf50578eso468182666b.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 10:02:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740160945; x=1740765745; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0VIpIXlWZY4+bDWNsWFMr1NCbUgoObwDP7O2t3z6S/o=;
+ b=vkBDdriMD6oFdRtfOBZy++33KZJWlp0QhLJjqmQFy8rQmy33j7Dx1wapNo7x9Hg4FI
+ /RvDX0R3P21ck0AIw4SbMzqKKSmaE+j4QJ/85kophk8IyK28Rb8YHZXAbeTNPy/dAh+Y
+ w6AibLdJT+Ba8Q42tLdF4AJjUYtn+i9Xd/Lntm3TClLGzAEHO9m67i7EgYzKciCYZXmv
+ MZAu0olA/UuIB0JxuiFAwRQtm8/8UXwJAYpTGT6p09wBmgLekMsJ9Iwb4mm8GJ6VC/2O
+ xulGq4yCQRTGsRPoO5WLVujCsQBaPzWukpitsOQk9hFGzgOFUaPSqg0J6YcwS1DKSgm2
+ kLJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740160945; x=1740765745;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=0VIpIXlWZY4+bDWNsWFMr1NCbUgoObwDP7O2t3z6S/o=;
+ b=qfpCW+sBbQ9+U3cyYNejmd8Lmkt4RiFGuHVxvoy1g2xgnEufRO4cYSRdH/rtWy7rny
+ ke9D42N6nbVHlfpcbYoGvdXktbP6kZzIzt43imFkCEAoQkIotAvvlJfKjOQT5sgTmaBI
+ Lkyf2XjfGtmwWsKvjWhNHQxwsDb68xQdew5BnRhpXMQ6jtJlnAR8lovxtdqDZ6gqMNr5
+ in8SHEtC2tcb5p+QCXuiDxGQwVB1np+YvDXYtJhq/82Z7AU2NXSqSqAnbTJ43NnSXnU0
+ IS4eeeut8kmnlWQV9riOStNrsfVg+DIZK7BuH9fZ/skfRSF59J9qUX5FYtnWR8ka17Zs
+ tETQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVi7oEKSFxicgYtoPokEFbFHmLLG+CmUh2oe9jqzHjC2xaV97N43Ld2GGlIbkRFiIkYl9E+HXk2FTbG@nongnu.org
+X-Gm-Message-State: AOJu0YzqTqNX7/zyY3usndpM4lAemGvn8ey8CQPYV+ix+5mNNxNHjPGd
+ F5lSpHgftydzXazKDe/HDcN9sSiS0ee0tmOQAhx0DrBws7mNgWWw+2flb71TJ0k=
+X-Gm-Gg: ASbGncvua3CFNr/BxPHQE11XAF587Ec10T+nxrmki2Y5K4wViLwB+j7Qili9VKhJh6I
+ BTt0eGiv1x/If9L8logRqMFF5qEhujC88PqBrdkgHS8XeDIeU7SQ8EnfId+co8/Bljp/FzWbhx+
+ fNtpghXP/mbvR2GeCVU+Q2pnE8DqgIcM4mzkRLxf5jf24DO5NDZZT/h2zWH0JgvqRJlkAHhWu/Q
+ NT2/gAa7dkUhHKtiFQLpYsXz3Tf54nWp7A14N9YRW+MIEadz6mx+XbmsBQrtZW/wBgEfhOIK9kQ
+ fqdOGuzlWGAXnfcYJiI6iULGpe9s
+X-Google-Smtp-Source: AGHT+IHHWkExOu3uHdwqkghhoFwrj9FhbCB4waAQ6bwGr8+kmC8W/rGRGXBUSUGCPeWShWyNrQ1Njw==
+X-Received: by 2002:a17:907:6d05:b0:abc:a40:4192 with SMTP id
+ a640c23a62f3a-abc0d994e7cmr392131266b.9.1740160944653; 
+ Fri, 21 Feb 2025 10:02:24 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-abbe1e8aa51sm486409466b.149.2025.02.21.10.02.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Feb 2025 10:02:24 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 4D4B35F8C8;
+ Fri, 21 Feb 2025 18:02:23 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org,  qemu-stable@nongnu.org
+Subject: Re: [PATCH v3 3/9] target/arm: Make CNTPS_* UNDEF from Secure EL1
+ when Secure EL2 is enabled
+In-Reply-To: <20250204125009.2281315-4-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Tue, 4 Feb 2025 12:50:03 +0000")
+References: <20250204125009.2281315-1-peter.maydell@linaro.org>
+ <20250204125009.2281315-4-peter.maydell@linaro.org>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Fri, 21 Feb 2025 18:02:23 +0000
+Message-ID: <87wmdjgor4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,92 +104,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the code in net/slirp.c to be compatible with
-libslirp 4.9.0, which deprecated slirp_pollfds_fill()
-and started using slirp_os_socket type for sockets
-(which is a 64-bit integer on win64) for all callbacks
-starting with version 6 of the interface.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Message-ID: <20250130123253.864681-1-mjt@tls.msk.ru>
-[thuth: Added some spaces to make checkpatch.pl happy]
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit f141caa270af536b4d5b7c8540820f1bdd245d71)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> When we added Secure EL2 support, we missed that this needs an update
+> to the access code for the EL3 physical timer registers.  These are
+> supposed to UNDEF from Secure EL1 when Secure EL2 is enabled.
+>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  target/arm/helper.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index ac8cb428925..7ec1e6cfaab 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -2387,6 +2387,9 @@ static CPAccessResult gt_stimer_access(CPUARMState =
+*env,
+>          if (!arm_is_secure(env)) {
+>              return CP_ACCESS_UNDEFINED;
+>          }
 
-diff --git a/net/slirp.c b/net/slirp.c
-index eb9a456ed4..102bec7b57 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -247,7 +247,14 @@ static void net_slirp_timer_mod(void *timer, int64_t expire_timer,
-     timer_mod(&t->timer, expire_timer);
- }
- 
--static void net_slirp_register_poll_fd(int fd, void *opaque)
-+#if !SLIRP_CHECK_VERSION(4, 9, 0)
-+# define slirp_os_socket int
-+# define slirp_pollfds_fill_socket slirp_pollfds_fill
-+# define register_poll_socket register_poll_fd
-+# define unregister_poll_socket unregister_poll_fd
-+#endif
-+
-+static void net_slirp_register_poll_sock(slirp_os_socket fd, void *opaque)
- {
- #ifdef WIN32
-     AioContext *ctxt = qemu_get_aio_context();
-@@ -260,7 +267,7 @@ static void net_slirp_register_poll_fd(int fd, void *opaque)
- #endif
- }
- 
--static void net_slirp_unregister_poll_fd(int fd, void *opaque)
-+static void net_slirp_unregister_poll_sock(slirp_os_socket fd, void *opaque)
- {
- #ifdef WIN32
-     if (WSAEventSelect(fd, NULL, 0) != 0) {
-@@ -286,8 +293,8 @@ static const SlirpCb slirp_cb = {
- #endif
-     .timer_free = net_slirp_timer_free,
-     .timer_mod = net_slirp_timer_mod,
--    .register_poll_fd = net_slirp_register_poll_fd,
--    .unregister_poll_fd = net_slirp_unregister_poll_fd,
-+    .register_poll_socket = net_slirp_register_poll_sock,
-+    .unregister_poll_socket = net_slirp_unregister_poll_sock,
-     .notify = net_slirp_notify,
- };
- 
-@@ -314,7 +321,7 @@ static int slirp_poll_to_gio(int events)
-     return ret;
- }
- 
--static int net_slirp_add_poll(int fd, int events, void *opaque)
-+static int net_slirp_add_poll(slirp_os_socket fd, int events, void *opaque)
- {
-     GArray *pollfds = opaque;
-     GPollFD pfd = {
-@@ -363,8 +370,8 @@ static void net_slirp_poll_notify(Notifier *notifier, void *data)
- 
-     switch (poll->state) {
-     case MAIN_LOOP_POLL_FILL:
--        slirp_pollfds_fill(s->slirp, &poll->timeout,
--                           net_slirp_add_poll, poll->pollfds);
-+        slirp_pollfds_fill_socket(s->slirp, &poll->timeout,
-+                                  net_slirp_add_poll, poll->pollfds);
-         break;
-     case MAIN_LOOP_POLL_OK:
-     case MAIN_LOOP_POLL_ERR:
-@@ -629,7 +636,9 @@ static int net_slirp_init(NetClientState *peer, const char *model,
- 
-     s = DO_UPCAST(SlirpState, nc, nc);
- 
--    cfg.version = SLIRP_CHECK_VERSION(4,7,0) ? 4 : 1;
-+    cfg.version =
-+         SLIRP_CHECK_VERSION(4, 9, 0) ? 6 :
-+         SLIRP_CHECK_VERSION(4, 7, 0) ? 4 : 1;
-     cfg.restricted = restricted;
-     cfg.in_enabled = ipv4;
-     cfg.vnetwork = net;
--- 
-2.39.5
+Hmm this failed to apply as b4d3978c2f (target-arm: Add the AArch64 view
+of the Secure physical timer) has the above as CP_ACCESS_TRAP. I guess
+because I didn't apply 20250130182309.717346-1-peter.maydell@linaro.org.
+I guess this needs fixing up for stable.
 
+
+> +        if (arm_is_el2_enabled(env)) {
+> +            return CP_ACCESS_UNDEFINED;
+> +        }
+>          if (!(env->cp15.scr_el3 & SCR_ST)) {
+>              return CP_ACCESS_TRAP_EL3;
+>          }
+
+
+Anyway:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
