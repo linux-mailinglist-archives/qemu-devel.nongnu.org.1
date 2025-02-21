@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95741A3ECEA
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B9DA3ECE4
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:36:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlMd4-0001RB-Dn; Fri, 21 Feb 2025 01:35:18 -0500
+	id 1tlMd8-0001UG-G1; Fri, 21 Feb 2025 01:35:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMd0-0001P6-PI
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:14 -0500
+ id 1tlMd3-0001RA-B4
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:17 -0500
 Received: from esa12.hc1455-7.c3s2.iphmx.com ([139.138.37.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMcx-0003jz-Ja
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:14 -0500
+ id 1tlMd1-0003jz-6b
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1740119711; x=1771655711;
+ t=1740119715; x=1771655715;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=f+W7xHv1eRI0J7FNacCobhI1uc+xjuUjaE8S1N4URnY=;
- b=PoqTxgBP6ysEU7pPYN2TDQnMjT8Wr7H9/ElScgZhYHwGfjSH2IPDNIRM
- W9A12nusTdcNAxSHtbj1A94NgAwjJjA2yRRPpNqDqms2lLDpjH14TxuUw
- dhNRGe5BWYD7KwhNLJciR5DoXiQUkTWaUdDPJlGGg/TllZlKwqFHNEuyj
- 2fSxpdGDFQnUSUBSnf3aTB6dNVAwrHfu0uKtLAZ5fJCrkSljStvOeAGHe
- wi70MFzANJaxTgYsu7rntNZ7bfrSH1N7+Scz5L7PXeJtjIkYumpbzgDlB
- sXTMoL02jcfQ8igtoEl70CXlc49J3RrRsfQm29ZmLDIP9YSdFDygfbPXe Q==;
-X-CSE-ConnectionGUID: BaqAVsWIQ8+0yHxUv/m5KQ==
-X-CSE-MsgGUID: zXdIBZYPRWO4U38i63W4eA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="169689014"
-X-IronPort-AV: E=Sophos;i="6.13,303,1732546800"; d="scan'208";a="169689014"
-Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
+ bh=23C5J9GjiTBVLzzFhi4s9G3Cy0DKVtnCKHfbmfdFK7M=;
+ b=YW3o+ZSC7bKtSrZYxrCHmu8YWI2Ah3LHPuArC37paSfg+6lZcap3eo7s
+ x87x/5RQ659RHOqI7Pu01chIRKueCZhVkUCq0EtGSpbaGC4LpTy3RspqC
+ pwN9YoFQd20ZIVhvSeQcBw4Het0UiGhrYOueudvbic8qp5P4QOnezCfFW
+ EfV9t0VBkJCcYCgL4mjpRZWGDdI20UNvWSiw7CR25bcTWLkniSl/o9Dty
+ DTzgzDtlV6O7a+Bhuq9PMug/FgR1VPgRvRoVJ3Nd3TTRfqB1UN5VZ9ter
+ c0fXC7JMWHrP/gjcgaHxNilGzuvymKUl0nDKm7cwniywY8X8aQ/bxj3MA Q==;
+X-CSE-ConnectionGUID: syoDI4VORyyAmE44My2plw==
+X-CSE-MsgGUID: 8REujhPOSuS22j2CIkhA7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="169689017"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732546800"; d="scan'208";a="169689017"
+Received: from unknown (HELO yto-r1.gw.nic.fujitsu.com) ([218.44.52.217])
  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Feb 2025 15:35:07 +0900
-Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com
- [192.168.83.65])
- by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id E9705E8529
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:04 +0900 (JST)
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com
+ [192.168.83.66])
+ by yto-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 5A81DD6EAD
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:05 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id A968DD5B26
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:04 +0900 (JST)
+ by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 22AFA17D1C
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:05 +0900 (JST)
 Received: from iaas-rdma.. (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 0B0C81A000B;
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 83EF71A006C;
  Fri, 21 Feb 2025 14:35:04 +0800 (CST)
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2 2/8] migration/rdma: Remove redundant
- RAM_SAVE_CONTROL_NOT_SUPP check
-Date: Fri, 21 Feb 2025 14:36:06 +0800
-Message-ID: <20250221063612.695909-3-lizhijian@fujitsu.com>
+Subject: [PATCH v2 3/8] migration: Kill RAM_SAVE_CONTROL_NOT_SUPP
+Date: Fri, 21 Feb 2025 14:36:07 +0800
+Message-ID: <20250221063612.695909-4-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20250221063612.695909-1-lizhijian@fujitsu.com>
 References: <20250221063612.695909-1-lizhijian@fujitsu.com>
@@ -87,28 +86,92 @@ From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_rdma_save_page() no longer returns RAM_SAVE_CONTROL_NOT_SUPP
-since commit a4832d299dd ("migration/rdma: Check sooner if we are in postcopy for save_page()")
+Refactor the migration control logic by eliminating the
+`RAM_SAVE_CONTROL_NOT_SUPP` return value within the migration codebase.
+
+This involves moving the checks for RDMA migration status and postcopy
+state from rdma_control_save_page() to control_save_page()
+
+With this change, control_save_page() now takes responsibility for
+determining whether RDMA operations can proceed, based on the state of
+migration.
 
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/rdma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ migration/ram.c  | 19 ++++++++++---------
+ migration/rdma.c |  4 +---
+ migration/rdma.h |  3 +--
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
+diff --git a/migration/ram.c b/migration/ram.c
+index 424df6d9f13..b7157b9b175 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1155,18 +1155,19 @@ static bool control_save_page(PageSearchStatus *pss,
+ {
+     int ret;
+ 
+-    ret = rdma_control_save_page(pss->pss_channel, pss->block->offset, offset,
+-                                 TARGET_PAGE_SIZE);
+-    if (ret == RAM_SAVE_CONTROL_NOT_SUPP) {
+-        return false;
+-    }
++    if (migrate_rdma() && !migration_in_postcopy()) {
++        ret = rdma_control_save_page(pss->pss_channel, pss->block->offset,
++                                     offset, TARGET_PAGE_SIZE);
+ 
+-    if (ret == RAM_SAVE_CONTROL_DELAYED) {
+-        *pages = 1;
++        if (ret == RAM_SAVE_CONTROL_DELAYED) {
++            *pages = 1;
++        } else {
++            *pages = ret;
++        }
+         return true;
+     }
+-    *pages = ret;
+-    return true;
++
++    return false;
+ }
+ 
+ /*
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 76fb0349238..af8e6234a9f 100644
+index af8e6234a9f..c6876347e1e 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -3290,8 +3290,7 @@ int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+@@ -3284,9 +3284,7 @@ err:
+ int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+                            ram_addr_t offset, size_t size)
+ {
+-    if (!migrate_rdma() || migration_in_postcopy()) {
+-        return RAM_SAVE_CONTROL_NOT_SUPP;
+-    }
++    assert(migrate_rdma());
  
      int ret = qemu_rdma_save_page(f, block_offset, offset, size);
  
--    if (ret != RAM_SAVE_CONTROL_DELAYED &&
--        ret != RAM_SAVE_CONTROL_NOT_SUPP) {
-+    if (ret != RAM_SAVE_CONTROL_DELAYED) {
-         if (ret < 0) {
-             qemu_file_set_error(f, ret);
-         }
+diff --git a/migration/rdma.h b/migration/rdma.h
+index f55f28bbed1..8eeb0117b91 100644
+--- a/migration/rdma.h
++++ b/migration/rdma.h
+@@ -33,7 +33,6 @@ void rdma_start_incoming_migration(InetSocketAddress *host_port, Error **errp);
+ #define RAM_CONTROL_ROUND     1
+ #define RAM_CONTROL_FINISH    3
+ 
+-#define RAM_SAVE_CONTROL_NOT_SUPP -1000
+ #define RAM_SAVE_CONTROL_DELAYED  -2000
+ 
+ #ifdef CONFIG_RDMA
+@@ -56,7 +55,7 @@ static inline
+ int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+                            ram_addr_t offset, size_t size)
+ {
+-    return RAM_SAVE_CONTROL_NOT_SUPP;
++    g_assert_not_reached();
+ }
+ #endif
+ #endif
 -- 
 2.44.0
 
