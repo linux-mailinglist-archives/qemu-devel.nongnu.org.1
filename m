@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62180A3FE00
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 888B5A3FDF9
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:52:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXAl-0001LL-J6; Fri, 21 Feb 2025 12:50:47 -0500
+	id 1tlXAl-0001L4-Ie; Fri, 21 Feb 2025 12:50:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAc-0001Gw-Ok; Fri, 21 Feb 2025 12:50:38 -0500
+ id 1tlXAe-0001I1-4m; Fri, 21 Feb 2025 12:50:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXAa-0001st-Lg; Fri, 21 Feb 2025 12:50:38 -0500
+ id 1tlXAb-0001tC-Qo; Fri, 21 Feb 2025 12:50:39 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5B760EFB70;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5FBBDEFB71;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 143B71BB58C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 186FE1BB58D;
  Fri, 21 Feb 2025 20:49:51 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id EDE2953F93; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id F065E53F95; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mikael Szreder <git@miszr.win>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 13/14] target/sparc: Fix gdbstub incorrectly handling
- registers f32-f62
-Date: Fri, 21 Feb 2025 20:49:43 +0300
-Message-Id: <20250221174949.836197-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [Stable-9.2.2 14/14] net/slirp: libslirp 4.9.0 compatibility
+Date: Fri, 21 Feb 2025 20:49:44 +0300
+Message-Id: <20250221174949.836197-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
@@ -61,62 +60,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mikael Szreder <git@miszr.win>
+Update the code in net/slirp.c to be compatible with
+libslirp 4.9.0, which deprecated slirp_pollfds_fill()
+and started using slirp_os_socket type for sockets
+(which is a 64-bit integer on win64) for all callbacks
+starting with version 6 of the interface.
 
-The gdbstub implementation for the Sparc architecture would
-incorrectly calculate the the floating point register offset.
-This resulted in, for example, registers f32 and f34 to point to
-the same value.
-
-The issue was caused by the confusion between even register numbers
-and even register indexes. For example, the register index of f32 is 64
-and f34 is 65.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
-Signed-off-by: Mikael Szreder <git@miszr.win>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250214070343.11501-1-git@miszr.win>
-(cherry picked from commit 7a74e468089a58756b438d31a2a9a97f183780d7)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Message-ID: <20250130123253.864681-1-mjt@tls.msk.ru>
+[thuth: Added some spaces to make checkpatch.pl happy]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit f141caa270af536b4d5b7c8540820f1bdd245d71)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index ec0036e9ef..134617fb23 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -79,8 +79,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         }
-     }
-     if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
-     }
-     switch (n) {
-     case 80:
-@@ -173,8 +178,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         }
-         return 4;
-     } else if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        env->fpr[(n - 32) / 2].ll = tmp;
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        env->fpr[(n - 64) + 16].ll = tmp;
-     } else {
-         switch (n) {
-         case 80:
+diff --git a/net/slirp.c b/net/slirp.c
+index eb9a456ed4..102bec7b57 100644
+--- a/net/slirp.c
++++ b/net/slirp.c
+@@ -247,7 +247,14 @@ static void net_slirp_timer_mod(void *timer, int64_t expire_timer,
+     timer_mod(&t->timer, expire_timer);
+ }
+ 
+-static void net_slirp_register_poll_fd(int fd, void *opaque)
++#if !SLIRP_CHECK_VERSION(4, 9, 0)
++# define slirp_os_socket int
++# define slirp_pollfds_fill_socket slirp_pollfds_fill
++# define register_poll_socket register_poll_fd
++# define unregister_poll_socket unregister_poll_fd
++#endif
++
++static void net_slirp_register_poll_sock(slirp_os_socket fd, void *opaque)
+ {
+ #ifdef WIN32
+     AioContext *ctxt = qemu_get_aio_context();
+@@ -260,7 +267,7 @@ static void net_slirp_register_poll_fd(int fd, void *opaque)
+ #endif
+ }
+ 
+-static void net_slirp_unregister_poll_fd(int fd, void *opaque)
++static void net_slirp_unregister_poll_sock(slirp_os_socket fd, void *opaque)
+ {
+ #ifdef WIN32
+     if (WSAEventSelect(fd, NULL, 0) != 0) {
+@@ -286,8 +293,8 @@ static const SlirpCb slirp_cb = {
+ #endif
+     .timer_free = net_slirp_timer_free,
+     .timer_mod = net_slirp_timer_mod,
+-    .register_poll_fd = net_slirp_register_poll_fd,
+-    .unregister_poll_fd = net_slirp_unregister_poll_fd,
++    .register_poll_socket = net_slirp_register_poll_sock,
++    .unregister_poll_socket = net_slirp_unregister_poll_sock,
+     .notify = net_slirp_notify,
+ };
+ 
+@@ -314,7 +321,7 @@ static int slirp_poll_to_gio(int events)
+     return ret;
+ }
+ 
+-static int net_slirp_add_poll(int fd, int events, void *opaque)
++static int net_slirp_add_poll(slirp_os_socket fd, int events, void *opaque)
+ {
+     GArray *pollfds = opaque;
+     GPollFD pfd = {
+@@ -363,8 +370,8 @@ static void net_slirp_poll_notify(Notifier *notifier, void *data)
+ 
+     switch (poll->state) {
+     case MAIN_LOOP_POLL_FILL:
+-        slirp_pollfds_fill(s->slirp, &poll->timeout,
+-                           net_slirp_add_poll, poll->pollfds);
++        slirp_pollfds_fill_socket(s->slirp, &poll->timeout,
++                                  net_slirp_add_poll, poll->pollfds);
+         break;
+     case MAIN_LOOP_POLL_OK:
+     case MAIN_LOOP_POLL_ERR:
+@@ -629,7 +636,9 @@ static int net_slirp_init(NetClientState *peer, const char *model,
+ 
+     s = DO_UPCAST(SlirpState, nc, nc);
+ 
+-    cfg.version = SLIRP_CHECK_VERSION(4,7,0) ? 4 : 1;
++    cfg.version =
++         SLIRP_CHECK_VERSION(4, 9, 0) ? 6 :
++         SLIRP_CHECK_VERSION(4, 7, 0) ? 4 : 1;
+     cfg.restricted = restricted;
+     cfg.in_enabled = ipv4;
+     cfg.vnetwork = net;
 -- 
 2.39.5
 
