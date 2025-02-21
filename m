@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE00CA3EDFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 09:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3DAA3EDF8
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 09:09:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlO4f-0004cG-HQ; Fri, 21 Feb 2025 03:07:53 -0500
+	id 1tlO4g-0004ci-6o; Fri, 21 Feb 2025 03:07:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tlO4c-0004ay-Mm
+ id 1tlO4c-0004az-NY
  for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:07:50 -0500
 Received: from smarthost1.eviden.com ([80.78.11.82])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tlO4a-0005ko-WD
+ id 1tlO4a-0005lK-Oi
  for qemu-devel@nongnu.org; Fri, 21 Feb 2025 03:07:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
  t=1740125269; x=1771661269;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=BrG4y3xDgUJOKdvWUgQWbXUTo2tp+lMrO+qSWDscVRo=;
- b=memZNBwiLKK7AIDte16vo6MnkMVD2fvJ59yC40tzTME8AyHE4OSMNaxW
- z323FlrF5GQWozkfBidkk40EmxTrwKyk6BgJ2FI/gi9OheRlivPHlRrCo
- U3zaohaF+qJ7U1uQA+np39q8ewwcAg2BuBnQwWKa+gXd2SYlJlqsjtgkb
- NXMbAnLST51t0kmruSPWlqkHbYp6fv4P65vl3pNau3Z9t64TG0sX9nXFL
- EKeFp9uKflcMpDa5sQgxm6WzbYMiqXMpDc/x5ds87VypsfiJAuR7sGuDD
- vadlDoPup0nb+P+Kk6fk6/BzLlj2pUKqnPvrrWcCdTikRTyitPzIaDOet Q==;
-X-CSE-ConnectionGUID: vaOXLAvTTTW8m0n1+0fJaQ==
-X-CSE-MsgGUID: scMsAkXxSeGc6IWWpKbbmA==
-X-IronPort-AV: E=Sophos;i="6.13,304,1732575600"; d="scan'208";a="31394146"
-X-MGA-submission: =?us-ascii?q?MDEN2jHDneYqbeae3jxb5kBe0ShaTiDAxS9dzS?=
- =?us-ascii?q?mXOlxZ0ANpeD+t1B2pKEWIEU1dBG8cviNmR1hvfPdapr4G3iA5HQLN9v?=
- =?us-ascii?q?wPu75DqjV85/sStT4XHhvOIUR3WzbE5n5ca7sAXq5mO6WyYiBM3Wahut?=
- =?us-ascii?q?AHrYSSvEfzRF9Qx3biLqoYRQ=3D=3D?=
+ bh=thx/EhaMFSpCXXIfgOfxU1JCplMe9WF6IcJG11lYnsQ=;
+ b=gsTtIgggJFjiI/rBm+UEhbttgznTjKf7451CEZfe8124GBwPr0UbAY1C
+ XxrfvswFVEe9+b0szlfoHSfffaX2CD7Rpo6207HXDGGj1LslPxsqkrBFu
+ nBxw3gwqv3Eby/McmdflQZvfIqWuirM/khH8ByQi0h0z6ZJKNvTu/Ijlq
+ wwJlSpzZUfrvpUN9Edeut8zWI6iV28HoRO+iVZCBfGK67p6fp8qF9hJOe
+ 5vAh5x3kADMbSDI8bQWmXn5y1XAT62l2gQyQOxxdSe8JwvKpH70W7izLO
+ MDuQmzk62mtjXH7pPquPbZO8cv12OaLxkfNPzqnUYi4RYGh/oYX5GDveI g==;
+X-CSE-ConnectionGUID: g2VXE75BSGCFejAUCrrseQ==
+X-CSE-MsgGUID: UHnVoGz5R0OIdYV30DUUMw==
+X-IronPort-AV: E=Sophos;i="6.13,304,1732575600"; d="scan'208";a="31394143"
+X-MGA-submission: =?us-ascii?q?MDHFzkmhD1qEen6Y+FK5uN/UpVldkOd5F7iswr?=
+ =?us-ascii?q?OL0whmDti5rQ+3TXkCeqWS2UFOQwi4SAsp+7O/syKEoX4acCEnbt+V7w?=
+ =?us-ascii?q?sPzI16rT3auAwR08JaCD4aGKkvytX3qIWuavSYukjHzRTlW22bjFj8xH?=
+ =?us-ascii?q?P3sfoKjEQA4Xt3zHHsy8woKg=3D=3D?=
 Received: from mail-vi1eur05lp2170.outbound.protection.outlook.com (HELO
  EUR05-VI1-obe.outbound.protection.outlook.com) ([104.47.17.170])
  by smarthost1.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 21 Feb 2025 09:07:47 +0100
+ 21 Feb 2025 09:07:45 +0100
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dkMpXL4FvlRUSUYkxW+SQp4OFHLFkWJfWpSUjl5zWfs8V6MTT9M8KXijM3yWR5wo6+SW2/SeeWHY0GiMbi6COr98Ncnv9ocD9QzpWEgqEQRrKtNPnsQvZXx0/GI2w89r1TogkUJ8PFj0fEyLfPm5zjSTPVP6AkN1izUCuJ9Ue/coT0OV1sDR0G72fmN1acKIDltXOX5TXc5PxDUGHYU85vEAZ5Qvn6QtGe2lp9pqqiUDhugmtlUSderapGml5GugJ0/DKfhuQLxlcnAZ/1u2oXxIdg17dHD6oFuR9TfexGKCE9WucQGUQKkdTuFXhxRBY5AaYzSJmlR1PiHvCY/39g==
+ b=OjX6e+A1Sc/8tOOqvl3vrX/vVGXfHhsvmuQU3NptiAWXpu7f4TnGQ0gmO3pXnJordKQKl1zYF6t19WazUGaNU35UNYqtut3JsXJtt+esxlrrhoTBQcFgN0d2ixKob2LY5UnnvQQ0EISsR3lTMHicFjgQql4PvEmfZZyqP2Rc3W0gwBKLm4qQaSLTmOlBDvS81cx3J/NciNUCEJ/6sMuZr/08ufoZcV+NTtCsWE8oe9STCVLzp+UB4v5GULy3xKo0f/+B99xZE6JzS4RKbv7KJ8c3Jp9lwtlAJngsOIQ51qKILDutL2yc5RpJ9aE0CrCK05DxArXvavn2X6DAaVCOtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=srhIn/WpdlVpAE2cNticNNYMCyk2sH0vssLZt9U3Azs=;
- b=wTKdASl9wIhFYquY/mAMUaet6Tvv0dp2iQAE7obkelAGAQkqfOf6cE9qKjvi3gcTmK7CH0i8srmPoYSjrCVpfvk2AM2UPpxDSu0IkCiuc+dkEcUWCbrUhtaRzIzSPM3TzNEznkZzdYUVgHObhV/aNnuwUVi/MLrtJWKh6bpk3cm9/352yP/ibR5UV8hOYP/6+xfi1Brf6LO3n0q04ITNGZ+CvA6wGYaF7A158vBf4n8TSDJD5602jDLL0kf55gC6nfIbm2E4oQKm+mGW7x2n6RRTBeuktTOXLecX4hI4YrVHepEWcRBjE7SHQrVjT+SKjv7fWQAxaAgpo9XACRghGQ==
+ bh=QfhltBH6apxt4PKk/fiqX0GKuSvhqsHT/xupMPVyhFk=;
+ b=E22Y3dYCl5AlkILbfo85TzWNFR8RzV75AOnZsKHZM7EFy/rrl57QGO3Kn8xwYm2W3gmB3r6h9pHvLUB5Ypj8VXgxN6peHZfakY7iFLDWAf4rPUtR2vKMp/T27sgxHCKeueFbXN1xTTNw11BLYqBE0ODv04PnnmNJy6SNpy7Itq5MApA6bwEtQ8H4hIkZVvaP20dQpWX2DlmvLlvc/LPz2imgN3iH9jvvjWikHQWtBLnYVav/9SgOChTcreqVCx9BmBpfny+x04/NGQRoDibxDrEeC9mBs92wgLBryIaFbcr3FuN1DQ9wAuy05zbe4KN1DgSKp0xYNytb3uNYylgs+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
  dkim=pass header.d=eviden.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=srhIn/WpdlVpAE2cNticNNYMCyk2sH0vssLZt9U3Azs=;
- b=KQWg7AkaIuFYoGkER52wxSK3hP2Z/CAELR9XkWyi9KQdjQv1fC+6SEZJlfR9bWfhFeCwFwX2I0pBlsrzaCm+ZbYQ5ysitePejOEZd1LVlDjHDVny0yd39XI7/ZHZyM2+0OLHrjsZJ8qkhgIbFwC6gOZrvlSeBAvFeM9L6COD/zIBMlwbkADiFwEKgd/zOW3dxkfWExGhwujkkroMBptUn/zlHxEBBxXePwnPrQGkmjNbESTb0BTJls7sOSIJzPm6bu/a+e+kkxDCBKd0b9R5rn4dmnxu46cxce/swmzKFqNQeIxSiwQT4bkCLAjFuGMcPSPFznpPxLgial6ZTrjkwQ==
+ bh=QfhltBH6apxt4PKk/fiqX0GKuSvhqsHT/xupMPVyhFk=;
+ b=P6zMvFqOkrbAWyDOZaGbZS3b1KOe1fLs24SjZUCs38fhzVWa9jN/hMKFBEYboCzKNc6C65mJwCJB9dVOOvt/FvJLcKu26TJbYhdeNrHO+92Er5xr7wf3xV6DL1PgdEY01Jr3nQa0hSCiI+5wmIJtXoeAYqNwelLHktLuKn3vekLdVci0v/Kxen27NBw46lfz0q4zPzmRNjznoGESdKyZXIsdkPcqBUPOA5YGfPShRJZrlnTE9DQaN7UJBov8sEPDFzOuuQYkz+J5mkqdis0nhHGsih257PzlrUaCEArHd03+Vty8FYgEDPi/ErsM3f41AHQepvFUpY+w/XIgr7TdPg==
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
  by DB8PR07MB6459.eurprd07.prod.outlook.com (2603:10a6:10:142::24)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Fri, 21 Feb
- 2025 08:07:43 +0000
+ 2025 08:07:42 +0000
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d%7]) with mapi id 15.20.8445.017; Fri, 21 Feb 2025
@@ -74,13 +74,11 @@ CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
  "mst@redhat.com" <mst@redhat.com>, "tjeznach@rivosinc.com"
  <tjeznach@rivosinc.com>, "minwoo.im@samsung.com" <minwoo.im@samsung.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-Subject: [PATCH v3 17/19] intel_iommu: Set address mask when a translation
- fails and adjust W permission
-Thread-Topic: [PATCH v3 17/19] intel_iommu: Set address mask when a
- translation fails and adjust W permission
-Thread-Index: AQHbhDeu169TFxh780WaPeBcIqbPLw==
+Subject: [PATCH v3 16/19] pci: Add a pci-level API for ATS
+Thread-Topic: [PATCH v3 16/19] pci: Add a pci-level API for ATS
+Thread-Index: AQHbhDeulsmv/QVTtU2P/5dyiWdZPw==
 Date: Fri, 21 Feb 2025 08:07:42 +0000
-Message-ID: <20250221080331.186285-18-clement.mathieu--drif@eviden.com>
+Message-ID: <20250221080331.186285-17-clement.mathieu--drif@eviden.com>
 References: <20250221080331.186285-1-clement.mathieu--drif@eviden.com>
 In-Reply-To: <20250221080331.186285-1-clement.mathieu--drif@eviden.com>
 Accept-Language: en-GB, fr-FR, en-US
@@ -91,83 +89,83 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=eviden.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|DB8PR07MB6459:EE_
-x-ms-office365-filtering-correlation-id: 72974e0f-bdbc-43a0-4122-08dd524ed158
+x-ms-office365-filtering-correlation-id: 3beef041-818f-406c-5925-08dd524ed0ef
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7416014|38070700018; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?0YQ3OBIJ3r/cc6Kg7+0rIsBOJ4loLNlxIS0MC9owrneG6CLNyUR4oBcOQE?=
- =?iso-8859-1?Q?dLhPdWY00ZeFtvUazcWQeeBEQgy2PSm05KrOwdKskBX57KHHAFq8N8eYE0?=
- =?iso-8859-1?Q?LXI83bYZcyWnasrMMrgIPab3uhTkMrqCuRvDDodKW4WrgeUZY2bOFghA7u?=
- =?iso-8859-1?Q?OhDl1FQRqHKSe4bQCIk6VQanVNoxk8vqMHEul/gjD+SBiXNCaKRkJtGXNc?=
- =?iso-8859-1?Q?VJSmk1BORR5hP/IE2/nLgd+/9Ll3CUDR7qNlrtXlGfB2aUpnpgMKC1HhC6?=
- =?iso-8859-1?Q?J2i29JfCxxgfzCLZFOFQB9yz3XfLlOl4P+NaMygEafuCFDBX2lE0oWL4S+?=
- =?iso-8859-1?Q?AvPrDNPGKOt1eDS7PkjA2LIqaPmYmUO8byMjysCfPJPtOz/4AMiCb3Y7oZ?=
- =?iso-8859-1?Q?uCRXOwKqS2JbZYjv8P/d1Qt4/72gXPnlHnDMrycmWI/1a/mhYwylRmdoIt?=
- =?iso-8859-1?Q?gE4jKqDrR9ePWJTCa81gyDbk7hn2FiK6IN+QdS09e8twX3MJfrHLclnNkM?=
- =?iso-8859-1?Q?oGApbWzXhzJMTTIRm1bqec1mhuoCOCkQDAlS+FeSDec5zABJwa0oo/yUT0?=
- =?iso-8859-1?Q?4Vn2yyWWaVM8Coawz5ZsjWXVQ9X0mpg/rFMXYZwgSHIuVIO7gJgiHtT1o1?=
- =?iso-8859-1?Q?KfJybMgxQPyv38z4KTvjHoWMHjD29mv06tudijuNSYA4JobrEPgxrWhrWG?=
- =?iso-8859-1?Q?CWqh29hcgSkrTLAP5ufczdQrZBrh67YJrG/31FTjybihhwt6i4Y1HeDWXt?=
- =?iso-8859-1?Q?lZCIN8FOorTqLeApNaC9ZRUeVJkySofD1YfwcpJk0oiyp22ucf9RUPEwDD?=
- =?iso-8859-1?Q?9xjQvds+JD965aSu4kwknrN4Bz/BnRzEnT06c5wA5q8JBR4sVoT6PgnD+/?=
- =?iso-8859-1?Q?EAOHNAwIFk5uRyhJSf0GyX+z+RKhymoNsYrQJU3N5TOUHIg+kMmciEfl/M?=
- =?iso-8859-1?Q?0ysHwQL5xoIm/Psj4dgIhVqfnl5gSQ9CTWOA/HYtdtka9NHeSM2fhWQRUV?=
- =?iso-8859-1?Q?4MedrQ/R4JUNgpx6C+smL5k4ne2Yj5il3/oiRCjK/rt95xpFDgBGOzxRWT?=
- =?iso-8859-1?Q?fmg0/n8USfxbqVUwwiUBcwaIFzmQrhbkMqGsIMLScGHn8Q7WgCygrCCAfQ?=
- =?iso-8859-1?Q?DW9ltZBoVPDtvcFSml/m2TaSZEjuQg3WtN0i7oDgFMtHDAKmYEdeqz004V?=
- =?iso-8859-1?Q?jxfMymdMEsDgahD0ceis3omsTcZ8xXkVKbAXqNVXhvjQftgB4D4hEjbXWw?=
- =?iso-8859-1?Q?EMCbT+Ov5v/huJHo9qB5jcEKwhXWmXOzujKLQxufQiShPQnZ5rXnG0nlhD?=
- =?iso-8859-1?Q?bF/eOGLXJ06nklNeFR7lwNNFSpudaImWuCThJQuXAMrIo2kxkfkPZxsYNH?=
- =?iso-8859-1?Q?UcBO3/2J/tipGS6XCYvhn0PhBLXa9jHuBX0oKPL2ykjlmEKtmQD6kHq9Oe?=
- =?iso-8859-1?Q?6t1/YpcaWCDlE9kf6KdJnxWkaVE9JSHe8eYuFLiILZF69M44jRQkDxYeuQ?=
- =?iso-8859-1?Q?rppoLDgkuT67PbpdOuAIoh?=
+ ARA:13230040|1800799024|4022899009|366016|376014|7416014|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?wZ2YKdQ+05YWjJaHwUsSALDfBDVfjo9it+nAaFFeQOtfAmVHL8jxUe48Zl?=
+ =?iso-8859-1?Q?gFAFUZNgjog36x001kqIImRImuycLCEhUyCln2kduYumUzoWkM8GrDU5M9?=
+ =?iso-8859-1?Q?jf3piR3ZqnlT8OVzv8nFi2aK57K15QZvKX1FAKMTylQPSpALJ1rX2mutg1?=
+ =?iso-8859-1?Q?zWOew7p0HNJQ7Qmqz7PjasZiYlk8t4h0Lx8j0kZnAksP/WEI7wWEaPXFiB?=
+ =?iso-8859-1?Q?moX8Ca1TqtVz11jLvonXWgw6fGa2LxrVf9BjCPpnlzsHw4yQxcm46LqGHU?=
+ =?iso-8859-1?Q?cab7qo5DEroCGpuZLtrbai7PR6jPl9shanTCEkocekGO45DmzbwC3ZJJqI?=
+ =?iso-8859-1?Q?G+h4+FICrnkyCgelBLijB1iQlWnd9UPhRXOUhHZesgpwXcXU7McPUqWuym?=
+ =?iso-8859-1?Q?L3kiLwPquWefZXC0Fwg5rkfgAn2M5+kwUJ2pjDpP9uQnwd1VQKjaRZ+Voq?=
+ =?iso-8859-1?Q?JFzeB7LPDP8fYPKK3mdcVhxfBZbCh/Vo2S8L6TEvXiNMxFpS4gnpmCNWoQ?=
+ =?iso-8859-1?Q?6TkoUKSklbp7f+Rn9wEpE9SJK5GeOz2ukMib2Ne4qAREiC/Qfq30pDV8Pl?=
+ =?iso-8859-1?Q?oQoirLPFKMr9j0wJYih3d/pcoFqol7vpgGXnuAULFWMyl76vppYBvN3CgQ?=
+ =?iso-8859-1?Q?RCKjxw1rC5fiT2vWZI+tORojrDOvx4MvQIMHcqpWAlF5L6+JyufKR9Uc5s?=
+ =?iso-8859-1?Q?9y67mGxC60+2QbAek3urPL+wMeFAHYS99D1SeubfrWwYQSy30ABZNJ3hue?=
+ =?iso-8859-1?Q?a9Ci6L98zF35t746xCKhQsHA16IDjPzuxbtwFZ+5KaxmTCW/BOVUJvHsoJ?=
+ =?iso-8859-1?Q?U1PJWv9rPSPnerkpka5IphbrvKwbcGTyIQSAlmHVF3JBlOD7l8dbjj9Dj3?=
+ =?iso-8859-1?Q?BsYyDQKz2RBYVr9ZU3gX5Xx1NNovFsG0Gq3Y/E3RdNHf8/IlFL3ILZSW9f?=
+ =?iso-8859-1?Q?BcFbJIB+6cNvBfPvaIvGvfIMULzSs6/uun7LSwzyA5vLa6biIaW6DAPoEO?=
+ =?iso-8859-1?Q?H3sDmk23VqW4FtE87oW9gWkh9dmozj5FM3aExS875ZxI/N4eLoCLKFY6sh?=
+ =?iso-8859-1?Q?zDQ04mOTZBA+oP512agbIO/8CuVAE0KRkH7I7JkhCooBmhFFgbN1SqHtk8?=
+ =?iso-8859-1?Q?165Aqxu2gRzhZEpP1XuiY2n8ENhlqTkAKsTJOCJ0osCdHmjMrKTzUXrul8?=
+ =?iso-8859-1?Q?I26OS3y0r9R22s+AzcA0QP+eMZlbIn+uDYobX5ClZL1n7T4XdQ4NJNR+DA?=
+ =?iso-8859-1?Q?O8LShjt5df6tDtknMdPUpL0l5he00RBaZGScEmDRiOQHz0eZgi/U8ZM5q0?=
+ =?iso-8859-1?Q?0JROtKbQuOo4JRCRil9g6UTiKeiYy2zG7zbKEXvQ5HNQRsNLcUV41IrFBm?=
+ =?iso-8859-1?Q?5ssmZWeIwUKMe/Tur3t6L0ooaceTJC7xZsEXkalZUO5SuiTP910IkGaSwB?=
+ =?iso-8859-1?Q?hiqSLlRY5xRyjM8/n9rQ9RkTqwtx9tzLLIhRdVppTTQtsHwaWU+pmh8uis?=
+ =?iso-8859-1?Q?EB16OdF6RxIwLiDTjbPPwz?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018); DIR:OUT;
- SFP:1101; 
+ SFS:(13230040)(1800799024)(4022899009)(366016)(376014)(7416014)(38070700018);
+ DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?mGn8lmtpcXtNlrt556d1Kx4cNjmIBtEC09gDnEqOJ+7t5d6ULfq8bCbtb+?=
- =?iso-8859-1?Q?0GjrxIrjHY6EXs8Ie59hJBuoWatK5NuzjkMKxa+ryRDmDKlBVoraSV9G+Y?=
- =?iso-8859-1?Q?7zwtVp3nO2Awp3hB2Y+J1bkU53siaio0KEmm/aH7ZjvnZgJVNZCPik7pac?=
- =?iso-8859-1?Q?qTkFXsZpN1Xz1E7xsP1gYv/DrwIqC9mAh75d26Mm/r3HFJ4D21JUmuyf/M?=
- =?iso-8859-1?Q?7aEl+HfDp/FE2e0d5mtzlxlXzOmb5OnQ5TFrxSNuzLh0hYyGON+o29xqhL?=
- =?iso-8859-1?Q?8aR7c4umzeSAqqlr2Mj6/S5f0RWkmNjpQrkdPNwxb+X7R5C0kuw+paiKO9?=
- =?iso-8859-1?Q?Ruvj+RVqJqKkOJFv3DPbRI9cXmXisI/xP6PXMETwaq9A2I2P9ZzmoHAbsc?=
- =?iso-8859-1?Q?YKeCGQS/FaO3ATWDyRuhO/pB5Fqdh0aocbC8FFxqWsv8aGgqgMGU8uXjEB?=
- =?iso-8859-1?Q?60QF0Ue4LV8N6cnn4FtuWPhoAeif37k2Juyl0En5mJM2ZLlGISG/fhd0GP?=
- =?iso-8859-1?Q?0GELlQ4C+YEOwa6D4DMvUVKlmBV0o4TcYHPMKeNGUqYwNImMQTvh9HYxa8?=
- =?iso-8859-1?Q?5tWEop44rQ5U8oNLsxmuqIzesHOqAQrudbtYfmljqIHSwaiNrCNKNYisyN?=
- =?iso-8859-1?Q?IfmF53RuBAMUhUJdg0SZmd+vaf2jUB3rUniruxMDnA3YufxaaGLFzp7DnM?=
- =?iso-8859-1?Q?Nt8MjuVqWWLujwZygbKk6alJHwFK0MzmHf1UBkedv2p5lo8D41DylaGcL4?=
- =?iso-8859-1?Q?duwZ1ak2foposjOl1EkQ3GFQcjRPsd/YSHraLqqFTrG5QKJew25ua4Rq/W?=
- =?iso-8859-1?Q?p9c2HZM0NTgU6GY5tNdFwjejn+Rd+1/K/5d9Awnek3gZOrgOTk6ZHx2Y+Z?=
- =?iso-8859-1?Q?6o9XBL1rpO+tNOrM5vjhKtC43EOvOHvxP4bATnHipJaLxWmeA0S/FJDSp/?=
- =?iso-8859-1?Q?9CT3OeKNoiwMhtdC8UKL2dFt+TZFiRbqfcR1hoH0hEyT2lSmfkz1ZV61U3?=
- =?iso-8859-1?Q?abX+lJAeQ3ZylwnqBZkmJB0p5CgbGrGmF+e89t+pVU8v8m+QQfzRjHAJie?=
- =?iso-8859-1?Q?6Nwo5lJVMaRq1HPDX6vHihrQV7H9b68xD13Wsv/IbLOuvfSIZeauz6MWe4?=
- =?iso-8859-1?Q?szE8C8eIZepqZVnMkZtVBneG30VVgi4qCsKw418MkXekqg4SQA3lpDXc6a?=
- =?iso-8859-1?Q?rIpOSUH8k6uRPaxSoFc2+6P5x6ZjM53/6mVtonU0HKSlatYt7AP6NqC/gt?=
- =?iso-8859-1?Q?McElFAnYJl0wmfNY0S8rjKprVvfvF3XwN4GlfO5bcd2ZUj6ESUmlZ8LSwm?=
- =?iso-8859-1?Q?6DHu2EcrIiGjEoUVR2bCZJAzanb6aQDmGxdNY4f3GqYLRCUQVlFuNrgv9D?=
- =?iso-8859-1?Q?B3LopflEmE4zK09YYxc+wI+OLgCFTPKV+k4o8zCgflYExT5khwEDRVIuRl?=
- =?iso-8859-1?Q?dYo0YkewrBywpmGtjBducgqw9GgUUWn/IE/UlrAi+BTT9dNl3L3G20hDkt?=
- =?iso-8859-1?Q?ZqT66PI70T/tmMV+/q1o/iK2fDYVzJ58BYi1cA1QqLaTOGtLvObPCDi70f?=
- =?iso-8859-1?Q?hWagoz17tRgSeXQMXRsdRBmjlXWLtgVpwYZDlufj5dvwJON9e/iw7CcbWV?=
- =?iso-8859-1?Q?W9wFm481YNdZz+W5s1S4hQwfnfbzYXnoKXfuz4tDK2iSGb/+74u6hspgZ8?=
- =?iso-8859-1?Q?5H7YbiYVp+cmXkBHJ9k=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?7DDyYPBzeIC1A3DBFrS4iKKhMqXGYdR9AKfrp42Jr226miCqOkaoJLnw2X?=
+ =?iso-8859-1?Q?I598I25NF7i1T3Njplhdtqc4pfin9ujQvjymACzxEOKNIzajJNeTrveeXX?=
+ =?iso-8859-1?Q?AmKSmylHNEGoE1SsQUjzTpRb2dUOaJbGlBuqUhra5z4eM9AZMS0mBaAj0a?=
+ =?iso-8859-1?Q?lVh5GMahNhqPNoNtU0KI6ejVL7E1QGNkJ0bTjfZZKRQbBFUzKB7G5yKBHr?=
+ =?iso-8859-1?Q?V/cMDlJbEHXriq0ZwkX0UmaJG2Y+g8FpVYCMHvmn5tCBdWXMH/SyIonr9E?=
+ =?iso-8859-1?Q?kmr8KVbRBe0T6kxwqCFeRMrcn7zlU3S7w8yL8Y8UnFc+hi42NkPfCX+L8O?=
+ =?iso-8859-1?Q?+bmKrwQbCZf85s+nIidmeY5vcHZNx6rEkon3rzt1QkjBY94lonqzaztGhk?=
+ =?iso-8859-1?Q?nYK2f6iFH2zV6ldBiuRxiVZXgyHg9PqJ/fOBaUfgwOm41TIcvRR/fhp1w0?=
+ =?iso-8859-1?Q?HOCrRUnn4xyGuSbqqbpt6tDfHrF37MulSE6jSNL81ysoKj8byDK5+lcB+2?=
+ =?iso-8859-1?Q?KUIul75/aECBqXvCLxDwAUVY5xtSew2qLRE9nBCjOLJuwiibHqLrlh2SoX?=
+ =?iso-8859-1?Q?P8vBJLy2ssa/aHRpxszuUnCXO1GVKtQPdTYs8+DMZhOpDoehk/CoJbpWxN?=
+ =?iso-8859-1?Q?Fo8O3vnFhysW6DulnkMHV/Q+W3T6zK5yaN7xTsaGaUmq9zhCWcYlI6QWh/?=
+ =?iso-8859-1?Q?z3Es8tD8gksfYE1oHxaIcD1bTVziv5gxZ5LcvwNpSGXDjRdR95Uj8Be9eG?=
+ =?iso-8859-1?Q?b+qePK+UndL+GwEfeYNTzqpPmyDBjE3xyOBHKeWWa/aM1l1I1TP6dnGcum?=
+ =?iso-8859-1?Q?z7/Cif1gXxav00LnRx7gmBQOCRpbllIxfOHPy0tzWeIcRtcoOCh9gBB8/6?=
+ =?iso-8859-1?Q?OK1+LD3q5q9MM9cQIvROqFUNN9Eqiu/l+Vlj1ei+FMkZOqD2ESG0jUko48?=
+ =?iso-8859-1?Q?Sh/PfyUw+9xbfuJJD8Y9fEokPbnIBOikkqqt3EaV0+MRD6Dwy1ewWctdSr?=
+ =?iso-8859-1?Q?nxl73uFVgRiEslL3ZcJSCo+HOJj2E9sW2cTjAdsJjHWwTeFGCHnAZyiDvB?=
+ =?iso-8859-1?Q?CTS9G36KymJ/zeTIsoUXBdz199s+gBPLFSOGOKIkYPqabLBAQz16Zemi4M?=
+ =?iso-8859-1?Q?XevefozUqPExT1t/WFUjtUTveI93NvcvMS/AP/BYUX30ErN5RcEG9SUtQw?=
+ =?iso-8859-1?Q?LcfeOtQHas+mtsZpOdpJ/FrHyKSO725pLWEM8stPouhJ3mr8UDnpaaJTEk?=
+ =?iso-8859-1?Q?2VdtSSDyg3yqKoA/YFekganHVjn9Sclx89o0yKZg8yrUMwIbYjZMDRRDGt?=
+ =?iso-8859-1?Q?98CeJLNfMmMKmNpropXqnKIkaEMP29zAOExoA1olcA2slKcrcRtsrB+P2W?=
+ =?iso-8859-1?Q?DmGBYqXmgToI7dXbSZfk2+52JhLXMCRTWVntceooycUk6hfyb8U8IJf0Ug?=
+ =?iso-8859-1?Q?wmg9CVhwcXlgoc6AwwYyh9fGkb5gzHuJeCRudOf22n/xHDizo73OdGZY+M?=
+ =?iso-8859-1?Q?GnU7HWq0QUCxnPMWEfBRM5+gKaXt0BNislUcimjntc29sUlxezfhXiCAJp?=
+ =?iso-8859-1?Q?A6SJDW6E6CfpMWvag0LawlmrAOcel65TxSRe0PECWlvWr40JrDsXc8WRYH?=
+ =?iso-8859-1?Q?MPlPef6wHIwrUupGIQMkCkdrxZuMoKx5TgEdCMe71lOH6UMN6SCrk+VsjS?=
+ =?iso-8859-1?Q?2nZu3LGiWCURXQHSQQk=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: eviden.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72974e0f-bdbc-43a0-4122-08dd524ed158
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 08:07:42.9583 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3beef041-818f-406c-5925-08dd524ed0ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 08:07:42.2146 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dQYzHTkyuE2PiobLm35HuW08jGXa6ON2W9h0a4N2VVzMKqgCVbxnGTWQn94ZLdpBdiWZkTmmUm4fS8uoJPwW7O2p9Z4DTFx7CQRyF7Cs3hhMFzIeOpJBlgbY0QPPdnhb
+X-MS-Exchange-CrossTenant-userprincipalname: GcgMZxudSS5ZBq/r/2RBWKIA8Y/KIR0vNAtyin837ys9cXWnOAu9xopCaYtbeZjCd39BjijrpYEPg9r/crnIiOZ4aaS379FuFNg3i7cZry7+r71vPcaAtl3mhiXIeUUu
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR07MB6459
 Received-SPF: pass client-ip=80.78.11.82;
  envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost1.eviden.com
@@ -195,54 +193,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-Implements the behavior defined in section 10.2.3.5 of PCIe spec rev 5.
-This is needed by devices that support ATS.
+Devices implementing ATS can send translation requests using
+pci_ats_request_translation_pasid.
+
+The invalidation events are sent back to the device using the iommu
+notifier managed with pci_register_iommu_tlb_event_notifier and
+pci_unregister_iommu_tlb_event_notifier
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 ---
- hw/i386/intel_iommu.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ hw/pci/pci.c         | 46 +++++++++++++++++++++++++++++++++++++++
+ include/hw/pci/pci.h | 52 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 98 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index d3772d8902..b9b5d492f5 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2100,7 +2100,8 @@ static bool vtd_do_iommu_translate(VTDAddressSpace *v=
-td_as, PCIBus *bus,
-     uint8_t bus_num =3D pci_bus_num(bus);
-     VTDContextCacheEntry *cc_entry;
-     uint64_t pte, page_mask;
--    uint32_t level, pasid =3D vtd_as->pasid;
-+    uint32_t level =3D UINT32_MAX;
-+    uint32_t pasid =3D vtd_as->pasid;
-     uint16_t source_id =3D PCI_BUILD_BDF(bus_num, devfn);
-     int ret_fr;
-     bool is_fpd_set =3D false;
-@@ -2259,14 +2260,19 @@ out:
-     entry->iova =3D addr & page_mask;
-     entry->translated_addr =3D vtd_get_pte_addr(pte, s->aw_bits) & page_ma=
-sk;
-     entry->addr_mask =3D ~page_mask;
--    entry->perm =3D access_flags;
-+    entry->perm =3D (is_write ? access_flags : (access_flags & (~IOMMU_WO)=
-));
-     return true;
-=20
- error:
-     vtd_iommu_unlock(s);
-     entry->iova =3D 0;
-     entry->translated_addr =3D 0;
--    entry->addr_mask =3D 0;
-+    /*
-+     * Set the mask for ATS (the range must be present even when the
-+     * translation fails : PCIe rev 5 10.2.3.5)
-+     */
-+    entry->addr_mask =3D (level !=3D UINT32_MAX) ?
-+                       (~vtd_pt_level_page_mask(level)) : (~VTD_PAGE_MASK_=
-4K);
-     entry->perm =3D IOMMU_NONE;
-     return false;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index be29c0375f..0ccd0656b7 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2896,6 +2896,52 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
+     }
  }
+=20
++ssize_t pci_ats_request_translation_pasid(PCIDevice *dev, uint32_t pasid,
++                                          bool priv_req, bool exec_req,
++                                          hwaddr addr, size_t length,
++                                          bool no_write, IOMMUTLBEntry *re=
+sult,
++                                          size_t result_length,
++                                          uint32_t *err_count)
++{
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
++
++    assert(result_length);
++
++    if (!iommu_mr || !pcie_ats_enabled(dev)) {
++        return -EPERM;
++    }
++    return memory_region_iommu_ats_request_translation(iommu_mr, priv_req,
++                                                       exec_req, addr, len=
+gth,
++                                                       no_write, result,
++                                                       result_length,
++                                                       err_count);
++}
++
++int pci_register_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid,
++                                          IOMMUNotifier *n)
++{
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
++    if (!iommu_mr) {
++        return -EPERM;
++    }
++    return memory_region_register_iommu_notifier(MEMORY_REGION(iommu_mr), =
+n,
++                                                 &error_fatal);
++}
++
++int pci_unregister_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid=
+,
++                                             IOMMUNotifier *n)
++{
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
++    if (!iommu_mr) {
++        return -EPERM;
++    }
++    memory_region_unregister_iommu_notifier(MEMORY_REGION(iommu_mr), n);
++    return 0;
++}
++
+ void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+ {
+     /*
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index a11366e08d..592e72aee9 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -461,6 +461,58 @@ bool pci_iommu_init_iotlb_notifier(PCIDevice *dev, uin=
+t32_t pasid,
+                                    IOMMUNotifier *n, IOMMUNotify fn,
+                                    void *opaque);
+=20
++/**
++ * pci_ats_request_translation_pasid: perform an ATS request
++ *
++ * Return the number of translations stored in @result in case of success,
++ * a negative error code otherwise.
++ * -ENOMEM is returned when the result buffer is not large enough to store
++ * all the translations
++ *
++ * @dev: the ATS-capable PCI device
++ * @pasid: the pasid of the address space in which the translation will be=
+ made
++ * @priv_req: privileged mode bit (PASID TLP)
++ * @exec_req: execute request bit (PASID TLP)
++ * @addr: start address of the memory range to be translated
++ * @length: length of the memory range in bytes
++ * @no_write: request a read-only access translation (if supported by the =
+IOMMU)
++ * @result: buffer in which the TLB entries will be stored
++ * @result_length: result buffer length
++ * @err_count: number of untranslated subregions
++ */
++ssize_t pci_ats_request_translation_pasid(PCIDevice *dev, uint32_t pasid,
++                                          bool priv_req, bool exec_req,
++                                          hwaddr addr, size_t length,
++                                          bool no_write, IOMMUTLBEntry *re=
+sult,
++                                          size_t result_length,
++                                          uint32_t *err_count);
++
++/**
++ * pci_register_iommu_tlb_event_notifier: register a notifier for changes =
+to
++ * IOMMU translation entries in a specific address space.
++ *
++ * Returns 0 on success, or a negative errno otherwise.
++ *
++ * @dev: the device that wants to get notified
++ * @pasid: the pasid of the address space to track
++ * @n: the notifier to register
++ */
++int pci_register_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid,
++                                          IOMMUNotifier *n);
++
++/**
++ * pci_unregister_iommu_tlb_event_notifier: unregister a notifier that has=
+ been
++ * registerd with pci_register_iommu_tlb_event_notifier
++ *
++ * Returns 0 on success, or a negative errno otherwise.
++ *
++ * @dev: the device that wants to unsubscribe
++ * @pasid: the pasid of the address space to be untracked
++ * @n: the notifier to unregister
++ */
++int pci_unregister_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid=
+,
++                                            IOMMUNotifier *n);
++
+ /**
+  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
+  *
 --=20
 2.48.1
 
