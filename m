@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FFBA3ECE3
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5BEA3ECF6
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 07:38:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlMd9-0001UQ-V7; Fri, 21 Feb 2025 01:35:23 -0500
+	id 1tlMgL-0006TQ-3i; Fri, 21 Feb 2025 01:38:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMd2-0001Qm-Eh
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:16 -0500
-Received: from esa1.hc1455-7.c3s2.iphmx.com ([207.54.90.47])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tlMgH-0006Sf-E4; Fri, 21 Feb 2025 01:38:37 -0500
+Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tlMcz-0003ki-UA
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 01:35:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1740119714; x=1771655714;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/RHv9Mp88/2oIuKI/eCTbMWqujLouJj70h/jd8CFmRE=;
- b=cUjJO2xGoHrzWPNxrC7WKXfAoz6e3yl0UP+zw0YcJOl6tnp5TOJjFwku
- BMarmSyyO3W1yK+oK4UBtBqk7JH/Kh6S10DgjS82WWGTntUF54epTHfbH
- Jx3PvwT4ukgKExMXcuwn0D+JyYGE+NZalooHnDubVC6cByaIFMtOAJC/E
- YrUXFhz8ssqb9j+CPKamVjLkFS8/KTm/2rw1ZvrX482Zh0gpwcrY1nmEO
- b1w2TqxiPlG+z1A8F7ybJOnXaEZ8M454RFqM5asqgsgkYMF+4lfmBx/BJ
- YKF4/Bq8xK42GCCq1Ss+QnRrGSemrJNbFM+qjegRCaRl+9HWuQPa8co3d g==;
-X-CSE-ConnectionGUID: ukQWWWX1RRCEJuyQTH8PUg==
-X-CSE-MsgGUID: nfUNY9H9SQC1q3yCr+MmnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="190808398"
-X-IronPort-AV: E=Sophos;i="6.13,303,1732546800"; d="scan'208";a="190808398"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 15:35:11 +0900
-Received: from oym-m3.gw.nic.fujitsu.com (oym-nat-oym-m3.gw.nic.fujitsu.com
- [192.168.87.60])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 262B6D480A
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:08 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id E093AD9A79
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 15:35:07 +0900 (JST)
-Received: from iaas-rdma.. (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 4E7B51A006C;
- Fri, 21 Feb 2025 14:35:07 +0800 (CST)
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2 8/8] migration: Add qtest for migration over RDMA
-Date: Fri, 21 Feb 2025 14:36:12 +0800
-Message-ID: <20250221063612.695909-9-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20250221063612.695909-1-lizhijian@fujitsu.com>
-References: <20250221063612.695909-1-lizhijian@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tlMgE-0003yp-El; Fri, 21 Feb 2025 01:38:36 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by tor.source.kernel.org (Postfix) with ESMTP id 643C66113A;
+ Fri, 21 Feb 2025 06:38:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85360C4CED6;
+ Fri, 21 Feb 2025 06:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1740119911;
+ bh=/EHL/JF7eS2/0snZ5wf6InM7vQD6VHbo9/K5D6CX9L0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=RJAy0pSy9nloi45ZfVr2VIvSdhDZrcj3GMNjoGco/4ViDspRkD7izHUXO4p8H98Pm
+ iF+EzITh0CrR6V93B83ApcchhbN1YEBrZDSwUHFGrd1lci8Nuzi72G/VdxO4l+Cw8o
+ Cec5q2Q5UMtzSGg6D/HRNrW97IsVyi1Km/skTmVpKqxH1aMrnk3GEclzFcoqC/qbCq
+ Vg5CwzTqHRHY4fs6dPuaNRKi3CkiV3tibVQrGgIi83mqfH796Mding6pT4Tv01jVKt
+ GuYHUvuAYS8pq83qdFJ6pi9p3uBf6S7WAB78EEvyhIkbF38mnvtgH0LeSFVRzycLB+
+ Pal/yO0+U7GgQ==
+Date: Fri, 21 Feb 2025 07:38:23 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Shiju Jose <shiju.jose@huawei.com>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, Philippe =?UTF-8?B?TWF0?=
+ =?UTF-8?B?aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Ani Sinha
+ <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Eric Blake
+ <eblake@redhat.com>, John Snow <jsnow@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, "Markus Armbruster" <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
+ <shannon.zhaosl@gmail.com>, Yanan Wang <wangyanan55@huawei.com>, Zhao Liu
+ <zhao1.liu@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 00/14] Change ghes to use HEST-based offsets and add
+ support for error inject
+Message-ID: <20250221073823.061a1039@foz.lan>
+In-Reply-To: <20250203162236.7d5872ff@imammedo.users.ipa.redhat.com>
+References: <cover.1738345063.git.mchehab+huawei@kernel.org>
+ <20250203110934.000038d8@huawei.com>
+ <20250203162236.7d5872ff@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=207.54.90.47; envelope-from=lizhijian@fujitsu.com;
- helo=esa1.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2600:3c04::f03c:95ff:fe5e:7468;
+ envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,179 +78,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Li Zhijian <lizhijian@fujitsu.com>
-From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This qtest requires there is a RDMA(RoCE) link in the host.
-In order to make the test work smoothly, introduce a
-scripts/rdma-migration-helper.sh to
-- setup a new Soft-RoCE(aka RXE) if it's root
-- detect existing RoCE link
+Em Mon, 3 Feb 2025 16:22:36 +0100
+Igor Mammedov <imammedo@redhat.com> escreveu:
 
-Test will be skipped if there is no available RoCE link.
- # Start of rdma tests
- # Running /x86_64/migration/precopy/rdma/plain
- ok 1 /x86_64/migration/precopy/rdma/plain # SKIP
- There is no available rdma link to run RDMA migration test.
- To enable the test:
- (1) Run 'scripts/rdma-migration-helper.sh setup' with root and rerun the test
- or
- (2) Run the test with root privilege
+> On Mon, 3 Feb 2025 11:09:34 +0000
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> > On Fri, 31 Jan 2025 18:42:41 +0100
+> > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> >   
+> > > Now that the ghes preparation patches were merged, let's add support
+> > > for error injection.
+> > > 
+> > > On this series, the first 6 patches chang to the math used to calculate offsets at HEST
+> > > table and hardware_error firmware file, together with its migration code. Migration tested
+> > > with both latest QEMU released kernel and upstream, on both directions.
+> > > 
+> > > The next patches add a new QAPI to allow injecting GHESv2 errors, and a script using such QAPI
+> > >    to inject ARM Processor Error records.
+> > > 
+> > > If I'm counting well, this is the 19th submission of my error inject patches.    
+> > 
+> > Looks good to me. All remaining trivial things are in the category
+> > of things to consider only if you are doing another spin.  The code
+> > ends up how I'd like it at the end of the series anyway, just
+> > a question of the precise path to that state!  
+> 
+> if you look at series as a whole it's more or less fine (I guess you
+> and me got used to it)
+> 
+> however if you take it patch by patch (as if you've never seen it)
+> ordering is messed up (the same would apply to everyone after a while
+> when it's forgotten)
+> 
+> So I'd strongly suggest to restructure the series (especially 2-6/14).
+> re sum up my comments wrt ordering:
+> 
+> 0  add testcase for HEST table with current HEST as expected blob
+>    (currently missing), so that we can be sure that we haven't messed
+>    existing tables during refactoring.
 
- # End of rdma tests
+Not sure if I got this one. The HEST table is part of etc/acpi/tables,
+which is already tested, as you pointed at the previous reviews. Doing
+changes there is already detected. That's basically why we added patches
+10 and 12:
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
- MAINTAINERS                           |  1 +
- scripts/rdma-migration-helper.sh      | 41 +++++++++++++++++
- tests/qtest/migration/precopy-tests.c | 64 +++++++++++++++++++++++++++
- 3 files changed, 106 insertions(+)
- create mode 100755 scripts/rdma-migration-helper.sh
+	[PATCH v3 10/14] tests/acpi: virt: allow acpi table changes for a new table: HEST
+	[PATCH v3 12/14] tests/acpi: virt: add a HEST table to aarch64 virt and update DSDT
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3848d37a38d..15360fcdc4b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3480,6 +3480,7 @@ R: Li Zhijian <lizhijian@fujitsu.com>
- R: Peter Xu <peterx@redhat.com>
- S: Odd Fixes
- F: migration/rdma*
-+F: scripts/rdma-migration-helper.sh
- 
- Migration dirty limit and dirty page rate
- M: Hyman Huang <yong.huang@smartx.com>
-diff --git a/scripts/rdma-migration-helper.sh b/scripts/rdma-migration-helper.sh
-new file mode 100755
-index 00000000000..66557d9e267
---- /dev/null
-+++ b/scripts/rdma-migration-helper.sh
-@@ -0,0 +1,41 @@
-+#!/bin/bash
-+
-+# Copied from blktests
-+get_ipv4_addr()
-+{
-+    ip -4 -o addr show dev "$1" |
-+        sed -n 's/.*[[:blank:]]inet[[:blank:]]*\([^[:blank:]/]*\).*/\1/p' |
-+        tr -d '\n'
-+}
-+
-+has_soft_rdma()
-+{
-+    rdma link | grep -q " netdev $1[[:blank:]]*\$"
-+}
-+
-+rdma_rxe_setup_detect()
-+{
-+    (
-+        cd /sys/class/net &&
-+            for i in *; do
-+                [ -e "$i" ] || continue
-+                [ "$i" = "lo" ] && continue
-+                [ "$(<"$i/addr_len")" = 6 ] || continue
-+                [ "$(<"$i/carrier")" = 1 ] || continue
-+
-+                has_soft_rdma "$i" && break
-+                [ "$operation" = "setup" ] &&
-+                    rdma link add "${i}_rxe" type rxe netdev "$i" && break
-+            done
-+        has_soft_rdma "$i" || return
-+        get_ipv4_addr "$i"
-+    )
-+}
-+
-+operation=${1:-setup}
-+
-+if [ "$operation" == "setup" ] || [ "$operation" == "detect" ]; then
-+    rdma_rxe_setup_detect
-+else
-+    echo "Usage: $0 [setup | detect]"
-+fi
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index ba273d10b9a..bf97f4e9325 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -99,6 +99,66 @@ static void test_precopy_unix_dirty_ring(void)
-     test_precopy_common(&args);
- }
- 
-+#ifdef CONFIG_RDMA
-+
-+#define RDMA_MIGRATION_HELPER "scripts/rdma-migration-helper.sh"
-+static int new_rdma_link(char *buffer)
-+{
-+    const char *argument = (geteuid() == 0) ? "setup" : "detect";
-+    char cmd[1024];
-+
-+    snprintf(cmd, sizeof(cmd), "%s %s", RDMA_MIGRATION_HELPER, argument);
-+
-+    FILE *pipe = popen(cmd, "r");
-+    if (pipe == NULL) {
-+        perror("Failed to run script");
-+        return -1;
-+    }
-+
-+    int idx = 0;
-+    while (fgets(buffer + idx, 128 - idx, pipe) != NULL) {
-+        idx += strlen(buffer);
-+    }
-+
-+    int status = pclose(pipe);
-+    if (status == -1) {
-+        perror("Error reported by pclose()");
-+        return -1;
-+    } else if (WIFEXITED(status)) {
-+        return WEXITSTATUS(status);
-+    }
-+
-+    return -1;
-+}
-+
-+static void test_precopy_rdma_plain(void)
-+{
-+    char buffer[128] = {};
-+
-+    if (new_rdma_link(buffer)) {
-+        g_test_skip("\nThere is no available rdma link to run RDMA migration test.\n"
-+                    "To enable the test:\n"
-+                    "(1) Run \'" RDMA_MIGRATION_HELPER " setup\' with root and rerun the test\n"
-+                    "or\n"
-+                    "(2) Run the test with root privilege\n");
-+        return;
-+    }
-+
-+    /*
-+     * TODO: query a free port instead of hard code.
-+     * 29200=('R'+'D'+'M'+'A')*100
-+     **/
-+    g_autofree char *uri = g_strdup_printf("rdma:%s:29200", buffer);
-+
-+    MigrateCommon args = {
-+        .listen_uri = uri,
-+        .connect_uri = uri,
-+    };
-+
-+    test_precopy_common(&args);
-+}
-+#endif
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -1124,6 +1184,10 @@ static void migration_test_add_precopy_smoke(MigrationTestEnv *env)
-                        test_multifd_tcp_uri_none);
-     migration_test_add("/migration/multifd/tcp/plain/cancel",
-                        test_multifd_tcp_cancel);
-+#ifdef CONFIG_RDMA
-+    migration_test_add("/migration/precopy/rdma/plain",
-+                       test_precopy_rdma_plain);
-+#endif
- }
- 
- void migration_test_add_precopy(MigrationTestEnv *env)
--- 
-2.44.0
+What tests don't have is a check for etc/hardware_errors firmware inside 
+tests/data/acpi/aarch64/virt/, but, IMO, we shouldn't add it there.
 
+See, hardware_errors table contains only some skeleton space to
+store:
+
+	- 1 or more error block address offsets;
+	- 1 or more read ack register;
+	- 1 or more HEST source entries containing CPER blocks.
+
+There's nothing there to be actually checked: it is just some
+empty spaces with a variable number of fields.
+
+With the new code, the actual number of CPER blocks and their
+corresponding offsets and read ack registers can be different on 
+different architectures. So, for instance, when we add x86 support,
+we'll likely start with just one error source entry, while arm will
+have two after this changeset.
+
+Also, one possibility to address the issues reported by Gavin Shan at
+https://lore.kernel.org/qemu-devel/20250214041635.608012-1-gshan@redhat.com/
+would be to have one entry per each CPU. So, the size of such firmware
+could be dependent on the number of CPUs.
+
+So, adding any validation to it would just cause pain and probably
+won't detect any problems.
+
+What could be done instead is to have a different type of tests that
+would use the error injection script to check if regressions are 
+introduced after QEMU 10.0. Such new kind of test would require
+this series to be merged first. It would also require the usage of
+an OSPM image with some testing tools on it. This is easier said 
+than done, as besides the complexity of having an OSPM test image,
+such kind of tests would require extra logic, specially if it would
+check regressions for SEA and other notification sources.
+
+Thanks,
+Mauro
 
