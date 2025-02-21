@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A459BA3FCC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:06:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6DCA3FCBA
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlWRy-0008Bc-6Q; Fri, 21 Feb 2025 12:04:30 -0500
+	id 1tlWS1-0008S9-8E; Fri, 21 Feb 2025 12:04:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRu-00080s-95
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tlWRw-0008Ck-NA
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRs-0001Wz-DY
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:25 -0500
+ id 1tlWRu-0001Xe-64
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740157463;
+ s=mimecast20190719; t=1740157465;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tF++Gjxl8qlA5pYY+tAt3HrugPJ8B0H6ljBKbOe9dP8=;
- b=N82HjQemBZDpKvcdUViHpsw1iJ8B9Dz+GrUvsc+rTAeEFiVAoJ/NHCJT7uMYmnQiW6I477
- xxTZmAV9d2g0TZh8h0CYu8WuYPNccUvS3zDC8f9TiuaSnfeU8RSWpDmeQMb5VVcgckA4MH
- afjEcOrj8FRfHzltviYnTnyu1PY99BQ=
+ bh=gITORNAi3idPJ7f7HHnX56O6J1H0hwCpHvwebA0yrfA=;
+ b=TWqImNhRgjI0EEqsovcpEuJtdP9sxKfHpFb8AP3k24iU5kYbNqg1pRXzXMD4JG/bh7ZvNB
+ r1RflNVCGAnjcKcs4/iJzATKVcBc9KKhAlZbzpYevDYFoFTGj8NEvAmvOiVUWMGoQYfJhj
+ ARsiqOJ2ADx6wJrnsHR2558P+87/qro=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-zKVvDBAzOOuf5Ai86YFTzA-1; Fri, 21 Feb 2025 12:04:21 -0500
-X-MC-Unique: zKVvDBAzOOuf5Ai86YFTzA-1
-X-Mimecast-MFC-AGG-ID: zKVvDBAzOOuf5Ai86YFTzA_1740157460
+ us-mta-426-YyB2QBF7OkGk8KTeyiTe_w-1; Fri, 21 Feb 2025 12:04:24 -0500
+X-MC-Unique: YyB2QBF7OkGk8KTeyiTe_w-1
+X-Mimecast-MFC-AGG-ID: YyB2QBF7OkGk8KTeyiTe_w_1740157463
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-abba4c6d9ddso265312966b.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:20 -0800 (PST)
+ a640c23a62f3a-ab7f6f6cd96so64125966b.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740157457; x=1740762257;
+ d=1e100.net; s=20230601; t=1740157462; x=1740762262;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tF++Gjxl8qlA5pYY+tAt3HrugPJ8B0H6ljBKbOe9dP8=;
- b=IAkV8TVUXb0LA8dQb1Gc9MdokxS+HmGT4f8f+RKTucaB5PptxuImU3dp0eb5bBzrys
- 95bTGbinxluM9PH1V7cezlPeePm0mJtFgsV338QmAFxUNhEuGvSimfLnUrgCBUz0dd2H
- AAvcfSHOCG5iWf/c1gjBpjAsDYvcCC9ffZlTikMkd50nkGczt0HIqM+bB4/9rVQ7a+72
- stoGbC+wxPyOlsQRp0nnY5w8cJaq/THaSuT1jzyuD7e4l1cOXGY4axFaB2PQ5QPjbgDs
- //wP6mjprZN5ISGOuRQyo/eekg/kILqoNYM9Miw+ZHmFWBGTvpl6dNt3g9oYizWIooq5
- A7mA==
-X-Gm-Message-State: AOJu0YwT3ONaIAYyRci7FujyGjanoeJoWrjUZf2sRi+2nxlhvLvmDQ31
- pwEweZ+E17McEoHzcyd1CIBbeqE7QU2ZloGjrmJC8o29Y7VzDwZocDLzRrF5x6am1LU1P+eIgTg
- qAcmjgGbLvLbotxtD7S5lTD7zHSnlyLzjAHzNoj3qB6ZDkKXcP3H+l4MsPL5LqbRQ+GsrgIhYiV
- ep08NcoMALLN8HXlMHFYpywWI2U/NSaCJeTsRK1TY=
-X-Gm-Gg: ASbGncvIbcOgmTLthBgBJiB5koNdcqT94nx//Licy26pxjhRU4cG1e5AbW6VZ3ZesgF
- i+zotrygJ7CgkX4dEqKu2Q/RHCyP+GhroszSx9UejPcGGs0qwJlHe+fCMEBNANTPITFL7/aIrIz
- OcjmGb9LW7WqnaDJDjmMjikAAP+zSOn6XhFe0LY840/9m1cSQ6v/HaQy3f+eODwSEU3oZgsCgRl
- E4624aPqPNWN7RK/MYlWSWNGtYDplyzuM3UpgOJIx3luZzGf9P/UIYRa5yZUJbIlIC9gjscgVms
- WNLz0cxoBx1pu2yNBrw=
-X-Received: by 2002:a17:907:d16:b0:aa6:b63a:4521 with SMTP id
- a640c23a62f3a-abc0d9dd9ecmr343454566b.15.1740157457287; 
- Fri, 21 Feb 2025 09:04:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlGheNS8hhPmT17THOlcjVYtIbDYCcx1/8bOp+Nm/X18M30oIRTJKprBJsZsTUU4Ax0giO3Q==
-X-Received: by 2002:a17:907:d16:b0:aa6:b63a:4521 with SMTP id
- a640c23a62f3a-abc0d9dd9ecmr343447666b.15.1740157456472; 
- Fri, 21 Feb 2025 09:04:16 -0800 (PST)
+ bh=gITORNAi3idPJ7f7HHnX56O6J1H0hwCpHvwebA0yrfA=;
+ b=kXmUnNO0+VK9GtRo9xmxRfX64XOC4YS55cr+HM+WlskNjM4/CLKNno72ZU8J5Qh3Z2
+ UGQWbR9d51J+m8wQYU3m6iWWspbCLR573uiwtX5fhU5HwcrGPByAbesP1JJ5rrFEqFk2
+ XAhGnuio6uTTVXA64+jBcj1+Tb2CpmyqvFk09AWYEAJK2X/zZAkIKT9bwOHvoNyLYk8I
+ wbOeEdkZ+3O/4Em45LOSyl46cjtKNhdnujyX6kik+Lx/s2AcpKgSgR5FIftBDTVpDnd3
+ XujwhyW2IcemG3LLQoihTMSIGI2XynpzWw1i6ezLZ3HD+/bTiK3burakwKLGfX745VXM
+ cIiA==
+X-Gm-Message-State: AOJu0Yy6/DfL8pNMkgLVAScB/hZTpkAiMeFXR4lD1kEJzfcjuPsw3Lz/
+ 5QLe90fs6f6vp2FcQe7GbVz0oFuyXXywyucYEAy2cgxXu+Lni/SljQnB4xcLEcLv8Qz9hYKNpBG
+ MbOfwubET/rTPZGsZXQWLAXTIZPOu6A4rZnOY3aQCETgWTTyH7VTddgC+2Od0XKktwwFP6rEo4b
+ G0sZasSKT/DvWpyByXJKxosE5HHTPHMrWju2A+sZs=
+X-Gm-Gg: ASbGnct1JTupu8y7k4jnRksSBar+W93t8REbxunlj15+eDt1igJ9ivJs+GEtTZPjC40
+ F+r6xD3AGVGuINpc81aykNT7Dtf8oJfAE6r3Hs3XsJo/eZtHVBSgiJ5HBmlgx1YMLjwPeUdeGWf
+ Sf6fNXCxbEsGfDrkdJapcDkC7WyYAAHIomYQFd2KRYqJby7LFZYkauAyTCsABB7SraK4DKdRCe0
+ U6MUuMQDoo44Uijan4AVus4NEp8mDmGVsaczUid6JoU57Pa15MxsURGNOGMcHHoZSmiz0ZWCn+V
+ J7LDBcl+wd1zKNjNWG8=
+X-Received: by 2002:a17:907:d204:b0:ab9:63bd:91be with SMTP id
+ a640c23a62f3a-abc099b3911mr472630166b.3.1740157462312; 
+ Fri, 21 Feb 2025 09:04:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHh3OiPvtScaPUKA6oR2syBGUS8aeCMOzQAoTZ6jAjPhsuT4a36zKEOsBZELst31y+ZScBTgg==
+X-Received: by 2002:a17:907:d204:b0:ab9:63bd:91be with SMTP id
+ a640c23a62f3a-abc099b3911mr472617766b.3.1740157461568; 
+ Fri, 21 Feb 2025 09:04:21 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.61.185])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aba9cf8a262sm1389156466b.22.2025.02.21.09.04.14
+ a640c23a62f3a-abbda707e3dsm535043666b.106.2025.02.21.09.04.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 09:04:15 -0800 (PST)
+ Fri, 21 Feb 2025 09:04:17 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 13/15] rust: memory: wrap MemoryRegion with Opaque<>
-Date: Fri, 21 Feb 2025 18:03:40 +0100
-Message-ID: <20250221170342.63591-14-pbonzini@redhat.com>
+Subject: [PATCH 14/15] rust: chardev: wrap Chardev with Opaque<>
+Date: Fri, 21 Feb 2025 18:03:41 +0100
+Message-ID: <20250221170342.63591-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250221170342.63591-1-pbonzini@redhat.com>
 References: <20250221170342.63591-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -108,89 +108,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/bindings.rs |  3 ---
- rust/qemu-api/src/memory.rs   | 30 ++++++++++++++++--------------
- 2 files changed, 16 insertions(+), 17 deletions(-)
+ rust/qemu-api/src/bindings.rs | 3 ---
+ rust/qemu-api/src/chardev.rs  | 8 ++++++--
+ rust/qemu-api/src/qdev.rs     | 1 +
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index b791ca6d87f..26cc8de0cf2 100644
+index 26cc8de0cf2..c3f36108bd5 100644
 --- a/rust/qemu-api/src/bindings.rs
 +++ b/rust/qemu-api/src/bindings.rs
-@@ -34,9 +34,6 @@ unsafe impl Sync for CharBackend {}
- unsafe impl Send for Chardev {}
- unsafe impl Sync for Chardev {}
+@@ -31,9 +31,6 @@ unsafe impl Sync for BusState {}
+ unsafe impl Send for CharBackend {}
+ unsafe impl Sync for CharBackend {}
  
--unsafe impl Send for MemoryRegion {}
--unsafe impl Sync for MemoryRegion {}
+-unsafe impl Send for Chardev {}
+-unsafe impl Sync for Chardev {}
 -
  unsafe impl Send for ObjectClass {}
  unsafe impl Sync for ObjectClass {}
  
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index 713c494ca2e..fdb1ea11fcf 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -6,9 +6,8 @@
+diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
+index 74cfb634e5f..a35b9217e90 100644
+--- a/rust/qemu-api/src/chardev.rs
++++ b/rust/qemu-api/src/chardev.rs
+@@ -6,9 +6,13 @@
  
- use std::{
-     ffi::{CStr, CString},
--    marker::{PhantomData, PhantomPinned},
-+    marker::PhantomData,
-     os::raw::{c_uint, c_void},
--    ptr::addr_of,
- };
+ use std::ffi::CStr;
  
- pub use bindings::{hwaddr, MemTxAttrs};
-@@ -16,6 +15,7 @@
- use crate::{
-     bindings::{self, device_endian, memory_region_init_io},
-     callbacks::FnCall,
-+    cell::Opaque,
-     prelude::*,
-     zeroable::Zeroable,
- };
-@@ -132,13 +132,13 @@ fn default() -> Self {
-     }
- }
- 
--/// A safe wrapper around [`bindings::MemoryRegion`].  Compared to the
--/// underlying C struct it is marked as pinned because the QOM tree
--/// contains a pointer to it.
--pub struct MemoryRegion {
--    inner: bindings::MemoryRegion,
--    _pin: PhantomPinned,
--}
-+/// A safe wrapper around [`bindings::MemoryRegion`].
+-use crate::{bindings, prelude::*};
++use crate::{bindings, cell::Opaque, prelude::*};
++
++/// A safe wrapper around [`bindings::Chardev`].
 +#[repr(transparent)]
 +#[derive(qemu_api_macros::Wrapper)]
-+pub struct MemoryRegion(Opaque<bindings::MemoryRegion>);
-+
-+unsafe impl Send for MemoryRegion {}
-+unsafe impl Sync for MemoryRegion {}
++pub struct Chardev(Opaque<bindings::Chardev>);
  
- impl MemoryRegion {
-     // inline to ensure that it is not included in tests, which only
-@@ -174,13 +174,15 @@ pub fn init_io<T: IsA<Object>>(
-         size: u64,
-     ) {
+-pub type Chardev = bindings::Chardev;
+ pub type ChardevClass = bindings::ChardevClass;
+ 
+ unsafe impl ObjectType for Chardev {
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index ed5dce08216..1ff6c1ca7c2 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -334,6 +334,7 @@ fn init_clock_out(&self, name: &str) -> Owned<Clock> {
+     fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
+         assert!(bql_locked());
+         let c_propname = CString::new(propname).unwrap();
++        let chr: &Chardev = chr;
          unsafe {
--            Self::do_init_io(&mut self.inner, owner.cast::<Object>(), &ops.0, name, size);
-+            Self::do_init_io(
-+                self.0.as_mut_ptr(),
-+                owner.cast::<Object>(),
-+                &ops.0,
-+                name,
-+                size,
-+            );
-         }
-     }
--
--    pub(crate) const fn as_mut_ptr(&self) -> *mut bindings::MemoryRegion {
--        addr_of!(self.inner) as *mut _
--    }
- }
- 
- unsafe impl ObjectType for MemoryRegion {
+             bindings::qdev_prop_set_chr(
+                 self.upcast().as_mut_ptr(),
 -- 
 2.48.1
 
