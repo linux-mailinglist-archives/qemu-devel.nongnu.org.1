@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17637A3FDEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AF9A3FDFC
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:52:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXA1-0000oI-2m; Fri, 21 Feb 2025 12:50:01 -0500
+	id 1tlXA2-0000pA-N1; Fri, 21 Feb 2025 12:50:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9x-0000nJ-Kb; Fri, 21 Feb 2025 12:49:57 -0500
+ id 1tlXA0-0000oc-Ln; Fri, 21 Feb 2025 12:50:00 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlX9v-0001au-VB; Fri, 21 Feb 2025 12:49:57 -0500
+ id 1tlX9z-0001bS-2f; Fri, 21 Feb 2025 12:50:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 321AFEFB66;
+ by isrv.corpit.ru (Postfix) with ESMTP id 361AEEFB67;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DE8A11BB582;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E2FD01BB583;
  Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D41B453F7F; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id D6C7553F81; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Krempa <pkrempa@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 03/14] block-backend: Fix argument order when calling
- 'qapi_event_send_block_io_error()'
-Date: Fri, 21 Feb 2025 20:49:33 +0300
-Message-Id: <20250221174949.836197-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Khem Raj <raj.khem@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 04/14] linux-user: Do not define struct sched_attr if
+ libc headers do
+Date: Fri, 21 Feb 2025 20:49:34 +0300
+Message-Id: <20250221174949.836197-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,56 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Krempa <pkrempa@redhat.com>
+From: Khem Raj <raj.khem@gmail.com>
 
-Commit 7452162adec25c10 introduced 'qom-path' argument to BLOCK_IO_ERROR
-event but when the event is instantiated in 'send_qmp_error_event()' the
-arguments for 'device' and 'qom_path' in
-qapi_event_send_block_io_error() were reversed :
+glibc 2.41+ has added [1] definitions for sched_setattr and
+sched_getattr functions and struct sched_attr.  Therefore, it needs
+to be checked for here as well before defining sched_attr, to avoid
+a compilation failure.
 
-Generated code for sending event:
+Define sched_attr conditionally only when SCHED_ATTR_SIZE_VER0 is
+not defined.
 
-  void qapi_event_send_block_io_error(const char *qom_path,
-                                      const char *device,
-                                      const char *node_name,
-                                      IoOperationType operation,
-                                      [...]
+[1] https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=21571ca0d70302909cf72707b2a7736cf12190a0;hp=298bc488fdc047da37482f4003023cb9adef78f8
 
-Call inside send_qmp_error_event():
-
-     qapi_event_send_block_io_error(blk_name(blk),
-                                    blk_get_attached_dev_path(blk),
-                                    bs ? bdrv_get_node_name(bs) : NULL, optype,
-                                    [...]
-
-This results into reporting the QOM path as the device alias and vice
-versa which in turn breaks libvirt, which expects the device alias being
-either a valid alias or empty (which would make libvirt do the lookup by
-node-name instead).
-
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2799
 Cc: qemu-stable@nongnu.org
-Fixes: 7452162adec2 ("qapi: add qom-path to BLOCK_IO_ERROR event")
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
-Message-ID: <09728d784888b38d7a8f09ee5e9e9c542c875e1e.1737973614.git.pkrempa@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 107c551de0d7bc3aa8e926c557b66b9549616f42)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 27a8d899c7a100fd5aa040a8b993bb257687c393)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 0c28091ef1..61b935e3c4 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -2137,7 +2137,7 @@ static void send_qmp_error_event(BlockBackend *blk,
-     g_autofree char *path = blk_get_attached_dev_path(blk);
- 
-     optype = is_read ? IO_OPERATION_TYPE_READ : IO_OPERATION_TYPE_WRITE;
--    qapi_event_send_block_io_error(blk_name(blk), path,
-+    qapi_event_send_block_io_error(path, blk_name(blk),
-                                    bs ? bdrv_get_node_name(bs) : NULL, optype,
-                                    action, blk_iostatus_is_enabled(blk),
-                                    error == ENOSPC, strerror(error));
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 1ce4c79784..a407d4a023 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -358,7 +358,8 @@ _syscall3(int, sys_sched_getaffinity, pid_t, pid, unsigned int, len,
+ #define __NR_sys_sched_setaffinity __NR_sched_setaffinity
+ _syscall3(int, sys_sched_setaffinity, pid_t, pid, unsigned int, len,
+           unsigned long *, user_mask_ptr);
+-/* sched_attr is not defined in glibc */
++/* sched_attr is not defined in glibc < 2.41 */
++#ifndef SCHED_ATTR_SIZE_VER0
+ struct sched_attr {
+     uint32_t size;
+     uint32_t sched_policy;
+@@ -371,6 +372,7 @@ struct sched_attr {
+     uint32_t sched_util_min;
+     uint32_t sched_util_max;
+ };
++#endif
+ #define __NR_sys_sched_getattr __NR_sched_getattr
+ _syscall4(int, sys_sched_getattr, pid_t, pid, struct sched_attr *, attr,
+           unsigned int, size, unsigned int, flags);
 -- 
 2.39.5
 
