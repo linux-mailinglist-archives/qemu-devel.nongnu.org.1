@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A884A3FDED
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F08DA3FDFE
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:53:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlXAB-0000vr-1U; Fri, 21 Feb 2025 12:50:11 -0500
+	id 1tlXAQ-000101-Ru; Fri, 21 Feb 2025 12:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA5-0000sM-BU; Fri, 21 Feb 2025 12:50:05 -0500
+ id 1tlXAA-0000wt-7o; Fri, 21 Feb 2025 12:50:10 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tlXA3-0001ci-Cq; Fri, 21 Feb 2025 12:50:05 -0500
+ id 1tlXA8-0001os-2B; Fri, 21 Feb 2025 12:50:09 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 46365EFB6A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4875FEFB6B;
  Fri, 21 Feb 2025 20:49:31 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EF74A1BB586;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F3BB31BB587;
  Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id DE83B53F87; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
+ id E119D53F89; Fri, 21 Feb 2025 20:49:50 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.2 07/14] vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
-Date: Fri, 21 Feb 2025 20:49:37 +0300
-Message-Id: <20250221174949.836197-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.2 08/14] ui/sdl2: reenable the SDL2 Windows keyboard hook
+ procedure
+Date: Fri, 21 Feb 2025 20:49:38 +0300
+Message-Id: <20250221174949.836197-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
 References: <qemu-stable-9.2.2-20250221204240@cover.tls.msk.ru>
@@ -62,46 +62,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-When iommufd_cdev_ram_block_discard_disable() fails for whatever reason,
-errp should be set or else SIGSEV is triggered in vfio_realize() when
-error_prepend() is called.
+Windows only:
 
-By this chance, use the same error message for both legacy and iommufd
-backend.
+The libSDL2 Windows message loop needs the libSDL2 Windows low
+level keyboard hook procedure to grab the left and right Windows
+keys correctly. Reenable the SDL2 Windows keyboard hook procedure.
 
-Fixes: 5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend")
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20250116102307.260849-1-zhenzhong.duan@intel.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 7b3d5b84cbd742356a1afc6b0fa489d0663f235d)
+Since SDL2 2.30.4 the SDL2 keyboard hook procedure also filters
+out the special left Control key event for every Alt Gr key event
+on keyboards with an international layout. This means the QEMU low
+level keyboard hook procedure is no longer needed. Remove the QEMU
+Windows keyboard hook procedure.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2139
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2323
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Link: https://lore.kernel.org/r/20241231115950.6732-1-vr_qemu@t-online.de
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 4dafba778aa3e5f5fd3b2c6333afd7650dcf54e2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fix in ui/sdl2.c (includes))
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index e7bece4ea1..a60c899dc6 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -515,8 +515,8 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-         } else {
-             ret = iommufd_cdev_ram_block_discard_disable(true);
-             if (ret) {
--                error_setg(errp,
--                              "Cannot set discarding of RAM broken (%d)", ret);
-+                error_setg_errno(errp, -ret,
-+                                 "Cannot set discarding of RAM broken");
-                 goto err_discard_disable;
-             }
-             goto found_container;
-@@ -544,6 +544,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+diff --git a/ui/meson.build b/ui/meson.build
+index 28c7381dd1..35fb04cadf 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -120,10 +120,6 @@ if gtk.found()
+ endif
  
-     ret = iommufd_cdev_ram_block_discard_disable(true);
-     if (ret) {
-+        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
-         goto err_discard_disable;
+ if sdl.found()
+-  if host_os == 'windows'
+-    system_ss.add(files('win32-kbd-hook.c'))
+-  endif
+-
+   sdl_ss = ss.source_set()
+   sdl_ss.add(sdl, sdl_image, pixman, glib, files(
+     'sdl2-2d.c',
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index bd4f5a9da1..3d70eaebfa 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -32,7 +32,6 @@
+ #include "sysemu/runstate.h"
+ #include "sysemu/runstate-action.h"
+ #include "sysemu/sysemu.h"
+-#include "ui/win32-kbd-hook.h"
+ #include "qemu/log.h"
+ 
+ static int sdl2_num_outputs;
+@@ -262,7 +261,6 @@ static void sdl_grab_start(struct sdl2_console *scon)
      }
+     SDL_SetWindowGrab(scon->real_window, SDL_TRUE);
+     gui_grab = 1;
+-    win32_kbd_set_grab(true);
+     sdl_update_caption(scon);
+ }
  
+@@ -270,7 +268,6 @@ static void sdl_grab_end(struct sdl2_console *scon)
+ {
+     SDL_SetWindowGrab(scon->real_window, SDL_FALSE);
+     gui_grab = 0;
+-    win32_kbd_set_grab(false);
+     sdl_show_cursor(scon);
+     sdl_update_caption(scon);
+ }
+@@ -371,19 +368,6 @@ static int get_mod_state(void)
+     }
+ }
+ 
+-static void *sdl2_win32_get_hwnd(struct sdl2_console *scon)
+-{
+-#ifdef CONFIG_WIN32
+-    SDL_SysWMinfo info;
+-
+-    SDL_VERSION(&info.version);
+-    if (SDL_GetWindowWMInfo(scon->real_window, &info)) {
+-        return info.info.win.window;
+-    }
+-#endif
+-    return NULL;
+-}
+-
+ static void handle_keydown(SDL_Event *ev)
+ {
+     int win;
+@@ -608,10 +592,6 @@ static void handle_windowevent(SDL_Event *ev)
+         sdl2_redraw(scon);
+         break;
+     case SDL_WINDOWEVENT_FOCUS_GAINED:
+-        win32_kbd_set_grab(gui_grab);
+-        if (qemu_console_is_graphic(scon->dcl.con)) {
+-            win32_kbd_set_window(sdl2_win32_get_hwnd(scon));
+-        }
+         /* fall through */
+     case SDL_WINDOWEVENT_ENTER:
+         if (!gui_grab && (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled)) {
+@@ -627,9 +607,6 @@ static void handle_windowevent(SDL_Event *ev)
+         scon->ignore_hotkeys = get_mod_state();
+         break;
+     case SDL_WINDOWEVENT_FOCUS_LOST:
+-        if (qemu_console_is_graphic(scon->dcl.con)) {
+-            win32_kbd_set_window(NULL);
+-        }
+         if (gui_grab && !gui_fullscreen) {
+             sdl_grab_end(scon);
+         }
+@@ -869,10 +846,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+ #ifdef SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR /* only available since SDL 2.0.8 */
+     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+ #endif
+-#ifndef CONFIG_WIN32
+-    /* QEMU uses its own low level keyboard hook procedure on Windows */
+     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
+-#endif
+ #ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
+     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
+ #endif
 -- 
 2.39.5
 
