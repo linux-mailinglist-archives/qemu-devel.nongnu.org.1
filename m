@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CBAA3F70E
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EE5A3F70F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 15:20:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlTro-0002Od-O1; Fri, 21 Feb 2025 09:19:00 -0500
+	id 1tlTrp-0002Pq-U1; Fri, 21 Feb 2025 09:19:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tlTrj-0002LZ-Ds
+ id 1tlTrk-0002M5-Kn
  for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:18:56 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tlTrg-00073e-5G
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:18:53 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-220dc3831e3so50593805ad.0
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:18:51 -0800 (PST)
+ id 1tlTrh-00073z-Jr
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 09:18:56 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-220f4dd756eso42413675ad.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 06:18:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1740147528; x=1740752328; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1740147531; x=1740752331; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CwiUkfAptJW8QwZGHJK0YcOqS7OLINR985yyAhSkxR0=;
- b=bWj+iQafUmNdG1a2nzgnQhWQjNSSfopTcN5oGg3TkmdihySuvS6bLZXpe/x0o8r7LB
- Q5kVq+kq8QrNhta/hIlqx+cQJrWUKOsZ/9OqkwRso9QDNj5aNnDCE3HwyZ3Pxd0rOu1p
- 5zanPTvYtm4OoIL1gitSE54uOgGYD7P4XdWYUcEDXyl0WVyjpmJKqONXemtHrWU+riTx
- CCYTX646a9pkxCzzfzWaXEWPWYEHpkJOeeXXFMErXu4iowAzhwcO/qtfprpwA9Raqrx6
- 4CaNAo3BfHEfVuSHjI+HWAcdRZz/kn6Za25/R88cBJoU+Jx3WHaOeqZ6HiqGuWvQKqRj
- ar3A==
+ bh=vRPV5pMQqeuIeYHTl+TnsXZt99QM6n1GWtO9C1Zj3A8=;
+ b=MLVGd1NDKsfdvAwXFDGkRikLPg7xfgh9MgRW2MUJgmJWIU44pFTXLhLrtpHxh+mWOL
+ Mtv3t2WqmPQ0ecB4gpBpTmzCY8WHRMXSzv9n9gSR9FDtDUpE8KsJikK8cB+OsETpQ0WD
+ yibgjF8UwEyh9sCKWLc7Ym1WDmKSlF6x9GnLlEK9iICLleVezKQB3aKgT7+w41tIA8yI
+ fRLYhzSTm/sJXBhw9PSscF44eD3vSST+g6x8n3uC8jIWJsQzr91vxHt83n01TJUuQU6/
+ p576a8YXm7oOqlXTtMKmXO4s6KTUdGrzBC8juBHBaygIfKKcTyC5ifUnlgeawjbbB7sp
+ cPww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740147528; x=1740752328;
+ d=1e100.net; s=20230601; t=1740147531; x=1740752331;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CwiUkfAptJW8QwZGHJK0YcOqS7OLINR985yyAhSkxR0=;
- b=ECD0uhFDNiO5dR4VqSWUY0BjUVUoX/Xqsv1Bwa8B2cQxk5b5d4dmNmv8lheHlQ4sBI
- YAHjrHRDQlZW6FfJzrgIARsAd7+qZqc9BD/woKDE9K03R/NVqwI6Fjs5fxBZaDlzHwrY
- uHkmWl/i+moyGsUUDSQJmZQASmI29GAQDGylQB2PNWg4hr4CI7bM9p3odl0WWOZvLG/a
- g0hA/mM9BgkJOPaGW9gE7+JIU4F7gU8Pdx5+6lnN5TzRdGBs76qhNIkCBsbSdx0SyYyB
- aVr803gEIB6VMy4JaxfZDPy7fP35WoMxzPSXViQnLeHW1fTRobx0tR4biJbZ+gtX9aO7
- mMMw==
-X-Gm-Message-State: AOJu0YzGc3OwnSbB/9E7h+VcICfZemzzZrLJfOP+qei+xON/IKNBAsks
- GnoR8LBGg+RbkGg+U/mReRXqLGUoZSMzl3c2e66JkJPlToRfxuXypk6MqSDTBWPsv+F8v/BfWr0
- 8
-X-Gm-Gg: ASbGnctOYQZKHyhP18aRjZhfAUDt+ESShlWqwKwrIIbHHc9Fb2Y94BmuSfrRh23lhX5
- b5GA+J6FKnwV9aEOX+De38ugxxfgM0xi48sXRzDS9fuPxnJZ6LW3/TmvPhwbRQOZx5i4xpcOz1b
- /hNIUTMX94Encxnw/PDEhproaa1im/8MdSa8PB5+n9PQ+rpz4A+KmouoUYG6eh9Wp9M7XO0VhUR
- PZ8pnNMJHuLaMbrgg6FbHy57tZmguuVPZSsbkQjuLm16mWdM0+BHOhlei1ImpAXun0vqXaLKntp
- 2zXY8Lh6rF8rs+nCuLnLfxBhb+mOKo/Be1+kdAO4MuspHvzqhqd5AQ==
-X-Google-Smtp-Source: AGHT+IGDVI4GEpTfESubysaaSk6jsk9ZHmZ7eYY/hS/fAVMYQ99JDvK2WlmEZsS1mq4mG8lmeMeliA==
-X-Received: by 2002:a05:6a00:3a1e:b0:732:5875:eb95 with SMTP id
- d2e1a72fcca58-734140898f3mr15292204b3a.4.1740147527928; 
- Fri, 21 Feb 2025 06:18:47 -0800 (PST)
+ bh=vRPV5pMQqeuIeYHTl+TnsXZt99QM6n1GWtO9C1Zj3A8=;
+ b=dFrCY0iBqJJ11PeNO6zrC6m5radNdlkxEqrebM/QjOJRGtwnLfCQT/cg21au5u23P5
+ aENxuyMnmwzZCv4xrEZmR2vl1J/DKy3Dtx06X8oIWxrLtePngabZFi+xiLct8At/xhZo
+ gjNp5wtW1M4sEdWs7JQ1e6a9RZwmbCpcs35Ly/zulmC7H3TOJBJPJqjVtW4Qy9btZg9/
+ wSRJazlR8JsD4HfyOnba5vgXMk0UOOeNM6ckmnRqZilyFF7zMCc6A0/jqoCLq+jqKoiJ
+ gdrmpjF+FdQWpYITS5l3A0QetfY/nUGsUFQDioe7n6YevKQGUPb/f9Y8qxkGD8885lZp
+ F0CA==
+X-Gm-Message-State: AOJu0YwqAPx6C/+Rivx4FPJGT+faW8sYlb0Bcg5k4p5NSfo+EEvG6lH4
+ wz7oEmDCUkIX7/TCJk311C+pNjMkHL4KTrl3v7q6KxJ3AvDbxE+6DNAXTcliZc7CpNmDJMxANQV
+ m
+X-Gm-Gg: ASbGncs7BqLt7r3Zfc0VUFq7wBJOilcyc4JK7MsibXdxstnVR0howVzg1SjF75Ih2z+
+ kMUazshP7JJd2cvte6/GmpZctukrTTqDnhqhhakOKS5oLOeHeXOX/tK48DW9DEYA3UPc11Tffsy
+ a6Uzbfys4oHa1vXVBR3pzc71nEZyEL4yxse7HFXKayjvzDH21gV1+Rxx+6LXTD46uSCK0iEXyh2
+ WzsKnUvjhT1iWcx15XsqHLFjKW6i19BVX9K37qMdfWpA4BDQ/ZdU/vv+yp9bNcqwgDnqDHkmzKU
+ er0cTscgB5sERAIL8deFUQ4o5ugguq+s8sb1hL+flNLFoeiqCg48rw==
+X-Google-Smtp-Source: AGHT+IG1gJbZSLGT8kbGcLEdEUZfvd4h5LxJewnrUzdqufxPWGt1QSLacG/vEj7frKnEEZkMBxgkAw==
+X-Received: by 2002:a05:6a21:9218:b0:1ee:cb08:d0a8 with SMTP id
+ adf61e73a8af0-1eef3cb91d7mr6582896637.21.1740147531584; 
+ Fri, 21 Feb 2025 06:18:51 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com ([187.11.154.120])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-734300da098sm1150290b3a.129.2025.02.21.06.18.45
+ d2e1a72fcca58-734300da098sm1150290b3a.129.2025.02.21.06.18.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 06:18:47 -0800 (PST)
+ Fri, 21 Feb 2025 06:18:50 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 2/3] target/riscv/cpu.c: create flag for ziccrse
-Date: Fri, 21 Feb 2025 11:18:33 -0300
-Message-ID: <20250221141834.626722-3-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 3/3] target/riscv/kvm: add extensions after 6.14-rc3 update
+Date: Fri, 21 Feb 2025 11:18:34 -0300
+Message-ID: <20250221141834.626722-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250221141834.626722-1-dbarboza@ventanamicro.com>
 References: <20250221141834.626722-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,73 +100,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At this moment ziccrse is a TCG always enabled named feature for
-priv_ver > 1.11 that has no exclusive flag. In the next patch we'll make
-the KVM driver update ziccrse as well, turning it on/off depending on
-host settings, but for that we'll need an ext_ziccrse flag in the CPU
-state.
-
-Create an exclusive flag for it like we do with other named features.
-As with any named features we already have, it won't be exposed to
-users. TCG will keep the same restiction for it (always enabled if
-has_priv_1_11 is true) and KVM will be free to turn it on/off as
-required.
+Expose ziccrse, zabha and svvptc.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/cpu.c         | 3 ++-
- target/riscv/cpu_cfg.h     | 3 +++
- target/riscv/tcg/tcg-cpu.c | 2 ++
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ target/riscv/kvm/kvm-cpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 522d6584e4..fc4632ce36 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -105,7 +105,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(ziccamoa, PRIV_VERSION_1_11_0, has_priv_1_11),
-     ISA_EXT_DATA_ENTRY(ziccif, PRIV_VERSION_1_11_0, has_priv_1_11),
-     ISA_EXT_DATA_ENTRY(zicclsm, PRIV_VERSION_1_11_0, has_priv_1_11),
--    ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, has_priv_1_11),
-+    ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, ext_ziccrse),
-     ISA_EXT_DATA_ENTRY(zicfilp, PRIV_VERSION_1_12_0, ext_zicfilp),
-     ISA_EXT_DATA_ENTRY(zicfiss, PRIV_VERSION_1_13_0, ext_zicfiss),
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-@@ -1749,6 +1749,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
-     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
-     MULTI_EXT_CFG_BOOL("ssstateen", ext_ssstateen, true),
-     MULTI_EXT_CFG_BOOL("sha", ext_sha, true),
-+    MULTI_EXT_CFG_BOOL("ziccrse", ext_ziccrse, true),
- 
-     { },
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 23ce779359..471fd554b3 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -274,6 +274,7 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
+     KVM_EXT_CFG("zicboz", ext_zicboz, KVM_RISCV_ISA_EXT_ZICBOZ),
++    KVM_EXT_CFG("ziccrse", ext_ziccrse, KVM_RISCV_ISA_EXT_ZICCRSE),
+     KVM_EXT_CFG("zicntr", ext_zicntr, KVM_RISCV_ISA_EXT_ZICNTR),
+     KVM_EXT_CFG("zicond", ext_zicond, KVM_RISCV_ISA_EXT_ZICOND),
+     KVM_EXT_CFG("zicsr", ext_zicsr, KVM_RISCV_ISA_EXT_ZICSR),
+@@ -283,6 +284,7 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
+     KVM_EXT_CFG("zimop", ext_zimop, KVM_RISCV_ISA_EXT_ZIMOP),
+     KVM_EXT_CFG("zcmop", ext_zcmop, KVM_RISCV_ISA_EXT_ZCMOP),
++    KVM_EXT_CFG("zabha", ext_zabha, KVM_RISCV_ISA_EXT_ZABHA),
+     KVM_EXT_CFG("zacas", ext_zacas, KVM_RISCV_ISA_EXT_ZACAS),
+     KVM_EXT_CFG("zawrs", ext_zawrs, KVM_RISCV_ISA_EXT_ZAWRS),
+     KVM_EXT_CFG("zfa", ext_zfa, KVM_RISCV_ISA_EXT_ZFA),
+@@ -325,6 +327,7 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
+     KVM_EXT_CFG("svnapot", ext_svnapot, KVM_RISCV_ISA_EXT_SVNAPOT),
+     KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
++    KVM_EXT_CFG("svvptc", ext_svvptc, KVM_RISCV_ISA_EXT_SVVPTC),
  };
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 3f3c1118c0..8a843482cc 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -166,6 +166,9 @@ struct RISCVCPUConfig {
-     bool has_priv_1_12;
-     bool has_priv_1_11;
  
-+    /* Always enabled for TCG if has_priv_1_11 */
-+    bool ext_ziccrse;
-+
-     /* Vendor-specific custom extensions */
-     bool ext_xtheadba;
-     bool ext_xtheadbb;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index ea8d77d06a..c93612b1da 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -360,6 +360,8 @@ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
- 
-     cpu->cfg.ext_sha = riscv_has_ext(&cpu->env, RVH) &&
-                        cpu->cfg.ext_ssstateen;
-+
-+    cpu->cfg.ext_ziccrse = cpu->cfg.has_priv_1_11;
- }
- 
- static void riscv_cpu_validate_g(RISCVCPU *cpu)
+ static void *kvmconfig_get_cfg_addr(RISCVCPU *cpu, KVMCPUConfig *kvmcfg)
 -- 
 2.48.1
 
