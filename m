@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C4BA3FCD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C61A3FCB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 18:04:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlWRv-0007yu-HF; Fri, 21 Feb 2025 12:04:28 -0500
+	id 1tlWRy-0008D6-Lv; Fri, 21 Feb 2025 12:04:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRq-0007kW-2K
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tlWRr-0007ml-4r
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tlWRn-0001VI-3z
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:21 -0500
+ id 1tlWRp-0001Vr-30
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 12:04:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740157458;
+ s=mimecast20190719; t=1740157460;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2qAjDlzrSY64BqeVItW5GYtRjxGE8Q/k4KYQ6izQmD4=;
- b=E8I2nmR72heNeVFs9yMELoDmmIyXjYVgsHFMJKZ0Zd0rGnd9R7xCU3ZtKn+zue+jt/zT/D
- 0HkyKtQwhF1EetEOcv8GFN3nJvBbY4spclKJajLzwPcykFnu2miu0bebpY0Oi5CN+KH/dO
- zbres3/+QthDAhQgHmEPS3/CU3y8VI4=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wrxstZfwC92BCL08iYO3tMXByMssL0Rad+3hL3bRI4k=;
+ b=XKAldwQb/0l/S6I+LX9a86GkDjihruQLqrVM43wFz/W0MEeox8PdRGiyizStmu3Ydhl/NR
+ mmYDMVIav6TA2FE4I5dpswGPAaZ4Fvyk3tVlKtFppZik3nUtVgvPWmkAPdKqKaJgdU1xEQ
+ Cpqk5qqsBq3NvdfLWUxwf1oY72aooCo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-WwGzz0EAP--jzrpca_zL8g-1; Fri, 21 Feb 2025 12:04:16 -0500
-X-MC-Unique: WwGzz0EAP--jzrpca_zL8g-1
-X-Mimecast-MFC-AGG-ID: WwGzz0EAP--jzrpca_zL8g_1740157455
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5e08dfe2283so2137128a12.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:16 -0800 (PST)
+ us-mta-658-vmo46GzqO_mRVpvHyEddow-1; Fri, 21 Feb 2025 12:04:18 -0500
+X-MC-Unique: vmo46GzqO_mRVpvHyEddow-1
+X-Mimecast-MFC-AGG-ID: vmo46GzqO_mRVpvHyEddow_1740157458
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5da03762497so2320560a12.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 09:04:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740157455; x=1740762255;
+ d=1e100.net; s=20230601; t=1740157456; x=1740762256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2qAjDlzrSY64BqeVItW5GYtRjxGE8Q/k4KYQ6izQmD4=;
- b=wLcpiycyxEN+W27T8E/rpfJA6ONXnLMKMMPASCmSOofG7p8sqaMnsVVEUlIRrFdWMn
- WAZC46KBFW8swpjGoDeWPUrpYkAju662xFW92dCMQeLg78idtE3Ml2soqCvrWTGjFE+e
- +ugWIc6/b3Xn2qYuGCmwyUWbFC9X7hOgRdo5r7XaxDHHeCQvqNKdqlY2mBnS96d2/19/
- pgsNTV100vVCIfyKx7JbrTpcFUwl+8l8FKIRIgxcQ0LpquIbtdV+nYjZWe0bWZ+ZMw9c
- 27ZbxVfxOpw+45158qObX1VVE5maRTlrmA0O1+TSgf0zbh7NNcKpdCLC6SaHc11n5AyD
- UGjA==
-X-Gm-Message-State: AOJu0YxkVH1pHs4MdQ4OzkAmAIGo2kXhNYDTICwlUhPilbJJW957JOao
- DLHx474voANZYbQvuKpfdmRLqkLCvhU8BtZ2zz3Rq9ieHfrO4uLytzo14nKUVk1ZP+Gbed2YGti
- AC4/tEoy/18zZ7v7r5Fd+1NvmgDWqDifD/4WI6a+JbgiCeCEYMkd6z1PYhMulN+HF447a9KlHnx
- oo7A/8azdCetWEO5s/Fw0GLOnNumLRzYGkZY90MM4=
-X-Gm-Gg: ASbGncuhSUlrdLn3yJlxKn2AuFBeFxjCCPNVgbBmr5ttaDGbn9RhLU0FIUjIb4V5wtu
- 6BXRx/qvW+EGSP1jICP0JZR7OZergliZINF6xPOrKD/AL7hTRwFz1blkWAzW1/JVca+AgtpcogS
- dz9k9K+D6SVtGQrTSJkeJ454CkTrDHutDzTiP3aWWaEqADxzRvBT9tXefiuz/rjnw1JGvafxrLe
- cJSu9u5mbRPigHx1Wm+yTBPmqgpp8vK7A6GPDbpNA+QyCXpEynMKHW1Sl7bXvPupn98adq5ZHrG
- rh/Hp9w+KoX1uDUEzt4=
-X-Received: by 2002:a05:6402:388c:b0:5e0:7cc4:ec57 with SMTP id
- 4fb4d7f45d1cf-5e0b7266ba5mr7393983a12.31.1740157454375; 
+ bh=wrxstZfwC92BCL08iYO3tMXByMssL0Rad+3hL3bRI4k=;
+ b=kNDJ32XcE6EQ8OXGsydDlK7pMAORdVo+zJrhWQnKzKbAkDxfS5xZ7e/FQFn+3hXrbB
+ S+C+XLWSKQK9kk+yh1szNRub/whoLXEY0SFfQocdLYSced0+WfKQWXkRF1VDVEaNuQ4u
+ +FymBlDgCEkzppiCc62MnyN5bzE3wX8C2RrrXQ86ejMcIOQO77ibJKgi48WOxmnLsgPK
+ hrjVcdzmO1qlMQVx0FMzMDOAJWVXPu79ElhhfUiJumRRaSU+rMJxQ7r8QYi91ae8amYP
+ HHrTaATXB/Xhje2H90Fr0q9hkxsLLNKeUwMXEXog+JXWqYLVjEHmE/v3GTXr0buFsi2H
+ UfJQ==
+X-Gm-Message-State: AOJu0YwIgWcZEaPsQjQ4gQ/X/0h4KKUTLL7a1FQ3sdcyBN8Bed8YRhVU
+ 6ARPNWahNULIy+fxfAVCqzXW4+ScCn6o8gPPfKg6P6pmqdG28ptfoc0IrnwPiiIa0GvfzfUzobO
+ Debwk2skKkrbAjBwy8yxk24GtjZH45JS2E6rKIP5fz9yn05X1ZBoj21s8PuWY6CDL4wdAK0i/i8
+ juYd7N5NKzfa+6zaCqnEgta6GZ8JM8vVo7jXqcKUI=
+X-Gm-Gg: ASbGncuneDe5Hb9lg/T33RLap7qp/bGscHixcN4A7GhpjMtZS1lSpLM1m4A2I8as6b9
+ hJaa5w/da08k4AWPxEtyfAra/KJ4jCjl72+uvgj6ZVyNQiRdcKUNu1JFOVmETF4WikOSK+wFYOR
+ 72qmf7BZb1+XMkpOnIEgkLTdVHpDSyWbGrb1ORFceCTfcpJDXoy0sv9z9tDW7M20Hivx4F6uVJi
+ UaFu16I9WiKr/kAaAiJbirPn4+fnGKYODtytBbQhYmEvk8zlkUyLyfuHGrbdomyt338alfqwO9/
+ Rb+pq0UQn8bzCq3lVN0=
+X-Received: by 2002:a05:6402:1ecf:b0:5e0:8a3f:ef65 with SMTP id
+ 4fb4d7f45d1cf-5e0b62f9bbdmr4044712a12.7.1740157456163; 
+ Fri, 21 Feb 2025 09:04:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExONKfMjCtfDcseZA+TksGC0DWhptB5rhNYjv195XCgFnxhHIkfqbSWPIwA2s61byRocY23g==
+X-Received: by 2002:a05:6402:1ecf:b0:5e0:8a3f:ef65 with SMTP id
+ 4fb4d7f45d1cf-5e0b62f9bbdmr4044457a12.7.1740157454033; 
  Fri, 21 Feb 2025 09:04:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF33QoOqgmxmc8LVsNCqEn91wuWdiLttrFTLkpybIl0dvb1Oxi7pSLekqxSW/N32BQEskDCgw==
-X-Received: by 2002:a05:6402:388c:b0:5e0:7cc4:ec57 with SMTP id
- 4fb4d7f45d1cf-5e0b7266ba5mr7393701a12.31.1740157452298; 
- Fri, 21 Feb 2025 09:04:12 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.61.185])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e07464bcc7sm6856043a12.33.2025.02.21.09.04.10
+ 4fb4d7f45d1cf-5e09072247esm4486329a12.51.2025.02.21.09.04.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 09:04:11 -0800 (PST)
+ Fri, 21 Feb 2025 09:04:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 11/15] rust: qdev: wrap Clock and DeviceState with Opaque<>
-Date: Fri, 21 Feb 2025 18:03:38 +0100
-Message-ID: <20250221170342.63591-12-pbonzini@redhat.com>
+Subject: [PATCH 12/15] rust: sysbus: wrap SysBusDevice with Opaque<>
+Date: Fri, 21 Feb 2025 18:03:39 +0100
+Message-ID: <20250221170342.63591-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250221170342.63591-1-pbonzini@redhat.com>
 References: <20250221170342.63591-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,199 +108,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/bindings.rs |  6 ----
- rust/qemu-api/src/qdev.rs     | 68 ++++++++++++++++++++++++-----------
- rust/qemu-api/src/vmstate.rs  |  2 +-
- 3 files changed, 49 insertions(+), 27 deletions(-)
+ rust/hw/timer/hpet/src/hpet.rs |  2 +-
+ rust/qemu-api/src/bindings.rs  |  3 ---
+ rust/qemu-api/src/sysbus.rs    | 25 ++++++++++++++++++-------
+ 3 files changed, 19 insertions(+), 11 deletions(-)
 
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index be27eb0eff4..19e63465cff 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -741,7 +741,7 @@ fn reset_hold(&self, _type: ResetType) {
+         HPETFwConfig::update_hpet_cfg(
+             self.hpet_id.get(),
+             self.capability.get() as u32,
+-            sbd.mmio[0].addr,
++            unsafe { *sbd.as_ptr() }.mmio[0].addr,
+         );
+ 
+         // to document that the RTC lowers its output on reset as well
 diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index be6dd68c09c..6e70a75a0e6 100644
+index 6e70a75a0e6..b791ca6d87f 100644
 --- a/rust/qemu-api/src/bindings.rs
 +++ b/rust/qemu-api/src/bindings.rs
-@@ -34,12 +34,6 @@ unsafe impl Sync for CharBackend {}
- unsafe impl Send for Chardev {}
- unsafe impl Sync for Chardev {}
+@@ -40,9 +40,6 @@ unsafe impl Sync for MemoryRegion {}
+ unsafe impl Send for ObjectClass {}
+ unsafe impl Sync for ObjectClass {}
  
--unsafe impl Send for Clock {}
--unsafe impl Sync for Clock {}
+-unsafe impl Send for SysBusDevice {}
+-unsafe impl Sync for SysBusDevice {}
 -
--unsafe impl Send for DeviceState {}
--unsafe impl Sync for DeviceState {}
--
- unsafe impl Send for MemoryRegion {}
- unsafe impl Sync for MemoryRegion {}
+ // SAFETY: this is a pure data struct
+ unsafe impl Send for CoalescedMemoryRange {}
+ unsafe impl Sync for CoalescedMemoryRange {}
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index 48803a655f9..78909fb9931 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -6,11 +6,11 @@
  
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 1a4d1f38762..ed5dce08216 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -10,12 +10,12 @@
-     ptr::NonNull,
- };
+ use std::{ffi::CStr, ptr::addr_of_mut};
  
--pub use bindings::{Clock, ClockEvent, DeviceClass, DeviceState, Property, ResetType};
-+pub use bindings::{ClockEvent, DeviceClass, Property, ResetType};
+-pub use bindings::{SysBusDevice, SysBusDeviceClass};
++pub use bindings::SysBusDeviceClass;
  
  use crate::{
-     bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, Error, ResettableClass},
-     callbacks::FnCall,
+     bindings,
 -    cell::bql_locked,
 +    cell::{bql_locked, Opaque},
-     chardev::Chardev,
-     irq::InterruptSource,
+     irq::{IRQState, InterruptSource},
+     memory::MemoryRegion,
      prelude::*,
-@@ -23,6 +23,22 @@
-     vmstate::VMStateDescription,
+@@ -18,6 +18,14 @@
+     qom::Owned,
  };
  
-+/// A safe wrapper around [`bindings::Clock`].
++/// A safe wrapper around [`bindings::SysBusDevice`].
 +#[repr(transparent)]
 +#[derive(Debug, qemu_api_macros::Wrapper)]
-+pub struct Clock(Opaque<bindings::Clock>);
++pub struct SysBusDevice(Opaque<bindings::SysBusDevice>);
 +
-+unsafe impl Send for Clock {}
-+unsafe impl Sync for Clock {}
++unsafe impl Send for SysBusDevice {}
++unsafe impl Sync for SysBusDevice {}
 +
-+/// A safe wrapper around [`bindings::DeviceState`].
-+#[repr(transparent)]
-+#[derive(Debug, qemu_api_macros::Wrapper)]
-+pub struct DeviceState(Opaque<bindings::DeviceState>);
-+
-+unsafe impl Send for DeviceState {}
-+unsafe impl Sync for DeviceState {}
-+
- /// Trait providing the contents of the `ResettablePhases` struct,
- /// which is part of the QOM `Resettable` interface.
- pub trait ResettablePhasesImpl {
-@@ -117,7 +133,10 @@ fn vmsd() -> Option<&'static VMStateDescription> {
- /// We expect the FFI user of this function to pass a valid pointer that
- /// can be downcasted to type `T`. We also expect the device is
- /// readable/writeable from one thread at any time.
--unsafe extern "C" fn rust_realize_fn<T: DeviceImpl>(dev: *mut DeviceState, _errp: *mut *mut Error) {
-+unsafe extern "C" fn rust_realize_fn<T: DeviceImpl>(
-+    dev: *mut bindings::DeviceState,
-+    _errp: *mut *mut Error,
-+) {
-     let state = NonNull::new(dev).unwrap().cast::<T>();
-     T::REALIZE.unwrap()(unsafe { state.as_ref() });
- }
-@@ -251,7 +270,7 @@ fn init_clock_in<F: for<'a> FnCall<(&'a Self::Target, ClockEvent)>>(
-         events: ClockEvent,
-     ) -> Owned<Clock> {
-         fn do_init_clock_in(
--            dev: *mut DeviceState,
-+            dev: &DeviceState,
-             name: &str,
-             cb: Option<unsafe extern "C" fn(*mut c_void, ClockEvent)>,
-             events: ClockEvent,
-@@ -265,14 +284,15 @@ fn do_init_clock_in(
-             unsafe {
-                 let cstr = CString::new(name).unwrap();
-                 let clk = bindings::qdev_init_clock_in(
--                    dev,
-+                    dev.0.as_mut_ptr(),
-                     cstr.as_ptr(),
-                     cb,
--                    dev.cast::<c_void>(),
-+                    dev.0.as_void_ptr(),
-                     events.0,
-                 );
- 
--                Owned::from(&*clk)
-+                let clk: &Clock = Clock::from_raw(clk);
-+                Owned::from(clk)
-             }
-         }
- 
-@@ -289,7 +309,7 @@ fn do_init_clock_in(
-             None
-         };
- 
--        do_init_clock_in(self.as_mut_ptr(), name, cb, events)
-+        do_init_clock_in(self.upcast(), name, cb, events)
-     }
- 
-     /// Add an output clock named `name`.
-@@ -304,9 +324,10 @@ fn do_init_clock_in(
-     fn init_clock_out(&self, name: &str) -> Owned<Clock> {
-         unsafe {
-             let cstr = CString::new(name).unwrap();
--            let clk = bindings::qdev_init_clock_out(self.as_mut_ptr(), cstr.as_ptr());
-+            let clk = bindings::qdev_init_clock_out(self.upcast().as_mut_ptr(), cstr.as_ptr());
- 
--            Owned::from(&*clk)
-+            let clk: &Clock = Clock::from_raw(clk);
-+            Owned::from(clk)
-         }
-     }
- 
-@@ -314,7 +335,11 @@ fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
+ unsafe impl ObjectType for SysBusDevice {
+     type Class = SysBusDeviceClass;
+     const TYPE_NAME: &'static CStr =
+@@ -49,7 +57,7 @@ pub trait SysBusDeviceMethods: ObjectDeref
+     fn init_mmio(&self, iomem: &MemoryRegion) {
          assert!(bql_locked());
-         let c_propname = CString::new(propname).unwrap();
          unsafe {
--            bindings::qdev_prop_set_chr(self.as_mut_ptr(), c_propname.as_ptr(), chr.as_mut_ptr());
-+            bindings::qdev_prop_set_chr(
+-            bindings::sysbus_init_mmio(self.as_mut_ptr(), iomem.as_mut_ptr());
++            bindings::sysbus_init_mmio(self.upcast().as_mut_ptr(), iomem.as_mut_ptr());
+         }
+     }
+ 
+@@ -60,7 +68,7 @@ fn init_mmio(&self, iomem: &MemoryRegion) {
+     fn init_irq(&self, irq: &InterruptSource) {
+         assert!(bql_locked());
+         unsafe {
+-            bindings::sysbus_init_irq(self.as_mut_ptr(), irq.as_ptr());
++            bindings::sysbus_init_irq(self.upcast().as_mut_ptr(), irq.as_ptr());
+         }
+     }
+ 
+@@ -69,7 +77,7 @@ fn mmio_map(&self, id: u32, addr: u64) {
+         assert!(bql_locked());
+         let id: i32 = id.try_into().unwrap();
+         unsafe {
+-            bindings::sysbus_mmio_map(self.as_mut_ptr(), id, addr);
++            bindings::sysbus_mmio_map(self.upcast().as_mut_ptr(), id, addr);
+         }
+     }
+ 
+@@ -81,7 +89,7 @@ fn connect_irq(&self, id: u32, irq: &Owned<IRQState>) {
+         let id: i32 = id.try_into().unwrap();
+         let irq: &IRQState = irq;
+         unsafe {
+-            bindings::sysbus_connect_irq(self.as_mut_ptr(), id, irq.as_mut_ptr());
++            bindings::sysbus_connect_irq(self.upcast().as_mut_ptr(), id, irq.as_mut_ptr());
+         }
+     }
+ 
+@@ -89,7 +97,10 @@ fn sysbus_realize(&self) {
+         // TODO: return an Error
+         assert!(bql_locked());
+         unsafe {
+-            bindings::sysbus_realize(self.as_mut_ptr(), addr_of_mut!(bindings::error_fatal));
++            bindings::sysbus_realize(
 +                self.upcast().as_mut_ptr(),
-+                c_propname.as_ptr(),
-+                chr.as_mut_ptr(),
++                addr_of_mut!(bindings::error_fatal),
 +            );
          }
      }
- 
-@@ -323,8 +348,17 @@ fn init_gpio_in<F: for<'a> FnCall<(&'a Self::Target, u32, u32)>>(
-         num_lines: u32,
-         _cb: F,
-     ) {
--        let _: () = F::ASSERT_IS_SOME;
-+        fn do_init_gpio_in(
-+            dev: &DeviceState,
-+            num_lines: u32,
-+            gpio_in_cb: unsafe extern "C" fn(*mut c_void, c_int, c_int),
-+        ) {
-+            unsafe {
-+                qdev_init_gpio_in(dev.as_mut_ptr(), Some(gpio_in_cb), num_lines as c_int);
-+            }
-+        }
- 
-+        let _: () = F::ASSERT_IS_SOME;
-         unsafe extern "C" fn rust_irq_handler<T, F: for<'a> FnCall<(&'a T, u32, u32)>>(
-             opaque: *mut c_void,
-             line: c_int,
-@@ -337,19 +371,13 @@ fn init_gpio_in<F: for<'a> FnCall<(&'a Self::Target, u32, u32)>>(
-         let gpio_in_cb: unsafe extern "C" fn(*mut c_void, c_int, c_int) =
-             rust_irq_handler::<Self::Target, F>;
- 
--        unsafe {
--            qdev_init_gpio_in(
--                self.as_mut_ptr::<DeviceState>(),
--                Some(gpio_in_cb),
--                num_lines as c_int,
--            );
--        }
-+        do_init_gpio_in(self.upcast(), num_lines, gpio_in_cb);
-     }
- 
-     fn init_gpio_out(&self, pins: &[InterruptSource]) {
-         unsafe {
-             qdev_init_gpio_out(
--                self.as_mut_ptr::<DeviceState>(),
-+                self.upcast().as_mut_ptr(),
-                 InterruptSource::slice_as_ptr(pins),
-                 pins.len() as c_int,
-             );
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 24a4dc81e7f..b115d1f8742 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -469,7 +469,7 @@ macro_rules! vmstate_clock {
-                 $crate::assert_field_type!(
-                     $struct_name,
-                     $field_name,
--                    $crate::qom::Owned<$crate::bindings::Clock>
-+                    $crate::qom::Owned<$crate::qdev::Clock>
-                 );
-                 $crate::offset_of!($struct_name, $field_name)
-             },
+ }
 -- 
 2.48.1
 
