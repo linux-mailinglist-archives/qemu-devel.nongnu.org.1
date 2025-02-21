@@ -2,96 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C6FA3F8B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 16:30:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B023EA3F90D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 16:39:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlUy5-0004Ik-9Y; Fri, 21 Feb 2025 10:29:33 -0500
+	id 1tlV6Q-00069d-VE; Fri, 21 Feb 2025 10:38:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tlUy2-0004IM-Oh
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 10:29:30 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlV6O-00069F-PH
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 10:38:08 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tlUy0-0007mo-W8
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 10:29:30 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5deb956aa5eso2785688a12.2
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 07:29:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tlV6N-0001UW-6V
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 10:38:08 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2fa8ada6662so4559455a91.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 07:38:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740151766; x=1740756566; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZP0luUtVsEUjAC3KAgWqXCf1eK7iCM+a/A7Gr584v+A=;
- b=gRHt1cx6NRi6A45EG5XA1RrmYaZDPkPKg1W/KBXutTYbM+2wsVmhvhVkiaT/IfE/qy
- Zak+CAGr7HnkcuhgmyMCKux1m8RfYUHezfvIej75IIXyS4AzTKOvd8LKHky02qB7XKns
- fkEsuHpqv2b7mlNF3Bq1dY97Wnh4cOxU3NJTyQ9FQeJgaqL/cX09sMzZN+b+EdIta1CP
- NuteIkL5XUY+rc/mX7vk4zAauZqw0L5ByU1tZrgs8mooVFWorZ066zaZzhDrlV+zPlBr
- 03weQ5y2tsz+0i4DrNVN11dmeFDL/M4D87Mvea/I5mjvmBD767xwm+x0m5TP4lc56KRK
- evZw==
+ d=ventanamicro.com; s=google; t=1740152285; x=1740757085; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yMAi4wNnnxwC+8z3Dgpqeq0wKNVZkgl25zc7VptcZp0=;
+ b=Tqd9pI1B2BkcV1iUSH81P1DY4nwjoE7zYXeZssIhLpeX8b7qx9CsYG1ThFG6AgzaId
+ 2eQsHQSpUs540AChDV8VNZ4+WHH1MAQJCiCKXISqH4OgK4kymSHyiWdTzvBYx9+kUzt0
+ 3CP5sLWyIgKIW3EIb4pwW1dIhXataBKK3HE/jjzhd2hQuna50B5rsrOz05TaJPoAorFL
+ 2O2F4r5MzjsfED3uobIYiLsDQdY56fpo6Asq95ELZHEbx948003BvJBUS3RTWy7W6xa8
+ BjqpFseDSbyW7C7p1tOj0rxeVFaQtPLdxceXXE3KD6qJaFSd5Tnf7RA0rhP+pdeotFaY
+ z7eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740151766; x=1740756566;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ZP0luUtVsEUjAC3KAgWqXCf1eK7iCM+a/A7Gr584v+A=;
- b=VeMopcMcizZI7Xr31uu46AobI12vhSnK8QJwaf7ZVfPSR5wqGoYzjB4wnx57xdw9Wu
- miG+D6wMMe9TxmwkEmjiodbGiqo5iQrerXj0j3bIGxOgCWh84OUCQ6tMS5WUJ7PzqQ6a
- hTeU/9G4QSEIDHgAjtx7ijGI0eyvg7PxI0TIQM91kvI+KDDJoRvtvOyIv7rxwrzjdwq9
- 2QwB/J0s2gNn5FnOBiIlqnavcBweTaXJG6Y/seCeFP3CiwegD9GWpTsiZmwZtB8VP8os
- SDmVkBTx6yztuB8RHnzAy20Z62WXW9J3m3AfUiP9cee9Y8hb2foPdRMO8mxEC+NSstPi
- zF6Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUb8NwhMZZy2HcpAgMB6WLVPDS3zr38IXJW/OAqv4s2KDtCNsLD8A6EH3SOlCeErcZkWBIjls9pS8gZ@nongnu.org
-X-Gm-Message-State: AOJu0Yy60DyL3XPpjxIAA21xfSY2E0dtuS0S+O/1pgS+R+Zs3yVPURwF
- Lgg3zrWOaN/bGvfZjym0OnEyZPKe9AO0rsa6KLjrkc5cCh8xxuamFUG3b5dhyPk=
-X-Gm-Gg: ASbGncswYy33ZcA+kl4wc7OfAbZB916q0Ja+k5M5Uclb/F/juVVftrcEkBncPvApsNA
- E1bU4ntZpPDikRSwNVaK6XUmRsm9JyS0xtf25N3v5H4C8s7XpYquCyVbzaCZyuEuFlpnm6BRU85
- rd3B/Rbn1DcAgWQ5aeygWBfOQThwWPftfdU/TKfX3HjIt461GsrWxi0haVC5yG3f/0qANURKSvi
- 9zdDbIUxxXTr9QrDAK0MVEkhGjHwirg42hgUdCN6lL1PvGpEPge0NsnHQNoYAcEgVPrU/GH/Nge
- yWeaB8Hc1cxsOJB+5B93QVVD9DuA
-X-Google-Smtp-Source: AGHT+IELxTM2yLIZq9vD5Y+XLUe26qOjEFjBPK0FHcA1sGR0lhiDjmpX24Dg+iDX72S098Eumwo7aQ==
-X-Received: by 2002:a05:6402:388c:b0:5e0:7cc4:ec57 with SMTP id
- 4fb4d7f45d1cf-5e0b7266ba5mr6734749a12.31.1740151766092; 
- Fri, 21 Feb 2025 07:29:26 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abb98640619sm1036057166b.54.2025.02.21.07.29.25
+ d=1e100.net; s=20230601; t=1740152285; x=1740757085;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yMAi4wNnnxwC+8z3Dgpqeq0wKNVZkgl25zc7VptcZp0=;
+ b=nSRqtO0fxFqo9rwvU80zoYU6zChPpezSszKIIEC2LkA/J0u6R9AeNNo9wRfdIQ/vPQ
+ 76QK3Kdzj89LKl2pktzx6cZYU1e0URs02DNZOf6SjonSe1LYiRUy1BkTsX97kFfcx1cn
+ yJCfoIy+T+Q13pDjlVgEnC6dTrQJkgUA5rG3ddCCaYBU25mD6C/pLW5FdNPThYXJKapo
+ Xvenh1jpULfXF8H+RGL9ZQ3RkHEUmkMAl/oO6fk3u4SQM3mzYOoxsoFwB0EjocQhPvzd
+ NFPWHbV0xwPuidR6iW8+fc66IAIAA/NoLCjiqmuoxdx27lyxWp7Phr6SO5uDm/xhWBQU
+ yySA==
+X-Gm-Message-State: AOJu0Yy6wNL4FKpYS6WJ7p2hUBdKKgwt/pBZ4s0i1dosxnVV2uDM/ROr
+ q3vess0EPhfB1LZypJsJWDF9gYgF4D7q0vckH0zMUstQyUT6Z4fWyCnWeVu7FlEQkf78fA1xqnd
+ m
+X-Gm-Gg: ASbGncusOD2LyVr+ho+8p2aPbOeCsy1tPDxHTdwwQVz8o2+tBc3OX5J4bdGHRLjnn6n
+ Qz7sujF591ALjUEsg7dvdBCFlcAObSXunp7CX7soV3BFhgloXaTvPAxA0vT3hVSY99un3HL5f0X
+ tUrL2UawDY2n9xHoK6RlYJUH3YuNBuKlqC7WPHbGkt+9wEElFNGA8RxZRLUyIjaQvYH6qwdZ2mZ
+ rj3uq5nX6oIN0Cd/xU6Nh/1sDnlp9bJAoczf+gbjEbUvBMEKmY/WzMw6Kyb1SQasu87QUhy2QYm
+ MvlEhfnUOj0Bovqrdm4EfZ7ZCFSMSTp9KM+ay+ku8rEvvnTpU8zomA==
+X-Google-Smtp-Source: AGHT+IFPzk0mV1m51BdJ1Pgojtak96Uz7LBVtg462kp+zixPvK7CNzf821UOEv39OM2VKz1AflO7GQ==
+X-Received: by 2002:a17:90b:3b83:b0:2f6:d266:f45c with SMTP id
+ 98e67ed59e1d1-2fce868c637mr5649127a91.2.1740152285269; 
+ Fri, 21 Feb 2025 07:38:05 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([187.11.154.120])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2fceb04bedbsm1538081a91.18.2025.02.21.07.38.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 07:29:25 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7A7655F8C8;
- Fri, 21 Feb 2025 15:29:24 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,
- qemu-devel@nongnu.org,  Radoslaw Biernacki <rad@semihalf.com>,  Leif
- Lindholm <leif.lindholm@oss.qualcomm.com>,  Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH] tests/functional: Bump some arm test timeouts
-In-Reply-To: <12ff6477-7cd5-4ada-b7a8-97a3add814c3@redhat.com> (Thomas Huth's
- message of "Fri, 21 Feb 2025 15:25:21 +0100")
-References: <20250221140640.786341-1-peter.maydell@linaro.org>
- <12ff6477-7cd5-4ada-b7a8-97a3add814c3@redhat.com>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Fri, 21 Feb 2025 15:29:24 +0000
-Message-ID: <87eczriaej.fsf@draig.linaro.org>
+ Fri, 21 Feb 2025 07:38:04 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/3] target/riscv/kvm: update to Linux 6.14-rc3
+Date: Fri, 21 Feb 2025 12:37:55 -0300
+Message-ID: <20250221153758.652078-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1030.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,66 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Hi,
 
-> On 21/02/2025 15.06, Peter Maydell wrote:
->> On my local machine, for a debug build, sbsaref_alpine takes
->> nearly 900s:
->> $ (cd build/x86 && ./pyvenv/bin/meson test --setup thorough --suite
->> func-thorough func-aarch64-aarch64_sbsaref_alpine
->> )
->> 1/1 qemu:func-thorough+func-aarch64-thorough+thorough /
->> func-aarch64-aarch64_sbsaref_alpine
->>                        OK 896.90s
->> arm_aspeed_rainier can also run close to its current timeout:
->>   6/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspe=
-ed_rainier
->>                        OK 215.75s
->> and arm_aspeed_ast2500 and arm_aspeed_ast2600 can go over:
->> 13/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspee=
-d_ast2600
->>                        OK 792.94s
->> 27/44 qemu:func-thorough+func-arm-thorough+thorough /
->> func-arm-arm_aspeed_ast2500
->>                   TIMEOUT 480.01s
->> The sx1 test fails not on the overall meson timeout but on the
->> 60 second timeout in some of the subtests.
->> Bump all these timeouts up a bit.
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> ---
->> This at least gets 'make -j4 check-functional' to passing for me
->> for an arm/aarch64 debug build, apart from the gpu test hang which
->> we're discussing in a different thread. Whole thing takes 25 mins...
->> ---
->>   tests/functional/meson.build     | 8 ++++----
->>   tests/functional/test_arm_sx1.py | 6 +++---
->>   2 files changed, 7 insertions(+), 7 deletions(-)
->> diff --git a/tests/functional/meson.build
->> b/tests/functional/meson.build
->> index b516d21cba1..effa31701cf 100644
->> --- a/tests/functional/meson.build
->> +++ b/tests/functional/meson.build
->> @@ -15,16 +15,16 @@ test_timeouts =3D {
->>     'aarch64_raspi4' : 480,
->>     'aarch64_rme_virt' : 1200,
->>     'aarch64_rme_sbsaref' : 1200,
->> -  'aarch64_sbsaref_alpine' : 720,
->> +  'aarch64_sbsaref_alpine' : 1200,
->
-> I wonder whether we should disable that test with @skipSlowTest() by
-> default, since it's really very slow...?
+In this series we made changes in the commit msg in patch 2 to make it
+less ambiguious what the KVM driver will do with ziccrse. 
 
-The pauth subtest is marked as @skipSlowTest() - but I think we can drop
-test_sbsaref_alpine_linux_cortex_a57 and
-test_sbsaref_alpine_linux_max_pauth_off because we don't actually verify
-anything so its wasted cycles booting something that we know already
-boots.
+No other changes made. Patches based on alistair/riscv_to_apply.next.
 
->
-> Anyway, for this patch here:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+Changes from v2:
+- patch 2:
+  - reworded commit message
+- v2 link: https://lore.kernel.org/qemu-riscv/20250221141834.626722-1-dbarboza@ventanamicro.com/
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+
+Daniel Henrique Barboza (3):
+  linux-headers: Update to Linux v6.14-rc3
+  target/riscv/cpu.c: create flag for ziccrse
+  target/riscv/kvm: add extensions after 6.14-rc3 update
+
+ include/standard-headers/linux/ethtool.h      |  4 +
+ include/standard-headers/linux/fuse.h         | 76 ++++++++++++++++++-
+ .../linux/input-event-codes.h                 |  1 +
+ include/standard-headers/linux/pci_regs.h     | 16 ++--
+ include/standard-headers/linux/virtio_pci.h   | 14 ++++
+ linux-headers/asm-arm64/kvm.h                 |  3 -
+ linux-headers/asm-loongarch/kvm_para.h        |  1 +
+ linux-headers/asm-riscv/kvm.h                 |  7 +-
+ linux-headers/asm-x86/kvm.h                   |  1 +
+ linux-headers/linux/iommufd.h                 | 35 ++++++---
+ linux-headers/linux/kvm.h                     |  8 +-
+ linux-headers/linux/stddef.h                  | 13 +++-
+ linux-headers/linux/vduse.h                   |  2 +-
+ target/riscv/cpu.c                            |  3 +-
+ target/riscv/cpu_cfg.h                        |  3 +
+ target/riscv/kvm/kvm-cpu.c                    |  3 +
+ target/riscv/tcg/tcg-cpu.c                    |  2 +
+ 17 files changed, 156 insertions(+), 36 deletions(-)
+
+-- 
+2.48.1
+
 
