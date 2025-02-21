@@ -2,86 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC696A3FF70
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 20:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C03DA4029E
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 23:26:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlYPf-0006Pp-Jb; Fri, 21 Feb 2025 14:10:15 -0500
+	id 1tlbRh-00035b-Co; Fri, 21 Feb 2025 17:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tlYPZ-0006M7-KZ
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 14:10:09 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tlbRf-00035N-6M
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 17:24:31 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tlYPX-0004Hd-8h
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 14:10:09 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-38f22fe889aso2119554f8f.3
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 11:10:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tlbRd-0005GF-Gw
+ for qemu-devel@nongnu.org; Fri, 21 Feb 2025 17:24:30 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-220d132f16dso42782185ad.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 14:24:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740165005; x=1740769805; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cBaUtQexwmvEbDOtV7dWohrzipVVAW8wPhNQo0ILWHg=;
- b=urxSt8Xtr9lPNgx8IyxukbV3cptOcMmFT3F2dp2wlWZgaOdMrxa++D070bVECSSIk8
- njd8FDlulNQVr2WgSYMyYIoBObjVSSajLgkf33ZveE00m/UC2N8FQyKR/WPpv5K1qmEA
- /yJWg6/FEPm0BbFcXh661WGg24aoCF8eDDCq6Y7mG7fFDDp44rQBb3cKdhvoDGFBHZGz
- 4oPheiWm5szBQhDeA/t4EbH++AsqoMqC9kJ+QhadVZENFcCQDa+av+5bSp3c/6aHU8sB
- vuYgN7cLbOBDD5sJZxpROwZ+RPpk4D3sW3nT+GO0+6+8XsRg3NM8PmYA7TPNyUJdtBaP
- WsNw==
+ d=linaro.org; s=google; t=1740176667; x=1740781467; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=czQ3in2NRWV2IjVUhes+vRjYztN+niZPh6IYd5ETZO0=;
+ b=D2hZAJkvxxL+jAOV12low0b5n25XZfN3z2BBNZbOtKfgOIk2yeIMhbetW8NulbK67Q
+ WxH8lMRKmzMb4+bl/ddaMFCDjWroR82DybOiPO0pUN8LmqIer1+NJcSjJykrJTgMylrk
+ /B9WukhploA5suOsYReT+8kluQQ1HPAuKIZp9AJwhqyxwVBtPZcrIs5Dhq3wreQrukNo
+ arzrN6BsnO0vyZC4F3mnOHcfPs0R3zQq4Qdm6HxfvyOz7mQomFVfx7rbAJS3UdqFstZe
+ pkYji3XmDPw49nSFE65RMAtRNwGuj7MkavtACUdbWpTygOPpeJL6kh/np5dhPFt550R9
+ TSbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740165005; x=1740769805;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cBaUtQexwmvEbDOtV7dWohrzipVVAW8wPhNQo0ILWHg=;
- b=Vhyy6wF5V8CiUAllnia8kpGPVNx5vC+TrGdE0jdMCdX++FsOa7/fUvHYT032E/YpO8
- QESGaYguuSwv2bWqfL3w0cDySXfoPPPlWHOL/mx2Qq3ErT/E+vcr4xwyaHjwSHaxkmqo
- ObZ/DTX5MY9k8FGcLo4WitWDx+O1Al/Mwu09orzq85ZpuJdrmhRCLW7WDGcINtVXEblA
- 9KNmQrhEajCMHF9J4VQPSmqRox3kpQlPGwTFYH1fiDWfQl+QrWgWbiquTVXKb+80fs2J
- Q1QHiIm6xmPBRhFmCyHO9ArYQAVGDCmqpp7nd2SnpwO3PQTpFsBCHQv66v+oGj1fVdH3
- 78ew==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX3+Nojy6/6/t5LQUGW88O1wi/k1cVbtCWBwySmlPr4oFrcWBkABrH7YSRgOZA18MkQW9Dkove5QMaG@nongnu.org
-X-Gm-Message-State: AOJu0YxAtF+76H/TbPXXP4KRFOgrKQY1UMiE+R/TaERlwYahX9kHMazu
- cuQbqbI5vEAXZgW1VbSxrfSelBn2YuVPtOZQrDKELPG786UitCPK02+3TZRtoP0=
-X-Gm-Gg: ASbGncv/2oZDFzpipBx7JFScPWKAs0bdh3n1HgCOGzq/fHPxZSwSdlev1GHzlRegKrU
- FSsCtHd63G5l2b6vbmuqMa3FcTW/xcjnx/L2XiR2EPv696eoU3LK0SFKg6osHXxgdZqagDRpSLL
- BhcCdcrJLrR3oqwSKbDa33vSnc+QvFVCWq0NiJcxyH56gKfB/UEFRkLzrgluAA9FopxEdoW/BwL
- GF3Mrc5NUeq/NMILO+3QGmH7Y1DCad0t1FXYX22IN8KaMuYguR8uK+qtbCJ4PS0ifpX9eImBlRG
- r3+E4NKHEemcNaF6jv+ARORaFJlnoJtv
-X-Google-Smtp-Source: AGHT+IGdspyBIRbq6mTAtalDYzGPOq6CvfMoE28lFDQ+OYEowJGrWoCqfRNIwTLTZUwQlb0QVUNz+w==
-X-Received: by 2002:adf:f003:0:b0:38e:65db:517d with SMTP id
- ffacd0b85a97d-38f6f097eacmr4193414f8f.40.1740165005242; 
- Fri, 21 Feb 2025 11:10:05 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258ddbe0sm24392478f8f.39.2025.02.21.11.10.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 11:10:04 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 4/4] target/arm: Rename vfp_helper.c to vfp_fpscr.c
-Date: Fri, 21 Feb 2025 19:09:56 +0000
-Message-ID: <20250221190957.811948-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250221190957.811948-1-peter.maydell@linaro.org>
-References: <20250221190957.811948-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1740176667; x=1740781467;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=czQ3in2NRWV2IjVUhes+vRjYztN+niZPh6IYd5ETZO0=;
+ b=AlY571SjVgs1sw5vrb+OpEiQRIzXCHxxuLI0iqcXs+wKMfwdDFVonhwb3uTcgw2sxg
+ zQP6nZFc1xAinWJqUxuxJOa8mbf65m1T1PxH8RpPDuRj3eG6cr5lRwAWJ0DF9v+Zq68w
+ 7iY9+2WJXRS+zsa1WEU8ahF9bqP7G8HNf78knb7ePScop+Y6NTwlOpJzrgsj/8o6H5iP
+ MvwxdkUO2eb4G00p0fEargvigySvQsI5NGIj3Ku09z74VrRRPRqIVrxkHecu8AEn1D8g
+ BD3U4gOP9F4JAX3PZBulVZN0H0+oe1VkVGGhB0RVwXdLPlYcyCiio2gm+XRh+n4DEFXk
+ qKBQ==
+X-Gm-Message-State: AOJu0Yx+3fFQWiOsy1fTcb4T881EZCqM/tc01fCfQowPP2k+GDCXvSro
+ t2wLpZ2vTDtV2DHW6a1RfyGo6kAP3Aw2ORhXvkL834LVpdp00q9nV7VgCPGKElE=
+X-Gm-Gg: ASbGncv7tL6MgrKM01PqWUiaqJj5hyN46ta5KYPUL6RuqhBSX3X3nWO5Sf5v47cWoMh
+ eH3Q/lWEqruBJfchTrQDpZqme2wOYWyLkSCRHhkORasE+N6JOxh3rtu4nZDhW8qKyWU4DqrsX9n
+ N0D4Lk2kvF+rAGjDxUXL4yUHqoaCvMlWL2VRLNcSDZu4x4achlB1uA4Ka3a6ghKa2FUAbTLLaBj
+ sByFCyy5oBmN3w2kKVvqLW7AswJZJIHkzYGSfasI0b9HYwTPDtekk3LGj+xFWCRJBPFxA+WcI/6
+ kpjhRewcQOkjMGqomg/0MgQ6MKNc3Ol51MKOHNMz/bKdB1DXDc6tLGXdM7nZeETYeU1nMoAZgIY
+ SeHgdt88=
+X-Google-Smtp-Source: AGHT+IHnSL1C/Luo8T6JDVf5gG+hTfYlM2bkWNNX+7+Uj3zHVsMCGZRzoUq8C3JoRkyUgB1ZsFf0JA==
+X-Received: by 2002:a17:902:e80b:b0:220:e63c:5aff with SMTP id
+ d9443c01a7336-2219fff351bmr82713475ad.47.1740176666820; 
+ Fri, 21 Feb 2025 14:24:26 -0800 (PST)
+Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d55963b5sm142372955ad.249.2025.02.21.14.24.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Feb 2025 14:24:26 -0800 (PST)
+Message-ID: <ca0f219a-71e1-43fb-aa82-8db282c7a512@linaro.org>
+Date: Fri, 21 Feb 2025 14:24:23 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/10] fpu: Move m68k_denormal fmt flag into
+ floatx80_behaviour
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <laurent@vivier.eu>
+References: <20250217125055.160887-1-peter.maydell@linaro.org>
+ <20250217125055.160887-7-peter.maydell@linaro.org>
+ <64deaf4f-b999-41aa-ae44-876a1860a10c@linaro.org>
+ <CAFEAcA_upC=ty1PWXOSsHHgk67EoPi6rB2DhK2M5_q2mzUCW=Q@mail.gmail.com>
+ <d7a0260d-5cdb-4e87-b12c-32e1dee4df1c@linaro.org>
+ <CAFEAcA_uPWSgwpygQiSBzCLsBV+HH5Pun1E9RGw16Z3SMj4REQ@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA_uPWSgwpygQiSBzCLsBV+HH5Pun1E9RGw16Z3SMj4REQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,46 +107,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vfp_helper.c in the target/arm directory now only has
-code for handling FPSCR/FPCR/FPSR in it, and no helper
-functions. Rename it to vfp_fpscr.c; this helps keep it
-distinct from tcg/vfp_helper.c.
+On 2/20/25 10:54, Peter Maydell wrote:
+> On Thu, 20 Feb 2025 at 18:39, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 2/20/25 09:12, Peter Maydell wrote:
+>>> That suggests that we are correctly implementing the x87
+>>> required behaviour in QEMU, and so that the TODO comment
+>>> I add in this patch isn't right. But then I'm a bit confused
+>>> about what the code is actually doing. Why do we need to look
+>>> at fmt->m68k_denormal in the input (canonicalize) code (i.e.
+>>> to have different behaviour here for x86 and m68k), if
+>>> both x86 and m68k accept these pseudodenormals as input?
+>>>
+>>> Is the difference that for x86 we accept but canonicalize
+>>> into the equivalent normal number immediately on input,
+>>> whereas for m68k we accept and leave the pseudodenormal
+>>> as a pseudodenormal (well, m68k calls these a kind of
+>>> normal number) ?
+>> The difference is in interpretation: x86 ignores the explicit integer bit of the
+>> pseudo-denormal, m68k considers it part of the input value.  This gives m68k one extra bit
+>> of range in their denormal, which allows representation of smaller numbers.
+> 
+> Ah, I see. So I suppose:
+> 
+> (1) we should call the floatx80_status flag
+> "floatx80_pseudo_denormal_valid" since it affects both inputs
+> and outputs, and document it in the enum like:
+> 
+> +    /*
+> +     * If the exponent is 0 and the Integer bit is set, Intel call
+> +     * this a "pseudo-denormal"; x86 supports that only on input
+> +     * (treating them as denormals by ignoring the Integer bit).
+> +     * For m68k, the integer bit is considered validly part of the
+> +     * input value when the exponent is 0, and may be 0 or 1,
+> +     * giving extra range. They may also be generated as outputs.
+> +     * (The m68k manual actually calls these values part of the
+> +     * normalized number range, not the denormalized number range.)
+> +     *
+> +     * By default you get the Intel behaviour where the Integer
+> +     * bit is ignored; if this is set then the Integer bit value
+> +     * is honoured, m68k-style.
+> +     *
+> +     * Either way, floatx80_invalid_encoding() will always accept
+> +     * pseudo-denormals.
+> +     */
+> +    floatx80_pseudo_denormal_valid = 16,
+> 
+> 
+> (2) the comment I add in canonicalize should instead read:
+> 
+> +    /*
+> +     * It's target-dependent how to handle the case of exponent 0
+> +     * and Integer bit set. Intel calls these "pseudodenormals",
+> +     * and treats them as if the integer bit was 0, and never
+> +     * produces them on output. This is the default behaviour for QEMU.
+> +     * For m68k, the integer bit is considered validly part of the
+> +     * input value when the exponent is 0, and may be 0 or 1,
+> +     * giving extra range. They may also be generated as outputs.
+> +     * (The m68k manual actually calls these values part of the
+> +     * normalized number range, not the denormalized number range,
+> +     * but that distinction is not important for us, because
+> +     * m68k doesn't care about the input_denormal_used status flag.)
+> +     * floatx80_pseudo_denormal_valid selects the m68k behaviour,
+> +     * which changes both how we canonicalize such a value and
+> +     * how we uncanonicalize results.
+> +     */
+> 
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/{vfp_helper.c => vfp_fpscr.c} | 2 +-
- target/arm/meson.build                   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename target/arm/{vfp_helper.c => vfp_fpscr.c} (98%)
+Looks good.
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_fpscr.c
-similarity index 98%
-rename from target/arm/vfp_helper.c
-rename to target/arm/vfp_fpscr.c
-index cc0f055ef0d..92ea60ebbf2 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_fpscr.c
-@@ -1,5 +1,5 @@
- /*
-- * ARM VFP floating-point operations
-+ * ARM VFP floating-point: handling of FPSCR/FPCR/FPSR
-  *
-  *  Copyright (c) 2003 Fabrice Bellard
-  *
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 2e10464dbb6..3065081d241 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -4,7 +4,7 @@ arm_ss.add(files(
-   'debug_helper.c',
-   'gdbstub.c',
-   'helper.c',
--  'vfp_helper.c',
-+  'vfp_fpscr.c',
- ))
- arm_ss.add(zlib)
- 
--- 
-2.43.0
 
+r~
 
