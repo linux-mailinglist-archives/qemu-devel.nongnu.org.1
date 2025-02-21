@@ -2,94 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF65A3F41C
+	by mail.lfdr.de (Postfix) with ESMTPS id C38FCA3F41F
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 13:24:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlS3r-0004uO-OB; Fri, 21 Feb 2025 07:23:19 -0500
+	id 1tlS47-0005TX-Ti; Fri, 21 Feb 2025 07:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3o-0004n8-6I
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tlS44-0005RK-58; Fri, 21 Feb 2025 07:23:32 -0500
+Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tlS3k-00073V-Ce
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 07:23:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740140591;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=scidcpthAR0TJWBqQT5UtCSnzM8INobCgdjwksC9/UU=;
- b=Vqta7CRQNBe8tAHr/cpDGRM8ucK+ZNm+qZHH2xefINSaRPg2aFl/aezUhwUuIV2IRDztvm
- iDGATYRKdYonJTZvFaaF/weX/1JONAWek9NEkR7odplsaxAuXidCdMLxOy8ruzezIlHLem
- 6NjdibkZvYHIdE04txrkG31lWx+vpC0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-cQoBxxyAMhWn7OY3fUR3Mg-1; Fri, 21 Feb 2025 07:23:10 -0500
-X-MC-Unique: cQoBxxyAMhWn7OY3fUR3Mg-1
-X-Mimecast-MFC-AGG-ID: cQoBxxyAMhWn7OY3fUR3Mg_1740140589
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38f44be93a8so1064670f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Feb 2025 04:23:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740140588; x=1740745388;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=scidcpthAR0TJWBqQT5UtCSnzM8INobCgdjwksC9/UU=;
- b=s84o6Q59iGbXS+1JIOk7Sxe0SLwsrK0metzD4ahT0nn6eKfZLzzW36/S81Erjgf2HP
- LUjdfgme4j4JhQOObwEU1BUhNMsZnrgwhqWlwToNqMiwVX6XNLr1tq2EuSogaFIdUU+q
- lueA053MAldjHuSucD1O1M5l+OumIuN+bKMYw3dnxISRQ/yZMKHv6csWuKgb3OcoCr/h
- qReKURHP4i7obby4eIaQlTEjseCtSvurxAQrkLyeTkWFH06jsuDv8ZSDzphCa9z91NWC
- c5GjOp1D+XP+I/dp9/7vuFalSknp3ZhltnFOPwuIxqpoy7p07T7UE3L3FEiikv1+wK1z
- SEUw==
-X-Gm-Message-State: AOJu0YyeUMwL1aFGTAyfw/fKyOylDsIqaWghx/YVPiiw7bybUelVfBpt
- udHki5w/LslqsCsbMZiY/L8UcDN45OkkX/Tr3l/wjDxhCDxM4pgVdU19HYqr4YA0XdDEfhQXX8u
- 8TlsvJsan18o2kZfP3wm7qrNAyzojlTFT5PuFFUOl3Rjysnn0WeiOAdZBn+ipaY7+Nw9s1fknxh
- 46Ef/8asEeo/jaa9yXr2AFaABElzq64A==
-X-Gm-Gg: ASbGncvMfd7GlAdXJs7jfuBIm2M284oHDKufjRxoX7OsQjKJ6FofovT8j5L7HH7qSd7
- vb2c60f2W3tqvnlco/mxQ7P3zT1ID0xOg8MVMB9VqDeJRe0p03CduDTsiCf0qXSGWL2Elm38xz7
- mSCAoVU8W0HeODykbjz+WXwn/0F6wPYAAAdGNWnDIqV9og/w3J18+BB1M+zdBnTBTJRAsv2AmaP
- 6rsMUs6khKnhHCo25yhwAQt4qYqYRdtzoM9QFivrHpMJeYfl1TxtSIP2l/OC6Dn75TYOXx/iM4S
- bLdV2Q==
-X-Received: by 2002:a05:6000:188f:b0:38f:277a:4eb6 with SMTP id
- ffacd0b85a97d-38f6e4bdf02mr2448572f8f.0.1740140588328; 
- Fri, 21 Feb 2025 04:23:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHrrUOzSJRerlT4CS6/y5fUKc+0bJYhH2HuRNdPEOvZOIy5Ts+dLe4+wHX+zt1b4JWdCP/jCg==
-X-Received: by 2002:a05:6000:188f:b0:38f:277a:4eb6 with SMTP id
- ffacd0b85a97d-38f6e4bdf02mr2448551f8f.0.1740140587847; 
- Fri, 21 Feb 2025 04:23:07 -0800 (PST)
-Received: from redhat.com ([31.187.78.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38f258b44b2sm22963137f8f.20.2025.02.21.04.23.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Feb 2025 04:23:06 -0800 (PST)
-Date: Fri, 21 Feb 2025 07:23:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 10/41] pcie_sriov: Reuse SR-IOV VF device instances
-Message-ID: <cab1398a60eb0cb2d2d1998c9b46aaa5e0bf3ee8.1740140520.git.mst@redhat.com>
-References: <cover.1740140520.git.mst@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tlS41-00074z-BY; Fri, 21 Feb 2025 07:23:31 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by tor.source.kernel.org (Postfix) with ESMTP id 2C71C6123E;
+ Fri, 21 Feb 2025 12:23:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0F2C4CED6;
+ Fri, 21 Feb 2025 12:23:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1740140605;
+ bh=NG9gwLahumtvPU8lC1XAWDBxn6rUCBFuxCyUdn7T0Tw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=P0qUkaLzDYg8WBIsuC0NUk9BN8lHt8bLN8qIxX7E1+pOKh7ON6ixGqqv370VLvaJ+
+ my8I+HoMjKxJJ0fWia0QPaB75JhxKBcvOcC1uo8ARtSFksjgx8bRgH53GxPesso0DC
+ ilxcc3zEs0tYU50hOaKdMCdM4nwAi2gOtKkizfnPKAPAoQYKh08FamolD11PU+Hjga
+ VgeDV6pQBOfTZqqdFhyrT2w9tX8+4DNudgTtvFtBsYjPBdbd9mNrfwM9xko+8O8buM
+ AGe6KhVp6X5aEace2xqSagRT3db2NAnRAAjveAQ5cKEZiCnHFnsJ4rIpC15+GHWuHF
+ k/C81dQ1lFUhw==
+Date: Fri, 21 Feb 2025 13:23:06 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Shiju Jose <shiju.jose@huawei.com>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, Philippe =?UTF-8?B?TWF0?=
+ =?UTF-8?B?aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Ani Sinha
+ <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Eric Blake
+ <eblake@redhat.com>, John Snow <jsnow@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, "Markus Armbruster" <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
+ <shannon.zhaosl@gmail.com>, Yanan Wang <wangyanan55@huawei.com>, Zhao Liu
+ <zhao1.liu@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH v3 00/14] Change ghes to use HEST-based offsets and add
+ support for error inject
+Message-ID: <20250221132306.77800dbf@sal.lan>
+In-Reply-To: <20250221102127.000059e6@huawei.com>
+References: <cover.1738345063.git.mchehab+huawei@kernel.org>
+ <20250203110934.000038d8@huawei.com>
+ <20250203162236.7d5872ff@imammedo.users.ipa.redhat.com>
+ <20250221073823.061a1039@foz.lan>
+ <20250221102127.000059e6@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1740140520.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2600:3c04::f03c:95ff:fe5e:7468;
+ envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.424,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,237 +83,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Em Fri, 21 Feb 2025 10:21:27 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
 
-Disable SR-IOV VF devices by reusing code to power down PCI devices
-instead of removing them when the guest requests to disable VFs. This
-allows to realize devices and report VF realization errors at PF
-realization time.
+> On Fri, 21 Feb 2025 07:38:23 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > Em Mon, 3 Feb 2025 16:22:36 +0100
+> > Igor Mammedov <imammedo@redhat.com> escreveu:
+> >   
+> > > On Mon, 3 Feb 2025 11:09:34 +0000
+> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> > >     
+> > > > On Fri, 31 Jan 2025 18:42:41 +0100
+> > > > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> > > >       
+> > > > > Now that the ghes preparation patches were merged, let's add support
+> > > > > for error injection.
+> > > > > 
+> > > > > On this series, the first 6 patches chang to the math used to calculate offsets at HEST
+> > > > > table and hardware_error firmware file, together with its migration code. Migration tested
+> > > > > with both latest QEMU released kernel and upstream, on both directions.
+> > > > > 
+> > > > > The next patches add a new QAPI to allow injecting GHESv2 errors, and a script using such QAPI
+> > > > >    to inject ARM Processor Error records.
+> > > > > 
+> > > > > If I'm counting well, this is the 19th submission of my error inject patches.        
+> > > > 
+> > > > Looks good to me. All remaining trivial things are in the category
+> > > > of things to consider only if you are doing another spin.  The code
+> > > > ends up how I'd like it at the end of the series anyway, just
+> > > > a question of the precise path to that state!      
+> > > 
+> > > if you look at series as a whole it's more or less fine (I guess you
+> > > and me got used to it)
+> > > 
+> > > however if you take it patch by patch (as if you've never seen it)
+> > > ordering is messed up (the same would apply to everyone after a while
+> > > when it's forgotten)
+> > > 
+> > > So I'd strongly suggest to restructure the series (especially 2-6/14).
+> > > re sum up my comments wrt ordering:
+> > > 
+> > > 0  add testcase for HEST table with current HEST as expected blob
+> > >    (currently missing), so that we can be sure that we haven't messed
+> > >    existing tables during refactoring.    
+> 
+> To potentially save time I think Igor is asking that before you do anything
+> at all you plug the existing test hole which is that we don't test HEST
+> at all.   Even after this series I think we don't test HEST. 
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250116-reuse-v20-8-7cb370606368@daynix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- include/hw/pci/pcie_sriov.h |  1 -
- hw/pci/pci.c                | 14 +++++-
- hw/pci/pcie_sriov.c         | 94 +++++++++++++++----------------------
- 3 files changed, 51 insertions(+), 58 deletions(-)
+On a previous review (v2, I guess), Igor requested me to do the DSDT
+test just before and after the patch which is actually changing its
+content (patch 11). The HEST table is inside DSDT firmware, and it is
+already tested.
 
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index aa704e8f9d..70649236c1 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -18,7 +18,6 @@
- typedef struct PCIESriovPF {
-     uint16_t num_vfs;   /* Number of virtual functions created */
-     uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
--    const char *vfname; /* Reference to the device type used for the VFs */
-     PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
- } PCIESriovPF;
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 2afa423925..3e29b30d55 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2963,7 +2963,17 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
- 
- void pci_set_power(PCIDevice *d, bool state)
- {
--    pci_set_enabled(d, state);
-+    /*
-+     * Don't change the enabled state of VFs when powering on/off the device.
-+     *
-+     * When powering on, VFs must not be enabled immediately but they must
-+     * wait until the guest configures SR-IOV.
-+     * When powering off, their corresponding PFs will be reset and disable
-+     * VFs.
-+     */
-+    if (!pci_is_vf(d)) {
-+        pci_set_enabled(d, state);
-+    }
- }
- 
- void pci_set_enabled(PCIDevice *d, bool state)
-@@ -2977,7 +2987,7 @@ void pci_set_enabled(PCIDevice *d, bool state)
-     memory_region_set_enabled(&d->bus_master_enable_region,
-                               (pci_get_word(d->config + PCI_COMMAND)
-                                & PCI_COMMAND_MASTER) && d->enabled);
--    if (!d->enabled) {
-+    if (qdev_is_realized(&d->qdev)) {
-         pci_device_reset(d);
-     }
- }
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 91c64c988e..f1993bc553 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -20,9 +20,16 @@
- #include "qapi/error.h"
- #include "trace.h"
- 
--static PCIDevice *register_vf(PCIDevice *pf, int devfn,
--                              const char *name, uint16_t vf_num);
--static void unregister_vfs(PCIDevice *dev);
-+static void unparent_vfs(PCIDevice *dev, uint16_t total_vfs)
-+{
-+    for (uint16_t i = 0; i < total_vfs; i++) {
-+        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
-+        object_unparent(OBJECT(vf));
-+        object_unref(OBJECT(vf));
-+    }
-+    g_free(dev->exp.sriov_pf.vf);
-+    dev->exp.sriov_pf.vf = NULL;
-+}
- 
- bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         const char *vfname, uint16_t vf_dev_id,
-@@ -30,6 +37,7 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         uint16_t vf_offset, uint16_t vf_stride,
-                         Error **errp)
- {
-+    BusState *bus = qdev_get_parent_bus(&dev->qdev);
-     int32_t devfn = dev->devfn + vf_offset;
-     uint8_t *cfg = dev->config + offset;
-     uint8_t *wmask;
-@@ -44,7 +52,6 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         offset, PCI_EXT_CAP_SRIOV_SIZEOF);
-     dev->exp.sriov_cap = offset;
-     dev->exp.sriov_pf.num_vfs = 0;
--    dev->exp.sriov_pf.vfname = g_strdup(vfname);
-     dev->exp.sriov_pf.vf = NULL;
- 
-     pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
-@@ -78,14 +85,34 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
- 
-     qdev_prop_set_bit(&dev->qdev, "multifunction", true);
- 
-+    dev->exp.sriov_pf.vf = g_new(PCIDevice *, total_vfs);
-+
-+    for (uint16_t i = 0; i < total_vfs; i++) {
-+        PCIDevice *vf = pci_new(devfn, vfname);
-+        vf->exp.sriov_vf.pf = dev;
-+        vf->exp.sriov_vf.vf_number = i;
-+
-+        if (!qdev_realize(&vf->qdev, bus, errp)) {
-+            unparent_vfs(dev, i);
-+            return false;
-+        }
-+
-+        /* set vid/did according to sr/iov spec - they are not used */
-+        pci_config_set_vendor_id(vf->config, 0xffff);
-+        pci_config_set_device_id(vf->config, 0xffff);
-+
-+        dev->exp.sriov_pf.vf[i] = vf;
-+        devfn += vf_stride;
-+    }
-+
-     return true;
- }
- 
- void pcie_sriov_pf_exit(PCIDevice *dev)
- {
--    unregister_vfs(dev);
--    g_free((char *)dev->exp.sriov_pf.vfname);
--    dev->exp.sriov_pf.vfname = NULL;
-+    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-+
-+    unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
- }
- 
- void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-@@ -151,38 +178,11 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
-     }
- }
- 
--static PCIDevice *register_vf(PCIDevice *pf, int devfn, const char *name,
--                              uint16_t vf_num)
--{
--    PCIDevice *dev = pci_new(devfn, name);
--    dev->exp.sriov_vf.pf = pf;
--    dev->exp.sriov_vf.vf_number = vf_num;
--    PCIBus *bus = pci_get_bus(pf);
--    Error *local_err = NULL;
--
--    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
--    if (local_err) {
--        error_report_err(local_err);
--        return NULL;
--    }
--
--    /* set vid/did according to sr/iov spec - they are not used */
--    pci_config_set_vendor_id(dev->config, 0xffff);
--    pci_config_set_device_id(dev->config, 0xffff);
--
--    return dev;
--}
--
- static void register_vfs(PCIDevice *dev)
- {
-     uint16_t num_vfs;
-     uint16_t i;
-     uint16_t sriov_cap = dev->exp.sriov_cap;
--    uint16_t vf_offset =
--        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
--    uint16_t vf_stride =
--        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
--    int32_t devfn = dev->devfn + vf_offset;
- 
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-@@ -190,18 +190,10 @@ static void register_vfs(PCIDevice *dev)
-         return;
-     }
- 
--    dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
--
-     trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
-                              PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
--        dev->exp.sriov_pf.vf[i] = register_vf(dev, devfn,
--                                              dev->exp.sriov_pf.vfname, i);
--        if (!dev->exp.sriov_pf.vf[i]) {
--            num_vfs = i;
--            break;
--        }
--        devfn += vf_stride;
-+        pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
-     }
-     dev->exp.sriov_pf.num_vfs = num_vfs;
- }
-@@ -214,12 +206,8 @@ static void unregister_vfs(PCIDevice *dev)
-     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
-                                PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
--        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
--        object_unparent(OBJECT(vf));
--        object_unref(OBJECT(vf));
-+        pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
-     }
--    g_free(dev->exp.sriov_pf.vf);
--    dev->exp.sriov_pf.vf = NULL;
-     dev->exp.sriov_pf.num_vfs = 0;
- }
- 
-@@ -241,14 +229,10 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-                              PCI_FUNC(dev->devfn), off, val, len);
- 
-     if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
--        if (dev->exp.sriov_pf.num_vfs) {
--            if (!(val & PCI_SRIOV_CTRL_VFE)) {
--                unregister_vfs(dev);
--            }
-+        if (val & PCI_SRIOV_CTRL_VFE) {
-+            register_vfs(dev);
-         } else {
--            if (val & PCI_SRIOV_CTRL_VFE) {
--                register_vfs(dev);
--            }
-+            unregister_vfs(dev);
-         }
-     }
- }
--- 
-MST
+> You add
+> a stub hest and exclusion but then in patch 12 the HEST stub is deleted whereas
+> it should be replaced with the example data for the test.
+
+This was actually a misinterpretation from my side: patch 10 adds the
+etc/hardware_errors table (mistakenly naming it as HEST), but this
+was never tested. For the next submission, I'll drop etc/hardware_errors
+table from patches 10 and 12.
+
+> That indeed doesn't address testing the error data storage which would be
+> a different problem.
+> > 
+> > Not sure if I got this one. The HEST table is part of etc/acpi/tables,
+> > which is already tested, as you pointed at the previous reviews. Doing
+> > changes there is already detected. That's basically why we added patches
+> > 10 and 12:
+> > 
+> > 	[PATCH v3 10/14] tests/acpi: virt: allow acpi table changes for a new table: HEST
+> > 	[PATCH v3 12/14] tests/acpi: virt: add a HEST table to aarch64 virt and update DSDT
+> > 
+> > What tests don't have is a check for etc/hardware_errors firmware inside 
+> > tests/data/acpi/aarch64/virt/, but, IMO, we shouldn't add it there.
+> > 
+> > See, hardware_errors table contains only some skeleton space to
+> > store:
+> > 
+> > 	- 1 or more error block address offsets;
+> > 	- 1 or more read ack register;
+> > 	- 1 or more HEST source entries containing CPER blocks.
+> > 
+> > There's nothing there to be actually checked: it is just some
+> > empty spaces with a variable number of fields.
+> > 
+> > With the new code, the actual number of CPER blocks and their
+> > corresponding offsets and read ack registers can be different on 
+> > different architectures. So, for instance, when we add x86 support,
+> > we'll likely start with just one error source entry, while arm will
+> > have two after this changeset.
+> > 
+> > Also, one possibility to address the issues reported by Gavin Shan at
+> > https://lore.kernel.org/qemu-devel/20250214041635.608012-1-gshan@redhat.com/
+> > would be to have one entry per each CPU. So, the size of such firmware
+> > could be dependent on the number of CPUs.
+> > 
+> > So, adding any validation to it would just cause pain and probably
+> > won't detect any problems.  
+> 
+> If we did do this the test would use a fixed number of CPUs so
+> would just verify we didn't break a small number of variants. Useful
+> but to me a follow up to this series not something that needs to
+> be part of it - particularly as Gavin's work may well change that!
+
+I don't think that testing etc/hardware_errors would detect any
+regressions. It will just create a test scenario that will require
+constant changes, as adding any entry to HEST would hit it. 
+
+Besides that, I don't think adding support for it would be a simple
+matter of adding another table. See, after this series, there are two 
+different scenarios for the /etc/hardware_errors:
+
+- one with a single GHESv2 entry, for virt-9.2;
+- another one with two GHESv2 entries for virt-10.0 and above that
+  will dynamically change its size (starting from 2) depending on
+  the features we add, and if we'll have one entry per CPU or not.
+
+Right now, the tests there are only for "virt-latest": there's no
+test directory for "virt-9.2". Adding support for virt-legacy will 
+very likely require lots of changes there at the test infrastructure,
+as it will require some virt migration support. 
+
+> > What could be done instead is to have a different type of tests that
+> > would use the error injection script to check if regressions are 
+> > introduced after QEMU 10.0. Such new kind of test would require
+> > this series to be merged first. It would also require the usage of
+> > an OSPM image with some testing tools on it. This is easier said 
+> > than done, as besides the complexity of having an OSPM test image,
+> > such kind of tests would require extra logic, specially if it would
+> > check regressions for SEA and other notification sources.
+> >   
+> Agreed that a more end to end test is even better, but those are
+> quite a bit more complex so definitely a follow up.
+
+Yes, but it could be simpler than modifying ACPI tests to handle
+migration.
+
+The way I see is that such kind of integration could be done by some
+gitlab workflow that would run an error injection script inside a
+pre-defined image emulating both virt-9.2 and virt-latest and checking
+if the HEST tables were properly generated for both SEA and GED
+sources.
+
+This is probably easier for GED, as the QMP interface already
+detects that the read ack register was changed by the OSPM. For
+SEA, it may require either some additional instrumentation or to
+capture OSPM logs.
+
+Anyway, ether way, a change like that is IMO outside the escope of
+this series, as it will require lots of unrelated changes.
+
+Regards,
+Mauro
 
 
