@@ -2,70 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF87FA3F254
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 11:43:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCF6A3F2AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Feb 2025 12:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tlQTW-0002JJ-FR; Fri, 21 Feb 2025 05:41:42 -0500
+	id 1tlQpt-0000XA-UU; Fri, 21 Feb 2025 06:04:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tlQTT-0002Ig-HT
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 05:41:39 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tlQpr-0000Wc-5W; Fri, 21 Feb 2025 06:04:47 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tlQTR-0001lx-4T
- for qemu-devel@nongnu.org; Fri, 21 Feb 2025 05:41:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740134497; x=1771670497;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=nUtWMIndr5zkpXIRxh+/VIc9lT8JL+dI8djwCGRbtAQ=;
- b=QP0qPLW000X6f7HFwhsxu642+DH6UBCpRB72nU/NWLwO2ktX3vMZQGff
- 7MI/DG34ZNcCFeKGyScq06OgJFmqkYhRHf4SgB1yueohD77mdWbOEtOgg
- /Y5pPfCLHHE2yEqKCx98PwscpAt69XYbfVmviIRc9dJBYdYdoZxdmu2WQ
- v1D96hKCujKA674mqZoKG/fEwaml81/7YoRbq+BVIsKGIzlSHeyiOluvz
- EGL3LXQ/QwzvMs2pU4lQMgB55cTdUkw35J1HX+buuqmkUydf281wHPGPL
- QuOb9EXHJhtNGAdwrDamNKtBjdFyWengtM01N3J11+BNzebKWsERy/Qzg Q==;
-X-CSE-ConnectionGUID: 3+2kIqpUTtizCsyWUznm1A==
-X-CSE-MsgGUID: LCXUn7crSemC1e5DLGlVtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="66312656"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="66312656"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2025 02:41:32 -0800
-X-CSE-ConnectionGUID: ffSF16yJTa2/e39jpLgNGw==
-X-CSE-MsgGUID: WNdErkdjR3ukExmCFCVtxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; d="scan'208";a="115979040"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 21 Feb 2025 02:41:32 -0800
-Date: Fri, 21 Feb 2025 19:01:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com
-Subject: Re: [PATCH v3 2/2] rust: add module to convert between
- success/-errno and io::Result
-Message-ID: <Z7hc8+h+mGnT7CSh@intel.com>
-References: <20250220113659.863332-1-pbonzini@redhat.com>
- <20250220113659.863332-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tlQpo-0004Wl-Cw; Fri, 21 Feb 2025 06:04:46 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YznHT31D5z6G83L;
+ Fri, 21 Feb 2025 19:01:09 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 02518140382;
+ Fri, 21 Feb 2025 19:04:38 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 21 Feb
+ 2025 12:04:37 +0100
+Date: Fri, 21 Feb 2025 11:04:35 +0000
+To: Gavin Shan <gshan@redhat.com>
+CC: Igor Mammedov <imammedo@redhat.com>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>, <mst@redhat.com>, <anisinha@redhat.com>,
+ <gengdongjiu1@gmail.com>, <peter.maydell@linaro.org>, <pbonzini@redhat.com>,
+ <shan.gavin@gmail.com>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH 4/4] target/arm: Retry pushing CPER error if necessary
+Message-ID: <20250221110435.00004a3b@huawei.com>
+In-Reply-To: <7caa54df-abe1-4833-bb59-cb83f8241962@redhat.com>
+References: <20250214041635.608012-1-gshan@redhat.com>
+ <20250214041635.608012-5-gshan@redhat.com>
+ <20250219185518.767a48d9@imammedo.users.ipa.redhat.com>
+ <7caa54df-abe1-4833-bb59-cb83f8241962@redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250220113659.863332-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.457,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,143 +67,265 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+On Fri, 21 Feb 2025 15:27:36 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
-> It is a common convention in QEMU to return a positive value in case of
-> success, and a negated errno value in case of error.  Unfortunately,
-> using errno portably in Rust is a bit complicated; on Unix the errno
-> values are supported natively by io::Error, but on Windows they are not;
-> so, use the libc crate.
+> On 2/20/25 3:55 AM, Igor Mammedov wrote:
+> > On Fri, 14 Feb 2025 14:16:35 +1000
+> > Gavin Shan <gshan@redhat.com> wrote:
+> >  =20
+> >> The error -1 is returned if the previously reported CPER error
+> >> hasn't been claimed. The virtual machine is terminated due to
+> >> abort(). It's conflicting to the ideal behaviour that the affected
+> >> vCPU retries pushing the CPER error in this case since the vCPU
+> >> can't proceed its execution.
+> >>
+> >> Move the chunk of code to push CPER error to a separate helper
+> >> report_memory_errors() and retry the request when the return
+> >> value from acpi_ghes_memory_errors() is greater than zero.
+> >>
+> >> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> >> ---
+> >>   target/arm/kvm.c | 31 +++++++++++++++++++++++++------
+> >>   1 file changed, 25 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> >> index 5c0bf99aec..9f063f6053 100644
+> >> --- a/target/arm/kvm.c
+> >> +++ b/target/arm/kvm.c
+> >> @@ -2362,6 +2362,30 @@ int kvm_arch_get_registers(CPUState *cs, Error =
+**errp)
+> >>       return ret;
+> >>   }
+> >>  =20
+> >> +static void report_memory_error(CPUState *c, hwaddr paddr)
+> >> +{
+> >> +    int ret;
+> >> +
+> >> +    while (true) {
+> >> +        /* Retry if the previously report error hasn't been claimed */
+> >> +        ret =3D acpi_ghes_memory_errors(ACPI_HEST_SRC_ID_SEA, paddr, =
+true);
+> >> +        if (ret <=3D 0) {
+> >> +            break;
+> >> +        }
+> >> +
+> >> +        bql_unlock();
+> >> +        g_usleep(1000); =20
+>=20
+> Igor, thanks for the detailed comments. Sorry for a bit delay of the repl=
+y, I
+> was checking the code to understand it better :)
 
-I'm a bit confused. The doc of error.h just said the negative value for
-failure:
+This is moderately tricky stuff so I'm not 100% sure of some of the things
+I said below, but will be traveling for next few weeks so want to get some
+comments out before that!
 
-• integer-valued functions return non-negative / negative.
+>=20
+> > even with bql released it's not safe to loop in here.
+> > consider,
+> >    a guest with 2 vcpus
+> >      * vcpu 1 gets SIGBUS due to error
+> >      * vcpu 2 trips over the same error and gets into this loop
+> >      * on guest side vcpu 1 continues to run to handle SEA but
+> >        might need to acquire a lock that vcpu 2 holds
+> >  =20
+>=20
+> Agreed.
+>=20
+> > GHESv2 error source we support, can report several errors,
+> > currently QEMU supports only 1 'error status block' which
+> > can hold several error records (CPER) (though storage size is limited)
+> >=20
+> > 1:
+> > We can potentially add support for more GHESv2 error sources
+> > with their own Read ACK registers (let's say =3Dmax_cpus)
+> > (that is under assumption that no other error will be
+> > triggered while guest VCPUs handle their own SEA (upto clearing Read AC=
+K))
 
-Why do we need to using libc's -errno for Windows as well?
+This one seems straight forward but I'd kind of like to know if real systems
+do this (I'll try and find out about ours).  I don't think there is
+any association available between a cpu and and SEA source, so linux at
+least will just go looking for any that are active on each SEA.
+Locking looks fine but it won't help with performance
 
-Converting `io::Error::last_os_error().raw_os_error().unwrap()` to a
-negative value seems compatible with Windows, except it returns Windows
-error codes.
+> >=20
+> > 2:
+> > Another way could be for QEMU to allocate more error status _blocks_
+> > for the only one error source it has now and try to find
+> > empty status block to inject new error(s).
 
-> This is a set of utility functions that are used by both chardev and
-> block layer bindings.
+Let me try to get my head around this one...
 
-...
+Each GHESv2 entry points, indirectly, to a single error status block at a t=
+ime
+(only one address to read that from)  Curious quirk is the length for that
+error status block is fixed as that's just a value in GHESv2 not an indirec=
+tion
+via a register - however I think you can just make it 'big'.
+So what I think you are proposing here is that on read_ack write (which we =
+would
+need to monitor for, the value of the error status address register is upda=
+ted
+to point to next one of a queue of error blocks.
 
-> +// On Unix, from_raw_os_error takes an errno value and OS errors
-> +// are printed using strerror.  On Windows however it takes a
-> +// GetLastError() value; therefore we need to convert errno values
-> +// into io::Error by hand.  This is the same mapping that the
-> +// standard library uses to retrieve the kind of OS errors
-> +// (`std::sys::pal::unix::decode_error_kind`).
-> +impl From<Errno> for ErrorKind {
-> +    fn from(value: Errno) -> ErrorKind {
+That can work.  I'm not sure it actually gets us anything over just queuing=
+ in
+qemu and writing the same error status block.  Those status blocks can cont=
+ain
+multiple Generic Error Data entries, but unless we have a load of them gath=
+ered
+up at time of first notifying the guest, I'm not sure that helps us.
 
-What about `use ErrorKind::*;` to oimt the following "ErrorKind::"
-prefix?
+One thing that I'm nervous about is that I can't actually find spec language
+that says that the OS 'must' reread the error status address register on
+each event. That isn't mentioned in the GHESv2 flow description which just =
+says:
+"
+These are the steps the OS must take once detecting an error from a particu=
+lar GHESv2 error source:
+=E2=80=A2 OSPM detects error (via interrupt/exception or polling the block =
+status)
+=E2=80=A2 OSPM copies the error status block
+=E2=80=A2 OSPM clears the block status field of the error status block
+=E2=80=A2 OSPM acknowledges the error via Read Ack register. For example:
+=E2=80=93 OSPM reads the Read Ack register =E2=80=93> X
+=E2=80=93 OSPM writes =E2=80=93> (( X & ReadAckPreserve) | ReadAckWrite)
+"
 
-> +        let Errno(errno) = value;
-> +        match i32::from(errno) {
+The linux code is confusing me, but I think it wonderfully changes
+the fixmap on every access as it needs to do an ioremap type operation
+in NMI conditions.
 
-Maybe `match i32::from(errno.0)` ?
+> >   * it can be saturated with high rate of errors (so what do we do in c=
+ase it happens?)
 
-> +            libc::EPERM | libc::EACCES => ErrorKind::PermissionDenied,
-> +            libc::ENOENT => ErrorKind::NotFound,
-> +            libc::EINTR => ErrorKind::Interrupted,
-> +            x if x == libc::EAGAIN || x == libc::EWOULDBLOCK => ErrorKind::WouldBlock,
-> +            libc::ENOMEM => ErrorKind::OutOfMemory,
-> +            libc::EEXIST => ErrorKind::AlreadyExists,
-> +            libc::EINVAL => ErrorKind::InvalidInput,
-> +            libc::EPIPE => ErrorKind::BrokenPipe,
-> +            libc::EADDRINUSE => ErrorKind::AddrInUse,
-> +            libc::EADDRNOTAVAIL => ErrorKind::AddrNotAvailable,
-> +            libc::ECONNABORTED => ErrorKind::ConnectionAborted,
-> +            libc::ECONNREFUSED => ErrorKind::ConnectionRefused,
-> +            libc::ECONNRESET => ErrorKind::ConnectionReset,
-> +            libc::ENOTCONN => ErrorKind::NotConnected,
-> +            libc::ENOTSUP => ErrorKind::Unsupported,
-> +            libc::ETIMEDOUT => ErrorKind::TimedOut,
-> +            _ => ErrorKind::Other,
+Make it big :)  But sure big just makes the condition unlikely rather than =
+solving it.
 
-Are these errno cases specifically selected? It seems to have fewer than
-`decode_error_kind` lists. Why not support all the cases `decode_error_kind`
-mentions? Or do we need to try to cover as many errno cases as possible
-from rust/kernel/error.rs?
+> >   * subject to race between clearing/setting Read ACK
+> >      (maybe it can dealt with that on side by keeping internal read_ack=
+ counter)
 
-> +        }
-> +    }
-> +}
-> +
-> +// This is used on Windows for all io::Errors, but also on Unix if the
-> +// io::Error does not have a raw OS error.  This is the reversed
-> +// mapping of the above.
+I don't think there are any races as long as we update the register only on=
+ clear which
+should I think happen before the next SEA can happen? My understanding, whi=
+ch may
+be wrong, is the OS must just take a copy of the error status block and set=
+ the
+read_ack all in the exception handler.
 
-Maybe:
+> >=20
+> > 3:
+> > And alternatively, queue incoming errors until read ack is cleared
+> > and then inject pending errors in one go.
+> > (problem with that is that at the moment QEMU doesn't monitor
+> > read ack register memory so it won't notice guest clearing that)
 
-This is the "almost" reversed (except the default case) mapping
+We'd need to monitor it definitely.  Injecting all we have queued up
+in one go here seems like a reasonable optimization over doing them
+one at a time.
 
-?
+> >=20
+> >=20
+> > Given spec has provision for multiple error status blocks/error data en=
+tries
+> > it seems that #2 is an expected way to deal with the problem.
+> >  =20
+>=20
+> I would say #1 is the ideal model because the read_ack_register is the bo=
+ttleneck
+> and it should be scaled up to max_cpus. In that way, the bottleneck can b=
+e avoided
+> from the bottom. Another benefit with #1 is the error can be delivered im=
+mediately
+> to the vCPU where the error was raised. This matches with the syntax of S=
+EA to me.
 
-> +impl From<io::ErrorKind> for Errno {
-> +    fn from(value: io::ErrorKind) -> Errno {
+I don't think it helps for the bottleneck in linux at least.  A whole bunch=
+ of locks
+are taken on each SEA because of the novel use of the fixmap.  There is onl=
+y one
+VA ever used to access the error status blocks we just change what PA it po=
+ints to
+under a spin lock. Maybe that can be improved on if we can persuade people =
+that error
+handling performance is a thing to care about!
 
-`use ErrorKind::*;` could save some words, too.
+>=20
+> #2 still has the risk to saturate the multiple error status blocks if the=
+re are
+> high rate of errors as you said. Besides, the vCPU where read_ack_registe=
+r is acknoledged
+> can be different from the vCPU where the error is raised, violating the s=
+yntax of
+> SEA.
+>=20
+> #3's drawback is to violate the syntax of SEA, similar to #2.
+>=20
+> However, #2/#3 wouldn't be that complicated to #1. I didn't expect big su=
+rgery to
+> GHES module, but it seems there isn't perfect solution without a big surg=
+ery.
+> I would vote for #1 to resolve the issue from the ground. What do you thi=
+nk, Igor?
+> I'm also hoping Jonathan and Mauro can provide their preference.
 
-> +        let errno = match value {
-> +            // can be both EPERM or EACCES :( pick one
-> +            ErrorKind::PermissionDenied => libc::EPERM,
-> +            ErrorKind::NotFound => libc::ENOENT,
-> +            ErrorKind::Interrupted => libc::EINTR,
-> +            ErrorKind::WouldBlock => libc::EAGAIN,
-> +            ErrorKind::OutOfMemory => libc::ENOMEM,
-> +            ErrorKind::AlreadyExists => libc::EEXIST,
-> +            ErrorKind::InvalidInput => libc::EINVAL,
-> +            ErrorKind::BrokenPipe => libc::EPIPE,
-> +            ErrorKind::AddrInUse => libc::EADDRINUSE,
-> +            ErrorKind::AddrNotAvailable => libc::EADDRNOTAVAIL,
-> +            ErrorKind::ConnectionAborted => libc::ECONNABORTED,
-> +            ErrorKind::ConnectionRefused => libc::ECONNREFUSED,
-> +            ErrorKind::ConnectionReset => libc::ECONNRESET,
-> +            ErrorKind::NotConnected => libc::ENOTCONN,
-> +            ErrorKind::Unsupported => libc::ENOTSUP,
-> +            ErrorKind::TimedOut => libc::ETIMEDOUT,
-> +            _ => libc::EIO,
-> +        };
-> +        Errno(errno as u16)
-> +    }
-> +}
-> +
-> +impl From<Errno> for io::Error {
-> +    #[cfg(unix)]
-> +    fn from(value: Errno) -> io::Error {
-> +        let Errno(errno) = value;
-> +        io::Error::from_raw_os_error(errno.into())
+Ideally I'd like whatever we choose to look like what a bare metal machine
+does - mostly because we are less likely to hit untested OS paths.
 
-Maybe `io::Error::from_raw_os_error(value.0.into())`?
-
-> +    }
-> +
-> +    #[cfg(windows)]
-> +    fn from(value: Errno) -> io::Error {
-> +        let error_kind: ErrorKind = value.into();
-> +        error_kind.into()
-
-Even this works:
-
-     fn from(value: Errno) -> io::Error {
--        let error_kind: ErrorKind = value.into();
--        error_kind.into()
-+        value.into()
-
-However, it's less readability, so I still prefer your current codes.
-:-)
-
-Thanks,
-Zhao
-
+>=20
+> > PS:
+> > I'd prefer Mauro's series being merged 1st (once it's resplit),
+> > for it refactors a bunch of original code and hopefully makes
+> > code easier to follow/extend.
+> >  =20
+>=20
+> Sure. I won't start the coding until the solution is confirmed. All the f=
+ollowup
+> work will base on Mauro's series.
+>=20
+> >> +        bql_lock();
+> >> +    }
+> >> +
+> >> +    if (ret =3D=3D 0) {
+> >> +        kvm_inject_arm_sea(c);
+> >> +    } else {
+> >> +        error_report("Error %d to report memory error", ret);
+> >> +        abort();
+> >> +    }
+> >> +}
+> >> +
+> >>   void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+> >>   {
+> >>       ram_addr_t ram_addr;
+> >> @@ -2387,12 +2411,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int c=
+ode, void *addr)
+> >>                */
+> >>               if (code =3D=3D BUS_MCEERR_AR) {
+> >>                   kvm_cpu_synchronize_state(c);
+> >> -                if (!acpi_ghes_memory_errors(ACPI_HEST_SRC_ID_SEA, pa=
+ddr, false)) {
+> >> -                    kvm_inject_arm_sea(c);
+> >> -                } else {
+> >> -                    error_report("failed to record the error");
+> >> -                    abort();
+> >> -                }
+> >> +                report_memory_error(c, paddr);
+> >>               }
+> >>               return;
+> >>           } =20
+> >  =20
+>=20
+> Thanks,
+> Gavin
+>=20
+>=20
 
 
