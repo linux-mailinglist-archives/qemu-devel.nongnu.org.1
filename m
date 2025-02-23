@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0BCA40EC8
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Feb 2025 13:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAFCA40E7A
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Feb 2025 12:48:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmAuZ-0008QM-L9; Sun, 23 Feb 2025 07:16:43 -0500
+	id 1tmASC-0008Of-Q6; Sun, 23 Feb 2025 06:47:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tmAuX-0008Pb-Dy; Sun, 23 Feb 2025 07:16:41 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1tmASA-0008O8-ND; Sun, 23 Feb 2025 06:47:22 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tmAuV-0000V5-Es; Sun, 23 Feb 2025 07:16:41 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5ded6c31344so4997677a12.1; 
- Sun, 23 Feb 2025 04:16:38 -0800 (PST)
+ id 1tmAS8-0005v9-NV; Sun, 23 Feb 2025 06:47:22 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5ded6c31344so4979450a12.1; 
+ Sun, 23 Feb 2025 03:47:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740312997; x=1740917797; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NyLMdX0mKTgfNlYNdKlrfBlC4EEs5GQx4Z7IGlqyMHo=;
- b=dE4IMsG5VSYrT01VFWRx7NzNtyFRx/jw93xNNzP2Ibl9Gp6ryMDnK6E+I99n6ZooeP
- TLbntMv46bKvumxQvklX1/GPGmryw7NqOjFQ8vWZWrC1cwVcmUXw0JeCRdUzWUDADl4Q
- WiM5NZ1yTGmszios5p7lp0skg3NdV5WtkPx3U7UYD8wf1R9V49jG1M68w2mEiQg1Auf5
- 7uMQzn6bGWZ/o3TXMJx0Z7JJ0s7ak150ioz+JUzip+keNVyWAyVKRqBxI+4B+3295opt
- OM3W5XBvWs84eP/ww68DAt6uh9zmvOxOWUzTXDj7qh+C6rHbY7PWctDlcQS0OAYVVjkh
- EpSg==
+ d=gmail.com; s=20230601; t=1740311238; x=1740916038; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tgSld8Qjv3h9JqKQUf+Zp1b7lgUyHl7hk037kh0cBVk=;
+ b=m4ZMETY05028irDh5YyLO1M1jUD+L9HsPBwyYpjf0O7vArge2acW4hdm2JQl3wdADy
+ OjwUM395eoE4ylHi3ng03Lju9KfB1n+ixDT+LED7I6ajxS06vN49V20ILamCFpzhyul0
+ E/30ExWs5KF2+5UWo6qVz2FCBerqaRX6A/NBmwcmoC7MHxzAwCppha+T/FP9eTPVtq/d
+ nSRFBR6xC42UfoH5K4w4dgPJJZQLgVXG65p+JzSm1hf3ZMwBGgF03mWa7a1Nc2FKUh5k
+ 2+1d1Y/v0GSM8cbjgB0wgGBxIw2kJzUiZNfUBZKtN05knFN8rg3P/m+CFB/i7rrsAr85
+ Q2ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740312997; x=1740917797;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NyLMdX0mKTgfNlYNdKlrfBlC4EEs5GQx4Z7IGlqyMHo=;
- b=FlOwWw+PRo90ESTd040Gpw3VU/hoP80OcXZb+aWYUg7I5Nnx8J02NSaGuBpl+Ow4jg
- DzvC6ZXWtlhRowFGhV/420iqjxgGITUrZ1PJEQ0OhCrYf8NdbEhmIeMa/wji8CLVNmHe
- sWfavOiBJXgnhFk1saPqA2kPkrNlCEa5z1Tc09i1LkOoLJ0zZI1UbPA90SFiENMHoe1+
- LwweP19ZolEZUGA0W4BsEu1cFcmsDYpqh/+AageqCgT4LSNbyZQV4ggZv189HC7GH71B
- ++PcprT14zVr5Y6NcWNzsw4wPQWFQjcpwElQVAnaiptkl4FjrzJsIQtSmG7Ztylts7Ep
- newA==
+ d=1e100.net; s=20230601; t=1740311238; x=1740916038;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tgSld8Qjv3h9JqKQUf+Zp1b7lgUyHl7hk037kh0cBVk=;
+ b=Y0mt22xHDF/DQ+qiHtlQbSjs4PAq5Z5sz4ZGbPT/2BvJU+ldBLovFjZHOVLN5O2nNI
+ YNtipGrTtA93IWerZ08WjLPNHpRrpe6jgr/spWgzRYbKSBzQYESoq4wTMNABrYJvHAcH
+ Cmv3/lMhaWADIb4uj+2NI9oDADWp2I6YY/gAp1E6X38PNQ4tNRwqyTCqObo1ZMop6rmm
+ gwzrCdyqLvuhxyTQ/zdcyecoG83/H3EgCRB4b89GiCnltWvaiYksNC26czoSj5LBh6Ee
+ E2RqJ9Ovbbh+0LIXyleFewBdrGdxBmxrhFL93kC9q7XDZ43I1MaoJtcKOHzJ8NbKuzmd
+ 1CNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUcEsxveTIlH+R1iF9Kye6QIm0ki7mlro9L95NPLVR8azkf+tbMBbp33anNwKQEAaDUqQscyu7fyw==@nongnu.org
-X-Gm-Message-State: AOJu0Yy3aKoTsQ9297KlgwALmlTout+0g4ASFArTuYROKN2Gcol9yCL6
- 1kUZm//VzLFuf47L88ko9LZPSDQIKRzfEQCXT6bFj/Wzp5fV8q3N
-X-Gm-Gg: ASbGnct1QnHWblwxLIkOpUzkiiMWNtIW4bHmY1IPiQRifjF+H7PWcvv1pg70IMPY2Rc
- Fb/JOdZUAEvG0rCcGy7Lwyzb7cCjHfBW6++55kN3vabVDrQx8MQHtjbYqDhDbg7KkMhG9Tq6PUi
- N2M+yShH4D2Pp5tX0NarGZ44Hpdk87LAN6buKVNIb1nB8b66zvo47Z6yci/JaFIlMxss6EmRy63
- +BNMPTh2SP8cEeTor9rRmL4PSDECCgP8tvtUVm1/XF4zZ5UG1WDFqNypTwAgaW+bV7etIzObZGF
- XhG8Tnb5JLp2fmi3zSj/CTWp2Lklh787DsFLeVFJP8VZRWJh0+IAJDsxxRZVxAQ5HyXC607VhaY
- =
-X-Google-Smtp-Source: AGHT+IGAYlQdk/J8jxr7d33I50dJAzrrk6Edzp6ZGTA+ENq6UHF2eapBk/39lz6KS3m8vU2WeFCXJQ==
-X-Received: by 2002:a05:6402:4304:b0:5e0:922e:527a with SMTP id
- 4fb4d7f45d1cf-5e0b6fe5685mr25031115a12.0.1740312997262; 
- Sun, 23 Feb 2025 04:16:37 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-011-167-038.77.11.pool.telefonica.de.
- [77.11.167.38]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dece1b4f65sm16552033a12.1.2025.02.23.04.16.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Feb 2025 04:16:36 -0800 (PST)
-Date: Sun, 23 Feb 2025 11:40:46 +0000
+ AJvYcCVrprm42kqupgAWOmYfT9XDH6p+FFI8OuH/JKBMmVwfiTRBWUv6clL/9jlnmbFhFx4p0XFqFhic0w==@nongnu.org
+X-Gm-Message-State: AOJu0YyONWYgouIhKqIgVCKjNeo0Oj5guL3C7xTSjnsOpGJAujZWCKas
+ hyDKGW8dFfHzGYrdP5B0RFZwU9+llR3KXChxnP/gd83c4UtqMl2bKfxRXA==
+X-Gm-Gg: ASbGnctY84s2YqDbhYvQtvRX7a4rtvA6J7vtx1SR7Pcn9oSYkx0ZFqyfFY2PN878bLG
+ fZRCQVQ55OKX+jYOHD94kSbuci1/KUx9C66jycnfrwSch4dnA/3PeX0e5a5Vs4kClGlU3BdUbns
+ SZZfWQaghylNTDOCYENu5anHxsenU+2vl0KOvos2kwY8pw9HyOtSu8l2IxKZn6JsQ0A4PUkeYfn
+ 62xtYKBkbThaCHFTUgHOsGIXcATkOGG8GcwByZyKUJeRsD9SkoB16a6VORa79WAXgZy9OEJIC8V
+ azuJkxVi5Z6Qv4QGmwfxmHzHx4qWeoW3YGuFUOu0Ba+ZygHKclVjhSCZ0tJ1tl3wbPkiixfpS5P
+ Sk/VtEI5wNv1+
+X-Google-Smtp-Source: AGHT+IEhh/xPlkrmBYDZZr133WBfa33BeCBec+O15IUvTSFw03EWWprGqRwKlZAu3YlMXJxMbMwCBQ==
+X-Received: by 2002:a05:6402:540c:b0:5dc:74fd:abf1 with SMTP id
+ 4fb4d7f45d1cf-5e0b7107adbmr19801955a12.15.1740311237623; 
+ Sun, 23 Feb 2025 03:47:17 -0800 (PST)
+Received: from Provence.localdomain
+ (dynamic-077-011-167-038.77.11.pool.telefonica.de. [77.11.167.38])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-abba4b9ee98sm1240515466b.167.2025.02.23.03.47.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 23 Feb 2025 03:47:17 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
  Andrey Smirnov <andrew.smirnov@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 04/18] hw/arm: Add i.MX 8M Plus EVK board
-In-Reply-To: <CAFEAcA8qgEDAnfaQDmpUjy77KZBiqwdKSmyLE-ZwEAhMNLWn4Q@mail.gmail.com>
-References: <20250204092112.26957-1-shentey@gmail.com>
- <20250204092112.26957-5-shentey@gmail.com>
- <CAFEAcA8qgEDAnfaQDmpUjy77KZBiqwdKSmyLE-ZwEAhMNLWn4Q@mail.gmail.com>
-Message-ID: <80063C2F-B373-4AB3-A23A-0A5FC0E91CBB@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/18] Add i.MX 8M Plus EVK machine
+Date: Sun, 23 Feb 2025 12:46:50 +0100
+Message-ID: <20250223114708.1780-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.48.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,184 +105,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 10=2E Februar 2025 17:30:01 UTC schrieb Peter Maydell <peter=2Emaydell@=
-linaro=2Eorg>:
->On Tue, 4 Feb 2025 at 09:21, Bernhard Beschow <shentey@gmail=2Ecom> wrote=
-:
->>
->> As a first step, implement the bare minimum: CPUs, RAM, interrupt contr=
-oller,
->> serial=2E All other devices of the A53 memory map are represented as
->> TYPE_UNIMPLEMENTED_DEVICE, i=2Ee=2E the whole memory map is provided=2E=
- This allows
->> for running Linux without it crashing due to invalid memory accesses=2E
->>
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->
->
->
->> --- /dev/null
->> +++ b/docs/system/arm/imx8mp-evk=2Erst
->> @@ -0,0 +1,56 @@
->> +NXP i=2EMX 8M Plus Evaluation Kit (``imx8mp-evk``)
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +The QEMU i=2EMX 8M Plus EVK board emulation is intended to emulate a p=
-lain i=2EMX 8M
->> +Plus system on chip (SoC)=2E All peripherals the real board has such a=
-s flash and
->> +I2C devices are intended to be added via configuration, e=2Eg=2E comma=
-nd line=2E
->
->Why do this? If they're on the real hardware board, we should
->be creating them by default in the machine model in QEMU=2E
->Command line options are for devices that are optional and
->pluggable by the user on the hardware=2E
-
-I'll rephrase the board description to be similar to the mcimx7d-sabre mac=
-hine=2E In fact, I've modeled this machine like it=2E
-
-Best regards,
-Bernhard
-
->
->> +Supported devices
->> +-----------------
->> +
->> +The ``imx8mp-evk`` machine implements the following devices:
->> +
->> + * Up to 4 Cortex-A53 Cores
->
->"cores"
->
->> + * Generic Interrupt Controller (GICv3)
->> + * 4 UARTs
->> +
->> +Boot options
->> +------------
->> +
->> +The ``imx8mp-evk`` machine can start using the standard -kernel functi=
-onality
->> +for loading a Linux kernel=2E
->> +
->> +Direct Linux Kernel Boot
->> +''''''''''''''''''''''''
->> +
->> +Probably the easiest way to get started with a whole Linux system on t=
-he machine
->> +is to generate an image with Buildroot=2E Version 2024=2E11=2E1 is tes=
-ted at the time
->> +of writing and involves two steps=2E First run the following commands =
-in the
->> +toplevel directory of the Buildroot source tree:
->> +
->> +=2E=2E code-block:: bash
->> +
->> +  $ echo "BR2_TARGET_ROOTFS_CPIO=3Dy" >> configs/freescale_imx8mpevk_d=
-efconfig
->> +  $ make freescale_imx8mpevk_defconfig
->> +  $ make
->> +
->> +Once finished successfully there is an ``output/image`` subfolder=2E N=
-avigate into
->> +it patch the device tree needs to be patched with the following comman=
-ds which
->> +will remove the ``cpu-idle-states`` properties from CPU nodes:
->
->This sentence seems to be confused in the middle -- cut-and-paste
->error ?
->
->> +
->> +=2E=2E code-block:: bash
->> +
->> +  $ dtc imx8mp-evk=2Edtb | sed '/cpu-idle-states/d' > imx8mp-evk-patch=
-ed=2Edts
->> +  $ dtc imx8mp-evk-patched=2Edts -o imx8mp-evk-patched=2Edtb
->> +
->> +Now that everything is prepared the newly built image can be run in th=
-e QEMU
->> +``imx8mp-evk`` machine:
->
->> +#define NAME_SIZE 20
->> +
->> +static void fsl_imx8mp_init(Object *obj)
->> +{
->> +    MachineState *ms =3D MACHINE(qdev_get_machine());
->> +    FslImx8mpState *s =3D FSL_IMX8MP(obj);
->> +    char name[NAME_SIZE];
->
->Better than fixed sized char arrays for object names
->is to use
->   g_autofree char *name =3D g_strdup_printf("cpu%d", i);
->inside the block of each for() loop etc=2E
->
->> +    int i;
->> +
->> +    for (i =3D 0; i < MIN(ms->smp=2Ecpus, FSL_IMX8MP_NUM_CPUS); i++) {
->> +        snprintf(name, NAME_SIZE, "cpu%d", i);
->> +        object_initialize_child(obj, name, &s->cpu[i],
->> +                                ARM_CPU_TYPE_NAME("cortex-a53"));
->> +    }
->> +
->> +    object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GICV3);
->> +
->> +    for (i =3D 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
->> +        snprintf(name, NAME_SIZE, "uart%d", i + 1);
->> +        object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIA=
-L);
->> +    }
->> +}
->> +
->> +static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
->> +{
->> +    MachineState *ms =3D MACHINE(qdev_get_machine());
->> +    FslImx8mpState *s =3D FSL_IMX8MP(dev);
->> +    DeviceState *gicdev =3D DEVICE(&s->gic);
->> +    int i;
->> +
->> +    if (ms->smp=2Ecpus > FSL_IMX8MP_NUM_CPUS) {
->> +        error_setg(errp, "%s: Only %d CPUs are supported (%d requested=
-)",
->> +                   TYPE_FSL_IMX8MP, FSL_IMX8MP_NUM_CPUS, ms->smp=2Ecpu=
-s);
->> +        return;
->> +    }
->> +
->> +    /* CPUs */
->> +    for (i =3D 0; i < ms->smp=2Ecpus; i++) {
->> +        /* On uniprocessor, the CBAR is set to 0 */
->> +        if (ms->smp=2Ecpus > 1) {
->> +            object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
->> +                                    fsl_imx8mp_memmap[FSL_IMX8MP_GIC_D=
-IST]=2Eaddr,
->> +                                    &error_abort);
->> +        }
->> +
->> +        /*
->> +         * Magic value from Linux output: "arch_timer: cp15 timer(s) r=
-unning at
->> +         * 8=2E00MHz (phys)"=2E
->> +         */
->> +        object_property_set_int(OBJECT(&s->cpu[i]), "cntfrq", 8000000,
->> +                                &error_abort);
->
->This is the CNTFRQ value in Hz=2E The datasheet actually tells you
->this, so we don't need to call it a magic number (section 4=2E11=2E4=2E1=
-=2E6=2E4
->of the i=2EMX 8M Plus Applications Processor Reference Manual says the
->base frequency of the system counter is 8MHz)=2E
->
->(Incidentally the memory mapped system counter is a stock Arm
->IP block and I have about 60% of a model of it, I just haven't
->needed to upstream it yet because in practice no guest software
->really tries to mess with it=2E If we turn out to need it for
->this SoC that would be a reason for me to clean it up and
->send it out=2E But I suspect we don't need it in practice=2E)
->
->thanks
->-- PMM
+This series adds a new aarch64 machine to QEMU: i.MX 8M Plus EVK [1]. It al=
+lows=0D
+for running Linux distributions such as Buildroot=0D
+(freescale_imx8mpevk_defconfig) and Arch Linux [2] via direct kernel boot.=
+=0D
+U-Boot does not work yet. I plan to use this machine in CI and I also want =
+to=0D
+make it available to a bigger audience, so I propose to add it to QEMU. My =
+goal=0D
+would be to have it added for 10.0. For this, a Changelog entry could be ad=
+ded=0D
+under https://wiki.qemu.org/ChangeLog/10.0 such as:=0D
+  * New board model "imx8mp-evk": i.MX 8M Plus Evaluation Kit=0D
+=0D
+The series is structured as follows: The first three patches fix some issue=
+s in=0D
+device models reused by the new machine. Patches 4-17 add the machine step =
+by=0D
+step which includes documentation. The last patch adds an I=C2=B2C RTC whic=
+h I'd like=0D
+to use along with the new machine.=0D
+=0D
+I've based some code on existing one (see "Based on" in file headers) and I=
+'m=0D
+unsure how to handle the licensing and attribution correctly -- advice welc=
+ome.=0D
+=0D
+v3:=0D
+* Pick up R-b tags=0D
+* Add QTest testcase for the RS5C372 RTC (Phil)=0D
+* Rephrase machine description (Peter)=0D
+* Fix typos and confused sentence in machine documentation (Peter)=0D
+* Use g_autofree for object names (Peter)=0D
+* Clarify source of "cntfrq" CPU property (Peter)=0D
+* Fix typo "g[e]neral purpose timers" in commit message (Peter)=0D
+* Don't `default y if I2C_DEVICES` for hw/gpio/pca955* (Peter)=0D
+* TYPE_FSL_IMX8M_PCIE_PHY:=0D
+  * Implement reset method (Peter)=0D
+  * Use named constant rather than risking undefined behavior (Peter)=0D
+* Fix copy'n'paste typo in imx8mp_analog.c=0D
+Open questions:=0D
+* How to generate all zero boot rom file in a portable way (Peter)=0D
+=0D
+v2:=0D
+* Rebase onto master, eliminating some patches from the series=0D
+* Initialize ROM with memory_region_init_rom() (Zoltan)=0D
+* Mark the machine as "Maintained" (Peter)=0D
+* Do not select TEST_DEVICES (Peter)=0D
+* Have separate sources for the two clock tree modules (Peter)=0D
+* Make PCI devices attach to the correct bus (Peter)=0D
+* Avoid adding documentation that is removed later (Zoltan) Instead, docume=
+nt=0D
+  Buildroot process in the first place and change it slightly.=0D
+* Drop TCA6416 device model (Phil, Dmitrii)=0D
+* Add pca955* Kconfig cleanup patch=0D
+=0D
+[1] https://www.nxp.com/design/design-center/development-boards-and-designs=
+/8MPLUSLPD4-EVK=0D
+[2] https://archlinuxarm.org/platforms/armv8/generic=0D
+=0D
+Bernhard Beschow (18):=0D
+  hw/usb/hcd-dwc3: Align global registers size with Linux=0D
+  hw/pci-host/designware: Prevent device attachment on internal PCIe=0D
+    root bus=0D
+  hw/gpio/pca955*: Move Kconfig switches next to implementations=0D
+  hw/arm: Add i.MX 8M Plus EVK board=0D
+  hw/arm/fsl-imx8mp: Implement clock tree=0D
+  hw/arm/fsl-imx8mp: Add SNVS=0D
+  hw/arm/fsl-imx8mp: Add USDHC storage controllers=0D
+  hw/arm/fsl-imx8mp: Add PCIe support=0D
+  hw/arm/fsl-imx8mp: Add GPIO controllers=0D
+  hw/arm/fsl-imx8mp: Add I2C controllers=0D
+  hw/arm/fsl-imx8mp: Add SPI controllers=0D
+  hw/arm/fsl-imx8mp: Add watchdog support=0D
+  hw/arm/fsl-imx8mp: Implement general purpose timers=0D
+  hw/arm/fsl-imx8mp: Add Ethernet controller=0D
+  hw/arm/fsl-imx8mp: Add USB support=0D
+  hw/arm/fsl-imx8mp: Add boot ROM=0D
+  hw/arm/fsl-imx8mp: Add on-chip RAM=0D
+  hw/rtc: Add Ricoh RS5C372 RTC emulation=0D
+=0D
+ MAINTAINERS                         |  16 +=0D
+ docs/system/arm/imx8mp-evk.rst      |  70 +++=0D
+ docs/system/target-arm.rst          |   1 +=0D
+ include/hw/arm/fsl-imx8mp.h         | 285 +++++++++++=0D
+ include/hw/misc/imx8mp_analog.h     |  81 +++=0D
+ include/hw/misc/imx8mp_ccm.h        |  30 ++=0D
+ include/hw/pci-host/designware.h    |   7 +=0D
+ include/hw/pci-host/fsl_imx8m_phy.h |  28 ++=0D
+ include/hw/timer/imx_gpt.h          |   1 +=0D
+ include/hw/usb/hcd-dwc3.h           |   2 +-=0D
+ hw/arm/fsl-imx8mp.c                 | 732 ++++++++++++++++++++++++++++=0D
+ hw/arm/imx8mp-evk.c                 |  74 +++=0D
+ hw/misc/imx8mp_analog.c             | 160 ++++++=0D
+ hw/misc/imx8mp_ccm.c                | 175 +++++++=0D
+ hw/pci-host/designware.c            |  18 +-=0D
+ hw/pci-host/fsl_imx8m_phy.c         |  98 ++++=0D
+ hw/rtc/rs5c372.c                    | 236 +++++++++=0D
+ hw/timer/imx_gpt.c                  |  25 +=0D
+ hw/usb/hcd-dwc3.c                   |   5 +=0D
+ tests/qtest/rs5c372-test.c          |  43 ++=0D
+ hw/arm/Kconfig                      |  24 +=0D
+ hw/arm/meson.build                  |   2 +=0D
+ hw/gpio/Kconfig                     |   8 +=0D
+ hw/misc/Kconfig                     |  14 +-=0D
+ hw/misc/meson.build                 |   2 +=0D
+ hw/pci-host/Kconfig                 |   3 +=0D
+ hw/pci-host/meson.build             |   1 +=0D
+ hw/rtc/Kconfig                      |   5 +=0D
+ hw/rtc/meson.build                  |   1 +=0D
+ hw/rtc/trace-events                 |   4 +=0D
+ pc-bios/imx8mp-boot.rom             | Bin 0 -> 258048 bytes=0D
+ pc-bios/meson.build                 |   1 +=0D
+ tests/qtest/meson.build             |   1 +=0D
+ 33 files changed, 2143 insertions(+), 10 deletions(-)=0D
+ create mode 100644 docs/system/arm/imx8mp-evk.rst=0D
+ create mode 100644 include/hw/arm/fsl-imx8mp.h=0D
+ create mode 100644 include/hw/misc/imx8mp_analog.h=0D
+ create mode 100644 include/hw/misc/imx8mp_ccm.h=0D
+ create mode 100644 include/hw/pci-host/fsl_imx8m_phy.h=0D
+ create mode 100644 hw/arm/fsl-imx8mp.c=0D
+ create mode 100644 hw/arm/imx8mp-evk.c=0D
+ create mode 100644 hw/misc/imx8mp_analog.c=0D
+ create mode 100644 hw/misc/imx8mp_ccm.c=0D
+ create mode 100644 hw/pci-host/fsl_imx8m_phy.c=0D
+ create mode 100644 hw/rtc/rs5c372.c=0D
+ create mode 100644 tests/qtest/rs5c372-test.c=0D
+ create mode 100644 pc-bios/imx8mp-boot.rom=0D
+=0D
+-- =0D
+2.48.1=0D
+=0D
 
