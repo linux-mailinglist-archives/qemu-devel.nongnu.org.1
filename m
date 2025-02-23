@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B14CA40F54
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2A7A40F53
 	for <lists+qemu-devel@lfdr.de>; Sun, 23 Feb 2025 15:55:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmDNE-0007p6-JL; Sun, 23 Feb 2025 09:54:28 -0500
+	id 1tmDNJ-0007r1-Rv; Sun, 23 Feb 2025 09:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tmDN8-0007op-4G
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:22 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1tmDNA-0007p3-Go
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:25 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tmDN5-0007dp-Ub
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:21 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5e0505275b7so5765757a12.3
- for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 06:54:18 -0800 (PST)
+ id 1tmDN7-0007e3-5L
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:23 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5dec817f453so5934209a12.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 06:54:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740322458; x=1740927258; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740322459; x=1740927259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ARVfbAZthN6G0J8zifHQamYji2miOgYkQ6/AWMTqiyg=;
- b=br6+1qnOBzCVBaDpx7Y765uyYKQusDdKeM7HcdqUclRHN0tcyUvWNnAkor68TpYhFf
- qz2pev25/wBFVugJBG7Be2CWgrhN+bgtCh/IDjaZkKeIHWcqOiWZkffedM8IakYvaRL7
- dgFxyVsra3UvJ31mtbsd3XUu64fKmgj6BJ1bLaAJDybOXdpD7wJj7TWcFMnNJGAc3rcQ
- 74fs6jFLPQ0M3LNwx8aHXT7WUnMdjqSjhvJ5lhphC7lUMB2W6vK2c0fvAVfxJ5+OqLV9
- cTEKAiAFsrSuuN+Aloz5+8xa+w2GSnTF0r3HxD8MGkcPpR591++tvpn2z76lo9T9C7qA
- tDaw==
+ bh=zN68A3m1xFZRBA4Wy0sLe9nvVRbka+7jawUW1pKYdX0=;
+ b=MLZhqjw5ou7fc4Uh67QEIytHbBaBBjm82EaSm/R7xFMaEFNtD/hMlO0MSscYkVEE/5
+ 07+ICkMRGBoa25fhR9WLOwAwyVb+fUW41RFFZTtJdIfy0A1loxk1pSPKLhfq/1/wNccW
+ GQnxx6FTHI4bO6A8XVw2VdIr6wI4fxpnLodU5QYNMD1mw7NtH1F+xlTtvoW0yxBm1YFY
+ 79MjlSyulZgLUGPz5wkx+fg5yp2YoOYLu+uIKdqhyeHYrZnnCVSH52qGA/YOn52ZAS/5
+ C2BazySfx1yZEcuTMuQQOlIaCGdVQUSd7Ud5RzvFjAPwq3/k1e/MwrBbKcKPoBQl7hM2
+ aq8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740322458; x=1740927258;
+ d=1e100.net; s=20230601; t=1740322459; x=1740927259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ARVfbAZthN6G0J8zifHQamYji2miOgYkQ6/AWMTqiyg=;
- b=NJx5svq/rRQznWi7UOjCeVS8dNT06cJTRRbwSebqIN36i3RXdhG92cRX+W2TY9ubcS
- LEmCbkbNnx8PVQpkgMWuRGkly5vWCI/ox/wFhiRucEM5vZpIQyhPMjwsflshoFBsMrYa
- I9PkHDghPvH3BBbmN24p3u/neqY3DZPJoQq0YrkjlCdIdBnxNzqdmnZXSqqsr7TfmckN
- j9/nf+/iGD2uYorRdi7g8kByLCGW6jhiFWG6Z/c6hlCoa8Ri6Q/N6CR32HkH/o7VTRx1
- iJQBiywg3v7wsvLqBSgKPcSUf4vrelJTimH18wM4ahXLJfgl49U+zOU7fmivifYMplDr
- iwrQ==
+ bh=zN68A3m1xFZRBA4Wy0sLe9nvVRbka+7jawUW1pKYdX0=;
+ b=R8f9lFpAhRQKA4NeR3DARMdApw2Yj+Ti6EgUgMW0Tq+Qs3HJY9IGXICreBpaGVxz36
+ cFdhyoeCCIF/ReQbEOwm/ZzyuiXIlFv+37w2RgjIVanZp45vRiVSqLhuaacMBdJjFddk
+ bvUMoWQ+WsbPniTcOw7bImp8woex8w2ZZL/PVu865OHw7w2HXOGmuyhlbXZ9EkPF5ZS0
+ XnTMeQV3nWojRuhLnIB+OPwObdFIykmqTjBriDrN3f8IUDnXmQXsgixJBjLfvuIcdFUO
+ b2X8gOOmzUAT83giSB83kjP6GUtbI5XnkVZVkg7MRJuixBKDhNKNDpitzS3AAba1B2VB
+ 12Qg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWcPkvoZlCXuEAKNHG+VUghUhV/l6Q4xelo2/53ycQCrqob2CkEI21fFYDUUeCu/vQVrgpKPnpmsQFk@nongnu.org
-X-Gm-Message-State: AOJu0YwHmt9Zk+Mq/KLDEiKBqPMwFT+WDI5EH4ZykDzyjyupKWuyDeKr
- Emw5yIHMg/LyJSZRgV4+uaVfpA0KEEPZznGJxwjJXoi54mgk8Oy1
-X-Gm-Gg: ASbGncvvNKS3fJtW5JBhcQOkSUzg8nPI/ricUmBlsaD3X41foy9gmKRWALUphzQ6OLn
- al6Zdk2O/ZcYo8gvmmmFyFUvwgKJwES1sDoUccKSJQFCmcPlBZ4YeDk+Gevat7d6YsofRKTwuWZ
- 60pM0wL1C58HvgcoTO/PJ+048nbkLdxRwJk+LPvOAChMxb9DLeEp2w70QW5vOxwoWi9B1FxrVtm
- LleY1jjIRul4nirrkS+2R2XFDzTkkVTfsEUYaakPoffzmsNAdiGBFZNfEmcEUNh4KIYntTlqaCz
- 7+wdn9OoJ9b9e9QPFFqWukf46egrHo7E8uA=
-X-Google-Smtp-Source: AGHT+IG3/1eo4iZ5JvQuxJiYR09fv9TtWpx2o5hxwcEmV4biPf1OO52DN6N4r8Pe3lS3zrA0CuLkZA==
-X-Received: by 2002:a05:6402:430c:b0:5da:d76:7b2e with SMTP id
- 4fb4d7f45d1cf-5e0b6fec4b4mr9947178a12.0.1740322457749; 
- Sun, 23 Feb 2025 06:54:17 -0800 (PST)
+ AJvYcCVOnYgf0cIupF42xJnD9iv4fxUD6KS0OL+JmeemYZduMvOQYCATzqK26xG/Hzgh2CIvgfVYXaft3eH1@nongnu.org
+X-Gm-Message-State: AOJu0Yy4+OixXCD82DoZBuZ2BDg8GTgqs/3xRLz4Z257T12hfbpWISrP
+ yr2xjY3aOX5IFyPqnaKrCl9ZmOqpOC0og6RaXBemYJxTRn9SSBLzaV+B3A==
+X-Gm-Gg: ASbGncvw0jgz3p+jn2e6yYwvy8Q6pqWOV1o/DMM15sp5Igd3YFsFcMLHit6+FOshZnJ
+ qHRzJJGQtFQXjjNBotzPCduIpCSnNZSjIepCllsc1zztbF+s+gLa5sFLG4c5a2zlBMMcCRJueZm
+ YKnfmh2ebzL5AD9D8VTmVOT75hlHtGT+7I4PElcnmR7LqUs7tGpKwiJuJHSGmQ3J0AUThWhugin
+ NUqw4PU78VSTeEmAnFDJvkwl1/+AHHqhqvKAtT1bdC6CWzkP2FTomrqlZO483KelUn9rn/gY3w6
+ Lb6vIYSwv9g8ptjD/8c4HsfNiRyWSx+RoeM=
+X-Google-Smtp-Source: AGHT+IEhb3P5TISi4jM0t2IF26KxuQA8/p+hDBNHm+mOujRQg3Cvb0SFOO+wwuXJ4WvQ7csUffnCFw==
+X-Received: by 2002:a05:6402:3488:b0:5e0:51a9:d425 with SMTP id
+ 4fb4d7f45d1cf-5e0b724ecfcmr9455896a12.29.1740322459390; 
+ Sun, 23 Feb 2025 06:54:19 -0800 (PST)
 Received: from think.fritz.box ([2a02:8109:8384:1400:1283:abda:b08f:72e4])
  by smtp.gmail.com with ESMTPSA id
  4fb4d7f45d1cf-5e0a0310f66sm6431580a12.81.2025.02.23.06.54.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Feb 2025 06:54:17 -0800 (PST)
+ Sun, 23 Feb 2025 06:54:18 -0800 (PST)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH 3/5] ui/console-vc: report cursor position in the screen not
- in the scroll buffer
-Date: Sun, 23 Feb 2025 15:54:00 +0100
-Message-ID: <20250223145407.259924-4-r.peniaev@gmail.com>
+Subject: [PATCH 4/5] ui/console-vc: add support for cursor DECSC and DECRC
+ commands
+Date: Sun, 23 Feb 2025 15:54:01 +0100
+Message-ID: <20250223145407.259924-5-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250223145407.259924-1-r.peniaev@gmail.com>
 References: <20250223145407.259924-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,46 +102,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The format of the CSI cursor position report is `ESC[row;columnR`,
-where `row` is a row of a cursor in the screen, not in the scrollback
-buffer. What's the difference? Let's say the terminal screen has 24
-lines, no matter how long the scrollback buffer may be, the last line
-is the 24th.
+There are aliases for save and restore cursor commands:
 
-For example the following command can be executed in xterm on the last
-screen line:
+* save cursor
+    `ESC 7`     (DEC Save Cursor [1], older VT100)
+    `ESC [ s`   (CSI Save Cursor, standard ANSI)
 
-   $ echo -en '\e[6n'; IFS='[;' read -sdR _ row col; echo $row:$col
-   24:1
+* load cursor
+    `ESC 8`     (DEC Restore Cursor [2], older VT100)
+    `ESC [ u`   (CSI Restore Cursor, standard ANSI)
 
-It shows the cursor position on the current screen and not relative
-to the backscroll buffer.
+This change introduces older DEC sequencies for compatibility with
+some scripts (for example [3]) and tools.
 
-Before this change the row number was always increasing for the QEMU
-VC and represents the cursor position relative to the backscroll
-buffer.
+This change also adds saving and restoring of character attributes,
+which is according to the VT spec [1][2]
+
+[1] https://vt100.net/docs/vt510-rm/DECSC.html
+[2] https://vt100.net/docs/vt510-rm/DECRC.html
+[3] https://wiki.archlinux.org/title/Working_with_the_serial_console#Resizing_a_terminal
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- ui/console-vc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ ui/console-vc.c | 40 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 34 insertions(+), 6 deletions(-)
 
 diff --git a/ui/console-vc.c b/ui/console-vc.c
-index d512f57e10a9..87f57f1c52c6 100644
+index 87f57f1c52c6..522adc2806c8 100644
 --- a/ui/console-vc.c
 +++ b/ui/console-vc.c
-@@ -827,8 +827,7 @@ static void vc_putchar(VCChardev *vc, int ch)
-                 case 6:
-                     /* report cursor position */
-                     response = g_strdup_printf("\033[%d;%dR",
--                           (s->y_base + s->y) % s->total_height + 1,
--                            s->x + 1);
-+                                               s->y + 1, s->x + 1);
-                     vc_respond_str(vc, response);
-                     break;
+@@ -90,6 +90,7 @@ struct VCChardev {
+     int esc_params[MAX_ESC_PARAMS];
+     int nb_esc_params;
+     TextAttributes t_attrib; /* currently active text attributes */
++    TextAttributes t_attrib_saved;
+     int x_saved, y_saved;
+ };
+ typedef struct VCChardev VCChardev;
+@@ -644,6 +645,31 @@ static void vc_set_cursor(VCChardev *vc, int x, int y)
+     s->y = y;
+ }
+ 
++/**
++ * vc_save_cursor() - saves cursor position and character attributes.
++ */
++static void vc_save_cursor(VCChardev *vc)
++{
++    QemuTextConsole *s = vc->console;
++
++    vc->x_saved = s->x;
++    vc->y_saved = s->y;
++    vc->t_attrib_saved = vc->t_attrib;
++}
++
++/**
++ * vc_restore_cursor() - restores cursor position and character
++ * attributes from saved state.
++ */
++static void vc_restore_cursor(VCChardev *vc)
++{
++    QemuTextConsole *s = vc->console;
++
++    s->x = vc->x_saved;
++    s->y = vc->y_saved;
++    vc->t_attrib = vc->t_attrib_saved;
++}
++
+ static void vc_putchar(VCChardev *vc, int ch)
+ {
+     QemuTextConsole *s = vc->console;
+@@ -699,6 +725,12 @@ static void vc_putchar(VCChardev *vc, int ch)
+             vc->state = TTY_STATE_G0;
+         } else if (ch == ')') {
+             vc->state = TTY_STATE_G1;
++        } else if (ch == '7') {
++            vc_save_cursor(vc);
++            vc->state = TTY_STATE_NORM;
++        } else if (ch == '8') {
++            vc_restore_cursor(vc);
++            vc->state = TTY_STATE_NORM;
+         } else {
+             vc->state = TTY_STATE_NORM;
+         }
+@@ -833,14 +865,10 @@ static void vc_putchar(VCChardev *vc, int ch)
                  }
+                 break;
+             case 's':
+-                /* save cursor position */
+-                vc->x_saved = s->x;
+-                vc->y_saved = s->y;
++                vc_save_cursor(vc);
+                 break;
+             case 'u':
+-                /* restore cursor position */
+-                s->x = vc->x_saved;
+-                s->y = vc->y_saved;
++                vc_restore_cursor(vc);
+                 break;
+             default:
+                 trace_console_putchar_unhandled(ch);
 -- 
 2.43.0
 
