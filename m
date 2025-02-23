@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8E8A40F56
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Feb 2025 15:56:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B14CA40F54
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Feb 2025 15:55:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmDNI-0007pu-1r; Sun, 23 Feb 2025 09:54:32 -0500
+	id 1tmDNE-0007p6-JL; Sun, 23 Feb 2025 09:54:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tmDN6-0007oL-NP
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:21 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1tmDN8-0007op-4G
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:22 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tmDN4-0007dk-Og
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:20 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5deb1266031so6607479a12.2
+ id 1tmDN5-0007dp-Ub
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 09:54:21 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5e0505275b7so5765757a12.3
  for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 06:54:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740322457; x=1740927257; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740322458; x=1740927258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NRKO4/Lf3S1y2z89MfhWfqnGHofF5YlWQGE0xWq6QzI=;
- b=DuJPee2o7YXf9CYD9OztP//HkKS2Oy2t61bp7SMcBIfNVr/SNtjmoXbzSR9bzLBa5d
- k1R1q9R22opEp4ink9uNqjgLWtK0VUR+YfQhJE9RKQpLtsIqrlyN8j336ouCpVMJ5xLN
- eeWElNiYvhks7PLAmxnMeNCwSDGEa/hsyznxH+Flsof77/57iXWXH2REhQO0U2d3M3Iu
- 4KQDyVShBL5/amhmMv5CVjVxVsWmpFHlr/nb2Dir2FbvsZjoPeyXprABD1+/VOJn/dGW
- QBAk16fyeBDo+Fx6cvW3yRfHrxp9qHrJRk/PTvS7ErpDUGSh5lT7+wBxl6bKKR5JTI65
- xDCw==
+ bh=ARVfbAZthN6G0J8zifHQamYji2miOgYkQ6/AWMTqiyg=;
+ b=br6+1qnOBzCVBaDpx7Y765uyYKQusDdKeM7HcdqUclRHN0tcyUvWNnAkor68TpYhFf
+ qz2pev25/wBFVugJBG7Be2CWgrhN+bgtCh/IDjaZkKeIHWcqOiWZkffedM8IakYvaRL7
+ dgFxyVsra3UvJ31mtbsd3XUu64fKmgj6BJ1bLaAJDybOXdpD7wJj7TWcFMnNJGAc3rcQ
+ 74fs6jFLPQ0M3LNwx8aHXT7WUnMdjqSjhvJ5lhphC7lUMB2W6vK2c0fvAVfxJ5+OqLV9
+ cTEKAiAFsrSuuN+Aloz5+8xa+w2GSnTF0r3HxD8MGkcPpR591++tvpn2z76lo9T9C7qA
+ tDaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740322457; x=1740927257;
+ d=1e100.net; s=20230601; t=1740322458; x=1740927258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NRKO4/Lf3S1y2z89MfhWfqnGHofF5YlWQGE0xWq6QzI=;
- b=jpL+S6eQJb5jWpogiggthXUpcCnKAjK7xwUrCIuXMflzOt9ObyYZQW+C9jkdcq16hc
- 70ecoxqNvilD22hi4Z9R+iExvIIGenE3tw7fH3ws6e6U3YcX3RgvVL8MlTfmBdlXk+nL
- kR9emk4yM0PCwp+eJ8n6p/xvTWUO5FGJs8KjgU/je/Yni6vdth25kiyEf8CZZ1K8sHh+
- 5H4iBhQC8uzWRcvlVAdjPEAU8sNvbvOnvY6Ew+mSlnbwsMI/GuFi5ybtPPRhFE+ZRBvB
- axYMgjeMOE4bdjZBxnIPRD35jlhQjM3tC3E1nRMh26ZFyQYXx4hv1egF/ZVouL+PuRP5
- cUYQ==
+ bh=ARVfbAZthN6G0J8zifHQamYji2miOgYkQ6/AWMTqiyg=;
+ b=NJx5svq/rRQznWi7UOjCeVS8dNT06cJTRRbwSebqIN36i3RXdhG92cRX+W2TY9ubcS
+ LEmCbkbNnx8PVQpkgMWuRGkly5vWCI/ox/wFhiRucEM5vZpIQyhPMjwsflshoFBsMrYa
+ I9PkHDghPvH3BBbmN24p3u/neqY3DZPJoQq0YrkjlCdIdBnxNzqdmnZXSqqsr7TfmckN
+ j9/nf+/iGD2uYorRdi7g8kByLCGW6jhiFWG6Z/c6hlCoa8Ri6Q/N6CR32HkH/o7VTRx1
+ iJQBiywg3v7wsvLqBSgKPcSUf4vrelJTimH18wM4ahXLJfgl49U+zOU7fmivifYMplDr
+ iwrQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVIDlorI1sQp03WnZbmuuznDN20Yt/RjiCWswMhTAxU++WwYBM1GK+juIOR5l/gf0Kl0dEbC/ek5bSU@nongnu.org
-X-Gm-Message-State: AOJu0Yx74e+i7xzjI64jvWRfF9bR5hmKkB3eAGahRZo7DAum47CkGA2E
- 0PrrDCvXB9wOe0WcsOiAGufqmP0PtpV/nKaRN/QCY8U7iFGPoZUC
-X-Gm-Gg: ASbGncuXD3KzmTo40B/gIcIOsvBm6OqyqGmcVMr0mdPoQ5WwU4QD1CgmYFctHaZawsF
- 4XNjuj626zS12I057i4SydDo2YtkCtotwNcWM7DGz6KBWECgO10Ce37a7cUG7sTmWPKXPazFd5n
- mm+BhzXLwnMoBXuLqQDCezCJUHh1swRGcrjjOvOMGj8G1oWDPH61FHQVHq+nuIVMubupGhnXIBx
- wLk2nhJepFRLBQ5Dg5f+3e1Xre+JOgqe0q+aLsdlCBRVVIUUITtinitkwR216GljCxVdHQoefIR
- Qglt+DV11dbswrBTy7OSPZSNNQRJCrfWQLE=
-X-Google-Smtp-Source: AGHT+IFDp3HbjbeHo960coxX2B1bxb91Moua6uoF462sA9UDbwkYBn9xXTgpTnUkk662WlpQz6+mvg==
-X-Received: by 2002:a05:6402:540c:b0:5e0:7d9b:b15d with SMTP id
- 4fb4d7f45d1cf-5e0b70e9cc6mr8530759a12.9.1740322457107; 
+ AJvYcCWcPkvoZlCXuEAKNHG+VUghUhV/l6Q4xelo2/53ycQCrqob2CkEI21fFYDUUeCu/vQVrgpKPnpmsQFk@nongnu.org
+X-Gm-Message-State: AOJu0YwHmt9Zk+Mq/KLDEiKBqPMwFT+WDI5EH4ZykDzyjyupKWuyDeKr
+ Emw5yIHMg/LyJSZRgV4+uaVfpA0KEEPZznGJxwjJXoi54mgk8Oy1
+X-Gm-Gg: ASbGncvvNKS3fJtW5JBhcQOkSUzg8nPI/ricUmBlsaD3X41foy9gmKRWALUphzQ6OLn
+ al6Zdk2O/ZcYo8gvmmmFyFUvwgKJwES1sDoUccKSJQFCmcPlBZ4YeDk+Gevat7d6YsofRKTwuWZ
+ 60pM0wL1C58HvgcoTO/PJ+048nbkLdxRwJk+LPvOAChMxb9DLeEp2w70QW5vOxwoWi9B1FxrVtm
+ LleY1jjIRul4nirrkS+2R2XFDzTkkVTfsEUYaakPoffzmsNAdiGBFZNfEmcEUNh4KIYntTlqaCz
+ 7+wdn9OoJ9b9e9QPFFqWukf46egrHo7E8uA=
+X-Google-Smtp-Source: AGHT+IG3/1eo4iZ5JvQuxJiYR09fv9TtWpx2o5hxwcEmV4biPf1OO52DN6N4r8Pe3lS3zrA0CuLkZA==
+X-Received: by 2002:a05:6402:430c:b0:5da:d76:7b2e with SMTP id
+ 4fb4d7f45d1cf-5e0b6fec4b4mr9947178a12.0.1740322457749; 
  Sun, 23 Feb 2025 06:54:17 -0800 (PST)
 Received: from think.fritz.box ([2a02:8109:8384:1400:1283:abda:b08f:72e4])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e0a0310f66sm6431580a12.81.2025.02.23.06.54.15
+ 4fb4d7f45d1cf-5e0a0310f66sm6431580a12.81.2025.02.23.06.54.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Feb 2025 06:54:15 -0800 (PST)
+ Sun, 23 Feb 2025 06:54:17 -0800 (PST)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH 2/5] ui/console-vc: report to the application instead of
- screen rendering
-Date: Sun, 23 Feb 2025 15:53:59 +0100
-Message-ID: <20250223145407.259924-3-r.peniaev@gmail.com>
+Subject: [PATCH 3/5] ui/console-vc: report cursor position in the screen not
+ in the scroll buffer
+Date: Sun, 23 Feb 2025 15:54:00 +0100
+Message-ID: <20250223145407.259924-4-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250223145407.259924-1-r.peniaev@gmail.com>
 References: <20250223145407.259924-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,55 +102,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Terminal Device Status Report (DSR) [1] should be sent to an
-application, not rendered to the screen. This patch fixes rendering of
-terminal report, which appears only on the graphical screen of the
-terminal (console "vc") and can be reproduced by the following
-command:
+The format of the CSI cursor position report is `ESC[row;columnR`,
+where `row` is a row of a cursor in the screen, not in the scrollback
+buffer. What's the difference? Let's say the terminal screen has 24
+lines, no matter how long the scrollback buffer may be, the last line
+is the 24th.
 
-     echo -en '\e[6n'; IFS='[;' read -sdR _ row col; echo $row:$col
+For example the following command can be executed in xterm on the last
+screen line:
 
-Command requests cursor position and waits for terminal response, but
-instead, the response is rendered to the graphical screen and never
-sent to an application.
+   $ echo -en '\e[6n'; IFS='[;' read -sdR _ row col; echo $row:$col
+   24:1
 
-Why bother? Busybox shell (ash) in Alpine distribution requests cursor
-position on each shell prompt (once <ENTER> is pressed), which makes a
-prompt on a graphical screen corrupted with repeating Cursor Position
-Report (CPR) [2]:
+It shows the cursor position on the current screen and not relative
+to the backscroll buffer.
 
-   [root@alpine ~]# \033[57;1R]
-
-Which is very annoying and incorrect.
-
-[1] https://vt100.net/docs/vt100-ug/chapter3.html#DSR
-[2] https://vt100.net/docs/vt100-ug/chapter3.html#CPR
+Before this change the row number was always increasing for the QEMU
+VC and represents the cursor position relative to the backscroll
+buffer.
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- ui/console-vc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ ui/console-vc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/ui/console-vc.c b/ui/console-vc.c
-index 90ff0ffda8c5..d512f57e10a9 100644
+index d512f57e10a9..87f57f1c52c6 100644
 --- a/ui/console-vc.c
 +++ b/ui/console-vc.c
-@@ -617,10 +617,9 @@ static void vc_put_one(VCChardev *vc, int ch)
- 
- static void vc_respond_str(VCChardev *vc, const char *buf)
- {
--    while (*buf) {
--        vc_put_one(vc, *buf);
--        buf++;
--    }
-+    QemuTextConsole *s = vc->console;
-+
-+    qemu_chr_be_write(s->chr, (const uint8_t *)buf, strlen(buf));
- }
- 
- /* set cursor, checking bounds */
+@@ -827,8 +827,7 @@ static void vc_putchar(VCChardev *vc, int ch)
+                 case 6:
+                     /* report cursor position */
+                     response = g_strdup_printf("\033[%d;%dR",
+-                           (s->y_base + s->y) % s->total_height + 1,
+-                            s->x + 1);
++                                               s->y + 1, s->x + 1);
+                     vc_respond_str(vc, response);
+                     break;
+                 }
 -- 
 2.43.0
 
