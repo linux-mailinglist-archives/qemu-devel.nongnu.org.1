@@ -2,84 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EB5A41D7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 12:49:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2D2A41E9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 13:16:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmWwN-0002Ur-W9; Mon, 24 Feb 2025 06:48:04 -0500
+	id 1tmXMj-0001Si-9Q; Mon, 24 Feb 2025 07:15:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWwI-0002TC-8L
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:47:59 -0500
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWwB-0007dm-R6
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:47:57 -0500
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-6f768e9be1aso48614557b3.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 03:47:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740397670; x=1741002470; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=k7y1iGF6azviOXT41pICQfPUU2u7nAyQGwI9LVQFm+I=;
- b=NSaggR43/wu2CPqlbNLRS2pK+QgEuUG1pv2s+rX8+jwm1Fb1BB0ZfJkIm/JmaRxKwI
- aCkEt3mBIAULZmfo/CAFzDX4u5a/zmpMbFuolgd1GhAKgKXTkoo3Qr7hQ3w8F5sAjwfe
- myewHc1SQaVho3Uul63xOejP/ctqfBiGYHLWX1zBlnEaToT+b4YJoCr/8avsqpPX8eRf
- BzwYinkGsphLXFVaoDj58yjUvJy04/5H9HBJVOUBtvRq/tnt3l9vs9cdshIDGfE3NJVT
- vSMnzQtJiHnekLqulW4JJlyocK4/fSV9k7wtS6sNJHsxyE89e5YY0+Jb5TQs9Raj2THJ
- sANQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740397670; x=1741002470;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=k7y1iGF6azviOXT41pICQfPUU2u7nAyQGwI9LVQFm+I=;
- b=eg3QgkhRtGMiet8GmxgbsAhApLQEEGNBlWuWyLEGY7qMxG1zLCmN2IRpaQ1igbXigX
- 6SXijqFocHYd6JxVqZI+nAgIfaY7sUyKRe1pnQbQ7k25KUQ2gRNPXbMf8CuEIMbSlykC
- BS7j38EUQ+oElefGaY3qaxvfoxdA3qVbcNPklo/T5KubT7Z25+tLBgGfrN3FooL+i02M
- P0c7sLyuCrxTU1F8P3QCksLAn+RF2sdafR1j/39x/+SB1vmbZiYp2QVpxFDA/yBneHdV
- YY6xzoySRQbVAUJyoyAqw3IlDmyhyt6+I2FEkt665CQk8SacXnFTAwQqmvdqsiCGJetS
- rycQ==
-X-Gm-Message-State: AOJu0Yx/1BNGXRmSNZTWTyTcJ5rbH0jcuJKTC6Dh5id3M/JhuBHLKbIV
- I8tcZ99xZwINZC0D30vPAA/PVCLnVhYTLTf1P6Ip1FwjxLeBAjTnfjZWj/42KPDcKE7mh8GVCY/
- RiLmz17salIuOyt2xWhdlsmzLGOujBZvWAcginA==
-X-Gm-Gg: ASbGncv5tNDmMq/4qt1mX5B27pxWcO5X7H5Dst3iYoSj11+AXA1AITbHDWOxEfXHiBC
- i/GhqMb4zjRc3YFosYhBCOiYzKQSfaU3r7XZ870+JLZ/44/LsD+O5T506bQL/iF9fof3e0YuKv/
- vrlZkXUSkw
-X-Google-Smtp-Source: AGHT+IFIlcyVXRCKzrivIa1Cd4jMAhbev9+tO/sn1wv9emX5aROQ2+jZewxrR38IExrj9L2hGKXFNW95ahrvqRcwv9s=
-X-Received: by 2002:a05:690c:7446:b0:6f9:5a36:577d with SMTP id
- 00721157ae682-6fbb791557cmr142012087b3.9.1740397670282; Mon, 24 Feb 2025
- 03:47:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tmXMh-0001SY-M9
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 07:15:15 -0500
+Received: from mailout1.samsung.com ([203.254.224.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <arpit1.kumar@samsung.com>)
+ id 1tmXMe-00053I-0x
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 07:15:15 -0500
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20250224120920epoutp01edae685884232317160e3f97f4749a60~nI6IWKeCP2995329953epoutp019
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 12:09:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20250224120920epoutp01edae685884232317160e3f97f4749a60~nI6IWKeCP2995329953epoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1740398960;
+ bh=1NUcUQzLB4jSDqrWTmTrd9HIrmpyHzp0hL88WCVOg3U=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=T+1xLOJFTrcXtnp7Wfp7dFc3Aiti03Q/ob2sfO4G7Gb8dZxITsFmAJYMROky/HbBt
+ NFQltDMiW4dWt80cRZ1G0+DrSW8+RHt29Qp9oq2PXujTdLe9pSjRBiPK182FMJ3c0I
+ 8Oe0n58Ox3Hyome8hksA/8Ro7XCCMNWgulEKafc0=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+ epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+ 20250224120919epcas5p1a9f2363b6727dae763f0827d0982ca52~nI6H5gw-R0499204992epcas5p1c;
+ Mon, 24 Feb 2025 12:09:19 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.180]) by
+ epsnrtp4.localdomain (Postfix) with ESMTP id 4Z1ffj5LMWz4x9Px; Mon, 24 Feb
+ 2025 12:09:17 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+ epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ BF.E2.19710.D616CB76; Mon, 24 Feb 2025 21:09:17 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250224115417epcas5p17e6d29167d3398ae896fab2ea6470e16~nIs-jxtf00884308843epcas5p16;
+ Mon, 24 Feb 2025 11:54:17 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20250224115417epsmtrp24c206b77d9789587af7f9a426e2b7bc5~nIs-i-GjU2202222022epsmtrp26;
+ Mon, 24 Feb 2025 11:54:17 +0000 (GMT)
+X-AuditID: b6c32a44-36bdd70000004cfe-c4-67bc616d0bdf
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 99.66.23488.9ED5CB76; Mon, 24 Feb 2025 20:54:17 +0900 (KST)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+ epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250224115415epsmtip1afebfc676ab6f5c6064d406add1d8568~nIs_FcorM2341623416epsmtip13;
+ Mon, 24 Feb 2025 11:54:15 +0000 (GMT)
+Date: Mon, 24 Feb 2025 17:24:01 +0530
+From: Arpit Kumar <arpit1.kumar@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, gost.dev@samsung.com, linux-cxl@vger.kernel.org,
+ nifan.cxl@gmail.com, dave@stgolabs.net, vishak.g@samsung.com,
+ krish.reddy@samsung.com, a.manzanares@samsung.com, alok.rathore@samsung.com
+Subject: Re: [PATCH v2 0/3] CXL CCI Log Commands implementation
+Message-ID: <20250224115401.scb6hmf55pb4e3uy@test-PowerEdge-R740xd>
 MIME-Version: 1.0
-References: <20250220161313.127376-1-dbarboza@ventanamicro.com>
- <20250220161313.127376-2-dbarboza@ventanamicro.com>
- <CAFEAcA8u8C2HTRjOBReSQ7oN7L248034VrfTHYgHCxBPy0gwDg@mail.gmail.com>
- <b04d1e5a-36f6-4c54-8bc7-134c79f0addb@ventanamicro.com>
-In-Reply-To: <b04d1e5a-36f6-4c54-8bc7-134c79f0addb@ventanamicro.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Feb 2025 11:47:39 +0000
-X-Gm-Features: AWEUYZn_z21FHxD7XRGf-IeGYRmZU7nGYZt0SFaRypvHX8uQxjrDbOhtPq8zCOI
-Message-ID: <CAFEAcA-kBsw6fZAqWkFMhH7+42BE+z5YNz7kAWtBQwf3ZqQVfA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] target/riscv/cpu: ignore TCG init for KVM CPUs in
- reset_hold
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <20250220160850.00003016@huawei.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEJsWRmVeSWpSXmKPExsWy7bCmlm5u4p50g3tr1CymH1a0+HJ6D5vF
+ 6ptrGC1uHtjJZLFq4TU2i4UblzFZnJ91isXi77a9jBbHe3ewALlz2B24PHbOusvu0XLkLavH
+ k2ubmTz6tqxi9Jg6u97j8ya5ALaobJuM1MSU1CKF1Lzk/JTMvHRbJe/geOd4UzMDQ11DSwtz
+ JYW8xNxUWyUXnwBdt8wcoMOUFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnFJbZKqQUpOQUmBXrF
+ ibnFpXnpenmpJVaGBgZGpkCFCdkZ705+ZirYIFyx69MzlgbG7/xdjJwcEgImEvduz2fuYuTi
+ EBLYzSjx+tYzKOcTo8SBm1+ZQKqEBL4xShzayQvTsW7KbHaIor2MEjdnNzLCdVyfP4cRpIpF
+ QFVidvcVMJtNQEfi/O25bCC2iICRxLsbk8AamAVuMko0TnoGlhAWsJdY8ekRmM0r4Czx4uAz
+ VghbUOLkzCcsIDangKHEu0enWUCaJQR6OSS+vfnGDHGTi8SfhXeZIGxhiVfHt7BD2FISn9/t
+ ZYOwsyX+zG+HsgskFv2cCVVjL9F6qh9sDrNAhsT7T2tZIOKyElNPrWOCiPNJ9P5+AjWfV2LH
+ PBhbTaJ9x3yoOTISb34thprvITHlyQl2SNjtZJT426E7gVFuFpJ/ZiFZB2FbSXR+aGKdxcgB
+ ZEtLLP/HAWFqSqzfpb+AkXUVo2RqQXFuemqyaYFhXmo5PJaT83M3MYITq5bLDsYb8//pHWJk
+ 4mA8xCjBwawkwqtbsiNdiDclsbIqtSg/vqg0J7X4EKMpMIImMkuJJucDU3teSbyhiaWBiZmZ
+ mYmlsZmhkjhv886WdCGB9MSS1OzU1ILUIpg+Jg5OqQam6/5aygyLncOqtDYp2YRUPf0m71q8
+ teDs2YmndP7fe/PN1c+K9eaaaW/1+pWbOlXuL547MyQ+9vuLT9tOc3NxKKSmRAfqpU3I09hu
+ /eP6uxUFDVuUnayfn+f93zujaPWDx696bDI6D5W5b7uy0f7Yh7mnTm+RveUZXFVa8I272urM
+ pgqtQ93cZ91VjHYYbCyfZBB8IPHF3/kr/ubP6piw70HcRfEOB5UbLfYv9S7u4VmxPkF408Le
+ DXqidTsPFjXPMgwrf61579LEiokiWv0FYW+8Lu65Jnjkp2rU6p077m/02W7Wv0WZcXHi9tXz
+ Ys1t4/NrfznWRZstfLlUVMdp85FHeSsWRXhJb+m6fjunUImlOCPRUIu5qDgRAEkHwsQ1BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrKLMWRmVeSWpSXmKPExsWy7bCSnO7L2D3pBqfec1pMP6xo8eX0HjaL
+ 1TfXMFrcPLCTyWLVwmtsFgs3LmOyOD/rFIvF3217GS2O9+5gAXLnsDtweeycdZfdo+XIW1aP
+ J9c2M3n0bVnF6DF1dr3H501yAWxRXDYpqTmZZalF+nYJXBn9u7ewFDwSqGib3c7cwHiYt4uR
+ k0NCwERi3ZTZ7F2MXBxCArsZJXYt7maHSMhIXJz5mAXCFpZY+e85VNEHRomVl4+ygSRYBFQl
+ ZndfYQSx2QR0JM7fngsWFxEwknh3YxIjSAOzwG1Gid+774FNEhawl1jx6RFYEa+As8SLg89Y
+ IabuZJToft3OCpEQlDg58wlYA7OAmcS8zQ+Zuxg5gGxpieX/OEDCnAKGEu8enWaZwCgwC0nH
+ LCQdsxA6FjAyr2KUTC0ozk3PTTYsMMxLLdcrTswtLs1L10vOz93ECI4JLY0djO++NekfYmTi
+ YDzEKMHBrCTCq1uyI12INyWxsiq1KD++qDQntfgQozQHi5I470rDiHQhgfTEktTs1NSC1CKY
+ LBMHp1QDU5L51len5+78pzV17qbdxktbXslNnVK94cQr34UitjPmC7/flbq0+e8LEx928yzO
+ QAvOY3ci/LM59mQ6rzKv/aRQ7bJ4tkvC2nXSzxu/lK9zP/TilO4lh6sBl91XSM+XWjxL8H6h
+ wPdpYdYr/tlUaCd8Neu37nhp6fypu0dccMIfsZURxROl7nAuZPnZMeXKYqYTRw5x3zkep85m
+ r7RVVfIs8xrxX1am9znOdod7XtwvPfHVkWML77P2fHicsMTPu6ffPqum9Ov2I9GPbrrtrjGd
+ U/NvteG9Lbu2JM5alLMhcLvA1c//T8goVv6S1G7ZuSZiyQGLRXZLpQ0Yyv3rt0oYPX06Sbhd
+ sKLQ+DNDvpMSS3FGoqEWc1FxIgD4bHyU+AIAAA==
+X-CMS-MailID: 20250224115417epcas5p17e6d29167d3398ae896fab2ea6470e16
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+ boundary="----MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_7e4f3_"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710
+References: <CGME20250218085809epcas5p3ee3d79ffec77b13bb097c6d15bb24710@epcas5p3.samsung.com>
+ <20250218085731.550029-1-arpit1.kumar@samsung.com>
+ <20250220160850.00003016@huawei.com>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=arpit1.kumar@samsung.com; helo=mailout1.samsung.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,126 +136,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 24 Feb 2025 at 11:29, Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_7e4f3_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
+
+On 20/02/25 04:08PM, Jonathan Cameron wrote:
+>On Tue, 18 Feb 2025 14:27:28 +0530
+>Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 >
+>> CXL CCI log commands implmented as per CXL Specification 3.2 8.2.10.5
+>> 1) get_log_capabilities (Opcode 0402h)
+>> 2) clear_log (Opcode 0403h)
+>> 3) populate_log (Opcode 0404h)
+>>
+>> This v2 patch addresses the feedback from the v1 patch and include some new changes.
 >
+>I'll apply these to my staging tree, but it is a little odd
+>to have the last two commands without any logs that they actually apply to.
 >
-> On 2/24/25 6:59 AM, Peter Maydell wrote:
-> > On Thu, 20 Feb 2025 at 16:14, Daniel Henrique Barboza
-> > <dbarboza@ventanamicro.com> wrote:
-> >>
-> >> riscv_cpu_reset_hold() does a lot of TCG-related initializations that
-> >> aren't relevant for KVM, but nevertheless are impacting the reset state
-> >> of KVM vcpus.
-> >>
-> >> When running a KVM guest, kvm_riscv_reset_vcpu() is called at the end of
-> >> reset_hold(). At that point env->mstatus is initialized to a non-zero
-> >> value, and it will be use to write 'sstatus' in the vcpu
-> >> (kvm_arch_put_registers() then kvm_riscv_put_regs_csr()).
-> >>
-> >> Do an early exit in riscv_cpu_reset_hold() if we're running KVM. All the
-> >> KVM reset procedure will be centered in kvm_riscv_reset_vcpu().
-> >>
-> >> While we're at it, remove the kvm_enabled() check in
-> >> kvm_riscv_reset_vcpu() since it's already being gated in
-> >> riscv_cpu_reset_hold().
-
-> > This looks super odd, from an "I don't know anything about
-> > riscv specifics" position. Generally the idea is:
-> >   * reset in QEMU should reset the CPU state
-> >   * what a reset CPU looks like doesn't differ between
-> >     accelerators
-> >   * when we start the KVM CPU, we copy the state from QEMU
-> >     to the kernel, and then the kernel's idea of the reset state
-> >     matches
-> >
-> > This patch looks like it's entirely skipping basically
-> > all of the QEMU CPU state reset code specifically for KVM.
+>Maybe we should make up a component state dump?
+>I think that currently the populate only really applies to that
+>one (or the vendor defined one).
 >
-> Not sure I understood what you said here.
+>We can also look at wiring up the ECS logs and some suitable error
+>injection as clear log would apply to those.  I like the idea
+>of having media test longer term as well as the use cases for that in
+>kernel are interesting to explore.
 >
-> Without this patch, riscv_cpu_reset_hold() is doing initializations that are TCG
-> based, both for user mode and system mode, and in the end is calling the kvm
-> specific reset function if we're running KVM. This patch is simply skipping
-> all the TCG related reset procedures if we're running KVM. So the patch isn't
-> skipping the KVM specific QEMU CPU reset code, it is skipping the TCG specific
-> reset code if we're running KVM.
+>Jonathan
 
-What I'm saying is that you shouldn't have "TCG reset" and
-"KVM reset" that are totally different code paths, but that the
-reset function should be doing "reset the CPU", and then the
-KVM codepath makes specific decisions about "for KVM these
-particular things should be the kernel's reset settings" and
-then passes that state over to the kernel.
-
-> Granted, after applying patches 2 and 3 we could discard this patch because
-> now we're resetting all that KVM needs in kvm_reset_vcpu(), but why go
-> through the reset steps for TCG if we're going to overwrite them later during
-> kvm_reset_vcpu()?
-
-The idea is that you only overwrite specific state where
-you've decided "actually the kernel is the authoritative
-source for what the reset state for these registers is".
-
-> > So now you'll have two different pieces of code controlling
-> > reset for different accelerators, and the resulting CPU
-> > state won't be consistent between them...
+Thanks for the suggestion Jonathan. I will go in depth of stated log 
+commands and will plan the same.
+>>
+>> Changes in from v1 to v2:
+>> - Added descriptive text for each patches
+>> - Added reference from CXL spec 3.2
+>> - Updated naming for better comprehension
+>> - Modified find_log_index() to return supported log
+>> - Handled array of log capabilities as static const pointers
+>> - Replaced bit fields for param_flags with defines for individual bits
+>> - Disabled support of clear & populate log command for command effect log
+>>
+>> The patches are generated against the Johnathan's tree
+>> https://gitlab.com/jic23/qemu.git and branch cxl-2024-11-27.
+>>
+>> Arpit Kumar (3):
+>>   hw/cxl/cxl-mailbox-utils.c: Added support for Get Log Capabilities
+>>     (Opcode 0402h)
+>>   hw/cxl/cxl-mailbox-utils.c: Added support for Clear Log (Opcode 0403h)
+>>   hw/cxl/cxl-mailbox-utils.c: Added support for Populate Log (Opcode
+>>     0404h)
+>>
+>>  hw/cxl/cxl-mailbox-utils.c   | 100 +++++++++++++++++++++++++++++++++++
+>>  include/hw/cxl/cxl_device.h  |  20 +++++++
+>>  include/hw/cxl/cxl_mailbox.h |   5 ++
+>>  3 files changed, 125 insertions(+)
+>>
 >
-> That is already the case even without this patch, doesn't it? If we have to call
-> a specific kvm reset function during cpu reset_hold then we're already in a point
-> where the reset procedure is differing between accelerators. I won't say that
-> this is a good design but I don't see it as a problem.
 
-> For instance, going to a code you're probably more familiar with, target/arm/cpu.c,
-> arm_cpu_reset_hold(), is doing something similar to what riscv_cpu_reset_hold() is
-> doing without this patch: a lot of TCG setups are made, then kvm_arm_reset_vcpu() is
-> called in the end if kvm_enabled(). kvm_arm_reset_vcpu() then overwrites at least some
-> of the TCG specific setup that was done before:
->
->      /* Re-init VCPU so that all registers are set to
->       * their respective reset values.
->       */
->      ret = kvm_arm_vcpu_init(cpu);
->
-> kvm_arm_vcpu_init() is doing a KVM_ARM_VCPU_INIT ioctl that will populate the CPU object
-> with the kernel specific feature bitmask and so on. Note that this is not copying the TCG
-> setup into the kernel, it is in fact doing the opposite.
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_7e4f3_
+Content-Type: text/plain; charset="utf-8"
 
-The way this code path in Arm works is:
- * we reset all the QEMU-side CPU state struct in arm_cpu_reset_hold()
- * kvm_arm_reset_vcpu() calls kvm_arm_vcpu_init() which inits
-   the KVM side vcpu
- * kvm_arm_reset_vcpu() calls the sequence write_kvmstate_to_list()
-   followed by write_list_to_cpustate() which does "for the system
-   registers specifically, read the values (and which registers we
-   have) from KVM, and write them to the QEMU CPU state struct".
-   We do this because on Arm we've said that the system registers
-   in particular have the kernel as their authoritative source.
-   (IIRC x86 makes QEMU the authority for its similar registers,
-   so it has to do even less in its kvm_arch_reset_vcpu().)
- * the generic CPU core code will call kvm_arch_put_registers()
-   before starting the vCPU, which copies whatever is in the QEMU-side
-   CPU state struct into KVM
 
-The upshot is that QEMU is the authority and arm_cpu_reset_hold()
-defines the reset value for all CPU state by default. (For instance,
-reset values for general purpose registers are set there.) But for
-specific parts of the state where we want KVM to be the authority,
-kvm_arm_reset_vcpu() gets to override that by filling in the CPU
-state struct by asking the kernel what its values are.
-
-> Note that my intention here isn't to make a case that the ARM KVM cpu doesn't need anything
-> that is being done in arm_cpu_reset_hold(). My point here is that KVM and TCG CPUs will have
-> different reset setups for some archs. For RISC-V I can say that KVM CPU does not rely on
-> anything that the TCG reset code is doing, hence why I sent this patch to make it official.
-
-What I'm trying to suggest here is that we don't want different
-architectures to end up doing things differently. There are
-multiple different design patterns that will work, but it will
-be easier to work on QEMU if we can standardise on doing it
-the same way across architectures.
-
-thanks
--- PMM
+------MTAFpDJBIS7x0DorxmyomC-IKR7RHdtq514vGN5lDcSFRf5o=_7e4f3_--
 
