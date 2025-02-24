@@ -2,96 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAC4A428F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:09:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4252A4291C
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:16:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmbwB-0003rZ-Nn; Mon, 24 Feb 2025 12:08:11 -0500
+	id 1tmc2f-0006tF-P3; Mon, 24 Feb 2025 12:14:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1tmbw4-0003qL-Ei
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:08:04 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1tmbw0-0004Jb-D8
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:08:01 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OEMAEZ025070;
- Mon, 24 Feb 2025 17:07:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=f7zR3D
- 7/VuKgHB2BVwIOzC2Zs2JePbvTTiUPhahkZqQ=; b=DKbiUY1hQAMNfW1XTk46k9
- IFIp1WbNxgupx/NQUv78YRJb4Z882JmWQi2dnUe/jfDvdVksqWGd4NQRQEZFORP9
- umdkWBuEbQdVeo9FsCJvq2SeJM81p8RrG54rlRDPakFzOzQTZabD+qU48Mz8U2xj
- ewZno3A3Ilm4Op8XY80ktV9WtorbghDgBVIuPp8XktgRlDGIG0AmLwzTpBAROlcq
- UZ3RKozxwyozG1H4P0Qq1npRM0J8P8PQK9TV+MNJVGSfcTn7feNWPKr+GIkIuodI
- G0b6QGfRuA4L3jhfYJHrbR1J6h9sbZGoxLBAfcEcd1eVfqX63cSDiYSMQXMAsiGQ
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450eu9uxhm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Feb 2025 17:07:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OF1LT8012470;
- Mon, 24 Feb 2025 17:07:58 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yrwsgga7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Feb 2025 17:07:58 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51OH7vnl59244860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2025 17:07:57 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DF9F58057;
- Mon, 24 Feb 2025 17:07:57 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C84AF58058;
- Mon, 24 Feb 2025 17:07:56 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.172.201]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 24 Feb 2025 17:07:56 +0000 (GMT)
-Message-ID: <e8f51190d833d6a283b4602bd20b42483983d9b1.camel@linux.ibm.com>
-Subject: Re: [PATCH] vfio/ccw: Replace warn_once_pfch() with warn_report_once()
-From: Eric Farman <farman@linux.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Matthew Rosato
- <mjrosato@linux.ibm.com>
-Date: Mon, 24 Feb 2025 12:07:56 -0500
-In-Reply-To: <20250214161936.1720039-1-clg@redhat.com>
-References: <20250214161936.1720039-1-clg@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmc2d-0006ss-Qg
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:14:51 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmc2b-0005XE-PD
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:14:51 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-220bff984a0so99008425ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:14:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740417288; x=1741022088; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dx37ot/VelrdYJ0OavN6CSRIKXW1vB1HPsDSEvZ03mk=;
+ b=NacsUI6Z1/xkb2i5y25dSJ3vxgku4Zk9VhQU7jHdBhp2U3PeCnbvMro36nSSls5280
+ QELvatbqrQTjHVcR3Dbd5P6igMHmYSQt5PeRZ6sL/5TEK7v9Sj7wSrbxgPf0E2i4Qp0C
+ Ptv5G3d00zy7E5VUtzzzy7XxizV+9WwiiZkWeyWSuS0uA+pUvhs5kDkMBDmtmrby62pM
+ KGSuWmxR0dmFRx7jyo3gouejapR3tVbAi+6OaqJoHgokA0Cs2yEsQYZtPoCiQASAaM28
+ oYiHeKskqXpgf0hnew9nVZ9oLr0nZrhI4bJS7bK4ZsRgtFTwiK5gBLzeXBlCyaziFulL
+ X5Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740417288; x=1741022088;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dx37ot/VelrdYJ0OavN6CSRIKXW1vB1HPsDSEvZ03mk=;
+ b=o2ZnZ0KEwcxi+uc0GHxKeUyjMLQmhxsVVi4Pk4fMyjMxtE+YKiIjBXE0lNpJqSNosz
+ MsnUdnO/Rgm719CQBKA3VJQ///SLTl3Hr7g+j/c+8CfhDxAM9A6QOk4p5wwDI5swymB8
+ lyDmvGes/boejamFXiTjdPIjXkUNyCjJDyDH2mwAzhv7gPgktmRb7aEsLjVLS1+LgClJ
+ +lClUFWAExzqT9jc0+j1FQbcEGjsSpjAsvdkW1/c+Yp1xFpMIFaPEjKpan0Gj8axj+pI
+ fkIc9ulXn68LKYMBFAghFQ1NQF3zvjcwDy3rSCDb4CXOHmfc7F8qgV8wVhiWrIxl8QbX
+ LwGA==
+X-Gm-Message-State: AOJu0YxpLko4J64DB32sXVxXzLDVeAq/n14/2pjjDnOHtKLIXSLCxi5e
+ gRYj92i/ukNtAtNOtIcqonTTojM0VOHniEFJATxMtzrIcUqho8+BdGYL2MtrYt2+SsJRjv2LZ7y
+ e
+X-Gm-Gg: ASbGncuw9lUlVQu4ATBxRrRHRBB4N6PX2HRRXA1DE5YkF1ld0AOChB3jg/6zS99vSXO
+ tiSn5TTTxE3OHF+gY78gDDedUnwHDhFxb3zpwsxePWnD4SKFHETtDHoYT8BhoqEYE/JKKd4OvyH
+ bDuSSD2jvblHYsIB7Zaovp8WFvQsS1zs8ErG0rg+LJ5s9tHEfwMKXtVO1DN9D2xPv+u25adqMBk
+ P2wXwRLTuHKAMO9juZnjNEvHFjl1uKz+Cbu3GAUHBzhiHm4jDdzeBCgDyiF8jKm2GXiSQQGc16j
+ fzMSS+3LVuA1g4Y/AW+/yEz7f3byB/4/yBQ=
+X-Google-Smtp-Source: AGHT+IFW3SDO+PAQw7ED9m3jEmNiZmGHt3rc2RKJe7ZKSZ7m+4XC1ri6/u+CYkR8yCHg0LmoheP5Pw==
+X-Received: by 2002:a62:e40a:0:b0:732:5954:a815 with SMTP id
+ d2e1a72fcca58-73426d8d80emr17445254b3a.22.1740417287983; 
+ Mon, 24 Feb 2025 09:14:47 -0800 (PST)
+Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.14.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Feb 2025 09:14:47 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu
+Subject: [PATCH v4 00/24] target/m68k: fpu improvements
+Date: Mon, 24 Feb 2025 09:14:20 -0800
+Message-ID: <20250224171444.440135-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9HLj_HSX_O3Cb4Dt_yd4c_EjU9Y3u8_N
-X-Proofpoint-ORIG-GUID: 9HLj_HSX_O3Cb4Dt_yd4c_EjU9Y3u8_N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_08,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- suspectscore=0 bulkscore=0 clxscore=1015 phishscore=0 spamscore=0
- malwarescore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=579
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502240116
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,15 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2025-02-14 at 17:19 +0100, C=C3=A9dric Le Goater wrote:
-> Use the common helper warn_report_once() instead of implementing its
-> own.
->=20
-> Cc: Eric Farman <farman@linux.ibm.com>
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> ---
->  hw/vfio/ccw.c | 12 ++----------
->  1 file changed, 2 insertions(+), 10 deletions(-)
+v3: https://lore.kernel.org/qemu-devel/20240909172823.649837-1-richard.henderson@linaro.org/
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Changes for v4:
+  - Rebase from September.  :-/
+  - Reorg update_fpsr(); do not expose as a separate helper.
+    Fixes raising of exceptions from FCMP (e.g. invalid).
+  - Fix a few comment typos.
+
+
+r~
+
+
+Richard Henderson (24):
+  target/m68k: Add FPSR exception bit defines
+  target/m68k: Restore fp rounding mode on vm load
+  target/m68k: Keep FPSR up-to-date
+  target/m68k: Update FPSR.EXC
+  target/m68k: Update FPSR for FMOVECR
+  target/m68k: Introduce M68K_FEATURE_FPU_PACKED_DECIMAL
+  target/m68k: Merge gen_ea into SRC_EA and DEST_EA
+  target/m68k: Use g_assert_not_reached in gen_lea_mode and gen_ea_mode
+  target/m68k: Use OS_UNSIZED in LEA, PEA, JMP
+  target/m68k: Move pre-dec/post-inc to gen_lea_mode
+  target/m68k: Split gen_ea_mode for load/store
+  target/m68k: Remove env argument to gen_lea_indexed
+  target/m68k: Remove env argument to gen_lea_mode
+  target/m68k: Remove env argument to gen_load_mode
+  target/m68k: Remove env argument to gen_store_mode
+  target/m68k: Remove env argument to gen_ea_mode_fp
+  target/m68k: Split gen_ea_mode_fp for load/store
+  target/m68k: Move gen_addr_fault into gen_{load,store}_mode_fp
+  target/m68k: Merge gen_load_fp, gen_load_mode_fp
+  target/m68k: Merge gen_store_fp, gen_store_mode_fp
+  target/m68k: Implement packed decimal real loads and stores
+  tests/tcg/m68k: Add packed decimal tests
+  target/m68k: Make vmstate variables static
+  target/m68k: Implement FPIAR
+
+ target/m68k/cpu.h                |   27 +-
+ target/m68k/helper.h             |    5 +-
+ target/m68k/cpu.c                |   38 +-
+ target/m68k/fpu_helper.c         |  330 +-
+ target/m68k/gen-floatx80-pow10.c |   33 +
+ target/m68k/helper.c             |   18 +-
+ target/m68k/translate.c          |  789 +++--
+ tests/tcg/m68k/packeddecimal-1.c |   41 +
+ tests/tcg/m68k/packeddecimal-2.c |   46 +
+ target/m68k/floatx80-pow10.c.inc | 4935 ++++++++++++++++++++++++++++++
+ tests/tcg/m68k/Makefile.target   |    4 +-
+ 11 files changed, 5746 insertions(+), 520 deletions(-)
+ create mode 100644 target/m68k/gen-floatx80-pow10.c
+ create mode 100644 tests/tcg/m68k/packeddecimal-1.c
+ create mode 100644 tests/tcg/m68k/packeddecimal-2.c
+ create mode 100644 target/m68k/floatx80-pow10.c.inc
+
+-- 
+2.43.0
+
 
