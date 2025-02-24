@@ -2,70 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568AFA4245E
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C26BA426CE
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 16:48:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmZrw-0004sF-Lp; Mon, 24 Feb 2025 09:55:40 -0500
+	id 1tmagM-0004NY-4v; Mon, 24 Feb 2025 10:47:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmZrg-0004ra-HG; Mon, 24 Feb 2025 09:55:24 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <shalini@imap.linux.ibm.com>)
+ id 1tmZDO-0007Id-A5; Mon, 24 Feb 2025 09:13:46 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmZre-0000xY-Cj; Mon, 24 Feb 2025 09:55:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740408922; x=1771944922;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=R1TuVWvo1RQjKE5AVxQjox+V72uDHcoDwboFvQuuqGw=;
- b=BfoLTfJ1C4brQlm1Sj3Pzt8s5oLikrxlGmkKbgN1mqQsFScKtIxVBPaq
- x2RI9JvZoApi/iCUC7GeZP3s8VcizGL1KADtiFhkLz9EwK4AiEwI9NXBq
- SvrYxIgjKzEh5tAjUjpSxF9NPr5SzgikcljSmYgpKZJYgeAlr38We4tpH
- tkLJ7hETwHx5R1N9fNg5sszlvj/IygKh25hT+6HCPfsnOr2IAlycJ4/uq
- pjleZLrf0Zvt3JlHac9APREPkUfngw1XvolNmc/uqTzu2W267IvZ9+V5N
- rgpPTnDVZuH+50SaMUxoI6XMYAJQMgjWiEjpjHhKmvkK4po1/KXu5+SLQ g==;
-X-CSE-ConnectionGUID: y2KsQdhlSiSX0hcZnVI0Tw==
-X-CSE-MsgGUID: QfGzMtCBSZKb1kCa/3ur/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="58712891"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="58712891"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:55:18 -0800
-X-CSE-ConnectionGUID: hvKwJfv9Styzp3oCj3hB8w==
-X-CSE-MsgGUID: 2VoTg29MTwqf9+Am6doPew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120201996"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 24 Feb 2025 06:55:17 -0800
-Date: Mon, 24 Feb 2025 23:14:54 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 04/15] rust: pl011, qemu_api tests: do not use
- ClassInitImpl
-Message-ID: <Z7yM7lDXs1Ohjt4b@intel.com>
-References: <20250221170342.63591-1-pbonzini@redhat.com>
- <20250221170342.63591-5-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <shalini@imap.linux.ibm.com>)
+ id 1tmZDK-0003RN-Iq; Mon, 24 Feb 2025 09:13:43 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O7XIQZ006492;
+ Mon, 24 Feb 2025 12:29:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Iu67g/
+ gJXgfLeBgHNgD69fBZoBpn1Atzm/PcRhMJLaA=; b=f6fSwOWhyR5JZgGJpTdctz
+ 25vtYlwArKqUrfNcFQx0xsaEjHt5ActOsqv74j0/uM4xxyPqZIg7DPVbrtYfhIwp
+ v/a5sT/hVpJRFLzS7UOzbKlRjUYlxskhi6vupkgcc03HUkrrBgZ4SEcEE6Doyj7w
+ K1B/YWc2y+sS7n6g3thx/i8tySaR4lU3cxAbRW+YZzCN1gpyFlvkRrfRNpkPOTBT
+ 9EUYJEGvoz8WJjfPWy3bBk4eZlbck5qyPcMEBfQwB8U6ykNmrHac3n6ZtfytU4Vk
+ TWEzTsmTW/qbfPABOMvFHu4fpxK6gdw/9RMgnZgfmWEYAZ4gOrNuG+bEAdisUT+A
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450mfp18c5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2025 12:29:19 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OB1U3h012741;
+ Mon, 24 Feb 2025 12:29:13 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yrwsfbbv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2025 12:29:13 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51OCTB7f58065380
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Feb 2025 12:29:12 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C64A058056;
+ Mon, 24 Feb 2025 12:29:11 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C6C458052;
+ Mon, 24 Feb 2025 12:29:11 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Feb 2025 12:29:11 +0000 (GMT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221170342.63591-5-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Date: Mon, 24 Feb 2025 13:29:11 +0100
+From: shalini <shalini@imap.linux.ibm.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x mailing
+ list <qemu-s390x@nongnu.org>, qemu-devel mailing list
+ <qemu-devel@nongnu.org>, Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: Re: [PATCH v1 3/3] hw/s390x: support migration of CPI values
+In-Reply-To: <1c844d5fefcbcfa5c969c4b6d5ad1ebf121861b2.camel@linux.ibm.com>
+References: <20250115133106.3034445-1-shalini@linux.ibm.com>
+ <20250115133106.3034445-3-shalini@linux.ibm.com>
+ <1c844d5fefcbcfa5c969c4b6d5ad1ebf121861b2.camel@linux.ibm.com>
+Message-ID: <92d79572c7781a9faf7b7a729fb68a18@imap.linux.ibm.com>
+X-Sender: shalini@imap.linux.ibm.com
+Organization: IBM Deutschland Research & Development GmbH
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pLINUEzP11X-czi8AJbyaUz8fdcQlubK
+X-Proofpoint-GUID: pLINUEzP11X-czi8AJbyaUz8fdcQlubK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_05,2025-02-24_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1034 bulkscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 adultscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502240091
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=shalini@imap.linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NO_DNS_FOR_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 24 Feb 2025 10:47:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,24 +112,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 21, 2025 at 06:03:31PM +0100, Paolo Bonzini wrote:
-> Date: Fri, 21 Feb 2025 18:03:31 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 04/15] rust: pl011, qemu_api tests: do not use ClassInitImpl
-> X-Mailer: git-send-email 2.48.1
+On 2025-01-24 19:09, Nina Schoetterl-Glausch wrote:
+> On Wed, 2025-01-15 at 14:31 +0100, Shalini Chellathurai Saroja wrote:
+>> This commit saves the state of CPI values in the guest and
+>> transfers this state during live migration of the guest.
 > 
-> Outside the qemu_api crate, orphan rules make the usage of ClassInitImpl
-> unwieldy.  Now that it is optional, do not use it.
+> IMO, using active voice and directly stating what is done is 
+> preferable.
 > 
-> For PL011Class, this makes it easier to provide a PL011Impl trait similar
-> to the ones in the qemu_api crate.  The device id consts are moved there.
+> Something like:
+> Register Control-Program Identifier data with the migration 
+> infrastructure.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs | 38 ++++++++++++++++----------------
->  rust/qemu-api/tests/tests.rs     | 33 ++++++++++-----------------
->  2 files changed, 31 insertions(+), 40 deletions(-)>
+> "This commit" doesn't really add anything.
+> (Applies to other commits also)
+> I also prefer verbosity when it comes to abbreviations.
+> 
+>> 
+>> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+>> ---
+>>  hw/s390x/s390-virtio-ccw.c | 17 +++++++++++++++++
+>>  1 file changed, 17 insertions(+)
+>> 
+>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+>> index 35fb523af9..8fe0c5c1cb 100644
+>> --- a/hw/s390x/s390-virtio-ccw.c
+>> +++ b/hw/s390x/s390-virtio-ccw.c
+>> @@ -259,6 +259,20 @@ static void s390_create_sclpconsole(SCLPDevice 
+>> *sclp,
+>>      qdev_realize_and_unref(dev, ev_fac_bus, &error_fatal);
+>>  }
+>> 
+>> +static const VMStateDescription vmstate_cpi = {
+>> +    .name = "s390_cpi",
+>> +    .version_id = 0,
+>> +    .minimum_version_id = 0,
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_UINT8_ARRAY(system_type, Cpi, 8),
+>> +        VMSTATE_UINT8_ARRAY(system_name, Cpi, 8),
+>> +        VMSTATE_UINT64(system_level, Cpi),
+>> +        VMSTATE_UINT8_ARRAY(sysplex_name, Cpi, 8),
+>> +        VMSTATE_UINT64(timestamp, Cpi),
+>> +        VMSTATE_END_OF_LIST()
+> 
+> I see, you need the Cpi type here.
+> How about naming it ControlProgramId and renaming CPI
+> to ControlProgramIdMsg or similar?
+> 
+> With that sorted out:
+> 
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Hello Nina,
 
+Thank you for your comments. I have implemented all the changes 
+according to your feedback and I have sent the version 2 of my patch 
+series.
+
+-- 
+Mit freundlichen Grüßen / Kind regards
+Shalini Chellathurai Saroja
+Software Developer
+Linux on IBM Z & KVM Development
+IBM Deutschland Research & Development GmbH
+Dept 1419, Schoenaicher Str. 220, 71032 Boeblingen
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Geschäftsführung: David Faller
+Sitz der Gesellschaft: Böblingen / Registergericht: Amtsgericht 
+Stuttgart, HRB 243294
 
