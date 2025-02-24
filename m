@@ -2,90 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA90A42D47
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 21:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E442EA42D82
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 21:17:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmeeI-0005NK-Tf; Mon, 24 Feb 2025 15:01:55 -0500
+	id 1tmesE-0000Ts-EG; Mon, 24 Feb 2025 15:16:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tmee1-000593-Ab
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 15:01:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tmesA-0000Re-Ph
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 15:16:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tmedy-0007zg-7U
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 15:01:35 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tmes8-0005EJ-Bq
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 15:16:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740427293;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1740428169;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g8os7CYmOIBlfUYUS4rI4CncpuaS0vvYGy5DOH7VCX4=;
- b=KXwWJ7acM5Cvwct55rJf7u9gAWGwRKy4UZV3mubZVkrNe6RNB+a1GOg/Z5eWMc7aNZlyRT
- aNHynxMxetf/HoSt3pxRXN28pAvvEFqJekPoXkK2PL4i3vykti6ABVMlOk1xS9Pfkp1sHa
- fKzFNCX9rzSJixaolDEayYiHvjdI2VQ=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5N8n+tR3ig3k6Dc8iNPIFi0w/z+a9OxLNbCtrJHwDOo=;
+ b=bNO3CZXOvp8A5zU1niDqGsDraDjOMcSsSG4IjsX++ShEoidEEsmDJaV6BgMnNDGD189iiA
+ ko2yhUclBekqsIe+DOIiny4/biOGYS3+mhHyMneq40vcjNr+8AnXrLaHWgk6xX+NS/gL5d
+ 4ikj5pKQBH2mm9GbIMkj5sCClXsdPMA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-XQrCmBUEMuqsbM2194fz0Q-1; Mon, 24 Feb 2025 15:01:31 -0500
-X-MC-Unique: XQrCmBUEMuqsbM2194fz0Q-1
-X-Mimecast-MFC-AGG-ID: XQrCmBUEMuqsbM2194fz0Q_1740427291
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6e65e656c41so101920506d6.1
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 12:01:31 -0800 (PST)
+ us-mta-396--HW1GX9dMA2wL4XvPb_fVw-1; Mon, 24 Feb 2025 15:16:08 -0500
+X-MC-Unique: -HW1GX9dMA2wL4XvPb_fVw-1
+X-Mimecast-MFC-AGG-ID: -HW1GX9dMA2wL4XvPb_fVw_1740428167
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-38f27acb979so4713446f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 12:16:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740427291; x=1741032091;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g8os7CYmOIBlfUYUS4rI4CncpuaS0vvYGy5DOH7VCX4=;
- b=bBtQXCkS30yN0liIiWl1eS7CGj09Xg8CW8kbtm920GUJI9UmPRebdX11PuJu+aaXCR
- MCl/YSfEE75jI2FFdLdZ/2VJEPlzwHLUprlbhYuAJtX3ILTs0mZDrc005LelAX4FOeOy
- 1Y0JaoaT9SoeyWJKQW/ASHWGa9+U4QlHNNRo6Hd85/jZyzwf9KSQ3SqGYf/InNv1lDbM
- O/RsdNjQlJFPp/VT3rOTm0pYC5F+E/PujonY8EokJd4f92bt+QaFQY9Hp1h0yv15CGcz
- IMNuUPLAMXA3Y5mTM+wlcobuos4u7ZcibGA3bBqkVs1zcciuZqnBXDIrl8vaRZrK+QN7
- af7g==
-X-Gm-Message-State: AOJu0YwdKZRAtiMEyUWy8NjX42hLVO/4NGOLOfzh7TaA97AKQ7vE6OJp
- CjpMPQ8pj/uG4TSX3z/mEcTcsBztS2vbKV7hcnCcF1oT7Ywc1O94JMi0uyz5BQkx4azkUpFktSc
- +KU02zb/0we/30NXidV/YHMPTAzel12m+tTCt3fE4jmw71m6S0rEU
-X-Gm-Gg: ASbGncvrpBRhEkzA5PfZsG0bQUgGkfG2EeWrn2AxIScRGcNXUD6PlFqqCwYsIljaeki
- lj/Wg4VseAtVoMNsawrcuMCNWIK4VDcAoeXzWR3IsVp7yZ5tEP8DZD9ogDIYk9NHA89VQELdhwZ
- qZO/8Iwf7KUz56aDCYjNdbVLrx/UKcM2nqR75jP6n+eDnmI/c6IBmN+OkJ1ZjZxXy3YX7JXe4vL
- Zuavx/BfxPEOdIkfyTf9g/es/LhMh9M+p6lxmFJSoCA6sNz9Ztj769wKTyBOV7wibxSow==
-X-Received: by 2002:a05:6214:501c:b0:6e6:5d61:4f00 with SMTP id
- 6a1803df08f44-6e6ae7c9624mr175612426d6.4.1740427290936; 
- Mon, 24 Feb 2025 12:01:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH1wU4AoYyZMidP31s0e7umUb2YWRfWiTg4pEOBLSdjdGLaE8/urI2uxz4AB3e9+FnQzOddRQ==
-X-Received: by 2002:a05:6214:501c:b0:6e6:5d61:4f00 with SMTP id
- 6a1803df08f44-6e6ae7c9624mr175612126d6.4.1740427290660; 
- Mon, 24 Feb 2025 12:01:30 -0800 (PST)
-Received: from x1.local ([2604:7a40:2041:2b00::1000])
+ d=1e100.net; s=20230601; t=1740428167; x=1741032967;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5N8n+tR3ig3k6Dc8iNPIFi0w/z+a9OxLNbCtrJHwDOo=;
+ b=cN5SW2nHwD0Zb2p8TdDxQnNjuxM1dmEiHDGD2oLz51nxtQIHf423thPkznZxdLoUox
+ 5Ze17JzpfGK2+zd/hHsTCign4n55idbjDC1QmrBpM3AYJdwMpxUTspjmpRiKEvcccxYH
+ Z891omB9808CEI0J2/7p8Nh8biB4ODuFsPUSfehrmjU2ItArXCPkf+3BSuyq6HZzGtIu
+ TIlRkxnQpPNJa7AXsKjEhKH9Xn/rDtj3vnsKJBzENghqZ2pG0G0LGo/UmVbqt40i1AAT
+ +a/wNC+BHu7MvVUjrbwrSCj2ptppaBdxZU3BSnszwVAPv+ZzkLxGQF+7UfPI31Twxd62
+ 39KA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWsW5bzev1pSB3MUs1R2FmJ6Z8Q4b+WirVP/CvXFM4aga0Qz9zimyMRIB2RCov1AQ4BENtz2F3MtBm1@nongnu.org
+X-Gm-Message-State: AOJu0YxgQStb0p8RwtjaGT4GNxA13aaQlJcVLzPAS0/E3J62ZPylmIag
+ m0H4mkKjAgVFCs1cm1JsQOi8pMRYh73yXCk8Y48RuW0wiNQDfX2MO1JTnP84x7VTjfQXhBzi5nU
+ 37/NAnUQ9wdpdLlxNVoqMtYUk3bsRlq85OD0ZW5f+Z0UirkOw4mi9
+X-Gm-Gg: ASbGncsdNUnDVzb+KW6z/ewLg+Q4CtfXTKhIjG4eO0FMWNaQj88H/F2ss+jjGBtJ/S1
+ 35jUNjFCG49IgTvz/WOPXZhk6bLccdfc67VP+1uOt/awb/1wxOWBVknOSVH8n9eAavo6UKpqsmV
+ Snh9dTVZ2TLXeAHVJV0v/lbKKYH0yW6fcOUgwoBfLMaJ7CyZzb56/KRU3f3KndH/gnemheIh66X
+ BNtQclq0HIDOmRLaqSg1WfRxsLt/nQax3BaDMx2g/JODRBstVnE4gwZpUjIAcnwP4VG4zQeH9F0
+ kfJ8N7BTrhVWDZfK2uPvcwHw5ZyrgbYIq7FQedgwFkDJ2/s3e3L8jSo2RZXeJzc=
+X-Received: by 2002:a5d:6d8f:0:b0:38f:2111:f5ac with SMTP id
+ ffacd0b85a97d-38f707b0941mr12293116f8f.31.1740428166940; 
+ Mon, 24 Feb 2025 12:16:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEl5qf7BSQlp8a6EytNWok0mb1I61LO2+JPG4Qa79ml9b/VNgLlL9fuIDiayzcNb/UHxiFajQ==
+X-Received: by 2002:a5d:6d8f:0:b0:38f:2111:f5ac with SMTP id
+ ffacd0b85a97d-38f707b0941mr12293098f8f.31.1740428166584; 
+ Mon, 24 Feb 2025 12:16:06 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e87b171962sm726316d6.106.2025.02.24.12.01.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 12:01:30 -0800 (PST)
-Date: Mon, 24 Feb 2025 15:01:27 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Li Zhijian <lizhijian@fujitsu.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 8/8] migration: Add qtest for migration over RDMA
-Message-ID: <Z7zQF4e_GQwjkaOR@x1.local>
-References: <20250221063612.695909-1-lizhijian@fujitsu.com>
- <20250221063612.695909-9-lizhijian@fujitsu.com>
+ ffacd0b85a97d-390cd86cc6asm27396f8f.35.2025.02.24.12.16.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Feb 2025 12:16:04 -0800 (PST)
+Message-ID: <241a5dbe-1c22-4369-84af-8127a9ed9328@redhat.com>
+Date: Mon, 24 Feb 2025 21:16:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250221063612.695909-9-lizhijian@fujitsu.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] hw/vfio/pci: Re-order pre-reset
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org
+Cc: eric.auger.pro@gmail.com, clg@redhat.com, zhenzhong.duan@intel.com,
+ mst@redhat.com, marcel.apfelbaum@gmail.com
+References: <20250220224918.2520417-1-alex.williamson@redhat.com>
+ <20250220224918.2520417-6-alex.williamson@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250220224918.2520417-6-alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,33 +111,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 21, 2025 at 02:36:12PM +0800, Li Zhijian wrote:
-> This qtest requires there is a RDMA(RoCE) link in the host.
-> In order to make the test work smoothly, introduce a
-> scripts/rdma-migration-helper.sh to
-> - setup a new Soft-RoCE(aka RXE) if it's root
-> - detect existing RoCE link
-> 
-> Test will be skipped if there is no available RoCE link.
->  # Start of rdma tests
->  # Running /x86_64/migration/precopy/rdma/plain
->  ok 1 /x86_64/migration/precopy/rdma/plain # SKIP
->  There is no available rdma link to run RDMA migration test.
->  To enable the test:
->  (1) Run 'scripts/rdma-migration-helper.sh setup' with root and rerun the test
->  or
->  (2) Run the test with root privilege
-> 
->  # End of rdma tests
-> 
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
 
--- 
-Peter Xu
+
+On 2/20/25 11:48 PM, Alex Williamson wrote:
+> We want the device in the D0 power state going into reset, but the
+> config write can enable the BARs in the address space, which are
+> then removed from the address space once we clear the memory enable
+> bit in the command register.  Re-order to clear the command bit
+> first, so the power state change doesn't enable the BARs.
+>
+> Cc: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+>  hw/vfio/pci.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index ba4ef65b16fa..fcc5f118bf90 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2405,6 +2405,15 @@ void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
+>  
+>      vfio_disable_interrupts(vdev);
+>  
+> +    /*
+> +     * Stop any ongoing DMA by disconnecting I/O, MMIO, and bus master.
+> +     * Also put INTx Disable in known state.
+> +     */
+> +    cmd = vfio_pci_read_config(pdev, PCI_COMMAND, 2);
+> +    cmd &= ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |
+> +             PCI_COMMAND_INTX_DISABLE);
+> +    vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
+> +
+>      /* Make sure the device is in D0 */
+>      if (pdev->pm_cap) {
+>          uint16_t pmcsr;
+> @@ -2424,15 +2433,6 @@ void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
+>              }
+>          }
+>      }
+> -
+> -    /*
+> -     * Stop any ongoing DMA by disconnecting I/O, MMIO, and bus master.
+> -     * Also put INTx Disable in known state.
+> -     */
+> -    cmd = vfio_pci_read_config(pdev, PCI_COMMAND, 2);
+> -    cmd &= ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |
+> -             PCI_COMMAND_INTX_DISABLE);
+> -    vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
+>  }
+>  
+>  void vfio_pci_post_reset(VFIOPCIDevice *vdev)
 
 
