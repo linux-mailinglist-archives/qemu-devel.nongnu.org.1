@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D655FA42935
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD65A42961
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:21:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmc3G-00077y-1b; Mon, 24 Feb 2025 12:15:30 -0500
+	id 1tmc3H-00078t-5k; Mon, 24 Feb 2025 12:15:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2t-00070e-PH
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:09 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1tmc2v-00072B-Fk
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:12 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2r-0005gz-KX
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:07 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-220d398bea9so74156315ad.3
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:05 -0800 (PST)
+ id 1tmc2t-0005lp-BL
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:09 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-220c4159f87so65446555ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740417304; x=1741022104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740417305; x=1741022105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x1wokWjEQnWGkNFvw6UwauoupCQ0IGRtX5SJLE3+d9Q=;
- b=XjMuJw9pmj4DGjR1L7uPs6Vp2j4JfRXmZE92hlOgH5gridIN1LxD0gPIP8BkUcxXQT
- Jc9ozhWn4ypOjwZzTMsj08wFfP04rO1bWxjtKIT9M7kRm3B6u369rQ0blZe26E8VucBY
- XkrXSAPUqjRFH2f5xJVRUhC/FkpjTR3R+aCEgxpO+xlmTRcAE2hUmIRZweYGq/SI+t84
- n2l9cPhhl+s7MRrxsmIB0IBJwn+nmULsgwN2lCg8yNy/C8XT/MZlgq9oHqh9RVR9709J
- vljAoMAfmurKtBGLnLNO0Thl8wG+jqvz/UuzbWq72OUhn4Ihk0+sCBjfmo4h81wS+w7z
- 7RlQ==
+ bh=U3tkcbPQoLdcbi8H1E2Irpn3GIVeScWhj/F3Kesih3M=;
+ b=eoKJ8DJiy7Hi3/AFDkkSQUeDrUgZsMTtvDsff3AEKOoGLLMA2AX4dVqMviabIGzVsE
+ UERnlif+ojLM9PpZS3UtCzUa+IEcCkwneum8VITWbF5pJIKS+NWDtvlkHae/1Ilp6iTl
+ Xun6h4I3afBw0soyyx1PkOjSFVZpHXpY2TwElcn3kgnY/z/egIJfTkdeO12NLTA8ku8J
+ KrU95rmy/GZov9VaNeCs9f82jYkD457UJo8bOkqSPDXHusfddAN3FXBdksmvwtTftG38
+ bKcinbohrW/EL6kMs91avypAR8BN6KRNhvXu/76urmItL6uhp+dG/OPop/nx27t9rN8f
+ +8wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740417304; x=1741022104;
+ d=1e100.net; s=20230601; t=1740417305; x=1741022105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x1wokWjEQnWGkNFvw6UwauoupCQ0IGRtX5SJLE3+d9Q=;
- b=G1IVCojsCzj3xyr83tWoX/AZdse+yebrEsZGu55KZR815cATYl/iRSPQvHL5R9AeYJ
- twM5L01tAqz/Xfe9HeS9g0+19kz/YznIkiNzpqUQDxOO6J9yevjQzzZhd4bfmt0Bo9fF
- mgo7fZ2o5DPch3krr13XFlmnA74FyUS5NOqN50QlFyalSNTJIUJQ8V+NsCInowfaWKxn
- q3KjvqQDTSrCyhFoXDmhLDaSvKJM+fS8KIMVvCKlN6nApcHNkdC4lvNrz7malhpqo3/W
- Qj7KVA/Sn1NtoQc28HlY6zZ+7by+GNZ+huHFnGJxbvB2mon2DrmnzLDyG+ibvWHqAfgD
- /YkA==
-X-Gm-Message-State: AOJu0YzlJi8flxrS6xiKFbx4Gs/f492buK0eLH2gldK/nLDlJjGSeMzm
- slQCdX+VHgKZfZy8hHN+IREHkMd3RSSWqaiVgAFn7GdSiYBOAZQe7v70NEdQPyC3FGr7q70T05p
- W
-X-Gm-Gg: ASbGnct6kpv67UHIQKiUG96wzDtnZ+tmLNxYI6LLI2VjCMX67IxRJL0W2lk5xoQsX1p
- mnvg9m8ZmxuAgNXYiFoZM8jMfwCIIs3dFC4JOpjki3xASOZj5AscQVoL4UsuVXsnYiGDdyKuEv2
- i2gL8DMvvdz58MVlkuWbgODQydsTNvkzaPx7tD3zTU8/uDVY7y5K7v72kA7iZpYPr3uIZtxJYXE
- 4rYdwDccPEgSvMLaq8ivBOsSRodZ2NadF8QYVHHkIzI7L0Thphk5yFd0f09aVWUirvMQuVkVzls
- iVTiL7iy3AZuTEx9HMltmlI5dE8tHPxpMt8=
-X-Google-Smtp-Source: AGHT+IEbkMX/LdioLvXT2jUIwCO5ZVGohbE4xkZ1GuZrkjQVSKkCyV8MffUbHBIA/Me891eRoMZANA==
-X-Received: by 2002:a05:6a00:2441:b0:732:a24:734b with SMTP id
- d2e1a72fcca58-73426d7271emr21724552b3a.15.1740417304070; 
- Mon, 24 Feb 2025 09:15:04 -0800 (PST)
+ bh=U3tkcbPQoLdcbi8H1E2Irpn3GIVeScWhj/F3Kesih3M=;
+ b=Vekcmb+RisnbvxCgdQhzIikFQ+UNuCVs9b56TXwcyFwh591gK4bBycoA98ktCZiRou
+ xjqMLvlIgSfxm7eNHAFe+eGWZD7s8xtmn0AJnMzruA/oxdhbkpCowEA7ah4mKD1Vlk82
+ FU3X57uls7Yn1IrapsFMKG+VRGq/BZViyXI1rhGsUWCSGCSjfHyXAHkAftYqqQeA7pbt
+ IdZ+PEKXOxoLZYCltxMKIZGbBod+14KBrkITHtWl5ugxUUaeGstK558mov30ztp5Opst
+ 0V4TCu21VuVKv0N2uoZBV9WF3p1IKg6MW/lXXMsN2ppAU+DOzQL0Meq1KOgF+wuDbMte
+ CFOQ==
+X-Gm-Message-State: AOJu0YzeQvr/nsA6RSau/yt7IVd5ZsPLcb2/OKokCe+b+fc7zJOwGpAj
+ OOV2BgiSU1wkzyRyfdeO2DebKhDBnVItOm04bUKgn1l93UJCabtNyZ/E0EvyBF0FvyzIT/DXNA/
+ A
+X-Gm-Gg: ASbGncu/PutEucPc3zs/i+O/ATiEic8htD/vUEEmWOLXOtGHd5h2uxgG/dMEvdXSHgy
+ gzz+0LrvQChnhedgTatqt3EKKE7PhJVvi2liy7PXmAx/uHB/B/pynQnT9QRa/OBzqOik8bS4W32
+ fxHzBWeIgqPJMqH0GiqihuFviBt4klSD3zZ309raXHvlbv2aHshGD0Q+VKa65ejPG3O1QstG69t
+ JyoB7xG34E3iQnH+AQC6HDDMjv+n/uVUEKvUYlexe5oUm3hMDydDSyNCRj338GzB6llfzDBuUPG
+ yl4gyIJAaQ/qImDT6lLo6V6HIXCb/Bk/YuU=
+X-Google-Smtp-Source: AGHT+IErN/jshs59DQ+Wsv39jnXHhR65InecRsL2loaK/Ljw45IQ0BnElJMImeO0jBjsoeHlwt1sVQ==
+X-Received: by 2002:a05:6a00:805:b0:730:75b1:7218 with SMTP id
+ d2e1a72fcca58-73426d7782emr25159335b3a.16.1740417305390; 
+ Mon, 24 Feb 2025 09:15:05 -0800 (PST)
 Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.03
+ d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 09:15:03 -0800 (PST)
+ Mon, 24 Feb 2025 09:15:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 13/24] target/m68k: Remove env argument to gen_lea_mode
-Date: Mon, 24 Feb 2025 09:14:33 -0800
-Message-ID: <20250224171444.440135-14-richard.henderson@linaro.org>
+Subject: [PATCH v4 14/24] target/m68k: Remove env argument to gen_load_mode
+Date: Mon, 24 Feb 2025 09:14:34 -0800
+Message-ID: <20250224171444.440135-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224171444.440135-1-richard.henderson@linaro.org>
 References: <20250224171444.440135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,104 +104,97 @@ Use the env pointer in DisasContext.
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ target/m68k/translate.c | 31 ++++++++++++-------------------
+ 1 file changed, 12 insertions(+), 19 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 0aa0721778..73189d1da4 100644
+index 73189d1da4..47938b9cb4 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -694,8 +694,7 @@ static int addr_inc_size(DisasContext *s, int reg0, int opsize)
- /*
-  * Generate code for an "effective address".
+@@ -776,9 +776,8 @@ static TCGv gen_lea(CPUM68KState *env, DisasContext *s, uint16_t insn,
+  * a write otherwise it is a read (0 == sign extend, -1 == zero extend).
+  * ADDRP is non-null for readwrite operands.
   */
--static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
--                         int mode, int reg0, int opsize)
-+static TCGv gen_lea_mode(DisasContext *s, int mode, int reg0, int opsize)
+-static TCGv gen_load_mode(CPUM68KState *env, DisasContext *s,
+-                          int mode, int reg0, int opsize, TCGv *addrp,
+-                          int sign, int index)
++static TCGv gen_load_mode(DisasContext *s, int mode, int reg0, int opsize,
++                          TCGv *addrp, int sign, int index)
  {
-     TCGv reg, addr, tmp;
-     uint16_t ext;
-@@ -733,7 +732,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-     case 5: /* Indirect displacement.  */
-         reg = get_areg(s, reg0);
-         addr = tcg_temp_new();
--        ext = read_im16(env, s);
-+        ext = read_im16(s->env, s);
-         tcg_gen_addi_i32(addr, reg, (int16_t)ext);
-         return addr;
-     case 6: /* Indirect index + displacement.  */
-@@ -742,14 +741,14 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-     case 7: /* Other */
-         switch (reg0) {
-         case 0: /* Absolute short.  */
--            offset = (int16_t)read_im16(env, s);
-+            offset = (int16_t)read_im16(s->env, s);
-             break;
-         case 1: /* Absolute long.  */
--            offset = read_im32(env, s);
-+            offset = read_im32(s->env, s);
-             break;
-         case 2: /* pc displacement  */
-             offset = s->pc;
--            offset += (int16_t)read_im16(env, s);
-+            offset += (int16_t)read_im16(s->env, s);
-             break;
-         case 3: /* pc index+displacement.  */
-             return gen_lea_indexed(s, NULL_QREG);
-@@ -769,7 +768,7 @@ static TCGv gen_lea(CPUM68KState *env, DisasContext *s, uint16_t insn,
- {
-     int mode = extract32(insn, 3, 3);
-     int reg0 = REG(insn, 0);
--    return gen_lea_mode(env, s, mode, reg0, opsize);
-+    return gen_lea_mode(s, mode, reg0, opsize);
+     TCGv reg, ret, addr = NULL;
+     int32_t offset;
+@@ -799,19 +798,19 @@ static TCGv gen_load_mode(CPUM68KState *env, DisasContext *s,
+             /* Immediate: sign extend values for consistency.  */
+             switch (opsize) {
+             case OS_BYTE:
+-                offset = read_im8(env, s);
++                offset = read_im8(s->env, s);
+                 if (sign) {
+                     offset = (int8_t)offset;
+                 }
+                 break;
+             case OS_WORD:
+-                offset = read_im16(env, s);
++                offset = read_im16(s->env, s);
+                 if (sign) {
+                     offset = (int16_t)offset;
+                 }
+                 break;
+             case OS_LONG:
+-                offset = read_im32(env, s);
++                offset = read_im32(s->env, s);
+                 break;
+             default:
+                 g_assert_not_reached();
+@@ -1324,7 +1323,7 @@ static void gen_exit_tb(DisasContext *s)
+ 
+ #define SRC_EA(env, result, opsize, op_sign, addrp)                     \
+     do {                                                                \
+-        result = gen_load_mode(env, s, extract32(insn, 3, 3),           \
++        result = gen_load_mode(s, extract32(insn, 3, 3),                \
+                                REG(insn, 0), opsize, addrp,             \
+                                op_sign, IS_USER(s));                    \
+         if (IS_NULL_QREG(result)) {                                     \
+@@ -1700,10 +1699,8 @@ DISAS_INSN(abcd_mem)
+ 
+     /* Indirect pre-decrement load (mode 4) */
+ 
+-    src = gen_load_mode(env, s, 4, REG(insn, 0), OS_BYTE,
+-                        NULL, false, IS_USER(s));
+-    dest = gen_load_mode(env, s, 4, REG(insn, 9), OS_BYTE,
+-                         &addr, false, IS_USER(s));
++    src = gen_load_mode(s, 4, REG(insn, 0), OS_BYTE, NULL, false, IS_USER(s));
++    dest = gen_load_mode(s, 4, REG(insn, 9), OS_BYTE, &addr, false, IS_USER(s));
+ 
+     bcd_add(dest, src);
+ 
+@@ -1736,10 +1733,8 @@ DISAS_INSN(sbcd_mem)
+ 
+     /* Indirect pre-decrement load (mode 4) */
+ 
+-    src = gen_load_mode(env, s, 4, REG(insn, 0), OS_BYTE,
+-                        NULL, false, IS_USER(s));
+-    dest = gen_load_mode(env, s, 4, REG(insn, 9), OS_BYTE,
+-                         &addr, false, IS_USER(s));
++    src = gen_load_mode(s, 4, REG(insn, 0), OS_BYTE, NULL, false, IS_USER(s));
++    dest = gen_load_mode(s, 4, REG(insn, 9), OS_BYTE, &addr, false, IS_USER(s));
+ 
+     bcd_sub(dest, src);
+ 
+@@ -3120,11 +3115,9 @@ DISAS_INSN(cmpm)
+     TCGv src, dst;
+ 
+     /* Post-increment load (mode 3) from Ay.  */
+-    src = gen_load_mode(env, s, 3, REG(insn, 0), opsize,
+-                        NULL, true, IS_USER(s));
++    src = gen_load_mode(s, 3, REG(insn, 0), opsize, NULL, true, IS_USER(s));
+     /* Post-increment load (mode 3) from Ax.  */
+-    dst = gen_load_mode(env, s, 3, REG(insn, 9), opsize,
+-                        NULL, true, IS_USER(s));
++    dst = gen_load_mode(s, 3, REG(insn, 9), opsize, NULL, true, IS_USER(s));
+ 
+     gen_update_cc_cmp(s, dst, src, opsize);
  }
- 
- /*
-@@ -827,7 +826,7 @@ static TCGv gen_load_mode(CPUM68KState *env, DisasContext *s,
-     case 4: /* Indirect predecrememnt.  */
-     case 5: /* Indirect displacement.  */
-     case 6: /* Indirect index + displacement.  */
--        addr = gen_lea_mode(env, s, mode, reg0, opsize);
-+        addr = gen_lea_mode(s, mode, reg0, opsize);
-         if (IS_NULL_QREG(addr)) {
-             ret = addr;
-             addr = NULL;
-@@ -870,7 +869,7 @@ static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
-     case 6: /* Indirect index + displacement.  */
-     case 7: /* Other */
-         if (!addr) {
--            addr = gen_lea_mode(env, s, mode, reg0, opsize);
-+            addr = gen_lea_mode(s, mode, reg0, opsize);
-             if (IS_NULL_QREG(addr)) {
-                 return false;
-             }
-@@ -1110,7 +1109,7 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
-     case 4: /* Indirect predecrememnt.  */
-     case 5: /* Indirect displacement.  */
-     case 6: /* Indirect index + displacement.  */
--        addr = gen_lea_mode(env, s, mode, reg0, opsize);
-+        addr = gen_lea_mode(s, mode, reg0, opsize);
-         if (IS_NULL_QREG(addr)) {
-             return -1;
-         }
-@@ -1931,7 +1930,7 @@ DISAS_INSN(movem)
-         break;
- 
-     default:
--        tmp = gen_lea_mode(env, s, mode, reg0, opsize);
-+        tmp = gen_lea_mode(s, mode, reg0, opsize);
-         if (IS_NULL_QREG(tmp)) {
-             goto do_addr_fault;
-         }
-@@ -2673,7 +2672,7 @@ DISAS_INSN(tas)
-     } else {
-         TCGv src1, addr;
- 
--        addr = gen_lea_mode(env, s, mode, reg0, OS_BYTE);
-+        addr = gen_lea_mode(s, mode, reg0, OS_BYTE);
-         if (IS_NULL_QREG(addr)) {
-             gen_addr_fault(s);
-             return;
 -- 
 2.43.0
 
