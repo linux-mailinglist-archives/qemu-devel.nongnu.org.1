@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B107AA42D83
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 21:17:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F166A42C7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 20:14:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmerI-0000HI-Jd; Mon, 24 Feb 2025 15:15:21 -0500
+	id 1tmdpN-0005kZ-HY; Mon, 24 Feb 2025 14:09:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tmerF-0000Fr-Em; Mon, 24 Feb 2025 15:15:17 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tmdoh-0005bC-Ik
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:42 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tmerD-0004he-4J; Mon, 24 Feb 2025 15:15:17 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5e0939c6456so7706306a12.3; 
- Mon, 24 Feb 2025 12:15:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tmdof-0004m2-LT
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:35 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-220c92c857aso82094045ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 11:08:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740428112; x=1741032912; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NyPAshIXenK9idrD/7VjTl4ZEDnGzzoPoyhm8ItuLJw=;
- b=gBOKSbh2V0j2cEyxrSECd14tWrlce2daQO4K0WrQ8oAdPmMKQz4J+aJ2TH8HHEGRXW
- DN6PRRmeBiKbDnG2mqIMjH1GRhku47elFZx2d4iGu1sc9y8nifmCyRZQnhcsOHNnxg0t
- 8yuP98ea34vW6Hy9/RLR5je+yIKUNwlciu0dxC8dfLrNLWZnOnvdHjfTOkjdfQFce7PR
- 4VoghzzKIYMvfzO3Vr2kxIi1kOlSWH5q0xKoRY0wvK5AtIC/XOyN/y6fgvi7GNytXt9c
- 6GCnoX39kkLRjHxPjp1mxGPfg718U2/9g36LxXgpl/f2H8UcFxR7AHsR9yavenQbbFtq
- 5qtA==
+ d=ventanamicro.com; s=google; t=1740424112; x=1741028912; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1xWuCmj3O1yQqtKxdDQcXHiLCpQRQJeKsi37lap4zeM=;
+ b=eFeJiJ7vgcj81AzFEfxTQc3ibDEUWFgGBK38nCAjC1GRmZ1IfchFJXgQnMTG74PLSK
+ A9x0L8U1w4XwEH/vYNbE2t0HwUsHs0sGqQWVTtHD2qBlimYd3bDnSCAB9MF3a5doBaDY
+ G+qt9LhJw4K0dicGS22iuCx+hGLLCOI0YB4sbzcVrT9MiZtfnJI0/ti3wrIcyB68N97e
+ Qr3sklqtx/GpyUvONbjzUPFrQ2ZvALfh5Qh446MbiBnTQh9FV0KzIi1xfJhpKGVz+xg/
+ fQKzZ2RjvXsUIFL0QJA0WALQkm4FyEIsoKxSSxGKWo8cnWJtTAwD7r+id0H4dGvb7Ft5
+ vAyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740428112; x=1741032912;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NyPAshIXenK9idrD/7VjTl4ZEDnGzzoPoyhm8ItuLJw=;
- b=itJ5YzeDB2M9TgXk31fPSp4JpEn5lRS/pmJ/433LKiYFrNh5+/SFlY1P2eBAgDwdYa
- 9ilBTtdbxc7xJ1asOzV5+Gs58/nepAijcq0HHPWzJaPYHNh8TdXkOP12BOZFiziAcRqq
- r4Z9UvKTtMbel+KdMzBQknbgAoRvRS1vKTVSdW1RzTgImmzW/LS8tu+1QnUKiyki7NxS
- fvNivLAPAElvOLHRzeVh7ks6wSfRIJ+YOTS96kMPvQqL9s/itRHeAGWop1RvkJltoj92
- spJuNfh9QMWGEi4YqiPr1l1q1WcGqKfoGhyyuvli/zGCmdhROa4PLChPql3ofThRuAfd
- bszA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUrrZ2S+8m9QfI2XD+OKpYNCK7RdPRHozc8qehZVCS6KU26YXTqdUBX2ap4j+ISV0/ZtJBD9tAemQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxxeNAkC/OxhLVCTKITVvV/De/cU2q33I5GZ3SBKbXbLxIEREr7
- au1LHCoQUwe+7mq0vEpnwwPBYxG4ZQyMM37ZwjPwMjcy/WAzsdqSvvZNKg==
-X-Gm-Gg: ASbGncsFMiCnGxKEIeFdFeQfuxA5Ord9zHAwOYoVGqp2h1C/+MinuIXhDCb7dgRXVmp
- d5ICsSADhNYOCnM3d6DuNIiIN1WgyKyRIwtQpPWZGD7AJtNbk/CqT0LNqgW+mWGUejm6LIEsW7Y
- Ej0JZz8urVbbmoetw/h7bA+XHUhc26tSCk6WTa/23L3r1nacVV5VV0skwzI8RQehBT/3kv5yPVx
- TOyEZV/b6jfkzgxxxl69MUePv5zwdO9JxOWNz8uZrWaZCQYQXLAa6KANk6dQBsIznbNivrLcI0V
- srF9lgC6Eer/oxMR5B98nP/0yqNB+LLlfkdMGrks4i50xdiday+FN5W4KEswoVQ34UxrRrPEa4W
- wJQ==
-X-Google-Smtp-Source: AGHT+IHfVGu9u8mVndwTf4ofJaaClyXtwSJ31FNXZmpMmN75rBnvgVGy1cD9he/u0Sfet6wSf5Jjwg==
-X-Received: by 2002:a05:6402:40c6:b0:5df:a651:32ef with SMTP id
- 4fb4d7f45d1cf-5e0b7231cadmr14710552a12.27.1740428111854; 
- Mon, 24 Feb 2025 12:15:11 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-183-167-055.77.183.pool.telefonica.de.
- [77.183.167.55]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e46212761bsm90705a12.80.2025.02.24.12.15.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Feb 2025 12:15:11 -0800 (PST)
-Date: Mon, 24 Feb 2025 19:04:46 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-ppc@nongnu.org
-CC: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/4] ppc/amigaone patches
-In-Reply-To: <cover.1740243918.git.balaton@eik.bme.hu>
-References: <cover.1740243918.git.balaton@eik.bme.hu>
-Message-ID: <ACCAE066-F36F-45DA-8768-0BBD956AA475@gmail.com>
+ d=1e100.net; s=20230601; t=1740424112; x=1741028912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1xWuCmj3O1yQqtKxdDQcXHiLCpQRQJeKsi37lap4zeM=;
+ b=lS6TQdONmOpHOX/XHbf8ZyIgRaivepCa0KShcqHmhbgqQuyfb6TNfqBjv6F3lcH5R/
+ wF348fUB9lgnrMyP8tDgSVM4oDgG2yFjNeczMQFh40wTmwM/wJEFwvJ/VLHqvM8VC9C9
+ ldxiBJ31qdH1xpBFI+C2Ihg8yONMyHCTYNynpD4Dal35d5Gw5gPzA8t/badkKOHv5l0H
+ hKc3C654ANKfmZ4hta6q0eO0CBlWvqsWvo+5ypkz8hDyFZOnsK1jbPVpgSs9GGMOQBSB
+ kYrytSTaV/95T3XNBY/exXlNhQP4gOjw23WyKxwhMAFrd0pehqILnSS7/tmeFn5/l0DP
+ kq5Q==
+X-Gm-Message-State: AOJu0YyOpTHHqxNWNHndxZuDx5ixJ1JRllvdy3nkr54mgdthkP4y+sGL
+ P3ujcI8bqyHsnIfgkaDA5JoDwrO6DgaHLrhfUH4RVZr2TsPoP88nFet81/lLWKoovZXqiyZuCai
+ e
+X-Gm-Gg: ASbGncsMfA7RsORw1NzTY25DtOFEkpN0y5vN1jkTTCvAtyo8aCRjmIKXigvjczk/Mfg
+ gRZ4AC4MgKQKeGhC88P4T4yTk5g0XrG7SfmsGmhDiYJ+f3e2UiZ4DuAiNm8tyB31zjMpv5BMVQ6
+ SpdpbI0PFfIosW/GGYJ54pCzasCcDQ0lLHee/AhgP2js+exFhNhXBYzkLPU1mUtsJz0lsLc8KY/
+ mHMrbrICCqgb0/FP8Gjd9Xd3FbH092PZW2yIZFq3f4dFzyIb6ZHEDnkTeM3hDraR6y/0YhXRvLB
+ aR7iGjNS9YM9oLIrhB3bkWQXI5JfPg==
+X-Google-Smtp-Source: AGHT+IGDx1Z8+pZNQjfM9/e6KW8X8lUodMRKxgcS79dgu+/M8SZZC0ZwkHZ0qTdb1WsOxi1T+SOOuA==
+X-Received: by 2002:a17:903:2bcb:b0:216:4676:dfb5 with SMTP id
+ d9443c01a7336-221a000ea3emr221301075ad.21.1740424111800; 
+ Mon, 24 Feb 2025 11:08:31 -0800 (PST)
+Received: from grind.. ([2804:7f0:bcc0:6edb:f473:a9df:d551:443b])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d545df28sm183583155ad.153.2025.02.24.11.08.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Feb 2025 11:08:31 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 00/11] riscv: IOMMU HPM support
+Date: Mon, 24 Feb 2025 16:08:15 -0300
+Message-ID: <20250224190826.1858473-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,67 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+In this version no major changes were made. Just a rebase with
+alistair/riscv-to-apply.next and acks from Alistair.
 
-Am 22=2E Februar 2025 17:52:27 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
-me=2Ehu>:
->Hello,
->
->This series adds NVRAM and support for -kernel, -initrd and -append
->options to the amigaone machine=2E This makes it easier to boot AmigaOS
->and avoids a crash in the guest when it tries to access NVRAM=2E
+All patches acked.
 
-Looks like the above information could be added to the changelog=2E While=
-=2E=2E=2E
+v1 link: https://lore.kernel.org/qemu-riscv/20241205133003.184581-1-dbarboza@ventanamicro.com/
 
->
->While the -kernel option emulates what U-Boot passes to the kernel,
->old Linux kernels for amigaone may not work with it because of two
->reasons: these come in legacy U-Boot Multi-File image format that QEMU
->cannot read and even after unpacking that and creating a kernel uimage
->it won't find PCI devices because it does not initialise them
->correctly=2E This works when booted from U-Boot because U-Boot inits PCI
->devices=2E So does my BBoot loader which can be used to load AmigaOS so
->I don't intend to emulate that part of U-Boot=2E
->
->I'd like this to be merged for the next release please=2E When merging
->please update https://wiki=2Eqemu=2Eorg/ChangeLog/10=2E0 with the followi=
-ng:
->
->amigaone
->
->Added support for NVRAM and -kernel, -initrd, -append command line
->options=2E
+Daniel Henrique Barboza (3):
+  hw/riscv/riscv-iommu.h: add missing headers
+  hw/riscv: add IOMMU HPM trace events
+  docs/specs/riscv-iommu.rst: add HPM support info
 
-=2E=2E=2E this:
+Tomasz Jeznach (8):
+  hw/riscv/riscv-iommu-bits.h: HPM bits
+  hw/riscv/riscv-iommu: add riscv-iommu-hpm file
+  hw/riscv/riscv-iommu: add riscv_iommu_hpm_incr_ctr()
+  hw/riscv/riscv-iommu: instantiate hpm_timer
+  hw/riscv/riscv-iommu: add IOCOUNTINH mmio writes
+  hw/riscv/riscv-iommu: add IOHPMCYCLES mmio write
+  hw/riscv/riscv-iommu: add hpm events mmio write
+  hw/riscv/riscv-iommu.c: add RISCV_IOMMU_CAP_HPM cap
 
->By default the NVRAM contents are not preserved between
->sessions=2E To make it persistent create a backing file with 'qemu-image
->create -f raw nvram=2Ebin 4k' and add -drive
->if=3Dmtd,format=3Draw,file=3Dnvram=2Ebin to keep NVRAM contents in the ba=
-cking
->file so settings stored in it will be preserved between sessions=2E
->
->To run AmigaOS with BBoot using the -kernel option at least BBoot
->version 0=2E8 is needed=2E Older BBoot versions only work with -device
->loader and cannot be used with -kernel on amigaone=2E
+ docs/specs/riscv-iommu.rst  |   2 +
+ hw/riscv/meson.build        |   3 +-
+ hw/riscv/riscv-iommu-bits.h |  47 +++++
+ hw/riscv/riscv-iommu-hpm.c  | 381 ++++++++++++++++++++++++++++++++++++
+ hw/riscv/riscv-iommu-hpm.h  |  33 ++++
+ hw/riscv/riscv-iommu.c      | 131 +++++++++++--
+ hw/riscv/riscv-iommu.h      |  27 +++
+ hw/riscv/trace-events       |   5 +
+ 8 files changed, 612 insertions(+), 17 deletions(-)
+ create mode 100644 hw/riscv/riscv-iommu-hpm.c
+ create mode 100644 hw/riscv/riscv-iommu-hpm.h
 
-=2E=2E=2E information could be added to the amigaone section in the QEMU m=
-anual to keep the documentation in one place=2E
+-- 
+2.48.1
 
-Best regards,
-Bernhard
-
->
->Regards,
->
->BALATON Zoltan (4):
->  ppc/amigaone: Simplify replacement dummy_fw
->  ppc/amigaone: Implement NVRAM emulation
->  ppc/amigaone: Add default environment
->  ppc/amigaone: Add kernel and initrd support
->
-> hw/ppc/amigaone=2Ec | 269 ++++++++++++++++++++++++++++++++++++++++++++--
-> 1 file changed, 261 insertions(+), 8 deletions(-)
->
 
