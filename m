@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7CBA4264B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 16:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0FBA425DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 16:15:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmaQf-0008I8-ST; Mon, 24 Feb 2025 10:31:33 -0500
+	id 1tmaAB-0002hs-Gk; Mon, 24 Feb 2025 10:14:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmaQb-0008Hw-Hb
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 10:31:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmaA8-0002hL-Gl
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 10:14:28 -0500
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmaQZ-0006fy-Nf
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 10:31:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740411084;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xtsR2GaTFqNApaR+NtxaDNshv+x4u0hipRWSSiJJAGc=;
- b=aulicaZ3PqQN0yRd5rW392THhafjAyNMyk78quRw6ufgXNxrARSJTWeZnBwooi2JUgHCLE
- efdMbPOJj6nbphiSxck3UkxmGx6xRpi+2rKdVJFJtU0OQ/bnF6DNw87ujUf5CUcZ/rvrsT
- 6fLH6fDwBqxkJICE3TlF88oXj0GBwN4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-GHxzlPOdOJms6GqJf7achQ-1; Mon,
- 24 Feb 2025 10:31:22 -0500
-X-MC-Unique: GHxzlPOdOJms6GqJf7achQ-1
-X-Mimecast-MFC-AGG-ID: GHxzlPOdOJms6GqJf7achQ_1740411081
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6624A18EB2CB; Mon, 24 Feb 2025 15:31:21 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.219])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 435EA1800358; Mon, 24 Feb 2025 15:31:18 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id C84BF1800098; Mon, 24 Feb 2025 16:31:15 +0100 (CET)
-Date: Mon, 24 Feb 2025 16:31:15 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmaA6-00040s-7O
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 10:14:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740410066; x=1771946066;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nqnXOdhhbSf3FSsBLv+n0ff4BYjRtr/PsBIjLrIkf30=;
+ b=PcpjREZrP3YBbu4hi5hnDqoPUD3oVtP8I5U2ZVXzr0hZBJDVa3KeuIT/
+ EbY2zrm2S/sVAobIxVDjufq0Tq8U+hTr1fQww3I7q0mIZnnihNt7Hzg5K
+ 2SdtM/FOkUB8ZMorLFRo9dXfypCzK/cqgQV0T5PjrFwhidxFlqtffaplc
+ n3M46y45+8ZWqn8BIsSVswTzoJ9zM+aqnQVBRLn51A/ZMD1cfIu3pT3Pi
+ ANCpXmmdrBLbLZGKs0TiYpdrezvlaF1HfrcMqHWdQ4bMHvr7i/O0wCnIa
+ a+dNjiftIIheNIRXhM/ubDqVajmrp2S71yaUVZlg3dAAlsrbE/UL4Vxdi w==;
+X-CSE-ConnectionGUID: oc/k+DlkToC6vv2ufLGqVQ==
+X-CSE-MsgGUID: kvqEcJCoR5qghd5q2HGG8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="45075988"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="45075988"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 07:14:23 -0800
+X-CSE-ConnectionGUID: U9UcDV1EToK7wB6Cedv8lQ==
+X-CSE-MsgGUID: S1j/Q2SIQNKO7mM0xMFxtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="116106267"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa007.fm.intel.com with ESMTP; 24 Feb 2025 07:14:22 -0800
+Date: Mon, 24 Feb 2025 23:33:58 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/i386: introduce x86_firmware_reconfigure api
-Message-ID: <wdwnpkhgisjqzztersvs3vov4piwqaaxf7gqfm2v2tibbaeakd@rfe24yyhrflr>
-References: <20250221032051.35033-1-anisinha@redhat.com>
+Subject: Re: [PATCH RESEND] i386: Only configure HPET firmware info when HPET
+ is enabled
+Message-ID: <Z7yRZhwCPkPrrtnu@intel.com>
+References: <20250121140121.84550-1-zhao1.liu@intel.com>
+ <20250220101525-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250221032051.35033-1-anisinha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+In-Reply-To: <20250220101525-mutt-send-email-mst@kernel.org>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,16 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+Hi Michael,
 
->      /* should only be called once */
-> -    if (ovmf_flash_parsed) {
-> +    if (ovmf_flash_parsed && !force) {
+Thanks for looking at here!
 
-I think it makes more sense to clear ovmf_flash_parsed when replacing
-the firmware (instead of adding the force override).
+On Thu, Feb 20, 2025 at 10:16:56AM -0500, Michael S. Tsirkin wrote:
+> Date: Thu, 20 Feb 2025 10:16:56 -0500
+> From: "Michael S. Tsirkin" <mst@redhat.com>
+> Subject: Re: [PATCH RESEND] i386: Only configure HPET firmware info when
+>  HPET is enabled
+> 
+> On Tue, Jan 21, 2025 at 10:01:21PM +0800, Zhao Liu wrote:
+> > At present, the hpet_cfg is written unconditionally since 40ac17cd56eb
+> > ("pass info about hpets to seabios.]"), because it concerns ACPI HPET is
+> > created unconditionally.
+> > 
+> > But that fact has changed since 51124bbfd2ea ("i386: acpi: Don't build
+> > HPET ACPI entry if HPET is disabled") and ACPI checks if HPET device
+> > exists in (hw/i386/acpi-build.c).
+> > 
+> > Therefore, configure HPET firmware information if and only if HPET is
+> > enabled.
+> >
+> 
+> and what is the gain from this change? just a cleanup?
 
-take care,
-  Gerd
+This patch was trying to decouple hpet_cfw with i386 codes, which can
+resolve the compilation issue when both the Rust and C versions of HPET
+are both disabled.
+
+But this patch is not needed since Paolo has figured out a simpler way
+[*].
+
+And thank you anyway!
+
+[*]: https://lore.kernel.org/qemu-devel/CABgObfb6PhiKO9=iWne9AoXQ+Ek7FddoW8D0VcWvw3Qa3TW-9w@mail.gmail.com/
+
+Regards,
+Zhao
 
 
