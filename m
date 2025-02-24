@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B42A41C4E
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 12:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64784A41C59
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 12:19:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmWRP-0005qb-EP; Mon, 24 Feb 2025 06:16:03 -0500
+	id 1tmWRO-0005pT-9j; Mon, 24 Feb 2025 06:16:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWR1-0005ly-06
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:39 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1tmWR2-0005n4-6s
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:40 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWQy-00018B-Nn
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:38 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38dcac27bcbso3252346f8f.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 03:15:36 -0800 (PST)
+ id 1tmWR0-00018x-5S
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:39 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4399deda38cso25180025e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 03:15:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740395735; x=1741000535; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740395737; x=1741000537; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ajZ80sJdOGH3k+29+o4N7kSCTpNRDBlyRWkxI9EVY8=;
- b=wEgDikF73w5EJcaQLy9bLuUiiGqBFm1TqaIL7n4Y5VpjLHtye3Irwh3IOpkC3c7IFU
- gbLpUjB6aC1o4JzNzYQPuJGsalXLuAnbiS/jSzPqDJ51RS6LN0Jcs+Ioydc8AOC2NjqR
- ByXi04dBVU083IU98xn2IO0Jq6Lesxp+Bx72Tbg7b4g3ZziZhBQtQ79iWGBF9LwKI5VI
- RYMp9X6ziIrW4DvEf0PDTl1t7ZF0aIN3Wq3+Rn3jREyYuJIDPWe0+c60XD/T0UV/UGWY
- jPnHw2ngoZsACG7b0KFy/dPCaIzXSHmsu+ESkNNDNKglQaQUF3v7w/zRQS7N9DcEhnrD
- zgDQ==
+ bh=oqXeXRoWaJ3QKZJ6jrqg2FahLEljcBiEpPgYa/U9aIk=;
+ b=sjMPmDmdrCOEQ6VEueSOQo39KclZbLqFrPryYe666ds4ttMtUGNjoFZ8rYJBwYiEOC
+ 6Hj+wC4OD2hncJJ6J0aOh3uyE3a87Z35Zvsb8NzAaew3uGT169hhF4yJttt8En9wDgua
+ goRst6ORbDgsQE/zxkR7iG1e4LR8oyRfYF1/VadcipK7UIDY//94A+o7bjUMIOimhQdI
+ 0I9jQpXnXtY663elFTxn1oDgT1iaUqVTo88IwtsGjkClZ/JHH2DBshO38gBRwHYB2nqi
+ Clmo5bRLo5zhm/GVAzKVR+Fw3kLVJtItAvG7tOI/WlPiigI4/Sc49wuce3+aW577o2lx
+ o57A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740395735; x=1741000535;
+ d=1e100.net; s=20230601; t=1740395737; x=1741000537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ajZ80sJdOGH3k+29+o4N7kSCTpNRDBlyRWkxI9EVY8=;
- b=Kw5zB5DslTBzkTKRJaaCGbzkFDIkLyUs5Q7IrK5siNdsQDucRebwRzKnSXgkSRJpop
- iZtCGG9+n+GVXPkBc7icXWAsLO/EDaFM/4hkXI9aiMzJOc8Wvp/0uMgezaSTHz2HDAnM
- 30BToOufG3VQqObXwiwm8X19dPSufAJiajuI51dYKJeZBEquuoLjKHDx3W38Fs418bb4
- 2TvqLBLNhzTuiGq2n8b7DfL7ZAFihtErpUEI3y3SpvwP4mXZS4IqqxHncIc8DAsmlRGk
- 0FIJyEN8gqHgXM/SHqNgvlx+M+7cVdofWZU7cxGHxginUeeTPtvWYjMGtN4iMiLjvcHn
- kDGA==
-X-Gm-Message-State: AOJu0YwS9lrupj4XiYvhi5LCSfKW7Nn4cLXep+3e8FPXmW+K3Uu+UeIW
- tnX/5Nk6rPb+2l6U5MCD2dphprBmAeJXYa/WYbEF3fqslNrW9sUuFWI5sfJQh8meBYz1OhPT3bq
- 9
-X-Gm-Gg: ASbGnctZekquSGXFvdIGqsItAJ0Hic6TEuUxpnkaCDSEb/DVjVLTB8vr4otf0X7ItOY
- OqHVoOHGDvAyJ7FMv3rQ4XIA+3rYjqBU4xVXSWgLIpVct1LvS7OPKp6lrN8Bh7HoQ7nFvfnULw2
- f1W178NnukvG5xc0x8u6CQH2p1/i2WzNK9bEX6W94/PUz69/MqNUiiVW7jIflqoV8Za8ktG5l/v
- ih4fCIQmxfaJwjaeTa0NOcGW2A6yXzhAj8EcT+eIGYryY4L4fBFqBpL6jrFoRw0LLPyFa9RHCqX
- aTTGQ7/tzndOA7I6HBmUnN8232fK/+9J
-X-Google-Smtp-Source: AGHT+IFGMc01xXSWKVFevOmmgMnodERzFMICfmYep/ekALoZhOueFgQywCVVrGnQMpB7TiPwTl+Xbg==
-X-Received: by 2002:a05:6000:4712:b0:38f:32d5:3a92 with SMTP id
- ffacd0b85a97d-38f614b827bmr14284352f8f.12.1740395735039; 
- Mon, 24 Feb 2025 03:15:35 -0800 (PST)
+ bh=oqXeXRoWaJ3QKZJ6jrqg2FahLEljcBiEpPgYa/U9aIk=;
+ b=VPVJ8MppsywdpI1IfBRbeuGg6UPn/T8HiZTfnxAjXxtO9TERyaMkPiYI2wit1/PlW0
+ HxZNy80RwAApas1GbojE5iRfmGeZLWDBjm4cO0TfiBpoOGyabweG9B0CRJ1hSiw7AAuO
+ R5miaySeVp40bqOuh1rjhhtjY460tmyWf6YQgeGkwwVQz4Zt3t3O4FEBcvl5st3QC3RJ
+ LoNglQMqmRxJR1drXHequwhG3aCkwmrqq3GXYqpg361LNgmZOOSJUTIa33hJy9gBYsy7
+ xmGy9P5CWjHo+fL+geGyPqWdE49PNHx6dqZVUtA0GVzesB38IFUvaLUt+Zrj1Rlp50A7
+ TQ5Q==
+X-Gm-Message-State: AOJu0YximThg6U2+kv4AY/XN8BNY5G8Ad10+PlTon2dqg+ysmJ3/1neN
+ Fq1D0Nz7JOWWysXjYZcJT94dM7xDgR4Yb1i17EpWf081T8o0VuPGwF5wYXyFYvDDcLy7GiGOH8+
+ m
+X-Gm-Gg: ASbGncv0ACRS+tlM32VVzCe0o96t0O/lVB2pvLAoCDxbKcV1Gt91ZCN+x3GF4QFFUA2
+ nvIXY5dWEF70WA74gr5saaSdwQbrLBAufYxuEeF19JfIu1VdrBY1yXq55YXVroNUBmTaZQZThGn
+ u6z1QI5NY1Qa3mTdyNIcPHnWPVzI2kC9bXdZSpV/nH4Z11BEtBtdSp9VZofJnaFE/cm8gi26FDe
+ sU0TK7K8yVX543o+G/4AERgetWyYgCuCqVv34V6LpiEYKCYY8tTwuYvgC8NbrTMRFKUWprcoXhl
+ /x55yk9lpBhSG2j2C7/Dh+7my0up+8Oy
+X-Google-Smtp-Source: AGHT+IHKrUtm8nDC4mB4T6pWXNR12sBYJkdtlG3hQTtihGebc/UngvQ0QcxmY3WbZeJGyujLi7NmuA==
+X-Received: by 2002:a05:600c:5246:b0:439:9c3a:bba7 with SMTP id
+ 5b1f17b1804b1-439ae21d280mr98358935e9.28.1740395736631; 
+ Mon, 24 Feb 2025 03:15:36 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b037214asm101447705e9.38.2025.02.24.03.15.34
+ 5b1f17b1804b1-439b037214asm101447705e9.38.2025.02.24.03.15.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 03:15:34 -0800 (PST)
+ Mon, 24 Feb 2025 03:15:35 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 07/12] fpu: Make floatx80 invalid encoding settable at
- runtime
-Date: Mon, 24 Feb 2025 11:15:19 +0000
-Message-ID: <20250224111524.1101196-8-peter.maydell@linaro.org>
+Subject: [PATCH v2 08/12] fpu: Move m68k_denormal fmt flag into
+ floatx80_behaviour
+Date: Mon, 24 Feb 2025 11:15:20 +0000
+Message-ID: <20250224111524.1101196-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224111524.1101196-1-peter.maydell@linaro.org>
 References: <20250224111524.1101196-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,193 +100,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because floatx80 has an explicit integer bit, this permits some
-odd encodings where the integer bit is not set correctly for the
-floating point value type. In In Intel terminology the
- categories are:
-  exp == 0, int = 0, mantissa == 0 : zeroes
-  exp == 0, int = 0, mantissa != 0 : denormals
-  exp == 0, int = 1 : pseudo-denormals
-  0 < exp < 0x7fff, int = 0 : unnormals
-  0 < exp < 0x7fff, int = 1 : normals
-  exp == 0x7fff, int = 0, mantissa == 0 : pseudo-infinities
-  exp == 0x7fff, int = 1, mantissa == 0 : infinities
-  exp == 0x7fff, int = 0, mantissa != 0 : pseudo-NaNs
-  exp == 0x7fff, int = 1, mantissa == 0 : NaNs
+Currently we compile-time set an 'm68k_denormal' flag in the FloatFmt
+for floatx80 for m68k.  This controls our handling of what the Intel
+documentation calls a "pseudo-denormal": a value where the exponent
+field is zero and the explicit integer bit is set.
 
-The usual IEEE cases of zero, denormal, normal, inf and NaN are always valid.
-x87 permits as input also pseudo-denormals.
-m68k permits all those and also pseudo-infinities, pseudo-NaNs and unnormals.
+For x86, the x87 FPU is supposed to accept a pseudo-denormal as
+input, but never generate one on output.  For m68k, these values are
+permitted on input and may be produced on output.
 
-Currently we have an ifdef in floatx80_invalid_encoding() to select
-the x86 vs m68k behaviour.  Add new floatx80_behaviour flags to
-select whether pseudo-NaN and unnormal are valid, and use these
-(plus the existing pseudo_inf_valid flag) to decide whether these
-encodings are invalid at runtime.
+Replace the flag in the FloatFmt with a flag indicating whether the
+float format has an explicit bit (which will be true for floatx80 for
+all targets, and false for every other float type).  Then we can gate
+the handling of these pseudo-denormals on the setting of a
+floatx80_behaviour flag.
 
-We leave pseudo-denormals as always-valid, since both x86 and m68k
-accept them.
+As far as I can see from the code we don't actually handle the
+x86-mandated "accept on input but don't generate" behaviour, because
+the handling in partsN(canonicalize) looked at fmt->m68k_denormal.
+So I have added TODO comments to that effect.
+
+This commit doesn't change any behaviour for any target.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250217125055.160887-6-peter.maydell@linaro.org
+Message-id: 20250217125055.160887-7-peter.maydell@linaro.org
 ---
- include/fpu/softfloat-types.h | 14 ++++++++
- include/fpu/softfloat.h       | 68 ++++++++++++++++++-----------------
- target/m68k/cpu.c             | 28 ++++++++++++++-
- 3 files changed, 77 insertions(+), 33 deletions(-)
+ include/fpu/softfloat-types.h | 19 +++++++++++++++++++
+ fpu/softfloat.c               |  9 ++++-----
+ target/m68k/cpu.c             |  3 ++-
+ fpu/softfloat-parts.c.inc     | 27 ++++++++++++++++++++++++---
+ 4 files changed, 49 insertions(+), 9 deletions(-)
 
 diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index e1732beba4f..b1941384aef 100644
+index b1941384aef..1af2a0cb14b 100644
 --- a/include/fpu/softfloat-types.h
 +++ b/include/fpu/softfloat-types.h
-@@ -333,8 +333,22 @@ typedef enum __attribute__((__packed__)) {
-     /*
-      * Are Pseudo-infinities (Inf with the Integer bit zero) valid?
-      * If so, floatx80_is_infinity() will return true for them.
-+     * If not, floatx80_invalid_encoding will return false for them,
-+     * and using them as inputs to a float op will raise Invalid.
+@@ -349,6 +349,25 @@ typedef enum __attribute__((__packed__)) {
+      * and using them as inputs to a float op will raise Invalid.
       */
-     floatx80_pseudo_inf_valid = 2,
+     floatx80_unnormal_valid = 8,
++
 +    /*
-+     * Are Pseudo-NaNs (NaNs where the Integer bit is zero) valid?
-+     * If not, floatx80_invalid_encoding() will return false for them,
-+     * and using them as inputs to a float op will raise Invalid.
++     * If the exponent is 0 and the Integer bit is set, Intel call
++     * this a "pseudo-denormal"; x86 supports that only on input
++     * (treating them as denormals by ignoring the Integer bit).
++     * For m68k, the integer bit is considered validly part of the
++     * input value when the exponent is 0, and may be 0 or 1,
++     * giving extra range. They may also be generated as outputs.
++     * (The m68k manual actually calls these values part of the
++     * normalized number range, not the denormalized number range.)
++     *
++     * By default you get the Intel behaviour where the Integer
++     * bit is ignored; if this is set then the Integer bit value
++     * is honoured, m68k-style.
++     *
++     * Either way, floatx80_invalid_encoding() will always accept
++     * pseudo-denormals.
 +     */
-+    floatx80_pseudo_nan_valid = 4,
-+    /*
-+     * Are Unnormals (0 < exp < 0x7fff, Integer bit zero) valid?
-+     * If not, floatx80_invalid_encoding() will return false for them,
-+     * and using them as inputs to a float op will raise Invalid.
-+     */
-+    floatx80_unnormal_valid = 8,
++    floatx80_pseudo_denormal_valid = 16,
  } FloatX80Behaviour;
  
  /*
-diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index 1c8f3cbb78d..c18ab2cb609 100644
---- a/include/fpu/softfloat.h
-+++ b/include/fpu/softfloat.h
-@@ -1073,41 +1073,45 @@ static inline bool floatx80_unordered_quiet(floatx80 a, floatx80 b,
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 2a20ae871eb..b299cfaf860 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -537,7 +537,8 @@ typedef struct {
+  *   round_mask: bits below lsb which must be rounded
+  * The following optional modifiers are available:
+  *   arm_althp: handle ARM Alternative Half Precision
+- *   m68k_denormal: explicit integer bit for extended precision may be 1
++ *   has_explicit_bit: has an explicit integer bit; this affects whether
++ *   the float_status floatx80_behaviour handling applies
+  */
+ typedef struct {
+     int exp_size;
+@@ -547,7 +548,7 @@ typedef struct {
+     int frac_size;
+     int frac_shift;
+     bool arm_althp;
+-    bool m68k_denormal;
++    bool has_explicit_bit;
+     uint64_t round_mask;
+ } FloatFmt;
  
- /*----------------------------------------------------------------------------
- | Return whether the given value is an invalid floatx80 encoding.
--| Invalid floatx80 encodings arise when the integer bit is not set, but
--| the exponent is not zero. The only times the integer bit is permitted to
--| be zero is in subnormal numbers and the value zero.
--| This includes what the Intel software developer's manual calls pseudo-NaNs,
--| pseudo-infinities and un-normal numbers. It does not include
--| pseudo-denormals, which must still be correctly handled as inputs even
--| if they are never generated as outputs.
-+| Invalid floatx80 encodings may arise when the integer bit is not set
-+| correctly; this is target-specific. In Intel terminology the
-+| categories are:
-+|  exp == 0, int = 0, mantissa == 0 : zeroes
-+|  exp == 0, int = 0, mantissa != 0 : denormals
-+|  exp == 0, int = 1 : pseudo-denormals
-+|  0 < exp < 0x7fff, int = 0 : unnormals
-+|  0 < exp < 0x7fff, int = 1 : normals
-+|  exp == 0x7fff, int = 0, mantissa == 0 : pseudo-infinities
-+|  exp == 0x7fff, int = 1, mantissa == 0 : infinities
-+|  exp == 0x7fff, int = 0, mantissa != 0 : pseudo-NaNs
-+|  exp == 0x7fff, int = 1, mantissa == 0 : NaNs
-+|
-+| The usual IEEE cases of zero, denormal, normal, inf and NaN are always valid.
-+| x87 permits as input also pseudo-denormals.
-+| m68k permits all those and also pseudo-infinities, pseudo-NaNs and unnormals.
-+|
-+| Since we don't have a target that handles floatx80 but prohibits
-+| pseudo-denormals in input, we don't currently have a floatx80_behaviour
-+| flag for that case, but instead always accept it. Conveniently this
-+| means that all cases with either exponent 0 or the integer bit set are
-+| valid for all targets.
- *----------------------------------------------------------------------------*/
- static inline bool floatx80_invalid_encoding(floatx80 a, float_status *s)
- {
--#if defined(TARGET_M68K)
--    /*-------------------------------------------------------------------------
--    | With m68k, the explicit integer bit can be zero in the case of:
--    | - zeros                (exp == 0, mantissa == 0)
--    | - denormalized numbers (exp == 0, mantissa != 0)
--    | - unnormalized numbers (exp != 0, exp < 0x7FFF)
--    | - infinities           (exp == 0x7FFF, mantissa == 0)
--    | - not-a-numbers        (exp == 0x7FFF, mantissa != 0)
--    |
--    | For infinities and NaNs, the explicit integer bit can be either one or
--    | zero.
--    |
--    | The IEEE 754 standard does not define a zero integer bit. Such a number
--    | is an unnormalized number. Hardware does not directly support
--    | denormalized and unnormalized numbers, but implicitly supports them by
--    | trapping them as unimplemented data types, allowing efficient conversion
--    | in software.
--    |
--    | See "M68000 FAMILY PROGRAMMER’S REFERENCE MANUAL",
--    |     "1.6 FLOATING-POINT DATA TYPES"
--    *------------------------------------------------------------------------*/
--    return false;
--#else
--    return (a.low & (1ULL << 63)) == 0 && (a.high & 0x7FFF) != 0;
+@@ -600,9 +601,7 @@ static const FloatFmt floatx80_params[3] = {
+     [floatx80_precision_d] = { FLOATX80_PARAMS(52) },
+     [floatx80_precision_x] = {
+         FLOATX80_PARAMS(64),
+-#ifdef TARGET_M68K
+-        .m68k_denormal = true,
 -#endif
-+    if ((a.low >> 63) || (a.high & 0x7fff) == 0) {
-+        /* Anything with the Integer bit set or the exponent 0 is valid */
-+        return false;
-+    }
-+
-+    if ((a.high & 0x7fff) == 0x7fff) {
-+        if (a.low) {
-+            return !(s->floatx80_behaviour & floatx80_pseudo_nan_valid);
-+        } else {
-+            return !(s->floatx80_behaviour & floatx80_pseudo_inf_valid);
-+        }
-+    } else {
-+        return !(s->floatx80_behaviour & floatx80_unnormal_valid);
-+    }
- }
++        .has_explicit_bit = true,
+     },
+ };
  
- #define floatx80_zero make_floatx80(0x0000, 0x0000000000000000LL)
 diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 56b23de21fe..505fa97a53f 100644
+index 505fa97a53f..2617d8f6ede 100644
 --- a/target/m68k/cpu.c
 +++ b/target/m68k/cpu.c
-@@ -111,9 +111,35 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
-      * m68k-specific floatx80 behaviour:
-      *  * default Infinity values have a zero Integer bit
-      *  * input Infinities may have the Integer bit either 0 or 1
-+     *  * pseudo-denormals supported for input and output
-+     *  * don't raise Invalid for pseudo-NaN/pseudo-Inf/Unnormal
-+     *
-+     * With m68k, the explicit integer bit can be zero in the case of:
-+     * - zeros                (exp == 0, mantissa == 0)
-+     * - denormalized numbers (exp == 0, mantissa != 0)
-+     * - unnormalized numbers (exp != 0, exp < 0x7FFF)
-+     * - infinities           (exp == 0x7FFF, mantissa == 0)
-+     * - not-a-numbers        (exp == 0x7FFF, mantissa != 0)
-+     *
-+     * For infinities and NaNs, the explicit integer bit can be either one or
-+     * zero.
-+     *
-+     * The IEEE 754 standard does not define a zero integer bit. Such a number
-+     * is an unnormalized number. Hardware does not directly support
-+     * denormalized and unnormalized numbers, but implicitly supports them by
-+     * trapping them as unimplemented data types, allowing efficient conversion
-+     * in software.
-+     *
-+     * See "M68000 FAMILY PROGRAMMER’S REFERENCE MANUAL",
-+     *     "1.6 FLOATING-POINT DATA TYPES"
-+     *
-+     * Note though that QEMU's fp emulation does directly handle both
-+     * denormal and unnormal values, and does not trap to guest software.
-      */
+@@ -139,7 +139,8 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
      set_floatx80_behaviour(floatx80_default_inf_int_bit_is_zero |
--                           floatx80_pseudo_inf_valid,
-+                           floatx80_pseudo_inf_valid |
-+                           floatx80_pseudo_nan_valid |
-+                           floatx80_unnormal_valid,
+                            floatx80_pseudo_inf_valid |
+                            floatx80_pseudo_nan_valid |
+-                           floatx80_unnormal_valid,
++                           floatx80_unnormal_valid |
++                           floatx80_pseudo_denormal_valid,
                             &env->fp_status);
  
      nan = floatx80_default_nan(&env->fp_status);
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index 1d09f066c5d..171bfd06e3a 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -195,6 +195,25 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+ static void partsN(canonicalize)(FloatPartsN *p, float_status *status,
+                                  const FloatFmt *fmt)
+ {
++    /*
++     * It's target-dependent how to handle the case of exponent 0
++     * and Integer bit set. Intel calls these "pseudodenormals",
++     * and treats them as if the integer bit was 0, and never
++     * produces them on output. This is the default behaviour for QEMU.
++     * For m68k, the integer bit is considered validly part of the
++     * input value when the exponent is 0, and may be 0 or 1,
++     * giving extra range. They may also be generated as outputs.
++     * (The m68k manual actually calls these values part of the
++     * normalized number range, not the denormalized number range,
++     * but that distinction is not important for us, because
++     * m68k doesn't care about the input_denormal_used status flag.)
++     * floatx80_pseudo_denormal_valid selects the m68k behaviour,
++     * which changes both how we canonicalize such a value and
++     * how we uncanonicalize results.
++     */
++    bool has_pseudo_denormals = fmt->has_explicit_bit &&
++        (status->floatx80_behaviour & floatx80_pseudo_denormal_valid);
++
+     if (unlikely(p->exp == 0)) {
+         if (likely(frac_eqz(p))) {
+             p->cls = float_class_zero;
+@@ -206,7 +225,7 @@ static void partsN(canonicalize)(FloatPartsN *p, float_status *status,
+             int shift = frac_normalize(p);
+             p->cls = float_class_denormal;
+             p->exp = fmt->frac_shift - fmt->exp_bias
+-                   - shift + !fmt->m68k_denormal;
++                   - shift + !has_pseudo_denormals;
+         }
+     } else if (likely(p->exp < fmt->exp_max) || fmt->arm_althp) {
+         p->cls = float_class_normal;
+@@ -342,13 +361,15 @@ static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
+         frac_clear(p);
+     } else {
+         bool is_tiny = s->tininess_before_rounding || exp < 0;
++        bool has_pseudo_denormals = fmt->has_explicit_bit &&
++            (s->floatx80_behaviour & floatx80_pseudo_denormal_valid);
+ 
+         if (!is_tiny) {
+             FloatPartsN discard;
+             is_tiny = !frac_addi(&discard, p, inc);
+         }
+ 
+-        frac_shrjam(p, !fmt->m68k_denormal - exp);
++        frac_shrjam(p, !has_pseudo_denormals - exp);
+ 
+         if (p->frac_lo & round_mask) {
+             /* Need to recompute round-to-even/round-to-odd. */
+@@ -379,7 +400,7 @@ static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
+             p->frac_lo &= ~round_mask;
+         }
+ 
+-        exp = (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) && !fmt->m68k_denormal;
++        exp = (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) && !has_pseudo_denormals;
+         frac_shr(p, frac_shift);
+ 
+         if (is_tiny) {
 -- 
 2.43.0
 
