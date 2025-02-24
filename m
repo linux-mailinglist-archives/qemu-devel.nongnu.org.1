@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82938A43083
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D474A43085
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 00:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmhXd-0005tK-9d; Mon, 24 Feb 2025 18:07:13 -0500
+	id 1tmhYP-0006Ee-BF; Mon, 24 Feb 2025 18:08:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhXZ-0005st-Jh
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:07:09 -0500
-Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhYJ-00068N-Hv
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:07:56 -0500
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhXX-0007XL-RS
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:07:09 -0500
-Received: by mail-il1-x133.google.com with SMTP id
- e9e14a558f8ab-3d2f5a93a32so3989395ab.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 15:07:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhYH-0007eM-Oi
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:07:55 -0500
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-3cf8e017abcso17287955ab.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 15:07:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1740438423; x=1741043223; darn=nongnu.org;
+ d=chromium.org; s=google; t=1740438471; x=1741043271; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aSH50K2JoZy3b57Ten2+Yq1o4INV7m/qW+7NuVpQc3U=;
- b=T5z1q7rYRDf9Ri3yyVrKGM3ENsCVIE3yBy++VrmqOHXpG+1LzSYnPbc5RDrlXZnn2h
- vKx1DrFYjp6kYOcBE31gIq2DoUvmg0X3fZLe6kxgU5ZmTCGQ6VR6GAexNlKsQm8lZ7Vh
- nAXAmaNC/1CVDck/DaGdW+RJDuXvCZKKeexWI=
+ bh=YBw5RnVhttKdF2Qo8bwI9+KLvnZSt3HCKA4Su8eQKxU=;
+ b=B9H6WcSl2ILnhxox4HI7L3mGAtI0gfGWODW73qTPS3QP3zfB1bMACBgdAcjNfwpLJD
+ DE52O8r+BLHgIsSsUp4+MPh6k6EGRVjzQPv6f7a65FRtJ53KkFKdRmfpYgQz8ZA6JqOx
+ GgBNWvTWzRiQ9ISxkLK1kqQv/53RGYv6edeeo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740438423; x=1741043223;
+ d=1e100.net; s=20230601; t=1740438471; x=1741043271;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aSH50K2JoZy3b57Ten2+Yq1o4INV7m/qW+7NuVpQc3U=;
- b=v5tAg0ut1LbtuUmfQJXghY5VuSHsp9vjJLun1LvPUtX95ZoafJHHOrRVpgdCS3BvUr
- gHDdatXUWgY4cMhN3xK0qoDxqJ2Hg5leka7323YJVyMMD6rP07VMKsEYE6C3LtQVZuaY
- 7e4bskRJ+vyH8B9CksTx/9lwzGelzVI7yhZZqTQ/TlGp1p/ZOg1A3gZrA7pKW0K1b1uk
- tNaJvrNV6QL8PeLLhxXOOzneirxVqny43mDKmqDfJi80iOHIpubG7UwV4b9NWCgOQPWF
- CIMO3my4YUPJ/MUrBgWg3l9xuP1T1Ni7Nt5UD5djcH62pXEZKC2x+iwjdXKBBEGf/Kua
- UjMg==
+ bh=YBw5RnVhttKdF2Qo8bwI9+KLvnZSt3HCKA4Su8eQKxU=;
+ b=AZgVIKm0ic5Q/0nz4JFZ4eiG3FE+ruk4namCgI1hG/f7Oz7m+/I95QFGtXxT1pfyVr
+ UN12VXSNf96gkOO95aZM/XxpLtI2Cz9jYDWY4PIwXJZB3ZawPswSrox+x3ZlbJXk+F3L
+ owdpwoho3aIn8fyQHdY4msIiSIYJYWkOn2uqvoXoOsLBGOnD7M5DAZbdiKRWJ9Qg7tez
+ gZIhgLPHyzoml9MlMjvF2PF7oTWte2PFAa+hjpAZkZqvgSUD9ubSl8or/Dmlh8bBNyvy
+ GolKZy6kGXlY77e1IJjLZXk+EkkvFLiId8Ir+gUzFs1XDIunmIeXtZMe+Bjh8YVdZ4T+
+ 7udg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYIo2urRsYL1J2fv9dJTl0Q1WYZeODiLl7nZ6Zp9iRRgHZNTiMHUacHqJQRC8hoBBWoA1GLm1+Sbo5@nongnu.org
-X-Gm-Message-State: AOJu0YwGdIKFgVV0iK1OR81Oi5adkCOr8YByy8BYAqJ//tPmebTvdBe+
- KdfSFgw7Dd7QiWCiMrpjUy7elX1qeyOqPsMP3mGFv0RcV+toLHZmziPT3mzOOg==
-X-Gm-Gg: ASbGncs/l4fv0qoqmauAXzEi7Xyo3YEgtrC1CdhBPGskmlAv9xjw41gO6OuItZbRvTy
- cjqGRwrIz3Wx6c4Bb4hdgLdcKTuiwUHCJlQGQ/28Gk1zJNZItv1H2LYLKbOtVFpJrdbXimblSFr
- LM4E8Yx8uiwLR2QAc/oDC+5JwZ479VbHORi7/74mB6rXqcYW11DRiD0UaHqAy4XVn8ZTX1/dInZ
- 6QMcOMCtTx0maUNEFs3CyHwLSH5RQD5IT7X5IqF9lgsTjdgMT7iUtFGIy6ENg6JOOd8tjm0Qh2m
- OJlGnzJ/lJWDiHPWvSyfWA++cg/PkV1GBFWNSRMwiF7BV58v1b7a5JgzuiPiilY=
-X-Google-Smtp-Source: AGHT+IFNct6lnzD/RZAZBeipW8gHFWGG2XuMfCVmS66pkePHPioDGJmUrm5ZiV/XCBnOKBRB9w0pMA==
-X-Received: by 2002:a05:6e02:16cb:b0:3d0:137a:8ca2 with SMTP id
- e9e14a558f8ab-3d2caf0dbeamr173540975ab.22.1740438423559; 
- Mon, 24 Feb 2025 15:07:03 -0800 (PST)
+ AJvYcCUoSbd2yTkeEEHJ/woOopSyt3DTubI1YdIeCygbeVJCZ4S83FPN4nEbXLlzzQHYFmES9ijv2x8/nR/h@nongnu.org
+X-Gm-Message-State: AOJu0YwckqnD1LX9yOj3NS6OhaSvH7ec7Rw30BYtK5bFCBIDeEfV9UZD
+ IXOzr8Sw4Qtk86eiMTfT/MZZBbvYVfZqSGJjiUN7XxxqsqaELyJUli5nCsYJtA==
+X-Gm-Gg: ASbGncsou9llmRuZcHcqy7cY5/ipqAE4Eos44h5Qvj9Tn+ZNjnR+29EoJXoewfmtMCS
+ YwhitZR9f48pRVPkO0i8XPt1Gpjtf5TBZDHetdrV7jsX3zb/2g/LPkmF7C4aJWiuNrgVIDLcku5
+ 5Ubni1MxMek0R+nxfozh+5/zWfhjl8OPSjmH55mH6u1FJnyNGr7iFSs16Nmb5bRq0RDEwlDD9Zg
+ lCF1X0TwTuHNBueSSVIfiw0ZoAwCEotcG8YQsg10QIRjQDNC/6RDwjotz6arjS8T/0G8fsaT+b+
+ J4da6N5R+yiGGls0KNNNIUT2w/dU6GyPG1cOURc31S69Ri0SLRDrOLZZv4lnsEk=
+X-Google-Smtp-Source: AGHT+IGJ0PyYA7aN2H+Wd3AUmLTHv4nsQ7t+eBZtCay/PdzBHbeJLHh3U9MgQnXeG1vnXSkUazdOJg==
+X-Received: by 2002:a05:6e02:b2a:b0:3ce:78e5:d36d with SMTP id
+ e9e14a558f8ab-3d2fc0ea5camr16148325ab.12.1740438471564; 
+ Mon, 24 Feb 2025 15:07:51 -0800 (PST)
 Received: from chromium.org (c-73-203-119-151.hsd1.co.comcast.net.
  [73.203.119.151]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f04752e026sm113941173.107.2025.02.24.15.07.01
+ 8926c6da1cb9f-4f04752e026sm113941173.107.2025.02.24.15.07.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 15:07:02 -0800 (PST)
+ Mon, 24 Feb 2025 15:07:50 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: U-Boot Mailing List <u-boot@lists.denx.de>
 Cc: Bin Meng <bmeng.cn@gmail.com>, Simon Glass <sjg@chromium.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Tom Rini <trini@konsulko.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 04/44] x86: qemu: Avoid accessing BSS too early
-Date: Mon, 24 Feb 2025 16:05:53 -0700
-Message-ID: <20250224230640.2665206-5-sjg@chromium.org>
+Subject: [PATCH v3 26/44] x86: qemu: Support environment and cat command
+Date: Mon, 24 Feb 2025 16:06:15 -0700
+Message-ID: <20250224230640.2665206-27-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224230640.2665206-1-sjg@chromium.org>
 References: <20250224230640.2665206-1-sjg@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
- envelope-from=sjg@chromium.org; helo=mail-il1-x133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=sjg@chromium.org; helo=mail-il1-x129.google.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,77 +94,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BSS is placed in DRAM which is actually available early with QEMU. But
-it is cleared by the init sequence, so values stored there are lost.
+Add support for an environment stored in the first partition of the
+disk, which is assumed to hold a FAT filesystem.
 
-Move the system-type flag into a function, instead.
+Support the 'cat' command as it is useful for looking at extlinux.conf
+files.
 
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
 (no changes since v1)
 
- arch/x86/cpu/qemu/qemu.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ configs/qemu-x86_64_defconfig | 6 ++++--
+ configs/qemu-x86_defconfig    | 4 ++++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/cpu/qemu/qemu.c b/arch/x86/cpu/qemu/qemu.c
-index 563f63e2bc8..e846ccd44aa 100644
---- a/arch/x86/cpu/qemu/qemu.c
-+++ b/arch/x86/cpu/qemu/qemu.c
-@@ -15,14 +15,21 @@
- #include <asm/arch/qemu.h>
- #include <asm/u-boot-x86.h>
- 
--static bool i440fx;
--
- #if CONFIG_IS_ENABLED(QFW_PIO)
- U_BOOT_DRVINFO(x86_qfw_pio) = {
- 	.name = "qfw_pio",
- };
- #endif
- 
-+static bool is_i440fx(void)
-+{
-+	u16 device;
-+
-+	pci_read_config16(PCI_BDF(0, 0, 0), PCI_DEVICE_ID, &device);
-+
-+	return device == PCI_DEVICE_ID_INTEL_82441;
-+}
-+
- static void enable_pm_piix(void)
- {
- 	u8 en;
-@@ -50,16 +57,17 @@ static void enable_pm_ich9(void)
- 
- void qemu_chipset_init(void)
- {
--	u16 device, xbcs;
-+	bool i440fx;
-+	u16 xbcs;
- 	int pam, i;
- 
-+	i440fx = is_i440fx();
-+
- 	/*
- 	 * i440FX and Q35 chipset have different PAM register offset, but with
- 	 * the same bitfield layout. Here we determine the offset based on its
- 	 * PCI device ID.
- 	 */
--	pci_read_config16(PCI_BDF(0, 0, 0), PCI_DEVICE_ID, &device);
--	i440fx = (device == PCI_DEVICE_ID_INTEL_82441);
- 	pam = i440fx ? I440FX_PAM : Q35_PAM;
- 
- 	/*
-@@ -123,7 +131,7 @@ int mp_determine_pci_dstirq(int bus, int dev, int func, int pirq)
- {
- 	u8 irq;
- 
--	if (i440fx) {
-+	if (is_i440fx()) {
- 		/*
- 		 * Not like most x86 platforms, the PIRQ[A-D] on PIIX3 are not
- 		 * connected to I/O APIC INTPIN#16-19. Instead they are routed
+diff --git a/configs/qemu-x86_64_defconfig b/configs/qemu-x86_64_defconfig
+index 84b7dc8e99f..ae34cc2a6f8 100644
+--- a/configs/qemu-x86_64_defconfig
++++ b/configs/qemu-x86_64_defconfig
+@@ -41,9 +41,7 @@ CONFIG_SPL_NO_BSS_LIMIT=y
+ CONFIG_SPL_BOARD_INIT=y
+ CONFIG_SPL_SYS_MALLOC_SIMPLE=y
+ CONFIG_SPL_CPU=y
+-CONFIG_SPL_ENV_SUPPORT=y
+ CONFIG_SPL_DM_SPI_FLASH=y
+-CONFIG_SPL_NET=y
+ CONFIG_SPL_PCI=y
+ CONFIG_SPL_PCH=y
+ CONFIG_SPL_RTC=y
+@@ -54,6 +52,7 @@ CONFIG_CMD_MEM_SEARCH=y
+ CONFIG_CMD_IDE=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USB=y
++CONFIG_CMD_CAT=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_BOOTP_BOOTFILESIZE=y
+ CONFIG_CMD_EFIDEBUG=y
+@@ -61,6 +60,9 @@ CONFIG_CMD_TIME=y
+ CONFIG_CMD_BOOTSTAGE=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_ENV_OVERWRITE=y
++CONFIG_ENV_IS_IN_FAT=y
++CONFIG_ENV_FAT_INTERFACE="virtio"
++CONFIG_ENV_FAT_DEVICE_AND_PART="0:1"
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_USE_BOOTFILE=y
+ CONFIG_BOOTFILE="bzImage"
+diff --git a/configs/qemu-x86_defconfig b/configs/qemu-x86_defconfig
+index d52afa42955..7afa3827e61 100644
+--- a/configs/qemu-x86_defconfig
++++ b/configs/qemu-x86_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_MEM_SEARCH=y
+ CONFIG_CMD_IDE=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USB=y
++CONFIG_CMD_CAT=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_BOOTP_BOOTFILESIZE=y
+ CONFIG_CMD_EFIDEBUG=y
+@@ -42,6 +43,9 @@ CONFIG_CMD_BOOTSTAGE=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_MAC_PARTITION=y
+ CONFIG_ENV_OVERWRITE=y
++CONFIG_ENV_IS_IN_FAT=y
++CONFIG_ENV_FAT_INTERFACE="virtio"
++CONFIG_ENV_FAT_DEVICE_AND_PART="0:1"
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_USE_BOOTFILE=y
+ CONFIG_BOOTFILE="bzImage"
 -- 
 2.43.0
 
