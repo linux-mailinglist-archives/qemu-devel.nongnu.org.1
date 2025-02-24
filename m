@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6050A42B74
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 19:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D70A42BAA
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 19:37:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmdEd-0007C7-Vq; Mon, 24 Feb 2025 13:31:20 -0500
+	id 1tmdGx-0001gs-0h; Mon, 24 Feb 2025 13:33:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tmdDJ-0005id-65
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:29:58 -0500
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ id 1tmdDL-0005lL-W3
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:30:01 -0500
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tmdDC-0003My-4o
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:29:55 -0500
-Received: by mail-pl1-x644.google.com with SMTP id
- d9443c01a7336-220d28c215eso73436425ad.1
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 10:29:49 -0800 (PST)
+ id 1tmdDE-0003N5-Vx
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:29:59 -0500
+Received: by mail-pl1-x642.google.com with SMTP id
+ d9443c01a7336-220c8f38febso101231905ad.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 10:29:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740421788; x=1741026588; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740421789; x=1741026589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YCCHlPi+FxqsaGVtlmnpzUh3V9i8PkuobSoBDnQT9Bk=;
- b=JGFn+nZKqNY212VYS5RG8gVRhB+KstTPU9LatdgxJjWt9IDNbspoSG5MzuCnXkADpW
- kxKY8f5Ep7av4xvWYCU6UCMbIsL/SzN9q6E/MUXvyM0E7fwZ2YNRTr8eYOMt0netBi9b
- 6U2oIKeYnQK87ylKyi7iWqJgCBCewfcAryepC71bJlOaJ7Q8XC3I0eNAfCLqSqATrSaC
- xvISe5rYCoBuMaLOUdFRIZbt41b3lX+v8J53X7w2FB1vlwNFpHu+L6obKh63E6i5RhUj
- xRgyJ24C4To0P/IuGU1EyJHAERZxLjszfBzC7yftGp7hT+ehs6tvdZPnsF0ZkcSSr9lb
- o8Rw==
+ bh=+Xs0oZUmiKgigK0ttBSqwyz2fzSA+xd8KRytqyUvu9g=;
+ b=DOBR0VVQZMJZ0yshDgf0X/u4uLQyICx50l5UKbDIx2DIxzuk5E0LXf/pDx87b746Po
+ 5Lo7p5VxJdV5Kqp2oa/pJKAz6mouXwfS1wY7Px7XOzzWOjY4OoIRlJuCrLK/RywuCHmy
+ dDnvG+kjOsElubI+ZGJaAP8Bboau8TrrJsNIQNlFJAw9x7IFxj0Jlev2Gn9w1UCfKl3C
+ eyt1MQsKB1NX5veKyRV0ZXDxztv7P/AEdwYMJoyD/S50AlrrrRSpzJiNXQBd7FwPh4kX
+ cq2wATF9KOwBrERnl6rPa5JlCkqXl3agUqYBpamdzpgtdtPOyg2jJxSCRgBHQoXNnv+Y
+ meZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740421788; x=1741026588;
+ d=1e100.net; s=20230601; t=1740421789; x=1741026589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YCCHlPi+FxqsaGVtlmnpzUh3V9i8PkuobSoBDnQT9Bk=;
- b=MpnPmqiRurYZzYr9/3Etb9LwkX0Xc1VFVL8vCKUaqTLuWZ6ZS3yPUk1rgmpmzzU17C
- /gECJmtxN7n1s5B+ZBXdZ5JtiT/sifsLhcTrjFTC/ZrDH2l88JDWFl7V+ToEksIap0N7
- iB/74FIlL4JI4SWDeUkaPk+LXP6Z4SWiFfOcYFk9OYY2ZSF5tR0bPf4id+4+UpPoWDA/
- /qYjYyZEAQHDZfCszbGxEkYSfFYBk5XJn+WmAZreQuDMX3hPszxLe5CTm/NbzmA0Kmbr
- 5g8L7fKzfCjda2Bve2pF6PUlRGZz4k6uSmZy8N1oYp2BkUq8ifrrtUHzhi9Vfca+10eZ
- dmog==
-X-Gm-Message-State: AOJu0Yw2qPXnhFc1sNpsR3iim8QPGr4oG1xWe9yPzDUprWsTk4mycxHK
- rfcWFEswak715q/IPgTLLRu+sjnH3fNAIvVSN44J4CDElgAipcfkOsTbG1vgsA==
-X-Gm-Gg: ASbGncuw8UjJvlGzkL/TabMzkNxRLII/iH3Pg27d08EQR1JFD0c6Vnqu+lk1gFjiuxo
- fyYOsMsoLRDgg6marpJvKjWS6Xr7ft6r3Ix2BrwIFjtCaGgovEiRzXKw6bkav6mXP96gteO3Vpr
- TWxuI6O/jOZTEpHvM5naWBZqWSETLfToliGsuJ/HpZoFlh65D/5DflHIOhllBtx9WmLtBYhYRK4
- jbLNimtWUdCHN0/buVY8OVfjZ4etuLw05/hu2YFImmx8UnvvOSGYaXpdA/uD8hHZo//3u3yCR8K
- gx6+kKqLW/IqVRi1J2322qg6vfHEGUoGqvwDeQs=
-X-Google-Smtp-Source: AGHT+IFEPoHZpbhwuiuN1iatqbtTb6riJOi8MfOnbJoZNs7go2bFFJQzmls705M00pfEDV1+5vGWfg==
-X-Received: by 2002:a17:903:191:b0:21f:6a36:7bf3 with SMTP id
- d9443c01a7336-22307b4bd13mr3740265ad.12.1740421787028; 
- Mon, 24 Feb 2025 10:29:47 -0800 (PST)
+ bh=+Xs0oZUmiKgigK0ttBSqwyz2fzSA+xd8KRytqyUvu9g=;
+ b=vj41GPOR+tfZe0jXOwMTwvdcClHI0MjMS7M/jlZamZZSw5FLibn97g9U0WfJITOS0R
+ VG2oLTxrtRSWz+8xOBAlK989NJuqUHtcY7m8S6MKMm4klzjNmDK09X2DWmsWBK3Jw6G0
+ yQY5ykVttz+fR6U02PRIyc1eb50e0AT7cAWxJrS5EPVnZEBikndEkDBUuT8UCXKH0LKP
+ x3NJil49ft6XuAQ3LkS8d5b5PF58iDWX6ZzjsaHDvaJWDbe9RWOKS8nMnKNdaX4scqAl
+ NPbd7KwtUOgBqMS6XfXWn0Yx7rWfs5XnCzuI1nkyHjvddO5DE+0GmMsPSpjQnsh+kTZP
+ DC+A==
+X-Gm-Message-State: AOJu0Yxnjda6KXuxey0SNYVC3AlnsSsJPts/xafkdlMcQh4N2yE7G0vn
+ FUcYN9LlQ6cZF4czCL1awWLCa5ihHh6VGyE60bhFQZqJO/O2wGo=
+X-Gm-Gg: ASbGncv1O/NPSHvPMFiHTlJb7wCNik4KEgvy50c2dHogqlALsZDW2THx9WN1YnCpw3e
+ LhEbsHuXGD7aNWxVVBmGCCGPLM48NW4X/Ft3OSyS3PmpUV5qrOfso7EtgoeMiZw48IOocNSTHXj
+ pujwGsiX82FfY4QCcukQXWQKA7wZSHHMOmNNvn7bRJYHM6bLONqd1fY9KErFzq0ds2xFj5NZsrQ
+ 0XH8QjK6a+ugcBe0tTAHyXk8tvBL8hE9gx4BLhgTjLlt9BXWGfksQgQ/sOB2VtPSIuq79hjMsA0
+ CTgRlBArS7y3fseUWSJrm0V73qjsROO0Khi2g5w=
+X-Google-Smtp-Source: AGHT+IFkQgbH3w0XNQSLSs0IZW30wkVNYiXZJc1thKc1gtNS9q8KDQbESAPj8nsUriDgOXBqHnXKjw==
+X-Received: by 2002:a17:903:41c8:b0:215:ac55:fd72 with SMTP id
+ d9443c01a7336-221a001576cmr214460635ad.37.1740421789005; 
+ Mon, 24 Feb 2025 10:29:49 -0800 (PST)
 Received: from localhost.localdomain ([116.227.8.253])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d545cf6bsm183662615ad.123.2025.02.24.10.29.45
+ d9443c01a7336-220d545cf6bsm183662615ad.123.2025.02.24.10.29.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 10:29:46 -0800 (PST)
+ Mon, 24 Feb 2025 10:29:48 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 04/10] vfio/igd: Remove implicit VGA access enabled by legacy
- mode
-Date: Tue, 25 Feb 2025 02:29:21 +0800
-Message-ID: <20250224182927.31519-5-tomitamoeko@gmail.com>
+Subject: [PATCH 05/10] vfio/pci: Make vfio_populate_vga static
+Date: Tue, 25 Feb 2025 02:29:22 +0800
+Message-ID: <20250224182927.31519-6-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250224182927.31519-1-tomitamoeko@gmail.com>
 References: <20250224182927.31519-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x642.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,52 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modern EFI-based system and drivers like i915 no longer use VGA IO/MMIO
-registers. Currently, legacy mode checks if the VGA decoding cycle is
-claimed by IGD, and implicitly exposes VGA address spaces for device.
-As we are going to remove legacy mode, remove this implicit behavior.
-If users want to enable VGA access for IGD, use the common x-vga option
-explicily.
+vfio_populate_vga is no longer called in igd.c. Make it static.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ hw/vfio/pci.c | 2 +-
+ hw/vfio/pci.h | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 4ae1122a2d..32ae263c23 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -430,20 +430,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
-     }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 89d900e9cf..1c45e3987e 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2662,7 +2662,7 @@ static VFIODeviceOps vfio_pci_ops = {
+     .vfio_load_config = vfio_pci_load_config,
+ };
  
--    gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
--
--    /*
--     * If IGD VGA Disable is clear (expected) and VGA is not already enabled,
--     * try to enable it.  Probably shouldn't be using legacy mode without VGA,
--     * but also no point in us enabling VGA if disabled in hardware.
--     */
--    if (!(gmch & 0x2) && !vdev->vga && !vfio_populate_vga(vdev, &err)) {
--        error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
--        error_report("IGD device %s failed to enable VGA access, "
--                     "legacy mode disabled", vdev->vbasedev.name);
--        return;
--    }
--
-     /* Create our LPC/ISA bridge */
-     ret = vfio_pci_igd_lpc_init(vdev, lpc);
-     if (ret) {
-@@ -467,6 +453,8 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
-     }
+-bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+ {
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     g_autofree struct vfio_region_info *reg_info = NULL;
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 43c166680a..75505af6a3 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -226,8 +226,6 @@ bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name);
+ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+                                     struct vfio_pci_hot_reset_info **info_p);
  
-+    gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
-+
-     /*
-      * Allow user to override dsm size using x-igd-gms option, in multiples of
-      * 32MiB. This option should only be used when the desired size cannot be
+-bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
+-
+ bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+                                 struct vfio_region_info *info,
+                                 Error **errp);
 -- 
 2.47.2
 
