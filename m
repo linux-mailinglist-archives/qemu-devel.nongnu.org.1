@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B966A41421
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31312A41428
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:42:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmPIt-0001iu-Jo; Sun, 23 Feb 2025 22:38:48 -0500
+	id 1tmPLr-00083f-W5; Sun, 23 Feb 2025 22:41:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIO-0001Qc-VU
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:38:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIM-0005S5-OF
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:38:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740368292;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NbNayGZzT5MkWdIwYFTlZTtHA+MFXV5ILRIOuKh2nCU=;
- b=XgUl6CKCJSf1PRF8A7xTHpsUkcfHMVpRfOikh7TvXrOQLoUtCSO8YcRQcXQUSq40wFLCb4
- FSsZTXzlpZmHXv5HX4eCsf7WExj9y1QR0E5oh1Q+yzedYUcgGkv0KyNaqReqkLuqtA24Md
- n4DaP8Wur71LFk/x2KTe8ED9kFwkt00=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-we2NwQSvMS28V5v6NkXWxQ-1; Sun,
- 23 Feb 2025 22:38:09 -0500
-X-MC-Unique: we2NwQSvMS28V5v6NkXWxQ-1
-X-Mimecast-MFC-AGG-ID: we2NwQSvMS28V5v6NkXWxQ_1740368288
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DBD361800873; Mon, 24 Feb 2025 03:38:07 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.88])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 168FF19560A3; Mon, 24 Feb 2025 03:38:05 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 10/10] docs: disambiguate cross-references
-Date: Sun, 23 Feb 2025 22:37:41 -0500
-Message-ID: <20250224033741.222749-11-jsnow@redhat.com>
-In-Reply-To: <20250224033741.222749-1-jsnow@redhat.com>
-References: <20250224033741.222749-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tmPLi-00080M-HV
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:41:47 -0500
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tmPLd-0005oi-Ms
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:41:40 -0500
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-868ddc4c6b6so1172152241.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 19:41:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1740368496; x=1740973296; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EbpRjMHRkG474jh8Sl3aCO0RUgrZHSnQwx3Ii9Ludts=;
+ b=hmP3ue9CYpmfsjWJfizvvXrDaipsRXtZD8hW4iZntFL5/0xq8YaY0SKLHXUfZYoCmT
+ fHr6DperQDO5VC66DzFIOZUgxtMs6ytlzxfNawFA9VPKrlu2HQCTbdZU8LgQc5nwwyXE
+ zzvEwGxILhCbNqoGLu0Qn4gPvRv8z5kSxD6ef0iC+7MkaCxy+wx1ZxIn7zqjGZ3qZ5N7
+ VveK7BqpOAFJcgg1RD2FS6rwG+K5dEsVxfbmXmWkIKUp8nWK8Hj6tppatOgVo9pRlqG6
+ sWja5/uRbiv13u/bB1i0VrVZsQZMF7jGVO1iItVKpIugJUlqif8wv8/Mvj7zR/oIQAGs
+ 0sqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740368496; x=1740973296;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EbpRjMHRkG474jh8Sl3aCO0RUgrZHSnQwx3Ii9Ludts=;
+ b=gao3dtOF4GKmAtgiAbuO2crZ32bQgCFCFTmR++n6y//ABk8yb9KAmA4HJppLnX5UDf
+ 2VAqgGF2ShtzwTZ8ecHGjP1KBB/bwWJYMEOhcyFvVn50+RQ9MuFzgH14xXotVM60G+Df
+ 24Gjx366trbj54+SO4AFMTPvAnw19XSDpPuzqiDGYsX9ebGgH8/hneQrIdqI5OM66W4M
+ 5B2t+Z8DAFw7OpzFmNWTUQWoVraHxsnJpcIfYOuPseKFylmH3VTE0j0+fL5kp+dGiqHf
+ 3x20rC+WCLfbXUMDqmD9aFi5VRqQeTNnXa5y4Bk8Kpsj0K1ME1gC1V4G9YBaBCvJgpjU
+ UBjA==
+X-Gm-Message-State: AOJu0YzBKfhCG0CJVutEX8a1r+h3iFkhW5ZJQ8MU0yfBASNh6GxI48dk
+ CJGrKQBalq8fdV4elGUIse4Pot9cMRlAKLG8HJrpPYsstlaLu2HT6rvKKmkzqybIAr7v6WRwtv7
+ ugKjYg7aEv8wkW09sukjZ7J8sqbt4pXUd
+X-Gm-Gg: ASbGncu+1hNLyCOKIjZc0C7PZFEoVIcE+RoFyDQx26dPuX/j5RDZ4U49qaPLD+0oweQ
+ nDCbC0rXOJzbzbtYNPGr5Juzjwh4yCn+Jxu8V9Mcv8gob2C0q/PfRcGjF3XWNeP7r+UxR/c4JUC
+ DaZM7ea4wJPcXWzYAEiWw4jPOenKctm5ET9PdQ
+X-Google-Smtp-Source: AGHT+IHRa/IQXEQrzohBxUOjoZORRHuBKYay2+iBOZ+KImgX0MmYuiIgRX25MZVrVtavwMe8dyDwFx9VUTronydzZkM=
+X-Received: by 2002:a05:6102:6d1:b0:4bb:edc9:f949 with SMTP id
+ ada2fe7eead31-4bfc0025907mr5635359137.10.1740368496497; Sun, 23 Feb 2025
+ 19:41:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250202-riscv-sa-restorer-v1-1-6f4bf814a1dd@t-8ch.de>
+In-Reply-To: <20250202-riscv-sa-restorer-v1-1-6f4bf814a1dd@t-8ch.de>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 24 Feb 2025 13:41:10 +1000
+X-Gm-Features: AWEUYZlyGVH-PjGS08IHEthSLF04ZanssOtZaBaan4IhwE_D6nj-rw6cBlojNWQ
+Message-ID: <CAKmqyKMA8CGv60c=24ThN_aE3hWM2d9aQpfB1XXA9Oqcr_7zug@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/riscv: Disable unsupported SA_RESTORER
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,84 +92,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These references are not in and of themselves problems at the moment,
-however, the forthcoming qapidoc conversion series will begin adding
-cross-reference targets that conflict with these existing targets.
+On Mon, Feb 3, 2025 at 8:58=E2=80=AFAM Thomas Wei=C3=9Fschuh <thomas@t-8ch.=
+de> wrote:
+>
+> Linux on riscv does not support SA_RESTORER.
+> Currently QEMU thinks there is a field 'sa_restorer' in the middle of
+> 'struct sigaction' which does not actually exist.
+> This leads to corrupted data and out-of-bounds accesses.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
 
-As a result, cross-references such as "migration", "qom", "replay" will
-become ambiguous. Modify these references to be more explicit to prevent
-"ambiguous cross-reference" warnings in the future.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- docs/devel/codebase.rst |  6 +++---
- docs/glossary.rst       | 10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Alistair
 
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 4039875ee04..1b09953197b 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -23,7 +23,7 @@ Some of the main QEMU subsystems are:
- - `Devices<device-emulation>` & Board models
- - `Documentation <documentation-root>`
- - `GDB support<GDB usage>`
--- `Migration<migration>`
-+- :ref:`Migration<migration>`
- - `Monitor<QEMU monitor>`
- - :ref:`QOM (QEMU Object Model)<qom>`
- - `System mode<System emulation>`
-@@ -112,7 +112,7 @@ yet, so sometimes the source code is all you have.
- * `libdecnumber <https://gitlab.com/qemu-project/qemu/-/tree/master/libdecnumber>`_:
-   Import of gcc library, used to implement decimal number arithmetic.
- * `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/migration>`__:
--  `Migration framework <migration>`.
-+  :ref:`Migration framework <migration>`.
- * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
-   `Monitor <QEMU monitor>` implementation (HMP & QMP).
- * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
-@@ -193,7 +193,7 @@ yet, so sometimes the source code is all you have.
-   - `lcitool <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/lcitool>`_:
-     Generate dockerfiles for CI containers.
-   - `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/migration>`_:
--    Test scripts and data for `Migration framework <migration>`.
-+    Test scripts and data for :ref:`Migration framework <migration>`.
-   - `multiboot <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/multiboot>`_:
-     Test multiboot functionality for x86_64/i386.
-   - `qapi-schema <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/qapi-schema>`_:
-diff --git a/docs/glossary.rst b/docs/glossary.rst
-index 693d9855dd1..4fa044bfb6e 100644
---- a/docs/glossary.rst
-+++ b/docs/glossary.rst
-@@ -120,7 +120,7 @@ Migration
- ---------
- 
- QEMU can save and restore the execution of a virtual machine between different
--host systems. This is provided by the `Migration framework<migration>`.
-+host systems. This is provided by the :ref:`Migration framework<migration>`.
- 
- NBD
- ---
-@@ -212,14 +212,14 @@ machine emulator and virtualizer.
- QOM
- ---
- 
--`QEMU Object Model <qom>` is an object oriented API used to define various
--devices and hardware in the QEMU codebase.
-+:ref:`QEMU Object Model <qom>` is an object oriented API used to define
-+various devices and hardware in the QEMU codebase.
- 
- Record/replay
- -------------
- 
--`Record/replay <replay>` is a feature of QEMU allowing to have a deterministic
--and reproducible execution of a virtual machine.
-+:ref:`Record/replay <replay>` is a feature of QEMU allowing to have a
-+deterministic and reproducible execution of a virtual machine.
- 
- Rust
- ----
--- 
-2.48.1
-
+> ---
+>  linux-user/riscv/target_signal.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/linux-user/riscv/target_signal.h b/linux-user/riscv/target_s=
+ignal.h
+> index 6c0470f0bc82c6330ce50cb662f2039cf1fab288..258945770b674c0b6b66a9465=
+9d9c93fbabffdfb 100644
+> --- a/linux-user/riscv/target_signal.h
+> +++ b/linux-user/riscv/target_signal.h
+> @@ -4,5 +4,6 @@
+>  #include "../generic/signal.h"
+>
+>  #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 1
+> +#undef TARGET_SA_RESTORER
+>
+>  #endif /* RISCV_TARGET_SIGNAL_H */
+>
+> ---
+> base-commit: 6fccaa2fba391815308a746d68f7fa197bc93586
+> change-id: 20250202-riscv-sa-restorer-edd3dfa7790f
+>
+> Best regards,
+> --
+> Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
+>
+>
 
