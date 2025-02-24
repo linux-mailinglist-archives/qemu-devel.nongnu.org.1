@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78006A42954
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D655FA42935
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:17:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmc3D-00076O-O6; Mon, 24 Feb 2025 12:15:27 -0500
+	id 1tmc3G-00077y-1b; Mon, 24 Feb 2025 12:15:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2s-0006zS-GX
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:07 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tmc2t-00070e-PH
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:09 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2q-0005aK-I4
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:06 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-221050f3f00so105831135ad.2
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:03 -0800 (PST)
+ id 1tmc2r-0005gz-KX
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:07 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-220d398bea9so74156315ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740417303; x=1741022103; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740417304; x=1741022104; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tg2zteOZpC9Wey89dCxgtFEoBQa8KJNvVhInvL38LKQ=;
- b=JCcb3gMIuosH2lgPGpolNZjWFUEu/kV6sc6sM5+6noqLb54in4SD+YEqvD2HYlzaHh
- 2DAh4UOcJYn15JD0PBRZYWqlLCxf9o6GGVgS7IrC7rVcJuyHTB4p9HuTUWzDYRg8rgab
- Dok4zGs7PE+VLrZY7r12zyBrSSKZADAA7DmF3VWBp/iy+e6K0/7EKZLK0+TRkfuSsMmA
- Ir7LKdtvybEj19OWvBlFJwp7pGKaI7Zr20NwFmD9TD/fjJshtG8VuNUs1iru8Qq4APLO
- a3LJErQbmHMGLKDUow88aNfjPm98HZnQKNdpshORD7oArBLWC5lWkfEAbFe5eHjvNVgk
- Uh8w==
+ bh=x1wokWjEQnWGkNFvw6UwauoupCQ0IGRtX5SJLE3+d9Q=;
+ b=XjMuJw9pmj4DGjR1L7uPs6Vp2j4JfRXmZE92hlOgH5gridIN1LxD0gPIP8BkUcxXQT
+ Jc9ozhWn4ypOjwZzTMsj08wFfP04rO1bWxjtKIT9M7kRm3B6u369rQ0blZe26E8VucBY
+ XkrXSAPUqjRFH2f5xJVRUhC/FkpjTR3R+aCEgxpO+xlmTRcAE2hUmIRZweYGq/SI+t84
+ n2l9cPhhl+s7MRrxsmIB0IBJwn+nmULsgwN2lCg8yNy/C8XT/MZlgq9oHqh9RVR9709J
+ vljAoMAfmurKtBGLnLNO0Thl8wG+jqvz/UuzbWq72OUhn4Ihk0+sCBjfmo4h81wS+w7z
+ 7RlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740417303; x=1741022103;
+ d=1e100.net; s=20230601; t=1740417304; x=1741022104;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tg2zteOZpC9Wey89dCxgtFEoBQa8KJNvVhInvL38LKQ=;
- b=CPs4e4J+K9W6dEVwRqELe8H8OCtdy7fGvcbSmOO9EAu7VX4B0M94BchXalk9YUzlFB
- YfXcGtu41y+CMSFLo0Deoii7fZojYWsVjvSaF2U5/t2Scu+ADX5ycWB01cUaF0m+i3XS
- XyMFV6J5XzNeJ6AsBKt5AiL7RBumBUi5BzEbMQOo+jF8BC/0bZkdo28Ya48rjyrFX6c8
- WQRAQRKsh4J2HVx2gQ5W23+jSwcmlOzctaBIAUjbdBLvGYClMPMkahPCagZdTFT5fK0N
- CodIzl/3GquCCOekM9hjUAHB8MG2sMUldoSb6/gzd+murn0nlQtNev5KGwaeXP4gUEwQ
- Fcmw==
-X-Gm-Message-State: AOJu0YySmSnrEx3KjSiEDlq2ERk2TifIB7LiVtkp6fXgnFU8z5woJyNC
- O0e3ma0uM/lbvisiXt6QMDn/s6BfgvxqulXCbP7md9eR1MLSJGlm8a+FKVArQ6944x46mfHgy0d
- 9
-X-Gm-Gg: ASbGncvLNWBzEFBfSTpBqiZISZBVXJpk6Al2jWIVuUl5lm+6LMfzPeV5QgmqTkKNZoe
- +UeUSyoQw98XznwCdKVcE3BFhPx4ZwwDTsiaifSeSLuCmV8xpGqrAGv6MwgyCnV/CbfZrh3pCT6
- merziV533gVxofsiRq63IovEnBO81MZhmpe37zjwlXuxOVjmWnNHyxQlB1OEQMiANWnF/TQ/X0y
- 5lziIL08ujhiNF9Vos89Rw+nJKDFYrNukUda5jPNy0dJHPhB2qmiUyT4vW5DOBKxnoSrm6wjKyS
- 7333MNhkrte1bLbjSO3nypijIomUP6MKtmI=
-X-Google-Smtp-Source: AGHT+IHy1asuAui/AE0XVlhWzSPfTjDeUMSPkZUxgfCzglqeOk1IatF45jtQXVEM1zqcr1KMHzuyvQ==
-X-Received: by 2002:aa7:888e:0:b0:732:5a8f:f51b with SMTP id
- d2e1a72fcca58-734790c6cc2mr14666b3a.8.1740417302829; 
- Mon, 24 Feb 2025 09:15:02 -0800 (PST)
+ bh=x1wokWjEQnWGkNFvw6UwauoupCQ0IGRtX5SJLE3+d9Q=;
+ b=G1IVCojsCzj3xyr83tWoX/AZdse+yebrEsZGu55KZR815cATYl/iRSPQvHL5R9AeYJ
+ twM5L01tAqz/Xfe9HeS9g0+19kz/YznIkiNzpqUQDxOO6J9yevjQzzZhd4bfmt0Bo9fF
+ mgo7fZ2o5DPch3krr13XFlmnA74FyUS5NOqN50QlFyalSNTJIUJQ8V+NsCInowfaWKxn
+ q3KjvqQDTSrCyhFoXDmhLDaSvKJM+fS8KIMVvCKlN6nApcHNkdC4lvNrz7malhpqo3/W
+ Qj7KVA/Sn1NtoQc28HlY6zZ+7by+GNZ+huHFnGJxbvB2mon2DrmnzLDyG+ibvWHqAfgD
+ /YkA==
+X-Gm-Message-State: AOJu0YzlJi8flxrS6xiKFbx4Gs/f492buK0eLH2gldK/nLDlJjGSeMzm
+ slQCdX+VHgKZfZy8hHN+IREHkMd3RSSWqaiVgAFn7GdSiYBOAZQe7v70NEdQPyC3FGr7q70T05p
+ W
+X-Gm-Gg: ASbGnct6kpv67UHIQKiUG96wzDtnZ+tmLNxYI6LLI2VjCMX67IxRJL0W2lk5xoQsX1p
+ mnvg9m8ZmxuAgNXYiFoZM8jMfwCIIs3dFC4JOpjki3xASOZj5AscQVoL4UsuVXsnYiGDdyKuEv2
+ i2gL8DMvvdz58MVlkuWbgODQydsTNvkzaPx7tD3zTU8/uDVY7y5K7v72kA7iZpYPr3uIZtxJYXE
+ 4rYdwDccPEgSvMLaq8ivBOsSRodZ2NadF8QYVHHkIzI7L0Thphk5yFd0f09aVWUirvMQuVkVzls
+ iVTiL7iy3AZuTEx9HMltmlI5dE8tHPxpMt8=
+X-Google-Smtp-Source: AGHT+IEbkMX/LdioLvXT2jUIwCO5ZVGohbE4xkZ1GuZrkjQVSKkCyV8MffUbHBIA/Me891eRoMZANA==
+X-Received: by 2002:a05:6a00:2441:b0:732:a24:734b with SMTP id
+ d2e1a72fcca58-73426d7271emr21724552b3a.15.1740417304070; 
+ Mon, 24 Feb 2025 09:15:04 -0800 (PST)
 Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.01
+ d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 09:15:02 -0800 (PST)
+ Mon, 24 Feb 2025 09:15:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 12/24] target/m68k: Remove env argument to gen_lea_indexed
-Date: Mon, 24 Feb 2025 09:14:32 -0800
-Message-ID: <20250224171444.440135-13-richard.henderson@linaro.org>
+Subject: [PATCH v4 13/24] target/m68k: Remove env argument to gen_lea_mode
+Date: Mon, 24 Feb 2025 09:14:33 -0800
+Message-ID: <20250224171444.440135-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224171444.440135-1-richard.henderson@linaro.org>
 References: <20250224171444.440135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,73 +104,104 @@ Use the env pointer in DisasContext.
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/m68k/translate.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index d6f848c48d..0aa0721778 100644
+index 0aa0721778..73189d1da4 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -392,7 +392,7 @@ static TCGv gen_addr_index(DisasContext *s, uint16_t ext, TCGv tmp)
-  * Handle a base + index + displacement effective address.
-  * A NULL_QREG base means pc-relative.
+@@ -694,8 +694,7 @@ static int addr_inc_size(DisasContext *s, int reg0, int opsize)
+ /*
+  * Generate code for an "effective address".
   */
--static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-+static TCGv gen_lea_indexed(DisasContext *s, TCGv base)
+-static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+-                         int mode, int reg0, int opsize)
++static TCGv gen_lea_mode(DisasContext *s, int mode, int reg0, int opsize)
  {
-     uint32_t offset;
+     TCGv reg, addr, tmp;
      uint16_t ext;
-@@ -401,7 +401,7 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-     uint32_t bd, od;
- 
-     offset = s->pc;
--    ext = read_im16(env, s);
-+    ext = read_im16(s->env, s);
- 
-     if ((ext & 0x800) == 0 && !m68k_feature(s->env, M68K_FEATURE_WORD_INDEX))
-         return NULL_QREG;
-@@ -419,9 +419,9 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-         if ((ext & 0x30) > 0x10) {
-             /* base displacement */
-             if ((ext & 0x30) == 0x20) {
--                bd = (int16_t)read_im16(env, s);
-+                bd = (int16_t)read_im16(s->env, s);
-             } else {
--                bd = read_im32(env, s);
-+                bd = read_im32(s->env, s);
-             }
-         } else {
-             bd = 0;
-@@ -467,9 +467,9 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-             if ((ext & 3) > 1) {
-                 /* outer displacement */
-                 if ((ext & 3) == 2) {
--                    od = (int16_t)read_im16(env, s);
-+                    od = (int16_t)read_im16(s->env, s);
-                 } else {
--                    od = read_im32(env, s);
-+                    od = read_im32(s->env, s);
-                 }
-             } else {
-                 od = 0;
-@@ -738,7 +738,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+@@ -733,7 +732,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+     case 5: /* Indirect displacement.  */
+         reg = get_areg(s, reg0);
+         addr = tcg_temp_new();
+-        ext = read_im16(env, s);
++        ext = read_im16(s->env, s);
+         tcg_gen_addi_i32(addr, reg, (int16_t)ext);
          return addr;
      case 6: /* Indirect index + displacement.  */
-         reg = get_areg(s, reg0);
--        return gen_lea_indexed(env, s, reg);
-+        return gen_lea_indexed(s, reg);
+@@ -742,14 +741,14 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
      case 7: /* Other */
          switch (reg0) {
          case 0: /* Absolute short.  */
-@@ -752,7 +752,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-             offset += (int16_t)read_im16(env, s);
+-            offset = (int16_t)read_im16(env, s);
++            offset = (int16_t)read_im16(s->env, s);
+             break;
+         case 1: /* Absolute long.  */
+-            offset = read_im32(env, s);
++            offset = read_im32(s->env, s);
+             break;
+         case 2: /* pc displacement  */
+             offset = s->pc;
+-            offset += (int16_t)read_im16(env, s);
++            offset += (int16_t)read_im16(s->env, s);
              break;
          case 3: /* pc index+displacement.  */
--            return gen_lea_indexed(env, s, NULL_QREG);
-+            return gen_lea_indexed(s, NULL_QREG);
-         case 4: /* Immediate.  */
-         default:
-             return NULL_QREG;
+             return gen_lea_indexed(s, NULL_QREG);
+@@ -769,7 +768,7 @@ static TCGv gen_lea(CPUM68KState *env, DisasContext *s, uint16_t insn,
+ {
+     int mode = extract32(insn, 3, 3);
+     int reg0 = REG(insn, 0);
+-    return gen_lea_mode(env, s, mode, reg0, opsize);
++    return gen_lea_mode(s, mode, reg0, opsize);
+ }
+ 
+ /*
+@@ -827,7 +826,7 @@ static TCGv gen_load_mode(CPUM68KState *env, DisasContext *s,
+     case 4: /* Indirect predecrememnt.  */
+     case 5: /* Indirect displacement.  */
+     case 6: /* Indirect index + displacement.  */
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
++        addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
+             ret = addr;
+             addr = NULL;
+@@ -870,7 +869,7 @@ static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
+     case 6: /* Indirect index + displacement.  */
+     case 7: /* Other */
+         if (!addr) {
+-            addr = gen_lea_mode(env, s, mode, reg0, opsize);
++            addr = gen_lea_mode(s, mode, reg0, opsize);
+             if (IS_NULL_QREG(addr)) {
+                 return false;
+             }
+@@ -1110,7 +1109,7 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+     case 4: /* Indirect predecrememnt.  */
+     case 5: /* Indirect displacement.  */
+     case 6: /* Indirect index + displacement.  */
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
++        addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
+             return -1;
+         }
+@@ -1931,7 +1930,7 @@ DISAS_INSN(movem)
+         break;
+ 
+     default:
+-        tmp = gen_lea_mode(env, s, mode, reg0, opsize);
++        tmp = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(tmp)) {
+             goto do_addr_fault;
+         }
+@@ -2673,7 +2672,7 @@ DISAS_INSN(tas)
+     } else {
+         TCGv src1, addr;
+ 
+-        addr = gen_lea_mode(env, s, mode, reg0, OS_BYTE);
++        addr = gen_lea_mode(s, mode, reg0, OS_BYTE);
+         if (IS_NULL_QREG(addr)) {
+             gen_addr_fault(s);
+             return;
 -- 
 2.43.0
 
