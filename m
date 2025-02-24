@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D834EA4293A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22156A42962
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:21:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmc3k-0007aW-NU; Mon, 24 Feb 2025 12:16:01 -0500
+	id 1tmc3L-0007D9-9p; Mon, 24 Feb 2025 12:15:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc38-00075s-0U
+ id 1tmc39-000768-Sq
  for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:24 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc36-0005o0-1A
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:21 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-220c4159f87so65450215ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:19 -0800 (PST)
+ id 1tmc38-0005oc-20
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:23 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-221057b6ac4so89516075ad.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740417318; x=1741022118; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740417320; x=1741022120; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JJE3DAs7T3oH0GbJsFZTv8MmDA7pEO0/Bzfp6DqKShg=;
- b=pC/unZYfYRbANXe6X9Q1iO0saNijEjnSFriTncBpvEQM7eJkyFALW906OKOz0X6u50
- QMrF5yBLPe6rKdc1jFG9k8ECcU7oQwxaW1Yz/kLp1VCq8RCtFlT0gE510Ah00tymGesi
- 9vVzXXeW2dCfdvjF5dyBmCzurRAT5khHgvo5RyLQynM6r2hTX4609lKSXRudqkSFP2dN
- 0fiaDio0lbpj7CdYFy9D+TPf8H8ihFN4ypFIwv/OEmE/ZtvUsSn6zdbtVn0qLhVwB9o0
- QduciPqF1n4pO0tQSit8a6T/KS9xFbdcWqt1Z7uvzyPe/SUqjLhAfJhn/DZzZM/g/GkF
- oa0A==
+ bh=F68LQn6DxIAyz6GCkjhNecCIBRtM27bQXM5weTx5xew=;
+ b=L5MWeGxyxywPWkrjUY73QGP78mEt1pvrXNw3ONO/FzZd1jYWZrUFuntk5NbkVL+U5d
+ u7YkF+FZMCWulfoHCMDC/CpNVpl2hvO5qmy7FexutqJCbSHXBtuQcckmqR/RViD1MQZy
+ tj7KQL9RS03xSn8uXSufgoxQBi3ftAuRLCDosjn69/j5LIWrEW093Eg5QBM7eYXPpKFB
+ uCSPL1EpwBckVfvZEVSUoSzUSK8wsAfPekqIYpcTiVRqyCnABxay7m1ng9u10mnTpqAb
+ qOoCC7p7wBEFto3VIKDzoNbu6CAsTJGXDnCdJEBKOU2OzhiS7du3Sz/MSChvxz13hDjK
+ iMvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740417318; x=1741022118;
+ d=1e100.net; s=20230601; t=1740417320; x=1741022120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JJE3DAs7T3oH0GbJsFZTv8MmDA7pEO0/Bzfp6DqKShg=;
- b=XlDWn6xSa1gXAeA7Oz+r7VD9xz4gGFTJDEftzh/XFGhIm0wiXHPiV1/Kxak4voyijv
- Qh38KBNIR9ou0Uzy7/ZKCCmQ8pEl+T6xiLlNj+DO59ynhw9V5OIALVgVzdD6RA+s4eJ2
- 2FHnygg82mkQG7qEMf88mtbcREo9noyKe41Zn8puC0WQ7BSJxzzh0ZPB7VW+tCXqyc68
- xiD+qZbZitdvNO1mQKpySvUhpwFL3oyzZ9mwYLW7FAda/fa1efDPOaWdJbGtguRKCNq9
- EzAqwS2orE/slSh7n8H7GUD949tk9xztKVDhLzdekSKgRQ9SSeZ9MQ8eMcBo2sG88wMO
- P6wg==
-X-Gm-Message-State: AOJu0YzDsO9beJb8Ua4/1MDhSxx8gtbSbobidcw6jmUjwK6z9iOKnxsF
- zxx0SUboNJnlESpGmoTmGebiS+MEnCy6iKMEJXXOeqTEuOIV4M43angGFj7SUvihHdb4fJ1TJeC
- h
-X-Gm-Gg: ASbGnct29rkITMX7KDsD1uaZnjj82NyCedeJxQBgc7bggF9jH/PqKoevsOG+xic2h+K
- e73r0Ag1jaswlrZOA+xDyPLg2ageMYSEAcdFE/VkrZUfLkMBieVpyjtk99smBEc6BACsPYT0zdN
- K3JrE2To6qtO/3laJoOp29QsuWvOO+ncfQaXD1JFVDuZ4Y5nL7Co27TcC+lgu0DGZFH+AU7NNRM
- KoJJFHGcSQAF9HKG1wV3ZjqxwChma1mySyFwC7lHWoksjkWUFiem6NnupnsOkmHSdBNsAU0pQi5
- l33ZnxWAtm84aHwhJTabHxCZoTvhxoQdbNw=
-X-Google-Smtp-Source: AGHT+IEnWdABwHbYDEfUXoOcQMNP4/34mec3F0YdjP+zgQMcnoxCmsAwo9BfhRcfhY1EAlVhyfx4Ug==
-X-Received: by 2002:a05:6a00:1399:b0:732:623d:f5cd with SMTP id
- d2e1a72fcca58-734790a0bdcmr23626b3a.5.1740417318439; 
- Mon, 24 Feb 2025 09:15:18 -0800 (PST)
+ bh=F68LQn6DxIAyz6GCkjhNecCIBRtM27bQXM5weTx5xew=;
+ b=FOr2AvB6Q74BbCUObLIskRA8e/LZ6SZTPmM45RPSa2drecyDz3eFQvPcQdqllOWyZe
+ 6g9rVypwgMSjpTLggR/ZZquYmdDBJlH+LqPBS8s4AsTY5JQlhL0IXjW9fwkw02N3/OOG
+ zOgTleDenPSmiTPY2KBm8foBMxTq++MDX37K7OLrdCxOW3QgnEsLhPoQsTC772iG94C1
+ DwNQFRWRM0ulQSkpTTO4J/JZ7aLONyg4+D23uhsWas0S98lgRoqzSJD3Vt5Wd8jlAbgZ
+ SQzRixPN433ZAzKNbZUDhq4DFgtOzIwwSdKswrCc4SZaGUYvEWbpnZBBSJq0CKZGQGfX
+ JVUw==
+X-Gm-Message-State: AOJu0Yzir/3qFIWmbDufmM2PAqeDzt7Y48LQ5+2j/aXSiuISiReli5V2
+ lwaM130Kl/ns9k/avc3MxS2dntdYmIHYEwFM5n4p1nVlnjCkucKhXv4MnhvHtwe+Y74kwLwIDsq
+ /
+X-Gm-Gg: ASbGncs988GZcZqzQ/Y/pVWHDyRJsadjhBo05VBhJsMYG6fuZoUOkz8OHg79Y0wjH44
+ k7Anr73hwGIeJHV71JlPRIMaC0HRA6oNna7kf6/dAeKmyCgXbB0SMlF6UCq7A30u61FgFRvMAZi
+ WR5JZ9qz4k/ze4QMu31zgJblZTXBrcWP3d7z0O+mYwM0atF8atnjBjWQO5WqvzSNfjepsS4HPA9
+ 5Itb8EfcG0h/q7KQbX3XOybG15zlPcoqOPCGiXXWr61FZbby/khUS7fMGjm0CyopOZU+/h1rPK2
+ JFUxife1Led7/H/U2naqbn90v/TGcz/MYfU=
+X-Google-Smtp-Source: AGHT+IFihcbnFkxIEpUxNZoV4BKypejc4q+VGPbnfBAjXKlZ+KgETCl35hgfZoGDP4rDmxFszHoAvA==
+X-Received: by 2002:aa7:88cb:0:b0:730:9801:d3e2 with SMTP id
+ d2e1a72fcca58-73426ca536dmr28267292b3a.8.1740417320364; 
+ Mon, 24 Feb 2025 09:15:20 -0800 (PST)
 Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.17
+ d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 09:15:18 -0800 (PST)
+ Mon, 24 Feb 2025 09:15:20 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 22/24] tests/tcg/m68k: Add packed decimal tests
-Date: Mon, 24 Feb 2025 09:14:42 -0800
-Message-ID: <20250224171444.440135-23-richard.henderson@linaro.org>
+Subject: [PATCH v4 23/24] target/m68k: Make vmstate variables static
+Date: Mon, 24 Feb 2025 09:14:43 -0800
+Message-ID: <20250224171444.440135-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224171444.440135-1-richard.henderson@linaro.org>
 References: <20250224171444.440135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,127 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These need not be exported beyond cpu.c.
+Fix a typo in vmstate_fpu.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/m68k/packeddecimal-1.c | 41 ++++++++++++++++++++++++++++
- tests/tcg/m68k/packeddecimal-2.c | 46 ++++++++++++++++++++++++++++++++
- tests/tcg/m68k/Makefile.target   |  4 ++-
- 3 files changed, 90 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/m68k/packeddecimal-1.c
- create mode 100644 tests/tcg/m68k/packeddecimal-2.c
+ target/m68k/cpu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/tcg/m68k/packeddecimal-1.c b/tests/tcg/m68k/packeddecimal-1.c
-new file mode 100644
-index 0000000000..5433acd17b
---- /dev/null
-+++ b/tests/tcg/m68k/packeddecimal-1.c
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* Test packed decimal real conversion to long double. */
-+
-+#include <stdio.h>
-+
-+struct T {
-+    unsigned int d[3];
-+    long double f;
-+};
-+
-+static const struct T tests[] = {
-+    { { 0x00000001, 0x00000000, 0x00000000 }, 1.0e0l },
-+    { { 0x01000001, 0x00000000, 0x00000000 }, 1.0e1l },
-+    { { 0x00100001, 0x00000000, 0x00000000 }, 1.0e10l },
-+    { { 0x00000000, 0x10000000, 0x00000000 }, 0.1e0l },
-+    { { 0x41000001, 0x00000000, 0x00000000 }, 1.0e-1l },
-+    { { 0x85000005, 0x55550000, 0x00000000 }, -5.5555e5l },
-+    { { 0x09990009, 0x99999999, 0x99999999 }, 9.9999999999999999e999l },
-+    { { 0x03210001, 0x23456789, 0x12345678 }, 1.2345678912345678e123l },
-+    { { 0x00000000, 0x00000000, 0x00000000 }, 0.0l },
-+    { { 0x80000000, 0x00000000, 0x00000000 }, -0.0l },
-+    { { 0x09990000, 0x00000000, 0x00000000 }, 0.0e999l },
-+};
-+
-+int main()
-+{
-+    int ret = 0;
-+
-+    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
-+        const struct T *t = &tests[i];
-+        long double f;
-+
-+        asm("fmove.p (%1),%0" : "=f"(f) : "a"(t->d));
-+
-+        if (f != t->f) {
-+            fprintf(stderr, "Mismatch at %d: %.17Le != %.17Le\n", i, f, t->f);
-+            ret = 1;
-+        }
-+    }
-+    return ret;
-+}
-diff --git a/tests/tcg/m68k/packeddecimal-2.c b/tests/tcg/m68k/packeddecimal-2.c
-new file mode 100644
-index 0000000000..448e97ce89
---- /dev/null
-+++ b/tests/tcg/m68k/packeddecimal-2.c
-@@ -0,0 +1,46 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* Test packed decimal real conversion from long double, dynamic k-factor */
-+
-+#include <stdio.h>
-+#include <float.h>
-+
-+struct T {
-+    unsigned int d[3];
-+    long double lf;
-+    int kfactor;
-+};
-+
-+static const struct T tests[] = {
-+    { { 0x00000001, 0x00000000, 0x00000000 }, 1.0e0l, 0 },
-+    { { 0x00100001, 0x00000000, 0x00000000 }, 1.0e10l, 0 },
-+    { { 0x41000001, 0x00000000, 0x00000000 }, 1.0e-1l, 0 },
-+    { { 0x85000005, 0x55550000, 0x00000000 }, -5.5555e5l, 5 },
-+    { { 0x45000005, 0x55550000, 0x00000000 }, 5.5555e-5l, 5 },
-+    { { 0x05000002, 0x22220000, 0x00000000 }, 2.2222e5, 99 },
-+    { { 0x05000002, 0x22220000, 0x00000000 }, 2.2222e5, 5 },
-+    { { 0x05000002, 0x20000000, 0x00000000 }, 2.2222e5, 2 },
-+    { { 0x02394001, 0x18973149, 0x53572318 }, LDBL_MAX, 17 },
-+    { { 0x42394001, 0x68105157, 0x15560468 }, LDBL_MIN, 17 },
-+    { { 0x41594001, 0x82259976, 0x59412373 }, LDBL_TRUE_MIN, 17 },
-+};
-+
-+int main()
-+{
-+    int ret = 0;
-+
-+    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
-+        const struct T *t = &tests[i];
-+        unsigned int out[3];
-+
-+        asm("fmove.p %1,(%0),%2"
-+            : : "a"(out), "f"(t->lf), "d"(t->kfactor) : "memory");
-+
-+        if (out[0] != t->d[0] || out[1] != t->d[1] || out[2] != t->d[2]) {
-+            fprintf(stderr, "Mismatch at %d: %08x%08x%08x != %08x%08x%08x\n",
-+                    i, out[0], out[1], out[2],
-+                    t->d[0], t->d[1], t->d[2]);
-+            ret = 1;
-+        }
-+    }
-+    return ret;
-+}
-diff --git a/tests/tcg/m68k/Makefile.target b/tests/tcg/m68k/Makefile.target
-index 33f7b1b127..b505260b79 100644
---- a/tests/tcg/m68k/Makefile.target
-+++ b/tests/tcg/m68k/Makefile.target
-@@ -4,4 +4,6 @@
- #
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 7936b1a7e7..21ebc198cd 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -420,7 +420,7 @@ static int fpu_post_load(void *opaque, int version)
+     return 0;
+ }
  
- VPATH += $(SRC_PATH)/tests/tcg/m68k
--TESTS += trap denormal
-+TESTS += trap denormal packeddecimal-1 packeddecimal-2
-+
-+run-packeddecimal-%: QEMU_OPTS += -cpu m68020
+-const VMStateDescription vmmstate_fpu = {
++static const VMStateDescription vmstate_fpu = {
+     .name = "cpu/fpu",
+     .version_id = 1,
+     .minimum_version_id = 1,
+@@ -442,7 +442,7 @@ static bool cf_spregs_needed(void *opaque)
+     return m68k_feature(&s->env, M68K_FEATURE_CF_ISA_A);
+ }
+ 
+-const VMStateDescription vmstate_cf_spregs = {
++static const VMStateDescription vmstate_cf_spregs = {
+     .name = "cpu/cf_spregs",
+     .version_id = 1,
+     .minimum_version_id = 1,
+@@ -464,7 +464,7 @@ static bool cpu_68040_mmu_needed(void *opaque)
+     return m68k_feature(&s->env, M68K_FEATURE_M68040);
+ }
+ 
+-const VMStateDescription vmstate_68040_mmu = {
++static const VMStateDescription vmstate_68040_mmu = {
+     .name = "cpu/68040_mmu",
+     .version_id = 1,
+     .minimum_version_id = 1,
+@@ -489,7 +489,7 @@ static bool cpu_68040_spregs_needed(void *opaque)
+     return m68k_feature(&s->env, M68K_FEATURE_M68040);
+ }
+ 
+-const VMStateDescription vmstate_68040_spregs = {
++static const VMStateDescription vmstate_68040_spregs = {
+     .name = "cpu/68040_spregs",
+     .version_id = 1,
+     .minimum_version_id = 1,
+@@ -525,7 +525,7 @@ static const VMStateDescription vmstate_m68k_cpu = {
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription * const []) {
+-        &vmmstate_fpu,
++        &vmstate_fpu,
+         &vmstate_cf_spregs,
+         &vmstate_68040_mmu,
+         &vmstate_68040_spregs,
 -- 
 2.43.0
 
