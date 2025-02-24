@@ -2,86 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FD8A42934
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 732C4A42B58
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 19:30:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmc3J-00079N-B9; Mon, 24 Feb 2025 12:15:33 -0500
+	id 1tmdCF-0004VU-Ts; Mon, 24 Feb 2025 13:28:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc3C-00076h-6F
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:26 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc39-0005os-Tn
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:25 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-220e83d65e5so89278215ad.1
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:15:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740417322; x=1741022122; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wACa546aE/nM20s3+KlDu5wR+UoWJX4NTRRrZ8hS8Vo=;
- b=NeGuaibCK4uoO65KUXYvxUwkH+SHwTnlLnUGMrSo0/KifQtDMh8Pr3aDnrWZIDjK6J
- MiUzUPCzZ7nBcnKovnezQZveN650rhkANr0yvCvAN1Ngdq6aeTtgzxAyTFAH9KERAeQr
- AqS62U7dcq9w77NyYaoX6QSrMbXDfoXF34mPHzWR7UZlma+S2QkC54iCM/CgDxYrvg/Q
- oxUR8RgAxsdU5wkWiu+Pb8j4eNOaRJrTWM92J+zL2SKKcCcPyeaSQUuo+l4fshxkzRuC
- kvNZ5sYDYbpItIFPJ3K2b/zWXAQHyA+hdIXJaKLMg+eQWUM2MjJJkgT6XmyAuKyWa5xH
- XVGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740417322; x=1741022122;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wACa546aE/nM20s3+KlDu5wR+UoWJX4NTRRrZ8hS8Vo=;
- b=MhmZb5Wel4lix2ViLaUlzVak30FAckWYn6P7M7D+pXWePZqwxmWGEfcTbNZHhzyQ5u
- FBb5owLZPxJXnXPUn4ZGo7KQv51mXFA/SiipkOC9Xgjozhew/ynH4nn8TWjXBV/IeHs/
- qVcKmpwd99lOUz1XqNhoJkJfqeJPYo5DbauCzyyCCO9hfxLx6hXslknyCR6uUIBBs7D7
- uJnkY5DfZKebyjlb5gSnPSydsZMy8GnVQ+6H4zna1pBvhxjDu3hqQs+dpAB1M8SlfTgj
- +xo+nhU/LW/cKlThHq0FKa8gYrBSu5vLIK20dY4SkTj1NGo8DUrGiRnK4HGAwMJ1zO5S
- c2nA==
-X-Gm-Message-State: AOJu0YxXCKBdyYaMxX81ieSyxnSMaf9L7ERU+QY8sD/BF30xmaQpn9Kk
- Hn6zIi+mhli5oGnRhqFihqdF32YKk1E25h92+mNsOXR4sMzCkShVklT/RV+TlyIv6F2Gi7GJJsI
- Q
-X-Gm-Gg: ASbGncsn7rm2Pd3QlOZwLgHHJa7QBKbXnxwHqKxwHW3LiXc7iv4FKr9cWKoY97iSldD
- A97UOVGHqF4hrOsmNGuDJAg0Q4GvqA8KMGVWuRsZngFBkhDZCcAuN0x3B7GEfPVgB/oDgpu/80c
- 5U2lpEX/ZiBARR5tVKdt976P6BN7x+ktYaBDg37n6rTJfbZXMsI5A9eCGnOzk7sFqsUmlV23tAY
- oCQf2skf+VJiSevE4Z1S5FqcgshY9MobZ5vIsvdiBf4rt320wQzbEjwD0ZGgIKZXuHJm9TYtLXM
- DxQWc8E+uT4Minq+Rw2HUT/q6YfEFjVs360=
-X-Google-Smtp-Source: AGHT+IEMmyMMolW0LYR/s4aCidamjOs9b4pFKYQYIzo/4K6LO6aeJs5armfv/IbmzZrGNvD30BQB9Q==
-X-Received: by 2002:a05:6a00:1387:b0:730:8768:76d7 with SMTP id
- d2e1a72fcca58-73426d72ae6mr20026471b3a.17.1740417322320; 
- Mon, 24 Feb 2025 09:15:22 -0800 (PST)
-Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.15.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 09:15:22 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmd4n-0008UQ-51
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:21:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmd4T-0000SH-IT
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:21:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740421241;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=V2okbYWvwQq0dzjuynuNshi0SY/bcufp1gNx6gOmgII=;
+ b=GmRA7vMn7epHic3Dx11yCubIcZGDuFC7YvSsteZh2czWs+qMxpC87ZuC5ygexEkkXgGHzq
+ 0BSo6zTZncFzD5Y831XcJyMTwdfEPH4MymGTZqKvmvkmO/Itwa4NBhjXq26HnfuW9mkXVP
+ wQw6nYInQF/H+XynOF5J6bbwZBNJm6U=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-3vt5p6dxMJWJmvH-HTd_iA-1; Mon,
+ 24 Feb 2025 13:20:36 -0500
+X-MC-Unique: 3vt5p6dxMJWJmvH-HTd_iA-1
+X-Mimecast-MFC-AGG-ID: 3vt5p6dxMJWJmvH-HTd_iA_1740421236
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3D04119560BC; Mon, 24 Feb 2025 18:20:35 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.119])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2DE0619560A3; Mon, 24 Feb 2025 18:20:32 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu
-Subject: [PATCH v4 24/24] target/m68k: Implement FPIAR
-Date: Mon, 24 Feb 2025 09:14:44 -0800
-Message-ID: <20250224171444.440135-25-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250224171444.440135-1-richard.henderson@linaro.org>
-References: <20250224171444.440135-1-richard.henderson@linaro.org>
+Cc: Victor Toso <victortoso@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2] qapi: pluggable backend code generators
+Date: Mon, 24 Feb 2025 18:20:30 +0000
+Message-ID: <20250224182030.2089959-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,138 +81,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So far, this is only read-as-written.
+The 'qapi.backend.QAPIBackend' class defines an API contract for code
+generators. The current generator is put into a new class
+'qapi.backend.QAPICBackend' and made to be the default impl.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2497
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+A custom generator can be requested using the '-k' arg which takes a
+fully qualified python class name
+
+   qapi-gen.py -B the.python.module.QAPIMyBackend
+
+This allows out of tree code to use the QAPI generator infrastructure
+to create new language bindings for QAPI schemas. This has the caveat
+that the QAPI generator APIs are not guaranteed stable, so consumers
+of this feature may have to update their code to be compatible with
+future QEMU releases.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- target/m68k/cpu.h       |  1 +
- target/m68k/cpu.c       | 23 ++++++++++++++++++++++-
- target/m68k/helper.c    | 14 ++++++++------
- target/m68k/translate.c |  3 ++-
- 4 files changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index c22d5223f0..0bb26720cf 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -110,6 +110,7 @@ typedef struct CPUArchState {
-     uint32_t fpsr;
-     bool fpsr_inex1;  /* live only with an in-flight decimal operand */
-     float_status fp_status;
-+    uint32_t fpiar;
- 
-     uint64_t mactmp;
-     /*
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 21ebc198cd..18d5e6a98c 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -412,6 +412,23 @@ static const VMStateDescription vmstate_freg = {
-     }
- };
- 
-+static bool fpu_fpiar_needed(void *opaque)
-+{
-+    M68kCPU *s = opaque;
-+    return s->env.fpiar != 0;
-+}
+In v2:
+
+ - Create QAPISchema object ahead of calling backend
+ - Use -B instead of -k
+ - Fix mypy annotations
+ - Add error checking when loading backend
+ - Hardcode import of QAPICBackend to guarantee mypy coverage
+
+ scripts/qapi/backend.py | 63 ++++++++++++++++++++++++++++++++++
+ scripts/qapi/main.py    | 75 ++++++++++++++++++++++-------------------
+ 2 files changed, 103 insertions(+), 35 deletions(-)
+ create mode 100644 scripts/qapi/backend.py
+
+diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
+new file mode 100644
+index 0000000000..14e60aa67a
+--- /dev/null
++++ b/scripts/qapi/backend.py
+@@ -0,0 +1,63 @@
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
 +
-+static const VMStateDescription vmstate_fpiar = {
-+    .name = "cpu/fpu/fpiar",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = fpu_fpiar_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32(env.fpiar, M68kCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
++from abc import ABC, abstractmethod
 +
- static int fpu_post_load(void *opaque, int version)
- {
-     M68kCPU *s = opaque;
-@@ -432,7 +449,11 @@ static const VMStateDescription vmstate_fpu = {
-         VMSTATE_STRUCT_ARRAY(env.fregs, M68kCPU, 8, 0, vmstate_freg, FPReg),
-         VMSTATE_STRUCT(env.fp_result, M68kCPU, 0, vmstate_freg, FPReg),
-         VMSTATE_END_OF_LIST()
--    }
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_fpiar,
-+        NULL
-+    },
- };
++from .commands import gen_commands
++from .events import gen_events
++from .features import gen_features
++from .introspect import gen_introspect
++from .schema import QAPISchema
++from .types import gen_types
++from .visit import gen_visit
++
++
++class QAPIBackend(ABC):
++
++    @abstractmethod
++    def generate(self,
++                 schema: QAPISchema,
++                 output_dir: str,
++                 prefix: str,
++                 unmask: bool,
++                 builtins: bool,
++                 gen_tracing: bool) -> None:
++        """
++        Generate code for the given schema into the target directory.
++
++        :param schema: The primary QAPI schema object.
++        :param output_dir: The output directory to store generated code.
++        :param prefix: Optional C-code prefix for symbol names.
++        :param unmask: Expose non-ABI names through introspection?
++        :param builtins: Generate code for built-in types?
++
++        :raise QAPIError: On failures.
++        """
++
++
++class QAPICBackend(QAPIBackend):
++
++    def generate(self,
++                 schema: QAPISchema,
++                 output_dir: str,
++                 prefix: str,
++                 unmask: bool,
++                 builtins: bool,
++                 gen_tracing: bool) -> None:
++        """
++        Generate C code for the given schema into the target directory.
++
++        :param schema_file: The primary QAPI schema file.
++        :param output_dir: The output directory to store generated code.
++        :param prefix: Optional C-code prefix for symbol names.
++        :param unmask: Expose non-ABI names through introspection?
++        :param builtins: Generate code for built-in types?
++
++        :raise QAPIError: On failures.
++        """
++        gen_types(schema, output_dir, prefix, builtins)
++        gen_features(schema, output_dir, prefix)
++        gen_visit(schema, output_dir, prefix, builtins)
++        gen_commands(schema, output_dir, prefix, gen_tracing)
++        gen_events(schema, output_dir, prefix)
++        gen_introspect(schema, output_dir, prefix, unmask)
+diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+index 324081b9fc..8a8b1e0121 100644
+--- a/scripts/qapi/main.py
++++ b/scripts/qapi/main.py
+@@ -8,18 +8,14 @@
+ """
  
- static bool cf_spregs_needed(void *opaque)
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 6e3bb96762..bc787cbf05 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -45,8 +45,8 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-         return gdb_get_reg32(mem_buf, env->fpcr);
-     case 9: /* fpstatus */
-         return gdb_get_reg32(mem_buf, env->fpsr);
--    case 10: /* fpiar, not implemented */
--        return gdb_get_reg32(mem_buf, 0);
-+    case 10: /* fpiar */
-+        return gdb_get_reg32(mem_buf, env->fpiar);
-     }
-     return 0;
- }
-@@ -69,7 +69,8 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     case 9: /* fpstatus */
-         env->fpsr = ldl_be_p(mem_buf);
-         return 4;
--    case 10: /* fpiar, not implemented */
-+    case 10: /* fpiar */
-+        env->fpiar = ldl_p(mem_buf);
-         return 4;
-     }
-     return 0;
-@@ -91,8 +92,8 @@ static int m68k_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-         return gdb_get_reg32(mem_buf, env->fpcr);
-     case 9: /* fpstatus */
-         return gdb_get_reg32(mem_buf, env->fpsr);
--    case 10: /* fpiar, not implemented */
--        return gdb_get_reg32(mem_buf, 0);
-+    case 10: /* fpiar */
-+        return gdb_get_reg32(mem_buf, env->fpiar);
-     }
-     return 0;
- }
-@@ -114,7 +115,8 @@ static int m68k_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     case 9: /* fpstatus */
-         env->fpsr = ldl_be_p(mem_buf);
-         return 4;
--    case 10: /* fpiar, not implemented */
-+    case 10: /* fpiar */
-+        env->fpiar = ldl_p(mem_buf);
-         return 4;
-     }
-     return 0;
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 29e64d3908..fdda7aeb99 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -4674,7 +4674,7 @@ static void gen_load_fcr(DisasContext *s, TCGv res, int reg)
- {
-     switch (reg) {
-     case M68K_FPIAR:
--        tcg_gen_movi_i32(res, 0);
-+        tcg_gen_ld_i32(res, tcg_env, offsetof(CPUM68KState, fpiar));
-         break;
-     case M68K_FPSR:
-         tcg_gen_ld_i32(res, tcg_env, offsetof(CPUM68KState, fpsr));
-@@ -4689,6 +4689,7 @@ static void gen_store_fcr(DisasContext *s, TCGv val, int reg)
- {
-     switch (reg) {
-     case M68K_FPIAR:
-+        tcg_gen_st_i32(val, tcg_env, offsetof(CPUM68KState, fpiar));
-         break;
-     case M68K_FPSR:
-         tcg_gen_st_i32(val, tcg_env, offsetof(CPUM68KState, fpsr));
+ import argparse
++from importlib import import_module
+ import sys
+ from typing import Optional
+ 
+-from .commands import gen_commands
++from .backend import QAPIBackend, QAPICBackend
+ from .common import must_match
+ from .error import QAPIError
+-from .events import gen_events
+-from .features import gen_features
+-from .introspect import gen_introspect
+ from .schema import QAPISchema
+-from .types import gen_types
+-from .visit import gen_visit
+ 
+ 
+ def invalid_prefix_char(prefix: str) -> Optional[str]:
+@@ -29,32 +25,37 @@ def invalid_prefix_char(prefix: str) -> Optional[str]:
+     return None
+ 
+ 
+-def generate(schema_file: str,
+-             output_dir: str,
+-             prefix: str,
+-             unmask: bool = False,
+-             builtins: bool = False,
+-             gen_tracing: bool = False) -> None:
+-    """
+-    Generate C code for the given schema into the target directory.
++def create_backend(path: str) -> QAPIBackend:
++    if path is None:
++        return QAPICBackend()
+ 
+-    :param schema_file: The primary QAPI schema file.
+-    :param output_dir: The output directory to store generated code.
+-    :param prefix: Optional C-code prefix for symbol names.
+-    :param unmask: Expose non-ABI names through introspection?
+-    :param builtins: Generate code for built-in types?
++    if "." not in path:
++        print(f"Missing qualified module path in '{path}'", file=sys.stderr)
++        sys.exit(1)
+ 
+-    :raise QAPIError: On failures.
+-    """
+-    assert invalid_prefix_char(prefix) is None
++    module_path, _, class_name = path.rpartition('.')
++    try:
++        mod = import_module(module_path)
++    except Exception as ex:
++        print(f"Unable to import '{module_path}': {ex}", file=sys.stderr)
++        sys.exit(1)
++
++    if not hasattr(mod, class_name):
++        print(f"Module '{module_path}' has no class '{class_name}'", file=sys.stderr)
++        sys.exit(1)
++    klass = getattr(mod, class_name)
++
++    try:
++        backend = klass()
++
++        if not isinstance(backend, QAPIBackend):
++            print(f"Backend '{path}' must be an instance of QAPIBackend", file=sys.stderr)
++            sys.exit(1)
+ 
+-    schema = QAPISchema(schema_file)
+-    gen_types(schema, output_dir, prefix, builtins)
+-    gen_features(schema, output_dir, prefix)
+-    gen_visit(schema, output_dir, prefix, builtins)
+-    gen_commands(schema, output_dir, prefix, gen_tracing)
+-    gen_events(schema, output_dir, prefix)
+-    gen_introspect(schema, output_dir, prefix, unmask)
++        return backend
++    except Exception as ex:
++        print(f"Backend '{path}' cannot be instantiated: {ex}", file=sys.stderr)
++        sys.exit(1)
+ 
+ 
+ def main() -> int:
+@@ -77,6 +78,8 @@ def main() -> int:
+     parser.add_argument('-u', '--unmask-non-abi-names', action='store_true',
+                         dest='unmask',
+                         help="expose non-ABI names in introspection")
++    parser.add_argument('-B', '--backend', default=None,
++                        help="Python module name for code generator")
+ 
+     # Option --suppress-tracing exists so we can avoid solving build system
+     # problems.  TODO Drop it when we no longer need it.
+@@ -93,12 +96,14 @@ def main() -> int:
+         return 1
+ 
+     try:
+-        generate(args.schema,
+-                 output_dir=args.output_dir,
+-                 prefix=args.prefix,
+-                 unmask=args.unmask,
+-                 builtins=args.builtins,
+-                 gen_tracing=not args.suppress_tracing)
++        schema = QAPISchema(args.schema)
++        backend = create_backend(args.backend)
++        backend.generate(schema,
++                         output_dir=args.output_dir,
++                         prefix=args.prefix,
++                         unmask=args.unmask,
++                         builtins=args.builtins,
++                         gen_tracing=not args.suppress_tracing)
+     except QAPIError as err:
+         print(err, file=sys.stderr)
+         return 1
 -- 
-2.43.0
+2.47.1
 
 
