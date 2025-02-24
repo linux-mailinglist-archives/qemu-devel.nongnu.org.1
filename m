@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30C0A42938
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F21A4291B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:16:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmc2p-0006vq-On; Mon, 24 Feb 2025 12:15:03 -0500
+	id 1tmc2s-0006wW-Bg; Mon, 24 Feb 2025 12:15:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2k-0006un-LZ
+ id 1tmc2l-0006us-Tf
  for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:15:00 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmc2j-0005Yf-0P
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:14:58 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21c2f1b610dso137339395ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:14:56 -0800 (PST)
+ id 1tmc2k-0005Yt-20
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:14:59 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-220d28c215eso72116275ad.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 09:14:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740417295; x=1741022095; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740417297; x=1741022097; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VHAdfN98EalcKVEjBSSimTDU4XR40iCNkU/fGqXPJUE=;
- b=gx02idx/AhbzlDb15bM76d/oEe7za3aSWJr2sa1Z8WLPwrKdeB4qHTDSfyzsDqeLAz
- CiWEuoMzNfnqxWRoHi++63td6OK3D3PwptnxvVedwHlb5okMWKxyQg7nRcG0AKMs9G5Y
- 3cIJAt6pFnP7gWgSP7fjjymOtsYcXk+0UsPlgnf/F2cczCeTOs7I7/8eXY4l30F7HbaX
- sDGF0wgjLrCfxWVSv8alPlW/zTPOTU79da7IDM3YA3R7djRDVTlxFYhsvSCgQ/+safNQ
- QgQDOjvbSJsgWFeEKt2mSbGUGVWZ30pTYb8BvLtV/vWiSCJ7/7i+fmS5TZoqN0KKBEHt
- q5Jg==
+ bh=fcrORcmmH56vrQ4HXfxMOiWFGhxCZ0NEZ8lztnAQbec=;
+ b=x2XZBjEnaWkvLeglahouVM6Lkxqq/HvDr3jUn/GZmGlpCXvX0cSocLRhYZ19ifqQHZ
+ qnIzpkG99pTiBRQOT4Kt12DkSQySCuGo2S/Qv4gl/8+2eBPxbmdNqgciYl5g81Uz5CNX
+ voqKle0/9h9bTOyGYWoji/ouGRxwMZHImFkqWaC6Mlj/Exsfln/fSnBbf9EbrljUqCf4
+ ifll77ase4gkEtTS5z/Gmfd8xfMaSyNy2B2WCGf3S3MXEPr2X2uKo3ldJCY01fCat/uy
+ G02awSpOPaSgu0nNa79rOyff02MkCSINC5hab6yFbzXbsA4nz0yNExrtju2+80I8inM3
+ CYzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740417295; x=1741022095;
+ d=1e100.net; s=20230601; t=1740417297; x=1741022097;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VHAdfN98EalcKVEjBSSimTDU4XR40iCNkU/fGqXPJUE=;
- b=o2y3sPZt/LFDGDEqt3UFbuTa2e6MvpMJlysl9QQlOCiSVBiig6yVo6cWUi9TyNPMFm
- tYOPeNuHNIXWZqunsvCWijIHYE+1VVHEuBt+Y2JS04844aIJ2mV1hylPoKnHZZqLDNvY
- 0C6eC3Hwjs6PLCcqe59zE6pYUGJppEKnkUB/aRy6LoHnyu4KStlqzkzoMOnFLX3rKAEf
- iTcwEE4UXvUN8dAzlL7Jx7bw0LESr8YNXeCnF0AhSq7LxygKdHRLGhc1xXpLp4H69Lqp
- y4Bvbi/i7A89tI17SfScADq1fC4qvRpvhm5saSbRqman4MIzjueY4jh27cvM0X0Yb6Mo
- 5XrA==
-X-Gm-Message-State: AOJu0YznUM0qHpZ0ywoAyQ/DBgD8BLFKdUAQ4X71rWUKgFs18tp66OBQ
- qEt+7emvZR4VlP2UO6uw+ZrZ44gIwwJCGQQmbq8Hyeow/fEWSbTlQCzCM3/rF89Hn7uzMFVZPxK
- h
-X-Gm-Gg: ASbGncsyJ41rLt4ZKmN4LxQyejZHb1EreeMF5mp9FdvZf27TI7gNAGUPXaNsbMBOIq0
- aruMtpUcjDhlxZAEoLS1d/db7hk8MQvb4SzpaxeEK/aCDyt23xuQl407T5gBFm+5d/2wkb6i7W1
- ZwLHHGWXRpKG/a628DfP6wlb8kvNWrjBSeKTsciYyliAwNmUYH/q1D63oZUckB5HRa4kv9ZGMB+
- gIpI1qWgJ+PNMZN4vW3HrC4bt/Ot00QFwR3nQG7WADswP6rkG9gHA9EaruZJhFupqBihHhlYsYZ
- YXub7tKF6CPYKLlL7wA6OXAcS1zpefFz8+U=
-X-Google-Smtp-Source: AGHT+IELsmtC+rJkJ72K5G3gfhhT2nwyYKEt86zSSmOF6gUhHsxejMrhdScF6c1rTyaq5emHBZoz+Q==
-X-Received: by 2002:a17:903:32c3:b0:220:c178:b2e with SMTP id
- d9443c01a7336-22307b4bbc2mr34805ad.17.1740417295560; 
- Mon, 24 Feb 2025 09:14:55 -0800 (PST)
+ bh=fcrORcmmH56vrQ4HXfxMOiWFGhxCZ0NEZ8lztnAQbec=;
+ b=ovursNay/vq5/PxU2T56N8s7QxLmqQP8NWB9fBOzImpYXCtZxYClCMlbQ4TUQ9mYkf
+ zueEjp6P4ElrX/ClQe2guSwamxsQSM2BtG8MNKLdOZOyTs/kmDpzq3eH/hHAn1u8DskI
+ P89ZLRw3XaDdzOXVJGOSHZjUUaLA8CBnx4xlx3Pv4wDsoU6PAZzkR1Hww9Pi2Ntq29ZU
+ ZxKWuumfZlVYKTYw7keihpVDTA62ikystbfxdeKNZmfmn7/f93pGNL5NpwPMfFTvk2i3
+ CtaFIZjBtRLCl38M4mTk+KU4nHAumoc7MRoLqE1ld8xmHyX7XPBCJ92RV9uX8Hm23VI8
+ SoCw==
+X-Gm-Message-State: AOJu0YxNj8j2cEURGZmLZBMXl52OnuXJf7o/sHZjiro9jS5sodiJszoD
+ ASYFvp7YKJR5xx6D/iS7AMNLUcormXoyMUyJnJhYQnVPjTITVJ6iInLum+u3WIGXPFBmtUkmmHf
+ q
+X-Gm-Gg: ASbGncvcpiiFxMoryNpv5fCnXMDNINuuDcVO1RqsZ2LGlGUbBy/WztzznSZdVDSE8Sg
+ llEsFJRdWILPOwlU5VW2JtXT7TW6Nir3VGFuCkdJI/UX4NSzF3rOm13a4zIlv0Gek2wPqNn1WLb
+ 69+1GeF/9PI8pCDmWpvpFUgd42++9orx/c4VMW5cJJXPzhLzRxeIA5GL38cORG44Ik0Ib2WNmko
+ hHvc/uJx1DWDmYeQUXidCvIQ4+KT5XwmVtcDpK3E9lEM2fHOVmamvO4peJgPOK48WcTcgjwtVA4
+ oTPezmLmoJx27MYEhYCHynBmBKWqBXOhijM=
+X-Google-Smtp-Source: AGHT+IFUHo/5qnPrIyVpHnKUM5ivodzU38kH44X2nj2bTbSax4B0zvGgo2sf03hZWj/H21FW/jb27g==
+X-Received: by 2002:a05:6a20:12c6:b0:1ee:e7d0:5c54 with SMTP id
+ adf61e73a8af0-1eef3dd815dmr27101549637.37.1740417296761; 
+ Mon, 24 Feb 2025 09:14:56 -0800 (PST)
 Received: from stoup.. ([2607:fb90:c9e2:d7e3:c85c:d4f0:c8b8:8fa7])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.14.54
+ d2e1a72fcca58-732425466besm20580780b3a.9.2025.02.24.09.14.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 09:14:55 -0800 (PST)
+ Mon, 24 Feb 2025 09:14:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 06/24] target/m68k: Introduce
- M68K_FEATURE_FPU_PACKED_DECIMAL
-Date: Mon, 24 Feb 2025 09:14:26 -0800
-Message-ID: <20250224171444.440135-7-richard.henderson@linaro.org>
+Subject: [PATCH v4 07/24] target/m68k: Merge gen_ea into SRC_EA and DEST_EA
+Date: Mon, 24 Feb 2025 09:14:27 -0800
+Message-ID: <20250224171444.440135-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224171444.440135-1-richard.henderson@linaro.org>
 References: <20250224171444.440135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,48 +99,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set for 68020 and 68030, but does nothing so far.
+This will enable further cleanups further down the call chain.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/cpu.h | 2 ++
- target/m68k/cpu.c | 2 ++
- 2 files changed, 4 insertions(+)
+ target/m68k/translate.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index 7b90e1e58f..b394d8bbb9 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -574,6 +574,8 @@ enum m68k_features {
-     M68K_FEATURE_MOVEFROMSR_PRIV,
-     /* Exception frame with format+vector (from 68010) */
-     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
-+    /* FPU supports packed decimal real format */
-+    M68K_FEATURE_FPU_PACKED_DECIMAL,
- };
- 
- static inline bool m68k_feature(CPUM68KState *env, int feature)
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 5dbad8bb43..7936b1a7e7 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -202,6 +202,7 @@ static void m68020_cpu_initfn(Object *obj)
-     m68k_set_feature(env, M68K_FEATURE_MSP);
-     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
-     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
-+    m68k_set_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index d3cfad315c..f093088d66 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -897,14 +897,6 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+     return NULL_QREG;
  }
  
- /*
-@@ -244,6 +245,7 @@ static void m68040_cpu_initfn(Object *obj)
- 
-     m68030_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68030);
-+    m68k_unset_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
-     m68k_set_feature(env, M68K_FEATURE_M68040);
+-static TCGv gen_ea(CPUM68KState *env, DisasContext *s, uint16_t insn,
+-                   int opsize, TCGv val, TCGv *addrp, ea_what what, int index)
+-{
+-    int mode = extract32(insn, 3, 3);
+-    int reg0 = REG(insn, 0);
+-    return gen_ea_mode(env, s, mode, reg0, opsize, val, addrp, what, index);
+-}
+-
+ static TCGv_ptr gen_fp_ptr(int freg)
+ {
+     TCGv_ptr fp = tcg_temp_new_ptr();
+@@ -1368,18 +1360,22 @@ static void gen_exit_tb(DisasContext *s)
+     s->base.is_jmp = DISAS_EXIT;
  }
  
+-#define SRC_EA(env, result, opsize, op_sign, addrp) do {                \
+-        result = gen_ea(env, s, insn, opsize, NULL_QREG, addrp,         \
+-                        op_sign ? EA_LOADS : EA_LOADU, IS_USER(s));     \
++#define SRC_EA(env, result, opsize, op_sign, addrp)                     \
++    do {                                                                \
++        result = gen_ea_mode(env, s, extract32(insn, 3, 3),             \
++                             REG(insn, 0), opsize, NULL_QREG, addrp,    \
++                             op_sign ? EA_LOADS : EA_LOADU, IS_USER(s)); \
+         if (IS_NULL_QREG(result)) {                                     \
+             gen_addr_fault(s);                                          \
+             return;                                                     \
+         }                                                               \
+     } while (0)
+ 
+-#define DEST_EA(env, insn, opsize, val, addrp) do {                     \
+-        TCGv ea_result = gen_ea(env, s, insn, opsize, val, addrp,       \
+-                                EA_STORE, IS_USER(s));                  \
++#define DEST_EA(env, insn, opsize, val, addrp)                          \
++    do {                                                                \
++        TCGv ea_result = gen_ea_mode(env, s, extract32(insn, 3, 3),     \
++                                     REG(insn, 0), opsize, val, addrp,  \
++                                     EA_STORE, IS_USER(s));             \
+         if (IS_NULL_QREG(ea_result)) {                                  \
+             gen_addr_fault(s);                                          \
+             return;                                                     \
 -- 
 2.43.0
 
