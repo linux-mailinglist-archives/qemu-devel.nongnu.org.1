@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF95A419E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 11:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E5CA41A1F
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 11:04:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmVFX-0003hM-DC; Mon, 24 Feb 2025 04:59:43 -0500
+	id 1tmVJL-0005dr-8u; Mon, 24 Feb 2025 05:03:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmVFV-0003hA-6B
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 04:59:41 -0500
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmVFN-0003G3-KH
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 04:59:39 -0500
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-6fb7d64908fso35203687b3.3
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 01:59:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740391170; x=1740995970; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=m3KglIjf6ji1bqOAeWAwF/JZZNcLvsq10cRCA75mzVk=;
- b=uLIooGi7gbStv9NF2wE2Lt1EYZ7RJbiUC+UPdNpsO+lx76u9tBkHtgAUk6qiqGlloN
- QaPXiby+fzNRx/AepVzEjzC4ayhMMtTK6m94JNX3dAUBhLh9W73e5EiIoTnmO0hJFIiY
- WEuHezPXjQRAP1bmO9JbGmm760maMQ0G5kXS16RbsE01ukhQboUlfDtXfpfMhXs3pEOL
- YbxOT0QvgbT9mHSxlcfdcvkGMR3mf+jWbFK+Nk5lM380E5z3DicKT6yow/JmgDEY2guv
- TiAVngMX7BeEg1Dpx7shmnm4orijTSIhPGoWHxS0c/KJQ94oAeQi8nhKSZ7FY8JccmR7
- NlgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740391170; x=1740995970;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=m3KglIjf6ji1bqOAeWAwF/JZZNcLvsq10cRCA75mzVk=;
- b=o5kWUtHBXYKX+7OAwVkRb2gUEEbwb6F/pFZioilw4CgCXvWqsGjvHrCJuohwLAVshz
- C0AuVZNCabSfpWVXmVhJtsCSSs8aZASRiuVb+neIZOx1NIZGSidN9Tl4Mmr5Gww+K7Rp
- JbXBs+kQ3yjHENAw1eOAl5/JIQqOVPsQCSJkms8uPDaZc4cs2sE78xRlysYzVuf/9VHN
- 5cNnW3XTmvrOl/oCoFTkPSGiEVJCzVU71gvVj4oXhOhWzMQ2KvIHNy4bPiy5jKoxcQoq
- wKZaza4fvkvF7HuyKliOIqBi4oU47nojNf5scfP8cSgminpfGzoSeyVaPRvTPkiN3HL8
- 8agQ==
-X-Gm-Message-State: AOJu0YyIMYWpIbILuxwpqrO9RZfYGnR+JvW9KODufVdPaKdQxNY1B1Kq
- ZW94ViX8BQs05iXYRUI8wVrNvuEQW1FrQ799br7tAI6GzeG1Ul3btyOLNTJWGziZ1blqAjtA8Rx
- q8U2ixGqpQWv4jAyCfn5gjvh37W/lXeA2a7q5Ww==
-X-Gm-Gg: ASbGncsD/g9ZsaXHdvaGPIyGhU2We1kvmokMqJaDaaoZ6ICgo8CA4rubsKHSOsmxuOU
- CaKUnj2CSthyZ5syJW0rE2bYam42S069jWjJ8kZxtCwFH5kCOmgH8hUMOJjJw86nd0atUlars93
- bGKWMnKXZB
-X-Google-Smtp-Source: AGHT+IGEMB6D+o0cve05P8d+NfPG7k59awKr5Pd3Gx5SsXMgueMOD3P1ut3nv40cQENY9PMNrX4qoixQeYUlVAdUkDo=
-X-Received: by 2002:a05:690c:8f:b0:6fb:4648:3425 with SMTP id
- 00721157ae682-6fbcc2346ecmr105900067b3.16.1740391170219; Mon, 24 Feb 2025
- 01:59:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tmVJF-0005cc-Iv
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 05:03:33 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tmVJA-00048a-Ir
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 05:03:33 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z1bp81GxLz6M4lc;
+ Mon, 24 Feb 2025 18:00:32 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+ by mail.maildlp.com (Postfix) with ESMTPS id 9C706140AE5;
+ Mon, 24 Feb 2025 18:03:15 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Feb 2025 11:03:15 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Mon, 24 Feb 2025 11:03:15 +0100
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "kevin.tian@intel.com"
+ <kevin.tian@intel.com>, "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
+ "chao.p.peng@intel.com" <chao.p.peng@intel.com>
+Subject: RE: [PATCH rfcv2 01/20] backends/iommufd: Add helpers for
+ invalidating user-managed HWPT
+Thread-Topic: [PATCH rfcv2 01/20] backends/iommufd: Add helpers for
+ invalidating user-managed HWPT
+Thread-Index: AQHbgqf742Ulx+fvuEu1j4r+mL1bx7NWPHpw
+Date: Mon, 24 Feb 2025 10:03:15 +0000
+Message-ID: <9c47c785082b4c6c8751164de6481c08@huawei.com>
+References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
+ <20250219082228.3303163-2-zhenzhong.duan@intel.com>
+In-Reply-To: <20250219082228.3303163-2-zhenzhong.duan@intel.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20250220161313.127376-1-dbarboza@ventanamicro.com>
- <20250220161313.127376-2-dbarboza@ventanamicro.com>
-In-Reply-To: <20250220161313.127376-2-dbarboza@ventanamicro.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Feb 2025 09:59:19 +0000
-X-Gm-Features: AWEUYZlmWOg2HUqpWcSmaYSeZOOkYTsiwHUa8UCdt5WGgYLiHlnNtscgSp6yLbA
-Message-ID: <CAFEAcA8u8C2HTRjOBReSQ7oN7L248034VrfTHYgHCxBPy0gwDg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] target/riscv/cpu: ignore TCG init for KVM CPUs in
- reset_hold
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,76 +82,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Feb 2025 at 16:14, Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> riscv_cpu_reset_hold() does a lot of TCG-related initializations that
-> aren't relevant for KVM, but nevertheless are impacting the reset state
-> of KVM vcpus.
->
-> When running a KVM guest, kvm_riscv_reset_vcpu() is called at the end of
-> reset_hold(). At that point env->mstatus is initialized to a non-zero
-> value, and it will be use to write 'sstatus' in the vcpu
-> (kvm_arch_put_registers() then kvm_riscv_put_regs_csr()).
->
-> Do an early exit in riscv_cpu_reset_hold() if we're running KVM. All the
-> KVM reset procedure will be centered in kvm_riscv_reset_vcpu().
->
-> While we're at it, remove the kvm_enabled() check in
-> kvm_riscv_reset_vcpu() since it's already being gated in
-> riscv_cpu_reset_hold().
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Hi Zhenzhong,
+
+> -----Original Message-----
+> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Sent: Wednesday, February 19, 2025 8:22 AM
+> To: qemu-devel@nongnu.org
+> Cc: alex.williamson@redhat.com; clg@redhat.com; eric.auger@redhat.com;
+> mst@redhat.com; jasowang@redhat.com; peterx@redhat.com;
+> jgg@nvidia.com; nicolinc@nvidia.com; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; joao.m.martins@oracle.com;
+> clement.mathieu--drif@eviden.com; kevin.tian@intel.com;
+> yi.l.liu@intel.com; chao.p.peng@intel.com; Zhenzhong Duan
+> <zhenzhong.duan@intel.com>
+> Subject: [PATCH rfcv2 01/20] backends/iommufd: Add helpers for
+> invalidating user-managed HWPT
+>=20
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  target/riscv/cpu.c         | 9 +++++----
->  target/riscv/kvm/kvm-cpu.c | 3 ---
->  2 files changed, 5 insertions(+), 7 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 522d6584e4..8e6e629ec4 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1050,6 +1050,11 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
->          mcc->parent_phases.hold(obj, type);
->      }
->  #ifndef CONFIG_USER_ONLY
-> +    if (kvm_enabled()) {
-> +        kvm_riscv_reset_vcpu(cpu);
-> +        return;
-> +    }
-> +
->      env->misa_mxl = mcc->misa_mxl_max;
->      env->priv = PRV_M;
->      env->mstatus &= ~(MSTATUS_MIE | MSTATUS_MPRV);
-> @@ -1146,10 +1151,6 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
->          env->rnmip = 0;
->          env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
->      }
-> -
-> -    if (kvm_enabled()) {
-> -        kvm_riscv_reset_vcpu(cpu);
-> -    }
+>  include/system/iommufd.h |  3 +++
+>  backends/iommufd.c       | 30 ++++++++++++++++++++++++++++++
+>  backends/trace-events    |  1 +
+>  3 files changed, 34 insertions(+)
+>=20
+> diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+> index cbab75bfbf..5d02e9d148 100644
+> --- a/include/system/iommufd.h
+> +++ b/include/system/iommufd.h
+> @@ -61,6 +61,9 @@ bool
+> iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t
+> hwpt_id,
+>                                        uint64_t iova, ram_addr_t size,
+>                                        uint64_t page_size, uint64_t *data=
+,
+>                                        Error **errp);
+> +int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t
+> hwpt_id,
+> +                                     uint32_t data_type, uint32_t entry_=
+len,
+> +                                     uint32_t *entry_num, void *data_ptr=
+);
+>=20
+>  #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+> TYPE_HOST_IOMMU_DEVICE "-iommufd"
 >  #endif
+> diff --git a/backends/iommufd.c b/backends/iommufd.c
+> index d57da44755..fc32aad5cb 100644
+> --- a/backends/iommufd.c
+> +++ b/backends/iommufd.c
+> @@ -311,6 +311,36 @@ bool
+> iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+>      return true;
 >  }
+>=20
+> +int iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t
+> hwpt_id,
 
-This looks super odd, from an "I don't know anything about
-riscv specifics" position. Generally the idea is:
- * reset in QEMU should reset the CPU state
- * what a reset CPU looks like doesn't differ between
-   accelerators
- * when we start the KVM CPU, we copy the state from QEMU
-   to the kernel, and then the kernel's idea of the reset state
-   matches
+Nit: As per struct iommu_hwpt_invalidate documentation this can be an ID of
+Nested HWPT or vIOMMU.  May be better to rename this just to id.
 
-This patch looks like it's entirely skipping basically
-all of the QEMU CPU state reset code specifically for KVM.
-So now you'll have two different pieces of code controlling
-reset for different accelerators, and the resulting CPU
-state won't be consistent between them...
-
-thanks
--- PMM
+Thanks,
+Shameer
 
