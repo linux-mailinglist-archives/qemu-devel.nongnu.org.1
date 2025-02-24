@@ -2,102 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB9A422A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B44A4201B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 14:14:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmZDT-0007Md-Um; Mon, 24 Feb 2025 09:13:51 -0500
+	id 1tmYGy-0007sW-Lz; Mon, 24 Feb 2025 08:13:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@imap.linux.ibm.com>)
- id 1tmYN8-00014q-Qd; Mon, 24 Feb 2025 08:19:47 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tmYGv-0007s1-ME
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 08:13:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@imap.linux.ibm.com>)
- id 1tmYN4-00052X-Mk; Mon, 24 Feb 2025 08:19:44 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O2DpSI026276;
- Mon, 24 Feb 2025 12:36:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=9DDnRY
- PZV3sMX17lNQoEE9HbUOsEz6ycagwFMkyOnL8=; b=PdOF+4W8xwhpHr04PLXSEm
- oT2cwKA74S1GlBNHPkeId4L9knJu75oBZaHwurbOZ+Wu4imQFxvVD40l/FbmpnE/
- Lb1yUVM9fZrkIwLVtBUI3q0nZqVZHvp0/AZhaIQl0g8I/p83hMUf/72ebL5pZGca
- c8YZ18pZ7IqMZfhB1qbfQfRYNPQuhrRLFZkpVMzp0rFu4kUWGIqbhzU67JUWWgZG
- kQ8AYIcBsxTsDNkoWt7+N2zVXVSLb/MhfuIL4uOSFWgeFzwtL5CkmQxjmn1plLbq
- WaKaiYBYYa4c0oL9UhkUcqg7yk/Po7f8FGBBeN7lkcKOGIHq99FoDtvK+o0U+d3w
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450eu9thmf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Feb 2025 12:36:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OBv1mX026274;
- Mon, 24 Feb 2025 12:36:01 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswn73x3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Feb 2025 12:36:01 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51OCa0fL65077654
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2025 12:36:00 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA4585805C;
- Mon, 24 Feb 2025 12:35:59 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73E9F5805A;
- Mon, 24 Feb 2025 12:35:59 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 24 Feb 2025 12:35:59 +0000 (GMT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tmYGu-00044c-3E
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 08:13:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740402795;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/tsIeLMF4fzW7ay8dgEC9ffQipAGeVFxpSEZUSQzcVo=;
+ b=hTRfM+Au9oMltTUHqUt7MW4O2mRuVKQ5ooabZ0vDtb5mRdSd7SbIKYI7iyg1R2fJgQd9Bt
+ FgTvFIuNHIS3jMk089f9Bs1kmZ4v8k4ASDmzGfnm9h+zBMTlQw/0WzvK3bamh9LH6MLwgR
+ tJOSrUk9fDOVYxO2TT+0rRbj8LQSEqs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-132-NoJazeGZOUeUKmHXGqc1jw-1; Mon,
+ 24 Feb 2025 08:13:11 -0500
+X-MC-Unique: NoJazeGZOUeUKmHXGqc1jw-1
+X-Mimecast-MFC-AGG-ID: NoJazeGZOUeUKmHXGqc1jw_1740402790
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1A42F19783B8; Mon, 24 Feb 2025 13:13:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.224.3])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 64D2F1800368; Mon, 24 Feb 2025 13:13:05 +0000 (UTC)
+Date: Mon, 24 Feb 2025 14:13:02 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com,
+ pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 15/16] iotests: Add qsd-migrate case
+Message-ID: <Z7xwXk_pNjOWXuAF@redhat.com>
+References: <20250204211407.381505-1-kwolf@redhat.com>
+ <20250204211407.381505-16-kwolf@redhat.com>
+ <b74180f8-f892-450e-9327-87a47bd0a8ab@redhat.com>
 MIME-Version: 1.0
-Date: Mon, 24 Feb 2025 13:35:59 +0100
-From: shalini <shalini@imap.linux.ibm.com>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x mailing
- list <qemu-s390x@nongnu.org>, qemu-devel mailing list
- <qemu-devel@nongnu.org>, Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: Re: [PATCH v1 2/3] hw/s390x: add CPI values to QOM
-In-Reply-To: <812ab32cb4f2ca3d8290936989491b8f3b970692.camel@linux.ibm.com>
-References: <20250115133106.3034445-1-shalini@linux.ibm.com>
- <20250115133106.3034445-2-shalini@linux.ibm.com>
- <812ab32cb4f2ca3d8290936989491b8f3b970692.camel@linux.ibm.com>
-Message-ID: <7fefa7560b7e42ae34680c99a69ba57f@imap.linux.ibm.com>
-X-Sender: shalini@imap.linux.ibm.com
-Organization: IBM Deutschland Research & Development GmbH
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XtLYWf4gX0reyl0A0xVuGv10QubCvchr
-X-Proofpoint-ORIG-GUID: XtLYWf4gX0reyl0A0xVuGv10QubCvchr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_05,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- suspectscore=0 bulkscore=0 clxscore=1034 phishscore=0 spamscore=0
- malwarescore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502240091
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=shalini@imap.linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NO_DNS_FOR_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b74180f8-f892-450e-9327-87a47bd0a8ab@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 24 Feb 2025 09:13:48 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,103 +83,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-01-24 18:49, Nina Schoetterl-Glausch wrote:
-> On Wed, 2025-01-15 at 14:31 +0100, Shalini Chellathurai Saroja wrote:
->> This commit adds the firmware control-program
->> identifiers received from a KVM guest via the
->> SCLP event type Control-Program Identification to QOM.
->> A timestamp in which the data is received is also
->> added to QOM.
->> 
->> Example:
->> virsh # qemu-monitor-command vm --pretty '{
->> "execute":"qom-get","arguments": {
->> "path": "/machine", "property": "s390-cpi"}}'
->> {
->>   "return": {
->>     "timestamp": 1711620874948254000,
->>     "system-level": "0x50e00",
->>     "sysplex-name": "SYSPLEX ",
->>     "system-name": "TESTVM  ",
->>     "system-type": "LINUX   "
->>   },
->>   "id": "libvirt-15"
->> }
->> 
->> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
->> ---
->>  hw/s390x/s390-virtio-ccw.c         | 26 ++++++++++++++++++++++++++
->>  hw/s390x/sclpcpi.c                 | 10 ++++++++++
->>  include/hw/s390x/s390-virtio-ccw.h |  8 ++++++++
->>  qapi/machine.json                  | 24 ++++++++++++++++++++++++
->>  4 files changed, 68 insertions(+)
->> 
->> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
->> index 38aeba14ee..35fb523af9 100644
->> --- a/hw/s390x/s390-virtio-ccw.c
->> +++ b/hw/s390x/s390-virtio-ccw.c
->> @@ -49,6 +49,7 @@
->>  #include "hw/virtio/virtio-md-pci.h"
->>  #include "hw/s390x/virtio-ccw-md.h"
->>  #include CONFIG_DEVICES
->> +#include "qapi/qapi-visit-machine.h"
->> 
->>  static Error *pv_mig_blocker;
->> 
->> @@ -773,6 +774,25 @@ static void machine_set_loadparm(Object *obj, 
->> Visitor *v,
->>      s390_ipl_fmt_loadparm(ms->loadparm, val, errp);
->>  }
->> 
->> +static void machine_get_cpi(Object *obj, Visitor *v,
->> +                             const char *name, void *opaque, Error 
->> **errp)
->> +{
->> +    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
->> +    S390Cpi *cpi;
->> +    cpi = &(S390Cpi){
->> +        .system_type = g_strndup((char *) ms->cpi.system_type,
->> +                       sizeof(ms->cpi.system_type)),
->> +        .system_name = g_strndup((char *) ms->cpi.system_name,
->> +                       sizeof(ms->cpi.system_name)),
->> +        .system_level = g_strdup_printf("0x%lx", 
->> ms->cpi.system_level),
+Am 24.02.2025 um 11:23 hat Thomas Huth geschrieben:
+> On 04/02/2025 22.14, Kevin Wolf wrote:
+> > Test that it's possible to migrate a VM that uses an image on shared
+> > storage through qemu-storage-daemon.
+> > 
+> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > Acked-by: Fabiano Rosas <farosas@suse.de>
+> > Reviewed-by: Eric Blake <eblake@redhat.com>
+> > ---
+> >   tests/qemu-iotests/tests/qsd-migrate     | 140 +++++++++++++++++++++++
+> >   tests/qemu-iotests/tests/qsd-migrate.out |  59 ++++++++++
+> >   2 files changed, 199 insertions(+)
+> >   create mode 100755 tests/qemu-iotests/tests/qsd-migrate
+> >   create mode 100644 tests/qemu-iotests/tests/qsd-migrate.out
 > 
-> Is there any way in which it would make sense for the qmp caller to
-> interpret this as a number? If so exposing it as a number would be 
-> preferable.
+>  Hi Kevin,
 > 
+> this test is failing for me in vmdk mode (discovered with "make check
+> SPEED=thorough"):
+> 
+> $ ./check -vmdk qsd-migrate
+> [...]
+> qsd-migrate   fail       [11:20:25] [11:20:25]   0.5s                 output
+> mismatch (see /home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/vmdk-file-qsd-migrate/qsd-migrate.out.bad)
+> --- /home/thuth/devel/qemu/tests/qemu-iotests/tests/qsd-migrate.out
+> +++ /home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/vmdk-file-qsd-migrate/qsd-migrate.out.bad
+> @@ -51,6 +51,7 @@
+>  --- vm_dst log ---
+>  read 4096/4096 bytes at offset 0
+>  4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +Pattern verification failed at offset 0, 4096 bytes
+>  read 4096/4096 bytes at offset 0
+>  4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>  wrote 4096/4096 bytes at offset 0
+> Failures: qsd-migrate
+> Failed 1 of 1 iotests
+> 
+> Is that working for you?
 
-Hello Nina,
+No, and it can't work currently. vmdk and some other formats don't
+support migration. If the image were attached directly to QEMU, the
+migration block would take effect and make the migration fail.
 
-As discussed offline, when interpreted as a number the output was
+So we should probably just change supported_fmts in the test case from
+'generic' to a list of actually supported image formats. Without
+checking, I'm not sure what can be enabled, but at least raw, qcow2 and
+qed work.
 
-'system-level': 74872343805430528
+The other option would be implementing .bdrv_co_invalidate_cache for the
+currently unsupported image formats so that they actually can support
+migration.
 
-however, the desired output is
+Kevin
 
-'system-level': '0x10a000000060b00'
-
-So, this code is not changed in v2. Thank you.
-
->> +        .sysplex_name = g_strndup((char *) ms->cpi.sysplex_name,
->> +                        sizeof(ms->cpi.sysplex_name)),
->> +        .timestamp = ms->cpi.timestamp
->> +    };
->> +
->> +    visit_type_S390Cpi(v, name, &cpi, &error_abort);
->> +}
->> +
-
--- 
-Mit freundlichen Grüßen / Kind regards
-Shalini Chellathurai Saroja
-Software Developer
-Linux on IBM Z & KVM Development
-IBM Deutschland Research & Development GmbH
-Dept 1419, Schoenaicher Str. 220, 71032 Boeblingen
-Vorsitzender des Aufsichtsrats: Wolfgang Wendt
-Geschäftsführung: David Faller
-Sitz der Gesellschaft: Böblingen / Registergericht: Amtsgericht 
-Stuttgart, HRB 243294
 
