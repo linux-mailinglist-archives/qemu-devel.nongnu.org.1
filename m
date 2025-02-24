@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD71A42C63
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 20:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D31EA42C78
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 20:14:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmdpR-0005mc-LL; Mon, 24 Feb 2025 14:09:22 -0500
+	id 1tmdpZ-0005oV-E2; Mon, 24 Feb 2025 14:09:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tmdot-0005e2-2F
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:49 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tmdox-0005fI-V8
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:56 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tmdoq-0004nr-4W
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:46 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-220e6028214so104180045ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 11:08:42 -0800 (PST)
+ id 1tmdos-0004oQ-70
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 14:08:51 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-220f4dd756eso99445885ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 11:08:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1740424121; x=1741028921; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1740424124; x=1741028924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y00TMw2vSZi5W2xAmzPCeeztV06fpu0c/uIoObcPADo=;
- b=mhD70UbeAQ6Y8hFiQ5nArPUZyQAEdai4MubaZwbNXmxOeSCcWthHReHY+ylgAtS0JA
- wQecAV4SZ5PAXLJ4JpEXviw5+ZuakTwTb+skFrwW+AHw5q1ck+w5pyzE13DpSdDsfc/r
- /InxpoB8KBbPiaqS8vSwZgb0uw1uMJgL/s7hmJ2rpRXrBG7GbPfUNxg8Q2uHTpAFezMd
- 1o1cpF2QJ4YI10WIy7j8lcdyxeY+gpBzgBMBC8il+/70ltlBXpKxI98AcAz8wIBmzNzs
- zf6m+9oujdTGgzc5+nNe5ozS1MQDfGqOb2u3itOBWbEmd/i5vSIdtxB89TawYLcRPJZs
- oUFw==
+ bh=JYchZo+9Zfqk3JonMm8w+m2V870HZdVGqg6ShWsJhJU=;
+ b=d652Pa7U9P4EkpheSontKOiGIwpUjAZ4Ug4UiDSwS//8q/4WpnB+sfTnder+xL4zmc
+ Um3iWAWVv6dFzggYWI5HYaro7Sf6SrxCMiceEZ28Vcr7KEHhxOgSzyuS7kKiG1UiCR/Q
+ Nrgph7lMXmy/qgcVZoVTBLBizmDeC7Lberp+h0YHHve+3Agk0w1bcpeP3wkSBCYbS5Ea
+ 0+WQGBeWnKQOYyUt57BSWY0AHwJgNu0/BW+s2w0CBVnlwf09flMoA65lbPN22H6AxvPh
+ KbwQK4jIYtEe/WcMGTl5B83cMdXY7PnK2ZQk1LGmTkSV/3j1A07QHRAZMid66L4zwE33
+ nZPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740424121; x=1741028921;
+ d=1e100.net; s=20230601; t=1740424124; x=1741028924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y00TMw2vSZi5W2xAmzPCeeztV06fpu0c/uIoObcPADo=;
- b=rjXe5In3pxk3J1xeQTNUgxDBMOailLPzivHaHhsF2OXh6VmZkBRWmE5VtPk2t+ymbv
- WlA9X8LPYS7XiQ86mhpTYHcuYrACFQ5VY5cR2DkqzTXeBQwYc6TZq07LLzmmvWOXUVfM
- zxJ1gNoktug5V6UcEAYsRocLhU0P8kyCHy4M4UcDI3gdTAyIx3lgvZnaqDYga7T9UU5C
- 6ahZKlE0p2x5Jiqx7GPgldevt7v1wRswXv8BvDojQ1vmxy36b0kMUhkpiS5QjAMVgZuB
- SmL8mWgoFgRQArKsz8zrFH4gdeu0+DtTVPG+HVaLHLJmfDs9CHwfZ1j8k+ABfXQDWdqO
- L45w==
-X-Gm-Message-State: AOJu0YyQuhYtow46GH1GwIht+HgAA2yfMSGnHJmGw94u1PGwpykg9Qdc
- nglpY1mKgWQ6+C9n2R+fYJ6FXaVujaRUL7JT3CrozU06vt1WLJMcE4rzM3ictJPRrNwrltdBtEZ
- y
-X-Gm-Gg: ASbGncs8zFRL++YzonrMKiSdINfdBcB0iEI27h5bDjCHCZ+Xe1HJWsM5888TzbUDfMa
- 8yQKp+WlBpcK1Fgs7whhfdmefpvazXmF6/bq1GruVE13U1pRDSARGz+rsfdYDDLQ3nvlZqjE8WP
- vYmogWno2hDtOhfD27lR5X8qEudqR+pqr3JzoSaOwImWZU8LuxIm/FPAN3nE7oWkN47+5o8Vf2R
- VT5anw4icSNFVq2pAwaItfziAk9mKiLK+hq6D2oylhnPGyZfC63oDv0ywD8CemTaJ38MyaR8xSm
- h+t0x0pkm2FpzqLwIjXTaeIEn9J6hQ==
-X-Google-Smtp-Source: AGHT+IHZNxLhuq6IbT4egGK+sPGlkME5fcwkKPSrljUHnL5eJpsGBN+nRqLJ8JVkTS8PCNC8oJqybQ==
-X-Received: by 2002:a17:903:2f03:b0:220:f7bb:842 with SMTP id
- d9443c01a7336-221a00211cdmr232171835ad.42.1740424121024; 
- Mon, 24 Feb 2025 11:08:41 -0800 (PST)
+ bh=JYchZo+9Zfqk3JonMm8w+m2V870HZdVGqg6ShWsJhJU=;
+ b=qvcHhi5K9MJkl7IOEgLGDGpWAAGmUQpj4v3ETKOFqpeS6NXz2re/WtU0KiZxIMiYaJ
+ Fi4MUngbddokqWjZcw0dM2FTNWbBlfGHeps+3md455KW9VoodpXIk08/0Cs85iD3PWLG
+ i0mmSb9EPw7tbmiyDMuyr8F0zcL4AcLkjiZCcpMg/GwkwRGcotGPli6QM+SalIWRxWq4
+ 8qUhitYbCmW+eVUMSam+ZeR2+wjWh1OrMrtGf+NiRcpFNQu+mV5z/7+37d/j89E1JkOB
+ iFUai97celc/EzJkeeRzZkvJrYoFAzpJQ9mbJttQ4fP1cyJyMaQ0jk9ZXqJalWr9mKLc
+ tpsQ==
+X-Gm-Message-State: AOJu0Yxdb+QdtDuVAZCiivNVie9J8Dc6XQtkWbQ2P/qmFUbaigDNEW/j
+ /qpbsnAUNvoBKAIjwa5sHIurn/egi1d5FBze2Jpy6O62BvboDnWuHjG4snjmQvA0w+Ijb3zb4cN
+ 4
+X-Gm-Gg: ASbGnctor+rALcO9G4XZXwT6zWISpAaaC3iL6dkTdVJIeMNtSck97VZjDXCSe7nvc3w
+ YbfCONLN+SdeVmahnVp2kJZ3Ui1BkmU7mBq/Z9KcceyIP0ANAeh1AXYfGdoFXjIG9efCNsj+Rk3
+ T1+zLd5PzXiQ7z812gUKmbuod/QBrWWWLqDKNHAaGVLOVxF7r6Z5JG6WnXVHHeenktPIqRiEY+N
+ kgVl2QoyDLRJuQo7G4OgSQcZkjeoc78Cglnpcfvp3bI3LosZ4ndSUBPr5vTwQoathKYh9OCu8PH
+ YAKoqgS4sD7Ttg6cQ7OZEl5sooarlQ==
+X-Google-Smtp-Source: AGHT+IEVlIMoanCBBkichfHkavrPwyrHunPZy4KaMU1TNXh4zsvbzOg8KXxPSzA0d+FvQzOyML5GBg==
+X-Received: by 2002:a17:903:19ec:b0:21f:658b:8ed5 with SMTP id
+ d9443c01a7336-22307b4556emr5265175ad.6.1740424124169; 
+ Mon, 24 Feb 2025 11:08:44 -0800 (PST)
 Received: from grind.. ([2804:7f0:bcc0:6edb:f473:a9df:d551:443b])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-220d545df28sm183583155ad.153.2025.02.24.11.08.38
+ d9443c01a7336-220d545df28sm183583155ad.153.2025.02.24.11.08.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 11:08:40 -0800 (PST)
+ Mon, 24 Feb 2025 11:08:43 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Tomasz Jeznach <tjeznach@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 03/11] hw/riscv/riscv-iommu: add riscv-iommu-hpm file
-Date: Mon, 24 Feb 2025 16:08:18 -0300
-Message-ID: <20250224190826.1858473-4-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 04/11] hw/riscv/riscv-iommu: add riscv_iommu_hpm_incr_ctr()
+Date: Mon, 24 Feb 2025 16:08:19 -0300
+Message-ID: <20250224190826.1858473-5-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224190826.1858473-1-dbarboza@ventanamicro.com>
 References: <20250224190826.1858473-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,196 +102,337 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomasz Jeznach <tjeznach@rivosinc.com>
 
-The HPM (Hardware Performance Monitor) support consists of almost 7
-hundred lines that would be put on top of the base riscv-iommu
-emulation.
+This function will increment a specific counter, generating an interrupt
+when an overflow occurs.
 
-To avoid clogging riscv-iommu.c, add a separated riscv-iommu-hpm file
-that will contain HPM specific code.
+Some extra changes in riscv-iommu.c  were required to add this new
+helper in riscv-iommu-hpm.c:
 
-We'll start by adding riscv_iommu_hpmcycle_read(), a helper that will be
-called during the riscv_iommu_mmio_read() callback.
+- RISCVIOMMUContext was moved to riscv-iommu.h, making it visible in
+  riscv-iommu-hpm.c;
 
-This change will have no effect on the existing emulation since we're
-not declaring HPM feature support.
+- riscv_iommu_notify() is now public.
+
+No behavior change is made since HPM support is not being advertised
+yet.
 
 Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/meson.build       |  3 ++-
- hw/riscv/riscv-iommu-hpm.c | 54 ++++++++++++++++++++++++++++++++++++++
- hw/riscv/riscv-iommu-hpm.h | 27 +++++++++++++++++++
- hw/riscv/riscv-iommu.c     | 24 ++++++++++++++++-
- hw/riscv/riscv-iommu.h     |  4 +++
- 5 files changed, 110 insertions(+), 2 deletions(-)
- create mode 100644 hw/riscv/riscv-iommu-hpm.c
- create mode 100644 hw/riscv/riscv-iommu-hpm.h
+ hw/riscv/riscv-iommu-hpm.c | 114 +++++++++++++++++++++++++++++++++++++
+ hw/riscv/riscv-iommu-hpm.h |   2 +
+ hw/riscv/riscv-iommu.c     |  43 +++++++++-----
+ hw/riscv/riscv-iommu.h     |  18 ++++++
+ 4 files changed, 162 insertions(+), 15 deletions(-)
 
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 3c7e083aca..c22f3a7216 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -10,7 +10,8 @@ riscv_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('sifive_u.c'))
- riscv_ss.add(when: 'CONFIG_SPIKE', if_true: files('spike.c'))
- riscv_ss.add(when: 'CONFIG_MICROCHIP_PFSOC', if_true: files('microchip_pfsoc.c'))
- riscv_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
--riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu.c', 'riscv-iommu-pci.c', 'riscv-iommu-sys.c'))
-+riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files(
-+	'riscv-iommu.c', 'riscv-iommu-pci.c', 'riscv-iommu-sys.c', 'riscv-iommu-hpm.c'))
- riscv_ss.add(when: 'CONFIG_MICROBLAZE_V', if_true: files('microblaze-v-generic.c'))
- 
- hw_arch += {'riscv': riscv_ss}
 diff --git a/hw/riscv/riscv-iommu-hpm.c b/hw/riscv/riscv-iommu-hpm.c
-new file mode 100644
-index 0000000000..5833ab8956
---- /dev/null
+index 5833ab8956..8eca5ee17e 100644
+--- a/hw/riscv/riscv-iommu-hpm.c
 +++ b/hw/riscv/riscv-iommu-hpm.c
-@@ -0,0 +1,54 @@
-+/*
-+ * RISC-V IOMMU - Hardware Performance Monitor (HPM) helpers
-+ *
-+ * Copyright (C) 2022-2023 Rivos Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -52,3 +52,117 @@ uint64_t riscv_iommu_hpmcycle_read(RISCVIOMMUState *s)
+     return (ctr_val + get_cycles() - ctr_prev) |
+         (cycle & RISCV_IOMMU_IOHPMCYCLES_OVF);
+ }
 +
-+#include "qemu/osdep.h"
-+#include "qemu/timer.h"
-+#include "cpu_bits.h"
-+#include "riscv-iommu-hpm.h"
-+#include "riscv-iommu.h"
-+#include "riscv-iommu-bits.h"
-+#include "trace.h"
-+
-+/* For now we assume IOMMU HPM frequency to be 1GHz so 1-cycle is of 1-ns. */
-+static inline uint64_t get_cycles(void)
++static void hpm_incr_ctr(RISCVIOMMUState *s, uint32_t ctr_idx)
 +{
-+    return qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    const uint32_t off = ctr_idx << 3;
++    uint64_t cntr_val;
++
++    cntr_val = ldq_le_p(&s->regs_rw[RISCV_IOMMU_REG_IOHPMCTR_BASE + off]);
++    stq_le_p(&s->regs_rw[RISCV_IOMMU_REG_IOHPMCTR_BASE + off], cntr_val + 1);
++
++    /* Handle the overflow scenario. */
++    if (cntr_val == UINT64_MAX) {
++        /*
++         * Generate interrupt only if OF bit is clear. +1 to offset the cycle
++         * register OF bit.
++         */
++        const uint32_t ovf =
++            riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_IOCOUNTOVF,
++                                  BIT(ctr_idx + 1), 0);
++        if (!get_field(ovf, BIT(ctr_idx + 1))) {
++            riscv_iommu_reg_mod64(s,
++                                  RISCV_IOMMU_REG_IOHPMEVT_BASE + off,
++                                  RISCV_IOMMU_IOHPMEVT_OF,
++                                  0);
++            riscv_iommu_notify(s, RISCV_IOMMU_INTR_PM);
++        }
++    }
 +}
 +
-+uint64_t riscv_iommu_hpmcycle_read(RISCVIOMMUState *s)
++void riscv_iommu_hpm_incr_ctr(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
++                              unsigned event_id)
 +{
-+    const uint64_t cycle = riscv_iommu_reg_get64(
-+        s, RISCV_IOMMU_REG_IOHPMCYCLES);
 +    const uint32_t inhibit = riscv_iommu_reg_get32(
 +        s, RISCV_IOMMU_REG_IOCOUNTINH);
-+    const uint64_t ctr_prev = s->hpmcycle_prev;
-+    const uint64_t ctr_val = s->hpmcycle_val;
++    uint32_t did_gscid;
++    uint32_t pid_pscid;
++    uint32_t ctr_idx;
++    gpointer value;
++    uint32_t ctrs;
++    uint64_t evt;
 +
-+    if (get_field(inhibit, RISCV_IOMMU_IOCOUNTINH_CY)) {
-+        /*
-+         * Counter should not increment if inhibit bit is set. We can't really
-+         * stop the QEMU_CLOCK_VIRTUAL, so we just return the last updated
-+         * counter value to indicate that counter was not incremented.
-+         */
-+        return (ctr_val & RISCV_IOMMU_IOHPMCYCLES_COUNTER) |
-+               (cycle & RISCV_IOMMU_IOHPMCYCLES_OVF);
++    if (!(s->cap & RISCV_IOMMU_CAP_HPM)) {
++        return;
 +    }
 +
-+    return (ctr_val + get_cycles() - ctr_prev) |
-+        (cycle & RISCV_IOMMU_IOHPMCYCLES_OVF);
++    value = g_hash_table_lookup(s->hpm_event_ctr_map,
++                                GUINT_TO_POINTER(event_id));
++    if (value == NULL) {
++        return;
++    }
++
++    for (ctrs = GPOINTER_TO_UINT(value); ctrs != 0; ctrs &= ctrs - 1) {
++        ctr_idx = ctz32(ctrs);
++        if (get_field(inhibit, BIT(ctr_idx + 1))) {
++            continue;
++        }
++
++        evt = riscv_iommu_reg_get64(s,
++            RISCV_IOMMU_REG_IOHPMEVT_BASE + (ctr_idx << 3));
++
++        /*
++         * It's quite possible that event ID has been changed in counter
++         * but hashtable hasn't been updated yet. We don't want to increment
++         * counter for the old event ID.
++         */
++        if (event_id != get_field(evt, RISCV_IOMMU_IOHPMEVT_EVENT_ID)) {
++            continue;
++        }
++
++        if (get_field(evt, RISCV_IOMMU_IOHPMEVT_IDT)) {
++            did_gscid = get_field(ctx->gatp, RISCV_IOMMU_DC_IOHGATP_GSCID);
++            pid_pscid = get_field(ctx->ta, RISCV_IOMMU_DC_TA_PSCID);
++        } else {
++            did_gscid = ctx->devid;
++            pid_pscid = ctx->process_id;
++        }
++
++        if (get_field(evt, RISCV_IOMMU_IOHPMEVT_PV_PSCV)) {
++            /*
++             * If the transaction does not have a valid process_id, counter
++             * increments if device_id matches DID_GSCID. If the transaction
++             * has a valid process_id, counter increments if device_id
++             * matches DID_GSCID and process_id matches PID_PSCID. See
++             * IOMMU Specification, Chapter 5.23. Performance-monitoring
++             * event selector.
++             */
++            if (ctx->process_id &&
++                get_field(evt, RISCV_IOMMU_IOHPMEVT_PID_PSCID) != pid_pscid) {
++                continue;
++            }
++        }
++
++        if (get_field(evt, RISCV_IOMMU_IOHPMEVT_DV_GSCV)) {
++            uint32_t mask = ~0;
++
++            if (get_field(evt, RISCV_IOMMU_IOHPMEVT_DMASK)) {
++                /*
++                 * 1001 1011   mask = GSCID
++                 * 0000 0111   mask = mask ^ (mask + 1)
++                 * 1111 1000   mask = ~mask;
++                 */
++                mask = get_field(evt, RISCV_IOMMU_IOHPMEVT_DID_GSCID);
++                mask = mask ^ (mask + 1);
++                mask = ~mask;
++            }
++
++            if ((get_field(evt, RISCV_IOMMU_IOHPMEVT_DID_GSCID) & mask) !=
++                (did_gscid & mask)) {
++                continue;
++            }
++        }
++
++        hpm_incr_ctr(s, ctr_idx);
++    }
 +}
 diff --git a/hw/riscv/riscv-iommu-hpm.h b/hw/riscv/riscv-iommu-hpm.h
-new file mode 100644
-index 0000000000..231c110ff2
---- /dev/null
+index 231c110ff2..411d869dce 100644
+--- a/hw/riscv/riscv-iommu-hpm.h
 +++ b/hw/riscv/riscv-iommu-hpm.h
-@@ -0,0 +1,27 @@
-+/*
-+ * RISC-V IOMMU - Hardware Performance Monitor (HPM) helpers
-+ *
-+ * Copyright (C) 2022-2023 Rivos Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef HW_RISCV_IOMMU_HPM_H
-+#define HW_RISCV_IOMMU_HPM_H
-+
-+#include "qom/object.h"
-+#include "hw/riscv/riscv-iommu.h"
-+
-+uint64_t riscv_iommu_hpmcycle_read(RISCVIOMMUState *s);
-+
-+#endif
+@@ -23,5 +23,7 @@
+ #include "hw/riscv/riscv-iommu.h"
+ 
+ uint64_t riscv_iommu_hpmcycle_read(RISCVIOMMUState *s);
++void riscv_iommu_hpm_incr_ctr(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
++                              unsigned event_id);
+ 
+ #endif
 diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index e7568ca227..0fbd50bb52 100644
+index 0fbd50bb52..0b15acf4e6 100644
 --- a/hw/riscv/riscv-iommu.c
 +++ b/hw/riscv/riscv-iommu.c
-@@ -29,6 +29,7 @@
- #include "cpu_bits.h"
- #include "riscv-iommu.h"
- #include "riscv-iommu-bits.h"
-+#include "riscv-iommu-hpm.h"
- #include "trace.h"
+@@ -39,7 +39,6 @@
+ #define PPN_PHYS(ppn)                 ((ppn) << TARGET_PAGE_BITS)
+ #define PPN_DOWN(phy)                 ((phy) >> TARGET_PAGE_BITS)
  
- #define LIMIT_CACHE_CTX               (1U << 7)
-@@ -2153,7 +2154,28 @@ static MemTxResult riscv_iommu_mmio_read(void *opaque, hwaddr addr,
-         return MEMTX_ACCESS_ERROR;
+-typedef struct RISCVIOMMUContext RISCVIOMMUContext;
+ typedef struct RISCVIOMMUEntry RISCVIOMMUEntry;
+ 
+ /* Device assigned I/O address space */
+@@ -52,19 +51,6 @@ struct RISCVIOMMUSpace {
+     QLIST_ENTRY(RISCVIOMMUSpace) list;
+ };
+ 
+-/* Device translation context state. */
+-struct RISCVIOMMUContext {
+-    uint64_t devid:24;          /* Requester Id, AKA device_id */
+-    uint64_t process_id:20;     /* Process ID. PASID for PCIe */
+-    uint64_t tc;                /* Translation Control */
+-    uint64_t ta;                /* Translation Attributes */
+-    uint64_t satp;              /* S-Stage address translation and protection */
+-    uint64_t gatp;              /* G-Stage address translation and protection */
+-    uint64_t msi_addr_mask;     /* MSI filtering - address mask */
+-    uint64_t msi_addr_pattern;  /* MSI filtering - address pattern */
+-    uint64_t msiptp;            /* MSI redirection page table pointer */
+-};
+-
+ typedef enum RISCVIOMMUTransTag {
+     RISCV_IOMMU_TRANS_TAG_BY,  /* Bypass */
+     RISCV_IOMMU_TRANS_TAG_SS,  /* Single Stage */
+@@ -101,7 +87,7 @@ static uint8_t riscv_iommu_get_icvec_vector(uint32_t icvec, uint32_t vec_type)
+     }
+ }
+ 
+-static void riscv_iommu_notify(RISCVIOMMUState *s, int vec_type)
++void riscv_iommu_notify(RISCVIOMMUState *s, int vec_type)
+ {
+     uint32_t ipsr, icvec, vector;
+ 
+@@ -423,6 +409,13 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+             }
+         }
+ 
++
++        if (pass == S_STAGE) {
++            riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_S_VS_WALKS);
++        } else {
++            riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_G_WALKS);
++        }
++
+         /* Read page table entry */
+         if (sc[pass].ptesize == 4) {
+             uint32_t pte32 = 0;
+@@ -941,6 +934,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+ 
+     /* Device directory tree walk */
+     for (; depth-- > 0; ) {
++        riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_DD_WALK);
+         /*
+          * Select device id index bits based on device directory tree level
+          * and device context format.
+@@ -968,6 +962,8 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+         addr = PPN_PHYS(get_field(de, RISCV_IOMMU_DDTE_PPN));
      }
  
--    ptr = &s->regs_rw[addr];
-+    /* Compute cycle register value. */
-+    if ((addr & ~7) == RISCV_IOMMU_REG_IOHPMCYCLES) {
-+        val = riscv_iommu_hpmcycle_read(s);
-+        ptr = (uint8_t *)&val + (addr & 7);
-+    } else if ((addr & ~3) == RISCV_IOMMU_REG_IOCOUNTOVF) {
-+        /*
-+         * Software can read RISCV_IOMMU_REG_IOCOUNTOVF before timer
-+         * callback completes. In which case CY_OF bit in
-+         * RISCV_IOMMU_IOHPMCYCLES_OVF would be 0. Here we take the
-+         * CY_OF bit state from RISCV_IOMMU_REG_IOHPMCYCLES register as
-+         * it's not dependent over the timer callback and is computed
-+         * from cycle overflow.
-+         */
-+        val = ldq_le_p(&s->regs_rw[addr]);
-+        val |= (riscv_iommu_hpmcycle_read(s) & RISCV_IOMMU_IOHPMCYCLES_OVF)
-+                   ? RISCV_IOMMU_IOCOUNTOVF_CY
-+                   : 0;
-+        ptr = (uint8_t *)&val + (addr & 3);
-+    } else {
-+        ptr = &s->regs_rw[addr];
-+    }
++    riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_DD_WALK);
 +
-     val = ldn_le_p(ptr, size);
+     /* index into device context entry page */
+     addr |= (ctx->devid * dc_len) & ~TARGET_PAGE_MASK;
  
-     *data = val;
+@@ -1033,6 +1029,8 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+     }
+ 
+     for (depth = mode - RISCV_IOMMU_DC_FSC_PDTP_MODE_PD8; depth-- > 0; ) {
++        riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_PD_WALK);
++
+         /*
+          * Select process id index bits based on process directory tree
+          * level. See IOMMU Specification, 2.2. Process-Directory-Table.
+@@ -1050,6 +1048,8 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+         addr = PPN_PHYS(get_field(de, RISCV_IOMMU_PC_FSC_PPN));
+     }
+ 
++    riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_PD_WALK);
++
+     /* Leaf entry in PDT */
+     addr |= (ctx->process_id << 4) & ~TARGET_PAGE_MASK;
+     if (dma_memory_read(s->target_as, addr, &dc.ta, sizeof(uint64_t) * 2,
+@@ -1419,6 +1419,8 @@ static int riscv_iommu_translate(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+     GHashTable *iot_cache;
+     int fault;
+ 
++    riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_URQ);
++
+     iot_cache = g_hash_table_ref(s->iot_cache);
+     /*
+      * TC[32] is reserved for custom extensions, used here to temporarily
+@@ -1429,6 +1431,7 @@ static int riscv_iommu_translate(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+ 
+     /* Check for ATS request. */
+     if (iotlb->perm == IOMMU_NONE) {
++        riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_ATS_RQ);
+         /* Check if ATS is disabled. */
+         if (!(ctx->tc & RISCV_IOMMU_DC_TC_EN_ATS)) {
+             enable_pri = false;
+@@ -1447,6 +1450,8 @@ static int riscv_iommu_translate(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+         goto done;
+     }
+ 
++    riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_TLB_MISS);
++
+     /* Translate using device directory / page table information. */
+     fault = riscv_iommu_spa_fetch(s, ctx, iotlb);
+ 
+@@ -2375,6 +2380,10 @@ static void riscv_iommu_realize(DeviceState *dev, Error **errp)
+     memory_region_init_io(&s->trap_mr, OBJECT(dev), &riscv_iommu_trap_ops, s,
+             "riscv-iommu-trap", ~0ULL);
+     address_space_init(&s->trap_as, &s->trap_mr, "riscv-iommu-trap-as");
++
++    if (s->cap & RISCV_IOMMU_CAP_HPM) {
++        s->hpm_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
++    }
+ }
+ 
+ static void riscv_iommu_unrealize(DeviceState *dev)
+@@ -2383,6 +2392,10 @@ static void riscv_iommu_unrealize(DeviceState *dev)
+ 
+     g_hash_table_unref(s->iot_cache);
+     g_hash_table_unref(s->ctx_cache);
++
++    if (s->cap & RISCV_IOMMU_CAP_HPM) {
++        g_hash_table_unref(s->hpm_event_ctr_map);
++    }
+ }
+ 
+ void riscv_iommu_reset(RISCVIOMMUState *s)
 diff --git a/hw/riscv/riscv-iommu.h b/hw/riscv/riscv-iommu.h
-index d2608d2f9b..59db3fd02a 100644
+index 59db3fd02a..4384f39515 100644
 --- a/hw/riscv/riscv-iommu.h
 +++ b/hw/riscv/riscv-iommu.h
-@@ -81,6 +81,10 @@ struct RISCVIOMMUState {
- 
-     QLIST_ENTRY(RISCVIOMMUState) iommus;
-     QLIST_HEAD(, RISCVIOMMUSpace) spaces;
+@@ -85,12 +85,30 @@ struct RISCVIOMMUState {
+     /* HPM cycle counter */
+     uint64_t hpmcycle_val;      /* Current value of cycle register */
+     uint64_t hpmcycle_prev;     /* Saved value of QEMU_CLOCK_VIRTUAL clock */
 +
-+    /* HPM cycle counter */
-+    uint64_t hpmcycle_val;      /* Current value of cycle register */
-+    uint64_t hpmcycle_prev;     /* Saved value of QEMU_CLOCK_VIRTUAL clock */
++    /* HPM event counters */
++    GHashTable *hpm_event_ctr_map; /* Mapping of events to counters */
  };
  
  void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
+          Error **errp);
+ void riscv_iommu_set_cap_igs(RISCVIOMMUState *s, riscv_iommu_igs_mode mode);
+ void riscv_iommu_reset(RISCVIOMMUState *s);
++void riscv_iommu_notify(RISCVIOMMUState *s, int vec_type);
++
++typedef struct RISCVIOMMUContext RISCVIOMMUContext;
++/* Device translation context state. */
++struct RISCVIOMMUContext {
++    uint64_t devid:24;          /* Requester Id, AKA device_id */
++    uint64_t process_id:20;     /* Process ID. PASID for PCIe */
++    uint64_t tc;                /* Translation Control */
++    uint64_t ta;                /* Translation Attributes */
++    uint64_t satp;              /* S-Stage address translation and protection */
++    uint64_t gatp;              /* G-Stage address translation and protection */
++    uint64_t msi_addr_mask;     /* MSI filtering - address mask */
++    uint64_t msi_addr_pattern;  /* MSI filtering - address pattern */
++    uint64_t msiptp;            /* MSI redirection page table pointer */
++};
+ 
+ /* private helpers */
+ 
 -- 
 2.48.1
 
