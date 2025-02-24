@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55DDA41746
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 09:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB95A41749
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 09:26:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmTlo-0000HI-J6; Mon, 24 Feb 2025 03:24:56 -0500
+	id 1tmTlo-0000Gb-Ib; Mon, 24 Feb 2025 03:24:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1tmTld-000081-Cf
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 03:24:45 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1tmTlh-0000BT-DW
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 03:24:50 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1tmTla-0001Av-La
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 03:24:45 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-221050f3f00so89196005ad.2
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 00:24:42 -0800 (PST)
+ id 1tmTlf-0001Bb-EN
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 03:24:49 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-22128b7d587so76086585ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 00:24:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1740385481; x=1740990281; darn=nongnu.org;
+ d=sifive.com; s=google; t=1740385485; x=1740990285; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=lxmKqqKswXlJbs5eaPNHVwiNA4X+9jY4AP8kBqT7664=;
- b=i9FdGUbosEC6/F9S2gss0jVXZ3cqSw13O1fNtHWZ0exO/CC6ANVkIC/iuM3oJDxFwA
- psMCzyyzrWpnPkJ/bo3OfpiGQRX3Ha4j7CxLlu23K4YYV4igD+gEQlDr9ZEgHZvxlwkr
- O0A5mhr01CQ4jZuxDDdn/lF1kY1AgGiA2rwnaigtAtTILK712nIXXXaeJRGFg5uPRwEA
- 3FDjOroP4INRKG2qQbMdkT25m1hgAkNgC5/tQlU7J8byzOj6I84npUbRMkd+JLvOtM19
- rzfQHXfOqjR67+QIFntLST7Q8inKdFojqVOZlzBNAidirnrdlYHBSzF+QQ9pXXwfYRY1
- vxLA==
+ bh=onlUINOp8JpvgGqdS5sWDC3DlUou1fW9JzejUaBAofM=;
+ b=dvQ3QL6IZhvcLQL0ghsJrDsZ5O+e5odpfNnYrWEJaJ2AgLho7nQufB/CZJGDq6drh5
+ CM/JRbwe6JLpc2o/2zNbjG8DlsY6AclI8XLBwry4Z5C33OIt5HEhmOLyYD9qa7QltdFK
+ nRQ7dSPeMw+Q8swiOM7PG9WAW236U7dT9ca0OOiOnBhvQdAGELJKGp1FdpWXOZVdMPq9
+ o2GLNpizgplldvqv4Gsq9SkYXTnB9Xrwgg1/1ECXHaPeWiYKphN8s2WFoS7QbcTSl2Md
+ nY+udvmQCEmyBU3A52Bt1i2f/YENpQo/aaQqNU36Y5T3gbeQXnKGEpqVfux/aMqHFLrf
+ 2ERA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740385481; x=1740990281;
+ d=1e100.net; s=20230601; t=1740385485; x=1740990285;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lxmKqqKswXlJbs5eaPNHVwiNA4X+9jY4AP8kBqT7664=;
- b=B0ERBcHQxUSzbVokUZ62uM1AX6whgidUkYDQ7izCOWctAVU9MTu3EsFWUclqLUGbV5
- Z82HEPbHwyYQNj9LMrjkOL/zsTkZ27NduBHzZ2Gl5ZM9VWqXn4VVPx1SsHVn1KmTNrFQ
- HBloP7YO5B+hc72MhxWeuXj6W99ltfjNqBFB3xqBg9+puAnPUxMtsjyoHuXWMEh0UWHJ
- y9DnQJVwT/2+K5B6rAGSLgtADyZCXEcdiWOoS5ekywUPuAd9oj9IXinAfyZSh5GiujXq
- OvCGsLO/UAEtC8NuVD0nw0o5y9qguJR7Bb7lPE36raad3SwmYybcrCGj9/O5bRLNlR6v
- PoUw==
-X-Gm-Message-State: AOJu0Yx7uMOAqQKio+GFuJYw2lHrOJGC4mMojQtEYA7OLUDH5X4YZ17u
- pf4G6XtfyOU7+MwAfzCzsE23uA5ThHqvRsUc/1WQc2wt+J//CVtxnb9GCL6IaR4t/ae5chMMV9N
- nJfJufxjkXOQvny/1GSqjnAIRYpNQc5jCS/cdazrPNlKd3mLXbjBVwc8tai1ngJRyGt/8zlY3pF
- f96PREZbwxsr+6gPmbIE5Lt8WTvrGPptiDKmdHuaXoBQ==
-X-Gm-Gg: ASbGncuCpo18bK/CwJSSRe1hj0VlK/rg1i6bBosgIg+awYGHmd8IhrM3goGRmIOjLKj
- bWM0nyrZfnRsiSCfoc8EDfISd1TNFEvT6PEao4urUPc3JZ4GuIOwwGoc0czXf/KhSzzi90i6vBm
- WQQCZJBDBzk53hBl+RZeOORk9l1/zjZvRc9zQxxoF35iaCwuoCnRpRLkxfX9kCirZfyIo6wF3gU
- swsOwXwBQsGDrMr/umoQFDnPiM4/nRBs7umM0ZrJmzLFaGrMybP8o1KevcjI82u3qEtzoBCFbtp
- QAvMs3WZvtjyTZKnc4WYUdEGQxLd6C9pHp2sy04Tx8VNZl8BfMSG+OA5
-X-Google-Smtp-Source: AGHT+IGQ7eju7iu6W5RoT1p96E/VQB3wy0f6AcRYFWl8cV1djL5uXEqVv3e65iwwjVJ+/O+2ydKSYg==
-X-Received: by 2002:a05:6a00:805:b0:730:75b1:7218 with SMTP id
- d2e1a72fcca58-73426d7782emr22451288b3a.16.1740385480586; 
- Mon, 24 Feb 2025 00:24:40 -0800 (PST)
+ bh=onlUINOp8JpvgGqdS5sWDC3DlUou1fW9JzejUaBAofM=;
+ b=SyRXxKmAltfCLRIiVG+qeiodqj911IutxJELfjM0RtzQuoEiGlK6SfChveE+l3/nvV
+ ZJN1m9k//wpzFEyVL7xrrlVX+kqJtsyWi/XQA5jVoHBzw8VcZODEkdWy6MMxyd8tpQmh
+ q5QLVd1SLj1JNsZ8HJJX5lbQ/vOQbCHXszUyE+jF30355g1Zeqr0E2In1ACp1QWsGQIE
+ FX+1XmruzZHcejRcBeHapOprF3gV3dq/U3NsWwg03oibgH30GPbzP1xM99H2O65fvPgd
+ Hsg9PjSk2cCLoz1OuZHFSbLWhQhW6MWwSaW4LJVbmxZKpoFqvdEAkEop37WBadF6WnRa
+ ZqYw==
+X-Gm-Message-State: AOJu0YyUqDXLpTxj0bwEYP5lqpgK2SC1E29eoMOOblCaWrAMclNmMyiJ
+ TEIIVynlxwE5AwFHSWnBMzNTbagutJENZf9RELkVsxAcDLarcJVmImz1OkAf1/UR7gMmngLeE8g
+ QOMccP8m1FeLZn6fZXKwtZRA5Wp9Vy80zMaXMcSZBpNP1rjBJpBBJVZMvYN/FzPjhfk6O4kyiUG
+ /VzWQGyMXxEfRIMTCtFF9Qx9SxZkZ0pklRVOe/E4sjYw==
+X-Gm-Gg: ASbGncvPnJmc/6P0qxTqEU7TlhS+fH08Oa/ga75YNqqcBtgA9NB40tzJiwQnUfjR6C6
+ rEP7D19Ng+i3kZdKBiMeUZZVqE4dY83EgB4zRu8vlNyVAkZsOt74g0xJoXWOjToEbZrPTn2A9SZ
+ dhwrcoX/QSUTFnTo2EQ5LEv8B/H2nf+kQnf/SvAOyqDUlGCA9R1kF5MMRqwlhWb5jL6VzOEfi1w
+ vRqGKmMempDMVHa1UcLRlHXd/BFdCF53vLRHYwUBWglJSoWbxbe5o2Z1rgWDHLMQsZF4C7SpMZr
+ u5O1LY3wKlUpEFhQeHjyS0OEq+2SyJjAMKteeYP3wOUX9Rc7asS/P5AS
+X-Google-Smtp-Source: AGHT+IFUB2NTRW56OIeSFM0J0s3sbM8xJzq+zvg3CSR8DFYSdfiwAVuzghlx2r0rdoYs+QjJxMyF6Q==
+X-Received: by 2002:a05:6a00:9283:b0:732:56cb:2f83 with SMTP id
+ d2e1a72fcca58-73426d72adbmr19698817b3a.15.1740385484860; 
+ Mon, 24 Feb 2025 00:24:44 -0800 (PST)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7325c88d74esm17714914b3a.149.2025.02.24.00.24.37
+ d2e1a72fcca58-7325c88d74esm17714914b3a.149.2025.02.24.00.24.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 00:24:40 -0800 (PST)
+ Mon, 24 Feb 2025 00:24:44 -0800 (PST)
 From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -70,17 +70,15 @@ Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, frank.chang@sifive.com,
  Alistair Francis <alistair.francis@wdc.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/8] target/riscv/kvm: add KVM_REG_RISCV_CSR_SMSTATEEN
-Date: Mon, 24 Feb 2025 16:24:10 +0800
-Message-Id: <20250224082417.31382-4-yongxuan.wang@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v2 4/8] target/riscv: add helper to get CSR name
+Date: Mon, 24 Feb 2025 16:24:11 +0800
+Message-Id: <20250224082417.31382-5-yongxuan.wang@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250224082417.31382-1-yongxuan.wang@sifive.com>
 References: <20250224082417.31382-1-yongxuan.wang@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=yongxuan.wang@sifive.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=yongxuan.wang@sifive.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,68 +101,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add KVM_REG_RISCV_CSR_SMSTATEEN support to get/set the context of
-Smstateen extension in VS mode.
+Add a helper function to get CSR name from CSR number.
 
 Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ target/riscv/cpu.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index c7318f64cf12..d421c7a1b65d 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -135,6 +135,9 @@ static uint64_t kvm_riscv_vector_reg_id(RISCVCPU *cpu,
- #define RISCV_AIA_CSR_REG(name) \
-     (KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_REG(name))
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 616c3bdc1c24..df10ff63474b 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -920,8 +920,14 @@ extern const bool valid_vm_1_10_32[], valid_vm_1_10_64[];
+ void riscv_get_csr_ops(int csrno, riscv_csr_operations *ops);
+ void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
  
-+#define RISCV_SMSTATEEN_CSR_REG(name) \
-+    (KVM_REG_RISCV_CSR_SMSTATEEN | KVM_REG_RISCV_CSR_SMSTATEEN_REG(name))
-+
- #define KVM_RISCV_GET_CSR(cs, env, idx, reg) \
-     do { \
-         int _ret = kvm_get_one_reg(cs, RISCV_CSR_REG(env, idx), &reg); \
-@@ -687,10 +690,31 @@ static int kvm_riscv_put_regs_aia_csr(CPUState *cs)
-     return 0;
- }
- 
-+static int kvm_riscv_get_regs_smstateen_csr(CPUState *cs)
+-void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
++static inline const char *riscv_get_csr_name(int csr_no)
 +{
-+    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+
-+    KVM_RISCV_GET_CSR(cs, env,
-+                      RISCV_SMSTATEEN_CSR_REG(sstateen0), env->sstateen[0]);
-+
-+    return 0;
++    g_assert(csr_no > 0 && csr_no < CSR_TABLE_SIZE);
+ 
++    return csr_ops[csr_no].name;
 +}
 +
-+static int kvm_riscv_put_regs_smstateen_csr(CPUState *cs)
-+{
-+    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+
-+    KVM_RISCV_SET_CSR(cs, env,
-+                      RISCV_SMSTATEEN_CSR_REG(sstateen0), env->sstateen[0]);
-+
-+    return 0;
-+}
-+
- static int kvm_riscv_get_regs_csr(CPUState *cs)
- {
-     kvm_riscv_get_regs_general_csr(cs);
-     kvm_riscv_get_regs_aia_csr(cs);
-+    kvm_riscv_get_regs_smstateen_csr(cs);
++void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
+ target_ulong riscv_new_csr_seed(target_ulong new_value,
+                                 target_ulong write_mask);
  
-     return 0;
- }
-@@ -699,6 +723,7 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
- {
-     kvm_riscv_put_regs_general_csr(cs);
-     kvm_riscv_put_regs_aia_csr(cs);
-+    kvm_riscv_put_regs_smstateen_csr(cs);
- 
-     return 0;
- }
 -- 
 2.17.1
 
