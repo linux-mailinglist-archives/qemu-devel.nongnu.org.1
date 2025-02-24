@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B31FA414CA
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F23A414C9
 	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 06:36:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmR7u-00033j-0n; Mon, 24 Feb 2025 00:35:34 -0500
+	id 1tmR7n-0002u3-3j; Mon, 24 Feb 2025 00:35:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmQou-0008QQ-UV
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:16:05 -0500
-Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
+ id 1tmQw6-0000Vf-SQ
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:23:23 -0500
+Received: from mail-vs1-xe35.google.com ([2607:f8b0:4864:20::e35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmQot-0006uZ-CB
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:15:56 -0500
-Received: by mail-ua1-x934.google.com with SMTP id
- a1e0cc1a2514c-8670fd79990so1143641241.3
- for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 21:15:54 -0800 (PST)
+ id 1tmQw4-0007Rx-Vy
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:23:22 -0500
+Received: by mail-vs1-xe35.google.com with SMTP id
+ ada2fe7eead31-4be5033a2cbso1715184137.1
+ for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 21:23:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740374153; x=1740978953; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740374600; x=1740979400; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p1TTEGIxZo2tw5gO+mFK8UbCpQYX5W0Iy95rgepM7eg=;
- b=jqxNh515gURB+zVJMJIJYS3Oqn4mWLnSXxMEj2cTzZ77DIo/xZKaTZlzcq/Klwi9Ql
- n/xCUW8fS3jaL0OLWvBKq1QJQVVCzZdNPqRSHigXqIR1o5pHGkInqoh1xOPf5VIEV7HH
- MGRj59bxoGJLxnye2LPj7ddyRpO11bgu2I2Sohjdt4yuAiGnn+plJtP0TZph03zL9/Vf
- +QxT0yXEMnEdjyabHDB9jlKndd7NhqHKRBcKFO7cy4gOGX8fszkB6erEB7zRGgjfEX1h
- zcvcznfsf+06/fp0R2HdLd4itMX2C9DO0VMZ71RfwwSFhln7BFuNjhKuOt1pDBbvMgN6
- Yeng==
+ bh=RO0J7eAO37erjUM9VtY9JG67VYsAfwKUH2VjCb+36XY=;
+ b=LOD7fNhwRqbbrqb28bj1M7/3Qbuh1sfJQIHlw2fv52T8DttLZ17Mmy7/R3FYo45fHH
+ sNPa0Ps78AlDJWPLZegKINy2Hqndaf/k/XJJtnD7tAF+jf075YLNDm4+NcjiT5zoaZzz
+ p3Q+jTRuxFSMJ/Q67JAvE6EAb3k/46oTYXhzKbaZSOauMRd+/WX9X2nQRL6rpy57AdAE
+ DCdPz9hK6W2DwNUmVo393dhOxBIvhhXHb94zgkxHG5cSBeKntNDu/FlP8RR9HVeFzaTn
+ fYb3Ac/z5V8GQ6UE6TAcYscMxxnnlKOLNQiJuLU6dX8zlZbGJVhtBos3ScI/qLSw5rBm
+ grKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740374153; x=1740978953;
+ d=1e100.net; s=20230601; t=1740374600; x=1740979400;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p1TTEGIxZo2tw5gO+mFK8UbCpQYX5W0Iy95rgepM7eg=;
- b=o9DZeExf59ZFP5FQXbwJlajdc2J0qx2hhIruzjW/pbsr/lcIS431yOdy3cd58wVyRc
- mR6loLdXAf3nmYV7Uwp1BEWGJIGbtTK1bBFEuaMVak0QEQ76nixP7yCzmKMnPh2GXuVz
- 4SPQYSEbdJ1whfhUvwLNFqbeooTXoKligxbmX/NgLMobya7LMs83yuN7UwjpLm+YoIOR
- CdOIrx4fTQoMbrlPngHYVmmv/VxGgEtFkPMtqUKNtrjNz0N0gudfl2RgL/Xuya62phka
- qEiwaau2v+uf0LLGFhLjNLF3MR/v9fCtxdO0xH3x0A7oHS9TcOHmW3m6t+JyeMbOd/hy
- 2++w==
-X-Gm-Message-State: AOJu0YzZnkz6Wdhm7ktjiKSQXbKTqu5pXbcIzAO6NYdt8zymMLau7/kI
- zR4HAdTKQO5x7luedq2sgIiwXWMIDoRM2PAiliJWR6QiSqaFyhcp0EQrGEXxpuDBWKERTGKZWio
- iY78GS2lUQu4JatLWXrgbE6auccY=
-X-Gm-Gg: ASbGncvW1WBl201c+27iVYHxJiYnyKq+cR3HIyJR/lO7sKrcQ0/LrTOLY5dqcUeBKsb
- DxBeZxK0I1Sr8s32HTkutbtwKk2wHaKwNhfAO1WRS7LMS5swznuXJvqBfNrGfFBzKm15mY6rQD1
- Jm7F/2fwVWht/NKErQLC4M9wibvCbx1UtbEEWN
-X-Google-Smtp-Source: AGHT+IHtfwqduIQ80zNvSTTEP5CiVGAGEmOVs4fbekdL9JYuAL0/YM7gm7qVOsOs4LL2I58P7mrzRNqj/yRH0iTOpog=
-X-Received: by 2002:a05:6102:38cb:b0:4bb:d394:46c0 with SMTP id
- ada2fe7eead31-4bfc0048c15mr5752333137.1.1740374153162; Sun, 23 Feb 2025
- 21:15:53 -0800 (PST)
+ bh=RO0J7eAO37erjUM9VtY9JG67VYsAfwKUH2VjCb+36XY=;
+ b=ZnkAoCR4n/XwtTUHdXb7P/ShCQ9VRXx/wIP/2UL+QhrxdXcmghL3OTfAqoSELn6a4V
+ MMuwZvFSu6buNhIuiwqVQ2wtylPZf3Ba0ns9BN7713kLSPNm3o/7OOoXxpj13/m67TbY
+ TqVwzmre075Ox7mA0TNXNzq8Xl6bnB5AdRr/ObDf5i3CoY8FE8xFZYkpNuUXUrHpoHUu
+ WJMM+h1VyIAZjtxjPOiSvHqKyi/H2gWqWZp11JexA1EzACV57iZ6YfIq4FbNut8otegN
+ 3Vwv4IjOQC0QmIuPkAkGgKHyal1sZEu+RyVTfrzzZRDbydHX0SBQm13pK/mhdt3XHOWr
+ SElw==
+X-Gm-Message-State: AOJu0YxwIeYT3zsG69DooFT/EvyTVUP1x2j0JkTPLV0LV7WXbAYFxgVw
+ cjJ4nTfNlsMTPsPk3ERvE1Eb2q0p3eiOivgZSmLXhYrJAJJ3Z87XUvpD54aQ1koDv/o56yW5Vz4
+ oeVDtuqScLAODV96Aw+yuJ7m/d9s=
+X-Gm-Gg: ASbGncsDULiICpb8LM8pguOp1fMAvpZI+UMB8C9p1wTIDqTQtbDsdiXxVp8SxteBSk9
+ goI+DM7mMJlEzp6GbOU6pBg8wbcrqcAd3gjya4mlGn9/oAm4O2mukBTF000ABa+6i1px3ge8xRe
+ +yUxfvMImbagM/m47hC07BiOTNra137cQ50R7x
+X-Google-Smtp-Source: AGHT+IHRAffY8eYCV4LmligcGCbpFAmBm8gU1SQYml3uHMiaHLZcXVU7MaY/GIDRqCBwLgq9KZxMy21OUHM5SrzBmfw=
+X-Received: by 2002:a05:6102:38d1:b0:4bb:b589:9da5 with SMTP id
+ ada2fe7eead31-4bfc0281f42mr4999716137.25.1740374599753; Sun, 23 Feb 2025
+ 21:23:19 -0800 (PST)
 MIME-Version: 1.0
 References: <20250214062443.9936-1-sebastian.huber@embedded-brains.de>
- <20250214062443.9936-3-sebastian.huber@embedded-brains.de>
-In-Reply-To: <20250214062443.9936-3-sebastian.huber@embedded-brains.de>
+ <20250214062443.9936-4-sebastian.huber@embedded-brains.de>
+In-Reply-To: <20250214062443.9936-4-sebastian.huber@embedded-brains.de>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 24 Feb 2025 15:15:26 +1000
-X-Gm-Features: AWEUYZk6EHZldxLpSkZOveZ5UKlM_Oyyw2VgPx1xT0JwBQeJ2Z9WI9qhADum_Lg
-Message-ID: <CAKmqyKN60a4hFPftFKOKPWT0J9NCXOURXYSGA+3pAsj5c0oBFw@mail.gmail.com>
-Subject: Re: [PATCH 2/5] hw/riscv: More flexible FDT placement for MPFS
+Date: Mon, 24 Feb 2025 15:22:53 +1000
+X-Gm-Features: AWEUYZne1OnRAVbG28ajNBomxYS60m0W20W311zn7Yt8pDuSlFlueelzgCg1BWc
+Message-ID: <CAKmqyKNZfBcqT08v-wYmApYuQgM7in__Q3b_vwEgZp+sXr8ckA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] hw/riscv: Make FDT optional for MPFS
 To: Sebastian Huber <sebastian.huber@embedded-brains.de>
 Cc: qemu-devel@nongnu.org, Conor Dooley <conor.dooley@microchip.com>, 
  Bin Meng <bin.meng@windriver.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::934;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x934.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e35;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe35.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,48 +94,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 14, 2025 at 4:26=E2=80=AFPM Sebastian Huber
+On Fri, Feb 14, 2025 at 4:27=E2=80=AFPM Sebastian Huber
 <sebastian.huber@embedded-brains.de> wrote:
 >
-> If the kernel entry is in the high DRAM area, place the FDT into this
-> area.
->
-> Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
+> Real-time kernels such as RTEMS or Zephyr may use a static device tree
+> built into the kernel image.  Do not require to use the -dtb option if
+> -kernel is used for the microchip-icicle-kit machine.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+That's a fair point, but it might also confuse people who expect QEMU
+to generate a DTB if they don't specify one.
+
+This at least needs a documentation update, but a warning log might
+also be warranted if no `-dtb` is supplied
 
 Alistair
 
+>
+> Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
 > ---
->  hw/riscv/microchip_pfsoc.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  hw/riscv/microchip_pfsoc.c | 53 ++++++++++++++++++--------------------
+>  1 file changed, 25 insertions(+), 28 deletions(-)
 >
 > diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-> index ec7e2e4226..2ddc3464bb 100644
+> index 2ddc3464bb..f9e256df52 100644
 > --- a/hw/riscv/microchip_pfsoc.c
 > +++ b/hw/riscv/microchip_pfsoc.c
-> @@ -626,8 +626,15 @@ static void microchip_icicle_kit_machine_init(Machin=
-eState *machine)
+> @@ -516,7 +516,6 @@ static void microchip_icicle_kit_machine_init(Machine=
+State *machine)
+>      uint64_t mem_low_size, mem_high_size;
+>      hwaddr firmware_load_addr;
+>      const char *firmware_name;
+> -    bool kernel_as_payload =3D false;
+>      target_ulong firmware_end_addr, kernel_start_addr;
+>      uint64_t kernel_entry;
+>      uint64_t fdt_load_addr;
+> @@ -589,25 +588,12 @@ static void microchip_icicle_kit_machine_init(Machi=
+neState *machine)
+>       *
+>       * This ensures backwards compatibility with how we used to expose -=
+bios
+>       * to users but allows them to run through direct kernel booting as =
+well.
+> -     *
+> -     * When -kernel is used for direct boot, -dtb must be present to pro=
+vide
+> -     * a valid device tree for the board, as we don't generate device tr=
+ee.
+>       */
+>
+> -    if (machine->kernel_filename && machine->dtb) {
+> -        int fdt_size;
+> -        machine->fdt =3D load_device_tree(machine->dtb, &fdt_size);
+> -        if (!machine->fdt) {
+> -            error_report("load_device_tree() failed");
+> -            exit(1);
+> -        }
+> -
+> +    if (machine->kernel_filename) {
+>          firmware_name =3D RISCV64_BIOS_BIN;
+>          firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
+> -        kernel_as_payload =3D true;
+> -    }
+> -
+> -    if (!kernel_as_payload) {
+> +    } else {
+>          firmware_name =3D BIOS_FILENAME;
+>          firmware_load_addr =3D RESET_VECTOR;
+>      }
+> @@ -617,7 +603,7 @@ static void microchip_icicle_kit_machine_init(Machine=
+State *machine)
+>                                                       &firmware_load_addr=
+, NULL);
+>
+>      riscv_boot_info_init(&boot_info, &s->soc.u_cpus);
+> -    if (kernel_as_payload) {
+> +    if (machine->kernel_filename) {
+>          kernel_start_addr =3D riscv_calc_kernel_start_addr(&boot_info,
+>                                                           firmware_end_ad=
+dr);
+>
+> @@ -625,19 +611,30 @@ static void microchip_icicle_kit_machine_init(Machi=
+neState *machine)
+>                            true, NULL);
 >          kernel_entry =3D boot_info.image_low_addr;
 >
->          /* Compute the fdt load address in dram */
-> -        fdt_load_addr =3D riscv_compute_fdt_addr(memmap[MICROCHIP_PFSOC_=
-DRAM_LO].base,
-> -                                               memmap[MICROCHIP_PFSOC_DR=
-AM_LO].size,
-> +        hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
-> +        hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].size;
+> -        /* Compute the fdt load address in dram */
+> -        hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
+> -        hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].size;
+> -
+> -        if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
+> -            kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base;
+> -            kernel_ram_size =3D mem_high_size;
+> +        if (machine->dtb) {
+> +            int fdt_size;
+> +            machine->fdt =3D load_device_tree(machine->dtb, &fdt_size);
+> +            if (!machine->fdt) {
+> +                error_report("load_device_tree() failed");
+> +                exit(1);
+> +            }
 > +
-> +        if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
-> +            kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base;
-> +            kernel_ram_size =3D mem_high_size;
-> +        }
+> +            /* Compute the FDT load address in DRAM */
+> +            hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].b=
+ase;
+> +            hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].s=
+ize;
 > +
-> +        fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, kernel=
-_ram_size,
->                                                 machine, &boot_info);
->          riscv_load_fdt(fdt_load_addr, machine->fdt);
+> +            if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
+> +                kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base=
+;
+> +                kernel_ram_size =3D mem_high_size;
+> +            }
+> +
+> +            fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, ke=
+rnel_ram_size,
+> +                                                   machine, &boot_info);
+> +            riscv_load_fdt(fdt_load_addr, machine->fdt);
+> +        } else {
+> +            fdt_load_addr =3D 0;
+>          }
 >
+> -        fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, kernel=
+_ram_size,
+> -                                               machine, &boot_info);
+> -        riscv_load_fdt(fdt_load_addr, machine->fdt);
+> -
+>          /* Load the reset vector */
+>          riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, firmware_load=
+_addr,
+>                                    memmap[MICROCHIP_PFSOC_ENVM_DATA].base=
+,
 > --
 > 2.43.0
 >
