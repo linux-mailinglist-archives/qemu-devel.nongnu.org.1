@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732C4A42B58
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 19:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B78AA42BAB
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 19:37:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmdCF-0004VU-Ts; Mon, 24 Feb 2025 13:28:54 -0500
+	id 1tmdHT-0002x1-Sw; Mon, 24 Feb 2025 13:34:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmd4n-0008UQ-51
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:21:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmd4T-0000SH-IT
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:21:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740421241;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V2okbYWvwQq0dzjuynuNshi0SY/bcufp1gNx6gOmgII=;
- b=GmRA7vMn7epHic3Dx11yCubIcZGDuFC7YvSsteZh2czWs+qMxpC87ZuC5ygexEkkXgGHzq
- 0BSo6zTZncFzD5Y831XcJyMTwdfEPH4MymGTZqKvmvkmO/Itwa4NBhjXq26HnfuW9mkXVP
- wQw6nYInQF/H+XynOF5J6bbwZBNJm6U=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-3vt5p6dxMJWJmvH-HTd_iA-1; Mon,
- 24 Feb 2025 13:20:36 -0500
-X-MC-Unique: 3vt5p6dxMJWJmvH-HTd_iA-1
-X-Mimecast-MFC-AGG-ID: 3vt5p6dxMJWJmvH-HTd_iA_1740421236
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D04119560BC; Mon, 24 Feb 2025 18:20:35 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.119])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2DE0619560A3; Mon, 24 Feb 2025 18:20:32 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Victor Toso <victortoso@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2] qapi: pluggable backend code generators
-Date: Mon, 24 Feb 2025 18:20:30 +0000
-Message-ID: <20250224182030.2089959-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tmdDC-0005f6-6o
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:29:50 -0500
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tmdD5-0003Iv-Kq
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 13:29:49 -0500
+Received: by mail-pl1-x644.google.com with SMTP id
+ d9443c01a7336-2210d92292eso143254995ad.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 10:29:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1740421779; x=1741026579; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=b7ZpKNKV2lhTLpMg6c3MCxEe2mJkFJIwCBfBpYs8QpY=;
+ b=HIJeKEc17HP3rILBHcbyU1QlHAEJah/5BsjX5tO9sCz45rhsQEh3ZVIv0j3vWYfdfL
+ O1hpYdeInes/ZhpYtk5h/1gEQ58zWSZGDX+m1jH35Ct//2xNQCiKjDgrugVov7SNaYdp
+ rC6S+1LqxtBjT9FaKpAhZg38nRLluVvcXWCdaYa5RqzinEIF18RBfJjvV71+1YyDhSZG
+ q8SBnddr0gYcNrcOg+mHNKpkg1DGIl7ESTpaakvITv6mmpVEVeXQDxsdCePCURD/GrYV
+ q0qS4zDVeXG8TVtnCwN/cOxKTM51OvhZRgC7lV1xyfTGDU7vXFZzW7Kpyn3FkzbIHD2q
+ lfmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740421779; x=1741026579;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=b7ZpKNKV2lhTLpMg6c3MCxEe2mJkFJIwCBfBpYs8QpY=;
+ b=q+Jw64hwuFJTQGW96Ul3nmcwy8tjaMrCmDXSjKcQdjbfLTnSi+8M7tTO2K9xkIMDhd
+ C65Pwgw/vu1urcRAOaAzjtWYV8/y/GLIy2XkSGJfAZfNI56tCQdS6y7CsACdCt1zIVeY
+ +sCk6S8oyqyMkUR3oKFGbkQXlL7oB7kABE3kse1WDcndrLwjAVxU3FMX4+ec9ZDb3lwi
+ kCLAHwxxKwclSmBnnn0v3op32Ti05sav0/Xq4bnizpXmdgkFPh1wegONWQR24Y6VZJLt
+ GkHJ2Ud1G3k/w2v7/LmLVahZMDqwGdhRmFXYRXpFHKOy9pcv1V6bxunbcfTUB/qSK5yZ
+ Vfrg==
+X-Gm-Message-State: AOJu0YwH4NMj0lHar3IWnrfu0YZ2ljlEJ6mk5+kO2E3qpORtHdykv4Nv
+ bDUrOjnbvZsinrO7VDjhbqhhJuOA+Qdr4iSKD9xpupBP63rP8j4=
+X-Gm-Gg: ASbGncvo8tv6WdKmT1yKhL76aOxlsCwXBKDS/VtIys5cHeIfZXkGSJfni2qCzZWJodl
+ 7dC0DKHL0gvVhbRWlDNT+wOU5GwJuibfYWrUDfkBTNAzx5AwB3s1flWBw3fsGEiq8fijzreTenx
+ B7PjyyLumOyZTbBEpmCDNU6flRGbKPAo2UZEmDCJJIOuW5btqhh6lGcRBmyYshWe3hyge3r5lai
+ CaEQ9WJvvYhOytpsWhGBDrHjfzEIIcKAp4GYxAGvCa0LxuYjGupEn74tsN1z/zpvvOyyLIss7hG
+ Ab/bD/erZkk4tFCf2aKtJMuxUtn4OnFTEGlXg9g=
+X-Google-Smtp-Source: AGHT+IFP2RTDZHRpdj0fwVyUP2FuFd0Cx82WQyta0jzUFvXWt/+ibSuIhkiUs3SLmRY68s2dJ47hVw==
+X-Received: by 2002:a17:903:2a8d:b0:21f:6584:2085 with SMTP id
+ d9443c01a7336-2219ffc4928mr256406105ad.42.1740421779263; 
+ Mon, 24 Feb 2025 10:29:39 -0800 (PST)
+Received: from localhost.localdomain ([116.227.8.253])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-220d545cf6bsm183662615ad.123.2025.02.24.10.29.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Feb 2025 10:29:38 -0800 (PST)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 00/10] vfio/igd: Remove legacy mode
+Date: Tue, 25 Feb 2025 02:29:17 +0800
+Message-ID: <20250224182927.31519-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,223 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'qapi.backend.QAPIBackend' class defines an API contract for code
-generators. The current generator is put into a new class
-'qapi.backend.QAPICBackend' and made to be the default impl.
+This patchset removes some legacy checks and converts the legacy mode
+implicitly enabled by BDF 00:02.0 into x-igd-* options, including:
+* Removing PCI ROM BAR and VGA IO/MMIO range check before applying quirk
+* Using unified x-igd-opregion option for OpRegion access.
+* Introducing new x-igd-lpc option for the LPC bridge / Host bridge ID
+  quirk. Currently this is only supported on i440fx.
+* Extending quirk support when IGD is not assigned to BDF 00:02.0
 
-A custom generator can be requested using the '-k' arg which takes a
-fully qualified python class name
+The first 2 patches of this patchset was taken from a previous one,
+details can be found at:
+https://lore.kernel.org/all/20250124191245.12464-1-tomitamoeko@gmail.com/
 
-   qapi-gen.py -B the.python.module.QAPIMyBackend
+This patchest was mainly tested on Alder Lake UHD770, with Debian 12
+(kernel 6.1), Windows 11 (driver 32.0.101.6458) and Intel GOP driver
+17.0.1081.
 
-This allows out of tree code to use the QAPI generator infrastructure
-to create new language bindings for QAPI schemas. This has the caveat
-that the QAPI generator APIs are not guaranteed stable, so consumers
-of this feature may have to update their code to be compatible with
-future QEMU releases.
+If the design is good to go, I will update the documentation also.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
+A open question is whether the old legacy mode behavior should be kept
+or not. Checking if all the condition of legacy mode were met and
+toggling correspoding options is more complicated then I expected :(
+Any ideas would be appreciated.
 
-In v2:
 
- - Create QAPISchema object ahead of calling backend
- - Use -B instead of -k
- - Fix mypy annotations
- - Add error checking when loading backend
- - Hardcode import of QAPICBackend to guarantee mypy coverage
+Tomita Moeko (10):
+  vfio/igd: Remove GTT write quirk in IO BAR 4
+  vfio/igd: Do not include GTT stolen size in etc/igd-bdsm-size
+  vfio/igd: Remove rombar check for legacy mode
+  vfio/igd: Remove implicit VGA access enabled by legacy mode
+  vfio/pci: Make vfio_populate_vga static
+  vfio/igd: Consolidate OpRegion initialization into a single function
+  vfio/igd: Move LPC bridge initialization to a separate function
+  vfio/pci: Add placeholder for device-specific config space quirks
+  vfio/igd: Refactor vfio_probe_igd_bar4_quirk into pci config quirk
+  vfio/igd: Replace legacy mode with options
 
- scripts/qapi/backend.py | 63 ++++++++++++++++++++++++++++++++++
- scripts/qapi/main.py    | 75 ++++++++++++++++++++++-------------------
- 2 files changed, 103 insertions(+), 35 deletions(-)
- create mode 100644 scripts/qapi/backend.py
+ hw/vfio/igd.c        | 476 ++++++++++++++-----------------------------
+ hw/vfio/pci-quirks.c |  51 +----
+ hw/vfio/pci.c        |  33 +--
+ hw/vfio/pci.h        |  12 +-
+ 4 files changed, 166 insertions(+), 406 deletions(-)
 
-diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
-new file mode 100644
-index 0000000000..14e60aa67a
---- /dev/null
-+++ b/scripts/qapi/backend.py
-@@ -0,0 +1,63 @@
-+# This work is licensed under the terms of the GNU GPL, version 2 or later.
-+# See the COPYING file in the top-level directory.
-+
-+from abc import ABC, abstractmethod
-+
-+from .commands import gen_commands
-+from .events import gen_events
-+from .features import gen_features
-+from .introspect import gen_introspect
-+from .schema import QAPISchema
-+from .types import gen_types
-+from .visit import gen_visit
-+
-+
-+class QAPIBackend(ABC):
-+
-+    @abstractmethod
-+    def generate(self,
-+                 schema: QAPISchema,
-+                 output_dir: str,
-+                 prefix: str,
-+                 unmask: bool,
-+                 builtins: bool,
-+                 gen_tracing: bool) -> None:
-+        """
-+        Generate code for the given schema into the target directory.
-+
-+        :param schema: The primary QAPI schema object.
-+        :param output_dir: The output directory to store generated code.
-+        :param prefix: Optional C-code prefix for symbol names.
-+        :param unmask: Expose non-ABI names through introspection?
-+        :param builtins: Generate code for built-in types?
-+
-+        :raise QAPIError: On failures.
-+        """
-+
-+
-+class QAPICBackend(QAPIBackend):
-+
-+    def generate(self,
-+                 schema: QAPISchema,
-+                 output_dir: str,
-+                 prefix: str,
-+                 unmask: bool,
-+                 builtins: bool,
-+                 gen_tracing: bool) -> None:
-+        """
-+        Generate C code for the given schema into the target directory.
-+
-+        :param schema_file: The primary QAPI schema file.
-+        :param output_dir: The output directory to store generated code.
-+        :param prefix: Optional C-code prefix for symbol names.
-+        :param unmask: Expose non-ABI names through introspection?
-+        :param builtins: Generate code for built-in types?
-+
-+        :raise QAPIError: On failures.
-+        """
-+        gen_types(schema, output_dir, prefix, builtins)
-+        gen_features(schema, output_dir, prefix)
-+        gen_visit(schema, output_dir, prefix, builtins)
-+        gen_commands(schema, output_dir, prefix, gen_tracing)
-+        gen_events(schema, output_dir, prefix)
-+        gen_introspect(schema, output_dir, prefix, unmask)
-diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-index 324081b9fc..8a8b1e0121 100644
---- a/scripts/qapi/main.py
-+++ b/scripts/qapi/main.py
-@@ -8,18 +8,14 @@
- """
- 
- import argparse
-+from importlib import import_module
- import sys
- from typing import Optional
- 
--from .commands import gen_commands
-+from .backend import QAPIBackend, QAPICBackend
- from .common import must_match
- from .error import QAPIError
--from .events import gen_events
--from .features import gen_features
--from .introspect import gen_introspect
- from .schema import QAPISchema
--from .types import gen_types
--from .visit import gen_visit
- 
- 
- def invalid_prefix_char(prefix: str) -> Optional[str]:
-@@ -29,32 +25,37 @@ def invalid_prefix_char(prefix: str) -> Optional[str]:
-     return None
- 
- 
--def generate(schema_file: str,
--             output_dir: str,
--             prefix: str,
--             unmask: bool = False,
--             builtins: bool = False,
--             gen_tracing: bool = False) -> None:
--    """
--    Generate C code for the given schema into the target directory.
-+def create_backend(path: str) -> QAPIBackend:
-+    if path is None:
-+        return QAPICBackend()
- 
--    :param schema_file: The primary QAPI schema file.
--    :param output_dir: The output directory to store generated code.
--    :param prefix: Optional C-code prefix for symbol names.
--    :param unmask: Expose non-ABI names through introspection?
--    :param builtins: Generate code for built-in types?
-+    if "." not in path:
-+        print(f"Missing qualified module path in '{path}'", file=sys.stderr)
-+        sys.exit(1)
- 
--    :raise QAPIError: On failures.
--    """
--    assert invalid_prefix_char(prefix) is None
-+    module_path, _, class_name = path.rpartition('.')
-+    try:
-+        mod = import_module(module_path)
-+    except Exception as ex:
-+        print(f"Unable to import '{module_path}': {ex}", file=sys.stderr)
-+        sys.exit(1)
-+
-+    if not hasattr(mod, class_name):
-+        print(f"Module '{module_path}' has no class '{class_name}'", file=sys.stderr)
-+        sys.exit(1)
-+    klass = getattr(mod, class_name)
-+
-+    try:
-+        backend = klass()
-+
-+        if not isinstance(backend, QAPIBackend):
-+            print(f"Backend '{path}' must be an instance of QAPIBackend", file=sys.stderr)
-+            sys.exit(1)
- 
--    schema = QAPISchema(schema_file)
--    gen_types(schema, output_dir, prefix, builtins)
--    gen_features(schema, output_dir, prefix)
--    gen_visit(schema, output_dir, prefix, builtins)
--    gen_commands(schema, output_dir, prefix, gen_tracing)
--    gen_events(schema, output_dir, prefix)
--    gen_introspect(schema, output_dir, prefix, unmask)
-+        return backend
-+    except Exception as ex:
-+        print(f"Backend '{path}' cannot be instantiated: {ex}", file=sys.stderr)
-+        sys.exit(1)
- 
- 
- def main() -> int:
-@@ -77,6 +78,8 @@ def main() -> int:
-     parser.add_argument('-u', '--unmask-non-abi-names', action='store_true',
-                         dest='unmask',
-                         help="expose non-ABI names in introspection")
-+    parser.add_argument('-B', '--backend', default=None,
-+                        help="Python module name for code generator")
- 
-     # Option --suppress-tracing exists so we can avoid solving build system
-     # problems.  TODO Drop it when we no longer need it.
-@@ -93,12 +96,14 @@ def main() -> int:
-         return 1
- 
-     try:
--        generate(args.schema,
--                 output_dir=args.output_dir,
--                 prefix=args.prefix,
--                 unmask=args.unmask,
--                 builtins=args.builtins,
--                 gen_tracing=not args.suppress_tracing)
-+        schema = QAPISchema(args.schema)
-+        backend = create_backend(args.backend)
-+        backend.generate(schema,
-+                         output_dir=args.output_dir,
-+                         prefix=args.prefix,
-+                         unmask=args.unmask,
-+                         builtins=args.builtins,
-+                         gen_tracing=not args.suppress_tracing)
-     except QAPIError as err:
-         print(err, file=sys.stderr)
-         return 1
 -- 
-2.47.1
+2.47.2
 
 
