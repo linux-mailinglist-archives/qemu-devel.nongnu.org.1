@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D49A422FA
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:27:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C36A423C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmZPu-0002mS-GB; Mon, 24 Feb 2025 09:26:42 -0500
+	id 1tmZk9-0000vF-7k; Mon, 24 Feb 2025 09:47:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmZPq-0002lj-W9; Mon, 24 Feb 2025 09:26:39 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmZPp-00057R-6i; Mon, 24 Feb 2025 09:26:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740407197; x=1771943197;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=M2hMqIx2O/FVqVzobD2PWmi+jxZJbgUVouYOZ+iLYm0=;
- b=XovN96e7gWCf0wix+IfjPbPM0aIl3hQLTT7DGYgvJqIXOwwvQNXSHvNy
- ZpHnEf91kLe7v0rSJ93GMViItlxEub9+79IIlZft2eoYqKRABKfvOTQme
- ni45S2UFRcIm7ZnAPCw2guj+tdav5a9wRYTnx/yYHJQsrNslcqkMs4Yxd
- XQn/bekn3ysAaBxG0q1GeeBt7fh2/8MDQW+1UdWtKFWQG5v6druCjH6M0
- 5sGNk4glP87JOMI+3LQX2qDaZqp8vlkSq8pV8vZgGgLKOiG0yCjrWqbv0
- S9FnN9zqWE5CmEh2AckcYlO5ihEqi7ERbaQg+wt71gKECualy2SysV8yw w==;
-X-CSE-ConnectionGUID: ReYfWgnaQh2rByAiJiePTg==
-X-CSE-MsgGUID: w8EtwFVxTEShNb4Qurx/qw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="44816395"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="44816395"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 06:26:35 -0800
-X-CSE-ConnectionGUID: +Imv1xRzRX28VbGWArQRKg==
-X-CSE-MsgGUID: r+kryvleT7ueGqE4y9Zxcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116978761"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 24 Feb 2025 06:26:34 -0800
-Date: Mon, 24 Feb 2025 22:46:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 02/15] rust: add SysBusDeviceImpl
-Message-ID: <Z7yGMo5rqJ5FTP8q@intel.com>
-References: <20250221170342.63591-1-pbonzini@redhat.com>
- <20250221170342.63591-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tmZjy-0000tk-Ou
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 09:47:26 -0500
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tmZjw-0007rx-Ja
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 09:47:25 -0500
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-6fb7c373416so35443107b3.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 06:47:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740408443; x=1741013243; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vaCwfjXRWYgdOrjWq1KNN6uPPUv1FI8JvSotyLevqRE=;
+ b=j/4tCP72cJbAH9cmR06lV4KqlqKAJ8RMEE2Didcf+uKsGfho3HHwgYKlu99TBUH9SU
+ NW5uJ1Kotk0Gb3k4VefpSKVE5xBZkYI73p75noOxIAx3DCjiX56ucC3dWX56jQejgrRa
+ 7KihorBCvEG1MGCdBnprgmvQkxGXkN61qFcB/mZFuV0pEIp/8q/rMXhjCUllO1LuU2ru
+ HLrbPcHom60GhkEfozkuOP5TuGCA0tWSsupmZ+zbTlEjDilBB+QAhrLAJ5yHi18/1awg
+ 7ytB0/5vCwHpmNWxDYDccQlU1xqPARysJvsOpjxUW0/kX0UE9xIYB8k/snrlrusJ0gou
+ +Wtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740408443; x=1741013243;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vaCwfjXRWYgdOrjWq1KNN6uPPUv1FI8JvSotyLevqRE=;
+ b=NPIZ/ZAM5kZNZvLgsEUAgU1eW5Nwfzi02kXrEM9KmX2FfXLp7k1qq7EVJYnIQU4vf9
+ 7nHZju8AaeLT0dQHmkLMOofUyRZHqfRp7dcMSDzjUdTW6HUBEosRIoyFTbs0UliVUPuZ
+ bT2WfzxPU7y1EUNxmUTD7A++khE9zzDmrYFmRcUALCXaaRBnW/n5VbpUY3+JW/GoDv0T
+ VuJW2uwC3dvJxW00z/rPnrfaLMKr4uMYex9mzxU35s4bN0aDc+yRMljxprvV3MnOtN8i
+ w0hA8+JdNpjNDCk87Pni+mvum8iE0JAhg7UeUeIVjeJfE12vCTUXFBFTABiTaILbd/Gu
+ DG9A==
+X-Gm-Message-State: AOJu0Yyv2dQWPH3ngAJ7yck6WjBc68LbjiskO0HggDAQXLs0ROGKf3pI
+ VbiCsotyYwt3UUfIos91sDJCD/UwbskM2WK47AYXrNgX9VQxvGEZ5UzvXUOddt/6lzj5EKbVkRg
+ CIWlf2oZTczSROzFx0SmVR0bk63XwGS8e2xr3ICvIJ/0pqkTw
+X-Gm-Gg: ASbGncv4Zgz65uIZY1kFUYkuCMxBWQT8e1OLJhwt5acgnyc64w/2TPc36+Rsba9h/5B
+ m5l9dRahS0Q60vUvsqvXkhw3idOIxWUGmjpXjWysHnC/8W/nNJW+GOLaiAOfTOHO4D3e5pUCiQ6
+ LjGx2VXnFA
+X-Google-Smtp-Source: AGHT+IGzSHk9xL20r2oqjhJlFqcdcRRKED1Ek86tuu2y0eGVqnlZ63xn98qSFmeIRfG7c+KvM4X3RFLUo2BwLuvCgW0=
+X-Received: by 2002:a05:690c:480a:b0:6ef:820c:a752 with SMTP id
+ 00721157ae682-6fbcc25ed88mr109705067b3.20.1740408442800; Mon, 24 Feb 2025
+ 06:47:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221170342.63591-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250213142613.151308-1-peter.maydell@linaro.org>
+In-Reply-To: <20250213142613.151308-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 24 Feb 2025 14:47:11 +0000
+X-Gm-Features: AWEUYZnl__72jn9Ay47kgQZmZBSQHY4Juh_O0iQcTCWpV_uB8NGMHqVhJNCTHhU
+Message-ID: <CAFEAcA86t=uc_XZd0s1yOFsop68XN2HK7c5MUJNfn7kcDoMsxQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] target/i386: Emulate ftz and denormal flag bits
+ correctly
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,22 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 21, 2025 at 06:03:29PM +0100, Paolo Bonzini wrote:
-> Date: Fri, 21 Feb 2025 18:03:29 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 02/15] rust: add SysBusDeviceImpl
-> X-Mailer: git-send-email 2.48.1
-> 
-> The only function, right now, is to ensure that anything with a
-> SysBusDeviceClass class is a SysBusDevice.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs | 5 ++++-
->  rust/hw/timer/hpet/src/hpet.rs   | 4 +++-
->  rust/qemu-api/src/sysbus.rs      | 8 +++++---
->  3 files changed, 12 insertions(+), 5 deletions(-)>
+Ping? Would an i386 maintainer like to pick these up?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+thanks
+-- PMM
 
+On Thu, 13 Feb 2025 at 14:26, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This is a set of four patches to target/i386 which use the core
+> fpu functionality we just landed for Arm FEAT_AFP to correct
+> the emulation of some corner cases of x86 floating point:
+>  * when we are flushing denormal outputs to zero, this should
+>    be done after rounding, not before
+>  * the MXCSR.DE and FPUS.DE bits indicate when a denormal input
+>    was not flushed and was used in an fp operation; we previously
+>    weren't implementing these semantics
+>
+> All four patches have been reviewed by RTH. Testing is a bit
+> light (make check-tcg and make check-functional), because AFAIK
+> there is no freely available comprehensive FP testsuite for x86,
+> and risu doesn't support x86 currently so I can't do the same kind
+> of random-instruction-testing I could for Arm.
+>
+> thanks
+> -- PMM
+>
+> Peter Maydell (4):
+>   target/i386: Detect flush-to-zero after rounding
+>   target/i386: Use correct type for get_float_exception_flags() values
+>   target/i386: Wire up MXCSR.DE and FPUS.DE correctly
+>   tests/tcg/x86_64/fma: add test for exact-denormal output
+>
+>  target/i386/ops_sse.h        |  16 +++---
+>  target/i386/tcg/fpu_helper.c | 101 +++++++++++++++++------------------
+>  tests/tcg/x86_64/fma.c       |  17 ++++--
+>  3 files changed, 68 insertions(+), 66 deletions(-)
+>
+> --
+> 2.43.0
 
