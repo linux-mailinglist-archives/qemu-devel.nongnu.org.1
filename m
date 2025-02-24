@@ -2,85 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04415A41413
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B2CA4141A
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:38:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmPEx-0000JV-Oc; Sun, 23 Feb 2025 22:34:43 -0500
+	id 1tmPI6-0001Mj-R9; Sun, 23 Feb 2025 22:37:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmPEu-0000GA-6X; Sun, 23 Feb 2025 22:34:40 -0500
-Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmPEs-00058S-Nu; Sun, 23 Feb 2025 22:34:39 -0500
-Received: by mail-vs1-xe29.google.com with SMTP id
- ada2fe7eead31-4bfb4853a5dso1016734137.2; 
- Sun, 23 Feb 2025 19:34:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740368077; x=1740972877; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oAdSQYhB5xvRIYyAlbietjKpk+ucgBqiwVL9hoD54yA=;
- b=hNnF9lctXoIyQhNvvM+OQyRhX8EmQ7ui5cGvGhU853CEFwyMXr/UJOqZyGJEiB/o/A
- 7qelDsFkuRBuD4wUUFeq5ThaU08S5tJ0/i+9Ahd3v2p1AbAFUkaBeF8r5MrTOBEAKkpA
- LrusGe/q1VHEZIlBPcXxhUhehBFy6Hgt0goUJK5nF7My0+id3NM3XxMHaAJm1Uh9bqB9
- epdQFbLKpSOYlmdMmic+6g2rw74n6ys4+QYiiZGwYYLRPUm9Axn1lAMklnrk2OHj0yrV
- mPXldPtXRIFoV/Az3243jX2ThF9+GJ1ncxtRvqkO+Bqz979pmkKmL4Mr9aR4n0i2InJR
- qJMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740368077; x=1740972877;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oAdSQYhB5xvRIYyAlbietjKpk+ucgBqiwVL9hoD54yA=;
- b=j5xiHXHK8mAnyunsYH+fJ5DRUBte9kaDssKRblwPftiTHklgTKXUsktWSige9hcvy3
- vg//kcPf/YylwsXkKBYbdFo7l/QZnMUaB67BDXqyqwnA384PWIYK4501ESgXE+7HwBvU
- /b6QvB7fMkzm1Sp+MCM9F/ceZ/6iw+qiDtMAyqCGCZp6d6NtMYs+3MtS15NemNozt4Oo
- RaCyO2XXhNnWkBnIABwN2gfaPMge80tjM/lo4aCsdK8HSqmxSCPxQyLdFw4Hag/yn31r
- DloPcOnNecLxeMqkiQoAQv8SdlwsLWxbwO2tFmHQD0eA0jDPR1Vzs83TeNtzvcMdIHrR
- bwMQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV89p6hhBy9YarPDJSMHzMZEUL/e1Ym2xq9fIlup/H64nfjCc2mmAVR/8LUEiD2x7OujFT6N1Wxnlz+@nongnu.org
-X-Gm-Message-State: AOJu0Yx71w97p+lTiz4tbmyDh22Z9L77tcfcEVUUHnoA+pfWpxTIvX3Q
- lCIQz4BZ74gjuJZXnMsZ+a7ffN3eVmbkhg4jZGz5Fb/IDU2zkIU3CF6+gyJLyfzaK9HsbXaCv6g
- iKx13dOPSS7Iaq8A36u5Yt2fn1UA=
-X-Gm-Gg: ASbGnctYcDeTnmJL6b8C+IOmslfWOeIW+7drCPNlw8LoG9XljODjaovBy3co2bgFe1A
- BaWOVXdiDEvayKAo8R6dZ6dpjhXGtoHeo2PuWgCqZ/uhY0/9oxKF/MbFTptWb9FnvIFv9x+/cwj
- qMG7hhESi9T960zXXZA8OD7yGr5qE9Jp7GZjEQ
-X-Google-Smtp-Source: AGHT+IHnwxOJZ27TbNllczfgpIyJX6O1oeHvZmSX7qtNsZo2prOkX2b2TJqP6qjmunjzJ4ztNpv7WsudJoyjgrmcR2E=
-X-Received: by 2002:a05:6102:32d3:b0:4bb:d7f0:6e7d with SMTP id
- ada2fe7eead31-4bfc01c63c8mr4548794137.25.1740368077191; Sun, 23 Feb 2025
- 19:34:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPI4-0001MO-8E
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:37:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPI2-0005QL-2m
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:37:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740368272;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/QaQvvkANl4CxJcoZXAetNsesoYPFAQysyASef0azrE=;
+ b=KoE69lpQcV7MsyYHrXA7pv2pwSUJVfYYTjqZdVhoYGsRR1uVIw7BuDhphg2nfLI9FspwNg
+ r5q30yVM4Ud4Ebe/zS37dbxV100scPam8V3luzlZz3x8ziYc1A10jcCMkIwLQxpdh2U65Q
+ FeNZer8E+wepfmxc+LM8p7CilA37xRU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-lfUsNUkQN_qsYEyFBMsC5A-1; Sun,
+ 23 Feb 2025 22:37:45 -0500
+X-MC-Unique: lfUsNUkQN_qsYEyFBMsC5A-1
+X-Mimecast-MFC-AGG-ID: lfUsNUkQN_qsYEyFBMsC5A_1740368264
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7688A196E078; Mon, 24 Feb 2025 03:37:44 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.88])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8407119560A3; Mon, 24 Feb 2025 03:37:42 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 00/10] qapi: misc testing and doc patches
+Date: Sun, 23 Feb 2025 22:37:31 -0500
+Message-ID: <20250224033741.222749-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20241205133003.184581-1-dbarboza@ventanamicro.com>
- <20241205133003.184581-12-dbarboza@ventanamicro.com>
-In-Reply-To: <20241205133003.184581-12-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 24 Feb 2025 13:34:11 +1000
-X-Gm-Features: AWEUYZnbKpSXoOwqXUQzE0xA84TXVAkj4YstMBu78zJqf-DrayCWFJCl5GmCcCw
-Message-ID: <CAKmqyKOasf_R4jTiupDLgNu6+M6uKWnQ+h2R=8FmN_nd1X=SRw@mail.gmail.com>
-Subject: Re: [PATCH for-10.0 11/11] docs/specs/riscv-iommu.rst: add HPM
- support info
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,37 +84,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 5, 2024 at 11:33=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+GitLab: https://gitlab.com/jsnow/qemu/-/pipelines/1684045409=0D
+=0D
+This is a series of random qapi and documentation patches;=0D
+=0D
+Patches 1-3: Formalize QAPI python testing (finally ...)=0D
+Patches 4-10: Miscellaneous patches and fixes related to the=0D
+documentation overhaul project; but were standalone enough that they=0D
+could be excised from a fairly lengthy series ...=0D
+=0D
+Markus: I think everything here is suitable for merging, even though=0D
+some of it might lack a little context. The more I pull out of that big=0D
+series, the easier that series will be to review :)=0D
+=0D
+Please stage as much as you feel comfortable doing, you can skip any=0D
+individual patch at your discretion.=0D
+=0D
+John Snow (10):=0D
+  qapi: update pylintrc config=0D
+  python: add qapi static analysis tests=0D
+  qapi: delete un-needed python static analysis configs=0D
+  docs/qapidoc: support header-less freeform sections=0D
+  qapi/parser: adjust info location for doc body section=0D
+  docs/qapidoc: remove example section support=0D
+  qapi: expand tags to all doc sections=0D
+  qapi/schema: add __repr__ to QAPIDoc.Section=0D
+  qapi/source: allow multi-line QAPISourceInfo advancing=0D
+  docs: disambiguate cross-references=0D
+=0D
+ docs/devel/codebase.rst        |   6 +-=0D
+ docs/glossary.rst              |  10 +--=0D
+ docs/sphinx/qapidoc.py         |  18 ++---=0D
+ python/tests/qapi-flake8.sh    |   2 +=0D
+ python/tests/qapi-isort.sh     |   2 +=0D
+ python/tests/qapi-mypy.sh      |   2 +=0D
+ python/tests/qapi-pylint.sh    |   4 ++=0D
+ scripts/qapi/.flake8           |   3 -=0D
+ scripts/qapi/.isort.cfg        |   7 --=0D
+ scripts/qapi/mypy.ini          |   4 --=0D
+ scripts/qapi/parser.py         | 124 +++++++++++++++++++++++++--------=0D
+ scripts/qapi/pylintrc          |   1 +=0D
+ scripts/qapi/source.py         |   4 +-=0D
+ tests/qapi-schema/doc-good.out |  10 +--=0D
+ tests/qapi-schema/test-qapi.py |   2 +-=0D
+ 15 files changed, 128 insertions(+), 71 deletions(-)=0D
+ create mode 100755 python/tests/qapi-flake8.sh=0D
+ create mode 100755 python/tests/qapi-isort.sh=0D
+ create mode 100755 python/tests/qapi-mypy.sh=0D
+ create mode 100755 python/tests/qapi-pylint.sh=0D
+ delete mode 100644 scripts/qapi/.flake8=0D
+ delete mode 100644 scripts/qapi/.isort.cfg=0D
+ delete mode 100644 scripts/qapi/mypy.ini=0D
+=0D
+-- =0D
+2.48.1=0D
+=0D
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
-> ---
->  docs/specs/riscv-iommu.rst | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-> index b1538c9ead..000c7e1f57 100644
-> --- a/docs/specs/riscv-iommu.rst
-> +++ b/docs/specs/riscv-iommu.rst
-> @@ -82,6 +82,8 @@ Several options are available to control the capabiliti=
-es of the device, namely:
->  - "off" (Out-of-reset translation mode: 'on' for DMA disabled, 'off' for=
- 'BARE' (passthrough))
->  - "s-stage": enable s-stage support
->  - "g-stage": enable g-stage support
-> +- "hpm-counters": number of hardware performance counters available. Max=
-imum value is 31.
-> +  Default value is 31. Use 0 (zero) to disable HPM support
->
->  riscv-iommu-sys device
->  ----------------------
-> --
-> 2.47.1
->
->
 
