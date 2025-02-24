@@ -2,81 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6527CA4242A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:53:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CF2A42342
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 15:38:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmZpH-0003Zd-90; Mon, 24 Feb 2025 09:52:55 -0500
+	id 1tmZa6-0005Xg-J4; Mon, 24 Feb 2025 09:37:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmZpE-0003Yx-WC
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 09:52:53 -0500
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmZpC-0000PA-Tv
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 09:52:52 -0500
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-6f6ae4846c7so36038137b3.1
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 06:52:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740408769; x=1741013569; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CCVwFU30iRIVDUkhO8+T1DaSlcaCUl6Lrdm8AEwgjvM=;
- b=CEhk9QrSqjitwzVMqQ43y6Hg66Y3MHjxG5OwViwdXip9wdrAuTFP90j4T6lirGmims
- WnubL/Jeo/lzsAoHl3n0R7MDFzUcyGja2WnM0qONu0M6KODWpoOyEqtmssHMHUUaYdcG
- C41Nv8AQOP3DzWU73iLrEErw8FhXVlE9sTlcB94atbqj+g0V9zn5rYSkWjV5BmQsqqGJ
- +CHLEdr6rY+B8WYfVwh4JRN2Pt+lgGp61Wy0Luw/6C09Ja6T6nY5E2FjB2bC+T6IZcPO
- IZJtFokVPZNCtkH1bHf4tZModTqtGziicq0h/MvXT9dj1b4ckKV4xhbFwjnpahhw57Eq
- Z/VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740408769; x=1741013569;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CCVwFU30iRIVDUkhO8+T1DaSlcaCUl6Lrdm8AEwgjvM=;
- b=tmqjg4o74cnt+RlYqK0Z5K/b8iYfz6fhl39SBwWkQJhLZjSeJH3lXQZ/j0xVAH5x6W
- k5/QIqD8+N8UXZRTJaI+Er1bCxQg//FMlwatOM5rNjkG/dYZpnRlr2tgDtEqX3i10NU9
- BhSUPrTJbm84gz1damVsXhQgRdREkwWtQImM/txE0Gof+tbCpBSdkdeQ4gOFeYg9yU12
- nJOVeg6ZnuK/dIrnDXP5dPDpe1pSeJ/VOaTdwbB9nhb3KbUiylIbFELuyvGdKReFN01Z
- 79Jy7mTbz/Vm/kFkSR8wml1CWLKO6PkMXVVLjq7NyC8fubiO8d9yflE75SHJ/Bdlb4u9
- zFCg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUgHWM7zTC+herDya3aKBO9ucUuuA3iTNXs7m9dkMo1hggDizj5llOI2V6gqap5nBLDu0mo/tPFiGy2@nongnu.org
-X-Gm-Message-State: AOJu0YzlMY7wSY1MmCLcYc1S79fksUI3SthWK2bFxDMs83n3+xh/P6NP
- 6NNgagkD9hyBhAcP6Jy3GpDrj9HIVzWxrOl30J4PnPVY6yLCFnixbiASIonj4e0lW/3/vpNr96/
- TmaZCJ09/l0AjJ0F4Q4J+JDuRYiG90wM44i9+tA==
-X-Gm-Gg: ASbGnctO+Onr3ANv6nw5m7SPaSfXiOOnb3H0P3+yUyz/IEQmzRogJ8BPUkqqYO93Hpe
- RLfrVRxsOQHfqZJ+D19TzgA7durJVoga1Cq6MZRg8B8scPj45Lg6pr7BAYfCzhqEaoTrmkj+kZw
- irhgJHL7Tl
-X-Google-Smtp-Source: AGHT+IGJ7//z/viz6CX9wR+A/D7zOKGUa8JHhsNi9AAn39cZTjnPkyDlqv3tL6vJfuAFl3VN5kTc6H3ny6F6VeuI0Vk=
-X-Received: by 2002:a05:690c:6a12:b0:6ef:5097:5daa with SMTP id
- 00721157ae682-6fbcc856ce4mr114955077b3.34.1740408769655; Mon, 24 Feb 2025
- 06:52:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmZa3-0005XJ-Dp; Mon, 24 Feb 2025 09:37:11 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmZa1-0006Km-Ag; Mon, 24 Feb 2025 09:37:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740407829; x=1771943829;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=un8HXcxNZE3oFALFsJNKuLE61w4QGf33WYRzArq2yu0=;
+ b=brytg2KFx4awoV+xcFbn4J6i1V4MwL8LmQtLsC94HwWzjJ2MSjNtfizl
+ b3YIRHICVrRGynv86pSk6FKGtYi0lgDyC/3/xooHdcLv3m2ntaEVSAmuN
+ jRsfwFP7emzxyR9bSp3LfSowGZTfDXviTZjG/zgJTSrclncNjw12oYe4E
+ tBAwAW2csVALIInP1zMF7ajcV2AihbIDmyZLGJIyHAXREGA0GFoJXW2Vb
+ W/uctfZEqAqWbF49mBsaNYyCjAMrqD2/WdnzxZm+E3fPzFpKjkI8808yp
+ FHdw+yHxIjKbninewdYt2BWGJVw3V9dgaskuCDH+tQ8XswgsCTlULqGGa A==;
+X-CSE-ConnectionGUID: IyS6v4zxRKyyRQdjGl0JIQ==
+X-CSE-MsgGUID: E15o6cj2TT2CLpLE6+DQMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="58710962"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="58710962"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2025 06:37:06 -0800
+X-CSE-ConnectionGUID: jgHqyOPZQE6IHwmrZ3ZTpg==
+X-CSE-MsgGUID: Cxa1PgNlToGKRclv3D1gyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; d="scan'208";a="116056262"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa006.jf.intel.com with ESMTP; 24 Feb 2025 06:37:04 -0800
+Date: Mon, 24 Feb 2025 22:56:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 03/15] rust: qom: add ObjectImpl::CLASS_INIT
+Message-ID: <Z7yIqbXZ+D5qufkn@intel.com>
+References: <20250221170342.63591-1-pbonzini@redhat.com>
+ <20250221170342.63591-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250210135804.3526943-1-peter.maydell@linaro.org>
-In-Reply-To: <20250210135804.3526943-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Feb 2025 14:52:37 +0000
-X-Gm-Features: AWEUYZkP0tpN-ueTrtqF1asomW7jXOP8tBH0MmuW-H8alHZx7JaGuMcnTIAf0Ks
-Message-ID: <CAFEAcA-SbHjBu8xo8Uy11n2N22LtUejARHC7w8ucu24kg15Xog@mail.gmail.com>
-Subject: Re: [PATCH] util/qemu-timer.c: Don't warp timer from timerlist_rearm()
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221170342.63591-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,84 +79,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This has been reviewed, but nobody's picked it up. Paolo,
-MAINTAINERS says qemu-timer.c is part of your "Main loop"
-responsibilities. Did you want to pick it up? Or I could
-throw it in to target-arm.next if you prefer.
-
-thanks
--- PMM
-
-On Mon, 10 Feb 2025 at 13:58, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Currently we call icount_start_warp_timer() from timerlist_rearm().
-> This produces incorrect behaviour, because timerlist_rearm() is
-> called, for instance, when a timer callback modifies its timer.  We
-> cannot decide here to warp the timer forwards to the next timer
-> deadline merely because all_cpu_threads_idle() is true, because the
-> timer callback we were called from (or some other callback later in
-> the list of callbacks being invoked) may be about to raise a CPU
-> interrupt and move a CPU from idle to ready.5A
->
-> The only valid place to choose to warp the timer forward is from the
-> main loop, when we know we have no outstanding IO or timer callbacks
-> that might be about to wake up a CPU.
->
-> For Arm guests, this bug was mostly latent until the refactoring
-> commit f6fc36deef6abc ("target/arm/helper: Implement
-> CNTHCTL_EL2.CNT[VP]MASK"), which exposed it because it refactored a
-> timer callback so that it happened to call timer_mod() first and
-> raise the interrupt second, when it had previously raised the
-> interrupt first and called timer_mod() afterwards.
->
-> This call seems to have originally derived from the
-> pre-record-and-replay icount code, which (as of e.g.  commit
-> db1a49726c3c in 2010) in this location did a call to
-> qemu_notify_event(), necessary to get the icount code in the vCPU
-> round-robin thread to stop and recalculate the icount deadline when a
-> timer was reprogrammed from the IO thread.  In current QEMU,
-> everything is done on the vCPU thread when we are in icount mode, so
-> there's no need to try to notify another thread here.
->
-> I suspect that the other reason why this call was doing icount timer
-> warping is that it pre-dates commit efab87cf79077a from 2015, which
-> added a call to icount_start_warp_timer() to main_loop_wait().  Once
-> the call in timerlist_rearm() has been removed, if the timer
-> callbacks don't cause any CPU to be woken up then we will end up
-> calling icount_start_warp_timer() from main_loop_wait() when the rr
-> main loop code calls rr_wait_io_event().
->
-> Remove the incorrect call from timerlist_rearm().
->
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+On Fri, Feb 21, 2025 at 06:03:30PM +0100, Paolo Bonzini wrote:
+> Date: Fri, 21 Feb 2025 18:03:30 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 03/15] rust: qom: add ObjectImpl::CLASS_INIT
+> X-Mailer: git-send-email 2.48.1
+> 
+> As shown in the PL011 device, the orphan rules required a manual
+> implementation of ClassInitImpl for anything not in the qemu_api crate;
+> this gets in the way of moving system emulation-specific code (including
+> DeviceClass, which as a blanket ClassInitImpl<DeviceClass> implementation)
+> into its own crate.
+> 
+> Make ClassInitImpl optional, at the cost of having to specify the CLASS_INIT
+> member by hand in every implementation of ObjectImpl.  The next commits will
+> get rid of it, replacing all the "impl<T> ClassInitImpl<Class> for T" blocks
+> with a generic class_init<T> method on Class.
+> 
+> Right now the definition is always the same, but do not provide a default
+> as that will not be true once ClassInitImpl goes away.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
-> As far as I can tell, this is the right thing, and it fixes the
-> "icount warps the timer when it should not" bug I'm trying to
-> address, but I'm not super familiar with the icount subsystem or its
-> evolution, so it's possible I've accidentally broken some other setup
-> here.  This does pass the tcg, functional and avocado tests,
-> including the record-and-replay ones.  I've cc'd it to stable as a
-> bugfix, but it definitely merits careful review first.
-> ---
->  util/qemu-timer.c | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-> index 0e8a453eaa1..af6e1787e57 100644
-> --- a/util/qemu-timer.c
-> +++ b/util/qemu-timer.c
-> @@ -409,10 +409,6 @@ static bool timer_mod_ns_locked(QEMUTimerList *timer_list,
->
->  static void timerlist_rearm(QEMUTimerList *timer_list)
->  {
-> -    /* Interrupt execution to force deadline recalculation.  */
-> -    if (icount_enabled() && timer_list->clock->type == QEMU_CLOCK_VIRTUAL) {
-> -        icount_start_warp_timer();
-> -    }
->      timerlist_notify(timer_list);
->  }
->
-> --
-> 2.34.1
+>  rust/hw/char/pl011/src/device.rs |  3 +++
+>  rust/hw/timer/hpet/src/hpet.rs   |  3 ++-
+>  rust/qemu-api/src/qom.rs         | 14 +++++++++++---
+>  rust/qemu-api/tests/tests.rs     |  3 +++
+>  4 files changed, 19 insertions(+), 4 deletions(-)> 
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
