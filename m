@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE49DA41423
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FA6A41420
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 04:39:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmPJD-00020g-SQ; Sun, 23 Feb 2025 22:39:08 -0500
+	id 1tmPIt-0001hw-K9; Sun, 23 Feb 2025 22:38:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIK-0001Px-VU
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIN-0001Q2-9G
  for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:38:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIH-0005Rl-VU
- for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:38:12 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tmPIK-0005Rr-P6
+ for qemu-devel@nongnu.org; Sun, 23 Feb 2025 22:38:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740368289;
+ s=mimecast20190719; t=1740368290;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VP5SDk4WkmLEFDLuA4c7QRtXKXfuW84WFZb7/tKq7PU=;
- b=acde/lPeJl3LOpCt2V578OZ0i7bJ1l6KzpYe7isMuXNcX864ZW9xJOOK4dkhKKMlhY/afz
- plTVfK8ueHRthksL578sKniusUCtjkjrp2iHOnM32rdbKU0/CZDveomTI9H7n1aG4v+2De
- Y8ioBtWi9mHhhsTX2bIym4pbq8nsYFg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=7G6YVAL0iU98F5nK+nS2ppNms52d37aU3+2UhKmOzzI=;
+ b=Hr7j5UAD2LEZ2+hZwT1CbgiM8B++8ryR6OZylZpjhSWvzKfx5s8upSI9xK3T0RJ6BR858r
+ /1z8L5qCu/LSc4ACSUATWgwXwfTIOqVNq3Sm6VTNH5cLaWOn7zv2yI5Dmqpt2SrgedPh/u
+ 7ikMML/XutMygYECDkCwB3z39+ZHiJU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-AuHs_yNeMkCbz69CtkaH8g-1; Sun,
- 23 Feb 2025 22:38:04 -0500
-X-MC-Unique: AuHs_yNeMkCbz69CtkaH8g-1
-X-Mimecast-MFC-AGG-ID: AuHs_yNeMkCbz69CtkaH8g_1740368283
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-CjF-6A1pMSGGNL7KsbCRFw-1; Sun,
+ 23 Feb 2025 22:38:06 -0500
+X-MC-Unique: CjF-6A1pMSGGNL7KsbCRFw-1
+X-Mimecast-MFC-AGG-ID: CjF-6A1pMSGGNL7KsbCRFw_1740368285
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B406318EB2C6; Mon, 24 Feb 2025 03:38:03 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C66CB18004A7; Mon, 24 Feb 2025 03:38:05 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.88])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D97D919560A3; Mon, 24 Feb 2025 03:38:01 +0000 (UTC)
+ id 0192E19560A3; Mon, 24 Feb 2025 03:38:03 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Thomas Huth <thuth@redhat.com>,
@@ -53,22 +53,22 @@ Cc: Michael Roth <michael.roth@amd.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 08/10] qapi/schema: add __repr__ to QAPIDoc.Section
-Date: Sun, 23 Feb 2025 22:37:39 -0500
-Message-ID: <20250224033741.222749-9-jsnow@redhat.com>
+Subject: [PATCH 09/10] qapi/source: allow multi-line QAPISourceInfo advancing
+Date: Sun, 23 Feb 2025 22:37:40 -0500
+Message-ID: <20250224033741.222749-10-jsnow@redhat.com>
 In-Reply-To: <20250224033741.222749-1-jsnow@redhat.com>
 References: <20250224033741.222749-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,41 +86,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes debugging far more pleasant when you can just print(section) and
-get something reasonable to display.
+This is for the sake of the new rST generator (the "transmogrifier") so
+we can advance multiple lines on occasion while keeping the
+generated<-->source mappings accurate.
+
+next_line now simply takes an optional n parameter which chooses the
+number of lines to advance.
+
+This is used mainly when converting section syntax in free-form
+documentation to more traditional rST section header syntax, which
+does not always line up 1:1 for line counts.
+
+For example:
+
+```
+ ##
+ # = Section     <-- Info is pointing here, "L1"
+ #
+ # Lorem Ipsum
+ ##
+```
+
+would be transformed to rST by the transmogrifier as:
+
+```
+=======        <-- L1
+Section        <-- L1
+=======        <-- L1
+               <-- L2
+Lorem Ipsum    <-- L3
+```
+
+With each line having its own source information credited to different
+source lines; sometimes one line to many.
+
+After consuming the single "Section" line from the source, we want to
+advance the source pointer to the next non-empty line which requires
+jumping by more than one line.
+
+```
+ ##
+ # = Section     <-- Info is pointing here, "L1"
+ #
+ # Lorem Ipsum   <-- We want to jump to here, +2.
+ ##
+```
 
 Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/parser.py | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ scripts/qapi/source.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index c3004aa70c6..617711b1f04 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -673,6 +673,9 @@ def __init__(
-             # section text without tag
-             self.text = ''
+diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
+index 7b379fdc925..ffdc3f482ac 100644
+--- a/scripts/qapi/source.py
++++ b/scripts/qapi/source.py
+@@ -47,9 +47,9 @@ def set_defn(self, meta: str, name: str) -> None:
+         self.defn_meta = meta
+         self.defn_name = name
  
-+        def __repr__(self) -> str:
-+            return f"<QAPIDoc.Section kind={self.kind!r} text={self.text!r}>"
-+
-         def append_line(self, line: str) -> None:
-             self.text += line + '\n'
+-    def next_line(self: T) -> T:
++    def next_line(self: T, n: int = 1) -> T:
+         info = copy.copy(self)
+-        info.line += 1
++        info.line += n
+         return info
  
-@@ -687,6 +690,12 @@ def __init__(
-             self.name = name
-             self.member: Optional['QAPISchemaMember'] = None
- 
-+        def __repr__(self) -> str:
-+            return (
-+                f"<QAPIDoc.ArgSection kind={self.kind!r} "
-+                f"name={self.name!r} text={self.text!r}>"
-+            )
-+
-         def connect(self, member: 'QAPISchemaMember') -> None:
-             self.member = member
- 
+     def loc(self) -> str:
 -- 
 2.48.1
 
