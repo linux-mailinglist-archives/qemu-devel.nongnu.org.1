@@ -2,76 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C833A42892
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 17:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86C2A428F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 18:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmbmO-0007Ty-F6; Mon, 24 Feb 2025 11:58:04 -0500
+	id 1tmbvp-0003il-A0; Mon, 24 Feb 2025 12:07:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tmbmI-0007TO-Tr; Mon, 24 Feb 2025 11:57:59 -0500
-Received: from mail-pl1-f170.google.com ([209.85.214.170])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tmbmH-0002pA-Dn; Mon, 24 Feb 2025 11:57:58 -0500
-Received: by mail-pl1-f170.google.com with SMTP id
- d9443c01a7336-221057b6ac4so89076025ad.2; 
- Mon, 24 Feb 2025 08:57:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740416275; x=1741021075;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3dWlk7xDgb1CUcA/8KFyJ9yfBRx9gna7Q3yZXDSfHSo=;
- b=kyq9evOtOwIbCrJS3A3sQnJZINc/YanY4WuXcmA2YTkAofFMGOShl547XwmkTvqsG1
- iWLjYFF+kgXhPApAFI6q9R78rDlSMywDAU3xz0psPYzu7jXeXMPZvYSbznJ8SjACUc5W
- zgaZ3jcNyDSNwyTuPGtf/PL/1yhcpfsU33oIHcSqtRCMYew25T61r1NjdSUJbn7ukasT
- ptzwx9BaNjlo27m7pTxziNeRKf4Sk0xNff5AW2Cc8+XlX/gCaDaVfsi93gGKTDS3TKWK
- Gl4j9B+uoynQCmcX4bx/oF+2v/X9uDO8KpgCxJJfN0UbB3XReCsxRtd4r4JU28qMKYEt
- KFYQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXXgiALWhAZdjCfIbyyCaiete1wJNOc8phZDeNbLCEFWqkvMejLqM8uYfu2Ht1ImUp/6/gil6j4Uw==@nongnu.org
-X-Gm-Message-State: AOJu0YxhRnkeg03uA1SDoFIMo75Rtd5ywOpgzCy9G+V0empGApcMr321
- 7nj49R/nAPr52OZ33mnhQ5bNap0y6bqU83MjptdYh28BhZsoo77ZAVD6ZQ==
-X-Gm-Gg: ASbGnctvbb/j+HMJPLsc4N786VREUK/gecEPQRHa4uuD0aJAI7lepakFD5CsKKupCKB
- Fl1yE94O0NQ6pAUvkahljmRu1Pez/1MIa5WLgYvsTGvR5U2r7JaJyTPTOLy9Isvd0sETdZhLbC2
- i3i1BBkY27DWWAEKhq6ViUK5mUmVcT4vBsFSiDpkonEWm4ECvpW8w+9y3MHEREzYU4LOlIce7Xi
- AZteAuAQAROllTbp6a+r92/fyjzKt7zgEntaYHloMkSvTK/ztYEJtTVEtSidDHFvvirqtuCxtEi
- g5bXdJWCzthCB3ui0gyAfTJgWWk6OOAwhunVK6hC/c90uPUnTTQqSMrBaw==
-X-Google-Smtp-Source: AGHT+IFO+MvrP0qJP77F2BdXDHjplwptesjMA2Tszs+8ggzBtN3vfUEGSxULBDb+5W8PE1wsJwIx3w==
-X-Received: by 2002:a05:6a20:8407:b0:1ee:e785:a082 with SMTP id
- adf61e73a8af0-1eef52c926bmr25147289637.1.1740416274861; 
- Mon, 24 Feb 2025 08:57:54 -0800 (PST)
-Received: from localhost.localdomain
- ([2607:fb90:370f:48e2:5d68:7347:53fe:9673])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-ae07fec1f8esm12845795a12.28.2025.02.24.08.57.53
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Feb 2025 08:57:54 -0800 (PST)
-From: Joelle van Dyne <j@getutm.app>
-To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH] hvf: arm: disable SME feature
-Date: Mon, 24 Feb 2025 08:57:34 -0800
-Message-ID: <20250224165735.36792-1-j@getutm.app>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1tmbvl-0003hm-Bw
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:07:45 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1tmbvf-0004FW-GF
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 12:07:44 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OF75lZ012138;
+ Mon, 24 Feb 2025 17:07:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=VRng8L
+ Nia1WdBVIIygYt0uMjvbJ1JbdrZ5DkXp4GzAU=; b=lLg4QCfQC+Q0rZEOp7rUdw
+ lLN+qcvUERkHbD1bwm0LiZV83MZFT6vqYvHaCUbcti7W65B+tvwgNUSfZzdcdN+9
+ DcYxOSY9JrsyQ7M707dqSng9coh/Ze3qxqcdRUUdZWam8a7vVFU05nl2WY4aEs0w
+ sxDg2faBdrc1Uo+dye7bQqQlEBf01Zra745uzYyXNKM5ujQmdrnxp9I+S3b952wf
+ Buvz83R6s9u/ilK8y/Rko5BBRjHBsFEQ0NqU/FyBCDo3VKR/sbo+HexolY/Pav3H
+ fZ45fXL8x9NOslCiFqOyl+l4gtbxY2dNXlK99BCYaLaaqT24LXoz1mFv6vR4dbEg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450jk836xg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2025 17:07:35 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51OGlVdA006251;
+ Mon, 24 Feb 2025 17:07:34 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450jk836x9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2025 17:07:34 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OGMOL5026961;
+ Mon, 24 Feb 2025 17:07:33 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44ytdk846b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2025 17:07:33 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51OH7XSB28050044
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Feb 2025 17:07:33 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 135D35805F;
+ Mon, 24 Feb 2025 17:07:33 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AC9A258043;
+ Mon, 24 Feb 2025 17:07:31 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.172.201]) by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Feb 2025 17:07:31 +0000 (GMT)
+Message-ID: <b8b54a18d9975633bd536341e419290c48a02794.camel@linux.ibm.com>
+Subject: Re: [PATCH v4] vfio: Add property documentation
+From: Eric Farman <farman@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, tomitamoeko@gmail.com,
+ corvin.koehne@gmail.com, Kirti Wankhede <kwankhede@nvidia.com>, Joao
+ Martins	 <joao.m.martins@oracle.com>, Tony Krowiak
+ <akrowiak@linux.ibm.com>, Eric Auger	 <eric.auger@redhat.com>
+Date: Mon, 24 Feb 2025 12:07:31 -0500
+In-Reply-To: <20250217173455.449983-1-clg@redhat.com>
+References: <20250217173455.449983-1-clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.214.170; envelope-from=osy86dev@gmail.com;
- helo=mail-pl1-f170.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tAgdFAHvHygJJS0QXDSgPiypIHLaXUol
+X-Proofpoint-GUID: bi5ndSpmnBpoH1yUgobG4Y3egjXs2W61
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_08,2025-02-24_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ phishscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502240116
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,32 +117,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macOS 15.2's Hypervisor.framework exposes SME feature on M4 Macs.
-However, HVF does not properly support it yet causing QEMU to
-fail to start when HVF accelerator is used on these systems.
+On Mon, 2025-02-17 at 18:34 +0100, C=C3=A9dric Le Goater wrote:
+> Investigate the git history to uncover when and why the VFIO
+> properties were introduced and update the models. This is mostly
+> targeting vfio-pci device, since vfio-platform, vfio-ap and vfio-ccw
+> devices are simpler.
+>=20
+> Sort the properties based on the QEMU version in which they were
+> introduced.
+>=20
+> Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+> Cc: Eric Farman <farman@linux.ibm.com>
+> Cc: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>=20
+>  Should we introduce documentation for properties like the kernel has
+>  in Documentation/ABI/*/sysfs-* ?
+>=20
+>  Changes in v4:
+>=20
+>  - Latest improvements from Alex=20
+>=20
+>  Changes in v3:
+>=20
+>  - Re-organized the vfio-pci properties based on the QEMU version in
+>    which they were introduced
+>  - Added property labels
+>  - Improved description as suggested by Alex, Tomita and Corvin
+>=20
+>  Changes in v2:
+>=20
+>  - Fixed version numbers
+>  - Fixed #ifdef in vfio/ccw.c
+>  - Addressed vfio-pci-nohotplug
+>  - Organize the vfio-pci properties in topics
+>=20
+>  hw/vfio/ap.c       |   9 ++++
+>  hw/vfio/ccw.c      |  15 ++++++
+>  hw/vfio/pci.c      | 125 +++++++++++++++++++++++++++++++++++++++++++++
+>  hw/vfio/platform.c |  24 +++++++++
+>  4 files changed, 173 insertions(+)
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- target/arm/hvf/hvf.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 0afd96018e..261db2d227 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -899,6 +899,11 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
- 
-     clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
- 
-+    /*
-+     * Disable SME which is not properly handled by QEMU yet
-+     */
-+    host_isar.id_aa64pfr1 &= ~R_ID_AA64PFR1_SME_MASK;
-+
-     ahcf->isar = host_isar;
- 
-     /*
--- 
-2.41.0
-
+Reviewed-by: Eric Farman <farman@linux.ibm.com> # vfio-ccw
 
