@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5785A414BD
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 06:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B31FA414CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 06:36:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmQyf-0000hi-6j; Mon, 24 Feb 2025 00:26:01 -0500
+	id 1tmR7u-00033j-0n; Mon, 24 Feb 2025 00:35:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmQnX-0007pt-MV; Mon, 24 Feb 2025 00:14:31 -0500
-Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
+ id 1tmQou-0008QQ-UV
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:16:05 -0500
+Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tmQnV-0006d8-R5; Mon, 24 Feb 2025 00:14:31 -0500
-Received: by mail-vs1-xe2b.google.com with SMTP id
- ada2fe7eead31-4bdb423b971so1177892137.2; 
- Sun, 23 Feb 2025 21:14:27 -0800 (PST)
+ id 1tmQot-0006uZ-CB
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 00:15:56 -0500
+Received: by mail-ua1-x934.google.com with SMTP id
+ a1e0cc1a2514c-8670fd79990so1143641241.3
+ for <qemu-devel@nongnu.org>; Sun, 23 Feb 2025 21:15:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740374067; x=1740978867; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740374153; x=1740978953; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A69i7VvcTTO+7ehkke80wkSGQ6qqqtZdm98NN1wdjdY=;
- b=LwbybJ3y5jynPrmT9LBxsr+3hJP9ni1/fbDG1kOjl0KHuJz2SQBgirZNneBirRsh0a
- 638vy4Gk0pHbP1uetHvXTaBmVwrK6l43yMe+4GTPpTxdwfYWzHYVt9k7kFPzW6+6hLMb
- Nfz1UyNcGXEERHGepBaU72+Sqq787HnC1sDHgeaWbDFWR1g22ShCDfv6y+l1fJbu5I7s
- mxUO6mAB6mgb09N30xQojSRs+6PyEonBjq0eld6BN+3mVSNdCVZghssvB0qQ6bajcleO
- vhs3mDD2cHKTcvhbO2hbUrdOTHezybq22JbkvazGCnFkZkYgo4fU5/G/lXV6ZExEA925
- zO/Q==
+ bh=p1TTEGIxZo2tw5gO+mFK8UbCpQYX5W0Iy95rgepM7eg=;
+ b=jqxNh515gURB+zVJMJIJYS3Oqn4mWLnSXxMEj2cTzZ77DIo/xZKaTZlzcq/Klwi9Ql
+ n/xCUW8fS3jaL0OLWvBKq1QJQVVCzZdNPqRSHigXqIR1o5pHGkInqoh1xOPf5VIEV7HH
+ MGRj59bxoGJLxnye2LPj7ddyRpO11bgu2I2Sohjdt4yuAiGnn+plJtP0TZph03zL9/Vf
+ +QxT0yXEMnEdjyabHDB9jlKndd7NhqHKRBcKFO7cy4gOGX8fszkB6erEB7zRGgjfEX1h
+ zcvcznfsf+06/fp0R2HdLd4itMX2C9DO0VMZ71RfwwSFhln7BFuNjhKuOt1pDBbvMgN6
+ Yeng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740374067; x=1740978867;
+ d=1e100.net; s=20230601; t=1740374153; x=1740978953;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A69i7VvcTTO+7ehkke80wkSGQ6qqqtZdm98NN1wdjdY=;
- b=hTqkZy3LODP0PIeZNQO37kkbSIuQdOLj3jKNd5zYenPJmvZzu/7hRZbRqBZbw3UXbo
- J6zBLcYe05ciXLFq7EQn0txPTpEz1vR2wo7fE8paPglYVIj0j1IDafAeUBXic0yZVGup
- B9r53y4EQsVUzDi65AM6+F+WjcHU6nLhjxEJwk5uevWdchaZs1u3jA22rSnXIgGY+rRt
- hdVI8U+bp94JMNAafPa4/JR8J7DmQip55BRVxFZZOP9delpq5mq1zWle6o0Wuzvn00gI
- Ve9jT07xfzLmP+4ViSsYlBs4NYDAVa9iwL0XjR8yHXD/0HXdsDuH9UZ9mXf2eKBiHmq/
- neRA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWIrAAy1a5d3jbHS54KRUi2i0EEOtdSfS4nMe1FqSaxegdgS9PN4BLV8sipvbV0joHoo7sRs65lzHwsFA==@nongnu.org,
- AJvYcCXICAsdxiH17DiOBwhB8wxhy33wZxmvw2IDR7GTRo2x11xRWCYq+wSlyYIjiMWI+xl78Rm2cmv6h8pZ@nongnu.org
-X-Gm-Message-State: AOJu0YwOS8orATKAHM214uE9NJG26yYQTgakMfvSKXG4NTXRyhwAdrbL
- sovhuLC33Os26NoofeBn6dtgHFGod232MCcpMKR4xI1dLRLv8g7eaY6BxHDVzrKpjIdISOhzDtn
- gt1Mx8Bs8aE3Xa2UXmanwo66IlJ8=
-X-Gm-Gg: ASbGncu57P+i7pXALV/nhGDnbHPBiNXavWwBTNP5vo05/SHXinmT5pxfLkUYP2yEAug
- 6d/SY6TMqVJMqT9+CR8+MLUK+RcL4LZToPusmEuGnA27EIC8Vno6wT6BcG+Qh/3p6yCYSQ0jhyG
- xg9kaV3B3CdXfd2yvkDCUgdi40UbJz2Sdr0Sre
-X-Google-Smtp-Source: AGHT+IGuDxEonNmw1hmJjnYWIOdU7195mw84JLHY1eV7Ju+URBWlkre3kfojBy5Adq7ualji6nnkIvEiTYkguqt8Nkw=
-X-Received: by 2002:a05:6102:4b18:b0:4bb:c0a7:39b8 with SMTP id
- ada2fe7eead31-4bfc022708fmr6116037137.17.1740374067140; Sun, 23 Feb 2025
- 21:14:27 -0800 (PST)
+ bh=p1TTEGIxZo2tw5gO+mFK8UbCpQYX5W0Iy95rgepM7eg=;
+ b=o9DZeExf59ZFP5FQXbwJlajdc2J0qx2hhIruzjW/pbsr/lcIS431yOdy3cd58wVyRc
+ mR6loLdXAf3nmYV7Uwp1BEWGJIGbtTK1bBFEuaMVak0QEQ76nixP7yCzmKMnPh2GXuVz
+ 4SPQYSEbdJ1whfhUvwLNFqbeooTXoKligxbmX/NgLMobya7LMs83yuN7UwjpLm+YoIOR
+ CdOIrx4fTQoMbrlPngHYVmmv/VxGgEtFkPMtqUKNtrjNz0N0gudfl2RgL/Xuya62phka
+ qEiwaau2v+uf0LLGFhLjNLF3MR/v9fCtxdO0xH3x0A7oHS9TcOHmW3m6t+JyeMbOd/hy
+ 2++w==
+X-Gm-Message-State: AOJu0YzZnkz6Wdhm7ktjiKSQXbKTqu5pXbcIzAO6NYdt8zymMLau7/kI
+ zR4HAdTKQO5x7luedq2sgIiwXWMIDoRM2PAiliJWR6QiSqaFyhcp0EQrGEXxpuDBWKERTGKZWio
+ iY78GS2lUQu4JatLWXrgbE6auccY=
+X-Gm-Gg: ASbGncvW1WBl201c+27iVYHxJiYnyKq+cR3HIyJR/lO7sKrcQ0/LrTOLY5dqcUeBKsb
+ DxBeZxK0I1Sr8s32HTkutbtwKk2wHaKwNhfAO1WRS7LMS5swznuXJvqBfNrGfFBzKm15mY6rQD1
+ Jm7F/2fwVWht/NKErQLC4M9wibvCbx1UtbEEWN
+X-Google-Smtp-Source: AGHT+IHtfwqduIQ80zNvSTTEP5CiVGAGEmOVs4fbekdL9JYuAL0/YM7gm7qVOsOs4LL2I58P7mrzRNqj/yRH0iTOpog=
+X-Received: by 2002:a05:6102:38cb:b0:4bb:d394:46c0 with SMTP id
+ ada2fe7eead31-4bfc0048c15mr5752333137.1.1740374153162; Sun, 23 Feb 2025
+ 21:15:53 -0800 (PST)
 MIME-Version: 1.0
 References: <20250214062443.9936-1-sebastian.huber@embedded-brains.de>
- <20250220-reggae-hardness-907e385516d8@spud>
-In-Reply-To: <20250220-reggae-hardness-907e385516d8@spud>
+ <20250214062443.9936-3-sebastian.huber@embedded-brains.de>
+In-Reply-To: <20250214062443.9936-3-sebastian.huber@embedded-brains.de>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 24 Feb 2025 15:14:00 +1000
-X-Gm-Features: AWEUYZlAb2LXUi9ehUHDn8C9xhjRaogHo7sWUQILq5TJI_nY77i8tsgSmjC4WHU
-Message-ID: <CAKmqyKNex8vQuT3ArR3gePfGfeLCZbW0DxzD9dz8oNAODE8sbw@mail.gmail.com>
-Subject: Re: [PATCH 0/5] Improve Microchip Polarfire SoC customization
-To: Conor Dooley <conor@kernel.org>
-Cc: Sebastian Huber <sebastian.huber@embedded-brains.de>, qemu-devel@nongnu.org,
- Conor Dooley <conor.dooley@microchip.com>, Bin Meng <bin.meng@windriver.com>, 
- alistair.francis@wdc.com, qemu-riscv@nongnu.org
+Date: Mon, 24 Feb 2025 15:15:26 +1000
+X-Gm-Features: AWEUYZk6EHZldxLpSkZOveZ5UKlM_Oyyw2VgPx1xT0JwBQeJ2Z9WI9qhADum_Lg
+Message-ID: <CAKmqyKN60a4hFPftFKOKPWT0J9NCXOURXYSGA+3pAsj5c0oBFw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] hw/riscv: More flexible FDT placement for MPFS
+To: Sebastian Huber <sebastian.huber@embedded-brains.de>
+Cc: qemu-devel@nongnu.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Bin Meng <bin.meng@windriver.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::934;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x934.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,101 +94,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 21, 2025 at 4:31=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
-te:
+On Fri, Feb 14, 2025 at 4:26=E2=80=AFPM Sebastian Huber
+<sebastian.huber@embedded-brains.de> wrote:
 >
-> +cc qemu-riscv, Alistar.
+> If the kernel entry is in the high DRAM area, place the FDT into this
+> area.
 >
-> On Fri, Feb 14, 2025 at 07:24:37AM +0100, Sebastian Huber wrote:
-> > Booting the microchip-icicle-kit machine using the latest PolarFire SoC
-> > Hart Software Services (HSS) no longer works since Qemu lacks support
-> > for several registers (clocks, DRAM controller). Also reading from the
-> > SDCard does not work currently.
->
-> On that note, I think the inaccurate docs about polarfire should be
-> removed. There's a wiki page here with dead links, or links to things
-> that do not work anymore:
-> https://wiki.qemu.org/Documentation/Platforms/RISCV#Microchip_PolarFire_S=
-oC_Icicle_Kit
-> I think the whole section should be removed, find it kinda odd that
-> there's a polarfire section but not for any other board. Either way,
-> it's talking about something that just does not work, the current HSS
-> and Yocto don't boot.
+> Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
 
-The wiki is independent of the QEMU code base, so you can modify it. I
-agree that we should remove outdated/wrong information as it's very
-confusing to users.
-
->
-> There's also a docs page here:
-> https://www.qemu.org/docs/master/system/riscv/microchip-icicle-kit.html
-
-That is generated from the QEMU codebase
-`docs/system/riscv/microchip-icicle-kit.rst` and should be updated,
-ideally with this patch set
-
-> that has a copy of the table your patch 4 modifies, that probably should
-> be updated to match your changes.
->
-> In a similar vein to the wiki, it talks about the HSS and booting a
-> yocto wic image. I think those should be deleted since they don't work.
-
-Agreed
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  hw/riscv/microchip_pfsoc.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 >
-> Alistar/Other RISC-V folks, what do you think? Bin wrote the port but
-> seems to be AFK and I don't have the capacity to fix any of that stuff
-> on top of what I already do in my spare time - do you agree that
-> deleting the now inaccurate docs makes sense?
+> diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+> index ec7e2e4226..2ddc3464bb 100644
+> --- a/hw/riscv/microchip_pfsoc.c
+> +++ b/hw/riscv/microchip_pfsoc.c
+> @@ -626,8 +626,15 @@ static void microchip_icicle_kit_machine_init(Machin=
+eState *machine)
+>          kernel_entry =3D boot_info.image_low_addr;
 >
-> > In order to allow tests runs for real-time kernels such as RTEMS and
-> > Zephyr, improve the boot customization. This patch set enables a direct
-> > run of kernel executables, for example:
-> >
-> > qemu-system-riscv64 -no-reboot -nographic \
-> >   -serial null -serial mon:stdio \
-> >   -smp 2 \
-> >   -bios none \
-> >   -machine microchip-icicle-kit,clint-timebase-frequency=3D10000000 \
-> >   -kernel rtos.elf
+>          /* Compute the fdt load address in dram */
+> -        fdt_load_addr =3D riscv_compute_fdt_addr(memmap[MICROCHIP_PFSOC_=
+DRAM_LO].base,
+> -                                               memmap[MICROCHIP_PFSOC_DR=
+AM_LO].size,
+> +        hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
+> +        hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].size;
+> +
+> +        if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
+> +            kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base;
+> +            kernel_ram_size =3D mem_high_size;
+> +        }
+> +
+> +        fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, kernel=
+_ram_size,
+>                                                 machine, &boot_info);
+>          riscv_load_fdt(fdt_load_addr, machine->fdt);
 >
-> The series breaks my usage:
-> qemu//build/qemu-system-riscv64 -M microchip-icicle-kit \
->         -m 3G -smp 5 \
->         -kernel vmlinux.bin \
->         -dtb riscvpc.dtb \
->         -initrd initramfs.cpio.gz \
->         -display none -serial null \
->         -serial mon:stdio \
->         -D qemu.log -d unimp
-> opensbi-riscv64-generic-fw_dynamic.bin: No such file or directory
-> qemu-system-riscv64: could not load firmware 'opensbi-riscv64-generic-fw_=
-dynamic.bin'
-> make: *** [Makefile:305: qemu-icicle] Error 1
+> --
+> 2.43.0
 >
-> Figure it is likely to be your patch 4? The file does exist, so probably
-> some sort of path-to-it issues?
 >
-> Cheers,
-> Conor.
->
-> >
-> > Sebastian Huber (5):
-> >   hw/misc: Add MPFS system reset support
-> >   hw/riscv: More flexible FDT placement for MPFS
-> >   hw/riscv: Make FDT optional for MPFS
-> >   hw/riscv: Allow direct start of kernel for MPFS
-> >   hw/riscv: Configurable MPFS CLINT timebase freq
-> >
-> >  hw/misc/mchp_pfsoc_sysreg.c        |   7 ++
-> >  hw/riscv/microchip_pfsoc.c         | 147 +++++++++++++++++++++--------
-> >  include/hw/riscv/microchip_pfsoc.h |   1 +
-> >  3 files changed, 115 insertions(+), 40 deletions(-)
-> >
-> > --
-> > 2.43.0
-> >
-> >
 
