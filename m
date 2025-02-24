@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67E3A41C40
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 12:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C02EA41C42
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Feb 2025 12:17:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmWR1-0005lr-2G; Mon, 24 Feb 2025 06:15:39 -0500
+	id 1tmWR3-0005n5-0a; Mon, 24 Feb 2025 06:15:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWQw-0005kV-P9
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:34 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1tmWQx-0005lH-W5
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:36 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmWQu-00016c-SI
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:34 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4394036c0efso25741625e9.2
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 03:15:32 -0800 (PST)
+ id 1tmWQw-00017C-0v
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 06:15:35 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4398ec2abc2so37231415e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 03:15:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740395731; x=1741000531; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740395732; x=1741000532; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9DbKOvjmlaa+eK1MxGX4jbLYMxjD78KrF+C7Cfab4aQ=;
- b=bSjtL5+THtnPiuPJAuWhlqnOAIM8bHkhP1gwdFuzmtUXe+PY3QDHestA1qJpIPerCt
- 6cmWx7IlsHvFPGCu93zEniU+O3GzuNn7F9f5j2FHrmb/z199ZEduOpHMHRB2A3BrpOX2
- dlWZujhgMNOO0cmVa2wsBpTVKBEoCW7t4HQiaknQd53WNvJ4prDXDfZVz1jrU/oHzGYi
- EAnO7VRLsqnpaFPpxowODycIS6iJNiSyMoP0dhFyY5Pbl4ers7rbOvjJce50iHMsiRS2
- CvvWK9bd8m/n1dF2xX6F48Wkuz2A9XD5Pt2scnUCg5PgxPBMA0v0m/VvEu9Supy5H94l
- GmJA==
+ bh=UAfkc5L9phFc4GuGJcjEeCq2ljrLeE9IXM1AAE+CUQ4=;
+ b=nINMGQsqopHQwGq102mHWfJ/y7t3kgSv7wEn4jEREBSxlvuX2eNlop/7/VSdAEq5cA
+ l0SK/77JrdV/x30wOQeYfbE6dVIWotcCCZBP1b/X5+yWguyaYsYcmVJqvKcxJkKs/nyP
+ 4SI/dznoHfwIY31tOaOXnm31W0Upv+F6y3LitfXuJapsHmaHOrN/klwigMcE78Eo/Ohe
+ wofTE23KYDH+T4GLH2hU1pTYknzjXuKFUhnSzw8j/FONm68TFmCJinKQEQk84RWrVQ2/
+ kKLA7lO2tIAOU5lYTRkT4Y2vZRwlkn+HxvDJ29s+rxmB0x33ITxdWjPWBnEbrALmVXzq
+ 0sCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740395731; x=1741000531;
+ d=1e100.net; s=20230601; t=1740395732; x=1741000532;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9DbKOvjmlaa+eK1MxGX4jbLYMxjD78KrF+C7Cfab4aQ=;
- b=rmzWRUtozGsF0f/mQiC9psCzUjIBuRfmazYpOjygFDYjtZcgktaq4UPvF1pzzdu7WN
- DQ93k0yVK0kTRsZB1Lw+AxtgaVzVuYh1faJNmG0F6x3UnY25kV6EF7i2B1bpetJMcuyb
- fRjCM+lWYFImAYnqpBGF3RORKDrtpXnNbwEc/8MHnDdZZl8sCpsUpI7LW2fA6GqRdbso
- hOdhqqx2HoyQ2cgHnKrTA/HmduHgTygvxYJbrXXwoeItJy+9tCUut4aEMxnKecuodMGC
- mzn8iw3/OR/yFiAWhdai/MmtejblmCtGHs+6/x+HVoqMPYrKOTqbPbEqKLdXhE1KWUw3
- stYQ==
-X-Gm-Message-State: AOJu0YyQEaLI4rGxGfuE9EOqjhfrYOpcuxfAWTrptm28Bc33YtdKt4BZ
- LDJYU9Oas1m7VsoJvxiNzX1s/rqBQdrBj7ETV6YHRqBRBU+psw69YjXGCqd8hKiqRwX9hBScq/F
- s
-X-Gm-Gg: ASbGncuTUSbVeClShmaZbOEgNI8qmkyf39aWJYJEDPJ2b2f2Z5Id8pQnwh7qwhIgUQC
- mspgQDLKOnee/P3caloentrP+R2Yw3GzO3b4W9aJk3VYlBIxeAvlBDBaO1GCaykD2BqEhYBhDHN
- M1HyyB2V7PdVG7GwOoNTM5SBsY0WkPfpeCuk5w0+xrG2Y5FPrnIz2e8XjNXrRXlSu/JXv7XSrFA
- cyvwykYtPP+jK6CKMryrfCbCGKkKB3rvz3Uh7I1IsfAYXhVEMu6TVW5+k2DkHUzgdUyR/HDjfmf
- szH8RwwxSmicr5HvJcDv9QYp1lnPMrjd
-X-Google-Smtp-Source: AGHT+IFqa9cvjdMXpfNqTskBMd1pB+u7MuX2hjWWcEPLUN/nBD6I098848BdMBYmacPpNIzr9a7MIA==
-X-Received: by 2002:a05:600c:1c85:b0:439:8346:505f with SMTP id
- 5b1f17b1804b1-439ae212980mr93119685e9.20.1740395731147; 
- Mon, 24 Feb 2025 03:15:31 -0800 (PST)
+ bh=UAfkc5L9phFc4GuGJcjEeCq2ljrLeE9IXM1AAE+CUQ4=;
+ b=Mo0zUKZCBHj6T9RpE9HRQ5QXzefdAS6pzYiD9XejLjwpaBjzHrA/raUQtfjHcuQwmy
+ jIVOpy1Rw+PVGkEa9WUTsLKKlo+tGJ1+TBr8POaEJER5cQs1vdD6TompMC1pkPmAVjWE
+ hTwlIfxtFOyI0UpH5yAVYfil4WJ4RVErAt1STKyuNoLZD6c4zJ4OboD51rvYm05YZAkn
+ xHlW4sdfj3QgZxvvA3rK5K9qPwU5Y1jHh8tk0jwk6AC58YdaPgPsy5qdKCbOLrqcBUBG
+ sqq4GvW875PU/WOX54dBneRyGyCOOR7+chINQ2bl2uT3l3rqODaL2DohVI0CpSRr92Kj
+ W1XQ==
+X-Gm-Message-State: AOJu0Yyz8BikTanbdMu44FEMVsGTbgwx+Gdxy4Bv8XS9H/+q5w89PolS
+ NkWhUqxufevH+rweJIB6R8qU5IiTB3uZnnmPbIE49lj0MKdcaFkKUq/obdCGAVAchIEUQTkVGfk
+ l
+X-Gm-Gg: ASbGnct/PL+JLwAoeXGBGQgi1eI/gAXYQHxMeFXfvd93Q5isB8hXcrU90IBsa4/PJ3N
+ KIDpMo/obvREPzIaCN+llC1SC8BLhE/vMcIkk+2bYKiRkcLnxyju4/W7jy6+BZGkwe1/G3Hno9K
+ FkUg62zsUrdtW+BfsqXFhFHNIzfSIsaeTptL6hcZEwocpv9zS2ResWveajeVrL8ctRSgLsDSEAR
+ QCRmC7TVzU8SfPubuO9GPCS7n+fZolMmqiCoHBnWXbxtNiDIxlkpNjbfYW85fmrRTiv+R1W1Bx4
+ nzypYMgC/X3ZNge0+gr9+GSU4Kv6hIVv
+X-Google-Smtp-Source: AGHT+IG04jQnVU67aSrrf9WAiusmPeaa8yIHqvAHB0cvQut7NYCEOl+FY8aasrW4pTNPV2qTfjBaIg==
+X-Received: by 2002:a05:600c:4e8c:b0:439:6712:643d with SMTP id
+ 5b1f17b1804b1-439ae1e6c15mr90435965e9.9.1740395732095; 
+ Mon, 24 Feb 2025 03:15:32 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b037214asm101447705e9.38.2025.02.24.03.15.30
+ 5b1f17b1804b1-439b037214asm101447705e9.38.2025.02.24.03.15.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 03:15:30 -0800 (PST)
+ Mon, 24 Feb 2025 03:15:31 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 03/12] target/i386: Avoid using floatx80_infinity global
- const
-Date: Mon, 24 Feb 2025 11:15:15 +0000
-Message-ID: <20250224111524.1101196-4-peter.maydell@linaro.org>
+Subject: [PATCH v2 04/12] fpu: Pass float_status to floatx80_is_infinity()
+Date: Mon, 24 Feb 2025 11:15:16 +0000
+Message-ID: <20250224111524.1101196-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224111524.1101196-1-peter.maydell@linaro.org>
 References: <20250224111524.1101196-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,52 +99,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The global const floatx80_infinity is (unlike all the other
-float*_infinity values) target-specific, because whether the explicit
-Integer bit is set or not varies between m68k and i386.  We want to
-be able to compile softfloat once for multiple targets, so we can't
-continue to use a single global whose value needs to be different
-between targets.
+Unlike the other float formats, whether a floatx80 value is
+considered to be an Infinity is target-dependent.  (On x86 if the
+explicit integer bit is clear this is a "pseudo-infinity" and not a
+valid infinity; m68k does not care about the value of the integer
+bit.)
 
-Replace the direct uses of floatx80_infinity in target/i386 with
-calls to the new floatx80_default_inf() function. Note that because
-we can ask the function for either a negative or positive infinity,
-we don't need to change the sign of a positive infinity via
-floatx80_chs() for the negative-Inf case.
+Currently we select this target-specific logic at compile time with
+an ifdef.  We're going to want to do this at runtime, so change the
+floatx80_is_infinity() function to take a float_status.
+
+This commit doesn't change any logic; we'll do that in the
+next commit.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250217125055.160887-4-peter.maydell@linaro.org
 ---
- target/i386/tcg/fpu_helper.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/fpu/softfloat.h      |  2 +-
+ target/i386/tcg/fpu_helper.c | 20 +++++++++++---------
+ target/m68k/fpu_helper.c     |  2 +-
+ 3 files changed, 13 insertions(+), 11 deletions(-)
 
+diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
+index afae3906024..3c83d703baf 100644
+--- a/include/fpu/softfloat.h
++++ b/include/fpu/softfloat.h
+@@ -996,7 +996,7 @@ static inline floatx80 floatx80_chs(floatx80 a)
+     return a;
+ }
+ 
+-static inline bool floatx80_is_infinity(floatx80 a)
++static inline bool floatx80_is_infinity(floatx80 a, float_status *status)
+ {
+ #if defined(TARGET_M68K)
+     return (a.high & 0x7fff) == floatx80_infinity.high && !(a.low << 1);
 diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index f112c6c6737..741af09f908 100644
+index 741af09f908..3b79bc049d1 100644
 --- a/target/i386/tcg/fpu_helper.c
 +++ b/target/i386/tcg/fpu_helper.c
-@@ -1832,7 +1832,7 @@ void helper_fxtract(CPUX86State *env)
-     } else if (floatx80_is_infinity(ST0)) {
+@@ -1393,7 +1393,8 @@ void helper_fpatan(CPUX86State *env)
+         /* Pass this NaN through.  */
+     } else if (floatx80_is_zero(ST1) && !arg0_sign) {
+         /* Pass this zero through.  */
+-    } else if (((floatx80_is_infinity(ST0) && !floatx80_is_infinity(ST1)) ||
++    } else if (((floatx80_is_infinity(ST0, &env->fp_status) &&
++                 !floatx80_is_infinity(ST1, &env->fp_status)) ||
+                  arg0_exp - arg1_exp >= 80) &&
+                !arg0_sign) {
+         /*
+@@ -1442,8 +1443,8 @@ void helper_fpatan(CPUX86State *env)
+             rexp = pi_exp;
+             rsig0 = pi_sig_high;
+             rsig1 = pi_sig_low;
+-        } else if (floatx80_is_infinity(ST1)) {
+-            if (floatx80_is_infinity(ST0)) {
++        } else if (floatx80_is_infinity(ST1, &env->fp_status)) {
++            if (floatx80_is_infinity(ST0, &env->fp_status)) {
+                 if (arg0_sign) {
+                     rexp = pi_34_exp;
+                     rsig0 = pi_34_sig_high;
+@@ -1462,7 +1463,8 @@ void helper_fpatan(CPUX86State *env)
+             rexp = pi_2_exp;
+             rsig0 = pi_2_sig_high;
+             rsig1 = pi_2_sig_low;
+-        } else if (floatx80_is_infinity(ST0) || arg0_exp - arg1_exp >= 80) {
++        } else if (floatx80_is_infinity(ST0, &env->fp_status) ||
++                   arg0_exp - arg1_exp >= 80) {
+             /* ST0 is negative.  */
+             rexp = pi_exp;
+             rsig0 = pi_sig_high;
+@@ -1829,7 +1831,7 @@ void helper_fxtract(CPUX86State *env)
+         }
          fpush(env);
          ST0 = ST1;
--        ST1 = floatx80_infinity;
-+        ST1 = floatx80_default_inf(0, &env->fp_status);
-     } else {
-         int expdif;
- 
-@@ -2358,9 +2358,8 @@ void helper_fscale(CPUX86State *env)
+-    } else if (floatx80_is_infinity(ST0)) {
++    } else if (floatx80_is_infinity(ST0, &env->fp_status)) {
+         fpush(env);
+         ST0 = ST1;
+         ST1 = floatx80_default_inf(0, &env->fp_status);
+@@ -2173,7 +2175,7 @@ void helper_fyl2x(CPUX86State *env)
+     } else if (arg0_sign && !floatx80_is_zero(ST0)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_default_nan(&env->fp_status);
+-    } else if (floatx80_is_infinity(ST1)) {
++    } else if (floatx80_is_infinity(ST1, &env->fp_status)) {
+         FloatRelation cmp = floatx80_compare(ST0, floatx80_one,
+                                              &env->fp_status);
+         switch (cmp) {
+@@ -2188,7 +2190,7 @@ void helper_fyl2x(CPUX86State *env)
+             ST1 = floatx80_default_nan(&env->fp_status);
+             break;
+         }
+-    } else if (floatx80_is_infinity(ST0)) {
++    } else if (floatx80_is_infinity(ST0, &env->fp_status)) {
+         if (floatx80_is_zero(ST1)) {
+             float_raise(float_flag_invalid, &env->fp_status);
+             ST1 = floatx80_default_nan(&env->fp_status);
+@@ -2341,11 +2343,11 @@ void helper_fscale(CPUX86State *env)
+             float_raise(float_flag_invalid, &env->fp_status);
+             ST0 = floatx80_silence_nan(ST0, &env->fp_status);
+         }
+-    } else if (floatx80_is_infinity(ST1) &&
++    } else if (floatx80_is_infinity(ST1, &env->fp_status) &&
+                !floatx80_invalid_encoding(ST0) &&
+                !floatx80_is_any_nan(ST0)) {
+         if (floatx80_is_neg(ST1)) {
+-            if (floatx80_is_infinity(ST0)) {
++            if (floatx80_is_infinity(ST0, &env->fp_status)) {
                  float_raise(float_flag_invalid, &env->fp_status);
                  ST0 = floatx80_default_nan(&env->fp_status);
              } else {
--                ST0 = (floatx80_is_neg(ST0) ?
--                       floatx80_chs(floatx80_infinity) :
--                       floatx80_infinity);
-+                ST0 = floatx80_default_inf(floatx80_is_neg(ST0),
-+                                           &env->fp_status);
-             }
-         }
-     } else {
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index 339b73ad7dc..eb1cb8c6872 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -455,7 +455,7 @@ void HELPER(ftst)(CPUM68KState *env, FPReg *val)
+ 
+     if (floatx80_is_any_nan(val->d)) {
+         cc |= FPSR_CC_A;
+-    } else if (floatx80_is_infinity(val->d)) {
++    } else if (floatx80_is_infinity(val->d, &env->fp_status)) {
+         cc |= FPSR_CC_I;
+     } else if (floatx80_is_zero(val->d)) {
+         cc |= FPSR_CC_Z;
 -- 
 2.43.0
 
