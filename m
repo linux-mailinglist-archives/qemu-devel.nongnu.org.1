@@ -2,81 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0ECFA43FDC
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 14:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775BBA44237
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 15:16:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmuW3-0007aZ-F4; Tue, 25 Feb 2025 07:58:27 -0500
+	id 1tmvjU-0008Nq-F7; Tue, 25 Feb 2025 09:16:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmuW1-0007a5-5O
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:58:25 -0500
-Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmuVy-0004tO-HA
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:58:24 -0500
-Received: by mail-yw1-x1132.google.com with SMTP id
- 00721157ae682-6fb2a6360efso38481537b3.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 04:58:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740488300; x=1741093100; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=HcD3XyFdA7mIEZd2U7bF/99wQU+mKGDluKiAz/FnbU8=;
- b=SXFEjORdw97b1/6IzUo4BY/wFO1h2o3pgw6TwW/Ajbv9YxHQTIQ02FYmD3idrkPYYQ
- DRRFDZze4aH4ZbgiN4HHDK45/pN1Z9bKFs9KLqZ5d6n1l9JwITMXAiJzlJKIa0ya+zH0
- yKpC62rdvpnoU6JRSDfVafvgCzig3NuIgdNag0BPfmdDE44L8+WIyfSsVsIOBFIUI6/p
- rIfAIKa3cKw7QEtsOnNNDQvog67BMdIr01nRBfNBjNsNNN9CT1UKpG8gpQscyMuip1QB
- oR/QiFSSzxAnTBnOLVnRSsTpKJLCAD4I/qkqGTGQ2i1lo1Wb1MxutB6q5lVydxL4uReD
- KkZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740488300; x=1741093100;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HcD3XyFdA7mIEZd2U7bF/99wQU+mKGDluKiAz/FnbU8=;
- b=Rkxzl5ZfF5Fce9nfljia7pTLsCvV7AkEvRea8+do4D/hieiRhIpcUN1Oe+SATmdidb
- lPBZthdlrO9rtN8saZcLzllYpJc6X7Oz+d2UJ6r+S9UcUN/HoGNzHMabirbSU3vsSoMl
- UdXYgjVCTJWUjWmVpwLnIQMbh0sx89+A6Q2L3aJ+mX8+heS48EBhwQptgLDtU9KnWeVr
- CevaYVqBaD6rJJAwONZX/wj+mN6U3KXquQSFHi84GQEUqyyrGsjhWjHz7sM7u/fQDTJq
- q4hUNuAdLrwblv8q6tGqs/RbZgqzG2jvVdfCziNWHX6/nvI42Ap8zEPJNG1nKFWFgOTI
- YTKg==
-X-Gm-Message-State: AOJu0YyIeReEz9EVZZ8PcfWCkjgrjZP+bLC/3jwBbbzeZp0sM2RJ66zz
- OUKYngxp80lp/LEoA+c9o49jn6dSO5beoOVTh3ATjiU5KU963WOWUrEwPcYHkbH3W1l8OiAXkpp
- wQAHLqyCEV1Ur+zIxZ00K24Z3QGl+S6gj/Jf+Vg==
-X-Gm-Gg: ASbGncuStPVudKRHLjj3N/kgn4Pbiy6sAwT4bEYIey0vRstQ0+EMOjc8ULfidusz+td
- jghCi2PVDeMJ70th5X6yCcASfh6OyqDOLE8McUF58jjWTX2+QcAQZJg9afzX3yWrHtnbjVhBHQp
- /GrO7AtEvO
-X-Google-Smtp-Source: AGHT+IFJGqsF/1/07NizGOi9RM65qu+ErOBwGSqW4RVu2c/PUrwXkKITGbcjiebNiYnZp8WSE0rZpNzB/xrNIaP7fWw=
-X-Received: by 2002:a05:690c:680a:b0:6f0:23da:49a3 with SMTP id
- 00721157ae682-6fbcc1f4e1cmr135351037b3.8.1740488300504; Tue, 25 Feb 2025
- 04:58:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <cy_liu@aspeedtech.com>)
+ id 1tmpWp-0006b6-Fx; Tue, 25 Feb 2025 02:38:55 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cy_liu@aspeedtech.com>)
+ id 1tmpWn-0008HP-4I; Tue, 25 Feb 2025 02:38:55 -0500
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 25 Feb
+ 2025 15:33:42 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Tue, 25 Feb 2025 15:33:42 +0800
+To: <cyliu0926@gmail.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
+ <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Subject: [PATCH v4 0/4] Support HACE to AST2700
+Date: Tue, 25 Feb 2025 15:33:37 +0800
+Message-ID: <20250225073342.2960966-1-cy_liu@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CGME20250225124423eucas1p150140ffe95a53e4d802b3594a89707b8@eucas1p1.samsung.com>
- <20250225124418.3530474-1-m.szyprowski@samsung.com>
-In-Reply-To: <20250225124418.3530474-1-m.szyprowski@samsung.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Feb 2025 12:58:09 +0000
-X-Gm-Features: AWEUYZlMIyIRLm1wtCUTLekpu1_Y4EzA4klC8cgAPng6t618gIvSnQSfEUnkfWE
-Message-ID: <CAFEAcA_MJ5YwLi04Be+n1TCKuQmU+3fgAznvzpPonJw0FHqH3w@mail.gmail.com>
-Subject: Re: [PATCH] linux-user: add support for the AARCH64 ILP32 ABI
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Laurent Vivier <laurent@vivier.eu>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72; envelope-from=cy_liu@aspeedtech.com;
+ helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 25 Feb 2025 09:16:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,25 +57,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  cy_liu <cy_liu@aspeedtech.com>
+From:  cy_liu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Feb 2025 at 12:44, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
->
-> This patch adds support for the AARCH64 ILP32 ABI [1] to the QEMU
-> linux-user AARCH64 port.
->
-> The ILP32 ABI was initially developed quite some time ago [2] to
-> facilitate porting legacy code to the new AARCH64 architecture. However,
-> it appears that most legacy code is still used as ARMv7 (ARM 32-bit)
-> binaries, running on ARM 64-bit CPUs through the 32-bit EL0 compatibility
-> feature of those CPUs. As a result, the ILP32 ABI has not been widely
-> adopted.
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Firm "no" on adding this to the QEMU linux-user mode emulation
-until/unless the ILP32 ABI is supported in mainline Linux
-kernels, I'm afraid (which I do not expect it ever will be).
+This patch series is from https://patchwork.kernel.org/project/qemu-devel/cover/20250213033531.3367697-1-jamin_lin@aspeedtech.com/. 
+To expedite the review process, I have separated the HACE patches portion from
+the https://patchwork.kernel.org/project/qemu-devel/cover/20250213033531.3367697-1-jamin_lin@aspeedtech.com/ patch series into this new patch series.
 
-thanks
--- PMM
+v4: Support HACE to AST2700
+
+Jamin Lin (4):
+  hw/misc/aspeed_hace: Fix coding style
+  hw/misc/aspeed_hace: Add AST2700 support
+  hw/arm/aspeed_ast27x0: Add HACE support for AST2700
+  hw/misc/aspeed_hace: Fix boot issue in the Crypto Manager Self Test
+
+ include/hw/misc/aspeed_hace.h |  2 ++
+ hw/arm/aspeed_ast27x0.c       | 15 ++++++++++
+ hw/misc/aspeed_hace.c         | 55 ++++++++++++++++++++++++++++++++---
+ 3 files changed, 68 insertions(+), 4 deletions(-)
+
+-- 
+2.34.1
+
 
