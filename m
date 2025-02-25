@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB3FA43226
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CF7A43223
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:56:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmjEU-000379-NI; Mon, 24 Feb 2025 19:55:34 -0500
+	id 1tmjEK-0002z4-Ni; Mon, 24 Feb 2025 19:55:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjDz-0002ui-4T; Mon, 24 Feb 2025 19:55:03 -0500
+ id 1tmjDz-0002uj-4Z; Mon, 24 Feb 2025 19:55:03 -0500
 Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjDx-0004df-8K; Mon, 24 Feb 2025 19:55:02 -0500
+ id 1tmjDx-0004dg-4A; Mon, 24 Feb 2025 19:55:02 -0500
 Received: from sslproxy05.your-server.de ([78.46.172.2])
  by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjDs-000HNN-29; Tue, 25 Feb 2025 01:54:56 +0100
+ id 1tmjDu-000HNj-18; Tue, 25 Feb 2025 01:54:58 +0100
 Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
  by sslproxy05.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjDs-0008o7-2m; Tue, 25 Feb 2025 01:54:56 +0100
+ id 1tmjDu-0008uY-1t; Tue, 25 Feb 2025 01:54:58 +0100
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id E84B148016C;
- Tue, 25 Feb 2025 01:54:55 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id B446548005B;
+ Tue, 25 Feb 2025 01:54:57 +0100 (CET)
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id aRqG5FlIDKUR; Tue, 25 Feb 2025 01:54:55 +0100 (CET)
+ with ESMTP id DJRmjIExPXOa; Tue, 25 Feb 2025 01:54:57 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 8681848005D;
- Tue, 25 Feb 2025 01:54:55 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 718B948005D;
+ Tue, 25 Feb 2025 01:54:57 +0100 (CET)
 X-Virus-Scanned: amavis at zimbra.eb.localhost
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id XGpUwBT1ZC36; Tue, 25 Feb 2025 01:54:55 +0100 (CET)
+ with ESMTP id YtOCc8OGksIZ; Tue, 25 Feb 2025 01:54:57 +0100 (CET)
 Received: from zimbra.eb.localhost (unknown [10.10.171.10])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id C418B48005B;
- Tue, 25 Feb 2025 01:54:53 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id C2A7048005B;
+ Tue, 25 Feb 2025 01:54:55 +0100 (CET)
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org,
@@ -47,12 +47,13 @@ Cc: qemu-riscv@nongnu.org,
  Alistair Francis <alistair23@gmail.com>,
  Conor Dooley <conor.dooley@microchip.com>,
  Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH v2 0/6] Improve Microchip Polarfire SoC customization
-Date: Tue, 25 Feb 2025 01:54:40 +0100
-Message-ID: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
+Subject: [PATCH v2 1/6] hw/misc: Add MPFS system reset support
+Date: Tue, 25 Feb 2025 01:54:41 +0100
+Message-ID: <20250225005446.13894-2-sebastian.huber@embedded-brains.de>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
+References: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Authenticated-Sender: smtp-embedded@poldi-networks.de
 X-Virus-Scanned: Clear (ClamAV 1.0.7/27559/Mon Feb 24 10:44:14 2025)
@@ -79,45 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Booting the microchip-icicle-kit machine using the latest PolarFire SoC
-Hart Software Services (HSS) no longer works since Qemu lacks support
-for several registers (clocks, DRAM controller). Also reading from the
-SDCard does not work currently.
+Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
+---
+ hw/misc/mchp_pfsoc_sysreg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-In order to allow tests runs for real-time kernels such as RTEMS and
-Zephyr, improve the boot customization. This patch set enables a direct
-run of kernel executables, for example:
-
-qemu-system-riscv64 -no-reboot -nographic \
-  -serial null -serial mon:stdio \
-  -smp 2 \
-  -bios none \
-  -machine microchip-icicle-kit,clint-timebase-frequency=3D10000000 \
-  -kernel rtos.elf
-
-v2:
-
-* Add documentation update.
-
-* In patch 3, warn if no device tree is specified.
-
-* In patch 4, use riscv_find_firmware() to locate the firmware shipped wi=
-th Qemu.
-
-Sebastian Huber (6):
-  hw/misc: Add MPFS system reset support
-  hw/riscv: More flexible FDT placement for MPFS
-  hw/riscv: Make FDT optional for MPFS
-  hw/riscv: Allow direct start of kernel for MPFS
-  hw/riscv: Configurable MPFS CLINT timebase freq
-  hw/riscv: microchip_pfsoc: Rework documentation
-
- docs/system/riscv/microchip-icicle-kit.rst | 124 ++++++-----------
- hw/misc/mchp_pfsoc_sysreg.c                |   7 +
- hw/riscv/microchip_pfsoc.c                 | 151 +++++++++++++++------
- include/hw/riscv/microchip_pfsoc.h         |   1 +
- 4 files changed, 162 insertions(+), 121 deletions(-)
-
+diff --git a/hw/misc/mchp_pfsoc_sysreg.c b/hw/misc/mchp_pfsoc_sysreg.c
+index 7876fe0c5b..08196525aa 100644
+--- a/hw/misc/mchp_pfsoc_sysreg.c
++++ b/hw/misc/mchp_pfsoc_sysreg.c
+@@ -27,7 +27,9 @@
+ #include "hw/irq.h"
+ #include "hw/sysbus.h"
+ #include "hw/misc/mchp_pfsoc_sysreg.h"
++#include "system/runstate.h"
+=20
++#define MSS_RESET_CR    0x18
+ #define ENVM_CR         0xb8
+ #define MESSAGE_INT     0x118c
+=20
+@@ -56,6 +58,11 @@ static void mchp_pfsoc_sysreg_write(void *opaque, hwad=
+dr offset,
+ {
+     MchpPfSoCSysregState *s =3D opaque;
+     switch (offset) {
++    case MSS_RESET_CR:
++        if (value =3D=3D 0xdead) {
++            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++        }
++        break;
+     case MESSAGE_INT:
+         qemu_irq_lower(s->irq);
+         break;
 --=20
 2.43.0
 
