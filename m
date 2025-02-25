@@ -2,82 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4CDA43088
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 00:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C559CA431FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:42:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmhYc-0006bV-3a; Mon, 24 Feb 2025 18:08:14 -0500
+	id 1tmizu-0004aC-Hb; Mon, 24 Feb 2025 19:40:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhYW-0006YJ-UY
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:08:09 -0500
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tmhYU-0007hD-B0
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 18:08:08 -0500
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-3d284b9734fso44177455ab.2
- for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 15:08:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1740438484; x=1741043284; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WPqq8WYaPj6J2IwBDMowPX92na6feXUAfjpPv3BrLRw=;
- b=CtYuJ3i4w9CX/qx3irDD0XWFVAbIYbi0YflD64DRrdVckj+QJiMRbbl3BpppVL5zdO
- ZMJTb4McJbn1GMuc7ZTxPBDYL7kqOYqiG3xAW/KZAlmQscP+CAfIXsWtRNG/lAgzuGf3
- 0wwGY3YXkjgIrSL+ZiEV6w9Jw4EtBaEGHt7lQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740438484; x=1741043284;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WPqq8WYaPj6J2IwBDMowPX92na6feXUAfjpPv3BrLRw=;
- b=q74lBRlj+8c2unJnfElEKlZVayUJTWTxCXuUgmyvXuXnUv2LUj2j+1qW+OCNUAQHT+
- RwqYNUpQXMTxp7xxr3vkpUHgfi1xrI1ZwNE8MgC9ayxuYrNhEx6VLNlpXoyqazVBGB0p
- v2sDooh/LEPsQLgTgQj3hH9Lu+fMyDoLgT4jWyhufoarwKWJvG8yOKHoGeibdqu3X7Hw
- BIhnh/r/+ZEVU8im+FQDJOpYun4SQf86ednegPuAIUsdImpew0aE9BXzqvvI3qnyywei
- Zm2iWVnq6t+zbgaWGxXn5O1sW0kj4GsKb0ad9avvwIzehPgCwwuOczEgsXpT3LpZSMDB
- Sf8Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV66+yqL5k2WDOe8Colk/cVF0jiQeiIm95jwFGz7lYVvGvJmUQsHou2TwUVWL9Q0fYOIle9IWwick54@nongnu.org
-X-Gm-Message-State: AOJu0Yx6rr8P9FURg8TrrUBB9mQKIbH9j8tgu53FWAKQcVpTL+qL2t04
- hIsUaYvBBXPbs+mLs4WBDEK31b25jTi6ycP1rW8OOgR1KgXORhzGJCNcF0I9bw==
-X-Gm-Gg: ASbGncthEvymVQjNXsbrN84PE0x53PRpmN+aY/bk5NDA4N7CjbthovKplacDC+Vge6j
- WJxpPLOfpCqGPHZ+617AwVCJA+S8lEccDTPeCxUiZ+Rhs9klQSCu9tYd2Fx345m454h+Yt2eVu/
- bBM5j89hOrQ8n5jpbq//Ywgxs66dGV4EA/szSFZfI86Lo2UwwrW5e52bh9vzlCNma8DzVpfKFqr
- BjVeI77AEySLExzgRxrRMtBWpun0X8R4PJpa66pz9K3Prt/eM4c4GJ+sBppzN/D6ezr7Eyf9b5S
- AsfdUU0kHjpoYvqN+HOayfiLlSG+svGazB9BRQFps/Lr9oIrWOn1al4j8dVlYtg=
-X-Google-Smtp-Source: AGHT+IGHuENz4NSG2YP3MtyNHiMYnYsoBcaBZ+4DIs/SSPItUKJyfRJV3Nh4u0OHC1KyNa9T9uFUxQ==
-X-Received: by 2002:a05:6e02:12e8:b0:3d2:aa73:7b65 with SMTP id
- e9e14a558f8ab-3d2cae699b6mr137167905ab.6.1740438484667; 
- Mon, 24 Feb 2025 15:08:04 -0800 (PST)
-Received: from chromium.org (c-73-203-119-151.hsd1.co.comcast.net.
- [73.203.119.151]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f04752e026sm113941173.107.2025.02.24.15.08.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2025 15:08:03 -0800 (PST)
-From: Simon Glass <sjg@chromium.org>
-To: U-Boot Mailing List <u-boot@lists.denx.de>
-Cc: Bin Meng <bmeng.cn@gmail.com>, Simon Glass <sjg@chromium.org>,
- Tom Rini <trini@konsulko.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 32/44] x86: qemu: Use the new e820 API
-Date: Mon, 24 Feb 2025 16:06:21 -0700
-Message-ID: <20250224230640.2665206-33-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250224230640.2665206-1-sjg@chromium.org>
-References: <20250224230640.2665206-1-sjg@chromium.org>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tmizo-0004XZ-Jy
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:24 -0500
+Received: from fout-b6-smtp.messagingengine.com ([202.12.124.149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tmizk-0003Rn-N7
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:24 -0500
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal
+ [10.202.2.50])
+ by mailfout.stl.internal (Postfix) with ESMTP id B5F141140122;
+ Mon, 24 Feb 2025 19:40:17 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-10.internal (MEProxy); Mon, 24 Feb 2025 19:40:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm2; t=1740444017; x=1740530417; bh=Qc
+ Y7yloHBJOi4V2A4+6R1KX+428NZiRlMHeP7YBEZqU=; b=pM8ayDa/q5ArUF8NNA
+ q4aDabdbYB4oIcXte5qEpAR5joe5NUft6jMVnvnkfkmeaVZuoatK2F2Wlm044OHT
+ 7upDn/3RYDIA1mvECSWvaWkyhXdQ9rmCjOp3Zd7grPexQVXwUjHugpV+UEoZ84xT
+ ZRk4caGPk6TYC/4mDr2FbxqzFVUv2cszP78tgs/Y7SvSndrwpQy0KSgg6rzNCzk/
+ CPyTGnLA0/mJj0suMWO2d1HasXG+Wf9wtJNLYAYwl96y1AH8qkorOVT0Iz4XFrxE
+ TZVR2bZJ10+78EEbNSdOaeHgORlGAJDdILF1s00rSdOsUDepolZARn8ZTSuQN2Uw
+ K3uA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm1; t=1740444017; x=1740530417; bh=QcY7yloHBJOi4V2A4+6R1KX+428N
+ ZiRlMHeP7YBEZqU=; b=zHoMpSLEOOTdZFMhcoO+PRF2uZQUM2FXOytcQH2G2JlL
+ eV9Umsw2bmNqhJbIFgfcJP8t/AOKZR2WbE4WJLSx/6kXSPa1KUiOIJXM7t4Xw//L
+ LWoz2IocDad28uwgIJoylKurAMdMIb7JP7eFVINdCCaqexXhEKEQ2EA5BNaM9Aie
+ xw2+ZjNjjCpyCzjZc8VSQUyEiA2YH6WmtRe67m8KevJ9pmsdnrME0Y8CtqwbAEmU
+ gpqF5mGvCIbU7fSLiqIU+bMXDLkIpZCkI5yvEosn9NRrri8qszrm15J5LDWZMRez
+ LiIUxrLwdCJ3GC4usg/FaPKxPvejWTmDU0Ihr14IIA==
+X-ME-Sender: <xms:cBG9Z_k1zz-TiSgTf45Cs3iqxVmSX6wqpxd5ruX8NPqGkh0Ji8bJxg>
+ <xme:cBG9Zy3NOU3ufsaiN3VNiC8ZyuuINW1G8_4a49ONHH5cfME6VHFN4ruSzbFSCTEod
+ B-ms08L2lFlsGb95QY>
+X-ME-Received: <xmr:cBG9Z1oiz_LCfuTX6M3buc_0LalKuF9DP5guZ3EKntusyrkAH9FFojY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdektddvhecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+ uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+ hnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeen
+ ucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihgh
+ horghtrdgtohhmqeenucggtffrrghtthgvrhhnpefgveffjeetgeejfeelgfekteelkefh
+ uefggedvueeujeekjeetkeekvdffffefudenucffohhmrghinhepkhgvrhhnvghlrdhorh
+ hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhi
+ rgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghpthhtohepgedpmh
+ houggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhirgiguhhnrdihrghnghesfhhlhihg
+ ohgrthdrtghomhdprhgtphhtthhopehgrghoshhonhhgsehlohhonhhgshhonhdrtghnpd
+ hrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdprhgtphhtthhopehqvghm
+ uhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:cBG9Z3no6XbhYd99xLjc1VjPOyDEQbiIL9tw4w_Y4pfuyhZSpwQlUg>
+ <xmx:cBG9Z911REK372Qmqeed2_lOzF_wf5lIELLApN2bQhhQfMzvEGTvjQ>
+ <xmx:cBG9Z2tZrYf3hgJVYb2eKHIiC-fk2DO9PgnxMBC5rZmttAykMf-8fw>
+ <xmx:cBG9ZxXGZi5QP_L5BojSNeu_1I1dXrdoB5zE_k-tYSwpi6ikccLVvw>
+ <xmx:cRG9Z4QiQdG8gCs_GPcN3pgAI1lHS500Opl-9iGBOXnjTlcAfe1D-oQs>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Feb 2025 19:40:15 -0500 (EST)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 0/9] target/loongarch: LoongArch32 fixes 1
+Date: Tue, 25 Feb 2025 00:40:13 +0000
+Message-Id: <20250225-la32-fixes1-v2-0-8ec68ada3dd5@flygoat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=sjg@chromium.org; helo=mail-il1-x12d.google.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG0RvWcC/22MwQ6DIBAFf8XsuTSwUoo99T8aDwirklgxYEyN4
+ d9LPfc472XmgETRU4JHdUCkzScf5gJ4qcCOZh6IeVcYkKMUiMgmUyPr/YeSYLXS1grpeKMVFGO
+ JdD5FeLWFR5/WEPczvonf+r+zCcaZtgq7O90a6bpnP+1DMOvVhje0OecvPyLAs6gAAAA=
+X-Change-ID: 20241222-la32-fixes1-368cc14d0986
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: b4 0.14.2
+Received-SPF: pass client-ip=202.12.124.149;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout-b6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,86 +112,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move over to use this API before making the code even more complicated.
+Hi all,
 
-Signed-off-by: Simon Glass <sjg@chromium.org>
+This series is a collection of small fixes I made to TCG for
+LoongArch32.
+
+There are still many thing broken, especially on CSRs. More
+series following. However this is sufficient to boot 32bit
+kernel.
+
+Thanks for revivewing!
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
+Changes in v2:
+- Addressing minor review comments
+- Don't create 32bit vairant, simply allow 32bit CPU on qemu-loongarch64
+- Link to v1: https://lore.kernel.org/r/20241222-la32-fixes1-v1-0-8c62b7e594db@flygoat.com
 
-Changes in v3:
-- Add new patch to use the new e820 API
+---
+Jiaxun Yang (9):
+      target/loongarch: Enable rotr.w/rotri.w for LoongArch32
+      target/loongarch: Fix address generation for gen_sc
+      target/loongarch: Fix PGD CSR for LoongArch32
+      target/loongarch: Perform sign extension for IOCSR reads
+      target/loongarch: Use target_ulong for iocsrrd helper results
+      target/loongarch: Fix some modifiers for log formatting
+      target/loongarch: Use target_ulong for CSR helpers
+      target/loongarch: Fix load type for gen_ll
+      target/loongarch: Introduce max32 CPU type
 
- arch/x86/cpu/qemu/e820.c | 48 ++++++++++------------------------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
+ target/loongarch/cpu.c                             | 152 +++++++++++++++++----
+ target/loongarch/helper.h                          |  22 +--
+ target/loongarch/tcg/csr_helper.c                  |   2 +-
+ target/loongarch/tcg/insn_trans/trans_atomic.c.inc |   8 +-
+ target/loongarch/tcg/insn_trans/trans_shift.c.inc  |   4 +-
+ target/loongarch/tcg/iocsr_helper.c                |  20 +--
+ target/loongarch/tcg/op_helper.c                   |   4 +-
+ target/loongarch/tcg/tlb_helper.c                  |   2 +-
+ target/loongarch/tcg/translate.c                   |   5 +-
+ 9 files changed, 155 insertions(+), 64 deletions(-)
+---
+base-commit: 65cb7129f4160c7e07a0da107f888ec73ae96776
+change-id: 20241222-la32-fixes1-368cc14d0986
 
-diff --git a/arch/x86/cpu/qemu/e820.c b/arch/x86/cpu/qemu/e820.c
-index 17a04f86479..2b0ad179489 100644
---- a/arch/x86/cpu/qemu/e820.c
-+++ b/arch/x86/cpu/qemu/e820.c
-@@ -19,51 +19,27 @@ unsigned int install_e820_map(unsigned int max_entries,
- 			      struct e820_entry *entries)
- {
- 	u64 high_mem_size;
--	int n = 0;
-+	struct e820_ctx ctx;
- 
--	entries[n].addr = 0;
--	entries[n].size = ISA_START_ADDRESS;
--	entries[n].type = E820_RAM;
--	n++;
-+	e820_init(&ctx, entries, max_entries);
- 
--	entries[n].addr = ISA_START_ADDRESS;
--	entries[n].size = ISA_END_ADDRESS - ISA_START_ADDRESS;
--	entries[n].type = E820_RESERVED;
--	n++;
-+	e820_next(&ctx, E820_RAM, ISA_START_ADDRESS);
-+	e820_next(&ctx, E820_RESERVED, ISA_END_ADDRESS);
- 
- 	/*
- 	 * since we use memalign(malloc) to allocate high memory for
- 	 * storing ACPI tables, we need to reserve them in e820 tables,
- 	 * otherwise kernel will reclaim them and data will be corrupted
- 	 */
--	entries[n].addr = ISA_END_ADDRESS;
--	entries[n].size = gd->relocaddr - TOTAL_MALLOC_LEN - ISA_END_ADDRESS;
--	entries[n].type = E820_RAM;
--	n++;
--
--	/* for simplicity, reserve entire malloc space */
--	entries[n].addr = gd->relocaddr - TOTAL_MALLOC_LEN;
--	entries[n].size = TOTAL_MALLOC_LEN;
--	entries[n].type = E820_RESERVED;
--	n++;
--
--	entries[n].addr = gd->relocaddr;
--	entries[n].size = qemu_get_low_memory_size() - gd->relocaddr;
--	entries[n].type = E820_RESERVED;
--	n++;
--
--	entries[n].addr = CONFIG_PCIE_ECAM_BASE;
--	entries[n].size = CONFIG_PCIE_ECAM_SIZE;
--	entries[n].type = E820_RESERVED;
--	n++;
-+	e820_to_addr(&ctx, E820_RAM, gd->relocaddr - TOTAL_MALLOC_LEN);
-+	e820_next(&ctx, E820_RESERVED, TOTAL_MALLOC_LEN);
-+	e820_to_addr(&ctx, E820_RAM, qemu_get_low_memory_size());
-+	e820_add(&ctx, E820_RESERVED, CONFIG_PCIE_ECAM_BASE,
-+		 CONFIG_PCIE_ECAM_SIZE);
- 
- 	high_mem_size = qemu_get_high_memory_size();
--	if (high_mem_size) {
--		entries[n].addr = SZ_4G;
--		entries[n].size = high_mem_size;
--		entries[n].type = E820_RAM;
--		n++;
--	}
-+	if (high_mem_size)
-+		e820_add(&ctx, E820_RAM, SZ_4G, high_mem_size);
- 
--	return n;
-+	return e820_finish(&ctx);
- }
+Best regards,
 -- 
-2.43.0
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 
