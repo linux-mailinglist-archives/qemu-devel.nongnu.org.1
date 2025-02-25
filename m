@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D4DA4399F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 10:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A66A4392B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 10:19:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmrL7-0002fc-1I; Tue, 25 Feb 2025 04:34:57 -0500
+	id 1tmr4N-0006BA-KR; Tue, 25 Feb 2025 04:17:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmrKz-0002ef-QD
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 04:34:50 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmrKx-0004mH-4V
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 04:34:49 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4398ec2abc2so46836515e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 01:34:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740476084; x=1741080884; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z/aOnmiLBL/MdJMrbpdNPso/NCDWVX7/KXn8mmcJks4=;
- b=y/UfIn9DD+csW0oJnrAGlrF690tcMopmcTsCRnpJUbCZcDHZphRg/ZYZHmfwqb6fnJ
- D4lBvCeH/0PGYLoBm4FtNHsH1kU7+WaBX5vofA7PAVvPBjrunIiGjJRbT/2ahxgD6kDA
- +odoJM4W98vU0N6UhLL2Fc8bvMhWqfaJDxiWOrpVeVYnmQSVL8pimjOsxjQWIvgBUBtK
- OAKLlgyYjbrtG2XJMWb4nT93nJ4kQ47cYFik+jFd3xg3ABtR15i8bp/Csn/n1002mfAR
- VtzXxmkx+IWbLYFskZl3YX2HGdt0Cglfm7sRyhdEfDAI496WECEp43uanpaaprMnZTgR
- nTBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740476084; x=1741080884;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=z/aOnmiLBL/MdJMrbpdNPso/NCDWVX7/KXn8mmcJks4=;
- b=luWWGxxmDKLgpbh//aTBEsFSqTnyAjeY5fYlByZTr+Wx6t3RaIwqYQeSLVraDYoMDx
- XTtr5gdIKu9t41pAvySoEjkaiW0xzkNSEdJNpEL4zvry4OhhMl8yu5/C6x1bsGSqCbcc
- iDLGzP33D+87tJf/XV6ice+qiHkSmvDscCyAYv+UlE18IlFRI+dpmrjSGPcv5la35YGv
- 9W5/SD713Zrcq+cZMy/m7C0inmHWONRPIrFsLRbJHX0F/kZsLNSMx4Z2QGUzEwit8Y7g
- 2QpJsMnq9yJRktsQrPdj5oqMOZRTFD1XKKM0h3hYIgwZ8IpOglJa9yOmEPIuf29ApRIY
- cujA==
-X-Gm-Message-State: AOJu0Yx0birREzlvJhdeSd9J5X/FV22hSuUmAXxDDsSs7Ba+IfdNxq0X
- V2V0iJ/X9Q6Fj4C3HFlQqoovXu3Sldbe5wSs96Iwa8OHquvGfCb2U1Br9mNIkKE=
-X-Gm-Gg: ASbGncsRTDc252F5id3dpMp9bK8S9Ryi1FVNLvdwpuYznpU0pLW7Ova6p3D6wVEAVlh
- o+bzT5KYijKGoCMytGTg+t2G6S1TO82rBTTmQYg9SGpjiEOOLziY4J7O9asdFbjOKbSmsZLZ8h7
- C0gu/68uSLzHjUrxmLxjyomjap80yGITXoJSQs6awifkzHvWGUI9W0WqZXD9JYKXaM/vvKvTGv8
- BUOUWwIR8OLSk/WF1RJdf92HLABi5j0t/4qwylqV1EGx96I8w8K44EJyD+H+ojff99L27/6rwi7
- aLVTtb/fjRTS83QCKAQ8u+covnw9
-X-Google-Smtp-Source: AGHT+IFxN2JG5TtZyYz6fnPCVm0BLnnBn3DEhqCz4MqMzlayRxjkXcL27JWB8lQWwgo047ttJHKO/Q==
-X-Received: by 2002:a05:6000:156b:b0:38f:2a82:4427 with SMTP id
- ffacd0b85a97d-38f6e95fe69mr12839485f8f.20.1740476084467; 
- Tue, 25 Feb 2025 01:34:44 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390cd866f15sm1648077f8f.4.2025.02.25.01.34.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 01:34:43 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E7F7E5F7DC;
- Tue, 25 Feb 2025 09:34:42 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jayakrishnan A <jksoftdeveloper@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: Seeking help on implementing sync over ivshmem shared memory
-In-Reply-To: <CAEHwtECacvmv98uAvXisx57qEN1hMbLjHNWUkm8mOt56wtWGaQ@mail.gmail.com>
- (Jayakrishnan A.'s message of "Sun, 23 Feb 2025 20:18:22 +0530")
-References: <CAEHwtECacvmv98uAvXisx57qEN1hMbLjHNWUkm8mOt56wtWGaQ@mail.gmail.com>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Tue, 25 Feb 2025 09:34:42 +0000
-Message-ID: <87ldtu74gd.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmr3s-00069o-MV; Tue, 25 Feb 2025 04:17:08 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmr3o-0002rq-Ln; Tue, 25 Feb 2025 04:17:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740475024; x=1772011024;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0hP/dOMHN9oIBVDBEonW6snT7aVupqS6iFBYUByyRjs=;
+ b=DkZ6Ieu1m5QPOv1ifY+hLxYd9S8njCLqoa+DUcGeBn3BS6AkZ2PQhqSG
+ 20hU9AUqTtBRJBgc2Tn7cloH8yxs3A/xjx2s6XxFrTlopjlae/yg7dUKG
+ bVVEc7yWjxLkSwQcIjYzTXynk/V4DVJEqbAdEKgMAu25GYa7UsUogCYoh
+ xJUBGTHiETwqtV2e+nbjxbCrrqVcJHvAWaI/804AsOYHuEKReplXskfyV
+ 3d6FM7gho+maPYftt+4QhzRcMcW+1KIICVC7mAUTugdpUcb3h3lK98tuP
+ uV6FR8QUDEi0hOYIGF1U8p+2bG/Z9RpXsZdLDxQO1CFBdddJAzxI1mb/b g==;
+X-CSE-ConnectionGUID: DKBo3bCZTTq8bXTMr3g+Ug==
+X-CSE-MsgGUID: 2xoCg28gRnK6WlzJMHe/yA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52696479"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="52696479"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 01:17:01 -0800
+X-CSE-ConnectionGUID: DbVFm30LSFiBwAGWUkadBQ==
+X-CSE-MsgGUID: R6kjhA7GRBaH61CHc4i9Pw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="139568991"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 25 Feb 2025 01:16:59 -0800
+Date: Tue, 25 Feb 2025 17:36:37 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 09/15] rust: irq: wrap IRQState with Opaque<>
+Message-ID: <Z72PJVq+R0nsQSwR@intel.com>
+References: <20250221170342.63591-1-pbonzini@redhat.com>
+ <20250221170342.63591-10-pbonzini@redhat.com>
+ <Z71+qiu+X4BKW2ja@intel.com>
+ <a776b84b-dd3c-4e17-b89a-a745c1f89a83@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a776b84b-dd3c-4e17-b89a-a745c1f89a83@redhat.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,35 +81,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jayakrishnan A <jksoftdeveloper@gmail.com> writes:
+On Tue, Feb 25, 2025 at 09:28:52AM +0100, Paolo Bonzini wrote:
+> Date: Tue, 25 Feb 2025 09:28:52 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH 09/15] rust: irq: wrap IRQState with Opaque<>
+> 
+> On 2/25/25 09:26, Zhao Liu wrote:
+> > > +/// An opaque wrapper around [`bindings::IRQState`].
+> > > +#[repr(transparent)]
+> > > +#[derive(Debug, qemu_api_macros::Wrapper)]
+> > > +pub struct IRQState(Opaque<bindings::IRQState>);
+> > > +
+> > >   /// Interrupt sources are used by devices to pass changes to a value (typically
+> > >   /// a boolean).  The interrupt sink is usually an interrupt controller or
+> > >   /// GPIO controller.
+> > > @@ -22,8 +28,7 @@
+> > >   /// method sends a `true` value to the sink.  If the guest has to see a
+> > >   /// different polarity, that change is performed by the board between the
+> > >   /// device and the interrupt controller.
+> > > -pub type IRQState = bindings::IRQState;
+> > > -
+> > > +///
+> > >   /// Interrupts are implemented as a pointer to the interrupt "sink", which has
+> > >   /// type [`IRQState`].  A device exposes its source as a QOM link property using
+> > >   /// a function such as [`SysBusDeviceMethods::init_irq`], and
+> > > @@ -41,7 +46,7 @@ pub struct InterruptSource<T = bool>
+> > >   where
+> > >       c_int: From<T>,
+> > >   {
+> > > -    cell: BqlCell<*mut IRQState>,
+> > > +    cell: BqlCell<*mut bindings::IRQState>,
+> > 
+> > Once we've already wrapper IRQState in Opaque<>, should we still use
+> > bindings::IRQState?
+> > 
+> > Although InterruptSource just stores a pointer. However, I think we can
+> > use wrapped IRQState here instead of the native binding type, since this
+> > item is also crossing the FFI boundary. What do you think?
+> 
+> Using the wrapped IRQState would be a bit more code because you have to cast
+> the pointer all the time when calling C code.  As far as correctness is
+> concerned, it does not really matter because as you said it only stores a
+> pointer.
 
-> Hi Team ,
->
-> Seeking help on implementing sync over ivshmem shared memory , As part of=
- internal project we could able to achieve
-> shared ivshmem with doorbell mechanism ,But in order to achieve shared me=
-mory synchronisation we are trying to add
-> atomic operation  over this shared memory area variables , Just wanted to=
- analyse whether this atomic variable between
-> VMs shared memory will work as expected , If not is there any suggested w=
-ay ahead to implement synchronisation over
-> ivshmem shared memory for threads running in multiple VMs.
+Yes, it makes sense. This conversion doesn't block the current patch. The
+correctness has been guaranteed.
 
-Atomic accesses are properly modelled for all QEMU TCG guests that
-support MTTCG using the hosts underlying atomic support. The shared
-memory region ivshmem_bar2/server_bar2 are just pages shared between the
-two QEMU processes so atomic accesses should behave the same way.
+> However, if needed, InterruptSource could have a function that converts from
+> IRQState to Option<&Opaque<irq::IRQState>>.  Since the accessor is needed
+> anyway, that would be a good place to put the conversion. 
 
-I'm unfamiliar with if both sides see the MMIO region but there is no
-intrinsic synchronisation for MMIO regions which are terminated by a
-MemoryRegionOps structure although vCPUS on the same QEMU will be
-serialised by the BQL.
+Then I understand we still need `assert!(bql_locked())` in assessor as
+the doc said: "it is possible to assert in the code that the right lock
+is taken, to use it together with a custom lock guard type, or to let C
+code take the lock, as appropriate."
 
->
-> Thanks and Regards ,=20
-> Jayakrishnan A
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
