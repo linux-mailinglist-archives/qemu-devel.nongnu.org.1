@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE50A44986
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62672A449B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:10:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzL2-0001xk-At; Tue, 25 Feb 2025 13:07:24 -0500
+	id 1tmzL7-0002f2-PD; Tue, 25 Feb 2025 13:07:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJA-0008L0-Pf
+ id 1tmzJ9-0008Kv-18
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:32 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJ6-0002D6-V9
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:28 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-438a3216fc2so56629465e9.1
+ id 1tmzJ6-0002D5-Mp
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:26 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-438a3216fc2so56629455e9.1
  for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1740506723; x=1741111523; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aW0zCtC8OIsiWYUh98kNB1SPvnD+Hi97ZoX3/5CmiFs=;
- b=lkmpWJr3SwEHf2TXCR3ULrJXjy+Ipms1n34L9gnKoXBrksBbvDj+uGuZraEn9JlSW1
- vLpQILWK+UDEC99s6c+8cTJGy5BxZlJ3aQPGobnLCwM+5cvOeenmGTG7jYcMYhmIuCIX
- PHThQuQTxnZueeG640/B53i/kH/PnwGe88M47nLfOKVmrEupdE5CDVsaQdItdvLBsPLQ
- cEe8z4DQIHbjJmrhxYDg4Rk/IOjsNFKMHO9GmxXpLozAwCAOJW2vbYTo1k/Cy30Ri6wh
- EZhY5KsrYY/9MQ/bHcQdBL8U8NEei0ZUx5OtToxvVv8VQLStivdCu3L7E2H7PkvXQdom
- Jozw==
+ :reply-to; bh=Y7p+aWd+dHKRzUy0HtF4GkLYr0x7T5CRvNgfUzf7AaQ=;
+ b=l3O10drq4c6vAYSdeyeW02B6whuW0ofhOgONBnHTewQZDfkNZ6KsBU/vJEGil2tw2e
+ J2tFqSauqMtRbfYJ2xVjPpfQU6Y3mnId9f5j0yVi3hmxUJbwAtCoCnbe5VqC6j0O0bMj
+ GS7graAVdid6Nmd/miiS1U4XTqbc/YqnjNADci9wNSyJervM2zqyz2U0ESzE+mZErjNc
+ yji1/lhUT0J2L3rFwRRGIQRficjC31pA4NFBI36WYYJig+NJr65sg80U26jTu+kUiZ70
+ GSzAlad27f0feglEJV7uBmlwntrFKYfptjd1wn0G7EdbGkFRVf+Ozmg656lNGXnMcnEj
+ meKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1740506723; x=1741111523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aW0zCtC8OIsiWYUh98kNB1SPvnD+Hi97ZoX3/5CmiFs=;
- b=Yg3yazWT/oTjYjemFo0K68l/wRwyoZxfVV1/mXum8Cqz89U41RO/BH4kvFsmxrEH32
- F30yByRnfPKnCJkRYP/x0XeLEBlU3pSjMd9q0IVkZMqnxV/1dMxXSQiNUtMvYO3O7H1u
- TwHG229DPGUwKSUWEjfHOiPMojNT1PtX/rzsFImN3RyMnwqUPDcapjBd1aQX/z/t9Xqi
- Ww0fUx/b9PycXBPhhTEujkpypgU8Porx7HZQrWn9ruVyo4tZ4MsO1440p3TDNe8ctqh1
- 2wZxRFcNizCLcNenSTbeynyTmre1wUeh9A7Y7HCwoTpRwwtpt5l1drIPboAk2vbEBTNa
- aiKQ==
-X-Gm-Message-State: AOJu0Yzk5F7EzzFd82gjgd7nU27XBbGApybZYA4A5SLgJPcGTs7nEYcx
- +i7KyM+kVXCT4cmblHuoQKLCJ6dhUaDtAwNyjapHEUUBrezCyp27XrUVQy2fcoDKw0EFLYbgLS3
- 3
-X-Gm-Gg: ASbGnctz6SwtAxNG/Y7TPPE4IszNZaQr7xf8cm3Bp04El4do0gklvtiIF+YV9Z2A2SX
- ldYaoGjZq0s6mZWMfE6ebNksxjD7jSJP1EGqaJLNU5cbSGikE7s/UG7mgcewBEPBzRsUy/KjAVD
- k79TzPgtxxiCiwh9G8fq+gqYbA4Gb6avM5VFTQH9DyY4BUCzd9ol7Km/QVeBYsp+/G1CmfM6Lx+
- 00wPwfd5ee6RyE56yabw87nGfxUzovWV/Iny59u5wMFJH/ZOE1yqxIJW+nWXoUjvZ8YzydaupC9
- cM8egdbTAC5Y6A8qTzCikHcSq+D6cQUL
-X-Google-Smtp-Source: AGHT+IGWoKiglTcinLu0taRMZbW+PXards+Dc/Z5XxOg9JpzsUW8V5PxTGyyjeUDuqkqE6p6VvbXow==
-X-Received: by 2002:a05:6000:18a2:b0:38f:50bd:ad11 with SMTP id
- ffacd0b85a97d-38f707840afmr14380506f8f.5.1740506721547; 
- Tue, 25 Feb 2025 10:05:21 -0800 (PST)
+ bh=Y7p+aWd+dHKRzUy0HtF4GkLYr0x7T5CRvNgfUzf7AaQ=;
+ b=j6sB5w0ZIHBiMyz56XQZFLJMHaRJVkHmigPqoQ/T9fbvzRf6MnmxbIQdgO44cJ2En3
+ iY9aL+aiMTB+eZg+dIEnBPqvQw0ldiO3jDlAY/inCWu9azdxe3qyu/5+JdhbtCN0zxnU
+ ZedLO6RzolnqGLfklr357dj+E544/dMIqJkamHZw41dutOJiLkEUR8BA3QcaqqDtG6KU
+ vybjXtgFoXBSgJ5AoOBMW9JXzifoTx3zZ7vvTkb1DtZq34BBDbio/mr01iWFwNZqVCFW
+ sgIQc7w945d4rWdBkfBayaPyDbhTWGPdG3S3qIfsoliqOmRFY3locaxQGYpUKMr+U9Bz
+ IN5w==
+X-Gm-Message-State: AOJu0YzBOg6X2TmoluShs2xXqMi7r4QI+xcTTrkEiSXAM2c9evnJnfCC
+ AmD0DM5lcReKEEYDjwrDbcr5tuiH6VAJXD4sS6UBbS7cR2qJyVUqppGSDin9q61vRRPIRfDhlmL
+ M
+X-Gm-Gg: ASbGncvxxkQNrcTaCUfXGtUk9HWYzfKmMopfNrVyeCRtHzcWX2Lxd1EMpK3SiTdcK9W
+ HN2kBdMTQMQw1YebLobKybVrdQ2tJz/DCkWLYUClpLgDSyAt53zRmj52vZs7tgCSrsm55FRKrIW
+ weBXvRLIW+ibNaPUwdO2B6JW6Xo8sNIJagl/6qp7YDUcGSErsQhMCM4/ddeXKZ3SUADnGVyPnA0
+ MbYrFo0i3fnxQUx/Pw6DY6GlWwcxk3ykyulDJwLZ50eSTwFYUFPBXbscC+kBASP6BhSnd0ni3i/
+ 30zGS+8o2cbwUQQFtrsQQnzNCVSW0i4+
+X-Google-Smtp-Source: AGHT+IEghznzR2tOF+1GCIfYeqvIT6wOAC4OLGX0HM6rVpPVMZyNxOUioaJnzGpaI9lXEsonZaDRBA==
+X-Received: by 2002:a05:600c:3ca1:b0:439:9595:c8e7 with SMTP id
+ 5b1f17b1804b1-439aea9d78bmr169642625e9.0.1740506722610; 
+ Tue, 25 Feb 2025 10:05:22 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.20
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:20 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/43] hw: Centralize handling of -machine dumpdtb option
-Date: Tue, 25 Feb 2025 18:04:33 +0000
-Message-ID: <20250225180510.1318207-8-peter.maydell@linaro.org>
+Subject: [PULL 08/43] hw/core/machine.c: Make -machine dumpdtb=file.dtb with
+ no DTB an error
+Date: Tue, 25 Feb 2025 18:04:34 +0000
+Message-ID: <20250225180510.1318207-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,245 +97,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we handle the 'dumpdtb' machine sub-option ad-hoc in every
-board model that has an FDT.  It's up to the board code to make sure
-it calls qemu_fdt_dumpdtb() in the right place.
+Currently if the user requests via -machine dumpdtb=file.dtb that we
+dump the DTB, but the machine doesn't have a DTB, we silently ignore
+the option.  This is confusing to users, and is a legacy of the old
+board-specific implementation of the option, where if the execution
+codepath didn't go via a call to qemu_fdt_dumpdtb() we would never
+handle the option.
 
-This means we're inconsistent and often just ignore the user's
-command line argument:
- * if the board doesn't have an FDT at all
- * if the board supports FDT, but there happens not to be one
-   present (usually because of a missing -fdt option)
+Now we handle the option in one place in machine.c, we can provide
+the user with a useful message if they asked us to dump a DTB when
+none exists.  qmp_dumpdtb() already produces this error; remove the
+logic in handle_machine_dumpdtb() that was there specifically to
+avoid hitting it.
 
-This isn't very helpful because it gives the user no clue why their
-option was ignored.
+While we're here, beef up the error message a bit with a hint, and
+make it consistent about "an FDT" rather than "a FDT".  (In the
+qmp_dumpdtb() case this needs an ERRP_GUARD to make
+error_append_hint() work when the caller passes error_fatal.)
 
-However, in order to support the QMP/HMP dumpdtb commands we require
-now that every FDT machine stores a pointer to the FDT in
-MachineState::fdt.  This means we can handle -machine dumpdtb
-centrally by calling the qmp_dumpdtb() function, unifying its
-handling with the QMP/HMP commands.  All the board code calls to
-qemu_fdt_dumpdtb() can then be removed.
+Note that the three places where we might report "doesn't have an
+FDT" are hit in different situations:
 
-For this commit we retain the existing behaviour that if there
-is no FDT we silently ignore the -machine dumpdtb option.
+(1) in handle_machine_dumpdtb(), if CONFIG_FDT is not set: this is
+because the QEMU binary was built without libfdt at all. The
+build system will not let you build with a machine type that
+needs an FDT but no libfdt, so here we know both that the machine
+doesn't use FDT and that QEMU doesn't have the support:
 
+(2) in the device_tree-stub.c qmp_dumpdtb(): this is used when
+we had libfdt at build time but the target architecture didn't
+enable any machines which did "select DEVICE_TREE", so here we
+know that the machine doesn't use FDT.
+
+(3) in qmp_dumpdtb(), if current_machine->fdt is NULL all we know
+is that this machine never set it. That might be because it doesn't
+use FDT, or it might be because the user didn't pass an FDT
+on the command line and the machine doesn't autogenerate an FDT.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2733
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250206151214.2947842-7-peter.maydell@linaro.org
 ---
- include/system/device_tree.h  |  2 --
- hw/arm/boot.c                 |  2 --
- hw/core/machine.c             | 25 +++++++++++++++++++++++++
- hw/loongarch/virt-fdt-build.c |  1 -
- hw/mips/boston.c              |  1 -
- hw/openrisc/boot.c            |  1 -
- hw/ppc/e500.c                 |  1 -
- hw/ppc/pegasos2.c             |  1 -
- hw/ppc/pnv.c                  |  1 -
- hw/ppc/spapr.c                |  1 -
- hw/riscv/boot.c               |  2 --
- system/device_tree.c          | 15 ---------------
- 12 files changed, 25 insertions(+), 28 deletions(-)
+ hw/core/machine.c         | 6 ++----
+ system/device_tree-stub.c | 5 ++++-
+ system/device_tree.c      | 7 ++++++-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/include/system/device_tree.h b/include/system/device_tree.h
-index eb601522f88..49d8482ed4e 100644
---- a/include/system/device_tree.h
-+++ b/include/system/device_tree.h
-@@ -133,8 +133,6 @@ int qemu_fdt_add_path(void *fdt, const char *path);
-                          sizeof(qdt_tmp));                                    \
-     } while (0)
- 
--void qemu_fdt_dumpdtb(void *fdt, int size);
--
- /**
-  * qemu_fdt_setprop_sized_cells_from_array:
-  * @fdt: device tree blob
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 42c18355e85..e296b62fa12 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -661,8 +661,6 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-         binfo->modify_dtb(binfo, fdt);
-     }
- 
--    qemu_fdt_dumpdtb(fdt, size);
--
-     /* Put the DTB into the memory map as a ROM image: this will ensure
-      * the DTB is copied again upon reset, even if addr points into RAM.
-      */
 diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 02cff735b3f..61c22f723a0 100644
+index 61c22f723a0..b68b8b94a3c 100644
 --- a/hw/core/machine.c
 +++ b/hw/core/machine.c
-@@ -19,6 +19,7 @@
- #include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "qapi/qapi-visit-machine.h"
-+#include "qapi/qapi-commands-machine.h"
- #include "qemu/madvise.h"
- #include "qom/object_interfaces.h"
- #include "system/cpus.h"
-@@ -1696,6 +1697,24 @@ void qemu_remove_machine_init_done_notifier(Notifier *notify)
-     notifier_remove(notify);
+@@ -1702,15 +1702,13 @@ static void handle_machine_dumpdtb(MachineState *ms)
+     if (!ms->dumpdtb) {
+         return;
+     }
+-    if (!ms->fdt) {
+-        /* Silently ignore dumpdtb option if there is nothing to dump */
+-        return;
+-    }
+ #ifdef CONFIG_FDT
+     qmp_dumpdtb(ms->dumpdtb, &error_fatal);
+     exit(0);
+ #else
+     error_report("This machine doesn't have an FDT");
++    error_printf("(this machine type definitely doesn't use FDT, and "
++                 "this QEMU doesn't have FDT support compiled in)\n");
+     exit(1);
+ #endif
  }
- 
-+static void handle_machine_dumpdtb(MachineState *ms)
-+{
-+    if (!ms->dumpdtb) {
-+        return;
-+    }
-+    if (!ms->fdt) {
-+        /* Silently ignore dumpdtb option if there is nothing to dump */
-+        return;
-+    }
-+#ifdef CONFIG_FDT
-+    qmp_dumpdtb(ms->dumpdtb, &error_fatal);
-+    exit(0);
-+#else
-+    error_report("This machine doesn't have an FDT");
-+    exit(1);
-+#endif
-+}
-+
- void qdev_machine_creation_done(void)
+diff --git a/system/device_tree-stub.c b/system/device_tree-stub.c
+index bddda6fa37a..428330b0fec 100644
+--- a/system/device_tree-stub.c
++++ b/system/device_tree-stub.c
+@@ -5,6 +5,9 @@
+ #ifdef CONFIG_FDT
+ void qmp_dumpdtb(const char *filename, Error **errp)
  {
-     cpu_synchronize_all_post_init();
-@@ -1712,6 +1731,12 @@ void qdev_machine_creation_done(void)
-     phase_advance(PHASE_MACHINE_READY);
-     qdev_assert_realized_properly();
- 
-+    /*
-+     * If the user used -machine dumpdtb=file.dtb to request that we
-+     * dump the DTB to a file,  do it now, and exit.
-+     */
-+    handle_machine_dumpdtb(current_machine);
+-    error_setg(errp, "This machine doesn't have a FDT");
++    ERRP_GUARD();
 +
-     /* TODO: once all bus devices are qdevified, this should be done
-      * when bus is created by qdev.c */
-     /*
-diff --git a/hw/loongarch/virt-fdt-build.c b/hw/loongarch/virt-fdt-build.c
-index dbc269afba4..728ce466996 100644
---- a/hw/loongarch/virt-fdt-build.c
-+++ b/hw/loongarch/virt-fdt-build.c
-@@ -527,7 +527,6 @@ void virt_fdt_setup(LoongArchVirtMachineState *lvms)
-      * Put the FDT into the memory map as a ROM image: this will ensure
-      * the FDT is copied again upon reset, even if addr points into RAM.
-      */
--    qemu_fdt_dumpdtb(machine->fdt, lvms->fdt_size);
-     rom_add_blob_fixed_as("fdt", machine->fdt, lvms->fdt_size, FDT_BASE,
-                           &address_space_memory);
-     qemu_register_reset_nosnapshotload(qemu_fdt_randomize_seeds,
-diff --git a/hw/mips/boston.c b/hw/mips/boston.c
-index 79410dabe7f..149a263bd5a 100644
---- a/hw/mips/boston.c
-+++ b/hw/mips/boston.c
-@@ -395,7 +395,6 @@ static void *boston_fdt_filter(void *opaque, const void *fdt_orig,
-                         1, ram_high_sz);
- 
-     fdt = g_realloc(fdt, fdt_totalsize(fdt));
--    qemu_fdt_dumpdtb(fdt, fdt_sz);
- 
-     s->fdt_base = *load_addr;
- 
-diff --git a/hw/openrisc/boot.c b/hw/openrisc/boot.c
-index 72e2756af05..0a5881be314 100644
---- a/hw/openrisc/boot.c
-+++ b/hw/openrisc/boot.c
-@@ -109,7 +109,6 @@ uint32_t openrisc_load_fdt(MachineState *ms, void *fdt,
-     /* Should only fail if we've built a corrupted tree */
-     g_assert(ret == 0);
-     /* copy in the device tree */
--    qemu_fdt_dumpdtb(fdt, fdtsize);
- 
-     /* Save FDT for dumpdtb monitor command */
-     ms->fdt = fdt;
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 26933e0457e..fe8b9f79621 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -658,7 +658,6 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
- 
- done:
-     if (!dry_run) {
--        qemu_fdt_dumpdtb(fdt, fdt_size);
-         cpu_physical_memory_write(addr, fdt, fdt_size);
- 
-         /* Set machine->fdt for 'dumpdtb' QMP/HMP command */
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index b057672e829..246d6d633b5 100644
---- a/hw/ppc/pegasos2.c
-+++ b/hw/ppc/pegasos2.c
-@@ -417,7 +417,6 @@ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
-     d[1] = cpu_to_be64(pm->kernel_size - (pm->kernel_entry - pm->kernel_addr));
-     qemu_fdt_setprop(fdt, "/chosen", "qemu,boot-kernel", d, sizeof(d));
- 
--    qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
-     g_free(pm->fdt_blob);
-     pm->fdt_blob = fdt;
- 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 11fd477b71b..87607508c76 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -744,7 +744,6 @@ static void pnv_reset(MachineState *machine, ResetType type)
-         _FDT((fdt_pack(fdt)));
-     }
- 
--    qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
-     cpu_physical_memory_write(PNV_FDT_ADDR, fdt, fdt_totalsize(fdt));
- 
-     /* Update machine->fdt with latest fdt */
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index f3a4b4235d4..c15340a58d8 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -1760,7 +1760,6 @@ static void spapr_machine_reset(MachineState *machine, ResetType type)
-                                   0, fdt_addr, 0);
-         cpu_physical_memory_write(fdt_addr, fdt, fdt_totalsize(fdt));
-     }
--    qemu_fdt_dumpdtb(fdt, fdt_totalsize(fdt));
- 
-     g_free(spapr->fdt_blob);
-     spapr->fdt_size = fdt_totalsize(fdt);
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index c309441b7d8..765b9e2b1ab 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -374,8 +374,6 @@ void riscv_load_fdt(hwaddr fdt_addr, void *fdt)
-     uint32_t fdtsize = fdt_totalsize(fdt);
- 
-     /* copy in the device tree */
--    qemu_fdt_dumpdtb(fdt, fdtsize);
--
-     rom_add_blob_fixed_as("fdt", fdt, fdtsize, fdt_addr,
-                           &address_space_memory);
-     qemu_register_reset_nosnapshotload(qemu_fdt_randomize_seeds,
++    error_setg(errp, "This machine doesn't have an FDT");
++    error_append_hint(errp, "(this machine type definitely doesn't use FDT)\n");
+ }
+ #endif
 diff --git a/system/device_tree.c b/system/device_tree.c
-index 4bc2d61b934..d605ed2a217 100644
+index d605ed2a217..aa3fe9516f3 100644
 --- a/system/device_tree.c
 +++ b/system/device_tree.c
-@@ -594,21 +594,6 @@ int qemu_fdt_add_path(void *fdt, const char *path)
-     return retval;
- }
+@@ -635,11 +635,16 @@ out:
  
--void qemu_fdt_dumpdtb(void *fdt, int size)
--{
--    const char *dumpdtb = current_machine->dumpdtb;
--
--    if (dumpdtb) {
--        /* Dump the dtb to a file and quit */
--        if (g_file_set_contents(dumpdtb, fdt, size, NULL)) {
--            info_report("dtb dumped to %s. Exiting.", dumpdtb);
--            exit(0);
--        }
--        error_report("%s: Failed dumping dtb to %s", __func__, dumpdtb);
--        exit(1);
--    }
--}
--
- int qemu_fdt_setprop_sized_cells_from_array(void *fdt,
-                                             const char *node_path,
-                                             const char *property,
+ void qmp_dumpdtb(const char *filename, Error **errp)
+ {
++    ERRP_GUARD();
++
+     g_autoptr(GError) err = NULL;
+     uint32_t size;
+ 
+     if (!current_machine->fdt) {
+-        error_setg(errp, "This machine doesn't have a FDT");
++        error_setg(errp, "This machine doesn't have an FDT");
++        error_append_hint(errp,
++                          "(Perhaps it doesn't support FDT at all, or perhaps "
++                          "you need to provide an FDT with the -fdt option?)\n");
+         return;
+     }
+ 
 -- 
 2.43.0
 
