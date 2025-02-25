@@ -2,50 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA683A43E8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBD1A43ED2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:08:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmtcz-0003w5-G7; Tue, 25 Feb 2025 07:01:33 -0500
+	id 1tmtjL-0003Eo-PI; Tue, 25 Feb 2025 07:08:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tmtcP-0003jn-B3
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:01:02 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tmtcJ-0006Vy-4D
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:00:56 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxTWvwsL1nPxaCAA--.26396S3;
- Tue, 25 Feb 2025 20:00:48 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxLsfpsL1n2uMnAA--.19507S13;
- Tue, 25 Feb 2025 20:00:47 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Stefan Hajnoczi <stefanha@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmtjH-0003EL-4f
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:08:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmtjF-0007IY-1R
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:08:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740485278;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=6ZgxtuOMITS8yBIkZ+uTwdlV6OGrCH+EuUshJ2LD8ks=;
+ b=JUZcEHhbOWzrUsigBQ1Kw7K0Q5D4z7qZWrrsiwl443v1vU4pfcL5Y/xwMCly0e5WuHBL8g
+ 1T5LPcParF4tNsDFAVq8qLRTXyw2a248nRjNvrgybM63U321gR8Z06u2laYEeZBB9SkTX9
+ 2vHLzQvvqyfJnzPSd62WXnayvvAZxfg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-CSGe9IqmNmK5MZRpjzT9LQ-1; Tue,
+ 25 Feb 2025 07:07:54 -0500
+X-MC-Unique: CSGe9IqmNmK5MZRpjzT9LQ-1
+X-Mimecast-MFC-AGG-ID: CSGe9IqmNmK5MZRpjzT9LQ_1740485273
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A391B1800998; Tue, 25 Feb 2025 12:07:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.59])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3A871800359; Tue, 25 Feb 2025 12:07:50 +0000 (UTC)
+Date: Tue, 25 Feb 2025 12:07:47 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Subject: [PULL 11/11] target/loongarch: Enable virtual extioi feature
-Date: Tue, 25 Feb 2025 20:00:41 +0800
-Message-Id: <20250225120041.1652869-12-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250225120041.1652869-1-maobibo@loongson.cn>
-References: <20250225120041.1652869-1-maobibo@loongson.cn>
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: Re: [RFC 0/2] python: integrate linter tests natively with meson
+Message-ID: <Z72yk559bBMm9XAs@redhat.com>
+References: <20250224191152.2123003-1-berrange@redhat.com>
+ <87y0xud0h0.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxLsfpsL1n2uMnAA--.19507S13
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87y0xud0h0.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,95 +84,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Feature virtual extioi is loongArch virt machine property rather than
-vCPU property in qemu side. However it is vCPU property in KVM kernel
-side, here add loongArch virt machine property checking and enable virt
-extioi feature when vCPU is created.
+On Tue, Feb 25, 2025 at 07:04:11AM +0100, Markus Armbruster wrote:
+> John, how does this mix with the linting parts of your "[PATCH 00/10]
+> qapi: misc testing and doc patches"?
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/loongarch/virt.c         |  8 --------
- include/hw/loongarch/virt.h |  9 +++++++++
- target/loongarch/kvm/kvm.c  | 10 ++++++++++
- 3 files changed, 19 insertions(+), 8 deletions(-)
+Since this is only an RFC, I would expect that John's patch series can
+simply ignore this & merge when ready. If we decide to turn this into
+a non-RFC series, than we can figure out the resolution at that point.
+At a quick glance, I don't see anything John's done in his series that
+would complicate life for this proposal in any notable way.
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index f2aa0a9782..59533b058b 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -45,14 +45,6 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "qemu/error-report.h"
- 
--static bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
--{
--    if (lvms->veiointc == ON_OFF_AUTO_OFF) {
--        return false;
--    }
--    return true;
--}
--
- static void virt_get_veiointc(Object *obj, Visitor *v, const char *name,
-                               void *opaque, Error **errp)
- {
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 661efae61d..2e7cdfaef0 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -68,4 +68,13 @@ struct LoongArchVirtMachineState {
- OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
- void virt_acpi_setup(LoongArchVirtMachineState *lvms);
- void virt_fdt_setup(LoongArchVirtMachineState *lvms);
-+
-+static inline bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
-+{
-+    if (lvms->veiointc == ON_OFF_AUTO_OFF) {
-+        return false;
-+    }
-+    return true;
-+}
-+
- #endif
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 59a5f84161..28735c80be 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -21,6 +21,7 @@
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/irq.h"
-+#include "hw/loongarch/virt.h"
- #include "qemu/log.h"
- #include "hw/loader.h"
- #include "system/runstate.h"
-@@ -1030,6 +1031,7 @@ static int kvm_cpu_check_pmu(CPUState *cs, Error **errp)
- 
- static int kvm_cpu_check_pv_features(CPUState *cs, Error **errp)
- {
-+    MachineState *ms = MACHINE(qdev_get_machine());
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = cpu_env(cs);
-     bool kvm_supported;
-@@ -1062,6 +1064,14 @@ static int kvm_cpu_check_pv_features(CPUState *cs, Error **errp)
-         env->pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
-     }
- 
-+    if (object_dynamic_cast(OBJECT(ms), TYPE_LOONGARCH_VIRT_MACHINE)) {
-+        LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
-+
-+        if (virt_is_veiointc_enabled(lvms)) {
-+            env->pv_features |= BIT(KVM_FEATURE_VIRT_EXTIOI);
-+        }
-+    }
-+
-     return 0;
- }
- 
+With regards,
+Daniel
 -- 
-2.43.5
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
