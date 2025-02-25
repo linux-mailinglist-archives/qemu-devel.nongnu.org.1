@@ -2,90 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9967A44B00
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 20:01:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3C0A44B5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 20:33:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn0Aj-0001YD-DS; Tue, 25 Feb 2025 14:00:49 -0500
+	id 1tn0fu-0002wU-Lr; Tue, 25 Feb 2025 14:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tn0A4-0001OW-6I
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 14:00:11 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tn0fO-0002v8-C7; Tue, 25 Feb 2025 14:32:34 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tn0A1-0002hl-Kj
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 14:00:07 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so3450511f8f.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 11:00:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tn0fM-0007un-GK; Tue, 25 Feb 2025 14:32:29 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5dec996069aso9727651a12.2; 
+ Tue, 25 Feb 2025 11:32:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740510003; x=1741114803; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1740511946; x=1741116746; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UoYP30pe3Y69bUhEc/iugFWzVPK0AK9VEOiX7fDGWFE=;
- b=PlZxF+P8kcNx0tcy5h9gwUcFnV58gzZTfQXqul8NL0sNShIsm2zh4HV1Q0gw2nRzLv
- zPjJuUkbt2J/pvMwzw81h58CVf59wdKS1mpPPBsNclPB08vtTt/ee4tvX0PYImRZX1tF
- +tXfm4wPj+5PCtVNlV1nOrFPr+pVzV2oEjaVyko6vUdYlyWaQAgtn7zhI7AkKhfdPqwW
- 0qLMYlypwEF6GwKfqiqiSlLZUEykLFK6B+MrgxqchjGbBrsmfCurqjt0NSi/PNJovIek
- dMtjEITYvmRBK91VGh43+ksD89cMCsXJyMfP56nCtEX3HEMmRikmIUfVPA6hfs8O6uC4
- r+nQ==
+ bh=JvE73Rg5rWKbwPbQYMIOUPC3ryk2kn7Ur9BRIhAoTLE=;
+ b=PUGjtKEW++kskJ0q2+dZ7lW5VRJBxAg8Z4WD+qp9YGcqIGUjNjqzldTA9CPqJKPWN9
+ STSjNfXYIvyUjHpPToUleALEfV5+MUBDpxiTcdVhza/fIyDoZk4MEe4ALCD6DpO1ykiv
+ sjJgNMQkSLIJLfT1JShBkbvB6Ng1ayit539iDVXlXzSOG6vF9VN+2rjrZ6ETgsvQ9F3B
+ 6mgzvjEq8jm1YvI4YFB1Kh1J7fN5j1aPmbhq8Eg2LJmqJkmml+DlhaJN/l+5AIUFX6tR
+ 9qjOyR6inrs5pAR4/M4ksNJRdV0UTRKYAs/PaqwRpJJus+5B4hzjg2sHsmozHXKGgiU3
+ EUPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740510003; x=1741114803;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=UoYP30pe3Y69bUhEc/iugFWzVPK0AK9VEOiX7fDGWFE=;
- b=LfPS6qLFnrHPROHnJFKWvZc4iNKmM/4gHATJJ9GuMoUWv8xXQSlp2ex43I1fZaB1qv
- gYemSM7PSBK0V30dDaixf524Gs7r8hLtHWQ8rI1a+3Ek9jpFBprRls5s4qsJq/xCL80/
- 7cqL47+fVKADSwXehOPqpePm3Cb9u5rk8NQVTJW4VQP9pOawa3Qqz3ej6Mvl/OQ+qR4F
- mJiee1kChyKwzo3+eKXnfYLjy7zEKS0zJFDkMeEEI57Lnu/vSN/6PSznEaVJmZWFTTOC
- kTHzNSXMuON++w4H5QMhONGTWKGSQtb5NEvzRTCmN68AXo6t5B3GBUHabFbL8Wrt0Tcb
- FUlQ==
-X-Gm-Message-State: AOJu0YwFDfKKnZP6EBndqzRYAHrMbsZl0gpRSnyP1TEH3oWMD9lJfDea
- i+vpsUvslRu+FiajM3+qLE8FpDJ7Zq1/1tjlDkBQDNPuqkXhC7llkLxrCXaYz48=
-X-Gm-Gg: ASbGncsxW2TH7k41mD8zsAYWOTXnezbITwvWLDTfi5ve+QU0WC/lywZOGSxT3Wd13t7
- XoP/ih+b1vM/CpYQQi3FvQmXYBXKNCe1ubNCvjv2VQ9Y2asQARWjq1VLSgoy9XaBXzUhbict8xp
- DL+YOZZEXbc52AGFnkBM0o6jX58va9spNKUbhIFN0eqo3wtbzCAkdya14yxCz9MQipa+baXww2k
- MZsXaXCqeDdoUL/TphXBU4Ofcpgrqcla/KQncB+Y0WmHLFmCKXswdxu5+KoqzvZ6L03OB/Ks+c+
- 2d2rrwUJwXSnEeM+FlfsC4io5ebe
-X-Google-Smtp-Source: AGHT+IHdFfK9VUIfPH96O+Kspp00UkT5F2tiJ0VqHru4jyjq1vvTZs3aG2dsv8/3hk8IyrTs3Skq1A==
-X-Received: by 2002:a05:6000:1789:b0:38f:295e:6331 with SMTP id
- ffacd0b85a97d-390cc605164mr3728683f8f.19.1740510003238; 
- Tue, 25 Feb 2025 11:00:03 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390cd8e72e6sm3241546f8f.68.2025.02.25.11.00.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 11:00:02 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E740E5F7DC;
- Tue, 25 Feb 2025 19:00:01 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 001/162] tcg: Add all_outop[]
-In-Reply-To: <20250216231012.2808572-2-richard.henderson@linaro.org> (Richard
- Henderson's message of "Sun, 16 Feb 2025 15:07:30 -0800")
-References: <20250216231012.2808572-1-richard.henderson@linaro.org>
- <20250216231012.2808572-2-richard.henderson@linaro.org>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Tue, 25 Feb 2025 19:00:01 +0000
-Message-ID: <87zfi94zpq.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1740511946; x=1741116746;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JvE73Rg5rWKbwPbQYMIOUPC3ryk2kn7Ur9BRIhAoTLE=;
+ b=ZphiLipMnlzsbNTQAy8utR4i3WAwwsqvBB7wa2xeDHcV+1JqeDhxsQnYT4sgH9xTQv
+ WiZy9bw3A/w+5x+N/96GEc0EdRGr87NQJ51pHiqsAUS1Vzc8JfwoCLRwSLgCBm5yg7bc
+ uyR/1c0VKT9PKZ5begOKF9BZ7bbQA+08XBtCmX7HhkWXc3+Bx92eCp5dmlmVZnSaBofd
+ DCvYBxlJJ2TAcnS+48NTEXIxhTwxtoMjXzy9Y0iaFj9isqiI08136/WcVDGpJBwj/C62
+ WNhgjmEXYTY0/yL4y9NJfO2tnSwX/pTWnvNxKheF5z/S1WP6HJzV3adqgx6VOqOY/9Js
+ j3fQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWH7zaVbr7acnMZdILS21kAdTkZgZoQVzQzn+hLz7WEmHK0QeMaL02iX/1ttfj7j5nxlbEAgFZ2wA==@nongnu.org
+X-Gm-Message-State: AOJu0YxXt/a5dhff4erdwm5oqMhk1g/DIizETt3QAKrq2VSX60F5emew
+ gSI1fiHtlJnRk5E6frUzsntYRlgeZXsFVWl3MawVeLzFq5VQ5qok
+X-Gm-Gg: ASbGncsdaJun3lLf62T0bc3PUxQzcLZxOzcPyaUIY5pBb61rpwelN71DfN3Qwa/KLyF
+ gTGfglZ2raWpBB0NVHX7XOFML3xozdokPmxD9AFRRIaCuTQyw6W8LYVyrp63CyHIJcW8xrjNYWx
+ W52g0I7Jbhp9IRQ+fesjAsp7VLuWvaGKNaYzH6vs0Q80nWGol3ADNf+aScFfdG4ZnxpK7uPjEOW
+ U80MtcKPBKdqT2Nn1GNX7OfJDD0mdF9yQr7DbpLqx21ar2FXTuEneAANehoJbZHeXzI+WKHbkv2
+ RGXRg9X0D3UWnxgF/Y918nBDg+Y6P9hK7wqrhoLgALc12sKVlXmYxoVurcZ04jes+8GJLkJgagh
+ 3wI0=
+X-Google-Smtp-Source: AGHT+IHhdLyhyIJ3UvEDFqj4yeLl5Mczn2TKFbR3Syf/cqx1TJ9klpzDFc2htfFObLMvQ5J2BLh22A==
+X-Received: by 2002:a05:6402:34cc:b0:5dc:cfc5:9305 with SMTP id
+ 4fb4d7f45d1cf-5e4a0dfc8b9mr885142a12.25.1740511946057; 
+ Tue, 25 Feb 2025 11:32:26 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-188-213-172.77.188.pool.telefonica.de.
+ [77.188.213.172]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5e45b80b87asm1629151a12.39.2025.02.25.11.32.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 11:32:25 -0800 (PST)
+Date: Tue, 25 Feb 2025 18:48:50 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 16/18] hw/arm/fsl-imx8mp: Add boot ROM
+In-Reply-To: <CAFEAcA8L6CFvuTC+UqG7r5R27Yohc9vSVtPBHttBKKj-s-L0oA@mail.gmail.com>
+References: <20250223114708.1780-1-shentey@gmail.com>
+ <20250223114708.1780-17-shentey@gmail.com>
+ <CAFEAcA8L6CFvuTC+UqG7r5R27Yohc9vSVtPBHttBKKj-s-L0oA@mail.gmail.com>
+Message-ID: <6DBA3ED8-1ED6-4657-992E-3B12FFF8332B@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,68 +107,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Add infrastructure for more consolidated output of opcodes.
-> The base structure allows for constraints to be either static
-> or dynamic, and for the existence of those constraints to
-> replace TCG_TARGET_HAS_* and the bulk of tcg_op_supported.
+
+Am 25=2E Februar 2025 14:29:15 UTC schrieb Peter Maydell <peter=2Emaydell@=
+linaro=2Eorg>:
+>On Sun, 23 Feb 2025 at 11:47, Bernhard Beschow <shentey@gmail=2Ecom> wrot=
+e:
+>>
+>> On a real device, the boot ROM contains the very first instructions the=
+ CPU
+>> executes=2E Also, U-Boot calls into the ROM to determine the boot devic=
+e=2E While
+>> we're not actually implementing this here, let's create the infrastruct=
+ure and
+>> add a dummy ROM with all zeros=2E This allows for implementing a ROM la=
+ter without
+>> touching the source code and even allows for users to provide their own=
+ ROMs=2E
+>>
+>> The imx8mp-boot=2Erom was created with
+>> `dd if=3D/dev/zero of=3Dimx8mp-boot=2Erom bs=3D1 count=3D258048`=2E
+>>
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tcg/tcg.c | 76 +++++++++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 68 insertions(+), 8 deletions(-)
+>Hi; I've thought about this a bit, and I think we should just
+>postpone having code to load a rom blob until we have an
+>actual rom blob that's not all zeroes=2E This makes this
+>board the same as e=2Eg=2E imx7 which also doesn't try to load
+>a ROM blob=2E You can create a memory region for the ROM,
+>like imx7; just don't load anything into it, and that's
+>exactly the same as if there was an all-zeroes file that
+>got loaded=2E
 >
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index e8950df2ad..96c29536b6 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -861,6 +861,7 @@ static int tcg_out_pool_finalize(TCGContext *s)
->  #define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I=
-1, I2, I3, I4),
->=20=20
->  typedef enum {
-> +    C_Dynamic =3D -2,
->      C_NotImplemented =3D -1,
->  #include "tcg-target-con-set.h"
->  } TCGConstraintSetIndex;
-> @@ -954,6 +955,29 @@ static const TCGConstraintSet constraint_sets[] =3D {
->  #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2,=
- I3, I4)
->  #define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I=
-1, I2, I3, I4)
->=20=20
-> +/*
-> + * TCGOutOp is the base class for a set of structures that describe how
-> + * to generate code for a given TCGOpcode.
-> + *
-> + * @static_constraint:
-> + *   C_NotImplemented: The TCGOpcode is not supported by the backend.
-> + *   C_Dynamic:        Use @dynamic_constraint to select a constraint set
-> + *                     based on any of @type, @flags, or host isa.
-> + *   Otherwise:        The register allocation constrains for the TCGOpc=
-ode.
-> + *
-> + * Subclasses of TCGOutOp will define a set of output routines that may
-> + * be used.  Such routines will often be selected by the set of registers
-> + * and constants that come out of register allocation.  The set of
-> + * routines that are provided will guide the set of constraints that are
-> + * legal.  In particular, assume that tcg_optimize() has done its job in
-> + * swapping commutative operands and folding operations for which all
-> + * operands are constant.
-> + */
-> +typedef struct TCGOutOp {
-> +    TCGConstraintSetIndex static_constraint;
-> +    TCGConstraintSetIndex (*dynamic_constraint)(TCGType type, unsigned f=
-lags);
-> +} TCGOutOp;
-> +
+>This doesn't prevent users from experimenting with providing
+>their own ROM code, because they can do that with the
+>generic loader (passing it either an ELF file set up to
+>load to the ROM area or else a binary blob plus the
+>start address of 0)=2E
+>
+>That way we aren't carrying code we aren't using and an
+>awkward binary blob in git; we can add those when we need
+>them=2E
 
-Nice ;-)
+Yes, makes sense=2E
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Best regards,
+Bernhard
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+>
+>thanks
+>-- PMM
 
