@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E1EA449E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3821CA4499A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:08:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzLX-0004yP-Ev; Tue, 25 Feb 2025 13:07:55 -0500
+	id 1tmzKd-0000lp-6b; Tue, 25 Feb 2025 13:07:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJI-0008OI-EX
+ id 1tmzJI-0008OJ-En
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:38 -0500
 Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJE-0002EG-6q
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:35 -0500
+ id 1tmzJE-0002EO-7R
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:36 -0500
 Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-439ac3216dcso35323035e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:29 -0800 (PST)
+ 5b1f17b1804b1-439846bc7eeso37887645e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1740506729; x=1741111529; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=G4xjZnl3BpPxOIB4pja6AX2uxbwVoiM4NI/V8RlY2sg=;
- b=UXM1eZDURFtxZN5+APj6xSZum8vmf/FA7qlt8a6Nm9gQgbgt39CwOKwFxOSSTHbjzE
- a1GdoFrlFVMmcntu1YjrwCFarQ81MexnljkyGLa8vpTtDGCdRWkgXENT/IGKNx3P5gd1
- 96Buv4Ih4Hny3yvZj8De09Z8jG55g6yPBDSlBQm7Nd6EiN7KxIlSXyzPoHDiNJn37G9N
- f9Ee/GDDP0ybRc4PTpLqSQm27JQ5Ggpt+K34gmAVa0EGeHJpjQaRlWCNlGLJBTJ8xZlF
- QrM/k3PH5ywI2eGEbh08JYAtDjvH93expN7zLxVT8OcVJvg6Ggtz2erHDnWcoGPOKzVT
- icsw==
+ :reply-to; bh=UyVluIUiXC9e1nybV7JnEyde0uqtuYfTQXqF3CZ1WlA=;
+ b=Pe2Eqr8eMRce4slhWm0iFHSsjzvRgQJCYblBJMh1ORfrCh0S7+qP0fgD+7EWKuri6K
+ Tyy1niaqR1FpvfhyCRT/Hv3U8U3wJyy2foMmTEtCYyf+WG4Nn3VQ0/AkHuxKWIyxtxWe
+ +7GgHOEC3ki6T8r7QhQYYndCSBRM9hJc7bLnrwlJUyWqvageZdelJJyj5583IrFY0hRf
+ 798syTsSpHtkEuRD0vMNV/r0WtGEG6AjqNtMF0JgH/B4vdt1MC3h6qD4nQdnntroNPX+
+ qVxtd0Nmbtr+11+YXhqDkghM+hlHOWEkKrMEqY5DZ5pXyXrAXbSX2QnhRll0gndxlqiz
+ XdmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1740506729; x=1741111529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G4xjZnl3BpPxOIB4pja6AX2uxbwVoiM4NI/V8RlY2sg=;
- b=imHMQv3oDrcC8EUXw2qT3rVMVaPEjRlTd0ExQFf+azbRCP3UYPcN2Nna8Y3fKlGIzm
- UGWfGAVf+tHmGSdGuwOvddUmZA9KLtAB66aHqht3Zo0zXP5MoT9wHutd8O6/r1BwI5gI
- V+vh8lISDVM1c/EsgIcOMy7XHTsTaGTtq4REfXhX2uO//skibMwYi3TN3bIytBfHCB1/
- H2u4Vm4ctRnnHedkjOA9CvF78ipBM9/jT0Ayko/mVpIYeSeS8jhbzBQXAeENIupcAnuh
- fgjaG/RlTcs2xZgm4JiSWkJ5WgQ0R5eDJF1MiGdknRw9ltHktODJuNyUm61SW5ViRXWZ
- 9AAw==
-X-Gm-Message-State: AOJu0Yw0RxUdD8FHZH3/vo0SIUIOMH2H+aBF84ZOjRyEBfduJnR8Dcrz
- n28lko8jSyeBDIf+HquE6MSESEv8Clvh4IqYLPBcgfXHiHk0cCSN0NokEhinr5iQDj5MdgnmGAK
- 9
-X-Gm-Gg: ASbGnct38koHCEGPLnfCkbdXCf67ZNSW6WzDzNAARt/nyE4Eige7F/ujziNpz/32tye
- aQ+txyqE72hs2lHzcyZw1JB+GqFmvV/i1pDIqU+k0AeyjtTv0M4d33GQvd1AZJnD5hER1rrx9Y2
- IbJp6uewMo8pcaNhTfIAojG8D6v8TQsmRVAn4KLmILKPIaLLl/5g15W6HfVm3JT2z+JwbwdqFTA
- Z5nzi2xTcjw8/31Z7l1+9iCjBwjBKlRqSHJf//CVo4bZ234cPJEAKA4YKidKzdg2IlI3BpGitpC
- 457L9etQHpgG4CVFab3k8p/X/34CygBQ
-X-Google-Smtp-Source: AGHT+IFzpf81Og47LC7aK6z2LLPt9spb4oUIjRbLO61+QcS/xBmYdPzn2bO1GVywwFWzKKw1Qqk0rA==
-X-Received: by 2002:a05:600c:4683:b0:439:8523:36cc with SMTP id
- 5b1f17b1804b1-43ab07ab212mr54003605e9.11.1740506728517; 
- Tue, 25 Feb 2025 10:05:28 -0800 (PST)
+ bh=UyVluIUiXC9e1nybV7JnEyde0uqtuYfTQXqF3CZ1WlA=;
+ b=VzJbMJMdBcZkYWKj7jB7orbuJ8uz+AhwpyjANf4qPVTLSk3ppbGdPYHF1dxI1FUMc8
+ 3iqUNNGGqEIN/i6+YqIHw/ffxfwk7v7DF5AwXlpB97ZyV2lXbYZPzX4CWL6Cs/6Tsfsr
+ ZmTUBqnJvbePLpSIgRcK/aZi3UyoZasgiIcFXUuQg+h7vw1MCHs1EyFDOsNxUodfmAZe
+ wn/6JmLVryzFPmKGcwKm3KJ9S5f0IlZ5lrNmcEE2e6OSUmjF/qOWq7kO3mzvN4YoEX6a
+ DL31Bw41HsPh1w2mJvPsQVBXHtFhmGh6rAoRjWDhmEUcxh7hlHtgNGSdmKlXN/jT1PNI
+ yWCg==
+X-Gm-Message-State: AOJu0YyMyCbsf8jJrLU1zs5L+uRUJx8gg9WZMFcQ3nESstvlKeC9+8ZY
+ aW/kYvEuTWbEkoxoI2gdd1xevvCt+Xe72ZQSEZf7qyyYDiw55h2B0+IhWI4Ae7NS0idrmQ7P7k0
+ 7
+X-Gm-Gg: ASbGncs5tx/yP+YBOGqxuQ2kjV5WjAM4p19fbLBYkSqm4I2JvhMtFMCjEsipZ1FZqhJ
+ CaTg6VSB1EbCUChDwH5lZi4L+a6q+2xje1wpk3eN/iv3BW/eNjIAXqufeog5Bo7XbmrR2KX0NbX
+ 4TkRgGfKuq/kdc8GfOseVuTkytJyMQ3xjC6mSveenCNfwi/A5ePGet5efZFO/HYjeu1q8vBRhEp
+ m2/SZCgjuNYDGdOTTAkHE1d3i+q5U4+Jq3pSBqbewvFK9IbQlaHFaWmToESBuJF5ook5hAe8MXY
+ WjvQwc874eJ/L3kwuY2bamKGTmwq/9g6
+X-Google-Smtp-Source: AGHT+IHW4pVTwkJTaPLxojq0VYINPbzkFIMR9xhfkdcoHzS8xaLJ0w0V9MY8t1Swf6iOD9l4p9t7sQ==
+X-Received: by 2002:a05:600c:524f:b0:439:96b2:e8f with SMTP id
+ 5b1f17b1804b1-43ab902b47cmr4198805e9.28.1740506729529; 
+ Tue, 25 Feb 2025 10:05:29 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.27
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:27 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:28 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/43] fpu: Make targets specify whether floatx80 Inf can have
- Int bit clear
-Date: Tue, 25 Feb 2025 18:04:39 +0000
-Message-ID: <20250225180510.1318207-14-peter.maydell@linaro.org>
+Subject: [PULL 14/43] fpu: Pass float_status to floatx80_invalid_encoding()
+Date: Tue, 25 Feb 2025 18:04:40 +0000
+Message-ID: <20250225180510.1318207-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
@@ -98,118 +97,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In Intel terminology, a floatx80 Infinity with the explicit integer
-bit clear is a "pseudo-infinity"; for x86 these are not valid
-infinity values.  m68k is looser and does not care whether the
-Integer bit is set or clear in an infinity.
+The definition of which floatx80 encodings are invalid is
+target-specific.  Currently we handle this with an ifdef, but we
+would like to defer this decision to runtime.  In preparation, pass a
+float_status argument to floatx80_invalid_encoding().
 
-Move this setting to runtime rather than using an ifdef in
-floatx80_is_infinity().
-
-Since this was the last use of the floatx80_infinity global constant,
-we remove it and its definition here.
+We will change the implementation from ifdef to looking at
+the status argument in the following commit.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250224111524.1101196-6-peter.maydell@linaro.org
-Message-id: 20250217125055.160887-5-peter.maydell@linaro.org
+Message-id: 20250224111524.1101196-7-peter.maydell@linaro.org
 ---
- include/fpu/softfloat-types.h  |  5 +++++
- include/fpu/softfloat.h        | 18 +++++++++++-------
- target/m68k/cpu.c              |  4 +++-
- fpu/softfloat-specialize.c.inc | 10 ----------
- 4 files changed, 19 insertions(+), 18 deletions(-)
+ include/fpu/softfloat.h      |  2 +-
+ fpu/softfloat.c              |  2 +-
+ target/i386/tcg/fpu_helper.c | 24 +++++++++++++-----------
+ 3 files changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index dd22ecdbe60..e1732beba4f 100644
---- a/include/fpu/softfloat-types.h
-+++ b/include/fpu/softfloat-types.h
-@@ -330,6 +330,11 @@ typedef enum __attribute__((__packed__)) {
- typedef enum __attribute__((__packed__)) {
-     /* In the default Infinity value, is the Integer bit 0 ? */
-     floatx80_default_inf_int_bit_is_zero = 1,
-+    /*
-+     * Are Pseudo-infinities (Inf with the Integer bit zero) valid?
-+     * If so, floatx80_is_infinity() will return true for them.
-+     */
-+    floatx80_pseudo_inf_valid = 2,
- } FloatX80Behaviour;
- 
- /*
 diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index 3c83d703baf..07259c59303 100644
+index 07259c59303..1c8f3cbb78d 100644
 --- a/include/fpu/softfloat.h
 +++ b/include/fpu/softfloat.h
-@@ -960,7 +960,6 @@ float128 floatx80_to_float128(floatx80, float_status *status);
- /*----------------------------------------------------------------------------
- | The pattern for an extended double-precision inf.
+@@ -1081,7 +1081,7 @@ static inline bool floatx80_unordered_quiet(floatx80 a, floatx80 b,
+ | pseudo-denormals, which must still be correctly handled as inputs even
+ | if they are never generated as outputs.
  *----------------------------------------------------------------------------*/
--extern const floatx80 floatx80_infinity;
- floatx80 floatx80_default_inf(bool zSign, float_status *status);
- 
- /*----------------------------------------------------------------------------
-@@ -998,12 +997,17 @@ static inline floatx80 floatx80_chs(floatx80 a)
- 
- static inline bool floatx80_is_infinity(floatx80 a, float_status *status)
+-static inline bool floatx80_invalid_encoding(floatx80 a)
++static inline bool floatx80_invalid_encoding(floatx80 a, float_status *s)
  {
--#if defined(TARGET_M68K)
--    return (a.high & 0x7fff) == floatx80_infinity.high && !(a.low << 1);
--#else
--    return (a.high & 0x7fff) == floatx80_infinity.high &&
--                       a.low == floatx80_infinity.low;
--#endif
-+    /*
-+     * It's target-specific whether the Integer bit is permitted
-+     * to be 0 in a valid Infinity value. (x86 says no, m68k says yes).
-+     */
-+    bool intbit = a.low >> 63;
-+
-+    if (!intbit &&
-+        !(status->floatx80_behaviour & floatx80_pseudo_inf_valid)) {
-+        return false;
-+    }
-+    return (a.high & 0x7fff) == 0x7fff && !(a.low << 1);
- }
+ #if defined(TARGET_M68K)
+     /*-------------------------------------------------------------------------
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index b12ad2b42a9..2a20ae871eb 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -1810,7 +1810,7 @@ static bool floatx80_unpack_canonical(FloatParts128 *p, floatx80 f,
+         g_assert_not_reached();
+     }
  
- static inline bool floatx80_is_neg(floatx80 a)
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index df66e8ba22a..56b23de21fe 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -110,8 +110,10 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
-     /*
-      * m68k-specific floatx80 behaviour:
-      *  * default Infinity values have a zero Integer bit
-+     *  * input Infinities may have the Integer bit either 0 or 1
-      */
--    set_floatx80_behaviour(floatx80_default_inf_int_bit_is_zero,
-+    set_floatx80_behaviour(floatx80_default_inf_int_bit_is_zero |
-+                           floatx80_pseudo_inf_valid,
+-    if (unlikely(floatx80_invalid_encoding(f))) {
++    if (unlikely(floatx80_invalid_encoding(f, s))) {
+         float_raise(float_flag_invalid, s);
+         return false;
+     }
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 3b79bc049d1..4858ae9a5fb 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -1141,7 +1141,7 @@ void helper_f2xm1(CPUX86State *env)
+     int32_t exp = extractFloatx80Exp(ST0);
+     bool sign = extractFloatx80Sign(ST0);
+ 
+-    if (floatx80_invalid_encoding(ST0)) {
++    if (floatx80_invalid_encoding(ST0, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST0 = floatx80_default_nan(&env->fp_status);
+     } else if (floatx80_is_any_nan(ST0)) {
+@@ -1383,8 +1383,8 @@ void helper_fpatan(CPUX86State *env)
+     } else if (floatx80_is_signaling_nan(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_silence_nan(ST1, &env->fp_status);
+-    } else if (floatx80_invalid_encoding(ST0) ||
+-               floatx80_invalid_encoding(ST1)) {
++    } else if (floatx80_invalid_encoding(ST0, &env->fp_status) ||
++               floatx80_invalid_encoding(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_default_nan(&env->fp_status);
+     } else if (floatx80_is_any_nan(ST0)) {
+@@ -1819,7 +1819,7 @@ void helper_fxtract(CPUX86State *env)
                             &env->fp_status);
- 
-     nan = floatx80_default_nan(&env->fp_status);
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 73789e97d77..8327f727861 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -237,16 +237,6 @@ floatx80 floatx80_default_inf(bool zSign, float_status *status)
-     return packFloatx80(zSign, 0x7fff, z ? 0 : (1ULL << 63));
- }
- 
--#define floatx80_infinity_high 0x7FFF
--#if defined(TARGET_M68K)
--#define floatx80_infinity_low  UINT64_C(0x0000000000000000)
--#else
--#define floatx80_infinity_low  UINT64_C(0x8000000000000000)
--#endif
--
--const floatx80 floatx80_infinity
--    = make_floatx80_init(floatx80_infinity_high, floatx80_infinity_low);
--
- /*----------------------------------------------------------------------------
- | Returns 1 if the half-precision floating-point value `a' is a quiet
- | NaN; otherwise returns 0.
+         fpush(env);
+         ST0 = temp.d;
+-    } else if (floatx80_invalid_encoding(ST0)) {
++    } else if (floatx80_invalid_encoding(ST0, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST0 = floatx80_default_nan(&env->fp_status);
+         fpush(env);
+@@ -1870,7 +1870,8 @@ static void helper_fprem_common(CPUX86State *env, bool mod)
+     env->fpus &= ~0x4700; /* (C3,C2,C1,C0) <-- 0000 */
+     if (floatx80_is_zero(ST0) || floatx80_is_zero(ST1) ||
+         exp0 == 0x7fff || exp1 == 0x7fff ||
+-        floatx80_invalid_encoding(ST0) || floatx80_invalid_encoding(ST1)) {
++        floatx80_invalid_encoding(ST0, &env->fp_status) ||
++        floatx80_invalid_encoding(ST1, &env->fp_status)) {
+         ST0 = floatx80_modrem(ST0, ST1, mod, &quotient, &env->fp_status);
+     } else {
+         if (exp0 == 0) {
+@@ -2066,8 +2067,8 @@ void helper_fyl2xp1(CPUX86State *env)
+     } else if (floatx80_is_signaling_nan(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_silence_nan(ST1, &env->fp_status);
+-    } else if (floatx80_invalid_encoding(ST0) ||
+-               floatx80_invalid_encoding(ST1)) {
++    } else if (floatx80_invalid_encoding(ST0, &env->fp_status) ||
++               floatx80_invalid_encoding(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_default_nan(&env->fp_status);
+     } else if (floatx80_is_any_nan(ST0)) {
+@@ -2164,8 +2165,8 @@ void helper_fyl2x(CPUX86State *env)
+     } else if (floatx80_is_signaling_nan(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_silence_nan(ST1, &env->fp_status);
+-    } else if (floatx80_invalid_encoding(ST0) ||
+-               floatx80_invalid_encoding(ST1)) {
++    } else if (floatx80_invalid_encoding(ST0, &env->fp_status) ||
++               floatx80_invalid_encoding(ST1, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST1 = floatx80_default_nan(&env->fp_status);
+     } else if (floatx80_is_any_nan(ST0)) {
+@@ -2331,7 +2332,8 @@ void helper_frndint(CPUX86State *env)
+ void helper_fscale(CPUX86State *env)
+ {
+     uint8_t old_flags = save_exception_flags(env);
+-    if (floatx80_invalid_encoding(ST1) || floatx80_invalid_encoding(ST0)) {
++    if (floatx80_invalid_encoding(ST1, &env->fp_status) ||
++        floatx80_invalid_encoding(ST0, &env->fp_status)) {
+         float_raise(float_flag_invalid, &env->fp_status);
+         ST0 = floatx80_default_nan(&env->fp_status);
+     } else if (floatx80_is_any_nan(ST1)) {
+@@ -2344,7 +2346,7 @@ void helper_fscale(CPUX86State *env)
+             ST0 = floatx80_silence_nan(ST0, &env->fp_status);
+         }
+     } else if (floatx80_is_infinity(ST1, &env->fp_status) &&
+-               !floatx80_invalid_encoding(ST0) &&
++               !floatx80_invalid_encoding(ST0, &env->fp_status) &&
+                !floatx80_is_any_nan(ST0)) {
+         if (floatx80_is_neg(ST1)) {
+             if (floatx80_is_infinity(ST0, &env->fp_status)) {
 -- 
 2.43.0
 
