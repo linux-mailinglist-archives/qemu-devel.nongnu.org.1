@@ -2,78 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787A3A44BF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2824A44BF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:05:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn1B6-0005dm-FR; Tue, 25 Feb 2025 15:05:19 -0500
+	id 1tn1Ag-0005aW-Lv; Tue, 25 Feb 2025 15:04:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tn1Aq-0005cz-JF
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:05:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tn1An-000453-Od
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740513897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OiRdKc8kc+lAB0iX44vSdY3uEOe5MHpol+/aR6KeNw0=;
- b=HnRJzBhb3AN5/tGfhyjYWpJ+jTVekzKIigBilLSddeZdB3fbrm3C8R018oxwAobz/+Khde
- sDh6Yl1+QSdUf+RzOlebkVYU3vn2cnO6ZPpAAzyYlrFAB190uqDtgTxqtoTPdEuelftFKV
- oagiI9YsvEb5r9dj5XTjtRSE8LCuChk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-XxtGZQXPMTOEDNHj0_WOzg-1; Tue,
- 25 Feb 2025 15:04:50 -0500
-X-MC-Unique: XxtGZQXPMTOEDNHj0_WOzg-1
-X-Mimecast-MFC-AGG-ID: XxtGZQXPMTOEDNHj0_WOzg_1740513886
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7A511979057; Tue, 25 Feb 2025 20:04:45 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.59])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 435701800359; Tue, 25 Feb 2025 20:04:42 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 4/4] include/hw/boards: add warning about changing deprecation
- logic
-Date: Tue, 25 Feb 2025 20:04:23 +0000
-Message-ID: <20250225200423.2350471-5-berrange@redhat.com>
-In-Reply-To: <20250225200423.2350471-1-berrange@redhat.com>
-References: <20250225200423.2350471-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tn1Ac-0005Zp-46
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:46 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tn1Aa-00042f-0g
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:45 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-220c665ef4cso106723585ad.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 12:04:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740513882; x=1741118682; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=eafRUFXF5KaoeWxrpiU1cINE1gCRLGDzjj7kyk58lY4=;
+ b=cjPU1jbPIcX/B3vixSpI+RXF2cg/bGSva8zGvwBShXoPMOx4Gn+OBeU5FJS1B2qfu/
+ L3G+0eNNzWFkcscuyqwcP37hf3nqiqyaygeEfzRhVQ/oID3uAbhah9P/21IvHBB+MZZz
+ ccMblrhAiqvXWo/9mg2/2piBx9gH9dYN9CWFTAu/PM+13vvvf7itRW55bAFvzsEWZXi2
+ CzdRU4cpklwxz3+K26pkFUbHQNTZIDLo8WLYVgdzB4i0+mN2wI7mqq02wV3bV82g3tvs
+ q/m81ECW3rqvorFIBvayuxwLTK4Y1mz9JmIps2UoFayEFnaCumNHBCcOjL9N6cRIc0yO
+ AZyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740513882; x=1741118682;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eafRUFXF5KaoeWxrpiU1cINE1gCRLGDzjj7kyk58lY4=;
+ b=eYjGe/x8BAxkXB0ooe84p8l/UR8xr0ohWNJcscfzKPamSHCw0Tr6L9pAm12XfJx4An
+ dVDyGl8DlkdXQ9Axiekbx19tPWmI+VYPk1p7lURNja+EDQ1q4L/Snltulcsxw1HZE1Jv
+ HmQqcbC7yy656GTBUFehFwqPUs5vQQ6De0/t9z3J8rkj5PegSnIYkjCzIwZINEEoPzfa
+ 4OL4LBy35YNcyNNtTMr3sluIoTjstGe6PEZfZF2V0fafne4BA73zfOebFUeynOrmmqAF
+ ydZ6oi2qJ/rCK7gE59S5WervUaQxS5lMEGkWt6rc5pMwBOPGt9HoE4MeaJfKTNXjWKM2
+ mdLA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVRaU+M5DLuvnRa+ubjHgE4WaHrss47YdgKhcbSGU35g3S4bDam3v5HJsgXXylNWwbknykqsFNPV3nm@nongnu.org
+X-Gm-Message-State: AOJu0YxZeEwWopGjJWTrIBVExz3/NBQm8D3riJdG4xg2ssRAkLHiaWNC
+ WwVXEzNglEjwBdObj9ZQ6IryJ8wVrg3hoi8k+K5x5Al6IkBOzT5Ql5I1QCVJDhw=
+X-Gm-Gg: ASbGncvMXePEaCoRh6AiUpVs729JnviBp3CN33Ti6TcsbqZoKGTwUM773SoLLgJv6hJ
+ ADOm9my/D7N99jeuCqKdTKlWcP3yfduMU4yKC9ue1DN5kWPj+BEZtfqKI5/jsqyfquS8NVn4wO6
+ /x3OmzCuceRPi0dfsO47CS9fdXcATawARDNtc/YTNrm6XP+StNqzxrzZ1Z2GHDg7wKR3lZdwBRB
+ c/iqgrp4ppYpcrI3gzSQshRaG6LKYSOzQILZVp0TBRt0NLDvyP159EJspEXWy7RqCITmUwQdLlv
+ LM471o4SjACW4s2jwiWsXqfoFwIOiJylw47uJ+aSN7PJ1ubfd8861dnHuE/naOKwE1x4Gb+Id00
+ Nr77fGxc=
+X-Google-Smtp-Source: AGHT+IG82hBc2mg3kpttkrnaLF9MyBuqZD4iMLfGRJwTrhdwwIupTS67P48At/jb4zydEhP9MF4o1Q==
+X-Received: by 2002:a17:903:2ecb:b0:220:e9ac:e746 with SMTP id
+ d9443c01a7336-221a003b2dcmr332903585ad.53.1740513882617; 
+ Tue, 25 Feb 2025 12:04:42 -0800 (PST)
+Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2230a0b0efesm18174325ad.250.2025.02.25.12.04.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 12:04:42 -0800 (PST)
+Message-ID: <07c147b4-67e0-4dd6-8ce1-9badf5706e42@linaro.org>
+Date: Tue, 25 Feb 2025 12:04:40 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] tcg:tlb: use tcg_debug_assert() in
+ assert_cpu_is_self()
+From: Richard Henderson <richard.henderson@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Helge Deller <deller@gmx.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-ppc@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+References: <20250225184628.3590671-1-alex.bennee@linaro.org>
+ <20250225184628.3590671-5-alex.bennee@linaro.org>
+ <c7c2d873-3ea7-41a5-8842-1ebf33b5a560@linaro.org>
+Content-Language: en-US
+In-Reply-To: <c7c2d873-3ea7-41a5-8842-1ebf33b5a560@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,50 +108,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we change the deprecation logic in include/hw/boards.h, we must make
-a corresponding change to docs/conf.py and docs/about/deprecated.rst.
-Add comments to these files as a warning to future maintainers to keep
-these files in sync.
+On 2/25/25 12:02, Richard Henderson wrote:
+> Not checked here are any of the other reasons a flush might be ok:
+> 
+> (2) The system as a whole is stopped, on the way in from migration/vmload.
+> (3) The cpu is offline, on the way in from poweroff/reset.
+(4) Running in round-robin mode, so there is *never* a race between cpus.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/conf.py        | 4 ++++
- include/hw/boards.h | 6 +++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+Anything else I've forgotten?
 
-diff --git a/docs/conf.py b/docs/conf.py
-index 8b567787ce..d0d3cd10ce 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -129,6 +129,10 @@
-     else:
-         minor += 1
- 
-+# These thresholds must match the constants
-+# MACHINE_VER_DELETION_MAJOR  & MACHINE_VER_DEPRECATION_MAJOR
-+# defined in include/hw/boards.h and the introductory text in
-+# docs/about/deprecated.rst
- ver_machine_deprecation_version = "%d.%d.%d" % (major - 3, minor, micro)
- ver_machine_deletion_version = "%d.%d.%d" % (major - 6, minor, micro)
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index dcfb251cbd..a89a885add 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -633,7 +633,11 @@ struct MachineState {
- /*
-  * How many years/major releases for each phase
-  * of the life cycle. Assumes use of versioning
-- * scheme where major is bumped each year
-+ * scheme where major is bumped each year.
-+ *
-+ * These values must match the ver_machine_deprecation_version
-+ * and ver_machine_deletion_version logic in docs/conf.py and
-+ * the text in docs/about/deprecated.rst
-  */
- #define MACHINE_VER_DELETION_MAJOR 6
- #define MACHINE_VER_DEPRECATION_MAJOR 3
--- 
-2.47.1
 
+r~
 
