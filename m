@@ -2,67 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C24A43531
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 07:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F8FA435E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 08:04:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmoPB-00079s-VU; Tue, 25 Feb 2025 01:26:57 -0500
+	id 1tmoxg-0005FQ-La; Tue, 25 Feb 2025 02:02:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmoP2-00079N-Pg; Tue, 25 Feb 2025 01:26:48 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmoOy-0001FC-6y; Tue, 25 Feb 2025 01:26:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740464804; x=1772000804;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=gcnnrlfbep+3n+TB3ISdH1THmG3D+qNZIJZlMekACzU=;
- b=dewLFsTkOLOjK+Am0leJChEGEQjGBEohQzN0v+sE2MvZbRpTQZo3Kmut
- H9sev64XT18qgiSYCqLq+SBwInARGkyT5NtNYvjaVHGKK81nxYdqYxWW4
- l36W5kB8yHEfVdzxZZACmgZNMdFNJHUEe/ImyeXvFg8mQeMUkZOp2z2nL
- iY4ILw5TD3SA3tDkbRHouYASQjXg0YtHQ+MKEB+NJhCBv6V6nKrywsWTU
- DVWCIRq/UTkMJer57uWpw5cBptQYJqz8hLEYdTTj3rsgo8Yuwc4qZqqo0
- q5WLsJK4cdzwP7zK23kbpVlenhMZuhNxfvAlc4d+a0Zzo0DBkBbF7M1ji w==;
-X-CSE-ConnectionGUID: LDM/YHplQ6CAGY0+Dsulsg==
-X-CSE-MsgGUID: pi/tzc8iQT24LKXi/dXZ/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="58796535"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="58796535"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2025 22:26:35 -0800
-X-CSE-ConnectionGUID: SkpgLxr4QA+0WPx418/9xA==
-X-CSE-MsgGUID: Bk8iHQveTZ67NcWAQK1e+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="116065015"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 24 Feb 2025 22:26:33 -0800
-Date: Tue, 25 Feb 2025 14:46:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 06/15] rust: cell: add wrapper for FFI types
-Message-ID: <Z71nMnJ3StEnFx/b@intel.com>
-References: <20250221170342.63591-1-pbonzini@redhat.com>
- <20250221170342.63591-7-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jksoftdeveloper@gmail.com>)
+ id 1tmoxa-0005FE-Hz
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 02:02:30 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jksoftdeveloper@gmail.com>)
+ id 1tmoxX-0004dg-AY
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 02:02:28 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5deb1266031so9618977a12.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 23:02:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1740466945; x=1741071745; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=lBiNhYAD/Hw+3CQYcnOxM+KZflEaCWsEGR0ap+QLUaY=;
+ b=YnhjRW8HyS1GU8+f95MfAKJ7+QigvfpeGHkASZEgRwMpC3BWjI2lfiV4fUwWoiS6LS
+ E77LTP4+Yz/OEGq7tcTSJjesUtP0hQ8n5WOdVEqOWLW/9tKmzL7+MRIOtldIS6McY8G4
+ 7nQyJiH5BhAtsH5VijBPtpazbfnN6wdQA6mF/Eh27qdsNCAGtNU7/JCsVPo8kgu7y//S
+ RxYmlczCJbhMo0HOBhjszHNJYW6zUwXbKm9Hi2bIWAnyS5EKzruYx4mYaGma9DJyjnDs
+ fGfs7jjWHDMZXsNDYjg0Xo7cQ/h5IqGj4zHjBYpXG0KERmmAHb2C7+AiF9z8bEGl1vy4
+ grdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740466945; x=1741071745;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lBiNhYAD/Hw+3CQYcnOxM+KZflEaCWsEGR0ap+QLUaY=;
+ b=bqdaMckgCksyFm05ubI1xkUnGdgMsmXJy4r56mBfsCXMmeuXJsPWo25HjNXZGiaRGo
+ 2gsQWsIdOgm7xtzDDaxoz09lAEYKMulpYFZGSruCR+/C0zamaAGPgL0AgvT83ECh/e4M
+ IJRbsnCthGmyjLbjkfrPQ+x1ElqVqf3dF3x/Q6vXw4bVySTn+H99n/tQqHIZV1DS6Eok
+ h1FlBXRUtamsoQTZ68KqUBOEkO+OwRpSDAiUnSNNPquHsYt2cb9PLfW6FJKRZJ9db4p1
+ RaGv0KjNobB1nI4nzBiDjWQQKLAd7d+pAM6JyBMkVtm2zAlcyUe7X9FtDrx5J047PVrJ
+ iUyQ==
+X-Gm-Message-State: AOJu0YxoSBzmWJMrvgfletRAYMhC8MLVdGk8D6ibAajGs6DrfeU9lFaL
+ At+hs6wIb25B8JlEVS4xozibuWjedSj5M60TExt7tkRkR98RI2iVIYbbqwzmmKYJoi4zmkmrwmN
+ BdwmYFSEigqSekl/g4JEUKBG0heQJwg==
+X-Gm-Gg: ASbGncsD4ph6r0IZkXWf+n1ZEcUBIZnS1SGCFzBbfyMz05j6SO3vOB94gmgzHZcHcWv
+ gHijyQXd26xcoZ2xjH2+y9eQZQhsyL+922+r9nGjuRVjeoGqYu26Gkgyc2o54AzoWQnpwoswqil
+ IpeXhceaa/BL5OcTneKtzxCA+X3GUokX1+Q0FX6iA=
+X-Google-Smtp-Source: AGHT+IHy/qk5upE7w1jX1+zPoeQI5scJmQ71NGlEL2CWtSeTl1gXBWScUu8TCbAhgwqPkYzZWeWmdGcbbpz0AMrO6xI=
+X-Received: by 2002:a05:6402:348d:b0:5dc:7823:e7e4 with SMTP id
+ 4fb4d7f45d1cf-5e0b70f8732mr15970093a12.12.1740466944480; Mon, 24 Feb 2025
+ 23:02:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221170342.63591-7-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <CAEHwtECacvmv98uAvXisx57qEN1hMbLjHNWUkm8mOt56wtWGaQ@mail.gmail.com>
+ <3c9247b8-7caa-49f8-a892-f044ab48ec12@linaro.org>
+In-Reply-To: <3c9247b8-7caa-49f8-a892-f044ab48ec12@linaro.org>
+From: Jayakrishnan A <jksoftdeveloper@gmail.com>
+Date: Tue, 25 Feb 2025 12:32:13 +0530
+X-Gm-Features: AQ5f1Jq9XncugqvuMD_bGmaiYmKj2DdhnoLMx3wUCPqUT78Oo3jamoQffsQ26ws
+Message-ID: <CAEHwtEBSv4KUh6momc=u7k9v8tbQ8sNCAdVprHg-mLVqOU_QGw@mail.gmail.com>
+Subject: Re: Seeking help on implementing sync over ivshmem shared memory
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000f81b17062ef2091a"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=jksoftdeveloper@gmail.com; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,51 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> +    /// Creates a new opaque object with zeroed contents.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Ultimately the pointer to the returned value will be dereferenced
-> +    /// in another unsafe block, for example when passing it to a C function.
-> +    /// However, this function is unsafe to "force" documenting whether a
-> +    /// zero value is safe.
-> +    pub const unsafe fn zeroed() -> Self {
-> +        Self {
-> +            value: UnsafeCell::new(MaybeUninit::uninit()),
+--000000000000f81b17062ef2091a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-typo? MaybeUninit::zeroed()
+Thanks for your support . It will be a great help for us .
 
-> +            _pin: PhantomPinned,
-> +        }
-> +    }
-> +
-> +    /// Returns a raw pointer to the opaque data.
+On Mon, 24 Feb 2025 at 3:03=E2=80=AFPM, Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
-Maybe "a raw mutable pointer".
+> Cc'ing Gustavo who maintains the IVSHMEM device.
+>
+> On 23/2/25 15:48, Jayakrishnan A wrote:
+> > Hi Team ,
+> >
+> > Seeking help on implementing sync over ivshmem shared memory , As part
+> > of internal project we could able to achieve shared ivshmem with
+> > doorbell mechanism ,But in order to achieve shared memory
+> > synchronisation we are trying to add atomic operation  over this shared
+> > memory area variables , Just wanted to analyse whether this atomic
+> > variable between VMs shared memory will work as expected , If not is
+> > there any suggested way ahead to implement synchronisation over ivshmem
+> > shared memory for threads running in multiple VMs.
+> >
+> > Thanks and Regards ,
+> > Jayakrishnan A
+> >
+>
+>
 
-> +    pub const fn as_mut_ptr(&self) -> *mut T {
-> +        UnsafeCell::get(&self.value).cast()
-> +    }
-> +
-> +    /// Returns a raw pointer to the opaque data.
-> +    pub const fn as_ptr(&self) -> *const T {
-> +        self.as_mut_ptr() as *const _
-> +    }
-> +
-> +    /// Returns a raw pointer to the opaque data.
+--000000000000f81b17062ef2091a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-What about "Returns a raw c_void type pointer"?
+<div><div dir=3D"auto">Thanks for your support . It will be a great help fo=
+r us .</div></div><div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Mon, 24 Feb 2025 at 3:03=E2=80=AFPM, Philippe Math=
+ieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org" target=3D"_blank">p=
+hilmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
+style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:s=
+olid;padding-left:1ex;border-left-color:rgb(204,204,204)">Cc&#39;ing Gustav=
+o who maintains the IVSHMEM device.<br>
+<br>
+On 23/2/25 15:48, Jayakrishnan A wrote:<br>
+&gt; Hi Team ,<br>
+&gt; <br>
+&gt; Seeking help on implementing sync over ivshmem shared memory , As part=
+ <br>
+&gt; of internal project we could able to achieve shared ivshmem with <br>
+&gt; doorbell mechanism ,But in order to achieve shared memory <br>
+&gt; synchronisation we are trying to add atomic operation =C2=A0over this =
+shared <br>
+&gt; memory area variables , Just wanted to analyse whether this atomic <br=
+>
+&gt; variable between VMs shared memory will work as expected , If not is <=
+br>
+&gt; there any suggested way ahead to implement synchronisation over ivshme=
+m <br>
+&gt; shared memory for threads running in multiple VMs.<br>
+&gt; <br>
+&gt; Thanks and Regards ,<br>
+&gt; Jayakrishnan A<br>
+&gt; <br>
+<br>
+</blockquote></div></div>
+</div>
 
-(Because the descriptions of these three helpers are exactly the same!
-We can make them different.)
-zeroed
-> +    pub const fn as_void_ptr(&self) -> *mut std::ffi::c_void {
-> +        UnsafeCell::get(&self.value).cast()
-> +    }
-> +}
-
-The whole idea is great! With the nit of zeroed fixed,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+--000000000000f81b17062ef2091a--
 
