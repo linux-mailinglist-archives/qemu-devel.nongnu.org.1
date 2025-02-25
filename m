@@ -2,77 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862C2A43875
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 10:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B52A437D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 09:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmqmn-0001Lf-IC; Tue, 25 Feb 2025 03:59:29 -0500
+	id 1tmqUI-0004uk-QM; Tue, 25 Feb 2025 03:40:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tmqmg-0001LO-Cr
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 03:59:22 -0500
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmqUG-0004uP-RK; Tue, 25 Feb 2025 03:40:20 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tmqmd-0000mU-TO
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 03:59:22 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmqUE-0006xA-SL; Tue, 25 Feb 2025 03:40:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740473960; x=1772009960;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=3hFp0w9TkaXMLYZrzh0OCU8rpuvN6ak09O3UKp4MH3E=;
- b=Y+MU5QMQnsXS0UKMApFQIisqTlv+hXkjhNzoLWMOf2EpQgydviJEaSjd
- 0Twv5AqfGGKnLXaXgJ64IbgmTCm+pNkY+tmiTqp/bfslBbRAcAiy+0uM9
- jSIm7Mkqd6KAobI9ewrQaTbV3XN2PykvqV4Igp+DXegNs2+5yMjS+JC5f
- ebFy2IkNdtCYuf2YR6DtkOyAb8+QrQZvjgOCQoZVPY3rPQua07qiRDpMB
- Ig9QlboXOjUI1kC95lfsXMj5w54qyS9gNn7PQGl0qJrk3ayZAReMoyRPl
- diF0hhbL73WZePKBVc7tG9sPCfQR10TbdEeuSEvrd4V6z04fiaqG9m0Gv w==;
-X-CSE-ConnectionGUID: 1yCf7ESFRx2U3ryiwSYhjA==
-X-CSE-MsgGUID: AdgfiGs5SSOYtdQo+xKcXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41524936"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="41524936"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 00:59:17 -0800
-X-CSE-ConnectionGUID: e/mlfnbsQxaOc6uYbdXHhQ==
-X-CSE-MsgGUID: vrgv+H7RS5GI+jCCUnlI3w==
+ t=1740472819; x=1772008819;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=X+6YwobAZHS/ZNCYW6Ko03wPfvvRr317mo0xh0JB3rI=;
+ b=ccFKdEucdox7Dn+EEdZ2D+NAFPt4z2eUoT8t/oTE3R+DsNRZbIvDz+pN
+ zcY8vepYmIKVWUQpxBH5/FXxlWIqFDwxdnSXNFIRJk+Xx4F/iPe1lDdMl
+ hlfd9ekOe83du2Gi9UOm7ajUx6k1/ct4IrmQCZl3ttfDCqFOB7sY4mw7V
+ sxjnVo1trg/nExeqqvFFqhcR098oWk2Wzjk5AQm2kTNvZQDxUHSa742cj
+ ZNOmNfmu/H+G6wbjbccK2VMUq9sGvvQtCsAOOUrkuYpb0MWwg+XW1+USr
+ u2vv5hhroCJnipV3YmQf7RFs8O8MJUoaK7OE2Zyz/wiEoz/7fMs0OR6nP Q==;
+X-CSE-ConnectionGUID: cFWQayPFSEmRKtKVjkFbIw==
+X-CSE-MsgGUID: kDOdLMIyQH2HEUKFq0O0ug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="44089747"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208";a="44089747"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 00:40:15 -0800
+X-CSE-ConnectionGUID: Ce37mBdZTa+VwkNKM5PFtQ==
+X-CSE-MsgGUID: ZG044S3hT72T0Y7OGC9+Dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="116181922"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 00:59:12 -0800
-Message-ID: <f4549022-8304-4838-9482-aa19769f8c19@intel.com>
-Date: Tue, 25 Feb 2025 16:59:10 +0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="147211832"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 25 Feb 2025 00:40:15 -0800
+Date: Tue, 25 Feb 2025 16:59:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 12/15] rust: sysbus: wrap SysBusDevice with Opaque<>
+Message-ID: <Z72GiF11dlzuDQ+i@intel.com>
+References: <20250221170342.63591-1-pbonzini@redhat.com>
+ <20250221170342.63591-13-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/52] i386/tdx: Get tdx_capabilities via
- KVM_TDX_CAPABILITIES
-To: Francesco Lavra <francescolavra.fl@gmail.com>
-Cc: armbru@redhat.com, berrange@redhat.com, chenhuacai@kernel.org,
- eblake@redhat.com, imammedo@redhat.com, kvm@vger.kernel.org, mst@redhat.com,
- mtosatti@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
- philmd@linaro.org, qemu-devel@nongnu.org, rick.p.edgecombe@intel.com,
- zhao1.liu@intel.com
-References: <08bf7f3061459af5f05fabf0d3796b77d8034587.camel@gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <08bf7f3061459af5f05fabf0d3796b77d8034587.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221170342.63591-13-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,35 +79,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/19/2025 3:21 AM, Francesco Lavra wrote:
-> On Fri, 24 Jan 2025 08:20:01 -0500, Xiaoyao Li wrote:
->> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
->> index 4ff94860815d..bd212abab865 100644
->> --- a/target/i386/kvm/tdx.c
->> +++ b/target/i386/kvm/tdx.c
->> @@ -10,17 +10,122 @@
->>    */
->>   
->>   #include "qemu/osdep.h"
->> +#include "qemu/error-report.h"
->> +#include "qapi/error.h"
->>   #include "qom/object_interfaces.h"
->>   
->>   #include "hw/i386/x86.h"
->>   #include "kvm_i386.h"
->>   #include "tdx.h"
->>   
->> +static struct kvm_tdx_capabilities *tdx_caps;
+On Fri, Feb 21, 2025 at 06:03:39PM +0100, Paolo Bonzini wrote:
+> Date: Fri, 21 Feb 2025 18:03:39 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 12/15] rust: sysbus: wrap SysBusDevice with Opaque<>
+> X-Mailer: git-send-email 2.48.1
 > 
-> Instead of a static variable, this should be a member of the TdxGuest
-> struct.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/timer/hpet/src/hpet.rs |  2 +-
+>  rust/qemu-api/src/bindings.rs  |  3 ---
+>  rust/qemu-api/src/sysbus.rs    | 25 ++++++++++++++++++-------
+>  3 files changed, 19 insertions(+), 11 deletions(-)
+> 
+> diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+> index be27eb0eff4..19e63465cff 100644
+> --- a/rust/hw/timer/hpet/src/hpet.rs
+> +++ b/rust/hw/timer/hpet/src/hpet.rs
+> @@ -741,7 +741,7 @@ fn reset_hold(&self, _type: ResetType) {
+>          HPETFwConfig::update_hpet_cfg(
+>              self.hpet_id.get(),
+>              self.capability.get() as u32,
+> -            sbd.mmio[0].addr,
+> +            unsafe { *sbd.as_ptr() }.mmio[0].addr,
 
-I don't think so.
+We can wrap this unsafe code into SysBusDeviceMethods...then the device
+won't introduce more unsafe code.
 
-tdx_caps is reported from KVM, which indicates what XFAM/Attributes and 
-configurable CPUID bits that can be configured for a TD under the KVM.
+>          );
+>  
+>          // to document that the RTC lowers its output on reset as well
 
-It's not the specific properties of the TD.
+Others, fine for me,
 
-So I would keep it as it.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
