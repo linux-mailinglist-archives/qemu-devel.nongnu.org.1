@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88598A44985
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0FBA4497E
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:06:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzL4-0002IV-1j; Tue, 25 Feb 2025 13:07:26 -0500
+	id 1tmzKG-0000Ry-0l; Tue, 25 Feb 2025 13:06:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJ0-0008B5-1U
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:19 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tmzJ3-0008HQ-Qy
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:23 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzIy-0002Bi-BG
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:17 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-439a4fc2d65so57827005e9.3
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:15 -0800 (PST)
+ id 1tmzJ1-0002Bs-BL
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:21 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-38f3486062eso4995888f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506714; x=1741111514; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506716; x=1741111516; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Yxn9ofMo25WYq7dF2Vjj2JTu1cwoC9F4JXJ3NPkXp1k=;
- b=bl34Zr+WjOITsj9Ca+wSlFU8AsFhIGifwwphTbSVFmtqfrN146/mKY4HUVVG6H1VHm
- bqIm0pIuPYKdDc5iOx469sx63/hr+0I6NFi9vhZOVRVwTqkwXIqWSbeX4VKBOjoJunmn
- UhucwzwaSBDwUfPiS39Se9P+nja4v8MjbHejDnBiJmF/OtDnGLuDZ2d2bVJeKJmkn19+
- R1v9ATdzqJtyN9f3MGpRzQzNVq68ZrZJLNbH95Omo0nYvXCX720FhS0rT6xYVUNZ+w5R
- UV056NaKuT86gnxm0KIz5WaUN4eQbOBxWVuTFHRsJDMNFj16cqhvcFzyuKHlLUda0G6p
- YYbg==
+ :reply-to; bh=aeWgldfF5Idz9YHODjOgtv9UXfco158ep0/S/kAtgfw=;
+ b=f1BaSFD9phLyBA3u7pCiyid4WB18mnmNG98WdEOW4JgSUqmanLtbgp4O75Zle1H+yP
+ mhDSkm1wyemeR6+43aJjYEu2t157Hp4gQ1lIHDOlnJOnL/FTh9viy9Icob/H+FLcW0Lr
+ fiPyxUWx9PKQUN0HGpE3APxZVGYBgd5OefQGAKFI8sgxZsYJhWX3J/UegYSHg92lB7Sb
+ SQRnfPqJysvfgDMbgYUIuaSYtzW20djyRPbOeKLuK68KZi4qekodDz7Aud+D518y1o+S
+ WJxdElN5LEJQkZrMqMmZj/J6GU65kWCvlYY7UVeutmJQzdXDLqM29ngS5NShBKLd5Fzh
+ YiCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506714; x=1741111514;
+ d=1e100.net; s=20230601; t=1740506716; x=1741111516;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yxn9ofMo25WYq7dF2Vjj2JTu1cwoC9F4JXJ3NPkXp1k=;
- b=xB1UzObgwPsnfOZPJByJuMLMHpByGdH6jv+zVKYy4/oTjHUMoBesgu6VCiIl8VIqXy
- N3SZh1x3a/ZAyUHztQmFhHq4t8VPJY54y6D8jNu1623wJdoYjX6kx3t+i5FoNIbhopQf
- bqD0pIIkE5jXzZAYXzImg6AxEXg4o3iDZIFmAAVYuSJRbijtagBP0K+sRIPYaMjALJge
- 0jJBUkjHUnjVt9i0H/ZVaI8XtkAPpOh7BqXlkr17QFNynNCCnzihNu0a93HKk+HUvQcK
- 5C8fiN/sYfHEXhjC67kEKNU7DofZ3V2dPVowDNcBd3zre87xOlA0tN0z/E+gWiQa7DVH
- YNUw==
-X-Gm-Message-State: AOJu0Ywx7wMPA45uDBV1qjuTVDBTPb6lDCQrcMagYTAUaQsnl5g5tMbB
- xo5cIPSfxSMyAg54tDCmCQs+S5dO858Ing0GhE5X4S8sRyA1ybOzFMDmYGKogvmKVxofgQnS7Pl
- O
-X-Gm-Gg: ASbGncvl2LOI7i17U6L/Ec2YzFLw+aEeODpPFaTqrpYHISRd45ALGiArctXN0o8Dnve
- pOTm42DpxNxeQirf8Z1R/InmOk/yP8u9lRF6MDUksHIyLDqO5fXjgkjEd3G2aPV+SK64oZYq+Xq
- xMce0UJ4RZyrbHrjAB/WC1LdjfHUOx/X/CjzRDRHC/QJEV9HLRW7IEJSd6xQ0cQNQZggA2YP4EB
- 4epDZhMl+Ya11fgs2dv67a0cROGJcvataOuL5+7pD4LIK1dAnLClYFR7DQ8Ewco6ICGZKKg1e6u
- 6SU8W4JSoNbIZf0SAPu0qtBnjqdxC4GA
-X-Google-Smtp-Source: AGHT+IHkzLD5ajZr0wOXczBWkQNn2+Dy9nkfKfXw/R5ZYRpQijzOSTToQt8uVaFr4lg+ydKYcRki4w==
-X-Received: by 2002:a05:600c:3114:b0:439:9b80:ca6f with SMTP id
- 5b1f17b1804b1-43ab0f255a3mr49938835e9.5.1740506714354; 
- Tue, 25 Feb 2025 10:05:14 -0800 (PST)
+ bh=aeWgldfF5Idz9YHODjOgtv9UXfco158ep0/S/kAtgfw=;
+ b=LUOH0wJeNHl6GJ4iCy5dS5eNSDJIK5trYDLGdGWSscUf9j0Uvf0CEqjQfE7rr5/BYM
+ JWu+kBXsWAVitbepMGi82sV87vC2ugt/nM8UN8TC80VkU8V0IMCJj8CjI235c4VE4pvx
+ 7h+iea4HiqsOn+cdClaqwsxTJpLxySVYv3qte4Cp8pgl/QX+rXFyKupSWWCTHx1rC0JP
+ 9R+Ro7l6E/EblcVRG2Dfv4Xjd3hYCTomdpyzwSSJUWvpgbpfkWZ124+ALpb+n4muz72d
+ 95pCjlWxwHE2CoxWL3E2t6rNHOKKTt6Op6EeJGhSYr9qI5U8XNn9tYKEcE5MmPYNqudt
+ DMfg==
+X-Gm-Message-State: AOJu0YyHLLhIRIg1chezqexZwpGttDS+5v47qcpBDzhcS03xqXSmqg3+
+ jnssRiKJkcq20QT8xHoargGmCTSb+jAA7ilZrGpbzeI/U+PAmjwOETIXA7r1pVfm39ExkA2srgU
+ b
+X-Gm-Gg: ASbGncs0T5EsenO72esxUaEeBpXjWMG8ilpg+7zrVUmuwTr7UWgEAQR11sWRZ9zM6wd
+ 1ZUNr0s9W1IJ70o2LfFTmx3U9yQiqWwFxRu8jpaM8FVIC+KH2yUbHQiSkj7ftYcxWxf2CPhtnA7
+ sAU/cnn5e0ObYgGSWVnVlKIA/oAGHuRRLVi6eXfT9n6W3gHyjZJi3uP/huR0JI7lKTwyFWU/mfC
+ vooUGgezTtmnsG8xdhbnYhKNahlkjLuINaD/kCWcEmiG3M/7j+UM8HU8W2q1iKMvT9quM6Pp5gN
+ 6UZ16nCddk0mJnApPrbwQnKuXmKCtBw7
+X-Google-Smtp-Source: AGHT+IG+1iA2JFkatPF2RuTwN2OmxSfCT0p8XkcyXv6hMB7x/BHFVSX+aan7GhFpQXKze3A6zopu4g==
+X-Received: by 2002:a5d:5986:0:b0:38f:470c:932e with SMTP id
+ ffacd0b85a97d-390d4f43d31mr271149f8f.29.1740506716116; 
+ Tue, 25 Feb 2025 10:05:16 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.12
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:13 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:14 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/43] hw/arm/smmuv3: Fill u.f_cd_fetch.addr for
- SMMU_EVT_F_CD_FETCH
-Date: Tue, 25 Feb 2025 18:04:27 +0000
-Message-ID: <20250225180510.1318207-2-peter.maydell@linaro.org>
+Subject: [PULL 02/43] hw/arm/virt: Support larger highmem MMIO regions
+Date: Tue, 25 Feb 2025 18:04:28 +0000
+Message-ID: <20250225180510.1318207-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +96,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: "Matthew R. Ochs" <mochs@nvidia.com>
 
-When we fill in the SMMUEventInfo for SMMU_EVT_F_CD_FETCH we write
-the address into the f_ste_fetch member of the union, but then when
-we come to read it back in smmuv3_record_event() we will (correctly)
-be using the f_cd_fetch member.
+The MMIO region size required to support virtualized environments with
+large PCI BAR regions can exceed the hardcoded limit configured in QEMU.
+For example, a VM with multiple NVIDIA Grace-Hopper GPUs passed through
+requires more MMIO memory than the amount provided by VIRT_HIGH_PCIE_MMIO
+(currently 512GB). Instead of updating VIRT_HIGH_PCIE_MMIO, introduce a
+new parameter, highmem-mmio-size, that specifies the MMIO size required
+to support the VM configuration.
 
-This is more like a cosmetics fix since the f_cd_fetch and f_ste_fetch are
-basically the same field since they are in the exact same union with exact
-same type, but it's conceptually wrong. Use the correct union member.
+Example usage with 1TB MMIO region size:
+	-machine virt,gic-version=3,highmem-mmio-size=1T
 
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Message-id: 20250220213832.80289-1-nicolinc@nvidia.com
+Signed-off-by: Matthew R. Ochs <mochs@nvidia.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Message-id: 20250221145419.1281890-1-mochs@nvidia.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/smmuv3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/arm/virt.rst |  4 ++++
+ hw/arm/virt.c            | 52 +++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index b49a59b64c2..b40acbe0245 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -377,7 +377,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, SMMUTransCfg *cfg,
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "Cannot fetch pte at address=0x%"PRIx64"\n", addr);
-         event->type = SMMU_EVT_F_CD_FETCH;
--        event->u.f_ste_fetch.addr = addr;
-+        event->u.f_cd_fetch.addr = addr;
-         return -EINVAL;
-     }
-     for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
+diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+index 0c9c2ce0351..adf446c0a29 100644
+--- a/docs/system/arm/virt.rst
++++ b/docs/system/arm/virt.rst
+@@ -144,6 +144,10 @@ highmem-mmio
+   Set ``on``/``off`` to enable/disable the high memory region for PCI MMIO.
+   The default is ``on``.
+ 
++highmem-mmio-size
++  Set the high memory region size for PCI MMIO. Must be a power of 2 and
++  greater than or equal to the default size (512G).
++
+ gic-version
+   Specify the version of the Generic Interrupt Controller (GIC) to provide.
+   Valid values are:
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 4a5a9666e91..ee69081ef42 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -53,6 +53,7 @@
+ #include "hw/loader.h"
+ #include "qapi/error.h"
+ #include "qemu/bitops.h"
++#include "qemu/cutils.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "hw/pci-host/gpex.h"
+@@ -192,6 +193,10 @@ static const MemMapEntry base_memmap[] = {
+     [VIRT_MEM] =                { GiB, LEGACY_RAMLIMIT_BYTES },
+ };
+ 
++/* Update the docs for highmem-mmio-size when changing this default */
++#define DEFAULT_HIGH_PCIE_MMIO_SIZE_GB 512
++#define DEFAULT_HIGH_PCIE_MMIO_SIZE (DEFAULT_HIGH_PCIE_MMIO_SIZE_GB * GiB)
++
+ /*
+  * Highmem IO Regions: This memory map is floating, located after the RAM.
+  * Each MemMapEntry base (GPA) will be dynamically computed, depending on the
+@@ -207,13 +212,16 @@ static const MemMapEntry base_memmap[] = {
+  * PA space for one specific region is always reserved, even if the region
+  * has been disabled or doesn't fit into the PA space. However, the PA space
+  * for the region won't be reserved in these circumstances with compact layout.
++ *
++ * Note that the highmem-mmio-size property will update the high PCIE MMIO size
++ * field in this array.
+  */
+ static MemMapEntry extended_memmap[] = {
+     /* Additional 64 MB redist region (can contain up to 512 redistributors) */
+     [VIRT_HIGH_GIC_REDIST2] =   { 0x0, 64 * MiB },
+     [VIRT_HIGH_PCIE_ECAM] =     { 0x0, 256 * MiB },
+     /* Second PCIe window */
+-    [VIRT_HIGH_PCIE_MMIO] =     { 0x0, 512 * GiB },
++    [VIRT_HIGH_PCIE_MMIO] =     { 0x0, DEFAULT_HIGH_PCIE_MMIO_SIZE },
+ };
+ 
+ static const int a15irqmap[] = {
+@@ -2550,6 +2558,40 @@ static void virt_set_highmem_mmio(Object *obj, bool value, Error **errp)
+     vms->highmem_mmio = value;
+ }
+ 
++static void virt_get_highmem_mmio_size(Object *obj, Visitor *v,
++                                       const char *name, void *opaque,
++                                       Error **errp)
++{
++    uint64_t size = extended_memmap[VIRT_HIGH_PCIE_MMIO].size;
++
++    visit_type_size(v, name, &size, errp);
++}
++
++static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
++                                       const char *name, void *opaque,
++                                       Error **errp)
++{
++    uint64_t size;
++
++    if (!visit_type_size(v, name, &size, errp)) {
++        return;
++    }
++
++    if (!is_power_of_2(size)) {
++        error_setg(errp, "highmem-mmio-size is not a power of 2");
++        return;
++    }
++
++    if (size < DEFAULT_HIGH_PCIE_MMIO_SIZE) {
++        char *sz = size_to_str(DEFAULT_HIGH_PCIE_MMIO_SIZE);
++        error_setg(errp, "highmem-mmio-size cannot be set to a lower value "
++                         "than the default (%s)", sz);
++        g_free(sz);
++        return;
++    }
++
++    extended_memmap[VIRT_HIGH_PCIE_MMIO].size = size;
++}
+ 
+ static bool virt_get_its(Object *obj, Error **errp)
+ {
+@@ -3207,6 +3249,14 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+                                           "Set on/off to enable/disable high "
+                                           "memory region for PCI MMIO");
+ 
++    object_class_property_add(oc, "highmem-mmio-size", "size",
++                                   virt_get_highmem_mmio_size,
++                                   virt_set_highmem_mmio_size,
++                                   NULL, NULL);
++    object_class_property_set_description(oc, "highmem-mmio-size",
++                                          "Set the high memory region size "
++                                          "for PCI MMIO");
++
+     object_class_property_add_str(oc, "gic-version", virt_get_gic_version,
+                                   virt_set_gic_version);
+     object_class_property_set_description(oc, "gic-version",
 -- 
 2.43.0
 
