@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C96A4499B
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:08:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453CFA44998
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:08:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzKi-0001Ni-Qa; Tue, 25 Feb 2025 13:07:05 -0500
+	id 1tmzL1-0001lo-0c; Tue, 25 Feb 2025 13:07:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJX-00005N-3J
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:52 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tmzJZ-000072-4r
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:57 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJT-0002Hr-0K
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:50 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-439950a45daso37500485e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:42 -0800 (PST)
+ id 1tmzJU-0002Ib-My
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:51 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4399d14334aso52069895e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506741; x=1741111541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506744; x=1741111544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6oWV1pSNijlLP/iH4WWfrlnyyIqKScPafOaD025E8r4=;
- b=rK4SjgchHq+CffjMW3f+clAp3dQVI/gCECqqZtM2JMqazRGjE04ChN7UIsobSq9GkW
- hVUgIlHLisa0IXomT+COf5JltMnECKRk+yTaDm3PKLmWMbeDk/QcHu914EaljXv+26Fz
- WNxZPxRSuS1kXcIxo24ytqJxPKQe3KR7AtaQKzcn5zfbUiIKiAb61VWMkFGyQoPmOSKl
- KInnpKwkaxRhPx/CGnLGzl2hpcty/zykAGjtwRpXHAGnJ9gwWp7GxWyQI7znz+A0pOq0
- bcZ1f/EkCf68lzKQO+mX43bDmsWbeyPi24blfaAYfD6EwXUtDLHKvfJLv2sBURXaHXBV
- P2pg==
+ :reply-to; bh=+KRNDOAM2UifPdugrP+Z6GvcaB2Pzjsk9KwzwCOMbUs=;
+ b=H6PDuuaIUiSCBtAck2wHjDmqeGVlLNUMdKgpckZrgWThsVBc/2l7ORZwdQe2JzMpA2
+ 70Fyix/PiMY9/21hdiSCil34419IRZs5m6bN1qKGRMSg95I7qWBr9dLfTQvcAwfbs2GC
+ D4E8e1ew63mLph1SJdW/30innSNtO1ZFdMduNLsCgLgIeLcHA7KuSj7DdZAavbb5l0D8
+ 7ZchDu1UseRN2rUW71WjwnzGlROi4AtIkxrzPhZZ2lVA/Vyfp1q1BEfD9AcUwO+R1j1n
+ 5SDGTc+8dz8HuWDUS/3X4XAZEpHdlmOxY7C7wqfGo0LZozDzGgMqjZI9/PhieKfCiNiY
+ 5xZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506741; x=1741111541;
+ d=1e100.net; s=20230601; t=1740506744; x=1741111544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6oWV1pSNijlLP/iH4WWfrlnyyIqKScPafOaD025E8r4=;
- b=N02kXwp4qnAYYwcbv72RkfdO8YPPubWrL/7Z/Nzy21rLef/IInFwMdVuJvMUIwpkyf
- ize7wlkgc5Iepryh0HscQhy1GipRONoL6c5kSUdeV4PG975DQwLGjP/o8KpUFuhdRO8K
- i7yI7Sn5W1526dAjpsuEkkz745TDDblAjglzZOvY0fQXmStsuWHZhYSs4ydCvDjqLufa
- KNQEt8OEe4aKYqFkz3fTEb8fcyypatG8eT4pbOjjdA/vBhwgcpxZZ2CwADhWjaek8KZl
- 8gnLnlhqGmFH000d0BGOdPQXQPW2YghPpVbcpiOoW6sHsj0tGHelWllXaqtcYixgRZaU
- 4CRw==
-X-Gm-Message-State: AOJu0Ywnt/+gpjfkh6V5OkYH1bi/+C+ZtomVvnIcsFYa/gc12EFBqPXh
- xG/+DpTfNcnLPC+M9LQNvce/6hUJl8DQNLDgJUHU4ZcqdFDBaqgE99jdE6je0sXbRN/DqRsNDnz
- q
-X-Gm-Gg: ASbGncteZUilM1bARnGwrC0fh+0Ns5nGDiF7gp+PYLdFlfGL73s7uDEjBzUdabIVeoK
- d6XyLGRwp+HnI1tNc5cVhhTibuJ2+fWdl6a5+eJLSw73Wl6Z6QtrQ/45x3jYA9DjTn1RVGFBhZz
- e3rAymyGSFBba6Cc8/whXe3FTS+1TPu1QGIPLzzgW7pLAtLNG7t810s3HZlsMNT7x/1D2cupC30
- 7TMp+P+H7X32H/Xwuhyjh2n3dUjE/ab4PQFYvcs3vkUgrmes8ToGV/mB1ipqFaeMfIcFy2WrfaM
- 7aSfznlWtUkhB/YX4DtBvUGqw+j2NBum
-X-Google-Smtp-Source: AGHT+IGsWnu+ehyXm4TrZm4hmUWGjJGg5TFDpqCimhFBRg8MhxaCkXSBb34Qd2v4UoDlee+YAmi5Gw==
-X-Received: by 2002:a05:600c:4588:b0:439:88bb:d020 with SMTP id
- 5b1f17b1804b1-43ab0f2dcb1mr33484395e9.8.1740506741218; 
- Tue, 25 Feb 2025 10:05:41 -0800 (PST)
+ bh=+KRNDOAM2UifPdugrP+Z6GvcaB2Pzjsk9KwzwCOMbUs=;
+ b=m4P9PZ7FTkxCouoqwXvlHGNijVECiLdpn2cR0B7Ob2VAXeOHF24JDqbuTdXSla1Yb6
+ +0XY2EIVPfw0PSDMxa3NV1j70hQv+Gzl0LXnKDg16Ipu9A3fGl6XTonRYOzTZWxu5+2x
+ zCKC9OP3kSDwTTF5Ns5xd3cmFglfRVc3DxTNKi5eBGRXCpQScYLWhDTYsvribXxvgIXK
+ 8diLX9CHq2Jzx1x8rfrrBEo1x0z8OkjcHSB1UWGltlvGj+pHBIH4EBgdiaEAlrXwTpnl
+ SSJbklir1+c2ZdarXJWqCu3mEsx/RnGYhuS8gWmOB9BK0dewAFmTEFP+Ncw3VeA3pRDM
+ uLIA==
+X-Gm-Message-State: AOJu0YwTmY586ILTL4PLSGEl0FbxnnqddUbF+1UxI2cX0r+a0fuEY5fd
+ q3KjjU77Vu/zdhCT5bdJmowOmZJFIkqwyjzCCgfDt9ivj7du1MYiOwWjuO8lxz8OdicjhMZif3R
+ f
+X-Gm-Gg: ASbGncsaptdtOuuemdAlXpAo4OZAbJemGRtG2tsaIWX8C7UI5eiZ7EtrVW3sJloejF8
+ m9P/pYzXNEiOfCO829Z05BTFGVB0TMyNVGD7If83xU1LZ/bXqVDmay+9NWDMnOJKnNFgDnnz3FJ
+ CwZlCv29cdrabT1oG/WVzS3ooRlDBCeNJmKyj+aKRHEm3of8J1SeeRw9gYwWOmRv3jcmvKvVf0m
+ 4byvzxa+oQ63FQwmnknKm4YiYsihyJTbr1IDgNszH+BZFyHka+vdL0DvlWEv0+24+gqjCEGkugz
+ /9oIRURQu5G1bFdB0d/tprI+sBHnFc53
+X-Google-Smtp-Source: AGHT+IGdmdXrgeGYXMkBCW78WohPgyiRGjzS5hP+hTVBL62RYzs+W+9BkNscBN338bmPksKL12+EIA==
+X-Received: by 2002:a05:600c:3588:b0:439:6304:e28a with SMTP id
+ 5b1f17b1804b1-43ab8f6fe56mr5771505e9.0.1740506742211; 
+ Tue, 25 Feb 2025 10:05:42 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.40
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:40 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:41 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/43] target/arm: Rename vfp_helper.c to vfp_fpscr.c
-Date: Tue, 25 Feb 2025 18:04:50 +0000
-Message-ID: <20250225180510.1318207-25-peter.maydell@linaro.org>
+Subject: [PULL 25/43] target/arm/hvf: Disable SME feature
+Date: Tue, 25 Feb 2025 18:04:51 +0000
+Message-ID: <20250225180510.1318207-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +96,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vfp_helper.c in the target/arm directory now only has
-code for handling FPSCR/FPCR/FPSR in it, and no helper
-functions. Rename it to vfp_fpscr.c; this helps keep it
-distinct from tcg/vfp_helper.c.
+From: Joelle van Dyne <j@getutm.app>
 
+macOS 15.2's Hypervisor.framework exposes SME feature on M4 Macs.
+However, QEMU's hvf accelerator code does not properly support it
+yet, causing QEMU to fail to start when hvf accelerator is used on
+these systems, with the error message:
+
+  qemu-aarch64-softmmu: cannot disable sme4224
+  All SME vector lengths are disabled.
+  With SME enabled, at least one vector length must be enabled.
+
+Ideally we would have SME support on these hosts; however, until that
+point, we must suppress the SME feature in the ID registers, so that
+users can at least run non-SME guests.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2665
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+Message-id: 20250224165735.36792-1-j@getutm.app
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: expanded commit message, comment]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250221190957.811948-5-peter.maydell@linaro.org
 ---
- target/arm/{vfp_helper.c => vfp_fpscr.c} | 2 +-
- target/arm/meson.build                   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename target/arm/{vfp_helper.c => vfp_fpscr.c} (98%)
+ target/arm/hvf/hvf.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_fpscr.c
-similarity index 98%
-rename from target/arm/vfp_helper.c
-rename to target/arm/vfp_fpscr.c
-index cc0f055ef0d..92ea60ebbf2 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_fpscr.c
-@@ -1,5 +1,5 @@
- /*
-- * ARM VFP floating-point operations
-+ * ARM VFP floating-point: handling of FPSCR/FPCR/FPSR
-  *
-  *  Copyright (c) 2003 Fabrice Bellard
-  *
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 2e10464dbb6..3065081d241 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -4,7 +4,7 @@ arm_ss.add(files(
-   'debug_helper.c',
-   'gdbstub.c',
-   'helper.c',
--  'vfp_helper.c',
-+  'vfp_fpscr.c',
- ))
- arm_ss.add(zlib)
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 0afd96018e0..872a25be869 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -899,6 +899,18 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
  
+     clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
+ 
++    /*
++     * Disable SME, which is not properly handled by QEMU hvf yet.
++     * To allow this through we would need to:
++     * - make sure that the SME state is correctly handled in the
++     *   get_registers/put_registers functions
++     * - get the SME-specific CPU properties to work with accelerators
++     *   other than TCG
++     * - fix any assumptions we made that SME implies SVE (since
++     *   on the M4 there is SME but not SVE)
++     */
++    host_isar.id_aa64pfr1 &= ~R_ID_AA64PFR1_SME_MASK;
++
+     ahcf->isar = host_isar;
+ 
+     /*
 -- 
 2.43.0
 
