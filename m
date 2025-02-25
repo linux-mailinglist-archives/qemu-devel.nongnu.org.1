@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AB9A44545
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9274AA44553
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:03:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmxMx-0007FE-1w; Tue, 25 Feb 2025 11:01:15 -0500
+	id 1tmxOp-0000mB-Tf; Tue, 25 Feb 2025 11:03:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmxMs-0007Ew-H0
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:01:10 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <loic@rivosinc.com>) id 1tmxN1-0007Gg-5a
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:01:19 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tmxMT-0001uj-Cl
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:00:51 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2fc1c80cdc8so8963280a91.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 08:00:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <loic@rivosinc.com>) id 1tmxMs-0001wO-PT
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:01:18 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4394345e4d5so38616325e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 08:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740499244; x=1741104044; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=b9XTk6z4K85n+ytR1q2JSu2SAm4/EuJxyo7sSPvd3R8=;
- b=OAErEfWoei4UZOI4f9+86cPGg9Wrwuyr65b7FcvubzcR5WBE4vcPDHDDkZAvsEIkDo
- RwR6rqktkP1a7+iM4lgQra24fvf1LJw2+FuEcNa0wf2x6LqMSDD66GF8n8xDXMHoNl1H
- crmZQCAdg3f9dgQc+eEbM7U4vVn4UJ3v8JsUXxp5ab4rHSPxRbzEnczm9Tq/5SYkqkcv
- uNvHhBd6pE/3Ey/3pJTdI7c1AovhvCyvDqYWYMNXxEKdqxWmZJuXcPUi97/WfOqlWTZT
- 7ZOROhMd3/yBI4vql3BoW0R8aoUkas5dGrXa0BjGJ18Qw1BRzd9/A1cnswXbMujKpKBe
- ZyJA==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1740499255; x=1741104055;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=D0G1BlFEwahcM4AHHFlaoJCV2Tx9e8WvmvlKENfqIqs=;
+ b=1pQPqI8MjZMJj9f73A/2n5VqSu3nxCNbnNTHwx1ZCUu3AXU6x3zzLap7PrLKEoraiw
+ 1qN5mddC5mceLO/CpBUUJqZ0m/ElME3LS/GZxXSww5qjsk2KkoZKiZPRtjB7O80p4DoS
+ YUJ81LnfD7GECt42DG9VNgCpoCc7vRcDVXiONesvr2cdBJfnGGVFOQzEjwCLnr3di+eU
+ 3fj9uAA94KqRH6mte3eHdVCrc8t8VHdjd/c7uYlXuW8ch4HYmjsQPiZJU4aGGAtl+dnm
+ EXe0urdWU7FcKhBgYruCDtqj9kE40pX8MVWDhR4XuU4iZX5dIsa3fsG6D+49IOTzaBNR
+ 5C6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740499244; x=1741104044;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b9XTk6z4K85n+ytR1q2JSu2SAm4/EuJxyo7sSPvd3R8=;
- b=LYr03ZNQorD/8qpcVBzsQTOV0y6k9H2FvFqbtrBezFM3ZYkUnrvHDHhRspZB2cjaWy
- YQmMjLJ1/ZrlHJV0+vzw+l6GGhi76RkTxml7cAR52ol+G4AnmdYl52u4wgJTDABBr5aQ
- 9Nf1SFsHCWcY7FdGFczIF07gKcO/7LEO/PHteLvXHL0SY7fh+FTB+iv6fFwocZzidFI8
- iaY95Ysw5Ad+I+XD5GjVkTNVpvYJAiYDOwCIdxc8ScPjWG1jkEP39FtxIlWJdRCPzogU
- 4dzkJzh5RH4zxFz5+IwyyEhc30m5V8sXoD9iED4DobCQJ+65suvVC+9L3UItmsmG+lsf
- CCCA==
-X-Gm-Message-State: AOJu0Yxkgy5kzvTNh9oP1daArk4TFz1vAIWF9RYlB5nBFXvgHUXrhVMO
- Szms1CcR4PfCGPn4zRBZi8EAZgbDf3KCzw0kYn3HtW4j5rYX5LVA0IV1C9uTm3BMRXe22gG0m58
- e
-X-Gm-Gg: ASbGncv4QDqyp9f1xZR1wN9MSZ67VYFHS3ux4YV7N89yZEMfkpyLxnKVgXMiirGxy6m
- JN2ry/X0zszr4pa5WOnEhiSm9A1KSYVSS+/I74PFiEhJuSw2mII/n40b2PJ6yu0/+xxH069Tc13
- Lv3GR59d5ov0YdPI5VA9t1XTtYR8OsRVokw7uuHr2Lm2JG9jsA3ClKXuPpVSoRYCELQMBjl7LsX
- bT7yqbcDNUacLZPMfM8oQIhdZ32MdpFSHi22pmGl/fMz4Pqs2VuMcuv8BIiky5o8Ymk2n26ZceR
- HYCbkfl6FicYuzzzn4ILVZxLdk35uWgzc/6tilKcSLlI5nBLygyxlWv0VWHqUfpKONNmLZIQLWp
- r+cDA/TA=
-X-Google-Smtp-Source: AGHT+IH6mN5d2F7F0Eg6bVGtMsN6nY8oZRWgks4djjtb+uT36dDOqYcBcBzaaP+Biqn51ouIqkDCnw==
-X-Received: by 2002:a17:90b:2d4d:b0:2ee:f550:3848 with SMTP id
- 98e67ed59e1d1-2fce7699f42mr27118546a91.5.1740499243597; 
- Tue, 25 Feb 2025 08:00:43 -0800 (PST)
-Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
- [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fe6a43cdfbsm1763103a91.33.2025.02.25.08.00.43
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Feb 2025 08:00:43 -0800 (PST)
-Message-ID: <549677f1-00a6-4ae5-bfdc-57dc52a70ab4@linaro.org>
-Date: Tue, 25 Feb 2025 08:00:41 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] plugins/api: use tcg_ctx to get TARGET_PAGE_MASK
+ d=1e100.net; s=20230601; t=1740499255; x=1741104055;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D0G1BlFEwahcM4AHHFlaoJCV2Tx9e8WvmvlKENfqIqs=;
+ b=J/QFTUB5/pIMbPkrd2DF87Mb/wgio+c25bpQ776tZO9iNcGJb03c6CGIHtO8h5xgdT
+ 3k4iUk4yOEUquqPoABdqlJEdCZ2hz09g/Dovqy52qiEs5okOqzkH8R0ilAGxRNR3CZzt
+ rbcc8iBeE0vRCYpm5vRMPv8CbR3KoYqF0ELQHRT25wLRhR+PQRR4PF1LcvGdlfATgetO
+ aJbKBzCYnZbUQseciEuifLKisEZLgtxsyF2Qh/OqwpnQPCj/go9UH2ew+szv2CK1CZn0
+ PZZpJzz7NoK/TYcxz3JAOeyNEj3+N8PoF1PwevCtWY5ddDWunBhFaMyYruaW/vCpKFNS
+ 5PFQ==
+X-Gm-Message-State: AOJu0Yyx67+sUMiDr/TUiw23qY7QafS/cioPo8yYGfyf4JyaFq9lBoq1
+ m94PqVbPTeMDp8QR6h5zkffpeheeM6l3nLYoFiNmlcWj3ieXV2V456tNTWWfI7mTnp1IC+Xz+gL
+ yKayzp+Vt
+X-Gm-Gg: ASbGncumxmYB6aodyK8fg4DZ3HvMXu6uB6YOXzup18tJjEMOKutwpHYnwMk19tBv49s
+ MuFvKiyyA6AO1qwWoojdjhlHuEIb574oVsdGyC7ToREJ9uE2aphPmKG9VqNKBC51b1SwHIvjrdq
+ 9OsDkVcWgS2liTt0Em0/iexe29+GseLKkYfjYwzWI4oyRmVDZsIFyJ1oVGXfSqkCWX0/b/Zd2b3
+ 1QkYq2yLmH1OK8KA6baUHCBq1odF0XGs7by9Mwe06ZSp4sZF6GAwCDhRFm03/1wn461N/fktzBa
+ 8QK8aIdEx3iOCDNdAky1nxDXgGBDTkw8qZHvgyYTBZvNZZq+7Gv+Xkbdf9x6jfErcptE75ii+g=
+ =
+X-Google-Smtp-Source: AGHT+IH9/nIdXEJG8xS0y2So5FuCfzYmG8qjQ2yNx1oWH8TLHk7/aqf2xNxzTgkojx5IEwL/KxLS4g==
+X-Received: by 2002:a05:600c:4ece:b0:439:9274:8203 with SMTP id
+ 5b1f17b1804b1-439aeae0543mr145133975e9.6.1740499254652; 
+ Tue, 25 Feb 2025 08:00:54 -0800 (PST)
+Received: from llx1.cad.pilog.net (lfbn-mar-1-50-94.w86-229.abo.wanadoo.fr.
+ [86.229.28.94]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43ab1546df4sm30530755e9.17.2025.02.25.08.00.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Feb 2025 08:00:54 -0800 (PST)
+From: =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>
 To: qemu-devel@nongnu.org
-References: <20250225110844.3296991-1-alex.bennee@linaro.org>
- <20250225110844.3296991-2-alex.bennee@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250225110844.3296991-2-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
+ qemu-riscv@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>
+Subject: [PATCH 0/5] target/riscv: Smepmp fixes to match specification
+Date: Tue, 25 Feb 2025 17:00:47 +0100
+Message-ID: <20250225160052.39564-1-loic@rivosinc.com>
+X-Mailer: git-send-email 2.47.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=loic@rivosinc.com; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,34 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/25/25 03:08, Alex Bennée wrote:
-> Requiring TARGET_PAGE_MASK to be defined gets in the way of building
-> this unit once. As tcg_ctx has the value lets use it.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   plugins/api.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/plugins/api.c b/plugins/api.c
-> index cf8cdf076a..10b258b08d 100644
-> --- a/plugins/api.c
-> +++ b/plugins/api.c
-> @@ -287,7 +287,7 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
->   void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
->   {
->       const DisasContextBase *db = tcg_ctx->plugin_db;
-> -    vaddr page0_last = db->pc_first | ~TARGET_PAGE_MASK;
-> +    vaddr page0_last = db->pc_first | ~tcg_ctx->page_mask;
->   
->       if (db->fake_insn) {
->           return NULL;
+Hi,
 
-NACK.  While this currently happens to work, it's the wrong api. This value is only live 
-during the compilation cycle, and this part of plugins is not that.
+These patches fix Smepmp implementation to make it compliant with the spec.
 
-For this, qemu_target_page_mask() is your huckleberry.
+First patch limits RLB to CSR changes since RLB should not affect privilege
+evaluation. Patch 2 extracts some common code into a function (to be used in
+patch 3). Patch 3 fixes validation of pmpcfg CSR writes in order to match Smepmp
+specification. Patch 4 is a small optimization and last patch is just removing
+redundant code.
 
+Loïc Lefort (5):
+  target/riscv: pmp: don't allow RLB to bypass rule privileges
+  target/riscv: pmp: move Smepmp operation conversion into a function
+  target/riscv: pmp: fix checks on writes to pmpcfg in Smepmp MML mode
+  target/riscv: pmp: exit csr writes early if value was not changed
+  target/riscv: pmp: remove redundant check in pmp_is_locked
 
-r~
+ target/riscv/pmp.c | 151 +++++++++++++++++++++++++--------------------
+ 1 file changed, 83 insertions(+), 68 deletions(-)
+
+-- 
+2.47.2
+
 
