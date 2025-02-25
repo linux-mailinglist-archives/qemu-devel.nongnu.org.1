@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5BCA43F9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74276A43FA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:45:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmuGo-0004Ns-FU; Tue, 25 Feb 2025 07:42:42 -0500
+	id 1tmuIq-0005KU-0K; Tue, 25 Feb 2025 07:44:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmuGg-0004NT-CI
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:42:35 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tmuIP-0005Ii-Qn
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:44:24 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmuGc-0003RL-Ss
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:42:33 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43989226283so37879305e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 04:42:28 -0800 (PST)
+ id 1tmuIN-0003bq-RF
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:44:21 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-38f1e8efef5so3254730f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 04:44:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740487346; x=1741092146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740487458; x=1741092258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yIDhUxYsRPxggjX3/jskG7TR522mRA/5YzVFSljUKbc=;
- b=bcTAKxBUzmw2lp0hX63nWgTgK+0o7B1/CZITkDWTuNPksGv50voETjPUfkMWZ8OtJP
- tXN5zm4FrE/1WlWVzm6epZWdyyOZqq8nmjCHU+exJ4Ank7s6aPz0DEe4PedYfaRII5N5
- nKJZ9f+rM+Hidct70LxzZp1m4Q/3HBEd5VrkSAnxleEMLgntgH9hSwDXXz+XIHeIi+qt
- Ct5DqCaDCJ1Llhyo4w1phwKwHW8YkPl4wWZE/UCBfdH1cBNp3uvTyoAtYT7A0+9eQJgO
- vKDPQyHysHN5v4nZwd4c3ELaC+59Q/Xf+DX7ES+fRht2Wqg4Bt06EyziV18qf001S7d7
- ECtA==
+ bh=NK1n6Lqgn4G5WCmuXE4U4lQ1gplVqfE4dwMWvEYq/Yk=;
+ b=fQE4ZQfmdcwDX2j5X+RX8GCk1PKbxCqrtQFNR+WGfuw5tvmeUpGFci+QqJizn1gzL8
+ bnUnBksnwtxrIU+OjBy4RCZE0W/UyiJOiBcN+izBI3pYR/f8YT0nECwp+4ukdtc5OH/l
+ LcuvajyHfp17CBaS2Ar3EsBUrRea174hL7kq9t3G/2Yaqy67d0XtwnzFV3oEx4LBEPKF
+ LnWwaWAvlYNWEXVsFMZE5OmVLyAre1UOh5QwdlV0C2xDITJU97U1YrTnYGgesxymDyHd
+ MtcOo88NHXVu0crqP30rhR5xhwX5GQVGqRybQ+JZiqCPeJnyjjjGHMcwRc1vc3zpqeeJ
+ ctvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740487346; x=1741092146;
+ d=1e100.net; s=20230601; t=1740487458; x=1741092258;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=yIDhUxYsRPxggjX3/jskG7TR522mRA/5YzVFSljUKbc=;
- b=JLcFeiHmSdCeZNPMCC5LbEvrO7wRMM7XNS5TMIlABV5ya3j+hsvjf57eLNKs/UMkBT
- M4MkABPw6d4mKvXEkrH4LJM8pHsIad/uqr2F0dSB+BswqnyaopfRxGDcZTSU9FhlMoHG
- jo02d/ZS/WMRj97WMsneFjcKa40DUkjiMsh1v2UeT1BusTn/88BiG5HCyNvR/s7dIpuQ
- hCBX8hvSYwS7ywBrGFbFUABU9ThEFVvwkcPAPjWWJc7sCh8xmvZk78E46c1d3aGCEVQI
- H4kDBSiS4nB4DxysmnHIiJHD7aBEqAEqYL6HgE5cqBUj3DbXCtlVaQfRxqZsDChkBXQL
- sK3g==
-X-Gm-Message-State: AOJu0YwIt3M6rL5C42n6FswHV6wcTCdXXNtHBiPCjLeQ5LAJMudWcp4L
- xivD2mNt5WZ6SsbdOzvBJjCsmZLp1tMeZOKEbpa8f6CgEI7kSe80e0IfghJsvjU=
-X-Gm-Gg: ASbGnctbP4+n1ahAjVdsFvPvCJkIWMgzakpz5dX1dMb67hsFSWBvH/OFcMTKd7Ltr8n
- RNUpLObekPJIt6sBU+qI+C3GhrwrrpVlIzMBP8MH5gfcPL1pbZ8VXdt2fvsE+NatVau3dt5crAY
- zb26KHvJTWK16ZhOAA/pdEpxKPBcia/UIr9aTFfZ3yc47lh/DOdeCcMm1NhOCodrRT4SbFEcp2d
- LQwSey8SpbiWMyDJrB5sHjuOqLIMY3mnZiGdoYU19B5d2JkvqIWi6H3kJ4ZsFSAsGYeYPRhwywF
- vqzaLyRDwhj01uw4BhcVNRm7mV0H
-X-Google-Smtp-Source: AGHT+IGDDdaSG291rGFtcwjyICfV+ZSkMGz5+HpO8XV3j8RwRjewi6qaiE4i6J1/IP1NIQAiQiLSHA==
-X-Received: by 2002:a05:600c:4ed1:b0:439:a155:549d with SMTP id
- 5b1f17b1804b1-439ae1eacfdmr149578345e9.12.1740487346501; 
- Tue, 25 Feb 2025 04:42:26 -0800 (PST)
+ bh=NK1n6Lqgn4G5WCmuXE4U4lQ1gplVqfE4dwMWvEYq/Yk=;
+ b=XK92ma9u/7gSmrgJWKkrrJDY3rXRpQ+3faK1iAcVTEDgA2P38IEp6PRGf6gDpxr5U4
+ nsxHSXVoXjVNPR/3UAvGmmLJBkEA6SD8eTW7E9eDtzp84CocbQWJbgXU0NUyUj9HsYsz
+ Sf6VDMlADrE7MmKnSqSPQcrgycAa8VnmgZF8uoHqJKEg/IujUdkNb+9il9zzXZmj6AFp
+ ZPwqKJCxm2r8OEa7o9XhJI5N6nG8xk8GJpZ7rVl8k9nvgYz+kqPIAiCa9QTOlPVRHgSq
+ prU6lFcsLOBMtkgHkwt5PQPDOvOCRo4kufXKJuheOYZBDoOalxHQDJQ4ECSYo2M3bYHs
+ SWbg==
+X-Gm-Message-State: AOJu0YzbwWABYG2gex6Jh8jJK24RmkD+QmjSRkFoZfQIJk3FJ2IQPSV/
+ YQH1wfDFpCmQkLUWGXdRInFbMRm7iE049zMlSi+yjEeCKLkdsddbKPCGmtLefOE=
+X-Gm-Gg: ASbGncvxa02UqM3yHephkcdZykK99Vs7EWiH8h6DZsnUxVqwXi77vM7RirmPMkZZZSx
+ 7eVrrJA8xXNqACLSRaVq8f3bXftn2XY6lDKgoq/GhX2vnPMk2+PVIbjRATq7F5j4O36/VWUOnA7
+ UYcoT0DbT7FB8q66jrJq3B3yYgD6K8AWh2B8xLP22ZRIJashmO5H8GzKXT6OwoeeKr+3Yb8xolm
+ pRrJO5+3crWK+Ynl3ASknF9zQ1oRmEjbB1ChhRIOnJDEmp0+SRtVo6uuVzzMvwoXavu9u1ROoFU
+ E8EtJu6ZON90f+JO4/VTGUP0o6tA
+X-Google-Smtp-Source: AGHT+IG1qD8cG++Qfpp3hhQ3niJ0LA0AXN89+cT0j0E4ouGUFsKIAxPvcgsifCuXdNDnG7Ch4rFxdg==
+X-Received: by 2002:adf:fec2:0:b0:38d:dc4d:3476 with SMTP id
+ ffacd0b85a97d-390cc63898cmr1692356f8f.52.1740487457858; 
+ Tue, 25 Feb 2025 04:44:17 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390cd8fc005sm2143685f8f.89.2025.02.25.04.42.25
+ 5b1f17b1804b1-43ab1532f20sm25654035e9.8.2025.02.25.04.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 04:42:25 -0800 (PST)
+ Tue, 25 Feb 2025 04:44:17 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F21575F7DC;
- Tue, 25 Feb 2025 12:42:24 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 961495F7DC;
+ Tue, 25 Feb 2025 12:44:16 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Richard
  Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
- =?utf-8?Q?d=C3=A9?=
- <philmd@linaro.org>,  npiggin@gmail.com,  BALATON Zoltan
- <balaton@eik.bme.hu>
-Subject: Re: [PATCH v2 05/10] Revert "tcg/cputlb: remove other-cpu
- capability from TLB flushing"
-In-Reply-To: <20250207162048.1890669-6-imammedo@redhat.com> (Igor Mammedov's
- message of "Fri, 7 Feb 2025 17:20:43 +0100")
+ =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 07/10] accel/tcg: Simplify use of &first_cpu in
+ rr_cpu_thread_fn()
+In-Reply-To: <20250207162048.1890669-8-imammedo@redhat.com> (Igor Mammedov's
+ message of "Fri, 7 Feb 2025 17:20:45 +0100")
 References: <20250207162048.1890669-1-imammedo@redhat.com>
- <20250207162048.1890669-6-imammedo@redhat.com>
+ <20250207162048.1890669-8-imammedo@redhat.com>
 User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Tue, 25 Feb 2025 12:42:24 +0000
-Message-ID: <87seo25h73.fsf@draig.linaro.org>
+Date: Tue, 25 Feb 2025 12:44:16 +0000
+Message-ID: <87msea5h3z.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,109 +106,16 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Igor Mammedov <imammedo@redhat.com> writes:
 
-> 1)
-> This reverts commit 30933c4fb4f3df95ae44c4c3c86a5df049852c01.
->   ("tcg/cputlb: remove other-cpu capability from TLB flushing")
+> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 >
-> The commit caused a regression which went unnoticed due to
-> affected being disabled by default (DEBUG_TLB_GATE 0)
-> Previous patch switched to using tcg_debug_assert() so that
-> at least on debug builds assert_cpu_is_self() path would be exercised.
+> Let vCPUs wait for themselves being ready first, then other ones.
+> This allows the first thread to starts without the global vcpu
+> queue (thus &first_cpu) being populated.
 >
-> And that lead to exposing regression introduced by [1] with abort during =
-tests.
-> to reproduce:
->   $ configure  --target-list=3Dx86_64-softmmu --enable-debug
->   $ make && ./qemu-system-x86_64
->
->   accel/tcg/cputlb.c:419: tlb_flush_by_mmuidx:
->     Assertion `!(cpu)->created || qemu_cpu_is_self(cpu)' failed.
->
-> which is triggered by usage outside of cpu thread:
->     x86_cpu_new -> ... ->
->       x86_cpu_realizefn -> cpu_reset -> ... ->
->           tcg_cpu_reset_hold
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 
-If the reset case is the only one I don't think we need to revert the
-rest of the changes as only tlb_flush needs calling. How about something
-like:
-
---8<---------------cut here---------------start------------->8---
-cputlb: introduce tlb_flush_other_cpu for reset use
-
-The commit 30933c4fb4 (tcg/cputlb: remove other-cpu capability from
-TLB flushing) introduced a regression that only shows up when
---enable-debug-tcg is used. The main use case of tlb_flush outside of
-the current_cpu context is for handling reset and CPU creation. Rather
-than revert the commit introduce a new helper and tweak the
-documentation to make it clear where it should be used.
-
-Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-3 files changed, 26 insertions(+), 5 deletions(-)
-include/exec/exec-all.h   | 20 ++++++++++++++++----
-accel/tcg/cputlb.c        |  9 +++++++++
-accel/tcg/tcg-accel-ops.c |  2 +-
-
-modified   include/exec/exec-all.h
-@@ -64,12 +64,24 @@ void tlb_flush_page_all_cpus_synced(CPUState *src, vadd=
-r addr);
-  * tlb_flush:
-  * @cpu: CPU whose TLB should be flushed
-  *
-- * Flush the entire TLB for the specified CPU. Most CPU architectures
-- * allow the implementation to drop entries from the TLB at any time
-- * so this is generally safe. If more selective flushing is required
-- * use one of the other functions for efficiency.
-+ * Flush the entire TLB for the specified current CPU.
-+ *
-+ * Most CPU architectures allow the implementation to drop entries
-+ * from the TLB at any time so this is generally safe. If more
-+ * selective flushing is required use one of the other functions for
-+ * efficiency.
-  */
- void tlb_flush(CPUState *cpu);
-+/**
-+ * tlb_flush_other_cpu:
-+ * @cpu: CPU whose TLB should be flushed
-+ *
-+ * Flush the entire TLB for a specified CPU. For cross vCPU flushes
-+ * you shuld be using a more selective function. This is really only
-+ * used for flushing CPUs being reset from outside their current
-+ * context.
-+ */
-+void tlb_flush_other_cpu(CPUState *cpu);
- /**
-  * tlb_flush_all_cpus_synced:
-  * @cpu: src CPU of the flush
-modified   accel/tcg/cputlb.c
-@@ -414,6 +414,15 @@ void tlb_flush(CPUState *cpu)
-     tlb_flush_by_mmuidx(cpu, ALL_MMUIDX_BITS);
- }
-=20
-+void tlb_flush_other_cpu(CPUState *cpu)
-+{
-+    g_assert(!qemu_cpu_is_self(cpu));
-+
-+    async_run_on_cpu(cpu,
-+                     tlb_flush_by_mmuidx_async_work,
-+                     RUN_ON_CPU_HOST_INT(ALL_MMUIDX_BITS));
-+}
-+
- void tlb_flush_by_mmuidx_all_cpus_synced(CPUState *src_cpu, uint16_t idxma=
-p)
- {
-     const run_on_cpu_func fn =3D tlb_flush_by_mmuidx_async_work;
-modified   accel/tcg/tcg-accel-ops.c
-@@ -85,7 +85,7 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
- {
-     tcg_flush_jmp_cache(cpu);
-=20
--    tlb_flush(cpu);
-+    tlb_flush_other_cpu(cpu);
- }
-=20
---8<---------------cut here---------------end--------------->8---
+Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
 --=20
 Alex Benn=C3=A9e
