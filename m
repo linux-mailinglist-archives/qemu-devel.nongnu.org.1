@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82891A43CF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAD0A43CE4
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmsoV-0001fV-7o; Tue, 25 Feb 2025 06:09:23 -0500
+	id 1tmsoO-0001b4-1b; Tue, 25 Feb 2025 06:09:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmsnx-0001XY-Ae
+ id 1tmsnx-0001XX-A0
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:50 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmsnv-0007kI-OZ
+ id 1tmsnv-0007kL-Pv
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:49 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4399deda38cso33192155e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:46 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-439ac3216dcso31534665e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740481725; x=1741086525; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740481726; x=1741086526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cXGP6wzkZErmn2F04TQmNlmyR3CeFAZYW4eH79gDg7o=;
- b=YuWHG7bvBaWPqP7QT3rkvU/Zv6mmG8v5HygVj3dPKRlKn05E/yUZECzsIzhTbfeGhz
- WAMykDpiYRK15O11cQkhXgaW2lOIcmWsIccXFp9lswMJ5hPMyLjPHSh1SYQbQRl73Z0H
- yPmTDEcZ2k81oIG1rzGaq02lZ0DMy6OEtABDZp/K0axp/3VO16IQeeAtuOR9ZbgYgaFd
- zHhO47l16HU/Syzyrv0QZv8pqZ5JmH1GqKk8W28mYFgBTGA07VF1j1f8bSyviJFIa9vJ
- OZ99/KrmfLqBaieNTcQdenRyMtIuCTRbecoerfeV5Mwv8CmBjNzDUt1hcoXbbF7XoQKo
- C8Dw==
+ bh=BXCoC3AjlvjFHfpG46LUtIZq27ESsMFw+aj5c/6HJiY=;
+ b=pI2JePBOnvXQUHQSo5AX3g+2f0Xwe5/c6MSSC3V2XSie8bh83+XtaKs9clCZ90nhkD
+ ubHxRGwyMW5nHOUG+8Tknv1dUxmM4sWqgRLJ2GunwBW8onmoSrCMq0MVZ8B8CZqz6uCO
+ okVTH9mQy67ncjHKuL1sfnTdH1kuCoINWY0ZlswvUiNLa5i5REiffuGIh0HAOMmZC6TM
+ ydz1+jD/OIxW3wjF+ku+JxRMP5QtHYw9i7NIdcshQrRoeBPFRPe/AszdnORe+DgHphf3
+ lO0FB0rgvR0NCjkgal6OxTHJUUNt3I8eqrwh0qvXxflSw+SYS8e0k4dzWvgeh2gdFOI4
+ h6Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740481725; x=1741086525;
+ d=1e100.net; s=20230601; t=1740481726; x=1741086526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cXGP6wzkZErmn2F04TQmNlmyR3CeFAZYW4eH79gDg7o=;
- b=doNRiU2+f7BSDVenPFDR2I6KcF2POaOZZRh+F/HB0+btHExw/xvPZ4/ZI7oBfh1Fvr
- 1uYIiSmGpvt1/0liZE5CULO9Mg8e0FuOA99CiKBMMbaIz8cI7W7/DvPc9dHP5EpVsz0Z
- H4eUzqR5j1RgCWgvUjcR55evkrTtWqG8G6SZ2wbZ+x1qkq35Fi+F4PYKJZzSIj54d5bl
- JmgOmSYgcCh1imCinv6BiKElvcjlk4frWz+TQNONc7Udu/RPROOaETsVlPbSNN2pB1D3
- Ej4uJgJbESIVGnGEk8Zk+oToE3dqMd8dutEuyp6zlsW0tnOdITUBXjd5Iqf1evqiVN44
- Q9WQ==
-X-Gm-Message-State: AOJu0YzhBzlgSsEX97sNWcHNpcaM6Gi7E+Txw5CynqIvYjKnEQZ4+s85
- /nzvhaQSE5/zmTauRaDlZlJ+gcXNEL2YHwK0K7LnCrr9V6+s6L29FEfvynXqWE8=
-X-Gm-Gg: ASbGncvqfvJB/yPfgYic0JuZ4IZUKG/L6L70Xpx/ak3bkc3jG2LjwA6QoiftF9xFKpq
- hBRej/hzS3cxVjat7Qajj/BLoEmJsTATBqqRLr+Eo0ZOlvGpApPWjtTvrMLNCsvTvUoCduSDrVw
- 8mMgtA2LD0J3KrwH0E1ssb6qNgSjX7a/tx1CVQfi8tvKRNIab+O3r+MQtFtmM+n3z0raiZt553O
- 8jGFWnbEWFAJt8VGfcDFhmgVdg1qSZpJCavT9x53tV3OeBGDNIfTqGLq1R7xXKVw4eXi83urHQu
- fCvak0u4Uwth0mn68rc5RlYtQ3tP
-X-Google-Smtp-Source: AGHT+IGsy/RqBFd06tETCtxhAw5hpQRYwExwI8EikFRM0h/sw6AoS/YvKex7xdT3HiD0yC4o1cgPNg==
-X-Received: by 2002:a05:600c:4753:b0:439:9a28:9e8d with SMTP id
- 5b1f17b1804b1-43ab0f313a0mr24678915e9.12.1740481725626; 
+ bh=BXCoC3AjlvjFHfpG46LUtIZq27ESsMFw+aj5c/6HJiY=;
+ b=XPKNl58SoC/q0hJtaiG/1Ni0UaTQs9qnk+hBp+uwt/NIiK2QR8VgxP0q3vjakuwPvL
+ 7dMwI8CZ6wvxWNppZn6Q2Aa3V0XMIrkL0oUKZFCt7I+T5hTEoCpA9pYLFMlWiB51ss4d
+ vWDlXP30/j+hgncDZLItae0KDSoSWGILRnZ2mMpkj9uadjDAYTJtmMMSOHiF5FBP4YA0
+ 39ABrRvwIsBJaFKyNfcIM/et4j6CWHopBtiabjjGh1q9Q1yL10BRtrBeGGsKmBbOPg7h
+ z3gz7Mf01oGgohLvTod8GA4zwnpIE+mELBFEJp/S5CBMIR8bKDDdDBRZIjFr1q6NjYvY
+ GOLg==
+X-Gm-Message-State: AOJu0YxHZSCo3NQXFlhyD3K7iEo22l4dC7guDbGPgQydCMB1dNHMLvSm
+ t7ajQQFMEzfvOza4Rq0kN88zYwMYT3V6PdcqHhOXXFS+7MO6lYHMjDXiQ27vWZglfkzwcKQON2M
+ fTJU=
+X-Gm-Gg: ASbGnct9j/OUp17sjRShRtg28H9fF1YToy3ww0kQBDWE0kTiRQxywWfD5XlXzQ8GSoP
+ KCvO2drVQ0GiWPMcdE2lUQDe9DFyGI8EvaRu453zZ9c435qCyL7AQEnKc3VHRT874jmJsvlrOSJ
+ tjSTzE347geICq0M3Eqq+CCxY+XPxG2ObB5QnMJoULxqDEDdrFblncjSj+9BK1qby7xl4qgitIv
+ etYgx6qgu4id+oWhydp0qAiW1s61JEmRepCdPDo+pHU6d5x49WAQHsTwKZmtoxhJZpDUI0BtrWH
+ LMfjnbwGbnc3Zit4KAw5lmakxsiI
+X-Google-Smtp-Source: AGHT+IHEUDqi/lWHUnS/yiCwRNbVZjHheB1kM2eycQhr+AtOAs5gPi2q0Ksc9MbN+Ppw90+weFe6CA==
+X-Received: by 2002:a05:600c:474b:b0:439:9a40:aa19 with SMTP id
+ 5b1f17b1804b1-43ab1823448mr19381435e9.12.1740481725960; 
  Tue, 25 Feb 2025 03:08:45 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02ce65dsm136562215e9.1.2025.02.25.03.08.44
+ 5b1f17b1804b1-43ab1532f20sm22530435e9.8.2025.02.25.03.08.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 25 Feb 2025 03:08:44 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 41A355F9D0;
+ by draig.lan (Postfix) with ESMTP id 56A605F9D3;
  Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,17 +71,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 01/10] plugins/api: use tcg_ctx to get TARGET_PAGE_MASK
-Date: Tue, 25 Feb 2025 11:08:35 +0000
-Message-Id: <20250225110844.3296991-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/10] plugins/loader: populate target_name with target_name()
+Date: Tue, 25 Feb 2025 11:08:36 +0000
+Message-Id: <20250225110844.3296991-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250225110844.3296991-1-alex.bennee@linaro.org>
 References: <20250225110844.3296991-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,27 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Requiring TARGET_PAGE_MASK to be defined gets in the way of building
-this unit once. As tcg_ctx has the value lets use it.
+We have a function we can call for this, lets not rely on macros that
+stop us building once.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- plugins/api.c | 2 +-
+ plugins/loader.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/plugins/api.c b/plugins/api.c
-index cf8cdf076a..10b258b08d 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -287,7 +287,7 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
- void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
- {
-     const DisasContextBase *db = tcg_ctx->plugin_db;
--    vaddr page0_last = db->pc_first | ~TARGET_PAGE_MASK;
-+    vaddr page0_last = db->pc_first | ~tcg_ctx->page_mask;
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 99686b5466..827473c8b6 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -297,7 +297,7 @@ int qemu_plugin_load_list(QemuPluginList *head, Error **errp)
+     struct qemu_plugin_desc *desc, *next;
+     g_autofree qemu_info_t *info = g_new0(qemu_info_t, 1);
  
-     if (db->fake_insn) {
-         return NULL;
+-    info->target_name = TARGET_NAME;
++    info->target_name = target_name();
+     info->version.min = QEMU_PLUGIN_MIN_VERSION;
+     info->version.cur = QEMU_PLUGIN_VERSION;
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.39.5
 
