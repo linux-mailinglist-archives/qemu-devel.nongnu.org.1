@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E6A43228
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E018A43225
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:56:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmjEW-00039f-FC; Mon, 24 Feb 2025 19:55:36 -0500
+	id 1tmjEY-0003Bh-Ea; Mon, 24 Feb 2025 19:55:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE3-0002xz-Gs; Mon, 24 Feb 2025 19:55:07 -0500
+ id 1tmjE8-00031W-JL; Mon, 24 Feb 2025 19:55:14 -0500
 Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE1-0004pc-QG; Mon, 24 Feb 2025 19:55:07 -0500
+ id 1tmjE4-0004pv-SQ; Mon, 24 Feb 2025 19:55:11 -0500
 Received: from sslproxy05.your-server.de ([78.46.172.2])
  by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE0-000HOv-0o; Tue, 25 Feb 2025 01:55:04 +0100
+ id 1tmjE2-000HPO-0y; Tue, 25 Feb 2025 01:55:06 +0100
 Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
  by sslproxy05.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE0-0009WX-1e; Tue, 25 Feb 2025 01:55:04 +0100
+ id 1tmjE2-0009fr-1h; Tue, 25 Feb 2025 01:55:06 +0100
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 9E3AD48005B;
- Tue, 25 Feb 2025 01:55:03 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 9E2CF48016C;
+ Tue, 25 Feb 2025 01:55:05 +0100 (CET)
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id PH40zLJV2LXQ; Tue, 25 Feb 2025 01:55:03 +0100 (CET)
+ with ESMTP id yMS5EZmWp39f; Tue, 25 Feb 2025 01:55:05 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 5219948005D;
- Tue, 25 Feb 2025 01:55:03 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 4900148005B;
+ Tue, 25 Feb 2025 01:55:05 +0100 (CET)
 X-Virus-Scanned: amavis at zimbra.eb.localhost
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id wMxk9Aw15X2c; Tue, 25 Feb 2025 01:55:03 +0100 (CET)
+ with ESMTP id uxyHrJoL-Zjt; Tue, 25 Feb 2025 01:55:05 +0100 (CET)
 Received: from zimbra.eb.localhost (unknown [10.10.171.10])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id AA7B548005B;
- Tue, 25 Feb 2025 01:55:01 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id A07C448016C;
+ Tue, 25 Feb 2025 01:55:03 +0100 (CET)
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org,
@@ -47,13 +47,14 @@ Cc: qemu-riscv@nongnu.org,
  Alistair Francis <alistair23@gmail.com>,
  Conor Dooley <conor.dooley@microchip.com>,
  Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH v2 4/6] hw/riscv: Allow direct start of kernel for MPFS
-Date: Tue, 25 Feb 2025 01:54:44 +0100
-Message-ID: <20250225005446.13894-5-sebastian.huber@embedded-brains.de>
+Subject: [PATCH v2 5/6] hw/riscv: Configurable MPFS CLINT timebase freq
+Date: Tue, 25 Feb 2025 01:54:45 +0100
+Message-ID: <20250225005446.13894-6-sebastian.huber@embedded-brains.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
 References: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Authenticated-Sender: smtp-embedded@poldi-networks.de
 X-Virus-Scanned: Clear (ClamAV 1.0.7/27559/Mon Feb 24 10:44:14 2025)
@@ -80,111 +81,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Further customize the -bios and -kernel options behaviour for the
-microchip-icicle-kit machine.  If "-bios none -kernel filename" is
-specified, then do not load a firmware and instead only load and start
-the kernel image.
+This property enables the setting of the CLINT timebase frequency
+through the command line, for example:
+
+  -machine microchip-icicle-kit,clint-timebase-frequency=3D10000000
 
 Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 ---
- hw/riscv/microchip_pfsoc.c | 57 ++++++++++++++++++++++++++------------
- 1 file changed, 40 insertions(+), 17 deletions(-)
+ hw/riscv/microchip_pfsoc.c         | 49 +++++++++++++++++++++++++++---
+ include/hw/riscv/microchip_pfsoc.h |  1 +
+ 2 files changed, 46 insertions(+), 4 deletions(-)
 
 diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index 844dc0545c..df902c8667 100644
+index df902c8667..9068eed780 100644
 --- a/hw/riscv/microchip_pfsoc.c
 +++ b/hw/riscv/microchip_pfsoc.c
-@@ -578,29 +578,45 @@ static void microchip_icicle_kit_machine_init(Machi=
-neState *machine)
-     }
+@@ -39,6 +39,7 @@
+ #include "qemu/units.h"
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
++#include "qapi/visitor.h"
+ #include "hw/boards.h"
+ #include "hw/loader.h"
+ #include "hw/sysbus.h"
+@@ -61,9 +62,6 @@
+ #define BIOS_FILENAME   "hss.bin"
+ #define RESET_VECTOR    0x20220000
 =20
-     /*
--     * We follow the following table to select which payload we execute.
-+     * We follow the following table to select which firmware we use.
-      *
--     *  -bios |    -kernel | payload
--     * -------+------------+--------
--     *      N |          N | HSS
--     *      Y | don't care | HSS
--     *      N |          Y | kernel
--     *
--     * This ensures backwards compatibility with how we used to expose -=
-bios
--     * to users but allows them to run through direct kernel booting as =
-well.
-+     * -bios         | -kernel    | firmware
-+     * --------------+------------+--------
-+     * none          |          N | error
-+     * none          |          Y | kernel
-+     * NULL, default |          N | BIOS_FILENAME
-+     * NULL, default |          Y | RISCV64_BIOS_BIN
-+     * other         | don't care | other
-      */
-+    if (machine->firmware && !strcmp(machine->firmware, "none")) {
-+        if (!machine->kernel_filename) {
-+            error_report("for -bios none, a kernel is required");
-+            exit(1);
-+        }
+-/* CLINT timebase frequency */
+-#define CLINT_TIMEBASE_FREQ 1000000
+-
+ /* GEM version */
+ #define GEM_REVISION    0x0107010c
 =20
--    if (machine->kernel_filename) {
--        firmware_name =3D RISCV64_BIOS_BIN;
--        firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
-+        firmware_name =3D NULL;
-+        firmware_load_addr =3D RESET_VECTOR;
-+    } else if (!machine->firmware || !strcmp(machine->firmware, "default=
-")) {
-+        if (machine->kernel_filename) {
-+            firmware_name =3D RISCV64_BIOS_BIN;
-+            firmware_load_addr =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
-+        } else {
-+            firmware_name =3D BIOS_FILENAME;
-+            firmware_load_addr =3D RESET_VECTOR;
-+        }
-     } else {
--        firmware_name =3D BIOS_FILENAME;
-+        firmware_name =3D machine->firmware;
-         firmware_load_addr =3D RESET_VECTOR;
-     }
+@@ -193,6 +191,7 @@ static void microchip_pfsoc_soc_instance_init(Object =
+*obj)
+ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
+ {
+     MachineState *ms =3D MACHINE(qdev_get_machine());
++    MicrochipIcicleKitState *iks =3D MICROCHIP_ICICLE_KIT_MACHINE(ms);
+     MicrochipPFSoCState *s =3D MICROCHIP_PFSOC(dev);
+     const MemMapEntry *memmap =3D microchip_pfsoc_memmap;
+     MemoryRegion *system_memory =3D get_system_memory();
+@@ -253,7 +252,7 @@ static void microchip_pfsoc_soc_realize(DeviceState *=
+dev, Error **errp)
+         memmap[MICROCHIP_PFSOC_CLINT].base + RISCV_ACLINT_SWI_SIZE,
+         RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
+         RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
+-        CLINT_TIMEBASE_FREQ, false);
++        iks->clint_timebase_freq, false);
 =20
--    /* Load the firmware */
--    firmware_end_addr =3D riscv_find_and_load_firmware(machine, firmware=
-_name,
--                                                     &firmware_load_addr=
-, NULL);
-+    /* Load the firmware if necessary */
-+    if (firmware_name) {
-+        const char *filename =3D riscv_find_firmware(firmware_name, NULL=
-);
-+        firmware_end_addr =3D riscv_load_firmware(filename, &firmware_lo=
-ad_addr,
-+                                                NULL);
-+    } else {
-+        firmware_end_addr =3D firmware_load_addr;
-+    }
-=20
-     riscv_boot_info_init(&boot_info, &s->soc.u_cpus);
-     if (machine->kernel_filename) {
-@@ -638,8 +654,15 @@ static void microchip_icicle_kit_machine_init(Machin=
+     /* L2 cache controller */
+     create_unimplemented_device("microchip.pfsoc.l2cc",
+@@ -669,6 +668,40 @@ static void microchip_icicle_kit_machine_init(Machin=
 eState *machine)
-             fdt_load_addr =3D 0;
-         }
+     }
+ }
 =20
-+        hwaddr start_addr;
-+        if (firmware_name) {
-+            start_addr =3D firmware_load_addr;
-+        } else {
-+            start_addr =3D kernel_entry;
-+        }
++static void microchip_icicle_kit_set_clint_timebase_freq(Object *obj,
++                                                         Visitor *v,
++                                                         const char *nam=
+e,
++                                                         void *opaque,
++                                                         Error **errp)
++{
++    MicrochipIcicleKitState *s =3D MICROCHIP_ICICLE_KIT_MACHINE(obj);
++    uint32_t value;
 +
-         /* Load the reset vector */
--        riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, firmware_load=
-_addr,
-+        riscv_setup_rom_reset_vec(machine, &s->soc.u_cpus, start_addr,
-                                   memmap[MICROCHIP_PFSOC_ENVM_DATA].base=
++    if (!visit_type_uint32(v, name, &value, errp)) {
++        return;
++    }
++
++    s->clint_timebase_freq =3D value;
++}
++
++static void microchip_icicle_kit_get_clint_timebase_freq(Object *obj,
++                                                         Visitor *v,
++                                                         const char *nam=
+e,
++                                                         void *opaque,
++                                                         Error **errp)
++{
++    MicrochipIcicleKitState *s =3D MICROCHIP_ICICLE_KIT_MACHINE(obj);
++    uint32_t value =3D s->clint_timebase_freq;
++
++    visit_type_uint32(v, name, &value, errp);
++}
++
++static void microchip_icicle_kit_machine_instance_init(Object *obj)
++{
++    MicrochipIcicleKitState *m =3D MICROCHIP_ICICLE_KIT_MACHINE(obj);
++    m->clint_timebase_freq =3D 1000000;
++}
++
+ static void microchip_icicle_kit_machine_class_init(ObjectClass *oc, voi=
+d *data)
+ {
+     MachineClass *mc =3D MACHINE_CLASS(oc);
+@@ -690,12 +723,20 @@ static void microchip_icicle_kit_machine_class_init=
+(ObjectClass *oc, void *data)
+      * See memory_tests() in mss_ddr.c in the HSS source code.
+      */
+     mc->default_ram_size =3D 1537 * MiB;
++
++    object_class_property_add(oc, "clint-timebase-frequency", "uint32_t"=
 ,
-                                   memmap[MICROCHIP_PFSOC_ENVM_DATA].size=
++                              microchip_icicle_kit_get_clint_timebase_fr=
+eq,
++                              microchip_icicle_kit_set_clint_timebase_fr=
+eq,
++                              NULL, NULL);
++    object_class_property_set_description(oc, "clint-timebase-frequency"=
 ,
-                                   kernel_entry, fdt_load_addr);
++                                  "Set CLINT timebase frequency in Hz.")=
+;
+ }
+=20
+ static const TypeInfo microchip_icicle_kit_machine_typeinfo =3D {
+     .name       =3D MACHINE_TYPE_NAME("microchip-icicle-kit"),
+     .parent     =3D TYPE_MACHINE,
+     .class_init =3D microchip_icicle_kit_machine_class_init,
++    .instance_init =3D microchip_icicle_kit_machine_instance_init,
+     .instance_size =3D sizeof(MicrochipIcicleKitState),
+ };
+=20
+diff --git a/include/hw/riscv/microchip_pfsoc.h b/include/hw/riscv/microc=
+hip_pfsoc.h
+index daef086da6..7ca9b976c1 100644
+--- a/include/hw/riscv/microchip_pfsoc.h
++++ b/include/hw/riscv/microchip_pfsoc.h
+@@ -67,6 +67,7 @@ typedef struct MicrochipIcicleKitState {
+     MachineState parent_obj;
+=20
+     /*< public >*/
++    uint32_t clint_timebase_freq;
+     MicrochipPFSoCState soc;
+ } MicrochipIcicleKitState;
+=20
 --=20
 2.43.0
 
