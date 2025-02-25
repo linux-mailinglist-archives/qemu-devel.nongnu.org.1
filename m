@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F453A449D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 208EAA449E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:15:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzL7-0002lZ-SX; Tue, 25 Feb 2025 13:07:29 -0500
+	id 1tmzL5-0002QY-U8; Tue, 25 Feb 2025 13:07:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJB-0008L2-11
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:32 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1tmzJE-0008Mu-ED
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:34 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJ7-0002DF-MV
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:28 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-439a4dec9d5so57994125e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:24 -0800 (PST)
+ id 1tmzJ9-0002DT-FR
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:30 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4399deda4bfso41030165e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1740506724; x=1741111524; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=o85nyeCWBlwcMm8LJhi8yYph6HgZIzLDg7S+MlOpjLI=;
- b=t3TPC+UDTwyA9CK4q4zwlB7JVzmkVITDlH0EUrdk+C9oBM3atGmL2WiCZwWKW4wgX+
- TL3AuGpEmoQPXfhhYmNI+2tSlrhadnTA1IstrzaF31UCvI042dDOtgVHHC03/i2+uSxP
- rfLsASVYnc2gRbM93/Zj6dBexG6xSmxUOp9qdKX0+oA2w9IrZAzRzgNFv6Jkyfcrg50n
- YdAmQKG9UjMwcLlF2JkDg+xhCWYCrzVd7JjSv1rjeC7GsNBLD2dut2ciyRUYaqxOC24O
- Ib7v2kH/g/sSGLAJ4H+rsZxJRwuXqwnoM2YqI54qKOZREFwe9K40J6iVnwkqVQQQiMEb
- vC4g==
+ :reply-to; bh=sF2iTBSB9udDdHFGKwWu1r3tpgd/tit84mrcKjGT1yo=;
+ b=Q5arw1QayYFb07WeXkME2mgz3VVh6/eeq4BIbDFimANtlnwjtaboVTzEqaITTyd/lm
+ F1BuGb680GYImiykK5VxMKN46t9FkFBgLSFRtQX1oNw/qHwQBHkbFzWFaSEPQPf1dYQJ
+ Yny0sofdWZy3lQ8ynOda5rStuSB1gbFd5sbyA3PEe2aI4ctmaAXGpX4KU4uCqN9PGEXg
+ vpPpNI+4akGZTdtPP8+Ps5lAsJjxNmlHbT2ltIqSHhjMUiUK49+Dea4Y0bMd+LRoGryz
+ TaXLOmgMlakqZjC9jyzoglihpL0ZeQ4hDuo1/Ohw2D1q62t9NFGhhCkGIrvaSIAWoJ0j
+ lMfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1740506724; x=1741111524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o85nyeCWBlwcMm8LJhi8yYph6HgZIzLDg7S+MlOpjLI=;
- b=wNAWse0sv5yZZWAk8/sq4zrx69dnqjuZWPeRIaimI2zjw8157YgrYzb1VwmqpRRp2E
- hu0yG8rcZX0P1aI89Wnn15C13erJFa/jL4O7/ATouas+WNTz7vUtlIy1o3DnKFc0w8j5
- L6LWgYkwrLWJXDDu2dbjQ4A0CG2Oj+Kmhv/DEodjwGPI3dT15GLDg3mCJouybT9OQvl5
- PLSbwzrQf98sZqchbvaXWMkHZl7wVMt5UyaxzQkaA+G3asFHcaxW9pW+JdNZFep9+4J3
- WVevgKEym8WDUiikxBCezZJU47tiP936oF6br34J3zmNvbnMDZAnBOsqn0wz27PUnDEx
- v3aA==
-X-Gm-Message-State: AOJu0YyQLzjRpUbZ7Bn6ZZ4TglYGt2IFHlCgECAKU35RZ7mHSPwlv/1B
- 4jiAf7lk1Y79EwGRlDU1rT4gQuKd2c01DQy3thHFh3YHyPHiPwekT467vmId/o7qmBD1wd97cgH
- y
-X-Gm-Gg: ASbGncu6TaZ//mtY7xKzcC0YnhNPo0Js5GoMEXWy08rytorOvzc7akUCb2QrbVs7FoL
- skgcD65DAPF2cnP6diVj0RH+XsaZ5uLyC3J4pgQMnIxat1ovqBlwzHPc5tl4Zw5DW9UUd4bJa/r
- 6AwMKtmhgLSiRvgt+dHUwxaiFlwdw1+FegOOo5PgImraZGyalCoA+hlY1cpGkj+CR3Cv3v/yos6
- rAYH3CrIpnyh9w+IlT2UIhorI0xQiRpffibIF5ysYRQ8+8JEnuy0t7Q7mzchUh0zSyLJaOWArZg
- YYMA7/PbRHPrzxi4N/MZF+F4YaivLjWn
-X-Google-Smtp-Source: AGHT+IG0b8r9qwGGKyo/rN+jtw7nstDC91bBVTAsC6RbrmslbYn8uBNQbEJvaeXaubZpv7+5iBoJHQ==
-X-Received: by 2002:a05:600c:154e:b0:439:a0a3:a15 with SMTP id
- 5b1f17b1804b1-43ab0f3c907mr54966635e9.14.1740506723621; 
- Tue, 25 Feb 2025 10:05:23 -0800 (PST)
+ bh=sF2iTBSB9udDdHFGKwWu1r3tpgd/tit84mrcKjGT1yo=;
+ b=KUVUvPlLomceJLf90h8jkCRrxILE6dOp3xY/tv7I7PiVp6MNlMJeD7EWplj7hRA0OX
+ lwK4gNLbEJJTnu8jDSl9YjHgF1eocmO4Oz3QvETyxcCeSww3JV3a30KOgDY6yslE+P9b
+ S+8rrylFFMbfdqs9XZVvBkbjnx4+tm2+htizfqSE2i5et4FitYsjfL5wIeF5fPkmnFRN
+ N/U9KG4V/34uSeOXcx1mi2pzxFn0DVGrD5kBB49zXEQPqEI8QOrs4Wft/8lQq9hnHrxi
+ STaaRPr7yMxoG+oeD+64eh6UMKXOFBCp2ZTp/gteZ8B5z0+iJUPyBoLwhrH1X0KPY4OF
+ zeMg==
+X-Gm-Message-State: AOJu0Yy4862ApdwnxvP8wt0B+sIBVh0jCr3adLOpK1P5GHeqlMXt1iQT
+ GJpZ+m1Ki2DasqcpQjbKErzxypNGlsCGhUsm7Z8OtHpaYdPIYABZ5JUSIUNgb9v9EYwiEKsYCvI
+ J
+X-Gm-Gg: ASbGncu05mSZge59nUzDKr4kaRCKXLm5rJG6hAW/zH7rr6jrPy75QWgJRMl6tsNTgK+
+ ZmVBe9rXixCyBQE8aGls1Z31ZOxnV6XPSuQJsu3JpycIUD5ueytzZPevrVepJ7rm9Ox1qojOAJo
+ D81Ca91rZvjTpHntKSVQfLs1PkMoOL42U6HSAJ6QXtMS+jykaQSCtw2kOGQiVMw5yW5y66iYu+i
+ c+NIApTkNhZ42DiOOH7feBVPoDdYeyNpS3YND4FIPVSdCJYPVXZb4936YwPRRkMZDw9Kh+gosIW
+ hxloJkAqLIEDpFIQbURHkjVCna7h5GFD
+X-Google-Smtp-Source: AGHT+IFzEygZ4UUVoljzEFTjTxSn7GITlI+vFiPuduDuES8vtjLkCg9VLNwWqMY+XN7+slNH0HdSRw==
+X-Received: by 2002:a05:600c:1e23:b0:439:987c:2309 with SMTP id
+ 5b1f17b1804b1-439ae221d7dmr149077815e9.27.1740506724508; 
+ Tue, 25 Feb 2025 10:05:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.22
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:22 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/43] fpu: Make targets specify floatx80 default Inf at runtime
-Date: Tue, 25 Feb 2025 18:04:35 +0000
-Message-ID: <20250225180510.1318207-10-peter.maydell@linaro.org>
+Subject: [PULL 10/43] target/m68k: Avoid using floatx80_infinity global const
+Date: Tue, 25 Feb 2025 18:04:36 +0000
+Message-ID: <20250225180510.1318207-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,188 +97,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we hardcode at compile time whether the floatx80 default
-Infinity value has the explicit integer bit set or not (x86 sets it;
-m68k does not).  To be able to compile softfloat once for all targets
-we'd like to move this setting to runtime.
+The global const floatx80_infinity is (unlike all the other
+float*_infinity values) target-specific, because whether the explicit
+Integer bit is set or not varies between m68k and i386.  We want to
+be able to compile softfloat once for multiple targets, so we can't
+continue to use a single global whose value needs to be different
+between targets.
 
-Define a new FloatX80Behaviour enum which is a set of flags that
-define the target's floatx80 handling.  Initially we define just one
-flag, for whether the default Infinity has the Integer bit set or
-not, but we will expand this in future commits to cover the other
-floatx80 target specifics that we currently make compile-time
-settings.
-
-Define a new function floatx80_default_inf() which returns the
-appropriate default Infinity value of the given sign, and use it in
-the code that was previously directly using the compile-time constant
-floatx80_infinity_{low,high} values when packing an infinity into a
-floatx80.
-
-Since floatx80 is highly unlikely to be supported in any new
-architecture, and the existing code is generally written as "default
-to like x87, with an ifdef for m68k", we make the default value for
-the floatx80 behaviour flags be "what x87 does".  This means we only
-need to change the m68k target to specify the behaviour flags.
-
-(Other users of floatx80 are the Arm NWFPE emulation, which is
-obsolete and probably not actually doing the right thing anyway, and
-the PPC xsrqpxp insn.  Making the default be "like x87" avoids our
-needing to review and test for behaviour changes there.)
-
-We will clean up the remaining uses of the floatx80_infinity global
-constant in subsequent commits.
+Replace the direct uses of floatx80_infinity in target/m68k with
+calls to the new floatx80_default_inf() function.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250224111524.1101196-2-peter.maydell@linaro.org
-Message-id: 20250217125055.160887-2-peter.maydell@linaro.org
+Message-id: 20250224111524.1101196-3-peter.maydell@linaro.org
+Message-id: 20250217125055.160887-3-peter.maydell@linaro.org
 ---
- include/fpu/softfloat-helpers.h | 12 ++++++++++++
- include/fpu/softfloat-types.h   | 13 +++++++++++++
- include/fpu/softfloat.h         |  1 +
- fpu/softfloat.c                 |  7 +++----
- target/m68k/cpu.c               |  6 ++++++
- fpu/softfloat-specialize.c.inc  | 10 ++++++++++
- 6 files changed, 45 insertions(+), 4 deletions(-)
+ target/m68k/softfloat.c | 47 ++++++++++++++---------------------------
+ 1 file changed, 16 insertions(+), 31 deletions(-)
 
-diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
-index 8983c2748ec..90862f5cd22 100644
---- a/include/fpu/softfloat-helpers.h
-+++ b/include/fpu/softfloat-helpers.h
-@@ -75,6 +75,12 @@ static inline void set_floatx80_rounding_precision(FloatX80RoundPrec val,
-     status->floatx80_rounding_precision = val;
- }
- 
-+static inline void set_floatx80_behaviour(FloatX80Behaviour b,
-+                                          float_status *status)
-+{
-+    status->floatx80_behaviour = b;
-+}
-+
- static inline void set_float_2nan_prop_rule(Float2NaNPropRule rule,
-                                             float_status *status)
- {
-@@ -151,6 +157,12 @@ get_floatx80_rounding_precision(const float_status *status)
-     return status->floatx80_rounding_precision;
- }
- 
-+static inline FloatX80Behaviour
-+get_floatx80_behaviour(const float_status *status)
-+{
-+    return status->floatx80_behaviour;
-+}
-+
- static inline Float2NaNPropRule
- get_float_2nan_prop_rule(const float_status *status)
- {
-diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index 53d5eb85210..dd22ecdbe60 100644
---- a/include/fpu/softfloat-types.h
-+++ b/include/fpu/softfloat-types.h
-@@ -320,6 +320,18 @@ typedef enum __attribute__((__packed__)) {
-     float_ftz_before_rounding = 1,
- } FloatFTZDetection;
- 
-+/*
-+ * floatx80 is primarily used by x86 and m68k, and there are
-+ * differences in the handling, largely related to the explicit
-+ * Integer bit which floatx80 has and the other float formats do not.
-+ * These flag values allow specification of the target's requirements
-+ * and can be ORed together to set floatx80_behaviour.
-+ */
-+typedef enum __attribute__((__packed__)) {
-+    /* In the default Infinity value, is the Integer bit 0 ? */
-+    floatx80_default_inf_int_bit_is_zero = 1,
-+} FloatX80Behaviour;
-+
- /*
-  * Floating Point Status. Individual architectures may maintain
-  * several versions of float_status for different functions. The
-@@ -331,6 +343,7 @@ typedef struct float_status {
-     uint16_t float_exception_flags;
-     FloatRoundMode float_rounding_mode;
-     FloatX80RoundPrec floatx80_rounding_precision;
-+    FloatX80Behaviour floatx80_behaviour;
-     Float2NaNPropRule float_2nan_prop_rule;
-     Float3NaNPropRule float_3nan_prop_rule;
-     FloatInfZeroNaNRule float_infzeronan_rule;
-diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index 09a40b43106..afae3906024 100644
---- a/include/fpu/softfloat.h
-+++ b/include/fpu/softfloat.h
-@@ -961,6 +961,7 @@ float128 floatx80_to_float128(floatx80, float_status *status);
- | The pattern for an extended double-precision inf.
- *----------------------------------------------------------------------------*/
- extern const floatx80 floatx80_infinity;
-+floatx80 floatx80_default_inf(bool zSign, float_status *status);
- 
- /*----------------------------------------------------------------------------
- | Software IEC/IEEE extended double-precision operations.
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index f4fed9bfda9..b12ad2b42a9 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -1860,7 +1860,8 @@ static floatx80 floatx80_round_pack_canonical(FloatParts128 *p,
- 
-     case float_class_inf:
-         /* x86 and m68k differ in the setting of the integer bit. */
--        frac = floatx80_infinity_low;
-+        frac = s->floatx80_behaviour & floatx80_default_inf_int_bit_is_zero ?
-+            0 : (1ULL << 63);
-         exp = fmt->exp_max;
-         break;
- 
-@@ -5144,9 +5145,7 @@ floatx80 roundAndPackFloatx80(FloatX80RoundPrec roundingPrecision, bool zSign,
-                ) {
-                 return packFloatx80( zSign, 0x7FFE, ~ roundMask );
-             }
--            return packFloatx80(zSign,
--                                floatx80_infinity_high,
--                                floatx80_infinity_low);
-+            return floatx80_default_inf(zSign, status);
+diff --git a/target/m68k/softfloat.c b/target/m68k/softfloat.c
+index 02dcc03d15d..d1f150e641f 100644
+--- a/target/m68k/softfloat.c
++++ b/target/m68k/softfloat.c
+@@ -142,8 +142,7 @@ floatx80 floatx80_scale(floatx80 a, floatx80 b, float_status *status)
+         if ((uint64_t) (aSig << 1)) {
+             return propagateFloatx80NaN(a, b, status);
          }
-         if ( zExp <= 0 ) {
-             isTiny = status->tininess_before_rounding
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 41dfdf58045..df66e8ba22a 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -107,6 +107,12 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
-     set_float_2nan_prop_rule(float_2nan_prop_ab, &env->fp_status);
-     /* Default NaN: sign bit clear, all frac bits set */
-     set_float_default_nan_pattern(0b01111111, &env->fp_status);
-+    /*
-+     * m68k-specific floatx80 behaviour:
-+     *  * default Infinity values have a zero Integer bit
-+     */
-+    set_floatx80_behaviour(floatx80_default_inf_int_bit_is_zero,
-+                           &env->fp_status);
+-        return packFloatx80(aSign, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(aSign, status);
+     }
+     if (aExp == 0) {
+         if (aSig == 0) {
+@@ -245,7 +244,7 @@ floatx80 floatx80_lognp1(floatx80 a, float_status *status)
+             float_raise(float_flag_invalid, status);
+             return floatx80_default_nan(status);
+         }
+-        return packFloatx80(0, floatx80_infinity.high, floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
  
-     nan = floatx80_default_nan(&env->fp_status);
-     for (i = 0; i < 8; i++) {
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index cbbbab52ba3..73789e97d77 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -227,6 +227,16 @@ floatx80 floatx80_default_nan(float_status *status)
- | The pattern for a default generated extended double-precision inf.
- *----------------------------------------------------------------------------*/
+     if (aExp == 0 && aSig == 0) {
+@@ -255,8 +254,7 @@ floatx80 floatx80_lognp1(floatx80 a, float_status *status)
+     if (aSign && aExp >= one_exp) {
+         if (aExp == one_exp && aSig == one_sig) {
+             float_raise(float_flag_divbyzero, status);
+-            return packFloatx80(aSign, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(aSign, status);
+         }
+         float_raise(float_flag_invalid, status);
+         return floatx80_default_nan(status);
+@@ -442,8 +440,7 @@ floatx80 floatx80_logn(floatx80 a, float_status *status)
+             propagateFloatx80NaNOneArg(a, status);
+         }
+         if (aSign == 0) {
+-            return packFloatx80(0, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(0, status);
+         }
+     }
  
-+floatx80 floatx80_default_inf(bool zSign, float_status *status)
-+{
-+    /*
-+     * Whether the Integer bit is set in the default Infinity is
-+     * target dependent.
-+     */
-+    bool z = status->floatx80_behaviour & floatx80_default_inf_int_bit_is_zero;
-+    return packFloatx80(zSign, 0x7fff, z ? 0 : (1ULL << 63));
-+}
-+
- #define floatx80_infinity_high 0x7FFF
- #if defined(TARGET_M68K)
- #define floatx80_infinity_low  UINT64_C(0x0000000000000000)
+@@ -452,8 +449,7 @@ floatx80 floatx80_logn(floatx80 a, float_status *status)
+     if (aExp == 0) {
+         if (aSig == 0) { /* zero */
+             float_raise(float_flag_divbyzero, status);
+-            return packFloatx80(1, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(1, status);
+         }
+         if ((aSig & one_sig) == 0) { /* denormal */
+             normalizeFloatx80Subnormal(aSig, &aExp, &aSig);
+@@ -610,15 +606,13 @@ floatx80 floatx80_log10(floatx80 a, float_status *status)
+             propagateFloatx80NaNOneArg(a, status);
+         }
+         if (aSign == 0) {
+-            return packFloatx80(0, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(0, status);
+         }
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+         float_raise(float_flag_divbyzero, status);
+-        return packFloatx80(1, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(1, status);
+     }
+ 
+     if (aSign) {
+@@ -668,16 +662,14 @@ floatx80 floatx80_log2(floatx80 a, float_status *status)
+             propagateFloatx80NaNOneArg(a, status);
+         }
+         if (aSign == 0) {
+-            return packFloatx80(0, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(0, status);
+         }
+     }
+ 
+     if (aExp == 0) {
+         if (aSig == 0) {
+             float_raise(float_flag_divbyzero, status);
+-            return packFloatx80(1, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(1, status);
+         }
+         normalizeFloatx80Subnormal(aSig, &aExp, &aSig);
+     }
+@@ -740,8 +732,7 @@ floatx80 floatx80_etox(floatx80 a, float_status *status)
+         if (aSign) {
+             return packFloatx80(0, 0, 0);
+         }
+-        return packFloatx80(0, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+@@ -924,8 +915,7 @@ floatx80 floatx80_twotox(floatx80 a, float_status *status)
+         if (aSign) {
+             return packFloatx80(0, 0, 0);
+         }
+-        return packFloatx80(0, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+@@ -1075,8 +1065,7 @@ floatx80 floatx80_tentox(floatx80 a, float_status *status)
+         if (aSign) {
+             return packFloatx80(0, 0, 0);
+         }
+-        return packFloatx80(0, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+@@ -2260,8 +2249,7 @@ floatx80 floatx80_atanh(floatx80 a, float_status *status)
+     if (compact >= 0x3FFF8000) { /* |X| >= 1 */
+         if (aExp == one_exp && aSig == one_sig) { /* |X| == 1 */
+             float_raise(float_flag_divbyzero, status);
+-            return packFloatx80(aSign, floatx80_infinity.high,
+-                                floatx80_infinity.low);
++            return floatx80_default_inf(aSign, status);
+         } else { /* |X| > 1 */
+             float_raise(float_flag_invalid, status);
+             return floatx80_default_nan(status);
+@@ -2320,8 +2308,7 @@ floatx80 floatx80_etoxm1(floatx80 a, float_status *status)
+         if (aSign) {
+             return packFloatx80(aSign, one_exp, one_sig);
+         }
+-        return packFloatx80(0, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+@@ -2687,8 +2674,7 @@ floatx80 floatx80_sinh(floatx80 a, float_status *status)
+         if ((uint64_t) (aSig << 1)) {
+             return propagateFloatx80NaNOneArg(a, status);
+         }
+-        return packFloatx80(aSign, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(aSign, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
+@@ -2774,8 +2760,7 @@ floatx80 floatx80_cosh(floatx80 a, float_status *status)
+         if ((uint64_t) (aSig << 1)) {
+             return propagateFloatx80NaNOneArg(a, status);
+         }
+-        return packFloatx80(0, floatx80_infinity.high,
+-                            floatx80_infinity.low);
++        return floatx80_default_inf(0, status);
+     }
+ 
+     if (aExp == 0 && aSig == 0) {
 -- 
 2.43.0
 
