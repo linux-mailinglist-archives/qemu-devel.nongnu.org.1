@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EE4A4499F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:09:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0337AA4498B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:07:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzKd-0000mI-6Q; Tue, 25 Feb 2025 13:07:00 -0500
+	id 1tmzL4-0002Pv-Uj; Tue, 25 Feb 2025 13:07:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJ3-0008HP-Ql
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:23 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1tmzJ5-0008K5-GQ
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:32 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJ1-0002C7-C5
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:20 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43aac0390e8so15397385e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:18 -0800 (PST)
+ id 1tmzJ2-0002CL-7r
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:22 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4397dff185fso51940075e9.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506717; x=1741111517; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506718; x=1741111518; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=u9s5E9vJL83glFBvhdpeE2aqzCOgd5BN92rYhBP9wLw=;
- b=jj+E+mW5duA8Nm3WJZZBPDZW2Z2VNUORVekIbxL5zoJqD2w+p254JOz4KVU1C3qEhp
- uN1jcVttE4upY8U5PAj7JoVK+d+rnzRi9fZRAhYZA9osN9PkokFCgY/jy3y+ih+vlmcH
- jUKcIGSWGDhbZ5Z2TFQAjpiv3hkr/qcjxcJiD8b586eGuFqFwgtCK0rq6ynHKrPO2QU2
- F9bleYDOX6ihk6tl/AEY0LJ7I3b7hOmA6uXnIyD/mmRXxDoyvpBZ72y56aHKruh8+JiW
- /rl4M1NFve9mRHYtklF0QbtLsD7FqmwGwvfwhw2JAK0g1fcs86CEgIAPHnx0nnY085jP
- JCQg==
+ :reply-to; bh=Ywe1k/zTO8EsX/iWW8wptwgphl5GHzPa/yPNvAW+RHQ=;
+ b=kEkQlo0oIKWac6eW6Dq5uSuRh5vXz6/kbxJzRax017j91HkX9glIux34u9kESRyUVg
+ jmlZElXzL1IT20tQC3t7J07dVYCecHywHYlEu88F9KcPqUdW3byUBXFK8qq+fRJ+O0TO
+ 41Xv3/eXWwPbK+fcXiRrbCpAdiyX7kn30NXmmu8t7qqbr4rODhXksfuPdwY19rSLfcT+
+ z7faJTjua8Y8n6W/vbpOJXFQ3NFNnXPgTkNBYizQD8wQ9xcOhw6PpaiwypCFK2JE6PJl
+ XhX7jLmXC1L+ltLz9PO5ciTYaNt0oQkvwM7rilgMM4dH5s0ICjCZRJKH3EfzGtk0gdgE
+ BRcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506717; x=1741111517;
+ d=1e100.net; s=20230601; t=1740506718; x=1741111518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u9s5E9vJL83glFBvhdpeE2aqzCOgd5BN92rYhBP9wLw=;
- b=rpELJ2Aa2GC20mjCklnx51kWQKXS6o2houyq/OtuXMuURCc6ZNY8eYkYDMBdIwTIqm
- 4cD1fhoZCFvWnw4XTix/kA+Lf8Q18U0XBjnfSDN39Gkb9DCJWJzDHXiKEHqRQF5l8/+N
- hwrGMAVVWXV24oEGI/LepWpwmHA2+/WcgT7dWyQY/IdRtBH2UobmxmX1BljioYBh6H8g
- uxCwF7n+mYWiz6xL0f9+doM2c6cuiTz2wDad1j40bf6rNQlZvEcDq6N0X9IuvY1upJFo
- p4GWe3L0Enawikl+cS7MyLnXJDtZs/rb96zzslp5hZDr9NBNsDsUV6oW13+90N9q2hW0
- iCJw==
-X-Gm-Message-State: AOJu0YzjMHyHE1ZcJWDMPPVfjoGeDOugnZV+oarMHZJXqpihFZ80Am5W
- fq0F9Hr0Xv8ZvAQHk2es60C1dHHgyF3W644NS8Uoz8A+K7FksuDdPsSgG/pAC2LKz8kZPA4IoGU
- J
-X-Gm-Gg: ASbGncsOSys5HJk1lk5h8Go9x3+mmYC5RBosXJ4fgOQwyOxQwQ7nktq3FONOFO2WgPt
- XINCZSo0wS18YtG4CL8XMoVpybWd2O52OTuvAlQkM9nw5MsLuDIGNj+5gi//swhukrs16fV2/3H
- dTKD6y/wrowohjJ7Mgd3DRYF+rj9GTlRx/4fMXfP+j/y476xFeDc0nYJvok8kQcnnhS0K1K+iVS
- 91PwL7lDC6M4Oxiflzj1nBbXgRWLfkjgCUQCqwjOJkybjJBnghoKYCudnypoLoI0s9+AbN/990f
- dRJVJa2vm8NIgJjB2+dkLGqS6lu2f77v
-X-Google-Smtp-Source: AGHT+IFv651/pReZgfsPrxrTA4JaZemUtu0Fu1aTOdENqus9mO+F8lZYXBX139yfYhrvcbzeh3GLsA==
-X-Received: by 2002:a05:600c:458e:b0:439:91dd:cfa3 with SMTP id
- 5b1f17b1804b1-439ae221d72mr147818635e9.29.1740506717137; 
- Tue, 25 Feb 2025 10:05:17 -0800 (PST)
+ bh=Ywe1k/zTO8EsX/iWW8wptwgphl5GHzPa/yPNvAW+RHQ=;
+ b=EQkdhcwX7bNGCUZIgN5Y/6+17B02aOmSdMNW2bF7i4Gt0MHqGqLAiVpVWXiSI+zxiN
+ PdEDx32JJJb2CgFf7ik2BIpmd99mNDFAzz/TMrkBSPW5uu61/shsom+g2wSbg13/pgwv
+ RcxlEUoCesQZYv2GJy5zUFy4gFa+V1g012HTGOKsjhg8kWqiJkYmlN0JV1JH7u81AyAU
+ 4MXpku8pnOfRtdkMMJLYTQPWyenmqgNzF41WBE4itgNgK0UcJYVG5WEZBcWDsOn4Je9i
+ Q+jqZsLZpBvLGg02a1g3jD3XWIin6rQEhNYjhY92M5y10TxNYoMekhZZaUP1Fq/SzN5f
+ TPKw==
+X-Gm-Message-State: AOJu0YxMw+GkW/k12B1nMjAL7Ktq6lOHu5NFwbSh67GY+nbCzjyhXKPe
+ TKDWayow1lDBnbaPzYTC6OK3AvCsGqVJw6TQQsW9iIXXXSAMOsQ/Y3tcIz5Q/j61Om0O5HFahr3
+ 4
+X-Gm-Gg: ASbGncvgRHkm0TsrD9Y/MKmcSecrlXQ8Lbq/YdMQngWDVRlFX2JPB6tkdUighyKPxQj
+ e483KkPtAwjBts14j/XJF207dzba8y3gqf2DwP4oETXy2ylIHiyr0yyCGXMI9KupY9Sj1NtQTqU
+ WBiuDTEtTVL6N8piu15YomGDPbQPdtM/fXBc+szeHe9bCqPECs3VEzEUOlqnOAtHDJkcHYPlK1Y
+ lY9dpqwW/xseqwaRT3YjYRF81J0hDcRfoa0HMYWdVSqwcvbqWvp+kbXOLL4O9sOqCGVMAJoVt/l
+ WqM9I5e127lfT+PG/06+crEGvkLQa1il
+X-Google-Smtp-Source: AGHT+IEsrQLUNeBqnOLMkcYNEGiqXDLqUmia4pEEJFSSLudibKC0v22L5Sxk4gaR2C5gCeSs8zmLgQ==
+X-Received: by 2002:a05:600c:3148:b0:43a:b0ac:b10c with SMTP id
+ 5b1f17b1804b1-43ab9027824mr4378505e9.26.1740506718342; 
+ Tue, 25 Feb 2025 10:05:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.16
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:16 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/43] monitor/hmp-cmds.c: Clean up hmp_dumpdtb printf
-Date: Tue, 25 Feb 2025 18:04:29 +0000
-Message-ID: <20250225180510.1318207-4-peter.maydell@linaro.org>
+Subject: [PULL 04/43] hw/openrisc: Support monitor dumpdtb command
+Date: Tue, 25 Feb 2025 18:04:30 +0000
+Message-ID: <20250225180510.1318207-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +97,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In hmp_dumpdtb(), we print a message when the command succeeds.  This
-message is missing the trailing \n, so the HMP command prompt is
-printed immediately after it.  We also weren't capitalizing 'DTB', or
-quoting the filename in the message.  Fix these nits.
+The openrisc machines don't set MachineState::fdt to point to their
+DTB blob.  This means that although the command line '-machine
+dumpdtb=file.dtb' option works, the equivalent QMP and HMP monitor
+commands do not, but instead produce the error "This machine doesn't
+have a FDT".
+
+Set MachineState::fdt in openrisc_load_fdt(), when we write it to
+guest memory.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250206151214.2947842-2-peter.maydell@linaro.org
+Message-id: 20250206151214.2947842-3-peter.maydell@linaro.org
 ---
- monitor/hmp-cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/openrisc/boot.h | 3 ++-
+ hw/openrisc/boot.c         | 7 +++++--
+ hw/openrisc/openrisc_sim.c | 2 +-
+ hw/openrisc/virt.c         | 2 +-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 3825ff40a9b..7ded3378cfc 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -431,6 +431,6 @@ void hmp_dumpdtb(Monitor *mon, const QDict *qdict)
-         return;
-     }
+diff --git a/include/hw/openrisc/boot.h b/include/hw/openrisc/boot.h
+index 25a313d63a1..9b4d88072c4 100644
+--- a/include/hw/openrisc/boot.h
++++ b/include/hw/openrisc/boot.h
+@@ -20,6 +20,7 @@
+ #define OPENRISC_BOOT_H
  
--    monitor_printf(mon, "dtb dumped to %s", filename);
-+    monitor_printf(mon, "DTB dumped to '%s'\n", filename);
+ #include "exec/cpu-defs.h"
++#include "hw/boards.h"
+ 
+ hwaddr openrisc_load_kernel(ram_addr_t ram_size,
+                             const char *kernel_filename,
+@@ -28,7 +29,7 @@ hwaddr openrisc_load_kernel(ram_addr_t ram_size,
+ hwaddr openrisc_load_initrd(void *fdt, const char *filename,
+                             hwaddr load_start, uint64_t mem_size);
+ 
+-uint32_t openrisc_load_fdt(void *fdt, hwaddr load_start,
++uint32_t openrisc_load_fdt(MachineState *ms, void *fdt, hwaddr load_start,
+                            uint64_t mem_size);
+ 
+ #endif /* OPENRISC_BOOT_H */
+diff --git a/hw/openrisc/boot.c b/hw/openrisc/boot.c
+index 0f08df812dc..72e2756af05 100644
+--- a/hw/openrisc/boot.c
++++ b/hw/openrisc/boot.c
+@@ -90,8 +90,8 @@ hwaddr openrisc_load_initrd(void *fdt, const char *filename,
+     return start + size;
  }
- #endif
+ 
+-uint32_t openrisc_load_fdt(void *fdt, hwaddr load_start,
+-                           uint64_t mem_size)
++uint32_t openrisc_load_fdt(MachineState *ms, void *fdt,
++                           hwaddr load_start, uint64_t mem_size)
+ {
+     uint32_t fdt_addr;
+     int ret;
+@@ -111,6 +111,9 @@ uint32_t openrisc_load_fdt(void *fdt, hwaddr load_start,
+     /* copy in the device tree */
+     qemu_fdt_dumpdtb(fdt, fdtsize);
+ 
++    /* Save FDT for dumpdtb monitor command */
++    ms->fdt = fdt;
++
+     rom_add_blob_fixed_as("fdt", fdt, fdtsize, fdt_addr,
+                           &address_space_memory);
+     qemu_register_reset_nosnapshotload(qemu_fdt_randomize_seeds,
+diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+index e0da4067ba3..d9e0744922a 100644
+--- a/hw/openrisc/openrisc_sim.c
++++ b/hw/openrisc/openrisc_sim.c
+@@ -354,7 +354,7 @@ static void openrisc_sim_init(MachineState *machine)
+                                              machine->initrd_filename,
+                                              load_addr, machine->ram_size);
+         }
+-        boot_info.fdt_addr = openrisc_load_fdt(state->fdt, load_addr,
++        boot_info.fdt_addr = openrisc_load_fdt(machine, state->fdt, load_addr,
+                                                machine->ram_size);
+     }
+ }
+diff --git a/hw/openrisc/virt.c b/hw/openrisc/virt.c
+index 7b60bf85094..9afe407b00a 100644
+--- a/hw/openrisc/virt.c
++++ b/hw/openrisc/virt.c
+@@ -540,7 +540,7 @@ static void openrisc_virt_init(MachineState *machine)
+                                              machine->initrd_filename,
+                                              load_addr, machine->ram_size);
+         }
+-        boot_info.fdt_addr = openrisc_load_fdt(state->fdt, load_addr,
++        boot_info.fdt_addr = openrisc_load_fdt(machine, state->fdt, load_addr,
+                                                machine->ram_size);
+     }
+ }
 -- 
 2.43.0
 
