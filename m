@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07C6A449DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F79A449CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzLF-0003bE-SF; Tue, 25 Feb 2025 13:07:38 -0500
+	id 1tmzM8-0006qf-PA; Tue, 25 Feb 2025 13:08:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJj-0000JW-U0
+ id 1tmzJj-0000JU-TB
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:12 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJc-0002JI-Is
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:59 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43994ef3872so36686995e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:46 -0800 (PST)
+ id 1tmzJd-0002JQ-BL
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:00 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4394036c0efso37901645e9.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506745; x=1741111545; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506746; x=1741111546; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sV2RVYTZrKxLr5vgnAv5zKHjTU7M6/iZgvefjw3/nVQ=;
- b=CFhOXD06aRa6AfeciWsr73HaOEPdKM+Ikkn2p2m7fyYBQFCvRZwo1Dd6Y+AaUGTXj7
- ktX4HSPVyJMW8tdQ8TVS7Izk0tA5DkKRmW7xf9kSS0nOx6lgKkl86nf1zwN2/UaBfV8F
- R7HmTLipBx1Bs/u2mypIuj5/gznsPDL2BJW5BEo80tIkz0FvjKgLO7sbkwjw2MpFy7aI
- C18kxeFhjeIw15xy2wd3kWd1/iCc03ohi7qjUyfAAVeuFugmebk59laE7FQxCHbKP86T
- c4yhor8WvFNbFjeAAjAOEo7gtmFS3WT/0xKWdqN4uefPjSH8z52C9cfKLR+QBXZXF4+u
- cX9Q==
+ :reply-to; bh=JM1z9IEOs0dWia7GldRmlxQ1KHltnDm7hKq9lC7Qz7k=;
+ b=H9TteOQAQeXZa1YetMyixTOlJ9SDxyOryL5oi32AWoXirgNG+2ASxEX+c76frLYrhc
+ VzSxBNMH41omXmdfxIi17GI3854+H0IPf6mYHnAxhXe1T7thVX/7G3cxZOVff2vW56TI
+ GSIfRliQSYDVjNfI9Kfh6fPBpYNKM4FNQVdCzjiaTqPi6kWrVLgSFP08vOvKTR9Z83jE
+ AjtLZ/5lL+Nlgw8QAe3MCH+yO1t5qRzU+2MgoSC/EUviRPsxZYEjsTXvjgT89XvsEahm
+ UZAw6TMP+Nmj6amJIOzjtnUqIZBpCasupuCtWOxTzm+gmdSbzDlrocmGWG2VMkoamfqV
+ fSpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506745; x=1741111545;
+ d=1e100.net; s=20230601; t=1740506746; x=1741111546;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sV2RVYTZrKxLr5vgnAv5zKHjTU7M6/iZgvefjw3/nVQ=;
- b=Sy8nE29EDtCKIZsMo8oJZnz+d7QWbCNnmj5ExHTYe3eKsGR/+KQAYR+t9YaYCQbqCw
- k+s0Hkx7ebvRynNjcFFJpJJ075x+PMBphIwYlY0I8rMf1I0TdLQ5ZXTzjCDKjp7PMEkg
- 63yYMYeTEN0dTmqG7X44W4Bes7XhOCFx0bO8itYul/hc85qD9TJE4Lpw6ZFPSnLMQnDz
- m3zpSScCrDGGLsuRER3B2UAvH9WkEybvdwPE7RSPRvqbfD6/s5zJn1zCSKprQEvbv6ry
- 2woA4WKQg5oWcFhUWXLfjcwQOci9futmc8FmOO7KylvGyjFyi7HfV2tQFVyaOzyLaqUs
- RSlA==
-X-Gm-Message-State: AOJu0YxI4TmA+YK+DeXqmgkY8bUxhNMBl2FM7eu1MeXUQoy0bxaYsnm4
- uXBOvudFYd3qn87rlv1+E8Z9Vexhd26gxvuNtGmtk3kUaIbmt9pDVndkd4zFfNhCTy0dQIUUgTE
- 4
-X-Gm-Gg: ASbGncuQchkb5EVuQRhTvid5NG04DxweDcObeqrB33f2yuWvvZxan1vAith3Y4Ss60f
- zGwJCCBO4r7973QcqEJi8R5tUoYdi06K1CODIXnLOmheG6YN1hlrgRb2NJzuti1bkDd0PzhAklV
- RfQUAmTMlz+zc/VLhiyfpR0pLBfoQ6nQJS2sIEfxWDd5v2jXSyRK2oF2zQZY13LGFRgdf8wdxgS
- YsorLBSmKi3dC4QoUwmElN6bog7T5NpRiXPGpTCTWGHx5PtkqfzRKcrz6iSvAL5oDjbPrQfN6+L
- 7rEfOm8wRJbljnj3dehIGhabgwWZ2AaP
-X-Google-Smtp-Source: AGHT+IFglQVxn+M9QFJOtIWr1dMGvGKYgdgf7XQGNEh285aniiz5bGrR3V2AoBtbel5KGKj8TNTMxw==
-X-Received: by 2002:a05:600c:3c87:b0:439:930a:58aa with SMTP id
- 5b1f17b1804b1-43ab0ecc2f2mr44083615e9.0.1740506745237; 
- Tue, 25 Feb 2025 10:05:45 -0800 (PST)
+ bh=JM1z9IEOs0dWia7GldRmlxQ1KHltnDm7hKq9lC7Qz7k=;
+ b=qgzdbKBc8/GzHJ5M6nO8PymwHzunN8Pd682mAVxXIMJEb1LxJEw09GwZvL55A3ytaW
+ hjZTRmABMGszuN0v7oR0wubZvxB61A5DXw3PVHMWdatpr4YWJ+I10QwX2PBKiv7efBx0
+ CBkiP6ej9a7f2HFWC/DldhL0CzrxA4Jru+yFX3dBmf5H+97n9RKvj9ELeJgS4InwMjjW
+ 8dqTilHnTpumRv/skL0kiNPJnJJuawJsS8LcBqXEYNq4KpZiYBKEc/Qe9T+ppkq0/t5R
+ AdMmGUUbCW7eHsIq2Ao24G8bsLhyj9wdEUjZUoDLJg21hofx3fSm5+g98HB7uzqGVM6e
+ VNhQ==
+X-Gm-Message-State: AOJu0YxfrscSX5ib1WPZXct3mKdopnC6aX/4B9zGU8sMO/+v9xHGU2cK
+ z5ojx8unxL5WCcSwIl26CDZDakYaXA/Jrxx1b2L9xXBhUuN3J7GTczXEtP0SOd+zLRngC0tKl2+
+ J
+X-Gm-Gg: ASbGnct7yd6uXm0/EOd3DljUyw7irKcCoDj18I4MnmK66f4sx1ffDSaR9fnyofC/vIQ
+ 1sfJvOQX50Wa7a2HPD30xPmFDmzY9vIn38wcjDIs0bZbwvunN2G/X3c/JanVRn2fq4mjPMslYSY
+ 5urCnU/9Z9VD5B9dbhzUTp7mEaRK9XLg5ZmJMdLXSDMNzsYp4ZJW/Kc6CeOKpqgqM8C1LULXdJW
+ fNHH3qnUnTNnEpyMm1JJQxpE6Edckk3Ctib/5TJf2Q8NeIFbsx+HqS18Vi0cIBzWz9ic7v70Hs/
+ SF67FO//g0v9SdoSmLnxCFgD10RVkCt5
+X-Google-Smtp-Source: AGHT+IFlE7NCzaac9t8TlelW8jl3fuxdhqqj4uL22vb9e2vlcVE77Tkc+PKc/2gej6Z3BXABv3lNWQ==
+X-Received: by 2002:a05:600c:4f0d:b0:439:98ca:e3a4 with SMTP id
+ 5b1f17b1804b1-43ab90169d5mr4441495e9.19.1740506746166; 
+ Tue, 25 Feb 2025 10:05:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.44
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:44 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/43] hw/usb/hcd-dwc3: Align global registers size with Linux
-Date: Tue, 25 Feb 2025 18:04:54 +0000
-Message-ID: <20250225180510.1318207-29-peter.maydell@linaro.org>
+Subject: [PULL 29/43] hw/pci-host/designware: Prevent device attachment on
+ internal PCIe root bus
+Date: Tue, 25 Feb 2025 18:04:55 +0000
+Message-ID: <20250225180510.1318207-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,54 +99,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-While at it add missing GUSB2RHBCTL register as found in i.MX 8M Plus reference
-manual.
+On the real device, the PCIe root bus is only connected to a PCIe bridge and
+does not allow for direct attachment of devices. Doing so in QEMU results in no
+PCI devices being detected by Linux. Instead, PCI devices should plug into the
+secondary PCIe bus spawned by the internal PCIe bridge.
+
+Unfortunately, QEMU defaults to plugging devices into the PCIe root bus. To work
+around this, every PCI device created on the command line needs an extra
+`bus=dw-pcie` option which is error prone. Fix that by marking the PCIe root bus
+as full which makes QEMU decend into the child PCIe bus.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250223114708.1780-2-shentey@gmail.com
+Message-id: 20250223114708.1780-3-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/usb/hcd-dwc3.h | 2 +-
- hw/usb/hcd-dwc3.c         | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/hw/pci-host/designware.h |  7 +++++++
+ hw/pci-host/designware.c         | 18 +++++++++++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/usb/hcd-dwc3.h b/include/hw/usb/hcd-dwc3.h
-index f752a27e940..dbdf12b21d7 100644
---- a/include/hw/usb/hcd-dwc3.h
-+++ b/include/hw/usb/hcd-dwc3.h
-@@ -35,7 +35,7 @@
- #define USB_DWC3(obj) \
-      OBJECT_CHECK(USBDWC3, (obj), TYPE_USB_DWC3)
+diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
+index bf8b2789787..a35a3bd06c8 100644
+--- a/include/hw/pci-host/designware.h
++++ b/include/hw/pci-host/designware.h
+@@ -25,12 +25,19 @@
+ #include "hw/pci/pci_bridge.h"
+ #include "qom/object.h"
  
--#define USB_DWC3_R_MAX ((0x530 / 4) + 1)
-+#define USB_DWC3_R_MAX (0x600 / 4)
- #define DWC3_SIZE 0x10000
++#define TYPE_DESIGNWARE_PCIE_ROOT_BUS "designware-pcie-root-BUS"
++OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERootBus, DESIGNWARE_PCIE_ROOT_BUS)
++
+ #define TYPE_DESIGNWARE_PCIE_HOST "designware-pcie-host"
+ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIEHost, DESIGNWARE_PCIE_HOST)
  
- typedef struct USBDWC3 {
-diff --git a/hw/usb/hcd-dwc3.c b/hw/usb/hcd-dwc3.c
-index 9ce9ba0b046..0bceee27128 100644
---- a/hw/usb/hcd-dwc3.c
-+++ b/hw/usb/hcd-dwc3.c
-@@ -343,6 +343,8 @@ REG32(GFLADJ, 0x530)
-     FIELD(GFLADJ, GFLADJ_REFCLK_FLADJ, 8, 14)
-     FIELD(GFLADJ, GFLADJ_30MHZ_SDBND_SEL, 7, 1)
-     FIELD(GFLADJ, GFLADJ_30MHZ, 0, 6)
-+REG32(GUSB2RHBCTL, 0x540)
-+    FIELD(GUSB2RHBCTL, OVRD_L1TIMEOUT, 0, 4)
+ #define TYPE_DESIGNWARE_PCIE_ROOT "designware-pcie-root"
+ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERoot, DESIGNWARE_PCIE_ROOT)
  
- #define DWC3_GLOBAL_OFFSET 0xC100
- static void reset_csr(USBDWC3 * s)
-@@ -560,6 +562,9 @@ static const RegisterAccessInfo usb_dwc3_regs_info[] = {
-         .rsvd = 0x40,
-         .ro = 0x400040,
-         .unimp = 0xffffffff,
-+    },{ .name = "GUSB2RHBCTL",  .addr = A_GUSB2RHBCTL,
-+        .rsvd = 0xfffffff0,
-+        .unimp = 0xffffffff,
-     }
- };
++struct DesignwarePCIERootBus {
++    PCIBus parent;
++};
++
+ typedef struct DesignwarePCIEViewport {
+     DesignwarePCIERoot *root;
  
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index 3e8c36e6a76..c07740bfaa4 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -55,6 +55,17 @@
+ #define DESIGNWARE_PCIE_ATU_DEVFN(x)               (((x) >> 16) & 0xff)
+ #define DESIGNWARE_PCIE_ATU_UPPER_TARGET           0x91C
+ 
++static void designware_pcie_root_bus_class_init(ObjectClass *klass, void *data)
++{
++    BusClass *k = BUS_CLASS(klass);
++
++    /*
++     * Designware has only a single root complex. Enforce the limit on the
++     * parent bus
++     */
++    k->max_dev = 1;
++}
++
+ static DesignwarePCIEHost *
+ designware_pcie_root_to_host(DesignwarePCIERoot *root)
+ {
+@@ -699,7 +710,7 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
+                                      &s->pci.memory,
+                                      &s->pci.io,
+                                      0, 4,
+-                                     TYPE_PCIE_BUS);
++                                     TYPE_DESIGNWARE_PCIE_ROOT_BUS);
+     pci->bus->flags |= PCI_BUS_EXTENDED_CONFIG_SPACE;
+ 
+     memory_region_init(&s->pci.address_space_root,
+@@ -754,6 +765,11 @@ static void designware_pcie_host_init(Object *obj)
+ 
+ static const TypeInfo designware_pcie_types[] = {
+     {
++        .name           = TYPE_DESIGNWARE_PCIE_ROOT_BUS,
++        .parent         = TYPE_PCIE_BUS,
++        .instance_size  = sizeof(DesignwarePCIERootBus),
++        .class_init     = designware_pcie_root_bus_class_init,
++    }, {
+         .name           = TYPE_DESIGNWARE_PCIE_HOST,
+         .parent         = TYPE_PCI_HOST_BRIDGE,
+         .instance_size  = sizeof(DesignwarePCIEHost),
 -- 
 2.43.0
 
