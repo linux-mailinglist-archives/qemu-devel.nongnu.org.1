@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7BBA437D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 09:40:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E76AA4379D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 09:29:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmqTQ-0004It-JH; Tue, 25 Feb 2025 03:39:28 -0500
+	id 1tmqIW-0001FP-45; Tue, 25 Feb 2025 03:28:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmqTO-0004Ik-B0
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 03:39:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmqIR-0001Ei-Lm; Tue, 25 Feb 2025 03:28:07 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmqTM-0006eU-I1
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 03:39:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740472762;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=79QjrUuVHqOE88t6MAqRoXr0s8uZIQBcH2qHTOXcyw4=;
- b=cm5lUpL1TgpYYy9jpezM7iCCmtUqXJ/8W1zgMNKdfqMEaracSMzO3M5+QCDij3R09+Vwgt
- iP6tKtbQtoRyOtJCvIiBREIC09aVqkYDEfVkGOCRUiSK3faQ32BrSxFgFx57hVXRNO/axd
- MqwwzNTOl838/cWG7ILVuXTzMVsyVSA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-9T_4TL14OrW0KiMQarTw5A-1; Tue,
- 25 Feb 2025 03:39:18 -0500
-X-MC-Unique: 9T_4TL14OrW0KiMQarTw5A-1
-X-Mimecast-MFC-AGG-ID: 9T_4TL14OrW0KiMQarTw5A_1740472757
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A84A3193578F; Tue, 25 Feb 2025 08:39:16 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.219])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 18042180035E; Tue, 25 Feb 2025 08:39:15 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8F2AF1800091; Tue, 25 Feb 2025 09:39:12 +0100 (CET)
-Date: Tue, 25 Feb 2025 09:39:12 +0100
-From: Gerd Hoffman <kraxel@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Alex Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Laurent Vivier <lvivier@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-Message-ID: <6t76cizlvnhufhg7j6v5dpyjj3k6ba4urd3r7563d3g3e6wnsf@7aenaqnc5d5a>
-References: <20250214153443.159889-1-anisinha@redhat.com>
- <xhprkjs2yj5yli65opi7md7gfylqxgdkiwap76stcxcx7jdpub@fauqiqm5giyi>
- <CAK3XEhMs=Do_3FA+Tyb9u4u+9XELvJUk3-SKAeuxciM-bsvDhQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tmqIP-0005Ej-BC; Tue, 25 Feb 2025 03:28:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740472086; x=1772008086;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ypBnyjHK5BmToensLWhz1lncWac+k22jlQMcx1/9y9o=;
+ b=mCQIdNTprzjAYoHzzoD6EMCLcZFtexWKp74SpK9bfK6XdfN6BDvFKAji
+ WP1ApgRaUQHyBJsnfHVdRk8Wxt/JdgYFb3tIrm84GqSdYLPY8T3eQW6PS
+ 8DHImP4okFcN8gcVYiioAnsT0+kstzGYCwg4L4ynRUIl2jjButjiIlGON
+ 4njgxcIzpTl6vQk6AAn0E6KCarEplc1O4E/6k/l616nRaiQFUaN2yIe7K
+ E6HkhxzQV8y3Zw7AwEu4UgLc/9aIrHD/6a9j9ndiNZoJikizcj1YnyfRP
+ w47/7UY89X13amvgJo/ojr+vMVFEY1RISuwqgI3G7b/lyL3KmOMBC2qu0 g==;
+X-CSE-ConnectionGUID: +Dv2DDKxT4qmJfdXehiVJw==
+X-CSE-MsgGUID: InEr1FPsRwOvEQ/Jz41W4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40451904"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208,217";a="40451904"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2025 00:28:00 -0800
+X-CSE-ConnectionGUID: uKjO1oniRt2Cr46t0kZE/Q==
+X-CSE-MsgGUID: sISh+4hlRK2rRfyLdpZEQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
+ d="scan'208,217";a="121262009"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 25 Feb 2025 00:27:58 -0800
+Date: Tue, 25 Feb 2025 16:47:35 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 10/15] rust: qom: wrap Object with Opaque<>
+Message-ID: <Z72Dp8BJdmZrgcXK@intel.com>
+References: <20250221170342.63591-1-pbonzini@redhat.com>
+ <20250221170342.63591-11-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK3XEhMs=Do_3FA+Tyb9u4u+9XELvJUk3-SKAeuxciM-bsvDhQ@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+In-Reply-To: <20250221170342.63591-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,54 +80,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 25, 2025 at 10:51:08AM +0530, Ani Sinha wrote:
-> On Mon, Feb 24, 2025 at 9:17 PM Gerd Hoffman <kraxel@redhat.com> wrote:
-> >
-> > Works nicely for me.  Test case:
-> >   https://kraxel.gitlab.io/uefi-tools-rs/seabios.efi
+> @@ -621,7 +629,7 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
+>  /// We expect the FFI user of this function to pass a valid pointer that
+>  /// can be downcasted to type `T`. We also expect the device is
+>  /// readable/writeable from one thread at any time.
+> -unsafe extern "C" fn rust_unparent_fn<T: ObjectImpl>(dev: *mut Object) {
+> +unsafe extern "C" fn rust_unparent_fn<T: ObjectImpl>(dev: *mut bindings::Object) {
+>      let state = NonNull::new(dev).unwrap().cast::<T>();
+>      T::UNPARENT.unwrap()(unsafe { state.as_ref() });
+>  }
+> @@ -796,8 +804,9 @@ fn new() -> Owned<Self> {
+>          // SAFETY: the object created by object_new is allocated on
+>          // the heap and has a reference count of 1
+>          unsafe {
+> -            let obj = &*object_new(Self::TYPE_NAME.as_ptr());
+> -            Owned::from_raw(obj.unsafe_cast::<Self>())
+> +            let obj = object_new(Self::TYPE_NAME.as_ptr());
+
+Having the same name is always not ideal, so let's name the first one raw_obj.
+
+> +            let obj = Object::from_raw(obj).unsafe_cast::<Self>();
+> +            Owned::from_raw(obj)
+>          }
+>      }
+>  }
+
+Others look good to me,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 > 
-> yeah if I can't get my unit test working we can make this an
-> integration test. or best case scenario, we can have both.
-
-Do you have a branch with your unit test somewhere?
-
-> > Also this adds five fw_cfg files.  Given that the number of fw_cfg files
-> > we can have is limited I'm not convinced this is the best idea to move
-> > forward.
-> 
-> Right, For implementation, I suggest we combine FILE_VMFWUPDATE_OBLOB
-> and FILE_VMFWUPDATE_FWBLOB together and also make
-> FILE_VMFWUPDATE_CONTROL part of the same structure. These are all
-> writable by the guest so makes sense to have one fwcfg for it. We can
-> have another read-only fwcfg for FILE_VMFWUPDATE_BIOS_SIZE and
-> FILE_VMFWUPDATE_CAP.
-
-I'd prefer to put everything into one file.  Maybe except the opaque
-blob page.  A struct along the lines of:
-
-struct vmfwupdate {
-    u64 capabilities;   // 'cap' file
-    u64 firmware_size;  // 'bios-size' file
-    u64 control;        // disable bit etc. 
-    u64 update_paddr;   // 'fw-blob' file, paddr field
-    u64 update_size;    // 'fw-blob' file, size field
-}
-
-On the host side you'll need two copies of the struct then: one where
-the guest can read from and write to, and one shadow struct where the
-actual values are stored.  The write callback goes sanity-check the
-guest-written data, takes everything which passes into the shadow
-struct, finally goes copy back the shadow struct to the guest struct
-so the guest can see what the host has accepted.
-
-Part of the verification process can be that you already copy the
-firmware to a host buffer.  Best using dma_* functions, these return
-errors in case something went wrong (say the paddr passed is not backed
-by guest ram).  Which gives you the chance to propagate those errors
-back to the guest before it'll actually try to launch the updated
-firmware via reset.
-
-take care,
-  Gerd
-
 
