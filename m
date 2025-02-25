@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0F2A431F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:41:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28F3A431FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:42:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmj0T-0004bZ-4O; Mon, 24 Feb 2025 19:41:05 -0500
+	id 1tmj0p-0005Cc-0J; Mon, 24 Feb 2025 19:41:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tmizr-0004a1-TF
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:28 -0500
+ id 1tmizt-0004bN-AM
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:29 -0500
 Received: from fout-b6-smtp.messagingengine.com ([202.12.124.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tmizq-0003Sl-8H
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:27 -0500
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal
- [10.202.2.44])
- by mailfout.stl.internal (Postfix) with ESMTP id 3FFFE114015F;
- Mon, 24 Feb 2025 19:40:25 -0500 (EST)
+ id 1tmizr-0003T0-En
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:28 -0500
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal
+ [10.202.2.41])
+ by mailfout.stl.internal (Postfix) with ESMTP id 6D6FD114016C;
+ Mon, 24 Feb 2025 19:40:26 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-04.internal (MEProxy); Mon, 24 Feb 2025 19:40:25 -0500
+ by phl-compute-01.internal (MEProxy); Mon, 24 Feb 2025 19:40:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1740444025;
- x=1740530425; bh=tFAQFqUAgdmLwYisLRxlA7J5J4yli3bv87ehvWOUb1w=; b=
- gR7Z0GJb3JtGvDAjVCRyGfNoi4L5aztnUUHlQQW2w+DENKx6Adro/qwiBrpYRr1S
- KMD2U+bIe6bdlxb+xSdcUWNcrUsRbmoR9YPEWUvEB7JHGmpQtftF3pWD6n9fwM11
- BXNAP/b9fyIM6KO622Fmhz/5jAeD4SC1LVsd3UU05kTv0cYUgjJcfejI8ooSsalq
- HhcKy1oxaUKI54A3Y0BKjZgpwso2W5yLyeen8CjX6prb9XEqOtW6yROVJsB+u3a7
- 7/UXCDWa3+qdr5FQDurP9ECIE8v4hdsrYDBl4AISAbOrQ2n0w+MWq4IDFwirBmJM
- o9HYlcc2mnPcpTtTtjrh4Q==
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1740444026;
+ x=1740530426; bh=To9ljGdoXUmo7Z5V/SBdfQXvdYuRRAbw4vPpVlePzWo=; b=
+ H967xv3eIHT2bpUgbIyPol1ZjblufCemkqf20y321hiyBIvkLczAQu1YRXn2yk6n
+ 7kUMjAjjT1mxofm4q0WPa35oGgqXoTsn6lIzbsgj79i5/DjdXahCm/jnhjaFsvL0
+ vmOa6O4KPxKED9yoNG6QV8cEaVLw+hH/3vpV0F/7iy0F2zZxT7q5BTlH2r11pseP
+ LoJe/gM+aO71jLG5wn2TrgN5KyxywQij4HMMl73NvAR6gYL7JI2ghhwjHTNrMGKC
+ wVjYMCzyi7TiS3uWUoORPa1zzBFsuxslGsnL+uwtGX1m9s6zxaK4LjkwRg0Mg97Z
+ TuapqnAwXBtxLU+w9N1SYQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740444025; x=
- 1740530425; bh=tFAQFqUAgdmLwYisLRxlA7J5J4yli3bv87ehvWOUb1w=; b=T
- 9wEku/LcKEMIpBb9gJ9sjEaFcd1M/n8RcAjNj7BTfKV2zJq21E++uOEOSqah0h7A
- mSlkZiNzndJyRr6gsfD/mnfUdIju5jZVkA1lVIaf29/hNFc68I2gzZe4oBmPj7P3
- Vyy1RUCfrPcP0DKi1b+579iierFxoOHHD6aLOAiZGHaDwydT4i/Kh3Pud6Qlggqo
- jaVWQqeFA54/NvYyvHVerfkHCjtOMyvT0gIIX+I9oDIXt0W8ux9roIH7waEvbI/o
- Q3bH0tBvaF9BQaapv6LB10Vbiky6JMtsWe42KYvdaJIUn7duITTd/bHxUZx0CDrX
- te0+fleVDf7Zl1EotpKwA==
-X-ME-Sender: <xms:eBG9Z8AkqLRWGOur2TJUQ7lAY6JEO1Eng24_fwaK1Ma4U_S2p6lXcQ>
- <xme:eBG9Z-hBkqUeloKZpHHeQGbztSO88KDgIBdjvuwEfw_OaG94_FNtklQctXRuJ3ekh
- CwUSQdmbZMe6zJnbfg>
-X-ME-Received: <xmr:eBG9Z_nXvM_zQjkVaHqlf-XIAcjZBZiVSh8SDomsQzVMh_iGJoYGFYo>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740444026; x=
+ 1740530426; bh=To9ljGdoXUmo7Z5V/SBdfQXvdYuRRAbw4vPpVlePzWo=; b=a
+ 5mRfdXGohV7axCEIAPu5MPmx1YzUIGSkbZ0a5dwoaCYMVMwQ1DeztgM4FTIT8sYi
+ Wn/pqyZeooib+vUadPOoh8tsGvX6gMyjWy79kfkeDT9tlGzcBZRMc6Wmo6SuYQW1
+ 7GET2MwuZQjlQKIGvdaOVY/XobP54jGBf8/rRjpph146NEJ3I/B/s5d+e6yjcov1
+ jJ4hBSw80eyeNuKhl+AYeM66ThAHtmD3J3O4KVuyLjGfTe+UtT+nagCD+2crx+Dh
+ SFpfaOqsvHqvWl71H4UI2o/Hp+sMDBBZpWMlE/0Ku5XuL6yHmCe1sW6NUhyoXijT
+ 3l/ozPpsOg2eHpUjsm6NA==
+X-ME-Sender: <xms:ehG9Z-oP-pnOD0ZLwaz0v6SIyup3weGyF0ad9zRxmq_INbNKgFDJSA>
+ <xme:ehG9Z8oecxna-pWX8n2rV3PU9Oi_OCJJhSN1ZBMdDW4g53FNNdBl83FOdvFAMA9Ex
+ bjftFC8eUaOgkcNYBE>
+X-ME-Received: <xmr:ehG9ZzPwRck5eV0K64curILJE2L6JBpkHE7Do0_RN15L98wwCNPQ1bY>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdektddviecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
+ hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
- ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
+ ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeevveetheeggfegjeekjedttdet
+ ueeludehveejgfejtedvhfdugeetgfelhfevkeenucevlhhushhtvghrufhiiigvpedtne
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
- rdgtohhmpdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+ rdgtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtth
  hopehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhrtghpthhtohepghgr
- ohhsohhngheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehqvghmuhdquggvvhgvlh
- esnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:eBG9ZywX4WmT35I2NgLA3c-Z-Js9oMfsvFdy2yDFrlfM1XQ5sxlwrg>
- <xmx:eRG9ZxQqfBB4IgWuRsgOMO4KrkRzs3opxZd6RKdEz8ni0Dz5ZdpGNA>
- <xmx:eRG9Z9Z-AjbW_uH4fAde1I3RL0XjsnidYGj1HwHuRSaEJCZ-Y38-fA>
- <xmx:eRG9Z6TW6TA73ngCR7oDRSxYw29rTZEOBnQYvh10hhlmIGr_ho05Sw>
- <xmx:eRG9Zzepr6dUlNyHax4W34E5B2Fu8K3Ym_iL89GaBkqOVsKKLOZhhdog>
+ ohhsohhngheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehphhhilhhmugeslhhinh
+ grrhhordhorhhgpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhr
+ gh
+X-ME-Proxy: <xmx:ehG9Z96DfHax6YsBt8rxkfnrDj2T0AHQ79SCwImmDFtcAN2ycPsVAA>
+ <xmx:ehG9Z95daaKLJOU59SJcI1A_hfHer7oS4VBVXeBmp4kO7x8ePxAJtA>
+ <xmx:ehG9Z9gHwV7qzM5lxo2q-nhgyxuEveLQ7bIPBkWi4EgE7nDDoizCLw>
+ <xmx:ehG9Z374-cLKI0abBBuNBWJdqbzc9O5quzfvGNaFJnk8yuoqWyLzyQ>
+ <xmx:ehG9Zw3ZtuTKFAHvIavugj0hFQOTeb_dUpJUyXH8eRK41jHrM29wwbIf>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Feb 2025 19:40:24 -0500 (EST)
+ 24 Feb 2025 19:40:25 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Tue, 25 Feb 2025 00:40:20 +0000
-Subject: [PATCH v2 7/9] target/loongarch: Use target_ulong for CSR helpers
+Date: Tue, 25 Feb 2025 00:40:21 +0000
+Subject: [PATCH v2 8/9] target/loongarch: Fix load type for gen_ll
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-la32-fixes1-v2-7-8ec68ada3dd5@flygoat.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250225-la32-fixes1-v2-8-8ec68ada3dd5@flygoat.com>
 References: <20250225-la32-fixes1-v2-0-8ec68ada3dd5@flygoat.com>
 In-Reply-To: <20250225-la32-fixes1-v2-0-8ec68ada3dd5@flygoat.com>
 To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 X-Mailer: b4 0.14.2
 Received-SPF: pass client-ip=202.12.124.149;
  envelope-from=jiaxun.yang@flygoat.com; helo=fout-b6-smtp.messagingengine.com
@@ -109,61 +111,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All CSRs are meant to be target_ulong wide in our setting.
+gen_ll should use tcg_gen_qemu_ld_tl to load t1, as t1 is
+in TCGv which means it should be a tl type value.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/helper.h        | 14 +++++++-------
- target/loongarch/tcg/op_helper.c |  4 ++--
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ target/loongarch/tcg/insn_trans/trans_atomic.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 409d93a5b0808f0e32b8c0e2e17cebac9feaf8ed..a608754b7f52689da9e9f4da1cef68d5af72f2ed 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -97,13 +97,13 @@ DEF_HELPER_1(rdtime_d, i64, env)
+diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+index 8584441b543712af8a56aa234c90fd6370c8df01..138bcb3e9999b2c186057c658a019136311f1b82 100644
+--- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+@@ -9,7 +9,7 @@ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+     TCGv t0 = make_address_i(ctx, src1, a->imm);
  
- #ifndef CONFIG_USER_ONLY
- /* CSRs helper */
--DEF_HELPER_1(csrrd_pgd, i64, env)
--DEF_HELPER_1(csrrd_cpuid, i64, env)
--DEF_HELPER_1(csrrd_tval, i64, env)
--DEF_HELPER_2(csrwr_estat, i64, env, tl)
--DEF_HELPER_2(csrwr_asid, i64, env, tl)
--DEF_HELPER_2(csrwr_tcfg, i64, env, tl)
--DEF_HELPER_2(csrwr_ticlr, i64, env, tl)
-+DEF_HELPER_1(csrrd_pgd, tl, env)
-+DEF_HELPER_1(csrrd_cpuid, tl, env)
-+DEF_HELPER_1(csrrd_tval, tl, env)
-+DEF_HELPER_2(csrwr_estat, tl, env, tl)
-+DEF_HELPER_2(csrwr_asid, tl, env, tl)
-+DEF_HELPER_2(csrwr_tcfg, tl, env, tl)
-+DEF_HELPER_2(csrwr_ticlr, tl, env, tl)
- DEF_HELPER_2(iocsrrd_b, tl, env, tl)
- DEF_HELPER_2(iocsrrd_h, tl, env, tl)
- DEF_HELPER_2(iocsrrd_w, tl, env, tl)
-diff --git a/target/loongarch/tcg/op_helper.c b/target/loongarch/tcg/op_helper.c
-index b17208e5b962f2191b2afa60181bff311d618bba..c9d7e84e7ec9000bab655366bdf6ed8aaa4fd080 100644
---- a/target/loongarch/tcg/op_helper.c
-+++ b/target/loongarch/tcg/op_helper.c
-@@ -61,7 +61,7 @@ void helper_asrtgt_d(CPULoongArchState *env, target_ulong rj, target_ulong rk)
-     }
- }
- 
--target_ulong helper_crc32(target_ulong val, target_ulong m, uint64_t sz)
-+target_ulong helper_crc32(target_ulong val, target_ulong m, target_ulong sz)
- {
-     uint8_t buf[8];
-     target_ulong mask = ((sz * 8) == 64) ? -1ULL : ((1ULL << (sz * 8)) - 1);
-@@ -71,7 +71,7 @@ target_ulong helper_crc32(target_ulong val, target_ulong m, uint64_t sz)
-     return (int32_t) (crc32(val ^ 0xffffffff, buf, sz) ^ 0xffffffff);
- }
- 
--target_ulong helper_crc32c(target_ulong val, target_ulong m, uint64_t sz)
-+target_ulong helper_crc32c(target_ulong val, target_ulong m, target_ulong sz)
- {
-     uint8_t buf[8];
-     target_ulong mask = ((sz * 8) == 64) ? -1ULL : ((1ULL << (sz * 8)) - 1);
+-    tcg_gen_qemu_ld_i64(t1, t0, ctx->mem_idx, mop);
++    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mop);
+     tcg_gen_st_tl(t0, tcg_env, offsetof(CPULoongArchState, lladdr));
+     tcg_gen_st_tl(t1, tcg_env, offsetof(CPULoongArchState, llval));
+     gen_set_gpr(a->rd, t1, EXT_NONE);
 
 -- 
 2.43.0
