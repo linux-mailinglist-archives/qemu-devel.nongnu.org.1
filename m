@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B74A43201
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8463A431FA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:41:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmj0T-0004dt-IN; Mon, 24 Feb 2025 19:41:07 -0500
+	id 1tmj0Z-0004pj-27; Mon, 24 Feb 2025 19:41:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tmizo-0004Xi-Nx
- for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:24 -0500
+ id 1tmizp-0004YF-50
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:25 -0500
 Received: from fhigh-b6-smtp.messagingengine.com ([202.12.124.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tmizm-0003S0-Vl
+ id 1tmizn-0003S2-CI
  for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:40:24 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 0198925400EE;
- Mon, 24 Feb 2025 19:40:20 -0500 (EST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal
+ [10.202.2.45])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id 0EDC5254016F;
+ Mon, 24 Feb 2025 19:40:22 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Mon, 24 Feb 2025 19:40:21 -0500
+ by phl-compute-05.internal (MEProxy); Mon, 24 Feb 2025 19:40:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1740444020;
- x=1740530420; bh=S4LKGFTypIdV3P5Y7CtYczPKE/btLEKjM8yejT9DHdU=; b=
- KJjpzDB2TT3ATuyaKfndMhqPdSZzYvy780W/+Ykje6PiDxWE8NSPh+zWJuHvYDT7
- 5R37/s5LhP6MCz1s1um2CocyJJZ0+YEeqrmYYJNCT/zSFWpb0j9Bn5nliOtcWIBP
- olyseqIzlz9EliGdxEYyradkZuhvONpnpQI4zKel/QKAAvRUr41Fd+kG7OpNqE5T
- NWhVbaQa95Th5lq+2nIPP+WHQVNskBSmt6/B9XUUp6A9VW+XcuQKFy2XDvlKYLNw
- gIr6+WacaWDPC15YWW/Tyq73cNZed5IbmUaFHpiOGnCdCP3MAL0J6/Ew0lDVtGbU
- OxnvsGGUZHsnM411FknDjQ==
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1740444021;
+ x=1740530421; bh=Q1Tr4VLCU/aCVt0TUBVkqUl7v2+5x9K5iupl27zw8OA=; b=
+ O66y8PtY0UvsiVEGpVO24R/o4y0O21xFUo1H9o6Vac2sThB3iJQl1PNXuCz47638
+ BJv2H0LFi4YaNJ4Y7+gZ7zLSjnKCetBhruY/UZAHmLSk9HrIOcymkTHbp23ra047
+ NpHcHtCvzsyQ/Im9WQgsqreT2V5a7cLWmtiawOwinWUFoxcF0QYBYD7x/Y4m530r
+ D17qp0NwL95b9YqPzmFgdpsJzVznDXcA2+3TXW9LWs27hQt5XywMAZVMfdqAVbq5
+ Mimd9Iu3PFflqFqW3O2N8nQiNdvnSrcQ937IF8gEjhTCv0TOqyPvHYgDqSMnaRHP
+ e8eGBcPmc6vm2o1OiR+1cw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740444020; x=
- 1740530420; bh=S4LKGFTypIdV3P5Y7CtYczPKE/btLEKjM8yejT9DHdU=; b=W
- bsdpPqJqSMLmQ+VkUc8ftYxCg/o6jFDOC3utYQvVRKZvOhe0nDZOd1T3M8lnSg0X
- 1PEgVOMJtut1IANh/S9AdOyLCcjszS7MpbNARZn6K8Zk8vsNqErebnApOTgdxKNC
- elKDbvVkXoy9keNmVj+BDJwUguTaaX0YAUfYqVuosl3dMIiC7/9hrBMfnkjlFpXg
- GmM9h1dE4IBf86n5aiWxHb+vk5YO9xIA/XPpZ8qM4KoU9HwQprAH3tub7CvlCY7R
- i0Rz63xiDSmBhg7IODwDo7g8rVHoZg18KOj2iAht/UlQEEL8B3I1xpWWghhxdxk5
- 8ZbYXm7IV6dpx00KhWETg==
-X-ME-Sender: <xms:dBG9Z9z77MP9K1SxE9tJzwiPdsM3E5rtJ73DcMsdTp_lh6e4-dETWg>
- <xme:dBG9Z9QA9ZSNtyB1Hh7-JTF2I3E0l0bVEBSl28flDJcKlfGwgKebGnSqFKL6Fxyjv
- 2To4HXFf7yMAFSBSDs>
-X-ME-Received: <xmr:dBG9Z3Uq4B0wo3STO3dXMXkoQsItUN7fyyyAnabiVJE-X9vSjhi3aA8>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740444021; x=
+ 1740530421; bh=Q1Tr4VLCU/aCVt0TUBVkqUl7v2+5x9K5iupl27zw8OA=; b=z
+ g0qgxvPaffPFP5IbPAbR01F4z2Dneaup+4eY6zF0lCHS+MqRFhKO7qaBazYZlS2F
+ 5hUy1lWdUUCgAMtZvb5/MbokpWppcJXsVr/z9S/qscVzv39AO7He1sISlkscctnO
+ MhLIpSKP2M8Wgjxq8j22yhCdYrfvT2eewMy3F1FXythnW041S7+pCKtqCzg1sYQ/
+ 0E2Dbc+ewM/MHvfPO69C9cqtj6RCBJndj3B7boSn9/bTJsQ9O6WPRskV9rMJ3dy8
+ APTCCWprf+xlw9p33EUDqNXgyBWaYgL6JSesDmyi6cieJIyZt+isNi4htpmVCSnw
+ zW8lW7Mb94qFnL8XR4YiQ==
+X-ME-Sender: <xms:dRG9Z-mjpOZtfR_ws-bXywJ7ihQuYWtwV4EM6waEb4_kwB0oEiJ6SA>
+ <xme:dRG9Z108H5CVUStuYGyNnifcmDiC9Djd-2A7P-NZ9x17HLO9sDH8mhcRs0PZ2KEU2
+ wj6lVreG3zOhSwn0pI>
+X-ME-Received: <xmr:dRG9Z8qZpLDaEuor8_xyaKJliyFNMtaDqyETcu_6dijc5muNDC7LkOo>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdektddvhecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
  ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedune
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
  rdgtohhmpdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtth
  hopehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhrtghpthhtohepghgr
  ohhsohhngheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehqvghmuhdquggvvhgvlh
  esnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:dBG9Z_idVv3B7i9s29nISZuF9Q_D5lRB8U6FAT1BHQ_qrKqP6zSdcA>
- <xmx:dBG9Z_DWsZxGTUBlcQfeS7h2Pzl-bKW_OSgK-aw4XV_MNwfgUoCn4w>
- <xmx:dBG9Z4LA-kT-h1RNcBj_-JhiU2VXpdPVWGn0HtHECIFfQjhUbmbAyg>
- <xmx:dBG9Z-BULk7YNP6amw8QDT8bFz1ySluu8HiEYn1f3r8SUon5QYgz8A>
- <xmx:dBG9Z2P0VRg22xhmkNc5Qhsnzo6TsVrUg-pneEDqmxKwZbxnugi7EfqQ>
+X-ME-Proxy: <xmx:dRG9ZyljXE-26DBVEmp8yF3xm5NxGOXc3slxplUFwxTyNnRlf3ooPw>
+ <xmx:dRG9Z83SfP9a0zixuTdI_j0lLkq14up5bFDagIZhv2m_wpIFbjo1Hg>
+ <xmx:dRG9Z5uLbInRCHTyXQEbYBjJj5AcObdHbvb_Uva5GocrR6eeH_3OKg>
+ <xmx:dRG9Z4VEJphwDoxKW9pOCNGZtzWEM-ZcapWGLNTJq0ESE1OnsoPtnA>
+ <xmx:dRG9Z5ypwnm9IpKHp4dcJhGsLWN0PZxZbjI74IfQ39n15PR75JUoCRQb>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Feb 2025 19:40:20 -0500 (EST)
+ 24 Feb 2025 19:40:21 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Tue, 25 Feb 2025 00:40:16 +0000
-Subject: [PATCH v2 3/9] target/loongarch: Fix PGD CSR for LoongArch32
+Date: Tue, 25 Feb 2025 00:40:17 +0000
+Subject: [PATCH v2 4/9] target/loongarch: Perform sign extension for IOCSR
+ reads
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-la32-fixes1-v2-3-8ec68ada3dd5@flygoat.com>
+Message-Id: <20250225-la32-fixes1-v2-4-8ec68ada3dd5@flygoat.com>
 References: <20250225-la32-fixes1-v2-0-8ec68ada3dd5@flygoat.com>
 In-Reply-To: <20250225-la32-fixes1-v2-0-8ec68ada3dd5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -109,28 +110,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per manual, the source of PGD CSR is relevant to highest bit of
-BADV. In LoongArch32, all CSRs are 32 bits only, thus we should check
-bit 31 of BADV to determine PGDH/PGDL for LoongArch32.
+As per LoongArch Reference Manual - Volume 1: Basic Architecture,
+4.2.2. IOCSR Access Instructions:
+
+The reading value is described as "writes it to the general register rd
+after symbolic expansion." which means it should be sign extended.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/tcg/csr_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/loongarch/tcg/iocsr_helper.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-index 15f94caefabc7722263fa46e948e21de37b4203c..821aa6af46ea2129d771fdc937eca72317cefc1e 100644
---- a/target/loongarch/tcg/csr_helper.c
-+++ b/target/loongarch/tcg/csr_helper.c
-@@ -26,7 +26,7 @@ target_ulong helper_csrrd_pgd(CPULoongArchState *env)
-         v = env->CSR_BADV;
-     }
+diff --git a/target/loongarch/tcg/iocsr_helper.c b/target/loongarch/tcg/iocsr_helper.c
+index b6916f53d20ca133f0000e773685cb94240bafe2..db30de2523fff01bcc8923eb12c7fca7bedca7bf 100644
+--- a/target/loongarch/tcg/iocsr_helper.c
++++ b/target/loongarch/tcg/iocsr_helper.c
+@@ -17,20 +17,20 @@
  
--    if ((v >> 63) & 0x1) {
-+    if (extract64(v, is_la64(env) ? 63 : 31, 1)) {
-         v = env->CSR_PGDH;
-     } else {
-         v = env->CSR_PGDL;
+ uint64_t helper_iocsrrd_b(CPULoongArchState *env, target_ulong r_addr)
+ {
+-    return address_space_ldub(env->address_space_iocsr, r_addr,
+-                              GET_MEMTXATTRS(env), NULL);
++    return (int8_t)address_space_ldub(env->address_space_iocsr, r_addr,
++                                      GET_MEMTXATTRS(env), NULL);
+ }
+ 
+ uint64_t helper_iocsrrd_h(CPULoongArchState *env, target_ulong r_addr)
+ {
+-    return address_space_lduw(env->address_space_iocsr, r_addr,
+-                              GET_MEMTXATTRS(env), NULL);
++    return (int16_t)address_space_lduw(env->address_space_iocsr, r_addr,
++                                       GET_MEMTXATTRS(env), NULL);
+ }
+ 
+ uint64_t helper_iocsrrd_w(CPULoongArchState *env, target_ulong r_addr)
+ {
+-    return address_space_ldl(env->address_space_iocsr, r_addr,
+-                             GET_MEMTXATTRS(env), NULL);
++    return (int32_t)address_space_ldl(env->address_space_iocsr, r_addr,
++                                      GET_MEMTXATTRS(env), NULL);
+ }
+ 
+ uint64_t helper_iocsrrd_d(CPULoongArchState *env, target_ulong r_addr)
 
 -- 
 2.43.0
