@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36334A4464F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DF5A44617
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:32:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmxrV-0002M9-Cx; Tue, 25 Feb 2025 11:32:51 -0500
+	id 1tmxqO-0001WF-4G; Tue, 25 Feb 2025 11:31:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq6-000193-K8
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:24 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq8-0001Aw-W1
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq3-0006cD-A3
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:20 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq6-0006d4-MR
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740501077;
+ s=mimecast20190719; t=1740501081;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0LerVMLCO2g0uxpoATuHSnU0aK0p7jxOiA6jhHk9aNQ=;
- b=P5rZt0rP37kHzGDJmng+U4G915lCYkCVsT/Zr49mhsUb4pgEwhsiavmJDNWdL0sVKpv5f3
- YCsVJHEtVo/PRTYQ+yXwqP2xRoP92TJ+IFfwLk3/uMuhIFQoOJ3P6Mg3vbCvR7F5eWdWqZ
- jVld17yJ4VHsK4mDgTOIngPt/nH5buw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4wqYQvkIUpzaWuflEazQgBVji+RgmWdrCWXiKb7V+BA=;
+ b=BPLXU4ejI37d6ShcMFl4P4SjLdWZsWhEbWFueQd4RbBG/kFFxbkM/R2EJX8qFGYVPXdpXC
+ gNjrAeAvFzNtPPfFZWxxaxW3RofPFhHKm0VrXcEurr3Boib159wkmGkaoo7xfVk+2RhFzk
+ FCnYXP8hQ/f4gCNfCDtzpKHjQuh+25A=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-l3WcQJdJO5u_z4qVFDJxmg-1; Tue,
- 25 Feb 2025 11:31:13 -0500
-X-MC-Unique: l3WcQJdJO5u_z4qVFDJxmg-1
-X-Mimecast-MFC-AGG-ID: l3WcQJdJO5u_z4qVFDJxmg_1740501071
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-JGGkppH5OkGECHUgasny7A-1; Tue,
+ 25 Feb 2025 11:31:16 -0500
+X-MC-Unique: JGGkppH5OkGECHUgasny7A-1
+X-Mimecast-MFC-AGG-ID: JGGkppH5OkGECHUgasny7A_1740501074
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7EFA418E6952; Tue, 25 Feb 2025 16:31:11 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 395AB18EAB3A; Tue, 25 Feb 2025 16:31:14 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.45.224.219])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2CD3E1800367; Tue, 25 Feb 2025 16:31:11 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DF30519560AA; Tue, 25 Feb 2025 16:31:13 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 14A1318007A1; Tue, 25 Feb 2025 17:30:33 +0100 (CET)
+ id 22F7E18007A2; Tue, 25 Feb 2025 17:30:33 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -59,14 +59,14 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 22/24] hw/uefi-vars-sysbus: allow for pc and q35
-Date: Tue, 25 Feb 2025 17:30:26 +0100
-Message-ID: <20250225163031.1409078-23-kraxel@redhat.com>
+Subject: [PATCH v5 23/24] hw/uefi: add MAINTAINERS entry
+Date: Tue, 25 Feb 2025 17:30:27 +0100
+Message-ID: <20250225163031.1409078-24-kraxel@redhat.com>
 In-Reply-To: <20250225163031.1409078-1-kraxel@redhat.com>
 References: <20250225163031.1409078-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -92,54 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the device being added to x86_64 pc and q35 VMs.
-
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/i386/pc_piix.c | 2 ++
- hw/i386/pc_q35.c  | 2 ++
- 2 files changed, 4 insertions(+)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 04d2957adcd7..6c91e2d29298 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -65,6 +65,7 @@
- #include "system/numa.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
-+#include "hw/uefi/var-service-api.h"
- #include "hw/i386/acpi-build.h"
- #include "target/i386/cpu.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1911949526ce..451fc33306dc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2807,6 +2807,12 @@ F: hw/misc/ivshmem-flat.c
+ F: include/hw/misc/ivshmem-flat.h
+ F: docs/system/devices/ivshmem-flat.rst
  
-@@ -468,6 +469,7 @@ static void pc_i440fx_machine_options(MachineClass *m)
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-+    machine_class_allow_dynamic_sysbus_dev(m, TYPE_UEFI_VARS_X64);
- 
-     object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
-                                    &PCSouthBridgeOption_lookup,
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 77536dd697f5..fd96d0345c7d 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -58,6 +58,7 @@
- #include "system/numa.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
-+#include "hw/uefi/var-service-api.h"
- #include "hw/i386/acpi-build.h"
- #include "target/i386/cpu.h"
- 
-@@ -355,6 +356,7 @@ static void pc_q35_machine_options(MachineClass *m)
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-+    machine_class_allow_dynamic_sysbus_dev(m, TYPE_UEFI_VARS_X64);
-     compat_props_add(m->compat_props,
-                      pc_q35_compat_defaults, pc_q35_compat_defaults_len);
- }
++UEFI variable service
++M: Gerd Hoffmann <kraxel@redhat.com>
++S: Maintained
++F: hw/uefi/
++F: include/hw/uefi/
++
+ Subsystems
+ ----------
+ Overall Audio backends
 -- 
 2.48.1
 
