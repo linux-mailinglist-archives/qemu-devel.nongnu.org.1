@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6567AA43CFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:11:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65998A43CF8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:11:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmsoT-0001ei-8c; Tue, 25 Feb 2025 06:09:21 -0500
+	id 1tmsoR-0001dT-Lf; Tue, 25 Feb 2025 06:09:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmsnz-0001Xj-5t
+ id 1tmsnz-0001Xi-5R
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmsnw-0007kS-39
+ id 1tmsnx-0007kk-CC
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:50 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4394345e4d5so35821315e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:47 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-38a8b17d7a7so3045585f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740481726; x=1741086526; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740481727; x=1741086527; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A0C07sYpNo4u7rDsFsSfzCKqSXgRvbHOGJATtnHgpac=;
- b=x9/V855wRzTevpCVybfEKd0VHp/zVyPA6lZlPD5nAC1m8Bc8Ow/d84o0y6wuYLX3OS
- vAaHn25OR/Pqj0CamWwAbh7WEmz5hoyPJtBgKrZKA9GzuRbMrSmXVsaM/hzoYuxJVkTJ
- aJANXQTlhSBy9X+NDM+CxU9UISY+vBvKBDAj3ZgVm4aCqYDYAOo2pC5RTv6Qh8ioFC4k
- qxcMS0zEbgukYR0a7RNwa+xES7QXZWNdd1XMNHRe/8s0oOMoW1T9CxGijFS0l9/UKKza
- 01ZJPoCOLbZbbJEPkjU6zhABzdT2AYpb6krnYpvve5arKt0EKVNa0QvqyoFlVYRqx1Hq
- UDnQ==
+ bh=Qb1orkQ+AqcTmWd0ljpleeeoHkiMqn4rSUOQc4oEDwE=;
+ b=lnB3x4ljrfWTdtZzi8b0foad1PWvext1RnqxIKCMEU3G5Ah4P6FTmNhVaPrvGio16C
+ qwh9ZIa2140bqwOWPi7cXEjusDw/j4/yEkYQskct/1bFEdBhKVilpFo2mTRomCRCjtQb
+ HaWGiDoWxd5r/lTOaUYG1c3S1a9gDGn7/PV9pE2HiDifKJYiuK0XBLRgwRqugc1ibjhq
+ pB/csvEBWUJHZF4bLvAyNKxthtz5fPlC6aKpe+/mV1COLmPQrU9DTTZ6WLPwNyJK36uK
+ F3IRea11/icgfvnoFAgxOWvSJOl+N5uBICRVfgb5Nk71/UgCc5xo2mO4/F/psRholNKd
+ Ej1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740481726; x=1741086526;
+ d=1e100.net; s=20230601; t=1740481727; x=1741086527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A0C07sYpNo4u7rDsFsSfzCKqSXgRvbHOGJATtnHgpac=;
- b=IbWft3SR/hgipQ8U3S64LEU8nQ6GvMbg2kHQDDMlA6MGCk+EoSfI6lShuuBhryseFa
- vd4h8XWgVvFP27MA4Pc1BKbz3J/cBl2vojHy+bj4pH82eE8W4Q++S2D5j6Tax+Ik0LXp
- W+WqnWeefSJehYaPI3M01je5IFPoywVApDKP63axEf/CYHncI3rujWQpwbCeMGUgCjvk
- P0Y3ZxY3m7bLuf1ybybbp5LyR5tDG08AyhW6qEhVz93j9HkIrxwqMcrB+PD8FADAcGbi
- CVNSsSsAHLbmq9Pp9wBRB68Eq31EavFiZFGP2bgA3S2+o7HVzhj8SScU0yaoB+XCpqVM
- MsEA==
-X-Gm-Message-State: AOJu0YyDyJCvaZHmJyE7+lBeu4huK0amO/BlJ2J9eUxZnKAT4yNBInaQ
- G3LZfBbAVp0Tr5fafqyRLsF+kDnXL1NJnKyR/m17kpu6XA/Acfm7QLmAS9gUzKQ=
-X-Gm-Gg: ASbGncvDSdssdEcWscDjFG2/FCWxNNmDs80UZvz1J5EcoR7ADue06rq0qwfXG2jupBY
- J29JFodnkcsIj05aDUBwpPEQLktr4GKJ5sFvWHuF7fD1hIqFkmtm6h6CxfgC5Vx0nR3jU87c3OS
- XdakG9758fR4LynYiMnqdeZ8pKoPQCC29+VBYRzHKkBYw/l3+8nDu/pupXMhqmH9joqmz+H6fRt
- oQI4diwg3oqNGVYwteSX6vdiIgtW0YTYN50wDZnejGfJdx3GhRiiX4P4gueeuVTcOjw+xgFkEIG
- es9UUXt+0ZurHutOng60mC31oUmN
-X-Google-Smtp-Source: AGHT+IEp/YkWTDiYfwzWIF6eGeuCJ3KVxlWw+YREg7vHyC0o0au8uWN9LAnONCah0tHmvDHgIhfaBw==
-X-Received: by 2002:a05:600c:5106:b0:439:a25a:1686 with SMTP id
- 5b1f17b1804b1-439aebda0bbmr120429185e9.25.1740481726320; 
- Tue, 25 Feb 2025 03:08:46 -0800 (PST)
+ bh=Qb1orkQ+AqcTmWd0ljpleeeoHkiMqn4rSUOQc4oEDwE=;
+ b=qhiwQZlc8OPNj/YOe/GrKO63IV4VxdR7SqkxQQpvZ6Bk9SysbNvDsreTivkRqkOuNw
+ 2+IOSHuTaACs7XZIrUa/CbkGjpmqa5TG9wttR1uSMJCwrjfp2cCdWNuqKfIYGztfr0lj
+ 7wFrWb+n/rNlth1vhFuDrsqGOSzqcXdMNqSCnd8Ap2+iCTfp816EPsDgHbGGTSjZNCLF
+ Fd18t3Ond4S/T6F75LBz5HzRfVZEsoK7pxiWg59G+80gvjKoWko4KfEm0JoMhwMr/bOQ
+ +l1cHJeHGotqJZBPAvuLnqZPeDjkgWSZV8KhnEVR8v0+ZqjmEvmHvrk4ssveOf7u1/yL
+ msfw==
+X-Gm-Message-State: AOJu0Yyj49kHhSrvdpxY1PCzIJal2g8DlZqgAPHJkpgGePVg3SrC4gVE
+ A1sqFEiTRgaOrFS45J9feRz2NY1i2+/04BuOwmhf0s2PEV/dtdPERbxAH3Fs8GA=
+X-Gm-Gg: ASbGncsvJFW4kwAL9G0kZOe4lvKqHDWF1lsN/eXD+TCNeduCEcfWuiPkITV341ompgm
+ Lw3L7IcNHWQWtM7AZzVj9Yi1ULiG7GwSoGDYFItV2jIrd7MVZiC6Dw7hZqDalzcqlS8iAugtxBf
+ jWrvkCYANL1mkEUKBkey0YOEGJrLcA1C42co2lAKyqwVqH5uE5M5lQfxiseIBMkqRhEbVzU/SDt
+ N+d2/t5hZupwx7Rbs6/TOrqDsttj4h3NaI2d/3SDE/Ppsj+JgO7lqIUXxmYngBjCMAh4N4xCZ2i
+ gi9ZFhAPu6//4MK/FLzz22jsyQt2
+X-Google-Smtp-Source: AGHT+IE5hol5zn1f9Zl4riLKeuflmsqjRzcccRFs5N7gs5KGfEDWcfEtzR3/gcilid0iKrI7qRNxMg==
+X-Received: by 2002:a05:6000:2c3:b0:38f:4251:597b with SMTP id
+ ffacd0b85a97d-38f6e754752mr14287017f8f.8.1740481727545; 
+ Tue, 25 Feb 2025 03:08:47 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02d60c0sm135556145e9.12.2025.02.25.03.08.44
+ ffacd0b85a97d-390cd8fcca2sm1898230f8f.96.2025.02.25.03.08.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 25 Feb 2025 03:08:45 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6B7FE5F9D7;
+ by draig.lan (Postfix) with ESMTP id 83BFA5FA34;
  Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,17 +70,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 03/10] include/qemu: plugin-memory.h doesn't need cpu-defs.h
-Date: Tue, 25 Feb 2025 11:08:37 +0000
-Message-Id: <20250225110844.3296991-4-alex.bennee@linaro.org>
+Subject: [PATCH 04/10] plugins/api: clean-up the includes
+Date: Tue, 25 Feb 2025 11:08:38 +0000
+Message-Id: <20250225110844.3296991-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250225110844.3296991-1-alex.bennee@linaro.org>
 References: <20250225110844.3296991-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,25 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hwaddr is a fixed size on all builds.
+Thanks to re-factoring and clean-up work (especially to exec-all) we
+no longer need such broad headers for the api.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/qemu/plugin-memory.h | 1 -
- 1 file changed, 1 deletion(-)
+ plugins/api.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/qemu/plugin-memory.h b/include/qemu/plugin-memory.h
-index 71c1123308..6065ec7aaf 100644
---- a/include/qemu/plugin-memory.h
-+++ b/include/qemu/plugin-memory.h
-@@ -9,7 +9,6 @@
- #ifndef PLUGIN_MEMORY_H
- #define PLUGIN_MEMORY_H
- 
--#include "exec/cpu-defs.h"
- #include "exec/hwaddr.h"
- 
- struct qemu_plugin_hwaddr {
+diff --git a/plugins/api.c b/plugins/api.c
+index 10b258b08d..3e1aac7bfb 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -39,9 +39,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/plugin.h"
+ #include "qemu/log.h"
+-#include "qemu/timer.h"
+ #include "tcg/tcg.h"
+-#include "exec/exec-all.h"
+ #include "exec/gdbstub.h"
+ #include "exec/translation-block.h"
+ #include "exec/translator.h"
+@@ -50,7 +48,6 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "qapi/error.h"
+ #include "migration/blocker.h"
+-#include "exec/ram_addr.h"
+ #include "qemu/plugin-memory.h"
+ #include "hw/boards.h"
+ #else
 -- 
 2.39.5
 
