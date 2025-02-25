@@ -2,74 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECFBA44F49
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 22:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647A6A450B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 00:00:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn2rh-00087R-A0; Tue, 25 Feb 2025 16:53:21 -0500
+	id 1tn3tS-0004rd-Mh; Tue, 25 Feb 2025 17:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tn2rc-00086o-6B
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 16:53:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tn3tP-0004qS-TM; Tue, 25 Feb 2025 17:59:11 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tn2ra-0006Ux-7f
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 16:53:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740520393;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yC+gsX2jLBnRtqKpNwAJ32yjJlZBgwNWwJ46QNMwElM=;
- b=eIn5R69p3T3n/bxN7tpzc0Q7COEN0c046IEfvhRA4ekEd+N3rbj//qj3vc5FxRdLVjbP9h
- XZt9L+nfhHujZecermqSF9A6CuefbCXGwtpNFG4qNikYeLGAS4AStWakf0RPiil05JkHvy
- 37cM5+9CS03O59AOelrLsBLVAmEhjjs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-17FG95cCNHGeA7ER6PbsRg-1; Tue,
- 25 Feb 2025 16:53:11 -0500
-X-MC-Unique: 17FG95cCNHGeA7ER6PbsRg-1
-X-Mimecast-MFC-AGG-ID: 17FG95cCNHGeA7ER6PbsRg_1740520390
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E9C21801A0D; Tue, 25 Feb 2025 21:53:10 +0000 (UTC)
-Received: from omen.home.shazbot.org (unknown [10.22.88.77])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 678B0300018D; Tue, 25 Feb 2025 21:53:06 +0000 (UTC)
-From: Alex Williamson <alex.williamson@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, eric.auger.pro@gmail.com,
- eric.auger@redhat.com, clg@redhat.com, zhenzhong.duan@intel.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com
-Subject: [PATCH v2 5/5] hw/vfio/pci: Re-order pre-reset
-Date: Tue, 25 Feb 2025 14:52:29 -0700
-Message-ID: <20250225215237.3314011-6-alex.williamson@redhat.com>
-In-Reply-To: <20250225215237.3314011-1-alex.williamson@redhat.com>
-References: <20250225215237.3314011-1-alex.williamson@redhat.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tn3tN-0001TH-Vt; Tue, 25 Feb 2025 17:59:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=CIQZtTxZ9dSzJ63DwaSEAqQOseP0TJPTyoSVi6I177I=; b=U77c1/V4eDJ2H/ZCTQvlfEpOpE
+ hhFHiWNsqar0LB+9g7fWRSgKSl0tKQSf3MT4cB9a+/7iXJsB5Vc9vuCuJAj0Dstpgh27h/Mt00Mw9
+ FF0dSJ4vSZTH6RFuCHK/VnbTUTKIoKznfJLMPk1qYFlb45ng1LYjH9MaUMwxNQALxDrlo9W0qFpwL
+ 2yUj1qvNXp6ZhC2FXIZ2u/gbzZl7ZPAWqJRdLnv8dzj+oug9mQGM87o4ID8DkahmiT2uDmba2cSK6
+ 1u2oGYlBU63tReNiWyK/8yIyRc0ergiazfAUWXvYo5eqW41unPWCqan8WCqQdzyweMBV19OPghHmh
+ 4uUBrHtsPPDY3EzCnD6kqFBswSKdkjiL7l/aotzjuQjT9KQBs54jQxn8xHeZZP7VzgZFlFBzBv+OD
+ F7uc+6+ifOwZtOCnBQRzAtr0TGveZuYAhLWeBFcZ92COIxAgT03hx5wrekE3dc7GHZfXdlDhDJiUs
+ KxprxABzSU9h364mTGbXfyoHZt+kVRwa4BXbJ8HPoySWwQG+liYsscPQmUL9TcoXkdZ/tXJGEUQzz
+ Zt+VlsPNqYz1KyjyxpWrq+7Af4LScUQFKJ1IIq03z6i55suwYcemsDvE86xxEEbb0xHe5LLSaCCSc
+ mIXRH9B7PGwLtDm+CuMygJqMwZSbQRsHxNOdLqWm4=;
+Received: from [2a02:8012:2f01:0:bfa1:1a8d:fd43:3eec]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tn3sK-00068j-UE; Tue, 25 Feb 2025 22:58:09 +0000
+Message-ID: <0b12354f-2e47-4520-ae28-e08c3990d6cb@ilande.co.uk>
+Date: Tue, 25 Feb 2025 22:58:57 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-trivial@nongnu.org
+Cc: Jd Lyons <lyons_dj@yahoo.com>
+References: <20250222122850.9D8B84E603D@zero.eik.bme.hu>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20250222122850.9D8B84E603D@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:bfa1:1a8d:fd43:3eec
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH] hw/misc/macio: Improve trace logs
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,57 +100,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want the device in the D0 power state going into reset, but the
-config write can enable the BARs in the address space, which are
-then removed from the address space once we clear the memory enable
-bit in the command register.  Re-order to clear the command bit
-first, so the power state change doesn't enable the BARs.
+On 22/02/2025 12:28, BALATON Zoltan wrote:
 
-Cc: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
----
- hw/vfio/pci.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+> Add macio_gpio_read trace event and use that in macio_gpio_read()
+> instead of macio_gpio_write. Also change log message to match
+> macio_timer_{read,write}.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/misc/macio/gpio.c       | 2 +-
+>   hw/misc/macio/trace-events | 3 ++-
+>   2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/misc/macio/gpio.c b/hw/misc/macio/gpio.c
+> index 7cad62819a..4364afc84a 100644
+> --- a/hw/misc/macio/gpio.c
+> +++ b/hw/misc/macio/gpio.c
+> @@ -135,7 +135,7 @@ static uint64_t macio_gpio_read(void *opaque, hwaddr addr, unsigned size)
+>           }
+>       }
+>   
+> -    trace_macio_gpio_write(addr, val);
+> +    trace_macio_gpio_read(addr, val);
+>       return val;
+>   }
+>   
+> diff --git a/hw/misc/macio/trace-events b/hw/misc/macio/trace-events
+> index ad4b9d1c08..055a407aeb 100644
+> --- a/hw/misc/macio/trace-events
+> +++ b/hw/misc/macio/trace-events
+> @@ -18,7 +18,8 @@ macio_timer_read(uint64_t addr, unsigned len, uint32_t val) "read addr 0x%"PRIx6
+>   macio_set_gpio(int gpio, bool state) "setting GPIO %d to %d"
+>   macio_gpio_irq_assert(int gpio) "asserting GPIO %d"
+>   macio_gpio_irq_deassert(int gpio) "deasserting GPIO %d"
+> -macio_gpio_write(uint64_t addr, uint64_t val) "addr: 0x%"PRIx64" value: 0x%"PRIx64
+> +macio_gpio_write(uint64_t addr, uint64_t val) "addr 0x%"PRIx64" val 0x%"PRIx64
+> +macio_gpio_read(uint64_t addr, uint64_t val) "addr 0x%"PRIx64" val 0x%"PRIx64
+>   
+>   # pmu.c
+>   pmu_adb_poll(int olen) "ADB autopoll, olen=%d"
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index eab8974e9b48..153455fae85d 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2410,6 +2410,15 @@ void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
- 
-     vfio_disable_interrupts(vdev);
- 
-+    /*
-+     * Stop any ongoing DMA by disconnecting I/O, MMIO, and bus master.
-+     * Also put INTx Disable in known state.
-+     */
-+    cmd = vfio_pci_read_config(pdev, PCI_COMMAND, 2);
-+    cmd &= ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |
-+             PCI_COMMAND_INTX_DISABLE);
-+    vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
-+
-     /* Make sure the device is in D0 */
-     if (pdev->pm_cap) {
-         uint16_t pmcsr;
-@@ -2429,15 +2438,6 @@ void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-             }
-         }
-     }
--
--    /*
--     * Stop any ongoing DMA by disconnecting I/O, MMIO, and bus master.
--     * Also put INTx Disable in known state.
--     */
--    cmd = vfio_pci_read_config(pdev, PCI_COMMAND, 2);
--    cmd &= ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |
--             PCI_COMMAND_INTX_DISABLE);
--    vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
- }
- 
- void vfio_pci_post_reset(VFIOPCIDevice *vdev)
--- 
-2.48.1
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+ATB,
+
+Mark.
 
 
