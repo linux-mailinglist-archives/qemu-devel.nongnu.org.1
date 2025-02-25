@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F61DA449C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 805C0A44987
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:07:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzLZ-0005GW-SS; Tue, 25 Feb 2025 13:07:57 -0500
+	id 1tmzKn-0001ad-CF; Tue, 25 Feb 2025 13:07:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJS-0008VZ-Si
+ id 1tmzJT-0008Vl-7F
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:50 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJG-0002FN-US
+ id 1tmzJI-0002FT-3P
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:37 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-38f2b7ce319so4932523f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:33 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43994ef3872so36685915e9.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506732; x=1741111532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506733; x=1741111533; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0JcBFgIX1k9qKb/9fOhS3EkBYk5j5U8LD6sAYLyZV2c=;
- b=nSNbhi5m0PdcxAAc5epohlPStF8Dpfk6TRtknGnBYDjfH6lodaqGwpklIc1oB8vCPM
- c9B+noPegFuGl3aQYcfD5Q8/PufQ4+mEjR31pBLxnpM3MxKsYQYjnbDXzAm9VHyAD/2o
- GJh9Sh0mF+R25FeKg/nYZa9Q0QuJT3lrHgbU1637PqDRbUp3AY/KOa3IaajsIkzlxYUk
- KWwLOQAUm4btWDKAnzD3hxrFrkBC2vfKW1j6tTV4ykH1lNNL7jICZuKn/EMQ+1qUFyq5
- VYRWM2R5MtuIxINRNjryG28VmqkbNinkMc0Mm5H7+hWVkXCmQlPsqPEC9KGEfI1f9hpT
- 98kQ==
+ :reply-to; bh=TnlrEm+jOYg4iMTgEIJfSftvcM8UJSyXDIRsqIENUQg=;
+ b=sfWYI1ZtxsETzNUGNALasQ9XZECJydq1TAc5DK0YCE6AOwTvaGuTTj7OteaJ+xDE6t
+ YaZGumMDYP+k3+mhbpzeUGKomK8XdJK/zGWYYfsAwV6xcPe98CVJz9xJ8V8c/MWiqRmF
+ OrMCCg3dcqBKIf2HTstxFrD5wfApIc8OaryHM6NPUJe4oMcC1pb4u9dfITXyd2s1SZE1
+ CaownbBTb53EtPNXUoB+4hM0Gez0GqX7kH9Yn9xzIyTRLEG7GuLCpY2oLHuLUVS3fUL2
+ gc8XSCjBO3cnM0l9cMMPYM8iNA4PvRICAsLoum0Nqr/tJDeLAIXHZplwSkpnVf3JmJmW
+ lNCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506732; x=1741111532;
+ d=1e100.net; s=20230601; t=1740506733; x=1741111533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0JcBFgIX1k9qKb/9fOhS3EkBYk5j5U8LD6sAYLyZV2c=;
- b=AW6mYN+thd4p2dCbr+ibfR7IUE0gnuudcTqpoyyB2gMSZh5F/EZ3k64UQToBeSEber
- fTlSz/9LqB0QkhF4TC5nI1HoTX0avMJiVdmcnEGnc3BpQcrgInrQDcrly8Op75Ou9Guu
- H8X93C2mtZq+kJsj8RiOv3DS3c59bmrxHnSNjNCT1htYVgBaWCewkpwjBoO+MOzgPe+o
- L3lFtpgE5S8fWj6a89kBbX8339m24E7OxKM78fD3ryK4BrGI/6/Wdkss7i01qwRiQIDd
- QfpfOwR0KeVZb8Zb1Y3qEfmWOmP8cvj+q1O34htaFcPzNrCfszvoM1tgKCQWsFWuTNIt
- RdGg==
-X-Gm-Message-State: AOJu0Yw+U8Lq3eMHiTlCiT6j5lsEzTga9ayIdMjMGNpOZYCKrrVlAWub
- 0eQC7uTl4Y+h2ghDUvlqId2w/iaw6llIc2sctdfFfZCr4QI5Ne5ClkSw3MN9Zqu8l5pQmjyTs+C
- E
-X-Gm-Gg: ASbGnctO4TEbPvOFgJHs3H2UUTIFT5VPsj/Rw8qHoQ77Yl25jMQByqsswzdnirlfMOc
- 9PHZOfEAt9PHrHCWU1xrQJ+YZkuSM8lChMdhKNIgvqDgJTNY7+uk6jLaoF3iAreeIB/JdQenE0h
- HWp0Aiq8NqmbS7BCE6XKMIcyKJFXlQcGOPEkL0beF76vsY0qqRyRi4pcntZcc8GsgJOCcqbuajQ
- QJ2tZTTRaNO/jVMnDq9NAjZ3LXN5UJb3HOKrqTFMnEUF2KYJCtI6t37NIxXy23ROEnO/zDt90rs
- DcjFBUnxiV4R7TH6oLuNtEIano8/9+FM
-X-Google-Smtp-Source: AGHT+IEu4eiVwgrdvNv7kdekRb+3SCqpIAxBUfSSzj63vvO6IRBlFc4VHWrQkO8l7Lg46HwHQcEBog==
-X-Received: by 2002:a5d:4090:0:b0:38d:ba09:86b5 with SMTP id
- ffacd0b85a97d-390d4fa3559mr173579f8f.52.1740506732472; 
- Tue, 25 Feb 2025 10:05:32 -0800 (PST)
+ bh=TnlrEm+jOYg4iMTgEIJfSftvcM8UJSyXDIRsqIENUQg=;
+ b=lRzWAfFhJsh6RJsQbeAGmQO3x4T3NZNvmTRwS8vKGfKL2bmbU7TVNYVyZ00wFfujL4
+ Y3YV9dgkg7AtfVck2efc+KcWO7ubwsAKcjMPYpBaywWqvIgo0MpuGMEFkwh2TnvFzgv9
+ 1fs/GORafBSk3i7SUtBtVzthe1wxzVtJY92ucZ70QFWbz0D9hwtPisN/e0fgCrnJR259
+ gEbcj6nd8+zT97QZB2GfvcijANsbXW2LO+AoDfbXQtWeUD+hp004W3CDvXvES+wzqaDt
+ 3/t24IlCr+1ukxxuyt3V2aX/L+ngHZJoR5ivew/sxVZ2PpSGnnEOPXIoj8sReA+FQbnA
+ MU3w==
+X-Gm-Message-State: AOJu0Yx49Q87WoWRvmmFZE8SIlW949ssgrLunzKXKFAVHhZyz946V5yI
+ EQWm5ZtDkdtZEIu9co9F3NjQhz4WqZwyzSxY06n3MBl3vo6bpQ9nHFXO1Uu1e4jJsIN5BEiJqx0
+ D
+X-Gm-Gg: ASbGncuQ4r+CNkdiyGJYa7LTibVDU20+3zEVXuNdKa+vLYuPCQhLegrPND5ij5GEW8q
+ jg2NJozmRLnoHA5XTp6tOaSCOdGWWbRNvbCBq8/Hh3/KfcXsDvXb88E0lcGoUwF7RZ50QseNJ3o
+ lYgRodUMk4iJN2Lnr6buMxmUuFcZGtWEjQu7+VDB//owGh0GnvzHXVueC6J68+KvEkr4boQrzxc
+ kWfKSJY+YElO8sD1RR7R71oRFSh89xniPvr3Fcz1B3IqVezkF/edRlwj5TF47dvOfsZGuA0kDwm
+ fUTK2K7mLk/iwZNk+r/yUeh3qECZvnIX
+X-Google-Smtp-Source: AGHT+IF/avcqL1QdAbnC2Ad1iLoVTAwAV/24gbI64BGdWgqCijI9C+h4U9DDbjbSdG9YQO7NEuLCmA==
+X-Received: by 2002:a05:600c:5123:b0:439:88bb:d035 with SMTP id
+ 5b1f17b1804b1-43ab0f2887dmr43380535e9.5.1740506733460; 
+ Tue, 25 Feb 2025 10:05:33 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.31
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:31 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:32 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/43] fpu: Always decide no_signaling_nans() at runtime
-Date: Tue, 25 Feb 2025 18:04:43 +0000
-Message-ID: <20250225180510.1318207-18-peter.maydell@linaro.org>
+Subject: [PULL 18/43] fpu: Always decide snan_bit_is_one() at runtime
+Date: Tue, 25 Feb 2025 18:04:44 +0000
+Message-ID: <20250225180510.1318207-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,40 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have a compile-time shortcut where we
-return false from no_signaling_nans() on everything except
-Xtensa, because we know that's the only target that
-might ever set status->no_signaling_nans.
+Currently we have a compile-time shortcut where we return a hardcode
+value from snan_bit_is_one() on everything except MIPS, because we
+know that's the only target that needs to change
+status->no_signaling_nans at runtime.
 
-Remove the ifdef, so we always look at the status flag;
-this has no behavioural change, but will be necessary
-if we want to build softfloat once for all targets.
+Remove the ifdef, so we always look at the status flag.  This means
+we must update the two targets (HPPA and SH4) that were previously
+hardcoded to return true so that they set the status flag correctly.
+
+This has no behavioural change, but will be necessary if we want to
+build softfloat once for all targets.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250224111524.1101196-10-peter.maydell@linaro.org
-Message-id: 20250217125055.160887-8-peter.maydell@linaro.org
+Message-id: 20250224111524.1101196-11-peter.maydell@linaro.org
+Message-id: 20250217125055.160887-9-peter.maydell@linaro.org
 ---
- fpu/softfloat-specialize.c.inc | 4 ----
- 1 file changed, 4 deletions(-)
+ target/hppa/fpu_helper.c       | 1 +
+ target/sh4/cpu.c               | 1 +
+ fpu/softfloat-specialize.c.inc | 7 -------
+ 3 files changed, 2 insertions(+), 7 deletions(-)
 
+diff --git a/target/hppa/fpu_helper.c b/target/hppa/fpu_helper.c
+index 8ff4b448049..a62d9d30831 100644
+--- a/target/hppa/fpu_helper.c
++++ b/target/hppa/fpu_helper.c
+@@ -67,6 +67,7 @@ void HELPER(loaded_fr0)(CPUHPPAState *env)
+     set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->fp_status);
+     /* Default NaN: sign bit clear, msb-1 frac bit set */
+     set_float_default_nan_pattern(0b00100000, &env->fp_status);
++    set_snan_bit_is_one(true, &env->fp_status);
+     /*
+      * "PA-RISC 2.0 Architecture" says it is IMPDEF whether the flushing
+      * enabled by FPSR.D happens before or after rounding. We pick "before"
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index 4ac693d99bd..ccfe222bdf3 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -128,6 +128,7 @@ static void superh_cpu_reset_hold(Object *obj, ResetType type)
+     set_flush_to_zero(1, &env->fp_status);
+ #endif
+     set_default_nan_mode(1, &env->fp_status);
++    set_snan_bit_is_one(true, &env->fp_status);
+     /* sign bit clear, set all frac bits other than msb */
+     set_float_default_nan_pattern(0b00111111, &env->fp_status);
+     /*
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 8327f727861..a2c6afad5da 100644
+index a2c6afad5da..ba4fa08b7be 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -85,11 +85,7 @@ this code that are retained.
+@@ -93,17 +93,10 @@ static inline bool no_signaling_nans(float_status *status)
+  * In IEEE 754-1985 this was implementation defined, but in IEEE 754-2008
+  * the msb must be zero.  MIPS is (so far) unique in supporting both the
+  * 2008 revision and backward compatibility with their original choice.
+- * Thus for MIPS we must make the choice at runtime.
   */
- static inline bool no_signaling_nans(float_status *status)
+ static inline bool snan_bit_is_one(float_status *status)
  {
--#if defined(TARGET_XTENSA)
-     return status->no_signaling_nans;
+-#if defined(TARGET_MIPS)
+     return status->snan_bit_is_one;
+-#elif defined(TARGET_HPPA) || defined(TARGET_SH4)
+-    return 1;
 -#else
--    return false;
+-    return 0;
 -#endif
  }
  
- /* Define how the architecture discriminates signaling NaNs.
+ /*----------------------------------------------------------------------------
 -- 
 2.43.0
 
