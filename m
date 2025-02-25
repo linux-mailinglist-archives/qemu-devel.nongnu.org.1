@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4874BA43CE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179D5A43CFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:11:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmsoS-0001ee-OL; Tue, 25 Feb 2025 06:09:20 -0500
+	id 1tmsoT-0001eR-Jn; Tue, 25 Feb 2025 06:09:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmso2-0001YG-Ls
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tmso3-0001ZC-PH
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:58 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmso0-0007lK-Op
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-439350f1a0bso32432105e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:51 -0800 (PST)
+ id 1tmso1-0007lg-0Q
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:55 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4399d14334aso47596725e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740481730; x=1741086530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740481731; x=1741086531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wOGEdNee22ihZNFYvdXhvyToWGXPcrh3omffan4xEow=;
- b=tVddNTMVckHB/wEVxwty7MhRbEQNkQCkI6HOF0kXWgKG1MelbdfSjE0jNlpVVzc/hM
- 8m7ekslgk6/Ld6gaZcVnWIMeYiRWvrmlAgTtphMzPMK4/4iBg6TL56BuSCQXOkcasmg/
- 6pw1mPncQkT4Ap1xbWM14XncTEJMoOhaO+tWZDElyonXQhnrJ45kvFyNmY4dCCOoh4yE
- SDuJtLV+bIhYzJWD9OCZJphWOhMTtMuADArPzwOdXuzoI/pO5Ejek26G/1ZHM3rHB1Mh
- TEYPcuDk0DHF3QJJA0yGRzS2S87H7HIX8XwXcNpmRrT9fVeLIlRgV0/ILUgTCRpCZksz
- BZgQ==
+ bh=6ziKeGk3G2q0jYp9Ya8g4Y6XfpCIgHNkybpH/GkwKVw=;
+ b=B1VoHVdAewwfOFojLzRWPPf7qEtj65m8Gdy0PinuTet4RuTgHsIZRnIYavktqDEPoC
+ wM9okPJluDspqVzLMhIryqdcquujbUA4+wLVA0MlrSbrUNBnbBZDTBLY0cZwgNfw3Lct
+ JQ2wVmKftCftIAL/GNqMfPqbUO/v9sasnYsdBa31InzZoWJnRRcNopfmO77Zp+mOu4jF
+ +eE45uTE3yzMEYmAb8YrNxYljxMa7JPjVPmVR71RDtDyhPTc2A6wszM362UfsxYe3qMz
+ nGAFCORzNepsd4ZpQafyzY1TJgiAa23FR/NpJd5Ri3lhPBDCN1iYrcz0l11s57/vVr1X
+ hpBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740481730; x=1741086530;
+ d=1e100.net; s=20230601; t=1740481731; x=1741086531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wOGEdNee22ihZNFYvdXhvyToWGXPcrh3omffan4xEow=;
- b=Wmm12/bUwTvDrdt1wVnSnfmhryj3Jh8m8EoRNXepIPkdcwNgtqRtg0Cu0SBwZ0HQ1P
- CrvOZO4iRXDspTgH6H6/v0yMxXIdkQlZGFvcPupQtNTunmMXu+X6PJQ5S0Zfa0MnSSBv
- y3CAbXTj5oUinYiShbTlEYi3YF13W0CMVHK4XkRPsFiC/hQ5O64xz7JqUQxh5M3tVNXm
- caaSugxvV0rAZ23KUfm7DCBnGGLP7sqMUFW8eadaPmuw+GVKZ5b82wCTFWLFo0JgE6HE
- 7nI+SuNAMlRqTDS5jxxGArLegGzTY+h2BRyly91I74NOrrj+KI2sHHWQc3fgQ18jdzK9
- lbwA==
-X-Gm-Message-State: AOJu0Yx44Sz4eHDNrkt3qpQ9Zwi/YbTAVz/msQPT9dSJ871Qxwt4rzqS
- AZsb6TVTliRM7EAh6G5AxjrX9Zu6MPt6P1AshA3wgTX2FpScxVXe148wFUidH7Y=
-X-Gm-Gg: ASbGncvU/wM1r/h/L5BUuIFk3hac4QyQaf5lXt+CBAlHog6a2HClqEaAQEnwCgZWFOa
- 1t12JTtJueKvoIOI9d0DD7PDAZWWRiga4D8A8+9nktVmkqNB3OiFY35rXVHhMdyJhf3YUUfG8sI
- zHZFko7iszPJS1urNOoLAdsbnI6zXIPyLGkKvN4pMUeIUN5bk81nmnCVHzD330U1xxaDO/nuIpF
- t99aQkNLDMFOpJqoXrOCaWOcnEAMBo+Ed0D3cPTLPloxGbgdMQSwsGy8xjmlkDsoIalARQziwme
- oc4glj3VUHLGRjF/XiKYFto+Gc3b
-X-Google-Smtp-Source: AGHT+IEBa+SJBlL9dnOxtbQjAnQN5WHbjzmu75hWgbM/9i9vhTmk1ZzGMTuFhBaudUCQ6MjhAMw98Q==
-X-Received: by 2002:a05:600c:5949:b0:439:8345:17a6 with SMTP id
- 5b1f17b1804b1-439a30d38e9mr151142155e9.12.1740481730292; 
- Tue, 25 Feb 2025 03:08:50 -0800 (PST)
+ bh=6ziKeGk3G2q0jYp9Ya8g4Y6XfpCIgHNkybpH/GkwKVw=;
+ b=DlVVpCSkIbUUGPHQ2mU0ZapVguwrgRBcEGzZ15oJY8dCGGPI2e72sAeQrHppHS4OhL
+ CTnUK2m8wRSKZTMNnTpjsOfyWIcyGT52tqHoM2RMQq+XQep/kvNWLGegDHlaRW1bNYVN
+ IITGJTg/WJ+eeas2Fnm4+dE9835ejY2DP65GMPlEaMj+gMr3t/DmpLWJC1L7507bf+Pl
+ LPQXgdMx39xVK2IuIc0C0fctyai4BC7k42HhdzpMKNdWYI8C+que2jGasFuKdSf/jhsR
+ dF2/wJie1MsmnLsGkvTaFrzAfAmWja/d2TLpYXzIJb3rqRvNCciMK2SdW7VO9XoqAidT
+ dO7w==
+X-Gm-Message-State: AOJu0YwuhGuuEh4Kw+a+omKdPQeidUYCA2kGikHkxFQjtApgmbPKgc/P
+ OxJOhxcidyr50/11Co10fLX55wSPiAX4rKGP3P1xGS9LNZMKrUjfeuHJN/HHyTs=
+X-Gm-Gg: ASbGncuyYYLA+bL6+jOAFVspkX9rE6gnyRo8wIboYmQKYwDCp5hh06ikDBpNB7VqHBH
+ nkqQU/AWfft1OLECL0o4fgUEfk2nRzroB9XctHA5jDzXWElOF303pi+JgMzPJufHVQ3M6eD8plr
+ wl4mmai7y69TLGq+UGmelrBITqUocSt69KoeX126+7VcRUSf84eyjLaxJDtpYQKwxeZ2wO69WRo
+ 4LzBKRoS86ItJ+0OV6e/7Hei8ZyzAQkZRgxvfZxtqS2R9Oiboz4m3CnCT/7eB7KZtYpoboJ3Ho9
+ jGtEL30vfcJ0ABUyDM+XNKy6f656
+X-Google-Smtp-Source: AGHT+IHwpKeNhLi91xir7Xj1HC6TMMummO9qdb3nimGAxEXyWR23Sy02RmFCmzaCJLw+RUpzJDqQZg==
+X-Received: by 2002:a05:600c:19c9:b0:439:6a7b:7697 with SMTP id
+ 5b1f17b1804b1-439ae1f349emr169043775e9.14.1740481731490; 
+ Tue, 25 Feb 2025 03:08:51 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02f23c2sm138795405e9.17.2025.02.25.03.08.46
+ 5b1f17b1804b1-439b02f23c2sm138795635e9.17.2025.02.25.03.08.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 25 Feb 2025 03:08:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EF0775FF26;
- Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 167FD60346;
+ Tue, 25 Feb 2025 11:08:45 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,17 +70,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 08/10] plugins/api: split out the vaddr/hwaddr helpers
-Date: Tue, 25 Feb 2025 11:08:42 +0000
-Message-Id: <20250225110844.3296991-9-alex.bennee@linaro.org>
+Subject: [PATCH 09/10] plugins/api: split out time control helpers
+Date: Tue, 25 Feb 2025 11:08:43 +0000
+Message-Id: <20250225110844.3296991-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250225110844.3296991-1-alex.bennee@linaro.org>
 References: <20250225110844.3296991-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,230 +103,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These only work for system-mode and are NOPs for user-mode.
+These are only usable in system mode where we control the timer. For
+user-mode make them NOPs.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- plugins/api-system.c | 58 ++++++++++++++++++++++++++++++++++++
- plugins/api-user.c   | 40 +++++++++++++++++++++++++
- plugins/api.c        | 70 --------------------------------------------
- plugins/meson.build  |  2 +-
- 4 files changed, 99 insertions(+), 71 deletions(-)
- create mode 100644 plugins/api-user.c
+ plugins/api-system.c | 34 ++++++++++++++++++++++++++++++++++
+ plugins/api-user.c   | 17 +++++++++++++++++
+ plugins/api.c        | 41 -----------------------------------------
+ 3 files changed, 51 insertions(+), 41 deletions(-)
 
 diff --git a/plugins/api-system.c b/plugins/api-system.c
-index cb0dd8f730..38560de342 100644
+index 38560de342..cc190b167e 100644
 --- a/plugins/api-system.c
 +++ b/plugins/api-system.c
-@@ -12,6 +12,10 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
-+#include "qapi/error.h"
-+#include "migration/blocker.h"
-+#include "hw/boards.h"
-+#include "qemu/plugin-memory.h"
- #include "qemu/plugin.h"
- 
- /*
-@@ -37,3 +41,57 @@ uint64_t qemu_plugin_entry_code(void)
- {
-     return 0;
+@@ -95,3 +95,37 @@ const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
+         return g_intern_static_string("RAM");
+     }
  }
 +
 +/*
-+ * Virtual Memory queries
++ * Time control
 + */
++static bool has_control;
++static Error *migration_blocker;
 +
-+static __thread struct qemu_plugin_hwaddr hwaddr_info;
-+
-+struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
-+                                                  uint64_t vaddr)
++const void *qemu_plugin_request_time_control(void)
 +{
-+    CPUState *cpu = current_cpu;
-+    unsigned int mmu_idx = get_mmuidx(info);
-+    enum qemu_plugin_mem_rw rw = get_plugin_meminfo_rw(info);
-+    hwaddr_info.is_store = (rw & QEMU_PLUGIN_MEM_W) != 0;
-+
-+    assert(mmu_idx < NB_MMU_MODES);
-+
-+    if (!tlb_plugin_lookup(cpu, vaddr, mmu_idx,
-+                           hwaddr_info.is_store, &hwaddr_info)) {
-+        error_report("invalid use of qemu_plugin_get_hwaddr");
-+        return NULL;
++    if (!has_control) {
++        has_control = true;
++        error_setg(&migration_blocker,
++                   "TCG plugin time control does not support migration");
++        migrate_add_blocker(&migration_blocker, NULL);
++        return &has_control;
 +    }
-+
-+    return &hwaddr_info;
++    return NULL;
 +}
 +
-+bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
++static void advance_virtual_time__async(CPUState *cpu, run_on_cpu_data data)
 +{
-+    return haddr->is_io;
++    int64_t new_time = data.host_ulong;
++    qemu_clock_advance_virtual_time(new_time);
 +}
 +
-+uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
++void qemu_plugin_update_ns(const void *handle, int64_t new_time)
 +{
-+    if (haddr) {
-+        return haddr->phys_addr;
-+    }
-+    return 0;
-+}
-+
-+const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
-+{
-+    if (h && h->is_io) {
-+        MemoryRegion *mr = h->mr;
-+        if (!mr->name) {
-+            unsigned maddr = (uintptr_t)mr;
-+            g_autofree char *temp = g_strdup_printf("anon%08x", maddr);
-+            return g_intern_string(temp);
-+        } else {
-+            return g_intern_string(mr->name);
-+        }
-+    } else {
-+        return g_intern_static_string("RAM");
++    if (handle == &has_control) {
++        /* Need to execute out of cpu_exec, so bql can be locked. */
++        async_run_on_cpu(current_cpu,
++                         advance_virtual_time__async,
++                         RUN_ON_CPU_HOST_ULONG(new_time));
 +    }
 +}
 diff --git a/plugins/api-user.c b/plugins/api-user.c
-new file mode 100644
-index 0000000000..867b420339
---- /dev/null
+index 867b420339..28704a89e8 100644
+--- a/plugins/api-user.c
 +++ b/plugins/api-user.c
-@@ -0,0 +1,40 @@
-+/*
-+ * QEMU Plugin API - user-mode only implementations
-+ *
-+ * This provides the APIs that have a user-mode specific
-+ * implementations or are only relevant to user-mode.
-+ *
-+ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
-+ * Copyright (C) 2019-2025, Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/plugin.h"
+@@ -12,6 +12,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/plugin.h"
++#include "exec/log.h"
+ 
+ /*
+  * Virtual Memory queries - these are all NOPs for user-mode which
+@@ -38,3 +39,19 @@ const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
+ {
+     return g_intern_static_string("Invalid");
+ }
 +
 +/*
-+ * Virtual Memory queries - these are all NOPs for user-mode which
-+ * only ever has visibility of virtual addresses.
++ * Time control - for user mode the only real time is wall clock time
++ * so realistically all you can do in user mode is slow down execution
++ * which doesn't require the ability to mess with the clock.
 + */
 +
-+struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
-+                                                  uint64_t vaddr)
++const void *qemu_plugin_request_time_control(void)
 +{
 +    return NULL;
 +}
 +
-+bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
++void qemu_plugin_update_ns(const void *handle, int64_t new_time)
 +{
-+    return false;
-+}
-+
-+uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
-+{
-+    return 0;
-+}
-+
-+const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
-+{
-+    return g_intern_static_string("Invalid");
++    qemu_log_mask(LOG_UNIMP, "user-mode can't control time");
 +}
 diff --git a/plugins/api.c b/plugins/api.c
-index 12a3b6a66d..b04577424f 100644
+index b04577424f..61480d3dc1 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -382,76 +382,6 @@ qemu_plugin_mem_value qemu_plugin_mem_get_value(qemu_plugin_meminfo_t info)
-     return value;
+@@ -525,44 +525,3 @@ uint64_t qemu_plugin_u64_sum(qemu_plugin_u64 entry)
+     return total;
  }
  
 -/*
-- * Virtual Memory queries
+- * Time control
 - */
--
+-static bool has_control;
 -#ifdef CONFIG_SOFTMMU
--static __thread struct qemu_plugin_hwaddr hwaddr_info;
+-static Error *migration_blocker;
 -#endif
 -
--struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
--                                                  uint64_t vaddr)
+-const void *qemu_plugin_request_time_control(void)
 -{
+-    if (!has_control) {
+-        has_control = true;
 -#ifdef CONFIG_SOFTMMU
--    CPUState *cpu = current_cpu;
--    unsigned int mmu_idx = get_mmuidx(info);
--    enum qemu_plugin_mem_rw rw = get_plugin_meminfo_rw(info);
--    hwaddr_info.is_store = (rw & QEMU_PLUGIN_MEM_W) != 0;
--
--    assert(mmu_idx < NB_MMU_MODES);
--
--    if (!tlb_plugin_lookup(cpu, vaddr, mmu_idx,
--                           hwaddr_info.is_store, &hwaddr_info)) {
--        error_report("invalid use of qemu_plugin_get_hwaddr");
--        return NULL;
+-        error_setg(&migration_blocker,
+-                   "TCG plugin time control does not support migration");
+-        migrate_add_blocker(&migration_blocker, NULL);
+-#endif
+-        return &has_control;
 -    }
--
--    return &hwaddr_info;
--#else
 -    return NULL;
--#endif
 -}
 -
--bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
--{
 -#ifdef CONFIG_SOFTMMU
--    return haddr->is_io;
--#else
--    return false;
--#endif
+-static void advance_virtual_time__async(CPUState *cpu, run_on_cpu_data data)
+-{
+-    int64_t new_time = data.host_ulong;
+-    qemu_clock_advance_virtual_time(new_time);
 -}
+-#endif
 -
--uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
+-void qemu_plugin_update_ns(const void *handle, int64_t new_time)
 -{
 -#ifdef CONFIG_SOFTMMU
--    if (haddr) {
--        return haddr->phys_addr;
+-    if (handle == &has_control) {
+-        /* Need to execute out of cpu_exec, so bql can be locked. */
+-        async_run_on_cpu(current_cpu,
+-                         advance_virtual_time__async,
+-                         RUN_ON_CPU_HOST_ULONG(new_time));
 -    }
 -#endif
--    return 0;
 -}
--
--const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
--{
--#ifdef CONFIG_SOFTMMU
--    if (h && h->is_io) {
--        MemoryRegion *mr = h->mr;
--        if (!mr->name) {
--            unsigned maddr = (uintptr_t)mr;
--            g_autofree char *temp = g_strdup_printf("anon%08x", maddr);
--            return g_intern_string(temp);
--        } else {
--            return g_intern_string(mr->name);
--        }
--    } else {
--        return g_intern_static_string("RAM");
--    }
--#else
--    return g_intern_static_string("Invalid");
--#endif
--}
--
- int qemu_plugin_num_vcpus(void)
- {
-     return plugin_num_vcpus();
-diff --git a/plugins/meson.build b/plugins/meson.build
-index 9c9bc9e5bb..942b59e904 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -58,7 +58,7 @@ if host_os == 'windows'
-   )
- endif
- 
--user_ss.add(files('user.c'))
-+user_ss.add(files('user.c', 'api-user.c'))
- system_ss.add(files('system.c', 'api-system.c'))
- 
- common_ss.add(files('loader.c'))
 -- 
 2.39.5
 
