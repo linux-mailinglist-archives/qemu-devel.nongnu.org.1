@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFD2A43CE6
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4874BA43CE7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmsoU-0001eo-6w; Tue, 25 Feb 2025 06:09:22 -0500
+	id 1tmsoS-0001ee-OL; Tue, 25 Feb 2025 06:09:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmso3-0001ZG-UI
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:56 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tmso2-0001YG-Ls
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmso0-0007lI-Oz
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:55 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-439a4dec9d5so52160465e9.0
+ id 1tmso0-0007lK-Op
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-439350f1a0bso32432105e9.0
  for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1740481730; x=1741086530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=95zpMPBQ4vqu24tnUZPYM2mX9mrk7ldJk6RK0AKliOA=;
- b=cP1D6ikRg+WT2KUyEkEDS9Qx6Vse6Pqcz4rLS1W508wCoivshD+N945B3B8Kb9SOio
- 4ny2qbp/TaPI6rnMu4avFPqfCWavcSj9zl2BxVOPodZJ0cqbaBzKcWOD6eVW/1eEQjXd
- rCJ69U7bctiu56U2fQkQHvR8ms2KXJXSL32Xte1YlyikuMUJasMQmzvOMCxR/CeE1fd0
- 41oJEc7MnfJV9XZjNM9QL9H1FqGyrcmozfIAJcVDMrtTGU7EzHHeQadjRVYRIcDKtEeg
- Otvv6YcsWYq2IIVgaM0ZktZAcXK47McDKPRK6THHkDZGlMbGT2kvcmODYBGrogeYz+Ym
- iinQ==
+ bh=wOGEdNee22ihZNFYvdXhvyToWGXPcrh3omffan4xEow=;
+ b=tVddNTMVckHB/wEVxwty7MhRbEQNkQCkI6HOF0kXWgKG1MelbdfSjE0jNlpVVzc/hM
+ 8m7ekslgk6/Ld6gaZcVnWIMeYiRWvrmlAgTtphMzPMK4/4iBg6TL56BuSCQXOkcasmg/
+ 6pw1mPncQkT4Ap1xbWM14XncTEJMoOhaO+tWZDElyonXQhnrJ45kvFyNmY4dCCOoh4yE
+ SDuJtLV+bIhYzJWD9OCZJphWOhMTtMuADArPzwOdXuzoI/pO5Ejek26G/1ZHM3rHB1Mh
+ TEYPcuDk0DHF3QJJA0yGRzS2S87H7HIX8XwXcNpmRrT9fVeLIlRgV0/ILUgTCRpCZksz
+ BZgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1740481730; x=1741086530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=95zpMPBQ4vqu24tnUZPYM2mX9mrk7ldJk6RK0AKliOA=;
- b=Y9aHyeZeQhDAGlLDHGiuXb3AP9clSm+rLvm9aV8mqwUuDCIYl8SJqsBLabfOeZdX3A
- w/327PCLI0+DJ3N5YUkArhbZVx2b9OmsZBJv/HlCPyyL3Dl/wUBbId+Dr9lKCQhWVXNH
- xQqIpQd6szbPd94IpXONkV9RiQNLucKFx9brUzHt5AiiS1/ZsIEZK0Rsf6HYk2OkGyYY
- +rnBYiVSUJ6jJPjJuhOnM0kn6jqxd4LZjqQIq7iKUe9eAjQcfbbb1N4RZY5Pt0pmz8/6
- l8kShyervtZQMI91caDUbwfMTeUrz0lUTCSCwdMFZ5VcLK/kc2SKbLCBUQkunf/4K2zn
- 77dA==
-X-Gm-Message-State: AOJu0YxT83smC08M1ksKT+XIX7j1oGDbZLhocdiaN76kZjIFLlBpbO6F
- +MRKA64xnUFuhJBY6WEhdnLT0+MD4rnuLBD52EkEXmfyGtlxdhHHnpk01Pcwciw=
-X-Gm-Gg: ASbGncvXzukWUW8AF8kk4hhAcKCcDawxvnPHtnlHkyqgdQNM/8BHwaKiX0W8RNX4AQv
- sG/z9zhu/nTeqH9fN2S/liyAwMSR3XuC60QtYXrBRFMI+0Kdh07yLXeDbmQ7LZHf2ht19xVXLIi
- utrv/1IsdRmJ9iMa3ZIuAU2M44nHf5/5D2G21aeuTdc92nXBEoRgnx0jpH4m8hBSvdnirJyTTDt
- fHEL0lZYMFSkgz92Q4AaNpFMNYj6jEAjEOG5Cmm1sbMCCk9ctMS4gzJko8MnvswDlDNYUHDfe3K
- JLyulibD1jePG0ZiBapOXcQxu7HN
-X-Google-Smtp-Source: AGHT+IFsD9hDABRfI47X5NncnP9sNEp3mQvZj1NNIw2GwLhQB5ci+aNrcVLIEDAZM8h4hSwpFmSGFw==
-X-Received: by 2002:a05:600c:3d19:b0:43a:b186:8abc with SMTP id
- 5b1f17b1804b1-43ab1868ac3mr22306705e9.2.1740481729920; 
- Tue, 25 Feb 2025 03:08:49 -0800 (PST)
+ bh=wOGEdNee22ihZNFYvdXhvyToWGXPcrh3omffan4xEow=;
+ b=Wmm12/bUwTvDrdt1wVnSnfmhryj3Jh8m8EoRNXepIPkdcwNgtqRtg0Cu0SBwZ0HQ1P
+ CrvOZO4iRXDspTgH6H6/v0yMxXIdkQlZGFvcPupQtNTunmMXu+X6PJQ5S0Zfa0MnSSBv
+ y3CAbXTj5oUinYiShbTlEYi3YF13W0CMVHK4XkRPsFiC/hQ5O64xz7JqUQxh5M3tVNXm
+ caaSugxvV0rAZ23KUfm7DCBnGGLP7sqMUFW8eadaPmuw+GVKZ5b82wCTFWLFo0JgE6HE
+ 7nI+SuNAMlRqTDS5jxxGArLegGzTY+h2BRyly91I74NOrrj+KI2sHHWQc3fgQ18jdzK9
+ lbwA==
+X-Gm-Message-State: AOJu0Yx44Sz4eHDNrkt3qpQ9Zwi/YbTAVz/msQPT9dSJ871Qxwt4rzqS
+ AZsb6TVTliRM7EAh6G5AxjrX9Zu6MPt6P1AshA3wgTX2FpScxVXe148wFUidH7Y=
+X-Gm-Gg: ASbGncvU/wM1r/h/L5BUuIFk3hac4QyQaf5lXt+CBAlHog6a2HClqEaAQEnwCgZWFOa
+ 1t12JTtJueKvoIOI9d0DD7PDAZWWRiga4D8A8+9nktVmkqNB3OiFY35rXVHhMdyJhf3YUUfG8sI
+ zHZFko7iszPJS1urNOoLAdsbnI6zXIPyLGkKvN4pMUeIUN5bk81nmnCVHzD330U1xxaDO/nuIpF
+ t99aQkNLDMFOpJqoXrOCaWOcnEAMBo+Ed0D3cPTLPloxGbgdMQSwsGy8xjmlkDsoIalARQziwme
+ oc4glj3VUHLGRjF/XiKYFto+Gc3b
+X-Google-Smtp-Source: AGHT+IEBa+SJBlL9dnOxtbQjAnQN5WHbjzmu75hWgbM/9i9vhTmk1ZzGMTuFhBaudUCQ6MjhAMw98Q==
+X-Received: by 2002:a05:600c:5949:b0:439:8345:17a6 with SMTP id
+ 5b1f17b1804b1-439a30d38e9mr151142155e9.12.1740481730292; 
+ Tue, 25 Feb 2025 03:08:50 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390cd86cd10sm1944786f8f.37.2025.02.25.03.08.46
+ 5b1f17b1804b1-439b02f23c2sm138795405e9.17.2025.02.25.03.08.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 25 Feb 2025 03:08:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D3B015FB97;
+ by draig.lan (Postfix) with ESMTP id EF0775FF26;
  Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,17 +70,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 07/10] plugins/api: split out binary path/start/end/entry code
-Date: Tue, 25 Feb 2025 11:08:41 +0000
-Message-Id: <20250225110844.3296991-8-alex.bennee@linaro.org>
+Subject: [PATCH 08/10] plugins/api: split out the vaddr/hwaddr helpers
+Date: Tue, 25 Feb 2025 11:08:42 +0000
+Message-Id: <20250225110844.3296991-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250225110844.3296991-1-alex.bennee@linaro.org>
 References: <20250225110844.3296991-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,84 +103,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To move the main api.c to a single build compilation object we need to
-start splitting out user and system specific code. As we need to grob
-around host headers we move these particular helpers into the *-user
-mode directories.
-
-The binary/start/end/entry helpers are all NOPs for system mode.
+These only work for system-mode and are NOPs for user-mode.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/plugin-api.c | 43 +++++++++++++++++++++++++++++++++++++++++
- plugins/api-system.c    | 39 +++++++++++++++++++++++++++++++++++++
- plugins/api.c           | 43 -----------------------------------------
- linux-user/meson.build  |  1 +
- plugins/meson.build     |  2 +-
- 5 files changed, 84 insertions(+), 44 deletions(-)
- create mode 100644 linux-user/plugin-api.c
- create mode 100644 plugins/api-system.c
+ plugins/api-system.c | 58 ++++++++++++++++++++++++++++++++++++
+ plugins/api-user.c   | 40 +++++++++++++++++++++++++
+ plugins/api.c        | 70 --------------------------------------------
+ plugins/meson.build  |  2 +-
+ 4 files changed, 99 insertions(+), 71 deletions(-)
+ create mode 100644 plugins/api-user.c
 
-diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c
-new file mode 100644
-index 0000000000..42e977c339
---- /dev/null
-+++ b/linux-user/plugin-api.c
-@@ -0,0 +1,43 @@
-+/*
-+ * QEMU Plugin API - linux-user-mode only implementations
-+ *
-+ * Common user-mode only APIs are in plugins/api-user. These helpers
-+ * are only specific to linux-user.
-+ *
-+ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
-+ * Copyright (C) 2019-2025, Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/main-loop.h"
-+#include "qemu/plugin.h"
-+#include "qemu.h"
-+
-+/*
-+ * Binary path, start and end locations. Host specific due to TaskState.
-+ */
-+const char *qemu_plugin_path_to_binary(void)
-+{
-+    TaskState *ts = get_task_state(current_cpu);
-+    return g_strdup(ts->bprm->filename);
-+}
-+
-+uint64_t qemu_plugin_start_code(void)
-+{
-+    TaskState *ts = get_task_state(current_cpu);
-+    return ts->info->start_code;
-+}
-+
-+uint64_t qemu_plugin_end_code(void)
-+{
-+    TaskState *ts = get_task_state(current_cpu);
-+    return ts->info->end_code;
-+}
-+
-+uint64_t qemu_plugin_entry_code(void)
-+{
-+    TaskState *ts = get_task_state(current_cpu);
-+    return ts->info->entry;
-+}
 diff --git a/plugins/api-system.c b/plugins/api-system.c
-new file mode 100644
-index 0000000000..cb0dd8f730
---- /dev/null
+index cb0dd8f730..38560de342 100644
+--- a/plugins/api-system.c
 +++ b/plugins/api-system.c
-@@ -0,0 +1,39 @@
+@@ -12,6 +12,10 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
++#include "qapi/error.h"
++#include "migration/blocker.h"
++#include "hw/boards.h"
++#include "qemu/plugin-memory.h"
+ #include "qemu/plugin.h"
+ 
+ /*
+@@ -37,3 +41,57 @@ uint64_t qemu_plugin_entry_code(void)
+ {
+     return 0;
+ }
++
 +/*
-+ * QEMU Plugin API - System specific implementations
++ * Virtual Memory queries
++ */
++
++static __thread struct qemu_plugin_hwaddr hwaddr_info;
++
++struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
++                                                  uint64_t vaddr)
++{
++    CPUState *cpu = current_cpu;
++    unsigned int mmu_idx = get_mmuidx(info);
++    enum qemu_plugin_mem_rw rw = get_plugin_meminfo_rw(info);
++    hwaddr_info.is_store = (rw & QEMU_PLUGIN_MEM_W) != 0;
++
++    assert(mmu_idx < NB_MMU_MODES);
++
++    if (!tlb_plugin_lookup(cpu, vaddr, mmu_idx,
++                           hwaddr_info.is_store, &hwaddr_info)) {
++        error_report("invalid use of qemu_plugin_get_hwaddr");
++        return NULL;
++    }
++
++    return &hwaddr_info;
++}
++
++bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
++{
++    return haddr->is_io;
++}
++
++uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
++{
++    if (haddr) {
++        return haddr->phys_addr;
++    }
++    return 0;
++}
++
++const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
++{
++    if (h && h->is_io) {
++        MemoryRegion *mr = h->mr;
++        if (!mr->name) {
++            unsigned maddr = (uintptr_t)mr;
++            g_autofree char *temp = g_strdup_printf("anon%08x", maddr);
++            return g_intern_string(temp);
++        } else {
++            return g_intern_string(mr->name);
++        }
++    } else {
++        return g_intern_static_string("RAM");
++    }
++}
+diff --git a/plugins/api-user.c b/plugins/api-user.c
+new file mode 100644
+index 0000000000..867b420339
+--- /dev/null
++++ b/plugins/api-user.c
+@@ -0,0 +1,40 @@
++/*
++ * QEMU Plugin API - user-mode only implementations
 + *
-+ * This provides the APIs that have a specific system implementation
-+ * or are only relevant to system-mode.
++ * This provides the APIs that have a user-mode specific
++ * implementations or are only relevant to user-mode.
 + *
 + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
 + * Copyright (C) 2019-2025, Linaro
@@ -189,111 +206,127 @@ index 0000000000..cb0dd8f730
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qemu/main-loop.h"
 +#include "qemu/plugin.h"
 +
 +/*
-+ * In system mode we cannot trace the binary being executed so the
-+ * helpers all return NULL/0.
++ * Virtual Memory queries - these are all NOPs for user-mode which
++ * only ever has visibility of virtual addresses.
 + */
-+const char *qemu_plugin_path_to_binary(void)
++
++struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
++                                                  uint64_t vaddr)
 +{
 +    return NULL;
 +}
 +
-+uint64_t qemu_plugin_start_code(void)
++bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
++{
++    return false;
++}
++
++uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
 +{
 +    return 0;
 +}
 +
-+uint64_t qemu_plugin_end_code(void)
++const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
 +{
-+    return 0;
-+}
-+
-+uint64_t qemu_plugin_entry_code(void)
-+{
-+    return 0;
++    return g_intern_static_string("Invalid");
 +}
 diff --git a/plugins/api.c b/plugins/api.c
-index 3e1aac7bfb..12a3b6a66d 100644
+index 12a3b6a66d..b04577424f 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -470,49 +470,6 @@ bool qemu_plugin_bool_parse(const char *name, const char *value, bool *ret)
-     return name && value && qapi_bool_parse(name, value, ret, NULL);
+@@ -382,76 +382,6 @@ qemu_plugin_mem_value qemu_plugin_mem_get_value(qemu_plugin_meminfo_t info)
+     return value;
  }
  
 -/*
-- * Binary path, start and end locations
+- * Virtual Memory queries
 - */
--const char *qemu_plugin_path_to_binary(void)
--{
--    char *path = NULL;
--#ifdef CONFIG_USER_ONLY
--    TaskState *ts = get_task_state(current_cpu);
--    path = g_strdup(ts->bprm->filename);
+-
+-#ifdef CONFIG_SOFTMMU
+-static __thread struct qemu_plugin_hwaddr hwaddr_info;
 -#endif
--    return path;
+-
+-struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
+-                                                  uint64_t vaddr)
+-{
+-#ifdef CONFIG_SOFTMMU
+-    CPUState *cpu = current_cpu;
+-    unsigned int mmu_idx = get_mmuidx(info);
+-    enum qemu_plugin_mem_rw rw = get_plugin_meminfo_rw(info);
+-    hwaddr_info.is_store = (rw & QEMU_PLUGIN_MEM_W) != 0;
+-
+-    assert(mmu_idx < NB_MMU_MODES);
+-
+-    if (!tlb_plugin_lookup(cpu, vaddr, mmu_idx,
+-                           hwaddr_info.is_store, &hwaddr_info)) {
+-        error_report("invalid use of qemu_plugin_get_hwaddr");
+-        return NULL;
+-    }
+-
+-    return &hwaddr_info;
+-#else
+-    return NULL;
+-#endif
 -}
 -
--uint64_t qemu_plugin_start_code(void)
+-bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
 -{
--    uint64_t start = 0;
--#ifdef CONFIG_USER_ONLY
--    TaskState *ts = get_task_state(current_cpu);
--    start = ts->info->start_code;
+-#ifdef CONFIG_SOFTMMU
+-    return haddr->is_io;
+-#else
+-    return false;
 -#endif
--    return start;
 -}
 -
--uint64_t qemu_plugin_end_code(void)
+-uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
 -{
--    uint64_t end = 0;
--#ifdef CONFIG_USER_ONLY
--    TaskState *ts = get_task_state(current_cpu);
--    end = ts->info->end_code;
+-#ifdef CONFIG_SOFTMMU
+-    if (haddr) {
+-        return haddr->phys_addr;
+-    }
 -#endif
--    return end;
+-    return 0;
 -}
 -
--uint64_t qemu_plugin_entry_code(void)
+-const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
 -{
--    uint64_t entry = 0;
--#ifdef CONFIG_USER_ONLY
--    TaskState *ts = get_task_state(current_cpu);
--    entry = ts->info->entry;
+-#ifdef CONFIG_SOFTMMU
+-    if (h && h->is_io) {
+-        MemoryRegion *mr = h->mr;
+-        if (!mr->name) {
+-            unsigned maddr = (uintptr_t)mr;
+-            g_autofree char *temp = g_strdup_printf("anon%08x", maddr);
+-            return g_intern_string(temp);
+-        } else {
+-            return g_intern_string(mr->name);
+-        }
+-    } else {
+-        return g_intern_static_string("RAM");
+-    }
+-#else
+-    return g_intern_static_string("Invalid");
 -#endif
--    return entry;
 -}
 -
- /*
-  * Create register handles.
-  *
-diff --git a/linux-user/meson.build b/linux-user/meson.build
-index f75b4fe0e3..f47a213ca3 100644
---- a/linux-user/meson.build
-+++ b/linux-user/meson.build
-@@ -27,6 +27,7 @@ linux_user_ss.add(libdw)
- linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
- linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
- linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true: files('semihost.c'))
-+linux_user_ss.add(when: 'CONFIG_TCG_PLUGINS', if_true: files('plugin-api.c'))
- 
- syscall_nr_generators = {}
- 
+ int qemu_plugin_num_vcpus(void)
+ {
+     return plugin_num_vcpus();
 diff --git a/plugins/meson.build b/plugins/meson.build
-index f7820806d3..9c9bc9e5bb 100644
+index 9c9bc9e5bb..942b59e904 100644
 --- a/plugins/meson.build
 +++ b/plugins/meson.build
-@@ -59,7 +59,7 @@ if host_os == 'windows'
+@@ -58,7 +58,7 @@ if host_os == 'windows'
+   )
  endif
  
- user_ss.add(files('user.c'))
--system_ss.add(files('system.c'))
-+system_ss.add(files('system.c', 'api-system.c'))
+-user_ss.add(files('user.c'))
++user_ss.add(files('user.c', 'api-user.c'))
+ system_ss.add(files('system.c', 'api-system.c'))
  
  common_ss.add(files('loader.c'))
- 
 -- 
 2.39.5
 
