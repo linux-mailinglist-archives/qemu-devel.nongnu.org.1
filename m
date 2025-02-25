@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35059A44AD5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D00A44AD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:48:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzxe-0002OA-Hc; Tue, 25 Feb 2025 13:47:18 -0500
+	id 1tmzy1-0002VN-OI; Tue, 25 Feb 2025 13:47:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmzx1-0002Bs-1n
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:43 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1tmzx1-0002Bx-Kw
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:47 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmzwu-0000Gy-0c
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:36 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so3444428f8f.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:46:31 -0800 (PST)
+ id 1tmzww-0000HW-El
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:38 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43994ef3872so36925905e9.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:46:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740509190; x=1741113990; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740509192; x=1741113992; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZDlMUFOwH6hJmcvGcn7JgUMSqs3wExou9nUbHU8n3vQ=;
- b=fx0CpoMXTEzbtedj2vYtIJWnBQhQm6UcKcwJxIr6nD0ouHCU4Y77qehgbzEcLUO5pn
- x+Wk2vLHP9FugnnbRoGIbY1d5L9bII2aw1wj7UbOrrqB/W2iquVZyJnrnmYiL7ZFkE77
- 94cfoaHCCT/+zC1ImJ2/SRo+NwWbeM22H1NlppiO9Yu10GQeYMuiKkAKJeD5NxIZo0zw
- tLu6T3cucWm+FvYHRLEsnrvn3pRQbQ1WAPgJQRcNiwp5Pmx9kwxjTdAl0m4yaqRapDuL
- bRdSaEqiO95Caa8PDOVegzhoYgAIhwJTS5Pz4swes6h+Y2a+qYdzPxlPIHniOrKqX1oo
- kq6g==
+ bh=jbTRpF5vcyxr/D6s1C7IEHtKwvLNoxEVjp74TTMjyRA=;
+ b=KSuLm6NC0auNjEkAYnkCF7hs5IrLZo9PFbObcN3tn+89PKLR9Qx0rcrhwYmsiUXqTO
+ 4iNuKs3c9F/bOvEqrzVmeCT+cvedAEk/0mC0n1SSK6yiWZWqhKm4wm6Pgf+HUBhRbgoM
+ EmgmRlUUaMtaPetosxpZhIzdSGZ6g8ShWzIjDAIFNDEkt5ZR29SSfIKf2TZXbN8S2iTu
+ Gk4FxzmxyUWhCoMrRPiIcPAPCeXaQ1J3ZKDOB6r0UIkDaE6vPFbghuN2Xj023BNYVOsM
+ 0JGDpC0V5RLejwyVXIArEtjmzASYJsCvQNkrmVXTAlsuwFXDv3dQkVEA2LT8Ru6plAaS
+ ScKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740509190; x=1741113990;
+ d=1e100.net; s=20230601; t=1740509192; x=1741113992;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZDlMUFOwH6hJmcvGcn7JgUMSqs3wExou9nUbHU8n3vQ=;
- b=pVoL+xKGHXrLMFcNPkt9b7AsOM8XpP0BaEKz0PaYyKyJ1sczHKVkAsfLYFXwp3yeGv
- kUWWmtDHMkSZ39JmKli/o0inM18m3jF0wE8W+o0PFbMEKaKy0wVyhoKUFnEqAlABbKOw
- 3YTIsnjgB/9Y+Q/uW/8dEMav+brYyjr93EH7kSo61QMyLBZNkWzY/lz2tyuNA56O2vpG
- Bc98LZng7Pv3GdNJT57/S/nptnHyWmI9Nl4xg0+NKx5vU8aM3yUVIsGtWapSNpdubOTh
- jKNNSktzEZV5ofYEsA7pFT9cyZeZoDl5QboS87l5FD+/cXLeLBz6ckYkOR+l24QgS+10
- a8vQ==
-X-Gm-Message-State: AOJu0YzJlujNRFxET9cghWxcQ6rgoyshfHNLJHDBX1yXibqm8kqSmCpg
- AIjhYgDA2NX+q/LIJyQWVi0RFNJjl2DRE0tltgsqReSafPpY7L1ZGATCw7OV7OU=
-X-Gm-Gg: ASbGncslD3VssObE6xcNSyYr6vvrvmnK0RLFoPyPRAiSHiqWeZHXIuO91q1oR5QIT4/
- w4B+BH2mcFemS/Hz3dc+hbcNA+u+OcBsflwS8Vs4PeqUYo+yZSXFi2AbI1ngUkYfL3JB34sEXtH
- 3q2OCyw6R0lPj2PkSJzo1dEQ4H2Iev4Tmm4rxZjw6McBlNSsOVV18aB7RWjQ2NeUvTKXBc2IgYT
- WsVGd2bt0ikMWENNUXptMe4oX2FALnxkBveflq/9R6KS1leLg1fTE/MutlH9CxkhyAkAnqQ1ofg
- lU9SFbPNpD/n85unWFU5Qv6CUAzS
-X-Google-Smtp-Source: AGHT+IGJLbbAIaLLV3V1DEScKsw2Hes3/JL7CKJNmV5zGM2ZYa5FuMt7B/RSZNDofv61do2GXB2OSw==
-X-Received: by 2002:a05:6000:1a88:b0:38d:c55e:ebcf with SMTP id
- ffacd0b85a97d-390cc63e0e1mr2854657f8f.52.1740509190168; 
- Tue, 25 Feb 2025 10:46:30 -0800 (PST)
+ bh=jbTRpF5vcyxr/D6s1C7IEHtKwvLNoxEVjp74TTMjyRA=;
+ b=VOmeD9EBhyfdVqDzA8vcXZOdPfeUhBGki9UNGEQJmR8/m9/6YzyVjnsxub+KlCgs3P
+ sjE9T1eOFlbEKF95rXy8BXZui6t/Rf4yRPEKvlYK6nyotGEXl6CjBI1sTNdgbw3aU1ic
+ w7jADBrnEYwj99d81xD5odd8e/ZCCD5K0FrfNWm9/BJw3K9/zIIyU29Jl4eh5m6FVaTY
+ Y2bjsmVo8d1EQqapfyKGHtHJJgCQpXiXv9T3A47f5l7jQ+YBghXWGgu1BbnoHQgMd4Ki
+ IfuVV9MkNhzmMGZ5TlxZ+uQW5bq+17m0TmE+utbHXe6fhZr27H2jZNoU9FW7xXsBBQb7
+ +ARQ==
+X-Gm-Message-State: AOJu0YwMtvz913ZyMXELJKBcKIiY7haqUyiaKuN48LuNi9CfdPWtpgiL
+ J07OB+2H/EaLAMzg2lSQZ1MgwFr6RQZsWJcu9jLVN0zp3ltrf/RWfWgAhaz6R2E=
+X-Gm-Gg: ASbGncsctcIED2t5xGLadIPm9kNEVQrah4LQvVyT69qVkQ8Mvpbo9nvvIFzGR57iAAK
+ /KwW8sjFSH9S6oJEE6pSP2CROGpBa6+O9t2Zduebdt2IMFaRWppUeD93V8epUhJiJITNQmNbrYW
+ t0gDYkYyItAsuhPfKUOzRfUHUPBhFYos7tPYBgTtDK6QkX1/v/2YImMEBxpgLQHeLvwy2eWSngf
+ K7ivSe35YDIJaxxyafVGpuzaBKNVxelfF6kRnY3DIZgcfILAQK0HhPQhmgqXXtUnSP9KEbBN/sL
+ XVV+yg5ClYS6qQVyWTVmAXgNO5kj
+X-Google-Smtp-Source: AGHT+IEq+ldn02LlB8ALfv/2PVb8RbqIIo0TN5XbPlxoSQ+pECInXYnm9NeoahrWW6BwXX+G3WOhCQ==
+X-Received: by 2002:a5d:64e4:0:b0:38d:a879:4778 with SMTP id
+ ffacd0b85a97d-390cc60aeb6mr4538882f8f.33.1740509192240; 
+ Tue, 25 Feb 2025 10:46:32 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390cd8fc1f9sm3107205f8f.88.2025.02.25.10.46.29
+ 5b1f17b1804b1-43ab155eb77sm37328515e9.32.2025.02.25.10.46.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 25 Feb 2025 10:46:29 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 990E85F9D3;
+ by draig.lan (Postfix) with ESMTP id B2C1F5F9D7;
  Tue, 25 Feb 2025 18:46:28 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,17 +72,17 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 2/4] target/hppa: defer hppa_ptlbe until CPU starts running
-Date: Tue, 25 Feb 2025 18:46:26 +0000
-Message-Id: <20250225184628.3590671-3-alex.bennee@linaro.org>
+Subject: [PATCH 3/4] cputlb: introduce tlb_flush_other_cpu for reset use
+Date: Tue, 25 Feb 2025 18:46:27 +0000
+Message-Id: <20250225184628.3590671-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250225184628.3590671-1-alex.bennee@linaro.org>
 References: <20250225184628.3590671-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -105,44 +105,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 30933c4fb4 (tcg/cputlb: remove other-cpu capability from TLB flushing)
-we don't expect non-CPU callers to the tlb_flush() code. Normally I
-would drop the call anyway as the common cpu_reset() code will call
-tlb_flush anyway. However as the flush function does more than that,
-and is called from helpers instead defer it with an async_run_on_cpu.
+The commit 30933c4fb4 (tcg/cputlb: remove other-cpu capability from
+TLB flushing) introduced a regression that only shows up when
+--enable-debug-tcg is used. The main use case of tlb_flush outside of
+the current_cpu context is for handling reset and CPU creation. Rather
+than revert the commit introduce a new helper and tweak the
+documentation to make it clear where it should be used.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/hppa/cpu.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 5655677431..b631af381c 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -168,6 +168,14 @@ void hppa_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
- 
-     cpu_loop_exit(cs);
+---
+v2
+  - appraently reset can come from both cpu context and outside
+  - add cpu_common_post_load fixes
+---
+ include/exec/exec-all.h   | 20 ++++++++++++++++----
+ accel/tcg/cputlb.c        | 11 +++++++++++
+ accel/tcg/tcg-accel-ops.c |  2 +-
+ cpu-target.c              |  2 +-
+ target/i386/machine.c     |  2 +-
+ 5 files changed, 30 insertions(+), 7 deletions(-)
+
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index d9045c9ac4..cf030001ca 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -64,12 +64,24 @@ void tlb_flush_page_all_cpus_synced(CPUState *src, vaddr addr);
+  * tlb_flush:
+  * @cpu: CPU whose TLB should be flushed
+  *
+- * Flush the entire TLB for the specified CPU. Most CPU architectures
+- * allow the implementation to drop entries from the TLB at any time
+- * so this is generally safe. If more selective flushing is required
+- * use one of the other functions for efficiency.
++ * Flush the entire TLB for the specified current CPU.
++ *
++ * Most CPU architectures allow the implementation to drop entries
++ * from the TLB at any time so this is generally safe. If more
++ * selective flushing is required use one of the other functions for
++ * efficiency.
+  */
+ void tlb_flush(CPUState *cpu);
++/**
++ * tlb_flush_other_cpu:
++ * @cpu: CPU whose TLB should be flushed
++ *
++ * Flush the entire TLB for a specified CPU. For cross vCPU flushes
++ * you shuld be using a more selective function. This is really only
++ * used for flushing CPUs being reset from outside their current
++ * context.
++ */
++void tlb_flush_other_cpu(CPUState *cpu);
+ /**
+  * tlb_flush_all_cpus_synced:
+  * @cpu: src CPU of the flush
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ad158050a1..fc16a576f0 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -417,6 +417,17 @@ void tlb_flush(CPUState *cpu)
+     tlb_flush_by_mmuidx(cpu, ALL_MMUIDX_BITS);
  }
-+
-+static void hppa_clear_ptlbe(CPUState *cpu, run_on_cpu_data opaque)
+ 
++void tlb_flush_other_cpu(CPUState *cpu)
 +{
-+    CPUHPPAState *env = (CPUHPPAState *) opaque.host_ptr;
-+    hppa_ptlbe(env);
++    if (qemu_cpu_is_self(cpu)) {
++        tlb_flush(cpu);
++    } else {
++        async_run_on_cpu(cpu,
++                         tlb_flush_by_mmuidx_async_work,
++                         RUN_ON_CPU_HOST_INT(ALL_MMUIDX_BITS));
++    }
 +}
 +
-+
- #endif /* CONFIG_USER_ONLY */
+ void tlb_flush_by_mmuidx_all_cpus_synced(CPUState *src_cpu, uint16_t idxmap)
+ {
+     const run_on_cpu_func fn = tlb_flush_by_mmuidx_async_work;
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 6e3f1fa92b..e85d317d34 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -85,7 +85,7 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+ {
+     tcg_flush_jmp_cache(cpu);
  
- static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
-@@ -191,7 +199,7 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
+-    tlb_flush(cpu);
++    tlb_flush_other_cpu(cpu);
+ }
  
-         cpu->alarm_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                         hppa_cpu_alarm_timer, cpu);
--        hppa_ptlbe(&cpu->env);
-+        async_run_on_cpu(cs, hppa_clear_ptlbe, RUN_ON_CPU_HOST_PTR(&cpu->env));
+ /* mask must never be zero, except for A20 change call */
+diff --git a/cpu-target.c b/cpu-target.c
+index 667688332c..8eb1633c02 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -56,7 +56,7 @@ static int cpu_common_post_load(void *opaque, int version_id)
+     /* 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
+        version_id is increased. */
+     cpu->interrupt_request &= ~0x01;
+-    tlb_flush(cpu);
++    tlb_flush_other_cpu(cpu);
+ 
+     /* loadvm has just updated the content of RAM, bypassing the
+      * usual mechanisms that ensure we flush TBs for writes to
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index d9d4f25d1a..e66f46758a 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -401,7 +401,7 @@ static int cpu_post_load(void *opaque, int version_id)
+         env->dr[7] = dr7 & ~(DR7_GLOBAL_BP_MASK | DR7_LOCAL_BP_MASK);
+         cpu_x86_update_dr7(env, dr7);
      }
- #endif
+-    tlb_flush(cs);
++    tlb_flush_other_cpu(cs);
+     return 0;
+ }
  
 -- 
 2.39.5
