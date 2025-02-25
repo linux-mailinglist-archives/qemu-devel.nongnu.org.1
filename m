@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3206A43CEE
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82891A43CF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmsoO-0001bt-2c; Tue, 25 Feb 2025 06:09:17 -0500
+	id 1tmsoV-0001fV-7o; Tue, 25 Feb 2025 06:09:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmso1-0001Xv-1c
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tmsnx-0001XY-Ae
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:50 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmsnx-0007ko-Oa
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:51 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43984e9cc90so37501795e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:49 -0800 (PST)
+ id 1tmsnv-0007kI-OZ
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:49 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4399deda38cso33192155e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740481728; x=1741086528; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QyNSTbsw1Rli9CIOsEEi/zV15lgdGHhsG9D/tniJcAU=;
- b=nSIozgvjSUGBZv2r6pGBqGgmV/Was7FlFIHkh5O3NUc+9D1MKBkUOli9O75PyL9tMy
- x4H7knHMfPwTQkZs2XZFycC+v0tNgGYLsM4G/WfSSFkClAjacpx/0b4JrF+WTBHObsEp
- LnnEcCQmBCVy/WE3jRgZ65YzvpwgUyjHoYzDraVe+YcDIKqXaeelhpeblsoBMjjpUOCV
- dJV2uwGqq+7T2e9XOjMWSzcJ2jRnLC/upemE12hOYVn4r90G5zKHti+LBkKOyRUXZ5II
- wD9ZFS+oEEAzoajzGU6zVBccoBXW9V709BvxfyXZ0kP+FJraJZ9WWDNRBw+EXUnuPZWr
- RVDw==
+ d=linaro.org; s=google; t=1740481725; x=1741086525; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cXGP6wzkZErmn2F04TQmNlmyR3CeFAZYW4eH79gDg7o=;
+ b=YuWHG7bvBaWPqP7QT3rkvU/Zv6mmG8v5HygVj3dPKRlKn05E/yUZECzsIzhTbfeGhz
+ WAMykDpiYRK15O11cQkhXgaW2lOIcmWsIccXFp9lswMJ5hPMyLjPHSh1SYQbQRl73Z0H
+ yPmTDEcZ2k81oIG1rzGaq02lZ0DMy6OEtABDZp/K0axp/3VO16IQeeAtuOR9ZbgYgaFd
+ zHhO47l16HU/Syzyrv0QZv8pqZ5JmH1GqKk8W28mYFgBTGA07VF1j1f8bSyviJFIa9vJ
+ OZ99/KrmfLqBaieNTcQdenRyMtIuCTRbecoerfeV5Mwv8CmBjNzDUt1hcoXbbF7XoQKo
+ C8Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740481728; x=1741086528;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QyNSTbsw1Rli9CIOsEEi/zV15lgdGHhsG9D/tniJcAU=;
- b=vJuPZojIHko0MVsQMqa7eD2+bYuuBQtACeujswnNHkxzHzsHIf0H421KNjDkkADsgu
- 24uCyD3PWtEeMKHajW1PLqHgAr3vK/mtSGaWKf8ijS09gSIkQPMvqNMyLMD4N6lM/Oz+
- /Mrts64zGoYrAkPPGepxMOmuotH62Q5rBcYUlpp15/YJ3lbF7Kn3T1dwb0I4po0s+i3x
- LG8IM+fVQpvhnhTPNdm9o2UcomW3pFClX1cKaEtEH6EHtb+FDN4JzbAdsOIPU/W/mz/C
- twZM7qniKiaIcVysoII2wBCfc+nqAVPYBNzScyoOeqF5dlpyyweWdTQTULbwITaTmNDp
- L3Fw==
-X-Gm-Message-State: AOJu0Yxvt9hkhcYud1BJOmCu3VpgWHBuTEgXef8VYIE1vM+QzRWjLbrJ
- e/ah33bkHt2wAAX4MU+qI270Jia0OdFDgsKru84vx38S7HifKNR/iVToJQ+EHEw=
-X-Gm-Gg: ASbGncvE9iPTeeAo9x0cSyh+uOGD3u4j+KFi8cJkRfghfcDmBQifdRm3yFP9sB6RHnD
- aoyTuxd7Lsq4Kfxm+7zhteo+U0DJHtIc3Z/jNydyQgMwSPQZJUd75oBJ9zPSY7TUGqy6ONlSUDh
- ZSIj/f7hMsKaGMBQwEdNsVfS8u0s1P56pGxTRBviR9rHuuHqoU1ce8oviF1FjqGBzPmiApVlH9A
- UMjab1WvhZmGIl2R/EFf0rNQdeuo7LT6V0DYSKj61xBnKbfq5kRLyF/aJzxIRy0uvQ8+PhzVIl7
- 3R0Yn+mUzcQoi/i+K2MewOblXYOI
-X-Google-Smtp-Source: AGHT+IER2h0YA/kvhnSDHcPus6viboUh7mJLj7bW0qCgMQcayyCv0dw2bA1wDMXepGPL/Uw/z1eDFg==
-X-Received: by 2002:a05:600c:4e8d:b0:439:892c:dfd0 with SMTP id
- 5b1f17b1804b1-439a30e91femr179562495e9.14.1740481727925; 
- Tue, 25 Feb 2025 03:08:47 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740481725; x=1741086525;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cXGP6wzkZErmn2F04TQmNlmyR3CeFAZYW4eH79gDg7o=;
+ b=doNRiU2+f7BSDVenPFDR2I6KcF2POaOZZRh+F/HB0+btHExw/xvPZ4/ZI7oBfh1Fvr
+ 1uYIiSmGpvt1/0liZE5CULO9Mg8e0FuOA99CiKBMMbaIz8cI7W7/DvPc9dHP5EpVsz0Z
+ H4eUzqR5j1RgCWgvUjcR55evkrTtWqG8G6SZ2wbZ+x1qkq35Fi+F4PYKJZzSIj54d5bl
+ JmgOmSYgcCh1imCinv6BiKElvcjlk4frWz+TQNONc7Udu/RPROOaETsVlPbSNN2pB1D3
+ Ej4uJgJbESIVGnGEk8Zk+oToE3dqMd8dutEuyp6zlsW0tnOdITUBXjd5Iqf1evqiVN44
+ Q9WQ==
+X-Gm-Message-State: AOJu0YzhBzlgSsEX97sNWcHNpcaM6Gi7E+Txw5CynqIvYjKnEQZ4+s85
+ /nzvhaQSE5/zmTauRaDlZlJ+gcXNEL2YHwK0K7LnCrr9V6+s6L29FEfvynXqWE8=
+X-Gm-Gg: ASbGncvqfvJB/yPfgYic0JuZ4IZUKG/L6L70Xpx/ak3bkc3jG2LjwA6QoiftF9xFKpq
+ hBRej/hzS3cxVjat7Qajj/BLoEmJsTATBqqRLr+Eo0ZOlvGpApPWjtTvrMLNCsvTvUoCduSDrVw
+ 8mMgtA2LD0J3KrwH0E1ssb6qNgSjX7a/tx1CVQfi8tvKRNIab+O3r+MQtFtmM+n3z0raiZt553O
+ 8jGFWnbEWFAJt8VGfcDFhmgVdg1qSZpJCavT9x53tV3OeBGDNIfTqGLq1R7xXKVw4eXi83urHQu
+ fCvak0u4Uwth0mn68rc5RlYtQ3tP
+X-Google-Smtp-Source: AGHT+IGsy/RqBFd06tETCtxhAw5hpQRYwExwI8EikFRM0h/sw6AoS/YvKex7xdT3HiD0yC4o1cgPNg==
+X-Received: by 2002:a05:600c:4753:b0:439:9a28:9e8d with SMTP id
+ 5b1f17b1804b1-43ab0f313a0mr24678915e9.12.1740481725626; 
+ Tue, 25 Feb 2025 03:08:45 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b01346d1sm138824145e9.0.2025.02.25.03.08.45
+ 5b1f17b1804b1-439b02ce65dsm136562215e9.1.2025.02.25.03.08.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 03:08:46 -0800 (PST)
+ Tue, 25 Feb 2025 03:08:44 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2C39C5F7DC;
+ by draig.lan (Postfix) with ESMTP id 41A355F9D0;
  Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -69,15 +70,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 00/10] plugins: reduce total number of build objects
-Date: Tue, 25 Feb 2025 11:08:34 +0000
-Message-Id: <20250225110844.3296991-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/10] plugins/api: use tcg_ctx to get TARGET_PAGE_MASK
+Date: Tue, 25 Feb 2025 11:08:35 +0000
+Message-Id: <20250225110844.3296991-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250225110844.3296991-1-alex.bennee@linaro.org>
+References: <20250225110844.3296991-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -100,49 +103,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As we move towards a more modular build this series converts both
-loader and api to build once objects. For both objects the only real
-difference is between user mode and system emulation so those bits
-have been hived off into those source sets.
+Requiring TARGET_PAGE_MASK to be defined gets in the way of building
+this unit once. As tcg_ctx has the value lets use it.
 
-The remaining core plugin is more intimately aligned with the TCG
-backend so requires definitions like TCG_TARGET_LONG. Hopefully this
-can been cleaned up once Richards TCG rationalisation code is added.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ plugins/api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please review.
-
-Alex.
-
-Alex Bennée (10):
-  plugins/api: use tcg_ctx to get TARGET_PAGE_MASK
-  plugins/loader: populate target_name with target_name()
-  include/qemu: plugin-memory.h doesn't need cpu-defs.h
-  plugins/api: clean-up the includes
-  plugins/plugin.h: include queue.h
-  plugins/loader: compile loader only once
-  plugins/api: split out binary path/start/end/entry code
-  plugins/api: split out the vaddr/hwaddr helpers
-  plugins/api: split out time control helpers
-  plugins/api: build only once
-
- include/qemu/plugin-memory.h |   1 -
- plugins/plugin.h             |   7 ++
- linux-user/plugin-api.c      |  43 +++++++++
- plugins/api-system.c         | 131 +++++++++++++++++++++++++++
- plugins/api-user.c           |  57 ++++++++++++
- plugins/api.c                | 170 +----------------------------------
- plugins/loader.c             |  15 +---
- plugins/system.c             |  24 +++++
- plugins/user.c               |  19 ++++
- linux-user/meson.build       |   1 +
- plugins/meson.build          |   8 +-
- 11 files changed, 292 insertions(+), 184 deletions(-)
- create mode 100644 linux-user/plugin-api.c
- create mode 100644 plugins/api-system.c
- create mode 100644 plugins/api-user.c
- create mode 100644 plugins/system.c
- create mode 100644 plugins/user.c
-
+diff --git a/plugins/api.c b/plugins/api.c
+index cf8cdf076a..10b258b08d 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -287,7 +287,7 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
+ void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
+ {
+     const DisasContextBase *db = tcg_ctx->plugin_db;
+-    vaddr page0_last = db->pc_first | ~TARGET_PAGE_MASK;
++    vaddr page0_last = db->pc_first | ~tcg_ctx->page_mask;
+ 
+     if (db->fake_insn) {
+         return NULL;
 -- 
 2.39.5
 
