@@ -2,182 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF3DA4496D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE41A4497D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:06:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzHo-0006yo-U1; Tue, 25 Feb 2025 13:04:05 -0500
+	id 1tmzJy-00009C-Lz; Tue, 25 Feb 2025 13:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1tmzHH-0006qC-AN
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:03:37 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1tmzHD-0001hk-VY
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:03:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740506608; x=1772042608;
- h=from:to:cc:subject:date:message-id:
- content-transfer-encoding:mime-version;
- bh=QA5zgludLWdMDb1QtTM+ZLe0M4okfFmqHj0ZpSgIAaw=;
- b=jJ8WgAhJM+NZFbQZYDRMNAaZjwzYsYXcrLT9Iy9VdHCRYn6WiHHq/K+o
- 4Ij/rvrZY2ucxIaTCxHVx1zZ61vSbkgxdwCXBwDH6adSE6BH/QDd7tWD6
- mj6he5fR0WrRikzfitC3O0JAzCo2z/5TVTKWjqGgFo8CSLsV5rEJLZR5j
- clGOo0Pea7F4Iu+qBOA0c/cr4qJdcF037VM8Do/v7U27Mg5VxJDeIUQSa
- U5TWe/bgIUmlutuJn669+VQDNOZjimUedJT21PDQ8So9ViwrVIpus9+5s
- 9XmU5XszZ7/kAk+UDXNTeaCgsT3O0H2nbGEhJ7koUVghEXdhBVeaMQ5Ew A==;
-X-CSE-ConnectionGUID: aNBpdE9VTaKcaivEmu16vg==
-X-CSE-MsgGUID: a7rKLONcTnKeVkOTZxTE/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41531683"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="41531683"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 10:03:22 -0800
-X-CSE-ConnectionGUID: JfqZyUZJTLmOLg4bMV4hTg==
-X-CSE-MsgGUID: mobA9UgLTeSUVcp4dHsrcQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="153637621"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 10:03:22 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 25 Feb 2025 10:03:21 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 25 Feb 2025 10:03:21 -0800
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 25 Feb 2025 10:03:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ssu/xwDZecGTxvwYBQjY1rKdp1Iz5ttIttHgsBBWR+Pxv9jLdjFlBc3hPH9MMF0Maq3NUoYXCUrIcUjE0QvzezFM2pqzjKvQK+lA/L/bIScM7f4/diPLeCpxGp2/dfF7L/iECdSJnjnDGQPTPngT2FQiXB6p1wxdKjif5gE+sqLTQUbP/leOtpoLjjKj1KoZu3ajgVyAiPL+j0m9vAf7+SsQ4GFxImKB+ytZzuVZTtn2CHoj/lU8zat3+uw0R2c5z/pY6aWgOjKVt7PIlgGTouSfzyP7l+hYDw8xVEPQy3Lh0wn8OOkzaRSVnp5GAHleAZArxjQo3oyW1SaZTy8nQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fwBbszmp+QPtfUZNqer5LbcfDxAHoQ2uhc5Ysm4rS34=;
- b=bIsH94vsIGxfFxrbdsEtijGFZoy5DoRYDJDEP0jh70Jf8UOz93L4C67OopwEqOZV6AHGi/l1IfQElpMMwk5IzvbdezbPmwWmj/0aryITrPGJ1/jQ692du7pT+6cO3JDrKyvL9SRq2Ag1l97Bm+9VvSKtg64i7HB5vorrDPZ5YEaeu7+wIXDjqVxtqA51gkJUyzzPB0OwOzWRYkQ2qcaz9EPiXvcAGKpj4QmUXKMYuQKJZfYecEskyBrvWHJXRhrw7Sk8Rh98zCkVjqLvYkdapgGY1YwsydOYvoCRf7GD3p0Im3HKSWBMg4raQ1PtH+hLLfr22durQCPtE/NuZTQYjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by MW4PR11MB5870.namprd11.prod.outlook.com (2603:10b6:303:187::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Tue, 25 Feb
- 2025 18:03:18 +0000
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::bd3d:59f2:9d29:346]) by PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::bd3d:59f2:9d29:346%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 18:03:18 +0000
-From: "Kim, Dongwon" <dongwon.kim@intel.com>
-To: hikalium <hikalium@hikalium.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?iso-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: Some regression due to "ui/gtk: Fix mouse/motion event scaling issue
- with GTK display backend"
-Thread-Topic: Some regression due to "ui/gtk: Fix mouse/motion event scaling
- issue with GTK display backend"
-Thread-Index: AduHr3IQUyMyDh5wS+uW6ITUR0kANA==
-Date: Tue, 25 Feb 2025 18:03:18 +0000
-Message-ID: <PH8PR11MB6879500CDBB703E22EC3D6F0FAC32@PH8PR11MB6879.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR11MB6879:EE_|MW4PR11MB5870:EE_
-x-ms-office365-filtering-correlation-id: 6ceb7668-97d9-4d5e-03c6-08dd55c6aed7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?TOqbFECBUEiyXw+9rfOFaefWjTLaioxm+UWejPYWbBmVOitPN0wrT8h6Am?=
- =?iso-8859-1?Q?hfd10+GnyAhh2lHdlDMglf1zYX4K4LhjkVJfK1T7cd0mP/gZEDLtkBm6Ns?=
- =?iso-8859-1?Q?7ZEDd82cw3h90SAA5G3vcFqdLaZ2xnDubGVGPABJO14c/dsgE0LsBU9D0I?=
- =?iso-8859-1?Q?iDKzbrJ1YAHy0ur73A//WBSk78VhgOK93Q0RG23cLERpCsI2lFhsMF73vw?=
- =?iso-8859-1?Q?Ua2+2jYhYMgTn3PnUUzCryhjHOM9Y4vmJbJ3q1mmR5WtZd6ylCbVtlrS+z?=
- =?iso-8859-1?Q?i7u9wolEyNngTJ1mSkD9GfmRHYWR+FwmH8dhcWEygcMJRZluYuW5TOE3vo?=
- =?iso-8859-1?Q?9bx8EOCGANpaC00prziXhrpQyT4yXjgtlojp5fIAdwJIaHfFTfAdJsJqI6?=
- =?iso-8859-1?Q?HIk66KKGln59uknmBOFov9WkLKd5OJEIPpdyAKv5sGJv0Mv41+cV9PY+gt?=
- =?iso-8859-1?Q?eLJAAnro0xnOiC5Jq5yR20nPZ0lijRZpKqpdQj5ksqN3ZdP3PwPfqMlp+x?=
- =?iso-8859-1?Q?rFW1ql9bBBKJt4yFZCAklPQzXU22ACUx8j0Edvd5fS79SPKF2MYlGW1x6S?=
- =?iso-8859-1?Q?X1vl/s+7PhuhYIY+3r4993k8y2kdw6CURQLOK4e8jTN8u+jASmQ3AHkqEe?=
- =?iso-8859-1?Q?E8uo+W8Y/pjRagh5WfVfH1ZAM/MXJf2yPhwe9cDwqMpoMWmt3VeOp9ACWZ?=
- =?iso-8859-1?Q?/v2WZjyxI0bK/5zCY65VeHKZVfxN0UTcjBNfwmH0MUqWK6owUdkLYJnrel?=
- =?iso-8859-1?Q?bBDQAaKXmEwwmhqOO8JKxes54+ZQ4HZKUW3G8dmTMRDJqhLIu0RRNSlDaA?=
- =?iso-8859-1?Q?M369sVT4K6CxVbe/AYdJdVNFo2pjgso5Le2ky97aeqo5PiIgaQjcgmKs9u?=
- =?iso-8859-1?Q?3QeqphkRP6OIUfXxmVz5slTPQy9QHHM8D51EHIm8daqWL4K6O4+GIgxlzY?=
- =?iso-8859-1?Q?aGCf93oEbh6TsTzHGV+cBo3Vu1z0bUPUVDhF+LFvByMLUeJruhiY1CuApI?=
- =?iso-8859-1?Q?6pYn5Xr6MLsoGshf8Y6rzwuhLIuYANQ0hsqK6Z2vnqSbJp+7Vd6hRBEKdx?=
- =?iso-8859-1?Q?/M2kkTh60anV8wo9uN/MQxRdrFXKKBzVt5vJr8dfey/JXVYuhbORIlc7Sz?=
- =?iso-8859-1?Q?Q5Y1pYTlgu7FTHG4dOfoQ+RCsrOx0+5P3cgqT5DtSLdWN4mRd+32jYUjI5?=
- =?iso-8859-1?Q?+nu08OOwy2k31NbRYHbhsDmus2m7YWi9C3HHIaTQalJ9OtyZzpURUYeWkI?=
- =?iso-8859-1?Q?PavW3a64hv+FG6QFLyYw06+Y4d1AtGURXzs9qipXwv//cipU7YNWsqebkw?=
- =?iso-8859-1?Q?SQxA3v5hWqadXEi74gs4CR/7+bWRkwFVpU8ueDAbNlBUF7Rfok8ZQpG4pM?=
- =?iso-8859-1?Q?gSE6ov/6yhDHnuXhics8ZlCwFIahxYms9FywpKuT0HLcN7tMRdBTzMuvVD?=
- =?iso-8859-1?Q?2fgaSgDtA23C1IYS8tKuOpiHa+8K4bdn0XxWi/4o+Ewjs/PPnB77ZE3Kni?=
- =?iso-8859-1?Q?6S5ZlME6Ude2jTZ00+ZUUk?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?yZ+KMDJfG8n9h2SWkGgoV8z08R7R4PjNrvtS8xROtj57e2X0hzVj2b+tWx?=
- =?iso-8859-1?Q?kHjnNnLnzV7QLiVJi4OVVwc4zXnSqsnGDuTurmfqc3tnBdZid/NKxqTaF0?=
- =?iso-8859-1?Q?mVE9+nx5JsErVLYkLiPP1YCCu14kfnxRjn1TVWM7jpeVgyNdXlqkuHREtR?=
- =?iso-8859-1?Q?T2QGxxldv7JTkXseG5lQeZ20WGve0hETmVgfRY5aqkU2mEa3Uv69Rg20O0?=
- =?iso-8859-1?Q?juIYxXSwg4ysCXHs1n+iePIeTFQ1T10/Oz2MNMeHZSI7pbRJHOWqmCtGlX?=
- =?iso-8859-1?Q?08xl6lkHzYrl/AdHhozb2xqCCZSA/ZgjkjG50DnplWrcFK0o0nLQACxgkD?=
- =?iso-8859-1?Q?z6jbQLaV10E8MVexqCu8h+FYkU/sh27siNX/B+sypMzuCa8+CvAn98sih6?=
- =?iso-8859-1?Q?EEzZY8xJTIQxmr1Z9YVJhT5nYTh3dzBmVwZhzRUdu+XlZn28zNLNJqiuFh?=
- =?iso-8859-1?Q?W4qrzgD25BJYihg5pKcBpmC3sHTUzc/UknlVwntC0GeSOu4/rqcPW+9vy8?=
- =?iso-8859-1?Q?IH2Jx3p1diSj+0XVaVvAZ2tJrxdqwwUCrg66Rct3FbLnnRRGJ02cYhRGRE?=
- =?iso-8859-1?Q?yPWbbQ/SSNBeNGPOM33YGBfs4JdwMw/rtb1NTyvBSFGfFtGOTrbc3ok+H4?=
- =?iso-8859-1?Q?3SO7g2hxgKTzCW247YH4vcaFsPlAhw8WCzafDgHhq8xtOKuyYq/52lmijw?=
- =?iso-8859-1?Q?uitRcn6LFQo8Pa5vd+iGFeMdzDybmSFZDceob+WHa1MWQEuJPY0zFccPYl?=
- =?iso-8859-1?Q?w6F6g4859v6EYXYq7bL15MWqikOMBdBVXRb+rHb1n35z7eojtsH6bJNrh6?=
- =?iso-8859-1?Q?5EtmG7RFN4T/wRBi3DEp5oZeMP78wNlDolJNwVOGPR2WRbAxE1B5aeeaIY?=
- =?iso-8859-1?Q?XsB9fM6UHkEM7CszuacbRiRS3Fi9n5WXnD5d0hpl9/W5YefyjBFYJpCtm5?=
- =?iso-8859-1?Q?cRh4v1dVasV38yqiVCog9Ci2Kk92N/NN/N2pBtKz8Eydlc1mtZSPgdUVfl?=
- =?iso-8859-1?Q?i6JE6pxQPbSqok9BnS8uff4x9d+xHvERoZ6oU+PUHloCpKlTL6eW6C94cs?=
- =?iso-8859-1?Q?H9b/eWP15g7yAoqrpPNcZrJb9Jgh/XbBpIoHKWgZinSlIlaOKPSeFZTlq8?=
- =?iso-8859-1?Q?Be+PO9AlslSCxdcE2CytZoXPeSkNxmWaV+7wccH9Cf2dzLgunBIYVkMSbp?=
- =?iso-8859-1?Q?jYO2InBV++J7rArTtkoD1dXxhSsXvPk37OjL+ay6r+UGC1o0muknfEyDr9?=
- =?iso-8859-1?Q?53Cc5UVgDXWNn0Swt6Pra1VgZpvidQbmfA3NnIdd393nqRMtEIklOJ6XQe?=
- =?iso-8859-1?Q?h/gJStsVE+y/790LwltFXWuENA5lkLj8VdDcZrVDxrlrcbNAwDQqUZi3SH?=
- =?iso-8859-1?Q?jX+nnB9uE4XmapKvQ3s3Yu0fAbCuIJpE0J2Ty28MkHGFi5x9nbkfCmAGSA?=
- =?iso-8859-1?Q?PxDE3qpcAGCZ2OYIVhJNGJLp3vlEx608S4t7GXjoaVa2/pLlv1Dwx9EorW?=
- =?iso-8859-1?Q?D5kSByRiESKGa6zSJWS7S3hLQHsF2gGIyAyHkUrhYHZgi1YCgUzHYABoIG?=
- =?iso-8859-1?Q?PeYPJ+rjOrgQLaM00tzhr6FXz1DP3aUpFytst5d/C/OquA//4tFMi3x5CW?=
- =?iso-8859-1?Q?jQsLbT9rvrxv2sWITjQI4UL6T0n3Obe+Jp?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tmzIz-0008Am-M8
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:19 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tmzIx-0002BG-4F
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:17 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-38f265c6cb0so2964521f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740506713; x=1741111513; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EC8IF2fsP3QA1UeWRpuXQQkqxhpY7selzaVRXFP1UlM=;
+ b=c1d5SaWXalQ6Yyj8vsOcaRALTHNNLj6Ged2qPqz982BVVHYnmitSIhT6nwPaBfFvhn
+ f9x5my6R115RfmPThi9yLCcdx2UkWf5aS72N1l0FWPPDLHJzE3zg3kT+UKX/u+oHVpoC
+ LZsAYrRhz8FchjJPLuOKtOEmPvA5HXEMK5d1xaVWwnsyHYRGIqeVDY2i8w/Ax816tFhx
+ y+oxgt4ch7nwt9gn9QdoKtNdPvM9vIAiSX9d5xSDgQw6NJ2TbCd8CqgSV+V1QupnLFcY
+ lnXrt7Qx24V8tMIFXYJ1IJ3XIIu041NJrduJa29fp6ySgb3bUCon9cJj3k94nnVbG1Mv
+ 7ZAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740506713; x=1741111513;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EC8IF2fsP3QA1UeWRpuXQQkqxhpY7selzaVRXFP1UlM=;
+ b=HEnoXTcWmTOZSJ27JqH9pvsItCwFM+4VKa1qEGb3OycTFVIFCi8Ny2Q7+HaafDtJ7e
+ ZucSQnzEQROZnWQZiNQJZDPnvByldPon22BIdU/eYXo+C1fZLq2EuSgOsyE3waclVmyA
+ hUScQokWlzXyH8vkvmP9O5E3V8Ba2StKprpVc4vZl2OIk7j2W12A671MTmnuJYvRRegQ
+ f7UoBkyNADG6vtPkfys5tAB38fvp16p2dt/XOrnCgiQZ05spJt0IHxsxyA+JYf0SqmQ+
+ 7lW4XM79f/qrhqN3ziHGRf7YuLTzMWHMwJIsyRNIY3DgPwvJie5HmCOz+jH4Um/BHVuP
+ WyRw==
+X-Gm-Message-State: AOJu0YxskqPFPnziCJFrlVHq49G5wxFBs1+7Egwmqtc2nJWvr1R4GAsY
+ N6C1DyL6on8X4Fs9qNr5F0DfQC9ekKH47NtChjqei1w1qfQQliTeXoq/IE/AV4qWqYgYPdJzv6Y
+ 9
+X-Gm-Gg: ASbGncvX8AMDpzBPUaJ0aNHMp2Uy75Z2+3ombBjGdqElG4kRot0sZCNtN7H+KtqLsSb
+ cChnaZhXk7vu9Ypckt6ZIR4iMGaOswOvDhK27X8x9bzpaQrMoi9aW2OI9gGT99JNs7isQpkUiVJ
+ i3hF2i7Q6wwmoiOcU6UaizCcFY6chvVeXis9d0a2HWzSB4LpJdh7SGHCogKO5Ez7+IWZ74277jS
+ skv1Lu6YQMEQu3eCP+dKaVbbarSkHzRKTs4JV1l027iq+Jgb2ft4f0735ykgmhMv90tIy4Saqnr
+ L/xTkP0R6qOvFhS8+RoF2E+KHRbpzr5S
+X-Google-Smtp-Source: AGHT+IGglvkixLE8mpZOsC7xmEJBTzQ1UDVOYNQ/QArMIZlNLpkh3nUKxw3Jxl2oxLt3zDyVlmkNWQ==
+X-Received: by 2002:a5d:6d8f:0:b0:38f:5833:43ca with SMTP id
+ ffacd0b85a97d-38f70772bb5mr15791121f8f.9.1740506712843; 
+ Tue, 25 Feb 2025 10:05:12 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.11
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Feb 2025 10:05:11 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/43] target-arm queue
+Date: Tue, 25 Feb 2025 18:04:26 +0000
+Message-ID: <20250225180510.1318207-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ceb7668-97d9-4d5e-03c6-08dd55c6aed7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Feb 2025 18:03:18.1630 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mrKpJn58+o4JOJJXnIu8qS6mwbSW5z9VeEMEuEFNUNcROpTqcT4bV1HK+xEgjsojMiRHYDh5y6YIfdXSPxvKSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5870
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=dongwon.kim@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -194,20 +94,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi hikalium,
+Hi; here's another Arm pullreq: the big thing in here is
+Bernhard's imx8mp-evk board model; there's also various cleanup
+type patches from me, as well as some bugfixes.
 
-This commit actually breaks one of our use cases with Ubuntu host when the =
-display scaling factor is
-set to 200%. It seems like gtk_widget_get_scale_factor is only way to get t=
-hat DPI scaling factor
-and without this, mouse movement on the guest wouldn't be able to go across=
- certain boundary
-as the coordinate will be halved (in case DPI scaling factor is 200%).
+thanks
+-- PMM
 
-commit 37e91415018db3656b46cdea8f9e4d47b3ff130d
-Author: hikalium <hikalium@hikalium.com>
-Date:   Sun May 12 20:14:35 2024 +0900
+The following changes since commit b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124:
 
-    ui/gtk: Fix mouse/motion event scaling issue with GTK display backend
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-02-22 05:06:39 +0800)
 
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20250225
+
+for you to fetch changes up to 1aaf3478684ff1cd02d1b36c32a00bfac9a5dbd5:
+
+  hw/arm/fsl-imx8mp: Add on-chip RAM (2025-02-25 17:24:00 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/arm/smmuv3: Fill u.f_cd_fetch.addr for SMMU_EVT_F_CD_FETCH
+ * hw/arm/virt: Support larger highmem MMIO regions
+ * machine: Centralize -machine dumpdtb option handling and report
+   attempt to dump nonexistent DTB as an error
+ * fpu: remove target ifdefs and build it only once
+ * target/arm: Refactor to move TCG-only vfp_helper code into tcg/
+ * target/arm/hvf: Disable SME feature
+ * target/arm/hvf: sign extend the data for a load operation when SSE=1
+ * hw/misc/npcm_clk: fix buffer-overflow
+ * hw/arm: Add i.MX 8M Plus EVK board ("imx8mp-evk")
+
+----------------------------------------------------------------
+Bernhard Beschow (16):
+      hw/usb/hcd-dwc3: Align global registers size with Linux
+      hw/pci-host/designware: Prevent device attachment on internal PCIe root bus
+      hw/gpio/pca955*: Move Kconfig switches next to implementations
+      hw/arm: Add i.MX 8M Plus EVK board
+      hw/arm/fsl-imx8mp: Implement clock tree
+      hw/arm/fsl-imx8mp: Add SNVS
+      hw/arm/fsl-imx8mp: Add USDHC storage controllers
+      hw/arm/fsl-imx8mp: Add PCIe support
+      hw/arm/fsl-imx8mp: Add GPIO controllers
+      hw/arm/fsl-imx8mp: Add I2C controllers
+      hw/arm/fsl-imx8mp: Add SPI controllers
+      hw/arm/fsl-imx8mp: Add watchdog support
+      hw/arm/fsl-imx8mp: Implement general purpose timers
+      hw/arm/fsl-imx8mp: Add Ethernet controller
+      hw/arm/fsl-imx8mp: Add USB support
+      hw/arm/fsl-imx8mp: Add on-chip RAM
+
+Joelle van Dyne (2):
+      target/arm/hvf: Disable SME feature
+      target/arm/hvf: sign extend the data for a load operation when SSE=1
+
+Matthew R. Ochs (1):
+      hw/arm/virt: Support larger highmem MMIO regions
+
+Nicolin Chen (1):
+      hw/arm/smmuv3: Fill u.f_cd_fetch.addr for SMMU_EVT_F_CD_FETCH
+
+Peter Maydell (22):
+      monitor/hmp-cmds.c: Clean up hmp_dumpdtb printf
+      hw/openrisc: Support monitor dumpdtb command
+      hw/mips/boston: Check for error return from boston_fdt_filter()
+      hw/mips/boston: Support dumpdtb monitor commands
+      hw: Centralize handling of -machine dumpdtb option
+      hw/core/machine.c: Make -machine dumpdtb=file.dtb with no DTB an error
+      fpu: Make targets specify floatx80 default Inf at runtime
+      target/m68k: Avoid using floatx80_infinity global const
+      target/i386: Avoid using floatx80_infinity global const
+      fpu: Pass float_status to floatx80_is_infinity()
+      fpu: Make targets specify whether floatx80 Inf can have Int bit clear
+      fpu: Pass float_status to floatx80_invalid_encoding()
+      fpu: Make floatx80 invalid encoding settable at runtime
+      fpu: Move m68k_denormal fmt flag into floatx80_behaviour
+      fpu: Always decide no_signaling_nans() at runtime
+      fpu: Always decide snan_bit_is_one() at runtime
+      fpu: Don't compile-time disable hardfloat for PPC targets
+      fpu: Build only once
+      target/arm: Move TCG-only VFP code into tcg/ subdir
+      target/arm: Move FPSCR get/set helpers to tcg/vfp_helper.c
+      target/arm: Move softfloat specific FPCR/FPSR handling to tcg/
+      target/arm: Rename vfp_helper.c to vfp_fpscr.c
+
+Pierrick Bouvier (1):
+      hw/misc/npcm_clk: fix buffer-overflow
+
+ MAINTAINERS                         |  13 +
+ docs/system/arm/imx8mp-evk.rst      |  70 ++++
+ docs/system/arm/virt.rst            |   4 +
+ docs/system/target-arm.rst          |   1 +
+ include/fpu/softfloat-helpers.h     |  12 +
+ include/fpu/softfloat-types.h       |  51 +++
+ include/fpu/softfloat.h             |  91 ++---
+ include/hw/arm/fsl-imx8mp.h         | 284 ++++++++++++++
+ include/hw/loader-fit.h             |  21 +-
+ include/hw/misc/imx8mp_analog.h     |  81 ++++
+ include/hw/misc/imx8mp_ccm.h        |  30 ++
+ include/hw/openrisc/boot.h          |   3 +-
+ include/hw/pci-host/designware.h    |   7 +
+ include/hw/pci-host/fsl_imx8m_phy.h |  28 ++
+ include/hw/timer/imx_gpt.h          |   1 +
+ include/hw/usb/hcd-dwc3.h           |   2 +-
+ include/system/device_tree.h        |   2 -
+ target/arm/internals.h              |   9 +
+ fpu/softfloat.c                     |  23 +-
+ hw/arm/boot.c                       |   2 -
+ hw/arm/fsl-imx8mp.c                 | 714 ++++++++++++++++++++++++++++++++++++
+ hw/arm/imx8mp-evk.c                 |  74 ++++
+ hw/arm/smmuv3.c                     |   2 +-
+ hw/arm/virt.c                       |  52 ++-
+ hw/core/loader-fit.c                |  38 +-
+ hw/core/machine.c                   |  23 ++
+ hw/loongarch/virt-fdt-build.c       |   1 -
+ hw/mips/boston.c                    |  16 +-
+ hw/misc/imx8mp_analog.c             | 160 ++++++++
+ hw/misc/imx8mp_ccm.c                | 175 +++++++++
+ hw/misc/npcm_clk.c                  |   5 +-
+ hw/openrisc/boot.c                  |   8 +-
+ hw/openrisc/openrisc_sim.c          |   2 +-
+ hw/openrisc/virt.c                  |   2 +-
+ hw/pci-host/designware.c            |  18 +-
+ hw/pci-host/fsl_imx8m_phy.c         |  98 +++++
+ hw/ppc/e500.c                       |   1 -
+ hw/ppc/pegasos2.c                   |   1 -
+ hw/ppc/pnv.c                        |   1 -
+ hw/ppc/spapr.c                      |   1 -
+ hw/riscv/boot.c                     |   2 -
+ hw/timer/imx_gpt.c                  |  25 ++
+ hw/usb/hcd-dwc3.c                   |   5 +
+ monitor/hmp-cmds.c                  |   2 +-
+ system/device_tree-stub.c           |   5 +-
+ system/device_tree.c                |  22 +-
+ target/arm/hvf/hvf.c                |  16 +
+ target/arm/tcg-stubs.c              |  22 ++
+ target/arm/{ => tcg}/vfp_helper.c   | 189 +---------
+ target/arm/vfp_fpscr.c              | 155 ++++++++
+ target/hppa/fpu_helper.c            |   1 +
+ target/i386/tcg/fpu_helper.c        |  51 +--
+ target/m68k/cpu.c                   |  35 ++
+ target/m68k/fpu_helper.c            |   2 +-
+ target/m68k/softfloat.c             |  47 +--
+ target/sh4/cpu.c                    |   1 +
+ fpu/softfloat-parts.c.inc           |  27 +-
+ fpu/softfloat-specialize.c.inc      |  29 +-
+ fpu/meson.build                     |   2 +-
+ hw/arm/Kconfig                      |  24 ++
+ hw/arm/meson.build                  |   2 +
+ hw/gpio/Kconfig                     |   8 +
+ hw/misc/Kconfig                     |  14 +-
+ hw/misc/meson.build                 |   2 +
+ hw/pci-host/Kconfig                 |   3 +
+ hw/pci-host/meson.build             |   1 +
+ target/arm/meson.build              |   2 +-
+ target/arm/tcg/meson.build          |   1 +
+ 68 files changed, 2439 insertions(+), 383 deletions(-)
+ create mode 100644 docs/system/arm/imx8mp-evk.rst
+ create mode 100644 include/hw/arm/fsl-imx8mp.h
+ create mode 100644 include/hw/misc/imx8mp_analog.h
+ create mode 100644 include/hw/misc/imx8mp_ccm.h
+ create mode 100644 include/hw/pci-host/fsl_imx8m_phy.h
+ create mode 100644 hw/arm/fsl-imx8mp.c
+ create mode 100644 hw/arm/imx8mp-evk.c
+ create mode 100644 hw/misc/imx8mp_analog.c
+ create mode 100644 hw/misc/imx8mp_ccm.c
+ create mode 100644 hw/pci-host/fsl_imx8m_phy.c
+ rename target/arm/{ => tcg}/vfp_helper.c (90%)
+ create mode 100644 target/arm/vfp_fpscr.c
 
