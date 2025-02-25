@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C694A43CC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3206A43CEE
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:10:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmskv-0000I6-Mn; Tue, 25 Feb 2025 06:05:41 -0500
+	id 1tmsoO-0001bt-2c; Tue, 25 Feb 2025 06:09:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmsks-0000H4-CR
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:05:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmskp-000742-1t
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:05:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740481532;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=LoaMERf8SxvE5HXDzgAZo7ed44gFtlIyuBdEBbTa6O4=;
- b=OfnazSx7/kNA4yWqP0Yi5T/0kdqSYjVaGFo/jTNyci9MnMJK6a3INDmJ2UptXfXjroAOpZ
- JzRpwzk3ABZ9wv+0EjJ8yFrf4eVLDHx/fUJ00V/ZmISUCSK7BLLtu6R2roZBuLz16X/Jh1
- 5NLCQ93zX1LixxkO69qwprFMoyVbsT0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-1uTLgOS2Prmho7cYdyub8g-1; Tue,
- 25 Feb 2025 06:05:31 -0500
-X-MC-Unique: 1uTLgOS2Prmho7cYdyub8g-1
-X-Mimecast-MFC-AGG-ID: 1uTLgOS2Prmho7cYdyub8g_1740481530
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D8BD180036F; Tue, 25 Feb 2025 11:05:30 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.59])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCD001955BD4; Tue, 25 Feb 2025 11:05:26 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tmso1-0001Xv-1c
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:54 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tmsnx-0007ko-Oa
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:08:51 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43984e9cc90so37501795e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:08:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740481728; x=1741086528; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QyNSTbsw1Rli9CIOsEEi/zV15lgdGHhsG9D/tniJcAU=;
+ b=nSIozgvjSUGBZv2r6pGBqGgmV/Was7FlFIHkh5O3NUc+9D1MKBkUOli9O75PyL9tMy
+ x4H7knHMfPwTQkZs2XZFycC+v0tNgGYLsM4G/WfSSFkClAjacpx/0b4JrF+WTBHObsEp
+ LnnEcCQmBCVy/WE3jRgZ65YzvpwgUyjHoYzDraVe+YcDIKqXaeelhpeblsoBMjjpUOCV
+ dJV2uwGqq+7T2e9XOjMWSzcJ2jRnLC/upemE12hOYVn4r90G5zKHti+LBkKOyRUXZ5II
+ wD9ZFS+oEEAzoajzGU6zVBccoBXW9V709BvxfyXZ0kP+FJraJZ9WWDNRBw+EXUnuPZWr
+ RVDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740481728; x=1741086528;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QyNSTbsw1Rli9CIOsEEi/zV15lgdGHhsG9D/tniJcAU=;
+ b=vJuPZojIHko0MVsQMqa7eD2+bYuuBQtACeujswnNHkxzHzsHIf0H421KNjDkkADsgu
+ 24uCyD3PWtEeMKHajW1PLqHgAr3vK/mtSGaWKf8ijS09gSIkQPMvqNMyLMD4N6lM/Oz+
+ /Mrts64zGoYrAkPPGepxMOmuotH62Q5rBcYUlpp15/YJ3lbF7Kn3T1dwb0I4po0s+i3x
+ LG8IM+fVQpvhnhTPNdm9o2UcomW3pFClX1cKaEtEH6EHtb+FDN4JzbAdsOIPU/W/mz/C
+ twZM7qniKiaIcVysoII2wBCfc+nqAVPYBNzScyoOeqF5dlpyyweWdTQTULbwITaTmNDp
+ L3Fw==
+X-Gm-Message-State: AOJu0Yxvt9hkhcYud1BJOmCu3VpgWHBuTEgXef8VYIE1vM+QzRWjLbrJ
+ e/ah33bkHt2wAAX4MU+qI270Jia0OdFDgsKru84vx38S7HifKNR/iVToJQ+EHEw=
+X-Gm-Gg: ASbGncvE9iPTeeAo9x0cSyh+uOGD3u4j+KFi8cJkRfghfcDmBQifdRm3yFP9sB6RHnD
+ aoyTuxd7Lsq4Kfxm+7zhteo+U0DJHtIc3Z/jNydyQgMwSPQZJUd75oBJ9zPSY7TUGqy6ONlSUDh
+ ZSIj/f7hMsKaGMBQwEdNsVfS8u0s1P56pGxTRBviR9rHuuHqoU1ce8oviF1FjqGBzPmiApVlH9A
+ UMjab1WvhZmGIl2R/EFf0rNQdeuo7LT6V0DYSKj61xBnKbfq5kRLyF/aJzxIRy0uvQ8+PhzVIl7
+ 3R0Yn+mUzcQoi/i+K2MewOblXYOI
+X-Google-Smtp-Source: AGHT+IER2h0YA/kvhnSDHcPus6viboUh7mJLj7bW0qCgMQcayyCv0dw2bA1wDMXepGPL/Uw/z1eDFg==
+X-Received: by 2002:a05:600c:4e8d:b0:439:892c:dfd0 with SMTP id
+ 5b1f17b1804b1-439a30e91femr179562495e9.14.1740481727925; 
+ Tue, 25 Feb 2025 03:08:47 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-439b01346d1sm138824145e9.0.2025.02.25.03.08.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Feb 2025 03:08:46 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2C39C5F7DC;
+ Tue, 25 Feb 2025 11:08:44 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] gitlab: use --refetch in check-patch/check-dco jobs
-Date: Tue, 25 Feb 2025 11:05:25 +0000
-Message-ID: <20250225110525.2209854-1-berrange@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PATCH 00/10] plugins: reduce total number of build objects
+Date: Tue, 25 Feb 2025 11:08:34 +0000
+Message-Id: <20250225110844.3296991-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,49 +100,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When gitlab initializes the repo checkout for a CI job, it will have
-done a shallow clone with only partial history. Periodically the objects
-that are omitted cause trouble with the check-patch/check-dco jobs. This
-is exhibited as reporting strange errors being unable to fetch certain
-objects that are known to exist.
+As we move towards a more modular build this series converts both
+loader and api to build once objects. For both objects the only real
+difference is between user mode and system emulation so those bits
+have been hived off into those source sets.
 
-Passing the --refetch flag to 'git fetch' causes it to not assume the
-local checkout has all common objects and thus re-fetch everything that
-is needed. This appears to solve the check-patch/check-dco job failures.
+The remaining core plugin is more intimately aligned with the TCG
+backend so requires definitions like TCG_TARGET_LONG. Hopefully this
+can been cleaned up once Richards TCG rationalisation code is added.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/check-dco.py   | 2 +-
- .gitlab-ci.d/check-patch.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Please review.
 
-diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
-index 70dec7d6ee..2fd56683dc 100755
---- a/.gitlab-ci.d/check-dco.py
-+++ b/.gitlab-ci.d/check-dco.py
-@@ -21,7 +21,7 @@
- 
- print(f"adding upstream git repo @ {repourl}")
- subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
--subprocess.check_call(["git", "fetch", "check-dco", "master"])
-+subprocess.check_call(["git", "fetch", "--refetch", "check-dco", "master"])
- 
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-dco/master", "HEAD"],
-diff --git a/.gitlab-ci.d/check-patch.py b/.gitlab-ci.d/check-patch.py
-index 68c549a146..be13e6f77d 100755
---- a/.gitlab-ci.d/check-patch.py
-+++ b/.gitlab-ci.d/check-patch.py
-@@ -24,7 +24,7 @@
- # base for the user's branch. We thus need to figure out a common
- # ancestor between the user's branch and current git master.
- subprocess.check_call(["git", "remote", "add", "check-patch", repourl])
--subprocess.check_call(["git", "fetch", "check-patch", "master"])
-+subprocess.check_call(["git", "fetch", "--refetch", "check-patch", "master"])
- 
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-patch/master", "HEAD"],
+Alex.
+
+Alex Bennée (10):
+  plugins/api: use tcg_ctx to get TARGET_PAGE_MASK
+  plugins/loader: populate target_name with target_name()
+  include/qemu: plugin-memory.h doesn't need cpu-defs.h
+  plugins/api: clean-up the includes
+  plugins/plugin.h: include queue.h
+  plugins/loader: compile loader only once
+  plugins/api: split out binary path/start/end/entry code
+  plugins/api: split out the vaddr/hwaddr helpers
+  plugins/api: split out time control helpers
+  plugins/api: build only once
+
+ include/qemu/plugin-memory.h |   1 -
+ plugins/plugin.h             |   7 ++
+ linux-user/plugin-api.c      |  43 +++++++++
+ plugins/api-system.c         | 131 +++++++++++++++++++++++++++
+ plugins/api-user.c           |  57 ++++++++++++
+ plugins/api.c                | 170 +----------------------------------
+ plugins/loader.c             |  15 +---
+ plugins/system.c             |  24 +++++
+ plugins/user.c               |  19 ++++
+ linux-user/meson.build       |   1 +
+ plugins/meson.build          |   8 +-
+ 11 files changed, 292 insertions(+), 184 deletions(-)
+ create mode 100644 linux-user/plugin-api.c
+ create mode 100644 plugins/api-system.c
+ create mode 100644 plugins/api-user.c
+ create mode 100644 plugins/system.c
+ create mode 100644 plugins/user.c
+
 -- 
-2.47.1
+2.39.5
 
 
