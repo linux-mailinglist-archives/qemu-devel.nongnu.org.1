@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73A3A44BF3
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6BEA44BEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:05:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn1AX-0005Yw-AZ; Tue, 25 Feb 2025 15:04:41 -0500
+	id 1tn1Ad-0005Zc-4R; Tue, 25 Feb 2025 15:04:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tn1AU-0005YJ-B9
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tn1AZ-0005ZG-Ey
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tn1AS-0003zp-4y
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:38 -0500
+ id 1tn1AX-00042W-QI
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740513875;
+ s=mimecast20190719; t=1740513880;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=iuWHyO8bxl5mtkUxjUyRQaGhT8WtBJ55DaYKzmJrinU=;
- b=P9WZMm3roySftSKSqMJ5k+fjUjy/M3LaR5yJUYLVZgfpmItvkv/wIM/3pbEqG8m9K5+1Av
- 8gJF6+cbY7Wq5/MTkxE+rkBCh1ZllYTrvU+897fc4R4disJI2C4X6iwyPb8mwcFbqgFPZS
- W7gspNpGEzrOXs4P7/Q8TwawD1m42us=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6/tsqTCLvYLjGViWEIjEmON2Q5fWig/xvrp6/qFGRhA=;
+ b=MIVhGCbYIsDFvCaBwkBmIqLRulsDDu163KdRsgZtGZFX9UbCUmlS7bGnMZBFSDdlgYttnh
+ IdgeP8fbhv7jUa5eIZ/pwTGVFLy+hYGQkNnr+jiUKQ12kF+byAYuAMNwWWQC7qjDoCLOfA
+ vJDPzK2kmFh7LPp3Xz4Qct/3OoJ94LU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-x-d9V9wlPxauEJCRCPAhXQ-1; Tue,
- 25 Feb 2025 15:04:30 -0500
-X-MC-Unique: x-d9V9wlPxauEJCRCPAhXQ-1
-X-Mimecast-MFC-AGG-ID: x-d9V9wlPxauEJCRCPAhXQ_1740513869
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-245-c1bTPcPVNJOyNFvnFGRGjg-1; Tue,
+ 25 Feb 2025 15:04:35 -0500
+X-MC-Unique: c1bTPcPVNJOyNFvnFGRGjg-1
+X-Mimecast-MFC-AGG-ID: c1bTPcPVNJOyNFvnFGRGjg_1740513874
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DD95619039C6; Tue, 25 Feb 2025 20:04:28 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C61691800873; Tue, 25 Feb 2025 20:04:33 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.59])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E61D71800357; Tue, 25 Feb 2025 20:04:24 +0000 (UTC)
+ id 610811800357; Tue, 25 Feb 2025 20:04:29 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -53,22 +54,24 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/4] docs: automated info about machine deprecation/removal
- info
-Date: Tue, 25 Feb 2025 20:04:19 +0000
-Message-ID: <20250225200423.2350471-1-berrange@redhat.com>
+Subject: [PATCH 1/4] include/hw/boards: cope with dev/rc versions in
+ deprecation checks
+Date: Tue, 25 Feb 2025 20:04:20 +0000
+Message-ID: <20250225200423.2350471-2-berrange@redhat.com>
+In-Reply-To: <20250225200423.2350471-1-berrange@redhat.com>
+References: <20250225200423.2350471-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,59 +89,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we deprecate and remove versioned machine types on a fixed
-schedule, we can automatically ensure that the docs reflect the
-latest version info, rather than requiring manual updates on each
-dev cycle.
+When VERSION is set to a development snapshot (micro >= 50), or a release
+candidate (micro >= 90) we have an off-by-1 in determining deprecation
+and deletion thresholds for versioned machine types. In such cases we need
+to use the next major/minor version in threshold checks.
 
-The first patch in this series fixes the logic to ensure dev snapshots
-and release candidates don't have an off-by-1 error in setting
-deprecation and removal thresholds - they must predict the next formal
-release version number.
+This adapts the deprecation macros to do "next version" prediction when
+seeing a dev/rc version number.
 
-The remaining patches deal with the docs stuff.
+This ensures users of release candidates get an accurate view of machines
+that will be deprecated/deleted in the final release.
 
-The first two patches can be applied in this release (10.0) if desired.
+This requires hardcoding our current release policy of 3 releases per
+year, with a major bump at the start of each year, and that dev/rc
+versions have micro >= 50.
 
-The third patch documents deletion logic that doesn't come into effect
-until the 10.1.0 release is out, so we shouldn't include that commit
-in 10.0.0. It can be applied after the following is reverted:
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ include/hw/boards.h | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-  commit c9fd2d9a48ee3c195cf83cc611b87b09f02f0013
-  Author: Daniel P. Berrangé <berrange@redhat.com>
-  Date:   Thu Jun 20 17:57:37 2024 +0100
-
-    include/hw: temporarily disable deletion of versioned machine types
-
-    The new deprecation and deletion policy for versioned machine types is
-    being introduced in QEMU 9.1.0.
-
-    Under the new policy a number of old machine types (any prior to 2.12)
-    would be liable for immediate deletion which would be a violation of our
-    historical deprecation and removal policy
-
-    Thus automatic deletions (by skipping QOM registration) are temporarily
-    gated on existance of the env variable "QEMU_DELETE_MACHINES" / QEMU
-    version number >= 10.1.0. This allows opt-in testing of the automatic
-    deletion logic, while activating it fully in QEMU >= 10.1.0.
-
-    This whole commit should be reverted in the 10.1.0 dev cycle or shortly
-    thereafter.
-
-Daniel P. Berrangé (4):
-  include/hw/boards: cope with dev/rc versions in deprecation checks
-  docs/about/deprecated: auto-generate a note for versioned machine
-    types
-  docs/about/removed-features: auto-generate a note for versioned
-    machine types
-  include/hw/boards: add warning about changing deprecation logic
-
- docs/about/deprecated.rst       |  7 ++++++
- docs/about/removed-features.rst | 10 +++++----
- docs/conf.py                    | 39 ++++++++++++++++++++++++++++++++-
- include/hw/boards.h             | 39 +++++++++++++++++++++++++++++++--
- 4 files changed, 88 insertions(+), 7 deletions(-)
-
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 9360d1ce39..dcfb251cbd 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -647,11 +647,42 @@ struct MachineState {
+     " years old are subject to deletion after " \
+     stringify(MACHINE_VER_DELETION_MAJOR) " years"
+ 
+-#define _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor) \
++#define _MACHINE_VER_IS_CURRENT_EXPIRED(cutoff, major, minor) \
+     (((QEMU_VERSION_MAJOR - major) > cutoff) || \
+      (((QEMU_VERSION_MAJOR - major) == cutoff) && \
+       (QEMU_VERSION_MINOR - minor) >= 0))
+ 
++#define _MACHINE_VER_IS_NEXT_MINOR_EXPIRED(cutoff, major, minor) \
++    (((QEMU_VERSION_MAJOR - major) > cutoff) || \
++     (((QEMU_VERSION_MAJOR - major) == cutoff) && \
++      ((QEMU_VERSION_MINOR + 1) - minor) >= 0))
++
++#define _MACHINE_VER_IS_NEXT_MAJOR_EXPIRED(cutoff, major, minor) \
++    ((((QEMU_VERSION_MAJOR + 1) - major) > cutoff) ||            \
++     ((((QEMU_VERSION_MAJOR + 1) - major) == cutoff) &&          \
++      (0 - minor) >= 0))
++
++/*
++ * - The first check applies to formal releases
++ * - The second check applies to dev snapshots / release candidates
++ *   where the next major version is the same.
++ *   e.g. 9.0.50, 9.1.50, 9.0.90, 9.1.90
++ * - The third check applies to dev snapshots / release candidates
++ *   where the next major version will change.
++ *   e.g. 9.2.50, 9.2.90
++ *
++ * NB: this assumes we do 3 minor releases per year, before bumping major,
++ * and dev snapshots / release candidates are numbered with micro >= 50
++ * If this ever changes the logic below will need modifying....
++ */
++#define _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor) \
++    ((QEMU_VERSION_MICRO < 50 && \
++      _MACHINE_VER_IS_CURRENT_EXPIRED(cutoff, major, minor)) || \
++     (QEMU_VERSION_MICRO >= 50 && QEMU_VERSION_MINOR < 2 && \
++      _MACHINE_VER_IS_NEXT_MINOR_EXPIRED(cutoff, major, minor)) || \
++     (QEMU_VERSION_MICRO >= 50 && QEMU_VERSION_MINOR == 2 && \
++      _MACHINE_VER_IS_NEXT_MAJOR_EXPIRED(cutoff, major, minor)))
++
+ #define _MACHINE_VER_IS_EXPIRED2(cutoff, major, minor) \
+     _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor)
+ #define _MACHINE_VER_IS_EXPIRED3(cutoff, major, minor, micro) \
 -- 
 2.47.1
 
