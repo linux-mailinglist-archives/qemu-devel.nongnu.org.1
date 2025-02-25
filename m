@@ -2,70 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF1DA438C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 10:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3EBA4398A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 10:32:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmquj-0004cF-Nj; Tue, 25 Feb 2025 04:07:41 -0500
+	id 1tmrHM-00019g-ND; Tue, 25 Feb 2025 04:31:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmquh-0004bd-Gw
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 04:07:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tmrHF-00019N-B9; Tue, 25 Feb 2025 04:30:57 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmquf-0001jA-E4
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 04:07:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740474455;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=I4FfhDXpMl0MdeuIKxaa92vCGojrGku0nUmG+DK9EpU=;
- b=XXYWZI9N9QU8qdNkYN3WtiLJSskGghljVXGi3jLRGCJ75wiuBy0Q7BzZkq5o4wlgea1MUn
- Wl8AowHiexfuBr+U6iQ+GxPnOH1ot/ww1btMdp40PcyPLgB4Q16G6hBIDvur88q3uTZYR7
- ILpQHi6nQW32AwNvP4sGcBXZQ3q84LM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-226--KS1Sq9SNYWe1OVKqrFujA-1; Tue,
- 25 Feb 2025 04:07:31 -0500
-X-MC-Unique: -KS1Sq9SNYWe1OVKqrFujA-1
-X-Mimecast-MFC-AGG-ID: -KS1Sq9SNYWe1OVKqrFujA_1740474450
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 937B71801A10; Tue, 25 Feb 2025 09:07:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.59])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC65E1955BD4; Tue, 25 Feb 2025 09:07:27 +0000 (UTC)
-Date: Tue, 25 Feb 2025 09:07:24 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Manish Mishra <manish.mishra@nutanix.com>
-Cc: qemu-devel@nongnu.org, leobras@redhat.com, peterx@redhat.com
-Subject: Re: [PATCH] QIOChannelSocket: Flush zerocopy socket error queue on
- ENOBUF failure for sendmsg
-Message-ID: <Z72ITCJlkz9711bU@redhat.com>
-References: <20250221094448.206845-1-manish.mishra@nutanix.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tmrHB-0004Ys-04; Tue, 25 Feb 2025 04:30:54 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A533CF1CC7;
+ Tue, 25 Feb 2025 12:30:21 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 172B61BE5D7;
+ Tue, 25 Feb 2025 12:30:47 +0300 (MSK)
+Message-ID: <f2a0b9d6-490a-41ca-91ec-1b3b7dcf9eac@tls.msk.ru>
+Date: Tue, 25 Feb 2025 12:30:47 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250221094448.206845-1-manish.mishra@nutanix.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] vdpa: Fix endian bugs in shadow virtqueue
+To: Konstantin Shkolnyy <kshk@linux.ibm.com>, eperezma@redhat.com
+Cc: mst@redhat.com, sgarzare@redhat.com, mjrosato@linux.ibm.com,
+ qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20250212164923.1971538-1-kshk@linux.ibm.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250212164923.1971538-1-kshk@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,182 +99,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 21, 2025 at 04:44:48AM -0500, Manish Mishra wrote:
-> We allocate extra metadata SKBs in case of zerocopy send. This metadata memory
-> is accounted for in the OPTMEM limit. If there is any error with sending
-> zerocopy data or if zerocopy was skipped, these metadata SKBs are queued in the
-> socket error queue. This error queue is freed when userspace reads it.
+12.02.2025 19:49, Konstantin Shkolnyy wrote:
+> VDPA didn't work on a big-endian machine due to missing/incorrect
+> CPU<->LE data format conversions.
 > 
-> Usually, if there are continuous failures, we merge the metadata into a single
-> SKB and free another one. However, if there is any out-of-order processing or
-> an intermittent zerocopy failures, this error chain can grow significantly,
-> exhausting the OPTMEM limit. As a result, all new sendmsg requests fail to
-> allocate any new SKB, leading to an ENOBUF error.
+> Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-IIUC, you are effectively saying that the migration code is calling
-qio_channel_write() too many times, before it calls qio_channel_flush(.)
+This looks like a qemu-stable material.
+Please let me know if it is not.
 
-Can you clarify what yu mean by the "OPTMEM limit" here ? I'm wondering
-if this is potentially triggered by suboptimal tuning of the deployment
-environment or we need to document tuning better. 
+Thanks,
 
-> To workaround this, if we encounter an ENOBUF error with a zerocopy sendmsg,
-> we flush the error queue and retry once more.
-> 
-> Signed-off-by: Manish Mishra <manish.mishra@nutanix.com>
-> ---
->  include/io/channel-socket.h |  1 +
->  io/channel-socket.c         | 52 ++++++++++++++++++++++++++++++++-----
->  2 files changed, 46 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/io/channel-socket.h b/include/io/channel-socket.h
-> index ab15577d38..6cfc66eb5b 100644
-> --- a/include/io/channel-socket.h
-> +++ b/include/io/channel-socket.h
-> @@ -49,6 +49,7 @@ struct QIOChannelSocket {
->      socklen_t remoteAddrLen;
->      ssize_t zero_copy_queued;
->      ssize_t zero_copy_sent;
-> +    bool new_zero_copy_sent_success;
->  };
->  
->  
-> diff --git a/io/channel-socket.c b/io/channel-socket.c
-> index 608bcf066e..c7f576290f 100644
-> --- a/io/channel-socket.c
-> +++ b/io/channel-socket.c
-> @@ -37,6 +37,11 @@
->  
->  #define SOCKET_MAX_FDS 16
->  
-> +#ifdef QEMU_MSG_ZEROCOPY
-> +static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-> +                                             Error **errp);
-> +#endif
-> +
->  SocketAddress *
->  qio_channel_socket_get_local_address(QIOChannelSocket *ioc,
->                                       Error **errp)
-> @@ -65,6 +70,7 @@ qio_channel_socket_new(void)
->      sioc->fd = -1;
->      sioc->zero_copy_queued = 0;
->      sioc->zero_copy_sent = 0;
-> +    sioc->new_zero_copy_sent_success = FALSE;
->  
->      ioc = QIO_CHANNEL(sioc);
->      qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
-> @@ -566,6 +572,7 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->      size_t fdsize = sizeof(int) * nfds;
->      struct cmsghdr *cmsg;
->      int sflags = 0;
-> +    bool zero_copy_flush_pending = TRUE;
->  
->      memset(control, 0, CMSG_SPACE(sizeof(int) * SOCKET_MAX_FDS));
->  
-> @@ -612,9 +619,21 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->              goto retry;
->          case ENOBUFS:
->              if (flags & QIO_CHANNEL_WRITE_FLAG_ZERO_COPY) {
-> -                error_setg_errno(errp, errno,
-> -                                 "Process can't lock enough memory for using MSG_ZEROCOPY");
-> -                return -1;
-> +                if (zero_copy_flush_pending) {
-> +                    ret = qio_channel_socket_flush_internal(ioc, errp);
-
-Calling this is problematic, because qio_channel_socket_flush is
-designed to block execution until all buffers are flushed. When
-ioc is in non-blocking mode, this breaks the required semantics
-of qio_channel_socket_writev which must return EAGAIN and not
-block.
-
-IOW, if we need to be able to flush at this point, we must be
-able to do a partial flush, rather than blocking on a full
-flush
-
-> +                    if (ret < 0) {
-> +                        error_setg_errno(errp, errno,
-> +                                         "Zerocopy flush failed");
-> +                        return -1;
-> +                    }
-> +                    zero_copy_flush_pending = FALSE;
-> +                    goto retry;
-> +                } else {
-> +                    error_setg_errno(errp, errno,
-> +                                     "Process can't lock enough memory for "
-> +                                     "using MSG_ZEROCOPY");
-> +                    return -1;
-> +                }
->              }
->              break;
->          }
-> @@ -725,8 +744,8 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->  
->  
->  #ifdef QEMU_MSG_ZEROCOPY
-> -static int qio_channel_socket_flush(QIOChannel *ioc,
-> -                                    Error **errp)
-> +static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-> +                                             Error **errp)
->  {
->      QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
->      struct msghdr msg = {};
-> @@ -791,15 +810,34 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
->          /* No errors, count successfully finished sendmsg()*/
->          sioc->zero_copy_sent += serr->ee_data - serr->ee_info + 1;
->  
-> -        /* If any sendmsg() succeeded using zero copy, return 0 at the end */
-> +        /* If any sendmsg() succeeded using zero copy, mark zerocopy success */
->          if (serr->ee_code != SO_EE_CODE_ZEROCOPY_COPIED) {
-> -            ret = 0;
-> +            sioc->new_zero_copy_sent_success = TRUE;
->          }
->      }
->  
->      return ret;
->  }
->  
-> +static int qio_channel_socket_flush(QIOChannel *ioc,
-> +                                    Error **errp)
-> +{
-> +    QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
-> +    int ret;
-> +
-> +    ret = qio_channel_socket_flush_internal(ioc, errp);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    if (sioc->new_zero_copy_sent_success) {
-> +        sioc->new_zero_copy_sent_success = FALSE;
-> +        ret = 0;
-> +    }
-> +
-> +    return ret;
-> +}
-
-I don't see the point in these changes adding new_zero_copy_sent_success.
-
-IIUC, you seem to be trying to make it so that qio_channel_socket_flush
-will return 0, if  qio_channel_socket_writev had called
-qio_channel_socket_flush_internal behind the scenes.
-That should already be working though, as the first thing we do in flush
-is to check if anything was pending and, if not, then return zero:
-
-    if (sioc->zero_copy_queued == sioc->zero_copy_sent) {
-        return 0;
-    }
-    ....do the real flush logic....
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+/mjt
 
