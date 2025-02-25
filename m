@@ -2,88 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F72EA44749
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 18:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADEDA44775
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 18:09:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmyJW-0000ZE-2l; Tue, 25 Feb 2025 12:01:46 -0500
+	id 1tmyQw-0006Gl-SL; Tue, 25 Feb 2025 12:09:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmyIv-0000BT-Nl
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:01:14 -0500
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmyIt-0001kd-2F
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:01:09 -0500
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-e5dcc3b0c77so4748744276.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 09:01:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740502865; x=1741107665; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M4dFCZW/85o9V/rsJaCHCE4r6BgNo9NPVq5fNOazp5M=;
- b=Whhrkh0iQc5IbFbG4QL8k3X04h5ga58ns8LR0kHB01ZH2lGSGLje9bTVlxSV30IxQ4
- vOGT9AvAPH6euErFMYgtKg49Ui0px27rcyX3kRicAoennnO+FufqLrV569JiqIXQehTR
- HbfN4p9jdIRuYrKBT1YwCN/KstVbEGcT/4p5KO63qJowI7E+7CG4oD8zK+DUjpmLGLQ+
- gKRem35XWM/74+8PC2HAh1AJgTASd5lmLFl6Tbr9IvZ1QB40C0BgcsGQ8UPaEZP1BS/C
- VElnvMpeVpOGN8EN6hXCCTStNP16RmozD381hWlEoZ32KqTzXy87NSnoEqQETHtqdyaL
- VQ4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740502865; x=1741107665;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=M4dFCZW/85o9V/rsJaCHCE4r6BgNo9NPVq5fNOazp5M=;
- b=E/zmySFgiSClyHHbeXd9834qZUA+rQvI2yVk0KcHmaiURMq2HhfP/w0OCDu0pXJ69r
- 2vkbKYCD/cErwpM9k4QQsSXquK1M7kMaaw3FitqzuIByd2D1m2pifEnck30MluAApNWM
- ysEmmdbAmWuAuHty5+cFm5JEfnjU5tjEDpjRCXNeSlNuQTFGp6Z1Vb7so6doakCSTbea
- C0FRIRPn6pD6R/KdvBpmVAU/jgDJ1ycaTbEIN2/UwWbhHhLnGVc7re44awJbvj4jDK+r
- PyvnOLpFMr4peFR4RX2CRHSefIJZr2kERSSeCxOpXCJoETyMQxZGdngeoF/WVo5APsxs
- F9Kg==
-X-Gm-Message-State: AOJu0YyolcGhMCmrqJAXOycCZYOEHkX24ymOKzP7OczhN0FrRCb9xdOd
- GDyOgQSPQsOvgAqnijzWPcG+H0OKEH6oU1GMT2HhjwH0ZkbZZgA3ARrZtCU8N4h8ksKat+OdUqF
- zpZKdIR0/iKZlNEOy/7iyJSKWij5iGf5Es1h6UQ==
-X-Gm-Gg: ASbGncsXnis4Q/ZkddWw9jaFAhMTHTZfldnYDbhgYUSt+/txXoIavVTbNOQja0raq2G
- BA9ZkWOedOKfAKcdq57fGk1z1TGBKBeNHQnbIQYpC98xjlrFFMkDDI6S4KXMMqH6pyeqq8cW62K
- WmbxKKH/1J
-X-Google-Smtp-Source: AGHT+IHln0UQewWfW8UTd9u+c3TWUqz/P434K/Elnot2g2l4VdJGk0x4aLPMPv7+kGVBhe7DFV06gwBOM5GcjEtvT8Y=
-X-Received: by 2002:a05:6902:2484:b0:e5d:c5f3:13e1 with SMTP id
- 3f1490d57ef6-e608a808b2fmr174338276.35.1740502864897; Tue, 25 Feb 2025
- 09:01:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1tmyQh-0006ES-Js
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:09:13 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1tmyQa-0002qv-Ek
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:09:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1740503338; bh=l4JP5th9g145iEpWQLMTjmwRHP7Mtsq0YD+kn4LEmJs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=gAvy06kjmD0k7CyFIbeYHHL1GfdgNceXoJMRmYS/slJ1g1C0USyAiGvkeUT+0tylz
+ 6p0DE4IrSSkNmtkilfYPVGjZTxNtLJuK8bEvGWOkc8pnizMBInyWVROkAeTqc8uSqz
+ IuM3m4BeMqMXBeg7yWjc0EzPpdOKSDxyFrmB/Z/s=
+Date: Tue, 25 Feb 2025 07:41:06 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH] linux-user/riscv: Disable unsupported SA_RESTORER
+Message-ID: <020224cc-1b24-4124-926e-26643c528c90@t-8ch.de>
+References: <20250202-riscv-sa-restorer-v1-1-6f4bf814a1dd@t-8ch.de>
+ <CAKmqyKMeK8uAdkL+DNWODMnSiBMUQh_jkwe5ryn=q1pqZmnHMA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250223114708.1780-1-shentey@gmail.com>
- <20250223114708.1780-5-shentey@gmail.com>
- <CAFEAcA_XJfAVEe3cgHiXgcewTL3kF3SEevrnMh-Edvfk56G6sQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA_XJfAVEe3cgHiXgcewTL3kF3SEevrnMh-Edvfk56G6sQ@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Feb 2025 17:00:53 +0000
-X-Gm-Features: AWEUYZmeg4enO--jZ7xJfwSMhYUOdjuW8NkTogc9tup8QtGuBS-XNQ-uQG3NQFE
-Message-ID: <CAFEAcA9e5FBrKLZrKRsw=wPThbwx3+gyVt9rv4_vx9OKfZ8qiQ@mail.gmail.com>
-Subject: Re: [PATCH v2 04/18] hw/arm: Add i.MX 8M Plus EVK board
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Andrey Smirnov <andrew.smirnov@gmail.com>,
- Fabiano Rosas <farosas@suse.de>, Alistair Francis <alistair@alistair23.me>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKMeK8uAdkL+DNWODMnSiBMUQh_jkwe5ryn=q1pqZmnHMA@mail.gmail.com>
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,34 +58,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Feb 2025 at 15:42, Peter Maydell <peter.maydell@linaro.org> wrot=
-e:
-> The C compiler for the OpenSUSE CI job doesn't seem to like this:
-> https://gitlab.com/pm215/qemu/-/jobs/9239416833
->
-> ../hw/arm/fsl-imx8mp.c: In function =E2=80=98fsl_imx8mp_realize=E2=80=99:
-> ../hw/arm/fsl-imx8mp.c:382:15: error: initializer element is not constant
->              { fsl_imx8mp_memmap[FSL_IMX8MP_UART1].addr, FSL_IMX8MP_UART1=
-_IRQ },
->                ^~~~~~~~~~~~~~~~~
-> ../hw/arm/fsl-imx8mp.c:382:15: note: (near initialization for
-> =E2=80=98serial_table[0].addr=E2=80=99)
-> ../hw/arm/fsl-imx8mp.c:383:15: error: initializer element is not constant
->              { fsl_imx8mp_memmap[FSL_IMX8MP_UART2].addr, FSL_IMX8MP_UART2=
-_IRQ },
->                ^~~~~~~~~~~~~~~~~
->
-> This is (gcc 7.5.0 "cc (SUSE Linux) 7.5.0") apparently. That's
-> a pretty old compiler, only just within the bounds of our
-> version requirements (which are 7.4 or better), so I'm guessing
-> it's just not as smart about figuring out that the
-> initializer here really is a constant value.
->
-> I'll fix this up by dropping the "const" from the serial_table[]
-> etc definitions.
+Hi Alistair,
 
-More specifically, you have to drop 'static const', leaving just 'struct'.
-Minimal repro: https://godbolt.org/z/5css4hv67
+On 2025-02-24 14:10:19+1000, Alistair Francis wrote:
+> On Mon, Feb 3, 2025 at 8:58 AM Thomas Weißschuh <thomas@t-8ch.de> wrote:
+> >
+> > Linux on riscv does not support SA_RESTORER.
+> > Currently QEMU thinks there is a field 'sa_restorer' in the middle of
+> > 'struct sigaction' which does not actually exist.
+> > This leads to corrupted data and out-of-bounds accesses.
+> >
+> > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+> 
+> Thanks!
+> 
+> Applied to riscv-to-apply.next
 
--- PMM
+Thanks, however this got superseded by Andreas Schwab's better
+"linux-user: Move TARGET_SA_RESTORER out of generic/signal.h".
+
+Could you drop it again?
+
+[0] https://lore.kernel.org/qemu-devel/mvmed060xc9.fsf@suse.de/
 
