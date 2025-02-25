@@ -2,70 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1088A43229
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 01:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B7A4322F
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 02:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmjEW-0003AU-Vx; Mon, 24 Feb 2025 19:55:37 -0500
+	id 1tmjIs-00083k-5D; Mon, 24 Feb 2025 20:00:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE9-00031c-3e; Mon, 24 Feb 2025 19:55:14 -0500
-Received: from dedi548.your-server.de ([85.10.215.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE6-0004qL-6g; Mon, 24 Feb 2025 19:55:12 -0500
-Received: from sslproxy05.your-server.de ([78.46.172.2])
- by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE4-000HPj-1o; Tue, 25 Feb 2025 01:55:08 +0100
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy05.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tmjE4-0009qK-2F; Tue, 25 Feb 2025 01:55:08 +0100
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id C341C48005D;
- Tue, 25 Feb 2025 01:55:07 +0100 (CET)
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id hg3HWs0rej5Q; Tue, 25 Feb 2025 01:55:07 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 4848E48005B;
- Tue, 25 Feb 2025 01:55:07 +0100 (CET)
-X-Virus-Scanned: amavis at zimbra.eb.localhost
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id E_aU0qZ5NuuB; Tue, 25 Feb 2025 01:55:07 +0100 (CET)
-Received: from zimbra.eb.localhost (unknown [10.10.171.10])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 95A9C48005D;
- Tue, 25 Feb 2025 01:55:05 +0100 (CET)
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair23@gmail.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH v2 6/6] hw/riscv: microchip_pfsoc: Rework documentation
-Date: Tue, 25 Feb 2025 01:54:46 +0100
-Message-ID: <20250225005446.13894-7-sebastian.huber@embedded-brains.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
-References: <20250225005446.13894-1-sebastian.huber@embedded-brains.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tmjIg-000835-Ut
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:59:56 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tmjIa-0005Cz-AO
+ for qemu-devel@nongnu.org; Mon, 24 Feb 2025 19:59:54 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2fbfc9ff0b9so7834088a91.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Feb 2025 16:59:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1740445186; x=1741049986; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J1zfBDm/UrYqM7GCBIGft4UEiJEMBd40pAwLkzY07h0=;
+ b=D6E19g4GsBpDBV2H/ClGrQlKW/qSn5jpA802iN7C8A/SXuhGoY6sGI0FR35RNodhpu
+ XbIJh8aMAM7En4gTcqMjNaHv0j6pn3qldndGOq6RQrg7LlBpPJkZGQ674koyGHGYLxoE
+ 0C5Dz+jd9s1z/v2B8jEesgojvxFadfT2EIv/QF9e7EtwpGpuWxNoF5ISG/MstFjYQe0G
+ Ke00NUFozC0qCo1lnCSrlfvEl8gvLcMYvmI6AqbQi/vh0hGVgrnPOobZf+RwysinzArq
+ NtknG8JDcHpsUIMbUwT7teMNEpq8PBkSg3IIQouAotdiVOhIt6BGZivgKVM4JX4FhCg2
+ jbig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740445186; x=1741049986;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J1zfBDm/UrYqM7GCBIGft4UEiJEMBd40pAwLkzY07h0=;
+ b=WflPoaZneDdEnTybSnRUruN3g17y22lnZ7OpuRx5ABO+ORq/7gj5Pr/H/FEt6sOZml
+ wu8YQXxhX1CnjCY2outg5PCXoFjGnJmO43+8nlBIrdik/MXu/SAVUeRP7wqH5lSzKTk2
+ TsA/WwNIKHHNqSyChgCty7qJBToObEfvMyesHGi5wgWkIOgZpO7azx96duQRSGJbaxzw
+ oAwGcdOJoBtrV+eT2oXCh0wOyly2yl1npMpsmBOPB22HSoOfKL7iC0BN7WaeWpSb+VTp
+ db+xhNmmKl+0Nz0vbV9kM2hthxNmDbkZedMRWHN7cDp/bM/DlGJx2UV/YuSPA7VWIj0u
+ AygQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVkDz76XyCyIx/2EhW6viPZ1YSvKVWfwyiQ74iEGhM/mORK86k1fof/Z4rxqhI4olKePJ9qno8tBOeA@nongnu.org
+X-Gm-Message-State: AOJu0Yxb9sMfyvQEBU3wT0j7W4DBInoC0TumaF4Tu3ZcNdw1klAiUnWc
+ bbBwZ/Eaym+ZdJYCgRdVbyhaeBqsLQNm0mUp7bF0E3DCtUvFa7nNHj2+TDIpwoyinGpYe2lv4aU
+ tlAuhPg==
+X-Gm-Gg: ASbGncvmjLJ2uai4AUXFGpZLMUwKM7DAGWrjMba7MmDqXuFFv8mXJJVZx6blb7sp7Ow
+ SnL/PTBRN3bvdtTvivdFBvycph4/n3pHCKtp3yqI6nGtcFBP3d0yMrdi2ai3PYyxMgvEzKe0eRy
+ jIA0lAWcNaWAvlIrdx7zxrZaXkb9ZBntOa1TF1qdA3r/bT+JYnUuetcrj6mGdGbRuoDgM/2KWcy
+ +cU6m6xqvZ7S77/WVBrtLYiUi4EMIWojjuDBPfSNokiGXcOXqelp+7KNdTBqWYPh9UXec3EzmMB
+ DNTQNAZwXgpX65BvEAZJ+wzNfkF92zZNndc+wF4=
+X-Google-Smtp-Source: AGHT+IGvDVQH3tkxqcC5RMkqYhwc1nAbgKK0VJLYN1lBYFllez0JFj6BdUx76OsOXmDgZHMsyXb9Aw==
+X-Received: by 2002:a17:90b:280c:b0:2ee:5bc9:75c7 with SMTP id
+ 98e67ed59e1d1-2fe68ac9330mr1934145a91.5.1740445186070; 
+ Mon, 24 Feb 2025 16:59:46 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2fe6dec6dc2sm52341a91.1.2025.02.24.16.59.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Feb 2025 16:59:45 -0800 (PST)
+Message-ID: <30a35e73-2f72-4e1c-b38f-c744b6884706@linaro.org>
+Date: Mon, 24 Feb 2025 16:59:44 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: smtp-embedded@poldi-networks.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27559/Mon Feb 24 10:44:14 2025)
-Received-SPF: pass client-ip=85.10.215.148;
- envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: Building QEMU as a Shared Library
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: "amir.gonnen@neuroblade.ai" <amir.gonnen@neuroblade.ai>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Saanjh Sengupta <saanjhsengupta@outlook.com>
+References: <PS2P216MB1388380FEF72AF5916FD9B59CCC62@PS2P216MB1388.KORP216.PROD.OUTLOOK.COM>
+ <befaccff-5885-4e8d-a397-29df6cdaa7d9@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Language: en-US
+In-Reply-To: <befaccff-5885-4e8d-a397-29df6cdaa7d9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,225 +106,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mention that running the HSS no longer works.  Document the changed boot
-options.  Reorder documentation blocks.  Update URLs.
-
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
----
- docs/system/riscv/microchip-icicle-kit.rst | 124 +++++++--------------
- 1 file changed, 43 insertions(+), 81 deletions(-)
-
-diff --git a/docs/system/riscv/microchip-icicle-kit.rst b/docs/system/ris=
-cv/microchip-icicle-kit.rst
-index 40798b1aae..9809e94b84 100644
---- a/docs/system/riscv/microchip-icicle-kit.rst
-+++ b/docs/system/riscv/microchip-icicle-kit.rst
-@@ -5,10 +5,10 @@ Microchip PolarFire SoC Icicle Kit integrates a PolarFi=
-re SoC, with one
- SiFive's E51 plus four U54 cores and many on-chip peripherals and an FPG=
-A.
-=20
- For more details about Microchip PolarFire SoC, please see:
--https://www.microsemi.com/product-directory/soc-fpgas/5498-polarfire-soc=
--fpga
-+https://www.microchip.com/en-us/products/fpgas-and-plds/system-on-chip-f=
-pgas/polarfire-soc-fpgas
-=20
- The Icicle Kit board information can be found here:
--https://www.microsemi.com/existing-parts/parts/152514
-+https://www.microchip.com/en-us/development-tool/mpfs-icicle-kit-es
-=20
- Supported devices
- -----------------
-@@ -26,95 +26,48 @@ The ``microchip-icicle-kit`` machine supports the fol=
-lowing devices:
- * 2 GEM Ethernet controllers
- * 1 SDHC storage controller
-=20
-+The memory is set to 1537 MiB by default.  A sanity check on RAM size is
-+performed in the machine init routine to prompt user to increase the RAM=
- size
-+to > 1537 MiB when less than 1537 MiB RAM is detected.
-+
- Boot options
- ------------
-=20
--The ``microchip-icicle-kit`` machine can start using the standard -bios
--functionality for loading its BIOS image, aka Hart Software Services (HS=
-S_).
--HSS loads the second stage bootloader U-Boot from an SD card. Then a ker=
-nel
--can be loaded from U-Boot. It also supports direct kernel booting via th=
-e
---kernel option along with the device tree blob via -dtb. When direct ker=
-nel
--boot is used, the OpenSBI fw_dynamic BIOS image is used to boot a payloa=
-d
--like U-Boot or OS kernel directly.
--
--The user provided DTB should have the following requirements:
--
--* The /cpus node should contain at least one subnode for E51 and the num=
-ber
--  of subnodes should match QEMU's ``-smp`` option
--* The /memory reg size should match QEMU=E2=80=99s selected ram_size via=
- ``-m``
--* Should contain a node for the CLINT device with a compatible string
--  "riscv,clint0"
--
--QEMU follows below truth table to select which payload to execute:
--
--=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D =3D=3D=3D=3D=3D=3D=3D
---bios    -kernel       -dtb payload
--=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D =3D=3D=3D=3D=3D=3D=3D
--    N          N don't care     HSS
--    Y don't care don't care     HSS
--    N          Y          Y  kernel
--=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D =3D=3D=3D=3D=3D=3D=3D
--
--The memory is set to 1537 MiB by default which is the minimum required h=
-igh
--memory size by HSS. A sanity check on ram size is performed in the machi=
-ne
--init routine to prompt user to increase the RAM size to > 1537 MiB when =
-less
--than 1537 MiB ram is detected.
--
--Running HSS
-------------
--
--HSS 2020.12 release is tested at the time of writing. To build an HSS im=
-age
--that can be booted by the ``microchip-icicle-kit`` machine, type the fol=
-lowing
--in the HSS source tree:
--
--.. code-block:: bash
--
--  $ export CROSS_COMPILE=3Driscv64-linux-
--  $ cp boards/mpfs-icicle-kit-es/def_config .config
--  $ make BOARD=3Dmpfs-icicle-kit-es
--
--Download the official SD card image released by Microchip and prepare it=
- for
--QEMU usage:
--
--.. code-block:: bash
--
--  $ wget ftp://ftpsoc.microsemi.com/outgoing/core-image-minimal-dev-icic=
-le-kit-es-sd-20201009141623.rootfs.wic.gz
--  $ gunzip core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs=
-.wic.gz
--  $ qemu-img resize core-image-minimal-dev-icicle-kit-es-sd-202010091416=
-23.rootfs.wic 4G
--
--Then we can boot the machine by:
--
--.. code-block:: bash
--
--  $ qemu-system-riscv64 -M microchip-icicle-kit -smp 5 \
--      -bios path/to/hss.bin -sd path/to/sdcard.img \
--      -nic user,model=3Dcadence_gem \
--      -nic tap,ifname=3Dtap,model=3Dcadence_gem,script=3Dno \
--      -display none -serial stdio \
--      -chardev socket,id=3Dserial1,path=3Dserial1.sock,server=3Don,wait=3D=
-on \
--      -serial chardev:serial1
-+The ``microchip-icicle-kit`` machine provides some options to run a firm=
-ware
-+(BIOS) or a kernel image.  QEMU follows below truth table to select the
-+firmware:
-=20
--With above command line, current terminal session will be used for the f=
-irst
--serial port. Open another terminal window, and use ``minicom`` to connec=
-t the
--second serial port.
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+-bios          -kernel    firmware
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+none                    N this is an error
-+none                    Y the kernel image
-+NULL, default           N hss.bin
-+NULL, default           Y opensbi-riscv64-generic-fw_dynamic.bin
-+other          don't care the BIOS image
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-=20
--.. code-block:: bash
-+Direct Kernel Boot
-+------------------
-=20
--  $ minicom -D unix\#serial1.sock
-+Use the ``-kernel`` option to directly run a kernel image.  When a direc=
-t
-+kernel boot is requested, a device tree blob may be specified via the ``=
--dtb``
-+option.  Unlike other QEMU machines, this machine does not generate a de=
-vice
-+tree for the kernel.  It shall be provided by the user.  The user provid=
-ed DTB
-+should meet the following requirements:
-=20
--HSS output is on the first serial port (stdio) and U-Boot outputs on the
--second serial port. U-Boot will automatically load the Linux kernel from
--the SD card image.
-+* The ``/cpus`` node should contain at least one subnode for E51 and the=
- number
-+  of subnodes should match QEMU's ``-smp`` option.
-=20
--Direct Kernel Boot
--------------------
-+* The ``/memory`` reg size should match QEMU=E2=80=99s selected RAM size=
- via the ``-m``
-+  option.
-=20
--Sometimes we just want to test booting a new kernel, and transforming th=
-e
--kernel image to the format required by the HSS bootflow is tedious. We c=
-an
--use '-kernel' for direct kernel booting just like other RISC-V machines =
-do.
-+* It should contain a node for the CLINT device with a compatible string
-+  "riscv,clint0".
-=20
--In this mode, the OpenSBI fw_dynamic BIOS image for 'generic' platform i=
-s
--used to boot an S-mode payload like U-Boot or OS kernel directly.
-+When ``-bios`` is not specified or set to ``default``, the OpenSBI
-+``fw_dynamic`` BIOS image for the ``generic`` platform is used to boot a=
-n
-+S-mode payload like U-Boot or OS kernel directly.
-=20
- For example, the following commands show building a U-Boot image from U-=
-Boot
- mainline v2021.07 for the Microchip Icicle Kit board:
-@@ -146,4 +99,13 @@ CAVEATS:
-   ``u-boot.bin`` has to be used which does contain one. To use the ELF i=
-mage,
-   we need to change to CONFIG_OF_EMBED or CONFIG_OF_PRIOR_STAGE.
-=20
-+Running HSS
-+-----------
-+
-+The machine ``microchip-icicle-kit`` used to run the Hart Software Servi=
-ces
-+(HSS_), however, the HSS development progressed and the QEMU machine
-+implementation lacks behind.  Currently, running the HSS no longer works=
-.
-+There is missing support in the clock and memory controller devices.  In
-+particular, reading from the SD card does not work.
-+
- .. _HSS: https://github.com/polarfire-soc/hart-software-services
---=20
-2.43.0
-
+SGkgU2FhbmpoLA0KDQpoZXJlIGlzIGEgbWluaW1hbCBwYXRjaCB0aGF0IGJ1aWxkcyBvbmUg
+c2hhcmVkIGxpYnJhcnkgcGVyIHRhcmdldCAoYXJjaCwgDQptb2RlKSB3aGVyZSBhcmNoIGlz
+IGNwdSBhcmNoLCBhbmQgbW9kZSBpcyBzeXN0ZW0gb3IgdXNlciwgYW5kIGxhdW5jaCANCnN5
+c3RlbS1hYXJjaDY0IHRocm91Z2ggYSBzaW1wbGUgZHJpdmVyOg0KDQpodHRwczovL2dpdGh1
+Yi5jb20vcGJvLWxpbmFyby9xZW11L2NvbW1pdC9mYmIzOWNjNjRmNzdkNGJmMWU1ZTUwNzk1
+Yzc1YjYyNzM1YmY1YzVmDQoNCldpdGggdGhpcywgaXQgY291bGQgYmUgcG9zc2libGUgdG8g
+Y3JlYXRlIGEgZHJpdmVyIHRoYXQgY2FuIGV4ZWN1dGUgYW55IA0KZXhpc3RpbmcgdGFyZ2V0
+LiBJdCdzIGEgc29ydCBvZiBzaW5nbGUgYmluYXJ5IGZvciBRRU1VLCBidXQgc2hhcmVkIA0K
+b2JqZWN0cyBhcmUgbWFuZGF0b3J5LCBhbmQgZHVwbGljYXRlcyBhbGwgdGhlIFFFTVUgc3Rh
+dGUuIFNvIHRoZXJlIGlzIG5vIA0KcmVhbCBiZW5lZml0IGNvbXBhcmVkIHRvIGhhdmluZyBk
+aWZmZXJlbnQgcHJvY2Vzc2VzLg0KDQpJbiBtb3JlLCB0byBiZSBhYmxlIHRvIGRvIGNvbmN1
+cnJlbnQgZW11bGF0aW9ucywgdGhlcmUgYXJlIG11Y2ggbW9yZSANCnByb2JsZW1zIHRvIGJl
+IHNvbHZlZC4gUUVNVSBzdGF0ZSBpcyBjb3JyZWN0bHkga2VwdCBwZXIgdGFyZ2V0LCBidXQg
+YWxsIA0Kb3RoZXIgbGlicmFyaWVzIHN0YXRlcyBhcmUgc2hhcmVkLiBUaGVyZSBhcmUgdmFy
+aW91cyBpc3N1ZXMgaWYgeW91IA0KbGF1bmNoIHR3byBlbXVsYXRpb25zIGF0IHRoZSBzYW1l
+IHRpbWUgaW4gdHdvIHRocmVhZHM6DQotIGdsaWIgZ2xvYmFsIGNvbnRleHQNCi0gcWVtdSBj
+YWxscyBleGl0IGluIG1hbnkgcGxhY2VzLCB3aGljaCBzdG9wcyB0aGUgd2hvbGUgcHJvY2Vz
+cw0KLSBwcm9iYWJseSBvdGhlciB0aGluZ3MgSSBkaWRuJ3QgZXhwbG9yZQ0KDQpBdCB0aGlz
+IHBvaW50LCBldmVuIHRob3VnaCBxZW11IHRhcmdldHMgY2FuIGJlIGJ1aWx0IGFzIHNoYXJl
+ZCBvYmplY3RzLCANCkkgd291bGQgcmVjb21tZW5kIHRvIHVzZSBkaWZmZXJlbnQgcHJvY2Vz
+c2VzLCBhbmQgaW1wbGVtZW50IHNvbWUgZm9ybSBvbiANCklQQyB0byBzeW5jaHJvbml6ZSBh
+bGwgdGhpcy4NCkFub3RoZXIgcG9zc2liaWxpdHkgaXMgdG8gdHJ5IHRvIGJ1aWxkIG1hY2hp
+bmVzIHdpdGhvdXQgdXNpbmcgdGhlIA0KZXhpc3RpbmcgbWFpbiwgYnV0IEknbSBub3Qgc3Vy
+ZSBpdCdzIHdvcnRoIGFsbCB0aGUgaGFzc2xlLg0KDQpXaGF0IGFyZSB5b3UgdHJ5aW5nIHRv
+IGFjaGlldmU/DQoNClJlZ2FyZHMsDQpQaWVycmljaw0KDQpPbiAyLzI0LzI1IDAxOjEwLCBQ
+aGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gQ2MnaW5nIG91ciBtZXNvbiBleHBl
+cnRzDQo+IA0KPiBPbiAyMi8yLzI1IDE0OjM2LCBTYWFuamggU2VuZ3VwdGEgd3JvdGU6DQo+
+PiBIaSwNCj4+DQo+PiBJIHJlZmVycmVkIHRvIHlvdXIgbWFpbGluZyBjaGFpbnMgb24gc3Vn
+Z2VzdGluZyBRRU1VIHRvIGJlIGJ1aWx0IGFzIGENCj4+IHNoYXJlZCBsaWJyYXJ5Lg0KPj4N
+Cj4+ICpDaGFuZ2UgbWVzb24uYnVpbGQgdG8gYnVpbGQgUUVNVSBhcyBhIHNoYXJlZCBsaWJy
+YXJ5ICh3aXRoIFBJQyBlbmFibGVkDQo+PiBmb3Igc3RhdGljIGxpYnJhcmllcykqDQo+PiAq
+DQo+PiAqDQo+PiBDb3VsZCB5b3UgcGxlYXNlIHN1Z2dlc3Qgd2hhdCBleGFjdGx5IGhhcyB0
+byBiZSBlbmFibGVkIGluIHRoZSBtZXNvbi5idWlsZD8NCj4+DQo+PiBJIGFtIGNvbmZ1c2Vk
+IG9uIHRoYXQgZnJvbnQuDQo+Pg0KPj4gUmVnYXJkcw0KPj4gU2FhbmpoIFNlbmd1cHRhDQo+
+IA0KDQo=
 
