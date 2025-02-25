@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348D2A44234
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 15:16:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21942A44270
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 15:20:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmvia-0007NN-SN; Tue, 25 Feb 2025 09:15:28 -0500
+	id 1tmvnI-0005u0-Ix; Tue, 25 Feb 2025 09:20:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmviS-0007Kr-LO
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:15:23 -0500
-Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ id 1tmvmz-0005pB-Mu
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:20:15 -0500
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmviR-0006Wq-2v
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:15:20 -0500
-Received: by mail-yw1-x1135.google.com with SMTP id
- 00721157ae682-6ef7c9e9592so46625947b3.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 06:15:17 -0800 (PST)
+ id 1tmvmm-00076v-1p
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:19:57 -0500
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-6fb73240988so36960177b3.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 06:19:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740492916; x=1741097716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740493180; x=1741097980; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Vz0ABdgSxp6SALma5ub9VzcI6UoyNasetIN7p0P5FA4=;
- b=bDD0Wvdy41qF1esrU6aDHv2k/x39DeOB3ZeNxiUB4GUmBuDCfLMehyCYKeZMO1HpVh
- hPBakGtVMFMGTTKmgHacw5WbrMozZOpxGqP/ue5xhXGOxpsyFN/K6x3uUl5a5jJ76A2/
- J6pOaruzWtrs4nCvap/hy4EpbKsesglIA4nxrRYSTqKqGsNGchjg5rm+nNTeJhIL4NR1
- qyAjTltOVqlCSnkJrME+T2kPPBwn4b26EJ4G+LO2XCkx3BjNa1oJX1p/8rO5oJwiJkM6
- dvxXR7zlOvkjIHGYkkRhEReDjGm+YAeRaqc2+bJOnglndDiyWxKDj3vmHha6qN0TEI5M
- e+0A==
+ bh=Y/5EpwWbz1TsNvc/h4VPdcsoE/3Ja0cJXiJhf1wslL0=;
+ b=JLQ0mVc+m+fpVuBk6KX56txEV3KPefYpaY8lhfepufaTEDixODnTQSib1EOQOQogzg
+ AGpSTXGijSobV5oNv33f5k0wZu6h7rRjekVe71Rh+zYDZwgpnVGjFVtg/jdXin7FRA/j
+ iLCzoHGVCvPD5EwOLEy5vAtnNw8EgXjgtSCxz21949PMrRzBv4yyB8+0ITHHW/vNbmX2
+ +jeRKoJt6VzthK4zeTb2nBg5ZtfXlB3YP2Iq7j7A04dBPK1GpmaJlCvYDHVdx72bHwsR
+ zkAM/sRCOF1zP4phn2yYVN6kWJL+/DTsGGn4YBpRFoQE4MR3RK4gIR9cUkRC5e0csR+z
+ fJ7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740492916; x=1741097716;
+ d=1e100.net; s=20230601; t=1740493180; x=1741097980;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Vz0ABdgSxp6SALma5ub9VzcI6UoyNasetIN7p0P5FA4=;
- b=rK52PrjEY/8EIhJylrDX4k9gNgB+mAyK2wHz3YTSkoW61iEjPQNrt5+0g3QW9Zo6l4
- uOjTt5I6vvqvCLwYQKCJs4ObFO0VRUSEEkmdphD8aPZ+izGQxedJTijxRunH7A/ZGNKL
- h+ol7DK10F8jxOA1G7MNCI2zIawHBy0aX978Y/NCmoxdX2KGpDEWL64+Fu6cvEXAwl5v
- wLELlzcXczEblPg8IL4EQU6Z6WNpW7YcbTTJJ/jipCjExlHqY0BWwXngtOL8TlvGgtFY
- CNRAXjTCqeRy39kHhx615m464N0DJOpuPtNET2IRSXVQymEk4IPc2rEJbclod1kyekSe
- 9bOg==
-X-Gm-Message-State: AOJu0YxJr6wiRmhQAwttIt53c5oErTBhAbvzX8D+74BBGcpZ1WB/dVXk
- PugngvkVbVqZiVYK+qscEJBFR+hEksVJT6rmwsmLKRtORYqf/1dKbrTCzhpm1AekjKvdn8jdu3R
- oRSxKKtKeMpI6LlnZqNfrqOoPz1ulbDa9Zuomcw==
-X-Gm-Gg: ASbGnct4ilsKCulwrmGS87K83RYMewPSJTNSWIAOvDxozbexcejxz9mjkhp7TM15Yph
- 41dqB4dZOOYjW9X9RTgFF0ALNt3jTaZCt+xCY6qll7KWkJrICh/WoSfc99h7hlLbmRyzODkwSKZ
- BofEQj+hxQ
-X-Google-Smtp-Source: AGHT+IHK1FvgAwdJHSXeZZYwFyqJmdcB5CJdXLBMNVzjtw0CJWF8q2erqyOaXTwH6aILmiPQLe+tJFIKj2IyRXhB1xM=
-X-Received: by 2002:a05:690c:6912:b0:6f9:88f2:b8d with SMTP id
- 00721157ae682-6fd109e6973mr28813827b3.11.1740492916301; Tue, 25 Feb 2025
- 06:15:16 -0800 (PST)
+ bh=Y/5EpwWbz1TsNvc/h4VPdcsoE/3Ja0cJXiJhf1wslL0=;
+ b=jOfoNLHufQURbgTWxvcjZAWcqMyPLZms+/yUf2gcr8jhjSDftypeKjlWjt4706N32O
+ jJ6avRvKDJnfjQW01HpViCBNIr5Ujh9xC/+mTN4ChuAiHfwOKO/zNakQ+DoTrTd6qRMd
+ r/UR91VykIRyhH2/pieZwoa5CuWD419TmAoyMQScjbg/+6VddDJsBybSdbuIjADGEUMz
+ DlCMOUSnHyxGOarku+ctOzfn4nfH94EssPeSc7ojznZoW0FRm61971mxAFZQekqGmGql
+ ifj5d/pEI/ndxcTuGgxhlc4yYtLcRX39nQWArQ1zjajfGHRCXFhI14DMeFCcI3lEY5SM
+ Jv1Q==
+X-Gm-Message-State: AOJu0Yx59ffmd8+L+z/unIK8Bxoc5+gDkecmhgESCvpp4BtkhAisVbIz
+ YIpW3gT7uOBV1tfBXsWTXLM5Ol6njR7xJnrxMuVUxTsw3/n8teGlVejq/G2gQHBTZf7fe4AWEmI
+ OUpTfMup6Vh9+mtQ2//gqlB6tgkpcr2+55dxMjA==
+X-Gm-Gg: ASbGncs37+SVAa6qKesGfVOMK1O2YtTOvHWvjtN85OOMapbHfmH408VACRUxpqw9YEs
+ XlIhMPtJKAwFwb7/SznLkKdH2SEBaLO1QKwyD2NQnsCtraZn0t2sJ3ZnryNtYH7kDPvP1pvXmri
+ GgqOPkLEN7
+X-Google-Smtp-Source: AGHT+IEnuhA3euBFugdkJxI2MlLSR6MnBGzJc/PcbnmnkzqiqGbWEOsuuA+YDoGLtcOxy2I0HWAfiOnozdlY5eKb1/I=
+X-Received: by 2002:a05:690c:67ca:b0:6fb:47d8:79ba with SMTP id
+ 00721157ae682-6fbcc23b1b4mr151642087b3.16.1740493179972; Tue, 25 Feb 2025
+ 06:19:39 -0800 (PST)
 MIME-Version: 1.0
 References: <20250223114708.1780-1-shentey@gmail.com>
- <20250223114708.1780-4-shentey@gmail.com>
-In-Reply-To: <20250223114708.1780-4-shentey@gmail.com>
+ <20250223114708.1780-5-shentey@gmail.com>
+In-Reply-To: <20250223114708.1780-5-shentey@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Feb 2025 14:15:05 +0000
-X-Gm-Features: AWEUYZnSEcCA3kgccc7Jtu6vQvHIlb63F9n9zhBuYv13_m2vXiYQr_X5ozJPh3Y
-Message-ID: <CAFEAcA-_z3E0wee3BNPpsxHOq29g+BKYJF7DEYBkPfPYNe5a5w@mail.gmail.com>
-Subject: Re: [PATCH v2 03/18] hw/gpio/pca955*: Move Kconfig switches next to
- implementations
+Date: Tue, 25 Feb 2025 14:19:28 +0000
+X-Gm-Features: AWEUYZkiA8ylBJMOBdzMDx0ZNe4uoEr-BaRu_jet4eEXXg69S3CM_V--L4J8aog
+Message-ID: <CAFEAcA_96RMUx68NTG=c0vwevD9LcCp0u7SKNnMx48yEePxYzQ@mail.gmail.com>
+Subject: Re: [PATCH v2 04/18] hw/arm: Add i.MX 8M Plus EVK board
 To: Bernhard Beschow <shentey@gmail.com>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org, 
@@ -73,15 +72,15 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,11 +98,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sun, 23 Feb 2025 at 11:47, Bernhard Beschow <shentey@gmail.com> wrote:
 >
-> The move of the Kconfig bits to hw/gpio is fixing a bug in 6328d8ffa6cb9d
-> ("misc/pca955*: Move models under hw/gpio"), which moved the code but forgot to
-> move the Kconfig sections.
+> As a first step, implement the bare minimum: CPUs, RAM, interrupt controller,
+> serial. All other devices of the A53 memory map are represented as
+> TYPE_UNIMPLEMENTED_DEVICE, i.e. the whole memory map is provided. This allows
+> for running Linux without it crashing due to invalid memory accesses.
 >
-> Fixes: 6328d8ffa6cb9d "misc/pca955*: Move models under hw/gpio"
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
