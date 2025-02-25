@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618D0A449AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CECA449D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:12:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzLC-0003BO-27; Tue, 25 Feb 2025 13:07:34 -0500
+	id 1tmzM6-0006Uz-1v; Tue, 25 Feb 2025 13:08:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJh-0000Gd-1K
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:01 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1tmzJl-0000LJ-4p
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:12 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJc-0002MD-IJ
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:58 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-439946a49e1so38048885e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:55 -0800 (PST)
+ id 1tmzJf-0002Ml-8l
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:03 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-38dcac27bcbso51751f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506755; x=1741111555; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506756; x=1741111556; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WbwJf6Ufk9A1VkvSglXgDxIqPBXLdVmrbehQ439hljQ=;
- b=XzCtJT/WIVhXnU6UB3T3Nii66US6iDDSUvLgcX7tlcKjjPQ5Cb+BJNG/KEsSY0UbOv
- RWsO8OQC7/G8s/RS6I2PNxHN7Rak1dk4nEDOybWg565tbM6bCAIDEW1QQzk6+iLk8OeA
- QN6ONDjuTGYmILOO8Jum30nINmeq4SWQUmuyVYn/+bUHdAfKbiAQWe6xK5kiCuSO4G25
- H5CsW3sp+EYPOLR48oOAmRWImZRTACE0JqT3k/7Q/94aDqYsMlWF1Aw1QZKU2Z44xUzt
- Hox2JmZL+3bSpOnC1XhDgOd7nu7o39HMIICnSPnU7Rz+xt6DOmCy6NljND0NO3OYyS8G
- qkeg==
+ :reply-to; bh=lpJldWyhvK0u3UuLZitJZjzUO1O37LpZkKZ6sW7L+AQ=;
+ b=NLBNrKK2S47wdg+4zml3pLNb7FdRGp9jEJ7xA2+hH5plLchKDBB2GQMYbYz07oRZF9
+ cuf6KBXu8jCbB1s+U0AvWQ/u+Oxa8gbwwe6l/u0LFtdvml+D5Q4LRNN/YXTOZrnEA+xb
+ vV8f0rJO4/VdvRaTcB04qv177i54OcGTG2I//m5M4Iif/huza06eLeNsr3bXBPYoPEUO
+ oqWxO7IyIQj5gEfOerVugYP0XEpWVLOZjlzoOCKxIKcZpKfMO0Az8Ayr4sdbDqKF9ykG
+ ukLpVtzaEbShFJT7htoyICGKXiHfsknjV3+elXjLvLLT/fPhSoOQ+dIhZrbfwahspYCX
+ 80pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506755; x=1741111555;
+ d=1e100.net; s=20230601; t=1740506756; x=1741111556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WbwJf6Ufk9A1VkvSglXgDxIqPBXLdVmrbehQ439hljQ=;
- b=iBIyepZmwINaAl34owDNT2tpZNew2V7DEzG47RxQa6i5m2fI3h1gsFaS99OYhjKzHR
- mJxR6TWftBqsDCltSUpTVjhAwHQvlZBMQJoLBXU9P3zyAtCt407ObyEtby6MR2ElJdKk
- DD0VX4/yQ/GYBsTDTS9dnd3VSIVHsWFO+lAcUvcd/68EfmFlGRKIH1o0k6ESJhNpfVEH
- C515TUdudsaohqjhc7zsqDVczxfn0yaXcfgBrj4CKLdfQ5hbszInYWnUbc1FKsIN2guV
- qynJaGgy4/avW5t4e/K20mxqcks4YXLGaIaVMC7hD1dS55LMQsGA2etesUCSqh33UoXl
- AFvg==
-X-Gm-Message-State: AOJu0YwyGVvFnPtWomO6kg9tEOB41JFAQsCco+Hmmd0UTem2taeDK7RO
- Vv9mxDfvrxET4zTem4GFzMPWC8+epYi4UcwwVgIF5k5FQNnPjpul/rMxGsaZd96mHJRAZsefydn
- F
-X-Gm-Gg: ASbGncthrbQ7nsyYTm/jmC9lCn9g/nXZ2QKF0qpxsri9UIc1mQC1E5XXZiB0xagdm51
- JGoliFXwHVmRiPELWR8+amh+UeeJhS9nDaDatfiq6/ZVlCoAIlT+ekWHzRz1X0726ff3cKGBu91
- gpu4uZ5pw93wC8GkKEVRW1q/fCAESXSWC/MLpyrO5O41E24rS4DSTsr0SphospYsElA0tasEIrd
- tLDsonIE5nyKH02FnaFeTPXBiT4D7AKOqjYo5WLjCfrZR9t10cHnuT9phnkx8+yRO+HmE5RiZsL
- R4LrVJDTHjnreCqG8UXtYq5C9exzW9Hy
-X-Google-Smtp-Source: AGHT+IHZwF8GjHjyoWrcUrdIRNWFNG2OidYtnZQHzcce/P94YnG8kXT8N2cLel4AcFMlwkRHg0meVQ==
-X-Received: by 2002:a05:600c:5125:b0:439:9828:c422 with SMTP id
- 5b1f17b1804b1-43ab8fea14fmr4805945e9.18.1740506754739; 
- Tue, 25 Feb 2025 10:05:54 -0800 (PST)
+ bh=lpJldWyhvK0u3UuLZitJZjzUO1O37LpZkKZ6sW7L+AQ=;
+ b=wlmZi+A8c81LAoE37UyyiIbAwikrAkx2lf1EzbKPJcd6G8qbjNDPTt5MLqACFx+VJO
+ XhWamsl/mJVCTgUAM0P8GOx9SvNKVCJCgGkw0kfLeiURVpoNaogTV2MhLxadhuPJ6nvZ
+ e7VZrd22dihtNdFeg42ZZsvvlICKNZihRufeE5rVmHHcAmg3FcwLw6NpmBxIz4mJh4CV
+ kqjTlDXOm7c97l3wQ2mqNz4yFGCSatHs00lGjuj0j/DG8Vfd3/nM35HeRf+mTKbDLHwg
+ bgPniqLugUDjW1D3H5x59o5uJ0PN5u5E5b6udMR98MjaDreEqAX5D0LpIjPxIF/b++qB
+ 1dxw==
+X-Gm-Message-State: AOJu0YzWR7/kWNR7p/qb71SdJXnVo8z3JElQ/tJOktsJ1CaFYh8HeFb5
+ 9F/F2F+aFA9iUPUHIsmRl1xQMFmI2WadLmeXnsPrhvXNGyU2Zv6h2USYM3kzXyzLg1Ty1zdSlri
+ h
+X-Gm-Gg: ASbGncsb8b8bsjcDJ256IpJ6szm3cKWpTT3M+hdrrJQM5dgsDPbzJWThW2bsngldthu
+ 3a0GOBiuxDoIlAS1WLDgb0tH4swl8epAf5zSBDyxt66hb8JpmxfCPeqiQXfMIOEYDtjrsJKjMpT
+ RO7xFWk29bh1POCe1iCdyi6fUkeSKGtGRTjqR+YmvVTLZnaIkHWolnf5qPGNIhuvrBEzhaolwGY
+ N49xaSvr9XlGAdLdotmmQGTa9hxnGjyjmnBBJjssxsTZ874iXEopZ6+vqDlDEPQc0+YNOr3KhqS
+ QV7aBzQVy5/S49S56EquJZQI+Edt/f3/
+X-Google-Smtp-Source: AGHT+IGpI3eu+I8C62gypsewBykxBH0c6QzHwZ5mvgFL4epOXBvKUBtf3lVY/eHmTrSH1glcDLftBw==
+X-Received: by 2002:a05:6000:4601:b0:38d:e363:494b with SMTP id
+ ffacd0b85a97d-38f614b6e05mr17785156f8f.8.1740506755823; 
+ Tue, 25 Feb 2025 10:05:55 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.53
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:54 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:55 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 37/43] hw/arm/fsl-imx8mp: Add I2C controllers
-Date: Tue, 25 Feb 2025 18:05:03 +0000
-Message-ID: <20250225180510.1318207-38-peter.maydell@linaro.org>
+Subject: [PULL 38/43] hw/arm/fsl-imx8mp: Add SPI controllers
+Date: Tue, 25 Feb 2025 18:05:04 +0000
+Message-ID: <20250225180510.1318207-39-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,150 +100,118 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250223114708.1780-11-shentey@gmail.com
-[PMM: drop static const from i2c_table for GCC 7.5]
+Message-id: 20250223114708.1780-12-shentey@gmail.com
+[PMM: drop static const from spi_table for GCC 7.5]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
  docs/system/arm/imx8mp-evk.rst |  1 +
- include/hw/arm/fsl-imx8mp.h    | 11 +++++++++++
- hw/arm/fsl-imx8mp.c            | 29 +++++++++++++++++++++++++++++
- hw/arm/Kconfig                 |  2 ++
- 4 files changed, 43 insertions(+)
+ include/hw/arm/fsl-imx8mp.h    |  8 ++++++++
+ hw/arm/fsl-imx8mp.c            | 26 ++++++++++++++++++++++++++
+ 3 files changed, 35 insertions(+)
 
 diff --git a/docs/system/arm/imx8mp-evk.rst b/docs/system/arm/imx8mp-evk.rst
-index 37d3630d09c..ef0d997250b 100644
+index ef0d997250b..66e58651079 100644
 --- a/docs/system/arm/imx8mp-evk.rst
 +++ b/docs/system/arm/imx8mp-evk.rst
-@@ -15,6 +15,7 @@ The ``imx8mp-evk`` machine implements the following devices:
-  * 3 USDHC Storage Controllers
+@@ -16,6 +16,7 @@ The ``imx8mp-evk`` machine implements the following devices:
   * 1 Designware PCI Express Controller
   * 5 GPIO Controllers
-+ * 6 I2C Controllers
+  * 6 I2C Controllers
++ * 3 SPI Controllers
   * Secure Non-Volatile Storage (SNVS) including an RTC
   * Clock Tree
  
 diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
-index 18ea52d0839..25900566272 100644
+index 25900566272..296a87eb504 100644
 --- a/include/hw/arm/fsl-imx8mp.h
 +++ b/include/hw/arm/fsl-imx8mp.h
-@@ -12,6 +12,7 @@
- #include "cpu.h"
- #include "hw/char/imx_serial.h"
- #include "hw/gpio/imx_gpio.h"
-+#include "hw/i2c/imx_i2c.h"
- #include "hw/intc/arm_gicv3_common.h"
- #include "hw/misc/imx7_snvs.h"
- #include "hw/misc/imx8mp_analog.h"
+@@ -20,6 +20,7 @@
+ #include "hw/pci-host/designware.h"
+ #include "hw/pci-host/fsl_imx8m_phy.h"
+ #include "hw/sd/sdhci.h"
++#include "hw/ssi/imx_spi.h"
+ #include "qom/object.h"
+ #include "qemu/units.h"
+ 
 @@ -31,6 +32,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(FslImx8mpState, FSL_IMX8MP)
+ 
  enum FslImx8mpConfiguration {
      FSL_IMX8MP_NUM_CPUS         = 4,
++    FSL_IMX8MP_NUM_ECSPIS       = 3,
      FSL_IMX8MP_NUM_GPIOS        = 5,
-+    FSL_IMX8MP_NUM_I2CS         = 6,
+     FSL_IMX8MP_NUM_I2CS         = 6,
      FSL_IMX8MP_NUM_IRQS         = 160,
-     FSL_IMX8MP_NUM_UARTS        = 4,
-     FSL_IMX8MP_NUM_USDHCS       = 3,
-@@ -45,6 +47,7 @@ struct FslImx8mpState {
+@@ -47,6 +49,7 @@ struct FslImx8mpState {
      IMX8MPCCMState     ccm;
      IMX8MPAnalogState  analog;
      IMX7SNVSState      snvs;
-+    IMXI2CState        i2c[FSL_IMX8MP_NUM_I2CS];
++    IMXSPIState        spi[FSL_IMX8MP_NUM_ECSPIS];
+     IMXI2CState        i2c[FSL_IMX8MP_NUM_I2CS];
      IMXSerialState     uart[FSL_IMX8MP_NUM_UARTS];
      SDHCIState         usdhc[FSL_IMX8MP_NUM_USDHCS];
-     DesignwarePCIEHost pcie;
-@@ -205,6 +208,11 @@ enum FslImx8mpIrqs {
+@@ -208,6 +211,11 @@ enum FslImx8mpIrqs {
      FSL_IMX8MP_UART5_IRQ    = 30,
      FSL_IMX8MP_UART6_IRQ    = 16,
  
-+    FSL_IMX8MP_I2C1_IRQ     = 35,
-+    FSL_IMX8MP_I2C2_IRQ     = 36,
-+    FSL_IMX8MP_I2C3_IRQ     = 37,
-+    FSL_IMX8MP_I2C4_IRQ     = 38,
++    FSL_IMX8MP_ECSPI1_IRQ   = 31,
++    FSL_IMX8MP_ECSPI2_IRQ   = 32,
++    FSL_IMX8MP_ECSPI3_IRQ   = 33,
++    FSL_IMX8MP_ECSPI4_IRQ   = 34,
 +
-     FSL_IMX8MP_GPIO1_LOW_IRQ  = 64,
-     FSL_IMX8MP_GPIO1_HIGH_IRQ = 65,
-     FSL_IMX8MP_GPIO2_LOW_IRQ  = 66,
-@@ -216,6 +224,9 @@ enum FslImx8mpIrqs {
-     FSL_IMX8MP_GPIO5_LOW_IRQ  = 72,
-     FSL_IMX8MP_GPIO5_HIGH_IRQ = 73,
- 
-+    FSL_IMX8MP_I2C5_IRQ     = 76,
-+    FSL_IMX8MP_I2C6_IRQ     = 77,
-+
-     FSL_IMX8MP_PCI_INTA_IRQ = 126,
-     FSL_IMX8MP_PCI_INTB_IRQ = 125,
-     FSL_IMX8MP_PCI_INTC_IRQ = 124,
+     FSL_IMX8MP_I2C1_IRQ     = 35,
+     FSL_IMX8MP_I2C2_IRQ     = 36,
+     FSL_IMX8MP_I2C3_IRQ     = 37,
 diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
-index 541e4ab5b63..750dbf9eab9 100644
+index 750dbf9eab9..63f07eca8a4 100644
 --- a/hw/arm/fsl-imx8mp.c
 +++ b/hw/arm/fsl-imx8mp.c
-@@ -208,6 +208,11 @@ static void fsl_imx8mp_init(Object *obj)
-         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
+@@ -223,6 +223,11 @@ static void fsl_imx8mp_init(Object *obj)
+         object_initialize_child(obj, name, &s->usdhc[i], TYPE_IMX_USDHC);
      }
  
-+    for (i = 0; i < FSL_IMX8MP_NUM_I2CS; i++) {
-+        g_autofree char *name = g_strdup_printf("i2c%d", i + 1);
-+        object_initialize_child(obj, name, &s->i2c[i], TYPE_IMX_I2C);
++    for (i = 0; i < FSL_IMX8MP_NUM_ECSPIS; i++) {
++        g_autofree char *name = g_strdup_printf("spi%d", i + 1);
++        object_initialize_child(obj, name, &s->spi[i], TYPE_IMX_SPI);
 +    }
 +
-     for (i = 0; i < FSL_IMX8MP_NUM_GPIOS; i++) {
-         g_autofree char *name = g_strdup_printf("gpio%d", i + 1);
-         object_initialize_child(obj, name, &s->gpio[i], TYPE_IMX_GPIO);
-@@ -360,6 +365,29 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-                            qdev_get_gpio_in(gicdev, serial_table[i].irq));
+     object_initialize_child(obj, "pcie", &s->pcie, TYPE_DESIGNWARE_PCIE_HOST);
+     object_initialize_child(obj, "pcie_phy", &s->pcie_phy,
+                             TYPE_FSL_IMX8M_PCIE_PHY);
+@@ -459,6 +464,26 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+                            qdev_get_gpio_in(gicdev, usdhc_table[i].irq));
      }
  
-+    /* I2Cs */
-+    for (i = 0; i < FSL_IMX8MP_NUM_I2CS; i++) {
++    /* ECSPIs */
++    for (i = 0; i < FSL_IMX8MP_NUM_ECSPIS; i++) {
 +        struct {
 +            hwaddr addr;
 +            unsigned int irq;
-+        } i2c_table[FSL_IMX8MP_NUM_I2CS] = {
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C1].addr, FSL_IMX8MP_I2C1_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C2].addr, FSL_IMX8MP_I2C2_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C3].addr, FSL_IMX8MP_I2C3_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C4].addr, FSL_IMX8MP_I2C4_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C5].addr, FSL_IMX8MP_I2C5_IRQ },
-+            { fsl_imx8mp_memmap[FSL_IMX8MP_I2C6].addr, FSL_IMX8MP_I2C6_IRQ },
++        } spi_table[FSL_IMX8MP_NUM_ECSPIS] = {
++            { fsl_imx8mp_memmap[FSL_IMX8MP_ECSPI1].addr, FSL_IMX8MP_ECSPI1_IRQ },
++            { fsl_imx8mp_memmap[FSL_IMX8MP_ECSPI2].addr, FSL_IMX8MP_ECSPI2_IRQ },
++            { fsl_imx8mp_memmap[FSL_IMX8MP_ECSPI3].addr, FSL_IMX8MP_ECSPI3_IRQ },
 +        };
 +
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->i2c[i]), errp)) {
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->spi[i]), errp)) {
 +            return;
 +        }
 +
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->i2c[i]), 0, i2c_table[i].addr);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
-+                           qdev_get_gpio_in(gicdev, i2c_table[i].irq));
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->spi[i]), 0, spi_table[i].addr);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
++                           qdev_get_gpio_in(gicdev, spi_table[i].irq));
 +    }
 +
-     /* GPIOs */
-     for (i = 0; i < FSL_IMX8MP_NUM_GPIOS; i++) {
-         struct {
-@@ -470,6 +498,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+     /* SNVS */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->snvs), errp)) {
+         return;
+@@ -498,6 +523,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
          case FSL_IMX8MP_GIC_DIST:
          case FSL_IMX8MP_GIC_REDIST:
          case FSL_IMX8MP_GPIO1 ... FSL_IMX8MP_GPIO5:
-+        case FSL_IMX8MP_I2C1 ... FSL_IMX8MP_I2C6:
++        case FSL_IMX8MP_ECSPI1 ... FSL_IMX8MP_ECSPI3:
+         case FSL_IMX8MP_I2C1 ... FSL_IMX8MP_I2C6:
          case FSL_IMX8MP_PCIE1:
          case FSL_IMX8MP_PCIE_PHY1:
-         case FSL_IMX8MP_RAM:
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index be5a2c02b74..28ae409c859 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -595,11 +595,13 @@ config FSL_IMX7
- 
- config FSL_IMX8MP
-     bool
-+    imply I2C_DEVICES
-     imply PCI_DEVICES
-     select ARM_GIC
-     select FSL_IMX8MP_ANALOG
-     select FSL_IMX8MP_CCM
-     select IMX
-+    select IMX_I2C
-     select PCI_EXPRESS_DESIGNWARE
-     select PCI_EXPRESS_FSL_IMX8M_PHY
-     select SDHCI
 -- 
 2.43.0
 
