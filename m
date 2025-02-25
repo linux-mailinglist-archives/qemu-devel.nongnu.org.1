@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F79A449CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17399A449B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:10:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzM8-0006qf-PA; Tue, 25 Feb 2025 13:08:32 -0500
+	id 1tmzLE-0003WK-Ax; Tue, 25 Feb 2025 13:07:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJj-0000JU-TB
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:12 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tmzJc-00008A-Sd
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:57 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJd-0002JQ-BL
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:00 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4394036c0efso37901645e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:47 -0800 (PST)
+ id 1tmzJW-0002KL-Tq
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:05:54 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4398738217aso51925765e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:05:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506746; x=1741111546; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740506748; x=1741111548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JM1z9IEOs0dWia7GldRmlxQ1KHltnDm7hKq9lC7Qz7k=;
- b=H9TteOQAQeXZa1YetMyixTOlJ9SDxyOryL5oi32AWoXirgNG+2ASxEX+c76frLYrhc
- VzSxBNMH41omXmdfxIi17GI3854+H0IPf6mYHnAxhXe1T7thVX/7G3cxZOVff2vW56TI
- GSIfRliQSYDVjNfI9Kfh6fPBpYNKM4FNQVdCzjiaTqPi6kWrVLgSFP08vOvKTR9Z83jE
- AjtLZ/5lL+Nlgw8QAe3MCH+yO1t5qRzU+2MgoSC/EUviRPsxZYEjsTXvjgT89XvsEahm
- UZAw6TMP+Nmj6amJIOzjtnUqIZBpCasupuCtWOxTzm+gmdSbzDlrocmGWG2VMkoamfqV
- fSpQ==
+ :reply-to; bh=tb2z/iCBDw+9Y/MjKpZH7HRISmiI4M+r/On2sHYXwd8=;
+ b=woGqJns1t8osTEGxTxkIr4D5patN8YB35O8YuhW/xFFtr5VXS2mzhqgfaDAthAFb6X
+ of6GRdpKW9I3n0l/RPNcW1B/BiLKDD2ne7ad19Ox3LeUMWDZUJmZ3vS8WVRXkfEoqcch
+ XD/d6dOMCsyAVMzN54EWYl4nAL7ieSmCQfy+0iF2aXlh8zNR3VSNkYEytsA8sPz+8Ols
+ F3/DNLYQfy/RbqWv6Rjx0hN9mLkwdKAtBGiHRwXkBnFLgRHXMpsbHjI0wrR8MwyQp2vk
+ dl+AQx6Uiu7KluZFYJ5XeKoWjNCg+pdKd0qj1xGCi4Mgy4weubIs9NTz0Baot7wdNMg/
+ rKeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506746; x=1741111546;
+ d=1e100.net; s=20230601; t=1740506748; x=1741111548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JM1z9IEOs0dWia7GldRmlxQ1KHltnDm7hKq9lC7Qz7k=;
- b=qgzdbKBc8/GzHJ5M6nO8PymwHzunN8Pd682mAVxXIMJEb1LxJEw09GwZvL55A3ytaW
- hjZTRmABMGszuN0v7oR0wubZvxB61A5DXw3PVHMWdatpr4YWJ+I10QwX2PBKiv7efBx0
- CBkiP6ej9a7f2HFWC/DldhL0CzrxA4Jru+yFX3dBmf5H+97n9RKvj9ELeJgS4InwMjjW
- 8dqTilHnTpumRv/skL0kiNPJnJJuawJsS8LcBqXEYNq4KpZiYBKEc/Qe9T+ppkq0/t5R
- AdMmGUUbCW7eHsIq2Ao24G8bsLhyj9wdEUjZUoDLJg21hofx3fSm5+g98HB7uzqGVM6e
- VNhQ==
-X-Gm-Message-State: AOJu0YxfrscSX5ib1WPZXct3mKdopnC6aX/4B9zGU8sMO/+v9xHGU2cK
- z5ojx8unxL5WCcSwIl26CDZDakYaXA/Jrxx1b2L9xXBhUuN3J7GTczXEtP0SOd+zLRngC0tKl2+
- J
-X-Gm-Gg: ASbGnct7yd6uXm0/EOd3DljUyw7irKcCoDj18I4MnmK66f4sx1ffDSaR9fnyofC/vIQ
- 1sfJvOQX50Wa7a2HPD30xPmFDmzY9vIn38wcjDIs0bZbwvunN2G/X3c/JanVRn2fq4mjPMslYSY
- 5urCnU/9Z9VD5B9dbhzUTp7mEaRK9XLg5ZmJMdLXSDMNzsYp4ZJW/Kc6CeOKpqgqM8C1LULXdJW
- fNHH3qnUnTNnEpyMm1JJQxpE6Edckk3Ctib/5TJf2Q8NeIFbsx+HqS18Vi0cIBzWz9ic7v70Hs/
- SF67FO//g0v9SdoSmLnxCFgD10RVkCt5
-X-Google-Smtp-Source: AGHT+IFlE7NCzaac9t8TlelW8jl3fuxdhqqj4uL22vb9e2vlcVE77Tkc+PKc/2gej6Z3BXABv3lNWQ==
-X-Received: by 2002:a05:600c:4f0d:b0:439:98ca:e3a4 with SMTP id
- 5b1f17b1804b1-43ab90169d5mr4441495e9.19.1740506746166; 
- Tue, 25 Feb 2025 10:05:46 -0800 (PST)
+ bh=tb2z/iCBDw+9Y/MjKpZH7HRISmiI4M+r/On2sHYXwd8=;
+ b=bxZSQbwGfgnZH7MmDE0HaYNK9TMgGsRY41My+M6jf58J1f/UasG0MwXzZ8CpV95g/3
+ eE8soXpA5mcWL2tqbOuVSmDR0k144Spw4HvAeTgMTLrSGHT7DK3NWs1ltooOhsvtRZuj
+ +FudJQ2aKpkPQmfld9Hz842B+GO3GU0tfshmrj8HVHYbHmiz52QHqG9O+R8W+l7NkyUC
+ Cs8Uo5hhVBHrP8bKrJv1iWLv4qPGD20YJ3aD/pAuLU48+YU5ddqs26X6WrWthaBStj66
+ RYOapeqKn7kOsBcuqlASxev5NuQ5FyjQtFTtfFSrFr72vxZAfDEg7lsEfujogBtaEO/J
+ uzbw==
+X-Gm-Message-State: AOJu0Ywj1BYteYkzwiaqeBGpepe7i7NFLeldGVR2aCwxpZ70dcl4SKBv
+ v98adk0KX5s5E83emIStcPbojtk8kiUuFkN8exikI9oRQWA7TFSReluovaf5ihI57n89HcGgYHg
+ 4
+X-Gm-Gg: ASbGnctK3MEYlxr3HlNHRyiRhzFY5Zfue73hBahjN94L6ZdZvhDpevUYUE/cIbeoHKO
+ uofDrhqvCACQ7P5UAwpvi/fl99Ka+nge99WxMjr7CMaFx77lJdmcP0MTQhBnDdj+jvApv7m73us
+ IeIW47IHcT1rJM7GNtGN09Y+5dqexs/mUSJeR87LvWxJtF5P/udnESeVSA7mhQ9OE41wFU2HmY3
+ kEAD2Ur7bZZWDTohkCmtk2tFjDQbIMfWiL7hflvVT0YfdzgvVFyITLPqnxPWBDQXtGmqOSfD51I
+ gApJixfNKeaaudXnM2Q0vlF3m4Q+S7J3
+X-Google-Smtp-Source: AGHT+IEnA8zcZn3yiQzzQVUbKi1AgxW3E3uckNpzWcuWMKxBO5pJUsYVb2wo5VQi1FLmXqEwl1yp+A==
+X-Received: by 2002:a05:600c:190e:b0:439:689b:99eb with SMTP id
+ 5b1f17b1804b1-43ab8fd8768mr4906095e9.7.1740506747063; 
+ Tue, 25 Feb 2025 10:05:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.45
+ 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.05.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:05:45 -0800 (PST)
+ Tue, 25 Feb 2025 10:05:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/43] hw/pci-host/designware: Prevent device attachment on
- internal PCIe root bus
-Date: Tue, 25 Feb 2025 18:04:55 +0000
-Message-ID: <20250225180510.1318207-30-peter.maydell@linaro.org>
+Subject: [PULL 30/43] hw/gpio/pca955*: Move Kconfig switches next to
+ implementations
+Date: Tue, 25 Feb 2025 18:04:56 +0000
+Message-ID: <20250225180510.1318207-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,92 +99,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-On the real device, the PCIe root bus is only connected to a PCIe bridge and
-does not allow for direct attachment of devices. Doing so in QEMU results in no
-PCI devices being detected by Linux. Instead, PCI devices should plug into the
-secondary PCIe bus spawned by the internal PCIe bridge.
+The move of the Kconfig bits to hw/gpio is fixing a bug in 6328d8ffa6cb9d
+("misc/pca955*: Move models under hw/gpio"), which moved the code but forgot to
+move the Kconfig sections.
 
-Unfortunately, QEMU defaults to plugging devices into the PCIe root bus. To work
-around this, every PCI device created on the command line needs an extra
-`bus=dw-pcie` option which is error prone. Fix that by marking the PCIe root bus
-as full which makes QEMU decend into the child PCIe bus.
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 6328d8ffa6cb9d "misc/pca955*: Move models under hw/gpio"
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250223114708.1780-3-shentey@gmail.com
+Message-id: 20250223114708.1780-4-shentey@gmail.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/pci-host/designware.h |  7 +++++++
- hw/pci-host/designware.c         | 18 +++++++++++++++++-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ hw/gpio/Kconfig | 8 ++++++++
+ hw/misc/Kconfig | 8 --------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
-index bf8b2789787..a35a3bd06c8 100644
---- a/include/hw/pci-host/designware.h
-+++ b/include/hw/pci-host/designware.h
-@@ -25,12 +25,19 @@
- #include "hw/pci/pci_bridge.h"
- #include "qom/object.h"
+diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
+index c423e10f59f..a209294c20c 100644
+--- a/hw/gpio/Kconfig
++++ b/hw/gpio/Kconfig
+@@ -16,6 +16,14 @@ config SIFIVE_GPIO
+ config STM32L4X5_GPIO
+     bool
  
-+#define TYPE_DESIGNWARE_PCIE_ROOT_BUS "designware-pcie-root-BUS"
-+OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERootBus, DESIGNWARE_PCIE_ROOT_BUS)
++config PCA9552
++    bool
++    depends on I2C
 +
- #define TYPE_DESIGNWARE_PCIE_HOST "designware-pcie-host"
- OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIEHost, DESIGNWARE_PCIE_HOST)
- 
- #define TYPE_DESIGNWARE_PCIE_ROOT "designware-pcie-root"
- OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERoot, DESIGNWARE_PCIE_ROOT)
- 
-+struct DesignwarePCIERootBus {
-+    PCIBus parent;
-+};
++config PCA9554
++    bool
++    depends on I2C
 +
- typedef struct DesignwarePCIEViewport {
-     DesignwarePCIERoot *root;
+ config PCF8574
+     bool
+     depends on I2C
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 8f9ce2f68c3..4271e2f4ac9 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -30,14 +30,6 @@ config EDU
+     default y if TEST_DEVICES
+     depends on PCI && MSI_NONBROKEN
  
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 3e8c36e6a76..c07740bfaa4 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -55,6 +55,17 @@
- #define DESIGNWARE_PCIE_ATU_DEVFN(x)               (((x) >> 16) & 0xff)
- #define DESIGNWARE_PCIE_ATU_UPPER_TARGET           0x91C
- 
-+static void designware_pcie_root_bus_class_init(ObjectClass *klass, void *data)
-+{
-+    BusClass *k = BUS_CLASS(klass);
-+
-+    /*
-+     * Designware has only a single root complex. Enforce the limit on the
-+     * parent bus
-+     */
-+    k->max_dev = 1;
-+}
-+
- static DesignwarePCIEHost *
- designware_pcie_root_to_host(DesignwarePCIERoot *root)
- {
-@@ -699,7 +710,7 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
-                                      &s->pci.memory,
-                                      &s->pci.io,
-                                      0, 4,
--                                     TYPE_PCIE_BUS);
-+                                     TYPE_DESIGNWARE_PCIE_ROOT_BUS);
-     pci->bus->flags |= PCI_BUS_EXTENDED_CONFIG_SPACE;
- 
-     memory_region_init(&s->pci.address_space_root,
-@@ -754,6 +765,11 @@ static void designware_pcie_host_init(Object *obj)
- 
- static const TypeInfo designware_pcie_types[] = {
-     {
-+        .name           = TYPE_DESIGNWARE_PCIE_ROOT_BUS,
-+        .parent         = TYPE_PCIE_BUS,
-+        .instance_size  = sizeof(DesignwarePCIERootBus),
-+        .class_init     = designware_pcie_root_bus_class_init,
-+    }, {
-         .name           = TYPE_DESIGNWARE_PCIE_HOST,
-         .parent         = TYPE_PCI_HOST_BRIDGE,
-         .instance_size  = sizeof(DesignwarePCIEHost),
+-config PCA9552
+-    bool
+-    depends on I2C
+-
+-config PCA9554
+-    bool
+-    depends on I2C
+-
+ config I2C_ECHO
+     bool
+     default y if TEST_DEVICES
 -- 
 2.43.0
 
