@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9118A4414E
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 14:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348D2A44234
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 15:16:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmvJx-0004RN-F6; Tue, 25 Feb 2025 08:50:01 -0500
+	id 1tmvia-0007NN-SN; Tue, 25 Feb 2025 09:15:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmvJo-0004R0-T1
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 08:49:53 -0500
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ id 1tmviS-0007Kr-LO
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:15:23 -0500
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmvJj-0003Nr-JN
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 08:49:50 -0500
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-6fcdf0980a6so27283017b3.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 05:49:46 -0800 (PST)
+ id 1tmviR-0006Wq-2v
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 09:15:20 -0500
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-6ef7c9e9592so46625947b3.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 06:15:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740491386; x=1741096186; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740492916; x=1741097716; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jNd7r7LIozbeBPZN2JJC/ZHmac4FW1Rw2VceOm+nyZY=;
- b=ZIQYBWbs2IZ/uPe55Gl4QP5ew5N8VH964XdRJEShqbuw9DOfTIZzvs+RYkofSZmJ+i
- tiKHUSsCcYHif+e8f/5q+unEMfdl3aGYu7VTQT38ZezUxSYXMEI++GSuEFC4VA4ps1cF
- KqJ9FhLRZvpj80DsebJfsiKQfNxRaPvy26Fj3vlnNTr3lmKN+Ik76ry85qEfimJrVdE5
- i9hruxVgZwYWHf1xrxNgnQ5e+JkqIhaPtrC2YwhHdiQAOrHAzIIS9Em1m/5g9gYgdwsV
- FWrLUw7DIMai54SzRD4p0esqX2DV4pUs2GBw9JC4YwQYL4fs1bV36lfw/AKUa/9nVKbd
- Ykjg==
+ bh=Vz0ABdgSxp6SALma5ub9VzcI6UoyNasetIN7p0P5FA4=;
+ b=bDD0Wvdy41qF1esrU6aDHv2k/x39DeOB3ZeNxiUB4GUmBuDCfLMehyCYKeZMO1HpVh
+ hPBakGtVMFMGTTKmgHacw5WbrMozZOpxGqP/ue5xhXGOxpsyFN/K6x3uUl5a5jJ76A2/
+ J6pOaruzWtrs4nCvap/hy4EpbKsesglIA4nxrRYSTqKqGsNGchjg5rm+nNTeJhIL4NR1
+ qyAjTltOVqlCSnkJrME+T2kPPBwn4b26EJ4G+LO2XCkx3BjNa1oJX1p/8rO5oJwiJkM6
+ dvxXR7zlOvkjIHGYkkRhEReDjGm+YAeRaqc2+bJOnglndDiyWxKDj3vmHha6qN0TEI5M
+ e+0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740491386; x=1741096186;
+ d=1e100.net; s=20230601; t=1740492916; x=1741097716;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jNd7r7LIozbeBPZN2JJC/ZHmac4FW1Rw2VceOm+nyZY=;
- b=SRI/oLpo1FcBZX8m0NlreRBO+g8HoIAUHVxQzWrScF2cmD0BPa/zI4hHHyk7xu60aI
- vrt/rVxVCYD/Bne98eRmZd3spcumdPGDOwm/6c3248rgWdDMIPMdZh7dFDqLK0ccV/CK
- 11UkPjIjOzL771AitvDVYu72ktKC65AQ9CJEZ+v3YgwwK8Fy4EkMzN2sDu+nDkff8FAT
- mLdl8uvWcvLNn68S8NDtcjmFdRoaTXb84+hGY+ESFtxpRvdIFGC4i+EBmuGmOq+GFWTI
- F4nh0tFYS9lkYph5f43Bx5tdUdFFRkHXECqvbye/SAX9tMN71bhTU0/269wevITjV4lN
- d0XA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWxnnPdtbRWfKb+G8GSHC4nO9/l/+JnM3uhhwZEYuKKtUrVck+fqOehfW027QqNLBrWviVxSRWyq+aM@nongnu.org
-X-Gm-Message-State: AOJu0YyLkpv+3EtavOnBEAxDlhbMejikwGNg5ECxtwmlMzKvx3f9XntC
- JVzoud9SqVt34yoqE8ZwHkeOWRlpKdAtQO+TGicLUTG95x11IFWLGgHbE6cWRgv0JBBh7h1KqCF
- AFfX77LT2SVmlL1tSKWlVcbgSlITbtNDOpa9SVA==
-X-Gm-Gg: ASbGncsK8evKD4QWAQPVKgwCuJoJHr4U1cjECuGGJsXn/SqnpS6EkRbqNtVEAxZZ8ZY
- 8ykmjxX3xysGaR0QON0adoaBv5c7gJEjptUWai3VwbGska4NupLAtjR8W6bNFrz6KQs/qn36ZeE
- obwmi8UqNl
-X-Google-Smtp-Source: AGHT+IH7BVR4/b9eGOKn2qDDwMNZLkxvarMwNnQKmUjUjDAm4YyFVRw5m4LU/RszrCLySGpnehXrdZuS5IACjQoiykI=
-X-Received: by 2002:a05:690c:6f8f:b0:6fb:949f:117 with SMTP id
- 00721157ae682-6fbcc23a67cmr139014987b3.12.1740491386053; Tue, 25 Feb 2025
- 05:49:46 -0800 (PST)
+ bh=Vz0ABdgSxp6SALma5ub9VzcI6UoyNasetIN7p0P5FA4=;
+ b=rK52PrjEY/8EIhJylrDX4k9gNgB+mAyK2wHz3YTSkoW61iEjPQNrt5+0g3QW9Zo6l4
+ uOjTt5I6vvqvCLwYQKCJs4ObFO0VRUSEEkmdphD8aPZ+izGQxedJTijxRunH7A/ZGNKL
+ h+ol7DK10F8jxOA1G7MNCI2zIawHBy0aX978Y/NCmoxdX2KGpDEWL64+Fu6cvEXAwl5v
+ wLELlzcXczEblPg8IL4EQU6Z6WNpW7YcbTTJJ/jipCjExlHqY0BWwXngtOL8TlvGgtFY
+ CNRAXjTCqeRy39kHhx615m464N0DJOpuPtNET2IRSXVQymEk4IPc2rEJbclod1kyekSe
+ 9bOg==
+X-Gm-Message-State: AOJu0YxJr6wiRmhQAwttIt53c5oErTBhAbvzX8D+74BBGcpZ1WB/dVXk
+ PugngvkVbVqZiVYK+qscEJBFR+hEksVJT6rmwsmLKRtORYqf/1dKbrTCzhpm1AekjKvdn8jdu3R
+ oRSxKKtKeMpI6LlnZqNfrqOoPz1ulbDa9Zuomcw==
+X-Gm-Gg: ASbGnct4ilsKCulwrmGS87K83RYMewPSJTNSWIAOvDxozbexcejxz9mjkhp7TM15Yph
+ 41dqB4dZOOYjW9X9RTgFF0ALNt3jTaZCt+xCY6qll7KWkJrICh/WoSfc99h7hlLbmRyzODkwSKZ
+ BofEQj+hxQ
+X-Google-Smtp-Source: AGHT+IHK1FvgAwdJHSXeZZYwFyqJmdcB5CJdXLBMNVzjtw0CJWF8q2erqyOaXTwH6aILmiPQLe+tJFIKj2IyRXhB1xM=
+X-Received: by 2002:a05:690c:6912:b0:6f9:88f2:b8d with SMTP id
+ 00721157ae682-6fd109e6973mr28813827b3.11.1740492916301; Tue, 25 Feb 2025
+ 06:15:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20250219184609.1839281-1-wuhaotsh@google.com>
- <20250219184609.1839281-7-wuhaotsh@google.com>
-In-Reply-To: <20250219184609.1839281-7-wuhaotsh@google.com>
+References: <20250223114708.1780-1-shentey@gmail.com>
+ <20250223114708.1780-4-shentey@gmail.com>
+In-Reply-To: <20250223114708.1780-4-shentey@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Feb 2025 13:49:34 +0000
-X-Gm-Features: AWEUYZn4xpvywFMJ5yLFnI7bhWeRlqomFp54fvHSlV3BjBlArIhXCY8Qe0FK8j8
-Message-ID: <CAFEAcA-KggoS6oUO9h0iGCy6ZDGTLecqBE_1ujsQ2cVcrEqUzQ@mail.gmail.com>
-Subject: Re: [PATCH v5 06/17] hw/misc: Add nr_regs and cold_reset_values to
- NPCM GCR
-To: Hao Wu <wuhaotsh@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, venture@google.com, 
- Avi.Fishman@nuvoton.com, kfting@nuvoton.com, hskinnemoen@google.com, 
- titusr@google.com, chli30@nuvoton.corp-partner.google.com, 
- pbonzini@redhat.com, jasowang@redhat.com, alistair@alistair23.me, 
- philmd@linaro.org
+Date: Tue, 25 Feb 2025 14:15:05 +0000
+X-Gm-Features: AWEUYZnSEcCA3kgccc7Jtu6vQvHIlb63F9n9zhBuYv13_m2vXiYQr_X5ozJPh3Y
+Message-ID: <CAFEAcA-_z3E0wee3BNPpsxHOq29g+BKYJF7DEYBkPfPYNe5a5w@mail.gmail.com>
+Subject: Re: [PATCH v2 03/18] hw/gpio/pca955*: Move Kconfig switches next to
+ implementations
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, Alistair Francis <alistair@alistair23.me>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,55 +97,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Feb 2025 at 18:46, Hao Wu <wuhaotsh@google.com> wrote:
+On Sun, 23 Feb 2025 at 11:47, Bernhard Beschow <shentey@gmail.com> wrote:
 >
-> These 2 values are different between NPCM7XX and NPCM8XX
-> GCRs. So we add them to the class and assign different values
-> to them.
+> The move of the Kconfig bits to hw/gpio is fixing a bug in 6328d8ffa6cb9d
+> ("misc/pca955*: Move models under hw/gpio"), which moved the code but forgot to
+> move the Kconfig sections.
 >
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> Fixes: 6328d8ffa6cb9d "misc/pca955*: Move models under hw/gpio"
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
-
-> @@ -156,10 +157,12 @@ static const struct MemoryRegionOps npcm_gcr_ops = {
->  static void npcm7xx_gcr_enter_reset(Object *obj, ResetType type)
->  {
->      NPCMGCRState *s = NPCM_GCR(obj);
-> +    NPCMGCRClass *c = NPCM_GCR_GET_CLASS(obj);
->
-> -    QEMU_BUILD_BUG_ON(sizeof(s->regs) != sizeof(cold_reset_values));
-> -
-> -    memcpy(s->regs, cold_reset_values, sizeof(s->regs));
-> +    g_assert(sizeof(s->regs) >= sizeof(c->cold_reset_values));
-> +    g_assert(sizeof(s->regs) >= c->nr_regs * sizeof(uint32_t));
-> +    memcpy(s->regs, c->cold_reset_values, c->nr_regs * sizeof(uint32_t));
-
-I looked again at this code after seeing the fix to the
-similar code in npcm_clk that Pierrick just sent, and this
-one looks broken in a different way:
-
-c->cold_reset_values is a pointer, not an array, so
-  g_assert(sizeof(s->regs) >= sizeof(c->cold_reset_values))
-is asserting that the s->regs[] array is bigger than the size
-of a pointer (8 bytes), which probably isn't what you meant.
-
-Other than that, this is now the same as the fixed npcm_clk code,
-except that we could do the same as that does and use a local
-variable for sizeof_regs:
-
-    size_t sizeof_regs = c->nr_regs * sizeof(uint32_t);
-    g_assert(sizeof(s->regs) >= sizeof_regs);
-    memcpy(s->regs, c->cold_reset_values, sizeof_regs);
-
-But also, in this device (unlike npcm_clk) we have separate
-reset method functions for npcm7xx and npcm8xx. So we don't
-really need the s->cold_reset_values pointer at all, because
-we could make npcm7xx_gcr_enter_reset() directly copy from
-npcm7xx_cold_reset_values[] and similarly fro the npcm8xx function.
-
-I think we should at least delete the assert() that isn't
-doing what it looks like it's doing; I'll leave it to you
-whether you want to also do one of the other two suggestions.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
