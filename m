@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198EAA449DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C26A449DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:14:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzMN-0008TW-4i; Tue, 25 Feb 2025 13:08:47 -0500
+	id 1tmzOb-00053X-4h; Tue, 25 Feb 2025 13:11:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJr-0000Ow-Ft
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:16 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmzOO-0004gB-PQ
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:10:53 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tmzJk-0002Ou-Tk
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:06:09 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43995b907cfso37493035e9.3
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:06:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmzON-0003GD-2Z
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:10:52 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-22185cddbffso1123975ad.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:10:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740506761; x=1741111561; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NR+zcHQnCsYl/JswP9hc5n95WylqnjqY5XYs4m7vvOk=;
- b=isEtxvTGjOQWn8pkaKr/Y8itN0PclKnqVzi18teEIxtZY03lSI6qKjNPJ35G20HUzF
- vyGJx6mHTrQabets2BWvyv9qpQeWcT8BBSZsZf7C47dbMypAVo+Y1NuVGi0j2cTX3uu8
- tkk8XwYYGF1biwpSiYZOHL9qV/XkZ89+0BFSMlGu5tgKmyk13ystY3xrX+rpcKEPkKY/
- eNi9kJ9V3LS7sqTtqzf8eSycDLEPYfYq7izvnH2lcpgs9KgSoFvSctI2gdwOa3ZA2D8U
- EIKh7QY5rhzzLNJJLZKjZ8M05AltEYTAyKOHDAhvNcKgj711MN6QMS7EPOHQnYy6P+Hv
- 4FtA==
+ d=linaro.org; s=google; t=1740507049; x=1741111849; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=8qgZm/0SGTAFR8pdYZ4FWK314BGa+SHO/xYxPh49gmI=;
+ b=BM3Yw13eFK/vOjMb+Wzm7aTn2ijphsi/iZkttUeRmHQ61W9tCqbUZONUOxwxsqLPGS
+ l+R1dTrbCnxKOBBiQjv6WlFZdwpDlDMVYEcsP6wh43brBj2dFsTChMdrQndSDG5rXDTB
+ YupItL9KH4ND8NI1VUqqbsiBsp9PXsCd2iAsVBdf4oXdpzNGMk98UJPJBwj+NkjtE4vs
+ DEKIjaxAT6YQDM9LE3D7QvEwIKqyjRdmkIMl+48dqIOMRjWyM75LrUipI7As1HWCeMWt
+ bOf/SnrjGG3PBdWetIVhoio8m/7hcoGJVsUz5k+1GRMjeijZRcyb7UJXwWo1P5Ad/jg8
+ 6NPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740506761; x=1741111561;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NR+zcHQnCsYl/JswP9hc5n95WylqnjqY5XYs4m7vvOk=;
- b=Me0wIj7A9XaveoaefHP1tNpySXjQrvBwtC48wkEx8U914cWHAzgOInhFQoajf0qwLy
- 3FvE+xRIAQRDTpSkRgkuX+ll6MCUa+BAAdDK1Q6qtBkgXjSyS7uTOJBHZyOmOjIdYaJ4
- EvJ8tadim4lre9eP1dTYGJpzcRZQs5Gaq164kX0a2tAEsIv5nWJFzzFLWzdoVbdZ9vPM
- U8DbnF4uaroilhpUHi/VoW46Q4gWU28VooKRcFqNuc0DffHThedu3jttqPd+qpqn7+EC
- C2mWg16C6CakhPzEsei0YqKLy+50nyY9YvDQazx+8ih5TPl1YgWXihexmnTmeVMIwnpW
- qplw==
-X-Gm-Message-State: AOJu0YzAKEC3pM57Cyme12nPl/cLnNDkewZ9z3UBtNXI9Ypw7HR66OXF
- hBTpWL2LOYAggodpslSDyLGlyLEaORYkanyymvN+dLMjfVQwsM8GHr4mpo+NyGFR0sBtrHRmptJ
- Q
-X-Gm-Gg: ASbGncvYAlS8sjM7MWL8WhJGeHbisrg2a6v1zKOexWtPHgzrzcgnfBSqDnk8hG4bySG
- QWJ5y0m9iqzHLfDV/OndyeT6OTNwmRw/nniRA06rnN2ryk/Q7pxFAVBBCqqtgyVG+2CeIrTdlhG
- W7NpuZXwtqEmd/vbXMdQqRpbJToRw3XQl3dW4m9H43w6XlYq21zO/qMd0kbjLCQ9W2ji1NhaLMl
- +8qLFwg62s2g/hybZSiqt7GDeAVYuU21OxIyp3NBMzckKnblEgEqxUZB1t0PKLRwX1hDR1DHHM3
- o8NnRgE/1dGzctPMhO7tk7OGEt2cjQ6q
-X-Google-Smtp-Source: AGHT+IHD34OKqxoXLyxovtnIkDQ8sbFCJLJakexaBo2VtNQc9UMsGIbEOi3kSEcMuXx3OIFz9xna8g==
-X-Received: by 2002:a05:600c:3ba8:b0:439:a138:20 with SMTP id
- 5b1f17b1804b1-43ab0f65faemr34538115e9.20.1740506760966; 
- Tue, 25 Feb 2025 10:06:00 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab156a136sm35147875e9.35.2025.02.25.10.06.00
+ d=1e100.net; s=20230601; t=1740507049; x=1741111849;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8qgZm/0SGTAFR8pdYZ4FWK314BGa+SHO/xYxPh49gmI=;
+ b=AnlcAkUmvHuzslGq4JsqHR7MGRTIdkpMt8nrbmIrfigyDOypIt7/lymzS0iXqLUjXh
+ IjDQQJ9yW9B9V2OvpBaCZAw7RsYQUSu1ZAHxPdU/vOaRNVSJb+457IJSFLXL1vrv5gTc
+ XKHZkQ9diXxF2a6jL+2AVyyznMkIhxmDFVv6my3oh8YSEFaPMhGKTndnfqu+jBXM8Mcz
+ KnPDB21jAQl1pd8mM4x1g0daNcsMbTNmGQkE4skg8wQqvFLfx7t4OI4ajV1HwBE1mcSI
+ 8kphBrYa4qBfhB7wqgE4YOrN3WHfnQ4de1ppf7+9hJsYt1glfv0r4xdxuFkqOSa66D6B
+ QUvg==
+X-Gm-Message-State: AOJu0YxsIbX+7PC7fyi2TQtNRW4U7+NZLwYK2usx5zxdekA3l5aG958b
+ 2A1UzyewAxTFbIeLZ/Ba7+qYrPpyydVsZ7qjjn14NkPESfEhmLE6OS8dX/1/nLTKmjTeQ63V6u/
+ i
+X-Gm-Gg: ASbGnctdUpqj16Yn7eQt/yiJis22N1d2T4vhG9Tw90BOt0ZxxrXv7SYQkpdq6suQbzR
+ J2ZKMpk425dxmgDPaOQxDS51WOzWoflcOx3zZKSyn2FKlu5UJlMkhwfZbdKcXwI2HTRDxv39dh5
+ FrbAzMGCoQv0aB5tiyYifOY8ufur2LKVRxB8QCDjJRUjRwVDincWeVZwxZyGxrXowROem+Cb5p7
+ raWcgH7Bi2eSyZUOVl5YSa5tCTuel/XV2lqwuy9Z0o0qj+KSLQYvcSynCpE/cg2yEnlfIugfxmh
+ ria8VpgBVRqBihUCMPyp7jeRwU9uKcfLdyRiYzDC5wfsw4jHaCzNIibgwyqPX3SEf/BnAuCUx1r
+ f0pXBydc=
+X-Google-Smtp-Source: AGHT+IEEKIKD+WLvCB8jTQcO4HI78tRVhex2W6xaNZaviB3dYtUNCCg+mrCMWQZr+Xt2UcMTsNS/CQ==
+X-Received: by 2002:a05:6a00:a8d:b0:732:56a7:a935 with SMTP id
+ d2e1a72fcca58-7341411dffamr43909985b3a.12.1740507049238; 
+ Tue, 25 Feb 2025 10:10:49 -0800 (PST)
+Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7347a81edaesm1890428b3a.149.2025.02.25.10.10.48
  for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:06:00 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 43/43] hw/arm/fsl-imx8mp: Add on-chip RAM
-Date: Tue, 25 Feb 2025 18:05:09 +0000
-Message-ID: <20250225180510.1318207-44-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250225180510.1318207-1-peter.maydell@linaro.org>
-References: <20250225180510.1318207-1-peter.maydell@linaro.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 10:10:48 -0800 (PST)
+Message-ID: <20653fc7-057f-4da9-ac73-0414c2fc1c0e@linaro.org>
+Date: Tue, 25 Feb 2025 10:10:47 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/10] include/qemu: plugin-memory.h doesn't need
+ cpu-defs.h
+To: qemu-devel@nongnu.org
+References: <20250225110844.3296991-1-alex.bennee@linaro.org>
+ <20250225110844.3296991-4-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250225110844.3296991-4-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,59 +102,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+On 2/25/25 03:08, Alex Bennée wrote:
+> hwaddr is a fixed size on all builds.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   include/qemu/plugin-memory.h | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/qemu/plugin-memory.h b/include/qemu/plugin-memory.h
+> index 71c1123308..6065ec7aaf 100644
+> --- a/include/qemu/plugin-memory.h
+> +++ b/include/qemu/plugin-memory.h
+> @@ -9,7 +9,6 @@
+>   #ifndef PLUGIN_MEMORY_H
+>   #define PLUGIN_MEMORY_H
+>   
+> -#include "exec/cpu-defs.h"
+>   #include "exec/hwaddr.h"
+>   
+>   struct qemu_plugin_hwaddr {
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250223114708.1780-18-shentey@gmail.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/arm/fsl-imx8mp.h |  1 +
- hw/arm/fsl-imx8mp.c         | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
-index 5247e972b88..bc97fc416eb 100644
---- a/include/hw/arm/fsl-imx8mp.h
-+++ b/include/hw/arm/fsl-imx8mp.h
-@@ -68,6 +68,7 @@ struct FslImx8mpState {
-     DesignwarePCIEHost pcie;
-     FslImx8mPciePhyState   pcie_phy;
-     OrIRQState         gpt5_gpt6_irq;
-+    MemoryRegion       ocram;
- 
-     uint32_t           phy_num;
-     bool               phy_connected;
-diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
-index 0880f0c7244..1ea98e14635 100644
---- a/hw/arm/fsl-imx8mp.c
-+++ b/hw/arm/fsl-imx8mp.c
-@@ -644,6 +644,16 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie_phy), 0,
-                     fsl_imx8mp_memmap[FSL_IMX8MP_PCIE_PHY1].addr);
- 
-+    /* On-Chip RAM */
-+    if (!memory_region_init_ram(&s->ocram, NULL, "imx8mp.ocram",
-+                                fsl_imx8mp_memmap[FSL_IMX8MP_OCRAM].size,
-+                                errp)) {
-+        return;
-+    }
-+    memory_region_add_subregion(get_system_memory(),
-+                                fsl_imx8mp_memmap[FSL_IMX8MP_OCRAM].addr,
-+                                &s->ocram);
-+
-     /* Unimplemented devices */
-     for (i = 0; i < ARRAY_SIZE(fsl_imx8mp_memmap); i++) {
-         switch (i) {
-@@ -655,6 +665,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-         case FSL_IMX8MP_ECSPI1 ... FSL_IMX8MP_ECSPI3:
-         case FSL_IMX8MP_ENET1:
-         case FSL_IMX8MP_I2C1 ... FSL_IMX8MP_I2C6:
-+        case FSL_IMX8MP_OCRAM:
-         case FSL_IMX8MP_PCIE1:
-         case FSL_IMX8MP_PCIE_PHY1:
-         case FSL_IMX8MP_RAM:
--- 
-2.43.0
-
+r~
 
