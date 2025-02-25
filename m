@@ -2,96 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF837A44BED
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E73A3A44BF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 21:05:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn18O-0004es-VO; Tue, 25 Feb 2025 15:02:29 -0500
+	id 1tn1AX-0005Yw-AZ; Tue, 25 Feb 2025 15:04:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tn185-0004cJ-O8
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:02:12 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tn182-0003Y4-Rr
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:02:08 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-220e989edb6so166951165ad.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 12:02:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740513725; x=1741118525; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w4jGV3D75YfX9XnMKOC/GiEryZiXIjZhXgsY+cWKjfc=;
- b=bpTEGIElPp+EyqUo/C6MSbM4hQB5I9hLjFFLsnEH4w2/Ln6Vow9D0nMzWxa+BH7ec/
- vdROyqLn3usM9YzcG/Wlc0tUMdrQS8LIt1sRqAS73sg48btlyQOxFQKcr97O3b7icxKE
- 81oIt9ufxGFBG9QPcJ9SmfFcwRUozQMgkUXoYwBv73QROXCSW+rN91l/aWOebmkVPLTu
- /H45EEbtLC/XjMupvmG54hWRnypKB3zbSMLWJHK6vhXe6vKiORVGQIbZhho3pBZxfqhr
- ihxsb4wtlptVSQjBTjojIJcTH0Isr99dmdys0nF1LA8ZjvoTClD25aOhD0FWs99NacMC
- bYQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740513725; x=1741118525;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w4jGV3D75YfX9XnMKOC/GiEryZiXIjZhXgsY+cWKjfc=;
- b=CePJzxRoSKF2tUTS7h1BQLOY8qe+edQEBs0dKetwhEAVTQAnHU5VRCDaqbW+luC/hV
- 468vw/3p+shnacd3GQaGtCrJrU+ujuuAMybiEWl28fcGjKTX+SNprB/9jj3ZmXOuDead
- tZt4mi+XSY7hmJ13qIfAtnXvYwG1a96KxeFNLksrLMPBEdh6FlfgU6DstJRyjyCi5asD
- 3yrrcsGxm4RUw9iAu8FQ15ttH/8AECGrk/7Ja9j9DwUZ+k4ZwVo5ttVpcahKDS1lS1+k
- 29iXTwNio5Ffjb2klnGtk/LpOb8gr4ABLNvJ+7nOOhSiiJ0taKhejqbnAPe4ipLdoqGJ
- 81+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIkuvBQNi7poi4k4DW/MQ5DW8MqU/HDF6odt/uEHcESgqZfcu/0VKDpfjM/AKNPd1go5UntiqOFgEE@nongnu.org
-X-Gm-Message-State: AOJu0YzobK+kUjGBQBCNGG4fs2MoXPWx+FFDZJonLFteyJOgfFTgV7RX
- D371DsEW4BQYW9HNit5GabyrZ28fOv30nrnmi2mPNjqBKjR3FSNyIJ/lRTR4pBs=
-X-Gm-Gg: ASbGncvYXAzXKaL7vJme53fHULoaflnoQ4/rsz0rbTGfSwAE70mtlXjI5XSco4nYAxP
- jvPf686zyk2Wqh9+bK1SzfdyS8XrFLgpyidRIRHD5HiuIazLgVa4bZ2ZQcxByWhwMxbqT493E8M
- Tz4Py4XzWZULD0N2tqj7HveM221qzcz5MXq7SmL/fAgcPejexuPCD+u0gLxfHXH1SJKlpUWht28
- kYHYj0BhTgBAxvcDg8QylFJZKeFiZDKk5PfchCGL2Frv6J/A/Dh2DS7IW/IS+629ltQ1WBHQMEy
- IcPyH2U0Nb5OvUAYQjDxkm64BKDku9SpHo04gQgxTR69Rm3PmsBMyL+fLk6fvpMKBSAeIZXpvpf
- 89F3BL1Y=
-X-Google-Smtp-Source: AGHT+IFLd+Rw+Z6BXvNUh/y9/vlXCFq6mSfOACpG5hC1wd+S88OsW6PPTM/BKOj7PVNJsTtFyav9YA==
-X-Received: by 2002:a17:903:94b:b0:221:331:1d4e with SMTP id
- d9443c01a7336-22307b32c67mr69441175ad.7.1740513724946; 
- Tue, 25 Feb 2025 12:02:04 -0800 (PST)
-Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
- [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2230a00ac23sm18364645ad.81.2025.02.25.12.02.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Feb 2025 12:02:04 -0800 (PST)
-Message-ID: <c7c2d873-3ea7-41a5-8842-1ebf33b5a560@linaro.org>
-Date: Tue, 25 Feb 2025 12:02:02 -0800
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tn1AU-0005YJ-B9
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tn1AS-0003zp-4y
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 15:04:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740513875;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=iuWHyO8bxl5mtkUxjUyRQaGhT8WtBJ55DaYKzmJrinU=;
+ b=P9WZMm3roySftSKSqMJ5k+fjUjy/M3LaR5yJUYLVZgfpmItvkv/wIM/3pbEqG8m9K5+1Av
+ 8gJF6+cbY7Wq5/MTkxE+rkBCh1ZllYTrvU+897fc4R4disJI2C4X6iwyPb8mwcFbqgFPZS
+ W7gspNpGEzrOXs4P7/Q8TwawD1m42us=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-x-d9V9wlPxauEJCRCPAhXQ-1; Tue,
+ 25 Feb 2025 15:04:30 -0500
+X-MC-Unique: x-d9V9wlPxauEJCRCPAhXQ-1
+X-Mimecast-MFC-AGG-ID: x-d9V9wlPxauEJCRCPAhXQ_1740513869
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DD95619039C6; Tue, 25 Feb 2025 20:04:28 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.59])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E61D71800357; Tue, 25 Feb 2025 20:04:24 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/4] docs: automated info about machine deprecation/removal
+ info
+Date: Tue, 25 Feb 2025 20:04:19 +0000
+Message-ID: <20250225200423.2350471-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] tcg:tlb: use tcg_debug_assert() in
- assert_cpu_is_self()
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-References: <20250225184628.3590671-1-alex.bennee@linaro.org>
- <20250225184628.3590671-5-alex.bennee@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250225184628.3590671-5-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,60 +86,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/25/25 10:46, Alex Bennée wrote:
-> From: Igor Mammedov <imammedo@redhat.com>
-> 
-> that will enable assert_cpu_is_self when QEMU is configured with
->     --enable-debug
-> without need for manual patching DEBUG_TLB_GATE define.
-> 
-> Need to manually path DEBUG_TLB_GATE define to enable assert,
-> let regression caused by [1] creep in unnoticed.
-> 
-> 1) 30933c4fb4f3d ("tcg/cputlb: remove other-cpu capability from TLB flushing")
-> 
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20250207162048.1890669-5-imammedo@redhat.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   accel/tcg/cputlb.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index fc16a576f0..65b04b1055 100644
-> --- a/accel/tcg/cputlb.c
-> +++ b/accel/tcg/cputlb.c
-> @@ -73,11 +73,8 @@
->       } \
->   } while (0)
->   
-> -#define assert_cpu_is_self(cpu) do {                              \
-> -        if (DEBUG_TLB_GATE) {                                     \
-> -            g_assert(!(cpu)->created || qemu_cpu_is_self(cpu));   \
-> -        }                                                         \
-> -    } while (0)
-> +#define assert_cpu_is_self(cpu)                             \
-> +    tcg_debug_assert(!(cpu)->created || qemu_cpu_is_self(cpu))
+Since we deprecate and remove versioned machine types on a fixed
+schedule, we can automatically ensure that the docs reflect the
+latest version info, rather than requiring manual updates on each
+dev cycle.
 
-I think this check is just wrong or incomplete.
+The first patch in this series fixes the logic to ensure dev snapshots
+and release candidates don't have an off-by-1 error in setting
+deprecation and removal thresholds - they must predict the next formal
+release version number.
 
-The intent here is to check that we're not attempting to modify the softmmu tlb 
-asynchronously while a cpu is running.
+The remaining patches deal with the docs stuff.
 
-(0) A synchronous flush to the current cpu is (obviously?) ok.
-(1) A flush to a cpu that is not yet created is (or should be) a no-op.
+The first two patches can be applied in this release (10.0) if desired.
 
-Not checked here are any of the other reasons a flush might be ok:
+The third patch documents deletion logic that doesn't come into effect
+until the 10.1.0 release is out, so we shouldn't include that commit
+in 10.0.0. It can be applied after the following is reverted:
 
-(2) The system as a whole is stopped, on the way in from migration/vmload.
-(3) The cpu is offline, on the way in from poweroff/reset.
+  commit c9fd2d9a48ee3c195cf83cc611b87b09f02f0013
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Thu Jun 20 17:57:37 2024 +0100
 
-If we decide that {1, 2, 3} are too complicated to check, then perhaps the solution to 
-queue flushes to the cpu's workqueue is the appropriate solution.  But so far all I see is 
-that we have an incomplete check, and no ready explanation for why that check can't be 
-improved.
+    include/hw: temporarily disable deletion of versioned machine types
 
+    The new deprecation and deletion policy for versioned machine types is
+    being introduced in QEMU 9.1.0.
 
-r~
+    Under the new policy a number of old machine types (any prior to 2.12)
+    would be liable for immediate deletion which would be a violation of our
+    historical deprecation and removal policy
+
+    Thus automatic deletions (by skipping QOM registration) are temporarily
+    gated on existance of the env variable "QEMU_DELETE_MACHINES" / QEMU
+    version number >= 10.1.0. This allows opt-in testing of the automatic
+    deletion logic, while activating it fully in QEMU >= 10.1.0.
+
+    This whole commit should be reverted in the 10.1.0 dev cycle or shortly
+    thereafter.
+
+Daniel P. Berrangé (4):
+  include/hw/boards: cope with dev/rc versions in deprecation checks
+  docs/about/deprecated: auto-generate a note for versioned machine
+    types
+  docs/about/removed-features: auto-generate a note for versioned
+    machine types
+  include/hw/boards: add warning about changing deprecation logic
+
+ docs/about/deprecated.rst       |  7 ++++++
+ docs/about/removed-features.rst | 10 +++++----
+ docs/conf.py                    | 39 ++++++++++++++++++++++++++++++++-
+ include/hw/boards.h             | 39 +++++++++++++++++++++++++++++++--
+ 4 files changed, 88 insertions(+), 7 deletions(-)
+
+-- 
+2.47.1
+
 
