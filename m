@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560A6A44AD8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F061A44ADA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:48:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzy6-0002fk-92; Tue, 25 Feb 2025 13:47:46 -0500
+	id 1tmzy5-0002dB-44; Tue, 25 Feb 2025 13:47:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmzx1-0002Bu-Id
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:43 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmzx8-0002FV-2V
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:58 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tmzww-0000HP-5t
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:37 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4394a0c65fcso60652275e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:46:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tmzx4-0000J1-Gg
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:46:44 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-220f4dd756eso127140415ad.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:46:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740509192; x=1741113992; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FbQf2cPMJ6YImQV1+hw0Op2lVZ36B/VbRboWjVjmjAI=;
- b=BDHQ1k4gPCnZYXo6oBjbr1lHeRgj4T5uVYiVNCkTeM60+vWRNUtdjPWg6ojykvWhfu
- 31jmHtAhBZY+nmZMNTcf0fqykjqph15NpEtv8PNcz/KZUP5TRm0G2MwLooyf41vI0YpV
- lrZ/TQJ/dRQ5c8vwKuac3HAmaOTpjiNBVfu1WAz8LID3ckFlIFF/xA4xzzOjfmjPpdp3
- sn7hDG/ouMuUCZdDQ//nJ9KAy8wb5+MFl2X+RLvjTroRhXkLREkWoDZilcemCBX/bz5x
- GZv8AD32HAj++KAS4XLtDdLKDC0s4sngacSa+y1sEvnaZ/e4Ga4FidD2FzgAS4zUi9Bg
- OwEw==
+ d=linaro.org; s=google; t=1740509199; x=1741113999; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=LhbEIpIBB5sMAWBXwLQJwqkqzuEasaA8LzuKqvtK1O0=;
+ b=eIcHvdKBvSyFzCcYTDdbeKIpZuTe8s+oWI3aoHKj4hZS4p+XptR2E3qIYP5BF3N4rB
+ LcZbMchG58NF5BuZcJxYn3LQ+pHjN3QmdfGee+HowBpZZWOuRBOe3IRI3Q3d9qDx0MPZ
+ LiAVqYgEbKkulJHZLrSzQtr4O/zNKT9n7t2Oj7o8QSOqrn7azk86zVrL/GjZoch1pKEx
+ 8F7TzLGT75NzNiwfIUHQqEgY9J49gfeeQv+ygHO0oAHRs5w6khLIG8/iPdf2Hl9B1n1K
+ 9hmOlHxbAs4hKkDXQOib1lPA4ZZ+shzp6xZ7vAoHYljbBW5cKBHJLuRTgWuJyWGkLIfz
+ w0LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740509192; x=1741113992;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FbQf2cPMJ6YImQV1+hw0Op2lVZ36B/VbRboWjVjmjAI=;
- b=N36HO3eZvEiv+h7KQ8n/N7y/f6fyMi5hNzA/jHTH65Y+1AtCSrd1hj9zDTEmCWOfkO
- tpE9E0wLAM4C+4sPFocmSAmgXpWSq90HaNPgA3Kf3tmlJPeRX1//yWcDN4Q6Bj6CVto/
- M1Otj0osOKgfk83dbBjRzyc0/sdVg1hKUuXjbUNxa38pvInGV9gcW32jo9/vZghz+dx5
- 68EiemoWE9i9UqY+cJbAETpLThLWjn12tBv14tdRhbLw2ThFTI9Hp+ZObCtrF6Y7P6ET
- 6nzVi2yJpP9LDencX0cHYaLFcfiWC0KUMoTGfko25HJHQnVkttOaemzX6LbCyAyXy/U1
- GMtw==
-X-Gm-Message-State: AOJu0YxEduGm4HnSp7SiFfKXIOg/Cb11tMSa0QGqWix6B/nzm5ReUJJl
- J3z05vo2r3m4Mn8+lZgVRu1tGOAlQmxCbov4BirFZth6jeN+M6Cp0hhLztrUTXU=
-X-Gm-Gg: ASbGncttMXJTLwv8IVnBiSq3wUHNpuDWb/KkOSVESD+06jQDo5mEIltG6l9+EYEnlig
- r9x0W5BWkqrPOeX8Bry0h4rs4EqareDIH1mbDPxNoGhqWtPI6faGdTG7FSZBScYVoSaSbK9/dv1
- m4ZUToVy0DdQzTmOUqhL+IxoovzAfsdApxr2nuYrGG3ZczcJ4SUy9OxJFFuOQOxdZDfZMGqgiKN
- +APU7hF6vAvILe+6rf2v8ozTnlAL55UZbNPbdt+Ctwzj2aEbHiquLopZIGwBBOHjo5Ihz7Dgf4j
- mgwjZhAX8xaRX0cq6P4GOLNSiSv/
-X-Google-Smtp-Source: AGHT+IHon/W6vZRQ61+ptb2vCLc+aENikQGb6LrftS5FJ6cmGWUYzguPJeuxRXCh7w9syd4okplYxw==
-X-Received: by 2002:a05:600c:5117:b0:439:86fb:7325 with SMTP id
- 5b1f17b1804b1-43ab0f8dd49mr50464195e9.31.1740509191824; 
- Tue, 25 Feb 2025 10:46:31 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-439b02d854csm149295355e9.15.2025.02.25.10.46.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2025 10:46:29 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C83175FA34;
- Tue, 25 Feb 2025 18:46:28 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 4/4] tcg:tlb: use tcg_debug_assert() in assert_cpu_is_self()
-Date: Tue, 25 Feb 2025 18:46:28 +0000
-Message-Id: <20250225184628.3590671-5-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250225184628.3590671-1-alex.bennee@linaro.org>
-References: <20250225184628.3590671-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1740509199; x=1741113999;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LhbEIpIBB5sMAWBXwLQJwqkqzuEasaA8LzuKqvtK1O0=;
+ b=LwMjeAoo3GsjFgHTSUONe8uhBOUtjRMAkVvA2n9mgbgbrIdqfd76VWqney4ux1vp04
+ 8q3jRsluAdvy24Qd7nKvNBeCJRlGrnVmNmCKoZUDsAN0VX6EUpPj0bYNy/RBvfq8vBWA
+ UdcXEr0t0F3gVodv744T/+UileAv9l7Q0xdjDaSjJvScGIzvgtkrxMX9deedC+hwlSYK
+ HZ2tiGWK8Dx3Bx844QvsZ38rVtkg6KKm0dnuEpM/WunfeFqyRgkcc6KPplLwEouCi2Ed
+ hH+YqV3FaWOpwr8Vns857KBAIg9dIFpEwruRW8cw2KGLhFN1sZz7VOJPJomo1KSSzFR5
+ QRgg==
+X-Gm-Message-State: AOJu0YxASiEt3hVeEzGzgr8ga/h1x254V//z40ZLX8ea92wp7Vm54HV6
+ 0Nv06tXlpDW+4LyToE2wClqoXSTCO7tuvsr6fcni/ZuPXWcbbTC9SqPMNKPuBMDSP4EDJZkr5eK
+ G
+X-Gm-Gg: ASbGncv1alyPVFbxGQ8id3XD8H+MsdShWloHKhVVoc1BoX0Tx4iuErRtCRAo96US5ov
+ RlinuuybnZi2NGw3vxlSvIzWhcYC+owj0lpw89nWff+WC2TqHHKBcgQP6vTnfu5C/R5JX7RqOor
+ 6lQrDMmMNTtODbBOeKkeIzfT2gf+HucIeded9+Y+KZRYgOKA+lwISUTG/ETb+s0v8/DtdavBJCt
+ kvD/jrozpZxvkkqIasiD8THzcLqp90PDsyH+Xhxfztvbg2wn5WnHucsDHxhzV+x4EB9LuQ4xZ2Z
+ c0Y6B964ZlHxYo3/2q/orZjIZHaPzHOO94d+UDiOQLUMAXtLpVB7tERINLHUu09Df8c71g2pbGJ
+ AvP7aAR0=
+X-Google-Smtp-Source: AGHT+IFxKsSpT3EaOzhSuYF1r5zmgfX+8g5Z99+cn4Svq4MZtZWK1h0hIq2WstZfkAnOg0hgxUqUCA==
+X-Received: by 2002:a17:902:e84e:b0:216:5294:619b with SMTP id
+ d9443c01a7336-22307e78b9fmr58482915ad.47.1740509198941; 
+ Tue, 25 Feb 2025 10:46:38 -0800 (PST)
+Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2230a000964sm17886235ad.48.2025.02.25.10.46.38
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 10:46:38 -0800 (PST)
+Message-ID: <12c9bc4b-f3e6-4cef-b7af-cae23ea27b0d@linaro.org>
+Date: Tue, 25 Feb 2025 10:46:36 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/10] plugins/api: build only once
+To: qemu-devel@nongnu.org
+References: <20250225110844.3296991-1-alex.bennee@linaro.org>
+ <20250225110844.3296991-11-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250225110844.3296991-11-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,44 +101,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+On 2/25/25 03:08, Alex Bennée wrote:
+> Now all the softmmu/user-mode stuff has been split out we can build
+> this compilation unit only once.
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> ---
+>   plugins/api.c       | 11 -----------
+>   plugins/meson.build |  3 +--
+>   2 files changed, 1 insertion(+), 13 deletions(-)
 
-that will enable assert_cpu_is_self when QEMU is configured with
-   --enable-debug
-without need for manual patching DEBUG_TLB_GATE define.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Need to manually path DEBUG_TLB_GATE define to enable assert,
-let regression caused by [1] creep in unnoticed.
-
-1) 30933c4fb4f3d ("tcg/cputlb: remove other-cpu capability from TLB flushing")
-
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Suggested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250207162048.1890669-5-imammedo@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- accel/tcg/cputlb.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index fc16a576f0..65b04b1055 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -73,11 +73,8 @@
-     } \
- } while (0)
- 
--#define assert_cpu_is_self(cpu) do {                              \
--        if (DEBUG_TLB_GATE) {                                     \
--            g_assert(!(cpu)->created || qemu_cpu_is_self(cpu));   \
--        }                                                         \
--    } while (0)
-+#define assert_cpu_is_self(cpu)                             \
-+    tcg_debug_assert(!(cpu)->created || qemu_cpu_is_self(cpu))
- 
- /* run_on_cpu_data.target_ptr should always be big enough for a
-  * vaddr even on 32 bit builds
--- 
-2.39.5
-
+r~
 
