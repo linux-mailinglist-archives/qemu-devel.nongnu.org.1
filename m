@@ -2,72 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003B4A44675
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D642A44660
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 17:40:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmxql-0001u6-8L; Tue, 25 Feb 2025 11:32:03 -0500
+	id 1tmxvV-0008Pv-5W; Tue, 25 Feb 2025 11:36:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq9-0001Az-3S
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:25 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tmxvB-0008Er-4o
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:36:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tmxq6-0006cw-08
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:31:24 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tmxv8-0007AG-OK
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 11:36:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740501080;
+ s=mimecast20190719; t=1740501392;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=erzI/Ncs6Hnb/gTlWEX/91dVhKQq6/Z2g6NMnZjQjkY=;
- b=ervDkWGDHP5lI3wZXgOiDAZ4DBWl06nYCrSglTHEk2rZ79Cvya0eue1kTXo97Xv7GYtOEm
- 7XrEXkW6UIFwRshzEJ9FiNYwbr9wZqkKXmDC5AD+AiAo05lwqzVFXP8BVvjC+/E7gG/dXB
- uJoDNR2CepsD9zY/7bEIj8bt0QSuDoo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-1-HsHjKtOpy-qXHF9uSBtg-1; Tue,
- 25 Feb 2025 11:31:18 -0500
-X-MC-Unique: 1-HsHjKtOpy-qXHF9uSBtg-1
-X-Mimecast-MFC-AGG-ID: 1-HsHjKtOpy-qXHF9uSBtg_1740501075
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 815571975AFC; Tue, 25 Feb 2025 16:31:15 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.219])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CDC81800359; Tue, 25 Feb 2025 16:31:14 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 36BFB18007A3; Tue, 25 Feb 2025 17:30:33 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org,
- Ard Biesheuvel <ardb@kernel.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, graf@amazon.com,
- Eric Blake <eblake@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 24/24] docs: add uefi variable service documentation
-Date: Tue, 25 Feb 2025 17:30:28 +0100
-Message-ID: <20250225163031.1409078-25-kraxel@redhat.com>
-In-Reply-To: <20250225163031.1409078-1-kraxel@redhat.com>
-References: <20250225163031.1409078-1-kraxel@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ep63gUqnzj8etQQYlvv+emyi6NBD5EYNEA0ygCPxWyM=;
+ b=St2hFqz+InlnLzxkVRd9m7WY2VkM8RaDCDT5OpCgDGWbadKWCSvWE1EiyiIgoI2dLiTS/6
+ yO5WPivyQPQt3gu8ercwM7qUJg5kzA/Sf/mlHrmBF82o6GJJ2q2shgB8Bw6H13jNgwKs2M
+ mGDNUII97ya4Pzbs6qJV69nmCJuQt3I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-58-JukbTRzDOkG3FrHFCbfSQg-1; Tue, 25 Feb 2025 11:36:30 -0500
+X-MC-Unique: JukbTRzDOkG3FrHFCbfSQg-1
+X-Mimecast-MFC-AGG-ID: JukbTRzDOkG3FrHFCbfSQg_1740501389
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4399c5ba9e4so32249215e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 08:36:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740501389; x=1741106189;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=ep63gUqnzj8etQQYlvv+emyi6NBD5EYNEA0ygCPxWyM=;
+ b=sdlkjvGD+ZOSjdqN3FWJmllkif5vbhDbLoliH9joXVqCuvGbb3txXko7wUrXhVeBfQ
+ q+OV6P/iQnzzjjsfQGXXIO73Dqs9ByGbHqBhTuZJH7WG7VhJfQPHbHYKxjUttD+8BDfF
+ JsRkpgOiur+TEVX/FL3wA0FhbwlZ9BPsOOgk6vEP4ajWBSD05elN9RjHoG7YI5oFtyAv
+ +tfh4DuLHaiDdA9JvgOinb8SfmdTMkeTNjuZetnkqqvPki9Gu0yN21sQiW1Y8h7ir3Zo
+ u1DCqEJMD27YXtdIIisyXOj1/ipwykTVw8a5zafYSn11IjbnFwS6Ysnk1I32WO4n/HrC
+ vHFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVCtu0kFaE8FoJDtuu0V4sMl0ozQO4eZ0P4cUrhOVT6qoqfSpoe9l1fMjpf6IpUuPy66xF1eF1neNpt@nongnu.org
+X-Gm-Message-State: AOJu0YzDjoD040B/taHBjIYNzUjvhFvMypq9mEsZbtywqjF/yF4jn81R
+ Mp3TY1hgKzxTTi6ldRPTgiIEZCr0rv1Hj1Hgfkrln69KsprFsx63Htptb54fpZ3uwacdJdBmGj0
+ oaAGqzhljBemVv2Jue8I8NuGsoMxiwMaNBThIilVIE9Cusmw+bkt5
+X-Gm-Gg: ASbGncteUX99qCvWJu5hlUNFERzu7T4wddsstHEAlbf1h2/FGnbRIamRjAa5wcimS1D
+ KIx/iA3f+vr0O8wQ2FsdfR0QPr9R32KhZ76/DBBxj5fwoj0ROjEM9Ym+Y8sStYt0r7LRJcPzut4
+ 5wFWwrPupjrbcLmtu6YZuvdni7lgXM2YkM0YOTdCTecO40Pu8OKX0gQH6RshYGaX0n0geXJYkO8
+ zlsKDAkV8ypQJSgmBmM1D5WwxG7ziP+pceP3apTriJScLdpKJ5CzYA6EQxRV2cdBUdkxNUBWpez
+ uYPmqguV488BtkEgt2yt3sAsg9EHh8hnfrT6+1JGE11MMg4wSKOqRt0thY1UBwFuJ7TOzKdPrv+
+ 1KyCEnQezTngVuV8Ywx0mkt5a/XVNdFMGy5vk3QskuRU=
+X-Received: by 2002:a05:600c:468e:b0:439:9828:c44b with SMTP id
+ 5b1f17b1804b1-43ab0f3ccddmr43689645e9.14.1740501389381; 
+ Tue, 25 Feb 2025 08:36:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFALsw400A49QMl78NL9fbLI7BPu6/d5ayzIP+4rSk/FKWWWDbLYTDiRNwPsWKvJ4QY3hEkHA==
+X-Received: by 2002:a05:600c:468e:b0:439:9828:c44b with SMTP id
+ 5b1f17b1804b1-43ab0f3ccddmr43689395e9.14.1740501389063; 
+ Tue, 25 Feb 2025 08:36:29 -0800 (PST)
+Received: from ?IPV6:2003:cb:c73e:aa00:c9db:441d:a65e:6999?
+ (p200300cbc73eaa00c9db441da65e6999.dip0.t-ipconnect.de.
+ [2003:cb:c73e:aa00:c9db:441d:a65e:6999])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-390cd8e7233sm2852737f8f.66.2025.02.25.08.36.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 08:36:28 -0800 (PST)
+Message-ID: <3f00e92f-1229-4d1c-bcef-832e399671c4@redhat.com>
+Date: Tue, 25 Feb 2025 17:36:27 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] migration: ram block cpr blockers
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <1740409979-243462-1-git-send-email-steven.sistare@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <1740409979-243462-1-git-send-email-steven.sistare@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -92,115 +158,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- docs/devel/index-internals.rst |  1 +
- docs/devel/uefi-vars.rst       | 68 ++++++++++++++++++++++++++++++++++
- hw/uefi/LIMITATIONS.md         |  7 ++++
- 3 files changed, 76 insertions(+)
- create mode 100644 docs/devel/uefi-vars.rst
- create mode 100644 hw/uefi/LIMITATIONS.md
+> + * Return true if ram is compatible with CPR.  Do not exclude rom,
+> + * because the rom file could change in new QEMU.
+> + */
+> +static bool ram_is_cpr_compatible(RAMBlock *rb)
+> +{
+> +    MemoryRegion *mr = rb->mr;
+> +
+> +    if (!mr || !memory_region_is_ram(mr)) {
+> +        return true;
+> +    }
+> +
+> +    /* Ram device is remapped in new QEMU */
+> +    if (memory_region_is_ram_device(mr)) {
+> +        return true;
+> +    }
+> +
+> +    /* Named files are remapped in new QEMU, same contents if shared (no COW) */
+> +    if (qemu_ram_is_shared(rb) && qemu_ram_is_named_file(rb)) {
+> +        return true;
+> +    }
 
-diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
-index bca597c65895..7a0678cbdd3a 100644
---- a/docs/devel/index-internals.rst
-+++ b/docs/devel/index-internals.rst
-@@ -20,6 +20,7 @@ Details about QEMU's various subsystems including how to add features to them.
-    s390-cpu-topology
-    s390-dasd-ipl
-    tracing
-+   uefi-vars
-    vfio-iommufd
-    writing-monitor-commands
-    virtio-backends
-diff --git a/docs/devel/uefi-vars.rst b/docs/devel/uefi-vars.rst
-new file mode 100644
-index 000000000000..0151a26a0a6f
---- /dev/null
-+++ b/docs/devel/uefi-vars.rst
-@@ -0,0 +1,68 @@
-+==============
-+UEFI variables
-+==============
-+
-+Guest UEFI variable management
-+==============================
-+
-+The traditional approach for UEFI Variable storage in qemu guests is
-+to work as close as possible to physical hardware.  That means
-+providing pflash as storage and leaving the management of variables
-+and flash to the guest.
-+
-+Secure boot support comes with the requirement that the UEFI variable
-+storage must be protected against direct access by the OS.  All update
-+requests must pass the sanity checks.  (Parts of) the firmware must
-+run with a higher privilege level than the OS so this can be enforced
-+by the firmware.  On x86 this has been implemented using System
-+Management Mode (SMM) in qemu and kvm, which again is the same
-+approach taken by physical hardware.  Only privileged code running in
-+SMM mode is allowed to access flash storage.
-+
-+Communication with the firmware code running in SMM mode works by
-+serializing the requests to a shared buffer, then trapping into SMM
-+mode via SMI.  The SMM code processes the request, stores the reply in
-+the same buffer and returns.
-+
-+Host UEFI variable service
-+==========================
-+
-+Instead of running the privileged code inside the guest we can run it
-+on the host.  The serialization protocol can be reused.  The
-+communication with the host uses a virtual device, which essentially
-+configures the shared buffer location and size, and traps to the host
-+to process the requests.
-+
-+The ``uefi-vars`` device implements the UEFI virtual device.  It comes
-+in ``uefi-vars-x86`` and ``uefi-vars-sysbus`` flavours.  The device
-+reimplements the handlers needed, specifically
-+``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
-+also consumes events (``EfiEndOfDxeEventGroup``,
-+``EfiEventReadyToBoot`` and ``EfiEventExitBootServices``).
-+
-+The advantage of the approach is that we do not need a special
-+privilege level for the firmware to protect itself, i.e. it does not
-+depend on SMM emulation on x64, which allows the removal of a bunch of
-+complex code for SMM emulation from the linux kernel
-+(CONFIG_KVM_SMM=n).  It also allows support for secure boot on arm
-+without implementing secure world (el3) emulation in kvm.
-+
-+Of course there are also downsides.  The added device increases the
-+attack surface of the host, and we are adding some code duplication
-+because we have to reimplement some edk2 functionality in qemu.
-+
-+usage on x86_64
-+---------------
-+
-+.. code::
-+
-+   qemu-system-x86_64 \
-+      -device uefi-vars-x86,jsonfile=/path/to/vars.json
-+
-+usage on aarch64
-+----------------
-+
-+.. code::
-+
-+   qemu-system-aarch64 -M virt \
-+      -device uefi-vars-sysbus,jsonfile=/path/to/vars.json
-diff --git a/hw/uefi/LIMITATIONS.md b/hw/uefi/LIMITATIONS.md
-new file mode 100644
-index 000000000000..29308bd587aa
---- /dev/null
-+++ b/hw/uefi/LIMITATIONS.md
-@@ -0,0 +1,7 @@
-+known issues and limitations
-+----------------------------
-+
-+* works only on little endian hosts
-+  - accessing structs in guest ram is done without endian conversion.
-+* works only for 64-bit guests
-+  - UINTN is mapped to uint64_t, for 32-bit guests that would be uint32_t
+In general
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
+
+just one more question:
+
+> +
+> +    /* A file descriptor is remapped in new QEMU */
+> +    if (rb->fd >= 0) {
+> +        return true;
+
+This looks odd / wrong. Assume we have
+
+!qemu_ram_is_shared(rb) || !qemu_ram_is_named_file(rb)
+
+(negated condition above)
+
+Why should having a fd be fine? It could just be MAP_PRIVATE/COW (which 
+you document above) or an unnamed file?
+
 -- 
-2.48.1
+Cheers,
+
+David / dhildenb
 
 
