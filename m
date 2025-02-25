@@ -2,55 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB98A43F7A
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C694A43CC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:06:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmu6j-0008NM-SX; Tue, 25 Feb 2025 07:32:17 -0500
+	id 1tmskv-0000I6-Mn; Tue, 25 Feb 2025 06:05:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuanmh12@chinatelecom.cn>)
- id 1tmu6a-0008MF-Gp
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:32:12 -0500
-Received: from smtpnm6-05.21cn.com ([182.42.157.213] helo=chinatelecom.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <yuanmh12@chinatelecom.cn>) id 1tmu6W-00029y-It
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:32:08 -0500
-HMM_SOURCE_IP: 192.168.139.44:0.2083019727
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-36.111.64.84 (unknown [192.168.139.44])
- by chinatelecom.cn (HERMES) with SMTP id 759689C1E41;
- Tue, 25 Feb 2025 20:24:27 +0800 (CST)
-X-189-SAVE-TO-SEND: +yuanmh12@chinatelecom.cn
-Received: from  ([36.111.64.84])
- by gateway-ssl-dep-84dfd8c7d7-g6c8d with ESMTP id
- 97978b9255744c09b859c0159951367a for qemu-devel@nongnu.org; 
- Tue, 25 Feb 2025 20:24:30 CST
-X-Transaction-ID: 97978b9255744c09b859c0159951367a
-X-Real-From: yuanmh12@chinatelecom.cn
-X-Receive-IP: 36.111.64.84
-X-MEDUSA-Status: 0
-From: yuanminghao <yuanmh12@chinatelecom.cn>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmsks-0000H4-CR
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:05:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tmskp-000742-1t
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:05:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740481532;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LoaMERf8SxvE5HXDzgAZo7ed44gFtlIyuBdEBbTa6O4=;
+ b=OfnazSx7/kNA4yWqP0Yi5T/0kdqSYjVaGFo/jTNyci9MnMJK6a3INDmJ2UptXfXjroAOpZ
+ JzRpwzk3ABZ9wv+0EjJ8yFrf4eVLDHx/fUJ00V/ZmISUCSK7BLLtu6R2roZBuLz16X/Jh1
+ 5NLCQ93zX1LixxkO69qwprFMoyVbsT0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-1uTLgOS2Prmho7cYdyub8g-1; Tue,
+ 25 Feb 2025 06:05:31 -0500
+X-MC-Unique: 1uTLgOS2Prmho7cYdyub8g-1
+X-Mimecast-MFC-AGG-ID: 1uTLgOS2Prmho7cYdyub8g_1740481530
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D8BD180036F; Tue, 25 Feb 2025 11:05:30 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.59])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CCD001955BD4; Tue, 25 Feb 2025 11:05:26 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 1/1] vhost: do not reset used_memslots when destroying vhost
- dev
-Date: Thu, 21 Nov 2024 14:07:55 +0800
-Message-Id: <20241121060755.164310-1-yuanmh12@chinatelecom.cn>
-X-Mailer: git-send-email 2.27.0
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH] gitlab: use --refetch in check-patch/check-dco jobs
+Date: Tue, 25 Feb 2025 11:05:25 +0000
+Message-ID: <20250225110525.2209854-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=182.42.157.213;
- envelope-from=yuanmh12@chinatelecom.cn; helo=chinatelecom.cn
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,74 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The global used_memslots or used_shared_memslots is updated to 0 unexpectly
-when a vhost device destroyed. This can occur during scenarios such as live
-detaching a vhost device or restarting a vhost-user net backend (e.g., OVS-DPDK):
- #0  vhost_commit(listener) at hw/virtio/vhost.c:439
- #1  listener_del_address_space(as, listener) at memory.c:2777
- #2  memory_listener_unregister(listener) at memory.c:2823
- #3  vhost_dev_cleanup(hdev) at hw/virtio/vhost.c:1406
- #4  vhost_net_cleanup(net) at hw/net/vhost_net.c:402
- #5  vhost_user_start(be, ncs, queues) at net/vhost-user.c:113
- #6  net_vhost_user_event(opaque, event) at net/vhost-user.c:281
- #7  tcp_chr_new_client(chr, sioc) at chardev/char-socket.c:924
- #8  tcp_chr_accept(listener, cioc, opaque) at chardev/char-socket.c:961
+When gitlab initializes the repo checkout for a CI job, it will have
+done a shallow clone with only partial history. Periodically the objects
+that are omitted cause trouble with the check-patch/check-dco jobs. This
+is exhibited as reporting strange errors being unable to fetch certain
+objects that are known to exist.
 
-So we skip the update of used_memslots and used_shared_memslots when destroying
-vhost devices, and it should work event if all vhost devices are removed.
+Passing the --refetch flag to 'git fetch' causes it to not assume the
+local checkout has all common objects and thus re-fetch everything that
+is needed. This appears to solve the check-patch/check-dco job failures.
 
-Signed-off-by: yuanminghao <yuanmh12@chinatelecom.cn>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/virtio/vhost.c         | 14 +++++++++-----
- include/hw/virtio/vhost.h |  1 +
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ .gitlab-ci.d/check-dco.py   | 2 +-
+ .gitlab-ci.d/check-patch.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 6aa72fd434..2258a12066 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -666,11 +666,13 @@ static void vhost_commit(MemoryListener *listener)
-     dev->mem = g_realloc(dev->mem, regions_size);
-     dev->mem->nregions = dev->n_mem_sections;
+diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
+index 70dec7d6ee..2fd56683dc 100755
+--- a/.gitlab-ci.d/check-dco.py
++++ b/.gitlab-ci.d/check-dco.py
+@@ -21,7 +21,7 @@
  
--    if (dev->vhost_ops->vhost_backend_no_private_memslots &&
--        dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
--        used_shared_memslots = dev->mem->nregions;
--    } else {
--        used_memslots = dev->mem->nregions;
-+    if (!dev->listener_removing) {
-+        if (dev->vhost_ops->vhost_backend_no_private_memslots &&
-+            dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
-+            used_shared_memslots = dev->mem->nregions;
-+        } else {
-+            used_memslots = dev->mem->nregions;
-+        }
-     }
+ print(f"adding upstream git repo @ {repourl}")
+ subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
+-subprocess.check_call(["git", "fetch", "check-dco", "master"])
++subprocess.check_call(["git", "fetch", "--refetch", "check-dco", "master"])
  
-     for (i = 0; i < dev->n_mem_sections; i++) {
-@@ -1668,7 +1670,9 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
-     }
-     if (hdev->mem) {
-         /* those are only safe after successful init */
-+        hdev->listener_removing = true;
-         memory_listener_unregister(&hdev->memory_listener);
-+        hdev->listener_removing = false;
-         QLIST_REMOVE(hdev, entry);
-     }
-     migrate_del_blocker(&hdev->migration_blocker);
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index a9469d50bc..037f85b642 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -133,6 +133,7 @@ struct vhost_dev {
-     QLIST_HEAD(, vhost_iommu) iommu_list;
-     IOMMUNotifier n;
-     const VhostDevConfigOps *config_ops;
-+    bool listener_removing;
- };
+ ancestor = subprocess.check_output(["git", "merge-base",
+                                     "check-dco/master", "HEAD"],
+diff --git a/.gitlab-ci.d/check-patch.py b/.gitlab-ci.d/check-patch.py
+index 68c549a146..be13e6f77d 100755
+--- a/.gitlab-ci.d/check-patch.py
++++ b/.gitlab-ci.d/check-patch.py
+@@ -24,7 +24,7 @@
+ # base for the user's branch. We thus need to figure out a common
+ # ancestor between the user's branch and current git master.
+ subprocess.check_call(["git", "remote", "add", "check-patch", repourl])
+-subprocess.check_call(["git", "fetch", "check-patch", "master"])
++subprocess.check_call(["git", "fetch", "--refetch", "check-patch", "master"])
  
- extern const VhostOps kernel_ops;
+ ancestor = subprocess.check_output(["git", "merge-base",
+                                     "check-patch/master", "HEAD"],
 -- 
-2.27.0
+2.47.1
 
 
