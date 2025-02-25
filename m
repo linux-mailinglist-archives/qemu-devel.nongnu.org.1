@@ -2,80 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902C1A4492D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 18:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D942A4496C
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 19:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmzC4-0004fX-6C; Tue, 25 Feb 2025 12:58:08 -0500
+	id 1tmzHo-0006zF-SI; Tue, 25 Feb 2025 13:04:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmzC1-0004ew-Sg
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:58:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tmzC0-00010t-4h
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 12:58:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740506283;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=c2Is02KFbP4f2SP8aG8/as4uDCX3uLim7HjLYUtNl3M=;
- b=Uv8f1uyj+eRuB/mcuETBq/FmHoQPskS30Nn5am3t4u/luolMcuieXjKpjmVDK41ipAL7hp
- S2plps4LqaihdLuWTU1AqhozR3+o9PgJiZlUwfvBoU1wjcI6tHB1yCCm4GgzwykdwHw+bT
- u8zK+5RJK6f+Hcet75iiv6Y6FbP2eqk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-OmTgD_bBOw6buVvaOzuTgg-1; Tue,
- 25 Feb 2025 12:57:58 -0500
-X-MC-Unique: OmTgD_bBOw6buVvaOzuTgg-1
-X-Mimecast-MFC-AGG-ID: OmTgD_bBOw6buVvaOzuTgg_1740506277
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8881C180034A; Tue, 25 Feb 2025 17:57:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.59])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D36091800944; Tue, 25 Feb 2025 17:57:54 +0000 (UTC)
-Date: Tue, 25 Feb 2025 17:57:51 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>, Qemu-block <qemu-block@nongnu.org>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: Problem with iotest 233
-Message-ID: <Z74En98KD0v11X8w@redhat.com>
-References: <5a31e4fb-3e0f-4455-9941-18b00287b276@redhat.com>
- <Z72XfP8gI9-SB4B9@redhat.com>
- <f500b606-b999-426c-8d72-50a9ba9e84ac@redhat.com>
- <574cdf2e-6b8c-4ff3-9a2b-a7d00c92a788@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tmzHC-0006oU-OB
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:03:36 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tmzH8-0001hK-Bs
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 13:03:24 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-220ca204d04so99235825ad.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 10:03:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1740506600; x=1741111400; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Kz/ULFmmFW1L+imp4J+QHBTCN/NNETrnCiCuaeCd76E=;
+ b=EedmPsjIpgkKvkPV74vbFRTTMxnrDXApkQghPsDv8M95gs2zVAIoCcl4n7q+qiYDzk
+ J6o8rItrwD2lDPf8tMG+R/O4pVN6I1dgracykEDnkKdXNh5g/RKaVa79X83zqHvSJlff
+ 4x+7l7VikPyeWoEA6voTfqJZxDh65zwbrPWBjOVhGjEqiW/1neIVglsi+BbuQGrDszu+
+ bDQnbX/m9ABdnH+sJykLxYdlzilMp04qPY4k/vFyCyXsPwHD8tzT/Qds367inA9nUfz4
+ YECrD3YlwkqhcbRcF9JktqZIdop3llfoybxm2wv3UjhZI9zl3D9ZNUrUSCuZkxcTHFht
+ ktsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740506600; x=1741111400;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kz/ULFmmFW1L+imp4J+QHBTCN/NNETrnCiCuaeCd76E=;
+ b=d7MKj5D9SekW9w9OzYEFa/VlnUv/B0xO6Rz1ZB/Y+w7SLKvXNLvFtONhBixXIK0JsQ
+ sozYh29HjuLF86wc+g83mVbR2zBpssN6+PMZGwiBJEyd4KzJJi3fRswpa4HA+94pmGWw
+ +SvZbvOH9f1lhfa4kzvSxXeeaG0+NnUTLqZ2D1iOlYqe8i9Ty/vJqsPWWJn7/cqyIuNf
+ L2ULBiTzR4vg7lkgh3CixKPyHfXEEYj79Iqm/ipzpNhxOE7qmyW8gO/iDvb6VRx4s09V
+ tdw3EzEv8Xq3CJzz0Oh6j/m5u215RmlLMdqtPy1yZ45M9Dhz6Q015V2qmYMHt1v/DMlg
+ 25bQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWn+v96RcK/1LdgLWKnE50o0B+l+bnWJYYGXV0/fyBrIr6CyQpVQ4vSp76Ab/nHIoF8tD5S/pt62MWg@nongnu.org
+X-Gm-Message-State: AOJu0YxNVOuJsQ5FafR6VjOZrB+qbR2blvGZTWzsYXgdBWU8yOqX+Y3A
+ LZD9puLTPsXaj05e5BHSgN3JAYo+SzFtJNp+mO3EtHQ4SdnLTIdv8PM0Gq6AjThote74dOqy91L
+ 8
+X-Gm-Gg: ASbGncsPjRQLXPMn5u1NElRi3gMNCuj0puYsvWuSNJfWLe4s9Rkahpz7AmM2drwpPk1
+ ol6MlA6euzzXaYtSqZCLT0hUXR7CEN/tPLUQrhtDWAF9e5Fg0ODbxGsF7B4HLdgUgIEs2KXvpev
+ 617Ajs3cG19VrxhQtM1pIvsCeudH7r9lKrNnd+n/IZwvuswiQiuyDbw8VHbalB27BZGoNp8nzf9
+ Hoe3SSTwNtrM3C2gHmefZ7jDP/HTzGMfRtxGAR7/VUIPvAghySdcszz4lSuYIZ1W++Evh2vKSNH
+ kUObzobGp0T0ZYqfR9cfo5z2wzn8qVhhGaiW4debEQ==
+X-Google-Smtp-Source: AGHT+IE8BhuRoA3I+joQAkSkZY2yH6cmNXEaAfyry/rV5DjUPMSR8Z1NyoE/MSn7XUUauJV5kK8B9Q==
+X-Received: by 2002:a17:90b:4d0d:b0:2f2:a664:df19 with SMTP id
+ 98e67ed59e1d1-2fe7e2e0719mr535365a91.7.1740506599810; 
+ Tue, 25 Feb 2025 10:03:19 -0800 (PST)
+Received: from [192.168.68.110] ([177.170.227.219])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2230a094470sm17299285ad.111.2025.02.25.10.03.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Feb 2025 10:03:19 -0800 (PST)
+Message-ID: <a4054c16-05e1-4d51-a94e-ae5b82113086@ventanamicro.com>
+Date: Tue, 25 Feb 2025 15:03:14 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <574cdf2e-6b8c-4ff3-9a2b-a7d00c92a788@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] [RISC-V/RVV] Expand the probe_pages helper function
+ to handle probe flags.
+To: Paolo Savini <paolo.savini@embecosm.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>, Jeremy Bennett
+ <jeremy.bennett@embecosm.com>, Craig Blackmore <craig.blackmore@embecosm.com>
+References: <20250221162036.61521-1-paolo.savini@embecosm.com>
+ <20250221162036.61521-2-paolo.savini@embecosm.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250221162036.61521-2-paolo.savini@embecosm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.443,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,85 +107,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 25, 2025 at 06:52:43PM +0100, Thomas Huth wrote:
-> On 25/02/2025 18.44, Thomas Huth wrote:
-> > On 25/02/2025 11.12, Kevin Wolf wrote:
-> > > Am 25.02.2025 um 08:20 hat Thomas Huth geschrieben:
-> > > > 
-> > > >   Hi!
-> > > > 
-> > > > I'm facing a weird hang in iotest 233 on my Fedora 41 laptop. When running
-> > > > 
-> > > >   ./check -raw 233
-> > > > 
-> > > > the test simply hangs. Looking at the log, the last message is "== check
-> > > > plain client to TLS server fails ==". I added some debug messages, and it
-> > > > seems like the previous NBD server is not correctly terminated here.
-> > > > The test works fine again if I apply this patch:
-> > > > 
-> > > > diff --git a/tests/qemu-iotests/common.nbd b/tests/qemu-iotests/common.nbd
-> > > > --- a/tests/qemu-iotests/common.nbd
-> > > > +++ b/tests/qemu-iotests/common.nbd
-> > > > @@ -35,7 +35,7 @@ nbd_server_stop()
-> > > >           read NBD_PID < "$nbd_pid_file"
-> > > >           rm -f "$nbd_pid_file"
-> > > >           if [ -n "$NBD_PID" ]; then
-> > > > -            kill "$NBD_PID"
-> > > > +            kill -9 "$NBD_PID"
-> > > >           fi
-> > > >       fi
-> > > >       rm -f "$nbd_unix_socket" "$nbd_stderr_fifo"
-> > > > 
-> > > > ... but that does not look like the right solution to me. What could prevent
-> > > > the qemu-nbd from correctly shutting down when it receives a normal SIGTERM
-> > > > signal?
-> > > 
-> > > Not sure. In theory, qemu_system_killed() should set state = TERMINATE
-> > > and make main_loop_wait() return through the notification, which should
-> > > then make it shut down. Maybe you can attach gdb and check what 'state'
-> > > is when it hangs and if it's still in the main loop?
-> > 
-> > I attached a gdb and ran "bt", and it looks like it is hanging in an
-> > exit() handler:
-> > 
-> > (gdb) bt
-> > #0  0x00007f127f8fff1d in syscall () from /lib64/libc.so.6
-> > #1  0x00007f127fd32e1d in g_cond_wait () from /lib64/libglib-2.0.so.0
-> > #2  0x00005583df3048b2 in flush_trace_file (wait=true) at
-> > ../../devel/qemu/ trace/simple.c:140
-> > #3  st_flush_trace_buffer () at ../../devel/qemu/trace/simple.c:383
-> > #4  0x00007f127f8296c1 in __run_exit_handlers () from /lib64/libc.so.6
-> > #5  0x00007f127f82978e in exit () from /lib64/libc.so.6
-> > #6  0x00005583df1ae9e1 in main (argc=<optimized out>, argv=<optimized
-> > out>) at ../../devel/qemu/qemu-nbd.c:1242
+
+
+On 2/21/25 1:20 PM, Paolo Savini wrote:
+> This commit expands the probe_pages helper function in
+> target/riscv/vector_helper.c to handle also the cases in which we need access to
+> the flags raised while probing the memory and the host address.
+> This is done in order to provide a unified interface to probe_access and
+> probe_access_flags.
+> The new version of probe_pages can now act as a regular call to probe_access as
+> before and as a call to probe_access_flags. In the latter case the user need to
+> pass pointers to flags and host address and a boolean value for nonfault.
+> The flags and host address will be set and made available as for a direct call
+> to probe_access_flags.
 > 
-> Ah, now that I wrote that: I recently ran "configure" with
-> --enable-trace-backends=simple ... when I remove that from "config.status"
-> again, then the test works fine again 8-)
+> Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   target/riscv/vector_helper.c | 57 +++++++++++++++++++++++-------------
+>   1 file changed, 37 insertions(+), 20 deletions(-)
 > 
-> Still, I think it should not hang with the simple trace backend here, should it?
-
-IIUC this is waiting on trace_empty_cond.
-
-This condition should be signalled from wait_for_trace_records_available
-which is in turn called from writeout_thread.
-
-This thread is started from st_init, which is called from trace_init_backends
-which should be called from qemu-nbd. I would expect this thread to still
-be running when exit() handlers are run.
-
-Does GDB show any other threads running at the time of this hang ?
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 772cff8fbe..c0f1b7994e 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -114,25 +114,42 @@ static inline uint32_t vext_max_elems(uint32_t desc, uint32_t log2_esz)
+>    * It will trigger an exception if there is no mapping in TLB
+>    * and page table walk can't fill the TLB entry. Then the guest
+>    * software can return here after process the exception or never return.
+> + *
+> + * This function can also be used when direct access to probe_access_flags is
+> + * needed in order to access the flags. If a pointer to a flags operand is
+> + * provided the function will call probe_access_flags instead, use nonfault
+> + * and update host and flags.
+>    */
+> -static void probe_pages(CPURISCVState *env, target_ulong addr,
+> -                        target_ulong len, uintptr_t ra,
+> -                        MMUAccessType access_type)
+> +static void probe_pages(CPURISCVState *env, target_ulong addr, target_ulong len,
+> +                        uintptr_t ra, MMUAccessType access_type, int mmu_index,
+> +                        void **host, int *flags, bool nonfault)
+>   {
+>       target_ulong pagelen = -(addr | TARGET_PAGE_MASK);
+>       target_ulong curlen = MIN(pagelen, len);
+> -    int mmu_index = riscv_env_mmu_index(env, false);
+>   
+> -    probe_access(env, adjust_addr(env, addr), curlen, access_type,
+> -                 mmu_index, ra);
+> +    if (flags != NULL) {
+> +        *flags = probe_access_flags(env, adjust_addr(env, addr), curlen,
+> +                                    access_type, mmu_index, nonfault, host, ra);
+> +    } else {
+> +        probe_access(env, adjust_addr(env, addr), curlen, access_type,
+> +                     mmu_index, ra);
+> +    }
+> +
+>       if (len > curlen) {
+>           addr += curlen;
+>           curlen = len - curlen;
+> -        probe_access(env, adjust_addr(env, addr), curlen, access_type,
+> -                     mmu_index, ra);
+> +        if (flags != NULL) {
+> +            *flags = probe_access_flags(env, adjust_addr(env, addr), curlen,
+> +                                        access_type, mmu_index, nonfault,
+> +                                        host, ra);
+> +        } else {
+> +            probe_access(env, adjust_addr(env, addr), curlen, access_type,
+> +                         mmu_index, ra);
+> +        }
+>       }
+>   }
+>   
+> +
+>   static inline void vext_set_elem_mask(void *v0, int index,
+>                                         uint8_t value)
+>   {
+> @@ -332,8 +349,8 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
+>       MMUAccessType access_type = is_load ? MMU_DATA_LOAD : MMU_DATA_STORE;
+>   
+>       /* Check page permission/pmp/watchpoint/etc. */
+> -    flags = probe_access_flags(env, adjust_addr(env, addr), size, access_type,
+> -                               mmu_index, true, &host, ra);
+> +    probe_pages(env, addr, size, ra, access_type, mmu_index, &host, &flags,
+> +                true);
+>   
+>       if (flags == 0) {
+>           if (nf == 1) {
+> @@ -635,7 +652,7 @@ vext_ldff(void *vd, void *v0, target_ulong base, CPURISCVState *env,
+>       uint32_t vma = vext_vma(desc);
+>       target_ulong addr, addr_probe, addr_i, offset, remain, page_split, elems;
+>       int mmu_index = riscv_env_mmu_index(env, false);
+> -    int flags;
+> +    int flags, probe_flags;
+>       void *host;
+>   
+>       VSTART_CHECK_EARLY_EXIT(env);
+> @@ -649,15 +666,15 @@ vext_ldff(void *vd, void *v0, target_ulong base, CPURISCVState *env,
+>       }
+>   
+>       /* Check page permission/pmp/watchpoint/etc. */
+> -    flags = probe_access_flags(env, adjust_addr(env, addr), elems * msize,
+> -                               MMU_DATA_LOAD, mmu_index, true, &host, ra);
+> +    probe_pages(env, addr, elems * msize, ra, MMU_DATA_LOAD, mmu_index, &host,
+> +                &flags, true);
+>   
+>       /* If we are crossing a page check also the second page. */
+>       if (env->vl > elems) {
+>           addr_probe = addr + (elems << log2_esz);
+> -        flags |= probe_access_flags(env, adjust_addr(env, addr_probe),
+> -                                    elems * msize, MMU_DATA_LOAD, mmu_index,
+> -                                    true, &host, ra);
+> +        probe_pages(env, addr_probe, elems * msize, ra, MMU_DATA_LOAD,
+> +                    mmu_index, &host, &probe_flags, true);
+> +        flags |= probe_flags;
+>       }
+>   
+>       if (flags & ~TLB_WATCHPOINT) {
+> @@ -669,16 +686,16 @@ vext_ldff(void *vd, void *v0, target_ulong base, CPURISCVState *env,
+>               addr_i = adjust_addr(env, base + i * (nf << log2_esz));
+>               if (i == 0) {
+>                   /* Allow fault on first element. */
+> -                probe_pages(env, addr_i, nf << log2_esz, ra, MMU_DATA_LOAD);
+> +                probe_pages(env, addr_i, nf << log2_esz, ra, MMU_DATA_LOAD,
+> +                            mmu_index, &host, NULL, false);
+>               } else {
+>                   remain = nf << log2_esz;
+>                   while (remain > 0) {
+>                       offset = -(addr_i | TARGET_PAGE_MASK);
+>   
+>                       /* Probe nonfault on subsequent elements. */
+> -                    flags = probe_access_flags(env, addr_i, offset,
+> -                                               MMU_DATA_LOAD, mmu_index, true,
+> -                                               &host, 0);
+> +                    probe_pages(env, addr_i, offset, 0, MMU_DATA_LOAD,
+> +                                mmu_index, &host, &flags, true);
+>   
+>                       /*
+>                        * Stop if invalid (unmapped) or mmio (transaction may
 
 
