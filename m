@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E76AA4379D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 09:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213E3A4380D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 09:49:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmqIW-0001FP-45; Tue, 25 Feb 2025 03:28:12 -0500
+	id 1tmqbm-0007Kq-Pe; Tue, 25 Feb 2025 03:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmqIR-0001Ei-Lm; Tue, 25 Feb 2025 03:28:07 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tmqbd-0007KS-An; Tue, 25 Feb 2025 03:47:57 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tmqIP-0005Ej-BC; Tue, 25 Feb 2025 03:28:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1740472086; x=1772008086;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ypBnyjHK5BmToensLWhz1lncWac+k22jlQMcx1/9y9o=;
- b=mCQIdNTprzjAYoHzzoD6EMCLcZFtexWKp74SpK9bfK6XdfN6BDvFKAji
- WP1ApgRaUQHyBJsnfHVdRk8Wxt/JdgYFb3tIrm84GqSdYLPY8T3eQW6PS
- 8DHImP4okFcN8gcVYiioAnsT0+kstzGYCwg4L4ynRUIl2jjButjiIlGON
- 4njgxcIzpTl6vQk6AAn0E6KCarEplc1O4E/6k/l616nRaiQFUaN2yIe7K
- E6HkhxzQV8y3Zw7AwEu4UgLc/9aIrHD/6a9j9ndiNZoJikizcj1YnyfRP
- w47/7UY89X13amvgJo/ojr+vMVFEY1RISuwqgI3G7b/lyL3KmOMBC2qu0 g==;
-X-CSE-ConnectionGUID: +Dv2DDKxT4qmJfdXehiVJw==
-X-CSE-MsgGUID: InEr1FPsRwOvEQ/Jz41W4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40451904"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; d="scan'208,217";a="40451904"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2025 00:28:00 -0800
-X-CSE-ConnectionGUID: uKjO1oniRt2Cr46t0kZE/Q==
-X-CSE-MsgGUID: sISh+4hlRK2rRfyLdpZEQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
- d="scan'208,217";a="121262009"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 25 Feb 2025 00:27:58 -0800
-Date: Tue, 25 Feb 2025 16:47:35 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 10/15] rust: qom: wrap Object with Opaque<>
-Message-ID: <Z72Dp8BJdmZrgcXK@intel.com>
-References: <20250221170342.63591-1-pbonzini@redhat.com>
- <20250221170342.63591-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tmqbb-00083I-JG; Tue, 25 Feb 2025 03:47:57 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id DBFB1F1C5D;
+ Tue, 25 Feb 2025 11:47:25 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 43AF01BE59B;
+ Tue, 25 Feb 2025 11:47:51 +0300 (MSK)
+Message-ID: <985611f9-e7f9-44d0-a8c0-95fb48370591@tls.msk.ru>
+Date: Tue, 25 Feb 2025 11:47:51 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221170342.63591-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] Emulated AMD IOMMU cleanup and fixes
+To: Sairaj Kodilkar <sarunkod@amd.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, vasant.hegde@amd.com, suravee.suthikulpanit@amd.com,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20250207045354.27329-1-sarunkod@amd.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250207045354.27329-1-sarunkod@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,34 +102,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> @@ -621,7 +629,7 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
->  /// We expect the FFI user of this function to pass a valid pointer that
->  /// can be downcasted to type `T`. We also expect the device is
->  /// readable/writeable from one thread at any time.
-> -unsafe extern "C" fn rust_unparent_fn<T: ObjectImpl>(dev: *mut Object) {
-> +unsafe extern "C" fn rust_unparent_fn<T: ObjectImpl>(dev: *mut bindings::Object) {
->      let state = NonNull::new(dev).unwrap().cast::<T>();
->      T::UNPARENT.unwrap()(unsafe { state.as_ref() });
->  }
-> @@ -796,8 +804,9 @@ fn new() -> Owned<Self> {
->          // SAFETY: the object created by object_new is allocated on
->          // the heap and has a reference count of 1
->          unsafe {
-> -            let obj = &*object_new(Self::TYPE_NAME.as_ptr());
-> -            Owned::from_raw(obj.unsafe_cast::<Self>())
-> +            let obj = object_new(Self::TYPE_NAME.as_ptr());
-
-Having the same name is always not ideal, so let's name the first one raw_obj.
-
-> +            let obj = Object::from_raw(obj).unsafe_cast::<Self>();
-> +            Owned::from_raw(obj)
->          }
->      }
->  }
-
-Others look good to me,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+07.02.2025 07:53, Sairaj Kodilkar wrote:
+> This series provides few bug fixes for emulated AMD IOMMU. The series is based
+> on top of qemu upstream master commit d922088eb4ba.
 > 
+> Patch 1: The code was using wrong DTE field to determine interrupt passthrough.
+>           Hence replaced it with correct field according to [1].
+> 
+> Patch 2: Current code sets the PCI capability BAR low and high to the
+>           lower and upper 16 bits of AMDVI_BASE_ADDR respectively, which is
+>           wrong. Instead use 32 bit mask to set the PCI capability BAR low and
+>           high.
+>           The guest IOMMU driver works with current qemu code because it uses
+>           base address from the IVRS table and not the one provided by
+>           PCI capability.
+> 
+> Sairaj Kodilkar (2):
+>    amd_iommu: Use correct DTE field for interrupt passthrough
+>    amd_iommu: Use correct bitmask to set capability BAR
+> 
+>   hw/i386/amd_iommu.c | 10 +++++-----
+>   hw/i386/amd_iommu.h |  2 +-
+>   2 files changed, 6 insertions(+), 6 deletions(-)
+
+Is this qemu-stable material (current series: 7.2, 8.2, 9.2)?
+
+3684717b74 "amd_iommu: Use correct bitmask to set capability BAR" does
+not apply to 7.2, since v8.0.0-10-g6291a28645 "hw/i386/amd_iommu: Explicit
+use of AMDVI_BASE_ADDR in amdvi_init" in not in 7.2, but the change can be
+adjusted for 7.2 easily, or 6291a28645 can be picked up too.
+
+Thanks,
+
+/mjt
 
