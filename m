@@ -2,153 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0ADA464B1
+	by mail.lfdr.de (Postfix) with ESMTPS id 77885A464B2
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 16:28:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnJJj-0005yw-CW; Wed, 26 Feb 2025 10:27:23 -0500
+	id 1tnJKk-00074Y-KO; Wed, 26 Feb 2025 10:28:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnJJg-0005tu-Hn
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 10:27:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnJJf-0001B7-07
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 10:27:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740583638;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=aSLI0UBvfVpH8vcL+mFWy59gnxBebYqtXeyZbhvBsuI=;
- b=DbhJ+S0BphHvkBQ38KBr6GCMvaVtW1nWaX1Wt/Eeu7yM9GZtUxO2sWBHLy15eWSKb5heat
- M5DgQ72ykDq4bRqhAlNRpDAEFlfUap6F4k98ZDbpo0W+pqrTb/ObbwuTub98gx2dm2kj9e
- pb3JHnzj49Wk7lEWtEJBF4HVVoAvsZ4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-kFpbzeDyNuCv4V6Txfo-Kw-1; Wed, 26 Feb 2025 10:27:17 -0500
-X-MC-Unique: kFpbzeDyNuCv4V6Txfo-Kw-1
-X-Mimecast-MFC-AGG-ID: kFpbzeDyNuCv4V6Txfo-Kw_1740583636
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43945f32e2dso63840245e9.2
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 07:27:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1tnJKg-0006uF-GM
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 10:28:22 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1tnJKc-0001Ib-GJ
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 10:28:22 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2fc3db58932so10328727a91.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 07:28:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1740583694; x=1741188494;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=otPD1pltukCVXEyy81M2xkMuRQbnIkdeFAXSVz93YqU=;
+ b=Xii1JCus1fNnemP1R4twCJ69efZ6DMEWko2A4hDomSlD0O0RLWofOehXR9IFVsiO6I
+ Sxxgd1/m3Zjle6KF+icgkwrgGLHLKYnc9sLum35CQ5DVa8P99CMZykjvhuqAOo8MOwhJ
+ rY4p7fhghGdlHJa9/DxYmQxR5bbiY1deSIaM2OKs5+PMrmp1odSNTSA1wGSKXFKbhko1
+ DHPNS3kDYQyfcZeBc364khlzOeELzqjMLQLrmGlxMW6UVvW8jHKiC+W7uskF59nmWijD
+ naGdOWB/JersdxKLQxSkjceOLqjYqh776vbHwsV6XB1mtI6cN2j81JMcUz1LYvytdGNa
+ vsug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740583636; x=1741188436;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1740583694; x=1741188494;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=aSLI0UBvfVpH8vcL+mFWy59gnxBebYqtXeyZbhvBsuI=;
- b=GauSw4kbM9HXYE8+K2vz1/JGBt4bShgPdEQH42qh6rarr2jNFgA6m7JuVv/HzunFR/
- EQqUs9H2NswJjRb+GfOxFihpsiGosF0wVfsTBo/pm1CaZiDtC/YC2Jtr3KLTYcZOmMAb
- sAp0VgLP54VAd6EEMvs2UkmsNGoVRJ6clF+quWAUlrAWOOjDDVZk+Mu1tS+tYwxSTKRm
- 8Thc4E0jlZJ2WYapBbw0TW4Dq/FRGlJ02ByRRsTYwAzkBIEUB6FdIbR3zLiTx7OYPd/T
- CTPljjYxg5lkra1kpwrlFjG9XhSmCLNNfN6OOtCrTMULHqBo5Kbu+RQg+ZoUkGbCqjhA
- x8Kw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUZ7xDtfl7PRJA74CxVdWz2tTwWc8p6kCL4V+1hf0wlYIQBr3uDtQJUzN1/CnwRb6yUv6E0V7aye7hZ@nongnu.org
-X-Gm-Message-State: AOJu0YyF8ic/xkWo5l/uOY/2ribjtVrmcedJqleJv9eomBlfK90puSli
- vhIUDGkwBAu05P4rmzDD6IeVYL7kpEHojvo9A8614vgX3JgX14aLYJM4Nl/xoOUFsMrOtX56Yo6
- uMFd+y8EGZl0YA1kk2t8CvERwialgO/mxgZMy4u+ChW3E34UADx3P
-X-Gm-Gg: ASbGncsuhuKSoN3wTa7u0n/7pmOgA0+dzod3R4HnE9yKzRq9DDmIEU50L0OBHorPj4I
- 649u75Mlklu47YcJhRRLA5cMpz4XYKStKFgZ8MGRWkMQusL8k3VdIugt4tMwFYMNKIaCyQKXQZU
- 0y+Zja5VtuRznJkKMXTvK5C1MyFjMsI91lQs8DgSN3DyeixlVCFRX6hrNXMtKOagvNIoPi0uoMF
- JGbTRTCzCurmo5I7pdYKc/QUayBxJHrfZO+A0k8oa5FqEpDDVzGX9Y8IYD2QXYfUXHisec0S1op
- 2oImDxtjG6HasCZTIGssyu/aUnpc50nfWP+ONFykTX/QdE0=
-X-Received: by 2002:a05:600c:3c9c:b0:439:96aa:e502 with SMTP id
- 5b1f17b1804b1-43ab0f312bcmr83709925e9.12.1740583635714; 
- Wed, 26 Feb 2025 07:27:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHWPNow9oIn9uTgBMtY6GWd205IgHIfBXhaoGzrnesCBNxdORvYr9NWY4o2rgCeJK/9GMCVww==
-X-Received: by 2002:a05:600c:3c9c:b0:439:96aa:e502 with SMTP id
- 5b1f17b1804b1-43ab0f312bcmr83709375e9.12.1740583635271; 
- Wed, 26 Feb 2025 07:27:15 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-49-245.web.vodafone.de.
- [109.42.49.245]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba539466sm26658195e9.18.2025.02.26.07.27.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Feb 2025 07:27:14 -0800 (PST)
-Message-ID: <354fdafb-9a09-4ac8-bfa0-86ac0e9ad01b@redhat.com>
-Date: Wed, 26 Feb 2025 16:27:12 +0100
+ bh=otPD1pltukCVXEyy81M2xkMuRQbnIkdeFAXSVz93YqU=;
+ b=KSsHj8lnK6XKgGrAJBk80aRs23IXwQYk00N2382IYno7A6oc/njO5byR85JAszOTYr
+ P9ltyXznHsrb3aVoTZE3j5lZMnCTUowcbZa2r5ID2j5rNPHh4d//zdniXXqyqxwHMDsr
+ CWZ0AvdFfNwoM3mkE9DMV3RPTv5mbOkOOLukBAvOnSj0Y/DCgzldIKophOPkU1csGJig
+ L4NsjvAphOi/j0WsQBlsY1R4N2ffbMfxVv0fbuRKnUPmi9BfvdESn8qO3qMpv381krpi
+ qn7/Ps3eSJVfVcEBskmNostwT9SILD5vRwJRLYCjnQ5vrI9l+f8CfIZhuHgXQLXrRT5J
+ 9Zjg==
+X-Gm-Message-State: AOJu0Yyx5YefzyJRurbEVdSGzsu3ZZUVAoXs3mYIlkv23QhkyH7UL2Hn
+ FMM05cqs2awq2TVCf9CVdH1i82TfHVekR13+mSxHdCu1fvxZ8NgN1NZvqw6BOuhEiSlsgJJ0jOV
+ 0nbgxYJdUle0GwuUDGXHVCaGRxqT3RyYCxgvq1A==
+X-Gm-Gg: ASbGncvv7Bt3wh+yxzQojWu4QniDDiNfNkVPygxIA6RFXE+u/dmrSnmaCprGkusH5XY
+ fd8LAFr46wk+kNPRFo0lZgFOTKSCF+zBwfJdZtjihzumtXetW5zp/GQATASIbK2RbjRKlraobB8
+ 6/GXxh9M3R93L+SPaqm/tOBo6ThnLBU53YNM7D
+X-Google-Smtp-Source: AGHT+IFDGdRBfHt4loK7VAklIdzpp19LOxcXzmYSI6uEsQuL9C+jaZmROm2s2zmXXfTmZValoB4mU9fwZptsdyEBeuI=
+X-Received: by 2002:a17:90a:fe15:b0:2fe:8a84:e033 with SMTP id
+ 98e67ed59e1d1-2fe8a84edd4mr3020639a91.2.1740583694413; Wed, 26 Feb 2025
+ 07:28:14 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/25] tests/functional: move aarch64 GPU test into own
- file
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Kyle Evans <kevans@freebsd.org>, Eduardo Habkost <eduardo@habkost.net>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Li-Wen Hsu <lwhsu@freebsd.org>,
- Riku Voipio <riku.voipio@iki.fi>, Warner Losh <imp@bsdimp.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ed Maste <emaste@freebsd.org>
 References: <20250226140343.3907080-1-alex.bennee@linaro.org>
- <20250226140343.3907080-2-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250226140343.3907080-2-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20250226140343.3907080-22-alex.bennee@linaro.org>
+In-Reply-To: <20250226140343.3907080-22-alex.bennee@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 26 Feb 2025 08:28:02 -0700
+X-Gm-Features: AQ5f1JoolAEwz_7kDX-Shjy5y_qUhTrXMzzYy5xY6wbDbZxX1QcqF4s-Ejptic4
+Message-ID: <CANCZdfqAZ19c9pKsLDDJ8kqbBaoi94OY9Rwq2P9D92dEUn9qBw@mail.gmail.com>
+Subject: Re: [PATCH 21/25] plugins/api: split out binary path/start/end/entry
+ code
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Kyle Evans <kevans@freebsd.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Alexandre Iooss <erdnaxe@crans.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Laurent Vivier <laurent@vivier.eu>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Li-Wen Hsu <lwhsu@freebsd.org>, 
+ Riku Voipio <riku.voipio@iki.fi>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, Ed Maste <emaste@freebsd.org>,
+ Thomas Huth <thuth@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000cecf76062f0d38a4"
+Received-SPF: none client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=wlosh@bsdimp.com; helo=mail-pj1-x1030.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,28 +100,588 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/02/2025 15.03, Alex Bennée wrote:
-> I want to expand the number of tests to cover a wide range of
-> configurations. That starts with splitting off from the normal virt
-> test from which it doesn't really share much code.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20250219150009.1662688-2-alex.bennee@linaro.org>
+--000000000000cecf76062f0d38a4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Feb 26, 2025 at 7:11=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+
+> To move the main api.c to a single build compilation object we need to
+> start splitting out user and system specific code. As we need to grob
+> around host headers we move these particular helpers into the *-user
+> mode directories.
+>
+> The binary/start/end/entry helpers are all NOPs for system mode.
+>
+> While using the plugin-api.c.inc trick means we build for both
+> linux-user and bsd-user the BSD user-mode command line is still
+> missing -plugin. This can be enabled once we have reliable check-tcg
+> tests working for the BSDs.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Message-Id: <20250225110844.3296991-8-alex.bennee@linaro.org>
+>
+
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+
+I'd love to see the check-tcg working well for bsd, but I'm swamped with
+other commitments.
+
+Warner
+
+
 > ---
-...
-> +class Aarch64VirtGPUMachine(QemuSystemTest):
-> +    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-> +    timeout = 360
+> v2
+>   - use common-user/plugin-api.c.inc instead
+>   - add commentary about state of plugins for BSD user
+> ---
+>  bsd-user/plugin-api.c        | 15 +++++++++++++
+>  linux-user/plugin-api.c      | 14 ++++++++++++
+>  plugins/api-system.c         | 39 ++++++++++++++++++++++++++++++++
+>  plugins/api.c                | 43 ------------------------------------
+>  common-user/plugin-api.c.inc | 43 ++++++++++++++++++++++++++++++++++++
+>  bsd-user/meson.build         |  1 +
+>  linux-user/meson.build       |  1 +
+>  plugins/meson.build          |  2 +-
+>  8 files changed, 114 insertions(+), 44 deletions(-)
+>  create mode 100644 bsd-user/plugin-api.c
+>  create mode 100644 linux-user/plugin-api.c
+>  create mode 100644 plugins/api-system.c
+>  create mode 100644 common-user/plugin-api.c.inc
+>
+> diff --git a/bsd-user/plugin-api.c b/bsd-user/plugin-api.c
+> new file mode 100644
+> index 0000000000..6ccef7eaa0
+> --- /dev/null
+> +++ b/bsd-user/plugin-api.c
+> @@ -0,0 +1,15 @@
+> +/*
+> + * QEMU Plugin API - bsd-user-mode only implementations
+> + *
+> + * Common user-mode only APIs are in plugins/api-user. These helpers
+> + * are only specific to bsd-user.
+> + *
+> + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
+> + * Copyright (C) 2019-2025, Linaro
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
 > +
-> +    def wait_for_console_pattern(self, success_message, vm=None):
-> +        wait_for_console_pattern(self, success_message,
-> +                                 failure_message='Kernel panic - not syncing',
-> +                                 vm=vm)
+> +#include "qemu/osdep.h"
+> +#include "qemu.h"
+> +#include "common-user/plugin-api.c.inc"
+> diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c
+> new file mode 100644
+> index 0000000000..e4f796d926
+> --- /dev/null
+> +++ b/linux-user/plugin-api.c
+> @@ -0,0 +1,14 @@
+> +/*
+> + * QEMU Plugin API - linux-user-mode only implementations
+> + *
+> + * Common user-mode only APIs are in plugins/api-user. These helpers
+> + * are only specific to linux-user.
+> + *
+> + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
+> + * Copyright (C) 2019-2025, Linaro
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu.h"
+> +#include "common-user/plugin-api.c.inc"
+> diff --git a/plugins/api-system.c b/plugins/api-system.c
+> new file mode 100644
+> index 0000000000..cb0dd8f730
+> --- /dev/null
+> +++ b/plugins/api-system.c
+> @@ -0,0 +1,39 @@
+> +/*
+> + * QEMU Plugin API - System specific implementations
+> + *
+> + * This provides the APIs that have a specific system implementation
+> + * or are only relevant to system-mode.
+> + *
+> + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
+> + * Copyright (C) 2019-2025, Linaro
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/main-loop.h"
+> +#include "qemu/plugin.h"
+> +
+> +/*
+> + * In system mode we cannot trace the binary being executed so the
+> + * helpers all return NULL/0.
+> + */
+> +const char *qemu_plugin_path_to_binary(void)
+> +{
+> +    return NULL;
+> +}
+> +
+> +uint64_t qemu_plugin_start_code(void)
+> +{
+> +    return 0;
+> +}
+> +
+> +uint64_t qemu_plugin_end_code(void)
+> +{
+> +    return 0;
+> +}
+> +
+> +uint64_t qemu_plugin_entry_code(void)
+> +{
+> +    return 0;
+> +}
+> diff --git a/plugins/api.c b/plugins/api.c
+> index c3ba1e98e8..ffccd71e4b 100644
+> --- a/plugins/api.c
+> +++ b/plugins/api.c
+> @@ -471,49 +471,6 @@ bool qemu_plugin_bool_parse(const char *name, const
+> char *value, bool *ret)
+>      return name && value && qapi_bool_parse(name, value, ret, NULL);
+>  }
+>
+> -/*
+> - * Binary path, start and end locations
+> - */
+> -const char *qemu_plugin_path_to_binary(void)
+> -{
+> -    char *path =3D NULL;
+> -#ifdef CONFIG_USER_ONLY
+> -    TaskState *ts =3D get_task_state(current_cpu);
+> -    path =3D g_strdup(ts->bprm->filename);
+> -#endif
+> -    return path;
+> -}
+> -
+> -uint64_t qemu_plugin_start_code(void)
+> -{
+> -    uint64_t start =3D 0;
+> -#ifdef CONFIG_USER_ONLY
+> -    TaskState *ts =3D get_task_state(current_cpu);
+> -    start =3D ts->info->start_code;
+> -#endif
+> -    return start;
+> -}
+> -
+> -uint64_t qemu_plugin_end_code(void)
+> -{
+> -    uint64_t end =3D 0;
+> -#ifdef CONFIG_USER_ONLY
+> -    TaskState *ts =3D get_task_state(current_cpu);
+> -    end =3D ts->info->end_code;
+> -#endif
+> -    return end;
+> -}
+> -
+> -uint64_t qemu_plugin_entry_code(void)
+> -{
+> -    uint64_t entry =3D 0;
+> -#ifdef CONFIG_USER_ONLY
+> -    TaskState *ts =3D get_task_state(current_cpu);
+> -    entry =3D ts->info->entry;
+> -#endif
+> -    return entry;
+> -}
+> -
+>  /*
+>   * Create register handles.
+>   *
+> diff --git a/common-user/plugin-api.c.inc b/common-user/plugin-api.c.inc
+> new file mode 100644
+> index 0000000000..5b8a1396b6
+> --- /dev/null
+> +++ b/common-user/plugin-api.c.inc
+> @@ -0,0 +1,43 @@
+> +/*
+> + * QEMU Plugin API - *-user-mode only implementations
+> + *
+> + * Common user-mode only APIs are in plugins/api-user. These helpers
+> + * are only specific to the *-user frontends.
+> + *
+> + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
+> + * Copyright (C) 2019-2025, Linaro
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/main-loop.h"
+> +#include "qemu/plugin.h"
+> +#include "qemu.h"
+> +
+> +/*
+> + * Binary path, start and end locations. Host specific due to TaskState.
+> + */
+> +const char *qemu_plugin_path_to_binary(void)
+> +{
+> +    TaskState *ts =3D get_task_state(current_cpu);
+> +    return g_strdup(ts->bprm->filename);
+> +}
+> +
+> +uint64_t qemu_plugin_start_code(void)
+> +{
+> +    TaskState *ts =3D get_task_state(current_cpu);
+> +    return ts->info->start_code;
+> +}
+> +
+> +uint64_t qemu_plugin_end_code(void)
+> +{
+> +    TaskState *ts =3D get_task_state(current_cpu);
+> +    return ts->info->end_code;
+> +}
+> +
+> +uint64_t qemu_plugin_entry_code(void)
+> +{
+> +    TaskState *ts =3D get_task_state(current_cpu);
+> +    return ts->info->entry;
+> +}
+> diff --git a/bsd-user/meson.build b/bsd-user/meson.build
+> index 39bad0ae33..37b7cd6de8 100644
+> --- a/bsd-user/meson.build
+> +++ b/bsd-user/meson.build
+> @@ -13,6 +13,7 @@ bsd_user_ss.add(files(
+>    'elfload.c',
+>    'main.c',
+>    'mmap.c',
+> +  'plugin-api.c',
+>    'signal.c',
+>    'strace.c',
+>    'uaccess.c',
+> diff --git a/linux-user/meson.build b/linux-user/meson.build
+> index f75b4fe0e3..f47a213ca3 100644
+> --- a/linux-user/meson.build
+> +++ b/linux-user/meson.build
+> @@ -27,6 +27,7 @@ linux_user_ss.add(libdw)
+>  linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
+>  linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
+>  linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true:
+> files('semihost.c'))
+> +linux_user_ss.add(when: 'CONFIG_TCG_PLUGINS', if_true:
+> files('plugin-api.c'))
+>
+>  syscall_nr_generators =3D {}
+>
+> diff --git a/plugins/meson.build b/plugins/meson.build
+> index f7820806d3..9c9bc9e5bb 100644
+> --- a/plugins/meson.build
+> +++ b/plugins/meson.build
+> @@ -59,7 +59,7 @@ if host_os =3D=3D 'windows'
+>  endif
+>
+>  user_ss.add(files('user.c'))
+> -system_ss.add(files('system.c'))
+> +system_ss.add(files('system.c', 'api-system.c'))
+>
+>  common_ss.add(files('loader.c'))
+>
+> --
+> 2.39.5
+>
+>
 
-You could inherit your class from LinuxKernelTest instead, then you would 
-get this wait_for_console_pattern() for free.
+--000000000000cecf76062f0d38a4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Anyway,
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Feb 26,=
+ 2025 at 7:11=E2=80=AFAM Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee=
+@linaro.org">alex.bennee@linaro.org</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">To move the main api.c to a single build=
+ compilation object we need to<br>
+start splitting out user and system specific code. As we need to grob<br>
+around host headers we move these particular helpers into the *-user<br>
+mode directories.<br>
+<br>
+The binary/start/end/entry helpers are all NOPs for system mode.<br>
+<br>
+While using the plugin-api.c.inc trick means we build for both<br>
+linux-user and bsd-user the BSD user-mode command line is still<br>
+missing -plugin. This can be enabled once we have reliable check-tcg<br>
+tests working for the BSDs.<br>
+<br>
+Signed-off-by: Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.or=
+g" target=3D"_blank">alex.bennee@linaro.org</a>&gt;<br>
+Message-Id: &lt;<a href=3D"mailto:20250225110844.3296991-8-alex.bennee@lina=
+ro.org" target=3D"_blank">20250225110844.3296991-8-alex.bennee@linaro.org</=
+a>&gt;<br></blockquote><div><br></div><div>Reviewed-by: Warner Losh &lt;<a =
+href=3D"mailto:imp@bsdimp.com">imp@bsdimp.com</a>&gt;</div><div><br></div><=
+div>I&#39;d love to see the check-tcg working well for bsd, but I&#39;m swa=
+mped with</div><div>other commitments.</div><div><br></div><div>Warner</div=
+><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
+ 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+---<br>
+v2<br>
+=C2=A0 - use common-user/plugin-api.c.inc instead<br>
+=C2=A0 - add commentary about state of plugins for BSD user<br>
+---<br>
+=C2=A0bsd-user/plugin-api.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 15 +++++++++++++<b=
+r>
+=C2=A0linux-user/plugin-api.c=C2=A0 =C2=A0 =C2=A0 | 14 ++++++++++++<br>
+=C2=A0plugins/api-system.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 39 ++++++++++=
+++++++++++++++++++++++<br>
+=C2=A0plugins/api.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+| 43 ------------------------------------<br>
+=C2=A0common-user/plugin-api.c.inc | 43 +++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A0bsd-user/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1 +<br>
+=C2=A0linux-user/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1 +<br>
+=C2=A0plugins/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 +-<br=
+>
+=C2=A08 files changed, 114 insertions(+), 44 deletions(-)<br>
+=C2=A0create mode 100644 bsd-user/plugin-api.c<br>
+=C2=A0create mode 100644 linux-user/plugin-api.c<br>
+=C2=A0create mode 100644 plugins/api-system.c<br>
+=C2=A0create mode 100644 common-user/plugin-api.c.inc<br>
+<br>
+diff --git a/bsd-user/plugin-api.c b/bsd-user/plugin-api.c<br>
+new file mode 100644<br>
+index 0000000000..6ccef7eaa0<br>
+--- /dev/null<br>
++++ b/bsd-user/plugin-api.c<br>
+@@ -0,0 +1,15 @@<br>
++/*<br>
++ * QEMU Plugin API - bsd-user-mode only implementations<br>
++ *<br>
++ * Common user-mode only APIs are in plugins/api-user. These helpers<br>
++ * are only specific to bsd-user.<br>
++ *<br>
++ * Copyright (C) 2017, Emilio G. Cota &lt;<a href=3D"mailto:cota@braap.org=
+" target=3D"_blank">cota@braap.org</a>&gt;<br>
++ * Copyright (C) 2019-2025, Linaro<br>
++ *<br>
++ * SPDX-License-Identifier: GPL-2.0-or-later<br>
++ */<br>
++<br>
++#include &quot;qemu/osdep.h&quot;<br>
++#include &quot;qemu.h&quot;<br>
++#include &quot;common-user/plugin-api.c.inc&quot;<br>
+diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c<br>
+new file mode 100644<br>
+index 0000000000..e4f796d926<br>
+--- /dev/null<br>
++++ b/linux-user/plugin-api.c<br>
+@@ -0,0 +1,14 @@<br>
++/*<br>
++ * QEMU Plugin API - linux-user-mode only implementations<br>
++ *<br>
++ * Common user-mode only APIs are in plugins/api-user. These helpers<br>
++ * are only specific to linux-user.<br>
++ *<br>
++ * Copyright (C) 2017, Emilio G. Cota &lt;<a href=3D"mailto:cota@braap.org=
+" target=3D"_blank">cota@braap.org</a>&gt;<br>
++ * Copyright (C) 2019-2025, Linaro<br>
++ *<br>
++ * SPDX-License-Identifier: GPL-2.0-or-later<br>
++ */<br>
++<br>
++#include &quot;qemu.h&quot;<br>
++#include &quot;common-user/plugin-api.c.inc&quot;<br>
+diff --git a/plugins/api-system.c b/plugins/api-system.c<br>
+new file mode 100644<br>
+index 0000000000..cb0dd8f730<br>
+--- /dev/null<br>
++++ b/plugins/api-system.c<br>
+@@ -0,0 +1,39 @@<br>
++/*<br>
++ * QEMU Plugin API - System specific implementations<br>
++ *<br>
++ * This provides the APIs that have a specific system implementation<br>
++ * or are only relevant to system-mode.<br>
++ *<br>
++ * Copyright (C) 2017, Emilio G. Cota &lt;<a href=3D"mailto:cota@braap.org=
+" target=3D"_blank">cota@braap.org</a>&gt;<br>
++ * Copyright (C) 2019-2025, Linaro<br>
++ *<br>
++ * SPDX-License-Identifier: GPL-2.0-or-later<br>
++ */<br>
++<br>
++#include &quot;qemu/osdep.h&quot;<br>
++#include &quot;qemu/main-loop.h&quot;<br>
++#include &quot;qemu/plugin.h&quot;<br>
++<br>
++/*<br>
++ * In system mode we cannot trace the binary being executed so the<br>
++ * helpers all return NULL/0.<br>
++ */<br>
++const char *qemu_plugin_path_to_binary(void)<br>
++{<br>
++=C2=A0 =C2=A0 return NULL;<br>
++}<br>
++<br>
++uint64_t qemu_plugin_start_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 return 0;<br>
++}<br>
++<br>
++uint64_t qemu_plugin_end_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 return 0;<br>
++}<br>
++<br>
++uint64_t qemu_plugin_entry_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 return 0;<br>
++}<br>
+diff --git a/plugins/api.c b/plugins/api.c<br>
+index c3ba1e98e8..ffccd71e4b 100644<br>
+--- a/plugins/api.c<br>
++++ b/plugins/api.c<br>
+@@ -471,49 +471,6 @@ bool qemu_plugin_bool_parse(const char *name, const ch=
+ar *value, bool *ret)<br>
+=C2=A0 =C2=A0 =C2=A0return name &amp;&amp; value &amp;&amp; qapi_bool_parse=
+(name, value, ret, NULL);<br>
+=C2=A0}<br>
+<br>
+-/*<br>
+- * Binary path, start and end locations<br>
+- */<br>
+-const char *qemu_plugin_path_to_binary(void)<br>
+-{<br>
+-=C2=A0 =C2=A0 char *path =3D NULL;<br>
+-#ifdef CONFIG_USER_ONLY<br>
+-=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
+-=C2=A0 =C2=A0 path =3D g_strdup(ts-&gt;bprm-&gt;filename);<br>
+-#endif<br>
+-=C2=A0 =C2=A0 return path;<br>
+-}<br>
+-<br>
+-uint64_t qemu_plugin_start_code(void)<br>
+-{<br>
+-=C2=A0 =C2=A0 uint64_t start =3D 0;<br>
+-#ifdef CONFIG_USER_ONLY<br>
+-=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
+-=C2=A0 =C2=A0 start =3D ts-&gt;info-&gt;start_code;<br>
+-#endif<br>
+-=C2=A0 =C2=A0 return start;<br>
+-}<br>
+-<br>
+-uint64_t qemu_plugin_end_code(void)<br>
+-{<br>
+-=C2=A0 =C2=A0 uint64_t end =3D 0;<br>
+-#ifdef CONFIG_USER_ONLY<br>
+-=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
+-=C2=A0 =C2=A0 end =3D ts-&gt;info-&gt;end_code;<br>
+-#endif<br>
+-=C2=A0 =C2=A0 return end;<br>
+-}<br>
+-<br>
+-uint64_t qemu_plugin_entry_code(void)<br>
+-{<br>
+-=C2=A0 =C2=A0 uint64_t entry =3D 0;<br>
+-#ifdef CONFIG_USER_ONLY<br>
+-=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
+-=C2=A0 =C2=A0 entry =3D ts-&gt;info-&gt;entry;<br>
+-#endif<br>
+-=C2=A0 =C2=A0 return entry;<br>
+-}<br>
+-<br>
+=C2=A0/*<br>
+=C2=A0 * Create register handles.<br>
+=C2=A0 *<br>
+diff --git a/common-user/plugin-api.c.inc b/common-user/plugin-api.c.inc<br=
+>
+new file mode 100644<br>
+index 0000000000..5b8a1396b6<br>
+--- /dev/null<br>
++++ b/common-user/plugin-api.c.inc<br>
+@@ -0,0 +1,43 @@<br>
++/*<br>
++ * QEMU Plugin API - *-user-mode only implementations<br>
++ *<br>
++ * Common user-mode only APIs are in plugins/api-user. These helpers<br>
++ * are only specific to the *-user frontends.<br>
++ *<br>
++ * Copyright (C) 2017, Emilio G. Cota &lt;<a href=3D"mailto:cota@braap.org=
+" target=3D"_blank">cota@braap.org</a>&gt;<br>
++ * Copyright (C) 2019-2025, Linaro<br>
++ *<br>
++ * SPDX-License-Identifier: GPL-2.0-or-later<br>
++ */<br>
++<br>
++#include &quot;qemu/osdep.h&quot;<br>
++#include &quot;qemu/main-loop.h&quot;<br>
++#include &quot;qemu/plugin.h&quot;<br>
++#include &quot;qemu.h&quot;<br>
++<br>
++/*<br>
++ * Binary path, start and end locations. Host specific due to TaskState.<b=
+r>
++ */<br>
++const char *qemu_plugin_path_to_binary(void)<br>
++{<br>
++=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
++=C2=A0 =C2=A0 return g_strdup(ts-&gt;bprm-&gt;filename);<br>
++}<br>
++<br>
++uint64_t qemu_plugin_start_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
++=C2=A0 =C2=A0 return ts-&gt;info-&gt;start_code;<br>
++}<br>
++<br>
++uint64_t qemu_plugin_end_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
++=C2=A0 =C2=A0 return ts-&gt;info-&gt;end_code;<br>
++}<br>
++<br>
++uint64_t qemu_plugin_entry_code(void)<br>
++{<br>
++=C2=A0 =C2=A0 TaskState *ts =3D get_task_state(current_cpu);<br>
++=C2=A0 =C2=A0 return ts-&gt;info-&gt;entry;<br>
++}<br>
+diff --git a/bsd-user/meson.build b/bsd-user/meson.build<br>
+index 39bad0ae33..37b7cd6de8 100644<br>
+--- a/bsd-user/meson.build<br>
++++ b/bsd-user/meson.build<br>
+@@ -13,6 +13,7 @@ bsd_user_ss.add(files(<br>
+=C2=A0 =C2=A0&#39;elfload.c&#39;,<br>
+=C2=A0 =C2=A0&#39;main.c&#39;,<br>
+=C2=A0 =C2=A0&#39;mmap.c&#39;,<br>
++=C2=A0 &#39;plugin-api.c&#39;,<br>
+=C2=A0 =C2=A0&#39;signal.c&#39;,<br>
+=C2=A0 =C2=A0&#39;strace.c&#39;,<br>
+=C2=A0 =C2=A0&#39;uaccess.c&#39;,<br>
+diff --git a/linux-user/meson.build b/linux-user/meson.build<br>
+index f75b4fe0e3..f47a213ca3 100644<br>
+--- a/linux-user/meson.build<br>
++++ b/linux-user/meson.build<br>
+@@ -27,6 +27,7 @@ linux_user_ss.add(libdw)<br>
+=C2=A0linux_user_ss.add(when: &#39;TARGET_HAS_BFLT&#39;, if_true: files(&#3=
+9;flatload.c&#39;))<br>
+=C2=A0linux_user_ss.add(when: &#39;TARGET_I386&#39;, if_true: files(&#39;vm=
+86.c&#39;))<br>
+=C2=A0linux_user_ss.add(when: &#39;CONFIG_ARM_COMPATIBLE_SEMIHOSTING&#39;, =
+if_true: files(&#39;semihost.c&#39;))<br>
++linux_user_ss.add(when: &#39;CONFIG_TCG_PLUGINS&#39;, if_true: files(&#39;=
+plugin-api.c&#39;))<br>
+<br>
+=C2=A0syscall_nr_generators =3D {}<br>
+<br>
+diff --git a/plugins/meson.build b/plugins/meson.build<br>
+index f7820806d3..9c9bc9e5bb 100644<br>
+--- a/plugins/meson.build<br>
++++ b/plugins/meson.build<br>
+@@ -59,7 +59,7 @@ if host_os =3D=3D &#39;windows&#39;<br>
+=C2=A0endif<br>
+<br>
+=C2=A0user_ss.add(files(&#39;user.c&#39;))<br>
+-system_ss.add(files(&#39;system.c&#39;))<br>
++system_ss.add(files(&#39;system.c&#39;, &#39;api-system.c&#39;))<br>
+<br>
+=C2=A0common_ss.add(files(&#39;loader.c&#39;))<br>
+<br>
+-- <br>
+2.39.5<br>
+<br>
+</blockquote></div></div>
 
+--000000000000cecf76062f0d38a4--
 
