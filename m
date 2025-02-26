@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF43A46CC0
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 21:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B814A46CE7
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 22:01:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnOMX-0002eT-1p; Wed, 26 Feb 2025 15:50:37 -0500
+	id 1tnOWT-0006qW-EP; Wed, 26 Feb 2025 16:00:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnOMS-0002dM-TS
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 15:50:32 -0500
-Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnOMQ-0001qV-JU
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 15:50:32 -0500
-Received: by mail-yb1-xb2f.google.com with SMTP id
- 3f1490d57ef6-e53c9035003so149274276.2
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 12:50:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740603028; x=1741207828; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=U0A6IXzS8YnKUNw5E47iu+Kpl2ECdYRHrLl8CUekn60=;
- b=JWtCvJ0tr6Yqn6UAZhRIld6KVpkm7VX8metW2iXtpG8mVwlNdLLsmM3LQnWPsi+nqE
- C9Qu+dj7kfMM4NK86zmHRtmKV+MBcrf9wZ6TwLpO2LqEPwuBa5skuUKbDwbIJWjBaw4O
- LMzkJV4SBWOejNfmLRZwdDuqhnXlyCJy/E3m9ZAKN9HwN5Ejq/Va5mi7m6445J760yjG
- 28whrj+rGMoiStA/j38JtxMB34MSyQqcIL0sAGRGCTdOEWpBWo7QBk7L5SfnfXuvJyTv
- kkRYZBAv9VNEusl7VMNoxwr2hX/CxPDjvvqOGhGgubBtx5vSbjDtFWO0HXCONhIm0h7g
- nj9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740603028; x=1741207828;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U0A6IXzS8YnKUNw5E47iu+Kpl2ECdYRHrLl8CUekn60=;
- b=rfC0Hhy6GmI3yY2uPqXaaQ5cW/tPttGkChK1p7FChXO9nGtydq7pw9diY0iI44ogFl
- yF1NLoo40g2Oe9JycL/tUjqY2dFoEeQBG4xJ64aKaKXMG22alGMwZdHzgHSTyW5MJw7k
- BrUgCArVjFp2s+egB2qmIilWHYV9nGD+XmAEcNGqIQq0BolbiDa1Xy6jLdMXyf39EJqF
- cZhDjLVZUwb0+4IEafuL8pYyzj0R2FmG3wupiGIg9695ykgwRa7p+pXCyPZc60ueTgJU
- j4+yUxvwXX0l93dODxfPm6cSWx0QV6xyLoSn/Ltompn01GJUWz7p6KBBzd4K5sss9JPc
- Gqag==
-X-Gm-Message-State: AOJu0YwpR+HEUCUR35P7mgdiYGrpxigZY5suOieuLmyVWBbF3vyE4pyu
- Sp43ruiRAVwzRRA8vUi6retGnGEZkOYdyotE/9wFs06En8btz06qbsBvvJaXc7sq+fl6diUU/fE
- dHVPXwm7yuwUCFUe2dwmpCaILnfUxiudEiZmLxQ==
-X-Gm-Gg: ASbGnct/8viI80UrkySJCHoaxPbzqyLSoeSzZDJXdYHyGPnqhAtPNwOkxUS9+cG+yVN
- 3ZlvCsMi8IBOQooaGBd/3ZwWUPJYeoSE486bLEdX8s1k7ln78P3PZVeehw7v9vbW0JUALDRWvWB
- U7TGY8IyQV
-X-Google-Smtp-Source: AGHT+IHoFDfXFDkKvKd/9g73u8XvGlp/4BA2Wc5UatF4PvcjyDLQZfDJeunjO3E4VCX1PcY5ZvTSu0dL4gLWffnYFiQ=
-X-Received: by 2002:a05:6902:2748:b0:e5d:d6b8:2318 with SMTP id
- 3f1490d57ef6-e607a54eb03mr7771616276.34.1740603028638; Wed, 26 Feb 2025
- 12:50:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1tnOW4-0006gS-2c; Wed, 26 Feb 2025 16:00:33 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1tnOW1-0002xo-Vu; Wed, 26 Feb 2025 16:00:27 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QCjQuY012268;
+ Wed, 26 Feb 2025 21:00:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=T5gSdfrhxfStH210iFjLTSaIVWZPxjAIQlrMuvAA8
+ C4=; b=IYC2bNczZN0Y0gQ/JGdq6jeJW6uL/Qm21xh82V2Uga/j6BnKOTRaGKkv4
+ maNRUYBwLw0L4v0RoM0LbDrFABpeNR84tKqJiOjJ02dBHRMXNYxwuWF194XGLoj+
+ 489YNQHQNRFav2vRBDwYST/QmOAVl0XDCVmUoLPA4k2nwbJ+I6/0F4bZ+WxYyxn/
+ 0LVPxsRWr396q+r7kGJaqRmJO6ZDglhc3f10ha8lWF9DbsGQ8Tj5taX6Efjchp4E
+ Ya+Rt+KZLV2J+jCaLzZqOxoOISSuk6oDZvYZIl7x3CUb5q1lOHplrfq31rzGIklt
+ pzsI4SkqSGL74MFPOwrrk58KvuP4w==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451s19da1t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 26 Feb 2025 21:00:17 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51QKsitZ012522;
+ Wed, 26 Feb 2025 21:00:16 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44ys9yn4c3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 26 Feb 2025 21:00:16 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 51QL0F4P15008454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 26 Feb 2025 21:00:15 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE47F58056;
+ Wed, 26 Feb 2025 21:00:14 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2657658061;
+ Wed, 26 Feb 2025 21:00:14 +0000 (GMT)
+Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
+ [9.61.46.135]) by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 26 Feb 2025 21:00:14 +0000 (GMT)
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ clg@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v5 0/2] s390x/pci: relax I/O address translation requirement
+Date: Wed, 26 Feb 2025 16:00:11 -0500
+Message-ID: <20250226210013.238349-1-mjrosato@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250224205053.104959-1-pierrick.bouvier@linaro.org>
- <CAFEAcA_sz-_6WGCQ=4kC2vtK2RUBXbAtMVzh3iZsp0xmNbgaxQ@mail.gmail.com>
- <829e9fd0-2d0f-45e6-ab89-d933d344cfe2@linaro.org>
- <CAFEAcA8BHzA_P7yX+cDMb1WiyGTzkh6xjvam4RHs5aoM1X6mkw@mail.gmail.com>
- <5c25f67a-2677-4162-9477-f51f230403b0@linaro.org>
-In-Reply-To: <5c25f67a-2677-4162-9477-f51f230403b0@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 26 Feb 2025 20:50:17 +0000
-X-Gm-Features: AWEUYZlSUyybVdgAACEr0gQtv_ujFwhK5De7RqbKJE6ZH21vOsXfQ1pZGzHtdVw
-Message-ID: <CAFEAcA8jzYvCLxDTybE34K5DxQqOG4-m8_-oNwiATVBHYbEV9A@mail.gmail.com>
-Subject: Re: [PATCH] hw/misc/npcm_clk: fix buffer-overflow
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CabrcKSqtelZHAZOg2ojKA4ePj95uTxp
+X-Proofpoint-ORIG-GUID: CabrcKSqtelZHAZOg2ojKA4ePj95uTxp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-26_06,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0
+ phishscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ mlxlogscore=914 mlxscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260163
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,78 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(edited cc list since it's moved away from a discussion of this
-particular patch and on to a testing/ci coverage issue)
+This series introduces the concept of the relaxed translation requirement
+for s390x guests in order to allow bypass of the guest IOMMU for more
+efficient PCI passthrough.
 
-On Wed, 26 Feb 2025 at 19:03, Pierrick Bouvier
-<pierrick.bouvier@linaro.org> wrote:
->
-> On 2/26/25 03:50, Peter Maydell wrote:
-> > On Tue, 25 Feb 2025 at 20:57, Pierrick Bouvier
-> > <pierrick.bouvier@linaro.org> wrote:
-> >>
-> >> On 2/25/25 05:41, Peter Maydell wrote:
-> >>> (Looking more closely at the cold_reset_values handling
-> >>> in npcm_gcr.c, that looks not quite right in a different
-> >>> way; I'll send a reply to that patch email about that.)
-> >>>
-> >>
-> >> It may be a hole in our CI right now.
-> >> Would that be interesting for CI to run all tests (check-functional +
-> >> check w/o functional) with both ubsan and asan?
-> >
-> > We do have at least some ubsan tests in our CI right now
-> > (eg the "clang-system" job). The problem with ubsan coverage
-> > is the usual one that we already have too much CI going on,
-> > and it takes forever and we don't have that much headroom
-> > for adding more jobs.
->
-> I understand the problem behind spending more minutes on this.
->
-> However, looking at our CI, we already duplicate functional testing a lot:
-> buildtest.yml:functional-system-alpine:
-> buildtest.yml:functional-system-ubuntu:
-> buildtest.yml:functional-system-debian:
-> buildtest.yml:functional-system-fedora:
-> buildtest.yml:functional-system-centos:
-> buildtest.yml:functional-system-opensuse:
+With this series, QEMU can indicate to the guest that an IOMMU is not
+strictly required for a zPCI device.  This would subsequently allow a
+guest linux to use iommu.passthrough=1 and bypass their guest IOMMU for
+PCI devices.
 
-I think that these are mostly testing different target
-architectures, e.g. functional-system-alpine tests what
-build-system-alpine built, which covers avr, loongarch64,
-mips64 and mipsel targets; functional-system-ubuntu
-tests what build-system-ubuntu bulit, which is alpha,
-microblazeel, mips64el, and so on. So there is less overlap
-than it might appear.
+When this occurs, QEMU will note the behavior via an intercepted MPCIFC
+instruction and will fill the host iommu with mappings of the entire
+guest address space in response.
 
-(Some of them complete pretty quickly because we have very few
-functional tests for some archs; some are slower where we're
-running more tests. e.g.
-https://gitlab.com/qemu-project/qemu/-/jobs/9213571833
-is functional-system-fedora completing in 7 mins because we
-only have a few ppc tests, but this is functional-system-opensuse
-https://gitlab.com/qemu-project/qemu/-/jobs/9213571852
-taking 27 mins because it's testing x86 and aarch64. The
-corresponding build jobs take about 30 mins each.)
+The kernel series [1] that adds the relevant behavior needed to
+exploit this new feature from within a s390x linux guest is available
+in linux-next via iommu-next.
 
-> Would that hurt so much to have one configuration enabled with ubsan and
-> asan, which catches *real* bugs, and potential security issues?
-> Yes, it adds overhead, but it should not be x10. Around x2 to x3.
+[1]: https://lore.kernel.org/linux-s390/20250212213418.182902-1-mjrosato@linux.ibm.com/
 
-You'd need to have a duplicate of all of the above
-functional-system-* test jobs if you wanted
-to test all the guest architectures, I think. So it's
-30 mins build * six configs plus 60 mins total for testing.
-Or we could convert (some of?) the existing jobs to use the
-sanitisers if we needed to economise on CI time.
+Changes for v5:
+- Add some review/test tags (had to drop some due to code changes)
+- Dynamically allocate iommu->dm_mr, remove direct_map bool 
 
-> I guess CI minutes are cheaper than engineer ones those days.
+Changes for v4:
+- use get_system_memory() instead of ms->ram
+- rename rtr_allowed to rtr_avail
+- turn off rtr_avail for emulated devices so MPCFIC fence properly
+  rejects an attempt at direct mapping (we only advertise via CLP
+  for passthrough devices)
+- turn off rtr_avail for passthrough ISM devices
+- various minor changes
 
-You could make an argument that it's the other way around:
-from the project's point of view engineer minutes are cheap
-because we never pay engineers, whereas CI minutes are
-expensive because we must pay for them out of our project
-donations :-)
+Changes for v3:
+- use s390_get_memory_limit
+- advertise full aperture for relaxed-translation-capable devices
 
--- PMM
+Changes for v2:
+- Add relax-translation property, fence for older machines
+- Add a new MPCIFC failure case when direct-mapping requested but
+  the relax-translation property is set to off.
+- For direct mapping, use a memory alias to handle the SMDA offset and
+  then just let vfio handle the pinning of memory.
+
+Matthew Rosato (2):
+  s390x/pci: add support for guests that request direct mapping
+  s390x/pci: indicate QEMU supports relaxed translation for passthrough
+
+ hw/s390x/s390-pci-bus.c         | 39 +++++++++++++++++++++++++++++++--
+ hw/s390x/s390-pci-inst.c        | 13 +++++++++--
+ hw/s390x/s390-pci-vfio.c        | 28 ++++++++++++++++++-----
+ hw/s390x/s390-virtio-ccw.c      |  5 +++++
+ include/hw/s390x/s390-pci-bus.h |  3 +++
+ include/hw/s390x/s390-pci-clp.h |  1 +
+ 6 files changed, 80 insertions(+), 9 deletions(-)
+
+-- 
+2.48.1
+
 
