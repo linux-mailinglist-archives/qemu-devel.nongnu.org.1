@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B64A45B01
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 10:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A72CA45B03
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 10:59:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnEBY-0004DP-Sy; Wed, 26 Feb 2025 04:58:37 -0500
+	id 1tnEBa-0004FY-8a; Wed, 26 Feb 2025 04:58:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnEBI-0003oP-Hw
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 04:58:21 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnEBJ-0003ud-OK
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 04:58:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnEBC-00089g-1X
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 04:58:20 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnEBH-0008AG-AK
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 04:58:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740563893;
+ s=mimecast20190719; t=1740563898;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3JtE4zE3gq8D+xuPd9WbR4L9SMWLo3LjxlKF/DU48zw=;
- b=K5vDCD0ElPC/em6zEI55YXjxiE3ZPD5Aw7P0+mT6IMPrtdi8cU+lEd0l46nhtNFI2gVpwT
- M0V9iix6PxeedcsJJEz7YMcDCixp9X8b+RIoEqmWEoIE7Qmh9SvYrgQ4Kx2U8JhiD1ir2Y
- GMWX8jFhnbJqepXBYyc7FXFcmXZDiEQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=2OhOHCVRG1ajbSFjgMYTuvP+dVzQxOuJ1lkMTnzzU1s=;
+ b=e26CIw7GFzbPn8vKVnjc3wQes0ICqT0MYG5kqNJ+z2SfC6L8wAgo6lezwghCzR4tfqcEyY
+ xy8uGb26BZGaZFhrsQ3gYTdOx1UiL6AhFJFzbfChsEscATRgtXVnV7qtG+E9WXZbmvYZoW
+ a9SMHAwQxL83J50q7maDmmwaTfbXvW8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-KgVh2Fe5P3yrHZ--pUWY-A-1; Wed,
- 26 Feb 2025 04:58:11 -0500
-X-MC-Unique: KgVh2Fe5P3yrHZ--pUWY-A-1
-X-Mimecast-MFC-AGG-ID: KgVh2Fe5P3yrHZ--pUWY-A_1740563890
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-vPhR6UJzPmSAnejDT7ajcA-1; Wed,
+ 26 Feb 2025 04:58:13 -0500
+X-MC-Unique: vPhR6UJzPmSAnejDT7ajcA-1
+X-Mimecast-MFC-AGG-ID: vPhR6UJzPmSAnejDT7ajcA_1740563892
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 64BE518EB2CF
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 09:58:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C3D891800374; Wed, 26 Feb 2025 09:58:12 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.144])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C7C1F180035E; Wed, 26 Feb 2025 09:58:08 +0000 (UTC)
+ id E29D1180087F; Wed, 26 Feb 2025 09:58:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 15/18] tests/functional: Convert the x86_64 replay avocado tests
-Date: Wed, 26 Feb 2025 10:57:28 +0100
-Message-ID: <20250226095731.1172375-16-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 16/18] tests/functional: Bump some arm test timeouts
+Date: Wed, 26 Feb 2025 10:57:29 +0100
+Message-ID: <20250226095731.1172375-17-thuth@redhat.com>
 In-Reply-To: <20250226095731.1172375-1-thuth@redhat.com>
 References: <20250226095731.1172375-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,122 +80,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Put the tests into a separate file now (in the functional framework,
-each file is run with one specific qemu-system-* binary).
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Signed-off-by: Thomas Huth <thuth@redhat.com
-Message-ID: <20250218152744.228335-14-thuth@redhat.com>
+On my local machine, for a debug build, sbsaref_alpine takes
+nearly 900s:
+
+$ (cd build/x86 && ./pyvenv/bin/meson test --setup thorough --suite func-thorough func-aarch64-aarch64_sbsaref_alpine
+)
+
+1/1 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_sbsaref_alpine
+                      OK 896.90s
+
+arm_aspeed_rainier can also run close to its current timeout:
+ 6/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_rainier
+                      OK 215.75s
+
+and arm_aspeed_ast2500 and arm_aspeed_ast2600 can go over:
+13/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_ast2600
+                      OK 792.94s
+
+27/44 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_aspeed_ast2500
+                 TIMEOUT 480.01s
+
+The sx1 test fails not on the overall meson timeout but on the
+60 second timeout in some of the subtests.
+
+Bump all these timeouts up a bit.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250221140640.786341-1-peter.maydell@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/replay_kernel.py         | 35 --------------------------
- tests/functional/meson.build           |  2 ++
- tests/functional/test_x86_64_replay.py | 35 ++++++++++++++++++++++++++
- 3 files changed, 37 insertions(+), 35 deletions(-)
- create mode 100755 tests/functional/test_x86_64_replay.py
+ tests/functional/meson.build     | 8 ++++----
+ tests/functional/test_arm_sx1.py | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index dffced62aa2..35515323723 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -108,38 +108,3 @@ def test_i386_pc(self):
-         console_pattern = 'VFS: Cannot open root device'
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
--
--    # See https://gitlab.com/qemu-project/qemu/-/issues/2094
--    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'pc machine is unstable with replay')
--    def test_x86_64_pc(self):
--        """
--        :avocado: tags=arch:x86_64
--        :avocado: tags=machine:pc
--        :avocado: tags=flaky
--        """
--        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
--                      '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
--                      '/vmlinuz')
--        kernel_hash = '23bebd2680757891cf7adedb033532163a792495'
--        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
--
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
--        console_pattern = 'VFS: Cannot open root device'
--
--        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
--
--    def test_x86_64_q35(self):
--        """
--        :avocado: tags=arch:x86_64
--        :avocado: tags=machine:q35
--        """
--        kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
--                      '/linux/releases/29/Everything/x86_64/os/images/pxeboot'
--                      '/vmlinuz')
--        kernel_hash = '23bebd2680757891cf7adedb033532163a792495'
--        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
--
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
--        console_pattern = 'VFS: Cannot open root device'
--
--        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e8e5a7757c3..8ae70568a20 100644
+index 8ae70568a20..3fd2652c078 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -49,6 +49,7 @@ test_timeouts = {
-   'sh4_tuxrun' : 240,
-   'virtio_balloon': 120,
-   'x86_64_kvm_xen' : 180,
-+  'x86_64_replay' : 480,
- }
+@@ -15,16 +15,16 @@ test_timeouts = {
+   'aarch64_raspi4' : 480,
+   'aarch64_rme_virt' : 1200,
+   'aarch64_rme_sbsaref' : 1200,
+-  'aarch64_sbsaref_alpine' : 720,
++  'aarch64_sbsaref_alpine' : 1200,
+   'aarch64_sbsaref_freebsd' : 720,
+   'aarch64_tuxrun' : 240,
+   'aarch64_virt' : 720,
+   'acpi_bits' : 420,
+   'arm_aspeed_palmetto' : 120,
+   'arm_aspeed_romulus' : 120,
+-  'arm_aspeed_ast2500' : 480,
+-  'arm_aspeed_ast2600' : 720,
+-  'arm_aspeed_rainier' : 240,
++  'arm_aspeed_ast2500' : 720,
++  'arm_aspeed_ast2600' : 1200,
++  'arm_aspeed_rainier' : 480,
+   'arm_bpim2u' : 500,
+   'arm_collie' : 180,
+   'arm_cubieboard' : 360,
+diff --git a/tests/functional/test_arm_sx1.py b/tests/functional/test_arm_sx1.py
+index b85bfaa178f..4dd1e1859fa 100755
+--- a/tests/functional/test_arm_sx1.py
++++ b/tests/functional/test_arm_sx1.py
+@@ -44,7 +44,7 @@ def test_arm_sx1_initrd(self):
+         self.vm.add_args('-no-reboot')
+         self.launch_kernel(zimage_path,
+                            initrd=initrd_path)
+-        self.vm.wait(timeout=60)
++        self.vm.wait(timeout=120)
  
- tests_generic_system = [
-@@ -302,6 +303,7 @@ tests_x86_64_system_thorough = [
-   'x86_64_hotplug_blk',
-   'x86_64_hotplug_cpu',
-   'x86_64_kvm_xen',
-+  'x86_64_replay',
-   'x86_64_tuxrun',
- ]
+     def test_arm_sx1_sd(self):
+         self.set_machine('sx1')
+@@ -55,7 +55,7 @@ def test_arm_sx1_sd(self):
+         self.vm.add_args('-snapshot')
+         self.vm.add_args('-drive', f'format=raw,if=sd,file={sd_fs_path}')
+         self.launch_kernel(zimage_path)
+-        self.vm.wait(timeout=60)
++        self.vm.wait(timeout=120)
  
-diff --git a/tests/functional/test_x86_64_replay.py b/tests/functional/test_x86_64_replay.py
-new file mode 100755
-index 00000000000..180f23a60c5
---- /dev/null
-+++ b/tests/functional/test_x86_64_replay.py
-@@ -0,0 +1,35 @@
-+#!/usr/bin/env python3
-+#
-+# Replay test that boots a Linux kernel on x86_64 machines
-+# and checks the console
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import Asset, skipFlakyTest
-+from replay_kernel import ReplayKernelBase
-+
-+
-+class X86Replay(ReplayKernelBase):
-+
-+    ASSET_KERNEL = Asset(
-+         ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
-+          '/releases/29/Everything/x86_64/os/images/pxeboot/vmlinuz'),
-+        '8f237d84712b1b411baf3af2aeaaee10b9aae8e345ec265b87ab3a39639eb143')
-+
-+    def do_test_x86(self, machine):
-+        self.set_machine(machine)
-+        kernel_path = self.ASSET_KERNEL.fetch()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
-+        console_pattern = 'VFS: Cannot open root device'
-+        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
-+
-+    @skipFlakyTest('https://gitlab.com/qemu-project/qemu/-/issues/2094')
-+    def test_pc(self):
-+        self.do_test_x86('pc')
-+
-+    def test_q35(self):
-+        self.do_test_x86('q35')
-+
-+
-+if __name__ == '__main__':
-+    ReplayKernelBase.main()
+     def test_arm_sx1_flash(self):
+         self.set_machine('sx1')
+@@ -66,7 +66,7 @@ def test_arm_sx1_flash(self):
+         self.vm.add_args('-snapshot')
+         self.vm.add_args('-drive', f'format=raw,if=pflash,file={flash_path}')
+         self.launch_kernel(zimage_path)
+-        self.vm.wait(timeout=60)
++        self.vm.wait(timeout=120)
+ 
+ if __name__ == '__main__':
+     LinuxKernelTest.main()
 -- 
 2.48.1
 
