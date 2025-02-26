@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9115EA461F1
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 15:11:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C1CA461BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 15:06:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnI1e-0001Ts-Lf; Wed, 26 Feb 2025 09:04:38 -0500
+	id 1tnI1X-0001HS-VQ; Wed, 26 Feb 2025 09:04:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tnI12-00016y-RK
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:04:01 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1tnI0z-00011O-T2
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:03:58 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tnI10-0005k2-Pp
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:04:00 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4397dff185fso59961515e9.2
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 06:03:58 -0800 (PST)
+ id 1tnI0w-0005hY-QG
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:03:57 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38f29a1a93bso5565556f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 06:03:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740578637; x=1741183437; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740578633; x=1741183433; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eFWFW+6NZINw/m6MJHmphcH27lcvn4J7lC5PnXB+pFU=;
- b=I6p8pIubtOVnxywNO/PCIbwzhz4XKSey/Z0JkZE4pUR/3/6FnbjGsYgNzcySRKmZk2
- l+AjyS5z25UU+U0piA218WI1xleApIIwOpdPeaLadCJLTKAXI9dpEGH5ZAV9jTayi/Ea
- UUQrwovMYB3yHx3fu8SDtQuOg4E8rglkK80FGRT3nk5g3BGYK4TBAclSrooEgbLmLXCW
- CsYLj3XQiv52a4iWBQ/6Mg+vCYRbEw5EXicxiy9IY6y9zMh8aU97MUo0dt5/Fsud8OaA
- elY7uU8NaPtS2Zee6EAR6EzivR1SzfniSc8jLthFV1bvABXaDLZbAqkyswwJ47l0zyZL
- aKZw==
+ bh=zISDsjBmMmQ71Gb6oaelmScpNesPc2IfHlK0vGMPwP0=;
+ b=jdsInQIaOc92j68cqFEK4rCHsyoS2RQT+dm9nLLzAOSxspDXCoZqmDGvokEuSPhEXo
+ N7IFOXeO1NNzPZSMgDJcfHsknVmI9PykS+VyHBNaxvcqMtZK+vTnNYA9Fe+9IiD1cw9W
+ IzhPrWs9Yno9tIscug4yAPtvJkERZtyQPOl2u6ldzKfdCsFR1OtWKQNxnfpeGxi+pmM4
+ RKHNq1xPceoOOdzj166EMWlvDXBVwzpfS1YftZImvpak1SmUVPeIWXPJZ472dd9hNjj8
+ 586rJvTGvkg3yGNSYTHu6n0hxfuuYanHZ4ZU5EZoQTBC3PrblNa7/ezxzljik/CZI837
+ YUXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740578637; x=1741183437;
+ d=1e100.net; s=20230601; t=1740578633; x=1741183433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eFWFW+6NZINw/m6MJHmphcH27lcvn4J7lC5PnXB+pFU=;
- b=ifjb//gPIGSbK9QDHElfRXQq74qsRbZO9pcesDFeFb849SfQYwsQhb5VIP+TY4h1Y3
- WYxG5sWaI5bGG6Y/qWWcrZdPIxuqKt5D0SclFUw08ilQj+HhtLSg8NRGuul/GYLcy+2Q
- NvhLS9GZoh0huv0pF4K5G9tu6YAZLtv3Q0VikBn2lPYVuG/qR0epVsMIVbDbkPR6OCYc
- UcF+W0JRI8xlay47uHsffIXKbrM3YoZ9AVMeMUhxAQBQbMjKQbKGcDUuaECbXrVn5ZUJ
- aUF9/VigsDMQw/x9a5J8jCgeGdJrTR2p87sb3ypaUOdHj5COjeGbZipYrffOx5AjDinu
- IQAg==
-X-Gm-Message-State: AOJu0YxCvOjIGv78liEDiTs5ylgCukEzXz+dAma4RFHjSWnk1RqrQsd1
- 6dTiFPdLXD2WK9iW7kttu4HXsy5MsVIkrqglplz+GWrgWaQ4CB4gOwtA7CDNXxw=
-X-Gm-Gg: ASbGncsYZMzVzv83vA4bYNULHiDaqcnhQ6zAxcpOUZTCWnAqsN0VvcUeveSj0nbfn5+
- rjofJ0nSdQlr8tCnRznrgrTHZHoQZmjVRjQkHJyH3q0v7eSkqZq8+RZrArLy0ioE0vpLcuvab4/
- mzCtp0lQDx5v7hU9xnbD9rW9gsyzCNEqg+a91am6bc88O3FYmjCM1HLB8Qt9pPkvGlw2hU7ks23
- TKEUhHdX4FeVNVMGxcu+x6WONGHkLIku8MrsOk+EsMEiGdkXbFvZiQghMQgQNUI+bw1F6PucxL3
- iGikU0FnAjpNlr+aKqLWAWjeuDVL
-X-Google-Smtp-Source: AGHT+IGcdCq0tB08QxeQfbH5w4GggS22UnqKtdKDnlGcLyAdYb6uH4jtxUtcFfwjwrl+Umq0sa8jqQ==
-X-Received: by 2002:a05:600c:4f0d:b0:439:6118:c188 with SMTP id
- 5b1f17b1804b1-43ab90155acmr28424875e9.19.1740578636993; 
- Wed, 26 Feb 2025 06:03:56 -0800 (PST)
+ bh=zISDsjBmMmQ71Gb6oaelmScpNesPc2IfHlK0vGMPwP0=;
+ b=tsm/MTzUbgDZp/y+gygS/jE1Eu4lWi0CR7oP6/jVqwJPXJCymypCyOYmXyZtjYF3Yb
+ A7CeAIZyZjtUUqBxvzQIkLs3e05KmcvJfJt6NVoWjDb7udWKI54oqtEA6979zrnZNzzp
+ JlLhBMhwelxWfarkU9oRy3g7ndyWNLn/6mpQ4qoosoQU1TE7y5lhSybXFke+1sEqXi+P
+ 2W5+6TdWm594tM5JuyiLCMz4CkOpN1WaD5rTZvxw9qVssBJi07XKUphlmT3nsqPvYta6
+ 1eWuLQbh5+4AM55gRaU9KKKucFqHMwJ1ZV5a9RWmgA49jBbRaxMaIeOHluHeqOx3tBZF
+ tAdg==
+X-Gm-Message-State: AOJu0YzgF+KTqyzvvOs5vKqIbSgH86hrl2gXJ3PLbAZI3upFQjtRSGsQ
+ t/ig+QZopzeYl3CgklIae4ROg83aRhVPVtQXJVcnsFVZHEJGvSGia4rff9K+4gU=
+X-Gm-Gg: ASbGncsGVX1KZBZWr2XBpE1UmOZBCzFsFLelQJBk17QeOpBXeaxVufrMLWjTlUlEKRz
+ UuPIsfELWUFWh1hh4OSPr8MgeKXNMaRHyHRCYuFjTH0pLWAG+LxGaTeXjibxrDy3VCUtjN8sLVr
+ Q0QI+8MaLd5nAzX/Mdntpua0sPVISWaLsdPrwBJrlOXgKLlw3Y0iLFvVuATKkbwHlSebY87YZBp
+ dONvzlq/qHZ9V6ObvjTY7PFAJzewyYB9fQ62IwNbf4rOr5OhiaF1PCXEWFn2rSt0dnZPZKiqa0s
+ YS9msHPJngFu9M1c3LDohDh1/W71
+X-Google-Smtp-Source: AGHT+IHAVSp/Vk9qJ+f8PZ/6Q7AR0sEr3gfMcHIuX2r0CcBzSrP/+q5OI9yk8z/9bJ0w2M+OjnH5dA==
+X-Received: by 2002:a5d:6c6f:0:b0:38f:2a5e:ec5 with SMTP id
+ ffacd0b85a97d-390d4f43052mr2726474f8f.24.1740578633165; 
+ Wed, 26 Feb 2025 06:03:53 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ab2cb1063sm33002425e9.2.2025.02.26.06.03.48
+ 5b1f17b1804b1-43aba52bbbbsm23282825e9.3.2025.02.26.06.03.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 26 Feb 2025 06:03:52 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0E0DF603D2;
+ by draig.lan (Postfix) with ESMTP id 24296603EA;
  Wed, 26 Feb 2025 14:03:45 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ed Maste <emaste@freebsd.org>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 11/25] tests/tcg: mark test-vma as a linux-only test
-Date: Wed, 26 Feb 2025 14:03:29 +0000
-Message-Id: <20250226140343.3907080-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/25] tests/tcg: add message to _Static_assert in test-avx
+Date: Wed, 26 Feb 2025 14:03:30 +0000
+Message-Id: <20250226140343.3907080-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250226140343.3907080-1-alex.bennee@linaro.org>
 References: <20250226140343.3907080-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,20 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main multiarch tests should compile for any POSIX system, however
-test-vma's usage of MAP_NORESERVE makes it a linux-only test. Simply
-moving the source file is enough for the build logic to skip on BSD's.
+In preparation for enabling clang and avoiding:
+
+  error: '_Static_assert' with no message is a C2x extension [-Werror,-Wc2x-extensions]
+
+lets just add the message.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/multiarch/{ => linux}/test-vma.c | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- rename tests/tcg/multiarch/{ => linux}/test-vma.c (100%)
+ tests/tcg/i386/test-avx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/tcg/multiarch/test-vma.c b/tests/tcg/multiarch/linux/test-vma.c
-similarity index 100%
-rename from tests/tcg/multiarch/test-vma.c
-rename to tests/tcg/multiarch/linux/test-vma.c
+diff --git a/tests/tcg/i386/test-avx.c b/tests/tcg/i386/test-avx.c
+index 230e6d84b8..43df2226b9 100644
+--- a/tests/tcg/i386/test-avx.c
++++ b/tests/tcg/i386/test-avx.c
+@@ -244,7 +244,7 @@ v4di indexd = {0x00000002ffffffcdull, 0xfffffff500000010ull,
+                0x0000003afffffff0ull, 0x000000000000000eull};
+ 
+ v4di gather_mem[0x20];
+-_Static_assert(sizeof(gather_mem) == 1024);
++_Static_assert(sizeof(gather_mem) == 1024, "gather_mem not defined size");
+ 
+ void init_f16reg(v4di *r)
+ {
 -- 
 2.39.5
 
