@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EBDA451DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 02:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAB0A451DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 02:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tn5o9-00048M-IV; Tue, 25 Feb 2025 20:01:53 -0500
+	id 1tn5o7-00040p-QJ; Tue, 25 Feb 2025 20:01:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tn5nf-0003rU-0m
+ id 1tn5nd-0003rI-Pa
  for qemu-devel@nongnu.org; Tue, 25 Feb 2025 20:01:24 -0500
-Received: from esa10.hc1455-7.c3s2.iphmx.com ([139.138.36.225])
+Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tn5nb-0004xu-DT
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 20:01:22 -0500
+ id 1tn5nV-0004yF-CL
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 20:01:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1740531679; x=1772067679;
+ t=1740531674; x=1772067674;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CSirQC4EObPjqlof3ujDjuP/Nb1WlYAJXM11TAR57ys=;
- b=UEe6KEA4TgKTS+YsedFVSwq6ywx63b7dIKcw9bA8RWv/UFIvzq5XzkuQ
- ZFYTgAItb1sHTUHCrocrGKtSnfgOFftJcDmMcTwNjX6ytaCvR3JMe1A+l
- FblPraa0jNN4FRcRb/847aFYX+SSzyh4mVRRSI/BJl93WrFm3OCstUBKH
- 4XCCaMHDR6nPYuB+wH5UCAoJkFolc4nHu+P3fz5CP+drc97p9mLD7I0Lb
- 2guPz3f5BIiyvv7g7JvdhB5y4bQYIFR11HCNIlbwYvmDmWFeVBKroqsAq
- XV7MoQirAbiMsiUrz1Y3s7dLMBvqGs4PZ9SOhYzWM546FPtTSHt4fFR9i Q==;
-X-CSE-ConnectionGUID: 4go/2eHGTsSR5RNNtYJw2w==
-X-CSE-MsgGUID: flp0eF/eTBe39ir6kndDxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="178520693"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732546800"; d="scan'208";a="178520693"
+ bh=7PBvoitHF7A+13zdpcsFHx6PTRDE0C2rhaDiyx486rU=;
+ b=j0nzDPKgNB7J1C5gvprFtSnRliJBIL7xhJQXcR/oR2bgTDkqELb3d40T
+ uBUQEub0GDCX/lrOkxpW5QlIzfAtuYIWhlzmJ8n3icnNzQr7/oP2sGEZr
+ czENYSSy/bKRvqCObjTGoxJKX54HnlwamzKxPUlHfcFdHpaiqWa3a0P7k
+ jVnm/Fh3wkfDrPzXsRqJKb7jwusJK7IBDw5w1Rg5bONwknOV3MC783Efg
+ sU/x5aIklnZyHoh2uzX6ayjycauu6NtW4JrmHQRib/Ye4vWg7cYIhazPj
+ 0TsgrtnRVUfg/dy0EVZ7Zbl/5/iperBGaVnkQJSkH5r2v4fFm/TVoL8cQ w==;
+X-CSE-ConnectionGUID: YukOeBzDSbSnblT1JUQuaA==
+X-CSE-MsgGUID: ZXZWfFqlR5WENfjxWY77hg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="191194312"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732546800"; d="scan'208";a="191194312"
 Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
- by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2025 10:01:09 +0900
+ by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 10:01:10 +0900
 Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com
  [192.168.83.65])
- by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 25374D5052
+ by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 9B72BD5042
  for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 10:01:07 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id DE24BD50B3
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 10:01:06 +0900 (JST)
+ by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 617F1D50B1
+ for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 10:01:07 +0900 (JST)
 Received: from iaas-rdma.. (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 4143B1A000B;
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id B85711A006C;
  Wed, 26 Feb 2025 09:01:06 +0800 (CST)
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v3 3/6] migration: disable RDMA + postcopy-ram
-Date: Wed, 26 Feb 2025 09:02:35 +0800
-Message-ID: <20250226010238.727348-4-lizhijian@fujitsu.com>
+Subject: [PATCH v3 4/6] migration/rdma: Remove redundant migration_in_postcopy
+ checks
+Date: Wed, 26 Feb 2025 09:02:36 +0800
+Message-ID: <20250226010238.727348-5-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20250226010238.727348-1-lizhijian@fujitsu.com>
 References: <20250226010238.727348-1-lizhijian@fujitsu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.138.36.225;
- envelope-from=lizhijian@fujitsu.com; helo=esa10.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=207.54.90.48; envelope-from=lizhijian@fujitsu.com;
+ helo=esa2.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,35 +87,48 @@ From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's believed that RDMA + postcopy-ram has been broken for a while.
-Rather than spending time re-enabling it, let's simply disable it as a
-trade-off.
+Since we have disabled RDMA + postcopy, it's safe to remove
+the migration_in_postcopy() that follows the migrate_rdma().
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
 V3:
-  - collect Reviewed tag
-  - reoder: 6th -> 3th
+  reorder: 7th->4th
 ---
- migration/migration.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ migration/rdma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 2eacae25e0e..d414a4b1379 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -251,6 +251,10 @@ migration_capabilities_and_transport_compatible(MigrationAddress *addr,
-             error_setg(errp, "RDMA and multifd can't be used together");
-             return false;
-         }
-+        if (migrate_postcopy_ram()) {
-+            error_setg(errp, "RDMA and postcopy-ram can't be used together");
-+            return false;
-+        }
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 76fb0349238..e5b4ac599b1 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -3284,7 +3284,7 @@ err:
+ int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+                            ram_addr_t offset, size_t size)
+ {
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return RAM_SAVE_CONTROL_NOT_SUPP;
      }
  
-     return true;
+@@ -3829,7 +3829,7 @@ int rdma_block_notification_handle(QEMUFile *f, const char *name)
+ 
+ int rdma_registration_start(QEMUFile *f, uint64_t flags)
+ {
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return 0;
+     }
+ 
+@@ -3861,7 +3861,7 @@ int rdma_registration_stop(QEMUFile *f, uint64_t flags)
+     RDMAControlHeader head = { .len = 0, .repeat = 1 };
+     int ret;
+ 
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return 0;
+     }
+ 
 -- 
 2.44.0
 
