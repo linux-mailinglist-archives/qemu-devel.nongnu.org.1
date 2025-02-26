@@ -2,103 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A16A461E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 15:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5E4A4620C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Feb 2025 15:15:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnI1y-0001ta-BO; Wed, 26 Feb 2025 09:04:58 -0500
+	id 1tnIBX-00033O-By; Wed, 26 Feb 2025 09:14:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tnI15-00019Z-3Y
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:04:03 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tnI13-0005mB-86
- for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:04:02 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-438a3216fc2so65586265e9.1
- for <qemu-devel@nongnu.org>; Wed, 26 Feb 2025 06:04:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740578639; x=1741183439; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F1MMLvZbg1LX5Rz6KSjocH3HVYPB/IR+83cVCtz/KGM=;
- b=KWll6xqgakd5GyeCgUUfeb8/VUBrk3mdhZlW9fTQrwWJk5DUEogxlQaEsiUMe0Rkj8
- iEbaYwGAwmboZwoR83FJNfYk2uOdWhFdgYVWpw65HYH4OevmIVDDv4sKOulaAO9sM354
- fw1hZ+A/p6+XyrEFf8tCKwUW49+K62iaWaTu5JYt5A+84MEMhPGJQdBvqtrSuQwpqRs4
- Yu7nGJWGRaD1MFu3VEGighGyx2Z7csYSBGpVYlFxdZM5K11O0TuLN79aY6c2sGZrunBI
- oeIHFo8qv+YekwUtLKRUWyVy/g6BMPD82mAOJ398xMIYVhjunei8oQaUIFvag2iVD+q+
- dAQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740578639; x=1741183439;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F1MMLvZbg1LX5Rz6KSjocH3HVYPB/IR+83cVCtz/KGM=;
- b=TVBIsKDrQUqlAIyseudaX561J8hcZ263ni955L6EVDH+1shGh4oDhq32cj3OU+880h
- 3Fgw+aWzjet/qdyryM2YDUzdHdgpr82FrGAD05NwFKBpqWN/NCwRDEJKgi+hnbUYsm90
- ZYREl3iCZ0P0tG1kpyPk1bCsN2QblM3aGDmaFr6+aEXm7HNDvm8eHv9GDvDrdyUwosIa
- 5qk4nKmksem5a5ZZ+O+MqregbZx8PHg0ETdoGfGbLFCjnSLkmLfLBvLYKxhExlKTL1SL
- /r+vuj9fiyDnNJKvdnsc3+8ixIRTumA9TQ4NHUpco89U+7zieFpf/RzK48+BBD2463Ls
- wgOg==
-X-Gm-Message-State: AOJu0YyWKuI6vsTcpPxULqDIzM0b1M2H6kbLa/gOpSgO+g8RtAfLEQAa
- 8zizrhE0uarbU8MCMtZzkgxfwy2IYgfoMBcFt/Jg6aEV9K8sr/wQjqifp0SCL3g=
-X-Gm-Gg: ASbGncvEer69kjI1lX2iNdJR6Qm1Ht8cslKfIsbqONxfzBh8Q4vV33IjJQAh9eSaA2/
- rlSNmUZzoYkKtQRQgBDlUrr1OEzblem4Gny18efPofNTmCf+WvizscczwiqryNpvF8pLp4o77X/
- AMjnw03YNJI0gysZLiRl/YLj8ZPg9dC5DVPHq0PpMc1JG49IHATcglFiqeW3A2eo5dAyrB/6FNn
- fg6Y1D0Fbsx/muBOzakv/PEkKJei6DAZiK7O0WDxQ8YTQLFI4IntPYtKaDzPRzdqXE2uF8KLfhg
- iKnf3+rD+G9rklp9HGtCHadKdA6s
-X-Google-Smtp-Source: AGHT+IECTYhG8QM+//FBl9xrzDWUnh7arnZz/ezerS3qJ2Z6nSgdXc95N1dTzOXL8rUuDkVAq7H5JA==
-X-Received: by 2002:a05:600c:3b97:b0:439:9ee2:5534 with SMTP id
- 5b1f17b1804b1-439b04f9d11mr175084255e9.12.1740578639446; 
- Wed, 26 Feb 2025 06:03:59 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba58720esm23260055e9.40.2025.02.26.06.03.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Feb 2025 06:03:56 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6580960920;
- Wed, 26 Feb 2025 14:03:46 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Kyle Evans <kevans@freebsd.org>,
- Eduardo Habkost <eduardo@habkost.net>, Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Li-Wen Hsu <lwhsu@freebsd.org>,
- Riku Voipio <riku.voipio@iki.fi>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Warner Losh <imp@bsdimp.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ed Maste <emaste@freebsd.org>, Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 25/25] MAINTAINERS: remove widely sanctioned entities
-Date: Wed, 26 Feb 2025 14:03:43 +0000
-Message-Id: <20250226140343.3907080-26-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250226140343.3907080-1-alex.bennee@linaro.org>
-References: <20250226140343.3907080-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tnI9d-0008Eb-VZ
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:12:56 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tnI9a-0007gp-Ia
+ for qemu-devel@nongnu.org; Wed, 26 Feb 2025 09:12:52 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6927F4E6198;
+ Wed, 26 Feb 2025 15:12:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id x1tfbavgWWUM; Wed, 26 Feb 2025 15:12:46 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 7C7F64E6182; Wed, 26 Feb 2025 15:12:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7A1E374577D;
+ Wed, 26 Feb 2025 15:12:46 +0100 (CET)
+Date: Wed, 26 Feb 2025 15:12:46 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
+ Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH 1/2] vfio: Make vfio-pci available on 64-bit host platforms
+ only
+In-Reply-To: <20250226084721.232703-2-clg@redhat.com>
+Message-ID: <a39e97c2-c6fd-34e4-f91b-b3491185b789@eik.bme.hu>
+References: <20250226084721.232703-1-clg@redhat.com>
+ <20250226084721.232703-2-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-867407228-1740579166=:45476"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,57 +69,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following organisations appear on the US sanctions list:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-  Yadro: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=41125
-  ISPRAS: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50890
+--3866299591-867407228-1740579166=:45476
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-As a result maintainers interacting with such entities would face
-legal risk in a number of jurisdictions. To reduce the risk of
-inadvertent non-compliance remove entries from these organisations
-from the MAINTAINERS file.
+On Wed, 26 Feb 2025, Cédric Le Goater wrote:
+> VFIO PCI never worked on PPC32 nor ARM, S390x is 64-bit, it might have
+> worked on i386 long ago but we have no plans to further support VFIO
+> on any 32-bit host platforms. Restrict to 64-bit host platforms.
+>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+> Cc: Eric Farman <farman@linux.ibm.com>
+> Cc: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+> hw/vfio/Kconfig | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/vfio/Kconfig b/hw/vfio/Kconfig
+> index 7cdba0560aa821c88d3420b36f86020575834202..6ed825429a9151fcdff33e95d1a310210689b258 100644
+> --- a/hw/vfio/Kconfig
+> +++ b/hw/vfio/Kconfig
+> @@ -7,7 +7,7 @@ config VFIO_PCI
+>     default y
+>     select VFIO
+>     select EDID
+> -    depends on LINUX && PCI
+> +    depends on LINUX && PCI && (AARCH64 || PPC64 || X86_64 || S390X)
 
-Mark the pcf8574 system as orphaned until someone volunteers to step
-up as a maintainer. Add myself as a second reviewer to record/replay
-so I can help with what odd fixes I can.
+Are these defined for the host or target? I see PPC is defined in 
+target/ppc/Kconfig so I think these mark the target not the host. Vfio-pci 
+works with qemu-system-ppc and we are trying to use it for GPU pass 
+through for 32 bit PPC guests. Please keep that enabled.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250221161443.2321327-1-alex.bennee@linaro.org>
----
- MAINTAINERS | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Regards,
+BALATON Zoltan
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1911949526..9cdfe19115 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2529,8 +2529,7 @@ F: hw/i2c/i2c_mux_pca954x.c
- F: include/hw/i2c/i2c_mux_pca954x.h
- 
- pcf8574
--M: Dmitrii Sharikhin <d.sharikhin@yadro.com>
--S: Maintained
-+S: Orphaned
- F: hw/gpio/pcf8574.c
- F: include/gpio/pcf8574.h
- 
-@@ -3627,10 +3626,10 @@ F: net/filter-mirror.c
- F: tests/qtest/test-filter*
- 
- Record/replay
--M: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
- R: Paolo Bonzini <pbonzini@redhat.com>
-+R: Alex Bennée <alex.bennee@linaro.org>
- W: https://wiki.qemu.org/Features/record-replay
--S: Supported
-+S: Odd Fixes
- F: replay/*
- F: block/blkreplay.c
- F: net/filter-replay.c
--- 
-2.39.5
-
+> config VFIO_CCW
+>     bool
+>
+--3866299591-867407228-1740579166=:45476--
 
