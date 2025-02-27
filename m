@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB3CA48620
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 18:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81807A4861D
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 18:05:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnhIZ-00078y-E2; Thu, 27 Feb 2025 12:03:47 -0500
+	id 1tnhIh-0007ai-1f; Thu, 27 Feb 2025 12:03:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnhGV-0005Cd-9t
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:43 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1tnhGX-0005D2-2n
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:44 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnhGR-0002LS-0G
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:37 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4394a823036so12282775e9.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 09:01:26 -0800 (PST)
+ id 1tnhGQ-0002Lr-W8
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:40 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43aac0390e8so8419695e9.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 09:01:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740675685; x=1741280485; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740675686; x=1741280486; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=v8PhnXMjZeodBD0z3UBX0mp4g/I3gCrKUSNVDYtiv1E=;
- b=oD81KmF9HL6Spe13KPVjNgRCcy/WvNPUhBJ/tGNnktaeawEPR6u9LriSpQBJ1OKW7u
- 7cRO+phn9Vjtgc2I+olNaIIA7Je+p/lQUunNJDjk7wMRz5DIA3w7ZWdYwfxAFNHoZTM6
- 5iuah0vTQdBgKln6bYCiCqjriihkNMCXIwvrl16U+tlYjjojswxUMY/K1CMUA/yQCt3d
- 0JiqBIAn7ZJRZNpqx7IPCU+3gVfw56KBKuxJQ+q5wvZbyu907u9AlI+XjJLVFqUi3EJc
- tOjDOdF8eG68qH2IB6/SVTLgX+O+0FRqeQ+H5prSLN24jbSdrN1PDS2JHaHx8NhAMwU+
- 0NxQ==
+ :reply-to; bh=3K/8zo+OPQ7fiQIh7CxNG3iVbX/8VRGnrPe58kHl2iU=;
+ b=uyImSSoyNnxcxSJnKA2iwvKKvbEYpc4gM3bjIXFWP7laxmiU5he5YeLIxL70FuzS1k
+ 8w44UkOOqNYiD/R8GHWrQrSC3AqG2amU1NBndULtjFmJGzYX3cz412HCo6N/7C9BBV4/
+ zJlUUDtuzqlr023XAzdxyBr0mfRU3ngbCasxa2muA0Zf0AIBd1jS74np+cmHnGb76miE
+ ud2dMUae+wI9layQOSFro0L/dgu/JI7Hu9FsXqXG6eSj2tK+vkG+NzqzkpTAd2gynQfB
+ 3y9bKbttB3WLvmpdHOXT5I3RhSPngRzAI3KM++8n5eVwk9AB/L2r2KYgsysW9L6FBam+
+ ClOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740675685; x=1741280485;
+ d=1e100.net; s=20230601; t=1740675686; x=1741280486;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v8PhnXMjZeodBD0z3UBX0mp4g/I3gCrKUSNVDYtiv1E=;
- b=ReQDIYbGllZG457kzY8QVffzHZaiVfYgFHFWwI10Joi9eefVCuLmYcUR3TaxMMOuv1
- 6ByiaHXNyN/gYIuoM1x9pUmRBolRtQ4GXC6P+6LC2IREq+Vi3RLv0DZkIkUDv3IePEKV
- Owfmge6wmSpr9PdFUc8XfNIk2Ev87rRQMmE10fzvBRE9fAMABcik8OjbmjLcENYpWNro
- 5PxCCpa2DeX4YfSJork4J1ak1DIHgewjoks1e3lD4JsyqWxVLBAmROOk10kqqGx1bbEx
- QTdrQqt8gSwVXruCXdDd8dkcQquMx430JPRHMD68w2EMxTW9oyXsqBqRqDv4Npz3hlJJ
- M43A==
+ bh=3K/8zo+OPQ7fiQIh7CxNG3iVbX/8VRGnrPe58kHl2iU=;
+ b=vEAE8EKXo0E4uXbxAINqXEC3MEyaTAKeyW8Icq8qFa8BczajaPQ6Gf4ZabKI2gvcrD
+ uGS0wqKG/+ayRwZEvrB5bNu1RS5GyYaZSFirn1vZcnEzcWSWMn9gsG54Y3FlKb1n6G9z
+ 27oc2pbbddFhzG1CoFLqsrWvU6RXB9AAkfWlJHnNhU2K4+Re59egZDd5keYEwVbKtAPZ
+ f1mCEIZMy2k9Lr9lS39WBpoqgNzQ83podSLN8aeDdCGBcDLA6w6pTn1UgKTyDb95KDFS
+ TtwPFX3OYIUP+6s9omwJZPGNRaQzcsHuemDi0Yr76oO3WnelMFTBKK9I/nVjV6UNPCRT
+ iUHQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW6kr45v1fk4+m9ynWuEAeFKKLj3LMhLJB2X/OKTAoRjBf4pptJZl4Qra6E1clpcpavUukgJbQGPCCM@nongnu.org
-X-Gm-Message-State: AOJu0YxiYzWG4f4qGG86/TAvwpRkKVDUF2XcEY/depfK9VmvRRR4An7A
- he+RuT6910IAL/bgbOujobC8sSZdDKpoThFrNfluOcA85mo8UlLn6nmVqmj46uI9XlGnf6GdYvU
- 8
-X-Gm-Gg: ASbGnct28KPotDo1gmAEjRjEFIGMrbOIYBLxvjYRMllku3QHQ/UNRDiZbwyZO3ksF2H
- 545fuYrT/T1z1fpumW2HncyYTPW8AsDOWZKLHk+VSx1rw/T1Qcz0jBKtgUzyJDpssdhbsO8N9nf
- Ann0k3EiXijssK3UY1iWQHCtSgPe95w1JgUqKwJ4s8Xnh2tP5skWT/tGdRg8lwvlabqzr5OoQHq
- pgxh8UcOfMRn1rOACEL8vkyHQydFGefm6pkF4j+Gx5NVHdAidYKZtXwE16wTzwYojJ5tY+2dG0a
- eQTehqek0KCE2DQ6CCILHw+nTCwbn8N0
-X-Google-Smtp-Source: AGHT+IFzqvxICu40nbqlDgxbI1+k8sVn+b0sieqMshYCJ29NVBDbB0Lh43wb/rACWqDzF8CgWfmFIA==
-X-Received: by 2002:a05:600c:4687:b0:439:9aca:3285 with SMTP id
- 5b1f17b1804b1-439b6ad5cbfmr199130035e9.6.1740675684699; 
- Thu, 27 Feb 2025 09:01:24 -0800 (PST)
+ AJvYcCXAR8CdUB4/W23999FBhIZ63uyD/kU89dRDS4yzhmOY6IACRWkS2U9KS7Dc56LZL/PmjNU7Z6mHBLtA@nongnu.org
+X-Gm-Message-State: AOJu0Yx6mxrQIAlQcokcKqx6dOZq2JbFoweyOaih8nRSdb6wLDidaTz5
+ o5Mrp7KcUmgzKUft5TxaABh3JxFUbZmvMUm7qUiSwPrqO010Q4dJoYIRaKQNbJs=
+X-Gm-Gg: ASbGncvjII5CQ7Rnm4YhUMsJercFLdtLmRWWMbt/Nan9Uj91ba3J4MXq5Z0w6IQjVoe
+ YcyieHsryiAFK8OkJCyM3JkbjNkjkqI53r6t9RtWJFdMnw7zea35S4BdLtulqaCyH0195Lejvet
+ 7xPSAnPE1KJ1Uto1VmRC4yHqebV1g8Hx0xSfWFXwChEzemsxYj+TkxQSv7Nod2Mek6/Gj5NSkJG
+ 7JyxE9G6rs+kXmQ5sdNoN5dTGcDrkm0e8NPKhPHuI+0FjHvqIapXcLJD5r43bwQTGuv+tebjyZ+
+ AcBgi1b30WOwzfvZrxY9vW5KYucshbBA
+X-Google-Smtp-Source: AGHT+IHOduFRNFpZ6KPiIMSFIC3xcsi+VCmmKAYlQDRyY7NzVI7ocfRXrTnPlOwD+2U+r6MbKM/OLw==
+X-Received: by 2002:a05:600c:4686:b0:439:a25b:e7d3 with SMTP id
+ 5b1f17b1804b1-439ae1f4153mr274745565e9.14.1740675685648; 
+ Thu, 27 Feb 2025 09:01:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba5871f4sm62747565e9.39.2025.02.27.09.01.23
+ 5b1f17b1804b1-43aba5871f4sm62747565e9.39.2025.02.27.09.01.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 27 Feb 2025 09:01:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 4/5] hw/arm/omap_sx1.c: Remove ifdeffed out debug printf
-Date: Thu, 27 Feb 2025 17:01:16 +0000
-Message-ID: <20250227170117.1726895-5-peter.maydell@linaro.org>
+Subject: [PATCH 5/5] hw/arm/versatilepb: Convert printfs to LOG_GUEST_ERROR
+Date: Thu, 27 Feb 2025 17:01:17 +0000
+Message-ID: <20250227170117.1726895-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250227170117.1726895-1-peter.maydell@linaro.org>
 References: <20250227170117.1726895-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove an ifdeffed out debug printf from the static_write() function in
-omap_sx1.c. In theory we could turn this into a tracepoint, but for
-code this old it doesn't seem worthwhile. We can add tracepoints if
-and when we have a reason to debug something.
+Convert some printf() calls for attempts to access nonexistent
+registers into LOG_GUEST_ERROR logging.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/omap_sx1.c | 4 ----
- 1 file changed, 4 deletions(-)
+ hw/arm/versatilepb.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/omap_sx1.c b/hw/arm/omap_sx1.c
-index c6b0bed0796..24b40431832 100644
---- a/hw/arm/omap_sx1.c
-+++ b/hw/arm/omap_sx1.c
-@@ -76,10 +76,6 @@ static uint64_t static_read(void *opaque, hwaddr offset,
- static void static_write(void *opaque, hwaddr offset,
-                          uint64_t value, unsigned size)
- {
--#ifdef SPY
--    printf("%s: value %" PRIx64 " %u bytes written at 0x%x\n",
--                    __func__, value, size, (int)offset);
--#endif
- }
+diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
+index 941616cd25b..35766445fa4 100644
+--- a/hw/arm/versatilepb.c
++++ b/hw/arm/versatilepb.c
+@@ -27,6 +27,7 @@
+ #include "qom/object.h"
+ #include "audio/audio.h"
+ #include "target/arm/cpu-qom.h"
++#include "qemu/log.h"
  
- static const MemoryRegionOps static_ops = {
+ #define VERSATILE_FLASH_ADDR 0x34000000
+ #define VERSATILE_FLASH_SIZE (64 * 1024 * 1024)
+@@ -110,7 +111,8 @@ static uint64_t vpb_sic_read(void *opaque, hwaddr offset,
+     case 8: /* PICENABLE */
+         return s->pic_enable;
+     default:
+-        printf ("vpb_sic_read: Bad register offset 0x%x\n", (int)offset);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "vpb_sic_read: Bad register offset 0x%x\n", (int)offset);
+         return 0;
+     }
+ }
+@@ -144,7 +146,8 @@ static void vpb_sic_write(void *opaque, hwaddr offset,
+         vpb_sic_update_pic(s);
+         break;
+     default:
+-        printf ("vpb_sic_write: Bad register offset 0x%x\n", (int)offset);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "vpb_sic_write: Bad register offset 0x%x\n", (int)offset);
+         return;
+     }
+     vpb_sic_update(s);
 -- 
 2.43.0
 
