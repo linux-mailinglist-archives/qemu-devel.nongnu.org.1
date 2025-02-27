@@ -2,100 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE62FA47954
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F6AA4795E
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnaFE-0000o5-Ai; Thu, 27 Feb 2025 04:31:52 -0500
+	id 1tnaFs-0002ek-Jy; Thu, 27 Feb 2025 04:32:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tnaEG-00088s-Bo; Thu, 27 Feb 2025 04:30:55 -0500
-Received: from fout-a6-smtp.messagingengine.com ([103.168.172.149])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tnaF3-00016X-NS
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:31:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tnaED-0008JC-2K; Thu, 27 Feb 2025 04:30:52 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfout.phl.internal (Postfix) with ESMTP id 92EE61382F81;
- Thu, 27 Feb 2025 04:30:45 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Thu, 27 Feb 2025 04:30:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm3; t=1740648645; x=
- 1740735045; bh=Ek139Gu4a814lUKETN8ffYGAAziBjZAe8RnGBT11S9U=; b=G
- fVJvOGt+iaDrFn8MzzN5UDNeUZS9fFp83eRweFGolG1DMiv9YkjCPR1vorlyZ0Bi
- D7Aa1dgfNsZuUY1XcXJwKaH7H+4uYQ8yTF8hMuR6y3+EhXNSx4yYpaiZmrRl1T/D
- smLuqlExs3LgT6xD1qSQ0AiIZa9/fiYELsi9NRP1aiHwKSe6jhUacmDu+y0XESES
- +BwLiwSjVkZihMribkuPYZeYw+0Lw+SqiCKGy0Z6YmIiyk2H4EDNZnOnTvCNFb1P
- pXvmGsDnN7JguNYPmFyq/Y2FOwIW+O4eXOK918DvGEoKVcL2SRnfpnjsIK4IGMVC
- uZV8eUn4xiq+D9JcoUBUw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm1; t=1740648645; x=1740735045; bh=E
- k139Gu4a814lUKETN8ffYGAAziBjZAe8RnGBT11S9U=; b=HxNfXZOY6422hdno0
- SiAInBPWlv4rMcMMo8DgZXdzv8DvH3f1rHw+CemKZZ43yUzpXTI6JBSJ4a+JepGW
- 2GoXU/8e+G9ewqG5XyqQWV8Ge1Lspty6GW8aHzZ7qHhqt1ZAlptUjllpzfvkNVdo
- QCPK1yzJTTsNQLWi2pWK+hvKSWb9h9UtG9BhdgK6ejYEeycfNCPdkX2/rjI1nJQx
- WBnACrGjRaNvMPGNdy5X8CgRv7M4LwCkTRNVaLoWZSkF3270jlOod5YW3IozUKh3
- egmKWLc578W+fk5isMfznyBhDmDBIYgbl0pBT0YJ2JqWazApAlRZ7jz4pjnUphkQ
- Sd9Bg==
-X-ME-Sender: <xms:xTDAZxyIegYiV0VS_KTdZ6FAoLBxeoSpvUFtOU8vuuur2HvWcrowZg>
- <xme:xTDAZxQ4O-K9M5EYgsTT1ZO3ALb-QUFccFZ9fqwOpdLsXgfPLSzANZ1FJlYlTeer2
- qJQKwZSCbCcbOVSdT0>
-X-ME-Received: <xmr:xTDAZ7UwaYmY3Ccj4esHT_XIL6q78KzbahBpnIn96KlFWw0U4chTj-hZwCYQEOnbEDQsIYTssxp93QpdAEhSaTnt>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeduudcutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
- uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
- necuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnth
- drughkqeenucggtffrrghtthgvrhhnpeejgfeilefgieevheekueevheehkeefveegiefg
- heefgfejjeehffefgedujedugeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmh
- epmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphht
- thhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlh
- esnhhonhhgnhhurdhorhhgpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhi
- nhgrrhhordhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtoh
- hmpdhrtghpthhtohepfhhoshhsseguvghfmhgrtghrohdrihhtpdhrtghpthhtohepkhgs
- uhhstghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehithhssehirhhrvghlvghvrg
- hnthdrughkpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrgh
-X-ME-Proxy: <xmx:xTDAZzjHSyVt69p3YbfHsQg8Ul_fLr6iog3eR0IEeVvg2Wwd-ekDAA>
- <xmx:xTDAZzDnI2qvK1_K5eMpkkBcGh1jPBHd6UzGNsZsjtQ1iJ1jMu-hBQ>
- <xmx:xTDAZ8IrJbQ3qZYZuv45ZymqahfA6fOic-AWWAPgXz_mDtY9la_pzA>
- <xmx:xTDAZyB_mR6oTwm2Lystjv09gDLMTCeQjGx4LgZw06goCN2vahs-tw>
- <xmx:xTDAZ1Dv8sISDrDZc7P_KjNVUgHvx4EjfEI4LeOzP2P2ZveHtfmINi-6>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Feb 2025 04:30:44 -0500 (EST)
-From: Klaus Jensen <its@irrelevant.dk>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Klaus Jensen <k.jensen@samsung.com>,
- Jesper Wendel Devantier <foss@defmacro.it>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- qemu-block@nongnu.org
-Subject: [PULL 10/10] hw/nvme: remove nvme_aio_err()
-Date: Thu, 27 Feb 2025 10:30:17 +0100
-Message-ID: <20250227093018.11262-11-its@irrelevant.dk>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250227093018.11262-1-its@irrelevant.dk>
-References: <20250227093018.11262-1-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tnaEx-0008PO-Jv
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:31:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1740648694;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=89v9hZYABJ+wAUFxJNmQ17f7WR0uDK72i3erFGo9da0=;
+ b=E5SJY5eGoaCV9xNUS9VgdjxBuMzyAAgcQRsXbw/x/V2f1774PxetJgBH5ds/dImxK7xESd
+ rHUwBRCXLpBDfPvU0CjrKE5coCe1thLvL/W9t0aYsBhZksM7H72jNt/ofIuhqQOOAmS+jR
+ x/udlyY+CbibioADLHx9WuYR0ZAixQs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-Aa0EKx0uOGO9WyZ7zykygw-1; Thu,
+ 27 Feb 2025 04:31:30 -0500
+X-MC-Unique: Aa0EKx0uOGO9WyZ7zykygw-1
+X-Mimecast-MFC-AGG-ID: Aa0EKx0uOGO9WyZ7zykygw_1740648689
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 595F2180087B; Thu, 27 Feb 2025 09:31:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.99])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89193180035F; Thu, 27 Feb 2025 09:31:26 +0000 (UTC)
+Date: Thu, 27 Feb 2025 09:31:23 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, eduardo@habkost.net
+Subject: Re: [PATCH v2 6/6] qdev: Improve a few more PropertyInfo
+ @description members
+Message-ID: <Z8Aw6wcsEiU_D7nB@redhat.com>
+References: <20250227085601.4140852-1-armbru@redhat.com>
+ <20250227085601.4140852-7-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.149; envelope-from=its@irrelevant.dk;
- helo=fout-a6-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <20250227085601.4140852-7-armbru@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,100 +84,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+On Thu, Feb 27, 2025 at 09:56:01AM +0100, Markus Armbruster wrote:
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  hw/block/xen-block.c             | 2 +-
+>  hw/core/qdev-properties-system.c | 2 +-
+>  hw/core/qdev-properties.c        | 1 +
+>  hw/s390x/ccw-device.c            | 4 ++--
+>  target/sparc/cpu.c               | 1 +
+>  5 files changed, 6 insertions(+), 4 deletions(-)
 
-nvme_rw_complete_cb() is the only remaining user of nvme_aio_err(), so
-open code the status code setting instead.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 60 +++++++++++++++++++-------------------------------
- 1 file changed, 23 insertions(+), 37 deletions(-)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index b7222fd9ac02..e62c6a358828 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -1762,42 +1762,6 @@ static uint16_t nvme_check_dulbe(NvmeNamespace *ns, uint64_t slba,
-     return NVME_SUCCESS;
- }
- 
--static void nvme_aio_err(NvmeRequest *req, int ret)
--{
--    uint16_t status = NVME_SUCCESS;
--    Error *local_err = NULL;
--
--    switch (req->cmd.opcode) {
--    case NVME_CMD_READ:
--        status = NVME_UNRECOVERED_READ;
--        break;
--    case NVME_CMD_WRITE:
--    case NVME_CMD_WRITE_ZEROES:
--    case NVME_CMD_ZONE_APPEND:
--    case NVME_CMD_COPY:
--        status = NVME_WRITE_FAULT;
--        break;
--    default:
--        status = NVME_INTERNAL_DEV_ERROR;
--        break;
--    }
--
--    trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
--
--    error_setg_errno(&local_err, -ret, "aio failed");
--    error_report_err(local_err);
--
--    /*
--     * Set the command status code to the first encountered error but allow a
--     * subsequent Internal Device Error to trump it.
--     */
--    if (req->status && status != NVME_INTERNAL_DEV_ERROR) {
--        return;
--    }
--
--    req->status = status;
--}
--
- static inline uint32_t nvme_zone_idx(NvmeNamespace *ns, uint64_t slba)
- {
-     return ns->zone_size_log2 > 0 ? slba >> ns->zone_size_log2 :
-@@ -2182,8 +2146,30 @@ void nvme_rw_complete_cb(void *opaque, int ret)
-     trace_pci_nvme_rw_complete_cb(nvme_cid(req), blk_name(blk));
- 
-     if (ret) {
-+        Error *err = NULL;
-+
-         block_acct_failed(stats, acct);
--        nvme_aio_err(req, ret);
-+
-+        switch (req->cmd.opcode) {
-+        case NVME_CMD_READ:
-+            req->status = NVME_UNRECOVERED_READ;
-+            break;
-+
-+        case NVME_CMD_WRITE:
-+        case NVME_CMD_WRITE_ZEROES:
-+        case NVME_CMD_ZONE_APPEND:
-+            req->status = NVME_WRITE_FAULT;
-+            break;
-+
-+        default:
-+            req->status = NVME_INTERNAL_DEV_ERROR;
-+            break;
-+        }
-+
-+        trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), req->status);
-+
-+        error_setg_errno(&err, -ret, "aio failed");
-+        error_report_err(err);
-     } else {
-         block_acct_done(stats, acct);
-     }
+> diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+> index 5a801057db..c04df3b337 100644
+> --- a/hw/core/qdev-properties.c
+> +++ b/hw/core/qdev-properties.c
+> @@ -247,6 +247,7 @@ static void set_bool(Object *obj, Visitor *v, const char *name, void *opaque,
+>  
+>  const PropertyInfo qdev_prop_bool = {
+>      .type  = "bool",
+> +    .description = "on/off",
+
+Awkward as on/off for QemuOpts, but JSON true/false  for QMP, but I
+guess clarifying this is beyond the scope of the .description field.
+
+>      .get   = get_bool,
+>      .set   = set_bool,
+>      .set_default_value = set_default_value_bool,
+
+
+With regards,
+Daniel
 -- 
-2.47.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
