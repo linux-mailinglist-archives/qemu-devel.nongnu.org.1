@@ -2,85 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6C4A48464
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AA9A4846B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:13:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngSP-0000yx-Nz; Thu, 27 Feb 2025 11:09:54 -0500
+	id 1tngVW-0005yF-3Z; Thu, 27 Feb 2025 11:13:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1tngQx-0008U3-Lj
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:08:23 -0500
-Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1tngQs-0000Db-W2
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:08:22 -0500
-Received: by mail-qk1-x72b.google.com with SMTP id
- af79cd13be357-7c08b14baa9so97944885a.3
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 08:08:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1740672493; x=1741277293; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LucYlR7wGBOJBB79VNJsJIy+ebAKyb8vWkC9gTxKADU=;
- b=tQEG/9WdqJN5JGmqEvs0/V3I8Do6TffAUkSPKpem6PnvEf9mU8/8iQIDdTaJp+FkEg
- LlZ0OqSNzA7ZKsnSRPU8EPA29tzmiulwutswNC/ASwQCNyjsVbmHGKEEnucwLDspUWBp
- A3GgWSgpKeOdrMsmmGp5GgjtYUrS9Z7vkX71b9G8G2G71/g0eM9nuK5qYabxxZNZgWGQ
- Wf+XGXuR5uUKrzwRFTAjZiiLW3E34saYXY8U3l989bqCS0zMKXomUtRUr5o4FY8xgYlD
- fY4r/IHGzO+9XOv6UWWdOJOGyReQsn8WuVymVMmrQ9FZy9BWB8E8uWdQ6GxrY80fxqpi
- /8Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740672493; x=1741277293;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LucYlR7wGBOJBB79VNJsJIy+ebAKyb8vWkC9gTxKADU=;
- b=uea2lUmOJXAzDZIzhWn0/pmg3cnQrvTfUazUtubsXsE+a3V37piuScTE/98bFotEF0
- tVChXQiUeXyTXts8OOfTBrCUZhrft0Ok9Yx//fUggL1B5Qdt2SQiR0feGQ9N9F6yPjE3
- O1PeP4PGzZuRmQ5VhHAV7La6xGquylnJuT8dUzgIyJWZlz1Av8PbMAWx7Qo9mS8UWKPm
- 03qotLfhDyLRwm11sc4Y2jxvHJzB5c0qOLXGs8a8qQF/N2Uvwz0ZIIIfqETQA0+aFJpT
- hh9p+UIoi6dcPRQ7Sf5PDO+Ym/rbrQX5yOlfHqsltwuCoExslXNl5WRXKVgmipgcTZnz
- Qdwg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHCLtCtdnQrLqbTjaZBG/fPKr3zO+Vy8Sl3lRwv4gPjob4Kphkhw+YtPIea3OBBbqpBRtIeYzv2zQS@nongnu.org
-X-Gm-Message-State: AOJu0YwIxpPmDArCfb0d+UNAghU81p9dpYRkB7tjNpl2Foj5ptC/VTZi
- x0A6wXxX3YLjh6+UF82LNxn46a2i44aLKvAvuiADVcUQpjiVgjfw7eJ7Xm0TF/IpHbG5n47XQqB
- ji+vDVFCOEgg3rtY7YCxfmPF3/A9Yp7RUe5/H
-X-Gm-Gg: ASbGncvAfG/6N/D4je0LUTTCwkMbi1ibUpnBiE6e4AuRKehkjtJ0jsEfR7bGINn3AmI
- epAb4WNUKBCFh6n/6fuXOTtnr5DSpouLc3kbCd7kS1m5sOi9Fuy67z5SzaA/sQPXfEvEDTfYGCm
- SIXdr1+Ib0ZacbJvfhJWH+4d+E9Vu1oWXL37mqdQ==
-X-Google-Smtp-Source: AGHT+IE8wR4B5OLygyB7K4WdFT7kQMxbPhofu4o3njERpe5XX3551jgGTnWqCHvJ9jIp2OzxV/hWsCDytc03r7dKhk0=
-X-Received: by 2002:a05:620a:450a:b0:7c0:9df3:a0d7 with SMTP id
- af79cd13be357-7c23c039803mr1779508485a.41.1740672493256; Thu, 27 Feb 2025
- 08:08:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1tngV1-0005re-6p
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:12:38 -0500
+Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
+ helo=smtp.livemail.co.uk)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1tngUw-00011i-U9
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:12:34 -0500
+Received: from [172.22.54.5] (unknown [145.40.191.116])
+ (Authenticated sender: roy.hopkins@randomman.co.uk)
+ by smtp.livemail.co.uk (Postfix) with ESMTPSA id 6770D40534;
+ Thu, 27 Feb 2025 16:12:23 +0000 (GMT)
+Message-ID: <31de7209a08147e3c8d9fe3d17e118b727729587.camel@randomman.co.uk>
+Subject: Re: [PATCH v7 00/16] Introduce support for IGVM files
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, "Daniel P .
+ Berrange" <berrange@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez
+ <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Alistair Francis
+ <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Ani Sinha
+ <anisinha@redhat.com>, Joerg Roedel <jroedel@suse.com>
+Date: Thu, 27 Feb 2025 16:12:23 +0000
+In-Reply-To: <ftgzr23cmis3sjwmbbfkw3ijrtythcwb3l6jg3aqsreebg46ll@mcm72sg3dbqs>
+References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
+ <ftgzr23cmis3sjwmbbfkw3ijrtythcwb3l6jg3aqsreebg46ll@mcm72sg3dbqs>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-References: <20250227154003.1646017-1-venture@google.com>
- <CAFEAcA_wR-M3+BhZY0MFjv3OfoyL2gvukduvKZ6ksKwUKmdB6Q@mail.gmail.com>
- <CAO=noty89OsH=vGmemL7eLcR2wV6n4XG9a2HfT7Uzo8EPRy4PQ@mail.gmail.com>
- <CAFEAcA-gyMTz-KpmamyXcKX9QOL=yYHDMPRF2Xji_uJbG02WpA@mail.gmail.com>
-In-Reply-To: <CAFEAcA-gyMTz-KpmamyXcKX9QOL=yYHDMPRF2Xji_uJbG02WpA@mail.gmail.com>
-From: Patrick Venture <venture@google.com>
-Date: Thu, 27 Feb 2025 08:08:01 -0800
-X-Gm-Features: AQ5f1JrEwx0ajtKdC1OwMVLACziYm9s_oiSxA8Tkx4sf6DvrX9OLlG1rT-OXiU4
-Message-ID: <CAO=notwcXTU9v4c_Hz=Si=QLrM5HNymYEO0ry4Td30GYUZqBwg@mail.gmail.com>
-Subject: Re: [PATCH] hw/net: npcm7xx_emc: fix alignment to eth_hdr
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: kfting@nuvoton.com, wuhaotsh@google.com, jasowang@redhat.com, 
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000a26448062f21e571"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
- envelope-from=venture@google.com; helo=mail-qk1-x72b.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
+Received-SPF: neutral client-ip=213.171.216.60;
+ envelope-from=roy.hopkins@randomman.co.uk; helo=smtp.livemail.co.uk
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,170 +68,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a26448062f21e571
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+T24gVGh1LCAyMDI1LTAyLTI3IGF0IDE2OjMyICswMTAwLCBTdGVmYW5vIEdhcnphcmVsbGEgd3Jv
+dGU6Cj4gSGkgUm95LAo+IAo+IE9uIFRodSwgRmViIDI3LCAyMDI1IGF0IDAxOjM4OjA4UE0gKzAw
+MDAsIFJveSBIb3BraW5zIHdyb3RlOgo+ID4gSGVyZSBpcyB2NyBvZiB0aGUgc2V0IG9mIHBhdGNo
+ZXMgdG8gYWRkIHN1cHBvcnQgZm9yIElHVk0gZmlsZXMgdG8KPiA+IFFFTVUuwqAgVGhpcyBpcwo+
+ID4gYmFzZWQgb24gY29tbWl0IDQwZWZlNzMzZTEwY2MwMGU0ZmI0ZjlmNTc5MGEyOGU3NDRlNjNj
+NjIgb2YgcWVtdS4KPiAKPiBUaGFua3MgYWdhaW4gZm9yIHRoaXMgd29yayEKPiAKPiBJIG5vdGlj
+ZWQgdGhhdCB0aGUgbGFzdCBwYXRjaCBmb3IgdGhpcyBzZXJpZXMgaXMgbWlzc2luZywgYWxzbwo+
+IHBhdGNoZXcKPiBkaWRuJ3QgcmVjZWl2ZSBpdDoKPiAKPiBodHRwczovL3BhdGNoZXcub3JnL1FF
+TVUvY292ZXIuMTc0MDY2MzQxMC5naXQucm95LmhvcGtpbnNAcmFuZG9tbWFuLmNvLnVrLwo+IAo+
+IElmIHlvdSdyZSB1c2luZyBnaXQtcHVibGlzaCB5b3UgY2FuIGRvOgo+IAo+ICQgZ2l0IHB1Ymxp
+c2ggLS1za2lwIDE2IC1TIFwKPiDCoMKgwqDCoCAtUiBjb3Zlci4xNzQwNjYzNDEwLmdpdC5yb3ku
+aG9wa2luc0ByYW5kb21tYW4uY28udWsKPiAKPiBUaGFua3MsCj4gU3RlZmFubwo+IAoKVGhhbmtz
+IFN0ZWZhbm8uIEkgaGFkIGFsbCBzb3J0cyBvZiBwcm9ibGVtcyBnZXR0aW5nIGdpdCBzZW5kLW1h
+aWwgdG8Kc2VuZCB1c2luZyBteSBtYWlsIHNlcnZpY2UgcHJvdmlkZXIuIEkndmUgc29ydGVkIGl0
+IG5vdyBhbmQgc2VudCB0aGUKbWlzc2luZyBwYXRjaC4KClJlZ2FyZHMsClJveQoKPiA+IAo+ID4g
+Rmlyc3RseSwgYXBvbG9naWVzIGZvciB0aGUgYW1vdW50IG9mIHRpbWUgYmV0d2VlbiB0aGUgbGFz
+dCB2ZXJzaW9uCj4gPiBhbmQgdGhpcyBvbmUuCj4gPiBJIG1vdmVkIHJvbGVzIHRvIGEgZGlmZmVy
+ZW50IGNvbXBhbnkgYW5kLCBhbHRob3VnaCBJIGFsd2F5cyBwbGFubmVkCj4gPiB0byBzZWUgdGhp
+cwo+ID4gcGF0Y2ggc2VyaWVzIHRvIGNvbXBsZXRpb24sIGl0IHRvb2sgYSB3aGlsZSBiZWZvcmUg
+SSBmb3VuZCB0aW1lIHRvCj4gPiBzZXR1cCBhCj4gPiBkZXZlbG9wbWVudCBlbnZpcm9ubWVudCBh
+bmQgYmUgaW4gYSBwb3NpdGlvbiB0byBzZW5kIGEgbmV3IHZlcnNpb24uCj4gPiBJIHdpbGwKPiA+
+IGNvbnRpbnVlIHRoaXMgc2VyaWVzIHVzaW5nIGEgcGVyc29uYWwgZW1haWwgYWRkcmVzcyBmb3Ig
+bm93LCBoZW5jZQo+ID4gdGhlIGNoYW5nZQo+ID4gdG8gdGhlIGF1dGhvciBhbmQgc2lnbmVkLW9m
+Zi1ieSBlbWFpbHMuCj4gPiAKPiA+IFRoZSBvbmx5IGNoYW5nZXMgaW4gdGhpcyB2ZXJzaW9uIGFy
+ZSB0byByZWJhc2Ugb24gdGhlIGN1cnJlbnQKPiA+IG1hc3RlciBicmFuY2ggYW5kCj4gPiB1cGRh
+dGUgY29tbWl0IG1ldGFkYXRhLCBpbmNsdWRpbmcgU2lnbmVkLU9mZi1CeSBhbmQgQXV0aG9yIGVt
+YWlscwo+ID4gZm9yIG15Cj4gPiByZXBsYWNlbWVudCBlbWFpbCBhZGRyZXNzLCBhbmQgdG8gaW5j
+bHVkZSB0aGUgZmluYWwgUmV2aWV3ZWQtQnkKPiA+IHRoYXQgd2VyZSBhZGRlZAo+ID4gaW4gdGhl
+IGxhc3QgcmV2aWV3LiBUaGVyZSB3ZXJlIG5vIHJlcXVlc3RlZCBjaGFuZ2VzIG9uIHRoZSBwcmV2
+aW91cwo+ID4gdmVyc2lvbiBbMV0KPiA+IHNvIEkgYmVsaWV2ZSB0aGlzIHNlcmllcyBpcyByZWFk
+eSB0byBtZXJnZS4KPiA+IAo+ID4gQXMgYWx3YXlzLCB0aGFua3MgdG8gdGhvc2UgdGhhdCBoYXZl
+IGJlZW4gZm9sbG93aW5nIGFsb25nLAo+ID4gcmV2aWV3aW5nIGFuZCB0ZXN0aW5nCj4gPiB0aGlz
+IHNlcmllcy4gVGhpcyB2NyBwYXRjaCBzZXJpZXMgaXMgYWxzbyBhdmFpbGFibGUgb24gZ2l0aHVi
+OiBbMl0KPiA+IAo+ID4gRm9yIHRlc3RpbmcgSUdWTSBzdXBwb3J0IGluIFFFTVUgeW91IG5lZWQg
+dG8gZ2VuZXJhdGUgYW4gSUdWTSBmaWxlCj4gPiB0aGF0IGlzCj4gPiBjb25maWd1cmVkIGZvciB0
+aGUgcGxhdGZvcm0geW91IHdhbnQgdG8gbGF1bmNoLiBZb3UgY2FuIHVzZSB0aGUKPiA+IGBidWls
+ZGlndm1gCj4gPiB0ZXN0IHRvb2wgWzNdIHRvIGFsbG93IGdlbmVyYXRpb24gb2YgSUdWTSBmaWxl
+cyBmb3IgYWxsIGN1cnJlbnRseQo+ID4gc3VwcG9ydGVkCj4gPiBwbGF0Zm9ybXMuIFBhdGNoIDEx
+LzE3IGNvbnRhaW5zIGluZm9ybWF0aW9uIG9uIGhvdyB0byBnZW5lcmF0ZSBhbgo+ID4gSUdWTSBm
+aWxlCj4gPiB1c2luZyB0aGlzIHRvb2wuCj4gPiAKPiA+IENoYW5nZXMgaW4gdjc6Cj4gPiAKPiA+
+ICogVXBkYXRlIHZlcnNpb24gbnVtYmVycyBmb3IgSUdWTSBzdXBwb3J0IHRvIDEwLjAKPiA+ICog
+QWRkIFJldmlld2VkLWJ5IHRvIHJlbGV2YW50IGNvbW1pdHMuCj4gPiAqIFVwZGF0ZSBBdXRob3Ig
+ZW1haWwgYW5kIHNpZ24tb2ZmcyB0byBteSBuZXcgZW1haWwgYWRkcmVzcwo+ID4gCj4gPiBQYXRj
+aCBzdW1tYXJ5Ogo+ID4gCj4gPiAxLTExOiBBZGQgc3VwcG9ydCBhbmQgZG9jdW1lbnRhdGlvbiBm
+b3IgcHJvY2Vzc2luZyBJR1ZNIGZpbGVzIGZvcgo+ID4gU0VWLCBTRVYtRVMsCj4gPiBTRVYtU05Q
+IGFuZCBuYXRpdmUgcGxhdGZvcm1zLgo+ID4gCj4gPiAxMi0xNTogUHJvY2Vzc2luZyBvZiBwb2xp
+Y3kgYW5kIFNFVi1TTlAgSURfQkxPQ0sgZnJvbSBJR1ZNIGZpbGUuCj4gPiAKPiA+IDE2OiBBZGQg
+cHJlLXByb2Nlc3Npbmcgb2YgSUdWTSBmaWxlIHRvIHN1cHBvcnQgc3luY2hyb25pemF0aW9uIG9m
+Cj4gPiAnU0VWX0ZFQVRVUkVTJwo+ID4gZnJvbSBJR1ZNIFZNU0EgdG8gS1ZNLgo+ID4gCj4gPiBb
+MV0gTGluayB0byB2NjoKPiA+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvY292
+ZXIuMTcyNzM0MTc2OC5naXQucm95LmhvcGtpbnNAc3VzZS5jb20vCj4gPiAKPiA+IFsyXSB2NyBw
+YXRjaGVzIGFsc28gYXZhaWxhYmxlIGhlcmU6Cj4gPiBodHRwczovL2dpdGh1Yi5jb20vcm95LWhv
+cGtpbnMvcWVtdS90cmVlL2lndm1fbWFzdGVyX3Y3Cj4gPiAKPiA+IFszXSBgYnVpbGRpZ3ZtYCB0
+b29sIHYwLjIuMAo+ID4gaHR0cHM6Ly9naXRodWIuY29tL3JveS1ob3BraW5zL2J1aWxkaWd2bS9y
+ZWxlYXNlcy90YWcvdjAuMi4wCj4gPiAKPiA+IFJveSBIb3BraW5zICgxNik6Cj4gPiDCoG1lc29u
+OiBBZGQgb3B0aW9uYWwgZGVwZW5kZW5jeSBvbiBJR1ZNIGxpYnJhcnkKPiA+IMKgYmFja2VuZHMv
+Y29uZmlkZW50aWFsLWd1ZXN0LXN1cHBvcnQ6IEFkZCBmdW5jdGlvbnMgdG8gc3VwcG9ydCBJR1ZN
+Cj4gPiDCoGJhY2tlbmRzL2lndm06IEFkZCBJR1ZNIGxvYWRlciBhbmQgY29uZmlndXJhdGlvbgo+
+ID4gwqBody9pMzg2OiBBZGQgaWd2bS1jZmcgb2JqZWN0IGFuZCBwcm9jZXNzaW5nIGZvciBJR1ZN
+IGZpbGVzCj4gPiDCoGkzODYvcGNfc3lzZnc6IEVuc3VyZSBzeXNmdyBmbGFzaCBjb25maWd1cmF0
+aW9uIGRvZXMgbm90IGNvbmZsaWN0Cj4gPiB3aXRoCj4gPiDCoMKgIElHVk0KPiA+IMKgc2V2OiBV
+cGRhdGUgbGF1bmNoX3VwZGF0ZV9kYXRhIGZ1bmN0aW9ucyB0byB1c2UgRXJyb3IgaGFuZGxpbmcK
+PiA+IMKgdGFyZ2V0L2kzODY6IEFsbG93IHNldHRpbmcgb2YgUl9MRFRSIGFuZCBSX1RSIHdpdGgK
+PiA+IMKgwqAgY3B1X3g4Nl9sb2FkX3NlZ19jYWNoZSgpCj4gPiDCoGkzODYvc2V2OiBSZWZhY3Rv
+ciBzZXR0aW5nIG9mIHJlc2V0IHZlY3RvciBhbmQgaW5pdGlhbCBDUFUgc3RhdGUKPiA+IMKgaTM4
+Ni9zZXY6IEltcGxlbWVudCBDb25maWRlbnRpYWxHdWVzdFN1cHBvcnQgZnVuY3Rpb25zIGZvciBT
+RVYKPiA+IMKgZG9jcy9zeXN0ZW06IEFkZCBkb2N1bWVudGF0aW9uIG9uIHN1cHBvcnQgZm9yIElH
+Vk0KPiA+IMKgZG9jcy9pbnRlcm9wL2Zpcm13YXJlLmpzb246IEFkZCBpZ3ZtIHRvIEZpcm13YXJl
+RGV2aWNlCj4gPiDCoGJhY2tlbmRzL2NvbmZpZGVudGlhbC1ndWVzdC1zdXBwb3J0OiBBZGQgc2V0
+X2d1ZXN0X3BvbGljeSgpCj4gPiBmdW5jdGlvbgo+ID4gwqBiYWNrZW5kcy9pZ3ZtOiBQcm9jZXNz
+IGluaXRpYWxpemF0aW9uIHNlY3Rpb25zIGluIElHVk0gZmlsZQo+ID4gwqBiYWNrZW5kcy9pZ3Zt
+OiBIYW5kbGUgcG9saWN5IGZvciBTRVYgZ3Vlc3RzCj4gPiDCoGkzODYvc2V2OiBBZGQgaW1wbGVt
+ZW50YXRpb24gb2YgQ0dTIHNldF9ndWVzdF9wb2xpY3koKQo+ID4gwqBzZXY6IFByb3ZpZGUgc2V2
+X2ZlYXR1cmVzIGZsYWdzIGZyb20gSUdWTSBWTVNBIHRvIEtWTV9TRVZfSU5JVDIKPiA+IAo+ID4g
+YmFja2VuZHMvY29uZmlkZW50aWFsLWd1ZXN0LXN1cHBvcnQuY8KgwqDCoMKgwqDCoCB8wqAgNDMg
+Kwo+ID4gYmFja2VuZHMvaWd2bS1jZmcuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCB8wqAgNTIgKysKPiA+IGJhY2tlbmRzL2lndm0uY8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgOTY3Cj4gPiAr
+KysrKysrKysrKysrKysrKysrKwo+ID4gYmFja2VuZHMvaWd2bS5owqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDIzICsKPiA+IGJhY2tl
+bmRzL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB8wqDCoCA1ICsKPiA+IGRvY3MvaW50ZXJvcC9maXJtd2FyZS5qc29uwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMzAgKy0KPiA+IGRvY3Mvc3lzdGVtL2kzODYvYW1k
+LW1lbW9yeS1lbmNyeXB0aW9uLnJzdMKgIHzCoMKgIDIgKwo+ID4gZG9jcy9zeXN0ZW0vaWd2bS5y
+c3TCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMTczICsr
+KysKPiA+IGRvY3Mvc3lzdGVtL2luZGV4LnJzdMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEgKwo+ID4gaHcvaTM4Ni9wYy5jwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEyICsK
+PiA+IGh3L2kzODYvcGNfcGlpeC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCB8wqAgMTAgKwo+ID4gaHcvaTM4Ni9wY19xMzUuY8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMTAgKwo+ID4g
+aHcvaTM4Ni9wY19zeXNmdy5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgfMKgIDMxICstCj4gPiBpbmNsdWRlL2h3L2kzODYveDg2LmjCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoCAzICsKPiA+IGluY2x1ZGUv
+c3lzdGVtL2NvbmZpZGVudGlhbC1ndWVzdC1zdXBwb3J0LmggfMKgIDg4ICsrCj4gPiBpbmNsdWRl
+L3N5c3RlbS9pZ3ZtLWNmZy5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzC
+oCA0NyArCj4gPiBtZXNvbi5idWlsZMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgOCArCj4gPiBtZXNvbl9vcHRpb25z
+LnR4dMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+fMKgwqAgMiArCj4gPiBxYXBpL3FvbS5qc29uwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxNyArCj4gPiBxZW11LW9wdGlvbnMu
+aHjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCB8wqAgMjggKwo+ID4gc2NyaXB0cy9tZXNvbi1idWlsZG9wdGlvbnMuc2jCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHzCoMKgIDMgKwo+ID4gdGFyZ2V0L2kzODYvY3B1LmjCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDkgKy0KPiA+
+IHRhcmdldC9pMzg2L3Nldi5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCB8IDg1MCArKysrKysrKysrKysrKystLQo+ID4gdGFyZ2V0L2kzODYvc2V2
+LmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwg
+MTI0ICsrKwo+ID4gMjQgZmlsZXMgY2hhbmdlZCwgMjQ1NCBpbnNlcnRpb25zKCspLCA4NCBkZWxl
+dGlvbnMoLSkKPiA+IGNyZWF0ZSBtb2RlIDEwMDY0NCBiYWNrZW5kcy9pZ3ZtLWNmZy5jCj4gPiBj
+cmVhdGUgbW9kZSAxMDA2NDQgYmFja2VuZHMvaWd2bS5jCj4gPiBjcmVhdGUgbW9kZSAxMDA2NDQg
+YmFja2VuZHMvaWd2bS5oCj4gPiBjcmVhdGUgbW9kZSAxMDA2NDQgZG9jcy9zeXN0ZW0vaWd2bS5y
+c3QKPiA+IGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3N5c3RlbS9pZ3ZtLWNmZy5oCj4gPiAK
+PiA+IC0tIAo+ID4gMi40My4wCj4gPiAKPiAKCg==
 
-On Thu, Feb 27, 2025 at 8:01=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
-.org>
-wrote:
-
-> On Thu, 27 Feb 2025 at 15:55, Patrick Venture <venture@google.com> wrote:
-> >
-> >
-> >
-> > On Thu, Feb 27, 2025 at 7:52=E2=80=AFAM Peter Maydell <peter.maydell@li=
-naro.org>
-> wrote:
-> >>
-> >> On Thu, 27 Feb 2025 at 15:40, Patrick Venture <venture@google.com>
-> wrote:
-> >> >
-> >> > 'const struct eth_header', which requires 2 byte alignment
-> >> >
-> >> > Signed-off-by: Patrick Venture <venture@google.com>
-> >> > ---
-> >> >  hw/net/npcm7xx_emc.c | 7 ++++++-
-> >> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >> >
-> >> > diff --git a/hw/net/npcm7xx_emc.c b/hw/net/npcm7xx_emc.c
-> >> > index e06f652629..11ed4a9e6a 100644
-> >> > --- a/hw/net/npcm7xx_emc.c
-> >> > +++ b/hw/net/npcm7xx_emc.c
-> >> > @@ -424,7 +424,12 @@ static bool emc_can_receive(NetClientState *nc)
-> >> >  static bool emc_receive_filter1(NPCM7xxEMCState *emc, const uint8_t
-> *buf,
-> >> >                                  size_t len, const char **fail_reaso=
-n)
-> >> >  {
-> >> > -    eth_pkt_types_e pkt_type =3D
-> get_eth_packet_type(PKT_GET_ETH_HDR(buf));
-> >> > +    struct eth_header eth_hdr =3D {};
-> >> > +    eth_pkt_types_e pkt_type;
-> >> > +
-> >> > +    memcpy(&eth_hdr, PKT_GET_ETH_HDR(buf),
-> >> > +           (sizeof(eth_hdr) > len) ? len : sizeof(eth_hdr));
-> >> > +    pkt_type =3D get_eth_packet_type(&eth_hdr);
-> >>
-> >> Maybe better to mark struct eth_header as QEMU_PACKED?
-> >> Compare commit f8b94b4c5201 ("net: mark struct ip_header as
-> >> QEMU_PACKED"). The handling of these header structs in eth.h
-> >> is in general pretty suspect IMHO. We do the same
-> >> "get_eth_packet_type(PKT_GET_ETH_HDR(buf))" in other devices,
-> >> so this isn't just this device's bug.
->
-> > Roger that. We saw this in the two NICs we happened to be testing that
-> day, and yeah, I grepped and just figured that those other NICs were doin=
-g
-> something with their buffer allocations that we didn't. I'll give
-> QEMU_PACKED  whirl.
->
-> You might find you need to make some fixes to other
-> devices to get the QEMU_PACKED change to compile (do an
-> all-targets build to test that). For instance for the
-> ip_header change I had to first fix virtio-net.c in commit
-> 5814c0846793715. The kind of thing that will need fixing is
-> if there are places where code takes the address of the
-> h_proto field and puts it into a uint16_t* : the compiler
-> will complain about that. A quick grep suggests that the
-> rocker_of_dpa.c code might be doing something like this, but
-> hopefully that's it.
->
-
-Thanks for the head's up.
-
->
-> thanks
-> -- PMM
->
-
---000000000000a26448062f21e571
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Feb 27,=
- 2025 at 8:01=E2=80=AFAM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@=
-linaro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
- rgb(204,204,204);padding-left:1ex">On Thu, 27 Feb 2025 at 15:55, Patrick V=
-enture &lt;<a href=3D"mailto:venture@google.com" target=3D"_blank">venture@=
-google.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt;<br>
-&gt;<br>
-&gt; On Thu, Feb 27, 2025 at 7:52=E2=80=AFAM Peter Maydell &lt;<a href=3D"m=
-ailto:peter.maydell@linaro.org" target=3D"_blank">peter.maydell@linaro.org<=
-/a>&gt; wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; On Thu, 27 Feb 2025 at 15:40, Patrick Venture &lt;<a href=3D"mailt=
-o:venture@google.com" target=3D"_blank">venture@google.com</a>&gt; wrote:<b=
-r>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; &#39;const struct eth_header&#39;, which requires 2 byte alig=
-nment<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; Signed-off-by: Patrick Venture &lt;<a href=3D"mailto:venture@=
-google.com" target=3D"_blank">venture@google.com</a>&gt;<br>
-&gt;&gt; &gt; ---<br>
-&gt;&gt; &gt;=C2=A0 hw/net/npcm7xx_emc.c | 7 ++++++-<br>
-&gt;&gt; &gt;=C2=A0 1 file changed, 6 insertions(+), 1 deletion(-)<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; diff --git a/hw/net/npcm7xx_emc.c b/hw/net/npcm7xx_emc.c<br>
-&gt;&gt; &gt; index e06f652629..11ed4a9e6a 100644<br>
-&gt;&gt; &gt; --- a/hw/net/npcm7xx_emc.c<br>
-&gt;&gt; &gt; +++ b/hw/net/npcm7xx_emc.c<br>
-&gt;&gt; &gt; @@ -424,7 +424,12 @@ static bool emc_can_receive(NetClientSta=
-te *nc)<br>
-&gt;&gt; &gt;=C2=A0 static bool emc_receive_filter1(NPCM7xxEMCState *emc, c=
-onst uint8_t *buf,<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size_t len, const =
-char **fail_reason)<br>
-&gt;&gt; &gt;=C2=A0 {<br>
-&gt;&gt; &gt; -=C2=A0 =C2=A0 eth_pkt_types_e pkt_type =3D get_eth_packet_ty=
-pe(PKT_GET_ETH_HDR(buf));<br>
-&gt;&gt; &gt; +=C2=A0 =C2=A0 struct eth_header eth_hdr =3D {};<br>
-&gt;&gt; &gt; +=C2=A0 =C2=A0 eth_pkt_types_e pkt_type;<br>
-&gt;&gt; &gt; +<br>
-&gt;&gt; &gt; +=C2=A0 =C2=A0 memcpy(&amp;eth_hdr, PKT_GET_ETH_HDR(buf),<br>
-&gt;&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(sizeof(eth_hdr) &g=
-t; len) ? len : sizeof(eth_hdr));<br>
-&gt;&gt; &gt; +=C2=A0 =C2=A0 pkt_type =3D get_eth_packet_type(&amp;eth_hdr)=
-;<br>
-&gt;&gt;<br>
-&gt;&gt; Maybe better to mark struct eth_header as QEMU_PACKED?<br>
-&gt;&gt; Compare commit f8b94b4c5201 (&quot;net: mark struct ip_header as<b=
-r>
-&gt;&gt; QEMU_PACKED&quot;). The handling of these header structs in eth.h<=
-br>
-&gt;&gt; is in general pretty suspect IMHO. We do the same<br>
-&gt;&gt; &quot;get_eth_packet_type(PKT_GET_ETH_HDR(buf))&quot; in other dev=
-ices,<br>
-&gt;&gt; so this isn&#39;t just this device&#39;s bug.<br>
-<br>
-&gt; Roger that. We saw this in the two NICs we happened to be testing that=
- day, and yeah, I grepped and just figured that those other NICs were doing=
- something with their buffer allocations that we didn&#39;t. I&#39;ll give =
-QEMU_PACKED=C2=A0 whirl.<br>
-<br>
-You might find you need to make some fixes to other<br>
-devices to get the QEMU_PACKED change to compile (do an<br>
-all-targets build to test that). For instance for the<br>
-ip_header change I had to first fix virtio-net.c in commit<br>
-5814c0846793715. The kind of thing that will need fixing is<br>
-if there are places where code takes the address of the<br>
-h_proto field and puts it into a uint16_t* : the compiler<br>
-will complain about that. A quick grep suggests that the<br>
-rocker_of_dpa.c code might be doing something like this, but<br>
-hopefully that&#39;s it.<br></blockquote><div><br></div><div>Thanks for the=
- head&#39;s up.=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">
-<br>
-thanks<br>
--- PMM<br>
-</blockquote></div></div>
-
---000000000000a26448062f21e571--
 
