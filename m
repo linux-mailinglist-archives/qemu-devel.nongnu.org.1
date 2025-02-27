@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C8CA480D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19951A480D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:21:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekS-000735-J5; Thu, 27 Feb 2025 09:20:25 -0500
+	id 1tnekQ-00072V-R2; Thu, 27 Feb 2025 09:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekK-0006ya-UU
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tnekM-00071V-CA
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekH-0003hW-SD
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:16 -0500
+ id 1tnekI-0003i2-T6
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666012;
+ s=mimecast20190719; t=1740666014;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jtNzr8uYuWTsnD/A8rhDCCpOJ/XgomM+/PA3Y3Q8jKo=;
- b=JgO3DgRpxNo5V0ebeXinozC/Z+J7Dx+mSdAuKT8TfdYBEiaXodXBgZhoULOdRr2ImgDrYd
- jHNPZGD4GLeX5R59jEKU4OMz2CK0/qWIc6EHUn/e3mLSr9w8aLTISI29h1BoBg1gORMrgI
- sbqYHgnikP6MyxC0kCKE6eGxKvtunac=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PjtxIkwdleYjC4DCWP1LEl8y9JNwMGZvc6X0QJOda88=;
+ b=OsfnlrOdWGJwmmAVZ2hACCm4tJ5ZYJi1aZ4yfvaOE2HCXl0Ag3xbiq0wZ218i0GLeXFnih
+ H45UVTrBDviiXNurGhsTmYXDhVHBeeW2Li/yihJfbbqlXbdG8AWYlc95BEz5fUuXocP7rY
+ 6i6Sl8N/PekM1YV4H/7VxVPcMy65Q58=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-wmXwe4eWMwq9AtxxpKWsdg-1; Thu, 27 Feb 2025 09:20:10 -0500
-X-MC-Unique: wmXwe4eWMwq9AtxxpKWsdg-1
-X-Mimecast-MFC-AGG-ID: wmXwe4eWMwq9AtxxpKWsdg_1740666009
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ab68fbe53a4so151877666b.2
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:10 -0800 (PST)
+ us-mta-224-OxMmEe7VOVuHqIUO00AoAA-1; Thu, 27 Feb 2025 09:20:12 -0500
+X-MC-Unique: OxMmEe7VOVuHqIUO00AoAA-1
+X-Mimecast-MFC-AGG-ID: OxMmEe7VOVuHqIUO00AoAA_1740666012
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5de5172cc5bso918251a12.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666008; x=1741270808;
+ d=1e100.net; s=20230601; t=1740666011; x=1741270811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jtNzr8uYuWTsnD/A8rhDCCpOJ/XgomM+/PA3Y3Q8jKo=;
- b=SX1QOI/XBUiO39tofkVtVJaRZXbzDrWuzo65iMeaPbOXQBxm282WmjAp74yV1usCzK
- ro+DN4lIM2bW3YDxADyGzf1tk2XHFA9MkPZyOXOzFNzgbw2lJsIFjWprQEbCI4MYKWyD
- oIi2se4LmM5YWzNlH6AOLN6mknLo4HqN5XrSUG/zjaKUx+5ccWw1MDYLBTINDX4OqIL6
- TUHpDY+NLgI5/2zfCEH7TvyoityuK5IUloD3ONHrk1i9LJr9LkKWloX+XiJfVyrJlWLI
- I1JLz7KEEeDsEmRhIl4tON+iHyNZ0lE01BfnBmZtmK4dOyEWsypUgZdORABE3ud0Cf5/
- 4Jkw==
-X-Gm-Message-State: AOJu0YzRP/aQsbTGm6juE1e7TH31SdAhz2fnnSQ2yu6dx97gHzfvxUC+
- ZlDybhyLQM8QsXMgll9G0gTjy9F26G6UjTAgCjLd0E4Vqa/h2p/Fi9KtPutNQsyyH0Vq64bqyIf
- bjm1Nh6/eHk0FBZSBlzVLbUF10dyizyusl2QKvdW2nCQTECooqtOvKnBAAWHD3Pry4fgF5GlsBt
- LMxJkhMgIKMJX/CIFHDKDvIbrGPglCg47Sq7XLzOI=
-X-Gm-Gg: ASbGncsk2lu3vLEUeE6lSTPd2sgH+AuYleSdsBdtrkFyvdcPJHh4ZmzraCBDhM4VQoJ
- 19wk0RSw/ZQ+dyxHKkgLqCf0Fo57z/YFP2OdKWyuLShGslQ5vwemVx3zmqc7djmvB/P2u6Hzqm1
- d7idR9VQwu8hZoyEadMVfTp9frkW+4YjEC18kKLG934lC5101E9PfU8SY6JazjELjhDuYw6cnMw
- eGf0lSrT96PdH9bIVNHZDXn2obwDK5lSr788fikSywm8ykYs/uZkO4hWItyRmYDBO15xYIyiOt8
- yDOecIRL+D9fKjffBFxo
-X-Received: by 2002:a17:907:96a1:b0:aa6:8d51:8fdb with SMTP id
- a640c23a62f3a-abed0ce9953mr1269801466b.19.1740666008604; 
- Thu, 27 Feb 2025 06:20:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGPEeMfrnDw4VgOT3FXH1Rjs0vLsCS7hIAjBNG2UWO4gshvoAkn/3UmynDGL+MSsArUqsIQZg==
-X-Received: by 2002:a17:907:96a1:b0:aa6:8d51:8fdb with SMTP id
- a640c23a62f3a-abed0ce9953mr1269799266b.19.1740666008132; 
- Thu, 27 Feb 2025 06:20:08 -0800 (PST)
+ bh=PjtxIkwdleYjC4DCWP1LEl8y9JNwMGZvc6X0QJOda88=;
+ b=OtD1VMGwu1hW1CR5MdaGM3ULPPunq2Ze9l7c5xBirlQuu5ExpQt6v74JgcYbtbOtKt
+ AR3zCoQL1PpbSSlEdPseHzNH4gkgZyqbjHV6m+CCOnFA05TdnvTzAYXJXgmM7SL47hpG
+ vzSUB3HwsJmBZcbDclfiHnImd2/4+GnfOreRZKJE0VV/gejzqYQbCsjkuIWmc6vBk7JC
+ LPx1YXNUTzmCIoonU1TSS9BUGZZ6AdN96TfH5xR78RnHDrNTg/WvdwGjaFkOuiI2IaYK
+ f29C0xyEArlqAv0gX/h5UYYx4IFO6LJWdbQqLozf/moIE+SneQsftRTfJ2DnrEUpoUvY
+ wPnQ==
+X-Gm-Message-State: AOJu0Yxk+evKC3Z5bwWyqTBhxKUNAhcsccqYpMleKW69BreAkP+slPnH
+ QiJ1jfVceg2MMVEwfmcULEazBmvIkomBK72o+kuGfBh4Axa3swFQqiwlKAtkcUzotkmRpuXB3qU
+ I+xloTJY/8378VFELqWOvhES+JAbQlWT3MnzB50j5mR80siIDaKelhTOMv0SJOtwNypz3dEX2En
+ aqyGHEt7uArpCvg1Ka74sQZVG6+wdUwlFkSNuM5x0=
+X-Gm-Gg: ASbGncu9OS3LKZ0Y4H88BqviwGicoObCFJhAqnl7pkEaWuZdBby1Ud/zHY6TTw8wytA
+ RuqqsuX6XC0zeUQEflLLBGgHVn1N6IEBJCbWLIKNgibSG+ZGEPyqGwkz8Fo1a96ulPrFmMRkfmu
+ /kZcJTY03utV0K2FtJltMQXB8VxYaV49zrhh3CyEYj/ee+Jw4X8fJ+yBxeqw4PPHIyQuQd7HHVh
+ 2u938DhI9mhSgLh+lQydQlx2VC0EmGwRPedwLuE17bxik4k02uXhfhuwuHK6EbLFfZk39UMsPGL
+ 6rv7hmXg7VtFhiURBxzk
+X-Received: by 2002:a05:6402:550c:b0:5de:4a8b:4c9c with SMTP id
+ 4fb4d7f45d1cf-5e44bb36bbcmr28548676a12.32.1740666010850; 
+ Thu, 27 Feb 2025 06:20:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWomp/c2XCxOHLPzV0g4wWqhMU7pq5Hz6kGeGHOZZ0M6++7mL0JarG9dPdFeUTR5roKKafcA==
+X-Received: by 2002:a05:6402:550c:b0:5de:4a8b:4c9c with SMTP id
+ 4fb4d7f45d1cf-5e44bb36bbcmr28548589a12.32.1740666010217; 
+ Thu, 27 Feb 2025 06:20:10 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c7c18a3sm127464566b.185.2025.02.27.06.20.07
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5e4c3b6df84sm1143247a12.30.2025.02.27.06.20.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:07 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:08 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/34] rust: tests: do not import bindings::*
-Date: Thu, 27 Feb 2025 15:19:24 +0100
-Message-ID: <20250227141952.811410-7-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 07/34] rust: prefer importing std::ptr over core::ptr
+Date: Thu, 27 Feb 2025 15:19:25 +0100
+Message-ID: <20250227141952.811410-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,34 +106,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similar to the devices, spell the exact set of C functions that are
-called directly.
+From: Zhao Liu <zhao1.liu@intel.com>
 
+The std::ptr is same as core::ptr, but std has already been used in many
+cases and there's no need to choose non-std library.
+
+So, use std::ptr directly to make the used ptr library as consistent as
+possible.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250218080835.3341082-1-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/tests/tests.rs | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ rust/hw/char/pl011/src/device.rs       | 2 +-
+ rust/hw/char/pl011/src/device_class.rs | 6 ++++--
+ rust/qemu-api/src/irq.rs               | 3 +--
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 92dbfb8a0c8..03569e4a44c 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -8,13 +8,14 @@
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index fe73771021e..59a689fdcd7 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -2,10 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use core::ptr::{addr_of, addr_of_mut, NonNull};
+ use std::{
+     ffi::CStr,
+     os::raw::{c_int, c_void},
++    ptr::{addr_of, addr_of_mut, NonNull},
  };
  
  use qemu_api::{
--    bindings::*,
-+    bindings::{module_call_init, module_init_type, object_new, object_unref, qdev_prop_bool},
-     c_str,
-     cell::{self, BqlCell},
-     declare_properties, define_property,
-     prelude::*,
-     qdev::{DeviceClass, DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
-     qom::{ClassInitImpl, ObjectImpl, ParentField},
-+    sysbus::SysBusDevice,
-     vmstate::VMStateDescription,
-     zeroable::Zeroable,
- };
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index dbef93f6cb3..0b2076ddaa0 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -2,8 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use core::ptr::NonNull;
+-use std::os::raw::{c_int, c_void};
++use std::{
++    os::raw::{c_int, c_void},
++    ptr::NonNull,
++};
+ 
+ use qemu_api::{
+     bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
+diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
+index d1c9dc96eff..34c19263c23 100644
+--- a/rust/qemu-api/src/irq.rs
++++ b/rust/qemu-api/src/irq.rs
+@@ -4,8 +4,7 @@
+ 
+ //! Bindings for interrupt sources
+ 
+-use core::ptr;
+-use std::{ffi::CStr, marker::PhantomData, os::raw::c_int};
++use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr};
+ 
+ use crate::{
+     bindings::{self, qemu_set_irq},
 -- 
 2.48.1
 
