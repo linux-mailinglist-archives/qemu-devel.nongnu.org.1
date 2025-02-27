@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5043A4813B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C44BEA48114
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:27:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnenT-0005RM-36; Thu, 27 Feb 2025 09:23:33 -0500
+	id 1tneoT-0006dY-K6; Thu, 27 Feb 2025 09:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnemc-0003qD-Ib
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:41 -0500
+ id 1tnemc-0003qG-Kj
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnemY-00045V-F8
+ id 1tnema-000460-GJ
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666153;
+ s=mimecast20190719; t=1740666155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nk4rG8BvOrBCUFxfsl3zj+sJAUqBN7gnD9BX4ggHZ8E=;
- b=Of8fQR6DKSW+gy895Yp1/se+99G5E6TNzTqqJkpPGZXjS1C51yISSv7maC7ZEj3gTWO6NQ
- C7RKOltVVUvI1TFlcQi0ARbEM6jNhkQyCqGLMLfpghsZgUlA9W06iPYYusFUaiKeXUqM0A
- tgGMdHVH5jLfvZBNS1GtIObdVrhjVhI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rpP0mKR1bYf8x/BopqJJucrB8oxIRdemZl6JUWYmoLk=;
+ b=FOpKrbpxgszyryqLe4YdgRxtHnZDr6wwya219/k1IYQOZ3NoVlpXlPMlVsw4fUctGXEUjt
+ e5xK3A/BeV8FTE+37SYZTieqGOWV5yT6ZUBpRDupVOFAJQyBcdNom9Dlq+z68vtYXDiQqv
+ 9rQNjFhxzU2idMMThHOW5RTRqdn+cv0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-cX38hNcHNGmPKacPrlPRLg-1; Thu, 27 Feb 2025 09:22:32 -0500
-X-MC-Unique: cX38hNcHNGmPKacPrlPRLg-1
-X-Mimecast-MFC-AGG-ID: cX38hNcHNGmPKacPrlPRLg_1740666151
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-abb86503062so118528066b.2
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:22:32 -0800 (PST)
+ us-mta-679-CIdWP2I5P8ij9o5Mj7lbqg-1; Thu, 27 Feb 2025 09:22:34 -0500
+X-MC-Unique: CIdWP2I5P8ij9o5Mj7lbqg-1
+X-Mimecast-MFC-AGG-ID: CIdWP2I5P8ij9o5Mj7lbqg_1740666153
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-abecbdb4272so119852666b.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:22:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666151; x=1741270951;
+ d=1e100.net; s=20230601; t=1740666152; x=1741270952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nk4rG8BvOrBCUFxfsl3zj+sJAUqBN7gnD9BX4ggHZ8E=;
- b=gTCPcEwIMt6uw/xPUbXTTPYCI0G/fsfPk1HrnYfar0PaHNdRDmOtYuxS7h3IOwBRog
- H0lqk4wIsTAVOqLhJbmVDEJUsQo2PyNtat0xelkMIM7jDMOx9oLK0x3tykdzbjvfMzO3
- hmE7WsXkT5WjFL+hWfykZcCb/pOLyy3LayoqJvJ0//M7sMmr/wnDVDm9ukKbpo8OqPai
- A1pSdo8H6kuxJSTPg4uyq16ZLG+qh6YZARIFIXGPnWORFeYHbrS15N3eGEKNwL8E6vnJ
- x9jL/c3Zc0eVTCb4f3rSO7fvoLoozY4i06/OzRAKbdgSWCEbY7vmrMCPnk3KDqsAhANA
- 1p4A==
-X-Gm-Message-State: AOJu0YyiBlpvs3FkBLxwnu/UAIwCUN9HpYyGXvj/dFvgCBB1mrYkxxsT
- eq8VKfx5Z/s5JzH/JKYOqW//T2+gdg95wDMIC5KKsAyq7Zd3mRobXoKqgNFT3TnHAbeAxSMXQxM
- NObgzvY6YzZYnhtGdNrU3Imp7soI+0Ut9ZmrIeXIdgMBnmcDXxutNbGCtTTj8mwsOmq7NVp1jKq
- SW32W/TUxa5Mb7+VVMFhSG3rqPoGn0uezuNY+zJXQ=
-X-Gm-Gg: ASbGncuJ+Hx6grhmsEeGNTsGeGvWqjidFd6MoErQKcRDX3G5nPdcC0VfDTCtumzInD9
- NLKXd+nzpPDh4MOxWqKyRtSTOYyp+XYyBauftDyGbJOa3gxneqF/Tbw8SHOBF4vGKgW6ioxp8vK
- byivXn7hiNVT6awQvk55WviypX8Z4YH7P7KVjiv+E49DMay6nHbFx6y5qLjOqw1xCOEAS4/ug2e
- 9v/IHztnGeyvX1VcADfc9MT+4adIifRSK+IoNHsacboj6vLtIXlQo3ChQQXHnykh0jr3Wd675Rq
- Fuo36rgk6C+qQypAD9/S
-X-Received: by 2002:a17:906:318a:b0:abb:fcbb:ab20 with SMTP id
- a640c23a62f3a-abeeed8bfdcmr836456366b.22.1740666150635; 
- Thu, 27 Feb 2025 06:22:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEre39vytYWAHhZhXaM95fI3eTfMy8Xz3vq9jO0H3LoqMNmrk3eKo/DJWQnPtAQh4wcgpPdlg==
-X-Received: by 2002:a17:906:318a:b0:abb:fcbb:ab20 with SMTP id
- a640c23a62f3a-abeeed8bfdcmr836454166b.22.1740666150047; 
- Thu, 27 Feb 2025 06:22:30 -0800 (PST)
+ bh=rpP0mKR1bYf8x/BopqJJucrB8oxIRdemZl6JUWYmoLk=;
+ b=icSwCFl6mNFBE5aXiQYzBBKtrKnlS3Vrl1617s+jz1197CBD1sr48Tr2Je1YYbZs/W
+ 88g9VTMBSl5TJLi1nAnR6IYVj5KTx679LvftcaCol98gP8nvlt2qXRnV716qDtXUbu2o
+ Vo7OmkzEyV83aewObYIBjfe0t6zjlEtHaH4pR3sqF6yKQ0nOWgeiPW2kNmgkdM0XwtQz
+ MjvbqNn8qF9EIDPq8XQoGDBOZgNFF+K9wVcTV4VCMWeccmd3I+6Pl01pjS5hkLn3Ffu1
+ MiY1Egm9TRK5uigfB2aLQIVrQRmmhZfaR4CE2dFjmv48uMOULMp6q6DjCVQNjqSNtex4
+ kkHg==
+X-Gm-Message-State: AOJu0YyZBSSwkZlb4W/52vUUNd0bEkVECpwSOemT77F++D7eRX30Lem8
+ 76SXEyMIBSw/mGBf7q5OrBqYTUds63KtCbuuSQC8nCAaLVLy5vqVmnrOP+MQwGVNspwCc3bQWz6
+ OEUKcXfIE32MwC5MA0V03qUdgq5tU9GqCp8Kjntf1YLI3bgpxOIEj1i0Pt9NPCT2r0Yv0QvF5j1
+ NNXuYCtPWwv1W5GCyfZHAOTgQrVLl+hvFDgcRMBbM=
+X-Gm-Gg: ASbGncuH3Cj77cwYA0YFOsVqbtjDzZhRWcA906FaEYAOF20bkpqHIuUbRS90HlezwAi
+ hHmVRupSYi1wpqJk1hiVFPARz5r2fF0dPzZmLIr6f5MZDz0QiMg0bbYcji4kxv8grEEqHq2t+NT
+ 69J0bN+VUnfwB5Ae2js11ok9NmUZoRZ+GllJ3U7x4Hmpcvx8odlBM2LxwK2OXFREKWkRYMPLKIP
+ hVrUEOUrQW6/4me3vYUtwgHnUXzAvw427N44mgT00SGExQD8JzxbyPR+TqYS61MtPR+TvVV51m/
+ QrF24JIeDF0Y3NgbNsrs
+X-Received: by 2002:a17:907:9686:b0:ab7:d7fd:6250 with SMTP id
+ a640c23a62f3a-abed1015488mr1399571166b.43.1740666152606; 
+ Thu, 27 Feb 2025 06:22:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvCk74a5ejhjBllkAOfm++110zW0HlAe/VNXfUAjWC6HXkOqOgZGXaU+RkRq9U/kJeZk+vSA==
+X-Received: by 2002:a17:907:9686:b0:ab7:d7fd:6250 with SMTP id
+ a640c23a62f3a-abed1015488mr1399568666b.43.1740666152200; 
+ Thu, 27 Feb 2025 06:22:32 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3fb4384sm1176263a12.49.2025.02.27.06.22.28
+ a640c23a62f3a-abf0c0dbc43sm131935466b.51.2025.02.27.06.22.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:22:28 -0800 (PST)
+ Thu, 27 Feb 2025 06:22:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	zhao1.liu@intel.com
-Subject: [PATCH 04/12] rust: timer: wrap QEMUTimer with Opaque<> and express
- pinning requirements
-Date: Thu, 27 Feb 2025 15:22:11 +0100
-Message-ID: <20250227142219.812270-5-pbonzini@redhat.com>
+Subject: [PATCH 05/12] rust: irq: wrap IRQState with Opaque<>
+Date: Thu, 27 Feb 2025 15:22:12 +0100
+Message-ID: <20250227142219.812270-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227142219.812270-1-pbonzini@redhat.com>
 References: <20250227142219.812270-1-pbonzini@redhat.com>
@@ -92,7 +91,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,192 +107,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Timers must be pinned in memory, because modify() stores a pointer to them
-in the TimerList.  To ensure this is the case, replace the separate new()
-and init_full() with a single function that returns a pinned box.  Because
-the only way to obtain a Timer is through Timer::new_full(), modify()
-knows that the timer it got is also pinned.  In the future the pinning
-requirement will be expressed through the pin_init crate instead.
-
-Note that Timer is a bit different from other users of Opaque, in that
-it is created in Rust code rather than C code.  This is why it has to
-use the unsafe Opaque::new() function.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                    |  7 -----
- rust/hw/timer/hpet/src/hpet.rs | 23 ++++++++---------
- rust/qemu-api/src/timer.rs     | 47 ++++++++++++++++++++++------------
- 3 files changed, 41 insertions(+), 36 deletions(-)
+ rust/qemu-api/src/irq.rs    | 15 ++++++++++-----
+ rust/qemu-api/src/sysbus.rs |  1 +
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 0a2c61d2bfa..fc02e5fc763 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4098,13 +4098,6 @@ if have_rust
-   foreach enum : c_bitfields
-     bindgen_args += ['--bitfield-enum', enum]
-   endforeach
--  c_nocopy = [
--    'QEMUTimer',
--  ]
--  # Used to customize Drop trait
--  foreach struct : c_nocopy
--    bindgen_args += ['--no-copy', struct]
--  endforeach
- 
-   # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
-   #
-diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
-index be27eb0eff4..ce4b289d0c8 100644
---- a/rust/hw/timer/hpet/src/hpet.rs
-+++ b/rust/hw/timer/hpet/src/hpet.rs
-@@ -4,6 +4,7 @@
- 
- use std::{
-     ffi::CStr,
-+    pin::Pin,
-     ptr::{addr_of_mut, null_mut, NonNull},
-     slice::from_ref,
- };
-@@ -156,7 +157,7 @@ pub struct HPETTimer {
-     /// timer N index within the timer block (`HPETState`)
-     #[doc(alias = "tn")]
-     index: usize,
--    qemu_timer: Option<Box<Timer>>,
-+    qemu_timer: Option<Pin<Box<Timer>>>,
-     /// timer block abstraction containing this timer
-     state: Option<NonNull<HPETState>>,
- 
-@@ -189,18 +190,14 @@ fn init(&mut self, index: usize, state_ptr: *mut HPETState) -> &mut Self {
-     }
- 
-     fn init_timer_with_state(&mut self) {
--        self.qemu_timer = Some(Box::new({
--            let mut t = Timer::new();
--            t.init_full(
--                None,
--                CLOCK_VIRTUAL,
--                Timer::NS,
--                0,
--                timer_handler,
--                &self.get_state().timers[self.index],
--            );
--            t
--        }));
-+        self.qemu_timer = Some(Timer::new_full(
-+            None,
-+            CLOCK_VIRTUAL,
-+            Timer::NS,
-+            0,
-+            timer_handler,
-+            &self.get_state().timers[self.index],
-+        ));
-     }
- 
-     fn get_state(&self) -> &HPETState {
-diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
-index a593538917a..a8b2ab058b6 100644
---- a/rust/qemu-api/src/timer.rs
-+++ b/rust/qemu-api/src/timer.rs
-@@ -2,40 +2,51 @@
- // Author(s): Zhao Liu <zhai1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use std::os::raw::{c_int, c_void};
-+use std::{
-+    os::raw::{c_int, c_void},
-+    pin::Pin,
-+};
+diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
+index 34c19263c23..1222d4fde30 100644
+--- a/rust/qemu-api/src/irq.rs
++++ b/rust/qemu-api/src/irq.rs
+@@ -8,10 +8,16 @@
  
  use crate::{
-     bindings::{self, qemu_clock_get_ns, timer_del, timer_init_full, timer_mod, QEMUClockType},
-     callbacks::FnCall,
+     bindings::{self, qemu_set_irq},
 +    cell::Opaque,
+     prelude::*,
+     qom::ObjectClass,
  };
  
--pub type Timer = bindings::QEMUTimer;
--pub type TimerListGroup = bindings::QEMUTimerListGroup;
-+/// A safe wrapper around [`bindings::QEMUTimer`].
++/// An opaque wrapper around [`bindings::IRQState`].
 +#[repr(transparent)]
 +#[derive(Debug, qemu_api_macros::Wrapper)]
-+pub struct Timer(Opaque<bindings::QEMUTimer>);
++pub struct IRQState(Opaque<bindings::IRQState>);
 +
-+unsafe impl Send for Timer {}
-+unsafe impl Sync for Timer {}
-+
-+#[repr(transparent)]
-+#[derive(qemu_api_macros::Wrapper)]
-+pub struct TimerListGroup(Opaque<bindings::QEMUTimerListGroup>);
-+
-+unsafe impl Send for TimerListGroup {}
-+unsafe impl Sync for TimerListGroup {}
- 
- impl Timer {
-     pub const MS: u32 = bindings::SCALE_MS;
-     pub const US: u32 = bindings::SCALE_US;
-     pub const NS: u32 = bindings::SCALE_NS;
- 
--    pub fn new() -> Self {
--        Default::default()
--    }
+ /// Interrupt sources are used by devices to pass changes to a value (typically
+ /// a boolean).  The interrupt sink is usually an interrupt controller or
+ /// GPIO controller.
+@@ -21,8 +27,7 @@
+ /// method sends a `true` value to the sink.  If the guest has to see a
+ /// different polarity, that change is performed by the board between the
+ /// device and the interrupt controller.
+-pub type IRQState = bindings::IRQState;
 -
--    const fn as_mut_ptr(&self) -> *mut Self {
--        self as *const Timer as *mut _
--    }
--
--    pub fn init_full<'timer, 'opaque: 'timer, T, F>(
--        &'timer mut self,
-+    pub fn new_full<'opaque, T, F>(
-         timer_list_group: Option<&TimerListGroup>,
-         clk_type: ClockType,
-         scale: u32,
-         attributes: u32,
-         _cb: F,
-         opaque: &'opaque T,
--    ) where
-+    ) -> Pin<Box<Self>>
-         F: for<'a> FnCall<(&'a T,)>,
-     {
-+        // SAFETY: returning a pinned box makes it certain that the object
-+        // will not move when added to a TimerList with `modify()`.
-+        let t = unsafe { Box::pin(Self(Opaque::new())) };
-         let _: () = F::ASSERT_IS_SOME;
- 
-         /// timer expiration callback
-@@ -51,7 +62,7 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
-         // SAFETY: the opaque outlives the timer
-         unsafe {
-             timer_init_full(
--                self,
-+                t.as_mut_ptr(),
-                 if let Some(g) = timer_list_group {
-                     g as *const TimerListGroup as *mut _
-                 } else {
-@@ -62,11 +73,14 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
-                 attributes as c_int,
-                 Some(timer_cb),
-                 (opaque as *const T).cast::<c_void>() as *mut c_void,
--            )
-+            );
-         }
-+        t
-     }
- 
-     pub fn modify(&self, expire_time: u64) {
-+        // SAFETY: the only way to obtain a Timer is via methods that return a
-+        // Pin<Box<Self>>, therefore the timer is pinned
-         unsafe { timer_mod(self.as_mut_ptr(), expire_time as i64) }
-     }
- 
-@@ -75,6 +89,7 @@ pub fn delete(&self) {
-     }
++///
+ /// Interrupts are implemented as a pointer to the interrupt "sink", which has
+ /// type [`IRQState`].  A device exposes its source as a QOM link property using
+ /// a function such as [`SysBusDeviceMethods::init_irq`], and
+@@ -40,7 +45,7 @@ pub struct InterruptSource<T = bool>
+ where
+     c_int: From<T>,
+ {
+-    cell: BqlCell<*mut IRQState>,
++    cell: BqlCell<*mut bindings::IRQState>,
+     _marker: PhantomData<T>,
  }
  
-+// FIXME: use something like PinnedDrop from the pinned_init crate
- impl Drop for Timer {
-     fn drop(&mut self) {
-         self.delete()
+@@ -79,11 +84,11 @@ pub fn set(&self, level: T) {
+         }
+     }
+ 
+-    pub(crate) const fn as_ptr(&self) -> *mut *mut IRQState {
++    pub(crate) const fn as_ptr(&self) -> *mut *mut bindings::IRQState {
+         self.cell.as_ptr()
+     }
+ 
+-    pub(crate) const fn slice_as_ptr(slice: &[Self]) -> *mut *mut IRQState {
++    pub(crate) const fn slice_as_ptr(slice: &[Self]) -> *mut *mut bindings::IRQState {
+         assert!(!slice.is_empty());
+         slice[0].as_ptr()
+     }
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index 04821a2b9b3..48803a655f9 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -79,6 +79,7 @@ fn mmio_map(&self, id: u32, addr: u64) {
+     fn connect_irq(&self, id: u32, irq: &Owned<IRQState>) {
+         assert!(bql_locked());
+         let id: i32 = id.try_into().unwrap();
++        let irq: &IRQState = irq;
+         unsafe {
+             bindings::sysbus_connect_irq(self.as_mut_ptr(), id, irq.as_mut_ptr());
+         }
 -- 
 2.48.1
 
