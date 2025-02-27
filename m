@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40C8A47AEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 11:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A914FA47AEF
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 11:57:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnbXc-0004f6-BD; Thu, 27 Feb 2025 05:54:56 -0500
+	id 1tnbXo-00053U-BY; Thu, 27 Feb 2025 05:55:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tnbXY-0004YL-UK
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:54:53 -0500
+ id 1tnbXm-0004xX-2Z
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:06 -0500
 Received: from smarthost4.eviden.com ([80.78.11.85])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tnbXX-0005oQ-90
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:54:52 -0500
+ id 1tnbXi-0005pC-Vw
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1740653691; x=1772189691;
+ t=1740653703; x=1772189703;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=V223gIkaKR30sNUdnEml5N4wlPmNOlUUGNe6oZ+paVM=;
- b=C4gQERwxPDuJQUwDXVuib5HeEC/my/pWzYEsz0XY/IPbMn24wmPqKHpd
- Ow5VkreNMjUQ08DHoTCif2IaWEGpgIZ5C0uWhDzoTCfzykbJ7U1qVMaUc
- 8cyhMLCI8lET9NnpapI+I4X1RhKrj/A5MTHpDztJ2Iz/tkVhZCNtslOhq
- R/ydl2CKInoxCMIX5hSWGU5CCK3IUaegxHGjGE46+zdEqw3IwLocLvWnI
- 4YbBztbNCfbozvNiNOamx5Yt5SuizBxM60FR3Qtlr7NZTfQ1sV2Ju/dGh
- dmvG/NJFCwOzRMGzg4rUtUJf4Cj/u4yBt1drVscTKyzZDQ/8/I/aDTJrZ g==;
-X-CSE-ConnectionGUID: cN6UGbkDRbmj5rZeyTfvGg==
-X-CSE-MsgGUID: S9nL0AnWT++j/kU4D1KUaQ==
-X-IronPort-AV: E=Sophos;i="6.13,319,1732575600"; d="scan'208";a="33331844"
-X-MGA-submission: =?us-ascii?q?MDErWGch/tb7NIQ25pullphBvH1UcSXz14d8kz?=
- =?us-ascii?q?TSi4hDqlmnjoNhFDXm3ORH1RVuxmmPH1oQt37dlLREItND1oYpP8hr3K?=
- =?us-ascii?q?LrTP4953QEeYkFZOeHTYHU27jnZwf/kC/blKzBK53dffO9YlNIYgoNLc?=
- =?us-ascii?q?NMAnmet//VRuELJP8AKeyukw=3D=3D?=
+ bh=93DPdh46cLzZN/H4SIAXi99N43vLB8BDQmTdIJflg/U=;
+ b=wH0LVVIFjkSXP9MoZUlHuwJmUi/1gcVXMgAJH4JcB/7n0vkF0sDkepFH
+ TLqix0ulKa3omHDPQSucZaVW/KDAzRGt00VRtTb4IEcolWqbShlFUofGd
+ 5/wDl2vHsHYXmBlEaK2f1g2aEAlv9FT8Lg9pvmu8vO6ft8KR3ClX0jl9F
+ NFtr6+YDnJENlsOBED0sO9E+4pUwUJwDc185/ODY23705S6AFH0aPHq0S
+ nYGZ31A9EJKlFgmI+pmfErqfCDLzL1dwglHeUt0udat0miYnuC5Ml2tTZ
+ jkQ+SOK8Wut0TNCVcknSqOn9UPDND8n5B9xmWFBhB1wP81IH8hFrTQJsN g==;
+X-CSE-ConnectionGUID: qHwjQ/MiRsCjpd3Xfk0hkA==
+X-CSE-MsgGUID: 6L/+7zHCSi6gFYAv4PYtOQ==
+X-IronPort-AV: E=Sophos;i="6.13,319,1732575600"; d="scan'208";a="33331846"
+X-MGA-submission: =?us-ascii?q?MDFWjuXsEDunYHr/HTDP38RtzypBRAetvtOVcm?=
+ =?us-ascii?q?dOGsmKOGat8VvKbD1ToST3hdGGTKC0WqVzKNvzmZQ+ioHlY6/vEBK+bl?=
+ =?us-ascii?q?/VXXqV/xBfBzC54N7mH3l5c8IcL0shQmLKSw9FVGjYTigwvhKlatheLt?=
+ =?us-ascii?q?fLx2KA/BJ/ZtwrBIIgpy9xkQ=3D=3D?=
 Received: from mail-db8eur05lp2110.outbound.protection.outlook.com (HELO
  EUR05-DB8-obe.outbound.protection.outlook.com) ([104.47.17.110])
  by smarthost4.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 27 Feb 2025 11:54:48 +0100
+ 27 Feb 2025 11:54:49 +0100
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w3wkWvTYkBjIUnmMljZcJwrCzlqkIHriFvZbd2NYj2/dHJ7IleZiqutdGCGK+W6zaudpI/STeEuHu0KL36GFBHPmwl8NylOuVaBOghjP27BxhRtqQaa96188hbGmVGChLv5EsCF7aczkdaAATT3oTLPICMM0RGapynynHuPNFDRVtHdyLLbwZHfqiCRUST73+ttfTRKeUnZwL/Va7rmqI6DnSHfH64XAswClSqOzYuqLYfFtmYI+oKOS8lp7WunvPRQht1RTDEhX6t6XnrMpuoPIcDtRzlyL1HeFgkjVwIVJPqegsXiH1M2dL1RA1toBAI/x47aT1pvafd5NSTAVDg==
+ b=i5KBlAL3wa7LNxmac2Np25/rNBEzldZNWx4JcY1qGoHz8hyBkQTsTpWVM+hAaKyVQEHHN8JOK2LpBol4g+H+RL/X8vSRLJV+A4zEcPuONv8NDPJBa03fa8XHFq9y2fhvF7YfYd7GGedf6JC8+nJhcI4y4KFIAhbjPlJgWNz2/xG9KYlXs5tOfOq/J8NUTU0vh2AMeP6K2H6lQcdCZdacUTat1WROBnHytkrWe0YYAldHwRolA9DuyOv2PF7AqqApFYRMm7YVIq3e61i++wGJRh7uJ2Zi4ABorLaDjd57dHgfQE7kkYnKl63mpdV0NMTHd5pWC4yzRAiWEXy7Sw/1Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4UxSyr3l4O0MfvKh7SI51WYPvr2HNFpIRSV5MiiWeWY=;
- b=uc2N/i9xzrYnBxM146yjkPoi5er1asTdCneMShnzNsfivyOYbzDx4GeYW+CK46hqpPMDiUqvHoNE+UozdPP8exHM4k6SjYGrRfJ8CPp9LlKat3iHTcqyB7Mtl5Ul39LjnLYsiSMuwKEw736bFiRVuqaE9O3IOPk9LvsT5Bn4boqeAUBukW+FFs2Qz59ZA6iNSD5UuQxpQlr4D8Gjd8YMViYfg6I8lmnJXXc2cVcnry3MFz9Pqed5lK4YdB6tI/JxCphVo3ndmxYZlGjGvjznO99efYRxQ0NPUIDxb1ZeYFEoW1sMpxTeN3DQt20OcaPq3BDj0GTFuFIvB8ijReDpeQ==
+ bh=yVNdNxN1Kzl6NpH3QHUnyPEPBmv8L7Yr/HO9NfaAAhs=;
+ b=GpgXOcVAc6Dbob45u3AHSF3dmnZhRAvIbOx3n6GBwBMJpxunBnJsqvgrgA1BmHC1PzFvXZ1IsFpzNI7SFbDtcupHw5VIhD8xl5NYqn31w8LBGW5evQyHnjlRfyxqUYrdPaXWJR/p09cyIgtLAw1mrxiHmAV04cru/1mCkO4bfTn/E/xP1SInTEM8Tlm/iGVLuJwPXd2E51jvGqpFtvM31lh/5bL9pKtd3Vj8n6RNd0nn80qrqgpNWcz4MUvus8NFCPVZgRI1m9ZvEjxscN6wYA8bp+DCs5oFR3+KZVhfm3gna7rBEce4Oo977vOfs8uippByyLHHRg1KgdOibDCYNA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
  dkim=pass header.d=eviden.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4UxSyr3l4O0MfvKh7SI51WYPvr2HNFpIRSV5MiiWeWY=;
- b=RXDIRUHw5tYgcuhlpycACnWhNudn3nnF2nBvn1WRpQSuxg/OUAMA8V5F5jS1icjstu8b7q+Va2pdd8ZXGpPwTm9UDxhvYz5eaQJGxwqxcYIPuoFC/4iyiUKO5D6GkRB5f+eFA5CuFNOweqhrXHRq8je2rWGjaVpH5g7u92eYEcGB/aZwt3kk8oiv08lT6o+u2mK7JjCRj3+qnU9yyfjYDAmltPbNZEio1Lpk8egrZ9eA7ibSNBm9xDwUlfjI6uFlKEsgYEnwSRba1WGXzybmom6D/Po+53NLmDKGiVH/mxxayhqWJAOTgzZGehoJ/LMw253PGfrJ0MAk3jk4z38Xgg==
+ bh=yVNdNxN1Kzl6NpH3QHUnyPEPBmv8L7Yr/HO9NfaAAhs=;
+ b=WMDgYZtlTH4Y8KgXNjRpSdGg8f0SohhbcSSGMA+iV1NvE6xRYpwojIFE0AISUHejeZAd5XbkcvEImqqBM3ABbRH1/hBrblZj+q+62crFJVmLwd+zskdR3GyWKg69sWB7l8OHe6ET+1hnbMxjV9DhtriC50flOJcTZnPyfftP0Lw462o6oeZEHvrlD+q/1J5ITlrp9RaVBnjadmc0TnPuBYUAN4PRoudN8PI9O8LvMHEHRkVtcDmVtyp1WVJB1IHUIaCUzw8awuqsmj0ZQ+TEW6f0KLpwT7J9A4klkjc91G/gTxSVhVA8vksqTZ66z3arJnEAEP2xBMzxLkwvcmo2zg==
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
  by AS2PR07MB9097.eurprd07.prod.outlook.com (2603:10a6:20b:558::17)
  with Microsoft SMTP Server (version=TLS1_2,
@@ -64,7 +64,7 @@ Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d%7]) with mapi id 15.20.8445.017; Thu, 27 Feb 2025
- 10:54:45 +0000
+ 10:54:46 +0000
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
@@ -74,13 +74,13 @@ CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
  "mst@redhat.com" <mst@redhat.com>, "tjeznach@rivosinc.com"
  <tjeznach@rivosinc.com>, "minwoo.im@samsung.com" <minwoo.im@samsung.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-Subject: [PATCH v4 11/19] memory: Store user data pointer in the IOMMU
- notifiers
-Thread-Topic: [PATCH v4 11/19] memory: Store user data pointer in the IOMMU
- notifiers
-Thread-Index: AQHbiQYDSAyUVSLpHk2eNfYAP59Y8A==
-Date: Thu, 27 Feb 2025 10:54:45 +0000
-Message-ID: <20250227105339.388598-12-clement.mathieu--drif@eviden.com>
+Subject: [PATCH v4 13/19] atc: Generic ATC that can be used by PCIe devices
+ that support SVM
+Thread-Topic: [PATCH v4 13/19] atc: Generic ATC that can be used by PCIe
+ devices that support SVM
+Thread-Index: AQHbiQYDqF0Aw28mhEmJoFUeCXHL/A==
+Date: Thu, 27 Feb 2025 10:54:46 +0000
+Message-ID: <20250227105339.388598-14-clement.mathieu--drif@eviden.com>
 References: <20250227105339.388598-1-clement.mathieu--drif@eviden.com>
 In-Reply-To: <20250227105339.388598-1-clement.mathieu--drif@eviden.com>
 Accept-Language: en-GB, fr-FR, en-US
@@ -91,83 +91,82 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=eviden.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|AS2PR07MB9097:EE_
-x-ms-office365-filtering-correlation-id: 82669fd4-553a-4d7c-2a7b-08dd571d25a8
+x-ms-office365-filtering-correlation-id: 9cce7e6b-1416-478b-4504-08dd571d268d
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|7416014|376014|366016|38070700018; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?lwKYKBrMwdsb1eJrPBudDp1MbNbMIfRRyDsmAvVkfBzA4H0o/XQDsufvor?=
- =?iso-8859-1?Q?Hl8NIqyn6cUcKSOXKmHCE1ds2lomFtWPKQZtiLCKrEl+WeQ0iBf/Y6F5Re?=
- =?iso-8859-1?Q?bAV/1kYQvte0AdFVJM4yPP01eg6SXFK/0BQQcnGAk4wjGGNXFaXGg++zhX?=
- =?iso-8859-1?Q?zYRiFHe71foEuWc+zQWkt3plqmp/3zWODtvs5zgV5XJ0grj0W1G4jguYRE?=
- =?iso-8859-1?Q?xq2J9N2U4aZgUQRQ5lLxaBFkwVtso9W/oNLcPu3POsRUoYVAQ/KcsK4XXA?=
- =?iso-8859-1?Q?YMOkb4r1CWjxzijplLbcNylGe8fg43biVDPDUX2Wz+f5tw1nv6jfei6dWR?=
- =?iso-8859-1?Q?kjGUIoX+oQ+cwgbKf/JfhJv2IKmmucdpQzeIasb8CSkJ99RyKyCKaz07bP?=
- =?iso-8859-1?Q?flnOx8eY2wr0kEpFcBcBV5fZ+n6Suw5tNqBlayYoqgMCB8ir9QcvYl1p5h?=
- =?iso-8859-1?Q?4cuYkn4VyEWsz5QVofeYOsFwexe9k7HoL5U6bqN3WI24K1uZRdVEtQPLAU?=
- =?iso-8859-1?Q?oTIX6GSDw3oR+iWq1gLg2dvoMD/pwOLXYRqAK/lKl/FLFt4b2WuHghUCtz?=
- =?iso-8859-1?Q?k/Uf7luyTXPhjOhtGF3wcS6/PyY2bd3YsCvGyvv04ZIq8NqUv/tOcK2pGk?=
- =?iso-8859-1?Q?4Qi1niHQD9RmEX+ZJjj+KdzorNSLnY1xpU2bNDOhZLLf1cjkuj8uEZKGX1?=
- =?iso-8859-1?Q?sWxc/1Hh2+Pe8aietBEkiv9gilptq7K98JEs9DkhEKR/V94OQuk3zJ9BkS?=
- =?iso-8859-1?Q?oAttmwLzIhAw8DulhURRu41Pp5gQbXqt2oxOb/Q0d24Ko4X5PAcHqGScWT?=
- =?iso-8859-1?Q?tH81dUmAmhA+QejvfadhLvKsNCSGZn2AzIitGmhGNLNU8grYLTErbYzep3?=
- =?iso-8859-1?Q?9eDgkn9o7uKOARKfbx9GR5tryFFu/VSSDt5lNGNlz2A/Ojhx5X3DQ9VUh5?=
- =?iso-8859-1?Q?IOGpXPeKskporvAKYira1cGgfhgCtwNbxX3BeM7/985nSQ8rcyNS0xQUjI?=
- =?iso-8859-1?Q?BHIlyaJQO+vw2d5Zk1GqOAdFoe7z7/i+Jb1RnlcKuYzaLWCEOk7gGdkt6z?=
- =?iso-8859-1?Q?e61toRi3aeuVt19v0J0k/UhCBwT+2Hn6sAs+cqCgWLFAWJKawkJqNWI+KE?=
- =?iso-8859-1?Q?pVax4qlejXN8w/hqKGDe7XwkBwi+As5jkcEgEXc32LJx+q5oi8Yzfr511I?=
- =?iso-8859-1?Q?HoR7fkyI+jG1SPH2Mo+EVenr+qiYXhJQY5Ynzr8v+uRZp9w/1O9eGv4Dnt?=
- =?iso-8859-1?Q?46nStJMycTMMwNKyvoIaSWD2DJxkrRBvaUGQFQk5a7dNuIJlnnEIpHUw4R?=
- =?iso-8859-1?Q?yYLUw5NDi7F5vDE21QVk+MvIIyTgJshdHy0KDpTbP3QSQ/NFMxdeo1yLtj?=
- =?iso-8859-1?Q?cpSEsZK9Sp77u7HX628dcsgaibLUw/Pip9cT+y1+PMbeDPAHfl3SoGg+BB?=
- =?iso-8859-1?Q?D0l14dT8ltJDk90J6BZR2u8eax65UneR/Lzbgsw4HUHJsjCkM6CGZloBU+?=
- =?iso-8859-1?Q?zO+g4hzWPWXV/qI7nwKXeA?=
+ ARA:13230040|1800799024|7416014|376014|366016|13003099007|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?RI32GePygr7xDBE2ev4qO6D3MihhO4ewxbG4r1QOJQ/3ksQhUQ76pkoI17?=
+ =?iso-8859-1?Q?CsY+NteBnc2c75tifz5p0GiWijZS0Vio5hb+1wav25Kt7pi3YRdFrujUpC?=
+ =?iso-8859-1?Q?0Gd8IUSoKVB1imVRHrBU4ZclEPKO1jxOnCZ9YAvMv4lBejOhpIN3oncg5r?=
+ =?iso-8859-1?Q?S1SbXQ0e4EENHgWwVCKlOmhGJlf72oU2gcXlxEKx3CqYYZRkuLQOkCIedo?=
+ =?iso-8859-1?Q?eNRclT2sRD8HWXqIXJAjiESpbenKssmbp/InFPMLo1Pen9Xa0UtpmUVdKy?=
+ =?iso-8859-1?Q?U8RuWbl+mb+9HCscahf47cnyaLflP3DQb6xxTTyIAJhSFiBc1V1zOcgylv?=
+ =?iso-8859-1?Q?dT/lpfa5GuXVe+FYICKPGirPyrWfz1pNRQV0eqHtgu065Zgt6H6OQqGo19?=
+ =?iso-8859-1?Q?16mLe3sWEKKgolH8bRM3Dc/m9mfDj/FfPdaHFyqoBo68JaTajWAAi64yuB?=
+ =?iso-8859-1?Q?Wgo0CR/dMg0/BiNTcvT28z+qefwvAOlWJKhIyPOgT2p+rM8vQhelWoIq7d?=
+ =?iso-8859-1?Q?Zf5X0a9yFYfKX+eCH/PsGXlkxA2UMK+pAINdpA4nwc7+nLGk7ZNht5TL60?=
+ =?iso-8859-1?Q?dXNEo9ri4kcjXFoJBZN2SMRzI126Luuxw9wC+Gwy+LpMS570do9bAM8ao7?=
+ =?iso-8859-1?Q?CcUa7n3ZExyDqXViC4Neknf6ZczxEq54HuEJa3ObT8ro5XxFU6R5f3ICcK?=
+ =?iso-8859-1?Q?nuIz7p+kOlfhmRXpqxA/3iMhYPS9o6Yr+oapqCU1mo7G8dBs24fp8gB3YW?=
+ =?iso-8859-1?Q?A6iFQEks9/F2uP+uHgMykuSqmNiSAJ2694u6vcfoqx7Tkj/HnXQUqtp8Qb?=
+ =?iso-8859-1?Q?SPS1ia53FQgrNoeSxKvPYmaxnwDnKqD6YYgej+TPVMfjeyLcRbOE12sUzi?=
+ =?iso-8859-1?Q?+fm0g82Fmi9xbSZs0rTNSMUO09TzdCy1d3+ZJmUBLciQAPp3ATRCIlyYig?=
+ =?iso-8859-1?Q?9Y1AHMKJFJ1javezVZVloOEMtzgsHsM3HNBUgWcQSiVumnX2uw5zsdoBNv?=
+ =?iso-8859-1?Q?s0vvoIipj74/QtQUS5bEC59eht2tgKstlty8X/vFhYLg/rAGanKHpEEjOY?=
+ =?iso-8859-1?Q?GANzpXh42rlvsRdDYWkFVN/TaNAC3r23s3fg5/rBlT1vncVivu8wncERNB?=
+ =?iso-8859-1?Q?oCvk2xsqmZ3692OPNQnJO4DcPltgj7d/ZSx4B83hozNVRXmjqo2BMhkC6F?=
+ =?iso-8859-1?Q?x+kUTknEqpglvwFZBOWvWz5OmDYIW2TJYzz72iCiGePj+29nb0lZdgWxct?=
+ =?iso-8859-1?Q?DMCcQD/vAUgNtZxnhDluNMrqJrRah75H/F47RCCfyPT9EeUeTT4+is37XB?=
+ =?iso-8859-1?Q?m4QjeF6Ci3rtIFaqu5izzQX4mx88S9N92h9Kc25lnmuWpgNJvz62acofu8?=
+ =?iso-8859-1?Q?JujYEqWWs0715LjpU67C7D0f+Yd1ec57S/0fzZjs/INJU7TeYNvsYE4ZIl?=
+ =?iso-8859-1?Q?nmJtLvFxty2GwnFqjwUIIHZBSASS5orCYsLp1g=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018); DIR:OUT;
- SFP:1101; 
+ SFS:(13230040)(1800799024)(7416014)(376014)(366016)(13003099007)(38070700018);
+ DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?XIoqn5Wd3tdIyVqRes2lVPg0X92SmrT1b/BnZq2iE0LkcMV4QoPBPzYKjG?=
- =?iso-8859-1?Q?PQZUcj1njmAoW87Bpz5now3dyvIecaXhNSj4pjtAhgRnj1Gsp+0nUXKfSq?=
- =?iso-8859-1?Q?kn9dJbYyhro8d7MY0mtL8Dg6JMw/885xUlGoZfYW77UwrFycNGE+r7kqz1?=
- =?iso-8859-1?Q?6nKlhdXQ+WA9tnF/1IYRMNb4VbzbOmOiEj7YCfxlqT4vDVEPQyZDIl1P2M?=
- =?iso-8859-1?Q?D+vpnFA2JuVOj+7TG6c/SMR2ZWU+R2SL5J9YSSw24Wcs2Ig0DYYGdCQsRw?=
- =?iso-8859-1?Q?D/QgiOXLIAu1MKJ7nf21KU9NYzewDVyAjqql4pAlxxV0y3zKWit03zStgs?=
- =?iso-8859-1?Q?rH2UD879Or8fSil6oFyeKxeI/T5vrjR5BtSNuMyLuEnSy9dzJRVBKYvSM1?=
- =?iso-8859-1?Q?wW0G6leJS1op4bBpMFiQTsfirWyKlHHM334db3vwKX5pNIPYumwewocLD2?=
- =?iso-8859-1?Q?tIBu0csA3oRfhsLntBPUxwTegEdiP+jVsEelg3EtjJfiTHb2WL5YY18SFa?=
- =?iso-8859-1?Q?pn7W7GA3+3WBet3JXJOb5qXGGRUpQB3bhGyWN9AHxKKDLn+yWecx6LBw8q?=
- =?iso-8859-1?Q?7ZipSwvqdQJmNcR7E8fNbshx/6DaMXZuw0BOp8ZVhqFXViOjoxTUlezbsU?=
- =?iso-8859-1?Q?5AvyYVEYY806+3yesASgBlFKBSUqjqpPgoE8zgSX1614UDMnkYnRoDM++6?=
- =?iso-8859-1?Q?8mNSBQ5hsBJBvb1FaW+cri+/2mcOItaO0QYv675NxNu4hA/xYvPZB0+u5t?=
- =?iso-8859-1?Q?JRisywSe8cYBGlNBU8svM8IZWTwlkoTX2xFZSOLzhSK47bpVI7fb5Uih0E?=
- =?iso-8859-1?Q?L67OWj8oHQ+L2IvObpwQttUirVTUw17YRGTHw9PfzKE+JvvopOWmJUpyLs?=
- =?iso-8859-1?Q?P6ecQ8lwZmWeEsEJU8vPvdZiHZknKVbnPtkZQR3dIjiQtGlEFiywXQNsYo?=
- =?iso-8859-1?Q?tYIRJDwmW3ZYqgOD0kT620VWsmelCjcwPoAPw+DkKIIfCkUw69UupsYFI8?=
- =?iso-8859-1?Q?63nVTi4l+3O1JEGaMUYZHZPgDa4ElqMNAto/gg499Z+FYh2d78N9BHebYs?=
- =?iso-8859-1?Q?KTe6xR8HrX5Audlcxh6qtA8fZe5k7U7Mmsv8f0KlZIo/2P8YctQRCzBO6C?=
- =?iso-8859-1?Q?e/VLlLjd+2w8pAfcSX4whxXkYrCHCD3x+wNbMSgwPmjx8eWy6nW9d6DOdR?=
- =?iso-8859-1?Q?XBrLwj71szJdNIOvTCRKsEKdMBQmIl3GBN5Oy/KjqLRZS+X4GdXRRlQQEm?=
- =?iso-8859-1?Q?u2SAiH+22aGWaEEQPmqBDtqBoVxj2Ouha/scjaPLskzB+9x++LNmQ4Meda?=
- =?iso-8859-1?Q?5g5ija1Ew03UU+DlBsjHt2gqIVKHSL/VhEreFXoVO4uJ4nFrc1ZChovTFG?=
- =?iso-8859-1?Q?03++7lopDES3GUiz+CFFcE0JYilZzcaq0cd5HKjMIHv5uB6oyXG6XtKjVz?=
- =?iso-8859-1?Q?60TcYtQV9Ve/N59vd2gZPSOkcUdLymk/hXtF5RYYheXt4+aSHMZ5zAYmJD?=
- =?iso-8859-1?Q?1YU4ucou3vsZ2eS/obCx2SEbt0YjIYbvqcboWplRCePeNL4CUc9KvllStm?=
- =?iso-8859-1?Q?zh8zvlgpwl/qsh61BHCulI3vpKv4tAfiXp2Y4tYThyVjbptsJHgCcqRfLF?=
- =?iso-8859-1?Q?G3XzlWuIGvRKuP06FnoDn4a43h44fsWGnol5ynmGcI6jt5opHOqGGkVUNb?=
- =?iso-8859-1?Q?vMjhj98ftRSSd0caBWw=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?vPH/la5EL/WXnX4HiujBCcglOdJHcilJ2zY8jxQVz8qIVU2Y93P8Bm48L9?=
+ =?iso-8859-1?Q?ObGSr3P7nAIVNYDi2rVyirIEVFh3xKwcC55mqw7mfkIimSSyo6m1VF0ni1?=
+ =?iso-8859-1?Q?1LxGYcfLpG1Dt7iNmqUiULr3D+aJTvz+Q/ecG9Ce3VVG8P6weeYYSvWr69?=
+ =?iso-8859-1?Q?4qQzSnieJymusiBTcs6yh7Tai5tP6g58tu7MBy/G311b8GVIseBRIUJ1G1?=
+ =?iso-8859-1?Q?1eEvXN4F2VnDePaoGGhYtNkBp0+0aTyf3RsQPZvY5eqEDMuz2WSxxnfFBR?=
+ =?iso-8859-1?Q?4nSLAog2/ROx0v+yOq5Q9fpDIqXqe9sJBLQnCBmV9oUgyeMyIHLtwICyMM?=
+ =?iso-8859-1?Q?0lvIpa8O9h5hTONhQjTkPWa7siXQLPwTeGph+5WRYOWVipXQogWffsjXFT?=
+ =?iso-8859-1?Q?ezEh+C2GvEXNR0W6uEEfIquoPYMmgjJt0eVW5JgQs8oKVd100GwtryQqFn?=
+ =?iso-8859-1?Q?wbmKItf+dPO3/XS66zFzfPwAFtt/JQPYBllUt7s/fnNPh+B1LP77uKsPXd?=
+ =?iso-8859-1?Q?xwD0uauUyoReojQFDC+kPGqyK2QcdBvoy4oCDGT9qeUSHIwfq6gfGMZJwd?=
+ =?iso-8859-1?Q?RaYVbb8tMXVH0tpOOOan1EhpBScrK4Ccomq2zGSObfm/7rwIy8XjgvpIiV?=
+ =?iso-8859-1?Q?UyO9tClQjeR4S4BnAjaveXELuGlF1wlMW3jgCNIydPjJMfe5ruqWYr2JqH?=
+ =?iso-8859-1?Q?i/Uo2NaQHN6KRZgKASR2PiW4XYqR0FfOX2TpJx0BrgB3wLrGc0z/jYNAPe?=
+ =?iso-8859-1?Q?Fq9IvoV5e+fVFJAQwEX29tzWF/nyp5PGErgPUZwRiWhuVowangql1qnH4l?=
+ =?iso-8859-1?Q?x+73r/qx+5FlEeSO4qivVAQU4qNFXHDrMMz4fQp+FoivDof6owaqPZzx6A?=
+ =?iso-8859-1?Q?cT06Ztn9zhCGcA4EU8yycNyNi37MSMHQRd8kBzCtQFQSO0KHW63z+SYgaw?=
+ =?iso-8859-1?Q?ZGqfIa8b2TYOhfL7N1pHR8/wcNGtwvtGT3TRiPHaT21ipBxP8mu+HAs2Iz?=
+ =?iso-8859-1?Q?opmF6H1BzeG8kw7UTulKK6u/F6ZPpPGZfmYJJdPM/2ovDb6w0/I8kSJRr4?=
+ =?iso-8859-1?Q?GV7x2U+VWhLKLVtx1gGJFGekSdGunvxNnHTbWGtsG3+TdpRGRtdeI98XeL?=
+ =?iso-8859-1?Q?eVHKrRilARpxp4pHEW6ywFCHvkzNkyrWzb09nKGTdVudqIw2T8XtvLonog?=
+ =?iso-8859-1?Q?+PfD+PbhrJhvyWPdc5IAzdeEanG2pOg9SZj8xxdo9+SbvrPeHP11i/0g3B?=
+ =?iso-8859-1?Q?9ApVnIqu0sGEleZFEuRZVKkXyuw8nkH05oIQilcJvn/D6dBooC+N8aEUqf?=
+ =?iso-8859-1?Q?zwJB82BF2nnrwCYQ6o43/dHtxdjqFcGd76UfhJoD2BFsv9y/l+c0VZoJri?=
+ =?iso-8859-1?Q?AIDvaIYWHXMGbMHe78Mfwuu3/41hSebTX00WhcymjNfOJVIwWLMtG5g0Cn?=
+ =?iso-8859-1?Q?QKV2moRqf58dhNVheCUYMQOnt+1sQOfB4pPmUQ3usxPMipZ3icMnWs9WdM?=
+ =?iso-8859-1?Q?Le6fYG9egoYE9LPZpLeoLqgPwVjIy1FwK8ZOM1bLuVA7DkIFOJT2asaPV3?=
+ =?iso-8859-1?Q?qLwppfUgWOSbUp4Oy6M1aPMfx/j86i6nNLh/y0QEYT8Vaokcm+0Us/wfI0?=
+ =?iso-8859-1?Q?qhqI28Ktgfrmm7QI2SyeP+SpfBpqvK/nGQH+0xbscmFUv9R0SlsrQ/c/zw?=
+ =?iso-8859-1?Q?zpcTgm2QSJqF41ifmeo=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: eviden.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82669fd4-553a-4d7c-2a7b-08dd571d25a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2025 10:54:45.3367 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9cce7e6b-1416-478b-4504-08dd571d268d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2025 10:54:46.6093 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0/SLqz3kvRSiepFsVSNC9AyjK+EPki7zIpRJi2FnJ9qEmJ9M7HZZ/OY1xeoGKG4Q3zOoxDZpeGSuQ2acuPbrrVBEK1TC+rtHRUUCoOEVPlqaeT+lcCyO2k/Qz9SyDCAE
+X-MS-Exchange-CrossTenant-userprincipalname: jXjzH8riGveULQkGpOTr7vKRGyG1vP/uImeOlhhjedpZNSmdCuM3nz+nKJ9H+aaTr4aAEQTXsggeliQf/bCFuG7rHOxR3AQIExurdyhzWLfzkwoNnm1hrEdHHw8FcKvB
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR07MB9097
 Received-SPF: pass client-ip=80.78.11.85;
  envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost4.eviden.com
@@ -195,25 +194,386 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-This will help developers of svm devices to track a state
+As the SVM-capable devices will need to cache translations, we provide
+an first implementation.
+
+This cache uses a two-level design based on hash tables.
+The first level is indexed by a PASID and the second by a virtual addresse.
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 ---
- include/exec/memory.h | 1 +
- 1 file changed, 1 insertion(+)
+ util/atc.c       | 211 +++++++++++++++++++++++++++++++++++++++++++++++
+ util/atc.h       | 117 ++++++++++++++++++++++++++
+ util/meson.build |   1 +
+ 3 files changed, 329 insertions(+)
+ create mode 100644 util/atc.c
+ create mode 100644 util/atc.h
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index eee625a9c6..4d240cad1c 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -204,6 +204,7 @@ struct IOMMUNotifier {
-     hwaddr start;
-     hwaddr end;
-     int iommu_idx;
-+    void *opaque;
-     QLIST_ENTRY(IOMMUNotifier) node;
- };
- typedef struct IOMMUNotifier IOMMUNotifier;
+diff --git a/util/atc.c b/util/atc.c
+new file mode 100644
+index 0000000000..7cd5c7abea
+--- /dev/null
++++ b/util/atc.c
+@@ -0,0 +1,211 @@
++/*
++ * QEMU emulation of an ATC
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "util/atc.h"
++
++
++#define PAGE_TABLE_ENTRY_SIZE 8
++
++/* a pasid is hashed using the identity function */
++static guint atc_pasid_key_hash(gconstpointer v)
++{
++    return (guint)(uintptr_t)v; /* pasid */
++}
++
++/* pasid equality */
++static gboolean atc_pasid_key_equal(gconstpointer v1, gconstpointer v2)
++{
++    return v1 =3D=3D v2;
++}
++
++/* Hash function for IOTLB entries */
++static guint atc_addr_key_hash(gconstpointer v)
++{
++    hwaddr addr =3D (hwaddr)(uintptr_t)v;
++    return (guint)((addr >> 32) ^ (addr & 0xffffffffU));
++}
++
++/* Equality test for IOTLB entries */
++static gboolean atc_addr_key_equal(gconstpointer v1, gconstpointer v2)
++{
++    return (hwaddr)(uintptr_t)v1 =3D=3D (hwaddr)(uintptr_t)v2;
++}
++
++static void atc_address_space_free(void *as)
++{
++    g_hash_table_unref(as);
++}
++
++/* return log2(val), or UINT8_MAX if val is not a power of 2 */
++static uint8_t ilog2(uint64_t val)
++{
++    uint8_t result =3D 0;
++    while (val !=3D 1) {
++        if (val & 1) {
++            return UINT8_MAX;
++        }
++
++        val >>=3D 1;
++        result +=3D 1;
++    }
++    return result;
++}
++
++ATC *atc_new(uint64_t page_size, uint8_t address_width)
++{
++    ATC *atc;
++    uint8_t log_page_size =3D ilog2(page_size);
++    /* number of bits each used to store all the intermediate indexes */
++    uint64_t addr_lookup_indexes_size;
++
++    if (log_page_size =3D=3D UINT8_MAX) {
++        return NULL;
++    }
++    /*
++     * We only support page table entries of 8 (PAGE_TABLE_ENTRY_SIZE) byt=
+es
++     * log2(page_size / 8) =3D log2(page_size) - 3
++     * is the level offset
++     */
++    if (log_page_size <=3D 3) {
++        return NULL;
++    }
++
++    atc =3D g_new0(ATC, 1);
++    atc->address_spaces =3D g_hash_table_new_full(atc_pasid_key_hash,
++                                                atc_pasid_key_equal,
++                                                NULL, atc_address_space_fr=
+ee);
++    atc->level_offset =3D log_page_size - 3;
++    /* at this point, we know that page_size is a power of 2 */
++    atc->min_addr_mask =3D page_size - 1;
++    addr_lookup_indexes_size =3D address_width - log_page_size;
++    if ((addr_lookup_indexes_size % atc->level_offset) !=3D 0) {
++        goto error;
++    }
++    atc->levels =3D addr_lookup_indexes_size / atc->level_offset;
++    atc->page_size =3D page_size;
++    return atc;
++
++error:
++    g_free(atc);
++    return NULL;
++}
++
++static inline GHashTable *atc_get_address_space_cache(ATC *atc, uint32_t p=
+asid)
++{
++    return g_hash_table_lookup(atc->address_spaces,
++                               (gconstpointer)(uintptr_t)pasid);
++}
++
++void atc_create_address_space_cache(ATC *atc, uint32_t pasid)
++{
++    GHashTable *as_cache;
++
++    as_cache =3D atc_get_address_space_cache(atc, pasid);
++    if (!as_cache) {
++        as_cache =3D g_hash_table_new_full(atc_addr_key_hash,
++                                         atc_addr_key_equal,
++                                         NULL, g_free);
++        g_hash_table_replace(atc->address_spaces,
++                             (gpointer)(uintptr_t)pasid, as_cache);
++    }
++}
++
++void atc_delete_address_space_cache(ATC *atc, uint32_t pasid)
++{
++    g_hash_table_remove(atc->address_spaces, (gpointer)(uintptr_t)pasid);
++}
++
++int atc_update(ATC *atc, IOMMUTLBEntry *entry)
++{
++    IOMMUTLBEntry *value;
++    GHashTable *as_cache =3D atc_get_address_space_cache(atc, entry->pasid=
+);
++    if (!as_cache) {
++        return -ENODEV;
++    }
++    value =3D g_memdup2(entry, sizeof(*value));
++    g_hash_table_replace(as_cache, (gpointer)(uintptr_t)(entry->iova), val=
+ue);
++    return 0;
++}
++
++IOMMUTLBEntry *atc_lookup(ATC *atc, uint32_t pasid, hwaddr addr)
++{
++    IOMMUTLBEntry *entry;
++    hwaddr mask =3D atc->min_addr_mask;
++    hwaddr key =3D addr & (~mask);
++    GHashTable *as_cache =3D atc_get_address_space_cache(atc, pasid);
++
++    if (!as_cache) {
++        return NULL;
++    }
++
++    /*
++     * Iterate over the possible page sizes and try to find a hit
++     */
++    for (uint8_t level =3D 0; level < atc->levels; ++level) {
++        entry =3D g_hash_table_lookup(as_cache, (gconstpointer)(uintptr_t)=
+key);
++        if (entry && (mask =3D=3D entry->addr_mask)) {
++            return entry;
++        }
++        mask =3D (mask << atc->level_offset) | ((1 << atc->level_offset) -=
+ 1);
++        key =3D addr & (~mask);
++    }
++
++    return NULL;
++}
++
++static gboolean atc_invalidate_entry_predicate(gpointer key, gpointer valu=
+e,
++                                               gpointer user_data)
++{
++    IOMMUTLBEntry *entry =3D (IOMMUTLBEntry *)value;
++    IOMMUTLBEntry *target =3D (IOMMUTLBEntry *)user_data;
++    hwaddr target_mask =3D ~target->addr_mask;
++    hwaddr entry_mask =3D ~entry->addr_mask;
++    return ((target->iova & target_mask) =3D=3D (entry->iova & target_mask=
+)) ||
++           ((target->iova & entry_mask) =3D=3D (entry->iova & entry_mask))=
+;
++}
++
++void atc_invalidate(ATC *atc, IOMMUTLBEntry *entry)
++{
++    GHashTable *as_cache =3D atc_get_address_space_cache(atc, entry->pasid=
+);
++    if (!as_cache) {
++        return;
++    }
++    g_hash_table_foreach_remove(as_cache,
++                                atc_invalidate_entry_predicate,
++                                entry);
++}
++
++void atc_destroy(ATC *atc)
++{
++    g_hash_table_unref(atc->address_spaces);
++}
++
++size_t atc_get_max_number_of_pages(ATC *atc, hwaddr addr, size_t length)
++{
++    hwaddr page_mask =3D ~(atc->min_addr_mask);
++    size_t result =3D (length / atc->page_size);
++    if ((((addr & page_mask) + length - 1) & page_mask) !=3D
++        ((addr + length - 1) & page_mask)) {
++        result +=3D 1;
++    }
++    return result + (length % atc->page_size !=3D 0 ? 1 : 0);
++}
++
++void atc_reset(ATC *atc)
++{
++    g_hash_table_remove_all(atc->address_spaces);
++}
+diff --git a/util/atc.h b/util/atc.h
+new file mode 100644
+index 0000000000..8be95f5cca
+--- /dev/null
++++ b/util/atc.h
+@@ -0,0 +1,117 @@
++/*
++ * QEMU emulation of an ATC
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef UTIL_ATC_H
++#define UTIL_ATC_H
++
++#include "qemu/osdep.h"
++#include "exec/memory.h"
++
++typedef struct ATC {
++    GHashTable *address_spaces; /* Key : pasid, value : GHashTable */
++    hwaddr min_addr_mask;
++    uint64_t page_size;
++    uint8_t levels;
++    uint8_t level_offset;
++} ATC;
++
++/*
++ * atc_new: Create an ATC.
++ *
++ * Return an ATC or NULL if the creation failed
++ *
++ * @page_size: #PCIDevice doing the memory access
++ * @address_width: width of the virtual addresses used by the IOMMU (in bi=
+ts)
++ */
++ATC *atc_new(uint64_t page_size, uint8_t address_width);
++
++/*
++ * atc_update: Insert or update an entry in the cache
++ *
++ * Return 0 if the operation succeeds, a negative error code otherwise
++ *
++ * The insertion will fail if the address space associated with this pasid
++ * has not been created with atc_create_address_space_cache
++ *
++ * @atc: the ATC to update
++ * @entry: the tlb entry to insert into the cache
++ */
++int atc_update(ATC *atc, IOMMUTLBEntry *entry);
++
++/*
++ * atc_create_address_space_cache: delare a new address space
++ * identified by a PASID
++ *
++ * @atc: the ATC to update
++ * @pasid: the pasid of the address space to be created
++ */
++void atc_create_address_space_cache(ATC *atc, uint32_t pasid);
++
++/*
++ * atc_delete_address_space_cache: delete an address space
++ * identified by a PASID
++ *
++ * @atc: the ATC to update
++ * @pasid: the pasid of the address space to be deleted
++ */
++void atc_delete_address_space_cache(ATC *atc, uint32_t pasid);
++
++/*
++ * atc_lookup: query the cache in a given address space
++ *
++ * @atc: the ATC to query
++ * @pasid: the pasid of the address space to query
++ * @addr: the virtual address to translate
++ */
++IOMMUTLBEntry *atc_lookup(ATC *atc, uint32_t pasid, hwaddr addr);
++
++/*
++ * atc_invalidate: invalidate an entry in the cache
++ *
++ * @atc: the ATC to update
++ * @entry: the entry to invalidate
++ */
++void atc_invalidate(ATC *atc, IOMMUTLBEntry *entry);
++
++/*
++ * atc_destroy: delete an ATC
++ *
++ * @atc: the cache to be deleted
++ */
++void atc_destroy(ATC *atc);
++
++/*
++ * atc_get_max_number_of_pages: get the number of pages a memory operation
++ * will access if all the pages concerned have the minimum size.
++ *
++ * This function can be used to determine the size of the result array to =
+be
++ * allocated when issuing an ATS request.
++ *
++ * @atc: the cache
++ * @addr: start address
++ * @length: number of bytes accessed from addr
++ */
++size_t atc_get_max_number_of_pages(ATC *atc, hwaddr addr, size_t length);
++
++/*
++ * atc_reset: invalidates all the entries stored in the ATC
++ *
++ * @atc: the cache
++ */
++void atc_reset(ATC *atc);
++
++#endif
+diff --git a/util/meson.build b/util/meson.build
+index 780b5977a8..5e175ca665 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -95,6 +95,7 @@ if have_block
+   util_ss.add(files('hbitmap.c'))
+   util_ss.add(files('hexdump.c'))
+   util_ss.add(files('iova-tree.c'))
++  util_ss.add(files('atc.c'))
+   util_ss.add(files('iov.c'))
+   util_ss.add(files('nvdimm-utils.c'))
+   util_ss.add(files('block-helpers.c'))
 --=20
 2.48.1
 
