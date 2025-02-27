@@ -2,43 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D64A48562
+	by mail.lfdr.de (Postfix) with ESMTPS id 4610DA48564
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:42:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngvp-0007vm-3v; Thu, 27 Feb 2025 11:40:17 -0500
+	id 1tngvp-0007xD-1P; Thu, 27 Feb 2025 11:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tngvG-0007gU-FK; Thu, 27 Feb 2025 11:39:42 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1tngvF-0007gH-0Z; Thu, 27 Feb 2025 11:39:42 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tngv0-0006HK-Db; Thu, 27 Feb 2025 11:39:42 -0500
+ id 1tnguz-0006HP-Ei; Thu, 27 Feb 2025 11:39:40 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6A0584E617D;
- Thu, 27 Feb 2025 17:39:19 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 652324E6180;
+ Thu, 27 Feb 2025 17:39:20 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id RNQjqCI_AfN5; Thu, 27 Feb 2025 17:39:14 +0100 (CET)
+ with ESMTP id JNzQWidwlWNU; Thu, 27 Feb 2025 17:39:15 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 18A884E6030; Thu, 27 Feb 2025 17:39:14 +0100 (CET)
-Message-Id: <cover.1740673173.git.balaton@eik.bme.hu>
+ id 22F1D4E6032; Thu, 27 Feb 2025 17:39:15 +0100 (CET)
+Message-Id: <446bf740cbb99422be2cc5a31e51a1034eddded7.1740673173.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1740673173.git.balaton@eik.bme.hu>
+References: <cover.1740673173.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 0/5] ppc/amigaone patches
+Subject: [PATCH v2 1/5] ppc/amigaone: Simplify replacement dummy_fw
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Date: Thu, 27 Feb 2025 17:39:14 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Thu, 27 Feb 2025 17:39:15 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,54 +57,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+There's no need to do shift in a loop, doing it in one instruction
+works just as well, only the result is used.
 
-v2:
-- change unused read function to g_assert_not_reached()
-- new patch to add defines to constants
-- added R-b tags
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ hw/ppc/amigaone.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-This series adds NVRAM and support for -kernel, -initrd and -append
-options to the amigaone machine. This makes it easier to boot AmigaOS
-and avoids a crash in the guest when it tries to access NVRAM.
-
-While the -kernel option emulates what U-Boot passes to the kernel,
-old Linux kernels for amigaone may not work with it because of two
-reasons: these come in legacy U-Boot Multi-File image format that QEMU
-cannot read and even after unpacking that and creating a kernel uimage
-it won't find PCI devices because it does not initialise them
-correctly. This works when booted from U-Boot because U-Boot inits PCI
-devices. So does my BBoot loader which can be used to load AmigaOS so
-I don't intend to emulate that part of U-Boot.
-
-I'd like this to be merged for the next release please. When merging
-please update https://wiki.qemu.org/ChangeLog/10.0 with the following:
-
-amigaone
-
-Added support for NVRAM and -kernel, -initrd, -append command line
-options. By default the NVRAM contents are not preserved between
-sessions. To make it persistent create a backing file with 'qemu-image
-create -f raw nvram.bin 4k' and add -drive
-if=mtd,format=raw,file=nvram.bin to keep NVRAM contents in the backing
-file so settings stored in it will be preserved between sessions.
-
-To run AmigaOS with BBoot using the -kernel option at least BBoot
-version 0.8 is needed. Older BBoot versions only work with -device
-loader and cannot be used with -kernel on amigaone.
-
-Regards,
-
-BALATON Zoltan (5):
-  ppc/amigaone: Simplify replacement dummy_fw
-  ppc/amigaone: Implement NVRAM emulation
-  ppc/amigaone: Add default environment
-  ppc/amigaone: Add kernel and initrd support
-  ppc/amigaone: Add #defines for memory map constants
-
- hw/ppc/amigaone.c | 284 +++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 271 insertions(+), 13 deletions(-)
-
+diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+index b02792221c..4290d58613 100644
+--- a/hw/ppc/amigaone.c
++++ b/hw/ppc/amigaone.c
+@@ -41,10 +41,7 @@
+ 
+ /* AmigaOS calls this routine from ROM, use this if no firmware loaded */
+ static const char dummy_fw[] = {
+-    0x38, 0x00, 0x00, 0x08, /* li      r0,8 */
+-    0x7c, 0x09, 0x03, 0xa6, /* mtctr   r0 */
+-    0x54, 0x63, 0xf8, 0x7e, /* srwi    r3,r3,1 */
+-    0x42, 0x00, 0xff, 0xfc, /* bdnz    0x8 */
++    0x54, 0x63, 0xc2, 0x3e, /* srwi    r3,r3,8 */
+     0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
+     0x4e, 0x80, 0x00, 0x20, /* blr */
+ };
 -- 
 2.30.9
 
