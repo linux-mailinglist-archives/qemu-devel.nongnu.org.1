@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DECA48127
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE42A4812D
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnelq-00015D-PN; Thu, 27 Feb 2025 09:21:53 -0500
+	id 1tnelY-00006S-PT; Thu, 27 Feb 2025 09:21:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnel2-0007ia-OG
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tnel6-0007sD-DA
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekz-0003qb-SA
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:00 -0500
+ id 1tnel3-0003ra-Cg
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666057;
+ s=mimecast20190719; t=1740666060;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W2DTEL0GvEgD05Vg/aBlXWWfjE1Jq68V9IAsv0IIcfk=;
- b=TKzodS39GChu4vh3QJ7LvfEIpbaUg2OA3OZcQR2j14O2Zx9ddQWsBqVtjvHT+q/U6G37nY
- uX/6/hB2wOFPf5OAB/GfZoFeNwDVbq1+xjqtjvxhcCgMZnoAFI58v+y1waOgGRVF0C+nLN
- xtHtKckr/SgNK7buAF7lehpNj6TQIqs=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wxYYY1R7biz/YFz8OOn3xrn4YUgJT/5akSv9YjxqfqA=;
+ b=J6/uHhb87Tv6c8wm0IR7tLWF0QpISWJpZsEhg3iwpr5Ri/GVQx8IY1nW2b42bgF4a2zffQ
+ Ue6FERRqcKGvN83dwNpv/kF24F4TeTgp1t/P8NBnIuj9aIlhXe/h2AD6x0+Kvw85juAQZt
+ bkPSZ8rgkwPdMw43WdHsT5hHeU7Xwjw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-yYxRgl66P8Kpnts6Wi53Yg-1; Thu, 27 Feb 2025 09:20:55 -0500
-X-MC-Unique: yYxRgl66P8Kpnts6Wi53Yg-1
-X-Mimecast-MFC-AGG-ID: yYxRgl66P8Kpnts6Wi53Yg_1740666055
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5e4aecbd88fso1149299a12.1
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:55 -0800 (PST)
+ us-mta-203-DIR0lcozOUKqRndGKx9XJg-1; Thu, 27 Feb 2025 09:20:59 -0500
+X-MC-Unique: DIR0lcozOUKqRndGKx9XJg-1
+X-Mimecast-MFC-AGG-ID: DIR0lcozOUKqRndGKx9XJg_1740666057
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-abb61c30566so93541766b.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666054; x=1741270854;
+ d=1e100.net; s=20230601; t=1740666056; x=1741270856;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W2DTEL0GvEgD05Vg/aBlXWWfjE1Jq68V9IAsv0IIcfk=;
- b=r480jGFftfMuh8kcRv+1hLWIEOtTFBoFyj+ntGtnEWboPBjU4Qex3qUV2ZiP6SphcE
- 0l0CjJMaOro/PtRZuUUgWLRu2JwwUUyIm8pc3ovn3eAQmZpnmrgqucLWlbcLrmwaF+Zy
- KiLMNuZcxptacOv/xQzddulWRE88tN2irh0fJwGVC34drmAxY6PElILg08c2JiFgZkZ/
- HFAzVDJftNJA4THzUsv4A/pzHCJBE1uJbWkZ6DJJhdmkye6UwC1+vGtuaAGyH9jacjZ8
- afEfUq76o9mrzgNUTgpxAHKrU/qi1cJ+AySyPRa5jqYBd0eHZ/SXZi+E0qUcHWg4MPlh
- WdFg==
-X-Gm-Message-State: AOJu0YwW0LvxL5zG8Bpx07fo/c+wUmM0F42ZvYDqRcDR8OMp3lS8F0iw
- dY59Ffl5i/FPL5mT2N/UOzrTRcvC01Ic6n8M8muX+wQNZmb60H5DLcN9w+I7ZFUBZ8in48dhEwh
- 6OFc0F7Pbddg0c7zDbWDa2sZ+VA7CFaqdKTz+zvTTIXFbpV3ucRBhhejF6Axjz5CvLdlW1370mk
- 7B4EqeDhEYvLm3bvw49EbC/XG1yzDoSkwrmW+W4Z0=
-X-Gm-Gg: ASbGncskRBFpLrGYbqVLDUdP++aG5bGJso79kRifxa2D02o1s9QJQFFes49fYVKj7Gg
- NII1Z2FVMq4bR/w+FHSMhmBtgAXlLnEAcyJxZh61XKULKVSvtM1fbLyPEDJ1UIgMj01wniZQYxj
- O4pGRM90TEeeCyCNjhMWzwxea9UnO0jMu6WBjN7NDRsY6u4pXMdgC7gcSrhi2SpyCU6vWtj2L4/
- K3uzYs/EHqVWig4u/AgYr8ReO9pMQkLM2WBwOPsMY9gTw2U2OZE/uihJRT0cImyMtnl2Alz+DMI
- JVAALCuwC7YfujBEOs/L
-X-Received: by 2002:a05:6402:2548:b0:5db:e7eb:1b34 with SMTP id
- 4fb4d7f45d1cf-5e0b70f07d4mr29001794a12.13.1740666053775; 
- Thu, 27 Feb 2025 06:20:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNsxeGbB+ZyF929QRj/hqGtIm2BMFKVfQd0zLRSDWQNLAUaW9RIj3K1h0b5ko8JQeCbTFUbA==
-X-Received: by 2002:a05:6402:2548:b0:5db:e7eb:1b34 with SMTP id
- 4fb4d7f45d1cf-5e0b70f07d4mr29001757a12.13.1740666053283; 
- Thu, 27 Feb 2025 06:20:53 -0800 (PST)
+ bh=wxYYY1R7biz/YFz8OOn3xrn4YUgJT/5akSv9YjxqfqA=;
+ b=dv83nZ1TnZasMO81CvhKve9sVG6s227WpjeGe/HPgbb313KBPcpYLuIUyhQrsESTZX
+ shWIavKXQYlZiZ3Mgy8x0u0F1p/CMhQTZ1c6OuvBTv4PuhB+6kKfcc+lClLoJlMfI9Av
+ avRZHqeBLtVtmN0aIAf+49mwQfClW3swthRnniVtt5dXdmElUBcT1uxkC21CDrO7dCZQ
+ Nqb+dK+q79KuwZQ9YXSvzc1iTH7poMceSdilYwAe/4Z2SfrPJYUReLTKIauFxJ8vqI7Q
+ AjvusNNOjM02vm+h0NqLusnM0tFOqBAvKq+dgFsjbBEY+GH0Ks6ntKOqIHK7WUtuPf2B
+ iqBQ==
+X-Gm-Message-State: AOJu0YyJbMUOyvTs+NO6rWbRVy447ILOi0Mswv2nMOZ6KEeuYebERbXG
+ xKWhsG4IcBxY+/fQnP5jE3+R7gQESeNoA/gKDGUgujGVYQKDGPZ0ChqFhO6JtYdytBvJYC8Pm2n
+ rcKAFp8l0XmMrl3fH2VILykTNApY0lxi0g0UkZOgma6Ki3gi7jfUDX4kDcWfoE3xZBuhApfPWq+
+ 7Y8G4q0JImalmr/RFvk3VW5AWPBz/NO0IsXV0xX8g=
+X-Gm-Gg: ASbGncuZyXZY5J3FPbcyx/Z5v1jBF4CmQqeHKlHPqcF8Cs4abynEWvcY1PBb14EVUNA
+ ObVZeO/OHP5cSOqhcL5MtG2NX5wiaUg11mzeuqBg53Eyto4/vgVZbR3z/zv9y+9SNRIRN7WQfdz
+ b2T3mkpn0INemVTOV/rLgwO2qkvRndYlX4Y2ecOhb6Lba+EzOOTUBbwhlY6iXOtD6L0X7F9Vtrp
+ 9ZQTfCV1/wjelcz2XtjpMtZR1/jr+P/JZhUFmJ7ttJfsQcy34+w/Gxr7xphmGy3lP795aNyXi08
+ PXcpoy7JPB8XYRwDyr81
+X-Received: by 2002:a17:907:c407:b0:abc:4b7:e3d3 with SMTP id
+ a640c23a62f3a-abeeedcfecbmr1035342766b.27.1740666055907; 
+ Thu, 27 Feb 2025 06:20:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHbnHBHIeA7vDAqGtZEUn8x3VOIc4qFSRAuXBDdTB6Angr8zSECngHltyIUGtquqaCepK9zNg==
+X-Received: by 2002:a17:907:c407:b0:abc:4b7:e3d3 with SMTP id
+ a640c23a62f3a-abeeedcfecbmr1035339566b.27.1740666055459; 
+ Thu, 27 Feb 2025 06:20:55 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c43a55besm1139424a12.72.2025.02.27.06.20.51
+ a640c23a62f3a-abf0c6ee4b3sm127042766b.112.2025.02.27.06.20.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:51 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:54 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+Cc: Alireza Sanaee <alireza.sanaee@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 27/34] i386/pc: Support cache topology in -machine for PC
- machine
-Date: Thu, 27 Feb 2025 15:19:45 +0100
-Message-ID: <20250227141952.811410-28-pbonzini@redhat.com>
+Subject: [PULL 28/34] i386/cpu: add has_caches flag to check smp_cache
+ configuration
+Date: Thu, 27 Feb 2025 15:19:46 +0100
+Message-ID: <20250227141952.811410-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,88 +109,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Alireza Sanaee <alireza.sanaee@huawei.com>
 
-Allow user to configure l1d, l1i, l2 and l3 cache topologies for PC
-machine.
+Add has_caches flag to SMPCompatProps, which helps in avoiding
+extra checks for every single layer of caches in x86 (and ARM in
+future).
 
-Additionally, add the document of "-machine smp-cache" in
-qemu-options.hx.
-
+Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://lore.kernel.org/r/20250110145115.1574345-5-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250110145115.1574345-6-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc.c    |  4 ++++
- qemu-options.hx | 30 +++++++++++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 1 deletion(-)
+ include/hw/boards.h   |  3 +++
+ hw/core/machine-smp.c |  2 ++
+ target/i386/cpu.c     | 11 +++++------
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index f199a8c7ad1..63a96cd23f8 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1798,6 +1798,10 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     mc->nvdimm_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->smp_props.modules_supported = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1D] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1I] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L2] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L3] = true;
-     mc->default_ram_id = "pc.ram";
-     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 9360d1ce394..f22b2e7fc75 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -156,6 +156,8 @@ typedef struct {
+  * @modules_supported - whether modules are supported by the machine
+  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
+  *                    supported by the machine
++ * @has_caches - whether cache properties are explicitly specified in the
++ *               user provided smp-cache configuration
+  */
+ typedef struct {
+     bool prefer_sockets;
+@@ -166,6 +168,7 @@ typedef struct {
+     bool drawers_supported;
+     bool modules_supported;
+     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
++    bool has_caches;
+ } SMPCompatProps;
  
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 61270e32067..dc694a99a30 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -42,7 +42,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                aux-ram-share=on|off allocate auxiliary guest RAM as shared (default: off)\n"
- #endif
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
--    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
-+    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
-+    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-machine [type=]name[,prop=value[,...]]``
-@@ -172,6 +173,33 @@ SRST
-         ::
+ /**
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 4e020c358b6..0be0ac044c2 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -332,6 +332,8 @@ bool machine_parse_smp_cache(MachineState *ms,
+             return false;
+         }
+     }
++
++    mc->smp_props.has_caches = true;
+     return true;
+ }
  
-             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
-+
-+    ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
-+        Define cache properties for SMP system.
-+
-+        ``cache=cachename`` specifies the cache that the properties will be
-+        applied on. This field is the combination of cache level and cache
-+        type. It supports ``l1d`` (L1 data cache), ``l1i`` (L1 instruction
-+        cache), ``l2`` (L2 unified cache) and ``l3`` (L3 unified cache).
-+
-+        ``topology=topologylevel`` sets the cache topology level. It accepts
-+        CPU topology levels including ``core``, ``module``, ``cluster``, ``die``,
-+        ``socket``, ``book``, ``drawer`` and a special value ``default``. If
-+        ``default`` is set, then the cache topology will follow the architecture's
-+        default cache topology model. If another topology level is set, the cache
-+        will be shared at corresponding CPU topology level. For example,
-+        ``topology=core`` makes the cache shared by all threads within a core.
-+        The omitting cache will default to using the ``default`` level.
-+
-+        The default cache topology model for an i386 PC machine is as follows:
-+        ``l1d``, ``l1i``, and ``l2`` caches are per ``core``, while the ``l3``
-+        cache is per ``die``.
-+
-+        Example:
-+
-+        ::
-+
-+            -machine smp-cache.0.cache=l1d,smp-cache.0.topology=core,smp-cache.1.cache=l1i,smp-cache.1.topology=core
- ERST
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 005ca4235df..2f9c604552b 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8203,13 +8203,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
  
- DEF("M", HAS_ARG, QEMU_OPTION_M,
+ #ifndef CONFIG_USER_ONLY
+     MachineState *ms = MACHINE(qdev_get_machine());
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
+ 
+-    /*
+-     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
+-     * if user didn't set smp_cache.
+-     */
+-    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
+-        return;
++    if (mc->smp_props.has_caches) {
++        if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
++            return;
++        }
+     }
+ 
+     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
 -- 
 2.48.1
 
