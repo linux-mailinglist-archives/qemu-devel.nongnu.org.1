@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA10A4817E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55722A4817C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnemL-0002t9-Ea; Thu, 27 Feb 2025 09:22:23 -0500
+	id 1tnen3-0004my-13; Thu, 27 Feb 2025 09:23:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnelL-0008N3-F5
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:27 -0500
+ id 1tnemW-0003la-BM
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnelI-0003uf-Fj
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:18 -0500
+ id 1tnemR-000441-7s
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666075;
+ s=mimecast20190719; t=1740666146;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cVvubKkZS2BJDfw7tQbs/X69Fi3+CKEkqZrpaVeftvc=;
- b=g9sTrzpxdfZELWJvCWLOPJg90D5ZVmYqFqzg+p0GDsKvpYE04XychCv07pyc7FPVs6qd1n
- VLREVuxuuuZr9oX8eY8SQE7Bt3/gmKud6V+Dn03YaHVMtI72+6ZumYxf0S6VrVtYuSUaXm
- Kx+JON5Bpwoz9nuCIlSWFLjI9AQTEZk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4VkJ57zjgyHFgj0AXjaq86EaB5VXCZKU4ItaWiQb4aQ=;
+ b=O6cv9WmnfGzG8PdRLxCBwyxogXWum3EYtDI2CCD6HraU6JYLrVYA/K1EFkSST6y7vj0oWR
+ Z15A6Nl+/SunNWwfOGKjO09Qv/pWrlDLXOy0Nq58KxbhEXKBZ75BolUd7Hk8BOXB1VCyXD
+ Y9kBxYO07WrxIpKmIo4d81gs8xXamHI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175--vbOxG-CMu-0UZz25Loznw-1; Thu, 27 Feb 2025 09:21:12 -0500
-X-MC-Unique: -vbOxG-CMu-0UZz25Loznw-1
-X-Mimecast-MFC-AGG-ID: -vbOxG-CMu-0UZz25Loznw_1740666072
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-abbc0572fc9so133364266b.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:21:12 -0800 (PST)
+ us-mta-637-VTcIe5ynOdOaJYtC1x5jPg-1; Thu, 27 Feb 2025 09:22:23 -0500
+X-MC-Unique: VTcIe5ynOdOaJYtC1x5jPg-1
+X-Mimecast-MFC-AGG-ID: VTcIe5ynOdOaJYtC1x5jPg_1740666142
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aa6b904a886so89205566b.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:22:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666071; x=1741270871;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cVvubKkZS2BJDfw7tQbs/X69Fi3+CKEkqZrpaVeftvc=;
- b=AxcnflNndxHESgcKDo1Cm52UbSOUKkIus5Ym+kPCrHeSt1Vy3CDKnWI0/IgR78kDbZ
- B5J9ykrMWS6tsAcNlx7Ale3jaL+pLnST4Ldm+SkaVkSoTEX9G6lqUBFNFqSCZUz21AUt
- OzVLXwEgvsX62QPOEgys28YT/hHdyOFIcpVSCSkNxoJNRWqrtCGLfYK9iDj3Bx+OgDLv
- gLapeFyijN08Hzdt06jYgEXr+8acnapr3KipYUw0Bm5eDvF77WB8/2ybKx2ytrMDnT1O
- u5iGLFlXCnFdpmyFZPT1gplgIE4KNFQo6SqyArGalJ3rkaNA+CmPrzMaoc60jLytxIXY
- 74Dg==
-X-Gm-Message-State: AOJu0YzJ7IbkTSzv5QpxS8tdhCvWhfLv26MAd2JrIyIbzcVJU2sb6d1L
- v7p+vOYFmjV2PB2fldxyEzbLJIr3GRCnkCnf/nV2TUe+2tYbO4tW7nSKNANyglVon4T1XkI/cT0
- SkhEZ/0oAQGcboeKpovPI+brl8fmMhIz4+PCttXxGMnsl/PWtqZ+7BF0pWZk9kfzYCUYCZ960pW
- pKm6Gazmh13TBNOXDDJmXLtI/iRBhmEqSQepQcRCo=
-X-Gm-Gg: ASbGncvZJwenWgnO5EoeVA2Usyb8zWuEAXS0K5nAaAPL75hQpshPrAFYUeTV8l0lIX0
- GXVlWrZGCMFrPHYVtfssFov67rye6B5z2oxznMvyKZcsmKe3s/ywc42AaLbCcrhc/sPPcYZYbrf
- Z6xP6fvOD67fBjuBm6Z9CfkqUEgjobQAohm9KzNb7eEDSFHEL2MGFjUNWS7Xpy6Kd1KvpxXnnYE
- c3ydmuimMNF+nB4Okqp4RTr8iyrou07nJegYTbOe16k7zc4GXurYeq/XPswqk0TCJLibPPGrrRD
- 2XBq2oTG42zJ6GK9xhiT
-X-Received: by 2002:a17:906:c00f:b0:ab7:b589:4f9e with SMTP id
- a640c23a62f3a-abc09c1a648mr2308367066b.39.1740666070913; 
- Thu, 27 Feb 2025 06:21:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFKgbYxuh+MB2gM/6flbYrUCoyOvV4GP3JqiNRJG+IufQ63cI4iQKOWSCRc0svq6y6TaSmeKw==
-X-Received: by 2002:a17:906:c00f:b0:ab7:b589:4f9e with SMTP id
- a640c23a62f3a-abc09c1a648mr2308363466b.39.1740666070450; 
- Thu, 27 Feb 2025 06:21:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1740666141; x=1741270941;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4VkJ57zjgyHFgj0AXjaq86EaB5VXCZKU4ItaWiQb4aQ=;
+ b=RyGyP3Xu/W6Mru9Ku+PtqK5NmpQsHR+Eu1VPK0GQjPIUeCao+cCAj688BxoTv0uHva
+ 48hGBJF+krMbrReVnvakIYk2AncchyJjKE3oMyC0A777jpoKKbjR8K5Ot1Cin312CHS6
+ oAXWtaNTwfD/4e03RmUl6VY9iLQN3W/9+zOMsw54wO+fbis3wQq5gERqXrvKnV7zlWxQ
+ Ro9BD+wUJPy/G8X/uwwJzHkP8fxjrpe0T36qqEDbgJngk/A3QJRAyDglmSHJ57qifEgv
+ 7CcnfJHwt2W2eoCFrKOHR6vCasN1yUqC1gHQqagiPcTNLb5g7W6OfyYe+GS6G4PjQpZv
+ 6LdA==
+X-Gm-Message-State: AOJu0YxOHvpRsCByEXAVmLAYHgtAqJunDHSUASURXsQe809AXjrFgepF
+ WyKURvrp5pIJWv7o2ea7wty3IgetV5jiQTpo/sqR5HGYX2I573IWOM4vwbqydFYgtwKorygR4kw
+ iQp7xCCxZu/bIoCDiAJ9wG4FsgHvcAD6jMy0n8UAcII3z/UqEBJe6qOYQ5HjH/EB9xPgOeRmvjB
+ G2Z4NXaP0YXxo/WdpVwn4YWVPlL333JlrHBCkMbvQ=
+X-Gm-Gg: ASbGnctC/UxnwBnyH/L3FGEo6cnfPFTTO4wexXYPtg7CpNhScMh0NxoXSeUWUncaYKV
+ efX6pcsmf0uMmmkYhORVG8Dl+FSIcKBpUT+hrwxZ+yRLiA0X+wenE4Dz/iG6JAExBRQkELLOF/e
+ ym5SWNxcJ5kG/BnC0hFqIgoBhFYOmiaiyjj88tqovhH3pHRolWwTPpDExmoEqNoNFc85QpUhtyS
+ GfF/ph51G/MoMH4PnxLNhdTnB7x8WzH+pUeQ9jMvQhAFqP/pPdGLdxH+sUe4vB77Z2hQkdydHQj
+ yjZW9y/v332ky7/JVU9d
+X-Received: by 2002:a17:906:bc55:b0:abc:29a2:f6cf with SMTP id
+ a640c23a62f3a-abc29a2f975mr1967489166b.19.1740666141248; 
+ Thu, 27 Feb 2025 06:22:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfOyAtyO7UXx6Jz11MRWvY8ssv+d7lcnv9b6HROoKZ2vu3FvYPvy0Oo3WROz7zqooaaQ9X7Q==
+X-Received: by 2002:a17:906:bc55:b0:abc:29a2:f6cf with SMTP id
+ a640c23a62f3a-abc29a2f975mr1967487266b.19.1740666140831; 
+ Thu, 27 Feb 2025 06:22:20 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf1f1d5b4csm39341366b.85.2025.02.27.06.21.07
+ a640c23a62f3a-abf181e0712sm82538066b.182.2025.02.27.06.22.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:21:07 -0800 (PST)
+ Thu, 27 Feb 2025 06:22:20 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: EwanHai <ewanhai-oc@zhaoxin.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 34/34] target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ECX
- for Zhaoxin CPUs
-Date: Thu, 27 Feb 2025 15:19:52 +0100
-Message-ID: <20250227141952.811410-35-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	zhao1.liu@intel.com
+Subject: [PATCH v2 00/12] rust: wrap all C types exposed through qemu_api
+Date: Thu, 27 Feb 2025 15:22:07 +0100
+Message-ID: <20250227142219.812270-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
-References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -108,54 +104,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: EwanHai <ewanhai-oc@zhaoxin.com>
+This is the second part of "rust: prepare for splitting crates" with
+Zhao's suggestions addressed and with more precise handling of pinning
+for Timers.
 
-Zhaoxin CPUs (including vendors "Shanghai" and "Centaurhauls") handle the
-CMPLegacy bit similarly to Intel CPUs. Therefore, this commit masks the
-CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin CPUs, just as it is done
-for Intel CPUs.
+The series introduce a third generic type in qemu_api::cell, Opaque<T>.
+This type is similar to a same-named type in Linux; it is basically a
+"disable all undefined behavior" switch for the Rust compiler and it
+helps maintaining safety at the Rust/C boundary, complementing the
+existing BqlCell and BqlRefCell types.
 
-AMD uses the CMPLegacy bit (CPUID[0x80000001].ECX.bit1) along with other CPUID
-information to enumerate platform topology (e.g., the number of logical
-processors per package). However, for Intel and other CPUs that follow Intel's
-behavior, CPUID[0x80000001].ECX.bit1 is reserved.
+Apart from making things more formally correct, this makes it possible
+to implement methods on a struct that is distinct from the one produced
+by bindgen.  This has a couple of advantages:
 
-- Impact on Intel and similar CPUs:
-This change has no effect on Intel and similar CPUs, as the goal is to
-accurately emulate CPU CPUID information.
+- you do not have to disable the Copy trait on structs where you want
+  to add a Drop trait.  This was already a problem for the Timer struct.
 
-- Impact on Linux Guests running on Intel (and similar) vCPUs:
-During boot, Linux checks if the CPU supports Hyper-Threading. For the Linux
-kernel before v6.9, if it detects X86_FEATURE_CMP_LEGACY, it assumes
-Hyper-Threading is not supported. For Intel and similar vCPUs, if the
-CMPLegacy bit is not masked in CPUID[0x80000001].ECX, Linux will incorrectly
-assume that Hyper-Threading is not supported, even if the vCPU does support it.
+- whether Send and Sync are implemented is entirely a decision of the
+  place that implements the wrapper.  Previously, a struct with no
+  pointers for example would have been always both Send and Sync,
+  whereas now that can be adjusted depending on the actual
+  thread-safety of the Rust methods.
 
-Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250113074413.297793-5-ewanhai-oc@zhaoxin.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+- more pertinent to the "multiple crates" plan that prompted posting
+  of v1, you do not have to put the methods in the same crate as the
+  bindgen-generated bindings.inc.rs.
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index bd407146136..0cd9b70938d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7804,9 +7804,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         /*
-          * The Linux kernel checks for the CMPLegacy bit and
-          * discards multiple thread information if it is set.
--         * So don't set it here for Intel to make Linux guests happy.
-+         * So don't set it here for Intel (and other processors
-+         * following Intel's behavior) to make Linux guests happy.
-          */
--        if (!IS_INTEL_CPU(env)) {
-+        if (!IS_INTEL_CPU(env) && !IS_ZHAOXIN_CPU(env)) {
-             env->features[FEAT_8000_0001_ECX] |= CPUID_EXT3_CMP_LEG;
-         }
-     }
+It also makes Debug output a bit less unwieldy, and in the future one
+might want to add specialized implementations of Display and Debug that
+are both useful and readable.
+
+Paolo
+
+Supersedes: <20250221170342.63591-1-pbonzini@redhat.com>
+
+v1->v2:
+From Zhao's review:
+- fix Opaque::zeroed()
+- improve comments for as_mut_ptr() fand as_void_ptr()
+- remove unnecessary ".0" accesses, or highlight why they're needed
+- add patch to access SysBusDevice MMIO addresses safely
+
+Other changes:
+- improve safety comments for constructors of Opaque
+- remove implementation of Default for Opaque<T: Default>,
+  leaving Opaque::new() in but only as an unsafe function
+- change Timer patch to construct timers as Pin<Box<Self>>,
+  following the documentation of `Opaque<>`
+- add "rust: vmstate: add std::pin::Pin as transparent wrapper"
+
+Paolo Bonzini (12):
+  rust: cell: add wrapper for FFI types
+  rust: qemu_api_macros: add Wrapper derive macro
+  rust: vmstate: add std::pin::Pin as transparent wrapper
+  rust: timer: wrap QEMUTimer with Opaque<> and express pinning
+    requirements
+  rust: irq: wrap IRQState with Opaque<>
+  rust: qom: wrap Object with Opaque<>
+  rust: qdev: wrap Clock and DeviceState with Opaque<>
+  rust: hpet: do not access fields of SysBusDevice
+  rust: sysbus: wrap SysBusDevice with Opaque<>
+  rust: memory: wrap MemoryRegion with Opaque<>
+  rust: chardev: wrap Chardev with Opaque<>
+  rust: bindings: remove more unnecessary Send/Sync impls
+
+ docs/devel/rust.rst             |  36 +++--
+ meson.build                     |   7 -
+ rust/hw/timer/hpet/src/hpet.rs  |  27 ++--
+ rust/qemu-api-macros/src/lib.rs |  86 +++++++++++-
+ rust/qemu-api/meson.build       |   7 +-
+ rust/qemu-api/src/bindings.rs   |  26 +---
+ rust/qemu-api/src/cell.rs       | 228 +++++++++++++++++++++++++++++++-
+ rust/qemu-api/src/chardev.rs    |   8 +-
+ rust/qemu-api/src/irq.rs        |  15 ++-
+ rust/qemu-api/src/memory.rs     |  37 +++---
+ rust/qemu-api/src/qdev.rs       |  75 +++++++----
+ rust/qemu-api/src/qom.rs        |  35 +++--
+ rust/qemu-api/src/sysbus.rs     |  40 +++++-
+ rust/qemu-api/src/timer.rs      |  47 ++++---
+ rust/qemu-api/src/vmstate.rs    |   3 +-
+ 15 files changed, 527 insertions(+), 150 deletions(-)
+
 -- 
 2.48.1
 
