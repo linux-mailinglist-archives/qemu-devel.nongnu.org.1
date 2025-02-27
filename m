@@ -2,96 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A64AA4812F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0D8A4812C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekY-0007Bu-Vh; Thu, 27 Feb 2025 09:20:31 -0500
+	id 1tnekZ-0007E5-Tr; Thu, 27 Feb 2025 09:20:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekR-00074F-7C
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tnekW-0007BV-BX
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekO-0003jW-HP
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:22 -0500
+ id 1tnekU-0003l0-Jx
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666019;
+ s=mimecast20190719; t=1740666025;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RntUDexksFwvMT7+4/zwxw40OZKETlpI3GYu/coQJlI=;
- b=DKPZupDbVCJVuo4t4ciXx8TIdgm2AYf+DOAqBxPHbmAsatkcabeEe12MJGf5h3eVqJPRVl
- eDXoom/B1za5Ty5A0GLQtdv8vYYQfLzmvCrLYXMLKzHnI5AQ5ezcEdl4LePyYgteYx2WGM
- MORdi5/nFE6KFJFcNcm/hThVom833s4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=d3SHEfAckc7eqDUyGo9AWwA42EPB6Qrfn1g2oHUJdAU=;
+ b=CsWg0BhZi5T+6H8wbTB40jcAEE7W0cQzhStkuvjMJFzcsbjybIYYPvBYhhUKkcJRca/aTj
+ OEf2GJOnCmP/YR9Ya3gFlNfeH5n7yzbOV/GehOGzGAncN1GFuUWa0b2br3yNfzYUDaYfHP
+ HjQVl2GLefQj+IkkB2yr8RiK7Idi7Pg=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-kwogPHaZNdSr2sPjRa_Qfg-1; Thu, 27 Feb 2025 09:20:18 -0500
-X-MC-Unique: kwogPHaZNdSr2sPjRa_Qfg-1
-X-Mimecast-MFC-AGG-ID: kwogPHaZNdSr2sPjRa_Qfg_1740666017
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5e0573b9f60so1028416a12.3
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:18 -0800 (PST)
+ us-mta-693-qS-PosQrNgCe_EzZkF2xFw-1; Thu, 27 Feb 2025 09:20:21 -0500
+X-MC-Unique: qS-PosQrNgCe_EzZkF2xFw-1
+X-Mimecast-MFC-AGG-ID: qS-PosQrNgCe_EzZkF2xFw_1740666020
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-abb7e837a7aso112748666b.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666016; x=1741270816;
+ d=1e100.net; s=20230601; t=1740666019; x=1741270819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RntUDexksFwvMT7+4/zwxw40OZKETlpI3GYu/coQJlI=;
- b=izjvTM0IEohcm2LbQDeDgyi5FHHFSxhUTYiCEdoTCBqjYm2I71H8qQpGfMyaDltekh
- jP0jn0VtZ+5pXQDThiNY+GYoDX9cOlI5USd8vrNtuJy103+7RiPpJ/R3MGLDEwYp9g3C
- 8m1hudRzyXl0HcEy9U0KcbPMupO+WegDgbaUhW93vJqlsG/DjufAuwPjmkZR/gKIJdpj
- HQ4U40uA+0cOh1rr8V65VsRygM/5vxphStDPTrla5n1EZRBL1bVCSOUfWDHKWKXRxGa4
- o14a7CRDhGbXLUCUAIp2P6qz5VifMTrnktrd2gOkI6NxH3H21D0nLQ4mWCgBVtLlytxP
- ApgA==
-X-Gm-Message-State: AOJu0Yz5ExW5yByvzJzMBRWEkEF1lFRFqmeH2tzf9BxfmCaZITEOD+d/
- GRB896lAYVSpP9gVmAPPXgVJIVy7CvawvGYKxsHZ1+QFX8YrMsYBgsSOUyjbnUwhAXBp3it0+hV
- X/HdqhslyflN9CV2qFxoZV8r54oDanTQmQZCXRax+J/kHNoH7uZuZIcRS2B7ThG+sXdl1qHd5B5
- gi4whLqxR2lso8kkbFY6+2yIytuvT77fGjdNnCwsc=
-X-Gm-Gg: ASbGnct3UjmhmplRE5LY5vjENP5Hup39z53f6rorO1Tdq8mPA4wrxx29nuuhzyXXqG0
- 6qA/iKvGf+9oMErPqFDesPK1ThIsm0GIPl9Y1eFjUDVQ3yYQVweTXPhLm2IGTzIT/jak03j0fyN
- gr8iYLFsvkViZn+pnLAduFbaZf6yx5+xlD1X4YYP1cT3ykarIMREduH+98Kxey46+Xs0Zv7hP3X
- /yzKsAbXKV5Sewmo5EdOoC3sgk+Tw425EMrlBsUFj871Gg/kt1csbLAOYt/o6ak5TNwN3/7u22y
- dGx6FV56Iz4iU1i8KJIq
-X-Received: by 2002:a05:6402:3554:b0:5de:5263:ae79 with SMTP id
- 4fb4d7f45d1cf-5e0b70f0041mr27989570a12.12.1740666016422; 
- Thu, 27 Feb 2025 06:20:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH9rccv8llgNynnIpHT98jNn2N6bzeWxaCSLX8hJwSQfyyn3+TQFQRqPmMSQUvBtNwarAxGNg==
-X-Received: by 2002:a05:6402:3554:b0:5de:5263:ae79 with SMTP id
- 4fb4d7f45d1cf-5e0b70f0041mr27989534a12.12.1740666015948; 
- Thu, 27 Feb 2025 06:20:15 -0800 (PST)
+ bh=d3SHEfAckc7eqDUyGo9AWwA42EPB6Qrfn1g2oHUJdAU=;
+ b=H4stA6ISuB44nWVu35SabXSygv7W9f6jAC5KxKq++syZXHDDUg+ve2ruqFWt+JGELm
+ IVtVczkuB76O0sOOsWpWadlZWWhit2HjI3hBsi629EAolPXOcPKw4MCEJuzbney5AzsV
+ skfA3+44AFRVfQPnGgmY2NqzNIuaBEy6avGL7Pkoowp8nnS2d/jS1BqKx2El8qeXRXOD
+ n7MN2D84aWxtw+6DnTwR310/UrsazThB4JY3pqfGENy+0jMXLX/bv+bc1rBmZ950fukh
+ yTxbn2O7uwt3UIa6/4WTfqFL6ReBY10wfatr/z7GP69WSDxruDCnk1C9jmnyQq/2PPSi
+ 4nvA==
+X-Gm-Message-State: AOJu0YyuoYBnJnKYOY7HAC9a1AktDG4K2IGVYoZlVj7SRwT2dh7gx+Vg
+ Z1SHPXSjcHToYYymnJex8kA7AdQ9P1icIzFAdkuDH23nfCY3g8MBy86jzzX54STXDWWiDWNACm2
+ XAp0Ia6NEDCvvSdg5yyQ4S7SrFvs1F7ZO3TJruxq908wCB42qTtnfV33ZfnPpbBp6KjD9JH8DXL
+ /zZH17u1bGiItkV6DuqAftS2SyJP5P7osLaRrzXE0=
+X-Gm-Gg: ASbGnctBaZTdCpbZ9PpLs/yNgYOJwxvoS/35hpQk8T52NkcwYqqz/YyJYd4601avsVg
+ /oZU+bOvd/Fl05ioFw+TLbQV4O/baBlDUGP5SPNJ+N6sBI3LcoGtPRJ+rBp+bo8Bje/pUiNlQLP
+ mCtOo5YZ81aN53Bju256RGOHuS+HH+tTbkxGshRT2WZgOLSw8MetPRpBctaJveIPS5tfoCtUNui
+ IPxEaIPdXUhqg6IRGbQbiZDmB5mLuWxuPbDzFj/cWdpkgpyoCTiFKJ5Cjv4AYwoBo5HO4vLvH3Z
+ TLm/TFD4n/56qTG+hrit
+X-Received: by 2002:a17:907:7801:b0:aa6:7737:199c with SMTP id
+ a640c23a62f3a-abc09a079d1mr2691813066b.15.1740666019119; 
+ Thu, 27 Feb 2025 06:20:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFparBIFnApYePY3cRqTgul9/BGUSE3ord1JQgKYxTV0MP1CgCcshqlW0JkCTbBtdyaVcZJuA==
+X-Received: by 2002:a17:907:7801:b0:aa6:7737:199c with SMTP id
+ a640c23a62f3a-abc09a079d1mr2691809166b.15.1740666018617; 
+ Thu, 27 Feb 2025 06:20:18 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3b6d252sm1173607a12.26.2025.02.27.06.20.14
+ a640c23a62f3a-abf0c6f60b2sm129205466b.102.2025.02.27.06.20.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:14 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:16 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 10/34] stub: Remove monitor-fd.c
-Date: Thu, 27 Feb 2025 15:19:28 +0100
-Message-ID: <20250227141952.811410-11-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 11/34] physmem: replace assertion with error
+Date: Thu, 27 Feb 2025 15:19:29 +0100
+Message-ID: <20250227141952.811410-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,54 +109,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+It is possible to start QEMU with a confidential-guest-support object
+even in TCG mode.  While there is already a check in qemu_machine_creation_done:
 
-Both monitor-fd.c and monitor-internal.c contain a stub for
-monitor_get_fd(), which causes a duplicate symbol linker error when
-linking rust-qemu-api-integration. Use monitor-internal.c instead of
-monitor-fd.c and remove the latter.
+    if (machine->cgs && !machine->cgs->ready) {
+        error_setg(errp, "accelerator does not support confidential guest %s",
+                   object_get_typename(OBJECT(machine->cgs)));
+        exit(1);
+    }
 
-Reported-by: Zhao Liu <zhao1.liu@intel.com>
-Suggested-by: Zhao Liu <zhao1.liu@intel.com>
-Fixes: fccb744f41c6 ("gdbstub: Try unlinking the unix socket before binding")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250217104900.230122-1-iii@linux.ibm.com
+the creation of RAMBlocks happens earlier, in qemu_init_board(), if
+the command line does not override the default memory backend with
+-M memdev.  Then the RAMBlock will try to use guest_memfd (because
+machine_require_guest_memfd correctly returns true; at least correctly
+according to the current implementation) and trigger the assertion
+failure for kvm_enabled().  This happend with a command line as
+simple as the following:
+
+    qemu-system-x86_64 -m 512 -nographic -object sev-snp-guest,reduced-phys-bits=48,id=sev0 \
+       -M q35,kernel-irqchip=split,confidential-guest-support=sev0
+    qemu-system-x86_64: ../system/physmem.c:1871: ram_block_add: Assertion `kvm_enabled()' failed.
+
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250217120812.396522-1-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/monitor-fd.c | 9 ---------
- stubs/meson.build  | 2 +-
- 2 files changed, 1 insertion(+), 10 deletions(-)
- delete mode 100644 stubs/monitor-fd.c
+ system/physmem.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/stubs/monitor-fd.c b/stubs/monitor-fd.c
-deleted file mode 100644
-index 9bb67498850..00000000000
---- a/stubs/monitor-fd.c
-+++ /dev/null
-@@ -1,9 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--
--#include "qemu/osdep.h"
--#include "monitor/monitor.h"
--
--int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
--{
--    abort();
--}
-diff --git a/stubs/meson.build b/stubs/meson.build
-index b0fee37e059..63392f5e785 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -62,7 +62,7 @@ if have_user
-     stub_ss.add(files('qdev.c'))
-   endif
+diff --git a/system/physmem.c b/system/physmem.c
+index 67bdf631e60..eff8b55c2dd 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1882,7 +1882,11 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+     if (new_block->flags & RAM_GUEST_MEMFD) {
+         int ret;
  
--  stub_ss.add(files('monitor-fd.c'))
-+  stub_ss.add(files('monitor-internal.c'))
- endif
+-        assert(kvm_enabled());
++        if (!kvm_enabled()) {
++            error_setg(errp, "cannot set up private guest memory for %s: KVM required",
++                       object_get_typename(OBJECT(current_machine->cgs)));
++            goto out_free;
++        }
+         assert(new_block->guest_memfd < 0);
  
- if have_system
+         ret = ram_block_discard_require(true);
 -- 
 2.48.1
 
