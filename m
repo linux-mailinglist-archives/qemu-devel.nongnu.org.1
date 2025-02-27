@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F5CA47935
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E614A47934
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:31:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnaEV-00089h-2s; Thu, 27 Feb 2025 04:31:14 -0500
+	id 1tnaEh-0008KQ-UP; Thu, 27 Feb 2025 04:31:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tnaE1-0007oH-Up; Thu, 27 Feb 2025 04:30:38 -0500
-Received: from fout-a6-smtp.messagingengine.com ([103.168.172.149])
+ id 1tnaEA-000836-AK; Thu, 27 Feb 2025 04:30:48 -0500
+Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tnaE0-0008Hv-8R; Thu, 27 Feb 2025 04:30:37 -0500
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal
- [10.202.2.44])
- by mailfout.phl.internal (Postfix) with ESMTP id 4725F1382F69;
- Thu, 27 Feb 2025 04:30:35 -0500 (EST)
+ id 1tnaE2-0008IR-FY; Thu, 27 Feb 2025 04:30:40 -0500
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal
+ [10.202.2.41])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 7F17D1140BC5;
+ Thu, 27 Feb 2025 04:30:37 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-04.internal (MEProxy); Thu, 27 Feb 2025 04:30:35 -0500
+ by phl-compute-01.internal (MEProxy); Thu, 27 Feb 2025 04:30:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm3; t=1740648635; x=
- 1740735035; bh=piQ0jCwd+gUw5pjvRr3WPHXU0ONE7wn4psJts59xtOw=; b=t
- u9OLu6EoGT6kW3oQCGxMXzIXa3kt5IuMzHYtFqYfs3XeXX/Hfb+mwT+ORTsRIy+a
- kG/brFAgzn0Lnr8ySjffcJLblpVKGK3JrDhjtALUdmNOSRQC2ITvhFA+AEGIoHMf
- BqhVfIV/XmKyR1pTvtliykpzQcvkZ0b2Uq90UdHE+yWI5j9usrMCb84DfkNlETxh
- QnacTjX+oPpm2Ouv5LvDQxPCGIqVDMhJkoz2aUo4/1K/DR3AvZx1IPh+mCpoQTFL
- zzhZJf2O3RpiByyL4rWP0poK7o3xfupXeiljqrYSOgNMbx7vfZF06zaoNkYgExCq
- w1WHjAOxWr6l9CV/RM8AA==
+ :reply-to:subject:subject:to:to; s=fm3; t=1740648637; x=
+ 1740735037; bh=dZuF08uJ1a3asratCM7/aWSmjseMjsdnXiaM51iax7c=; b=a
+ +setTad8dwBoTL3q7bqaxDl4T9l+wkl/JiqX3XLNKAn2FAGc1Rxqf972e0e/RKNB
+ aSQnrId4Q5Ao6hlgoGUD0fBBKnUWfKiC+PP1gn1UF8ScPA1Mp1IkmD2PnHXJIT2N
+ lZTp2LK402icLqGkTPerIPQX9fqKiDJk4dgcHFjy8y6XUOPhVxMRLmgPE1jnADoc
+ OSRVTxirM+iEnMIDl005kghQxppe4xbmZTb5EL+q5Hm+JdKnWvQlKDHG2qbgxsjl
+ 2QnT/OJyDAlGOCAbSsxYKATYRAAPxZoEBxPb19IbgSYR83I5Wi9ngYVXDtIQ89f4
+ +LU/NP0KqV0MzQiPNIBwg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm1; t=1740648635; x=1740735035; bh=p
- iQ0jCwd+gUw5pjvRr3WPHXU0ONE7wn4psJts59xtOw=; b=h+ARg9W3C2yBGU4QM
- wXuYVNpKRhxadfYFATc0jFujrhc2PY1qRtO0sypbHHw88sujxYbNjXEwGfF65t+w
- qhgrIDUyNJ/Eab6f92Ax7nwAuA8Yf2IXaLmCMFxnZQcU2tWZc5Uigkntu0jHSEob
- VHI7JFvY1EN+XlHUKCDxzxeiqYX2cDgoY5KnWoGt9OaceUNf11EucqGdQ2EkOgPx
- 8jpxOE8MSfx8lFIKhmrEz9UrxB4XRxZ6Ck4a3GJxMrBUd8Bqwh8XlaW6xBoY2ted
- /UydIarFCy4jyY3NG35tS2Sq7pAAwVlbPwF6gm/MlXrWPsig2+mkjS5bjl4CSy1h
- +/a1g==
-X-ME-Sender: <xms:uzDAZ1fra9PTyiN9iqmsFf8fA5kcttQFzAUYg_AQNyTBDzc1ydV-vw>
- <xme:uzDAZzN6jagzzZ6SEb5JYc3cerdGd6CA9pafVNfUoXsGeUhmeGgRDQ4VbrDGqiFkE
- yqTKotuy58PUxeHo1A>
-X-ME-Received: <xmr:uzDAZ-gxa7jx6Y1xcyr76FpcLs6kIdRK7OUEUqLMSHGCFT7QyLEclSLoSJ5yuMzSYnyXSS-K1R4-ewCdobGTqfP2>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjedutdcutefuodetggdotefrod
+ :x-me-sender:x-sasl-enc; s=fm1; t=1740648637; x=1740735037; bh=d
+ ZuF08uJ1a3asratCM7/aWSmjseMjsdnXiaM51iax7c=; b=1HWJQODbtZpGuCLGJ
+ /ihDO+wJ7ZzkY8/bIy3EHTkpmU/4Vkc4R6uVSreq6F841BKkgSirL5G5qyMvO6vl
+ b+Wl9pw2Ia8jOw8+tcaiCPxEoekTcfBo0GC+enbolyXM5zew3Pmlxv5URhFhmtm5
+ 2hFOVzbLfH8GWV0ID65ikcWXd5AYSTSv1dWIhRD4fMa8HSBNfPNa7fkzWOyXOfuM
+ oMyR2df3Yb5bGw2/+exd6oPUHq2g1kcjxgi7DBKDjmYH3k7uTaeoJNgRk2MxlQVz
+ OmWioyZYie5AoO8h1jx9YZy1i2+LR2pAKj3ynZ3aOhB3uhwdmquk1Gxmzkq7wF5f
+ f6QVg==
+X-ME-Sender: <xms:vTDAZ888TbspuB-hYZ06s2g2UbOIdUh-9XxO_TQPdlb9gaqvTBYTiQ>
+ <xme:vTDAZ0v6Tv1GwrokCa7V5uDynZSfkzAexku6o1NaEcHpBCI7fAaRdSAAUxW1zVCtS
+ _2ZQKlxc20LP2QU6zg>
+X-ME-Received: <xmr:vTDAZyBMBI6d6mKm-Yi9TWsTCDRGf_onmaGsMDux953NfMiUCZsRghrMCPbVwngLt_f-VTeK3ZoPFLlHjRx_tnrl>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeduudcutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
  necuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnth
  drughkqeenucggtffrrghtthgvrhhnpeejgfeilefgieevheekueevheehkeefveegiefg
- heefgfejjeehffefgedujedugeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+ heefgfejjeehffefgedujedugeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmh
  epmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphht
  thhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepqhgvmhhuqdguvghvvg
  hlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehl
@@ -66,14 +66,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjedutdcutefuodetgg
  grnhhtrdgukhdprhgtphhtthhopehsthgvfhgrnhhhrgesrhgvughhrghtrdgtohhmpdhr
  tghpthhtohepfhgrmhesvghuphhhohhnrdhnvghtpdhrtghpthhtohepphhhihhlmhguse
  hlihhnrghrohdrohhrgh
-X-ME-Proxy: <xmx:uzDAZ-8bPkvyN6i5QN5y-algER1Eo9aTohepY22ljM3MEkb3Kercdg>
- <xmx:uzDAZxtjIhVczOeVajAPUS2VmhLDtmUQwrDZvbPT1ywuXNOMYh24bw>
- <xmx:uzDAZ9EQeSw_B3D89OXQwt8_X1sW4lIZKoC1vg4k7je2S7SxVUnQOg>
- <xmx:uzDAZ4OA8eUsP_iwpt1P0WY_ZtyvVRvsS7aJgbvEkxHgKPgX-DoTJQ>
- <xmx:uzDAZ6GnWkewpSXnoEmyzQ7-4z3gaHQrBLaeoLej5TBxtxwXCyzW4VTr>
+X-ME-Proxy: <xmx:vTDAZ8eVnIZ86TFyb3XeTW46iUFQrb52dPTXRhhOVpyZWBQu_iQNCA>
+ <xmx:vTDAZxNU9OAxVKuK-1p-RmpqFibf3IIqWGzksOhQKpnrYBt1wI7EAg>
+ <xmx:vTDAZ2l6-8eUMrkDlcNvzAP6J5irifHz1osuwi7owHDgRnjmhPVBFA>
+ <xmx:vTDAZzsGd29xHrvIn-5tQ5WPDxsm9QN3Dq-1cBJWacyFUjYKrPBAww>
+ <xmx:vTDAZ1kLrdTWLYutfDWVvmtHsKTUb5EVc_LmnV3ORQyWmxzIc5-Gmnrs>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Feb 2025 04:30:33 -0500 (EST)
+ 27 Feb 2025 04:30:35 -0500 (EST)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -84,16 +84,16 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org
-Subject: [PULL 05/10] nvme: fix iocs status code values
-Date: Thu, 27 Feb 2025 10:30:12 +0100
-Message-ID: <20250227093018.11262-6-its@irrelevant.dk>
+Subject: [PULL 06/10] hw/nvme: be compliant wrt. dsm processing limits
+Date: Thu, 27 Feb 2025 10:30:13 +0100
+Message-ID: <20250227093018.11262-7-its@irrelevant.dk>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250227093018.11262-1-its@irrelevant.dk>
 References: <20250227093018.11262-1-its@irrelevant.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.149; envelope-from=its@irrelevant.dk;
- helo=fout-a6-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.152; envelope-from=its@irrelevant.dk;
+ helo=fhigh-a1-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -119,59 +119,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-The status codes related to I/O Command Sets are in the wrong group.
+The specification states that,
+
+> The controller shall set all three processing limit fields (i.e., the
+> DMRL, DMRSL and DMSL fields) to non-zero values or shall clear all
+> three processing limit fields to 0h.
+
+So, set the DMRL and DMSL fields in addition to DMRSL.
 
 Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c       | 4 ++--
- include/block/nvme.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ hw/nvme/ctrl.c       | 24 +++++++++++++++---------
+ include/block/nvme.h |  2 ++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 1ad76da943a6..2b73f601608f 100644
+index 2b73f601608f..86e1c48fab82 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -5681,7 +5681,7 @@ static uint16_t nvme_identify_ns(NvmeCtrl *n, NvmeRequest *req, bool active)
-         return nvme_c2h(n, (uint8_t *)&ns->id_ns, sizeof(NvmeIdNs), req);
-     }
+@@ -5639,7 +5639,9 @@ static uint16_t nvme_identify_ctrl_csi(NvmeCtrl *n, NvmeRequest *req)
+     switch (c->csi) {
+     case NVME_CSI_NVM:
+         id_nvm->vsl = n->params.vsl;
++        id_nvm->dmrl = NVME_ID_CTRL_NVM_DMRL_MAX;
+         id_nvm->dmrsl = cpu_to_le32(n->dmrsl);
++        id_nvm->dmsl = NVME_ID_CTRL_NVM_DMRL_MAX * n->dmrsl;
+         break;
  
--    return NVME_INVALID_CMD_SET | NVME_DNR;
-+    return NVME_INVALID_IOCS | NVME_DNR;
+     case NVME_CSI_ZONED:
+@@ -6696,18 +6698,23 @@ static uint16_t nvme_aer(NvmeCtrl *n, NvmeRequest *req)
+     return NVME_NO_COMPLETE;
  }
  
- static uint16_t nvme_identify_ctrl_list(NvmeCtrl *n, NvmeRequest *req,
-@@ -6647,7 +6647,7 @@ static uint16_t nvme_set_feature(NvmeCtrl *n, NvmeRequest *req)
-     case NVME_COMMAND_SET_PROFILE:
-         if (dw11 & 0x1ff) {
-             trace_pci_nvme_err_invalid_iocsci(dw11 & 0x1ff);
--            return NVME_CMD_SET_CMB_REJECTED | NVME_DNR;
-+            return NVME_IOCS_COMBINATION_REJECTED | NVME_DNR;
+-static void nvme_update_dmrsl(NvmeCtrl *n)
++static void nvme_update_dsm_limits(NvmeCtrl *n, NvmeNamespace *ns)
+ {
+-    int nsid;
++    if (ns) {
++        n->dmrsl =
++            MIN_NON_ZERO(n->dmrsl, BDRV_REQUEST_MAX_BYTES / nvme_l2b(ns, 1));
+ 
+-    for (nsid = 1; nsid <= NVME_MAX_NAMESPACES; nsid++) {
+-        NvmeNamespace *ns = nvme_ns(n, nsid);
++        return;
++    }
++
++    for (uint32_t nsid = 1; nsid <= NVME_MAX_NAMESPACES; nsid++) {
++        ns = nvme_ns(n, nsid);
+         if (!ns) {
+             continue;
          }
-         break;
-     case NVME_FDP_MODE:
+ 
+-        n->dmrsl = MIN_NON_ZERO(n->dmrsl,
+-                                BDRV_REQUEST_MAX_BYTES / nvme_l2b(ns, 1));
++        n->dmrsl =
++            MIN_NON_ZERO(n->dmrsl, BDRV_REQUEST_MAX_BYTES / nvme_l2b(ns, 1));
+     }
+ }
+ 
+@@ -6795,7 +6802,7 @@ static uint16_t nvme_ns_attachment(NvmeCtrl *n, NvmeRequest *req)
+             ctrl->namespaces[nsid] = NULL;
+             ns->attached--;
+ 
+-            nvme_update_dmrsl(ctrl);
++            nvme_update_dsm_limits(ctrl, NULL);
+ 
+             break;
+ 
+@@ -8902,8 +8909,7 @@ void nvme_attach_ns(NvmeCtrl *n, NvmeNamespace *ns)
+     n->namespaces[nsid] = ns;
+     ns->attached++;
+ 
+-    n->dmrsl = MIN_NON_ZERO(n->dmrsl,
+-                            BDRV_REQUEST_MAX_BYTES / nvme_l2b(ns, 1));
++    nvme_update_dsm_limits(n, ns);
+ }
+ 
+ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
 diff --git a/include/block/nvme.h b/include/block/nvme.h
-index 63eb74460eac..aecfc9ce66b4 100644
+index aecfc9ce66b4..763b2b2f0ec7 100644
 --- a/include/block/nvme.h
 +++ b/include/block/nvme.h
-@@ -906,8 +906,6 @@ enum NvmeStatusCodes {
-     NVME_SGL_DESCR_TYPE_INVALID = 0x0011,
-     NVME_INVALID_USE_OF_CMB     = 0x0012,
-     NVME_INVALID_PRP_OFFSET     = 0x0013,
--    NVME_CMD_SET_CMB_REJECTED   = 0x002b,
--    NVME_INVALID_CMD_SET        = 0x002c,
-     NVME_FDP_DISABLED           = 0x0029,
-     NVME_INVALID_PHID_LIST      = 0x002a,
-     NVME_LBA_RANGE              = 0x0080,
-@@ -940,6 +938,8 @@ enum NvmeStatusCodes {
-     NVME_INVALID_SEC_CTRL_STATE = 0x0120,
-     NVME_INVALID_NUM_RESOURCES  = 0x0121,
-     NVME_INVALID_RESOURCE_ID    = 0x0122,
-+    NVME_IOCS_COMBINATION_REJECTED = 0x012b,
-+    NVME_INVALID_IOCS           = 0x012c,
-     NVME_CONFLICTING_ATTRS      = 0x0180,
-     NVME_INVALID_PROT_INFO      = 0x0181,
-     NVME_WRITE_TO_RO            = 0x0182,
+@@ -1207,6 +1207,8 @@ typedef struct NvmeIdCtrlZoned {
+     uint8_t     rsvd1[4095];
+ } NvmeIdCtrlZoned;
+ 
++#define NVME_ID_CTRL_NVM_DMRL_MAX 255
++
+ typedef struct NvmeIdCtrlNvm {
+     uint8_t     vsl;
+     uint8_t     wzsl;
 -- 
 2.47.2
 
