@@ -2,91 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4A8A48D27
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 01:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1D5A48E44
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 03:00:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tno5j-0007xu-LK; Thu, 27 Feb 2025 19:18:59 -0500
+	id 1tnpfZ-0007by-Gs; Thu, 27 Feb 2025 21:00:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tno5g-0007wf-By
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 19:18:56 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from
+ <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com>)
+ id 1tnpfW-0007b9-Fq
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 21:00:02 -0500
+Received: from o12.p25.mailjet.com ([185.189.236.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tno5d-0003sw-Ql
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 19:18:55 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2211cd4463cso30330535ad.2
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 16:18:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740701931; x=1741306731; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+IgIJgHuUK+F2p+uThMoUAk2YCMJpN74jZllake+BnI=;
- b=sxkIHsu6uON7qaZ8iD2mCgfRG3g2Fqzkf1ilEaOoqowatw+N8Xq4V7V93/6XizDu6j
- yWrYcYTJJ9CgtT5/WPwr0EMGUkCuj8QqQZhobxZASqYAXlFQGY4fc2Xm7llJqAlWA501
- w+frOQua2tRM8GSffgCZ9CXW6L+WrMLrBB0suwKYroJH+U4GrFDEVeTt5ZAYAWyibcB3
- 2jl/hMAk7FmSboBiy+p6WHsTquG8dYf/O3IfsJX36sZ2GwmmYxB+2SOLPLSt1bCA/cPL
- vD95yzEl/BNl3YocPZ8sxPg2zLF+T0D85olqZUzJoASoAPqXqkvkz1dAE5VKblORLR//
- 2xHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740701931; x=1741306731;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+IgIJgHuUK+F2p+uThMoUAk2YCMJpN74jZllake+BnI=;
- b=S9YGJ0/O3jIedYJX7GfgnmDUwP7lvgcBigiex+LSeY4Bts24fGf0UYRp7aGTzVZp+X
- V6GvMk7nsmBJTbMTfkGgHqz9SbOZvkruf4AYJVoUoh23BmHLlVax5U/787JI3KUGy8CQ
- H4Q0dGprLHPVM4fIJLmYWyjoitjLgUgALkFgWDdsyKCKQLUD0yQMC/0bMRQyGYLkb65M
- cPqEnsoXQKLHX+DIHiy/462GwM7vnjxr1bqjXyF7fNFpOAPm4qq0hiK7Op9E36LUVknV
- Yh911VJI/4JzQy9Wc2KpKaT+z+nNVvrv2uFow3XrB2pD5ks2sZMyV3baOWspHCVOstxR
- w1hQ==
-X-Gm-Message-State: AOJu0YzndnJ6OaxTG7p3G6d9iTV1sBZitwWlqkyYuReZj+RAOkQ4VQDe
- 7QZ60+51eMO71unU0lOXUQLIL+ZqaLjOyKrWMKBA+O6sIgAwlx8OZAP3btx39AU=
-X-Gm-Gg: ASbGncsvLMqPHThedoM3/Uf85pSFoE3ElozGcmwWeYtcqwEqEXb9CU5dNPufFhPJoLb
- 6ccYXsgjcQU86Y1Ve7wNYJQmiXWbkz1X/hg0FXcuTkZBmzLjgs4fLYLFr7l7QRWeih1tc5M27Tc
- 29Hg80E6pZFpJtMP5XBmOw8zZe5+DgA3keXX7gUjDguV1D4MKYd6XdPQa1wgIICTpURS13Atjmn
- 7tbFK0VSacDPIC3kMUap9VR6eOpqSs3dxzpeLKJhe2jEoSpej8LN+YxzCcZNT1A9XYmuxmknTbx
- 1avgVH0zwLtRzyzm1U71yFg1XFF1ht10WjTL/a6Glnl4U/JNCKWmTNydW0kR5bV3kSyOWNg6v+1
- 3/LEz3b4=
-X-Google-Smtp-Source: AGHT+IE+oCx4fMmNrdpiOjUd7czQ9aaPNmrbpkqqbBB4Q0cRX6kfHXiUeoSPEAP6ZSv6/JV1clFjmw==
-X-Received: by 2002:a05:6a00:1914:b0:730:8f67:2dbb with SMTP id
- d2e1a72fcca58-734ac3832fcmr2292315b3a.13.1740701931315; 
- Thu, 27 Feb 2025 16:18:51 -0800 (PST)
-Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
- [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-734a0024d4bsm2452535b3a.104.2025.02.27.16.18.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Feb 2025 16:18:50 -0800 (PST)
-Message-ID: <05633317-0484-4595-94e5-c7fddbb2d283@linaro.org>
-Date: Thu, 27 Feb 2025 16:18:47 -0800
+ (Exim 4.90_1) (envelope-from
+ <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com>)
+ id 1tnpfU-0007PD-1C
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 21:00:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+ d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740715195;
+ h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe:list-unsubscribe-post:
+ cc:feedback-id:in-reply-to:references:x-csa-complaints:x-mj-mid:x-mj-smtpguid:
+ x-report-abuse-to:content-transfer-encoding;
+ bh=GXWbG44eui7Mwpp5Xz2SyJS+nkh+OwE/jSi4x/FzpTE=;
+ b=QfMlE35Rl0uX3WorDby9N0WHilfSfNpZa2W4H+VEyFV+QX0R7k9D0j19u
+ TOimsbzaHxpBFZTOrvg/SP8YOmDvkW3lZDzSASuqs0H8viFwqzyroRFVUMcC
+ v4vdtDj+DT5fWa5j7DLg9O6uoIQj2hE49vlog92pPwQMBSS7ic5k1Evk9tYW
+ FNKS5gQi68IZu7mo0WBOmeiTRl8RFrV372HMQGzYxst4ESFNVzIdUNUYYpXC
+ P474HKf7Ek2KMFNl/y7AXnJ/QqzvRl+1H5KAqlV5EKjVJBy82qANfF76eBF9
+ zJqlBnVK/VK9n41pK8xtw1Hm+RGV/uxAsZXScOnY8ZiKQ==
+Message-Id: <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@mailjet.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] target/arm: Correct LDRD atomicity and fault behaviour
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250227142746.1698904-1-peter.maydell@linaro.org>
- <20250227142746.1698904-2-peter.maydell@linaro.org>
- <69ae459d-90ff-441d-a039-ae3ee15c919e@linaro.org>
- <CAFEAcA8=P0hJz45RFEBQX7QySR6+RiDqFA8BS8HF_k-m9BdZDw@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8=P0hJz45RFEBQX7QySR6+RiDqFA8BS8HF_k-m9BdZDw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v7 16/16] sev: Provide sev_features flags from IGVM VMSA to
+ KVM_SEV_INIT2
+Date: Thu, 27 Feb 2025 14:29:34 +0000
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Sergio Lopez <slp@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Alistair Francis
+ <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Ani Sinha
+ <anisinha@redhat.com>, Joerg Roedel <jroedel@suse.com>
+Feedback-Id: 42.3031119.2785883:MJ
+In-Reply-To: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
+References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid: AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRibwQ-T-AXiRTKgcZEht5cGTAAqgls
+X-MJ-SMTPGUID: 718a7d47-8b5b-4438-b1dc-96456ee847b9
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+ abuse@mailjet.com with a copy of the message
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=185.189.236.12;
+ envelope-from=4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com;
+ helo=o12.p25.mailjet.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,68 +86,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/27/25 09:58, Peter Maydell wrote:
-> On Thu, 27 Feb 2025 at 17:41, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> On 2/27/25 06:27, Peter Maydell wrote:
->>> +static void do_ldrd_load(DisasContext *s, TCGv_i32 addr, int rt, int rt2)
->>> +{
->>> +    /*
->>> +     * LDRD is required to be an atomic 64-bit access if the
->>> +     * address is 8-aligned, two atomic 32-bit accesses if
->>> +     * it's only 4-aligned, and to give an alignemnt fault
->>> +     * if it's not 4-aligned.
->>> +     * Rt is always the word from the lower address, and Rt2 the
->>> +     * data from the higher address, regardless of endianness.
->>> +     * So (like gen_load_exclusive) we avoid gen_aa32_ld_i64()
->>> +     * so we don't get its SCTLR_B check, and instead do a 64-bit access
->>> +     * using MO_BE if appropriate and then split the two halves.
->>> +     *
->>> +     * This also gives us the correct behaviour of not updating
->>> +     * rt if the load of rt2 faults; this is required for cases
->>> +     * like "ldrd r2, r3, [r2]" where rt is also the base register.
->>> +     */
->>> +    int mem_idx = get_mem_index(s);
->>> +    MemOp opc = MO_64 | MO_ALIGN_4 | MO_ATOM_SUBALIGN | s->be_data;
->>
->> The 64-bit atomicity begins with armv7 + LPAE, and not present for any m-profile.
->> Worth checking ARM_FEATURE_LPAE, or at least adding to the comment?
->>
->> Getting 2 x 4-byte atomicity, but not require 8-byte atomicity, would use
->> MO_ATOM_IFALIGN_PAIR.
-> 
-> Definitely worth a comment at minimum. Do we generate better
-> code for MO_ATOM_IFALIGN_PAIR ? (If not, then providing higher
-> atomicity than the architecture mandates seems harmless.)
+IGVM files can contain an initial VMSA that should be applied to each
+vcpu as part of the initial guest state. The sev_features flags are
+provided as part of the VMSA structure. However, KVM only allows
+sev_features to be set during initialization and not as the guest is
+being prepared for launch.
 
-We could, but currently do not, generate better code for IFALIGN_PAIR for MO_64. 
-Currently the only place we take special care is for MO_128.
+This patch queries KVM for the supported set of sev_features flags and
+processes the IGVM file during kvm_init to determine any sev_features
+flags set in the IGVM file. These are then provided in the call to
+KVM_SEV_INIT2 to ensure the guest state matches that specified in the
+IGVM file.
 
-> For the comment in memop.h that currently reads
->       * MO_ATOM_SUBALIGN: the operation is single-copy atomic by parts
->       *    by the alignment.  E.g. if the address is 0 mod 4, then each
->       *    4-byte subobject is single-copy atomic.
->       *    This is the atomicity e.g. of IBM Power.
-> 
-> maybe we could expand the e.g:
-> 
->    E.g if an 8-byte value is accessed at an address which is 0 mod 8,
->    then the whole 8-byte access is single-copy atomic; otherwise,
->    if it is accessed at 0 mod 4 then each 4-byte subobject is
->    single-copy atomic; otherwise if it is accessed at 0 mod 2
->    then the four 2-byte subobjects are single-copy atomic.
-> 
-> ?
+This does cause the IGVM file to be processed twice. Firstly to extract
+the sev_features then secondly to actually configure the guest. However,
+the first pass is largely ignored meaning the overhead is minimal.
 
-Yes, that's correct.
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ target/i386/sev.c | 160 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 141 insertions(+), 19 deletions(-)
 
-> I wasn't sure when reading what we currently have whether
-> it provided the 8-byte-aligned guarantee, rather than merely
-> the 4-byte-aligned one.
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index fa9b4bcad6..ef25e64b14 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -117,6 +117,8 @@ struct SevCommonState {
+     uint32_t cbitpos;
+     uint32_t reduced_phys_bits;
+     bool kernel_hashes;
++    uint64_t sev_features;
++    uint64_t supported_sev_features;
+ 
+     /* runtime state */
+     uint8_t api_major;
+@@ -492,7 +494,40 @@ static void sev_apply_cpu_context(CPUState *cpu)
+     }
+ }
+ 
+-static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
++static int check_sev_features(SevCommonState *sev_common, uint64_t sev_features,
++                              Error **errp)
++{
++    /*
++     * Ensure SEV_FEATURES is configured for correct SEV hardware and that
++     * the requested features are supported. If SEV-SNP is enabled then
++     * that feature must be enabled, otherwise it must be cleared.
++     */
++    if (sev_snp_enabled() && !(sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
++        error_setg(
++            errp,
++            "%s: SEV_SNP is enabled but is not enabled in VMSA sev_features",
++            __func__);
++        return -1;
++    } else if (!sev_snp_enabled() &&
++               (sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
++        error_setg(
++            errp,
++            "%s: SEV_SNP is not enabled but is enabled in VMSA sev_features",
++            __func__);
++        return -1;
++    }
++    if (sev_features & ~sev_common->supported_sev_features) {
++        error_setg(errp,
++                   "%s: VMSA contains unsupported sev_features: %lX, "
++                   "supported features: %lX",
++                   __func__, sev_features, sev_common->supported_sev_features);
++        return -1;
++    }
++    return 0;
++}
++
++static int check_vmsa_supported(SevCommonState *sev_common, hwaddr gpa,
++                                const struct sev_es_save_area *vmsa,
+                                 Error **errp)
+ {
+     struct sev_es_save_area vmsa_check;
+@@ -558,24 +593,10 @@ static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
+     vmsa_check.x87_fcw = 0;
+     vmsa_check.mxcsr = 0;
+ 
+-    if (sev_snp_enabled()) {
+-        if (vmsa_check.sev_features != SVM_SEV_FEAT_SNP_ACTIVE) {
+-            error_setg(errp,
+-                       "%s: sev_features in the VMSA contains an unsupported "
+-                       "value. For SEV-SNP, sev_features must be set to %x.",
+-                       __func__, SVM_SEV_FEAT_SNP_ACTIVE);
+-            return -1;
+-        }
+-        vmsa_check.sev_features = 0;
+-    } else {
+-        if (vmsa_check.sev_features != 0) {
+-            error_setg(errp,
+-                       "%s: sev_features in the VMSA contains an unsupported "
+-                       "value. For SEV-ES and SEV, sev_features must be "
+-                       "set to 0.", __func__);
+-            return -1;
+-        }
++    if (check_sev_features(sev_common, vmsa_check.sev_features, errp) < 0) {
++        return -1;
+     }
++    vmsa_check.sev_features = 0;
+ 
+     if (!buffer_is_zero(&vmsa_check, sizeof(vmsa_check))) {
+         error_setg(errp,
+@@ -1729,6 +1750,39 @@ static int sev_snp_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_SNP_VM;
+ }
+ 
++static int sev_init_supported_features(ConfidentialGuestSupport *cgs,
++                                       SevCommonState *sev_common, Error **errp)
++{
++    X86ConfidentialGuestClass *x86_klass =
++                               X86_CONFIDENTIAL_GUEST_GET_CLASS(cgs);
++    /*
++     * Older kernels do not support query or setting of sev_features. In this
++     * case the set of supported features must be zero to match the settings
++     * in the kernel.
++     */
++    if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) ==
++        KVM_X86_DEFAULT_VM) {
++        sev_common->supported_sev_features = 0;
++        return 0;
++    }
++
++    /* Query KVM for the supported set of sev_features */
++    struct kvm_device_attr attr = {
++        .group = KVM_X86_GRP_SEV,
++        .attr = KVM_X86_SEV_VMSA_FEATURES,
++        .addr = (unsigned long)&sev_common->supported_sev_features,
++    };
++    if (kvm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr) < 0) {
++        error_setg(errp, "%s: failed to query supported sev_features",
++                   __func__);
++        return -1;
++    }
++    if (sev_snp_enabled()) {
++        sev_common->supported_sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
++    }
++    return 0;
++}
++
+ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ {
+     char *devname;
+@@ -1809,6 +1863,10 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         }
+     }
+ 
++    if (sev_init_supported_features(cgs, sev_common, errp) < 0) {
++        return -1;
++    }
++
+     trace_kvm_sev_init();
+     switch (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common))) {
+     case KVM_X86_DEFAULT_VM:
+@@ -1820,6 +1878,39 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     case KVM_X86_SEV_ES_VM:
+     case KVM_X86_SNP_VM: {
+         struct kvm_sev_init args = { 0 };
++        MachineState *machine = MACHINE(qdev_get_machine());
++        X86MachineState *x86machine = X86_MACHINE(qdev_get_machine());
++
++        /*
++         * If configuration is provided via an IGVM file then the IGVM file
++         * might contain configuration of the initial vcpu context. For SEV
++         * the vcpu context includes the sev_features which should be applied
++         * to the vcpu.
++         *
++         * KVM does not synchronize sev_features from CPU state. Instead it
++         * requires sev_features to be provided as part of this initialization
++         * call which is subsequently automatically applied to the VMSA of
++         * each vcpu.
++         *
++         * The IGVM file is normally processed after initialization. Therefore
++         * we need to pre-process it here to extract sev_features in order to
++         * provide it to KVM_SEV_INIT2. Each cgs_* function that is called by
++         * the IGVM processor detects this pre-process by observing the state
++         * as SEV_STATE_UNINIT.
++         */
++        if (x86machine->igvm) {
++            if (IGVM_CFG_GET_CLASS(x86machine->igvm)
++                    ->process(x86machine->igvm, machine->cgs, errp) == -1) {
++                return -1;
++            }
++            /*
++             * KVM maintains a bitmask of allowed sev_features. This does not
++             * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
++             * itself. Therefore we need to clear this flag.
++             */
++            args.vmsa_features = sev_common->sev_features &
++                                 ~SVM_SEV_FEAT_SNP_ACTIVE;
++        }
+ 
+         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
+         break;
+@@ -2424,6 +2515,24 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
+ 
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        if ((cpu_index == 0) && (memory_type == CGS_PAGE_TYPE_VMSA)) {
++            const struct sev_es_save_area *sa =
++                (const struct sev_es_save_area *)ptr;
++            if (len < sizeof(*sa)) {
++                error_setg(errp, "%s: invalid VMSA length encountered",
++                           __func__);
++                return -1;
++            }
++            if (check_sev_features(sev_common, sa->sev_features, errp) < 0) {
++                return -1;
++            }
++            sev_common->sev_features = sa->sev_features;
++        }
++        return 0;
++    }
++
+     if (!sev_enabled()) {
+         error_setg(errp, "%s: attempt to configure guest memory, but SEV "
+                      "is not enabled", __func__);
+@@ -2443,7 +2552,8 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+                        __func__);
+             return -1;
+         }
+-        if (check_vmsa_supported(gpa, (const struct sev_es_save_area *)ptr,
++        if (check_vmsa_supported(sev_common, gpa,
++                                 (const struct sev_es_save_area *)ptr,
+                                  errp) < 0) {
+             return -1;
+         }
+@@ -2500,6 +2610,12 @@ static int cgs_get_mem_map_entry(int index,
+     struct e820_entry *table;
+     int num_entries;
+ 
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        return 1;
++    }
++
+     num_entries = e820_get_table(&table);
+     if ((index < 0) || (index >= num_entries)) {
+         return 1;
+@@ -2531,6 +2647,12 @@ static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+                                 uint32_t policy_data1_size, void *policy_data2,
+                                 uint32_t policy_data2_size, Error **errp)
+ {
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        return 0;
++    }
++
+     if (policy_type != GUEST_POLICY_SEV) {
+         error_setg(errp, "%s: Invalid guest policy type provided for SEV: %d",
+         __func__, policy_type);
+-- 
+2.43.0
 
-I was trying to highlight the difference between SUBALIGN and IFALIGN, and perhaps didn't 
-do adequate job of it.
-
-r~
 
