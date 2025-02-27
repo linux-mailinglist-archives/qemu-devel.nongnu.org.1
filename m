@@ -2,64 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7105A47865
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 09:57:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133EFA47887
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:02:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnZgv-0003fG-Bn; Thu, 27 Feb 2025 03:56:25 -0500
+	id 1tnZlk-0000Ie-6o; Thu, 27 Feb 2025 04:01:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgs-0003eo-U8
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:22 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tnZlV-0000Hw-S3
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:01:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgm-0001lP-13
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:17 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tnZlS-0002cp-O8
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:01:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740646574;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1740646865;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZAqUbCDnvWBy3/Czvf3EyM7BKzjbQa1Io3/kPYioLn4=;
- b=AtRsSFWH1D1KW6ryWebm6uS2Tf27d1YX3fd0lUI4Tlr9UJVUlNiTYFxAA9CRKwqYC3xtAh
- 2efy55oOSAD4+Fdjy6PaCmeOqJba1wcawLQke1iOpdEToELneZcz1vsGP6CWtukTyAfTkd
- UtmZ5bk1nJKyPJEw/TMGyzvLjEHFU6c=
+ bh=Mgg6KjhrYkIcoGwH/ktg3sCvG/7sEtt9Rd9CNLKCkDQ=;
+ b=dZXo+bTCJA3MGaHgGNZxvSHW3x6R0ZgQ4jxUqOxMn8GwsZJgQBTPDahpQRVBri7gPygODg
+ 20+YLnVK7oI9R+GMHM9f21RFwUx+R/shLSXg71ieihoGKPS1GFSbrBrMH4zTtmJ3sxW8iD
+ 7K17Sdt5bQxQ5wsYOoxb+YwabDk3uBs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-519-6gGadRUQNNecCyBS_RyoJA-1; Thu,
- 27 Feb 2025 03:56:09 -0500
-X-MC-Unique: 6gGadRUQNNecCyBS_RyoJA-1
-X-Mimecast-MFC-AGG-ID: 6gGadRUQNNecCyBS_RyoJA_1740646568
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-JFGrtdE5PZW3Mo9cRN8ibQ-1; Thu,
+ 27 Feb 2025 04:01:01 -0500
+X-MC-Unique: JFGrtdE5PZW3Mo9cRN8ibQ-1
+X-Mimecast-MFC-AGG-ID: JFGrtdE5PZW3Mo9cRN8ibQ_1740646860
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CF87B180034A; Thu, 27 Feb 2025 08:56:08 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ id 6569B180098D; Thu, 27 Feb 2025 09:00:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.99])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DF8F180035E; Thu, 27 Feb 2025 08:56:07 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1A62721E65FF; Thu, 27 Feb 2025 09:56:02 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	berrange@redhat.com,
-	eduardo@habkost.net
-Subject: [PATCH v2 6/6] qdev: Improve a few more PropertyInfo @description
- members
-Date: Thu, 27 Feb 2025 09:56:01 +0100
-Message-ID: <20250227085601.4140852-7-armbru@redhat.com>
-In-Reply-To: <20250227085601.4140852-1-armbru@redhat.com>
-References: <20250227085601.4140852-1-armbru@redhat.com>
+ id 7209B180087F; Thu, 27 Feb 2025 09:00:54 +0000 (UTC)
+Date: Thu, 27 Feb 2025 09:00:50 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v2 2/3] tests/functional: Introduce the dso_suffix() helper
+Message-ID: <Z8ApwkWmJygfNfq7@redhat.com>
+References: <20250220080215.49165-1-philmd@linaro.org>
+ <20250220080215.49165-3-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250220080215.49165-3-philmd@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -81,84 +91,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- hw/block/xen-block.c             | 2 +-
- hw/core/qdev-properties-system.c | 2 +-
- hw/core/qdev-properties.c        | 1 +
- hw/s390x/ccw-device.c            | 4 ++--
- target/sparc/cpu.c               | 1 +
- 5 files changed, 6 insertions(+), 4 deletions(-)
+On Thu, Feb 20, 2025 at 09:02:14AM +0100, Philippe Mathieu-Daudé wrote:
+> Introduce a helper to get the default shared library
+> suffix used on the host.
+> 
+> Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  tests/functional/qemu_test/__init__.py | 2 +-
+>  tests/functional/qemu_test/cmd.py      | 1 -
+>  tests/functional/qemu_test/config.py   | 6 ++++++
+>  3 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+> index 5c972843a6d..45f7befa374 100644
+> --- a/tests/functional/qemu_test/__init__.py
+> +++ b/tests/functional/qemu_test/__init__.py
+> @@ -7,7 +7,7 @@
+>  
+>  
+>  from .asset import Asset
+> -from .config import BUILD_DIR
+> +from .config import BUILD_DIR, dso_suffix
+>  from .cmd import is_readable_executable_file, \
+>      interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+>      exec_command, exec_command_and_wait_for_pattern, get_qemu_img, which
+> diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
+> index dc5f422b77d..254e23ef748 100644
+> --- a/tests/functional/qemu_test/cmd.py
+> +++ b/tests/functional/qemu_test/cmd.py
+> @@ -15,7 +15,6 @@
+>  import os
+>  import os.path
+>  
+> -
+>  def which(tool):
+>      """ looks up the full path for @tool, returns None if not found
+>          or if @tool does not have executable permissions.
+> diff --git a/tests/functional/qemu_test/config.py b/tests/functional/qemu_test/config.py
+> index edd75b7fd06..0eab1baa541 100644
+> --- a/tests/functional/qemu_test/config.py
+> +++ b/tests/functional/qemu_test/config.py
+> @@ -13,6 +13,7 @@
+>  
+>  import os
+>  from pathlib import Path
+> +import platform
+>  
+>  
+>  def _source_dir():
+> @@ -34,3 +35,8 @@ def _build_dir():
+>      raise Exception("Cannot identify build dir, set QEMU_BUILD_ROOT")
+>  
+>  BUILD_DIR = _build_dir()
+> +
+> +def dso_suffix():
+> +    '''Return the dynamic libraries suffix for the current platform'''
+> +    DSO_SUFFIXES = { 'Linux': 'so', 'Darwin': 'dylib', 'Windows': 'dll' }
+> +    return DSO_SUFFIXES[platform.system()]
 
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index 7c9d1b658c..2098286b5f 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -662,7 +662,7 @@ invalid:
-  */
- static const PropertyInfo xen_block_prop_vdev = {
-     .type  = "str",
--    .description = "Virtual Disk specifier: d*p*/xvd*/hd*/sd*",
-+    .description = "Virtual Disk specifier (d*p*/xvd*/hd*/sd*)",
-     .get = xen_block_get_vdev,
-     .set = xen_block_set_vdev,
- };
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index aa7600bce6..1f01eb3e59 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -985,7 +985,7 @@ inval:
- 
- const PropertyInfo qdev_prop_pci_host_devaddr = {
-     .type = "str",
--    .description = "Address (bus/device/function) of "
-+    .description = "Address (bus:device.function) of "
-                    "the host device, example: 04:10.0",
-     .get = get_pci_host_devaddr,
-     .set = set_pci_host_devaddr,
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 5a801057db..c04df3b337 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -247,6 +247,7 @@ static void set_bool(Object *obj, Visitor *v, const char *name, void *opaque,
- 
- const PropertyInfo qdev_prop_bool = {
-     .type  = "bool",
-+    .description = "on/off",
-     .get   = get_bool,
-     .set   = set_bool,
-     .set_default_value = set_default_value_bool,
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index 1d4b8ea35c..1ea9934f6c 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -75,8 +75,8 @@ static void ccw_device_set_loadparm(Object *obj, Visitor *v,
- 
- const PropertyInfo ccw_loadparm = {
-     .type  = "str",
--    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to pass"
--            " to the guest loader/kernel",
-+    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to select"
-+            " a guest kernel",
-     .get = ccw_device_get_loadparm,
-     .set = ccw_device_set_loadparm,
- };
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index c8ea35be76..f0613f8a8e 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -939,6 +939,7 @@ static void sparc_set_nwindows(Object *obj, Visitor *v, const char *name,
- 
- static const PropertyInfo qdev_prop_nwindows = {
-     .type  = "int",
-+    .description = "Number of register windows",
-     .get   = sparc_get_nwindows,
-     .set   = sparc_set_nwindows,
- };
+Windows and Darwin are the two odd-ball platforms we target, Linux and
+all the BSDs use .so, so it makes sense to use .so as the general
+fallback, at which point I'm not sure the lookup table is worthwhile
+compared to:
+
+  if platform.system() == "Darwin"
+    return "dylib"
+  elif platform.system() == "Windows"
+    return "dll"
+  else
+    return "so"
+
+With regards,
+Daniel
 -- 
-2.48.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
