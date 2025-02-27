@@ -2,49 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B86CA47B4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C979A47B2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:05:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnbhD-0005Nz-OB; Thu, 27 Feb 2025 06:04:51 -0500
+	id 1tnbgW-0004l7-Pd; Thu, 27 Feb 2025 06:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgV-0004mS-UZ; Thu, 27 Feb 2025 06:04:08 -0500
+ id 1tnbgR-0004k7-J4; Thu, 27 Feb 2025 06:04:03 -0500
 Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgS-0007Tk-65; Thu, 27 Feb 2025 06:04:07 -0500
+ id 1tnbgP-0007SH-Lu; Thu, 27 Feb 2025 06:04:03 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 52BC4615A3;
+ by tor.source.kernel.org (Postfix) with ESMTP id 374ED6158A;
  Thu, 27 Feb 2025 11:03:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27009C4CEF6;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3E8C4AF0E;
  Thu, 27 Feb 2025 11:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1740654238;
- bh=k5E8zYD/Vp0nYR8SBW8TZ3Ix4TuME3pXjKPF5NCHL7s=;
+ bh=WNgUSU0OrqFnvTXh8PzzTv6ghTQeysRMH1deXYrrJ9Y=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BAXPfdMCrMPBU7IgB4t5XJ/BQJkIRXb3OenmvoEGV4Kdd50m7ma1vEVvieXJZukEZ
- A7LtOryDUG0ckFqqhJe+EOA0fYBiSIeV9OQ9RIPAUclFn4ZOAkmbGAo3P+uYdiUMgV
- OwKAS5LOWxSd5r9Od4gSIg8P4BWp5eNVnVajF0T87Qqe/f/XO9/zeFeR7M16F4F1Gu
- OQZ9TwjXl0GLFKR3AqMkwjmQ0Mh++ctP2xmR/7UBeO6FzLnJcvJbADB3IP/xayIA/2
- wx/ikDbMTa7UdxI/QqDML8wIK2mJ9tnAiIIIkIJCHawV8KyElEHDbI7asWC/nLrBJu
- HD6dQSXCxIc/Q==
+ b=ceS2Ouo7w7r7EK2hzfN0o273SzOemxtLhuz1YLh83NAH4zAI8qSohfhFBUH1+JgL5
+ BU0UTEwqn8wHHwcvKlfm84H11GFSZxCFCl98ySElP1O7mH6NqsR3pqqSTsfsNe0PTN
+ eWKZH94cyqi4J+w8/B6+uteOLjoQ9TqadLzBQT+KiFP0fwJe1ecvsm8p5KFDu/qcb4
+ eOsH0ogozoESxmyfPFtR5jr8esgyFJBO+GbrDAZ1jU8GgWHltGksQlwO0Ktx2KbFgf
+ VCzLva6CXkFnkFmL64BLjW2IKNfOFjUS1wMAtLwS7ymFgMgVsXGT9LqldXJJ5iQCIT
+ fdo8dPJooCYpw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgK-00000001mRA-181Y; Thu, 27 Feb 2025 12:03:56 +0100
+ id 1tnbgK-00000001mRE-1Eo9; Thu, 27 Feb 2025 12:03:56 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v5 10/21] acpi/ghes: create an ancillary acpi_ghes_get_state()
- function
-Date: Thu, 27 Feb 2025 12:03:40 +0100
-Message-ID: <a84cb4567f087231991ce05980d2f331b772dab5.1740653898.git.mchehab+huawei@kernel.org>
+ Ani Sinha <anisinha@redhat.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 11/21] acpi/generic_event_device: Update GHES migration to
+ cover hest addr
+Date: Thu, 27 Feb 2025 12:03:41 +0100
+Message-ID: <8fb7cb334faa6ce86630899565ef57d1ba366873.1740653898.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1740653898.git.mchehab+huawei@kernel.org>
 References: <cover.1740653898.git.mchehab+huawei@kernel.org>
@@ -73,33 +72,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of having a function to check if ACPI is enabled
-(acpi_ghes_present), change its logic to be more generic,
-returing a pointed to AcpiGhesState.
-
-Such change allows cleanup the ghes GED state code, avoiding
-to read it multiple times, and simplifying the code.
+The GHES migration logic should now support HEST table location too.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by:  Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ghes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index c3a64adfe5ed..0135ac844bcf 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -608,7 +608,7 @@ AcpiGhesState *acpi_ghes_get_state(void)
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index c85d97ca3776..5346cae573b7 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -386,6 +386,34 @@ static const VMStateDescription vmstate_ghes_state = {
      }
-     ags = &acpi_ged_state->ghes_state;
+ };
  
--    if (!ags->hw_error_le) {
-+    if (!ags->hw_error_le && !ags->hest_addr_le) {
-         return NULL;
++static const VMStateDescription vmstate_hest = {
++    .name = "acpi-hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static bool hest_needed(void *opaque)
++{
++    AcpiGedState *s = opaque;
++    return s->ghes_state.hest_addr_le;
++}
++
++static const VMStateDescription vmstate_hest_state = {
++    .name = "acpi-ged/hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = hest_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
++                       vmstate_hest, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_acpi_ged = {
+     .name = "acpi-ged",
+     .version_id = 1,
+@@ -398,6 +426,7 @@ static const VMStateDescription vmstate_acpi_ged = {
+         &vmstate_memhp_state,
+         &vmstate_cpuhp_state,
+         &vmstate_ghes_state,
++        &vmstate_hest_state,
+         NULL
      }
-     return ags;
+ };
 -- 
 2.48.1
 
