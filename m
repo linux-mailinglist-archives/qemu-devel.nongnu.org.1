@@ -2,60 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE097A47B92
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF15A47B30
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:05:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnbgv-00053P-Ro; Thu, 27 Feb 2025 06:04:33 -0500
+	id 1tnbgW-0004kw-PE; Thu, 27 Feb 2025 06:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgT-0004ki-Kd; Thu, 27 Feb 2025 06:04:05 -0500
+ id 1tnbgR-0004k6-Gg; Thu, 27 Feb 2025 06:04:03 -0500
 Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgP-0007SF-RE; Thu, 27 Feb 2025 06:04:04 -0500
+ id 1tnbgP-0007SG-KF; Thu, 27 Feb 2025 06:04:03 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 2AA596155A;
- Thu, 27 Feb 2025 11:03:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5E3C4CEEE;
+ by tor.source.kernel.org (Postfix) with ESMTP id E872E61521;
+ Thu, 27 Feb 2025 11:03:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D4CC4CEEA;
  Thu, 27 Feb 2025 11:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1740654238;
- bh=oN+y/NJZCBdygHU7yu4YFzn7ilHK4n88/7YjliN/sbU=;
- h=From:To:Cc:Subject:Date:From;
- b=bsxd4MpugxXY5vMy+dbiIOpauoY928bGuF/0UYgTNg9V3b/cv9y2elOfZcYMVG/5a
- GP2mvQqI0BgKeaDSa+/jbedcwfReBQO+0QadhyMBVnMa06zCSWCFQvXtOK4Rc70vpl
- 6HGxHpAP3JmfNJC3g8woWsXmDPv2pYm/dDOAi5UO4od3RioHARhgEx1Nn1j5sY3NnR
- Yxt7BS1alBvoDwd2naLzzLBuU7BQ2C3lfGtuA6jHQgUNXA/96s551zm4Gau5igfVRz
- 3ofC3/clBGM6AcyCo/DOuhsHCzjP1Xf+KaB5LvM6CSZstqrN+W7rEDaN/CRiCj/m2t
- BUnl9nhUbE30g==
+ bh=WFSs/B3Y34immM1a4OhkanKgJ7jJZGY58fcV+6YM6P4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=iEg0GYNrvGcLEdkYD3sIqziy/IPNKk8xMz9vEDSXYibyAXRX6mnL1hO4hT/QkXcMX
+ tiwTsroWWil5RobhnMO5dXKnEUghjC/UrH43z5SGmMuY3nN7W0oyWbuFClOsUzgDsK
+ ZEY6CsWXr0mlUV6rcgZf/ooNykBBL8Dih0DrZZpcFigfzinlpltlkFIELrxTQWQ3q/
+ zEVgm+slR3VF7AnbmrlQhz8PzdFKt6DE6lB6G+v5LMdiLkP0L1A2JuGTUAA+1ApUPg
+ tJj37K1ierPwX5R+7239UhwqZyQAxY1HfndMldXXz7xdyt3emqM37rv1+pYAd9/DXW
+ u5q5Z/Y2gL9Xw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tnbgK-00000001mQX-00jM; Thu, 27 Feb 2025 12:03:56 +0100
+ id 1tnbgK-00000001mQa-07zQ; Thu, 27 Feb 2025 12:03:56 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- John Snow <jsnow@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v5 00/21]Change ghes to use HEST-based offsets and add support
- for error inject
-Date: Thu, 27 Feb 2025 12:03:30 +0100
-Message-ID: <cover.1740653898.git.mchehab+huawei@kernel.org>
+ Ani Sinha <anisinha@redhat.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 01/21] tests/acpi: virt: add an empty HEST file
+Date: Thu, 27 Feb 2025 12:03:31 +0100
+Message-ID: <3da2d197610ada25dacaee54d113fb87c5448b04.1740653898.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1740653898.git.mchehab+huawei@kernel.org>
+References: <cover.1740653898.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2600:3c04::f03c:95ff:fe5e:7468;
@@ -81,111 +71,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the ghes preparation patches were merged, let's add support
-for error injection.
+Such file will be used to track HEST table changes.
 
-On this version, HEST table got added to ACPI tables testing for aarch64 virt.
+For now, disallow HEST table check until we update it to the
+current data.
 
-There are also some patch reorder to help reviewers to check the changes.
-
-The code itself is almost identical to v4, with just a few minor nits addressed.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
-v5:
-- make checkpatch happier;
-- HEST table is now tested;
-- some changes at HEST spec documentation to align with code changes;
-- extra care was taken with regards to git bisectability.
-
-v4:
-- added an extra comment for AcpiGhesState structure;
-- patches reordered;
-- no functional changes, just code shift between the patches in this series.
-
-v3:
-- addressed more nits;
-- hest_add_le now points to the beginning of HEST table;
-- removed HEST from tests/data/acpi;
-- added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
-
-v2: 
-- address some nits;
-- improved ags cleanup patch and removed ags.present field;
-- added some missing le*_to_cpu() calls;
-- update date at copyright for new files to 2024-2025;
-- qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
-- added HEST and DSDT tables after the changes to make check target happy.
-  (two patches: first one whitelisting such tables; second one removing from
-   whitelist and updating/adding such tables to tests/data/acpi)
-
-
-Mauro Carvalho Chehab (21):
-  tests/acpi: virt: add an empty HEST file
-  tests/qtest/bios-tables-test: extend to also check HEST table
-  tests/acpi: virt: update HEST file with its current data
-  acpi/ghes: Cleanup the code which gets ghes ged state
-  acpi/ghes: prepare to change the way HEST offsets are calculated
-  acpi/ghes: add a firmware file with HEST address
-  acpi/ghes: Use HEST table offsets when preparing GHES records
-  acpi/ghes: don't hard-code the number of sources for HEST table
-  acpi/ghes: add a notifier to notify when error data is ready
-  acpi/ghes: create an ancillary acpi_ghes_get_state() function
-  acpi/generic_event_device: Update GHES migration to cover hest addr
-  acpi/generic_event_device: add logic to detect if HEST addr is
-    available
-  acpi/generic_event_device: add an APEI error device
-  tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
-  arm/virt: Wire up a GED error device for ACPI / GHES
-  qapi/acpi-hest: add an interface to do generic CPER error injection
-  tests/acpi: virt: update HEST table to accept two sources
-  tests/acpi: virt: and update DSDT table to add the new GED device
-  docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
-  acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
-  scripts/ghes_inject: add a script to generate GHES error inject
-
- MAINTAINERS                                   |  10 +
- docs/specs/acpi_hest_ghes.rst                 |  28 +-
- hw/acpi/Kconfig                               |   5 +
- hw/acpi/aml-build.c                           |  10 +
- hw/acpi/generic_event_device.c                |  43 ++
- hw/acpi/ghes-stub.c                           |   7 +-
- hw/acpi/ghes.c                                | 231 ++++--
- hw/acpi/ghes_cper.c                           |  38 +
- hw/acpi/ghes_cper_stub.c                      |  19 +
- hw/acpi/meson.build                           |   2 +
- hw/arm/virt-acpi-build.c                      |  36 +-
- hw/arm/virt.c                                 |  19 +-
- hw/core/machine.c                             |   2 +
- include/hw/acpi/acpi_dev_interface.h          |   1 +
- include/hw/acpi/aml-build.h                   |   2 +
- include/hw/acpi/generic_event_device.h        |   1 +
- include/hw/acpi/ghes.h                        |  52 +-
- include/hw/arm/virt.h                         |   2 +
- qapi/acpi-hest.json                           |  35 +
- qapi/meson.build                              |   1 +
- qapi/qapi-schema.json                         |   1 +
- scripts/arm_processor_error.py                | 476 ++++++++++++
- scripts/ghes_inject.py                        |  51 ++
- scripts/qmp_helper.py                         | 702 ++++++++++++++++++
- target/arm/kvm.c                              |   7 +-
- tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
- .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
- tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
- tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
- tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
- tests/data/acpi/aarch64/virt/HEST             | Bin 0 -> 224 bytes
- tests/qtest/bios-tables-test.c                |   2 +-
- 32 files changed, 1692 insertions(+), 91 deletions(-)
- create mode 100644 hw/acpi/ghes_cper.c
- create mode 100644 hw/acpi/ghes_cper_stub.c
- create mode 100644 qapi/acpi-hest.json
- create mode 100644 scripts/arm_processor_error.py
- create mode 100755 scripts/ghes_inject.py
- create mode 100755 scripts/qmp_helper.py
+ tests/data/acpi/aarch64/virt/HEST           | 0
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 2 files changed, 1 insertion(+)
  create mode 100644 tests/data/acpi/aarch64/virt/HEST
 
+diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
+new file mode 100644
+index 000000000000..e69de29bb2d1
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8bf4..39901c58d647 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/HEST",
 -- 
 2.48.1
-
 
 
