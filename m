@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F1DA48134
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD93A48193
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:38:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnes0-0006I7-2a; Thu, 27 Feb 2025 09:28:12 -0500
+	id 1tnevR-0007mo-N2; Thu, 27 Feb 2025 09:31:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnerm-0005QF-1H
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:27:58 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from
+ <edff2bf1.AVIAAGMvUGQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHc2@a3031119.bnc3.mailjet.com>)
+ id 1tnev7-00076C-MO
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:31:26 -0500
+Received: from o0.p27.mailjet.com ([185.189.238.0])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnerj-0004vE-B6
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:27:57 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-390dd3403fdso820514f8f.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:27:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740666471; x=1741271271; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bBTqTkCG2mdnnfefXGlINhtGqt3fpl8EJ4NhuP7TlgE=;
- b=ZbdKsjwilmoZKMi29fpz2olgtlExlSzC6mm3ZkjmPUonBf2eX2WDvZ2eMqo+yjzUW2
- vVa4pEtZNQO1OEiNGW4MkNfPyVny+jZGi4fGe4KCGdC+MXgPJOMu2wkCXHMvbt+7p63x
- 4xM2Zz9MSQO5cFh2ryrZC4JRxEmpiB5etktJne/1Mrt0+KOXSYTKAQkVgIUJPkXFXaLW
- 1aXwA2ZDpYOk9VoV8io3bcM/f17yWwSpceNAziu34pnXEJnMBHSWiQsC5vmrNJ8nQZqK
- +zYtfroDO5CYSsjBOiyOxsiYiLU5iqshx6cc4dcZVas4TqfQ8W6BBB8nBOr/cy6LxJBf
- f0SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666471; x=1741271271;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bBTqTkCG2mdnnfefXGlINhtGqt3fpl8EJ4NhuP7TlgE=;
- b=Y+IEoOkxURk+aYUsCan8dYfpFYgEptpjrIk//z5map8pEYF+lUJhwsP47AKLsvNM3T
- 6PFpK5wAl4ZWEo2c99nQZTMSXt+j5VzZiTYUptaCHm163XHNnGoIroPbJAW9/R6itINo
- sVo/22TZ1mu5GnLmxAKNRVp5hGTP39uuyl+sj2hdaXWf8C7kF2/urbW/EnxvH78ajw5w
- tayOG0aJ3ebLAXfsJvN/F+rTroCIXZSk96awUNVcTnED1K5tYwTM81QO+twNQD+11iBu
- 2CVAtpdOhfiBIjJgxyM9EY7IC/gCfYXVcit3XiHOfUv/uQ42WArOI+ELLR4h4FGXfUyL
- wmBA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX1wYXKIvIR1FtZTPCktwqA1gYDqv+mxVPZOHu48u22oIpy11mwLg0F+gd/umKFn7/QQgmWjmatlK94@nongnu.org
-X-Gm-Message-State: AOJu0YybkF3OfsbPotVraBKy+FzQB1wYomWv+45mHlcjwDMKiZn2dzOx
- zRQPXbq/ShM5s47WF/e8SfDb+P8yQU9XlqTG6xbJBWmlEdJA7G+b9T+6xd6Bsq0=
-X-Gm-Gg: ASbGnct6uKN5QAMFUnl9rTneW9T/K1vJnX672Bos22hS5vqT6rcMWX8hjsJOiV1lItj
- gZ+KdcUdSogOUZrPDqZFXge15dWoL/vrS7OaNR4GAy66W75RmjmmAqWR2O6HZg9ASz8ssUR0R3K
- 2ewRuNg2u52b8+qE5XZHMNpjrAvf58pxFHF6z8y+RFAsMmR/ROHqkhA2+zJMVb/u75/Wfk725/L
- /aNHoXwFH1uQrQSQug3r16A5ih9wpzORqK4Llv033bjIZ8d7XbDaskmisSNO1HbVAjXIdvZaStZ
- qM4bEb32ZreQAhCsJamhI5bgKpus0S+G
-X-Google-Smtp-Source: AGHT+IEL/EcvBY5mxvmNRof0znHQFzgKXwE+SvIJyVHPciYeDbymFxvFdPGCv3NX6OxQCn9R+ytbrg==
-X-Received: by 2002:a5d:47a3:0:b0:385:fc70:7f6 with SMTP id
- ffacd0b85a97d-390d4f377eemr6243064f8f.7.1740666471076; 
- Thu, 27 Feb 2025 06:27:51 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba532b8dsm55968335e9.14.2025.02.27.06.27.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:27:50 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 3/3] target/arm: Drop unused address_offset from op_addr_{rr,
- ri}_post()
-Date: Thu, 27 Feb 2025 14:27:46 +0000
-Message-ID: <20250227142746.1698904-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250227142746.1698904-1-peter.maydell@linaro.org>
-References: <20250227142746.1698904-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from
+ <edff2bf1.AVIAAGMvUGQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHc2@a3031119.bnc3.mailjet.com>)
+ id 1tnev5-00067W-Js
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:31:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+ d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740673878;
+ h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
+ cc:feedback-id:in-reply-to:references:x-csa-complaints:x-mj-mid:x-mj-smtpguid:
+ x-report-abuse-to:content-type:content-transfer-encoding;
+ bh=wlswxwumfmqWyMCJTOkK60i/m10r0H4MQHDPopGM2v4=;
+ b=LlowocNmf0c+ki/va/9lPfzumwLFCL9Zkp/V/MYWLoYo/wWH/98y8Tndo
+ qXVVgn95LWwsA/ma9/RunxhfTV1CK1XUrxNy5XZPj8bfvcp6+CsD+JZlfNLV
+ 13s+F88z22tus7R+bPz1j9jIrv80ezHU2jw/F++rcDwn5sJ4RjmhubkTeibF
+ b5LksXOg4dE6QMUPBMAf1btYBGARa6oqo9jZjbnmN8v3fVVRPnR3tflwgF2T
+ sJUi8r3W0o494JmmiDg7YBqSUPtZuDgsXc4PNB14cXocwvblv6PBHpFWkPp7
+ 94B1yJt+1pyUlk7D5SqjzEDk5SU94sLm9/w88gCxmmS0Q==
+Message-Id: <edff2bf1.AVIAAGMvUGQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHc2@mailjet.com>
 MIME-Version: 1.0
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v7 05/16] i386/pc_sysfw: Ensure sysfw flash configuration
+ does not conflict with IGVM
+Date: Thu, 27 Feb 2025 14:29:23 +0000
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Sergio Lopez <slp@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Alistair Francis
+ <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Ani Sinha
+ <anisinha@redhat.com>, Joerg Roedel <jroedel@suse.com>, Pankaj Gupta
+ <pankaj.gupta@amd.com>
+Feedback-Id: 42.3031119.2785883:MJ
+In-Reply-To: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
+References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid: AVIAAGMvUGQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHc2MvIl0w8CSlWyruy8T_x5OgAqgls
+X-MJ-SMTPGUID: 38407107-47bf-4ffe-b0d7-e374ac88f84c
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+ abuse@mailjet.com with a copy of the message
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=185.189.238.0;
+ envelope-from=edff2bf1.AVIAAGMvUGQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHc2@a3031119.bnc3.mailjet.com;
+ helo=o0.p27.mailjet.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,125 +87,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All the callers of op_addr_rr_post() and op_addr_ri_post() now pass in
-zero for the address_offset, so we can remove that argument.
+When using an IGVM file the configuration of the system firmware is
+defined by IGVM directives contained in the file. In this case the user
+should not configure any pflash devices.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+This commit skips initialization of the ROM mode when pflash0 is not set
+then checks to ensure no pflash devices have been configured when using
+IGVM, exiting with an error message if this is not the case.
+
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 ---
- target/arm/tcg/translate.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ hw/i386/pc_sysfw.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 2020d18f019..bd3838d68e3 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -4941,7 +4941,7 @@ static TCGv_i32 op_addr_rr_pre(DisasContext *s, arg_ldst_rr *a)
- }
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index 1eeb58ab37..2460af7014 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -219,7 +219,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     BlockBackend *pflash_blk[ARRAY_SIZE(pcms->flash)];
  
- static void op_addr_rr_post(DisasContext *s, arg_ldst_rr *a,
--                            TCGv_i32 addr, int address_offset)
-+                            TCGv_i32 addr)
- {
-     if (!a->p) {
-         TCGv_i32 ofs = load_reg(s, a->rm);
-@@ -4954,7 +4954,6 @@ static void op_addr_rr_post(DisasContext *s, arg_ldst_rr *a,
-     } else if (!a->w) {
+     if (!pcmc->pci_enabled) {
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        /*
++         * If an IGVM file is specified then the firmware must be provided
++         * in the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        }
          return;
      }
--    tcg_gen_addi_i32(addr, addr, address_offset);
-     store_reg(s, a->rn, addr);
+ 
+@@ -239,8 +245,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     if (!pflash_blk[0]) {
+-        /* Machine property pflash0 not set, use ROM mode */
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        /*
++         * Machine property pflash0 not set, use ROM mode unless using IGVM,
++         * in which case the firmware must be provided by the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        }
+     } else {
+         if (kvm_enabled() && !kvm_readonly_mem_enabled()) {
+             /*
+@@ -256,6 +267,20 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     pc_system_flash_cleanup_unused(pcms);
++
++    /*
++     * The user should not have specified any pflash devices when using IGVM
++     * to configure the guest.
++     */
++    if (X86_MACHINE(pcms)->igvm) {
++        for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
++            if (pcms->flash[i]) {
++                error_report("pflash devices cannot be configured when "
++                             "using IGVM");
++                exit(1);
++            }
++        }
++    }
  }
  
-@@ -4974,7 +4973,7 @@ static bool op_load_rr(DisasContext *s, arg_ldst_rr *a,
-      * Perform base writeback before the loaded value to
-      * ensure correct behavior with overlapping index registers.
-      */
--    op_addr_rr_post(s, a, addr, 0);
-+    op_addr_rr_post(s, a, addr);
-     store_reg_from_load(s, a->rt, tmp);
-     return true;
- }
-@@ -4999,7 +4998,7 @@ static bool op_store_rr(DisasContext *s, arg_ldst_rr *a,
-     gen_aa32_st_i32(s, tmp, addr, mem_idx, mop);
-     disas_set_da_iss(s, mop, issinfo);
- 
--    op_addr_rr_post(s, a, addr, 0);
-+    op_addr_rr_post(s, a, addr);
-     return true;
- }
- 
-@@ -5053,7 +5052,7 @@ static bool trans_LDRD_rr(DisasContext *s, arg_ldst_rr *a)
-     do_ldrd_load(s, addr, a->rt, a->rt + 1);
- 
-     /* LDRD w/ base writeback is undefined if the registers overlap.  */
--    op_addr_rr_post(s, a, addr, 0);
-+    op_addr_rr_post(s, a, addr);
-     return true;
- }
- 
-@@ -5101,7 +5100,7 @@ static bool trans_STRD_rr(DisasContext *s, arg_ldst_rr *a)
- 
-     do_strd_store(s, addr, a->rt, a->rt + 1);
- 
--    op_addr_rr_post(s, a, addr, 0);
-+    op_addr_rr_post(s, a, addr);
-     return true;
- }
- 
-@@ -5137,13 +5136,14 @@ static TCGv_i32 op_addr_ri_pre(DisasContext *s, arg_ldst_ri *a)
- }
- 
- static void op_addr_ri_post(DisasContext *s, arg_ldst_ri *a,
--                            TCGv_i32 addr, int address_offset)
-+                            TCGv_i32 addr)
- {
-+    int address_offset = 0;
-     if (!a->p) {
-         if (a->u) {
--            address_offset += a->imm;
-+            address_offset = a->imm;
-         } else {
--            address_offset -= a->imm;
-+            address_offset = -a->imm;
-         }
-     } else if (!a->w) {
-         return;
-@@ -5168,7 +5168,7 @@ static bool op_load_ri(DisasContext *s, arg_ldst_ri *a,
-      * Perform base writeback before the loaded value to
-      * ensure correct behavior with overlapping index registers.
-      */
--    op_addr_ri_post(s, a, addr, 0);
-+    op_addr_ri_post(s, a, addr);
-     store_reg_from_load(s, a->rt, tmp);
-     return true;
- }
-@@ -5193,7 +5193,7 @@ static bool op_store_ri(DisasContext *s, arg_ldst_ri *a,
-     gen_aa32_st_i32(s, tmp, addr, mem_idx, mop);
-     disas_set_da_iss(s, mop, issinfo);
- 
--    op_addr_ri_post(s, a, addr, 0);
-+    op_addr_ri_post(s, a, addr);
-     return true;
- }
- 
-@@ -5206,7 +5206,7 @@ static bool op_ldrd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
-     do_ldrd_load(s, addr, a->rt, rt2);
- 
-     /* LDRD w/ base writeback is undefined if the registers overlap.  */
--    op_addr_ri_post(s, a, addr, 0);
-+    op_addr_ri_post(s, a, addr);
-     return true;
- }
- 
-@@ -5235,7 +5235,7 @@ static bool op_strd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
- 
-     do_strd_store(s, addr, a->rt, rt2);
- 
--    op_addr_ri_post(s, a, addr, 0);
-+    op_addr_ri_post(s, a, addr);
-     return true;
- }
- 
+ void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
 -- 
 2.43.0
 
