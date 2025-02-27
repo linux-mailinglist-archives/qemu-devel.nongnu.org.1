@@ -2,104 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B003FA475EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 07:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71127A475D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 07:07:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnXJI-0003wV-SC; Thu, 27 Feb 2025 01:23:52 -0500
+	id 1tnX1n-000369-Od; Thu, 27 Feb 2025 01:05:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tnXJF-0003p0-5B; Thu, 27 Feb 2025 01:23:49 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tnX1k-00035C-9I
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 01:05:44 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tnXJD-000847-Ax; Thu, 27 Feb 2025 01:23:48 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51R2GYEJ005931;
- Thu, 27 Feb 2025 06:23:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Kio/Of
- 4pPfQQAte8swXeCaxVNhzbL9r/ZCf/CplA9w0=; b=QTwG1M59X+h+AU4ipUsf1V
- sIFLfIp6ZtS/A8vyQm3jEsdcH/Ap6ogA0iuqLMg6ydvk3Foi2NyzN3B006gkHvT2
- 4nEMdb/VY/2acVPZowIMqUQN9lPwteVdUAKdjG1009+YNA+QfBw4AkCXB7scFsH0
- p5cZugzQ8RbuaSUAUvZMJGx/bMvXGVPFldjvvwUbmf37IWRYFo/BhCXYj1WYZ9nK
- nqXGAROH31mHugyPW7FTb1WSa6OFOfMj6MBXNYwOaDbt/HHyjcVt3pnodxETIVly
- VzPEpCg9ZJgWcSxW7CX70wdjm6w+TWzyzxllqTBJroXS23P2CFOO0GGTJyTuX/Rw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451xnp5q6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2025 06:23:35 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51R6KIWd023887;
- Thu, 27 Feb 2025 06:23:35 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451xnp5q6s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2025 06:23:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51R2sBdu002551;
- Thu, 27 Feb 2025 06:23:34 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yu4jxrag-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2025 06:23:34 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 51R6NVra58065314
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Feb 2025 06:23:31 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F1A2520043;
- Thu, 27 Feb 2025 06:23:30 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02A3E20040;
- Thu, 27 Feb 2025 06:23:27 +0000 (GMT)
-Received: from [9.124.211.149] (unknown [9.124.211.149])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 27 Feb 2025 06:23:26 +0000 (GMT)
-Message-ID: <171ee322-e41e-42b2-816d-b45fde796874@linux.ibm.com>
-Date: Thu, 27 Feb 2025 11:53:25 +0530
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tnX1h-0001rg-Ru
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 01:05:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1740636342; x=1772172342;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=t1nipi6U9eSk+/EIGKV9BJ1I5KWA2cBTKLGsu7WWMvo=;
+ b=WCOq6ZAb1QhYZlQNSQu4lavfIXoi2tnaN6FupSK/g4sxAggZ/ZhJ3Xo1
+ zQU78zxMqFCKB6cCj/1tFWY8nqkblq9fyANeMk4NotGPVBdpNkPUil8Mr
+ bdgztlpanDTYLyvPi2EhJFgRwG7coPApqRJqZhO/uYTimyB+zA+Qn/YoY
+ dKUtRpwKEO65q7Rt8+WfTYJKcJcKc12N9nfnH+UszcTMJxyHcbrGmOtyh
+ eqDPNpYlNksPYtfVEGFzInZRvOeDMgZwo9fThCYB0+JrSQNAZnK0ujZcm
+ sN5rk3e+/Ll/TKeQEtXPrplzfIIoAvWb5kG/WhEzwodn00r4o6J0cn/lf A==;
+X-CSE-ConnectionGUID: 1+7WGjTHSym/N4pGiaugUw==
+X-CSE-MsgGUID: ocrH4TtzSVOqdcUqzwrR/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="52148164"
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="52148164"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2025 22:05:35 -0800
+X-CSE-ConnectionGUID: TiRftZbgQoWMjzEfgjPpKw==
+X-CSE-MsgGUID: NaipIpCNRbidFxWXrJsQCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; d="scan'208";a="121938232"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 26 Feb 2025 22:05:32 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Chuang Xu <xuchuangxclwt@bytedance.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Babu Moger <babu.moger@amd.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/4] i386/cpu: Fix topological field encoding & overflow
+Date: Thu, 27 Feb 2025 14:25:19 +0800
+Message-Id: <20250227062523.124601-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] Implement MPIPL for PowerNV
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>
-References: <20250217071934.86131-1-adityag@linux.ibm.com>
- <D82WY0RYB30R.3M0B68UOLV0EK@gmail.com>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <D82WY0RYB30R.3M0B68UOLV0EK@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LWuYPPGMY3B5T8t0YOEM2_4mDzDP9fQf
-X-Proofpoint-GUID: iVz2O--4zaKFKsM7JQfVrGQJYnm81KiD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_03,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=754 spamscore=0 phishscore=0
- mlxscore=0 adultscore=0 malwarescore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502270044
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,43 +81,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nick,
+Hi,
 
-On 27/02/25 09:07, Nicholas Piggin wrote:
-> On Mon Feb 17, 2025 at 5:19 PM AEST, Aditya Gupta wrote:
->> Overview
->> =========
->>
->> Implemented MPIPL (Memory Preserving IPL, aka fadump) on PowerNV machine
->> in QEMU.
-> Wow, that's a lot of effort.
+This series collects and organizes several topology-related cleanups and
+fixes, based on b69801dd6b1e ("Merge tag 'for_upstream' of
+https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging").
 
-Thanks Nick.
+Patch 1 is picked from Chuang's v6 [1].
 
+Patch 2-3 are picked from Qian's v4 [2], though it had previously gone
+through sufficient review (got R/b tags), I dropped its R/b tags because
+of my code change.
 
->> Note: It's okay if this isn't merged as there might be less users. Sending
->> for archieval purpose, as the patches can be referred for how fadump/mpipl
->> can be implemented in baremetal/PowerNV/any other arch QEMU.
-> I would like to add it. It helps test a bunch of code that is in Linux
-> and skiboot, so it would be quite useful. A functional test would be
-> important to have.
+Patch 4 is newly added, inspired by patch 3, to also perform a check on
+AMD's cache CPUID. This is to consider the current maximum number of
+supported CPUs, which is approaching the overflow boundary.
 
-Sure, it's not complete yet (didn't implement the CPU saving part) as I 
-just wanted to do a experiment I did, will improve those things by v2 
-then. It might take some time though.
+In addition to the 0x1, 0x4, and 0x8000001d leaves involved in the patch
+series, there is also the 0x1f leaf related to topology. However, the
+upper limit for CPUID.1FH.EBX[bits 15:0] is 65,535 threads, which
+provides enough room. Therefore, this field does not currently require
+overflow checks.
 
-Will look into the functional test thing also.
+This series correct the CPUIDs, but it doesn't affect the Guest's live
+migration. Therefore, I did not add the compat property for this.
 
-> I've had a glance through it, but better review might have to wait for
-> until the next development cycle.
+[1]: https://lore.kernel.org/qemu-devel/20241009035638.59330-1-xuchuangxclwt@bytedance.com/
+[2]: https://lore.kernel.org/qemu-devel/20230829042405.932523-2-qian.wen@intel.com/
 
-Sure, that's totally okay. Thank you for looking at it.
+Thanks and Best Regards,
+Zhao
+---
+Chuang Xu (1):
+  i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]
 
+Qian Wen (2):
+  i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+  i386/cpu: Fix overflow of cache topology fields in CPUID.04H
 
-Thanks,
+Zhao Liu (1):
+  i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
 
-- Aditya G
+ target/i386/cpu.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-> Thanks,
-> Nick
+-- 
+2.34.1
+
 
