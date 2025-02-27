@@ -2,48 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038ABA4844B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698DDA48428
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:04:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngKD-0007B9-HJ; Thu, 27 Feb 2025 11:01:26 -0500
+	id 1tngK3-00072i-6s; Thu, 27 Feb 2025 11:01:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngK1-00072R-CB; Thu, 27 Feb 2025 11:01:13 -0500
+ id 1tngJz-00070F-7K; Thu, 27 Feb 2025 11:01:11 -0500
 Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngJx-0007IB-9z; Thu, 27 Feb 2025 11:01:13 -0500
+ id 1tngJv-0007H9-Cq; Thu, 27 Feb 2025 11:01:10 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 3091E61F42;
+ by tor.source.kernel.org (Postfix) with ESMTP id 0E58D61F39;
  Thu, 27 Feb 2025 16:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CC3C4CEF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FD4C4CEF9;
  Thu, 27 Feb 2025 16:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1740672062;
- bh=WNgUSU0OrqFnvTXh8PzzTv6ghTQeysRMH1deXYrrJ9Y=;
+ bh=43wQnGF5bHXoBiXyFpeGog9TgdwJxwGs68pbdiJLeDU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Y/Mg9IyUodcfdaRqg8tN4fvu/AgxkRqJVgxlkzRlvSt7Kns053gpqm3jmMY5TK/vH
- R0+ABeLp8aZ6fq7byf27hvf5HuCHxQmcgzfx4sDl+VqjeOMZz46gT2T7BY4O4cRuQx
- uR8+18Suu2q+m1fvEbWy0Sv0snROFrI0dlIQ/J51shflFrQ07VR2cxNYzbW+albJC6
- ZuYT20D1E++nnlPAzF7czN//T4rp8GX0jdYHSp4yTSe9oNBXB/JmZ4HtcB5O/Foi3Z
- 1OmfAPxAeyqPuKfJg9IqcthUVljGieJuJognKev/J1brDaCtSK9sz9UwtgOAXMPK9G
- 5ji/sjO1SvtoA==
+ b=ISqiUzpjh8nXc4rLp2dogRiIcUUTNhfISsOUidTiVvdKzp68qE4/WkTyY5bH3YlSj
+ nfXHlrLns2erS3MDDWLDDIfnCDSUgntBRLJjVYcQMWysHGwCR6Uxqyel+T06yov5FS
+ qJdec64YkGr5Erozn+4dB6/bBdELCY+4dd+QNf+jut1JOMPGvBgN8B0vBVIx48AggU
+ aUXrfQS0e0J8MSQKMSR+XAGgrJiUlczbCa7Mf+roB/RmqpqmXnnSJlL/qxwEhCY1y1
+ g1db1zNVMGlPdqvEsREdH9H4jljp5Yd2hbvnYMuZYrYSSYFjcseTj5QVFk+zwTzsFj
+ sT7L/yjtWm5Xw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngJo-000000023bL-4Bm0; Thu, 27 Feb 2025 17:01:01 +0100
+ id 1tngJp-000000023bP-06v1; Thu, 27 Feb 2025 17:01:01 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Ani Sinha <anisinha@redhat.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH v6 10/19] acpi/generic_event_device: Update GHES migration to
- cover hest addr
-Date: Thu, 27 Feb 2025 17:00:48 +0100
-Message-ID: <c291cdfd61e25437b85e5e660f3a67520a89d13c.1740671863.git.mchehab+huawei@kernel.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH v6 11/19] acpi/generic_event_device: add logic to detect if
+ HEST addr is available
+Date: Thu, 27 Feb 2025 17:00:49 +0100
+Message-ID: <045fdc23abaeeb7bb3b0141b57b935fe9bb176e5.1740671863.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1740671863.git.mchehab+huawei@kernel.org>
 References: <cover.1740671863.git.mchehab+huawei@kernel.org>
@@ -72,62 +78,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GHES migration logic should now support HEST table location too.
+Create a new property (x-has-hest-addr) and use it to detect if
+the GHES table offsets can be calculated from the HEST address
+(qemu 10.0 and upper) or via the legacy way via an offset obtained
+from the hardware_errors firmware file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ hw/acpi/generic_event_device.c |  2 ++
+ hw/arm/virt-acpi-build.c       | 18 ++++++++++++++++--
+ hw/core/machine.c              |  2 ++
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index c85d97ca3776..5346cae573b7 100644
+index 5346cae573b7..471d1a7afc76 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -386,6 +386,34 @@ static const VMStateDescription vmstate_ghes_state = {
-     }
+@@ -318,6 +318,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+ 
+ static const Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
++    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState,
++                     ghes_state.use_hest_addr, false),
  };
  
-+static const VMStateDescription vmstate_hest = {
-+    .name = "acpi-hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static bool hest_needed(void *opaque)
-+{
-+    AcpiGedState *s = opaque;
-+    return s->ghes_state.hest_addr_le;
-+}
-+
-+static const VMStateDescription vmstate_hest_state = {
-+    .name = "acpi-ged/hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = hest_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
-+                       vmstate_hest, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
-     .version_id = 1,
-@@ -398,6 +426,7 @@ static const VMStateDescription vmstate_acpi_ged = {
-         &vmstate_memhp_state,
-         &vmstate_cpuhp_state,
-         &vmstate_ghes_state,
-+        &vmstate_hest_state,
-         NULL
-     }
+ static const VMStateDescription vmstate_memhp_state = {
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index ea9682ee2662..5443615d976d 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -897,6 +897,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
+     { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
  };
+ 
++static const AcpiNotificationSourceId hest_ghes_notify_9_2[] = {
++    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
++};
++
+ static
+ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ {
+@@ -951,15 +955,25 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ 
+     if (vms->ras) {
+         AcpiGedState *acpi_ged_state;
++        static const AcpiNotificationSourceId *notify;
++        unsigned int notify_sz;
+         AcpiGhesState *ags;
+ 
+         acpi_ged_state = ACPI_GED(vms->acpi_dev);
+         ags = &acpi_ged_state->ghes_state;
+         if (ags) {
+             acpi_add_table(table_offsets, tables_blob);
++
++            if (!ags->use_hest_addr) {
++                notify = hest_ghes_notify_9_2;
++                notify_sz = ARRAY_SIZE(hest_ghes_notify_9_2);
++            } else {
++                notify = hest_ghes_notify;
++                notify_sz = ARRAY_SIZE(hest_ghes_notify);
++            }
++
+             acpi_build_hest(ags, tables_blob, tables->hardware_errors,
+-                            tables->linker, hest_ghes_notify,
+-                            ARRAY_SIZE(hest_ghes_notify),
++                            tables->linker, notify, notify_sz,
+                             vms->oem_id, vms->oem_table_id);
+         }
+     }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 02cff735b3fb..7a11e0f87b11 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -34,6 +34,7 @@
+ #include "hw/virtio/virtio-pci.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "hw/virtio/virtio-iommu.h"
++#include "hw/acpi/generic_event_device.h"
+ #include "audio/audio.h"
+ 
+ GlobalProperty hw_compat_9_2[] = {
+@@ -43,6 +44,7 @@ GlobalProperty hw_compat_9_2[] = {
+     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
+     { "virtio-mem-pci", "vectors", "0" },
+     { "migration", "multifd-clean-tls-termination", "false" },
++    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
+ };
+ const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
+ 
 -- 
 2.48.1
 
