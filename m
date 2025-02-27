@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE35A48619
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 18:04:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF86FA4861C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 18:05:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnhHi-0005ai-Jv; Thu, 27 Feb 2025 12:02:57 -0500
+	id 1tnhIe-0007RF-Rk; Thu, 27 Feb 2025 12:03:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnhGY-0005DB-4e
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:43 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1tnhGV-0005Ce-AC
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:44 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tnhGR-0002L4-5J
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:41 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4399d14334aso11614005e9.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 09:01:23 -0800 (PST)
+ id 1tnhGQ-0002LP-Vs
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 12:01:37 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-439a331d981so11384095e9.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 09:01:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740675682; x=1741280482; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740675684; x=1741280484; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BMZ/a2nzPtLYyS89YoqeNcWEmY/c5UQ/LIwoP4jOOso=;
- b=EiZc/z0mqtIgvsJqQTvgu1Jvwut4ug6jSNciof7t/mqrVqg/M93UQEVULflWhHe2dV
- AbBrd8FKZzH4dh3u28CJP/YbfHHtvizihUwI/cKrLcAORBMcq+RFa1m/kg6YfMZdT42y
- Kf1uQsKWhUQSbDi+rn9R6MFtUfOW8jkd+OSZdj6RTNwRTbG41SQ2NwRVBuWzRC6kuUon
- 9osPeTtyNMku5/WyhsZHwOlP5I7F7xrZ0cK+hqbZgFXYUoDDQhsrTHSHzptWYrdnyBLC
- ZeDtndY1ooAObYBHj04NcgGZ2G55Xki0vyoJpbcJrRFK7lQ+dtx5Vc2s4j7xKbss0k+h
- wQ1w==
+ :reply-to; bh=UF02YER6LE6cA8Ff3jhsAUNNOFSeF4BeX3fGvUwDcr8=;
+ b=IMnlzyQmRu9NFTY2Qpxd0zuu5otFx63Qt4HenisymcW7FIyvbVQUOWr4wic1qWWFxe
+ kY6CW9ux/1BQWMQoAhICh/6HgT7cBEtOelUI5WrER+JULyC0AnxhSrODcntPCRsLinJ+
+ Sz3P7EiPeIDnudxqQTx7OHH1sYJc3ENu7S2mmBhLMtpHL7reRQ7ZWODKFzcxl28/0vXN
+ 8mxEv7CLeMwercJvcs2ulZ6MX/973iZ7/S9dVZmoULkKK+DV6XkY7KeScd0i6jhqCyzC
+ o4UWMk0nvU+ZdQbHVctf36aDa+XWBJE9ZWIWKKXNV2iYfkuoAVVfKx9Vt0vDi5X8fM6g
+ mNnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740675682; x=1741280482;
+ d=1e100.net; s=20230601; t=1740675684; x=1741280484;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BMZ/a2nzPtLYyS89YoqeNcWEmY/c5UQ/LIwoP4jOOso=;
- b=TPjHXMB+sMkuW731rVI4TAit/BaWheqHvnm/YkawoHpOLK8N6QvFT9kdqB8kzp44x0
- KgU4xaohi4cEpdKR4ErOo2TUdyjjfmItZjr74BEs+HmYSfVVugNbJUPUoSicZE23OMBf
- eSPFAchtqP6CLZuTCjlyaTdbuGH2WX8tSNWVsNxc7px/qKjELlXVbJOnz5SaQqaCsosJ
- OlBS/ydcW9tcAFCghegYIAKXR1FpQl9rdGVZv9JmbWBAkGWcbEYfd3MG9/aur4d+et2g
- 5uM9YXGYgWL5Gq8HLKAjKJtjPSl20yrsa1YoIwWPXdcba6zTNUN+vu0kbYFmleTgk80r
- ZMug==
+ bh=UF02YER6LE6cA8Ff3jhsAUNNOFSeF4BeX3fGvUwDcr8=;
+ b=F94BnXMC6sRDA9PRhYPHee+zTAr7T4YPRCBC2ivwyorN/arMVWbEhsCfnjcBG0p3jP
+ ySOGdVPfj+eLXP36GabLqpoOf6J9WUcchy4Q2thUjRnEQB5iC6Sqm8uy8akwJAlPdru0
+ 3ov56S9PyqWCKQ3LazFd5bwGo08jAjaKiXwdlw5TAzQBcJC9P6K5PoTRBhwJ3VvFavF4
+ ZFvYasqN3CaJIwaO4OhOu2Y2OJn4fRNlKlo6W6+hGpJ0U/mhlvKcmdWL+dHqRTDHKFqO
+ xJMa1OMWY1lXego+KUOmFre+99TLMWfmdD//YA+Gky0vjQJzwZdNanuI0bHkiQ36QbNh
+ iZUw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJHJ0DX2Ky4442uBzuEVyTnU1nlYS2F1Pps4ZgHQL1/0CIXhM8qmBHjPIs4W/7crNl18TRM+C3crlu@nongnu.org
-X-Gm-Message-State: AOJu0YzG/KtaaLyQhoOH+jT73ga3+Xti1wCsvuM6dnjmhZZg0SxJwobG
- anfEqQKsqUll3NWB2asifxqm7YLTL73YTMzo8ysIwt7DFh5hRw0zwj8TGXPhugw=
-X-Gm-Gg: ASbGncsd2XxrmCLzckx0rA3+GqDDkCWnyy2422IhXxGO0I18mXFSYvVylBtAtd6E5QN
- 0pHgkqsVGRF/bNylAsATR0EgV/Ef0IdvGfNRjU2UCCNt9u96TR+5LvCKXsLgSQP2D4qKg+NdSAf
- qS4B01gNvQNK+KpiECk+KNcdW8dkUzf0BrfWe8TwUOBkPh2RSS2t8MdmBT+fszPl2yRH0s88YFo
- IGaR8HjH7RXFN35gNz+djmrIArAtHIFZOGoqlCOnmNHX2IrhSNCuDGJPn0GgdVc3hyb2Tbx7adD
- ItwU3ktAl/5MXGV14GZzKXVkZ4UM+rgm
-X-Google-Smtp-Source: AGHT+IEjUpmp7qH7xrFuzRLwifeW065y+rDLej9Muz6Spa3RsBHNeweZGN1eiaP+Jtm4F+Vqm7QsjA==
-X-Received: by 2002:a05:600c:5487:b0:439:9494:318 with SMTP id
- 5b1f17b1804b1-43ab8fd04dcmr63498175e9.1.1740675681665; 
- Thu, 27 Feb 2025 09:01:21 -0800 (PST)
+ AJvYcCXrSnFdmIPDbeZmoRzpYYs/krwiXTwGOs97IdRZZugdqNvvnyGl1Zq4Q46ODhbq8uuqf0PcUmAv+Cff@nongnu.org
+X-Gm-Message-State: AOJu0YzN+zxaGCI6TI1PXsH4S8GcOFKV7EaWyR1ENPeFJ5VA6Sq/tSH3
+ DQJ8uuDUHFpfGzhHfYbl4Yz8niYOEyga2FHfm2oCm0HIbpREFycn+t5VNK14ZiKAYEm4uyjfpPn
+ o
+X-Gm-Gg: ASbGnctzSWf/UlgPA6P9JAjp/EmCSHRNP6H5EhGThiR7JvB9qwpQPIxLAvGQKqwEF48
+ iFUUdLcgBiLgSdM80wTkyUhIDsqWTVLFVKVuI6l7o6PDhcaZdWzyzbCwW73a3Kl9xw4RKC02C6L
+ o2+Cs2F7nUgbcf16Rey+O0ao9Q5O4AgM4cx0kUYoApsJW72Bm3SoRQfUQsC/Pln6C1v8ZNrogY9
+ cILrZI9fPGMKWV7Z8fhCGNWtlXKzpNu65SvsQUuGv5LGX0Icm82279N0k6zjZYT9kdLlbNpGkT4
+ WtWhwoYz0VApUg+kiLGTCjxUu9DOlRHl
+X-Google-Smtp-Source: AGHT+IHUTthj7HwrLcOBTNDhkZmLZvSanZVqclSel26RA5rjqmJu5TpWwrZ7gd3arWlsSUUxCC/LwA==
+X-Received: by 2002:a05:600c:5103:b0:439:5da7:8e0 with SMTP id
+ 5b1f17b1804b1-43ab8fe2fe9mr83751495e9.16.1740675682878; 
+ Thu, 27 Feb 2025 09:01:22 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba5871f4sm62747565e9.39.2025.02.27.09.01.20
+ 5b1f17b1804b1-43aba5871f4sm62747565e9.39.2025.02.27.09.01.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 09:01:20 -0800 (PST)
+ Thu, 27 Feb 2025 09:01:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 1/5] hw/arm/omap1: Convert raw printfs to qemu_log_mask()
-Date: Thu, 27 Feb 2025 17:01:13 +0000
-Message-ID: <20250227170117.1726895-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/5] hw/arm/omap1: Drop ALMDEBUG ifdeffed out code
+Date: Thu, 27 Feb 2025 17:01:14 +0000
+Message-ID: <20250227170117.1726895-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250227170117.1726895-1-peter.maydell@linaro.org>
 References: <20250227170117.1726895-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,131 +98,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-omap1.c is very old code, and it contains numerous calls direct to
-printf() for various error and information cases.
+In omap1.c, there are some debug printfs in the omap_rtc_write()
+function that are guardad by ifdef ALMDEBUG. ALMDEBUG is never
+set, so this is all dead code.
 
-In this commit, convert the printf() calls that are for either guest
-error or unimplemented functionality to qemu_log_mask() calls.
-
-This leaves the printf() calls that are informative or which are
-ifdeffed-out debug statements untouched.
+It's not worth the effort of converting all of these to tracepoints;
+a modern tracepoint approach would probably have a single tracepoint
+covering all the register writes anyway. Just delete the printf()s.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/omap1.c | 48 +++++++++++++++++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 17 deletions(-)
+ hw/arm/omap1.c | 51 --------------------------------------------------
+ 1 file changed, 51 deletions(-)
 
 diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
-index ca2eb0d1576..3c0ce5e0979 100644
+index 3c0ce5e0979..8f5bb81c96a 100644
 --- a/hw/arm/omap1.c
 +++ b/hw/arm/omap1.c
-@@ -2559,8 +2559,9 @@ static void omap_rtc_interrupts_update(struct omap_rtc_s *s)
- static void omap_rtc_alarm_update(struct omap_rtc_s *s)
- {
-     s->alarm_ti = mktimegm(&s->alarm_tm);
--    if (s->alarm_ti == -1)
--        printf("%s: conversion failed\n", __func__);
-+    if (s->alarm_ti == -1) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: conversion failed\n", __func__);
-+    }
- }
+@@ -2660,25 +2660,16 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
  
- static uint64_t omap_rtc_read(void *opaque, hwaddr addr, unsigned size)
-@@ -3024,8 +3025,9 @@ static void omap_mcbsp_source_tick(void *opaque)
- 
-     if (!s->rx_rate)
-         return;
--    if (s->rx_req)
--        printf("%s: Rx FIFO overrun\n", __func__);
-+    if (s->rx_req) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Rx FIFO overrun\n", __func__);
-+    }
- 
-     s->rx_req = s->rx_rate << bps[(s->rcr[0] >> 5) & 7];
- 
-@@ -3070,8 +3072,9 @@ static void omap_mcbsp_sink_tick(void *opaque)
- 
-     if (!s->tx_rate)
-         return;
--    if (s->tx_req)
--        printf("%s: Tx FIFO underrun\n", __func__);
-+    if (s->tx_req) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO underrun\n", __func__);
-+    }
- 
-     s->tx_req = s->tx_rate << bps[(s->xcr[0] >> 5) & 7];
- 
-@@ -3173,7 +3176,7 @@ static uint64_t omap_mcbsp_read(void *opaque, hwaddr addr,
-         /* Fall through.  */
-     case 0x02:	/* DRR1 */
-         if (s->rx_req < 2) {
--            printf("%s: Rx FIFO underrun\n", __func__);
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: Rx FIFO underrun\n", __func__);
-             omap_mcbsp_rx_done(s);
-         } else {
-             s->tx_req -= 2;
-@@ -3278,8 +3281,9 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
-             }
-             if (s->tx_req < 2)
-                 omap_mcbsp_tx_done(s);
--        } else
--            printf("%s: Tx FIFO overrun\n", __func__);
-+        } else {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO overrun\n", __func__);
-+        }
+     switch (offset) {
+     case 0x00:	/* SECONDS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC SEC_REG <-- %02x\n", value);
+-#endif
+         s->ti -= s->current_tm.tm_sec;
+         s->ti += from_bcd(value);
          return;
  
-     case 0x08:	/* SPCR2 */
-@@ -3293,8 +3297,11 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
-     case 0x0a:	/* SPCR1 */
-         s->spcr[0] &= 0x0006;
-         s->spcr[0] |= 0xf8f9 & value;
--        if (value & (1 << 15))				/* DLB */
--            printf("%s: Digital Loopback mode enable attempt\n", __func__);
-+        if (value & (1 << 15)) {                        /* DLB */
-+            qemu_log_mask(LOG_UNIMP,
-+                          "%s: Digital Loopback mode enable attempt\n",
-+                          __func__);
-+        }
-         if (~value & 1) {				/* RRST */
-             s->spcr[0] &= ~6;
-             s->rx_req = 0;
-@@ -3325,13 +3332,19 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
+     case 0x04:	/* MINUTES_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC MIN_REG <-- %02x\n", value);
+-#endif
+         s->ti -= s->current_tm.tm_min * 60;
+         s->ti += from_bcd(value) * 60;
          return;
-     case 0x18:	/* MCR2 */
-         s->mcr[1] = value & 0x03e3;
--        if (value & 3)					/* XMCM */
--            printf("%s: Tx channel selection mode enable attempt\n", __func__);
-+        if (value & 3) {                                /* XMCM */
-+            qemu_log_mask(LOG_UNIMP,
-+                          "%s: Tx channel selection mode enable attempt\n",
-+                          __func__);
-+        }
-         return;
-     case 0x1a:	/* MCR1 */
-         s->mcr[0] = value & 0x03e1;
--        if (value & 1)					/* RMCM */
--            printf("%s: Rx channel selection mode enable attempt\n", __func__);
-+        if (value & 1) {                                /* RMCM */
-+            qemu_log_mask(LOG_UNIMP,
-+                          "%s: Rx channel selection mode enable attempt\n",
-+                          __func__);
-+        }
-         return;
-     case 0x1c:	/* RCERA */
-         s->rcer[0] = value & 0xffff;
-@@ -3412,8 +3425,9 @@ static void omap_mcbsp_writew(void *opaque, hwaddr addr,
-             }
-             if (s->tx_req < 4)
-                 omap_mcbsp_tx_done(s);
--        } else
--            printf("%s: Tx FIFO overrun\n", __func__);
-+        } else {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO overrun\n", __func__);
-+        }
-         return;
-     }
  
+     case 0x08:	/* HOURS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC HRS_REG <-- %02x\n", value);
+-#endif
+         s->ti -= s->current_tm.tm_hour * 3600;
+         if (s->pm_am) {
+             s->ti += (from_bcd(value & 0x3f) & 12) * 3600;
+@@ -2688,17 +2679,11 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+         return;
+ 
+     case 0x0c:	/* DAYS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC DAY_REG <-- %02x\n", value);
+-#endif
+         s->ti -= s->current_tm.tm_mday * 86400;
+         s->ti += from_bcd(value) * 86400;
+         return;
+ 
+     case 0x10:	/* MONTHS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC MTH_REG <-- %02x\n", value);
+-#endif
+         memcpy(&new_tm, &s->current_tm, sizeof(new_tm));
+         new_tm.tm_mon = from_bcd(value);
+         ti[0] = mktimegm(&s->current_tm);
+@@ -2715,9 +2700,6 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+         return;
+ 
+     case 0x14:	/* YEARS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC YRS_REG <-- %02x\n", value);
+-#endif
+         memcpy(&new_tm, &s->current_tm, sizeof(new_tm));
+         new_tm.tm_year += from_bcd(value) - (new_tm.tm_year % 100);
+         ti[0] = mktimegm(&s->current_tm);
+@@ -2737,25 +2719,16 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+         return;	/* Ignored */
+ 
+     case 0x20:	/* ALARM_SECONDS_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM SEC_REG <-- %02x\n", value);
+-#endif
+         s->alarm_tm.tm_sec = from_bcd(value);
+         omap_rtc_alarm_update(s);
+         return;
+ 
+     case 0x24:	/* ALARM_MINUTES_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM MIN_REG <-- %02x\n", value);
+-#endif
+         s->alarm_tm.tm_min = from_bcd(value);
+         omap_rtc_alarm_update(s);
+         return;
+ 
+     case 0x28:	/* ALARM_HOURS_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM HRS_REG <-- %02x\n", value);
+-#endif
+         if (s->pm_am)
+             s->alarm_tm.tm_hour =
+                     ((from_bcd(value & 0x3f)) % 12) +
+@@ -2766,33 +2739,21 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+         return;
+ 
+     case 0x2c:	/* ALARM_DAYS_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM DAY_REG <-- %02x\n", value);
+-#endif
+         s->alarm_tm.tm_mday = from_bcd(value);
+         omap_rtc_alarm_update(s);
+         return;
+ 
+     case 0x30:	/* ALARM_MONTHS_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM MON_REG <-- %02x\n", value);
+-#endif
+         s->alarm_tm.tm_mon = from_bcd(value);
+         omap_rtc_alarm_update(s);
+         return;
+ 
+     case 0x34:	/* ALARM_YEARS_REG */
+-#ifdef ALMDEBUG
+-        printf("ALM YRS_REG <-- %02x\n", value);
+-#endif
+         s->alarm_tm.tm_year = from_bcd(value);
+         omap_rtc_alarm_update(s);
+         return;
+ 
+     case 0x40:	/* RTC_CTRL_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC CONTROL <-- %02x\n", value);
+-#endif
+         s->pm_am = (value >> 3) & 1;
+         s->auto_comp = (value >> 2) & 1;
+         s->round = (value >> 1) & 1;
+@@ -2802,32 +2763,20 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+         return;
+ 
+     case 0x44:	/* RTC_STATUS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC STATUSL <-- %02x\n", value);
+-#endif
+         s->status &= ~((value & 0xc0) ^ 0x80);
+         omap_rtc_interrupts_update(s);
+         return;
+ 
+     case 0x48:	/* RTC_INTERRUPTS_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC INTRS <-- %02x\n", value);
+-#endif
+         s->interrupts = value;
+         return;
+ 
+     case 0x4c:	/* RTC_COMP_LSB_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC COMPLSB <-- %02x\n", value);
+-#endif
+         s->comp_reg &= 0xff00;
+         s->comp_reg |= 0x00ff & value;
+         return;
+ 
+     case 0x50:	/* RTC_COMP_MSB_REG */
+-#ifdef ALMDEBUG
+-        printf("RTC COMPMSB <-- %02x\n", value);
+-#endif
+         s->comp_reg &= 0x00ff;
+         s->comp_reg |= 0xff00 & (value << 8);
+         return;
 -- 
 2.43.0
 
