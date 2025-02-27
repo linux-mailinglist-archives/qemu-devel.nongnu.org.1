@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0D8A4812C
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E59BA480F0
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:23:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekZ-0007E5-Tr; Thu, 27 Feb 2025 09:20:32 -0500
+	id 1tnekd-0007EN-Hb; Thu, 27 Feb 2025 09:20:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekW-0007BV-BX
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:28 -0500
+ id 1tnekX-0007CD-KE
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekU-0003l0-Jx
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:27 -0500
+ id 1tnekU-0003l2-UW
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1740666025;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d3SHEfAckc7eqDUyGo9AWwA42EPB6Qrfn1g2oHUJdAU=;
- b=CsWg0BhZi5T+6H8wbTB40jcAEE7W0cQzhStkuvjMJFzcsbjybIYYPvBYhhUKkcJRca/aTj
- OEf2GJOnCmP/YR9Ya3gFlNfeH5n7yzbOV/GehOGzGAncN1GFuUWa0b2br3yNfzYUDaYfHP
- HjQVl2GLefQj+IkkB2yr8RiK7Idi7Pg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3r5BzHwwGLE8w4wpYRt2uj1rsGj25j/C0CBMCevqqBU=;
+ b=SsOBAILotg0oXhmTlLCkfGNAZ/STfrDKo/Cr3KzFT7r9EtvC/Kq0UUomesfFxk6xmOR0vj
+ 54SHtYjhNiBY59e9hfafWiZOXeVBPLYBP5gh6zLel/Aw1IljMlamYonW9Q0ZfNSfohLdgh
+ xHJ+2YqYhUI4/TdpweU4OEiA80UZiIA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-qS-PosQrNgCe_EzZkF2xFw-1; Thu, 27 Feb 2025 09:20:21 -0500
-X-MC-Unique: qS-PosQrNgCe_EzZkF2xFw-1
-X-Mimecast-MFC-AGG-ID: qS-PosQrNgCe_EzZkF2xFw_1740666020
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-abb7e837a7aso112748666b.3
+ us-mta-661-UQYzrzFhMM27S47IaMrfOw-1; Thu, 27 Feb 2025 09:20:21 -0500
+X-MC-Unique: UQYzrzFhMM27S47IaMrfOw-1
+X-Mimecast-MFC-AGG-ID: UQYzrzFhMM27S47IaMrfOw_1740666021
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-abf16f47749so73097166b.0
  for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666019; x=1741270819;
+ d=1e100.net; s=20230601; t=1740666020; x=1741270820;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d3SHEfAckc7eqDUyGo9AWwA42EPB6Qrfn1g2oHUJdAU=;
- b=H4stA6ISuB44nWVu35SabXSygv7W9f6jAC5KxKq++syZXHDDUg+ve2ruqFWt+JGELm
- IVtVczkuB76O0sOOsWpWadlZWWhit2HjI3hBsi629EAolPXOcPKw4MCEJuzbney5AzsV
- skfA3+44AFRVfQPnGgmY2NqzNIuaBEy6avGL7Pkoowp8nnS2d/jS1BqKx2El8qeXRXOD
- n7MN2D84aWxtw+6DnTwR310/UrsazThB4JY3pqfGENy+0jMXLX/bv+bc1rBmZ950fukh
- yTxbn2O7uwt3UIa6/4WTfqFL6ReBY10wfatr/z7GP69WSDxruDCnk1C9jmnyQq/2PPSi
- 4nvA==
-X-Gm-Message-State: AOJu0YyuoYBnJnKYOY7HAC9a1AktDG4K2IGVYoZlVj7SRwT2dh7gx+Vg
- Z1SHPXSjcHToYYymnJex8kA7AdQ9P1icIzFAdkuDH23nfCY3g8MBy86jzzX54STXDWWiDWNACm2
- XAp0Ia6NEDCvvSdg5yyQ4S7SrFvs1F7ZO3TJruxq908wCB42qTtnfV33ZfnPpbBp6KjD9JH8DXL
- /zZH17u1bGiItkV6DuqAftS2SyJP5P7osLaRrzXE0=
-X-Gm-Gg: ASbGnctBaZTdCpbZ9PpLs/yNgYOJwxvoS/35hpQk8T52NkcwYqqz/YyJYd4601avsVg
- /oZU+bOvd/Fl05ioFw+TLbQV4O/baBlDUGP5SPNJ+N6sBI3LcoGtPRJ+rBp+bo8Bje/pUiNlQLP
- mCtOo5YZ81aN53Bju256RGOHuS+HH+tTbkxGshRT2WZgOLSw8MetPRpBctaJveIPS5tfoCtUNui
- IPxEaIPdXUhqg6IRGbQbiZDmB5mLuWxuPbDzFj/cWdpkgpyoCTiFKJ5Cjv4AYwoBo5HO4vLvH3Z
- TLm/TFD4n/56qTG+hrit
-X-Received: by 2002:a17:907:7801:b0:aa6:7737:199c with SMTP id
- a640c23a62f3a-abc09a079d1mr2691813066b.15.1740666019119; 
+ bh=3r5BzHwwGLE8w4wpYRt2uj1rsGj25j/C0CBMCevqqBU=;
+ b=lzJVYKJnoxia5wruVxHsR3hnSEk4VDuza4q527RHJqYn2c8IhkP2YHsGcXwmXfjp9L
+ Zwt7Y+lZUlkrFF8E0Y/CBNCBTTclNYpVSR/Dp1M8K5X/3ZJ+zWyVZFo2F0lzmYjjvrPE
+ kVnyRTylfvARDQgg7aHNffiFjCivS1dW2vOxbYwpJ01suULl/AwSO6vTSjqzNjjQtZeX
+ sMw7GrbO5BCJRaC3RuuMvIZRjoTFd2EWAM14cmMGr5dcpkPcanLhJmVxFgplA13dZ9IF
+ fC74yC3SamuYTIOebMF3QXbSeFZ5oUjWeiEvkXDipZ6l8RitCK93WhQXmxEQkQitCbZA
+ 1CEA==
+X-Gm-Message-State: AOJu0YzqDn3eHR569McZ0o7mOE3cQFJ6Bspxpg3gb9LeQmsRkoEIJeyi
+ Rey9L93LLzm/HzIoKJ2E0uIJnM8y8yRvsbrn33a0vb4eLiyZFh84jS5nL33JizGXExDTaNG5U8Y
+ bpCumTGymQAFAt8FSqbefQdnH9YEvY1h6GvODGE8icDa94fuO50Y3u5Cxv/nauIXB1kWnJIqbNU
+ 7Wx161npwYFUL/BZEvJQQNspcqkha12cQUVeG05Tc=
+X-Gm-Gg: ASbGncvTDRmP+At45l1i6h5I6IuHvKraXPPHtMKpt8eV0fhUZYAUPsDEI7lUypZhAzK
+ Verd9SZGgHRHITIolc/8s9hO11pdkM8f1w9ZUEoMBCtC0MvKY1sJPzdEmIsgSLf7nJV487+pxrW
+ v2rclMuGOWlv41ufmU35eKZPNyrnbfKzMWfG++ZPESh/VbFTJ86YsH9aaHlQYEEwpidH9FZo/0x
+ ByhBg+tfQk/cbDo6aDE4Fv/ZFaMoLwZL9O866aNI/o3Ga4BVvb/8FTnvnX66WRDegf4kvH4PLpG
+ NVnYpc+HJW0pxixm6usm
+X-Received: by 2002:a05:6402:4310:b0:5de:5939:6c34 with SMTP id
+ 4fb4d7f45d1cf-5e4bfba9848mr4139849a12.15.1740666020232; 
+ Thu, 27 Feb 2025 06:20:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE9emLnvHCCggBF1OEIDrmWorMy2I48000PcEQ7IZrLuP0QRKyPgEoe8g1cWCogbehQCz0Oeg==
+X-Received: by 2002:a05:6402:4310:b0:5de:5939:6c34 with SMTP id
+ 4fb4d7f45d1cf-5e4bfba9848mr4139825a12.15.1740666019667; 
  Thu, 27 Feb 2025 06:20:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFparBIFnApYePY3cRqTgul9/BGUSE3ord1JQgKYxTV0MP1CgCcshqlW0JkCTbBtdyaVcZJuA==
-X-Received: by 2002:a17:907:7801:b0:aa6:7737:199c with SMTP id
- a640c23a62f3a-abc09a079d1mr2691809166b.15.1740666018617; 
- Thu, 27 Feb 2025 06:20:18 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c6f60b2sm129205466b.102.2025.02.27.06.20.16
+ 4fb4d7f45d1cf-5e4c43a55e0sm1145604a12.79.2025.02.27.06.20.19
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:16 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:19 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- David Hildenbrand <david@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 11/34] physmem: replace assertion with error
-Date: Thu, 27 Feb 2025 15:19:29 +0100
-Message-ID: <20250227141952.811410-12-pbonzini@redhat.com>
+Subject: [PULL 12/34] pvg: do not enable it on cross-architecture targets
+Date: Thu, 27 Feb 2025 15:19:30 +0100
+Message-ID: <20250227141952.811410-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -93,7 +90,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,57 +106,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is possible to start QEMU with a confidential-guest-support object
-even in TCG mode.  While there is already a check in qemu_machine_creation_done:
+PVG is not cross-architecture; the PVG guest drivers with x86-64 macOS do not give
+useful results with the aarch64 macOS host PVG framework, and vice versa.
+To express this repurpose CONFIG_MAC_PVG, making it true only if the target has
+the same architecture as the host.  Furthermore, remove apple-gfx.m unless
+one of the devices is actually present.
 
-    if (machine->cgs && !machine->cgs->ready) {
-        error_setg(errp, "accelerator does not support confidential guest %s",
-                   object_get_typename(OBJECT(machine->cgs)));
-        exit(1);
-    }
-
-the creation of RAMBlocks happens earlier, in qemu_init_board(), if
-the command line does not override the default memory backend with
--M memdev.  Then the RAMBlock will try to use guest_memfd (because
-machine_require_guest_memfd correctly returns true; at least correctly
-according to the current implementation) and trigger the assertion
-failure for kvm_enabled().  This happend with a command line as
-simple as the following:
-
-    qemu-system-x86_64 -m 512 -nographic -object sev-snp-guest,reduced-phys-bits=48,id=sev0 \
-       -M q35,kernel-irqchip=split,confidential-guest-support=sev0
-    qemu-system-x86_64: ../system/physmem.c:1871: ram_block_add: Assertion `kvm_enabled()' failed.
-
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250217120812.396522-1-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/physmem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ meson.build            | 6 ++++++
+ Kconfig.host           | 3 +++
+ hw/display/Kconfig     | 4 ----
+ hw/display/meson.build | 9 +++------
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 67bdf631e60..eff8b55c2dd 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1882,7 +1882,11 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     if (new_block->flags & RAM_GUEST_MEMFD) {
-         int ret;
+diff --git a/meson.build b/meson.build
+index 0ee79c664d3..ad2c6b61930 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3367,6 +3367,12 @@ foreach target : target_dirs
+     target_kconfig += 'CONFIG_' + config_target['TARGET_ARCH'].to_upper() + '=y'
+     target_kconfig += 'CONFIG_TARGET_BIG_ENDIAN=' + config_target['TARGET_BIG_ENDIAN']
  
--        assert(kvm_enabled());
-+        if (!kvm_enabled()) {
-+            error_setg(errp, "cannot set up private guest memory for %s: KVM required",
-+                       object_get_typename(OBJECT(current_machine->cgs)));
-+            goto out_free;
-+        }
-         assert(new_block->guest_memfd < 0);
++    # PVG is not cross-architecture.  Use accelerator_targets as a proxy to
++    # figure out which target can support PVG on this host
++    if pvg.found() and target in accelerator_targets.get('CONFIG_HVF', [])
++      target_kconfig += 'CONFIG_MAC_PVG=y'
++    endif
++
+     config_input = meson.get_external_property(target, 'default')
+     config_devices_mak = target + '-config-devices.mak'
+     config_devices_mak = configure_file(
+diff --git a/Kconfig.host b/Kconfig.host
+index 842cbe0d6c5..933425c74b4 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -61,3 +61,6 @@ config HV_BALLOON_POSSIBLE
  
-         ret = ram_block_discard_require(true);
+ config HAVE_RUST
+     bool
++
++config MAC_PVG
++    bool
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index 2b53dfd7d26..1e95ab28ef4 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -141,10 +141,6 @@ config XLNX_DISPLAYPORT
+ config DM163
+     bool
+ 
+-config MAC_PVG
+-    bool
+-    default y
+-
+ config MAC_PVG_MMIO
+     bool
+     depends on MAC_PVG && AARCH64
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index 94f4f05d36f..b9bdf219103 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -61,12 +61,9 @@ system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+ 
+ system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
+ 
+-if host_os == 'darwin'
+-  system_ss.add(when: 'CONFIG_MAC_PVG',         if_true: [files('apple-gfx.m'), pvg, metal])
+-  system_ss.add(when: 'CONFIG_MAC_PVG_PCI',     if_true: [files('apple-gfx-pci.m'), pvg, metal])
+-  if cpu == 'aarch64'
+-    system_ss.add(when: 'CONFIG_MAC_PVG_MMIO',  if_true: [files('apple-gfx-mmio.m'), pvg, metal])
+-  endif
++if pvg.found()
++  system_ss.add(when: 'CONFIG_MAC_PVG_PCI',     if_true: [files('apple-gfx.m', 'apple-gfx-pci.m'), pvg, metal])
++  system_ss.add(when: 'CONFIG_MAC_PVG_MMIO',    if_true: [files('apple-gfx.m', 'apple-gfx-mmio.m'), pvg, metal])
+ endif
+ 
+ if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
 -- 
 2.48.1
 
