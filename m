@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02144A47866
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 09:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7105A47865
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 09:57:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnZgt-0003en-E3; Thu, 27 Feb 2025 03:56:23 -0500
+	id 1tnZgv-0003fG-Bn; Thu, 27 Feb 2025 03:56:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgl-0003dM-Pk
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgs-0003eo-U8
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgj-0001kz-MA
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:15 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnZgm-0001lP-13
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:56:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740646573;
+ s=mimecast20190719; t=1740646574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=APifhp3j6n4W5oWPDH4oxmGTRnbnrNQc5kXxVnbO/RQ=;
- b=WO9gs28OHWTtbEVy3aqp0LcAWqJVIO4ogLPKFIon8Pqlx8O/2zm/vWo0lfx53fWGlHh8CL
- unQbyYyFdwTPr3QuV4Dyu1123hBVI3MPDULZ+w/njhXLMRDbDFcUprVitsEP193QTzC/3v
- CcuiXtPbdSNsl0RA7F04qijpdUwHtE0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ZAqUbCDnvWBy3/Czvf3EyM7BKzjbQa1Io3/kPYioLn4=;
+ b=AtRsSFWH1D1KW6ryWebm6uS2Tf27d1YX3fd0lUI4Tlr9UJVUlNiTYFxAA9CRKwqYC3xtAh
+ 2efy55oOSAD4+Fdjy6PaCmeOqJba1wcawLQke1iOpdEToELneZcz1vsGP6CWtukTyAfTkd
+ UtmZ5bk1nJKyPJEw/TMGyzvLjEHFU6c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-132-a07nHNgjPTaTyetwIrA6Hg-1; Thu,
- 27 Feb 2025 03:56:08 -0500
-X-MC-Unique: a07nHNgjPTaTyetwIrA6Hg-1
-X-Mimecast-MFC-AGG-ID: a07nHNgjPTaTyetwIrA6Hg_1740646568
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-519-6gGadRUQNNecCyBS_RyoJA-1; Thu,
+ 27 Feb 2025 03:56:09 -0500
+X-MC-Unique: 6gGadRUQNNecCyBS_RyoJA-1
+X-Mimecast-MFC-AGG-ID: 6gGadRUQNNecCyBS_RyoJA_1740646568
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC3D219560BC; Thu, 27 Feb 2025 08:56:07 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CF87B180034A; Thu, 27 Feb 2025 08:56:08 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 822DC180094B; Thu, 27 Feb 2025 08:56:07 +0000 (UTC)
+ id 9DF8F180035E; Thu, 27 Feb 2025 08:56:07 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1680121E65FD; Thu, 27 Feb 2025 09:56:02 +0100 (CET)
+ id 1A62721E65FF; Thu, 27 Feb 2025 09:56:02 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	berrange@redhat.com,
 	eduardo@habkost.net
-Subject: [PATCH v2 5/6] qdev: Improve PropertyInfo member @description for
- enum properties
-Date: Thu, 27 Feb 2025 09:56:00 +0100
-Message-ID: <20250227085601.4140852-6-armbru@redhat.com>
+Subject: [PATCH v2 6/6] qdev: Improve a few more PropertyInfo @description
+ members
+Date: Thu, 27 Feb 2025 09:56:01 +0100
+Message-ID: <20250227085601.4140852-7-armbru@redhat.com>
 In-Reply-To: <20250227085601.4140852-1-armbru@redhat.com>
 References: <20250227085601.4140852-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,106 +84,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Consistently use format "DESCRIPTION (VALUE/VALUE...)".
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/core/qdev-properties-system.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ hw/block/xen-block.c             | 2 +-
+ hw/core/qdev-properties-system.c | 2 +-
+ hw/core/qdev-properties.c        | 1 +
+ hw/s390x/ccw-device.c            | 4 ++--
+ target/sparc/cpu.c               | 1 +
+ 5 files changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index 7c9d1b658c..2098286b5f 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -662,7 +662,7 @@ invalid:
+  */
+ static const PropertyInfo xen_block_prop_vdev = {
+     .type  = "str",
+-    .description = "Virtual Disk specifier: d*p*/xvd*/hd*/sd*",
++    .description = "Virtual Disk specifier (d*p*/xvd*/hd*/sd*)",
+     .get = xen_block_get_vdev,
+     .set = xen_block_set_vdev,
+ };
 diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 21f67d42f8..aa7600bce6 100644
+index aa7600bce6..1f01eb3e59 100644
 --- a/hw/core/qdev-properties-system.c
 +++ b/hw/core/qdev-properties-system.c
-@@ -603,6 +603,7 @@ QEMU_BUILD_BUG_ON(sizeof(LostTickPolicy) != sizeof(int));
+@@ -985,7 +985,7 @@ inval:
  
- const PropertyInfo qdev_prop_losttickpolicy = {
-     .type  = "LostTickPolicy",
-+    .description = "Policy for handling lost ticks (discard/delay/slew)",
-     .enum_table  = &LostTickPolicy_lookup,
-     .get   = qdev_propinfo_get_enum,
-     .set   = qdev_propinfo_set_losttickpolicy,
-@@ -642,8 +643,7 @@ QEMU_BUILD_BUG_ON(sizeof(BlockdevOnError) != sizeof(int));
+ const PropertyInfo qdev_prop_pci_host_devaddr = {
+     .type = "str",
+-    .description = "Address (bus/device/function) of "
++    .description = "Address (bus:device.function) of "
+                    "the host device, example: 04:10.0",
+     .get = get_pci_host_devaddr,
+     .set = set_pci_host_devaddr,
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 5a801057db..c04df3b337 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -247,6 +247,7 @@ static void set_bool(Object *obj, Visitor *v, const char *name, void *opaque,
  
- const PropertyInfo qdev_prop_blockdev_on_error = {
-     .type = "BlockdevOnError",
--    .description = "Error handling policy, "
--                   "report/ignore/enospc/stop/auto",
-+    .description = "Error handling policy (report/ignore/enospc/stop/auto)",
-     .enum_table = &BlockdevOnError_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -656,8 +656,8 @@ QEMU_BUILD_BUG_ON(sizeof(BiosAtaTranslation) != sizeof(int));
+ const PropertyInfo qdev_prop_bool = {
+     .type  = "bool",
++    .description = "on/off",
+     .get   = get_bool,
+     .set   = set_bool,
+     .set_default_value = set_default_value_bool,
+diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
+index 1d4b8ea35c..1ea9934f6c 100644
+--- a/hw/s390x/ccw-device.c
++++ b/hw/s390x/ccw-device.c
+@@ -75,8 +75,8 @@ static void ccw_device_set_loadparm(Object *obj, Visitor *v,
  
- const PropertyInfo qdev_prop_bios_chs_trans = {
-     .type = "BiosAtaTranslation",
--    .description = "Logical CHS translation algorithm, "
--                   "auto/none/lba/large/rechs",
-+    .description = "Logical CHS translation algorithm "
-+                   " (auto/none/lba/large/rechs)",
-     .enum_table = &BiosAtaTranslation_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -668,8 +668,7 @@ const PropertyInfo qdev_prop_bios_chs_trans = {
+ const PropertyInfo ccw_loadparm = {
+     .type  = "str",
+-    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to pass"
+-            " to the guest loader/kernel",
++    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to select"
++            " a guest kernel",
+     .get = ccw_device_get_loadparm,
+     .set = ccw_device_set_loadparm,
+ };
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index c8ea35be76..f0613f8a8e 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -939,6 +939,7 @@ static void sparc_set_nwindows(Object *obj, Visitor *v, const char *name,
  
- const PropertyInfo qdev_prop_fdc_drive_type = {
-     .type = "FloppyDriveType",
--    .description = "FDC drive type, "
--                   "144/288/120/none/auto",
-+    .description = "Floppy drive type (144/288/120/none/auto)",
-     .enum_table = &FloppyDriveType_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -680,8 +679,8 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
- 
- const PropertyInfo qdev_prop_multifd_compression = {
-     .type = "MultiFDCompression",
--    .description = "multifd_compression values, "
--                   "none/zlib/zstd/qpl/uadk/qatzip",
-+    .description = "multifd_compression values"
-+                   " (none/zlib/zstd/qpl/uadk/qatzip)",
-     .enum_table = &MultiFDCompression_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -694,8 +693,7 @@ QEMU_BUILD_BUG_ON(sizeof(MigMode) != sizeof(int));
- 
- const PropertyInfo qdev_prop_mig_mode = {
-     .type = "MigMode",
--    .description = "mig_mode values, "
--                   "normal,cpr-reboot",
-+    .description = "Migration mode (normal/cpr-reboot)",
-     .enum_table = &MigMode_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -708,8 +706,7 @@ QEMU_BUILD_BUG_ON(sizeof(GranuleMode) != sizeof(int));
- 
- const PropertyInfo qdev_prop_granule_mode = {
-     .type = "GranuleMode",
--    .description = "granule_mode values, "
--                   "4k, 8k, 16k, 64k, host",
-+    .description = "Granule page size (4k/8k/16k/64k/host)",
-     .enum_table = &GranuleMode_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -718,8 +715,7 @@ const PropertyInfo qdev_prop_granule_mode = {
- 
- const PropertyInfo qdev_prop_zero_page_detection = {
-     .type = "ZeroPageDetection",
--    .description = "zero_page_detection values, "
--                   "none,legacy,multifd",
-+    .description = "Zero page detection (none/legacy/multifd)",
-     .enum_table = &ZeroPageDetection_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-@@ -1232,7 +1228,7 @@ QEMU_BUILD_BUG_ON(sizeof(S390CpuEntitlement) != sizeof(int));
- 
- const PropertyInfo qdev_prop_cpus390entitlement = {
-     .type  = "S390CpuEntitlement",
--    .description = "low/medium (default)/high",
-+    .description = "auto/low/medium/high (default medium)",
-     .enum_table  = &S390CpuEntitlement_lookup,
-     .get   = qdev_propinfo_get_enum,
-     .set   = qdev_propinfo_set_enum,
+ static const PropertyInfo qdev_prop_nwindows = {
+     .type  = "int",
++    .description = "Number of register windows",
+     .get   = sparc_get_nwindows,
+     .set   = sparc_set_nwindows,
+ };
 -- 
 2.48.1
 
