@@ -2,66 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2E2A47750
+	by mail.lfdr.de (Postfix) with ESMTPS id 892FCA47751
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 09:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnYwM-0008V0-Pl; Thu, 27 Feb 2025 03:08:18 -0500
+	id 1tnYwS-00008D-Is; Thu, 27 Feb 2025 03:08:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnYwF-0008MN-Hu
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnYwF-0008MM-4c
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:08:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnYwC-0001fk-F5
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:08:11 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnYwB-0001fg-Te
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 03:08:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740643687;
+ s=mimecast20190719; t=1740643686;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=XuUQYF53VJoGGVTIA3kMbsSXg7OB2NmsJ4NgUKwHE0Q=;
- b=gJqV8tG62qZyQyzEhUOZrvMdx5Lfs7uxCjwafcsYBpO+ZnOkqj/8K06LgeKR8F67xnQuLT
- ui8WWD2SqUCNWJe0a8vJOI2eMuYsjR1j9EkW2usgDJMdO0t63ghQd3ZB6woRTmE1Hp8noP
- 8q4j6PdjvQoEo0WNZ0IEFkz0HRNQdPI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LiUZZgQ9toEnOPd6UumwpN6QdODXEOS9nTUgnrw7vII=;
+ b=i726IZ6yx8VdNPBUbklr9vmbPFVPiRzuGmoZ9JgP8Wg/klCVSd/GkI2M3YLe1g4GIHULvE
+ sUTi0GgzgQqsG632ayLSq5SkWvLc/T/85KaPvKIEEhQHr+lmGZ8B6V+2v0lqTaq9PvgtFD
+ dSzkVqv4dZUoWZlWAL56axbkWVfbZEA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-Ks3wVPpQOV6v_LmTKuRUKA-1; Thu,
- 27 Feb 2025 03:08:01 -0500
-X-MC-Unique: Ks3wVPpQOV6v_LmTKuRUKA-1
-X-Mimecast-MFC-AGG-ID: Ks3wVPpQOV6v_LmTKuRUKA_1740643680
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-iTPj08g_OPGWUZERDxowOQ-1; Thu,
+ 27 Feb 2025 03:08:02 -0500
+X-MC-Unique: iTPj08g_OPGWUZERDxowOQ-1
+X-Mimecast-MFC-AGG-ID: iTPj08g_OPGWUZERDxowOQ_1740643681
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 956B31800877; Thu, 27 Feb 2025 08:08:00 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DB07180087A; Thu, 27 Feb 2025 08:08:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 268451944D02; Thu, 27 Feb 2025 08:08:00 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED170300018D; Thu, 27 Feb 2025 08:07:59 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7215921E675F; Thu, 27 Feb 2025 09:07:57 +0100 (CET)
+ id 7411B21E65DD; Thu, 27 Feb 2025 09:07:57 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com,
 	jsnow@redhat.com
-Subject: [PATCH 0/3] qapi: Clean up for Python 3.8
-Date: Thu, 27 Feb 2025 09:07:54 +0100
-Message-ID: <20250227080757.3978333-1-armbru@redhat.com>
+Subject: [PATCH 1/3] docs/about/build-platforms: Correct minimum supported
+ Python version
+Date: Thu, 27 Feb 2025 09:07:55 +0100
+Message-ID: <20250227080757.3978333-2-armbru@redhat.com>
+In-Reply-To: <20250227080757.3978333-1-armbru@redhat.com>
+References: <20250227080757.3978333-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,33 +83,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QAPI code generator code still contains a few minor oddities to
-make it work with versions of Python we no longer support.  Bury them.
+Fixes: ca056f4499c2 (Python: Drop support for Python 3.7)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ docs/about/build-platforms.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm leaving two things for later because I don't know what to do about
-them:
-
-* scripts/qapi/source.py has a "Replace with @dataclass in Python
-  3.7+" comment.
-
-* scripts/qapi/introspect.py has a "Python 3.6 does not offer
-  TypedDict constructs" comment.
-
-While there, fix a missing version bump in build dependency
-documentation.
-
-Markus Armbruster (3):
-  docs/about/build-platforms: Correct minimum supported Python version
-  qapi: Eliminate OrderedDict
-  qapi/introspect: Use @dataclass to simplify
-
- docs/about/build-platforms.rst |  2 +-
- scripts/qapi/introspect.py     | 12 +++++-------
- scripts/qapi/parser.py         |  5 ++---
- scripts/qapi/schema.py         | 11 +++++------
- tests/qapi-schema/test-qapi.py | 11 +----------
- 5 files changed, 14 insertions(+), 27 deletions(-)
-
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 482b09819c..1552b1a704 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -101,7 +101,7 @@ Python runtime
+   option of the ``configure`` script to point QEMU to a supported
+   version of the Python runtime.
+ 
+-  As of QEMU |version|, the minimum supported version of Python is 3.7.
++  As of QEMU |version|, the minimum supported version of Python is 3.8.
+ 
+ Python build dependencies
+   Some of QEMU's build dependencies are written in Python.  Usually these
 -- 
 2.48.1
 
