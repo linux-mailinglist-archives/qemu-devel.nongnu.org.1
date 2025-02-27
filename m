@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C55A47ADC
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 11:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5889FA47AE0
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 11:56:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnbXv-0005Bh-6V; Thu, 27 Feb 2025 05:55:15 -0500
+	id 1tnbY4-0005Gy-8t; Thu, 27 Feb 2025 05:55:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tnbXn-00052I-3h
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:07 -0500
+ id 1tnbXy-0005Eo-NI
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:18 -0500
 Received: from smarthost4.eviden.com ([80.78.11.85])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tnbXk-0005o1-W6
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:06 -0500
+ id 1tnbXw-0005pC-Ik
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 05:55:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1740653705; x=1772189705;
+ t=1740653716; x=1772189716;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=L+qfiCqDv/FvxxOldZORUEjs2F9iRklyEARtcbtk2HM=;
- b=v+tjLdcclykausmCv7vzwGTDPQy2Mdr9edZMwv7rK/N90DUeTvIofv75
- hRnuH5M9V+AG8bvKLprcrVbW7D2bo1EvjxbHOTKVffM3oN6gMMlv3QoVS
- RnkAYOIuT0UNGclrNwG29PU2vBHevpnd0Gv2QMly4hokrdbLeVw6dL5Kg
- NpALYn7uUXhTJrDy3OOqv/Y0W+HU+FO2bK2AkfclcNcFwsjdR5fGDzExS
- ZvGqUDomH9okUu71rRXVH8G5Nthn2QebG+hQduWBSYxCk5zSZGb2q5VSW
- KvNPrrdCnWu8zGIhVyNLlK+/IY2qgSz6ocE5eCybpeW9CXsphJN6FC1It w==;
-X-CSE-ConnectionGUID: C+RDtWRdRme8ZWSewEBHag==
-X-CSE-MsgGUID: 5aPUJKp8Q12q3kOqfdRmDg==
-X-IronPort-AV: E=Sophos;i="6.13,319,1732575600"; d="scan'208";a="33331856"
-X-MGA-submission: =?us-ascii?q?MDGyf9621O0n+gR25HSLjzaylgnq+IflCTDqGp?=
- =?us-ascii?q?OFY7PHyWqQPFvkAt9dgUL6MacODUdulWxKWtiVSKM1t6c8eZc5GHq2+N?=
- =?us-ascii?q?h+cX0Xtqx3VX108saZpSl/PcqsqBxrDrQpIthcFIUDtXUhbnG82vGfU7?=
- =?us-ascii?q?61o3pXeSBr1Y41xAPR+fYkBQ=3D=3D?=
+ bh=thx/EhaMFSpCXXIfgOfxU1JCplMe9WF6IcJG11lYnsQ=;
+ b=JmO/5LMbJ3bxz7RjvVBgtnoa0M7qVR1zzHrcfc90/pmwBZhfSRqt/yEz
+ 2sqU396X8A716HlcdK0V0VD0IF4iMdrHMEfKh/lwOvmg+RPphEqAoaPun
+ aOJBoF12O7JK87PWQQsvdI0OjEm4O5kvUFBDc3tGcICLYRHQksNBnI1Bw
+ NTW7fvdJybkIl7pWZrdI5pWbgMGHkoH0yzP86HIUCsrIGlmlxo9sV3igU
+ TFec/o4I6UfntNnrEEYkruMRIBEEnfzTZnLtzSd9d5MXTRF6GdeVklWxB
+ WXwLbia/ZB0NS7Hr21DMTuEZx78IB31UiWPkvWYWN7GFGp0cA1IncR/2P A==;
+X-CSE-ConnectionGUID: EFL1yFbGS72W5JCF5Nw9UA==
+X-CSE-MsgGUID: 7kwR1EsBSJ+aGXaMmpCJVw==
+X-IronPort-AV: E=Sophos;i="6.13,319,1732575600"; d="scan'208";a="33331859"
+X-MGA-submission: =?us-ascii?q?MDG6/5DQTOC9L9s+HN24DSB3hjKWtjD3E/kW11?=
+ =?us-ascii?q?K9aOBD8toS1wjcdWqUoDSt2fLIzx9ndCDRVAzQi9cSC5k1wMQZpcHJQr?=
+ =?us-ascii?q?WacfZf20XOhRb8OdPgUdmIL+7nu9J9fFMTUDxPbNzQIzJHeTNRhiIYBr?=
+ =?us-ascii?q?HFd5VP/zXEvHrnXfApV8Cjow=3D=3D?=
 Received: from mail-db8eur05lp2110.outbound.protection.outlook.com (HELO
  EUR05-DB8-obe.outbound.protection.outlook.com) ([104.47.17.110])
  by smarthost4.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
  27 Feb 2025 11:54:50 +0100
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gzpUkcXxzTumeUMQ1bPFjIborRpB0JA5gUdvngvh+B0Q3naC9GoDGrlRvispFjHxcLqthPG2qAKOmA6jgywQ0Wy3BM7nNer1e8exJ4EgirJEwb06m36sP+D+xhCfHwrb+x12CuJ7wPAsh9+O0ZmKbbA+pBoYyMp4lSNzMMS8nPBxvHuJCleaPYPqfm7T/9wH0+Ml6v0gw8uWl/YTWMLuZG8S64DCrkmiSgSz38Tv4VBXCqsEDUMNZi1q1fnlrMP5AFMzhWK+fMRaeZ7hFAaZjUKgha1eyYxCJ4EzBh9+OgtEPRaJzT91hsT7KNFq51Fg23eSTCvOsO98MmRm2EJovg==
+ b=URSFqHlTCUCvajhA8rMvLD5DeEG09N+p8jDNsI8nVVcP8cDvNF65Yy8E0ba5GQ40HBLigUxXtc/fPet3iz2KkZ1aXFl1nu7Ul6K806dPHET9F2BSCIc1sZo7DSfBN6oCjY6iPvafD8FLUc4Gty9PvSQ99DM1jOx8hU4bmnbUfa5KoUVfM856xXbbbTHyT2z6+8caeHblnK3kc9idYLbsmq6vvvqISHpwTr5DmBoiYXTnctUODCbsIxjeO3N6kH7/Rf6EMadwTDwIG2ttyx5i34ApqJYHAWuSzSpvB6HtoBZGfUv7+cIBAdKn4sMcCyEwnLW048xbaj7gB0iaBFG8WQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Quf2k86fFz0ZYXnqnyMCqldIOYG9IMWVRxd9aH7T6rw=;
- b=STRn7DGEFkBp2rUAdCJ+x1SdSeIbEcwJvqtNbm0ArD7zZro0S649Y9CxWsz+PhNindzu/iyHmpefSWcIkcknbrre9tr2dJDpRiF3TepvjdLpVf1PuqJBQXnBqK0f/nL1l648ynDwbomuwpmv21Xx+wrQWmWtxPYxOYaxKZn0sLv6JjABP25e+eyQRsnyMFtJPvC4qfFL6uJ7E3eXQkrrYtbYGqFI4zXYTO95Qa/5F6/2T18jVIz9Kiml/N4DL77KzSt0Rugdt1DASDwpqWTLwCONqzvyxwFmo7KG6fUfzD/LqitaKSSl9m6MHUpRTYzI92F+xykfrDN8aaIWmn80BA==
+ bh=QfhltBH6apxt4PKk/fiqX0GKuSvhqsHT/xupMPVyhFk=;
+ b=p3BhEyLoeXUoSqxYP5NmVkLMqRZe/Puy2t2sFr778b/vvUEI0pEw5TGibLysJKdHbUoaQDHUe175NRwGFde4nJ7aquCW2Wt4eiBZ8fL3PCxZi3qrdz6cwD++ftDJzYlYrAaACEouh8yg+gG6wwXtcdfWFvhbsH20k//2ZDGpIZKDyBfP8Qi646AwsbSK3aywV2MrzhWm93MJbbWzhEICFEF1YKqlRSWpPRrVL4W5NP+zND7MnuGYFDhP3pYCy9OvNitiSsLgur1R8SVcDUaw4Jvxqyel9g/+U9h95fLX3ZmoKjsBc+rh8Hb3l7fScFvxffODGC83OCQPvbNeIbjuKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
  dkim=pass header.d=eviden.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Quf2k86fFz0ZYXnqnyMCqldIOYG9IMWVRxd9aH7T6rw=;
- b=sXv8krICGbrzlrIwI4yp0YO/LkYkiM8wcqumXVNR240tT1Ma/OzxCZnQpmAn1XSCyZ5+B1VxGetweuYqqBFk1N8+yoSR96HTwUwqeW3kF1XnUgbJFKOWF+xsFyUIkGwh1l44zbm7+XxzbpLsNzkdoKbru92T69Q2Zb/8B6h/l9bkfpwd1JfEQVC3HbNw2cBEteWApTggQBwzMd+XdHv/Cn1zmq5I01RlBJAxLBQzClI7ER+e1+qNi1myWeqf1ohPblhstZniGWiDPRrCZk+PYSgvCCG/ajGiEEUMfDNOSW7uxcuRAv8c5FmU1DSlFpNSxbQho9A/8zE+Br1rJHSIVQ==
+ bh=QfhltBH6apxt4PKk/fiqX0GKuSvhqsHT/xupMPVyhFk=;
+ b=iN01uTmH3A5yBfDJkwZ0NuW3p+GJ6FAjyyZHQ7/aNEueJjPcbbEc4EescT8zw5vT8/96NZmJsyt7HXpn4vmihSpguv9pWfKEGwM/M/zrgB6eHYmM9rWaYxt7EU1vc6oeyZDFlIjqKUfpCSmibExhcf8EQNtghdTin8xSdBODq6HgFzF7RKySYar6X1X+1Gphe4a40wq8fxX8VZDH7W+5Djwsz4G77LO77zPbFfKzI4bgZhYLZofDCk8OhvttqW5Xf0WiXv0+o6gmETJnoTIrdZofuE0lzLoATxihF7ksoSCLG5TrfvKfYu6hUrVd8ctR4C5vJxHRtpksIgGQQ+25dg==
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
  by AS2PR07MB9097.eurprd07.prod.outlook.com (2603:10a6:20b:558::17)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Thu, 27 Feb
- 2025 10:54:48 +0000
+ 2025 10:54:49 +0000
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d%7]) with mapi id 15.20.8445.017; Thu, 27 Feb 2025
- 10:54:48 +0000
+ 10:54:49 +0000
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
@@ -74,11 +74,11 @@ CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
  "mst@redhat.com" <mst@redhat.com>, "tjeznach@rivosinc.com"
  <tjeznach@rivosinc.com>, "minwoo.im@samsung.com" <minwoo.im@samsung.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-Subject: [PATCH v4 15/19] memory: Add an API for ATS support
-Thread-Topic: [PATCH v4 15/19] memory: Add an API for ATS support
-Thread-Index: AQHbiQYERBOBlG/ExkqAjrzlMtbyBw==
-Date: Thu, 27 Feb 2025 10:54:47 +0000
-Message-ID: <20250227105339.388598-16-clement.mathieu--drif@eviden.com>
+Subject: [PATCH v4 16/19] pci: Add a pci-level API for ATS
+Thread-Topic: [PATCH v4 16/19] pci: Add a pci-level API for ATS
+Thread-Index: AQHbiQYF4FT+hHV2UUmgrPufKTOtXw==
+Date: Thu, 27 Feb 2025 10:54:48 +0000
+Message-ID: <20250227105339.388598-17-clement.mathieu--drif@eviden.com>
 References: <20250227105339.388598-1-clement.mathieu--drif@eviden.com>
 In-Reply-To: <20250227105339.388598-1-clement.mathieu--drif@eviden.com>
 Accept-Language: en-GB, fr-FR, en-US
@@ -89,83 +89,83 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=eviden.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|AS2PR07MB9097:EE_
-x-ms-office365-filtering-correlation-id: 7398f958-16e4-481c-933e-08dd571d2731
+x-ms-office365-filtering-correlation-id: 1a383428-57fe-47a1-7d27-08dd571d27df
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|7416014|376014|366016|38070700018; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?0XTVT4W+5XRAnWS10kB47Z0wUHSnurPrIw2N0YWWrPEPhVXzXkW+negwvn?=
- =?iso-8859-1?Q?yxAC4228fdnfJ8mAKQDBGMQ/TYMrof6vapvynl28U8IVKPSdCueDBOywvH?=
- =?iso-8859-1?Q?3+h27CXl1pAem2cg0Vu43rGTazbM2A0jRcHYPcmxcym7p5YU8cbuZrwk7C?=
- =?iso-8859-1?Q?KT1dXStERyUkcqhClzVuZd8fOxY46N8NtSXyDzEbqGeKKYUX7JGDPBQcfA?=
- =?iso-8859-1?Q?/S2ASQ+AeHN4Zn0aTf6RJniWgfcH2PNFxy/4YUWF2AfQgi8KtneJ2EZgbD?=
- =?iso-8859-1?Q?qPShlC/zPkAruDTdnA3uAbnvYNURSfVM82myntiewIoRMAXZmQlCtwQ7gH?=
- =?iso-8859-1?Q?T+7OiV5zrkzOFl/p2OtO1n9YJxGy7kI6YqKmmmXvzeMk6GI9PIsAooOAsq?=
- =?iso-8859-1?Q?mdLDYFAC7yrwW2omaQIJcdXfc+GJTuXnYr/aJrXctd0K/X0+zXv4AI69bB?=
- =?iso-8859-1?Q?wpRlpyuJ2cmBfT1ehTHg7yEHqn/uFzi9LURf4iMo00/dHgxI1LEFoeV9Wa?=
- =?iso-8859-1?Q?drF2Ie+3or/h4GPOkQNX3FyelAObrrXS2GbsQ2C5/XHXi2GQpjL8T5ftI0?=
- =?iso-8859-1?Q?LIqIM+Hm6NzWipsN3q5fGNIMZdgw/pPXCQC+GaHRLU1/c9xustZgSwxKLb?=
- =?iso-8859-1?Q?tDH/n+20J50l2DuDcWRrEEafbYW7ky4RtztU+Id69TUm3YLo4LWM2sh1hf?=
- =?iso-8859-1?Q?kjt4+4TXIyDUwE4htBDQBvCt/1zwe9m5KZz7Oen6vfshNXQhxI87SCGfpU?=
- =?iso-8859-1?Q?x4yBJJxkzw8phKQQJRUzKbVnDSDXNajZEznxd4ppkX8KbEA6ppk+G+/ITP?=
- =?iso-8859-1?Q?iFGwySnpTl2nnv8ZQAc3R01ClnnYBI81CH6BTcgAi1aCVvijYG2EXPySYO?=
- =?iso-8859-1?Q?dLt/WifAmVLl1NVdrbTQJgZZCIHZhxSX4JdAaMiJcmTEcEOjswavUIbRJ0?=
- =?iso-8859-1?Q?ORJ0nGGG8mrYAPq6zOtmxf/DLMByR1IybUb05Mv8sXca216dm5dAyaUFiN?=
- =?iso-8859-1?Q?A6dROdR0hfR4Ipzkc0G/UoN0CYOZT5VJJgzHlwlLd+uqxFWwam9inIxsce?=
- =?iso-8859-1?Q?8GMzYNgriQjQH2W+jpKSOiijtC+d4jMBuISyaiLN3rKSqQNrkghkUFvlLA?=
- =?iso-8859-1?Q?k3KPhriMSbOoeS3hSoq3dMeX0qxKl4invjKn7KzqJbHtBBHt+gSF4mHOhw?=
- =?iso-8859-1?Q?csMRY3rZu8JDxeR4dF3zd9Z9quiBwOxjoJsYRX5oV6vOhSFIFgAiBKTIf5?=
- =?iso-8859-1?Q?TN2xGhJ0laXjmY37eq3Wl4fvPTD9QCFnwdZwOf51JCq1t6jtgwaSAvsEgw?=
- =?iso-8859-1?Q?+mt0uI3WA/JT7FYBng+mKht9kGebWnX9uvVwTTp1fTuZoQRSx6HZqoEhxs?=
- =?iso-8859-1?Q?rAmXwwqXQU3uwXsVqV0+3adrijiLOXLezyCaamc/+iWeslwAjPRdPrrlWX?=
- =?iso-8859-1?Q?9jiuOPCIdBnIjzNxRk0GiKsY9x7PhM7Uv99fWM0TWRFjhROtwq1B41411T?=
- =?iso-8859-1?Q?DpCCWDIHWPur0ZukXA4btO?=
+ ARA:13230040|1800799024|7416014|376014|366016|4022899009|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?lBB6EmQzqd2mg1DuymH6DKV0L3okg62+utV3agc5uaeOyHCIxU+DpSxfTt?=
+ =?iso-8859-1?Q?XLfbgbDyrS5uwZQOuYzrTrTpsm3cxOX/+O/LXpRezzt6nEbOI9hO/S+/dh?=
+ =?iso-8859-1?Q?aAy4y/laLVoNBoPfg/Ll2N5dtwvAW60vJDeGw0TF3ZcKtQw6bDe6tet9Jf?=
+ =?iso-8859-1?Q?cWqISjpqFntUqqrdt7ylU8FEVsqRTYNRc+xdHamr6rsTiJBx0h7lSl0HJi?=
+ =?iso-8859-1?Q?StqXmmJA15ZrS2WZ2nVoj8VmdGE/lT7XXdeqgmlA2HWL970SlBIYTAtPRb?=
+ =?iso-8859-1?Q?/StL9JB+ZxfIuCgzHrIpH36QgUxYvbwQOqacDPpAGzfScqIkoBgNowJAcf?=
+ =?iso-8859-1?Q?U6COxKpQkpG6zpNm4CxcpFDvrTVSrUw6YImZfOmzEWvZDmH+AaUu0Ts8BV?=
+ =?iso-8859-1?Q?OYchJGpUDrnXp+NjL54h3I5O/JvUQPwD2yFEqI4AJzx1mJWFERHOHuONj9?=
+ =?iso-8859-1?Q?+iLLIBuCGZ3y0UbPqDilRuxg/WyPqlemjXexd3ap0GnknTN/H/FuSl4zQK?=
+ =?iso-8859-1?Q?WXaGgJQ/lq+8UCXbPKVlkiEy+VWXztmuj9xiBBBOm2pjETFfis44NlWa+c?=
+ =?iso-8859-1?Q?Kw/nTnwqkoRr+yc12jve3lbXFs3PoZOPrIyHnqvaahWaGNHgMWaglIP0ms?=
+ =?iso-8859-1?Q?BreLK3Iue2DflXEsmss8uimBOKr+vlq47uAkqQWRfhSVAdgnA4L+r3vQkk?=
+ =?iso-8859-1?Q?jwLncyza+MuAOQqr0GsJLvDvdx6K21F1q2Cr1FGP22Hs99QRlXBflQs0Y+?=
+ =?iso-8859-1?Q?BMtXE4TyFynfFh+5Z29Xt/pBuzG4LwIG0SjE3UOl2bKuzAFpUhhK9/pjqp?=
+ =?iso-8859-1?Q?c6Sw3ZTNDNlqAV2UUO1qHxJcZsGXFhX8Pgv0MEwj7baVr5Z3v+8ikO6f/k?=
+ =?iso-8859-1?Q?D2G63eIrdPHFbbz+jpvIh/LarcamOOgb17JQX345tt2QZqtX72NFZLW1ay?=
+ =?iso-8859-1?Q?+mrfRuoe2kB0X7U97lctRUXrEINn0A+HUos6ETteji1QWVeyE/ZR+848mc?=
+ =?iso-8859-1?Q?9PNFO+80V/1MlvhBEgt9Gzpiv8DK5UyDFAwDbINKR6Iu0mYULc3QVLT+sw?=
+ =?iso-8859-1?Q?MnBTJ9XeNuv3n0BO5/UGBG73P1o+jIGylWyTPrCHeZqClTAg7/1Nz1O9b/?=
+ =?iso-8859-1?Q?Bfu+vV7rlohCam0ovVQ68zS8zr3m7vnBZ22wY5vO6wZ+IIYmVSyH7idzVE?=
+ =?iso-8859-1?Q?aWLFCxHH2uqXHVABEdFeOeksvbA81AW6YZr5yvU7wmxFNWbmPj8NnTYz7v?=
+ =?iso-8859-1?Q?xupuF5IK1KzNHc1CIfXvTKjuF60RooDjDBd+7q1caUn4vGDN4PmnFxM6Hi?=
+ =?iso-8859-1?Q?hDh6+7TrqcTger2SpPG6cTRXizfn0fbryDS8pBXDHXG5/CD9VdOpmTyqhV?=
+ =?iso-8859-1?Q?HHcBHsGeCgRncXU2GC509eCb/2mseEaQ87iZBNn7ACoWYQHC3o09I32+Y5?=
+ =?iso-8859-1?Q?Eid7FfIUGWYhHri+GhbyyiiQnOyYH7ymPFFCqTNfLpdM2x7BHmfeDLlJdn?=
+ =?iso-8859-1?Q?4ZJ2hrwUVaLDLO4tiMaDEF?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018); DIR:OUT;
- SFP:1101; 
+ SFS:(13230040)(1800799024)(7416014)(376014)(366016)(4022899009)(38070700018);
+ DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?MuOmQNM8H+Rk2nduFqO1suxeMemWJ0DeK1C4FhDiyKFlGyxdWF8oYmT7aU?=
- =?iso-8859-1?Q?VyTR18mvk9NS6HIXlyj+alrRffDJ+arF0Se9Q6AwvrdW1CZSEvMgtKj+oG?=
- =?iso-8859-1?Q?JIVbdSnhFj0yIRl95AgFF5r40PcEYSXqjnCrH/i0I6c62rl38oJGG9yUdq?=
- =?iso-8859-1?Q?QwSAWcowN6dzD5Ga0M1sNULKs4eEnRcSeywDouF6ktSNjZhDJuIfeuI0sD?=
- =?iso-8859-1?Q?ycBaAmrJh2CNordi+oVI+M7ByXO8B7xO+Pso8xakV5Hp4gaHj/l1v3zqO9?=
- =?iso-8859-1?Q?hFRPSSyMtFAkB15UqHuKa7oTNDBjLYzmNmUob1omA513CQoirPmi9/UuOU?=
- =?iso-8859-1?Q?EkHP+WcurM0nqCAcwa3E5yup3OhijRfMeTYaYX/1NVPe2QRzERK4aN/AYG?=
- =?iso-8859-1?Q?6iZCh3qsGRX1fBiqAEp75z6Bn6uC3NIdQgdNw0t0Cfd4qePhQPE6BhUpKS?=
- =?iso-8859-1?Q?vijP1qj0XaNpKKkDHEuC+jZudlHXMBPSTkZKMkplNhZIigSUta4ZxVruK6?=
- =?iso-8859-1?Q?7glvV56F0LTIx+nL99cuSo0zWEInWcyua89q7/jc2XRicL2xaXVqpMoPZ2?=
- =?iso-8859-1?Q?IFXh77p6pScLBpQ3mfgbODVf38D4hRsvd8XYw38/sNZVpfVVyQnbZq8Q+l?=
- =?iso-8859-1?Q?NdYuZVqVRBnZq5hMQN/GZzRg3EF9hPW1jnW58+oNo2BjKcoCGRFtQ8ocvi?=
- =?iso-8859-1?Q?ZmIwwlh+2qlt59RMcNQj8tqFzHuRb/EkTUmEYDqEDcxH+/oYjGCpZ/KR00?=
- =?iso-8859-1?Q?4XFw/o/FCVkB9s1tc+229PZRSLVmr0yvGVfyU82DZeBg5Y3RFKNHWbg+1s?=
- =?iso-8859-1?Q?GyQLPY0Wj0W//BFCctNTXH+ZRtx6g9rPcb7oIb8y76LiNT0RA38Wf8LBA5?=
- =?iso-8859-1?Q?sDUTgyITTjBpP68D28t/N8HAj0OPSjjtF7zbr9ASnRrQ8SrUrdo2w/HetB?=
- =?iso-8859-1?Q?gF6myn9KaaNqZao4yDI46jqqP7QCNCqalcB6Sxi3hWkoo6+CZy1ovlGh6L?=
- =?iso-8859-1?Q?7lJ4UHV05IIHPAdcdDTawIhYCZHZqVI/D0Xzs+cNJv5BSzbQ6QWYPMWLe9?=
- =?iso-8859-1?Q?TSy9+tGwKsSEcR3HkBSict3bj64VlYPaFarKa4ye7+Ai4TDDTbuKfVmcQe?=
- =?iso-8859-1?Q?rUz5ylC+Es9oXdUYxAaec/2aOMu32fJUkW8zV7F3YOIJ6cKCgEtRrNwk0v?=
- =?iso-8859-1?Q?4cPjlOoReHPQOxk6v+12Z3AMcH32+WWGJISXLT5Ebv258dp7SDtrb76Xo8?=
- =?iso-8859-1?Q?q1B6UbGDij7dDAn+o2SV09IDkb9h7psoZIFkR44gGDNK4M4Vm9qm/ciB/l?=
- =?iso-8859-1?Q?gCNRMHSKAoFalxZjClSf0z3tDJardIcxhlCF/5qZgXG27eq6/0hG3XO/Bv?=
- =?iso-8859-1?Q?xCkgAE8IKUbTr1tlVApTvevE10/5nceOB+sXgGvA25Y0phoLajVkAeI4hl?=
- =?iso-8859-1?Q?+sFHJ1oa1EV8HHlZg7nfIVTYJxgObZDmcGn4+ddIdWWwR/lVfSYjjNqJ1p?=
- =?iso-8859-1?Q?up6HdEPey4IxRGAyadozN5VwxblOP8YZEt17E8++MmbSD4zre8r57B7145?=
- =?iso-8859-1?Q?ytq49AL14baHtPl7xwvTeiK/A5T8BAd+T7j79j8tRY7j36Q15i7xXoaixD?=
- =?iso-8859-1?Q?eGvwxGiy7JkPtxEFuxebISjRs8bftQ6JHgt4KBuEh9ZBywh4KrO5B5kcXt?=
- =?iso-8859-1?Q?rFLaQvw861l1dfrMKfs=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?JFFc2Rs43leQuUsmxWXCpGf5xLy8nmfVSAjBZkT9XjmpL8AykwrOmcGFnn?=
+ =?iso-8859-1?Q?oOhtxpVzYYowZa7/X7j4I+bzS/tfkxJY9NFbJ+JIVvuLRI0spn4rSFmBQu?=
+ =?iso-8859-1?Q?s/r1i+GwK0cXpLzF5lG5GLlnRuimwEgcW6dUgTUmOefc1/6Di7WwE8FTqN?=
+ =?iso-8859-1?Q?y4e3ZPQNiAszgZxbVmrhUc/6uP6Sgmi7F/XHsA5SkO60ouEh2COTqRD0/0?=
+ =?iso-8859-1?Q?lefHugsEQVdUubu6bIUpl9xOpNhlI5R2HZgWQWDhyHZOy9N8f7acB8rCeg?=
+ =?iso-8859-1?Q?537kAcHd2RGSiBrJUoWJaxdjdnOglPE1nWklUNTqd1FVfYe++7cOnJDTKf?=
+ =?iso-8859-1?Q?YV6liRc7jNkPx/ocPSSgTSwvCipFxszYVPkDB7LkmoDEii9hHFzgTh/A60?=
+ =?iso-8859-1?Q?qD/+cAmYS1qybA1udPGMrRNGir98iL9rP/4xHnaqUkSzKKAvb0rDcpPLnG?=
+ =?iso-8859-1?Q?A3bjZTUfr56flMY3ipJeE1JmEnIA9rsJymU1YEfyzrm10q1rCoi7INDvGy?=
+ =?iso-8859-1?Q?RVUftJs1h00rF8+QdOkvvjHewN3bIjMCsQMK11sw53JSAfz8DgsoysA4XA?=
+ =?iso-8859-1?Q?mUUUueI1xd+NsGnkoSzEz76GVbQ1jb4DqFhiIpfxJvl5slBifxt5YMt/Hb?=
+ =?iso-8859-1?Q?xYKp5LG+eeX0SmJrfo5Sm+SEXfUsTzBqW+sAwF7QvQjiVaO28PirEuTa36?=
+ =?iso-8859-1?Q?h6uaAQNrlyRl3Ma830UbaOOmzBSgp6Ogwfo9sPaLL5ARZdMcRqqYkGIk8Y?=
+ =?iso-8859-1?Q?mUIulNaMcRR3NuR104JO10T0bbdgSFxeOsOsr1ZismCKei46sVGAXgF9HW?=
+ =?iso-8859-1?Q?YdgHbo/+AUydG0GCBMBGD+TfHOs+UMhR4bj8ViaKptGP72TNsuZO7u+rxW?=
+ =?iso-8859-1?Q?s7dUW1CGaGZPHh7OF+6i0uB06XWuK56Chsgw3J+MGAXikTxMSkhbqYtj4D?=
+ =?iso-8859-1?Q?cTf7oVHeo+aL9+ipRkzmbMdAZU5UOomQWnqm3WSKcHgoRJZBFr8bPBEhoT?=
+ =?iso-8859-1?Q?Nde5oEH7xlnjfXUw31B0W8Rc3hU1YQSulsgIsWvcEnke+Uf/g1iqlB7/+3?=
+ =?iso-8859-1?Q?v/MBjOqTqO54eXAT9ooRJErVTvVK/BiQaeVVWftnqFF1noHHoTOj1iZi0I?=
+ =?iso-8859-1?Q?mAhUd9X/LufXwYAotW2xzPMeaplfleRjxJEyu/O3xMMELADOXwing/ab1B?=
+ =?iso-8859-1?Q?h7IsiUy960Kf9WfXK6UzSfyZTu/XiCQK8j7UdrnYsani6cWLiB98/oyyHS?=
+ =?iso-8859-1?Q?lNVlrT0ut5wu2uQoZA7r0FkaK00C0Oi4V5Aj9lXrHHgH441ZuJ/soN4IJ6?=
+ =?iso-8859-1?Q?ZU+Va/10HauDNjD+RKFagSCpIzCWYyXCvQ1qAB3YpaB2/ZkC+w5C/iUFGU?=
+ =?iso-8859-1?Q?k/4EMW2Gcs8bXdQMOctrBBgXdGOMF/FtJ0mVbWyV+7FdVEfRjzWqmJGiZU?=
+ =?iso-8859-1?Q?E3VSh0Rr83DROJFEUzeK2r9WLWPtf3aY1TTszyZLKlwkU/WsEwZsOZo/SC?=
+ =?iso-8859-1?Q?Fc9/yPEJw2zSRHeXkL5fZUNcuaziXh4dG23SeYbgSdm5xAnPd4UqM4Rn5h?=
+ =?iso-8859-1?Q?rtQQ9x5Ccjeq1K4G8P1epokCiwmEOWCXfhVaoOAuH6zIGy1t9MISAURxRh?=
+ =?iso-8859-1?Q?yslxts/gNnKC2t53mh/ZVHnLop7utBiMWeOEXOWHD2kmdxNikLb0wxi8jm?=
+ =?iso-8859-1?Q?MSOFNiF7TFgxF5Br7Dc=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: eviden.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7398f958-16e4-481c-933e-08dd571d2731
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2025 10:54:47.9388 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a383428-57fe-47a1-7d27-08dd571d27df
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2025 10:54:48.5725 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lY+BJX/p1z7n26mBrOelW7G0w9tcP/7KjJmcAAxM4n/J5zN11fzAIBcRST2fUVll3I4b4EAakDDN3z51TqmaFKB7VxH8UFcLzgVvHgqbXnAeWbFso5sJA068D+Fr4guw
+X-MS-Exchange-CrossTenant-userprincipalname: nIsKsO0D3GuZxKYz6qvBoMScOYblO9F23pogNVzmtY+Y9Bvd+EGt8dHB2wy27nq0nGiWumiaGScrAGgWV9RqtINN7xOjWeD2q2BxoJHzZJM4aplV8pi2dya94Ww1sfmG
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR07MB9097
 Received-SPF: pass client-ip=80.78.11.85;
  envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost4.eviden.com
@@ -193,114 +193,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-IOMMU have to implement iommu_ats_request_translation to support ATS.
+Devices implementing ATS can send translation requests using
+pci_ats_request_translation_pasid.
 
-Devices can use IOMMU_TLB_ENTRY_TRANSLATION_ERROR to check the tlb
-entries returned by a translation request.
-
-We decided not to use the existing translation operation for 2 reasons.
-First, ATS is designed to translate ranges and not isolated addresses.
-Second, we need ATS-specific parameters.
+The invalidation events are sent back to the device using the iommu
+notifier managed with pci_register_iommu_tlb_event_notifier and
+pci_unregister_iommu_tlb_event_notifier
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 ---
- include/exec/memory.h | 26 ++++++++++++++++++++++++++
- system/memory.c       | 21 +++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ hw/pci/pci.c         | 46 +++++++++++++++++++++++++++++++++++++++
+ include/hw/pci/pci.h | 52 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 98 insertions(+)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 4d240cad1c..9a8e765909 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -148,6 +148,10 @@ struct IOMMUTLBEntry {
-     uint32_t         pasid;
- };
-=20
-+/* Check if an IOMMU TLB entry indicates a translation error */
-+#define IOMMU_TLB_ENTRY_TRANSLATION_ERROR(entry) ((((entry)->perm) & IOMMU=
-_RW) \
-+                                                    =3D=3D IOMMU_NONE)
-+
- /*
-  * Bitmap for different IOMMUNotifier capabilities. Each notifier can
-  * register with one or multiple IOMMU Notifier capability bit(s).
-@@ -535,6 +539,20 @@ struct IOMMUMemoryRegionClass {
-      * @iommu: the IOMMUMemoryRegion
-      */
-     int (*num_indexes)(IOMMUMemoryRegion *iommu);
-+
-+    /**
-+     * @iommu_ats_request_translation:
-+     * This method must be implemented if the IOMMU has ATS enabled
-+     *
-+     * @see pci_ats_request_translation_pasid
-+     */
-+    ssize_t (*iommu_ats_request_translation)(IOMMUMemoryRegion *iommu,
-+                                             bool priv_req, bool exec_req,
-+                                             hwaddr addr, size_t length,
-+                                             bool no_write,
-+                                             IOMMUTLBEntry *result,
-+                                             size_t result_length,
-+                                             uint32_t *err_count);
- };
-=20
- typedef struct RamDiscardListener RamDiscardListener;
-@@ -1892,6 +1910,14 @@ void memory_region_iommu_replay(IOMMUMemoryRegion *i=
-ommu_mr, IOMMUNotifier *n);
- void memory_region_unregister_iommu_notifier(MemoryRegion *mr,
-                                              IOMMUNotifier *n);
-=20
-+ssize_t memory_region_iommu_ats_request_translation(IOMMUMemoryRegion *iom=
-mu_mr,
-+                                                bool priv_req, bool exec_r=
-eq,
-+                                                hwaddr addr, size_t length=
-,
-+                                                bool no_write,
-+                                                IOMMUTLBEntry *result,
-+                                                size_t result_length,
-+                                                uint32_t *err_count);
-+
- /**
-  * memory_region_iommu_get_attr: return an IOMMU attr if get_attr() is
-  * defined on the IOMMU.
-diff --git a/system/memory.c b/system/memory.c
-index 4c829793a0..f95c602a46 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2011,6 +2011,27 @@ void memory_region_unregister_iommu_notifier(MemoryR=
-egion *mr,
-     memory_region_update_iommu_notify_flags(iommu_mr, NULL);
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index be29c0375f..0ccd0656b7 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2896,6 +2896,52 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
+     }
  }
 =20
-+ssize_t memory_region_iommu_ats_request_translation(IOMMUMemoryRegion *iom=
-mu_mr,
-+                                                    bool priv_req,
-+                                                    bool exec_req,
-+                                                    hwaddr addr, size_t le=
-ngth,
-+                                                    bool no_write,
-+                                                    IOMMUTLBEntry *result,
-+                                                    size_t result_length,
-+                                                    uint32_t *err_count)
++ssize_t pci_ats_request_translation_pasid(PCIDevice *dev, uint32_t pasid,
++                                          bool priv_req, bool exec_req,
++                                          hwaddr addr, size_t length,
++                                          bool no_write, IOMMUTLBEntry *re=
+sult,
++                                          size_t result_length,
++                                          uint32_t *err_count)
 +{
-+    IOMMUMemoryRegionClass *imrc =3D
-+        memory_region_get_iommu_class_nocheck(iommu_mr);
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
 +
-+    if (!imrc->iommu_ats_request_translation) {
-+        return -ENODEV;
++    assert(result_length);
++
++    if (!iommu_mr || !pcie_ats_enabled(dev)) {
++        return -EPERM;
 +    }
-+
-+    return imrc->iommu_ats_request_translation(iommu_mr, priv_req, exec_re=
-q,
-+                                               addr, length, no_write, res=
-ult,
-+                                               result_length, err_count);
++    return memory_region_iommu_ats_request_translation(iommu_mr, priv_req,
++                                                       exec_req, addr, len=
+gth,
++                                                       no_write, result,
++                                                       result_length,
++                                                       err_count);
 +}
 +
- void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
-                                     const IOMMUTLBEvent *event)
++int pci_register_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid,
++                                          IOMMUNotifier *n)
++{
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
++    if (!iommu_mr) {
++        return -EPERM;
++    }
++    return memory_region_register_iommu_notifier(MEMORY_REGION(iommu_mr), =
+n,
++                                                 &error_fatal);
++}
++
++int pci_unregister_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid=
+,
++                                             IOMMUNotifier *n)
++{
++    IOMMUMemoryRegion *iommu_mr =3D pci_device_iommu_memory_region_pasid(d=
+ev,
++                                                                        pa=
+sid);
++    if (!iommu_mr) {
++        return -EPERM;
++    }
++    memory_region_unregister_iommu_notifier(MEMORY_REGION(iommu_mr), n);
++    return 0;
++}
++
+ void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
  {
+     /*
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index a11366e08d..592e72aee9 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -461,6 +461,58 @@ bool pci_iommu_init_iotlb_notifier(PCIDevice *dev, uin=
+t32_t pasid,
+                                    IOMMUNotifier *n, IOMMUNotify fn,
+                                    void *opaque);
+=20
++/**
++ * pci_ats_request_translation_pasid: perform an ATS request
++ *
++ * Return the number of translations stored in @result in case of success,
++ * a negative error code otherwise.
++ * -ENOMEM is returned when the result buffer is not large enough to store
++ * all the translations
++ *
++ * @dev: the ATS-capable PCI device
++ * @pasid: the pasid of the address space in which the translation will be=
+ made
++ * @priv_req: privileged mode bit (PASID TLP)
++ * @exec_req: execute request bit (PASID TLP)
++ * @addr: start address of the memory range to be translated
++ * @length: length of the memory range in bytes
++ * @no_write: request a read-only access translation (if supported by the =
+IOMMU)
++ * @result: buffer in which the TLB entries will be stored
++ * @result_length: result buffer length
++ * @err_count: number of untranslated subregions
++ */
++ssize_t pci_ats_request_translation_pasid(PCIDevice *dev, uint32_t pasid,
++                                          bool priv_req, bool exec_req,
++                                          hwaddr addr, size_t length,
++                                          bool no_write, IOMMUTLBEntry *re=
+sult,
++                                          size_t result_length,
++                                          uint32_t *err_count);
++
++/**
++ * pci_register_iommu_tlb_event_notifier: register a notifier for changes =
+to
++ * IOMMU translation entries in a specific address space.
++ *
++ * Returns 0 on success, or a negative errno otherwise.
++ *
++ * @dev: the device that wants to get notified
++ * @pasid: the pasid of the address space to track
++ * @n: the notifier to register
++ */
++int pci_register_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid,
++                                          IOMMUNotifier *n);
++
++/**
++ * pci_unregister_iommu_tlb_event_notifier: unregister a notifier that has=
+ been
++ * registerd with pci_register_iommu_tlb_event_notifier
++ *
++ * Returns 0 on success, or a negative errno otherwise.
++ *
++ * @dev: the device that wants to unsubscribe
++ * @pasid: the pasid of the address space to be untracked
++ * @n: the notifier to unregister
++ */
++int pci_unregister_iommu_tlb_event_notifier(PCIDevice *dev, uint32_t pasid=
+,
++                                            IOMMUNotifier *n);
++
+ /**
+  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
+  *
 --=20
 2.48.1
 
