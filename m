@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFE6A4811E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA986A480DD
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:21:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnelt-0001BV-Ac; Thu, 27 Feb 2025 09:21:53 -0500
+	id 1tnelk-0000Wc-Ql; Thu, 27 Feb 2025 09:21:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnel0-0007f9-Ja
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:02 -0500
+ id 1tnel2-0007ib-Oj
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tneky-0003q1-PS
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:58 -0500
+ id 1tneky-0003q9-Qz
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666052;
+ s=mimecast20190719; t=1740666054;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sU4JUhAK5XAEQyd9qSYhUnxLKsYgYIsyzAJD2IwPzIU=;
- b=UxN8L+pmpRAvWKPPy9JX5r5v2ixSu7kNKYzwa+/LvspKdu1XY1rEe7B66vm7kVOA283WDL
- A7mNpHNMPXtKz8ptGeG5XV1gMf+szdkg1VXuAeKhxJ4t6rqSl0hRhjhlPjonFqnov8k3yc
- gz1TdqJ0pL3Cb/IVixpavQe8kS4tnDE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gh0j8ufLlOEegSjJktfQdEiBAdxSKXYPacngKO6YrfQ=;
+ b=XLE5RkBjQNWh7rdqMZ6jMIE3k9ARe1yOR19G5aUc+YiA55BOUE9lEc2H1PYlEN+G+BGUI0
+ KCh020KCBQj1IdRLQisGr/FVXy+FfHHbEAtaz1dLb4iUMDLANwdgaZHBhBYyNPt7qpIK+T
+ lyPP99zTVkLMTfrEiw3HcZKKC9nNEMc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-ApgzUnnTPYOD0V9g1-lFSQ-1; Thu, 27 Feb 2025 09:20:50 -0500
-X-MC-Unique: ApgzUnnTPYOD0V9g1-lFSQ-1
-X-Mimecast-MFC-AGG-ID: ApgzUnnTPYOD0V9g1-lFSQ_1740666050
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-390eb06d920so101572f8f.3
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:50 -0800 (PST)
+ us-mta-578-IjFlgM1JODamjTXTiufiMw-1; Thu, 27 Feb 2025 09:20:53 -0500
+X-MC-Unique: IjFlgM1JODamjTXTiufiMw-1
+X-Mimecast-MFC-AGG-ID: IjFlgM1JODamjTXTiufiMw_1740666052
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ab76f438dddso41007066b.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666048; x=1741270848;
+ d=1e100.net; s=20230601; t=1740666051; x=1741270851;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sU4JUhAK5XAEQyd9qSYhUnxLKsYgYIsyzAJD2IwPzIU=;
- b=fDO7QNAsmA5ySGy8gYcu9QcvKGG85qFwoyxer8+V8s2zhJcVCO+n/cumgNHAtxRQNN
- mzVnMVT4yLZE44nP3l1JfafeMuMWGkryphCSsho3gU1H2h4YvGBwPdSR0UBTguaR4DnC
- bkBRTeXGmYO1K9ut6xNGTjQjKHZRfhMA6yeX/IZ1hNEmJlgRxNX1bxZaryPkuZm2Ayyh
- G3Rl09DG6gz5sOVtSIXQ4tjy6B/U5tbk5eJRHex0m/kny2Z9kZJiZhKZUmuGmOWU3PoI
- vrn1mAlDcIcRlHTlXM6uxtJcrFgx4jC4mbWySHDyv+SKyg/D68vlLhsFubSnaVDfmJ8w
- /VhA==
-X-Gm-Message-State: AOJu0Yw+u4j+yaPaiWrAj3m0jhrIGGJXmw3bBRmloQN06769RIWgKfeO
- H8oQWM+LNCVKuW2nf0NXIJbf5C0uDGMEXh+DbaKiqIazVqjVZwNfWYPzjhkuZTxKK58ceKcUiES
- oXgWUYseVK/ShxqXjBU8gFtLeZelEXIXQ4AXekxL8zTN6/L/TSbjcVmKOww4bhklnRR02h+9lA6
- I37cilovV/3pT1sBKlmTK4gvi35jydzGQ5XXWNg/U=
-X-Gm-Gg: ASbGnct0dJNKr+sNYjrm/wXvBypQPWMCMYTfPj3kqFunTDRgS0JtfliZESMQV87dJGx
- DzsYEzxMQSXFj6wdt4vselNg1AtItxT7De9IpPbWpsPXeQXUJt00PlG90yTB8/YblMFnPMqvdu9
- QRyHM0xH7WW5IBR/FNEy1KvmEQkCZv6dmx6QuEZpASTB5iFyQj5+Sj6Qjfox+aEl1Own9fWAiED
- FqUA7SgD3eDwUOzRyqdFNsEIE/2QizGMnzu0JhUCiRL5/BxKPNcuuSbrjyhL5sGAG/bGn49eKwm
- at/Zxv7kgz2/0p/o1ex2
-X-Received: by 2002:a05:6000:18ad:b0:38f:32ab:d4f4 with SMTP id
- ffacd0b85a97d-390cc5f58admr11636049f8f.4.1740666048629; 
- Thu, 27 Feb 2025 06:20:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGdrJGfG1m9xhlSs8sYUhd0vadoDAk6nS4+smvPDgTgjagVwFjAhKtVfXfdtuQqpsk8rTQb/w==
-X-Received: by 2002:a05:6000:18ad:b0:38f:32ab:d4f4 with SMTP id
- ffacd0b85a97d-390cc5f58admr11636013f8f.4.1740666048152; 
- Thu, 27 Feb 2025 06:20:48 -0800 (PST)
+ bh=gh0j8ufLlOEegSjJktfQdEiBAdxSKXYPacngKO6YrfQ=;
+ b=Y7S9Gz2G7AioDRa7+iSnL87r1cKGXkA8j09nUNpQR17E4iRCxvfqxa93Hhlbheq7ES
+ h121yoVWl0pOi4bOhTpRDw7ULji/CnvHwleJAFBr0un6kzwRmI0+eKq+k0QLj+I9G48k
+ D9jkMmEq84XeOtY3f8XXgclzeT08sBddQ01ddTdNc0bv05lIoB92cYTIirhdaiJtc9HS
+ 0OrZy8GmpSPonD/DlJh9/4l4xEwBrJ5HhGtOerc4azoNQbYmyNmEDEhDpFMzj48Bt10w
+ HxdbUmRWp8VcjUf7jhJQ4r3e712x1M+YsoCleyIB6z91T1V6nAkudVNdKyft1QzSm3l0
+ CfSg==
+X-Gm-Message-State: AOJu0YzSP1o/2PBFQJVkoSwhvynTUP0dHJmMafFDAmEt0+FgBdu6SD06
+ aZ88PU3p44mn+J2mzlPOEh4c8Rs3S9K9qaJsKsakuzNXwHtIUKiD85q4HCSSapGrC+rRSzwMJt1
+ oJ2pYyTrA2cTK1FjGyJdEK5NIjKhO2DI62oDjS4kj7SPxCwKowN/zBMhuaPPZkFyLLu7cHZoIP3
+ sjZrAE802JXwSwgr7a8iN0FEvTD/iSNdnC/t6M+BA=
+X-Gm-Gg: ASbGncvDXhP7klIk9rs1ylGUBkUsvpWVyiNlsVrSwyw2VHdRuafK7zGU8estQEU5o3Q
+ IvvvucK5/0jYwItocV4hYBOGNU/5OgaSi8IZiiBs5hee27JrfYjUpg4HQd/pIoZww9epoWk6+an
+ Y2djvQi3pvN8gRw23Gkq3T+ijxudh5fwG9P/qYvGI3cTMckFL1dYwGvcp8MsuA/MgJkvZuEyHy1
+ edf+xh0tHGQXQzJ1LWPYuqob6BAxsDxEf8ixkIyJZyRBTfDZX+NgciLo30TuWOFtfjHFSBiSgwz
+ mJ1jNyO142V2wPZdkzoh
+X-Received: by 2002:a17:906:3155:b0:ab7:c6a2:7a43 with SMTP id
+ a640c23a62f3a-abc0db35941mr2366717066b.31.1740666051264; 
+ Thu, 27 Feb 2025 06:20:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLlWQ6QD1ZDDBu4ot/1NZFk2nnvmD0s6fqyXTudnZBPEAQfDfIX2y8kxCKr/w45fxh1mKsMg==
+X-Received: by 2002:a17:906:3155:b0:ab7:c6a2:7a43 with SMTP id
+ a640c23a62f3a-abc0db35941mr2366713966b.31.1740666050819; 
+ Thu, 27 Feb 2025 06:20:50 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c1146b7sm129343066b.84.2025.02.27.06.20.47
+ 4fb4d7f45d1cf-5e4c3b6dbbbsm1179991a12.22.2025.02.27.06.20.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:47 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:49 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 25/34] i386/cpu: Support module level cache topology
-Date: Thu, 27 Feb 2025 15:19:43 +0100
-Message-ID: <20250227141952.811410-26-pbonzini@redhat.com>
+Subject: [PULL 26/34] i386/cpu: Update cache topology with machine's
+ configuration
+Date: Thu, 27 Feb 2025 15:19:44 +0100
+Message-ID: <20250227141952.811410-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
@@ -110,42 +111,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Allow cache to be defined at the module level. This increases
-flexibility for x86 users to customize their cache topology.
+User will configure smp cache topology via -machine smp-cache.
+
+For this case, update the x86 CPUs' cache topology with user's
+configuration in MachineState.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://lore.kernel.org/r/20250110145115.1574345-3-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250110145115.1574345-4-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 72ab147e851..8799e22ed45 100644
+index 8799e22ed45..005ca4235df 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -247,6 +247,9 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-     case CPU_TOPOLOGY_LEVEL_CORE:
-         num_ids = 1 << apicid_core_offset(topo_info);
-         break;
-+    case CPU_TOPOLOGY_LEVEL_MODULE:
-+        num_ids = 1 << apicid_module_offset(topo_info);
-+        break;
-     case CPU_TOPOLOGY_LEVEL_DIE:
-         num_ids = 1 << apicid_die_offset(topo_info);
-         break;
-@@ -255,7 +258,7 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-         break;
-     default:
-         /*
--         * Currently there is no use case for THREAD and MODULE, so use
-+         * Currently there is no use case for THREAD, so use
-          * assert directly to facilitate debugging.
-          */
-         g_assert_not_reached();
+@@ -7906,6 +7906,64 @@ static void x86_cpu_hyperv_realize(X86CPU *cpu)
+     cpu->hyperv_limits[2] = 0;
+ }
+ 
++#ifndef CONFIG_USER_ONLY
++static bool x86_cpu_update_smp_cache_topo(MachineState *ms, X86CPU *cpu,
++                                          Error **errp)
++{
++    CPUX86State *env = &cpu->env;
++    CpuTopologyLevel level;
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D);
++    if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
++        env->cache_info_cpuid4.l1d_cache->share_level = level;
++        env->cache_info_amd.l1d_cache->share_level = level;
++    } else {
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
++            env->cache_info_cpuid4.l1d_cache->share_level);
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
++            env->cache_info_amd.l1d_cache->share_level);
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I);
++    if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
++        env->cache_info_cpuid4.l1i_cache->share_level = level;
++        env->cache_info_amd.l1i_cache->share_level = level;
++    } else {
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
++            env->cache_info_cpuid4.l1i_cache->share_level);
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
++            env->cache_info_amd.l1i_cache->share_level);
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2);
++    if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
++        env->cache_info_cpuid4.l2_cache->share_level = level;
++        env->cache_info_amd.l2_cache->share_level = level;
++    } else {
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
++            env->cache_info_cpuid4.l2_cache->share_level);
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
++            env->cache_info_amd.l2_cache->share_level);
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3);
++    if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
++        env->cache_info_cpuid4.l3_cache->share_level = level;
++        env->cache_info_amd.l3_cache->share_level = level;
++    } else {
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
++            env->cache_info_cpuid4.l3_cache->share_level);
++        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
++            env->cache_info_amd.l3_cache->share_level);
++    }
++
++    if (!machine_check_smp_cache(ms, errp)) {
++        return false;
++    }
++    return true;
++}
++#endif
++
+ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+ {
+     CPUState *cs = CPU(dev);
+@@ -8145,6 +8203,15 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+ #ifndef CONFIG_USER_ONLY
+     MachineState *ms = MACHINE(qdev_get_machine());
++
++    /*
++     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
++     * if user didn't set smp_cache.
++     */
++    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
++        return;
++    }
++
+     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
+ 
+     if (cpu->env.features[FEAT_1_EDX] & CPUID_APIC || ms->smp.cpus > 1) {
 -- 
 2.48.1
 
