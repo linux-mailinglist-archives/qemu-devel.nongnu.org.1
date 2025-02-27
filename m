@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AADA48104
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56752A4812E
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnelm-0000io-DT; Thu, 27 Feb 2025 09:21:47 -0500
+	id 1tnelV-0008CI-V5; Thu, 27 Feb 2025 09:21:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekr-0007Ot-QU
+ id 1tnekr-0007Ou-SZ
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tneko-0003oQ-2M
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:49 -0500
+ id 1tneko-0003oU-1V
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1740666044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VMmBZwWfeUJ0S3v0Efj9vDO4/Kt8kiAMYCBrnhv0TtQ=;
- b=UdX+0w+WuRqtX5hQsMK9ynayCjkZIikr8auAco8tJ4ifchG+qsePEg38pBAlGw8ZJ363Pe
- 3Mv77cBlBiZOJxMx8f7g/cFtIA+pjxIRAHDdQ7Cz/5PuLySxwV4PSoR9VpdvijRNbVLRAX
- xwgaeGbQugww1FiLuTHOIza5+bjj5b4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w5tiPQV4FLbVxra6ghak4CioHmf6+RCo+QEbLhSZJd4=;
+ b=Qn8DgNNz5+1x4meZOc4yGYyd65m62XN5caK+kufH0GxiftwRnMDeOhhZ2zfMVe6LZcHdsi
+ 70UVJUyk0bDm2D/wGa/lQ+Ds1FK2f6ZhRzSCgFGB82j8rPpoxenbKn7pkOVnaqFwinGhOW
+ /lj0sMX5OfiwPGbd76VZxSybMnHcHV8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-26-mk5VR0o9NUyKfWUsrdcrDQ-1; Thu, 27 Feb 2025 09:20:40 -0500
-X-MC-Unique: mk5VR0o9NUyKfWUsrdcrDQ-1
-X-Mimecast-MFC-AGG-ID: mk5VR0o9NUyKfWUsrdcrDQ_1740666040
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5e4987b2107so1060025a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:40 -0800 (PST)
+ us-mta-570-Sw-MAk7nMGa61r4UEhPhyw-1; Thu, 27 Feb 2025 09:20:43 -0500
+X-MC-Unique: Sw-MAk7nMGa61r4UEhPhyw-1
+X-Mimecast-MFC-AGG-ID: Sw-MAk7nMGa61r4UEhPhyw_1740666041
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ab39f65dc10so106199166b.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666039; x=1741270839;
+ d=1e100.net; s=20230601; t=1740666040; x=1741270840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VMmBZwWfeUJ0S3v0Efj9vDO4/Kt8kiAMYCBrnhv0TtQ=;
- b=oVTkgvy9jokgOQFubeiEd3Ro80V9aMG4erF1w30RuAnuIF2x1AyrfloSB7Gn4IwLZr
- mptTnS2eFXTfZRlzunoILCmJJbOKrtPPrKXWmKmxKHWi9gbWiwmgr3bABnnTenPrCEdk
- Qbg7MkF1ZILe/UX1rrwPpXXyN3LAznJP7wrf2u4QSBCWslcV1pJ8aHmTdqtbUuxdH57Z
- V4OLkUkgdXNBt6EzdWEz3tQMHKNiBnnRYQ9YA37DJdTupF9hSpwpWY67jbKhFYQNDung
- LHa8EruT+Ken6ZxkIjOKUXTB0J5PFOSX8cPCG6InV9uYLXbu6a52EQ79YRxSk4fKbl7B
- Jrpw==
-X-Gm-Message-State: AOJu0YyYq99A1J/XlJxLl9bj8hkL9bktOMKArCxbjSYtzQ45J2w0LG0a
- kmSsH6P64wiq3MmHn4i/IsVQd/qP00Tx6gT5Nu6qbv/qt20LzBVmtBamQQsv6sg/R9UfTGOwMqV
- PHH5E37JZy0ySEEYloapMr+rouEhteQu/lNvP2zDnBfvNpX/6eI1FdBqns0B/X/Da68Sn6BHhLs
- UwdXKWLkka8O92cdr2kgxSRWAiEPj1jGMWj6IKFRo=
-X-Gm-Gg: ASbGncvJOdpb6F2NhNGVwgAG8YsBWovot2zWn2WEzmLzSqw+5J7J8oXrdvntiYkR3Bw
- c0zpHXa8oz7jdSYIuN4HT6qZDQhkgLrzq7ERptYlo3xFdk/MkosYtGb+4Dyh53XLGMxsOXu3AYz
- WMe8nyl+srQGQRhk0qJpdqhBor2wrILfRPxV7ikwg80e+LhQndHAdP/o24/O97zYxLesFEjattC
- qoqlB9kYRsC89NIH6LwGEbQNAnDaQiPx8sspv2A18tzY7o0EELTPh7BBgaYp6WqjefRQ2ijg7Mm
- yW13ITM2n59SU/ecbvG7
-X-Received: by 2002:a05:6402:3483:b0:5e4:c522:51cd with SMTP id
- 4fb4d7f45d1cf-5e4c5225c72mr2888192a12.20.1740666038596; 
- Thu, 27 Feb 2025 06:20:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHdxIZkrf6vaXaGryO1U5cLNzE8R58b3C28wriZ9epCFj4Y53ya5Cbw65qd+d7rpqyN7rr1+g==
-X-Received: by 2002:a05:6402:3483:b0:5e4:c522:51cd with SMTP id
- 4fb4d7f45d1cf-5e4c5225c72mr2888153a12.20.1740666037999; 
- Thu, 27 Feb 2025 06:20:37 -0800 (PST)
+ bh=w5tiPQV4FLbVxra6ghak4CioHmf6+RCo+QEbLhSZJd4=;
+ b=w4u+ppRGAy+rZiqluE1UtS6nYYnWdckA+De9zzcSTqVSZrhG7fwZAuaH3MVy4mnnLr
+ eVJsUs2Lpf3TkF4WYtaG9qEFvI92ERElDVPZbL32guHxkj327j7UfObZvPmTbpFe/NQt
+ rz/QtJDcBN35LpBHOKlwm7pHQwaWScEY3jzBDXSmfCF4BEd+WIKAj/pxBiSxw7Fq14bR
+ CFCyGzamMF1hRmIjLgAoR/NIEY2KhjPIxp4u0rYyghN3YIYdnKXjUVQ1R+uW+55R2khk
+ 5/gOfg0dnQgPg7bOy88KSiWrZr0TAu+OqhNYfJuN3F80PEeGtCr9/wqGKcOQxAtONfDE
+ TTEQ==
+X-Gm-Message-State: AOJu0YyVK+zs9u7ZrHMqpjPNxCEKCXBf/lzFMyC/O4Agzy9Q8YVfxDjx
+ 5ZiS4ikbKU+HA6/AXraASKz9dJ1hn/QdzBix1z46Vk0hmKl4VMDBCLVoQWZBcYzgqpw1vL11zQW
+ yVOi3YksYNzSCjqnz8ZSNrFj+0BZ4WG0k4eYKOeu4q2uQyGI+9JONgAqLlkZRuEcYeWxaSqcz8D
+ 24lzypM06MthY6tkRlHtPPGPRkNlzteMYEBvhHLOI=
+X-Gm-Gg: ASbGncuQglgLUE3ddREDnjjaKXiyB7j3llS9LENRtA1FYRRVpn3gXzcHC7YHPSgyEw1
+ BjfQiUmW8AbnX6KBqkyMQpqB9M90bG4nhahNpqH8V1RUYlojpTk7Mh52Bg4YNjNk8lqsSBKq0aT
+ 9nJzc0QKXor2c27s3U756XWxTY5BlUYpLiNQG/7xnntebz2r+ZTUOWZ8LNg5SWrVUfyaVHxuyyU
+ 0BxNKoMFXNvugzEXKwtVR87fZ1FpbqAZTkijaLHcySy2jraK+KL3UhHhaP6sE+Ly43cZswpuDte
+ hokVO/nO2pvuDCi45pM+
+X-Received: by 2002:a17:907:7fa6:b0:abe:c8ff:32a7 with SMTP id
+ a640c23a62f3a-abed0db724fmr1443989466b.31.1740666039622; 
+ Thu, 27 Feb 2025 06:20:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGcMSb6n5Zcu3jgk9dUkGkCUYM7m5rg1FYPOE8oahP9/0LN8kLAOJrNfIXPTntJzwieBIUUow==
+X-Received: by 2002:a17:907:7fa6:b0:abe:c8ff:32a7 with SMTP id
+ a640c23a62f3a-abed0db724fmr1443985766b.31.1740666039183; 
+ Thu, 27 Feb 2025 06:20:39 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3bb733asm1152112a12.38.2025.02.27.06.20.37
+ a640c23a62f3a-abf0c0dc150sm131297766b.61.2025.02.27.06.20.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:37 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:38 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 20/34] rust: add IsA bounds to QOM implementation traits
-Date: Thu, 27 Feb 2025 15:19:38 +0100
-Message-ID: <20250227141952.811410-21-pbonzini@redhat.com>
+Subject: [PULL 21/34] rust: add SysBusDeviceImpl
+Date: Thu, 27 Feb 2025 15:19:39 +0100
+Message-ID: <20250227141952.811410-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
@@ -106,53 +106,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check that the right bounds are provided to the qom_isa! macro
-whenever the class is defined to implement a certain class.
-This removes the need to add IsA<> bounds together with the
-*Impl trait bounds.
+The only function, right now, is to ensure that anything with a
+SysBusDeviceClass class is a SysBusDevice.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/qdev.rs | 2 +-
- rust/qemu-api/src/qom.rs  | 4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 5 ++++-
+ rust/hw/timer/hpet/src/hpet.rs   | 4 +++-
+ rust/qemu-api/src/sysbus.rs      | 8 +++++---
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 3a7aa4def62..c4dd26b582c 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -86,7 +86,7 @@ pub trait ResettablePhasesImpl {
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 59a689fdcd7..bea9723aed8 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -20,7 +20,7 @@
+     prelude::*,
+     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
+     qom::{ClassInitImpl, ObjectImpl, Owned, ParentField},
+-    sysbus::{SysBusDevice, SysBusDeviceClass},
++    sysbus::{SysBusDevice, SysBusDeviceClass, SysBusDeviceImpl},
+     vmstate::VMStateDescription,
+ };
+ 
+@@ -176,6 +176,8 @@ impl ResettablePhasesImpl for PL011State {
+     const HOLD: Option<fn(&Self, ResetType)> = Some(Self::reset_hold);
  }
  
- /// Trait providing the contents of [`DeviceClass`].
--pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl {
-+pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
-     /// _Realization_ is the second stage of device creation. It contains
-     /// all operations that depend on device properties and can fail (note:
-     /// this is not yet supported for Rust devices).
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 3d5ab2d9018..10ce359becb 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -37,6 +37,8 @@
- //! * a trait for virtual method implementations, for example `DeviceImpl`.
- //!   Child classes implement this trait to provide their own behavior for
- //!   virtual methods. The trait's methods take `&self` to access instance data.
-+//!   The traits have the appropriate specialization of `IsA<>` as a supertrait,
-+//!   for example `IsA<DeviceState>` for `DeviceImpl`.
- //!
- //! * an implementation of [`ClassInitImpl`], for example
- //!   `ClassInitImpl<DeviceClass>`. This fills the vtable in the class struct;
-@@ -497,7 +499,7 @@ impl<T: ObjectType> ObjectDeref for &mut T {}
- impl<T: ObjectType> ObjectCastMut for &mut T {}
++impl SysBusDeviceImpl for PL011State {}
++
+ impl PL011Registers {
+     pub(self) fn read(&mut self, offset: RegisterOffset) -> (bool, u32) {
+         use RegisterOffset::*;
+@@ -746,3 +748,4 @@ impl ObjectImpl for PL011Luminary {
  
- /// Trait a type must implement to be registered with QEMU.
--pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
-+pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> + IsA<Object> {
-     /// The parent of the type.  This should match the first field of the
-     /// struct that implements `ObjectImpl`, minus the `ParentField<_>` wrapper.
-     type ParentType: ObjectType;
+ impl DeviceImpl for PL011Luminary {}
+ impl ResettablePhasesImpl for PL011Luminary {}
++impl SysBusDeviceImpl for PL011Luminary {}
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index 75ff5b3e8d6..b4ffccf815f 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -23,7 +23,7 @@
+     qdev::{DeviceImpl, DeviceMethods, DeviceState, Property, ResetType, ResettablePhasesImpl},
+     qom::{ObjectImpl, ObjectType, ParentField},
+     qom_isa,
+-    sysbus::SysBusDevice,
++    sysbus::{SysBusDevice, SysBusDeviceImpl},
+     timer::{Timer, CLOCK_VIRTUAL},
+ };
+ 
+@@ -887,3 +887,5 @@ fn properties() -> &'static [Property] {
+ impl ResettablePhasesImpl for HPETState {
+     const HOLD: Option<fn(&Self, ResetType)> = Some(Self::reset_hold);
+ }
++
++impl SysBusDeviceImpl for HPETState {}
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index fa36e12178f..fee2e3d478f 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -14,7 +14,7 @@
+     irq::{IRQState, InterruptSource},
+     memory::MemoryRegion,
+     prelude::*,
+-    qdev::{DeviceClass, DeviceState},
++    qdev::{DeviceClass, DeviceImpl, DeviceState},
+     qom::{ClassInitImpl, Owned},
+ };
+ 
+@@ -25,10 +25,12 @@ unsafe impl ObjectType for SysBusDevice {
+ }
+ qom_isa!(SysBusDevice: DeviceState, Object);
+ 
+-// TODO: add SysBusDeviceImpl
++// TODO: add virtual methods
++pub trait SysBusDeviceImpl: DeviceImpl + IsA<SysBusDevice> {}
++
+ impl<T> ClassInitImpl<SysBusDeviceClass> for T
+ where
+-    T: ClassInitImpl<DeviceClass>,
++    T: SysBusDeviceImpl + ClassInitImpl<DeviceClass>,
+ {
+     fn class_init(sdc: &mut SysBusDeviceClass) {
+         <T as ClassInitImpl<DeviceClass>>::class_init(&mut sdc.parent_class);
 -- 
 2.48.1
 
