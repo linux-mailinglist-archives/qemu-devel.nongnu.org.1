@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D365A4810C
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5043A4813B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:29:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnenw-0005xW-EQ; Thu, 27 Feb 2025 09:24:00 -0500
+	id 1tnenT-0005RM-36; Thu, 27 Feb 2025 09:23:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnemc-0003q8-VY
+ id 1tnemc-0003qD-Ib
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnemX-00044y-9u
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:36 -0500
+ id 1tnemY-00045V-F8
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:22:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666151;
+ s=mimecast20190719; t=1740666153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OAGa/1zAiQKppBasu/YtxlNDeSsZyMqPAmmwgiPHU8k=;
- b=h3c/d85VvNOczNK81g1iY3ceQjCwzfY1L0e9S2H+HaU5oOV54dosazBvp0QvZTmYvm/Ao6
- kslBqmbP+8+UJ21a1Vv66HiUcjm+BqrN1/pN/3Wu+0PFU3JSrdn2ZrkymDunmJpBAUOwzz
- HhLDZwprip75BcXlSphyj1l6Cs7V6Io=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nk4rG8BvOrBCUFxfsl3zj+sJAUqBN7gnD9BX4ggHZ8E=;
+ b=Of8fQR6DKSW+gy895Yp1/se+99G5E6TNzTqqJkpPGZXjS1C51yISSv7maC7ZEj3gTWO6NQ
+ C7RKOltVVUvI1TFlcQi0ARbEM6jNhkQyCqGLMLfpghsZgUlA9W06iPYYusFUaiKeXUqM0A
+ tgGMdHVH5jLfvZBNS1GtIObdVrhjVhI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-Ey703yRpNyOlFO-nX5OZJA-1; Thu, 27 Feb 2025 09:22:30 -0500
-X-MC-Unique: Ey703yRpNyOlFO-nX5OZJA-1
-X-Mimecast-MFC-AGG-ID: Ey703yRpNyOlFO-nX5OZJA_1740666149
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-abb7e837a7aso112964866b.3
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:22:30 -0800 (PST)
+ us-mta-423-cX38hNcHNGmPKacPrlPRLg-1; Thu, 27 Feb 2025 09:22:32 -0500
+X-MC-Unique: cX38hNcHNGmPKacPrlPRLg-1
+X-Mimecast-MFC-AGG-ID: cX38hNcHNGmPKacPrlPRLg_1740666151
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-abb86503062so118528066b.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:22:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666148; x=1741270948;
+ d=1e100.net; s=20230601; t=1740666151; x=1741270951;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OAGa/1zAiQKppBasu/YtxlNDeSsZyMqPAmmwgiPHU8k=;
- b=UiHKzC+iBFhKE7DP+v+svtInU1xKNurDrP+JJN1722e2cTcOQisXmJgfPfApxldcPU
- I1gcLdRck/1lQU97Rar0uFpUbM7GIBrf2YcCQ6CwiJLzHHkR7gHnr6WTRX78SI2L4k2E
- rQ3lw0x7lXICDHBw1752tWPxmayVFIhtE/BXHZv8tOEHLLAnGkssiX9/BtgCZR4YZufm
- XwcsMWpQGtv5qQMNM7bgnPwDuzsHfQF8XZPbpLXPxi8b0+gC3KHB+pUU0YvrsA+n8YUp
- JfuTwbAKtsYOMeIjeFPSpTrEyQQSsoEda752JcTmk1FdLxunTl838cJJEe2VQmOTRY5J
- 8g+Q==
-X-Gm-Message-State: AOJu0YwX+14B/eLfz5aFf5i2OydknkLqURd8XCGAzvcCsHGRK4jZe/+2
- TfHNlTXczAm3Fitn2v5hO3l6/Cii8m0U7SZPDn0q802G1yMgJx0M+70G8YIKVXslLF08+nsRUYo
- ExHpqkzaHD6DlxKbTyEPXiBjVYlZQQh4VVDZIMRViH5CsfBE3YbdoS7q1qmUXwBTZn79cXLx4i+
- FMcDVBpGuYqjj8kdhmSPcAWYaHOFRh5PyrUS3H4bw=
-X-Gm-Gg: ASbGncurjxlTM+c79haZgXiawBt8V28EWT75UMnuuq8TpBOM+u6JJKy1rYhUAuL9yEt
- kudCQ2iDLrQlu8XH8Ini9MU4eibAvZ8xyDmDRxxzAv3LPxG3FbkplRZedT9WAi7CAO4pq1YJoX5
- 9IniasC86K9+Grw+GHyKF0Pco/uQa5GuEQRkZ6ECekB1wBSV8xFBT3m4J1CfxKatQn/f0HRGMOz
- lgJ1gH3wWhP7Xv76+EOc5elkBixKsx11XMaXVeMnYQ776jDaSn2Kq1PN4fTFKQzvOhbSHy0Q+AJ
- Phx+UOckrlB5KrKXiMHc
-X-Received: by 2002:a17:907:c0f:b0:ab6:d47a:9b20 with SMTP id
- a640c23a62f3a-abc09a8a15cmr3264750966b.31.1740666148365; 
- Thu, 27 Feb 2025 06:22:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4daWnQQOCN1bWh3SugyKqQgpaK2V8VPcdTd6AzyLvPLm6JBm1RPxBjICn07Gp4GTaMSKIQg==
-X-Received: by 2002:a17:907:c0f:b0:ab6:d47a:9b20 with SMTP id
- a640c23a62f3a-abc09a8a15cmr3264746266b.31.1740666147824; 
- Thu, 27 Feb 2025 06:22:27 -0800 (PST)
+ bh=nk4rG8BvOrBCUFxfsl3zj+sJAUqBN7gnD9BX4ggHZ8E=;
+ b=gTCPcEwIMt6uw/xPUbXTTPYCI0G/fsfPk1HrnYfar0PaHNdRDmOtYuxS7h3IOwBRog
+ H0lqk4wIsTAVOqLhJbmVDEJUsQo2PyNtat0xelkMIM7jDMOx9oLK0x3tykdzbjvfMzO3
+ hmE7WsXkT5WjFL+hWfykZcCb/pOLyy3LayoqJvJ0//M7sMmr/wnDVDm9ukKbpo8OqPai
+ A1pSdo8H6kuxJSTPg4uyq16ZLG+qh6YZARIFIXGPnWORFeYHbrS15N3eGEKNwL8E6vnJ
+ x9jL/c3Zc0eVTCb4f3rSO7fvoLoozY4i06/OzRAKbdgSWCEbY7vmrMCPnk3KDqsAhANA
+ 1p4A==
+X-Gm-Message-State: AOJu0YyiBlpvs3FkBLxwnu/UAIwCUN9HpYyGXvj/dFvgCBB1mrYkxxsT
+ eq8VKfx5Z/s5JzH/JKYOqW//T2+gdg95wDMIC5KKsAyq7Zd3mRobXoKqgNFT3TnHAbeAxSMXQxM
+ NObgzvY6YzZYnhtGdNrU3Imp7soI+0Ut9ZmrIeXIdgMBnmcDXxutNbGCtTTj8mwsOmq7NVp1jKq
+ SW32W/TUxa5Mb7+VVMFhSG3rqPoGn0uezuNY+zJXQ=
+X-Gm-Gg: ASbGncuJ+Hx6grhmsEeGNTsGeGvWqjidFd6MoErQKcRDX3G5nPdcC0VfDTCtumzInD9
+ NLKXd+nzpPDh4MOxWqKyRtSTOYyp+XYyBauftDyGbJOa3gxneqF/Tbw8SHOBF4vGKgW6ioxp8vK
+ byivXn7hiNVT6awQvk55WviypX8Z4YH7P7KVjiv+E49DMay6nHbFx6y5qLjOqw1xCOEAS4/ug2e
+ 9v/IHztnGeyvX1VcADfc9MT+4adIifRSK+IoNHsacboj6vLtIXlQo3ChQQXHnykh0jr3Wd675Rq
+ Fuo36rgk6C+qQypAD9/S
+X-Received: by 2002:a17:906:318a:b0:abb:fcbb:ab20 with SMTP id
+ a640c23a62f3a-abeeed8bfdcmr836456366b.22.1740666150635; 
+ Thu, 27 Feb 2025 06:22:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEre39vytYWAHhZhXaM95fI3eTfMy8Xz3vq9jO0H3LoqMNmrk3eKo/DJWQnPtAQh4wcgpPdlg==
+X-Received: by 2002:a17:906:318a:b0:abb:fcbb:ab20 with SMTP id
+ a640c23a62f3a-abeeed8bfdcmr836454166b.22.1740666150047; 
+ Thu, 27 Feb 2025 06:22:30 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c75bffcsm130517966b.143.2025.02.27.06.22.25
+ 4fb4d7f45d1cf-5e4c3fb4384sm1176263a12.49.2025.02.27.06.22.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:22:25 -0800 (PST)
+ Thu, 27 Feb 2025 06:22:28 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	zhao1.liu@intel.com
-Subject: [PATCH 03/12] rust: vmstate: add std::pin::Pin as transparent wrapper
-Date: Thu, 27 Feb 2025 15:22:10 +0100
-Message-ID: <20250227142219.812270-4-pbonzini@redhat.com>
+Subject: [PATCH 04/12] rust: timer: wrap QEMUTimer with Opaque<> and express
+ pinning requirements
+Date: Thu, 27 Feb 2025 15:22:11 +0100
+Message-ID: <20250227142219.812270-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227142219.812270-1-pbonzini@redhat.com>
 References: <20250227142219.812270-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -107,23 +108,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Timers must be pinned in memory, because modify() stores a pointer to them
+in the TimerList.  To ensure this is the case, replace the separate new()
+and init_full() with a single function that returns a pinned box.  Because
+the only way to obtain a Timer is through Timer::new_full(), modify()
+knows that the timer it got is also pinned.  In the future the pinning
+requirement will be expressed through the pin_init crate instead.
+
+Note that Timer is a bit different from other users of Opaque, in that
+it is created in Rust code rather than C code.  This is why it has to
+use the unsafe Opaque::new() function.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/vmstate.rs | 1 +
- 1 file changed, 1 insertion(+)
+ meson.build                    |  7 -----
+ rust/hw/timer/hpet/src/hpet.rs | 23 ++++++++---------
+ rust/qemu-api/src/timer.rs     | 47 ++++++++++++++++++++++------------
+ 3 files changed, 41 insertions(+), 36 deletions(-)
 
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 24a4dc81e7f..1e7ba531e2a 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -330,6 +330,7 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+diff --git a/meson.build b/meson.build
+index 0a2c61d2bfa..fc02e5fc763 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4098,13 +4098,6 @@ if have_rust
+   foreach enum : c_bitfields
+     bindgen_args += ['--bitfield-enum', enum]
+   endforeach
+-  c_nocopy = [
+-    'QEMUTimer',
+-  ]
+-  # Used to customize Drop trait
+-  foreach struct : c_nocopy
+-    bindgen_args += ['--no-copy', struct]
+-  endforeach
  
- impl_vmstate_transparent!(std::cell::Cell<T> where T: VMState);
- impl_vmstate_transparent!(std::cell::UnsafeCell<T> where T: VMState);
-+impl_vmstate_transparent!(std::pin::Pin<T> where T: VMState);
- impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
- impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
+   # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
+   #
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index be27eb0eff4..ce4b289d0c8 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -4,6 +4,7 @@
  
+ use std::{
+     ffi::CStr,
++    pin::Pin,
+     ptr::{addr_of_mut, null_mut, NonNull},
+     slice::from_ref,
+ };
+@@ -156,7 +157,7 @@ pub struct HPETTimer {
+     /// timer N index within the timer block (`HPETState`)
+     #[doc(alias = "tn")]
+     index: usize,
+-    qemu_timer: Option<Box<Timer>>,
++    qemu_timer: Option<Pin<Box<Timer>>>,
+     /// timer block abstraction containing this timer
+     state: Option<NonNull<HPETState>>,
+ 
+@@ -189,18 +190,14 @@ fn init(&mut self, index: usize, state_ptr: *mut HPETState) -> &mut Self {
+     }
+ 
+     fn init_timer_with_state(&mut self) {
+-        self.qemu_timer = Some(Box::new({
+-            let mut t = Timer::new();
+-            t.init_full(
+-                None,
+-                CLOCK_VIRTUAL,
+-                Timer::NS,
+-                0,
+-                timer_handler,
+-                &self.get_state().timers[self.index],
+-            );
+-            t
+-        }));
++        self.qemu_timer = Some(Timer::new_full(
++            None,
++            CLOCK_VIRTUAL,
++            Timer::NS,
++            0,
++            timer_handler,
++            &self.get_state().timers[self.index],
++        ));
+     }
+ 
+     fn get_state(&self) -> &HPETState {
+diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
+index a593538917a..a8b2ab058b6 100644
+--- a/rust/qemu-api/src/timer.rs
++++ b/rust/qemu-api/src/timer.rs
+@@ -2,40 +2,51 @@
+ // Author(s): Zhao Liu <zhai1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use std::os::raw::{c_int, c_void};
++use std::{
++    os::raw::{c_int, c_void},
++    pin::Pin,
++};
+ 
+ use crate::{
+     bindings::{self, qemu_clock_get_ns, timer_del, timer_init_full, timer_mod, QEMUClockType},
+     callbacks::FnCall,
++    cell::Opaque,
+ };
+ 
+-pub type Timer = bindings::QEMUTimer;
+-pub type TimerListGroup = bindings::QEMUTimerListGroup;
++/// A safe wrapper around [`bindings::QEMUTimer`].
++#[repr(transparent)]
++#[derive(Debug, qemu_api_macros::Wrapper)]
++pub struct Timer(Opaque<bindings::QEMUTimer>);
++
++unsafe impl Send for Timer {}
++unsafe impl Sync for Timer {}
++
++#[repr(transparent)]
++#[derive(qemu_api_macros::Wrapper)]
++pub struct TimerListGroup(Opaque<bindings::QEMUTimerListGroup>);
++
++unsafe impl Send for TimerListGroup {}
++unsafe impl Sync for TimerListGroup {}
+ 
+ impl Timer {
+     pub const MS: u32 = bindings::SCALE_MS;
+     pub const US: u32 = bindings::SCALE_US;
+     pub const NS: u32 = bindings::SCALE_NS;
+ 
+-    pub fn new() -> Self {
+-        Default::default()
+-    }
+-
+-    const fn as_mut_ptr(&self) -> *mut Self {
+-        self as *const Timer as *mut _
+-    }
+-
+-    pub fn init_full<'timer, 'opaque: 'timer, T, F>(
+-        &'timer mut self,
++    pub fn new_full<'opaque, T, F>(
+         timer_list_group: Option<&TimerListGroup>,
+         clk_type: ClockType,
+         scale: u32,
+         attributes: u32,
+         _cb: F,
+         opaque: &'opaque T,
+-    ) where
++    ) -> Pin<Box<Self>>
+         F: for<'a> FnCall<(&'a T,)>,
+     {
++        // SAFETY: returning a pinned box makes it certain that the object
++        // will not move when added to a TimerList with `modify()`.
++        let t = unsafe { Box::pin(Self(Opaque::new())) };
+         let _: () = F::ASSERT_IS_SOME;
+ 
+         /// timer expiration callback
+@@ -51,7 +62,7 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
+         // SAFETY: the opaque outlives the timer
+         unsafe {
+             timer_init_full(
+-                self,
++                t.as_mut_ptr(),
+                 if let Some(g) = timer_list_group {
+                     g as *const TimerListGroup as *mut _
+                 } else {
+@@ -62,11 +73,14 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
+                 attributes as c_int,
+                 Some(timer_cb),
+                 (opaque as *const T).cast::<c_void>() as *mut c_void,
+-            )
++            );
+         }
++        t
+     }
+ 
+     pub fn modify(&self, expire_time: u64) {
++        // SAFETY: the only way to obtain a Timer is via methods that return a
++        // Pin<Box<Self>>, therefore the timer is pinned
+         unsafe { timer_mod(self.as_mut_ptr(), expire_time as i64) }
+     }
+ 
+@@ -75,6 +89,7 @@ pub fn delete(&self) {
+     }
+ }
+ 
++// FIXME: use something like PinnedDrop from the pinned_init crate
+ impl Drop for Timer {
+     fn drop(&mut self) {
+         self.delete()
 -- 
 2.48.1
 
