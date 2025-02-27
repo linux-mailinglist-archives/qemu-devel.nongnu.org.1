@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690E0A481A5
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7278DA4817B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:36:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnewl-0002qj-Rl; Thu, 27 Feb 2025 09:33:07 -0500
+	id 1tnewv-0003Lj-UI; Thu, 27 Feb 2025 09:33:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <61dd66de.AVIAAGMvXh8AAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd2@a3031119.bnc3.mailjet.com>)
- id 1tnewH-0001UR-5Y
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:32:38 -0500
-Received: from o32.p25.mailjet.com ([185.189.236.32])
+ <492a147d.AWQAAGXdcTUAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd3@a3031119.bnc3.mailjet.com>)
+ id 1tnewE-0001Tr-QY
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:32:36 -0500
+Received: from o72.p38.mailjet.com ([185.250.237.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <61dd66de.AVIAAGMvXh8AAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd2@a3031119.bnc3.mailjet.com>)
- id 1tnewC-0006Ll-LN
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:32:35 -0500
+ <492a147d.AWQAAGXdcTUAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd3@a3031119.bnc3.mailjet.com>)
+ id 1tnew8-0006Lf-QW
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:32:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
- d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740673942;
- h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
+ d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740673943;
+ h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe:list-unsubscribe-post:
  cc:feedback-id:in-reply-to:references:x-csa-complaints:x-mj-mid:x-mj-smtpguid:
- x-report-abuse-to:content-transfer-encoding;
- bh=akdFEJLNVZasuPzCASIwnSvNTNsx/1vk+8n5aNiDGzg=;
- b=I2Bco9jB3TKhzvj8gsyRBbfCfW09IiHv2BB9goqAaKCuLZWpNFeiLidgu
- 9IFHeSo3TTyK/lyhj9bstf6UalbZ7xvMfe2JdA4Z/OsEGA++48NQ0A8/gh19
- k9H2aGbZ857feUvXgPioRoX01cLbnGPtYnxJmNCn1vCu1wJAfFwa0tNPX1de
- jzQr9icXVRDFmSc2cv3llad5LPvyTh3yQHOX42VOlXIprdIVHDF7AGONEJgz
- j2KGecdZUvgMc9d3SHqaF+MohaAbyucToQxvbkRuPD0Cz+6XGChsFE6DPkYq
- /NA4z8CHt54wzVcAlCLe9QIeR87+8ZuxmzkD0OskaEGmg==
-Message-Id: <61dd66de.AVIAAGMvXh8AAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd2@mailjet.com>
+ x-report-abuse-to:content-type:content-transfer-encoding;
+ bh=DVpozaxx/Uix4NnfQuB/nnLxENTtmruWdZuycPgN0XE=;
+ b=Zm9fo3KU6nBRJS32rEvBSu4g8QsWfihSNxc7zSSLQHedpHDjc6CrigBX0
+ Ef6b/jTT3j3cTqTt59ZllKFWsA8lNWv1wU1HTYXSo8NjJqV1KjqtO8J6PnvF
+ 3nqEx3WBhPgZpV5hg5Bbtp6ZiuHG7Ct2UD0f1/T0sHvaOGqohnw0gPLstO/R
+ 4cuPHjQ2cTeTAZT4ymSfaG948eKg0DC8yRWmdHU3IIzOn6v5FlP/XPFYuwNu
+ w8DAaQ5qu7/5hC2UlVvqarABFWxWKuWxKk+x0HoqduSUYq1WA2aWmrM/XFnb
+ V40shfC4mL9NLlJi7aDhZVscOHRnC5toYxFWysu8qozsQ==
+Message-Id: <492a147d.AWQAAGXdcTUAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd3@mailjet.com>
 MIME-Version: 1.0
 From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v7 11/16] docs/interop/firmware.json: Add igvm to
- FirmwareDevice
-Date: Thu, 27 Feb 2025 14:29:29 +0000
+Subject: [PATCH v7 12/16] backends/confidential-guest-support: Add
+ set_guest_policy() function
+Date: Thu, 27 Feb 2025 14:29:30 +0000
 List-Unsubscribe-Post: List-Unsubscribe=One-Click
 Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>, Paolo Bonzini
  <pbonzini@redhat.com>, "Daniel P . Berrange" <berrange@redhat.com>,
@@ -54,22 +54,23 @@ Feedback-Id: 42.3031119.2785883:MJ
 In-Reply-To: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
 References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
 X-CSA-Complaints: csa-complaints@eco.de
-X-MJ-Mid: AVIAAGMvXh8AAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd2_sVhdlCSRgGN6huN-1NfAgAqgls
-X-MJ-SMTPGUID: b5a4ec9e-4f21-4f30-93e3-968e37563de3
+X-MJ-Mid: AWQAAGXdcTUAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd3dyoWHjziS32LwwvBaok4yAAqgls
+X-MJ-SMTPGUID: 1fb25099-b410-48e3-ad94-b6dd030ba534
 X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
  abuse@mailjet.com with a copy of the message
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.189.236.32;
- envelope-from=61dd66de.AVIAAGMvXh8AAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd2@a3031119.bnc3.mailjet.com;
- helo=o32.p25.mailjet.com
+Received-SPF: pass client-ip=185.250.237.72;
+ envelope-from=492a147d.AWQAAGXdcTUAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwHd3@a3031119.bnc3.mailjet.com;
+ helo=o72.p38.mailjet.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
 X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,75 +86,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create an enum entry within FirmwareDevice for 'igvm' to describe that
-an IGVM file can be used to map firmware into memory as an alternative
-to pre-existing firmware devices.
+For confidential guests a policy can be provided that defines the
+security level, debug status, expected launch measurement and other
+parameters that define the configuration of the confidential platform.
+
+This commit adds a new function named set_guest_policy() that can be
+implemented by each confidential platform, such as AMD SEV to set the
+policy. This will allow configuration of the policy from a
+multi-platform resource such as an IGVM file without the IGVM processor
+requiring specific implementation details for each platform.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- docs/interop/firmware.json | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ backends/confidential-guest-support.c       | 12 ++++++++++++
+ include/system/confidential-guest-support.h | 21 +++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index 57f55f6c54..70475e61e6 100644
---- a/docs/interop/firmware.json
-+++ b/docs/interop/firmware.json
-@@ -57,10 +57,17 @@
- #
- # @memory: The firmware is to be mapped into memory.
- #
-+# @igvm: The firmware is defined by a file conforming to the IGVM
-+#        specification and mapped into memory according to directives
-+#        defined in the file. This is similar to @memory but may
-+#        include additional processing defined by the IGVM file
-+#        including initial CPU state or population of metadata into
-+#        the guest address space. Since: 10.0
-+#
- # Since: 3.0
- ##
- { 'enum' : 'FirmwareDevice',
--  'data' : [ 'flash', 'kernel', 'memory' ] }
-+  'data' : [ 'flash', 'kernel', 'memory', 'igvm' ] }
+diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+index ed1ff78b5c..0fe76444a4 100644
+--- a/backends/confidential-guest-support.c
++++ b/backends/confidential-guest-support.c
+@@ -38,6 +38,17 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+     return -1;
+ }
  
- ##
- # @FirmwareArchitecture:
-@@ -367,6 +374,24 @@
- { 'struct' : 'FirmwareMappingMemory',
-   'data'   : { 'filename' : 'str' } }
- 
-+##
-+# @FirmwareMappingIgvm:
-+#
-+# Describes loading and mapping properties for the firmware executable,
-+# when @FirmwareDevice is @igvm.
-+#
-+# @filename: Identifies the IGVM file containing the firmware executable
-+#            along with other information used to configure the initial
-+#            state of the guest. The IGVM file may be shared by multiple
-+#            virtual machine definitions. This corresponds to creating
-+#            an object on the command line with "-object igvm-cfg,
-+#            file=@filename".
-+#
-+# Since: 10.0
-+##
-+{ 'struct' : 'FirmwareMappingIgvm',
-+  'data'   : { 'filename' : 'str' } }
++static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
++                            uint64_t policy,
++                            void *policy_data1, uint32_t policy_data1_size,
++                            void *policy_data2, uint32_t policy_data2_size,
++                            Error **errp)
++{
++    error_setg(errp,
++               "Setting confidential guest policy is not supported for this platform");
++    return -1;
++}
 +
- ##
- # @FirmwareMapping:
- #
-@@ -383,7 +408,8 @@
-   'discriminator' : 'device',
-   'data'          : { 'flash'  : 'FirmwareMappingFlash',
-                       'kernel' : 'FirmwareMappingKernel',
--                      'memory' : 'FirmwareMappingMemory' } }
-+                      'memory' : 'FirmwareMappingMemory',
-+                      'igvm'   : 'FirmwareMappingIgvm' } }
+ static int get_mem_map_entry(int index, ConfidentialGuestMemoryMapEntry *entry,
+                              Error **errp)
+ {
+@@ -52,6 +63,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc, void *data)
+     ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+     cgsc->check_support = check_support;
+     cgsc->set_guest_state = set_guest_state;
++    cgsc->set_guest_policy = set_guest_policy;
+     cgsc->get_mem_map_entry = get_mem_map_entry;
+ }
  
- ##
- # @Firmware:
+diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+index b2cfd1f70c..dbf787a04b 100644
+--- a/include/system/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -61,6 +61,10 @@ typedef enum ConfidentialGuestPageType {
+     CGS_PAGE_TYPE_REQUIRED_MEMORY,
+ } ConfidentialGuestPageType;
+ 
++typedef enum ConfidentialGuestPolicyType {
++    GUEST_POLICY_SEV,
++} ConfidentialGuestPolicyType;
++
+ struct ConfidentialGuestSupport {
+     Object parent;
+ 
+@@ -127,6 +131,23 @@ typedef struct ConfidentialGuestSupportClass {
+                            ConfidentialGuestPageType memory_type,
+                            uint16_t cpu_index, Error **errp);
+ 
++    /*
++     * Set the guest policy. The policy can be used to configure the
++     * confidential platform, such as if debug is enabled or not and can contain
++     * information about expected launch measurements, signed verification of
++     * guest configuration and other platform data.
++     *
++     * The format of the policy data is specific to each platform. For example,
++     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
++     * ID block and ID authentication in the 'policy_data' parameters. The type
++     * of policy data is identified by the 'policy_type' argument.
++     */
++    int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
++                            uint64_t policy,
++                            void *policy_data1, uint32_t policy_data1_size,
++                            void *policy_data2, uint32_t policy_data2_size,
++                            Error **errp);
++
+     /*
+      * Iterate the system memory map, getting the entry with the given index
+      * that can be populated into guest memory.
 -- 
 2.43.0
 
