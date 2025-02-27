@@ -2,66 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860AEA47B17
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE097A47B92
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 12:14:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnbdB-0002o3-6Z; Thu, 27 Feb 2025 06:00:41 -0500
+	id 1tnbgv-00053P-Ro; Thu, 27 Feb 2025 06:04:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnbd2-0002hH-9K
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 06:00:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tnbgT-0004ki-Kd; Thu, 27 Feb 2025 06:04:05 -0500
+Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tnbcx-0006zq-MB
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 06:00:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740654024;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Zo6DyPSAv2JcYtJVHblpCSdKkVIsSIgM7UWICPOOvKE=;
- b=PdXNNg8uDRrHlZl4fwdThleniXxCUg5AFd6enYpemq9c9hTC3hjm2HHdDZzIo/Thsm0sTc
- y1mje/DcoE+fVncUtR0bsKggSkNzBFeHhGHJ/zCeDu0wC6MP3h/+thX65D5DcH0cmxp2Em
- g9ec3mN7kcZFq0Dt/gyU/D09EzF+N6s=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-ymxAumHfOz2YYn3F-VsPQQ-1; Thu,
- 27 Feb 2025 06:00:22 -0500
-X-MC-Unique: ymxAumHfOz2YYn3F-VsPQQ-1
-X-Mimecast-MFC-AGG-ID: ymxAumHfOz2YYn3F-VsPQQ_1740654021
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6BD7B180099F; Thu, 27 Feb 2025 11:00:21 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.33.184])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E9DEA1800371; Thu, 27 Feb 2025 11:00:16 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] tests/avocado: Remove the boot_linux.py and replay_linux.py
- tests
-Date: Thu, 27 Feb 2025 12:00:14 +0100
-Message-ID: <20250227110014.21048-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tnbgP-0007SF-RE; Thu, 27 Feb 2025 06:04:04 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by tor.source.kernel.org (Postfix) with ESMTP id 2AA596155A;
+ Thu, 27 Feb 2025 11:03:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5E3C4CEEE;
+ Thu, 27 Feb 2025 11:03:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1740654238;
+ bh=oN+y/NJZCBdygHU7yu4YFzn7ilHK4n88/7YjliN/sbU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=bsxd4MpugxXY5vMy+dbiIOpauoY928bGuF/0UYgTNg9V3b/cv9y2elOfZcYMVG/5a
+ GP2mvQqI0BgKeaDSa+/jbedcwfReBQO+0QadhyMBVnMa06zCSWCFQvXtOK4Rc70vpl
+ 6HGxHpAP3JmfNJC3g8woWsXmDPv2pYm/dDOAi5UO4od3RioHARhgEx1Nn1j5sY3NnR
+ Yxt7BS1alBvoDwd2naLzzLBuU7BQ2C3lfGtuA6jHQgUNXA/96s551zm4Gau5igfVRz
+ 3ofC3/clBGM6AcyCo/DOuhsHCzjP1Xf+KaB5LvM6CSZstqrN+W7rEDaN/CRiCj/m2t
+ BUnl9nhUbE30g==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tnbgK-00000001mQX-00jM; Thu, 27 Feb 2025 12:03:56 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 00/21]Change ghes to use HEST-based offsets and add support
+ for error inject
+Date: Thu, 27 Feb 2025 12:03:30 +0100
+Message-ID: <cover.1740653898.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2600:3c04::f03c:95ff:fe5e:7468;
+ envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,375 +81,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These tests are based on the cloudinit functions from Avocado.
-The cloudinit is very, very slow compared to our other tests,
-so most of these Avocado tests have either been disabled by default
-with a decorator, or have been marked to only run with KVM.
+Now that the ghes preparation patches were merged, let's add support
+for error injection.
 
-We won't include this sluggish cloudinit stuff in the functional
-framework, and we've already got plenty of other tests there that
-check pretty much the same things, so let's simply get rid of these
-old tests now.
+On this version, HEST table got added to ACPI tables testing for aarch64 virt.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+There are also some patch reorder to help reviewers to check the changes.
+
+The code itself is almost identical to v4, with just a few minor nits addressed.
+
 ---
- tests/avocado/boot_linux.py   | 132 ----------------------
- tests/avocado/replay_linux.py | 206 ----------------------------------
- 2 files changed, 338 deletions(-)
- delete mode 100644 tests/avocado/boot_linux.py
- delete mode 100644 tests/avocado/replay_linux.py
+v5:
+- make checkpatch happier;
+- HEST table is now tested;
+- some changes at HEST spec documentation to align with code changes;
+- extra care was taken with regards to git bisectability.
 
-diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-deleted file mode 100644
-index a029ef4ad1e..00000000000
---- a/tests/avocado/boot_linux.py
-+++ /dev/null
-@@ -1,132 +0,0 @@
--# Functional test that boots a complete Linux system via a cloud image
--#
--# Copyright (c) 2018-2020 Red Hat, Inc.
--#
--# Author:
--#  Cleber Rosa <crosa@redhat.com>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--import os
--
--from avocado_qemu.linuxtest import LinuxTest
--from avocado_qemu import BUILD_DIR
--
--from avocado import skipUnless
--
--
--class BootLinuxX8664(LinuxTest):
--    """
--    :avocado: tags=arch:x86_64
--    """
--    timeout = 480
--
--    def test_pc_i440fx_tcg(self):
--        """
--        :avocado: tags=machine:pc
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pc_i440fx_kvm(self):
--        """
--        :avocado: tags=machine:pc
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pc_q35_tcg(self):
--        """
--        :avocado: tags=machine:q35
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pc_q35_kvm(self):
--        """
--        :avocado: tags=machine:q35
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--
--# For Aarch64 we only boot KVM tests in CI as booting the current
--# Fedora OS in TCG tests is very heavyweight. There are lighter weight
--# distros which we use in the machine_aarch64_virt.py tests.
--class BootLinuxAarch64(LinuxTest):
--    """
--    :avocado: tags=arch:aarch64
--    :avocado: tags=machine:virt
--    """
--    timeout = 720
--
--    def test_virt_kvm(self):
--        """
--        :avocado: tags=accel:kvm
--        :avocado: tags=cpu:host
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.vm.add_args("-machine", "virt,gic-version=host")
--        self.vm.add_args('-bios',
--                         os.path.join(BUILD_DIR, 'pc-bios',
--                                      'edk2-aarch64-code.fd'))
--        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
--        self.vm.add_args('-object', 'rng-random,id=rng0,filename=/dev/urandom')
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--
--# See the tux_baseline.py tests for almost the same coverage in a lot
--# less time.
--class BootLinuxPPC64(LinuxTest):
--    """
--    :avocado: tags=arch:ppc64
--    """
--
--    timeout = 360
--
--    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
--    def test_pseries_tcg(self):
--        """
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pseries_kvm(self):
--        """
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.vm.add_args("-machine", "cap-ccf-assist=off")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--class BootLinuxS390X(LinuxTest):
--    """
--    :avocado: tags=arch:s390x
--    """
--
--    timeout = 240
--
--    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
--    def test_s390_ccw_virtio_tcg(self):
--        """
--        :avocado: tags=machine:s390-ccw-virtio
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
-diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
-deleted file mode 100644
-index 59169224353..00000000000
---- a/tests/avocado/replay_linux.py
-+++ /dev/null
-@@ -1,206 +0,0 @@
--# Record/replay test that boots a complete Linux system via a cloud image
--#
--# Copyright (c) 2020 ISP RAS
--#
--# Author:
--#  Pavel Dovgalyuk <Pavel.Dovgaluk@ispras.ru>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--import os
--import logging
--import time
--
--from avocado import skipUnless
--from avocado_qemu import BUILD_DIR
--from avocado.utils import cloudinit
--from avocado.utils import network
--from avocado.utils import vmimage
--from avocado.utils import datadrainer
--from avocado.utils.path import find_command
--from avocado_qemu.linuxtest import LinuxTest
--
--class ReplayLinux(LinuxTest):
--    """
--    Boots a Linux system, checking for a successful initialization
--    """
--
--    timeout = 1800
--    chksum = None
--    hdd = 'ide-hd'
--    cd = 'ide-cd'
--    bus = 'ide'
--
--    def setUp(self):
--        # LinuxTest does many replay-incompatible things, but includes
--        # useful methods. Do not setup LinuxTest here and just
--        # call some functions.
--        super(LinuxTest, self).setUp()
--        self._set_distro()
--        self.boot_path = self.download_boot()
--        self.phone_server = cloudinit.PhoneHomeServer(('0.0.0.0', 0),
--                                                      self.name)
--        ssh_pubkey, self.ssh_key = self.set_up_existing_ssh_keys()
--        self.cloudinit_path = self.prepare_cloudinit(ssh_pubkey)
--
--    def vm_add_disk(self, vm, path, id, device):
--        bus_string = ''
--        if self.bus:
--            bus_string = ',bus=%s.%d' % (self.bus, id,)
--        vm.add_args('-drive', 'file=%s,snapshot=on,id=disk%s,if=none' % (path, id))
--        vm.add_args('-drive',
--            'driver=blkreplay,id=disk%s-rr,if=none,image=disk%s' % (id, id))
--        vm.add_args('-device',
--            '%s,drive=disk%s-rr%s' % (device, id, bus_string))
--
--    def vm_add_cdrom(self, vm, path, id, device):
--        vm.add_args('-drive', 'file=%s,id=disk%s,if=none,media=cdrom' % (path, id))
--
--    def launch_and_wait(self, record, args, shift):
--        self.require_netdev('user')
--        vm = self.get_vm()
--        vm.add_args('-smp', '1')
--        vm.add_args('-m', '1024')
--        vm.add_args('-netdev', 'user,id=vnet,hostfwd=:127.0.0.1:0-:22',
--                    '-device', 'virtio-net,netdev=vnet')
--        vm.add_args('-object', 'filter-replay,id=replay,netdev=vnet')
--        if args:
--            vm.add_args(*args)
--        self.vm_add_disk(vm, self.boot_path, 0, self.hdd)
--        self.vm_add_cdrom(vm, self.cloudinit_path, 1, self.cd)
--        logger = logging.getLogger('replay')
--        if record:
--            logger.info('recording the execution...')
--            mode = 'record'
--        else:
--            logger.info('replaying the execution...')
--            mode = 'replay'
--        replay_path = os.path.join(self.workdir, 'replay.bin')
--        vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s' %
--                    (shift, mode, replay_path))
--
--        start_time = time.time()
--
--        vm.set_console()
--        vm.launch()
--        console_drainer = datadrainer.LineLogger(vm.console_socket.fileno(),
--                                    logger=self.log.getChild('console'),
--                                    stop_check=(lambda : not vm.is_running()))
--        console_drainer.start()
--        if record:
--            while not self.phone_server.instance_phoned_back:
--                self.phone_server.handle_request()
--            vm.shutdown()
--            logger.info('finished the recording with log size %s bytes'
--                % os.path.getsize(replay_path))
--            self.run_replay_dump(replay_path)
--            logger.info('successfully tested replay-dump.py')
--        else:
--            vm.event_wait('SHUTDOWN', self.timeout)
--            vm.wait()
--            logger.info('successfully finished the replay')
--        elapsed = time.time() - start_time
--        logger.info('elapsed time %.2f sec' % elapsed)
--        return elapsed
--
--    def run_rr(self, args=None, shift=7):
--        t1 = self.launch_and_wait(True, args, shift)
--        t2 = self.launch_and_wait(False, args, shift)
--        logger = logging.getLogger('replay')
--        logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
--
--    def run_replay_dump(self, replay_path):
--        try:
--            subprocess.check_call(["./scripts/replay-dump.py",
--                                   "-f", replay_path],
--                                  stdout=subprocess.DEVNULL)
--        except subprocess.CalledProcessError:
--            self.fail('replay-dump.py failed')
--
--@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
--class ReplayLinuxX8664(ReplayLinux):
--    """
--    :avocado: tags=arch:x86_64
--    :avocado: tags=accel:tcg
--    """
--
--    chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
--
--    def test_pc_i440fx(self):
--        """
--        :avocado: tags=machine:pc
--        """
--        self.run_rr(shift=1)
--
--    def test_pc_q35(self):
--        """
--        :avocado: tags=machine:q35
--        """
--        self.run_rr(shift=3)
--
--@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
--class ReplayLinuxX8664Virtio(ReplayLinux):
--    """
--    :avocado: tags=arch:x86_64
--    :avocado: tags=virtio
--    :avocado: tags=accel:tcg
--    """
--
--    hdd = 'virtio-blk-pci'
--    cd = 'virtio-blk-pci'
--    bus = None
--
--    chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
--
--    def test_pc_i440fx(self):
--        """
--        :avocado: tags=machine:pc
--        """
--        self.run_rr(shift=1)
--
--    def test_pc_q35(self):
--        """
--        :avocado: tags=machine:q35
--        """
--        self.run_rr(shift=3)
--
--@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
--class ReplayLinuxAarch64(ReplayLinux):
--    """
--    :avocado: tags=accel:tcg
--    :avocado: tags=arch:aarch64
--    :avocado: tags=machine:virt
--    :avocado: tags=cpu:max
--    """
--
--    chksum = '1e18d9c0cf734940c4b5d5ec592facaed2af0ad0329383d5639c997fdf16fe49'
--
--    hdd = 'virtio-blk-device'
--    cd = 'virtio-blk-device'
--    bus = None
--
--    def get_common_args(self):
--        return ('-bios',
--                os.path.join(BUILD_DIR, 'pc-bios', 'edk2-aarch64-code.fd'),
--                "-cpu", "max,lpa2=off",
--                '-device', 'virtio-rng-pci,rng=rng0',
--                '-object', 'rng-builtin,id=rng0')
--
--    def test_virt_gicv2(self):
--        """
--        :avocado: tags=machine:gic-version=2
--        """
--
--        self.run_rr(shift=3,
--                    args=(*self.get_common_args(),
--                          "-machine", "virt,gic-version=2"))
--
--    def test_virt_gicv3(self):
--        """
--        :avocado: tags=machine:gic-version=3
--        """
--
--        self.run_rr(shift=3,
--                    args=(*self.get_common_args(),
--                          "-machine", "virt,gic-version=3"))
+v4:
+- added an extra comment for AcpiGhesState structure;
+- patches reordered;
+- no functional changes, just code shift between the patches in this series.
+
+v3:
+- addressed more nits;
+- hest_add_le now points to the beginning of HEST table;
+- removed HEST from tests/data/acpi;
+- added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
+
+v2: 
+- address some nits;
+- improved ags cleanup patch and removed ags.present field;
+- added some missing le*_to_cpu() calls;
+- update date at copyright for new files to 2024-2025;
+- qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
+- added HEST and DSDT tables after the changes to make check target happy.
+  (two patches: first one whitelisting such tables; second one removing from
+   whitelist and updating/adding such tables to tests/data/acpi)
+
+
+Mauro Carvalho Chehab (21):
+  tests/acpi: virt: add an empty HEST file
+  tests/qtest/bios-tables-test: extend to also check HEST table
+  tests/acpi: virt: update HEST file with its current data
+  acpi/ghes: Cleanup the code which gets ghes ged state
+  acpi/ghes: prepare to change the way HEST offsets are calculated
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/ghes: don't hard-code the number of sources for HEST table
+  acpi/ghes: add a notifier to notify when error data is ready
+  acpi/ghes: create an ancillary acpi_ghes_get_state() function
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+  acpi/generic_event_device: add an APEI error device
+  tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
+  arm/virt: Wire up a GED error device for ACPI / GHES
+  qapi/acpi-hest: add an interface to do generic CPER error injection
+  tests/acpi: virt: update HEST table to accept two sources
+  tests/acpi: virt: and update DSDT table to add the new GED device
+  docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
+  acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
+  scripts/ghes_inject: add a script to generate GHES error inject
+
+ MAINTAINERS                                   |  10 +
+ docs/specs/acpi_hest_ghes.rst                 |  28 +-
+ hw/acpi/Kconfig                               |   5 +
+ hw/acpi/aml-build.c                           |  10 +
+ hw/acpi/generic_event_device.c                |  43 ++
+ hw/acpi/ghes-stub.c                           |   7 +-
+ hw/acpi/ghes.c                                | 231 ++++--
+ hw/acpi/ghes_cper.c                           |  38 +
+ hw/acpi/ghes_cper_stub.c                      |  19 +
+ hw/acpi/meson.build                           |   2 +
+ hw/arm/virt-acpi-build.c                      |  36 +-
+ hw/arm/virt.c                                 |  19 +-
+ hw/core/machine.c                             |   2 +
+ include/hw/acpi/acpi_dev_interface.h          |   1 +
+ include/hw/acpi/aml-build.h                   |   2 +
+ include/hw/acpi/generic_event_device.h        |   1 +
+ include/hw/acpi/ghes.h                        |  52 +-
+ include/hw/arm/virt.h                         |   2 +
+ qapi/acpi-hest.json                           |  35 +
+ qapi/meson.build                              |   1 +
+ qapi/qapi-schema.json                         |   1 +
+ scripts/arm_processor_error.py                | 476 ++++++++++++
+ scripts/ghes_inject.py                        |  51 ++
+ scripts/qmp_helper.py                         | 702 ++++++++++++++++++
+ target/arm/kvm.c                              |   7 +-
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
+ tests/data/acpi/aarch64/virt/HEST             | Bin 0 -> 224 bytes
+ tests/qtest/bios-tables-test.c                |   2 +-
+ 32 files changed, 1692 insertions(+), 91 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 hw/acpi/ghes_cper_stub.c
+ create mode 100644 qapi/acpi-hest.json
+ create mode 100644 scripts/arm_processor_error.py
+ create mode 100755 scripts/ghes_inject.py
+ create mode 100755 scripts/qmp_helper.py
+ create mode 100644 tests/data/acpi/aarch64/virt/HEST
+
 -- 
 2.48.1
+
 
 
