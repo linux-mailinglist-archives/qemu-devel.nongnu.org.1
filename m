@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ADFA480E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692E6A48105
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:25:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekD-0006mj-1m; Thu, 27 Feb 2025 09:20:09 -0500
+	id 1tnekD-0006nE-PF; Thu, 27 Feb 2025 09:20:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnek9-0006h3-J7
+ id 1tnek9-0006h2-Ik
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnek5-0003TN-Cr
+ id 1tnek5-0003TF-E4
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666000;
+ s=mimecast20190719; t=1740665999;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=zXo3u30w+/k/HJ37k5XXSMZnhq4Zco28xSz4dahNjvg=;
- b=Gq4etQtmnHVTxaKPdx2A7E0gSP6HGuwU7M9hqlNt3pMOJ7M8auUXd6bgZfrUtjwdf7vv9Y
- d0LzGmzmIn2+1Bd9m8akeLaDOltoFWrLer+iV4X91QJT62zUg9DC8DuderU9VzgyKWgD4s
- pJRxJC+Knx3uvLAk49QoQTzPMDLNzV8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=016GiMgPCDCxH4pGbauqv5pOlfa+t27Nzdjf4IvZ1wM=;
+ b=NIEd3X8JA7vak89kixpWJSuSjCcUekhwR3jA17aDC8t7L/RW0Wip8hM9uyuxc5A6yueZ9p
+ pX+Amg4PjwVNY9VfhsGJySrkn2UOa8wT2XA5DFMzoVwOFXGNvO3VKk2Y+gBiUyN+4KiNwI
+ WptaVgshzKZah9s0OQxt6wY/ecMiJAc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-8X5momk0PIeRebRlQ-pLhQ-1; Thu, 27 Feb 2025 09:19:58 -0500
-X-MC-Unique: 8X5momk0PIeRebRlQ-pLhQ-1
-X-Mimecast-MFC-AGG-ID: 8X5momk0PIeRebRlQ-pLhQ_1740665997
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ab77dd2c243so200376666b.0
+ us-mta-66-jB1P_j1OPVWp6v7kCFiAGA-1; Thu, 27 Feb 2025 09:19:58 -0500
+X-MC-Unique: jB1P_j1OPVWp6v7kCFiAGA-1
+X-Mimecast-MFC-AGG-ID: jB1P_j1OPVWp6v7kCFiAGA_1740665997
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-abbae81829fso114065966b.3
  for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:19:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1740665996; x=1741270796;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zXo3u30w+/k/HJ37k5XXSMZnhq4Zco28xSz4dahNjvg=;
- b=kSQeSBn4Hb2yeU3KY5nI9V3qYoapE7QLoHvOePBsOpjQZOotLAm00+pCTvjbDmVcFi
- mPoM/KTB1CU7a9E6wBlSnP3T7YXuvIbZ3iIcNeNrHIuEkytkG6hIuOP36H+1PmbiNN9p
- zyNCASq70qrYS/rfnIcoSjl+Y87ITcyMM1byT+pe4G97gSgpTjPwn/+MekudZm9oS/t9
- tcoA0+xwxHshSZRZrFEMLcnotDoeCq/uIijtCdfhd4S20EiDnoTh5TQFgqyOr46oMN5o
- yvyD0ju3cJGm1IGNT8Z3TA14JR1ctSVgZ5kbIMEd56PM1pXryOo9qz6WOAYc1+0n2R9x
- aOrw==
-X-Gm-Message-State: AOJu0YzmSk3g2mVx0EI+F+xJ31z1sNIBEXn80BzbYo0j9YjznS1v7pgb
- xr7izR8dLBFMoTB3MQttm/z8k1UGnwBIjSL9nkZCrvdpma+9wKleEvchFinMBvujJ8JVDGDe9pb
- Ky4Y5Q1V43cHTNM6/4Y0Ozu1X7t4bFCw0oer+mRet2DpBqOxx5PK/j2dGDUTxu8GKqWD5H9lDWy
- eQJJUDOwTmAxItxNnZV/p5/jGqinBn4i5vQ/agulI=
-X-Gm-Gg: ASbGnctNPqVBqygRimb5DLL4mSinIvtkJByaY+Cg3S6eS4rP6J4N3LAPhSht26i3GuU
- pJlC+sE3QKrfkWZnkMS/XjQ1ZgUhC/KaYMYMXZ0hoRXA1zHynwhjgTM2WEAJwcIqzd5KDKzilzB
- bs9I6QJZkwtY+WQy6nwwRll4EFpeixm1TKb551WPlED6chDggJS7s41qHfIZFjIWDjh6pHR4WwJ
- z78M750D3IH07UKqWtZs3wtvDbTPih/TDdN88fXvwE8R/pKy7C6aZCKOuw+ulCzJHD030UHmt8W
- NWWMX0I2U3PMQJIQAzcE
-X-Received: by 2002:a17:907:1c9c:b0:ab7:d454:11c9 with SMTP id
- a640c23a62f3a-abed0c77dd6mr1562381566b.8.1740665995982; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=016GiMgPCDCxH4pGbauqv5pOlfa+t27Nzdjf4IvZ1wM=;
+ b=OF6QWIdqEEHYPHWFfhA0Ho/etaw+1r6VcD9cQ5fYx9oTXd9a+6JuU2e2ZobU5X7P1+
+ 69GzpS1aQeqEo8DBNPIhwNt3wjwAqJ4tCxofZq0c8KP+kXbuQRMGBtJBsK7rtpplGNA6
+ abch2DuTWV0GTLSynnppgkObYKowE+229YczKFNLvFj9zDE8O0RT4u4O18dN3KrhoTs7
+ 8mZetO5hd6f+w/tcJsxhC7j6ZBNhW8Eoum9H5Oxn3gdmKUvfVGPatfBNGaqDTntHVwte
+ pxBZFImpml1nqNHeMCcdL3wo2pEUwYcwAT3Zf0cTOfvK1Chsu1VQr3W+sHXXXbkxjns9
+ MfHg==
+X-Gm-Message-State: AOJu0YyB7UCoWhIpoektzvK/Obkl8vsjhpa7hVPupzQnxEXDjsGRkJ5p
+ 2PGw/u0oa8u69mO62ntaoOADleJF/WXEsWb+UCvnqS8lcZpEBzGzlihTcfYW2Ck9plBKfjeHPx2
+ hy25viC6BMQ8IV/1POFLJKy2Uko5G8gF6FVlQdvVGYw2oVpjqiKHvBzTYILUvo4d9ZKJnqWV4he
+ QU4XOJvnMZSSXTLOz77kW19an5noINqalqY7xcnzk=
+X-Gm-Gg: ASbGncsGHkMJjAiQq3mBD4fe69kyNRTI0aRPQMC4sOnC6LFw/qXFezDp7Op0UZIC27Y
+ bEBz5rz+JdfvyaCUvVQ48s09+gYF0jR+uZjBCl9tYUA/Ww07EEiT4tIk1ANDpGvLa51dtmfRxCI
+ /PC5g1Mq3h4m1hFtPd1VkYF+5QFqD+1sbKRWCIIskXWwCZ8iGlYx33degY+PXOJ/Z4dD/zWoxWg
+ Sp67IMweMyLO1SFVGNhwLmDd9uVnsY9Arg7nPI75dCUNg+0ohTic8CotUboX+AdyRjnSrTLrR8N
+ l99GmiKcKCOkFSRwSbHC
+X-Received: by 2002:a17:906:3109:b0:aa6:7091:1e91 with SMTP id
+ a640c23a62f3a-abed0c66947mr1240880666b.11.1740665995727; 
  Thu, 27 Feb 2025 06:19:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEr7e5Cs7NXbmmI6fc3TL2iRMO4DC6jswPnRWpcteq6uuOpzBgDtBY/Vg8kaYEiDAOKWH+Uw==
-X-Received: by 2002:a17:907:1c9c:b0:ab7:d454:11c9 with SMTP id
- a640c23a62f3a-abed0c77dd6mr1562367666b.8.1740665994088; 
- Thu, 27 Feb 2025 06:19:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEP/XSbmvFTNNThmAOiFlW/7Pija0uKgDmKhE89+TZfCvGl0FL/GGGOnlXiMjRl0FuK80btxA==
+X-Received: by 2002:a17:906:3109:b0:aa6:7091:1e91 with SMTP id
+ a640c23a62f3a-abed0c66947mr1240878666b.11.1740665995200; 
+ Thu, 27 Feb 2025 06:19:55 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c0dcb12sm129181566b.74.2025.02.27.06.19.53
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-abf0c0dcb12sm129184566b.74.2025.02.27.06.19.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:19:53 -0800 (PST)
+ Thu, 27 Feb 2025 06:19:54 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/34] i386, Rust, build system, QOM patches for 2025-02-27
-Date: Thu, 27 Feb 2025 15:19:18 +0100
-Message-ID: <20250227141952.811410-1-pbonzini@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PULL 01/34] qom: Use command line syntax for default values in help
+Date: Thu, 27 Feb 2025 15:19:19 +0100
+Message-ID: <20250227141952.811410-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
+References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -103,137 +106,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-02-22 05:06:39 +0800)
+object_property_help() uses the conventional command line syntax instead
+of the JSON syntax. In particular,
+- Key-value pairs are written in the command line syntax.
+- bool description passed to the function says on/off instead of
+  true/false.
 
-are available in the Git repository at:
+However, there is one exception: default values are formatted into JSON.
+While the command line and JSON syntaxes are consistent in many cases,
+there are two types where they disagree:
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+string: The command line syntax omits quotes while JSON requires them.
 
-for you to fetch changes up to a4e749780bd20593c0c386612a51bf4d64a80132:
+bool: JSON only accepts true/false for bool but the command line syntax
+      accepts on/off too, and on/off are also more popular than
+      true/false. For example, the docs directory has 2045 "on"
+      occurances while it has only 194 "true" occurances.
+      on/off are also accepted by OnOffAuto so users do not have to
+      remember the type is bool or OnOffAuto to use the values.
 
-  target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin CPUs (2025-02-26 09:56:18 +0100)
+Omit quotes for strings and use on/off for bools when formatting
+default values for better consistency.
 
-----------------------------------------------------------------
-* qom: Use command line syntax for default values in help
-* i386: support cache topology with machine's configuration
-* rust: fix duplicate symbols from monitor-fd.c
-* rust: add module to convert between success/-errno and io::Result
-* rust: move class_init implementation from trait to method
-* pvg: configuration improvements
-* kvm guestmemfd: replace assertion with error
-* riscv: cleanups
-* target/i386/hvf: cleanups to emulation
-* target/i386: add Zhaoxin and Yongfeng CPU model
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Link: https://lore.kernel.org/r/20250207-bool-v1-1-5749d5d6df24@daynix.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ qom/object_interfaces.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      qom: Use command line syntax for default values in help
-
-Alireza Sanaee (1):
-      i386/cpu: add has_caches flag to check smp_cache configuration
-
-EwanHai (4):
-      target/i386: Add support for Zhaoxin CPU vendor identification
-      target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
-      target/i386: Introduce Zhaoxin Yongfeng CPU model
-      target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin CPUs
-
-Ilya Leoshkevich (1):
-      stub: Remove monitor-fd.c
-
-Paolo Bonzini (16):
-      hpet: do not overwrite properties on post_load
-      rust: subprojects: add libc crate
-      rust: add module to convert between success/-errno and io::Result
-      rust: tests: do not import bindings::*
-      docs: rust: fix typos
-      docs: rust: update description of crates
-      physmem: replace assertion with error
-      pvg: do not enable it on cross-architecture targets
-      pvg: add option to configure it out
-      rust: add IsA bounds to QOM implementation traits
-      rust: add SysBusDeviceImpl
-      rust: qom: add ObjectImpl::CLASS_INIT
-      rust: pl011, qemu_api tests: do not use ClassInitImpl
-      rust: qom: get rid of ClassInitImpl
-      target/riscv: remove unused macro DEFINE_CPU
-      target/riscv: move 128-bit check to TCG realize
-
-Wei Liu (6):
-      target/i386/hvf: fix a typo in a type name
-      target/i386/hvf: fix the declaration of hvf_handle_io
-      target/i386/hvf: use x86_segment in x86_decode.c
-      target/i386/hvf: move and rename {load, store}_regs
-      target/i386/hvf: move and rename simulate_{rdmsr, wrmsr}
-      target/i386/hvf: drop some dead code
-
-Zhao Liu (5):
-      i386: Fix the missing Rust HPET configuration option
-      rust: prefer importing std::ptr over core::ptr
-      i386/cpu: Support module level cache topology
-      i386/cpu: Update cache topology with machine's configuration
-      i386/pc: Support cache topology in -machine for PC machine
-
- docs/devel/rust.rst                              |  19 +-
- meson.build                                      |  14 +-
- include/hw/boards.h                              |   3 +
- target/i386/cpu.h                                |  41 ++-
- target/i386/hvf/hvf-i386.h                       |   4 +-
- target/i386/hvf/x86.h                            |   8 +-
- target/i386/hvf/x86_descr.h                      |   6 +-
- target/i386/hvf/x86_emu.h                        |   7 +-
- target/i386/hvf/x86_task.h                       |   2 +-
- target/i386/hvf/x86hvf.h                         |   3 +
- hw/core/machine-smp.c                            |   2 +
- hw/i386/pc.c                                     |   4 +
- hw/timer/hpet.c                                  |  38 +--
- qom/object_interfaces.c                          |  24 +-
- stubs/monitor-fd.c                               |   9 -
- system/physmem.c                                 |   6 +-
- target/i386/cpu.c                                | 200 ++++++++++++-
- target/i386/hvf/hvf.c                            | 295 +++++++++++++++++--
- target/i386/hvf/x86.c                            |   4 +-
- target/i386/hvf/x86_decode.c                     |  20 +-
- target/i386/hvf/x86_descr.c                      |   8 +-
- target/i386/hvf/x86_emu.c                        | 273 +-----------------
- target/i386/hvf/x86_task.c                       |  26 +-
- target/riscv/cpu.c                               |  16 --
- target/riscv/tcg/tcg-cpu.c                       |   9 +
- Kconfig.host                                     |   3 +
- hw/display/Kconfig                               |   4 -
- hw/display/meson.build                           |   9 +-
- meson_options.txt                                |   2 +
- qemu-options.hx                                  |  30 +-
- rust/Cargo.lock                                  |   7 +
- rust/hw/char/pl011/src/device.rs                 |  46 +--
- rust/hw/char/pl011/src/device_class.rs           |   6 +-
- rust/hw/timer/Kconfig                            |   1 +
- rust/hw/timer/hpet/src/hpet.rs                   |   5 +-
- rust/qemu-api/Cargo.toml                         |   1 +
- rust/qemu-api/meson.build                        |   4 +
- rust/qemu-api/src/assertions.rs                  |  28 ++
- rust/qemu-api/src/errno.rs                       | 345 +++++++++++++++++++++++
- rust/qemu-api/src/irq.rs                         |   3 +-
- rust/qemu-api/src/lib.rs                         |   1 +
- rust/qemu-api/src/prelude.rs                     |   2 +
- rust/qemu-api/src/qdev.rs                        |  40 ++-
- rust/qemu-api/src/qom.rs                         | 168 +++++------
- rust/qemu-api/src/sysbus.rs                      |  19 +-
- rust/qemu-api/tests/tests.rs                     |  35 +--
- scripts/archive-source.sh                        |   2 +-
- scripts/make-release                             |   2 +-
- scripts/meson-buildoptions.sh                    |   3 +
- stubs/meson.build                                |   2 +-
- subprojects/.gitignore                           |   1 +
- subprojects/libc-0.2-rs.wrap                     |   7 +
- subprojects/packagefiles/libc-0.2-rs/meson.build |  37 +++
- 53 files changed, 1275 insertions(+), 579 deletions(-)
- delete mode 100644 stubs/monitor-fd.c
- create mode 100644 rust/qemu-api/src/errno.rs
- create mode 100644 subprojects/libc-0.2-rs.wrap
- create mode 100644 subprojects/packagefiles/libc-0.2-rs/meson.build
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index f35d3313317..1ffea1a7288 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -4,9 +4,11 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-visit-qom.h"
+ #include "qobject/qobject.h"
++#include "qobject/qbool.h"
+ #include "qobject/qdict.h"
+ #include "qapi/qmp/qerror.h"
+ #include "qobject/qjson.h"
++#include "qobject/qstring.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qobject-output-visitor.h"
+ #include "qom/object_interfaces.h"
+@@ -177,9 +179,25 @@ char *object_property_help(const char *name, const char *type,
+         g_string_append(str, description);
+     }
+     if (defval) {
+-        g_autofree char *def_json = g_string_free(qobject_to_json(defval),
+-                                                  false);
+-        g_string_append_printf(str, " (default: %s)", def_json);
++        g_autofree char *def_json = NULL;
++        const char *def;
++
++        switch (qobject_type(defval)) {
++        case QTYPE_QSTRING:
++            def = qstring_get_str(qobject_to(QString, defval));
++            break;
++
++        case QTYPE_QBOOL:
++            def = qbool_get_bool(qobject_to(QBool, defval)) ? "on" : "off";
++            break;
++
++        default:
++            def_json = g_string_free(qobject_to_json(defval), false);
++            def = def_json;
++            break;
++        }
++
++        g_string_append_printf(str, " (default: %s)", def);
+     }
+ 
+     return g_string_free(str, false);
 -- 
 2.48.1
 
