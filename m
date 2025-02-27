@@ -2,63 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15286A48456
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 038ABA4844B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:08:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngK1-00071i-Du; Thu, 27 Feb 2025 11:01:13 -0500
+	id 1tngKD-0007B9-HJ; Thu, 27 Feb 2025 11:01:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngJw-0006yN-8G; Thu, 27 Feb 2025 11:01:08 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ id 1tngK1-00072R-CB; Thu, 27 Feb 2025 11:01:13 -0500
+Received: from tor.source.kernel.org ([2600:3c04::f03c:95ff:fe5e:7468])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngJt-0007G0-EO; Thu, 27 Feb 2025 11:01:07 -0500
+ id 1tngJx-0007IB-9z; Thu, 27 Feb 2025 11:01:13 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 7C1A35C59C6;
- Thu, 27 Feb 2025 16:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C282BC4CEF1;
+ by tor.source.kernel.org (Postfix) with ESMTP id 3091E61F42;
+ Thu, 27 Feb 2025 16:00:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CC3C4CEF7;
  Thu, 27 Feb 2025 16:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1740672062;
- bh=gCKFAW7Z2A6kbC2aXCcaFJfusets8MNdT9H4ztHpIKg=;
+ bh=WNgUSU0OrqFnvTXh8PzzTv6ghTQeysRMH1deXYrrJ9Y=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ZawRAFEf4He0RAGPLzzojlRUmLa9qJrdF18Izbem/LjqM+v3e7yGbAjohI7QOta9k
- PW/ra8WF29ZhGjA93B13f2+nlSMAek8yjF4D+8hmV+2I1p1k+FWzY6qXFd4YXocswG
- 0WwFEdI0UZK6PUMraM48c59APp6ZoXN3IH0waMmMslvaBQscddX30zVa3P9X7z1D6A
- NRIxOCWpf9tX7r4avKpwIvxE8FrsH3UEM383xGAk+P+nHHfSIV10UckkweDnvlZN3G
- Vak/AMAkDk/KNdxEwMi+HJXY56wfihZK0Pr6CjoKgW96JQdcex0e33RZHuCrU9ruHx
- xrTkna3t8kgtA==
+ b=Y/Mg9IyUodcfdaRqg8tN4fvu/AgxkRqJVgxlkzRlvSt7Kns053gpqm3jmMY5TK/vH
+ R0+ABeLp8aZ6fq7byf27hvf5HuCHxQmcgzfx4sDl+VqjeOMZz46gT2T7BY4O4cRuQx
+ uR8+18Suu2q+m1fvEbWy0Sv0snROFrI0dlIQ/J51shflFrQ07VR2cxNYzbW+albJC6
+ ZuYT20D1E++nnlPAzF7czN//T4rp8GX0jdYHSp4yTSe9oNBXB/JmZ4HtcB5O/Foi3Z
+ 1OmfAPxAeyqPuKfJg9IqcthUVljGieJuJognKev/J1brDaCtSK9sz9UwtgOAXMPK9G
+ 5ji/sjO1SvtoA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tngJo-000000023bH-44QX; Thu, 27 Feb 2025 17:01:00 +0100
+ id 1tngJo-000000023bL-4Bm0; Thu, 27 Feb 2025 17:01:01 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v6 09/19] acpi/ghes: add a notifier to notify when error data
- is ready
-Date: Thu, 27 Feb 2025 17:00:47 +0100
-Message-ID: <a6a2b8b68a12df8ef9018a9756b3ea95b1c84eb9.1740671863.git.mchehab+huawei@kernel.org>
+ Ani Sinha <anisinha@redhat.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 10/19] acpi/generic_event_device: Update GHES migration to
+ cover hest addr
+Date: Thu, 27 Feb 2025 17:00:48 +0100
+Message-ID: <c291cdfd61e25437b85e5e660f3a67520a89d13c.1740671863.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1740671863.git.mchehab+huawei@kernel.org>
 References: <cover.1740671863.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
+Received-SPF: pass client-ip=2600:3c04::f03c:95ff:fe5e:7468;
+ envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,54 +72,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some error injection notify methods are async, like GPIO
-notify. Add a notifier to be used when the error record is
-ready to be sent to the guest OS.
+The GHES migration logic should now support HEST table location too.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ghes.c         | 5 ++++-
- include/hw/acpi/ghes.h | 3 +++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index f49d0d628fc4..0135ac844bcf 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -510,6 +510,9 @@ static void get_ghes_source_offsets(uint16_t source_id,
-     *read_ack_start_addr = le64_to_cpu(*read_ack_start_addr);
- }
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index c85d97ca3776..5346cae573b7 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -386,6 +386,34 @@ static const VMStateDescription vmstate_ghes_state = {
+     }
+ };
  
-+NotifierList acpi_generic_error_notifiers =
-+    NOTIFIER_LIST_INITIALIZER(error_device_notifiers);
++static const VMStateDescription vmstate_hest = {
++    .name = "acpi-hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    },
++};
 +
- void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp)
- {
-@@ -550,7 +553,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     /* Write the generic error data entry into guest memory */
-     cpu_physical_memory_write(cper_addr, cper, len);
- 
--    return;
-+    notifier_list_notify(&acpi_generic_error_notifiers, NULL);
- }
- 
- int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 8c4b08433760..390943e46d99 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -24,6 +24,9 @@
- 
- #include "hw/acpi/bios-linker-loader.h"
- #include "qapi/error.h"
-+#include "qemu/notify.h"
++static bool hest_needed(void *opaque)
++{
++    AcpiGedState *s = opaque;
++    return s->ghes_state.hest_addr_le;
++}
 +
-+extern NotifierList acpi_generic_error_notifiers;
- 
- /*
-  * Values for Hardware Error Notification Type field
++static const VMStateDescription vmstate_hest_state = {
++    .name = "acpi-ged/hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = hest_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
++                       vmstate_hest, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_acpi_ged = {
+     .name = "acpi-ged",
+     .version_id = 1,
+@@ -398,6 +426,7 @@ static const VMStateDescription vmstate_acpi_ged = {
+         &vmstate_memhp_state,
+         &vmstate_cpuhp_state,
+         &vmstate_ghes_state,
++        &vmstate_hest_state,
+         NULL
+     }
+ };
 -- 
 2.48.1
 
