@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19951A480D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FD3A480D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:21:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekQ-00072V-R2; Thu, 27 Feb 2025 09:20:22 -0500
+	id 1tnekU-00074E-2U; Thu, 27 Feb 2025 09:20:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekM-00071V-CA
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tnekN-00072h-P2
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekI-0003i2-T6
+ id 1tnekK-0003iN-AO
  for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666014;
+ s=mimecast20190719; t=1740666015;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PjtxIkwdleYjC4DCWP1LEl8y9JNwMGZvc6X0QJOda88=;
- b=OsfnlrOdWGJwmmAVZ2hACCm4tJ5ZYJi1aZ4yfvaOE2HCXl0Ag3xbiq0wZ218i0GLeXFnih
- H45UVTrBDviiXNurGhsTmYXDhVHBeeW2Li/yihJfbbqlXbdG8AWYlc95BEz5fUuXocP7rY
- 6i6Sl8N/PekM1YV4H/7VxVPcMy65Q58=
+ bh=rffOM0f5uVVtqcpBSP7+vcNn2V5K/QuALkN5DWmU1mM=;
+ b=V3wvxd11JJynKhtd/RziZ4jlYjazhfWcigGc+hgiZUP3DSrwjLtoNP+a3Kpdc24I1D2zYH
+ nl+7LFUejMJWOmVzlF6D4G0sZBKwaqm0astkTyhF2zj7JIK1k1x2cyN0A+2Nsk/96QHyNB
+ BRElI58YcZwFrWZdUFm89EPldDUt2J4=
 Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
  [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-OxMmEe7VOVuHqIUO00AoAA-1; Thu, 27 Feb 2025 09:20:12 -0500
-X-MC-Unique: OxMmEe7VOVuHqIUO00AoAA-1
-X-Mimecast-MFC-AGG-ID: OxMmEe7VOVuHqIUO00AoAA_1740666012
+ us-mta-383-bwRcAuttOv2TxXdHS50Sbw-1; Thu, 27 Feb 2025 09:20:14 -0500
+X-MC-Unique: bwRcAuttOv2TxXdHS50Sbw-1
+X-Mimecast-MFC-AGG-ID: bwRcAuttOv2TxXdHS50Sbw_1740666013
 Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5de5172cc5bso918251a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:12 -0800 (PST)
+ 4fb4d7f45d1cf-5e082a05744so1106825a12.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666011; x=1741270811;
+ d=1e100.net; s=20230601; t=1740666012; x=1741270812;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PjtxIkwdleYjC4DCWP1LEl8y9JNwMGZvc6X0QJOda88=;
- b=OtD1VMGwu1hW1CR5MdaGM3ULPPunq2Ze9l7c5xBirlQuu5ExpQt6v74JgcYbtbOtKt
- AR3zCoQL1PpbSSlEdPseHzNH4gkgZyqbjHV6m+CCOnFA05TdnvTzAYXJXgmM7SL47hpG
- vzSUB3HwsJmBZcbDclfiHnImd2/4+GnfOreRZKJE0VV/gejzqYQbCsjkuIWmc6vBk7JC
- LPx1YXNUTzmCIoonU1TSS9BUGZZ6AdN96TfH5xR78RnHDrNTg/WvdwGjaFkOuiI2IaYK
- f29C0xyEArlqAv0gX/h5UYYx4IFO6LJWdbQqLozf/moIE+SneQsftRTfJ2DnrEUpoUvY
- wPnQ==
-X-Gm-Message-State: AOJu0Yxk+evKC3Z5bwWyqTBhxKUNAhcsccqYpMleKW69BreAkP+slPnH
- QiJ1jfVceg2MMVEwfmcULEazBmvIkomBK72o+kuGfBh4Axa3swFQqiwlKAtkcUzotkmRpuXB3qU
- I+xloTJY/8378VFELqWOvhES+JAbQlWT3MnzB50j5mR80siIDaKelhTOMv0SJOtwNypz3dEX2En
- aqyGHEt7uArpCvg1Ka74sQZVG6+wdUwlFkSNuM5x0=
-X-Gm-Gg: ASbGncu9OS3LKZ0Y4H88BqviwGicoObCFJhAqnl7pkEaWuZdBby1Ud/zHY6TTw8wytA
- RuqqsuX6XC0zeUQEflLLBGgHVn1N6IEBJCbWLIKNgibSG+ZGEPyqGwkz8Fo1a96ulPrFmMRkfmu
- /kZcJTY03utV0K2FtJltMQXB8VxYaV49zrhh3CyEYj/ee+Jw4X8fJ+yBxeqw4PPHIyQuQd7HHVh
- 2u938DhI9mhSgLh+lQydQlx2VC0EmGwRPedwLuE17bxik4k02uXhfhuwuHK6EbLFfZk39UMsPGL
- 6rv7hmXg7VtFhiURBxzk
-X-Received: by 2002:a05:6402:550c:b0:5de:4a8b:4c9c with SMTP id
- 4fb4d7f45d1cf-5e44bb36bbcmr28548676a12.32.1740666010850; 
- Thu, 27 Feb 2025 06:20:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWomp/c2XCxOHLPzV0g4wWqhMU7pq5Hz6kGeGHOZZ0M6++7mL0JarG9dPdFeUTR5roKKafcA==
-X-Received: by 2002:a05:6402:550c:b0:5de:4a8b:4c9c with SMTP id
- 4fb4d7f45d1cf-5e44bb36bbcmr28548589a12.32.1740666010217; 
- Thu, 27 Feb 2025 06:20:10 -0800 (PST)
+ bh=rffOM0f5uVVtqcpBSP7+vcNn2V5K/QuALkN5DWmU1mM=;
+ b=o9zuiFYwlcBvMRwLqKU4RUZOpysClXBKHcbE/0e0RftW65M7xBr7OptcgI28cbLhLS
+ OVstDmYO8kl3XIGS409l/veFpTxP6qU2AVZ9oY3hVAzdnQ0SK0q1H99JrCixyVZVZOSz
+ sO4LLwOb9nTeaAyfwogF7lBCFAkp1N759DvVCtkH7/nfzkd6zAtn1TkXCR5YkPof1OJw
+ R85Amjf3gx7M8oNuZM3DohXABp4WhwztJhsbhioX7SXz0L9nh5ux7IeD+Fwg550mqR8D
+ 5XGzA3729XT0jtIu9YoGKJzWyYiWDphu5epQlJcyyGIWmw1GdR/f9FEr2eHqbn2SxDWx
+ RiRQ==
+X-Gm-Message-State: AOJu0Yyml/YhCV16AOb3bR/kalKW3SDb9RsZGWi8mCkMO+8oPG05A1cX
+ Jem2GwEDBngyoUfqMyEg3IQlqCjxEIkyNo5nXFtjcGTgN1kYZJNCfyHe5JutQWmLwC2JfXqtPtY
+ cQKGpogUo+gHmOLoq2ePQU/ItJPtKu2XOMbijcn9wN5zg1iS/vPgjjC9ChoWFWtJ4cKfY0g46Vm
+ 2mBcXUySYk6r16U4s5EvmDQWcKZJz2UUhJWhuMR9g=
+X-Gm-Gg: ASbGncvaRutVM9L0awmoq67I7e4/Z/l83htNWEEEtWMrohJX/OpsCFl466LFFGkDMcG
+ ffO1S/BXsHB98EDJ3WFOTsB3yom8eMRs+0UjNreKpvQHBvXwGESHPZ2wT8LrBSIJFo7KlZtLteu
+ KZv+sH7ZJ7yqwVs+d3eWC2XQulLl4OSlPj6dcinR8JIjkkAVWrCfSQa+m8VrQlMrEV99jiiagoQ
+ gtIAoL19OivkKoHiPAZmxAUBcHaXA1zn6IpY5CG7M3/7U4pk6j6EP60ZzGF8lm7KcLKO0ieHzzl
+ MFPQP0tZx84SgcFhT/GA
+X-Received: by 2002:a05:6402:a001:b0:5e4:a0c4:1db7 with SMTP id
+ 4fb4d7f45d1cf-5e4a0c41eadmr7442309a12.13.1740666011884; 
+ Thu, 27 Feb 2025 06:20:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8bZf1qckRKdvlgFMb0JPie2kjFkOllhql9a2DyL3Zbr2Cpwq9f7HU2qxJuzxbhtkv1UKFGQ==
+X-Received: by 2002:a05:6402:a001:b0:5e4:a0c4:1db7 with SMTP id
+ 4fb4d7f45d1cf-5e4a0c41eadmr7442290a12.13.1740666011514; 
+ Thu, 27 Feb 2025 06:20:11 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3b6df84sm1143247a12.30.2025.02.27.06.20.08
+ 4fb4d7f45d1cf-5e4c3b70112sm1145715a12.31.2025.02.27.06.20.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:08 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:11 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 07/34] rust: prefer importing std::ptr over core::ptr
-Date: Thu, 27 Feb 2025 15:19:25 +0100
-Message-ID: <20250227141952.811410-8-pbonzini@redhat.com>
+Subject: [PULL 08/34] docs: rust: fix typos
+Date: Thu, 27 Feb 2025 15:19:26 +0100
+Message-ID: <20250227141952.811410-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,70 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
-
-The std::ptr is same as core::ptr, but std has already been used in many
-cases and there's no need to choose non-std library.
-
-So, use std::ptr directly to make the used ptr library as consistent as
-possible.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250218080835.3341082-1-zhao1.liu@intel.com
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       | 2 +-
- rust/hw/char/pl011/src/device_class.rs | 6 ++++--
- rust/qemu-api/src/irq.rs               | 3 +--
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ docs/devel/rust.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index fe73771021e..59a689fdcd7 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -2,10 +2,10 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index c75dccdbb7c..d68701c9c87 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -294,7 +294,7 @@ to a Rust mutable reference, and use a shared reference instead.  Rust code
+ will then have to use QEMU's ``BqlRefCell`` and ``BqlCell`` type, which
+ enforce that locking rules for the "Big QEMU Lock" are respected.  These cell
+ types are also known to the ``vmstate`` crate, which is able to "look inside"
+-them when building an in-memory representation of a ``struct``s layout.
++them when building an in-memory representation of a ``struct``'s layout.
+ Note that the same is not true of a ``RefCell`` or ``Mutex``.
  
--use core::ptr::{addr_of, addr_of_mut, NonNull};
- use std::{
-     ffi::CStr,
-     os::raw::{c_int, c_void},
-+    ptr::{addr_of, addr_of_mut, NonNull},
- };
+ In the future, similar cell types might also be provided for ``AioContext``-based
+@@ -350,7 +350,7 @@ Writing procedural macros
+ '''''''''''''''''''''''''
  
- use qemu_api::{
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index dbef93f6cb3..0b2076ddaa0 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -2,8 +2,10 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use core::ptr::NonNull;
--use std::os::raw::{c_int, c_void};
-+use std::{
-+    os::raw::{c_int, c_void},
-+    ptr::NonNull,
-+};
- 
- use qemu_api::{
-     bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
-diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
-index d1c9dc96eff..34c19263c23 100644
---- a/rust/qemu-api/src/irq.rs
-+++ b/rust/qemu-api/src/irq.rs
-@@ -4,8 +4,7 @@
- 
- //! Bindings for interrupt sources
- 
--use core::ptr;
--use std::{ffi::CStr, marker::PhantomData, os::raw::c_int};
-+use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr};
- 
- use crate::{
-     bindings::{self, qemu_set_irq},
+ By conventions, procedural macros are split in two functions, one
+-returning ``Result<proc_macro2::TokenStream, MacroError>` with the body of
++returning ``Result<proc_macro2::TokenStream, MacroError>`` with the body of
+ the procedural macro, and the second returning ``proc_macro::TokenStream``
+ which is the actual procedural macro.  The former's name is the same as
+ the latter with the ``_or_error`` suffix.  The code for the latter is more
 -- 
 2.48.1
 
