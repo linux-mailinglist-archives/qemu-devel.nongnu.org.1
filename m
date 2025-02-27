@@ -2,89 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4359A4853E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D64A48562
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:42:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngrh-00065p-FR; Thu, 27 Feb 2025 11:36:01 -0500
+	id 1tngvp-0007vm-3v; Thu, 27 Feb 2025 11:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tngrT-00062w-Tt
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:35:53 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tngrP-0005rB-8i
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 11:35:47 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2234e5347e2so24027565ad.1
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 08:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740674139; x=1741278939; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1bcl3PLBOyvlDjjxGk9BtXCRaSICo2z9tXjne/+S/dQ=;
- b=PPEuLXbf8mKPW2urtwxXrMPZZ0rvpEDEpKQiE5+YQw3yMS0Wg5TYqACUpUkaAOo81u
- NyB7UxBAMy7hBEuospFYQHMcxZk4lp3vy3rwdI2DTxhh51vUO6sJTAl22JwvV6NlhNVx
- OXPRK1RhKuqAR32/qTMqEinf6LthBYICvQh4yBGmDjTUOfVVwMXJNt8/kNqZ4fF25YTq
- n1TSVjxmGG2+/xEfv0qj1CSC1+7CkLxlHn4gfnXK+r77mhGoZe5cZcqfro3yjRigBuPe
- KMD5Au7tTQqFizxUuQ9Py8N9V+es8HKqkUcrW8nQHV6hjVMegnB8s5msYbc2pkviNTn/
- c6nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740674139; x=1741278939;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1bcl3PLBOyvlDjjxGk9BtXCRaSICo2z9tXjne/+S/dQ=;
- b=s+wAfBmJUfwMyUzPh4652pm02BbguNMhIZ2UOe7Pv1g634owgUNNpy9yNXatlyUbsN
- bFloeFF7ReuoChApaYGKPpXF2zQPmMkY61wPy0aRrDEhoN4ZbllQ5jciN853xKsUz4e4
- rHg0sSFLRqKtBJdx+g777bAvuF5vpDsgC9BqAnK5VL2v6ZBJshQjmH1ogRrtdWfRWG6B
- aTaS7s7r06WvEAT1i9KU2kTYaI/3WSkDrAcg89PzKl/gFxfqoqFMfvpUoBN964bWOKIR
- JPu+OWqhtNG/00jbwa/c/CGHln9sLBpLExCwD1t1xDv9UMK1Bmi7oPUNiSJcpJrsnF2I
- L/fQ==
-X-Gm-Message-State: AOJu0Yx8S3r0a4+lEDsTgYUgqJVA8s2DYiN77ZZj7plk0vsxf1M9ACzS
- GCS/CnqhKcFyc+w6YEDoACh9MVbvgAnFTqMA4jgPcnQ2DIX9OLzJXylz6/g90cbdcO+vq46wGg0
- 7
-X-Gm-Gg: ASbGncuGguAH8o37+vR/I1qDNSljNGl7YwJnFaLwTq8sBkwngpEfrHP/kAo5LvFFR3G
- ACKQ2OPVzI/UL10e5OqWRigOS7eC4QM2RGYHXoewz5tOY4TKWaLCMJv2Hrcx5pKl+eZF7QNh+QT
- h4m9lvk5oPLjD8rmXf3g8mpmTWBN/E3MnW4BVNmx8uukjxZNMOIzYMpj/9OmEaE/k43RRbe4/wD
- UeOP1tZ9I4d3g8wqY2FgZBoTZnoalN5H0HkjojzT3kQ7KHGhyfchF/OmBUJzYBaHbPzsCwf7XxR
- J/6nLPtbbnPrm+KSReE4Cq6a9X42KgIbUqHCVtH1CIpuvhIMfnV8Dw68YVQDDdEFto35zQyv5dV
- mv08szGA=
-X-Google-Smtp-Source: AGHT+IGloj0BOX/CIi/38OlytRqFtvnUSUghF6Ebm1l6a2CwlMJPOR/IMglDN/JiyiuptIPt09SWAw==
-X-Received: by 2002:a17:902:f791:b0:223:2b15:31d8 with SMTP id
- d9443c01a7336-2232b153f81mr90646195ad.27.1740674139495; 
- Thu, 27 Feb 2025 08:35:39 -0800 (PST)
-Received: from [10.254.143.227] (syn-156-019-246-023.biz.spectrum.com.
- [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223504c5a3esm16950435ad.132.2025.02.27.08.35.38
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Feb 2025 08:35:39 -0800 (PST)
-Message-ID: <1c3acde9-9540-4a23-97dd-dc28dcd77f5f@linaro.org>
-Date: Thu, 27 Feb 2025 08:35:36 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/tcg: Suppress compiler false-positive warning on
- sha1.c
-To: qemu-devel@nongnu.org
-References: <20250227141343.1675415-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250227141343.1675415-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tngvG-0007gU-FK; Thu, 27 Feb 2025 11:39:42 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tngv0-0006HK-Db; Thu, 27 Feb 2025 11:39:42 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6A0584E617D;
+ Thu, 27 Feb 2025 17:39:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id RNQjqCI_AfN5; Thu, 27 Feb 2025 17:39:14 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 18A884E6030; Thu, 27 Feb 2025 17:39:14 +0100 (CET)
+Message-Id: <cover.1740673173.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v2 0/5] ppc/amigaone patches
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Date: Thu, 27 Feb 2025 17:39:14 +0100 (CET)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,33 +54,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/27/25 06:13, Peter Maydell wrote:
-> GCC versions at least 12 through 15 incorrectly report a warning
-> about code in sha1.c:
-> 
-> tests/tcg/multiarch/sha1.c:161:13: warning: ‘SHA1Transform’ reading 64 bytes from a region of size 0 [-Wstringop-overread]
->    161 |             SHA1Transform(context->state, &data[i]);
->        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> This is a piece of stock library code for doing SHA1 which we've
-> simply copied, rather than writing ourselves. The bug has been
-> reported to upstream GCC (about a different library's use of this
-> code):
->   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106709
-> 
-> For our test case, since this isn't our original code and there isn't
-> actually a bug in it, suppress the incorrect warning rather than
-> trying to modify the code to work around the compiler issue.
-> 
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/2328
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   tests/tcg/aarch64/Makefile.target   | 3 ++-
->   tests/tcg/arm/Makefile.target       | 3 ++-
->   tests/tcg/multiarch/Makefile.target | 8 ++++++++
->   3 files changed, 12 insertions(+), 2 deletions(-)
+Hello,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+v2:
+- change unused read function to g_assert_not_reached()
+- new patch to add defines to constants
+- added R-b tags
 
-r~
+This series adds NVRAM and support for -kernel, -initrd and -append
+options to the amigaone machine. This makes it easier to boot AmigaOS
+and avoids a crash in the guest when it tries to access NVRAM.
+
+While the -kernel option emulates what U-Boot passes to the kernel,
+old Linux kernels for amigaone may not work with it because of two
+reasons: these come in legacy U-Boot Multi-File image format that QEMU
+cannot read and even after unpacking that and creating a kernel uimage
+it won't find PCI devices because it does not initialise them
+correctly. This works when booted from U-Boot because U-Boot inits PCI
+devices. So does my BBoot loader which can be used to load AmigaOS so
+I don't intend to emulate that part of U-Boot.
+
+I'd like this to be merged for the next release please. When merging
+please update https://wiki.qemu.org/ChangeLog/10.0 with the following:
+
+amigaone
+
+Added support for NVRAM and -kernel, -initrd, -append command line
+options. By default the NVRAM contents are not preserved between
+sessions. To make it persistent create a backing file with 'qemu-image
+create -f raw nvram.bin 4k' and add -drive
+if=mtd,format=raw,file=nvram.bin to keep NVRAM contents in the backing
+file so settings stored in it will be preserved between sessions.
+
+To run AmigaOS with BBoot using the -kernel option at least BBoot
+version 0.8 is needed. Older BBoot versions only work with -device
+loader and cannot be used with -kernel on amigaone.
+
+Regards,
+
+BALATON Zoltan (5):
+  ppc/amigaone: Simplify replacement dummy_fw
+  ppc/amigaone: Implement NVRAM emulation
+  ppc/amigaone: Add default environment
+  ppc/amigaone: Add kernel and initrd support
+  ppc/amigaone: Add #defines for memory map constants
+
+ hw/ppc/amigaone.c | 284 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 271 insertions(+), 13 deletions(-)
+
+-- 
+2.30.9
+
 
