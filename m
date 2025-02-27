@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E0BA480FB
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A64AA4812F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:28:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnekW-00075j-DZ; Thu, 27 Feb 2025 09:20:28 -0500
+	id 1tnekY-0007Bu-Vh; Thu, 27 Feb 2025 09:20:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekP-00073F-IS
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:22 -0500
+ id 1tnekR-00074F-7C
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnekN-0003jD-Ee
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:20 -0500
+ id 1tnekO-0003jW-HP
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:20:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666018;
+ s=mimecast20190719; t=1740666019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TIrGFvl8XMnSDNAnwzqUPVz8YQqpnZQKu+akhrL+9gc=;
- b=g+57ciItA7Lf+3gucuPYLnUT95VaiV81NtrVO/5oXtMOKs2/vIJUj7cJZd1ZwKcXk7mkwv
- AVuSVpDt3+yv+tar3oguZLwbwhEmPrrCfCkLIjM9rGjdpJPlD92nlhICpsradDSmMu5n9T
- F+TJPlqBmyWvGS7Sw8VCenQcAv1fXhw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RntUDexksFwvMT7+4/zwxw40OZKETlpI3GYu/coQJlI=;
+ b=DKPZupDbVCJVuo4t4ciXx8TIdgm2AYf+DOAqBxPHbmAsatkcabeEe12MJGf5h3eVqJPRVl
+ eDXoom/B1za5Ty5A0GLQtdv8vYYQfLzmvCrLYXMLKzHnI5AQ5ezcEdl4LePyYgteYx2WGM
+ MORdi5/nFE6KFJFcNcm/hThVom833s4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-AI6gzLkaP8yPBGnA7efScg-1; Thu, 27 Feb 2025 09:20:16 -0500
-X-MC-Unique: AI6gzLkaP8yPBGnA7efScg-1
-X-Mimecast-MFC-AGG-ID: AI6gzLkaP8yPBGnA7efScg_1740666015
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-abbe5ac36a9so116393866b.2
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:16 -0800 (PST)
+ us-mta-638-kwogPHaZNdSr2sPjRa_Qfg-1; Thu, 27 Feb 2025 09:20:18 -0500
+X-MC-Unique: kwogPHaZNdSr2sPjRa_Qfg-1
+X-Mimecast-MFC-AGG-ID: kwogPHaZNdSr2sPjRa_Qfg_1740666017
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5e0573b9f60so1028416a12.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:20:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666015; x=1741270815;
+ d=1e100.net; s=20230601; t=1740666016; x=1741270816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TIrGFvl8XMnSDNAnwzqUPVz8YQqpnZQKu+akhrL+9gc=;
- b=PMOHcx6Hqz8/MRgmDmB56elnpMBjtxlehOk/NdB2E6ZwaQyb3O+327AlJ8DCwoWZ2n
- LTlP14h4c0QPY9Dm1a8ekTCH0+aANfQKJI3uFPgv+xOUIMB7LYXemo20G9S4pfdBdLSW
- a1zhY9+oAhbatMrvT43XYaAGk7g3PhMySWxeT0OzaKKTvkuBbuNgeBG8rHfYa1WPh3+P
- zQQsyg+8owOLAC21rHNuO9GL/9CmqkO62Utpn81Oyhju2g/kjHa4vJkilHxn5zb/6/yu
- 7ZOHPlBm14iroRO+TVU7dqlS/Fcgz1JrnNKsYIgnlDbck1BbbfbOPRgki56ZULo2cnf0
- Hpwg==
-X-Gm-Message-State: AOJu0YwxdaMmJRaabDPl/v5CibjgnuD2dBnvihtJSqKS73z3Ly8oZe7v
- sWxKq1OTfy37OZzb8mAOZf5Jl0zqnu1Z7VVcplpS72NRjhmkoOAI+h7XZN0wf42udywEAILo1gf
- zTl/3SmsUOY+2eRtr4yJ/RISmARCNYSefFm0zwZM4kz83K2p8M+4JSDBYx4QA53admSG1uUWieJ
- CwkBF01Ura77d7P11sW4V/Fj0XkY0b+dT0pFP+doY=
-X-Gm-Gg: ASbGnctZq5cEmLWsghkYvdsRZ6iY/G7sZNBU4gYWjtme3lNy0+6heD4iziHlszQaDub
- MzXu3KtDC5wbETC1FXNB6M18eF3cFMtccIU4hYf/Amh1/whZikuwtiajoF6OT1WAIMl0IXiRJQf
- ZKNtQtmZ2A4lrpd3y5Y8reGwjD9zN1XYllK0VZShgsDCFgYsiE2WvNulWkdISVmQE1J5qLeOZkW
- JygN2rKbvbWGGHdejucyAQo1WBmeEDJ+POFZ371QQ5vO1iZI8z8aMjfbLUOGuO2YTdcEBJuoRqG
- b0OO2KzaNsVKLhpehat+
-X-Received: by 2002:a17:906:309a:b0:ab7:4641:a72d with SMTP id
- a640c23a62f3a-abc0de4fb0cmr2488339266b.51.1740666014727; 
- Thu, 27 Feb 2025 06:20:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGowif1EE8SoFEH8XN4ShMl+uizlle4Eeii03++zVweXfeDYmMob3hKp9e5Ee+vgo0OsUQAmg==
-X-Received: by 2002:a17:906:309a:b0:ab7:4641:a72d with SMTP id
- a640c23a62f3a-abc0de4fb0cmr2488334866b.51.1740666014241; 
- Thu, 27 Feb 2025 06:20:14 -0800 (PST)
+ bh=RntUDexksFwvMT7+4/zwxw40OZKETlpI3GYu/coQJlI=;
+ b=izjvTM0IEohcm2LbQDeDgyi5FHHFSxhUTYiCEdoTCBqjYm2I71H8qQpGfMyaDltekh
+ jP0jn0VtZ+5pXQDThiNY+GYoDX9cOlI5USd8vrNtuJy103+7RiPpJ/R3MGLDEwYp9g3C
+ 8m1hudRzyXl0HcEy9U0KcbPMupO+WegDgbaUhW93vJqlsG/DjufAuwPjmkZR/gKIJdpj
+ HQ4U40uA+0cOh1rr8V65VsRygM/5vxphStDPTrla5n1EZRBL1bVCSOUfWDHKWKXRxGa4
+ o14a7CRDhGbXLUCUAIp2P6qz5VifMTrnktrd2gOkI6NxH3H21D0nLQ4mWCgBVtLlytxP
+ ApgA==
+X-Gm-Message-State: AOJu0Yz5ExW5yByvzJzMBRWEkEF1lFRFqmeH2tzf9BxfmCaZITEOD+d/
+ GRB896lAYVSpP9gVmAPPXgVJIVy7CvawvGYKxsHZ1+QFX8YrMsYBgsSOUyjbnUwhAXBp3it0+hV
+ X/HdqhslyflN9CV2qFxoZV8r54oDanTQmQZCXRax+J/kHNoH7uZuZIcRS2B7ThG+sXdl1qHd5B5
+ gi4whLqxR2lso8kkbFY6+2yIytuvT77fGjdNnCwsc=
+X-Gm-Gg: ASbGnct3UjmhmplRE5LY5vjENP5Hup39z53f6rorO1Tdq8mPA4wrxx29nuuhzyXXqG0
+ 6qA/iKvGf+9oMErPqFDesPK1ThIsm0GIPl9Y1eFjUDVQ3yYQVweTXPhLm2IGTzIT/jak03j0fyN
+ gr8iYLFsvkViZn+pnLAduFbaZf6yx5+xlD1X4YYP1cT3ykarIMREduH+98Kxey46+Xs0Zv7hP3X
+ /yzKsAbXKV5Sewmo5EdOoC3sgk+Tw425EMrlBsUFj871Gg/kt1csbLAOYt/o6ak5TNwN3/7u22y
+ dGx6FV56Iz4iU1i8KJIq
+X-Received: by 2002:a05:6402:3554:b0:5de:5263:ae79 with SMTP id
+ 4fb4d7f45d1cf-5e0b70f0041mr27989570a12.12.1740666016422; 
+ Thu, 27 Feb 2025 06:20:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9rccv8llgNynnIpHT98jNn2N6bzeWxaCSLX8hJwSQfyyn3+TQFQRqPmMSQUvBtNwarAxGNg==
+X-Received: by 2002:a05:6402:3554:b0:5de:5263:ae79 with SMTP id
+ 4fb4d7f45d1cf-5e0b70f0041mr27989534a12.12.1740666015948; 
+ Thu, 27 Feb 2025 06:20:15 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c759385sm128256566b.150.2025.02.27.06.20.12
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5e4c3b6d252sm1173607a12.26.2025.02.27.06.20.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:20:12 -0800 (PST)
+ Thu, 27 Feb 2025 06:20:14 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/34] docs: rust: update description of crates
-Date: Thu, 27 Feb 2025 15:19:27 +0100
-Message-ID: <20250227141952.811410-10-pbonzini@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 10/34] stub: Remove monitor-fd.c
+Date: Thu, 27 Feb 2025 15:19:28 +0100
+Message-ID: <20250227141952.811410-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
@@ -106,42 +107,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+
+Both monitor-fd.c and monitor-internal.c contain a stub for
+monitor_get_fd(), which causes a duplicate symbol linker error when
+linking rust-qemu-api-integration. Use monitor-internal.c instead of
+monitor-fd.c and remove the latter.
+
+Reported-by: Zhao Liu <zhao1.liu@intel.com>
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Fixes: fccb744f41c6 ("gdbstub: Try unlinking the unix socket before binding")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250217104900.230122-1-iii@linux.ibm.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ stubs/monitor-fd.c | 9 ---------
+ stubs/meson.build  | 2 +-
+ 2 files changed, 1 insertion(+), 10 deletions(-)
+ delete mode 100644 stubs/monitor-fd.c
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index d68701c9c87..5d8aa3a45bc 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -139,16 +139,22 @@ anymore.
- Writing Rust code in QEMU
- -------------------------
+diff --git a/stubs/monitor-fd.c b/stubs/monitor-fd.c
+deleted file mode 100644
+index 9bb67498850..00000000000
+--- a/stubs/monitor-fd.c
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-#include "qemu/osdep.h"
+-#include "monitor/monitor.h"
+-
+-int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
+-{
+-    abort();
+-}
+diff --git a/stubs/meson.build b/stubs/meson.build
+index b0fee37e059..63392f5e785 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -62,7 +62,7 @@ if have_user
+     stub_ss.add(files('qdev.c'))
+   endif
  
--Right now QEMU includes three crates:
-+QEMU includes four crates:
+-  stub_ss.add(files('monitor-fd.c'))
++  stub_ss.add(files('monitor-internal.c'))
+ endif
  
- * ``qemu_api`` for bindings to C code and useful functionality
- 
- * ``qemu_api_macros`` defines several procedural macros that are useful when
-   writing C code
- 
--* ``pl011`` (under ``rust/hw/char/pl011``) is the sample device that is being
--  used to further develop ``qemu_api`` and ``qemu_api_macros``.  It is a functional
--  replacement for the ``hw/char/pl011.c`` file.
-+* ``pl011`` (under ``rust/hw/char/pl011``) and ``hpet`` (under ``rust/hw/timer/hpet``)
-+  are sample devices that demonstrate ``qemu_api`` and ``qemu_api_macros``, and are
-+  used to further develop them.  These two crates are functional\ [#issues]_ replacements
-+  for the ``hw/char/pl011.c`` and ``hw/timer/hpet.c`` files.
-+
-+.. [#issues] The ``pl011`` crate is synchronized with ``hw/char/pl011.c``
-+   as of commit 02b1f7f61928.  The ``hpet`` crate is synchronized as of
-+   commit f32352ff9e.  Both are lacking tracing functionality; ``hpet``
-+   is also lacking support for migration.
- 
- This section explains how to work with them.
- 
+ if have_system
 -- 
 2.48.1
 
