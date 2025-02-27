@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1CEA482DB
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 16:24:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C222A482AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 16:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnfji-0001IB-Tz; Thu, 27 Feb 2025 10:23:43 -0500
+	id 1tnfaK-0001hA-OE; Thu, 27 Feb 2025 10:14:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <saveliy.motov@syntacore.com>)
- id 1tnf6L-0001sL-LP; Thu, 27 Feb 2025 09:43:01 -0500
-Received: from m.syntacore.com ([178.249.69.228])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tnfaH-0001cm-29; Thu, 27 Feb 2025 10:13:57 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <saveliy.motov@syntacore.com>)
- id 1tnf6J-0008Te-N2; Thu, 27 Feb 2025 09:43:01 -0500
-Received: from pmg.syntacore.com (localhost.localdomain [127.0.0.1])
- by m.syntacore.com (Proxmox) with ESMTP id C5344B41D10;
- Thu, 27 Feb 2025 17:42:50 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:from:from:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=m; bh=d+XAQK1xiGQq17VjpVEtbaO
- swnov1e3zbeiyzXg+Eqc=; b=qUWEDldQqlXEcBPClh+U+fk/c6OyZUSGR8kz3ae
- Gv/XTasqSLC5/QCrnXKHIu62zXn8Q5oEwwYzW3KRYPowMgERIWcg4qPi92mEkPgF
- vUX27Bw/elrNjA/P2sUkmlHF96pBYZ7/4Pz4FTu8btxWjd0bq202WIQnUo/tT8v8
- 9i+Bh2HIUULbyUZRCjq+arnAZ+svJWgJUBruAXcsAUO+CLjltrVAOnIvW2fNTiM5
- Fyf8BtCfE1YLRxsS9QqaUDhQWOTUpHxdV/MBlKPO1d+8sxtA9BuOPICjhR4PZFa9
- NajBv6JjwnkPGwd8Zor11sboXzhKmfhHIncgVVwkzKSfnmw==
-Received: from S-SC-EXCH-01.corp.syntacore.com (mail.syntacore.com
- [10.76.202.20])
- by m.syntacore.com (Proxmox) with ESMTPS id B1BEBB41D05;
- Thu, 27 Feb 2025 17:42:50 +0300 (MSK)
-Received: from le14u.yadro.com (172.17.5.46) by
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 27 Feb 2025 17:41:40 +0300
-From: Saveliy Motov <saveliy.motov@syntacore.com>
-To: <palmer@dabbelt.com>
-CC: <alistair.francis@wdc.com>, <bmeng.cn@gmail.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>, Saveliy Motov
- <saveliy.motov@syntacore.com>
-Subject: [PATCH 2/2] target/riscv/cpu_bits.h: Fix [63:32] bits in Zkr seed CSR
-Date: Thu, 27 Feb 2025 17:42:00 +0300
-Message-ID: <20250227144200.69270-3-saveliy.motov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250227144200.69270-1-saveliy.motov@syntacore.com>
-References: <20250227144200.69270-1-saveliy.motov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tnfaF-0006DA-34; Thu, 27 Feb 2025 10:13:56 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 1FA5D5C032A;
+ Thu, 27 Feb 2025 15:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A22C4CEDD;
+ Thu, 27 Feb 2025 15:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1740669230;
+ bh=iRdlLeLNV1v/SdkmRrf//HdDAGmEp0/h9w4ViUssNHI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=KlMV9lS37dpdw08l0ZO9yoYTuDxJ4zhPda/N50v/03oY2/UWS9pwfZc8fajaTrV11
+ uYsB7hW9K9j6tYE4pcLxuha5pJp0rYMOuaZdUEQfLKeQ+v0OnQeMOPYTGmLYe1GwJ8
+ 8D/PtrCKkKjCNupk0/u0ha6GvrEZLlf6hixpN9MCfzc4O0NGAQIGDf6mPYbyLpCR8c
+ 7n25zAJcN1SF6DSQVnLZF2XS5bLjBeLRGDKX3o8laLNBPnhHOGVChdf78Kk1m8PxXY
+ Gu6hygs/eIQMK2jeqKggfMzN74Yfw/J+t/XQkFVsToGsT27SwWuhNrybsKQI0ZuKCP
+ 8vMe+5FUiBLNQ==
+Date: Thu, 27 Feb 2025 16:13:43 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGll?=
+ =?UTF-8?B?dS1EYXVkw6k=?= <philmd@linaro.org>, Ani Sinha
+ <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Eric Blake
+ <eblake@redhat.com>, John Snow <jsnow@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
+ <shannon.zhaosl@gmail.com>, Yanan Wang <wangyanan55@huawei.com>, Zhao Liu
+ <zhao1.liu@intel.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 00/21]Change ghes to use HEST-based offsets and add
+ support for error inject
+Message-ID: <20250227161343.5249e9b8@foz.lan>
+In-Reply-To: <20250227143028.22372363@imammedo.users.ipa.redhat.com>
+References: <cover.1740653898.git.mchehab+huawei@kernel.org>
+ <20250227143028.22372363@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.5.46]
-X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
-Received-SPF: pass client-ip=178.249.69.228;
- envelope-from=saveliy.motov@syntacore.com; helo=m.syntacore.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 27 Feb 2025 10:23:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,42 +80,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to:
-RISC-V Cryptography Extensions Volume I. Version 1.0.1, 4.1. The seed CSR
+Em Thu, 27 Feb 2025 14:30:28 +0100
+Igor Mammedov <imammedo@redhat.com> escreveu:
 
-On 64 bit machine 32 bit register must be extended with zeroes in higher bits
-Previously status mask was formed by integer left bitshift with sign changing,
-so higher 32 bits was 1.
-Change type from int to ULL fix ZKR seed.
+> On Thu, 27 Feb 2025 12:03:30 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > Now that the ghes preparation patches were merged, let's add support
+> > for error injection.
+> > 
+> > On this version, HEST table got added to ACPI tables testing for aarch64 virt.
+> > 
+> > There are also some patch reorder to help reviewers to check the changes.
+> > 
+> > The code itself is almost identical to v4, with just a few minor nits addressed.  
+> 
+> series still has checkpatch errors 'line over 80' which are not false positive,
+> it needs to be fixed
 
-Signed-off-by: Saveliy Motov <saveliy.motov@syntacore.com>
----
- target/riscv/cpu_bits.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+The long line warnings are at the patch adding the Python script. IMO,
+all but one are false positives:
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index f97c48a394..140b45bda7 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -878,11 +878,11 @@ typedef enum RISCVException {
-     (HVICTL_VTI | HVICTL_IID | HVICTL_IPRIOM | HVICTL_IPRIO)
- 
- /* seed CSR bits */
--#define SEED_OPST                        (0b11 << 30)
--#define SEED_OPST_BIST                   (0b00 << 30)
--#define SEED_OPST_WAIT                   (0b01 << 30)
--#define SEED_OPST_ES16                   (0b10 << 30)
--#define SEED_OPST_DEAD                   (0b11 << 30)
-+#define SEED_OPST                          (0b11UL << 30)
-+#define SEED_OPST_BIST                     (0b00UL << 30)
-+#define SEED_OPST_WAIT                     (0b01UL << 30)
-+#define SEED_OPST_ES16                     (0b10UL << 30)
-+#define SEED_OPST_DEAD                     (0b11UL << 30)
- /* PMU related bits */
- #define MIE_LCOFIE                         (1 << IRQ_PMU_OVF)
- 
--- 
-2.34.1
+1. Long lines at patch description because of the tool output example added
+   inside the commit description:
+
+	ERROR: line over 90 characters
+	#148: FILE: scripts/arm_processor_error.py:83:
+	+[Hardware Error]:     bus error, operation type: Generic read (type of instruction or data request cannot be determined)
+
+	ERROR: line over 90 characters
+	#153: FILE: scripts/arm_processor_error.py:88:
+	+[Hardware Error]:     Program execution can be restarted reliably at the PC associated with the error.
+
+	WARNING: line over 80 characters
+	#170: FILE: scripts/arm_processor_error.py:105:
+	+[Hardware Error]:    00000000: 13 7b 04 05 01                                   .{...
+
+	WARNING: line over 80 characters
+	#174: FILE: scripts/arm_processor_error.py:109:
+	+[Firmware Warn]: GHES: Unhandled processor error type 0x10: micro-architectural error
+
+	ERROR: line over 90 characters
+	#175: FILE: scripts/arm_processor_error.py:110:
+	+[Firmware Warn]: GHES: Unhandled processor error type 0x14: TLB error|micro-architectural error
+
+   IMO, breaking command output at the description is a bad practice.
+
+2. Big strings at help message:
+
+	WARNING: line over 80 characters
+	#261: FILE: scripts/arm_processor_error.py:196:
+	+                           help="Power State Coordination Interface - PSCI state")
+
+	ERROR: line over 90 characters
+	#276: FILE: scripts/arm_processor_error.py:211:
+	+                        help="Number of errors: 0: Single error, 1: Multiple errors, 2-65535: Error count if known")
+
+	WARNING: line over 80 characters
+	#278: FILE: scripts/arm_processor_error.py:213:
+	+                        help="Error information (UEFI 2.10 tables N.18 to N.20)")
+
+	ERROR: line over 90 characters
+	#287: FILE: scripts/arm_processor_error.py:222:
+	+                        help="Type of the context (0=ARM32 GPR, 5=ARM64 EL1, other values supported)")
 
 
+	WARNING: line over 80 characters
+	#1046: FILE: scripts/qmp_helper.py:442:
+	+                           help="Marks the timestamp as precise if --timestamp is used")
+
+	WARNING: line over 80 characters
+	#1048: FILE: scripts/qmp_helper.py:444:
+	+                           help=f"General Error Data Block flags: {gedb_flags_bits}")
+
+   Those might be changed if we add one variable per string to store the
+   help lines, at the expense of doing some code obfuscation.
+
+   I don't think doing it is a good idea.
+
+3. Long class function names that are part of Python's standard library:
+
+	ERROR: line over 90 characters
+	#576: FILE: scripts/ghes_inject.py:29:
+	+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+
+   We can't change the big name of the argparse formatter. The only
+   possible fix would be to obfuscate it by doing:
+
+	format = argparse.ArgumentDefaultsHelpFormatter,
+	parser = argparse.ArgumentParser(formatter_class=format,
+
+   IMO this is a bad practice.
+
+4. False-positive warning disable for pylint coding style tool:
+
+	ERROR: line over 90 characters
+	#805: FILE: scripts/qmp_helper.py:201:
+	+        data.extend(value.to_bytes(num_bytes, byteorder="little"))  # pylint: disable=E1101
+
+	WARNING: line over 80 characters
+	#1028: FILE: scripts/qmp_helper.py:424:
+	+        g_gen = parser.add_argument_group("Generic Error Data")  # pylint: disable=E1101
+
+   AFAIKT, those need to be at the same line for pylint to process them
+   properly.
+
+5. A long name inside an indented block:
+
+	WARNING: line over 80 characters
+	#1109: FILE: scripts/qmp_helper.py:505:
+	+                                                   value=args.gen_err_valid_bits,
+
+   Again the only solution would be to obfuscate the argument, like:
+
+	a = args.gen_err_valid_bits
+
+							    value=a,
+
+   Not nice, IMHO.
+
+Now, there is one warning that I is not a false positive, which I ended
+missing:
+
+	WARNING: line over 80 characters
+	#1227: FILE: scripts/qmp_helper.py:623:
+	+            ret = self.send_cmd("qom-get", args, may_open=True, return_error=False)
+
+I'll fix it at the next respin.
+
+Regards,
+Mauro
 
