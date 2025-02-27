@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B146A47927
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1594AA47928
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 10:31:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnaDm-00074x-UI; Thu, 27 Feb 2025 04:30:23 -0500
+	id 1tnaDw-0007cx-1R; Thu, 27 Feb 2025 04:30:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tnaDW-00073P-VJ
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:30:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1tnaDt-0007bf-2j
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:30:29 -0500
+Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tnaDV-00087o-9A
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:30:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740648604;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=raIYiEPuGiYqjD46w792wKkpGz1hDfYlOhQ4dTAAGL8=;
- b=P6t+heqj4kQ4N4WooBTSviUJUwWVUt1HguUrQ5pLksIK0OYn2iHp7U8hq4CBRIdpp1/tTy
- +lM+EQB1koS8zASIfHUunEgaywSnUq/+FnxukSooChxYUXca6L8qnBPPBQ5ww4DSb7UvNW
- onFNWGo7IZKxgd57DVyd8UJQtGtkJFY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-CH_7ROilPieHOui9Hk_EvA-1; Thu, 27 Feb 2025 04:30:02 -0500
-X-MC-Unique: CH_7ROilPieHOui9Hk_EvA-1
-X-Mimecast-MFC-AGG-ID: CH_7ROilPieHOui9Hk_EvA_1740648601
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-38f628ff78eso377802f8f.1
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 01:30:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740648601; x=1741253401;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=raIYiEPuGiYqjD46w792wKkpGz1hDfYlOhQ4dTAAGL8=;
- b=NlvUS5FhcSoLP8nWo1VFMDNLcgYKS2o2Votp1QyLXzPUdEuWgbxTLBSL8YJByc7869
- RaPF6fDfuAQTnB4cE+yZrJ8UKpNBqpZAWpCjs2imNfFe8Y4LQOsuJ6il3lj5B3JT7WOf
- fHf2k2/H45zjaxRQXlwd/qeWsb3lFUI1ET9danM3PbOin2SPelyo89NMbXNUFeANj6eP
- HNArDcmRfCgZPS6IT4NEMlGg45ULOQDBzpJrKTQ4m8NKZJdtrlfCJELwoKydMsQGzry2
- jcRLDMtNDH5bHjy7NLXqVLuuNnVhuEsbspf4VniuS5ffFUdhc1ETzgwvMkmSzu+LLICp
- itIQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVns9rlwKZbtbrkKsYlsYW51dW+CmkxjFOEvOCFt9WaFlTjSnInDfiOxiSZEzsV4iUMPKfO/orMNDGw@nongnu.org
-X-Gm-Message-State: AOJu0YyihiolpZXbKI0UhJCxCxzkC2xKB0sSKg0E9rOEEfQ4J//VJMul
- jQt9ZLN1CQR6IGfnGRtsZEGHjheq5mK/fWsOsTCFYk03F+jC/X4buTPP/a2xQl0Eax3RvdfgYwQ
- lAtzRTKMKj4ybPgOdWOI9QU8gxvbTvyXRCszsicyZPTdfvjWRn/++
-X-Gm-Gg: ASbGncviONE5IOKxZ01Ck4srmUUC+oiTebVuTEAfP5WX0XWc3ykkCimSCaAVe5Bufrc
- IinSB5HFrxmX5U32BU5oiUwQumvvXDC/Rm/U9vkoi/GPEXe3M+ZxOl7ZxnzhAdUPI/Cu4onovxN
- wvCkfYKjrKMbFmcAI49oF5PXJ2OB206/j7kpY8DJ0AFwh7t0KrO1mSPjoW4Bxkfmre+D3m70WyN
- cZajXKsnjbe5Kv9b6Kzrpef9IhVnjod0NW1EFkHE8ckm9CbOo3Dt/Wt5vf2JE85RbTklOiDtj+A
- KIdCDoryvrxUZWxnK9/QLe4taxyoYwsVkCifxdMZY7DAab1u+vqtOhCS38BVQck=
-X-Received: by 2002:a05:6000:2cd:b0:386:374b:e8bc with SMTP id
- ffacd0b85a97d-390e169bd84mr1868110f8f.15.1740648601390; 
- Thu, 27 Feb 2025 01:30:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFf1dnsyzbRcLgZm6uoEcksKMNfyMKaKlJaGqq2CQ34loqlOdaT29CIogAm4uOoPbzigUNaSA==
-X-Received: by 2002:a05:6000:2cd:b0:386:374b:e8bc with SMTP id
- ffacd0b85a97d-390e169bd84mr1868088f8f.15.1740648601079; 
- Thu, 27 Feb 2025 01:30:01 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e47a7850sm1450325f8f.39.2025.02.27.01.29.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Feb 2025 01:30:00 -0800 (PST)
-Message-ID: <9863d34f-3244-4d07-996f-c91db5a17ffc@redhat.com>
-Date: Thu, 27 Feb 2025 10:29:58 +0100
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1tnaDq-0008DL-Nt
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 04:30:28 -0500
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal
+ [10.202.2.49])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id A0ECC1140BC5;
+ Thu, 27 Feb 2025 04:30:22 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-09.internal (MEProxy); Thu, 27 Feb 2025 04:30:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm3; t=1740648622; x=1740735022; bh=7vtb381evc
+ DOFyVQn3AGe148GfjDnLjFE5QqPYCvPk8=; b=dLHZYm+0g60UFpSfDqkSdyUHhN
+ 3fEnxIarHBCVq5/7wpjjq5Dy5nwBLGD+1Z6sWb2ZXRTekv8b0XfGCHdE4no9pn3r
+ gsoo34krFDXnYz/iktXPTqnB5KvO885L/5M2yzjLRcdMTBwhgducUVVjujW7piw0
+ 6gcHqPw7MHzfA50072v3H2uyOF4j0IeDMMJhRFSUwfeammnNnNnkAUhdHK0WcyRz
+ SGCCoXNBQ1jHiD2Q8X9PuHKcRUhwz5/eol86R5iY9UiR0AsAI0npAb7qnRmbHnCp
+ x0qFmPYgUGksN++6DH2p4CJ/uSuLo4oOi/PA/yDsynhRVH1IzM4NR4y0ywfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+ 1740648622; x=1740735022; bh=7vtb381evcDOFyVQn3AGe148GfjDnLjFE5Q
+ qPYCvPk8=; b=lVBKflysRS3DpBJafvtJFBLCx98Fb87GFSooYi/onyBw0/6dOzU
+ qoBVOcHGpchDNR8dmDqzZOuZ8r1MoJ2ZT4TT9XFUFAdHUPP7UHKnWFHjU5QnfXlU
+ YAmZfnMBjwR3WIpb2MN+zmmow7fLIiQEeh+JTPUEtxHlQm5B1dNdD6pdMf7CAA8z
+ BJzVwkxPAVEv5y5vwNwF5q2TO9Nhio9/GWIerzwBZRWN9VnRpS0EtYRl89Z2iXX3
+ xeRGTASNHvSTggd/E7T8+R2RRSNN5Q050JYeRxuyIiX+SMhZAl7i/viJ7lAGvxt0
+ VIEfI3KaIzovj3ZHz3Z4gE06LWwPfTmJDew==
+X-ME-Sender: <xms:rjDAZ-KCfK7vetobV-HTQoDMcsXTbOlupvlzGM3JW_JpdYAmfIi4zg>
+ <xme:rjDAZ2Li6BRZHyYAKXroZyJIs9hdUPCJaW5CByGs0F_8zIuMZ1COSIg22fTTHRe0A
+ 2RpIOq2tVDi9sskBco>
+X-ME-Received: <xmr:rjDAZ-vHRMhjkTdQ0-0WhM18xqQxvKi8z4FtV3PC8X-07PQE8WAedpsNo35p2pgnLBco5LIcZLKRBCxGYtQwBaH7>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeduudcutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+ uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+ hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecu
+ hfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrug
+ hkqeenucggtffrrghtthgvrhhnpeetudfhkeetjeeuleeihfdtudejteelhfdtkeeggefh
+ teduueegvdefgfehjedvhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhtlh
+ grsgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+ ohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphhtthhopeefpdhmoh
+ guvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhu
+ rdhorhhgpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorh
+ hgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhm
+X-ME-Proxy: <xmx:rjDAZzatbWzXMnJaoTMsDzE-gzOqre5u8RFNA8yvACrm6elaC-_GOw>
+ <xmx:rjDAZ1YIXXK8eX47Iv4b7E-THT4owFm_bTv41jLN1KcMgHdrJA_gaw>
+ <xmx:rjDAZ_BsSAud0j7boURL_2GbHKinFvBYICwOIKDU7GvIQrKBuI6JcA>
+ <xmx:rjDAZ7aTk9-9bRGpOR4038-2vkPE1sG7VbwnGbLM2LRCUYD6w6Axbg>
+ <xmx:rjDAZ5GAVyRToWEhwp1w7OTQ7HB4ePfYdUXuix1VdwONccN4sheEuVIa>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Feb 2025 04:30:21 -0500 (EST)
+From: Klaus Jensen <its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 00/10] nvme queue
+Date: Thu, 27 Feb 2025 10:30:07 +0100
+Message-ID: <20250227093018.11262-1-its@irrelevant.dk>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/smmu-common: Remove the repeated ttb field
-Content-Language: en-US
-To: JianChunfu <jansef.jian@hj-micro.com>
-Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20250221031034.69822-1-jansef.jian@hj-micro.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250221031034.69822-1-jansef.jian@hj-micro.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=103.168.172.152; envelope-from=its@irrelevant.dk;
+ helo=fhigh-a1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.44,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,36 +100,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Klaus Jensen <k.jensen@samsung.com>
+
 Hi,
-On 2/21/25 4:10 AM, JianChunfu wrote:
-> SMMUTransCfg->ttb is never used in QEMU, TT base address
-> can be accessed by SMMUTransCfg->tt[i]->ttb.
->
-> Signed-off-by: JianChunfu <jansef.jian@hj-micro.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Thanks!
+The following changes since commit b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124:
 
-Eric
-> ---
->  include/hw/arm/smmu-common.h | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
-> index d1a4a6455..e5ad55bba 100644
-> --- a/include/hw/arm/smmu-common.h
-> +++ b/include/hw/arm/smmu-common.h
-> @@ -110,7 +110,6 @@ typedef struct SMMUTransCfg {
->      /* Used by stage-1 only. */
->      bool aa64;                 /* arch64 or aarch32 translation table */
->      bool record_faults;        /* record fault events */
-> -    uint64_t ttb;              /* TT base address */
->      uint8_t oas;               /* output address width */
->      uint8_t tbi;               /* Top Byte Ignore */
->      int asid;
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-02-22 05:06:39 +0800)
 
+are available in the Git repository at:
+
+  https://gitlab.com/birkelund/qemu.git tags/pull-nvme-20250227
+
+for you to fetch changes up to cad58ada8f104bf342097a7a683ef594ac949c8d:
+
+  hw/nvme: remove nvme_aio_err() (2025-02-26 12:40:35 +0100)
+
+----------------------------------------------------------------
+nvme queue
+
+----------------------------------------------------------------
+Klaus Jensen (9):
+      hw/nvme: always initialize a subsystem
+      hw/nvme: make oacs dynamic
+      hw/nvme: add knob for doorbell buffer config support
+      nvme: fix iocs status code values
+      hw/nvme: be compliant wrt. dsm processing limits
+      hw/nvme: rework csi handling
+      hw/nvme: only set command abort requested when cancelled due to Abort
+      hw/nvme: set error status code explicitly for misc commands
+      hw/nvme: remove nvme_aio_err()
+
+Stephen Bates (1):
+      hw/nvme: Add OCP SMART / Health Information Extended Log Page
+
+ docs/system/devices/nvme.rst |   7 +
+ hw/nvme/ctrl.c               | 460 +++++++++++++++++++++++++++----------------
+ hw/nvme/ns.c                 |  62 ++----
+ hw/nvme/nvme.h               |  11 +-
+ include/block/nvme.h         |  63 +++++-
+ 5 files changed, 373 insertions(+), 230 deletions(-)
 
