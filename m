@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51348A4855E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B56A48561
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 17:42:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tngvt-00081S-Jd; Thu, 27 Feb 2025 11:40:23 -0500
+	id 1tngvp-0007y9-Bs; Thu, 27 Feb 2025 11:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tngvL-0007i7-Jx; Thu, 27 Feb 2025 11:39:47 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1tngvO-0007jV-2S; Thu, 27 Feb 2025 11:39:55 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tngv4-0006IK-TB; Thu, 27 Feb 2025 11:39:46 -0500
+ id 1tngvF-0006KH-Iv; Thu, 27 Feb 2025 11:39:49 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A8C3C4E61AB;
- Thu, 27 Feb 2025 17:39:25 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C15EE4E61D4;
+ Thu, 27 Feb 2025 17:39:26 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id KZSbQ2Y_AU1z; Thu, 27 Feb 2025 17:39:20 +0100 (CET)
+ with ESMTP id s4Es38NyKC_X; Thu, 27 Feb 2025 17:39:21 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4FC144E6041; Thu, 27 Feb 2025 17:39:18 +0100 (CET)
-Message-Id: <489b1be5d95d5153e924c95b0691b8b53f9ffb9e.1740673173.git.balaton@eik.bme.hu>
+ id 603DD4E60F7; Thu, 27 Feb 2025 17:39:19 +0100 (CET)
+Message-Id: <3b8e54ad9220d57e7b0a33f3570e880f26677ce8.1740673173.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1740673173.git.balaton@eik.bme.hu>
 References: <cover.1740673173.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 4/5] ppc/amigaone: Add kernel and initrd support
+Subject: [PATCH v2 5/5] ppc/amigaone: Add #defines for memory map constants
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Date: Thu, 27 Feb 2025 17:39:18 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Thu, 27 Feb 2025 17:39:19 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,169 +57,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for -kernel, -initrd and -append command line options.
-
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/amigaone.c | 113 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 112 insertions(+), 1 deletion(-)
+ hw/ppc/amigaone.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-index 5c5585d39a..04ff415a6b 100644
+index 04ff415a6b..f6c9eb69ab 100644
 --- a/hw/ppc/amigaone.c
 +++ b/hw/ppc/amigaone.c
-@@ -25,11 +25,14 @@
- #include "system/qtest.h"
- #include "system/reset.h"
- #include "kvm_ppc.h"
-+#include "elf.h"
- 
- #include <zlib.h> /* for crc32 */
- 
+@@ -32,6 +32,14 @@
  #define BUS_FREQ_HZ 100000000
  
-+#define INITRD_MIN_ADDR 0x600000
+ #define INITRD_MIN_ADDR 0x600000
++#define INIT_RAM_ADDR 0x40000000
 +
++#define PCI_HIGH_ADDR 0x80000000
++#define PCI_HIGH_SIZE 0x7d000000
++#define PCI_LOW_ADDR  0xfd000000
++#define PCI_LOW_SIZE  0xe0000
++
++#define ARTICIA_ADDR 0xfe000000
+ 
  /*
   * Firmware binary available at
-  * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
-@@ -178,12 +181,68 @@ static const TypeInfo nvram_types[] = {
- };
- DEFINE_TYPES(nvram_types)
- 
-+struct boot_info {
-+    hwaddr entry;
-+    hwaddr stack;
-+    hwaddr bd_info;
-+    hwaddr initrd_start;
-+    hwaddr initrd_end;
-+    hwaddr cmdline_start;
-+    hwaddr cmdline_end;
-+};
-+
-+/* Board info struct from U-Boot */
-+struct bd_info {
-+    uint32_t bi_memstart;
-+    uint32_t bi_memsize;
-+    uint32_t bi_flashstart;
-+    uint32_t bi_flashsize;
-+    uint32_t bi_flashoffset;
-+    uint32_t bi_sramstart;
-+    uint32_t bi_sramsize;
-+    uint32_t bi_bootflags;
-+    uint32_t bi_ip_addr;
-+    uint8_t  bi_enetaddr[6];
-+    uint16_t bi_ethspeed;
-+    uint32_t bi_intfreq;
-+    uint32_t bi_busfreq;
-+    uint32_t bi_baudrate;
-+} QEMU_PACKED;
-+
-+static void create_bd_info(hwaddr addr, ram_addr_t ram_size)
-+{
-+    struct bd_info *bd = g_new0(struct bd_info, 1);
-+
-+    bd->bi_memsize =    cpu_to_be32(ram_size);
-+    bd->bi_flashstart = cpu_to_be32(PROM_ADDR);
-+    bd->bi_flashsize =  cpu_to_be32(1); /* match what U-Boot detects */
-+    bd->bi_bootflags =  cpu_to_be32(1);
-+    bd->bi_intfreq =    cpu_to_be32(11.5 * BUS_FREQ_HZ);
-+    bd->bi_busfreq =    cpu_to_be32(BUS_FREQ_HZ);
-+    bd->bi_baudrate =   cpu_to_be32(115200);
-+
-+    cpu_physical_memory_write(addr, bd, sizeof(*bd));
-+}
-+
- static void amigaone_cpu_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
-+    CPUPPCState *env = &cpu->env;
- 
-     cpu_reset(CPU(cpu));
--    cpu_ppc_tb_reset(&cpu->env);
-+    if (env->load_info) {
-+        struct boot_info *bi = env->load_info;
-+
-+        env->gpr[1] = bi->stack;
-+        env->gpr[2] = 1024;
-+        env->gpr[3] = bi->bd_info;
-+        env->gpr[4] = bi->initrd_start;
-+        env->gpr[5] = bi->initrd_end;
-+        env->gpr[6] = bi->cmdline_start;
-+        env->gpr[7] = bi->cmdline_end;
-+        env->nip = bi->entry;
-+    }
-+    cpu_ppc_tb_reset(env);
- }
- 
- static void fix_spd_data(uint8_t *spd)
-@@ -205,6 +264,8 @@ static void amigaone_init(MachineState *machine)
-     I2CBus *i2c_bus;
-     uint8_t *spd_data;
-     DriveInfo *di;
-+    hwaddr loadaddr;
-+    struct boot_info *bi = NULL;
- 
-     /* init CPU */
-     cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-@@ -301,6 +362,56 @@ static void amigaone_init(MachineState *machine)
+@@ -287,7 +295,7 @@ static void amigaone_init(MachineState *machine)
+         /* Firmware uses this area for startup */
+         mr = g_new(MemoryRegion, 1);
+         memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
+-        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
++        memory_region_add_subregion(get_system_memory(), INIT_RAM_ADDR, mr);
      }
-     pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
-     pci_vga_init(pci_bus);
-+
-+    if (!machine->kernel_filename) {
-+        return;
-+    }
-+
-+    /* handle -kernel, -initrd, -append options and emulate U-Boot */
-+    bi = g_new0(struct boot_info, 1);
-+    cpu->env.load_info = bi;
-+
-+    loadaddr = MIN(machine->ram_size, 256 * MiB);
-+    bi->bd_info = loadaddr - 8 * MiB;
-+    create_bd_info(bi->bd_info, machine->ram_size);
-+    bi->stack = bi->bd_info - 64 * KiB - 8;
-+
-+    if (machine->kernel_cmdline && machine->kernel_cmdline[0]) {
-+        size_t len = strlen(machine->kernel_cmdline);
-+
-+        loadaddr = bi->bd_info + 1 * MiB;
-+        cpu_physical_memory_write(loadaddr, machine->kernel_cmdline, len + 1);
-+        bi->cmdline_start = loadaddr;
-+        bi->cmdline_end = loadaddr + len + 1; /* including terminating '\0' */
-+    }
-+
-+    sz = load_elf(machine->kernel_filename, NULL, NULL, NULL,
-+                  &bi->entry, &loadaddr, NULL, NULL,
-+                  ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
-+    if (sz <= 0) {
-+        sz = load_uimage(machine->kernel_filename, &bi->entry, &loadaddr,
-+                         NULL, NULL, NULL);
-+    }
-+    if (sz <= 0) {
-+        error_report("Could not load kernel '%s'",
-+                     machine->kernel_filename);
-+        exit(1);
-+    }
-+    loadaddr += sz;
-+
-+    if (machine->initrd_filename) {
-+        loadaddr = ROUND_UP(loadaddr + 4 * MiB, 4 * KiB);
-+        loadaddr = MAX(loadaddr, INITRD_MIN_ADDR);
-+        sz = load_image_targphys(machine->initrd_filename, loadaddr,
-+                                 bi->bd_info - loadaddr);
-+        if (sz <= 0) {
-+            error_report("Could not load initrd '%s'",
-+                         machine->initrd_filename);
-+            exit(1);
-+        }
-+        bi->initrd_start = loadaddr;
-+        bi->initrd_end = loadaddr + sz;
-+    }
- }
  
- static void amigaone_machine_init(MachineClass *mc)
+     /* nvram */
+@@ -322,7 +330,7 @@ static void amigaone_init(MachineState *machine)
+     }
+ 
+     /* Articia S */
+-    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
++    dev = sysbus_create_simple(TYPE_ARTICIA, ARTICIA_ADDR, NULL);
+ 
+     i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
+     if (machine->ram_size > 512 * MiB) {
+@@ -339,12 +347,12 @@ static void amigaone_init(MachineState *machine)
+     pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
+     mr = g_new(MemoryRegion, 1);
+     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
+-                             0, 0xe0000);
+-    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
++                             0, PCI_LOW_SIZE);
++    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
+     mr = g_new(MemoryRegion, 1);
+     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
+-                             0x80000000, 0x7d000000);
+-    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
++                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
++    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, mr);
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+ 
+     /* VIA VT82c686B South Bridge (multifunction PCI device) */
 -- 
 2.30.9
 
