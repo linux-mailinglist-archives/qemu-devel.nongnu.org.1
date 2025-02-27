@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87223A48112
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0CCA48162
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Feb 2025 15:33:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnem5-0002TA-Ic; Thu, 27 Feb 2025 09:22:05 -0500
+	id 1tnem3-00023j-82; Thu, 27 Feb 2025 09:22:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnelB-0007yX-8I
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:09 -0500
+ id 1tnelC-00084L-Mn
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tnel8-0003sx-H2
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:08 -0500
+ id 1tnelB-0003t9-0u
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 09:21:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740666065;
+ s=mimecast20190719; t=1740666068;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PQLxNgYdZM0KSbKDqppJfoYhlJo1A1+kCjsRcdbWf5w=;
- b=TGPc0Dh8XB0NcujX5PrtJB2CNrjNQJQWCM+nhuDA12dQqNrLSgU44E8prPV+1IsaKpPdi0
- zKFrwIt+ehWPRYkbGY/zOZykJHjgJJLG6HRfauknCAtHeNwuAlxU8FDmqZK8QNIGVhDcte
- dNyIy7JNnQQaTyhGnHGCfvucV17oH1o=
+ bh=+GiEaq4+igrWwP4fp+abzJc1rUXq1wsd/EYkNDp5ecs=;
+ b=GCwsHdLoebe4X37KiLrWWMFum2gGutKHvocwa3uVtLk9JrOy1L4cPe2movJHRfTGts0FlU
+ /Vv5htSy6LwxFHROf4r6olX5E2LNlqv6yNGB9P8b0zKbFxXnhTGkHI0Yla2PHzVbEeMLtR
+ dgSPwGG3zKDatLLL1cm/fUjMLKhaEt8=
 Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
  [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-r8dWTlaUPMqaMfcGmY5pIg-1; Thu, 27 Feb 2025 09:21:04 -0500
-X-MC-Unique: r8dWTlaUPMqaMfcGmY5pIg-1
-X-Mimecast-MFC-AGG-ID: r8dWTlaUPMqaMfcGmY5pIg_1740666063
+ us-mta-584-ugK5z9jINDutf280NJIQVw-1; Thu, 27 Feb 2025 09:21:07 -0500
+X-MC-Unique: ugK5z9jINDutf280NJIQVw-1
+X-Mimecast-MFC-AGG-ID: ugK5z9jINDutf280NJIQVw_1740666066
 Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5e4c2618332so1105360a12.2
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:21:04 -0800 (PST)
+ 4fb4d7f45d1cf-5e0573b9f60so1029310a12.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 06:21:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740666062; x=1741270862;
+ d=1e100.net; s=20230601; t=1740666065; x=1741270865;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PQLxNgYdZM0KSbKDqppJfoYhlJo1A1+kCjsRcdbWf5w=;
- b=nnip8UO2AGKeyshov07r2CrDIBYYlEzdQD1u9vnF8mnv2rWmNW4+gC3CVQfNOu5tPD
- SdBrqzX8NxN6mEkaGeanqhNYniDZygT6I0BNpBohIyMC5VTAmuF2+9dBmlosueE9pAZs
- qgSQozUghOVK0EYzaJ7KBUIoihh1jU7foo8IvQVPkCJ6YORVY6DqoMNgzP61uJ1/Nobc
- NI9haKt+C61QjakU+VzPdb7ayy5MTYomiv+9w+j7LuzIsP1v1kDNk3hB+JlQahPWMD/P
- ZOs9bJcQB4OQmWvyHKsL35NJkDDlGHTQFQVliQV6usuvjYVK3oV1Ydkw8MHH2HxnbgSN
- uhyw==
-X-Gm-Message-State: AOJu0Yy8OS+tySohcXJ332Xg7foPhqoUyK1CjZ5ZWdobCXxbasLTV5bN
- muZUEix602Z5s5xvytzVaGYT2wHFI4QdLpg/4r2lR2YvY3/V5s3zE9oPY5geptJ/1SFGTklpf0O
- 07v1Ff5YSwMjPmCYMwJo3UObMQT2p0UyHlBXOpQ6UthotMo7igX4/uSB8h/fp41gwSjudo/qM7u
- 87/sItI0W4PSikEPIKeHgSKFiJkQalg92DMRmEu5g=
-X-Gm-Gg: ASbGncvSBxlysvgOc1pZIj/LOJtN/XURYrdyrjcpEeh7aELqjBHjI8IVQNJvwoHL5iU
- xWAWufAJhaQ/egHlo4aq3JAK1eAGJ4Wr1Ezxn8A9kaYPjBdqN9cr4eRRB/CLP2u/skSW68mhdw+
- 67npcLX/kGopHIh1Q0ZGalKS2chXEK5nb6JuzhA08L3M1wcQq5anTum7HrxuezL6gTr7BxIE1m9
- gHLx8NJMMmx9Xo41Br2IkXOIFQl3+NO7nVxlJS4fGLzxAVyBDBwImu8ZtKztTrVyvPEsqhiCtA3
- o0HxhQ5MTqDix7uczUDF
-X-Received: by 2002:a05:6402:13d2:b0:5e0:2ce6:3d50 with SMTP id
- 4fb4d7f45d1cf-5e4a0dfc587mr8748723a12.23.1740666062366; 
- Thu, 27 Feb 2025 06:21:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCxQV2zq3REPKF+9zeoHJgyF+JRF/UdepBUbu59xs1Yz8FPQaNnVqb30lOQv+FZCBkFCVC5Q==
-X-Received: by 2002:a05:6402:13d2:b0:5e0:2ce6:3d50 with SMTP id
- 4fb4d7f45d1cf-5e4a0dfc587mr8748697a12.23.1740666061853; 
- Thu, 27 Feb 2025 06:21:01 -0800 (PST)
+ bh=+GiEaq4+igrWwP4fp+abzJc1rUXq1wsd/EYkNDp5ecs=;
+ b=kraINdXZPn4zoUg6TTcZBtPE3LPpBez9zJQNdiRotW3xayzFespWT63SB0DxI2R+sy
+ mevGwoWiIVWyv1y/rCce9RAQpeGOTLLrihzGScbNDVT0Fd8t6dwOsoVl+GlnU3jrUi5t
+ yGCsNZygOmzbsPRNsZ/cZhu+3CYi83kgi3i6/imAWhXh1o7vkjx2rCNaqNFLWdVVHaTq
+ iLh1yGyeJWlKhp03DjuDSYQm32e81/APbjKP4oFQi5BiK7omm3QVyNudioegPzpmjoKk
+ 4AmSnUEXQU+qCRBvYN/6SFPcAhfpdQJdCN6o145g1XpbOXDI5T52lVM2ubttRpoxxxWk
+ nzSQ==
+X-Gm-Message-State: AOJu0YwLun2/rhx9f+4Xr0mlhZ+e8oPL4JQXkNqF/1LAQnjGn1JS4311
+ 9KoWKfQ+YLpCNR4gubyVxLkZEMmjYTE8Dy83DVATOZxyrxqrHVUCqDlTagyEh447Kzj2wBKI8EK
+ pLfypdtbHrjbOtklvpXCpLQBenQpNFj6MSmFijDtw/0UgZFaMxHG2s3A272stTo0mKBLdIMYN2d
+ SOCOKAtxIoswj99k5Ykab1SHJdOwUpvqHt2276AZ4=
+X-Gm-Gg: ASbGncsfLTgO90X0V3ooGPPhwC438c1kIGQLO3YiHmVpuBajA5DvGan2hhfzvP/9Jtq
+ 3WVwY+Jpi+t9bhjC6ZzOy/RV3lZCQXKdKuzEWzAX72G2nMDL1NTNRBayNnA7Zj8YnT9ouEElw0M
+ JCxYJQL3kU4oUDXsj2/BizbTDIuOHqXQ24cs2hnXsRu09D9NEO3BVHsBa2DpDSuJozSQM7RDku1
+ RcQDbIPOq5NpxdnZ64rO3hKWMbWvxZOFd6j/80OCDU5dXWVLgTrw7ji6XXH7rkN9cMXfcDMBO5E
+ +Fo4q907o8xBiga9US81
+X-Received: by 2002:a05:6402:4008:b0:5e4:bf03:e907 with SMTP id
+ 4fb4d7f45d1cf-5e4bf03eaafmr4860349a12.19.1740666065184; 
+ Thu, 27 Feb 2025 06:21:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHAcqj9YSZaFkB+23AY/L7qncTTPWc3kca6m9MNiFg2ZmVIRlsguDOEk7M9XeRoVE8HbwzdBg==
+X-Received: by 2002:a05:6402:4008:b0:5e4:bf03:e907 with SMTP id
+ 4fb4d7f45d1cf-5e4bf03eaafmr4860316a12.19.1740666064697; 
+ Thu, 27 Feb 2025 06:21:04 -0800 (PST)
 Received: from [192.168.10.48] ([176.206.102.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3fb44dasm1162171a12.62.2025.02.27.06.21.00
+ 4fb4d7f45d1cf-5e4c3fb6067sm1140683a12.50.2025.02.27.06.21.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2025 06:21:00 -0800 (PST)
+ Thu, 27 Feb 2025 06:21:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: EwanHai <ewanhai-oc@zhaoxin.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 31/34] target/i386: Add support for Zhaoxin CPU vendor
- identification
-Date: Thu, 27 Feb 2025 15:19:49 +0100
-Message-ID: <20250227141952.811410-32-pbonzini@redhat.com>
+Subject: [PULL 32/34] target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
+Date: Thu, 27 Feb 2025 15:19:50 +0100
+Message-ID: <20250227141952.811410-33-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250227141952.811410-1-pbonzini@redhat.com>
 References: <20250227141952.811410-1-pbonzini@redhat.com>
@@ -110,62 +109,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: EwanHai <ewanhai-oc@zhaoxin.com>
 
-Zhaoxin currently uses two vendors: "Shanghai" and "Centaurhauls".
-It is important to note that the latter now belongs to Zhaoxin. Therefore,
-this patch replaces CPUID_VENDOR_VIA with CPUID_VENDOR_ZHAOXIN1.
-
-The previous CPUID_VENDOR_VIA macro was only defined but never used in
-QEMU, making this change straightforward.
-
-Additionally, the IS_ZHAOXIN_CPU macro has been added to simplify the
-checks for Zhaoxin CPUs.
+Add new CPUID feature flags for various Zhaoxin PadLock extensions.
+These definitions will be used for Zhaoxin CPU models.
 
 Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250113074413.297793-2-ewanhai-oc@zhaoxin.com
+Link: https://lore.kernel.org/r/20250113074413.297793-3-ewanhai-oc@zhaoxin.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ target/i386/cpu.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c67b42d34fc..4279cf5cdee 100644
+index 4279cf5cdee..10ce019e3f8 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1122,7 +1122,16 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_VENDOR_AMD_3   0x444d4163 /* "cAMD" */
- #define CPUID_VENDOR_AMD   "AuthenticAMD"
+@@ -1110,6 +1110,27 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ /* CPUID[0x80000007].EDX flags: */
+ #define CPUID_APM_INVTSC       (1U << 8)
  
--#define CPUID_VENDOR_VIA   "CentaurHauls"
-+#define CPUID_VENDOR_ZHAOXIN1_1 0x746E6543 /* "Cent" */
-+#define CPUID_VENDOR_ZHAOXIN1_2 0x48727561 /* "aurH" */
-+#define CPUID_VENDOR_ZHAOXIN1_3 0x736C7561 /* "auls" */
++/* "rng" RNG present (xstore) */
++#define CPUID_C000_0001_EDX_XSTORE             (1U << 2)
++/* "rng_en" RNG enabled */
++#define CPUID_C000_0001_EDX_XSTORE_EN          (1U << 3)
++/* "ace" on-CPU crypto (xcrypt) */
++#define CPUID_C000_0001_EDX_XCRYPT             (1U << 6)
++/* "ace_en" on-CPU crypto enabled */
++#define CPUID_C000_0001_EDX_XCRYPT_EN          (1U << 7)
++/* Advanced Cryptography Engine v2 */
++#define CPUID_C000_0001_EDX_ACE2               (1U << 8)
++/* ACE v2 enabled */
++#define CPUID_C000_0001_EDX_ACE2_EN            (1U << 9)
++/* PadLock Hash Engine */
++#define CPUID_C000_0001_EDX_PHE                (1U << 10)
++/* PHE enabled */
++#define CPUID_C000_0001_EDX_PHE_EN             (1U << 11)
++/* PadLock Montgomery Multiplier */
++#define CPUID_C000_0001_EDX_PMM                (1U << 12)
++/* PMM enabled */
++#define CPUID_C000_0001_EDX_PMM_EN             (1U << 13)
 +
-+#define CPUID_VENDOR_ZHAOXIN2_1 0x68532020 /* "  Sh" */
-+#define CPUID_VENDOR_ZHAOXIN2_2 0x68676E61 /* "angh" */
-+#define CPUID_VENDOR_ZHAOXIN2_3 0x20206961 /* "ai  " */
-+
-+#define CPUID_VENDOR_ZHAOXIN1   "CentaurHauls"
-+#define CPUID_VENDOR_ZHAOXIN2   "  Shanghai  "
+ #define CPUID_VENDOR_SZ      12
  
- #define CPUID_VENDOR_HYGON    "HygonGenuine"
- 
-@@ -1132,6 +1141,15 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define IS_AMD_CPU(env) ((env)->cpuid_vendor1 == CPUID_VENDOR_AMD_1 && \
-                          (env)->cpuid_vendor2 == CPUID_VENDOR_AMD_2 && \
-                          (env)->cpuid_vendor3 == CPUID_VENDOR_AMD_3)
-+#define IS_ZHAOXIN1_CPU(env) \
-+    ((env)->cpuid_vendor1 == CPUID_VENDOR_ZHAOXIN1_1 && \
-+     (env)->cpuid_vendor2 == CPUID_VENDOR_ZHAOXIN1_2 && \
-+     (env)->cpuid_vendor3 == CPUID_VENDOR_ZHAOXIN1_3)
-+#define IS_ZHAOXIN2_CPU(env) \
-+    ((env)->cpuid_vendor1 == CPUID_VENDOR_ZHAOXIN2_1 && \
-+     (env)->cpuid_vendor2 == CPUID_VENDOR_ZHAOXIN2_2 && \
-+     (env)->cpuid_vendor3 == CPUID_VENDOR_ZHAOXIN2_3)
-+#define IS_ZHAOXIN_CPU(env) (IS_ZHAOXIN1_CPU(env) || IS_ZHAOXIN2_CPU(env))
- 
- #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
- #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
+ #define CPUID_VENDOR_INTEL_1 0x756e6547 /* "Genu" */
 -- 
 2.48.1
 
