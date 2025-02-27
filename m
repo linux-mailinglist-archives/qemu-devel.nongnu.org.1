@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1D5A48E44
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 03:00:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF582A48EEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 04:03:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnpfZ-0007by-Gs; Thu, 27 Feb 2025 21:00:05 -0500
+	id 1tnqdv-0007gg-2t; Thu, 27 Feb 2025 22:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com>)
- id 1tnpfW-0007b9-Fq
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 21:00:02 -0500
-Received: from o12.p25.mailjet.com ([185.189.236.12])
+ <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com>)
+ id 1tnqds-0007ep-UU
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 22:02:24 -0500
+Received: from o0.p27.mailjet.com ([185.189.238.0])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com>)
- id 1tnpfU-0007PD-1C
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 21:00:02 -0500
+ <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com>)
+ id 1tnqdj-0005xO-FC
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 22:02:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
- d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740715195;
- h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe:list-unsubscribe-post:
+ d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740718930;
+ h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
  cc:feedback-id:in-reply-to:references:x-csa-complaints:x-mj-mid:x-mj-smtpguid:
  x-report-abuse-to:content-transfer-encoding;
  bh=GXWbG44eui7Mwpp5Xz2SyJS+nkh+OwE/jSi4x/FzpTE=;
- b=QfMlE35Rl0uX3WorDby9N0WHilfSfNpZa2W4H+VEyFV+QX0R7k9D0j19u
- TOimsbzaHxpBFZTOrvg/SP8YOmDvkW3lZDzSASuqs0H8viFwqzyroRFVUMcC
- v4vdtDj+DT5fWa5j7DLg9O6uoIQj2hE49vlog92pPwQMBSS7ic5k1Evk9tYW
- FNKS5gQi68IZu7mo0WBOmeiTRl8RFrV372HMQGzYxst4ESFNVzIdUNUYYpXC
- P474HKf7Ek2KMFNl/y7AXnJ/QqzvRl+1H5KAqlV5EKjVJBy82qANfF76eBF9
- zJqlBnVK/VK9n41pK8xtw1Hm+RGV/uxAsZXScOnY8ZiKQ==
-Message-Id: <4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@mailjet.com>
+ b=CTk6i1xogbFtJtgRKi3+ZzUwofBiiCZ2BzRRDCpdURuhOYL1tb8R5vZjr
+ N+W8pa+rzZaUMnbh5g7qoAIYMeMOug4hAqUDmyYx/MfvKxsb+xDAKKi5nZrT
+ iW5wfpysorc8qDe4YpwRMuMH5wrcGCbFT35esH03mZldKV8+f/fmpK6+EGvk
+ +cohR2bnVCJY10ccq5uD1YSqztjLk8D8WBwRXzGNdjofTaPhY8UD08Uy+Vt+
+ m1NanTP7GA7vTUrSseGeglwY34PdJHIDwlv+uwT5WyMhU/GjL4ONZajUPRNl
+ T+RHcItJtI3Eshj5wGshcepGh6UNrihwDmOLqA37kENYw==
+Message-Id: <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@mailjet.com>
 MIME-Version: 1.0
 From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 To: qemu-devel@nongnu.org
 Subject: [PATCH v7 16/16] sev: Provide sev_features flags from IGVM VMSA to
  KVM_SEV_INIT2
-Date: Thu, 27 Feb 2025 14:29:34 +0000
+Date: Thu, 27 Feb 2025 15:35:07 +0000
 List-Unsubscribe-Post: List-Unsubscribe=One-Click
 Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>, Paolo Bonzini
  <pbonzini@redhat.com>, "Daniel P . Berrange" <berrange@redhat.com>,
@@ -54,14 +54,14 @@ Feedback-Id: 42.3031119.2785883:MJ
 In-Reply-To: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
 References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
 X-CSA-Complaints: csa-complaints@eco.de
-X-MJ-Mid: AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRibwQ-T-AXiRTKgcZEht5cGTAAqgls
-X-MJ-SMTPGUID: 718a7d47-8b5b-4438-b1dc-96456ee847b9
+X-MJ-Mid: AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScywoT4CCt1Rk68DE_xSddeOgAqgls
+X-MJ-SMTPGUID: 75f866be-6ecf-4e0c-9cb7-ee383e6371e1
 X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
  abuse@mailjet.com with a copy of the message
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.189.236.12;
- envelope-from=4c7159ed.AWwAAGWzWYQAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwRib@a3031119.bnc3.mailjet.com;
- helo=o12.p25.mailjet.com
+Received-SPF: pass client-ip=185.189.238.0;
+ envelope-from=4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com;
+ helo=o0.p27.mailjet.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
