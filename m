@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68C9A4990E
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 13:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC01A4998C
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 13:39:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnzK4-0004Uc-Oi; Fri, 28 Feb 2025 07:18:32 -0500
+	id 1tnzco-0005Ee-Tw; Fri, 28 Feb 2025 07:37:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tnzK2-0004UN-L0
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 07:18:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnzcm-0005ET-Dn
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 07:37:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tnzK0-0001Ha-Mv
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 07:18:30 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tnzcg-0003l5-HX
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 07:37:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740745108;
+ s=mimecast20190719; t=1740746263;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ymdbOcFU28t6i+NJy7WqEtgrLRGdGbzIInM2PsVA9IE=;
- b=Yqb4U1P2CPSHZ5pGJ9HMDH3dNGgU+akNbP4rcjWY4Ie5d3gvmDMIDVXbt19wyk3QXG4JLM
- 4nn1b+FP2j8/o+ejB1cglhsBLoF/LdeUidHC5zUqgrqxD0s9jJzpTjjLO4oDPZVfxbKVoO
- sHaQoZW5jrqn4RRp4C9S3M6Fq3OC9Wk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=b8SwAhFp5iAfSVIavksa/iFm3DfIubcpap7e3OTgyng=;
+ b=I5jIeSlo36k9N/9pIw2USDiSBn+jDqjZBrKUL3Tq9qZbbx4rbJMewEikOx/AzGMGq5uTjC
+ INJIPKYwPbY5CG8WNAWk9R0aJouL3rvZdZVwd6tCAXxpzXpwkb3a2u8pc8GmMUWmsT4v/b
+ /y4XlCVyxBvfpcvucAUuYHi8INp3vvY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-IgV3vDqING-v7uF3k0NgJQ-1; Fri,
- 28 Feb 2025 07:18:26 -0500
-X-MC-Unique: IgV3vDqING-v7uF3k0NgJQ-1
-X-Mimecast-MFC-AGG-ID: IgV3vDqING-v7uF3k0NgJQ_1740745105
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-dhDaisdVNTeG_6Qn99vXxw-1; Fri,
+ 28 Feb 2025 07:37:40 -0500
+X-MC-Unique: dhDaisdVNTeG_6Qn99vXxw-1
+X-Mimecast-MFC-AGG-ID: dhDaisdVNTeG_6Qn99vXxw_1740746258
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 922AE180036F; Fri, 28 Feb 2025 12:18:25 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.74.16.175])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0B2F2180087F; Fri, 28 Feb 2025 12:18:21 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v7 5/5] migration: add MULTIFD_RECV_SYNC migration command
-Date: Fri, 28 Feb 2025 17:47:49 +0530
-Message-ID: <20250228121749.553184-6-ppandit@redhat.com>
-In-Reply-To: <20250228121749.553184-1-ppandit@redhat.com>
-References: <20250228121749.553184-1-ppandit@redhat.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E2CF19560BC; Fri, 28 Feb 2025 12:37:38 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BEC071800367; Fri, 28 Feb 2025 12:37:37 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4D11121E66B9; Fri, 28 Feb 2025 13:37:35 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Thomas
+ Huth <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Cleber Rosa
+ <crosa@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH 07/10] qapi: expand tags to all doc sections
+In-Reply-To: <20250224033741.222749-8-jsnow@redhat.com> (John Snow's message
+ of "Sun, 23 Feb 2025 22:37:38 -0500")
+References: <20250224033741.222749-1-jsnow@redhat.com>
+ <20250224033741.222749-8-jsnow@redhat.com>
+Date: Fri, 28 Feb 2025 13:37:35 +0100
+Message-ID: <871pviw8hc.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,186 +88,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+John Snow <jsnow@redhat.com> writes:
 
-When Multifd and Postcopy migration is enabled together,
-before starting Postcopy phase, Multifd threads are shutdown.
+> This patch adds an explicit section "kind" to all QAPIDoc
+> sections. Members/Features are now explicitly marked as such, with the
+> name now being stored in a dedicated "name" field (which qapidoc.py was
+> not actually using anyway.)
 
-But before this shutdown, we need to flush the Multifd channels
-on the source side and notify the destination migration thread
-to synchronise with the Multifd 'recv_x' threads, so that all
-the Multifd data is received and processed on the destination
-side, before Multifd threads are shutdown.
+I'm not sure what the parenthesis is trying to convey.
 
-This synchronisation happens when the main migration thread
-waits for all the Multifd threads to receive their data.
+Before the patch, we have:
 
-Add 'MULTIFD_RECV_SYNC' migration command to notify the
-destination side to synchronise with Multifd threads.
+              type        tag
+    untagged  Section     None
+    @foo:     ArgSection  'foo'
+    Returns:  Section     'Returns'
+    Errors:   Section     'Errors'
+    Since:    Section     'Since'
+    TODO:     Section     'TODO'
 
-Suggested-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- migration/migration.c      |  3 +++
- migration/multifd-nocomp.c | 21 +++++++++++++++------
- migration/multifd.c        |  1 +
- migration/multifd.h        |  1 +
- migration/savevm.c         | 13 +++++++++++++
- migration/savevm.h         |  1 +
- 6 files changed, 34 insertions(+), 6 deletions(-)
+Afterwards, I believe:
 
-v6: New patch, not from earlier versions.
-- https://lore.kernel.org/qemu-devel/20250215123119.814345-1-ppandit@redhat.com/T/#t
+              type         kind     name
+    untagged  Section      PLAIN
+    @foo:     ArgSection   MEMBER   'foo'   if member or argument
+              ArgSection   FEATURE  'foo'   if feature
+    Returns:  Section      RETURNS
+    Errors:   Section      ERRORS
+    Since:    Section      SINCE
+    TODO:     Section      TODO
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 5db9e18272..65fc4f5eed 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3401,6 +3401,9 @@ static MigIterateState migration_iteration_run(MigrationState *s)
-     if (!in_postcopy && must_precopy <= s->threshold_size
-         && can_switchover && qatomic_read(&s->start_postcopy)) {
-         if (migrate_multifd()) {
-+            multifd_send_flush();
-+            multifd_send_sync_main(MULTIFD_SYNC_LOCAL);
-+            qemu_savevm_send_multifd_recv_sync(s->to_dst_file);
-             multifd_send_shutdown();
-         }
-         if (postcopy_start(s, &local_err)) {
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index d0edec7cd1..bbe07e4f7e 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -334,7 +334,7 @@ retry:
-      * After flush, always retry.
-      */
-     if (pages->block != block || multifd_queue_full(pages)) {
--        if (!multifd_send(&multifd_ram_send)) {
-+        if (multifd_send_flush() < 0) {
-             return false;
-         }
-         goto retry;
-@@ -387,6 +387,18 @@ bool multifd_ram_sync_per_round(void)
-     return !migrate_multifd_flush_after_each_section();
- }
- 
-+int multifd_send_flush(void)
-+{
-+    if (!multifd_payload_empty(multifd_ram_send)) {
-+        if (!multifd_send(&multifd_ram_send)) {
-+            error_report("%s: multifd_send fail", __func__);
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- int multifd_ram_flush_and_sync(QEMUFile *f)
- {
-     MultiFDSyncReq req;
-@@ -396,11 +408,8 @@ int multifd_ram_flush_and_sync(QEMUFile *f)
-         return 0;
-     }
- 
--    if (!multifd_payload_empty(multifd_ram_send)) {
--        if (!multifd_send(&multifd_ram_send)) {
--            error_report("%s: multifd_send fail", __func__);
--            return -1;
--        }
-+    if ((ret = multifd_send_flush()) < 0) {
-+        return ret;
-     }
- 
-     /* File migrations only need to sync with threads */
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 2bd8604ca1..8928ca2611 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1265,6 +1265,7 @@ static void *multifd_recv_thread(void *opaque)
- 
-     rcu_unregister_thread();
-     trace_multifd_recv_thread_end(p->id, p->packets_recved);
-+    qemu_sem_post(&multifd_recv_state->sem_sync);
- 
-     return NULL;
- }
-diff --git a/migration/multifd.h b/migration/multifd.h
-index bff867ca6b..242b923633 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -361,6 +361,7 @@ static inline uint32_t multifd_ram_page_count(void)
- 
- void multifd_ram_save_setup(void);
- void multifd_ram_save_cleanup(void);
-+int multifd_send_flush(void);
- int multifd_ram_flush_and_sync(QEMUFile *f);
- bool multifd_ram_sync_per_round(void);
- bool multifd_ram_sync_per_section(void);
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 4046faf009..0b71e988ba 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -37,6 +37,7 @@
- #include "migration/register.h"
- #include "migration/global_state.h"
- #include "migration/channel-block.h"
-+#include "multifd.h"
- #include "ram.h"
- #include "qemu-file.h"
- #include "savevm.h"
-@@ -90,6 +91,7 @@ enum qemu_vm_cmd {
-     MIG_CMD_ENABLE_COLO,       /* Enable COLO */
-     MIG_CMD_POSTCOPY_RESUME,   /* resume postcopy on dest */
-     MIG_CMD_RECV_BITMAP,       /* Request for recved bitmap on dst */
-+    MIG_CMD_MULTIFD_RECV_SYNC, /* Sync multifd recv_x and main threads */
-     MIG_CMD_MAX
- };
- 
-@@ -109,6 +111,7 @@ static struct mig_cmd_args {
-     [MIG_CMD_POSTCOPY_RESUME]  = { .len =  0, .name = "POSTCOPY_RESUME" },
-     [MIG_CMD_PACKAGED]         = { .len =  4, .name = "PACKAGED" },
-     [MIG_CMD_RECV_BITMAP]      = { .len = -1, .name = "RECV_BITMAP" },
-+    [MIG_CMD_MULTIFD_RECV_SYNC] = { .len = 0, .name = "MULTIFD_RECV_SYNC" },
-     [MIG_CMD_MAX]              = { .len = -1, .name = "MAX" },
- };
- 
-@@ -1201,6 +1204,12 @@ void qemu_savevm_send_recv_bitmap(QEMUFile *f, char *block_name)
-     qemu_savevm_command_send(f, MIG_CMD_RECV_BITMAP, len + 1, (uint8_t *)buf);
- }
- 
-+void qemu_savevm_send_multifd_recv_sync(QEMUFile *f)
-+{
-+    /* TBD: trace_savevm_send_multifd_recv_sync(); */
-+    qemu_savevm_command_send(f, MIG_CMD_MULTIFD_RECV_SYNC, 0, NULL);
-+}
-+
- bool qemu_savevm_state_blocked(Error **errp)
- {
-     SaveStateEntry *se;
-@@ -2479,6 +2488,10 @@ static int loadvm_process_command(QEMUFile *f)
-     case MIG_CMD_RECV_BITMAP:
-         return loadvm_handle_recv_bitmap(mis, len);
- 
-+    case MIG_CMD_MULTIFD_RECV_SYNC:
-+        multifd_recv_sync_main();
-+        break;
-+
-     case MIG_CMD_ENABLE_COLO:
-         return loadvm_process_enable_colo(mis);
-     }
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 7957460062..91ae703925 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -53,6 +53,7 @@ void qemu_savevm_send_postcopy_listen(QEMUFile *f);
- void qemu_savevm_send_postcopy_run(QEMUFile *f);
- void qemu_savevm_send_postcopy_resume(QEMUFile *f);
- void qemu_savevm_send_recv_bitmap(QEMUFile *f, char *block_name);
-+void qemu_savevm_send_multifd_recv_sync(QEMUFile *f);
- 
- void qemu_savevm_send_postcopy_ram_discard(QEMUFile *f, const char *name,
-                                            uint16_t len,
--- 
-2.48.1
+So, .tag is replaced by .kind and .name, member vs. feature vs. other
+tags is now obvious from .kind alone, i.e. there's no need to account
+for context or type.
+
+Fine print: why do we need to account for type before the patch?
+Consider @Since: ...
+
+> The qapi-schema tests are updated to account for the new section names;
+> mostly "TODO" becomes "Todo" and `None` becomes "Plain".
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  docs/sphinx/qapidoc.py         |   7 ++-
+>  scripts/qapi/parser.py         | 109 ++++++++++++++++++++++++---------
+>  tests/qapi-schema/doc-good.out |  10 +--
+>  tests/qapi-schema/test-qapi.py |   2 +-
+>  4 files changed, 90 insertions(+), 38 deletions(-)
+>
+> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+> index 61997fd21af..d622398f1da 100644
+> --- a/docs/sphinx/qapidoc.py
+> +++ b/docs/sphinx/qapidoc.py
+> @@ -35,6 +35,7 @@
+>  from docutils.statemachine import ViewList
+>  from qapi.error import QAPIError, QAPISemError
+>  from qapi.gen import QAPISchemaVisitor
+> +from qapi.parser import QAPIDoc
+>  from qapi.schema import QAPISchema
+>
+>  from sphinx import addnodes
+> @@ -258,11 +259,11 @@ def _nodes_for_sections(self, doc):
+>          """Return list of doctree nodes for additional sections"""
+>          nodelist = []
+>          for section in doc.sections:
+> -            if section.tag and section.tag == 'TODO':
+> +            if section.kind == QAPIDoc.Kind.TODO:
+>                  # Hide TODO: sections
+>                  continue
+>
+> -            if not section.tag:
+> +            if section.kind == QAPIDoc.Kind.PLAIN:
+>                  # Sphinx cannot handle sectionless titles;
+>                  # Instead, just append the results to the prior section.
+>                  container = nodes.container()
+> @@ -270,7 +271,7 @@ def _nodes_for_sections(self, doc):
+>                  nodelist += container.children
+>                  continue
+>
+> -            snode = self._make_section(section.tag)
+> +            snode = self._make_section(section.kind.name.title())
+>              self._parse_text_into_node(dedent(section.text), snode)
+>              nodelist.append(snode)
+>          return nodelist
+> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> index 36cb64a677a..c3004aa70c6 100644
+> --- a/scripts/qapi/parser.py
+> +++ b/scripts/qapi/parser.py
+> @@ -15,6 +15,7 @@
+>  # See the COPYING file in the top-level directory.
+>
+>  from collections import OrderedDict
+> +import enum
+>  import os
+>  import re
+>  from typing import (
+> @@ -575,7 +576,10 @@ def get_doc(self) -> 'QAPIDoc':
+>                          )
+>                          raise QAPIParseError(self, emsg)
+>
+> -                    doc.new_tagged_section(self.info, match.group(1))
+> +                    doc.new_tagged_section(
+> +                        self.info,
+> +                        QAPIDoc.Kind.from_string(match.group(1))
+> +                    )
+>                      text = line[match.end():]
+>                      if text:
+>                          doc.append_line(text)
+> @@ -586,7 +590,7 @@ def get_doc(self) -> 'QAPIDoc':
+>                          self,
+>                          "unexpected '=' markup in definition documentation")
+>                  else:
+> -                    # tag-less paragraph
+> +                    # plain paragraph(s)
+
+We're parsing a single pargraph here.  The plain section we add it to
+may have any number of paragraphs.  But for me, the comment is about
+what's being parsed.  Mind to drop (s)?
+
+>                      doc.ensure_untagged_section(self.info)
+>                      doc.append_line(line)
+>                      line = self.get_doc_paragraph(doc)
+> @@ -635,14 +639,37 @@ class QAPIDoc:
+>      Free-form documentation blocks consist only of a body section.
+>      """
+>
+> +    class Kind(enum.Enum):
+> +        PLAIN = 0
+> +        MEMBER = 1
+> +        FEATURE = 2
+> +        RETURNS = 3
+> +        ERRORS = 4
+> +        SINCE = 5
+> +        TODO = 6
+> +
+> +        @staticmethod
+> +        def from_string(kind: str) -> 'QAPIDoc.Kind':
+
+Remind me, why do we need to quote the type here?
+
+> +            return QAPIDoc.Kind[kind.upper()]
+> +
+> +        def text_required(self) -> bool:
+> +            # Only "plain" sections can be empty
+> +            return self.value not in (0,)
+
+Rather roundabout way to check for PLAIN, isn't it?
+
+There's just one caller (see below).  I doubt the method is worth its
+keep.
+
+> +
+> +        def __str__(self) -> str:
+> +            return self.name.title()
+
+I wonder whether a simple StrEnum without methods would do.  Oh, StrEnum
+is new in 3.11.  Nevermind.
+
+Hmm.
+
+    >>> Kind = Enum('Kind', [('PLAIN', 'Plain'), ('TODO, 'TODO)])
+    >>> kind=Kind('Plain')
+    >>> kind.value
+    'Plain'
+
+What do you think?
+
+> +
+>      class Section:
+>          # pylint: disable=too-few-public-methods
+> -        def __init__(self, info: QAPISourceInfo,
+> -                     tag: Optional[str] = None):
+> +        def __init__(
+> +            self,
+> +            info: QAPISourceInfo,
+> +            kind: 'QAPIDoc.Kind',
+> +        ):
+>              # section source info, i.e. where it begins
+>              self.info = info
+> -            # section tag, if any ('Returns', '@name', ...)
+> -            self.tag = tag
+> +            # section kind
+> +            self.kind = kind
+>              # section text without tag
+>              self.text = ''
+>
+> @@ -650,8 +677,14 @@ def append_line(self, line: str) -> None:
+>              self.text += line + '\n'
+>
+>      class ArgSection(Section):
+> -        def __init__(self, info: QAPISourceInfo, tag: str):
+> -            super().__init__(info, tag)
+> +        def __init__(
+> +            self,
+> +            info: QAPISourceInfo,
+> +            kind: 'QAPIDoc.Kind',
+> +            name: str
+> +        ):
+> +            super().__init__(info, kind)
+> +            self.name = name
+>              self.member: Optional['QAPISchemaMember'] = None
+
+Before the patch, use of a separate type for members, arguments and
+features was necessary to distinguish between '@TAG:' and 'TAG:' for the
+various TAGs.  This is no longer the case.  Fold ArgSection into
+Section?  Not sure.  If yes, separate patch to keep this one as
+mechanical as possible.
+
+>
+>          def connect(self, member: 'QAPISchemaMember') -> None:
+> @@ -663,7 +696,9 @@ def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
+>          # definition doc's symbol, None for free-form doc
+>          self.symbol: Optional[str] = symbol
+>          # the sections in textual order
+> -        self.all_sections: List[QAPIDoc.Section] = [QAPIDoc.Section(info)]
+> +        self.all_sections: List[QAPIDoc.Section] = [
+> +            QAPIDoc.Section(info, QAPIDoc.Kind.PLAIN)
+> +        ]
+>          # the body section
+>          self.body: Optional[QAPIDoc.Section] = self.all_sections[0]
+>          # dicts mapping parameter/feature names to their description
+> @@ -680,12 +715,17 @@ def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
+>      def end(self) -> None:
+>          for section in self.all_sections:
+>              section.text = section.text.strip('\n')
+> -            if section.tag is not None and section.text == '':
+> +            if section.kind.text_required() and section.text == '':
+
+This is the only use of .text_required().  I believe checking for PLAIN
+would be clearer.
+
+>                  raise QAPISemError(
+> -                    section.info, "text required after '%s:'" % section.tag)
+> +                    section.info, "text required after '%s:'" % section.kind)
+>  
+> -    def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
+> -        if self.all_sections and not self.all_sections[-1].tag:
+> +    def ensure_untagged_section(
+> +        self,
+> +        info: QAPISourceInfo,
+> +    ) -> None:
+
+Accidental line breaking?
+
+> +        kind = QAPIDoc.Kind.PLAIN
+> +
+> +        if self.all_sections and self.all_sections[-1].kind == kind:
+
+I'd prefer not to hide PLAIN behind a variable, but I'd also prefer
+the condition to fit on a line.  Hmm.
+
+>              # extend current section
+>              section = self.all_sections[-1]
+>              if not section.text:
+
+Maybe
+
+           section = self.all_sections[-1] if self.all_sections else None
+
+           if second and section.kind = QAPIDoc.Kind.Plain:
+               # extend current section
+               if not section.text:
+
+> @@ -693,46 +733,56 @@ def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
+>                  section.info = info
+>              section.text += '\n'
+>              return
+> +
+>          # start new section
+> -        section = self.Section(info)
+> +        section = self.Section(info, kind)
+>          self.sections.append(section)
+>          self.all_sections.append(section)
+>
+> -    def new_tagged_section(self, info: QAPISourceInfo, tag: str) -> None:
+> -        section = self.Section(info, tag)
+> -        if tag == 'Returns':
+> +    def new_tagged_section(
+> +        self,
+> +        info: QAPISourceInfo,
+> +        kind: 'QAPIDoc.Kind',
+> +    ) -> None:
+> +        section = self.Section(info, kind)
+> +        if kind == QAPIDoc.Kind.RETURNS:
+>              if self.returns:
+>                  raise QAPISemError(
+> -                    info, "duplicated '%s' section" % tag)
+> +                    info, "duplicated '%s' section" % kind)
+>              self.returns = section
+> -        elif tag == 'Errors':
+> +        elif kind == QAPIDoc.Kind.ERRORS:
+>              if self.errors:
+>                  raise QAPISemError(
+> -                    info, "duplicated '%s' section" % tag)
+> +                    info, "duplicated '%s' section" % kind)
+>              self.errors = section
+> -        elif tag == 'Since':
+> +        elif kind == QAPIDoc.Kind.SINCE:
+>              if self.since:
+>                  raise QAPISemError(
+> -                    info, "duplicated '%s' section" % tag)
+> +                    info, "duplicated '%s' section" % kind)
+>              self.since = section
+>          self.sections.append(section)
+>          self.all_sections.append(section)
+>
+> -    def _new_description(self, info: QAPISourceInfo, name: str,
+> -                         desc: Dict[str, ArgSection]) -> None:
+> +    def _new_description(
+> +        self,
+> +        info: QAPISourceInfo,
+> +        name: str,
+> +        kind: 'QAPIDoc.Kind',
+> +        desc: Dict[str, ArgSection]
+> +    ) -> None:
+>          if not name:
+>              raise QAPISemError(info, "invalid parameter name")
+>          if name in desc:
+>              raise QAPISemError(info, "'%s' parameter name duplicated" % name)
+> -        section = self.ArgSection(info, '@' + name)
+> +        section = self.ArgSection(info, kind, name)
+>          self.all_sections.append(section)
+>          desc[name] = section
+>
+>      def new_argument(self, info: QAPISourceInfo, name: str) -> None:
+> -        self._new_description(info, name, self.args)
+> +        self._new_description(info, name, QAPIDoc.Kind.MEMBER, self.args)
+>
+>      def new_feature(self, info: QAPISourceInfo, name: str) -> None:
+> -        self._new_description(info, name, self.features)
+> +        self._new_description(info, name, QAPIDoc.Kind.FEATURE, self.features)
+
+QAPIDoc.Kind.FOO is a mouthful, and it tends to result in long lines,
+like here.  Can't see an easy and clean way to reduce the verbosity.
+
+>
+>      def append_line(self, line: str) -> None:
+>          self.all_sections[-1].append_line(line)
+> @@ -744,8 +794,9 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
+>                  raise QAPISemError(member.info,
+>                                     "%s '%s' lacks documentation"
+>                                     % (member.role, member.name))
+> -            self.args[member.name] = QAPIDoc.ArgSection(
+> -                self.info, '@' + member.name)
+> +            section = QAPIDoc.ArgSection(
+> +                self.info, QAPIDoc.Kind.MEMBER, member.name)
+> +            self.args[member.name] = section
+
+Why the extra variable?
+
+>          self.args[member.name].connect(member)
+>
+>      def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
+> diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+> index ec277be91e9..2d33a305ee7 100644
+> --- a/tests/qapi-schema/doc-good.out
+> +++ b/tests/qapi-schema/doc-good.out
+> @@ -110,7 +110,7 @@ The _one_ {and only}, description on the same line
+>  Also _one_ {and only}
+>      feature=enum-member-feat
+>  a member feature
+> -    section=None
+> +    section=Plain
+>  @two is undocumented
+>  doc symbol=Base
+>      body=
+> @@ -168,15 +168,15 @@ description starts on the same line
+>  a feature
+>      feature=cmd-feat2
+>  another feature
+> -    section=None
+> +    section=Plain
+>  .. note:: @arg3 is undocumented
+>      section=Returns
+>  @Object
+>      section=Errors
+>  some
+> -    section=TODO
+> +    section=Todo
+
+With the method-less Enum I suggested, this hunk would go away.  Not
+that it matters :)
+
+>  frobnicate
+> -    section=None
+> +    section=Plain
+>  .. admonition:: Notes
+>
+>   - Lorem ipsum dolor sit amet
+> @@ -209,7 +209,7 @@ If you're bored enough to read this, go see a video of boxed cats
+>  a feature
+>      feature=cmd-feat2
+>  another feature
+> -    section=None
+> +    section=Plain
+>  .. qmp-example::
+>
+>     -> "this example"
+> diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
+> index 7e3f9f4aa1f..bca924309be 100755
+> --- a/tests/qapi-schema/test-qapi.py
+> +++ b/tests/qapi-schema/test-qapi.py
+> @@ -131,7 +131,7 @@ def test_frontend(fname):
+>          for feat, section in doc.features.items():
+>              print('    feature=%s\n%s' % (feat, section.text))
+>          for section in doc.sections:
+> -            print('    section=%s\n%s' % (section.tag, section.text))
+> +            print('    section=%s\n%s' % (section.kind, section.text))
+>
+>
+>  def open_test_result(dir_name, file_name, update):
 
 
