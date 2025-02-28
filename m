@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3095A4A0CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 18:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EE5A4A0CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 18:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to4TV-0007g1-NI; Fri, 28 Feb 2025 12:48:37 -0500
+	id 1to4TX-0007q0-SM; Fri, 28 Feb 2025 12:48:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1to4T7-0007R9-Br
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:13 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1to4TB-0007VQ-7t
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:17 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1to4T1-0005Mc-NJ
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:10 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4398738217aso21724025e9.3
- for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 09:48:06 -0800 (PST)
+ id 1to4T8-0005NE-7Q
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:16 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-439a4dec9d5so26072755e9.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 09:48:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740764886; x=1741369686; darn=nongnu.org;
+ d=linaro.org; s=google; t=1740764888; x=1741369688; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eN07gCc2oP06ECRd8sreJOokFNA6cGgOnl4Jc0WaVu4=;
- b=w4k8A0ArvYP84JD1o+L4/HEwueeIZ4o9XETaih4MKeiD2BFqS//Zi339KMooC4Hp9q
- aeZmHIGZT8pwWNRfTsuWO8gs8pZg1sTX9gesYtSHUa/NSFZ8bzW2g7FyXIDLjr2HMW9t
- MwQ3dPhoqjKhGpjM8sCYiEA4iSqNxHKhUPDMVew6tqYv5wfABuKarMJ+Di3Ph3K60UvY
- W/+8rSqLiVyX0o9NrbXYRCE93ugzGbyQe6EVv3mQ8EvORRSHnlTlDzchiJZuajYUk/EC
- Arg1HqGUKkTeDequbHZTaoQ8vNAhivPsQX+WIjQcz+XE9/eltyerghJ0IJk22dsnqJ91
- lNDA==
+ bh=bK4QMP2l/mN25359h/sPhHBhlHOYz8CuG9/oUAWNxfg=;
+ b=sw+Ks4yzndvavcUuaKIA8jcek9EtBFjwE2jeOYr9w0MdiwDFDExBkbGT++Ye1wsrRJ
+ 1x5TJSpyHZITrR6HX4ymq2qSxdcCOb9AXsIChXUKb3am99FCBzO8eO+rvflDrt31rl0d
+ Lszhx3ytxBde4DZqXZ8MlRATkwL1gFrUaMtylIFO8GDV8YdCDF17RbVmxeEbDjVQFZdN
+ MIaUZgqctt9FXQNOJd5M0MI2F+7UVf/5p0dsK1GX5W6UhLIE3C2QRkqnPqQ4q9nI1YR3
+ q9lGTlnsW/zVutDosijHjMh9ohDmVXS4sHCeI1qHm0f/V4Shujnv77CXpSbkSdUTBjei
+ m3wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740764886; x=1741369686;
+ d=1e100.net; s=20230601; t=1740764888; x=1741369688;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eN07gCc2oP06ECRd8sreJOokFNA6cGgOnl4Jc0WaVu4=;
- b=SeZ/5Sa7wJ1xTyku2iN0KT6BxuPTh1NtX9PeChWhjMwgMRqLhP2U6TFv21na3MFRs5
- BrpLjTpRp5hmZuihQDd2FklgqoUM6R/6yZGEMrc7S/3NxjELhka657i+o7LmlIyrXOml
- ZB1c2uxhU8aL0zLrdkFU0JxAkj7udyrrUm+6ODl2uMkDJ7EJm7J4ImTyW+SRP1FT1WFr
- e7SXcCDGG87wpyknZGopNvTutO63FzLbDk10PWpILgjzh3BmFg2JlE1iVpx9WBSINuIs
- BtxNVB0sXucZcWBH5eTtr9qMhpsQzzf8oA0BZLel3wd4cloLYo8lszRKvsoouWn+lz3J
- +MbQ==
+ bh=bK4QMP2l/mN25359h/sPhHBhlHOYz8CuG9/oUAWNxfg=;
+ b=bGBkFR8ajNVHkCo0COv+gjnLl38sS8//aQpfabTJEK8n9vrjpGBIU7g+2pLj8kA0qg
+ iQ9SgULCQ5Ff/XiR99ntn030eP7JuHOlxT05zL3lW11oCf125jM69Wd7PVSE/GkNLqtx
+ SKgOiNykBTcEehnaqK5nWebaSQwEMVwH0P2qWeyFs141BD84xb+vAm/rQXK1HA2liS7M
+ MsLWZ82zII6SSqhquVRB6gO1KhEOSbSAKfGQpa8BXPx64O3pC6ep7wcLu2XOOYzJ7MpE
+ YG2Mn3ydPnQZAGs2zPolDKIv5tQ6v93QQhe6Ik5Yld9718YNSDn63gBGdrlqKZavl82n
+ sW2Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXJ5FGETEWdSoRiJcZhw465WZcz2qSSJxePxHfqy/NbAqKkZMAw4xVq/j8L88dsvDooNQBhvtxTUxGx@nongnu.org
-X-Gm-Message-State: AOJu0YyT4Ke0RuVxhB68ah2IESZXptasve+e0vY0n0hn807DOU42yaYZ
- TY6sKppdi2rOgOItjMle/ZtG4ibm/CO0Lw0BroykS3DKbUJ5U9gZjXXOueyERlwZxs3MF5zCGa+
- 1
-X-Gm-Gg: ASbGncsJinGwE0OndsHjFWMp/qI8Epo30gf/R94+dIBNlVzCRqQHDtJWnEn6yyY9qyD
- mJ227f5DuUEEOw0lJ/hHrqvuu4ekWMl8/G9ks4fLZDfQShIJTZDMuERE2Y2GdIXJJ8OY5v4ein7
- PIqjqHzBphUUEF/PjVz1fT0tAzg64QsJ7inB51qTvFhDu0xbyOi0gCVRF7SXwPVobXWof1Owgdr
- U0OhJwf09qr6lkN7GW7legygl1jDN1zw5qYdOdghT3Z/8QSVNATYJeH/Ed/7/Jy8nLmI9DxH7J9
- GHBFET1dtR62ptP6MIt12/x9LFdR/n2S
-X-Google-Smtp-Source: AGHT+IFTDzG/AG8cluvdOSFouLD9fvwivS/Vmmwy0TNqtwDkEzUwgJeyJhwI/+kkG1woycmQ5wIEkQ==
-X-Received: by 2002:a05:600c:1d82:b0:439:9543:9488 with SMTP id
- 5b1f17b1804b1-43ba6727b65mr33765805e9.21.1740764885856; 
- Fri, 28 Feb 2025 09:48:05 -0800 (PST)
+ AJvYcCUooZXYCLBp8bc6dte1g+PDEn8eELDyL483UhF3fcaPoCIF4DxQK0vsZEvYdDaPT93ahJZL1ExJlAE1@nongnu.org
+X-Gm-Message-State: AOJu0YwO4TOE1GihLeqJicdNQaR6Z8syRVGszY0H4bZWCnJcKs+1evbR
+ 3EY6ixaUQ3Ly8qcYPnCuIEusH+mhsGvmvHS24jsKvFo/atSNCSqhF9FrMRSAC5M=
+X-Gm-Gg: ASbGnctFxxu1tvazD6YoQPTfWpKZHLkYPaOgbuCJfT+7FtKySADuhrI8OORLx8Wp9Qt
+ Yu3YitwymaZ6pvLK9Z2OljDVccsn0Dd2023RCJtOV83/2tN8GuRoQf8AUpc/W/KWcM40Ne1uyyx
+ Wn40oM0ImNnBI08Om8kJ6vBqa4Gd6Zug2t1fmptDQ5x6Hhk8Viuqz4i0kQOEegqOmpw3ravbhGy
+ hxbL3k9f15R6IbhQAFkf+9QKiLfOuupu/cDu5flkOCDgBKO7eU3jfF+mLHxDQVzBALkTsL3ysR/
+ Z4Y/LkUK/8k0A5wjOTgpfu0Vc0fP2AQ9
+X-Google-Smtp-Source: AGHT+IHq1JW4MN/qaVK8h6N8qk620ISXiqPkvDbAUfOkHkNVDvxLHznfCNMZDGcqjK/3rSvC3iNncw==
+X-Received: by 2002:a05:600c:1c1f:b0:439:9eba:93bb with SMTP id
+ 5b1f17b1804b1-43ba67049b8mr48330735e9.18.1740764887948; 
+ Fri, 28 Feb 2025 09:48:07 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795da5sm5979556f8f.15.2025.02.28.09.48.04
+ ffacd0b85a97d-390e4795da5sm5979556f8f.15.2025.02.28.09.48.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Feb 2025 09:48:04 -0800 (PST)
+ Fri, 28 Feb 2025 09:48:06 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
 	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 1/3] hw/net/smc91c111: Sanitize packet numbers
-Date: Fri, 28 Feb 2025 17:47:59 +0000
-Message-ID: <20250228174802.1945417-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/3] hw/net/smc91c111: Sanitize packet length on tx
+Date: Fri, 28 Feb 2025 17:48:00 +0000
+Message-ID: <20250228174802.1945417-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250228174802.1945417-1-peter.maydell@linaro.org>
 References: <20250228174802.1945417-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,127 +100,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The smc91c111 uses packet numbers as an index into its internal
-s->data[][] array. Valid packet numbers are between 0 and 3, but
-the code does not generally check this, and there are various
-places where the guest can hand us an arbitrary packet number
-and cause an out-of-bounds access to the data array.
+When the smc91c111 transmits a packet, it must read a control byte
+which is at the end of the data area and CRC.  However, we don't
+sanitize the length field in the packet buffer, so if the guest sets
+the length field to something large we will try to read past the end
+of the packet data buffer when we access the control byte.
 
-Add validation of packet numbers. The datasheet is not very
-helpful about how guest errors like this should be handled:
-it says nothing on the subject, and none of the documented
-error conditions are relevant. We choose to log the situation
-with LOG_GUEST_ERROR and silently ignore the attempted operation.
+As usual, the datasheet says nothing about the behaviour of the
+hardware if the guest misprograms it in this way.  It says only that
+the maximum valid length is 2048 bytes.  We choose to log the guest
+error and silently drop the packet.
 
-In the places where we are about to access the data[][] array
-using a packet number and we know the number is valid because
-we got it from somewhere that has already validated, we add
-an assert() to document that belief.
+This requires us to factor out the "mark the tx packet as complete"
+logic, so we can call it for this "drop packet" case as well as at
+the end of the loop when we send a valid packet.
 
 Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2742
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/net/smc91c111.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ hw/net/smc91c111.c | 34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
 diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 0e13dfa18b2..2295c6acf25 100644
+index 2295c6acf25..23ca99f926a 100644
 --- a/hw/net/smc91c111.c
 +++ b/hw/net/smc91c111.c
-@@ -118,6 +118,11 @@ static const VMStateDescription vmstate_smc91c111 = {
- #define RS_TOOSHORT     0x0400
- #define RS_MULTICAST    0x0001
+@@ -22,6 +22,13 @@
  
-+static inline bool packetnum_valid(int packet_num)
+ /* Number of 2k memory pages available.  */
+ #define NUM_PACKETS 4
++/*
++ * Maximum size of a data frame, including the leading status word
++ * and byte count fields and the trailing CRC, last data byte
++ * and control byte (per figure 8-1 in the Microchip Technology
++ * LAN91C111 datasheet).
++ */
++#define MAX_PACKET_SIZE 2048
+ 
+ #define TYPE_SMC91C111 "smc91c111"
+ OBJECT_DECLARE_SIMPLE_TYPE(smc91c111_state, SMC91C111)
+@@ -240,6 +247,16 @@ static void smc91c111_release_packet(smc91c111_state *s, int packet)
+     smc91c111_flush_queued_packets(s);
+ }
+ 
++static void smc91c111_complete_tx_packet(smc91c111_state *s, int packetnum)
 +{
-+    return packet_num >= 0 && packet_num < NUM_PACKETS;
++    if (s->ctr & CTR_AUTO_RELEASE) {
++        /* Race?  */
++        smc91c111_release_packet(s, packetnum);
++    } else if (s->tx_fifo_done_len < NUM_PACKETS) {
++        s->tx_fifo_done[s->tx_fifo_done_len++] = packetnum;
++    }
 +}
 +
- /* Update interrupt status.  */
- static void smc91c111_update(smc91c111_state *s)
+ /* Flush the TX FIFO.  */
+ static void smc91c111_do_tx(smc91c111_state *s)
  {
-@@ -218,6 +223,17 @@ static void smc91c111_pop_tx_fifo_done(smc91c111_state *s)
- /* Release the memory allocated to a packet.  */
- static void smc91c111_release_packet(smc91c111_state *s, int packet)
- {
-+    if (!packetnum_valid(packet)) {
-+        /*
-+         * Data sheet doesn't document behaviour in this guest error
-+         * case, and there is no error status register to report it.
-+         * Log and ignore the attempt.
-+         */
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "smc91c111: attempt to release invalid packet %d\n",
-+                      packet);
-+        return;
-+    }
-     s->allocated &= ~(1 << packet);
-     if (s->tx_alloc == 0x80)
-         smc91c111_tx_alloc(s);
-@@ -239,6 +255,8 @@ static void smc91c111_do_tx(smc91c111_state *s)
-         return;
-     for (i = 0; i < s->tx_fifo_len; i++) {
-         packetnum = s->tx_fifo[i];
-+        /* queue_tx checked the packet number was valid */
-+        assert(packetnum_valid(packetnum));
-         p = &s->data[packetnum][0];
-         /* Set status word.  */
-         *(p++) = 0x01;
-@@ -287,6 +305,17 @@ static void smc91c111_do_tx(smc91c111_state *s)
- /* Add a packet to the TX FIFO.  */
- static void smc91c111_queue_tx(smc91c111_state *s, int packet)
- {
-+    if (!packetnum_valid(packet)) {
-+        /*
-+         * Datasheet doesn't document behaviour in this error case, and
-+         * there's no error status register we could report it in.
-+         * Log and ignore.
-+         */
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "smc91c111: attempt to queue invalid packet %d\n",
-+                      packet);
-+        return;
-+    }
-     if (s->tx_fifo_len == NUM_PACKETS)
-         return;
-     s->tx_fifo[s->tx_fifo_len++] = packet;
-@@ -457,6 +486,13 @@ static void smc91c111_writeb(void *opaque, hwaddr offset,
-                     n = s->rx_fifo[0];
-                 else
-                     n = s->packet_num;
-+                if (!packetnum_valid(n)) {
-+                    /* Datasheet doesn't document what to do here */
-+                    qemu_log_mask(LOG_GUEST_ERROR,
-+                                  "smc91c111: attempt to write data to invalid packet %d\n",
-+                                  n);
-+                    return;
-+                }
-                 p = s->ptr & 0x07ff;
-                 if (s->ptr & 0x4000) {
-                     s->ptr = (s->ptr & 0xf800) | ((s->ptr + 1) & 0x7ff);
-@@ -605,6 +641,13 @@ static uint32_t smc91c111_readb(void *opaque, hwaddr offset)
-                     n = s->rx_fifo[0];
-                 else
-                     n = s->packet_num;
-+                if (!packetnum_valid(n)) {
-+                    /* Datasheet doesn't document what to do here */
-+                    qemu_log_mask(LOG_GUEST_ERROR,
-+                                  "smc91c111: attempt to read data from invalid packet %d\n",
-+                                  n);
-+                    return 0;
-+                }
-                 p = s->ptr & 0x07ff;
-                 if (s->ptr & 0x4000) {
-                     s->ptr = (s->ptr & 0xf800) | ((s->ptr + 1) & 0x07ff);
-@@ -713,6 +756,8 @@ static ssize_t smc91c111_receive(NetClientState *nc, const uint8_t *buf, size_t
-         return -1;
-     s->rx_fifo[s->rx_fifo_len++] = packetnum;
- 
-+    /* allocate_packet() will not hand us back an invalid packet number */
-+    assert(packetnum_valid(packetnum));
-     p = &s->data[packetnum][0];
-     /* ??? Multicast packets?  */
-     status = 0;
+@@ -263,6 +280,17 @@ static void smc91c111_do_tx(smc91c111_state *s)
+         *(p++) = 0x40;
+         len = *(p++);
+         len |= ((int)*(p++)) << 8;
++        if (len >= MAX_PACKET_SIZE) {
++            /*
++             * Datasheet doesn't say what to do here, and there is no
++             * relevant tx error condition listed. Log, and drop the packet.
++             */
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "smc91c111: tx packet with bad length %d, dropping\n",
++                          len);
++            smc91c111_complete_tx_packet(s, packetnum);
++            continue;
++        }
+         len -= 6;
+         control = p[len + 1];
+         if (control & 0x20)
+@@ -291,11 +319,7 @@ static void smc91c111_do_tx(smc91c111_state *s)
+             }
+         }
+ #endif
+-        if (s->ctr & CTR_AUTO_RELEASE)
+-            /* Race?  */
+-            smc91c111_release_packet(s, packetnum);
+-        else if (s->tx_fifo_done_len < NUM_PACKETS)
+-            s->tx_fifo_done[s->tx_fifo_done_len++] = packetnum;
++        smc91c111_complete_tx_packet(s, packetnum);
+         qemu_send_packet(qemu_get_queue(s->nic), p, len);
+     }
+     s->tx_fifo_len = 0;
 -- 
 2.43.0
 
