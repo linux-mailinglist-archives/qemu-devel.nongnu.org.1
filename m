@@ -2,137 +2,202 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E30A4A128
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 19:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E0DA4A135
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 19:13:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to4mb-0006ML-5S; Fri, 28 Feb 2025 13:08:23 -0500
+	id 1to4rS-00072k-Eb; Fri, 28 Feb 2025 13:13:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1to4mM-0005wF-TO
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:08:06 -0500
-Received: from mail-mw2nam10on20631.outbound.protection.outlook.com
- ([2a01:111:f403:2412::631]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1to4rP-0006tY-Cd
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:13:19 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1to4mK-0002W7-Rc
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:08:06 -0500
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1to4rM-0003Mk-Fl
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:13:18 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51SEHEAV002421;
+ Fri, 28 Feb 2025 18:13:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=dChfiLhp3aHPNIX2RvE8TViZypEixXkRZMuzgifox6g=; b=
+ mOD7ljcEhAq3VALrwMEziPOsSfgsJ7t3M/d/9uiHwE0n90ttD63b5JRkIspAcpzo
+ FYx+5MXF11ZsOyxWp9w7w7WrTZZO66/9JYsQKtMpXTcXpc1yFeRt0agPxwYzZ5K/
+ DDVZaQIsq6KutQ2u9NI/mnAo+T5Iq0jAOkKlmFMz3JWHHFBQYPFHJoJvAW+DzQ85
+ sfclR51ebOHVPgViFb3sIEB6d8s2D12mS+4y6VC8Akqx2Yjulx+muY9go+qepjCL
+ xplxJbt9eDLq8Y7m0EtWiu+9jeasqaKu1hyYrjVXQ1Ygz+AwrXwcw74yO1b77/mh
+ ojPqkJsLLYYhicBrE5jomQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 451psfx3bf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Feb 2025 18:13:12 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 51SH3t6D012594; Fri, 28 Feb 2025 18:13:12 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2043.outbound.protection.outlook.com [104.47.58.43])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 44y51f6fk2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Feb 2025 18:13:12 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XhB85ZaLUXzEtJJrpL+opuLFeNIi3d7SdkYAujjA/1gPssdHtnA7SiXhNV1Q5Q4Lz+TW4jWVHc4igLKheuVFaU976tEmwCKrVxs7asGBmVbqz+b2WbtxStBBkw25ceIB7n+lpQIIHoHHwUJ5zfPjuzb14V15txon35CoxVud7dYYqcihD0OiwSKultM31hX/qX7PZqy2FF5h1frc34FNMeBiv3pwnBcfc9YYa1IZZjTNQG72W2bDYqoI7PX+4JSA8+LKhecacAQCCLPmBRurbqDdYs0RBtvKN9dQRlYOmh4v3AVDir+hMqbrLll9OwPkITKQkouAkyZ4LmdEwFCMBg==
+ b=nXlTO4UB6Vvex0+Q6kAo+6Mgp0JqWEZyvk6Jlr0JFiI1lf5KVU++nwIYVHqKZ7RB0szdEXDmxMI4A0hTPkt81anH7wC+6P0XnkPzJ/JPcxoOkXCNJCBBhlBul1jHASyjsP5uGEEY7Z+kbxmMu8f7wYd9Nqa7mrWVBXJ5lQX3LaMvryHKQTQb5b5l/HVhXyxF5FO5IOZsOLLjpkFa628KkOPa5ZVaq5GtB45uAg4d3an+4WCcdesRc623G1iC05Sd0gTVGWIk9bpT441AgMtqZ6z4SKPwUrj3k/NeLxvylrvKfM0NY0NesJnyhMUw9hkfyc7uTUewvk4sQFwNrHFvOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aVeULQ+Eb8fvVEv9FUxZ/7bE5TjiFYthpnLAE5e7kvU=;
- b=tawIzD+qkmXt+hykkhUOYKFTVHnM9pxzGKma5my+YONBVmHIJq5kBjZVOiuaziLSp3HftxIHry7mGvFgHvYM8o69oGG0nxgYeC9Yn9btZjQrbdxqmBiOE44tt7iC6Kwhqujp5yRblXharTKOnBF9I2ELL05f86hyl3ZxPTUxfZcXXcCCMNR+qADR4S6uIbA5MhJdoYpuWrSLtLk2BIF9RtcHf2y2R0mtSTf3meFXfUDR0wKBWufvSwnFvmfe3UMySz/uicIgfgfL5hXGAGpFAp38MTdqya8HKsL7LfhqZyxgUsBJRq6dU1dvbJ8sPgjuLlM+PLN/r3XoLB5tiADxVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ bh=dChfiLhp3aHPNIX2RvE8TViZypEixXkRZMuzgifox6g=;
+ b=eqTMd1Z2V/s1JRf3Ac/3ttScfUTBIUe2dfNNEhgjV3J1K8Pp8Vlo9byy9df1wCnAbenuBWW2BX2OJ5BAo7qH2JpUHd2coocOMEsGHNhxILgO7MbasLDGKrAiieXZOzYWKJ3Odz0hfHdWUyah5X89r+f84VTYNLTiEhyvJ9aYkOim57ai4odspklomQbUdiT0i6nljxorE6cWq11dr8WxyDFOruDjLmcot3KOZDXJoZhZuqF3bvVdyhs2W7xTs2bxWdsZLUKtwT2Qqa/k5gbzmzBy0UkV6YVe5/MPBVgrM8aO1lGhX3ulZaHikYBe4Fotjvspky3NSfuwnOpy5IZTCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aVeULQ+Eb8fvVEv9FUxZ/7bE5TjiFYthpnLAE5e7kvU=;
- b=LCgrz6ME1G3zmoVy8zvH9Z4ESgxxCg2wQkWciIsoabcYlGuuW4C/Xzqy8ddicuWWIdBUD6/K42RzbGHgokicvKsrCc8c+Y3mbf84iloRE1KT+uKgEY/FyNmG2I4ZRVbxD5xGUNaIe7bLeQEoGS2GrI2y5pg1Do6ylqblZmdil30=
-Received: from SJ0PR13CA0123.namprd13.prod.outlook.com (2603:10b6:a03:2c6::8)
- by CYYPR12MB8872.namprd12.prod.outlook.com (2603:10b6:930:c8::14)
+ bh=dChfiLhp3aHPNIX2RvE8TViZypEixXkRZMuzgifox6g=;
+ b=yG20XdCFeSAsycc83qGvoCfv6NrrwTxwNo0Yum5cGlxlpmPCMaHTFWMmV0HAim+rFtoLlhaOQajh3HNPA2emgU1xNRkyAw+xuWcyWXzTC1ZryzT5GsxLkYfDKxkBEAjLPqXd/5fr7tUfHRqlNjfHmdTC1Uojr+BjDLkOE6sxXVw=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by MW5PR10MB5876.namprd10.prod.outlook.com (2603:10b6:303:190::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Fri, 28 Feb
- 2025 18:08:00 +0000
-Received: from CY4PEPF0000EE3A.namprd03.prod.outlook.com
- (2603:10b6:a03:2c6:cafe::a6) by SJ0PR13CA0123.outlook.office365.com
- (2603:10b6:a03:2c6::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.10 via Frontend Transport; Fri,
- 28 Feb 2025 18:08:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE3A.mail.protection.outlook.com (10.167.242.12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8489.16 via Frontend Transport; Fri, 28 Feb 2025 18:07:59 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Feb
- 2025 12:07:58 -0600
-From: Babu Moger <babu.moger@amd.com>
-To: <pbonzini@redhat.com>
-CC: <zhao1.liu@intel.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
- <davydov-max@yandex-team.ru>
-Subject: [PATCH v6 6/6] target/i386: Add support for EPYC-Turin model
-Date: Fri, 28 Feb 2025 12:07:06 -0600
-Message-ID: <51b0e6fdd7caafd365f3a0f38a177920c7a167c5.1740766026.git.babu.moger@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1740766026.git.babu.moger@amd.com>
-References: <cover.1740766026.git.babu.moger@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Fri, 28 Feb
+ 2025 18:13:09 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.8489.021; Fri, 28 Feb 2025
+ 18:13:09 +0000
+Message-ID: <6fd87c40-92dd-4290-9fa9-abd014ddf248@oracle.com>
+Date: Fri, 28 Feb 2025 13:13:07 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG, RFC] cpr-transfer: qxl guest driver crashes after migration
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: William Roche <william.roche@oracle.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, "Denis V. Lunev" <den@virtuozzo.com>
+References: <78309320-f19e-4a06-acfa-bc66cbc81bd7@virtuozzo.com>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <78309320-f19e-4a06-acfa-bc66cbc81bd7@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN0PR03CA0021.namprd03.prod.outlook.com
+ (2603:10b6:408:e6::26) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3A:EE_|CYYPR12MB8872:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7855d33-e65d-4f50-4397-08dd5822d603
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|MW5PR10MB5876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 207f6604-ebc3-4a42-e496-08dd58238e69
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|376014|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?O4a8zIBuWfV2zBesqvZizN+zPFc1uVvNoNV97uZHygLs4VX1rs/62ImGLZwh?=
- =?us-ascii?Q?8gYRwBHuh4aqJPVQQVwOqV9P1MQJiEzPuwQKs/H9tp/IT146O/tiRIlsTiGO?=
- =?us-ascii?Q?bGIqz8mGfAYQr0iZOOOdIP/RQnEjekKCzsyN1yh43L9zOwQ/fLKl07slwFFD?=
- =?us-ascii?Q?ZsIQeJuwAhUcGUbm2hTufGL4MlwlM9jml91Q1ElUeEAQVAb/AwkHvud7kJ98?=
- =?us-ascii?Q?dN6+Mo5LHQcxyI3Douv9498n17QhmyinxS4406o+VMWZB726G88D3MuIAHPc?=
- =?us-ascii?Q?+pWqJArBTecFbrmhTiwYCpMVR8vOYOmspL3OZOpK5CvOESVMj7TJtw8LRNuG?=
- =?us-ascii?Q?AMR69+p49sk979ffZ1RHFajDsPz4BshTziMH11O00sKrnLcclgMCMVz1Mlen?=
- =?us-ascii?Q?BpH3fUHBd6WaFbrw6kf/wlRB0xcIgdJqlA8RSeIaiFKI+U31xKUynM86Vjn6?=
- =?us-ascii?Q?t5SoLlVDT3ML3jCxx3E54ITr15LkOFFLXCvPxX3SIZYHnuajd+oZtvGSzpZS?=
- =?us-ascii?Q?n4UfX726pQVbbAoUOp0NtLelgJ/LMmiF5bbO6imaLR5w5/fseFToExS5wpwJ?=
- =?us-ascii?Q?B1X9wtzVRXppERhI00pjRWXJ8C1vWe9zI/2/DWXWbw8aPUocmSUaZFyo4cO7?=
- =?us-ascii?Q?7Hc+WCTuaHIbAZFxO6WXYdNRULOe2U7ck3pYCFTWPxCZFr2PXMiCCxaMpUno?=
- =?us-ascii?Q?YtRDKl3lUmM/fRpK48LgILmlpetuPOBYPDvTCc/w9plXNWkzo3q0L2QwMLZt?=
- =?us-ascii?Q?RP7n6jtqGYM6ZpNR8LAQaOJN5HafLeOWe4/9wXNFKgm+XKz0sHvNfAKP7EIa?=
- =?us-ascii?Q?CBseFWfA3up4yljQfGRLrFNq3z4KqPpyew7riV9/VyL/dAwWiPSXjydO4NBu?=
- =?us-ascii?Q?wma+n8l+jGv/bNSIUOKuPIoqy+ZqXUs1ODWmZ7thkv/x3je4UkzfYh9zPZNB?=
- =?us-ascii?Q?lX4W/ei3QTxxv/Zv/sNSWLXF9N2noZ1HDvdlaUytdvT67vKaXGuMuJ+vAcUv?=
- =?us-ascii?Q?X/r7a2/n81wc7CM90WVF5RUTarvnUXvuYxa5mzSjXTVzNas938ySJEOiHW+k?=
- =?us-ascii?Q?3gIuiexs8KCkd7wsWWwL9HeheKaFhFiaShn+0HOI+j386/LkIntGC/2olOD5?=
- =?us-ascii?Q?ZwCE1DZNRIgeLwHdnSV15mlgHcEcBtK9+BhRPnrki0XftPOQ0TFgdIYRrV5U?=
- =?us-ascii?Q?6ZJJ1rh8KEox8/T1snF+SkqwEzn0QuCTacupDt4IauXvdEE7p9EN4LOxg2Pd?=
- =?us-ascii?Q?mQNMjNf1L4KNyJnwveIzw302fKc9GM598q6pWx+AFcG1kp9HAmYk+QX3UgpL?=
- =?us-ascii?Q?zmDwjhKLTPFJqem8Q44I+20MC12u7sfblryhj7op2+UIOQXlGEc+SODH5mCT?=
- =?us-ascii?Q?BBCD4n4+WagMkNcdFiENaaRvG7IYoerz03FlF5G2yBNXCfU0q3lecLk8a8Ol?=
- =?us-ascii?Q?xLfxvDwzdNovFLSS41N3DP13oYriliWBob8vy36Yzlp9hyzhyJMgAGJvDDFP?=
- =?us-ascii?Q?PmgOnvgVy1CELRk5ySOuYY6zoTzMtJphzAR+?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 18:07:59.7586 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7855d33-e65d-4f50-4397-08dd5822d603
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3A.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8872
-Received-SPF: permerror client-ip=2a01:111:f403:2412::631;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OGE4YmlaUDBpUmpjQjNTSEJJUWoyUXA2R0hYYUw3dmxXQmlFQVk1eEcvczN0?=
+ =?utf-8?B?RjNleTFETFhqK09ONkVHRWMwVUcwanlGSE8wOW92KzlkaFVPc0loQ1NSR2wv?=
+ =?utf-8?B?UlpyblkxbDV4eFlmWXluRWFHZjM3VnUwdkMrRzhocXZ2MEVVNGZSOHgzM0NI?=
+ =?utf-8?B?RlQxd3B6SlVFMXA4YmFLVjAwZDFUbTZrdXA4UFV3QlN6T1pGWFRlTGxHRkp0?=
+ =?utf-8?B?TGZBWEZ0R044WjBvbkN4dVJSV0tDbEswT1U3OXdUcysvZ05iR1J5OWtPNTI0?=
+ =?utf-8?B?b3NXVkZ4anFqOVQrVGx6V2pmMGZmbTFDMFZqcU5sS1IyaVR1Qm5RNnRmUWlk?=
+ =?utf-8?B?YThnTlRtU29QSFhBMkVZY2ZUNUZFeXh0SlRoNWpleVFrYkVwc3dmcHdQeG45?=
+ =?utf-8?B?RFNkakVyS0pyNXhGZC9Ld1ZnRlA5eVpsUktwNmYzclE1TFFCU21tS0dxUUg1?=
+ =?utf-8?B?QklwdjZwbzZUYkpHc0NsWktlNjdSOWUyb2gwTFRyZW9JOCtmelk3S0NwLy93?=
+ =?utf-8?B?bDFKc3EyUFRZNk5CaTRhc29pQUNTNXg4UVU0QTdvRlhNOWFxMHRFVzNGNHph?=
+ =?utf-8?B?K1J6SXIzSTQ3SWYyOXBjR081Q2lhcjhrUDA2YTU1N093UGFNK3UwdXJ0YmFO?=
+ =?utf-8?B?VjFjOFFzUXhoblBrNG9QZTZySTZsR0FiaGlZVFVlQ1Jsejc5eFNIeG1tYkM5?=
+ =?utf-8?B?bUNKcElrc2R2RVpLY25iNXRWQUxydGdHcUo3QTdTVms5SE5GUUF6RVZTcXRL?=
+ =?utf-8?B?b1EvRUFBZC91WHBaQWZvMStGNkRwd0M2RzM5bUZtVkdFRVlycGpjSi9zMng4?=
+ =?utf-8?B?anNXUWl5UjFxTWN2eWFsV1crcDI1eVpVM1ZjQkVsZ01HYll3ZU9kd012TzZm?=
+ =?utf-8?B?RFJob1h3M1RrTERtYmJoUWE0WjBXR29LQXpUTWZpdjh1UU5ER2U3K042Y0Vo?=
+ =?utf-8?B?TWRRTnhQaThYUmRMM2JJc3hmNFF5OUo0U2s2Qm9GbjlEOHM2dEpaUkVEWGNl?=
+ =?utf-8?B?UENGK1VNMHJiUmNzZXN2UTkwTGRQRmtrcUJidU0zQ3p5dVJZMVdUZWw5M3ly?=
+ =?utf-8?B?d3lNRHBtdnRKTHRnQWVqT1g2MGltbWREZlVIQTloV2tlYzNrMnRwNEtmUmZK?=
+ =?utf-8?B?WndPc2VrNEtabXVZY2J0bkRtZGowM2pxaXNodlVlN21TMWNNK2hDR2hzdVBX?=
+ =?utf-8?B?aTVZWFhVUjNNek5uc3NPZTU2cHpKNVZ2K01OUUV6UFRDS3l4QmNROGpEY2F6?=
+ =?utf-8?B?bldOdmZ3aWxMRVA0dDBmblNVdUVQNEQxZk11aHZDaGIvRE5FS096cUhGVHZs?=
+ =?utf-8?B?N1QvNjNtOUxMVDFtWVlQaUtHcWNQeVRHSi9na05Pc0t2dElGV1VLMlk2ck40?=
+ =?utf-8?B?a2V5LzduVVNhRFIzMno3MDhZdEdkcDJOL0F6OVBLYnkrZElCNnpsSnBuOER1?=
+ =?utf-8?B?Q2VJRkNTTDV3R2o3VXVQYityYm5Pcno4VmFQeFczQUgzOU9ibUdPTHdBY3Iz?=
+ =?utf-8?B?TitRM1pieHpkOXhpY3VUbHNGRXFLaENTOGordDEwSFY4MGh2TEV1bTgzc1Ez?=
+ =?utf-8?B?WEIyUUJMQWx1bzhYbVpzUEh6UndkVDg4SnVWOFBuWVBucG8yYVpmS09XSUlG?=
+ =?utf-8?B?dGlyNnl0S1dzS1p2eXIwcmJyNkRJLzd5bVRPbG5SUGFFZGFxb0lGVWJLbzk0?=
+ =?utf-8?B?c3hBOFpkWFRaaVV2aGVTNWVFNnQzeDdBemRDRXpUYXZiVWdmU0dOOHcrQ2tq?=
+ =?utf-8?B?QjRQVHZiWGxzMUlvWlFBSGNNcWhZSjQ1ZDFPZDdERXFnN2xSNjJFZ0MzQ2pD?=
+ =?utf-8?B?NEdTSTRJejRVOEpsSzF5Zz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SGhFeTIxTlAwOGx1S09xcW5GbW9LNWZXRjVnNVN1ZURVaXJXNG1xbEg2cUcz?=
+ =?utf-8?B?ZXAzWTFSUlBvekIvME1yN2xqRHJ1V3JpOGRFMDUxTVpScUltTWw5RThtM3FV?=
+ =?utf-8?B?VS9Obm1sUm1VWmhGeGZQb1dXNEYyS2hxbFNOZHdid2p2a2JLWlVUNnpsVzVl?=
+ =?utf-8?B?SzAvSFhqNmtndEpvUGdYV0cxbFJQMk9OdW5GVzdLYVN0ZkJEdEllQkRnRUgz?=
+ =?utf-8?B?ODU5MEtNN0pUZlBFcHU0eE1oV1ZRejR4a2NnQ1dPZDBJVW00aGs3ZUxCa2ts?=
+ =?utf-8?B?VUlhY0FXekIrL215ckVDQ0M3Z0RSSTZkWVBtZGdDd0hqVWFJSC9TNExVY2Y2?=
+ =?utf-8?B?Ly9iUmZueFRQb09BR0lIazJ5OUV5K0h1NHVHZUpzNmdUUnZUVnk3MStkQzJ0?=
+ =?utf-8?B?dnRZRWd3M3poeVFyVTN6NzcraEt6SFdSVTlJM0hjQWVmcWIrNzV0bldsVDZo?=
+ =?utf-8?B?TWJubUlBNFcyQVZJdVo1TlJ6aDhvR0RyQWtXV2RKaUlnV1E5KzJySEx1YmpR?=
+ =?utf-8?B?RXNibzhjTGNTMzFtQWhKU0U1cUtGd21XZ04wMWhZaHRwTjFoNXo5dU83RTk0?=
+ =?utf-8?B?K2FqT0NKRXFubnZMeWg3M3RzcWt5czgzeVc3TGpTNTk5NEVXUWdIcTlvb1Bi?=
+ =?utf-8?B?eVZtUDY4RzR5NHZzTFZwaTJ4UWJMdWFjZ3diL0xZRjZ4MG1DNjYwU1RwRHpu?=
+ =?utf-8?B?S3o0YjBTdTBVWjJVaWs2b2dyN09qYnNSa2EzM0NnS0FaaHRYNlJsL2dzUit4?=
+ =?utf-8?B?My9WWW8zZVJNa2ZpdndHcGdiWk0vSitGV1p6UUl6Tnpua0swdFVrQ3NCSDJH?=
+ =?utf-8?B?UExtKzRVN1Q4ZWZzRjdSd01qaVpIUDlUN3pHZ3drQUIrNHNpUjRrbmxBREJ5?=
+ =?utf-8?B?OXc4eURzOU5RWkRuTFVwTkVKYnUybU9tSW01RXBRLzZTSjhTU0FsVmF0N2wx?=
+ =?utf-8?B?ZkNSTHFoVFBqcUc4M2s4dWd3WmZjUUJ2MklUellBMXZOWWZ0OGllamVRZE40?=
+ =?utf-8?B?WHRKSTZqQldKZkxsOTFzT2xDUkEyQ05NNGpKM0VXUWNQV3FCVE5WQ2xBMzZk?=
+ =?utf-8?B?SzdGVy90MnU4d0NGZjB1dHlNNTdnRkdNaGV0QU5scXRjSmxldUFFNG9JZTE4?=
+ =?utf-8?B?YmlMakFsRi8wQ0hjcUV0MFdBcGUzSWljZlZDS3dwTzBhb1hoNXdaalZGL0VB?=
+ =?utf-8?B?Y3ZBOCtCa3dablM4V2kwcmdkY2swVFNGai9TbG5jT2U2eWtaeWowWm42VGRh?=
+ =?utf-8?B?NnRnRHhHQW96aWp3ejNQM1NlZkxGMUtIS1NXSG1kWG1uWkhuNWFRajZGZFhQ?=
+ =?utf-8?B?WTUvUmtYYk55OHdhdjE4ajA5eGhSWTZOSVc0NElaNmhkRGMrTWRCR0JlYnRL?=
+ =?utf-8?B?SklTQ1NKam8vWTQ1ZTlxMzhhUEdHVEx6K1dZNUw1YnorYlpNQUh2ZHlCeHZC?=
+ =?utf-8?B?OU5qV0w5dENaL1BUdVlaSVhaS2JFN1E5VkxGR1BnbVFJb0V3VFRzQy85QzQ0?=
+ =?utf-8?B?dUtmMUZTTWhjSVpuTHRYbXh5c2E0bGJUYXZ1Wlp3TFNSMjB1L2FjTk8yQ3Jy?=
+ =?utf-8?B?L3dDR29JY0dpSzM4dWFLOEVTUXhvS3VuSmxIYW5pVWFjRGJWK08vNnkwSHMz?=
+ =?utf-8?B?Vmx5ZnNpS0h0bll0RURmL1gvMnI5Q0p2aEpzU2I3dGpkQTYweDlQSTRoMVlW?=
+ =?utf-8?B?c2c2Y2JCQWhWdWF5MGl4NEs0OHp1VklHV1pZUU1FdmVndFZvT3RHZFBBY0x3?=
+ =?utf-8?B?a3VCUC80QkdKcWpRck5KNnBOZnI0TWNaVS9aeVZ1Nlc5SC9kaUlNckc2Nm9P?=
+ =?utf-8?B?K3c5dnNLc0YxYmxuVVRhQURUYk9QNFNaelg1QzdUM0hCS0ZzVzdpUHpxc1RN?=
+ =?utf-8?B?MEl1aHB2b25aRENtZDhIM2xEblhPOUdZcEhOdDNzbldDZlQrY2M3Ty9ONmds?=
+ =?utf-8?B?alZvV0wrSTAwaDFxN3pHVExGY0F0bVdVVll0d01TZExtR3Z1c3BFdFU2dlc4?=
+ =?utf-8?B?WW5tTHFrZDIyTmU5d2Z1Rmt5RzZyTHZyNlZMOVluYTJ6bDkraDNaM2o5UFk3?=
+ =?utf-8?B?YXpKVEU0K1dwYk1DcFIxYkdwQjBGZnhhU3lTeHgwbStKNW9YRDZMc2s2OVVo?=
+ =?utf-8?B?Q2tSZkxseGhWRGI0TWFqa0dZY0lhb0x0dUhTZFVhZk9UdkdzaEx0TjU2NVRy?=
+ =?utf-8?B?NEE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Wy74ZftO17z4gtyOylOeh+7aMNH2xdrLxDZFwlWjXqyH2r1NL116m3kAS7pGnRCVSiEopBpMZfaHmz31xhsZfjd2R7BtSd2NuVV9VDWTd9aw7ySZrBeuosrE2LB/M+FR6D/br6guy2eSy7fynDA1/Cc7UMtt/NKh5b6K5cXxVsI8ZQfUrfTA8WVfmhzeMPPmQSv2w2w/3kZSHViq0EdyG3HG5fXr6F5KCP1+whXwSOTsJU5HlE8LcwBChdMRN0h58nW7u2TlXVFoerc3qFoj6N+D/6MMftLBFr/6aqmHtMeHsh6gPbmWdi5dRH2FZs6c0TVc3R4/pLzA4RB4Imf0kbCwh/HiJUOmvmPzeDgGn/SNkSvE1SmZK2pAGLhHxgpIm31nWnND6NwsIdyi5Rg4u2+3IjhCYT2+f5kIkwzl7YYKH2t/qwqcr4m+b2RDzIoWuHufU0jHjSLsAMjUaROmVVfk+/d3eRJMIxeeiGHaJrbJn6C4tERMNM0/ljent9A85BzIBA2ajajbbbthzSG/d4tMpADhkfMdfe/6jp3H3DMThdBAfIWWpF9vuv45ps2H5nUHeD/CSQD9tot3EucNOGKtNh62+kQUOy5Q6bWkCWE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 207f6604-ebc3-4a42-e496-08dd58238e69
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 18:13:09.4292 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: POJ/fjUVqv4AZgS9Q1Xllu5Ey3QEV+zu2uG4TXFMcBAtYw4/ZBv9v/cQeQDyUezh/5/tg2sQGPZJ25XwmEfpcZsT25UVhJJyKA4bWtwI1+8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5876
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-28_05,2025-02-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ spamscore=0 mlxscore=0
+ adultscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
+ definitions=main-2502280133
+X-Proofpoint-ORIG-GUID: 38kPUo0WK3VeP2t_AvegUbm7VmZ-Iy1Y
+X-Proofpoint-GUID: 38kPUo0WK3VeP2t_AvegUbm7VmZ-Iy1Y
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,185 +213,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the support for AMD EPYC zen 5 processors (EPYC-Turin).
+On 2/28/2025 12:39 PM, Andrey Drobyshev wrote:
+> Hi all,
+> 
+> We've been experimenting with cpr-transfer migration mode recently and
+> have discovered the following issue with the guest QXL driver:
+> 
+> Run migration source:
+>> EMULATOR=/path/to/emulator
+>> ROOTFS=/path/to/image
+>> QMPSOCK=/var/run/alma8qmp-src.sock
+>>
+>> $EMULATOR -enable-kvm \
+>>      -machine q35 \
+>>      -cpu host -smp 2 -m 2G \
+>>      -object memory-backend-file,id=ram0,size=2G,mem-path=/dev/shm/ram0,share=on\
+>>      -machine memory-backend=ram0 \
+>>      -machine aux-ram-share=on \
+>>      -drive file=$ROOTFS,media=disk,if=virtio \
+>>      -qmp unix:$QMPSOCK,server=on,wait=off \
+>>      -nographic \
+>>      -device qxl-vga
+> 
+> Run migration target:
+>> EMULATOR=/path/to/emulator
+>> ROOTFS=/path/to/image
+>> QMPSOCK=/var/run/alma8qmp-dst.sock
+>>                                                                                     
+>> $EMULATOR -enable-kvm \
+>>      -machine q35 \
+>>      -cpu host -smp 2 -m 2G \
+>>      -object memory-backend-file,id=ram0,size=2G,mem-path=/dev/shm/ram0,share=on\
+>>      -machine memory-backend=ram0 \
+>>      -machine aux-ram-share=on \
+>>      -drive file=$ROOTFS,media=disk,if=virtio \
+>>      -qmp unix:$QMPSOCK,server=on,wait=off \
+>>      -nographic \
+>>      -device qxl-vga \
+>>      -incoming tcp:0:44444 \
+>>      -incoming '{"channel-type": "cpr", "addr": { "transport": "socket", "type": "unix", "path": "/var/run/alma8cpr-dst.sock"}}'
+> 
+> 
+> Launch the migration:
+>> QMPSHELL=/root/src/qemu/master/scripts/qmp/qmp-shell
+>> QMPSOCK=/var/run/alma8qmp-src.sock
+>>
+>> $QMPSHELL -p $QMPSOCK <<EOF
+>>      migrate-set-parameters mode=cpr-transfer
+>>      migrate channels=[{"channel-type":"main","addr":{"transport":"socket","type":"inet","host":"0","port":"44444"}},{"channel-type":"cpr","addr":{"transport":"socket","type":"unix","path":"/var/run/alma8cpr-dst.sock"}}]
+>> EOF
+> 
+> Then, after a while, QXL guest driver on target crashes spewing the
+> following messages:
+>> [   73.962002] [TTM] Buffer eviction failed
+>> [   73.962072] qxl 0000:00:02.0: object_init failed for (3149824, 0x00000001)
+>> [   73.962081] [drm:qxl_alloc_bo_reserved [qxl]] *ERROR* failed to allocate VRAM BO
+> 
+> That seems to be a known kernel QXL driver bug:
+> 
+> https://lore.kernel.org/all/20220907094423.93581-1-min_halo@163.com/T/
+> https://lore.kernel.org/lkml/ZTgydqRlK6WX_b29@eldamar.lan/
+> 
+> (the latter discussion contains that reproduce script which speeds up
+> the crash in the guest):
+>> #!/bin/bash
+>>
+>> chvt 3
+>>
+>> for j in $(seq 80); do
+>>          echo "$(date) starting round $j"
+>>          if [ "$(journalctl --boot | grep "failed to allocate VRAM BO")" != "" ]; then
+>>                  echo "bug was reproduced after $j tries"
+>>                  exit 1
+>>          fi
+>>          for i in $(seq 100); do
+>>                  dmesg > /dev/tty3
+>>          done
+>> done
+>>
+>> echo "bug could not be reproduced"
+>> exit 0
+> 
+> The bug itself seems to remain unfixed, as I was able to reproduce that
+> with Fedora 41 guest, as well as AlmaLinux 8 guest. However our
+> cpr-transfer code also seems to be buggy as it triggers the crash -
+> without the cpr-transfer migration the above reproduce doesn't lead to
+> crash on the source VM.
+> 
+> I suspect that, as cpr-transfer doesn't migrate the guest memory, but
+> rather passes it through the memory backend object, our code might
+> somehow corrupt the VRAM.  However, I wasn't able to trace the
+> corruption so far.
+> 
+> Could somebody help the investigation and take a look into this?  Any
+> suggestions would be appreciated.  Thanks!
 
-Add the following new feature bits on top of the feature bits from
-the previous generation EPYC models.
+Possibly some memory region created by qxl is not being preserved.
+Try adding these traces to see what is preserved:
 
-movdiri             : Move Doubleword as Direct Store Instruction
-movdir64b           : Move 64 Bytes as Direct Store Instruction
-avx512-vp2intersect : AVX512 Vector Pair Intersection to a Pair
-                      of Mask Register
-avx-vnni            : AVX VNNI Instruction
-sbpb                : Selective Branch Predictor Barrier
-ibpb-brtype         : IBPB includes branch type prediction flushing
-srso-user-kernel-no : Not vulnerable to SRSO at the user-kernel boundary
+-trace enable='*cpr*'
+-trace enable='*ram_alloc*'
 
-Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
-Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/cpu.c | 138 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 138 insertions(+)
+- Steve
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b9109b7e79..081a7f0c0f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2665,6 +2665,61 @@ static const CPUCaches epyc_genoa_v2_cache_info = {
-         .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-     },
- };
-+
-+static const CPUCaches epyc_turin_cache_info = {
-+    .l1d_cache = &(CPUCacheInfo) {
-+        .type = DATA_CACHE,
-+        .level = 1,
-+        .size = 48 * KiB,
-+        .line_size = 64,
-+        .associativity = 12,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l1i_cache = &(CPUCacheInfo) {
-+        .type = INSTRUCTION_CACHE,
-+        .level = 1,
-+        .size = 32 * KiB,
-+        .line_size = 64,
-+        .associativity = 8,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l2_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 2,
-+        .size = 1 * MiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 1024,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .inclusive = true,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l3_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 3,
-+        .size = 32 * MiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 32768,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .no_invd_sharing = true,
-+        .complex_indexing = false,
-+        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-+    },
-+};
-+
- /* The following VMX features are not supported by KVM and are left out in the
-  * CPU definitions:
-  *
-@@ -5792,6 +5847,89 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             { /* end of list */ }
-         }
-     },
-+    {
-+        .name = "EPYC-Turin",
-+        .level = 0xd,
-+        .vendor = CPUID_VENDOR_AMD,
-+        .family = 26,
-+        .model = 0,
-+        .stepping = 0,
-+        .features[FEAT_1_ECX] =
-+            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
-+            CPUID_EXT_XSAVE | CPUID_EXT_AES |  CPUID_EXT_POPCNT |
-+            CPUID_EXT_MOVBE | CPUID_EXT_SSE42 | CPUID_EXT_SSE41 |
-+            CPUID_EXT_PCID | CPUID_EXT_CX16 | CPUID_EXT_FMA |
-+            CPUID_EXT_SSSE3 | CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ |
-+            CPUID_EXT_SSE3,
-+        .features[FEAT_1_EDX] =
-+            CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX | CPUID_CLFLUSH |
-+            CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA | CPUID_PGE |
-+            CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 | CPUID_MCE |
-+            CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE | CPUID_DE |
-+            CPUID_VME | CPUID_FP87,
-+        .features[FEAT_6_EAX] =
-+            CPUID_6_EAX_ARAT,
-+        .features[FEAT_7_0_EBX] =
-+            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_AVX2 |
-+            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ERMS |
-+            CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_AVX512F |
-+            CPUID_7_0_EBX_AVX512DQ | CPUID_7_0_EBX_RDSEED | CPUID_7_0_EBX_ADX |
-+            CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_AVX512IFMA |
-+            CPUID_7_0_EBX_CLFLUSHOPT | CPUID_7_0_EBX_CLWB |
-+            CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
-+            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
-+        .features[FEAT_7_0_ECX] =
-+            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU |
-+            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
-+            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
-+            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
-+            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
-+            CPUID_7_0_ECX_RDPID | CPUID_7_0_ECX_MOVDIRI |
-+            CPUID_7_0_ECX_MOVDIR64B,
-+        .features[FEAT_7_0_EDX] =
-+            CPUID_7_0_EDX_FSRM | CPUID_7_0_EDX_AVX512_VP2INTERSECT,
-+        .features[FEAT_7_1_EAX] =
-+            CPUID_7_1_EAX_AVX_VNNI | CPUID_7_1_EAX_AVX512_BF16,
-+        .features[FEAT_8000_0001_ECX] =
-+            CPUID_EXT3_OSVW | CPUID_EXT3_3DNOWPREFETCH |
-+            CPUID_EXT3_MISALIGNSSE | CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
-+            CPUID_EXT3_CR8LEG | CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM |
-+            CPUID_EXT3_TOPOEXT | CPUID_EXT3_PERFCORE,
-+        .features[FEAT_8000_0001_EDX] =
-+            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
-+            CPUID_EXT2_FFXSR | CPUID_EXT2_MMXEXT | CPUID_EXT2_NX |
-+            CPUID_EXT2_SYSCALL,
-+        .features[FEAT_8000_0007_EBX] =
-+            CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR,
-+        .features[FEAT_8000_0008_EBX] =
-+            CPUID_8000_0008_EBX_CLZERO | CPUID_8000_0008_EBX_XSAVEERPTR |
-+            CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_IBPB |
-+            CPUID_8000_0008_EBX_IBRS | CPUID_8000_0008_EBX_STIBP |
-+            CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
-+            CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
-+        .features[FEAT_8000_0021_EAX] =
-+            CPUID_8000_0021_EAX_NO_NESTED_DATA_BP |
-+            CPUID_8000_0021_EAX_FS_GS_BASE_NS |
-+            CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
-+            CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
-+            CPUID_8000_0021_EAX_AUTO_IBRS | CPUID_8000_0021_EAX_SBPB |
-+            CPUID_8000_0021_EAX_IBPB_BRTYPE |
-+            CPUID_8000_0021_EAX_SRSO_USER_KERNEL_NO,
-+        .features[FEAT_8000_0022_EAX] =
-+            CPUID_8000_0022_EAX_PERFMON_V2,
-+        .features[FEAT_XSAVE] =
-+            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
-+            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES,
-+        .features[FEAT_SVM] =
-+            CPUID_SVM_NPT | CPUID_SVM_LBRV | CPUID_SVM_NRIPSAVE |
-+            CPUID_SVM_TSCSCALE | CPUID_SVM_VMCBCLEAN | CPUID_SVM_FLUSHASID |
-+            CPUID_SVM_PAUSEFILTER | CPUID_SVM_PFTHRESHOLD |
-+            CPUID_SVM_V_VMSAVE_VMLOAD | CPUID_SVM_VGIF |
-+            CPUID_SVM_VNMI | CPUID_SVM_SVME_ADDR_CHK,
-+        .xlevel = 0x80000022,
-+        .model_id = "AMD EPYC-Turin Processor",
-+        .cache_info = &epyc_turin_cache_info,
-+    },
- };
- 
- /*
--- 
-2.34.1
+
+
 
 
