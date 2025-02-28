@@ -2,89 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83901A4A101
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 18:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C19EA4A134
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 19:13:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to4Zb-0005SI-Q8; Fri, 28 Feb 2025 12:54:55 -0500
+	id 1to4qa-0006Id-SD; Fri, 28 Feb 2025 13:12:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1to4ZZ-0005No-Gt
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:54:53 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1to4ZX-0006iM-8M
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:54:53 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4397dff185fso21795005e9.2
- for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 09:54:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740765289; x=1741370089; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jtvMelRpMHPT9gIgF1y4kKqGNE8vJVEvR/SuEBPumP4=;
- b=zC+UbZvSxGiLqrwyVReJbbT76AqmTZf+G3YAbpr1Z/7+LeEoYB9gekFAKPBSCKxanU
- eXyXTa36DOrvki1Prirldp+j+d10zKmMrAVvi9+eJ328ZR228hU4Xa/kK/b/1ukFYbUz
- aOqERCWVUMHChhGRslZq+nSwcypKnDgrchchgXjB/3+V35fKnGm+WphkBmze7gkBrfEM
- Yz+jeNqgICbCct0SmX0vQPem+IXuCvhtv3Tcb0smGFZLefg6grFU3HEG1XYt7/X5D+UB
- K94sf95syhJQcCp7E3xbZ/ouDJ2XhVwyQYsoc3RDLxhIj+ViKWqur8ayi147BD0bmFnK
- uMrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740765289; x=1741370089;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jtvMelRpMHPT9gIgF1y4kKqGNE8vJVEvR/SuEBPumP4=;
- b=mHfUxIG//MoQshUXrjF0hplgx1msAFPJv/E79y3viL1pyznmWAoqO9Culvn6svsbhZ
- S9E8kMYzIQKm8Ogw1jumvIv7mCkTyOjSYyK7lXujKBaulxMhQOdRsjxUefQ6pixppt79
- tSfgc2fzDK3kbmiB1A+02xbtsT3mKMq4BRlrl4trs76bOhi0EIsMKiyL+RBU1OsA0wnO
- FcS3FHTZsglIkdzuro6LocLVQzBbFGy97KXjD9Ua7BtUJPCo95AWgYrVmha5U0TtysdV
- LJPfD+e4ib/jH4c7xz9bvgkJeEgRvynl1v4Is+BMgqeVMX007CQX9iRTMpBApY5j7AP9
- pGoA==
-X-Gm-Message-State: AOJu0YxT2nkCVCKdYwVUmaO1dJBPip8fjUc06vuR5loeozqBeSyVCuTw
- URrSfaiyN77orggwPdeHs1L7xbVc3g1Zzaq0sFtYdj3KO9j78XZf2EqtjxkBH2M=
-X-Gm-Gg: ASbGncvHme0hDYJ/GOfIB4ZkVV1QoDjgz5qiFs6tbwt0fR0kUULhcV+9qGpOLI93tct
- DXlPvGoHpMhpMYn7fLjRTvMNmcO11/gtghbxhQ1iBCvQTPJnZvUIM6ruorXqlrky7CzgYsPo+ek
- lJQdG3+jgQnLkq4iAUydpTCznBMphgGrrVzMArsjoHGhmYmXaB9EgbktUreaUOsKNh7iiZDiRES
- epAOJcfRrqltoXMtMa6RHvJ0CQcS9U+axAQ7AKLehci1SoRRJlFFyvjhQw3PFd4ZGOPesAQ6G0I
- HV01aHKLQdivsDakjQsrCN8QAD83
-X-Google-Smtp-Source: AGHT+IEEUmZW/ghjkQdLqnqP8A/kZ0JNuvsioQ6f+TTIDp2YbRs//2RhmU2AjUQyqVEfH5hhsYKJKA==
-X-Received: by 2002:a05:600c:1c8e:b0:43a:b0ac:b10c with SMTP id
- 5b1f17b1804b1-43ba6744a10mr29506175e9.26.1740765288904; 
- Fri, 28 Feb 2025 09:54:48 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43b73717230sm62409275e9.19.2025.02.28.09.54.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Feb 2025 09:54:48 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 95B615F7DE;
- Fri, 28 Feb 2025 17:54:47 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [RFC PATCH] gitlab: add a new build_unit job to track build size
-Date: Fri, 28 Feb 2025 17:54:41 +0000
-Message-Id: <20250228175441.674384-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1to4qY-0006Hv-Ev
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:12:26 -0500
+Received: from mail-mw2nam10on2060.outbound.protection.outlook.com
+ ([40.107.94.60] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1to4qV-0003Hp-Vg
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 13:12:26 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LtIkAun8ppghMSZBYgNtXSCSxOUlKZzvcd5suou5E1hh1T8On/mk+Kf1S6cN3BKwaDHRrTjh5CyF1Hv/9vSJvKko1kZ9KDOjj23HH7f/UqbLW+/vPElE5mw8fAM77operLbnQVMd7lsT+RxnreGWFfYt9zuzm1LM3i2P3/lDFpyylVHBTYufjfG1qWDaQYTpAHXg/h4AkJRYJRezhOfs+yu4B3HOU4SGGC6eeo2Q3xDQ3u1nv2yKyZpieTI60/+RcX26m7t/hhZJi+KU2jwqimoVfC8rfk/6vzzEF4IMevm3lPOfha/8JnMo/DIeS0Ii/rInSzI87rky08qCX3j8Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K2FDTukXAiLBoFjos2fdqXuplt+kJ6XxKQQi10Sb2yc=;
+ b=gMZ6zp7RBp8iUZ4iwHUppqVHxUkq/8dKaiyGV0gNlVvhyVBIl22X/KmhW9SahvtmGo8eSxos2yZCGq1TftrWe31pIPWT75ISKel8p+cLaCBCwkWwjbaxHu1v/hH/VlHUL0GMEXCOayGIiFBns49FuvboOk61780gWrYkTWodxkemh0HbUJ7Jxgs0VyRUdYfi+lMZ8+MwEoQ8ydRF8ecl1i09+tEGJxJQbiebkzPoY2E8AxJmeh246kch/9/nVp4Sc/WM0Iv+5hidej2FK8j29ljaMQM1GYcdl+bGjc4JLA2Cph/6MTcV+uN54EHLpRMgnwI9eNWuVk+GbPjACDrqIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K2FDTukXAiLBoFjos2fdqXuplt+kJ6XxKQQi10Sb2yc=;
+ b=4QPPTwMhAJIXFc+KyDL9WesiYTcmq4d8mReq4UqbOx+4weRVJ0OpcnE6yUttXpHC6jQrD/lkzq/Bf0ZD33oxbK/zeaxVHN3yk0ExGPDHxYReWlBhffEsXunKmye11paLrn83pyefJev0m12mPI2nsOe/ArGpHebkcDyMc17j4/s=
+Received: from DM6PR13CA0001.namprd13.prod.outlook.com (2603:10b6:5:bc::14) by
+ CH3PR12MB8260.namprd12.prod.outlook.com (2603:10b6:610:12a::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8489.24; Fri, 28 Feb 2025 18:07:14 +0000
+Received: from CY4PEPF0000EE3B.namprd03.prod.outlook.com
+ (2603:10b6:5:bc:cafe::2d) by DM6PR13CA0001.outlook.office365.com
+ (2603:10b6:5:bc::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.9 via Frontend Transport; Fri,
+ 28 Feb 2025 18:07:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3B.mail.protection.outlook.com (10.167.242.14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8489.16 via Frontend Transport; Fri, 28 Feb 2025 18:07:13 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Feb
+ 2025 12:07:12 -0600
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>
+CC: <zhao1.liu@intel.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
+ <davydov-max@yandex-team.ru>
+Subject: [PATCH v6 0/6] target/i386: Update EPYC CPU models for Cache property, RAS,
+ SVM feature and add EPYC-Turin CPU model
+Date: Fri, 28 Feb 2025 12:07:00 -0600
+Message-ID: <cover.1740766026.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3B:EE_|CH3PR12MB8260:EE_
+X-MS-Office365-Filtering-Correlation-Id: b92545b9-11ad-4e97-d873-08dd5822baa7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|82310400026|36860700013|1800799024|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sQDMR00maWUgzdwwvExg36jN/ZwhbinW/iCGYv2OLP/tUGnTPW8npNRAIe+Z?=
+ =?us-ascii?Q?tzrCUC6DDC3UHF/83uCK+W9gc4otP01iRiRZ/wsMeA9EcFBNRGp5psqxCWHW?=
+ =?us-ascii?Q?l0FAAa+NwKLR6I3n+OAMtD3mie8YKmhimZg7SPW0Mrry4qjcx5wOJJTMRDGP?=
+ =?us-ascii?Q?DUtsI+wJ3xWMehXXaodzLMIOrWRYcLmKyNOGrWwOIjW7DPP5PDBYcy5aX3u1?=
+ =?us-ascii?Q?29ZK3Ls98fPi7sOh5dYwJ2j2xXmS1aDaBWEFKpplYcQxmvZ1oQIrdD7N/p+C?=
+ =?us-ascii?Q?DDPhF6GVC+wPrB+rKsJxlG445NJ1PpEYIGectTufBL/xFooQXbOv1KO0UvyG?=
+ =?us-ascii?Q?rB7fZ/yDnbhzUhh376sllVlpgA/cNxrG9PaDWjnOmdbABzv2JwPzU/Pb0fOs?=
+ =?us-ascii?Q?qT4JcvnVlyMSJL8e1iaD2DeHpI/v7b21Mu+Qo8BIWaFXxZsXA+F/MPGNYmY/?=
+ =?us-ascii?Q?Tp5r7xktWz5WFsOcYDhwn8fdZDtmQvY/usga5AzC9lgyS7oQlstBmdT7rrWV?=
+ =?us-ascii?Q?MKb8b0sUnjopVE0PMaUtTurn3hyLpZ+e/MJkT6Yl3pJ0vDcAqljoxpNVc8jd?=
+ =?us-ascii?Q?9LsG/Qp41Y3SnH2tvNzX8TcnLGZ5hAUlbUBuadxd0gcrG2xsemj1Cf9XNn74?=
+ =?us-ascii?Q?lkwEOhP9uNBv3VOjqGDSlsRMzeLfG1OiZ8T4qIE01QMBMzA9uyPPASeTwp3x?=
+ =?us-ascii?Q?V55dPteocC+q4FmNuzmhj66KyAO4CQ/J2WLSq7jnYMsrS5cFgOtuZKw2C/ao?=
+ =?us-ascii?Q?2ZmH7h48iMBAtpprzk2xdVdhYptKX6hCaB/Lw0tV6pJJNzUgaGomAlhVfmFn?=
+ =?us-ascii?Q?XtaDF1qk7RokYkzP1BMItsKSS6qhwACkRq8oGKeeStMAwK4hUmgTR1tUkKgx?=
+ =?us-ascii?Q?SirdxPKvwZKaFKMbOF6rB//pL7vSrdo1rh0ZGve4tFLlW1evj2NNFztQ+F7U?=
+ =?us-ascii?Q?bIEDaV0TXiWV86tCJvwy+EWfhqy7pmjWjUDrO41TxGysBcS1dVUM2e5/uwnJ?=
+ =?us-ascii?Q?1BSyDSbZGz68cQWcwoN7AUx2hTAxRsjQoyXQbMvFqppLpNg4MMj1lFFTq/NM?=
+ =?us-ascii?Q?SyCX7f6CIZ0PHpQw8XriEixDEDw9klOeUfDln6LyCLQhhUsMmXGTvrnYSBHr?=
+ =?us-ascii?Q?Kx6/OURBdXa2mk8wOTrJ5zmrgbdpKahEFaffDn3PuxJZLctDN7P8YL6kuQE7?=
+ =?us-ascii?Q?0HMQcGqhgH+AQzC2EFpe4UwZOQgbmQSa9B+VAqrCkeiCyYxJ97NNMgdGQghW?=
+ =?us-ascii?Q?5qIxO6QjJPxXrP/wcdlUc1HuhUDdwcj17Q55Lv5+Vkw/IAQq9SEftjAwrg6s?=
+ =?us-ascii?Q?j6iyr5f4kLu+fWEaEEtxER1PZHF3taWNohBxtsWzkOVT5AMUwYmH41b5gGiw?=
+ =?us-ascii?Q?DIoHjUALQYleUEtY6qnFhXbIVl4hJVTyz/DYpyCtSKjfTxbEfl/vUJQyhalC?=
+ =?us-ascii?Q?dmfF8vzB5wb5Z0357JYvykws8IMTiRaT?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 18:07:13.8610 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b92545b9-11ad-4e97-d873-08dd5822baa7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3B.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8260
+Received-SPF: permerror client-ip=40.107.94.60;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,152 +146,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to reduce the total number of build units in the system to get
-on our way to a single binary. It will help to have some numbers so
-lets add a job to gitlab to track our progress.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>
+Following changes are implemented in this series.
+
+1. Fixed the cache(L2,L3) property details in all the EPYC models.
+2. Add RAS feature bits (SUCCOR, McaOverflowRecov) on all EPYC models
+3. Add missing SVM feature bits required for nested guests on all EPYC models
+4. Add the missing feature bit fs-gs-base-ns(WRMSR to {FS,GS,KERNEL_G}S_BASE is
+   non-serializing). This bit is added in EPYC-Genoa and EPYC-Turin models.
+5. Add RAS, SVM, fs-gs-base-ns and perfmon-v2 on EPYC-Genoa and EPYC-Turin models.
+6. Add support for EPYC-Turin. 
+   (Add all the above feature bits and few additional bits movdiri, movdir64b,
+    avx512-vp2intersect, avx-vnni, sbpb, ibpb-brtype, srso-user-kernel-no).
+
+Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
 ---
- .gitlab-ci.d/check-units.py    | 95 ++++++++++++++++++++++++++++++++++
- .gitlab-ci.d/static_checks.yml | 22 ++++++++
- 2 files changed, 117 insertions(+)
- create mode 100755 .gitlab-ci.d/check-units.py
+v6: Initialized the boolean feature bits to true where applicable.
+    Added Reviewed-by tag from Zhao.
 
-diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
-new file mode 100755
-index 0000000000..aca63bd481
---- /dev/null
-+++ b/.gitlab-ci.d/check-units.py
-@@ -0,0 +1,95 @@
-+#!/usr/bin/env python3
-+#
-+# check-units.py: check the number of compilation units and identify
-+#                 those that are rebuilt multiple times
-+#
-+# Copyright (C) 2025 Linaro Ltd.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from os import access, R_OK, path
-+from subprocess import check_output, CalledProcessError
-+from sys import argv, exit
-+import re
-+
-+
-+def extract_build_units(cc_path):
-+    """
-+    Extract the build units and their counds from compile_commands.json file.
-+
-+    Returns:
-+        Hash table of ["unit"] = count
-+    """
-+
-+    # Make jq/shell do the heavy lifting
-+    cmd = f"jq < {cc_path} '.[] | .file' | sort | uniq -c | sort -rn"
-+
-+    try:
-+        # Execute the shell command and capture the output
-+        result = check_output(cmd, shell=True)
-+    except CalledProcessError as exp:
-+        print(f"Error executing {cmd}: {exp}")
-+        exit(1)
-+
-+    lines = result.decode().strip().split('\n')
-+
-+    # Create a dictionary to store the build unit frequencies
-+    build_units = {}
-+
-+    # extract from string of form: ' 65 "../../fpu/softfloat.c"'
-+    ext_pat = re.compile(r'^\s*(\d+)\s+"([^"]+)"')
-+
-+    # strip leading ../
-+    norm_pat = re.compile(r'^((\.\./)+|/+)')
-+
-+    # Process each line of the output
-+    for line in lines:
-+        match = re.match(ext_pat, line)
-+        if match:
-+            count = int(match.group(1))
-+            unit_path = re.sub(norm_pat, '', match.group(2))
-+
-+            # Store the count in the dictionary
-+            build_units[unit_path] = count
-+        else:
-+            print(f"couldn't process {line}")
-+
-+    return build_units
-+
-+
-+def analyse_units(build_units):
-+    """
-+    Analyse the build units and report stats and the top 10 rebuilds
-+    """
-+
-+    print(f"Total source files: {len(build_units.keys())}")
-+    print(f"Total build units: {sum(units.values())}")
-+
-+    # Create a sorted list by number of rebuilds
-+    sorted_build_units = sorted(build_units.items(),
-+                                key=lambda item: item[1],
-+                                reverse=True)
-+
-+    print("Most rebuilt units:")
-+    for unit, count in sorted_build_units[:10]:
-+        print(f"  {unit} built {count} times")
-+
-+    print("Least rebuilt units:")
-+    for unit, count in sorted_build_units[-10:]:
-+        print(f"  {unit} built {count} times")
-+
-+
-+if __name__ == "__main__":
-+    if len(argv) != 2:
-+        script_name = path.basename(argv[0])
-+        print(f"Usage: {script_name} <path_to_compile_commands.json>")
-+        exit(1)
-+
-+    cc_path = argv[1]
-+    if path.isfile(cc_path) and access(cc_path, R_OK):
-+        units = extract_build_units(cc_path)
-+        analyse_units(units)
-+        exit(0)
-+    else:
-+        print(f"{cc_path} doesn't exist or isn't readable")
-+        exit(1)
-diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
-index c0ba453382..c3ed6de453 100644
---- a/.gitlab-ci.d/static_checks.yml
-+++ b/.gitlab-ci.d/static_checks.yml
-@@ -70,3 +70,25 @@ check-rust-tools-nightly:
-     expire_in: 2 days
-     paths:
-       - rust/target/doc
-+
-+check-build-units:
-+  extends: .base_job_template
-+  stage: build
-+  image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
-+  needs:
-+    job: amd64-debian-container
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Install Tools"
-+    - apt install --assume-yes --no-install-recommends jq
-+    - section_end setup
-+  script:
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - ../configure
-+    - cd ..
-+    - section_end configure
-+    - section_start analyse "Analyse"
-+    - .gitlab-ci.d/check-units.py build/compile_commands.json
-+    - section_end analyse
+v5: Add EPYC-Turin CPU model
+    Dropped ERAPS and RAPSIZE bits from EPYC-Turin models as kernel support for
+    these bits are not done yet. Users can still use the options +eraps,+rapsize
+    to test these featers.
+    Add Reviewed-by tag from Maksim for the patches already reviewed.
+
+v4: Some of the patches in v3 are already merged. Posting the rest of the patches.
+    Dropped EPYC-Turin model for now. Will post them later.
+    Added SVM feature bit as discussed in
+    https://lore.kernel.org/kvm/b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com/
+    Fixed the cache property details as discussed in
+    https://lore.kernel.org/kvm/20230504205313.225073-8-babu.moger@amd.com/
+    Thanks to Maksim and Paolo for their feedback.
+
+v3: Added SBPB, IBPB_BRTYPE, SRSO_USER_KERNEL_NO, ERAPS and RAPSIZE bits
+    to EPYC-Turin.
+    Added new patch(1) to fix a minor typo.
+
+v2: Fixed couple of typos.
+    Added Reviewed-by tag from Zhao.
+    Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
+
+Previous revisions:
+v5: https://lore.kernel.org/kvm/cover.1738869208.git.babu.moger@amd.com/
+v4: https://lore.kernel.org/kvm/cover.1731616198.git.babu.moger@amd.com/
+v3: https://lore.kernel.org/kvm/cover.1729807947.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/kvm/cover.1723068946.git.babu.moger@amd.com/
+v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
+
+Babu Moger (6):
+  target/i386: Update EPYC CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Rome CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Milan CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Add feature that indicates WRMSR to BASE reg is
+    non-serializing
+  target/i386: Update EPYC-Genoa for Cache property, perfmon-v2, RAS and
+    SVM feature bits
+  target/i386: Add support for EPYC-Turin model
+
+ target/i386/cpu.c | 437 +++++++++++++++++++++++++++++++++++++++++++++-
+ target/i386/cpu.h |   2 +
+ 2 files changed, 438 insertions(+), 1 deletion(-)
+
 -- 
-2.39.5
+2.34.1
 
 
