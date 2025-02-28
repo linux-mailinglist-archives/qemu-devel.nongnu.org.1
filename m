@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF582A48EEF
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 04:03:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7261A48DDB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 02:21:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnqdv-0007gg-2t; Thu, 27 Feb 2025 22:02:27 -0500
+	id 1tnp2d-0006Vb-52; Thu, 27 Feb 2025 20:19:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com>)
- id 1tnqds-0007ep-UU
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 22:02:24 -0500
-Received: from o0.p27.mailjet.com ([185.189.238.0])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tnp2P-0006Sd-8r; Thu, 27 Feb 2025 20:19:38 -0500
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com>)
- id 1tnqdj-0005xO-FC
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 22:02:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
- d=randomman.co.uk; i=roy.hopkins@randomman.co.uk; s=mailjet; x=1740718930;
- h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
- cc:feedback-id:in-reply-to:references:x-csa-complaints:x-mj-mid:x-mj-smtpguid:
- x-report-abuse-to:content-transfer-encoding;
- bh=GXWbG44eui7Mwpp5Xz2SyJS+nkh+OwE/jSi4x/FzpTE=;
- b=CTk6i1xogbFtJtgRKi3+ZzUwofBiiCZ2BzRRDCpdURuhOYL1tb8R5vZjr
- N+W8pa+rzZaUMnbh5g7qoAIYMeMOug4hAqUDmyYx/MfvKxsb+xDAKKi5nZrT
- iW5wfpysorc8qDe4YpwRMuMH5wrcGCbFT35esH03mZldKV8+f/fmpK6+EGvk
- +cohR2bnVCJY10ccq5uD1YSqztjLk8D8WBwRXzGNdjofTaPhY8UD08Uy+Vt+
- m1NanTP7GA7vTUrSseGeglwY34PdJHIDwlv+uwT5WyMhU/GjL4ONZajUPRNl
- T+RHcItJtI3Eshj5wGshcepGh6UNrihwDmOLqA37kENYw==
-Message-Id: <4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@mailjet.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tnp2N-0002oR-8j; Thu, 27 Feb 2025 20:19:37 -0500
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-521c478d433so743887e0c.0; 
+ Thu, 27 Feb 2025 17:19:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1740705573; x=1741310373; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1jlK16RNducbvQEuAHjldApuBirP4j8l8j9PAI4j0Xg=;
+ b=ZZkd3DghvIY0KBCmL8UBOkZmAIlpgithjc71WhLhgEhYyfQTPWseb18fMGbGd1gix/
+ dZQ/rDWRg3BYHxozF8rjxWBi/XuUue55X7/raw9dYSIt87iax6UV2QS5YLwyJ3sH0C1f
+ 4d0eIHr7skLYW39wh0cvTEfICgo3uEPUiot3fFdFkhnUCK5daJTM41Z2Cs4mg9Kf1W92
+ 56kORCwA3Ji0DQKwmkyzkHaMrdOzhkBEB6h27wfzmD8P/IOQ+50OIyD0Y7op5LU6OXI3
+ 0yfa8BvG8ZlLrKTuZ58IlLcI/S2rD9q3d63GjoFNCsrxCI4Y6l4DPaQRtFZTFvmT3Vi6
+ hUmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740705573; x=1741310373;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1jlK16RNducbvQEuAHjldApuBirP4j8l8j9PAI4j0Xg=;
+ b=eDVIQHOvRUBlsvIHnH2NjV9PCtmpwLzhjif1AMtU6iPDPu6+x2dCQsjmpQPwa46rAN
+ lSg3c/Gh2Sqi7WFk30cnZcEwvVLTBcp1b+fBvCtsT/EvzlhMn4RPEouPLzIN2EEt0Oa4
+ ofIHBPnVYUxT+df31UCbhoizcd5el80tPvu16tyHPd8AEpVQS/DoNnFZ+2SpmlwPYxlL
+ DV55UPHGx2qiwclPNQl+kaQ60h7sZf8FnteP4TowosNBRcQyyM58gvlqNRnlbkCKkrhe
+ 0MLaZFBpf2rQNyY1uWkjamLKWXE8BTdR36RnP5It2cHaxrnw1TaKiiM1BlXHTWDOv3JJ
+ ewmg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXNxLHBkh6VGDBk7mPqJpIMqja1NMybOD462K+ZpbFH5/xWm7LNqbPL+mofLR+vXuoIMIqI89rffinZ@nongnu.org
+X-Gm-Message-State: AOJu0YyHmbNX31XFBTDGxm5G/WOUG356b62zXOH3dHQTF4giWGhOyDC5
+ 47CYv6V/6mANcbvCIL/Rh6Uf2W0QMsPTqIBXA4kcARrw4MQf7Jh279IHjP8HN5mbajo0mocg77v
+ +Aupu2k1KbRqwBVhOzrqzjZw3puQ=
+X-Gm-Gg: ASbGncurmvWUlSvte8SlTU8EhGgMgCPYk7d9TEw3sF6kDGfPBWXiXcXLkYi5wQ32Jzx
+ OrDJwOyuWG9E1K1i6360Ojjukk5H5WGuxJBD9LeVxCSiox2LsssKQczT/IKrCLz8Dm6VIXxlTM8
+ wsqs0YIrCvlmgvCxv9OD43cpD86vVMZp8Atmvz
+X-Google-Smtp-Source: AGHT+IHQDB3esgrs6vxN97UuZohLEKgDOa0nZ/JD8cesdOyf1xwBTZPy5QUdovA4PEmuVdAG8wGbYX3vuXQawdb8kbU=
+X-Received: by 2002:a05:6102:3910:b0:4bb:d062:43e with SMTP id
+ ada2fe7eead31-4c044528389mr1619854137.0.1740705573090; Thu, 27 Feb 2025
+ 17:19:33 -0800 (PST)
 MIME-Version: 1.0
-From: Roy Hopkins <roy.hopkins@randomman.co.uk>
-To: qemu-devel@nongnu.org
-Subject: [PATCH v7 16/16] sev: Provide sev_features flags from IGVM VMSA to
- KVM_SEV_INIT2
-Date: Thu, 27 Feb 2025 15:35:07 +0000
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>, Paolo Bonzini
- <pbonzini@redhat.com>, "Daniel P . Berrange" <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Sergio Lopez <slp@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Alistair Francis
- <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Ani Sinha
- <anisinha@redhat.com>, Joerg Roedel <jroedel@suse.com>
-Feedback-Id: 42.3031119.2785883:MJ
-In-Reply-To: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
-References: <cover.1740663410.git.roy.hopkins@randomman.co.uk>
-X-CSA-Complaints: csa-complaints@eco.de
-X-MJ-Mid: AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScywoT4CCt1Rk68DE_xSddeOgAqgls
-X-MJ-SMTPGUID: 75f866be-6ecf-4e0c-9cb7-ee383e6371e1
-X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
- abuse@mailjet.com with a copy of the message
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.189.238.0;
- envelope-from=4838dff7.AWMAAGLknwIAAAAAAAAAA9cBm3sAAYKJZwAAAAAAAC5ATwBnwScy@a3031119.bnc3.mailjet.com;
- helo=o0.p27.mailjet.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250122083617.3940240-1-ethan84@andestech.com>
+ <20250122083617.3940240-3-ethan84@andestech.com>
+In-Reply-To: <20250122083617.3940240-3-ethan84@andestech.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 28 Feb 2025 11:19:06 +1000
+X-Gm-Features: AQ5f1Jo8etBIkHbZrP0bZUwKIvsNqfSkOSFZKCkFWZcM0gkB0ezDBGA4ULr38Y0
+Message-ID: <CAKmqyKPQWL=o3FohvdK=re5rwmrN=znZna2=QCB3z9rk_uZWVw@mail.gmail.com>
+Subject: Re: [PATCH v10 2/8] memory: Introduce memory region fetch operation
+To: Ethan Chen <ethan84@andestech.com>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,265 +96,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IGVM files can contain an initial VMSA that should be applied to each
-vcpu as part of the initial guest state. The sev_features flags are
-provided as part of the VMSA structure. However, KVM only allows
-sev_features to be set during initialization and not as the guest is
-being prepared for launch.
+On Wed, Jan 22, 2025 at 6:39=E2=80=AFPM Ethan Chen via <qemu-devel@nongnu.o=
+rg> wrote:
+>
+> Allow memory regions to have different behaviors for read and fetch
+> operations.
+>
+> For example, the RISC-V IOPMP could raise an interrupt when the CPU
+> tries to fetch from a non-executable region.
+>
+> If the fetch operation for a memory region is not implemented, the read
+> operation will still be used for fetch operations.
+>
+> Signed-off-by: Ethan Chen <ethan84@andestech.com>
 
-This patch queries KVM for the supported set of sev_features flags and
-processes the IGVM file during kvm_init to determine any sev_features
-flags set in the IGVM file. These are then provided in the call to
-KVM_SEV_INIT2 to ensure the guest state matches that specified in the
-IGVM file.
+This looks ok to me, but I would like someone who knows this better to
+review it as well
 
-This does cause the IGVM file to be processed twice. Firstly to extract
-the sev_features then secondly to actually configure the guest. However,
-the first pass is largely ignored meaning the overhead is minimal.
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
----
- target/i386/sev.c | 160 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 141 insertions(+), 19 deletions(-)
+Alistair
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index fa9b4bcad6..ef25e64b14 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -117,6 +117,8 @@ struct SevCommonState {
-     uint32_t cbitpos;
-     uint32_t reduced_phys_bits;
-     bool kernel_hashes;
-+    uint64_t sev_features;
-+    uint64_t supported_sev_features;
- 
-     /* runtime state */
-     uint8_t api_major;
-@@ -492,7 +494,40 @@ static void sev_apply_cpu_context(CPUState *cpu)
-     }
- }
- 
--static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
-+static int check_sev_features(SevCommonState *sev_common, uint64_t sev_features,
-+                              Error **errp)
-+{
-+    /*
-+     * Ensure SEV_FEATURES is configured for correct SEV hardware and that
-+     * the requested features are supported. If SEV-SNP is enabled then
-+     * that feature must be enabled, otherwise it must be cleared.
-+     */
-+    if (sev_snp_enabled() && !(sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
-+        error_setg(
-+            errp,
-+            "%s: SEV_SNP is enabled but is not enabled in VMSA sev_features",
-+            __func__);
-+        return -1;
-+    } else if (!sev_snp_enabled() &&
-+               (sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
-+        error_setg(
-+            errp,
-+            "%s: SEV_SNP is not enabled but is enabled in VMSA sev_features",
-+            __func__);
-+        return -1;
-+    }
-+    if (sev_features & ~sev_common->supported_sev_features) {
-+        error_setg(errp,
-+                   "%s: VMSA contains unsupported sev_features: %lX, "
-+                   "supported features: %lX",
-+                   __func__, sev_features, sev_common->supported_sev_features);
-+        return -1;
-+    }
-+    return 0;
-+}
-+
-+static int check_vmsa_supported(SevCommonState *sev_common, hwaddr gpa,
-+                                const struct sev_es_save_area *vmsa,
-                                 Error **errp)
- {
-     struct sev_es_save_area vmsa_check;
-@@ -558,24 +593,10 @@ static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
-     vmsa_check.x87_fcw = 0;
-     vmsa_check.mxcsr = 0;
- 
--    if (sev_snp_enabled()) {
--        if (vmsa_check.sev_features != SVM_SEV_FEAT_SNP_ACTIVE) {
--            error_setg(errp,
--                       "%s: sev_features in the VMSA contains an unsupported "
--                       "value. For SEV-SNP, sev_features must be set to %x.",
--                       __func__, SVM_SEV_FEAT_SNP_ACTIVE);
--            return -1;
--        }
--        vmsa_check.sev_features = 0;
--    } else {
--        if (vmsa_check.sev_features != 0) {
--            error_setg(errp,
--                       "%s: sev_features in the VMSA contains an unsupported "
--                       "value. For SEV-ES and SEV, sev_features must be "
--                       "set to 0.", __func__);
--            return -1;
--        }
-+    if (check_sev_features(sev_common, vmsa_check.sev_features, errp) < 0) {
-+        return -1;
-     }
-+    vmsa_check.sev_features = 0;
- 
-     if (!buffer_is_zero(&vmsa_check, sizeof(vmsa_check))) {
-         error_setg(errp,
-@@ -1729,6 +1750,39 @@ static int sev_snp_kvm_type(X86ConfidentialGuest *cg)
-     return KVM_X86_SNP_VM;
- }
- 
-+static int sev_init_supported_features(ConfidentialGuestSupport *cgs,
-+                                       SevCommonState *sev_common, Error **errp)
-+{
-+    X86ConfidentialGuestClass *x86_klass =
-+                               X86_CONFIDENTIAL_GUEST_GET_CLASS(cgs);
-+    /*
-+     * Older kernels do not support query or setting of sev_features. In this
-+     * case the set of supported features must be zero to match the settings
-+     * in the kernel.
-+     */
-+    if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) ==
-+        KVM_X86_DEFAULT_VM) {
-+        sev_common->supported_sev_features = 0;
-+        return 0;
-+    }
-+
-+    /* Query KVM for the supported set of sev_features */
-+    struct kvm_device_attr attr = {
-+        .group = KVM_X86_GRP_SEV,
-+        .attr = KVM_X86_SEV_VMSA_FEATURES,
-+        .addr = (unsigned long)&sev_common->supported_sev_features,
-+    };
-+    if (kvm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr) < 0) {
-+        error_setg(errp, "%s: failed to query supported sev_features",
-+                   __func__);
-+        return -1;
-+    }
-+    if (sev_snp_enabled()) {
-+        sev_common->supported_sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
-+    }
-+    return 0;
-+}
-+
- static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     char *devname;
-@@ -1809,6 +1863,10 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         }
-     }
- 
-+    if (sev_init_supported_features(cgs, sev_common, errp) < 0) {
-+        return -1;
-+    }
-+
-     trace_kvm_sev_init();
-     switch (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common))) {
-     case KVM_X86_DEFAULT_VM:
-@@ -1820,6 +1878,39 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     case KVM_X86_SEV_ES_VM:
-     case KVM_X86_SNP_VM: {
-         struct kvm_sev_init args = { 0 };
-+        MachineState *machine = MACHINE(qdev_get_machine());
-+        X86MachineState *x86machine = X86_MACHINE(qdev_get_machine());
-+
-+        /*
-+         * If configuration is provided via an IGVM file then the IGVM file
-+         * might contain configuration of the initial vcpu context. For SEV
-+         * the vcpu context includes the sev_features which should be applied
-+         * to the vcpu.
-+         *
-+         * KVM does not synchronize sev_features from CPU state. Instead it
-+         * requires sev_features to be provided as part of this initialization
-+         * call which is subsequently automatically applied to the VMSA of
-+         * each vcpu.
-+         *
-+         * The IGVM file is normally processed after initialization. Therefore
-+         * we need to pre-process it here to extract sev_features in order to
-+         * provide it to KVM_SEV_INIT2. Each cgs_* function that is called by
-+         * the IGVM processor detects this pre-process by observing the state
-+         * as SEV_STATE_UNINIT.
-+         */
-+        if (x86machine->igvm) {
-+            if (IGVM_CFG_GET_CLASS(x86machine->igvm)
-+                    ->process(x86machine->igvm, machine->cgs, errp) == -1) {
-+                return -1;
-+            }
-+            /*
-+             * KVM maintains a bitmask of allowed sev_features. This does not
-+             * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
-+             * itself. Therefore we need to clear this flag.
-+             */
-+            args.vmsa_features = sev_common->sev_features &
-+                                 ~SVM_SEV_FEAT_SNP_ACTIVE;
-+        }
- 
-         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
-         break;
-@@ -2424,6 +2515,24 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
- 
-+    if (sev_common->state == SEV_STATE_UNINIT) {
-+        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
-+        if ((cpu_index == 0) && (memory_type == CGS_PAGE_TYPE_VMSA)) {
-+            const struct sev_es_save_area *sa =
-+                (const struct sev_es_save_area *)ptr;
-+            if (len < sizeof(*sa)) {
-+                error_setg(errp, "%s: invalid VMSA length encountered",
-+                           __func__);
-+                return -1;
-+            }
-+            if (check_sev_features(sev_common, sa->sev_features, errp) < 0) {
-+                return -1;
-+            }
-+            sev_common->sev_features = sa->sev_features;
-+        }
-+        return 0;
-+    }
-+
-     if (!sev_enabled()) {
-         error_setg(errp, "%s: attempt to configure guest memory, but SEV "
-                      "is not enabled", __func__);
-@@ -2443,7 +2552,8 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-                        __func__);
-             return -1;
-         }
--        if (check_vmsa_supported(gpa, (const struct sev_es_save_area *)ptr,
-+        if (check_vmsa_supported(sev_common, gpa,
-+                                 (const struct sev_es_save_area *)ptr,
-                                  errp) < 0) {
-             return -1;
-         }
-@@ -2500,6 +2610,12 @@ static int cgs_get_mem_map_entry(int index,
-     struct e820_entry *table;
-     int num_entries;
- 
-+    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-+    if (sev_common->state == SEV_STATE_UNINIT) {
-+        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
-+        return 1;
-+    }
-+
-     num_entries = e820_get_table(&table);
-     if ((index < 0) || (index >= num_entries)) {
-         return 1;
-@@ -2531,6 +2647,12 @@ static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
-                                 uint32_t policy_data1_size, void *policy_data2,
-                                 uint32_t policy_data2_size, Error **errp)
- {
-+    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-+    if (sev_common->state == SEV_STATE_UNINIT) {
-+        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
-+        return 0;
-+    }
-+
-     if (policy_type != GUEST_POLICY_SEV) {
-         error_setg(errp, "%s: Invalid guest policy type provided for SEV: %d",
-         __func__, policy_type);
--- 
-2.43.0
-
+> ---
+>  accel/tcg/cputlb.c    |   9 +++-
+>  include/exec/memory.h |  27 +++++++++++
+>  system/memory.c       | 104 ++++++++++++++++++++++++++++++++++++++++++
+>  system/trace-events   |   2 +
+>  4 files changed, 140 insertions(+), 2 deletions(-)
+>
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index b4ccf0cdcb..71c16a1ac1 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1947,8 +1947,13 @@ static uint64_t int_ld_mmio_beN(CPUState *cpu, CPU=
+TLBEntryFull *full,
+>          this_size =3D 1 << this_mop;
+>          this_mop |=3D MO_BE;
+>
+> -        r =3D memory_region_dispatch_read(mr, mr_offset, &val,
+> -                                        this_mop, full->attrs);
+> +        if (type =3D=3D MMU_INST_FETCH) {
+> +            r =3D memory_region_dispatch_fetch(mr, mr_offset, &val,
+> +                                             this_mop, full->attrs);
+> +        } else {
+> +            r =3D memory_region_dispatch_read(mr, mr_offset, &val,
+> +                                            this_mop, full->attrs);
+> +        }
+>          if (unlikely(r !=3D MEMTX_OK)) {
+>              io_failed(cpu, full, addr, this_size, type, mmu_idx, r, ra);
+>          }
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 3ee1901b52..6166d697d9 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -273,6 +273,11 @@ struct MemoryRegionOps {
+>                    hwaddr addr,
+>                    uint64_t data,
+>                    unsigned size);
+> +    /* Fetch from the memory region. @addr is relative to @mr; @size is
+> +     * in bytes. */
+> +    uint64_t (*fetch)(void *opaque,
+> +                      hwaddr addr,
+> +                      unsigned size);
+>
+>      MemTxResult (*read_with_attrs)(void *opaque,
+>                                     hwaddr addr,
+> @@ -284,6 +289,11 @@ struct MemoryRegionOps {
+>                                      uint64_t data,
+>                                      unsigned size,
+>                                      MemTxAttrs attrs);
+> +    MemTxResult (*fetch_with_attrs)(void *opaque,
+> +                                    hwaddr addr,
+> +                                    uint64_t *data,
+> +                                    unsigned size,
+> +                                    MemTxAttrs attrs);
+>
+>      enum device_endian endianness;
+>      /* Guest-visible constraints: */
+> @@ -2604,6 +2614,23 @@ MemTxResult memory_region_dispatch_write(MemoryReg=
+ion *mr,
+>                                           MemOp op,
+>                                           MemTxAttrs attrs);
+>
+> +
+> +/**
+> + * memory_region_dispatch_fetch: perform a fetch directly to the specifi=
+ed
+> + * MemoryRegion.
+> + *
+> + * @mr: #MemoryRegion to access
+> + * @addr: address within that region
+> + * @pval: pointer to uint64_t which the data is written to
+> + * @op: size, sign, and endianness of the memory operation
+> + * @attrs: memory transaction attributes to use for the access
+> + */
+> +MemTxResult memory_region_dispatch_fetch(MemoryRegion *mr,
+> +                                         hwaddr addr,
+> +                                         uint64_t *pval,
+> +                                         MemOp op,
+> +                                         MemTxAttrs attrs);
+> +
+>  /**
+>   * address_space_init: initializes an address space
+>   *
+> diff --git a/system/memory.c b/system/memory.c
+> index b17b5538ff..7f26f681f9 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -477,6 +477,51 @@ static MemTxResult memory_region_read_with_attrs_acc=
+essor(MemoryRegion *mr,
+>      return r;
+>  }
+>
+> +static MemTxResult memory_region_fetch_accessor(MemoryRegion *mr,
+> +                                                hwaddr addr,
+> +                                                uint64_t *value,
+> +                                                unsigned size,
+> +                                                signed shift,
+> +                                                uint64_t mask,
+> +                                                MemTxAttrs attrs)
+> +{
+> +    uint64_t tmp;
+> +
+> +    tmp =3D mr->ops->fetch(mr->opaque, addr, size);
+> +    if (mr->subpage) {
+> +        trace_memory_region_subpage_fetch(get_cpu_index(), mr, addr, tmp=
+, size);
+> +    } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_FE=
+TCH)) {
+> +        hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+> +        trace_memory_region_ops_fetch(get_cpu_index(), mr, abs_addr, tmp=
+, size,
+> +                                     memory_region_name(mr));
+> +    }
+> +    memory_region_shift_read_access(value, shift, mask, tmp);
+> +    return MEMTX_OK;
+> +}
+> +
+> +static MemTxResult memory_region_fetch_with_attrs_accessor(MemoryRegion =
+*mr,
+> +                                                          hwaddr addr,
+> +                                                          uint64_t *valu=
+e,
+> +                                                          unsigned size,
+> +                                                          signed shift,
+> +                                                          uint64_t mask,
+> +                                                          MemTxAttrs att=
+rs)
+> +{
+> +    uint64_t tmp =3D 0;
+> +    MemTxResult r;
+> +
+> +    r =3D mr->ops->fetch_with_attrs(mr->opaque, addr, &tmp, size, attrs)=
+;
+> +    if (mr->subpage) {
+> +        trace_memory_region_subpage_fetch(get_cpu_index(), mr, addr, tmp=
+, size);
+> +    } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_FE=
+TCH)) {
+> +        hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+> +        trace_memory_region_ops_fetch(get_cpu_index(), mr, abs_addr, tmp=
+, size,
+> +                                      memory_region_name(mr));
+> +    }
+> +    memory_region_shift_read_access(value, shift, mask, tmp);
+> +    return r;
+> +}
+> +
+>  static MemTxResult memory_region_write_accessor(MemoryRegion *mr,
+>                                                  hwaddr addr,
+>                                                  uint64_t *value,
+> @@ -1493,6 +1538,65 @@ MemTxResult memory_region_dispatch_read(MemoryRegi=
+on *mr,
+>      return r;
+>  }
+>
+> +static MemTxResult memory_region_dispatch_fetch1(MemoryRegion *mr,
+> +                                                hwaddr addr,
+> +                                                uint64_t *pval,
+> +                                                unsigned size,
+> +                                                MemTxAttrs attrs)
+> +{
+> +    *pval =3D 0;
+> +
+> +    if (mr->ops->fetch) {
+> +        return access_with_adjusted_size(addr, pval, size,
+> +                                         mr->ops->impl.min_access_size,
+> +                                         mr->ops->impl.max_access_size,
+> +                                         memory_region_fetch_accessor,
+> +                                         mr, attrs);
+> +    } else if (mr->ops->fetch_with_attrs) {
+> +        return access_with_adjusted_size(addr, pval, size,
+> +            mr->ops->impl.min_access_size,
+> +            mr->ops->impl.max_access_size,
+> +            memory_region_fetch_with_attrs_accessor,
+> +            mr, attrs);
+> +    } else if (mr->ops->read) {
+> +        return access_with_adjusted_size(addr, pval, size,
+> +                                         mr->ops->impl.min_access_size,
+> +                                         mr->ops->impl.max_access_size,
+> +                                         memory_region_read_accessor,
+> +                                         mr, attrs);
+> +    } else {
+> +        return access_with_adjusted_size(addr, pval, size,
+> +                                         mr->ops->impl.min_access_size,
+> +                                         mr->ops->impl.max_access_size,
+> +                                         memory_region_read_with_attrs_a=
+ccessor,
+> +                                         mr, attrs);
+> +    }
+> +}
+> +
+> +MemTxResult memory_region_dispatch_fetch(MemoryRegion *mr,
+> +                                        hwaddr addr,
+> +                                        uint64_t *pval,
+> +                                        MemOp op,
+> +                                        MemTxAttrs attrs)
+> +{
+> +    unsigned size =3D memop_size(op);
+> +    MemTxResult r;
+> +
+> +    if (mr->alias) {
+> +        return memory_region_dispatch_fetch(mr->alias,
+> +                                           mr->alias_offset + addr,
+> +                                           pval, op, attrs);
+> +    }
+> +    if (!memory_region_access_valid(mr, addr, size, false, attrs)) {
+> +        *pval =3D unassigned_mem_read(mr, addr, size);
+> +        return MEMTX_DECODE_ERROR;
+> +    }
+> +
+> +    r =3D memory_region_dispatch_fetch1(mr, addr, pval, size, attrs);
+> +    adjust_endianness(mr, pval, op);
+> +    return r;
+> +}
+> +
+>  /* Return true if an eventfd was signalled */
+>  static bool memory_region_dispatch_write_eventfds(MemoryRegion *mr,
+>                                                      hwaddr addr,
+> diff --git a/system/trace-events b/system/trace-events
+> index 5bbc3fbffa..4e78bb515b 100644
+> --- a/system/trace-events
+> +++ b/system/trace-events
+> @@ -18,8 +18,10 @@ cpu_out(unsigned int addr, char size, unsigned int val=
+) "addr 0x%x(%c) value %u"
+>  # memory.c
+>  memory_region_ops_read(int cpu_index, void *mr, uint64_t addr, uint64_t =
+value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" valu=
+e 0x%"PRIx64" size %u name '%s'"
+>  memory_region_ops_write(int cpu_index, void *mr, uint64_t addr, uint64_t=
+ value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" val=
+ue 0x%"PRIx64" size %u name '%s'"
+> +memory_region_ops_fetch(int cpu_index, void *mr, uint64_t addr, uint64_t=
+ value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" val=
+ue 0x%"PRIx64" size %u name '%s'"
+>  memory_region_subpage_read(int cpu_index, void *mr, uint64_t offset, uin=
+t64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PRIx=
+64" size %u"
+>  memory_region_subpage_write(int cpu_index, void *mr, uint64_t offset, ui=
+nt64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PRI=
+x64" size %u"
+> +memory_region_subpage_fetch(int cpu_index, void *mr, uint64_t offset, ui=
+nt64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PRI=
+x64" size %u"
+>  memory_region_ram_device_read(int cpu_index, void *mr, uint64_t addr, ui=
+nt64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx6=
+4" size %u"
+>  memory_region_ram_device_write(int cpu_index, void *mr, uint64_t addr, u=
+int64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx=
+64" size %u"
+>  memory_region_sync_dirty(const char *mr, const char *listener, int globa=
+l) "mr '%s' listener '%s' synced (global=3D%d)"
+> --
+> 2.34.1
+>
+>
 
