@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99FCA49051
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 05:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 626A5A49067
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 05:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tnrwH-000124-3s; Thu, 27 Feb 2025 23:25:29 -0500
+	id 1tns4M-0007pW-CR; Thu, 27 Feb 2025 23:33:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tnrwB-000100-Mr
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 23:25:25 -0500
-Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ id 1tns4I-0007pH-TZ
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 23:33:46 -0500
+Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tnrw8-0007au-92
- for qemu-devel@nongnu.org; Thu, 27 Feb 2025 23:25:23 -0500
-Received: by mail-vk1-xa2c.google.com with SMTP id
- 71dfb90a1353d-51e902b58c0so1317169e0c.0
- for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 20:25:19 -0800 (PST)
+ id 1tns4H-00005g-8b
+ for qemu-devel@nongnu.org; Thu, 27 Feb 2025 23:33:46 -0500
+Received: by mail-vk1-xa2b.google.com with SMTP id
+ 71dfb90a1353d-51e902b58c0so1322370e0c.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Feb 2025 20:33:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740716718; x=1741321518; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740717224; x=1741322024; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c6iiqjs0b9zJ1D0jUaumhiJH40zl2+2yrOGKXJ7sNx0=;
- b=RrBT03+SOE+N/N1N7y+4Fh7/jBpeKSFm/VW0CqNvmJf4lINwvoBtt66z4fYETZ2fl8
- IwJCKrwy3x4clowc4ld5upyn7p5oA6o36JTFVYQ0R7OJOX7polKBqqj7FhZzaWAEfn8i
- vCcKF62yQlycEw8HDamhcrigG7eDn19JC5pe+S6dwC7Jv2vOvjWuFvqrvYrK6k6dTiTE
- hMLE0Uh9X7XsUBI9llPy3wBz0drZWRgQ/TUMy6t9g3J04IocuwA0OxVtoyp+IlO5aPOy
- Op3XoiIt5nfvP5Oup61CBPFZcn3g2LiMRUie5x0hDukxDnC18blaHj5adlCuYnNDkjTc
- W5Og==
+ bh=v+4hfEZ7oyRQwnR4N4n5f/VaD5dsfpvw9io43m+St5g=;
+ b=AKrq0r3HhZpG6EoecV/S07WFBvjm1iBNHLGFpS4HXmiGf2WTTPs6exVnkjpSbjp/4J
+ C9B6gzt7VNq9sa5LTgmII5rMF9mIX6H/bl5OSHAs8dT2iN9U5DW0jsoc1uZvpG11tgWo
+ ntnLj7TQZgPijZ6vDVii2XMxfrIw+fqsXEwmu/TDjoqqKBgopGN/8McZmlYeAP5g3AEk
+ YRJ2WJ5N/46xISlvPgrZi5QUBq6XJqxStNuwOCFvkmGyJCbKGAWFIZGi4qG4PVoI/LXO
+ D6Fl/YT6WCntP2mVegPbOfQIvS5dCn3tfFVDtVrd6pKosQ4R8t9rhaI+nvpXDlfecIc7
+ Jn5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740716718; x=1741321518;
+ d=1e100.net; s=20230601; t=1740717224; x=1741322024;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c6iiqjs0b9zJ1D0jUaumhiJH40zl2+2yrOGKXJ7sNx0=;
- b=biQSJCq2Li/uEyPncTbpXtYre018cDJCFspllGwYBEeVuqJGxHTyDWwXioluF90PYR
- uZHHwpE8w4KnhgmwKwFLFbu54iZKfYHzM8mIYACCCs70awdTefKuguCBr9B48+hTveYW
- vRmkdCz3Pjva0EUtz9Eno4N5t3ge0jG6Od6SPTl/mLEMR0xzQ2gNsBlQ3CtiwUJJLQPg
- IBZBh/is3Y3EvF5rMx1uPU0FBgNT4/W4ToA0aM7ohd7d6l+DbiKJU/oxbOWIkNtxrOXQ
- uzHshPn6EqqSiSvs2K1PAJlvFcKfoDjyfiGEnqZfXH8FzniIRZhQKvgG6DhisLs1FX2b
- sR6w==
-X-Gm-Message-State: AOJu0YzJsYejNSWfONHv2t/nI8yNtiuLD3/ifswh+grajpr1wiUNpajK
- c/cckonZ4lgbPDKuGJqFvMrczoZfye+VrQmUBjfDFrMv9UF+f0gpasSOQxJVMygs8sGoiBwiez8
- OHCdYbZNF0js9YGuqcxy80xPmEdE=
-X-Gm-Gg: ASbGnctfkrs+QjBzU+DmhIvo2iLplTG+UGaEAMz42BUcabJksxPCKY9Bjey5vkn6tcd
- qyr4234cRWyEnGWIIkWU+O0H1RS9u9rNn2cJX+YGDNtik/YM3OUFZUjKpb28cIptx0nNTGnNBGh
- FqPMcpz6ecXokN+L4H9bU66bBQMOKlTQ3awtlt
-X-Google-Smtp-Source: AGHT+IHHxZNoPLK0WQrBdCrYitZc4/LpWMIJbBKoM2HucHyABAUtiN8sOyBpu7ZiEHWnta2iihDdN/fnmE8FFwhGN50=
+ bh=v+4hfEZ7oyRQwnR4N4n5f/VaD5dsfpvw9io43m+St5g=;
+ b=an8fw9U7V4FDQ0BPtKbl/RcHRR89VwSM+8nv+b52VjLanuAKEAzTA7facdaqssJLFq
+ E31SAHLHIsFdR4xKJHfZxlIJbVI/N9UPzPBe27nhzSgqisyqxZD1Ic9Lq/aK77VMPgJD
+ Fup5yiZzaiS0EPzb5Rd+LJ9ShV4ZiARedoYgYElLdoOscw0Z5jGGo++F9o2lX/bbjwwD
+ kyrp0lD9y5ukdYRoGCq4DPJeUF/JSf4ogqSQhmbZIyrnPjBILxZl3UCUyfCx+gj+0Lrk
+ SQ3SoQOEkgXhJFsNe99o8t2TMzjhlRxyiJG9bncXD4M8L6xk7sDJbQEh2/Gkp5eea6yt
+ 8PUw==
+X-Gm-Message-State: AOJu0Yxl5IVVXZuvPsHa75g6sjr3kmIaQsEXEt0jeVNPYPHqSX66Ikef
+ zKg5kweDpm7qSOnATTE+78P4QvUUV9xApGoiuUsUNB1kUZNqGhGbznM0D73+vmWLjUz4XOF7qnf
+ Gl7pZgNbSbH5gb3/wbJft/U5hLDcYvJq0jjE=
+X-Gm-Gg: ASbGncuoRSWDMQTfM3P6RRuX+lt16pDvpm+doIa43eLS4Q0u0cPyz//JJAQxD1fIVTN
+ sHzFeaZbkycW7VEUOqEDQtprA78RdSQz48H6VsamzJs/CaTSFn9/sgEkoCgEg0yu4MSBp/TRTKI
+ H/uoT8JhjbEfuj6dMuaWdA1vXVUzqbx9sypk1C
+X-Google-Smtp-Source: AGHT+IGmApyc+bCRfGM6MMjG0oTFngw/ohX6WinmOtkVR4/moK/yszfb/SwFtG3zicIb2L6ZBpot64aiX7lSE0X9tGM=
 X-Received: by 2002:a05:6122:3908:b0:51f:3eee:89e7 with SMTP id
- 71dfb90a1353d-5235bd672a7mr1074074e0c.11.1740716718535; Thu, 27 Feb 2025
- 20:25:18 -0800 (PST)
+ 71dfb90a1353d-5235bd672a7mr1079432e0c.11.1740717224179; Thu, 27 Feb 2025
+ 20:33:44 -0800 (PST)
 MIME-Version: 1.0
 References: <20250127182924.103510-1-abologna@redhat.com>
- <20250127182924.103510-4-abologna@redhat.com>
-In-Reply-To: <20250127182924.103510-4-abologna@redhat.com>
+In-Reply-To: <20250127182924.103510-1-abologna@redhat.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 28 Feb 2025 14:24:52 +1000
-X-Gm-Features: AQ5f1Jr1oppNTYg85YRL_4i-UDcF-QPiYSVUv68ACfoRDKL3a49T8uYQAyIn-vg
-Message-ID: <CAKmqyKN7HtWpihKAyAzzXGiB6-DBe-HExCY130YaVAV6Wpu+4w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] binfmt: Add --ignore-family option
+Date: Fri, 28 Feb 2025 14:33:18 +1000
+X-Gm-Features: AQ5f1Jo54A-8xteorpDmLD8QCmz4hcYXF8LdltgPgTh_pbUHsQBFmd67WYxQOoM
+Message-ID: <CAKmqyKO29B2sJBFpqfZwTRYdkDSevCnDhBha48u8t4hczmjU1Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] binfmt: Add --ignore-family option
 To: Andrea Bolognani <abologna@redhat.com>
 Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
  David Abdurachmanov <davidlt@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,103 +97,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, Jan 28, 2025 at 4:29=E2=80=AFAM Andrea Bolognani <abologna@redhat.c=
 om> wrote:
 >
-> Until now, the script has worked under the assumption that a
-> host CPU can run binaries targeting any CPU in the same family.
-> That's a fair enough assumption when it comes to running i386
-> binaries on x86_64, but it doesn't quite apply in the general
-> case.
+> Changes from [v1]:
 >
-> For example, while riscv64 CPUs could theoretically run riscv32
-> applications natively, in practice there exist few (if any?)
-> CPUs that implement the necessary silicon; moreover, even if you
-> had one such CPU, your host OS would most likely not have
-> enabled the necessary kernel bits.
+>   * adopt a completely different, more general approach.
 >
-> This new option gives distro packagers the ability to opt out of
-> the assumption, likely on a per-architecture basis, and make
-> things work out of the box for a larger fraction of their user
-> base.
+> [v1] https://mail.gnu.org/archive/html/qemu-devel/2024-12/msg00459.html
 >
-> As an interesting side effect, this makes it possible to enable
-> execution of 64-bit binaries on 32-bit CPUs of the same family,
-> which is a perfectly valid use case that apparently hadn't been
-> considered until now.
->
-> Link: https://src.fedoraproject.org/rpms/qemu/pull-request/72
-> Thanks: David Abdurachmanov <davidlt@rivosinc.com>
-> Thanks: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Andrea Bolognani <abologna@redhat.com>
+> Andrea Bolognani (3):
+>   binfmt: Shuffle things around
+>   binfmt: Normalize host CPU architecture
+>   binfmt: Add --ignore-family option
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Thanks!
+
+Applied to riscv-to-apply.next
 
 Alistair
 
-> ---
->  scripts/qemu-binfmt-conf.sh | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
 >
-> diff --git a/scripts/qemu-binfmt-conf.sh b/scripts/qemu-binfmt-conf.sh
-> index 8d9136a29f..5fd462b1d1 100755
-> --- a/scripts/qemu-binfmt-conf.sh
-> +++ b/scripts/qemu-binfmt-conf.sh
-> @@ -205,6 +205,9 @@ Usage: qemu-binfmt-conf.sh [--qemu-path PATH][--debia=
-n][--systemd CPU]
->         --persistent:    if yes, the interpreter is loaded when binfmt is
->                          configured and remains in memory. All future use=
-s
->                          are cloned from the open file.
-> +       --ignore-family: if yes, it is assumed that the host CPU (e.g. ri=
-scv64)
-> +                        can't natively run programs targeting a CPU that=
- is
-> +                        part of the same family (e.g. riscv32).
->         --preserve-argv0 preserve argv[0]
+>  scripts/qemu-binfmt-conf.sh | 78 ++++++++++++++++++++++++-------------
+>  1 file changed, 50 insertions(+), 28 deletions(-)
 >
->      To import templates with update-binfmts, use :
-> @@ -337,7 +340,12 @@ qemu_set_binfmts() {
->          fi
->
->          if [ "$host_family" =3D "$family" ] ; then
-> -            continue
-> +            # When --ignore-family is used, we have to generate rules ev=
-en
-> +            # for targets that are in the same family as the host CPU. T=
-he
-> +            # only exception is of course when the CPU types exactly mat=
-ch
-> +            if [ "$target" =3D "$host_cpu" ] || [ "$IGNORE_FAMILY" =3D "=
-no" ] ; then
-> +                continue
-> +            fi
->          fi
->
->          $BINFMT_SET
-> @@ -355,10 +363,11 @@ CREDENTIAL=3Dno
->  PERSISTENT=3Dno
->  PRESERVE_ARG0=3Dno
->  QEMU_SUFFIX=3D""
-> +IGNORE_FAMILY=3Dno
->
->  _longopts=3D"debian,systemd:,qemu-path:,qemu-suffix:,exportdir:,help,cre=
-dential:,\
-> -persistent:,preserve-argv0:"
-> -options=3D$(getopt -o ds:Q:S:e:hc:p:g:F: -l ${_longopts} -- "$@")
-> +persistent:,preserve-argv0:,ignore-family:"
-> +options=3D$(getopt -o ds:Q:S:e:hc:p:g:F:i: -l ${_longopts} -- "$@")
->  eval set -- "$options"
->
->  while true ; do
-> @@ -418,6 +427,10 @@ while true ; do
->          shift
->          PRESERVE_ARG0=3D"$1"
->          ;;
-> +    -i|--ignore-family)
-> +        shift
-> +        IGNORE_FAMILY=3D"$1"
-> +        ;;
->      *)
->          break
->          ;;
 > --
 > 2.48.1
 >
