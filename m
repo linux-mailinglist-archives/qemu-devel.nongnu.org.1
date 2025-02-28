@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A8FA4A36A
+	by mail.lfdr.de (Postfix) with ESMTPS id E6255A4A36B
 	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 21:06:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to6c1-0005NK-Iv; Fri, 28 Feb 2025 15:05:33 -0500
+	id 1to6bx-0005L2-LU; Fri, 28 Feb 2025 15:05:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <39BbCZwgKCm8jURaQeVXTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--whendrik.bounces.google.com>)
- id 1to6bi-000580-Tg
+ <39xbCZwgKCnImXUdThYaWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--whendrik.bounces.google.com>)
+ id 1to6bl-00059o-2R
  for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:05:19 -0500
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+Received: from mail-wr1-x44a.google.com ([2a00:1450:4864:20::44a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <39BbCZwgKCm8jURaQeVXTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--whendrik.bounces.google.com>)
- id 1to6bh-0001AC-7d
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:05:14 -0500
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-43ab5baf62cso18738865e9.0
- for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 12:05:09 -0800 (PST)
+ <39xbCZwgKCnImXUdThYaWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--whendrik.bounces.google.com>)
+ id 1to6bh-0001Ae-JU
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:05:15 -0500
+Received: by mail-wr1-x44a.google.com with SMTP id
+ ffacd0b85a97d-390f6aa50c5so200077f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 12:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1740773109; x=1741377909; darn=nongnu.org;
+ d=google.com; s=20230601; t=1740773111; x=1741377911; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=kmLVEYOHqmSuKqtrlHj7xi68jyrF2grY357sctURLPY=;
- b=n79mVFztausugPlMC8wNXlE61uyMOuNv3nAb96W0doBJj+OTBIJmSStnpzjiTEqIjW
- pTmHiP4V7G7864vEcHhDn1JOW0yTKosMbIZPqqNdU8+mG7XAkNwFSSe1w2h+HaO/jIku
- 6gqUYMQJg/oPSwNZq0mRJZt+yTlhxmpm3Q7vRo1eUn1ieR+flTy7NtOHb1VXyTvOmT9d
- QeExA0FUd6R9I7hbbXxKg6H2DpMuoA0ttlQJ0bocHqs6qDGbjf+tJ2EBY18W/g3XZB3O
- 6RDnMskDzzR4Gy+niWN+uAcv0ZWRHIFsMTEnAvs9UoDU4B2TlGSJO3IaBPiowa55WOdc
- E6gw==
+ bh=uGSGCt2jpgGQiVQiPTcoL8q2cRRPXF5PbYpq3+oes4A=;
+ b=VfVd3we6lN1YPw16oa3mZuDhefLdIHWLDUZDjyAs4WtVoihzAI9mQS8iZF3gHrGVOW
+ 5CD4BywXJqBu9YSn0/Dp84bXZ79JTGYOTm7q1C1zhSyroCTNO+UkcczhtbBSC0m/6QHJ
+ yuJniBS/oU0fsdnUNY/Kx+vnP+nJcsy8OqZG4EY2ws8z8J+wGyh/AnicKqndleCgW0vQ
+ 2CqJPeHvtk18MWNu526QGyGVfGyyQEi+/9xmAri7oh4zjvT+9A1FkAjd1n3Xovk6A7Nh
+ emP6tYBDWieqyc2p5fPRb428hyEW9UDPYJws4BWIR6NXoFB3AsysYXdYP7FpqD9p4Muk
+ H5KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740773109; x=1741377909;
+ d=1e100.net; s=20230601; t=1740773111; x=1741377911;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kmLVEYOHqmSuKqtrlHj7xi68jyrF2grY357sctURLPY=;
- b=RgdDhsvUpZEDk/ADkgnQojEmelj5dnE0jST+2/GC4I3WerdEyXhO60RDrbTk6YHPbq
- yvcpTDHFHNsmiQ9kZTx1xVQNs5mha+Q4N7eINgWMgHwtTonOmdWX9vpdAE88El2lgCMi
- RsFlmI+TtUGCkNVRXVKP8WrmkzPOKKKl5NcistpesxBsZF0LW0VTQTKLijnxnULmAq3t
- V7Q5ZQc9OtBpsSJYIbAmTEoX1pfVZ+/ztDVawAwsz0LZRQMiXLecuDM/vXECEAHnO2uD
- LSFO05UUm319GSNSClTfKvsLp/pRwjbK2AeswMTILGI4cWz6icVtwWNu9FRDeIM7Y9ir
- ovRg==
-X-Gm-Message-State: AOJu0YzEtwXAYIb7RzRucwMlSLjTip5Rx9G6fChoClrJeZG3DpSndJrb
- nsqoU3sGo3aJ4FDs7Y2IoevMVQnE/EVydEzEO9Pb123xyejemgyUI+TgQ+XM+91V0KTaTFE7x7K
- a5zrHd5Lj3ogAX1Jq2fLILgmVej0rlDAlpFcQdpR5olMAF3du/mqTk8ZtMM5JVD+aDgKqkxD9gR
- CObDbG0SUUNCOw1GaHFC2xAjX8Cb8VUeiprUpXv3O68w==
-X-Google-Smtp-Source: AGHT+IEXDnmtHdvCU6FYxqx7SwZPQUpPbr18UkYC5JLrNcO3k2UfFjffj812/9T2Ik/o7OjQ3e5tDnnKh17anA==
-X-Received: from wmbfm10.prod.google.com ([2002:a05:600c:c0a:b0:439:81e4:9ca6])
+ bh=uGSGCt2jpgGQiVQiPTcoL8q2cRRPXF5PbYpq3+oes4A=;
+ b=CuFolIJ91skYw1dukzhGCW53uhuXrPRv49kEWps+crjA1F1nTnvtAjUpDYSFwuew31
+ bVW+7i6SdKqSKz29xR8PiXM8/FmgH3P7CUL0wIxg6p4pe8mB55yytit2PecgZn4Wb6DZ
+ ARPsirAecTtdMw7JRs0sQ/Xb8oeIZO/KEhp8y1BgS5NjcLihTSVMRk9mo1Arb+mLlcg6
+ 501r1iGrLqWdUwmqFaSGi0kyYUY5F2KMs6Vqs+TsMeiF82mKK9T/zSV6BwExWOMHX8yQ
+ yppxcwboclv2/wBRtXA21eIOAMN0fnkn1inKP8ll29oEV8/VGXlNx/tYJkkZ9zGZW4wA
+ mbsw==
+X-Gm-Message-State: AOJu0YyXJLWk4Ar/yEHorQgLQ2uhsY1R2pqn9YYOgQxOTRrkzajYVTNj
+ f7MNng+UFlHvl+m0n7k246GYRK/q1qY0YkMepwvKZvWyZtzqfG/vCR9nnTlHc0pXKuyzahCJshC
+ oAj/faicf/p2wb4sTnUuPK2GK9DHv2k5VdjlcelolHw2xJjAkmMBTXbU3q9iS9OLj0dVdtL+IA8
+ 5yUTNT2ol3cnOzdQ4O9iWH5dpM1QuH5vLHTOVTYPz8jg==
+X-Google-Smtp-Source: AGHT+IFbZpM9s5UNjjeyIN6pD3JSGrNta9nwfz2pM99RKn4uczzIqfi9Nqb+BaigbskYx/PsDCW8yoqC2eMmuA==
+X-Received: from wmbg8.prod.google.com ([2002:a05:600c:a408:b0:439:846f:f9c8])
  (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1392:b0:439:6ab6:5d45 with SMTP id
- 5b1f17b1804b1-43ba6747775mr34648115e9.28.1740773108969; 
- Fri, 28 Feb 2025 12:05:08 -0800 (PST)
-Date: Fri, 28 Feb 2025 20:04:51 +0000
+ 2002:a05:6000:1faa:b0:38d:e6b6:508b with SMTP id
+ ffacd0b85a97d-390ec7cd37fmr3818354f8f.9.1740773111082; 
+ Fri, 28 Feb 2025 12:05:11 -0800 (PST)
+Date: Fri, 28 Feb 2025 20:04:52 +0000
 In-Reply-To: <20250228200453.45173-1-whendrik@google.com>
 Mime-Version: 1.0
 References: <20250228200453.45173-1-whendrik@google.com>
 X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-Message-ID: <20250228200453.45173-6-whendrik@google.com>
-Subject: [PATCH v6 6/8] i386: Add RDT feature flags.
+Message-ID: <20250228200453.45173-7-whendrik@google.com>
+Subject: [PATCH v6 7/8] i386/cpu: Adjust CPUID level for RDT features
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
  marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com, 
@@ -69,9 +69,9 @@ To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org,
  v6-0000-cover-letter.patch@google.com
 Cc: peternewman@google.com, Hendrik Wuethrich <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=39BbCZwgKCm8jURaQeVXTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--whendrik.bounces.google.com;
- helo=mail-wm1-x349.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::44a;
+ envelope-from=39xbCZwgKCnImXUdThYaWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--whendrik.bounces.google.com;
+ helo=mail-wr1-x44a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,93 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add RDT features to feature word / TCG.
+Adjust minimum CPUID level if RDT monitoring or allocation features are
+enabled to ensure that CPUID will return them.
 
 Signed-off-by: Hendrik Wuethrich <whendrik@google.com>
 ---
- target/i386/cpu.c | 33 +++++++++++++++++++++++++++++++--
- target/i386/cpu.h |  2 ++
- 2 files changed, 33 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index cd06744451..6262665294 100644
+index 6262665294..1ec3d88a65 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -868,7 +868,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-           CPUID_7_0_EBX_CLFLUSHOPT |            \
-           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \
-           CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED | \
--          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES)
-+          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES | \
-+          CPUID_7_0_EBX_PQM | CPUID_7_0_EBX_PQE)
-           /* missing:
-           CPUID_7_0_EBX_HLE
-           CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
-@@ -905,6 +906,9 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- #define TCG_SGX_12_0_EBX_FEATURES 0
- #define TCG_SGX_12_1_EAX_FEATURES 0
- #define TCG_24_0_EBX_FEATURES 0
-+#define TCG_RDT_F_0_EDX_FEATURES CPUID_F_0_EDX_L3
-+#define TCG_RDT_10_0_EDX_FEATURES (CPUID_10_0_EBX_L3_CAT | \
-+          CPUID_10_0_EBX_L2_CAT | CPUID_10_0_EBX_MBA)
- 
- #if defined CONFIG_USER_ONLY
- #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
-@@ -1062,7 +1066,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "fsgsbase", "tsc-adjust", "sgx", "bmi1",
-             "hle", "avx2", "fdp-excptn-only", "smep",
-             "bmi2", "erms", "invpcid", "rtm",
--            NULL, "zero-fcs-fds", "mpx", NULL,
-+            "rdt-m", "zero-fcs-fds", "mpx", "rdt-a",
-             "avx512f", "avx512dq", "rdseed", "adx",
-             "smap", "avx512ifma", "pcommit", "clflushopt",
-             "clwb", "intel-pt", "avx512pf", "avx512er",
-@@ -1650,6 +1654,31 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         },
-         .tcg_features = TCG_SGX_12_1_EAX_FEATURES,
-     },
+@@ -7872,6 +7872,16 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
+         }
 +
-+    [FEAT_RDT_10_0_EBX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            NULL, "l3-cat", "l2-cat", "mba"
-+        },
-+        .cpuid = {
-+            .eax = 0x10,
-+            .needs_ecx = true, .ecx = 0,
-+            .reg = R_EBX,
-+        },
-+        .tcg_features = TCG_RDT_10_0_EDX_FEATURES,
-+    },
-+    [FEAT_RDT_F_0_EDX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            [1] = "l3-cmt"
-+        },
-+        .cpuid = {
-+            .eax = 0xf,
-+            .needs_ecx = true, .ecx = 0,
-+            .reg = R_EDX,
-+        },
-+        .tcg_features = TCG_RDT_F_0_EDX_FEATURES,
-+    },
- };
++        /* RDT monitoring requires CPUID[0xF] */
++        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0xF);
++        }
++
++        /* RDT allocation requires CPUID[0x10] */
++        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQE) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x10);
++        }
+     }
  
- typedef struct FeatureMask {
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 6f5a3ecbd4..488126378d 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -679,7 +679,9 @@ typedef enum FeatureWord {
-     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
-     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
-     FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
-+    FEAT_RDT_F_0_EBX,  /* CPUID[EAX=0xf,ECX=0].EBX (RDT CMT/MBM) */
-     FEAT_RDT_F_0_EDX,  /* CPUID[EAX=0xf,ECX=0].EDX (RDT CMT/MBM) */
-+    FEAT_RDT_10_0_EBX,  /* CPUID[EAX=0x10,ECX=0].EBX (RDT CAT/MBA) */
-     FEATURE_WORDS,
- } FeatureWord;
- 
+     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
 -- 
 2.48.1.711.g2feabab25a-goog
 
