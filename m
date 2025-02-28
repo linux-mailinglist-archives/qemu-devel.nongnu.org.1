@@ -2,71 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1DEA4A429
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 21:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CA9A4A461
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 21:48:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to6tQ-0002Ou-D6; Fri, 28 Feb 2025 15:23:32 -0500
+	id 1to7Gj-00028I-EV; Fri, 28 Feb 2025 15:47:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1to6tO-0002Jk-Q7
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:23:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1to7Gd-000287-IJ
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:47:32 -0500
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1to6tL-00031G-B3
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:23:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1740774204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eni8Zrw7kMLCtsByvvKGEtf/CYD4C5cbO1hI1SodTwY=;
- b=F/4fmJCfXpIYv1dRjsqnZXnN+CcdDVk6rCFNbRFtT62DhxdUg6IMPODBc9p40/NdCvS68q
- uIYI07VRvEHYvmbnroGgbQOy4pUGfWVZ3SFaMw9zKqn0FVFaasd2M1IyAxRC45udMwUJTO
- vkITz37XTZ1nIoZWxeAPmOui3wqxOlI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-aOkxnnfWN4uaPLcpXFFn6g-1; Fri,
- 28 Feb 2025 15:23:19 -0500
-X-MC-Unique: aOkxnnfWN4uaPLcpXFFn6g-1
-X-Mimecast-MFC-AGG-ID: aOkxnnfWN4uaPLcpXFFn6g_1740774198
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B40A519560B5; Fri, 28 Feb 2025 20:23:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.162])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 36B6A1800359; Fri, 28 Feb 2025 20:23:15 +0000 (UTC)
-Date: Fri, 28 Feb 2025 14:23:12 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Nir Soffer <nirsof@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [PATCH v2] iotest: Unbreak 302 with python 3.13
-Message-ID: <dyhnb6zxkmzkr6gkhwokdjibvrt52otmqqc6q6ko5ejfkub6tk@lnwxbr7lnppq>
-References: <20250228195708.48035-1-nirsof@gmail.com>
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1to7Gb-0005UC-CE
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:47:31 -0500
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1to7GU-00000000ALV-1aGi; Fri, 28 Feb 2025 21:47:22 +0100
+Message-ID: <71749651-ecc4-4fe3-878d-25040ef17bd4@maciej.szmigiero.name>
+Date: Fri, 28 Feb 2025 21:47:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250228195708.48035-1-nirsof@gmail.com>
-User-Agent: NeoMutt/20250113
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 26/36] vfio/migration: Multifd device state transfer
+ support - received buffers queuing
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
+ <4de9762ebf7e7857103eb276d1a26a092aee325d.1739994627.git.maciej.szmigiero@oracle.com>
+ <6ad969cd-e522-4c8b-9d95-05b4df3be002@redhat.com>
+ <e91b1d67-1ddc-4d63-9c7f-cde1b13f3673@maciej.szmigiero.name>
+ <0a2cb938-7c2c-46aa-bb5e-19a425b18de5@redhat.com>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
+ 6oJdk+jpvKiyzlbKqlDtw/Y2Ob24tg1g/zvkHn8AVUwX+ZWWewSZ0vcwp7u/LvA+w2nJbIL1
+ N0/QUUdmxfkWTHhNqgkNX5hEmYqhwUPozFR0zblfD/6+XFR7VM9yT0fZPLqYLNOmGfqAXlxY
+ m8nWmi+lxkd/PYqQQwOq6GQwxjRFEvSc09m/YPYo9hxh7a6s8hAP88YOf2PD8oBB1r5E7KGb
+ Fv10Qss4CU/3zaiyRTExWwOJnTQdzSbtnM3S8/ZO/sL0FY/b4VLtlZzERAraxHdnPn8GgxYk
+ oPtAqoyf52RkCabL9dsXPWYQjkwG8WEUPScHDy8Uoo6imQujshG23A99iPuXcWc/5ld9mIo/
+ Ee7kN50MOXwS4vCJSv0cMkVhh77CmGUv5++E/rPcbXPLTPeRVy6SHgdDhIj7elmx2Lgo0cyh
+ uyxyBKSuzPvb61nh5EKAGL7kPqflNw7LJkInzHqKHDNu57rVuCHEx4yxcKNB4pdE2SgyPxs9
+ 9W7Cz0q2Hd7Yu8GOXvMfQfrBiEV4q4PzidUtV6sLqVq0RMK7LEi0RiZpthwxz0IUFwRw2KS/
+ 9Kgs9LmOXYimodrV0pMxpVqcyTepmDSoWzyXNP2NL1+GuQtaTQARAQABzTBNYWNpZWogUy4g
+ U3ptaWdpZXJvIDxtYWlsQG1hY2llai5zem1pZ2llcm8ubmFtZT7CwZQEEwEIAD4CGwMFCwkI
+ BwIGFQoJCAsCBBYCAwECHgECF4AWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxhgUJD0w7
+ wQAKCRCEf143kM4JdwHlD/9Ef793d6Q3WkcapGZLg1hrUg+S3d1brtJSKP6B8Ny0tt/6kjc2
+ M8q4v0pY6rA/tksIbBw6ZVZNCoce0w3/sy358jcDldh/eYotwUCHQzXl2IZwRT2SbmEoJn9J
+ nAOnjMCpMFRyBC1yiWzOR3XonLFNB+kWfTK3fwzKWCmpcUkI5ANrmNiDFPcsn+TzfeMV/CzT
+ FMsqVmr+TCWl29QB3U0eFZP8Y01UiowugS0jW/B/zWYbWo2FvoOqGLRUWgQ20NBXHlV5m0qa
+ wI2Isrbos1kXSl2TDovT0Ppt+66RhV36SGA2qzLs0B9LO7/xqF4/xwmudkpabOoH5g3T20aH
+ xlB0WuTJ7FyxZGnO6NL9QTxx3t86FfkKVfTksKP0FRKujsOxGQ1JpqdazyO6k7yMFfcnxwAb
+ MyLU6ZepXf/6LvcFFe0oXC+ZNqj7kT6+hoTkZJcxynlcxSRzRSpnS41MRHJbyQM7kjpuVdyQ
+ BWPdBnW0bYamlsW00w5XaR+fvNr4fV0vcqB991lxD4ayBbYPz11tnjlOwqnawH1ctCy5rdBY
+ eTC6olpkmyUhrrIpTgEuxNU4GvnBK9oEEtNPC/x58AOxQuf1FhqbHYjz8D2Pyhso8TwS7NTa
+ Z8b8o0vfsuqd3GPJKMiEhLEgu/io2KtLG10ynfh0vDBDQ7bwKoVlqC3It87AzQRaRrwiAQwA
+ xnVmJqeP9VUTISps+WbyYFYlMFfIurl7tzK74bc67KUBp+PHuDP9p4ZcJUGC3UZJP85/GlUV
+ dE1NairYWEJQUB7bpogTuzMI825QXIB9z842HwWfP2RW5eDtJMeujzJeFaUpmeTG9snzaYxY
+ N3r0TDKj5dZwSIThIMQpsmhH2zylkT0jH7kBPxb8IkCQ1c6wgKITwoHFjTIO0B75U7bBNSDp
+ XUaUDvd6T3xd1Fz57ujAvKHrZfWtaNSGwLmUYQAcFvrKDGPB5Z3ggkiTtkmW3OCQbnIxGJJw
+ /+HefYhB5/kCcpKUQ2RYcYgCZ0/WcES1xU5dnNe4i0a5gsOFSOYCpNCfTHttVxKxZZTQ/rxj
+ XwTuToXmTI4Nehn96t25DHZ0t9L9UEJ0yxH2y8Av4rtf75K2yAXFZa8dHnQgCkyjA/gs0ujG
+ wD+Gs7dYQxP4i+rLhwBWD3mawJxLxY0vGwkG7k7npqanlsWlATHpOdqBMUiAR22hs02FikAo
+ iXNgWTy7ABEBAAHCwXwEGAEIACYCGwwWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxrgUJ
+ D0w6ggAKCRCEf143kM4Jd55ED/9M47pnUYDVoaa1Xu4dVHw2h0XhBS/svPqb80YtjcBVgRp0
+ PxLkI6afwteLsjpDgr4QbjoF868ctjqs6p/M7+VkFJNSa4hPmCayU310zEawO4EYm+jPRUIJ
+ i87pEmygoN4ZnXvOYA9lkkbbaJkYB+8rDFSYeeSjuez0qmISbzkRVBwhGXQG5s5Oyij2eJ7f
+ OvtjExsYkLP3NqmsODWj9aXqWGYsHPa7NpcLvHtkhtc5+SjRRLzh/NWJUtgFkqNPfhGMNwE8
+ IsgCYA1B0Wam1zwvVgn6yRcwaCycr/SxHZAR4zZQNGyV1CA+Ph3cMiL8s49RluhiAiDqbJDx
+ voSNR7+hz6CXrAuFnUljMMWiSSeWDF+qSKVmUJIFHWW4s9RQofkF8/Bd6BZxIWQYxMKZm4S7
+ dKo+5COEVOhSyYthhxNMCWDxLDuPoiGUbWBu/+8dXBusBV5fgcZ2SeQYnIvBzMj8NJ2vDU2D
+ m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
+ IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
+ VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
+In-Reply-To: <0a2cb938-7c2c-46aa-bb5e-19a425b18de5@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,80 +110,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Feb 28, 2025 at 09:57:08PM +0200, Nir Soffer wrote:
-> This test depends on TarFile.addfile() to add tar member header without
-> writing the member data, which we write ourself using qemu-nbd. Python
-> 3.13 changed the function in a backward incompatible way[1] to require a
-> file object for tarinfo with non-zero size, breaking the test:
+On 28.02.2025 09:09, Cédric Le Goater wrote:
+> On 2/26/25 22:04, Maciej S. Szmigiero wrote:
+>> On 26.02.2025 11:43, Cédric Le Goater wrote:
+>>> On 2/19/25 21:34, Maciej S. Szmigiero wrote:
+>>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>>
+>>>> The multifd received data needs to be reassembled since device state
+>>>> packets sent via different multifd channels can arrive out-of-order.
+>>>>
+>>>> Therefore, each VFIO device state packet carries a header indicating its
+>>>> position in the stream.
+>>>> The raw device state data is saved into a VFIOStateBuffer for later
+>>>> in-order loading into the device.
+>>>>
+>>>> The last such VFIO device state packet should have
+>>>> VFIO_DEVICE_STATE_CONFIG_STATE flag set and carry the device config state.
+>>>>
+>>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>>> ---
+>>>>   hw/vfio/migration-multifd.c | 103 ++++++++++++++++++++++++++++++++++++
+>>>>   hw/vfio/migration-multifd.h |   3 ++
+>>>>   hw/vfio/migration.c         |   1 +
+>>>>   hw/vfio/trace-events        |   1 +
+>>>>   4 files changed, 108 insertions(+)
+>>>>
+>>>> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+>>>> index c2defc0efef0..5d5ee1393674 100644
+>>>> --- a/hw/vfio/migration-multifd.c
+>>>> +++ b/hw/vfio/migration-multifd.c
+>>>> @@ -42,6 +42,11 @@ typedef struct VFIOStateBuffer {
+>>>>   } VFIOStateBuffer;
+>>>>   typedef struct VFIOMultifd {
+>>>> +    VFIOStateBuffers load_bufs;
+>>>> +    QemuCond load_bufs_buffer_ready_cond;
+>>>> +    QemuMutex load_bufs_mutex; /* Lock order: this lock -> BQL */
+>>>> +    uint32_t load_buf_idx;
+>>>> +    uint32_t load_buf_idx_last;
+>>>>   } VFIOMultifd;
+>>>>   static void vfio_state_buffer_clear(gpointer data)
+>>>> @@ -87,15 +92,113 @@ static VFIOStateBuffer *vfio_state_buffers_at(VFIOStateBuffers *bufs, guint idx)
+>>>>       return &g_array_index(bufs->array, VFIOStateBuffer, idx);
+>>>>   }
+>>>
+>>> this routine expects load_bufs_mutex to be locked ? May be say so.
+>>
+>> I guess the comment above pertains to the vfio_load_state_buffer_insert()
+>> below.
+>>
+>> Do you mean it should have a comment that it expects to be called
+>> under load_bufs_mutex?
 > 
->      -[{"name": "vm.ovf", "offset": 512, "size": 6}, {"name": "disk", "offset": 1536, "size": 393216}]
->      +Traceback (most recent call last):
->      +  File "/home/stefanha/qemu/tests/qemu-iotests/302", line 118, in <module>
->      +    tar.addfile(disk)
->      +    ~~~~~~~~~~~^^^^^^
->      +  File "/usr/lib64/python3.13/tarfile.py", line 2262, in addfile
->      +    raise ValueError("fileobj not provided for non zero-size regular file")
->      +ValueError: fileobj not provided for non zero-size regular file
+> Just a one liner like :
 > 
-> The new behavior makes sense for most users, but breaks our unusual
-> usage. Fix the test to add the member header directly using public but
-> undocumented attributes. This is more fragile but the test works again.
+> /* called with load_bufs_mutex locked */
 > 
-> This also fixes a bug in the previous code - when calling addfile()
-> without a fileobject, tar.offset points to the start of the member data
-> instead of the end.
+> ?
 > 
-> [1] https://github.com/python/cpython/pull/117988
-> 
-> Signed-off-by: Nir Soffer <nirsof@gmail.com>
+> It's good to have for the future generations.
 
+Okay, done.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
-> ---
->  tests/qemu-iotests/302 | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
+>>
+>>>> +static bool vfio_load_state_buffer_insert(VFIODevice *vbasedev,
+>>>
+>>> could you pass VFIOMultifd* instead  ?
+>>
+>> No, it needs vbasedev->migration_max_queued_buffers too (introduced
+>> in later patch).
+>> > Also, most of VFIO routines (besides very small helpers/wrappers)
+>> take VFIODevice *.
 > 
-> diff --git a/tests/qemu-iotests/302 b/tests/qemu-iotests/302
-> index a6d79e727b..e980ec513f 100755
-> --- a/tests/qemu-iotests/302
-> +++ b/tests/qemu-iotests/302
-> @@ -115,13 +115,22 @@ with tarfile.open(tar_file, "w") as tar:
->  
->      disk = tarfile.TarInfo("disk")
->      disk.size = actual_size
-> -    tar.addfile(disk)
->  
-> -    # 6. Shrink the tar to the actual size, aligned to 512 bytes.
-> +    # Since python 3.13 we cannot use addfile() to create the member header.
-> +    # Add the tarinfo directly using public but undocumented attributes.
->  
-> -    tar_size = offset + (disk.size + 511) & ~511
-> -    tar.fileobj.seek(tar_size)
-> -    tar.fileobj.truncate(tar_size)
-> +    buf = disk.tobuf(tar.format, tar.encoding, tar.errors)
-> +    tar.fileobj.write(buf)
-> +    tar.members.append(disk)
-> +
-> +    # Update the offset and position to the location of the next member.
-> +
-> +    tar.offset = offset + (disk.size + 511) & ~511
-> +    tar.fileobj.seek(tar.offset)
-> +
-> +    # 6. Shrink the tar to the actual size.
-> +
-> +    tar.fileobj.truncate(tar.offset)
->  
->  with tarfile.open(tar_file) as tar:
->      members = [{"name": m.name, "size": m.size, "offset": m.offset_data}
-> -- 
-> 2.39.5 (Apple Git-154)
+> OK. It's minor but I prefer when parameters are limited to the minimum.
+> Having 'VFIODevice *' opens doors to a lot of state.
 > 
 > 
+> Thanks,
+> 
+> C.
+> 
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Thanks.
+Maciej
 
 
