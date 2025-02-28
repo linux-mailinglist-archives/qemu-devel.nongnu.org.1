@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7F3A4A0CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 18:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83901A4A101
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 18:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to4TW-0007nQ-Ti; Fri, 28 Feb 2025 12:48:38 -0500
+	id 1to4Zb-0005SI-Q8; Fri, 28 Feb 2025 12:54:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1to4TA-0007VJ-Ry
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:17 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1to4ZZ-0005No-Gt
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:54:53 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1to4T7-0005Nw-WC
- for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:48:16 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38f6475f747so1230617f8f.3
- for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 09:48:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1to4ZX-0006iM-8M
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 12:54:53 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4397dff185fso21795005e9.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 09:54:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1740764889; x=1741369689; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IrK81ur78/kd+G6F3kTwFNDWhB4gkURHyE9BpPtQ7cw=;
- b=QBOc97TGU8coZO044vEU6iTAKItSwICwtQISKtLa2GOW+8OnQ6+ul9FvydAtewPPsp
- msjB1qbA6ctTPeyqdwjcj6qHTmoibwd/UnejUaXOmmnMxDHSHbWH3teOm2kE0U/0OzI/
- xk/G6guV21LwMdpWFz+nxnJl8eIdw9lHQQSogQC7IB6mgyR79XRNqghRcx6EWnHc9G/O
- KA2MqBta7ERHat740P5iILxL+eQNIX+UkhpzxqlOqNBqmV9dzOwBfDJwb0cT0K4IO5Wj
- /8z/HY5YLKQ8SrxD/37jr8yAuGqjjnLLzU1hiV4wiA1E8olV7b1bT1wjVa+OwtXgU29c
- zADw==
+ d=linaro.org; s=google; t=1740765289; x=1741370089; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jtvMelRpMHPT9gIgF1y4kKqGNE8vJVEvR/SuEBPumP4=;
+ b=zC+UbZvSxGiLqrwyVReJbbT76AqmTZf+G3YAbpr1Z/7+LeEoYB9gekFAKPBSCKxanU
+ eXyXTa36DOrvki1Prirldp+j+d10zKmMrAVvi9+eJ328ZR228hU4Xa/kK/b/1ukFYbUz
+ aOqERCWVUMHChhGRslZq+nSwcypKnDgrchchgXjB/3+V35fKnGm+WphkBmze7gkBrfEM
+ Yz+jeNqgICbCct0SmX0vQPem+IXuCvhtv3Tcb0smGFZLefg6grFU3HEG1XYt7/X5D+UB
+ K94sf95syhJQcCp7E3xbZ/ouDJ2XhVwyQYsoc3RDLxhIj+ViKWqur8ayi147BD0bmFnK
+ uMrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740764889; x=1741369689;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IrK81ur78/kd+G6F3kTwFNDWhB4gkURHyE9BpPtQ7cw=;
- b=BJOVfxHvQjbpQm8GmHfwFNy/vOQ5jc2hCX2qTUHabh439bGoYQmliCZiog/Peq/DLF
- ua1FDYp+SrSO/6JWaAG5gTtHQ4CA3/BC0qXQnHfGsbT8zoG8UkKtYLq/EKM65mRq/W2V
- 4oUbuBFtZxLg6kc+71/gEnwMlx57wvJuXsXOsR0j9u5NYobGRDFGj2+Iu7XaBxWqf5EU
- HcWOxqgqDeENpuBTgH5WEMu+eDZMmX+KMup1FLWe9MOGOjEiWuYabdwS/cw5HfPesu0Y
- eICMrnQrYcsxP0m1xSRDnM3QUkz71PSU9mNtn8hWhi+8lggoqKq1KgZXXRUYyztroxKU
- l0kg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX+M5CTUyBKCBdMXBo5hlaMxodv0WtELUVPXK0hVuphpk1eIk7or6MkizudTrwgF7BYWyoIABH24zvN@nongnu.org
-X-Gm-Message-State: AOJu0YyQ67+T5kFz7KkcBpTrZZiHc1kF3TFz+T9pn02/USP+JeBpiSx/
- oDzgExqmUj/J5iAGP/d1V73eCWQO7TUm7cFNkc3BqatL5l10jtQZ2fj/E4xyf6k=
-X-Gm-Gg: ASbGncvMRM2YvUqAhaw+FgIN8jj2wIdwhKMV67TbIzECZ75tbdrm2vUHyUrztIygV9I
- xashbtBoBYuIrI7n/Hb2Z8wHDLawq8yMCPRDCufgnrI65hQNX2J4PUz98DivvSt4kp5LpQJtANI
- uVxT6fq0YbxiJJqFmkVyrarxrNMlpX1j90ycK2UYDM/WXwEB5hXitiZxTwWx3TbLt3XMXmXTGiT
- kFaVa1z2ZxEUJ95xmQQDYjkqZlW7Kb+ZgZ4qjL5JjMz3CQDjsyiRpl4gBeYqCaO2g48QvO8TYgn
- uKhmiAmcHEXSz8A64Z9uMfrT8lhcLf/n
-X-Google-Smtp-Source: AGHT+IFfZ6GHcrxwn3SafSDm+9COzqYxaY87as062ZhALvU+4CT5Yv7PYlX2tHV3oWCLTlGuQjBqGA==
-X-Received: by 2002:a05:6000:401f:b0:38f:38eb:fcfc with SMTP id
- ffacd0b85a97d-390ec7c7fefmr3526755f8f.7.1740764889367; 
- Fri, 28 Feb 2025 09:48:09 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795da5sm5979556f8f.15.2025.02.28.09.48.08
+ d=1e100.net; s=20230601; t=1740765289; x=1741370089;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jtvMelRpMHPT9gIgF1y4kKqGNE8vJVEvR/SuEBPumP4=;
+ b=mHfUxIG//MoQshUXrjF0hplgx1msAFPJv/E79y3viL1pyznmWAoqO9Culvn6svsbhZ
+ S9E8kMYzIQKm8Ogw1jumvIv7mCkTyOjSYyK7lXujKBaulxMhQOdRsjxUefQ6pixppt79
+ tSfgc2fzDK3kbmiB1A+02xbtsT3mKMq4BRlrl4trs76bOhi0EIsMKiyL+RBU1OsA0wnO
+ FcS3FHTZsglIkdzuro6LocLVQzBbFGy97KXjD9Ua7BtUJPCo95AWgYrVmha5U0TtysdV
+ LJPfD+e4ib/jH4c7xz9bvgkJeEgRvynl1v4Is+BMgqeVMX007CQX9iRTMpBApY5j7AP9
+ pGoA==
+X-Gm-Message-State: AOJu0YxT2nkCVCKdYwVUmaO1dJBPip8fjUc06vuR5loeozqBeSyVCuTw
+ URrSfaiyN77orggwPdeHs1L7xbVc3g1Zzaq0sFtYdj3KO9j78XZf2EqtjxkBH2M=
+X-Gm-Gg: ASbGncvHme0hDYJ/GOfIB4ZkVV1QoDjgz5qiFs6tbwt0fR0kUULhcV+9qGpOLI93tct
+ DXlPvGoHpMhpMYn7fLjRTvMNmcO11/gtghbxhQ1iBCvQTPJnZvUIM6ruorXqlrky7CzgYsPo+ek
+ lJQdG3+jgQnLkq4iAUydpTCznBMphgGrrVzMArsjoHGhmYmXaB9EgbktUreaUOsKNh7iiZDiRES
+ epAOJcfRrqltoXMtMa6RHvJ0CQcS9U+axAQ7AKLehci1SoRRJlFFyvjhQw3PFd4ZGOPesAQ6G0I
+ HV01aHKLQdivsDakjQsrCN8QAD83
+X-Google-Smtp-Source: AGHT+IEEUmZW/ghjkQdLqnqP8A/kZ0JNuvsioQ6f+TTIDp2YbRs//2RhmU2AjUQyqVEfH5hhsYKJKA==
+X-Received: by 2002:a05:600c:1c8e:b0:43a:b0ac:b10c with SMTP id
+ 5b1f17b1804b1-43ba6744a10mr29506175e9.26.1740765288904; 
+ Fri, 28 Feb 2025 09:54:48 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43b73717230sm62409275e9.19.2025.02.28.09.54.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Feb 2025 09:48:08 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 3/3] hw/net/smc91c111: Use MAX_PACKET_SIZE instead of magic
- numbers
-Date: Fri, 28 Feb 2025 17:48:01 +0000
-Message-ID: <20250228174802.1945417-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250228174802.1945417-1-peter.maydell@linaro.org>
-References: <20250228174802.1945417-1-peter.maydell@linaro.org>
+ Fri, 28 Feb 2025 09:54:48 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 95B615F7DE;
+ Fri, 28 Feb 2025 17:54:47 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [RFC PATCH] gitlab: add a new build_unit job to track build size
+Date: Fri, 28 Feb 2025 17:54:41 +0000
+Message-Id: <20250228175441.674384-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,49 +100,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we have a constant for the maximum packet size, we can use it
-to replace various hardcoded 2048 values.
+We want to reduce the total number of build units in the system to get
+on our way to a single binary. It will help to have some numbers so
+lets add a job to gitlab to track our progress.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/net/smc91c111.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .gitlab-ci.d/check-units.py    | 95 ++++++++++++++++++++++++++++++++++
+ .gitlab-ci.d/static_checks.yml | 22 ++++++++
+ 2 files changed, 117 insertions(+)
+ create mode 100755 .gitlab-ci.d/check-units.py
 
-diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 23ca99f926a..4a8f867d96e 100644
---- a/hw/net/smc91c111.c
-+++ b/hw/net/smc91c111.c
-@@ -58,7 +58,7 @@ struct smc91c111_state {
-     int tx_fifo_done_len;
-     int tx_fifo_done[NUM_PACKETS];
-     /* Packet buffer memory.  */
--    uint8_t data[NUM_PACKETS][2048];
-+    uint8_t data[NUM_PACKETS][MAX_PACKET_SIZE];
-     uint8_t int_level;
-     uint8_t int_mask;
-     MemoryRegion mmio;
-@@ -86,7 +86,8 @@ static const VMStateDescription vmstate_smc91c111 = {
-         VMSTATE_INT32_ARRAY(rx_fifo, smc91c111_state, NUM_PACKETS),
-         VMSTATE_INT32(tx_fifo_done_len, smc91c111_state),
-         VMSTATE_INT32_ARRAY(tx_fifo_done, smc91c111_state, NUM_PACKETS),
--        VMSTATE_BUFFER_UNSAFE(data, smc91c111_state, 0, NUM_PACKETS * 2048),
-+        VMSTATE_BUFFER_UNSAFE(data, smc91c111_state, 0,
-+                              NUM_PACKETS * MAX_PACKET_SIZE),
-         VMSTATE_UINT8(int_level, smc91c111_state),
-         VMSTATE_UINT8(int_mask, smc91c111_state),
-         VMSTATE_END_OF_LIST()
-@@ -773,8 +774,9 @@ static ssize_t smc91c111_receive(NetClientState *nc, const uint8_t *buf, size_t
-     if (crc)
-         packetsize += 4;
-     /* TODO: Flag overrun and receive errors.  */
--    if (packetsize > 2048)
-+    if (packetsize > MAX_PACKET_SIZE) {
-         return -1;
-+    }
-     packetnum = smc91c111_allocate_packet(s);
-     if (packetnum == 0x80)
-         return -1;
+diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
+new file mode 100755
+index 0000000000..aca63bd481
+--- /dev/null
++++ b/.gitlab-ci.d/check-units.py
+@@ -0,0 +1,95 @@
++#!/usr/bin/env python3
++#
++# check-units.py: check the number of compilation units and identify
++#                 those that are rebuilt multiple times
++#
++# Copyright (C) 2025 Linaro Ltd.
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++from os import access, R_OK, path
++from subprocess import check_output, CalledProcessError
++from sys import argv, exit
++import re
++
++
++def extract_build_units(cc_path):
++    """
++    Extract the build units and their counds from compile_commands.json file.
++
++    Returns:
++        Hash table of ["unit"] = count
++    """
++
++    # Make jq/shell do the heavy lifting
++    cmd = f"jq < {cc_path} '.[] | .file' | sort | uniq -c | sort -rn"
++
++    try:
++        # Execute the shell command and capture the output
++        result = check_output(cmd, shell=True)
++    except CalledProcessError as exp:
++        print(f"Error executing {cmd}: {exp}")
++        exit(1)
++
++    lines = result.decode().strip().split('\n')
++
++    # Create a dictionary to store the build unit frequencies
++    build_units = {}
++
++    # extract from string of form: ' 65 "../../fpu/softfloat.c"'
++    ext_pat = re.compile(r'^\s*(\d+)\s+"([^"]+)"')
++
++    # strip leading ../
++    norm_pat = re.compile(r'^((\.\./)+|/+)')
++
++    # Process each line of the output
++    for line in lines:
++        match = re.match(ext_pat, line)
++        if match:
++            count = int(match.group(1))
++            unit_path = re.sub(norm_pat, '', match.group(2))
++
++            # Store the count in the dictionary
++            build_units[unit_path] = count
++        else:
++            print(f"couldn't process {line}")
++
++    return build_units
++
++
++def analyse_units(build_units):
++    """
++    Analyse the build units and report stats and the top 10 rebuilds
++    """
++
++    print(f"Total source files: {len(build_units.keys())}")
++    print(f"Total build units: {sum(units.values())}")
++
++    # Create a sorted list by number of rebuilds
++    sorted_build_units = sorted(build_units.items(),
++                                key=lambda item: item[1],
++                                reverse=True)
++
++    print("Most rebuilt units:")
++    for unit, count in sorted_build_units[:10]:
++        print(f"  {unit} built {count} times")
++
++    print("Least rebuilt units:")
++    for unit, count in sorted_build_units[-10:]:
++        print(f"  {unit} built {count} times")
++
++
++if __name__ == "__main__":
++    if len(argv) != 2:
++        script_name = path.basename(argv[0])
++        print(f"Usage: {script_name} <path_to_compile_commands.json>")
++        exit(1)
++
++    cc_path = argv[1]
++    if path.isfile(cc_path) and access(cc_path, R_OK):
++        units = extract_build_units(cc_path)
++        analyse_units(units)
++        exit(0)
++    else:
++        print(f"{cc_path} doesn't exist or isn't readable")
++        exit(1)
+diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
+index c0ba453382..c3ed6de453 100644
+--- a/.gitlab-ci.d/static_checks.yml
++++ b/.gitlab-ci.d/static_checks.yml
+@@ -70,3 +70,25 @@ check-rust-tools-nightly:
+     expire_in: 2 days
+     paths:
+       - rust/target/doc
++
++check-build-units:
++  extends: .base_job_template
++  stage: build
++  image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
++  needs:
++    job: amd64-debian-container
++  before_script:
++    - source scripts/ci/gitlab-ci-section
++    - section_start setup "Install Tools"
++    - apt install --assume-yes --no-install-recommends jq
++    - section_end setup
++  script:
++    - mkdir build
++    - cd build
++    - section_start configure "Running configure"
++    - ../configure
++    - cd ..
++    - section_end configure
++    - section_start analyse "Analyse"
++    - .gitlab-ci.d/check-units.py build/compile_commands.json
++    - section_end analyse
 -- 
-2.43.0
+2.39.5
 
 
