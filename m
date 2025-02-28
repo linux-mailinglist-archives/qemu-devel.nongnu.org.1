@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8D1A4A343
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 20:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10D3A4A369
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Feb 2025 21:06:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1to6UB-0006n4-F5; Fri, 28 Feb 2025 14:57:27 -0500
+	id 1to6bw-0005Ku-Cr; Fri, 28 Feb 2025 15:05:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1to6U8-0006mQ-T2; Fri, 28 Feb 2025 14:57:24 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from
+ <36xbCZwgKCmYaLIRHVMOKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--whendrik.bounces.google.com>)
+ id 1to6ba-0004on-17
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:05:06 -0500
+Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1to6U5-0000IL-Qx; Fri, 28 Feb 2025 14:57:24 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-390edaee0cfso808805f8f.2; 
- Fri, 28 Feb 2025 11:57:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <36xbCZwgKCmYaLIRHVMOKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--whendrik.bounces.google.com>)
+ id 1to6bX-0000xm-1r
+ for qemu-devel@nongnu.org; Fri, 28 Feb 2025 15:05:05 -0500
+Received: by mail-wm1-x349.google.com with SMTP id
+ 5b1f17b1804b1-43ab5baf62cso18737895e9.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 12:05:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740772639; x=1741377439; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mDBWY57Bf9Ibr5qB0DFIWRzHoLx2Mj9UY/E0dsFYsN8=;
- b=NeQ2bjWVDpJb4CIBJ1S3YelLXQd53/L58LMhB/4B23Lt4pnaBvKOQ51jwWQkcpvo75
- YsZDlZdyQPM35jSPQFUqeNynK05nxvnEil+gWGFNJ8odnAjHQXkGzJ4s5AuUXTh5djyu
- Q7b/6jPydsCXDn+YncwGli4oVIzG3bvHqUaEHXAnkR8GtcnHhKiK7APxIHXLcZEs0ZOP
- RuTktrj8ZAEStxLBt5O6JO6Q+2OqBrhRnlv/soOisPXHiYZAlimaIfQHX80fBVffcMvd
- 3GbdCS/wzAAwOX3O+brV9y0pArY0zxMcB4Qxp4NZom86ZoxJw4nE7ruKQibLBiKRCz7T
- Nn0w==
+ d=google.com; s=20230601; t=1740773099; x=1741377899; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=DolmQsqndmFLMXgbOTcrfWM8vLPEPuQ/PPLa+E6wyHc=;
+ b=38XuES/Vm+B7W999d7fnJHBYIJogfFuPE6Q/Wfc2Fs4M8VWilQEbHcI1wxdlPdnqoU
+ lpcddH9I0dsoqCkbg/GtrSPfqG4mgRS03OoJC1yJA1VJAz3PPDzEegx10DqEi4Aa6kPr
+ sx0hLMx2uGpCQEJEvzdmEGHEzmXy5bgJSImA8rAHYzYsQmApUUFZ4yVWGg7YAS8T7H5N
+ GcIeAzN+WXO1LAdzxNWkwYRox1z75iueAZVfIBEDGGzlGD44mn9hkIOmTl6T1jCwzrfY
+ 3yqbRMXN4jneWiq5Jscf5EYKNrd7cu8OmACAglx+8keiV2jah6q/Mi7vz4OgBih5PwY1
+ PPrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740772639; x=1741377439;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mDBWY57Bf9Ibr5qB0DFIWRzHoLx2Mj9UY/E0dsFYsN8=;
- b=w9lkCTnQ+UbjghAww6ZMkke3c28HNP9+YhaG5xB9mrFvjvU/sR+upklCoJjIgRw51B
- eJ//ktcmkwCFjFnz4qdjkbYDwFRsVPPuWiQb+gZB6O0i3uhRJ3xYxgRKiERzLb8NKRPs
- MJnCajcrP2v4JBxPO/crf1BcxIUvUKETDM7b2iFT5wzHLpwidLqAWj62AEIVb5zY6CRK
- p+QkNqRaA3nW/8x17l50azIyJBmrXG6gHZKc4CC6q0cqwO+V5kMH+pBzoY0/7stS0lAH
- qNdx89lVinzpXdIQnU+HzFoO9aFPIBKX9mi15F8uWVDiTtWd81F/a3cs+sWcsZyia6jt
- Vf/g==
-X-Gm-Message-State: AOJu0YzwzdZslNbcvxwXmzyYHWt0KL/PEAmTK0VDZlL2919QPizzutGz
- qPec3I3rIS2tAfpwekkfHnj16XQS3oexrJxSL5wqLnj4nayDYd83Dt7HpA==
-X-Gm-Gg: ASbGncvebIK6r8b51HKPFuorggzlskBpa8GXqmmOs8zvTfo/iMl92LK52XUlFdKOd7+
- foOM36X2afs0u34D57nNqAKe5Ouu0u/1VxNoNHN159o9xwcNXOQU99Nhx0ap2P1YVW4wguzb3zO
- gs1IidVAIi/vfGadNITAtiTM8bicXUCCyB4przikw/COOla+2BSylGQPzeastuOaameoK2fXDXP
- cxKbjk5UY0XYeoRs9rO3qSulTgloRqgzCE3ik2/F5/tLwHDzRp+Q5XZHVsvLYaR+Qiw46Tad8IL
- O6465s94RPFhc/NGikAR8oAiNslvpsfDxjpW+NVc1Xx6Fkh8ar7r86OQ5WcG0hYJGfMYn6RW0fl
- 9P8LpeA==
-X-Google-Smtp-Source: AGHT+IHAiVlMT+sAQusBwJz+zXa4JeQlP/BQ6fmdgfoq4ovMv6+r4PpHaNkS8qJ4RZ5r8MgF8xE1qA==
-X-Received: by 2002:a05:6000:156d:b0:38d:e572:4dc2 with SMTP id
- ffacd0b85a97d-390eca27dabmr4047115f8f.40.1740772638822; 
- Fri, 28 Feb 2025 11:57:18 -0800 (PST)
-Received: from localhost.localdomain (46-116-132-27.bb.netvision.net.il.
- [46.116.132.27]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba5710ebsm102859325e9.26.2025.02.28.11.57.16
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Feb 2025 11:57:17 -0800 (PST)
-From: Nir Soffer <nirsof@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Nir Soffer <nirsof@gmail.com>
-Subject: [PATCH v2] iotest: Unbreak 302 with python 3.13
-Date: Fri, 28 Feb 2025 21:57:08 +0200
-Message-Id: <20250228195708.48035-1-nirsof@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=nirsof@gmail.com; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1740773099; x=1741377899;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DolmQsqndmFLMXgbOTcrfWM8vLPEPuQ/PPLa+E6wyHc=;
+ b=r34bj4Gk6INk7IrIR7jTuJe7Y/2YGgxIUTGfvnomtKorfZIFShww4hYkwO/j0RLZjd
+ Sf3iaYjsrKYYGoiQjKOh3lfE+8dKp8ajIsvbek+EBMC8ctikhyIQenCo8DyyofbzaRvM
+ SKIEhUXX3ax4Qri8IkPC3b7kXS1S8kKP0mD4rm05Pm6uPO26Scn7Rvu5dTDmaUHsQhxW
+ 3OVw+G9TmkEmeVhQihGhXqfXhK+sh3cOug1S8uy/1dR6kp4tAYWzz/0oTgbFrxsoMriG
+ Ci6LgCq76kcwxwcXIxlhkX0xFUsq9efndG2hfbhG4a9ovz2N7vyOP0kYgaRVNWlwqutB
+ YeOA==
+X-Gm-Message-State: AOJu0Yw4LDWuJM/ZJFzBKnJTUoQFOdxo8hN7D0A/lmW4DIYHMVXlgHqh
+ wySsKPClGm09db48flUY0GMPP9tWuebtXMGZtQw6edKRvIjgePbSGo3slfHzT+GYtUW+LI2bCrJ
+ wFoCNgp0wI0uJj1ZdBWW/4LL+EWCoGwqb5JOTMF5PzDh0l4XWd2DdQ1C6e1RRTT/O+Veb/H5jvJ
+ 5zb6YwTg8EhcU3+QxvP6J8Qt1adWsvoTBZ4oBYDBMgmQ==
+X-Google-Smtp-Source: AGHT+IG7w9KVqYnW/iUiH6FcHTHOtUoSFA69ouOf77jdVo8p2tdo6oeabuuM+uwA+AwZflT0lU2vSd3u9LmTbQ==
+X-Received: from wmbhc26.prod.google.com
+ ([2002:a05:600c:871a:b0:439:916e:3c57])
+ (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3c93:b0:439:8bc3:a697 with SMTP id
+ 5b1f17b1804b1-43ba66cfe5dmr41066515e9.4.1740773099324; 
+ Fri, 28 Feb 2025 12:04:59 -0800 (PST)
+Date: Fri, 28 Feb 2025 20:04:46 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
+Message-ID: <20250228200453.45173-1-whendrik@google.com>
+Subject: [PATCH v6 1/8] i386: Add Intel RDT device and State to config.
+From: Hendrik Wuethrich <whendrik@google.com>
+To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
+ marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com, 
+ zhao1.liu@intel.com, xiaoyao.li@intel.com, Jonathan.Cameron@huawei.com, 
+ v6-0000-cover-letter.patch@google.com
+Cc: peternewman@google.com, Hendrik Wuethrich <whendrik@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::349;
+ envelope-from=36xbCZwgKCmYaLIRHVMOKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x349.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,68 +93,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This test depends on TarFile.addfile() to add tar member header without
-writing the member data, which we write ourself using qemu-nbd. Python
-3.13 changed the function in a backward incompatible way[1] to require a
-file object for tarinfo with non-zero size, breaking the test:
+Change config to show RDT, add minimal code to the rdt.c module to make
+sure things still compile.
 
-     -[{"name": "vm.ovf", "offset": 512, "size": 6}, {"name": "disk", "offset": 1536, "size": 393216}]
-     +Traceback (most recent call last):
-     +  File "/home/stefanha/qemu/tests/qemu-iotests/302", line 118, in <module>
-     +    tar.addfile(disk)
-     +    ~~~~~~~~~~~^^^^^^
-     +  File "/usr/lib64/python3.13/tarfile.py", line 2262, in addfile
-     +    raise ValueError("fileobj not provided for non zero-size regular file")
-     +ValueError: fileobj not provided for non zero-size regular file
-
-The new behavior makes sense for most users, but breaks our unusual
-usage. Fix the test to add the member header directly using public but
-undocumented attributes. This is more fragile but the test works again.
-
-This also fixes a bug in the previous code - when calling addfile()
-without a fileobject, tar.offset points to the start of the member data
-instead of the end.
-
-[1] https://github.com/python/cpython/pull/117988
-
-Signed-off-by: Nir Soffer <nirsof@gmail.com>
+Signed-off-by: Hendrik Wuethrich <whendrik@google.com>
 ---
- tests/qemu-iotests/302 | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ hw/i386/Kconfig       |  4 ++
+ hw/i386/meson.build   |  1 +
+ hw/i386/rdt.c         | 97 +++++++++++++++++++++++++++++++++++++++++++
+ include/hw/i386/rdt.h | 35 ++++++++++++++++
+ target/i386/cpu.h     |  4 ++
+ 5 files changed, 141 insertions(+)
+ create mode 100644 hw/i386/rdt.c
+ create mode 100644 include/hw/i386/rdt.h
 
-diff --git a/tests/qemu-iotests/302 b/tests/qemu-iotests/302
-index a6d79e727b..e980ec513f 100755
---- a/tests/qemu-iotests/302
-+++ b/tests/qemu-iotests/302
-@@ -115,13 +115,22 @@ with tarfile.open(tar_file, "w") as tar:
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index d34ce07b21..a3a6b2259c 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -10,6 +10,9 @@ config SGX
+     bool
+     depends on KVM
  
-     disk = tarfile.TarInfo("disk")
-     disk.size = actual_size
--    tar.addfile(disk)
++config RDT
++    bool
++
+ config PC
+     bool
+     imply APPLESMC
+@@ -26,6 +29,7 @@ config PC
+     imply QXL
+     imply SEV
+     imply SGX
++    imply RDT
+     imply TEST_DEVICES
+     imply TPM_CRB
+     imply TPM_TIS_ISA
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index 10bdfde27c..3a697dcc03 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -22,6 +22,7 @@ i386_ss.add(when: 'CONFIG_VMPORT', if_true: files('vmport.c'))
+ i386_ss.add(when: 'CONFIG_VTD', if_true: files('intel_iommu.c'))
+ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
+                                 if_false: files('sgx-stub.c'))
++i386_ss.add(when: 'CONFIG_RDT', if_true: files('rdt.c'))
  
--    # 6. Shrink the tar to the actual size, aligned to 512 bytes.
-+    # Since python 3.13 we cannot use addfile() to create the member header.
-+    # Add the tarinfo directly using public but undocumented attributes.
+ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+ i386_ss.add(when: 'CONFIG_PC', if_true: files(
+diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
+new file mode 100644
+index 0000000000..76a253902b
+--- /dev/null
++++ b/hw/i386/rdt.c
+@@ -0,0 +1,97 @@
++/*
++ * Intel Resource Director Technology (RDT).
++ *
++ * Copyright 2025 Google LLC
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
++ */
++
++#include "hw/i386/rdt.h"
++#include "qemu/osdep.h" /* Needs to be included before isa.h */
++#include "hw/isa/isa.h"
++#include "hw/qdev-properties.h"
++#include "qom/object.h"
++
++#define TYPE_RDT "rdt"
++#define RDT_NUM_RMID_PROP "rmids"
++
++OBJECT_DECLARE_TYPE(RDTState, RDTStateClass, RDT);
++
++struct RDTMonitor {
++    uint64_t count_local;
++    uint64_t count_remote;
++    uint64_t count_l3;
++};
++
++struct RDTAllocation {
++    QemuMutex lock;
++    uint32_t active_cos;
++};
++
++struct RDTStatePerCore {
++    QemuMutex lock;
++    uint32_t active_rmid;
++};
++
++struct RDTStatePerL3Cache {
++    QemuMutex lock;
++
++    RDTMonitor *monitors;
++
++    /* RDT Allocation bitmask MSRs */
++    uint32_t msr_L3_ia32_mask_n[RDT_MAX_L3_MASK_COUNT];
++    uint32_t msr_L2_ia32_mask_n[RDT_MAX_L2_MASK_COUNT];
++    uint32_t ia32_L2_qos_ext_bw_thrtl_n[RDT_MAX_MBA_THRTL_COUNT];
++
++    /* Parent RDTState */
++    RDTState *rdtstate;
++};
++
++/* One instance of RDT-internal state to be shared by all cores */
++struct RDTState {
++    ISADevice parent;
++
++    /* Max amount of RMIDs */
++    uint32_t rmids;
++
++    uint16_t l3_caches;
++
++    RDTStatePerL3Cache *rdtInstances;
++    RDTAllocation *allocations;
++};
++
++struct RDTStateClass {
++};
++
++OBJECT_DEFINE_TYPE(RDTState, rdt, RDT, ISA_DEVICE);
++
++static Property rdt_properties[] = {
++    DEFINE_PROP_UINT32(RDT_NUM_RMID_PROP, RDTState, rmids, 256),
++};
++
++static void rdt_init(Object *obj)
++{
++}
++
++static void rdt_finalize(Object *obj)
++{
++}
++
++static void rdt_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->hotpluggable = false;
++    dc->desc = "RDT";
++    dc->user_creatable = true;
++
++    device_class_set_props(dc, rdt_properties);
++}
+diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
+new file mode 100644
+index 0000000000..1f99f98f7f
+--- /dev/null
++++ b/include/hw/i386/rdt.h
+@@ -0,0 +1,35 @@
++/*
++ * Intel Resource Director Technology (RDT).
++ *
++ * Copyright 2025 Google LLC
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
++ */
++
++#ifndef HW_RDT_H
++#define HW_RDT_H
++
++/* Max counts for allocation masks or CBMs. In other words, the size of
++ * respective MSRs.
++ * L3_MASK and L3_mask are architectural limitations. THRTL_COUNT is just
++ * the space left until the next MSR.
++ * */
++#define RDT_MAX_L3_MASK_COUNT      127
++#define RDT_MAX_L2_MASK_COUNT      63
++#define RDT_MAX_MBA_THRTL_COUNT    63
++
++typedef struct RDTState RDTState;
++typedef struct RDTStatePerL3Cache RDTStatePerL3Cache;
++typedef struct RDTStatePerCore RDTStatePerCore;
++typedef struct RDTMonitor RDTMonitor;
++typedef struct RDTAllocation RDTAllocation;
++
++#endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c67b42d34f..2cbcc8fe4e 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2253,6 +2253,10 @@ struct ArchCPU {
+     struct MemoryRegion *cpu_as_root, *cpu_as_mem, *smram;
+     Notifier machine_done;
  
--    tar_size = offset + (disk.size + 511) & ~511
--    tar.fileobj.seek(tar_size)
--    tar.fileobj.truncate(tar_size)
-+    buf = disk.tobuf(tar.format, tar.encoding, tar.errors)
-+    tar.fileobj.write(buf)
-+    tar.members.append(disk)
++    /* Help the RDT MSRs find the RDT device state */
++    struct RDTStatePerL3Cache *rdtStatePerL3Cache;
++    struct RDTStatePerCore *rdtPerCore;
 +
-+    # Update the offset and position to the location of the next member.
-+
-+    tar.offset = offset + (disk.size + 511) & ~511
-+    tar.fileobj.seek(tar.offset)
-+
-+    # 6. Shrink the tar to the actual size.
-+
-+    tar.fileobj.truncate(tar.offset)
+     struct kvm_msrs *kvm_msr_buf;
  
- with tarfile.open(tar_file) as tar:
-     members = [{"name": m.name, "size": m.size, "offset": m.offset_data}
+     int32_t node_id; /* NUMA node this CPU belongs to */
 -- 
-2.39.5 (Apple Git-154)
+2.48.1.711.g2feabab25a-goog
 
 
