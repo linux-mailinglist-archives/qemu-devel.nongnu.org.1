@@ -2,62 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED06A4A7AC
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 02:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EB9A4A8D0
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 06:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1toBxH-0001Yx-Hz; Fri, 28 Feb 2025 20:47:51 -0500
+	id 1toFNJ-0002qK-Gu; Sat, 01 Mar 2025 00:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <s23adhik@csclub.uwaterloo.ca>)
- id 1toBx3-0001Tr-GR; Fri, 28 Feb 2025 20:47:40 -0500
-Received: from mail.csclub.uwaterloo.ca ([129.97.134.52])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <s23adhik@csclub.uwaterloo.ca>)
- id 1toBx1-00078L-0e; Fri, 28 Feb 2025 20:47:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csclub.uwaterloo.ca;
- s=csc; t=1740793651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DMQU+hwf/6FXpGH8QjvHBZ5Uf4cfHzZgiKwQI3ENW2A=;
- b=QW3AetzMfn73VdZqe/RrTWxdwuKQtnUEk7iFApG/OqeFDIcen6KnMeWa3HmyKAqUphRpNB
- /aEFQ0Bug1cdKbbE8ePjY/N4jY96Jw5YUEabNEaB4GohBKLBfk6dnT4qWB0EA+CTh3OfDo
- RcPi7imSXNP3pAOq11Xoharra895ZCU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=csclub.uwaterloo.ca;
- s=202502e; t=1740793651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DMQU+hwf/6FXpGH8QjvHBZ5Uf4cfHzZgiKwQI3ENW2A=;
- b=3pxsCk8SE+Xxk8Yd7lFr4QEcwh8uUZKi1U0uGDPc6GmABSrMIVuOQ/uIwfgvRWc9kBPjfD
- fPUyLtwGBVf1MrDg==
-Content-Type: multipart/alternative;
- boundary="------------iOMpxdDDldQXtDQ0AfPpaIqr"
-Message-ID: <d714a7c2-2291-4a85-abcc-81648da1ef57@csclub.uwaterloo.ca>
-Date: Fri, 28 Feb 2025 20:47:31 -0500
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1toFNH-0002pp-0k
+ for qemu-devel@nongnu.org; Sat, 01 Mar 2025 00:26:55 -0500
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1toFNE-00085Y-Qd
+ for qemu-devel@nongnu.org; Sat, 01 Mar 2025 00:26:54 -0500
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5213PdbS006219
+ for <qemu-devel@nongnu.org>; Sat, 1 Mar 2025 05:26:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:content-type:date:from
+ :message-id:mime-version:subject:to; s=qcppdkim1; bh=xQQujpqNyaD
+ n+Tnw9nWbgXwudBtzG+L6bXQZUV7VzFE=; b=jPlmtXnjaXyfu414LpkUVJ36yAZ
+ B5v+eVlyCOvI3ATCi+rEdu1UAI3X+7Dc1Qp9iihwgZwj6BQpC67H53guPsS0GiY8
+ ZsrIVzRPW3kU2lrahsVN+beKJNrp2/o5xfAUPc1anveCzXIqaLeTih+Kh6ATXdJV
+ JyqY0Hshgfm4L9Tk+4td+WEcp4YiOtt3WEFl6eRZ+8fEhNd5TG9h0bV0C6qaLnz0
+ R+zHxV5t00KKdxiHIKfkMwjqSHCt4VRT+U7WMhaF2nXKRsZtf/qpuQYzA/s8sKw4
+ 6gOyPCZnBV6EVO9HjnnnXbpvbKXxnUl0SJJZffrrksLT7RxeiKiaQouCwEg==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453tas85n2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Sat, 01 Mar 2025 05:26:49 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2fe9527c041so5896056a91.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Feb 2025 21:26:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1740806808; x=1741411608;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xQQujpqNyaDn+Tnw9nWbgXwudBtzG+L6bXQZUV7VzFE=;
+ b=eV/mg+8Gz+hpGzLQlxRXVlpmu360icfZKUc9Ro+anI1Q0tYZKBleKaHRgbGtI6wwOB
+ M01DwniymFwwhOQDoSThf074d+FxuCGdzBcx9bwmPa213KHXxJIKU50jI719But6xlvo
+ GS1ebfYMK4mlAHubLsyrPvOlEsjNLF02J3lACnTr2kc3l7zNodvkMl91T0iPTb5SW0ii
+ mE7pi4Sen+F43saaGN0I5XS4mMJXq/gKNYtgvHyHSmuR1L0Evkn1CPSXpDqFHUWlx49l
+ vTUbgplnjGe2acUYABGK7S6QWb6UkHKtwESgXlIOhHpA00JGPYBzGy/2e2dIHkgYbv3D
+ NpJg==
+X-Gm-Message-State: AOJu0YwFUk5AhlfOHlE46AymxzWoseVFGQdwxUvFrX0LAOn/PgtM6w71
+ /4oyQvBvRh0+M/LKZkyWrWO+KzE/NnYRdLSg0hkJEYYcYJZ5x6pU6jIQEorE6AEOr8EbKgGQGum
+ lE7bh/daerXhoYh7gWYPHHdetZXf7rnPYeSZmkc9v8fZwUvtM1eczGpaMKDAgkA==
+X-Gm-Gg: ASbGncvkWaBzFaUyBheLpovlZ4S7QCi2OM5X+bP+cB2iLiEdL3sz7YKGzYh2MUK0Ce3
+ BEQCC8WbytY3rZjmE+blXYpb60aKVcvV4X4kWuSDbalL7M/o7495EDWlYiyFFiaVBeO502HwTw3
+ B9fGiCe1YmIo4cOafv71YsBxrdK6dNNqvsVUZXQoPciCTWS9Aj0tGqycagp7M3WHbTucZuaQ6Y+
+ yGAfblDAL3Q9CeAN7RSbetHQikm8hSuiNx1i1MEqL9KaAHToPKnyeSWCy+lnSEfo4ScSKSJxERe
+ jk3+bWX8cKgbjQ4ItWVwJJFJie4xZy/6g1PHw4+n88p8Ge2+EucGHPIMr80Q9Qds
+X-Received: by 2002:a17:90a:d40e:b0:2ee:d371:3227 with SMTP id
+ 98e67ed59e1d1-2febab6fb09mr10949534a91.17.1740806807789; 
+ Fri, 28 Feb 2025 21:26:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHlw8PUrlrEv/opwj7dRr8T2nGswMqgPFOsIGMeBTq5P8bHV/d5WGkb5fVz/eqLoqn9+MrChQ==
+X-Received: by 2002:a17:90a:d40e:b0:2ee:d371:3227 with SMTP id
+ 98e67ed59e1d1-2febab6fb09mr10949507a91.17.1740806807372; 
+ Fri, 28 Feb 2025 21:26:47 -0800 (PST)
+Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
+ [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2fe825bb346sm6930596a91.18.2025.02.28.21.26.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Feb 2025 21:26:47 -0800 (PST)
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+To: qemu-devel@nongnu.org
+Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
+ philmd@linaro.org, quic_mathbern@quicinc.com, ale@rev.ng, anjo@rev.ng,
+ quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com,
+ alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com
+Subject: [PATCH 00/38] hexagon system emu, part 1/3
+Date: Fri, 28 Feb 2025 21:25:50 -0800
+Message-Id: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: Re: [PATCH] bcm2838: Add GIC-400 timer interupt connections
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, qemu-arm@nongnu.org
-References: <3cca4eb3-09d1-4467-81fd-27a5bfe19a3e@csclub.uwaterloo.ca>
- <CAFEAcA9kED+fB1repp2+r-zMfZ_5ZeAkZq2ChyxjSUo1j5gAFQ@mail.gmail.com>
- <aef79501-b99f-4e84-b6fe-14dec1e030e6@csclub.uwaterloo.ca>
- <CAFEAcA9ht=T_XqKaKB-PaNK9joQFYgks37JHjqUO-qkaNe7YUQ@mail.gmail.com>
-Content-Language: en-US
-From: Sourojeet Adhikari <s23adhik@csclub.uwaterloo.ca>
-In-Reply-To: <CAFEAcA9ht=T_XqKaKB-PaNK9joQFYgks37JHjqUO-qkaNe7YUQ@mail.gmail.com>
-Received-SPF: pass client-ip=129.97.134.52;
- envelope-from=s23adhik@csclub.uwaterloo.ca; helo=mail.csclub.uwaterloo.ca
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Proofpoint-GUID: V5oIH_vKzK4CZoaxJES_u4EKhErYw66G
+X-Proofpoint-ORIG-GUID: V5oIH_vKzK4CZoaxJES_u4EKhErYw66G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-01_01,2025-02-28_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=841 spamscore=0 phishscore=0 mlxscore=0 priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503010039
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,212 +119,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------iOMpxdDDldQXtDQ0AfPpaIqr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 2025-02-27 10:17, Peter Maydell wrote:
-
-> On Thu, 27 Feb 2025 at 09:15, Sourojeet Adhikari
-> <s23adhik@csclub.uwaterloo.ca> wrote:
->>> The systmr INTERRUPT_TIMER0..3 sysbus IRQ outputs are already
->>> being wired up in the function bcm_soc_peripherals_common_realize()
->>> in hw/arm/bcm2835_peripherals.c (to the TYPE_BCM2835_IC
->>> interrupt controller), and it isn't valid to wire one input
->>> directly to multiple outputs.
->>>
->>> In fact it looks like we are currently getting this wrong for
->>> all of the interrupts that need to be wired to both the
->>> "legacy interrupt controller" and the GIC. I think at the moment
->>> what happens is that the wiring to the GIC will happen last
->>> and this overrides the earlier wiring to the legacy interrupt
->>> controller, so code using the latter won't work correctly.
->> I'll try reading through the relevant sections and send an
->> updated patch later next week. From what I can tell it falls
->> under the bcm2835_pheripherals.c file, right?
-> Yes. To expand a bit, QEMU's qemu_irq abstraction must
-> always be wired exactly 1-to-1, from a single output to
-> a single input. Wiring either one input to multiple outputs
-> or one output to multiple inputs will not behave correctly
-> (and unfortunately we don't have an easy way to assert()
-> if code in QEMU gets this wrong).
->
-> So for cases where you want the one-to-many behaviour you need
-> to create an object of TYPE_SPLIT_IRQ. This has one input and
-> multiple outputs, so you can connect your wire from device A's
-> output to the splitter's input, and then connect outputs
-> from the splitter to devices B, C, etc. (In this case A
-> would be the timer, and B, C the two interrupt controllers.)
-> Searching the source code for TYPE_SPLIT_IRQ will give some
-> places where it's used. (Ignore the qdev_new(TYPE_SPLIT_IRQ)
-> ones, those are a code pattern we use in board models, not
-> in SoC device models.)
->
-> In this specific bcm2838 case, it's a little more awkward,
-> because one of the two interrupt controllers is created inside
-> bcm2835_peripherals.c and one of them is created outside it.
-> Since bcm2838 is already reaching inside the bcm2835_peripherals
-> object I guess the simplest thing is:
->   * create a splitter object in bcm2835_peripherals.c for
->     every IRQ line that needs to be connected to both
->     interrupt controllers (probably easiest to have an array
->     of splitter objects, irq_splitter[])
->   * in bcm2835_peripherals.c, connect the device's outbound
->     IRQ to the input of the appropriate splitter, and
->     connect output 0 of that splitter to the BCM2835_IC
->     correct interrupt controller input
->   * in bcm2838.c, connect output 0 of ps_base->irq_splitter[n]
->     to the correct GIC input
->
-> (This is kind of breaking the abstraction layer that ideally
-> exists where the code that creates and uses a device doesn't
-> try to look "inside" it at any subparts it might have. We
-> could, for instance, instead make the bcm2835_peripherals
-> object expose its own qemu_irq outputs which were the second
-> outputs of the splitters, so that the bcm2838.c code wasn't
-> looking inside and finding the splitters directly. But I
-> think that's more awkward than it's worth. It's also possible
-> that we have the split between the main SoC and the
-> peripheral object wrong and either both interrupt controllers
-> or neither should be inside the peripheral object; but
-> reshuffling things like that would be a lot of work too.)
-
-This weekend I'll try my best to mess around, and get the solution
-you proposed working. From what I can tell, I (personally) think , the not-reshuffling things approach might be a bit better here. Since otherwise it'd turn into a somewhat sizeable patch pretty quick, and is a lot of work, for something that's not *too* big of an issue. I do have access to a raspberry pi if you think I should do any kind of testing before doing the reshuffling.
-
-On another note, do you think it's reasonable to add what you said here into the development documentation (paraphrased, and if not already documented). If I do write a patch to the documentation, can/should I cc you on it?
-
-> (PS: for the other "not 1:1" case, where you want to connect
-> many qemu_irqs outputs together into one input, the usual semantics
-> you want is to logically-OR the interrupt lines together, and
-> so you use TYPE_OR_IRQ for that.)
-
-(oh oki, I'll make sure to do that on the upcoming patch then,
-thank you!)
-
-(P.S the patch probably won't be coming till next week since I have quite a bit of work outside of my programming stuff to do. Should hopfully be done by Wednesday next week though?)
-
---------------iOMpxdDDldQXtDQ0AfPpaIqr
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><font face="monospace">On 2025-02-27 10:17, Peter Maydell wrote:</font></p>
-    <blockquote type="cite"
-cite="mid:CAFEAcA9ht=T_XqKaKB-PaNK9joQFYgks37JHjqUO-qkaNe7YUQ@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">On Thu, 27 Feb 2025 at 09:15, Sourojeet Adhikari
-<a class="moz-txt-link-rfc2396E" href="mailto:s23adhik@csclub.uwaterloo.ca">&lt;s23adhik@csclub.uwaterloo.ca&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">The systmr INTERRUPT_TIMER0..3 sysbus IRQ outputs are already
-being wired up in the function bcm_soc_peripherals_common_realize()
-in hw/arm/bcm2835_peripherals.c (to the TYPE_BCM2835_IC
-interrupt controller), and it isn't valid to wire one input
-directly to multiple outputs.
-
-In fact it looks like we are currently getting this wrong for
-all of the interrupts that need to be wired to both the
-"legacy interrupt controller" and the GIC. I think at the moment
-what happens is that the wiring to the GIC will happen last
-and this overrides the earlier wiring to the legacy interrupt
-controller, so code using the latter won't work correctly.
-</pre>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">I'll try reading through the relevant sections and send an
-updated patch later next week. From what I can tell it falls
-under the bcm2835_pheripherals.c file, right?
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Yes. To expand a bit, QEMU's qemu_irq abstraction must
-always be wired exactly 1-to-1, from a single output to
-a single input. Wiring either one input to multiple outputs
-or one output to multiple inputs will not behave correctly
-(and unfortunately we don't have an easy way to assert()
-if code in QEMU gets this wrong).
-
-So for cases where you want the one-to-many behaviour you need
-to create an object of TYPE_SPLIT_IRQ. This has one input and
-multiple outputs, so you can connect your wire from device A's
-output to the splitter's input, and then connect outputs
-from the splitter to devices B, C, etc. (In this case A
-would be the timer, and B, C the two interrupt controllers.)
-Searching the source code for TYPE_SPLIT_IRQ will give some
-places where it's used. (Ignore the qdev_new(TYPE_SPLIT_IRQ)
-ones, those are a code pattern we use in board models, not
-in SoC device models.)
-
-In this specific bcm2838 case, it's a little more awkward,
-because one of the two interrupt controllers is created inside
-bcm2835_peripherals.c and one of them is created outside it.
-Since bcm2838 is already reaching inside the bcm2835_peripherals
-object I guess the simplest thing is:
- * create a splitter object in bcm2835_peripherals.c for
-   every IRQ line that needs to be connected to both
-   interrupt controllers (probably easiest to have an array
-   of splitter objects, irq_splitter[])
- * in bcm2835_peripherals.c, connect the device's outbound
-   IRQ to the input of the appropriate splitter, and
-   connect output 0 of that splitter to the BCM2835_IC
-   correct interrupt controller input
- * in bcm2838.c, connect output 0 of ps_base-&gt;irq_splitter[n]
-   to the correct GIC input
-
-(This is kind of breaking the abstraction layer that ideally
-exists where the code that creates and uses a device doesn't
-try to look "inside" it at any subparts it might have. We
-could, for instance, instead make the bcm2835_peripherals
-object expose its own qemu_irq outputs which were the second
-outputs of the splitters, so that the bcm2838.c code wasn't
-looking inside and finding the splitters directly. But I
-think that's more awkward than it's worth. It's also possible
-that we have the split between the main SoC and the
-peripheral object wrong and either both interrupt controllers
-or neither should be inside the peripheral object; but
-reshuffling things like that would be a lot of work too.)
-</pre>
-    </blockquote>
-    <p><font face="monospace">This weekend I'll try my best to mess
-        around, and get the solution<br>
-        you proposed working<span style="white-space: pre-wrap">. From what I can tell, I (personally) think
-, the not-reshuffling things approach might be a bit better here.
-Since otherwise it'd turn into a somewhat sizeable patch pretty
-quick, and is a lot of work, for something that's not *too* big
-of an issue.
-I do have access to a raspberry pi if you think I should do any
-kind of testing before doing the reshuffling. </span></font></p>
-    <p><font face="monospace"><span style="white-space: pre-wrap">On another note, do you think it's reasonable to add what you said
-here into the development documentation (paraphrased, and if not 
-already documented). If I do write a patch to the documentation,
-can/should I cc you on it?
-</span></font></p>
-    <blockquote type="cite"
-cite="mid:CAFEAcA9ht=T_XqKaKB-PaNK9joQFYgks37JHjqUO-qkaNe7YUQ@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">(PS: for the other "not 1:1" case, where you want to connect
-many qemu_irqs outputs together into one input, the usual semantics
-you want is to logically-OR the interrupt lines together, and
-so you use TYPE_OR_IRQ for that.)</pre>
-    </blockquote>
-    <p><font face="monospace">(oh oki, I'll make sure to do that on the
-        upcoming patch then, <br>
-        thank you!)</font></p>
-    <p><span style="white-space: pre-wrap"><font face="monospace">(P.S the patch probably won't be coming till next week since I have 
-quite a bit of work outside of my programming stuff to do.
-Should hopfully be done by Wednesday next week though?)
-</font></span></p>
-  </body>
-</html>
-
---------------iOMpxdDDldQXtDQ0AfPpaIqr--
+aGV4YWdvbiBhcmNoaXRlY3R1cmUgc3lzdGVtIGVtdWxhdGlvbjogcGFydCAxLzMKClRoZXNlIHBh
+dGNoZXMgYXJlIGFsc28gc3RhZ2VkIGluIG15IHRyZWUgKGJyYW5jaCAiaGV4LW5leHQiCmF0IGh0
+dHBzOi8vZ2l0aHViLmNvbS9xdWljL3FlbXUvKS4gIEFmdGVyIHRoZXNlIHRocmVlIHBhdGNoIHNl
+cmllcywgd2UncmUKYWJsZSB0byBydW4gdGhlIHRlc3Qgc3VpdGUgZm9yIG1pbml2bSBbMV0uICBt
+aW5pdm0gaXMgYSBoeXBlcnZpc29yLAphbiBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgSGV4YWdvbiBW
+aXJ0dWFsIE1hY2hpbmUgU3BlY2lmaWNhdGlvbi4KClsxXSBodHRwczovL2dpdGh1Yi5jb20vcXVp
+Yy9oZXhhZ29uTVZNCgpCcmlhbiBDYWluICgzOCk6CiAgZG9jczogQWRkIGhleGFnb24gc3lzZW11
+IGRvY3MKICBkb2NzL3N5c3RlbTogQWRkIGhleGFnb24gQ1BVIGVtdWxhdGlvbgogIHRhcmdldC9o
+ZXhhZ29uOiBBZGQgU3lzdGVtL0d1ZXN0IHJlZ2lzdGVyIGRlZmluaXRpb25zCiAgdGFyZ2V0L2hl
+eGFnb246IE1ha2UgZ2VuX2V4Y2VwdGlvbl9lbmRfdGIgbm9uLXN0YXRpYwogIHRhcmdldC9oZXhh
+Z29uOiBTd2l0Y2ggdG8gdGFnX2lnbm9yZSgpLCBnZW5lcmF0ZSB2aWEKICAgIGdldF97dXNlcixz
+eXN9X3RhZ3MoKQogIHRhcmdldC9oZXhhZ29uOiBBZGQgcHJpdmlsZWdlIGNoZWNrLCB1c2UgdGFn
+X2lnbm9yZSgpCiAgdGFyZ2V0L2hleGFnb246IEFkZCBhIHBsYWNlaG9sZGVyIGZwIGV4Y2VwdGlv
+bgogIHRhcmdldC9oZXhhZ29uOiBBZGQgZ3Vlc3QsIHN5c3RlbSByZWcgbnVtYmVyIGRlZnMKICB0
+YXJnZXQvaGV4YWdvbjogQWRkIGd1ZXN0LCBzeXN0ZW0gcmVnIG51bWJlciBzdGF0ZQogIHRhcmdl
+dC9oZXhhZ29uOiBBZGQgVENHIHZhbHVlcyBmb3Igc3JlZywgZ3JlZwogIHRhcmdldC9oZXhhZ29u
+OiBBZGQgZ3Vlc3Qvc3lzIHJlZyB3cml0ZXMgdG8gRGlzYXNDb250ZXh0CiAgdGFyZ2V0L2hleGFn
+b246IEFkZCBpbXBvcnRlZCBtYWNybywgYXR0ciBkZWZzIGZvciBzeXNlbXUKICB0YXJnZXQvaGV4
+YWdvbjogRGVmaW5lIERDYWNoZSBzdGF0ZXMKICB0YXJnZXQvaGV4YWdvbjogQWRkIG5ldyBtYWNy
+byBkZWZpbml0aW9ucyBmb3Igc3lzZW11CiAgdGFyZ2V0L2hleGFnb246IEFkZCBoYW5kbGVycyBm
+b3IgZ3Vlc3Qvc3lzcmVnIHIvdwogIHRhcmdldC9oZXhhZ29uOiBBZGQgcGxhY2Vob2xkZXIgZ3Jl
+Zy9zcmVnIHIvdyBoZWxwZXJzCiAgdGFyZ2V0L2hleGFnb246IEFkZCB2bXN0YXRlIHJlcHJlc2Vu
+dGF0aW9uCiAgdGFyZ2V0L2hleGFnb246IE1ha2UgQV9QUklWLCAiSjJfdHJhcCoiIGluc3RzIG5l
+ZWRfZW52KCkKICB0YXJnZXQvaGV4YWdvbjogRGVmaW5lIHJlZ2lzdGVyIGZpZWxkcyBmb3Igc3lz
+dGVtIHJlZ3MKICB0YXJnZXQvaGV4YWdvbjogSW1wbGVtZW50IGRvX3JhaXNlX2V4Y2VwdGlvbigp
+CiAgdGFyZ2V0L2hleGFnb246IEFkZCBzeXN0ZW0gcmVnIGluc25zCiAgdGFyZ2V0L2hleGFnb246
+IEFkZCBzeXNlbXUgVENHIG92ZXJyaWRlcwogIHRhcmdldC9oZXhhZ29uOiBBZGQgaW1wbGljaXQg
+YXR0cmlidXRlcyB0byBzeXNlbXUgbWFjcm9zCiAgdGFyZ2V0L2hleGFnb246IEFkZCBUQ0cgb3Zl
+cnJpZGVzIGZvciBpbnQgaGFuZGxlciBpbnN0cwogIHRhcmdldC9oZXhhZ29uOiBBZGQgVENHIG92
+ZXJyaWRlcyBmb3IgdGhyZWFkIGN0bAogIHRhcmdldC9oZXhhZ29uOiBBZGQgVENHIG92ZXJyaWRl
+cyBmb3IgcnRlLCBubWkKICB0YXJnZXQvaGV4YWdvbjogQWRkIHNyZWdfe3JlYWQsd3JpdGV9IGhl
+bHBlcnMKICB0YXJnZXQvaGV4YWdvbjogSW5pdGlhbGl6ZSBodGlkLCBtb2RlY3RsIHJlZ3MKICB0
+YXJnZXQvaGV4YWdvbjogQWRkIGxvY2tzLCBpZCwgbmV4dF9QQyB0byBzdGF0ZQogIHRhcmdldC9o
+ZXhhZ29uOiBBZGQgYSBUTEIgY291bnQgcHJvcGVydHkKICB0YXJnZXQvaGV4YWdvbjogQWRkIHtU
+TEIsazB9bG9jaywgY2F1c2UgY29kZSwgd2FpdF9uZXh0X3BjCiAgdGFyZ2V0L2hleGFnb246IEFk
+ZCBzdHVicyBmb3IgbW9kaWZ5X3Nzci9nZXRfZXhlX21vZGUKICB0YXJnZXQvaGV4YWdvbjogQWRk
+IGdkYiBzdXBwb3J0IGZvciBzeXMgcmVncwogIHRhcmdldC9oZXhhZ29uOiBBZGQgaW5pdGlhbCBN
+TVUgbW9kZWwKICB0YXJnZXQvaGV4YWdvbjogQWRkIElSUSBldmVudHMKICB0YXJnZXQvaGV4YWdv
+bjogQWRkIGNsZWFyX3dhaXRfbW9kZSgpIGRlZmluaXRpb24KICB0YXJnZXQvaGV4YWdvbjogRGVm
+aW5lIGZ7UyxHfUVUX0ZJRUxEIG1hY3JvcwogIHRhcmdldC9oZXhhZ29uOiBBZGQgaGV4X2ludGVy
+cnVwdHMgc3VwcG9ydAoKIE1BSU5UQUlORVJTICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgMiArCiBkb2NzL2RldmVsL2hleGFnb24tc3lzLnJzdCAgICAgICAgICAgICAgfCAxMDYgKysr
+KysKIGRvY3MvZGV2ZWwvaW5kZXgtaW50ZXJuYWxzLnJzdCAgICAgICAgICB8ICAgMSArCiBkb2Nz
+L3N5c3RlbS9oZXhhZ29uL2Nkc3AucnN0ICAgICAgICAgICAgfCAgMTAgKwogZG9jcy9zeXN0ZW0v
+aGV4YWdvbi9lbXVsYXRpb24ucnN0ICAgICAgIHwgIDE2ICsKIGRvY3Mvc3lzdGVtL3RhcmdldC1o
+ZXhhZ29uLnJzdCAgICAgICAgICB8IDEwMSArKysrKwogZG9jcy9zeXN0ZW0vdGFyZ2V0cy5yc3Qg
+ICAgICAgICAgICAgICAgIHwgICAxICsKIHRhcmdldC9oZXhhZ29uL2NwdS1wYXJhbS5oICAgICAg
+ICAgICAgICB8ICAgNCArCiB0YXJnZXQvaGV4YWdvbi9jcHUuaCAgICAgICAgICAgICAgICAgICAg
+fCAgNzUgKysrLQogdGFyZ2V0L2hleGFnb24vY3B1X2JpdHMuaCAgICAgICAgICAgICAgIHwgIDQz
+ICsrCiB0YXJnZXQvaGV4YWdvbi9jcHVfaGVscGVyLmggICAgICAgICAgICAgfCAgNDMgKysKIHRh
+cmdldC9oZXhhZ29uL2dlbl90Y2cuaCAgICAgICAgICAgICAgICB8ICAgOSArCiB0YXJnZXQvaGV4
+YWdvbi9nZW5fdGNnX3N5cy5oICAgICAgICAgICAgfCAxMDMgKysrKysKIHRhcmdldC9oZXhhZ29u
+L2hlbHBlci5oICAgICAgICAgICAgICAgICB8ICAyMyArCiB0YXJnZXQvaGV4YWdvbi9oZXhfaW50
+ZXJydXB0cy5oICAgICAgICAgfCAgMTUgKwogdGFyZ2V0L2hleGFnb24vaGV4X21tdS5oICAgICAg
+ICAgICAgICAgIHwgIDMwICsrCiB0YXJnZXQvaGV4YWdvbi9oZXhfcmVncy5oICAgICAgICAgICAg
+ICAgfCAxMTUgKysrKysKIHRhcmdldC9oZXhhZ29uL2ludGVybmFsLmggICAgICAgICAgICAgICB8
+ICAxNiArCiB0YXJnZXQvaGV4YWdvbi9tYWNyb3MuaCAgICAgICAgICAgICAgICAgfCAgNDAgKy0K
+IHRhcmdldC9oZXhhZ29uL21heC5oICAgICAgICAgICAgICAgICAgICB8ICAyNiArKwogdGFyZ2V0
+L2hleGFnb24vc3lzX21hY3Jvcy5oICAgICAgICAgICAgIHwgMjM4ICsrKysrKysrKysKIHRhcmdl
+dC9oZXhhZ29uL3RyYW5zbGF0ZS5oICAgICAgICAgICAgICB8ICA0NSArKwogdGFyZ2V0L2hleGFn
+b24vYXR0cmlic19kZWYuaC5pbmMgICAgICAgIHwgNDE0ICsrKysrKysrKysrKysrKystLQogdGFy
+Z2V0L2hleGFnb24vcmVnX2ZpZWxkc19kZWYuaC5pbmMgICAgIHwgIDk2ICsrKysKIHRhcmdldC9o
+ZXhhZ29uL2FyY2guYyAgICAgICAgICAgICAgICAgICB8ICAgNSArCiB0YXJnZXQvaGV4YWdvbi9j
+cHUuYyAgICAgICAgICAgICAgICAgICAgfCAgODcgKysrKwogdGFyZ2V0L2hleGFnb24vY3B1X2hl
+bHBlci5jICAgICAgICAgICAgIHwgIDkxICsrKysKIHRhcmdldC9oZXhhZ29uL2dkYnN0dWIuYyAg
+ICAgICAgICAgICAgICB8ICA0NSArKwogdGFyZ2V0L2hleGFnb24vZ2VucHRyLmMgICAgICAgICAg
+ICAgICAgIHwgMTYzICsrKysrKysKIHRhcmdldC9oZXhhZ29uL2hleF9pbnRlcnJ1cHRzLmMgICAg
+ICAgICB8IDMyNCArKysrKysrKysrKysrKwogdGFyZ2V0L2hleGFnb24vaGV4X21tdS5jICAgICAg
+ICAgICAgICAgIHwgNTI4ICsrKysrKysrKysrKysrKysrKysrKysKIHRhcmdldC9oZXhhZ29uL21h
+Y2hpbmUuYyAgICAgICAgICAgICAgICB8ICA2MyArKysKIHRhcmdldC9oZXhhZ29uL29wX2hlbHBl
+ci5jICAgICAgICAgICAgICB8IDI0OCArKysrKysrKysrKwogdGFyZ2V0L2hleGFnb24vdHJhbnNs
+YXRlLmMgICAgICAgICAgICAgIHwgIDE4ICstCiBnZGIteG1sL2hleGFnb24tc3lzLnhtbCAgICAg
+ICAgICAgICAgICAgfCAxMTYgKysrKysKIHRhcmdldC9oZXhhZ29uL2dlbl9hbmFseXplX2Z1bmNz
+LnB5ICAgICB8ICAyMSArLQogdGFyZ2V0L2hleGFnb24vZ2VuX2hlbHBlcl9mdW5jcy5weSAgICAg
+IHwgIDIzICstCiB0YXJnZXQvaGV4YWdvbi9nZW5faGVscGVyX3Byb3Rvcy5weSAgICAgfCAgMjMg
+Ky0KIHRhcmdldC9oZXhhZ29uL2dlbl9pZGVmX3BhcnNlcl9mdW5jcy5weSB8ICAgMiArCiB0YXJn
+ZXQvaGV4YWdvbi9nZW5fb3BfYXR0cmlicy5weSAgICAgICAgfCAgIDIgKy0KIHRhcmdldC9oZXhh
+Z29uL2dlbl9vcGNvZGVzX2RlZi5weSAgICAgICB8ICAgNSArLQogdGFyZ2V0L2hleGFnb24vZ2Vu
+X3RjZ19mdW5jX3RhYmxlLnB5ICAgIHwgIDE0ICstCiB0YXJnZXQvaGV4YWdvbi9nZW5fdGNnX2Z1
+bmNzLnB5ICAgICAgICAgfCAgMzIgKy0KIHRhcmdldC9oZXhhZ29uL2hleF9jb21tb24ucHkgICAg
+ICAgICAgICB8IDE4OSArKysrKysrLQogdGFyZ2V0L2hleGFnb24vaW1wb3J0ZWQvZW5jb2RlX3Bw
+LmRlZiAgIHwgMjEzICsrKysrKy0tLQogdGFyZ2V0L2hleGFnb24vaW1wb3J0ZWQvbWFjcm9zLmRl
+ZiAgICAgIHwgNTU4ICsrKysrKysrKysrKysrKysrKysrKysrKwogdGFyZ2V0L2hleGFnb24vaW1w
+b3J0ZWQvc3lzdGVtLmlkZWYgICAgIHwgMjYyICsrKysrKysrKystCiB0YXJnZXQvaGV4YWdvbi9t
+ZXNvbi5idWlsZCAgICAgICAgICAgICAgfCAgMTcgKy0KIDQ4IGZpbGVzIGNoYW5nZWQsIDQ0MzUg
+aW5zZXJ0aW9ucygrKSwgMTg2IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRvY3Mv
+ZGV2ZWwvaGV4YWdvbi1zeXMucnN0CiBjcmVhdGUgbW9kZSAxMDA2NDQgZG9jcy9zeXN0ZW0vaGV4
+YWdvbi9jZHNwLnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IGRvY3Mvc3lzdGVtL2hleGFnb24vZW11
+bGF0aW9uLnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IGRvY3Mvc3lzdGVtL3RhcmdldC1oZXhhZ29u
+LnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IHRhcmdldC9oZXhhZ29uL2NwdV9oZWxwZXIuaAogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IHRhcmdldC9oZXhhZ29uL2dlbl90Y2dfc3lzLmgKIGNyZWF0ZSBtb2Rl
+IDEwMDY0NCB0YXJnZXQvaGV4YWdvbi9oZXhfaW50ZXJydXB0cy5oCiBjcmVhdGUgbW9kZSAxMDA2
+NDQgdGFyZ2V0L2hleGFnb24vaGV4X21tdS5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGFyZ2V0L2hl
+eGFnb24vbWF4LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCB0YXJnZXQvaGV4YWdvbi9zeXNfbWFjcm9z
+LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCB0YXJnZXQvaGV4YWdvbi9jcHVfaGVscGVyLmMKIGNyZWF0
+ZSBtb2RlIDEwMDY0NCB0YXJnZXQvaGV4YWdvbi9oZXhfaW50ZXJydXB0cy5jCiBjcmVhdGUgbW9k
+ZSAxMDA2NDQgdGFyZ2V0L2hleGFnb24vaGV4X21tdS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGFy
+Z2V0L2hleGFnb24vbWFjaGluZS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgZ2RiLXhtbC9oZXhhZ29u
+LXN5cy54bWwKIG1vZGUgY2hhbmdlIDEwMDc1NSA9PiAxMDA2NDQgdGFyZ2V0L2hleGFnb24vaW1w
+b3J0ZWQvbWFjcm9zLmRlZgoKLS0gCjIuMzQuMQoK
 
