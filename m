@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42056A4AC51
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 15:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FB0A4AC4F
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 15:37:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1toNwv-0001AX-4M; Sat, 01 Mar 2025 09:36:17 -0500
+	id 1toNxG-0001TG-KS; Sat, 01 Mar 2025 09:36:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1toNwK-00019h-7i
- for qemu-devel@nongnu.org; Sat, 01 Mar 2025 09:35:40 -0500
+ id 1toNwL-00019k-0W
+ for qemu-devel@nongnu.org; Sat, 01 Mar 2025 09:35:42 -0500
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1toNwH-00017f-GK
+ id 1toNwH-00017g-CF
  for qemu-devel@nongnu.org; Sat, 01 Mar 2025 09:35:39 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2120B4E6068;
- Sat, 01 Mar 2025 15:35:34 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 160C54E60F7;
+ Sat, 01 Mar 2025 15:35:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id I74GeRo2VDXK; Sat,  1 Mar 2025 15:35:32 +0100 (CET)
+ with ESMTP id Y9hyjc1MESdb; Sat,  1 Mar 2025 15:35:33 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2F0814E6069; Sat, 01 Mar 2025 15:35:32 +0100 (CET)
-Message-Id: <cover.1740839457.git.balaton@eik.bme.hu>
+ id 3966F4E6067; Sat, 01 Mar 2025 15:35:33 +0100 (CET)
+Message-Id: <08d9900af04789ede485942c8072eaa58bf52f80.1740839457.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1740839457.git.balaton@eik.bme.hu>
+References: <cover.1740839457.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 0/4] Misc eeprom_at24c clean ups
+Subject: [PATCH 1/4] hw/nvram/eeprom_at24c: Use OBJECT_DECLARE_SIMPLE_TYPE
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Date: Sat, 01 Mar 2025 15:35:32 +0100 (CET)
+Date: Sat, 01 Mar 2025 15:35:33 +0100 (CET)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -55,20 +57,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are some small misc clean ups in hw/nvram/eeprom_at24c.
+No need to open code it so use the simple object type declaration.
 
-Regards,
-BALATON Zoltan
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/nvram/eeprom_at24c.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-BALATON Zoltan (4):
-  hw/nvram/eeprom_at24c: Use OBJECT_DECLARE_SIMPLE_TYPE
-  hw/nvram/eeprom_at24c: Remove ERR macro that calls fprintf to stderr
-  hw/nvram/eeprom_at24c: Remove memset after g_malloc0
-  hw/nvram/eeprom_at24c: Reorganise init to avoid overwriting values
-
- hw/nvram/eeprom_at24c.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
-
+diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
+index a40cc5dd15..2ae03935d4 100644
+--- a/hw/nvram/eeprom_at24c.c
++++ b/hw/nvram/eeprom_at24c.c
+@@ -30,9 +30,7 @@
+                             ## __VA_ARGS__)
+ 
+ #define TYPE_AT24C_EE "at24c-eeprom"
+-typedef struct EEPROMState EEPROMState;
+-DECLARE_INSTANCE_CHECKER(EEPROMState, AT24C_EE,
+-                         TYPE_AT24C_EE)
++OBJECT_DECLARE_SIMPLE_TYPE(EEPROMState, AT24C_EE)
+ 
+ struct EEPROMState {
+     I2CSlave parent_obj;
 -- 
 2.30.9
 
