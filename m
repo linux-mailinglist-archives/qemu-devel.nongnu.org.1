@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44ADA4AC4E
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 15:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2006CA4AC52
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Mar 2025 15:37:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1toNx9-0001Qz-DK; Sat, 01 Mar 2025 09:36:32 -0500
+	id 1toNx8-0001Mo-3J; Sat, 01 Mar 2025 09:36:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1toNwL-00019l-Ch
+ id 1toNwM-00019n-5c
  for qemu-devel@nongnu.org; Sat, 01 Mar 2025 09:35:42 -0500
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1toNwI-00017s-EN
+ id 1toNwJ-000187-Vh
  for qemu-devel@nongnu.org; Sat, 01 Mar 2025 09:35:41 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 486554E6108;
- Sat, 01 Mar 2025 15:35:36 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 44FDB4E610A;
+ Sat, 01 Mar 2025 15:35:37 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id RFM_Qwe8OYCF; Sat,  1 Mar 2025 15:35:34 +0100 (CET)
+ with ESMTP id IntMI6M68Kor; Sat,  1 Mar 2025 15:35:35 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 47DEA4E60F6; Sat, 01 Mar 2025 15:35:34 +0100 (CET)
-Message-Id: <637b92984795a385b648a84208f093947cc261e4.1740839457.git.balaton@eik.bme.hu>
+ id 569254E6106; Sat, 01 Mar 2025 15:35:35 +0100 (CET)
+Message-Id: <ff281851e6d824ecd01b8b5cd955328dae1515a0.1740839457.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1740839457.git.balaton@eik.bme.hu>
 References: <cover.1740839457.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 2/4] hw/nvram/eeprom_at24c: Remove ERR macro that calls
- fprintf to stderr
+Subject: [PATCH 3/4] hw/nvram/eeprom_at24c: Remove memset after g_malloc0
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Date: Sat, 01 Mar 2025 15:35:34 +0100 (CET)
+Date: Sat, 01 Mar 2025 15:35:35 +0100 (CET)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -59,59 +58,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the realize method error_setg can be used like other places there
-already do. The other usage can be replaced with error_report which is
-the preferred way instead of directly printing to stderr.
+Calling memset to zero memory is not needed after g_malloc0 which
+already clears memory. These used to be in separate functions but
+after some patches the memset ended up after g_malloc0 and thus can be
+dropped.
 
+Fixes: 4f2c6448c3 (hw/nvram/eeprom_at24c: Make reset behavior more like hardware)
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/nvram/eeprom_at24c.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ hw/nvram/eeprom_at24c.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
-index 2ae03935d4..9f606842eb 100644
+index 9f606842eb..78c81bea77 100644
 --- a/hw/nvram/eeprom_at24c.c
 +++ b/hw/nvram/eeprom_at24c.c
-@@ -10,6 +10,7 @@
- #include "qemu/osdep.h"
- 
- #include "qapi/error.h"
-+#include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/i2c/i2c.h"
- #include "hw/nvram/eeprom_at24c.h"
-@@ -26,9 +27,6 @@
- #define DPRINTK(FMT, ...) do {} while (0)
- #endif
- 
--#define ERR(FMT, ...) fprintf(stderr, TYPE_AT24C_EE " : " FMT, \
--                            ## __VA_ARGS__)
--
- #define TYPE_AT24C_EE "at24c-eeprom"
- OBJECT_DECLARE_SIMPLE_TYPE(EEPROMState, AT24C_EE)
- 
-@@ -75,8 +73,7 @@ int at24c_eeprom_event(I2CSlave *s, enum i2c_event event)
-         if (ee->blk && ee->changed) {
-             int ret = blk_pwrite(ee->blk, 0, ee->rsize, ee->mem, 0);
-             if (ret < 0) {
--                ERR(TYPE_AT24C_EE
--                        " : failed to write backing file\n");
-+                error_report("%s: failed to write backing file", __func__);
-             }
-             DPRINTK("Wrote to backing file\n");
-         }
-@@ -203,8 +200,9 @@ static void at24c_eeprom_realize(DeviceState *dev, Error **errp)
-         int ret = blk_pread(ee->blk, 0, ee->rsize, ee->mem, 0);
- 
-         if (ret < 0) {
--            ERR(TYPE_AT24C_EE
--                    " : Failed initial sync with backing file\n");
-+            error_setg(errp, "%s: Failed initial sync with backing file",
-+                       TYPE_AT24C_EE);
-+            return;
-         }
-         DPRINTK("Reset read backing file\n");
+@@ -190,7 +190,6 @@ static void at24c_eeprom_realize(DeviceState *dev, Error **errp)
      }
+ 
+     ee->mem = g_malloc0(ee->rsize);
+-    memset(ee->mem, 0, ee->rsize);
+ 
+     if (ee->init_rom) {
+         memcpy(ee->mem, ee->init_rom, MIN(ee->init_rom_size, ee->rsize));
 -- 
 2.30.9
 
