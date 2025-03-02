@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2687A4B4B7
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Mar 2025 21:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5135A4B538
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Mar 2025 23:06:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1toqDK-0006qO-BD; Sun, 02 Mar 2025 15:47:07 -0500
+	id 1torQ7-0004Te-M4; Sun, 02 Mar 2025 17:04:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1toqD2-0006na-UN; Sun, 02 Mar 2025 15:46:48 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1toqD1-0001HE-Bv; Sun, 02 Mar 2025 15:46:48 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-abf4802b242so291929566b.1; 
- Sun, 02 Mar 2025 12:46:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740948404; x=1741553204; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Kdcd4RXFyiStCTqm54RuatpYjBx6eqFMkIpMCno5Uzo=;
- b=D6+J5ybYEGx2AleC80djoaLAIJuJysJptIUvYybN2dj28lmgyfSUh0EwHBAb/W05dt
- 6ZPbAax0Bo8pZ4bUVrggPxEnEnW9HtPd1X7PdjmCpaGknH596pw6540Xg2zuYOafXRvQ
- fEsq6SAngqlm5C88jxurXRVBWhW+nUQnRg6TZWmc5TP2PtCviDr7BkumgSWZLnj9InPp
- eNRHwBROXX4UesFdz8ji+NNQ4qpEBgc/CkzN6qaigKcTlPesPRWiALaNbL+zFt5/zuGg
- ubU5hFtqrYklWAuSltlPHfyqZrakdTImLSGFzH19FRAKRaGTe+MgmUd+km+PKNuCvoDb
- Zupw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740948404; x=1741553204;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Kdcd4RXFyiStCTqm54RuatpYjBx6eqFMkIpMCno5Uzo=;
- b=hvrnnLamzBHPnNQDsNpDJCtPUts+EklhEyJ79JM+9oSE7IBq5ZESCkVy+djz/tgCgk
- YQuk69g2kvsWnTnYtevR0oRNrTr1yc0uOqpjb7+gJV/iKqCLwn7gWyJrLGz8oL6CDina
- XKTLqOt54J9k34xSn7li7bps7oBfEYKELnGtMGOaBsIMzR2+Ug0BFylmgMAQmmeUgx6e
- pEo8MZqZGNQKS0Brqp4VzRmFBvKgb4rx3/zNZJNsl6cqpHXQ9S98B/mvEehseTtnBqcQ
- U9ftXM8YZmngxiImY1P+TkqS+Iib3/+MYhHre6KfhADxCSEe9oG6bUN5bjF0Fgf3Wmlu
- 7i0Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUxWtsV+2t11BsXnunGkN/NJryTtxYSoe2n/6+tQ79ifQoA5JA7PTrkw9aHtZ0g8cSTTqRucG/3FQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yy2NxRjqeFDUCsWMLDS/HY6azgyuKL3Snezb/C1GFGTarlFv1PO
- hxi9vgfGY8GAWg0iSrTcUj2KqdQ3v7yPj6TX3WSW1oCOUNRHnZk0oQBeRQ==
-X-Gm-Gg: ASbGncvncnl3cv4REvLnkASMZXGAyCQUzMIqETPGyqKIDE3PwwGf/rqryQTkx0UzPso
- TN8rizy58e+0rRvHpxwMntO+Sd/GFkjvyssmBjpFIN+qWIP0ZYNgb/xdnc/L7UmDpEHOCxktYpP
- uKB9YL/EFsDmJM7KUrK8mWUDQ2y8U2ZKuTkJM7+bQMC2Mq2scHrwOD/ZlmRz7haUqfC3HxSImxx
- i9vDw9Gry5huMnLRe7kEI3f74co7O+Omu7jibSeKDQKLbtlyqpJMzLmWAhRVnwAYMfmNr/TFCJg
- eeJyjWlJ+YMscZJgjOsJwY3G7MtQBQbcJJorc73fDD/9oNoDWpsgIBUo9elr0tsqN5VkkFPQylx
- S0aDdDxeDTmre+MY+AJC/aDrKv8Jnyb8JmiKmXunEsDfQRZgmyfYm
-X-Google-Smtp-Source: AGHT+IEEuLVmNMFxNiYvBihuLnNzZDEPIgvLNdoz1G2x3nVgD16NQ4PZpmVICEU0l3lUayVnEM6JJw==
-X-Received: by 2002:a17:907:6d0f:b0:abf:7a26:c47c with SMTP id
- a640c23a62f3a-abf7a26c669mr138811266b.47.1740948403968; 
- Sun, 02 Mar 2025 12:46:43 -0800 (PST)
-Received: from ?IPv6:::1?
- (dynamic-2a02-3100-2f94-9100-69d2-56f6-a5af-50a8.310.pool.telefonica.de.
- [2a02:3100:2f94:9100:69d2:56f6:a5af:50a8])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf0c7bf82fsm696637466b.173.2025.03.02.12.46.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Mar 2025 12:46:43 -0800 (PST)
-Date: Sun, 02 Mar 2025 20:46:41 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-ppc@nongnu.org
-CC: philmd@linaro.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/net/fsl=5Fetsec=3A_Set_e?=
- =?US-ASCII?Q?TSEC_device_description_and_category?=
-In-Reply-To: <20250218155407.838774E600E@zero.eik.bme.hu>
-References: <20250218155407.838774E600E@zero.eik.bme.hu>
-Message-ID: <4D68CE5A-4E7D-4B89-8E60-1CA435866306@gmail.com>
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1torQ4-0004TC-Pl
+ for qemu-devel@nongnu.org; Sun, 02 Mar 2025 17:04:21 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1torQ2-0001ad-Gt
+ for qemu-devel@nongnu.org; Sun, 02 Mar 2025 17:04:20 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522BNMDX029888;
+ Sun, 2 Mar 2025 22:03:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2023-11-20; bh=ZcijMWLxpIRqndUt7j1TxLaHbZYJ+
+ ZQUDOxv2I7j0E4=; b=DqTN/GIbcqPZLm8iRXxm+QgJDspvQwInDntwur/yC7EA+
+ e6EXjqYDsQ6jH3AAWoSv2WF3mfuBiBK22wfp+EhVFly+MeafjcNGRGEN2aKJh9eg
+ ILsBtpKhJVwX7c+qoKFO9JsHyXq9Zu5syvNFTLrpnssutfUGiqxFO+bactdIeYWv
+ mES2gWwdZ+waLLZFbCHI3bhGgILmztNHZ6mCRHUX/yfuU8ZWNhGBwwcL2WjQvXUx
+ AqU2Sf0VOTm6qByqvi3TjzQHbQgYZ6fmuKKvkj4ukxL068q+JEeOYa6+olbawtrP
+ 4Gg7Ikuu33jRNucCq/Su/zYKEVuRRkI9SBvOnTo3w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453ub71kgq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 02 Mar 2025 22:03:27 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 522GhEHV015706; Sun, 2 Mar 2025 22:03:26 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 453rp803b3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 02 Mar 2025 22:03:26 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 522M3QoP040088;
+ Sun, 2 Mar 2025 22:03:26 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 453rp80353-1; Sun, 02 Mar 2025 22:03:26 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
+ khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com
+Subject: [PATCH v2 00/10] target/i386/kvm/pmu: PMU Enhancement,
+ Bugfix and Cleanup 
+Date: Sun,  2 Mar 2025 14:00:08 -0800
+Message-ID: <20250302220112.17653-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-02_06,2025-02-28_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ suspectscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
+ definitions=main-2503020180
+X-Proofpoint-GUID: Px3x5PcXlVOtH_SyJSbj8YF-L0NOPzIN
+X-Proofpoint-ORIG-GUID: Px3x5PcXlVOtH_SyJSbj8YF-L0NOPzIN
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +101,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Would you mind suggesting how we can move forward with this patchset as:
+
+(1) One patch for kvm_arch_pre_create_vcpu() is picked from Xiaoyao's
+patchset.
+(2) Dapeng is working on mediated passthrough vPMU QEMU patches. This
+patchset doesn't support mediated passthrough vPMU.
+
+This patchset addresses four bugs related to AMD PMU virtualization.
+
+1. The PerfMonV2 is still available if PERCORE if disabled via
+"-cpu host,-perfctr-core".
+
+2. The VM 'cpuid' command still returns PERFCORE although "-pmu" is
+configured.
+
+3. The third issue is that using "-cpu host,-pmu" does not disable AMD PMU
+virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
+virtualization remains enabled. On the VM's Linux side, you might still
+see:
+
+[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+
+instead of:
+
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
+
+4. The fourth issue is that unreclaimed performance events (after a QEMU
+system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
+injected into the VM.
+
+The AMD PMU registers are not reset during QEMU system_reset.
+
+(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
+running "perf top", the PMU registers are not disabled properly.
+
+(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
+does not handle AMD PMU registers, causing some PMU events to remain
+enabled in KVM.
+
+(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
+preventing the reclamation of these events. Consequently, the
+kvm_pmc->perf_event remains active.
+
+(4) After a reboot, the VM kernel may report the following error:
+
+[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+
+(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
+NMIs randomly into the VM kernel:
+
+[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+
+To resolve these issues, we propose resetting AMD PMU registers during the
+VM reset process
 
 
-Am 18=2E Februar 2025 15:54:07 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
-me=2Ehu>:
->Add description and set category for eTSEC device so it shows up
->better in -device help=2E
->
->Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->---
-> hw/net/fsl_etsec/etsec=2Ec | 2 ++
-> 1 file changed, 2 insertions(+)
->
->diff --git a/hw/net/fsl_etsec/etsec=2Ec b/hw/net/fsl_etsec/etsec=2Ec
->index 3ce4fa2662=2E=2Eadde644892 100644
->--- a/hw/net/fsl_etsec/etsec=2Ec
->+++ b/hw/net/fsl_etsec/etsec=2Ec
->@@ -423,8 +423,10 @@ static void etsec_class_init(ObjectClass *klass, voi=
-d *data)
->     DeviceClass *dc =3D DEVICE_CLASS(klass);
->=20
->     dc->realize =3D etsec_realize;
->+    dc->desc =3D "Freescale Enhanced Three-Speed Ethernet Controller";
->     device_class_set_legacy_reset(dc, etsec_reset);
->     device_class_set_props(dc, etsec_properties);
->+    set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-> }
->=20
-> static const TypeInfo etsec_types[] =3D {
+Changed since v1:
+  - Use feature_dependencies for CPUID_EXT3_PERFCORE and
+    CPUID_8000_0022_EAX_PERFMON_V2.
+  - Remove CPUID_EXT3_PERFCORE when !cpu->enable_pmu.
+  - Pick kvm_arch_pre_create_vcpu() patch from Xiaoyao Li.
+  - Use "-pmu" but not a global "pmu-cap-disabled" for KVM_PMU_CAP_DISABLE.
+  - Also use sysfs kvm.enable_pmu=N to determine if PMU is supported.
+  - Some changes to PMU register limit calculation.
 
-Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
+
+Xiaoyao Li (1):
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+
+Dongli Zhang (9):
+  target/i386: disable PerfMonV2 when PERFCORE unavailable
+  target/i386: disable PERFCORE when "-pmu" is configured
+  target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+  target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+  target/i386/kvm: rename architectural PMU variables
+  target/i386/kvm: query kvm.enable_pmu parameter
+  target/i386/kvm: reset AMD PMU registers during VM reset
+  target/i386/kvm: support perfmon-v2 for reset
+  target/i386/kvm: don't stop Intel PMU counters
+
+ accel/kvm/kvm-all.c        |   5 +
+ include/system/kvm.h       |   1 +
+ target/arm/kvm.c           |   5 +
+ target/i386/cpu.c          |   8 +
+ target/i386/cpu.h          |  12 ++
+ target/i386/kvm/kvm.c      | 348 ++++++++++++++++++++++++++++++++++------
+ target/loongarch/kvm/kvm.c |   5 +
+ target/mips/kvm.c          |   5 +
+ target/ppc/kvm.c           |   5 +
+ target/riscv/kvm/kvm-cpu.c |   5 +
+ target/s390x/kvm/kvm.c     |   5 +
+ 11 files changed, 357 insertions(+), 47 deletions(-)
+
+base-commit: b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124
+
+Thank you very much!
+
+Dongli Zhang
 
 
