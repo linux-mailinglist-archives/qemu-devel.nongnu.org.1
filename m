@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53972A4BC67
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C6AA4BC63
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:35:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp389-0008LK-3R; Mon, 03 Mar 2025 05:34:37 -0500
+	id 1tp38A-0008OA-3B; Mon, 03 Mar 2025 05:34:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp37r-00089K-Ln; Mon, 03 Mar 2025 05:34:20 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tp37w-00089w-UQ; Mon, 03 Mar 2025 05:34:25 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp37q-00076u-70; Mon, 03 Mar 2025 05:34:19 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2239aa5da08so18127015ad.3; 
- Mon, 03 Mar 2025 02:34:17 -0800 (PST)
+ id 1tp37s-00077Q-Qm; Mon, 03 Mar 2025 05:34:22 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-223959039f4so24118795ad.3; 
+ Mon, 03 Mar 2025 02:34:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740998056; x=1741602856; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740998059; x=1741602859; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cDU1zpgxw5NQE1GZ4VMSDId7tdssn+1yod5XCqVYjkE=;
- b=NXX0ZYFxvVq4DQtG7rSN9khmtcJp5A6WbqtGrn9Qf4ENyaBLUse+fMu3BpQ1/0J+iG
- ItRZfV81lwKHclj2bfRaocQKQeqXyfUbdDX4DVBkm/2MnnrynNePeiVdfpDs6M50QAfP
- J/IKOAwkvinNvl6jb6jNfJSdEGGkBIiAp7SFxzMD6ZwaXa0HixPSJ8GFsO9OQbtBS9bx
- n0GWVKyUdoTSVhzxG9ra0QS9UHvi0UizAwOASxP6JqvWhwT5nR8p/4+tLgiCgvoNalKE
- VGB2syU55bTymAfKcb6epaTj1rEjl76XORvUe43biijWjxG2ODzdnwf4ssZzeNT2JMzj
- 9c9Q==
+ bh=Y3AZuJ9knP2vix0loLxAZpy1PVhtWN6trVm/NXU34mY=;
+ b=ZX9B/Nbws+ktMfA0GyxgBEn/NIbzYZBnFCPSRpuBkYpaxTAUQE5UZ+aefCRUtw7/vc
+ N5g4cerEt+kEZe+xH6cFRxo5e9wdPT1n6mYHqemDjEZDl4pUc7IqFXz/uAkwaMNKWs25
+ 6RP0TLsc1SNhYcNeHXNsVLOkAeCex5muSfNOmS1HADjqWJXNBfaoiL4xtkp3s4empSVu
+ KDBFVgE0GnC7O4h5Q1ElAcSap1r0JMAz33gBcc6SlXtB3/genmmHjX75b0lh6DuKZhpi
+ IiAOoDLZtO3ncC5IK3AEIf4bS80LoFWJgOeKr27rM7oZ/N+/rYaU0ZDi4LeQeJwkv3tX
+ lVuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740998056; x=1741602856;
+ d=1e100.net; s=20230601; t=1740998059; x=1741602859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cDU1zpgxw5NQE1GZ4VMSDId7tdssn+1yod5XCqVYjkE=;
- b=fSv4S/vWglKI85XI6HREXLd+nDF6Kg6Jgeaxb4Cv7NUkf+Nje9FWmkUahRMtKF0s1p
- xDJFLBazBeAo/7y0lYZsThjCOjYmnlQQbAE0P3Vhi7tl2UsmC4OHJhqw76f9SsrtYFWH
- HW13YAlnp6COyxRqwvFcy5INU+BLkv2aFGqxmUdT2mtLw7t/A5HFMvXEeqRvGAbjrAOo
- YdNNcFQw1JrnNcAWTPgrzKzIdpPGiU6vnmSe426y8uCHcQSf62wX3teXsJJnMX3h3ZTw
- 4Bn+iyDPkpoh6boqa/xLHZ8rx7HC7aZZF4doNHKDjotCcmZqsJ8fpdrEcawhLU77XYey
- 1j8Q==
+ bh=Y3AZuJ9knP2vix0loLxAZpy1PVhtWN6trVm/NXU34mY=;
+ b=XVUxGnCP6PXiL8L4WKwMYzfLDuVIp/CD87E1OSzyBOfBZhFcnw8Pd+PeeGUolLjwW2
+ rnYBecz6OFPJmChRLiUuTPVAAmhykyEPdkdGv9aVSinTOBYO4qXnK4FBfYFWa/BhC8JO
+ CfoUeCW3K/q8F8UY33E/R7YUUfFkkr4FMK2iT39H++xk3a+0a0kD47DNpyM8gDSiI0rh
+ nl6fVwE3d7DuE/TxMefyMpWYNAl9CMAT50jE0+7Pr1RMQgFiUb4HhnSK0CMlTtMUQOo3
+ DD7Ner6Ew/aXL30XS3h7vZXEhbKXMTGp4DsZOilCRNH/Ghrv3UCXcklMhdusyR3xVuM4
+ 2cRw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWw/Ar+JP3llorILz9Q7DGn55199llmHUYaqmp5KoByeJe3NvsbxHpvAGbYyq3pWbcMwS7IUuofMGHs@nongnu.org
-X-Gm-Message-State: AOJu0Yxy3El8EewnRZ5vCIHVAiElRcjQfsDMgloFBrOM9kiLxhM2cvF3
- eDi4m3ATAtkw/Y3EyUJPMHBTpMNOmxytLFzSqosA98WjDcE/h0KZL7RK7g==
-X-Gm-Gg: ASbGncsxG+nQInRVk7/Fmqcxw+Zh3IrO6CdiCykjJjSfjCZHesJzGNa0PPU04dZjUX9
- 0km/NS0p2Xjjv6DbzA54a/vqY/UVm7DWQnfnir4ixBJuzZDRN+4tXsrKVFBu7+MRet/g3m9eLaU
- hIVsCMYMdbH2iXV4nftCe9dRqDq6aS33YCK3ertidCF+gmGrSMAow8UZipUv5EIhhYs64IrBBo5
- qNfCCwTtuPu70MbA5J8xbjDe7ukW+7+cEd9hc/kHRbjhonVDpZGkDm03DGhl6m6hm77KrHKP5rC
- e3+UFaKbbqcnV+BgOGKA81GD44jK52aCGHl6jnsuAdKktEZPR1Q=
-X-Google-Smtp-Source: AGHT+IH6xRcFBwzh+Ic9nr2PTYlxIhI7c+ELjGK17IVu1+3Iju6NnB12UDW/hG936QyK5y+5qG/WqA==
-X-Received: by 2002:a17:90b:3fcb:b0:2fe:9581:fbea with SMTP id
- 98e67ed59e1d1-2febabf414amr20026398a91.29.1740998056129; 
- Mon, 03 Mar 2025 02:34:16 -0800 (PST)
+ AJvYcCUB8grCJK0iYgRuDhKQ6wDIOTeuEABtwRAhQ1ORzlrcQKdrXeB8w40CmJxledhTio4NRgCM6YQN0nyP@nongnu.org
+X-Gm-Message-State: AOJu0Yx6Inb9oq0TQEwHtsGmHhkpKkJm9MW9yWlLD8A7g4SBrhxQXU+i
+ lL0SV+v/UN/CfyI4b09K0oJKZDvN/PGsTyqV60WtGJepGpWMtngkeNawcg==
+X-Gm-Gg: ASbGnctW5mP6XIFp/Yd8qlb6gNJIM8qTNQCiEU6qz+a/XkmTlPzJKfCh+H68hthxMy0
+ GQBB18mBrmw3YzwPyQgiNJc1X2kEdlqAb8GQZwSwh1xOUqvW/5h+V+z80oQgfsmAy+rEY10NTQg
+ ZbMp1DzzzsqvyL4lh7+E2/iv/DS9irrWBzY/ylgpcq3RAMKxcVhtHlXD5B/fnM/aL/OWV4vK23G
+ v4bl27ZbCcs2FAPGCJrko9M5uLbnrDo/2CGx3ggtfcwnhq4wmQJZ33nl/Jr7/XyHrD4yaoaJy0n
+ QGQAWgNmLiLkaE2xUx9/BNgRuPKGnQ0e4FzF3XGRN5wzIycTRU0=
+X-Google-Smtp-Source: AGHT+IFYfDkXOZ6/TmyN+hewIjyrM1BZuEFUPLC9YGgbYePDgBf5RFILKWDqj7tNoxmQe25qr6Zm6Q==
+X-Received: by 2002:a17:90b:4c4d:b0:2fa:e9b:33ab with SMTP id
+ 98e67ed59e1d1-2febab7878bmr22055491a91.16.1740998058905; 
+ Mon, 03 Mar 2025 02:34:18 -0800 (PST)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fea698f309sm8594558a91.42.2025.03.03.02.34.13
+ 98e67ed59e1d1-2fea698f309sm8594558a91.42.2025.03.03.02.34.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Mar 2025 02:34:15 -0800 (PST)
+ Mon, 03 Mar 2025 02:34:18 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH 4/6] ppc/pnv: Move PNOR to offset 0 in the ISA FW space
-Date: Mon,  3 Mar 2025 20:33:55 +1000
-Message-ID: <20250303103359.578994-5-npiggin@gmail.com>
+Subject: [PATCH 5/6] ppc/pnv: Add a PNOR address and size sanity checks
+Date: Mon,  3 Mar 2025 20:33:56 +1000
+Message-ID: <20250303103359.578994-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250303103359.578994-1-npiggin@gmail.com>
 References: <20250303103359.578994-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-skiboot has a bug that does not handle ISA FW access correctly for IDSEL
-devices > 0, and the current PNOR default address and size puts 64MB in
-device 0 and 64MB in device 1, which causes skiboot to hit this bug and
-breaks PNOR accesses.
-
-Move the PNOR address down to 0 for now, so a 256MB PNOR can be accessed
-via device 0.
+The BMC HIOMAP PNOR access protocol has certain limits on PNOR addresses
+and sizes. Add some sanity checks for these so we don't get strange
+behaviour.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_pnor.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_bmc.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/hw/ppc/pnv_pnor.h b/include/hw/ppc/pnv_pnor.h
-index 2e37ac88bf1..19c2d642e82 100644
---- a/include/hw/ppc/pnv_pnor.h
-+++ b/include/hw/ppc/pnv_pnor.h
-@@ -13,9 +13,11 @@
- #include "hw/sysbus.h"
+diff --git a/hw/ppc/pnv_bmc.c b/hw/ppc/pnv_bmc.c
+index 0c1274df21a..811ba3d7a49 100644
+--- a/hw/ppc/pnv_bmc.c
++++ b/hw/ppc/pnv_bmc.c
+@@ -251,10 +251,38 @@ static const IPMINetfn hiomap_netfn = {
  
- /*
-- * PNOR offset on the LPC FW address space
-+ * PNOR offset on the LPC FW address space. For now this should be 0 because
-+ * skiboot 7.1 has a bug where IDSEL > 0 (LPC FW address > 256MB) access is
-+ * not performed correctly.
-  */
--#define PNOR_SPI_OFFSET         0x0c000000UL
-+#define PNOR_SPI_OFFSET         0x00000000UL
+ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor)
+ {
++    uint32_t pnor_size = pnor->size;
++    uint32_t pnor_addr = PNOR_SPI_OFFSET;
++
+     if (!pnv_bmc_is_simulator(bmc)) {
+         return;
+     }
  
- #define TYPE_PNV_PNOR  "pnv-pnor"
- OBJECT_DECLARE_SIMPLE_TYPE(PnvPnor, PNV_PNOR)
++    /*
++     * The HIOMAP protocol uses block units and 16-bit addressing.
++     * Prevent overflow or misalign.
++     */
++    if (pnor_addr >= 1U << (BLOCK_SHIFT + 16)) {
++        warn_report("PNOR address is larger than 2^%d, disabling PNOR",
++                    BLOCK_SHIFT + 16);
++        return;
++    }
++    if (pnor_addr & ((1U << BLOCK_SHIFT) - 1)) {
++        warn_report("PNOR address is not aligned to 2^%d, disabling PNOR",
++                    BLOCK_SHIFT);
++        return;
++    }
++    if (pnor_size > 1U << (BLOCK_SHIFT + 16)) {
++        warn_report("PNOR size is larger than 2^%d, disabling PNOR",
++                    BLOCK_SHIFT + 16);
++        return;
++    }
++    if (pnor_size & ((1U << BLOCK_SHIFT) - 1)) {
++        warn_report("PNOR size is not aligned to 2^%d, disabling PNOR",
++                    BLOCK_SHIFT);
++        return;
++    }
++
+     object_ref(OBJECT(pnor));
+     object_property_add_const_link(OBJECT(bmc), "pnor", OBJECT(pnor));
+ 
 -- 
 2.47.1
 
