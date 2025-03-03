@@ -2,53 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CC9A4CAD2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2062A4CAC7
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:09:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpAHa-0006jG-AB; Mon, 03 Mar 2025 13:12:50 -0500
+	id 1tpAD4-0005U5-SJ; Mon, 03 Mar 2025 13:08:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuanmh12@chinatelecom.cn>)
- id 1tpAGy-0006bL-CN
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:12:12 -0500
-Received: from smtpnm6-08.21cn.com ([182.42.159.130] helo=chinatelecom.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <yuanmh12@chinatelecom.cn>) id 1tpAGv-00047I-12
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:12:12 -0500
-HMM_SOURCE_IP: 192.168.137.232:0.491197274
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-125.69.36.133 (unknown [192.168.137.232])
- by chinatelecom.cn (HERMES) with SMTP id 98A589063223;
- Tue,  4 Mar 2025 02:02:33 +0800 (CST)
-X-189-SAVE-TO-SEND: yuanmh12@chinatelecom.cn
-Received: from  ([125.69.36.133])
- by gateway-ssl-dep-84dfd8c7d7-bsrdr with ESMTP id
- 65809addb1854f7eb06a0c0470c52420 for imammedo@redhat.com; 
- Tue, 04 Mar 2025 02:02:36 CST
-X-Transaction-ID: 65809addb1854f7eb06a0c0470c52420
-X-Real-From: yuanmh12@chinatelecom.cn
-X-Receive-IP: 125.69.36.133
-X-MEDUSA-Status: 0
-From: yuanminghao <yuanmh12@chinatelecom.cn>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH 1/1] vhost: do not reset used_memslots when destroying
- vhost dev
-Date: Mon,  3 Mar 2025 13:02:17 -0500
-Message-Id: <1741024937-37164-1-git-send-email-yuanmh12@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
-Received-SPF: pass client-ip=182.42.159.130;
- envelope-from=yuanmh12@chinatelecom.cn; helo=chinatelecom.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tpACs-0005SH-SB
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:08:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tpACp-0002Wl-UH
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:07:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741025272;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rBLGARsSGkigOBi6cELIuVucqv4iup6isxmDe0b/drk=;
+ b=AsTkEEWHhjYTbM0iDQdvHCguyaCCO+Kd6qZ5cM5BTz9k4p05REoXXUko4xJzwInEdCWVZT
+ LZjDc7E7c+OnoNKD2IlRNTMIbZ6SnxhudOku8c5+K8Vp2vtbhM4rNdPAdw0nItQu7E1I/5
+ fQLe2AtJo/al8juNbh2+KCWiVsrnXls=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-f398Oz9hNT2zjEBuqs2d_w-1; Mon, 03 Mar 2025 13:07:46 -0500
+X-MC-Unique: f398Oz9hNT2zjEBuqs2d_w-1
+X-Mimecast-MFC-AGG-ID: f398Oz9hNT2zjEBuqs2d_w_1741025265
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-390e271517fso2775667f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 10:07:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741025259; x=1741630059;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rBLGARsSGkigOBi6cELIuVucqv4iup6isxmDe0b/drk=;
+ b=NTH9U5VUnR4UNVx6HBrbCzkQq+ZyJHLUwNLZJzqWc0ZLs7CvOfKZ9ibxnbEUgRC8ip
+ 9iOChwHJ+xgpR4ooGQX1AiApoqEBDwsfCVok4uND6QJNwo1vPwlJpfykvi4n1ZLWRFMh
+ JdV849NP3bTqOYVWVvHrGMu91YDnM550R+7XWLUGft0AGYn9+5AQQ+nS1vU/ss7Si/Al
+ ISKuS9m8+VGG9x7EkqJQe4tKkfp6CacXbsIE0wbuzEkHHAAz44DGvD7ZK8p9aANFjsg0
+ vMzZed5QwzfIa9SFk4N2vvTNQTRNutW+P/FAt5thgzlvyNlcXHtWCoIL3xqMrWxRzCCS
+ tm+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVyUufJUsfm0lJ4l8+nL4H0nE63pnlqMIaH1ex3UjUXZdwLV/oZ+ZyHKVprApo7rm1f3IKDEckNjSSB@nongnu.org
+X-Gm-Message-State: AOJu0YxwZrQnIAH8krSRjwp3m6QWL5rLZd0upVvO/t7C1m7/9cOe4i8f
+ Vk8Qs57ja8fOv2yRCj+i0sEeeHGRxa9YfQgSVQYKmtI+0OoIX9QghKjhX3LbT2+Ln5pOqBGJd+L
+ 5XnW2ddxkQov02L0xQkrIGiFYUR8B302Ld1kWotvj6xE+T0jeHfLe
+X-Gm-Gg: ASbGnctubl6LTEPx0L1t9h4gVl9Xq11g8kOYjuSrRedg/TLPUY3vPVbefcBtboTGW3l
+ syvrijn2mJcfdsF9GFPEVaGvOlgSZqydjSY0gy9q5s3qt2v+BvQ5m/+l552XlfWxj17cq+tWHx2
+ ZR/xV6ZeOrnmSCcOMDiV64XnzIrf2HKEkkUfITiYw6rGiiVG4S7srQKAM+IeQGb0/8vzN0CMyct
+ 2EPBjmdSa8J+BRy5tfhN874EYqzWjU9HPTCSSjWg9oGlgrLufPkmJU4fI7QfWLW3QxKaZw0mL+i
+ WN4LRFNYZk7SDewuB6NlOkewOdhkZAQFka9ugx3sqXOwYLQ8Pyq0piCXnFXmy6E=
+X-Received: by 2002:a05:6000:1562:b0:390:e535:8770 with SMTP id
+ ffacd0b85a97d-390ec7cc8f6mr12151801f8f.14.1741025259441; 
+ Mon, 03 Mar 2025 10:07:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtUCJbTNewDTEEw0joVa/RrWBx1t/of6zRX4LKLmBPd941MbDM4FAIswFNXc8ewh6rxHllng==
+X-Received: by 2002:a05:6000:1562:b0:390:e535:8770 with SMTP id
+ ffacd0b85a97d-390ec7cc8f6mr12151785f8f.14.1741025259097; 
+ Mon, 03 Mar 2025 10:07:39 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-390e47b6cd8sm14961183f8f.44.2025.03.03.10.07.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Mar 2025 10:07:37 -0800 (PST)
+Message-ID: <25f360d5-d89f-4d21-a80d-21699bc14da1@redhat.com>
+Date: Mon, 3 Mar 2025 19:07:36 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] vfio: Make vfio-platform available on Aarch64
+ platforms only
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ qemu-devel@nongnu.org, Will Deacon <will@kernel.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Marc Zyngier <maz@kernel.org>
+References: <20250226084721.232703-1-clg@redhat.com>
+ <20250226084721.232703-3-clg@redhat.com>
+ <291bf12d-18bc-444f-b09d-3fb80e0f144a@redhat.com>
+ <20250227102737.197ab32b.alex.williamson@redhat.com>
+ <d069fea1-3e3d-4fff-8548-8cba491fcdc0@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <d069fea1-3e3d-4fff-8548-8cba491fcdc0@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,118 +117,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Global used_memslots or used_shared_memslots is updated to 0 unexpectly
-> 
-> it shouldn't be 0 in practice, as it comes from number of RAM regions VM has.
-> It's likely a bug somewhere else.
-> 
-> Please describe a way to reproduce the issue.
-> 
-Hi, Igor Mammedov,
-  Sorry for the late response, here are the steps to reproduce the issue:
+Hi,
 
-  1.start a domain with 1Core 1GiB memory, no network interface.
-  2.print used_memslots with gdb
-    gdb -p ${qemupid} <<< "p used_memslots"
-    $1 = 0
-  3.attach a network interface net1
-  cat>/tmp/net1.xml <<EOF
-  <interface type='network'>
-    <mac address='52:54:00:12:34:56'/>
-    <source network='default'/>
-    <model type='virtio'/>
-  </interface>
-  EOF
-  virsh attach-device dom /tmp/net1.xml --live
-  4.print current used_memslots with gdb
-    gdb -p ${qemupid} <<< "p used_memslots"
-    $1 = 2
-  5.attach another network interface net2
-  cat>/tmp/net2.xml <<EOF
-  <interface type='network'>
-    <mac address='52:54:00:12:34:78'/>
-    <source network='default'/>
-    <model type='virtio'/>
-  </interface>
-  EOF
-  virsh attach-device dom /tmp/net2.xml --live
-  6.print current used_memslots with gdb
-    gdb -p ${qemupid} <<< "p used_memslots"
-    $1 = 2
-  7.detach network interface net2
-  virsh detach-device dom /tmp/net2.xml --live
-  8.print current used_memslots with gdb
-    gdb -p ${qemupid} <<< "p used_memslots"
-    $1 = 0
-After detaching net2, the used_memslots was reseted to 0, which was expected to be 2.
 
-> > when a vhost device destroyed. This can occur during scenarios such as live
-> > detaching a vhost device or restarting a vhost-user net backend (e.g., OVS-DPDK):
-> >  #0  vhost_commit(listener) at hw/virtio/vhost.c:439
-> >  #1  listener_del_address_space(as, listener) at memory.c:2777
-> >  #2  memory_listener_unregister(listener) at memory.c:2823
-> >  #3  vhost_dev_cleanup(hdev) at hw/virtio/vhost.c:1406
-> >  #4  vhost_net_cleanup(net) at hw/net/vhost_net.c:402
-> >  #5  vhost_user_start(be, ncs, queues) at net/vhost-user.c:113
-> >  #6  net_vhost_user_event(opaque, event) at net/vhost-user.c:281
-> >  #7  tcp_chr_new_client(chr, sioc) at chardev/char-socket.c:924
-> >  #8  tcp_chr_accept(listener, cioc, opaque) at chardev/char-socket.c:961
-> >
-> > So we skip the update of used_memslots and used_shared_memslots when destroying
-> > vhost devices, and it should work event if all vhost devices are removed.
-> >
-> > Signed-off-by: yuanminghao <yuanmh12@chinatelecom.cn>
-> > ---
-> >  hw/virtio/vhost.c         | 14 +++++++++-----
-> >  include/hw/virtio/vhost.h |  1 +
-> >  2 files changed, 10 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> > index 6aa72fd434..2258a12066 100644
-> > --- a/hw/virtio/vhost.c
-> > +++ b/hw/virtio/vhost.c
-> > @@ -666,11 +666,13 @@ static void vhost_commit(MemoryListener *listener)
-> >      dev->mem = g_realloc(dev->mem, regions_size);
-> >      dev->mem->nregions = dev->n_mem_sections;
-> > 
-> > -    if (dev->vhost_ops->vhost_backend_no_private_memslots &&
-> > -        dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
-> > -        used_shared_memslots = dev->mem->nregions;
-> > -    } else {
-> > -        used_memslots = dev->mem->nregions;
-> > +    if (!dev->listener_removing) {
-> > +        if (dev->vhost_ops->vhost_backend_no_private_memslots &&
-> > +            dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
-> > +            used_shared_memslots = dev->mem->nregions;
-> > +        } else {
-> > +            used_memslots = dev->mem->nregions;
-> > +        }
-> >      }
-> > 
-> >      for (i = 0; i < dev->n_mem_sections; i++) {
-> > @@ -1668,7 +1670,9 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
-> >      }
-> >      if (hdev->mem) {
-> >          /* those are only safe after successful init */
-> > +        hdev->listener_removing = true;
-> >          memory_listener_unregister(&hdev->memory_listener);
-> > +        hdev->listener_removing = false;
-> >          QLIST_REMOVE(hdev, entry);
-> >      }
-> >      migrate_del_blocker(&hdev->migration_blocker);
-> > diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-> > index a9469d50bc..037f85b642 100644
-> > --- a/include/hw/virtio/vhost.h
-> > +++ b/include/hw/virtio/vhost.h
-> > @@ -133,6 +133,7 @@ struct vhost_dev {
-> >      QLIST_HEAD(, vhost_iommu) iommu_list;
-> >      IOMMUNotifier n;
-> >      const VhostDevConfigOps *config_ops;
-> > +    bool listener_removing;
-> >  };
-> > 
-> >  extern const VhostOps kernel_ops;
+On 3/3/25 3:32 PM, Philippe Mathieu-Daudé wrote:
+> On 27/2/25 18:27, Alex Williamson wrote:
+>> On Thu, 27 Feb 2025 09:32:46 +0100
+>> Eric Auger <eric.auger@redhat.com> wrote:
+>>
+>>> Hi Cédric,
+>>>
+>>> On 2/26/25 9:47 AM, Cédric Le Goater wrote:
+>>>> VFIO Platforms was designed for Aarch64. Restrict availability to
+>>>> 64-bit host platforms.
+>>>>
+>>>> Cc: Eric Auger <eric.auger@redhat.com>
+>>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+>>> As an outcome from last KVM forum, next step may be to simply remove
+>>> VFIO_PLATFORM from the qemu tree.
+>>>
+>>> We also need to make a decision wrt linux vfio platform driver. As I
+>>> can't test it anymore without hacks (my last tegra234 mgbe works are
+>>> unlikely to land on qemu side and lack traction on kernel side too),
+>>> either someone who can test it volunteers to take over the kernel
+>>> maintainership or we remove it from kernel too.
+>>
+>> I think it's more than just a kernel maintainer stepping up to test,
+>> there really needs to be some in-kernel justification for the
+>> vfio-platform driver itself.  If it's only enabling out of tree use
+>> cases and there's nothing in-tree that's actually independently
+>> worthwhile, I don't really see why we shouldn't remove it and just let
+>> those out of tree use cases provide their own out of tree versions of
+>> vfio-platform.  Thanks,
+>
+> Now (1 week before freeze for release) is a good time to post a patch
+> deprecating it :)
+Yes I will do that tomorrow
+
+Eric
+
 
