@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912A7A4BB58
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 10:56:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661AFA4BB97
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp2Wx-00083b-Ku; Mon, 03 Mar 2025 04:56:12 -0500
+	id 1tp2X3-0008Lx-UZ; Mon, 03 Mar 2025 04:56:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2W7-0007sb-60; Mon, 03 Mar 2025 04:55:19 -0500
+ id 1tp2W8-0007su-1Z; Mon, 03 Mar 2025 04:55:20 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2W5-0001gH-Dx; Mon, 03 Mar 2025 04:55:18 -0500
+ id 1tp2W6-0001s3-E2; Mon, 03 Mar 2025 04:55:19 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 3 Mar
@@ -30,10 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v4 07/23] hw/arm/aspeed_ast27x0: Sort the IRQ table by IRQ
- number
-Date: Mon, 3 Mar 2025 17:54:35 +0800
-Message-ID: <20250303095457.2337631-8-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 08/23] hw/intc/aspeed: Support different memory region ops
+Date: Mon, 3 Mar 2025 17:54:36 +0800
+Message-ID: <20250303095457.2337631-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
 References: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
@@ -47,8 +46,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,91 +64,65 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To improve readability, sort the IRQ table by IRQ number.
+The previous implementation set the "aspeed_intc_ops" struct, containing read
+and write callbacks, to be used when I/O is performed on the INTC region.
+Both "aspeed_intc_read" and "aspeed_intc_write" callback functions were used
+for INTC (CPU Die).
+
+To support the INTCIO (IO Die) model, introduces a new "reg_ops" class
+attribute. This allows setting different memory region operations to support
+different INTC models.
+
+Will introduce "aspeed_intcio_read" and "aspeed_intcio_write" callback
+functions are used for INTCIO.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 50 ++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ include/hw/intc/aspeed_intc.h | 1 +
+ hw/intc/aspeed_intc.c         | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index f1beea7ece..b44d23b5ae 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -74,27 +74,13 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
- 
- /* Shared Peripheral Interrupt values below are offset by -32 from datasheet */
- static const int aspeed_soc_ast2700a0_irqmap[] = {
--    [ASPEED_DEV_UART0]     = 132,
--    [ASPEED_DEV_UART1]     = 132,
--    [ASPEED_DEV_UART2]     = 132,
--    [ASPEED_DEV_UART3]     = 132,
--    [ASPEED_DEV_UART4]     = 8,
--    [ASPEED_DEV_UART5]     = 132,
--    [ASPEED_DEV_UART6]     = 132,
--    [ASPEED_DEV_UART7]     = 132,
--    [ASPEED_DEV_UART8]     = 132,
--    [ASPEED_DEV_UART9]     = 132,
--    [ASPEED_DEV_UART10]    = 132,
--    [ASPEED_DEV_UART11]    = 132,
--    [ASPEED_DEV_UART12]    = 132,
--    [ASPEED_DEV_FMC]       = 131,
-     [ASPEED_DEV_SDMC]      = 0,
--    [ASPEED_DEV_SCU]       = 12,
--    [ASPEED_DEV_ADC]       = 130,
-+    [ASPEED_DEV_HACE]      = 4,
-     [ASPEED_DEV_XDMA]      = 5,
--    [ASPEED_DEV_EMMC]      = 15,
--    [ASPEED_DEV_GPIO]      = 130,
-+    [ASPEED_DEV_UART4]     = 8,
-+    [ASPEED_DEV_SCU]       = 12,
-     [ASPEED_DEV_RTC]       = 13,
-+    [ASPEED_DEV_EMMC]      = 15,
-     [ASPEED_DEV_TIMER1]    = 16,
-     [ASPEED_DEV_TIMER2]    = 17,
-     [ASPEED_DEV_TIMER3]    = 18,
-@@ -103,19 +89,33 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
-     [ASPEED_DEV_TIMER6]    = 21,
-     [ASPEED_DEV_TIMER7]    = 22,
-     [ASPEED_DEV_TIMER8]    = 23,
--    [ASPEED_DEV_WDT]       = 131,
--    [ASPEED_DEV_PWM]       = 131,
-+    [ASPEED_DEV_DP]        = 28,
-     [ASPEED_DEV_LPC]       = 128,
-     [ASPEED_DEV_IBT]       = 128,
-+    [ASPEED_DEV_KCS]       = 128,
-+    [ASPEED_DEV_ADC]       = 130,
-+    [ASPEED_DEV_GPIO]      = 130,
-     [ASPEED_DEV_I2C]       = 130,
--    [ASPEED_DEV_PECI]      = 133,
-+    [ASPEED_DEV_FMC]       = 131,
-+    [ASPEED_DEV_WDT]       = 131,
-+    [ASPEED_DEV_PWM]       = 131,
-+    [ASPEED_DEV_I3C]       = 131,
-+    [ASPEED_DEV_UART0]     = 132,
-+    [ASPEED_DEV_UART1]     = 132,
-+    [ASPEED_DEV_UART2]     = 132,
-+    [ASPEED_DEV_UART3]     = 132,
-+    [ASPEED_DEV_UART5]     = 132,
-+    [ASPEED_DEV_UART6]     = 132,
-+    [ASPEED_DEV_UART7]     = 132,
-+    [ASPEED_DEV_UART8]     = 132,
-+    [ASPEED_DEV_UART9]     = 132,
-+    [ASPEED_DEV_UART10]    = 132,
-+    [ASPEED_DEV_UART11]    = 132,
-+    [ASPEED_DEV_UART12]    = 132,
-     [ASPEED_DEV_ETH1]      = 132,
-     [ASPEED_DEV_ETH2]      = 132,
-     [ASPEED_DEV_ETH3]      = 132,
--    [ASPEED_DEV_HACE]      = 4,
--    [ASPEED_DEV_KCS]       = 128,
--    [ASPEED_DEV_DP]        = 28,
--    [ASPEED_DEV_I3C]       = 131,
-+    [ASPEED_DEV_PECI]      = 133,
-     [ASPEED_DEV_SDHCI]     = 133,
+diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
+index 18ca405336..c1fe2dd15a 100644
+--- a/include/hw/intc/aspeed_intc.h
++++ b/include/hw/intc/aspeed_intc.h
+@@ -44,6 +44,7 @@ struct AspeedINTCClass {
+     uint64_t mem_size;
+     uint64_t reg_size;
+     uint64_t reg_offset;
++    const MemoryRegionOps *reg_ops;
  };
  
+ #endif /* ASPEED_INTC_H */
+diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
+index e94ebb6f4e..90658ffb59 100644
+--- a/hw/intc/aspeed_intc.c
++++ b/hw/intc/aspeed_intc.c
+@@ -346,7 +346,7 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
+ 
+     sysbus_init_mmio(sbd, &s->iomem_container);
+ 
+-    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
++    memory_region_init_io(&s->iomem, OBJECT(s), aic->reg_ops, s,
+                           TYPE_ASPEED_INTC ".regs", aic->reg_size);
+ 
+     memory_region_add_subregion(&s->iomem_container, aic->reg_offset,
+@@ -365,11 +365,14 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
+ static void aspeed_intc_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
+ 
+     dc->desc = "ASPEED INTC Controller";
+     dc->realize = aspeed_intc_realize;
+     device_class_set_legacy_reset(dc, aspeed_intc_reset);
+     dc->vmsd = NULL;
++
++    aic->reg_ops = &aspeed_intc_ops;
+ }
+ 
+ static const TypeInfo aspeed_intc_info = {
 -- 
 2.34.1
 
