@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5791A4BE42
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 12:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D9BA4BE49
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 12:24:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp3tP-0002kq-7l; Mon, 03 Mar 2025 06:23:27 -0500
+	id 1tp3tR-0002oy-Gl; Mon, 03 Mar 2025 06:23:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp3tB-0002iW-Bi
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 06:23:16 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tp3tN-0002kM-8d; Mon, 03 Mar 2025 06:23:26 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp3t9-00074B-9o
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 06:23:12 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43998deed24so40811415e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 03:23:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tp3tL-00075y-GE; Mon, 03 Mar 2025 06:23:24 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2234bec7192so57713885ad.2; 
+ Mon, 03 Mar 2025 03:23:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741000989; x=1741605789; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=bcPSyr2ecHg504G3TC/wZai/ECXtY0e3pY5frzAVvZE=;
- b=LcAHAddtuecV0O+JfLUB/3xN6fvpNPXpzUqKnwiEGXHUjKPGQjA2IiFvgETGjnlFjY
- RBlhSrEE4uwA+/eQJWafmOhgztVfov7OMnB3Q+C0/KPg4ubxX5fOU3EmTg3oZd7bLeHN
- 7PTmg17d25RnOv3YkUda7B5QQ/H2hFk9R5GuO6CXjxibyurOjpJfKnWJLuOlPp9RcCSe
- Pn1ugK0VVIy2CtK09gzjZbNaiJH/7SONLhlDO6X8oPRkjae7T6a/SeNzbI4vSAtKRIDt
- uHrwEQzb1eAVytOOeM42bbBEkS0DyyuUxiRsy6W9sMWXOUvhF0W1zjYus9Ca+T4FO+Tp
- GTjQ==
+ d=gmail.com; s=20230601; t=1741001001; x=1741605801; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dUidDEA6np+35JPmU5jOJYVOfmEjlpsQmxLwUQgUvG0=;
+ b=nsIxQYexcJ4YZGvrvxZTs77dVlt18POhqN2SmKqqn7tg5IF9SmaQ11xyLspVDeW7Bi
+ QCqE6SN58N8H2JE1StNRIKnyGpNM7CwkPazElj2WiwHi0L5HjYXr2vo9dF8+pwgZXFy9
+ Nd519+acQ9wJVIGCbQVUu/ZiwoZ0vzjAcZP7p9Fn0h3ky004Kenj4G2HTWY87JeC5UY2
+ Kj4NDnBvXy3GeQH4Azw2PUsbml+MA1bEEBnGHmo7L58FlVNCxq40FclussBolKKsc/1a
+ PhK/FNansCmTZ9O1oNtvL8kMJjwRXA6edXSFG4RQA+Of4p9iU3mHYZJXwgzJIwS5b8S0
+ saAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741000989; x=1741605789;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bcPSyr2ecHg504G3TC/wZai/ECXtY0e3pY5frzAVvZE=;
- b=VQbo76ddf2iSXDwI612zmYvLjNd9VgQ6niz7+fJWRgOWQR/GoR9cVDpRLtbaA9kDub
- 8nbbi7n9ialSNKe5yk+rxVePWTbmpcJrdYQit3a4/ZVQiYQZ2rMQfFGxce2ewr0eseO0
- dXJBNSQ5Z4UxdqvzUgoOcSu0UUzYVohQyNU8/dddSgnsZVCEZM1MzeWdxAxEAJRPvDRQ
- 7S3owUiuKKCVWnuDXuEOm0u9BmgCxQkjQMYJlLs/CvYpmEtHtwsKQSgsmC85NQxkGHjq
- 6v/rxDVDNfGAVbMU/vzonS/tFxcNf9BQA1j48V0HhzTFeykSSGkDmNo+E1Rwqn7zKiei
- sIHg==
+ d=1e100.net; s=20230601; t=1741001001; x=1741605801;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dUidDEA6np+35JPmU5jOJYVOfmEjlpsQmxLwUQgUvG0=;
+ b=VsezlWSpJtNQWhw6REe4/DLozvIVnf20FyGJCX7oOhHXjowU9jUIpTrrltsxkAWKAQ
+ xmNIhKr4Oq1rB6BTiwXt9/bkX5/VBg6V47Ivda8Oar9GIf8WAc/a9d2khOw3Ld4heriz
+ XwX2Rk7KldXK/zi3X+pAN19eV/8/r2svVsqTUsePG4h7/mUd6gsnTkcZS2KwEVP+5n6s
+ irbuen33BA733TYWZF1brL9TUP8dLCI5wl5XOsrifa/DCYUaBMRs40huDSiziGg2bBMy
+ HVoYjuR2GQToH1d27/AAoyypwNmCVu5/L4f9UgotwqMXDeHooGZt+c4cpMIxWKOPfmEo
+ BOlw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUNzeqLZK+QvuS33dOELbQ725CvRKUwabqPD9F3AhJZxAHgiH6WbEIyA1i193TRdg6EtctjPlTNPv7I@nongnu.org
-X-Gm-Message-State: AOJu0Yy1Mw/bcD5t91FbqXB5AnTHqbmU+es71dHvjeRU3xWZ8Ltu3poo
- 4zVNlONiy8dKPQig7L5hTfnb5fmqAAb2jgja7vU2KeQ1q53gfkkay90fYQvslHS1p1xjwtYR7Gz
- 293FtZQ==
-X-Gm-Gg: ASbGncs8EvrVYTK12CKnrAnY0sGNI6nVDFA0AkwXOLeHQ5HF1zZuxm11zX4W4lgVjqc
- URH7FgBlMN09v1v9DSmiFAy6NTX145aj47LoVscLJ2a/5xfvRge+tYUcIlNruo2kWccBL9avBv0
- CPYB2Q6da1HOdaufxN1xbnvyOT3UBwnnoFT5tALwR9peNPpi8CplzR5Ayd9qPCHGwjbGuN9OtSt
- Qpq+bZFLrD/FoBvr0AgKP6pBmzTwG4pRABQ/QLyCyNDSlh45nr7T6AQLRniTpPMUg7pZNwmX+3m
- 4qA1Cd+Yga6yQBZ/NX6JlmglabjS6QC8s9F+3yT9yX4X+uVfrdJAvg/dvSAkCPCKQUeqQSGJB0r
- 1vVoHXkAqefG5
-X-Google-Smtp-Source: AGHT+IEv1ZCC5EEWc8ZizZ+IDuiO4VVNVFM5t5H7CVhFia+32SeAHtcDVwb5NX/y47+rPejrVn1E0w==
-X-Received: by 2002:a05:600c:511e:b0:439:9aca:3285 with SMTP id
- 5b1f17b1804b1-43ba66dfe1amr100994145e9.6.1741000989429; 
- Mon, 03 Mar 2025 03:23:09 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba538b9fsm191252295e9.17.2025.03.03.03.23.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 03:23:08 -0800 (PST)
-Message-ID: <feff5b7e-0d56-4776-bec4-ffb745ae5120@linaro.org>
-Date: Mon, 3 Mar 2025 12:23:08 +0100
+ AJvYcCW0dDj4Rm9rUzhj7oMS+jOljqDucoUdOLN+sbTwpmI1JTWewMlXawYkWRnLQ/W+Ece8aBlKVd5879qI@nongnu.org
+X-Gm-Message-State: AOJu0YxpQV1bjsITHIriUDBI7zxIyVFMNToQ8ZGxmBkJ6WAHKe7Kkrx+
+ cE2JaHZgkn2W5k2RlIF0pCPta5eL8Hs2p68PL/wpf7VoKjWNMxZ8xs1+HQ==
+X-Gm-Gg: ASbGnctPtrjpf4vc+p4oUBIO1uh9V4BG7cVM1zrMUYudwr+8c9QXv8bHGzXTXompPGs
+ pMTFge3DJ4eUbOl5SciNxFZDCIUBpliugBRdVY9SUinO9O6jPQ1p0rc07mWrUxTQPomqJHudvkk
+ 7Z1Wbch2uUxNQPJIzdqfy9kJXofywpZRcDswJ371iAdDEgZcYVxd59TGNlvE/MG/XGzPxYRq4i/
+ +4bMEynnpgFFH76r2KypjL69LKkUzi5u6k+bEw1CimmiRyM4dn+0UjyzC39OIVbQApYwm+1VZSr
+ vqhVpwH2n5OPCbWZDSrCkPXuJwR/9euY/25zpUtPNtK+IoGus30=
+X-Google-Smtp-Source: AGHT+IGetSR4DGXERuvfSs4PL9dDW+y5MIrBDl72BoYnuNej2psiFC34e4Rk8RmKlJcYPeR1sMtQ8A==
+X-Received: by 2002:a17:903:41cf:b0:21f:164d:93fe with SMTP id
+ d9443c01a7336-2236922174bmr201897175ad.53.1741001001304; 
+ Mon, 03 Mar 2025 03:23:21 -0800 (PST)
+Received: from wheely.local0.net ([118.208.151.101])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-223501f9e3bsm75388875ad.82.2025.03.03.03.23.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Mar 2025 03:23:20 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/3] target/ppc: Fixes for TCG TLB modeling of some MMU SPRs
+Date: Mon,  3 Mar 2025 21:23:11 +1000
+Message-ID: <20250303112315.586478-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] hw/nvram/eeprom_at24c: Reorganise init to avoid
- overwriting values
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
-References: <cover.1740839457.git.balaton@eik.bme.hu>
- <fd8e0478febd60d5f48c58bc77c60e043d1c3cdc.1740839457.git.balaton@eik.bme.hu>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <fd8e0478febd60d5f48c58bc77c60e043d1c3cdc.1740839457.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,44 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/3/25 15:35, BALATON Zoltan wrote:
-> The init_rom can write values to the beginning of the memory but these
-> are overwritten by values from a backing file that covers the whole
-> memory. Do the init_rom handling only if it would not be overwritten.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   hw/nvram/eeprom_at24c.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
-> index 78c81bea77..ff7a21eee7 100644
-> --- a/hw/nvram/eeprom_at24c.c
-> +++ b/hw/nvram/eeprom_at24c.c
-> @@ -191,10 +191,6 @@ static void at24c_eeprom_realize(DeviceState *dev, Error **errp)
->   
->       ee->mem = g_malloc0(ee->rsize);
->   
-> -    if (ee->init_rom) {
-> -        memcpy(ee->mem, ee->init_rom, MIN(ee->init_rom_size, ee->rsize));
-> -    }
-> -
->       if (ee->blk) {
->           int ret = blk_pread(ee->blk, 0, ee->rsize, ee->mem, 0);
->   
-> @@ -204,6 +200,8 @@ static void at24c_eeprom_realize(DeviceState *dev, Error **errp)
->               return;
->           }
->           DPRINTK("Reset read backing file\n");
-> +    } else if (ee->init_rom) {
+Any register or memory value that is used by the .tlb_fill
+function (e.g., in ppc_xlate()) can affect what gets put in TCG's
+TLB, so changing it requires either: that the ISA permits cached
+address translations that become incoherent vs the changed value;
+that TCG TLB is "tagged" with the changing value (e.g., with mmuidx);
+or that the TCG TLB is flushed.
 
-Don't you want to keep overwritting the init_rom[] buffer?
+ppc is missing a few such flushes. Other than the AMR flush, Linux/KVM
+probably covers such SPR changes with other flushes (e.g., context
+switching between guests or guest/host will update LPCR and LPIDR and
+LPIDR update already causes a TLB flush), which explains why they
+haven't caused obvious bugs.
 
-IOW why not s/else//?
+Thanks,
+Nick
 
-> +        memcpy(ee->mem, ee->init_rom, MIN(ee->init_rom_size, ee->rsize));
->       }
->   
->       /*
+Nicholas Piggin (3):
+  target/ppc: flush TLB on HRMOR and LPCR SPR updates
+  target/ppc: Avoid work if MMU SPRs are written with same value
+  target/ppc: add missing TLB flushes for memory protection key SPR
+    updates
+
+ target/ppc/helper.h      |  3 ++
+ target/ppc/spr_common.h  |  1 +
+ target/ppc/cpu.c         | 12 +++++-
+ target/ppc/cpu_init.c    |  6 +--
+ target/ppc/misc_helper.c | 85 +++++++++++++++++++++++++++++++++++++++-
+ target/ppc/translate.c   | 62 ++++++-----------------------
+ 6 files changed, 114 insertions(+), 55 deletions(-)
+
+-- 
+2.47.1
 
 
