@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4AEA4BD19
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:58:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B68BA4BD26
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:59:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp3Tn-0002rF-Rh; Mon, 03 Mar 2025 05:56:59 -0500
+	id 1tp3Vr-0003aA-29; Mon, 03 Mar 2025 05:59:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tp3Te-0002qN-Ue; Mon, 03 Mar 2025 05:56:54 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1tp3Vo-0003ZY-9X; Mon, 03 Mar 2025 05:59:04 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tp3Tc-0002e5-58; Mon, 03 Mar 2025 05:56:50 -0500
+ id 1tp3Vj-0002p9-07; Mon, 03 Mar 2025 05:59:03 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DA7AA4E6014;
- Mon, 03 Mar 2025 11:56:44 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B94CA4E6014;
+ Mon, 03 Mar 2025 11:58:56 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id tCAa0piixh2o; Mon,  3 Mar 2025 11:56:42 +0100 (CET)
+ with ESMTP id blv0oRQU-hBk; Mon,  3 Mar 2025 11:58:54 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A8B214E6010; Mon, 03 Mar 2025 11:56:42 +0100 (CET)
+ id C0D154E6010; Mon, 03 Mar 2025 11:58:54 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A70FC74577C;
- Mon, 03 Mar 2025 11:56:42 +0100 (CET)
-Date: Mon, 3 Mar 2025 11:56:42 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id BED1574577C;
+ Mon, 03 Mar 2025 11:58:54 +0100 (CET)
+Date: Mon, 3 Mar 2025 11:58:54 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Hab Gallagher <hab.gallagher@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>
 cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: Adding gamma support to QemuMacDrivers
-In-Reply-To: <CANDMsCp3wH3xhEvHz_DvnPbv7NLCdGb2LDaECOG=yJqfKObLkA@mail.gmail.com>
-Message-ID: <0f927835-62e6-a2a8-7de0-262657edb638@eik.bme.hu>
-References: <CANDMsCp3wH3xhEvHz_DvnPbv7NLCdGb2LDaECOG=yJqfKObLkA@mail.gmail.com>
+Subject: Re: [RFC PATCH] target/ppc: Do not set HPTE R/C bits on !guest_visible
+ xlate
+In-Reply-To: <20250303104755.584897-1-npiggin@gmail.com>
+Message-ID: <caad84f0-d3dc-dd89-14d0-498a9246772b@eik.bme.hu>
+References: <20250303104755.584897-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,45 +61,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
-
-On Sun, 2 Mar 2025, Hab Gallagher wrote:
-> I have interest in contributing patches to extend qemu's powerpc graphics
-> card emulation to include more comprehensive support for gamma. Some
-> classic mac applications will balk at launch if the graphics card doesn't
-> claim enough support for gamma tricks. Native parity should be possible,
-> allowing applications to ramp the apparent screen brightness using gamma
-> tricks.
+On Mon, 3 Mar 2025, Nicholas Piggin wrote:
+> Perform !guest_visible memory accesses without modifying R/C bits.
 >
-> As far as I can tell, both https://github.com/ozbenh/QemuMacDrivers and
-> qemu itself need to be updated for this endeavor. It is unclear to me how
-> much of the code "should" live in one repository or the other. I assume
-> that it would be preferable to put as little code as possible into the
-> driver that runs emulated, and move the bulk of the work to the driver
-> side, in the qemu host.
+> It's arguable whether !guest_visible memory accesses should modify
+> R/C bits. i386 seems to set accessed/dirty bit updates for "probe"
+> accesses, but ppc with radix MMU does not. Follow the ppc/radix
+> lead and perform the accesses without updating R/C bits.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> target/ppc/mmu-hash32.c | 27 ++++++++++++++-------------
+> target/ppc/mmu-hash64.c | 27 ++++++++++++++-------------
+> 2 files changed, 28 insertions(+), 26 deletions(-)
+>
+> diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+> index 1f791a7f2f7..b8d7f87507b 100644
+> --- a/target/ppc/mmu-hash32.c
+> +++ b/target/ppc/mmu-hash32.c
+> @@ -410,19 +410,20 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+>     qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
+>
+>     /* 8. Update PTE referenced and changed bits if necessary */
+> -
+> -    if (!(pte.pte1 & HPTE32_R_R)) {
+> -        ppc_hash32_set_r(cpu, pte_offset, pte.pte1);
+> -    }
+> -    if (!(pte.pte1 & HPTE32_R_C)) {
+> -        if (access_type == MMU_DATA_STORE) {
+> -            ppc_hash32_set_c(cpu, pte_offset, pte.pte1);
+> -        } else {
+> -            /*
+> -             * Treat the page as read-only for now, so that a later write
+> -             * will pass through this function again to set the C bit
+> -             */
+> -            prot &= ~PAGE_WRITE;
+> +    if (guest_visible) {
 
-That driver is for a VGA device which I think does not support gamma in 
-hardware. QEMU emulates the hardware so if it does not support gamma then 
-there's no place to add it in QEMU. Therefore if you want to emulate gamma 
-on VGA this should be done within the guest driver but that may be slower. 
-How does this work on real hardware? What graphics device is used there 
-and does that support gamma in hardware? Maybe that graphics device needs 
-to be emulated instead?
-
-> I could not find any existing work on this, nor anyone asking about the
-> feature. I don't have experience hacking on qemu, but I have extensively
-> patched SheepShaver before. I hope to contribute more to qemu-ppc instead.
-
-I have an article on AmigaOS gfx here:
-https://codeberg.org/qmiga/pages/wiki/AmigaOSGfx
-that discusses similar issue and most of it may be applicable to MacOS 
-too. There's also a DeveloperTips link with some QEMU getting started 
-links that may help you. I have started an ati-vga emulation that could do 
-all this and more but it's quite complex and I could take some help with 
-it. Maybe that could be interesting to you as well as these ATI chips were 
-used on real Macs so MacOS has support for it. I also have an article 
-linked from the above about that.
+Are these unlikely() ? Not sure if that makes a difference but if we know 
+it may help some compilers.
 
 Regards,
 BALATON Zoltan
+
+> +        if (!(pte.pte1 & HPTE32_R_R)) {
+> +            ppc_hash32_set_r(cpu, pte_offset, pte.pte1);
+> +        }
+> +        if (!(pte.pte1 & HPTE32_R_C)) {
+> +            if (access_type == MMU_DATA_STORE) {
+> +                ppc_hash32_set_c(cpu, pte_offset, pte.pte1);
+> +            } else {
+> +                /*
+> +                 * Treat the page as read-only for now, so that a later write
+> +                 * will pass through this function again to set the C bit
+> +                 */
+> +                prot &= ~PAGE_WRITE;
+> +            }
+>         }
+>     }
+>     *protp = prot;
+> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+> index 5ca4faee2ab..de5eb5fb221 100644
+> --- a/target/ppc/mmu-hash64.c
+> +++ b/target/ppc/mmu-hash64.c
+> @@ -1183,19 +1183,20 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+>     qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
+>
+>     /* 6. Update PTE referenced and changed bits if necessary */
+> -
+> -    if (!(pte.pte1 & HPTE64_R_R)) {
+> -        ppc_hash64_set_r(cpu, ptex, pte.pte1);
+> -    }
+> -    if (!(pte.pte1 & HPTE64_R_C)) {
+> -        if (access_type == MMU_DATA_STORE) {
+> -            ppc_hash64_set_c(cpu, ptex, pte.pte1);
+> -        } else {
+> -            /*
+> -             * Treat the page as read-only for now, so that a later write
+> -             * will pass through this function again to set the C bit
+> -             */
+> -            prot &= ~PAGE_WRITE;
+> +    if (guest_visible) {
+> +        if (!(pte.pte1 & HPTE64_R_R)) {
+> +            ppc_hash64_set_r(cpu, ptex, pte.pte1);
+> +        }
+> +        if (!(pte.pte1 & HPTE64_R_C)) {
+> +            if (access_type == MMU_DATA_STORE) {
+> +                ppc_hash64_set_c(cpu, ptex, pte.pte1);
+> +            } else {
+> +                /*
+> +                 * Treat the page as read-only for now, so that a later write
+> +                 * will pass through this function again to set the C bit
+> +                 */
+> +                prot &= ~PAGE_WRITE;
+> +            }
+>         }
+>     }
+>
+>
 
