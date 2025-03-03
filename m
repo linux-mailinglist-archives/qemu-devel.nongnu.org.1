@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFE0A4C050
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 13:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE6CA4C065
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 13:32:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp4tQ-0000fl-QT; Mon, 03 Mar 2025 07:27:32 -0500
+	id 1tp4wz-0003Nl-LF; Mon, 03 Mar 2025 07:31:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Robu=VW=kaod.org=clg@ozlabs.org>)
- id 1tp4tK-0000cI-0K; Mon, 03 Mar 2025 07:27:26 -0500
+ id 1tp4wd-0003KK-Px; Mon, 03 Mar 2025 07:30:57 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Robu=VW=kaod.org=clg@ozlabs.org>)
- id 1tp4tE-0007R6-Qq; Mon, 03 Mar 2025 07:27:24 -0500
+ id 1tp4wa-0008Ro-Fr; Mon, 03 Mar 2025 07:30:51 -0500
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Z5yk92wn6z4x21;
- Mon,  3 Mar 2025 23:27:13 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Z5yp92sQZz4wvb;
+ Mon,  3 Mar 2025 23:30:41 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z5yk52dFhz4x1w;
- Mon,  3 Mar 2025 23:27:06 +1100 (AEDT)
-Message-ID: <d9a98e5c-f574-44a2-83e2-3ee1b5e2262c@kaod.org>
-Date: Mon, 3 Mar 2025 13:27:03 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z5yp50KDvz4wcD;
+ Mon,  3 Mar 2025 23:30:35 +1100 (AEDT)
+Message-ID: <86768e84-a4d9-4c20-b34d-0b82bf27e43c@kaod.org>
+Date: Mon, 3 Mar 2025 13:30:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] hw/misc/aspeed_scu: Skipping dram_init in u-boot
+Subject: Re: [PATCH v4 3/6] hw/arm/aspeed Update HW Strap Default Values for
+ AST2700
 To: Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
@@ -38,7 +39,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 Cc: troy_lee@aspeedtech.com
 References: <20250303073547.1145080-1-jamin_lin@aspeedtech.com>
- <20250303073547.1145080-2-jamin_lin@aspeedtech.com>
+ <20250303073547.1145080-4-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -83,7 +84,7 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250303073547.1145080-2-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250303073547.1145080-4-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -111,11 +112,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/3/25 08:35, Jamin Lin wrote:
-> Setting BIT6 in VGA0 SCRATCH register will indicate that the ddr traning
-> is done, therefore skipping the u-boot-spl dram_init() process.
+> Separate HW Strap Registers for SCU and SCUIO.
+> AST2700_EVB_HW_STRAP1 is used for the SCU (CPU Die) hw-strap1.
+> AST2700_EVB_HW_STRAP2 is used for the SCUIO (IO Die) hw-strap1.
+> 
+> Additionally, both default values are updated based on the dump from the EVB.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -126,28 +129,25 @@ C.
 
 
 > ---
->   hw/misc/aspeed_scu.c | 2 ++
->   1 file changed, 2 insertions(+)
+>   hw/arm/aspeed.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-> index bac1441b06..50f74fbabd 100644
-> --- a/hw/misc/aspeed_scu.c
-> +++ b/hw/misc/aspeed_scu.c
-> @@ -157,6 +157,7 @@
->   #define AST2700_SCU_FREQ_CNTR       TO_REG(0x3b0)
->   #define AST2700_SCU_CPU_SCRATCH_0   TO_REG(0x780)
->   #define AST2700_SCU_CPU_SCRATCH_1   TO_REG(0x784)
-> +#define AST2700_SCU_VGA_SCRATCH_0   TO_REG(0x900)
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index 98bf071139..c6c18596d6 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -181,8 +181,10 @@ struct AspeedMachineState {
 >   
->   #define AST2700_SCUIO_CLK_STOP_CTL_1    TO_REG(0x240)
->   #define AST2700_SCUIO_CLK_STOP_CLR_1    TO_REG(0x244)
-> @@ -930,6 +931,7 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
->       [AST2700_SCU_FREQ_CNTR]         = 0x000375eb,
->       [AST2700_SCU_CPU_SCRATCH_0]     = 0x00000000,
->       [AST2700_SCU_CPU_SCRATCH_1]     = 0x00000004,
-> +    [AST2700_SCU_VGA_SCRATCH_0]     = 0x00000040,
->   };
+>   #ifdef TARGET_AARCH64
+>   /* AST2700 evb hardware value */
+> -#define AST2700_EVB_HW_STRAP1 0x000000C0
+> -#define AST2700_EVB_HW_STRAP2 0x00000003
+> +/* SCU HW Strap1 */
+> +#define AST2700_EVB_HW_STRAP1 0x00000800
+> +/* SCUIO HW Strap1 */
+> +#define AST2700_EVB_HW_STRAP2 0x00000700
+>   #endif
 >   
->   static void aspeed_ast2700_scu_reset(DeviceState *dev)
+>   /* Rainier hardware value: (QEMU prototype) */
 
 
