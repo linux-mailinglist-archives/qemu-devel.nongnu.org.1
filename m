@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB155A4C34E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 723B7A4C353
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:25:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp6gm-00005C-6O; Mon, 03 Mar 2025 09:22:36 -0500
+	id 1tp6iM-0000jU-0F; Mon, 03 Mar 2025 09:24:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Robu=VW=kaod.org=clg@ozlabs.org>)
- id 1tp6gI-0008Tu-KH; Mon, 03 Mar 2025 09:22:08 -0500
+ id 1tp6hr-0000ea-JR; Mon, 03 Mar 2025 09:23:43 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Robu=VW=kaod.org=clg@ozlabs.org>)
- id 1tp6gF-0008RJ-92; Mon, 03 Mar 2025 09:22:06 -0500
+ id 1tp6hp-0000DO-0Z; Mon, 03 Mar 2025 09:23:43 -0500
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Z61GX1PStz4x0L;
- Tue,  4 Mar 2025 01:21:56 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Z61JV3lBXz4x0L;
+ Tue,  4 Mar 2025 01:23:38 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z61GR5zB9z4wcD;
- Tue,  4 Mar 2025 01:21:51 +1100 (AEDT)
-Message-ID: <51ecafcb-4cd4-4617-a155-8d699b9dbc2e@kaod.org>
-Date: Mon, 3 Mar 2025 15:21:49 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z61JR1V32z4wcD;
+ Tue,  4 Mar 2025 01:23:34 +1100 (AEDT)
+Message-ID: <ee616fe5-280d-4afa-84db-9896b39fcb7a@kaod.org>
+Date: Mon, 3 Mar 2025 15:23:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/23] hw/intc/aspeed: Reduce regs array size by adding
- a register sub-region
+Subject: Re: [PATCH v4 06/23] hw/arm/aspeed: Rename IRQ table and machine name
+ for AST2700 A0
 To: Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
@@ -39,7 +39,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>,
  "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 Cc: troy_lee@aspeedtech.com
 References: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
- <20250303095457.2337631-4-jamin_lin@aspeedtech.com>
+ <20250303095457.2337631-7-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -84,9 +84,9 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250303095457.2337631-4-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250303095457.2337631-7-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=Robu=VW=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -41
@@ -111,37 +111,39 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/3/25 10:54, Jamin Lin wrote:
-> Currently, the size of the "regs" array is 0x2000, which is too large. So far,
-> it only uses "GICINT128 to `GICINT134", and the offsets from 0 to 0x1000 are
-> unused. To save code size and avoid mapping large unused gaps, update to only
-> map the useful set of registers:
+> Currently, AST2700 SoC only supports A0. To support AST2700 A1, rename its IRQ
+> table and machine name.
 > 
-> INTC register [0x1000 – 0x1804]
-> 
-> Update "reg_size" to 0x808. Introduce a new class attribute "reg_offset" to set
-> the start offset of a "INTC" sub-region. Set the "reg_offset" to 0x1000 for INTC
-> registers.
+> To follow the machine deprecation rule, the initial machine "ast2700-evb" is
+> aliased to "ast2700a0-evb." In the future, we will alias "ast2700-evb" to new
+> SoCs, such as "ast2700a1-evb."
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   include/hw/intc/aspeed_intc.h |  3 ++-
->   hw/intc/aspeed_intc.c         | 50 ++++++++++++++++++++---------------
->   2 files changed, 31 insertions(+), 22 deletions(-)
+>   hw/arm/aspeed.c         | 9 +++++----
+>   hw/arm/aspeed_ast27x0.c | 8 ++++----
+>   2 files changed, 9 insertions(+), 8 deletions(-)
 > 
-> diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-> index ecaeb15aea..18ca405336 100644
-> --- a/include/hw/intc/aspeed_intc.h
-> +++ b/include/hw/intc/aspeed_intc.h
-> @@ -16,7 +16,7 @@
->   #define TYPE_ASPEED_2700_INTC TYPE_ASPEED_INTC "-ast2700"
->   OBJECT_DECLARE_TYPE(AspeedINTCState, AspeedINTCClass, ASPEED_INTC)
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index c6c18596d6..2482f05154 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -1673,12 +1673,13 @@ static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
+>                               TYPE_TMP105, 0x4d);
+>   }
 >   
-> -#define ASPEED_INTC_NR_REGS (0x2000 >> 2)
-> +#define ASPEED_INTC_NR_REGS (0x808 >> 2)
+> -static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
+> +static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc, void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+>       AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+>   
+> -    mc->desc = "Aspeed AST2700 EVB (Cortex-A35)";
+> +    mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
+> +    mc->alias = "ast2700-evb";
 
-We should allocate the regs[] array using aic->reg_size to avoid
-redundancy.
-
+please put the ->alias assignment line first. So that it is
+easily identified.
 
 Thanks,
 
@@ -149,92 +151,60 @@ C.
 
 
 
-
->   #define ASPEED_INTC_NR_INTS 9
+>       amc->soc_name  = "ast2700-a0";
+>       amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
+>       amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
+> @@ -1817,9 +1818,9 @@ static const TypeInfo aspeed_machine_types[] = {
+>           .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
+>   #ifdef TARGET_AARCH64
+>       }, {
+> -        .name          = MACHINE_TYPE_NAME("ast2700-evb"),
+> +        .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
+>           .parent        = TYPE_ASPEED_MACHINE,
+> -        .class_init    = aspeed_machine_ast2700_evb_class_init,
+> +        .class_init    = aspeed_machine_ast2700a0_evb_class_init,
+>   #endif
+>       }, {
+>           .name          = TYPE_ASPEED_MACHINE,
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index 527a5f8245..f1beea7ece 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -73,7 +73,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+>   #define AST2700_MAX_IRQ 256
 >   
->   struct AspeedINTCState {
-> @@ -43,6 +43,7 @@ struct AspeedINTCClass {
->       uint32_t num_ints;
->       uint64_t mem_size;
->       uint64_t reg_size;
-> +    uint64_t reg_offset;
->   };
->   
->   #endif /* ASPEED_INTC_H */
-> diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-> index 316885a27a..0f630ffab7 100644
-> --- a/hw/intc/aspeed_intc.c
-> +++ b/hw/intc/aspeed_intc.c
-> @@ -14,25 +14,31 @@
->   #include "hw/registerfields.h"
->   #include "qapi/error.h"
->   
-> -/* INTC Registers */
-> -REG32(GICINT128_EN,         0x1000)
-> -REG32(GICINT128_STATUS,     0x1004)
-> -REG32(GICINT129_EN,         0x1100)
-> -REG32(GICINT129_STATUS,     0x1104)
-> -REG32(GICINT130_EN,         0x1200)
-> -REG32(GICINT130_STATUS,     0x1204)
-> -REG32(GICINT131_EN,         0x1300)
-> -REG32(GICINT131_STATUS,     0x1304)
-> -REG32(GICINT132_EN,         0x1400)
-> -REG32(GICINT132_STATUS,     0x1404)
-> -REG32(GICINT133_EN,         0x1500)
-> -REG32(GICINT133_STATUS,     0x1504)
-> -REG32(GICINT134_EN,         0x1600)
-> -REG32(GICINT134_STATUS,     0x1604)
-> -REG32(GICINT135_EN,         0x1700)
-> -REG32(GICINT135_STATUS,     0x1704)
-> -REG32(GICINT136_EN,         0x1800)
-> -REG32(GICINT136_STATUS,     0x1804)
-> +/*
-> + * INTC Registers
-> + *
-> + * values below are offset by - 0x1000 from datasheet
-> + * because its memory region is start at 0x1000
-> + *
-> + */
-> +REG32(GICINT128_EN,         0x000)
-> +REG32(GICINT128_STATUS,     0x004)
-> +REG32(GICINT129_EN,         0x100)
-> +REG32(GICINT129_STATUS,     0x104)
-> +REG32(GICINT130_EN,         0x200)
-> +REG32(GICINT130_STATUS,     0x204)
-> +REG32(GICINT131_EN,         0x300)
-> +REG32(GICINT131_STATUS,     0x304)
-> +REG32(GICINT132_EN,         0x400)
-> +REG32(GICINT132_STATUS,     0x404)
-> +REG32(GICINT133_EN,         0x500)
-> +REG32(GICINT133_STATUS,     0x504)
-> +REG32(GICINT134_EN,         0x600)
-> +REG32(GICINT134_STATUS,     0x604)
-> +REG32(GICINT135_EN,         0x700)
-> +REG32(GICINT135_STATUS,     0x704)
-> +REG32(GICINT136_EN,         0x800)
-> +REG32(GICINT136_STATUS,     0x804)
->   
->   #define GICINT_STATUS_BASE     R_GICINT128_STATUS
->   
-> @@ -311,7 +317,8 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
->       memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
->                             TYPE_ASPEED_INTC ".regs", aic->reg_size);
->   
-> -    memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
-> +    memory_region_add_subregion(&s->iomem_container, aic->reg_offset,
-> +                                &s->iomem);
->   
->       qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_ints);
->   
-> @@ -352,7 +359,8 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
->       aic->num_lines = 32;
->       aic->num_ints = 9;
->       aic->mem_size = 0x4000;
-> -    aic->reg_size = 0x2000;
-> +    aic->reg_size = 0x808;
-> +    aic->reg_offset = 0x1000;
+>   /* Shared Peripheral Interrupt values below are offset by -32 from datasheet */
+> -static const int aspeed_soc_ast2700_irqmap[] = {
+> +static const int aspeed_soc_ast2700a0_irqmap[] = {
+>       [ASPEED_DEV_UART0]     = 132,
+>       [ASPEED_DEV_UART1]     = 132,
+>       [ASPEED_DEV_UART2]     = 132,
+> @@ -762,7 +762,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       create_unimplemented_device("ast2700.io", 0x0, 0x4000000);
 >   }
 >   
->   static const TypeInfo aspeed_2700_intc_info = {
+> -static void aspeed_soc_ast2700_class_init(ObjectClass *oc, void *data)
+> +static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, void *data)
+>   {
+>       static const char * const valid_cpu_types[] = {
+>           ARM_CPU_TYPE_NAME("cortex-a35"),
+> @@ -785,7 +785,7 @@ static void aspeed_soc_ast2700_class_init(ObjectClass *oc, void *data)
+>       sc->uarts_num    = 13;
+>       sc->num_cpus     = 4;
+>       sc->uarts_base   = ASPEED_DEV_UART0;
+> -    sc->irqmap       = aspeed_soc_ast2700_irqmap;
+> +    sc->irqmap       = aspeed_soc_ast2700a0_irqmap;
+>       sc->memmap       = aspeed_soc_ast2700_memmap;
+>       sc->get_irq      = aspeed_soc_ast2700_get_irq;
+>   }
+> @@ -800,7 +800,7 @@ static const TypeInfo aspeed_soc_ast27x0_types[] = {
+>           .name           = "ast2700-a0",
+>           .parent         = TYPE_ASPEED27X0_SOC,
+>           .instance_init  = aspeed_soc_ast2700_init,
+> -        .class_init     = aspeed_soc_ast2700_class_init,
+> +        .class_init     = aspeed_soc_ast2700a0_class_init,
+>       },
+>   };
+>   
 
 
