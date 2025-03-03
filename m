@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D7CA4B7F5
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 07:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F15F4A4B7F8
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 07:54:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tozfV-0001fD-4W; Mon, 03 Mar 2025 01:52:49 -0500
+	id 1tozgF-0002ym-T2; Mon, 03 Mar 2025 01:53:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1tozf8-0001QF-2Y
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:52:26 -0500
+ id 1tozfo-0002BV-Ci
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:53:09 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1tozf4-0005aK-Rz
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:52:25 -0500
+ (envelope-from <lixianglai@loongson.cn>) id 1tozfl-0005cB-QH
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:53:08 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxWXGbUcVng_CIAA--.37676S3;
- Mon, 03 Mar 2025 14:52:11 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxdXDPUcVnkPCIAA--.38162S3;
+ Mon, 03 Mar 2025 14:53:03 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxXsWaUcVnqU0zAA--.57870S2;
- Mon, 03 Mar 2025 14:52:10 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMDxu8TPUcVnCE4zAA--.56500S2;
+ Mon, 03 Mar 2025 14:53:03 +0800 (CST)
 From: Xianglai Li <lixianglai@loongson.cn>
 To: qemu-devel@nongnu.org
+Cc: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>
 Subject: [PATCH] target/loongarch: Adjust the cpu reset action to a proper
  position
-Date: Mon,  3 Mar 2025 14:30:43 +0800
-Message-Id: <20250303063043.3237264-1-lixianglai@loongson.cn>
+Date: Mon,  3 Mar 2025 14:31:33 +0800
+Message-Id: <20250303063133.3237285-1-lixianglai@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxXsWaUcVnqU0zAA--.57870S2
+X-CM-TRANSID: qMiowMDxu8TPUcVnCE4zAA--.56500S2
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -71,10 +73,10 @@ Now adjust the order of cpu reset and vcpu create actions to fix this problem
 
 Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 ---
-Bibo Mao <maobibo@loongson.cn>
-Huacai Chen <chenhuacai@loongson.cn>
-Song Gao <gaosong@loongson.cn>
-Xianglai Li <lixianglai@loongson.cn>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>
+Cc: Xianglai Li <lixianglai@loongson.cn>
 
  target/loongarch/cpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
