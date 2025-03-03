@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553B8A4B7D6
+	by mail.lfdr.de (Postfix) with ESMTPS id 515C8A4B7D5
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 07:20:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1toz9K-00013c-47; Mon, 03 Mar 2025 01:19:34 -0500
+	id 1toz9W-00017I-1J; Mon, 03 Mar 2025 01:19:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1toz8q-00012Z-27
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:19:04 -0500
+ id 1toz8r-00012p-86
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:19:05 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1toz8m-0002Vk-G3
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:19:03 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1toz8n-0002W6-D0
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 01:19:05 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxbeLLScVnLOuIAA--.64630S3;
- Mon, 03 Mar 2025 14:18:51 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Axz3PRScVnMeuIAA--.37161S3;
+ Mon, 03 Mar 2025 14:18:57 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMDxu8TJScVnNEMzAA--.56344S2;
- Mon, 03 Mar 2025 14:18:49 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMDxu8TJScVnNEMzAA--.56344S3;
+ Mon, 03 Mar 2025 14:18:56 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org,
 	maobibo@loongson.cn
 Cc: richard.henderson@linaro.org, yangxiaojuan@loongson.cn,
  wangliupu@loongson.cn
-Subject: [PATCH v6 0/2] target/loongarch: fix 'make check-functional' failed
-Date: Mon,  3 Mar 2025 13:57:19 +0800
-Message-Id: <20250303055721.3236502-1-gaosong@loongson.cn>
+Subject: [PATCH v6 1/2] target/loongarch: fix 'make check-functional' failed
+Date: Mon,  3 Mar 2025 13:57:20 +0800
+Message-Id: <20250303055721.3236502-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250303055721.3236502-1-gaosong@loongson.cn>
+References: <20250303055721.3236502-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxu8TJScVnNEMzAA--.56344S2
+X-CM-TRANSID: qMiowMDxu8TJScVnNEMzAA--.56344S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,70 +65,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Some tlb instructions get the tlb_ps from tlb->misc but the
- value may has been initialized to 0,just check the tlb_e skip
- the function and check_tlb_ps write a log.
+ some tlb instructions get  the tlb_ps from tlb->misc but the
+ value may has been initialized to 0,just check the tlb_ps skip
+ the function and write a log.
 
-For LoongArch th min tlb_ps is 12(4KB), for TLB code,
-the tlb_ps may be 0,this may case UndefinedBehavior
-Add a check-tlb_ps fuction to check tlb_ps,
-to make sure the tlb_ps is avalablie. we check tlb_ps
-when get the tlb_ps from tlb->misc or CSR bits.
-1. cpu reset.
-   set CSR_PWCL.PTBASE and CSR_STLBPS.PS bits a default value
-   from CSR_PRCFG2;
-2. tlb instructions.
-   some tlb instructions get  the tlb_ps from tlb->misc but the
-   value may  has been initialized to 0. we need just check the tlb_e
-   skip the function and check tlb_ps write a guest log.
-3. csrwr instructions.
-   to make sure CSR_PWCL.PTBASE and CSR_STLBPS.PS bits are avalable,
-   cheke theses bits and set a default value from CSR_PRCFG2.
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+---
+ target/loongarch/tcg/tlb_helper.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-
-v6:
-  1 clean code. fix code style.
-  2 rebase and R-b.
-
-V5:
-  1 Add add chek_ps() function to check tlb_ps with CSR_PRCFG2;
-  2 Some tlb instuctions, just check tlb_ps, do't rewrite the tlb_ps
-  bits  just write a guest log;
-  3 remove csrwr crmd helper function and crmd check PWCL and check CSR_STLBPS.just
-chcek PWCL and STLBPS when csrwr CSR_PWCL and CSR_STLBPS;
-  4 set CSR_PWCL.PTBASE and CSR_STLBPS.PS bits a default value
-   from CSR_PRCFG2 when cpu reset.
-V4:
-1.Get the default tlb_ps value from env->CSR_PRCFG2.
-2.Some tlb  instrucions check the tlb_ps such as tlbfill/tlbwr/invtlb.
-3.check_tlb_ps()just check CSR_PWCL.PTBASE bits and CSR_STLBPS.PS bits.
-don't check all tlb->misc.
-
-v3:
-remove some tlb instruction chek MMU on PG model, because on DA model
-also can use tlb instructions.
-
-v2:
-check-tlb_ps when write CSR_PWCL and CSR_STLBPS;
-some tlb instructions check CRMD PG model when clear/read/write the tlb.
-link to patch: https://patchew.org/QEMU/20250220012226.2182174-1-gaosong@loongson.cn/
-
-Thanks.
-Song Gao
-
-Song Gao (2):
-  target/loongarch: fix 'make check-functional' failed
-  target/loongarch: check tlb_ps
-
- target/loongarch/cpu.c                        | 10 +++-
- target/loongarch/cpu_helper.c                 |  8 ++-
- target/loongarch/helper.h                     |  1 +
- target/loongarch/internals.h                  |  2 +
- target/loongarch/tcg/csr_helper.c             | 30 +++++++++-
- .../tcg/insn_trans/trans_privileged.c.inc     |  1 +
- target/loongarch/tcg/tlb_helper.c             | 55 ++++++++++++++++++-
- 7 files changed, 99 insertions(+), 8 deletions(-)
-
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index a323606e5a..112556301f 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -427,7 +427,11 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
+         uint16_t tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
+         uint64_t vpn, tlb_vppn;
+         uint8_t tlb_ps, compare_shift;
++        uint8_t tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
+ 
++        if (!tlb_e) {
++            continue;
++        }
+         if (i >= LOONGARCH_STLB) {
+             tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
+         } else {
+@@ -456,7 +460,11 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
+         uint16_t tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
+         uint64_t vpn, tlb_vppn;
+         uint8_t tlb_ps, compare_shift;
++        uint8_t tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
+ 
++        if (!tlb_e) {
++            continue;
++        }
+         if (i >= LOONGARCH_STLB) {
+             tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
+         } else {
 -- 
 2.34.1
 
