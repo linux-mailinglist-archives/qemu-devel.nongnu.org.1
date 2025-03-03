@@ -2,104 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB45A4CCDD
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 21:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FF7A4CD4C
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 22:11:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpCef-0003kJ-Or; Mon, 03 Mar 2025 15:44:49 -0500
+	id 1tpD3M-0008UL-KU; Mon, 03 Mar 2025 16:10:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1tpCeX-0003in-1E
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 15:44:43 -0500
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1tpD3I-0008So-8I
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 16:10:16 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1tpCeU-0003Gz-JA
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 15:44:40 -0500
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523AFMvQ025122
- for <qemu-devel@nongnu.org>; Mon, 3 Mar 2025 20:44:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=qcppdkim1; bh=Eb+8IeIfgwFwqfNpEBukyROO
- FzwPNkiWo0719T+6Xmw=; b=apsaAYvs1LyKR+r3+4lXq0jPoVqB221iNEfDi+qq
- SxJFLFdfSqCpVV87wHvFoDqX6lMTb1NA2KNNJHTS6pKjMQBQAWlotIJDhDjUePEL
- PH2M+slnxJNmRR5VPGlAPVZtz/KS6odtxTYBnJGp3xJa/nqRtrJup02l0psWz/Tu
- ePRd7Xc1D9TvrRq7RDtNO4jxbXAeKConF9nkJTd6wLqFos5UXM7YhQZspt4vhGA9
- exRJwgjClS3jS2Yf2UJPSttq5F2x7M3ynU4JTyXGyScnGi5XN08bLs+b7GzheX7Q
- ldBRVDYb3sfcFNf6W8bJOzNd0e4CDl6VqnpFb8oOy7Eebw==
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453tase46n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 20:44:34 +0000 (GMT)
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-6f2bdb560ecso68701237b3.1
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 12:44:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741034674; x=1741639474;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Eb+8IeIfgwFwqfNpEBukyROOFzwPNkiWo0719T+6Xmw=;
- b=oNcCoa5DCp8wQlkWq1k5KrxqTBLMzP4OZcDOV/BHy5C3Os+QKS7PnDoISREreRqUBH
- cVRXtWXAqkctd16zUaLoUneBVmfHW2Swfs5vXp9wfJ9PXZO9Pv8Fw7/vGuijS/h60dfp
- 4EG+PsskRXcbRBhmdm9wsKl60dnF/+IVEzESv+skOsJ+uvfaSJkvtpXyZGSAoDy9OIf9
- XkyhjIIXmS00AUqVttrWSo9Qwg/F+ZZtaKtrox+eHv1/1a6plyMByoSjTk38do8cu/nW
- jFx6sD2eZU1ggbBVn7pVDQhf13ulMuajQVfiODcfxOreNU+rM42wH9EEOqGagL3l3Cl+
- JtmA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVWFxUDIVbeF1u3pKmLOnPVi6zN9lubciS0DueN0LI5NyZ4zisk+xt+l84cwdsh+dISstlEjM1FLqDe@nongnu.org
-X-Gm-Message-State: AOJu0Yy1qeZw+LffqqTLyABogBt++XiinJL/uY2sa5SG8KauFCzSe2eL
- awLtZCy2w6mWYAdbhmY1+jUDs/ibg5JcgWy2WEQxaZh/3ShZseMgTBrsLj0BYNMRxko/A7d2YY/
- M/nQta9oX1m2t3pqD9wuf+ZG+a/Bj+SpQEZzozcFmsA5TPG+m44NqP484D05MnD2GxJLLLd69kP
- MLkJZcA5Fh6ClnPq8viUNPj69LlMaB
-X-Gm-Gg: ASbGncstJ0RhsVr6IW8a+++jB13mHh4+mVjzDjyWTK4s/l2QwyD+a05xYPoxA7KSG0M
- p5iJdD02lBh0a3fgqD2vQW9QHmD7vMK/Lz0R9RNsq5BjexekQpdHhP+hYwGRGQDgQQkYea0U4zz
- 23qeiOyWldBX/uRHvYm3rZOZoVKRMGSw==
-X-Received: by 2002:a05:690c:74c9:b0:6fd:369c:635e with SMTP id
- 00721157ae682-6fd4a0fba64mr221123817b3.16.1741034673738; 
- Mon, 03 Mar 2025 12:44:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpenhb6bjNCr5KKNHJuPuPek1JIJ6CNDQiTnccoi8xin5L1JEDmPvdjhbDYHOtW1sRpnaLHfe3SomLlY6UEws=
-X-Received: by 2002:a05:690c:74c9:b0:6fd:369c:635e with SMTP id
- 00721157ae682-6fd4a0fba64mr221123567b3.16.1741034673406; Mon, 03 Mar 2025
- 12:44:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20250225074133.6827-1-kuqin12@gmail.com>
- <20250225074133.6827-2-kuqin12@gmail.com>
- <CAD=n3R2kuvUzyE7nKPmpyELozdo_+eAKVr_CxA5HQ_jLL25stw@mail.gmail.com>
-In-Reply-To: <CAD=n3R2kuvUzyE7nKPmpyELozdo_+eAKVr_CxA5HQ_jLL25stw@mail.gmail.com>
-From: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Date: Mon, 3 Mar 2025 20:44:21 +0000
-X-Gm-Features: AQ5f1JprlG5Sgu7UcZuHcTwErsEB0-U0S3xSc2buB1mmfQIoDfpU4ZFqvaFi8rU
-Message-ID: <CAD=n3R0ntWYNN9LxJWVXApY3s_LRddx4YVQPYRzRojXcL-BDug@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: Adding TPM support for ARM SBSA-Ref
- machine
-To: Kun Qin <kuqin12@gmail.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Graeme Gregory <graeme@xora.org.uk>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-GUID: jmZCq9Ut_wbF1Mvzyx_zbgMLa8tl4mcZ
-X-Proofpoint-ORIG-GUID: jmZCq9Ut_wbF1Mvzyx_zbgMLa8tl4mcZ
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1tpD3F-0008JT-T5
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 16:10:15 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523JfjrB001838;
+ Mon, 3 Mar 2025 21:10:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :date:from:message-id:subject:to; s=corp-2023-11-20; bh=Pqw97mO8
+ 1IMD7Zh35EPz50hrrBmVzRYx8UpEOnr19ig=; b=lBaGEuZ2snizFeYL+1aUHzaY
+ ZjlQeVHtcFXG0xYDf8XzGlLF/tMRd/0l6rKw7YncaG5jgztscK8dUg0aP+xJrl8H
+ HBHInskSF4hXZA7Pa5Nhtn1U4hD6VdBFH+kBUk6Mwu+uHM+vqF4pXmI90XJOl26c
+ Rb43VLZGvJtFYzjnTRu7ChWxebvMu7qlGYQHm8Sg53oWkNbXF8x9K1kEKwVAYtD1
+ h1mzQCd/RWcKhN6TvIf/+lqk4psxD15CxK7UP1HOVOEm35ig0Hcj+lkMwJAGXyY5
+ TE1c+X7teBp8Bu6luR0eQt3/zzU8nSq6Q9/Mol0aLHHPanOkvWAI5Gy2/pQXjA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453uavuma3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 03 Mar 2025 21:10:06 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 523JiEd0003144; Mon, 3 Mar 2025 21:10:05 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 453rp82py2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 03 Mar 2025 21:10:05 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 523LA4Ic022708;
+ Mon, 3 Mar 2025 21:10:04 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 453rp82pwh-1; Mon, 03 Mar 2025 21:10:04 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V1 0/6] fast qom tree get
+Date: Mon,  3 Mar 2025 13:09:56 -0800
+Message-Id: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-03_10,2025-03-03_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=999 spamscore=0 phishscore=0 mlxscore=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503030159
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=leif.lindholm@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ adultscore=0 bulkscore=0
+ mlxlogscore=920 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
+ definitions=main-2503030163
+X-Proofpoint-GUID: r2SMCtpipHebTS8wowPS9I9-CnM6hvEx
+X-Proofpoint-ORIG-GUID: r2SMCtpipHebTS8wowPS9I9-CnM6hvEx
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,116 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doh! Add the lists back in. (No idea how I dropped them off.)
+Using qom-list and qom-get to get all the nodes and property values in a
+QOM tree can take multiple seconds because it requires 1000's of individual
+QOM requests.  Some managers fetch the entire tree or a large subset
+of it when starting a new VM, and this cost is a substantial fraction of
+start up time.
 
-On Mon, 3 Mar 2025 at 17:02, Leif Lindholm
-<leif.lindholm@oss.qualcomm.com> wrote:
->
-> Hi Kun,
->
-> Apologies for delay in responding - I was out last week.
-> I agree with this addition, since a TPM is a requirement for servers.
->
-> However, to help simplify review, could you add some detail in the
-> commit message
-> as to which SystemReady requirements this resolves and whether this
-> implementation
-> fulfills all requirements across BSA/SBSA/BBSA?
->
-> I agree with Peter that since this is a non-discoverable component, it
-> would make sense
-> to step the machine minor version number. A major version bump would
-> not be required
-> since simply adding this component will not break any existing
-> firmware (which will have
-> no way of knowing it even exists).
->
-> Regards,
->
-> Leif
->
-> On Tue, 25 Feb 2025 at 07:41, Kun Qin <kuqin12@gmail.com> wrote:
-> >
-> > From: Kun Qin <kuqin@microsoft.com>
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2625
-> >
-> > This change aims to add a TPM device for SBSA ref machine.
-> >
-> > The implementation adds a TPM create routine during machine
-> > initialization.
-> >
-> > The backend can be the same as the rest of TPM support, by using swtpm.
-> >
-> > Signed-off-by: Kun Qin <kuqin12@gmail.com>
-> > ---
-> >  hw/arm/sbsa-ref.c | 24 ++++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
-> > diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> > index e720de306419..93eb3d1e363b 100644
-> > --- a/hw/arm/sbsa-ref.c
-> > +++ b/hw/arm/sbsa-ref.c
-> > @@ -28,6 +28,8 @@
-> >  #include "system/numa.h"
-> >  #include "system/runstate.h"
-> >  #include "system/system.h"
-> > +#include "system/tpm.h"
-> > +#include "system/tpm_backend.h"
-> >  #include "exec/hwaddr.h"
-> >  #include "kvm_arm.h"
-> >  #include "hw/arm/boot.h"
-> > @@ -94,6 +96,7 @@ enum {
-> >      SBSA_SECURE_MEM,
-> >      SBSA_AHCI,
-> >      SBSA_XHCI,
-> > +    SBSA_TPM,
-> >  };
-> >
-> >  struct SBSAMachineState {
-> > @@ -132,6 +135,7 @@ static const MemMapEntry sbsa_ref_memmap[] = {
-> >      /* Space here reserved for more SMMUs */
-> >      [SBSA_AHCI] =               { 0x60100000, 0x00010000 },
-> >      [SBSA_XHCI] =               { 0x60110000, 0x00010000 },
-> > +    [SBSA_TPM] =                { 0x60120000, 0x00010000 },
-> >      /* Space here reserved for other devices */
-> >      [SBSA_PCIE_PIO] =           { 0x7fff0000, 0x00010000 },
-> >      /* 32-bit address PCIE MMIO space */
-> > @@ -629,6 +633,24 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
-> >      }
-> >  }
-> >
-> > +static void create_tpm(SBSAMachineState *sbsa, PCIBus *bus)
-> > +{
-> > +    Error *errp = NULL;
-> > +    DeviceState *dev;
-> > +
-> > +    TPMBackend *be = qemu_find_tpm_be("tpm0");
-> > +    if (be == NULL) {
-> > +        error_report("Couldn't find tmp0 backend");
-> > +        return;
-> > +    }
-> > +
-> > +    dev = qdev_new(TYPE_TPM_TIS_SYSBUS);
-> > +    object_property_set_link(OBJECT(dev), "tpmdev", OBJECT(be), &errp);
-> > +    object_property_set_str(OBJECT(dev), "tpmdev", be->id, &errp);
-> > +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-> > +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, sbsa_ref_memmap[SBSA_TPM].base);
-> > +}
-> > +
-> >  static void create_pcie(SBSAMachineState *sms)
-> >  {
-> >      hwaddr base_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].base;
-> > @@ -686,6 +708,8 @@ static void create_pcie(SBSAMachineState *sms)
-> >      pci_create_simple(pci->bus, -1, "bochs-display");
-> >
-> >      create_smmu(sms, pci->bus);
-> > +
-> > +    create_tpm(sms, pci->bus);
-> >  }
-> >
-> >  static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_size)
-> > --
-> > 2.43.0
-> >
+To reduce this cost, consider QAPI calls that fetch more information in
+each call:
+  * qom-list-get: given a path, return a list of properties and values.
+  * qom-list-getv: given a list of paths, return a list of properties and
+    values for each path.
+  * qom-tree-get: given a path, return all descendant nodes rooted at that
+    path, with properties and values for each.
+
+In all cases, a returned property is represented by ObjectPropertyValue,
+with fields name, type, value, and error.  If an error occurs when reading
+a value, the value field is omitted, and the error message is returned in the
+the error field.  Thus an error for one property will not cause a bulk fetch
+operation to fail.
+
+To evaluate each method, I modified scripts/qmp/qom-tree to use the method,
+verified all methods produce the same output, and timed each using:
+
+  qemu-system-x86_64 -display none \
+    -chardev socket,id=monitor0,path=/tmp/vm1.sock,server=on,wait=off \
+    -mon monitor0,mode=control &
+
+  time qom-tree -s /tmp/vm1.sock > /dev/null
+
+I only measured once per method, but the variation is low after a warm up run.
+The 'real - user - sys' column is a proxy for QEMU CPU time.
+
+method               real(s)   user(s)   sys(s)  (real - user - sys)(s)
+qom-list / qom-get   2.048     0.932     0.057   1.059
+qom-list-get         0.402     0.230     0.029   0.143
+qom-list-getv        0.200     0.132     0.015   0.053
+qom-tree-get         0.143     0.123     0.012   0.008
+
+qom-tree-get is the clear winner, reducing elapsed time by a factor of 14X,
+and reducing QEMU CPU time by 132X.
+
+qom-list-getv is slower when fetching the entire tree, but can beat
+qom-tree-get when only a subset of the tree needs to be fetched (not shown).
+qom-list-get is shown for comparison only, and is not included in this series.
+
+Steve Sistare (6):
+  qom: qom_resolve_path
+  qom: qom-tree-get
+  python: use qom-tree-get
+  tests/qtest/qom-test: unit test for qom-tree-get
+  qom: qom-list-getv
+  tests/qtest/qom-test: unit test for qom-list-getv
+
+ python/qemu/utils/qom.py        |  36 +++++------
+ python/qemu/utils/qom_common.py |  50 ++++++++++++++++
+ qapi/qom.json                   |  93 ++++++++++++++++++++++++++++
+ qom/qom-qmp-cmds.c              | 130 ++++++++++++++++++++++++++++++++++++++--
+ tests/qtest/qom-test.c          | 116 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 401 insertions(+), 24 deletions(-)
+
+base-commit: 354925d42252f6f36a9e1e4a6b929aaafb2eaf45
+-- 
+1.8.3.1
+
 
