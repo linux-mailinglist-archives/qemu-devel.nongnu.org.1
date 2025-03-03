@@ -2,135 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78140A4C014
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 13:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46811A4C04F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 13:28:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp4jj-0006bK-2H; Mon, 03 Mar 2025 07:17:31 -0500
+	id 1tp4sz-0000Xd-0J; Mon, 03 Mar 2025 07:27:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tp4jb-0006WI-Na
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 07:17:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tp4jZ-0005RK-8C
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 07:17:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741004239;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=HJv4pR22jpZQf+pJ8krGsd15am5SkHVX5usZPqlFYG4=;
- b=YSa3ndPPRJnrquVLRDviFi/BSwZdleW1/Li97JQKNxFKBEemfCOtr7ZRegiA2ZimuCeeJ8
- ZiOZB6Zb3ePSNw/ky6SYuV/oAlLX/TSmlcEteJRJ0A1FbJXelCYwHQIlK0glyh7RNfo1u8
- l4MuUJXsHDL2Tv504p7KE4jGXzP/M20=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-Wjgc9b05Oq2fEBIfTSsxbA-1; Mon, 03 Mar 2025 07:17:17 -0500
-X-MC-Unique: Wjgc9b05Oq2fEBIfTSsxbA-1
-X-Mimecast-MFC-AGG-ID: Wjgc9b05Oq2fEBIfTSsxbA_1741004236
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4393b6763a3so16667625e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 04:17:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp4sU-0000UX-D6
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 07:26:36 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp4sQ-0007Go-Vo
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 07:26:33 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-390f5f48eafso1076506f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 04:26:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741004789; x=1741609589; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wCNDAMKzWSCOn/BVS1TBOQlzVKtJ0BwoGBeM0Dv+Fg4=;
+ b=cWzIpY9r2rNdiwOP3+ik+R3KtHokF1yySgrMePh6H/fcinHmM+nbwm+GWpOMuhADrM
+ YmcdGhrcIs8e9U0hTMgvhzAqzRbvUHx54nUV2UmE2dJdtGKoYxtt3hHVCOkfBEIuAr0S
+ JvEpNleo1KGDe1+urLoGZ1s/JKpf7d0VhIMtSeQw8+7U64OG2Ajcrnzacv87kSQsU2uv
+ gGdR4da/5T10Y4a8HLsixr+E35DayLtbbKlgBhJVABorkiEewpXxpBAkHw7FkKKa1e/J
+ Hfus6Pm3oZkd2qQzac+8qXq7h94/y2zWuAi4nvl1D41QBw0y6WU5BSWO4/C2ZNHtGtfv
+ hnYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741004236; x=1741609036;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HJv4pR22jpZQf+pJ8krGsd15am5SkHVX5usZPqlFYG4=;
- b=abh/AjSK8r6KfBLpNxcidvLAmFkmfQ99qFuM+MjctcqfhTeR/RXpqvD0bAFB4C60D7
- TltchBEffJKiC6IlPKOKFoK+vsepcC7cKVLf/oJNX7vkPPB96ryobklxyanD8k4nhx3S
- qyCyyXDPpqI1a9/ZiVPTrcXXFut/SKja2VJDXsDOA0N15yDGyckJHgzoEo39M+r+h0Gf
- 4kkQZz+MtVbeZfmuaeAjqgVekIgf/Vy116nrNCUVJkSQxMImk9kYP9qEyKwlxvAD3jwp
- gDB/CTOiGE2gCIRTmmyxszzwyZTZw/SQd+RGnXIigdxM+bPtbuBsMPasNp6Xy3ylG4ub
- VdbA==
+ d=1e100.net; s=20230601; t=1741004789; x=1741609589;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wCNDAMKzWSCOn/BVS1TBOQlzVKtJ0BwoGBeM0Dv+Fg4=;
+ b=wviRvN+Jy3p9hFJjveTZ5EkWg2ftQ+MBr8orX0wzeJNtJfiMwbFjO1mAAvDuVWQ3k5
+ X9Z2+1aoVGL9Q5V10UniPVwsk12ZmuCzdm1MdPf/xwXtABNxAvmDO0kG1fTXIIsesbzK
+ B5QuuoytrOBWGyTOjtR6UhTEXjKcasTRRWvGUON+K1/vtm+2PArc5QqxKHSYBLkr1/9c
+ gjF3vnA4uTP+5LZ/RGvpvhChhVwhgYIHxcjFXa1GPreQGEVaWeE7vXGB8c3uWAKaZaPf
+ pRtgku8Z/faaIt+5/gj4k3Q3US9xFTXyacmDGVmvki2s2pXsbOd49acnsy5MNGLLQtGl
+ 1s/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUg/J+jN0uZ8hFyWQSgsyTcS25sqtCKJt5s2jMcVwwG39Wx33Cz/38WTxeAIFxEhJxojarkb57fIAwR@nongnu.org
-X-Gm-Message-State: AOJu0YyvMBrywCZiQIebpc3xyhA4zu4XyhXVCawnUM0mmvkSjm7FtXpX
- rVbYWBstGwcEiPQf+hoN4z7M9bW8SuvFQwo2yrTM3XCQT7bJL++pxpWe2hbOzyDNLR6Zxsam5ws
- 3YjWF1/Mftq/r3saFPI3l74o34Lw5nspA+rg3O/6KwIQ5ecUK4usw
-X-Gm-Gg: ASbGnct3Xf1TfkYE54mOBrBmu9tjO3vNBLv7qN+4uoAUJfXTzeTyxy13uLqog0sadvf
- ODmB8mkZos/bWiynh+HlshgZs07Vm9LvEPcpG0vKTW5j3D4OfdWfE+lJChdIZ/IKBj4ZrQE1fSz
- x8SohwKWH1ihMjQmEx2TJs7Wc2HMie2+HrQXlrMRD5x58Dvn55ssOHtuZ8eLoYh/115o+0scBAh
- 1Ksgg0+xXVoqId2JoSgKUj50gUBPTYHRacGxr1o/GVIYsrK3PGBo2R/0cYGzH1jzEFhjhpKpEGv
- mka88mLx/lzQXROrhKQ=
-X-Received: by 2002:a05:600c:2d82:b0:43b:c0fa:f9c0 with SMTP id
- 5b1f17b1804b1-43bc0fb0089mr22466335e9.28.1741004236368; 
- Mon, 03 Mar 2025 04:17:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtQSoKn2oJP12uIh0xdOXtj0IXsxDKX0t8AE1Uz0xDFgzoltV1iBCTFvfhWHymmGY7R8JqUQ==
-X-Received: by 2002:a05:600c:2d82:b0:43b:c0fa:f9c0 with SMTP id
- 5b1f17b1804b1-43bc0fb0089mr22466185e9.28.1741004236005; 
- Mon, 03 Mar 2025 04:17:16 -0800 (PST)
-Received: from [192.168.10.27] ([151.95.119.44])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-43bc63bcaafsm18418865e9.28.2025.03.03.04.17.15
+ AJvYcCVaRUcyUbrP6GaBFytVWgA9QjcmRj/f8PuWmMT6TvOpaHqFyyrwdBmeLMC9azkIjJ1WR5H6wVr/Gb9p@nongnu.org
+X-Gm-Message-State: AOJu0Yz8XvPPc0UN/QncqNupW4M54qRa9wIKNm7i88kmQcQLLFZQSEhW
+ FiEJHnfUIHn3rZjB4JrDdJJThXnSWQci1REIE91zW4OMM+ojtX8gtx99hzsH8Co8xhoRDdNLNQu
+ 23W0kEg==
+X-Gm-Gg: ASbGncvKLpCKus0y2Omtt2dI/CRlZXjPcCBZV6OhZW4qucSn3acXPbesmNZHDe7CHq0
+ LtoldBgGQ2/9EGdx8jtpI2eXpSGjxc58Uksg2IZsmnTbvTWlGn8H4e8aTLuB5d+HdWfoFmeTmCi
+ hY5tVfJK7zKWc4Jpf38D8u4Z48wUdZ+sW3F5LBMNmhSRWwEMKIvoHPCBIC7KcToDyp0UZMQtKq1
+ qL8DWB4xEwOTmEIH+shdcbR+92lb/zGQvE6JugBmWe0htUIFiSMZl9pg341Dc0uio6QYty3WQS3
+ BKivP6VN/ycIFGtyRWGGCWFZEq5mRv5JQzWKPcWRH7DdaYVem4/EgFQ+9/vIwy02X4JSyQxvCFu
+ b0mra3BmX9SMi
+X-Google-Smtp-Source: AGHT+IEjZdK0X1TrH2QKbGt1lYS5zhUHB7SLTiKQf7Ivmgep0MyvgfzIcHRERjNMWCTxNOJo0ym/Ag==
+X-Received: by 2002:a05:6000:184e:b0:38d:e6f4:5a88 with SMTP id
+ ffacd0b85a97d-390ec7cd17cmr10718889f8f.12.1741004788630; 
+ Mon, 03 Mar 2025 04:26:28 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bc48f6d6bsm23561095e9.36.2025.03.03.04.26.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 04:17:15 -0800 (PST)
-Message-ID: <0128cd62-b5d7-4aa1-b169-2a7717d33113@redhat.com>
-Date: Mon, 3 Mar 2025 13:17:14 +0100
+ Mon, 03 Mar 2025 04:26:27 -0800 (PST)
+Message-ID: <3029782c-8d16-4428-9d6b-1c2fa8a7e755@linaro.org>
+Date: Mon, 3 Mar 2025 13:26:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb-storage: Allow manually adding SCSI device
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Fam Zheng <fam@euphon.net>,
- qemu-devel@nongnu.org
-Cc: devel@daynix.com
-References: <20250303-usb-v1-1-70f700a181fd@daynix.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 1/8] hw/intc: Add l2vic interrupt controller
+To: Brian Cain <brian.cain@oss.qualcomm.com>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, quic_mathbern@quicinc.com, ale@rev.ng,
+ anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com,
+ alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
+ Damien Hedde <damien.hedde@dahe.fr>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20250301172045.1295412-1-brian.cain@oss.qualcomm.com>
+ <20250301172045.1295412-2-brian.cain@oss.qualcomm.com>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20250303-usb-v1-1-70f700a181fd@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250301172045.1295412-2-brian.cain@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,85 +104,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/25 11:28, Akihiko Odaki wrote:
-> usb-storage automatically adds a SCSI device, but it limits
-> configurability of the added SCSI device and causes usability
-> problems as observed in:
-> https://gitlab.com/libvirt/libvirt/-/issues/368
+Hi Brian and Sid,
+
+On 1/3/25 18:20, Brian Cain wrote:
+> From: Sid Manning <sidneym@quicinc.com>
 > 
-> Allow manually adding SCSI device when the drive option is not
-> specified.
-
-I might be misunderstanding what you're doing, but can't you do that 
-already with usb-bot?
-
-Paolo
-
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Co-authored-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Co-authored-by: Damien Hedde <damien.hedde@dahe.fr>
+> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 > ---
->   hw/usb/dev-storage-classic.c | 33 ++++++++++++++++-----------------
->   1 file changed, 16 insertions(+), 17 deletions(-)
-> 
-> diff --git a/hw/usb/dev-storage-classic.c b/hw/usb/dev-storage-classic.c
-> index 56ef39da2e634d1639a07ac4636cdaa000989f5f..33e5a7cfc8bdf3f92b18014e885771aee6d32f5e 100644
-> --- a/hw/usb/dev-storage-classic.c
-> +++ b/hw/usb/dev-storage-classic.c
-> @@ -33,10 +33,9 @@ static void usb_msd_storage_realize(USBDevice *dev, Error **errp)
->       BlockBackend *blk = s->conf.blk;
->       SCSIDevice *scsi_dev;
->   
-> -    if (!blk) {
-> -        error_setg(errp, "drive property not set");
-> -        return;
-> -    }
-> +    usb_desc_create_serial(dev);
-> +    scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev),
-> +                 &usb_msd_scsi_info_storage);
->   
->       /*
->        * Hack alert: this pretends to be a block device, but it's really
-> @@ -48,23 +47,23 @@ static void usb_msd_storage_realize(USBDevice *dev, Error **errp)
->        *
->        * The hack is probably a bad idea.
->        */
-> -    blk_ref(blk);
-> -    blk_detach_dev(blk, DEVICE(s));
-> -    s->conf.blk = NULL;
-> +    if (blk) {
-> +        blk_ref(blk);
-> +        blk_detach_dev(blk, DEVICE(s));
-> +        s->conf.blk = NULL;
+>   MAINTAINERS                    |   2 +
+>   docs/devel/hexagon-l2vic.rst   |  59 +++++
+>   docs/devel/index-internals.rst |   1 +
+>   include/hw/intc/l2vic.h        |  37 +++
+>   hw/intc/l2vic.c                | 417 +++++++++++++++++++++++++++++++++
+>   hw/intc/Kconfig                |   3 +
+>   hw/intc/meson.build            |   2 +
+>   hw/intc/trace-events           |   4 +
+>   8 files changed, 525 insertions(+)
+>   create mode 100644 docs/devel/hexagon-l2vic.rst
+>   create mode 100644 include/hw/intc/l2vic.h
+>   create mode 100644 hw/intc/l2vic.c
+
+
+> diff --git a/hw/intc/l2vic.c b/hw/intc/l2vic.c
+> new file mode 100644
+> index 0000000000..9df6575214
+> --- /dev/null
+> +++ b/hw/intc/l2vic.c
+> @@ -0,0 +1,417 @@
+> +/*
+> + * QEMU L2VIC Interrupt Controller
+> + *
+> + * Arm PrimeCell PL190 Vector Interrupt Controller was used as a reference.
+> + * Copyright(c) 2020-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
 > +
-> +        scsi_dev = scsi_bus_legacy_add_drive(&s->bus, blk, 0, !!s->removable,
-> +                                             &s->conf, dev->serial, errp);
-> +        blk_unref(blk);
-> +        if (!scsi_dev) {
-> +            return;
-> +        }
-> +        s->scsi_dev = scsi_dev;
+> +#include "qemu/osdep.h"
+> +#include "hw/irq.h"
+> +#include "hw/sysbus.h"
+> +#include "migration/vmstate.h"
+> +#include "qemu/log.h"
+> +#include "qemu/module.h"
+> +#include "hw/intc/l2vic.h"
+> +#include "trace.h"
+> +
+> +#define L2VICA(s, n) (s[(n) >> 2])
+> +
+> +#define TYPE_L2VIC "l2vic"
+> +#define L2VIC(obj) OBJECT_CHECK(L2VICState, (obj), TYPE_L2VIC)
+
+Why not use OBJECT_DECLARE_SIMPLE_TYPE()?
+
+> +
+> +#define SLICE_MAX (L2VIC_INTERRUPT_MAX / 32)
+> +
+> +typedef struct L2VICState {
+> +    SysBusDevice parent_obj;
+> +
+> +    QemuMutex active;
+> +    MemoryRegion iomem;
+> +    MemoryRegion fast_iomem;
+> +    uint32_t level;
+> +    /*
+> +     * offset 0:vid group 0 etc, 10 bits in each group
+> +     * are used:
+> +     */
+> +    uint32_t vid_group[4];
+> +    uint32_t vid0;
+> +    /* Clear Status of Active Edge interrupt, not used: */
+> +    uint32_t int_clear[SLICE_MAX] QEMU_ALIGNED(16);
+> +    /* Enable interrupt source */
+> +    uint32_t int_enable[SLICE_MAX] QEMU_ALIGNED(16);
+> +    /* Clear (set to 0) corresponding bit in int_enable */
+> +    uint32_t int_enable_clear;
+> +    /* Set (to 1) corresponding bit in int_enable */
+> +    uint32_t int_enable_set;
+> +    /* Present for debugging, not used */
+> +    uint32_t int_pending[SLICE_MAX] QEMU_ALIGNED(16);
+> +    /* Generate an interrupt */
+> +    uint32_t int_soft;
+> +    /* Which enabled interrupt is active */
+> +    uint32_t int_status[SLICE_MAX] QEMU_ALIGNED(16);
+> +    /* Edge or Level interrupt */
+> +    uint32_t int_type[SLICE_MAX] QEMU_ALIGNED(16);
+> +    /* L2 interrupt group 0-3 0x600-0x7FF */
+> +    uint32_t int_group_n0[SLICE_MAX] QEMU_ALIGNED(16);
+> +    uint32_t int_group_n1[SLICE_MAX] QEMU_ALIGNED(16);
+> +    uint32_t int_group_n2[SLICE_MAX] QEMU_ALIGNED(16);
+> +    uint32_t int_group_n3[SLICE_MAX] QEMU_ALIGNED(16);
+> +    qemu_irq irq[8];
+> +} L2VICState;
+
+OBJECT_DECLARE_SIMPLE_TYPE(L2VICState, L2VIC)
+
+
+> +static inline bool vid_active(L2VICState *s)
+> +
+> +{
+> +    /* scan all 1024 bits in int_status arrary */
+> +    const int size = sizeof(s->int_status) * CHAR_BIT;
+> +    const int active_irq = find_first_bit((unsigned long *)s->int_status, size);
+
+Maybe this file could leverage the 32-bit bitops.h API:
+
+$ git grep bit32\( include/qemu/bitops.h
+include/qemu/bitops.h:38: * - Bits stored in an array of 'uint32_t': 
+set_bit32(), clear_bit32(), etc
+include/qemu/bitops.h:270:static inline void set_bit32(long nr, uint32_t 
+*addr)
+include/qemu/bitops.h:296:static inline void clear_bit32(long nr, 
+uint32_t *addr)
+include/qemu/bitops.h:322:static inline void change_bit32(long nr, 
+uint32_t *addr)
+include/qemu/bitops.h:335:static inline int test_and_set_bit32(long nr, 
+uint32_t *addr)
+include/qemu/bitops.h:350:static inline int test_and_clear_bit32(long 
+nr, uint32_t *addr)
+include/qemu/bitops.h:365:static inline int test_and_change_bit32(long 
+nr, uint32_t *addr)
+include/qemu/bitops.h:380:static inline int test_bit32(long nr, const 
+uint32_t *addr)
+
+> +    return ((active_irq != size)) ? true : false;
+> +}
+> +
+> +static bool l2vic_update(L2VICState *s, int irq)
+> +{
+> +    if (vid_active(s)) {
+> +        return true;
 > +    }
->   
-> -    usb_desc_create_serial(dev);
->       usb_desc_init(dev);
->       dev->flags |= (1 << USB_DEV_FLAG_IS_SCSI_STORAGE);
-> -    scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev),
-> -                 &usb_msd_scsi_info_storage);
-> -    scsi_dev = scsi_bus_legacy_add_drive(&s->bus, blk, 0, !!s->removable,
-> -                                         &s->conf, dev->serial, errp);
-> -    blk_unref(blk);
-> -    if (!scsi_dev) {
-> -        return;
-> -    }
->       usb_msd_handle_reset(dev);
-> -    s->scsi_dev = scsi_dev;
->   }
->   
->   static const Property msd_properties[] = {
-> 
-> ---
-> base-commit: b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124
-> change-id: 20250301-usb-5dde4bcb1467
-> 
-> Best regards,
+> +
+> +    bool pending = test_bit(irq, (unsigned long *)s->int_pending);
+> +    bool enable = test_bit(irq, (unsigned long *)s->int_enable);
+> +    if (pending && enable) {
+> +        int vid = get_vid(s, irq);
+> +        set_bit(irq, (unsigned long *)s->int_status);
+> +        clear_bit(irq, (unsigned long *)s->int_pending);
+> +        clear_bit(irq, (unsigned long *)s->int_enable);
+> +        /* ensure the irq line goes low after going high */
+> +        s->vid0 = irq;
+> +        s->vid_group[get_vid(s, irq)] = irq;
+> +
+> +        /* already low: now call pulse */
+> +        /*     pulse: calls qemu_upper() and then qemu_lower()) */
+> +        qemu_irq_pulse(s->irq[vid + 2]);
+> +        trace_l2vic_delivered(irq, vid);
+> +        return true;
+> +    }
+> +    return false;
+> +}
 
 
