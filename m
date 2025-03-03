@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69691A4BB8B
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E394A4BB80
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 10:59:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp2Xa-0001H1-8L; Mon, 03 Mar 2025 04:56:50 -0500
+	id 1tp2XY-000176-OJ; Mon, 03 Mar 2025 04:56:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2Wq-00084I-CE; Mon, 03 Mar 2025 04:56:04 -0500
+ id 1tp2Wt-00088W-FY; Mon, 03 Mar 2025 04:56:07 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2Wp-0001vN-1K; Mon, 03 Mar 2025 04:56:04 -0500
+ id 1tp2Wr-0001vN-DU; Mon, 03 Mar 2025 04:56:07 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 3 Mar
@@ -28,18 +28,17 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v4 16/23] hw/misc/aspeed_scu: Add Support for AST2700/AST2750
- A1 Silicon Revisions
-Date: Mon, 3 Mar 2025 17:54:44 +0800
-Message-ID: <20250303095457.2337631-17-jamin_lin@aspeedtech.com>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
+Subject: [PATCH v4 17/23] hw/arm/aspeed_ast27x0.c Support AST2700 A1 GIC
+ Interrupt Mapping
+Date: Mon, 3 Mar 2025 17:54:45 +0800
+Message-ID: <20250303095457.2337631-18-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
 References: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -65,42 +64,193 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added new definitions for AST2700_A1_SILICON_REV and AST2750_A1_SILICON_REV to
-identify the A1 silicon revisions.
+Currently, these IRQ tables support from GIC 128 - 136 for AST2700 A0.
+These IRQ tables can be reused for AST2700 A1 from GIC 192 - 197.
+Updates the interrupt mapping to include support for AST2700 A1 by extending
+the existing mappings to the new GIC range.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/misc/aspeed_scu.h | 2 ++
- hw/misc/aspeed_scu.c         | 2 ++
- 2 files changed, 4 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 82 ++++++++++++++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 30 deletions(-)
 
-diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
-index 356be95e45..684b48b722 100644
---- a/include/hw/misc/aspeed_scu.h
-+++ b/include/hw/misc/aspeed_scu.h
-@@ -54,6 +54,8 @@ struct AspeedSCUState {
- #define AST2700_A0_SILICON_REV   0x06000103U
- #define AST2720_A0_SILICON_REV   0x06000203U
- #define AST2750_A0_SILICON_REV   0x06000003U
-+#define AST2700_A1_SILICON_REV   0x06010103U
-+#define AST2750_A1_SILICON_REV   0x06010003U
- 
- #define ASPEED_IS_AST2500(si_rev)     ((((si_rev) >> 24) & 0xff) == 0x04)
- 
-diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index 0581c744f1..76cfd91671 100644
---- a/hw/misc/aspeed_scu.c
-+++ b/hw/misc/aspeed_scu.c
-@@ -560,6 +560,8 @@ static uint32_t aspeed_silicon_revs[] = {
-     AST2700_A0_SILICON_REV,
-     AST2720_A0_SILICON_REV,
-     AST2750_A0_SILICON_REV,
-+    AST2700_A1_SILICON_REV,
-+    AST2750_A1_SILICON_REV,
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 09aad69e3c..eab9674b6c 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -120,21 +120,27 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
  };
  
- bool is_supported_silicon_rev(uint32_t silicon_rev)
+ /* GICINT 128 */
+-static const int aspeed_soc_ast2700_gic128_intcmap[] = {
++/* GICINT 192 */
++static const int ast2700_gic128_gic192_intcmap[] = {
+     [ASPEED_DEV_LPC]       = 0,
+     [ASPEED_DEV_IBT]       = 2,
+     [ASPEED_DEV_KCS]       = 4,
+ };
+ 
++/* GICINT 129 */
++/* GICINT 193 */
++
+ /* GICINT 130 */
+-static const int aspeed_soc_ast2700_gic130_intcmap[] = {
++/* GICINT 194 */
++static const int ast2700_gic130_gic194_intcmap[] = {
+     [ASPEED_DEV_I2C]        = 0,
+     [ASPEED_DEV_ADC]        = 16,
+     [ASPEED_DEV_GPIO]       = 18,
+ };
+ 
+ /* GICINT 131 */
+-static const int aspeed_soc_ast2700_gic131_intcmap[] = {
++/* GICINT 195 */
++static const int ast2700_gic131_gic195_intcmap[] = {
+     [ASPEED_DEV_I3C]       = 0,
+     [ASPEED_DEV_WDT]       = 16,
+     [ASPEED_DEV_FMC]       = 25,
+@@ -142,7 +148,8 @@ static const int aspeed_soc_ast2700_gic131_intcmap[] = {
+ };
+ 
+ /* GICINT 132 */
+-static const int aspeed_soc_ast2700_gic132_intcmap[] = {
++/* GICINT 196 */
++static const int ast2700_gic132_gic196_intcmap[] = {
+     [ASPEED_DEV_ETH1]      = 0,
+     [ASPEED_DEV_ETH2]      = 1,
+     [ASPEED_DEV_ETH3]      = 2,
+@@ -161,24 +168,26 @@ static const int aspeed_soc_ast2700_gic132_intcmap[] = {
+ };
+ 
+ /* GICINT 133 */
+-static const int aspeed_soc_ast2700_gic133_intcmap[] = {
++/* GICINT 197 */
++static const int ast2700_gic133_gic197_intcmap[] = {
+     [ASPEED_DEV_SDHCI]     = 1,
+     [ASPEED_DEV_PECI]      = 4,
+ };
+ 
+ /* GICINT 128 ~ 136 */
++/* GICINT 192 ~ 201 */
+ struct gic_intc_irq_info {
+     int irq;
+     const int *ptr;
+ };
+ 
+-static const struct gic_intc_irq_info aspeed_soc_ast2700_gic_intcmap[] = {
+-    {128,  aspeed_soc_ast2700_gic128_intcmap},
++static const struct gic_intc_irq_info ast2700_gic_intcmap[] = {
++    {128,  ast2700_gic128_gic192_intcmap},
+     {129,  NULL},
+-    {130,  aspeed_soc_ast2700_gic130_intcmap},
+-    {131,  aspeed_soc_ast2700_gic131_intcmap},
+-    {132,  aspeed_soc_ast2700_gic132_intcmap},
+-    {133,  aspeed_soc_ast2700_gic133_intcmap},
++    {130,  ast2700_gic130_gic194_intcmap},
++    {131,  ast2700_gic131_gic195_intcmap},
++    {132,  ast2700_gic132_gic196_intcmap},
++    {133,  ast2700_gic133_gic197_intcmap},
+     {134,  NULL},
+     {135,  NULL},
+     {136,  NULL},
+@@ -190,11 +199,11 @@ static qemu_irq aspeed_soc_ast2700_get_irq(AspeedSoCState *s, int dev)
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     int i;
+ 
+-    for (i = 0; i < ARRAY_SIZE(aspeed_soc_ast2700_gic_intcmap); i++) {
+-        if (sc->irqmap[dev] == aspeed_soc_ast2700_gic_intcmap[i].irq) {
+-            assert(aspeed_soc_ast2700_gic_intcmap[i].ptr);
++    for (i = 0; i < ARRAY_SIZE(ast2700_gic_intcmap); i++) {
++        if (sc->irqmap[dev] == ast2700_gic_intcmap[i].irq) {
++            assert(ast2700_gic_intcmap[i].ptr);
+             return qdev_get_gpio_in(DEVICE(&a->intc.orgates[i]),
+-                aspeed_soc_ast2700_gic_intcmap[i].ptr[dev]);
++                ast2700_gic_intcmap[i].ptr[dev]);
+         }
+     }
+ 
+@@ -208,16 +217,17 @@ static qemu_irq aspeed_soc_ast2700_get_irq_index(AspeedSoCState *s, int dev,
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     int i;
+ 
+-    for (i = 0; i < ARRAY_SIZE(aspeed_soc_ast2700_gic_intcmap); i++) {
+-        if (sc->irqmap[dev] == aspeed_soc_ast2700_gic_intcmap[i].irq) {
+-            assert(aspeed_soc_ast2700_gic_intcmap[i].ptr);
++    for (i = 0; i < ARRAY_SIZE(ast2700_gic_intcmap); i++) {
++        if (sc->irqmap[dev] == ast2700_gic_intcmap[i].irq) {
++            assert(ast2700_gic_intcmap[i].ptr);
+             return qdev_get_gpio_in(DEVICE(&a->intc.orgates[i]),
+-                aspeed_soc_ast2700_gic_intcmap[i].ptr[dev] + index);
++                                    ast2700_gic_intcmap[i].ptr[dev] + index);
+         }
+     }
+ 
+     /*
+-     * Invalid orgate index, device irq should be 128 to 136.
++     * Invalid OR gate index, device IRQ should be between 128 to 136
++     * and 192 to 201.
+      */
+     g_assert_not_reached();
+ }
+@@ -492,7 +502,6 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     Aspeed27x0SoCState *a = ASPEED27X0_SOC(dev);
+     AspeedSoCState *s = ASPEED_SOC(dev);
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+-    AspeedINTCClass *ic = ASPEED_INTC_GET_CLASS(&a->intc);
+     g_autofree char *sram_name = NULL;
+     qemu_irq irq;
+ 
+@@ -530,17 +539,18 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc), 0,
+                     sc->memmap[ASPEED_DEV_INTC]);
+ 
+-    /* source orgates -> INTC */
+-    for (i = 0; i < ic->num_inpins; i++) {
++    /* irq sources -> orgates -> INTC */
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc)->num_inpins; i++) {
+         qdev_connect_gpio_out(DEVICE(&a->intc.orgates[i]), 0,
+-                                qdev_get_gpio_in(DEVICE(&a->intc), i));
++                              qdev_get_gpio_in(DEVICE(&a->intc), i));
+     }
+ 
++    /* INTC -> GIC192 - GIC201 */
+     /* INTC -> GIC128 - GIC136 */
+-    for (i = 0; i < ic->num_outpins; i++) {
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc)->num_outpins; i++) {
+         sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc), i,
+                            qdev_get_gpio_in(DEVICE(&a->gic),
+-                                aspeed_soc_ast2700_gic_intcmap[i].irq));
++                                            ast2700_gic_intcmap[i].irq));
+     }
+ 
+     /* SRAM */
+@@ -691,10 +701,22 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     for (i = 0; i < ASPEED_I2C_GET_CLASS(&s->i2c)->num_busses; i++) {
+         /*
+          * The AST2700 I2C controller has one source INTC per bus.
+-         * I2C buses interrupt are connected to GICINT130_INTC
+-         * from bit 0 to bit 15.
+-         * I2C bus 0 is connected to GICINT130_INTC at bit 0.
+-         * I2C bus 15 is connected to GICINT130_INTC at bit 15.
++         *
++         * For AST2700 A0:
++         * I2C bus interrupts are connected to the OR gate from bit 0 to bit
++         * 15, and the OR gate output pin is connected to the input pin of
++         * GICINT130 of INTC (CPU Die). Then, the output pin is connected to
++         * the GIC.
++         *
++         * For AST2700 A1:
++         * I2C bus interrupts are connected to the OR gate from bit 0 to bit
++         * 15, and the OR gate output pin is connected to the input pin of
++         * GICINT194 of INTCIO (IO Die). Then, the output pin is connected
++         * to the INTC (CPU Die) input pin, and its output pin is connected
++         * to the GIC.
++         *
++         * I2C bus 0 is connected to the OR gate at bit 0.
++         * I2C bus 15 is connected to the OR gate at bit 15.
+          */
+         irq = aspeed_soc_ast2700_get_irq_index(s, ASPEED_DEV_I2C, i);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
 -- 
 2.34.1
 
