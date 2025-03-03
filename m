@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C582A4BB5B
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 10:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A36EFA4BB59
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 10:56:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp2W2-0007rH-RM; Mon, 03 Mar 2025 04:55:14 -0500
+	id 1tp2Wb-0007vH-O4; Mon, 03 Mar 2025 04:55:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2W0-0007qi-At; Mon, 03 Mar 2025 04:55:12 -0500
+ id 1tp2Vy-0007qB-GR; Mon, 03 Mar 2025 04:55:10 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tp2Vy-0001s3-CQ; Mon, 03 Mar 2025 04:55:11 -0500
+ id 1tp2Vw-0001gH-VP; Mon, 03 Mar 2025 04:55:10 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 3 Mar
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v4 01/23] hw/intc/aspeed: Support setting different memory size
-Date: Mon, 3 Mar 2025 17:54:29 +0800
-Message-ID: <20250303095457.2337631-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 02/23] hw/intc/aspeed: Support setting different register
+ sizes
+Date: Mon, 3 Mar 2025 17:54:30 +0800
+Message-ID: <20250303095457.2337631-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
 References: <20250303095457.2337631-1-jamin_lin@aspeedtech.com>
@@ -63,67 +64,70 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the AST2700 datasheet, the INTC(CPU DIE) controller has 16KB
-(0x4000) of register space, and the INTCIO (I/O DIE) controller has 1KB (0x400)
-of register space.
-
-Introduced a new class attribute "mem_size" to set different memory sizes for
-the INTC models in AST2700.
+Currently, the size of the regs array is 0x2000, which is too large. So far,
+it only use GICINT128 - GICINT134, and the offsets from 0 to 0x1000 are unused.
+To save code size, introduce a new class attribute "reg_size" to set the
+different register sizes for the INTC models in AST2700 and add a regs
+sub-region in the memory container.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/intc/aspeed_intc.h | 3 +++
- hw/intc/aspeed_intc.c         | 9 ++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/hw/intc/aspeed_intc.h | 1 +
+ hw/intc/aspeed_intc.c         | 8 +++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-index 18cb43476c..03324f05ab 100644
+index 03324f05ab..ecaeb15aea 100644
 --- a/include/hw/intc/aspeed_intc.h
 +++ b/include/hw/intc/aspeed_intc.h
-@@ -25,6 +25,8 @@ struct AspeedINTCState {
- 
-     /*< public >*/
-     MemoryRegion iomem;
-+    MemoryRegion iomem_container;
-+
-     uint32_t regs[ASPEED_INTC_NR_REGS];
-     OrIRQState orgates[ASPEED_INTC_NR_INTS];
-     qemu_irq output_pins[ASPEED_INTC_NR_INTS];
-@@ -39,6 +41,7 @@ struct AspeedINTCClass {
- 
+@@ -42,6 +42,7 @@ struct AspeedINTCClass {
      uint32_t num_lines;
      uint32_t num_ints;
-+    uint64_t mem_size;
+     uint64_t mem_size;
++    uint64_t reg_size;
  };
  
  #endif /* ASPEED_INTC_H */
 diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index 126b711b94..033b574c1e 100644
+index 033b574c1e..316885a27a 100644
 --- a/hw/intc/aspeed_intc.c
 +++ b/hw/intc/aspeed_intc.c
-@@ -302,10 +302,16 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
-     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
-     int i;
+@@ -117,10 +117,11 @@ static void aspeed_intc_set_irq(void *opaque, int irq, int level)
+ static uint64_t aspeed_intc_read(void *opaque, hwaddr offset, unsigned int size)
+ {
+     AspeedINTCState *s = ASPEED_INTC(opaque);
++    AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
+     uint32_t addr = offset >> 2;
+     uint32_t value = 0;
  
-+    memory_region_init(&s->iomem_container, OBJECT(s),
-+            TYPE_ASPEED_INTC ".container", aic->mem_size);
-+
-+    sysbus_init_mmio(sbd, &s->iomem_container);
-+
+-    if (addr >= ASPEED_INTC_NR_REGS) {
++    if (offset >= aic->reg_size) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx "\n",
+                       __func__, offset);
+@@ -143,7 +144,7 @@ static void aspeed_intc_write(void *opaque, hwaddr offset, uint64_t data,
+     uint32_t change;
+     uint32_t irq;
+ 
+-    if (addr >= ASPEED_INTC_NR_REGS) {
++    if (offset >= aic->reg_size) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
+                       __func__, offset);
+@@ -308,7 +309,7 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
+     sysbus_init_mmio(sbd, &s->iomem_container);
+ 
      memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
-                           TYPE_ASPEED_INTC ".regs", ASPEED_INTC_NR_REGS << 2);
+-                          TYPE_ASPEED_INTC ".regs", ASPEED_INTC_NR_REGS << 2);
++                          TYPE_ASPEED_INTC ".regs", aic->reg_size);
  
--    sysbus_init_mmio(sbd, &s->iomem);
-+    memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
-+
-     qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_ints);
+     memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
  
-     for (i = 0; i < aic->num_ints; i++) {
-@@ -344,6 +350,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
-     dc->desc = "ASPEED 2700 INTC Controller";
+@@ -351,6 +352,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
      aic->num_lines = 32;
      aic->num_ints = 9;
-+    aic->mem_size = 0x4000;
+     aic->mem_size = 0x4000;
++    aic->reg_size = 0x2000;
  }
  
  static const TypeInfo aspeed_2700_intc_info = {
