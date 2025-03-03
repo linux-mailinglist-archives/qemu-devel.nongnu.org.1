@@ -2,94 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AE1A4CA96
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CC9A4CAD2
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:13:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpA03-0004KF-3a; Mon, 03 Mar 2025 12:54:44 -0500
+	id 1tpAHa-0006jG-AB; Mon, 03 Mar 2025 13:12:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp9zq-00045W-Jq
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 12:54:31 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp9zl-0000Rz-G2
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 12:54:30 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4399ee18a57so30013755e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 09:54:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741024461; x=1741629261; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ig1O+P684D2zxZDZEH1iwaJLNZ3uO/yV94Srxs0Fy5c=;
- b=IaxQHXRLlfDIvx0bDIEifkyqqokGVEXrGmFgw2Htth4qDgPtLNCuoogqwafRwwCeXk
- pqLErCjtQENLTbkD9jj+zYKLO4OIbxPFsOuRrVPfiiqH2GmDg3H0t34PiXOIU5uQzT9V
- mYrO4uDmtHFqPEaH+tjbbd6oS7l6/JX2mcQCzeeO5wtt+G93CyL0mOV400g7E1LaSOBE
- 9wgy5oCe0NYXTkMfzHYVZIeR6353LODMF1H74UP/U+F3D/5/64W0X5cMbHix5XyYbJGf
- YSlNkFeHsasX67O9gVEI6UmRTWsqMaifVer2sJQ7HJls+OB7GDiGBshgd41WRHBq/Qwi
- qkYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741024461; x=1741629261;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ig1O+P684D2zxZDZEH1iwaJLNZ3uO/yV94Srxs0Fy5c=;
- b=Pi5DpIV2z0R4rLBtTjDBtzZEgoOiIlx6p9KdwkgqugvYQxnatvroUAAMFC6G5616h/
- s/p2z6RiOM2nHMNShcs/Dh8/KOxHpi30mhQB5f+X9iaNc5W1G+4vRpwLI/LhbOjgKZcO
- 5AvglFL40WT04M4SkGFkuJrMON8YMi5azhd0bKH0ZBbfs9Xj9myrcKvg8eE3s2EWashY
- wjqmV9zvI7p5Dr69mE4w1Uxaf+AoezRNxqlTjdz4uMwJv3bVzsaxZJOz3bxROabx0F3i
- ZtebLNhw/om+Y9XS8w+jDEwjABvpHtlgw/rDJ4M6Wb5UETCsufY7YCcPMASBLTTc7MTm
- i0gA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWl67mx/iDNTnga612BLVs+oYQxngsvgCjMtCbKGq739XBTnw0RyKDNeJhQNVrIbNm6OQAzlKJ+pfy5@nongnu.org
-X-Gm-Message-State: AOJu0YzNnG3KY8dQ0QxLOdNZ1hkK7qsZuCEA+991QOfXvbr3aUxHP4yi
- +L0oypZyTb3PqXm+jrxbl7YG91hO3Fngx0r0wb3YhFyeZ87TP3ZQ6h9b2RCSsUA=
-X-Gm-Gg: ASbGncuA1MU5jQ0dmegnZdDdORcGXS8BoIq1trAav7aqEQriXK9JuFTqowBqRYvgjDx
- wQsEomSw7UIwLstG80bSEcok61yhwzyU/+IH2egXb7GKwKZM0PMLE3m7MeTbVtAdrX1zHZ3o3VD
- QfqZOYrgndw+hOtcG0FH37CX1JFFVCLG8J9J7CmZza+NRY4UbsnGpnSm4AKv6+Qs+sMOdkKIbB2
- xTeAlwIXyw6qCtlGyzZzOAlncl9gd0NaUeavf7v6kheuC8I+zZyouJFtvQUz7YPgm1qwl17xlLo
- 5x9bMT3YSl7vVJiATTprg12BKwC5SYEADL7cQtfTtweRqOkglB3QJuJ999R4t+A0+SZJ50+5VRA
- T35oeI034OuU2
-X-Google-Smtp-Source: AGHT+IEVstF0P4bQY4ARwaYs70KvMfUdl2n5C4C0g3Wfep2QqgvzIqJFj/x+vUGRRtuSsT/w3yNXEQ==
-X-Received: by 2002:a05:600c:a403:b0:43b:bfa7:c7d with SMTP id
- 5b1f17b1804b1-43bcae04e3cmr1971915e9.2.1741024461181; 
- Mon, 03 Mar 2025 09:54:21 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bc2d76c9esm39334795e9.26.2025.03.03.09.54.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 09:54:20 -0800 (PST)
-Message-ID: <54399bc5-2dc8-4494-a501-ddfbabf4699b@linaro.org>
-Date: Mon, 3 Mar 2025 18:54:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 04/11] hw/misc/pvpanic: Add MMIO interface
-To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
- mst@redhat.com, stefanha@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- marcandre.lureau@redhat.com, eblake@redhat.com, armbru@redhat.com,
- qemu-block@nongnu.org, qemu-arm@nongnu.org, Alexander Graf
- <graf@amazon.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20250112210056.16658-1-phil@philjordan.eu>
- <20250112210056.16658-5-phil@philjordan.eu>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250112210056.16658-5-phil@philjordan.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ (Exim 4.90_1) (envelope-from <yuanmh12@chinatelecom.cn>)
+ id 1tpAGy-0006bL-CN
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:12:12 -0500
+Received: from smtpnm6-08.21cn.com ([182.42.159.130] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <yuanmh12@chinatelecom.cn>) id 1tpAGv-00047I-12
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:12:12 -0500
+HMM_SOURCE_IP: 192.168.137.232:0.491197274
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-125.69.36.133 (unknown [192.168.137.232])
+ by chinatelecom.cn (HERMES) with SMTP id 98A589063223;
+ Tue,  4 Mar 2025 02:02:33 +0800 (CST)
+X-189-SAVE-TO-SEND: yuanmh12@chinatelecom.cn
+Received: from  ([125.69.36.133])
+ by gateway-ssl-dep-84dfd8c7d7-bsrdr with ESMTP id
+ 65809addb1854f7eb06a0c0470c52420 for imammedo@redhat.com; 
+ Tue, 04 Mar 2025 02:02:36 CST
+X-Transaction-ID: 65809addb1854f7eb06a0c0470c52420
+X-Real-From: yuanmh12@chinatelecom.cn
+X-Receive-IP: 125.69.36.133
+X-MEDUSA-Status: 0
+From: yuanminghao <yuanmh12@chinatelecom.cn>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH 1/1] vhost: do not reset used_memslots when destroying
+ vhost dev
+Date: Mon,  3 Mar 2025 13:02:17 -0500
+Message-Id: <1741024937-37164-1-git-send-email-yuanmh12@chinatelecom.cn>
+X-Mailer: git-send-email 1.8.3.1
+Received-SPF: pass client-ip=182.42.159.130;
+ envelope-from=yuanmh12@chinatelecom.cn; helo=chinatelecom.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,41 +64,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/25 22:00, Phil Dennis-Jordan wrote:
-> From: Alexander Graf <graf@amazon.com>
+> > Global used_memslots or used_shared_memslots is updated to 0 unexpectly
 > 
-> In addition to the ISA and PCI variants of pvpanic, let's add an MMIO
-> platform device that we can use in embedded arm environments.
+> it shouldn't be 0 in practice, as it comes from number of RAM regions VM has.
+> It's likely a bug somewhere else.
 > 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
+> Please describe a way to reproduce the issue.
 > 
-> v3:
->   * Rebased on upstream, updated a header path
-> 
-> v15:
->   * Constified the property table.
-> 
-> v16:
->   * Removed the DEFINE_PROP_END_OF_LIST marker to match recent upstream
->     changes.
-> 
->   hw/misc/Kconfig           |  4 +++
->   hw/misc/meson.build       |  1 +
->   hw/misc/pvpanic-mmio.c    | 60 +++++++++++++++++++++++++++++++++++++++
+Hi, Igor Mammedov,
+  Sorry for the late response, here are the steps to reproduce the issue:
 
-Missing MAINTAINERS update, who is going to maintain this file?
+  1.start a domain with 1Core 1GiB memory, no network interface.
+  2.print used_memslots with gdb
+    gdb -p ${qemupid} <<< "p used_memslots"
+    $1 = 0
+  3.attach a network interface net1
+  cat>/tmp/net1.xml <<EOF
+  <interface type='network'>
+    <mac address='52:54:00:12:34:56'/>
+    <source network='default'/>
+    <model type='virtio'/>
+  </interface>
+  EOF
+  virsh attach-device dom /tmp/net1.xml --live
+  4.print current used_memslots with gdb
+    gdb -p ${qemupid} <<< "p used_memslots"
+    $1 = 2
+  5.attach another network interface net2
+  cat>/tmp/net2.xml <<EOF
+  <interface type='network'>
+    <mac address='52:54:00:12:34:78'/>
+    <source network='default'/>
+    <model type='virtio'/>
+  </interface>
+  EOF
+  virsh attach-device dom /tmp/net2.xml --live
+  6.print current used_memslots with gdb
+    gdb -p ${qemupid} <<< "p used_memslots"
+    $1 = 2
+  7.detach network interface net2
+  virsh detach-device dom /tmp/net2.xml --live
+  8.print current used_memslots with gdb
+    gdb -p ${qemupid} <<< "p used_memslots"
+    $1 = 0
+After detaching net2, the used_memslots was reseted to 0, which was expected to be 2.
 
-I could add it within the vmapple section in the next patch, but I'd
-rather pvpanic have its own entry covering all variants.
-
->   include/hw/misc/pvpanic.h |  1 +
->   4 files changed, 66 insertions(+)
->   create mode 100644 hw/misc/pvpanic-mmio.c
-
+> > when a vhost device destroyed. This can occur during scenarios such as live
+> > detaching a vhost device or restarting a vhost-user net backend (e.g., OVS-DPDK):
+> >  #0  vhost_commit(listener) at hw/virtio/vhost.c:439
+> >  #1  listener_del_address_space(as, listener) at memory.c:2777
+> >  #2  memory_listener_unregister(listener) at memory.c:2823
+> >  #3  vhost_dev_cleanup(hdev) at hw/virtio/vhost.c:1406
+> >  #4  vhost_net_cleanup(net) at hw/net/vhost_net.c:402
+> >  #5  vhost_user_start(be, ncs, queues) at net/vhost-user.c:113
+> >  #6  net_vhost_user_event(opaque, event) at net/vhost-user.c:281
+> >  #7  tcp_chr_new_client(chr, sioc) at chardev/char-socket.c:924
+> >  #8  tcp_chr_accept(listener, cioc, opaque) at chardev/char-socket.c:961
+> >
+> > So we skip the update of used_memslots and used_shared_memslots when destroying
+> > vhost devices, and it should work event if all vhost devices are removed.
+> >
+> > Signed-off-by: yuanminghao <yuanmh12@chinatelecom.cn>
+> > ---
+> >  hw/virtio/vhost.c         | 14 +++++++++-----
+> >  include/hw/virtio/vhost.h |  1 +
+> >  2 files changed, 10 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> > index 6aa72fd434..2258a12066 100644
+> > --- a/hw/virtio/vhost.c
+> > +++ b/hw/virtio/vhost.c
+> > @@ -666,11 +666,13 @@ static void vhost_commit(MemoryListener *listener)
+> >      dev->mem = g_realloc(dev->mem, regions_size);
+> >      dev->mem->nregions = dev->n_mem_sections;
+> > 
+> > -    if (dev->vhost_ops->vhost_backend_no_private_memslots &&
+> > -        dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
+> > -        used_shared_memslots = dev->mem->nregions;
+> > -    } else {
+> > -        used_memslots = dev->mem->nregions;
+> > +    if (!dev->listener_removing) {
+> > +        if (dev->vhost_ops->vhost_backend_no_private_memslots &&
+> > +            dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
+> > +            used_shared_memslots = dev->mem->nregions;
+> > +        } else {
+> > +            used_memslots = dev->mem->nregions;
+> > +        }
+> >      }
+> > 
+> >      for (i = 0; i < dev->n_mem_sections; i++) {
+> > @@ -1668,7 +1670,9 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+> >      }
+> >      if (hdev->mem) {
+> >          /* those are only safe after successful init */
+> > +        hdev->listener_removing = true;
+> >          memory_listener_unregister(&hdev->memory_listener);
+> > +        hdev->listener_removing = false;
+> >          QLIST_REMOVE(hdev, entry);
+> >      }
+> >      migrate_del_blocker(&hdev->migration_blocker);
+> > diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+> > index a9469d50bc..037f85b642 100644
+> > --- a/include/hw/virtio/vhost.h
+> > +++ b/include/hw/virtio/vhost.h
+> > @@ -133,6 +133,7 @@ struct vhost_dev {
+> >      QLIST_HEAD(, vhost_iommu) iommu_list;
+> >      IOMMUNotifier n;
+> >      const VhostDevConfigOps *config_ops;
+> > +    bool listener_removing;
+> >  };
+> > 
+> >  extern const VhostOps kernel_ops;
 
