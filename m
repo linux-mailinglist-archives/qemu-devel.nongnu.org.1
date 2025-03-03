@@ -2,81 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD766A4C2FB
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46168A4C2FC
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:13:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp6XN-0000ya-0p; Mon, 03 Mar 2025 09:12:53 -0500
+	id 1tp6XT-0001Dx-KW; Mon, 03 Mar 2025 09:12:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tp6Wf-0000pT-Hw
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:12:12 -0500
-Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tp6Wc-0006Ez-IZ
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:12:07 -0500
-Received: by mail-yw1-x1135.google.com with SMTP id
- 00721157ae682-6fbaf4cf2b5so29786097b3.3
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 06:12:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741011124; x=1741615924; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=c4se0JcUUSt1l0DsIdUpVzlZalM69sHmE0kyAvEGe5k=;
- b=aQNDrgHyqLjD2q0MGMGwpRSbV1wCftuZb1zswvDYKGIYf4rKw0eu6lPDr7ZD3tax0i
- rCBC2QGEgLAPHuWKRMaeSVrXpABZ/kLXD8lLiT8/Q7qK370jz9aCxBUxVpkSLFLogsdb
- YqdHANvJbwWoznxWVlKWlylz4A0A9LEFZjzEEV7isI6IXLtFe3F0ou4Xz7oiSTESJa9h
- Cc9w7mOfAl4wRek+KMiwXCBw0uZX1aliYjWYm3DFAabqWOrGfWcO8OGNjAYlKEDLROcs
- dCGRatJ0SvDUZ12PsZWvVhrft1eA87eDlNJkpopkOAkymTz0W8kbnYOC6IIRSCMf0zp6
- IIqw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tp6X3-0000w8-Tj
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:12:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tp6X1-0006Hk-73
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:12:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741011147;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AWteq7IsfO98h1Bj/PvrrNVm+toLC3uI/bhJCQyLh6E=;
+ b=VW8T9SAUXf+bAQutLp/EqPEn9piFyC+DafUJCHRASQRHqsQhkKjzGpwENw43DR1OrIjqf4
+ tmUnWaHFzJ2c7Masw7Eh4ebHRYWUpk82dFmDG2Keq3m4OfWY4M8eraIFfLENXn+EqMEFT/
+ 8pir6x3zK4GknOjbXDX1CiPzuxSKcX8=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-Ppf_8eWYN-CwyVdRFA7GQQ-1; Mon, 03 Mar 2025 09:12:24 -0500
+X-MC-Unique: Ppf_8eWYN-CwyVdRFA7GQQ-1
+X-Mimecast-MFC-AGG-ID: Ppf_8eWYN-CwyVdRFA7GQQ_1741011144
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6e8c68dae82so25720426d6.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 06:12:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741011124; x=1741615924;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c4se0JcUUSt1l0DsIdUpVzlZalM69sHmE0kyAvEGe5k=;
- b=KLsNcz1dl24LNzyOSaT5UtC+LBpHxDzG+Ye8BR9ePvN52g2JtyKLjEeBweF9ENCuSn
- HJgv0QNLqb+Tt0RUwVr5N6a3Avo1CcMFMVFak5IB8E+cdNjXEn/vCmlvkwTXv06a0GMT
- TsaYoYxFSw8VBYZNoV+u8DDaiFGVGH3RhuHX/tCoWjG4P6GyqV2LClvxSjt2boznUEXB
- TjyLFDO3yLAeijh84ifRYtV0QPLU0xJbPBUOfIZhs6Ne8f2VqGpBCWqIzJIDw95MaAYV
- UzxUBncimOlI8AFYdLD7WI0U/LsvOlqT60q+tecd5gqaHgxRqH5IhMLL/0D1aolSCZko
- c/3Q==
+ d=1e100.net; s=20230601; t=1741011144; x=1741615944;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AWteq7IsfO98h1Bj/PvrrNVm+toLC3uI/bhJCQyLh6E=;
+ b=qG68zOhAPJvX43Iotdr6kTrNuSX2rKaPTMIqAjxJZxk65lIMYESS/ASsn4WMY6g0TS
+ NpyMZlHnXV5yMUfylJbo/Tq6mXOq4lslWzIE9r6C4VE3Va67rb1dM+NxH3WTUEwCujg7
+ 9LvO0jjSVeQ3WBqrCtw9QC9fVxM6A9MAltdRe/MzzpQr85pAIGKBK5gIURUlCpPXkeJM
+ u/yZ+A6i4x6xA37xLI9A8vP/PeFUcrshpTpPi//In9sh9mrPi1UuJiT21NZXwzIVJPm5
+ Q3/iZ6SDg83sH2hGXNZ6l/fiQ82zH/3XgsrFWvzo/wVv8vYIWTpvdlUDi0oFRJxLsbDQ
+ yiLg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUcADZrpc1LNGICjgIYE9A6KwwU469OXVgBoJuYV/BLNqfOUUZKXpay0xzoPEC2vOBwntCzHlo/b6Sj@nongnu.org
-X-Gm-Message-State: AOJu0Yw4msEl6/h0mcYYkE72C9cgRMkDxhYLLxIjxTi8y0t+QpATx1+e
- s+cqMjxcGT9CbjeByyvCieSeKhV9lZ1HrarnEypYnEzfmBLiXCzSLSow93Gn2uDQMPmjyiCzL07
- 5VE6g+g1mX8r7lAM8aQdiy5ozjSSOelEtwI9klQ==
-X-Gm-Gg: ASbGncvsXehUiWfHEernxml2WMZSoZ1UYAwWYgjI9XO2r899GB4CloNaJ6amxE7topc
- 7wu6FXuoNuIMd0+MFm+txRWafG16lnul/+LRSBcTd73ZtmJEIJ+dbKMa/y+xdfh/A8pjvD8ZxYX
- mRqwHEVOJHx+VdeUU7bGvvyf+tlEs=
-X-Google-Smtp-Source: AGHT+IHMfxk3TICpE4yNWklnb/xRBKhb4tvCYFEG/nxo7gIdOIHyfnQK0R15/uSePe8LHKLuD1UiVUfQd0mWFWaU56k=
-X-Received: by 2002:a05:690c:4493:b0:6fb:b8a1:d3bb with SMTP id
- 00721157ae682-6fd4a02387cmr164796637b3.17.1741011124254; Mon, 03 Mar 2025
- 06:12:04 -0800 (PST)
+ AJvYcCV3m9vTzgqqSVWEeGeJH7KPx20qOaFtMp44Ob/uCmXESeqsfUyXQdtFKCpPLuZ/WoQ2cKAc/fv3jx9g@nongnu.org
+X-Gm-Message-State: AOJu0YyTgCsLam+v4J3Nhqt3LwitDuh+xhZ23e0Yf2XVlQlPBz05ej1h
+ LfeikOUSfO4Wr9h3YNB2e+dkq1861wxcz6xL9InVxe5vr68nERdxCODHBpaBrbrtVeHMiT/JD5O
+ rJhfa+rxnqRAvnCRftM1APwwXjUNazc8N9AnwNQTRwwuDw2TIDQiY
+X-Gm-Gg: ASbGncvpbmz7iZs4lV3OATHGDAfumPUzsJ6WcREf4fI1k4PE2cox+1MrkoFis2Brbp0
+ MU73rLI8nV4Uv5guWOg1dVK//ioMTgrhpG1AM8cxq0hNaiYNVPJ5ouQufoDWKMxOXFNuffxEd9K
+ qecYmROv23Zen2vW23KhHBsq4AkHHV9/QufZhhcc6Gwq1h3quNd1rKG5irAFZoYoATnDeDcvtNj
+ Y1o4OAzQSGiukSjmHREhpXd1+ySCg0+yFmMwrMX/EQrzQtfge5OfdRyMqdhYIJRdJpEPbZJSe3Q
+ CZNrlV8=
+X-Received: by 2002:ad4:596c:0:b0:6e6:5bd5:f3a8 with SMTP id
+ 6a1803df08f44-6e8a0d8fab2mr184414236d6.29.1741011144388; 
+ Mon, 03 Mar 2025 06:12:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEKdrUfZqkSYtZZQ1uDCo+KgCmPozIcrv3KxvCU2tN7bE3lHMYeC5VTw2mOGiic+raqEDWwug==
+X-Received: by 2002:ad4:596c:0:b0:6e6:5bd5:f3a8 with SMTP id
+ 6a1803df08f44-6e8a0d8fab2mr184413986d6.29.1741011144025; 
+ Mon, 03 Mar 2025 06:12:24 -0800 (PST)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e897661633sm53332376d6.58.2025.03.03.06.12.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Mar 2025 06:12:23 -0800 (PST)
+Date: Mon, 3 Mar 2025 09:12:21 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ berrange@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v7 0/5] Allow to enable multifd and postcopy migration
+ together
+Message-ID: <Z8W4xVOLLAD1wXjC@x1.local>
+References: <20250228121749.553184-1-ppandit@redhat.com>
+ <87frjy2k8z.fsf@suse.de>
+ <CAE8KmOwVoGJ2frVCY76W7UxSr90wAL2EMj5Nmtcrdc+BE1e9=g@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250226024603.493148-1-venture@google.com>
-In-Reply-To: <20250226024603.493148-1-venture@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 3 Mar 2025 14:11:52 +0000
-X-Gm-Features: AQ5f1JpzfHXwMG4-5NoLwQ7JEqGektmvxs4fJTBxL0SxP2ogXNLlo6dNN7jJM9s
-Message-ID: <CAFEAcA-jOcycjqDiqKPJi+WMK6OBBp_8vwx1ASpd2jr3HnqE0w@mail.gmail.com>
-Subject: Re: [PATCH] hw/gpio: npcm7xx: fixup out-of-bounds access
-To: Patrick Venture <venture@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAE8KmOwVoGJ2frVCY76W7UxSr90wAL2EMj5Nmtcrdc+BE1e9=g@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,19 +107,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Feb 2025 at 02:46, Patrick Venture <venture@google.com> wrote:
->
-> The reg isn't validated to be a possible register before
-> it's dereferenced for one case.  The mmio space registered
-> for the gpio device is 4KiB but there aren't that many
-> registers in the struct.
->
-> Google-Bug-Id: 397469048
-> Change-Id: I2fb8d0d3d41422baab22e8fc7e9fadd0f2ee7068
-> Signed-off-by: Patrick Venture <venture@google.com>
+On Mon, Mar 03, 2025 at 04:17:53PM +0530, Prasad Pandit wrote:
+> * I think we (you, me, Peter) are all looking at things differently.
+>     - In my view Patch-2 is the minimal change _required_  to enable
+> multifd & postcopy. In your view we are _revamping_ channel discovery
+> parts while _sneaking_ in a feature of enabling multifd & postcopy
+> together.
+>     - In my view Patch-5 in this series is an isolated change because
+> it adds a new migration command to allow multifd threads sync from
+> source side. But Peter thinks without that 'flush and sync' Patch-2 is
+> incomplete, so we should merge it back there.
 
-Applied to target-arm.next (with commit message tweaks
-as per Philippe's email), thanks.
+Just to mention, my suggestion does not conflict with splitting patch 2, as
+long as you keep every patch complete on its own.
 
--- PMM
+Patch 5 needs to be squashed to either patch 2 or a split patch out of
+patch 2, because current patch 2 (or any possible way to split it into
+smaller ones, then one of them which enables the feature) is buggy.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
