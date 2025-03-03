@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8366A4BC65
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3119A4BC69
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 11:35:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp37x-000894-1z; Mon, 03 Mar 2025 05:34:26 -0500
+	id 1tp388-0008Hb-3e; Mon, 03 Mar 2025 05:34:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp37n-00088L-Gu; Mon, 03 Mar 2025 05:34:15 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1tp37p-000896-ML; Mon, 03 Mar 2025 05:34:18 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp37l-00075Z-1f; Mon, 03 Mar 2025 05:34:14 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2febaaf175fso4664952a91.3; 
- Mon, 03 Mar 2025 02:34:12 -0800 (PST)
+ id 1tp37n-00076L-NA; Mon, 03 Mar 2025 05:34:17 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2fee05829edso2995843a91.3; 
+ Mon, 03 Mar 2025 02:34:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1740998051; x=1741602851; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1740998053; x=1741602853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B4S8rnC1+5w/GBtgcoACwXWBW/0V0OGHaa1l5WT+ryk=;
- b=i9nBfi1jPQN5L4kRba0Id5QpIuMAhiktf1FgtJbhcGBgLiFhRy+uzW8PyOU2O3EiMu
- Q81GR9OQ/oGh0J3wkn8lB4DIqCRCZKvMhKP44RKoIJo66H1uEjaYB2/MGcQyfAR53sY9
- T+QTPOFYkxqqmp82X5hOcVN8HPc85mQDM20V0BRTTf2k3UjUYeZX3RmvPalDMuPWTKxN
- AoRdwjcLLeO9oMvt3URWbixLdy/oKJ8zYqBejXn24e3i4Un99Ev0hZDkOhwW0T9ePx39
- TgJM6vwFSCffAi3wVn0ho10r9AK11F+A47ZQxaYIAm0em+k6mv20drVA3eqU2DTJmqQ3
- wQ7g==
+ bh=vCrkW5/SSBdsD828jdLH1Sz2kRQnvu37ag8EUtNq8pY=;
+ b=jSXvhUgKmmoY1PMzFRPlp2HGcWID2IqsTf3OmfGO+vtc527e5fYoH1NTpQFqVtYv1u
+ D5UfxJIsGpN2dAMOvK/82Dd7iEfctsh86pPsFh6+rO+XcypUwf+PxDSwNY1ebdyr9WhH
+ vrBMBO2tnusgKJNqB4NQIdqabZwzZpZ2kMn60SRborabCK28KL+KC8XHo2ntPIjXtoW8
+ MkQbnpuw4eqdIR221ZrWcUo87OWpoC+yqFlLUdh5Pka2h+l6ZWl8l6JlQyrfSmsMpA3K
+ zlQFZ4TculjgJXqpY1VraN/q1XWDcZK3YmDvgEPMBMtKX8PbtUk8d5HiwigjH31p+BgE
+ vyCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740998051; x=1741602851;
+ d=1e100.net; s=20230601; t=1740998053; x=1741602853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B4S8rnC1+5w/GBtgcoACwXWBW/0V0OGHaa1l5WT+ryk=;
- b=WMb3hU+NYlRJyiA90dz/qxIx8cmJA63QnD+ZrNDI6MnTdSBdfcWRGREBHntbx+XSLi
- 5nQgC0NRWUX0rihYQvxKZ5z8nZwZ/nQ33fLtsuFNOKvZD/okjuDCoST6pb9RB8fpZn/Q
- pNn0MCFHGNh4I5G0+8miZe8pKopMYTx3809KEcKs4yo9DVlI2Aoqa9cZShKduZD41rqj
- gpcQ2vbGuXIk2R7j1So4Y8ZftCgKeF7z43cefDfS/1Gb8/oRWeOXg28T0E117WYfXupF
- BmgC/mKWgK6MXmqUqSv/IzPqNOJcuMCUB0EcnoLTEEG0WqQXjTgYdE37AzaM0p+j3Unv
- NlDQ==
+ bh=vCrkW5/SSBdsD828jdLH1Sz2kRQnvu37ag8EUtNq8pY=;
+ b=EQV4KxpxEzJVFpfziAX36Org2kss/IkZIzePk08qi5rKWpjLTNjQeaOfzKDSAvmdNM
+ Rlsgc0GgXdE10uRmtOom0IxcHCBPwlkK68XEOCZfFbWU1URHiBNUire1N08FcEMLFKLl
+ skjDb093nTPQkch0V/F1K73FxkwKADsEFrxmI3IAiyEuGvTkWEO7kj4TFMkVevR7eIkV
+ GcUNpnIDYCdGdKL1gTWy5uhKL6XKRsgUkQHTcVGhuo+ozyk66c5/U+lu2b7l/yWH9P/M
+ ABgOO4mdWt0RX92KZyzr9CGq0Xqu7LwJp3XSbN/0/K0BfAnSRJO0THHCXrji4DD3B5LI
+ wrAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXBtHx1xeBmmWtRlMSB6eYsrGuYfHf79ciNOqDM1ytS4+mAD/UVzJ03cscU3k+KiOuEc/lQQiNc36p3@nongnu.org
-X-Gm-Message-State: AOJu0YzOziNcQE5POXLiKDr46PA6+b8YK1wfIL4PjaILc0Tv5wUUQXgg
- BjCgB98/xQqYpqGhzKRs085Ni/JeE/PxP1hnuWfeyEWgPX+juX2/PDtyvQ==
-X-Gm-Gg: ASbGncuH8DB3ZvEnU4jvZGuePmhIgqbKwxTZIoIwTjdU9xpztpm9FzYUx2KtC0IcbPl
- s/XO3jXSFAhMZoRPHucZa3OGW78wEiC0mtPmuVl4IocWd9fX/v/Rqhh3KvHO/EtdZQV/2ofPhTj
- OVTphwsCleP1erxqQATcArPps6iiAaFaQKUbQenfIB/vWXg4a1G5TbZQCP71nGOgPX19Ywvo+PQ
- rKQz5JuEa0H7L1WmWQ1+Xa9FlHOxYyV9A6kJOPkYJb/5hj//Z7DMM0dxxBBbQgeA3f3GxTTNiw/
- rmDI4QTpgY/cZz9dtYuLmqZa2Xk3lefbZH8UtquWHWujn4oNPFE=
-X-Google-Smtp-Source: AGHT+IFc2XpWV98sBhBCa6lldyccM07gpkyTrkYT9q4H2R0bAzOno8c313I63gjPmjypxuPROtMiFA==
-X-Received: by 2002:a17:90b:4988:b0:2ee:a76a:830 with SMTP id
- 98e67ed59e1d1-2febabcb0c7mr21432915a91.24.1740998050784; 
- Mon, 03 Mar 2025 02:34:10 -0800 (PST)
+ AJvYcCUvnh350xGLsmDzkkHSP29QZ7Rlt2TaUROiHRhHirC1I6lcC+7F0FD1X1eDTNi2rraprIbquC9BvS+O@nongnu.org
+X-Gm-Message-State: AOJu0YxXnGfnPO7Tzyh2pGWYhAaMvENL8Z+hTvuKprll0OrjBd9pbram
+ lH9904SXgnCQ0zPEAMy/bH9S4kupM4B8AjmCkDpJcOOLZhWNejeZL10ptA==
+X-Gm-Gg: ASbGncuu6jeP4aFhFbolAZLWfbjR/68A8MR1cKSiWghzrAjLLpBHX5cfo7DybPbBzvZ
+ 1BeaqgRu3XZlXwtIciKJpAOeVudD/DOuGZdvIt2kmyxZ0BefgZ4U/ZA7UHKlzSemlgXmSnX7R4U
+ 7jt1u7f5aHvR23R5nDtpIOf1ygRXUeGTQmPBS4a2TTsv5PgiPXaEUOr05C7WF8VeJ0x3/deAKbF
+ 33C8mmapRE2/lUizdqmHmmJZYjy0+TtxfSeBMXy9/RU2W1R8FJqUqRYX0Jdpubl1G43EcQAcRJ8
+ KBSyheA7VkGzTlf3FrGNHj9Rful5DnuhPVwtY6J/ydtjT3wsz8c=
+X-Google-Smtp-Source: AGHT+IEHkFKtI48I+/GXUIy7f4c4vGhNHtTfUQ3bN5Bg7PiHfFmTOt97JgCumVg5LKlGkhBeX0qkWg==
+X-Received: by 2002:a17:90a:e7c6:b0:2ee:53b3:3f1c with SMTP id
+ 98e67ed59e1d1-2febab2ed89mr18729852a91.5.1740998053467; 
+ Mon, 03 Mar 2025 02:34:13 -0800 (PST)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2fea698f309sm8594558a91.42.2025.03.03.02.34.08
+ 98e67ed59e1d1-2fea698f309sm8594558a91.42.2025.03.03.02.34.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Mar 2025 02:34:10 -0800 (PST)
+ Mon, 03 Mar 2025 02:34:13 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH 2/6] ppc/pnv: raise no-response errors if an LPC transaction
- fails
-Date: Mon,  3 Mar 2025 20:33:53 +1000
-Message-ID: <20250303103359.578994-3-npiggin@gmail.com>
+Subject: [PATCH 3/6] ppc/pnv: Implement LPC FW address space IDSEL
+Date: Mon,  3 Mar 2025 20:33:54 +1000
+Message-ID: <20250303103359.578994-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250303103359.578994-1-npiggin@gmail.com>
 References: <20250303103359.578994-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,60 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If nothing responds to an LPC access, the LPC host controller should
-set an IRQSTAT error. Model this behaviour.
-
-skiboot uses this error to "probe" LPC accesses, among other things to
-determine if a SuperIO chip is present. After this change it recognizes
-there is no SuperIO present and does not keep trying to access it.
+LPC FW address space is a 256MB (28-bit) region to one of 16-devices
+that are selected with the IDSEL register. Implement this by making
+the ISA FW address space 4GB, and move the 256MB OPB alias within
+that space according to IDSEL.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_lpc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/ppc/pnv_lpc.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index d0fccc165d9..0e02ce6e940 100644
+index 0e02ce6e940..d812dc82681 100644
 --- a/hw/ppc/pnv_lpc.c
 +++ b/hw/ppc/pnv_lpc.c
-@@ -353,6 +353,8 @@ static const MemoryRegionOps pnv_lpc_xscom_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
+@@ -85,7 +85,7 @@ enum {
  
-+static void pnv_lpc_opb_noresponse(PnvLpcController *lpc);
-+
- static uint64_t pnv_lpc_mmio_read(void *opaque, hwaddr addr, unsigned size)
- {
-     PnvLpcController *lpc = PNV_LPC(opaque);
-@@ -376,6 +378,7 @@ static uint64_t pnv_lpc_mmio_read(void *opaque, hwaddr addr, unsigned size)
-     }
+ #define ISA_IO_SIZE             0x00010000
+ #define ISA_MEM_SIZE            0x10000000
+-#define ISA_FW_SIZE             0x10000000
++#define ISA_FW_SIZE             0x100000000
+ #define LPC_IO_OPB_ADDR         0xd0010000
+ #define LPC_IO_OPB_SIZE         0x00010000
+ #define LPC_MEM_OPB_ADDR        0xe0000000
+@@ -561,10 +561,13 @@ static void lpc_hc_write(void *opaque, hwaddr addr, uint64_t val,
  
-     if (result != MEMTX_OK) {
-+        pnv_lpc_opb_noresponse(lpc);
-         qemu_log_mask(LOG_GUEST_ERROR, "OPB read failed at @0x%"
-                       HWADDR_PRIx "\n", addr);
-     }
-@@ -406,6 +409,7 @@ static void pnv_lpc_mmio_write(void *opaque, hwaddr addr,
-     }
+     switch (addr) {
+     case LPC_HC_FW_SEG_IDSEL:
+-        /* XXX Actually figure out how that works as this impact
+-         * memory regions/aliases
++        /*
++         * ISA FW "devices" are modeled as 16x256MB windows into a
++         * 4GB LPC FW address space.
+          */
++        val &= 0xf; /* Selects device 0-15 */
+         lpc->lpc_hc_fw_seg_idsel = val;
++        memory_region_set_alias_offset(&lpc->opb_isa_fw, val * LPC_FW_OPB_SIZE);
+         break;
+     case LPC_HC_FW_RD_ACC_SIZE:
+         lpc->lpc_hc_fw_rd_acc_size = val;
+@@ -798,9 +801,9 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+     memory_region_init(&lpc->opb_mr, OBJECT(dev), "lpc-opb", 0x100000000ull);
+     address_space_init(&lpc->opb_as, &lpc->opb_mr, "lpc-opb");
  
-     if (result != MEMTX_OK) {
-+        pnv_lpc_opb_noresponse(lpc);
-         qemu_log_mask(LOG_GUEST_ERROR, "OPB write failed at @0x%"
-                       HWADDR_PRIx "\n", addr);
-     }
-@@ -511,6 +515,12 @@ static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
-     qemu_set_irq(lpc->psi_irq_lpchc, lpc->opb_irq_stat != 0);
- }
- 
-+static void pnv_lpc_opb_noresponse(PnvLpcController *lpc)
-+{
-+    lpc->lpc_hc_irqstat |= LPC_HC_IRQ_SYNC_NORESP_ERR;
-+    pnv_lpc_eval_irqs(lpc);
-+}
-+
- static uint64_t lpc_hc_read(void *opaque, hwaddr addr, unsigned size)
- {
-     PnvLpcController *lpc = opaque;
+-    /* Create ISA IO and Mem space regions which are the root of
+-     * the ISA bus (ie, ISA address spaces). We don't create a
+-     * separate one for FW which we alias to memory.
++    /*
++     * Create ISA IO, Mem, and FW space regions which are the root of
++     * the ISA bus (ie, ISA address spaces).
+      */
+     memory_region_init(&lpc->isa_io, OBJECT(dev), "isa-io", ISA_IO_SIZE);
+     memory_region_init(&lpc->isa_mem, OBJECT(dev), "isa-mem", ISA_MEM_SIZE);
 -- 
 2.47.1
 
