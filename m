@@ -2,147 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B267FA4CAD1
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F0AA4CAE9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 19:22:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpAGS-0006Y5-RL; Mon, 03 Mar 2025 13:11:40 -0500
+	id 1tpAPj-0000SZ-Ep; Mon, 03 Mar 2025 13:21:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tpAGM-0006Xq-SZ
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:11:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tpAGJ-0003if-CH
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:11:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741025484;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=N1d5VN8AqrhCwkxjK0gUYDrNqqebiyXoFyVvNiYAvv8=;
- b=Mc0Vqzkci5eU1d3/G6utkuiOGF+taQ6yU3kmmpodu9Doi9BP1wxn0mwckqxb8CXYToVUsG
- dqVPf4kXn+OPsMy5BUCkeeibw60yR6cgWw5bXeyuROoH0Hd1ZMhV/z+tAcIolknZrtyzXL
- SgvqWcmJtEBMSfWTLkaE3Xamb4Fzn0Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-488-qRFQ9pAYMsOEr0QbajDYAQ-1; Mon, 03 Mar 2025 13:11:23 -0500
-X-MC-Unique: qRFQ9pAYMsOEr0QbajDYAQ-1
-X-Mimecast-MFC-AGG-ID: qRFQ9pAYMsOEr0QbajDYAQ_1741025482
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43947979ce8so18515415e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 10:11:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpAP9-0000QW-Fk
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:20:40 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpAP4-0007LP-I7
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 13:20:39 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-439846bc7eeso30689475e9.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 10:20:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741026031; x=1741630831; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0YoHIuFSEeK7MKuSnvIBX2jv7utQoX9b++yL0jPdWzI=;
+ b=wMoRW3ZFLUlZDw1zZQkrUba12Xi5MUw5CVC7dg/cIQ+Ds8tWmmMahCwB1Y1aj0zDSb
+ cwVQmH9sy6DEMthZe5T8RdC8yUfONfNuxZjkqMyTvJQTYVDlK8HHWD9FDGcrDiarPchB
+ osUZ3l/nFRkxMYci6x+q3XpUftG2JGE5T1qqzEEOwhHnuKKTYNgY8yubIfkE5lA2JPV/
+ p43eqyE3/si9kOrQkvEHX93pe8HQjfWgZaT7IQdzEPWVgC9Pz/7uNyRF9yHTP3r+E0qs
+ 8D685wgmV0PSY/+0ENMUAeaE2cmuNOhEqljLjoQMJ1kYKf3yGQhCjuUTLJzCpHj3WGZ3
+ V10w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741025482; x=1741630282;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N1d5VN8AqrhCwkxjK0gUYDrNqqebiyXoFyVvNiYAvv8=;
- b=o230lG8tAYw8CgMhMIKDL1C7CIRAhxhaE3lpDOSPbuGeUSHNdCUAhPn455P5/3iGd8
- Pmm7NMapPAHf+UQ9BtuyG80j6Lyg/iWG11UwNfrJvZ5vCrTg2dOrzubXj9PrxwET/23/
- ia/c1M3jpftwNPij6KZY8aHt9uUDeXaMQQCatRVeOgvWgNow2hytj7j7xpjSIQZ7ICrR
- /uVcIjV0qHk97HVieeXmGeuUDgja8d2mE1NaBtMJCEoZ0odBgZtB2bouSW6+1enfczEf
- i9nGtM09Ze0r7uzt8FDaUUn5ojENB/nHbuX++3VWrxXihEGONMMMs3zZtFrfdMLEotcP
- /mYw==
-X-Gm-Message-State: AOJu0YyuLtc2pdIzarWfLEvy0PD5OWB8qkRTuPLkrenocLwGwNwcyV+4
- FcrhfEwCOJCVXdBqhHd+SrUbUnbzhZGjep0EmqDm1Nxz90Od0RSdb3HQ+v6HmArNaQHIr8lKnnY
- uSjVuIDG6ZOXNpY50PI1QitFlwQqZpemv8d2HEcEg8NMaeeLQXlRR
-X-Gm-Gg: ASbGncv5BnqdrC7G/dPH5dbZgVpwFV8w9nZY9q59VNwMtZCjwMJBu0SwaxnmqPuPrD3
- bHMGu/xT2nKB5cKuesHZi9Hqr+pKFbFlP4twtXkUTiIUodXcyin7UqddMg8tioPxCY7FQV0D4X3
- ab+3GvGj9zz57b08PN2gwbF6+WajOiqgoeVjaWo+xKpLluCMwh+LMmPeYBJEs+9R66ZfM9AkzHk
- ynHUyrIPCCL0LBlXjVZcmyIGorfC4E75hdqpvSCtO4l7MimJJ0TJkO3HkasO51PSS4HdZaR/Ph6
- AVGxTxLrXps2qYdlYEFbAnyWkvuFB1VOqyRfdkX4JbUdf7zKtT4LwQ==
-X-Received: by 2002:a5d:59a2:0:b0:391:6fd:bb65 with SMTP id
- ffacd0b85a97d-39106fdbc7fmr4356751f8f.9.1741025482040; 
- Mon, 03 Mar 2025 10:11:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGD6kGtgMCIFp4+q3So2xHx3nGo5wIsmlM1BflJKRQYhgP21ROkWCtGE6OCerwnKN+jgvg8rQ==
-X-Received: by 2002:a5d:59a2:0:b0:391:6fd:bb65 with SMTP id
- ffacd0b85a97d-39106fdbc7fmr4356729f8f.9.1741025481683; 
- Mon, 03 Mar 2025 10:11:21 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e47b6d31sm14947740f8f.42.2025.03.03.10.11.19
+ d=1e100.net; s=20230601; t=1741026031; x=1741630831;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0YoHIuFSEeK7MKuSnvIBX2jv7utQoX9b++yL0jPdWzI=;
+ b=UY7hWGY0TZ5iplHfEtT7JrXQfCK0Q9xCidbIvaGOvyBwskMhkOTgn+6KQ2IHgYkV+G
+ hMQshOvjRtQfPyRV82TAcE7r7y3RJjK84k/k1xcbUfrnjBaRHQL58yDTB62z2hDvYu0o
+ F8cBbKGjNfHVmLcleFndjGTDRxHrtQyzSGHtpkSSOcPF6A4f8i5hsExxfqKCJWC6KtjI
+ lwgnD8PxydCo2FoGo4oEMiyEpBL7ScOZarIIdH7mhyV8O9D7B/yTZLU4C1wcwaro7ZYF
+ RQrDBvIIp86anYDNzHhtKH9JerjIaVHkpNoUvlvBmT1pb4PiQ76hidkPg+PScsSXIOJm
+ ksJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWsXYCjR3rl+HaXrwHgxZnVsGiLRlDq1LsI9z/5uChVWnGijPLzn1dBo/Phr3RC5+Rtq/h0i5yYtcWI@nongnu.org
+X-Gm-Message-State: AOJu0YzsAcUYkhphiH2YATBtAw8iJP+40G76Tan+6Ixe6WLzenqn7fhh
+ Zo6mQar3ob5a1sxFj57lhprM1CD9u+pDEsxlszoUkdrBYegWdf+vCChj/6nSvntqP2aCsH6cGUS
+ 423o=
+X-Gm-Gg: ASbGncvkYyy26N35N+qZnHHavzbZ1nx4FXlp5FN/HyrIOmdT6+UOKraiXF2awEa+uNl
+ jXDjl6D7OzKQqvJMa5FTIRlZwf3lSOJkBV02Cp/Lwy86ES/vQEkv8CvUtXUZv3WWsyD6BdymEzP
+ VzDM9cV1q9VqFpzePgnHaaWjT0aSXZbcwIFy+GEXKX3ZfeJW9XsbEStlCQ7+HdA4pID8jvXhdTw
+ yd2ewh4OU398vY7yzyt1jyyh6ShjC0jNAarhr1ZdX6G2SzYRyU3zYGl0IOerhiuXtw4H5WwO+O2
+ zI7i/G83pBf4xLNZrmaymjP0hF2YsSpXCkb84MaWI7eYEt7L9O9eo0qjTFCOiTq54ftNUmU4XqA
+ M2LDzdPXE6hB6
+X-Google-Smtp-Source: AGHT+IHYpQJiw6D332lVy4EcKWWuN4LOWdPsUvliKRIMjFhzqLnuhqEqsDiMM8QyWshwujZvs5a/Pw==
+X-Received: by 2002:a05:600c:3b18:b0:43b:caac:5934 with SMTP id
+ 5b1f17b1804b1-43bcaac5c6emr5374455e9.10.1741026030801; 
+ Mon, 03 Mar 2025 10:20:30 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43aba5871f4sm203944225e9.39.2025.03.03.10.20.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 10:11:21 -0800 (PST)
-Message-ID: <9c9232f1-73f8-40ec-9064-a0df3f2e15cf@redhat.com>
-Date: Mon, 3 Mar 2025 19:11:19 +0100
+ Mon, 03 Mar 2025 10:20:29 -0800 (PST)
+Message-ID: <2a4229cf-c789-41ed-ab46-0f0fd9efd19a@linaro.org>
+Date: Mon, 3 Mar 2025 19:20:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio: Make vfio-pci available on 64-bit host
- platforms only
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Eric Auger <eric.auger@redhat.com>
-References: <20250226084721.232703-1-clg@redhat.com>
- <20250226084721.232703-2-clg@redhat.com>
- <a39e97c2-c6fd-34e4-f91b-b3491185b789@eik.bme.hu>
- <c60b7780-5b3f-43a0-a7f1-30820d4e6fb8@redhat.com>
- <bb7c2adf-f146-50c7-7716-c1ee7b606b01@eik.bme.hu>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <bb7c2adf-f146-50c7-7716-c1ee7b606b01@eik.bme.hu>
+Subject: Re: [PATCH v17 11/11] hw/vmapple/vmapple: Add vmapple machine type
+To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
+Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
+ mst@redhat.com, stefanha@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ marcandre.lureau@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org, Alexander Graf
+ <graf@amazon.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20250112210056.16658-1-phil@philjordan.eu>
+ <20250112210056.16658-12-phil@philjordan.eu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250112210056.16658-12-phil@philjordan.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,84 +106,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
->>> I see PPC is defined in target/ppc/Kconfig so I think these mark the target not the host. Vfio-pci works with qemu-system-ppc 
->>
->> Ah ! I am surprised. Which host and QEMU machine please ?
+On 12/1/25 22:00, Phil Dennis-Jordan wrote:
+> From: Alexander Graf <graf@amazon.com>
 > 
-> I've seen people do this on x86_64 host with pegasos2, amigaone and mac99 running 32 bit guests (AmigaOS and MacOS). Some people running older 32 bit Windows versions on pc machine might also use this.
+> Apple defines a new "vmapple" machine type as part of its proprietary
+> macOS Virtualization.Framework vmm. This machine type is similar to the
+> virt one, but with subtle differences in base devices, a few special
+> vmapple device additions and a vastly different boot chain.
+> 
+> This patch reimplements this machine type in QEMU. To use it, you
+> have to have a readily installed version of macOS for VMApple,
+> run on macOS with -accel hvf, pass the Virtualization.Framework
+> boot rom (AVPBooter) in via -bios, pass the aux and root volume as pflash
+> and pass aux and root volume as virtio drives. In addition, you also
+> need to find the machine UUID and pass that as -M vmapple,uuid= parameter:
+> 
+> $ qemu-system-aarch64 -accel hvf -M vmapple,uuid=0x1234 -m 4G \
+>      -bios /System/Library/Frameworks/Virtualization.framework/Versions/A/Resources/AVPBooter.vmapple2.bin
+>      -drive file=aux,if=pflash,format=raw \
+>      -drive file=root,if=pflash,format=raw \
+>      -drive file=aux,if=none,id=aux,format=raw \
+>      -device vmapple-virtio-blk-pci,variant=aux,drive=aux \
+>      -drive file=root,if=none,id=root,format=raw \
+>      -device vmapple-virtio-blk-pci,variant=root,drive=root
+> 
+> With all these in place, you should be able to see macOS booting
+> successfully.
+> 
+> Known issues:
+>   - Currently only macOS 12 guests are supported. The boot process for
+>     13+ will need further investigation and adjustment.
+> 
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> Co-authored-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
 
 
-I tried with :
+>   MAINTAINERS                 |   1 +
+>   contrib/vmapple/uuid.sh     |   9 +
+>   docs/system/arm/vmapple.rst |  63 ++++
+>   docs/system/target-arm.rst  |   1 +
+>   hw/vmapple/Kconfig          |  20 ++
+>   hw/vmapple/meson.build      |   1 +
+>   hw/vmapple/vmapple.c        | 618 ++++++++++++++++++++++++++++++++++++
+>   7 files changed, 713 insertions(+)
+>   create mode 100755 contrib/vmapple/uuid.sh
+>   create mode 100644 docs/system/arm/vmapple.rst
+>   create mode 100644 hw/vmapple/vmapple.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e220744abf..3a3d9e19f4 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2791,6 +2791,7 @@ M: Phil Dennis-Jordan <phil@philjordan.eu>
+>   S: Maintained
+>   F: hw/vmapple/*
+>   F: include/hw/vmapple/*
+> +F: docs/system/arm/vmapple.rst
+>   
+>   Subsystems
+>   ----------
+> diff --git a/contrib/vmapple/uuid.sh b/contrib/vmapple/uuid.sh
+> new file mode 100755
+> index 0000000000..956e8c3afe
+> --- /dev/null
+> +++ b/contrib/vmapple/uuid.sh
+> @@ -0,0 +1,9 @@
+> +#!/bin/sh
+> +# Used for converting a guest provisioned using Virtualization.framework
+> +# for use with the QEMU 'vmapple' aarch64 machine type.
+> +#
+> +# Extracts the Machine UUID from Virtualization.framework VM JSON file.
+> +# (as produced by 'macosvm', passed as command line argument)
+> +
+> +plutil -extract machineId raw "$1" | base64 -d | plutil -extract ECID raw -
+> +
+> diff --git a/docs/system/arm/vmapple.rst b/docs/system/arm/vmapple.rst
+> new file mode 100644
+> index 0000000000..5090a8997c
+> --- /dev/null
+> +++ b/docs/system/arm/vmapple.rst
+> @@ -0,0 +1,63 @@
 
-     qemu-system-ppc -m 1G -smp 1 -M mac99,via=pmu -cpu g4  ....
+Alex, Phil, we now mandate a SPDX tag. Due to the license used in
+vmapple.c in this patch, are you OK with me squashing here:
 
-There are some errors/warnings:
+-- >8 --
+diff --git a/docs/system/arm/vmapple.rst b/docs/system/arm/vmapple.rst
+index 5090a8997c3..c5b1bcf45ea 100644
+--- a/docs/system/arm/vmapple.rst
++++ b/docs/system/arm/vmapple.rst
+@@ -0,0 +1,2 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
+diff --git a/contrib/vmapple/uuid.sh b/contrib/vmapple/uuid.sh
+index 956e8c3afed..f5637221d23 100755
+--- a/contrib/vmapple/uuid.sh
++++ b/contrib/vmapple/uuid.sh
+@@ -1,0 +2 @@
++#
+@@ -6,0 +8,2 @@
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
+---
 
-     qemu-system-ppc: -device vfio-pci,host=0000:0c:00.0: warning: MSI-X is not supported by interrupt controller
-     Cannot manage 'ethernet controller' PCI device type 'network':
-     >>
-     >>  8086 10c9 (2 0 0)
-     >> set_property: NULL phandle
-     
-     >> =============================================================
-     >> OpenBIOS 1.1 [Sep 24 2024 19:56]
-     ...
+?
 
-but it does work :
-
-     root@debian-powerpc:~# uname -a
-     Linux debian-powerpc 6.1.0-7-powerpc #1 Debian 6.1.20-1 (2023-03-19) ppc GNU/Linux
-     root@debian-powerpc:~# lspci -s  00:10.0 -vv
-     00:10.0 Ethernet controller: Intel Corporation 82576 Gigabit Network Connection (rev 01)
-     	Subsystem: Beijing Sinead Technology Co., Ltd. 82576 Gigabit Network Connection
-     	Device tree node: /sys/firmware/devicetree/base/pci@f2000000/pci8086,10c9@10
-     	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-     	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-     	Latency: 0, Cache Line Size: 64 bytes
-     	Interrupt: pin A routed to IRQ 27
-     	Region 0: Memory at 82080000 (32-bit, non-prefetchable) [size=128K]
-     	Region 1: Memory at 82400000 (32-bit, non-prefetchable) [size=4M]
-     	Region 2: I/O ports at 1080 [size=32]
-     	Region 3: Memory at 82800000 (32-bit, non-prefetchable) [size=16K]
-     	Expansion ROM at 82c00000 [disabled] [size=4M]
-     	Capabilities: [40] Power Management version 3
-     		Flags: PMEClk- DSI+ D1- D2- AuxCurrent=0mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
-     		Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=1 PME-
-     	Capabilities: [a0] Express (v2) Endpoint, MSI 00
-     		DevCap:	MaxPayload 512 bytes, PhantFunc 0, Latency L0s <512ns, L1 <64us
-     			ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+ SlotPowerLimit 0W
-     		DevCtl:	CorrErr- NonFatalErr- FatalErr+ UnsupReq-
-     			RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+ FLReset-
-     			MaxPayload 256 bytes, MaxReadReq 512 bytes
-     		DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
-     		LnkCap:	Port #0, Speed 2.5GT/s, Width x4, ASPM L0s L1, Exit Latency L0s <4us, L1 <64us
-     			ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
-     		LnkCtl:	ASPM L1 Enabled; RCB 64 bytes, Disabled- CommClk+
-     			ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-     		LnkSta:	Speed 2.5GT/s, Width x1 (downgraded)
-     			TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-     		DevCap2: Completion Timeout: Range ABCD, TimeoutDis+ NROPrPrP- LTR-
-     			 10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt- EETLPPrefix-
-     			 EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
-     			 FRS- TPHComp- ExtTPHComp-
-     			 AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-     		DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis- LTR- 10BitTagReq- OBFF Disabled,
-     			 AtomicOpsCtl: ReqEn-
-     		LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
-     			 EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
-     			 Retimer- 2Retimers- CrosslinkRes: unsupported
-     	Kernel driver in use: igb
-     	Kernel modules: igb
-     root@debian-powerpc:~# ip link show dev enp0s16
-     2: enp0s16: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-         link/ether 80:61:5f:0a:2f:c4 brd ff:ff:ff:ff:ff:ff
-
-
-The number of VFIO combinations drives me nuts. It's worse than PPC.
-
-Thanks,
-
-C.
-
+> +VMApple machine emulation
+> +========================================================================================
+> +
+> +VMApple is the device model that the macOS built-in hypervisor called "Virtualization.framework"
+> +exposes to Apple Silicon macOS guests. The "vmapple" machine model in QEMU implements the same
+> +device model, but does not use any code from Virtualization.Framework.
+> +
+> +Prerequisites
+> +-------------
+> +
+> +To run the vmapple machine model, you need to
+> +
+> + * Run on Apple Silicon
+> + * Run on macOS 12.0 or above
+> + * Have an already installed copy of a Virtualization.Framework macOS 12 virtual
+> +   machine. Note that newer versions than 12.x are currently NOT supported on
+> +   the guest side. I will assume that you installed it using the
+> +   `macosvm <https://github.com/s-u/macosvm>` CLI.
+> +
+> +First, we need to extract the UUID from the virtual machine that you installed. You can do this
+> +by running the shell script in contrib/vmapple/uuid.sh on the macosvm.json file.
+> +
+> +.. code-block:: bash
+> +  :caption: uuid.sh script to extract the UUID from a macosvm.json file
+> +
+> +  $ contrib/vmapple/uuid.sh "path/to/macosvm.json"
+> +
+> +Now we also need to trim the aux partition. It contains metadata that we can just discard:
+> +
+> +.. code-block:: bash
+> +  :caption: Command to trim the aux file
+> +
+> +  $ dd if="aux.img" of="aux.img.trimmed" bs=$(( 0x4000 )) skip=1
+> +
+> +How to run
+> +----------
+> +
+> +Then, we can launch QEMU with the Virtualization.Framework pre-boot environment and the readily
+> +installed target disk images. I recommend to port forward the VM's ssh and vnc ports to the host
+> +to get better interactive access into the target system:
+> +
+> +.. code-block:: bash
+> +  :caption: Example execution command line
+> +
+> +  $ UUID="$(contrib/vmapple/uuid.sh 'macosvm.json')"
+> +  $ AVPBOOTER="/System/Library/Frameworks/Virtualization.framework/Resources/AVPBooter.vmapple2.bin"
+> +  $ AUX="aux.img.trimmed"
+> +  $ DISK="disk.img"
+> +  $ qemu-system-aarch64 \
+> +       -serial mon:stdio \
+> +       -m 4G \
+> +       -accel hvf \
+> +       -M vmapple,uuid="$UUID" \
+> +       -bios "$AVPBOOTER" \
+> +       -drive file="$AUX",if=pflash,format=raw \
+> +       -drive file="$DISK",if=pflash,format=raw \
+> +       -drive file="$AUX",if=none,id=aux,format=raw \
+> +       -drive file="$DISK",if=none,id=root,format=raw \
+> +       -device vmapple-virtio-blk-pci,variant=aux,drive=aux \
+> +       -device vmapple-virtio-blk-pci,variant=root,drive=root \
+> +       -netdev user,id=net0,ipv6=off,hostfwd=tcp::2222-:22,hostfwd=tcp::5901-:5900 \
+> +       -device virtio-net-pci,netdev=net0
+> +
 
