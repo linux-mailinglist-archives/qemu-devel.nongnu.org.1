@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C62CA4CDFC
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 23:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDD6A4CE00
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 23:15:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpE3r-0007f8-Nf; Mon, 03 Mar 2025 17:14:55 -0500
+	id 1tpE4C-0007ha-Gb; Mon, 03 Mar 2025 17:15:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpE3o-0007em-M6
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 17:14:52 -0500
+ id 1tpE40-0007gi-NF
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 17:15:04 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpE3m-00060M-FL
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 17:14:52 -0500
+ id 1tpE3y-00063x-CE
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 17:15:04 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpE3h-00000000IE2-2Bn5; Mon, 03 Mar 2025 23:14:45 +0100
-Message-ID: <ecccb4c5-5d02-4d41-a7be-f01cee278510@maciej.szmigiero.name>
-Date: Mon, 3 Mar 2025 23:14:40 +0100
+ id 1tpE3u-00000000IEC-2I3n; Mon, 03 Mar 2025 23:14:58 +0100
+Message-ID: <ef1ac370-b368-47aa-aaa4-7f16c7c22cba@maciej.szmigiero.name>
+Date: Mon, 3 Mar 2025 23:14:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 23/36] vfio/migration: Multifd device state transfer
- support - VFIOStateBuffer(s)
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
+Subject: Re: [PATCH v5 11/36] migration/multifd: Device state transfer support
+ - receive side
+To: Avihai Horon <avihaih@nvidia.com>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
- <96303daed289e9c7a3261590027d18e425ea07c2.1739994627.git.maciej.szmigiero@oracle.com>
- <9bc9f288-6db5-4229-9a16-7e8842604c55@nvidia.com>
- <b64bc541-e23c-4a41-aaf5-bdd1ab16c69d@redhat.com>
+ <8857884d14e5e854629a32dfb96011b43945088f.1739994627.git.maciej.szmigiero@oracle.com>
+ <a55c5f70-04ad-486d-96fa-5b3b75e0a5c6@nvidia.com>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -82,7 +81,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
  IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
  VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
-In-Reply-To: <b64bc541-e23c-4a41-aaf5-bdd1ab16c69d@redhat.com>
+In-Reply-To: <a55c5f70-04ad-486d-96fa-5b3b75e0a5c6@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=145.239.82.108;
@@ -109,111 +108,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3.03.2025 07:42, Cédric Le Goater wrote:
-> On 3/2/25 14:00, Avihai Horon wrote:
+On 2.03.2025 13:42, Avihai Horon wrote:
+> Hi Maciej,
+> 
+> Sorry for the long delay, I have been busy with other tasks.
+> I got some small comments for the series.
+> 
+> On 19/02/2025 22:33, Maciej S. Szmigiero wrote:
+>> External email: Use caution opening links or attachments
 >>
->> On 19/02/2025 22:34, Maciej S. Szmigiero wrote:
->>> External email: Use caution opening links or attachments
->>>
->>>
->>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>>
->>> Add VFIOStateBuffer(s) types and the associated methods.
->>>
->>> These store received device state buffers and config state waiting to get
->>> loaded into the device.
->>>
->>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->>> ---
->>>   hw/vfio/migration-multifd.c | 54 +++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 54 insertions(+)
->>>
->>> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
->>> index 0c3185a26242..760b110a39b9 100644
->>> --- a/hw/vfio/migration-multifd.c
->>> +++ b/hw/vfio/migration-multifd.c
->>> @@ -29,3 +29,57 @@ typedef struct VFIODeviceStatePacket {
->>>       uint32_t flags;
->>>       uint8_t data[0];
->>>   } QEMU_PACKED VFIODeviceStatePacket;
->>> +
->>> +/* type safety */
->>> +typedef struct VFIOStateBuffers {
->>> +    GArray *array;
->>> +} VFIOStateBuffers;
->>> +
->>> +typedef struct VFIOStateBuffer {
->>> +    bool is_present;
->>> +    char *data;
->>> +    size_t len;
->>> +} VFIOStateBuffer;
->>> +
->>> +static void vfio_state_buffer_clear(gpointer data)
->>> +{
->>> +    VFIOStateBuffer *lb = data;
->>> +
->>> +    if (!lb->is_present) {
->>> +        return;
->>> +    }
->>> +
->>> +    g_clear_pointer(&lb->data, g_free);
->>> +    lb->is_present = false;
->>> +}
->>> +
->>> +static void vfio_state_buffers_init(VFIOStateBuffers *bufs)
->>> +{
->>> +    bufs->array = g_array_new(FALSE, TRUE, sizeof(VFIOStateBuffer));
->>> +    g_array_set_clear_func(bufs->array, vfio_state_buffer_clear);
->>> +}
->>> +
->>> +static void vfio_state_buffers_destroy(VFIOStateBuffers *bufs)
->>> +{
->>> +    g_clear_pointer(&bufs->array, g_array_unref);
->>> +}
->>> +
->>> +static void vfio_state_buffers_assert_init(VFIOStateBuffers *bufs)
->>> +{
->>> +    assert(bufs->array);
->>> +}
->>> +
->>> +static guint vfio_state_buffers_size_get(VFIOStateBuffers *bufs)
->>> +{
->>> +    return bufs->array->len;
->>> +}
->>> +
->>> +static void vfio_state_buffers_size_set(VFIOStateBuffers *bufs, guint size)
->>> +{
->>> +    g_array_set_size(bufs->array, size);
->>> +}
->>> +
->>> +static VFIOStateBuffer *vfio_state_buffers_at(VFIOStateBuffers *bufs, guint idx)
->>> +{
->>> +    return &g_array_index(bufs->array, VFIOStateBuffer, idx);
->>> +}
 >>
->> This patch breaks compilation as non of the functions are used, e.g.: error: ‘vfio_state_buffers_init’ defined but not used I can think of three options to solve it: 1. Move these functions to their own file and export them, e.g., hw/vfio/state-buffer.{c,h}. But this seems like an overkill for such a small API. 2. Add __attribute__((unused)) tags and remove them in patch #26 where the functions are actually used. A bit ugly. 
-> 
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> 3. Squash this patch into patch #26. I prefer option 3 as this is a small API closely related to patch #26 (and patch #26 will still remain rather small).
+>> Add a basic support for receiving device state via multifd channels -
+>> channels that are shared with RAM transfers.
+>>
+>> Depending whether MULTIFD_FLAG_DEVICE_STATE flag is present or not in the
+>> packet header either device state (MultiFDPacketDeviceState_t) or RAM
+>> data (existing MultiFDPacket_t) is read.
+>>
+>> The received device state data is provided to
+>> qemu_loadvm_load_state_buffer() function for processing in the
+>> device's load_state_buffer handler.
+>>
+>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> ---
+>>   migration/multifd.c | 99 ++++++++++++++++++++++++++++++++++++++++-----
+>>   migration/multifd.h | 26 +++++++++++-
+>>   2 files changed, 113 insertions(+), 12 deletions(-)
+>>
+(..)
+>> index f7156f66c0f6..c2ebef2d319e 100644
+>> --- a/migration/multifd.h
+>> +++ b/migration/multifd.h
+>> @@ -62,6 +62,12 @@ MultiFDRecvData *multifd_get_recv_data(void);
+>>   #define MULTIFD_FLAG_UADK (8 << 1)
+>>   #define MULTIFD_FLAG_QATZIP (16 << 1)
+>>
+>> +/*
+>> + * If set it means that this packet contains device state
+>> + * (MultiFDPacketDeviceState_t), not RAM data (MultiFDPacket_t).
+>> + */
+>> +#define MULTIFD_FLAG_DEVICE_STATE (32 << 1)
+>> +
+>>   /* This value needs to be a multiple of qemu_target_page_size() */
+>>   #define MULTIFD_PACKET_SIZE (512 * 1024)
+>>
+>> @@ -94,6 +100,16 @@ typedef struct {
+>>       uint64_t offset[];
+>>   } __attribute__((packed)) MultiFDPacket_t;
+>>
+>> +typedef struct {
+>> +    MultiFDPacketHdr_t hdr;
+>> +
+>> +    char idstr[256] QEMU_NONSTRING;
+>> +    uint32_t instance_id;
+>> +
+>> +    /* size of the next packet that contains the actual data */
+>> +    uint32_t next_packet_size;
+>> +} __attribute__((packed)) MultiFDPacketDeviceState_t;
+>> +
+>>   typedef struct {
+>>       /* number of used pages */
+>>       uint32_t num;
+>> @@ -111,6 +127,13 @@ struct MultiFDRecvData {
+>>       off_t file_offset;
+>>   };
+>>
+>> +typedef struct {
+>> +    char *idstr;
+>> +    uint32_t instance_id;
+>> +    char *buf;
+>> +    size_t buf_len;
+>> +} MultiFDDeviceState_t;
 > 
-> I vote for option 3 too.
+> This is only used in patch #14. Maybe move it there?
 
-Merged this patch into the "received buffers queuing" one (#26) now.
+Moved it to "send side" patch.
 
-> vfio_state_buffers_init is only called once, it's 2 lines,
-> it could be merged in vfio_multifd_new() too.
-
-Most of these helpers are even shorter (1 line), but the whole
-point of them is to abstract the GArray rather than open-code
-these accesses.
-
-This was discussed two versions ago:
-https://lore.kernel.org/qemu-devel/9106d15e-3ff5-4d42-880d-0de70a4caa1c@maciej.szmigiero.name/
-
-> 
-> Thanks,
-> 
-> C.
+> Thanks.
 > 
 
 Thanks,
