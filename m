@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86210A4BE40
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 12:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85723A4BE43
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 12:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp3tS-0002qd-1U; Mon, 03 Mar 2025 06:23:30 -0500
+	id 1tp3tT-0002sr-ND; Mon, 03 Mar 2025 06:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp3tQ-0002oa-FY; Mon, 03 Mar 2025 06:23:28 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tp3tR-0002qi-JA; Mon, 03 Mar 2025 06:23:29 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tp3tO-00076J-Mp; Mon, 03 Mar 2025 06:23:28 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2234bec7192so57714735ad.2; 
- Mon, 03 Mar 2025 03:23:25 -0800 (PST)
+ id 1tp3tQ-00076t-4L; Mon, 03 Mar 2025 06:23:29 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2239aa5da08so18866465ad.3; 
+ Mon, 03 Mar 2025 03:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741001004; x=1741605804; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741001006; x=1741605806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9Sd3DVVAXD6tqmCQ5NglFT6kDc4plDf6NJTVkHPAxEw=;
- b=FOABHUmuM8mAk7oYpEpSE1fytTt5gJvwUhighZbYYaJ2c+s82sXDwBfXZ03wJOAapo
- FPz/1PZOz5QDN7mvGRIeof344eDxdM+2jWPCWsbr1DIIl3Pi6ITwMNCxYbjtmN/uUxZk
- lTKuV4SkkprQv5rzUCjwbUqQQyaFozpE5c6NJDdgAvSc/QSB4yEN6vuxdVi/4qvOBLtl
- SjB9maHT/0LAs0BYH1ucy97pnbH0uhevRS4uvmRyxH32dNQT3m8MM2TdY2hH2u20hAFL
- 7tHrn7jodMO9tZuox8sFLCzI5RvEpMnZYm8+jLlNbBu8t/4LNpL2+TRF7WRg5kZb+7cM
- S8BA==
+ bh=Cu9dJddBsSRtdsBzKn6C+oUO9t7UsRoDwTthYYeOMK4=;
+ b=BZQsabt0Z1LDOAThPP8CxjmYm373dpzxbDkWjHWUm86egTn4wk866I2yGF1V9fbZTy
+ nIwBMwIpenasrYkEUMpRVnS0geZ2k4Le+q0XvfeyWz/BvLaPYG6H5jkhpPGxyPWeqHhZ
+ Wyol5K5hcllX0JziIGJKDLgETJeNMnfGkkdJRhc3J6Zhfl/FJ47LVpVrOmIQKpfx5sl7
+ y+vkb/IsIIENO6EiMgryfbXez4JRlhBPclvlGCcf9xuprwcDCup73QYLCaCKe7le+wha
+ 8Omvau9ulKwdX23f02KF5+snaaXH2yKjYe7jr5McLE5lY1YEfchz3CS/fC6evKP7L2nc
+ 0fzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741001004; x=1741605804;
+ d=1e100.net; s=20230601; t=1741001006; x=1741605806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9Sd3DVVAXD6tqmCQ5NglFT6kDc4plDf6NJTVkHPAxEw=;
- b=iarYa+f9o969To3VJIdgCxR6bfVw0t68xjVtB/Ik0iQ3Ye1Q6MMKg1C1o4FCA8yoCT
- V/zXA4kZw73jcH7XeKfg14diiLurAEBPnPX+wvzoqcJVfu0B9wtG0IjzIUiMF763KdoT
- eZ7qOzFo7DIXjkDYIdqJvUVn3nFgU0reepUhnGIopcz0jHwvqIbeuvLxSeQB28n/Jia5
- fOUYj0qwfBQgnPGfvdm62EafwLoTPzQoO780FQD9zyN+/2pkHNJUxaa+0MTsjvGK8iW8
- 6Lhi9oTOixfuKGgm/wvuVLo5vIUgk8OIUXOClHFHCcoAhzr8Xa8bq8ap7YOstNx7LKx6
- V/dg==
+ bh=Cu9dJddBsSRtdsBzKn6C+oUO9t7UsRoDwTthYYeOMK4=;
+ b=TV+1jDv5iVLx3nfM2qVXIHvlRttFY/bua9Wer6vcUOgmvXv+aJiOdb27x677CMdpXt
+ jg9UYPAB71Pz8l1G2wMepzNY0zXHmcZw/tNf95Q3r8y4dLL4C1G1MF6FhZjgjXqotePe
+ dfeSbl92NtimDwQW/BeSf7KnMzD/w5nor++hLVJPVIIv7A4uJc76SMC9n8yWYt0WthVy
+ E3LkFdBGe+7sSqCCIfz79ncumkoGfN/dn4wBlL9aKMwCmBSdG3bm74lOF6VaFDfsi0pZ
+ WasULatcJD36RBcCa3yC/FKs1agSWBOtxTqjeYgoHxAOO+4MydH7XbynRRMSuS8k+vNU
+ 2NEw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUVgWELbBiBXlB/+PG5b0UQXaIsc2SLtKXAqiY/98CuMhYOE8usUpfClgVyKxuHWw//QfjNxvi+NlWS@nongnu.org
-X-Gm-Message-State: AOJu0YyjiNauuqkHzSG0rOlcy7LWrIzB2ygI/zA1GXp1VImjDxioSZL9
- p0R1tLrC7WW4mL1l5eYygxE25y7cxPPu8eWn+RgT+5D0pPzk9iu7bNsW+w==
-X-Gm-Gg: ASbGncuZJt/NBMaIV/CjzFhDe71V9C06UN8sP7XrE9Dl2OAcWFX1L6nWUmv15w37Rp3
- GuyHQrjciT/RCSV4EGYj0hQzLbxvzVH2Pc4QXiouwT5t+B+OIXWHT/yVJpZSy9CBYNoNUVpMKwI
- 10kDfCel/KvhPSiblG6Ii8XkbVjy/rQU3bduuYb39Y/cvU10atIUmq68Jw2d4HxUrnNS794mwZA
- qv9qHFqvup4HaLMHTshXlNv0zqj1B5i4NlqxEEsZlz2lDMY8C0D9twfsYw+MgC0RuFskm8BXL6K
- BlncqrCodVlAfCUG0FB40Sg/ILRJO+2rAWYpT+4y5KbS+TDcTnk=
-X-Google-Smtp-Source: AGHT+IH4AFJ2Ae0Ld9F0SzXxZbtEYkhwNpf+03J/yylh5B7tZdZUK2c6IQccTvpQOVPlZ9smAdPjSA==
-X-Received: by 2002:a17:903:33cc:b0:223:5a6e:b16 with SMTP id
- d9443c01a7336-22368f60ac5mr180058215ad.5.1741001003763; 
- Mon, 03 Mar 2025 03:23:23 -0800 (PST)
+ AJvYcCXAGJ5b2Gf5d5/jD69REUv0bdQxg/Q2SvTmFKkwKXpJ0s+GMuetQt1bwDSk7gClFqlVgsriBuLfS6d8@nongnu.org
+X-Gm-Message-State: AOJu0YzJTLNdpCpIXY0E3EcGX/NX7UuTBsew8FSZTibPbvT1A7UnpbXI
+ 5HpGqxlk7fLgcUVCv3ov2es8KbTdUv4VtPsnkqSG2ZvE3CdHV5RCSl9dWA==
+X-Gm-Gg: ASbGncsG+HVjqCJauPf1hqePlEVAhVDpF36CpB3ENIVNSAyUeCf8T4gpAu2+KHQqf1O
+ 1Cg1Z24K9ztXCLz7pXxjbHobDh+klyqasJJeMPtdYEgO/PMSG1xWp9t0QH31LApRxrb21VhFqkZ
+ uTFJAoqr4z7Ydb3N5Gp5ZXJDihJkeoswx2LBd9DBv+ZfNX59CM1kRL3f7Vr9+cO0CB2miL1Vjwg
+ 9qYynbcOnG3RrWQ9m4IAEuJqW88ITggtMrIXvmRV43ssC625xe1gLcUznk7JiTWZxsRpKlTl4xZ
+ 8d1wWMIaPjVitE4Y57bCSfu5maqR8wKQjDRrLtI3y09GMIi/M/E=
+X-Google-Smtp-Source: AGHT+IE0crRjB9HRFCalYWm1hjJO/xP7QWgt9BkE2vA+IItaNHeWguQc+99MOYmRxi7OZHcKsNQeyQ==
+X-Received: by 2002:a17:903:18a:b0:216:5448:22a4 with SMTP id
+ d9443c01a7336-22368f6dc74mr226818155ad.10.1741001006109; 
+ Mon, 03 Mar 2025 03:23:26 -0800 (PST)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e3bsm75388875ad.82.2025.03.03.03.23.21
+ d9443c01a7336-223501f9e3bsm75388875ad.82.2025.03.03.03.23.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Mar 2025 03:23:23 -0800 (PST)
+ Mon, 03 Mar 2025 03:23:25 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 1/3] target/ppc: flush TLB on HRMOR and LPCR SPR updates
-Date: Mon,  3 Mar 2025 21:23:12 +1000
-Message-ID: <20250303112315.586478-2-npiggin@gmail.com>
+Subject: [PATCH 2/3] target/ppc: Avoid work if MMU SPRs are written with same
+ value
+Date: Mon,  3 Mar 2025 21:23:13 +1000
+Message-ID: <20250303112315.586478-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250303112315.586478-1-npiggin@gmail.com>
 References: <20250303112315.586478-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,135 +98,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HRMOR and LPCR registers are involved with MMU translations that
-are not tagged in the TLB (i.e., with mmuidx), so the TLB needs to be
-flushed when these are changed, e.g., as PIDR, LPIDR already do.
-target/ppc: add missing TLB flushes for MMU SPR updates
+Avoid TLB flushing and hflags recomputation if LPCR, LPIDR, or PIDR
+are written with the same value. This is observed to happen in some
+cases (e.g., in hypervisor real-mode exit fastpath handlers).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper.h      |  1 +
- target/ppc/spr_common.h  |  1 +
- target/ppc/cpu.c         |  4 ++++
- target/ppc/cpu_init.c    |  2 +-
- target/ppc/misc_helper.c | 23 +++++++++++++++++++++++
- target/ppc/translate.c   | 10 ++++++++++
- 6 files changed, 40 insertions(+), 1 deletion(-)
+ target/ppc/cpu.c         |  8 +++++++-
+ target/ppc/misc_helper.c | 14 +++++++++++++-
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 5a77e761bd3..6178ebe138f 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -723,6 +723,7 @@ DEF_HELPER_FLAGS_1(load_vtb, TCG_CALL_NO_RWG, tl, env)
- #if defined(TARGET_PPC64)
- DEF_HELPER_FLAGS_1(load_purr, TCG_CALL_NO_RWG, tl, env)
- DEF_HELPER_FLAGS_2(store_purr, TCG_CALL_NO_RWG, void, env, tl)
-+DEF_HELPER_2(store_hrmor, void, env, tl)
- DEF_HELPER_2(store_ptcr, void, env, tl)
- DEF_HELPER_FLAGS_1(load_dpdes, TCG_CALL_NO_RWG, tl, env)
- DEF_HELPER_FLAGS_2(store_dpdes, TCG_CALL_NO_RWG, void, env, tl)
-diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index 01aff449bcc..8cac82b2dac 100644
---- a/target/ppc/spr_common.h
-+++ b/target/ppc/spr_common.h
-@@ -177,6 +177,7 @@ void spr_write_pidr(DisasContext *ctx, int sprn, int gprn);
- void spr_write_lpidr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_hior(DisasContext *ctx, int gprn, int sprn);
- void spr_write_hior(DisasContext *ctx, int sprn, int gprn);
-+void spr_write_hrmor(DisasContext *ctx, int sprn, int gprn);
- void spr_write_ptcr(DisasContext *ctx, int sprn, int gprn);
- void spr_write_pcr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn);
 diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
-index d148cd76b47..cdd50cb36d6 100644
+index cdd50cb36d6..0fa2ccfcb2f 100644
 --- a/target/ppc/cpu.c
 +++ b/target/ppc/cpu.c
-@@ -21,6 +21,7 @@
- #include "cpu.h"
- #include "cpu-models.h"
- #include "cpu-qom.h"
-+#include "exec/exec-all.h"
- #include "exec/log.h"
- #include "fpu/softfloat-helpers.h"
- #include "mmu-hash64.h"
-@@ -101,6 +102,9 @@ void ppc_store_lpcr(PowerPCCPU *cpu, target_ulong val)
+@@ -97,8 +97,14 @@ void ppc_store_lpcr(PowerPCCPU *cpu, target_ulong val)
+ {
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+     CPUPPCState *env = &cpu->env;
++    target_ulong old, new;
+ 
+-    env->spr[SPR_LPCR] = val & pcc->lpcr_mask;
++    old = env->spr[SPR_LPCR];
++    new = val & pcc->lpcr_mask;
++    if (old == new) {
++        return;
++    }
++    env->spr[SPR_LPCR] = new;
      /* The gtse bit affects hflags */
      hreg_compute_hflags(env);
  
-+    /* Various untagged bits affect translation (e.g., TC, HR, etc). */
-+    tlb_flush(env_cpu(env));
-+
-     ppc_maybe_interrupt(env);
- }
- 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 062a6e85fba..92316b55afd 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5496,7 +5496,7 @@ static void register_book3s_ids_sprs(CPUPPCState *env)
-     spr_register_hv(env, SPR_HRMOR, "HRMOR",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_core_write_generic,
-+                 &spr_read_generic, &spr_write_hrmor,
-                  0x00000000);
- }
- 
 diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index f0ca80153b2..179e8b6b4d2 100644
+index 179e8b6b4d2..ac439e00326 100644
 --- a/target/ppc/misc_helper.c
 +++ b/target/ppc/misc_helper.c
-@@ -169,6 +169,29 @@ void helper_store_sdr1(CPUPPCState *env, target_ulong val)
- }
+@@ -403,12 +403,24 @@ void helper_store_sprd(CPUPPCState *env, target_ulong val)
  
- #if defined(TARGET_PPC64)
-+void helper_store_hrmor(CPUPPCState *env, target_ulong val)
-+{
-+    if (env->spr[SPR_HRMOR] != val) {
-+        CPUState *cs = env_cpu(env);
-+
-+        qemu_log_mask(CPU_LOG_MMU, "%s: " TARGET_FMT_lx "\n", __func__, val);
-+
-+        if (ppc_cpu_lpar_single_threaded(cs)) {
-+            env->spr[SPR_HRMOR] = val;
-+            tlb_flush(cs);
-+        } else {
-+            CPUState *ccs;
-+
-+            THREAD_SIBLING_FOREACH(cs, ccs) {
-+                PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-+                CPUPPCState *cenv = &ccpu->env;
-+                cenv->spr[SPR_HRMOR] = val;
-+                tlb_flush(ccs);
-+            }
-+        }
-+    }
-+}
-+
- void helper_store_ptcr(CPUPPCState *env, target_ulong val)
+ void helper_store_pidr(CPUPPCState *env, target_ulong val)
  {
-     if (env->spr[SPR_PTCR] != val) {
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 80638ab5359..ac910151cfa 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -909,6 +909,16 @@ void spr_write_hior(DisasContext *ctx, int sprn, int gprn)
-     tcg_gen_andi_tl(t0, cpu_gpr[gprn], 0x3FFFFF00000ULL);
-     tcg_gen_st_tl(t0, tcg_env, offsetof(CPUPPCState, excp_prefix));
- }
-+
-+void spr_write_hrmor(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!gen_serialize_core(ctx)) {
++    if (env->spr[SPR_BOOKS_PID] == (uint32_t)val) {
 +        return;
 +    }
 +
-+    gen_helper_store_hrmor(tcg_env, cpu_gpr[gprn]);
-+}
+     env->spr[SPR_BOOKS_PID] = (uint32_t)val;
+-    tlb_flush(env_cpu(env));
 +
- void spr_write_ptcr(DisasContext *ctx, int sprn, int gprn)
++    if (env->spr[SPR_LPCR] & LPCR_HR) {
++        /* PID is only relevant to CPU translations when LPCR[HR]=1 */
++        tlb_flush(env_cpu(env));
++    }
+ }
+ 
+ void helper_store_lpidr(CPUPPCState *env, target_ulong val)
  {
-     if (!gen_serialize_core(ctx)) {
++    if (env->spr[SPR_LPIDR] == (uint32_t)val) {
++        return;
++    }
++
+     env->spr[SPR_LPIDR] = (uint32_t)val;
+ 
+     /*
 -- 
 2.47.1
 
