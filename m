@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FF7A4CD4C
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8F0A4CD4E
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 22:11:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpD3M-0008UL-KU; Mon, 03 Mar 2025 16:10:21 -0500
+	id 1tpD3K-0008TU-Nh; Mon, 03 Mar 2025 16:10:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tpD3I-0008So-8I
+ id 1tpD3I-0008Sl-4t
  for qemu-devel@nongnu.org; Mon, 03 Mar 2025 16:10:16 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tpD3F-0008JT-T5
+ id 1tpD3F-0008Js-Fi
  for qemu-devel@nongnu.org; Mon, 03 Mar 2025 16:10:15 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523JfjrB001838;
- Mon, 3 Mar 2025 21:10:07 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523Jfh01024361;
+ Mon, 3 Mar 2025 21:10:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:message-id:subject:to; s=corp-2023-11-20; bh=Pqw97mO8
- 1IMD7Zh35EPz50hrrBmVzRYx8UpEOnr19ig=; b=lBaGEuZ2snizFeYL+1aUHzaY
- ZjlQeVHtcFXG0xYDf8XzGlLF/tMRd/0l6rKw7YncaG5jgztscK8dUg0aP+xJrl8H
- HBHInskSF4hXZA7Pa5Nhtn1U4hD6VdBFH+kBUk6Mwu+uHM+vqF4pXmI90XJOl26c
- Rb43VLZGvJtFYzjnTRu7ChWxebvMu7qlGYQHm8Sg53oWkNbXF8x9K1kEKwVAYtD1
- h1mzQCd/RWcKhN6TvIf/+lqk4psxD15CxK7UP1HOVOEm35ig0Hcj+lkMwJAGXyY5
- TE1c+X7teBp8Bu6luR0eQt3/zzU8nSq6Q9/Mol0aLHHPanOkvWAI5Gy2/pQXjA==
+ :date:from:in-reply-to:message-id:references:subject:to; s=
+ corp-2023-11-20; bh=tmuIQKf+LVR9RSQKG+1LL6QxmOnH2kHU/hydALtZnBs=; b=
+ aR7i1aAEJDKsKs2dSmylqS+knqQDFdbKP8s6cpVFtElnt+qtPvFkqjh1R0R58R8Z
+ 8ikp7qR9rHdA6OHDVCrfZ1wOJMYkx1+6o5AykZ234y4uS2wsb48YogIHQ9zwEJkw
+ uQdxhnIhmBAk/SSJgqbE4vofYYeHdeTB1OaP/wdb4llceikTlGQhXrnn2Uzyr290
+ OgA/7b7LZTbGUIeq55aLr9Bc6nxVe1RgYXjFsY9y8TCusIqmMRBsVKIvQX296i3B
+ rKH4olbxS4f/D/cYhmUEf9hAMa9yOGbK+s2xnuBZ+h3e6eFaWKO7praUjS6XtXrh
+ mhFodbxiFr7en27RTXcjOg==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453uavuma3-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u81un6k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Mar 2025 21:10:06 +0000 (GMT)
+ Mon, 03 Mar 2025 21:10:07 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 523JiEd0003144; Mon, 3 Mar 2025 21:10:05 GMT
+ with ESMTP id 523JtIA6003167; Mon, 3 Mar 2025 21:10:06 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 453rp82py2-1
+ 453rp82q0q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Mar 2025 21:10:05 +0000
+ Mon, 03 Mar 2025 21:10:06 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 523LA4Ic022708;
- Mon, 3 Mar 2025 21:10:04 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 523LA4Ie022708;
+ Mon, 3 Mar 2025 21:10:05 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 453rp82pwh-1; Mon, 03 Mar 2025 21:10:04 +0000
+ ESMTP id 453rp82pwh-2; Mon, 03 Mar 2025 21:10:05 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
@@ -59,20 +60,22 @@ Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 0/6] fast qom tree get
-Date: Mon,  3 Mar 2025 13:09:56 -0800
-Message-Id: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 1/6] qom: qom_resolve_path
+Date: Mon,  3 Mar 2025 13:09:57 -0800
+Message-Id: <1741036202-265696-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
+References: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-03_10,2025-03-03_04,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  adultscore=0 bulkscore=0
- mlxlogscore=920 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
  definitions=main-2503030163
-X-Proofpoint-GUID: r2SMCtpipHebTS8wowPS9I9-CnM6hvEx
-X-Proofpoint-ORIG-GUID: r2SMCtpipHebTS8wowPS9I9-CnM6hvEx
+X-Proofpoint-GUID: _lIchtoz_8ETXjmwG9RPp0EzLHHMmwvk
+X-Proofpoint-ORIG-GUID: _lIchtoz_8ETXjmwG9RPp0EzLHHMmwvk
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -98,67 +101,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using qom-list and qom-get to get all the nodes and property values in a
-QOM tree can take multiple seconds because it requires 1000's of individual
-QOM requests.  Some managers fetch the entire tree or a large subset
-of it when starting a new VM, and this cost is a substantial fraction of
-start up time.
+Factor out a helper to resolve the user's path and print error messages.
+No functional change.
 
-To reduce this cost, consider QAPI calls that fetch more information in
-each call:
-  * qom-list-get: given a path, return a list of properties and values.
-  * qom-list-getv: given a list of paths, return a list of properties and
-    values for each path.
-  * qom-tree-get: given a path, return all descendant nodes rooted at that
-    path, with properties and values for each.
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ qom/qom-qmp-cmds.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-In all cases, a returned property is represented by ObjectPropertyValue,
-with fields name, type, value, and error.  If an error occurs when reading
-a value, the value field is omitted, and the error message is returned in the
-the error field.  Thus an error for one property will not cause a bulk fetch
-operation to fail.
-
-To evaluate each method, I modified scripts/qmp/qom-tree to use the method,
-verified all methods produce the same output, and timed each using:
-
-  qemu-system-x86_64 -display none \
-    -chardev socket,id=monitor0,path=/tmp/vm1.sock,server=on,wait=off \
-    -mon monitor0,mode=control &
-
-  time qom-tree -s /tmp/vm1.sock > /dev/null
-
-I only measured once per method, but the variation is low after a warm up run.
-The 'real - user - sys' column is a proxy for QEMU CPU time.
-
-method               real(s)   user(s)   sys(s)  (real - user - sys)(s)
-qom-list / qom-get   2.048     0.932     0.057   1.059
-qom-list-get         0.402     0.230     0.029   0.143
-qom-list-getv        0.200     0.132     0.015   0.053
-qom-tree-get         0.143     0.123     0.012   0.008
-
-qom-tree-get is the clear winner, reducing elapsed time by a factor of 14X,
-and reducing QEMU CPU time by 132X.
-
-qom-list-getv is slower when fetching the entire tree, but can beat
-qom-tree-get when only a subset of the tree needs to be fetched (not shown).
-qom-list-get is shown for comparison only, and is not included in this series.
-
-Steve Sistare (6):
-  qom: qom_resolve_path
-  qom: qom-tree-get
-  python: use qom-tree-get
-  tests/qtest/qom-test: unit test for qom-tree-get
-  qom: qom-list-getv
-  tests/qtest/qom-test: unit test for qom-list-getv
-
- python/qemu/utils/qom.py        |  36 +++++------
- python/qemu/utils/qom_common.py |  50 ++++++++++++++++
- qapi/qom.json                   |  93 ++++++++++++++++++++++++++++
- qom/qom-qmp-cmds.c              | 130 ++++++++++++++++++++++++++++++++++++++--
- tests/qtest/qom-test.c          | 116 +++++++++++++++++++++++++++++++++++
- 5 files changed, 401 insertions(+), 24 deletions(-)
-
-base-commit: 354925d42252f6f36a9e1e4a6b929aaafb2eaf45
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index e866547..293755f 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -28,15 +28,11 @@
+ #include "qom/object_interfaces.h"
+ #include "qom/qom-qobject.h"
+ 
+-ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
++static Object *qom_resolve_path(const char *path, Error **errp)
+ {
+-    Object *obj;
+     bool ambiguous = false;
+-    ObjectPropertyInfoList *props = NULL;
+-    ObjectProperty *prop;
+-    ObjectPropertyIterator iter;
++    Object *obj = object_resolve_path(path, &ambiguous);
+ 
+-    obj = object_resolve_path(path, &ambiguous);
+     if (obj == NULL) {
+         if (ambiguous) {
+             error_setg(errp, "Path '%s' is ambiguous", path);
+@@ -44,6 +40,19 @@ ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
+             error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
+                       "Device '%s' not found", path);
+         }
++    }
++    return obj;
++}
++
++ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
++{
++    Object *obj;
++    ObjectPropertyInfoList *props = NULL;
++    ObjectProperty *prop;
++    ObjectPropertyIterator iter;
++
++    obj = qom_resolve_path(path, errp);
++    if (obj == NULL) {
+         return NULL;
+     }
+ 
 -- 
 1.8.3.1
 
