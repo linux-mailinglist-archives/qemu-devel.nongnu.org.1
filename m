@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221CDA4C438
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D3FA4C44E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:09:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp7Mb-0007do-8G; Mon, 03 Mar 2025 10:05:49 -0500
+	id 1tp7Pg-0000TI-L0; Mon, 03 Mar 2025 10:09:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tp7MD-0007YW-Sc
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:05:27 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tp7Od-0000N6-My
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:07:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tp7MA-0000eE-O6
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:05:25 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tp7Ob-0000pt-Hu
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:07:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741014319;
+ s=mimecast20190719; t=1741014472;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=JhVwYqePrs1oMS+p7BbvbR6oAVAaenFgRTJ1PsgX0TA=;
- b=ZAaqY562C2y2fV4z2UdnI+ib+ncXrBvVd+s6neuV4cZScRjZ/DqI4zxBYp9nAX0yzLOvsV
- bxh/zX7WgaOhC7HhXaAmVeRGoE+auQrBPDbYucHXrmqvyPGUxVb7e8vPFO3Q3+/51AqUOA
- 8Gj4ebgK7vOzWUmi8KxfYP+y2JPbybw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3PV1oX5l2ZaQyuOgBUA8R/Lr8u8tYnIiOCmQUyEb8DI=;
+ b=CHUP3kqMPn/kowonbUW12T/b68mXKU1qt5k0fauS+ljhUG8f6Ufwa7O/truOb5WwAlFnxp
+ IKBV2B/5tn9B6ZrKG2Bedx0zjCZuKHNCpekPuGsEOhrs3uqarFarhpjx6rnSmhmnkPTG0J
+ iIoU3J8XbD3swCwJqFMJ9XH70CUdFe0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-cem5pnZaPtOOe2M56lMq0w-1; Mon, 03 Mar 2025 10:05:18 -0500
-X-MC-Unique: cem5pnZaPtOOe2M56lMq0w-1
-X-Mimecast-MFC-AGG-ID: cem5pnZaPtOOe2M56lMq0w_1741014317
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43bbbb00891so5355655e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 07:05:18 -0800 (PST)
+ us-mta-616-WYaWpUj8PeKLdxBJ6oCaAg-1; Mon, 03 Mar 2025 10:07:41 -0500
+X-MC-Unique: WYaWpUj8PeKLdxBJ6oCaAg-1
+X-Mimecast-MFC-AGG-ID: WYaWpUj8PeKLdxBJ6oCaAg_1741014460
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-438e180821aso24399415e9.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 07:07:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741014317; x=1741619117;
+ d=1e100.net; s=20230601; t=1741014460; x=1741619260;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JhVwYqePrs1oMS+p7BbvbR6oAVAaenFgRTJ1PsgX0TA=;
- b=JlxAWicyuwkjhlJMMo4dKMMW+sXS1GgypNFlfZ84yvkuAKv3uRIbqy6iZx29BveThx
- GNxUIsPRHjRFDWCIXwbEQuhBNDITeDKyoj06u7LP+/4TiI1I80nODR1vIxWK0Zf90SXP
- EmdDqpVkOzJ0sGsfzAGEz3jGakP7qfmZCYjd4p0Pzi7i+AjpVUsBpE12pOJOrgcKTQNP
- A3/wsaXQaSDhgcWN4QKLYsToMTUVEUO4Tei4wgMyKUL+beII/fU9A43O1r6PveLPGJkk
- Zx4BZl9pvFLO6hjC0pkJ0g8cueAomntgKxGSLXCh6K8mDIOBRNT974wXTvlMX7I8kLnX
- 81ug==
-X-Gm-Message-State: AOJu0YyAfoN2SYmGaVqHgUh8I++LR67C05wxCpY863ZYSzeIL4TZCGk2
- mklwJP4+wRqG3z6XLkAB9v/Qwnz3Q3YVlCblL7JU/F5S2hRvz5qd0XKbBKOHdOrVDlcdWYqooza
- ldvlWLhdIi3YEZ6ouHJ50erX4q45CMp/k5ydFrDKWbxOG30jKFQZi
-X-Gm-Gg: ASbGncu6f+4gnzRMTBCFudJZfem6Qzz9xIbEd1hRB6Nx0/oPZPZryl1spzoq52Kwl3g
- BTQbt4MuXBdHBjTQzA+s0/P8Q1pVpy9sAWTZ1lf978FvK8+vBhFh0WqXoggBVSgY+w+LygYIGNN
- TBmr0/MlYiU8/hKZq5wpeu0EWaMXu9VbauoLWAl75574wiFw1sm4jowCuJc8z0Ct4H8ISYCA+wL
- JEEH0URKAe3OdHFpAAwxYNKgDyFmYzI4vdT5zUcYK4fZIiBTqhV+mhmO+K12Ci+fyzaO2/ohZTz
- UhQGI16YuL9m+nTBinqnLoRimvkwZ4bKKi53/nkgzL6tLtx78/NEeQ==
-X-Received: by 2002:a7b:cb10:0:b0:43b:b32e:f429 with SMTP id
- 5b1f17b1804b1-43bb32ef8c0mr58729545e9.27.1741014317101; 
- Mon, 03 Mar 2025 07:05:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFghnXieMWjPAQ9DOuFHMlSbPp0KTwUyAt4crsvlXIt4I7x6gnYeN9BOsEVXDBg5a0ocvgFTg==
-X-Received: by 2002:a7b:cb10:0:b0:43b:b32e:f429 with SMTP id
- 5b1f17b1804b1-43bb32ef8c0mr58728765e9.27.1741014316500; 
- Mon, 03 Mar 2025 07:05:16 -0800 (PST)
+ bh=3PV1oX5l2ZaQyuOgBUA8R/Lr8u8tYnIiOCmQUyEb8DI=;
+ b=mqOM4C008/1OBuMo0yg4iZsgCZHvTgHKmH4sOXO18kD5jIfHKN/hE+jd7yNUpfS9DN
+ AWGlA0GZEA5GUtPKOe88os1fupUwV/SgTZOCK/AVqioHOoe9pC0Bj7gdvKOYbqWwQRBq
+ 4BbVST5DL8s4CfUJQfl7cr8mvZ4KJwznDD59BBqJlo0dmFoFWUyIydp1BFdUyvSI9hzA
+ V9cf08/RjQ59OwTel1vRLXuPXmbyNhRiGzVZYSTLrPQKLA05nePaGeql/kXHhncgNidy
+ d+gMF3pMHQKYKLjTjRL5KMoAdNEuniZ3QwfTTuYxj6HsuVN8iPxzTHSk47ioBbAev29o
+ fVuA==
+X-Gm-Message-State: AOJu0YzcczdJvH3t9ZX6oDA5CRPSl19Vs0YmI9XPg6GEDQKrkXxc+hog
+ ADLaf3HHteu29MgqwSKXxNAYEy7H5xFxbP/o8Xl//gfNw/g4O5UhrtqNgMJMMIVHmvt/Jaz/uaL
+ AO5slW0MBffgauRzIVDtHMOr+8GiMop1LOaFECLQUl6+LmrZqBFZ+
+X-Gm-Gg: ASbGncv2UxrSaL88tB3BldjyNzK74LC+6Xt19nn8tmlNsKq7PZhI09SlKDiNHWj9fsb
+ HnwPEd/JsnMEoNgv1p5tRR0Y1GYBu/JI0BhpvrDg2pmgJztYrxCp2u3sppjKaIphigNFMZ/+90e
+ q/HVOmLCg/Qaq7BEO8YKncTY7VIucBHg0eJlIoDiSOclcjqrtHmY7H2aVXMxGUIOi0TyoeUAeMT
+ loSdUW0r4WWv9tAyLvIwInbwQcJ+dmz5yNlwoqgGl0O8XszJ02ujymMnbkT5VOCh1PJILt/s9lJ
+ TQJNLZaO++xmR7aXGYBbMa/V3nKrrZu8cmY9Z78+NVoYHJyiyiC/nA==
+X-Received: by 2002:a5d:6dab:0:b0:390:fd84:9b with SMTP id
+ ffacd0b85a97d-390fd84033emr7142932f8f.25.1741014460136; 
+ Mon, 03 Mar 2025 07:07:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE/dMoNoIVDjGnxagsdM6M4gSeSvNJw+SPglJ/NUQnGoUTDw9ZINud0fHyjVNmACyMMD7UNSg==
+X-Received: by 2002:a5d:6dab:0:b0:390:fd84:9b with SMTP id
+ ffacd0b85a97d-390fd84033emr7142881f8f.25.1741014459686; 
+ Mon, 03 Mar 2025 07:07:39 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43aba5329besm190554535e9.15.2025.03.03.07.05.15
+ ffacd0b85a97d-390e479652dsm15023290f8f.16.2025.03.03.07.07.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 07:05:15 -0800 (PST)
-Message-ID: <b2075e91-79ca-4d5f-b13b-151f2a59181d@redhat.com>
-Date: Mon, 3 Mar 2025 16:05:15 +0100
+ Mon, 03 Mar 2025 07:07:39 -0800 (PST)
+Message-ID: <79685365-0ce5-435a-b6df-144916fed396@redhat.com>
+Date: Mon, 3 Mar 2025 16:07:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] vfio: Make vfio-pci available on 64-bit host
  platforms only
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
+To: Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
@@ -86,9 +84,7 @@ References: <20250226084721.232703-1-clg@redhat.com>
  <20250226084721.232703-2-clg@redhat.com>
  <a39e97c2-c6fd-34e4-f91b-b3491185b789@eik.bme.hu>
  <c60b7780-5b3f-43a0-a7f1-30820d4e6fb8@redhat.com>
- <bb7c2adf-f146-50c7-7716-c1ee7b606b01@eik.bme.hu>
- <aa01f3dd-e3ac-4ee5-87b4-8133103bd000@linaro.org>
- <270cc189-e3b2-4bf4-b32b-8655be51bcb4@redhat.com>
+ <7982159d-710f-4948-830f-ab61b100a5d6@redhat.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -134,7 +130,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <270cc189-e3b2-4bf4-b32b-8655be51bcb4@redhat.com>
+In-Reply-To: <7982159d-710f-4948-830f-ab61b100a5d6@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -162,41 +158,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/25 15:46, Paolo Bonzini wrote:
-> On 3/3/25 15:30, Philippe Mathieu-Daudé wrote:
->>>>> I see PPC is defined in target/ppc/Kconfig so I think these mark the target not the host. Vfio-pci works with qemu-system-ppc 
+On 3/3/25 15:43, Paolo Bonzini wrote:
+> On 2/26/25 17:26, Cédric Le Goater wrote:
+>> On 2/26/25 15:12, BALATON Zoltan wrote:
+>>> On Wed, 26 Feb 2025, Cédric Le Goater wrote:
+>>>> VFIO PCI never worked on PPC32 nor ARM, S390x is 64-bit, it might have
+>>>> worked on i386 long ago but we have no plans to further support VFIO
+>>>> on any 32-bit host platforms. Restrict to 64-bit host platforms.
+>>>>
+>>>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>>> Cc: Tony Krowiak <akrowiak@linux.ibm.com>
+>>>> Cc: Eric Farman <farman@linux.ibm.com>
+>>>> Cc: Eric Auger <eric.auger@redhat.com>
+>>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>>> ---
+>>>> hw/vfio/Kconfig | 2 +-
+>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/hw/vfio/Kconfig b/hw/vfio/Kconfig
+>>>> index 7cdba0560aa821c88d3420b36f86020575834202..6ed825429a9151fcdff33e95d1a310210689b258 100644
+>>>> --- a/hw/vfio/Kconfig
+>>>> +++ b/hw/vfio/Kconfig
+>>>> @@ -7,7 +7,7 @@ config VFIO_PCI
+>>>>     default y
+>>>>     select VFIO
+>>>>     select EDID
+>>>> -    depends on LINUX && PCI
+>>>> +    depends on LINUX && PCI && (AARCH64 || PPC64 || X86_64 || S390X)
 >>>
->>> I've seen people do this on x86_64 host
+>>> Are these defined for the host or target? 
 >>
->> Since this patch does:
->>
->>    LINUX && PCI && (...  X86_64 ...)
->>
->> these users won't see any change.
+>> host.
 > 
-> This is wrong---clearly this patch was never tested on the 32-bit platforms where it was supposed to have an effect.
+> No, Zoltan is correct.  They are defined for the target, so if you build for 32-bit ARM you'd still get things with "depends on AARCH64" in qemu-system-aarch64.  You can check that you have
 
-euh it was.
-
-With this patch, on 32-bit and 64-bit host systems :
-
-   # build/qemu-system-i386 -device vfio-pci,?
-   # qemu-system-i386: -device vfio-pci,?: Device 'vfio-pci' not found
-
-Same for qemu-system-ppc and qemu-system-arm
-
-What I am doing wrong ?
-
-  
-> For VFIO_PLATFORM, no objections to deprecating this.
-
-Good let's do that !
-
+AFAICS, you can't build qemu-system-aarch64 on 32-bit ARM anymore. Can you ?
 
 Thanks,
 
 C.
 
 
+
+> 
+> config SBSA_REF
+>      bool
+>      default y
+>      depends on TCG && AARCH64
+> 
+> but on x86-64:
+> 
+> $ qemu-system-aarch64 -M help|grep sbsa
+> sbsa-ref             QEMU 'SBSA Reference' ARM Virtual Machine
+> 
+> 
+>> As per commit 6d701c9bac1d3571e9ad511e01b27df7237f0b13 "meson: Deprecate
+>> 32-bit host support", support will be fully removed in 2 releases and
+>> it doesn't need to be addressed by VFIO.
+> 
+> Note that a deprecation *allows* full removal in 2 releases.  We have a lot of things that are deprecated but have not been removed.  For example
+> 
+>     Short-form boolean options (since 6.0)
+>     ''''''''''''''''''''''''''''''''''''''
+> 
+>     Boolean options such as ``share=on``/``share=off`` could be written
+>     in short form as ``share`` and ``noshare``.  This is now deprecated
+>     and will cause a warning.
+> 
+> is deprecated to *allow* switching command-line options from the "qemu-options" parser to the "keyval" parser that doesn't support short-form boolean options, but it's unlikely that qemu-options will drop support for short-form boolean options.
+> 
+> Paolo
+> 
 
 
