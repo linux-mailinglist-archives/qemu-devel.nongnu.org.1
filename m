@@ -2,68 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3000DA4C439
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC5DA4C4FE
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:28:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp7NP-0007ky-3J; Mon, 03 Mar 2025 10:06:39 -0500
+	id 1tp7gY-0006hI-RQ; Mon, 03 Mar 2025 10:26:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tp7MY-0007fP-DZ; Mon, 03 Mar 2025 10:05:48 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tp7gU-0006gd-T2
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:26:23 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tp7MV-0000fe-Sl; Mon, 03 Mar 2025 10:05:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741014344; x=1772550344;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=YWu7U2ox8C/kS5IwJ4lG/zzSKqj7UhVgFgx8RBptvjE=;
- b=dIfsAlnSUYBehUdQBeOKRMRxnannHPcJVPfDjtRpmtivP8plq3SyKtXs
- PFQv9xVZU87luIEt9dDOvxkhIfX1BtgpI1Ka8bn4Ml+iQt3GH7Mx8kROu
- knAZq57h+6pSFACcMBPF5LHGwyFObpZ6xd2BSqV3QKtACL3J+tkqnBkwv
- XyoH+1lCX/GKDe29oN2AdFozUWVRQmPhfnvG/H4zUW0kDObpOHCiG3sTM
- CVdBES27TM/6iNwbgBQa4b6A+fOXHu7JnsdnYkxKPn0o15bBt2udEXx16
- ho6ImSGqF7h4hDXDlmPADQfNq48agkU0QMwaCSIf+pwTTEc7ibBYKi71M A==;
-X-CSE-ConnectionGUID: 6sFnXdPVRpq9RD6nK5tjZg==
-X-CSE-MsgGUID: viYkFKm/QOqMtwxfi38DeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52530058"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208,217";a="52530058"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2025 07:05:40 -0800
-X-CSE-ConnectionGUID: c0r33xX1Q8qv9toIUwi6+A==
-X-CSE-MsgGUID: b1sqFXykQuKLlSQ4e7KDzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
- d="scan'208,217";a="122176351"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 03 Mar 2025 07:05:39 -0800
-Date: Mon, 3 Mar 2025 23:25:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 10/12] rust: memory: wrap MemoryRegion with Opaque<>
-Message-ID: <Z8XJ+RwBctFJ6FqW@intel.com>
-References: <20250227142219.812270-1-pbonzini@redhat.com>
- <20250227142219.812270-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tp7gS-00058I-65
+ for qemu-devel@nongnu.org; Mon, 03 Mar 2025 10:26:22 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BFDBE4E601D;
+ Mon, 03 Mar 2025 16:26:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id VlpIhAGIx-sm; Mon,  3 Mar 2025 16:26:12 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id C4C5D4E6010; Mon, 03 Mar 2025 16:26:12 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C201C74577C;
+ Mon, 03 Mar 2025 16:26:12 +0100 (CET)
+Date: Mon, 3 Mar 2025 16:26:12 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+cc: Paolo Bonzini <pbonzini@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
+ Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH 1/2] vfio: Make vfio-pci available on 64-bit host platforms
+ only
+In-Reply-To: <b2075e91-79ca-4d5f-b13b-151f2a59181d@redhat.com>
+Message-ID: <8e3a5810-accf-1f77-8692-4e077c3ce327@eik.bme.hu>
+References: <20250226084721.232703-1-clg@redhat.com>
+ <20250226084721.232703-2-clg@redhat.com>
+ <a39e97c2-c6fd-34e4-f91b-b3491185b789@eik.bme.hu>
+ <c60b7780-5b3f-43a0-a7f1-30820d4e6fb8@redhat.com>
+ <bb7c2adf-f146-50c7-7716-c1ee7b606b01@eik.bme.hu>
+ <aa01f3dd-e3ac-4ee5-87b4-8133103bd000@linaro.org>
+ <270cc189-e3b2-4bf4-b32b-8655be51bcb4@redhat.com>
+ <b2075e91-79ca-4d5f-b13b-151f2a59181d@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227142219.812270-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-1909933127-1741015572=:78201"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,44 +76,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 27, 2025 at 03:22:17PM +0100, Paolo Bonzini wrote:
-> Date: Thu, 27 Feb 2025 15:22:17 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 10/12] rust: memory: wrap MemoryRegion with Opaque<>
-> X-Mailer: git-send-email 2.48.1
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/bindings.rs |  3 ---
->  rust/qemu-api/src/memory.rs   | 35 +++++++++++++++++++++--------------
->  2 files changed, 21 insertions(+), 17 deletions(-)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-...
+--3866299591-1909933127-1741015572=:78201
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
->  impl MemoryRegion {
->      // inline to ensure that it is not included in tests, which only
-> @@ -174,13 +174,20 @@ pub fn init_io<T: IsA<Object>>(
->          size: u64,
->      ) {
->          unsafe {
-> -            Self::do_init_io(&mut self.inner, owner.cast::<Object>(), &ops.0, name, size);
-> +            Self::do_init_io(
-> +                // self.0.as_mut_ptr() needed because Rust tries to call
-> +                // ObjectDeref::as_mut_ptr() on "&mut Self", instead of coercing
-> +                // to "&Self" and then calling MemoryRegion::as_mut_ptr().
-> +                // Revisit if/when ObjectCastMut is not needed anymore; it is
-> +                // only used in a couple places for initialization.
-> +                self.0.as_mut_ptr(),
-> +                owner.cast::<Object>(),
-> +                &ops.0,
-> +                name,
-> +                size,
-> +            );
->          }
->      }
+On Mon, 3 Mar 2025, Cédric Le Goater wrote:
+> On 3/3/25 15:46, Paolo Bonzini wrote:
+>> On 3/3/25 15:30, Philippe Mathieu-Daudé wrote:
+>>>>>> I see PPC is defined in target/ppc/Kconfig so I think these mark the 
+>>>>>> target not the host. Vfio-pci works with qemu-system-ppc 
+>>>> 
+>>>> I've seen people do this on x86_64 host
+>>> 
+>>> Since this patch does:
+>>> 
+>>>    LINUX && PCI && (...  X86_64 ...)
+>>> 
+>>> these users won't see any change.
+>> 
+>> This is wrong---clearly this patch was never tested on the 32-bit platforms 
+>> where it was supposed to have an effect.
+>
+> euh it was.
+>
+> With this patch, on 32-bit and 64-bit host systems :
+>
+>  # build/qemu-system-i386 -device vfio-pci,?
+>  # qemu-system-i386: -device vfio-pci,?: Device 'vfio-pci' not found
+>
+> Same for qemu-system-ppc and qemu-system-arm
+>
+> What I am doing wrong ?
 
-The extra comment is nice, too. :-)
+These QEMU targets aren't deprecated, compiling QEMU on 32 bit hosts is. 
+But you can still use qemu-system-i386 and qemu-system-ppc on 64 bit 
+hosts and vfio-pci works with these so it should not be disabled when 
+building these QEMU targets. I think you meant to do something else not 
+what this patch does.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Regards,
+BALATON Zoltan
+--3866299591-1909933127-1741015572=:78201--
 
