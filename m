@@ -2,87 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF96A4C354
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FED8A4C2E5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 15:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp6iQ-0000pJ-5j; Mon, 03 Mar 2025 09:24:18 -0500
+	id 1tp6Tn-0007wI-JS; Mon, 03 Mar 2025 09:09:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp6hr-0000ep-Sa
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:23:44 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tp6hp-0000DY-MN
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 09:23:43 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-30bb2fdbb09so13576041fa.2
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 06:23:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741011819; x=1741616619; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pF8mhgVS9mR7+xpM7SF4Y/E3aG2pQC5gehg+3H9tV80=;
- b=v5kfkr/sUcaPZXGKq7AOTS1+L5OOAYgrIxq1DBmDZYwJpbaGR/sqCYcZ3xYtzVywE9
- N4N3//ikMAJFufDfxuSYfc/3DO44j1/auPZMFFKr0ERzsxcqpFX1H3socX95eP3NrpIB
- hQy+Lg+Itbz9sCRwvYtKw1ydIpxumx4JOqTLoFQ+KkzYRQGe/EQjDDwYFTxcLyyD3YUB
- VnOXybetYPH6QthuKnhKg2u4vBMeUQmW4f4P9Ckn1sODkIvnuQttQiydXjBN+X99QMeK
- EWUjvOOQmXd4uAzpGUruoPiJ4Z4sBo2ky/2s3NsYwOdX7tHwKUicjGo4H+9UKrekvY3m
- Pvrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741011819; x=1741616619;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pF8mhgVS9mR7+xpM7SF4Y/E3aG2pQC5gehg+3H9tV80=;
- b=icqEqbZNCqPZkYy/ggZJC/WodxJUUR9sLDm+sE2RBVNk8x7Drw/uEIXJo2eoEiGUtz
- q5wuQBxWvXI07q0peHAGJFeMcdN+hyYU69KO5C6l0yn0t2Qg8C9ofaATFQZvtQTfbHOS
- lbBnY403soBZOh3gtBpS38wHvLFKyhOhe04T+w0aP6UPY/8cK57AF1LQyMBqvfuwfQOb
- FBizS1IV8uXZ90KUFXsS1v7Gug2QIw7Llc9ntPu7dYJ9bRFNRRHNKnln6injb/uCVlzM
- 2bbQ04BrU/3K55ZIfX2TwF08d0+cvcVrerj/mV59hs/cBNdYTBeGpDJmiJPbWmnYVwMw
- zDdQ==
-X-Gm-Message-State: AOJu0YwY85xNvNvA5fhfAPNBLBRLmWkpAsCc9CA+oq20phpBgEa81byJ
- IlU4WqbKaIBYdblGtDm8vs3COIjFqBb7VWtwHPn8QsGldBen0WGPb2eOk/sFmVs=
-X-Gm-Gg: ASbGncuzkLXkSfE+VZrxX5eBbKuFUP2YHVP5fMolABN9dB7+UmRKsBDTRCsyoPuPXEg
- lQo1Ahz2Ki7SeBOWC4e8VOnhM7yfii/8UhhD3l+LWYT3/3OcnVlpZM69AAFvwIASRuW6mwXtfbl
- shD8U72eGhdv+yp07Afx+NTAzC1cbGbU2/DODXJ4AYbY21CKhTFCpAKuCG9MqjRPqeMSPKoENgS
- S2La1eux/MbOldLZNBlsXUs5XuVGjdiygQ8SO1vchr5IOxI6l/QyJ8wAwemOTEo41HBQ3PJXaBX
- aYm0Ygc+eCejpQJcrgIO/XyKhjbuTBGPbVJsERVi3Y2IHWAdi7R+nMjqE+k13YhpxRPT9F7xyH4
- ZXpLorYJ51V2t
-X-Google-Smtp-Source: AGHT+IGautwzdxbFpKOav9W11W73VWUeR18+q7gSWI1T5LbnQC6a6mxUxouTG99MtltBGDByZeGB/A==
-X-Received: by 2002:a05:651c:19a7:b0:302:2620:ec84 with SMTP id
- 38308e7fff4ca-30b931f9d3dmr45740011fa.7.1741011819461; 
- Mon, 03 Mar 2025 06:23:39 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-30bb22c2189sm5179171fa.33.2025.03.03.06.23.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 06:23:38 -0800 (PST)
-Message-ID: <846d2da9-1254-4c38-aa36-d3160bb84b0e@linaro.org>
-Date: Mon, 3 Mar 2025 15:23:36 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tp6T3-0007v8-Oj; Mon, 03 Mar 2025 09:08:27 -0500
+Received: from mgamail.intel.com ([198.175.65.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tp6T0-0005ow-64; Mon, 03 Mar 2025 09:08:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741010902; x=1772546902;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=cYg9gQJivnvnrJ5GVOpdMXeSeKglr3leGd4UVFX0/mQ=;
+ b=L2pxpmssqVZIKU+aQs8/zOEg43MYy6Kv81XxlA/LLFiWuBgKC3A37wbz
+ 7/He/jgZDbItzgaZcnw65j7TN3H4Q5Rn1Tx9oAaTniaXJQHaegUPHvBq6
+ IXw76l4PwZpA37CP/sXA9LTiw9eeGntcaoVqm1lLynL76Y5gF4XrWByfZ
+ sME4wI4ez9ZCwn2f4h/oVyErb1Gb999vZJOslWYbcoaUVOGk2vkTO6IlO
+ fq2LCsU2ZMtLIZ3osAPmhDgvf1NLg2/g6lDVJxslgjP8GDLn3IbARIEbk
+ egxyeGqO2dMVvXEFNocYKEsGZdhppiPXpOsVQJciLf3Bnyn/Kz/QIicw5 A==;
+X-CSE-ConnectionGUID: OoM5o7hPSLmDXpr83t/bgg==
+X-CSE-MsgGUID: fc/+qCM7QmaT+IhtIvejAw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="53279050"
+X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; d="scan'208";a="53279050"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 06:08:17 -0800
+X-CSE-ConnectionGUID: 46kBIb++S+Op3qO5hdy/eA==
+X-CSE-MsgGUID: l/3MIYIVRQeZHTYcmXUkjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155203497"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa001.jf.intel.com with ESMTP; 03 Mar 2025 06:08:16 -0800
+Date: Mon, 3 Mar 2025 22:28:23 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 04/12] rust: timer: wrap QEMUTimer with Opaque<> and
+ express pinning requirements
+Message-ID: <Z8W8hzFO9HU3IujQ@intel.com>
+References: <20250227142219.812270-1-pbonzini@redhat.com>
+ <20250227142219.812270-5-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/char: sifive_uart: Free fifo on unrealize
-To: Alistair Francis <alistair23@gmail.com>, palmer@dabbelt.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, chigot@adacore.com
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-References: <20250303023120.157221-1-alistair.francis@wdc.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250303023120.157221-1-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227142219.812270-5-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,16 +80,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/25 03:31, Alistair Francis wrote:
-> We previously allocate the fifo on reset and never free it, which means
-> we are leaking memory.
-> 
-> Instead let's allocate on realize and free on unrealize.
-> 
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->   hw/char/sifive_uart.c | 44 +++++++++++++++++++++++++++----------------
->   1 file changed, 28 insertions(+), 16 deletions(-)
+> -    pub fn init_full<'timer, 'opaque: 'timer, T, F>(
+> -        &'timer mut self,
+> +    pub fn new_full<'opaque, T, F>(
+>          timer_list_group: Option<&TimerListGroup>,
+>          clk_type: ClockType,
+>          scale: u32,
+>          attributes: u32,
+>          _cb: F,
+>          opaque: &'opaque T,
+> -    ) where
+> +    ) -> Pin<Box<Self>>
+>          F: for<'a> FnCall<(&'a T,)>,
+>      {
 
-Patch queued, thanks!
+Ah, the lifetime here isn't effectively bound... However, I also
+referred to your latest code [1] :), and it seems that this issue
+has already been fixed. (Nit: The code still has a complaint from
+`cargo fmt`)
+
+[1]: https://gitlab.com/bonzini/qemu/-/commit/ccb9f6dc738f503a696d8d50f1b5e4576ee80bc6
+
+Regards,
+Zhao
+
 
