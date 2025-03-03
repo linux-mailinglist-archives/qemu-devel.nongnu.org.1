@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE6FA4C4E1
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3000DA4C439
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Mar 2025 16:07:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tp7dU-0004EF-IC; Mon, 03 Mar 2025 10:23:17 -0500
+	id 1tp7NP-0007ky-3J; Mon, 03 Mar 2025 10:06:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tp7ca-000491-0p; Mon, 03 Mar 2025 10:22:20 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tp7MY-0007fP-DZ; Mon, 03 Mar 2025 10:05:48 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1tp7cP-0004aS-Nr; Mon, 03 Mar 2025 10:22:13 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z62XR3mXbz6H7Kh;
- Mon,  3 Mar 2025 23:19:03 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
- by mail.maildlp.com (Postfix) with ESMTPS id E5F2E140A86;
- Mon,  3 Mar 2025 23:21:57 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Mar 2025 16:21:57 +0100
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Mon, 3 Mar 2025 16:21:57 +0100
-To: Nicolin Chen <nicolinc@nvidia.com>
-CC: Eric Auger <eric.auger@redhat.com>, "ddutile@redhat.com"
- <ddutile@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Jason
- Gunthorpe" <jgg@nvidia.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rLkOMCAgAAM2QCAAAz2gIAEhqeggCVVAYCAI176AIAE12cAgAGBGYCAAGn5AIACTjRQgAB/1ACAJxm5oA==
-Date: Mon, 3 Mar 2025 15:21:57 +0000
-Message-ID: <48e3ac70f9fb4867a9ef835c22d4fda8@huawei.com>
-References: <Z1wh69_gZ9izr1iU@redhat.com> <Z1wsslDnwlth3A8+@nvidia.com>
- <CAFEAcA8TW2RKyFnh-TZRpfaKfZipHD5TZy_hymUr41GJ4rs4xA@mail.gmail.com>
- <329445b2f68a47269292aefb34584375@huawei.com>
- <Z39Ugx2M+FRFVVpB@Asurada-Nvidia>
- <f4e64a3a-5c1d-49f2-ac72-b84ecd353c9d@redhat.com>
- <Z6EQENkHJy7TrkYy@Asurada-Nvidia>
- <77f736f6-9ef9-462b-916e-c8cfff279044@redhat.com>
- <Z6KsAE9wnjWU0xMs@Asurada-Nvidia>
- <8224c38797344d1a9c0f453774925db3@huawei.com>
- <Z6UGVP3olKvakHUh@Asurada-Nvidia>
-In-Reply-To: <Z6UGVP3olKvakHUh@Asurada-Nvidia>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.203.177.241]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tp7MV-0000fe-Sl; Mon, 03 Mar 2025 10:05:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741014344; x=1772550344;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=YWu7U2ox8C/kS5IwJ4lG/zzSKqj7UhVgFgx8RBptvjE=;
+ b=dIfsAlnSUYBehUdQBeOKRMRxnannHPcJVPfDjtRpmtivP8plq3SyKtXs
+ PFQv9xVZU87luIEt9dDOvxkhIfX1BtgpI1Ka8bn4Ml+iQt3GH7Mx8kROu
+ knAZq57h+6pSFACcMBPF5LHGwyFObpZ6xd2BSqV3QKtACL3J+tkqnBkwv
+ XyoH+1lCX/GKDe29oN2AdFozUWVRQmPhfnvG/H4zUW0kDObpOHCiG3sTM
+ CVdBES27TM/6iNwbgBQa4b6A+fOXHu7JnsdnYkxKPn0o15bBt2udEXx16
+ ho6ImSGqF7h4hDXDlmPADQfNq48agkU0QMwaCSIf+pwTTEc7ibBYKi71M A==;
+X-CSE-ConnectionGUID: 6sFnXdPVRpq9RD6nK5tjZg==
+X-CSE-MsgGUID: viYkFKm/QOqMtwxfi38DeQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52530058"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; d="scan'208,217";a="52530058"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 07:05:40 -0800
+X-CSE-ConnectionGUID: c0r33xX1Q8qv9toIUwi6+A==
+X-CSE-MsgGUID: b1sqFXykQuKLlSQ4e7KDzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+ d="scan'208,217";a="122176351"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 03 Mar 2025 07:05:39 -0800
+Date: Mon, 3 Mar 2025 23:25:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 10/12] rust: memory: wrap MemoryRegion with Opaque<>
+Message-ID: <Z8XJ+RwBctFJ6FqW@intel.com>
+References: <20250227142219.812270-1-pbonzini@redhat.com>
+ <20250227142219.812270-11-pbonzini@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227142219.812270-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,46 +77,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgTmljb2xpbiwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBOaWNv
-bGluIENoZW4gPG5pY29saW5jQG52aWRpYS5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBGZWJydWFy
-eSA2LCAyMDI1IDY6NTggUE0NCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1l
-ZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT4NCj4gQ2M6IEVyaWMgQXVnZXIgPGVyaWMu
-YXVnZXJAcmVkaGF0LmNvbT47IGRkdXRpbGVAcmVkaGF0LmNvbTsgUGV0ZXINCj4gTWF5ZGVsbCA8
-cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPjsgSmFzb24gR3VudGhvcnBlIDxqZ2dAbnZpZGlhLmNv
-bT47DQo+IERhbmllbCBQLiBCZXJyYW5nw6kgPGJlcnJhbmdlQHJlZGhhdC5jb20+OyBxZW11LWFy
-bUBub25nbnUub3JnOw0KPiBxZW11LWRldmVsQG5vbmdudS5vcmc7IExpbnV4YXJtIDxsaW51eGFy
-bUBodWF3ZWkuY29tPjsgV2FuZ3pob3UNCj4gKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47
-IGppYW5na3Vua3VuIDxqaWFuZ2t1bmt1bkBodWF3ZWkuY29tPjsNCj4gSm9uYXRoYW4gQ2FtZXJv
-biA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsNCj4gemhhbmdmZWkuZ2FvQGxpbmFyby5v
-cmcNCj4gU3ViamVjdDogUmU6IFtSRkMgUEFUQ0ggMC81XSBody9hcm0vdmlydDogQWRkIHN1cHBv
-cnQgZm9yIHVzZXItY3JlYXRhYmxlDQo+IG5lc3RlZCBTTU1VdjMNCj4gDQpbLi5dDQoNCj4gPiBP
-bmUgb2YgdGhlIGZlZWRiYWNrIEkgcmVjZWl2ZWQgb24gbXkgc2VyaWVzIHdhcyB0byByZW5hbWUg
-ImFybS1zbW11djMtDQo+IG5lc3RlZCINCj4gPiB0byAiYXJtLXNtbXV2My1hY2NlbCIgYW5kIHBv
-c3NpYmx5IHJlbmFtZSBmdW5jdGlvbiBuYW1lcyB0byBpbmNsdWRlDQo+ICJhY2NlbCcgYXMgd2Vs
-bA0KPiA+IGFuZCBtb3ZlIHRob3NlIGZ1bmN0aW9ucyB0byBhIHNlcGFyYXRlICJzbW11djMtYWNj
-ZWwuYyIgZmlsZS4gSSBzdXBwb3NlDQo+IHRoYXQgYXBwbGllcyB0bw0KPiA+IHRoZSAiIEFkZCBI
-VyBhY2NlbGVyYXRlZCBuZXN0aW5nIHN1cHBvcnQgZm9yIGFybSBTTU1VdjMiIHNlcmllcyBhcw0K
-PiB3ZWxsLg0KPiA+DQo+ID4gSXMgdGhhdCBmaW5lIHdpdGggeW91Pw0KPiANCj4gT2gsIG5vIHBy
-b2JsZW0uIElmIHlvdSB3YW50IHRvIHJlbmFtZSB0aGUgd2hvbGUgdGhpbmcsIHBsZWFzZSBmZWVs
-DQo+IGZyZWUuIEkgZG8gc2VlIHRoZSBuYW1pbmcgY29uZmxpY3QgYmV0d2VlbiB0aGUgIm5lc3Rl
-ZCIgc3RhZ2UgYW5kDQo+IHRoZSAibmVzdGVkIiBIVyBmZWF0dXJlLCB3aGljaCBhcmUgYm90aCBz
-dXBwb3J0ZWQgYnkgdGhlIHZTTU1VIG5vdy4NCg0KSSBhbSB3b3JraW5nIG9uIHRoZSBhYm92ZSBu
-b3cgYW5kIGhhdmUgcXVpY2sgcXVlc3Rpb24gdG8geW918J+Yii4NCg0KTG9va2luZyBhdCB0aGUg
-c21tdV9kZXZfYXR0YWNoX3Zpb21tdSgpIGZuIGhlcmVbMF0sDQppdCBhcHBlYXJzIHRvIGRvIHRo
-ZSBmb2xsb3dpbmc6DQoNCjEuIEFsbG9jIGEgczJfaHdwdCBpZiBub3QgYWxsb2NhdGVkIGFscmVh
-ZHkgYW5kIGF0dGFjaCBpdC4NCjIuIEFsbG9jYXRlIGFib3J0IGFuZCBieXBhc3MgaHdwdA0KMy4g
-QXR0YWNoIGJ5cGFzcyBod3B0Lg0KDQpJIGRpZG4ndCBnZXQgd2h5IHdlIGFyZSBkb2luZyB0aGUg
-c3RlcCAzIGhlcmUuIFRvIG1lIGl0IGxvb2tzIGxpa2UsDQp3aGVuIHdlIGF0dGFjaCB0aGUgczJf
-aHdwdChpZSwgdGhlIG5lc3RlZCBwYXJlbnQgZG9tYWluIGF0dGFjaCksIA0KdGhlIGtlcm5lbCB3
-aWxsIGRvLA0KDQphcm1fc21tdV9hdHRhY2hfZGV2KCkNCiAgYXJtX3NtbXVfbWFrZV9zMl9kb21h
-aW5fc3RlKCkNCg0KSXQgYXBwZWFycyB0aHJvdWdoIHN0ZXAgMywgd2UgYWNoaWV2ZSB0aGUgc2Ft
-ZSB0aGluZyBhZ2Fpbi4NCg0KT3IgaXQgaXMgcG9zc2libGUgSSBtaXNzZWQgc29tZXRoaW5nIG9i
-dmlvdXMgaGVyZS4NCg0KUGxlYXNlIGxldCBtZSBrbm93Lg0KDQpUaGFua3MsDQpTaGFtZWVyDQoN
-ClswXSBodHRwczovL2dpdGh1Yi5jb20vbmljb2xpbmMvcWVtdS9ibG9iL3dpcC9mb3Jfc2hhbWVl
-cl8wMjA0MjAyNS9ody9hcm0vc21tdS1jb21tb24uYyNMOTEwQzEzLUw5MTBDMzUNCg0KDQo=
+On Thu, Feb 27, 2025 at 03:22:17PM +0100, Paolo Bonzini wrote:
+> Date: Thu, 27 Feb 2025 15:22:17 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 10/12] rust: memory: wrap MemoryRegion with Opaque<>
+> X-Mailer: git-send-email 2.48.1
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/src/bindings.rs |  3 ---
+>  rust/qemu-api/src/memory.rs   | 35 +++++++++++++++++++++--------------
+>  2 files changed, 21 insertions(+), 17 deletions(-)
+
+...
+
+>  impl MemoryRegion {
+>      // inline to ensure that it is not included in tests, which only
+> @@ -174,13 +174,20 @@ pub fn init_io<T: IsA<Object>>(
+>          size: u64,
+>      ) {
+>          unsafe {
+> -            Self::do_init_io(&mut self.inner, owner.cast::<Object>(), &ops.0, name, size);
+> +            Self::do_init_io(
+> +                // self.0.as_mut_ptr() needed because Rust tries to call
+> +                // ObjectDeref::as_mut_ptr() on "&mut Self", instead of coercing
+> +                // to "&Self" and then calling MemoryRegion::as_mut_ptr().
+> +                // Revisit if/when ObjectCastMut is not needed anymore; it is
+> +                // only used in a couple places for initialization.
+> +                self.0.as_mut_ptr(),
+> +                owner.cast::<Object>(),
+> +                &ops.0,
+> +                name,
+> +                size,
+> +            );
+>          }
+>      }
+
+The extra comment is nice, too. :-)
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
