@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00F4A4F105
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C882A4F0ED
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:00:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpbEu-0003dU-Bb; Tue, 04 Mar 2025 17:59:52 -0500
+	id 1tpbEv-0003kf-Ek; Tue, 04 Mar 2025 17:59:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbEq-0003NX-0O
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:48 -0500
+ id 1tpbEs-0003dl-Sr
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:50 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbEo-0007Jf-Bs
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:47 -0500
+ id 1tpbEr-0007KI-2W
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:50 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaPQ-00000000La1-0EaM; Tue, 04 Mar 2025 23:06:40 +0100
+ id 1tpaPV-00000000LaB-0ifU; Tue, 04 Mar 2025 23:06:45 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,14 +31,15 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v6 22/36] vfio/migration: Multifd device state transfer
- support - basic types
-Date: Tue,  4 Mar 2025 23:03:49 +0100
-Message-ID: <4eedd529e6617f80f3d6a66d7268a0db2bc173fa.1741124640.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v6 23/36] vfio/migration: Multifd device state transfer - add
+ support checking function
+Date: Tue,  4 Mar 2025 23:03:50 +0100
+Message-ID: <8ce50256f341b3d47342bb217cb5fbb2deb14639.1741124640.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1741124640.git.maciej.szmigiero@oracle.com>
 References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=145.239.82.108;
  envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
@@ -66,107 +67,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Add basic types and flags used by VFIO multifd device state transfer
-support.
+Add vfio_multifd_transfer_supported() function that tells whether the
+multifd device state transfer is supported.
 
-Since we'll be introducing a lot of multifd transfer specific code,
-add a new file migration-multifd.c to home it, wired into main VFIO
-migration code (migration.c) via migration-multifd.h header file.
-
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/meson.build         |  1 +
- hw/vfio/migration-multifd.c | 33 +++++++++++++++++++++++++++++++++
- hw/vfio/migration-multifd.h | 17 +++++++++++++++++
- hw/vfio/migration.c         |  1 +
- 4 files changed, 52 insertions(+)
- create mode 100644 hw/vfio/migration-multifd.c
- create mode 100644 hw/vfio/migration-multifd.h
+ hw/vfio/migration-multifd.c | 6 ++++++
+ hw/vfio/migration-multifd.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index bba776f75cc7..260d65febd6b 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -5,6 +5,7 @@ vfio_ss.add(files(
-   'container-base.c',
-   'container.c',
-   'migration.c',
-+  'migration-multifd.c',
-   'cpr.c',
- ))
- vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
 diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-new file mode 100644
-index 000000000000..fa594b33fdd1
---- /dev/null
+index fa594b33fdd1..79fae0b6296f 100644
+--- a/hw/vfio/migration-multifd.c
 +++ b/hw/vfio/migration-multifd.c
-@@ -0,0 +1,33 @@
-+/*
-+ * Multifd VFIO migration
-+ *
-+ * Copyright (C) 2024,2025 Oracle and/or its affiliates.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+@@ -31,3 +31,9 @@ typedef struct VFIODeviceStatePacket {
+     uint32_t flags;
+     uint8_t data[0];
+ } QEMU_PACKED VFIODeviceStatePacket;
 +
-+#include "qemu/osdep.h"
-+#include "hw/vfio/vfio-common.h"
-+#include "migration/misc.h"
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "qemu/lockable.h"
-+#include "qemu/main-loop.h"
-+#include "qemu/thread.h"
-+#include "migration/qemu-file.h"
-+#include "migration-multifd.h"
-+#include "trace.h"
-+
-+#define VFIO_DEVICE_STATE_CONFIG_STATE (1)
-+
-+#define VFIO_DEVICE_STATE_PACKET_VER_CURRENT (0)
-+
-+typedef struct VFIODeviceStatePacket {
-+    uint32_t version;
-+    uint32_t idx;
-+    uint32_t flags;
-+    uint8_t data[0];
-+} QEMU_PACKED VFIODeviceStatePacket;
++bool vfio_multifd_transfer_supported(void)
++{
++    return multifd_device_state_supported() &&
++        migrate_send_switchover_start();
++}
 diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
-new file mode 100644
-index 000000000000..5b221c6e16b0
---- /dev/null
+index 5b221c6e16b0..1b60d5f67a1c 100644
+--- a/hw/vfio/migration-multifd.h
 +++ b/hw/vfio/migration-multifd.h
-@@ -0,0 +1,17 @@
-+/*
-+ * Multifd VFIO migration
-+ *
-+ * Copyright (C) 2024,2025 Oracle and/or its affiliates.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+@@ -14,4 +14,6 @@
+ 
+ #include "hw/vfio/vfio-common.h"
+ 
++bool vfio_multifd_transfer_supported(void);
 +
-+#ifndef HW_VFIO_MIGRATION_MULTIFD_H
-+#define HW_VFIO_MIGRATION_MULTIFD_H
-+
-+#include "hw/vfio/vfio-common.h"
-+
-+#endif
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index a9b0970604aa..dc1fe4e717a4 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -23,6 +23,7 @@
- #include "migration/qemu-file.h"
- #include "migration/register.h"
- #include "migration/blocker.h"
-+#include "migration-multifd.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-vfio.h"
- #include "exec/ramlist.h"
+ #endif
 
