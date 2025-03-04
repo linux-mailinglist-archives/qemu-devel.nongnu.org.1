@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFAEA4D599
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 09:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D75AA4D58A
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 09:00:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpNCt-0001EX-Q3; Tue, 04 Mar 2025 03:00:51 -0500
+	id 1tpNBw-0000Bf-GO; Tue, 04 Mar 2025 02:59:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tpNBf-00009k-FG
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tpNBW-00006g-Me
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tpNBU-0003H5-CI
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:30 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tpNBU-0003H1-Bt
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1741075162;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:resent-to:
  resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=0hojsqr1mliEcFxxn6q69rS2Om4P70YoeoZzTwtq1pY=;
- b=ZvZxH9fnisCnjBLfOmBHjeJcpoi8fKqZ6PVvjmRtAPK6vXiL0JEFiEBa3XYYjWZp+1655Z
- isN+VguYvpaObqwm+4Otdb5C5TzWAx/EF61wQgSyEYr/yAfAlYLMF614cn49plosAvgyXP
- NALV33nJz4WQC0uLcDgAAi7FVJ4jFlY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=SG8udyNgcXPK4khZdpXuLvQKpbrngN6G82L4C6A6YgM=;
+ b=IilfKwp6feg4B2VBhOFJ5+LXJWQrvLeh62m464phvVCOBk39T6ncRnnmB8Bbt5NtkfbIud
+ p5V95c71k5ZIL/QRKwBB+Zex15GaC3t/fnDX0SEexfr1szJTnBFp5DdNWJmLYujcYaqJjU
+ HPzhABHsnd2ZD0Ng0usk38NIkKS7L2g=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-U2sa28p_O_WEeBI83GlEag-1; Tue,
- 04 Mar 2025 02:59:20 -0500
-X-MC-Unique: U2sa28p_O_WEeBI83GlEag-1
-X-Mimecast-MFC-AGG-ID: U2sa28p_O_WEeBI83GlEag_1741075160
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-DuNRvjDbOl2XvWHBoVRN6A-1; Tue,
+ 04 Mar 2025 02:59:21 -0500
+X-MC-Unique: DuNRvjDbOl2XvWHBoVRN6A-1
+X-Mimecast-MFC-AGG-ID: DuNRvjDbOl2XvWHBoVRN6A_1741075160
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2892F180087B
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1828619137AE
  for <qemu-devel@nongnu.org>; Tue,  4 Mar 2025 07:59:20 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.15])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D355719560AF
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C2EBF180087B
  for <qemu-devel@nongnu.org>; Tue,  4 Mar 2025 07:59:19 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3783421E66C3; Tue, 04 Mar 2025 08:59:17 +0100 (CET)
+ id 3DF6B21E66AB; Tue, 04 Mar 2025 08:59:17 +0100 (CET)
 Resent-To: qemu-devel@nongnu.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
 Resent-Date: Tue, 04 Mar 2025 08:59:17 +0100
-Resent-Message-ID: <87cyexw7je.fsf@pond.sub.org>
+Resent-Message-ID: <878qplw7je.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com Tue Mar  4 08:43:47 2025
 Received: from imap.gmail.com ([2a00:1450:4025:402::6d]:993) by
- dusky.pond.sub.org with IMAP4-SSL getmail6 msgid:11/315748; 04 Mar 2025
+ dusky.pond.sub.org with IMAP4-SSL getmail6 msgid:11/315749; 04 Mar 2025
  07:43:47 -0000
-Received: from blackfin.pond.sub.org (p4fd0400e.dip0.t-ipconnect.de.
- [79.208.64.14]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43b737074d8sm187289425e9.16.2025.03.03.23.21.17
+Received: from blackfin.pond.sub.org
+ (p200300d36f33fd00dda5bc774eb05696.dip0.t-ipconnect.de.
+ [2003:d3:6f33:fd00:dda5:bc77:4eb0:5696])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-390e47a7a2asm16895541f8f.37.2025.03.03.23.21.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Mar 2025 23:21:17 -0800 (PST)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5180D21E66C3; Tue, 04 Mar 2025 08:21:17 +0100 (CET)
+ id 560BE21E66AB; Tue, 04 Mar 2025 08:21:17 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL v2 1/5] qapi/char.json: minor doc rewording for `hub` device
-Date: Tue,  4 Mar 2025 08:21:13 +0100
-Message-ID: <20250304072117.894134-2-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	John Snow <jsnow@redhat.com>
+Subject: [PULL v2 2/5] qapi: update pylintrc config
+Date: Tue,  4 Mar 2025 08:21:14 +0100
+Message-ID: <20250304072117.894134-3-armbru@redhat.com>
 In-Reply-To: <20250304072117.894134-1-armbru@redhat.com>
 References: <20250304072117.894134-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-getmail-retrieved-from-mailbox: [Gmail]/All Mail
 X-GMAIL-LABELS: "\\Sent"
-X-GMAIL-THRID: 1825647234722748545
-X-GMAIL-MSGID: 1825647234722748545
-Lines: 32
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-GMAIL-THRID: 1825647234672510546
+X-GMAIL-MSGID: 1825647234672510546
+Lines: 30
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,34 +106,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Roman Penyaev <r.peniaev@gmail.com>
+From: John Snow <jsnow@redhat.com>
 
-Refine documentation for the hub device, specify the maximum.
+If you've got a newer pylint, it'll whine about positional arguments
+separately from the regular ones. Update the configuration to ignore
+both categories of warning.
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org
-Message-ID: <20250219090607.559887-1-r.peniaev@gmail.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20250224033741.222749-2-jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/char.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/qapi/pylintrc | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/qapi/char.json b/qapi/char.json
-index f02b66c06b..dde2f9538f 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -337,7 +337,7 @@
- #
- # Configuration info for hub chardevs.
- #
--# @chardevs: List of chardev IDs, which should be added to this hub
-+# @chardevs: IDs to be added to this hub (maximum 4 devices).
- #
- # Since: 10.0
- ##
+diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
+index c028a1f9f5..d24eece741 100644
+--- a/scripts/qapi/pylintrc
++++ b/scripts/qapi/pylintrc
+@@ -17,6 +17,7 @@ disable=consider-using-f-string,
+         too-many-arguments,
+         too-many-branches,
+         too-many-instance-attributes,
++        too-many-positional-arguments,
+         too-many-statements,
+         useless-option-value,
+ 
 -- 
 2.48.1
 
