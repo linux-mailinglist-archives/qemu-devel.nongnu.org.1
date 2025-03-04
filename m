@@ -2,90 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B44A4E212
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 15:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15903A4E322
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 16:27:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpTj1-0003pf-C7; Tue, 04 Mar 2025 09:58:27 -0500
+	id 1tpU9g-0001qS-Ep; Tue, 04 Mar 2025 10:26:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpTii-0003lS-7F
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 09:58:11 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpTig-00008T-9P
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 09:58:07 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43bbc8b7c65so26470565e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 06:58:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741100284; x=1741705084; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qrQ4Tubmr97IIFk7uuXTlrc2UQCvR3jWexkewFvyPaQ=;
- b=hj/2Wo/Cy8w7MOwVl17/u1lqUpXXim87CznhCFzCM/8kivuk4uA1/UZ1C2qZoUzmMx
- Ccn/yo29wq8QLCpKFMLn9W2AsCq5MWHtrbeY4wyz05nmg2DvuihzbuFcXhVN1mvSxHk/
- 9QS3Zl9wyuRJQR0CES0X2P/IGB0mA/xdMO29rdBh/cx38VcatLdeUQgGHxk4a/u807wN
- B7yDGBaaTn79VGWFD+M7aRO+CWChHGCTyO4Gxxn4NFV3s66WT0j2csp/c1nbTyapcg/Z
- qhLbClEqBQ1vdTJbO6BzvtVBZrx0SPCT4jRjvZW46jP0/aYhc+37F/hJma/M1myoJFGM
- BTLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741100284; x=1741705084;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qrQ4Tubmr97IIFk7uuXTlrc2UQCvR3jWexkewFvyPaQ=;
- b=CPw0KyovMF85kDpbh3FqEJEvTVeay8pY0ihR2HTj9wKh7Sj9JmH4sWtf+4PIImilwv
- e6VFiwDdtthGBQTbhadWVvFBE1MBywq5txUz47fafZrJ8OazUAtdll9rvr9oDyRn0QtV
- e1XckTTWXtwbrsg8eWLUWaR+I3ee0R0IjLob9QGlGegvhBFd5tPTvxl+KioGEAcSfA1g
- 3ugUJI0wXnemr41uilJ4AP57S+xuGtCAk/sbvzkEqI4RiGmqzvg36GKUEDDsUWuBxjnC
- rEGaLDqonB0q7tL+eGVykPhJn0hVD4T63PFwIf7Qd1/kGLxybxj16gZFdLaZ9JN0AvM6
- 2NRA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUjCoPQI9pHMwqS1ualQFjdUBlBBe7NwGj5OPU8XWB1CEOZdsASnxvxIZeqcyKWOD4pYbyloY8ICFAb@nongnu.org
-X-Gm-Message-State: AOJu0Yy0EJRJ8WojXf7weOUa1tjITbCn1+6/q9Jw24TSZlM3j/JQ+OfW
- mmXudtPzzN42WLr8almiFLrwTm/G2D4BJcYOTh6emFRSUCfzcZA58Chh4ep+DTA=
-X-Gm-Gg: ASbGncvEencBafvfg37LHeWzhec3dGwewY7y/QXts7uHEp270iAlY2eZ6Ep8EX1VCB2
- 3Va+DwiICLtOkyRRgZ+YXwOZuJZNFzLYU0ZlmFZj2j6KOPHXubGQEdjX72FAkzb7YzukosKCO69
- zUqXV0Gwm8yjj9yU0jQyQha+OTT4dFlaozpXXyfwTZXs7GmK7J/KY2n+3d00PCyUYFP3nhkPany
- UuITqk7O+K5E/hJNlXGGcHcCJHTDDhLxD2n1celhH4LfNP3MimakpOorOO2THg1ITjQQiD73kzi
- eGIfSMX2Wbcdfk8/CRm/3VR3IkG2wIjEIKUYVJq2SCEJ4drOoa6OB4l5ErwntNldNLlqzKccXtK
- fKcCHtYiBdIfZ
-X-Google-Smtp-Source: AGHT+IGbxSRjEVR+T3OfLQwdseH4MPQ6Rv9Q71Wo3ED9lZFyvctZQyUP70sL+95HBXt4tDvTpTck1g==
-X-Received: by 2002:a05:600c:1c8c:b0:439:9f97:7d5b with SMTP id
- 5b1f17b1804b1-43ba674cb46mr167898515e9.23.1741100283958; 
- Tue, 04 Mar 2025 06:58:03 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bcc280e55sm10129335e9.3.2025.03.04.06.58.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Mar 2025 06:58:03 -0800 (PST)
-Message-ID: <7e98d6b9-c17c-48e0-9513-e8c45b29a52e@linaro.org>
-Date: Tue, 4 Mar 2025 15:58:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/4] ufs queue
-To: stefanha@redhat.com
-Cc: pbonzini@redhat.com, qemu-block@nongnu.org, jeuk20.kim@samsung.com,
- j-young.choi@samsung.com, farosas@suse.de, lvivier@redhat.com,
- Jeuk Kim <jeuk20.kim@gmail.com>, qemu-devel@nongnu.org
-References: <cover.1739784105.git.jeuk20.kim@samsung.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <cover.1739784105.git.jeuk20.kim@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+ (Exim 4.90_1)
+ (envelope-from <3429da65ff753b47654b7ae26607417c571a7cb1@kylie.crudebyte.com>)
+ id 1tpU9M-0001q2-16; Tue, 04 Mar 2025 10:25:40 -0500
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <3429da65ff753b47654b7ae26607417c571a7cb1@kylie.crudebyte.com>)
+ id 1tpU9K-0006tZ-9y; Tue, 04 Mar 2025 10:25:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
+ Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
+ Content-Description; bh=620FshvAVPKcENtDD1iG6QmqaFxggLab8Oiyh7VhCtk=; b=ndqw+
+ KSKSWH6XyN5tjTLjSHwYHHu59UhRVxhq6kNlQA/jB1qqJ2EkgMg+0xhsxNVb30R6t7jmjQraS/PUR
+ KpmrNursAZhim+coYsnlQ3xuuSCK4/HHNH5n12nvQF+HWbA8Hc0AX4yZxMJtYpVuu8ppZqnRNsnCs
+ K0kYFQNQlV9xa0JjWSIgyzz5nT4bTDB7Zn/yihnXkC3qxpHT76JAt7Mp1DDsAd1U2fCCrzWWiP6Qi
+ SoeIyldaUru3QmgAdRxFZdjLHbXoNgqEf5ccSizdoE4n48eH62RipSuKjCBJEwot4DOlsNKJimLn6
+ WxJgebcmzNUAoOMVgEGWr0BZRSkvc3qqMldSvJCp4u73QkT9uySs4UrVZtGH2NqaAeYLiQIm7/0Ik
+ umbCzdG5++p4pSGMSZ3Wk8TgBWq/xN2aGIDdjMc6+Pq7QKUk/4YmW35c3Ics81YhABhuh1FxA8hEC
+ FTRhMrSWrYx9y2KoaVeud8hfsuSQy7c7vxfgBmM5eGNl78TmE1/lWDvQ99b4ho0fjv8HejBzkWaXr
+ oOnw87LBVnixtOBFC7a8bkLfh4EcTRhBE4sJzJ0YHBLvqJvZKUgyO39Wnuqa6MEGnMsTs7/N+chM5
+ sJjq1Fe30c2DlpxgA50l8WE/Y4Na1t0XUKQ5rVcugB2rLvtK8LD0t9h0SWxqpI=;
+Message-Id: <3429da65ff753b47654b7ae26607417c571a7cb1.1741101468.git.qemu_oss@crudebyte.com>
+In-Reply-To: <cover.1741101468.git.qemu_oss@crudebyte.com>
+References: <cover.1741101468.git.qemu_oss@crudebyte.com>
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Tue, 4 Mar 2025 16:15:57 +0100
+Subject: [PATCH 1/2] 9pfs: fix concurrent v9fs_reclaim_fd() calls
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>,
+    qemu-stable@nongnu.org
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=3429da65ff753b47654b7ae26607417c571a7cb1@kylie.crudebyte.com;
+ helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,43 +65,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
+Even though this function is serialized to be always called from main
+thread, v9fs_reclaim_fd() is dispatching the coroutine to a worker thread
+in between via its v9fs_co_*() calls, hence leading to the situation where
+v9fs_reclaim_fd() is effectively executed multiple times simultaniously,
+which renders its LRU algorithm useless and causes high latency.
 
-On 17/2/25 10:27, Jeuk Kim wrote:
-> From: Jeuk Kim <jeuk20.kim@samsung.com>
-> 
-> The following changes since commit db7aa99ef894e88fc5eedf02ca2579b8c344b2ec:
-> 
->    Merge tag 'hw-misc-20250216' of https://github.com/philmd/qemu into staging (2025-02-16 20:48:06 -0500)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/jeuk20.kim/qemu.git tags/pull-ufs-20250217
-> 
-> for you to fetch changes up to a54596a96006096798b172a368ae952a231f9f72:
-> 
->    tests/qtest/ufs-test: Add test code for MCQ functionality (2025-02-17 18:20:53 +0900)
-> 
-> ----------------------------------------------------------------
-> ufs updates for MCQ testing
-> 
-> - Remove unused task management request code
-> - Implement bitmap-based command descriptor slot allocation for MCQ
-> - Add test cases for MCQ initialization and basic read/write operations
-> - Fix LSDBS value for legacy single doorbell mode
-> 
-> ----------------------------------------------------------------
-> Jeuk Kim (4):
->        hw/ufs: Fix legacy single doorbell support bit
->        tests/qtest/ufs-test: Cleanup unused code
->        tests/qtest/ufs-test: Prepare for MCQ test
->        tests/qtest/ufs-test: Add test code for MCQ functionality
+Fix this by adding a simple boolean variable to ensure this function is
+only called once at a time. No synchronization needed for this boolean
+variable as this function is only entered and returned on main thread.
 
-Just wondering if this PR is on your list or there is a problem
-with it...
+Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+---
+ hw/9pfs/9p.c | 10 ++++++++++
+ hw/9pfs/9p.h |  1 +
+ 2 files changed, 11 insertions(+)
 
-Regards,
-
-Phil.
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 7cad2bce62..4f9c2dde9c 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -435,6 +435,12 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+     GHashTableIter iter;
+     gpointer fid;
+ 
++    /* prevent multiple coroutines running this function simultaniously */
++    if (s->reclaiming) {
++        return;
++    }
++    s->reclaiming = true;
++
+     g_hash_table_iter_init(&iter, s->fids);
+ 
+     QSLIST_HEAD(, V9fsFidState) reclaim_list =
+@@ -510,6 +516,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+          */
+         put_fid(pdu, f);
+     }
++
++    s->reclaiming = false;
+ }
+ 
+ /*
+@@ -4324,6 +4332,8 @@ int v9fs_device_realize_common(V9fsState *s, const V9fsTransport *t,
+     s->ctx.fst = &fse->fst;
+     fsdev_throttle_init(s->ctx.fst);
+ 
++    s->reclaiming = false;
++
+     rc = 0;
+ out:
+     if (rc) {
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 5e041e1f60..259ad32ed1 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -362,6 +362,7 @@ struct V9fsState {
+     uint64_t qp_ndevices; /* Amount of entries in qpd_table. */
+     uint16_t qp_affix_next;
+     uint64_t qp_fullpath_next;
++    bool reclaiming;
+ };
+ 
+ /* 9p2000.L open flags */
+-- 
+2.39.5
 
 
