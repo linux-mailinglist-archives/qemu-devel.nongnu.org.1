@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FB9A4D421
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA889A4D414
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:49:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpMAm-0002WN-JM; Tue, 04 Mar 2025 01:54:36 -0500
+	id 1tpM4H-0006YP-IN; Tue, 04 Mar 2025 01:47:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM9g-00028O-K3; Tue, 04 Mar 2025 01:53:31 -0500
+ id 1tpM4D-0006Y4-Ao; Tue, 04 Mar 2025 01:47:49 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM9d-00051y-Ag; Tue, 04 Mar 2025 01:53:28 -0500
+ id 1tpM4B-0003IK-4N; Tue, 04 Mar 2025 01:47:49 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 4 Mar
@@ -28,11 +28,14 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v5 0/6] Fix hw-strap for AST2700
-Date: Tue, 4 Mar 2025 14:47:02 +0800
-Message-ID: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v5 1/6] hw/misc/aspeed_scu: Skipping dram_init in u-boot
+Date: Tue, 4 Mar 2025 14:47:03 +0800
+Message-ID: <20250304064710.2128993-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
+References: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -61,31 +64,36 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: This patch series is from https://patchwork.kernel.org/project/qemu-devel/cover/20250213033531.3367697-1-jamin_lin@aspeedtech.com/.
-   To expedite the review process, I have separated the SCU fix patches
+Setting BIT6 in VGA0 SCRATCH register will indicate that the ddr traning
+is done, therefore skipping the u-boot-spl dram_init() process.
 
-a. Fix the hw-strap and revision ID for SCU and SCUIO
-b. ix boot issue for AST2700
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/misc/aspeed_scu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v2:
-a. update commit log for "Fix the revision ID cannot be set in the SOC layer for AST2700"
-b. update code comments location for "Separate HW Strap Registers for SCU and SCUIO"
-
-Jamin Lin (6):
-  hw/misc/aspeed_scu: Skipping dram_init in u-boot
-  hw/misc/aspeed_scu: Fix the revision ID cannot be set in the SOC layer
-    for AST2700
-  hw/arm/aspeed Update HW Strap Default Values for AST2700
-  hw/misc/aspeed_scu: Fix the hw-strap1 cannot be set in the SOC layer
-    for AST2700
-  hw/arm/aspeed_ast27x0.c Separate HW Strap Registers for SCU and SCUIO
-  hw/arm/aspeed_ast27x0.c Fix boot issue for AST2700
-
- hw/arm/aspeed.c         |  6 ++++--
- hw/arm/aspeed_ast27x0.c | 13 ++++++++++---
- hw/misc/aspeed_scu.c    |  8 ++++----
- 3 files changed, 18 insertions(+), 9 deletions(-)
-
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index bac1441b06..50f74fbabd 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -157,6 +157,7 @@
+ #define AST2700_SCU_FREQ_CNTR       TO_REG(0x3b0)
+ #define AST2700_SCU_CPU_SCRATCH_0   TO_REG(0x780)
+ #define AST2700_SCU_CPU_SCRATCH_1   TO_REG(0x784)
++#define AST2700_SCU_VGA_SCRATCH_0   TO_REG(0x900)
+ 
+ #define AST2700_SCUIO_CLK_STOP_CTL_1    TO_REG(0x240)
+ #define AST2700_SCUIO_CLK_STOP_CLR_1    TO_REG(0x244)
+@@ -930,6 +931,7 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
+     [AST2700_SCU_FREQ_CNTR]         = 0x000375eb,
+     [AST2700_SCU_CPU_SCRATCH_0]     = 0x00000000,
+     [AST2700_SCU_CPU_SCRATCH_1]     = 0x00000004,
++    [AST2700_SCU_VGA_SCRATCH_0]     = 0x00000040,
+ };
+ 
+ static void aspeed_ast2700_scu_reset(DeviceState *dev)
 -- 
 2.34.1
 
