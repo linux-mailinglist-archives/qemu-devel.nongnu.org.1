@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3EBA4D413
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEF7A4D419
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:50:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpM4O-0006aX-LJ; Tue, 04 Mar 2025 01:48:00 -0500
+	id 1tpM4R-0006bA-7k; Tue, 04 Mar 2025 01:48:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM4I-0006ZJ-89; Tue, 04 Mar 2025 01:47:54 -0500
+ id 1tpM4L-0006aQ-U7; Tue, 04 Mar 2025 01:47:57 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM4G-0003IK-Sn; Tue, 04 Mar 2025 01:47:53 -0500
+ id 1tpM4J-0003IK-49; Tue, 04 Mar 2025 01:47:57 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 4 Mar
- 2025 14:47:10 +0800
+ 2025 14:47:11 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 4 Mar 2025 14:47:10 +0800
+ Transport; Tue, 4 Mar 2025 14:47:11 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 3/6] hw/arm/aspeed Update HW Strap Default Values for
- AST2700
-Date: Tue, 4 Mar 2025 14:47:05 +0800
-Message-ID: <20250304064710.2128993-4-jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 4/6] hw/misc/aspeed_scu: Fix the hw-strap1 cannot be set in
+ the SOC layer for AST2700
+Date: Tue, 4 Mar 2025 14:47:06 +0800
+Message-ID: <20250304064710.2128993-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
 References: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
@@ -65,35 +65,52 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Separate HW Strap Registers for SCU and SCUIO.
-AST2700_EVB_HW_STRAP1 is used for the SCU (CPU Die) hw-strap1.
-AST2700_EVB_HW_STRAP2 is used for the SCUIO (IO Die) hw-strap1.
+There is one hw_strap1 register in the SCU (CPU DIE) and another hw_strap1
+register in the SCUIO (IO DIE).
 
-Additionally, both default values are updated based on the dump from the EVB.
+In the "ast2700_a0_resets" function, the hardcoded value "0x00000800" is set in
+SCU hw-strap1 (CPU DIE), and in "ast2700_a0_resets_io" the hardcoded value
+"0x00000504" is set in SCUIO hw-strap1 (IO DIE). Both values cannot be set via
+the SOC layer.
+
+The value of "s->hw_strap1" is set by the SOC layer via the "hw-strap1" property.
+Update the "aspeed_ast2700_scu_reset" function to set the value of "s->hw_strap1"
+in both the SCU and SCUIO hw-strap1 registers.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/misc/aspeed_scu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 98bf071139..c6c18596d6 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -181,8 +181,10 @@ struct AspeedMachineState {
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index 545d004749..0581c744f1 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -910,7 +910,6 @@ static const MemoryRegionOps aspeed_ast2700_scu_ops = {
+ };
  
- #ifdef TARGET_AARCH64
- /* AST2700 evb hardware value */
--#define AST2700_EVB_HW_STRAP1 0x000000C0
--#define AST2700_EVB_HW_STRAP2 0x00000003
-+/* SCU HW Strap1 */
-+#define AST2700_EVB_HW_STRAP1 0x00000800
-+/* SCUIO HW Strap1 */
-+#define AST2700_EVB_HW_STRAP2 0x00000700
- #endif
+ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
+-    [AST2700_HW_STRAP1]             = 0x00000800,
+     [AST2700_HW_STRAP1_CLR]         = 0xFFF0FFF0,
+     [AST2700_HW_STRAP1_LOCK]        = 0x00000FFF,
+     [AST2700_HW_STRAP1_SEC1]        = 0x000000FF,
+@@ -940,6 +939,7 @@ static void aspeed_ast2700_scu_reset(DeviceState *dev)
  
- /* Rainier hardware value: (QEMU prototype) */
+     memcpy(s->regs, asc->resets, asc->nr_regs * 4);
+     s->regs[AST2700_SILICON_REV] = s->silicon_rev;
++    s->regs[AST2700_HW_STRAP1] = s->hw_strap1;
+ }
+ 
+ static void aspeed_2700_scu_class_init(ObjectClass *klass, void *data)
+@@ -1032,7 +1032,6 @@ static const MemoryRegionOps aspeed_ast2700_scuio_ops = {
+ };
+ 
+ static const uint32_t ast2700_a0_resets_io[ASPEED_AST2700_SCU_NR_REGS] = {
+-    [AST2700_HW_STRAP1]                 = 0x00000504,
+     [AST2700_HW_STRAP1_CLR]             = 0xFFF0FFF0,
+     [AST2700_HW_STRAP1_LOCK]            = 0x00000FFF,
+     [AST2700_HW_STRAP1_SEC1]            = 0x000000FF,
 -- 
 2.34.1
 
