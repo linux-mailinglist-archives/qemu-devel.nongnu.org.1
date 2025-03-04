@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF96A4DE8C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 13:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DA6A4DE67
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 13:54:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpRjt-000872-Bv; Tue, 04 Mar 2025 07:51:13 -0500
+	id 1tpRij-0005qP-LY; Tue, 04 Mar 2025 07:50:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRho-0004us-AO
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:49:05 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhh-0004t6-Vq
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhm-0007KW-NE
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:49:04 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhg-0006uO-Cg
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741092542;
+ s=mimecast20190719; t=1741092535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mvD6ERtdNZvA+ha9/RWDeUr8FDIVyFXGhPtG732HzTI=;
- b=TGqtjhpW2bNUp+CcVWhfOlqtHXjapAG5mJ1ZTLMNw/DjpaSKxF8X6u8B7NWaItbyWOdHMx
- bwjlyktPZnESCt6zPlb0MomaPvL+caw/5SKFJM1OLN6gGu86RJI9aGuBkFWWXhZuZ5luw2
- bOxZzoDAETqTvFQwChrndATyuqkKswo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=UH+gxr284seD1s6rKwaAfaRG6h2gEVK2XY5pxCJ+vbU=;
+ b=eF9nf9eF8IAmv3a3ymuM218B8P0LLAkEIQXk7ua4mmmORZ+hR94zSbcQfv65uTClGO+KuH
+ Ojj236Os0rwkaxKMgyt8AqAswlMQ6WCZleHX5KpEeJnjvx7wXjdcqFhnFC9gw77fKUueg8
+ aM1zDSFmphj7DYoA2g6QAWn0x7ZTD80=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-5jMaWxRtPSmzp6Eh4lSCrg-1; Tue,
- 04 Mar 2025 07:48:50 -0500
-X-MC-Unique: 5jMaWxRtPSmzp6Eh4lSCrg-1
-X-Mimecast-MFC-AGG-ID: 5jMaWxRtPSmzp6Eh4lSCrg_1741092529
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-414-113AWx1yMaCdY1yyN-bLrg-1; Tue,
+ 04 Mar 2025 07:48:52 -0500
+X-MC-Unique: 113AWx1yMaCdY1yyN-bLrg-1
+X-Mimecast-MFC-AGG-ID: 113AWx1yMaCdY1yyN-bLrg_1741092530
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB269180087C; Tue,  4 Mar 2025 12:48:48 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F7C7193585F; Tue,  4 Mar 2025 12:48:50 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.122])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 381B519560AB; Tue,  4 Mar 2025 12:48:48 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4D29D180087C; Tue,  4 Mar 2025 12:48:49 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 460F61800604; Tue, 04 Mar 2025 13:48:16 +0100 (CET)
+ id 5A44D1800605; Tue, 04 Mar 2025 13:48:16 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -57,14 +57,14 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 16/24] hw/uefi: add UEFI_VARS to Kconfig
-Date: Tue,  4 Mar 2025 13:48:04 +0100
-Message-ID: <20250304124815.591749-17-kraxel@redhat.com>
+Subject: [PULL 17/24] hw/uefi: add to meson
+Date: Tue,  4 Mar 2025 13:48:05 +0100
+Message-ID: <20250304124815.591749-18-kraxel@redhat.com>
 In-Reply-To: <20250304124815.591749-1-kraxel@redhat.com>
 References: <20250304124815.591749-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,37 +90,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add UEFI_VARS config option, enable by default for x86_64 and aarch64.
+Wire up uefi-vars in the build system.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20250225163031.1409078-17-kraxel@redhat.com>
+Message-ID: <20250225163031.1409078-18-kraxel@redhat.com>
 ---
- hw/Kconfig      | 1 +
- hw/uefi/Kconfig | 3 +++
- 2 files changed, 4 insertions(+)
- create mode 100644 hw/uefi/Kconfig
+ hw/meson.build      |  1 +
+ hw/uefi/meson.build | 19 +++++++++++++++++++
+ meson.build         |  1 +
+ 3 files changed, 21 insertions(+)
 
-diff --git a/hw/Kconfig b/hw/Kconfig
-index 1b4e9bb07f7d..c4dfe2e7af7c 100644
---- a/hw/Kconfig
-+++ b/hw/Kconfig
-@@ -37,6 +37,7 @@ source smbios/Kconfig
- source ssi/Kconfig
- source timer/Kconfig
- source tpm/Kconfig
-+source uefi/Kconfig
- source ufs/Kconfig
- source usb/Kconfig
- source virtio/Kconfig
-diff --git a/hw/uefi/Kconfig b/hw/uefi/Kconfig
-new file mode 100644
-index 000000000000..ca6c2bc46a96
---- /dev/null
-+++ b/hw/uefi/Kconfig
-@@ -0,0 +1,3 @@
-+config UEFI_VARS
-+	bool
-+        default y if X86_64 || AARCH64
+diff --git a/hw/meson.build b/hw/meson.build
+index b827c82c5d7b..138f5d59e178 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -35,6 +35,7 @@ subdir('smbios')
+ subdir('ssi')
+ subdir('timer')
+ subdir('tpm')
++subdir('uefi')
+ subdir('ufs')
+ subdir('usb')
+ subdir('vfio')
+diff --git a/hw/uefi/meson.build b/hw/uefi/meson.build
+index a8b168941255..e63708aa164f 100644
+--- a/hw/uefi/meson.build
++++ b/hw/uefi/meson.build
+@@ -1 +1,20 @@
+ system_ss.add(files('hardware-info.c'))
++
++uefi_vars_ss = ss.source_set()
++if (config_all_devices.has_key('CONFIG_UEFI_VARS'))
++  uefi_vars_ss.add(files('var-service-core.c',
++                         'var-service-json.c',
++                         'var-service-vars.c',
++                         'var-service-auth.c',
++                         'var-service-guid.c',
++                         'var-service-utils.c',
++                         'var-service-policy.c'))
++  uefi_vars_ss.add(when: gnutls,
++                   if_true: files('var-service-pkcs7.c'),
++                   if_false: files('var-service-pkcs7-stub.c'))
++  uefi_vars_ss.add(files('var-service-siglist.c'))
++endif
++
++modules += { 'hw-uefi' : {
++    'vars'     : uefi_vars_ss,
++}}
+diff --git a/meson.build b/meson.build
+index 0a2c61d2bfa0..1c1982dac3b0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3601,6 +3601,7 @@ if have_system
+     'hw/ssi',
+     'hw/timer',
+     'hw/tpm',
++    'hw/uefi',
+     'hw/ufs',
+     'hw/usb',
+     'hw/vfio',
 -- 
 2.48.1
 
