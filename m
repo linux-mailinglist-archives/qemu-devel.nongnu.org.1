@@ -2,148 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A71A4D51B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 08:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F02A4D595
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 09:01:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpMuw-0003RN-Dt; Tue, 04 Mar 2025 02:42:18 -0500
+	id 1tpNCg-0000Q4-6Q; Tue, 04 Mar 2025 03:00:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tpMuu-0003Qe-2L
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:42:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tpNBm-0000Bn-G8
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:45 -0500
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tpMur-00065v-28
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:42:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741074127;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6WscQPj4vUoKyHeAAGbZzSy4WlC2OFMlhMYKx+S6K9Y=;
- b=YVuORfQOmKerl77SiZGkGGL3qulYQAVGwpJb3Vr2JHh3FjIV1+VVv1PhUrU0PFjDHzFuT/
- Hyi8/yIn4+LWVWqkVYGLwAZWKmyEYgTTrV+jwFGoReglrJfDtaWUvkV1fDhAGUACL3oq9m
- GVl8NLN3S7qoUD6H5TcnwqOH0ZJpXuo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-gQgQaU2jNiuz2fBU5tYnJg-1; Tue, 04 Mar 2025 02:41:51 -0500
-X-MC-Unique: gQgQaU2jNiuz2fBU5tYnJg-1
-X-Mimecast-MFC-AGG-ID: gQgQaU2jNiuz2fBU5tYnJg_1741074110
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4393e89e910so29246925e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Mar 2025 23:41:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741074110; x=1741678910;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6WscQPj4vUoKyHeAAGbZzSy4WlC2OFMlhMYKx+S6K9Y=;
- b=HeHPeq78QcZTg4t35qcdXbelp53JAM3GO5+5F2GE7aQU9Zk08btuHJUrVT7aQbVxw5
- 3wi32n5hTj9D/vCh1JK7cD+IhD7lQ/951az8jePyMfy0z2DSwXbvz2BhAY2834cJXy5i
- EEq7rDIi6FEFS4uhdhQX+SGeUddbZLMjznce6U8pwb0gZAlHaSbpuewKfCVqGVymHSY6
- s9ibq0+DgdxeAjT0lsHm0ZqWZp5FHWs/95g7wg09eP4Njc3Lmg0Dj9Q+UGUQRYFqO0hO
- D1FQDdCJGw3TlEzVxeKlYYe+y3iXWSXzJ6zknT19Ot2txE+EioKG/3zTLNK07pdMmQzU
- +4mA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV+IVVC7XyXqG21/dEuM+M4v0fH7tGXCnqCiOJr6wATypfVrbPpSOP0ALqdXh/CkoN1npCjLfLTcU97@nongnu.org
-X-Gm-Message-State: AOJu0Yy433BYeFFjsA5AQFKTaEdy33fR/kIh1+oqb92amce2uJRIJIhl
- 4S0hoXD2vc+f3iufUIRtzKBSXHCnUEJg6f/6GRY4oNlR4PG1vv0JGf+Fhox9hIa/4OAy18m1Llf
- JUqsL7lQPW722TpEORMhl0ThOq0ZU2JlCSpEqF8CLw+Q1vISMZtsc
-X-Gm-Gg: ASbGncuVgw70kg5TYhP/oFgnvwxvkKB1xpG7xP1IZXQvXx5kZd73VXtVFhKdsznuqGz
- e6sdBnlRQuF1mm/jdWQ4xQL1g2MVxVnRozxcl4r4qzIImNc+fKA/AdTVtYm3xqYRIOiKlMJJXH2
- bG9XfxQ7FWX7zn0mrnHTUeo065OLx/18b4Kr2FP00XAaC0I9q9vngRFJosD1DEocjCOwYmakl8a
- kJIlh6t75se25udsJBKdApUD0GluwXa+PRZ5R5fm0z0dsiajtlDgnVJlzl5N7nv8ronyMRvPHD6
- RBad4HUJ8DnBmtet5nz+1O3pfw84u952rFO5iQcFSMYdzbfHNNmyZQ==
-X-Received: by 2002:a05:600c:1d22:b0:43b:c390:b78d with SMTP id
- 5b1f17b1804b1-43bc390ba52mr38152465e9.24.1741074110145; 
- Mon, 03 Mar 2025 23:41:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFssnhjpRaZRtz+XyySZBLC6bFosyYI12D9opNG4CsWRWW8d/JqrnUVklkuncez3QJoGe3zyA==
-X-Received: by 2002:a05:600c:1d22:b0:43b:c390:b78d with SMTP id
- 5b1f17b1804b1-43bc390ba52mr38152235e9.24.1741074109818; 
- Mon, 03 Mar 2025 23:41:49 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bc032d049sm68084835e9.5.2025.03.03.23.41.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Mar 2025 23:41:49 -0800 (PST)
-Message-ID: <6888be59-09f3-472c-b993-fad0630e416d@redhat.com>
-Date: Tue, 4 Mar 2025 08:41:48 +0100
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tpNBh-0003IP-VU
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 02:59:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741075178; x=1772611178;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=fStzAgDO0dDP/vwo04uzV8D13FdB8wbm/NHcgdjt3ZQ=;
+ b=gNyaAOjnwcTK8QKpsS2ZkE2Eut2TRdHhJD4DK5joliiL2+oycDq192kx
+ kMNB9/n8h7bkrsnXJEZY91eIdwQd72gE0lgCwdUWgPzpqiY1USaMH0iAW
+ bJFErzijDpg2WEWGGP0JFkE51nlDvKmQLDEPRykl7OdNUAibTCFPYiJXl
+ 7CFG83cLnHvbf9xXn8zj2014JmRV0jzo+3V4d9gqp8hn9YcQ4gxKnQnty
+ 3DSFbH1KXUhDn280oUCoF74bmxepFr5z9EdLwNr2f8oMlTklGi9k2gcpo
+ oHjmpqhwJxdti0b7Jt+REtQzmmBk4TKs2hxP1L7Bj0l6xf+beSFIQVHau w==;
+X-CSE-ConnectionGUID: 4VApCfSxSDC5ARdRGs2g5g==
+X-CSE-MsgGUID: rsPv72FHQ46Jes89MfHCBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41888634"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="41888634"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 23:59:34 -0800
+X-CSE-ConnectionGUID: L6ZQuwHCQYydl+Zxmm56sA==
+X-CSE-MsgGUID: kmL3LGcoQi+OvI0u7sXtwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="118087272"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 23:59:29 -0800
+Message-ID: <76da2b4a-2dc4-417c-91bc-ad29e08c8ba0@intel.com>
+Date: Tue, 4 Mar 2025 15:59:27 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 28/36] vfio/migration: Multifd device state transfer
- support - config loading support
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- Avihai Horon <avihaih@nvidia.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
- <47be7bf2f46923e2a9d2b75b1d35c6b2915c20c8.1739994627.git.maciej.szmigiero@oracle.com>
- <b9284c9a-149a-4965-a4fa-ec092e3fb7d0@nvidia.com>
- <d1bb2200-1ccf-4e52-8d34-09d95f4863b4@maciej.szmigiero.name>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <d1bb2200-1ccf-4e52-8d34-09d95f4863b4@maciej.szmigiero.name>
+Subject: Re: [PATCH v2 04/10] target/i386/kvm: set KVM_PMU_CAP_DISABLE if
+ "-pmu" is configured
+To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
+ khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, dapeng1.mi@linux.intel.com, joe.jin@oracle.com
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-5-dongli.zhang@oracle.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250302220112.17653-5-dongli.zhang@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -161,26 +90,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>> @@ -728,6 +728,12 @@ static int vfio_load_state(QEMUFile *f, void *opaque, int version_id)
->>>           switch (data) {
->>>           case VFIO_MIG_FLAG_DEV_CONFIG_STATE:
->>>           {
->>> +            if (vfio_multifd_transfer_enabled(vbasedev)) {
->>> +                error_report("%s: got DEV_CONFIG_STATE but doing multifd transfer",
->>> +                             vbasedev->name);
->>
->> To make clearer, maybe change to:
->> "%s: got DEV_CONFIG_STATE in main migration channel but doing multifd transfer"
+On 3/3/2025 6:00 AM, Dongli Zhang wrote:
+> Although AMD PERFCORE and PerfMonV2 are removed when "-pmu" is configured,
+> there is no way to fully disable KVM AMD PMU virtualization. Neither
+> "-cpu host,-pmu" nor "-cpu EPYC" achieves this.
+
+This looks like a KVM bug.
+
+Anyway, since QEMU can achieve its goal with KVM_PMU_CAP_DISABLE with 
+current KVM, I'm fine with it.
+
+I have one nit below, otherwise
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> As a result, the following message still appears in the VM dmesg:
 > 
-> That normally would be good idea, however we are already at 83 characters in this
-> line here and will not fit that many more words to this string.
+> [    0.263615] Performance Events: AMD PMU driver.
+> 
+> However, the expected output should be:
+> 
+> [    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+> [    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+> 
+> This occurs because AMD does not use any CPUID bit to indicate PMU
+> availability.
+> 
+> To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+> when "-pmu" is configured.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> ---
+> Changed since v1:
+>    - Switch back to the initial implementation with "-pmu".
+> https://lore.kernel.org/all/20221119122901.2469-3-dongli.zhang@oracle.com
+>    - Mention that "KVM_PMU_CAP_DISABLE doesn't change the PMU behavior on
+>      Intel platform because current "pmu" property works as expected."
+> 
+>   target/i386/kvm/kvm.c | 31 +++++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index f41e190fb8..5c8a852dbd 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -176,6 +176,8 @@ static int has_triple_fault_event;
+>   
+>   static bool has_msr_mcg_ext_ctl;
+>   
+> +static int has_pmu_cap;
+> +
+>   static struct kvm_cpuid2 *cpuid_cache;
+>   static struct kvm_cpuid2 *hv_cpuid_cache;
+>   static struct kvm_msr_list *kvm_feature_msrs;
+> @@ -2053,6 +2055,33 @@ full:
+>   
+>   int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+>   {
+> +    static bool first = true;
+> +    int ret;
+> +
+> +    if (first) {
+> +        first = false;
+> +
+> +        /*
+> +         * Since Linux v5.18, KVM provides a VM-level capability to easily
+> +         * disable PMUs; however, QEMU has been providing PMU property per
+> +         * CPU since v1.6. In order to accommodate both, have to configure
+> +         * the VM-level capability here.
+> +         *
+> +         * KVM_PMU_CAP_DISABLE doesn't change the PMU
+> +         * behavior on Intel platform because current "pmu" property works
+> +         * as expected.
+> +         */
+> +        if (has_pmu_cap && !X86_CPU(cpu)->enable_pmu) {
 
-The 80 characters "rule" is not strict. A clear error report is
-always good to have !
+One nit, it's safer to use
 
-Thanks,
+	(has_pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu
 
-C.
+Maybe we can rename has_pmu_cap to pmu_cap as well.
 
+> +            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
+> +                                    KVM_PMU_CAP_DISABLE);
+> +            if (ret < 0) {
+> +                error_setg_errno(errp, -ret,
+> +                                 "Failed to set KVM_PMU_CAP_DISABLE");
+> +                return ret;
+> +            }
+> +        }
+> +    }
+> +
+>       return 0;
+>   }
+>   
+> @@ -3351,6 +3380,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>           }
+>       }
+>   
+> +    has_pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
+> +
+>       return 0;
+>   }
+>   
 
 
