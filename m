@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67396A4F057
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46412A4F077
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:29:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpaiG-0005uC-EO; Tue, 04 Mar 2025 17:26:08 -0500
+	id 1tpaia-0007Ps-Hp; Tue, 04 Mar 2025 17:26:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpah1-0005Og-Fk
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:51 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1tpah5-0005QE-Pu
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:25:09 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpagz-0006Vb-KH
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:51 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-abf4cebb04dso47557266b.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:49 -0800 (PST)
+ id 1tpah2-0006XG-BF
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:54 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5e4d50ed90aso7213601a12.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741127088; x=1741731888; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741127090; x=1741731890; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pZvYp7FSlelG8xgQuaTWht4mgcpsKdckID5yTml3+ZE=;
- b=SY2B9LIvLw53PYW3XUNPozfdyJjmZ87iTgcYRdAz27AVFN1Ye+fcorKqVxjY8boA5P
- WGWHSlfAZkCZXVuIQ24anpT52d0ULdLDrn+v7PIdDWbj3BKwQE4qZx5T1TJ+ecQCY4z+
- Ji6+wwKrJOTfTmrYPSPmfVxj67ilSjxUyzoMIfppFw1sGMh6cD1TDdYTAhdkjCZxgI55
- 3o6fOZaOddPi+YjB6ghxWZjppSKG7jeB8pdDQRuHLzu8QF54RxxWgJH48d3xtDOqwavs
- NpCvtCbUmCf2qEpexJRVcA11XSLBxHdup6HBRY+U7BrfwClim6Fg7iK51t1OOjgM/PZc
- a8gw==
+ bh=5MQuHd0qcU2J5poAhTVutiNlp9cSxVFs0o4bkyIqmvM=;
+ b=xPbj2aQBugm4ORg4zRjkD3OMXB16L3CPgVdFVbSIJ7J6SkbtkQdWs4J3aBsoucclvX
+ PVqCSjoD7QOwACPzupiBRmZdudgiZUJKzmFqMYGcd4xKL/ZkfliAqqynMREk7BYEEP9x
+ ItZUHyVZaiIEQBeL9ALx8CU6XW4v3el5PrBeH9iFj1plDLQIE7jkfoe0FPm6uMw9DmJi
+ hTAOdxDuWjVxjDTCOorEs0rt+fGaase4kfMpAM0bdQmFq4Ku0s85tfUlJ6HlTjsRx7ge
+ k9M6W+eUn9XJnIB5GIjDG7EP/Kh2WZxN9ioayAaNRDJ2uc9szNNkmfcfJIHPnLr7KSQV
+ uO+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741127088; x=1741731888;
+ d=1e100.net; s=20230601; t=1741127090; x=1741731890;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pZvYp7FSlelG8xgQuaTWht4mgcpsKdckID5yTml3+ZE=;
- b=S1qhO1F6qQBIqkdrFBJPaTd+iaMsuIrrdCiCAVQJUqMWg8D6SpUbjMu59S77Rb4FVO
- Hf49wikpQXGYmDworNULySR1Yrzxizbe9e/ST70z4XlzDVvZJKedJLAhlbt1IUMMjpEp
- TT2yhdFbDkD6Hbx8kf4jlPm0xLB5iOExb38fzGaMc3eJKr1j3w7U8Lzl0bovwQC2Be0G
- /vyVlxDuTZcHZzwwFp+Tb4x5wd1Q96ERbz+fAQHZQM9+edA5NoLUcrbtDIxfuhqqbaKF
- 1xwVyvj5bpVP2sPTwiOBtviKqav0TCutDesgyHGPZq3NZR7lcIkIN/RkeL9gmTFxOKXO
- PgfQ==
-X-Gm-Message-State: AOJu0Yx7co8vJX0rdD9/xJCetFmc41/AzL5hkLZDcT9jk93vbN8JXFwt
- eLtubXKjlepys6YSEtXn5ZvMEEgNXSbBp6MBJP4n4/a1Ody/gEbiAbV1an8xGFA=
-X-Gm-Gg: ASbGnct7Gads7FyquKblrWkx77ZIQ1kf/PILYcfSQVm0DlnXKCNOuzhJXyu9p3SqR1T
- /j3jzj8761WqoBDrq57AKXSateCah5ZkO6Vaxsdg/ITwMJjKuqN2GN5CNLLcDGbXGPQq9ryHodY
- q1BX7rImjYbRUYwo1VbalCzsy6lZ8cD1hi81SOz8ju991bPbHdrYkUjio2kqnmdwyrVk+nu7eDA
- /CvkDhBC8Q4U984MkIsRTP5p5EEb3reZzHT44szEO7oWKJmpfRssgrinPzOlmbpaRCuR24cLhCD
- qjVUZ8k6run4ZBfyNd5xi+Cdg1ui1Qb2uN9Q9k3efdt+aXM=
-X-Google-Smtp-Source: AGHT+IEW620O6/PzN260m4MOEMNjBvEkYO621jVnwMaTgFfnOqoSCKbWg5B0P3rKLghYiOEMmeIwSw==
-X-Received: by 2002:a17:906:794f:b0:abf:7a26:c473 with SMTP id
- a640c23a62f3a-ac20edb19c5mr90649066b.13.1741127087550; 
- Tue, 04 Mar 2025 14:24:47 -0800 (PST)
+ bh=5MQuHd0qcU2J5poAhTVutiNlp9cSxVFs0o4bkyIqmvM=;
+ b=jkqC9LgMDTEnUjm1XnXjAa8HFUQWHOY+xmJ1/TeH3sBD0qTdmKPpnY0AdJ6GrOOE69
+ R8zzTSH9Ijo7sO5HfbSnni8OPOCnDxVK+A9nqHnBjWQbnfakm2ZhIptwzcZ9yJJo3ZRe
+ TPHVmX9qpq7TZeTASCB06W01xfgSl13bmLahNFngc+7Hh2LeaMEs3zkzqZLDBAXeQCTS
+ fhuglpZ2XCxfKeQhAOaXxTHHxG6b0ogtEOlUIdjGvAIanN0pizCPFbMv5c06yQJUBHdD
+ dEY9IJobencCJ2AytDM9gYFArYTRqxxkTxwsWxw7CqH2OIGqMTAx5hEBk1lCsdsRX30J
+ /upg==
+X-Gm-Message-State: AOJu0YzY32wubiar49g0TJ2EDUQDrAzt9zIhdU5wLtv5wTnYbwqhaStz
+ IG1s1wdUDW2dvIg3XNxqcNxkAEztaG0tjaSX8E7ONSaRBMuW3FcdxlLUL46cW+4=
+X-Gm-Gg: ASbGncsr6XtT3WQmkIqJNh+GpH9r25q4ZPuDbiOqrw5JVm0pPzRtqIOrW7u2MQXZ/Cg
+ mzxuRPIG+yVRC7qVMvB9sAguatkm9x27quo3K3CXANwy2CyKyTDc+eyDM3zU2i7hg5RRXXakByt
+ igFzUz38SYLqh9s9IYCO64/qwKS7+nfaMgmVMV6CA+JdLZghldMlyd7aNfr9rbnvhaq6fe0q+rh
+ LCCJrvk3aaeF3FXAwJCNOiVvkhoio60qFi3mPd8hnSW/sc/YG89T7cHXNNCHaiAjpsbP+hcWkb2
+ 2oMD7uxUtyn2r4/3ULSF6CAt+PfcfwVkkQR7x90SLRJZLa8=
+X-Google-Smtp-Source: AGHT+IF1ZiuisnoznXxDurascLPnNdUoUs8Hl8vkZxl+e7wSuYPvG3eVVXhL9xZiwSReknzxBoYlpg==
+X-Received: by 2002:a17:906:6a09:b0:abf:733f:5c42 with SMTP id
+ a640c23a62f3a-ac20d852f4emr73755566b.8.1741127090386; 
+ Tue, 04 Mar 2025 14:24:50 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac1e382a04bsm277988166b.163.2025.03.04.14.24.45
+ a640c23a62f3a-abf5a6e59ffsm629108966b.171.2025.03.04.14.24.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 04 Mar 2025 14:24:45 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E509B6007F;
- Tue,  4 Mar 2025 22:24:40 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 068806013F;
+ Tue,  4 Mar 2025 22:24:41 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -80,17 +80,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 15/32] tests/tcg: fix constraints in test-i386-adcox
-Date: Tue,  4 Mar 2025 22:24:22 +0000
-Message-Id: <20250304222439.2035603-16-alex.bennee@linaro.org>
+Subject: [PATCH v2 16/32] tests/tcg: enable -fwrapv for test-i386-bmi
+Date: Tue,  4 Mar 2025 22:24:23 +0000
+Message-Id: <20250304222439.2035603-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,47 +113,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clang complains:
+We allow things like:
 
-  clang -O2 -m64 -mcx16 /home/alex/lsrc/qemu.git/tests/tcg/i386/test-i386-adcox.c -o test-i386-adcox -static
-  /home/alex/lsrc/qemu.git/tests/tcg/i386/test-i386-adcox.c:32:26: error: invalid input constraint '0' in asm
-          : "r" ((REG)-1), "0" (flags), "1" (out_adcx), "2" (out_adox));
-                           ^
-  /home/alex/lsrc/qemu.git/tests/tcg/i386/test-i386-adcox.c:57:26: error: invalid input constraint '0' in asm
-          : "r" ((REG)-1), "0" (flags), "1" (out_adcx), "2" (out_adox));
-                           ^
-  2 errors generated.
+  tests/tcg/i386/test-i386-bmi2.c:124:35: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+      assert(result == (mask & ~(-1 << 30)));
 
-Pointing out a numbered input constraint can't point to a read/write
-output [1]. Convert to a read-only input constraint to allow this.
+in the main code, so allow it for the test.
 
-[1] https://lists.llvm.org/pipermail/cfe-commits/Week-of-Mon-20101101/036036.html
-
+Message-Id: <20250226140343.3907080-15-alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-
 ---
-v2
-  - followed rth's suggestion and removed additional matches.
----
- tests/tcg/i386/test-i386-adcox.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/tcg/i386/Makefile.target | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/tcg/i386/test-i386-adcox.c b/tests/tcg/i386/test-i386-adcox.c
-index 16169efff8..d653fa86a7 100644
---- a/tests/tcg/i386/test-i386-adcox.c
-+++ b/tests/tcg/i386/test-i386-adcox.c
-@@ -53,8 +53,8 @@ void test_adcx_adox(uint32_t in_c, uint32_t in_o, REG adcx_operand, REG adox_ope
-         "adcx %3, %1;"
-         "adox %3, %2;"
-         "pushf; pop %0"
--        : "+r" (flags), "+r" (out_adcx), "+r" (out_adox)
--        : "r" ((REG)-1), "0" (flags), "1" (out_adcx), "2" (out_adox));
-+        : "+r"(flags), "+r"(out_adcx), "+r"(out_adox)
-+        : "r" ((REG)-1));
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index bbe2c44b2a..f1df40411b 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -22,7 +22,7 @@ run-test-i386-sse-exceptions: QEMU_OPTS += -cpu max
+ test-i386-pcmpistri: CFLAGS += -msse4.2
+ run-test-i386-pcmpistri: QEMU_OPTS += -cpu max
  
-     assert(out_adcx == in_c + adcx_operand - 1);
-     assert(out_adox == in_o + adox_operand - 1);
+-test-i386-bmi2: CFLAGS=-O2
++test-i386-bmi2: CFLAGS=-O2 -fwrapv
+ run-test-i386-bmi2: QEMU_OPTS += -cpu max
+ 
+ test-i386-adcox: CFLAGS=-O2
 -- 
 2.39.5
 
