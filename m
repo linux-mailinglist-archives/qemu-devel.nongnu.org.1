@@ -2,78 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F21A4DF12
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 14:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3C6A4DF4F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 14:33:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpSC3-0006H3-9r; Tue, 04 Mar 2025 08:20:19 -0500
+	id 1tpSNE-0000ED-3s; Tue, 04 Mar 2025 08:31:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tpSC0-0006Gs-GT
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 08:20:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tpSMs-00008V-4D; Tue, 04 Mar 2025 08:31:30 -0500
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tpSBx-0000i6-Ou
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 08:20:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741094411;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2iOTcITd1b+2bjwBC5Qft0xaXveCB4sSyY+SyK7h0m8=;
- b=bC9vMlnx/bQ4POLfJWG/WZPlNSWv4VIseg8LHX6FIUdyziwRdOsCK0C8WQprkmYPgh2gtS
- kIVf3iGXsNtKsOXZ2Uu5d4sPdZH4wVD8S0yphMQLe6uXzpv+EkKpL2ch2/HNDW8HDQFKax
- EGPRPIsoDGXJgSHzWbflw37fJ/t1fPU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-lUQ9x8DuN9KSH2mrSGhAKw-1; Tue,
- 04 Mar 2025 08:20:09 -0500
-X-MC-Unique: lUQ9x8DuN9KSH2mrSGhAKw-1
-X-Mimecast-MFC-AGG-ID: lUQ9x8DuN9KSH2mrSGhAKw_1741094408
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 938F41800570; Tue,  4 Mar 2025 13:20:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.210])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C28C1180087D; Tue,  4 Mar 2025 13:20:05 +0000 (UTC)
-Date: Tue, 4 Mar 2025 13:20:01 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [RFC PATCH] meson.build: add -gsplit-dwarf to default cflags
-Message-ID: <Z8b96wVB2f88csSN@redhat.com>
-References: <20250303221703.1291078-1-alex.bennee@linaro.org>
- <Z8bTy54Jgaddg6V3@redhat.com> <87tt8958tj.fsf@draig.linaro.org>
- <Z8bt7ajRVwdabG7p@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tpSMo-0004Yg-VU; Tue, 04 Mar 2025 08:31:29 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 0D088A44D7A;
+ Tue,  4 Mar 2025 13:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C32C4CEE9;
+ Tue,  4 Mar 2025 13:31:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1741095076;
+ bh=lVWHChPEXjI/bHXulgoGRI0WzVhFif47e2xu9lXivW0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=aEqNlCMpfTebC7bzdTgNCYn9KZQa5KGWmVdaODpkZ/SYSzRb0hY9k1ZeDEBAztyKh
+ P21DKubI9mCc4ypOBguOXhH0wJdO7nPamHUB5c/oPSxUitJzFoZd6yJh+gY+DEFwfI
+ Kbly95uAPgpbUmjKkOXFWm+0fzMdUtErzoEyAdy8t70HK/M4uDo5rGNXypw6vnhzOz
+ VYgTJ5s2IU0dY6qCUByOaPjveY5+6RJMdltwqIQybVfxrXh5mITtpZtqgqkQdW/AIb
+ jQa95jl/qVn22ZLCd5zZCe77B+bDu47FOpr5b3f5caxvk5QJ6IeDD5IZcnFisty7z+
+ nqBcS3PhxFqwg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tpSMc-00000005rnM-1lsf; Tue, 04 Mar 2025 14:31:14 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>
+Subject: [PATCH RFC 0/3] Attempt to add GHES for x86
+Date: Tue,  4 Mar 2025 14:30:55 +0100
+Message-ID: <cover.1741094512.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z8bt7ajRVwdabG7p@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,77 +71,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 04, 2025 at 12:11:25PM +0000, Daniel P. Berrangé wrote:
-> On Tue, Mar 04, 2025 at 11:33:44AM +0000, Alex Bennée wrote:
-> > Daniel P. Berrangé <berrange@redhat.com> writes:
-> > 
-> > > On Mon, Mar 03, 2025 at 10:17:03PM +0000, Alex Bennée wrote:
-> > >> This option is supported by both gcc (since 4.7) and clang (since
-> > >> 7.0). Not only does this make the linkers job easier by reducing the
-> > >> amount of ELF it needs to parse it also reduces the total build size
-> > >> quite considerably. In my case a default build went from 5.8G to 3.9G.
-> > >
-> > > I've not come across this option before, but the docs say
-> > >
-> > >   ‘-gsplit-dwarf’
-> > >      If DWARF debugging information is enabled, separate as much
-> > >      debugging information as possible into a separate output file with
-> > >      the extension ‘.dwo’.  This option allows the build system to avoid
-> > >      linking files with debug information.  To be useful, this option
-> > >      requires a debugger capable of reading ‘.dwo’ files.
-> > >
-> > > In Fedora and RHEL we build QEMU will full debug enabled, and then a feature
-> > > of the distro RPM build config will post-process all ELF files to extract
-> > > the debug info into files that we store under /usr/lib/debug. eg for
-> > > /usr/bin/qemu-system-x86_64, we get a separate
-> > > /usr/lib/debug/bin/qemu-system-x86_64-9.1.3-1.fc41.x86_64.debug, and
-> > > tools like GDB, etc know to look for these separate files.
-> > 
-> > A modern gdb can certainly handle fetching the debug out of the .dwo
-> > files when debugging.
-> 
-> See this response from one of the upstream GCC maintainers pretty much
-> recommending against (on by default) use of -gsplit-dwarf:
-> 
->   https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/RXA55BTO62NWWHCTUFYGEVHJKZPL5EKE/
+Hi Igor,
 
-Since lists.fp.o is being rather unreliable today...
+This patch series comes after:
+   https://lore.kernel.org/qemu-devel/cover.1740903110.git.mchehab+huawei@kernel.org/
 
-[quote]
-On Tue, Mar 04, 2025 at 11:44:18AM +0000, Daniel P. Berrangé wrote:
-> The QEMU community is discussing possible use of -gsplit-dwarf as a default
-> option for QEMU's build system:
->
->  https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg00424.html
->
-> This option causes debug symbols to be written to separate .dwo files
-> instead of the .o files or final executables.
+I'm basically trying to add support for error injection for x86,
+without success so far.
 
-Don't.
--gsplit-dwarf is something to get faster link times at the expense of slower
-debugging and more files around.
-So, it can be useful for fast modify/rebuild/test cycles during development,
-but is something that is really undesirable for the distro builds.
-There you don't mind slightly longer link times, that is done once per
-build, but having to ship larger debug info and especially when it is split
-into hundreds or thousands of small files is then a price everybody who
-downloads the package debuginfo pays.
-debugedit can't deal with it, dwz can't either, in order to ship something
-reasonable one would need to dwp the separate debug info back into the
-normal debug info.
+On x86, the notification mechanism is different: it is via QMP.
+Yet, from what I saw on Linux implementation, it works on
+a similar way to GED. So, I ended implementing a notification
+via GED.
 
-        Jakub
-[/quote]
+HEST table build seems to be working OK on it, and the
+error injection notification for x86 is called. Yet, OSPM is not
+receiving any notifications.
 
-With regards,
-Daniel
+Could you help me figuring out what are the missing bits?
+
+PS.: there are some things at the code that require polishing,
+plus there are some extra printf() there to help debugging.
+Finally, we would need to add x86 CPU error event at the
+ghes script, but I'd like to have at least something that the 
+OSPM receives before improving it further.
+
+It can be tested with:
+   $ ./scripts/ghes_inject.py arm
+
+(Ok, this would be generating an ARM processor event , but
+I guess Linux would at least mark the event as read, even if
+it doesn't recognize it)
+
+Mauro Carvalho Chehab (3):
+  acpi/ghes: move use_hest_addr out of acpi_build_hest()
+  hw/i186: add support for HEST table with SCI
+  Add a GED device for RAS notification
+
+ hw/acpi/ghes.c           | 16 ++++-----
+ hw/arm/virt-acpi-build.c | 12 ++++---
+ hw/i386/Kconfig          |  1 +
+ hw/i386/acpi-build.c     | 75 ++++++++++++++++++++++++++++++++++++++++
+ hw/i386/pc.c             | 41 ++++++++++++++++++++++
+ include/hw/acpi/ghes.h   | 25 +++++++-------
+ include/hw/i386/pc.h     |  5 +++
+ include/hw/i386/x86.h    |  2 ++
+ 8 files changed, 153 insertions(+), 24 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
+
 
 
