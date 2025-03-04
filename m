@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4A7A4F088
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D67A4F08B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:33:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpamW-0000gI-Lv; Tue, 04 Mar 2025 17:30:32 -0500
+	id 1tpamf-00018d-2x; Tue, 04 Mar 2025 17:30:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpam4-000899-W7
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:14 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1tpam6-0008BP-T3
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:15 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpalx-0007mD-Na
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:00 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5e4b410e48bso9316494a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:29:53 -0800 (PST)
+ id 1tpaly-0007nU-BY
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:04 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5e04064af07so11473278a12.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:29:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741127392; x=1741732192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741127395; x=1741732195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3MUzqz6FU8Y/M1Y0uPwJOCVPftv09cieoqEpBt2LY4U=;
- b=gOrHS6IcnjPMtnDeVDxf+yUEFpK3E+x//YOm9KKdMdy3jkjWUuE8uXRfLWAI2L0r3m
- YWqj9i3Fik0hQC6OzXvm0/FbxuuGsB77K9Psk9xvXcrC/QW8LHz4qdE6EadMgAwMuPqP
- opiUpMz5yJqZPcVvxlLY95BT0S+n0WtCIgCFlAcMdM8xfc6cxyCVNplud3ep89Rctd1V
- LQTFLYdU8iaS5LEwrk3EObc7j5aRBDLZ4Hgr8SzcjoSp//csaa9LJESj3XeNNHECQHQ2
- L0BIDd/9XptFp7qTK3pH9ZGSMm+1sovRL/N0dZqWOFGQllJz1D5d3ks8c1gFuhXPXjEE
- n/rg==
+ bh=7NduONkNHzryA23734KniKbJ3709Oe6o9/gEpRh5YHc=;
+ b=RyN3ESyuMkXpQgsGbrMy2kuOC0npfErUFUcL2qnVF7BQdv7tYH/foXh5yb6LSlhtkC
+ rw8q7gYU2mhiR7LecI7+JTBBF+4qAG1oLEvE8qAYF2n2K+oej46+DeCdXtSns+DTUV/7
+ cNgNVduz6wlGxU+PB/pYjjn17rGVQFAuzgOQtLRg7ckihhpzf93WmT67a5Z5AvJq+Z/p
+ vIyCvwexuCab0PWWxNiGbEi1URje/algOSC1AjiZ4atAouawBVpx7lVl32VkjHjaAWoY
+ OjTAh/t2r9nL05BJij5vqPxypOMUHAbMKNimfSRNTzctWyS7YPRqFJ1Nk+6C0Tfc9pO9
+ k3+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741127392; x=1741732192;
+ d=1e100.net; s=20230601; t=1741127395; x=1741732195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3MUzqz6FU8Y/M1Y0uPwJOCVPftv09cieoqEpBt2LY4U=;
- b=g6c4Ren53AeIuW6WSmiJH0/EY1DNu5RK1KI1bYOoJq48GJLizqcCbQ0vZPJ7Z7ALpm
- CQCGecKs9IgwMnLp+REE5Pnry4g8XM/0efVwp9l4PAH8vepYrcH/jCQipqknm6yF23uh
- R/yO41sH8iBjVuGuhY14kC5xJ37rJ6C2YdseJHLwnUgjtg4F5b2bgdSWT42t8HqX/Rrl
- FeAccAToUI67FSpRlNaDaMIXXDSBuSlrpHCriloefHWIC7zAc0aLwlh2vKeHbhnW6hBd
- MsakqvJgU64vjYAm6aCR3tntxugqw0+PIXPInAd/tBkCVuq3OMrgjKxqDQBZCqLk17Oq
- eASA==
-X-Gm-Message-State: AOJu0YzJMilgEwBLddEQQOpaThAWW0ITZ086brrakKE0DStWQJX41Ncf
- YTKSgayMRxF0TxbLgXXJmHr6nJQXf7+t6ebkvmy3LhgW4ziDysmAaYGtmM4WgOA=
-X-Gm-Gg: ASbGncvk17NAxgrbtXXm7MlHmI86vPiu4n8OGAuiwPlEDr+Ko/r2UQQxaA6fsUVyp1s
- D28EjpgEHJR2xSci4Jk6H1ZUy2L7OR7i+JIklpemvQeVm6jwD/vXvCRLaoC3eNgXWDhXYnSTfrp
- 54OzeX3SfxoElD2bHLm3fS5s4359mmRenhS4yreWMylAaPIY0F4VjuWZZQeHZNJc+FNg/tr3fDK
- XD0Bp2bGrgmjRyj+W+nelTMmGGFP8YsNGjcmomGaGbtAdnhIuo/m5Hqk9fy3FnmXtYdMlAj+Ix7
- 2xmOvrgySyyWW+t04gI7pl0wWlBoG60BPDLv/b2gImytTBo=
-X-Google-Smtp-Source: AGHT+IFx7WoyZIFi/Hi60hpxy6n5v8dzpQS3KPFarlJ9FYinvav0z9Ev12XjhWqazU0R05TgbtlN4A==
-X-Received: by 2002:a17:907:7da7:b0:abf:6b14:6cfb with SMTP id
- a640c23a62f3a-ac20d84494cmr79356166b.5.1741127391992; 
- Tue, 04 Mar 2025 14:29:51 -0800 (PST)
+ bh=7NduONkNHzryA23734KniKbJ3709Oe6o9/gEpRh5YHc=;
+ b=SFMYkWbiktbiFRkh2Xdn7nSkmiX8UC8ieft4mX5AMGiXGP7teDvGBH3VMKa0X6OJgv
+ SDFS5kAQW8CXY+FuUXHuEeLWBDSnhy2qgXJVGf5ggpzCTJGRW/UPmcUI/cC/byswjrxz
+ e99tPqDrma+KPbBimcyUdkBbMJtVRxcfkFfnMX3oo+mK75MzKHb59tuXgx2JKGj9v4/o
+ j5bINRp4C93c7u5NrEOtSWirBrAPQu2QQ9degSzXvumiSHok0Y7rknEAwxSBZzfiI3Ty
+ kr1p8aJGtBWeq9jFpxzsRE4iaVKbvH3+zLunUusIyQJSj3UYIhSshi5T9kmxX1RUKrHJ
+ r0Bw==
+X-Gm-Message-State: AOJu0YzwncR81MiH8MMHqr9JB2+BEvk7SFPmLgwSoOpnI9IodMy25dA9
+ VOdeWMT1YGey5ok9ofGk4qrpJlbSznJIYvYquxv4BM1DLTRtl11IRzf0zXGh98E=
+X-Gm-Gg: ASbGncux7sNkuEFYQbXzX6iiu7P6EIMETQ6rs7AYweGaZ720xUqFUvbR+QsQ9xzQHTY
+ scLHznLN8f5B+Wg8MH95ZYUsEdpe6+edelUTeuinJm1jRB5/2yeCk4vWMs/MRdIrx+8Vz81YBD9
+ PkeNnDvgE/XrCbwtGveUTeYx3ptTEr9yTLGn3tqu/HpS89MTM72zembk+2gvldJ5bEUSXwHc8VZ
+ 5O3If5yKqBwsffl6KY9s30VTSgz/fuQL8o/mumeX/3ZfNWlW677lf3jcsTTr1BGf+1P4UNE1rMX
+ 5Jqnfd0hL0oOEFGpQM5YJura7lwaerLfnCmsBpyc1V+X/3c=
+X-Google-Smtp-Source: AGHT+IEYyaUJhrtg1WSGdM5XLPAf5TsuQU8GAaB9pDpVMiR600V41mczw7as0Kv3QoUYsBJ18IvNwA==
+X-Received: by 2002:a05:6402:518e:b0:5e0:9390:f0d2 with SMTP id
+ 4fb4d7f45d1cf-5e59f455d54mr646687a12.20.1741127395009; 
+ Tue, 04 Mar 2025 14:29:55 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac1e2ced681sm283977066b.1.2025.03.04.14.29.51
+ 4fb4d7f45d1cf-5e4c43a66b1sm8643141a12.71.2025.03.04.14.29.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 14:29:51 -0800 (PST)
+ Tue, 04 Mar 2025 14:29:53 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C14A2625BC;
+ by draig.lan (Postfix) with ESMTP id DC3E1625C3;
  Tue,  4 Mar 2025 22:24:41 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 24/32] plugins/plugin.h: include queue.h
-Date: Tue,  4 Mar 2025 22:24:31 +0000
-Message-Id: <20250304222439.2035603-25-alex.bennee@linaro.org>
+Subject: [PATCH v2 25/32] plugins/loader: compile loader only once
+Date: Tue,  4 Mar 2025 22:24:32 +0000
+Message-Id: <20250304222439.2035603-26-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,29 +113,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Headers should bring in what they need so don't rely on getting
-queue.h by side effects. This will help with clean-ups in the
-following patches.
+There is very little in loader that is different between builds save
+for a tiny user/system mode difference in the plugin_info structure.
+Create two new files, user and system to hold mode specific helpers
+and move loader into common_ss.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250225110844.3296991-6-alex.bennee@linaro.org>
+Message-Id: <20250225110844.3296991-7-alex.bennee@linaro.org>
 ---
- plugins/plugin.h | 1 +
- 1 file changed, 1 insertion(+)
+ plugins/plugin.h    |  6 ++++++
+ plugins/loader.c    | 13 ++-----------
+ plugins/system.c    | 24 ++++++++++++++++++++++++
+ plugins/user.c      | 19 +++++++++++++++++++
+ plugins/meson.build |  7 ++++++-
+ 5 files changed, 57 insertions(+), 12 deletions(-)
+ create mode 100644 plugins/system.c
+ create mode 100644 plugins/user.c
 
 diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 30e2299a54..9ed20b5c41 100644
+index 9ed20b5c41..6fbc443b96 100644
 --- a/plugins/plugin.h
 +++ b/plugins/plugin.h
-@@ -13,6 +13,7 @@
- #define PLUGIN_H
+@@ -119,4 +119,10 @@ struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
  
- #include <gmodule.h>
-+#include "qemu/queue.h"
- #include "qemu/qht.h"
+ void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
  
- #define QEMU_PLUGIN_MIN_VERSION 2
++/**
++ * qemu_plugin_fillin_mode_info() - populate mode specific info
++ * info: pointer to qemu_info_t structure
++ */
++void qemu_plugin_fillin_mode_info(qemu_info_t *info);
++
+ #endif /* PLUGIN_H */
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 827473c8b6..7523d554f0 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -31,9 +31,6 @@
+ #include "qemu/memalign.h"
+ #include "hw/core/cpu.h"
+ #include "exec/tb-flush.h"
+-#ifndef CONFIG_USER_ONLY
+-#include "hw/boards.h"
+-#endif
+ 
+ #include "plugin.h"
+ 
+@@ -300,14 +297,8 @@ int qemu_plugin_load_list(QemuPluginList *head, Error **errp)
+     info->target_name = target_name();
+     info->version.min = QEMU_PLUGIN_MIN_VERSION;
+     info->version.cur = QEMU_PLUGIN_VERSION;
+-#ifndef CONFIG_USER_ONLY
+-    MachineState *ms = MACHINE(qdev_get_machine());
+-    info->system_emulation = true;
+-    info->system.smp_vcpus = ms->smp.cpus;
+-    info->system.max_vcpus = ms->smp.max_cpus;
+-#else
+-    info->system_emulation = false;
+-#endif
++
++    qemu_plugin_fillin_mode_info(info);
+ 
+     QTAILQ_FOREACH_SAFE(desc, head, entry, next) {
+         int err;
+diff --git a/plugins/system.c b/plugins/system.c
+new file mode 100644
+index 0000000000..b3ecc33ba5
+--- /dev/null
++++ b/plugins/system.c
+@@ -0,0 +1,24 @@
++/*
++ * QEMU Plugin system-emulation helpers
++ *
++ * Helpers that are specific to system emulation.
++ *
++ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
++ * Copyright (C) 2019-2025, Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/plugin.h"
++#include "hw/boards.h"
++
++#include "plugin.h"
++
++void qemu_plugin_fillin_mode_info(qemu_info_t *info)
++{
++    MachineState *ms = MACHINE(qdev_get_machine());
++    info->system_emulation = true;
++    info->system.smp_vcpus = ms->smp.cpus;
++    info->system.max_vcpus = ms->smp.max_cpus;
++}
+diff --git a/plugins/user.c b/plugins/user.c
+new file mode 100644
+index 0000000000..250d542502
+--- /dev/null
++++ b/plugins/user.c
+@@ -0,0 +1,19 @@
++/*
++ * QEMU Plugin user-mode helpers
++ *
++ * Helpers that are specific to user-mode.
++ *
++ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
++ * Copyright (C) 2019-2025, Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/plugin.h"
++#include "plugin.h"
++
++void qemu_plugin_fillin_mode_info(qemu_info_t *info)
++{
++    info->system_emulation = false;
++}
+diff --git a/plugins/meson.build b/plugins/meson.build
+index d60be2a4d6..f7820806d3 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -57,8 +57,13 @@ if host_os == 'windows'
+     command: dlltool_cmd
+   )
+ endif
++
++user_ss.add(files('user.c'))
++system_ss.add(files('system.c'))
++
++common_ss.add(files('loader.c'))
++
+ specific_ss.add(files(
+-  'loader.c',
+   'core.c',
+   'api.c',
+ ))
 -- 
 2.39.5
 
