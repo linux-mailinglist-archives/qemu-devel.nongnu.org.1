@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC484A4EFFA
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB2A4F0F0
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:00:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpaaF-0006AK-9W; Tue, 04 Mar 2025 17:17:51 -0500
+	id 1tpbEq-0003L3-KG; Tue, 04 Mar 2025 17:59:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaYJ-000475-LE
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:15:53 -0500
+ id 1tpbEk-00038l-E6
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:43 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaQc-0001PZ-NW
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:15:50 -0500
+ id 1tpbEh-0007Dh-Md
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:40 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
@@ -48,7 +48,7 @@ X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
