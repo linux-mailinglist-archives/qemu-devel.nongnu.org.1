@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FB1A4F076
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F391A4F05E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:26:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpahR-0005bC-Iz; Tue, 04 Mar 2025 17:25:18 -0500
+	id 1tpaiP-0006dD-Ji; Tue, 04 Mar 2025 17:26:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpah2-0005PT-Oc
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:53 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1tpah9-0005SV-Fn
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:25:07 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpah0-0006Vf-NV
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:52 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-abf518748cbso663490866b.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:49 -0800 (PST)
+ id 1tpah3-0006Y8-IP
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:55 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-abf3cf3d142so560515166b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741127088; x=1741731888; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741127092; x=1741731892; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kU8wMZNvEzgPbmwhpM6JkBirf3HCpj8nA5DxvL7UJOA=;
- b=DSBgLkYMBgHQIT7ghy2tn9YarNkeA4X7JmKOfeOMeav9yM4wJhlP3WQx03PDe3CcXm
- iZFoZk7Y+dOPSdDURpjVP6DpmRtQOvQOgVduZ0dpckZAmQpKUq3dsvS3T4AzZnLZKE4c
- JtceniQ6fKAwdT7O2qXqCxdDxVv/yOUn6BDuieY01dDsyNrgP7gHdCCJde2VTPjWyKAq
- PzUHdiEpYWGBzLwL3J7kCMxfiWKLDnWT2Pfm4d8r3hcJ2Hh5QkpKAIZKAhSdphoAn0B/
- 3nZ9w4J49+S0LDiKhMuiKHjBszxzT6gfxWQk93osgd4iQaBbc43Zt7uy0jYZxZaF2Hx2
- L/DQ==
+ bh=nuyU4RtfkAy5FahNVVdqaLuFf5A6JqdgckTnQGTYpas=;
+ b=iScA6Wu3v6BkZNKj3kuwjituD0sCmEm8SpnGQz0fwETsT3RqvNBV9bdCEcLrBf9CVr
+ oVxmJ8FzoWdpZs05lGER3dMwH6LtUgHaD/Ec+t7wNjNeP8IIbIQyJ3EliQzT/5fJLK6S
+ KShn76e+He03svR1Sxp9kd8sKn9FyS1s5zxeucxHSX8unnaOmxTLt4KS3OKsnkOd07w8
+ BLlhILoZsyCpQ9XGEzgzdw33JYhIKctuVtyzrErybOdFmo9lthTxZQX3bt+waX0TPmZ9
+ JT6pMl82DOSUZ5iwu/iOvbzqhXNPT1pHgZtvw+hHvH1TIUWTymOR5Lpq2cAQYr1KmxDC
+ lJXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741127088; x=1741731888;
+ d=1e100.net; s=20230601; t=1741127092; x=1741731892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kU8wMZNvEzgPbmwhpM6JkBirf3HCpj8nA5DxvL7UJOA=;
- b=BPwx28k2+dscs/qSCbwCAcI+USUCYhw3AaPPavffFyCiwqdf+KwXs2zawMtUXOGnKb
- KTYz9nu5Em/+jJyTmiQXyxwLu09bXAfHmqN/oaoqZs5Q3138IGLWgUSdK7Yyncf/UzY7
- RcpxaNIlc90FP80Yg77fypI9aneUPKMrrkHYXQ8mg62+AzkE6DSLKmDcMQbnQcWCe3KA
- YvmrDABgf3EmEnYBA5MoKehDZcV56yeTlM1ztvSTZTljM5GuSkCl00nam4XfYwTZbAi5
- tkNxHhO7vgQDZtDb8YbTG9nZAFjJ1bU6yAGoRdKxDpsXVWvvphqjY5fgZtm85QSIpa8K
- iU1g==
-X-Gm-Message-State: AOJu0YyZvVuqNzZn1TtUdoB2i9G3jhQlfAbL0ZVMbc55I7cNkQBXYY3p
- MrO/tJTlIJqIs2ZkaTfj6r1m5fciZSJmPM2VpleQ/6xEfO4eWQGo1iAZUd/JU2E=
-X-Gm-Gg: ASbGncsCUuGE8ftRVriH9rEQPMxhLfR9TeHKaEoHtIyoMP37XEfFUmKqz/xxWJkP9Kh
- x9uMa08N+YTsVeIp6KsCTUUyA+RooAwZNZ2DXgQr//2b1/bB688kmNlSnwgrgIVMWHqyfH4rINz
- ZUxIlRoePTL9a7QPUJKLNVBd6+BkNBEJ0vZXGsy55OjYxf+F5fZ3LnWUb1b83YLAQvbuhuU1JJG
- miFkihehGbdB/R9DruL7D1FuweuV0naTIc5KCs0rN9EYvtWRe57NmiMug32ZezkVXEvrH2/EZ5+
- MvHT9qE3B4JuhT8Yn8+sauQxcbuimpQ5377nhuzwhajc30k=
-X-Google-Smtp-Source: AGHT+IGfbmf9+7XS7F+SL5+TYvKZ5+ecSkv3uYZewFzRDszMnhO/LR7/tEd+M4U+oGWEtgUPzNCHFA==
-X-Received: by 2002:a17:907:728d:b0:abf:6e3b:4b4 with SMTP id
- a640c23a62f3a-ac20d8bce38mr75190466b.22.1741127088015; 
- Tue, 04 Mar 2025 14:24:48 -0800 (PST)
+ bh=nuyU4RtfkAy5FahNVVdqaLuFf5A6JqdgckTnQGTYpas=;
+ b=deCZ5igRqYM1LkNMD/2IAGLtFVA+A+2jZNV2XRAXYjcerAUgAulbJdxn1i5+ymwN6J
+ AxYsopd1j/sacxu2TG9uneB6eRAvYx9n7mAiCSTMXOvQJOtXz4PqJI1FmW7grLB2iDL4
+ I6e0aQf/VGPeBzJLifpulAapRU6HIFKIAp8n7Jiey8f78K+sR+Fv4dH/vpaBgfK0Ew+h
+ crEfj+NBrTfJ0deJSzrGuGmkTolCFg4x33nr+eckiIiKym+mNy6bDt3Jvy+4Dc23XHci
+ bguCGm95/5oOEbT9bk6XCo/x7oolg/JprtuihY3reXiINYb/r7I7sLtvbMm112cQNM1z
+ B0xw==
+X-Gm-Message-State: AOJu0YxCDp0YERvedVkBWEIOtRQzEEue3i4E69t6SDifs35f6y7kObor
+ kcmIFd2SXyzGuwOE5boclRPkSQlciZlPmmVGsociBnmjwMsYzu/YvYSPiBOQK3U=
+X-Gm-Gg: ASbGncscrINrIwpbam08YmYPMVUnPtEr2DyEKnJOaC2mQ1guWPvtsMtGzpYHSpG9xfq
+ ZVUa0rYqP1Zj3ig1ah0tZnQIHFcC9nmqFD1RhShPCRwv3pWzHl4NW2rVDIfO4XUWaYeZ7kunsdR
+ UExLJSk+rtHZfDtAWoiv4G8DTdIuioezyIirgBDvfM4ZM5LyNpfKDu7JntN/AfEH9HjivhcWmSn
+ 9ClGsQEeGPQ9pdXe7N6qVdVMDgoMwMGT4qZXWQS6jvf+W5FY7kipO1JvlJcJ9ZnXLf0qwqjnphj
+ cbC08irqWROWhYdUkIV7gIprAQeTpy0c9uphXLzdEE0IB0w=
+X-Google-Smtp-Source: AGHT+IEVLCEN/rLy4cpvUeLBVb/6bdRMFtZpvRF2Uc9DK8BNd2cq3G13uMTgXXkEs1Qed2XBBtl3ew==
+X-Received: by 2002:a05:6402:1e91:b0:5dc:a44e:7644 with SMTP id
+ 4fb4d7f45d1cf-5e59f39d009mr1618069a12.2.1741127091776; 
+ Tue, 04 Mar 2025 14:24:51 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac0e1fb5588sm357045766b.18.2025.03.04.14.24.43
+ a640c23a62f3a-ac1ea7dd823sm234374866b.109.2025.03.04.14.24.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 04 Mar 2025 14:24:45 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A1D5D5FE0C;
+ by draig.lan (Postfix) with ESMTP id B70BB5FE31;
  Tue,  4 Mar 2025 22:24:40 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 12/32] tests/vm: bump timeout for shutdown
-Date: Tue,  4 Mar 2025 22:24:19 +0000
-Message-Id: <20250304222439.2035603-13-alex.bennee@linaro.org>
+Subject: [PATCH v2 13/32] tests/tcg: mark test-vma as a linux-only test
+Date: Tue,  4 Mar 2025 22:24:20 +0000
+Message-Id: <20250304222439.2035603-14-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,30 +113,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On my fairly beefy machine the timeout was triggering leaving a
-corrupted disk image due to power being pulled before the disk had
-synced. Triple the timeout to avoid this.
+The main multiarch tests should compile for any POSIX system, however
+test-vma's usage of MAP_NORESERVE makes it a linux-only test. Simply
+moving the source file is enough for the build logic to skip on BSD's.
 
-Message-Id: <20250226140343.3907080-11-alex.bennee@linaro.org>
+Message-Id: <20250226140343.3907080-12-alex.bennee@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/vm/basevm.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/multiarch/{ => linux}/test-vma.c | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename tests/tcg/multiarch/{ => linux}/test-vma.c (100%)
 
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index 6d41ac7574..9e879e966a 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -83,7 +83,7 @@ class BaseVM(object):
-     # command to halt the guest, can be overridden by subclasses
-     poweroff = "poweroff"
-     # Time to wait for shutdown to finish.
--    shutdown_timeout_default = 30
-+    shutdown_timeout_default = 90
-     # enable IPv6 networking
-     ipv6 = True
-     # This is the timeout on the wait for console bytes.
+diff --git a/tests/tcg/multiarch/test-vma.c b/tests/tcg/multiarch/linux/test-vma.c
+similarity index 100%
+rename from tests/tcg/multiarch/test-vma.c
+rename to tests/tcg/multiarch/linux/test-vma.c
 -- 
 2.39.5
 
