@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB2A4F0F0
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E45A4F117
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:02:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpbEq-0003L3-KG; Tue, 04 Mar 2025 17:59:48 -0500
+	id 1tpbF0-0003w7-FR; Tue, 04 Mar 2025 17:59:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbEk-00038l-E6
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:43 -0500
+ id 1tpbEx-0003te-Q2
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:55 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbEh-0007Dh-Md
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:40 -0500
+ id 1tpbEu-0007Ki-0r
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:55 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaPa-00000000LaL-1GE4; Tue, 04 Mar 2025 23:06:50 +0100
+ id 1tpaPf-00000000LaV-1oNq; Tue, 04 Mar 2025 23:06:55 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v6 24/36] vfio/migration: Multifd setup/cleanup functions and
- associated VFIOMultifd
-Date: Tue,  4 Mar 2025 23:03:51 +0100
-Message-ID: <c0520523053b1087787152ddf2163257d3030be0.1741124640.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v6 25/36] vfio/migration: Setup and cleanup multifd transfer
+ in these general methods
+Date: Tue,  4 Mar 2025 23:03:52 +0100
+Message-ID: <b1f864a65fafd4fdab1f89230df52e46ae41f2ac.1741124640.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1741124640.git.maciej.szmigiero@oracle.com>
 References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
@@ -66,108 +66,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Add multifd setup/cleanup functions and an associated VFIOMultifd data
-structure that will contain most of the receive-side data together
-with its init/cleanup methods.
+Wire VFIO multifd transfer specific setup and cleanup functions into
+general VFIO load/save setup and cleanup methods.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration-multifd.c   | 44 +++++++++++++++++++++++++++++++++++
- hw/vfio/migration-multifd.h   |  4 ++++
- include/hw/vfio/vfio-common.h |  3 +++
- 3 files changed, 51 insertions(+)
+ hw/vfio/migration.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 79fae0b6296f..091dc43210ad 100644
---- a/hw/vfio/migration-multifd.c
-+++ b/hw/vfio/migration-multifd.c
-@@ -32,8 +32,52 @@ typedef struct VFIODeviceStatePacket {
-     uint8_t data[0];
- } QEMU_PACKED VFIODeviceStatePacket;
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index dc1fe4e717a4..3c8286ae6230 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -453,6 +453,10 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
+     uint64_t stop_copy_size = VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE;
+     int ret;
  
-+typedef struct VFIOMultifd {
-+} VFIOMultifd;
++    if (!vfio_multifd_setup(vbasedev, false, errp)) {
++        return -EINVAL;
++    }
 +
-+static VFIOMultifd *vfio_multifd_new(void)
-+{
-+    VFIOMultifd *multifd = g_new(VFIOMultifd, 1);
+     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_SETUP_STATE);
+ 
+     vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
+@@ -509,6 +513,9 @@ static void vfio_save_cleanup(void *opaque)
+     Error *local_err = NULL;
+     int ret;
+ 
++    /* Currently a NOP, done for symmetry with load_cleanup() */
++    vfio_multifd_cleanup(vbasedev);
 +
-+    return multifd;
-+}
-+
-+static void vfio_multifd_free(VFIOMultifd *multifd)
-+{
-+    g_free(multifd);
-+}
-+
-+void vfio_multifd_cleanup(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    g_clear_pointer(&migration->multifd, vfio_multifd_free);
-+}
-+
- bool vfio_multifd_transfer_supported(void)
+     /*
+      * Changing device state from STOP_COPY to STOP can take time. Do it here,
+      * after migration has completed, so it won't increase downtime.
+@@ -674,15 +681,28 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
+ static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
  {
-     return multifd_device_state_supported() &&
-         migrate_send_switchover_start();
- }
-+
-+bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev)
-+{
-+    return false;
-+}
-+
-+bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp)
-+{
+     VFIODevice *vbasedev = opaque;
 +    VFIOMigration *migration = vbasedev->migration;
-+
-+    if (!vfio_multifd_transfer_enabled(vbasedev)) {
-+        /* Nothing further to check or do */
-+        return true;
++    int ret;
+ 
+-    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
+-                                    vbasedev->migration->device_state, errp);
++    if (!vfio_multifd_setup(vbasedev, true, errp)) {
++        return -EINVAL;
 +    }
 +
-+    if (alloc_multifd) {
-+        assert(!migration->multifd);
-+        migration->multifd = vfio_multifd_new();
++    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
++                                   migration->device_state, errp);
++    if (ret) {
++        return ret;
 +    }
 +
-+    return true;
-+}
-diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
-index 1b60d5f67a1c..2a7a76164f29 100644
---- a/hw/vfio/migration-multifd.h
-+++ b/hw/vfio/migration-multifd.h
-@@ -14,6 +14,10 @@
++    return 0;
+ }
  
- #include "hw/vfio/vfio-common.h"
+ static int vfio_load_cleanup(void *opaque)
+ {
+     VFIODevice *vbasedev = opaque;
  
-+bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp);
-+void vfio_multifd_cleanup(VFIODevice *vbasedev);
++    vfio_multifd_cleanup(vbasedev);
 +
- bool vfio_multifd_transfer_supported(void);
-+bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev);
+     vfio_migration_cleanup(vbasedev);
+     trace_vfio_load_cleanup(vbasedev->name);
  
- #endif
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index bf5d52087129..40382390692d 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -78,6 +78,8 @@ typedef struct VFIORegion {
-     uint8_t nr; /* cache the region number for debug */
- } VFIORegion;
- 
-+typedef struct VFIOMultifd VFIOMultifd;
-+
- typedef struct VFIOMigration {
-     struct VFIODevice *vbasedev;
-     VMChangeStateEntry *vm_state;
-@@ -89,6 +91,7 @@ typedef struct VFIOMigration {
-     uint64_t mig_flags;
-     uint64_t precopy_init_size;
-     uint64_t precopy_dirty_size;
-+    VFIOMultifd *multifd;
-     bool initial_data_sent;
- 
-     bool event_save_iterate_started;
 
