@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69997A4DE62
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 13:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36676A4DE65
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 13:54:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpRhP-0004ff-Vk; Tue, 04 Mar 2025 07:48:40 -0500
+	id 1tpRhf-0004oq-PH; Tue, 04 Mar 2025 07:48:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhI-0004ei-Sh
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhQ-0004gj-Bj
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhF-0006he-P3
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:32 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tpRhO-0006jj-7W
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 07:48:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741092508;
+ s=mimecast20190719; t=1741092517;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gkcyaZ27h2WsA2IHdLuCkDhTgUP4RBoCBo8IPYTJMjw=;
- b=MtzfkzLu/sFQyQJF5XNjNfocOJMk5mg2ZOxXLdeGOTnyBpYB+2vAIWkmLDac4t1zy9nm81
- pyfAANnIjDt4NMK8kngAesqeIePhOsSWyWualRBqB24yXB0LJ2L1TGzm98iEZ2+yfhp+xr
- ZdqCV3OyEfq2/SyBZ1l3aFYZCSurLx0=
+ bh=K/GFtp0QO6yu6/4mr5Mp0qNucr+nmJ7SLkaVqL01H0Y=;
+ b=KPV7llWU/qZAzAEAum7L+UAahEFXHZL3mdFdum8JbAmlKwErCuKt92gtraktpZFeo3gUup
+ 5LLLqIIt6tVzf54BdQYWo72MhrS3g3Fxi+RptAKVYjm8UzKxiEGHyuvj93FAzeBcA8kgab
+ JO21VEzJZ2DCTQVTaWL7HcJg0ta/Pfg=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-9L6nYouiMkCypSe16qSyxw-1; Tue,
- 04 Mar 2025 07:48:22 -0500
-X-MC-Unique: 9L6nYouiMkCypSe16qSyxw-1
-X-Mimecast-MFC-AGG-ID: 9L6nYouiMkCypSe16qSyxw_1741092500
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-emFkRSd3MQuaCOEaCoM7tA-1; Tue,
+ 04 Mar 2025 07:48:24 -0500
+X-MC-Unique: emFkRSd3MQuaCOEaCoM7tA-1
+X-Mimecast-MFC-AGG-ID: emFkRSd3MQuaCOEaCoM7tA_1741092502
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6009F1954B20; Tue,  4 Mar 2025 12:48:19 +0000 (UTC)
+ id 8CBA21954200; Tue,  4 Mar 2025 12:48:22 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.122])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A30841956048; Tue,  4 Mar 2025 12:48:17 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB275180087C; Tue,  4 Mar 2025 12:48:21 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 3B4931800392; Tue, 04 Mar 2025 13:48:15 +0100 (CET)
+ id 4B3941800396; Tue, 04 Mar 2025 13:48:15 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -56,25 +56,26 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 01/24] Add support for etc/hardware-info fw_cfg file
-Date: Tue,  4 Mar 2025 13:47:49 +0100
-Message-ID: <20250304124815.591749-2-kraxel@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Laszlo Ersek <lersek@redhat.com>
+Subject: [PULL 02/24] hw/uefi: add include/hw/uefi/var-service-api.h
+Date: Tue,  4 Mar 2025 13:47:50 +0100
+Message-ID: <20250304124815.591749-3-kraxel@redhat.com>
 In-Reply-To: <20250304124815.591749-1-kraxel@redhat.com>
 References: <20250304124815.591749-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,112 +91,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-edk2 looks for the etc/hardware-info fw_cfg file to discover hardware
-which can not easily be found in other ways.  Entries consist of a
-header with hardware type and entry size (HARDWARE_INFO_HEADER),
-followed by the actual hardware description (which is type specific).
-The file can have multiple entries.
+This file defines the register interface of the uefi-vars device.
+It's only a handful of registers: magic value, command and status
+registers, location and size of the communication buffer.
 
-This patch adds the infrastructure to add entries to the file and an
-entry struct for simple devices (HARDWARE_INFO_SIMPLE_DEVICE) which have
-an mmio address only.
-
+Reviewed-by: Laszlo Ersek <lersek@redhat.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20250225163031.1409078-2-kraxel@redhat.com>
+Message-ID: <20250225163031.1409078-3-kraxel@redhat.com>
 ---
- include/hw/uefi/hardware-info.h | 35 +++++++++++++++++++++++++++++++++
- hw/uefi/hardware-info.c         | 31 +++++++++++++++++++++++++++++
- hw/uefi/meson.build             |  1 +
- 3 files changed, 67 insertions(+)
- create mode 100644 include/hw/uefi/hardware-info.h
- create mode 100644 hw/uefi/hardware-info.c
- create mode 100644 hw/uefi/meson.build
+ include/hw/uefi/var-service-api.h | 48 +++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+ create mode 100644 include/hw/uefi/var-service-api.h
 
-diff --git a/include/hw/uefi/hardware-info.h b/include/hw/uefi/hardware-info.h
+diff --git a/include/hw/uefi/var-service-api.h b/include/hw/uefi/var-service-api.h
 new file mode 100644
-index 000000000000..94c38cff2007
+index 000000000000..0d71638f3efe
 --- /dev/null
-+++ b/include/hw/uefi/hardware-info.h
-@@ -0,0 +1,35 @@
++++ b/include/hw/uefi/var-service-api.h
+@@ -0,0 +1,48 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * pass hardware information to uefi
-+ *
-+ * see OvmfPkg/Library/HardwareInfoLib/ in edk2
++ * uefi-vars device - API of the virtual device for guest/host communication.
 + */
-+#ifndef QEMU_UEFI_HARDWARE_INFO_H
-+#define QEMU_UEFI_HARDWARE_INFO_H
++#ifndef QEMU_UEFI_VAR_SERVICE_API_H
++#define QEMU_UEFI_VAR_SERVICE_API_H
 +
-+/* data structures */
++/* qom: device names */
++#define TYPE_UEFI_VARS_X64       "uefi-vars-x64"
++#define TYPE_UEFI_VARS_SYSBUS    "uefi-vars-sysbus"
 +
-+typedef enum {
-+    HardwareInfoTypeUndefined  = 0,
-+    HardwareInfoTypeHostBridge = 1,
-+    HardwareInfoQemuUefiVars   = 2,
-+} HARDWARE_INFO_TYPE;
++/* sysbus: fdt node path */
++#define UEFI_VARS_FDT_NODE       "qemu-uefi-vars"
++#define UEFI_VARS_FDT_COMPAT     "qemu,uefi-vars"
 +
-+typedef struct {
-+    union {
-+        uint64_t            uint64;
-+        HARDWARE_INFO_TYPE  value;
-+    } type;
-+    uint64_t  size;
-+} HARDWARE_INFO_HEADER;
++/* registers */
++#define UEFI_VARS_REG_MAGIC                  0x00  /* 16 bit */
++#define UEFI_VARS_REG_CMD_STS                0x02  /* 16 bit */
++#define UEFI_VARS_REG_BUFFER_SIZE            0x04  /* 32 bit */
++#define UEFI_VARS_REG_DMA_BUFFER_ADDR_LO     0x08  /* 32 bit */
++#define UEFI_VARS_REG_DMA_BUFFER_ADDR_HI     0x0c  /* 32 bit */
++#define UEFI_VARS_REG_PIO_BUFFER_TRANSFER    0x10  /* 8-64 bit */
++#define UEFI_VARS_REG_PIO_BUFFER_CRC32C      0x18  /* 32 bit (read-only) */
++#define UEFI_VARS_REG_FLAGS                  0x1c  /* 32 bit */
++#define UEFI_VARS_REGS_SIZE                  0x20
 +
-+typedef struct {
-+    uint64_t  mmio_address;
-+} HARDWARE_INFO_SIMPLE_DEVICE;
++/* flags register */
++#define UEFI_VARS_FLAG_USE_PIO           (1 << 0)
 +
-+/* qemu functions */
++/* magic value */
++#define UEFI_VARS_MAGIC_VALUE               0xef1
 +
-+void hardware_info_register(HARDWARE_INFO_TYPE type, void *info, uint64_t size);
++/* command values */
++#define UEFI_VARS_CMD_RESET                  0x01
++#define UEFI_VARS_CMD_DMA_MM                 0x02
++#define UEFI_VARS_CMD_PIO_MM                 0x03
++#define UEFI_VARS_CMD_PIO_ZERO_OFFSET        0x04
 +
-+#endif /* QEMU_UEFI_HARDWARE_INFO_H */
-diff --git a/hw/uefi/hardware-info.c b/hw/uefi/hardware-info.c
-new file mode 100644
-index 000000000000..930502a4df3a
---- /dev/null
-+++ b/hw/uefi/hardware-info.c
-@@ -0,0 +1,31 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * pass hardware information to uefi
-+ *
-+ * see OvmfPkg/Library/HardwareInfoLib/ in edk2
-+ */
++/* status values */
++#define UEFI_VARS_STS_SUCCESS                0x00
++#define UEFI_VARS_STS_BUSY                   0x01
++#define UEFI_VARS_STS_ERR_UNKNOWN            0x10
++#define UEFI_VARS_STS_ERR_NOT_SUPPORTED      0x11
++#define UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE    0x12
 +
-+#include "qemu/osdep.h"
 +
-+#include "hw/nvram/fw_cfg.h"
-+#include "hw/uefi/hardware-info.h"
-+
-+static void      *blob;
-+static uint64_t  blobsize;
-+
-+void hardware_info_register(HARDWARE_INFO_TYPE type, void *info, uint64_t infosize)
-+{
-+    HARDWARE_INFO_HEADER hdr = {
-+        .type.value = cpu_to_le64(type),
-+        .size       = cpu_to_le64(infosize),
-+    };
-+
-+    blob = g_realloc(blob, blobsize + sizeof(hdr) + infosize);
-+    memcpy(blob + blobsize, &hdr, sizeof(hdr));
-+    blobsize += sizeof(hdr);
-+    memcpy(blob + blobsize, info, infosize);
-+    blobsize += infosize;
-+
-+    fw_cfg_modify_file(fw_cfg_find(), "etc/hardware-info", blob, blobsize);
-+}
-diff --git a/hw/uefi/meson.build b/hw/uefi/meson.build
-new file mode 100644
-index 000000000000..a8b168941255
---- /dev/null
-+++ b/hw/uefi/meson.build
-@@ -0,0 +1 @@
-+system_ss.add(files('hardware-info.c'))
++#endif /* QEMU_UEFI_VAR_SERVICE_API_H */
 -- 
 2.48.1
 
