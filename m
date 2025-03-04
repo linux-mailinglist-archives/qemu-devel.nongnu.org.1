@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C51A4D415
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C60A4D416
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:50:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpM4T-0006c5-11; Tue, 04 Mar 2025 01:48:05 -0500
+	id 1tpM4W-0006dZ-Hb; Tue, 04 Mar 2025 01:48:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM4O-0006b2-KP; Tue, 04 Mar 2025 01:48:00 -0500
+ id 1tpM4Q-0006br-TQ; Tue, 04 Mar 2025 01:48:02 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tpM4N-0003IK-16; Tue, 04 Mar 2025 01:48:00 -0500
+ id 1tpM4P-0003IK-Dw; Tue, 04 Mar 2025 01:48:02 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 4 Mar
@@ -28,17 +28,17 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v5 5/6] hw/arm/aspeed_ast27x0.c Separate HW Strap Registers
- for SCU and SCUIO
-Date: Tue, 4 Mar 2025 14:47:07 +0800
-Message-ID: <20250304064710.2128993-6-jamin_lin@aspeedtech.com>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v5 6/6] hw/arm/aspeed_ast27x0.c Fix boot issue for AST2700
+Date: Tue, 4 Mar 2025 14:47:08 +0800
+Message-ID: <20250304064710.2128993-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
 References: <20250304064710.2128993-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -64,45 +64,35 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is one hw-strap1 register in the SCU (CPU DIE) and another hw-strap1
-register in the SCUIO (IO DIE). The values of these two registers should not be
-the same. To reuse the current design of hw-strap, hw-strap1 is assigned to the
-SCU and sets the value in the SCU hw-strap1 register, while hw-strap2 is
-assigned to the SCUIO and sets the value in the SCUIO hw-strap1 register.
+Currently, ASPEED_DEV_SPI_BOOT is set to "0x400000000", which is the DRAM start
+address, and the QEMU loader is used to load the U-Boot binary into this address.
+
+However, if users want to install FMC flash contents as a boot ROM, the DRAM
+address 0x400000000 would be overwritten with Boot ROM data. This causes the
+AST2700 to fail to boot because the U-Boot data becomes incorrect.
+
+To fix this, change the ASPEED_DEV_SPI_BOOT address to "0x100000000", which is
+the FMC0 memory-mapped start address in the AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index a48f47b74e..92487bf229 100644
+index 92487bf229..10e1358166 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -333,14 +333,21 @@ static void aspeed_soc_ast2700_init(Object *obj)
-                          sc->silicon_rev);
-     object_property_add_alias(obj, "hw-strap1", OBJECT(&s->scu),
-                               "hw-strap1");
--    object_property_add_alias(obj, "hw-strap2", OBJECT(&s->scu),
--                              "hw-strap2");
-     object_property_add_alias(obj, "hw-prot-key", OBJECT(&s->scu),
-                               "hw-prot-key");
+@@ -24,7 +24,7 @@
+ #include "qemu/log.h"
  
-     object_initialize_child(obj, "scuio", &s->scuio, TYPE_ASPEED_2700_SCUIO);
-     qdev_prop_set_uint32(DEVICE(&s->scuio), "silicon-rev",
-                          sc->silicon_rev);
-+    /*
-+     * There is one hw-strap1 register in the SCU (CPU DIE) and another
-+     * hw-strap1 register in the SCUIO (IO DIE). To reuse the current design
-+     * of hw-strap, hw-strap1 is assigned to the SCU and sets the value in the
-+     * SCU hw-strap1 register, while hw-strap2 is assigned to the SCUIO and
-+     * sets the value in the SCUIO hw-strap1 register.
-+     */
-+    object_property_add_alias(obj, "hw-strap2", OBJECT(&s->scuio),
-+                                  "hw-strap1");
- 
-     snprintf(typename, sizeof(typename), "aspeed.fmc-%s", socname);
-     object_initialize_child(obj, "fmc", &s->fmc, typename);
+ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+-    [ASPEED_DEV_SPI_BOOT]  =  0x400000000,
++    [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
+     [ASPEED_DEV_SRAM]      =  0x10000000,
+     [ASPEED_DEV_SDMC]      =  0x12C00000,
+     [ASPEED_DEV_SCU]       =  0x12C02000,
 -- 
 2.34.1
 
