@@ -2,94 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACFFA4E45E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 16:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47016A4E493
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 16:59:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpUZd-0004ub-5V; Tue, 04 Mar 2025 10:52:49 -0500
+	id 1tpUfT-0007mj-Gu; Tue, 04 Mar 2025 10:58:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1tpUZY-0004uB-Jg
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 10:52:44 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tpUfO-0007mD-QN
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 10:58:46 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1tpUZW-0003Ik-SB
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 10:52:44 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-439846bc7eeso37513015e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 07:52:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tpUfM-00041Q-CC
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 10:58:45 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-abbd96bef64so912392566b.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 07:58:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1741103561; x=1741708361; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=ob+55ii8E4Ycc2GkEVlEPolvIyx3KgrxuhKnE7204WA=;
- b=SfS3g3PfmbK/MgNUHRPhTcEddK5gBuEa18CbncHnh1euxPUpUisVOjh1a2B9th6LAv
- B8XF0xNqwWbSBB9A/oPEx9MkphSMccxb4gtDcHqKsDumtFdJ3q3C1ODc4XvRepp7Tkdj
- Q7IiFowHCg1ir+SLt1WM3l90IWD9PxXf/OKq0eI/jQR/NSP1L3iSKGm6xTJanoAqmv2G
- NOkRWwngJxwCtC7joMP3d959MDqQKQ8S6u78obUul4ONUobdPeKQ1AHXtEuzcr8TCQgH
- tsp3aJ9WMIi2tQNJldDv8ITOjKdct1rOdWcj3PADjfmUXMiQfMcytUFFQXRR3aaolej9
- yEjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741103561; x=1741708361;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1741103922; x=1741708722; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ob+55ii8E4Ycc2GkEVlEPolvIyx3KgrxuhKnE7204WA=;
- b=RxNnkYLR3yluOmgIhR6YOkkVGHUCwaM5mVL7XFkJhTb3SWPh96tCcBBORz+AKVlo9l
- HvYuf5yGJVY0F6B8nj1NmZwJmO5VfyD+MA+E6bxhZQl7V86uSgaKIa/a94zgVwHnqtQf
- v//eR+r2yhMkthgL1EUkIofk+osMFkZeYgaJUCbHQevO2Q6p7Kek8UuyvhOSyqTXFpGb
- qn1/RbNdM66KIn4kc2OiBSGHsHCixNSJuDZ7vIlZqXml7ht8Gqa7j4MIgYgCZBPc/lwo
- 4HAbpjpM7jTVIA+PYkoz68As8wvkWjt6mTegc07G6B5QdSQwrXeoAdflPbOjh2tqbfny
- M4PQ==
-X-Gm-Message-State: AOJu0YwDTnaMsFFxlTol8PLEx9rBOz594TNunzxt1r6Hlrq26dwrzKLD
- d1Q1Sna+Xjb2fuJJPqldcweiyR3d+atlQV0FYNxfZSsSjihhOWwmnjd3z1azSH92AoDp+SKu/Q0
- G
-X-Gm-Gg: ASbGncvGXk6iRyPsA/lqvS8eHtda/VTS8AbTdmQpDaGP+Lp6KSgClHxgZZhbd08EXql
- 1QxWZJoB3rq4dSl1syk8LnnAgD5uaRMSskWEfIr1jw19c8Yrr++999NShFyy6HtdW3mBEsq/Ct3
- BcCOL1Sne96sbjvFpISXusxxOVraGn/WmAjEIdQB9AEFJEsPxidFbxNgj0Fd0rCUkaNzS27ETiX
- e3ID3bFpRM2/5DrwRDLxRFe7jbyAjMl2fTCUYD3psWva66zx+EJrakSTz6kSgPk+OGr8Rm3aW6C
- +pAENkpuRhcuuxaT5diA6S4uJZpf48mo
-X-Google-Smtp-Source: AGHT+IGjscO4ADJjKnuALrcPAQ0LK/XwIq1iH7QKTDkKX2tPx7j7fB1QbfPoWnzpTvL1WH5s3/780Q==
-X-Received: by 2002:a05:600c:4fd0:b0:43b:d12a:40e1 with SMTP id
- 5b1f17b1804b1-43bd12a42b8mr835005e9.18.1741103561024; 
- Tue, 04 Mar 2025 07:52:41 -0800 (PST)
-Received: from localhost ([2a02:8308:a00c:e200::688c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bbed8b26asm92527595e9.22.2025.03.04.07.52.40
+ bh=wPxAnvFWcx7YD+me+vO+xA5sVaTRnES3/AiU1O3qTJ4=;
+ b=JeVJgmEemH5StMb/lIPgVouIkdHxSd4790utb5TYg0i0dKjeiGf7/V/WzVVOZtu6Pu
+ pz1YuZIFAYC6FabxTIedffDOplEghEH8gImdv7aKY+5XDZPB0eKKsTW3nJnmD4h+CfLf
+ Lgvs62zoQtM7KMiXB29QsLAYB0JlQKrNfNIQ0SHpZH4pIV2rXMbv3eJTnPhAwODOipRr
+ J62epYmzUAVYEVXNK6yHonNehqakxAO8/0GRSKYb43CA3jnj9iaIdCxL6At4oPjtSeH8
+ eA+1GzHBcaEYgjCb5QG3fed3pWjNmBt0E+Un8Y80ftCY3/VE/Raqe3jYilJ8z5ywX27G
+ FGfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741103922; x=1741708722;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=wPxAnvFWcx7YD+me+vO+xA5sVaTRnES3/AiU1O3qTJ4=;
+ b=jswILe+zCk+CXCNxLtGgNt3QLYgAPuLz6/oM1QrY1llGIInyM82yQmm/6jda4ox/9j
+ l9unh2zNbk+82N0BG+65Mtf+rViLKqXF2B4ZdjpyAc2AzgkC6WxhpZ4wCme8i9p+OtwR
+ 4BWu8IY7rsODkB1RMhkb+3NNV7SIOfvq91QMQTN9t2WMftSP4VzClUVwmgQ9pq8By45W
+ /K5UeR3WnysuddAZ1SivqJ0liPcefA+eIE73gYo1ssgPPYhxLunZCIFWCm2So9n97Uz9
+ bJJrGiXvsJe8yVaHqL3hSktTTnNHyEvC9Uf7kNgK2Uw2jZ64oWAxijXhfGwaFDxMeB5T
+ A+fg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXxHtdpL78w9ge8e4A1tx1AQ6A6YDqf1IsYFUPhjQB4CtUtUBN9Gm+rC9rgHVTh5VB/nsEv/f8lAk9V@nongnu.org
+X-Gm-Message-State: AOJu0YySt7ovaqf5sCAQq10xVfwc2XQ/g9ed0Yd4Lvbl1viWb9mf+8H5
+ f8JOx2oGvRGvrDWIq0+4tx5weIen6fA9n2j6pO4HmBt7QcKs8D8WhPJg/3by4BY=
+X-Gm-Gg: ASbGncuiGVvgMnfTptGgzhaub9liXos/UKlVTtjBK26eq/iuf9V8pAWzuvyVu57OmWA
+ xWd1tULKG4GTyQ22/XKL8OoFUXsK5/82V55CpFQhvSniviCItHKmkJKtiWcQUU1BQD7G8nVgyb+
+ C5Ef2PWBnnJHEXCExOSFQW5Z1Y0xaCuIgz1CohGCEkGmR7hNEzE3GGIFDIEGP1PbN4Ti/qH1MOI
+ /RDMHfqvxGXc+U4BNdYJaX7SSsuSmfUFfNKQ+n+bxZh6pWt7I8TDmxL4XIovk9ov9dkQDJamwqD
+ Lx2965QsKk2fDPHTskb8qvTNZa4Oow7dAF3uynWbTaCEkeY=
+X-Google-Smtp-Source: AGHT+IFghzikPg3jPRp6H+GwPT5DvRM+N5zB7noQNWeuUsLiG0t+BpuqjHLBiAyjIgMpQDM3QqlpIg==
+X-Received: by 2002:a17:907:2d2b:b0:ac1:cceb:d9b0 with SMTP id
+ a640c23a62f3a-ac1ccebdc9bmr717782966b.16.1741103922179; 
+ Tue, 04 Mar 2025 07:58:42 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-abf74e85fbfsm407913366b.15.2025.03.04.07.58.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 07:52:40 -0800 (PST)
-Date: Tue, 4 Mar 2025 16:52:39 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
- vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 6/8] target/riscv/kvm: add CSR_SIREG and CSR_STOPEI
- emulation
-Message-ID: <20250304-d8cce0e92dc6363ebfecd07a@orel>
-References: <20250224082417.31382-1-yongxuan.wang@sifive.com>
- <20250224082417.31382-7-yongxuan.wang@sifive.com>
+ Tue, 04 Mar 2025 07:58:41 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id ADBC15F93C;
+ Tue,  4 Mar 2025 15:58:40 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org,  Brian Cain
+ <brian.cain@oss.qualcomm.com>
+Subject: Re: [PATCH] tests/tcg: Suppress compiler false-positive warning on
+ sha1.c
+In-Reply-To: <CAFEAcA_nbax7qq7Lxc-Qo8xTaxxTn9dJ5VQYuQTy+Qp1_2mNXg@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 4 Mar 2025 14:36:42 +0000")
+References: <20250227141343.1675415-1-peter.maydell@linaro.org>
+ <87o6yh57r2.fsf@draig.linaro.org>
+ <CAFEAcA9VDtWKoQ09dOt+ZxJ2MhdRTFY_X1ON58pEjYTM_NtZ-A@mail.gmail.com>
+ <87ikoo6hbm.fsf@draig.linaro.org>
+ <CAFEAcA9mFHo=U=F+7on-9m+VWh_b2rQXtEJovU3fuj3MZxHTyw@mail.gmail.com>
+ <877c546f9r.fsf@draig.linaro.org>
+ <CAFEAcA_nbax7qq7Lxc-Qo8xTaxxTn9dJ5VQYuQTy+Qp1_2mNXg@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 04 Mar 2025 15:58:40 +0000
+Message-ID: <87v7so4wjz.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250224082417.31382-7-yongxuan.wang@sifive.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,131 +110,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Feb 24, 2025 at 04:24:13PM +0800, Yong-Xuan Wang wrote:
-> Support user-space emulation of SIREG and STOPEI CSR with KVM
-> acceleration. For SIREG emulation, the SISELECT CSR value and iprio
-> array must be loaded before handling, and since the iprio array might
-> be modified, it must be written back after the emulation.
-> 
-> When running with KVM acceleration, the machine lacks M-mode CSRs and
-> does not report S-mode support in its environment configuration, even
-> though some S-mode CSRs are accessible. This patch adds kvm_enabled()
-> checks in relevant predicates to ensure proper handling and validation.
-> 
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> ---
->  target/riscv/csr.c         | 12 +++++++++---
->  target/riscv/kvm/kvm-cpu.c | 27 +++++++++++++++++++++++++++
->  2 files changed, 36 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index a2830888d010..594df30c456a 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -27,6 +27,7 @@
->  #include "exec/exec-all.h"
->  #include "exec/tb-flush.h"
->  #include "system/cpu-timers.h"
-> +#include "system/kvm.h"
->  #include "qemu/guest-random.h"
->  #include "qapi/error.h"
->  #include <stdbool.h>
-> @@ -42,6 +43,11 @@ void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops)
->      csr_ops[csrno & (CSR_TABLE_SIZE - 1)] = *ops;
->  }
->  
-> +static bool riscv_has_ext_s(CPURISCVState *env)
-> +{
-> +    return riscv_has_ext(env, RVS) || kvm_enabled();
-> +}
-> +
->  /* Predicates */
->  #if !defined(CONFIG_USER_ONLY)
->  RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit)
-> @@ -52,7 +58,7 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit)
->          return RISCV_EXCP_NONE;
->      }
->  
-> -    if (!(env->mstateen[index] & bit)) {
-> +    if (!kvm_enabled() && !(env->mstateen[index] & bit)) {
->          return RISCV_EXCP_ILLEGAL_INST;
->      }
->  
-> @@ -66,7 +72,7 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit)
->          }
->      }
->  
-> -    if (env->priv == PRV_U && riscv_has_ext(env, RVS)) {
-> +    if (env->priv == PRV_U && riscv_has_ext_s(env)) {
->          if (!(env->sstateen[index] & bit)) {
->              return RISCV_EXCP_ILLEGAL_INST;
->          }
-> @@ -326,7 +332,7 @@ static RISCVException csrind_or_aia_any(CPURISCVState *env, int csrno)
->  
->  static RISCVException smode(CPURISCVState *env, int csrno)
->  {
-> -    if (riscv_has_ext(env, RVS)) {
-> +    if (riscv_has_ext_s(env)) {
->          return RISCV_EXCP_NONE;
->      }
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Scattering kvm_enabled() checks around, as is done in the above hunks, is
-what I meant in my reply to the previous patch about TCG likely not having
-its state maintained well enough to always provide functional CSR
-emulation for KVM. Rather than fixing things up as we bump into them with
-kvm_enabled() checks we should come up with a way to truly support QEMU
-KVM emulation forwarding to TCG.
+> On Tue, 4 Mar 2025 at 14:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > On Tue, 4 Mar 2025 at 13:44, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
+ wrote:
+>> >>
+>> >> Peter Maydell <peter.maydell@linaro.org> writes:
+>> >> > I think it's new-ish (gcc 11?). On the other hand
+>> >> > -Wno-unknown-warning-option is quite old, and would suppress
+>> >> > this error. If we do
+>> >> >  CFLAGS+=3D-Wno-unknown-warning-option -Wno-stringop-overread
+>> >> >
+>> >> > does that work?
+>> >>
+>> >> Yes, I did:
+>> >>
+>> >> modified   tests/tcg/hexagon/Makefile.target
+>> >> @@ -18,7 +18,7 @@
+>> >>  # Hexagon doesn't support gdb, so skip the EXTRA_RUNS
+>> >>  EXTRA_RUNS =3D
+>> >>
+>> >> -CFLAGS +=3D -Wno-incompatible-pointer-types -Wno-undefined-internal
+>> >> +CFLAGS +=3D -Wno-incompatible-pointer-types -Wno-undefined-internal =
+-Wno-unknown-warning-option
+>> >>  CFLAGS +=3D -fno-unroll-loops -fno-stack-protector
+>> >
+>> > I think we should do this where we add -Wno-stringop-overread,
+>> > not just for the hexagon tests -- or are the tcg tests
+>> > guaranteed to be run with a fixed compiler from a container
+>> > regardless of the local dev environment?
+>>
+>> I can move it, but hexagon is unusual in being clang based. However the
+>> oldest compilers we use are 10.2 in the qemu/debian-legacy-test-cross
+>> container.
+>
+> My question was more "do we only ever build this test with
+> a fixed set of compilers that we control, or are we instead
+> maybe sometimes using the user's clang/cc/gcc" ?
 
-Thanks,
-drew
+Its certainly possible - at least on a Debian system or with the
+appropriate --cross-cc-$ARCH flags. I expect 99% of devs either have
+Debian or Docker/Podman to fall back on.
 
->  
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index b088b947adae..50b0e7c9ff7d 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -1627,6 +1627,31 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
->  }
->  
->  /* User-space CSR emulation */
-> +static int kvm_riscv_emu_sireg_ctx_load(CPUState *cs)
-> +{
-> +    CPURISCVState *env = &RISCV_CPU(cs)->env;
-> +
-> +    KVM_RISCV_GET_CSR(cs, env, RISCV_AIA_CSR_REG(siselect), env->siselect);
-> +    KVM_RISCV_GET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio1), env->siprio[0]);
-> +    KVM_RISCV_GET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio1h), env->siprio[8]);
-> +    KVM_RISCV_GET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio2), env->siprio[16]);
-> +    KVM_RISCV_GET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio2h), env->siprio[24]);
-> +
-> +    return 0;
-> +}
-> +
-> +static int kvm_riscv_emu_sireg_ctx_put(CPUState *cs)
-> +{
-> +    CPURISCVState *env = &RISCV_CPU(cs)->env;
-> +
-> +    KVM_RISCV_SET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio1), env->siprio[0]);
-> +    KVM_RISCV_SET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio1h), env->siprio[8]);
-> +    KVM_RISCV_SET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio2), env->siprio[16]);
-> +    KVM_RISCV_SET_CSR(cs, env, RISCV_AIA_CSR_REG(iprio2h), env->siprio[24]);
-> +
-> +    return 0;
-> +}
-> +
->  struct kvm_riscv_emu_csr_data {
->      target_ulong csr_num;
->      int (*context_load)(CPUState *cs);
-> @@ -1635,6 +1660,8 @@ struct kvm_riscv_emu_csr_data {
->  
->  struct kvm_riscv_emu_csr_data kvm_riscv_emu_csr_data[] = {
->      { CSR_SEED, NULL, NULL },
-> +    { CSR_SIREG, kvm_riscv_emu_sireg_ctx_load, kvm_riscv_emu_sireg_ctx_put },
-> +    { CSR_STOPEI, NULL, NULL },
->  };
->  
->  static int kvm_riscv_handle_csr(CPUState *cs, struct kvm_run *run)
-> -- 
-> 2.17.1
-> 
+> If the latter, we definitely need to associate the
+> "don't warn about unknown warnings" with the place we are
+> adding the option that's not known across all our supported
+> compilers. If the former, then putting it in the hexagon
+> specific file seems OK I guess.
+>
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
