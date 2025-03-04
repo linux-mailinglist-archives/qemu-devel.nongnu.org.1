@@ -2,70 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5820A4D295
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 05:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E83A4D361
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 07:04:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpJs9-0000Vj-2A; Mon, 03 Mar 2025 23:27:13 -0500
+	id 1tpLMt-00061O-7a; Tue, 04 Mar 2025 01:03:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tpJs6-0000VT-If
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 23:27:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tpLMX-00060h-Kc
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 01:02:43 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tpJs4-0000if-IL
- for qemu-devel@nongnu.org; Mon, 03 Mar 2025 23:27:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741062426;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nfCsRC1QWfN2xD4TP7KqVNHVjUTe37/1cmexLOyGHHE=;
- b=YsTDzehBK3dIBckJSOUQ5VoQnR9NZAsjot1CuJRP+PcuePkRgWavn9m8caspHUKovwerWj
- tA422mPh0vlVP3VbITcZgvuC3f3z5R70sz3bngddPJtHXr0mqRQ3egc9DSXYCK03W4CtQX
- oVsiaTTpICKNlFJ7HunCepQwTXkj62g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-ZUjP6BuiMz-gYKTAQImJKQ-1; Mon,
- 03 Mar 2025 23:26:57 -0500
-X-MC-Unique: ZUjP6BuiMz-gYKTAQImJKQ-1
-X-Mimecast-MFC-AGG-ID: ZUjP6BuiMz-gYKTAQImJKQ_1741062416
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E8AB1801A1A; Tue,  4 Mar 2025 04:26:55 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.89])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9F371180087D; Tue,  4 Mar 2025 04:26:53 +0000 (UTC)
-Date: Tue, 4 Mar 2025 12:26:50 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH] scripts/checkpatch: Fix a typo
-Message-ID: <20250304042650.GB223986@fedora>
-References: <20250303172508.93234-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tpLMU-0001L0-Ik
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 01:02:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741068159; x=1772604159;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8k+gCmWzyPAX3ACsdCDd/8IJ2f0jiR58l1KDEiQjScA=;
+ b=fJrG1w8O4oBELkuT3ty1uDxrjMiPvD/gQVXVEG4WDIh0Ejt6AO3+SY4M
+ WUNr0x2telS4R+y8dFN19wwOBOxK7bP0QQZJsR3CVKzK6LyD2y17xqGfe
+ wDOJr3wHCx4cXxDoTLUqO5FNJOBThp1Uf+MgcD/xbkH/v3DRqrcGXTBuH
+ yopj+QVgNzQh3oxy/p46I60GgayjWcvdU4XVkN4bSjD32z6sEKtAniGmv
+ HhuLGy93WGYHpIKGunyIzfac5knNsaxH+uWsXOKzZKEpr3gkAiLAzdo6R
+ V3OBvdnS25/Ld7WgL1QP09Gq0FsiEKWPAgGWVV27oTEkyssKrPTjhwjkT A==;
+X-CSE-ConnectionGUID: f12wO2zSSPaCd/PFx2DvMw==
+X-CSE-MsgGUID: PMSUNWfcRoG0ESruSGmIrA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="59519162"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; d="scan'208";a="59519162"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2025 22:02:29 -0800
+X-CSE-ConnectionGUID: A4joGlkCQcuDAq4v+lkWpw==
+X-CSE-MsgGUID: 3/+5H1xiSByWglAs4JXM1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="118132363"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa010.jf.intel.com with ESMTP; 03 Mar 2025 22:02:27 -0800
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Dongli Zhang <dongli.zhang@oracle.com>
+Subject: [PATCH 0/2] i386: Adjust CPUID_EXT_PDCM based on enable_pmu at
+ realization
+Date: Tue,  4 Mar 2025 00:24:48 -0500
+Message-Id: <20250304052450.465445-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="7KfH+LHOb+k48meZ"
-Content-Disposition: inline
-In-Reply-To: <20250303172508.93234-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,49 +79,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+First, it's not a good practice that values in env->features[] cannot be
+directly used for guest CPUID in void cpu_x86_cpuid(), but require further
+adjustment there. env->features[] are supposed to be finalized at cpu
+realization, so that after it env->features[] is reliable.
 
---7KfH+LHOb+k48meZ
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Second, there is one dependency entry relates to CPUID_EXT_PDCM in
+feature_dependencies[]. QEMU needs to get correct value of
+CPUID_EXT_PDCM in env->features[] to ensure applying the dependencies
+correctly.
 
-On Mon, Mar 03, 2025 at 06:25:08PM +0100, Philippe Mathieu-Daud=E9 wrote:
-> When running checkpatch.pl on a commit adding a file without
-> SPDX tag we get:
->=20
->   Undefined subroutine &main::WARNING called at ./scripts/checkpatch.pl l=
-ine 1694.
->=20
-> The WARNING level is reported by the WARN() method. Fix the typo.
->=20
-> Fixes: fa4d79c64da ("scripts: mandate that new files have SPDX-License-Id=
-entifier")
-> Signed-off-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> ---
-> Possible candidate to apply on /master as buildfix
-> ---
->  scripts/checkpatch.pl | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Patch 1 resolves above two points.
 
-Thanks, applied to qemu.git/master!
+Patch 2 is a enhancement to give users a warning when they request pdcm
+explicitly while PMU disabled.
 
-Stefan
+Xiaoyao Li (2):
+  i386/cpu: Move adjustment of CPUID_EXT_PDCM before
+    feature_dependencies[] check
+  i386/cpu: Warn about why CPUID_EXT_PDCM is not available
 
---7KfH+LHOb+k48meZ
-Content-Type: application/pgp-signature; name="signature.asc"
+ target/i386/cpu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfGgQoACgkQnKSrs4Gr
-c8hqVQf+NUHt+UnApirOzN6kVhgbALni3803Mb7lF5s5PtTEaAr0gNeEuGpPn+By
-vZC2MzL1khKp87oG4ziC4cXTe9KPOqoTscho3HTrWoIH3ymziowzj2YYzRdg+1IJ
-FBKWYfPfPZBWftK9O7OMNJ4Iu/ayIvxK+RICvx5ahzkIOVFiC6bUSPBbNXzoXC7D
-rcf3X0usAweTdRcS5dMrSk+OE3wWEtYyPuCCmKzPFH+aRW7nQWihXKXg+jnJG7xN
-uASkkZceAVpHe8BSs2GlgX9LOiQRU5b0/1/A5N9cW2MhwAHmJDoMoGjYB4riXBHB
-HQx0vbMsc524wTmho3/mO4iVoUhHzw==
-=EayY
------END PGP SIGNATURE-----
-
---7KfH+LHOb+k48meZ--
+-- 
+2.34.1
 
 
