@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D67A4F08B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E6CA4F089
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:32:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpamf-00018d-2x; Tue, 04 Mar 2025 17:30:41 -0500
+	id 1tpamR-0000RB-K8; Tue, 04 Mar 2025 17:30:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpam6-0008BP-T3
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:15 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1tpam5-00089F-Jp
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:14 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpaly-0007nU-BY
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:04 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5e04064af07so11473278a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:29:56 -0800 (PST)
+ id 1tpaly-0007mq-Bd
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:30:02 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5e549af4927so4688889a12.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:29:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741127395; x=1741732195; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741127393; x=1741732193; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7NduONkNHzryA23734KniKbJ3709Oe6o9/gEpRh5YHc=;
- b=RyN3ESyuMkXpQgsGbrMy2kuOC0npfErUFUcL2qnVF7BQdv7tYH/foXh5yb6LSlhtkC
- rw8q7gYU2mhiR7LecI7+JTBBF+4qAG1oLEvE8qAYF2n2K+oej46+DeCdXtSns+DTUV/7
- cNgNVduz6wlGxU+PB/pYjjn17rGVQFAuzgOQtLRg7ckihhpzf93WmT67a5Z5AvJq+Z/p
- vIyCvwexuCab0PWWxNiGbEi1URje/algOSC1AjiZ4atAouawBVpx7lVl32VkjHjaAWoY
- OjTAh/t2r9nL05BJij5vqPxypOMUHAbMKNimfSRNTzctWyS7YPRqFJ1Nk+6C0Tfc9pO9
- k3+w==
+ bh=4AVfGi7ra8MkKWd/PMrFZCQLGgeEHyEMJkQKuf70mbg=;
+ b=SREjOW/DiS/TR1yGxrLznKg+HuYAIimZM2F8m1leZ/vwBzaynvVNwC6Gb8z4kQmA9B
+ yZ2fsrLA0N0dEAr4IskFHVpoBEMW+oQYy1B5K4tva/nj74O2dL84U5vJHrTi2LFddQja
+ rx3rfF0OX45Km9VXpnK0cdRSKUxqPGHlhe8Wbt4oGMuuFeWXtVhPoThW/i8M+1gftwSh
+ yy8HBGFX0ro3RpbFD31EbZ+yRjLZUgDCv9XDM2gWSdHara0N8lh7EY9X1zdDyfw8volB
+ nvaUHFH/WGmE3SrFEynqiSfnbzTtOizPG8aset4x4J3GxWLGebDjVxJTIIwf2iWN0qQU
+ vBuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741127395; x=1741732195;
+ d=1e100.net; s=20230601; t=1741127393; x=1741732193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7NduONkNHzryA23734KniKbJ3709Oe6o9/gEpRh5YHc=;
- b=SFMYkWbiktbiFRkh2Xdn7nSkmiX8UC8ieft4mX5AMGiXGP7teDvGBH3VMKa0X6OJgv
- SDFS5kAQW8CXY+FuUXHuEeLWBDSnhy2qgXJVGf5ggpzCTJGRW/UPmcUI/cC/byswjrxz
- e99tPqDrma+KPbBimcyUdkBbMJtVRxcfkFfnMX3oo+mK75MzKHb59tuXgx2JKGj9v4/o
- j5bINRp4C93c7u5NrEOtSWirBrAPQu2QQ9degSzXvumiSHok0Y7rknEAwxSBZzfiI3Ty
- kr1p8aJGtBWeq9jFpxzsRE4iaVKbvH3+zLunUusIyQJSj3UYIhSshi5T9kmxX1RUKrHJ
- r0Bw==
-X-Gm-Message-State: AOJu0YzwncR81MiH8MMHqr9JB2+BEvk7SFPmLgwSoOpnI9IodMy25dA9
- VOdeWMT1YGey5ok9ofGk4qrpJlbSznJIYvYquxv4BM1DLTRtl11IRzf0zXGh98E=
-X-Gm-Gg: ASbGncux7sNkuEFYQbXzX6iiu7P6EIMETQ6rs7AYweGaZ720xUqFUvbR+QsQ9xzQHTY
- scLHznLN8f5B+Wg8MH95ZYUsEdpe6+edelUTeuinJm1jRB5/2yeCk4vWMs/MRdIrx+8Vz81YBD9
- PkeNnDvgE/XrCbwtGveUTeYx3ptTEr9yTLGn3tqu/HpS89MTM72zembk+2gvldJ5bEUSXwHc8VZ
- 5O3If5yKqBwsffl6KY9s30VTSgz/fuQL8o/mumeX/3ZfNWlW677lf3jcsTTr1BGf+1P4UNE1rMX
- 5Jqnfd0hL0oOEFGpQM5YJura7lwaerLfnCmsBpyc1V+X/3c=
-X-Google-Smtp-Source: AGHT+IEYyaUJhrtg1WSGdM5XLPAf5TsuQU8GAaB9pDpVMiR600V41mczw7as0Kv3QoUYsBJ18IvNwA==
-X-Received: by 2002:a05:6402:518e:b0:5e0:9390:f0d2 with SMTP id
- 4fb4d7f45d1cf-5e59f455d54mr646687a12.20.1741127395009; 
- Tue, 04 Mar 2025 14:29:55 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c43a66b1sm8643141a12.71.2025.03.04.14.29.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ bh=4AVfGi7ra8MkKWd/PMrFZCQLGgeEHyEMJkQKuf70mbg=;
+ b=oprnL/tep3sMirHyzwRYPfMunZ12Z9Gu1NdyItMOnGW2IPzagR7IOs/wI0Shng8DCN
+ LnPmzADG+ZNYkJ3F72FI7SUVKVwHk5h+CgDBcSIBT5vNt/owbjm6wRfhGP12jvHm2lzP
+ jHT1YZ9/u6Sgyf0Yefr1dKRKo/eqhTU2Y+9PabOQOFGzCxYoPaeTyNv9TgsjafpiiDex
+ Sn1NEQZMu2iMlQIMauEmQ706WksODwFZRjjFt69r4GRuRMkTfJ0XvkBMaP1+VFyqN8+9
+ GmNV2vHm2B3D6qg/jIh1ufocNIJ9sE2CoCY6HDcCPdUf8kHKgWkYFGZGmmXOewisEw44
+ bIoQ==
+X-Gm-Message-State: AOJu0YwqdY28GHl6gRncam0/rSLQj5bWEaZXAMI+nUG1WKxhYsn+V43H
+ /KSEFAxGb+AGCp1ucknS+V0GmYmpcsV+zklzFXrU+FPcH5DNlynedOSl8j5Sgsg=
+X-Gm-Gg: ASbGncur31jm9CUo4W7RZ5tY8ODtoLZUaPwJroG5LHEYhYzktHFmfKiR9xCzHQ0vUIg
+ dUDhGUW6l3QJ67KPH/1LoM0KJ/YzHPUmycQFPhtEBnDJHJD9DoJU/Hq9saHFITvzbwPp0PutW+d
+ vS2tdAUbL8/D/QH19e4l1mSayw+akObG9aGOT01YRwi/AcchiQvjn33dgojMz5B2Jf3roR3Csym
+ 0oCuovfEUDXa0rrlLXfnMwZMWIPYs4PASBO7ktXwnMHLMOZeVFpCP0DWRvzay3ONuCyKQ+ncF/U
+ 0714fnwNwaWaqYIz8yrUmvHZlgm5ryEqeogHjlVkaKR9OQ8=
+X-Google-Smtp-Source: AGHT+IERA880j6e67WUjpyHdkX4yep3LdFkWTt9nGTZHfgOT36fGdT1yfqweSs83ZsV68Zp49yjBrA==
+X-Received: by 2002:a05:6402:3596:b0:5e0:7509:4543 with SMTP id
+ 4fb4d7f45d1cf-5e59f48a5c3mr627213a12.32.1741127393170; 
  Tue, 04 Mar 2025 14:29:53 -0800 (PST)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5e4c43a6ab7sm8743631a12.74.2025.03.04.14.29.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Mar 2025 14:29:50 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DC3E1625C3;
- Tue,  4 Mar 2025 22:24:41 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 09CBB625D9;
+ Tue,  4 Mar 2025 22:24:42 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -80,17 +80,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 25/32] plugins/loader: compile loader only once
-Date: Tue,  4 Mar 2025 22:24:32 +0000
-Message-Id: <20250304222439.2035603-26-alex.bennee@linaro.org>
+Subject: [PATCH v2 26/32] plugins/api: split out binary path/start/end/entry
+ code
+Date: Tue,  4 Mar 2025 22:24:33 +0000
+Message-Id: <20250304222439.2035603-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,80 +114,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is very little in loader that is different between builds save
-for a tiny user/system mode difference in the plugin_info structure.
-Create two new files, user and system to hold mode specific helpers
-and move loader into common_ss.
+To move the main api.c to a single build compilation object we need to
+start splitting out user and system specific code. As we need to grob
+around host headers we move these particular helpers into the *-user
+mode directories.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The binary/start/end/entry helpers are all NOPs for system mode.
+
+While using the plugin-api.c.inc trick means we build for both
+linux-user and bsd-user the BSD user-mode command line is still
+missing -plugin. This can be enabled once we have reliable check-tcg
+tests working for the BSDs.
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250225110844.3296991-7-alex.bennee@linaro.org>
----
- plugins/plugin.h    |  6 ++++++
- plugins/loader.c    | 13 ++-----------
- plugins/system.c    | 24 ++++++++++++++++++++++++
- plugins/user.c      | 19 +++++++++++++++++++
- plugins/meson.build |  7 ++++++-
- 5 files changed, 57 insertions(+), 12 deletions(-)
- create mode 100644 plugins/system.c
- create mode 100644 plugins/user.c
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Message-Id: <20250226140343.3907080-22-alex.bennee@linaro.org>
 
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 9ed20b5c41..6fbc443b96 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -119,4 +119,10 @@ struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
- 
- void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
- 
-+/**
-+ * qemu_plugin_fillin_mode_info() - populate mode specific info
-+ * info: pointer to qemu_info_t structure
-+ */
-+void qemu_plugin_fillin_mode_info(qemu_info_t *info);
-+
- #endif /* PLUGIN_H */
-diff --git a/plugins/loader.c b/plugins/loader.c
-index 827473c8b6..7523d554f0 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -31,9 +31,6 @@
- #include "qemu/memalign.h"
- #include "hw/core/cpu.h"
- #include "exec/tb-flush.h"
--#ifndef CONFIG_USER_ONLY
--#include "hw/boards.h"
--#endif
- 
- #include "plugin.h"
- 
-@@ -300,14 +297,8 @@ int qemu_plugin_load_list(QemuPluginList *head, Error **errp)
-     info->target_name = target_name();
-     info->version.min = QEMU_PLUGIN_MIN_VERSION;
-     info->version.cur = QEMU_PLUGIN_VERSION;
--#ifndef CONFIG_USER_ONLY
--    MachineState *ms = MACHINE(qdev_get_machine());
--    info->system_emulation = true;
--    info->system.smp_vcpus = ms->smp.cpus;
--    info->system.max_vcpus = ms->smp.max_cpus;
--#else
--    info->system_emulation = false;
--#endif
-+
-+    qemu_plugin_fillin_mode_info(info);
- 
-     QTAILQ_FOREACH_SAFE(desc, head, entry, next) {
-         int err;
-diff --git a/plugins/system.c b/plugins/system.c
+---
+v2
+  - use common-user/plugin-api.c.inc instead
+  - add commentary about state of plugins for BSD user
+v3
+  - add missing osdep include
+---
+ bsd-user/plugin-api.c        | 15 +++++++++++++
+ linux-user/plugin-api.c      | 15 +++++++++++++
+ plugins/api-system.c         | 39 ++++++++++++++++++++++++++++++++
+ plugins/api.c                | 43 ------------------------------------
+ common-user/plugin-api.c.inc | 43 ++++++++++++++++++++++++++++++++++++
+ bsd-user/meson.build         |  1 +
+ linux-user/meson.build       |  1 +
+ plugins/meson.build          |  2 +-
+ 8 files changed, 115 insertions(+), 44 deletions(-)
+ create mode 100644 bsd-user/plugin-api.c
+ create mode 100644 linux-user/plugin-api.c
+ create mode 100644 plugins/api-system.c
+ create mode 100644 common-user/plugin-api.c.inc
+
+diff --git a/bsd-user/plugin-api.c b/bsd-user/plugin-api.c
 new file mode 100644
-index 0000000000..b3ecc33ba5
+index 0000000000..6ccef7eaa0
 --- /dev/null
-+++ b/plugins/system.c
-@@ -0,0 +1,24 @@
++++ b/bsd-user/plugin-api.c
+@@ -0,0 +1,15 @@
 +/*
-+ * QEMU Plugin system-emulation helpers
++ * QEMU Plugin API - bsd-user-mode only implementations
 + *
-+ * Helpers that are specific to system emulation.
++ * Common user-mode only APIs are in plugins/api-user. These helpers
++ * are only specific to bsd-user.
 + *
 + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
 + * Copyright (C) 2019-2025, Linaro
@@ -195,28 +171,19 @@ index 0000000000..b3ecc33ba5
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qemu/plugin.h"
-+#include "hw/boards.h"
-+
-+#include "plugin.h"
-+
-+void qemu_plugin_fillin_mode_info(qemu_info_t *info)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    info->system_emulation = true;
-+    info->system.smp_vcpus = ms->smp.cpus;
-+    info->system.max_vcpus = ms->smp.max_cpus;
-+}
-diff --git a/plugins/user.c b/plugins/user.c
++#include "qemu.h"
++#include "common-user/plugin-api.c.inc"
+diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c
 new file mode 100644
-index 0000000000..250d542502
+index 0000000000..66755df526
 --- /dev/null
-+++ b/plugins/user.c
-@@ -0,0 +1,19 @@
++++ b/linux-user/plugin-api.c
+@@ -0,0 +1,15 @@
 +/*
-+ * QEMU Plugin user-mode helpers
++ * QEMU Plugin API - linux-user-mode only implementations
 + *
-+ * Helpers that are specific to user-mode.
++ * Common user-mode only APIs are in plugins/api-user. These helpers
++ * are only specific to linux-user.
 + *
 + * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
 + * Copyright (C) 2019-2025, Linaro
@@ -225,32 +192,193 @@ index 0000000000..250d542502
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qemu/plugin.h"
-+#include "plugin.h"
++#include "qemu.h"
++#include "common-user/plugin-api.c.inc"
+diff --git a/plugins/api-system.c b/plugins/api-system.c
+new file mode 100644
+index 0000000000..cb0dd8f730
+--- /dev/null
++++ b/plugins/api-system.c
+@@ -0,0 +1,39 @@
++/*
++ * QEMU Plugin API - System specific implementations
++ *
++ * This provides the APIs that have a specific system implementation
++ * or are only relevant to system-mode.
++ *
++ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
++ * Copyright (C) 2019-2025, Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+void qemu_plugin_fillin_mode_info(qemu_info_t *info)
++#include "qemu/osdep.h"
++#include "qemu/main-loop.h"
++#include "qemu/plugin.h"
++
++/*
++ * In system mode we cannot trace the binary being executed so the
++ * helpers all return NULL/0.
++ */
++const char *qemu_plugin_path_to_binary(void)
 +{
-+    info->system_emulation = false;
++    return NULL;
 +}
++
++uint64_t qemu_plugin_start_code(void)
++{
++    return 0;
++}
++
++uint64_t qemu_plugin_end_code(void)
++{
++    return 0;
++}
++
++uint64_t qemu_plugin_entry_code(void)
++{
++    return 0;
++}
+diff --git a/plugins/api.c b/plugins/api.c
+index c3ba1e98e8..ffccd71e4b 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -471,49 +471,6 @@ bool qemu_plugin_bool_parse(const char *name, const char *value, bool *ret)
+     return name && value && qapi_bool_parse(name, value, ret, NULL);
+ }
+ 
+-/*
+- * Binary path, start and end locations
+- */
+-const char *qemu_plugin_path_to_binary(void)
+-{
+-    char *path = NULL;
+-#ifdef CONFIG_USER_ONLY
+-    TaskState *ts = get_task_state(current_cpu);
+-    path = g_strdup(ts->bprm->filename);
+-#endif
+-    return path;
+-}
+-
+-uint64_t qemu_plugin_start_code(void)
+-{
+-    uint64_t start = 0;
+-#ifdef CONFIG_USER_ONLY
+-    TaskState *ts = get_task_state(current_cpu);
+-    start = ts->info->start_code;
+-#endif
+-    return start;
+-}
+-
+-uint64_t qemu_plugin_end_code(void)
+-{
+-    uint64_t end = 0;
+-#ifdef CONFIG_USER_ONLY
+-    TaskState *ts = get_task_state(current_cpu);
+-    end = ts->info->end_code;
+-#endif
+-    return end;
+-}
+-
+-uint64_t qemu_plugin_entry_code(void)
+-{
+-    uint64_t entry = 0;
+-#ifdef CONFIG_USER_ONLY
+-    TaskState *ts = get_task_state(current_cpu);
+-    entry = ts->info->entry;
+-#endif
+-    return entry;
+-}
+-
+ /*
+  * Create register handles.
+  *
+diff --git a/common-user/plugin-api.c.inc b/common-user/plugin-api.c.inc
+new file mode 100644
+index 0000000000..5b8a1396b6
+--- /dev/null
++++ b/common-user/plugin-api.c.inc
+@@ -0,0 +1,43 @@
++/*
++ * QEMU Plugin API - *-user-mode only implementations
++ *
++ * Common user-mode only APIs are in plugins/api-user. These helpers
++ * are only specific to the *-user frontends.
++ *
++ * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
++ * Copyright (C) 2019-2025, Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/main-loop.h"
++#include "qemu/plugin.h"
++#include "qemu.h"
++
++/*
++ * Binary path, start and end locations. Host specific due to TaskState.
++ */
++const char *qemu_plugin_path_to_binary(void)
++{
++    TaskState *ts = get_task_state(current_cpu);
++    return g_strdup(ts->bprm->filename);
++}
++
++uint64_t qemu_plugin_start_code(void)
++{
++    TaskState *ts = get_task_state(current_cpu);
++    return ts->info->start_code;
++}
++
++uint64_t qemu_plugin_end_code(void)
++{
++    TaskState *ts = get_task_state(current_cpu);
++    return ts->info->end_code;
++}
++
++uint64_t qemu_plugin_entry_code(void)
++{
++    TaskState *ts = get_task_state(current_cpu);
++    return ts->info->entry;
++}
+diff --git a/bsd-user/meson.build b/bsd-user/meson.build
+index 39bad0ae33..37b7cd6de8 100644
+--- a/bsd-user/meson.build
++++ b/bsd-user/meson.build
+@@ -13,6 +13,7 @@ bsd_user_ss.add(files(
+   'elfload.c',
+   'main.c',
+   'mmap.c',
++  'plugin-api.c',
+   'signal.c',
+   'strace.c',
+   'uaccess.c',
+diff --git a/linux-user/meson.build b/linux-user/meson.build
+index f75b4fe0e3..f47a213ca3 100644
+--- a/linux-user/meson.build
++++ b/linux-user/meson.build
+@@ -27,6 +27,7 @@ linux_user_ss.add(libdw)
+ linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
+ linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
+ linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true: files('semihost.c'))
++linux_user_ss.add(when: 'CONFIG_TCG_PLUGINS', if_true: files('plugin-api.c'))
+ 
+ syscall_nr_generators = {}
+ 
 diff --git a/plugins/meson.build b/plugins/meson.build
-index d60be2a4d6..f7820806d3 100644
+index f7820806d3..9c9bc9e5bb 100644
 --- a/plugins/meson.build
 +++ b/plugins/meson.build
-@@ -57,8 +57,13 @@ if host_os == 'windows'
-     command: dlltool_cmd
-   )
+@@ -59,7 +59,7 @@ if host_os == 'windows'
  endif
-+
-+user_ss.add(files('user.c'))
-+system_ss.add(files('system.c'))
-+
-+common_ss.add(files('loader.c'))
-+
- specific_ss.add(files(
--  'loader.c',
-   'core.c',
-   'api.c',
- ))
+ 
+ user_ss.add(files('user.c'))
+-system_ss.add(files('system.c'))
++system_ss.add(files('system.c', 'api-system.c'))
+ 
+ common_ss.add(files('loader.c'))
+ 
 -- 
 2.39.5
 
