@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A83A4F10E
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 00:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001A8A4F01E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:23:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpbEa-0002yL-Ev; Tue, 04 Mar 2025 17:59:32 -0500
+	id 1tpaae-0006bR-KU; Tue, 04 Mar 2025 17:18:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbES-0002vY-O3
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:25 -0500
+ id 1tpaYH-00046S-78
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:15:51 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpbEQ-00074U-Im
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:59:24 -0500
+ id 1tpaX7-0001SP-UU
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:15:48 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaQ5-00000000LbM-0DR0; Tue, 04 Mar 2025 23:07:21 +0100
+ id 1tpaQA-00000000LbW-0kqQ; Tue, 04 Mar 2025 23:07:26 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v6 30/36] vfio/migration: Multifd device state transfer
- support - send side
-Date: Tue,  4 Mar 2025 23:03:57 +0100
-Message-ID: <4d727e2e0435e0022d50004e474077632830e08d.1741124640.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v6 31/36] vfio/migration: Add x-migration-multifd-transfer
+ VFIO property
+Date: Tue,  4 Mar 2025 23:03:58 +0100
+Message-ID: <d6dbb326e3d53c7104d62c96c9e3dd64e1c7b940.1741124640.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1741124640.git.maciej.szmigiero@oracle.com>
 References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
@@ -66,288 +66,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Implement the multifd device state transfer via additional per-device
-thread inside save_live_complete_precopy_thread handler.
+This property allows configuring whether to transfer the particular device
+state via multifd channels when live migrating that device.
 
-Switch between doing the data transfer in the new handler and doing it
-in the old save_state handler depending if VFIO multifd transfer is enabled
-or not.
+It defaults to AUTO, which means that VFIO device state transfer via
+multifd channels is attempted in configurations that otherwise support it.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration-multifd.c   | 142 ++++++++++++++++++++++++++++++++++
- hw/vfio/migration-multifd.h   |   6 ++
- hw/vfio/migration.c           |  22 ++++--
- hw/vfio/trace-events          |   2 +
- include/hw/vfio/vfio-common.h |   6 ++
- 5 files changed, 172 insertions(+), 6 deletions(-)
+ hw/vfio/migration-multifd.c   | 18 +++++++++++++++++-
+ hw/vfio/pci.c                 |  8 ++++++++
+ include/hw/vfio/vfio-common.h |  2 ++
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 1d81233c755f..bfb9a72fa450 100644
+index bfb9a72fa450..aacddc503bb8 100644
 --- a/hw/vfio/migration-multifd.c
 +++ b/hw/vfio/migration-multifd.c
-@@ -496,6 +496,148 @@ bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp)
-     return true;
+@@ -476,18 +476,34 @@ bool vfio_multifd_transfer_supported(void)
+ 
+ bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev)
+ {
+-    return false;
++    VFIOMigration *migration = vbasedev->migration;
++
++    return migration->multifd_transfer;
  }
  
-+void vfio_multifd_emit_dummy_eos(VFIODevice *vbasedev, QEMUFile *f)
-+{
-+    assert(vfio_multifd_transfer_enabled(vbasedev));
-+
-+    /*
-+     * Emit dummy NOP data on the main migration channel since the actual
-+     * device state transfer is done via multifd channels.
-+     */
-+    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+}
-+
-+static bool
-+vfio_save_complete_precopy_thread_config_state(VFIODevice *vbasedev,
-+                                               char *idstr,
-+                                               uint32_t instance_id,
-+                                               uint32_t idx,
-+                                               Error **errp)
-+{
-+    g_autoptr(QIOChannelBuffer) bioc = NULL;
-+    g_autoptr(QEMUFile) f = NULL;
-+    int ret;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    size_t packet_len;
-+
-+    bioc = qio_channel_buffer_new(0);
-+    qio_channel_set_name(QIO_CHANNEL(bioc), "vfio-device-config-save");
-+
-+    f = qemu_file_new_output(QIO_CHANNEL(bioc));
-+
-+    if (vfio_save_device_config_state(f, vbasedev, errp)) {
-+        return false;
+ bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp)
+ {
+     VFIOMigration *migration = vbasedev->migration;
+ 
++    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
++        migration->multifd_transfer = vfio_multifd_transfer_supported();
++    } else {
++        migration->multifd_transfer =
++            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
 +    }
 +
-+    ret = qemu_fflush(f);
-+    if (ret) {
-+        error_setg(errp, "%s: save config state flush failed: %d",
-+                   vbasedev->name, ret);
-+        return false;
-+    }
-+
-+    packet_len = sizeof(*packet) + bioc->usage;
-+    packet = g_malloc0(packet_len);
-+    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
-+    packet->idx = idx;
-+    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
-+    memcpy(&packet->data, bioc->data, bioc->usage);
-+
-+    if (!multifd_queue_device_state(idstr, instance_id,
-+                                    (char *)packet, packet_len)) {
-+        error_setg(errp, "%s: multifd config data queuing failed",
+     if (!vfio_multifd_transfer_enabled(vbasedev)) {
+         /* Nothing further to check or do */
+         return true;
+     }
+ 
++    if (!vfio_multifd_transfer_supported()) {
++        error_setg(errp,
++                   "%s: Multifd device transfer requested but unsupported in the current config",
 +                   vbasedev->name);
 +        return false;
 +    }
 +
-+    vfio_mig_add_bytes_transferred(packet_len);
+     if (alloc_multifd) {
+         assert(!migration->multifd);
+         migration->multifd = vfio_multifd_new();
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 89d900e9cf0c..6d6f889f59c5 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3377,6 +3377,9 @@ static const Property vfio_pci_dev_properties[] = {
+                     VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
+     DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
+                             vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO("x-migration-multifd-transfer", VFIOPCIDevice,
++                            vbasedev.migration_multifd_transfer,
++                            ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
+                      vbasedev.migration_events, false),
+     DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
+@@ -3433,6 +3436,11 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
+     pdc->exit = vfio_exitfn;
+     pdc->config_read = vfio_pci_read_config;
+     pdc->config_write = vfio_pci_write_config;
 +
-+    return true;
-+}
-+
-+/*
-+ * This thread is spawned by the migration core directly via
-+ * .save_live_complete_precopy_thread SaveVMHandler.
-+ *
-+ * It exits after either:
-+ * * completing saving the remaining device state and device config, OR:
-+ * * encountering some error while doing the above, OR:
-+ * * being forcefully aborted by the migration core by
-+ *   multifd_device_state_save_thread_should_exit() returning true.
-+ */
-+bool
-+vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
-+                                          Error **errp)
-+{
-+    VFIODevice *vbasedev = d->handler_opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-+    bool ret = false;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    uint32_t idx;
-+
-+    if (!vfio_multifd_transfer_enabled(vbasedev)) {
-+        /* Nothing to do, vfio_save_complete_precopy() does the transfer. */
-+        return true;
-+    }
-+
-+    trace_vfio_save_complete_precopy_thread_start(vbasedev->name,
-+                                                  d->idstr, d->instance_id);
-+
-+    /* We reach here with device state STOP or STOP_COPY only */
-+    if (vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
-+                                 VFIO_DEVICE_STATE_STOP, errp)) {
-+        goto thread_exit;
-+    }
-+
-+    packet = g_malloc0(sizeof(*packet) + migration->data_buffer_size);
-+    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
-+
-+    for (idx = 0; ; idx++) {
-+        ssize_t data_size;
-+        size_t packet_size;
-+
-+        if (multifd_device_state_save_thread_should_exit()) {
-+            error_setg(errp, "operation cancelled");
-+            goto thread_exit;
-+        }
-+
-+        data_size = read(migration->data_fd, &packet->data,
-+                         migration->data_buffer_size);
-+        if (data_size < 0) {
-+            error_setg(errp, "%s: reading state buffer %" PRIu32 " failed: %d",
-+                       vbasedev->name, idx, errno);
-+            goto thread_exit;
-+        } else if (data_size == 0) {
-+            break;
-+        }
-+
-+        packet->idx = idx;
-+        packet_size = sizeof(*packet) + data_size;
-+
-+        if (!multifd_queue_device_state(d->idstr, d->instance_id,
-+                                        (char *)packet, packet_size)) {
-+            error_setg(errp, "%s: multifd data queuing failed", vbasedev->name);
-+            goto thread_exit;
-+        }
-+
-+        vfio_mig_add_bytes_transferred(packet_size);
-+    }
-+
-+    if (!vfio_save_complete_precopy_thread_config_state(vbasedev,
-+                                                        d->idstr,
-+                                                        d->instance_id,
-+                                                        idx, errp)) {
-+        goto thread_exit;
-+   }
-+
-+    ret = true;
-+
-+thread_exit:
-+    trace_vfio_save_complete_precopy_thread_end(vbasedev->name, ret);
-+
-+    return ret;
-+}
-+
- int vfio_multifd_switchover_start(VFIODevice *vbasedev)
- {
-     VFIOMigration *migration = vbasedev->migration;
-diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
-index f0d28fcef2ea..a664051eb8ae 100644
---- a/hw/vfio/migration-multifd.h
-+++ b/hw/vfio/migration-multifd.h
-@@ -23,6 +23,12 @@ bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev);
- bool vfio_multifd_load_state_buffer(void *opaque, char *data, size_t data_size,
-                                     Error **errp);
- 
-+void vfio_multifd_emit_dummy_eos(VFIODevice *vbasedev, QEMUFile *f);
-+
-+bool
-+vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
-+                                          Error **errp);
-+
- int vfio_multifd_switchover_start(VFIODevice *vbasedev);
- 
- #endif
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index f325a619c3ed..24bdc9e24c71 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -120,10 +120,10 @@ static void vfio_migration_set_device_state(VFIODevice *vbasedev,
-     vfio_migration_send_event(vbasedev);
++    object_class_property_set_description(klass, /* 10.0 */
++                                          "x-migration-multifd-transfer",
++                                          "Transfer this device state via "
++                                          "multifd channels when live migrating it");
  }
  
--static int vfio_migration_set_state(VFIODevice *vbasedev,
--                                    enum vfio_device_mig_state new_state,
--                                    enum vfio_device_mig_state recover_state,
--                                    Error **errp)
-+int vfio_migration_set_state(VFIODevice *vbasedev,
-+                             enum vfio_device_mig_state new_state,
-+                             enum vfio_device_mig_state recover_state,
-+                             Error **errp)
- {
-     VFIOMigration *migration = vbasedev->migration;
-     uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
-@@ -238,8 +238,7 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
-     return ret;
- }
- 
--static int vfio_save_device_config_state(QEMUFile *f, void *opaque,
--                                         Error **errp)
-+int vfio_save_device_config_state(QEMUFile *f, void *opaque, Error **errp)
- {
-     VFIODevice *vbasedev = opaque;
-     int ret;
-@@ -638,6 +637,11 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     int ret;
-     Error *local_err = NULL;
- 
-+    if (vfio_multifd_transfer_enabled(vbasedev)) {
-+        vfio_multifd_emit_dummy_eos(vbasedev, f);
-+        return 0;
-+    }
-+
-     trace_vfio_save_complete_precopy_start(vbasedev->name);
- 
-     /* We reach here with device state STOP or STOP_COPY only */
-@@ -669,6 +673,11 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
-     Error *local_err = NULL;
-     int ret;
- 
-+    if (vfio_multifd_transfer_enabled(vbasedev)) {
-+        vfio_multifd_emit_dummy_eos(vbasedev, f);
-+        return;
-+    }
-+
-     ret = vfio_save_device_config_state(f, opaque, &local_err);
-     if (ret) {
-         error_prepend(&local_err,
-@@ -815,6 +824,7 @@ static const SaveVMHandlers savevm_vfio_handlers = {
-     .is_active_iterate = vfio_is_active_iterate,
-     .save_live_iterate = vfio_save_iterate,
-     .save_live_complete_precopy = vfio_save_complete_precopy,
-+    .save_live_complete_precopy_thread = vfio_multifd_save_complete_precopy_thread,
-     .save_state = vfio_save_state,
-     .load_setup = vfio_load_setup,
-     .load_cleanup = vfio_load_cleanup,
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index d6b7e34faa39..9347e3a5f660 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -171,6 +171,8 @@ vfio_save_block_precopy_empty_hit(const char *name) " (%s)"
- vfio_save_cleanup(const char *name) " (%s)"
- vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
- vfio_save_complete_precopy_start(const char *name) " (%s)"
-+vfio_save_complete_precopy_thread_start(const char *name, const char *idstr, uint32_t instance_id) " (%s) idstr %s instance %"PRIu32
-+vfio_save_complete_precopy_thread_end(const char *name, int ret) " (%s) ret %d"
- vfio_save_device_config_state(const char *name) " (%s)"
- vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size %"PRIu64" precopy dirty size %"PRIu64
- vfio_save_iterate_start(const char *name) " (%s)"
+ static const TypeInfo vfio_pci_dev_info = {
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 9d72ac1eae8a..961931d9f457 100644
+index 961931d9f457..04b123a6c929 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -298,6 +298,7 @@ void vfio_mig_add_bytes_transferred(unsigned long val);
- bool vfio_device_state_is_running(VFIODevice *vbasedev);
- bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
+@@ -91,6 +91,7 @@ typedef struct VFIOMigration {
+     uint64_t mig_flags;
+     uint64_t precopy_init_size;
+     uint64_t precopy_dirty_size;
++    bool multifd_transfer;
+     VFIOMultifd *multifd;
+     bool initial_data_sent;
  
-+int vfio_save_device_config_state(QEMUFile *f, void *opaque, Error **errp);
- int vfio_load_device_config_state(QEMUFile *f, void *opaque);
- 
- #ifdef CONFIG_LINUX
-@@ -314,6 +315,11 @@ struct vfio_info_cap_header *
- vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
- struct vfio_info_cap_header *
- vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
-+
-+int vfio_migration_set_state(VFIODevice *vbasedev,
-+                             enum vfio_device_mig_state new_state,
-+                             enum vfio_device_mig_state recover_state,
-+                             Error **errp);
- #endif
- 
- bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
+@@ -153,6 +154,7 @@ typedef struct VFIODevice {
+     bool no_mmap;
+     bool ram_block_discard_allowed;
+     OnOffAuto enable_migration;
++    OnOffAuto migration_multifd_transfer;
+     bool migration_events;
+     VFIODeviceOps *ops;
+     unsigned int num_irqs;
 
