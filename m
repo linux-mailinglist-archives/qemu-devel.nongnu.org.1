@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AB1A4F084
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D74D7A4F097
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:36:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpaiZ-0007KJ-6q; Tue, 04 Mar 2025 17:26:27 -0500
+	id 1tparA-0000Zu-DS; Tue, 04 Mar 2025 17:35:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpahC-0005Sn-3B
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:25:09 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1tpaqj-0000WW-G5
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:34:54 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpah9-0006Zx-45
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:25:01 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5e4ad1d67bdso9753734a12.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:56 -0800 (PST)
+ id 1tpaqh-0001O3-Np
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:34:53 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-aaec111762bso1131455366b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741127096; x=1741731896; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741127690; x=1741732490; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jk0L9tiR8Pw91LWiTI1Z3wlxkKLipHgTcC6b1a+5kwk=;
- b=K4QqxobgGpnRBGZ6VZ1TXgp6BHR/9DGr6hbOX50/vYHJoAZqOFpqMFYWfGPlgOn+z/
- 389RiJmV42o0f5wZCtEwkAK3kPBPPRer3fwnm8zDMZK/A3VNxzZJZVFbrwgaxEL06riS
- 7QfAmIG8MsH/nILMqSnggeZNx9cdOrF3SK78Rk6M8Xm42kGYoDJw6F7o7Sz6nwbV1ZUj
- BlJ/EyAjxlgxysrf/HINEjnVeeHQtu2peWk16fPTqZNk9Kyyc1ZBoTlf4VVc5h4xlDUo
- xtoX69ybUq1bMcVr5ax8nOJRdYQNaTyEx3DTjsFaew5F16aa0BLh0Y1g38tmjMWrFPxX
- VaZQ==
+ bh=5gbc4xRevNcxKhPTEVM7Uxyv/yl8OruDV/F/XzKp644=;
+ b=PsNLfvJ5CXXusCN22XmWgrLRLAruiaxVSkYJV59D/3WtDj/MB4ByA8WeF39N+VxgK0
+ wlJiUp9ELrO/iCGtE5jbgLZT/gOtlW3NvNLALE0f464qwoxdIa1kXAu+Hva5BX+YDuoz
+ rp2FPiSY/240jcPBJZGl3ij75EloO5dZhRdd9HAbLJ56+uk5j9cKrfza+uxHDZ3gh3mr
+ cp4hNALDGMwAQWVLVMUDrsvLJ8FpTXI/84EKsI2ni+bXDkyT34LB6W1mHqW89fUYSI9w
+ R9PBd60Dl/AI7GJVP8f7SDl5lCUR92U+3DkW9gGlg6aT/MAN4ZLDtWBv/701xk4noJhT
+ EG/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741127096; x=1741731896;
+ d=1e100.net; s=20230601; t=1741127690; x=1741732490;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jk0L9tiR8Pw91LWiTI1Z3wlxkKLipHgTcC6b1a+5kwk=;
- b=WFG3FjyIL73g3abYu4VzPJq5KYD5QMFaN7fZHqOyc84ibutHIJGYa6MHWOMoyQBECk
- Wc7naV2iqEg5Rm+ZeH8mWQxjonLgBw9Imf76RhBVziivwax7R42FJFZR6b7Gv/XXxzIK
- wiYgA8WNW+7rjPZHu/4isiJjlnZBdGQb0m/W0ENcS0AIUKnKZE6WoKAuoWybBXCb/N0y
- z/OrNAtcJnt6qhNX0xAOtNZoMuMoB6dVaifzBjiG2boTWreXfEcIaqJzoNEDziK3d3Nw
- BkHtVUXhhuHbt9wLcpidGAym/U23U6FyhG7uhRgthjrj+6mEHVqikKVlZKGGhquiVvU8
- NBPg==
-X-Gm-Message-State: AOJu0YxUYRin4x4cIOJfIGVNQHcNHtOcwxzWXvoPpgLmATwHIR+kmkB5
- NknK13SWs/nXnl9I/T3dUw6xdceXunckpMMmGuCOS5frHZRMX+7GSbvw6Ljs1ZU=
-X-Gm-Gg: ASbGnctOtAtKvT8sD1QwZLwcSbMZTABPuklHi2y5UegTov6JLlvLfqEJTe3kbD4Mrcv
- UWZEmwkIOIlyhiRE2fCC41jE93cRUw3kHl6FCyzm3Aug5/mMAcJ+TAY73XD3wNybrwXJmZzugyV
- mmW3YApCkHg3VMHi4+/yjI26eTR25DEKlWOgVevBZD8b6rkUd+5hXekr+d5ghqDL0AGMhZYiFlx
- MhP5HZcEj3a1mm3KCKXtM/USn21weTu3FMVu1/smcLgOfwcKreP8vKRTKG7UlFhI3gGwCb1x9K9
- /R7/9+qTQgdp++LS12CHKZlfT/DVXdpkc+DMgp0zFLrtl3A=
-X-Google-Smtp-Source: AGHT+IGzd4q6ld9rSt6nyxUB3LQc/TZ9sahtNbY0Td0uifmVydb/pAO8djsz0D6JUVFlW4mE+bMxcw==
-X-Received: by 2002:a17:907:7d93:b0:abf:6cc9:7ef5 with SMTP id
- a640c23a62f3a-ac20db05bc9mr102181266b.47.1741127095791; 
- Tue, 04 Mar 2025 14:24:55 -0800 (PST)
+ bh=5gbc4xRevNcxKhPTEVM7Uxyv/yl8OruDV/F/XzKp644=;
+ b=DCvu199/gicVGXLGtYEVwy98ksh//FYtNsg2+6TII0Wz/NouB9hvT4GBh5RzS0L557
+ A2bkWh8N1DUVuuol0/gDrYrE6uictvmhgod79pAlPmMM6b6q8zOhKJsivypg4OafIPDn
+ 0CY7kprpjVs2sbI1xNmixTtQltjL/w68NgXqpzeMhi0+jRkkgCMFLaa3stG7IQ4PWHMP
+ ekzfuAiGVNr9be6Z8EwUj6uYndFTHbysg7d5PpqezDQ3e/dH5hazZ2JdIr6xIUGnO7fk
+ NSoSRRCH+asFF6NMdcySN+AKxtoDDZQkOb6RD98uyoEyFfegt1Uq7/N0ITd3UJUjAvD6
+ Q8gA==
+X-Gm-Message-State: AOJu0Yz8BKkxoFrKbQqmtE2Dilk+J7CSC3CR8RQDulTpKZAWXrE+TiSv
+ VLl5JB8JAj1jeGO3V3Qm4xPFQEEZURKdRfHodk9uKcMbv1kx+HCznAD0K9EDvXo=
+X-Gm-Gg: ASbGncsneEbCAoFluw9wQ3vnMpo0SBQegRr6VQ4cP/7iKxV37Q2jnHPTPUUg0vLcJVQ
+ vvQl3+GbrUWL03E+pNdlc1f+B6BvdnExrlNoo3khC+vFYEvK/R36/gV1FeS9dMoPBuE6gx5tvpD
+ rloyGrz175wnNLrxMsirSmJJMDErtaVMRjkZQz90vd7+WuS9QpH8j86Kfl4Bjg82s5QbXWNXarM
+ 6nnySuahIFBeYmNMs4piAEGORVAxoxmpa4TJs3hP8We38N97bbktelBVl4CdWYYRYouaTjf5Mtz
+ jYnUTiMnE5tMd/SccY54ZdbLoLqWKRM2e2oXBO0VubRPMEk=
+X-Google-Smtp-Source: AGHT+IHoHX0vn54s8jHxEZ8M89Qre9WyOjWPfB145jEjcBNE2OH7vM68Tgon0I4aKTVNGv83huE8Pg==
+X-Received: by 2002:a17:907:d9f:b0:abf:6424:79eb with SMTP id
+ a640c23a62f3a-ac20d8bc9d6mr98437466b.20.1741127689626; 
+ Tue, 04 Mar 2025 14:34:49 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac1f6a3769bsm164672266b.14.2025.03.04.14.24.49
+ a640c23a62f3a-abf7a9306a3sm397112466b.90.2025.03.04.14.34.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 14:24:52 -0800 (PST)
+ Tue, 04 Mar 2025 14:34:49 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 561CF625E8;
+ by draig.lan (Postfix) with ESMTP id 702AB625FA;
  Tue,  4 Mar 2025 22:24:42 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 29/32] plugins/api: build only once
-Date: Tue,  4 Mar 2025 22:24:36 +0000
-Message-Id: <20250304222439.2035603-30-alex.bennee@linaro.org>
+Subject: [PATCH v2 30/32] plugins/core: make a single build unit
+Date: Tue,  4 Mar 2025 22:24:37 +0000
+Message-Id: <20250304222439.2035603-31-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,54 +113,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now all the softmmu/user-mode stuff has been split out we can build
-this compilation unit only once.
+Trim through the includes and remove everything not needed for the
+core. Only include tcg-op-common.h to remove the need to
+TARGET_LONG_BITS and move the build unit into the common set.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250225110844.3296991-11-alex.bennee@linaro.org>
 ---
- plugins/api.c       | 11 -----------
- plugins/meson.build |  3 +--
- 2 files changed, 1 insertion(+), 13 deletions(-)
+ plugins/core.c      | 10 +---------
+ plugins/meson.build |  5 +----
+ 2 files changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/plugins/api.c b/plugins/api.c
-index 832bf6ee5e..604ce06802 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -46,17 +46,6 @@
- #include "exec/translator.h"
- #include "disas/disas.h"
- #include "plugin.h"
--#ifndef CONFIG_USER_ONLY
+diff --git a/plugins/core.c b/plugins/core.c
+index bb105e8e68..eb9281fe54 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -12,22 +12,14 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ #include "qemu/osdep.h"
+-#include "qemu/error-report.h"
+-#include "qemu/config-file.h"
 -#include "qapi/error.h"
--#include "migration/blocker.h"
--#include "qemu/plugin-memory.h"
--#include "hw/boards.h"
--#else
--#include "qemu.h"
--#ifdef CONFIG_LINUX
--#include "loader.h"
--#endif
--#endif
+ #include "qemu/lockable.h"
+ #include "qemu/option.h"
+ #include "qemu/plugin.h"
+ #include "qemu/queue.h"
+ #include "qemu/rcu_queue.h"
+-#include "qemu/xxhash.h"
+ #include "qemu/rcu.h"
+-#include "hw/core/cpu.h"
+-
+-#include "exec/exec-all.h"
+ #include "exec/tb-flush.h"
+-#include "tcg/tcg.h"
+-#include "tcg/tcg-op.h"
++#include "tcg/tcg-op-common.h"
+ #include "plugin.h"
  
- /* Uninstall and Reset handlers */
- 
+ struct qemu_plugin_cb {
 diff --git a/plugins/meson.build b/plugins/meson.build
-index 942b59e904..d27220d5ff 100644
+index d27220d5ff..3be8245a69 100644
 --- a/plugins/meson.build
 +++ b/plugins/meson.build
-@@ -61,9 +61,8 @@ endif
+@@ -61,8 +61,5 @@ endif
  user_ss.add(files('user.c', 'api-user.c'))
  system_ss.add(files('system.c', 'api-system.c'))
  
--common_ss.add(files('loader.c'))
-+common_ss.add(files('loader.c', 'api.c'))
+-common_ss.add(files('loader.c', 'api.c'))
++common_ss.add(files('loader.c', 'api.c', 'core.c'))
  
- specific_ss.add(files(
-   'core.c',
--  'api.c',
- ))
+-specific_ss.add(files(
+-  'core.c',
+-))
 -- 
 2.39.5
 
