@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7864A4EF8F
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 22:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BA6A4EF91
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 22:51:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpaA7-0004JI-0j; Tue, 04 Mar 2025 16:50:51 -0500
+	id 1tpaA9-0004Jv-Jf; Tue, 04 Mar 2025 16:50:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaA3-0004Ik-2R
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 16:50:47 -0500
+ id 1tpaA5-0004Jf-M9
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 16:50:49 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpaA0-0004ha-CY
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 16:50:45 -0500
+ id 1tpaA4-0004lA-0F
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 16:50:49 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tpa9v-00000000LUA-1ENh; Tue, 04 Mar 2025 22:50:39 +0100
-Message-ID: <5c140829-3b31-4b57-92ac-688bd59c4320@maciej.szmigiero.name>
-Date: Tue, 4 Mar 2025 22:50:39 +0100
+ id 1tpaA0-00000000LUA-1eUA; Tue, 04 Mar 2025 22:50:44 +0100
+Message-ID: <bb4682c0-d485-4465-96cf-ff5acf8c0180@maciej.szmigiero.name>
+Date: Tue, 4 Mar 2025 22:50:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 28/36] vfio/migration: Multifd device state transfer
- support - config loading support
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
+Subject: Re: [PATCH v5 31/36] vfio/migration: Add x-migration-multifd-transfer
+ VFIO property
+To: Avihai Horon <avihaih@nvidia.com>
 Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
  <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
 References: <cover.1739994627.git.maciej.szmigiero@oracle.com>
- <47be7bf2f46923e2a9d2b75b1d35c6b2915c20c8.1739994627.git.maciej.szmigiero@oracle.com>
- <b9284c9a-149a-4965-a4fa-ec092e3fb7d0@nvidia.com>
- <d1bb2200-1ccf-4e52-8d34-09d95f4863b4@maciej.szmigiero.name>
- <6888be59-09f3-472c-b993-fad0630e416d@redhat.com>
+ <8f38087567dfc898fb0f1688be0689dd1dacfa22.1739994627.git.maciej.szmigiero@oracle.com>
+ <f462d899-7cba-4673-b8bf-f6a3b25d25b3@nvidia.com>
+ <0e982175-efab-4dce-b183-3ce53f17c522@maciej.szmigiero.name>
+ <64ef5268-a951-4a03-9728-e6daacf7d56f@nvidia.com>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -83,7 +83,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
  IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
  VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
-In-Reply-To: <6888be59-09f3-472c-b993-fad0630e416d@redhat.com>
+In-Reply-To: <64ef5268-a951-4a03-9728-e6daacf7d56f@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=145.239.82.108;
@@ -110,31 +110,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4.03.2025 08:41, Cédric Le Goater wrote:
->>>> @@ -728,6 +728,12 @@ static int vfio_load_state(QEMUFile *f, void *opaque, int version_id)
->>>>           switch (data) {
->>>>           case VFIO_MIG_FLAG_DEV_CONFIG_STATE:
->>>>           {
->>>> +            if (vfio_multifd_transfer_enabled(vbasedev)) {
->>>> +                error_report("%s: got DEV_CONFIG_STATE but doing multifd transfer",
->>>> +                             vbasedev->name);
->>>
->>> To make clearer, maybe change to:
->>> "%s: got DEV_CONFIG_STATE in main migration channel but doing multifd transfer"
+On 4.03.2025 12:29, Avihai Horon wrote:
+> 
+> On 04/03/2025 0:17, Maciej S. Szmigiero wrote:
+>> External email: Use caution opening links or attachments
 >>
->> That normally would be good idea, however we are already at 83 characters in this
->> line here and will not fit that many more words to this string.
+>>
+>> On 2.03.2025 15:48, Avihai Horon wrote:
+>>>
+>>> On 19/02/2025 22:34, Maciej S. Szmigiero wrote:
+>>>> External email: Use caution opening links or attachments
+>>>>
+>>>>
+>>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>>
+>>>> This property allows configuring at runtime whether to transfer the
+>>>
+>>> IIUC, in this patch it's not configurable at runtime, so let's drop "at runtime".
+>>
+>> Dropped this expression from this patch description.
+>>
+>>>> particular device state via multifd channels when live migrating that
+>>>> device.
+>>>>
+>>>> It defaults to AUTO, which means that VFIO device state transfer via
+>>>> multifd channels is attempted in configurations that otherwise support it.
+>>>>
+>>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>>> ---
+>>>>   hw/vfio/migration-multifd.c   | 17 ++++++++++++++++-
+>>>>   hw/vfio/pci.c                 |  3 +++
+>>>>   include/hw/vfio/vfio-common.h |  2 ++
+>>>>   3 files changed, 21 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+>>>> index 0cfa9d31732a..18a5ff964a37 100644
+>>>> --- a/hw/vfio/migration-multifd.c
+>>>> +++ b/hw/vfio/migration-multifd.c
+>>>> @@ -460,11 +460,26 @@ bool vfio_multifd_transfer_supported(void)
+>>>>
+>>>>   bool vfio_multifd_transfer_enabled(VFIODevice *vbasedev)
+>>>>   {
+>>>> -    return false;
+>>>> +    VFIOMigration *migration = vbasedev->migration;
+>>>> +
+>>>> +    return migration->multifd_transfer;
+>>>>   }
+>>>>
+>>>>   bool vfio_multifd_transfer_setup(VFIODevice *vbasedev, Error **errp)
+>>>>   {
+>>>> +    VFIOMigration *migration = vbasedev->migration;
+>>>> +
+>>>> +    /*
+>>>> +     * Make a copy of this setting at the start in case it is changed
+>>>> +     * mid-migration.
+>>>> +     */
+>>>> +    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
+>>>> +        migration->multifd_transfer = vfio_multifd_transfer_supported();
+>>>> +    } else {
+>>>> +        migration->multifd_transfer =
+>>>> +            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
+>>>> +    }
+>>>
+>>> Making a copy of this value is only relevant for the next patch where it's turned mutable, so let's move this code to patch #32.
+>>
+>> But we still need to handle the "AUTO" condition so it would need
+>> very similar code just to get reworked into the above in the next
+>> patch.
+>> I think that's just not worth code churn between patches.
 > 
-> The 80 characters "rule" is not strict. A clear error report is
-> always good to have !
+> Ah, I understand.
+> In that case, we can move only the comment "Make a copy of this setting ..." to patch #32.
 
-Changed the message to the suggested by splitting that string into two to avoid going
-above 100 characters per line.
+All right, comment moved.
 
-> Thanks,
-> 
-> C.
-> 
+> Thanks.
 > 
 
 Thanks,
