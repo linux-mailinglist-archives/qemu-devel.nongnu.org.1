@@ -2,85 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DA2A4E6F7
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 17:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1ABA4E690
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 17:45:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpVVx-0005C1-Nq; Tue, 04 Mar 2025 11:53:05 -0500
+	id 1tpVNe-00032V-Gd; Tue, 04 Mar 2025 11:44:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1tpVVs-0005Bl-SQ
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 11:53:00 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1tpVVq-0004nW-OL
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 11:53:00 -0500
-Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
- by smtp-out2.suse.de (Postfix) with ESMTP id 47EC81F441;
- Tue,  4 Mar 2025 16:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1741107172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=n5mpIw+zydjJcUnLTOyBRRdB1kJAS2opwH3W7uf10gE=;
- b=Qu4JNA2Yv6GTk2tU8KB0Em3+j7okybmY2miTnnErujJ9hSfkoLUItseiM97LFyC/iItHf0
- M4Gv7j4H5Jg/+1L5qiwWan5bOp4kr21Dzh/M871XOLEPdoU73bW0IlpHq4aPNtkHh2XpLc
- dQGteJM5xPY5xJEbS6ivVXa025UtMIw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1741107172;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=n5mpIw+zydjJcUnLTOyBRRdB1kJAS2opwH3W7uf10gE=;
- b=pXz+izjE0Gc2N4lMFdRgDzfw+f9byssmvPFjyMh7yg3kk5udNuO52TVwsTbmHrFmpnlri+
- X7yZZ9JbqDg5zkAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1741107172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=n5mpIw+zydjJcUnLTOyBRRdB1kJAS2opwH3W7uf10gE=;
- b=Qu4JNA2Yv6GTk2tU8KB0Em3+j7okybmY2miTnnErujJ9hSfkoLUItseiM97LFyC/iItHf0
- M4Gv7j4H5Jg/+1L5qiwWan5bOp4kr21Dzh/M871XOLEPdoU73bW0IlpHq4aPNtkHh2XpLc
- dQGteJM5xPY5xJEbS6ivVXa025UtMIw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1741107172;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=n5mpIw+zydjJcUnLTOyBRRdB1kJAS2opwH3W7uf10gE=;
- b=pXz+izjE0Gc2N4lMFdRgDzfw+f9byssmvPFjyMh7yg3kk5udNuO52TVwsTbmHrFmpnlri+
- X7yZZ9JbqDg5zkAA==
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
- id 3694D4A056D; Tue,  4 Mar 2025 17:52:52 +0100 (CET)
-From: Andreas Schwab <schwab@suse.de>
-To: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] linux-user: fix handling of cpu mask in riscv_hwprobe syscall
-CC: Palmer Dabbelt <palmer@rivosinc.com>, Robbin Ehn <rehn@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-devel@nongnu.org
-Date: Tue, 04 Mar 2025 17:52:52 +0100
-Message-ID: <mvmo6yglouz.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tpVNH-00031D-Dk; Tue, 04 Mar 2025 11:44:09 -0500
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tpVNE-0002Zv-EF; Tue, 04 Mar 2025 11:44:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741106645; x=1772642645;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=auieZzgOTOCYKBrvQYZJmSQkHiOvD/6ruV0hO5lxmYs=;
+ b=oHmtzP1WFdzMDpP7aekvKyWy2N6nJU3g3tqUr2o5xtTGB5CAvrzNBB8y
+ e2NwVdZ0mVm3od7nUEpmDID+McKmXRNym7z3jF6A0etIYbIAaWM268wim
+ XH+eVUPEX+38EaZV4PD8bdUjco7Z6+c0RpabJFl8HNF657YQXlSMOhwZL
+ qqkLXeQmtoTLvxxFYDTm6Kcg/FWPqnfcfbKz9Qmd6QJeAXzs9D0gIrEYf
+ 02k98boAY21manBkX6VtwwIpnrOuhmplXoKqZ39gXAeJ+VSfxOYswiUTE
+ XIKymAzAf73bd8l/oUW7OH53SG+EjkdGQjiC3Ny+uPNbg1SvtPojqG1Jw A==;
+X-CSE-ConnectionGUID: 6y8FR2wLSjWbMYxRVty3TA==
+X-CSE-MsgGUID: 3+piKya1QAGI61F/oM2v1Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="45811462"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; d="scan'208";a="45811462"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2025 08:44:00 -0800
+X-CSE-ConnectionGUID: FmpUDhfUSYG1peJLfa4GMA==
+X-CSE-MsgGUID: XAI/oKgXRq+UWzYm8BPQxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="155615156"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa001.jf.intel.com with ESMTP; 04 Mar 2025 08:43:58 -0800
+Date: Wed, 5 Mar 2025 01:04:05 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH] rust: cell: add full example of declaring a SysBusDevice
+Message-ID: <Z8cyhSfdeTufVzaj@intel.com>
+References: <20250228085506.846381-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.19
-X-Spamd-Result: default: False [-4.19 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.19)[-0.973]; RCVD_NO_TLS_LAST(0.10)[];
- MIME_GOOD(-0.10)[text/plain]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_COUNT_ONE(0.00)[1];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=schwab@suse.de; helo=smtp-out2.suse.de
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228085506.846381-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,45 +78,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The third argument of the riscv_hwprobe syscall contains the size of the
-cpu mask in bytes, not bits.
+> +//! ### Example
+> +//!
+> +//! ```
+> +//! # use qemu_api::prelude::*;
+> +//! # use qemu_api::{c_str, cell::BqlRefCell, irq::InterruptSource, irq::IRQState};
+> +//! # use qemu_api::{sysbus::SysBusDevice, qom::Owned, qom::ParentField};
+> +//! # const N_GPIOS: usize = 8;
+> +//! # struct PL061Registers { /* ... */ }
+> +//! # unsafe impl ObjectType for PL061Device {
+> +//! #     type Class = <SysBusDevice as ObjectType>::Class;
+> +//! #     const TYPE_NAME: &'static std::ffi::CStr = c_str!("pl061");
+> +//! # }
+> +//! struct PL061Device {
 
-Signed-off-by: Andreas Schwab <schwab@suse.de>
----
- linux-user/syscall.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Maybe PL061State?
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a22a5df8cc..4cc1a31d0d 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -9120,16 +9120,16 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
- 
- static int cpu_set_valid(abi_long arg3, abi_long arg4)
- {
--    int ret, i, tmp;
-+    int ret, i;
-     size_t host_mask_size, target_mask_size;
-     unsigned long *host_mask;
- 
-     /*
-      * cpu_set_t represent CPU masks as bit masks of type unsigned long *.
--     * arg3 contains the cpu count.
-+     * arg3 contains the size of the cpu mask.
-      */
--    tmp = (8 * sizeof(abi_ulong));
--    target_mask_size = ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
-+    target_mask_size = (arg3 + (sizeof(abi_ulong) - 1)) &
-+                       ~(sizeof(abi_ulong) - 1);
-     host_mask_size = (target_mask_size + (sizeof(*host_mask) - 1)) &
-                      ~(sizeof(*host_mask) - 1);
- 
--- 
-2.48.1
+> +//!     parent_obj: ParentField<SysBusDevice>,
+> +//!
+> +//!     // Configuration is read-only after initialization
+> +//!     pullups: u32,
+> +//!     pulldowns: u32,
+> +//!
+> +//!     // Same for sub-objects of the device
+> +//!     out: [Owned<IRQState>; N_GPIOS],
+
+Should this be InterruptSource type?
+
+Just have a quick look at pl061.c:
+
+qdev_init_gpio_out(dev, s->out, N_GPIOS);
+
+So in Rust side, `out` would be initialized by
+DeviceMethods::init_gpio_out().
 
 
--- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+Others are fine for me ~ with above nits fixed,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
