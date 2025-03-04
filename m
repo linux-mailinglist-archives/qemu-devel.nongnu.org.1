@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDE5A4F03B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18979A4F05C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Mar 2025 23:26:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpahP-0005Tz-1c; Tue, 04 Mar 2025 17:25:15 -0500
+	id 1tpahN-0005PS-UU; Tue, 04 Mar 2025 17:25:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpagx-0005LK-5c
+ id 1tpagx-0005LM-GD
  for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:48 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tpagu-0006TV-He
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:46 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-ac202264f9cso144153866b.0
+ id 1tpagv-0006Tb-9D
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 17:24:47 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-abf615d5f31so622722966b.2
  for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 14:24:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1741127083; x=1741731883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KnSHjGtDRpaEDbyYC8kppAAfhPC7ZbGjHbQwEVFXiqQ=;
- b=FjzdPsQVs0FEx5CrD6hhu4BB5yiRKHblofXS3IK6gweEDFF6SG2XacuHtfKoEhqMgc
- iiTpk6sajjb+uWCa/B6DIXCW3CXaqUBk8FUnkhR54KjtstcZ1/9EReP4mPPZWTBIKoyG
- r7FtLY+ijKi43ZDEtAUQymkTJbZzocBoEBIrY3nsh7v5TjGFc6AP9HziVmaS5xFCttv8
- B9OvKXJwkHkox/O7yepQfEOiM4ruzSXmiVDq35ITZJmxDbl8ox97Eo3AIuQLReArrG4x
- YSZTF3uh1qX4Cjylrw67/J69jSK5sLgsWnrpCxlsVn8l+uBUu0ah3Q9uUQzW+ueA9WaY
- vUrw==
+ bh=Onp89pSroQtMObXGq9VTrbTAFH+9BfAPDxoO68vbwOU=;
+ b=zsN/zYzm/xTyGUT5QEsRcbhx/5NCsXvuZXhvlrPBpn0pD7lWKdcuWi+BBgC5FYTJEG
+ 3UabGvVaB5zFh6/PuPYDvqxDXxpqtX23Kqqp6yQ7yehszXUKxE7TkIm3+mcrsIzyR5tE
+ E1id52tjeyvT8EaxnEYzrmlPnIzQoZ/49ZnLmLnL5VjQUZRsgCdaQs1Oei87FcqJi64T
+ NccJhKCDyvbE/HN1ZE/UqHL+nHrLX2IwJJ4LKqEbX4ljZLnQnYudzdbSdTuZxxx/bKVs
+ DR77eV+ihMGP1AMJeMt1vlpOwb4ZaOiQGti7CGzKiZzdhi3rDjs1kAIeq/5wp4T9trSU
+ M2qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741127083; x=1741731883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KnSHjGtDRpaEDbyYC8kppAAfhPC7ZbGjHbQwEVFXiqQ=;
- b=JQtyG7piXePn0WPgYogNDINqybNvjFOkPASmAAO+QvXYjXouo02vDrVWWq+kWbolnE
- ZO91CmvviINst8YlljPAgnankw6YurhCh/+/9zt1GrSRU31PURcu8/YMqprkrwD3Qyd6
- lLNe6SovJz7ezrf/GxbQoTNFKYDy9ri+VfmB/NAlxG5S8WDH+fhl2zYKNPUZLLbx2LmJ
- sbMl7VYG/1XXFY7cknk38XnwPIYauIVwJFa3bvQnrRSyINnhv0EF88DK6865YZJCaqd7
- VFbTFacos0ZbJUqfiNxy4hi11Ru6o05pVTJ7J8hyqWwIjYhDrV8Qx2gD0uoous86+ddO
- VTWg==
-X-Gm-Message-State: AOJu0YypN2PRJlptNwD7koSd47LHy3j1ieONpRstN8APmFD2Pis32yq4
- mks+YuzC0QsQHYRzTYjS2RKHm61YhqFCqnYdRzDwfBHwDYPL1Gls/dGSNOf9udg=
-X-Gm-Gg: ASbGncuAcw9qBuV/8rZorPjERS/AQhqSG+6W8d1gxRtd7k/0k8pxwvEWQKwcw6Z62kQ
- KpgyOhB5QyQfikZPj/HP6pctfeUPE2x9xF4cpXs3bt8TPkrJ5FhVClEyDwEW5NvhDbGjPvD2XzX
- cvtO65wRiguLM1kVwtC7Id1vcwFbc6smlh+kisAdWJIF8N9XUdDI5CIVJGF9wN4J9cvoSl8e/dp
- 6t3EG8z1gL8NLY4Wd6OP6/jH+f0ogo5ya+A3b0u91CJ774TOKVe1pve3hXg5j1P5bKNeY6jPb8F
- 0IG6WUMZ/fI1HZTqUjFD5sxAhF7x8H8r7tVxBcMG874is84=
-X-Google-Smtp-Source: AGHT+IH+ZShXvgauKpsbJcXwNAXI3McoiVdTBaDlrpYFgc/AJjvqME6T4opPDW4J2nYEVNMf62fdZw==
-X-Received: by 2002:a17:907:7247:b0:ac1:de14:6d6d with SMTP id
- a640c23a62f3a-ac20db37f95mr73021066b.28.1741127082771; 
- Tue, 04 Mar 2025 14:24:42 -0800 (PST)
+ bh=Onp89pSroQtMObXGq9VTrbTAFH+9BfAPDxoO68vbwOU=;
+ b=KrSY4GLjUCLBdy1eEDU2jGwtswqeO6UtsCNQ93cDJyOWJWpINr+/2ES+kSvz8YnmNE
+ FB8EMi2HisFxXvfCqtI2D4XIpupidqjbRPjVyAnJb5w+UEG/CF/LzCATz3ZL4nOWZiSI
+ RgA6XtXTnucGmPqaTb+Zmf7l7K93Dac2pO1BKDFEwkbag76NNeq2L85fac8bvWOhsgUP
+ +WTAyeIUd0I/RFYhtApbjb3hNQoKAqkoH4sx3gOnjHxrvkTArrwoxePBBStjHnGipr97
+ ReKR9RzLQfkPTSYBUSy3xsvetj5Zh/WI2fG15L665u1aYUcf8hiplX0FSTPuxIIBPR9Q
+ vERA==
+X-Gm-Message-State: AOJu0YxGNKGUEq1evja78uoA7OyThBTgXmKca+88R5fO9ST7CONW5ZEq
+ x8GINV5z61maxvn+e89ZT3fXDAuZEAmJ7VR86PE8SfxAv4hqK4pvcHnSmogjicY=
+X-Gm-Gg: ASbGncv/lWoV9DrL3yFgSUs5aKonLw+pAqvz+Cl1kkGZjknZIFigml5mk9ulXTEqNS+
+ Fg7qyaTtnW6ZZ1N9vLZsHJN/wbSWULF3BRNr4uiTG7h/lBSuYVvQc3xHFUEm38K+3L4Smbx/N3I
+ ViIgpadCGX9xzu60fu7XRWGmsNO+ffNKUIsZVoATRrKg4NVBIX6G5hsHWhYmBVzCwfhV+BKna1+
+ Hsp+sKcUufGxXRTpGvIzNqEq8k5Ms6snDcbMPlGSvX0PnsugY5oMsMsavUcXUuYkaVd5TyFGxnU
+ LOZVaABnq8Pli9ZakY1B52V2IrtfWzSxy44MGoyQMD/5McA=
+X-Google-Smtp-Source: AGHT+IFgc+Hyu8uqFyojDJgkb9CqycIFloG9vwRl0TkOsweIUpLR0PtM7/YubMdKtiq0mS/UddWPqg==
+X-Received: by 2002:a17:907:2d12:b0:abf:5aea:a584 with SMTP id
+ a640c23a62f3a-ac20dade8dbmr83852866b.38.1741127083223; 
+ Tue, 04 Mar 2025 14:24:43 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-abf4f8a2035sm692348266b.107.2025.03.04.14.24.41
+ a640c23a62f3a-ac1e7fa6246sm252666366b.167.2025.03.04.14.24.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 04 Mar 2025 14:24:41 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0DE725FD05;
+ by draig.lan (Postfix) with ESMTP id 29E675FD17;
  Tue,  4 Mar 2025 22:24:40 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 07/32] tests/functional: update the aarch64_virg_gpu images
-Date: Tue,  4 Mar 2025 22:24:14 +0000
-Message-Id: <20250304222439.2035603-8-alex.bennee@linaro.org>
+Subject: [PATCH v2 08/32] plugins: add explicit dependency in functional tests
+Date: Tue,  4 Mar 2025 22:24:15 +0000
+Message-Id: <20250304222439.2035603-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250304222439.2035603-1-alex.bennee@linaro.org>
 References: <20250304222439.2035603-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -113,54 +113,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update to the most recent aarch64_virt_gpu image. The principle
-differences are:
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-  - target a v8.0 baseline CPU
-  - latest vkmark (2025.1)
-  - actually uses the rootfs (previously was initrd)
-  - rootfs includes more testing tools for interactive use
+./tests/functional/test_aarch64_tcg_plugins.py needs to have plugin
+libinsn built. However, it's not listed as a dependency, so meson can't
+know it needs to be built.
 
-See README.md in https://fileserver.linaro.org/s/ce5jXBFinPxtEdx for
-details about the image creation and the buildroot config.
+Thus, we keep track of all plugins, and add them as an explicit
+dependency.
 
+Fixes: 4c134d07b9e ("tests: add a new set of tests to exercise plugins")
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250220080215.49165-2-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/test_aarch64_virt_gpu.py | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ meson.build                   | 1 +
+ contrib/plugins/meson.build   | 2 ++
+ tests/functional/meson.build  | 2 +-
+ tests/tcg/plugins/meson.build | 2 ++
+ 4 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
-index 3fdb31f034..e417ca9beb 100755
---- a/tests/functional/test_aarch64_virt_gpu.py
-+++ b/tests/functional/test_aarch64_virt_gpu.py
-@@ -25,14 +25,14 @@ class Aarch64VirtGPUMachine(LinuxKernelTest):
-     ASSET_VIRT_GPU_KERNEL = Asset(
-         'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
-         'download?path=%2F&files='
--        'Image',
--        '89e5099d26166204cc5ca4bb6d1a11b92c217e1f82ec67e3ba363d09157462f6')
-+        'Image.6.12.16.aarch64',
-+        '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec8b')
+diff --git a/meson.build b/meson.build
+index 0a2c61d2bf..8d0abe7f12 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3662,6 +3662,7 @@ qtest_module_ss = ss.source_set()
  
-     ASSET_VIRT_GPU_ROOTFS = Asset(
-         'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
-         'download?path=%2F&files='
--        'rootfs.ext4.zstd',
--        '792da7573f5dc2913ddb7c638151d4a6b2d028a4cb2afb38add513c1924bdad4')
-+        'rootfs.aarch64.ext2.zstd',
-+        'd45118c899420b7e673f1539a37a35480134b3e36e3a59e2cb69b1781cbb14ef')
- 
-     def _launch_virt_gpu(self, gpu_device):
- 
-@@ -47,7 +47,7 @@ def _launch_virt_gpu(self, gpu_device):
-                                'console=ttyAMA0 root=/dev/vda')
- 
-         self.vm.add_args("-accel", "tcg")
--        self.vm.add_args("-cpu", "neoverse-v1,pauth-impdef=on")
-+        self.vm.add_args("-cpu", "cortex-a72")
-         self.vm.add_args("-machine", "virt,gic-version=max",
-                          '-kernel', kernel_path,
-                          '-append', kernel_command_line)
+ modules = {}
+ target_modules = {}
++plugin_modules = []
+ hw_arch = {}
+ target_arch = {}
+ target_system_arch = {}
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index 484b9a808c..fa8a426c8b 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -26,3 +26,5 @@ if t.length() > 0
+ else
+   run_target('contrib-plugins', command: find_program('true'))
+ endif
++
++plugin_modules += t
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 4b492135e0..008d72aed8 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -380,7 +380,7 @@ foreach speed : ['quick', 'thorough']
+       # 'run_target' logic below & in Makefile.include
+       test('func-' + testname,
+            python,
+-           depends: [test_deps, test_emulator, emulator_modules],
++           depends: [test_deps, test_emulator, emulator_modules, plugin_modules],
+            env: test_env,
+            args: [testpath],
+            protocol: 'tap',
+diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
+index 87a17d67bd..c8cb0626a6 100644
+--- a/tests/tcg/plugins/meson.build
++++ b/tests/tcg/plugins/meson.build
+@@ -19,3 +19,5 @@ if t.length() > 0
+ else
+   run_target('test-plugins', command: find_program('true'))
+ endif
++
++plugin_modules += t
 -- 
 2.39.5
 
