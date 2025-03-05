@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC26A4F3E4
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B88A4F3E3
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdWu-0006VQ-9H; Tue, 04 Mar 2025 20:26:36 -0500
+	id 1tpdWL-0004vm-Sj; Tue, 04 Mar 2025 20:26:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUN-0002Di-3D
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:00 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUS-0002Fa-ON
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:11 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUL-0007AM-I2
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:58 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-390ddf037ffso3360399f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUR-0007BE-6f
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:04 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43bcad638efso10145755e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:24:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137835; x=1741742635; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137841; x=1741742641; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qd7m5wMCz+XZxcgvBF3/5ywn7cJ5I9SW91UZjpHUbeA=;
- b=cYsEZF4DPwJbbCt2fcEC3RW4ULWbSjKrmFSsyxUxqf3vY1nCYW87qh0oHAI9zVhh5/
- 6pl70pzVP1Opom2qJKsNV5QzuF++Mq1Inl+/nim0nBhV7q4+71MzBpr3iiw8m++giGO1
- qxnEzfCdR5vlq7KHnYVV+5LRd1DWh5BfIyKgJB53AA19mfvqAYwvBi4wpqEjn1NTwYOR
- v1Un3+6KvPG9YtVPcIW4C8QltQvzFk5MsQwUOXsQGQ8ScxJBhqZd43dHUiFHDDg2Q81C
- KS1gCmkBdfFbSMk2a4LhiUq7QLLx8sRGqOlCT38y3YynIvCPvONf5F8K0gXuzNoFu9rY
- rAcQ==
+ bh=GWCkeTUZ1Bwoa+5rt2QUs52v09pE2by6BJ43I/9OHfA=;
+ b=GCfUfAtIrzHLlH/2PKgYp41BYSS/VC+sMlt2aBoOgsv5WWw96+LLCa7e9Ey5oolEMG
+ s0aUcNBFNw8pSGl9wJFFx1keMLTIcGuLEf6ENh6PPWkB3dNlru6cgfbMI1dyLzZUM238
+ 07DAOX6RJfb7B8+YXeKIxuO1VpRsCn66njZ2S0++aBqLh8ShV3LbTlMOb/6VWcrCWFNq
+ bAoapJgQND1xUoWCuubtXc6bTcvLD7Ks74v5MIQ/J1ABryAxKk/hp4xVNuMfwPITICYS
+ wmPqS+LBmsYqie7HrzzfDhDFv2UPzeuSBNuibXq7NZM3/U3mG59F5S/307ewz+68Ye5G
+ nVjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137835; x=1741742635;
+ d=1e100.net; s=20230601; t=1741137841; x=1741742641;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qd7m5wMCz+XZxcgvBF3/5ywn7cJ5I9SW91UZjpHUbeA=;
- b=Awo44fFGfeZqqPNZXzGOppZGOv9Ug5FF8NE5H24lK5kU1N9LyUbcjH7McRYrQSd+mB
- 1h4lfHWLWcH8oHswepdAG1StsLSJyEIgqyhoqtS/r9MrBLEo44IPaDQnNUMvUzToHq2A
- KvlISm+hdIJc64D5CZX1jtv+fRCO8JjJtS3yxgmgwFpCVGdaQYiVc0ZdhlZmSAny7FHh
- 1bYKhKtBN25gqCa6ighF30q7z0YcfwE7P74UePPJGljGQP8L+JegdclRrrPyd54aNc5b
- /U2/0Tk3xxoEpdA5LvAQqvfNCSTsd2irKRseopgiNVRxqhSP5F6lnNDe6Q9ccOAQiJuO
- KA9g==
-X-Gm-Message-State: AOJu0Yx5HYI4NwhSiWy1IBNC+GMntEJ0ttMZSMURE0/WmShy8bVbQGA6
- UyBGJkQ4XlEaUrDBEEPXJ5k5lCj6V6NEUC4s39LonL6Xy0StLnK+OqB8TC79oL0NnEelAO6FFAu
- nzzc=
-X-Gm-Gg: ASbGnctVnumn7uZWEozYHEe2A3uH+FH4Xub98GUrtX0WoCIpOHGPm+2YRWwL8Rk+a5R
- J+m7HyNvzAYQcKktbGJ0YfATt/UDI8GMIcSzEJ3tqG9xw/78xzVv6u0Hbc62vctoAdBPjpoQ3C8
- OHqzmH61P54k8kRHe0/EIR5T26FtQq6M1ZydnvdGESUBxHHnn0bVMK4dXmtcQQ3JW+w5wY1Yw7m
- TVBCW59YXivH1Oa2SyVjP+dam4PxfxSnsN++RscEBE6oW3Bh1eXQoCXoB783WycRrZbFEOkNN2r
- Y27trYw9wCdVN2dwE7gjL5Z00nnEVKz6ahSmLngeFvJjlco40NpoSg+LX/fPWQIu+DXvCr0M+wt
- 7rTW/uYFSirzj/CJPWCg=
-X-Google-Smtp-Source: AGHT+IFQriLDXu0bW0VYcFYpFnrQQOenK3H2DTY1wBvYAaLm4iAVNypHhoO05v4I74OKggKoXOtFHg==
-X-Received: by 2002:a05:6000:381:b0:38f:2f0e:980c with SMTP id
- ffacd0b85a97d-3911f7d2fc9mr585329f8f.47.1741137835466; 
- Tue, 04 Mar 2025 17:23:55 -0800 (PST)
+ bh=GWCkeTUZ1Bwoa+5rt2QUs52v09pE2by6BJ43I/9OHfA=;
+ b=TCVDQI1a+T8X8laRZ8RvMShF6DVwZSjU4O7YRxyQv55o+wuBq4McljzZVCekcBVJOA
+ d0AquUTBJVrpg+wt6DTZDnafFQNfXqzjjXwGPIqhDoaxPyXNBgbNzrIk+vpSGQ25RGRK
+ 7g2nCgfWG9LxOB5n/2+ppQIm53362DP0Iz0bu5Kgav+3krwvbakQ3hwOkKBwT2NkxvCv
+ Wugesf7IFGJ0dC8ylqTBpQ/DHBWJ9fMmPKT/pm16I2AJ07FfZALoeJHk6ENQyoNo3Pel
+ a1MXuyNTTOv8Mlev4lbXC3QWMhDlaFWokSEguKPe3TMJTv9MX2/ZLLIDQ+RVo0ibCJHY
+ 5/gw==
+X-Gm-Message-State: AOJu0YxzrrbPjijQUBZZThhAMoqf0HRqRI3G68uEVh/sgZTNBl4JrBuO
+ KRgddAKO3WQPssOZt5t0i6r6AhoQDHaIq4Nkmm/ziJHu1RmneKo45CuyJ8foyOhd/3sZFsGRJVD
+ cC50=
+X-Gm-Gg: ASbGncveFHx2qsJfrJDinjwwFaQyOfd+o4CaBlWbEZL7Lf3xbTfWizCVoa/EdTCKdFn
+ ek7yM2bsdoX+2eIfOSSB4BlMb/PAhbp4rvItfJhSZK9SMa83Nrh0lx3o01TwGoaFgy+XeQDi+IF
+ qI7gB5B/drA0qLNikaB0MSA3AfpJZu3Zc763x8AI+7wQ6FGPzPU/swD4P+JsZbwY32KdUtWDXTf
+ t9k6GErlSgvEWRmLAD4ktqAWad6Z9fDNpEzSyXE5BjOPn0R2ofBlrWLTXBhX8OJV38WJ/TWwxAQ
+ rtmMEfuphrp8M26i9J6Xhcf2OjdgB9M6BbQGKNksTGTWqB/Yb+o5cVj6H3x91poKYWjExflaEfH
+ ZIDjcHdfMzPWTJ54I71E=
+X-Google-Smtp-Source: AGHT+IEDnbjMa1qZO+TqVDNEIcP6ZL46N87m9w0qmJfAaCjm2r5QnBMcwlcnE+z00mQf2jHlHbIhzA==
+X-Received: by 2002:a05:600c:4ed2:b0:439:a5e6:73ff with SMTP id
+ 5b1f17b1804b1-43bd29d8441mr6558595e9.17.1741137840978; 
+ Tue, 04 Mar 2025 17:24:00 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4844c0dsm18880330f8f.80.2025.03.04.17.23.54
+ 5b1f17b1804b1-43bd42e6bcfsm1952175e9.32.2025.03.04.17.23.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:55 -0800 (PST)
+ Tue, 04 Mar 2025 17:24:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Luc Michel <luc.michel@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 24/41] hw/char/imx_serial: Really use RX FIFO depth
-Date: Wed,  5 Mar 2025 02:21:39 +0100
-Message-ID: <20250305012157.96463-25-philmd@linaro.org>
+ Luc Michel <luc.michel@amd.com>, Thomas Huth <huth@tuxfamily.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 25/41] hw/char/mcf_uart: Use FIFO_DEPTH definition instead of
+ magic values
+Date: Wed,  5 Mar 2025 02:21:40 +0100
+Message-ID: <20250305012157.96463-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +100,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we model a 32-elements RX FIFO since the IMX serial
-model was introduced in commit 988f2442971 ("hw/char/imx_serial:
-Implement receive FIFO and ageing timer") we only read 1 char
-at a time!
-
-Have the IOCanReadHandler handler return how many elements are
-available, and use that in the IOReadHandler handler.
+Defines FIFO_DEPTH and use it, fixing coding style.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20250220092903.3726-7-philmd@linaro.org>
+Message-Id: <20250220092903.3726-8-philmd@linaro.org>
 ---
- hw/char/imx_serial.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/char/mcf_uart.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
-index 38b4865157e..6f14f8403a9 100644
---- a/hw/char/imx_serial.c
-+++ b/hw/char/imx_serial.c
-@@ -386,7 +386,8 @@ static void imx_serial_write(void *opaque, hwaddr offset,
- static int imx_can_receive(void *opaque)
+diff --git a/hw/char/mcf_uart.c b/hw/char/mcf_uart.c
+index 980a12fcb7d..95f269ee9b7 100644
+--- a/hw/char/mcf_uart.c
++++ b/hw/char/mcf_uart.c
+@@ -17,6 +17,8 @@
+ #include "chardev/char-fe.h"
+ #include "qom/object.h"
+ 
++#define FIFO_DEPTH 4
++
+ struct mcf_uart_state {
+     SysBusDevice parent_obj;
+ 
+@@ -27,7 +29,7 @@ struct mcf_uart_state {
+     uint8_t imr;
+     uint8_t bg1;
+     uint8_t bg2;
+-    uint8_t fifo[4];
++    uint8_t fifo[FIFO_DEPTH];
+     uint8_t tb;
+     int current_mr;
+     int fifo_len;
+@@ -247,14 +249,16 @@ static void mcf_uart_reset(DeviceState *dev)
+ static void mcf_uart_push_byte(mcf_uart_state *s, uint8_t data)
  {
-     IMXSerialState *s = (IMXSerialState *)opaque;
--    return s->ucr2 & UCR2_RXEN && fifo32_num_used(&s->rx_fifo) < FIFO_SIZE;
-+
-+    return s->ucr2 & UCR2_RXEN ? fifo32_num_free(&s->rx_fifo) : 0;
- }
- 
- static void imx_put_data(void *opaque, uint32_t value)
-@@ -417,7 +418,10 @@ static void imx_receive(void *opaque, const uint8_t *buf, int size)
-     IMXSerialState *s = (IMXSerialState *)opaque;
- 
-     s->usr2 |= USR2_WAKE;
--    imx_put_data(opaque, *buf);
-+
-+    for (int i = 0; i < size; i++) {
-+        imx_put_data(opaque, buf[i]);
+     /* Break events overwrite the last byte if the fifo is full.  */
+-    if (s->fifo_len == 4)
++    if (s->fifo_len == FIFO_DEPTH) {
+         s->fifo_len--;
 +    }
- }
  
- static void imx_event(void *opaque, QEMUChrEvent event)
+     s->fifo[s->fifo_len] = data;
+     s->fifo_len++;
+     s->sr |= MCF_UART_RxRDY;
+-    if (s->fifo_len == 4)
++    if (s->fifo_len == FIFO_DEPTH) {
+         s->sr |= MCF_UART_FFULL;
++    }
+ 
+     mcf_uart_update(s);
+ }
 -- 
 2.47.1
 
