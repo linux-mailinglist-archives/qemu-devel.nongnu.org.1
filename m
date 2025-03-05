@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2188AA4F42B
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D954A4F424
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:56:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdxg-0003La-Kz; Tue, 04 Mar 2025 20:54:16 -0500
+	id 1tpdxk-0003VL-3M; Tue, 04 Mar 2025 20:54:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxe-00039H-4K
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:14 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tpdxh-0003SC-4d
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:17 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxc-0008Sz-7y
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:13 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-22382657540so72562105ad.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:11 -0800 (PST)
+ id 1tpdxf-0008TO-Dv
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:16 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-22349dc31bcso110902965ad.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139651; x=1741744451; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139654; x=1741744454; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jMRtoXKWoktOFhEsg4DGrJQquTSdWQNK2JOTRNo+Qz8=;
- b=jTkZRdGfX1CHd4XBy2M90CJ8mermDpN0SDjyFwgkrG864WeMgZXYyBMgHlTAp+mYtT
- MgyscxoYekIZGPkcBzsyBcf9/BfeZ77SO97coECeBteLe8naHiU+PfDhGn5iDY1CYLYp
- gfGv59+BbLZJNp8HYE11Tyhm8ALaxT02R3TpKoeKvW+uOFsDaTyjY0+OZoNcrGfwSyQD
- ct/VlNGigoywLYKvZrb/jLjape5Hkx4pbT1ODFaXZdLt8c6DDgB2tZE1XSQgkevQSMeh
- Bn1jaIxd1XdwXdtBCLytWuG0ji2x7RYQxm1v9BnGFy6cCbVTK/Tv4snS7eiWZY8GxnuV
- 15Iw==
+ bh=ZhcMHAF0LEx4SB+8bqtdgUZxuEwpD7O1r3fLFnMpyJA=;
+ b=Par+Cxjr1cdRQMn4+jMLgE5rSzqWQVVkAHCw4PudxHEJnYKkDDx8K1EUYUdTgIWp1x
+ dIcRisOwxqXcA4vQ8SdXnjqazzuc60HFbtmw3sdMFdefrpw6SK1PC8qhrcxjoJ/y4BTf
+ DrBcRPkSkEVw5f2wD3smzj4XXNeicPUK1ynK4ffFYwmGtn/AMcvXVViccHrcJkOobafW
+ 3lDDRTA8Sm7eIFC5XluT+QPRjfyQsWyUo71Pn/5NeUxqs8CWMeW6qlL5u1wVKVqTwSRn
+ uj2IzqabygVaNPxYa7epQSBrvwk2UHbZLitRFMwgqjbhpA9xl/NC+nQrQVWCTnbWPYx5
+ oKrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139651; x=1741744451;
+ d=1e100.net; s=20230601; t=1741139654; x=1741744454;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jMRtoXKWoktOFhEsg4DGrJQquTSdWQNK2JOTRNo+Qz8=;
- b=qCyTgTKmbST0N3YDcsPDOiHcZ29I0ltUCTbY9ndxhf/61U9FYGDYGZm1z6ezdeUEOK
- z3X9mxEc2x+IV3F9rXUIH1nXWHpXGlUmPZwuJkWPwuy3Z0a8R0UCHwN7nyprOm8ZgmPT
- rqvRgfhxQUrYJiXIlNcV/0/vIUfgMDAjoEZrVB3pge61XRev57B3gv8ucQmnDf6ZV8gA
- Q/DwdMSxl5dBlx+l9gVd6uWRikOseh0Oro4n1JGZSBYKMeOaCBGsWqyWVNEELuNg3jlG
- h/x83K6xybPTShFyuW9UeE06y9o2BVrlsvnu4nd8r0+8ExvxOLpQSKK7H8AGgUlkT1/c
- XdRQ==
-X-Gm-Message-State: AOJu0YwpkRZ81fk7fKXSEt8dENchafjtUzDFOyZuu++GF2C5QAv7SHpO
- QYDmEVKgFXCfJd5HDh/SA7/lhroFkAO73ul6ySr5IaNztHgpq67rxo0389r0abA=
-X-Gm-Gg: ASbGncvZ9RnDCIAEa5OmcVuc5nfX1DF8g4th4QsLbPCapNyp2fTwrZqKOOL06SLGpmj
- 3v1R3Eubw5wdVis066EsqjleElkNovZtHzyJwWgMUzhuxIedjft6sJlDCEYYWzQOCBevzL+C8G9
- DRGG+ubRkHkGyHhezKLEzqQommX7ayvpB6f4GSfj+iH0PkWZv7O7Fx7NDhBJGVJXnQkbcGacH+k
- COUeyTVpbPRrApiDT1v7uQn8uu0FLvpFGA1l59Pn+wFf44TIBaYh3oHi/Gcd/EdLgh8lt7bbnAA
- RLE/yIzfVhg0a9zlP6JwVDmgtTepNVBoLArPhCqdhZcjk9H0eOOpCWv4uHiwIAx9bZgNoVvFwx9
- E5SkWGztlHe4+eF+00+glRCq4c7aCGrBua9dWd95obrdv0AASXuU=
-X-Google-Smtp-Source: AGHT+IHS3lj2ZerRCD8neS4bfVFrQw5uLSudKrBRG7KRrPZ10NEQkZ02fQK8LRpbFNCYoQ155YgHcQ==
-X-Received: by 2002:a17:902:ea0b:b0:223:65dc:4580 with SMTP id
- d9443c01a7336-223f1d3feeemr16398925ad.52.1741139650702; 
- Tue, 04 Mar 2025 17:54:10 -0800 (PST)
+ bh=ZhcMHAF0LEx4SB+8bqtdgUZxuEwpD7O1r3fLFnMpyJA=;
+ b=JJ3n0ilJ7JLGZqHbp+DAObLLtCDTyBAHjZlYKQAwxT5pwyHz1U5lOtKXyGVcRozlJC
+ UYcKUiD1O5q/WhiTk2np1F9aRpQs63FiujUSoSBjx8hFO+iuvC/rXX4iw9YyKHUb950s
+ 8Pj4ncWJqpQNmlU+RaVtonbb63iYuXg7WUgdetrMvUH0qZyeH0VNZfcYQp1oOOG2ljtd
+ 3RHytMtCNFpycSEoygb12eX7bZWesrmDdlz+Yyitcc8zh6rr13/kzQ+w0btjI++gQMPd
+ kTAOVBq0ZS5ndKOBOx4mtgOKIhsIDGJc9Ri4/wvxRoEXWz32EsPyRj0HKoUbjzmqo1cF
+ YNmw==
+X-Gm-Message-State: AOJu0Ywn2gmQtVzVnmeQPNNrpJSlWK7ru4fc/vKiZ7ztdA5PayhDKtzT
+ 4n4F1oWin+Saya/B4fGSx8JIpadWkOEqBxz0hqh5Z7XXgksCZ/Kz5mJ7PHNmvXU=
+X-Gm-Gg: ASbGncv0MADuhpCNxGbvHNHMonvrn90YmF6Xoe4BTqcZOmu4ZmopkGgwGnOu5e1nqHP
+ gJbVQoVc1yL7WtQT9fzRWcSSgvzEE522O246nKtSlXihxIiiYJcoxrnLM9TKKYDRqhFZkMltTco
+ ttKzJuHqqK6LVsR6xjak7wkHoAMvvQK/SXCmLzBT6FOPEQ43G74YxM5HjjPQrUQbnAQHq5iEJyc
+ kVGhUXx1csD/jrfT+5tbsmngBpxpa/0TypkIQ/Yx5y/+X6lVnWEnZjPpkAnXxGL0yblkdOrlkIg
+ Zd/ROvctIxeQIPK1oXmdzNrpsD6HusuJVTeSe0Q54PXQmyHQ/LtqIeRpwlYvdNHGjy+wgH1+qVB
+ iKMFxENSttpHQS02avcn7WwBR/Z6J8eLL3L7mzbziXwyNZs+zgB0=
+X-Google-Smtp-Source: AGHT+IGOgguZULiQwawFZuCYN84Spa8roeJdqYWB28rTP+rq9/aWIJaCf102B0wrjfsQqUCFq0BCWA==
+X-Received: by 2002:a17:902:e54a:b0:220:ff3f:6cc0 with SMTP id
+ d9443c01a7336-223f1cf3515mr26184075ad.38.1741139653723; 
+ Tue, 04 Mar 2025 17:54:13 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.08
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:54:09 -0800 (PST)
+ Tue, 04 Mar 2025 17:54:13 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rodrigo Dias Correa <r@drigo.nl>,
+Cc: alistair23@gmail.com, Vasilis Liaskovitis <vliaskovitis@suse.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 19/59] goldfish_rtc: Fix tick_offset migration
-Date: Wed,  5 Mar 2025 11:52:27 +1000
-Message-ID: <20250305015307.1463560-20-alistair.francis@wdc.com>
+Subject: [PULL 20/59] hw/riscv/virt: Add serial alias in DTB
+Date: Wed,  5 Mar 2025 11:52:28 +1000
+Message-ID: <20250305015307.1463560-21-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,102 +103,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rodrigo Dias Correa <r@drigo.nl>
+From: Vasilis Liaskovitis <vliaskovitis@suse.com>
 
-Instead of migrating the raw tick_offset, goldfish_rtc migrates a
-recalculated value based on QEMU_CLOCK_VIRTUAL. As QEMU_CLOCK_VIRTUAL
-stands still across a save-and-restore cycle, the guest RTC becomes out
-of sync with the host RTC when the VM is restored.
+Add an "aliases" node with a "serial0" entry for the single UART
+in the riscv virt machine.
 
-As described in the bug description, it looks like this calculation was
-copied from pl031 RTC, which had its tick_offset migration fixed by
-Commit 032cfe6a79c8 ("pl031: Correctly migrate state when using -rtc
-clock=host").
-
-Migrate the tick_offset directly, adding it as a version-dependent field
-to VMState. Keep the old behavior when migrating from previous versions.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2033
-Signed-off-by: Rodrigo Dias Correa <r@drigo.nl>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2774
+Signed-off-by: Vasilis Liaskovitis <vliaskovitis@suse.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250114212150.228241-1-r@drigo.nl>
+Message-ID: <20250116161007.39710-1-vliaskovitis@suse.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/rtc/goldfish_rtc.c | 43 +++++++++++++------------------------------
- 1 file changed, 13 insertions(+), 30 deletions(-)
+ hw/riscv/virt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/rtc/goldfish_rtc.c b/hw/rtc/goldfish_rtc.c
-index fa1d9051f4..0f1b53e0e4 100644
---- a/hw/rtc/goldfish_rtc.c
-+++ b/hw/rtc/goldfish_rtc.c
-@@ -178,38 +178,21 @@ static void goldfish_rtc_write(void *opaque, hwaddr offset,
-     trace_goldfish_rtc_write(offset, value);
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 241389d72f..dae46f4733 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -971,6 +971,7 @@ static void create_fdt_uart(RISCVVirtState *s, const MemMapEntry *memmap,
+     }
+ 
+     qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", name);
++    qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", name);
  }
  
--static int goldfish_rtc_pre_save(void *opaque)
--{
--    uint64_t delta;
--    GoldfishRTCState *s = opaque;
--
--    /*
--     * We want to migrate this offset, which sounds straightforward.
--     * Unfortunately, we cannot directly pass tick_offset because
--     * rtc_clock on destination Host might not be same source Host.
--     *
--     * To tackle, this we pass tick_offset relative to vm_clock from
--     * source Host and make it relative to rtc_clock at destination Host.
--     */
--    delta = qemu_clock_get_ns(rtc_clock) -
--            qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    s->tick_offset_vmstate = s->tick_offset + delta;
--
--    return 0;
--}
--
- static int goldfish_rtc_post_load(void *opaque, int version_id)
- {
--    uint64_t delta;
-     GoldfishRTCState *s = opaque;
+ static void create_fdt_rtc(RISCVVirtState *s, const MemMapEntry *memmap,
+@@ -1180,6 +1181,8 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
+     qemu_fdt_setprop(ms->fdt, "/chosen", "rng-seed",
+                      rng_seed, sizeof(rng_seed));
  
--    /*
--     * We extract tick_offset from tick_offset_vmstate by doing
--     * reverse math compared to pre_save() function.
--     */
--    delta = qemu_clock_get_ns(rtc_clock) -
--            qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    s->tick_offset = s->tick_offset_vmstate - delta;
-+    if (version_id < 3) {
-+        /*
-+         * Previous versions didn't migrate tick_offset directly. Instead, they
-+         * migrated tick_offset_vmstate, which is a recalculation based on
-+         * QEMU_CLOCK_VIRTUAL. We use tick_offset_vmstate when migrating from
-+         * older versions.
-+         */
-+        uint64_t delta = qemu_clock_get_ns(rtc_clock) -
-+                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        s->tick_offset = s->tick_offset_vmstate - delta;
-+    }
- 
-     goldfish_rtc_set_alarm(s);
- 
-@@ -239,8 +222,7 @@ static const MemoryRegionOps goldfish_rtc_ops[2] = {
- 
- static const VMStateDescription goldfish_rtc_vmstate = {
-     .name = TYPE_GOLDFISH_RTC,
--    .version_id = 2,
--    .pre_save = goldfish_rtc_pre_save,
-+    .version_id = 3,
-     .post_load = goldfish_rtc_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(tick_offset_vmstate, GoldfishRTCState),
-@@ -249,6 +231,7 @@ static const VMStateDescription goldfish_rtc_vmstate = {
-         VMSTATE_UINT32(irq_pending, GoldfishRTCState),
-         VMSTATE_UINT32(irq_enabled, GoldfishRTCState),
-         VMSTATE_UINT32(time_high, GoldfishRTCState),
-+        VMSTATE_UINT64_V(tick_offset, GoldfishRTCState, 3),
-         VMSTATE_END_OF_LIST()
-     }
- };
++    qemu_fdt_add_subnode(ms->fdt, "/aliases");
++
+     create_fdt_flash(s, memmap);
+     create_fdt_fw_cfg(s, memmap);
+     create_fdt_pmu(s);
 -- 
 2.48.1
 
