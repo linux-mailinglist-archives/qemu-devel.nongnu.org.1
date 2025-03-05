@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B88A4F3E3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47247A4F3C5
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:32:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdWL-0004vm-Sj; Tue, 04 Mar 2025 20:26:02 -0500
+	id 1tpdWQ-00056U-9w; Tue, 04 Mar 2025 20:26:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUS-0002Fa-ON
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:11 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUY-0002Lo-Q1
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:12 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUR-0007BE-6f
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:04 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43bcad638efso10145755e9.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:24:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUW-0007CF-5v
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:09 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43bbb440520so31789515e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137841; x=1741742641; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137846; x=1741742646; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GWCkeTUZ1Bwoa+5rt2QUs52v09pE2by6BJ43I/9OHfA=;
- b=GCfUfAtIrzHLlH/2PKgYp41BYSS/VC+sMlt2aBoOgsv5WWw96+LLCa7e9Ey5oolEMG
- s0aUcNBFNw8pSGl9wJFFx1keMLTIcGuLEf6ENh6PPWkB3dNlru6cgfbMI1dyLzZUM238
- 07DAOX6RJfb7B8+YXeKIxuO1VpRsCn66njZ2S0++aBqLh8ShV3LbTlMOb/6VWcrCWFNq
- bAoapJgQND1xUoWCuubtXc6bTcvLD7Ks74v5MIQ/J1ABryAxKk/hp4xVNuMfwPITICYS
- wmPqS+LBmsYqie7HrzzfDhDFv2UPzeuSBNuibXq7NZM3/U3mG59F5S/307ewz+68Ye5G
- nVjg==
+ bh=zsw3hWIwysJpMOxIWVwDgeawOr5AGtB31cvISbXkIjI=;
+ b=gB4KeL70UwMnRFx/HECn5QdOBHUVajlYN85JrM9ATad4YwGRr2Lx96JJdiVPR8/WKH
+ wCKm9aN+BNZy2Wcxh4DeFteC0HILmPqBjxOCBbOzHexqP/Xqc7AkHNj97aEl+yBE5paX
+ bvakTqmql+nAxAbW7T7M4ronz3Rz1JLhiZENe0cnCdnhHdgupJxbNRTH6p5eEY1lcvDn
+ G2T+xZA9g2V33VT11RkdlA6p44YpcXHOVLXN7x6Au/BD15oiKQQf1HDJgIOu5YgOdM2X
+ m4g66MnLwIkM//PpngZsR0IxX/vuxNWNvJ/AFyzn/0hELOt3vPOg+6zNTtIC/whcRzML
+ POTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137841; x=1741742641;
+ d=1e100.net; s=20230601; t=1741137846; x=1741742646;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GWCkeTUZ1Bwoa+5rt2QUs52v09pE2by6BJ43I/9OHfA=;
- b=TCVDQI1a+T8X8laRZ8RvMShF6DVwZSjU4O7YRxyQv55o+wuBq4McljzZVCekcBVJOA
- d0AquUTBJVrpg+wt6DTZDnafFQNfXqzjjXwGPIqhDoaxPyXNBgbNzrIk+vpSGQ25RGRK
- 7g2nCgfWG9LxOB5n/2+ppQIm53362DP0Iz0bu5Kgav+3krwvbakQ3hwOkKBwT2NkxvCv
- Wugesf7IFGJ0dC8ylqTBpQ/DHBWJ9fMmPKT/pm16I2AJ07FfZALoeJHk6ENQyoNo3Pel
- a1MXuyNTTOv8Mlev4lbXC3QWMhDlaFWokSEguKPe3TMJTv9MX2/ZLLIDQ+RVo0ibCJHY
- 5/gw==
-X-Gm-Message-State: AOJu0YxzrrbPjijQUBZZThhAMoqf0HRqRI3G68uEVh/sgZTNBl4JrBuO
- KRgddAKO3WQPssOZt5t0i6r6AhoQDHaIq4Nkmm/ziJHu1RmneKo45CuyJ8foyOhd/3sZFsGRJVD
- cC50=
-X-Gm-Gg: ASbGncveFHx2qsJfrJDinjwwFaQyOfd+o4CaBlWbEZL7Lf3xbTfWizCVoa/EdTCKdFn
- ek7yM2bsdoX+2eIfOSSB4BlMb/PAhbp4rvItfJhSZK9SMa83Nrh0lx3o01TwGoaFgy+XeQDi+IF
- qI7gB5B/drA0qLNikaB0MSA3AfpJZu3Zc763x8AI+7wQ6FGPzPU/swD4P+JsZbwY32KdUtWDXTf
- t9k6GErlSgvEWRmLAD4ktqAWad6Z9fDNpEzSyXE5BjOPn0R2ofBlrWLTXBhX8OJV38WJ/TWwxAQ
- rtmMEfuphrp8M26i9J6Xhcf2OjdgB9M6BbQGKNksTGTWqB/Yb+o5cVj6H3x91poKYWjExflaEfH
- ZIDjcHdfMzPWTJ54I71E=
-X-Google-Smtp-Source: AGHT+IEDnbjMa1qZO+TqVDNEIcP6ZL46N87m9w0qmJfAaCjm2r5QnBMcwlcnE+z00mQf2jHlHbIhzA==
-X-Received: by 2002:a05:600c:4ed2:b0:439:a5e6:73ff with SMTP id
- 5b1f17b1804b1-43bd29d8441mr6558595e9.17.1741137840978; 
- Tue, 04 Mar 2025 17:24:00 -0800 (PST)
+ bh=zsw3hWIwysJpMOxIWVwDgeawOr5AGtB31cvISbXkIjI=;
+ b=Y0lPJyl35H7EPINLzHLPMsczGpyG2pA0zVCGZFt2Fc1G1RYveQXfgfK3UyA1VR9eZW
+ bCoJcRnGbnTcEcU+JLfi35xVMIfxNq9IXmtb0FmdLwVYBiTzNz8RQjFzA3iARyYdTgVp
+ DESp7LoQP65Kj1+BdkaWgZ0Qa5Vb8vLUZf/jq4hTeFG0Fzrfy1XxhAG4hXUuWtK0aj2j
+ pJvZ49buDmVrwfhIBXk2W3gKs4YPSuRqWu7HaFpfarWTx4s5+V1+nAyIzFcEXHbRwi6b
+ buvJtsT8dGbeNocnTYEtCGWwzhiCDaLst+aDqf9Imcb1VindG1cXSvGLftsyalYqhkcb
+ RvLA==
+X-Gm-Message-State: AOJu0YwRaXXWAowf3kNskItwY8s2Bq9vqbqbYEPFCYGhRVyrO8vVQMI6
+ GdxRP+gC1y4XbwXhGZTDpVHzIzg++roBVK0Tj33nbsLW8rhX2pMrMUAwP1g45QTaMtul1DlrntL
+ EfOM=
+X-Gm-Gg: ASbGncv4pOqHbx2BGgyDLvVJPKqgf9sVDPLE0/+Wa4Yuobw1SgsXkl0F7+gFHZr69yv
+ qx3yuJITx/sHxAoqvxpan6/utXnWUNBIkX8SVQ++N4oBwG2Mn8Ea1ZuWZbc4lA5iy0peJU7jP0m
+ A+SJ8TOO1abAFGKOoHlGZ069a/HWFeXqgO0Vx3s37IafIML4Xxg4Mri3TbRXok/bILMaoQCjIwn
+ 9FZ60o1KwTRy4WZhw/zkE+MHgqKu0imgyMdbvEeecxZEEtOK+tgxzOL+MVkQgVyFUjisfmls8/N
+ D0hR7pkkiQU3Hcd5QinUfHdyRY0qzj2t2+DHoCiE2nmRuHkJfq/+V90qopLNUs/RNt64mFrSOdB
+ pNf+lJXlmEwt9zDXYY20=
+X-Google-Smtp-Source: AGHT+IG9ZmacBlKb5ZVQcmDUs9qj5tagOwc/FyygnJ6KABY3skoFkrFA0rNRxJS1t2tQYkQMx+bXsw==
+X-Received: by 2002:a7b:ce94:0:b0:43b:cf9c:700c with SMTP id
+ 5b1f17b1804b1-43bd29847ffmr8044605e9.16.1741137846353; 
+ Tue, 04 Mar 2025 17:24:06 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42e6bcfsm1952175e9.32.2025.03.04.17.23.59
+ 5b1f17b1804b1-43bd42c8050sm1989855e9.21.2025.03.04.17.24.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:24:00 -0800 (PST)
+ Tue, 04 Mar 2025 17:24:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Luc Michel <luc.michel@amd.com>, Thomas Huth <huth@tuxfamily.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 25/41] hw/char/mcf_uart: Use FIFO_DEPTH definition instead of
- magic values
-Date: Wed,  5 Mar 2025 02:21:40 +0100
-Message-ID: <20250305012157.96463-26-philmd@linaro.org>
+Subject: [PULL 26/41] hw/char/mcf_uart: Really use RX FIFO depth
+Date: Wed,  5 Mar 2025 02:21:41 +0100
+Message-ID: <20250305012157.96463-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,58 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Defines FIFO_DEPTH and use it, fixing coding style.
+While we model a 4-elements RX FIFO since the MCF UART model
+was introduced in commit 20dcee94833 ("MCF5208 emulation"),
+we only read 1 char at a time!
+
+Have the IOCanReadHandler handler return how many elements are
+available, and use that in the IOReadHandler handler.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
+Tested-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250220092903.3726-8-philmd@linaro.org>
+Message-Id: <20250220092903.3726-9-philmd@linaro.org>
 ---
- hw/char/mcf_uart.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ hw/char/mcf_uart.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/hw/char/mcf_uart.c b/hw/char/mcf_uart.c
-index 980a12fcb7d..95f269ee9b7 100644
+index 95f269ee9b7..529c26be93a 100644
 --- a/hw/char/mcf_uart.c
 +++ b/hw/char/mcf_uart.c
-@@ -17,6 +17,8 @@
- #include "chardev/char-fe.h"
- #include "qom/object.h"
- 
-+#define FIFO_DEPTH 4
-+
- struct mcf_uart_state {
-     SysBusDevice parent_obj;
- 
-@@ -27,7 +29,7 @@ struct mcf_uart_state {
-     uint8_t imr;
-     uint8_t bg1;
-     uint8_t bg2;
--    uint8_t fifo[4];
-+    uint8_t fifo[FIFO_DEPTH];
-     uint8_t tb;
-     int current_mr;
-     int fifo_len;
-@@ -247,14 +249,16 @@ static void mcf_uart_reset(DeviceState *dev)
- static void mcf_uart_push_byte(mcf_uart_state *s, uint8_t data)
+@@ -281,14 +281,16 @@ static int mcf_uart_can_receive(void *opaque)
  {
-     /* Break events overwrite the last byte if the fifo is full.  */
--    if (s->fifo_len == 4)
-+    if (s->fifo_len == FIFO_DEPTH) {
-         s->fifo_len--;
-+    }
+     mcf_uart_state *s = (mcf_uart_state *)opaque;
  
-     s->fifo[s->fifo_len] = data;
-     s->fifo_len++;
-     s->sr |= MCF_UART_RxRDY;
--    if (s->fifo_len == 4)
-+    if (s->fifo_len == FIFO_DEPTH) {
-         s->sr |= MCF_UART_FFULL;
-+    }
- 
-     mcf_uart_update(s);
+-    return s->rx_enabled && (s->sr & MCF_UART_FFULL) == 0;
++    return s->rx_enabled ? FIFO_DEPTH - s->fifo_len : 0;
  }
+ 
+ static void mcf_uart_receive(void *opaque, const uint8_t *buf, int size)
+ {
+     mcf_uart_state *s = (mcf_uart_state *)opaque;
+ 
+-    mcf_uart_push_byte(s, buf[0]);
++    for (int i = 0; i < size; i++) {
++        mcf_uart_push_byte(s, buf[i]);
++    }
+ }
+ 
+ static const MemoryRegionOps mcf_uart_ops = {
 -- 
 2.47.1
 
