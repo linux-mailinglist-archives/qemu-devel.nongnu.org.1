@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01C2A503A2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2473BA503BA
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:43:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpqrb-0000lU-Gu; Wed, 05 Mar 2025 10:40:51 -0500
+	id 1tpqrm-0000qF-3C; Wed, 05 Mar 2025 10:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrU-0000de-1c
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:45 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrX-0000gU-KX
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:47 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrR-0002bt-UR
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:43 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-390e3b3d432so4644332f8f.2
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrV-0002cR-P4
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:47 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-438a39e659cso47730345e9.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741189240; x=1741794040; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741189243; x=1741794043; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6yTWsYV7yfcZRB8fKtcjLgcDtoMSuGOlcV0M3TYNzGI=;
- b=UzoVL2nakmRGmzJfmGz7PMGX+0Wve3Dehhz5M9YBUVSscGVZdx6/gRbWOtpTusDIeI
- oi1RkVJVq9Xqo36CFpFjBTkw+LB8dpF8UDHNzm+crOwZ7qDq/Dvxc1BVoIggONOqoEpN
- tTa47bqh5yJ5TIYd6haTXT7WXK28HIgl+ORE0eQPunJKSWEAJG+zSvyg2Dh5q3IEz+TY
- cAoBgTHlIJ8BviFw3TjQSGPr+1ZD3L2xKKSC1b48Xb9m9qMbaChFPALTMPbMxbK6YNJ8
- mdj5uyUG0gRgvfyWZzd+1YdWt1vhLwwGssYlwuqze9nizdz3kJb0spK8BBfBJdzTGv2D
- m0UA==
+ bh=zCLXy/6Jr/0dTWXwfCWT0ZtMvCFd8v9iNYIKh2Xds74=;
+ b=LtHdewnI0eoML0y3ophnI/8JLHRmlU2u4RiXzulKM7Ub9tKUgPGhuNDk+Y5m5lHWWI
+ WKBqZgGkj+YQ+ynLkwUCdKmfnhMRMlWa1bm7uPxz80AjZbYKYp73l4HGZf0PQnS/s+kw
+ pWxCbYaaw3ee2SQZA1Txw1fd9R6t271IWQDznALzY422SuX6sFJQKi+Vazz3913yMjEQ
+ X1C2HA3pJYpEdAWYJVHvmyNJ7GIRjwOzUkCmLSJMyAJ51KC44WrOYDCYYCc1Edy91Hzr
+ d91iU5GzO5t4nCp4HzBoeGaqZe5nP1th8cchz505wA+HahkLhRpZ1+0eGU91tEUqKtmc
+ bJsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741189240; x=1741794040;
+ d=1e100.net; s=20230601; t=1741189243; x=1741794043;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6yTWsYV7yfcZRB8fKtcjLgcDtoMSuGOlcV0M3TYNzGI=;
- b=RH6PQhD1Q9lmHZ7Hn9fdCNn4I/mVyeo2KjBikHEJXM9MPC6yyctF++V8eV56sde/S5
- DBNigjQIiY+dtnOZM9YtY694y8Vlb2Nkyf56Sb0oAvXdvr8tvIBJ8k2eEvzKVH/DUEZO
- DjhiIdn9a7TSK1rN912n4EzTGaq8kk0DNoApv4O1oKefCGudpdtZElc3qZEUB5A2QgSe
- r2usCMvX8SrdvSx6MgwAchjjcbxesxs11YMPRu8XNQ+2Ajo50MHFT9ivPpTkqdlo5mF2
- dbl2wvAIn5yUEYUMvNOkg5j/3ziZW/gSHiszX4EEC3kUps5H5djkF9Mrd2aVsqJ8mhX8
- /4kg==
-X-Gm-Message-State: AOJu0Yxw7YxIa8lEAlDCyKtJ1kcoYAgT2I1L3EdH8Tx5KbfNUcVAR11i
- Z97zUt+k1+185WJ2i5YGvr78aORlOlWsIIPwJB8VPRo5EW9mZo/XBSxTmFN2vK/EaUW8L85cVCR
- t630=
-X-Gm-Gg: ASbGncs30mW2wO3QCsTCvF42pbGjtRqQzyJwCxGhTRtO7vQn5sa4UznZibtl8puFWBN
- qhoH8xsHEvSr1qs37N4gOQa3098DISvjL7f1iSYMnuk4TcArH2v5Gy9wmSr0DXnreui5LWwGR2i
- 311+I9xCgteswqEJKwQlP4Z4SfoypOuDgKEbUv/fSKKmby79EIJaVu5WGMkAdsw9UXjiMFbAfbV
- 7YkVF2V4fUGB/m2UUyH17NuoSAdaQDL9OCZ9zsDP335NMkEhT824NG4HKgJ2b6OnkOZ21qewXjY
- ysdur9DVws1Intn4/x6hA10Gg5Ox51YZikBn6m3agGQzcZcGtbFwGU3kuTQCJSoNoIecTu3+cec
- nOYbwtEIghTI4YoAuBQU=
-X-Google-Smtp-Source: AGHT+IFOQhx56i9GhpkFWeMqO+r36ELBfvzHkZvTWBo5eoemy07OMx/V+xN1/4OZH2QfdKI9HmV6sQ==
-X-Received: by 2002:a5d:64e9:0:b0:391:2192:ccd6 with SMTP id
- ffacd0b85a97d-3912192cd5fmr2461486f8f.39.1741189238864; 
- Wed, 05 Mar 2025 07:40:38 -0800 (PST)
+ bh=zCLXy/6Jr/0dTWXwfCWT0ZtMvCFd8v9iNYIKh2Xds74=;
+ b=Tb7iDtH7wf5CcnpE4ASRlOXXsiEmtoJegWmPshC2+wDU2sN2qTQJxjZsFzdH2RDJMa
+ Qe14kQLFwNvdSItguYu3TuT9LsYxQIIEspDhqu+zPmFD7/EicMZ/ft1XVjOn4wI0hC0p
+ 8eMtzgu5NFmj4TkTxehWpb3gAIkrcM6/LZsz9/q/IxBS9ULKD8imbaiKd5hXjrRtRsIF
+ U4g3JYFaz8wUgAxkN5GpfpZcDxZXu0KldssUCF0s5tCoGFulG56n7xFIzI6w3Et334XE
+ Le5ATC6YyODk5QxAmvcT0LdGSXo1i0uiSif42UMwMpzM+lw6KwNnbFochHnxy1Qexu8X
+ swOw==
+X-Gm-Message-State: AOJu0YwWWrvgtFuedPTTF8ywpFcjIYxmL0TmxGoQkPDdj0iy9y0mUhUQ
+ fE4cZZj5IPlWoAMn0DfXc8dHoFy2cXKfaI41tykH3HNxVzeONvIi+rEsggDnPrKJBjmoM0Pvp/e
+ U+nY=
+X-Gm-Gg: ASbGncuOppiHLDMbGdkv/VOZJAvGGPtqE8XLDjECq6yPQ6hKyBLadO1/8Qw3ouVLg47
+ vyGkyxiEkGvgcUt5giWReSkcy1PVi9GSg+IzdsKLtzM53SeqOJhQGCahTrh3C/UW0CTDyfWnbu2
+ C0jBtxVV4y+CpdfbM4Ym2aTmH5kxCfmxXZK/oUNIT/3BgYGTk0pbtApbFh/fHefIY3dw03F4OUF
+ QqHo1lDpEHL+ZMiSOfTA0/hVtwEtmYKK+7xxzSKySanCG1WxRekzQjOdRi7P6oUzqvu+rtPPBsL
+ 19+UVJSYDTT+gBwHfzmqldD5EAopaSHcIAL+cE0+fKm0lbbcZCHYAFk58tIXB798Vvz5x0xB+aJ
+ OTzgz6pPPrQq9p/xW34A=
+X-Google-Smtp-Source: AGHT+IHEiBphRCdocbVqnHQgT/UnY6shrIcCANlIoob8I0XmTJJCBWeV1E92qmelqF6Ve7FsQLrpmw==
+X-Received: by 2002:a05:600c:4f06:b0:439:9f42:8652 with SMTP id
+ 5b1f17b1804b1-43bd296df39mr27311485e9.17.1741189243554; 
+ Wed, 05 Mar 2025 07:40:43 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e485d6dbsm21356258f8f.82.2025.03.05.07.40.37
+ ffacd0b85a97d-39118753933sm5479088f8f.48.2025.03.05.07.40.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Mar 2025 07:40:38 -0800 (PST)
+ Wed, 05 Mar 2025 07:40:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -70,18 +70,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 14/18] hw/xtensa/xtfpga: Check endianness via
+Subject: [RFC PATCH 15/18] hw/microblaze/petalogix_ml605_mmu: Use
  legacy_binary_is_big_endian()
-Date: Wed,  5 Mar 2025 16:39:24 +0100
-Message-ID: <20250305153929.43687-15-philmd@linaro.org>
+Date: Wed,  5 Mar 2025 16:39:25 +0100
+Message-ID: <20250305153929.43687-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305153929.43687-1-philmd@linaro.org>
 References: <20250305153929.43687-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,18 +104,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For legacy binaries, legacy_binary_is_big_endian() is
-equivalent of the compile time TARGET_BIG_ENDIAN definition.
+For legacy binaries, legacy_binary_is_big_endian() is equivalent
+of the compile time TARGET_BIG_ENDIAN definition.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/xtensa/xtfpga.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ hw/microblaze/petalogix_ml605_mmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-index 3f3677f1c9a..7f0a849b795 100644
---- a/hw/xtensa/xtfpga.c
-+++ b/hw/xtensa/xtfpga.c
+diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
+index 21ad215e442..f324a863772 100644
+--- a/hw/microblaze/petalogix_ml605_mmu.c
++++ b/hw/microblaze/petalogix_ml605_mmu.c
 @@ -27,6 +27,7 @@
  
  #include "qemu/osdep.h"
@@ -123,46 +123,17 @@ index 3f3677f1c9a..7f0a849b795 100644
 +#include "qemu/legacy_binary_info.h"
  #include "qapi/error.h"
  #include "cpu.h"
- #include "system/system.h"
-@@ -238,6 +239,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
-     uint32_t freq = 10000000;
-     int n;
-     unsigned int smp_cpus = machine->smp.cpus;
-+    bool is_big_endian = legacy_binary_is_big_endian();
+ #include "hw/sysbus.h"
+@@ -80,8 +81,7 @@ petalogix_ml605_init(MachineState *machine)
+     MemoryRegion *phys_lmb_bram = g_new(MemoryRegion, 1);
+     MemoryRegion *phys_ram = g_new(MemoryRegion, 1);
+     qemu_irq irq[32];
+-    EndianMode endianness = TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG
+-                                              : ENDIAN_MODE_LITTLE;
++    EndianMode endianness = legacy_binary_endianness();
  
-     if (smp_cpus > 1) {
-         mx_pic = xtensa_mx_pic_init(31);
-@@ -311,7 +313,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
- 
-     dinfo = drive_get(IF_PFLASH, 0, 0);
-     if (dinfo) {
--        flash = xtfpga_flash_init(system_io, board, dinfo, TARGET_BIG_ENDIAN);
-+        flash = xtfpga_flash_init(system_io, board, dinfo, is_big_endian);
-     }
- 
-     /* Use presence of kernel file name as 'boot from SRAM' switch. */
-@@ -399,7 +401,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
-         uint64_t elf_entry;
-         int success = load_elf(kernel_filename, NULL, translate_phys_addr, cpu,
-                                &elf_entry, NULL, NULL, NULL,
--                               TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
-+                               is_big_endian ? ELFDATA2MSB : ELFDATA2LSB,
-                                EM_XTENSA, 0, 0);
-         if (success > 0) {
-             entry_point = elf_entry;
-@@ -437,9 +439,9 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
-                 0x21, 0xfe, 0xff,       /* l32r a2, entry_a2 */
-                 0xa0, 0x00, 0x00,       /* jx   a0 */
-             };
--            const size_t boot_sz = TARGET_BIG_ENDIAN ? sizeof(boot_be)
--                                                     : sizeof(boot_le);
--            uint8_t *boot = TARGET_BIG_ENDIAN ? boot_be : boot_le;
-+            const size_t boot_sz = is_big_endian ? sizeof(boot_be)
-+                                                 : sizeof(boot_le);
-+            uint8_t *boot = is_big_endian ? boot_be : boot_le;
-             uint32_t entry_pc = tswap32(entry_point);
-             uint32_t entry_a2 = tswap32(tagptr);
- 
+     /* init CPUs */
+     cpu = MICROBLAZE_CPU(object_new(TYPE_MICROBLAZE_CPU));
 -- 
 2.47.1
 
