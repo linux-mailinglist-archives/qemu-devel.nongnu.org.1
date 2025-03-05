@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6609FA4F595
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2BEA4F5D0
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:54:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpfic-0005P7-Pl; Tue, 04 Mar 2025 22:46:50 -0500
+	id 1tpfiZ-0005O4-5f; Tue, 04 Mar 2025 22:46:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfiX-0005O0-77
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:46:45 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfiV-0005NU-1D
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:46:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfiV-00062Y-6f
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:46:44 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfiS-00061v-LQ
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:46:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741146402;
+ s=mimecast20190719; t=1741146398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MJ8i3B3IWUv9hwDYZ3ZSUdrZb/ZBpQUf3O+dp/jYjMw=;
- b=cvpcA9lN5l950s/7tWCGn1PuzPs1tWFn5HrQKUm6H0dvn9LmSDgT6nAXIWq5tIHzau6isX
- tFSGS8BSzxuoohkPN1Pwg1JMaqoqd+PvjOVQptLlpo/xDDD2HUpicsXEGe1RiWWoCXWdim
- fwwj62gw2V7G/gjbKhCzo2xPoEo6FNo=
+ bh=T6TqtdK3QHiRBZKdssAAdRdFK6e5Ug2kJUSKKEhUJck=;
+ b=hnCHjsmD3KwMJKygKlpYl74RTQ8wVL1wFlhgrVFm6heslnCRyyc+zPg5sT+deC6GIaz3mf
+ oAbrrt9Jx28yqsHarAyBJPEK/O3nzzHSxqBBquaGWWAT3v38nFK87hhXFKJTkwdrrHXL4k
+ 35gshWXp7XA8GC6q3Pb0cplnC4GRVkk=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-xeOJpzt0PyOGHsjD6QAQcA-1; Tue,
- 04 Mar 2025 22:46:34 -0500
-X-MC-Unique: xeOJpzt0PyOGHsjD6QAQcA-1
-X-Mimecast-MFC-AGG-ID: xeOJpzt0PyOGHsjD6QAQcA_1741146393
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-EPb44TO7NkiK3dPlDAWejA-1; Tue,
+ 04 Mar 2025 22:46:33 -0500
+X-MC-Unique: EPb44TO7NkiK3dPlDAWejA-1
+X-Mimecast-MFC-AGG-ID: EPb44TO7NkiK3dPlDAWejA_1741146390
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4D196193578F; Wed,  5 Mar 2025 03:46:27 +0000 (UTC)
+ id F2B7519039D0; Wed,  5 Mar 2025 03:46:29 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.45])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCFBB1956095; Wed,  5 Mar 2025 03:46:23 +0000 (UTC)
+ id 8D0A01955DDD; Wed,  5 Mar 2025 03:46:27 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
@@ -51,9 +51,10 @@ Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 03/57] docs/sphinx: create QAPI domain extension stub
-Date: Tue,  4 Mar 2025 22:45:12 -0500
-Message-ID: <20250305034610.960147-4-jsnow@redhat.com>
+Subject: [PATCH 04/57] docs/sphinx: add compat.py module and nested_parse
+ helper
+Date: Tue,  4 Mar 2025 22:45:13 -0500
+Message-ID: <20250305034610.960147-5-jsnow@redhat.com>
 In-Reply-To: <20250305034610.960147-1-jsnow@redhat.com>
 References: <20250305034610.960147-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -84,107 +85,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A Sphinx domain is a collection of directive and role extensions meant
-to facilitate the documentation of a specific language. For instance,
-Sphinx ships with "python" and "cpp" domains. This patch introduces a
-stub for the "qapi" language domain.
+Create a compat module that handles sphinx cross-version compatibility
+issues. For the inaugural function, add a nested_parse() helper that
+handles differences in line number tracking for nested directive body
+parsing.
 
-Please see https://www.sphinx-doc.org/en/master/usage/domains/index.html
-for more information.
-
-This stub doesn't really do anything yet, we'll get to it brick-by-brick
-in the forthcoming commits to keep the series breezy and the git history
-informative.
+Spoilers: there are more cross-version hacks to come throughout the
+series.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/conf.py               |  9 +++++-
- docs/sphinx/qapi_domain.py | 56 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
- create mode 100644 docs/sphinx/qapi_domain.py
+ docs/sphinx/compat.py | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 docs/sphinx/compat.py
 
-diff --git a/docs/conf.py b/docs/conf.py
-index 31bb9a37893..49d9de894c0 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -60,7 +60,14 @@
- # Add any Sphinx extension module names here, as strings. They can be
- # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
- # ones.
--extensions = ['kerneldoc', 'qmp_lexer', 'hxtool', 'depfile', 'qapidoc']
-+extensions = [
-+    'depfile',
-+    'hxtool',
-+    'kerneldoc',
-+    'qapi_domain',
-+    'qapidoc',
-+    'qmp_lexer',
-+]
- 
- if sphinx.version_info[:3] > (4, 0, 0):
-     tags.add('sphinx4')
-diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+diff --git a/docs/sphinx/compat.py b/docs/sphinx/compat.py
 new file mode 100644
-index 00000000000..a1983d94440
+index 00000000000..792aca10e39
 --- /dev/null
-+++ b/docs/sphinx/qapi_domain.py
-@@ -0,0 +1,56 @@
++++ b/docs/sphinx/compat.py
+@@ -0,0 +1,33 @@
 +"""
-+QAPI domain extension.
++Sphinx cross-version compatibility goop
 +"""
 +
-+from __future__ import annotations
++from docutils.nodes import Element
 +
-+from typing import (
-+    TYPE_CHECKING,
-+    AbstractSet,
-+    Any,
-+    Dict,
-+    Tuple,
-+)
-+
-+from sphinx.domains import Domain, ObjType
-+from sphinx.util import logging
++from sphinx.util.docutils import SphinxDirective, switch_source_input
++from sphinx.util.nodes import nested_parse_with_titles
 +
 +
-+if TYPE_CHECKING:
-+    from sphinx.application import Sphinx
++def nested_parse(directive: SphinxDirective, content_node: Element) -> None:
++    """
++    This helper preserves error parsing context across sphinx versions.
++    """
 +
-+logger = logging.getLogger(__name__)
++    # necessary so that the child nodes get the right source/line set
++    content_node.document = directive.state.document
 +
-+
-+class QAPIDomain(Domain):
-+    """QAPI language domain."""
-+
-+    name = "qapi"
-+    label = "QAPI"
-+
-+    object_types: Dict[str, ObjType] = {}
-+    directives = {}
-+    roles = {}
-+    initial_data: Dict[str, Dict[str, Tuple[Any]]] = {}
-+    indices = []
-+
-+    def merge_domaindata(
-+        self, docnames: AbstractSet[str], otherdata: Dict[str, Any]
-+    ) -> None:
-+        pass
-+
-+    def resolve_any_xref(self, *args: Any, **kwargs: Any) -> Any:
-+        # pylint: disable=unused-argument
-+        return []
-+
-+
-+def setup(app: Sphinx) -> Dict[str, Any]:
-+    app.setup_extension("sphinx.directives")
-+    app.add_domain(QAPIDomain)
-+
-+    return {
-+        "version": "1.0",
-+        "env_version": 1,
-+        "parallel_read_safe": True,
-+        "parallel_write_safe": True,
-+    }
++    try:
++        # Modern sphinx (6.2.0+) supports proper offsetting for
++        # nested parse error context management
++        nested_parse_with_titles(
++            directive.state,
++            directive.content,
++            content_node,
++            content_offset=directive.content_offset,
++        )
++    except TypeError:
++        # No content_offset argument. Fall back to SSI method.
++        with switch_source_input(directive.state, directive.content):
++            nested_parse_with_titles(
++                directive.state, directive.content, content_node
++            )
 -- 
 2.48.1
 
