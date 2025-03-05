@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D25A4F2FD
+	by mail.lfdr.de (Postfix) with ESMTPS id B91AAA4F2FB
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 01:53:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpd00-0001yA-9n; Tue, 04 Mar 2025 19:52:36 -0500
+	id 1tpd02-0001yX-Up; Tue, 04 Mar 2025 19:52:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpczx-0001xc-8A
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:52:33 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpd01-0001yH-08
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:52:37 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpczv-0007Q9-55
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:52:32 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43bc38bb6baso17009465e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 16:52:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpczz-0007R8-5a
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:52:36 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4394a0c65fcso66759665e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 16:52:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741135948; x=1741740748; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9cx41270KwV2RsvJaXRPp+qFCSNUAqq2qOHjSJJvwi0=;
- b=eGf+TXfeFZukIKX+A4fivp0kJ7VV0DpXt/v33sg47rwNjha9naaEvS3AbTVj0s31Mz
- 0EIrVIPbIyTyfkTSBgT/O9430imvX50kK4aqSU1Gq9ZqcYrAbUFLX2kSpPdWoHYtR1CS
- VaqDkM5DwqUVsO4UKoxKDs7+LUZPvFRofTOrfOqgn+Ydlzk+tgaWmochJ2lTdTvkP5jx
- QT7KO3XkOOW7hogwjlfcZw6cacQsMbUNiL/lia6s2G74D/ag5rPjSja3Wi6ex50DTQLE
- 0IRZ2LDjsTV1dUMbeiHdWog6479m7CTgrqwOmsPIeLRndJFUmBu91bwlySgxr3kbNJ2y
- /bRQ==
+ d=linaro.org; s=google; t=1741135953; x=1741740753; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lk9TI+rSZkzKv7Njal1Wbs7A5Y+36v2tj7kLtziVEzo=;
+ b=ipNReLJRXOHXo+sPkQyGh2PL2R5IRoL8f9X+40CuLYGSMVZ8sGcpAzscO3OlB3lyxZ
+ 6gH9naTiheXA4UariubfBippcI2RbfVY/Hk1b2SB7rJmJPAnzfsG8xrXRPUjHUXY6QKf
+ JiIbq7/qWy06hPRRfnmf5frQrBhIFoyB9hFU6WaAh3uLuwPtoUcL+fVfrpbBuR6rwhQQ
+ fbvppcBlyECVEiIMphAc60pCbACb5HJQTZplfWAwSD+7PsKQalubTEJziNSJqKv/C5V3
+ O8fjL81Y2KR2dASpy3es8oM0BXzhVenGmzB4P4oEU14FxJ618c804jeAikzc9UZhO1fR
+ k5aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741135948; x=1741740748;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9cx41270KwV2RsvJaXRPp+qFCSNUAqq2qOHjSJJvwi0=;
- b=jdfOesi+vQny7ay0l+nU0AgoHqi9iwAfrbh/YjENdUqaRzD2NSHpW7vxV/Hs2f7S5B
- hf2TPEhYeBeg6zx8SnH7Xa+m7gKozGtkN2PsdGn8zo9gVNDaOKVYPv6nScgPogSwhcoR
- OJx5xx6t408ykgMgNmdo0ckHmp5CXkEQTCpnQ77yB2v7UhrycJasDQ07FMrrj9qAnFDq
- QiBcelv0fox00S/h5U/Y8fBVw+wjR5L5mx8gx2EsYF3RKl4XMQ1z7JVmbQcfLYKZMgn8
- SWR9Ns+q1QNaRYYu7qWUhwrBbiR0yC0ZxxNwhudC3tekwdLLtbvVF0C4Hp8p/L8FIiqf
- wK2Q==
-X-Gm-Message-State: AOJu0YwM1UsLj4ffiuTM2oUyTfeTSfKt/xql2azAIEUtzykRGrbwnZiu
- FY9EA8ARIhmtmSNUL7B2Tkbvr+bTobykvD9v4B/iWLOshkX6xtxeimts7Jrm3IoqxeHGvNwFXMp
- uzls=
-X-Gm-Gg: ASbGncsyVD8SsVn7fUZI2V3251BrxN94wv4dtZURkb11U4nVAp/wbNENkUkShaTrZoM
- 6zX1XtClxKuf+nYZcPfoh0FJen36dOyU8y7Tnm0ZUEIZLQgRKpkIkGr1tqq35v1YebTQJN2YbkW
- kUOhM8umissTjqiBH1SmFYGJ/qdQDvyPhc8CMuOZyzXEO68AQ1BDlpYyrti5LNQrqIQ0YeZUcnS
- 55QnHM6ObQzVivgIs+WAC8wa6j/C/vkN9+ON4T3OtIZzXFn/3lQJ18dADjj/nSH2RyjgGesFhJS
- V1XtaWTG/KirCaV62iFc+M4AH2hldo91RyucilHNvVLVK31hOUr+uX2OmBMD6pgRHTinKOsD+Uo
- IoUTapRsQX91ER4Skudw=
-X-Google-Smtp-Source: AGHT+IEo720edrp++aFGTVzlJSAcmqBI9AGhStP/JHiBmJ8dEFczj6L0vPHQ/Po5qYhYfWg+4aOriw==
-X-Received: by 2002:a05:6000:1565:b0:390:f6aa:4e72 with SMTP id
- ffacd0b85a97d-3911f740127mr652893f8f.18.1741135948381; 
- Tue, 04 Mar 2025 16:52:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1741135953; x=1741740753;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lk9TI+rSZkzKv7Njal1Wbs7A5Y+36v2tj7kLtziVEzo=;
+ b=IWKt6Myqkkdh5yOhDbBGz1XUP9slqNeypBvjN2XqChTAib+FIil97LYAETKKiiaxzn
+ iwDRkoPdcXTutT3M1P6ThFc+zooW50MRKxXkFMmYBCvKbtJ43QYUIvkUi7avRwRXzneQ
+ RnRYGo8n4jN9XzgTulVTorNNY1M+qZEnXVHhkH5JpY+pWsGabKg41olVwFsSFln3F3dc
+ hs6UbKzPEv5pnoEzqotwuQKDJePU1FfLUZD3ky+Wm3ENQnStVB0ATVqWKL5ttzci9/cD
+ LoiFOutfSTkb9prx0oKTFT+SlY4rVRtskaXGItHx06vrHnEFXocLskokzKi6jUFUsUrV
+ O18w==
+X-Gm-Message-State: AOJu0YyM41Cxy/iumxVkHpscy3fGf4fG1wGK0H394YPgkLtN57dA1u66
+ DfiZV0+HV3Z4a+GjTg+ccPVxceM78zsP9q6NrD3r4vdjfmmN+cugfFvA7gFf8SbIDCVPgqsXHcy
+ YNGc=
+X-Gm-Gg: ASbGncv4+pQccMKCRfVsqKc5Ucs+dNQ1D7niFWmvV5aNf08Q7917NgdHcxgkS03qLVD
+ Mf6WQAUylVOFrXJp47Nnal4+CB1Diz6QhB1AjnbRDrJ+WWqubkJFGJ2pw/EsESmHVBCywKEL11q
+ gYa76MvHj2v/YME07nR5rB9KyO/m9L2cvCQslpCgvVYE0//QBg1nRBYlPVqcwN4OUN4bBRmMAry
+ hkCgMuH0ocFYTiAdTYFMVMXX/5aNi1peRO7j5KHZ11JOuq4jnzPuaqnlC0zfDdo/XSpv/LNNpVQ
+ y7nqDED9VCywINmVWgEZb8hwj/sTrFveVg+icv3hUGzo30ls4LhNKvbB/sN7wqPZm8Qie/0Wod6
+ Cx0s0M+uMYFjc/fPuCFY=
+X-Google-Smtp-Source: AGHT+IEAp+T7jbKyE/IL9MPtQR2WZJ7USejrJCM9Stl3cHW7orNQM9hsROUx2jxG6xIf/nWUxgL1wA==
+X-Received: by 2002:a05:600c:5493:b0:439:9106:c09 with SMTP id
+ 5b1f17b1804b1-43bd29d0497mr5548175e9.26.1741135953104; 
+ Tue, 04 Mar 2025 16:52:33 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e47b7a73sm19632623f8f.50.2025.03.04.16.52.26
+ 5b1f17b1804b1-43bcc13b23asm21499725e9.1.2025.03.04.16.52.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 16:52:27 -0800 (PST)
+ Tue, 04 Mar 2025 16:52:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -69,15 +70,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 00/11] qemu: Remove TARGET_NAME definition
-Date: Wed,  5 Mar 2025 01:52:14 +0100
-Message-ID: <20250305005225.95051-1-philmd@linaro.org>
+Subject: [RFC PATCH 01/11] system: Extract target-specific globals to their
+ own compilation unit
+Date: Wed,  5 Mar 2025 01:52:15 +0100
+Message-ID: <20250305005225.95051-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250305005225.95051-1-philmd@linaro.org>
+References: <20250305005225.95051-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,56 +104,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace all TARGET_NAME uses by target_name() runtime,
-then remove the definition and poison it.
+We shouldn't use target specific globals for machine properties.
+These ones could be desugarized, as explained in [*]. While
+certainly doable, not trivial nor my priority for now. Just move
+them to a different file to clarify they are *globals*, like the
+generic globals residing in system/globals.c.
 
-While is looks like another cleanup, it is a small step
-required for the single binary project.
+[*] https://lore.kernel.org/qemu-devel/e514d6db-781d-4afe-b057-9046c70044dc@redhat.com/
 
-Alex Bennée (1):
-  plugins/loader: populate target_name with target_name()
-
-Philippe Mathieu-Daudé (10):
-  system: Extract target-specific globals to their own compilation unit
-  system: Open-code qemu_init_arch_modules() using target_name()
-  system: Introduce QemuArchBit enum
-  system: Replace arch_type global by qemu_arch_available() helper
-  include: Expose QemuArchBit enum to user emulation
-  include: Declare target_name() in common "qemu/arch_info.h"
-  tests/qtest: Replace TARGET_NAME -> target_name()
-  user: Replace TARGET_NAME -> target_name()
-  qemu: Introduce qemu_arch_name() helper
-  qemu: Remove C definitions of TARGET_NAME
-
- meson.build                     | 10 +++--
- include/exec/poison.h           |  1 -
- include/hw/core/cpu.h           |  2 -
- include/qemu/arch_info.h        | 55 +++++++++++++++++++++++++++
- include/qemu/osdep.h            |  2 +
- include/system/arch_init.h      | 32 ----------------
- arch_info-target.c              | 67 +++++++++++++++++++++++++++++++++
- bsd-user/main.c                 |  9 +++--
- cpu-target.c                    |  5 ---
- hw/core/machine-qmp-cmds.c      |  1 +
- hw/scsi/scsi-disk.c             |  4 +-
- linux-user/main.c               | 12 +++---
- plugins/loader.c                |  3 +-
- system/arch_init.c              | 50 ------------------------
- system/globals-target.c         | 24 ++++++++++++
- system/qdev-monitor.c           |  6 +--
- system/vl.c                     | 14 ++++---
- tests/qtest/fuzz/fuzz.c         |  5 +--
- tests/qtest/fuzz/generic_fuzz.c |  4 +-
- tests/qtest/fuzz/i440fx_fuzz.c  |  5 ++-
- tests/qtest/fuzz/qos_fuzz.c     |  5 ++-
- system/meson.build              |  2 +-
- 22 files changed, 195 insertions(+), 123 deletions(-)
- create mode 100644 include/qemu/arch_info.h
- delete mode 100644 include/system/arch_init.h
- create mode 100644 arch_info-target.c
- delete mode 100644 system/arch_init.c
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ system/arch_init.c      | 14 --------------
+ system/globals-target.c | 24 ++++++++++++++++++++++++
+ system/meson.build      |  1 +
+ 3 files changed, 25 insertions(+), 14 deletions(-)
  create mode 100644 system/globals-target.c
 
+diff --git a/system/arch_init.c b/system/arch_init.c
+index d2c32f84887..ea0842b7410 100644
+--- a/system/arch_init.c
++++ b/system/arch_init.c
+@@ -25,20 +25,6 @@
+ #include "qemu/module.h"
+ #include "system/arch_init.h"
+ 
+-#ifdef TARGET_SPARC
+-int graphic_width = 1024;
+-int graphic_height = 768;
+-int graphic_depth = 8;
+-#elif defined(TARGET_M68K)
+-int graphic_width = 800;
+-int graphic_height = 600;
+-int graphic_depth = 8;
+-#else
+-int graphic_width = 800;
+-int graphic_height = 600;
+-int graphic_depth = 32;
+-#endif
+-
+ const uint32_t arch_type = QEMU_ARCH;
+ 
+ void qemu_init_arch_modules(void)
+diff --git a/system/globals-target.c b/system/globals-target.c
+new file mode 100644
+index 00000000000..989720591e7
+--- /dev/null
++++ b/system/globals-target.c
+@@ -0,0 +1,24 @@
++/*
++ * Global variables that should not exist (target specific)
++ *
++ * Copyright (c) 2003-2008 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: MIT
++ */
++
++#include "qemu/osdep.h"
++#include "system/system.h"
++
++#ifdef TARGET_SPARC
++int graphic_width = 1024;
++int graphic_height = 768;
++int graphic_depth = 8;
++#elif defined(TARGET_M68K)
++int graphic_width = 800;
++int graphic_height = 600;
++int graphic_depth = 8;
++#else
++int graphic_width = 800;
++int graphic_height = 600;
++int graphic_depth = 32;
++#endif
+diff --git a/system/meson.build b/system/meson.build
+index 4952f4b2c7d..181195410fb 100644
+--- a/system/meson.build
++++ b/system/meson.build
+@@ -1,6 +1,7 @@
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
+   'arch_init.c',
+   'ioport.c',
++  'globals-target.c',
+   'memory.c',
+   'physmem.c',
+   'watchpoint.c',
 -- 
 2.47.1
 
