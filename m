@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FFBA4F38A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6C8A4F398
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:26:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdUq-0002fO-LW; Tue, 04 Mar 2025 20:24:29 -0500
+	id 1tpdUe-00025k-H9; Tue, 04 Mar 2025 20:24:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTb-0000Cw-K5
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:14 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTg-0000MS-TV
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:18 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTZ-00072K-R2
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:11 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43bc0b8520cso18283125e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTe-00073A-G1
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:16 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38f406e9f80so4730969f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137788; x=1741742588; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137792; x=1741742592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aeQ4l2OYCtamyJNS0OGrQ+B6RH9yuhSbCm/kTfeIjFw=;
- b=sHuL/NuiwUnmUgf9vSd4+e4dcqwHfNMzS6WvPuHPb5ejnVnN5XQmK3zgpgdPCYza8w
- cb9GIEWiYDocMNlYsU+ioQOC+d6Dl7UYQ1iaukqBcXQKF9IrcVIlSaeOpxycxE3+SM4Z
- QQ4hlWDrCSirRxNxUaV9EBevQCmuBr7yKdVUtgD4I2eeGZ2KmZoLH0Xlw7spr7seMhRY
- cgV18xqB3rkgIrusf+zebm6DZKCtQ5eSjKCHYXdHnALbfucC1FtyfO8UOerluP82MQS3
- yjqY4nQco/DrhEjU6+PrczvfyQNDgJkSptbDCroEwQ2yWWVompncH+2d3GKw0VtXVS/p
- aLUw==
+ bh=q2IHjjPDhAlThC5AYDDLcqpca6XJWi3ImZ01k6AVQ1k=;
+ b=h727yHxxlFu8IHv/fSPHUjGxf7eBGh8Gghj+BPPI/vJVqyuVizsyrbIdrEqf8oiSfI
+ z8JzyUyl/FDcGrOMGfrW6FWo4xvgeDVt2qZEbZE4kNnrsSWDUKhKwC5fWPZV9u8zoPuO
+ R2dgEu7MxatphqIcqMssuSjhPy58hTiFX8LqKeVdwuVXEJWyUZb4c2MRmbYdL97by2xl
+ /lvJ2z6yh3tbVZwSjOeTE8A1mFyilVNs23rV6xGf9ziTjsLZ9EUWSNApa/HyTAjBIZ7f
+ WBhVLzlFT9T05/trv3I4fuGvs3HS2SEbvWEqp1k+IG8PrrawxN3Mia6vA0dZpMda8hcj
+ 5fkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137788; x=1741742588;
+ d=1e100.net; s=20230601; t=1741137792; x=1741742592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aeQ4l2OYCtamyJNS0OGrQ+B6RH9yuhSbCm/kTfeIjFw=;
- b=b/Xvp0kmG6AtPxP1L0Fy+5qBCtbAqbjiN4UbxUgNW+mJiJex3Bh7fPyaedGgp4wHhm
- UeniYTynt/scGhkaYVsf1+U3bdc1mSHHZrVBjQSNvaane3LzZIlF5ty2zP5qzegRt1S3
- cMgFqWJ3sni0U4cZc5r0VJ4rHwEkRNFZEd6SYhB56DBvXnmskSNHc8HpiSbn6w+gzUBR
- Udl34SW1YYSKn5gaG8TRfx1JMdIUTsosHxHgOH5oaUfIbLYRxp6seoilb8GtZfL43i/p
- fVXec9IHGcgONS5j/+ZlM/xqZOUofvVGtcm1H75oSy9qCSlj2rHS4Pk51cQZswxT8iUG
- 1aCQ==
-X-Gm-Message-State: AOJu0YzYLaGak6KNVWP+UidJ6xv1OPMaiImSSU4u5P6uTSL2pQAA0dZH
- aanws5d+ezeWlDVnRKIPbsNITeQafWAt6Ibj+FVS9GTNA8+JLiHFa+UvhOPX3IowVR8/OFKhQ84
- YDH8=
-X-Gm-Gg: ASbGnctUXlZfv7xtIRHgWxIBJx47+zklkWhedEVwx3X+5w20aSBTxtvNrH44TwvfxH3
- X8U335nKxNn270hG5SgHJVKCcXGDIUjxjahBN9Ao1EDjbUa3NMt0VgiVfYnEaqlX9ywen3pn/qp
- OAm93dB4pgz+uQ6LgFT/5VugR3beQePXiDjF4bbPlBzrySsZ77ywjTjo+/qjhugkty9p/FNevQM
- cEYom2BrDR7MkvvXQlTwOgXjb8oOvBUkCEvtEHBCoajW2Bwff0htaGfOnnv6oUj//UAEMhD69+J
- JbLqHGK57XojhHDFqPVlIVkekoNdua5GVsbxRWkyO5cTnjGxhobaiRwtsXM00ZkAvQqpzYAkppf
- P8f9D+aOSbLCb/N0wGis=
-X-Google-Smtp-Source: AGHT+IEz9bELYNHsjKK2F/BgmQWXnXhLASFYyS27hnCY1gOJJavUIwFuGaRJcYLARH10q7J9vflpNg==
-X-Received: by 2002:a05:6000:1448:b0:391:ab2:9e87 with SMTP id
- ffacd0b85a97d-3911f7264e3mr616606f8f.6.1741137787876; 
- Tue, 04 Mar 2025 17:23:07 -0800 (PST)
+ bh=q2IHjjPDhAlThC5AYDDLcqpca6XJWi3ImZ01k6AVQ1k=;
+ b=N1TIpaVOoExgCTrdiV7lO2iksjUhQptSN+PJih02DY1XC2gC48/An8ShA3RcKR2Ygy
+ MqzPwsMWm1THHazuvIkMx80x7x6MiTzlrGWIpD0KdzNq1R/TP0fv8ZrZjhCEoMJDroAe
+ vC4E/v3FiviJ0/9O2hiW30WkDnUHdkN4UOJdAz5BFD8tz/aJ1M6Exe8mNX6zgGnh1ukO
+ eNE89/w3QVC2ggHhf8n2tHjEZyt9MfRx8KjcYcnh2g84Eu/lVfwUJU0D+9ectlp3nfIw
+ 9HstJlnY24ipf0HB7gyakFNSQXO5/UY0MOXEtISQwXw5WgB8+KK0gJW/V5whncsjbjQm
+ xBDQ==
+X-Gm-Message-State: AOJu0Yzg99y6U2+EAxQ60lX7NciR/aoBLEY2p7MOgE+if85k3ts/qh7f
+ cpHXapJ3WR76nhxcyW5CtvylLoiwPTAB11AiTuN+NT9K7SX1GX4UK/3LOkiW1y3v4gTljbXA7kS
+ ofNY=
+X-Gm-Gg: ASbGncsqDRsEllb9D37HeaF0wbEH2WWWZGZz0dHHw73GJibYpdObmm5lGwwVT0V0YpX
+ DYuawkYeLT6J60CauSAGCJ5gteA1NRLwh1hV40jWvPyBHZpdJCHO0DRLUZSS8nGdRaXcDmgKUc5
+ 4GmMXY8DRIKn+W0qi3iuUSHhQIGAbI9BBOMoKd2817ROqyr2liZuMtEp/++q4FdgaJe84ZwaG0k
+ WiCsccSVWWHcC7qKvzsWCyzXVSl94x5nhDUPUYbY5rDwLRbTn/Sy886/3ez0u1EpNfzFCZGyGOV
+ 9mlaIBKqYUBYuL/lz2dy1fwrylX2wiDA0p3ZH9HU2KfowywiR2MXGhq87xO4d0cTXyDGQTIiE9q
+ SxndNqngSBSpHCVCtNy8=
+X-Google-Smtp-Source: AGHT+IGmPJqNugJgMNTXD3BqXBJSRvxwid1ZabjiCa/EK9RyDTVAmdrleDK1M9LFNLm9SMi2A4P+uw==
+X-Received: by 2002:a05:6000:4007:b0:38d:e584:81ea with SMTP id
+ ffacd0b85a97d-3911f7c8308mr650163f8f.45.1741137792366; 
+ Tue, 04 Mar 2025 17:23:12 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4847fe5sm19388500f8f.73.2025.03.04.17.23.07
+ ffacd0b85a97d-390e485d6cdsm19218804f8f.84.2025.03.04.17.23.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:07 -0800 (PST)
+ Tue, 04 Mar 2025 17:23:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 14/41] hw/xen/xen-pvh: Reduce included headers
-Date: Wed,  5 Mar 2025 02:21:29 +0100
-Message-ID: <20250305012157.96463-15-philmd@linaro.org>
+ Anthony PERARD <anthony.perard@vates.tech>
+Subject: [PULL 15/41] hw/xen/xen-hvm: Reduce included headers
+Date: Wed,  5 Mar 2025 02:21:30 +0100
+Message-ID: <20250305012157.96463-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,83 +98,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have "hw/xen/xen-pvh-common.h" include the bare minimal set
+Have "hw/xen/xen-hvm-common.h" include the bare minimal set
 of headers. Adapt sources to avoid errors when refactoring
 unrelated headers such:
 
-    hw/i386/xen/xen-pvh.c: In function ‘xen_pvh_machine_class_init’:
-    hw/i386/xen/xen-pvh.c:84:28: error: ‘TARGET_DEFAULT_CPU_TYPE’ undeclared (first use in this function)
-       84 |     mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
-          |                            ^~~~~~~~~~~~~~~~~~~~~~~
-    hw/xen/xen-pvh-common.c: In function ‘xen_pvh_init’:
-    hw/xen/xen-pvh-common.c:217:43: error: ‘MiB’ undeclared (first use in this function)
-      217 |         if (s->cfg.pci_ecam.size != 256 * MiB) {
-          |                                           ^~~
-    hw/xen/xen-hvm-common.c:18:6: error: no previous prototype for ‘xen_mr_is_memory’ [-Werror=missing-prototypes]
-       18 | bool xen_mr_is_memory(MemoryRegion *mr)
-          |      ^~~~~~~~~~~~~~~~
+  include/hw/xen/xen-hvm-common.h:71:5: error: unknown type name ‘xenevtchn_handle’
+     71 |     xenevtchn_handle *xce_handle;
+        |     ^~~~~~~~~~~~~~~~
+  hw/xen/xen-hvm-common.c: In function ‘cpu_get_ioreq’:
+  hw/xen/xen-hvm-common.c:227:13: error: implicit declaration of function ‘hw_error’
+    227 |             hw_error("Fatal error while trying to get io event!\n");
+        |             ^~~~~~~~
+        |             herror
+  hw/xen/xen-hvm-common.c: In function ‘handle_ioreq’:
+  hw/xen/xen-hvm-common.c:446:34: error: ‘target_ulong’ undeclared (first use in this function)
+    446 |             (req->size < sizeof (target_ulong))) {
+        |                                  ^~~~~~~~~~~~
+  hw/i386/xen/xen-hvm.c: In function ‘xen_add_to_physmap’:
+  hw/i386/xen/xen-hvm.c:298:22: error: implicit declaration of function ‘xen_replace_cache_entry’
+    298 |         uint8_t *p = xen_replace_cache_entry(phys_offset, start_addr, size);
+        |                      ^~~~~~~~~~~~~~~~~~~~~~~
+  hw/i386/xen/xen-hvm.c:314:9: error: implicit declaration of function 'error_report' is invalid in C99
+    314 |    error_report("relocate_memory %lu pages from GFN %"HWADDR_PRIx
+             ^~~~~~~~~~~~
+  hw/i386/xen/xen-hvm.c: In function ‘xen_log_global_start’:
+  hw/i386/xen/xen-hvm.c:465:9: error: implicit declaration of function ‘xen_enabled’
+    465 |     if (xen_enabled()) {
+        |         ^~~~~~~~~~~
+  hw/i386/xen/xen-hvm.c: In function ‘regs_to_cpu’:
+  hw/i386/xen/xen-hvm.c:487:5: error: unknown type name ‘X86CPU’
+    487 |     X86CPU *cpu;
+        |     ^~~~~~
+  hw/i386/xen/xen-hvm.c:492:15: error: ‘R_EAX’ undeclared (first use in this function)
+    492 |     env->regs[R_EAX] = req->data;
+        |               ^~~~~
+        |               REG_RAX
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-Id: <20250218162618.46167-5-philmd@linaro.org>
+Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
+Message-Id: <20250218162618.46167-6-philmd@linaro.org>
 ---
- include/hw/xen/xen-pvh-common.h | 8 ++++----
- hw/i386/xen/xen-pvh.c           | 1 +
- hw/xen/xen-pvh-common.c         | 5 ++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/hw/xen/xen-hvm-common.h | 14 +++-----------
+ hw/arm/xen-stubs.c              |  5 ++---
+ hw/i386/xen/xen-hvm.c           |  6 ++++++
+ hw/xen/xen-hvm-common.c         |  7 +++++++
+ 4 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/xen/xen-pvh-common.h b/include/hw/xen/xen-pvh-common.h
-index 5cdd23c2f4d..17c5a58a5a4 100644
---- a/include/hw/xen/xen-pvh-common.h
-+++ b/include/hw/xen/xen-pvh-common.h
-@@ -9,11 +9,11 @@
- #ifndef XEN_PVH_COMMON_H__
- #define XEN_PVH_COMMON_H__
+diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+index c1ea2c0d787..19df5600a39 100644
+--- a/include/hw/xen/xen-hvm-common.h
++++ b/include/hw/xen/xen-hvm-common.h
+@@ -1,18 +1,10 @@
+ #ifndef HW_XEN_HVM_COMMON_H
+ #define HW_XEN_HVM_COMMON_H
  
--#include <assert.h>
--#include "hw/sysbus.h"
+-#include "qemu/units.h"
+-
+-#include "cpu.h"
+-#include "hw/pci/pci.h"
 -#include "hw/hw.h"
--#include "hw/xen/xen-hvm-common.h"
-+#include "exec/memory.h"
-+#include "qom/object.h"
-+#include "hw/boards.h"
- #include "hw/pci-host/gpex.h"
-+#include "hw/xen/xen-hvm-common.h"
++#include "qemu/queue.h"
++#include "exec/hwaddr.h"
+ #include "hw/xen/xen_native.h"
+-#include "hw/xen/xen-legacy-backend.h"
+-#include "system/runstate.h"
+-#include "system/system.h"
+-#include "system/xen.h"
+-#include "system/xen-mapcache.h"
+-#include "qemu/error-report.h"
++#include "hw/xen/xen_backend_ops.h"
+ #include <xen/hvm/ioreq.h>
  
- #define TYPE_XEN_PVH_MACHINE MACHINE_TYPE_NAME("xen-pvh-base")
- OBJECT_DECLARE_TYPE(XenPVHMachineState, XenPVHMachineClass,
-diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
-index 33c10279763..f6356f2a7ed 100644
---- a/hw/i386/xen/xen-pvh.c
-+++ b/hw/i386/xen/xen-pvh.c
-@@ -14,6 +14,7 @@
- #include "hw/xen/arch_hvm.h"
- #include <xen/hvm/hvm_info_table.h>
- #include "hw/xen/xen-pvh-common.h"
-+#include "target/i386/cpu.h"
- 
- #define TYPE_XEN_PVH_X86  MACHINE_TYPE_NAME("xenpvh")
- OBJECT_DECLARE_SIMPLE_TYPE(XenPVHx86State, XEN_PVH_X86)
-diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
-index 9c21fa858d3..d675f7a8aeb 100644
---- a/hw/xen/xen-pvh-common.c
-+++ b/hw/xen/xen-pvh-common.c
-@@ -8,14 +8,13 @@
+ extern MemoryRegion xen_memory;
+diff --git a/hw/arm/xen-stubs.c b/hw/arm/xen-stubs.c
+index 34beb8b08cb..5551584dc20 100644
+--- a/hw/arm/xen-stubs.c
++++ b/hw/arm/xen-stubs.c
+@@ -5,10 +5,9 @@
+  */
  
  #include "qemu/osdep.h"
- #include "qemu/error-report.h"
--#include "qapi/error.h"
-+#include "qemu/units.h"
- #include "qapi/visitor.h"
- #include "hw/boards.h"
- #include "hw/irq.h"
--#include "hw/sysbus.h"
+-#include "qemu/error-report.h"
+ #include "qapi/qapi-commands-migration.h"
+-#include "hw/boards.h"
 -#include "system/system.h"
- #include "system/tpm.h"
- #include "system/tpm_backend.h"
-+#include "system/runstate.h"
- #include "hw/xen/xen-pvh-common.h"
++#include "system/xen.h"
++#include "hw/hw.h"
+ #include "hw/xen/xen-hvm-common.h"
+ #include "hw/xen/arch_hvm.h"
+ 
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index d3df488c483..d4516acec69 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -10,10 +10,12 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-migration.h"
  #include "trace.h"
+ 
++#include "hw/hw.h"
+ #include "hw/i386/pc.h"
+ #include "hw/irq.h"
+ #include "hw/i386/apic-msidef.h"
+@@ -24,6 +26,10 @@
+ #include "hw/xen/arch_hvm.h"
+ #include <xen/hvm/e820.h>
+ #include "exec/target_page.h"
++#include "target/i386/cpu.h"
++#include "system/runstate.h"
++#include "system/xen-mapcache.h"
++#include "system/xen.h"
+ 
+ static MemoryRegion ram_640k, ram_lo, ram_hi;
+ static MemoryRegion *framebuffer;
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 7ffbbfea23b..9a677e8ed74 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -1,14 +1,21 @@
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "exec/target_long.h"
+ #include "exec/target_page.h"
+ #include "trace.h"
+ 
++#include "hw/hw.h"
+ #include "hw/pci/pci_host.h"
+ #include "hw/xen/xen-hvm-common.h"
+ #include "hw/xen/xen-bus.h"
+ #include "hw/boards.h"
+ #include "hw/xen/arch_hvm.h"
++#include "system/runstate.h"
++#include "system/system.h"
++#include "system/xen.h"
++#include "system/xen-mapcache.h"
+ 
+ MemoryRegion xen_memory, xen_grants;
  
 -- 
 2.47.1
