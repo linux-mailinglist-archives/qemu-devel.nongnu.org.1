@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F94A4F421
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E312CA4F449
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:02:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdy5-0004fA-8i; Tue, 04 Mar 2025 20:54:42 -0500
+	id 1tpdyM-0004tk-Sl; Tue, 04 Mar 2025 20:54:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxy-0004UN-QX
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:34 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tpdy1-0004fL-6w
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:37 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxw-0008WL-GQ
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:34 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-223480ea43aso156424565ad.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:32 -0800 (PST)
+ id 1tpdxz-00005H-6Q
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:36 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2234e4b079cso115239525ad.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139671; x=1741744471; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139673; x=1741744473; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wQEm50w7hIBU99p2JPQi53vKIrZxWkieyhO8rz98ZNM=;
- b=YtKpntLsRPrR7l33dGXm11PXo9cnSykizwSUDkbfergKjJYf7HtofoNP625/sboJST
- KjJTJTpn55v6PlPYdNZLTmuLoGiR6z/tD9v0YDf2I+lbwp5aLzt62QA/wdvzGui6HTj5
- 47SOG0Q3VwHBnjpOyqL9cndbJ3XhpAJyIYGwb86v8h+ysdj5Ax2tt8xZPk/76E/GayKj
- cV4ziETbb+2+9KIEXhIXxHnBQxH4b6TbO+P49a3XPIXFgVZgIZagD9YuRtgKDzVdDLWK
- LljJEvrwtErBK0no+h/t9LaLcgzsIp6m3d7/sNLXNH+iXYlfckZfdemxEVMBT1F5w7Qq
- BSvQ==
+ bh=jFAmqPRQPWgYFzdVLR2UUIxIvDBtzJRXuo2E2Y5DFx8=;
+ b=k7z7d1WlLPQ46qzBhxYixcmTaGMGI4AjELu0asB0PA2R8WVfxsDlUnohjHj0yuRj30
+ BknK1Rf0fUt59mhPHqo/5EEA6qf2S1NDsYR53pjmT5zRnaxJ+iy7UgBqRykCHrrz9oZx
+ HIpVhVWr0JEzaBYZff9RQkiH54BLprrsmMBUVtGxNVq2cRCY441YzmLgjeLRIb/JTXnF
+ Kn6WnPjVrliflZN51ngUmrTnmI7DGaFOfN+4hA+376+95B7Cj/NmqYjcsK7WAirjrvJ6
+ aHtc219SFvklDhLf7zttt+Be03wPGL3gSUdaTR2g/SsFcn3Qe47fvGCyi0C0qhgUzjc1
+ 9tUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139671; x=1741744471;
+ d=1e100.net; s=20230601; t=1741139673; x=1741744473;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wQEm50w7hIBU99p2JPQi53vKIrZxWkieyhO8rz98ZNM=;
- b=TVUCrifLiHfLQYa3eN63LdQtOMg/w5sLd8NUBSZ2YMtdRY4xxfRMK/X8bbBN3d/fu7
- qwVGxAZEIeLHMFaoBjQOYYHMHv+28Qugk2IQqeN0Vb0aa3HnebVdwGForK7hVhdeRxcI
- 3ts4af3bgYBJ9Jx+GYmT3qiZbWWXVYlYsmkA4m0G+ct3gPmHnOfhBRZjq1o4BNq2600k
- C1SWuhZbC42dIjn2OYlDOTQaxb58Gi4eBnndDkCH/FashTKKrPvldxXKNVkia3d36Xty
- v9Zcr19jSaGdKYPRxRBGupJXua37Bsfy7V7PaFwry08ChqfA/A/DqDbl8PmeaUKUY/tJ
- mFOg==
-X-Gm-Message-State: AOJu0YxhRpRmv4CgG5yKDLcUP9iluN1jWoGizetyWTg390jfj+2uoNEz
- 7AbKos4rfWwsknL9cbY7+3zatRfiUo48d9ZzJQ6UoR+tTqrKG0A8WZwmuXDazDs=
-X-Gm-Gg: ASbGnctC3tinH7LdJFiCR3wFTRAx72csnopp93bbm88YGUcm7m+xIe3OzaGK+gRYRxu
- OWaI8QCZir67Idnx3EY02QUXyr7XkpWgPkxvTfS5niTZubv7Qyg9fbvhoisJY7AMkBd6iZo75S0
- jZhhJZt+KNzSsa9mshk0fQ5llQZRQzLQNHYcSJWxmiih2ox/jHRrfYKXFYdSupVmGzeNcvLAR7S
- YtLbsnWPDSAhpst9ogBDc1gxm/wholrkCzwlmv4qqB2KFA+WCk8S+Y/akYGg6YVBpHPsTjw3C04
- ZJSVhMkgdPHEtTwKRIpLQhXLoBHAtp2gOfAKDbbM1AFYyvC8nmSbHhScgkp5DLJ9pjNankKAsar
- 6Q/Lk/ckbFV1skTQRZqPRwjwMyl/yXaXbetkIBSo8eFM/M182lug=
-X-Google-Smtp-Source: AGHT+IHS+0HhkTr1vynsGHC9+hEd5MVqmVnVMmu5gApYlVKEx8UYd+6jWf6bK/0s4UPnWmN3V32mTQ==
-X-Received: by 2002:a17:902:db03:b0:223:4998:a75e with SMTP id
- d9443c01a7336-223f1c804f7mr19685385ad.3.1741139670866; 
- Tue, 04 Mar 2025 17:54:30 -0800 (PST)
+ bh=jFAmqPRQPWgYFzdVLR2UUIxIvDBtzJRXuo2E2Y5DFx8=;
+ b=cNFarSjgyLLr4nq8YukCE05N6UX1G1KgQeUZBPZBMtiLg2Gp0zYzEnmIWAE1ZQyLVu
+ EyRghy0cWTMkTSZCXs07LZlr2XnGZTsES/RjbHoxsrlybTgG2znF+9SHJYoysWP/AzWu
+ GTtMoYL8cqPN8ZS3kb4wlwe4rjvdmKSha6eSRiGVlv/zmLGYgW1KGwkxslUS6ZsjU43K
+ xRUImQHgcEJjCExwV2j07HL8Y9X4LKksy88wEEVE5+NK9Cm8J7JEorClzk32hGBOIXqA
+ ib2uXxrYny90d9Ecwe30y3aHeSvePzUnTum+b0JU/h202RGH/Qy7GLvms/tGI+HB8ya7
+ l5Xg==
+X-Gm-Message-State: AOJu0YyGXXSzW4VNOi4xUWDmRfU1a8wYakqw4FC6NBkRmATu2jZAlDcK
+ JVK8OA/Ox2+prUCplLOPmvTWozUizumkxTi19Z2+FVnFQBLVmf5agjHK3EtiopQ=
+X-Gm-Gg: ASbGncs9mTsJJ0jr7S63HHlZ06x87G/QwZGb5H1G3ahODG8C1I8Q58UNKJEVdkLa9e9
+ hJENuDyuu3RjknxJh7t9ZZXjxXzj04z6Qa1g1B8OscqOWp6CZWwN6hkQNMSirQB+Pw4xt10eqkw
+ joATb+xrENsrp5h6JSLWDb+eLAMJj87+S98oeL+V9pWtayRe9dcVE9y0+LWwBvKavrG2JDaQOJe
+ exx3Z+x9LCbur/1qmkaAlOfr80aoluJLV4RVe7iCC5GkndpuDTh8W87gYtC/IG8yOSkl9xavG3C
+ Z7BgxsQU71BkT7Nyr08bfThqb5eStBWR2Lcdwrc8ZyhJNTC2R5BAPbzMbpqo3GvlD4CEObJh+dC
+ 2O+ft10gr2RFBCAt7VSo1DCNdWHIHY3YUL30dNYlP89c5R3dpo5M=
+X-Google-Smtp-Source: AGHT+IEMl8z7W1Nra9VXDBSJjUfCIv+l/mQPbl+1k8uT9NKB2EQItUYQuTwkGjufTSoqgAzAWkq+AA==
+X-Received: by 2002:a17:903:1cd:b0:223:4a10:311b with SMTP id
+ d9443c01a7336-223f1cb2068mr21551835ad.1.1741139673584; 
+ Tue, 04 Mar 2025 17:54:33 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.28
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:54:30 -0800 (PST)
+ Tue, 04 Mar 2025 17:54:33 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Rajnesh Kanwal <rkanwal@rivosinc.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 26/59] target/riscv: Add CTR sctrclr instruction.
-Date: Wed,  5 Mar 2025 11:52:34 +1000
-Message-ID: <20250305015307.1463560-27-alistair.francis@wdc.com>
+Subject: [PULL 27/59] target/riscv: machine: Add Control Transfer Record state
+ description
+Date: Wed,  5 Mar 2025 11:52:35 +1000
+Message-ID: <20250305015307.1463560-28-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,138 +105,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 
-CTR extension adds a new instruction sctrclr to quickly
-clear the recorded entries buffer.
+Add a subsection to machine.c to migrate CTR CSR state
 
 Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250205-b4-ctr_upstream_v6-v6-5-439d8e06c8ef@rivosinc.com>
+Message-ID: <20250205-b4-ctr_upstream_v6-v6-6-439d8e06c8ef@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h                            |  1 +
- target/riscv/helper.h                         |  1 +
- target/riscv/insn32.decode                    |  1 +
- target/riscv/cpu_helper.c                     |  7 +++++
- target/riscv/op_helper.c                      | 29 +++++++++++++++++++
- .../riscv/insn_trans/trans_privileged.c.inc   | 11 +++++++
- 6 files changed, 50 insertions(+)
+ target/riscv/machine.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 9e92144b61..616c3bdc1c 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -619,6 +619,7 @@ void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv, bool virt_en);
- 
- void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
-     enum CTRType type, target_ulong prev_priv, bool prev_virt);
-+void riscv_ctr_clear(CPURISCVState *env);
- 
- void riscv_translate_init(void);
- void riscv_translate_code(CPUState *cs, TranslationBlock *tb,
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index 163121ade5..85d73e492d 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -132,6 +132,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
- DEF_HELPER_1(sret, tl, env)
- DEF_HELPER_1(mret, tl, env)
- DEF_HELPER_1(mnret, tl, env)
-+DEF_HELPER_1(ctr_clear, void, env)
- DEF_HELPER_1(wfi, void, env)
- DEF_HELPER_1(wrs_nto, void, env)
- DEF_HELPER_1(tlb_flush, void, env)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index a98dab0205..6d1a13c826 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -114,6 +114,7 @@
- # *** Privileged Instructions ***
- ecall       000000000000     00000 000 00000 1110011
- ebreak      000000000001     00000 000 00000 1110011
-+sctrclr     000100000100     00000 000 00000 1110011
- uret        0000000    00010 00000 000 00000 1110011
- sret        0001000    00010 00000 000 00000 1110011
- mret        0011000    00010 00000 000 00000 1110011
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 7dbdb34b17..356e84b9a2 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -887,6 +887,13 @@ static void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_mask,
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index d8445244ab..889e2b6570 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -300,6 +300,30 @@ static const VMStateDescription vmstate_envcfg = {
      }
- }
+ };
  
-+void riscv_ctr_clear(CPURISCVState *env)
++static bool ctr_needed(void *opaque)
 +{
-+    memset(env->ctr_src, 0x0, sizeof(env->ctr_src));
-+    memset(env->ctr_dst, 0x0, sizeof(env->ctr_dst));
-+    memset(env->ctr_data, 0x0, sizeof(env->ctr_data));
++    RISCVCPU *cpu = opaque;
++
++    return cpu->cfg.ext_smctr || cpu->cfg.ext_ssctr;
 +}
 +
- static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
- {
-     switch (priv) {
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 5a99c47b12..f156bfab12 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -485,6 +485,35 @@ void helper_ctr_add_entry(CPURISCVState *env, target_ulong src,
-                         env->priv, env->virt_enabled);
- }
- 
-+void helper_ctr_clear(CPURISCVState *env)
-+{
-+    /*
-+     * It's safe to call smstateen_acc_ok() for umode access regardless of the
-+     * state of bit 54 (CTR bit in case of m/hstateen) of sstateen. If the bit
-+     * is zero, smstateen_acc_ok() will return the correct exception code and
-+     * if it's one, smstateen_acc_ok() will return RISCV_EXCP_NONE. In that
-+     * scenario the U-mode check below will handle that case.
-+     */
-+    RISCVException ret = smstateen_acc_ok(env, 0, SMSTATEEN0_CTR);
-+    if (ret != RISCV_EXCP_NONE) {
-+        riscv_raise_exception(env, ret, GETPC());
++static const VMStateDescription vmstate_ctr = {
++    .name = "cpu/ctr",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = ctr_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(env.mctrctl, RISCVCPU),
++        VMSTATE_UINT32(env.sctrdepth, RISCVCPU),
++        VMSTATE_UINT32(env.sctrstatus, RISCVCPU),
++        VMSTATE_UINT64(env.vsctrctl, RISCVCPU),
++        VMSTATE_UINT64_ARRAY(env.ctr_src, RISCVCPU, 16 << SCTRDEPTH_MAX),
++        VMSTATE_UINT64_ARRAY(env.ctr_dst, RISCVCPU, 16 << SCTRDEPTH_MAX),
++        VMSTATE_UINT64_ARRAY(env.ctr_data, RISCVCPU, 16 << SCTRDEPTH_MAX),
++        VMSTATE_END_OF_LIST()
 +    }
++};
 +
-+    if (env->priv == PRV_U) {
-+        /*
-+         * One corner case is when sctrclr is executed from VU-mode and
-+         * mstateen.CTR = 0, in which case we are supposed to raise
-+         * RISCV_EXCP_ILLEGAL_INST. This case is already handled in
-+         * smstateen_acc_ok().
-+         */
-+        uint32_t excep = env->virt_enabled ? RISCV_EXCP_VIRT_INSTRUCTION_FAULT :
-+            RISCV_EXCP_ILLEGAL_INST;
-+        riscv_raise_exception(env, excep, GETPC());
-+    }
-+
-+    riscv_ctr_clear(env);
-+}
-+
- void helper_wfi(CPURISCVState *env)
+ static bool pmu_needed(void *opaque)
  {
-     CPUState *cs = env_cpu(env);
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index ca52405d7d..8a62b4cfcd 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -75,6 +75,17 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebreak *a)
-     return true;
- }
- 
-+static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    if (ctx->cfg_ptr->ext_smctr || ctx->cfg_ptr->ext_ssctr) {
-+        gen_helper_ctr_clear(tcg_env);
-+        return true;
-+    }
-+#endif
-+    return false;
-+}
-+
- static bool trans_uret(DisasContext *ctx, arg_uret *a)
- {
-     return false;
+     RISCVCPU *cpu = opaque;
+@@ -450,6 +474,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         &vmstate_jvt,
+         &vmstate_elp,
+         &vmstate_ssp,
++        &vmstate_ctr,
+         NULL
+     }
+ };
 -- 
 2.48.1
 
