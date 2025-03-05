@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5211DA4F445
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5041DA4F42F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:58:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdyR-0005WS-7a; Tue, 04 Mar 2025 20:55:03 -0500
+	id 1tpdya-000643-5Z; Tue, 04 Mar 2025 20:55:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdyC-0005B9-7E
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:50 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tpdyF-0005Cr-7d
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:54 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdyA-00007t-Ka
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:47 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-223f4c06e9fso2333395ad.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:46 -0800 (PST)
+ id 1tpdyD-00008N-L4
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:50 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-223cc017ef5so40561775ad.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139685; x=1741744485; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139688; x=1741744488; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o2tk+IDQAaFexLh32/3aSUR3dERRACns7VIzSWEBYTg=;
- b=i7jLdxgotlIlYjPG3i8pamr8QVfWwLJeB60tg1hPFFQspxr9OeHlQzONQrdE1d1C0t
- 1VnIp776dA5Ix7zrQA3eRY5RJuWky4H2b16bTMgLxWQ6GfRAXqOMcKaUnYcS5gEDKlWs
- JG1NZ7NdPe/mepMG/c9TgVSsZEWTDbhBrsyeqFqJPlL6Jhm6pcVBfnBJrK2Epo2SYdS3
- KsIEskxxiyN/hZpkMFCjKmVb5bMjRkvleAPrqDDqnGjIMtMSKos/HjO9OLvm3r9GqFZK
- ccFqWmWwZJ4x4wpUGQsy55rJ+YuyVF4io18G7FYUyUMsG5R3rwUWClpsNPrTxLNO58fa
- p57Q==
+ bh=tGFBC54uGrka6BKNJV2LE5BwEafI9r/taUzH7CwogWE=;
+ b=A6A/eJreC686lP1fQazHE7yD3u4Pu2qG672cVFIeXV7rYMLM6y7cmtC4d4XXAtjy6Q
+ Mbh4J3YK6oWAS8Qk8cW9n7ZyUJ5GkdsmAP9FXWSCsiVCR6K20aaEKGi1Oy6SBDXsvX5x
+ cY4aCE6bVnXOu0UvBYaBZSqeTcV9HwIlpTmwvQoOpuMV0HK9+wvshN072HdiEYcaINox
+ NrGIa+ISouGX0XNY9yZkffy1edV8QoyRepULGdemaUdHtdZzhHEh5PLoWChPpyz/87d+
+ GssXAm4UpI1PdXCqKGNcMqGmGGu++D99xhES+eCubBzGYYQixFWEWffRDsv7ht6ypQhR
+ 15hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139685; x=1741744485;
+ d=1e100.net; s=20230601; t=1741139688; x=1741744488;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o2tk+IDQAaFexLh32/3aSUR3dERRACns7VIzSWEBYTg=;
- b=TY0pqVKWzm5CW04yPc9qFdetcRvzkmuRX8irXFavXp2/rqH2dY2XKh6RLGlzahTumQ
- 2xOrrIlfYyRYCD+1zxXr2TBzbWLcyDYWbfjebCr4sQe0iZ3b3w32b7HZ1t6zCr/KBbBF
- viQFHq1sAVeNAqrF6Y9nZNzxFKnUR6tWTisObWRNzjS3hYvufGWVHEZNHJC0JWoGtM5j
- W8hBh7bsMIeLILhiBeirewefpKth4I4YZ3iBCQPAyliBoijJ6wOxtCLLQmXIhqpGta8+
- Zk1dp4lazxK0r3jPAraE6YMoiPJfpsnC14Ns8itjg/jst0wQWAN0fCNDWOGZPE1y7iSi
- JKkg==
-X-Gm-Message-State: AOJu0YyqjV3Q0gu5TFf6zxld+kDj5wr2THBPsDGuTlMMstTz9bgMKkKI
- +zck2ZkrdaGcPyavz3esv691C0ygPHRyDv8zD2u1ycebPAPNDie2k0IAAxytJJs=
-X-Gm-Gg: ASbGnctpVI3qmH71zE6ItUR0e0gmwrTDhhb86cenquHLHkHJ68eK3rZR0bwSmiCdGO4
- CowZUiyfytg4E2ehE99EjtwMgO/yNbJ4Nfl1a3OzJ7yTVyR2qJDo48QYxcf6elNKIYn/lu/8R7H
- 8i56TD2KIvxdxLiKq7vHI1MMNpcYykXb0wTM0zPlS5i7zswcPvk7ScSQ+zfV/DcRW4WzAfrD4p0
- /0S2uDpffb7g8Z/W7Dc6NV+cVAYbLlQipvfiYkzZXkZH5LK0b9GCQfn8o0d0P7mSAWD3YGY54Fh
- +g1kG3f0A3wiJ90L9ryJ33fB8aG4QgjMX7GFW/Gl29/PAqgCut+C/zlZ2OENrTwUoF6rLQrHAAJ
- Xptt+sJPKIxBaEBb2DSUgxXVgXvZvFlleRBOkuQsmF8S1jOP+VQI=
-X-Google-Smtp-Source: AGHT+IEaQosfOnW/G9cyn9jwnO1QLqXSVHa3KmXKcLlhDEAd4giTyDST7lILTOo8cJjqedE2yY3/dw==
-X-Received: by 2002:a17:903:41cd:b0:220:fe36:650c with SMTP id
- d9443c01a7336-223f1e074e1mr21109925ad.23.1741139685042; 
- Tue, 04 Mar 2025 17:54:45 -0800 (PST)
+ bh=tGFBC54uGrka6BKNJV2LE5BwEafI9r/taUzH7CwogWE=;
+ b=kFyUVgjB4qkVqMP2FWo6hZ1OZcDKscr+2Bn28rDZSJfV6hbjsyzsZVRVTpYfK42eH5
+ 7xxfwAiETu3gKMkTPZqyE1hFd4pjZzYMDudf9bZTLZUSMaUCyONi6dwOIpp37d4N/G9a
+ tHsl8Khj8NfgQxAt0dSjZjV2Z2+WZibbcBKb9O9ON80rAIrMZ8gTYjIpuhZ0opSY+tuI
+ 3SWwvP40Tq9T++kV0WVUPRwBAnN94oYEwb4YiUox/OJ25b74/UvoCfQAB/YZyLoWlbnX
+ dNufkv5FhE7r2VcmcJdJTIERUgZ2PVLsYIhW+JFL+fZ8ytEB9tXZTioVRbDfnLk2rsuP
+ sKng==
+X-Gm-Message-State: AOJu0YxOZdFeV3DW2Xh8lkBmYSky0gl0+nm6SfVKb51XMG8emNvOs2Dh
+ fjq86KFbLN4HOjU2IuI+bnR2atLFLZMvdtw0uZy4mmjzDKcBgHBJVOxeuofw8Tg=
+X-Gm-Gg: ASbGncsJ4AxKa2I0kwRChxDZq7ehG/fQsAuWAjxdNPcTcy8sZLliPhr/dGIx4PN33Ow
+ o03pyiOmOISRm5qAeNcFwVHLSX74WovOYWmIHqcBiu/7j/YMeSKUgO75o0ELHVp42jaspN5fsEE
+ LYhkvxgQqNCOKNT+LWPCWhiOy1kvcouTsSX8HM8zCIXoDZpwvv/T62dFzsbuAxSa/5/FhjAbaRf
+ G/T1PsBBPWBOHv/qFLTr3/lBJ75PE2n5UJdyz+jJzXz9MORAp1txKFLRCkBysf/LZX3GuGK080o
+ cuCt17djarkrJ1ihDOKybbKBUG+XyzkLdPG05IMffRJDpMWfDKqTxTnFZB9JqOYxDoNZc1YuGvl
+ qfINcfiC1nJ+wc5F1lPkDAaACyodVdjnDjAAKCCvWPsdY//A4V1s=
+X-Google-Smtp-Source: AGHT+IHk3w5Iv/CU4r96wBkZ3HuEl6kJQJAws+ZMowqkRhZalmkkI07LoTVHEeW2mBLfRuy5mZ5uDg==
+X-Received: by 2002:a17:902:f682:b0:223:37b8:c213 with SMTP id
+ d9443c01a7336-223f1d359fdmr18115805ad.52.1741139688023; 
+ Tue, 04 Mar 2025 17:54:48 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.42
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:54:44 -0800 (PST)
+ Tue, 04 Mar 2025 17:54:47 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Atish Patra <atishp@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 31/59] target/riscv: Fix the hpmevent mask
-Date: Wed,  5 Mar 2025 11:52:39 +1000
-Message-ID: <20250305015307.1463560-32-alistair.francis@wdc.com>
+Subject: [PULL 32/59] target/riscv: Mask out upper sscofpmf bits during
+ validation
+Date: Wed,  5 Mar 2025 11:52:40 +1000
+Message-ID: <20250305015307.1463560-33-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,37 +106,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Atish Patra <atishp@rivosinc.com>
 
-As per the latest privilege specification v1.13[1], the sscofpmf
-only reserves first 8 bits of hpmeventX. Update the corresponding
-masks accordingly.
+As per the ISA definition, the upper 8 bits in hpmevent are defined
+by Sscofpmf for privilege mode filtering and overflow bits while the
+lower 56 bits are desginated for platform specific hpmevent values.
+For the reset case, mhpmevent value should have zero in lower 56 bits.
+Software may set the OF bit to indicate disable interrupt.
 
-[1]https://github.com/riscv/riscv-isa-manual/issues/1578
+Ensure that correct value is checked after masking while clearing the
+event encodings.
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250206-pmu_minor_fixes-v2-1-1bb0f4aeb8b4@rivosinc.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Message-ID: <20250206-pmu_minor_fixes-v2-2-1bb0f4aeb8b4@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/riscv/pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 70ef443c99..a30317c617 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -1078,9 +1078,8 @@ typedef enum CTRType {
-                                             MHPMEVENTH_BIT_VSINH | \
-                                             MHPMEVENTH_BIT_VUINH)
- 
--#define MHPMEVENT_SSCOF_MASK               _ULL(0xFFFF000000000000)
--#define MHPMEVENT_IDX_MASK                 0xFFFFF
--#define MHPMEVENT_SSCOF_RESVD              16
-+#define MHPMEVENT_SSCOF_MASK               MAKE_64BIT_MASK(63, 56)
-+#define MHPMEVENT_IDX_MASK                 (~MHPMEVENT_SSCOF_MASK)
- 
- /* RISC-V-specific interrupt pending bits. */
- #define CPU_INTERRUPT_RNMI                 CPU_INTERRUPT_TGT_EXT_0
+diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+index cf713663ee..0408f96e6a 100644
+--- a/target/riscv/pmu.c
++++ b/target/riscv/pmu.c
+@@ -390,7 +390,7 @@ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
+      * Expected mhpmevent value is zero for reset case. Remove the current
+      * mapping.
+      */
+-    if (!value) {
++    if (!(value & MHPMEVENT_IDX_MASK)) {
+         g_hash_table_foreach_remove(cpu->pmu_event_ctr_map,
+                                     pmu_remove_event_map,
+                                     GUINT_TO_POINTER(ctr_idx));
 -- 
 2.48.1
 
