@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51EB1A4F714
+	by mail.lfdr.de (Postfix) with ESMTPS id 54513A4F715
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:28:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpiDv-0002H3-CV; Wed, 05 Mar 2025 01:27:19 -0500
+	id 1tpiDq-0002Fr-JW; Wed, 05 Mar 2025 01:27:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tpiDe-0002EL-El
+ id 1tpiDd-0002E9-KH
  for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:27:04 -0500
-Received: from esa5.hc1455-7.c3s2.iphmx.com ([68.232.139.130])
+Received: from esa4.hc1455-7.c3s2.iphmx.com ([68.232.139.117])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tpiDb-0007eh-N5
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:27:02 -0500
+ id 1tpiDa-0007es-VH
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:27:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1741156019; x=1772692019;
+ t=1741156018; x=1772692018;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+CR7mMv1ubPow4V3VojBzeRtfH/4mt0zSZmZJSzhgAQ=;
- b=V049X8BJBb6iHNJvSYQKzmbOTq8gHg7l2BbH1AEnW4qVbWAuxkimUW6D
- 2n+PKp9gGsekCDFexuXNXrEyBnjxFnWE87d1U9+sIA35rKC48/WX2fCax
- z5yaS+otqwQI+CVOA9IXsQUUU92rcx2vKhTkaOi+HNZ+Uzv/EGbY2DQWq
- 8lmqX1/OuTQ6BJP2T+nPk6zKmoljc6LZzOtkSelNGdQr9pSEREZC5FT4+
- OVrQ9/y33Jo9P0imQYF4lQrKmz9QOI6FApQN7h8lThVn5NZfMDXKgBiUR
- tp40Q9aXi1DlLerB6xjajODiWPwOfk8CP/kjEfcGCguyn6u6vhc2v7j6I Q==;
-X-CSE-ConnectionGUID: pxRF47CDRP2/aB3/eLHP6g==
-X-CSE-MsgGUID: M929AnRWSoGi3ingVL2n5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="191183347"
-X-IronPort-AV: E=Sophos;i="6.14,222,1736780400"; d="scan'208";a="191183347"
-Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
- by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2025 15:26:53 +0900
-Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com
- [192.168.83.65])
- by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 9CE0AE076B
- for <qemu-devel@nongnu.org>; Wed,  5 Mar 2025 15:26:51 +0900 (JST)
+ bh=Kf7nUzx6bCEoflN6wH/5kN4a9SJ7oJCr6a8XCP/ryZQ=;
+ b=KFRYd/AnNPYsZSOl2ZScphO92Htx+raxGTQfFz3+knMvI43xrS3R4ESV
+ Xa7obXXsAgBT8XZav7d+4NvQ/NV0RpqcrYd5XSFCDp720epxzdk6hgRkU
+ z7DQVNS6uiXekQcGsvE0kkpQ+0eK0BHe94bBqEkPHzKTg+ZT4D/BZKfxp
+ 3YfA0fiNPJyl7vrTupO7oAEPj8OEoq+IbPxt8lhSMXrzcVeNZiB0Aq5d/
+ wCn5ODQk9sSuVxThRwdFDJRyH7cLzBue3Gcvjs9En2HLOa3V7YcvPdAeM
+ ju90q1K0/I3WfkJuQXRUZr7RyqIk+u7kjNSYzB6RAkqlXHMur0cyuVwDO Q==;
+X-CSE-ConnectionGUID: CoscqJ2BRgybZGaWcVAZ0w==
+X-CSE-MsgGUID: /eRXmp2JSKezmJ275wcmOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="192279487"
+X-IronPort-AV: E=Sophos;i="6.14,222,1736780400"; d="scan'208";a="192279487"
+Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
+ by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2025 15:26:54 +0900
+Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
+ [192.168.87.59])
+ by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 065B8D4C39
+ for <qemu-devel@nongnu.org>; Wed,  5 Mar 2025 15:26:52 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 4F286D5037
+ by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id BA8D9BDB65
  for <qemu-devel@nongnu.org>; Wed,  5 Mar 2025 15:26:51 +0900 (JST)
 Received: from iaas-rdma.. (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 9BDD11A00AE;
- Wed,  5 Mar 2025 14:26:50 +0800 (CST)
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 186A61A00A0;
+ Wed,  5 Mar 2025 14:26:51 +0800 (CST)
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v5 1/6] migration: Prioritize RDMA in ram_save_target_page()
-Date: Wed,  5 Mar 2025 14:28:20 +0800
-Message-ID: <20250305062825.772629-2-lizhijian@fujitsu.com>
+Subject: [PATCH v5 2/6] migration: check RDMA and capabilities are compatible
+ on both sides
+Date: Wed,  5 Mar 2025 14:28:21 +0800
+Message-ID: <20250305062825.772629-3-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20250305062825.772629-1-lizhijian@fujitsu.com>
 References: <20250305062825.772629-1-lizhijian@fujitsu.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=68.232.139.130;
- envelope-from=lizhijian@fujitsu.com; helo=esa5.hc1455-7.c3s2.iphmx.com
+Received-SPF: pass client-ip=68.232.139.117;
+ envelope-from=lizhijian@fujitsu.com; helo=esa4.hc1455-7.c3s2.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -86,64 +87,152 @@ From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Address an error in RDMA-based migration by ensuring RDMA is prioritized
-when saving pages in `ram_save_target_page()`.
+Depending on the order of starting RDMA and setting capability,
+they can be categorized into the following scenarios:
+Source:
+ S1: [set capabilities] -> [Start RDMA outgoing]
+Destination:
+ D1: [set capabilities] -> [Start RDMA incoming]
+ D2: [Start RDMA incoming] -> [set capabilities]
 
-Previously, the RDMA protocol's page-saving step was placed after other
-protocols due to a refactoring in commit bc38dc2f5f3. This led to migration
-failures characterized by unknown control messages and state loading errors
-destination:
-(qemu) qemu-system-x86_64: Unknown control message QEMU FILE
-qemu-system-x86_64: error while loading state section id 1(ram)
-qemu-system-x86_64: load of migration failed: Operation not permitted
-source:
-(qemu) qemu-system-x86_64: RDMA is in an error state waiting migration to abort!
-qemu-system-x86_64: failed to save SaveStateEntry with id(name): 1(ram): -1
-qemu-system-x86_64: rdma migration: recv polling control error!
-qemu-system-x86_64: warning: Early error. Sending error.
-qemu-system-x86_64: warning: rdma migration: send polling control error
+Previously, compatibility between RDMA and capabilities was verified only
+in scenario D1, potentially causing migration failures in other situations.
 
-RDMA migration implemented its own protocol/method to send pages to
-destination side, hand over to RDMA first to prevent pages being saved by
-other protocol.
+For scenarios S1 and D1, we can seamlessly incorporate
+migration_transport_compatible() to address compatibility between
+channels and capabilities vs transport.
 
-Fixes: bc38dc2f5f3 ("migration: refactor ram_save_target_page functions")
+For scenario D2, ensure compatibility within migrate_caps_check().
+
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
-V3:
-   collect Reviewed tags
----
- migration/ram.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 589b6505eb2..424df6d9f13 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1964,6 +1964,11 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
-     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-     int res;
- 
-+    /* Hand over to RDMA first */
-+    if (control_save_page(pss, offset, &res)) {
-+        return res;
-+    }
-+
-     if (!migrate_multifd()
-         || migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
-         if (save_zero_page(rs, pss, offset)) {
-@@ -1976,10 +1981,6 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
-         return ram_save_multifd_page(block, offset);
-     }
- 
--    if (control_save_page(pss, offset, &res)) {
--        return res;
--    }
--
-     return ram_save_page(rs, pss);
+V4:
+  - Remove Reviewed-tag and cover above D2 scenario
+
+V3:
+  - collect Reviewed tag
+  - reorder: 5th -> 2nd
+---
+ migration/migration.c | 30 ++++++++++++++++++++----------
+ migration/options.c   | 21 +++++++++++++++++++++
+ migration/options.h   |  1 +
+ 3 files changed, 42 insertions(+), 10 deletions(-)
+
+diff --git a/migration/migration.c b/migration/migration.c
+index c597aa707e5..0736d3a6728 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -238,6 +238,24 @@ migration_channels_and_transport_compatible(MigrationAddress *addr,
+     return true;
  }
  
++static bool
++migration_capabilities_and_transport_compatible(MigrationAddress *addr,
++                                                Error **errp)
++{
++    if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
++        return migrate_rdma_caps_check(migrate_get_current()->capabilities,
++                                       errp);
++    }
++
++    return true;
++}
++
++static bool migration_transport_compatible(MigrationAddress *addr, Error **errp)
++{
++    return migration_channels_and_transport_compatible(addr, errp) &&
++           migration_capabilities_and_transport_compatible(addr, errp);
++}
++
+ static gint page_request_addr_cmp(gconstpointer ap, gconstpointer bp)
+ {
+     uintptr_t a = (uintptr_t) ap, b = (uintptr_t) bp;
+@@ -716,7 +734,7 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+-    if (!migration_channels_and_transport_compatible(addr, errp)) {
++    if (!migration_transport_compatible(addr, errp)) {
+         return;
+     }
+ 
+@@ -735,14 +753,6 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+         }
+ #ifdef CONFIG_RDMA
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
+-        if (migrate_xbzrle()) {
+-            error_setg(errp, "RDMA and XBZRLE can't be used together");
+-            return;
+-        }
+-        if (migrate_multifd()) {
+-            error_setg(errp, "RDMA and multifd can't be used together");
+-            return;
+-        }
+         rdma_start_incoming_migration(&addr->u.rdma, errp);
+ #endif
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
+@@ -2159,7 +2169,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+-    if (!migration_channels_and_transport_compatible(addr, errp)) {
++    if (!migration_transport_compatible(addr, errp)) {
+         return;
+     }
+ 
+diff --git a/migration/options.c b/migration/options.c
+index bb259d192a9..c6f18df5864 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -439,6 +439,20 @@ static bool migrate_incoming_started(void)
+     return !!migration_incoming_get_current()->transport_data;
+ }
+ 
++bool migrate_rdma_caps_check(bool *caps, Error **errp)
++{
++    if (caps[MIGRATION_CAPABILITY_XBZRLE]) {
++        error_setg(errp, "RDMA and XBZRLE can't be used together");
++        return false;
++    }
++    if (caps[MIGRATION_CAPABILITY_MULTIFD]) {
++        error_setg(errp, "RDMA and multifd can't be used together");
++        return false;
++    }
++
++    return true;
++}
++
+ /**
+  * @migration_caps_check - check capability compatibility
+  *
+@@ -602,6 +616,13 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+         }
+     }
+ 
++    /*
++     * On destination side, check the cases that capability is being set
++     * after incoming thread has started.
++    */
++    if (migrate_rdma() && !migrate_rdma_caps_check(new_caps, errp)) {
++        return false;
++    }
+     return true;
+ }
+ 
+diff --git a/migration/options.h b/migration/options.h
+index 762be4e641a..82d839709e7 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -57,6 +57,7 @@ bool migrate_tls(void);
+ 
+ /* capabilities helpers */
+ 
++bool migrate_rdma_caps_check(bool *caps, Error **errp);
+ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
+ 
+ /* parameters */
 -- 
 2.44.0
 
