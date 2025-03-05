@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D954A4F424
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4FAA4F428
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:56:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdxk-0003VL-3M; Tue, 04 Mar 2025 20:54:20 -0500
+	id 1tpdxm-0003Xh-Bz; Tue, 04 Mar 2025 20:54:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxh-0003SC-4d
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:17 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tpdxj-0003W3-S2
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:19 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdxf-0008TO-Dv
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:16 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22349dc31bcso110902965ad.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:15 -0800 (PST)
+ id 1tpdxi-0008Tw-3l
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:19 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-22113560c57so118905275ad.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139654; x=1741744454; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139656; x=1741744456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZhcMHAF0LEx4SB+8bqtdgUZxuEwpD7O1r3fLFnMpyJA=;
- b=Par+Cxjr1cdRQMn4+jMLgE5rSzqWQVVkAHCw4PudxHEJnYKkDDx8K1EUYUdTgIWp1x
- dIcRisOwxqXcA4vQ8SdXnjqazzuc60HFbtmw3sdMFdefrpw6SK1PC8qhrcxjoJ/y4BTf
- DrBcRPkSkEVw5f2wD3smzj4XXNeicPUK1ynK4ffFYwmGtn/AMcvXVViccHrcJkOobafW
- 3lDDRTA8Sm7eIFC5XluT+QPRjfyQsWyUo71Pn/5NeUxqs8CWMeW6qlL5u1wVKVqTwSRn
- uj2IzqabygVaNPxYa7epQSBrvwk2UHbZLitRFMwgqjbhpA9xl/NC+nQrQVWCTnbWPYx5
- oKrQ==
+ bh=0cnDsZ6O9ZtIfrPZ08I3SlUP4EkCO0c3KoTjhEdGuUI=;
+ b=U/xgzq0rcgqUrjWhyt5NNK2EFqOMehRndbpBbIOI1kY+0kxWzfCO0Dt3E6pPohnrJv
+ ACZE5h4V8qjsw/2IP49vUDy8PSMKZhubif6gxtjokGgeq1Dxix8jAt0FSpDYI/t+yQLT
+ cfkUBTzThcw2mG+PeZ3pGoePs8+Bo2L0aKWkYDopw9m9jyHOlbsDkPoWboupmzcNyPzs
+ mF0Q7BMkHvda9dYo1Ku7gAHapFSfS46hXhO5Powgo4hSDezR+Za4f1RDSJ+oHznEJyE1
+ VNpwDFywUEwmmaDuBZXMZ8lVkh9SLHdTdHadSL9js82TCUv3Mtr66aXR5UM/77PayIJM
+ iBtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139654; x=1741744454;
+ d=1e100.net; s=20230601; t=1741139656; x=1741744456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZhcMHAF0LEx4SB+8bqtdgUZxuEwpD7O1r3fLFnMpyJA=;
- b=JJ3n0ilJ7JLGZqHbp+DAObLLtCDTyBAHjZlYKQAwxT5pwyHz1U5lOtKXyGVcRozlJC
- UYcKUiD1O5q/WhiTk2np1F9aRpQs63FiujUSoSBjx8hFO+iuvC/rXX4iw9YyKHUb950s
- 8Pj4ncWJqpQNmlU+RaVtonbb63iYuXg7WUgdetrMvUH0qZyeH0VNZfcYQp1oOOG2ljtd
- 3RHytMtCNFpycSEoygb12eX7bZWesrmDdlz+Yyitcc8zh6rr13/kzQ+w0btjI++gQMPd
- kTAOVBq0ZS5ndKOBOx4mtgOKIhsIDGJc9Ri4/wvxRoEXWz32EsPyRj0HKoUbjzmqo1cF
- YNmw==
-X-Gm-Message-State: AOJu0Ywn2gmQtVzVnmeQPNNrpJSlWK7ru4fc/vKiZ7ztdA5PayhDKtzT
- 4n4F1oWin+Saya/B4fGSx8JIpadWkOEqBxz0hqh5Z7XXgksCZ/Kz5mJ7PHNmvXU=
-X-Gm-Gg: ASbGncv0MADuhpCNxGbvHNHMonvrn90YmF6Xoe4BTqcZOmu4ZmopkGgwGnOu5e1nqHP
- gJbVQoVc1yL7WtQT9fzRWcSSgvzEE522O246nKtSlXihxIiiYJcoxrnLM9TKKYDRqhFZkMltTco
- ttKzJuHqqK6LVsR6xjak7wkHoAMvvQK/SXCmLzBT6FOPEQ43G74YxM5HjjPQrUQbnAQHq5iEJyc
- kVGhUXx1csD/jrfT+5tbsmngBpxpa/0TypkIQ/Yx5y/+X6lVnWEnZjPpkAnXxGL0yblkdOrlkIg
- Zd/ROvctIxeQIPK1oXmdzNrpsD6HusuJVTeSe0Q54PXQmyHQ/LtqIeRpwlYvdNHGjy+wgH1+qVB
- iKMFxENSttpHQS02avcn7WwBR/Z6J8eLL3L7mzbziXwyNZs+zgB0=
-X-Google-Smtp-Source: AGHT+IGOgguZULiQwawFZuCYN84Spa8roeJdqYWB28rTP+rq9/aWIJaCf102B0wrjfsQqUCFq0BCWA==
-X-Received: by 2002:a17:902:e54a:b0:220:ff3f:6cc0 with SMTP id
- d9443c01a7336-223f1cf3515mr26184075ad.38.1741139653723; 
- Tue, 04 Mar 2025 17:54:13 -0800 (PST)
+ bh=0cnDsZ6O9ZtIfrPZ08I3SlUP4EkCO0c3KoTjhEdGuUI=;
+ b=oidvkTsfb4J1AjFTbbYQ8n9TdEIp86d5TEn1RVfURSRp7VdGJsxQDlibtxKugvA7hm
+ uB6w6NwPzSWMBY2KfP8yvTD6OcH8uH6jbm10x+ZG99d/C35SoxWPhJmXGtUxDmisCIkH
+ 6Oq56wUbCN540KJpFphTuyEisFhd9P0xOzVDDzNkTzIY3uNHddllhkmX6E/qDwMS7ZoH
+ 07WSPlc57B7KnGFDI6jWitXb8MdAMXQizDBKL1xg6Zrm7O1gSSjcX8QIqFWuDsODS8Zm
+ fAA+KTxRUAP8JvW0voKsq8evDu+3l0bE3INW7pf6HXXuMDZb4O8ldtdr9vSEjSXDkT9V
+ AGKg==
+X-Gm-Message-State: AOJu0YxNP/wJPcl8u4mfutDKA76/qfzYJpzECzyu51DpaSHBI1tFcU+5
+ qptClO4PI6uz9HPmjSmP00j4E9o2AX93OYfDakqAgICzABvY3pFNTakT8ULo3rs=
+X-Gm-Gg: ASbGnct/jZhqSI9AhdTz3CCkpBd/cRdm6p1xXRgL1qNyhMoCNluDRw3P1inwmfsAHv1
+ zIhlHRlFB9K3gC+5pgsrF8j1RZi47bYg8/pVH9t9oitAFBbSPR9Nc1FyBfcR7tRMhpGyBaydwvl
+ 9pZvvHPs3qhZ64mF6levbaTJuGkwVckAhCrPd1mQryrpNH8E6fRGDpRipQVIVcERGmg16IcNfZg
+ g6Rqyu7UKYVl8pNE2EzVO6oIvJCy98XFlOsBrSMGskYKduHwJhpnTlCY3+pzm/HGSj7DSvYa8eq
+ fu3OcCugBSA9JJW+dqv98vipEem6wd+Z9oQIP0QFEzvipkldSNiK9RXUg0yI7Te0sWY1POATAU/
+ 9C2eoBgHQe3gCZQekLIfiJCt1Psmj6ZjX2H6BlYXW24M2O3FQAYs=
+X-Google-Smtp-Source: AGHT+IGjcHdILQk+eWMxRqeLOEMROLjhpD2JtvEjT7Ysa/ULNCtgyJeGJjhO0A7dtmIhGtwT/5/3LQ==
+X-Received: by 2002:a17:902:c406:b0:215:9642:4d7a with SMTP id
+ d9443c01a7336-223f1ba4773mr20529985ad.0.1741139656460; 
+ Tue, 04 Mar 2025 17:54:16 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.11
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:54:13 -0800 (PST)
+ Tue, 04 Mar 2025 17:54:15 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Vasilis Liaskovitis <vliaskovitis@suse.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 20/59] hw/riscv/virt: Add serial alias in DTB
-Date: Wed,  5 Mar 2025 11:52:28 +1000
-Message-ID: <20250305015307.1463560-21-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 21/59] MAINTAINERS: Remove Bin Meng from RISC-V maintainers
+Date: Wed,  5 Mar 2025 11:52:29 +1000
+Message-ID: <20250305015307.1463560-22-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,42 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vasilis Liaskovitis <vliaskovitis@suse.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-Add an "aliases" node with a "serial0" entry for the single UART
-in the riscv virt machine.
+Bin Meng has been a long time contributor and maintainer for QEMU RISC-V
+and has been very beneficial to the RISC-V ecosystem.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2774
-Signed-off-by: Vasilis Liaskovitis <vliaskovitis@suse.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250116161007.39710-1-vliaskovitis@suse.com>
+Unfortunately his email has started to bounce so this patch is removing
+them from MAINTAINERS. If in the future Bin Meng wants to return we will
+happily re-add them.
+
+Note that I'm not removing Bin Meng as a "SD (Secure Card)" maintainer.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20250128060546.1374394-1-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 241389d72f..dae46f4733 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -971,6 +971,7 @@ static void create_fdt_uart(RISCVVirtState *s, const MemMapEntry *memmap,
-     }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2e7fc6fa91..433cf66e8f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -319,7 +319,6 @@ F: tests/functional/test_ppc_74xx.py
+ RISC-V TCG CPUs
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <alistair.francis@wdc.com>
+-M: Bin Meng <bmeng.cn@gmail.com>
+ R: Weiwei Li <liwei1518@gmail.com>
+ R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+@@ -1618,7 +1617,6 @@ F: include/hw/riscv/opentitan.h
+ F: include/hw/*/ibex_*.h
  
-     qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", name);
-+    qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", name);
- }
+ Microchip PolarFire SoC Icicle Kit
+-M: Bin Meng <bmeng.cn@gmail.com>
+ L: qemu-riscv@nongnu.org
+ S: Supported
+ F: docs/system/riscv/microchip-icicle-kit.rst
+@@ -1645,7 +1643,6 @@ F: include/hw/char/shakti_uart.h
  
- static void create_fdt_rtc(RISCVVirtState *s, const MemMapEntry *memmap,
-@@ -1180,6 +1181,8 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-     qemu_fdt_setprop(ms->fdt, "/chosen", "rng-seed",
-                      rng_seed, sizeof(rng_seed));
+ SiFive Machines
+ M: Alistair Francis <Alistair.Francis@wdc.com>
+-M: Bin Meng <bmeng.cn@gmail.com>
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ L: qemu-riscv@nongnu.org
+ S: Supported
+@@ -3747,7 +3744,7 @@ S: Orphan
+ F: hw/i386/amd_iommu.?
  
-+    qemu_fdt_add_subnode(ms->fdt, "/aliases");
-+
-     create_fdt_flash(s, memmap);
-     create_fdt_fw_cfg(s, memmap);
-     create_fdt_pmu(s);
+ OpenSBI Firmware
+-M: Bin Meng <bmeng.cn@gmail.com>
++L: qemu-riscv@nongnu.org
+ S: Supported
+ F: pc-bios/opensbi-*
+ F: .gitlab-ci.d/opensbi.yml
 -- 
 2.48.1
 
