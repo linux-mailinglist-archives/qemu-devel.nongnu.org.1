@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6B0A4F377
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F42BA4F37C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:22:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdRP-0006av-M1; Tue, 04 Mar 2025 20:20:55 -0500
+	id 1tpdSa-0007ph-BP; Tue, 04 Mar 2025 20:22:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdRM-0006a1-CV
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:20:52 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdSX-0007mc-I7
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:22:05 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdRJ-0005k6-9N
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:20:52 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-390f69e71c8so215535f8f.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:20:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdST-0006t3-8H
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:22:05 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4393dc02b78so40628875e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137647; x=1741742447; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=tk/h5aC9157IndKi5d93agJzQQcdRdCNAHnwM8zwr7s=;
- b=Xw+ScyPTqa/E4fQ2DYfccOmiUMkQnKRjLi3UFWu3I3vtdwMCgxEzt4T9S25RxvtOQJ
- dBCoJXnrEudswLFDtRm73HYwCTN38/Uqz/Vg4xaghSG+IUgTCdBuD5mdjA2vdU8eJPc9
- T+eAEYRQ5W/uxxAXyU+zbfCF6Ootc2eF+i4+lKzfigl658yG3ip0sTGg2LyPpT5SnhEt
- ix02JUT7em6riz650r8yuzsUOBjeKsvlnlAh5OFGk+7hT3zpIUOnjOUgCgT1EQop4B52
- YJLAXSggR0UjrqHUcsLHkwfHOpxULm2jdDpGjuu8OyV2SviMvw6WTsyEfD7b3ngJrdWw
- FTmw==
+ d=linaro.org; s=google; t=1741137719; x=1741742519; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ngh/0QFDEK1KefUKxSamgqklsnsCaEo4eWiuSuzCkvs=;
+ b=B+nFoOQ1FErYz7pg7WCmUtIqxAyoBRpqlrUa5YO2alRLlFseyRaX8P5YHE+/MEt8Gk
+ 5BIQLuMKga+Hn9JsNiijjfId6yrZkQKnMretpqXAGUvA+4WB6d1vHnHDLu9N293W9o/y
+ vfA0amUk5H3KKSv2xZuexLTbfKPCMImUQgijNeMpjrzVrND0/ltGBgL+N7N3n93BSlIu
+ xF2cIJn100HiZrBpKkRkZTO+L5Dkdl1aEyNQmA+EfsyhVn20dJrJwov5dMiGezXNmgEN
+ k3eLRt8SUhUnqtJaTkcHarV6JpCtblpdxJT6lykjtF5Msz9DbaJ9IBOGD5fr7fsliTcW
+ IzVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137647; x=1741742447;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tk/h5aC9157IndKi5d93agJzQQcdRdCNAHnwM8zwr7s=;
- b=iarBABQTNucKlWe1FsKgjVMqlGetGhx/TYsChpPgNrvlq9sna7kTbw0LS41dZ4KU9O
- DSWtc2pcJcWPuS+FFqCneR8++T1srKGuwDVwR4vcFylnpYu5N7bylPIdp2qNHws39SrD
- q5aRs9VPay/8j51INsZzA8qZQIUIkJdOCpzQ6mtfj2MH1PjdBPlE/klPUEd7x4viazAW
- Ga3a/913rBUuKOdapAGR9RKEXWCUCYpNFe79TjRyXKJR/4xd3zK3IRVaX1hj4s/nW/HC
- BnxWhCg1c6hRx0qH6VjvgmqICRqYpArl/Mn9Zx9KuGWaorjdkhAVMPpWInekgZ94lCsh
- oCzA==
-X-Gm-Message-State: AOJu0YygKYDK3lXBzCTOBo9h2KcccAhayehaI8bRIF278Tn5sHQBKRCw
- C9vclQ1N0AHAVdWLnbswJC7hR30LnDjg+jotHz6QvKiIj8+holJD4g75ZbVHB80=
-X-Gm-Gg: ASbGncvoMNQt9gTL0Groi1xqEKPsRUHMSVhtkBPH/MpG15rOn45EnHY89s3XYzRVcuk
- T9LaGqYmFs1MzfKVQlu9Z8KJE3KBNOrB/M6EYlG+Ib8vpVN4xi4uCPajb21trn9VtaefZvQ1Yp6
- eDVy3aKbHGyRb4Hg14LW7RHphFX3YOM7/nq2KpX00fPpK8bPAdxCUZ33+1743M9a+tNPx+zNoXL
- 0Sg/uDnOjleNIJwExY6Id5Gy3YGL+7BRXf6pz/48WJ8DOecybFDUReeZAzwk/FHAE2eXwQuxR6a
- 9YoXIi5nLUeAt5Idv3A6v+gmPn2fxem234i66wrclbClBMBev5b++rldw7gFu5RYl3OI4PKU+51
- QB79m/LD8eRgN
-X-Google-Smtp-Source: AGHT+IEUM1iwwu8LPCt3wShcauBD88FFdJciFH6VNKztu3VtAO0/r2xK/eKIdMbodubiw3iBG6BsHQ==
-X-Received: by 2002:a05:6000:4009:b0:38d:ba8e:7327 with SMTP id
- ffacd0b85a97d-3911e9df21fmr958328f8f.8.1741137647606; 
- Tue, 04 Mar 2025 17:20:47 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1741137719; x=1741742519;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ngh/0QFDEK1KefUKxSamgqklsnsCaEo4eWiuSuzCkvs=;
+ b=v8QvuwA2CdXI2my2RppyEBC1iaOf3gC3HFVJXHoVuDWXyOQEdN8DEjtiAMsJqmvZJN
+ BLvcexKHVK6QPaOpRtvmPWidFkU5bsNBbv3E9pbPX+WYCVHNcvVaYca0Tfx4WGQnMH66
+ nrolazmb/htdxdFxDYjIXoZdZhb3O3e9foI566YW3SyIH/Ts/hRx8kuz3PkayuQeLJYE
+ fr7ASzSDUnoTq3jGF6jZ1CY8tYJ2tPW873SQhSAkb1dvJCrTnaM9GZl08o0DwCPPki2G
+ V/det5oMWrpG6WsrOH2YaLJ7eUSLkBcohZU74JXRGVYTeuDhxrVGjuAvkveLUA4/W2PQ
+ f78g==
+X-Gm-Message-State: AOJu0Yx6ZZcgJDV4Q3GWMKelLHwBxzmH/pBGkBlKuSq6zLuWvp3pU1QG
+ O6h3WiK9O5US6edw5elH9oxWMu1JnnUjuD5ZX4U5bASbz6UJnb8Ax2El+OXwzD1klDxQpLL0ro/
+ 14OA=
+X-Gm-Gg: ASbGncsH0NiR/ehKZCilGMMuEOcuREpBEIUbTyhpCfobo1h1fpRvQFkLalhqGf+CMqI
+ IiadwwGtrfr3m6+i9kQ0z4sW+lo1QgOvQ/vhVJRRESPYwXuK020VcjJNOc26+9BkaGMI3mCSpQ/
+ 6CKXN98b/PMMLaQk6lNVVz/JfuNzWrOCtRPDiMnwRrKShiD1g9qnSDpS2y/KoNgk+QRZPrUbNNY
+ nJQurs3fxRH18nrz3HTsqWS0+QNCR/HGdoZlZsvqjPwFDzaYf08d9B1rz5er13uXlH96aDE/zDw
+ I1CYGvBKVQpG4lR9yCCJjyXcq9ZImUelqtkt+lAxtBuGuhDpYEv2L8FuHntakPuqJE/rh/mLXK9
+ ZnNpfvGpbLpMRmRST9gs=
+X-Google-Smtp-Source: AGHT+IFx9qbmPmvq8DiT+g+eF5LgvKKX1peAVSTwbBQRwMs/dm8yXFQ4bWGFiDPgc9WjjFMhB7foHQ==
+X-Received: by 2002:a05:600c:35c5:b0:43b:c1ba:2186 with SMTP id
+ 5b1f17b1804b1-43bd29a0dbdmr5975575e9.18.1741137718803; 
+ Tue, 04 Mar 2025 17:21:58 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795d1asm18998820f8f.4.2025.03.04.17.20.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Mar 2025 17:20:46 -0800 (PST)
-Message-ID: <b6d6b2bc-bd5a-4917-9486-9a23ba4afbf4@linaro.org>
-Date: Wed, 5 Mar 2025 02:20:45 +0100
+ 5b1f17b1804b1-43bd42e53e0sm1928805e9.27.2025.03.04.17.21.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 04 Mar 2025 17:21:58 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/41] Misc HW patches for 2025-03-05
+Date: Wed,  5 Mar 2025 02:21:15 +0100
+Message-ID: <20250305012157.96463-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 11/11] hw/vmapple/vmapple: Add vmapple machine type
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Phil Dennis-Jordan <phil@philjordan.eu>, peter.maydell@linaro.org,
- berrange@redhat.com, pbonzini@redhat.com, John Snow <jsnow@redhat.com>,
- Kashyap Chamarthy <kchamart@redhat.com>
-Cc: qemu-devel@nongnu.org, agraf@csgraf.de, mst@redhat.com,
- stefanha@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- marcandre.lureau@redhat.com, eblake@redhat.com, armbru@redhat.com,
- qemu-block@nongnu.org, qemu-arm@nongnu.org, Alexander Graf
- <graf@amazon.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20250112210056.16658-1-phil@philjordan.eu>
- <20250112210056.16658-12-phil@philjordan.eu>
- <2a4229cf-c789-41ed-ab46-0f0fd9efd19a@linaro.org>
- <CAAibmn0tV_YLwJwcgfy5sZiPyeaBWE_FPOPEEE_0aZ7mMANFig@mail.gmail.com>
- <81390b0b-bae7-43bc-84d4-7447805a1a83@linaro.org>
-Content-Language: en-US
-In-Reply-To: <81390b0b-bae7-43bc-84d4-7447805a1a83@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,75 +94,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/25 23:11, Philippe Mathieu-Daudé wrote:
-> On 3/3/25 21:36, Phil Dennis-Jordan wrote:
->>
->>
->> On Mon, 3 Mar 2025 at 19:20, Philippe Mathieu-Daudé <philmd@linaro.org 
->> <mailto:philmd@linaro.org>> wrote:
->>
->>     On 12/1/25 22:00, Phil Dennis-Jordan wrote:
->>      > From: Alexander Graf <graf@amazon.com <mailto:graf@amazon.com>>
+The following changes since commit 661c2e1ab29cd9c4d268ae3f44712e8d421c0e56:
 
+  scripts/checkpatch: Fix a typo (2025-03-04 09:30:26 +0800)
 
->>      >   MAINTAINERS                 |   1 +
->>      >   contrib/vmapple/uuid.sh     |   9 +
->>      >   docs/system/arm/vmapple.rst |  63 ++++
->>      >   docs/system/target-arm.rst  |   1 +
->>      >   hw/vmapple/Kconfig          |  20 ++
->>      >   hw/vmapple/meson.build      |   1 +
->>      >   hw/vmapple/vmapple.c        | 618 +++++++++++++++++++++++++++++
->>     +++++++
->>      >   7 files changed, 713 insertions(+)
+are available in the Git repository at:
 
+  https://github.com/philmd/qemu.git tags/hw-misc-20250305
 
->>     Alex, Phil, we now mandate a SPDX tag. Due to the license used in
->>     vmapple.c in this patch, are you OK with me squashing here:
->>
->>
->> Sorry about that, I forgot all about the SPDX tags in scripts and docs 
->> - yes, please add that SPDX on uuid.sh. The vmapple.rst is Alex's 
->> creation (I think I tweaked a few lines max) - but if that's the usual 
->> license we use for documentation as well then it seems a reasonable 
->> assumption to use GPL2+ there too if we don't hear from him.
-> 
-> TBH IDK and IANAL :) "GPL-2.0-or-later" is about *program*, is it
-> relevant for documentation? This is the single license used with SPDX
-> in docs/:
-> 
-> $ git grep SPDX docs
-> docs/system/devices/igb.rst:1:.. SPDX-License-Identifier: GPL-2.0-or-later
-> docs/system/devices/virtio-gpu.rst:2:   SPDX-License-Identifier: 
-> GPL-2.0-or-later
-> 
-> Note we also use the FreeBSD-DOC in bitmaps.rst (not as SPDX tag):
-> 
-> docs/interop/bitmaps.rst:5:   This file is licensed via The FreeBSD 
-> Documentation License, the full
-> 
-> Per commit 2b96c1a4931 ("scripts: validate SPDX license choices"):
-> 
-> +    my $prefer = "GPL-2.0-or-later";
-> +    my @valid = qw(
-> +       GPL-2.0-only
-> +       LGPL-2.1-only
-> +       LGPL-2.1-or-later
-> +       BSD-2-Clause
-> +       BSD-3-Clause
-> +       MIT
-> +       );
-> 
-> GPL: "program"
-> LGPL: "library"
-> BSD/MIT: "software"
-> 
-> In doubt I'll stick with $prefer except if someone has a better clue /
-> suggestion.
+for you to fetch changes up to 15571873d76b8fdd6cafb1d268415a1327ae3a6f:
 
-FTR I'm going to send a PR including this series with the previously
-$prefer = "GPL-2.0-or-later" snippets squashed.
+  hw/nvram/eeprom_at24c: Reorganise init to avoid overwriting values (2025-03-05 02:13:38 +0100)
 
-Regards,
+"Line over 80 chars" checkpatch.pl warnings in vmapple patches deliberately ignored.
 
-Phil.
+----------------------------------------------------------------
+Misc HW patches
+
+- Remove TCG dependency on ARM_GICV3 (Philippe)
+- Add MMIO interface to PVPanic device (Alexander)
+- Add vmapple machine (Alexander & Phil)
+- Restrict part of sPAPR PAGE_INIT hypercall to TCG (Philippe)
+- Make ghes_record_cper_errors() scope static (Gavin)
+- Do not expose the ARM virt machines on Xen-only binary (Philippe)
+- Xen header cleanups (Philippe)
+- Set Freescale eTSEC network device description & category (Zoltan)
+- Improve RX FIFO depth for various UARTs (Philippe)
+- Prevent TX FIFO memory leak in SiFive UART (Alistair)
+- Cleanups in MacIO and AT24C EEPROM (Zoltan)
+- Add UFS temperature event notification support & test (Keoseong)
+- Remove printf() calls in hw/arm/ (Peter)
+----------------------------------------------------------------
+
+Alexander Graf (7):
+  hw/misc/pvpanic: Add MMIO interface
+  hw: Add vmapple subdir
+  hw/vmapple/aes: Introduce aes engine
+  hw/vmapple/bdif: Introduce vmapple backdoor interface
+  hw/vmapple/cfg: Introduce vmapple cfg region
+  hw/vmapple/virtio-blk: Add support for apple virtio-blk
+  hw/vmapple/vmapple: Add vmapple machine type
+
+Alistair Francis (1):
+  hw/char/sifive_uart: Free fifo on unrealize
+
+BALATON Zoltan (7):
+  hw/net/fsl_etsec: Set eTSEC device description and category
+  hw/misc/macio: Improve trace logs
+  hw/misc/macio/gpio: Add constants for register bits
+  hw/nvram/eeprom_at24c: Use OBJECT_DECLARE_SIMPLE_TYPE
+  hw/nvram/eeprom_at24c: Remove ERR macro that calls fprintf to stderr
+  hw/nvram/eeprom_at24c: Remove memset after g_malloc0
+  hw/nvram/eeprom_at24c: Reorganise init to avoid overwriting values
+
+Gavin Shan (1):
+  hw/acpi/ghes: Make ghes_record_cper_errors() static
+
+Keoseong Park (2):
+  hw/ufs: Add temperature event notification support
+  tests/qtest/ufs-test: Add test code for the temperature feature
+
+Peter Maydell (5):
+  hw/arm/omap1: Convert raw printfs to qemu_log_mask()
+  hw/arm/omap1: Drop ALMDEBUG ifdeffed out code
+  hw/arm/omap1: Convert information printfs to tracepoints
+  hw/arm/omap_sx1: Remove ifdeffed out debug printf
+  hw/arm/versatilepb: Convert printfs to LOG_GUEST_ERROR
+
+Phil Dennis-Jordan (1):
+  hw/usb/hcd-xhci-pci: Adds property for disabling mapping in IRQ mode
+
+Philippe Mathieu-Daudé (17):
+  hw/intc: Remove TCG dependency on ARM_GICV3
+  hw/ppc/spapr: Restrict part of PAGE_INIT hypercall to TCG
+  hw/arm: Do not expose the virt machine on Xen-only binary
+  hw/xen: Link XenPVH with GPEX PCIe bridge
+  hw/xen/xen-pvh: Reduce included headers
+  hw/xen/xen-hvm: Reduce included headers
+  hw/xen/xen-bus: Reduce included headers
+  hw/xen/xen-legacy-backend: Remove unused 'net/net.h' header
+  hw/char/pl011: Warn when using disabled receiver
+  hw/char/pl011: Simplify a bit pl011_can_receive()
+  hw/char/pl011: Improve RX flow tracing events
+  hw/char/pl011: Really use RX FIFO depth
+  hw/char/bcm2835_aux: Really use RX FIFO depth
+  hw/char/imx_serial: Really use RX FIFO depth
+  hw/char/mcf_uart: Use FIFO_DEPTH definition instead of magic values
+  hw/char/mcf_uart: Really use RX FIFO depth
+  hw/char/sh_serial: Return correct number of empty RX FIFO elements
+
+ MAINTAINERS                         |   8 +
+ docs/system/arm/vmapple.rst         |  65 +++
+ docs/system/target-arm.rst          |   1 +
+ meson.build                         |   1 +
+ qapi/virtio.json                    |  14 +
+ hw/ufs/ufs.h                        |   2 +
+ hw/usb/hcd-xhci-pci.h               |   1 +
+ hw/usb/hcd-xhci.h                   |   5 +
+ hw/vmapple/trace.h                  |   2 +
+ include/block/ufs.h                 |  13 +-
+ include/hw/acpi/ghes.h              |   2 -
+ include/hw/misc/pvpanic.h           |   1 +
+ include/hw/pci/pci_ids.h            |   1 +
+ include/hw/qdev-properties-system.h |   6 +
+ include/hw/virtio/virtio-blk.h      |  11 +-
+ include/hw/vmapple/vmapple.h        |  23 ++
+ include/hw/xen/xen-bus.h            |   3 +-
+ include/hw/xen/xen-hvm-common.h     |  14 +-
+ include/hw/xen/xen-legacy-backend.h |   1 -
+ include/hw/xen/xen-pvh-common.h     |   8 +-
+ include/qemu/cutils.h               |  15 +
+ hw/acpi/ghes.c                      |   6 +-
+ hw/arm/omap1.c                      | 125 ++----
+ hw/arm/omap_sx1.c                   |   4 -
+ hw/arm/versatilepb.c                |   7 +-
+ hw/arm/xen-stubs.c                  |   5 +-
+ hw/block/virtio-blk.c               |  17 +-
+ hw/char/bcm2835_aux.c               |   6 +-
+ hw/char/imx_serial.c                |   8 +-
+ hw/char/mcf_uart.c                  |  16 +-
+ hw/char/pl011.c                     |  30 +-
+ hw/char/sh_serial.c                 |  30 +-
+ hw/char/sifive_uart.c               |  44 +-
+ hw/core/qdev-properties-system.c    |   9 +
+ hw/i386/xen/xen-hvm.c               |   6 +
+ hw/i386/xen/xen-pvh.c               |   1 +
+ hw/misc/macio/gpio.c                |  21 +-
+ hw/misc/pvpanic-mmio.c              |  60 +++
+ hw/net/fsl_etsec/etsec.c            |   2 +
+ hw/nvram/eeprom_at24c.c             |  23 +-
+ hw/ppc/spapr_hcall.c                |   4 +-
+ hw/ufs/ufs.c                        |  78 +++-
+ hw/usb/hcd-xhci-pci.c               |  24 ++
+ hw/usb/hcd-xhci.c                   |   3 +-
+ hw/vmapple/aes.c                    | 581 ++++++++++++++++++++++++++
+ hw/vmapple/bdif.c                   | 274 ++++++++++++
+ hw/vmapple/cfg.c                    | 195 +++++++++
+ hw/vmapple/virtio-blk.c             | 204 +++++++++
+ hw/vmapple/vmapple.c                | 618 ++++++++++++++++++++++++++++
+ hw/xen/xen-hvm-common.c             |   7 +
+ hw/xen/xen-pvh-common.c             |   5 +-
+ tests/qtest/ufs-test.c              |  24 ++
+ util/hexdump.c                      |  18 +
+ accel/Kconfig                       |   1 +
+ contrib/vmapple/uuid.sh             |  12 +
+ hw/Kconfig                          |   1 +
+ hw/arm/Kconfig                      |   1 +
+ hw/arm/trace-events                 |   7 +
+ hw/char/trace-events                |   7 +-
+ hw/intc/Kconfig                     |   6 +-
+ hw/intc/meson.build                 |   4 +-
+ hw/meson.build                      |   1 +
+ hw/misc/Kconfig                     |   4 +
+ hw/misc/macio/trace-events          |   3 +-
+ hw/misc/meson.build                 |   1 +
+ hw/vmapple/Kconfig                  |  34 ++
+ hw/vmapple/meson.build              |   7 +
+ hw/vmapple/trace-events             |  21 +
+ 68 files changed, 2558 insertions(+), 204 deletions(-)
+ create mode 100644 docs/system/arm/vmapple.rst
+ create mode 100644 hw/vmapple/trace.h
+ create mode 100644 include/hw/vmapple/vmapple.h
+ create mode 100644 hw/misc/pvpanic-mmio.c
+ create mode 100644 hw/vmapple/aes.c
+ create mode 100644 hw/vmapple/bdif.c
+ create mode 100644 hw/vmapple/cfg.c
+ create mode 100644 hw/vmapple/virtio-blk.c
+ create mode 100644 hw/vmapple/vmapple.c
+ create mode 100755 contrib/vmapple/uuid.sh
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+
+-- 
+2.47.1
+
 
