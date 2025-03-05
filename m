@@ -2,52 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127A4A4F785
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B71A4F73D
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:39:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpifD-0001V9-KW; Wed, 05 Mar 2025 01:55:31 -0500
+	id 1tpiPH-0007mI-2R; Wed, 05 Mar 2025 01:39:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1tpieq-00017e-LF
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:55:09 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1tpiei-0005wT-VB
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:55:04 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxGHFC9cdnDumKAA--.41612S3;
- Wed, 05 Mar 2025 14:54:58 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCx_cYw9cdnViM3AA--.10022S4;
- Wed, 05 Mar 2025 14:54:57 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org,
-	peter.maydell@linaro.org,
-	maobibo@loongson.cn
-Cc: richard.henderson@linaro.org, yangxiaojuan@loongson.cn,
- wangliupu@loongson.cn
-Subject: [PATCH v7 2/2] target/loongarch: check tlb_ps
-Date: Wed,  5 Mar 2025 14:33:11 +0800
-Message-Id: <20250305063311.830674-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250305063311.830674-1-gaosong@loongson.cn>
-References: <20250305063311.830674-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tpiPB-0007lx-Iy
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:38:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tpiP9-0000xi-2k
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:38:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741156730;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=JYYUs2fBDZGyQRkxAl6EA2s4BhdIPh9cwsN5arzJRQg=;
+ b=UEh5qAwzmGckUd96HdNqYOWTDoCU7d9ntHuvpCdbaPNaSILdyA7gT0DYukTsdnV84lvk5W
+ 7zfRpw/poTLqwlnseM9gedVKaqx7sIxvjPdk/8wtmw9IiqFjp1mlcBe5iYzAS+P8toy07+
+ xWmvUNEn3NMchDAlP4q0oPrHRxFhcBw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-524--arPV_qBPfyaYuHZJQA10g-1; Wed, 05 Mar 2025 01:38:48 -0500
+X-MC-Unique: -arPV_qBPfyaYuHZJQA10g-1
+X-Mimecast-MFC-AGG-ID: -arPV_qBPfyaYuHZJQA10g_1741156727
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43bd0586b86so6040865e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 22:38:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741156727; x=1741761527;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JYYUs2fBDZGyQRkxAl6EA2s4BhdIPh9cwsN5arzJRQg=;
+ b=SNR6/dFxb9/SvNOLyjsA6DZR/BJ6+RpqG8x9GrAtpZWSOVj1MC3Bctm0Zw/jsfxgqj
+ dtNErHSO7AZ8I+jaME8xPvXxQXw1V321Ydxiu0p+h+hb1gZkRDrDPbkaamp6nt+OGltE
+ XF5ndNI1svMI1YKTwhW1eyHPXSnfxhvJkDc7+Wa6yVwTHYb/PGgXtHmghHwQNEwSXtAA
+ gBY/l2XJYuV8hbh/ShM5FwTK3oxKmsMN3PE+Rd9o49ubh9HnZ6JC5So1nSMKxo7LsvtW
+ ihEBZcl4cW6blzrIIDdU0RJnPPjo/V6/KWzK2IFBkEHyH6d4011Oy69pSmiA4A1QoXqQ
+ yyHA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU0xS8q+fqMBSxcT0FRg6D13u9S4XE8o8Tx+N10UueUAzEBZqUpvcVZT/rzTm79YHy6qGg6VqEGcGdR@nongnu.org
+X-Gm-Message-State: AOJu0YyRMXDpYJmqCVk9sKd/HY/dl/RSpkcU5psFFUE+MykgQxH50tTz
+ DuEQ4UfHdoK72wb0ak9kI6DKI2bjciIqHqJibMLh6y9s8thvHwVGd0xv+OGmPgLGhNYNcdNC3me
+ K+DGVpmpwAt2+ZlZVatP7kRk27+Qk/yEq9GwBqJsSFE57O3Qq/yh2
+X-Gm-Gg: ASbGnctUJSMOvoE6GMKx/G9ttk/GG8yDV1IfWhFBqc11xr0H69AS7aeqr8/0RVneh7j
+ d07uybWKE2kFVDPfXW+Wd4a97DwqNW69HPKQ1A8t0nEOkr6N7s/zYlz2eN6OLoHo3NUDksCDoEi
+ JwTxfPBuwxtNvgLTWem2qYPxqXOsd2yUvm5/vvLjjpZh0Z3lYY5jSLgFmp7CrpuyH1bVmc+5AyW
+ e1MJc4bddDV523BHTYBBgw+y0fpDPD9XjI8NrIAT5I4NKgR4IgLHE/n7F5vSY50QCyXRiSiGS6d
+ CKH3N87d7NCEebjzpHO6rM+qPkMxd0H3s3V55X6KIn6oIPw=
+X-Received: by 2002:a05:600c:458a:b0:439:5da7:8e0 with SMTP id
+ 5b1f17b1804b1-43bd2992d20mr13444575e9.16.1741156727129; 
+ Tue, 04 Mar 2025 22:38:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEFgFDO9pjgjRN7EVdQM+28tR8gOu+IwlE9xKq/ZVnbl87C8RKnhAPHPzvnCBTwJy2UpqXndg==
+X-Received: by 2002:a05:600c:458a:b0:439:5da7:8e0 with SMTP id
+ 5b1f17b1804b1-43bd2992d20mr13444375e9.16.1741156726746; 
+ Tue, 04 Mar 2025 22:38:46 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-231.web.vodafone.de.
+ [109.42.51.231]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bd4310779sm7604665e9.37.2025.03.04.22.38.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Mar 2025 22:38:45 -0800 (PST)
+Message-ID: <c37bff90-72f2-4f82-94b0-e2ea63684b35@redhat.com>
+Date: Wed, 5 Mar 2025 07:38:43 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio: Make vfio-pci available on 64-bit host
+ platforms only
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini <pbonzini@redhat.com>, 
+ qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Eric Auger <eric.auger@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250226084721.232703-1-clg@redhat.com>
+ <20250226084721.232703-2-clg@redhat.com>
+ <a39e97c2-c6fd-34e4-f91b-b3491185b789@eik.bme.hu>
+ <c60b7780-5b3f-43a0-a7f1-30820d4e6fb8@redhat.com>
+ <bb7c2adf-f146-50c7-7716-c1ee7b606b01@eik.bme.hu>
+ <aa01f3dd-e3ac-4ee5-87b4-8133103bd000@linaro.org>
+ <270cc189-e3b2-4bf4-b32b-8655be51bcb4@redhat.com>
+ <b2075e91-79ca-4d5f-b13b-151f2a59181d@redhat.com>
+ <8e3a5810-accf-1f77-8692-4e077c3ce327@eik.bme.hu>
+ <b0b56480-0b5a-4f32-af27-13394795b58e@redhat.com>
+ <CAFEAcA8FRyuuPxZQhLM8Jq4iD6TEMqN+E=iTNfNOeafTzTBeNg@mail.gmail.com>
+ <2ccd4a87-68f3-4eb1-bc2a-dbc424bc8d34@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <2ccd4a87-68f3-4eb1-bc2a-dbc424bc8d34@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCx_cYw9cdnViM3AA--.10022S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -65,209 +169,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For LoongArch th min tlb_ps is 12(4KB), for TLB code,
-the tlb_ps may be 0,this may case UndefinedBehavior
-Add a check-tlb_ps fuction to check tlb_ps,
-to make sure the tlb_ps is avalablie. we check tlb_ps
-when get the tlb_ps from tlb->misc or CSR bits.
-1. cpu reset
-   set CSR_PWCL.PTBASE and CSR_STLBPS.PS bits a default value
-   from CSR_PRCFG2;
-2. tlb instructions.
-   some tlb instructions get  the tlb_ps from tlb->misc but the
-   value may  has been initialized to 0. we need just check the tlb_ps
-   skip the function and write a guest log.
-3. csrwr instructions.
-   to make sure CSR_PWCL.PTBASE and CSR_STLBPS.PS bits are avalable,
-   cheke theses bits and set a default value from CSR_PRCFG2.
+On 03/03/2025 18.32, Philippe Mathieu-Daudé wrote:
+> On 3/3/25 17:57, Peter Maydell wrote:
+>> On Mon, 3 Mar 2025 at 15:49, Cédric Le Goater <clg@redhat.com> wrote:
+>>> Why are we keeping qemu-system-ppc and qemu-system-i386, and arm,
+>>> since qemu-system-ppc64 and qemu-system-x86_64 should be able to
+>>> run the same machines ?
+>>
+>> They're not identical -- for example "-cpu max" on
+>> qemu-system-arm is a 32-bit CPU but on qemu-system-aarch64
+>> it is a 64-bit CPU.
+>>
+>> There's definitely a lot of overlap but we can't just drop
+>> the -arm executable until/unless we figure out what to do
+>> about the corner cases where they are different. Plus there's
+>> a lot of users out there with existing command lines and
+>> configs that assume the existence of a qemu-system-arm
+>> executable.
+> 
+> Thomas and myself have been trying to sort that out. Now with the
+> single-binary effort, it gained new interest. This hasn't be a trivial
+> task so far, due to as you mentioned the legacy CLI uses and migration.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu.c                        | 11 +++++---
- target/loongarch/helper.h                     |  1 +
- target/loongarch/internals.h                  |  2 ++
- target/loongarch/tcg/csr_helper.c             | 27 +++++++++++++++++--
- .../tcg/insn_trans/trans_privileged.c.inc     |  1 +
- target/loongarch/tcg/tlb_helper.c             | 23 ++++++++++++++--
- 6 files changed, 58 insertions(+), 7 deletions(-)
+FWIW, here's my former attempt to see whether we could move into that direction:
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 3788f895c1..03ab2d44ca 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -543,6 +543,7 @@ static void loongarch_max_initfn(Object *obj)
- 
- static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
- {
-+    uint8_t tlb_ps;
-     CPUState *cs = CPU(obj);
-     LoongArchCPUClass *lacc = LOONGARCH_CPU_GET_CLASS(obj);
-     CPULoongArchState *env = cpu_env(cs);
-@@ -591,13 +592,17 @@ static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
-      */
-     env->CSR_PGDH = 0;
-     env->CSR_PGDL = 0;
--    env->CSR_PWCL = 0;
-     env->CSR_PWCH = 0;
--    env->CSR_STLBPS = 0;
-     env->CSR_EENTRY = 0;
-     env->CSR_TLBRENTRY = 0;
-     env->CSR_MERRENTRY = 0;
--
-+    /* set CSR_PWCL.PTBASE and CSR_STLBPS.PS bits from CSR_PRCFG2 */
-+    if (env->CSR_PRCFG2 == 0) {
-+        env->CSR_PRCFG2 = 0x3fffff000;
-+    }
-+    tlb_ps = ctz32(env->CSR_PRCFG2);
-+    env->CSR_STLBPS = FIELD_DP64(env->CSR_STLBPS, CSR_STLBPS, PS, tlb_ps);
-+    env->CSR_PWCL = FIELD_DP64(env->CSR_PWCL, CSR_PWCL, PTBASE, tlb_ps);
-     for (n = 0; n < 4; n++) {
-         env->CSR_DMW[n] = FIELD_DP64(env->CSR_DMW[n], CSR_DMW, PLV0, 0);
-         env->CSR_DMW[n] = FIELD_DP64(env->CSR_DMW[n], CSR_DMW, PLV1, 0);
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 943517b5f2..1d5cb0198c 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -100,6 +100,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
- DEF_HELPER_1(csrrd_pgd, i64, env)
- DEF_HELPER_1(csrrd_cpuid, i64, env)
- DEF_HELPER_1(csrrd_tval, i64, env)
-+DEF_HELPER_2(csrwr_stlbps, i64, env, tl)
- DEF_HELPER_2(csrwr_estat, i64, env, tl)
- DEF_HELPER_2(csrwr_asid, i64, env, tl)
- DEF_HELPER_2(csrwr_tcfg, i64, env, tl)
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 7b254c5f49..1cd959a766 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -43,6 +43,8 @@ enum {
-     TLBRET_PE = 7,
- };
- 
-+bool check_ps(CPULoongArchState *ent, int ps);
-+
- extern const VMStateDescription vmstate_loongarch_cpu;
- 
- void loongarch_cpu_set_irq(void *opaque, int irq, int level);
-diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-index 6c95be9910..5029b51d77 100644
---- a/target/loongarch/tcg/csr_helper.c
-+++ b/target/loongarch/tcg/csr_helper.c
-@@ -17,6 +17,23 @@
- #include "hw/irq.h"
- #include "cpu-csr.h"
- 
-+target_ulong helper_csrwr_stlbps(CPULoongArchState *env, target_ulong val)
-+{
-+    int64_t old_v = env->CSR_STLBPS;
-+
-+    /*
-+     * The real hardware only supports the min tlb_ps is 12
-+     * tlb_ps=0 may cause undefined-behavior.
-+     */
-+    uint8_t tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-+    if (!check_ps(env, tlb_ps)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "Attempted set ps %d\n", tlb_ps);
-+        return old_v;
-+    }
-+    return old_v;
-+}
-+
- target_ulong helper_csrrd_pgd(CPULoongArchState *env)
- {
-     int64_t v;
-@@ -99,7 +116,7 @@ target_ulong helper_csrwr_ticlr(CPULoongArchState *env, target_ulong val)
- 
- target_ulong helper_csrwr_pwcl(CPULoongArchState *env, target_ulong val)
- {
--    int shift;
-+    int shift, ptbase;
-     int64_t old_v = env->CSR_PWCL;
- 
-     /*
-@@ -107,12 +124,18 @@ target_ulong helper_csrwr_pwcl(CPULoongArchState *env, target_ulong val)
-      * treated as illegal.
-      */
-     shift = FIELD_EX64(val, CSR_PWCL, PTEWIDTH);
-+    ptbase = FIELD_EX64(val, CSR_PWCL, PTBASE);
-     if (shift) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "Attempted set pte width with %d bit\n", 64 << shift);
-         val = FIELD_DP64(val, CSR_PWCL, PTEWIDTH, 0);
-     }
-+    env->CSR_PWCL =val;
-+    if (!check_ps(env, ptbase)) {
-+         qemu_log_mask(LOG_GUEST_ERROR,
-+                      "Attrmpted set ptbase 2^%d\n", ptbase);
-+         return old_v;
-+    }
- 
--    env->CSR_PWCL = val;
-     return old_v;
- }
-diff --git a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-index 3afa23af79..ecbfe23b63 100644
---- a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-@@ -74,6 +74,7 @@ static bool set_csr_trans_func(unsigned int csr_num, GenCSRRead readfn,
- 
- void loongarch_csr_translate_init(void)
- {
-+    SET_CSR_FUNC(STLBPS, NULL, gen_helper_csrwr_stlbps);
-     SET_CSR_FUNC(ESTAT, NULL, gen_helper_csrwr_estat);
-     SET_CSR_FUNC(ASID,  NULL, gen_helper_csrwr_asid);
-     SET_CSR_FUNC(PGD,   gen_helper_csrrd_pgd, NULL);
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 27c729b5b5..5a426691bc 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -18,6 +18,14 @@
- #include "exec/log.h"
- #include "cpu-csr.h"
- 
-+bool check_ps(CPULoongArchState *env, int tlb_ps)
-+{
-+     if (tlb_ps > 64) {
-+         return false;
-+     }
-+     return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
-+}
-+
- void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
-                                uint64_t *dir_width, target_ulong level)
- {
-@@ -191,8 +199,10 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
-         lo1 = env->CSR_TLBELO1;
-     }
- 
--    if (csr_ps == 0) {
--        qemu_log_mask(CPU_LOG_MMU, "page size is 0\n");
-+    /*check csr_ps */
-+    if (!check_ps(env, csr_ps)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "csr_ps %d is illegal\n", csr_ps);
-+        return;
-     }
- 
-     /* Only MTLB has the ps fields */
-@@ -302,7 +312,16 @@ void helper_tlbfill(CPULoongArchState *env)
-         pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
-     }
- 
-+    if (!check_ps(env, pagesize)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "pagesize %d is illegal\n", pagesize);
-+        return;
-+    }
-+
-     stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-+    if (!check_ps(env, stlb_ps)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "stlb_ps %d is illegal\n", stlb_ps);
-+        return;
-+    }
- 
-     if (pagesize == stlb_ps) {
-         /* Only write into STLB bits [47:13] */
--- 
-2.34.1
+  https://lore.kernel.org/qemu-devel/20230425133851.489283-1-thuth@redhat.com/
+
+In the end, it was too frustrating to struggle with the 
+backwards-compatibility questions (do we really need to keep 
+qemu-system-i386 around forever?), so I pretty much gave up on that patch 
+series.
+
+  Thomas
 
 
