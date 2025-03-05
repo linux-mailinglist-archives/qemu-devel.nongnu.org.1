@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2D9A4F389
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50030A4F3CE
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:32:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdUz-00037j-Mx; Tue, 04 Mar 2025 20:24:38 -0500
+	id 1tpdVb-0003oI-Cs; Tue, 04 Mar 2025 20:25:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdU0-00017G-L8
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:36 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdU4-0001L7-TG
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:40 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTy-00076h-TB
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:36 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43bc63876f1so21509305e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdU3-00077N-5j
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:40 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43bc638686eso1801335e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137813; x=1741742613; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137817; x=1741742617; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YXL5B5zw3pZta0/9DCa7fbyWVn6oj5wqXc+Tu2wdyGc=;
- b=lPhjsJhh1qGpQTamOxZIoAJ6mnhtpFCBrkCBdqaVgtNDLpyk0Cb3opFylqsOTLEdWA
- Lp6QTM9o9im3+WoMPNwod0Nq9CwJPhoho1o+4kERSY7cBvUbcOS5if4jK8oRtlMSWG8n
- I6jbph/wRMWET26IMhK6CSzfaAgdrAXTi/zi02yz6A818cX0Uq0tbg2+dTWZWtkjlZ3B
- r35pB3c+MxSVXJNlQ5FPrV+Xjugv5qGENU/dtTQmKWw8zRdio5aayz7NkEWJncM/w37N
- 8InxAFZ6Ntp/EfT1QMLp8ZziXFY/2t/7rlAbMybkoM714VK1VVXVEMvTGKf8Qte2AkJi
- +saA==
+ bh=LY4o8wZMDwjmmvlDp+QFAxvztgqIF0167Zll+crzCoA=;
+ b=IkcZV7oZFTXWk+kM7I7vnX2hNI+yA3huw0FyyrrTevQ8ZiumVWC+9wQaX/cSXoOByc
+ YL/B9bisFooyO+C/REdtfKpLmT4dn2nlh5S4b8AMnqfvtQbmivpgjdhIrZZoAkHlIIX3
+ xpK4X3MHODMmNwQpl5TnRUe4mcLlVNFSr7TCu+K39D8jEtFvEY14lV4a8ZP67jG4eF42
+ Xv8MXmpLDX30bT4TI9SZpX1xCSaEYsacEWiGMjKgYX6kve2PhudzUegZP8r4/topwg2d
+ 6MjawXghSl++BmsmGBFeV9A1g/IRDRFnCbNDpCaZ7z880qpGzd5FPcwGp0lUWOUjRfZa
+ Pe3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137813; x=1741742613;
+ d=1e100.net; s=20230601; t=1741137817; x=1741742617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YXL5B5zw3pZta0/9DCa7fbyWVn6oj5wqXc+Tu2wdyGc=;
- b=sROAVgZdid3AHzqIENrRBfVvYALefCveAS2+qgS56fh/TkMYKLa9hovOn0+he52cDM
- W+wY8GwWwDqASmtwuujyQAgps2RoSR6AgkiliKRmRFuIRIp5LrdiC8E8mt5pHUS391FQ
- Jv/4Ac25IwAI2AOHrBxxBL+joz24Sh8fPb+cMixtEOmNS6QCXEu0sszyANmlDyq2fnjy
- cssn7GLQQLPVEj9iQ6F5kZnwXvzlAUFsvAb2aRdo+SWBrHjxIEmWez5lmbJyd4smZQt4
- ukYQyz/oRzoV5VYb9tChpcTQkKm5jVI+nJvfQoedpKfpA1PntT6wHRNUhz0VPA8IJxkO
- Qo2A==
-X-Gm-Message-State: AOJu0Yx2vqg0hJtp3nbQUzxh+k1MrfecBX52Wr3rz4zNEuucD/wtaVol
- BTFqxpu/NQe3wOyABcUDiqqdCzqUFCkp1x30yNcronfH2y5UBv6Tq/++FeuctaA0dmC4aEX1pGJ
- SynI=
-X-Gm-Gg: ASbGncvZhYTbvLxemymL9Fqqx4DRXc272tw0dv/U+3MgtxjuxBsOn/2FlasPKpLvPoH
- FklUjiau4SiJIRK/7rSd4CJwyFKXo3mdhmvL6FZpb6zNY+lkWJbqH4tEFLsT+/pFHLMTlxb82tC
- MR6EopKPo9YiHfs+fCWnLZ83Fm+ivrXprZXoQbpyHbX0tdnxn5NjJsUAiHJpe9xE8dQVIyKxUBX
- EnCGCBSAWV/Zz0dsFzholFpwRLiz9JdfaNnkwdcMGfCr1CqH/hGioBn6ia2bSZhBTtGvJFiGAsf
- yY6OIUkrSS8D9psKJtLlDINOP4prSLaEfospGGHFy8h6d4y63fMeYfXhZ40dV6HsNsxFo27Yzps
- 6wP6YLRM16kdv0jaOIyA=
-X-Google-Smtp-Source: AGHT+IF/guHa8k1/nCw46LIANCQTGevHIRFKBoA3EzattkIkY3LlS3BPfihgea5vcJJsBjaKX/8Bwg==
-X-Received: by 2002:a05:6000:4185:b0:391:5f:fa4e with SMTP id
- ffacd0b85a97d-3911f7476b5mr487607f8f.29.1741137812850; 
- Tue, 04 Mar 2025 17:23:32 -0800 (PST)
+ bh=LY4o8wZMDwjmmvlDp+QFAxvztgqIF0167Zll+crzCoA=;
+ b=GlTCl7Rjl379bymYv/ksEM3GsjMlGfwVoJK9iTjr/U8I2Wqbe0aw/KNvhJ/UMsSHfF
+ nBpZBBiFymxKAxKvBaEADp/KM5QwkOWflTEHJbXwvq1aYGEgbOFWTcHI6488Z7mxhrph
+ kM1ocg0+oUu/7TnZMLzm8K6QW4bv3tjM6UjRu/Xi1Nm33CNH7ouBApUo9gE9JpZ54CAc
+ 86TvZq+OghUMdb8DGvJQ37WRlrb4Gz+KPONTicY5EzmwIOtT/5momVe1DYnw+oxWyBTV
+ Kfi01W2IkIZJvfncPhyFHheUDXfLkWbXsMBzAH0DnYN7RF+8h1Q1oEA/7ixWT1S6bYdT
+ Nx5A==
+X-Gm-Message-State: AOJu0YwAbS3UabvaPZT+YM5KOFIU/zpl18bFaactiCnTvPp2AhIOmfTv
+ 50ngCIzl0lpzDkkDnclQPfozE02u6fYDaBQGpg5EaDdrcVanp2sXEgiQgjOu2AHM5DjBAlZ6xek
+ PHhM=
+X-Gm-Gg: ASbGnctm4cIDC3c878VpHWX1P+wdTTFd52s1sDbwdNrSXXWJvb5FB2UCNJYfXNIm+32
+ 7QP4wF4OR3aFx4vDiN9x2FEz9PH3UxRJv2MY1psMn9arBSQha5fGi1O51DJwSXqHy7Sb5CFVuNQ
+ Dhueg1hLPSBPkCK/C1j3QV8aSiu4kQbxcKlKNGog565CMxtsv7/AEp1TU1kfGbWfrEtjArHHeo5
+ pEK/qKIXFpmDuCn+gNBUmk4v3LTPxuPCnLfMDbqBfAKHbqyVeIirnNczJJUSe/aRifJETYynAYR
+ bKaq70gAMlrnV1UBIFa36TwsxbtbQfycOIvzac7jgaj+Y4JE0l2NTf6jfZehw1Q7agS20bVz1YV
+ cpEM2bBfJlXCktnGDzww=
+X-Google-Smtp-Source: AGHT+IGNwDSmTBiLS5JzWxPSHWVAvnh6RqPhuL4XS6c3mv82/VAQJS4rzee4Y0fdrHHe3YPLZinHrA==
+X-Received: by 2002:a5d:588a:0:b0:391:865:5a93 with SMTP id
+ ffacd0b85a97d-3911ea4130amr856807f8f.22.1741137817331; 
+ Tue, 04 Mar 2025 17:23:37 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42e51e8sm1956345e9.26.2025.03.04.17.23.31
+ ffacd0b85a97d-390e485ddedsm18938636f8f.89.2025.03.04.17.23.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:32 -0800 (PST)
+ Tue, 04 Mar 2025 17:23:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Luc Michel <luc.michel@amd.com>
-Subject: [PULL 19/41] hw/char/pl011: Warn when using disabled receiver
-Date: Wed,  5 Mar 2025 02:21:34 +0100
-Message-ID: <20250305012157.96463-20-philmd@linaro.org>
+ Luc Michel <luc.michel@amd.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 20/41] hw/char/pl011: Simplify a bit pl011_can_receive()
+Date: Wed,  5 Mar 2025 02:21:35 +0100
+Message-ID: <20250305012157.96463-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,46 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We shouldn't receive characters when the full UART or its
-receiver is disabled. However we don't want to break the
-possibly incomplete "my first bare metal assembly program"s,
-so we choose to simply display a warning when this occurs.
+Introduce 'fifo_depth' and 'fifo_available' local variables
+to better express the 'r' variable use.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
-Message-Id: <20250220092903.3726-2-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250220092903.3726-3-philmd@linaro.org>
 ---
- hw/char/pl011.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/char/pl011.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index 06ce851044d..12a2d4bc7bd 100644
+index 12a2d4bc7bd..5bb83c54216 100644
 --- a/hw/char/pl011.c
 +++ b/hw/char/pl011.c
-@@ -85,6 +85,7 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
- #define CR_OUT1     (1 << 12)
- #define CR_RTS      (1 << 11)
- #define CR_DTR      (1 << 10)
-+#define CR_RXE      (1 << 9)
- #define CR_TXE      (1 << 8)
- #define CR_LBE      (1 << 7)
- #define CR_UARTEN   (1 << 0)
-@@ -487,6 +488,14 @@ static int pl011_can_receive(void *opaque)
+@@ -486,7 +486,9 @@ static void pl011_write(void *opaque, hwaddr offset,
+ static int pl011_can_receive(void *opaque)
+ {
      PL011State *s = (PL011State *)opaque;
-     int r;
+-    int r;
++    unsigned fifo_depth = pl011_get_fifo_depth(s);
++    unsigned fifo_available = fifo_depth - s->read_count;
++    int r = fifo_available ? 1 : 0;
  
-+    if (!(s->cr & CR_UARTEN)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "PL011 receiving data on disabled UART\n");
-+    }
-+    if (!(s->cr & CR_RXE)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "PL011 receiving data on disabled RX UART\n");
-+    }
-     r = s->read_count < pl011_get_fifo_depth(s);
+     if (!(s->cr & CR_UARTEN)) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+@@ -496,7 +498,6 @@ static int pl011_can_receive(void *opaque)
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "PL011 receiving data on disabled RX UART\n");
+     }
+-    r = s->read_count < pl011_get_fifo_depth(s);
      trace_pl011_can_receive(s->lcr, s->read_count, r);
      return r;
+ }
 -- 
 2.47.1
 
