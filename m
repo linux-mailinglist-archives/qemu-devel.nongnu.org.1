@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3B3A4F3A5
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E70A4F3C2
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:31:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdXH-0008L5-5i; Tue, 04 Mar 2025 20:26:59 -0500
+	id 1tpdX7-0007kd-PQ; Tue, 04 Mar 2025 20:26:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdV0-0003lD-L1
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:38 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdV5-00047S-Sp
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:47 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUy-0007GR-FL
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:38 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43bc0b8520cso18285865e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:24:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdV3-0007HI-Qw
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:43 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-390cf7458f5so5799657f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:24:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137874; x=1741742674; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137880; x=1741742680; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1mWnfHltEj6tHRnPRGRMEHYizLDHaaGta9SL21+nd1o=;
- b=hc/LkIRUATJSRI49wJ2RBhflEIAKYAB7myCjrhabHKx/Uw4g5TX9DGd/uQeC3oWcJz
- 3u+OQsEo9lycpw+1R+0nbExp+dbeHHNnPMQZWioAgBTvN3SUgQNq47uqpW7QZN7ez31w
- plMZuWtQkCorpCotRyKJXGtq1cmRl+sGIj+DdueaQzMvFflIFnrpXTY0nRuy/Q17Jb9R
- w1aLfR7SvHdjEjq8Vju/B3FiQlQGL0zpbQcf36w5W0QlVnJ39wU8Sj9YgChV96c2Ibdw
- /XANeIw8OitxcRywjUdnA7Dd2BLz47dE0nO67+HNmXsN39TlVl2qvQRa4CqDjFiRnTAo
- 2spA==
+ bh=uSWq8OG1UJ3+TSUQoJxemZJrVqGEUCcwykT7a0JIQRg=;
+ b=WFxCohIRaRdVAQHNJBEeEMHs8j2N1qAySc2y1z9aOAstpHGcQZtL3Ju+B/gQ+NRYLr
+ GEh5dttlhtSX+jV2hA6j+B9s8U3hv28+jyNU9DIJlctiOJxchbRkwWGuSneZNcVuikij
+ hJ9ih8lvYtKUJtibiwCg2avBYctzfJ2ssZfGrnxQpEP71Jxd0gIoPGigJl2Bvk7O44zJ
+ 3QoWSmhWksqGsaiSm8+IPfaeakaG7EMdi/prGEouDUqF9UnqWJMzxkAtBtHcZtVRhdRQ
+ W4D9KAHLd6hHtkS8BtQi2m0OBZv0iI5Y5a49mO4B55zUIzHG3sKhyRLL3LMmaWwDdpEg
+ Zx0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137874; x=1741742674;
+ d=1e100.net; s=20230601; t=1741137880; x=1741742680;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1mWnfHltEj6tHRnPRGRMEHYizLDHaaGta9SL21+nd1o=;
- b=kF1LseIIktEfLe8eHWJgrmR717O2XaAI0qLadOxiCbsV5pyiTAHuDrcsl/zNNEA+dh
- 1g87pnBrk58Eai49n+Ck1pb132Mro8aUSKOLjqna6npADAhIQ0wkj+L8Fv9yFa6V+lqL
- fzfXO8vjqc4zuBbDGkf1nVKNCQ3tbGLC3qEGyxKgN3X2PnWvWGgTd+J0dlfwxMGnkyEx
- mXkERBm10FI1QRLrGAUnujUa3I1FfpKkbf9RJUT9PbZc7xdSZr6bwUnhWZWjRU6Ew8xs
- ysyF3LkbLTOwENLniMElSwjmRODYKSSVbxONRsd09sfToQK+uwA/xa1qkPlI/5QrwyHl
- fe1w==
-X-Gm-Message-State: AOJu0YweaJUAfBCWd2a3NlrKkT6oYp34sntAFO4flwWZ3/A515c7QrpB
- 1NC5rBeGOGKvslUpz/juRhhg67lMxTe4HgGCEG6ELPl0tWgVIWfcU8l/rxxsCgDuwnqJhaTjZUD
- vVwo=
-X-Gm-Gg: ASbGncu1J0LD2uihG/yH3oM/mNkqLkW72dCk9D8+g+fWqSk94KpgMdwQcspXw4/DXRY
- osWDXWMDKln12Qa4haDkWzX+SlH7Rk+TSYmPa5rFKq7EJTHg+ni1hOy+sRBybnbmfvN3LxP6+ai
- 7ow1JpplNJFuBenf1ZCIsvNEz2G2yDYwRv3FB5+S4hVTjRCnq1c1K/hCs5YQ2suzW5NOT2seC8a
- 56Jff0+Qcn025trtArQv4c5pa0hEUHjhMrjRNqUlyjqSjyVlmUFngA+GUTYGpuoxyOQkJEZaUaA
- htOhyXLaUyL+WRDONDb7O7qoH7WQZCgwbL+VJRY0A8zL/A1ZH9VCf6AuMecW/6dSOszWSlbTfRJ
- c9LjF1lhwgoRyIdBNqKM=
-X-Google-Smtp-Source: AGHT+IFD3pgOlhis6f0S3UKzIuGTZWgOG/uOLqazzWAzAiVz/aQlZPTA3PivA+kPSv2VnG0oHSTbig==
-X-Received: by 2002:a5d:56c7:0:b0:390:f55b:baa4 with SMTP id
- ffacd0b85a97d-3911f7c3383mr449324f8f.42.1741137874653; 
- Tue, 04 Mar 2025 17:24:34 -0800 (PST)
+ bh=uSWq8OG1UJ3+TSUQoJxemZJrVqGEUCcwykT7a0JIQRg=;
+ b=CdTXGn4FUdaWsPSkNyWyt5UKDFWWWCzqTrdsN59eDsG5Uh8aVrt1mNHhEfnUEzfYIg
+ J7w59huGS962/TvffIMJGe5JbN7c7WedxdCKOxikSG2NBfSfU3VyTHA02R1bKNkMWJTg
+ HgzYbYIH9QZ+AVAzm4LHy7Fyyoh79ZHiX3pRRom6ZH18wOmhSn31dYH8UGSKYsxNkpSz
+ n9TONh7FFCiJuofSIQq6vw0PdABFUc0dZjVgo36mYlR9JfHrrkGG6n5n5qkmM6L176X3
+ dFV4iaKcCoUO4I/rwFAepsU+letV5zIJP+2YbO6suKc9IL7im5PWG8sn60Ctz4YFbZi3
+ nFxg==
+X-Gm-Message-State: AOJu0Yx/lfLozwPS/KV7WqpPBQr8TN0ipy45nlS2jaXaLCH0t42J9ih1
+ XqIm+eZSYiwnqADyoRK8U4KF4O6stjWZCAOosNstasN4nnEtrrjkwKDE7BHI4mCXeifztvcG8N6
+ RMYk=
+X-Gm-Gg: ASbGnctbIuExWCa0EDWLuxyzJ704zHNJ0v2f4H8gTbRbIauhhRmmuAbmBavdXd/TtCR
+ Uji+/v1B9aSsnka/zSj4+Vc4zHFnED+xngZYYuw6RK1Nh9eDHhqrBJR/MNiUt7s/aa8aAFwQsIc
+ 4YLede25j132zSH8CpueJmv+LmjkNkoe9Pvij8MRYXkZGXIiceP4YnZtghzEUVXLXXv4x8p8oQ5
+ LQtNP+KWXlleTSjjnhuP+ldaRkmOIy/6leqY9FKm7gb7m/HqqSwa8V8Ux1t05w1pRwZ9f8tWjgw
+ gDMtZrWlpOnBZl15lduky88x+1BZmGOAZHN3oUtdgYoelqqjb6rg2Hu46d2TUjy8b17ib4rQo2Q
+ MXX6dKi7UXkiEW59vCmI=
+X-Google-Smtp-Source: AGHT+IFBGJZqSVCmDqv59QnAKo6/f3VyL+ZmoFRmoxKd1kQoPqqYdDRJilPCcFXmWJSxHVhZ6OJhwA==
+X-Received: by 2002:a05:6000:401f:b0:391:4f9:a048 with SMTP id
+ ffacd0b85a97d-3911f724a16mr570929f8f.4.1741137879989; 
+ Tue, 04 Mar 2025 17:24:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795983sm19152823f8f.6.2025.03.04.17.24.33
+ 5b1f17b1804b1-43bd4292144sm2027895e9.13.2025.03.04.17.24.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:24:34 -0800 (PST)
+ Tue, 04 Mar 2025 17:24:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Keoseong Park <keosung.park@samsung.com>, Fabiano Rosas <farosas@suse.de>,
- Jeuk Kim <jeuk20.kim@samsung.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 32/41] tests/qtest/ufs-test: Add test code for the temperature
- feature
-Date: Wed,  5 Mar 2025 02:21:47 +0100
-Message-ID: <20250305012157.96463-33-philmd@linaro.org>
+Subject: [PULL 33/41] hw/arm/omap1: Convert raw printfs to qemu_log_mask()
+Date: Wed,  5 Mar 2025 02:21:48 +0100
+Message-ID: <20250305012157.96463-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,56 +99,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keoseong Park <keosung.park@samsung.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-This commit adds tests to verify the correctness of query attribute
-results related to the temperature feature. It ensures that querying
-temperature attributes returns expected values.
+omap1.c is very old code, and it contains numerous calls direct to
+printf() for various error and information cases.
 
-Signed-off-by: Keoseong Park <keosung.park@samsung.com>
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
-Message-ID: <20250225064243epcms2p8b7b59e7bf381bd68d30a6f59b40dea9f@epcms2p8>
+In this commit, convert the printf() calls that are for either guest
+error or unimplemented functionality to qemu_log_mask() calls.
+
+This leaves the printf() calls that are informative or which are
+ifdeffed-out debug statements untouched.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250227170117.1726895-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/qtest/ufs-test.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ hw/arm/omap1.c | 48 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index d5076bdeb54..4867ccf08a1 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -784,6 +784,30 @@ static void ufstest_query_attr_request(void *obj, void *data,
-     g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-     g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
+diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
+index ca2eb0d1576..3c0ce5e0979 100644
+--- a/hw/arm/omap1.c
++++ b/hw/arm/omap1.c
+@@ -2559,8 +2559,9 @@ static void omap_rtc_interrupts_update(struct omap_rtc_s *s)
+ static void omap_rtc_alarm_update(struct omap_rtc_s *s)
+ {
+     s->alarm_ti = mktimegm(&s->alarm_tm);
+-    if (s->alarm_ti == -1)
+-        printf("%s: conversion failed\n", __func__);
++    if (s->alarm_ti == -1) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: conversion failed\n", __func__);
++    }
+ }
  
-+    ocs = ufs_send_query(ufs, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                         UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                         UFS_QUERY_ATTR_IDN_CASE_ROUGH_TEMP, 0, 0, 0,
-+                         &rsp_upiu);
-+    g_assert_cmpuint(ocs, ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
-+
-+    ocs = ufs_send_query(ufs, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                         UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                         UFS_QUERY_ATTR_IDN_HIGH_TEMP_BOUND, 0, 0, 0,
-+                         &rsp_upiu);
-+    g_assert_cmpuint(ocs, ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(160));
-+
-+    ocs = ufs_send_query(ufs, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                         UFS_UPIU_QUERY_OPCODE_READ_ATTR,
-+                         UFS_QUERY_ATTR_IDN_LOW_TEMP_BOUND, 0, 0, 0,
-+                         &rsp_upiu);
-+    g_assert_cmpuint(ocs, ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(60));
-+
-     /* Write Writable Attributes & Read Again */
-     ocs = ufs_send_query(ufs, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-                          UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
+ static uint64_t omap_rtc_read(void *opaque, hwaddr addr, unsigned size)
+@@ -3024,8 +3025,9 @@ static void omap_mcbsp_source_tick(void *opaque)
+ 
+     if (!s->rx_rate)
+         return;
+-    if (s->rx_req)
+-        printf("%s: Rx FIFO overrun\n", __func__);
++    if (s->rx_req) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Rx FIFO overrun\n", __func__);
++    }
+ 
+     s->rx_req = s->rx_rate << bps[(s->rcr[0] >> 5) & 7];
+ 
+@@ -3070,8 +3072,9 @@ static void omap_mcbsp_sink_tick(void *opaque)
+ 
+     if (!s->tx_rate)
+         return;
+-    if (s->tx_req)
+-        printf("%s: Tx FIFO underrun\n", __func__);
++    if (s->tx_req) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO underrun\n", __func__);
++    }
+ 
+     s->tx_req = s->tx_rate << bps[(s->xcr[0] >> 5) & 7];
+ 
+@@ -3173,7 +3176,7 @@ static uint64_t omap_mcbsp_read(void *opaque, hwaddr addr,
+         /* Fall through.  */
+     case 0x02:	/* DRR1 */
+         if (s->rx_req < 2) {
+-            printf("%s: Rx FIFO underrun\n", __func__);
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Rx FIFO underrun\n", __func__);
+             omap_mcbsp_rx_done(s);
+         } else {
+             s->tx_req -= 2;
+@@ -3278,8 +3281,9 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
+             }
+             if (s->tx_req < 2)
+                 omap_mcbsp_tx_done(s);
+-        } else
+-            printf("%s: Tx FIFO overrun\n", __func__);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO overrun\n", __func__);
++        }
+         return;
+ 
+     case 0x08:	/* SPCR2 */
+@@ -3293,8 +3297,11 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
+     case 0x0a:	/* SPCR1 */
+         s->spcr[0] &= 0x0006;
+         s->spcr[0] |= 0xf8f9 & value;
+-        if (value & (1 << 15))				/* DLB */
+-            printf("%s: Digital Loopback mode enable attempt\n", __func__);
++        if (value & (1 << 15)) {                        /* DLB */
++            qemu_log_mask(LOG_UNIMP,
++                          "%s: Digital Loopback mode enable attempt\n",
++                          __func__);
++        }
+         if (~value & 1) {				/* RRST */
+             s->spcr[0] &= ~6;
+             s->rx_req = 0;
+@@ -3325,13 +3332,19 @@ static void omap_mcbsp_writeh(void *opaque, hwaddr addr,
+         return;
+     case 0x18:	/* MCR2 */
+         s->mcr[1] = value & 0x03e3;
+-        if (value & 3)					/* XMCM */
+-            printf("%s: Tx channel selection mode enable attempt\n", __func__);
++        if (value & 3) {                                /* XMCM */
++            qemu_log_mask(LOG_UNIMP,
++                          "%s: Tx channel selection mode enable attempt\n",
++                          __func__);
++        }
+         return;
+     case 0x1a:	/* MCR1 */
+         s->mcr[0] = value & 0x03e1;
+-        if (value & 1)					/* RMCM */
+-            printf("%s: Rx channel selection mode enable attempt\n", __func__);
++        if (value & 1) {                                /* RMCM */
++            qemu_log_mask(LOG_UNIMP,
++                          "%s: Rx channel selection mode enable attempt\n",
++                          __func__);
++        }
+         return;
+     case 0x1c:	/* RCERA */
+         s->rcer[0] = value & 0xffff;
+@@ -3412,8 +3425,9 @@ static void omap_mcbsp_writew(void *opaque, hwaddr addr,
+             }
+             if (s->tx_req < 4)
+                 omap_mcbsp_tx_done(s);
+-        } else
+-            printf("%s: Tx FIFO overrun\n", __func__);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: Tx FIFO overrun\n", __func__);
++        }
+         return;
+     }
+ 
 -- 
 2.47.1
 
