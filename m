@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA45A503A7
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3D0A5039F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:41:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpqqz-0008QY-BF; Wed, 05 Mar 2025 10:40:13 -0500
+	id 1tpqr4-0008Sk-01; Wed, 05 Mar 2025 10:40:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqu-0008Oc-T9
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:08 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqr0-0008SE-TQ
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:14 -0500
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqt-0002LA-0i
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:08 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqx-0002Lw-Mw
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:14 -0500
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4398ec2abc2so62238015e9.1
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:06 -0800 (PST)
+ 5b1f17b1804b1-43bc4b16135so21693585e9.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741189205; x=1741794005; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741189210; x=1741794010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p6dIwE7gVAC3kvr4prQgvoWqphwYC2S/k+p1kJTqC1M=;
- b=c48DXGjxEH3K+6+lw+hB76dsjSZdOgCcSN5h7nwg82XugAfvjPON6BzNRCt96HtPtl
- ozBgF8lMemjy401D3REG238dJPC46+4zuGr0+TIaNeuiyT0OXM+Vq/gbljNdSROsy7aU
- Bf3SlFETTuWROUrRGXQHiJ+2K+AHeBd2/roowjwTSlYOKSgaRGqHf3Je723CYi6ygTRJ
- uruEAO0eD6c7lWzK4J0YWe5UI9jYiW18XT8wzep2rNsCDvZqoe7Z4YdrEtsD+K5b4KOx
- aXDgwNvFZacWKpUefF334Cn9MYakm3MxyIuha43oYFLnQm2KDi94JFjggJ3epmZ1MWQd
- GLGg==
+ bh=RHsIUy8sKMvdJC/jiaNf5NT96KaTYh580z1CwMPFXu8=;
+ b=wDy7Pt6qy/l45gXtOt+d7wRwhG7cRfJXeP1LSoklQ4PhqbKzpiuCcBHfzmGexNM53W
+ MQ7bLSkpmco19KnRaJ5K4K+SV8dtgQnGfs5aXsKSiySIr9dx1m+Z2BgeHrUn0n+OI0kL
+ SGsduy/0VnJf+YRQDY76HgdUB2kNA1F4yaFO4wW4yZlciiXN0POABNKbf83paCvzOGg6
+ uqln6Ppin9HhPc5ZAKxwPybYoDB3c6hLllsmSgOl1rEB2ET94AO5gTsX6e4eu2JPOX2m
+ Ke23OyGSjujky8WCn8mZAAit+yfM+girGJYYn2g5rRhdtL0g6EZ9EH8Z7TcsR9EDupJk
+ Eulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741189205; x=1741794005;
+ d=1e100.net; s=20230601; t=1741189210; x=1741794010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p6dIwE7gVAC3kvr4prQgvoWqphwYC2S/k+p1kJTqC1M=;
- b=lQ2ZeqbkdyPY4rUh7XjR9n7XtlDc38fzdXIRg8z6kLa6AZYMa+skSpANaVkZKTu8u5
- Io437DQhdt10gP0OGyMJu/X5408g3ikB3C45gl3hw/ugLJnVy+ZbR8VcZFCpZDKDaetr
- /9fjFSRegVgXGLxZ0sw/zl7xTeyw5vCiSIljsZzDtAmxrgAX2nqBMBpQlrkyMISitQ11
- VSge9LH8k1Q7PAkBJv78Tj8vE/3PA31ILhiQBEgi0/skt7D254dDORd2PpkbnImWtfMR
- OxUvdFDfkMihOgjf2P+LI0oT58VRh6KKlb0Kdbb0l01z6ftUSHGz+8xlBmwd39phETwm
- yjqQ==
-X-Gm-Message-State: AOJu0YyxIzC3ZoN2J7rPkyfmbgAB33O18TnuRn01+N1zqwTmLXsq/ZUo
- Em6NtAsvd1ybqFSJrmPsSAYQuObc0vYKVGDjBKzYAQLBK3XDGcx37nxrhfc2gqkRNk+IG/5c5OP
- F+uI=
-X-Gm-Gg: ASbGncvh3PSX0tEpYYifWh3YOTL87pTnUP6qk1B5V3eit6JfbZ3B+AVfZsLgIEXLfw9
- IrqNktW6lQHbYv1aRJcD2RJplezO4KRe2XnqwgLnC/aqSslrdVSiOQl/t4/4PKfMC38+O7utGmv
- D/p18tLpi6sv0VmRjnfxTFxkM0eT+HE/ZEr2lvyOr/3UZ2Jq8TqwQbLhZuRI41mUCT85NLWxlp6
- Cui8SmATJsMW8o6zJ3QEphDiIJZz6yd6YHdWqQkR5LMsSHlMTSs/vVGq98t6n1h3XVXMUhUtSYs
- UBYfJ0w2Rs4tChyoGUS6yr1QSxfmQ8d72/rkRCj4FcIzUlS7axtP0VCLsOc82cG7sLBE87CNsgy
- IGH8bSr9MdOM5iWtOb9E=
-X-Google-Smtp-Source: AGHT+IEEw1M4NTgNFD4c1Pk88DDohyB7w17rsrnSVgJ/UueZW5oDEyan6zat3wzUzU3k9bDq32o2Fw==
-X-Received: by 2002:a05:600c:4f15:b0:439:8bc3:a697 with SMTP id
- 5b1f17b1804b1-43bd294bc2dmr28503345e9.4.1741189205082; 
- Wed, 05 Mar 2025 07:40:05 -0800 (PST)
+ bh=RHsIUy8sKMvdJC/jiaNf5NT96KaTYh580z1CwMPFXu8=;
+ b=SvXMSpyKD5mmmRNSSQM4JF+DNG9QVbAxzXYr6INQIu47FtVruSY0r/ptq9k+Z6pjX4
+ SPwoeW4iaVr1TsjdgeV/6cAwYaoBWQHJq85LuLtl25HVbtTGxLQtSbMZCdDlWi603ZEF
+ C3DFv8KphXilD68XnfA/ALE/+oJdWQXglFOzKoI7jc9Fh/u/KVUC/oCmbplvQ2Gb/E1M
+ E+9rY1UPD9U0TLKgh2pLEUchjiBUsI2nyoUDOxlTHrka2dzkw06jJWUQAkzHrCMVirdE
+ 2/skwt6r/r/OMVRlExZYtnWcGuiDVFighG7w55nPPBC79zuvu35MYShPvC0rSwQeKvX6
+ TNPw==
+X-Gm-Message-State: AOJu0YxejBjjKZApm6fkjAz8QByNkDNbkcpEZQQl7Y05ugt0B3g8T/kA
+ KrA3HRSVTxnkAD7PKGceiuZTY5ohLi9OBYbeLODeXUMLtK/tdP0pwppvmSxQToH915z+7PIE66w
+ Hf/s=
+X-Gm-Gg: ASbGnct/F3d6fUQoI0XoaNg2/LqciktLiSZHG1GsH5GnyzQh6nEWw3kX0WO5Za/kRVk
+ z00IdPAfbKbrXmCkOqZfgHyXyGKd3klMD8eQ0O96GqQ438cGW2k4ytZqFvJ1odRG6HvIid6FVSO
+ kSHrNVXvV1ccJczA8qhbKnL96o+RDWlC7TonQV4Ia8I2JWT3Dlq23Q6JdCK7s1ZZtaepk9berI+
+ ViGx/BH/MXIt5tWaVJ/jpRYEBEqLm8TLIv4h+BOyV7tPzMG6WqNWZYwNqZjGQZ86XoIfrhVMDmz
+ 6SbXLbBKVvZHWLj2cphFe2AbI8vpmGi5yR9dCOzALuWXirv6aaYb5PUiC4eemN8sSnn5MjB+mW+
+ DcVFmdQ9mjICGjtezxqE=
+X-Google-Smtp-Source: AGHT+IHOUVpD+bGIsn9N3xpYujRIAoxMaeIxhOt1BddFy+SOh08mb7/IAJ0D2a6iA7SvK7QD0LFQCA==
+X-Received: by 2002:a05:600c:468e:b0:43b:bdf4:1c9 with SMTP id
+ 5b1f17b1804b1-43bd2af4b26mr26941585e9.29.1741189209779; 
+ Wed, 05 Mar 2025 07:40:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd435c6f4sm20308835e9.34.2025.03.05.07.40.03
+ 5b1f17b1804b1-43bd42badefsm20744025e9.18.2025.03.05.07.40.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Mar 2025 07:40:04 -0800 (PST)
+ Wed, 05 Mar 2025 07:40:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -70,10 +70,9 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 07/18] hw/mips/malta: Replace TARGET_MIPS64 by
- legacy_binary_is_64bit()
-Date: Wed,  5 Mar 2025 16:39:17 +0100
-Message-ID: <20250305153929.43687-8-philmd@linaro.org>
+Subject: [RFC PATCH 08/18] hw/i386: Inline TARGET_DEFAULT_CPU_TYPE definition
+Date: Wed,  5 Mar 2025 16:39:18 +0100
+Message-ID: <20250305153929.43687-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305153929.43687-1-philmd@linaro.org>
 References: <20250305153929.43687-1-philmd@linaro.org>
@@ -104,40 +103,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For legacy MIPS binaries, legacy_binary_is_64bit() is
-equivalent of the compile time TARGET_MIPS64 definition.
+For legacy x86 binaries, legacy_binary_is_64bit() is equivalent
+of the compile time TARGET_X86_64 definition. Use it in place in
+machine class_init() handlers, removing the need on TARGET_X86_64.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/malta.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ target/i386/cpu.h     | 6 ------
+ hw/i386/microvm.c     | 5 ++++-
+ hw/i386/pc.c          | 5 ++++-
+ hw/i386/xen/xen-pvh.c | 5 ++++-
+ 4 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 8e9cea70b13..3517e437f26 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -26,6 +26,7 @@
- #include "qemu/units.h"
- #include "qemu/bitops.h"
- #include "qemu/datadir.h"
-+#include "qemu/legacy_binary_info.h"
- #include "qemu/cutils.h"
- #include "qemu/guest-random.h"
- #include "exec/tswap.h"
-@@ -1300,11 +1301,8 @@ static void mips_malta_machine_init(MachineClass *mc)
-     mc->block_default_type = IF_IDE;
-     mc->max_cpus = 16;
-     mc->is_default = true;
--#ifdef TARGET_MIPS64
--    mc->default_cpu_type = MIPS_CPU_TYPE_NAME("20Kc");
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 0ab2e1bdb40..7f3c1ceaca7 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2555,12 +2555,6 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+ 
+ #define CPU_RESOLVING_TYPE TYPE_X86_CPU
+ 
+-#ifdef TARGET_X86_64
+-#define TARGET_DEFAULT_CPU_TYPE X86_CPU_TYPE_NAME("qemu64")
 -#else
--    mc->default_cpu_type = MIPS_CPU_TYPE_NAME("24Kf");
+-#define TARGET_DEFAULT_CPU_TYPE X86_CPU_TYPE_NAME("qemu32")
 -#endif
-+    mc->default_cpu_type = legacy_binary_is_64bit() ? MIPS_CPU_TYPE_NAME("20Kc")
-+                                                    : MIPS_CPU_TYPE_NAME("24Kf");
-     mc->default_ram_id = "mips_malta.ram";
-     compat_props_add(mc->compat_props, malta_compat, malta_compat_len);
- }
+-
+ #define cpu_list x86_cpu_list
+ 
+ /* MMU modes definitions */
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index d0a236c74f3..cc94e1408c6 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -19,6 +19,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/cutils.h"
+ #include "qemu/units.h"
++#include "qemu/legacy_binary_info.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+ #include "qapi/qapi-visit-common.h"
+@@ -654,7 +655,9 @@ static void microvm_class_init(ObjectClass *oc, void *data)
+     mc->has_hotpluggable_cpus = false;
+     mc->auto_enable_numa_with_memhp = false;
+     mc->auto_enable_numa_with_memdev = false;
+-    mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
++    mc->default_cpu_type = legacy_binary_is_64bit()
++                           ? X86_CPU_TYPE_NAME("qemu64")
++                           : X86_CPU_TYPE_NAME("qemu32");
+     mc->nvdimm_supported = false;
+     mc->default_ram_id = "microvm.ram";
+ 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 63a96cd23f8..936a770aad8 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -24,6 +24,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
++#include "qemu/legacy_binary_info.h"
+ #include "hw/i386/pc.h"
+ #include "hw/char/serial-isa.h"
+ #include "hw/char/parallel.h"
+@@ -1794,7 +1795,9 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     hc->plug = pc_machine_device_plug_cb;
+     hc->unplug_request = pc_machine_device_unplug_request_cb;
+     hc->unplug = pc_machine_device_unplug_cb;
+-    mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
++    mc->default_cpu_type = legacy_binary_is_64bit()
++                           ? X86_CPU_TYPE_NAME("qemu64")
++                           : X86_CPU_TYPE_NAME("qemu32");
+     mc->nvdimm_supported = true;
+     mc->smp_props.dies_supported = true;
+     mc->smp_props.modules_supported = true;
+diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
+index 33c10279763..f0080c83021 100644
+--- a/hw/i386/xen/xen-pvh.c
++++ b/hw/i386/xen/xen-pvh.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/legacy_binary_info.h"
+ #include "qemu/error-report.h"
+ #include "hw/boards.h"
+ #include "system/system.h"
+@@ -81,7 +82,9 @@ static void xen_pvh_machine_class_init(ObjectClass *oc, void *data)
+     MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     mc->desc = "Xen PVH x86 machine";
+-    mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
++    mc->default_cpu_type = legacy_binary_is_64bit()
++                           ? X86_CPU_TYPE_NAME("qemu64")
++                           : X86_CPU_TYPE_NAME("qemu32");
+ 
+     /* mc->max_cpus holds the MAX value allowed in the -smp cmd-line opts. */
+     mc->max_cpus = HVM_MAX_VCPUS;
 -- 
 2.47.1
 
