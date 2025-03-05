@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFFAA4F304
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 01:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A38A4F316
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 01:56:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpd1T-00035V-FB; Tue, 04 Mar 2025 19:54:07 -0500
+	id 1tpd3D-0000b1-54; Tue, 04 Mar 2025 19:55:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpd0u-0002UD-5x
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:53:36 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpd39-0000ah-HC
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:55:51 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpd0q-0007YW-Kw
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:53:30 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-38a8b17d7a7so3682142f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 16:53:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpd37-0007we-E1
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 19:55:51 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43bcb1a9890so1841185e9.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 16:55:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741136007; x=1741740807; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SzOKHZRFCe8gSsyMmCbgGLcMBcX5RnVMQQNugexIWns=;
- b=ZV+JpKfZ0Jw5FRV4T4jbnSvF6MZMn7S97k3SUVkqmCzEE8LA2gbyVAlM1xWbSYr1Oh
- 5hufbHB6NI/1jlAIU2NLc+t/EkFadGMmPNzuZdrDWlRNu2Om7AHbRIORFEKo7awPd/1k
- YiN4cZvriWcNSUAH6Ez3F6gD03UIwR7HAxaFPW/Hs3lu0h/vZVMdrnCgzHvY3xlVtUNV
- JKwEpqvXgCKD2deolia1v7MUUFJkupdmTfWt+XF7WWwnN0aNE9OLOZsRcu4/XGDJy1az
- wqIC0581qPdwpo+MSyiVhcICayzvPqbm8FrO/5xsIzNxrs8Mu7MnEjfjHIYXl4lzGae0
- 0jsw==
+ d=linaro.org; s=google; t=1741136148; x=1741740948; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uAGo3NGmikpZkIcE56ZMcshiOURcTU0IOT+kWtxbtXU=;
+ b=YOdG7gMeHD9x9/Fyi7vRdsOVREQ0HlD4LIR45fyl9nczmaJJWmCvdqEBBam+9xAxlO
+ xbX/rHqVbtGiWkzNtSQQ1PBkQ8gJ/dW+US2U6vQ1avHs53la+FA23I9VP+xSN4yRIjjo
+ pPAFw7FCAtVCOHzWY8zpnicYvvOgC/hUCu2x8FxC0S3bjaVr2zqL7Gn0Qlpe1XpWM0+J
+ m0kIPDMrss+4JfbzC8bmcpdG3kRiGzOiiQRJD/DNSs5lDeNJsarFsQLpOg77XaPFtlux
+ CWtLkEk3KN9eNpgNsRuQ+0lpT+OQweGbEWWgiQ58Q+Iu46AVtoMGgG8PiqvsXrro7FB7
+ PKzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741136007; x=1741740807;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SzOKHZRFCe8gSsyMmCbgGLcMBcX5RnVMQQNugexIWns=;
- b=kGBJHJOfKpX5LoBXh8Z4uUay36pWw68jsx++mBvRdBcfRq93cEuNo8XFF58UJawBp/
- 667bo7y9fVQuHmWXIXiRcvpsEVSRip8EkPMqCarQS0k0MiMkGD1DWR6OcSIDE73JFFRT
- X8uvYZdu/CNU/wDo/RSGlGjM3gB8dbJsWkIMpsdE060LC0rjKNNU/jSi5JAH/iu+NfQ3
- PrM+zlvEbU9HZTGcsR2E8EHdtRqyZLQQpd6/xHBV5+3L78F1CLa0JubckoZJLdp99NCy
- 3HuVHEEAmy0g0zsZZpc23aKwCHDsiaAYrUjxcKO5ghy85c658/sWRGUbt4CWUxdcG7Uz
- 4CIA==
-X-Gm-Message-State: AOJu0Ywqn7rDfFEkA6+CxHOnpatGHW8Sv49sHGg8iApEIq6AqI+7VrI4
- 3fRG0cXQwss9p5COhcGUkIRpA8TcJl8aZT3/LFYbKHMl2IpBuMus7kqH5d84/Rw5VAjR+X2n0BW
- l5d4=
-X-Gm-Gg: ASbGncsHtA837A5/vD//IPpSsBs2wO2lCyGoEWy51cgzXa6iWjJeSq1Q8tVp11oBR8W
- gIvwOA+ixs6FaWWm3IjrdeaG4TbMswEPalfXYvVtTW+1nNtXZQNBr9lxf2SyaevJXPbVfR1Rs8v
- nGqj3wfT1r8sywf/n4l5wkzB8QZd2mA1jxKGZTX2eapt8c3Xo/zaBfyy2r2IZMuVOoY9F2bZtJK
- RSDEIiAjkcE6PBlJV4DVWpOfKAcEz6OkMu6z3lJfekf+qfy54GyUdFO1Aa1JX521xvKlUnIo5Mc
- FXS1SPvwp/y9qk4uLFLSPJ05UVGOBuP/hLwrK3mtLnQAuZkw7o9BlBeySv/egOQblKgSITcuGPB
- D30OUreaxQnGlUJTLgQo=
-X-Google-Smtp-Source: AGHT+IFmY0fHZO/RV2a0dc7rdZ6O+Ah3IMc1LZF0TdVbrJ7q+7Gb/Wpr2Xtlx31Ye/jq2gX+ESQr5Q==
-X-Received: by 2002:a05:6000:184c:b0:391:2163:dd67 with SMTP id
- ffacd0b85a97d-3912163dfe0mr147689f8f.6.1741136006937; 
- Tue, 04 Mar 2025 16:53:26 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1741136148; x=1741740948;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uAGo3NGmikpZkIcE56ZMcshiOURcTU0IOT+kWtxbtXU=;
+ b=rUsfv9FSYs0ixOez3MNtCXa1ETw5mFC2kwxNcBQUpCcOOgo99/o8pyU88hkz3Mv1cV
+ yWxdiBaQYsdl8oUG8vk6Jy+/wIyEGxXxEhNWrJGt6uXjrQlNEXBPSJ+AewGUL2AKBdd5
+ DA3JwJNLyHBvq2JZ5ZJHTZ5Y7PaQYShuoWnLt731eiE0RFavGlRAKBx2W/SM3XvITJjL
+ w9rg+U4KN7tErvsVYwblaN1lRMRmWGfvmVjqtXRaCe0rI3603sVz2pjiE7PvD5MCPYWR
+ JXN0d3urXRbE4tDwC66DIx0ZARPnpUGpVVum/YIK1MouIzXFrtTFQlsVBB35M03iVqZk
+ ysxQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWTpflBuiFjHTXsqbHvePjTvu7beTEdLn4vsQOOr9QjoYWo6GmRj7vIn7Wo8JIGoSh+wEcInk0eVu7a@nongnu.org
+X-Gm-Message-State: AOJu0YwbXToAjFo8Qb+jb2fwprs0i9HdeK/twPg7VIH9NH3DH6FToTvs
+ /2u6LsAktOwkenK4cT2nKtRnL03LdwRYo5iuhYg2aWFDJCAkoj+s94uNI40zjGg=
+X-Gm-Gg: ASbGncuJ1GBF8Nr1DVZUhccoucldH57xhL7FJDif1qfkwJ7tTFukpaPnwHlKpEvb5Y4
+ WkbadOQ8Kt1hPIborbF516TjkTd9kF/chiDzxTlXgpzBANbGTF/i2NXCTuVefL50SNvXsNwtDzC
+ AJwvIsoQ5WVj3R3bbVEwal9BJ8I1Wd2KkeJYJi0lRnBE7rlUgSbOhis+1dGzBkGOl/JfxsujcYO
+ jKDBvJb3FB5+fPq5CdkXZ3IDsvJGoSYYBRJ9BUkzgckFKl3sinNRRQfBwCwzFYMaNWdLSQmRZvt
+ hnLMkhjaV2rT1u/64Gu9IKuMg42Ey+RloVKQv/vNNptgDMcl4WJ/ScAcxp1Y0b6Kmi2bPNrl79z
+ LrY3iye1OB8NU
+X-Google-Smtp-Source: AGHT+IHXHXfcF5sV17aFqBCr+sTudEFeVdAtVcHm+K/dp3+EdymoUHy5rrydaoWjM5c6CzOspZPbAw==
+X-Received: by 2002:a5d:47a5:0:b0:391:1218:d5f4 with SMTP id
+ ffacd0b85a97d-3911ea411f0mr738235f8f.23.1741136147684; 
+ Tue, 04 Mar 2025 16:55:47 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4847fe5sm19327264f8f.73.2025.03.04.16.53.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 16:53:26 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 11/11] qemu: Remove C definitions of TARGET_NAME
-Date: Wed,  5 Mar 2025 01:52:25 +0100
-Message-ID: <20250305005225.95051-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250305005225.95051-1-philmd@linaro.org>
-References: <20250305005225.95051-1-philmd@linaro.org>
+ ffacd0b85a97d-390e47a7473sm19505109f8f.38.2025.03.04.16.55.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Mar 2025 16:55:47 -0800 (PST)
+Message-ID: <d4f22c7c-66cd-4dc3-b024-7f6e9626b72e@linaro.org>
+Date: Wed, 5 Mar 2025 01:55:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 24/24] target/m68k: Implement FPIAR
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250224171444.440135-1-richard.henderson@linaro.org>
+ <20250224171444.440135-25-richard.henderson@linaro.org>
+ <81d01563-8a5d-4002-81e0-1b34108bfce3@linaro.org>
+ <34beaac3-405b-47bb-b12a-91a0dd3e9f5b@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <34beaac3-405b-47bb-b12a-91a0dd3e9f5b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,59 +102,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't use TARGET_NAME anymore, remove and poison it globally.
+On 3/3/25 21:40, Richard Henderson wrote:
+> On 3/3/25 10:39, Philippe Mathieu-Daudé wrote:
+>> Hi Richard,
+>>
+>> On 24/2/25 18:14, Richard Henderson wrote:
+>>> So far, this is only read-as-written.
+>>>
+>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2497
+>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>>   target/m68k/cpu.h       |  1 +
+>>>   target/m68k/cpu.c       | 23 ++++++++++++++++++++++-
+>>>   target/m68k/helper.c    | 14 ++++++++------
+>>>   target/m68k/translate.c |  3 ++-
+>>>   4 files changed, 33 insertions(+), 8 deletions(-)
+>>
+>>
+>>> diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+>>> index 6e3bb96762..bc787cbf05 100644
+>>> --- a/target/m68k/helper.c
+>>> +++ b/target/m68k/helper.c
+>>> @@ -45,8 +45,8 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, 
+>>> GByteArray *mem_buf, int n)
+>>>           return gdb_get_reg32(mem_buf, env->fpcr);
+>>>       case 9: /* fpstatus */
+>>>           return gdb_get_reg32(mem_buf, env->fpsr);
+>>> -    case 10: /* fpiar, not implemented */
+>>> -        return gdb_get_reg32(mem_buf, 0);
+>>> +    case 10: /* fpiar */
+>>> +        return gdb_get_reg32(mem_buf, env->fpiar);
+>>>       }
+>>>       return 0;
+>>>   }
+>>> @@ -69,7 +69,8 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t 
+>>> *mem_buf, int n)
+>>>       case 9: /* fpstatus */
+>>>           env->fpsr = ldl_be_p(mem_buf);
+>>>           return 4;
+>>> -    case 10: /* fpiar, not implemented */
+>>> +    case 10: /* fpiar */
+>>> +        env->fpiar = ldl_p(mem_buf);
+>>
+>> Should we consider target endianness?
+> 
+> I am.  Are you suggesting that the TARGET_BIG_ENDIAN shorthand be 
+> eliminated entirely, even from target-specific code?
 
-The symbol is still defined in Makefiles by the configure script
-(it is required by tests/tcg/).
+As we figured earlier, while ldl_p() is expanded as ldl_be_p() for
+m68k, it is easier to review using the expanded form, as done
+previously in this file in commit 3a76d302047:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- meson.build           | 4 +++-
- include/exec/poison.h | 1 -
- include/qemu/osdep.h  | 2 ++
- 3 files changed, 5 insertions(+), 2 deletions(-)
+commit 3a76d302047ce4518cedef7a9feca1238a00f97b
+Author: Philippe Mathieu-Daudé <philmd@linaro.org>
+Date:   Fri Oct 4 13:30:34 2024 -0300
 
-diff --git a/meson.build b/meson.build
-index 04d8c477644..eaae1da2e92 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3347,7 +3347,9 @@ foreach target : target_dirs
-       # Note that TARGET_BASE_ARCH ends up in config-target.h but it is
-       # not used to select files from sourcesets.
-       config_target_data.set('TARGET_' + v.to_upper(), 1)
--    elif k == 'TARGET_NAME' or k == 'CONFIG_QEMU_INTERP_PREFIX'
-+    elif k == 'TARGET_NAME'
-+      # do nothing
-+    elif k == 'CONFIG_QEMU_INTERP_PREFIX'
-       config_target_data.set_quoted(k, v)
-     elif v == 'y'
-       config_target_data.set(k, 1)
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index f4283f693af..0c4ad04eb97 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -34,7 +34,6 @@
- #pragma GCC poison TARGET_XTENSA
- 
- #pragma GCC poison TARGET_HAS_BFLT
--#pragma GCC poison TARGET_NAME
- #pragma GCC poison TARGET_SUPPORTS_MTTCG
- #pragma GCC poison TARGET_BIG_ENDIAN
- #pragma GCC poison BSWAP_NEEDED
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 4397a906807..3167fda68e4 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -50,6 +50,8 @@
-  */
- #pragma GCC poison TARGET_WORDS_BIGENDIAN
- 
-+#pragma GCC poison TARGET_NAME
-+
- #include "qemu/compiler.h"
- 
- /* Older versions of C++ don't get definitions of various macros from
--- 
-2.47.1
+     target/m68k: Use explicit big-endian LD/ST API
 
+     The M68K architecture uses big endianness. Directly use
+     the big-endian LD/ST API.
+
+So using ldl_be_p():
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Regards,
+
+Phil.
 
