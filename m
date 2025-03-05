@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8BEA4F59F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B037CA4F598
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpfk2-0000pq-00; Tue, 04 Mar 2025 22:48:18 -0500
+	id 1tpfjq-0008Sc-56; Tue, 04 Mar 2025 22:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfjv-0000gT-PJ
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:48:11 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfjm-0008Cu-01
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:48:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfju-0006FE-1B
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:48:11 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfjj-0006Du-Sg
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:48:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741146487;
+ s=mimecast20190719; t=1741146479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M4NWkQ4ouYUL+mKJBAl/nb9/STXk2k++zJ8lVadQp84=;
- b=GR2NAovtL7xolgbBRXIUiTSpXQdUiwbtDk6fh6gj2MVliBwDJ3ZggkT+6zWjdpmFlUi9Zq
- NHYDEC8Cjc9qXGj3jAZz47lzHgj/H3xjzkmuLrCGFnMhQx0Cb8l9nEXlX2jpvDwaOcWL4X
- Z63SgVWRORoILK/XSaGgs1sUVIapCaA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XnCJfW+biu+m4w15XD6/6V9QzgBV8sqOeeCt9NGl4Zo=;
+ b=gTvfS2+2NR0dSteE2VYNwmDOYshLaFYkr5ZQKh/e2eVKO/tR4Rq2ud6Gl4jXDtF9l/8Gg6
+ 8+lf227yOQ/f718u8v+3nnnfz1+X6o4bvVhHpa7EETHDq6On9tsIL5ODtIr4ta3CDAsqvu
+ +90Kq45oncu7Qwlw1wkI9NR+QTYHfF4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-089OL6oYPDeXDB1PT4Pt_w-1; Tue,
- 04 Mar 2025 22:47:57 -0500
-X-MC-Unique: 089OL6oYPDeXDB1PT4Pt_w-1
-X-Mimecast-MFC-AGG-ID: 089OL6oYPDeXDB1PT4Pt_w_1741146471
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-9qIvw5y-OMajbyRkzJul9Q-1; Tue,
+ 04 Mar 2025 22:47:55 -0500
+X-MC-Unique: 9qIvw5y-OMajbyRkzJul9Q-1
+X-Mimecast-MFC-AGG-ID: 9qIvw5y-OMajbyRkzJul9Q_1741146474
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2F781954218; Wed,  5 Mar 2025 03:47:51 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C451919039CE; Wed,  5 Mar 2025 03:47:54 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.45])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 261031956095; Wed,  5 Mar 2025 03:47:47 +0000 (UTC)
+ id 6FF4E1956095; Wed,  5 Mar 2025 03:47:52 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
@@ -50,11 +50,11 @@ Cc: Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
- Harmonie Snow <harmonie@gmail.com>
-Subject: [PATCH 26/57] docs/qapi-domain: add CSS styling
-Date: Tue,  4 Mar 2025 22:45:35 -0500
-Message-ID: <20250305034610.960147-27-jsnow@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: [PATCH 27/57] docs/qapi-domain: add XREF compatibility goop for
+ Sphinx < 4.1
+Date: Tue,  4 Mar 2025 22:45:36 -0500
+Message-ID: <20250305034610.960147-28-jsnow@redhat.com>
 In-Reply-To: <20250305034610.960147-1-jsnow@redhat.com>
 References: <20250305034610.960147-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,95 +85,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve the general look and feel of generated QAPI docs.
+Sphinx < 4.1 handles cross-references ... differently. Factor out and
+isolate the compatibility goop we need to make cross references work
+properly in old versions of Sphinx.
 
-Attempt to limit line lengths to offer a more comfortable measure on
-maximized windows, and improve some margin and spacing for field lists.
+Yes, it's ugly. Yes, it works. No, I don't want to talk about
+it.
 
-Signed-off-by: Harmonie Snow <harmonie@gmail.com>
+Understand that this patch exists because of the overflowing love in my
+heart.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx-static/theme_overrides.css | 56 +++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 2 deletions(-)
+ docs/sphinx/compat.py      | 129 ++++++++++++++++++++++++++++++++++++-
+ docs/sphinx/qapi_domain.py |  24 ++++---
+ 2 files changed, 142 insertions(+), 11 deletions(-)
 
-diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index 3fd326613d9..92f395054a8 100644
---- a/docs/sphinx-static/theme_overrides.css
-+++ b/docs/sphinx-static/theme_overrides.css
-@@ -18,8 +18,8 @@ h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend {
+diff --git a/docs/sphinx/compat.py b/docs/sphinx/compat.py
+index 1f9f1f42ef7..7e8d72c9b1f 100644
+--- a/docs/sphinx/compat.py
++++ b/docs/sphinx/compat.py
+@@ -2,14 +2,32 @@
+ Sphinx cross-version compatibility goop
+ """
  
- .rst-content dl:not(.docutils) dt {
-     border-top: none;
--    border-left: solid 3px #ccc;
--    background-color: #f0f0f0;
-+    border-left: solid 5px #bcc6d2;
-+    background-color: #eaedf1;
-     color: black;
- }
+-from typing import Callable
++import re
++from typing import (
++    Any,
++    Callable,
++    Optional,
++    Type,
++)
  
-@@ -211,6 +211,18 @@ div[class^="highlight"] pre {
++from docutils import nodes
+ from docutils.nodes import Element, Node, Text
  
- /* QAPI domain theming */
+ import sphinx
+ from sphinx import addnodes
+-from sphinx.util.docutils import SphinxDirective, switch_source_input
++from sphinx.environment import BuildEnvironment
++from sphinx.roles import XRefRole
++from sphinx.util import docfields
++from sphinx.util.docutils import (
++    ReferenceRole,
++    SphinxDirective,
++    switch_source_input,
++)
+ from sphinx.util.nodes import nested_parse_with_titles
++from sphinx.util.typing import TextlikeNode
++
++
++MAKE_XREF_WORKAROUND = sphinx.version_info[:3] < (4, 1, 0)
  
-+/* most content in a qapi object definition should not eclipse about
-+   80ch, but nested field lists are explicitly exempt due to their
-+   two-column nature */
-+.qapi dd *:not(dl) {
-+    max-width: 80ch;
-+}
+ 
+ SpaceNode: Callable[[str], Node]
+@@ -46,3 +64,110 @@ def nested_parse(directive: SphinxDirective, content_node: Element) -> None:
+             nested_parse_with_titles(
+                 directive.state, directive.content, content_node
+             )
 +
-+/* but the content column itself should still be less than ~80ch. */
-+.qapi .field-list dd {
-+    max-width: 80ch;
-+}
 +
- .qapi-infopips {
-     margin-bottom: 1em;
- }
-@@ -250,3 +262,43 @@ div[class^="highlight"] pre {
-     border-radius: 15px;
-     margin: 5px;
- }
++# ###########################################
++# xref compatibility hacks for Sphinx < 4.1 #
++# ###########################################
 +
-+/* code blocks */
-+.qapi div[class^="highlight"] {
-+    width: fit-content;
-+    background-color: #fffafd;
-+    border: 2px solid #ffe1f3;
-+}
++# When we require >= Sphinx 4.1, the following function and the
++# subsequent 3 compatibility classes can be removed. Anywhere in
++# qapi_domain that uses one of these Compat* types can be switched to
++# using the garden-variety lib-provided classes with no trickery.
 +
-+/* note, warning, etc. */
-+.qapi .admonition {
-+    width: fit-content;
-+}
 +
-+/* pad the top of the field-list so the text doesn't start directly at
-+   the top border; primarily for the field list labels, but adjust the
-+   field bodies as well for parity. */
-+dl.field-list > dt:first-of-type, dl.field-list > dd:first-of-type {
-+    padding-top: 0.3em;
-+}
++def _compat_make_xref(  # pylint: disable=unused-argument
++    self: sphinx.util.docfields.Field,
++    rolename: str,
++    domain: str,
++    target: str,
++    innernode: Type[TextlikeNode] = addnodes.literal_emphasis,
++    contnode: Optional[Node] = None,
++    env: Optional[BuildEnvironment] = None,
++    inliner: Any = None,
++    location: Any = None,
++) -> Node:
++    """
++    Compatibility workaround for Sphinx versions prior to 4.1.0.
 +
-+dl.field-list > dt:last-of-type, dl.field-list > dd:last-of-type {
-+    padding-bottom: 0.3em;
-+}
++    Older sphinx versions do not use the domain's XRefRole for parsing
++    and formatting cross-references, so we need to perform this magick
++    ourselves to avoid needing to write the parser/formatter in two
++    separate places.
 +
-+/* pad the field list labels so they don't crash into the border */
-+dl.field-list > dt {
-+    padding-left: 0.5em;
-+    padding-right: 0.5em;
-+}
++    This workaround isn't brick-for-brick compatible with modern Sphinx
++    versions, because we do not have access to the parent directive's
++    state during this parsing like we do in more modern versions.
 +
-+/* Add a little padding between field list sections */
-+dl.field-list > dd:not(:last-child) {
-+    padding-bottom: 1em;
-+}
++    It's no worse than what pre-Sphinx 4.1.0 does, so... oh well!
++    """
 +
-+/* Sphinx 3.x: unresolved xrefs */
-+.rst-content *:not(a) > code.xref {
-+    font-weight: 400;
-+    color: #333333;
-+}
++    # Yes, this function is gross. Pre-4.1 support is a miracle.
++    # pylint: disable=too-many-locals
++
++    assert env
++    # Note: Sphinx's own code ignores the type warning here, too.
++    if not rolename:
++        return contnode or innernode(target, target)  # type: ignore[call-arg]
++
++    # Get the role instance, but don't *execute it* - we lack the
++    # correct state to do so. Instead, we'll just use its public
++    # methods to do our reference formatting, and emulate the rest.
++    role = env.get_domain(domain).roles[rolename]
++    assert isinstance(role, XRefRole)
++
++    # XRefRole features not supported by this compatibility shim;
++    # these were not supported in Sphinx 3.x either, so nothing of
++    # value is really lost.
++    assert not target.startswith("!")
++    assert not re.match(ReferenceRole.explicit_title_re, target)
++    assert not role.lowercase
++    assert not role.fix_parens
++
++    # Code below based mostly on sphinx.roles.XRefRole; run() and
++    # create_xref_node()
++    options = {
++        "refdoc": env.docname,
++        "refdomain": domain,
++        "reftype": rolename,
++        "refexplicit": False,
++        "refwarn": role.warn_dangling,
++    }
++    refnode = role.nodeclass(target, **options)
++    title, target = role.process_link(env, refnode, False, target, target)
++    refnode["reftarget"] = target
++    classes = ["xref", domain, f"{domain}-{rolename}"]
++    refnode += role.innernodeclass(target, title, classes=classes)
++
++    # This is the very gross part of the hack. Normally,
++    # result_nodes takes a document object to which we would pass
++    # self.inliner.document. Prior to Sphinx 4.1, we don't *have* an
++    # inliner to pass, so we have nothing to pass here. However, the
++    # actual implementation of role.result_nodes in this case
++    # doesn't actually use that argument, so this winds up being
++    # ... fine. Rest easy at night knowing this code only runs under
++    # old versions of Sphinx, so at least it won't change in the
++    # future on us and lead to surprising new failures.
++    # Gross, I know.
++    result_nodes, _messages = role.result_nodes(
++        None,  # type: ignore
++        env,
++        refnode,
++        is_ref=True,
++    )
++    return nodes.inline(target, "", *result_nodes)
++
++
++class CompatField(docfields.Field):
++    if MAKE_XREF_WORKAROUND:
++        make_xref = _compat_make_xref
++
++
++class CompatGroupedField(docfields.GroupedField):
++    if MAKE_XREF_WORKAROUND:
++        make_xref = _compat_make_xref
++
++
++class CompatTypedField(docfields.TypedField):
++    if MAKE_XREF_WORKAROUND:
++        make_xref = _compat_make_xref
+diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+index 753e07024f5..d3487c5dfeb 100644
+--- a/docs/sphinx/qapi_domain.py
++++ b/docs/sphinx/qapi_domain.py
+@@ -26,7 +26,14 @@
+ from docutils import nodes
+ from docutils.parsers.rst import directives
+ 
+-from compat import KeywordNode, SpaceNode, nested_parse
++from compat import (
++    CompatField,
++    CompatGroupedField,
++    CompatTypedField,
++    KeywordNode,
++    SpaceNode,
++    nested_parse,
++)
+ from sphinx import addnodes
+ from sphinx.addnodes import desc_signature, pending_xref
+ from sphinx.directives import ObjectDescription
+@@ -39,7 +46,6 @@
+ from sphinx.locale import _, __
+ from sphinx.roles import XRefRole
+ from sphinx.util import logging
+-from sphinx.util.docfields import Field, GroupedField, TypedField
+ from sphinx.util.docutils import SphinxDirective
+ from sphinx.util.nodes import make_id, make_refnode
+ 
+@@ -187,7 +193,7 @@ class QAPIObject(ObjectDescription[Signature]):
+ 
+     doc_field_types = [
+         # :feat name: descr
+-        GroupedField(
++        CompatGroupedField(
+             "feature",
+             label=_("Features"),
+             names=("feat",),
+@@ -444,7 +450,7 @@ class QAPICommand(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :arg TypeName ArgName: descr
+-            TypedField(
++            CompatTypedField(
+                 "argument",
+                 label=_("Arguments"),
+                 names=("arg",),
+@@ -452,14 +458,14 @@ class QAPICommand(QAPIObject):
+                 can_collapse=False,
+             ),
+             # :error: descr
+-            Field(
++            CompatField(
+                 "error",
+                 label=_("Errors"),
+                 names=("error", "errors"),
+                 has_arg=False,
+             ),
+             # :returns TypeName: descr
+-            GroupedField(
++            CompatGroupedField(
+                 "returnvalue",
+                 label=_("Returns"),
+                 rolename="type",
+@@ -477,7 +483,7 @@ class QAPIEnum(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :value name: descr
+-            GroupedField(
++            CompatGroupedField(
+                 "value",
+                 label=_("Values"),
+                 names=("value",),
+@@ -494,7 +500,7 @@ class QAPIAlternate(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :choice type name: descr
+-            TypedField(
++            CompatTypedField(
+                 "choice",
+                 label=_("Choices"),
+                 names=("choice",),
+@@ -512,7 +518,7 @@ class QAPIObjectWithMembers(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :member type name: descr
+-            TypedField(
++            CompatTypedField(
+                 "member",
+                 label=_("Members"),
+                 names=("memb",),
 -- 
 2.48.1
 
