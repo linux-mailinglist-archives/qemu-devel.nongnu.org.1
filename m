@@ -2,90 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E733A505CC
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661EEA505D0
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:58:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tps3O-0003eY-Qw; Wed, 05 Mar 2025 11:57:06 -0500
+	id 1tps4n-0005V9-JV; Wed, 05 Mar 2025 11:58:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tps3D-0003Vn-NS
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:56:56 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1tps4g-0005UK-Ej
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:58:26 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tps3B-0006um-Am
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:56:55 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5dee07e51aaso13193805a12.3
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 08:56:52 -0800 (PST)
+ id 1tps4e-0007An-Nt
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:58:26 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5050d19e9so9241854a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 08:58:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741193811; x=1741798611; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741193903; x=1741798703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Llya3cKTylfTdJlmzelKgDKlLlGaQCfDm77o7jsNxaE=;
- b=YoZFrhtPPnl1YAAx38VRcFYmp84J17aMe5nVI2a9vSZk5OukGaiVhA5OrRGdrkULn8
- srRqI12fu+4kNSM4AKNUPi1JO42n3TuJhoJU49mLTo/lNsTU7xqDQCedmo8wP3EHFBKO
- 1rbS0N3cUMlLp+Phoe73mAoStdi9QQmlKNKsBrXdWNgJ+4Aby4/Ket0x8KWneljGFCI2
- GrJL8lSYF3fQBHL/TD1CAT8zkgw3r2GuQKWIBYRoB1NGGjMN4AXZw+Cqs+eDzO6gRZbs
- TRfjZTzh3uQF7Kfegt1uDik24qvS0MylfHTYB+a6tbpREgjYxlKd2QdBwFdMSlvmYTI0
- FWVg==
+ bh=OqqMOx2SW5qI2K7spDUtIJB3NXGuVoyvBTmNrS9R2c8=;
+ b=Vny+/nRT0gmpnxbMrQAMjunP7UkkXReq2q3oToau/dcqpDEFTX3/QDdqKTsYP7sKPZ
+ LfPkwM61ZG6J6XUjKFnctVPTBmjNb9g1wwVfvodrQP6rqMvO8Iv+v+oQ3z58ZuZoTCnd
+ F7lg1jJPoX0AlgjSSWDEfA5O44DdOHMexYW9g+23wR7bYquv9xyr62XRyW8jmxjQX0Lp
+ yLWwF4EWHrTtbWpzK/WjkDyqbQmAX86ZthB4x3TFT1/+/S+EQnSpKHSLYpTWDhLA4eal
+ 4O5zRv0nXF+q7HWBKw6j9d1CqzMFOZQDfR6oYZpQwd/wflIcz3l5ux2+9vdAPBXyTVVc
+ cT1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741193811; x=1741798611;
+ d=1e100.net; s=20230601; t=1741193903; x=1741798703;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Llya3cKTylfTdJlmzelKgDKlLlGaQCfDm77o7jsNxaE=;
- b=OBwl9pMTQbVuf6KWyy2ZH8M1O4SQ5i0/V+v9eEbpmmOY/SlifpoBALO8Kwx9OXUCae
- tkLNxgs5x/xb6S0vgd10v/w8NtDQlj2JaoUiH9WN9RbXo7tvy9OTq7u0BCcJh+wT60Yx
- VK9tGA1yebVz8HB3wpShSEA5+/dhg2KmSuqnITJ4UoDyK8vImFPLWTGuh7uodCgHYqdn
- vHJgdIVOCarT2yoZBGcXFyLEEDNOgcckOHo7kq+4Rd2pcWtnwA+gCTDp47qIIf0vRR2k
- jtpiMch6Y3Jbt8zsiTMdS9jmVdllfPWVZ7Yq6VEbvN2YqnnznRbWu18rbo5/z7WVtu5I
- /4UQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXUIOBmEhY4ugO945pTyQxV/4994LVi5iujRWBPmLi1jrkiZ9ii3RE0ytfRU8Vr6KqKVJJU9lnEsAYw@nongnu.org
-X-Gm-Message-State: AOJu0YxM+WH3QQ23+gZ6aKx7P11XoIJ8FoQOmsvguvBtZnNEH0wPr5Gm
- 5WL841zzxtsNmpSRcIHTmBaWTvLzWEbGtKosDnZdIuNb6syiC6Gy8EWuHEZNQapUffKZgEUMOz9
- hy/Y=
-X-Gm-Gg: ASbGncvAfWvo1IAVWO2GVYaND7Z1nrn0bjTzvFcPC8m+u8Lf0jY32lPNIUWo5z6c1CY
- efx1aF4iYumqAJNEBf1Ewm+nrw9zgnp8Q/Vm6rs52hNWh+OjiZ57DPiRFNBQWdD7Cne90Ny1eat
- lTOEIO3VBy14o8E+egnc/JM8C9Um8VU8uzAlGiNMxhZ4ow+ayJ6XzGoMBBUB33DDpijDpLd/ciM
- Bs+Vj7wDTAGReHPcyTYAAMzoiBk/Zmap66vZxVUhY2aC1ZbMqI5oHeU5lhu+Rvx3ATbzdRaBetT
- 6XzBg/LZXkRGYVKz7n82KZDv9NEncNRN7WJ/yvRQZdAgDgs=
-X-Google-Smtp-Source: AGHT+IFzAKSYYFW11gsREt2ZSv/Z2fKwFJHEX9/bgRVgfxMTzhRbw4AAegwlf0oqZCZ6UH98MOXgZg==
-X-Received: by 2002:a05:6402:3495:b0:5e4:b874:3df7 with SMTP id
- 4fb4d7f45d1cf-5e59f4cc1f2mr4213907a12.25.1741193810698; 
- Wed, 05 Mar 2025 08:56:50 -0800 (PST)
+ bh=OqqMOx2SW5qI2K7spDUtIJB3NXGuVoyvBTmNrS9R2c8=;
+ b=V2FDE0t+5f/gY4kbv4lfK7n6h2HP5Ce5t0f5Zammsz6ohAPPyVnc+9rwDOXt5i7PJN
+ m57yI2ldEcq5rojCkhGuKEU8WcczkQhz+/TooRInFt+q/wKqVBzUDOoAPLCo31mzNDS/
+ rZNe2MyTyZUQesuhVYXWUb661XtiFn85/i4Lxjmh3qYAAxgR5Gvo30wD9lCqBX8Y1czu
+ mPdgP4s4TVsBL/uwvBFdi1Xmgc90RBCRHJqQ8DvTdsw/4jEBq1JhvtlKkqXetgS9itai
+ nhJoRE5KR0KCrlLdls5FDWSgtSvafzxuYQV9f56Y2fqZoBLgXfs/MabRyjUrG0y9B2XD
+ D3kQ==
+X-Gm-Message-State: AOJu0YyJpXqccZEp5VHarGQAWPw7P6OYr66sq3HSZAs4lXKF434Oazbm
+ kZ8ZqGM3CX9v5onnY71wXIOjMEPKNEH9qaFlNM8VYm7uHnFqWQqzLcLT9GqVs3c=
+X-Gm-Gg: ASbGnct6HbtdGmPV1UqPVGJdDNUAOLXeodIBE8DaZozeKUWVoOZTt+MD5szZPJkix2b
+ n8LqQeD+Jss8wZIwt6QWeQQYsVgelh3V2aBKxQxWLsLuodWdKiEYh/YLaV/k1Ruf0y27dJbNL1p
+ rVP7H33b1K5NBGAK73Wmp70/Rb44YzAzjN4Pfi24yJzwvf0dRx3QPUVKD6Mn7S3pZEkqCWNgjVX
+ JCfpPL8DBRTx9Bm4ZqtMEDcAZa/wrUHhmLaKlQtCVgJRhlhPmI7bglQ4m3MkNjLTfJBZmhmwhoK
+ jq3X3O3MuucOFsOio84hztwtSntIaXtscLUF5mLZ5SRZcQk=
+X-Google-Smtp-Source: AGHT+IHIWWaubpF2qPGZqYMf3xsxVjzVL+olHb49BMM3DkfVQKnMnEm8SORIy7gdJJpMka1l4tQgMw==
+X-Received: by 2002:a05:6402:34c6:b0:5e0:82a0:50ab with SMTP id
+ 4fb4d7f45d1cf-5e59f4f947bmr4097005a12.27.1741193902922; 
+ Wed, 05 Mar 2025 08:58:22 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5e4c3b4aa3bsm9867128a12.16.2025.03.05.08.56.49
+ 4fb4d7f45d1cf-5e5bcd1595bsm314744a12.42.2025.03.05.08.58.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Mar 2025 08:56:50 -0800 (PST)
+ Wed, 05 Mar 2025 08:58:21 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7592B5F932;
- Wed,  5 Mar 2025 16:56:48 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id D7B0B5F932;
+ Wed,  5 Mar 2025 16:58:19 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Brian Cain <brian.cain@oss.qualcomm.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/tcg: Suppress compiler false-positive warning on
- sha1.c
-In-Reply-To: <2de21adf-204b-4417-aa2b-2d16d22148f8@oss.qualcomm.com> (Brian
- Cain's message of "Wed, 5 Mar 2025 08:56:26 -0600")
-References: <20250227141343.1675415-1-peter.maydell@linaro.org>
- <87o6yh57r2.fsf@draig.linaro.org>
- <CAFEAcA9VDtWKoQ09dOt+ZxJ2MhdRTFY_X1ON58pEjYTM_NtZ-A@mail.gmail.com>
- <2de21adf-204b-4417-aa2b-2d16d22148f8@oss.qualcomm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,  Li-Wen Hsu <lwhsu@freebsd.org>,
+ Peter Maydell <peter.maydell@linaro.org>,  Laurent Vivier
+ <laurent@vivier.eu>,  qemu-arm@nongnu.org,  Alexandre Iooss
+ <erdnaxe@crans.org>,  Paolo Bonzini <pbonzini@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Riku Voipio
+ <riku.voipio@iki.fi>,  Warner Losh <imp@bsdimp.com>,  Brian Cain
+ <brian.cain@oss.qualcomm.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Kyle Evans <kevans@freebsd.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Ed Maste <emaste@freebsd.org>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v2 07/32] tests/functional: update the aarch64_virg_gpu
+ images
+In-Reply-To: <20f719a9-a26d-4cb7-aa59-aab6cb20fe77@redhat.com> (Thomas Huth's
+ message of "Wed, 5 Mar 2025 09:35:08 +0100")
+References: <20250304222439.2035603-1-alex.bennee@linaro.org>
+ <20250304222439.2035603-8-alex.bennee@linaro.org>
+ <20f719a9-a26d-4cb7-aa59-aab6cb20fe77@redhat.com>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 05 Mar 2025 16:56:48 +0000
-Message-ID: <87ikon4drj.fsf@draig.linaro.org>
+Date: Wed, 05 Mar 2025 16:58:19 +0000
+Message-ID: <87cyev4dp0.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,87 +115,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Brian Cain <brian.cain@oss.qualcomm.com> writes:
+Thomas Huth <thuth@redhat.com> writes:
 
-> On 3/4/2025 6:51 AM, Peter Maydell wrote:
->> On Tue, 4 Mar 2025 at 11:56, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>> +# GCC versions 12/13/14/15 at least incorrectly complain about
->>>> +# "'SHA1Transform' reading 64 bytes from a region of size 0"; see the=
- gcc bug
->>>> +# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D106709
->>>> +# Since this is just a standard piece of library code we've borrowed =
-for a
->>>> +# TCG test case, suppress the warning rather than trying to modify the
->>>> +# code to work around the compiler.
->>>> +sha1: CFLAGS+=3D-Wno-stringop-overread
->>>> +
->>> Sadly this breaks the hexagon compiler:
->>>
->>>    error: unknown warning option '-Wno-stringop-overread' [-Werror,-Wun=
-known-warning-option]
->>>    Traceback (most recent call last):
->>>      File "/home/alex/lsrc/qemu.git/tests/docker/docker.py", line 683, =
-in <module>
->>>        sys.exit(main())
->>>                 ^^^^^^
->>>      File "/home/alex/lsrc/qemu.git/tests/docker/docker.py", line 679, =
-in main
->>>        return args.cmdobj.run(args, argv)
->>>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>      File "/home/alex/lsrc/qemu.git/tests/docker/docker.py", line 657, =
-in run
->>>        return Docker().run(cmd, False, quiet=3Dargs.quiet,
->>>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>      File "/home/alex/lsrc/qemu.git/tests/docker/docker.py", line 370, =
-in run
->>>        ret =3D self._do_check(["run", "--rm", "--label",
->>>              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>      File "/home/alex/lsrc/qemu.git/tests/docker/docker.py", line 247, =
-in _do_check
->>>        return subprocess.check_call(self._command + cmd, **kwargs)
->>>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>      File "/usr/lib/python3.11/subprocess.py", line 413, in check_call
->>>        raise CalledProcessError(retcode, cmd)
->>>    subprocess.CalledProcessError: Command '['podman', 'run', '--rm', '-=
--label', 'com.qemu.instance.uuid=3D5bbb7b6ed2ea4377b9b6d646859ec4ea', '--us=
-erns=3Dkeep-id', '-u', '1000', '-w', '/home/alex/lsrc/qemu.git/builds/all/t=
-ests/tcg/hexagon-linux-user', '-v', '/home/alex/lsrc/qemu.git/builds/all/te=
-sts/tcg/hexagon-linux-user:/home/alex/lsrc/qemu.git/builds/all/tests/tcg/he=
-xagon-linux-user:rw', '-v', '/home/alex/lsrc/qemu.git:/home/alex/lsrc/qemu.=
-git:ro,z', 'qemu/debian-hexagon-cross', 'hexagon-unknown-linux-musl-clang',=
- '-Wno-incompatible-pointer-types', '-Wno-undefined-internal', '-fno-unroll=
--loops', '-fno-stack-protector', '-Wall', '-Werror', '-O0', '-g', '-fno-str=
-ict-aliasing', '-Wno-stringop-overread', '-mv73', '-O2', '-static', '/home/=
-alex/lsrc/qemu.git/tests/tcg/multiarch/sha1.c', '-o', 'sha1', '-static']' r=
-eturned non-zero exit status 1.
->>>    filter=3D--filter=3Dlabel=3Dcom.qemu.instance.uuid=3D5bbb7b6ed2ea437=
-7b9b6d646859ec4ea
->>>    make[1]: *** [Makefile:122: sha1] Error 1
->>>    make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:52: build=
--tcg-tests-hexagon-linux-user] Error 2
->>>
->>> Is it that new an option?
->> I think it's new-ish (gcc 11?). On the other hand
+> On 04/03/2025 23.24, Alex Benn=C3=A9e wrote:
+>> Update to the most recent aarch64_virt_gpu image. The principle
+>> differences are:
+>>    - target a v8.0 baseline CPU
+>>    - latest vkmark (2025.1)
+>>    - actually uses the rootfs (previously was initrd)
+>>    - rootfs includes more testing tools for interactive use
+>> See README.md in https://fileserver.linaro.org/s/ce5jXBFinPxtEdx for
+>> details about the image creation and the buildroot config.
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>   tests/functional/test_aarch64_virt_gpu.py | 10 +++++-----
+>>   1 file changed, 5 insertions(+), 5 deletions(-)
+>> diff --git a/tests/functional/test_aarch64_virt_gpu.py
+>> b/tests/functional/test_aarch64_virt_gpu.py
+>> index 3fdb31f034..e417ca9beb 100755
+>> --- a/tests/functional/test_aarch64_virt_gpu.py
+>> +++ b/tests/functional/test_aarch64_virt_gpu.py
+>> @@ -25,14 +25,14 @@ class Aarch64VirtGPUMachine(LinuxKernelTest):
+>>       ASSET_VIRT_GPU_KERNEL =3D Asset(
+>>           'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+>>           'download?path=3D%2F&files=3D'
+>> -        'Image',
+>> -        '89e5099d26166204cc5ca4bb6d1a11b92c217e1f82ec67e3ba363d09157462=
+f6')
+>> +        'Image.6.12.16.aarch64',
+>> +        '7888c51c55d37e86bbbdeb5acea9f08c34e6b0f03c1f5b2463285f6a6f6eec=
+8b')
+>>         ASSET_VIRT_GPU_ROOTFS =3D Asset(
+>>           'https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
+>>           'download?path=3D%2F&files=3D'
+>> -        'rootfs.ext4.zstd',
+>> -        '792da7573f5dc2913ddb7c638151d4a6b2d028a4cb2afb38add513c1924bda=
+d4')
+>> +        'rootfs.aarch64.ext2.zstd',
 >
->
-> I was going to volunteer to update the toolchain used for hexagon to
-> address this.=C2=A0 But unfortunately this warning is still not supported
-> in clang 21.
->
-> https://github.com/llvm/llvm-project/issues/72455 sounds like it's not
-> very likely to arrive any time soon.
->
->
-> So "-Wno-unknown-warning-option" does indeed seem like a good workaround.
->
->
->> -Wno-unknown-warning-option is quite old, and would suppress
->> this error. If we do
->>   CFLAGS+=3D-Wno-unknown-warning-option -Wno-stringop-overread
+> I'm a little bit surprised to see "ext2" instead of "ext4" here, did
+> they really downgrade the filesystem?
 
-Workaround is fine for the time being then.
+I think buildroot just symlinked them all together. I'll double check.
+
+>
+> Anyway,
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 --=20
 Alex Benn=C3=A9e
