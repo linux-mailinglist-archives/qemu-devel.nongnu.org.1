@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0771A4F39F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC26A4F3E4
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdWG-0004QT-OL; Tue, 04 Mar 2025 20:25:58 -0500
+	id 1tpdWu-0006VQ-9H; Tue, 04 Mar 2025 20:26:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUI-00021w-8t
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:55 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUN-0002Di-3D
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:24:00 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUG-00079J-M7
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:54 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43bcad638efso10144815e9.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdUL-0007AM-I2
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:58 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-390ddf037ffso3360399f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137831; x=1741742631; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137835; x=1741742635; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZnAwaBdhJN/kNZhyvNDoVKLIcUFbc7BOsa1ZC7/+qgE=;
- b=ckD8q9cCjeg07PFn5jvflfQRaryZPLVyiyMTnrDScblq4oZfVB7/qjFD54p+fU08Oq
- 2FtE90CgjjcNcS3KK05g8kqFV0m3pj5Pth/8iU9exYyZu51TMgOS8oIoy1tyMp2mwKYH
- Vh/CzpeGOabTwusaruXBzUvEQGqayGJ/RMju39w/HXdDNwjxqaO9z3GCYUsxFhgAwH/B
- Arvr3v3/3vDReg5mOzKfYit+3plxYzJiS9Y3is84moqWyGNuET8+CBM2oTkEXIxZGbez
- yffAFcyP91Yxs3jazH1c9gQPalEP1uV630ORxFxQp7aqSRb7jqrTL1oHrYyZ926Rmz6k
- sVLA==
+ bh=qd7m5wMCz+XZxcgvBF3/5ywn7cJ5I9SW91UZjpHUbeA=;
+ b=cYsEZF4DPwJbbCt2fcEC3RW4ULWbSjKrmFSsyxUxqf3vY1nCYW87qh0oHAI9zVhh5/
+ 6pl70pzVP1Opom2qJKsNV5QzuF++Mq1Inl+/nim0nBhV7q4+71MzBpr3iiw8m++giGO1
+ qxnEzfCdR5vlq7KHnYVV+5LRd1DWh5BfIyKgJB53AA19mfvqAYwvBi4wpqEjn1NTwYOR
+ v1Un3+6KvPG9YtVPcIW4C8QltQvzFk5MsQwUOXsQGQ8ScxJBhqZd43dHUiFHDDg2Q81C
+ KS1gCmkBdfFbSMk2a4LhiUq7QLLx8sRGqOlCT38y3YynIvCPvONf5F8K0gXuzNoFu9rY
+ rAcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137831; x=1741742631;
+ d=1e100.net; s=20230601; t=1741137835; x=1741742635;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZnAwaBdhJN/kNZhyvNDoVKLIcUFbc7BOsa1ZC7/+qgE=;
- b=aXMwooP8B0sIt51phEjp8bnZnwsZpdHMLzbT+XaBmA9tkzHy0APVqlMwWW9U6PLXlt
- 8daVNz7BVz7NaCLqTvW0QEDBvrQCNp3A9RAHTVUi91UpHHfCYNOa6Qsdbr/oi+ep64lo
- ubGa+EJXO3D+fiaxMHS/ku5RFICvr+eisWYpW7pzdUoS0nSIwVcPiUkHlPzei2CtKNKD
- 9y09J0FMLVxDXHgytEitlPqnyrHubQ6pUIneoFPR3yXGwilxA50E/bW84sShjXsMVZ+O
- Fn709MBRvzQoNOXuI3jBHexGGyTMBipyeWsr/SnqJk2sis3XS7/aMCOTUonaJG6E3do0
- EkvQ==
-X-Gm-Message-State: AOJu0YzqhoMwrdd61TksbE6cl5nu2+WlhzILdHMEtWGGEoXp2AuVz0SJ
- I3Gt5dpDUYnxUIbSG9Qyjm2gYpQRsV73W0j0i4JwTYKhGhXrirlJ4/h4yCdck2RSbKGJPD9QC69
- RioM=
-X-Gm-Gg: ASbGncvSp2GAX3XleuOzwew8sEfdjrNKQgxFLppKtySYu6DnKXCBfpbKUDnScdbmaif
- MqfcAaM5PaQIrBJE0SYPIY+7m86oJYRmDAEYBAQXR9F160+ORkLaE5ejCfMkMxQF+S04Lu19QSr
- 0DxswN1tFaMvtVGx5S6sDc+nUaEuARpJorwqFw/F+bjFdZBr7rkulMwMCsJLT2tQrORyWOuzp44
- 2R2nXdb7KIsiZLffFvzZiMl51tLyy3oRmOqj+ok2a3qn83XgwLbeoREWb2EWbTpKifdchcA9Iud
- +gTNjC8Hh9LO1zr8q/H+zkOsbeYyM2ut3YhidFPJbWhPBQy4Xt1sIm8T2RPaSTpsEZRnuZqkLdu
- QZ+5vyEIlwM0ZkotHowk=
-X-Google-Smtp-Source: AGHT+IHQjFcVkrER2JAN0yrKdDyhp69G7z/M3MsPPRTR3N81lST5vwanaLoZdXDVR9aUVwms6Ax5sg==
-X-Received: by 2002:a05:6000:156d:b0:391:10c5:d1a9 with SMTP id
- ffacd0b85a97d-3911f76e3a4mr736504f8f.31.1741137830987; 
- Tue, 04 Mar 2025 17:23:50 -0800 (PST)
+ bh=qd7m5wMCz+XZxcgvBF3/5ywn7cJ5I9SW91UZjpHUbeA=;
+ b=Awo44fFGfeZqqPNZXzGOppZGOv9Ug5FF8NE5H24lK5kU1N9LyUbcjH7McRYrQSd+mB
+ 1h4lfHWLWcH8oHswepdAG1StsLSJyEIgqyhoqtS/r9MrBLEo44IPaDQnNUMvUzToHq2A
+ KvlISm+hdIJc64D5CZX1jtv+fRCO8JjJtS3yxgmgwFpCVGdaQYiVc0ZdhlZmSAny7FHh
+ 1bYKhKtBN25gqCa6ighF30q7z0YcfwE7P74UePPJGljGQP8L+JegdclRrrPyd54aNc5b
+ /U2/0Tk3xxoEpdA5LvAQqvfNCSTsd2irKRseopgiNVRxqhSP5F6lnNDe6Q9ccOAQiJuO
+ KA9g==
+X-Gm-Message-State: AOJu0Yx5HYI4NwhSiWy1IBNC+GMntEJ0ttMZSMURE0/WmShy8bVbQGA6
+ UyBGJkQ4XlEaUrDBEEPXJ5k5lCj6V6NEUC4s39LonL6Xy0StLnK+OqB8TC79oL0NnEelAO6FFAu
+ nzzc=
+X-Gm-Gg: ASbGnctVnumn7uZWEozYHEe2A3uH+FH4Xub98GUrtX0WoCIpOHGPm+2YRWwL8Rk+a5R
+ J+m7HyNvzAYQcKktbGJ0YfATt/UDI8GMIcSzEJ3tqG9xw/78xzVv6u0Hbc62vctoAdBPjpoQ3C8
+ OHqzmH61P54k8kRHe0/EIR5T26FtQq6M1ZydnvdGESUBxHHnn0bVMK4dXmtcQQ3JW+w5wY1Yw7m
+ TVBCW59YXivH1Oa2SyVjP+dam4PxfxSnsN++RscEBE6oW3Bh1eXQoCXoB783WycRrZbFEOkNN2r
+ Y27trYw9wCdVN2dwE7gjL5Z00nnEVKz6ahSmLngeFvJjlco40NpoSg+LX/fPWQIu+DXvCr0M+wt
+ 7rTW/uYFSirzj/CJPWCg=
+X-Google-Smtp-Source: AGHT+IFQriLDXu0bW0VYcFYpFnrQQOenK3H2DTY1wBvYAaLm4iAVNypHhoO05v4I74OKggKoXOtFHg==
+X-Received: by 2002:a05:6000:381:b0:38f:2f0e:980c with SMTP id
+ ffacd0b85a97d-3911f7d2fc9mr585329f8f.47.1741137835466; 
+ Tue, 04 Mar 2025 17:23:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795962sm19846140f8f.13.2025.03.04.17.23.50
+ ffacd0b85a97d-390e4844c0dsm18880330f8f.80.2025.03.04.17.23.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:50 -0800 (PST)
+ Tue, 04 Mar 2025 17:23:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Luc Michel <luc.michel@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 23/41] hw/char/bcm2835_aux: Really use RX FIFO depth
-Date: Wed,  5 Mar 2025 02:21:38 +0100
-Message-ID: <20250305012157.96463-24-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 24/41] hw/char/imx_serial: Really use RX FIFO depth
+Date: Wed,  5 Mar 2025 02:21:39 +0100
+Message-ID: <20250305012157.96463-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,9 +100,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we model a 8-elements RX FIFO since the BCM2835 AUX model
-was introduced in commit 97398d900ca ("bcm2835_aux: add emulation
-of BCM2835 AUX block") we only read 1 char at a time!
+While we model a 32-elements RX FIFO since the IMX serial
+model was introduced in commit 988f2442971 ("hw/char/imx_serial:
+Implement receive FIFO and ageing timer") we only read 1 char
+at a time!
 
 Have the IOCanReadHandler handler return how many elements are
 available, and use that in the IOReadHandler handler.
@@ -109,35 +111,38 @@ available, and use that in the IOReadHandler handler.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250220092903.3726-6-philmd@linaro.org>
+Tested-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20250220092903.3726-7-philmd@linaro.org>
 ---
- hw/char/bcm2835_aux.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/char/imx_serial.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
-index 73ad5934067..c6e7eccf7dd 100644
---- a/hw/char/bcm2835_aux.c
-+++ b/hw/char/bcm2835_aux.c
-@@ -221,7 +221,7 @@ static int bcm2835_aux_can_receive(void *opaque)
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index 38b4865157e..6f14f8403a9 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -386,7 +386,8 @@ static void imx_serial_write(void *opaque, hwaddr offset,
+ static int imx_can_receive(void *opaque)
  {
-     BCM2835AuxState *s = opaque;
- 
--    return s->read_count < BCM2835_AUX_RX_FIFO_LEN;
-+    return BCM2835_AUX_RX_FIFO_LEN - s->read_count;
+     IMXSerialState *s = (IMXSerialState *)opaque;
+-    return s->ucr2 & UCR2_RXEN && fifo32_num_used(&s->rx_fifo) < FIFO_SIZE;
++
++    return s->ucr2 & UCR2_RXEN ? fifo32_num_free(&s->rx_fifo) : 0;
  }
  
- static void bcm2835_aux_put_fifo(void *opaque, uint8_t value)
-@@ -243,7 +243,9 @@ static void bcm2835_aux_put_fifo(void *opaque, uint8_t value)
+ static void imx_put_data(void *opaque, uint32_t value)
+@@ -417,7 +418,10 @@ static void imx_receive(void *opaque, const uint8_t *buf, int size)
+     IMXSerialState *s = (IMXSerialState *)opaque;
  
- static void bcm2835_aux_receive(void *opaque, const uint8_t *buf, int size)
- {
--    bcm2835_aux_put_fifo(opaque, *buf);
+     s->usr2 |= USR2_WAKE;
+-    imx_put_data(opaque, *buf);
++
 +    for (int i = 0; i < size; i++) {
-+        bcm2835_aux_put_fifo(opaque, buf[i]);
++        imx_put_data(opaque, buf[i]);
 +    }
  }
  
- static const MemoryRegionOps bcm2835_aux_ops = {
+ static void imx_event(void *opaque, QEMUChrEvent event)
 -- 
 2.47.1
 
