@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B28A4F6F9
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75009A4F6F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:14:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpi0E-0000qi-8F; Wed, 05 Mar 2025 01:13:10 -0500
+	id 1tpi1W-0002Gx-3K; Wed, 05 Mar 2025 01:14:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tpi0B-0000pa-LS
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:13:07 -0500
+ id 1tpi1O-00021R-NI
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:14:24 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tpi05-0004Gy-Sc
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:13:07 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1tpi1M-0004SS-Az
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:14:22 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Cxqmpr68dnzN+KAA--.41221S3;
- Wed, 05 Mar 2025 14:12:59 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bxnmts68dnzt+KAA--.40866S3;
+ Wed, 05 Mar 2025 14:13:00 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBx3MRi68dnfRQ3AA--.5679S11;
- Wed, 05 Mar 2025 14:12:59 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBx3MRi68dnfRQ3AA--.5679S12;
+ Wed, 05 Mar 2025 14:13:00 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Stefan Hajnoczi <stefanha@gmail.com>
 Cc: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
  Xianglai Li <lixianglai@loongson.cn>
-Subject: [PULL 09/15] hw/loongarch/virt: Add topo properties on CPU object
-Date: Wed,  5 Mar 2025 14:12:44 +0800
-Message-Id: <20250305061250.1908444-10-maobibo@loongson.cn>
+Subject: [PULL 10/15] hw/loongarch/virt: Add basic cpu plug interface framework
+Date: Wed,  5 Mar 2025 14:12:45 +0800
+Message-Id: <20250305061250.1908444-11-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250305061250.1908444-1-maobibo@loongson.cn>
 References: <20250305061250.1908444-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBx3MRi68dnfRQ3AA--.5679S11
+X-CM-TRANSID: qMiowMBx3MRi68dnfRQ3AA--.5679S12
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,65 +63,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add some properties such as socket_id, core_id, thread_id and node_id
-on LoongArch CPU object.
+Add basic cpu hotplug interface framework, cpu hotplug interface is
+stub function and only framework is added here.
 
 Co-developed-by: Xianglai Li <lixianglai@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/cpu.c | 9 +++++++++
- target/loongarch/cpu.h | 4 ++++
- 2 files changed, 13 insertions(+)
+ hw/loongarch/virt.c    | 29 +++++++++++++++++++++++++++++
+ target/loongarch/cpu.c | 13 +++++++++++++
+ target/loongarch/cpu.h |  1 +
+ 3 files changed, 43 insertions(+)
 
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 2bbbbbfbcf..2b4b60f718 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -816,6 +816,26 @@ static int virt_get_arch_id_from_topo(MachineState *ms, LoongArchCPUTopo *topo)
+     return arch_id;
+ }
+ 
++static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
++                              DeviceState *dev, Error **errp)
++{
++}
++
++static void virt_cpu_unplug_request(HotplugHandler *hotplug_dev,
++                                    DeviceState *dev, Error **errp)
++{
++}
++
++static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
++                            DeviceState *dev, Error **errp)
++{
++}
++
++static void virt_cpu_plug(HotplugHandler *hotplug_dev,
++                          DeviceState *dev, Error **errp)
++{
++}
++
+ static bool memhp_type_supported(DeviceState *dev)
+ {
+     /* we only support pc dimm now */
+@@ -834,6 +854,8 @@ static void virt_device_pre_plug(HotplugHandler *hotplug_dev,
+ {
+     if (memhp_type_supported(dev)) {
+         virt_mem_pre_plug(hotplug_dev, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
++        virt_cpu_pre_plug(hotplug_dev, dev, errp);
+     }
+ }
+ 
+@@ -852,6 +874,8 @@ static void virt_device_unplug_request(HotplugHandler *hotplug_dev,
+ {
+     if (memhp_type_supported(dev)) {
+         virt_mem_unplug_request(hotplug_dev, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
++        virt_cpu_unplug_request(hotplug_dev, dev, errp);
+     }
+ }
+ 
+@@ -870,6 +894,8 @@ static void virt_device_unplug(HotplugHandler *hotplug_dev,
+ {
+     if (memhp_type_supported(dev)) {
+         virt_mem_unplug(hotplug_dev, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
++        virt_cpu_unplug(hotplug_dev, dev, errp);
+     }
+ }
+ 
+@@ -897,6 +923,8 @@ static void virt_device_plug_cb(HotplugHandler *hotplug_dev,
+         }
+     } else if (memhp_type_supported(dev)) {
+         virt_mem_plug(hotplug_dev, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
++        virt_cpu_plug(hotplug_dev, dev, errp);
+     }
+ }
+ 
+@@ -906,6 +934,7 @@ static HotplugHandler *virt_get_hotplug_handler(MachineState *machine,
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+ 
+     if (device_is_dynamic_sysbus(mc, dev) ||
++        object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU) ||
+         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
+         memhp_type_supported(dev)) {
+         return HOTPLUG_HANDLER(machine);
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 3788f895c1..df76ab66d5 100644
+index df76ab66d5..8b99b8def4 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -14,6 +14,7 @@
- #include "system/tcg.h"
- #include "system/kvm.h"
- #include "kvm/kvm_loongarch.h"
-+#include "hw/qdev-properties.h"
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
- #include "cpu.h"
-@@ -879,6 +880,13 @@ static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
+@@ -647,6 +647,17 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+     lacc->parent_realize(dev, errp);
  }
- #endif
  
-+static const Property loongarch_cpu_properties[] = {
-+    DEFINE_PROP_INT32("socket-id", LoongArchCPU, socket_id, 0),
-+    DEFINE_PROP_INT32("core-id", LoongArchCPU, core_id, 0),
-+    DEFINE_PROP_INT32("thread-id", LoongArchCPU, thread_id, 0),
-+    DEFINE_PROP_INT32("node-id", LoongArchCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
-+};
++static void loongarch_cpu_unrealizefn(DeviceState *dev)
++{
++    LoongArchCPUClass *lacc = LOONGARCH_CPU_GET_CLASS(dev);
 +
- static void loongarch_cpu_class_init(ObjectClass *c, void *data)
++#ifndef CONFIG_USER_ONLY
++    cpu_remove_sync(CPU(dev));
++#endif
++
++    lacc->parent_unrealize(dev);
++}
++
+ static bool loongarch_get_lsx(Object *obj, Error **errp)
  {
-     LoongArchCPUClass *lacc = LOONGARCH_CPU_CLASS(c);
-@@ -886,6 +894,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-     DeviceClass *dc = DEVICE_CLASS(c);
-     ResettableClass *rc = RESETTABLE_CLASS(c);
- 
-+    device_class_set_props(dc, loongarch_cpu_properties);
+     return LOONGARCH_CPU(obj)->lsx != ON_OFF_AUTO_OFF;
+@@ -897,6 +908,8 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+     device_class_set_props(dc, loongarch_cpu_properties);
      device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
                                      &lacc->parent_realize);
++    device_class_set_parent_unrealize(dc, loongarch_cpu_unrealizefn,
++                                      &lacc->parent_unrealize);
      resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
+                                        &lacc->parent_phases);
+ 
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 9dc71fa7f1..677100bd42 100644
+index 677100bd42..eae874c67b 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -417,6 +417,10 @@ struct ArchCPU {
-     OnOffAuto lasx;
-     OnOffAuto kvm_pv_ipi;
-     OnOffAuto kvm_steal_time;
-+    int32_t socket_id;  /* socket-id of this CPU */
-+    int32_t core_id;    /* core-id of this CPU */
-+    int32_t thread_id;  /* thread-id of this CPU */
-+    int32_t node_id;    /* NUMA node of this CPU */
+@@ -439,6 +439,7 @@ struct LoongArchCPUClass {
+     CPUClass parent_class;
  
-     /* 'compatible' string for this CPU for Linux device trees */
-     const char *dtb_compatible;
+     DeviceRealize parent_realize;
++    DeviceUnrealize parent_unrealize;
+     ResettablePhases parent_phases;
+ };
+ 
 -- 
 2.43.5
 
