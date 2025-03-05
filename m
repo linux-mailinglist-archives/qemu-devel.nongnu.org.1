@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24E4A4F465
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5211DA4F445
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:02:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdyV-0005kJ-JB; Tue, 04 Mar 2025 20:55:08 -0500
+	id 1tpdyR-0005WS-7a; Tue, 04 Mar 2025 20:55:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdyA-00057n-7R
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:48 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1tpdyC-0005B9-7E
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:50 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdy8-00007H-Ow
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:45 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2fce3b01efcso9113675a91.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:43 -0800 (PST)
+ id 1tpdyA-00007t-Ka
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:54:47 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-223f4c06e9fso2333395ad.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139682; x=1741744482; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139685; x=1741744485; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7mXzu/q/STb5uoLRSBRxYvW5KroRtvT4LUQ7GK2i/JE=;
- b=dmm+eAEExD1uQ7D5LUVuMmPoO9yD52YwrrOr3yqU3kh9c9ZQFXxowNuaIeP12SZ9kd
- iGWDO3fK5oWMXv0Vw1Txwbt5kFO02G4lPsDnz3RsEU96ponWaAfAkH8CIBdoyTVATFws
- 7ncoYq6iLaoFwbV9jhPFXqexZEuBsAmqqO1upuAAj6waWJVqYMP7FCaTngW5bxe7m5Xi
- 18DzPPw6N+xRGIps7PFrA9oTyKHYiWvBXKppKAECVN69de4BzqV4PeKd2V3VmhOFO5TU
- 59yJvHHx8g52SHY0LEPbVLz7Hzt8vPk9lm4wJ6A3ecLJ9bQ9zptaaOt8bn69pw04BbGb
- hwFQ==
+ bh=o2tk+IDQAaFexLh32/3aSUR3dERRACns7VIzSWEBYTg=;
+ b=i7jLdxgotlIlYjPG3i8pamr8QVfWwLJeB60tg1hPFFQspxr9OeHlQzONQrdE1d1C0t
+ 1VnIp776dA5Ix7zrQA3eRY5RJuWky4H2b16bTMgLxWQ6GfRAXqOMcKaUnYcS5gEDKlWs
+ JG1NZ7NdPe/mepMG/c9TgVSsZEWTDbhBrsyeqFqJPlL6Jhm6pcVBfnBJrK2Epo2SYdS3
+ KsIEskxxiyN/hZpkMFCjKmVb5bMjRkvleAPrqDDqnGjIMtMSKos/HjO9OLvm3r9GqFZK
+ ccFqWmWwZJ4x4wpUGQsy55rJ+YuyVF4io18G7FYUyUMsG5R3rwUWClpsNPrTxLNO58fa
+ p57Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139682; x=1741744482;
+ d=1e100.net; s=20230601; t=1741139685; x=1741744485;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7mXzu/q/STb5uoLRSBRxYvW5KroRtvT4LUQ7GK2i/JE=;
- b=mJW+yaidNvT7LjpEtIMCzCXxvebmdDo02UXUJy7IEQpWtqQifbpBCsbXc3+q+R+KIr
- ufFN9BxQgv9FpfceH9bPbhAh2wHHwtzDOUcaH5K13vlJE2dZa47pQxmsjaEnJ9nFGlSX
- 28yKswM1occ8Jkg9+ISNckIJS3BIz/oQugAAbm4qPqZPmO16S6igofHqugiQWRxU547d
- UNzZG7ssoKN665QnGLpXTkchnunr8KUtGptccGcYBybSZ3Y5eHLxJWic1Di96zeaQzy3
- dqkouGgX2d+SzVURUO6lO616TB1qA+rICz/nTXjjLS0brlJ1nYPBB3eAUINVNaZjj7Ed
- JBcg==
-X-Gm-Message-State: AOJu0YywpiaWZXfciWEhIkaTQ861CA0c795avaz647DGD29KfXaBp6B7
- kLLJ86ErNmoK8gGHwcrn/QeP64sHG3ncpOrGCTQ9lN108fOG61X83NvnnTtffVo=
-X-Gm-Gg: ASbGncuusWg9ewLSlX7psVJ2G1SGVGSaVM1Ef3yv1IBXpNSvaF/ymz/MuDh8LohwJLK
- QO6zzmP+2QWVqzK80mvzcUkA7NjH1M6I72kDFjfB+VpLdhL/iWeIgRZHQHFPk9G14fRMcVikyiI
- qzq8elnCS6nTpu8fZvU40PyGoGLNVhsKXCC5mjNF98aGZ9G9AzUkaudgqtjZjLG+++nEJ4NJWJR
- xLuYDj5xG4EGNSAly+9wT0nFSD1waCyIElVhRgfsGVFLuWFdAUPgHmj2KWTyxe2dnjAG1rTX6Uu
- gNyZHplxYFozTyE6uYQXty3ZyYGieX3KREcAe/OVNiIrFf8c6Zp0sUE0aQ9yAuHIBl3PnK5rYig
- ReKPsaMvMm33Cut6G9McO2fok2A43kfGKuwIiTfIvB6Mi3h02teg=
-X-Google-Smtp-Source: AGHT+IFcSNMMq41FUWQ0kKGvgJs4ZxC70p7Plz6a3MV2la6Cwi3+srqjq8Iq5ZKFO0shxnwVKv8ObQ==
-X-Received: by 2002:a17:90b:3ec4:b0:2fe:a76c:ffd0 with SMTP id
- 98e67ed59e1d1-2ff497ff897mr2448212a91.27.1741139681988; 
- Tue, 04 Mar 2025 17:54:41 -0800 (PST)
+ bh=o2tk+IDQAaFexLh32/3aSUR3dERRACns7VIzSWEBYTg=;
+ b=TY0pqVKWzm5CW04yPc9qFdetcRvzkmuRX8irXFavXp2/rqH2dY2XKh6RLGlzahTumQ
+ 2xOrrIlfYyRYCD+1zxXr2TBzbWLcyDYWbfjebCr4sQe0iZ3b3w32b7HZ1t6zCr/KBbBF
+ viQFHq1sAVeNAqrF6Y9nZNzxFKnUR6tWTisObWRNzjS3hYvufGWVHEZNHJC0JWoGtM5j
+ W8hBh7bsMIeLILhiBeirewefpKth4I4YZ3iBCQPAyliBoijJ6wOxtCLLQmXIhqpGta8+
+ Zk1dp4lazxK0r3jPAraE6YMoiPJfpsnC14Ns8itjg/jst0wQWAN0fCNDWOGZPE1y7iSi
+ JKkg==
+X-Gm-Message-State: AOJu0YyqjV3Q0gu5TFf6zxld+kDj5wr2THBPsDGuTlMMstTz9bgMKkKI
+ +zck2ZkrdaGcPyavz3esv691C0ygPHRyDv8zD2u1ycebPAPNDie2k0IAAxytJJs=
+X-Gm-Gg: ASbGnctpVI3qmH71zE6ItUR0e0gmwrTDhhb86cenquHLHkHJ68eK3rZR0bwSmiCdGO4
+ CowZUiyfytg4E2ehE99EjtwMgO/yNbJ4Nfl1a3OzJ7yTVyR2qJDo48QYxcf6elNKIYn/lu/8R7H
+ 8i56TD2KIvxdxLiKq7vHI1MMNpcYykXb0wTM0zPlS5i7zswcPvk7ScSQ+zfV/DcRW4WzAfrD4p0
+ /0S2uDpffb7g8Z/W7Dc6NV+cVAYbLlQipvfiYkzZXkZH5LK0b9GCQfn8o0d0P7mSAWD3YGY54Fh
+ +g1kG3f0A3wiJ90L9ryJ33fB8aG4QgjMX7GFW/Gl29/PAqgCut+C/zlZ2OENrTwUoF6rLQrHAAJ
+ Xptt+sJPKIxBaEBb2DSUgxXVgXvZvFlleRBOkuQsmF8S1jOP+VQI=
+X-Google-Smtp-Source: AGHT+IEaQosfOnW/G9cyn9jwnO1QLqXSVHa3KmXKcLlhDEAd4giTyDST7lILTOo8cJjqedE2yY3/dw==
+X-Received: by 2002:a17:903:41cd:b0:220:fe36:650c with SMTP id
+ d9443c01a7336-223f1e074e1mr21109925ad.23.1741139685042; 
+ Tue, 04 Mar 2025 17:54:45 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.39
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.54.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:54:41 -0800 (PST)
+ Tue, 04 Mar 2025 17:54:44 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
+Cc: alistair23@gmail.com, Atish Patra <atishp@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 30/59] disas/riscv: Add missing Sdtrig CSRs
-Date: Wed,  5 Mar 2025 11:52:38 +1000
-Message-ID: <20250305015307.1463560-31-alistair.francis@wdc.com>
+Subject: [PULL 31/59] target/riscv: Fix the hpmevent mask
+Date: Wed,  5 Mar 2025 11:52:39 +1000
+Message-ID: <20250305015307.1463560-32-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,36 +103,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Atish Patra <atishp@rivosinc.com>
 
-This reflects the latest frozen version of the RISC-V Debug
-specification (1.0.0-rc4) which includes the Sdtrig extension.
+As per the latest privilege specification v1.13[1], the sscofpmf
+only reserves first 8 bits of hpmeventX. Update the corresponding
+masks accordingly.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+[1]https://github.com/riscv/riscv-isa-manual/issues/1578
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250206153410.236636-3-rbradford@rivosinc.com>
+Message-ID: <20250206-pmu_minor_fixes-v2-1-1bb0f4aeb8b4@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/riscv/cpu_bits.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 305dd40ac4..85cd2a9c2a 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -2438,9 +2438,11 @@ static const char *csr_name(int csrno)
-     case 0x07a1: return "tdata1";
-     case 0x07a2: return "tdata2";
-     case 0x07a3: return "tdata3";
-+    case 0x07a4: return "tinfo";
-     case 0x07b0: return "dcsr";
-     case 0x07b1: return "dpc";
--    case 0x07b2: return "dscratch";
-+    case 0x07b2: return "dscratch0";
-+    case 0x07b3: return "dscratch1";
-     case 0x0b00: return "mcycle";
-     case 0x0b01: return "mtime";
-     case 0x0b02: return "minstret";
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index 70ef443c99..a30317c617 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -1078,9 +1078,8 @@ typedef enum CTRType {
+                                             MHPMEVENTH_BIT_VSINH | \
+                                             MHPMEVENTH_BIT_VUINH)
+ 
+-#define MHPMEVENT_SSCOF_MASK               _ULL(0xFFFF000000000000)
+-#define MHPMEVENT_IDX_MASK                 0xFFFFF
+-#define MHPMEVENT_SSCOF_RESVD              16
++#define MHPMEVENT_SSCOF_MASK               MAKE_64BIT_MASK(63, 56)
++#define MHPMEVENT_IDX_MASK                 (~MHPMEVENT_SSCOF_MASK)
+ 
+ /* RISC-V-specific interrupt pending bits. */
+ #define CPU_INTERRUPT_RNMI                 CPU_INTERRUPT_TGT_EXT_0
 -- 
 2.48.1
 
