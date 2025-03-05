@@ -2,97 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07540A505C5
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AF2A505CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:57:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tps25-0002Uu-GG; Wed, 05 Mar 2025 11:55:45 -0500
+	id 1tps3q-0004S8-W0; Wed, 05 Mar 2025 11:57:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tps1c-0002SK-Ij
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:55:18 -0500
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tps3m-0004ON-TF
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:57:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tps1a-0006Xu-8Y
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:55:16 -0500
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tps1V-00000000NMN-1uxe; Wed, 05 Mar 2025 17:55:09 +0100
-Message-ID: <59febfa3-c1be-400f-aed6-18cd07dff999@maciej.szmigiero.name>
-Date: Wed, 5 Mar 2025 17:55:04 +0100
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tps3k-0006yo-Us
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:57:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741193848;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ro/uAiz8KrtRiLEIDDBY59Jsc1UsZOMUjifs8ibsjpo=;
+ b=D7wVl320Sk46FYsJTsU4bGokw9qyFozD2Tke6/QacScAJoc+7c4J5BBZONbwvExvfV4wwS
+ XIY1BbRhbaaVp43ypSEeSjktd7BK+6Jw0xya83y5Oi5XTe3KjcM7tjxGHp2Vfjp4nI0gJ2
+ /bLeKUnDfjqTEfmH+eILDj7r0xuZVAc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-34-FPbbOMpJPqmrYgsmHBTUhw-1; Wed, 05 Mar 2025 11:56:20 -0500
+X-MC-Unique: FPbbOMpJPqmrYgsmHBTUhw-1
+X-Mimecast-MFC-AGG-ID: FPbbOMpJPqmrYgsmHBTUhw_1741193779
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-39104223bb5so1892469f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 08:56:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741193779; x=1741798579;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ro/uAiz8KrtRiLEIDDBY59Jsc1UsZOMUjifs8ibsjpo=;
+ b=E859K9IE596NR+77YG1vI85YuFUV7faWIn52faz+ErexpMznJ/gpusngRInsJPUgrv
+ tyhA+SnFNWNDxGxyR30v7drmpVlu9AJ57leekv4KstP5bNkm9/uvu3InuT+jmIf6digp
+ /NQOGNsXeoTgd9877N5gdcvHf2JR08oPrEKgkzjVz73JtyehpTNxmi7Abs8QpQAkIRY5
+ toy2ca1FHIRklUusLjmzXB/bDW/m6FKJQsxnkcQcdrpmbA3EK08U135zCixR5CpSncKM
+ zu433HO5QTNWiESXLE0eazbMUq2KkGGHtyeiqQccvcqmfqEDtXuafVUr88Hb612aSZVn
+ qALw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXRD7LBVdEuov8jIQYu5jFQTTueg1NNPCrYsWfMgNHoHkor42KlO0Xgt23CLTMIgtqjRJiJOoQFvQkh@nongnu.org
+X-Gm-Message-State: AOJu0Yzw8yCDsyrlMCSqv5MmK67RIy/w3NwHwFa87IwJzEOnqrBFVssC
+ b3q4vqlasZrq8w0sJW1VSZ7E/YZNUebRR1ku0GW0DBaZ9XmSuVcNPl2lpCagVTI7uRT8E/ZbxZH
+ W8xPiLrDxRqafj0AiauyqHzxrK4QOJQriwZ4CAMvvKKtORSZfup+a
+X-Gm-Gg: ASbGncv1LIy8jgvj7yAIzpPCs5Mf546QZC9E46zJS0KFI2TQtz6NMRcAXW1yxMoV7rm
+ HO3XxFP38IQDyRxL+V9vW3Rcfl2i86YNvTGmVuEIdCncueL/+ehLbgUHjpaDWlA6ZvHic7XEF1B
+ IbJzXtOIP1Ro+Vb5IDobaClrF9q+i7EGuTEBi6SqSkDPa1uXpdmnLw3PC8O8tqbIawY7rNBbMcn
+ pYFYVPBARvGeLmNW5U7OXcgvNdfyh1yYGkjxE4iTyfvvuuokdPx2j/DezcvSuMl3bmYZftO/dWj
+ PXdpIoXCsS/IA7KBE5cqXL4WC78LY88+MbAlUAf03+pnx9DBm0KfDNHpHqw0w5E=
+X-Received: by 2002:a5d:6d8a:0:b0:391:1f9:c599 with SMTP id
+ ffacd0b85a97d-3911f726350mr2699719f8f.4.1741193778910; 
+ Wed, 05 Mar 2025 08:56:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFTpwqaUb2e3nPekDRpsPyGFA/nWmzMgzDpUc6iXlFAdVOR3hmIQriKoj0HQf60C4gkVunWLw==
+X-Received: by 2002:a5d:6d8a:0:b0:391:1f9:c599 with SMTP id
+ ffacd0b85a97d-3911f726350mr2699704f8f.4.1741193778536; 
+ Wed, 05 Mar 2025 08:56:18 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bd4292eeasm22539525e9.16.2025.03.05.08.56.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Mar 2025 08:56:17 -0800 (PST)
+Message-ID: <a55764ff-5e44-4057-af0f-3beb9ae1c0c1@redhat.com>
+Date: Wed, 5 Mar 2025 17:56:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] migration: Always take BQL for
- migration_incoming_state_destroy()
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
- <21bb5ca337b1d5a802e697f553f37faf296b5ff4.1741193259.git.maciej.szmigiero@oracle.com>
- <00b3cd87-2be1-4981-9b7a-4b92b44b7c8b@redhat.com>
-Content-Language: en-US, pl-PL
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <00b3cd87-2be1-4981-9b7a-4b92b44b7c8b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Subject: Re: [PATCH v3] hw/arm/smmu: Introduce smmu_configs_inv_sid_range()
+ helper
+Content-Language: en-US
+To: JianChunfu <jansef.jian@hj-micro.com>, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20250228031438.3916-1-jansef.jian@hj-micro.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250228031438.3916-1-jansef.jian@hj-micro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,102 +110,175 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5.03.2025 17:53, Cédric Le Goater wrote:
-> So that's PATCH 7 replacement.
 
-Yes, that the replacement for "[PATCH v6 07/36] migration: postcopy_ram_listen_thread() should take BQL for some calls".
+Hi,
 
-> Thanks,
-> 
-> C.
+On 2/28/25 4:14 AM, JianChunfu wrote:
+> Use a similar terminology smmu_hash_remove_by_sid_range() as the one
+> being used for other hash table matching functions since
+> smmuv3_invalidate_ste() name is not self explanatory, and introduce a
+> helper that invokes the g_hash_table_foreach_remove.
+>
+> No functional change intended.
+>
+> Signed-off-by: JianChunfu <jansef.jian@hj-micro.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Thanks,
-Maciej
+Thanks
 
-> On 3/5/25 17:49, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> All callers to migration_incoming_state_destroy() other than
->> postcopy_ram_listen_thread() do this call with BQL held.
->>
->> Since migration_incoming_state_destroy() ultimately calls "load_cleanup"
->> SaveVMHandlers and it will soon call BQL-sensitive code it makes sense
->> to always call that function under BQL rather than to have it deal with
->> both cases (with BQL and without BQL).
->> Add the necessary bql_lock() and bql_unlock() to
->> postcopy_ram_listen_thread().
->>
->> qemu_loadvm_state_main() in postcopy_ram_listen_thread() could call
->> "load_state" SaveVMHandlers that are expecting BQL to be held.
->>
->> In principle, the only devices that should be arriving on migration
->> channel serviced by postcopy_ram_listen_thread() are those that are
->> postcopiable and whose load handlers are safe to be called without BQL
->> being held.
->>
->> But nothing currently prevents the source from sending data for "unsafe"
->> devices which would cause trouble there.
->> Add a TODO comment there so it's clear that it would be good to improve
->> handling of such (erroneous) case in the future.
->>
->> Acked-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->> ---
->>   migration/migration.c | 13 +++++++++++++
->>   migration/savevm.c    |  4 ++++
->>   2 files changed, 17 insertions(+)
->>
->> diff --git a/migration/migration.c b/migration/migration.c
->> index 9e9db26667f1..0bf70ea9717d 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -402,10 +402,23 @@ void migration_incoming_state_destroy(void)
->>       struct MigrationIncomingState *mis = migration_incoming_get_current();
->>       multifd_recv_cleanup();
->> +
->>       /*
->>        * RAM state cleanup needs to happen after multifd cleanup, because
->>        * multifd threads can use some of its states (receivedmap).
->> +     * The VFIO load_cleanup() implementation is BQL-sensitive. It requires
->> +     * BQL must NOT be taken when recycling load threads, so that it won't
->> +     * block the load threads from making progress on address space
->> +     * modification operations.
->> +     *
->> +     * To make it work, we could try to not take BQL for all load_cleanup(),
->> +     * or conditionally unlock BQL only if bql_locked() in VFIO.
->> +     *
->> +     * Since most existing call sites take BQL for load_cleanup(), make
->> +     * it simple by taking BQL always as the rule, so that VFIO can unlock
->> +     * BQL and retake unconditionally.
->>        */
->> +    assert(bql_locked());
->>       qemu_loadvm_state_cleanup();
->>       if (mis->to_src_file) {
->> diff --git a/migration/savevm.c b/migration/savevm.c
->> index 7c1aa8ad7b9d..3e86b572cfa8 100644
->> --- a/migration/savevm.c
->> +++ b/migration/savevm.c
->> @@ -1986,6 +1986,8 @@ static void *postcopy_ram_listen_thread(void *opaque)
->>        * in qemu_file, and thus we must be blocking now.
->>        */
->>       qemu_file_set_blocking(f, true);
->> +
->> +    /* TODO: sanity check that only postcopiable data will be loaded here */
->>       load_res = qemu_loadvm_state_main(f, mis);
->>       /*
->> @@ -2046,7 +2048,9 @@ static void *postcopy_ram_listen_thread(void *opaque)
->>        * (If something broke then qemu will have to exit anyway since it's
->>        * got a bad migration state).
->>        */
->> +    bql_lock();
->>       migration_incoming_state_destroy();
->> +    bql_unlock();
->>       rcu_unregister_thread();
->>       mis->have_listen_thread = false;
->>
-> 
+Eric
+> ---
+> v3: - Modify the commit msg
+>     - Rename the trace funtion
+> v2: - move smmuv3_invalidate_ste() to smmu_hash_remove_by_sid_range()
+>     - add function smmu_configs_inv_sid_range()
+> v1: - Rename smmuv3_invalidate_ste to smmuv3_hash_remove_by_sid_range
+> ---
+>  hw/arm/smmu-common.c         | 21 +++++++++++++++++++++
+>  hw/arm/smmu-internal.h       |  5 -----
+>  hw/arm/smmuv3.c              | 19 ++-----------------
+>  hw/arm/trace-events          |  3 ++-
+>  include/hw/arm/smmu-common.h |  6 ++++++
+>  5 files changed, 31 insertions(+), 23 deletions(-)
+>
+> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+> index 3f8272875..bad3b3b0b 100644
+> --- a/hw/arm/smmu-common.c
+> +++ b/hw/arm/smmu-common.c
+> @@ -225,6 +225,27 @@ static gboolean smmu_hash_remove_by_vmid_ipa(gpointer key, gpointer value,
+>             ((entry->iova & ~info->mask) == info->iova);
+>  }
+>  
+> +static gboolean
+> +smmu_hash_remove_by_sid_range(gpointer key, gpointer value, gpointer user_data)
+> +{
+> +    SMMUDevice *sdev = (SMMUDevice *)key;
+> +    uint32_t sid = smmu_get_sid(sdev);
+> +    SMMUSIDRange *sid_range = (SMMUSIDRange *)user_data;
+> +
+> +    if (sid < sid_range->start || sid > sid_range->end) {
+> +        return false;
+> +    }
+> +    trace_smmu_config_cache_inv(sid);
+> +    return true;
+> +}
+> +
+> +void smmu_configs_inv_sid_range(SMMUState *s, SMMUSIDRange sid_range)
+> +{
+> +    trace_smmu_configs_inv_sid_range(sid_range.start, sid_range.end);
+> +    g_hash_table_foreach_remove(s->configs, smmu_hash_remove_by_sid_range,
+> +                                &sid_range);
+> +}
+> +
+>  void smmu_iotlb_inv_iova(SMMUState *s, int asid, int vmid, dma_addr_t iova,
+>                           uint8_t tg, uint64_t num_pages, uint8_t ttl)
+>  {
+> diff --git a/hw/arm/smmu-internal.h b/hw/arm/smmu-internal.h
+> index 843bebb18..d143d296f 100644
+> --- a/hw/arm/smmu-internal.h
+> +++ b/hw/arm/smmu-internal.h
+> @@ -141,9 +141,4 @@ typedef struct SMMUIOTLBPageInvInfo {
+>      uint64_t mask;
+>  } SMMUIOTLBPageInvInfo;
+>  
+> -typedef struct SMMUSIDRange {
+> -    uint32_t start;
+> -    uint32_t end;
+> -} SMMUSIDRange;
+> -
+>  #endif
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 4c49b5a88..1c55bc56d 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -903,7 +903,7 @@ static void smmuv3_flush_config(SMMUDevice *sdev)
+>      SMMUv3State *s = sdev->smmu;
+>      SMMUState *bc = &s->smmu_state;
+>  
+> -    trace_smmuv3_config_cache_inv(smmu_get_sid(sdev));
+> +    trace_smmu_config_cache_inv(smmu_get_sid(sdev));
+>      g_hash_table_remove(bc->configs, sdev);
+>  }
+>  
+> @@ -1277,20 +1277,6 @@ static void smmuv3_range_inval(SMMUState *s, Cmd *cmd, SMMUStage stage)
+>      }
+>  }
+>  
+> -static gboolean
+> -smmuv3_invalidate_ste(gpointer key, gpointer value, gpointer user_data)
+> -{
+> -    SMMUDevice *sdev = (SMMUDevice *)key;
+> -    uint32_t sid = smmu_get_sid(sdev);
+> -    SMMUSIDRange *sid_range = (SMMUSIDRange *)user_data;
+> -
+> -    if (sid < sid_range->start || sid > sid_range->end) {
+> -        return false;
+> -    }
+> -    trace_smmuv3_config_cache_inv(sid);
+> -    return true;
+> -}
+> -
+>  static int smmuv3_cmdq_consume(SMMUv3State *s)
+>  {
+>      SMMUState *bs = ARM_SMMU(s);
+> @@ -1373,8 +1359,7 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+>              sid_range.end = sid_range.start + mask;
+>  
+>              trace_smmuv3_cmdq_cfgi_ste_range(sid_range.start, sid_range.end);
+> -            g_hash_table_foreach_remove(bs->configs, smmuv3_invalidate_ste,
+> -                                        &sid_range);
+> +            smmu_configs_inv_sid_range(bs, sid_range);
+>              break;
+>          }
+>          case SMMU_CMD_CFGI_CD:
+> diff --git a/hw/arm/trace-events b/hw/arm/trace-events
+> index c64ad344b..e96f9ae47 100644
+> --- a/hw/arm/trace-events
+> +++ b/hw/arm/trace-events
+> @@ -15,6 +15,8 @@ smmu_iotlb_inv_asid_vmid(int asid, int vmid) "IOTLB invalidate asid=%d vmid=%d"
+>  smmu_iotlb_inv_vmid(int vmid) "IOTLB invalidate vmid=%d"
+>  smmu_iotlb_inv_vmid_s1(int vmid) "IOTLB invalidate vmid=%d"
+>  smmu_iotlb_inv_iova(int asid, uint64_t addr) "IOTLB invalidate asid=%d addr=0x%"PRIx64
+> +smmu_configs_inv_sid_range(uint32_t start, uint32_t end) "Config cache INV SID range from 0x%x to 0x%x"
+> +smmu_config_cache_inv(uint32_t sid) "Config cache INV for sid=0x%x"
+>  smmu_inv_notifiers_mr(const char *name) "iommu mr=%s"
+>  smmu_iotlb_lookup_hit(int asid, int vmid, uint64_t addr, uint32_t hit, uint32_t miss, uint32_t p) "IOTLB cache HIT asid=%d vmid=%d addr=0x%"PRIx64" hit=%d miss=%d hit rate=%d"
+>  smmu_iotlb_lookup_miss(int asid, int vmid, uint64_t addr, uint32_t hit, uint32_t miss, uint32_t p) "IOTLB cache MISS asid=%d vmid=%d addr=0x%"PRIx64" hit=%d miss=%d hit rate=%d"
+> @@ -52,7 +54,6 @@ smmuv3_cmdq_tlbi_nh(int vmid) "vmid=%d"
+>  smmuv3_cmdq_tlbi_nsnh(void) ""
+>  smmuv3_cmdq_tlbi_nh_asid(int asid) "asid=%d"
+>  smmuv3_cmdq_tlbi_s12_vmid(int vmid) "vmid=%d"
+> -smmuv3_config_cache_inv(uint32_t sid) "Config cache INV for sid=0x%x"
+>  smmuv3_notify_flag_add(const char *iommu) "ADD SMMUNotifier node for iommu mr=%s"
+>  smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s"
+>  smmuv3_inv_notifiers_iova(const char *name, int asid, int vmid, uint64_t iova, uint8_t tg, uint64_t num_pages, int stage) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64" stage=%d"
+> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+> index e5ad55bba..e5e2d0929 100644
+> --- a/include/hw/arm/smmu-common.h
+> +++ b/include/hw/arm/smmu-common.h
+> @@ -142,6 +142,11 @@ typedef struct SMMUIOTLBKey {
+>      uint8_t level;
+>  } SMMUIOTLBKey;
+>  
+> +typedef struct SMMUSIDRange {
+> +    uint32_t start;
+> +    uint32_t end;
+> +} SMMUSIDRange;
+> +
+>  struct SMMUState {
+>      /* <private> */
+>      SysBusDevice  dev;
+> @@ -219,6 +224,7 @@ void smmu_iotlb_inv_iova(SMMUState *s, int asid, int vmid, dma_addr_t iova,
+>                           uint8_t tg, uint64_t num_pages, uint8_t ttl);
+>  void smmu_iotlb_inv_ipa(SMMUState *s, int vmid, dma_addr_t ipa, uint8_t tg,
+>                          uint64_t num_pages, uint8_t ttl);
+> +void smmu_configs_inv_sid_range(SMMUState *s, SMMUSIDRange sid_range);
+>  /* Unmap the range of all the notifiers registered to any IOMMU mr */
+>  void smmu_inv_notifiers_all(SMMUState *s);
+>  
 
 
