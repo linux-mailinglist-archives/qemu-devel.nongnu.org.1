@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEFAA50454
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:14:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86546A50451
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:14:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tprMn-00037u-68; Wed, 05 Mar 2025 11:13:06 -0500
+	id 1tprMu-00039g-6C; Wed, 05 Mar 2025 11:13:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tprMl-00037c-5I
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:13:03 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tprMr-000397-Mv
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:13:09 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tprMj-0007aE-Gs
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:13:02 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43bcc85ba13so17092335e9.0
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 08:13:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tprMo-0007as-1v
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:13:08 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43bc6a6aaf7so27647445e9.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 08:13:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741191179; x=1741795979; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741191184; x=1741795984; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=orvtcKfihVUFCViVDE72hkVKr7ZPDEWfYMWfWKQWuPY=;
- b=ja5xZk/2aA57HeG2bu1heOs6gjoh9rd6PMPqAsWADnDrkTY6L1ImC+icBwNKCNecTf
- 0cj0B1Mj1FhdaOSsCuu0qzYNUweALUFtJh5EgufzOjIXNU/3K1b3rc5JaImpJ9Bi/Yzr
- Qjv4JFhLdSsVxuZDX2bDyLqBLM0gsQRreZFzt+vBlAyrl3HqFSnif3cbSg/zqYZL82Fl
- Z/1h/9L8dk+0E2p9BxYgP6jOq3xHNcksukj9uGPzGUcjeOhYhdZc6vlXXA+OKRW/8l6V
- /6/8TaR86Q10TbMerrk35Hz3ByiBDqa4xvF76Ival/ULKuxLgWXz/ZAYeID/bNmQHd4M
- MY5A==
+ bh=Qg/30+ydc7IJRGhxhQY+axZZcsxzMfsJFGVXHCMQm/4=;
+ b=qT3lE5TU6Wz6aKfb09qDS3Q6OTYQWt4fBNGPTB2RblvMhVGaFcK38G2VsxMrMb3g+T
+ sGUrGUnSKD+gaCicHyq1371VD7HpuAblllENyprwYLgM4cbLVQhBYSNkfzzDVYkn/+K/
+ oICh+1JAEbIoztq6wxjXa1H4rPsI7PaSXzMFJK5RF0kiK44/sEjS6ibUBnH1KW0NH7nn
+ BfWchRqrQ4sWfXgaS8RWG+tuZ3FVP51ms6CyNKurpN8sn2HfEiOacGkgOsMrBI0g1Rxu
+ ZB1cKEPhzqCM4dD2R2jccdtZcCqATQBm09Bjsmcycq2ScCT3e39EJ+rc5ercLTMtKBTK
+ azQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741191179; x=1741795979;
+ d=1e100.net; s=20230601; t=1741191184; x=1741795984;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=orvtcKfihVUFCViVDE72hkVKr7ZPDEWfYMWfWKQWuPY=;
- b=tCebPA11YmOydwYQG22zeFc+ALYI4OexfAhJIWzX+P6u/+IjhonngMOnsyiTekxx+g
- YhTzwNJifySPgSJjahRL/+84pnqCPPqnQeBmKHVxQR2cXpR+B1XoHBeTJLjQTMMYn7xh
- 6lxgwgTZPWhhUVGFAS+STW9vQpXW7EOUWD+EdCHIrkzn3wzzcC9oXoNV7umTA/16QaDT
- mkjCLVaPbTVkg2/6AsO0PipsRKLRUcnHU6PQA+sXibHo0XDaZANsvDqPkY5qQvzEhDqE
- oaadY429R/FBPdnJOgqtUIEpHonfSNYKeENpixdK6rx3oCy+LFF6EYUZ67K+W6S6q4Bl
- lNvQ==
-X-Gm-Message-State: AOJu0Yz/WiHPI/oHTolv77iCfamTK7kQRyoGVDT4dxndXYNdZ0YKF6vE
- wSfOFfNN5IFxyuhLH9umRLcuPb0f1H5MjJIRKuy8CWqck7269gOnb3UDbxisJlQ/cvS4Y9rd2yl
- wZH8=
-X-Gm-Gg: ASbGncuVm7pSXWtmC7EJIhvU+nScGGfXCPVMoED19V8TLVCsqA1xIegfJOzyYWdz7ue
- lF5TsEtakxr6U7juqNCIS/6ASxsRbckiu6+7cNSNZM13v7AuzdeIWTbUjdLgNs3cVX4sf5G6YMN
- MePgyDmR4MYwaAD+nGhbWPKTI//pyZ4Zd8hHUMWSYgH4ip8nPu7EWeb/rVUCHMjCkFQPBMGM6vE
- iixauI0VYuBsOow1MWmq8uLV+JoWBMNRXM37wVPWPAgtm7SssTHjvHhmhWVpCOvlS9jvL3Gc+YY
- CuaVvHeRieYfohwoC0OHjZADMMpeQjlNwo3EmUj/7fKgTZrFLU1XxWtY5BI+nbKASTmT38kBA0X
- zm3oY2YHQcOeOIzvUydo=
-X-Google-Smtp-Source: AGHT+IHdItuvKX+lQ1X4oGvok1OXlpr6c8Tv3ERZvjrwMhvQRnaiHtRHrPNICpMnfkrfYNsFJGPflA==
-X-Received: by 2002:a05:6000:18ab:b0:391:241d:a13e with SMTP id
- ffacd0b85a97d-391241da3c8mr2108327f8f.48.1741191179375; 
- Wed, 05 Mar 2025 08:12:59 -0800 (PST)
+ bh=Qg/30+ydc7IJRGhxhQY+axZZcsxzMfsJFGVXHCMQm/4=;
+ b=uCKaGZp/hTzeYHdceyDFegKVLYsawkWeAVH/1rE3HkvCGPvMDZCD0ip+cgaglYO90E
+ KjsOIoUmW7yMxUFgFssbPd5XJ8Wsu9He4khG0a9aQcfCuWctWVyKCiIk2yuRUdq0yLiv
+ dQp1E7UyxVxKc+mXuoOIalopizKUUVNqfGDFbx3/wEUb6/FIlq5HhgYGj3Xo9R+TdIz+
+ +dpMLTnC+Iv/LmAS87FeKgnVYnbCZ1gOirivlPhNOrx9LXIZKYBOrv+8WGdjYPi7QHEj
+ u681Z5gdMcxbTCwEwGwM/i3FsS6XNu/4FWsdsonxEovlqHawB92nQX9OhIEPkoVD12dG
+ 7Cwg==
+X-Gm-Message-State: AOJu0YwZ2jlOOIjtTdqndxOe0S2rj31FhHTn6FA5rkbmLxgXJZLPrAsn
+ iTuHTvvmVQODcTIpm4/PjP3mSemBbQUlPU3vFbtQuQ7cs6R+YG3ScSnmIf2yMWDCRbLkiD+xWDJ
+ 044Y=
+X-Gm-Gg: ASbGnct4UJV6gRss+8sWaOjQbuADqPo+g/uAB91Y5BdjmXWRhDrRyRQACD95mIl4jwr
+ X2/sztw4/CfJ661uzwCC0pMhqS9zt9Vyl1+Uai9bGy2kNrgz7c4l1R7OyGOBgkdgfYCI6gA5Red
+ l6ssO9XVjQ2o4pXoqCu2l5GdpsSSYmVnLNfpuWK+dgaCt3AOGXBAYdNVnwdsDcG8TKr6wVmLri+
+ h5Q6lPXhk62+XwhycwRlbl1sHsV5G8GljYNub7bTR6cb9hLrhyWCED4VKeHdrNelHWhtGFBuk5I
+ wuKKoDaZQeWkqXi6/NpVxvbzU5/+32jdohBIk+vMuFDOnYo4HH3QtXblx+X/XtbYefeBfSsUQFX
+ anJk6EXvJvGAfz7Xt0Z4=
+X-Google-Smtp-Source: AGHT+IFxDeN876InatIsSjSDZ80/TUSkTjwZpHJWITAgNTNUaTC/7w/dc/lOxL2VwxyFs/KwQhqeEA==
+X-Received: by 2002:a05:600c:35cf:b0:43b:ca8c:fc76 with SMTP id
+ 5b1f17b1804b1-43bd29a84f1mr29527715e9.18.1741191184087; 
+ Wed, 05 Mar 2025 08:13:04 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795d1asm21143947f8f.4.2025.03.05.08.12.58
+ 5b1f17b1804b1-43bd42c6203sm21718385e9.24.2025.03.05.08.13.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Mar 2025 08:12:58 -0800 (PST)
+ Wed, 05 Mar 2025 08:13:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,18 +71,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/4] hw/arm/raspi: Replace TARGET_AARCH64 by
+Subject: [RFC PATCH 3/4] hw/arm/aspeed: Replace TARGET_AARCH64 by
  legacy_binary_is_64bit()
-Date: Wed,  5 Mar 2025 17:12:46 +0100
-Message-ID: <20250305161248.54901-3-philmd@linaro.org>
+Date: Wed,  5 Mar 2025 17:12:47 +0100
+Message-ID: <20250305161248.54901-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305161248.54901-1-philmd@linaro.org>
 References: <20250305161248.54901-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,99 +114,63 @@ removing the need of TARGET_AARCH64 #ifdef'ry.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/bcm2836.c | 6 ++----
- hw/arm/raspi.c   | 7 +++----
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ hw/arm/aspeed.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index 95e16806fa1..88a32e5fc20 100644
---- a/hw/arm/bcm2836.c
-+++ b/hw/arm/bcm2836.c
-@@ -12,6 +12,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-+#include "qemu/legacy_binary_info.h"
- #include "hw/arm/bcm2836.h"
- #include "hw/arm/raspi_platform.h"
- #include "hw/sysbus.h"
-@@ -195,7 +196,6 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
-     dc->realize = bcm2836_realize;
- };
- 
--#ifdef TARGET_AARCH64
- static void bcm2837_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -208,7 +208,6 @@ static void bcm2837_class_init(ObjectClass *oc, void *data)
-     bc->clusterid = 0x0;
-     dc->realize = bcm2836_realize;
- };
--#endif
- 
- static const TypeInfo bcm283x_types[] = {
-     {
-@@ -219,12 +218,11 @@ static const TypeInfo bcm283x_types[] = {
-         .name           = TYPE_BCM2836,
-         .parent         = TYPE_BCM283X,
-         .class_init     = bcm2836_class_init,
--#ifdef TARGET_AARCH64
-     }, {
-         .name           = TYPE_BCM2837,
-         .parent         = TYPE_BCM283X,
-+        .registerable   = legacy_binary_is_64bit,
-         .class_init     = bcm2837_class_init,
--#endif
-     }, {
-         .name           = TYPE_BCM283X,
-         .parent         = TYPE_BCM283X_BASE,
-diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index dce35ca11aa..f7e647a9cbf 100644
---- a/hw/arm/raspi.c
-+++ b/hw/arm/raspi.c
-@@ -15,6 +15,7 @@
- #include "qemu/osdep.h"
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 98bf071139b..3f18a4501e0 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -28,6 +28,7 @@
+ #include "hw/loader.h"
+ #include "qemu/error-report.h"
  #include "qemu/units.h"
- #include "qemu/cutils.h"
 +#include "qemu/legacy_binary_info.h"
- #include "qapi/error.h"
- #include "hw/arm/boot.h"
- #include "hw/arm/bcm2836.h"
-@@ -367,7 +368,6 @@ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
+ #include "hw/qdev-clock.h"
+ #include "system/system.h"
+ 
+@@ -179,11 +180,9 @@ struct AspeedMachineState {
+ #define AST2600_EVB_HW_STRAP1 0x000000C0
+ #define AST2600_EVB_HW_STRAP2 0x00000003
  
 -#ifdef TARGET_AARCH64
- static void raspi3ap_machine_class_init(ObjectClass *oc, void *data)
+ /* AST2700 evb hardware value */
+ #define AST2700_EVB_HW_STRAP1 0x000000C0
+ #define AST2700_EVB_HW_STRAP2 0x00000003
+-#endif
+ 
+ /* Rainier hardware value: (QEMU prototype) */
+ #define RAINIER_BMC_HW_STRAP1 (0x00422016 | SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC)
+@@ -1661,7 +1660,6 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+ 
+-#ifdef TARGET_AARCH64
+ static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -387,7 +387,6 @@ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
-     rmc->board_rev = 0xa02082;
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
--#endif /* TARGET_AARCH64 */
+     AspeedSoCState *soc = bmc->soc;
+@@ -1690,7 +1688,6 @@ static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+-#endif
  
- static const TypeInfo raspi_machine_types[] = {
-     {
-@@ -402,16 +401,16 @@ static const TypeInfo raspi_machine_types[] = {
-         .name           = MACHINE_TYPE_NAME("raspi2b"),
-         .parent         = TYPE_RASPI_MACHINE,
-         .class_init     = raspi2b_machine_class_init,
+ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
+                                                      void *data)
+@@ -1813,12 +1810,11 @@ static const TypeInfo aspeed_machine_types[] = {
+         .name           = MACHINE_TYPE_NAME("ast1030-evb"),
+         .parent         = TYPE_ASPEED_MACHINE,
+         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
 -#ifdef TARGET_AARCH64
      }, {
-         .name           = MACHINE_TYPE_NAME("raspi3ap"),
-         .parent         = TYPE_RASPI_MACHINE,
+         .name          = MACHINE_TYPE_NAME("ast2700-evb"),
+         .parent        = TYPE_ASPEED_MACHINE,
 +        .registerable   = legacy_binary_is_64bit,
-         .class_init     = raspi3ap_machine_class_init,
-     }, {
-         .name           = MACHINE_TYPE_NAME("raspi3b"),
-         .parent         = TYPE_RASPI_MACHINE,
-+        .registerable   = legacy_binary_is_64bit,
-         .class_init     = raspi3b_machine_class_init,
+         .class_init    = aspeed_machine_ast2700_evb_class_init,
 -#endif
      }, {
-         .name           = TYPE_RASPI_MACHINE,
-         .parent         = TYPE_RASPI_BASE_MACHINE,
+         .name          = TYPE_ASPEED_MACHINE,
+         .parent        = TYPE_MACHINE,
 -- 
 2.47.1
 
