@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFB5A4F463
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED64A4F456
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:04:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdzg-0001Cr-3U; Tue, 04 Mar 2025 20:56:20 -0500
+	id 1tpdza-0000kL-SU; Tue, 04 Mar 2025 20:56:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdzB-0007cX-81
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:55:52 -0500
+ id 1tpdzC-0007cn-L3
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:55:53 -0500
 Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdz9-0000UH-Mx
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:55:49 -0500
+ id 1tpdzA-0000Uf-TE
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:55:50 -0500
 Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-22349bb8605so121888685ad.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:55:45 -0800 (PST)
+ d9443c01a7336-223cc017ef5so40570025ad.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:55:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139744; x=1741744544; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139747; x=1741744547; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IHxwppqX+NiAR+OZkag50+4l/nth1KdlivI6n/xfrDA=;
- b=WAY+67opqid26yhsuIUZLsU05eecKgT6YdE2iD9u2Hy1SyygthXeRE9rDcxfOWZ5Bb
- PGmnQZubyR/zTXbP8Tuk48aL97zy//3D3c0FGA/ZlOadR8q01PLN2tESTH9o4NfQSwO/
- TXPY0UIhDod6ZZgyUpdwGMaWRAK8sg4RnW9jK3UONklaguSNJq18UmFRbT/2++SeqRNn
- 3O+REVHu0TrPcA2Gvnz23TJ4mnqOsHI4rbLYZQaKdjx5r+Knt1olqKftTpnTPFniLoVS
- uCKCRu4K+Vfa/dclXZCeUTxhvqJzG2F033S3f2HHjhU9pGzWaluyq549kgCP+GDqWl9g
- eSgA==
+ bh=552MSFU/T799YJkWKsYbkSBXDrPDP/uDH7GO5H2sxJ4=;
+ b=MPm+TJWwQvO/afgkXVQMmO9UH1LhtPvwIlzosBOnRemV37m3cHCLyj7SOqduqrcZbb
+ fWDw/XQ+dHNHVZlBpviiwT1KBWO/gcgsWfBHi8T+uBAr+j9kMnX/tXdX5/elqOXvIJuE
+ BTeV9kW/7GXxB40ILOFusdzCmb3DyObENk1nk6UNLIo6spCJa1XqUeGNzFVGJHNxVUVm
+ dcMnL+NHxLiW6SMIqADprve+BehS7v8zA+YP3pLDUkWqtCTpaVIFDG2WZ4F+YVonOV7E
+ J0zxgVmRxxqV7pwPwqI5HvVRa5wMHg278Owv8Jprg3MgyR0bAuqpJxxxBij4lYuilzFn
+ Qkjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139744; x=1741744544;
+ d=1e100.net; s=20230601; t=1741139747; x=1741744547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IHxwppqX+NiAR+OZkag50+4l/nth1KdlivI6n/xfrDA=;
- b=CnAUX1qwoktRrNeNmgUiTYBuHXsrwRy6HfdEGNhVYhGtqzUYKyOehO2ZTeCFDCeaJ7
- 63NKK60k/Wt3H1Clr04nTaoVZGQteYS5QC9n36onq5TH9GpOHJSoM4q6UalqS3bKyWMl
- cyhOgUJCWjtar9JPMA9TmKWrucpjGYBY2xVyPhYlUXR5PftfakfQX8vFkjN7NRlRKYgo
- Gxt7DNUwRdmKF2yk1uDJ6XSFGUBe1tb/rjAeb9kPvgvwjrh184apY1wnlp01aUarwdS2
- m73JFeT4o3ECIObF9OopFwDRg39RjJqKIH9YQwAxnY5R9ONa33lG8AlS7aObgZLDElY9
- nVsA==
-X-Gm-Message-State: AOJu0Yzr6F8dNDd5VK5Ky/ZaSQA31Moz05x4r/EHF9FVYkQI/FQ8ggMk
- hLMeHNbiBfGteU1C17p/Oc4Ne2mIUXk104TFJCBx/9qcCcE28vY2eDxfw3WxQY8=
-X-Gm-Gg: ASbGncsFL6hZL6OgTmARp2RtVUj4B9fHrRnuXPDbdlbVoDiyuhoVDEZs/TVtY41wlhm
- 0BGy7iaiKyRnfNBLgBDxzRZNh3hjOtHJgw3+t8Aw/THWZc6LmlLm4vC2AbWZYAzxwp4Wqt89dsU
- YvXeAJ4FbTq9QPAJCYBrdjX/RNePsGXl9wsJjWGEmebR6Y8S8yTHv41TKvJwdAwLZxYAxw+3GNF
- X8Wu9Q/w7tSJJATjk1biVIaVZrCu0iOj89TE1KXNw/S5xYrSrPOTlM5aH1poqMzZpyjyLNsCcCd
- 7NBU4KEe1Frn7eg6jTqaNWiigs7TZ6WRwcUpmNYq6m/oimGS6XeSfkH8fqK4LE6jCLsFegLmvcg
- TwaUZGuiyszSf7KOmQabMc2DOb1m7mEhpfkdFy1sS9ltakZvnmTs=
-X-Google-Smtp-Source: AGHT+IEBh7OaYWDy5GEVy0u3nnuUs8+yQ/Hb/75MJcCvd4RA71i270h2Gy9tivzE9kcEoJtOXWaY/g==
-X-Received: by 2002:a17:903:2312:b0:21f:9c48:254b with SMTP id
- d9443c01a7336-223f1c9945amr23211635ad.24.1741139744431; 
- Tue, 04 Mar 2025 17:55:44 -0800 (PST)
+ bh=552MSFU/T799YJkWKsYbkSBXDrPDP/uDH7GO5H2sxJ4=;
+ b=MFPO4kx7yO4npP2Cyl/OvyT5uwvFobdCsutYsE2IjNNk2NvS+8hZ1khjxakB/YgyMU
+ YDGcBv8b1txE0kvnTKJ4Xh+OdHqScRopRZ3bDXW8DANDUWWBZdfvE2kWjnVZV82/CTbR
+ OhRlSEs4n/Oi3BJ1D+VhvG+WZ8swUq+/eAx+HdEKYMDikF1fiaDsJWroJwpIxLCXvkT2
+ eYx+w8IY4qxelfybOi0WPG759apQ6i+aVGfHXzHOAIlK/Aze1qzJgaZZbwwqIh8h0+dJ
+ axPT2b5Ddr52sMoQSqt7Za5uo86q3SwGhWx02u31Nxb7di9VvI0AP3C1xI7rSmAeNHGG
+ LTSQ==
+X-Gm-Message-State: AOJu0Yws913BW/VmLEFvHyCcvPwu06lr5KDHCRkDD187+ZzaWwfuFYJM
+ dWLagDxG8WUQDuOjYJ+XJEvrG7oyz9P9v9Y15Q6Jtz5bIB4vry8mSX0D7UWz75E=
+X-Gm-Gg: ASbGncsdb+cnT74KfjRIUTPMTCsH/ZnIrBH41YFY3Cuu/hEOgyAE+bQr6+4/36Rydvo
+ mtJ5NIPhfBKH7KNa8bN+WhvrxUTxhNrfMF5VUr6ebDpXS5KSXJylS6V6NM9J2lL8rfEayha4OvX
+ 8Eu6eEB55RftnYCp5SOPGJaExGCclX50SsbVDnuEr8IQRFGS1ppjbNe3RljDhga/ISIznd6f9c8
+ Zvtb3FYQXIcnW3+UdULfYRjgcqzBTVWbt+TCz6Ly59hDuaV6VBM4Ap5vM19kVAkMphYkmRtv8yn
+ qBsipzOapJv3ZKfOv3UA1a4BHouthxiunX912aGJHJJBsvWoq9FbqOkm/Bryjd4DT+FltNoogzo
+ fb2eeooeSUA6wkyTMYZSO5jwdUPzS1XeH50oz2GeGrAAtVkQANmM=
+X-Google-Smtp-Source: AGHT+IEDJZ6cXlON7JEGLXxfMLEx6n7BXo+rx4KwuwyyPBXPIyHjVQzJ2LHfZ7CU6MTw2LNVOx3wHQ==
+X-Received: by 2002:a17:902:fc4f:b0:220:d439:2485 with SMTP id
+ d9443c01a7336-223f1ca901bmr28643585ad.29.1741139747373; 
+ Tue, 04 Mar 2025 17:55:47 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.55.41
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.55.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:55:43 -0800 (PST)
+ Tue, 04 Mar 2025 17:55:46 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Andrea Bolognani <abologna@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 51/59] binfmt: Shuffle things around
-Date: Wed,  5 Mar 2025 11:52:59 +1000
-Message-ID: <20250305015307.1463560-52-alistair.francis@wdc.com>
+Subject: [PULL 52/59] binfmt: Normalize host CPU architecture
+Date: Wed,  5 Mar 2025 11:53:00 +1000
+Message-ID: <20250305015307.1463560-53-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
@@ -105,52 +105,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Andrea Bolognani <abologna@redhat.com>
 
-This should make no difference from the functional point of
-view and it's just preparation for upcoming changes.
+Right now information regarding the family each CPU type belongs
+to is recorded in two places: the large data table at the top of
+the script, and the qemu_host_family() function.
+
+We can make things better by mapping host CPU architecture to
+QEMU target in the few cases where the two don't already match
+and then using the data table to look up the family, same as
+we're already doing for the guest CPU architecture.
+
+Being able to reason in terms of QEMU target regardless of
+whether we're looking at the host or guest CPU architecture will
+come in handy to implement upcoming changes.
+
+A couple of entries are dropped in the process: BePC and Power
+Macintosh. I'm quite certain neither of those have ever been
+reported as CPU architectures by Linux. I believe many more of
+the entries that are carried forward could be dropped as well,
+but I don't have the same level of confidence there so I
+decided to play it safe just in case.
 
 Signed-off-by: Andrea Bolognani <abologna@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-ID: <20250127182924.103510-2-abologna@redhat.com>
+Message-ID: <20250127182924.103510-3-abologna@redhat.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- scripts/qemu-binfmt-conf.sh | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ scripts/qemu-binfmt-conf.sh | 44 +++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
 
 diff --git a/scripts/qemu-binfmt-conf.sh b/scripts/qemu-binfmt-conf.sh
-index 6ef9f118d9..426f075e31 100755
+index 426f075e31..8d9136a29f 100755
 --- a/scripts/qemu-binfmt-conf.sh
 +++ b/scripts/qemu-binfmt-conf.sh
-@@ -318,20 +318,23 @@ qemu_set_binfmts() {
-         mask=$(eval echo \$${cpu}_mask)
-         family=$(eval echo \$${cpu}_family)
+@@ -144,35 +144,35 @@ loongarch64_magic='\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x
+ loongarch64_mask='\xff\xff\xff\xff\xff\xff\xff\xfc\x00\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'
+ loongarch64_family=loongarch
  
-+        target="$cpu"
-+        if [ "$cpu" = "i486" ] ; then
-+            target="i386"
-+        fi
+-qemu_get_family() {
+-    cpu=${HOST_ARCH:-$(uname -m)}
++# Converts the name of a host CPU architecture to the corresponding QEMU
++# target.
++#
++# FIXME: This can probably be simplified a lot by dropping most entries.
++#        Remember that the script is only used on Linux, so we only need to
++#        handle the strings Linux uses to report the host CPU architecture.
++qemu_normalize() {
++    cpu="$1"
+     case "$cpu" in
+-    amd64|i386|i486|i586|i686|i86pc|BePC|x86_64)
++    i[3-6]86)
+         echo "i386"
+         ;;
+-    mips*)
+-        echo "mips"
++    amd64)
++        echo "x86_64"
+         ;;
+-    "Power Macintosh"|ppc64|powerpc|ppc)
++    powerpc)
+         echo "ppc"
+         ;;
+-    ppc64el|ppc64le)
+-        echo "ppcle"
++    ppc64el)
++        echo "ppc64le"
+         ;;
+-    arm|armel|armhf|arm64|armv[4-9]*l|aarch64)
++    armel|armhf|armv[4-9]*l)
+         echo "arm"
+         ;;
+-    armeb|armv[4-9]*b|aarch64_be)
++    armv[4-9]*b)
+         echo "armeb"
+         ;;
+-    sparc*)
+-        echo "sparc"
+-        ;;
+-    riscv*)
+-        echo "riscv"
+-        ;;
+-    loongarch*)
+-        echo "loongarch"
++    arm64)
++        echo "aarch64"
+         ;;
+     *)
+         echo "$cpu"
+@@ -309,7 +309,13 @@ EOF
+ 
+ qemu_set_binfmts() {
+     # probe cpu type
+-    host_family=$(qemu_get_family)
++    host_cpu=$(qemu_normalize ${HOST_ARCH:-$(uname -m)})
++    host_family=$(eval echo \$${host_cpu}_family)
 +
-+        qemu="$QEMU_PATH/qemu-$target$QEMU_SUFFIX"
-+
-         if [ "$magic" = "" ] || [ "$mask" = "" ] || [ "$family" = "" ] ; then
-             echo "INTERNAL ERROR: unknown cpu $cpu" 1>&2
-             continue
-         fi
++    if [ "$host_family" = "" ] ; then
++        echo "INTERNAL ERROR: unknown host cpu $host_cpu" 1>&2
++        exit 1
++    fi
  
--        qemu="$QEMU_PATH/qemu-$cpu"
--        if [ "$cpu" = "i486" ] ; then
--            qemu="$QEMU_PATH/qemu-i386"
-+        if [ "$host_family" = "$family" ] ; then
-+            continue
-         fi
- 
--        qemu="$qemu$QEMU_SUFFIX"
--        if [ "$host_family" != "$family" ] ; then
--            $BINFMT_SET
--        fi
-+        $BINFMT_SET
-     done
- }
+     # register the interpreter for each cpu except for the native one
  
 -- 
 2.48.1
