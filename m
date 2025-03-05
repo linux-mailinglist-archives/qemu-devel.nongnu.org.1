@@ -2,89 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7D5A4F3C4
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9913FA4F3A6
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdU0-0000re-Fk; Tue, 04 Mar 2025 20:23:36 -0500
+	id 1tpdWj-0005aJ-7x; Tue, 04 Mar 2025 20:26:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3UqfHZwYKCgUxjfsohlttlqj.htrvjrz-ij0jqstslsz.twl@flex--seanjc.bounces.google.com>)
- id 1tpdSy-00089K-0i
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:22:35 -0500
-Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tpdU3-0001He-OF
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:40 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3UqfHZwYKCgUxjfsohlttlqj.htrvjrz-ij0jqstslsz.twl@flex--seanjc.bounces.google.com>)
- id 1tpdSw-0006wk-5C
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:22:31 -0500
-Received: by mail-pj1-x1049.google.com with SMTP id
- 98e67ed59e1d1-2feb47c6757so10280701a91.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:22:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tpdU1-00076v-Ne
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:39 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2235189adaeso6227735ad.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1741137747; x=1741742547; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=DCS/nNw6mNxVSNW6ZyvtCA2C5M73+qL9HLBJBSb59yY=;
- b=AhHtMCq9ietAAoCfODIvGTShfYVsqHUHr8yHJrQBmTt8f2gk9eYjwLuqNF+O8OVpiS
- WwKeD5Bmqn0AnG1pH9fTQ3OJT1dgKCLeUryCXDp+d5r/NfZQ9KSvJ3W9ExO7LQey9+rw
- mm7HYdWecCebFpenzyAG4WZJxcNML0l53ci5X+WPUXRN4vFXFx3aPpZ8TP5RzJWlFbM9
- rLiDURKTdq2L9KWeiIhxECCJRXxs5XeagKY9eXYqT2n0vImcpXqCZYPIj6bkCPlRw7i7
- +fEni/GvIx75jiDqwQT8yJLQapI6prb2rXETl7cCs2hCl7fYMNoFx6aLLGVq1kIVVxMn
- p4Hw==
+ d=linaro.org; s=google; t=1741137815; x=1741742615; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=P/l2v9NbYNrFTmHZ24VrD2fnkFSRFdaCiyS3m4xy7CU=;
+ b=QlrisZKGl1HlJtNEYwbREDvp2MZAdxiBxbc5OIXBbsQ7uB1UMHf0uJpNQ4NCiU1oAm
+ TjXHm2WNXSZMNNxRZctrQ7dudLZl/PFfkU5o1paLr7UEMh9Mvvk2l3XM/p2PLaoweGXN
+ 8CG2SihFSDusklQIVQFeXZGKA7rvdjiTpd+x6CrmWcpCx0zivZgZ+qfFXqVTmqLADERX
+ PcIZ7WTNiuUul8O4Ujoaie5ooRK7mGitPnYqj1Y2HEtGbQBAvEgHjnJsEVXPP9zj6VK2
+ UT8Tz0r2N9QMcFxns/Y5Cw0HhzevBzFyN8DUTmAXcSyxnt32mXre1bqHHwdSAymlgxwQ
+ NkuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137747; x=1741742547;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DCS/nNw6mNxVSNW6ZyvtCA2C5M73+qL9HLBJBSb59yY=;
- b=CJGpLgBoOgZFA5I8wlb4l0b4JhpzPQwAbUmw/aZBV+ZNYoESDI8JEt+J51MHRfNrf7
- QHKsEVU7FLAkxbShClkZNn/x/8i4lBc2l7lqEEEmG039ghMpCiba2gczs5elPOYskCSX
- ZLa5IZPkB43Enjn/yg2sv+VsCeg/LdEqJWTqpYxagUlvrGUYFqWnCKSS6UiY291NmXCO
- 16tDffkKh6rEb8miaelAG19ayTGV+y+O3g+yVTvUSlA42ELboTbYzbkG3ZwoDX/PdGlW
- JIknx/E7uHfeJmSFR4aAW4lMJrGeQmJ/u3YwXmDJPy+K6PRNdeGqvfs+ymnjvu+SYa87
- 3WUg==
+ d=1e100.net; s=20230601; t=1741137815; x=1741742615;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P/l2v9NbYNrFTmHZ24VrD2fnkFSRFdaCiyS3m4xy7CU=;
+ b=PazqbjAZgHEm77CdlHAwWSzNwKUCTa6LKmx7ljho6tDS2OUXywJrjZHRYDMEXMOnPE
+ Wcx5Kvs7BCmM1L1ZAIq97cX+C9pMdeIyzI+gd+Se3tIixrfjvLwO9q6ZW6rLSS6x/eU7
+ isRrzc48283X63krEbh/RgA+cTi4nLvYgXgsCQpO0HOftxVL5uGVHUxrLcTHSkWyyK3p
+ 8ySr6UA4nuMfAN9lwEePJr6iXHaHBMLAu+SnaM3+nkpCxvCG0CEgdcU5oqLoXzZqpWwW
+ YeDR2q9WpmWPEknr16D/okYn6dNvOxLar78hIHaw7hLuW4W8lXY093Fm++4kUUQ3zLob
+ M9Qw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXoLORJVssz+i6rhPU6JYAJecSU5tserS4dPWxqc5kHnhAFfx0/vp2E7qH6B2vDVzH+aF30jlxpMIZS@nongnu.org
-X-Gm-Message-State: AOJu0YwwxvO11Qm4n4qsHLHawpSm+x2SDUxS5cSIgH2joUejS+gildjx
- GBrHHP5yvGnxo23L9jF+cIXXiFHg9O9hSweLcPyiORKnGTFfvW80TBqMnATD0Ms8oaLI6f6CMpw
- LgA==
-X-Google-Smtp-Source: AGHT+IGJYp2ZLl5wcmz8t5mtTOoaetyDIG/yhDzE4zTGYRR+kewQEAAmX8rVAMwffKV4YIgqaMx4Mf/Jkw0=
-X-Received: from pjf14.prod.google.com ([2002:a17:90b:3f0e:b0:2fc:2ee0:d38a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2413:b0:2ff:4bac:6fa2
- with SMTP id 98e67ed59e1d1-2ff4bac7163mr971273a91.16.1741137746768; Tue, 04
- Mar 2025 17:22:26 -0800 (PST)
-Date: Tue, 4 Mar 2025 17:22:25 -0800
-In-Reply-To: <76da2b4a-2dc4-417c-91bc-ad29e08c8ba0@intel.com>
-Mime-Version: 1.0
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-5-dongli.zhang@oracle.com>
- <76da2b4a-2dc4-417c-91bc-ad29e08c8ba0@intel.com>
-Message-ID: <Z8enUUXhfRTr7KCf@google.com>
-Subject: Re: [PATCH v2 04/10] target/i386/kvm: set KVM_PMU_CAP_DISABLE if
- "-pmu" is configured
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, 
- pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com, 
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com, 
- like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org, 
- khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com, den@virtuozzo.com, 
- davydov-max@yandex-team.ru, dapeng1.mi@linux.intel.com, joe.jin@oracle.com
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
- envelope-from=3UqfHZwYKCgUxjfsohlttlqj.htrvjrz-ij0jqstslsz.twl@flex--seanjc.bounces.google.com;
- helo=mail-pj1-x1049.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ AJvYcCXDvUGeUGZRHS0YBn4Zrwft+T8E7OzUH+dmXYVtXiOk/JN23Fob826ASkrXPKIb6dOKO5GmsrNxNjSP@nongnu.org
+X-Gm-Message-State: AOJu0YwJmw/sw1JKXephaH5K75y5HC/9DeHi1ulC5g6WE3/DS5u9KSDY
+ RigBZxcu7Yh6ryTOsaS/eWpThKVObRDsiaRT6rDR6UkduWOmHr1vWK/0jnu0ABQ=
+X-Gm-Gg: ASbGncu1DQaJeWvfwtGFzdxnpmAjAOUyZ2mzRsn9YR8w0SU+BHb8Yat3gWQaDvTtx7u
+ pYaGb67juv2IpzZJVF/Q0s4hEs421MuEj2DAUeOR+Dl2iBvN9q8bJbj5iookpUyl5JVDFK2HOAV
+ cqV4APDkMRR2Eda2lTErc6nczEpuhseuMuZNoImtu+FCzpdeF1+18YrukEg5o/R1AmX24dTZjuE
+ r+/eY7RkTrlTHow24reKpp62fMlCNfQ1AoaIyjHSCDcMdBbp5SM5mZ5UiYQLKj9alRzQUCYPwTn
+ YXdF9vcqfFgFFxKY2LyKXD5KXn7bLJ/MqEx//sxypvuknrYrVIR34bNu3w==
+X-Google-Smtp-Source: AGHT+IFXIwvuO3djKdV6NsnFryti5ZEPQTMdBEZBOY7n+lrNlLtMEjkRpF/oXV5FUIe0AT/ZJnGDgg==
+X-Received: by 2002:a17:903:22c4:b0:215:58be:334e with SMTP id
+ d9443c01a7336-223f1d3eb5amr20980165ad.10.1741137815484; 
+ Tue, 04 Mar 2025 17:23:35 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-223501f9d63sm101358805ad.78.2025.03.04.17.23.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Mar 2025 17:23:35 -0800 (PST)
+Message-ID: <1951b0b1-ccea-429e-9e72-e8df7a7a8599@linaro.org>
+Date: Tue, 4 Mar 2025 17:23:34 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 03/11] system: Introduce QemuArchBit enum
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+References: <20250305005225.95051-1-philmd@linaro.org>
+ <20250305005225.95051-4-philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250305005225.95051-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,48 +106,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 04, 2025, Xiaoyao Li wrote:
-> On 3/3/2025 6:00 AM, Dongli Zhang wrote:
-> > Although AMD PERFCORE and PerfMonV2 are removed when "-pmu" is configured,
-> > there is no way to fully disable KVM AMD PMU virtualization. Neither
-> > "-cpu host,-pmu" nor "-cpu EPYC" achieves this.
-> 
-> This looks like a KVM bug.
-
-Heh, the patches you sent do fix _a_ KVM bug, but this is something else entirely.
-
-In practice, the KVM bug only affects what KVM_GET_SUPPORTED_CPUID returns when
-enable_pmu=false, and in that case, it's only a reporting issue, i.e. KVM will
-still block usage of the PMU.
-
-As Dongli pointed out, older AMD CPUs don't actually enumerate a PMU in CPUID,
-and so the kernel assumes that not-too-old CPUs have a PMU:
-
-	/* Performance-monitoring supported from K7 and later: */
-	if (boot_cpu_data.x86 < 6)
-		return -ENODEV;
-
-The "expected" output:
-
-   Performance Events: PMU not available due to virtualization, using software events only.
-
-is a long-standing workaround in the kernel to deal with lack of enumeration.  On
-top of explicit enumeration, init_hw_perf_events() => check_hw_exists() probes
-hardware to see if it actually works.  If an MSR is unexpectedly unavailable, as
-is the case when running as a guest, the kernel prints a message and disables PMU
-usage.  E.g. the above message is specific to running as a guest:
-
-	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
-		pr_cont("PMU not available due to virtualization, using software events only.\n");
-
-From the KVM side, because there's no CPUID enumeration, there's no way for KVM
-to know that userspace wants to completely disable PMU virtualization from CPUID
-alone.  Whereas with Intel CPUs, KVM infers that the PMU should be disabled by
-lack of a non-zero PMU version, e.g. if CPUID.0xA is omitted.
-
-> Anyway, since QEMU can achieve its goal with KVM_PMU_CAP_DISABLE with
-> current KVM, I'm fine with it.
-
-Yeah, this is the only way other than disabling KVM's PMU virtualization via
-module param (enable_pmu).
+T24gMy80LzI1IDE2OjUyLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gRGVj
+bGFyZSBRRU1VX0FSQ0hfQklUXyR0YXJnZXQgYXMgUWVtdUFyY2hCaXQgZW51bS4NCj4gVXNl
+IHRoZW0gdG8gZGVjbGFyZSBRRU1VX0FSQ0hfJHRhcmdldCBiaXRtYXNrcy4NCj4gDQo+IFNp
+Z25lZC1vZmYtYnk6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9y
+Zz4NCj4gLS0tDQo+ICAgbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgfCAgNCArLS0NCj4g
+ICBpbmNsdWRlL3N5c3RlbS9hcmNoX2luaXQuaCB8IDY1ICsrKysrKysrKysrKysrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tDQo+ICAgc3lzdGVtL2FyY2hfaW5pdC5jICAgICAgICAgfCAg
+MiArLQ0KPiAgIDMgZmlsZXMgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgMjUgZGVsZXRp
+b25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbWVzb24uYnVpbGQgYi9tZXNvbi5idWlsZA0K
+PiBpbmRleCAwYTJjNjFkMmJmYS4uMWFiMDJhNWQ0OGQgMTAwNjQ0DQo+IC0tLSBhL21lc29u
+LmJ1aWxkDQo+ICsrKyBiL21lc29uLmJ1aWxkDQo+IEBAIC0zMzU3LDggKzMzNTcsOCBAQCBm
+b3JlYWNoIHRhcmdldCA6IHRhcmdldF9kaXJzDQo+ICAgICAgICAgY29uZmlnX3RhcmdldF9k
+YXRhLnNldChrLCB2KQ0KPiAgICAgICBlbmRpZg0KPiAgICAgZW5kZm9yZWFjaA0KPiAtICBj
+b25maWdfdGFyZ2V0X2RhdGEuc2V0KCdRRU1VX0FSQ0gnLA0KPiAtICAgICAgICAgICAgICAg
+ICAgICAgICAgICdRRU1VX0FSQ0hfJyArIGNvbmZpZ190YXJnZXRbJ1RBUkdFVF9CQVNFX0FS
+Q0gnXS50b191cHBlcigpKQ0KPiArICBjb25maWdfdGFyZ2V0X2RhdGEuc2V0KCdRRU1VX0FS
+Q0hfQklUJywNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAnUUVNVV9BUkNIX0JJVF8n
+ICsgY29uZmlnX3RhcmdldFsnVEFSR0VUX0JBU0VfQVJDSCddLnRvX3VwcGVyKCkpDQo+ICAg
+ICBjb25maWdfdGFyZ2V0X2ggKz0ge3RhcmdldDogY29uZmlndXJlX2ZpbGUob3V0cHV0OiB0
+YXJnZXQgKyAnLWNvbmZpZy10YXJnZXQuaCcsDQo+ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBjb25maWd1cmF0aW9uOiBjb25maWdfdGFyZ2V0
+X2RhdGEpfQ0KPiAgIA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zeXN0ZW0vYXJjaF9pbml0
+LmggYi9pbmNsdWRlL3N5c3RlbS9hcmNoX2luaXQuaA0KPiBpbmRleCBkOGI3NzQ0MDQ4Ny4u
+MDZlNTUyN2VjODggMTAwNjQ0DQo+IC0tLSBhL2luY2x1ZGUvc3lzdGVtL2FyY2hfaW5pdC5o
+DQo+ICsrKyBiL2luY2x1ZGUvc3lzdGVtL2FyY2hfaW5pdC5oDQo+IEBAIC0xLDI5ICsxLDUw
+IEBADQo+ICAgI2lmbmRlZiBRRU1VX0FSQ0hfSU5JVF9IDQo+ICAgI2RlZmluZSBRRU1VX0FS
+Q0hfSU5JVF9IDQo+ICAgDQo+ICsjaW5jbHVkZSAicWVtdS9iaXRvcHMuaCINCj4gICANCj4g
+LWVudW0gew0KPiAtICAgIFFFTVVfQVJDSF9BTEwgPSAtMSwNCj4gLSAgICBRRU1VX0FSQ0hf
+QUxQSEEgPSAoMSA8PCAwKSwNCj4gLSAgICBRRU1VX0FSQ0hfQVJNID0gKDEgPDwgMSksDQo+
+IC0gICAgUUVNVV9BUkNIX0kzODYgPSAoMSA8PCAzKSwNCj4gLSAgICBRRU1VX0FSQ0hfTTY4
+SyA9ICgxIDw8IDQpLA0KPiAtICAgIFFFTVVfQVJDSF9NSUNST0JMQVpFID0gKDEgPDwgNiks
+DQo+IC0gICAgUUVNVV9BUkNIX01JUFMgPSAoMSA8PCA3KSwNCj4gLSAgICBRRU1VX0FSQ0hf
+UFBDID0gKDEgPDwgOCksDQo+IC0gICAgUUVNVV9BUkNIX1MzOTBYID0gKDEgPDwgOSksDQo+
+IC0gICAgUUVNVV9BUkNIX1NINCA9ICgxIDw8IDEwKSwNCj4gLSAgICBRRU1VX0FSQ0hfU1BB
+UkMgPSAoMSA8PCAxMSksDQo+IC0gICAgUUVNVV9BUkNIX1hURU5TQSA9ICgxIDw8IDEyKSwN
+Cj4gLSAgICBRRU1VX0FSQ0hfT1BFTlJJU0MgPSAoMSA8PCAxMyksDQo+IC0gICAgUUVNVV9B
+UkNIX1RSSUNPUkUgPSAoMSA8PCAxNiksDQo+IC0gICAgUUVNVV9BUkNIX0hQUEEgPSAoMSA8
+PCAxOCksDQo+IC0gICAgUUVNVV9BUkNIX1JJU0NWID0gKDEgPDwgMTkpLA0KPiAtICAgIFFF
+TVVfQVJDSF9SWCA9ICgxIDw8IDIwKSwNCj4gLSAgICBRRU1VX0FSQ0hfQVZSID0gKDEgPDwg
+MjEpLA0KPiAtICAgIFFFTVVfQVJDSF9IRVhBR09OID0gKDEgPDwgMjIpLA0KPiAtICAgIFFF
+TVVfQVJDSF9MT09OR0FSQ0ggPSAoMSA8PCAyMyksDQo+IC19Ow0KPiArdHlwZWRlZiBlbnVt
+IFFlbXVBcmNoQml0IHsNCj4gKyAgICBRRU1VX0FSQ0hfQklUX0FMUEhBICAgICAgICAgPSAw
+LA0KPiArICAgIFFFTVVfQVJDSF9CSVRfQVJNICAgICAgICAgICA9IDEsDQo+ICsgICAgUUVN
+VV9BUkNIX0JJVF9JMzg2ICAgICAgICAgID0gMywNCj4gKyAgICBRRU1VX0FSQ0hfQklUX002
+OEsgICAgICAgICAgPSA0LA0KPiArICAgIFFFTVVfQVJDSF9CSVRfTUlDUk9CTEFaRSAgICA9
+IDYsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9NSVBTICAgICAgICAgID0gNywNCj4gKyAgICBR
+RU1VX0FSQ0hfQklUX1BQQyAgICAgICAgICAgPSA4LA0KPiArICAgIFFFTVVfQVJDSF9CSVRf
+UzM5MFggICAgICAgICA9IDksDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9TSDQgICAgICAgICAg
+ID0gMTAsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9TUEFSQyAgICAgICAgID0gMTEsDQo+ICsg
+ICAgUUVNVV9BUkNIX0JJVF9YVEVOU0EgICAgICAgID0gMTIsDQo+ICsgICAgUUVNVV9BUkNI
+X0JJVF9PUEVOUklTQyAgICAgID0gMTMsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9UUklDT1JF
+ICAgICAgID0gMTYsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9IUFBBICAgICAgICAgID0gMTgs
+DQo+ICsgICAgUUVNVV9BUkNIX0JJVF9SSVNDViAgICAgICAgID0gMTksDQo+ICsgICAgUUVN
+VV9BUkNIX0JJVF9SWCAgICAgICAgICAgID0gMjAsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9B
+VlIgICAgICAgICAgID0gMjEsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9IRVhBR09OICAgICAg
+ID0gMjIsDQo+ICsgICAgUUVNVV9BUkNIX0JJVF9MT09OR0FSQ0ggICAgID0gMjMsDQo+ICt9
+IFFlbXVBcmNoQml0Ow0KPiArDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9BTFBIQSAgICAgICAg
+IEJJVChRRU1VX0FSQ0hfQklUX0FMUEhBKQ0KPiArI2RlZmluZSBRRU1VX0FSQ0hfQVJNICAg
+ICAgICAgICBCSVQoUUVNVV9BUkNIX0JJVF9BUk0pDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9J
+Mzg2ICAgICAgICAgIEJJVChRRU1VX0FSQ0hfQklUX0kzODYpDQo+ICsjZGVmaW5lIFFFTVVf
+QVJDSF9NNjhLICAgICAgICAgIEJJVChRRU1VX0FSQ0hfQklUX002OEspDQo+ICsjZGVmaW5l
+IFFFTVVfQVJDSF9NSUNST0JMQVpFICAgIEJJVChRRU1VX0FSQ0hfQklUX01JQ1JPQkxBWkUp
+DQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9NSVBTICAgICAgICAgIEJJVChRRU1VX0FSQ0hfQklU
+X01JUFMpDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9QUEMgICAgICAgICAgIEJJVChRRU1VX0FS
+Q0hfQklUX1BQQykNCj4gKyNkZWZpbmUgUUVNVV9BUkNIX1MzOTBYICAgICAgICAgQklUKFFF
+TVVfQVJDSF9CSVRfUzM5MFgpDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9TSDQgICAgICAgICAg
+IEJJVChRRU1VX0FSQ0hfQklUX1NINCkNCj4gKyNkZWZpbmUgUUVNVV9BUkNIX1NQQVJDICAg
+ICAgICAgQklUKFFFTVVfQVJDSF9CSVRfU1BBUkMpDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9Y
+VEVOU0EgICAgICAgIEJJVChRRU1VX0FSQ0hfQklUX1hURU5TQSkNCj4gKyNkZWZpbmUgUUVN
+VV9BUkNIX09QRU5SSVNDICAgICAgQklUKFFFTVVfQVJDSF9CSVRfT1BFTlJJU0MpDQo+ICsj
+ZGVmaW5lIFFFTVVfQVJDSF9UUklDT1JFICAgICAgIEJJVChRRU1VX0FSQ0hfQklUX1RSSUNP
+UkUpDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9IUFBBICAgICAgICAgIEJJVChRRU1VX0FSQ0hf
+QklUX0hQUEEpDQo+ICsjZGVmaW5lIFFFTVVfQVJDSF9SSVNDViAgICAgICAgIEJJVChRRU1V
+X0FSQ0hfQklUX1JJU0NWKQ0KPiArI2RlZmluZSBRRU1VX0FSQ0hfUlggICAgICAgICAgICBC
+SVQoUUVNVV9BUkNIX0JJVF9SWCkNCj4gKyNkZWZpbmUgUUVNVV9BUkNIX0FWUiAgICAgICAg
+ICAgQklUKFFFTVVfQVJDSF9CSVRfQVZSKQ0KPiArI2RlZmluZSBRRU1VX0FSQ0hfSEVYQUdP
+TiAgICAgICBCSVQoUUVNVV9BUkNIX0JJVF9IRVhBR09OKQ0KPiArI2RlZmluZSBRRU1VX0FS
+Q0hfTE9PTkdBUkNIICAgICBCSVQoUUVNVV9BUkNIX0JJVF9MT09OR0FSQ0gpDQo+ICsjZGVm
+aW5lIFFFTVVfQVJDSF9BTEwgICAgICAgICAgIC0xDQo+ICAgDQo+ICAgZXh0ZXJuIGNvbnN0
+IHVpbnQzMl90IGFyY2hfdHlwZTsNCj4gICANCg0KV2hhdCBhcmUgd2UgZ2FpbmluZyBieSBo
+YXZpbmcgYSAiYml0IiBvcmllbnRlZCBlbnVtLCB2cyBzaW1wbGUgdmFsdWVzIA0KdGhhdCBj
+YW4gYmUgY29tcGFyZWQgdG9vPw0KQXMgd2VsbCwgaXQgd291bGQgbWFrZSBzZW5zZSB0byBh
+ZGQgc3VidmFyaWFudHMgKGFhcmNoNjQsIHg4Nl82NCwgbGl0dGxlIA0KYW5kIGJpZyBlbmRp
+YW4gdmFyaWFudHMgZm9yIHNvbWUgYXJjaCksIHNvIGFsbCBvZiB0aGVtIGFyZSBwcmVzZW50
+IGFuZCANCmNhbiBiZSBxdWVyaWVkIGVhc2lseS4NCg0KPiBkaWZmIC0tZ2l0IGEvc3lzdGVt
+L2FyY2hfaW5pdC5jIGIvc3lzdGVtL2FyY2hfaW5pdC5jDQo+IGluZGV4IGI5MTQ3YWY5M2Ni
+Li5mZWRiYjE4ZTJjYyAxMDA2NDQNCj4gLS0tIGEvc3lzdGVtL2FyY2hfaW5pdC5jDQo+ICsr
+KyBiL3N5c3RlbS9hcmNoX2luaXQuYw0KPiBAQCAtMjQsNCArMjQsNCBAQA0KPiAgICNpbmNs
+dWRlICJxZW11L29zZGVwLmgiDQo+ICAgI2luY2x1ZGUgInN5c3RlbS9hcmNoX2luaXQuaCIN
+Cj4gICANCj4gLWNvbnN0IHVpbnQzMl90IGFyY2hfdHlwZSA9IFFFTVVfQVJDSDsNCj4gK2Nv
+bnN0IHVpbnQzMl90IGFyY2hfdHlwZSA9IEJJVChRRU1VX0FSQ0hfQklUKTsNCg0K
 
