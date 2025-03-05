@@ -2,123 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB29A50229
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED6A5022B
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 15:36:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tppqO-000175-Rv; Wed, 05 Mar 2025 09:35:33 -0500
+	id 1tppqe-0001G6-Gg; Wed, 05 Mar 2025 09:35:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1tppq5-0000yH-OJ
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 09:35:13 -0500
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tppqF-00018u-E9
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 09:35:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1tppq3-00088l-8I
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 09:35:13 -0500
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525AsZSw025365
- for <qemu-devel@nongnu.org>; Wed, 5 Mar 2025 14:35:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- uOwe38oSSTMNopjp3mbuua1J8mGfnnOcpjMOrZywjt0=; b=FxkFgY99ozdJd2IY
- dazeKjZ/vjHseH0/2AgmNzBYCKyEgsP1IoFyYfNlWBt26P0Bm/gvP18Bz7UUwjxv
- lNs74GyG8C0bYirvzLDv3YdMk2kUdANPc4PuaNqa364VZx1fw/4N6fJfIbjkzoaB
- 9C6qNjPqIhPwzWgM+yUB/wb3WOReWJctmUKD219Be3tSAeFJFiSqHQ43EB5NSmd/
- z51Yxz7lYjNbF8n3AfsgsH3P1RXsBhhoVVAK4oCRPEXV0DnID8rOvxafXeNAHDE2
- MHSbHzUEEhJzyPTI9exCPkYGzBcrWtqaaOakeM/kSzBmhubK0xNl/WLIKE3L2wKq
- Oq31PQ==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p935jwq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 14:35:07 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-474fc025985so51769691cf.1
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 06:35:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tppqC-00089z-PZ
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 09:35:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741185319;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=IsBZ/DFpq5C9sGK6lNAJ+pjPanDa0oYkvLiR+0Lf1ZM=;
+ b=IOdH87g/75Ksv0JsQp5y+X9mSqypCqElUDkJIcNfi1DG0jumO8tMYu7dSlGUwFCILl/MhA
+ VJfu9jA+ZZG2Udt6gY9+6K/VHOOBl/29Y1VmDzfQ0zbfJnqWtZtReYauYBfR+Cy5iare/i
+ PdAr1NxkFls7wFeyjDEYtTckqRwlp6M=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-62h3elZUOqawLXZyAz-P7g-1; Wed, 05 Mar 2025 09:35:16 -0500
+X-MC-Unique: 62h3elZUOqawLXZyAz-P7g-1
+X-Mimecast-MFC-AGG-ID: 62h3elZUOqawLXZyAz-P7g_1741185316
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-390fd681712so1938718f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 06:35:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741185306; x=1741790106;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uOwe38oSSTMNopjp3mbuua1J8mGfnnOcpjMOrZywjt0=;
- b=sy38kyzqaD4zJENlwP3hJpbxydAGxFx1T5EYXHe/1ENKFzfvK2Iow75tAE75X7ZBzC
- 9rXAEAzZGK71ph0z3XnR5LYCmiIDJF8L9S9961mZe15QUhyGuEM7WNXB+YWlAryb7LnE
- R/nKocD1FETgZl1ALA82umKAlEGwzKzvJQZqQ8gy3xTXih+2rNXi1fW2IaOtdr+hSFRS
- QIRrYoRFT5On4VCJsNAEwNIo0Kgne9i3wOsW5uubhb6y8LAprVGEz0Sucr0BwHuebp48
- KrjIBsabwH7I3TFt4Qnh0+cTSaU9aqzxrwjfu0fDB8EDah3NcsaksfoH6cd2W2eLo/pw
- tHKA==
+ d=1e100.net; s=20230601; t=1741185315; x=1741790115;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IsBZ/DFpq5C9sGK6lNAJ+pjPanDa0oYkvLiR+0Lf1ZM=;
+ b=sb+oZ9px760l4ENYCmVHxRpNMR8dRh098UPhVFTavTngllbqkr+gCdWdBd2LjL6WW/
+ GYTLfb9iiBvS/c+Hry2KZNoivuKkLX0yqJoL/Wqsdl+xU7URL6NG1zFsG65zywky/LWP
+ Lvfc8ijx4znRP7KojXnKrfu4kJl5GWe13/ePD1wNm8EK6aQeQuyVmgPB9L1Akevqjex3
+ 1b7GibkUM+rqk4SmeyS9IFdEZAmLUxawrQlgZd5xL3mZgzSMYSQv/yQHi9KS+P3arr8M
+ Gg9R1iyzW/yurqHkmMB0hMbOQ5+VY6fdSJOVYvhIi6jejSGqS1Eo0oXnN8dmqArDTSSp
+ ZIqQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWVPpZHhJrR8Kqht53uRUJ7uRp8dvphK80iKAej+s5IFR3M0n4S0XYM/SjpKScCzb6qzGMkCxdsP9gK@nongnu.org
-X-Gm-Message-State: AOJu0YwGCvFKe8bw4QttYyw6LHX7YaQPYyWg1OJ17urXcOTATZiEHF05
- uqSxszdN2a7xw/bVjYDp/FTT5bXiygTCtntHZZGYA5kE6tAsep/Tc6UCGaEZENBC2eHsbaltsvp
- XHk02fHqoCrM/iPVNvhAAfsKkmfIQIGrqlMT8LkRqoj12zcICj15Ygw==
-X-Gm-Gg: ASbGncvjGpiB/hIOMULzFxEn0jTHnVmuQKPgqRZ7Y51Xiyu4oqEyGpsJ29Xhnmo+KPp
- uo+OQ5T2X9BkitQAW19buXCqcbeocOvk8vFhi930ywqnWGx/ZakvzQAY+yBuc1CTWwUtojLaV2N
- KMvLO/zqMjyKaEfDGah6hKyiTBzn/61DtVzQcPQ1TS+1hzl6Pwb8zv3ahZ/B1CRR8EI46pk6Zmn
- ic75TmauAXwSwf7tDG+Maq7WJmoC6FZqJRY6ugykVDarptAZCRfGLU10kPV6xBPu8pLQLq3iWVD
- sT1RmtFIaO+vsXUvf110/LFOMVTgR0ypgWH81u+w0p3fxUwjvdHwNLZwqesWj8wqQUYM7e6z6Dw
- 88epYzonbCalP+pOQ
-X-Received: by 2002:ac8:7d56:0:b0:475:aef:3f9b with SMTP id
- d75a77b69052e-4750b4e6a53mr48873661cf.47.1741185306472; 
- Wed, 05 Mar 2025 06:35:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFADJaSXmjgW5GNws/uRvpNUuy42kNbdiORId47uVKtdlw5i+zU4kn6rpyn4yZMjQwprQZqFw==
-X-Received: by 2002:ac8:7d56:0:b0:475:aef:3f9b with SMTP id
- d75a77b69052e-4750b4e6a53mr48872951cf.47.1741185305903; 
- Wed, 05 Mar 2025 06:35:05 -0800 (PST)
-Received: from [192.168.1.157] (104-54-226-75.lightspeed.austtx.sbcglobal.net.
- [104.54.226.75]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-475083eabcdsm15466771cf.13.2025.03.05.06.35.04
+ AJvYcCUGlmNn7BYBjpiMLbDcbaFF9YEiQ23j+HKHeQjGjEoDUcgLM0iGpFimkjD4h91m/FCSpKVBmBrzlEWN@nongnu.org
+X-Gm-Message-State: AOJu0YzdN/9USBv839F8wfyoGR+AhUHggAfTFe5f/PrzNgFDOByVM1X8
+ MyScc9rT6JyXTlla98KOCjE6VuwOU0xgcaqTBG495Qt5H0bXoo/2CA56n+Xb1oiepIfsGtGJ0U3
+ et+gjdMeyzvpn8ATufByCOnXdmNaXzn2ZCEYs1n6KmyRbeBp6YcxW
+X-Gm-Gg: ASbGncvOuK9vU+90n9NBtWkzdSGRVcPSSAFWAcb/mlaoHpOAUnjLTEBhk9N+qyhFPm9
+ RI4OUKAn1K8TquPtji2yP3y6onCQ6Dk2HejCRK9GFH4z7+6X1ctbV5/QdzzeVLWrO1/91eT37Rk
+ CoPf55J1eDMlMum5QUFD5X8Q5MKdsnkZo/cOw2o73bV/I9XnE2e4fsiZI68EkbXIsi0xFZIw7c3
+ Eku3C4rGAvuufFzK0P06agat2HMkRsIyRDQiIVR9k2CjEBvOW/tfMrNL2LkF3avYtELnm9MDtEx
+ p3wriJnf3FmCUkqDstTtbK2enHfau2Q3W66apStTruHxjs8=
+X-Received: by 2002:a05:6000:1848:b0:390:db07:87ea with SMTP id
+ ffacd0b85a97d-3911f7adc52mr3095378f8f.34.1741185315665; 
+ Wed, 05 Mar 2025 06:35:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGQ5eK6JX42BinsWVxGeIQ28pOxlOSDNSvZ9ys5z/w4/cYnSv8XCg8/Kgw4/F7OlZ3EvOSQow==
+X-Received: by 2002:a05:6000:1848:b0:390:db07:87ea with SMTP id
+ ffacd0b85a97d-3911f7adc52mr3095348f8f.34.1741185315323; 
+ Wed, 05 Mar 2025 06:35:15 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-231.web.vodafone.de.
+ [109.42.51.231]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bd42c5dd1sm18917615e9.18.2025.03.05.06.35.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Mar 2025 06:35:05 -0800 (PST)
-Message-ID: <ed9c45e4-1c9f-406b-b5f6-ea6ab19de651@oss.qualcomm.com>
-Date: Wed, 5 Mar 2025 08:35:04 -0600
+ Wed, 05 Mar 2025 06:35:14 -0800 (PST)
+Message-ID: <393fdd69-69b9-4d10-8a08-834f0aa82978@redhat.com>
+Date: Wed, 5 Mar 2025 15:35:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] tests/functional: Add a hexagon minivm test
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, quic_mathbern@quicinc.com, ale@rev.ng,
- anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com,
- alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
- Brian Cain <bcain@quicinc.com>, "Daniel P. Berrange" <berrange@redhat.com>
-References: <20250301172045.1295412-1-brian.cain@oss.qualcomm.com>
- <20250301172045.1295412-9-brian.cain@oss.qualcomm.com>
- <38afa09a-6b3f-4f4f-a9a3-78bab25f0e3a@linaro.org>
- <3e35f453-926b-4eb6-a5ce-72f89c4f8375@redhat.com>
+Subject: Re: [PATCH 1/2] s390x/pci: fix cleanup of failed hotplug
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ clg@redhat.com, qemu-devel@nongnu.org
+References: <20250226210201.238489-1-mjrosato@linux.ibm.com>
+ <20250226210201.238489-2-mjrosato@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Brian Cain <brian.cain@oss.qualcomm.com>
-In-Reply-To: <3e35f453-926b-4eb6-a5ce-72f89c4f8375@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250226210201.238489-2-mjrosato@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Me2Wu4/f c=1 sm=1 tr=0 ts=67c8611b cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=x6rl1zRT+JsLSO7OGbGBKQ==:17
- a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=NEAV23lmAAAA:8 a=qC_FGOx9AAAA:8
- a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=ch3z_QLeA-ZhuCZCqtAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22 a=fsdK_YakeE02zTmptMdW:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: VwgtDDtBohQFrFZwbJErMwZaXtjMcYjN
-X-Proofpoint-ORIG-GUID: VwgtDDtBohQFrFZwbJErMwZaXtjMcYjN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-05_06,2025-03-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- suspectscore=0 mlxscore=0 malwarescore=0 phishscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503050114
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -136,100 +153,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 26/02/2025 22.02, Matthew Rosato wrote:
+> In the unlikely event that we must fail hotplug of a PCI passthrough
+> device, ensure appropriate clean up of the associated zPCI device is
+> performed.
+> 
+> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> ---
+>   hw/s390x/s390-pci-bus.c | 21 +++++++++++++++++++--
+>   1 file changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+> index 913d72cc74..6cc0e7538a 100644
+> --- a/hw/s390x/s390-pci-bus.c
+> +++ b/hw/s390x/s390-pci-bus.c
+> @@ -1119,7 +1119,7 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>                       if (rc) {
+>                           error_setg(errp, "Plug failed for zPCI device in "
+>                                      "interpretation mode: %d", rc);
+> -                        return;
+> +                        goto pbdev_cleanup;
+>                       }
+>                   } else {
+>                       trace_s390_pcihost("zPCI interpretation missing");
+> @@ -1150,7 +1150,7 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>           if (s390_pci_msix_init(pbdev) && !pbdev->interp) {
+>               error_setg(errp, "MSI-X support is mandatory "
+>                          "in the S390 architecture");
+> -            return;
+> +            goto pbdev_cleanup;
+>           }
+>   
+>           if (dev->hotplugged) {
+> @@ -1168,6 +1168,23 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>       } else {
+>           g_assert_not_reached();
+>       }
+> +
+> +    return;
+> +
+> + pbdev_cleanup:
+> +    DeviceState *bdev = DEVICE(pbdev);
+> +
+> +    if (pbdev->shutdown_notifier.notify) {
+> +        notifier_remove(&pbdev->shutdown_notifier);
+> +    }
+> +    if (pbdev->iommu->dma_limit) {
+> +        s390_pci_end_dma_count(s, pbdev->iommu->dma_limit);
+> +    }
+> +    s390_pci_iommu_free(s, pci_get_bus(pbdev->pdev), pbdev->pdev->devfn);
+> +    QTAILQ_REMOVE(&s->zpci_devs, pbdev, link);
+> +    g_hash_table_remove(s->zpci_table, &pbdev->idx);
+> +    object_unparent(OBJECT(bdev));
+> +    qdev_unrealize(bdev);
+>   }
 
-On 3/5/2025 2:05 AM, Thomas Huth wrote:
-> On 04/03/2025 16.46, Philippe Mathieu-Daudé wrote:
->> Hi Brian,
->>
->> On 1/3/25 18:20, Brian Cain wrote:
->>> From: Brian Cain <bcain@quicinc.com>
->>
->> A bit opaque...
->>
->>> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
->>> ---
->>>   MAINTAINERS                             |  1 +
->>>   tests/functional/meson.build            |  8 +++++
->>>   tests/functional/test_hexagon_minivm.py | 42 
->>> +++++++++++++++++++++++++
->>>   3 files changed, 51 insertions(+)
->>>   create mode 100755 tests/functional/test_hexagon_minivm.py
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index deeb7878c8..48a5e7c005 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -247,6 +247,7 @@ F: gdb-xml/hexagon*.xml
->>>   F: docs/system/target-hexagon.rst
->>>   F: docs/devel/hexagon-sys.rst
->>>   F: docs/devel/hexagon-l2vic.rst
->>> +F: tests/functional/test_hexagon_minivm.py
->>>   T: git https://github.com/quic/qemu.git hex-next
->>>   Hexagon idef-parser
->>> diff --git a/tests/functional/meson.build 
->>> b/tests/functional/meson.build
->>> index 111d8bab26..78b42e58f9 100644
->>> --- a/tests/functional/meson.build
->>> +++ b/tests/functional/meson.build
->>> @@ -135,6 +135,14 @@ tests_i386_system_quick = [
->>>     'migration',
->>>   ]
->>> +test_timeouts += {
->>> +  'hexagon_minivm': 180,
->>> +}
->>> +
->>> +tests_hexagon_system_quick = [
->>> +  'hexagon_minivm',
->>> +]
->>> +
->>>   tests_i386_system_thorough = [
->>>     'i386_tuxrun',
->>>   ]
->>> diff --git a/tests/functional/test_hexagon_minivm.py 
->>> b/tests/functional/ test_hexagon_minivm.py
->>> new file mode 100755
->>> index 0000000000..2ba92bcce3
->>> --- /dev/null
->>> +++ b/tests/functional/test_hexagon_minivm.py
->>> @@ -0,0 +1,42 @@
->>> +#!/usr/bin/env python3
->>> +#
->>> +# Copyright(c) 2024-2025 Qualcomm Innovation Center, Inc. All 
->>> Rights Reserved.
->>> +#
->>> +# SPDX-License-Identifier: GPL-2.0-or-later
->>> +
->>> +import os
->>> +from glob import glob
->>> +from qemu_test import QemuSystemTest, Asset
->>> +from qemu_test import wait_for_console_pattern
->>> +
->>> +class MiniVMTest(QemuSystemTest):
->>> +
->>> +    timeout = 180
->>> +    GUEST_ENTRY = 0xc0000000
->>> +
->>> +    REPO = 'https://artifacts.codelinaro.org/artifactory'
->>> +    ASSET_TARBALL = \
->>> +        Asset(f'{REPO}/codelinaro-toolchain-for-hexagon/'
->>> +               '19.1.5/hexagon_minivm_2024_Dec_15.tar.gz',
->>> + 'd7920b5ff14bed5a10b23ada7d4eb927ede08635281f25067e0d5711feee2c2a')
->
-> Tests that download assets should go into the "thorough" category, not 
-> into the quick one, so please replace tests_hexagon_system_quick with 
-> tests_hexagon_system_thorough in the meson.build file.
->
-> (yes, I know, it's a little bit confusing that tests that finish 
-> quickly should still go into the thorough category instead ... but we 
-> needed a way to distinguish the tests that download assets and the 
-> ones that can run without downloads, see also the description in 
-> docs/devel/testing/functional.rst)
+Not sure, but should bdev realy be unrealized here already? Or should that 
+rather be done by the caller (when it sees the errp set)?
 
+  Thomas
 
-Thanks -- I'll fix this.
-
-
->
->  Thomas
->
 
