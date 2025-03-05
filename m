@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C571AA4F44A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C40FA4F436
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:59:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdx7-0001Ta-Bo; Tue, 04 Mar 2025 20:53:41 -0500
+	id 1tpdx8-0001WJ-RT; Tue, 04 Mar 2025 20:53:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdx0-0001P9-Nw
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:53:34 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tpdx4-0001U7-KU
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:53:40 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdwy-0008MC-LV
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:53:34 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22328dca22fso94312025ad.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:53:32 -0800 (PST)
+ id 1tpdx1-0008Mm-UR
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:53:37 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-223594b3c6dso108662695ad.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:53:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139611; x=1741744411; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741139614; x=1741744414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q/GPSEwp58vGbM9OWIiwI6PEo6VDjJTBjv2Albcbic0=;
- b=GOCHhFknPD/fOGOH63wWPMo8yBr1isHGKroKG1/Qj+5gxc28VReg57uLLr+/TWQpAV
- OJA+k/erdT+Q7gt4ti+yOe7NSmSQUEOPn7A1RkYI1a/agdcMB24JvvlO2I9Ax89DMgRx
- +cAOtqO61uhnRddeOYFMXGWy8X8KKsAzFZccALJuRQZafeigab41XlDCHxUqylbIG/Eh
- I2sgyqVBNcgXHWdNyS8Fgk1G7hWAW3BD4plWAKPrmTAuUK1BVMBD3JzpA8wYTninHPn6
- q5RRAFDGLqELqG7gFcvyjGvSUnmbkBPbF+9FOz4RA8ADDMnKQGh8+UEpXRp1vhC7WrBZ
- Kkgw==
+ bh=ZBEKcLD/t7V+wqyWsb5h8cuBdhinzK3N2UdwWuTfii4=;
+ b=MHA9k3p164NDUpcEpIflfWQsQtkXW2O5AimW19JXBsKiWVNxiVOVxpNi9alXu6Ek2E
+ sDD8c3hSqtTEsVk9OoPuIzLA2CkTSYnMXazlSkoYSZJ2NuNxfgWTVTvCYBnTqnR4USmR
+ DB2ELyxir949eMOoJtuaxUpmcIEvZqo9DVF33yyfqId4fhiwT9DWVoqm7omUGsbeeb3k
+ uPBdI+5JxuzMPKcwVb92M1pRjlvcePZvVW4mAuUqknSNhUjVQ8fa/mRCpsZHeRKbuMyC
+ LjWG2roGbW/3C7iDc08L6V4Z5ZQO1egpc6oISwISoJTEKy3pnanIicxu/UsDCRhqOrAg
+ xQoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139611; x=1741744411;
+ d=1e100.net; s=20230601; t=1741139614; x=1741744414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q/GPSEwp58vGbM9OWIiwI6PEo6VDjJTBjv2Albcbic0=;
- b=PiA7FeOmLhPqimLxDdnKntLFS76czR7+USVeSUisT5KtjUF02Vt9f4DpP2GunTy9Kf
- /k0HYmTM0Mj7aW8c4m46+XlJcKs/d547unq2iE4rXii66qs6FL7qVh5hfMbeF4ZHM6M/
- RU6bAqPWVHcR+/8U2TGxR+z4i3kZTqVAl40HzaW5VZ3Z3oTLkWvZ2oZX10VrhdTeEJkA
- PFAVJkne/geyjYn16nPb88XouJzZ4PHfJIXN5dFbI07iQI+YRzfQxquOHhCb2csjpsEw
- t1WXgUdJa5Zr+eHPX4MGYPqY3OukotQ7/So6V1z1zLWymCf6rjMHONNjg14Wlc+mZurn
- z1Mw==
-X-Gm-Message-State: AOJu0YyX71+ymZ5PvXrZTz/8+QtMpaPutsgThZBJLdspdE1ZRhLKJiJX
- p6r1SfblP1sFIMi1+zyxymTN8HyZq2ujWpMipE0m72vlUPI09v4aaRlHmOIfTus=
-X-Gm-Gg: ASbGncujTmd1dlhH1mFPFB1ogihXna/fsWD8YFcI9szDp0J00Bs9d669t2LUdYQeIiv
- qPIBKlI8kcZ7XJWI6q7G8wqMbd9gQcOiCazGsYHV7/XE+rMGlW9wsLjMvZu/qfTSxv6sJDh4QtS
- IRcarizlgtOV7M/UYZYedQ5O6V8OcAzbIEvnv8aI4dSr/Ed7pIQ99CBAGeBIuFjxaQZvUc3ucYX
- lMXp0mvnGMZoRcYRMDx4IFKs5woREyf22dzotI4gixp4Q3eZgT19I/Ur7S1QsqwzK4n/Wvabju2
- wTlKllJApqKyunSWJEJN8psMRXmpFP9MNMuYY0uQHY97kcDO9DgmYcN1e3PbEp+qgMTvH0bI42h
- HD+sLebvd0nZ/+WXFFJuvg+IEwsjtLlEG5JFCGoWM/1ovN8ZqhZ0=
-X-Google-Smtp-Source: AGHT+IELaGdZ4+7yHT16IlRLo6gLdp/8yiTQ+hfmt0QgZ/OqZCX0mLQ1Xgp34wJGTJoY60z+QKi0uA==
-X-Received: by 2002:a17:902:c943:b0:223:37ec:63bf with SMTP id
- d9443c01a7336-223f1c992c2mr17514095ad.25.1741139611102; 
- Tue, 04 Mar 2025 17:53:31 -0800 (PST)
+ bh=ZBEKcLD/t7V+wqyWsb5h8cuBdhinzK3N2UdwWuTfii4=;
+ b=EPvoAabSV4GW3TCrLF/UONLIPfE4xS6PD1A+2D2xIPul1S2I2ckGle/EQoEE01NKc6
+ PU1Nbef36ysG9kSnNAMHf7C2x6QF0jUZAk1y1NGbD5P0q2MceOoYeeu9fHOvng8XemzF
+ v0SDHha4NUA5Lv4aHCy1pKJhAI4hn8ueCTtJKQShiG3hAtlQ7c3b3YChvuHPTJWC288Q
+ pJY+mLJuikbLUrp3Ykb0/qqzLFESp77c7bgBgD0NIhEUzXoqBVE/4yOyrYhql1YVXtI7
+ KQHnVWpQ/zH5Yv1PxO24c0EffjDCzJNkbeZBqbEZEj326rII1yvlM0e2aK0lWDqu8Hv0
+ lGZg==
+X-Gm-Message-State: AOJu0YyJYHjn7RCixrX/I1N0p9K14w3jtbJzylPY08qPFjlKZy9idPwy
+ XZs2sM9aHnAo5VgUiqPjilSIABcy1sP9B9T8uYF1qVo/XNMy1fmjSzl8/3WWels=
+X-Gm-Gg: ASbGncsAcy232ISjLdDEUNJ4riT0jIikNh9D0kbvfYi31xH78qrEgjZSJLGDn5FjK+h
+ CP7iYVEL4PPoLFa8VzMq1phlY+La7Y9GHR1iydm9ZCFsEKNN+cWDOGQlW+NOmSJtO5KgwCvmIpL
+ xlmbtlVYGriUguHyTQ4ECTDOhz62+EvLQ7oE6ChNqOAiqhwQLlC80qURQoZ1aBbpnudkHFL/gjz
+ wmdPu6YiAoc8MYmvLG3mk+YZN5AeIGkse5Y38d1x0wxpLcVZINaUWSuxfAAKxM6tm7qUP+hT5ZE
+ UlXNU6o31lf0p4gnKmma4IMB2SPEnXjt2Gi+i9padJ3xPgiV4GLMDNug3+9inbrKPFyeIxejFJk
+ cpTbBstkV42PiD7aeGOndTtQW2tzL6KY67EzXA6jqTKfiq+J2yi0=
+X-Google-Smtp-Source: AGHT+IFMx0l8OZiOIOFDePTBbTjc2CJW1ir5fVrQjEFoqwnVnp6ujy0FcaQdddAfkmpbtMed5dsdag==
+X-Received: by 2002:a17:902:e751:b0:21b:d2b6:ca7f with SMTP id
+ d9443c01a7336-223f1d6ce53mr21187765ad.32.1741139614074; 
+ Tue, 04 Mar 2025 17:53:34 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.53.28
+ d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.53.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:53:30 -0800 (PST)
+ Tue, 04 Mar 2025 17:53:33 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 06/59] target/riscv: rvv: Fix unexpected behavior of vector
- reduction instructions when vl is 0
-Date: Wed,  5 Mar 2025 11:52:14 +1000
-Message-ID: <20250305015307.1463560-7-alistair.francis@wdc.com>
+Subject: [PULL 07/59] target/riscv: rvv: Fix incorrect vlen comparison in
+ prop_vlen_set
+Date: Wed,  5 Mar 2025 11:52:15 +1000
+Message-ID: <20250305015307.1463560-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
 References: <20250305015307.1463560-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,49 +106,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-According to the Vector Reduction Operations section in the RISC-V "V"
-Vector Extension spec,
-"If vl=0, no operation is performed and the destination register is not
-updated."
+In prop_vlen_set function, there is an incorrect comparison between
+vlen(bit) and vlenb(byte).
+This will cause unexpected error when user applies the `vlen=1024` cpu
+option with a vendor predefined cpu type that the default vlen is
+1024(vlenb=128).
 
-The vd should be updated when vl is larger than 0.
-
-Fixes: fe5c9ab1fc ("target/riscv: vector single-width integer reduction instructions")
-Fixes: f714361ed7 ("target/riscv: rvv-1.0: implement vstart CSR")
+Fixes: 4f6d036ccc ("target/riscv/cpu.c: remove cpu->cfg.vlen")
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250124101452.2519171-1-max.chou@sifive.com>
+Message-ID: <20250124090539.2506448-1-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ target/riscv/cpu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 5386e3b97c..7773df6a7c 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -4659,7 +4659,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-         }                                                 \
-         s1 = OP(s1, (TD)s2);                              \
-     }                                                     \
--    *((TD *)vd + HD(0)) = s1;                             \
-+    if (vl > 0) {                                         \
-+        *((TD *)vd + HD(0)) = s1;                         \
-+    }                                                     \
-     env->vstart = 0;                                      \
-     /* set tail elements to 1s */                         \
-     vext_set_elems_1s(vd, vta, esz, vlenb);               \
-@@ -4745,7 +4747,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,           \
-         }                                                  \
-         s1 = OP(s1, (TD)s2, &env->fp_status);              \
-     }                                                      \
--    *((TD *)vd + HD(0)) = s1;                              \
-+    if (vl > 0) {                                          \
-+        *((TD *)vd + HD(0)) = s1;                          \
-+    }                                                      \
-     env->vstart = 0;                                       \
-     /* set tail elements to 1s */                          \
-     vext_set_elems_1s(vd, vta, esz, vlenb);                \
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index d7ecf729d0..99436f1750 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2027,6 +2027,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
+                          void *opaque, Error **errp)
+ {
+     RISCVCPU *cpu = RISCV_CPU(obj);
++    uint16_t cpu_vlen = cpu->cfg.vlenb << 3;
+     uint16_t value;
+ 
+     if (!visit_type_uint16(v, name, &value, errp)) {
+@@ -2038,10 +2039,10 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
+-    if (value != cpu->cfg.vlenb && riscv_cpu_is_vendor(obj)) {
++    if (value != cpu_vlen && riscv_cpu_is_vendor(obj)) {
+         cpu_set_prop_err(cpu, name, errp);
+         error_append_hint(errp, "Current '%s' val: %u\n",
+-                          name, cpu->cfg.vlenb << 3);
++                          name, cpu_vlen);
+         return;
+     }
+ 
 -- 
 2.48.1
 
