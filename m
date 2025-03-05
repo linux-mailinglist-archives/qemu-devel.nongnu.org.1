@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367BEA4F4D6
+	by mail.lfdr.de (Postfix) with ESMTPS id 45EA4A4F4D7
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:44:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpejG-0006fS-BQ; Tue, 04 Mar 2025 21:43:26 -0500
+	id 1tpeji-0006mj-KI; Tue, 04 Mar 2025 21:43:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tpejD-0006eF-Nu
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 21:43:23 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tpejg-0006lx-Ga; Tue, 04 Mar 2025 21:43:52 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tpejB-0005Np-CC
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 21:43:22 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-22382657540so73060455ad.2
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 18:43:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tpeje-0005R4-0u; Tue, 04 Mar 2025 21:43:52 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-219f8263ae0so118025965ad.0; 
+ Tue, 04 Mar 2025 18:43:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741142599; x=1741747399; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SUEuJdK4JXBGfbHkdk6cCjwrE9S0Iadxua/QAQa0NKQ=;
- b=zKzvCcGEJ30CizKyQ1xyoD0QZB0IJiAxcSQ+yRWO4D89RJt0wteWEkrioIpm715+bO
- UFQh5OnwLU6UAYDwSoyikTkDzoZjNdh4bM19UW8XhOCIeOA4O1f/ta63D2MADCUueWbT
- OS7f2OtKuc0x9UhLXwWKGcoTTqF57ZcaMkmkPT3mYbPQ513vekHtwQ+Fp9UjIQEO7S5F
- oD6xiIScdk/WOfIXAZP5m0iWcpqGvsueN/0EiakkEy93yoCfc79yDDfp+Yuqz8PZMmim
- 8XMZvQG7IYy9UGWHK9fXLRXQVKA0pF2q1zHg55fTGxyqpDYCUoRyg7NmqBszaX4WcSPJ
- WICQ==
+ d=gmail.com; s=20230601; t=1741142628; x=1741747428; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5sppU0FCF9jDLgCOEFiKj3D933OKeDqndzQMLl816kU=;
+ b=WzC4HYib8BMR7eHP5vTFnDS440mzu5a8Xsn15t4j12GlAVoKpJuK+ubixIEj6P3slz
+ nsas16svN97AAJ0gPHkJMyUzpoCLRi4TP5rRDfZpeRuX5MueNY67Qkk0XK7Io5HVVaef
+ uPMEZbf14u75/ZnTZns4hyrsvSLO31GiampnlbDdGJCDr689Z7XmN4JCsO67DGsSRhSa
+ B4WDQoP3v3STrHtbEnt9kgtwp24vlpMkcKpoE7crlEVbFKf2AYtbADHJpy5cMb61Ywky
+ R91yXQMAddr9a/sk6DtMKPIv6IGMEhLvu9+5uhj2cMaPQ9wNTYeBPpjl0gr9ABkW5R6Y
+ LzDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741142599; x=1741747399;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SUEuJdK4JXBGfbHkdk6cCjwrE9S0Iadxua/QAQa0NKQ=;
- b=ADCuM90x65UTq3tEGrUcpYJ77Ckb2RnnH4sVZ5koqNMi4CnlKqAaDKBhrXsj2Kmb4/
- E7Jg6uCWvDdqYXVE2Mi4vhODIEgnHeCZJw09SVTmWyO05hL/hLdPLRJPe/eCa2ZS1aGs
- tOrjkonQkY6Ae7cz4VZWAPGvt4XNdLvMwLv6hiBCaG497Torx46Es5/w6/x3nBGiZbB3
- ve6yzWyzX/9qyrEHSAfqxPkQLhsoBcKb7MZfGwr5qOEXHxHtQP9A9h4QAFPLrI0V/29L
- 9yGmCWsf/VfIQYydTnGv+i3JmwFRRsNq/QFIEdDvQgWDUzqkPnUHFaJcIGXjoBC/ttLd
- 1XrA==
+ d=1e100.net; s=20230601; t=1741142628; x=1741747428;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5sppU0FCF9jDLgCOEFiKj3D933OKeDqndzQMLl816kU=;
+ b=a7apjXCvBGflf8ohI729Nv5ZHHjh+bKJfuD0bvLU8NzPeS4Vg0sNW9pV7XA2nCiC/x
+ F2y+gkRvZM049DS1okmBRPzVR6iGh60OZNyl7Ar0qua7RSGygwl9NPeeBne8tJneja8c
+ Mq47cOd6+hJNIInLpQDNe1+Q2++2RuiwMeD3RzKs8W5WEFyi2BFbFrftBLaLzkcWUqHp
+ OtDbLuMElFNjMKXs8psiHXe/l1HYZCX1QbIEm0UtPgXmmvTn8puLMuYRVcflyEKvI1xa
+ 2GtZE855ztTeknI1sfacRYNOFt2yWmNCH9YjvagCBokVqFRPCKunkdS5Yer2s6fuMJ0j
+ 1hHw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV8+gaFl5CT+vs18vaJukIekpjRVZrmBem6Tjq6v+tqfT7x8UkfpGC75rNMOSFf7yQX/frl5i2ayIbp@nongnu.org
-X-Gm-Message-State: AOJu0Yw37roT85hcfBsAHJNUBgP1Ha3+6OVpxEOeepIYTXx2fXT3YFMX
- wOnOqJ0625x/UEl7cWMv6J7kIxn8EDGXmltwlI7jAE2GY85qY+9YepdJYk+nV2g=
-X-Gm-Gg: ASbGncuLYAPljKx2TORB456R1GiwTVV59z3a+7znjvQ/RW3V+f4728fC1e64g0w4rcY
- 2d0rKE3eZOwESQ90b2GXBZw56K5CoIauZ06U4UF7ClLyTiTpRabbEPTXNMtpb4OmJoOICub3V0b
- tdjjUqRGxLZcgjpG3cfPkG+B5mRsgnZCYdB1F8W8xSyxSv6NwTpjzMOeERHk8QgJQrnJqKa+J85
- 15z8cCPTLZssO1pmrzGp3ZqnqnSLjxU4tDH835lOo9JpfL/OwiANrrxkkTz6JxbNOBOwSNP7ZHT
- jVGTt27LomQxqNCnw1Rif919kkHFGnuYmlTnuwLGFHwel/K8n21SlToSmepdkXV+Cfp8xsq5Pd5
- MjIrTcSXF
-X-Google-Smtp-Source: AGHT+IFIPU3+l11NONZRrt9drybQJShkCQrTH7Ja+WQ5q18LnMBnKicW5QAap2ued/x/0eP2RSVxMg==
-X-Received: by 2002:a05:6a00:2e92:b0:736:5753:12f7 with SMTP id
- d2e1a72fcca58-73682b6c1b8mr2233261b3a.3.1741142599365; 
- Tue, 04 Mar 2025 18:43:19 -0800 (PST)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ AJvYcCUcN68KZk37Fhb1oKSzCIQgRv+NDCYLcexQgjSzYFKEsRCm3/YumbowHHWtfdk9PpwvbvRAL2UkO7QF@nongnu.org,
+ AJvYcCWZ5HMWxKumxTocZUziViJ4EosK+XUuA3iIbk05G3vcdRaPaJiylULvu5ZM6HU42KIiNAFjJjuKLEKG@nongnu.org
+X-Gm-Message-State: AOJu0Ywua7hVfeFzY3R7PpUPBzYj7Nvr/yk7cLsS10p+kHZhlvc+cHya
+ pAjSKRCuBnJBCaqHtqNrgj9G75/VKGUF4yJEerKAeVmmrjWsqCnu
+X-Gm-Gg: ASbGnctnLX6gsrm9unBPGsNhandERo5y0ooQ1lDXbhBHhi7o1xDUVUEPoFAU0tArhvp
+ sM1i67yxv3aLpw5GMp1b3bSCnONwOwQXkPYVlV01nIXh7zKVK4k4tiaaNSL+R/xU4GXIdMK3WiA
+ dVtBWDzcur5dYR/MXE+SBudgRSSCwZLVTWMm2XVyaAFDp8g3KzMhKud9QWXIFo/zOhV7r4MGLoK
+ HmpLFBsQBsDrPSUVDJjB31rrNSZRjrMf8DLa25YUJ+0onLGFYGBRy/m9dJ43Bt7RpGV8qsomZeA
+ pcPu1Ch9rs8K58WYPVzeDW44BOp/zCaLb0qwrgq2G20Km5QJ3t7MF4EYExaIVME=
+X-Google-Smtp-Source: AGHT+IEgNIK25Nev1CUtxHsMv0/iUQMVxA1I9lwKZ11r3BddPzgB3PIQP1RXnvALiehWTzmAE9uR1g==
+X-Received: by 2002:a05:6a00:14d1:b0:730:8386:6070 with SMTP id
+ d2e1a72fcca58-736829cd997mr2143414b3a.0.1741142627301; 
+ Tue, 04 Mar 2025 18:43:47 -0800 (PST)
+Received: from localhost (n11648126014.netvigator.com. [116.48.126.14])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-aee7de3ad9esm9151581a12.39.2025.03.04.18.43.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Mar 2025 18:43:19 -0800 (PST)
-Message-ID: <332b2988-93b2-4811-8626-37fa18cd2444@linaro.org>
-Date: Tue, 4 Mar 2025 18:43:17 -0800
+ d2e1a72fcca58-7349fe48849sm11701791b3a.46.2025.03.04.18.43.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Mar 2025 18:43:46 -0800 (PST)
+From: Stefan Hajnoczi <stefanha@gmail.com>
+X-Google-Original-From: Stefan Hajnoczi <stefanha@fedora>
+Date: Wed, 5 Mar 2025 10:43:42 +0800
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
+ manos.pitsidianakis@linaro.org, philmd@linaro.org,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH v2 08/11] rust/block: Add driver module
+Message-ID: <20250305024342.GB247800@fedora>
+References: <20250218182019.111467-1-kwolf@redhat.com>
+ <20250218182019.111467-9-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/11] include: Expose QemuArchBit enum to user
- emulation
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20250305005225.95051-1-philmd@linaro.org>
- <20250305005225.95051-6-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250305005225.95051-6-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="DnLHf8xUuxM2eJhW"
+Content-Disposition: inline
+In-Reply-To: <20250218182019.111467-9-kwolf@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=stefanha@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,30 +101,288 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/4/25 16:52, Philippe Mathieu-Daudé wrote:
-> QemuArchBit isn't really specific to system emulation,
-> move the "system/arch_init.h" header to "qemu/arch_info.h",
-> a more generic include path.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+
+--DnLHf8xUuxM2eJhW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Feb 18, 2025 at 07:20:16PM +0100, Kevin Wolf wrote:
+> This adds a barebones module for a block driver interface. Because there
+> is no native QAPI support for Rust yet, opening images takes a few
+> unsafe functions to call into C visitor functions. This should be
+> cleaned up later.
+>=20
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > ---
->   meson.build                                      | 2 +-
->   include/{system/arch_init.h => qemu/arch_info.h} | 4 ++--
->   system/arch_init.c => arch_info-target.c         | 2 +-
->   hw/scsi/scsi-disk.c                              | 2 +-
->   system/qdev-monitor.c                            | 2 +-
->   system/vl.c                                      | 2 +-
->   system/meson.build                               | 1 -
->   7 files changed, 7 insertions(+), 8 deletions(-)
->   rename include/{system/arch_init.h => qemu/arch_info.h} (97%)
->   rename system/arch_init.c => arch_info-target.c (97%)
+>  rust/block/src/driver.rs | 195 +++++++++++++++++++++++++++++++++++++++
+>  rust/block/src/lib.rs    |   1 +
+>  2 files changed, 196 insertions(+)
+>  create mode 100644 rust/block/src/driver.rs
+>=20
+> diff --git a/rust/block/src/driver.rs b/rust/block/src/driver.rs
+> new file mode 100644
+> index 0000000000..fe19f4b88f
+> --- /dev/null
+> +++ b/rust/block/src/driver.rs
+> @@ -0,0 +1,195 @@
+> +// Copyright Red Hat Inc.
+> +// Author(s): Kevin Wolf <kwolf@redhat.com>
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +// All of this is unused until the first block driver is added
+> +#![allow(dead_code)]
+> +#![allow(unused_macros)]
+> +#![allow(unused_imports)]
+> +
+> +use crate::{IoBuffer, SizedIoBuffer};
+> +use qemu_api::bindings;
+> +use std::ffi::c_void;
+> +use std::io::{self, Error, ErrorKind};
+> +use std::mem::MaybeUninit;
+> +use std::ptr;
+> +
+> +/// A trait for writing block drivers.
+> +///
+> +/// Types that implement this trait can be registered as QEMU block driv=
+ers using the
+> +/// [`block_driver`] macro.
+> +pub trait BlockDriver {
 
-I can't think of a reason to use QemuArch(Bit) in user-mode.
-But I can't really justify splitting the header either.
-It's certainly not "init" related anyway.
+> +    /// The type that contains the block driver specific options for ope=
+ning an image
+> +    type Options;
+> +
+> +    // TODO Native support for QAPI types and deserialization
+> +    unsafe fn parse_options(
+> +        v: &mut bindings::Visitor,
+> +        opts: &mut *mut Self::Options,
+> +        errp: *mut *mut bindings::Error,
+> +    );
+> +    unsafe fn free_options(opts: *mut Self::Options);
+> +    unsafe fn open(
+> +        bs: *mut bindings::BlockDriverState,
+> +        opts: &Self::Options,
+> +        errp: *mut *mut bindings::Error,
+> +    ) -> std::os::raw::c_int;
+> +
+> +    /// Returns the size of the image in bytes
+> +    fn size(&self) -> u64;
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+I wonder if it makes sense to separate different parts of the
+BlockDriver API into multiple traits:
+1. Pre-open APIs (open(), probe()?, etc)
+2. I/O path - Future or async-based and can run in any thread
+3. Control path (size(), close(), reopen()?, etc)
 
+That way the type system guarantees that sub-APIs that are only valid in
+a specific state (e.g. when the BlockDriverState is open) cannot be
+called.
 
-r~
+size() is an example of a method that would benefit from more
+fine-grained traits that keep states separated. size() -> u64 doesn't
+make sense before open().
+
+What do you think?
+
+> +}
+> +
+> +/// Represents the connection between a parent and its child node.
+> +///
+> +/// This is a wrapper around the `BdrvChild` type in C.
+> +pub struct BdrvChild {
+> +    child: *mut bindings::BdrvChild,
+> +}
+> +
+> +// TODO Represent the graph lock and let the compiler verify it's held w=
+hen accessing child
+> +unsafe impl Send for BdrvChild {}
+> +unsafe impl Sync for BdrvChild {}
+> +
+> +impl BdrvChild {
+> +    /// Creates a new child reference from a `BlockdevRef`.
+> +    pub unsafe fn new(
+> +        parent: *mut bindings::BlockDriverState,
+> +        bref: *mut bindings::BlockdevRef,
+> +        errp: *mut *mut bindings::Error,
+> +    ) -> Option<Self> {
+> +        unsafe {
+> +            let child_bs =3D bindings::bdrv_open_blockdev_ref_file(bref,=
+ parent, errp);
+> +            if child_bs.is_null() {
+> +                return None;
+> +            }
+> +
+> +            bindings::bdrv_graph_wrlock();
+> +            let child =3D bindings::bdrv_attach_child(
+> +                parent,
+> +                child_bs,
+> +                c"file".as_ptr(),
+> +                &bindings::child_of_bds as *const _,
+> +                bindings::BDRV_CHILD_IMAGE,
+> +                errp,
+> +            );
+> +            bindings::bdrv_graph_wrunlock();
+> +
+> +            if child.is_null() {
+> +                None
+> +            } else {
+> +                Some(BdrvChild { child })
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Reads data from the child node into a linear byte buffer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `buf` must be a valid I/O buffer that can store at least `bytes`=
+ bytes.
+> +    pub async unsafe fn read_raw(&self, offset: u64, bytes: usize, buf: =
+*mut u8) -> io::Result<()> {
+> +        let offset: i64 =3D offset
+> +            .try_into()
+> +            .map_err(|e| Error::new(ErrorKind::InvalidInput, e))?;
+> +        let bytes: i64 =3D bytes
+> +            .try_into()
+> +            .map_err(|e| Error::new(ErrorKind::InvalidInput, e))?;
+> +
+> +        let ret =3D unsafe { bindings::bdrv_pread(self.child, offset, by=
+tes, buf as *mut c_void, 0) };
+> +        if ret < 0 {
+> +            Err(Error::from_raw_os_error(-ret))
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
+> +
+> +    /// Reads data from the child node into a linear typed buffer.
+> +    pub async fn read<T: IoBuffer + ?Sized>(&self, offset: u64, buf: &mu=
+t T) -> io::Result<()> {
+> +        unsafe {
+> +            self.read_raw(offset, buf.buffer_len(), buf.buffer_mut_ptr())
+> +                .await
+> +        }
+> +    }
+> +
+> +    /// Reads data from the child node into a linear, potentially uninit=
+ialised typed buffer.
+> +    pub async fn read_uninit<T: SizedIoBuffer>(
+> +        &self,
+> +        offset: u64,
+> +        mut buf: Box<MaybeUninit<T>>,
+> +    ) -> io::Result<Box<T>> {
+> +        unsafe {
+> +            self.read_raw(offset, buf.buffer_len(), buf.buffer_mut_ptr())
+> +                .await?;
+> +            let ptr =3D Box::into_raw(buf) as *mut T;
+> +            Ok(Box::from_raw(ptr))
+> +        }
+> +    }
+> +}
+> +
+> +#[doc(hidden)]
+> +pub unsafe extern "C" fn bdrv_open<D: BlockDriver>(
+> +    bs: *mut bindings::BlockDriverState,
+> +    options: *mut bindings::QDict,
+> +    _flags: std::os::raw::c_int,
+> +    errp: *mut *mut bindings::Error,
+> +) -> std::os::raw::c_int {
+> +    unsafe {
+> +        let v =3D match bindings::qobject_input_visitor_new_flat_confuse=
+d(options, errp).as_mut() {
+> +            None =3D> return -libc::EINVAL,
+> +            Some(v) =3D> v,
+> +        };
+> +
+> +        let mut opts: *mut D::Options =3D ptr::null_mut();
+> +        D::parse_options(v, &mut opts, errp);
+> +        bindings::visit_free(v);
+> +
+> +        let opts =3D match opts.as_mut() {
+> +            None =3D> return -libc::EINVAL,
+> +            Some(opts) =3D> opts,
+> +        };
+> +
+> +        while let Some(e) =3D bindings::qdict_first(options).as_ref() {
+> +            bindings::qdict_del(options, e.key);
+> +        }
+> +
+> +        let ret =3D D::open(bs, opts, errp);
+> +        D::free_options(opts);
+> +        ret
+> +    }
+> +}
+> +
+> +#[doc(hidden)]
+> +pub unsafe extern "C" fn bdrv_close<D: BlockDriver>(bs: *mut bindings::B=
+lockDriverState) {
+> +    unsafe {
+> +        let state =3D (*bs).opaque as *mut D;
+> +        ptr::drop_in_place(state);
+> +    }
+> +}
+> +
+> +/// Declare a format block driver. This macro is meant to be used at the=
+ top level.
+> +///
+> +/// `typ` is a type implementing the [`BlockDriver`] trait to handle the=
+ image format with the
+> +/// user-visible name `fmtname`.
+> +macro_rules! block_driver {
+> +    ($fmtname:expr, $typ:ty) =3D> {
+> +        const _: () =3D {
+> +            static mut BLOCK_DRIVER: ::qemu_api::bindings::BlockDriver =
+=3D
+> +                ::qemu_api::bindings::BlockDriver {
+> +                    format_name: ::qemu_api::c_str!($fmtname).as_ptr(),
+> +                    instance_size: ::std::mem::size_of::<$typ>() as i32,
+> +                    bdrv_open: Some($crate::driver::bdrv_open::<$typ>),
+> +                    bdrv_close: Some($crate::driver::bdrv_close::<$typ>),
+> +                    bdrv_child_perm: Some(::qemu_api::bindings::bdrv_def=
+ault_perms),
+> +                    is_format: true,
+> +                    ..::qemu_api::zeroable::Zeroable::ZERO
+> +                };
+> +
+> +            qemu_api::module_init! {
+> +                MODULE_INIT_BLOCK =3D> unsafe {
+> +                    ::qemu_api::bindings::bdrv_register(std::ptr::addr_o=
+f_mut!(BLOCK_DRIVER));
+> +                }
+> +            }
+> +        };
+> +    };
+> +}
+> +pub(crate) use block_driver;
+> diff --git a/rust/block/src/lib.rs b/rust/block/src/lib.rs
+> index 1c03549821..54ebd480ec 100644
+> --- a/rust/block/src/lib.rs
+> +++ b/rust/block/src/lib.rs
+> @@ -1,3 +1,4 @@
+> +mod driver;
+>  mod iobuffer;
+> =20
+>  pub use iobuffer::{IoBuffer, SizedIoBuffer};
+> --=20
+> 2.48.1
+>=20
+>=20
+
+--DnLHf8xUuxM2eJhW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfHul0ACgkQnKSrs4Gr
+c8jhFwf/fy29pFvGq1Nj+uSHLFtkwzhsD1c7twoeI4pM6gPswG2o8xTvkYPV8ZHw
+k6HFnJbZ0dRiQmqVbuGSy064pPEpKeD485kqo3jLAQWG58jtvYbwjgpJz3+fAmVU
+Ru1w543eAxEGWTzgqfUVQG2sSnzNNNc1sjP2paQIEM7xeS+sXQJX62/jBMKRGm1D
+xUmOpqpPMvFH0kxyMhVs8hREU/YzAH7CdXXGoGg1QXbKOg8WyLgeclzsRG/2hkug
+WJQbgDT7xkRdyojyNWNkSt5JGZzn0L4569w2fXpKjLgfV6deYX9u4FeERg9emrEl
+dWZABdwBJ7BXxgM0IYF5TfKfnSAzSA==
+=5wlD
+-----END PGP SIGNATURE-----
+
+--DnLHf8xUuxM2eJhW--
 
