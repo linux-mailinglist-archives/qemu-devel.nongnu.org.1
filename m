@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4ABA50396
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F8FA503B6
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:43:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpqqe-0008HZ-QF; Wed, 05 Mar 2025 10:39:52 -0500
+	id 1tpqqh-0008IG-Tl; Wed, 05 Mar 2025 10:39:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqa-0008H9-Va
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:39:49 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqf-0008Hx-LQ
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:39:53 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqZ-0002II-4j
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:39:48 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43995b907cfso45221935e9.3
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:39:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqqd-0002IX-PW
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:39:53 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-390eb7c1024so4144023f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:39:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741189185; x=1741793985; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741189190; x=1741793990; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xdtas5HdXydL2NOaru6Yo7c9eAGwqywYol70/Ag2vxo=;
- b=HmwqVeeGNaoOvljc14e+kLmVhOR+pSufNLgF2rs/2aG2ixx2IpodkuRdtKb9fdrEcg
- kzGiMt9TIYBE8TiOgPAgBkuJLV3PI8hipAm6NTJrjilYlcle1LYpARSonx8n2HUpG+7V
- 3RUJYQbMqcQUeD9Dk2EKWMCJ3yLslLbVkA3kCHqTVUCxFdKOLt3eHTe8D8EiajRSsz1Q
- gWU0Ag4YrHRACvAbrS4NeC3abfkBPfj+pMIQ/vf+Kp+yi/AJr3nj4uZ+OVOcGaEcQ99B
- lyKO9WT6w6Do9FVyNgO0aEG+0A0zHS5Kcm2Md/g1RqYXAm3fjsCCf8q0TWYHt+Owj3e3
- bmSA==
+ bh=yO8rIUYsmfpiPaEUeyghGtqZEEwY/40aLvzN2/tuA48=;
+ b=nAj2LVcsLTK+CkUHNkiCy3FBLK7afKdhfynr1QOo+9kcssmLEhWwsLQaBlcAwcoodv
+ aucIkh5JBA/pw4Nl36dzf3zu4Tb3l2w5t4PXv0XXHV7IlR0Dm5wIvWAQtJxyyiPfgSe0
+ aN7sfhQNuBN/oSSH3qpzGIi4/kUJB8y6hoEhdtp6JnBIiATNW8KeSFypvajf0iNJtkCc
+ Xw4iZgtaw2thIrkAzOCZoSSzKDivw+oT11DUh3kihzTgIfuKFxTxSxQ9otKu0l9Ow4Uf
+ zsMok/Wc7GxF9NqGJdW+pXNUTCMRKGBqnoQpACw3TGAnaXalDxy8itqQMOmC+cevxprx
+ fqiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741189185; x=1741793985;
+ d=1e100.net; s=20230601; t=1741189190; x=1741793990;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xdtas5HdXydL2NOaru6Yo7c9eAGwqywYol70/Ag2vxo=;
- b=WaWdCXIX4d2hCHelYgilSPtomu0A6k4MOiAjB+dLPMg6GJoElMYdObhmeAydmsHJaV
- BV1lbL+w6ThdxFp4wJlJEfEDMzIhFi9Q5l6Irv5Xy5QxwdsRX/t1paI5tLnw4IMycUGe
- LdLmu6RC/SUe9hEEdPM0xkK2KnZU2epejd2lv6dSGumS8t41AK/7SY3pDyQcPgABIuON
- y/DiLu4Uz8Pq1xUtgHnVDSjDxEREn+T+hvcyf/DFqfVBNuLrYRvsYT8FWdRB91qZPm6/
- f/vKWKbHi4nvIE1KWChEiyHx/dho6gNPwyBVqJgyZmFzsMI4uRelBK9VaKyRDmQaOHZ8
- 9d+A==
-X-Gm-Message-State: AOJu0YyP6Bq44AGTwUZb5Bg5gUD9+KFCOMaghxz/OFulEVsF0cYSV+vz
- jMGHXk+mO92UDYavLpTne5B+VLu1WzRrj3a20B7kygnrxjt7+Q15WQsFfQNsC6KasQbnAM+QkM7
- aNnw=
-X-Gm-Gg: ASbGncscUd/Z8mRQ4fL/pf0THyp86nsBONge75I76n6Nl90eJcTzjCQOzIlJembB4xX
- Ic1ZlnEzDOxlW+qhwR3F3SLO/O8AmugaYhZASL9F4Rk8lwvpd+VlvQ1T5TmKUYgwjtAPxTAetRi
- bonncwXCY0jpiEuwD19bKGu1ZzpVJOCoYudLCJzYyXZhX+d+GKfLygmvDATZoNyYJflwFYjTd2/
- bjeZ2lEFgIFpkuvayZJm1U1P1J5G4c32C/bbcuijWH4mordM2cSPeyFmaf6tzMSGg2YyDQWJfJZ
- 35CZe0lRT0rO4LqxjpAjONOZbi2N7zwnk0HmyukQXjccJfmugMmzvpDeG/adGbvRW5LCrcx3pRX
- vGRKgeYUo3opNlf8Se3I=
-X-Google-Smtp-Source: AGHT+IGqmhu/i4tlWiizNzpPx8mEocXR9cuZYwCsTXNSpMVaO4jgil7kIFzVs+8gqF9dkMUyrm2VHg==
-X-Received: by 2002:a05:600c:5112:b0:439:a1ad:6851 with SMTP id
- 5b1f17b1804b1-43bd2ae1663mr24257265e9.23.1741189185145; 
- Wed, 05 Mar 2025 07:39:45 -0800 (PST)
+ bh=yO8rIUYsmfpiPaEUeyghGtqZEEwY/40aLvzN2/tuA48=;
+ b=HtxJNeDEF6rPt2eceaBUGlSyvIYFm2MPW9IdIp+/3GnC3JTCO/0atsKNE7Wwlm2pMD
+ 1OWdzD/e6NJQ5fgk3JATQooWlfg8ZCSY2LmF1c/NXFz6ryIsJI0I/EhHlwjVvCfh0qwK
+ gk+2q7EH/kwVYgmUio80R7dG/0cWHrmfImuXvX3A278TRqkG8SDEtcZzEHXS+cFLhgCR
+ jStB7Ftw+RguTCXjqOFAl0PHtDW0pHOnvP+mEOuE+nJyBDt8g8Pdc9Ijf7d16nQRHzE+
+ u1VGNOw29Ats+I8fkuBNQerMfLtQmoTUdHwnsJ5i1aRUrbeSaLS17HNIEiYBBOyIGniC
+ O8SA==
+X-Gm-Message-State: AOJu0Yy3W3+XHm/IcqaDnKLm306ZwwXtxtmPB6pzYI+mqQwtrMb9Fjrw
+ rjB0L82ClnyPbin6Qsxwx1u/gRy0zZKlGrxK5pjJ4VCQUSscKX6INMa+AnfEJkQsLDGW0ylrRly
+ rAPY=
+X-Gm-Gg: ASbGncsKrBWEHVFEyaVtzMWOt6BKeNn2gzL3pmY+IxJBYLz43cAIxBpvNY3xZb+f4IA
+ eusokO0lpKL6iG9PzpESic/OG0Axb72C02fEjnt/XYi/CAWvSr27F570vQnq/48nTYrLSVzrC4f
+ iAFeAYUos/BSWSHedmAMoBic+PlsyxMMfCefymqIDgQ3bgyFmaCK3YbtTBpYgUswuaymbNnDett
+ WQz2YTHlghqPBve0SgQ/i0VdnwIcfrEwqutwIr/u4u3CJcPfk7nUm16YM9pURpasDPh7eSEkxEv
+ 2rnMt9GNQ5HwYNgqmP55m6H+rcXV/Ew2u6IuTl03ZETwqMMBTSUFIlBasrBcOxcHDad+/4TdNbM
+ jx6kG751N3181iJ6LuQ0=
+X-Google-Smtp-Source: AGHT+IG3RVUWfz3pij+8dv7UpzBYF5BrCgJPwOUtxqW3U8p6LEMITUNUqsumhTtxxnlaJrkX4NdytQ==
+X-Received: by 2002:a05:6000:186c:b0:390:f609:cbc with SMTP id
+ ffacd0b85a97d-3911f7c3d13mr3569537f8f.35.1741189189912; 
+ Wed, 05 Mar 2025 07:39:49 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42b7478sm20663345e9.17.2025.03.05.07.39.44
+ ffacd0b85a97d-390e47a6d0asm21008964f8f.27.2025.03.05.07.39.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Mar 2025 07:39:44 -0800 (PST)
+ Wed, 05 Mar 2025 07:39:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -70,18 +70,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 03/18] include: Poison TARGET_PHYS_ADDR_SPACE_BITS
- definition
-Date: Wed,  5 Mar 2025 16:39:13 +0100
-Message-ID: <20250305153929.43687-4-philmd@linaro.org>
+Subject: [RFC PATCH 04/18] qemu: Introduce 'qemu/legacy_binary_info.h'
+Date: Wed,  5 Mar 2025 16:39:14 +0100
+Message-ID: <20250305153929.43687-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305153929.43687-1-philmd@linaro.org>
 References: <20250305153929.43687-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,25 +103,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure common code never use this target specific definition.
+Introduce an API to get information specific to a binary
+from the binary name (argv[0]).
+
+Initialize it from qemu_init() on system emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/poison.h | 1 +
- 1 file changed, 1 insertion(+)
+ meson.build                       |   2 +-
+ include/qemu/legacy_binary_info.h |  14 +++
+ legacy_binary_info.c              | 160 ++++++++++++++++++++++++++++++
+ system/vl.c                       |   2 +
+ 4 files changed, 177 insertions(+), 1 deletion(-)
+ create mode 100644 include/qemu/legacy_binary_info.h
+ create mode 100644 legacy_binary_info.c
 
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 0c4ad04eb97..0ab7f0da1c7 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -47,6 +47,7 @@
- #pragma GCC poison TARGET_PAGE_MASK
- #pragma GCC poison TARGET_PAGE_BITS
- #pragma GCC poison TARGET_PAGE_ALIGN
-+#pragma GCC poison TARGET_PHYS_ADDR_SPACE_BITS
+diff --git a/meson.build b/meson.build
+index eaae1da2e92..e4ede6ba06f 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3767,7 +3767,7 @@ if have_block
+   endif
+ endif
  
- #pragma GCC poison CPU_INTERRUPT_HARD
- #pragma GCC poison CPU_INTERRUPT_EXITTB
+-common_ss.add(files('cpu-common.c'))
++common_ss.add(files('cpu-common.c', 'legacy_binary_info.c'))
+ specific_ss.add(files('cpu-target.c', 'arch_info-target.c'))
+ 
+ subdir('system')
+diff --git a/include/qemu/legacy_binary_info.h b/include/qemu/legacy_binary_info.h
+new file mode 100644
+index 00000000000..ae67399ebf2
+--- /dev/null
++++ b/include/qemu/legacy_binary_info.h
+@@ -0,0 +1,14 @@
++/*
++ * QEMU legacy binary helpers
++ *
++ *  Copyright (c) Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef QEMU_LEGACY_BINARY_INFO_H
++#define QEMU_LEGACY_BINARY_INFO_H
++
++void legacy_binary_info_init(const char *argv0);
++
++#endif
+diff --git a/legacy_binary_info.c b/legacy_binary_info.c
+new file mode 100644
+index 00000000000..0c50fc9248a
+--- /dev/null
++++ b/legacy_binary_info.c
+@@ -0,0 +1,160 @@
++/*
++ * QEMU legacy binary helpers
++ *
++ *  Copyright (c) Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/arch_info.h"
++#include "qemu/legacy_binary_info.h"
++
++typedef struct LegacyBinaryInfo {
++    const char *binary_name;
++    QemuArchBit arch_bit;
++} LegacyBinaryInfo;
++
++/* List alphabetically sorted by binary_name */
++static const LegacyBinaryInfo legacy_binary_infos[] = {
++    {
++        .binary_name = "qemu-system-aarch64",
++        .arch_bit = QEMU_ARCH_BIT_ARM,
++    },
++    {
++        .binary_name = "qemu-system-alpha",
++        .arch_bit = QEMU_ARCH_BIT_ALPHA,
++    },
++    {
++        .binary_name = "qemu-system-arm",
++        .arch_bit = QEMU_ARCH_BIT_ARM,
++    },
++    {
++        .binary_name = "qemu-system-avr",
++        .arch_bit = QEMU_ARCH_BIT_AVR,
++    },
++    {
++        .binary_name = "qemu-system-hppa",
++        .arch_bit = QEMU_ARCH_BIT_HPPA,
++    },
++    {
++        .binary_name = "qemu-system-i386",
++        .arch_bit = QEMU_ARCH_BIT_I386,
++    },
++    {
++        .binary_name = "qemu-system-loongarch64",
++        .arch_bit = QEMU_ARCH_BIT_LOONGARCH,
++    },
++    {
++        .binary_name = "qemu-system-m68k",
++        .arch_bit = QEMU_ARCH_BIT_M68K,
++    },
++    {
++        .binary_name = "qemu-system-microblaze",
++        .arch_bit = QEMU_ARCH_BIT_MICROBLAZE,
++    },
++    {
++        .binary_name = "qemu-system-microblazeel",
++        .arch_bit = QEMU_ARCH_BIT_MICROBLAZE,
++    },
++    {
++        .binary_name = "qemu-system-mips",
++        .arch_bit = QEMU_ARCH_BIT_MIPS,
++    },
++    {
++        .binary_name = "qemu-system-mips64",
++        .arch_bit = QEMU_ARCH_BIT_MIPS,
++    },
++    {
++        .binary_name = "qemu-system-mips64el",
++        .arch_bit = QEMU_ARCH_BIT_MIPS,
++    },
++    {
++        .binary_name = "qemu-system-mipsel",
++        .arch_bit = QEMU_ARCH_BIT_MIPS,
++    },
++    {
++        .binary_name = "qemu-system-or1k",
++        .arch_bit = QEMU_ARCH_BIT_OPENRISC,
++    },
++    {
++        .binary_name = "qemu-system-ppc",
++        .arch_bit = QEMU_ARCH_BIT_PPC,
++    },
++    {
++        .binary_name = "qemu-system-ppc64",
++        .arch_bit = QEMU_ARCH_BIT_PPC,
++    },
++    {
++        .binary_name = "qemu-system-riscv32",
++        .arch_bit = QEMU_ARCH_BIT_RISCV,
++    },
++    {
++        .binary_name = "qemu-system-riscv64",
++        .arch_bit = QEMU_ARCH_BIT_RISCV,
++    },
++    {
++        .binary_name = "qemu-system-rx",
++        .arch_bit = QEMU_ARCH_BIT_RX,
++    },
++    {
++        .binary_name = "qemu-system-s390x",
++        .arch_bit = QEMU_ARCH_BIT_S390X,
++    },
++    {
++        .binary_name = "qemu-system-sh4",
++        .arch_bit = QEMU_ARCH_BIT_SH4,
++    },
++    {
++        .binary_name = "qemu-system-sh4eb",
++        .arch_bit = QEMU_ARCH_BIT_SH4,
++    },
++    {
++        .binary_name = "qemu-system-sparc",
++        .arch_bit = QEMU_ARCH_BIT_SPARC,
++    },
++    {
++        .binary_name = "qemu-system-sparc64",
++        .arch_bit = QEMU_ARCH_BIT_SPARC,
++    },
++    {
++        .binary_name = "qemu-system-tricore",
++        .arch_bit = QEMU_ARCH_BIT_TRICORE,
++    },
++    {
++        .binary_name = "qemu-system-x86_64",
++        .arch_bit = QEMU_ARCH_BIT_I386,
++    },
++    {
++        .binary_name = "qemu-system-xtensa",
++        .arch_bit = QEMU_ARCH_BIT_XTENSA,
++    },
++    {
++        .binary_name = "qemu-system-xtensaeb",
++        .arch_bit = QEMU_ARCH_BIT_XTENSA,
++    },
++};
++
++static int current_index = -1;
++
++void legacy_binary_info_init(const char *argv0)
++{
++    g_auto(GStrv) tokens = g_strsplit(argv0, G_DIR_SEPARATOR_S, -1);
++    unsigned count = 0;
++    const char *binary_name;
++
++    while (tokens[count]) {
++        count++;
++    }
++    assert(count > 0);
++    binary_name = tokens[count - 1];
++
++    for (size_t i = 0; i < ARRAY_SIZE(legacy_binary_infos); i++) {
++        if (!strcmp(legacy_binary_infos[i].binary_name, binary_name)) {
++            current_index = i;
++            return;
++        }
++    }
++    fprintf(stderr, "Missing legacy info for '%s' binary.\n", binary_name);
++    abort();
++}
+diff --git a/system/vl.c b/system/vl.c
+index a41ba4a2d5f..74a062c7fff 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -28,6 +28,7 @@
+ #include "qemu/units.h"
+ #include "qemu/module.h"
+ #include "qemu/arch_info.h"
++#include "qemu/legacy_binary_info.h"
+ #include "exec/cpu-common.h"
+ #include "exec/page-vary.h"
+ #include "hw/qdev-properties.h"
+@@ -2883,6 +2884,7 @@ void qemu_init(int argc, char **argv)
+ 
+     error_init(argv[0]);
+     qemu_init_exec_dir(argv[0]);
++    legacy_binary_info_init(argv[0]);
+ 
+     os_setup_limits();
+ 
 -- 
 2.47.1
 
