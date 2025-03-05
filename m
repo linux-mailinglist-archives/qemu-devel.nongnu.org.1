@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DF1A4F3C1
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9240A4F39C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:26:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdUp-0002bG-S8; Tue, 04 Mar 2025 20:24:28 -0500
+	id 1tpdUz-0003BE-J8; Tue, 04 Mar 2025 20:24:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTl-0000Tq-5C
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:21 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTq-0000hB-8P
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:26 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTj-00073u-FP
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:20 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43948f77f1aso40736675e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTn-00074U-R0
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:25 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-390effd3e85so4770627f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137797; x=1741742597; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137802; x=1741742602; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/CnzfLPf8xf4AIvAaiMSlLZCOnCeYXV9atLF0rIWAMo=;
- b=FxAVF24YHZlO+GjDz/e+w7dyogpILrg9osDD728ihec58NCDMLhp+31HMlruxhsczC
- tvDjz1mkxmi27L8sYN6658A5rT7dmplp6T3YZjf31gXm9K+0szcv2tLa8LV/GJzYYeh8
- 8XWhXMonIp+rMBooiij8iRgaU8VsyzCT0aHsbrTWYMptvTwusMExC0kYvAxaKLnaTHFc
- NBbLq1CMkqxk76/7Dwdi5yUTdY1hss4GOfJrcYdSCNgJpHoiNwStk9lYq/nUUafQrSPa
- ffn26hPHe4/nAtZxXY71v0xbO72Y5LCgs8R/i5q8YusCVgeLveAMjFa34/SS+01I3jwu
- NJ6w==
+ bh=/QUbgFdH+LpUBvr3jWV7pVNPKK1k5LRXJFBmyMiAPQM=;
+ b=w3W9wYSqKFkjVuCqfdOLwMdquHGCBVKpYoj9WukBRl5bx+EQbr2OGAa5H8v8QOQEXF
+ caJrjlA3eMhK/j8+tHyb7oGD1ALNP9ShShZQiMIu/3MX5oddODay4RuVM323m8mwXTIq
+ sjbax4sWgdspIq9NR+O2UDiFzTpR5nW4oprZOOKvkctfBYXyKJ2oXXWBo1Susl5gXstG
+ bNngnxdn80ai06MsZYJoLTvAvCh6wUWT59T5bAPIPTzVXGJXimKywgTkalOvbr2UaBBO
+ iN9vco/msSJW3SAbiJemdCGZd8LRVkR/ECXkwTMDxDzzCoo9eGRoNoT0TxdAEZMw+Z/x
+ Q8bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137797; x=1741742597;
+ d=1e100.net; s=20230601; t=1741137802; x=1741742602;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/CnzfLPf8xf4AIvAaiMSlLZCOnCeYXV9atLF0rIWAMo=;
- b=jourZ2djC8GxffWqSpH56w29i0RuUoi3rDlA59Y+di9j2HJ5wyUnUU9UHn7JB4VE8t
- NXGGwwzlkxnz8j4dCLlhMA7DB24pSaMkeJ0Vik4suG1kr2Fkyb5cS3Aqq2dvD8gMa8Vg
- OWY75dAU2CaWq+1Gzs2Bk6OblDL3JiTIDjJE5J9MzGvFGsEJnYobYIjtrxSkRd5JicQ/
- k+nMNsSPaio7Jl7sADD+WQjCf4m/p7ZED7LJL1jg35RUlVWtJ4IHWlBKUxRHEvQNeksg
- WjhgNO9ce/VN+E7ch8EzhEoRhh3Mnx4QrIqkXfNlp/n6GpOl3C0ezewIuYWtY6XRUrdY
- BYQg==
-X-Gm-Message-State: AOJu0YxlqNjHA7xAh4zuGVB1nPTq1vQOICwi7Hy03MMaOWbJfhZLLMmv
- HHJuU3RDWZDJaDZ65X2Q2j5QYwBw9D8KC3gXAMnAcYkuK2RKJHuPVw5bzaTkS8X/M62VQcVgf20
- iOCA=
-X-Gm-Gg: ASbGncvbKXmjFGR+pezoTj9xFd2pNxkZIt3WeQRXnAdUEKxYZ13lB6Cy80hAZ6dR7qE
- VlcG+w4tM+9x3PgdgdnbYhBr7LlUiYrfXNaut7tCESdUcmEYQ/8GiAX2H40ieRxpBwFx2YpxfXi
- Yktv1uV0V8pvEfAu90mDN/ODy9pA80J9W4GXcAFOjfCG7CAgvUQEaiaa8lIuTbjGAm7uO5rccWo
- k3S20VR1W+Mo/+0Q1Te7s0xLJIZ0XvZoEFcIS0PJOVUbamNq3XNPTNIG1sJCjoPijsZPQFR94Ld
- KftV3ADd+yjPMnWFksV7W9A0ger2pLs+UDIVMGvT5ye/LUiLKRllm/I8w2dpQgawt9MSGh15Nlp
- NGTUBHXVj5OhtC2TCwZc=
-X-Google-Smtp-Source: AGHT+IFaCr2cj8q8mFa5/D2JsdT/Ae/V8MANJ9ca2dvHt/Mfrgxl9rMvvt03eV/Z/jkJpUl/06nWlg==
-X-Received: by 2002:a05:600c:510f:b0:43b:cf12:2ca5 with SMTP id
- 5b1f17b1804b1-43bd29bdf43mr5928775e9.8.1741137797615; 
- Tue, 04 Mar 2025 17:23:17 -0800 (PST)
+ bh=/QUbgFdH+LpUBvr3jWV7pVNPKK1k5LRXJFBmyMiAPQM=;
+ b=Vz4jvsl6zDc5xHHPmP49huC14ao0Uovyl6iUR44kBImJWFK24EQN/ZOCT9I8RWCWe9
+ lblms1Yh8YlBtRJ1I86ZzIXxpyyxU/06sO5XuCgG62dBd840ftxxLxnhjluDauL5tjP1
+ +M58XdyDWokAveO9QGFJB138LOmfErozwU8B+WGhn3902HiybWF8En/aVU2ko9JfKglC
+ KCx0uOwScq2PjFQtMBNE839QhVswJ6rW7erYS1Tc6emda0vHHubbAvgn9Fz0Ut/L5MJB
+ T1nVPjzMRc1jYI22U9zmrKRIIunDyaQMhtfBjthuR5aN++jJKl/D8I23OmZEFFsexz7G
+ J9Fw==
+X-Gm-Message-State: AOJu0YyXLWmDASvhemRVfDg2aUQwO4tHXD9nMi05245ydgmLkv8o8bFx
+ kkCLRJMl5/VQ+RfvJmsKk6ppJhvpA9QdC+gnp12WsCde5NWUEZx9jsrvhouIAgzHX9ecfUbLkQ3
+ kzec=
+X-Gm-Gg: ASbGnctFCZa+j+qAZwdMfqIS2QitlFoN9vKYEA9cqWkbCJuN1gmBQLCYMCbDurcOVP/
+ 9PEUgrvNs4SHxtke948eWDM3dcs5zlyXHRHZKdfW/BEKkdYQLngwAMgkRW6u+nsi7BJmHWYAjfD
+ nBnHf6ya/Oji6rk+BVqe5jVF7wOIRrrQEUKblfGbImeryUrdv6DpbbYPSnlxe/ds13O+GN2MABO
+ lkNfEcydpxrdFJuPuhuKxbq6S01eXId4Eie7RZfG7j5OR2spmIEWH/Fz5jO8mj6TD4W7uX3nasG
+ F7nDpRAZZjDj/01yOolxSOkU+bJFaBo5j65e0qilQC/WIkNR+zcDLNykI6tJUa9D9ShtJPEcgV5
+ Gs3wRfRwxIQVWY+yeuLs=
+X-Google-Smtp-Source: AGHT+IHkhqNryqZFpM238fJOfII6PO1kZdEUeuykTBuEcIfg3+vfRMOl2LupPUicva2CG9Jz0cGPKw==
+X-Received: by 2002:a5d:64a6:0:b0:390:eb32:3fd2 with SMTP id
+ ffacd0b85a97d-3911f57cc31mr909806f8f.0.1741137802156; 
+ Tue, 04 Mar 2025 17:23:22 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd4310539sm1908815e9.35.2025.03.04.17.23.16
+ ffacd0b85a97d-390e4795978sm18925528f8f.3.2025.03.04.17.23.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:16 -0800 (PST)
+ Tue, 04 Mar 2025 17:23:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anthony PERARD <anthony.perard@vates.tech>
-Subject: [PULL 16/41] hw/xen/xen-bus: Reduce included headers
-Date: Wed,  5 Mar 2025 02:21:31 +0100
-Message-ID: <20250305012157.96463-17-philmd@linaro.org>
+Subject: [PULL 17/41] hw/xen/xen-legacy-backend: Remove unused 'net/net.h'
+ header
+Date: Wed,  5 Mar 2025 02:21:32 +0100
+Message-ID: <20250305012157.96463-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +99,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have "hw/xen/xen-bus" include the bare minimal set of headers.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
-Message-Id: <20250218162618.46167-7-philmd@linaro.org>
+Message-Id: <20250218162618.46167-8-philmd@linaro.org>
 ---
- include/hw/xen/xen-bus.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/hw/xen/xen-legacy-backend.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/xen/xen-bus.h b/include/hw/xen/xen-bus.h
-index 2adb2af8391..bdbf1ed6fd0 100644
---- a/include/hw/xen/xen-bus.h
-+++ b/include/hw/xen/xen-bus.h
-@@ -8,9 +8,10 @@
- #ifndef HW_XEN_BUS_H
- #define HW_XEN_BUS_H
+diff --git a/include/hw/xen/xen-legacy-backend.h b/include/hw/xen/xen-legacy-backend.h
+index e198b120c5d..2d0cbfecade 100644
+--- a/include/hw/xen/xen-legacy-backend.h
++++ b/include/hw/xen/xen-legacy-backend.h
+@@ -3,7 +3,6 @@
  
-+#include "hw/qdev-core.h"
  #include "hw/xen/xen_backend_ops.h"
--#include "hw/sysbus.h"
- #include "qemu/notify.h"
-+#include "qemu/queue.h"
+ #include "hw/xen/xen_pvdev.h"
+-#include "net/net.h"
  #include "qom/object.h"
  
- typedef struct XenEventChannel XenEventChannel;
+ #define TYPE_XENSYSDEV "xen-sysdev"
 -- 
 2.47.1
 
