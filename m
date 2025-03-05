@@ -2,56 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12452A50524
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CB2A50542
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 17:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tprl9-0004vL-Iu; Wed, 05 Mar 2025 11:38:15 -0500
+	id 1tprmA-0006Y5-Lr; Wed, 05 Mar 2025 11:39:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tprl2-0004oV-Ew; Wed, 05 Mar 2025 11:38:09 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tprlv-0006Qv-At
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:39:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tprky-0003YK-B4; Wed, 05 Mar 2025 11:38:08 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 522A44E601A;
- Wed, 05 Mar 2025 17:38:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 84pnArlZaCzq; Wed,  5 Mar 2025 17:37:59 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3AA7E4E6010; Wed, 05 Mar 2025 17:37:59 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3800574577C;
- Wed, 05 Mar 2025 17:37:59 +0100 (CET)
-Date: Wed, 5 Mar 2025 17:37:59 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: Hab Gallagher <hab.gallagher@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Howard Spoelstra <hsp.cat7@gmail.com>, qemu-ppc@nongnu.org, 
- qemu-devel@nongnu.org
-Subject: Re: Adding gamma support to QemuMacDrivers
-In-Reply-To: <8957f2ce-5679-467a-ad91-7b96c9d7e11c@ilande.co.uk>
-Message-ID: <a55e63ea-4a6d-878e-95b3-599b08afa362@eik.bme.hu>
-References: <CANDMsCp3wH3xhEvHz_DvnPbv7NLCdGb2LDaECOG=yJqfKObLkA@mail.gmail.com>
- <0f927835-62e6-a2a8-7de0-262657edb638@eik.bme.hu>
- <CABLmASFQby0KpR646Vp=7JGsw40_2cvW-gFa49f2G3iMCAz14A@mail.gmail.com>
- <85e1dcb9-f0d7-6ed2-6370-30cd8f31a604@eik.bme.hu>
- <CANDMsCpVVsXihocUmKNQr4VFmjk57MjHh=_rx0Hbfny1wZ74aQ@mail.gmail.com>
- <8957f2ce-5679-467a-ad91-7b96c9d7e11c@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tprlt-0003gF-DY
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 11:39:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741192734;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IX/RrldB2VoEvfDNUYV1sErfr681DEBoI8oaCo4ZqN4=;
+ b=PAVcPQYD2Cb/leMPHHpsmVK4h/YjVJpen9H1NWjNvz0KfB8kwtV4qb+4dNEUbOlo8tFaKn
+ faebW2RFuRFnRBfI7BgjqXB9Yl2lokTAxJyRiunw+sa/15mfMx3+pDORw3fdZ3EWyXrD+v
+ /ePb4Ah04gsH6CKMiaLieA3ACrxemXc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-hBTxPL1JMKWd7szDjVh2DA-1; Wed,
+ 05 Mar 2025 11:38:45 -0500
+X-MC-Unique: hBTxPL1JMKWd7szDjVh2DA-1
+X-Mimecast-MFC-AGG-ID: hBTxPL1JMKWd7szDjVh2DA_1741192723
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E36618001D0; Wed,  5 Mar 2025 16:38:42 +0000 (UTC)
+Received: from gondolin.redhat.com (unknown [10.67.24.9])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9CBB01955DDE; Wed,  5 Mar 2025 16:38:25 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ agraf@csgraf.de
+Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH v2 00/14] arm: rework id register storage
+Date: Wed,  5 Mar 2025 17:38:05 +0100
+Message-ID: <20250305163819.2477553-1-cohuck@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="3866299591-94149128-1741192150=:59328"
-Content-ID: <c0fddcb4-d938-44ec-0a9d-44282ccb0554@eik.bme.hu>
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -69,133 +84,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+[Oh, it's been about a month since I posted the last version of this :/
+ Unfortunately, life happened. I still do plan to post a rebase of the
+ cpu model patches on top of this.]
 
---3866299591-94149128-1741192150=:59328
-Content-Type: text/plain; CHARSET=ISO-8859-7; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-ID: <55085a5e-c26c-3ebc-2d3e-291c30884ff1@eik.bme.hu>
+Original cover letter below.
 
-On Wed, 5 Mar 2025, Mark Cave-Ayland wrote:
-> On 03/03/2025 17:52, Hab Gallagher wrote:
->
-> (added Gerd on CC)
->
->>     That driver is for a VGA device which I think does not support gamma in
->>     hardware. QEMU emulates the hardware so if it does not support gamma 
->> then
->>     there's no place to add it in QEMU. Therefore if you want to emulate 
->> gamma
->>     on VGA this should be done within the guest driver but that may be 
->> slower.
->>     How does this work on real hardware? What graphics device is used there
->>     and does that support gamma in hardware? Maybe that graphics device 
->> needs
->>     to be emulated instead?
->> 
->> 
->> For understanding the MacOS side of things, I have been consulting https:// 
->> developer.apple.com/library/archive/documentation/Hardware/DeviceManagers/pci_srvcs/ 
->> pci_cards_drivers/Designing_PCI_Cards_Drivers.pdf 
->> <https://developer.apple.com/ 
->> library/archive/documentation/Hardware/DeviceManagers/pci_srvcs/pci_cards_drivers/ 
->> Designing_PCI_Cards_Drivers.pdf>
->>
->>     To reduce visible flashes resulting from color table changes, the 
->> SetGamma
->>     routine works in conjunction with the SetEntries control routine on 
->> indexed
->>     devices. The SetGamma routine first loads new gamma correction data 
->> into the
->>     driver¢s private storage; the next SetEntries control call applies the 
->> gamma
->>     correction as it changes the CLUT. SetGamma calls are always followed 
->> by
->>     SetEntries control calls on indexed devices.
->>
->>     For direct devices, the SetGamma routine first sets up the gamma 
->> correction data
->>     table. Next, it synthesizes a black-to-white linear ramp color table. 
->> Finally, it
->>     applies the new gamma correction to the color table and sets the data 
->> directly in
->>     the hardware.
->> 
->> 
->> As far as I can tell, the documentation is implying that somewhere between 
->> the driver and the physical hardware, *something* must keep track of the 
->> gamma table (even if indirectly by subsequently applying it to the palette 
->> table) to map the raw framebuffer data to gamma-corrected colors.
->>
->>     Perhaps this is also of interest: 
->> https://github.com/SolraBizna/mac_qfb_driver
->>     <https://github.com/SolraBizna/mac_qfb_driver>The nubus declaration rom 
->> supports
->>     gamma correction.
->> 
->> 
->> This is very much of interest! Thank you. I am hoping to continue to use 
->> the mac99 machine type, but this code is a useful reference.
->> 
->> The most basic support requires cscGetGamma and cscSetGamma to at least 
->> return success: https://github.com/cebix/macemu/ 
->> commit/2676e1bd134703d888788c682fb56e07b5cf56a9 
->> <https://github.com/cebix/macemu/ 
->> commit/2676e1bd134703d888788c682fb56e07b5cf56a9>
->> The patch to SheepShaver was small because most of the functionality was 
->> already present, albeit dead code.
->> 
->> Surprisingly, github can't deal with CR line endings, so I can't (easily) 
->> link to some of the code to cite it: 
->> https://github.com/ozbenh/QemuMacDrivers/blob/master/ 
->> shared/MacDriverUtils.c 
->> <https://github.com/ozbenh/QemuMacDrivers/blob/master/shared/ 
->> MacDriverUtils.c>
->> 
->> Once the gamma table is saved, it's "applied" by cscSetEntries to combine a 
->> color palette and gamma table into the "real" color. QemuMacDrivers does 
->> not seem to keep track of the palette at all, sending it upstream to the 
->> driver by calling this function in a loop:
->> 
->> OSStatus QemuVga_SetColorEntry(UInt32 index, RGBColor *color)
->> {
->> VgaWriteB(0x3c8, index);
->> VgaWriteB(0x3c9, color->red >> 8);
->> VgaWriteB(0x3c9, color->green >> 8);
->> VgaWriteB(0x3c9, color->blue >> 8);
->> return noErr;
->> }
->> 
->> VgaWriteB seems to be doing MMIO to write those values upstream.
->> 
->> Similarly, mac_qfb_driver seems to use MMIO to write back both the palette 
->> table and the gamma table to the driver, saving neither one in emulated 
->> driver state: https:// 
->> github.com/SolraBizna/mac_qfb_driver/blob/e78ba4ccd08d254a10bad7c13d90810b17dbfd87/ 
->> src/control.cc#L48-L62 <https://github.com/SolraBizna/mac_qfb_driver/blob/ 
->> e78ba4ccd08d254a10bad7c13d90810b17dbfd87/src/control.cc#L48-L62>
->
-> Implementing the registers to store the gamma table is trivial: the tricky 
-> part is updating the VGA framebuffer code to apply the gamma as it is 
-> rendered. Have a look at 
-> https://gitlab.com/qemu-project/qemu/-/blob/master/hw/display/vga.c?ref_type=heads#L1478 
-> (vga_draw_graphic) and 
-> https://gitlab.com/qemu-project/qemu/-/blob/master/hw/display/vga.c?ref_type=heads#L1194 
-> (vga_draw_text) to see how this is handled.
->
-> Gerd: what do you think would be the best way to apply a gamma to the VGA 
-> device?
+Changed from v1:
+- Noticed that we missed the hvf code. Converted, compiled, but not tested
+  as I'm lacking an environment for testing.
+- Hopefully incorporated most of the suggested changes -- if I missed
+  something, it was unintentional unless mentioned below.
+  - fixed repeated inclusion of definitions
+  - hopefully made macros more robust
+  - removed distinction between reading 32/64 values, which was mostly
+    adding churn for little value
+  - postponed generating property definitions to the cpu model patches,
+    where they are actually used
+  - juggled hunks and moved them to the right patches
+  - fixed some typos
+- rebased to a more recent code base
 
-I think that would be similar to what's done here:
-https://github.com/SolraBizna/qemu/commit/f551de525360a26df481c5b80876845c323d9303
-Maybe add such additional draw routines with alpha and only set those in 
-vga_draw_line_table when an alpha is set otherwise use the current ones. 
-That should avoid changing current code in case when alpha is not 
-used. Alternatively that qfb device could be merged and a PCI version 
-added for mac99?
+NOT changed from v1:
+- definitions are still generated from the Linux sysregs file
+  - I still think updating the generated files on demand (so that we can
+    double check the result) is the right thing to do
+  - I'm open to changing the source of the definitions from the sysregs
+    file to the JSON definitions published by Arm; however, I first wanted
+    to get the code using it right -- we can switch out the code generating
+    the file to use a different source easily later on, and I'd also like
+    to steal parts of the script from Linux once integrated (which I think
+    hasn't happened yet?)
 
-Regards,
-BALATON Zoltan
---3866299591-94149128-1741192150=:59328--
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v2
+
+<v1 cover letter>
+
+[Note: I've kept the cc list from the last round of cpu model patches;
+so if you're confused as to why you're cc:ed here, take it as a
+heads-up that a new cpu model series will come along soon]
+
+This patch series contains patches extracted from the larger cpu model
+series (RFC v2 last posted at
+https://lore.kernel.org/qemu-devel/20241206112213.88394-1-cohuck@redhat.com/)
+and aims at providing a base upon which we can continue with building
+support for cpu models, but which is hopefully already an improvement
+on its own.
+
+Main changes from the patches in that series include:
+- post-pone the changes to handle KVM writable ID registers for cpu models
+  (I have a series including that on top of this one)
+- change how we store the list of ID registers, and access them
+  basically, use an enum for indexing, and an enum doing encodings in a
+  pattern similar to cpregs
+- move some hunks to different patches
+- update the scripts to generate the register descriptions, and run
+  them against a recent Linux sysregs file
+
+What I've kept:
+- generating the register descriptions from the Linux sysregs file
+  I think that file is still our best bet to generate the descriptions
+  easily, and updating the definitions is a manual step that can be checked
+  for unintended changes
+- most of the hard work that Eric had been doing; all new bugs in there
+  are my own :)
+
+</v1 cover letter>
+
+Cornelia Huck (2):
+  arm/kvm: add accessors for storing host features into idregs
+  arm/cpu: Add generated files
+
+Eric Auger (12):
+  arm/cpu: Add sysreg definitions in cpu-sysregs.h
+  arm/cpu: Store aa64isar0/aa64zfr0 into the idregs arrays
+  arm/cpu: Store aa64isar1/2 into the idregs array
+  arm/cpu: Store aa64pfr0/1 into the idregs array
+  arm/cpu: Store aa64mmfr0-3 into the idregs array
+  arm/cpu: Store aa64dfr0/1 into the idregs array
+  arm/cpu: Store aa64smfr0 into the idregs array
+  arm/cpu: Store id_isar0-7 into the idregs array
+  arm/cpu: Store id_pfr0/1/2 into the idregs array
+  arm/cpu: Store id_dfr0/1 into the idregs array
+  arm/cpu: Store id_mmfr0-5 into the idregs array
+  arm/cpu: Add sysreg generation scripts
+
+ hw/intc/armv7m_nvic.c                 |  27 +-
+ scripts/gen-cpu-sysregs-header.awk    |  70 ++++
+ scripts/update-aarch64-sysreg-code.sh |  35 ++
+ target/arm/cpu-features.h             | 317 +++++++++---------
+ target/arm/cpu-sysregs.h              |  22 ++
+ target/arm/cpu-sysregs.h.inc          | 167 ++++++++++
+ target/arm/cpu.c                      | 111 +++----
+ target/arm/cpu.h                      |  80 +++--
+ target/arm/cpu64.c                    | 131 ++++----
+ target/arm/helper.c                   |  68 ++--
+ target/arm/hvf/hvf.c                  |  36 +-
+ target/arm/internals.h                |   6 +-
+ target/arm/kvm.c                      | 119 +++----
+ target/arm/ptw.c                      |   6 +-
+ target/arm/tcg/cpu-v7m.c              | 174 +++++-----
+ target/arm/tcg/cpu32.c                | 320 +++++++++---------
+ target/arm/tcg/cpu64.c                | 460 +++++++++++++-------------
+ 17 files changed, 1230 insertions(+), 919 deletions(-)
+ create mode 100755 scripts/gen-cpu-sysregs-header.awk
+ create mode 100755 scripts/update-aarch64-sysreg-code.sh
+ create mode 100644 target/arm/cpu-sysregs.h
+ create mode 100644 target/arm/cpu-sysregs.h.inc
+
+-- 
+2.48.1
+
 
