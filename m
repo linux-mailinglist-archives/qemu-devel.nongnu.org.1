@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AA9A4F5C5
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A78FA4F5B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:51:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpflO-0005jx-5B; Tue, 04 Mar 2025 22:49:42 -0500
+	id 1tpflS-0006BI-Fg; Tue, 04 Mar 2025 22:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfks-0004po-UJ
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:11 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfkw-0004u0-9i
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfkr-0006Q1-A2
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:10 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpfku-0006Qe-IQ
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741146548;
+ s=mimecast20190719; t=1741146551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OsISB484xmR91C9VkjAj0P0bum4J91L8AI+R4ChrXF0=;
- b=auJ4U2KpfyENSRXJcyS1K87vppuqa6cRHpjlKbBwXAedxE7IHICu6BbfqSIgOV/C3MuY1D
- zkdMJDBmnCGpaCICnzpV8vDb7iRZcN2oTzcQpRvaV9vo+xDinot6gsfwtctJSRIADFgZLE
- 7hCLHMsamAdc+ykemSHMEbMn7UyfsbM=
+ bh=eIml+bdV/p1otVFgQ8rtuT2HtOqCWjt8m6j6hmwpw64=;
+ b=cXO0s5ZZlRyApGMljYpa+dsTdc6spjDHAam1kWUTl03BD2e9nFSM93+4sUzUMidiL33I5U
+ h8IvoD6GknNn7NROlEA65w2VDAJaLFAlbQmh1yxB5yvdqLMmrPT1Yuk6Y5Zb9b80ZL2IqC
+ obF/IopxoIovHu+YO9rByZTwv9MVcxE=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-L_OkiZ8oNZC6sC5KqjXBTg-1; Tue,
- 04 Mar 2025 22:49:07 -0500
-X-MC-Unique: L_OkiZ8oNZC6sC5KqjXBTg-1
-X-Mimecast-MFC-AGG-ID: L_OkiZ8oNZC6sC5KqjXBTg_1741146546
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-JEnN4Il1MCCX6EhzA19pyA-1; Tue,
+ 04 Mar 2025 22:49:10 -0500
+X-MC-Unique: JEnN4Il1MCCX6EhzA19pyA-1
+X-Mimecast-MFC-AGG-ID: JEnN4Il1MCCX6EhzA19pyA_1741146549
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 262A91954B32; Wed,  5 Mar 2025 03:49:06 +0000 (UTC)
+ id 77F7A1955BC5; Wed,  5 Mar 2025 03:49:09 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.45])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C44871956095; Wed,  5 Mar 2025 03:49:02 +0000 (UTC)
+ id 188341956095; Wed,  5 Mar 2025 03:49:06 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
@@ -51,9 +51,10 @@ Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 46/57] docs/qapidoc: add visit_feature() method
-Date: Tue,  4 Mar 2025 22:45:55 -0500
-Message-ID: <20250305034610.960147-47-jsnow@redhat.com>
+Subject: [PATCH 47/57] docs/qapidoc: prepare to record entity being
+ transmogrified
+Date: Tue,  4 Mar 2025 22:45:56 -0500
+Message-ID: <20250305034610.960147-48-jsnow@redhat.com>
 In-Reply-To: <20250305034610.960147-1-jsnow@redhat.com>
 References: <20250305034610.960147-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -84,34 +85,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds a simple ":feat name: lorem ipsum ..." line to the generated
-rST document, so at the moment it's only for "top level" features.
+Prepare to keep a record of which entity we're working on documenting
+for the purposes of being able to change certain generative features
+conditionally and create stronger assertions.
+
+If you find yourself asking: "Wait, but where does the current entity
+actually get recorded?!", you're right! That part comes with the
+visit_entity() implementation, which gets added later.
+
+This patch is front-loaded for the sake of type checking in the
+forthcoming commits before visit_entity() is ready to be added.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ docs/sphinx/qapidoc.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index b87ce288837..eaea19af7ac 100644
+index eaea19af7ac..834f12ba6e9 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -195,6 +195,15 @@ def visit_paragraph(self, section: QAPIDoc.Section) -> None:
-         self.add_lines(section.text, section.info)
-         self.ensure_blank_line()
+@@ -78,9 +78,15 @@
  
-+    def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
-+        # FIXME - ifcond for features is not handled at all yet!
-+        # Proposal: decorate the right-hand column with some graphical
-+        # element to indicate conditional availability?
-+        assert section.text  # Guaranteed by parser.py
-+        assert section.member
+ class Transmogrifier:
+     def __init__(self) -> None:
++        self._curr_ent: Optional[QAPISchemaDefinition] = None
+         self._result = StringList()
+         self.indent = 0
+ 
++    @property
++    def entity(self) -> QAPISchemaDefinition:
++        assert self._curr_ent is not None
++        return self._curr_ent
 +
-+        self.generate_field("feat", section.member, section.text, section.info)
-+
-     def visit_errors(self, section: QAPIDoc.Section) -> None:
-         # FIXME: the formatting for errors may be inconsistent and may
-         # or may not require different newline placement to ensure
+     # General-purpose rST generation functions
+ 
+     def get_indent(self) -> str:
 -- 
 2.48.1
 
