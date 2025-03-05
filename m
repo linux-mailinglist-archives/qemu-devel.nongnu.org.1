@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486CDA4F3BE
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1563A4F3D8
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdWy-0006q4-J9; Tue, 04 Mar 2025 20:26:41 -0500
+	id 1tpdXM-0000NW-H3; Tue, 04 Mar 2025 20:27:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdVe-0004Tl-4Y
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdVe-0004To-4e
  for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:25:21 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdVR-0007L4-PK
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:25:07 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43bc63876f1so21515215e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:25:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdVW-0007QL-BS
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:25:12 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3910e101d0fso1839209f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:25:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137904; x=1741742704; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137908; x=1741742708; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fBKaSdciz4vWObThuGuztLYugPKsPiaANZDROnbbSag=;
- b=f7vv46wcHJziPk1i4fP4WQSugpG4FTyl9MJLFjIT6RldKP+9D+hR4iNDQiChuhYU5b
- HmeBgZJGfr5yVtB7tp5HRSPF6E6pbG9Wk4dAqm1EPa0p/xq9hx1pbSKAkY4YXTSe5bEQ
- 9oLzdpYsX7J3f5U4XUD/z5XLWgicfiy1SnmfJIlNLFjQdu/FSrT9sdtnaD30RzvuTtun
- 6IZpQ4TXIKTUg6mWPJZtw7ca3xrlr/f2eS/44iz6caiL8g1rMPMiww0E4dvs4UcX5cHE
- uZQ1LJyfGesYg5rG7IHXT2S0gVOk1gJ4zgeDN2v1P/z3lZPJOiK0D+kRLLJ6o+pbWpun
- h83Q==
+ bh=BfDhx6dXYnykeldUX+NORiuKe1+4dgkAJvvKMJwXJlA=;
+ b=uoxAaEA/mgd0E0DYys9gVHhJB2TvbpFZvKsMDgaAfjE1JAlIBkQA+IkAv5SQV4lV8+
+ LCfZ0OAJVXHEzGVTTf4N8Bem3LX6+fMLY9kIMm2O8kcg/b27iICtLXtXBadrRJcDG8Cn
+ KTu7IOs/SXSvZzmQHddsMNoa2YAk4cALFYvqhJGzHa3keU22CPD7Fch24EfywnbwSQ0q
+ qdGiTqRhevqH4UbBLkbEB1KDCLtygw5mJcrlCm6LsfX6eekpUT9m2nVYmlfwVFKIjlzh
+ qANwUyPXaOuHMPRa8yzkX4Oh9HMrHaWZHKuI82JPhNEcR3uia9WAo11EFJgMwj/FmXRN
+ GFTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137904; x=1741742704;
+ d=1e100.net; s=20230601; t=1741137908; x=1741742708;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fBKaSdciz4vWObThuGuztLYugPKsPiaANZDROnbbSag=;
- b=iwJKyfHpIyHLGqbAPljtcoD54adWUuxbMALsZXOHdu9asITN+Q1KXDcLG50wIwbiOQ
- YaSW9Ir1Ar+mzN5FJzSVXSMeOZ4DU+4FVi8Lvadzqm5QsRy+E5kH8dfFUJo7BkO7LHeW
- BBZFUR9Ij5y84UP86hRfld6T0QrQdFSZq1nvpsvX2PraJpo81ghL6io6X4WEG8Erqr6S
- uFH6g9i71JWgJOFvm/aYS8TQJeDXCZ2n+XkSX5MimiMStFMHH1SL/fcp7x9ZoyHiD6tX
- ktSTTjMTsb+3/YIChEbqihuCWIdTryoQRj9MF1gmwX9KWqXNBamgt7UWtTOr4WzThFb6
- x56w==
-X-Gm-Message-State: AOJu0YzjUANriqBBOxxp/yLB314jlIcOAypx98xFASU3nru5bmzn6QF5
- eyu7fRP9qG00UQ7ZPcoAGyMm3YT6b/yQ4uXwtK0jsrqzsQu9NtTkNmhR6bGi9dutUQ2p4wTrN56
- GU48=
-X-Gm-Gg: ASbGnctRwGtVAtgiTl+/2w+sIweKKqxVLpMBXepVCwU/98S9uDjNeelBSTxaQf6eT1V
- 6kImeaFzBnGy1iBANJgXaYU2bumjrLAs4IuZscZv119vX9dNHKfGA9xOT1y8+9UYnjcH5cMq6Zf
- 1zo74UbEhLt8KzMi2Rd92Pn+geIaFVbWid7rnvepshmeW2IiKAs8bSRJeCwDPRvcByv+WCsO7g8
- zo9z4frXHwcd0ETfAie/gkaE+Izyyn8oYchYlycTUwf4FEBCR0Ohk7IWpyUebyLc+FjlfW7fmlS
- oESVaeiKwbumUIuV3Y3WCmumPJCeN1m7VriDk9a/Kzg5v3KSkRL1DZlcyUsDeC7P4ocqkQTIL6I
- DfE5nPVkdfMpV8OJ/mOQ=
-X-Google-Smtp-Source: AGHT+IGQlstr4QKzVtgWdZq8j7qDheTdAWqwVZT6dBgKI8NoqRkvrhgRtkXpntsEVCd8+Y0mzmW8gA==
-X-Received: by 2002:a5d:64a6:0:b0:390:eb32:3fd2 with SMTP id
- ffacd0b85a97d-3911f57cc31mr912485f8f.0.1741137903706; 
- Tue, 04 Mar 2025 17:25:03 -0800 (PST)
+ bh=BfDhx6dXYnykeldUX+NORiuKe1+4dgkAJvvKMJwXJlA=;
+ b=ElqtnIhjwRW6MIEsaZlH+FTBv2F7s4KXtKgaz9gj6WDE/KvPp9QiV/VatQL2rb/hqr
+ FjwPsAEslHT9WZGvDm81J/IkVxeewVWn5UBzKh3mvmBB4UnD7qwoTpDlWSUnra2RGvUn
+ Mrf2kgOVJbEsTtlVbs9q70Uy/tOMCCd6BE5G4uIKFxSt3X/wRXaztRNkW8o9tzeCdReF
+ c4WpcYychQBU2kB+93I8iBTtyBuQrsyiqBH3hwedpHYZ7lXQIxlIp9uTEyya9a4vaeBC
+ YrsRNt+7XcN8sw+dxRcUcETc8z+CDgSikJyeuP21U7kTUqWOIsZ1DFjCiKej9x8e3XjH
+ K5CQ==
+X-Gm-Message-State: AOJu0Yxz7avBqlj70oNDhLbDxe86FUTC1U6kik1hIZKv8EZVbIwrpYGY
+ ifdC+i34luz9KidvWFnn04m8CgYm3UlI7e7VQoX0pVFOhbBbkCLao7+S+PnJRVBpe9KDArP3+o+
+ JPnU=
+X-Gm-Gg: ASbGncsbjsG9TygWz7M9qGGyViGoemWKgZwZNeZ1qqaLwZwCyV71FP5LdgyKytPfeZr
+ uo4neqYmSaehcDqQSYAkCa/BRKgc/GlVQqy5brx0z+2I7Tqwz8975k1c6aiyYGzoFSRMUz4+zw4
+ Zgmm0cvjgHw/82N+yxYo46r1JIm/4GkPSnEMI7ft4uAUmhi873r9Ts8iZeI6LfGQfWKBRT7+hLJ
+ CLF18/GvtY4UBNeD508nJLKntWPvr+M6GhiozcEZbwqbRHa74I8uETPaeqt5ozTh54iTAbdBvDr
+ My+de9HkjN5AnBb2nUo9I80Weytq6Kktt++DA4nwYeEPul78pACl58TgvarnMdMemccsDYjgRBE
+ DkNVxI9eCkveJ1BUPlQk=
+X-Google-Smtp-Source: AGHT+IFdaDJC26axO68WBbQYWgB5Uxwn5n2ntVK/vCHtuezXOnVByz5M4l4YaOKWNvOKy8oicfsviw==
+X-Received: by 2002:a5d:47a7:0:b0:38f:3224:6615 with SMTP id
+ ffacd0b85a97d-3911f7265d2mr608397f8f.7.1741137908148; 
+ Tue, 04 Mar 2025 17:25:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e4795983sm19153614f8f.6.2025.03.04.17.25.03
+ ffacd0b85a97d-390e4844a16sm19320417f8f.79.2025.03.04.17.25.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:25:03 -0800 (PST)
+ Tue, 04 Mar 2025 17:25:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 38/41] hw/nvram/eeprom_at24c: Use OBJECT_DECLARE_SIMPLE_TYPE
-Date: Wed,  5 Mar 2025 02:21:53 +0100
-Message-ID: <20250305012157.96463-39-philmd@linaro.org>
+Subject: [PULL 39/41] hw/nvram/eeprom_at24c: Remove ERR macro that calls
+ fprintf to stderr
+Date: Wed,  5 Mar 2025 02:21:54 +0100
+Message-ID: <20250305012157.96463-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,31 +101,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-No need to open code it so use the simple object type declaration.
+In the realize method error_setg can be used like other places there
+already do. The other usage can be replaced with error_report which is
+the preferred way instead of directly printing to stderr.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <08d9900af04789ede485942c8072eaa58bf52f80.1740839457.git.balaton@eik.bme.hu>
+Message-ID: <637b92984795a385b648a84208f093947cc261e4.1740839457.git.balaton@eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/nvram/eeprom_at24c.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/nvram/eeprom_at24c.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
-index a40cc5dd15a..2ae03935d47 100644
+index 2ae03935d47..9f606842eb6 100644
 --- a/hw/nvram/eeprom_at24c.c
 +++ b/hw/nvram/eeprom_at24c.c
-@@ -30,9 +30,7 @@
-                             ## __VA_ARGS__)
+@@ -10,6 +10,7 @@
+ #include "qemu/osdep.h"
  
+ #include "qapi/error.h"
++#include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "hw/i2c/i2c.h"
+ #include "hw/nvram/eeprom_at24c.h"
+@@ -26,9 +27,6 @@
+ #define DPRINTK(FMT, ...) do {} while (0)
+ #endif
+ 
+-#define ERR(FMT, ...) fprintf(stderr, TYPE_AT24C_EE " : " FMT, \
+-                            ## __VA_ARGS__)
+-
  #define TYPE_AT24C_EE "at24c-eeprom"
--typedef struct EEPROMState EEPROMState;
--DECLARE_INSTANCE_CHECKER(EEPROMState, AT24C_EE,
--                         TYPE_AT24C_EE)
-+OBJECT_DECLARE_SIMPLE_TYPE(EEPROMState, AT24C_EE)
+ OBJECT_DECLARE_SIMPLE_TYPE(EEPROMState, AT24C_EE)
  
- struct EEPROMState {
-     I2CSlave parent_obj;
+@@ -75,8 +73,7 @@ int at24c_eeprom_event(I2CSlave *s, enum i2c_event event)
+         if (ee->blk && ee->changed) {
+             int ret = blk_pwrite(ee->blk, 0, ee->rsize, ee->mem, 0);
+             if (ret < 0) {
+-                ERR(TYPE_AT24C_EE
+-                        " : failed to write backing file\n");
++                error_report("%s: failed to write backing file", __func__);
+             }
+             DPRINTK("Wrote to backing file\n");
+         }
+@@ -203,8 +200,9 @@ static void at24c_eeprom_realize(DeviceState *dev, Error **errp)
+         int ret = blk_pread(ee->blk, 0, ee->rsize, ee->mem, 0);
+ 
+         if (ret < 0) {
+-            ERR(TYPE_AT24C_EE
+-                    " : Failed initial sync with backing file\n");
++            error_setg(errp, "%s: Failed initial sync with backing file",
++                       TYPE_AT24C_EE);
++            return;
+         }
+         DPRINTK("Reset read backing file\n");
+     }
 -- 
 2.47.1
 
