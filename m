@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18751A50397
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0302FA503BB
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 16:43:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpqrR-0000MX-IW; Wed, 05 Mar 2025 10:40:41 -0500
+	id 1tpqrX-0000Z0-HN; Wed, 05 Mar 2025 10:40:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqr9-0000B7-VA
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:25 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrF-0000Fe-EJ
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:31 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqr8-0002Yd-0r
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:23 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-388cae9eb9fso3709630f8f.3
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpqrD-0002Yw-Dy
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 10:40:28 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-38a25d4b9d4so4199817f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 07:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741189220; x=1741794020; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741189225; x=1741794025; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fYDAc70iCmEcsaAQpim9Lu0U9CfOBiddFcVryIIgw1c=;
- b=YkMY0QYPt/LvwyelHu9FWgbr6h6iETjtGO5oUtRKzVuRdXJmU0MvggKrPQ5nos1x/r
- UDjkG3fCKv0GXa8tPhFJcDUXJ/DZQN7ppa6/8+8GUmRgpVA+ReWCWLu2bgGLzzNtgGGI
- XTYYcDLf6mmjzy1Di5Ir2qgO/4ih5bb25/0HtyYCDzUOqNDHUiou5DIf0y3utI4RVy4d
- 4yP0ArNp9ef4YAvAoMN43bd6X84Z4j1kfmJx9LFdiyidgxQ9axqLyv2ujgdtTjxWtJUL
- NgdzieO6bH2fKwXUFGt8CwdCyiSzg1PLQPJHQ/58sPhcdtaun1T+Vno55fTTc/nQN1Wu
- ZB4w==
+ bh=h75Q8oFB88c1KxlztseXVkazErFGK1NRT/MtbJI0cyg=;
+ b=CqqxoSQBo2gAujJYVlE9bT4K1R5IVnfaGIpvyn+fU11FMflWA6FkxGQlJgzGX2ZehC
+ hG+iBBAEpVdRwVcwaOHEV6yehNxNkfJv4NpUzPVAXO7jEPqj24yt4QeEKXD/nH9CXWul
+ Q9BBLJh7MAVn+KRJd88XHXTyC7UOIUlZJW4SCQEusVQt0QdEbDR732W/biXpDnHIGbYi
+ SObWxLDuOGcghisjYGj60y0DnyIG6A3/ONlf09nL5g19H6PvH+DXR/5bg2CyYzDh06Uf
+ SgjoN1UKwFQf6GoBA6k2IArCgj0UMkSGTC3ul+jZwCcZBxLZwzqTEKME1xyvmtHZzI4E
+ 07QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741189220; x=1741794020;
+ d=1e100.net; s=20230601; t=1741189225; x=1741794025;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fYDAc70iCmEcsaAQpim9Lu0U9CfOBiddFcVryIIgw1c=;
- b=QTZLQa2MnORvXC34Q59v14NuKZCuIkY1E/wtoyzS73Yci5Y5UjNAkEbGWnwrz9fBmj
- wwVlC4CMKbzEerpwr487HMW8pjc3BbcICLSNP2VJcNA4EW7sa/iSR/vTFeRjf1DKEN2x
- lpu1y3W45WtxDuT0k9IdjIdr0/9YmIMS9jUoHTBj/1v73eSjwja97RdJrKLapdXrbALl
- tmf40EAuwAy7TamKGTG8dw5l2ZngyLjY0OeTH8W+e6sYU6ry3OomIGnm6RJci6DGL3vf
- rfLo0uMjpioOdkwTPqQ4rW0lpRRh0Yxlo93WxxqM5fCVYlttCBfaDk8bSgpgu+iiIyeK
- PNww==
-X-Gm-Message-State: AOJu0Yw7degxVPtBDUT/WVO7/U8pHvL9aOKV3CLtAMO46srizBzXeA3c
- JQRP9oi/v/fq1YVLQDPXX6j0UqHrpffc7cq2v25jMndtrpf4myEm6FhelQ0GnIfDZ0ZN8a9iv/e
- Redo=
-X-Gm-Gg: ASbGnctSjetN0JxQCsUTkEQMMm3FZt/rjeIWjnbzoDc0Lqk7h6aks788h/f8ooRnaoT
- D1bmE48/au18JGf0iaFRJgmBNSRzibyn1uMryS364EE/r8mvKS+TXebQbPQdxeT32mLWv7Z+4oZ
- JE4E/0Jwy/ELtX/hXY6wloaaJF2MkpPs8rKHRBW1W5GxtnVAsk5S93N1WUdfBBV2PDi/XL44Duj
- 305RemwBjtQFBIFPu4UqM+ETOia1eMH66j9ChclosOaQcZ9SUtmq3e7nkg0YGBzOiHOg/VoRYgw
- qe4zE6Pb52TnXrAYqHeBBQjDvlXvGZ6JHweerz5PqiJCHinI16t87tYE8TxRZ0e/12maF2ToTGA
- EOVrwytjiveO8c1mlsuY=
-X-Google-Smtp-Source: AGHT+IHroEkV8P6Vz2KqqECLrWsyC5n3bWV3S4dxFGiwdRq/c7o7hZuQb8VuOSVRyA0UAd26buKBew==
-X-Received: by 2002:a05:6000:1869:b0:390:fbba:e64b with SMTP id
- ffacd0b85a97d-3911f789f82mr4109789f8f.31.1741189220035; 
- Wed, 05 Mar 2025 07:40:20 -0800 (PST)
+ bh=h75Q8oFB88c1KxlztseXVkazErFGK1NRT/MtbJI0cyg=;
+ b=MZ+VvvFLMYIVD9C/Tj9Dc7/FsfR4VqMIPc7NFF2C6KwQJikw4M7v6l+xBupZjfsJpt
+ P+D7ySHq21CArkoybKque/+rDMo/MAze8NcIece/y4H/Zt3UVPfiMXQC2cQ78OUdfrXh
+ Qm2wNVbIykUUIJlddYR+yMcsSZDG12kqH1jwq0KwhLG0HnGmuwrg1uBG9G64Cmmr3e+e
+ UFGtuTEz7yRw1x/zebyx+za78ln5L0xjE7V5dwFOk/T1gbTMmgae35hrC5pO6+ExnzK6
+ yTPGyMqD4OqvvQgeWG94QzjYQDKj49LHA0Tz8FwSsJoCzEfjIjBA3cAj4CjMY7e0pMNK
+ teMw==
+X-Gm-Message-State: AOJu0YxSjURCaLNWoXUGEJsYMWagH/1ZaPIwfKoMbDKqJfZj+MsoQEgF
+ 4PaY0VZM14ysom0pE2NneqC6BZTISG9FOpnNdgAirYRaggUR97wASko1wupZuQpMhHBVFCyOPpE
+ S4AE=
+X-Gm-Gg: ASbGncu9ULweRO+zZL74CsEPBCrw6d3kN1XInXK8rQ+bf23uf5hyg9MiqRlQZg2hnAL
+ AGES5zc4MsoKl4/e/xy1hO2wXuIvNk2ci6zjon26JawZrmwvtcsy1dARGKX8TngnDb6+MI2jF/R
+ KZZuvsI13nRQ8mJeXhQe6W+T5M6WTCXY70xMOAQMFn6kRMlivVnBYusssZyq3Aa/E101GCWQLGq
+ E20lIs9ecgurKSKhpa+FotGaZ//vn0yf+IIeOtsa2TYP0i4rRFlaiJDMQ9ylenOwot6dnvDIWuE
+ sgrsagvaFy7cYhibimKeMbSCeuXCsbeo1631/IvLjbfY39gifXbpOtFOUBryq18GgbBFpHzRPtY
+ hFT1q1ZlqcwGy9zOUfB0=
+X-Google-Smtp-Source: AGHT+IFSjbTE5HXp9KyZNAh82ePsMKy7upgs6ToOmvQCiPR00bzw/AMHbUAXgjxdLnjIMDCUPcKj1g==
+X-Received: by 2002:a05:6000:2cf:b0:391:6fd:bb8a with SMTP id
+ ffacd0b85a97d-3911f740597mr3342520f8f.14.1741189224730; 
+ Wed, 05 Mar 2025 07:40:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-390e485dbe7sm21577111f8f.93.2025.03.05.07.40.19
+ ffacd0b85a97d-391288b54cbsm243197f8f.28.2025.03.05.07.40.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Mar 2025 07:40:19 -0800 (PST)
+ Wed, 05 Mar 2025 07:40:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -70,17 +70,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 10/18] qemu: Introduce legacy_binary_is_big_endian() helper
-Date: Wed,  5 Mar 2025 16:39:20 +0100
-Message-ID: <20250305153929.43687-11-philmd@linaro.org>
+Subject: [RFC PATCH 11/18] hw/mips/jazz: Replace TARGET_BIG_ENDIAN by
+ legacy_binary_is_big_endian
+Date: Wed,  5 Mar 2025 16:39:21 +0100
+Message-ID: <20250305153929.43687-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305153929.43687-1-philmd@linaro.org>
 References: <20250305153929.43687-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,254 +104,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce legacy_binary_endianness() to return the endianness
-of a legacy binary, and legacy_binary_is_big_endian() being
-equivalent of compile time TARGET_BIG_ENDIAN definition.
+For legacy binaries, legacy_binary_is_big_endian() is equivalent
+of the compile time TARGET_BIG_ENDIAN definition.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/legacy_binary_info.h |  8 ++++++
- legacy_binary_info.c              | 43 +++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ hw/mips/jazz.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/include/qemu/legacy_binary_info.h b/include/qemu/legacy_binary_info.h
-index 2d42e852b7a..18886a05402 100644
---- a/include/qemu/legacy_binary_info.h
-+++ b/include/qemu/legacy_binary_info.h
-@@ -9,9 +9,17 @@
- #ifndef QEMU_LEGACY_BINARY_INFO_H
- #define QEMU_LEGACY_BINARY_INFO_H
+diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
+index 1700c3765de..b6f7565f6c5 100644
+--- a/hw/mips/jazz.c
++++ b/hw/mips/jazz.c
+@@ -24,6 +24,7 @@
  
-+#include "qapi/qapi-types-common.h"
-+
- void legacy_binary_info_init(const char *argv0);
- 
- /* Return runtime equivalent of TARGET_LONG_BITS == 64 check */
- bool legacy_binary_is_64bit(void);
- 
-+/* Return runtime equivalent of TARGET_BIG_ENDIAN definition */
-+bool legacy_binary_is_big_endian(void);
-+
-+/* Return endianness of legacy binary */
-+EndianMode legacy_binary_endianness(void);
-+
- #endif
-diff --git a/legacy_binary_info.c b/legacy_binary_info.c
-index be50d3f50ea..c9a8e99699e 100644
---- a/legacy_binary_info.c
-+++ b/legacy_binary_info.c
-@@ -9,10 +9,12 @@
  #include "qemu/osdep.h"
- #include "qemu/arch_info.h"
- #include "qemu/legacy_binary_info.h"
-+#include "qapi/qapi-types-common.h"
- 
- typedef struct LegacyBinaryInfo {
-     const char *binary_name;
-     QemuArchBit arch_bit;
-+    EndianMode endianness;
-     unsigned long_bits;
- } LegacyBinaryInfo;
- 
-@@ -21,146 +23,175 @@ static const LegacyBinaryInfo legacy_binary_infos[] = {
-     {
-         .binary_name = "qemu-system-aarch64",
-         .arch_bit = QEMU_ARCH_BIT_ARM,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-alpha",
-         .arch_bit = QEMU_ARCH_BIT_ALPHA,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-arm",
-         .arch_bit = QEMU_ARCH_BIT_ARM,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-avr",
-         .arch_bit = QEMU_ARCH_BIT_AVR,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-hppa",
-         .arch_bit = QEMU_ARCH_BIT_HPPA,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-i386",
-         .arch_bit = QEMU_ARCH_BIT_I386,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-loongarch64",
-         .arch_bit = QEMU_ARCH_BIT_LOONGARCH,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-m68k",
-         .arch_bit = QEMU_ARCH_BIT_M68K,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-microblaze",
-         .arch_bit = QEMU_ARCH_BIT_MICROBLAZE,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-microblazeel",
-         .arch_bit = QEMU_ARCH_BIT_MICROBLAZE,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-mips",
-         .arch_bit = QEMU_ARCH_BIT_MIPS,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-mips64",
-         .arch_bit = QEMU_ARCH_BIT_MIPS,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-mips64el",
-         .arch_bit = QEMU_ARCH_BIT_MIPS,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-mipsel",
-         .arch_bit = QEMU_ARCH_BIT_MIPS,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-or1k",
-         .arch_bit = QEMU_ARCH_BIT_OPENRISC,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-ppc",
-         .arch_bit = QEMU_ARCH_BIT_PPC,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-ppc64",
-         .arch_bit = QEMU_ARCH_BIT_PPC,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-riscv32",
-         .arch_bit = QEMU_ARCH_BIT_RISCV,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-riscv64",
-         .arch_bit = QEMU_ARCH_BIT_RISCV,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-rx",
-         .arch_bit = QEMU_ARCH_BIT_RX,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-s390x",
-         .arch_bit = QEMU_ARCH_BIT_S390X,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-sh4",
-         .arch_bit = QEMU_ARCH_BIT_SH4,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-sh4eb",
-         .arch_bit = QEMU_ARCH_BIT_SH4,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-sparc",
-         .arch_bit = QEMU_ARCH_BIT_SPARC,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-sparc64",
-         .arch_bit = QEMU_ARCH_BIT_SPARC,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-tricore",
-         .arch_bit = QEMU_ARCH_BIT_TRICORE,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-x86_64",
-         .arch_bit = QEMU_ARCH_BIT_I386,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 64,
-     },
-     {
-         .binary_name = "qemu-system-xtensa",
-         .arch_bit = QEMU_ARCH_BIT_XTENSA,
-+        .endianness = ENDIAN_MODE_LITTLE,
-         .long_bits = 32,
-     },
-     {
-         .binary_name = "qemu-system-xtensaeb",
-         .arch_bit = QEMU_ARCH_BIT_XTENSA,
-+        .endianness = ENDIAN_MODE_BIG,
-         .long_bits = 32,
-     },
+ #include "qemu/datadir.h"
++#include "qemu/legacy_binary_info.h"
+ #include "hw/clock.h"
+ #include "hw/mips/mips.h"
+ #include "hw/intc/i8259.h"
+@@ -59,12 +60,6 @@ enum jazz_model_e {
+     JAZZ_PICA61,
  };
-@@ -182,6 +213,7 @@ void legacy_binary_info_init(const char *argv0)
-     for (size_t i = 0; i < ARRAY_SIZE(legacy_binary_infos); i++) {
-         if (!strcmp(legacy_binary_infos[i].binary_name, binary_name)) {
-             assert(legacy_binary_infos[i].long_bits);
-+            assert(legacy_binary_infos[i].endianness != ENDIAN_MODE_UNSPECIFIED);
-             current_index = i;
-             return;
-         }
-@@ -195,3 +227,14 @@ bool legacy_binary_is_64bit(void)
-     assert(current_index != -1);
-     return legacy_binary_infos[current_index].long_bits == 64;
- }
-+
-+EndianMode legacy_binary_endianness(void)
-+{
-+    assert(current_index != -1);
-+    return legacy_binary_infos[current_index].endianness;
-+}
-+
-+bool legacy_binary_is_big_endian(void)
-+{
-+    return legacy_binary_endianness() == ENDIAN_MODE_BIG;
-+}
+ 
+-#if TARGET_BIG_ENDIAN
+-#define BIOS_FILENAME "mips_bios.bin"
+-#else
+-#define BIOS_FILENAME "mipsel_bios.bin"
+-#endif
+-
+ static void main_cpu_reset(void *opaque)
+ {
+     MIPSCPU *cpu = opaque;
+@@ -120,7 +115,8 @@ static const MemoryRegionOps dma_dummy_ops = {
+ };
+ 
+ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
+-                               DeviceState *rc4030, MemoryRegion *dp8393x_prom)
++                               DeviceState *rc4030, MemoryRegion *dp8393x_prom,
++                               bool is_big_endian)
+ {
+     DeviceState *dev;
+     SysBusDevice *sysbus;
+@@ -136,7 +132,7 @@ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
+     dev = qdev_new("dp8393x");
+     qdev_set_nic_properties(dev, nd);
+     qdev_prop_set_uint8(dev, "it_shift", 2);
+-    qdev_prop_set_bit(dev, "big_endian", TARGET_BIG_ENDIAN);
++    qdev_prop_set_bit(dev, "big_endian", is_big_endian);
+     object_property_set_link(OBJECT(dev), "dma_mr",
+                              OBJECT(rc4030_dma_mr), &error_abort);
+     sysbus = SYS_BUS_DEVICE(dev);
+@@ -194,6 +190,9 @@ static void mips_jazz_init(MachineState *machine,
+     MemoryRegion *bios2 = g_new(MemoryRegion, 1);
+     SysBusESPState *sysbus_esp;
+     ESPState *esp;
++    bool is_big_endian = legacy_binary_is_big_endian();
++    const char *default_bios_filename = is_big_endian ? "mips_bios.bin"
++                                                      : "mipsel_bios.bin";
+     static const struct {
+         unsigned freq_hz;
+         unsigned pll_mult;
+@@ -212,8 +211,7 @@ static void mips_jazz_init(MachineState *machine,
+                          * ext_clk[jazz_model].pll_mult);
+ 
+     /* init CPUs */
+-    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk,
+-                                     TARGET_BIG_ENDIAN);
++    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, is_big_endian);
+     env = &cpu->env;
+     qemu_register_reset(main_cpu_reset, cpu);
+ 
+@@ -245,7 +243,8 @@ static void mips_jazz_init(MachineState *machine,
+     memory_region_add_subregion(address_space, 0xfff00000LL, bios2);
+ 
+     /* load the BIOS image. */
+-    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, machine->firmware ?: BIOS_FILENAME);
++    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, machine->firmware
++                                                   ?: default_bios_filename);
+     if (filename) {
+         bios_size = load_image_targphys(filename, 0xfff00000LL,
+                                         MAGNUM_BIOS_SIZE);
+@@ -329,7 +328,7 @@ static void mips_jazz_init(MachineState *machine,
+     }
+ 
+     /* Network controller */
+-    mips_jazz_init_net(rc4030_dma_mr, rc4030, dp8393x_prom);
++    mips_jazz_init_net(rc4030_dma_mr, rc4030, dp8393x_prom, is_big_endian);
+ 
+     /* SCSI adapter */
+     dev = qdev_new(TYPE_SYSBUS_ESP);
 -- 
 2.47.1
 
