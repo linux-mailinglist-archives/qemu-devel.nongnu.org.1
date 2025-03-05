@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C087A4F5BC
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11ACA4F5CC
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:53:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpflY-0006gA-14; Tue, 04 Mar 2025 22:49:52 -0500
+	id 1tpflT-0006Fk-KY; Tue, 04 Mar 2025 22:49:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflM-0005tD-HV
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflM-0005uF-Pq
  for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflK-0006Ux-MW
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflK-0006Uz-NY
  for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1741146578;
@@ -22,27 +22,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=95agMskPgnBc4AkyN44TZ2mvq+7CH/4kl3dTXY02EW8=;
- b=SkW5f8wCkpQQfOGjrGIgAHzQfNaw2D61sbgla5bX8QHl17083Xz72Bg5BfTS3eIH0NVrPc
- tOlH7g5biuIH04hdvu/+wavw/MqRbKy6lBUGmgh2CN7S/c+9f4Bdfm4ZxUTL63Zwvtqxjd
- r2YfWPmJjagfRmDuiSKYEUcd+M4sCtY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=e5urStQP63jkqPMNX2eWKJXzq7q9kxq6QAKJEtebhcU=;
+ b=JLYqARfcY+rbx/xdClcQoYYbaVi+1lfw2LXkV+w+nO6DlWNjkHAhuowXmSx0Fn9IddlnyD
+ qIsRFlM5gMcL+W3Wt49PGP3dFa7gkNUYfQd41gRlFXZdNceOv/VXjq72JRRxY2grvwZ/Ec
+ TCYAAoNjX458uCyF/hOKCu2rXREQYsQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-p5QP6MnJOwaOB_KSIW3sEQ-1; Tue,
- 04 Mar 2025 22:49:32 -0500
-X-MC-Unique: p5QP6MnJOwaOB_KSIW3sEQ-1
-X-Mimecast-MFC-AGG-ID: p5QP6MnJOwaOB_KSIW3sEQ_1741146571
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-340-tD9_x6NmPsWWh5WBswH_og-1; Tue,
+ 04 Mar 2025 22:49:36 -0500
+X-MC-Unique: tD9_x6NmPsWWh5WBswH_og-1
+X-Mimecast-MFC-AGG-ID: tD9_x6NmPsWWh5WBswH_og_1741146575
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE1E119039CE; Wed,  5 Mar 2025 03:49:31 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A309119560BC; Wed,  5 Mar 2025 03:49:35 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.45])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 36F4A1956095; Wed,  5 Mar 2025 03:49:28 +0000 (UTC)
+ id 43E371956095; Wed,  5 Mar 2025 03:49:32 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
@@ -51,9 +51,9 @@ Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 53/57] docs: disambiguate cross-references
-Date: Tue,  4 Mar 2025 22:46:02 -0500
-Message-ID: <20250305034610.960147-54-jsnow@redhat.com>
+Subject: [PATCH 54/57] docs/qapidoc: add transmogrifier test document
+Date: Tue,  4 Mar 2025 22:46:03 -0500
+Message-ID: <20250305034610.960147-55-jsnow@redhat.com>
 In-Reply-To: <20250305034610.960147-1-jsnow@redhat.com>
 References: <20250305034610.960147-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -84,80 +84,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next patch will engage the qapidoc transmogrifier, which creates a
-lot of cross-reference targets. Some of the existing targets
-("migration", "qom", "replay") will become ambiguous as a result. Nail
-them down more explicitly to prevent ambiguous cross-reference warnings.
+This is just a test document that demonstrates the new qapi-domain doc
+generator. Note that this test document uses a nesting depth of 2 for
+the TOC unlike the existing QMP's reference nesting depth of 3. It's
+arbitrary and can be changed to suit taste, it has nothing to do with
+the new domain itself.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/devel/codebase.rst |  6 +++---
- docs/glossary.rst       | 10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ docs/index.rst      |  1 +
+ docs/qapi/index.rst | 53 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 docs/qapi/index.rst
 
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 4039875ee04..1b09953197b 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -23,7 +23,7 @@ Some of the main QEMU subsystems are:
- - `Devices<device-emulation>` & Board models
- - `Documentation <documentation-root>`
- - `GDB support<GDB usage>`
--- `Migration<migration>`
-+- :ref:`Migration<migration>`
- - `Monitor<QEMU monitor>`
- - :ref:`QOM (QEMU Object Model)<qom>`
- - `System mode<System emulation>`
-@@ -112,7 +112,7 @@ yet, so sometimes the source code is all you have.
- * `libdecnumber <https://gitlab.com/qemu-project/qemu/-/tree/master/libdecnumber>`_:
-   Import of gcc library, used to implement decimal number arithmetic.
- * `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/migration>`__:
--  `Migration framework <migration>`.
-+  :ref:`Migration framework <migration>`.
- * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
-   `Monitor <QEMU monitor>` implementation (HMP & QMP).
- * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
-@@ -193,7 +193,7 @@ yet, so sometimes the source code is all you have.
-   - `lcitool <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/lcitool>`_:
-     Generate dockerfiles for CI containers.
-   - `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/migration>`_:
--    Test scripts and data for `Migration framework <migration>`.
-+    Test scripts and data for :ref:`Migration framework <migration>`.
-   - `multiboot <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/multiboot>`_:
-     Test multiboot functionality for x86_64/i386.
-   - `qapi-schema <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/qapi-schema>`_:
-diff --git a/docs/glossary.rst b/docs/glossary.rst
-index 693d9855dd1..4fa044bfb6e 100644
---- a/docs/glossary.rst
-+++ b/docs/glossary.rst
-@@ -120,7 +120,7 @@ Migration
- ---------
- 
- QEMU can save and restore the execution of a virtual machine between different
--host systems. This is provided by the `Migration framework<migration>`.
-+host systems. This is provided by the :ref:`Migration framework<migration>`.
- 
- NBD
- ---
-@@ -212,14 +212,14 @@ machine emulator and virtualizer.
- QOM
- ---
- 
--`QEMU Object Model <qom>` is an object oriented API used to define various
--devices and hardware in the QEMU codebase.
-+:ref:`QEMU Object Model <qom>` is an object oriented API used to define
-+various devices and hardware in the QEMU codebase.
- 
- Record/replay
- -------------
- 
--`Record/replay <replay>` is a feature of QEMU allowing to have a deterministic
--and reproducible execution of a virtual machine.
-+:ref:`Record/replay <replay>` is a feature of QEMU allowing to have a
-+deterministic and reproducible execution of a virtual machine.
- 
- Rust
- ----
+diff --git a/docs/index.rst b/docs/index.rst
+index 5665de85cab..4364f9f1618 100644
+--- a/docs/index.rst
++++ b/docs/index.rst
+@@ -21,3 +21,4 @@ Welcome to QEMU's documentation!
+    specs/index
+    devel/index
+    glossary
++   qapi/index
+diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
+new file mode 100644
+index 00000000000..e40dce09119
+--- /dev/null
++++ b/docs/qapi/index.rst
+@@ -0,0 +1,53 @@
++########################
++QAPI Transmogrifier Test
++########################
++
++This is a test render of the QEMU QMP reference manual using the new
++"transmogrifier" generator in qapidoc.py in conjunction with the
++qapi-domain.py sphinx extension.
++
++Some notable features:
++
++ * Every QAPI definition visible below is available to be
++   cross-referenced from anywhere else in the Sphinx docs; for example
++   ```blockdev-add``` will render to `blockdev-add`.
++
++ * There are type-specific cross-referencing roles available for
++   alternates, commands, events, enums, structs, unions and modules. for
++   example, ``:qapi:cmd:`block-dirty-bitmap-add``` resolves to
++   :qapi:cmd:`block-dirty-bitmap-add`, and only works for commands. The
++   roles available are ``cmd``, ``alt``, ``event``, ``enum``,
++   ``struct``, ``union``, and ``mod``; with two meta-roles available:
++   ``obj`` for absolutely any QAPI definition, and ``type`` for
++   everything except commands, events, and modules.
++
++ * There is a new `qapi-index` page which can be linked to with
++   ```qapi-index```. There, you can browse a list of all QAPI
++   definitions by type or alphabetically.
++
++ * QAPI definitions are also added to the existing `genindex` page.
++
++ * All member/argument/return types are now cross-references to that
++   type's definition. `chardev-add` is a good example.
++
++ * This work-in-progress version does not perform any inlining.
++
++ * This work-in-progress version actually also ignores branches entirely
++   right now!
++
++ * This version currently does not "prune" unnecessary docs.
++
++ * This version does not add undocumented members or return values.
++
++ * This version does not handle ifcond for anything other than top-level
++   entity definitions.
++
++ * This version renders sections in precisely the order they appear in
++   source, even if that winds up looking silly.
++
++
++.. contents::
++   :depth: 2
++
++.. qapi-doc:: qapi/qapi-schema.json
++   :transmogrify:
 -- 
 2.48.1
 
