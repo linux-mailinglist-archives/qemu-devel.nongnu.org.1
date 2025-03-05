@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B007A4F5BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:51:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A6AA4F5C2
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 04:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpflb-0007HN-Pj; Tue, 04 Mar 2025 22:49:56 -0500
+	id 1tpflQ-0005yX-93; Tue, 04 Mar 2025 22:49:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflP-0006DQ-KQ
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:43 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflJ-0005XV-Cr
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflO-0006Vg-4R
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:43 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tpflH-0006UU-La
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 22:49:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741146581;
+ s=mimecast20190719; t=1741146574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HpqhHOOTiU3A8ngfVKgEqmqrwhJ8IiOiBgSyl9W96wU=;
- b=hFbBe6rJqsdTkTQozGDHbYiXsl71hcWI1mGn1VwvcbXoXlhVtERC5hdLJMOsJToDagyoxE
- 8sDwrucWK7LNa5edxNIXSKLG4zP/ePdZJJ79TcsETcJvn0skxqiwBSJU0Wz6aCWuTYNpt7
- W1+3cjKX5hfom1gv9y5hjHrI/XoDeFQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=g4fd40egBu4gIs8kyZUy61ee8TmMN9/LsTce+Q6ojj8=;
+ b=PJ4D2VxPnmbAIGjMfqojzVJkbhgqbHhnvgha5EK7vjOl3sXbqMVUKo1F1jSifOEoGfVfOX
+ cvcrTHO27n0+zJnBBPKKjSCb8g7A4Oeyv/210KsF+fdwgaiHEScZF3mTuPucdvXMRano9I
+ QLX31epvsMQb2zb8yBhi+eer+DdZ76Q=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-g0OUE05lPHaoXf8dtDHjEw-1; Tue,
- 04 Mar 2025 22:49:21 -0500
-X-MC-Unique: g0OUE05lPHaoXf8dtDHjEw-1
-X-Mimecast-MFC-AGG-ID: g0OUE05lPHaoXf8dtDHjEw_1741146560
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-137--x4fTareMrKWS5nuEUHoOw-1; Tue,
+ 04 Mar 2025 22:49:25 -0500
+X-MC-Unique: -x4fTareMrKWS5nuEUHoOw-1
+X-Mimecast-MFC-AGG-ID: -x4fTareMrKWS5nuEUHoOw_1741146564
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 926B3180087D; Wed,  5 Mar 2025 03:49:20 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BCDBE1800262; Wed,  5 Mar 2025 03:49:24 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.45])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 86CB01956095; Wed,  5 Mar 2025 03:49:17 +0000 (UTC)
+ id E28A91956095; Wed,  5 Mar 2025 03:49:20 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
@@ -51,9 +51,9 @@ Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 50/57] docs/qapidoc: add visit_sections() method
-Date: Tue,  4 Mar 2025 22:45:59 -0500
-Message-ID: <20250305034610.960147-51-jsnow@redhat.com>
+Subject: [PATCH 51/57] docs/qapidoc: add visit_entity()
+Date: Tue,  4 Mar 2025 22:46:00 -0500
+Message-ID: <20250305034610.960147-52-jsnow@redhat.com>
 In-Reply-To: <20250305034610.960147-1-jsnow@redhat.com>
 References: <20250305034610.960147-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -84,50 +84,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the actual main dispatch method that processes and handles the
-list of doc sections for a given QAPI entity.
+Finally, the core entry method for a qapi entity.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ docs/sphinx/qapidoc.py | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index ed0269af27d..7308fa0a767 100644
+index 7308fa0a767..fb2ad7492ae 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -288,6 +288,31 @@ def preamble(self, ent: QAPISchemaDefinition) -> None:
+@@ -78,6 +78,8 @@
  
+ 
+ class Transmogrifier:
++    # pylint: disable=too-many-public-methods
++
+     # Field names used for different entity types:
+     field_types = {
+         "enum": "value",
+@@ -368,6 +370,25 @@ def visit_freeform(self, doc: QAPIDoc) -> None:
+         self.add_lines(text, info)
          self.ensure_blank_line()
  
-+    def visit_sections(self, ent: QAPISchemaDefinition) -> None:
-+        sections = ent.doc.all_sections if ent.doc else []
++    def visit_entity(self, ent: QAPISchemaDefinition) -> None:
++        assert ent.info
 +
-+        # Add sections *in the order they are documented*:
-+        for section in sections:
-+            if section.kind == QAPIDoc.Kind.PLAIN:
-+                self.visit_paragraph(section)
-+            elif section.kind == QAPIDoc.Kind.MEMBER:
-+                assert isinstance(section, QAPIDoc.ArgSection)
-+                self.visit_member(section)
-+            elif section.kind == QAPIDoc.Kind.FEATURE:
-+                assert isinstance(section, QAPIDoc.ArgSection)
-+                self.visit_feature(section)
-+            elif section.kind in (QAPIDoc.Kind.SINCE, QAPIDoc.Kind.TODO):
-+                # Since is handled in preamble, TODO is skipped intentionally.
-+                pass
-+            elif section.kind == QAPIDoc.Kind.RETURNS:
-+                self.visit_returns(section)
-+            elif section.kind == QAPIDoc.Kind.ERRORS:
-+                self.visit_errors(section)
-+            else:
-+                assert False
++        try:
++            self._curr_ent = ent
 +
-+        self.ensure_blank_line()
++            # Squish structs and unions together into an "object" directive.
++            meta = ent.meta
++            if meta in ("struct", "union"):
++                meta = "object"
 +
-     # Transmogrification core methods
++            # This line gets credited to the start of the /definition/.
++            self.add_line(f".. qapi:{meta}:: {ent.name}", ent.info)
++            with self.indented():
++                self.preamble(ent)
++                self.visit_sections(ent)
++        finally:
++            self._curr_ent = None
++
  
-     def visit_module(self, path: str) -> None:
+ class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
+     """A QAPI schema visitor which adds Sphinx dependencies each module
 -- 
 2.48.1
 
