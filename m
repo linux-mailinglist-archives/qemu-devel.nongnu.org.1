@@ -2,85 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3644CA4F77F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B32BAA4F787
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 07:57:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpicw-0000IY-RD; Wed, 05 Mar 2025 01:53:11 -0500
+	id 1tpigY-0002cE-1U; Wed, 05 Mar 2025 01:56:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tpicr-0000IO-9p
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:53:05 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tpifr-0002Tj-7L
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:56:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tpicn-0004wg-P1
- for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:53:05 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tpifp-0006Cw-EC
+ for qemu-devel@nongnu.org; Wed, 05 Mar 2025 01:56:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741157580;
+ s=mimecast20190719; t=1741157768;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=psQ7ZnH7blFSRYIoIWVachSRcExkF1M2wts4eqPiX60=;
- b=a1QRNs/cns3BwLItz5BskPMS+327mFCGJxZoOFGPqZDVO7yNWuj36mnjPs5HfcwXEgCEon
- PxjUj2QRXfkjesBAE8MXs9LRfXv6X7ODOT+xiifpkFuuhMopGe/fvhI4t5oRPAugTIiCnP
- oaE+OusAMRoaQzp9e09CYo4rFneh/kA=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=2Kr6XjnTw+S1ctno2A9iBia5rbpn8+MxM4eZfV3fVw0=;
+ b=RVY4lVIWtLkE8pUpIF/d6epWnjSuZHokQrMSvF2YhO3bc4QwDD7Fr9ccBKWsRH6+Fs8Lzn
+ EWWwuBAvvuL+5LHZ4zSNvxsHQfR3WgfOByrZAC7MJiAfh26aR0uFwTHmGmEUz/4k89lwHw
+ JUJ3bLWnvQNbY91WuCMPvHPGl9y558s=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-1iBhLTN-Oy68mSbG_d8HpQ-1; Wed, 05 Mar 2025 01:52:58 -0500
-X-MC-Unique: 1iBhLTN-Oy68mSbG_d8HpQ-1
-X-Mimecast-MFC-AGG-ID: 1iBhLTN-Oy68mSbG_d8HpQ_1741157577
+ us-mta-681-iXhQlER0Mu6IqaSoqrfhgQ-1; Wed, 05 Mar 2025 01:55:52 -0500
+X-MC-Unique: iXhQlER0Mu6IqaSoqrfhgQ-1
+X-Mimecast-MFC-AGG-ID: iXhQlER0Mu6IqaSoqrfhgQ_1741157751
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4388eee7073so2063545e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 22:52:58 -0800 (PST)
+ 5b1f17b1804b1-43943bd1409so46296225e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 22:55:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741157577; x=1741762377;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=psQ7ZnH7blFSRYIoIWVachSRcExkF1M2wts4eqPiX60=;
- b=pyo5lnq19QfwIICPKDk1dNyWP/hcP/wP7zVY7D55m17BrAI28D1zCG1r359d0sWrz/
- 2Py2CXn7ckAr7g7r4oPMfIEQ84N7ga+G5LdquBi1C4mMO91dgMTOQT9ljpl7E1kbnQBH
- t+6wV2JtyAuGZ8s1+Y2gF8EoVRpKQMakd5uxUBFddeHX+d12lmrNh+xpZND+InVQAfmE
- HkjWMv4D1xaQIyT5V21YiqBRyMyMY8QDSw2hu1LfJAM60I7ks8Hq6yuI8AbkMfP76g7Y
- et/e4NtQ86+O+/xMVoBx4Odgpt5mX5GEAibH5HwmDypsM/UUKKLoBOPCogFwSvvWksx7
- jq8w==
-X-Gm-Message-State: AOJu0YyI2pE1evTQIlShXaXuKAgEbB2ybMarV/NQ6oYv2AAGqqW7CBpa
- AkX96bdcVMPiB22gADRQLX7d3KoS/nNeaY5Nr841R9vDkyqHDdGsGcbyGbxm8Cjs30Q+ZAoRiZ6
- unnBtrr7bWEAoi+CLpW7Lvh4Uxt1K9qMxqa0wyW6ha0lUUvsOrN+h
-X-Gm-Gg: ASbGnctIdJwTCoel9MZv/mN8/AxdnWGObggSTfIpYLKsv9Dv5dUp8nl1VPBVqRerNAO
- Fa3iBVKiVceZHP9x0oG30AiSt6yX6LmOvmzmORykaL+Mp/q3Yfs15MOSO+is/AW50vfF4Imj5We
- b4nixSyjtzx2+fZA8qoIN2cFacGx5Wph3k2pWj5yG5+vs5nFYke35CG1XLjWPb1xCZN4i773Oxo
- t8vgL5GzjkbwjStZNO86aQa0SGTkp7gYcsLdD6qyMOnzrUVcte84bRlj5+eJJeVf57vUQ2+dQ8l
- dt7ex4eerA==
-X-Received: by 2002:a05:600c:428c:b0:43b:d0b1:90c5 with SMTP id
- 5b1f17b1804b1-43bd0b1912emr19743425e9.10.1741157577382; 
- Tue, 04 Mar 2025 22:52:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1bN6bmcqaxSgrvEyQECsYlLNEJ5lmhzF8o2pvw6SQwZHBkReAP7wPUixLuRrPylmM0/S4AA==
-X-Received: by 2002:a05:600c:428c:b0:43b:d0b1:90c5 with SMTP id
- 5b1f17b1804b1-43bd0b1912emr19743225e9.10.1741157577049; 
- Tue, 04 Mar 2025 22:52:57 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd4292eeasm8032905e9.16.2025.03.04.22.52.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 22:52:55 -0800 (PST)
-Date: Wed, 5 Mar 2025 01:52:52 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
- marcel.apfelbaum@gmail.com, jon.grimm@amd.com,
- santosh.shukla@amd.com, vasant.hegde@amd.com, Wei.Huang2@amd.com,
- kraxel@redhat.com, bsd@redhat.com, berrange@redhat.com, ddutile@redhat.com
-Subject: Re: [PATCH] pci-ids.rst: Add Red Hat pci-id for AMD IOMMU device
-Message-ID: <20250305015122-mutt-send-email-mst@kernel.org>
-References: <20250304183747.639382-1-suravee.suthikulpanit@amd.com>
+ d=1e100.net; s=20230601; t=1741157751; x=1741762551;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2Kr6XjnTw+S1ctno2A9iBia5rbpn8+MxM4eZfV3fVw0=;
+ b=OO2o5Cy0j/4ZA+WbHsxVPOXNOoUD5k3hLnezzwZXnrftcqKDdv2bmHMY0Xe9brXK5j
+ 0NX1qFLRyL6A/CG0zaecq6HPnb6sxQPkJLHJjcP0X1OK1YWbZF81iM5a/roq2z2I0n+P
+ iP7kHWJe3sPXXy4sr+twL3VN/zMikrv/K6PoysW14/Dhj/wrBmZmKkb/BDNKoxtltMr9
+ 0ZJGCZ+dZJ+Q0P+8w4xorz8dmSScNEV19/U4lHVCv0w//TKM0kGm/e1mg4hcn6kFNXar
+ tzH6VqQLxUPxq7tRouEpmO5LTs3f7qFUnN8r2y/ETzgq7Cuj5MG08qWyTCBRquR336JI
+ Dfnw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUchF0sBiIRBf+dgKkeN/f03pADOfB3bAlzualmeMOkNDkX1PM72WxMZdajOSv15+in6r9SnFVaAkJ4@nongnu.org
+X-Gm-Message-State: AOJu0YzhxpJra1gWEYVq39T6og7LeGDot9vSoaBEFn0/4qbngXFe/dR+
+ kodP6Ks/CA6ufH5dDvNYYx/ugD7oZpDPWs08i2u/UnhW0tiQdVnskBTSVFHVmMFYU4SRA1S8gCP
+ ox1f/xX3dM+NkMIOa67y/1zN3nLtQOReq3ml3OjTUPIUn43b+5aKJ
+X-Gm-Gg: ASbGncvUuWuVRs3lWtqqxl7vdQIHf5Wf+a0laf+a/tRxhpBeMjoJpAqNb/jMxnBZNV5
+ xDarm5f7krFpdxWeZNzmIsj5Vq1uYLAW/G6bK3JLFADYs2ouK1fIjqXMtE4vQH9NHtExHe983o/
+ JJgu5bB0fZ9cbXRInS/CS0xaXQ+/rNzGfEyMGMJz8YYhabphFcjVkM7BlKr4+oUthSxg4r19dw/
+ psQ7N9fyyyGXpa80QyFX+In1JtbWXUHSqmByzsSRnngcEOlc/W9CYR/zt3C+O0D0lgZbvZR0Mdo
+ jfaKbVjxMhlsOqXA5iWKUUzHpSDIQJNbQ779UArSeXmGu18=
+X-Received: by 2002:a05:600c:4f56:b0:43b:cd15:2ec6 with SMTP id
+ 5b1f17b1804b1-43bd298ed36mr11116885e9.14.1741157751088; 
+ Tue, 04 Mar 2025 22:55:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEUHWXdLTbPEE91ogwUNYLlRrhaNmBYx4NaHFK6d3fYoTcQjA6qNBpDMzGYaQ3NizRvfTgt2g==
+X-Received: by 2002:a05:600c:4f56:b0:43b:cd15:2ec6 with SMTP id
+ 5b1f17b1804b1-43bd298ed36mr11116785e9.14.1741157750743; 
+ Tue, 04 Mar 2025 22:55:50 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-231.web.vodafone.de.
+ [109.42.51.231]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bcc186de4sm20448815e9.1.2025.03.04.22.55.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Mar 2025 22:55:50 -0800 (PST)
+Message-ID: <ecfdf860-7bbd-4744-9195-2eee2c7a0d05@redhat.com>
+Date: Wed, 5 Mar 2025 07:55:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250304183747.639382-1-suravee.suthikulpanit@amd.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nbd: Defer trace init until after daemonization
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org
+References: <20250227220625.870246-2-eblake@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250227220625.870246-2-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,76 +150,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 04, 2025 at 06:37:47PM +0000, Suravee Suthikulpanit wrote:
-> The QEMU-emulated AMD IOMMU PCI device is implemented based on the AMD I/O
-> Virtualization Technology (IOMMU) Specification [1]. The PCI id for this
-> device is platform-specific.
+On 27/02/2025 23.06, Eric Blake wrote:
+> At least the simple trace backend works by spawning a helper thread,
+> and setting up an atexit() handler that coordinates completion with
+> the helper thread.  But since atexit registrations survive fork() but
+> helper threads do not, this means that qemu-nbd configured to use the
+> simple trace will deadlock waiting for a thread that no longer exists
+> when it has daemonized.
 > 
-> Currently, the QEMU-emulated AMD IOMMU device is using AMD vendor id and
-> undefined device id.
-
-undefined?
-
-> Therefore, change the vendor id to Red Hat and request a new QEMU-specific
-> device id.
-
-Won't the drivers fail to load then?
-
-
+> Better is to follow the example of vl.c: don't call any setup
+> functions that might spawn helper threads until we are in the final
+> process that will be doing the work worth tracing.
 > 
-> [1] https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/specifications/48882_IOMMU.pdf
-
-what is this link teaching us? It's a 300 page document. Where to look
-in there?
-
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Tested by configuring with --enable-trace-backends=simple, then running
+>    qemu-nbd --fork --trace=nbd_\*,file=qemu-nbd.trace -f raw -r README.rst
+> followed by `nbdinfo nbd://localhost`, and observing that the trace
+> file is now created without hanging.
+> 
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 > ---
->  docs/specs/pci-ids.rst | 2 ++
->  hw/i386/amd_iommu.c    | 3 ++-
->  include/hw/pci/pci.h   | 1 +
->  3 files changed, 5 insertions(+), 1 deletion(-)
+>   qemu-nbd.c | 16 ++++++++++++----
+>   1 file changed, 12 insertions(+), 4 deletions(-)
 > 
-> diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
-> index 261b0f359f..2416a70a2d 100644
-> --- a/docs/specs/pci-ids.rst
-> +++ b/docs/specs/pci-ids.rst
-> @@ -100,6 +100,8 @@ PCI devices (other than virtio):
->    PCI UFS device (``-device ufs``)
->  1b36:0014
->    PCI RISC-V IOMMU device
-> +1b36:0015
-> +  PCI AMD IOMMU device (``-device amd-iommu``)
->  
->  All these devices are documented in :doc:`index`.
->  
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index dda1a5781f..4d8564249c 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -1766,7 +1766,8 @@ static void amdvi_pci_class_init(ObjectClass *klass, void *data)
->      DeviceClass *dc = DEVICE_CLASS(klass);
->      PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
->  
-> -    k->vendor_id = PCI_VENDOR_ID_AMD;
-> +    k->vendor_id = PCI_VENDOR_ID_REDHAT;
-> +    k->device_id = PCI_DEVICE_ID_REDHAT_AMD_IOMMU;
->      k->class_id = 0x0806;
->      k->realize = amdvi_pci_realize;
->  
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index 4002bbeebd..da44e6673d 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -117,6 +117,7 @@ extern bool pci_available;
->  #define PCI_DEVICE_ID_REDHAT_ACPI_ERST   0x0012
->  #define PCI_DEVICE_ID_REDHAT_UFS         0x0013
->  #define PCI_DEVICE_ID_REDHAT_RISCV_IOMMU 0x0014
-> +#define PCI_DEVICE_ID_REDHAT_AMD_IOMMU   0x0015
->  #define PCI_DEVICE_ID_REDHAT_QXL         0x0100
->  
->  #define FMT_PCIBUS                      PRIx64
-> -- 
-> 2.34.1
+> diff --git a/qemu-nbd.c b/qemu-nbd.c
+> index 05b61da51ea..ed5895861bb 100644
+> --- a/qemu-nbd.c
+> +++ b/qemu-nbd.c
+> @@ -852,10 +852,6 @@ int main(int argc, char **argv)
+>           export_name = "";
+>       }
+> 
+> -    if (!trace_init_backends()) {
+> -        exit(1);
+> -    }
+> -    trace_init_file();
+>       qemu_set_log(LOG_TRACE, &error_fatal);
+> 
+>       socket_activation = check_socket_activation();
+> @@ -1045,6 +1041,18 @@ int main(int argc, char **argv)
+>   #endif /* WIN32 */
+>       }
+> 
+> +    /*
+> +     * trace_init must be done after daemonization.  Why? Because at
+> +     * least the simple backend spins up a helper thread as well as an
+> +     * atexit() handler that waits on that thread, but the helper
+> +     * thread won't survive a fork, leading to deadlock in the child
+> +     * if we initialized pre-fork.
+> +     */
+> +    if (!trace_init_backends()) {
+> +        exit(1);
+> +    }
+> +    trace_init_file();
+
+This also sounds like the best option to me!
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
