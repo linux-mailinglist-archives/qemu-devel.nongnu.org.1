@@ -2,92 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA03A4F452
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9851EA4F466
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 03:07:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpe14-0003pr-Hh; Tue, 04 Mar 2025 20:57:49 -0500
+	id 1tpe9N-0005Mg-Ra; Tue, 04 Mar 2025 21:06:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdzX-0000tB-8v
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:56:12 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tpdzV-0000ZJ-ND
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:56:10 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-223785beedfso79532405ad.1
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:56:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741139768; x=1741744568; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QoiFdbbJTlFWZLwqC1xUIWOhoGHSOkQ9ZUT/2MtQZn0=;
- b=cy9NDum2PKxtXuATKdp3n6Y8CbObMggu4BHktEIQrKU/Fvjq2Jw3LcP2NZGfeeeAPB
- RedKGKFZKJjiyq7bREQ6XGu9An0BWAo6fxNPOjjTJkgTe7S5zcDcUXdvNj2RjhbFmvL/
- HWjnqafESjByxhv4hhWH9J67nl9Axt7W7Z1OW6pDxdi6/lCrYgWLU53+P8xZxvNrCCGR
- 5CS0dZb4HZ8uoGZHHpMb8gpq/Y5nOLPHAOaGrWvi/FF3hWYeJf7ir5cGasstPvhuB64Q
- h6Y2hzkEBYmdtIzrImFdDw+6GazWj7ycYpXXq6kdLpPk64iuolmKG7ZE6wiGw4+MUYoN
- Idww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741139768; x=1741744568;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QoiFdbbJTlFWZLwqC1xUIWOhoGHSOkQ9ZUT/2MtQZn0=;
- b=sn6Q0BfUdgA4xX2UOoLpNGEwQPj5a853GSJzsNTV07LYja9PSasvO3Zwi+n5em5M5p
- gH5qScy/1nJK8Zr1IH9ptQkIBVG54lmPRVpmYofc3HkXSS3xxJNTmux/FVWRyd+ao//k
- 0daztkEo92K4++qCRZdnv1WzPr73cm8kc5qKy/bzI35Srnugb4+TCi/vnX3kS0i8w5Ps
- dHYZdTi5taHQMpiLe0T3RhAU3Ghasl3FZO21e5YMzuq03LzR3cNZ7bVLAxgfd/D2tFvY
- TYinbtJoOtepMw2MH/lbrxKINIb/5JEoRBNL99iGO/NcZWDgW56HjNQjpLYefSdNH3El
- 9S7g==
-X-Gm-Message-State: AOJu0Yx13RJjjUFi8OHG3mCxswmi+ct5H7/xzuaLmJ8k6jG/Bj5FvY50
- e5S51O9I3Y4FbJq0DbX82lWVbCMzk+r3yEv5WWqvR/hlK14mXYfaojYqPiRsxGs=
-X-Gm-Gg: ASbGncsXjJu7kfAUFPLc7id2OPk0PwsUqdXdK+FdWMJKtgFFtkE8F5sZHyMEppMuTno
- 2tWRmds8i2EMKvyoIOwMN9U0iWRGW+ajXRy0kNYcWm1+X7d5YqbqBJNgB0ty0k34+GkQH7/eCcK
- ZHmRtJIGUXUOoEwFadmPCJmhprqTxpjKiWQulx/FZEyJ4WR3pJ31KcTPmYdefmLGQaCw1i4vgeB
- ct404iTgA2VatFnWZB++ly8w47w7mXN5ckmESfQvRSQL9SAZFXctOfhbCxMkd4G+rwYwEmw0iaa
- C9Hhdit7abzY9T+pHWp2o3gQ7dwzR00FwLmhgkbd1HEZ5uzHhoupnyWi84AlybKMbyadHQCdaYI
- yOBZkw+8P8I9UXuaCUmejgTsgr2BW5Sco2h3TpL4d+qGc+Std+II=
-X-Google-Smtp-Source: AGHT+IFFm/Wer26YIDZDSNWLTXVY1RVZ4XZHLvWeOaMCwQtnQ1BXqpgJEFzMohhjTp1uRLINnOYYtA==
-X-Received: by 2002:a17:902:f691:b0:223:653e:eb06 with SMTP id
- d9443c01a7336-223f1ca7c4cmr26259985ad.26.1741139768121; 
- Tue, 04 Mar 2025 17:56:08 -0800 (PST)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-223501f9e04sm102583695ad.87.2025.03.04.17.56.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Mar 2025 17:56:07 -0800 (PST)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 59/59] target/riscv/kvm: add missing KVM CSRs
-Date: Wed,  5 Mar 2025 11:53:07 +1000
-Message-ID: <20250305015307.1463560-60-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305015307.1463560-1-alistair.francis@wdc.com>
-References: <20250305015307.1463560-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tpe8N-0005Ei-NO
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 21:05:27 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tpe8K-00028i-SK
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 21:05:19 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6836A4E6027;
+ Wed, 05 Mar 2025 03:05:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id WAMaR6hbDdsA; Wed,  5 Mar 2025 03:05:09 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 7F01D4E601A; Wed, 05 Mar 2025 03:05:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7D83574577C;
+ Wed, 05 Mar 2025 03:05:09 +0100 (CET)
+Date: Wed, 5 Mar 2025 03:05:09 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, 
+ =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+Subject: Re: [RFC PATCH 10/11] qemu: Introduce qemu_arch_name() helper
+In-Reply-To: <19ec9924-5011-4bae-945a-2442f518865a@linaro.org>
+Message-ID: <2dd4e227-1d4a-b4c4-9ceb-6c72d66a7688@eik.bme.hu>
+References: <20250305005225.95051-1-philmd@linaro.org>
+ <20250305005225.95051-11-philmd@linaro.org>
+ <774c4a7a-c8e0-8bb2-0e40-a34886fcc7ed@eik.bme.hu>
+ <19ec9924-5011-4bae-945a-2442f518865a@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Content-Type: multipart/mixed;
+ boundary="3866299591-2045484394-1741140309=:73150"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,52 +72,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-We're missing scounteren and senvcfg CSRs, both already present in the
-KVM UAPI.
+--3866299591-2045484394-1741140309=:73150
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250224123120.1644186-4-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/kvm/kvm-cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Wed, 5 Mar 2025, Philippe Mathieu-Daudé wrote:
+> On 5/3/25 02:32, BALATON Zoltan wrote:
+>> On Wed, 5 Mar 2025, Philippe Mathieu-Daudé wrote:
+>>> Introduce a generic helper to get the target name of a QemuArchBit.
+>>> (This will be used for single / heterogeneous binaries).
+>>> Use it in target_name(), removing the last use of the TARGET_NAME
+>>> definition.
+>>> 
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>> include/qemu/arch_info.h |  2 ++
+>>> arch_info-target.c       | 34 +++++++++++++++++++++++++++++++++-
+>>> 2 files changed, 35 insertions(+), 1 deletion(-)
+>>> 
+>>> diff --git a/include/qemu/arch_info.h b/include/qemu/arch_info.h
+>>> index 613dc2037db..7e3192f590f 100644
+>>> --- a/include/qemu/arch_info.h
+>>> +++ b/include/qemu/arch_info.h
+>>> @@ -46,6 +46,8 @@ typedef enum QemuArchBit {
+>>> #define QEMU_ARCH_LOONGARCH     BIT(QEMU_ARCH_BIT_LOONGARCH)
+>>> #define QEMU_ARCH_ALL           -1
+>>> 
+>>> +const char *qemu_arch_name(QemuArchBit qemu_arch_bit);
+>>> +
+>>> const char *target_name(void);
+>>> 
+>>> bool qemu_arch_available(unsigned qemu_arch_mask);
+>>> diff --git a/arch_info-target.c b/arch_info-target.c
+>>> index 61007415b30..9b19fe8d56d 100644
+>>> --- a/arch_info-target.c
+>>> +++ b/arch_info-target.c
+>>> @@ -24,9 +24,41 @@
+>>> #include "qemu/osdep.h"
+>>> #include "qemu/arch_info.h"
+>>> 
+>>> +const char *qemu_arch_name(QemuArchBit qemu_arch_bit)
+>>> +{
+>>> +    static const char *legacy_target_names[] = {
+>>> +        [QEMU_ARCH_ALPHA] = "alpha",
+>>> +        [QEMU_ARCH_BIT_ARM] = TARGET_LONG_BITS == 32 ? "arm" : "aarch64",
+>>> +        [QEMU_ARCH_BIT_AVR] = "avr",
+>>> +        [QEMU_ARCH_BIT_HEXAGON] = "hexagon",
+>>> +        [QEMU_ARCH_BIT_HPPA] = "hppa",
+>>> +        [QEMU_ARCH_BIT_I386] = TARGET_LONG_BITS == 32 ? "i386" : 
+>>> "x86_64",
+>>> +        [QEMU_ARCH_BIT_LOONGARCH] = "loongarch64",
+>>> +        [QEMU_ARCH_BIT_M68K] = "m68k",
+>>> +        [QEMU_ARCH_BIT_MICROBLAZE] = TARGET_BIG_ENDIAN ? "microblaze"
+>>> +                                                       : "microblazeel",
+>>> +        [QEMU_ARCH_BIT_MIPS] = TARGET_BIG_ENDIAN
+>>> +                             ? (TARGET_LONG_BITS == 32 ? "mips" : 
+>>> "mips64")
+>>> +                             : (TARGET_LONG_BITS == 32 ? "mipsel" : 
+>>> "mips64el"),
+>>> +        [QEMU_ARCH_BIT_OPENRISC] = "or1k",
+>>> +        [QEMU_ARCH_BIT_PPC] = TARGET_LONG_BITS == 32 ? "ppc" : "ppc64",
+>>> +        [QEMU_ARCH_BIT_RISCV] = TARGET_LONG_BITS == 32 ? "riscv32" : 
+>>> "riscv64",
+>>> +        [QEMU_ARCH_BIT_RX] = "rx",
+>>> +        [QEMU_ARCH_BIT_S390X] = "s390x",
+>>> +        [QEMU_ARCH_BIT_SH4] = TARGET_BIG_ENDIAN ? "sh4eb" : "sh4",
+>>> +        [QEMU_ARCH_BIT_SPARC] = TARGET_LONG_BITS == 32 ? "sparc" : 
+>>> "sparc64",
+>>> +        [QEMU_ARCH_BIT_TRICORE] = "tricore",
+>>> +        [QEMU_ARCH_BIT_XTENSA] = TARGET_BIG_ENDIAN ? "xtensaeb" : 
+>>> "xtensa",
+>>> +    };
+>>> +
+>>> +    assert(qemu_arch_bit < ARRAY_SIZE(legacy_target_names));
+>>> +    assert(legacy_target_names[qemu_arch_bit]);
+>>> +    return legacy_target_names[qemu_arch_bit];
+>>> +}
+>>> +
+>>> const char *target_name(void)
+>>> {
+>>> -    return TARGET_NAME;
+>>> +    return qemu_arch_name(QEMU_ARCH_BIT);
+>>> }
+>> 
+>> Why two functions that do the same? Do you plan to remove target_name later 
+>> or it should just do what the new function does?
+>
+> target_name() is a no-op for current binaries, where one binary include
+> a single target.
+>
+> The "single binary" will include multiple targets. We plan to symlink it
+> to the previous binaries and use argv[0] to mimic previous behavior.
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index ba54eaa0b4..7f3b59cb72 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -624,6 +624,8 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
-     env->stval = 0;
-     env->mip = 0;
-     env->satp = 0;
-+    env->scounteren = 0;
-+    env->senvcfg = 0;
- }
- 
- static int kvm_riscv_get_regs_csr(CPUState *cs)
-@@ -639,6 +641,8 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
-     KVM_RISCV_GET_CSR(cs, env, stval, env->stval);
-     KVM_RISCV_GET_CSR(cs, env, sip, env->mip);
-     KVM_RISCV_GET_CSR(cs, env, satp, env->satp);
-+    KVM_RISCV_GET_CSR(cs, env, scounteren, env->scounteren);
-+    KVM_RISCV_GET_CSR(cs, env, senvcfg, env->senvcfg);
- 
-     return 0;
- }
-@@ -656,6 +660,8 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-     KVM_RISCV_SET_CSR(cs, env, stval, env->stval);
-     KVM_RISCV_SET_CSR(cs, env, sip, env->mip);
-     KVM_RISCV_SET_CSR(cs, env, satp, env->satp);
-+    KVM_RISCV_SET_CSR(cs, env, scounteren, env->scounteren);
-+    KVM_RISCV_SET_CSR(cs, env, senvcfg, env->senvcfg);
- 
-     return 0;
- }
--- 
-2.48.1
+This didn't answer the question for me why this would need target_name() 
+and qemu_arch_name() which are the same function with two names. If these 
+do the same why not only have one of them?
 
+Regards,
+BALATON Zoltan
+--3866299591-2045484394-1741140309=:73150--
 
