@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292BBA4F39A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2D9A4F389
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Mar 2025 02:24:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tpdUO-0001v5-G2; Tue, 04 Mar 2025 20:24:10 -0500
+	id 1tpdUz-00037j-Mx; Tue, 04 Mar 2025 20:24:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTv-0000vv-1D
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:31 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdU0-00017G-L8
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:36 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTt-00075s-8U
- for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:30 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43bcc85ba13so10403895e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tpdTy-00076h-TB
+ for qemu-devel@nongnu.org; Tue, 04 Mar 2025 20:23:36 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43bc63876f1so21509305e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Mar 2025 17:23:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741137807; x=1741742607; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741137813; x=1741742613; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9zYIkt9GKGIYdkcKWEhjNfLJXtEaeim06qAhvggPTOw=;
- b=MEBVe2ZV2f2gZbAVC+RZBjJGmSh/7ixmfUkjzrECeHDDwxXhYeJRsrrhIwOWGAdvId
- imi58FtR7XUvujqMVb9YVIVoSSwdNIZ+OAePqsdF+q3spENY8Lef64qIrKH/tQY6BKtU
- ECb4Xfv8oc7sYY41pAllzeEgpwPfAL/XVZgeoIYx/pXBTyN5Mq2kV5FvFYNi1qZWxMOu
- j6jaQHqAIuz6bhjjY7hLNwnvXXDX+tI2DIqBKguDeOurvYPZuSIfS/UOb5mJ/zZtJ4MN
- H4USQTU/VfTgdrOzhtmiRs7gT418Gj9dAAZfYOA+gDdzQU7f38E58Uj3nACC1z1HT1mS
- MReg==
+ bh=YXL5B5zw3pZta0/9DCa7fbyWVn6oj5wqXc+Tu2wdyGc=;
+ b=lPhjsJhh1qGpQTamOxZIoAJ6mnhtpFCBrkCBdqaVgtNDLpyk0Cb3opFylqsOTLEdWA
+ Lp6QTM9o9im3+WoMPNwod0Nq9CwJPhoho1o+4kERSY7cBvUbcOS5if4jK8oRtlMSWG8n
+ I6jbph/wRMWET26IMhK6CSzfaAgdrAXTi/zi02yz6A818cX0Uq0tbg2+dTWZWtkjlZ3B
+ r35pB3c+MxSVXJNlQ5FPrV+Xjugv5qGENU/dtTQmKWw8zRdio5aayz7NkEWJncM/w37N
+ 8InxAFZ6Ntp/EfT1QMLp8ZziXFY/2t/7rlAbMybkoM714VK1VVXVEMvTGKf8Qte2AkJi
+ +saA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741137807; x=1741742607;
+ d=1e100.net; s=20230601; t=1741137813; x=1741742613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9zYIkt9GKGIYdkcKWEhjNfLJXtEaeim06qAhvggPTOw=;
- b=wm0qoOV8sbXyz7PKSuaDyUj5LC/hMay+N67/pTCvM03vszrtmrxA8UL8Yc3zyIEaaV
- 1sFiUB3b1mXgjyJq0/2TIiFmDHqwRtH3h2OVfi6vX1qARY9anmr65sBzdRFy1tOf7pyG
- WouxLUiWJQ7t0arQkWTXrWvr+LSJIN3JWrf6vWSyKIaPWG6wcSupovti9Ug/qYS6ouyt
- S1mAwNagDhvFJHRgdPiSoqVw4k9td0mxCfAMl+zQDDkgVfg52ioPcQrxuieI08hYnvo8
- 9EAATRpavAe3Lpz6EV9scgYvfQCLZdgucA/4U8YdbOhTJ2ZvZjnXR1jO1pG9mRHiaKlq
- Gctg==
-X-Gm-Message-State: AOJu0YweN1f18PMjKAg6kDchU90Xlvs4A+gl8UeRv4uQv4zbjfxCwpwM
- yFLSCPxHVeA/TA4OW3igkr8zqxNhQBMVB1o4lJNF6xEEWH/MG+ircxEuTq5ombgvdUu6OIPO8Oy
- SaGY=
-X-Gm-Gg: ASbGnct6Jea7lTRIR98MwIj0N+BsIjNl/CC6Igd1ukHXlzxDIQ/dOzwW14SVH/XJs7E
- Jo69vt1BbSi1WiH8hoGJrFq7selytDVi8/CNnWRmGaaRM/k9zotnDVREBKBw4JnZxaPmD9o53Xw
- ze9p/khDg8nhTAV6SfCmBIjlwPm6yTSs/bJNfa3OCJf4S+4430NynibUW6NSpexHSyzmd0EwOBc
- NYTioLRLTlWH8LxHqp+GYqks2bqYYVt24zUlXlwz5FVyjo/rYAkGYp+2aBquBElt4X7ZuBavx4j
- asFwrI3/bCd1KyDMg8UlhebROhj+Y+rEp5oHDVA/kirEHBr7PqqMqcg0WkWrgUfIg2KSB1NjCfi
- RoSnOYHPm5KGm8qr7cYM=
-X-Google-Smtp-Source: AGHT+IHtA/bag7Tdz6sdGvjgZ7CrhAe1pi8OSdo8brr0CZx2FAnemKS7xQOTu2zUSNdl6rekkLaacw==
-X-Received: by 2002:a05:600c:4ece:b0:43b:c94d:e1e2 with SMTP id
- 5b1f17b1804b1-43bd2ae54bcmr5223275e9.25.1741137807422; 
- Tue, 04 Mar 2025 17:23:27 -0800 (PST)
+ bh=YXL5B5zw3pZta0/9DCa7fbyWVn6oj5wqXc+Tu2wdyGc=;
+ b=sROAVgZdid3AHzqIENrRBfVvYALefCveAS2+qgS56fh/TkMYKLa9hovOn0+he52cDM
+ W+wY8GwWwDqASmtwuujyQAgps2RoSR6AgkiliKRmRFuIRIp5LrdiC8E8mt5pHUS391FQ
+ Jv/4Ac25IwAI2AOHrBxxBL+joz24Sh8fPb+cMixtEOmNS6QCXEu0sszyANmlDyq2fnjy
+ cssn7GLQQLPVEj9iQ6F5kZnwXvzlAUFsvAb2aRdo+SWBrHjxIEmWez5lmbJyd4smZQt4
+ ukYQyz/oRzoV5VYb9tChpcTQkKm5jVI+nJvfQoedpKfpA1PntT6wHRNUhz0VPA8IJxkO
+ Qo2A==
+X-Gm-Message-State: AOJu0Yx2vqg0hJtp3nbQUzxh+k1MrfecBX52Wr3rz4zNEuucD/wtaVol
+ BTFqxpu/NQe3wOyABcUDiqqdCzqUFCkp1x30yNcronfH2y5UBv6Tq/++FeuctaA0dmC4aEX1pGJ
+ SynI=
+X-Gm-Gg: ASbGncvZhYTbvLxemymL9Fqqx4DRXc272tw0dv/U+3MgtxjuxBsOn/2FlasPKpLvPoH
+ FklUjiau4SiJIRK/7rSd4CJwyFKXo3mdhmvL6FZpb6zNY+lkWJbqH4tEFLsT+/pFHLMTlxb82tC
+ MR6EopKPo9YiHfs+fCWnLZ83Fm+ivrXprZXoQbpyHbX0tdnxn5NjJsUAiHJpe9xE8dQVIyKxUBX
+ EnCGCBSAWV/Zz0dsFzholFpwRLiz9JdfaNnkwdcMGfCr1CqH/hGioBn6ia2bSZhBTtGvJFiGAsf
+ yY6OIUkrSS8D9psKJtLlDINOP4prSLaEfospGGHFy8h6d4y63fMeYfXhZ40dV6HsNsxFo27Yzps
+ 6wP6YLRM16kdv0jaOIyA=
+X-Google-Smtp-Source: AGHT+IF/guHa8k1/nCw46LIANCQTGevHIRFKBoA3EzattkIkY3LlS3BPfihgea5vcJJsBjaKX/8Bwg==
+X-Received: by 2002:a05:6000:4185:b0:391:5f:fa4e with SMTP id
+ ffacd0b85a97d-3911f7476b5mr487607f8f.29.1741137812850; 
+ Tue, 04 Mar 2025 17:23:32 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd426c01bsm2058145e9.2.2025.03.04.17.23.25
+ 5b1f17b1804b1-43bd42e51e8sm1956345e9.26.2025.03.04.17.23.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Mar 2025 17:23:26 -0800 (PST)
+ Tue, 04 Mar 2025 17:23:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/41] hw/net/fsl_etsec: Set eTSEC device description and
- category
-Date: Wed,  5 Mar 2025 02:21:33 +0100
-Message-ID: <20250305012157.96463-19-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Luc Michel <luc.michel@amd.com>
+Subject: [PULL 19/41] hw/char/pl011: Warn when using disabled receiver
+Date: Wed,  5 Mar 2025 02:21:34 +0100
+Message-ID: <20250305012157.96463-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305012157.96463-1-philmd@linaro.org>
 References: <20250305012157.96463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,34 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+We shouldn't receive characters when the full UART or its
+receiver is disabled. However we don't want to break the
+possibly incomplete "my first bare metal assembly program"s,
+so we choose to simply display a warning when this occurs.
 
-Add description and set category for eTSEC device so it shows up
-better in -device help.
-
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20250218155407.838774E600E@zero.eik.bme.hu>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Luc Michel <luc.michel@amd.com>
+Message-Id: <20250220092903.3726-2-philmd@linaro.org>
 ---
- hw/net/fsl_etsec/etsec.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/char/pl011.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
-index 3ce4fa2662d..adde6448926 100644
---- a/hw/net/fsl_etsec/etsec.c
-+++ b/hw/net/fsl_etsec/etsec.c
-@@ -423,8 +423,10 @@ static void etsec_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 06ce851044d..12a2d4bc7bd 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -85,6 +85,7 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+ #define CR_OUT1     (1 << 12)
+ #define CR_RTS      (1 << 11)
+ #define CR_DTR      (1 << 10)
++#define CR_RXE      (1 << 9)
+ #define CR_TXE      (1 << 8)
+ #define CR_LBE      (1 << 7)
+ #define CR_UARTEN   (1 << 0)
+@@ -487,6 +488,14 @@ static int pl011_can_receive(void *opaque)
+     PL011State *s = (PL011State *)opaque;
+     int r;
  
-     dc->realize = etsec_realize;
-+    dc->desc = "Freescale Enhanced Three-Speed Ethernet Controller";
-     device_class_set_legacy_reset(dc, etsec_reset);
-     device_class_set_props(dc, etsec_properties);
-+    set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
- }
- 
- static const TypeInfo etsec_types[] = {
++    if (!(s->cr & CR_UARTEN)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "PL011 receiving data on disabled UART\n");
++    }
++    if (!(s->cr & CR_RXE)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "PL011 receiving data on disabled RX UART\n");
++    }
+     r = s->read_count < pl011_get_fifo_depth(s);
+     trace_pl011_can_receive(s->lcr, s->read_count, r);
+     return r;
 -- 
 2.47.1
 
