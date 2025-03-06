@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D799AA5503C
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0B8A5503E
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:10:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDlo-0000Jt-Tp; Thu, 06 Mar 2025 11:08:25 -0500
+	id 1tqDlW-0008C6-CQ; Thu, 06 Mar 2025 11:08:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tqDjW-00072c-QZ
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:06:07 -0500
-Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tqDjU-0008PZ-LC
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:06:02 -0500
-Received: by mail-il1-x132.google.com with SMTP id
- e9e14a558f8ab-3d1a428471fso6554475ab.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 08:05:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1741277159; x=1741881959; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pEe7q4w3SeigGu9Yyevoz5YHH/txq64uIVifPcLXvEQ=;
- b=Ub4DjTw1KQBH6Oqx+Z8gGQr7gJy4Aj8GBJRLG2ANxc3fq7gHfIHy8nDNmznJC5gElp
- 20SgzkuZLDM7Won3sdOt9U/OK0lG+NM1IH8oeGWXfMLzWD5REf0UKtfV+0X0SMu2z8Wl
- fV2PlUYWyCTiuppM6uJExIARXcLsOBSjzgk4g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741277159; x=1741881959;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pEe7q4w3SeigGu9Yyevoz5YHH/txq64uIVifPcLXvEQ=;
- b=If/dpH9dbyEzjgmbkkOynWLZ+YLOQhyDDuM0tMfrxxbQ4JYv6jc5+9ua5o6GSdHBLx
- KNgKl++DUX2hZRd1W1/FlqrQ06CmwJXlMQRE9yCjfXyAuMlBZ7xhkQH48+xWmYR+dUE+
- 182OiwtZtt7/GhQqdrakB8cyEGpnrg6ebvKZq3+F2NpMF/ApQf+4ugEBXgATuL819u32
- 3rlApo25rSYV9oS18q8laGAktijQn9Gtzvmpb2vqCROruNgA3vow61YnIiyHUwY7wlwp
- kAiF6AGWJpLhTe9/Jx4u0Ygbz7ep27PzWaJzEnRGiNaZN4KKlL9f9LLT1D2GtJWxii/P
- r0GA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU/I1Qz8k7dzWHBXMHvXT2riixTXeBqxRValQNByzCDLr608p1yVIb6ctXFQb6Fg3GXKNzX+xO1gwms@nongnu.org
-X-Gm-Message-State: AOJu0Yxb5muNTuP4CBrYVPC14HDKgd+G7HsVI8/irAWHcWfksWwXQfFk
- 0xCYQlnEanR9UZiAhSPCTEo5XhkjEUOymkOUYO2REoiyeQ+fYfT2pL7UY/F6jA==
-X-Gm-Gg: ASbGncsFGhsgFgp0wo/asU06B/X1FuqsiBOMAU//dgR+v2Moek7NXFglG7M4o6f9Qzt
- uye3ijPseOfOgQ8NbsfFX2CK24wstCTVVEoHr5GJuOQitTthM/Y4qeU71U79CHnfriBHqEE3x4L
- C9JMCKK2a4G+OHszdrgGOdX9NvfvJBFhF0j2Xg70FVsmtZN9qXoLek/QUEYoECrH1oQ8QEVjYjq
- dZWSkhN/riQUlDtzJb6Hae80BN0GMgJjNXT2qM8t3pnFdk83kcT6PcrfxbeXL6mk+c6KyzORkBG
- rzYGYgIqzgL1Ao+aF9ojNkVb721W/OAXFv+65i5amNhqkFP3gB2dFjUEtFUTUBZ0iQxEztA9lkC
- nOqGEvg==
-X-Google-Smtp-Source: AGHT+IFVrNhma8uIsT77632739na8ad17f1vpP9I5ULeUIufeQtRgBbCD/r5f5pfbzXHknwO/BWWFg==
-X-Received: by 2002:a05:6e02:1c0e:b0:3d3:f4fc:a291 with SMTP id
- e9e14a558f8ab-3d44193e19fmr390085ab.19.1741277159017; 
- Thu, 06 Mar 2025 08:05:59 -0800 (PST)
-Received: from chromium.org (c-73-203-119-151.hsd1.co.comcast.net.
- [73.203.119.151]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f213b959c1sm46759173.38.2025.03.06.08.05.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Mar 2025 08:05:58 -0800 (PST)
-From: Simon Glass <sjg@chromium.org>
-To: U-Boot Mailing List <u-boot@lists.denx.de>
-Cc: Bin Meng <bmeng.cn@gmail.com>, Simon Glass <sjg@chromium.org>,
- Tom Rini <trini@konsulko.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 34/47] x86: qemu: Use the new e820 API
-Date: Thu,  6 Mar 2025 09:04:01 -0700
-Message-ID: <20250306160428.3041057-35-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250306160428.3041057-1-sjg@chromium.org>
-References: <20250306160428.3041057-1-sjg@chromium.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tqDj1-0006Po-BP
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:05:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tqDiw-0008KO-RI
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:05:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741277124;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CiuNvnjJP5MotkVq+HHQWlet/MGSOekNGEEEtipC8ek=;
+ b=GcKMLV6WnQ2vJ4hx/ZTU5ctgjYDpGS3yGuitUVBpjqRHahmpu6q74cfAl1W+wAfw02KLYP
+ 7KiEYwJ5pHR4Je5/H1NxrTYw0PcTgNO8TFIvI3YinTynuZHX1oZSpayBORGutmpzv+j3Xh
+ dDuz49IbGnkqqMpdCAtcoiKXVhj2z7s=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-QYu2YZRsPwOswM2Vntji7g-1; Thu,
+ 06 Mar 2025 11:05:14 -0500
+X-MC-Unique: QYu2YZRsPwOswM2Vntji7g-1
+X-Mimecast-MFC-AGG-ID: QYu2YZRsPwOswM2Vntji7g_1741277113
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4B7A21955D66; Thu,  6 Mar 2025 16:05:13 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.112])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E3CF61956095; Thu,  6 Mar 2025 16:05:09 +0000 (UTC)
+Date: Thu, 6 Mar 2025 16:05:06 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
+ qemu-s390x mailing list <qemu-s390x@nongnu.org>,
+ qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: Re: [PATCH qemu v2 1/3] hw/s390x: add CPI identifiers to QOM
+Message-ID: <Z8nHlBnfcT7H87fB@redhat.com>
+References: <20250224120449.1764114-1-shalini@linux.ibm.com>
+ <48caabe7-c112-4454-96a8-742d154c77ee@redhat.com>
+ <78b6c548212517ef8620fce0c6832e4f@imap.linux.ibm.com>
+ <f64b5ce4-8843-4d92-af97-24160f687698@redhat.com>
+ <98ab6ad416f0dcf7d1beb5105cace9ca46ad3c84.camel@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::132;
- envelope-from=sjg@chromium.org; helo=mail-il1-x132.google.com
+In-Reply-To: <98ab6ad416f0dcf7d1beb5105cace9ca46ad3c84.camel@linux.ibm.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,91 +90,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move over to use this API before making the code even more complicated.
+On Thu, Mar 06, 2025 at 04:44:33PM +0100, Nina Schoetterl-Glausch wrote:
+> On Thu, 2025-03-06 at 15:55 +0100, Thomas Huth wrote:
+> > On 06/03/2025 13.23, shalini wrote:
+> > > On 2025-03-05 16:56, Thomas Huth wrote:
+> > > > On 24/02/2025 13.04, Shalini Chellathurai Saroja wrote:
+> > > > > Add Control-Program Identification (CPI) to the QEMU Object
+> > > > > Model (QOM). The CPI identifiers provide information about
+> > > > > the guest operating system. The CPI identifiers are:
+> > > > > system type, system name, system level and sysplex name.
+> > > > > 
+> > > > > The system type provides the OS type of the guest (e.g. LINUX).
+> > > > > The system name provides the name of the guest (e.g. TESTVM).
+> > > > > The system level provides the distribution and kernel version
+> > > > > of the guest OS (e.g. 0x50e00).
+> > > > > The sysplex name provides the sysplex name of the guest
+> > > > > (e.g. SYSPLEX).
+> > > > > 
+> > > > > Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+> > > > > ---
+> > > > >   hw/s390x/s390-virtio-ccw.c         | 29 +++++++++++++++++++++++++++++
+> > > > >   include/hw/s390x/s390-virtio-ccw.h |  8 ++++++++
+> > > > >   qapi/machine.json                  | 24 ++++++++++++++++++++++++
+> > > > >   3 files changed, 61 insertions(+)
+> > > > > 
+> > > > > diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> > > > > index 51ae0c133d..13ea8db1b0 100644
+> > > > > --- a/hw/s390x/s390-virtio-ccw.c
+> > > > > +++ b/hw/s390x/s390-virtio-ccw.c
+> > > > > @@ -50,6 +50,7 @@
+> 
+> [...]
+> 
+> > > > > +##
+> > > > > +{ 'struct': 'S390ControlProgramId', 'data': {
+> > > > > +     'system-type': 'str',
+> > > > > +     'system-name': 'str',
+> > > > > +     'system-level': 'str',
+> > > > 
+> > > > Not sure, but would it make sense to use a number for the system-level
+> > > > instead? At least it's a number in ControlProgramId, not a string.
+> > > > 
+> > > 
+> > > The system-level, when interpreted as an int provides the output below
+> > > 
+> > > 'system-level': 74872343805430528
+> > > 
+> > > But the desired output below is obtained only when interpreted as a str. 
+> > > please refer https://www.ibm.com/docs/en/linux-on-systems? 
+> > > topic=identification-system-level for details on system-level. I will also 
+> > > document this in the description of system-level as suggested by Daniel. 
+> > > Thank you.
+> > > 
+> > > 'system-level': '0x10a000000060b00'
+> > 
+> > Well, the idea of QOM/QAPI is: It's an *API* for machines, not meant for 
+> > direct consumption by the end user. So passing an integer as a string is not 
+> > the right way here. For the user, you'd require some upper level instead 
+> > that renders the integer in the right shape for the user. So please don't 
+> > use a string for this at the QOM/QAPI level.
+> 
+> In a sense the system level is a bitfield.
+> So this could become a struct
+> 
+> {
+> 	'hypervisor-use' : true,
+> 	'distribution-id': 3,	// or an enum?
+> 	'distribution-version-major: 24,
+> 	...
+> }
 
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
+Yes, if this is a mandatory format, breaking out the fields makes sense.
 
-(no changes since v3)
+> Not sure how to handle the 3 undefined bits in the highest byte.
 
-Changes in v3:
-- Add new patch to use the new e820 API
+If they're always left zero, might as well just omit them until
+such time as they have semantics defined (if ever)
 
- arch/x86/cpu/qemu/e820.c | 48 ++++++++++------------------------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
 
-diff --git a/arch/x86/cpu/qemu/e820.c b/arch/x86/cpu/qemu/e820.c
-index 17a04f86479..2b0ad179489 100644
---- a/arch/x86/cpu/qemu/e820.c
-+++ b/arch/x86/cpu/qemu/e820.c
-@@ -19,51 +19,27 @@ unsigned int install_e820_map(unsigned int max_entries,
- 			      struct e820_entry *entries)
- {
- 	u64 high_mem_size;
--	int n = 0;
-+	struct e820_ctx ctx;
- 
--	entries[n].addr = 0;
--	entries[n].size = ISA_START_ADDRESS;
--	entries[n].type = E820_RAM;
--	n++;
-+	e820_init(&ctx, entries, max_entries);
- 
--	entries[n].addr = ISA_START_ADDRESS;
--	entries[n].size = ISA_END_ADDRESS - ISA_START_ADDRESS;
--	entries[n].type = E820_RESERVED;
--	n++;
-+	e820_next(&ctx, E820_RAM, ISA_START_ADDRESS);
-+	e820_next(&ctx, E820_RESERVED, ISA_END_ADDRESS);
- 
- 	/*
- 	 * since we use memalign(malloc) to allocate high memory for
- 	 * storing ACPI tables, we need to reserve them in e820 tables,
- 	 * otherwise kernel will reclaim them and data will be corrupted
- 	 */
--	entries[n].addr = ISA_END_ADDRESS;
--	entries[n].size = gd->relocaddr - TOTAL_MALLOC_LEN - ISA_END_ADDRESS;
--	entries[n].type = E820_RAM;
--	n++;
--
--	/* for simplicity, reserve entire malloc space */
--	entries[n].addr = gd->relocaddr - TOTAL_MALLOC_LEN;
--	entries[n].size = TOTAL_MALLOC_LEN;
--	entries[n].type = E820_RESERVED;
--	n++;
--
--	entries[n].addr = gd->relocaddr;
--	entries[n].size = qemu_get_low_memory_size() - gd->relocaddr;
--	entries[n].type = E820_RESERVED;
--	n++;
--
--	entries[n].addr = CONFIG_PCIE_ECAM_BASE;
--	entries[n].size = CONFIG_PCIE_ECAM_SIZE;
--	entries[n].type = E820_RESERVED;
--	n++;
-+	e820_to_addr(&ctx, E820_RAM, gd->relocaddr - TOTAL_MALLOC_LEN);
-+	e820_next(&ctx, E820_RESERVED, TOTAL_MALLOC_LEN);
-+	e820_to_addr(&ctx, E820_RAM, qemu_get_low_memory_size());
-+	e820_add(&ctx, E820_RESERVED, CONFIG_PCIE_ECAM_BASE,
-+		 CONFIG_PCIE_ECAM_SIZE);
- 
- 	high_mem_size = qemu_get_high_memory_size();
--	if (high_mem_size) {
--		entries[n].addr = SZ_4G;
--		entries[n].size = high_mem_size;
--		entries[n].type = E820_RAM;
--		n++;
--	}
-+	if (high_mem_size)
-+		e820_add(&ctx, E820_RAM, SZ_4G, high_mem_size);
- 
--	return n;
-+	return e820_finish(&ctx);
- }
+With regards,
+Daniel
 -- 
-2.43.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
