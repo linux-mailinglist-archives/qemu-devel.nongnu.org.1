@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69C7A542F6
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFC4A542F9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:44:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq4wK-0002j5-3U; Thu, 06 Mar 2025 01:42:42 -0500
+	id 1tq4yP-0007vB-TG; Thu, 06 Mar 2025 01:44:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tq4w2-0002du-Gf; Thu, 06 Mar 2025 01:42:23 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tq4vz-0006Hh-1Y; Thu, 06 Mar 2025 01:42:20 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A354FF857F;
- Thu, 06 Mar 2025 09:41:35 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 252441C4FF0;
- Thu,  6 Mar 2025 09:42:15 +0300 (MSK)
-Message-ID: <f741f6da-46b6-499d-9432-11277b9dded6@tls.msk.ru>
-Date: Thu, 6 Mar 2025 09:42:15 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tq4yO-0007uB-3i
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:44:48 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tq4yL-0006SE-6K
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:44:46 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-390fb1b987fso308660f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 22:44:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741243483; x=1741848283; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UMoWzdJKPmx3GK+kmpHJkUBkTaJGlw70lnDXziwQI9Q=;
+ b=YwFrBBpSgN0XvOG56I7SkzRSgF/7sv7Txce8gKa/l417laWf2vdd4eox1zD1vDbUg/
+ foOU7GlSJzYjJ54jShUhZ0ZVX48rbLmaCAmsQwVYrf2ElT0IbISeVYgIIYE4cL/fmVVm
+ 2uqDt757jSHbYqR8xgQCtkR1dHHh+vw+GpUb2+U/Y960sWgZSN0B+vQllrrLj/SJya5y
+ KzGxUOygKXqlUx85ahAhLDRDCPqQlfkP0PHExSfH9+msp4g/EFKVMQj0K472HB4JbAQG
+ HKh8kdaqh4PNiJpK70RD2/GZAP2/hPttMw8y0VC7nPZ7c0hNgGmCgNmgfLqiuLmO2YvK
+ jGrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741243483; x=1741848283;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UMoWzdJKPmx3GK+kmpHJkUBkTaJGlw70lnDXziwQI9Q=;
+ b=b/bYFOFjKcInGzlpNUViQuxaTUKqXpjdam9oc22CY1t46dPSM6oyZy508IEsQVcwsv
+ lo9O/kob0ZCZZF1PyqFofs/rzYn2e+gZadUUVWS6AJggbqzre6f40juW0PQ1/5tmC2Yd
+ pnoAlCrl5eJf0fprmx1y5fgiiKakT6XozDiCeciR60yLovlFxJ7t9YKDlO+SUHOeHgun
+ PAZxv2+TeRphQSGPKEwI/jakje7WapBpwF3GKvijgErrw8zq80wo7Gthr9sot9jDO9+K
+ AcEdBrJRuDCbHuYRMRQWJR6TsuuqAVffqMIbm3D+9yuTiIrYwBvAqiJvT9jzEjn+DCUI
+ Uwsg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWGoJmigx/RlRgO5CBwo3+rF4HB+SQBYHqXwhM538I7yeOVAm2AAjbF6CdARa/VObHAQrbxXQw6OqCm@nongnu.org
+X-Gm-Message-State: AOJu0Yykob+9icx9mSPN2+HvkDJXPnlQwB0oPZjgjSPqq6QbEybRNLsF
+ k1ABfd58QJ8tzgG43q1nFBxVpzMTVA/KWbA70yxt9u4G1iDhJwbbTXJIGQr9O5c=
+X-Gm-Gg: ASbGncuNmifv7FsmxneSiG3zmsmLKWW8zbU5PY2Pqsx5g3YCxFyyCOhAG4Bs3CN1d3o
+ xEZ9K8jN5cSWRTjivbsLN3KSTACCqjSoI1ZjgmBJdiQ/rZuHtiArZlxt2qws4/u4KeMT0tv+iNY
+ tT77DmRvaLe+mHNstQ1Zr2cs3MAdXZgLLLFH0b7nYb8drt5Zx4EWE+6DMNzOEbbmZ8u3iVvivUy
+ kdj84LbU9xVAoRowYB/R5NObQOixImoiMvsIIjpFlvlASUWMhZ0NDlU9qqpgMaEWQA++lQzQSJ+
+ TKW+nZ1a0wARB2tphN96qrbkqGoHK09DctYO3hiz/QDwQZtlhTZKsUkVJlU9QPrXNEEpDuwRmov
+ FEe5XoQZpj8KJ
+X-Google-Smtp-Source: AGHT+IG51/TVu0yGDusBChVu1K5myslQQqOEAyRUHbnXnnHjWYVVzzKs2dRLuEMQDHqMG5gDwg+7Zw==
+X-Received: by 2002:a5d:598d:0:b0:390:d990:823 with SMTP id
+ ffacd0b85a97d-3911f740b29mr5064279f8f.13.1741243483163; 
+ Wed, 05 Mar 2025 22:44:43 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912c103808sm968518f8f.97.2025.03.05.22.44.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Mar 2025 22:44:42 -0800 (PST)
+Message-ID: <4a96e43a-a4f3-4b24-8ffe-63b5da01f82b@linaro.org>
+Date: Thu, 6 Mar 2025 07:44:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] goldfish_rtc: Fix tick_offset migration
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Rodrigo Dias Correa <r@drigo.nl>, anup.patel@wdc.com,
- Alistair.Francis@wdc.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20250114212150.228241-1-r@drigo.nl>
- <558cbfb7-fdd4-40b1-84ee-27c1c6aba4b2@tls.msk.ru>
-Content-Language: en-US, ru-RU
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <558cbfb7-fdd4-40b1-84ee-27c1c6aba4b2@tls.msk.ru>
+Subject: Re: [PATCH] doc: add missing 'Asset' type in function test doc
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20250306060706.1982992-1-adityag@linux.ibm.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250306060706.1982992-1-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,19 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-06.03.2025 09:35, Michael Tokarev wrote:
-
->> Migrate the tick_offset directly, adding it as a version-dependent field
->> to VMState. Keep the old behavior when migrating from previous versions.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2033
+On 6/3/25 07:07, Aditya Gupta wrote:
+> Seems 'Asset' got missed in the documentation by mistake.
 > 
-> Is this a qemu-stable material?
+> Also fix the one spellcheck issue pointed by spellcheck
+> 
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   docs/devel/testing/functional.rst | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+> index ecc738922b7c..50fca2a0291e 100644
+> --- a/docs/devel/testing/functional.rst
+> +++ b/docs/devel/testing/functional.rst
+> @@ -251,7 +251,7 @@ Many functional tests download assets (e.g. Linux kernels, initrds,
+>   firmware images, etc.) from the internet to be able to run tests with
+>   them. This imposes additional challenges to the test framework.
+>   
+> -First there is the the problem that some people might not have an
+> +First there is the problem that some people might not have an
+>   unconstrained internet connection, so such tests should not be run by
+>   default when running ``make check``. To accomplish this situation,
+>   the tests that download files should only be added to the "thorough"
+> @@ -274,7 +274,9 @@ the tests are run. This pre-caching is done with the qemu_test.Asset
+>   class. To use it in your test, declare an asset in your test class with
+>   its URL and SHA256 checksum like this::
+>   
+> -    ASSET_somename = (
+> +    from qemu_test import Asset
+> +
+> +    ASSET_somename = Asset(
+>           ('https://www.qemu.org/assets/images/qemu_head_200.png'),
+>           '34b74cad46ea28a2966c1d04e102510daf1fd73e6582b6b74523940d5da029dd')
+>   
 
-It is probably not, since this change adds a new field (and version) to the
-migration stream.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thanks,
-
-/mjt
 
