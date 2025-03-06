@@ -2,87 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF003A54183
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 05:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A3EA54189
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 05:09:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq2Rm-0002K2-TN; Wed, 05 Mar 2025 23:02:58 -0500
+	id 1tq2XS-0005UH-MV; Wed, 05 Mar 2025 23:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tq2Rg-0002JJ-TO; Wed, 05 Mar 2025 23:02:55 -0500
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tq2Re-0006Mm-LA; Wed, 05 Mar 2025 23:02:52 -0500
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-86911fd168dso69369241.1; 
- Wed, 05 Mar 2025 20:02:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741233769; x=1741838569; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0Q44+Jr43EjF7kk5hQoiPCOSjLF+Y6mo7Oc5ScaxovM=;
- b=OJyD7RUWKl9egpAV6M0TLRscG8mW6Xr3n46WgAneTlsdMxN1p4aCKp86N+5Y6e2H/p
- XFFNY/WaZyTaPG/t6OV80ZWep+ZNcr/bTAtpKpbK09qxEdTuVQ2QzCUv2JDmBJoc1t10
- Fb1PjZaFQrl3Ndb6oB2jai4IszgV3c5vr+wWWWf9EBO/ctxss29n7vgrcC3yLQPTcOVO
- PKWTvmi9B1oqEn11yzPZyifxsZDVUh8eNHu3PyDh1zPnds3zDPucHUhyhhhnIonBA0l2
- a5gq5QSGV0tMTgPpO5vozzNYGUwpzDZA9g/MeLUDw3rl2y58naA7l98uvzDp3i33TMph
- FIpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741233769; x=1741838569;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0Q44+Jr43EjF7kk5hQoiPCOSjLF+Y6mo7Oc5ScaxovM=;
- b=pOs5pMDuixPT+tXeQzPD3C/RfnQ9sWQSs5bTItJ6Mqr+275JxnBJXLn0EPt+pqG3Fz
- by+H7nmLxBPLPAYmRnGxsyBFniMx/aSbOjgd/m9yuujRI8K2Ou0pmYMlwkhX8rB8ZYAY
- ul2Xh4Ghp1Hr/Rfqm1W/lP3t6ONhg4l2iRgWa6OUSL0LntwGtPIik0hBUqJSVIvSNIz7
- UvHacRjTFsY0BuhyMVZ/O+4GmhGlMIFYeVXO4C6p6T1G8HzawMoFiK9ylHpvDu1BlEoT
- JSHOSdY9Eg8X/jSPm2Y41FTveAVNFglH8ktrf+tmOwo7DluRUp3O1uumawAzUiuKM+tR
- HkwQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUaOeBtlRa0flKOFR5db+yB53kP/8BjgmstMv4U7HfeSFFWvi8VoWYiu2zHKqOHYTEccftgnu7ThpL1@nongnu.org
-X-Gm-Message-State: AOJu0YwU/PFR0aXZBnG0u8BfVDdet5Cbc39pSxLfqH7/D5QQ3ZaKhExd
- Vs0X84h399qniugkatKROsbDvFfGEUnt7fAG0qerA+BTokcmxd6xTh0GfWXqxcWw9UaxjT3cyOj
- f9dgxvpou1/Wii9BrK7bciBIDQzc=
-X-Gm-Gg: ASbGnctMc6t3qsQGDaCKfg7GPOsXy6Tupp7bsMA/lBEr/Wj5AjjX9UKxXWpvSOaPFn4
- LpLf+Sji7Kij/xUZvsfDLuUsQBGyafKoyzDSlXZ7/sYNgySyoo5sSxt6ypkkQk3Bhc5ZXxaD1db
- JBP3SKJHDeuzwcFER77WYJIea4nDc1WA2ZvO9GaQrElLbldrgBpeVvaYUo
-X-Google-Smtp-Source: AGHT+IH+qakCOVujinTt/Hp6uFlHGJy0KOCDjDY/tWzeLi8InMEnIiFo8XJXyEsBmq9OmN0IPHVKEg9eI5TY8mMb/jc=
-X-Received: by 2002:a05:6102:c48:b0:4bb:f1f0:1b34 with SMTP id
- ada2fe7eead31-4c2e2749be6mr4173482137.2.1741233769096; Wed, 05 Mar 2025
- 20:02:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tq2XP-0005TP-EZ; Wed, 05 Mar 2025 23:08:47 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tq2XN-0006xI-4P; Wed, 05 Mar 2025 23:08:47 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5263k0el023633;
+ Thu, 6 Mar 2025 04:08:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=1Zf62m
+ kEcCgQlNJ7C8oGXv7WIABP2+7rMAbeENRWhT0=; b=lk4a8/TOoQKxtB8pqSykHG
+ kH6+dRdE69MAxlSCFeTOVoqmRPmxU5pTuyKNm/1y81+EmdVNIbnDkcss7o+p1jJf
+ K20Q/Wi2/8w2qVMAYyysyiJTeE23yqYsNly19s0BokOvDG2PM7xOZmvhyzyJI9wH
+ stDN5dDDUOBn4BRQanlD7tEXjTPoyS4KvCb/STQoNoTl7Gj+ixlVPVgidS5yC37w
+ 6KOHJac7QgbCU8Ylilj+eX+LaTuyCNKkMTheNPvjxuMIr3pVIP2xaWl9WLklN5vd
+ lp7SpyjHmcQvxvd+zkkkBpUcWja/6MV3OE+M4nNPYNPA/rw2AzqhSfWh29Nn5XTQ
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457439032f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 04:08:40 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 526488xu003966;
+ Thu, 6 Mar 2025 04:08:40 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457439032c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 04:08:40 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52610eQV009015;
+ Thu, 6 Mar 2025 04:08:38 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454cxypqm0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 04:08:38 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52648Y7q25887360
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Mar 2025 04:08:34 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CDA3E2004B;
+ Thu,  6 Mar 2025 04:08:34 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 52CCA2004E;
+ Thu,  6 Mar 2025 04:08:32 +0000 (GMT)
+Received: from [9.124.214.147] (unknown [9.124.214.147])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Mar 2025 04:08:31 +0000 (GMT)
+Message-ID: <9b51d975-b49d-4bf4-ac58-a4889f06b892@linux.ibm.com>
+Date: Thu, 6 Mar 2025 09:38:30 +0530
 MIME-Version: 1.0
-References: <20250304231956.34396-1-philmd@linaro.org>
-In-Reply-To: <20250304231956.34396-1-philmd@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 6 Mar 2025 14:02:23 +1000
-X-Gm-Features: AQ5f1Jr8oSuimA5fjovSBgba_uOsDnwGVx-IZP3agI9uN18k3bict7kk3SMNlJQ
-Message-ID: <CAKmqyKOKUZ4Ct0K1X3DrK3VqVEKCStdig076ys59Y1UMnA_qmw@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv/riscv-iommu: Get target page info using runtime
- helpers
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Bin Meng <bmeng.cn@gmail.com>, qemu-riscv@nongnu.org, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Weiwei Li <liwei1518@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] hw/ppc: Implement skeleton code for fadump in PSeries
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
+References: <20250217071711.83735-1-adityag@linux.ibm.com>
+ <20250217071711.83735-2-adityag@linux.ibm.com>
+ <8d530fc3-0b7f-4c2b-b8ad-fe41fbbd58e8@linux.ibm.com>
+Content-Language: en-US
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <8d530fc3-0b7f-4c2b-b8ad-fe41fbbd58e8@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6AjGLmJXKxAyAM1n65MxFN6Z1gOaRfSn
+X-Proofpoint-ORIG-GUID: lRHQ3a6DmWS9nFFWu0YQXlGXmrJrO4a5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_02,2025-03-05_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015 mlxscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503060025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,215 +119,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 5, 2025 at 9:20=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org> wrote:
->
-> Prefer runtime helpers to get target page size / mask / bits
-> rather than compile time definitions. This will help to build
-> these files once for all RISC-V binaries.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Hi Harsh,
 
-Thanks!
+Thanks for your reviews.
 
-Do you mind rebasing on
-https://github.com/alistair23/qemu/tree/riscv-to-apply.next ?
 
-Alistair
+On 04/03/25 14:31, Harsh Prateek Bora wrote:
+>
+>
+> On 2/17/25 12:47, Aditya Gupta wrote:
+>> Implement the handler for "ibm,configure-kernel-dump" rtas call in QEMU.
+>>
+>> Currently the handler just does basic checks and handles
+>> register/unregister/invalidate requests from kernel.
+>>
+>> Fadump will be enabled in a later patch.
+>
+> Let's use FADump or fadump for consistency.
+>
+Sure, will use FADump when starting the line, else fadump ?
+>>
+>> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr_rtas.c    | 99 ++++++++++++++++++++++++++++++++++++++++++
+>>   include/hw/ppc/spapr.h | 59 +++++++++++++++++++++++++
+>>   2 files changed, 158 insertions(+)
+>>
+>> diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
+>> index df2e837632aa..eebdf13b1552 100644
+>> --- a/hw/ppc/spapr_rtas.c
+>> +++ b/hw/ppc/spapr_rtas.c
+>> @@ -341,6 +341,105 @@ static void 
+>> rtas_ibm_set_system_parameter(PowerPCCPU *cpu,
+>>       rtas_st(rets, 0, ret);
+>>   }
+>>   +struct fadump_metadata fadump_metadata;
+>> +
+>> +/* Papr Section 7.4.9 ibm,configure-kernel-dump RTAS call */
+>> +static __attribute((unused)) void 
+>> rtas_configure_kernel_dump(PowerPCCPU *cpu,
+>
+> This __attribute shall be avoided if the function can be introduced 
+> when actually get used.
+Will do it that way in v2, without introducing this unused attribute.
+>
+>> + SpaprMachineState *spapr,
+>> +                                   uint32_t token, uint32_t nargs,
+>> +                                   target_ulong args,
+>> +                                   uint32_t nret, target_ulong rets)
+>> +{
+>> +    struct rtas_fadump_section_header header;
+>> +    target_ulong cmd = rtas_ld(args, 0);
+>> +    target_ulong fdm_addr = rtas_ld(args, 1);
+>> +    target_ulong fdm_size = rtas_ld(args, 2);
+>> +
+>> +    /* Number outputs has to be 1 */
+>> +    if (nret != 1) {
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                "FADUMP: ibm,configure-kernel-dump RTAS called with 
+>> nret != 1.\n");
+>
+> Some of the error cases are using hcall_dprintf below. Let's use same
+> for consistency. Also, shouldn't this case also return 
+> RTAS_OUT_PARAM_ERROR ?
 
-> ---
->  hw/riscv/riscv-iommu-pci.c |  4 +++-
->  hw/riscv/riscv-iommu.c     | 29 +++++++++++++++--------------
->  2 files changed, 18 insertions(+), 15 deletions(-)
+Sure, will use qemu_log_mask then.
+
+Thanks for the catch, yes I should have returned PARAM_ERROR, missed it. 
+Will do it.
+
 >
-> diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
-> index 12451869e41..e2b893c5898 100644
-> --- a/hw/riscv/riscv-iommu-pci.c
-> +++ b/hw/riscv/riscv-iommu-pci.c
-> @@ -23,6 +23,7 @@
->  #include "hw/qdev-properties.h"
->  #include "hw/riscv/riscv_hart.h"
->  #include "migration/vmstate.h"
-> +#include "exec/target_page.h"
->  #include "qapi/error.h"
->  #include "qemu/error-report.h"
->  #include "qemu/host-utils.h"
-> @@ -102,7 +103,8 @@ static void riscv_iommu_pci_realize(PCIDevice *dev, E=
-rror **errp)
->      qdev_realize(DEVICE(iommu), NULL, errp);
+>> +        return;
+>> +    }
+>> +
+>> +    /* Number inputs has to be 3 */
+>> +    if (nargs != 3) {
+>> +        rtas_st(rets, 0, RTAS_OUT_PARAM_ERROR);
 >
->      memory_region_init(&s->bar0, OBJECT(s), "riscv-iommu-bar0",
-> -        QEMU_ALIGN_UP(memory_region_size(&iommu->regs_mr), TARGET_PAGE_S=
-IZE));
-> +                       QEMU_ALIGN_UP(memory_region_size(&iommu->regs_mr)=
-,
-> +                                     qemu_target_page_size()));
->      memory_region_add_subregion(&s->bar0, 0, &iommu->regs_mr);
+> Log error ?
+Will add.
 >
->      pcie_endpoint_cap_init(dev, 0);
-> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-> index e7568ca227a..8bbb33b8b53 100644
-> --- a/hw/riscv/riscv-iommu.c
-> +++ b/hw/riscv/riscv-iommu.c
-> @@ -23,6 +23,7 @@
->  #include "hw/qdev-properties.h"
->  #include "hw/riscv/riscv_hart.h"
->  #include "migration/vmstate.h"
-> +#include "exec/target_page.h"
->  #include "qapi/error.h"
->  #include "qemu/timer.h"
+>> +        return;
+>> +    }
+>> +
+>> +    switch (cmd) {
+>> +    case FADUMP_CMD_REGISTER:
+>> +        if (fadump_metadata.fadump_registered) {
+>> +            /* Fadump already registered */
+>> +            rtas_st(rets, 0, RTAS_OUT_DUMP_ALREADY_REGISTERED);
 >
-> @@ -300,14 +301,14 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx,
->          riscv_iommu_msi_check(s, ctx, iotlb->iova)) {
->          iotlb->target_as =3D &s->trap_as;
->          iotlb->translated_addr =3D iotlb->iova;
-> -        iotlb->addr_mask =3D ~TARGET_PAGE_MASK;
-> +        iotlb->addr_mask =3D ~qemu_target_page_mask();
->          return 0;
->      }
+> Log error ?
+Will do.
 >
->      /* Exit early for pass-through mode. */
->      if (!(en_s || en_g)) {
->          iotlb->translated_addr =3D iotlb->iova;
-> -        iotlb->addr_mask =3D ~TARGET_PAGE_MASK;
-> +        iotlb->addr_mask =3D ~qemu_target_page_mask();
->          /* Allow R/W in pass-through mode */
->          iotlb->perm =3D IOMMU_RW;
->          return 0;
-> @@ -390,7 +391,7 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, =
-RISCVIOMMUContext *ctx,
->      do {
->          const unsigned widened =3D (pass && !sc[pass].step) ? 2 : 0;
->          const unsigned va_bits =3D widened + sc[pass].ptidxbits;
-> -        const unsigned va_skip =3D TARGET_PAGE_BITS + sc[pass].ptidxbits=
- *
-> +        const unsigned va_skip =3D qemu_target_page_bits() + sc[pass].pt=
-idxbits *
->                                   (sc[pass].levels - 1 - sc[pass].step);
->          const unsigned idx =3D (addr >> va_skip) & ((1 << va_bits) - 1);
->          const dma_addr_t pte_addr =3D base + idx * sc[pass].ptesize;
-> @@ -448,7 +449,7 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, =
-RISCVIOMMUContext *ctx,
->              break;                /* Reserved leaf PTE flags: PTE_W */
->          } else if ((pte & (PTE_R | PTE_W | PTE_X)) =3D=3D (PTE_W | PTE_X=
-)) {
->              break;                /* Reserved leaf PTE flags: PTE_W + PT=
-E_X */
-> -        } else if (ppn & ((1ULL << (va_skip - TARGET_PAGE_BITS)) - 1)) {
-> +        } else if (ppn & ((1ULL << (va_skip - qemu_target_page_bits())) =
-- 1)) {
->              break;                /* Misaligned PPN */
->          } else if ((iotlb->perm & IOMMU_RO) && !(pte & PTE_R)) {
->              break;                /* Read access check failed */
-> @@ -480,7 +481,7 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, =
-RISCVIOMMUContext *ctx,
->                  riscv_iommu_msi_check(s, ctx, base)) {
->                  /* Trap MSI writes and return GPA address. */
->                  iotlb->target_as =3D &s->trap_as;
-> -                iotlb->addr_mask =3D ~TARGET_PAGE_MASK;
-> +                iotlb->addr_mask =3D ~qemu_target_page_mask();
->                  return 0;
->              }
+>> +            return;
+>> +        }
+>> +
+>> +        if (fadump_metadata.fadump_dump_active == 1) {
+>> +            rtas_st(rets, 0, RTAS_OUT_DUMP_ACTIVE);
 >
-> @@ -950,7 +951,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, =
-RISCVIOMMUContext *ctx)
->           *   device index: [23:16][15:7][6:0]
->           */
->          const int split =3D depth * 9 + 6 + dc_fmt;
-> -        addr |=3D ((ctx->devid >> split) << 3) & ~TARGET_PAGE_MASK;
-> +        addr |=3D ((ctx->devid >> split) << 3) & ~qemu_target_page_mask(=
-);
->          if (dma_memory_read(s->target_as, addr, &de, sizeof(de),
->                              MEMTXATTRS_UNSPECIFIED) !=3D MEMTX_OK) {
->              return RISCV_IOMMU_FQ_CAUSE_DDT_LOAD_FAULT;
-> @@ -968,7 +969,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, =
-RISCVIOMMUContext *ctx)
->      }
+> Log error?
+Will add.
 >
->      /* index into device context entry page */
-> -    addr |=3D (ctx->devid * dc_len) & ~TARGET_PAGE_MASK;
-> +    addr |=3D (ctx->devid * dc_len) & ~qemu_target_page_mask();
+>> +            return;
+>> +        }
+>> +
+>> +        if (fdm_size < sizeof(struct rtas_fadump_section_header)) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                "FADUMP: Header size is invalid: %lu\n", fdm_size);
+>> +            rtas_st(rets, 0, RTAS_OUT_PARAM_ERROR);
+>> +            return;
+>> +        }
+>> +
+>> +        /* XXX: Can we ensure fdm_addr points to a valid RMR-memory 
+>> buffer ? */
+>> +        if (fdm_addr <= 0) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                "FADUMP: Invalid fdm address: %ld\n", fdm_addr);
+>> +            rtas_st(rets, 0, RTAS_OUT_PARAM_ERROR);
+>> +            return;
+>> +        }
+>> +
+>> +        /* Verify that we understand the fadump header version */
+>> +        cpu_physical_memory_read(fdm_addr, &header, sizeof(header));
+>> +        if (header.dump_format_version != 
+>> cpu_to_be32(FADUMP_VERSION)) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                "FADUMP: Unknown fadump header version: 0x%x\n",
+>> +                header.dump_format_version);
+>> +            rtas_st(rets, 0, RTAS_OUT_PARAM_ERROR);
+>> +            return;
+>> +        }
+>> +
+>> +        fadump_metadata.fadump_registered = true;
+>> +        fadump_metadata.fadump_dump_active = false;
+>> +        fadump_metadata.fdm_addr = fdm_addr;
+>> +        break;
+>> +    case FADUMP_CMD_UNREGISTER:
+>> +        if (fadump_metadata.fadump_dump_active == 1) {
+>> +            rtas_st(rets, 0, RTAS_OUT_DUMP_ACTIVE);
 >
->      memset(&dc, 0, sizeof(dc));
->      if (dma_memory_read(s->target_as, addr, &dc, dc_len,
-> @@ -1037,7 +1038,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx)
->           * level. See IOMMU Specification, 2.2. Process-Directory-Table.
->           */
->          const int split =3D depth * 9 + 8;
-> -        addr |=3D ((ctx->process_id >> split) << 3) & ~TARGET_PAGE_MASK;
-> +        addr |=3D ((ctx->process_id >> split) << 3) & ~qemu_target_page_=
-mask();
->          if (dma_memory_read(s->target_as, addr, &de, sizeof(de),
->                              MEMTXATTRS_UNSPECIFIED) !=3D MEMTX_OK) {
->              return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
-> @@ -1050,7 +1051,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx)
->      }
+> Log error?
+Will add.
 >
->      /* Leaf entry in PDT */
-> -    addr |=3D (ctx->process_id << 4) & ~TARGET_PAGE_MASK;
-> +    addr |=3D (ctx->process_id << 4) & ~qemu_target_page_mask();
->      if (dma_memory_read(s->target_as, addr, &dc.ta, sizeof(uint64_t) * 2=
-,
->                          MEMTXATTRS_UNSPECIFIED) !=3D MEMTX_OK) {
->          return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
-> @@ -1440,7 +1441,7 @@ static int riscv_iommu_translate(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx,
->      perm =3D iot ? iot->perm : IOMMU_NONE;
->      if (perm !=3D IOMMU_NONE) {
->          iotlb->translated_addr =3D PPN_PHYS(iot->phys);
-> -        iotlb->addr_mask =3D ~TARGET_PAGE_MASK;
-> +        iotlb->addr_mask =3D ~qemu_target_page_mask();
->          iotlb->perm =3D perm;
->          fault =3D 0;
->          goto done;
-> @@ -1481,7 +1482,7 @@ done:
->                                 RISCV_IOMMU_PREQ_HDR_PID, ctx->process_id=
-);
->          }
->          pr.hdr =3D set_field(pr.hdr, RISCV_IOMMU_PREQ_HDR_DID, ctx->devi=
-d);
-> -        pr.payload =3D (iotlb->iova & TARGET_PAGE_MASK) |
-> +        pr.payload =3D (iotlb->iova & qemu_target_page_mask()) |
->                       RISCV_IOMMU_PREQ_PAYLOAD_M;
->          riscv_iommu_pri(s, &pr);
->          return fault;
-> @@ -1683,7 +1684,7 @@ static void riscv_iommu_process_cq_tail(RISCVIOMMUS=
-tate *s)
->                                         RISCV_IOMMU_CMD_IOTINVAL_GSCID);
->              uint32_t pscid =3D get_field(cmd.dword0,
->                                         RISCV_IOMMU_CMD_IOTINVAL_PSCID);
-> -            hwaddr iova =3D (cmd.dword1 << 2) & TARGET_PAGE_MASK;
-> +            hwaddr iova =3D (cmd.dword1 << 2) & qemu_target_page_mask();
+>> +            return;
+>> +        }
+>> +
+>> +        fadump_metadata.fadump_registered = false;
+>> +        fadump_metadata.fadump_dump_active = false;
+>> +        fadump_metadata.fdm_addr = -1;
+>> +        break;
+>> +    case FADUMP_CMD_INVALIDATE:
+>> +        if (fadump_metadata.fadump_dump_active) {
+>> +            fadump_metadata.fadump_registered = false;
+>> +            fadump_metadata.fadump_dump_active = false;
+>> +            fadump_metadata.fdm_addr = -1;
+>> +            memset(&fadump_metadata.registered_fdm, 0,
+>> +                    sizeof(fadump_metadata.registered_fdm));
+>> +        } else {
+>> +            hcall_dprintf("fadump: Nothing to invalidate, no dump 
+>> active.\n");
 >
->              if (pscv) {
->                  /* illegal command arguments IOTINVAL.GVMA & PSCV =3D=3D=
- 1 */
-> @@ -1715,7 +1716,7 @@ static void riscv_iommu_process_cq_tail(RISCVIOMMUS=
-tate *s)
->                                         RISCV_IOMMU_CMD_IOTINVAL_GSCID);
->              uint32_t pscid =3D get_field(cmd.dword0,
->                                         RISCV_IOMMU_CMD_IOTINVAL_PSCID);
-> -            hwaddr iova =3D (cmd.dword1 << 2) & TARGET_PAGE_MASK;
-> +            hwaddr iova =3D (cmd.dword1 << 2) & qemu_target_page_mask();
->              RISCVIOMMUTransTag transtag;
+> Isnt this an error case? Should it return status as error or success ?
+
+Not sure. PAPR doesn't specify it any error for this situation. With 
+this current code, software can do invalidate anytime without needing to 
+verify if dump is active or not (shouldn't happen though), but final 
+state should always be that there won't be any dump active and fadump 
+registered is reset.
+
+Or should I return a HARDWARE_ERROR or PARAMETER_ERROR for this (don't 
+think either is helpful) ?
+
 >
->              if (gv) {
-> @@ -1928,7 +1929,7 @@ static void riscv_iommu_process_dbg(RISCVIOMMUState=
- *s)
->              iova =3D RISCV_IOMMU_TR_RESPONSE_FAULT | (((uint64_t) fault)=
- << 10);
->          } else {
->              iova =3D iotlb.translated_addr & ~iotlb.addr_mask;
-> -            iova >>=3D TARGET_PAGE_BITS;
-> +            iova >>=3D qemu_target_page_bits();
->              iova &=3D RISCV_IOMMU_TR_RESPONSE_PPN;
+>> +        }
+>> +        break;
+>> +    default:
+>> +        hcall_dprintf("Unknown RTAS token 0x%x\n", token);
+>> +        rtas_st(rets, 0, RTAS_OUT_PARAM_ERROR);
+>> +        return;
+>> +    }
+>> +
+>> +    rtas_st(rets, 0, RTAS_OUT_SUCCESS);
+>> +}
+>> +
+>>   static void rtas_ibm_os_term(PowerPCCPU *cpu,
+>>                               SpaprMachineState *spapr,
+>>                               uint32_t token, uint32_t nargs,
+>> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+>> index a6c0547e313d..efa2f891a8a7 100644
+>> --- a/include/hw/ppc/spapr.h
+>> +++ b/include/hw/ppc/spapr.h
+>> @@ -704,6 +704,8 @@ void push_sregs_to_kvm_pr(SpaprMachineState *spapr);
+>>   #define RTAS_OUT_PARAM_ERROR                    -3
+>>   #define RTAS_OUT_NOT_SUPPORTED                  -3
+>>   #define RTAS_OUT_NO_SUCH_INDICATOR              -3
+>> +#define RTAS_OUT_DUMP_ALREADY_REGISTERED        -9
+>> +#define RTAS_OUT_DUMP_ACTIVE                    -10
+>>   #define RTAS_OUT_NOT_AUTHORIZED                 -9002
+>>   #define RTAS_OUT_SYSPARM_PARAM_ERROR            -9999
+>>   @@ -769,6 +771,63 @@ void push_sregs_to_kvm_pr(SpaprMachineState 
+>> *spapr);
+>>     #define RTAS_TOKEN_MAX (RTAS_TOKEN_BASE + 0x2D)
+>>   +/* Fadump commands */
+>> +#define FADUMP_CMD_REGISTER            1
+>> +#define FADUMP_CMD_UNREGISTER          2
+>> +#define FADUMP_CMD_INVALIDATE          3
+>> +
+>> +#define FADUMP_VERSION    1
+>> +
+>> +/*
+>> + * The Firmware Assisted Dump Memory structure supports a maximum of 
+>> 10 sections
+>> + * in the dump memory structure. Presently, three sections are used for
+>> + * CPU state data, HPTE & Parameters area, while the remaining seven 
+>> sections
+>> + * can be used for boot memory regions.
+>> + */
+>> +#define FADUMP_MAX_SECTIONS            10
+>> +#define RTAS_FADUMP_MAX_BOOT_MEM_REGS  7
+>> +
+>> +/* Kernel Dump section info */
+>> +struct rtas_fadump_section {
+>> +    __be32    request_flag;
+>> +    __be16    source_data_type;
+>> +    __be16    error_flags;
+>> +    __be64    source_address;
+>> +    __be64    source_len;
+>> +    __be64    bytes_dumped;
+>> +    __be64    destination_address;
+>> +};
 >
->              /* We do not support superpages (> 4kbs) for now */
-> --
-> 2.47.1
+> Please refer docs/devel/style.rst for Naming style. CamelCase for 
+> structs.
+
+Sure, thanks, will follow it.
+
+
+Thanks,
+
+- Aditya Gupta
+
 >
->
+>> +
+>> +/* ibm,configure-kernel-dump header. */
+>> +struct rtas_fadump_section_header {
+>> +    __be32    dump_format_version;
+>> +    __be16    dump_num_sections;
+>> +    __be16    dump_status_flag;
+>> +    __be32    offset_first_dump_section;
+>> +
+>> +    /* Fields for disk dump option. */
+>> +    __be32    dd_block_size;
+>> +    __be64    dd_block_offset;
+>> +    __be64    dd_num_blocks;
+>> +    __be32    dd_offset_disk_path;
+>> +
+>> +    /* Maximum time allowed to prevent an automatic dump-reboot. */
+>> +    __be32    max_time_auto;
+>> +};
+>> +
+>> +struct rtas_fadump_mem_struct {
+>> +    struct rtas_fadump_section_header header;
+>> +    struct rtas_fadump_section        rgn[FADUMP_MAX_SECTIONS];
+>> +};
+>> +
+>> +struct fadump_metadata {
+>> +    bool fadump_registered;
+>> +    bool fadump_dump_active;
+>> +    target_ulong fdm_addr;
+>> +    struct rtas_fadump_mem_struct registered_fdm;
+>> +};
+>> +extern struct fadump_metadata fadump_metadata;
+>> +
+>>   /* RTAS ibm,get-system-parameter token values */
+>>   #define RTAS_SYSPARM_SPLPAR_CHARACTERISTICS      20
+>>   #define RTAS_SYSPARM_DIAGNOSTICS_RUN_MODE        42
 
