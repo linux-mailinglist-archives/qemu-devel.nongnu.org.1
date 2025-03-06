@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E937A542F2
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:43:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2654A542F3
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:43:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq4vN-0001zh-OA; Thu, 06 Mar 2025 01:41:41 -0500
+	id 1tq4vQ-00020u-85; Thu, 06 Mar 2025 01:41:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tq4vC-0001yk-A0
+ id 1tq4vC-0001yx-Sf
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:41:30 -0500
 Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tq4vA-0006F5-Ha
+ id 1tq4vB-0006FE-7W
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:41:30 -0500
 Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-22382657540so4155795ad.2
- for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 22:41:27 -0800 (PST)
+ d9443c01a7336-223959039f4so4517275ad.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 22:41:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741243286; x=1741848086; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FkqugfpLmgZAYLYj9EQO2VXghr69/Qi0X4/l0AwFoQQ=;
- b=XqjGd2RN2l58tbzzu+VCjj7y6YyvoooLXu9EARv9o8DhA7fwL/PFQ/QmS6Un5xmvON
- 7uCuDUe+rpXYVqCBuuoGD1al2viRgCSL2l4/1rI7cU6IPUFs7lfTAhAxDJ0F57/TDh0v
- QjR0NYFtnFm9FGqkQGsD+8pGTAQ5rRG7qtZ05PyfJ4HeCUT/oGgzSEX9vy2Wpg3uk8ry
- QTtTMJGhy6nrhb+Hl+pdnJop1AFsE4t3kX+pU/LLX+UGT/kX51zsO/liS22GxZbFd7ba
- Hv0Or/Zb2i7V7WAsRIS+hCjoAu0H3sxFGfzMLNJgMtKOtNdRgR/lV8ZC2fslo4VoApL1
- TeTA==
+ d=linaro.org; s=google; t=1741243287; x=1741848087; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wT8pzATX7z0g510B/bcUtetzdKIxpUlAXqTAPEA9Pmo=;
+ b=TX9YD6JUYameHKisYMzsZHECxTV8cv/iY96XkR4ANkGSj4h2zZEcd2vPeU0OHwG93s
+ ze7mxt0qDg0soI3ni5FocjqJPnu9hjqC+bEuCWFVKLJrHj9VtE5/7o91mat0G2t4YTin
+ qht8fqsf2eNO++3pU+f42cUtAxnGcszDLCMxQxCKUcD3cQIBlNnxq/lDGtZFffFTFxl2
+ wUiApHvOP7XiXN8+sUEshQXedaj49i8miqY3cyW9ylssyfUWHsgdGUGb8aX6c5cX6q5U
+ Sep2XxglVNsloiLPyg5JZa1eqOUOkMPAk8H39zJQL+J+NtDyV2x35loyXPgfjQ9LBVQm
+ FzAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741243286; x=1741848086;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FkqugfpLmgZAYLYj9EQO2VXghr69/Qi0X4/l0AwFoQQ=;
- b=tHMJmZMRR+HA5RusQsNH7oHoXx1dr0P4Y7koZP0nUj8uukiqW8P/sNCbrWt2Kk3P2I
- dULsdsr+5hgODK/g9F8BRuU4jEEfh9tg3uzgUzMqMkCSrgxfUa1DPiCwqUAiBXJaYw2L
- CVmDsqfcUrncMelTU9Jc150JklYfB2RBWFafgav6c1tar5ILuHko1qyhdVs/TJIaY46H
- oZ+fGjxZaG/XBD2yOZGAPR1b7BBpJnQCrNRocaYyKOBjad3OILIZp9N3Xv8ENoQumr3u
- VKKGs4A3e9wganIFSfF3Zsyrx/tFOD6jklZIzvNElFUuQhOIUBtizIWMc5wTgdqORCMC
- VStQ==
-X-Gm-Message-State: AOJu0YwJDfPckqm37QJgrCA/WYVxDxArLu1ZK/I0QvuwHMmtoZQtxB+U
- va+tiGjR8ow04X/k5tLxUOytdPCkKJEKwrtSV/APoHRY3Rctl7q16gL+Zi7EmeBFjIqIhqjlhhr
- x
-X-Gm-Gg: ASbGncuwdd7iBlif0uYrbgl0d16mDIwWWh7PGNfW5txcD/yAUScvgDRLSQWjH9ylDgr
- WUeWHF2kCoc+VoAbqJyZWRziyQ54KCZ+NP+gi4vlPZEFeMs/74PIrDspX4z1U8bcK9OW5vp2zf5
- 7qdWb6/So03YF1maG0By8V8YIguNvbDNf0a5VY83SqFQcvAc58ghOA7ZEUKOnpF4NuIgFUraXfY
- Q1GnUkTLe0pK57saCyjiuTVrh1O/UBOii0U7U9YNogHxb9lCakmKdHcqmwAlQCVTBAEmKYlBlz6
- zgLWpbaeP5po4QJerLBncIVwKYnodOBd5TtjnsWREafJ
-X-Google-Smtp-Source: AGHT+IEEsF3k9RGAHKI6byG+A+vkqd0wzsLFy6cQsq4ZWFCLH3YwKFMsHMGnrfim33vYZLZM3MjK9Q==
-X-Received: by 2002:a17:903:11c3:b0:215:4a4e:9262 with SMTP id
- d9443c01a7336-223f1c6af8fmr81636785ad.8.1741243286218; 
- Wed, 05 Mar 2025 22:41:26 -0800 (PST)
+ d=1e100.net; s=20230601; t=1741243287; x=1741848087;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wT8pzATX7z0g510B/bcUtetzdKIxpUlAXqTAPEA9Pmo=;
+ b=fJpAcb57YE9CH0YtuFgC+lFlM+IvUiuTN66P0ZfptvsuEewsdLi+BqTdiPPGaVM9y3
+ Q4i523PiYiqQ0PKfiR1bj3kml2SQlFyb84Y/LTiQUPGPFrcF6WEGZEDuO0G3Ma5MooD1
+ shWkrZF0Tw9iKZkTF3tyedFspSZY5hZoHH7Do2GBvUpSeEfm7NLg8W0g7PJbaw41v0My
+ R2xEKa0QPL91sxVAMlRah1iHpUlWVLxsuHvpGIChDAzKrvUdQjvjoituo4WHYnKbwKWp
+ +Oz+r2bpladnR4AWL758C+cU73tLs4fWEDBQeRvLAplzrE6hD6axv2e9fKv02Iiz+Eeb
+ 8yFw==
+X-Gm-Message-State: AOJu0YzYkJ9IYFv3dD5zNG3RawPR2xATwlxSRRpU02SUB0ogaik/g/di
+ FLf6xt/XXQvx+gPsLxHGe+ZTCX9T7QUzBdj5oDckBrCRTapCIohDs1qsCY+66vi3hBTBPo4a6Np
+ C
+X-Gm-Gg: ASbGnctZ5brq+z9MRE3SDOtsG/N+3G8sdr776L+ORi0pqv/dMjvrN/DVxgdI8h7HMwM
+ LIj5EqhoJXDhMLiLV0W2sbOiBMogACwK2P85Yt0HVNw9HbyGq/7oI0ZB04ZQarUPrybkqiSV1aV
+ usZnsbiFuTrI2TX5CiqO85c8pcu7XfIX7AdohrJaMg6B+QwhjPiEXE2tlCfpP5HUJpjmDjIcXbl
+ Cvjzip5q9FuDLkTub412Buuin+z0Crixae94Hvb52jw/1aa6/ob8oM1ngGx7kQtH9mIwo19JaQp
+ uBHUB0aQWM2X+Qon1RDZ5GM4QbVnz1vSx/ApggxbqXyl
+X-Google-Smtp-Source: AGHT+IFLB8iv4RFayusNn/dU8XKbHiB/II8ZC0o6pkKlvCRP8oMz/PdatWDGujnk6B+WsfH2+JYe+Q==
+X-Received: by 2002:a17:902:d2ca:b0:224:10a2:cae1 with SMTP id
+ d9443c01a7336-22410a2cdafmr13816755ad.37.1741243287140; 
+ Wed, 05 Mar 2025 22:41:27 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a91cffsm4769355ad.174.2025.03.05.22.41.25
+ d9443c01a7336-22410a91cffsm4769355ad.174.2025.03.05.22.41.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Mar 2025 22:41:25 -0800 (PST)
+ Wed, 05 Mar 2025 22:41:26 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, philmd@linaro.org,
@@ -68,11 +69,12 @@ Cc: kvm@vger.kernel.org, philmd@linaro.org,
  "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
  richard.henderson@linaro.org, Marcelo Tosatti <mtosatti@redhat.com>,
  alex.bennee@linaro.org
-Subject: [PATCH 0/7] hw/hyperv: remove duplication compilation units
-Date: Wed,  5 Mar 2025 22:41:11 -0800
-Message-Id: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/7] hw/hyperv/hv-balloon-stub: common compilation unit
+Date: Wed,  5 Mar 2025 22:41:12 -0800
+Message-Id: <20250306064118.3879213-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
+References: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
@@ -99,33 +101,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Work towards having a single binary, by removing duplicated object files.
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ hw/hyperv/meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-hw/hyperv/hyperv.c was excluded at this time, because it depends on target
-dependent symbols:
-- from system/kvm.h
-    - kvm_check_extension
-    - kvm_vm_ioctl
-- from exec/cpu-all.h | memory_ldst_phys.h.inc
-    - ldq_phys
-
-Pierrick Bouvier (7):
-  hw/hyperv/hv-balloon-stub: common compilation unit
-  hw/hyperv/hyperv.h: header cleanup
-  hw/hyperv/vmbus: common compilation unit
-  hw/hyperv/hyperv-proto: move SYNDBG definition from target/i386
-  hw/hyperv/syndbg: common compilation unit
-  hw/hyperv/balloon: common balloon compilation units
-  hw/hyperv/hyperv_testdev: common compilation unit
-
- include/hw/hyperv/hyperv-proto.h | 12 ++++++++
- include/hw/hyperv/hyperv.h       |  4 ++-
- target/i386/kvm/hyperv-proto.h   | 12 --------
- hw/hyperv/syndbg.c               |  7 +++--
- hw/hyperv/vmbus.c                | 50 ++++++++++++++++----------------
- hw/hyperv/meson.build            |  9 +++---
- 6 files changed, 49 insertions(+), 45 deletions(-)
-
+diff --git a/hw/hyperv/meson.build b/hw/hyperv/meson.build
+index d3d2668c71a..f4aa0a5ada9 100644
+--- a/hw/hyperv/meson.build
++++ b/hw/hyperv/meson.build
+@@ -2,4 +2,5 @@ specific_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'))
+ specific_ss.add(when: 'CONFIG_HYPERV_TESTDEV', if_true: files('hyperv_testdev.c'))
+ specific_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
+ specific_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
+-specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'), if_false: files('hv-balloon-stub.c'))
++specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
++system_ss.add(when: 'CONFIG_HV_BALLOON', if_false: files('hv-balloon-stub.c'))
 -- 
 2.39.5
 
