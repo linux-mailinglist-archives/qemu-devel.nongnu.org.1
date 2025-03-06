@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51098A54FA5
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70004A55004
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:03:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDTz-0002D0-8B; Thu, 06 Mar 2025 10:49:59 -0500
+	id 1tqDV5-0004LV-Lu; Thu, 06 Mar 2025 10:51:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTD-0000FI-QC
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:15 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTI-0000KC-B5
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:21 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTC-0006Mb-8X
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:11 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43bcad638efso5186625e9.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:49:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTG-0006Mn-Py
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:16 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-390cf7458f5so822025f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:49:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276148; x=1741880948; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276153; x=1741880953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=d6J+LsLjSWQlqsq7ooik8ElyF+HqmtBS26XCNLHBy/I=;
- b=UisdJWTc45CYTx52tq33X5ZMEvuDDFISV2ZNy8F6sJQ+GbkhX5Cy9cLJXOcCo4jokU
- pIIasSG7ViKHEXHQ2g70PtoxhXBBEY+3EXhfsFIhM6V2FlOzLDmqtkTSo+QpjoDHKOZw
- 8LLgY7ds04U3aPqJf2BUc+KfyIVWheVt2IS67YlFN1xz+Lo4BPsvxpfbohJj5t9uIEzZ
- I17K5yoFpsBd6JM9Zprrr6Hv5FOSqWeOZwSMdO7ePq9tJtGmz5dZ47J149286EJZa3J7
- km4tB5PNrcYPFicEl94/KDj+6aaAZONA9UIzI8cm3QV/ubxfkUdbk94PdksuWd4Pv/h+
- fJhQ==
+ :reply-to; bh=k+YMncU/lkdHhuSVLGblvNz32VlH9gXNcYRrUvN73h0=;
+ b=roTQ5uo//Q20XozGTal8vkrIS2AAAuZK6MPExZ80y12Npy3TmeTQmvlJ92TeY6BhOW
+ cHQOGsmkN2beAmvmYtsxKlmEyricazTEkZfKLfhPdUWp4mySwuoUuIqPar1180uAU3Fy
+ t4FdAWZLHzcOHfpvqsDFmW74zaCg//YZxL90p5cqy61Fd4JhxyepkbdPfy5vUPPzScga
+ sTiObBkhe2w50luX43zxTdxAkEwdRGcvhFRKAA7HJhbd2BSrtC+TPMbl3juKN6TE8rO8
+ ySAdB2LLIMc/wXT4cRgg7wGaDexLP2fAihoPDIMNcBlGeMhHVG+/bCwKSj/tyiDgGPuy
+ 25kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276148; x=1741880948;
+ d=1e100.net; s=20230601; t=1741276153; x=1741880953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d6J+LsLjSWQlqsq7ooik8ElyF+HqmtBS26XCNLHBy/I=;
- b=pqPKCKQwuqAyXYR4Qgsh2nOSuf/qCtV0U3JqrLBFlREg+KYX3mNVK+lx35lR976rl7
- ezraFHpBo4RJsY3kcVzF4CDUlMw0mjaADBRnNqB5HAHF05Ogsn1BsSOH0IQKJegk6qpm
- VRXQeFIvH5FuIWc6XYD5UkBZuBvDH64vqhVT8GHPl4q+lW154gqkBIyDmttlpewVapmU
- u/j0LRDZdACMHpkWci0w7ZGp5JfPMTnOIhBlWmGXzlWoNa/dgJiHVWHPAy/01ulFd6GJ
- aXI/oaJDbQsvmxM7zeHVpTDn7tvMw6Zz/TO+nyZCRepA1zjVYVsBKVVMJY1CcxKfq92r
- IwmA==
-X-Gm-Message-State: AOJu0YzAqtNMD+aGPygnhqud+xbP+QUqwIbW1G9jUjEd2suYE11Jui0m
- 8WpkEj9fcOtNaoq2N6Ui/pI0Lyr+h4DU75sIDofB0B/XtMiZkQ6w+GoiDddaEWmqTFhzM+R7Z+a
- O/RE=
-X-Gm-Gg: ASbGnctMn2bqhkmzuXdMGblBRP0uL1U/+UvJLSxKIHuYo/EsrSiida1xaI2m/7v2pUn
- 3NNTWhiu1axnqvdDsOY7Nwt/UylHx3FmTSEAQygWHTFXzklWikj0NfxHGMZP6edu2hxiuninOHc
- 9RDzVO253LhHyNY6ZRZye9J2AnQEt9M4o49VFgX3+jFe5aaGLfF3ScSlg+0f7TlvCkZqtPWw6JU
- h9muGksU1PO0HPVm3OxpzaDz4DcacsWK63fazyCnlXw2BbecCruAgTzsIJgZVQjslFvhDKtUhgm
- jUoZk1bKxBo1cOYBC/eFc4XhfnwBu7oZWGAhZC2PvF2YrBW2XIQ6LDyfFty+UOAmQXLHE6r8cXL
- 2c00kSQ7wx5y2xKNYJDw=
-X-Google-Smtp-Source: AGHT+IHfVhKDA2lTidrgMbFCl5h9q6UnpHASeVb0hhW1+/aJpfm0jJEVWE+O1wSXS+4U6uyAbJmNPw==
-X-Received: by 2002:a05:600c:45c6:b0:439:98ef:5d6 with SMTP id
- 5b1f17b1804b1-43bd2aed717mr51793495e9.22.1741276148454; 
- Thu, 06 Mar 2025 07:49:08 -0800 (PST)
+ bh=k+YMncU/lkdHhuSVLGblvNz32VlH9gXNcYRrUvN73h0=;
+ b=k5vOsVT/x4hkFKxFUfdEimKJ+LNjGXQSykeZ3vZ6MoYbWV8UnLnemCvXusoVoztdkB
+ hvfluDl+blXzznOEm191+PE3DQjJLqc3pbdXRh7kYqW8tJuq38GrPWU/EK8i1mnxDOXU
+ roXlCfdg1ehojJY2mvLrEuZlOQvm1ZVt+vGDT62eJsBTPWg3f1jZ/J71I4Hl0CaPz9lW
+ XN0pEl21mfb7TNJmOC9ZLSP+A/eGRRMNz7pK1Rm6fzbaGukMnUxcrGoBikeyBZU0Loin
+ dTApvYZZJE0fcDUJaWI47YZ9yR9cBiEUX+4IMP711wpDTVEDn/6gnsIntWa4Jp44Av03
+ FwWA==
+X-Gm-Message-State: AOJu0YyqFmttZ+HjpTZyWTOMpH//8r/lfC+b4UUu8pB4ASPSVqxg+94n
+ Z3RMXtjxHiQOTKZ3u0/d7IX+M93yY+XMv1PDeYJfIk/xV1umQtyd+A6SmIcGPqZrNGJssBGMWfo
+ gW/o=
+X-Gm-Gg: ASbGncuGYWMGPv0CFA86EnHY+ZgRUqhib3KhBKxhWfprF6eIjEDIj5b19e7V/mY6qEz
+ k8O2Xu/EYpodA7FGdqZiQeke7rtwdDSnKpw4/7o5FkuXe0YYr7SInpzpn5GsaH/DA35RFqnVu6C
+ 3yYlLrccwIOzCJj44GUZhnF2tfe3RIoc9maFafjsng0UWQFr78bhyD9bzfjNNGWwmW+uMaVCayu
+ IFBpySDzacYsJXAdQ1n6AO9quPPqbg9QdqVbudDG32c34hfnRrDzXeWAWh2QURG7usg95agqLcJ
+ dHwe4X+MG3EIYjQ7bV7rHzI2uEi5VEIQnw5sIagx2xKovHT4MXbfphmPfr9fW1LQ57a0NZkp95u
+ 3ksPbFq8WZ2XoAWgvgyc=
+X-Google-Smtp-Source: AGHT+IGgjKQoc9J01eK6/A2n55H76jd7eWhXL6ngn6MtGAgeD3ajN1Ute5QxvCsz5b9PkMRwkMh/bQ==
+X-Received: by 2002:a5d:64a2:0:b0:390:e7c1:59c4 with SMTP id
+ ffacd0b85a97d-3911f740a0bmr8290839f8f.13.1741276152879; 
+ Thu, 06 Mar 2025 07:49:12 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd41c7cc7sm56999535e9.0.2025.03.06.07.49.07
+ ffacd0b85a97d-3912c0e2b8bsm2418916f8f.64.2025.03.06.07.49.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:49:08 -0800 (PST)
+ Thu, 06 Mar 2025 07:49:12 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/54] cpus: Fix style in cpu-target.c
-Date: Thu,  6 Mar 2025 16:47:02 +0100
-Message-ID: <20250306154737.70886-21-philmd@linaro.org>
+Subject: [PULL 21/54] cpus: Restrict cpu_common_post_load() code to TCG
+Date: Thu,  6 Mar 2025 16:47:03 +0100
+Message-ID: <20250306154737.70886-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +96,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix style on code we are going to modify.
+CPU_INTERRUPT_EXIT was removed in commit 3098dba01c7
+("Use a dedicated function to request exit from execution
+loop"), tlb_flush() and tb_flush() are related to TCG
+accelerator.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250123234415.59850-16-philmd@linaro.org>
+Message-Id: <20250123234415.59850-17-philmd@linaro.org>
 ---
- cpu-target.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ cpu-target.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
 diff --git a/cpu-target.c b/cpu-target.c
-index 83688f1d508..b925b9391e8 100644
+index b925b9391e8..48446c90212 100644
 --- a/cpu-target.c
 +++ b/cpu-target.c
-@@ -48,12 +48,15 @@ static int cpu_common_post_load(void *opaque, int version_id)
+@@ -46,22 +46,25 @@
+ #ifndef CONFIG_USER_ONLY
+ static int cpu_common_post_load(void *opaque, int version_id)
  {
-     CPUState *cpu = opaque;
+-    CPUState *cpu = opaque;
++    if (tcg_enabled()) {
++        CPUState *cpu = opaque;
  
--    /* 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
--       version_id is increased. */
-+    /*
-+     * 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
-+     * version_id is increased.
-+     */
-     cpu->interrupt_request &= ~0x01;
-     tlb_flush(cpu);
+-    /*
+-     * 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
+-     * version_id is increased.
+-     */
+-    cpu->interrupt_request &= ~0x01;
+-    tlb_flush(cpu);
++        /*
++         * 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
++         * version_id is increased.
++         */
++        cpu->interrupt_request &= ~0x01;
  
--    /* loadvm has just updated the content of RAM, bypassing the
-+    /*
-+     * loadvm has just updated the content of RAM, bypassing the
-      * usual mechanisms that ensure we flush TBs for writes to
-      * memory we've translated code from. So we must flush all TBs,
-      * which will now be stale.
+-    /*
+-     * loadvm has just updated the content of RAM, bypassing the
+-     * usual mechanisms that ensure we flush TBs for writes to
+-     * memory we've translated code from. So we must flush all TBs,
+-     * which will now be stale.
+-     */
+-    tb_flush(cpu);
++        tlb_flush(cpu);
++
++        /*
++         * loadvm has just updated the content of RAM, bypassing the
++         * usual mechanisms that ensure we flush TBs for writes to
++         * memory we've translated code from. So we must flush all TBs,
++         * which will now be stale.
++         */
++        tb_flush(cpu);
++    }
+ 
+     return 0;
+ }
 -- 
 2.47.1
 
