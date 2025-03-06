@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7316A54DBD
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A51CA54E05
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:42:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqCC0-00053u-NN; Thu, 06 Mar 2025 09:27:21 -0500
+	id 1tqCPc-0003uG-8H; Thu, 06 Mar 2025 09:41:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqCBo-0004ya-3i
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:27:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqCPY-0003th-QQ
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:41:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqCBk-00038P-Uz
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:27:06 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqCPW-0005HV-Uy
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:41:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741271222;
+ s=mimecast20190719; t=1741272077;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=epHqCapw2ITcyVCRZZ5gs/CE915iB8zkoYckaNQ87Go=;
- b=CrJ3oUHDgGavzra4+KmIG5wGc1VAeP6KGc6ChTuwaciO6vhGpdE9NYY6iSSbEcyfJMMV0i
- N0wwat8gZgPSNdlIDFAugF+RYFUT5zhIM8jyEmQr2EZKIir64LgvSc8jFqXQ1htZYpsxCm
- a9tdYi8grxHNLC4iPbxy1ByVwgEsfyI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mtCXg6grMPLJClan6P+6p+RZIhSvFMABkaMd0ADEUE8=;
+ b=EQ9yhyUU/7OKtnHpYgacfAcunO1meoQLyF58hDf69jlFcAQx+HytoEtuNTJJNMlyp4hGXM
+ GoaEh8LWV5MBXBYYy9u3HrCOUxjcHgZSQ2Lg6nMnA3YYCmrDFCw0KqPQdZJiOHkCtMR5we
+ WuduyYQmsE459sqpwUS570Gzp9vhzwA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-TxhlW9QlMwyrOwOqb9zb5Q-1; Thu, 06 Mar 2025 09:27:01 -0500
-X-MC-Unique: TxhlW9QlMwyrOwOqb9zb5Q-1
-X-Mimecast-MFC-AGG-ID: TxhlW9QlMwyrOwOqb9zb5Q_1741271220
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-39123912ff0so326191f8f.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 06:27:00 -0800 (PST)
+ us-mta-265-H9MYiPZENLyxfJG-1DbvwQ-1; Thu, 06 Mar 2025 09:41:06 -0500
+X-MC-Unique: H9MYiPZENLyxfJG-1DbvwQ-1
+X-Mimecast-MFC-AGG-ID: H9MYiPZENLyxfJG-1DbvwQ_1741272065
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-390de58dc09so540576f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 06:41:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741271220; x=1741876020;
+ d=1e100.net; s=20230601; t=1741272064; x=1741876864;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=epHqCapw2ITcyVCRZZ5gs/CE915iB8zkoYckaNQ87Go=;
- b=qsFR6LWezC1+TAi8lHyoxh6wv0Hf0X6op6AcSCTDOna6zFKOK/K1akNv4Fq2fkniG8
- UDxzoowoDNKxKX5FAbYVXOdtkAUmv81lYcJY4SdxAyq5I99bSURI9NGWcj9qWX2fFQxE
- RDV+rtlAZDshGXiqiSgpHRCAw6HSVhFS88AKz+d+/LLy2T4/NImY9YH5JIOwdn3LpmqC
- Zos/RVKS12nKTZ8RiyhspEYcY+kAU2V57FkR4OOAOmtZJ5XzTeHeDkKp279EnX3IYktw
- 7vsfpXTM66YpV9IjIPcVjq3d3PZDMt5NfQ8xM1fj3/Rb4wIehrt4DA3VFeb187LPkHmS
- zvAA==
+ bh=mtCXg6grMPLJClan6P+6p+RZIhSvFMABkaMd0ADEUE8=;
+ b=nm1LkQUz8Bwd2WeXraUwj5ykEFJ7+dILKg7STWd2vWYl93L4zoxOlGfueJFc0hwxKo
+ XWCUV00zMYLPSPbgaxBAkzF1jmI/JEpngCFBhDwLxZhLF3AcjKbZIHOLi6NKFhce4/7J
+ aZOT6XRa59ZMuHvZIDQCjT1CfOrRMOgSmxyDxHM2Ho4GE0j6FVA8sT0XQrPX75mc/A+o
+ I7FRl2RozCeQhtKFjZR8rLp7GF2H+rKDEaPtEamjdhuZZ1sWbkTmv1CmoZ3k+clSTAVc
+ 93tCO1a6Tby3BZnzDc0XTPd0JQEx8q9jYjAXzbRHDU1JGFyua+2hFS/Y6sQcfapUDG6E
+ RrOA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW9GWCwXzjsmK4Ju4lcYaeBJZh+xcdETEUta0HQTKt0m1rB3DO6kob2yLohiinejImoxFI1LPKDDr1o@nongnu.org
-X-Gm-Message-State: AOJu0YypGq8vlxwT9cq2Zs4XRzitmT67gWCK2YOrYCvUAXao9NU6TPa2
- SkjeFjwr1Ban2zQIsI1ZFSStKZPpkFv7nX18IkLi6BjoHTmTrOPMgfBa2hWZCA7EDXve+ozzP4f
- OUCgTqyAlO5PxG5aeEa3WMpiSENj5FWykj359Lpw2fL33U388JiN2
-X-Gm-Gg: ASbGncvA49xh/LNlPD+YJcGb1t5vxRgqxAfKgzlnngX14SrC4f4PMvuRBPFQKa6yYur
- vbzisSzpZkHF/so+QcApq8u7VNr5rzr0iI3EzlXb/DbjThNCzU4RsgQXus0FjRhGzzf1+CFcFmo
- reen5a+rrdX822wYBTLJ3tGZuvdeAnCZ1T8Jie7QPXEOTkuYWkZmDuMSnhy391IH34cJg7FwG/G
- kyQRGjnh+M0BBZyuPX9B5BMBDifz6wMSATuWD4QudDUSHkQz7xkurxGiic3s7cinYQZoX1sEMQe
- ubGbBJDwBVN5+EfifNPpspzeMtyKJPO1Wn+50AfEMn0KTOEj8TanGg==
-X-Received: by 2002:a5d:6c65:0:b0:391:34:4fa9 with SMTP id
- ffacd0b85a97d-3911f58eb5fmr7267255f8f.0.1741271219683; 
- Thu, 06 Mar 2025 06:26:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF+mdpEiDM6MXK5fFR6glAV+0wkyhCyns2zG5MJ334E0bzpHg11+nTgXmoKTklK1JCvasMGyw==
-X-Received: by 2002:a5d:6c65:0:b0:391:34:4fa9 with SMTP id
- ffacd0b85a97d-3911f58eb5fmr7267172f8f.0.1741271217833; 
- Thu, 06 Mar 2025 06:26:57 -0800 (PST)
+ AJvYcCXWudgPLGxWBIjzDE9WXgrqM1pySoy0jRt83s97YH9Rd91P2hP69P55TLaCNd0eE434cX25vJEQfD7B@nongnu.org
+X-Gm-Message-State: AOJu0YwOTKttSidAmp6H3uDxKnFAP5soEW+LxFbn0bIFqZ1WhNivRkad
+ loLK7VaTJTPqLC6uvkq6hIFNpU7XgskQmz6PrH+WpejNogU5kTTl18pcZsxSSRtoBz/Y5fsO7sl
+ JzhUBnoqVH3EKKc4eiobRlKD32cNrgJIIRz2nAwUTtkWh+dQQUY43
+X-Gm-Gg: ASbGncut0YwfQD7f37/KK5meRSrA+EUgUa7mWK1+U0nsW4BfgXS45EgusOyh9CIW9Lo
+ dsherQgsXHSB/dE0b20kSZFiRvQFB5yXYoax5Lf16rQ7AW3dJeXpWF5GnB/f6pmxwCLnHmTlOxN
+ cy2lzkWETxo6a6K8Q+js0Ed78CJfZJOINROagpILlPkUoMetIR/HFPYtT/4RI8hXvE8RF49UF/k
+ tQgaCnMmEOfZNoRNqMdcl6I8OFdbTf3yNH6YEpXd8+XsbTmT6sLxbhOrRs/PofyAHoxUoSXAO7I
+ HaUEVJ8hYF7KiPr93Qigj9ibNBb7ZdLh/SgYU9wQ5Q2zlghYtSwMKw==
+X-Received: by 2002:a5d:5885:0:b0:390:e62e:f31f with SMTP id
+ ffacd0b85a97d-3911f7205c6mr7245748f8f.3.1741272064421; 
+ Thu, 06 Mar 2025 06:41:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHzCAAg7v2nL5opbsaPFLUzpk1VLplx8LGJ6WegGFWNcki2ph/9iX0igWzfjiauWUsf7b5u2w==
+X-Received: by 2002:a5d:5885:0:b0:390:e62e:f31f with SMTP id
+ ffacd0b85a97d-3911f7205c6mr7245718f8f.3.1741272064005; 
+ Thu, 06 Mar 2025 06:41:04 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd8c3aa8sm21251195e9.14.2025.03.06.06.26.56
+ ffacd0b85a97d-3912bfb79adsm2227942f8f.7.2025.03.06.06.41.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 06:26:57 -0800 (PST)
-Message-ID: <7eb4dd80-0ae3-4522-bd1d-b004c19c4bf2@redhat.com>
-Date: Thu, 6 Mar 2025 15:26:55 +0100
+ Thu, 06 Mar 2025 06:41:03 -0800 (PST)
+Message-ID: <b73d5989-f5a8-4370-be6f-6f6bb609a38e@redhat.com>
+Date: Thu, 6 Mar 2025 15:41:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 30/36] vfio/migration: Multifd device state transfer
- support - send side
-To: Avihai Horon <avihaih@nvidia.com>,
- "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 7/9] cpu: Introduce cpu_get_phys_bits()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
- <4d727e2e0435e0022d50004e474077632830e08d.1741124640.git.maciej.szmigiero@oracle.com>
- <629dff3c-865d-47d9-a01a-d212dfed1efb@nvidia.com>
- <97b87f22-b867-4282-ba13-efba16458859@maciej.szmigiero.name>
- <973268d4-85d6-4a17-ae76-2d20d8cfd7cb@redhat.com>
- <d85c8d21-5e1b-4162-9f5b-fe270beb5eca@nvidia.com>
- <498a07aa-d539-46e6-90e9-8c41a59a6b2f@maciej.szmigiero.name>
- <bdf53809-b0da-489b-b25a-28be1286c06a@nvidia.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20250130134346.1754143-1-clg@redhat.com>
+ <20250130134346.1754143-8-clg@redhat.com>
+ <4dc45084-fb9d-4fed-88b0-18b0034c8c74@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -137,17 +131,17 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <bdf53809-b0da-489b-b25a-28be1286c06a@nvidia.com>
+In-Reply-To: <4dc45084-fb9d-4fed-88b0-18b0034c8c74@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -165,132 +159,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/25 15:23, Avihai Horon wrote:
+On 3/6/25 11:37, Philippe Mathieu-Daudé wrote:
+> On 30/1/25 14:43, Cédric Le Goater wrote:
+>> The Intel CPU has a complex history regarding setting of the physical
+>> address space width on KVM. A 'phys_bits' field and a "phys-bits"
+>> property were added by commit af45907a1328 ("target-i386: Allow
+>> physical address bits to be set") to tune this value.
+>>
+>> In certain circumstances, it is interesting to know this value to
+>> check that all the conditions are met for optimal operation. For
+>> instance, when the system has a 39-bit IOMMU address space width and a
+>> larger CPU physical address space, we expect issues when mapping the
+>> MMIO regions of passthrough devices and it would good to report to the
+>> user. These hybrid HW configs can be found on some consumer grade
+>> processors or when using a vIOMMU device with default settings.
+>>
+>> For this purpose, add an helper routine and a CPUClass callback to
+>> return the physical address space width of a CPU.
+>>
+>> Cc: Richard Henderson <richard.henderson@linaro.org>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Eduardo Habkost <eduardo@habkost.net>
+>> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>> Cc: Yanan Wang <wangyanan55@huawei.com>
+>> Cc: Zhao Liu <zhao1.liu@intel.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   include/hw/core/cpu.h            |  9 +++++++++
+>>   include/hw/core/sysemu-cpu-ops.h |  6 ++++++
+>>   cpu-target.c                     |  5 +++++
+>>   hw/core/cpu-system.c             | 11 +++++++++++
+>>   target/i386/cpu.c                |  6 ++++++
+>>   5 files changed, 37 insertions(+)
+>>
+>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>> index fb397cdfc53d12d40d3e4e7f86251fc31c48b9f6..1b3eead102ce62fcee55ab0ed5e0dff327fa2fc5 100644
+>> --- a/include/hw/core/cpu.h
+>> +++ b/include/hw/core/cpu.h
+>> @@ -748,6 +748,14 @@ int cpu_asidx_from_attrs(CPUState *cpu, MemTxAttrs attrs);
+>>    */
+>>   bool cpu_virtio_is_big_endian(CPUState *cpu);
+>> +/**
+>> + * cpu_get_phys_bits:
+>> + * @cpu: CPU
+>> + *
+>> + * Return the physical address space width of the CPU @cpu.
+>> + */
+>> +uint32_t cpu_get_phys_bits(const CPUState *cpu);
+>> +
+>>   #endif /* CONFIG_USER_ONLY */
+>>   /**
+>> @@ -1168,6 +1176,7 @@ void cpu_exec_unrealizefn(CPUState *cpu);
+>>   void cpu_exec_reset_hold(CPUState *cpu);
+>>   const char *target_name(void);
+>> +uint32_t target_phys_bits(void);
+>>   #ifdef COMPILING_PER_TARGET
+>> diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
+>> index 0df5b058f50073e47d2a6b8286be5204776520d2..210b3ed57985525795b81559e41e0085969210d5 100644
+>> --- a/include/hw/core/sysemu-cpu-ops.h
+>> +++ b/include/hw/core/sysemu-cpu-ops.h
+>> @@ -81,6 +81,12 @@ typedef struct SysemuCPUOps {
+>>        */
+>>       bool (*virtio_is_big_endian)(CPUState *cpu);
+>> +    /**
+>> +     * @get_phys_bits: Callback to return the physical address space
+>> +     * width of a CPU.
+>> +     */
+>> +    uint32_t (*get_phys_bits)(const CPUState *cpu);
+>> +
+>>       /**
+>>        * @legacy_vmsd: Legacy state for migration.
+>>        *               Do not use in new targets, use #DeviceClass::vmsd instead.
+>> diff --git a/cpu-target.c b/cpu-target.c
+>> index 667688332c929aa53782c94343def34571272d5f..88158272c06cc42424d435b9701e33735f080239 100644
+>> --- a/cpu-target.c
+>> +++ b/cpu-target.c
+>> @@ -472,3 +472,8 @@ const char *target_name(void)
+>>   {
+>>       return TARGET_NAME;
+>>   }
+>> +
+>> +uint32_t target_phys_bits(void)
+>> +{
+>> +    return TARGET_PHYS_ADDR_SPACE_BITS;
+>> +}
+>> diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
+>> index 6aae28a349a7a377d010ff9dcab5ebc29e1126ca..05067d84f4258facf4252216f17729e390d38eae 100644
+>> --- a/hw/core/cpu-system.c
+>> +++ b/hw/core/cpu-system.c
+>> @@ -60,6 +60,17 @@ hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+>>       return cc->sysemu_ops->get_phys_page_debug(cpu, addr);
+>>   }
+>> +uint32_t cpu_get_phys_bits(const CPUState *cpu)
+>> +{
+>> +    CPUClass *cc = CPU_GET_CLASS(cpu);
+>> +
+>> +    if (cc->sysemu_ops->get_phys_bits) {
+>> +        return cc->sysemu_ops->get_phys_bits(cpu);
+>> +    }
+>> +
+>> +    return target_phys_bits();
 > 
-> On 06/03/2025 16:13, Maciej S. Szmigiero wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> On 6.03.2025 14:37, Avihai Horon wrote:
->>>
->>> On 06/03/2025 12:32, Cédric Le Goater wrote:
->>>> External email: Use caution opening links or attachments
->>>>
->>>>
->>>> On 3/6/25 11:15, Maciej S. Szmigiero wrote:
->>>>> On 6.03.2025 07:47, Avihai Horon wrote:
->>>>>>
->>>>>> On 05/03/2025 0:03, Maciej S. Szmigiero wrote:
->>>>>>> External email: Use caution opening links or attachments
->>>>>>>
->>>>>>>
->>>>>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>>>>>>
->>>>>>> Implement the multifd device state transfer via additional per-device
->>>>>>> thread inside save_live_complete_precopy_thread handler.
->>>>>>>
->>>>>>> Switch between doing the data transfer in the new handler and doing it
->>>>>>> in the old save_state handler depending if VFIO multifd transfer is enabled
->>>>>>> or not.
->>>>>>>
->>>>>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->>>>>>> ---
->>>>>>>   hw/vfio/migration-multifd.c   | 142 ++++++++++++++++++++++++++++++++++
->>>>>>>   hw/vfio/migration-multifd.h   |   6 ++
->>>>>>>   hw/vfio/migration.c           |  22 ++++--
->>>>>>>   hw/vfio/trace-events          |   2 +
->>>>>>>   include/hw/vfio/vfio-common.h |   6 ++
->>>>>>>   5 files changed, 172 insertions(+), 6 deletions(-)
->>>>>>>
->>>>>>> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
->>>>>>> index 1d81233c755f..bfb9a72fa450 100644
->>>>>>> --- a/hw/vfio/migration-multifd.c
->>>>>>> +++ b/hw/vfio/migration-multifd.c
->>>>>>> @@ -496,6 +496,148 @@ bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp)
->>>>>>>       return true;
->>>>>>>   }
->>>>>>>
->>>>>>> +void vfio_multifd_emit_dummy_eos(VFIODevice *vbasedev, QEMUFile *f)
->>>>>>> +{
->>>>>>> +    assert(vfio_multifd_transfer_enabled(vbasedev));
->>>>>>> +
->>>>>>> +    /*
->>>>>>> +     * Emit dummy NOP data on the main migration channel since the actual
->>>>>>> +     * device state transfer is done via multifd channels.
->>>>>>> +     */
->>>>>>> +    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
->>>>>>> +}
->>>>>>> +
->>>>>>> +static bool
->>>>>>> +vfio_save_complete_precopy_thread_config_state(VFIODevice *vbasedev,
->>>>>>> +                                               char *idstr,
->>>>>>> +                                               uint32_t instance_id,
->>>>>>> +                                               uint32_t idx,
->>>>>>> +                                               Error **errp)
->>>>>>> +{
->>>>>>> +    g_autoptr(QIOChannelBuffer) bioc = NULL;
->>>>>>> +    g_autoptr(QEMUFile) f = NULL;
->>>>>>> +    int ret;
->>>>>>> +    g_autofree VFIODeviceStatePacket *packet = NULL;
->>>>>>> +    size_t packet_len;
->>>>>>> +
->>>>>>> +    bioc = qio_channel_buffer_new(0);
->>>>>>> +    qio_channel_set_name(QIO_CHANNEL(bioc), "vfio-device-config-save");
->>>>>>> +
->>>>>>> +    f = qemu_file_new_output(QIO_CHANNEL(bioc));
->>>>>>> +
->>>>>>> +    if (vfio_save_device_config_state(f, vbasedev, errp)) {
->>>>>>> +        return false;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    ret = qemu_fflush(f);
->>>>>>> +    if (ret) {
->>>>>>> +        error_setg(errp, "%s: save config state flush failed: %d",
->>>>>>> +                   vbasedev->name, ret);
->>>>>>> +        return false;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    packet_len = sizeof(*packet) + bioc->usage;
->>>>>>> +    packet = g_malloc0(packet_len);
->>>>>>> +    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
->>>>>>> +    packet->idx = idx;
->>>>>>> +    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
->>>>>>
->>>>>> The packet is sent on the wire.
->>>>>> Shouldn't we use cpu_to_be32() for version, idx and flags? Also below in vfio_multifd_save_complete_precopy_thread().
->>>>>> And then use be32_to_cpu() in patch #26 when receiving the packet?
->>>>>
->>>>> Is it even possible to migrate to a host with different endianess here?
->>>>>
->>>>> Also AFAIK big endian hosts barely exist today, is any of them even VFIO-capable?
->>>>
->>>> s390x is VFIO capable. VFIO PCI migration is not supported on these.
->>>>
->>> It is indeed a niche use case and not even applicable today, but if we want to add support for it after the release, we will have to add a compatibility option for older QEMUs.
->>> If we add support for it now, then we can avoid the compatibility option.
->>>
->>> It's a really small change and it can come even after the series is merged, as a fix.
->>> So IMHO it wouldn't hurt, for completeness.
->>
->> For sure, any such bit stream change will need re-testing the whole VFIO migration.
->>
->> But I will be testing the queued buffers size limit anyway so it would make
->> sense to test both at the same time.
->>
->> Wouldn't it make more sense, however, to squash this endianess change already
->> to the relevant patches rather than to have such bit stream modifying patch on the top?
->>
->> It would help prevent backporting mistakes - when someone forgets about this last patch
->> and ends with a different bit stream.
-> 
-> I agree.
-> Whatever you and Cedric decide.
-> 
+> I might have suggested to return TARGET_PHYS_ADDR_SPACE_BITS
+> by default in v1, I'm not sure about it anymore. Maybe default
+> to 0 and have each target register its helper if necessary?
 
-PR was sent. So it will be a "Fixes" patch.
+sure. No problem. I can change that.
+
 
 Thanks,
 
 C.
+
+
+> 
+>> +}
+>> +
+>>   hwaddr cpu_get_phys_page_debug(CPUState *cpu, vaddr addr)
+>>   {
+>>       MemTxAttrs attrs = {};
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index b5dd60d2812e0c3d13c1743fd485a9068ab29c4f..01cf9a44963710a415c755c17582730f75233143 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -8393,6 +8393,11 @@ static bool x86_cpu_get_paging_enabled(const CPUState *cs)
+>>       return cpu->env.cr[0] & CR0_PG_MASK;
+>>   }
+>> +
+>> +static uint32_t x86_cpu_get_phys_bits(const CPUState *cs)
+>> +{
+>> +    return X86_CPU(cs)->phys_bits;
+>> +}
+>>   #endif /* !CONFIG_USER_ONLY */
+>>   static void x86_cpu_set_pc(CPUState *cs, vaddr value)
+>> @@ -8701,6 +8706,7 @@ static const struct SysemuCPUOps i386_sysemu_ops = {
+>>       .get_memory_mapping = x86_cpu_get_memory_mapping,
+>>       .get_paging_enabled = x86_cpu_get_paging_enabled,
+>>       .get_phys_page_attrs_debug = x86_cpu_get_phys_page_attrs_debug,
+>> +    .get_phys_bits = x86_cpu_get_phys_bits,
+>>       .asidx_from_attrs = x86_asidx_from_attrs,
+>>       .get_crash_info = x86_cpu_get_crash_info,
+>>       .write_elf32_note = x86_cpu_write_elf32_note,
+> 
 
 
