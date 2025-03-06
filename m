@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1173FA54287
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7A3A5428F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:07:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq4LZ-00018L-FQ; Thu, 06 Mar 2025 01:04:41 -0500
+	id 1tq4O7-0005nK-AL; Thu, 06 Mar 2025 01:07:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tq4LK-00016R-DR; Thu, 06 Mar 2025 01:04:28 -0500
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tq4LI-0001g4-Fj; Thu, 06 Mar 2025 01:04:26 -0500
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-86b6be2c480so89262241.0; 
- Wed, 05 Mar 2025 22:04:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741241062; x=1741845862; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JT672sFUaARLo+xAOg1ib1kW1Nt0+E5ZKP8pHGJ4cQA=;
- b=TuyjX9xnsnAACxUh3Z6qpHJWCzN35jSba7daMs/K2ezKnV/XEEpCcIGDrdh8AvVnwl
- VgaxCyxqQ5pYRYZ+5TmjKjksfZMT6kTKs1QdbTAI11oV3u90xWXaqyOlnPw8BFhTixcg
- GHtRRazHW+SkWpfpvy6sRmQgqslmCytlrbdCnkwU2K6MxIY66GbM3qY7QjpMbLFBW/Mx
- k0JJTac4OGWEsTkrBOg58Wq2chAAQrQCRfTTARYG6W1wEMlNzAQ23sBalXGxXDaH0+9V
- cZrT3rrrssH1oK444T9O/5yWq6cGK7cJKmQMNFf5ow4hFyachT4wfvgMw52C1n+UJrdB
- uvkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741241062; x=1741845862;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JT672sFUaARLo+xAOg1ib1kW1Nt0+E5ZKP8pHGJ4cQA=;
- b=e5gD4DX5BTJEsV9HiHJUE7YpkLdNbS+VVQ0M7ITLxNXRyhk+p1Rlc+GMfunHope8WL
- XJgodYABP0SHUz7E4+qMTlICZpgXaFPgOQFGxAW5qliKjXP7bClYDZDc2/ptEQ/LRTOC
- ntoUXmKpuC5xvM9V0qIJ9wOjyk2/Spyj6Bma3g9yncnCP1LtgQ4+SS5Xd976nqQlmjRQ
- UmrlbvcNWhkUgmmsPefMpj8klW7YmIzv11gOkf5w5X4vbN57IqrYfrIEYngkdZ1oRI/x
- zEk5bb4UyVURjAmD4rh0McG1pY+dSW63/WjPM2XGG5GxG/xmUcPU6DcSpglBiuRIN9na
- FgOQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXWeKJ4ffBTR+vIFTE5DP30BRKqMr1DhOt/kxn1mcKwmLKh+j0XQaAOCA5jQaPt/GzKIX8SxBW20X0U@nongnu.org
-X-Gm-Message-State: AOJu0Yyz8/954u5eSRXVBrb1wIlFBQAoWH+VQGnfqO4pBG9ho6kkFAuU
- NJ/HxBiUfkbyFus8ueqLW96we9enEKOiq2M0Kdm75qou/NBQshlQU9q3brmSFHvQA/+NM0P6hWF
- d/MvKafevuk8XxPC/0R64smYsXT0=
-X-Gm-Gg: ASbGncsB+2VFbKmfFOJIE/9TzbNvctFajTxbaCRSTePt5nnRRLr/x60Xj1E3QIrZ/W+
- zQCcJQrT0f+M1qVb8JboFUDHS0AF2ajeX9ahWG/k+EKjAoOdoY1dSBSNPzcN3xkXuOXIWCPZGA9
- /tmH0I7OmnA/SJFQjTyQAHFX+S1t+0TLSPvpzao99rxosoHCaFYl3DMwN8
-X-Google-Smtp-Source: AGHT+IFxyrSZlA5APPJxp7C3F+DQBZoXhCNev8SjeAXKvumGIanxY50BxaKomW6+DxN48IcICu/yDLi5eTvWo7KGU0c=
-X-Received: by 2002:a05:6102:50a3:b0:4c1:94c1:1c34 with SMTP id
- ada2fe7eead31-4c2e291086dmr3826594137.20.1741241062540; Wed, 05 Mar 2025
- 22:04:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tq4O4-0005n3-Sp
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:07:16 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tq4O3-0002KC-0M
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:07:16 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525LCwT1000389;
+ Thu, 6 Mar 2025 06:07:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=KF0K7WXnSlPxtYfcySYIHBSFh8/Jg4wf4y4TWH+Wl
+ jw=; b=gc1RumkCYQSx746OL8GYP7Q3bUi2RXnyjc3i3qJSMoZURCvQt6APMqJjQ
+ EnAoL9PJc3uFwv/619L/tCSOlK5NRYcGMoWnb62GTEk40qhqddx+vlx9bbrTpTKG
+ KVQhcdP6zAdIs0No/E4wubOex7nCkxAabJgYzXmJsvotmCP5jdI1KTENQbx9i4VG
+ UwOqc3oPATXbaDsrmpb7ZegzYRUv2Lqi1i/WHr0h4HSmWReXw1vR2AP5LRr4SN13
+ FEjp+kdP2Sj9w0m6/BrCTLyzlKSwPL//TN4BvjdaKOqPQdDTnKxXTipIRMYIXWSB
+ SxKXtqrnfABc5VWb5UkjCOlOyy9cw==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 456pnavh5h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 06:07:12 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 526407EU025026;
+ Thu, 6 Mar 2025 06:07:11 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 454f926m3u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 06:07:11 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 526678Ox42271138
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Mar 2025 06:07:08 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50B0720043;
+ Thu,  6 Mar 2025 06:07:08 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5671F20040;
+ Thu,  6 Mar 2025 06:07:07 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
+ [9.109.199.160])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Mar 2025 06:07:07 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: <qemu-devel@nongnu.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH] doc: add missing 'Asset' type in function test doc
+Date: Thu,  6 Mar 2025 11:37:06 +0530
+Message-ID: <20250306060706.1982992-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250303093155.35585-1-florian.lugou@provenrun.com>
- <20250303093155.35585-2-florian.lugou@provenrun.com>
- <CAKmqyKOhUpLbmj3ob7htaYdmqhZxOn2nJCyoerb=UsuLxECjig@mail.gmail.com>
-In-Reply-To: <CAKmqyKOhUpLbmj3ob7htaYdmqhZxOn2nJCyoerb=UsuLxECjig@mail.gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 6 Mar 2025 16:03:56 +1000
-X-Gm-Features: AQ5f1Jq35SeN9ke0GhHI5AoTqaF1EfvZ61Zg_VxWr5Jm30MStaBhhvUxffca8JI
-Message-ID: <CAKmqyKP0ZcRXpPveDD3MpKDRATfeV+fsqg=+dWn+xGe-cBMjwQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] target/riscv: Add scontext CSR handling
-To: Florian Lugou <florian.lugou@provenrun.com>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: p4oxg_KkcPFFZC3fSdZCbe_84XC6hel6
+X-Proofpoint-GUID: p4oxg_KkcPFFZC3fSdZCbe_84XC6hel6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_03,2025-03-06_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0
+ phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ bulkscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503060042
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,162 +104,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Mar 6, 2025 at 3:48=E2=80=AFPM Alistair Francis <alistair23@gmail.c=
-om> wrote:
->
-> On Mon, Mar 3, 2025 at 7:39=E2=80=AFPM Florian Lugou
-> <florian.lugou@provenrun.com> wrote:
-> >
-> > scontext size is 16 bits on RV32 and 32 bits on RV64, as recommended by
-> > version 1.0 2025-02-21 of the debug specification.
->
-> Section 5.7.8 indicates the register is XLEN bits wide, with data
-> being 32-bits wide for both RV32 and RV64.
+Seems 'Asset' got missed in the documentation by mistake.
 
-Note that QEMU supports the ratified 0.13 debug spec [1] (plus
-mcontrol6), where scontext.data is XLEN bits wide, so that's what will
-need to be done here.
+Also fix the one spellcheck issue pointed by spellcheck
 
-If you want to support the new debug spec that's also fine, but we
-need a way to expose that to users and ensure the spec is supported.
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+ docs/devel/testing/functional.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-1: https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index ecc738922b7c..50fca2a0291e 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -251,7 +251,7 @@ Many functional tests download assets (e.g. Linux kernels, initrds,
+ firmware images, etc.) from the internet to be able to run tests with
+ them. This imposes additional challenges to the test framework.
+ 
+-First there is the the problem that some people might not have an
++First there is the problem that some people might not have an
+ unconstrained internet connection, so such tests should not be run by
+ default when running ``make check``. To accomplish this situation,
+ the tests that download files should only be added to the "thorough"
+@@ -274,7 +274,9 @@ the tests are run. This pre-caching is done with the qemu_test.Asset
+ class. To use it in your test, declare an asset in your test class with
+ its URL and SHA256 checksum like this::
+ 
+-    ASSET_somename = (
++    from qemu_test import Asset
++
++    ASSET_somename = Asset(
+         ('https://www.qemu.org/assets/images/qemu_head_200.png'),
+         '34b74cad46ea28a2966c1d04e102510daf1fd73e6582b6b74523940d5da029dd')
+ 
+-- 
+2.48.1
 
-Alistair
-
->
-> Alistair
->
-> >
-> > When the Smstateen extension is implemented, accessibility to the
-> > scontext CSR is controlled by bit 57 of the [mh]stateen0 CSRs.
-> >
-> > Signed-off-by: Florian Lugou <florian.lugou@provenrun.com>
-> > ---
-> >  target/riscv/cpu.h      |  1 +
-> >  target/riscv/cpu_bits.h |  5 +++++
-> >  target/riscv/csr.c      | 36 ++++++++++++++++++++++++++++++++++++
-> >  target/riscv/debug.c    |  1 +
-> >  4 files changed, 43 insertions(+)
-> >
-> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> > index 616c3bdc1c..102e8285a6 100644
-> > --- a/target/riscv/cpu.h
-> > +++ b/target/riscv/cpu.h
-> > @@ -440,6 +440,7 @@ struct CPUArchState {
-> >      target_ulong tdata2[RV_MAX_TRIGGERS];
-> >      target_ulong tdata3[RV_MAX_TRIGGERS];
-> >      target_ulong mcontext;
-> > +    target_ulong scontext;
-> >      struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
-> >      struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
-> >      QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
-> > diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> > index a30317c617..e8997f3153 100644
-> > --- a/target/riscv/cpu_bits.h
-> > +++ b/target/riscv/cpu_bits.h
-> > @@ -258,6 +258,9 @@
-> >  /* VS-Level Control transfer records CSRs */
-> >  #define CSR_VSCTRCTL        0x24e
-> >
-> > +/* Supervisor-Level Sdtrig CSRs (debug) */
-> > +#define CSR_SCONTEXT        0x5a8
-> > +
-> >  /* Hpervisor CSRs */
-> >  #define CSR_HSTATUS         0x600
-> >  #define CSR_HEDELEG         0x602
-> > @@ -1103,4 +1106,6 @@ typedef enum CTRType {
-> >  #define MCONTEXT64                         0x0000000000001FFFULL
-> >  #define MCONTEXT32_HCONTEXT                0x0000007F
-> >  #define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
-> > +#define SCONTEXT32                         0x0000FFFF
-> > +#define SCONTEXT64                         0x00000000FFFFFFFFULL
-> >  #endif
-> > diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> > index 0ebcca4597..37b38f24a6 100644
-> > --- a/target/riscv/csr.c
-> > +++ b/target/riscv/csr.c
-> > @@ -3393,6 +3393,10 @@ static RISCVException write_mstateen0(CPURISCVSt=
-ate *env, int csrno,
-> >          wr_mask |=3D SMSTATEEN0_P1P13;
-> >      }
-> >
-> > +    if (riscv_cpu_cfg(env)->debug) {
-> > +        wr_mask |=3D SMSTATEEN0_HSCONTXT;
-> > +    }
-> > +
-> >      if (riscv_cpu_cfg(env)->ext_smaia || riscv_cpu_cfg(env)->ext_smcsr=
-ind) {
-> >          wr_mask |=3D SMSTATEEN0_SVSLCT;
-> >      }
-> > @@ -5321,6 +5325,35 @@ static RISCVException write_mcontext(CPURISCVSta=
-te *env, int csrno,
-> >      return RISCV_EXCP_NONE;
-> >  }
-> >
-> > +static RISCVException read_scontext(CPURISCVState *env, int csrno,
-> > +                                    target_ulong *val)
-> > +{
-> > +    RISCVException ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_HSCONTX=
-T);
-> > +    if (ret !=3D RISCV_EXCP_NONE) {
-> > +        return ret;
-> > +    }
-> > +
-> > +    *val =3D env->scontext;
-> > +    return RISCV_EXCP_NONE;
-> > +}
-> > +
-> > +static RISCVException write_scontext(CPURISCVState *env, int csrno,
-> > +                                     target_ulong val)
-> > +{
-> > +    bool rv32 =3D riscv_cpu_mxl(env) =3D=3D MXL_RV32 ? true : false;
-> > +
-> > +    RISCVException ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_HSCONTX=
-T);
-> > +    if (ret !=3D RISCV_EXCP_NONE) {
-> > +        return ret;
-> > +    }
-> > +
-> > +    /* Spec suggest 16-bit for RV32 and 34-bit for RV64 */
-> > +    target_ulong mask =3D rv32 ? SCONTEXT32 : SCONTEXT64;
-> > +
-> > +    env->scontext =3D val & mask;
-> > +    return RISCV_EXCP_NONE;
-> > +}
-> > +
-> >  static RISCVException read_mnscratch(CPURISCVState *env, int csrno,
-> >                                       target_ulong *val)
-> >  {
-> > @@ -5973,6 +6006,9 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D =
-{
-> >      [CSR_SIEH]       =3D { "sieh",   aia_smode32, NULL, NULL, rmw_sieh=
- },
-> >      [CSR_SIPH]       =3D { "siph",   aia_smode32, NULL, NULL, rmw_siph=
- },
-> >
-> > +    /* Supervisor-Level Sdtrig CSRs (debug) */
-> > +    [CSR_SCONTEXT]   =3D { "scontext", debug, read_scontext, write_sco=
-ntext },
-> > +
-> >      [CSR_HSTATUS]     =3D { "hstatus",     hmode,   read_hstatus, writ=
-e_hstatus,
-> >                            .min_priv_ver =3D PRIV_VERSION_1_12_0       =
-         },
-> >      [CSR_HEDELEG]     =3D { "hedeleg",     hmode,   read_hedeleg, writ=
-e_hedeleg,
-> > diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-> > index 9db4048523..072593ab12 100644
-> > --- a/target/riscv/debug.c
-> > +++ b/target/riscv/debug.c
-> > @@ -1088,4 +1088,5 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
-> >      }
-> >
-> >      env->mcontext =3D 0;
-> > +    env->scontext =3D 0;
-> >  }
-> > --
-> > 2.43.0
-> >
-> >
 
