@@ -2,94 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9153A5485B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD306A5484D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:46:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq8gn-00041Q-Vp; Thu, 06 Mar 2025 05:42:54 -0500
+	id 1tq8hU-0005mi-Nw; Thu, 06 Mar 2025 05:43:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tq8gi-0003kh-DK
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 05:42:49 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tq8gf-00011W-Pp
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 05:42:47 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so256580f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 02:42:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741257761; x=1741862561; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xaKViYZxdwLecpko1tt8xlUV8OQ9jjP7rcobJLc+Lcg=;
- b=K5dy3gSnWwHpliCOa5I+bw9Da7bEPNbbe8sOqTrgsD/1ESwhH6gE/Qe3713anHsLXo
- fJKYuymYLdwpnGcNZgvQfoLsDvXO1Kuh6NeC7Ede2mJkvtDObLNBQvv8Xih9EDx6d6hb
- UxMvpBh7f+kDbO51KgUiTGSr9Y3zog6MK6Yg/HVLRAcif3UXuFepr+ip/vXIymOobYLh
- M9MWYMzBLE1G2k1TNZWfiFCdCbbm6E5bsy7irm5h5z1rkv9S3mI/plBdiTUEPyUygxgb
- Ma4qHGnWVcUuZbZU983z4u2BEpmGRM5ZcrnMXLMVGQQgBzW/1ik0Fc3R2Cs8hAy6zthn
- Vxdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741257761; x=1741862561;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xaKViYZxdwLecpko1tt8xlUV8OQ9jjP7rcobJLc+Lcg=;
- b=UNSdOY3sdkHHt0H8rtt5uCxu6FROB842OJQoCVL5XjqFXek0s+tBQvXvu84+RFyTNh
- 9v5t6rUZrw4C5tm8o+iuuC9Rmv9Zf5QxaXDSoU03chNtaULkwgvS5thAk0qBiLiAlcLs
- b7rcVfr8SFHAQweU+pPF6GG23qIbUUtJdBlPw95O9XZoBRFCFvhAtmn3sv0vOf4d8bLX
- aporXD3T705b588CwPqCx+lCgj80m/QphZPrS0QyFI5YdTk3f231jngwF7oYykPtPYij
- iND2dqtyNmJt1OoIzgGt/vtJ2+taWq0Wdpm1qRPujKSvNnYa33ymUTtA9BNpZ1W8Fv17
- 0KZA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsdkE5RP2tMsoLFo7ZQ+pKImPAIH99DtqaCddPVu6kKCF6e5UkloMrN3fcwIZjaFrQr8QSoEDkA4sv@nongnu.org
-X-Gm-Message-State: AOJu0Ywoet7RuxPE2EpsZeJmYpqrTfmVKkekALDQPEfapYX/sZHfxe3C
- 5qaKPbF22hTLDgOeo6MQnHLM5bXt4qlTHGWAuZHRi46JcspV0wazgZoLwL4XtgM=
-X-Gm-Gg: ASbGncvX+w3if3vfNhZxXKl2SVH3wxrJNucZiTXhZUUfY4IrZanqyti4dDztjEw2QTX
- YKK2goDu16zCbCpVjsTk3CP+7ZunSJtrmYNJ8Xhi1ANY6Jc8icJs+tlGs7XyKwP5RB2uhgdnw8V
- +mImylxsi2LASpu/IijveRzN2yh1wM+iV6WE3vbek0Dx1ONqksDH0G8p31hmw7X6be6kXi1nCan
- rcIIra7v8VcvpEuzqZ5RTclKe64n8ea/cnrszq0QczBjdMcudo5WEbUcaGBquyNlG2zSoVJaBqr
- SF9Q/FiCLOaggBeEteu6I2s08lEGEkEbaxzsMWibXu3uteqoaKqHd7l2l+xrFGl7VnHmhQqaXHl
- GiXUniry3r1Dg
-X-Google-Smtp-Source: AGHT+IHRj55Ay85fBiqAkp2KdssrUaWQXE1GtZ7kLXN9Uw703fDO7P+S26h2Z+7vanik5rKW5hlRCg==
-X-Received: by 2002:adf:f0c2:0:b0:390:d6ab:6c49 with SMTP id
- ffacd0b85a97d-3911f7bda9amr5516886f8f.35.1741257761010; 
- Thu, 06 Mar 2025 02:42:41 -0800 (PST)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0193bfsm1651353f8f.55.2025.03.06.02.42.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 02:42:40 -0800 (PST)
-Message-ID: <71f7e071-4b60-4f74-aaa2-67796e35631a@linaro.org>
-Date: Thu, 6 Mar 2025 11:42:39 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tq8hH-0005U3-8N
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 05:43:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tq8hD-00013E-Dw
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 05:43:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741257797;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oCn44R6Jj2zqzNFRY/+pHZ0rHttc1kRizyt07LUZpf8=;
+ b=Hsor+DzP79E/klwWrC5Ef7/RQHLhEqPIO/p0pd7rNSnLBS+AlAoeAMyrS52aKHfvGuT677
+ Dzl1HM2jKTufkAQ93c1cRLp/sLCm72odzQ7wUc06mQGfL1jBQ3pPCGs/j5AIblW5tm/ldA
+ aE15cZ7lwCVYTO5ryb0lc4PckErsUc4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-rMXVYuggMd6u0hrAc2HfoQ-1; Thu,
+ 06 Mar 2025 05:43:09 -0500
+X-MC-Unique: rMXVYuggMd6u0hrAc2HfoQ-1
+X-Mimecast-MFC-AGG-ID: rMXVYuggMd6u0hrAc2HfoQ_1741257788
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 700A8180AF73; Thu,  6 Mar 2025 10:43:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.34.123])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0B524180174D; Thu,  6 Mar 2025 10:43:05 +0000 (UTC)
+Date: Thu, 6 Mar 2025 11:43:03 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Alberto Faria <afaria@redhat.com>, qemu-devel@nongnu.org,
+ Fam Zheng <fam@euphon.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH 1/2] scsi-disk: Advertise FUA support by default
+Message-ID: <Z8l8N0JGULfuNrzH@redhat.com>
+References: <20250304155232.1325581-1-afaria@redhat.com>
+ <20250304155232.1325581-2-afaria@redhat.com>
+ <Z8cnJB2KRxl9ULHC@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] hw/hyperv/hyperv-proto: move SYNDBG definition from
- target/i386
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- manos.pitsidianakis@linaro.org,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- richard.henderson@linaro.org, Marcelo Tosatti <mtosatti@redhat.com>,
- alex.bennee@linaro.org
-References: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
- <20250306064118.3879213-5-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250306064118.3879213-5-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+In-Reply-To: <Z8cnJB2KRxl9ULHC@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,15 +85,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/25 07:41, Pierrick Bouvier wrote:
-> Allows them to be available for common compilation units.
+Am 04.03.2025 um 17:15 hat Daniel P. BerrangÈ geschrieben:
+> On Tue, Mar 04, 2025 at 03:52:31PM +0000, Alberto Faria wrote:
+> > FUA emulation code is already is place.
+> > 
+> > Signed-off-by: Alberto Faria <afaria@redhat.com>
+> > ---
+> >  hw/scsi/scsi-disk.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+> > index e7f738b484..8cf50845ab 100644
+> > --- a/hw/scsi/scsi-disk.c
+> > +++ b/hw/scsi/scsi-disk.c
+> > @@ -3212,7 +3212,7 @@ static const Property scsi_hd_properties[] = {
+> >      DEFINE_PROP_BIT("removable", SCSIDiskState, features,
+> >                      SCSI_DISK_F_REMOVABLE, false),
+> >      DEFINE_PROP_BIT("dpofua", SCSIDiskState, features,
+> > -                    SCSI_DISK_F_DPOFUA, false),
+> > +                    SCSI_DISK_F_DPOFUA, true),
 > 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   include/hw/hyperv/hyperv-proto.h | 12 ++++++++++++
->   target/i386/kvm/hyperv-proto.h   | 12 ------------
->   2 files changed, 12 insertions(+), 12 deletions(-)
+> Should this come with machine type compat to prevent us advertizing FUA
+> to existing machine type versions ?
 
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
+To give a little more background to Alberto: When upgrading QEMU, you
+don't want the guest-visible machine to change. You already don't really
+want hardware changes while the VM is down (Windows might require
+reactivation etc.), but we support live migration between old and new
+versions (often in both directions) as long as you use the same machine
+type, and no guest expects that the hardware changes while it's running.
+
+So we can only change guest-visible features in new machine types. What
+you set here is fine for all new machine types, but you'll have to set
+it back to false in hw_compat_9_2 in hw/core/machine.c so that all older
+machine types still get the old default.
+
+Kevin
 
 
