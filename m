@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FBDA55189
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9418BA550F4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:31:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqEIJ-0000vO-KK; Thu, 06 Mar 2025 11:42:00 -0500
+	id 1tqE7G-00006m-T0; Thu, 06 Mar 2025 11:30:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqEHw-0000iQ-J6
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:41:38 -0500
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqEHu-0005PX-T0
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:41:36 -0500
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-6fd8be1e534so8431087b3.3
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 08:41:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741279293; x=1741884093; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tuE7sAT+n3xPBCauhqafEUU/Z7tC+IuzsmyDxqxYy8g=;
- b=tyHbUL4rlx98W5EgQ0sj5oW3mGJJLm0fA4QmbIOcBm9XQ1i3ldISatUGC4+LO1dfsp
- 98veupZrN5t+B9/z3q/mU4z69sVYLyXxR1Fhd1l7yhqWX/vudFgZSNKsFw/WjlKkIJqz
- ulWhskTiCHjCBwqn264BdZFXAS51B6GCPjYvgRAC19EmA8pHGuRzivmwwET7QVgg660l
- tbGLwqy8g4y6cDiJaJcciQ0iqj5uQZTmP+T/09hl3626UYA657WePHxcxfb3WiHobyxq
- asX2kUeulBXZk5Cuq/vFJ81HDWX/yNoFyP168LNfCzUterfuqxC7e1W+Dmqg4qqK1gt7
- YTtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741279293; x=1741884093;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tuE7sAT+n3xPBCauhqafEUU/Z7tC+IuzsmyDxqxYy8g=;
- b=lBqGPFJr/DpJJpxjcBDX6NgT2N7df6TN5v2HDfUrQAx8N0NAtuCeKVW1SBrXpfdMZE
- i0mXSyxblVj12lOObhnLm5i23ni/rifbw+cSoB61n1WrrO8xVUGJOyUiXiRWJtgAGEy4
- 6keDKXm3qZ7k7lFH8XAiRrDbWRQX/3NlQyXsk7YQOKkz1s6qu6qbHvM/R5IdBy/AMIAa
- sNHV7lxpLzlYEZUOyIn/ZMdVOKDxDc6WA642C6AeH1/lu9qDJ3dWuO6zliAuqmCuUN2q
- g8GwWoEXzFJO3eD4JfYYvDuK8SCYzuNPZ3GlRpZoE3xnreaBfH8AXVyU+SIHcnJuvkKj
- bAqg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOQvxT4ONC8GvAaF36dZjnLuE4pawnxva5YyHDtQWM1PYNIHplc98ZssiBPWDuAjtXzn8SeqWYyi6w@nongnu.org
-X-Gm-Message-State: AOJu0Yyx4+qLOFmf06lc5tqCnAhIXlFPDlNCTqT+BtF6eDWKRRql7VZB
- GfVzO08B+qhFKtDUXpoWgI6e6Dzs5dyqkp9mryFoKebQ2vhxNlzVXUqZS44MZCfz7ABQ/jlklWh
- pk7wv1XpAUq8R+Mx5fhRm0UEwTxrBLwyzhNUb5w==
-X-Gm-Gg: ASbGnctMHaSyjtd8Z1fjp/KxCW/oA+ZMOOQBPjMOgzC+DmK593WHNiejh+h6HqtiDac
- kXL5HGYp7bA85SrtBgqMkoR3ve3m731pHjzUuZt3LURMd8qof9o85IKr8vR5ZkRHQz29etxv4+n
- tKpCkcCVqIJ8QDtRNJUVVC/ws9+Jc=
-X-Google-Smtp-Source: AGHT+IGrIld9lFINAvm3RbCjtTvZCDPufYXALDYiM29oLzWtQOIB4YLIVElw8MjUe8w+rRSXeChP8kYPHrLO0Z1LBhw=
-X-Received: by 2002:a05:690c:6009:b0:6f9:48c6:6a17 with SMTP id
- 00721157ae682-6fda3018933mr98932527b3.26.1741279293570; Thu, 06 Mar 2025
- 08:41:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tqE6o-0008Uq-Dm
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:30:08 -0500
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tqE6l-0003CU-QG
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:30:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741278604; x=1772814604;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9JT6hQcuHPteGjoaNI+sWKgKEc5E/9AZD+AdonkE+gQ=;
+ b=Tm11V0NaurniXzAkZR8hY+PCrLEyUBMH3EUXKpppVj/66VVpGWADyidm
+ zO0Efh9ceVn0Qi+l2PEFYmhRWsCvb9Y8P1jTD4roiiHFrF5OwaeAMBJYj
+ sswFJNH4V7s4urey94xyHo/f0xAVPBAnm8tgfHIVGU3v9eS5GedNXLKf7
+ 6ZsWoe4jEpQHqAwfzLf3mK85LyGXxCHwyFpJuV7XFOiRCWfTbbBdZJ9Ox
+ bPGF3rRdAuEydKYU93tANbHYkiqFAzXwCHLPOZ6qvCO54FqDBTmd3e1Oi
+ KUvCzF7CjU4I2C6gGIakq2BgkwYkmBDVValaijzcItU136eX8y4wL0Z8q w==;
+X-CSE-ConnectionGUID: gdBHqypTSPaTNMgJxPW33w==
+X-CSE-MsgGUID: dwFjMivZRLS3u/F6UcFTxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46069640"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="46069640"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 08:30:01 -0800
+X-CSE-ConnectionGUID: 6/o4d1CJRlmH59W6JvCY3g==
+X-CSE-MsgGUID: 9vz7cgYqQKO18CkQEoPjYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119579483"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 06 Mar 2025 08:29:57 -0800
+Date: Fri, 7 Mar 2025 00:50:05 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+ mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
+ likexu@tencent.com, like.xu.linux@gmail.com,
+ zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com
+Subject: Re: [PATCH v2 02/10] target/i386: disable PERFCORE when "-pmu" is
+ configured
+Message-ID: <Z8nSPf4bUPICgf3g@intel.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-3-dongli.zhang@oracle.com>
 MIME-Version: 1.0
-References: <20250306163925.2940297-1-peter.maydell@linaro.org>
-In-Reply-To: <20250306163925.2940297-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Mar 2025 16:41:22 +0000
-X-Gm-Features: AQ5f1JoDreMEI4B7qV2l_bTBhgXgesld--17niqj2WiZlEgRMn5BhszwrB0rMwg
-Message-ID: <CAFEAcA8g0D_TyRyBGjjC=RaPjp-aNQb-P5K7bUcvDACDpWFFyA@mail.gmail.com>
-Subject: [PATCH 00/10] target/arm: Forbid exception returns to unimplemented
- AArch32 ELs
-To: qemu-arm <qemu-arm@nongnu.org>, QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250302220112.17653-3-dongli.zhang@oracle.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,68 +88,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apologies for the bogus subject line in the cover letter:
-I accidentally put a leading ' ' into the file and then
-git send-email interpreted that From line as the subject.
-Intended subject line was:
-[PATCH 00/10] target/arm: Forbid exception returns to unimplemented AArch32 ELs
+Hi Dongli,
 
--- PMM
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index b6d6167910..61a671028a 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7115,6 +7115,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>              !(env->hflags & HF_LMA_MASK)) {
+>              *edx &= ~CPUID_EXT2_SYSCALL;
+>          }
+> +
+> +        if (kvm_enabled() && IS_AMD_CPU(env) && !cpu->enable_pmu) {
 
-On Thu, 6 Mar 2025 at 16:39, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Newer Arm CPUs need not implement AArch32 at all exception levels
-> (and Armv9 forbids implementing AArch32 at any EL except EL0).
-> All our current CPU models implement both AArch32 and AArch64
-> at every exception levels, so we currently get away with failing
-> to enforce that the guest isn't trying to do an exception return
-> to AArch32 when the target EL doesn't support AArch32.
->
-> This patchset adds the missing checks:
->  * SCR_EL3.RW has an effective value of 1 if EL2 is AArch64-only
->  * HCR_EL2.RW is RAO/WI if EL1 is AArch64-only
->  * return to AArch32 when no EL supports AArch32 is an illegal
->    exception return
->
-> To do this it needs to start off with some cleanup. This is
-> because we need to add a cpu_isar_feature() check to
-> arm_el_is_aa64(), but we don't want to include cpu-features.h
-> in cpu.h. arm_el_is_aa64() is really an internal part of the
-> CPU implementation, so we can move it to internals.h; this
-> means also moving some other functions in cpu.h that are
-> defined as inline functions and which call arm_el_is_aa64().
-> Removing some unused macros from linux-user allows us to
-> avoid having linux-user include internals.h.
->
-> (No doubt there are other functions that could be moved out
-> of cpu.h, but I stuck to only the ones that I actually needed
-> to move.)
->
-> thanks
-> -- PMM
->
-> Peter Maydell (10):
->   target/arm: Move A32_BANKED_REG_{GET,SET} macros to cpregs.h
->   target/arm: Un-inline access_secure_reg()
->   linux-user/aarch64: Remove unused get/put_user macros
->   linux-user/arm: Remove unused get_put_user macros
->   target/arm: Move arm_cpu_data_is_big_endian() etc to internals.h
->   target/arm: Move arm_current_el() and arm_el_is_aa64() to internals.h
->   target/arm: SCR_EL3.RW should be treated as 1 if EL2 doesn't support
->     AArch32
->   target/arm: HCR_EL2.RW should be RAO/WI if EL1 doesn't support AArch32
->   target/arm: Add cpu local variable to exception_return helper
->   target/arm: Forbid return to AArch32 when CPU is AArch64-only
->
->  target/arm/cpregs.h           |  28 +++++++
->  target/arm/cpu.h              | 153 +---------------------------------
->  target/arm/internals.h        | 133 +++++++++++++++++++++++++++++
->  hw/intc/arm_gicv3_cpuif.c     |   1 +
->  linux-user/aarch64/cpu_loop.c |  48 -----------
->  linux-user/arm/cpu_loop.c     |  43 +---------
->  target/arm/arch_dump.c        |   1 +
->  target/arm/helper.c           |  16 +++-
->  target/arm/tcg/helper-a64.c   |  12 ++-
->  target/arm/tcg/hflags.c       |   9 ++
->  10 files changed, 202 insertions(+), 242 deletions(-)
+No need to check "kvm_enabled() && IS_AMD_CPU(env)" because:
+
+ * "pmu" is a general CPU property option which should cover all PMU
+   related features, and not kvm-specific/vendor-specific.
+ * this bit is reserved on Intel. So the following operation doesn't
+   affect Intel.
+
+I think Xiaoyao's idea about checking in x86_cpu_expand_features() is
+good. And I believe it's worth having another cleanup series to revisit
+pmu dependencies. I can help you later to consolidate and move this
+check to x86_cpu_expand_features(), so this patch can focus on correctly
+defining the current dependency relationship.
+
+With the above nit fixed,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+
+
 
