@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50047A55144
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B7AA5517C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:41:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqECY-0003QY-6b; Thu, 06 Mar 2025 11:36:02 -0500
+	id 1tqEGA-0006sx-9F; Thu, 06 Mar 2025 11:39:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqECJ-0003On-KV
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:35:47 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tqEFv-0006kU-59
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:39:34 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqECI-00040d-08
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:35:47 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-223f4c06e9fso17887415ad.1
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 08:35:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tqEFt-0004W1-CL
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:39:30 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso5998195e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 08:39:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741278944; x=1741883744; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XAgfEPaoGHSZq07mbdjEXSxpSubJXrriPtuulftaiNs=;
- b=GhoYwYo9pKvHids2sX9XG31ag3B8p+cCAmdxZ7tzDJos01Fd8FSpCpWvl/b5VK0nWD
- 6A4TZLXt5r44cLICRvM8OXZvbaZPQLinqOrNznLRIaAvDZZCJ3WQLNIZlQ5b8fwUVMI0
- rS/Zuo96UYjuSjrqXDsqpOpHUbMqxs5jrCBLp/pKixA1ocYKbAB6QM94P84ftbOEWBae
- VXmXg0Shsx8gIgoEaKs6/iU7tk72GuNsUZPGzewKS7hynAq8FHiQpe/M4ZsasMQ8i4Na
- tPhTjdE8T42Zy4bNznhQeNty5f5dRUlfD/RqsQmh7GvN9qQ4IpM8MBKN8t7Z9WXX8nin
- InGg==
+ d=linaro.org; s=google; t=1741279168; x=1741883968; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y3lF4QXwAXqr0/RhGUX/8f5AxZ/nEi7UOp1O/QtSQMQ=;
+ b=IkG2lSrn9+bexSIoM48UUDiGUqb2oPo/muMlPRR5D6ReQVkxuEXdjRq4BzR3kcNAEH
+ CLks8jhEglv+10P011jijeHHu0p8JU7QkzgR8GR2lE17qGM9+jfcE2TO/6yNaBWeYlzc
+ 0bgjC/qB2BlKYtst/C71dFV7FmFWTsgKigb11ASJ0YcjlYo1zz3zBKkPE1x+LPEqiGPF
+ A3Xbha+HuAgJv4luO9Ol3QmxzOvboEyOdWc8qPJQZMkqetBul9MfTqOXgEDRNpwpgizw
+ dVr4EuPUB4t2tVjPWUVsOPgVeRZj+qN6QEv9aXdxuThpnM83R9/8oqsLLlHupZ6ib+Tu
+ HWew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741278944; x=1741883744;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XAgfEPaoGHSZq07mbdjEXSxpSubJXrriPtuulftaiNs=;
- b=Ls2fNd9spuULx8JVihPJxZwczNumOODt7THLP64QeFoCzDVWxsVldaqUmZaLWuT0h2
- VfNVsUD1zSbP0FoE9mhK3Ur9LXBKNHwjolmyljxxiQtFE6LnP40S3GR1DQcLxWMxdkGw
- ZUqLQ3zJTLvfhRSKW4UIUAialmcfPlCkFX0h0YCDv4fCHP58RGiXC+UV2lmlBU1fgS66
- 64c1PqIyJunCwC2y00ywrTLFucK6/54tYwJ57bHRSTcYTB2QSSO9/tFBHl0K/dZmgmWc
- QXxTZj/B9Emf+uFd9AqlmpCjMR/56jlM9ivIZP/IhZJ826ABtLJ9FHYKueKZtzgX1Sni
- fMAA==
+ d=1e100.net; s=20230601; t=1741279168; x=1741883968;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y3lF4QXwAXqr0/RhGUX/8f5AxZ/nEi7UOp1O/QtSQMQ=;
+ b=fgFsivpa8ykJs1Xt6oxbrIQqXzGK6XAjXrOJ2Vme0qZkFi04BQaTe63csFtSJRO0nP
+ UVaWhzuvUJ1TVIyZfTxEB69xo/MbaG1OpvGVUrZMy631p/iTa52Ph3A8RcVPwtVAr3qZ
+ yAGBGRR2UwN/jID7d4oGXPt6aI41/cH5pvQsqj9F8vF91rRMveX++Ev4bZfkCHAXNRGv
+ 8DaxtYPTxh3x7ViFCY/E5JswC/sh5MUr3WMOugsZPany4KgSMh9qmwjutvQIUX4hE5co
+ YWEFBilQ7kDHhDYxkr8WuZ2AK2y16nxa6BFvQnVuoLZGUORrGy8WpcahlXcC91zT4CjA
+ KZ+w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVVMsh9aBf25SIHFmXqO5uQzech/veZMCrJrtQp5dSjO5X/98vnqzA2k+YRID64hyY6HezvJiE+T/Mq@nongnu.org
-X-Gm-Message-State: AOJu0YzSn1RuLdCwfgLxRaX2IgmSzxUDAoh/bi/x1+eyDtMS4up4RryT
- OwfdB+6RKdAsP8s40oT37IvDvzb5VaBJKNtMMM1XCP683Q0iAX+4WOP2kGVugOQ=
-X-Gm-Gg: ASbGnctCium5hrf2i0PRoDn85UWWUPmjlJfuq/6AUvt45xQ2Rnb40NF1yyqmCbKJPL5
- MztwPn94gOzCbmHqlSRlv7S5mMSVEUcBYHHDG9qD7Rg3m+6BoVLD/C8xbHO5/v/w3qSDGToxEIg
- uVCHLxLW7UbrxK0nfz14XgCfOhQ2PkbA9cUuhlbWR6gJYcrLC9a7sqkopHAMjVEK1eUYotlwBv7
- sgBYoxPeeD3ZcggExT2HkhuW9dQcTZRqwsna1/fpj//r2htUSIes6tXnacaG+oRlnFoS7Qj87Wy
- Ea/5Bn1WXwVR/G+EMqYRA+IXnM4Duw0kTjwIuQ4L1IMt8pNIQhiME308Ag==
-X-Google-Smtp-Source: AGHT+IFEcsPPTb++NpYeNs25boDWH44SnjrXjA5LUkchp6XeuV57Gmop2Z0lHg35HUzrTyjL9tiNsw==
-X-Received: by 2002:a17:902:e802:b0:221:89e6:ccb6 with SMTP id
- d9443c01a7336-22427071ce8mr2054765ad.25.1741278944389; 
- Thu, 06 Mar 2025 08:35:44 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
+ AJvYcCWh9dzDej89jhW0i8KUdrCWiN4ZTRqrNg6/0M4PkJyzq2FqYrTotUZArkdxPTgiBRYEW85kiwBPIa3j@nongnu.org
+X-Gm-Message-State: AOJu0YxRAvHaFcBiY4t3j5cZaOc1in3HLDsCSz11lhuaLqsWylaHC2nx
+ ZeYgJ34KCT3jWsTs3qxauygzgB/PvQiCJWOK5w+D5v5yq3O1jzD7nECUJUT9dgTZW11c8PRSrkC
+ q
+X-Gm-Gg: ASbGnct8vTf4F+tvqORkmeXhS4bTU9aGWwZSb8dNVIni1zr76QSLsRdU3H7Ljqd87Ca
+ uoYJYj3zbzhEMsLIsjJRHNIIXfLzv9BPd0QR/4QWYKwQLIrZZZhSwhg7A74Xs4LfVrtsGJQB9uh
+ pBbWXNvCU7m9mVEv7NMBx3w/4vNfVsVG+5Jvtbm3RsMTdE9FweeOqr8VaJWMjqy/oHUpQ3wbWfr
+ uxbKMY4wkmpMPPMexgmEc+j0koHlPcXsQ6uhCZSf2ktGjecVU+hqD6Z6mTS6R49MdIv4K+uQ7oU
+ 7O/ABOMhq/HBvnmnFP+sJMzawWNfeTPTKl3ztpQJukf5ArJVByw=
+X-Google-Smtp-Source: AGHT+IFegjuDYBEVA/nuybmIrjSOCdMavvCdffBIz0j23VZQ1qlsd8N0SHHItuXfI+yWd6348PkEbA==
+X-Received: by 2002:a05:600c:474c:b0:439:9b19:9e2d with SMTP id
+ 5b1f17b1804b1-43c601e1393mr1627435e9.16.1741279167524; 
+ Thu, 06 Mar 2025 08:39:27 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-224109ddbf2sm14609215ad.18.2025.03.06.08.35.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 08:35:43 -0800 (PST)
-Message-ID: <9604ac56-4fff-40da-a95a-57bca9d88251@linaro.org>
-Date: Thu, 6 Mar 2025 08:35:43 -0800
+ 5b1f17b1804b1-43bdd94913fsm23999905e9.37.2025.03.06.08.39.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Mar 2025 08:39:26 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: From ce9a42483c23c32cee233f648101a160b6604b45 Mon Sep 17 00:00:00 2001
+Date: Thu,  6 Mar 2025 16:39:14 +0000
+Message-ID: <20250306163925.2940297-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] hw/hyperv: remove duplication compilation units
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, philmd@linaro.org,
- Paolo Bonzini <pbonzini@redhat.com>, manos.pitsidianakis@linaro.org,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, alex.bennee@linaro.org
-References: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
- <0226e9d5-edbc-417a-8cf0-8c752f52b7ed@linaro.org>
- <badcb867-64db-4b45-93b0-fd4ff203c35a@linaro.org>
-In-Reply-To: <badcb867-64db-4b45-93b0-fd4ff203c35a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,51 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/25 08:35, Pierrick Bouvier wrote:
-> On 3/6/25 08:26, Richard Henderson wrote:
->> On 3/5/25 22:41, Pierrick Bouvier wrote:
->>> Work towards having a single binary, by removing duplicated object files.
->>>
->>> hw/hyperv/hyperv.c was excluded at this time, because it depends on target
->>> dependent symbols:
->>> - from system/kvm.h
->>>        - kvm_check_extension
->>>        - kvm_vm_ioctl
->>> - from exec/cpu-all.h | memory_ldst_phys.h.inc
->>>        - ldq_phys
->>>
->>> Pierrick Bouvier (7):
->>>      hw/hyperv/hv-balloon-stub: common compilation unit
->>>      hw/hyperv/hyperv.h: header cleanup
->>>      hw/hyperv/vmbus: common compilation unit
->>>      hw/hyperv/hyperv-proto: move SYNDBG definition from target/i386
->>>      hw/hyperv/syndbg: common compilation unit
->>>      hw/hyperv/balloon: common balloon compilation units
->>>      hw/hyperv/hyperv_testdev: common compilation unit
->>>
->>>     include/hw/hyperv/hyperv-proto.h | 12 ++++++++
->>>     include/hw/hyperv/hyperv.h       |  4 ++-
->>>     target/i386/kvm/hyperv-proto.h   | 12 --------
->>>     hw/hyperv/syndbg.c               |  7 +++--
->>>     hw/hyperv/vmbus.c                | 50 ++++++++++++++++----------------
->>>     hw/hyperv/meson.build            |  9 +++---
->>>     6 files changed, 49 insertions(+), 45 deletions(-)
->>>
->>
->> I'm reasonably certain that hyperv is specific to x86.
-> 
-> That's correct.
-> 
+Newer Arm CPUs need not implement AArch32 at all exception levels
+(and Armv9 forbids implementing AArch32 at any EL except EL0).
+All our current CPU models implement both AArch32 and AArch64
+at every exception levels, so we currently get away with failing
+to enforce that the guest isn't trying to do an exception return
+to AArch32 when the target EL doesn't support AArch32.
 
-But potentially could be extended to arm64 one day as well.
+This patchset adds the missing checks:
+ * SCR_EL3.RW has an effective value of 1 if EL2 is AArch64-only
+ * HCR_EL2.RW is RAO/WI if EL1 is AArch64-only
+ * return to AArch32 when no EL supports AArch32 is an illegal
+   exception return
 
->> Are these only "duplicated" because of qemu-system-{i386,x86_64}?
->>
-> 
-> Yes. A lot of duplications in hw/ is related to 32/64bits variants.
-> 
->>
->> r~
-> 
+To do this it needs to start off with some cleanup. This is
+because we need to add a cpu_isar_feature() check to
+arm_el_is_aa64(), but we don't want to include cpu-features.h
+in cpu.h. arm_el_is_aa64() is really an internal part of the
+CPU implementation, so we can move it to internals.h; this
+means also moving some other functions in cpu.h that are
+defined as inline functions and which call arm_el_is_aa64().
+Removing some unused macros from linux-user allows us to
+avoid having linux-user include internals.h.
+
+(No doubt there are other functions that could be moved out
+of cpu.h, but I stuck to only the ones that I actually needed
+to move.)
+
+thanks
+-- PMM
+
+Peter Maydell (10):
+  target/arm: Move A32_BANKED_REG_{GET,SET} macros to cpregs.h
+  target/arm: Un-inline access_secure_reg()
+  linux-user/aarch64: Remove unused get/put_user macros
+  linux-user/arm: Remove unused get_put_user macros
+  target/arm: Move arm_cpu_data_is_big_endian() etc to internals.h
+  target/arm: Move arm_current_el() and arm_el_is_aa64() to internals.h
+  target/arm: SCR_EL3.RW should be treated as 1 if EL2 doesn't support
+    AArch32
+  target/arm: HCR_EL2.RW should be RAO/WI if EL1 doesn't support AArch32
+  target/arm: Add cpu local variable to exception_return helper
+  target/arm: Forbid return to AArch32 when CPU is AArch64-only
+
+ target/arm/cpregs.h           |  28 +++++++
+ target/arm/cpu.h              | 153 +---------------------------------
+ target/arm/internals.h        | 133 +++++++++++++++++++++++++++++
+ hw/intc/arm_gicv3_cpuif.c     |   1 +
+ linux-user/aarch64/cpu_loop.c |  48 -----------
+ linux-user/arm/cpu_loop.c     |  43 +---------
+ target/arm/arch_dump.c        |   1 +
+ target/arm/helper.c           |  16 +++-
+ target/arm/tcg/helper-a64.c   |  12 ++-
+ target/arm/tcg/hflags.c       |   9 ++
+ 10 files changed, 202 insertions(+), 242 deletions(-)
+
+-- 
+2.43.0
 
 
