@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBD3A5481D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC51CA54820
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:42:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq8fF-0008IL-Ia; Thu, 06 Mar 2025 05:41:19 -0500
+	id 1tq8fY-0000sM-9H; Thu, 06 Mar 2025 05:41:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8f1-0007u5-B7; Thu, 06 Mar 2025 05:41:04 -0500
+ id 1tq8f9-0008D5-Sl; Thu, 06 Mar 2025 05:41:12 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8ez-0000om-Ks; Thu, 06 Mar 2025 05:41:03 -0500
+ id 1tq8f3-0000om-AF; Thu, 06 Mar 2025 05:41:11 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 6 Mar
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v5 23/29] hw/arm/aspeed: Add Machine Support for AST2700 A1
-Date: Thu, 6 Mar 2025 18:38:31 +0800
-Message-ID: <20250306103846.429221-24-jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 24/29] hw/arm/aspeed_ast27x0: Sort the memmap table by
+ mapping address
+Date: Thu, 6 Mar 2025 18:38:32 +0800
+Message-ID: <20250306103846.429221-25-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
 References: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
@@ -63,56 +64,94 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce "aspeed_machine_ast2700a1_evb_class_init" to initialize the
-AST2700 A1 EVB.
+To improve readability, sort the memmap table by mapping address
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 54 ++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 18f7c450da..82f42582fa 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1693,6 +1693,26 @@ static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
-+
-+static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc = "Aspeed AST2700 A1 EVB (Cortex-A35)";
-+    amc->soc_name  = "ast2700-a1";
-+    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
-+    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
-+    amc->fmc_model = "w25q01jvq";
-+    amc->spi_model = "w25q512jv";
-+    amc->num_cs    = 2;
-+    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
-+    amc->uart_default = ASPEED_DEV_UART12;
-+    amc->i2c_init  = ast2700_evb_i2c_init;
-+    mc->auto_create_sdcard = true;
-+    mc->default_ram_size = 1 * GiB;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+}
- #endif
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 7439512b83..3330484bf5 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -24,16 +24,40 @@
+ #include "qemu/log.h"
  
- static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-@@ -1821,6 +1841,10 @@ static const TypeInfo aspeed_machine_types[] = {
-         .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_ast2700a0_evb_class_init,
-+        }, {
-+        .name          = MACHINE_TYPE_NAME("ast2700a1-evb"),
-+        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2700a1_evb_class_init,
- #endif
-     }, {
-         .name          = TYPE_ASPEED_MACHINE,
+ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+-    [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
+     [ASPEED_DEV_SRAM]      =  0x10000000,
++    [ASPEED_DEV_HACE]      =  0x12070000,
++    [ASPEED_DEV_EMMC]      =  0x12090000,
++    [ASPEED_DEV_INTC]      =  0x12100000,
++    [ASPEED_GIC_DIST]      =  0x12200000,
++    [ASPEED_GIC_REDIST]    =  0x12280000,
+     [ASPEED_DEV_SDMC]      =  0x12C00000,
+     [ASPEED_DEV_SCU]       =  0x12C02000,
++    [ASPEED_DEV_RTC]       =  0x12C0F000,
++    [ASPEED_DEV_TIMER1]    =  0x12C10000,
++    [ASPEED_DEV_SLI]       =  0x12C17000,
++    [ASPEED_DEV_UART4]     =  0X12C1A000,
++    [ASPEED_DEV_FMC]       =  0x14000000,
++    [ASPEED_DEV_SPI0]      =  0x14010000,
++    [ASPEED_DEV_SPI1]      =  0x14020000,
++    [ASPEED_DEV_SPI2]      =  0x14030000,
++    [ASPEED_DEV_MII1]      =  0x14040000,
++    [ASPEED_DEV_MII2]      =  0x14040008,
++    [ASPEED_DEV_MII3]      =  0x14040010,
++    [ASPEED_DEV_ETH1]      =  0x14050000,
++    [ASPEED_DEV_ETH2]      =  0x14060000,
++    [ASPEED_DEV_ETH3]      =  0x14070000,
++    [ASPEED_DEV_SDHCI]     =  0x14080000,
++    [ASPEED_DEV_ADC]       =  0x14C00000,
+     [ASPEED_DEV_SCUIO]     =  0x14C02000,
++    [ASPEED_DEV_GPIO]      =  0x14C0B000,
++    [ASPEED_DEV_I2C]       =  0x14C0F000,
++    [ASPEED_DEV_INTCIO]    =  0x14C18000,
++    [ASPEED_DEV_SLIIO]     =  0x14C1E000,
++    [ASPEED_DEV_VUART]     =  0X14C30000,
+     [ASPEED_DEV_UART0]     =  0X14C33000,
+     [ASPEED_DEV_UART1]     =  0X14C33100,
+     [ASPEED_DEV_UART2]     =  0X14C33200,
+     [ASPEED_DEV_UART3]     =  0X14C33300,
+-    [ASPEED_DEV_UART4]     =  0X12C1A000,
+     [ASPEED_DEV_UART5]     =  0X14C33400,
+     [ASPEED_DEV_UART6]     =  0X14C33500,
+     [ASPEED_DEV_UART7]     =  0X14C33600,
+@@ -43,32 +67,8 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_UART11]    =  0X14C33A00,
+     [ASPEED_DEV_UART12]    =  0X14C33B00,
+     [ASPEED_DEV_WDT]       =  0x14C37000,
+-    [ASPEED_DEV_VUART]     =  0X14C30000,
+-    [ASPEED_DEV_FMC]       =  0x14000000,
+-    [ASPEED_DEV_SPI0]      =  0x14010000,
+-    [ASPEED_DEV_SPI1]      =  0x14020000,
+-    [ASPEED_DEV_SPI2]      =  0x14030000,
++    [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
+     [ASPEED_DEV_SDRAM]     =  0x400000000,
+-    [ASPEED_DEV_MII1]      =  0x14040000,
+-    [ASPEED_DEV_MII2]      =  0x14040008,
+-    [ASPEED_DEV_MII3]      =  0x14040010,
+-    [ASPEED_DEV_ETH1]      =  0x14050000,
+-    [ASPEED_DEV_ETH2]      =  0x14060000,
+-    [ASPEED_DEV_ETH3]      =  0x14070000,
+-    [ASPEED_DEV_EMMC]      =  0x12090000,
+-    [ASPEED_DEV_INTC]      =  0x12100000,
+-    [ASPEED_DEV_INTCIO]    =  0x14C18000,
+-    [ASPEED_DEV_SLI]       =  0x12C17000,
+-    [ASPEED_DEV_SLIIO]     =  0x14C1E000,
+-    [ASPEED_GIC_DIST]      =  0x12200000,
+-    [ASPEED_GIC_REDIST]    =  0x12280000,
+-    [ASPEED_DEV_ADC]       =  0x14C00000,
+-    [ASPEED_DEV_I2C]       =  0x14C0F000,
+-    [ASPEED_DEV_GPIO]      =  0x14C0B000,
+-    [ASPEED_DEV_RTC]       =  0x12C0F000,
+-    [ASPEED_DEV_SDHCI]     =  0x14080000,
+-    [ASPEED_DEV_TIMER1]    =  0x12C10000,
+-    [ASPEED_DEV_HACE]      =  0x12070000,
+ };
+ 
+ #define AST2700_MAX_IRQ 256
 -- 
 2.43.0
 
