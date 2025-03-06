@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BE5A54F8E
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:50:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE93A54FFB
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:01:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDTu-0001fl-Ag; Thu, 06 Mar 2025 10:49:54 -0500
+	id 1tqDU5-0002fs-RZ; Thu, 06 Mar 2025 10:50:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTR-0000Ox-62
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTW-0000PV-3R
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:30 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTP-0006NS-IF
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:24 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43bbb440520so9729865e9.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:49:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDTU-0006Nk-CA
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:29 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43948f77f1aso5247255e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276162; x=1741880962; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276166; x=1741880966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7gQL+fUXOizsPvaDiR2QJscVtgRbEO+e68iNhkxG0Ak=;
- b=klKKoksQTPsQ5yCZ5+lP/2GKoMC+co/ZDnNm0C22Y+DX02pD9pNajQc7SGooSnI0bJ
- G5eIKNxGtMNGfwpF0oFirB3BeaVjooHyDw54qxPp75wCEUvsXWEDtKgqV9Z3UhYW7SE1
- ANVFtF/oWVeLrXygSzY1Gj22FReVSf9KFcVgdU0HkUeWiLUq8UV+M5uZ1/dpeSoiWnGX
- QNwPYLcFjOmWrQYYMlnxyk1wg1tl2bmUBBfJ4l/6xiYOdeWPJJ/wAUg40MIVigcKpuRw
- uVTdkPP+QkAw8uAzL16w5iStSFvlYbPz2/HcbFPbL6hNtFyMqLNM1DOkFWq+Bt+hLbMw
- 0fdg==
+ :reply-to; bh=4sVC2TkF7qXS2mJBLOLW8I7WhvYkgMOlFC0u4MR1LHM=;
+ b=K242bB1oIISjIz9+JXTlU0cXLajRNBiCin4OCs03OcpuWRQEt2r2SDt0oGYFqq/sTz
+ DlXG1Dw4Fry8BuxSs20aQ0aHq9arM9ETflT9HddZ7/G84BtxAyIxV5gC3mDWBsmwN1oi
+ 6Ad+PGwcsxzH5YuQnL44rHEbN1Zl2KXccXNEjyW9HEs3uSeAydGhkCkTivhsS7RAHAa/
+ 13ESwZguvIvSJdUaYUxfKAFfDGTBY4DjZrAEiteROecPbD0fTrcgL4uTjoNk2Uead8bO
+ F+CHjmnDCQASI8JZSa1ONOoNKpVDQ4m4UBIM7Js7Q7/pfRHMBvUZoh8rvZtOLWNJCLF2
+ ZV7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276162; x=1741880962;
+ d=1e100.net; s=20230601; t=1741276166; x=1741880966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7gQL+fUXOizsPvaDiR2QJscVtgRbEO+e68iNhkxG0Ak=;
- b=S0iWBHzyl+uRSwZ11E2uAmOzKKtkUjKYaGRDH692SMH+J7VhkFy4GkCMwyA5SVEVE3
- qLaAkZDQ84lrvc4N0gmv1SXnIFkrVnFlqim6VA1madcX89rH0c5ysGa6LKKpVnl239tY
- gWwd+EtkSgCUjkAaoJbtKuLyKujIdKgKz/4vd8d7dyVhQRl2VTRcXOrQeaZS6Dq2QdWP
- 5/VaS41t91qYMTN1nmSpubRGVfUPeTMW3I6h1iIfa6DWddfte+3/zUvzMZd7KAeEFzKC
- ghIJ7fKdRbmg5jyAyTj3winQMZoyGa80J+IHrx6G8bsjWyvL7ME6SRP0BesOCtLJO4lP
- CV4Q==
-X-Gm-Message-State: AOJu0Yz/hQJVyA1DaFmFyL5MpctviNgiRmlZ0pMu5mMSfys7x417bTNd
- QPJBGO3z+7ZHVv4HB5ZzMEr0hpascs8fSHOHFqWLjRnZZ0nSTIYd6G08FCnCkjiRfjxMVMR33eL
- Azms=
-X-Gm-Gg: ASbGncuJLsR/lPmmwYpNzIraBIFOhV76mx1rOdB0BrSkkQGb+S8x9izcjzlpVsyBP2b
- 0/FQUXWpDw2ltefYr32NwqMqUr8ngoMafUlqEjlNsfcLhcsqGA49D4SLQEz+gkht+KGzi5fbcQt
- WRsj2jKHiRSHIkUIaPXhV1WRpeoqUlEGF7A6a0qROE2EAxCB3/SekAQNxtcj95rv5SNAb5DTVvA
- z6QPaNRvPFVpljuoaynu48beUkT4yDXVHZerM0seDnUXvkkJsDUjvddZx74QsPp0C798baPv/Rm
- YuSfz17kiGSaneUeWmqj1IiI7V2c0c5ywPcO6vXhs5/S4v2RB6RBoWjlUgxugx47xWKAS5qBkpB
- CegN+SDXom5MZ/HnpTsc=
-X-Google-Smtp-Source: AGHT+IHI5bm8Q2OvpeafvKTe7+ygU6pEWjyJsA32DtcgZQzug5v9fTlo3D1R1UG0HoGPhfqRAw1kDw==
-X-Received: by 2002:a05:6000:1f82:b0:390:f75e:f815 with SMTP id
- ffacd0b85a97d-3911f7543a6mr8563839f8f.23.1741276161875; 
- Thu, 06 Mar 2025 07:49:21 -0800 (PST)
+ bh=4sVC2TkF7qXS2mJBLOLW8I7WhvYkgMOlFC0u4MR1LHM=;
+ b=fMw1CuFnREL3fpEA36VZx153fRlqmd3fbmn/6Cu26eoT/yoL5jO2dBo/94E9zBunef
+ rDEU57gIxafwYfRiOlBMe2xARozfPXZ3m2FnvF7SdasafaZ6qL0k60ZnZ/eJkBA0APHN
+ X++EJTBEdWWKujWgtQ556dtFnCeexl1GwwmW9rYcT8I5eaIfxLEZutnq3SJUAWRnnEs2
+ qgka0KWGBIqbKPsres5T5WXse+EhG3uSKfkSW+EgO+EV1Z2dtVIR+3tGJEBk071Hb8Hj
+ sejQ9TTeoMbpEVapB2Kg69t+2IZ68oLOtvpqM4u0VoR7DN48amvTjdPN9NuAHtQ+kf+W
+ xUcw==
+X-Gm-Message-State: AOJu0YxygTAMF6lFStjfY5qRjoZZSiH4ZuMUL0KxPciIjWI2nshXBbNX
+ Moz8UMVMGEyw3vQ8q3mNH9w+HDUSMFbJ8HqtSJlBsag+MWGNyHOd02Ls+TcmEUSGCBVoNs/a3CB
+ zwVQ=
+X-Gm-Gg: ASbGnctZEzXmQFDUNEp8nhPZ9vvLr4hpkhmQyxxMer8t/1ucCWUm3YSRjIuF+lCqCbl
+ CE1pOCzqPlSs9yMZToV4B3u9rISs71X4rMQnKkx97oAoG0TAepfDpWBvyR7qFFtdD3owoLy3oo4
+ jfxwro3ARpFg1JRKRbT7VJTTqAGV7sm7IK1TXGtAVlhV9GWvy7B2X00HeMIpRJbMFpvxd2INlKC
+ IXRHsDsubQnhJsZzuax7w9acgYWm5sgavIKrUPIhimTSrdtEwFJOC8PC/heUEG1aFKRhtNhjBQO
+ hSP2z46Ip+DIeCekxhdWdXUGF7LVmeHRRJUL05oHB8zuVMvm2QF/mN38xWKV4Q/XB3osRAQfyro
+ p49/jdz4TDbnyBQhSlqQ=
+X-Google-Smtp-Source: AGHT+IFzOckwGf6F3uW5qNouQU2YB+VifASO7BcLY4YafZLNGmm8Gx9HEdiHqsnzTaRloCPrKHsFSQ==
+X-Received: by 2002:a5d:6d87:0:b0:385:ee40:2d88 with SMTP id
+ ffacd0b85a97d-3911f7260c5mr7376064f8f.3.1741276166357; 
+ Thu, 06 Mar 2025 07:49:26 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103f57sm2411276f8f.91.2025.03.06.07.49.21
+ ffacd0b85a97d-3912c0e2b8bsm2419446f8f.64.2025.03.06.07.49.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:49:21 -0800 (PST)
+ Thu, 06 Mar 2025 07:49:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/54] cpus: Have cpu_exec_initfn() per user / system emulation
-Date: Thu,  6 Mar 2025 16:47:05 +0100
-Message-ID: <20250306154737.70886-24-philmd@linaro.org>
+Subject: [PULL 24/54] cpus: Restrict cpu_get_memory_mapping() to system
+ emulation
+Date: Thu,  6 Mar 2025 16:47:06 +0100
+Message-ID: <20250306154737.70886-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,80 +97,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Slighly simplify cpu-target.c again by extracting cpu_exec_initfn()
-to cpu-{system,user}.c, adding an empty stub for user emulation.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250123234415.59850-19-philmd@linaro.org>
+Message-Id: <20250121142341.17001-5-philmd@linaro.org>
 ---
- cpu-target.c         | 9 ---------
- hw/core/cpu-system.c | 7 +++++++
- hw/core/cpu-user.c   | 5 +++++
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ include/hw/core/cpu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index f4c834fd26a..5aa6c4b0c63 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -24,7 +24,6 @@
- #include "migration/vmstate.h"
- #ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
--#include "exec/address-spaces.h"
- #endif
- #include "system/accel-ops.h"
- #include "system/cpus.h"
-@@ -175,14 +174,6 @@ void cpu_exec_unrealizefn(CPUState *cpu)
-     accel_cpu_common_unrealize(cpu);
- }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 7b6b22c431b..9dd6ac7c763 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -616,6 +616,8 @@ extern bool mttcg_enabled;
+  */
+ bool cpu_paging_enabled(const CPUState *cpu);
  
--void cpu_exec_initfn(CPUState *cpu)
--{
--#ifndef CONFIG_USER_ONLY
--    cpu->memory = get_system_memory();
--    object_ref(OBJECT(cpu->memory));
--#endif
--}
++#if !defined(CONFIG_USER_ONLY)
++
+ /**
+  * cpu_get_memory_mapping:
+  * @cpu: The CPU whose memory mappings are to be obtained.
+@@ -627,8 +629,6 @@ bool cpu_paging_enabled(const CPUState *cpu);
+ bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+                             Error **errp);
+ 
+-#if !defined(CONFIG_USER_ONLY)
 -
- char *cpu_model_from_type(const char *typename)
- {
-     const char *suffix = "-" CPU_RESOLVING_TYPE;
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 1310b4203fd..e511507e13b 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -20,6 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "exec/address-spaces.h"
- #include "exec/memory.h"
- #include "exec/tswap.h"
- #include "hw/qdev-core.h"
-@@ -187,3 +188,9 @@ void cpu_class_init_props(DeviceClass *dc)
- 
-     device_class_set_props(dc, cpu_system_props);
- }
-+
-+void cpu_exec_initfn(CPUState *cpu)
-+{
-+    cpu->memory = get_system_memory();
-+    object_ref(OBJECT(cpu->memory));
-+}
-diff --git a/hw/core/cpu-user.c b/hw/core/cpu-user.c
-index e5ccf6bf13a..cdd8de2fefa 100644
---- a/hw/core/cpu-user.c
-+++ b/hw/core/cpu-user.c
-@@ -25,3 +25,8 @@ void cpu_class_init_props(DeviceClass *dc)
- {
-     device_class_set_props(dc, cpu_user_props);
- }
-+
-+void cpu_exec_initfn(CPUState *cpu)
-+{
-+    /* nothing to do */
-+}
+ /**
+  * cpu_write_elf64_note:
+  * @f: pointer to a function that writes memory to a file
 -- 
 2.47.1
 
