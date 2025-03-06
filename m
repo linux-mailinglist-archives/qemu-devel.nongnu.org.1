@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4227CA54FC8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5A4A54FDA
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:58:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDZc-0001xk-AQ; Thu, 06 Mar 2025 10:55:48 -0500
+	id 1tqDav-0004FC-KQ; Thu, 06 Mar 2025 10:57:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tqDXj-0007cz-EQ
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:53:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tqDaO-0003N4-JU
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:56:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tqDXg-0006uE-Hp
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:53:50 -0500
+ id 1tqDaM-0007Ff-Su
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:56:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741276424;
+ s=mimecast20190719; t=1741276593;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xxQdVCmnI3Aqsh0ic0CdkLhW0EOUUimR6/7hs+syd1M=;
- b=IwtWl4vJ5D5P4kxXsRvk/UGVg22HEYcloV486J3Fi2DXLl1vumhHQ9UbOr8aMhbZtKXPXh
- GiJ7/GMhbfdyNojWdHqQzE3WctlFOGYD/tdsPdInOU3kl2kGVdDJk6yMNOqzROnv1E8VHQ
- m98xkPAWVnjXOx9q0wz3rGJIqBBYLpw=
+ bh=FjM6zY5Yik7Qo+JU7LFR+LTH6lh/qDgoKWL6ATnBGkc=;
+ b=E03nECidP0wmpmPwbcm0XS7rSIPkitywUDezU+gJDELThr3T1c0/guR0/lne3jTWNJDUKH
+ IGJPEzZXPyPGErn0KQV/Jb7q00JWSsLqDhpRFv5l+4ZxJwPPm1QI1Pwja9UeL8YrJGAcsL
+ CJ+CO6SZLHkLVQN5FGeOG+maOKfQOCo=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-ls7wGqcWNguPotixr1Uofg-1; Thu, 06 Mar 2025 10:53:42 -0500
-X-MC-Unique: ls7wGqcWNguPotixr1Uofg-1
-X-Mimecast-MFC-AGG-ID: ls7wGqcWNguPotixr1Uofg_1741276422
+ us-mta-426-JK1hHK03O2ednaqrg5Zuwg-1; Thu, 06 Mar 2025 10:56:30 -0500
+X-MC-Unique: JK1hHK03O2ednaqrg5Zuwg-1
+X-Mimecast-MFC-AGG-ID: JK1hHK03O2ednaqrg5Zuwg_1741276588
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43942e82719so5806095e9.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:53:42 -0800 (PST)
+ 5b1f17b1804b1-4388eee7073so10667245e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:56:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276422; x=1741881222;
+ d=1e100.net; s=20230601; t=1741276588; x=1741881388;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xxQdVCmnI3Aqsh0ic0CdkLhW0EOUUimR6/7hs+syd1M=;
- b=KutSmDTn3GyRFBXQh8X9l1ZqbpQQ1HfMud0j8JzE1nITA2yHIfsq6q1/1Roh7kWY2R
- +qLSMqn3bK5cgZW6gC+U0BOg7baPBDR+pHjuIRbmB7J9uxySnaCqzH/MvLGZe8YX+FqA
- ORvd8we3NHqRnI8n4GNlnf5JvvIHLmUQPiHz0uurdUbkh3bVsNvcwctVQsP6MB6NnVqe
- 6BgVlizn3P+2o99Qsdg1+7FEn08+C0QwljpBlE9u8koS8EAfRAMzh5dfxX5CqVdUAVf+
- qS86vKXAno0eODGLfpxPL/5psHJfxBicq0eWlWdYrkfIWhuM18xT7riXHPFQTI9ORpeE
- Hy6Q==
+ bh=FjM6zY5Yik7Qo+JU7LFR+LTH6lh/qDgoKWL6ATnBGkc=;
+ b=JMy5VY/Ij2Bj66x3vjQY81Uz6V1873SyY9B2fugdlBmdfxR3UhTTRZ4V4t4mCYBuZK
+ GrYSnJLRGpkacWucchSHPb5OjMZywlJOlIO8+W47Q/OlVGSeKuQXjFQH/2BJnaA9iqyl
+ P4tcKc9GVNEhJnKqTl5QT6waIqol8PhQ5fAoIpS+ZK9yPlplcwHwlIICcu7Wldjr+I+j
+ W8YQAgemz2Au3V3NoMuh2ORPDJyYblmyylffEBN00abi4arqKKOhYPZMj0IPiPb98i9v
+ /1LZEGiy2koq0TPEB5x8M99grobrca3BUxdOLn+h2cA66+2HhOHnw+FJn6ZxJSYoTPcq
+ QkFA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUN89c2ouqQs5WtsrFLaLJEhaXaFnOOxxZseNnlGtXb2hRWG0BdsQAM/rkPHyW3l2Guf4vAVT/T0G/S@nongnu.org
-X-Gm-Message-State: AOJu0YwiwdJEruS2ircklWEcRUa79NVqXup8OIy4taBin5zoPj4M6Cul
- mPsVZNv0On3XpyNtaEiI5SBxT3sl9dIFdmKs/Wz9q4Ig+ySDN9haNjbjDxDqL20kM7e7LzG7ar5
- 2TuD7AiTxyHDf5SlPwsQnm2pMelyVqWgRapSQ1Se9aSftJo3B5nX3
-X-Gm-Gg: ASbGnct9lQ6k8upekbD175JRLDquks7r4X5GixZTkVQuQ2shmGg44C+0t1fn5dXKT2N
- my2mUI9dF/Uc4FeyLW6qXag4u/plmqqTEOp2Z9PoO7NE+rjETj4Po/G1OlYb5bzedfdXQlNTXg8
- KuB4SdxX55ptgsrblx1J32Jv3+MzLYqBXqK/n7a6Q0vAv775Df1hHuroC+DyH8DnC9xr4jWg8xk
- x+cx8YtzW2qmFO3RS4PpEyNdwTTBe4lanR3QPCxKQNxbmfjyskXrdV+Hc9th50esW/aByMTeje+
- SSRZrLgi6HiMCliTtqSlTS74V30kJU52UEkBLz6WFD6dhBOgrRcX8+EORYwlKV4=
-X-Received: by 2002:a05:6000:1ac9:b0:390:f4f9:8396 with SMTP id
- ffacd0b85a97d-3911f746e95mr6723725f8f.28.1741276421795; 
- Thu, 06 Mar 2025 07:53:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEB3ybbOubmeHxtfmX0OjLXsF7gR3/V0JMnCi4n3v0TXXFDru69LyuLCM2pnIlTmZCVzfVrSw==
-X-Received: by 2002:a05:6000:1ac9:b0:390:f4f9:8396 with SMTP id
- ffacd0b85a97d-3911f746e95mr6723707f8f.28.1741276421417; 
- Thu, 06 Mar 2025 07:53:41 -0800 (PST)
+ AJvYcCWYFEULxEf6jpPh9lHs6nBb45KppC1UYaKGMLuD8VCiQ+F273Grni1TZDWnxBUwEy0/spyflff/orcU@nongnu.org
+X-Gm-Message-State: AOJu0YwwBPT8Av+NlGMpFJLdKkraYVSvPMSXsxeQELLbQq6DcFAwukY2
+ LfiWID0j8xGk2cJVeQOaWeve4kWhl30sF/08kcH+ojG7uA+k1DFzSEX58T+MQQwwl9/IXXYXN0h
+ MRMgtstwPqW6AFAONtwyWwTsuYDi8gokVGnWf3y2aXshimoHoHzYb
+X-Gm-Gg: ASbGncuDeE/JiT7LDmjgZmpXc7GVMD+CruG3NMWFLqExcLasdS1VZLhdwqZJis4xG6l
+ SMvYIUtwAd5IX0pPn1J6dkd/hfeB1zNVidVYoYlhj2ePQbalquhIjPvPLWIqVM8coz6HC/WThqY
+ WJ5ix9csECY/1k3zAAB6r41jFuTfdju5bCdhrC1rzsbWkNuW6R47bHfPchU5mL/YF3D1ESwKoRA
+ Mys4uosTTRPUy6gguBnFbByMrXx561pLvwGIBVCUVQzL2idLUsIagCOLQzyDH+yz7eaqLjt1VXi
+ 7DdILqWvODVm3fCYue9BQKiSgGSXE4oppL7usHEETUpeiXuBWskZ26ba3lVB7hY=
+X-Received: by 2002:a05:600c:458f:b0:439:91c7:895a with SMTP id
+ 5b1f17b1804b1-43bdb38dd94mr30742725e9.7.1741276587995; 
+ Thu, 06 Mar 2025 07:56:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHEXZtC3h1HxHZp5QLqSWMCM/WBI97psT+YZ5fi8+s++1dWsKn6/ymprw7Qm1Q609DT/Q46mg==
+X-Received: by 2002:a05:600c:458f:b0:439:91c7:895a with SMTP id
+ 5b1f17b1804b1-43bdb38dd94mr30742505e9.7.1741276587566; 
+ Thu, 06 Mar 2025 07:56:27 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e2f39sm2385652f8f.80.2025.03.06.07.53.39
+ ffacd0b85a97d-3912bfba87csm2478466f8f.17.2025.03.06.07.56.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 07:53:40 -0800 (PST)
-Message-ID: <37a28de6-dd57-4501-adc1-3e2484e2081d@redhat.com>
-Date: Thu, 6 Mar 2025 16:53:39 +0100
+ Thu, 06 Mar 2025 07:56:26 -0800 (PST)
+Message-ID: <3f200adc-13fc-44e8-ba86-04508a2c44e8@redhat.com>
+Date: Thu, 6 Mar 2025 16:56:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv2 03/20] HostIOMMUDevice: Introduce realize_late
- callback
+Subject: Re: [PATCH rfcv2 05/20] vfio/iommufd: Implement [at|de]tach_hwpt
+ handlers
 Content-Language: en-US
 To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
@@ -95,21 +95,21 @@ Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
  "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
  "Peng, Chao P" <chao.p.peng@intel.com>
 References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
- <20250219082228.3303163-4-zhenzhong.duan@intel.com>
- <5322a196-017e-46c1-98d9-bf2f30d148e9@redhat.com>
- <SJ0PR11MB6744096111D47692257CD1B392CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20250219082228.3303163-6-zhenzhong.duan@intel.com>
+ <65c7bf72-10d2-4183-b548-f0f842083c49@redhat.com>
+ <SJ0PR11MB6744DB4CF84B062FF62022B992CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744096111D47692257CD1B392CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <SJ0PR11MB6744DB4CF84B062FF62022B992CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -129,49 +129,93 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Hi Zhenzhong,
 
-On 2/28/25 9:16 AM, Duan, Zhenzhong wrote:
+
+On 2/28/25 9:24 AM, Duan, Zhenzhong wrote:
 >
 >> -----Original Message-----
 >> From: Eric Auger <eric.auger@redhat.com>
->> Subject: Re: [PATCH rfcv2 03/20] HostIOMMUDevice: Introduce realize_late
->> callback
+>> Subject: Re: [PATCH rfcv2 05/20] vfio/iommufd: Implement [at|de]tach_hwpt
+>> handlers
 >>
 >>
 >>
 >>
 >> On 2/19/25 9:22 AM, Zhenzhong Duan wrote:
->>> Currently we have realize() callback which is called before attachment.
->>> But there are still some elements e.g., hwpt_id is not ready before
->>> attachment. So we need a realize_late() callback to further initialize
->>> them.
-> >from the description it is not obvious why the realize() could not have
->> been called after the attach. Could you remind the reader what is the
->> reason?
-> Sure, will rephrase as below:
->
-> " HostIOMMUDevice provides some elements to vIOMMU, but there are some which
-> are ready after attachment, e.g., hwpt_id.
->
-> Before create and attach to a new hwpt with IOMMU dirty tracking capability,
-> we have to call realize() to get if hardware IOMMU supports dirty tracking
-> capability.
->
-> So moving realize() after attach() will not work here, we need a new callback
-> realize_late() to further initialize those elements.
->
-> Currently, this callback is only useful for iommufd backend. For legacy
-> backend nothing needs to be initialized after attachment. "
-
-OK this helps me
-
-Thanks
+>>> Implement [at|de]tach_hwpt handlers in VFIO subsystem. vIOMMU
+>>> utilizes them to attach to or detach from hwpt on host side.
+>>>
+>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>> ---
+>>>  hw/vfio/iommufd.c | 22 ++++++++++++++++++++++
+>>>  1 file changed, 22 insertions(+)
+>>>
+>>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+>>> index 53639bf88b..175c4fe1f4 100644
+>>> --- a/hw/vfio/iommufd.c
+>>> +++ b/hw/vfio/iommufd.c
+>>> @@ -802,6 +802,24 @@ static void
+>> vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
+>>>      vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
+>>>  };
+>>>
+>>> +static bool
+>> can't we return an integer instead. This looks more standard to me
+> I can do that, but I remember VFIO honors bool return value
+> whenever possible. We had ever cleanup patches to make all functions
+> return bool when possible. Do we really want to return int for only these
+> two functions?
+I now remember those patches from Cédric. As I mentionned realier I have
+not found in the errp doc that this was a requirement but nevertheless
+ignore this comment then ;-)
 
 Eric
 >
 > Thanks
 > Zhenzhong
 >
+>> Eric
+>> +host_iommu_device_iommufd_vfio_attach_hwpt(HostIOMMUDeviceIOMMUFD
+>> *idev,
+>>> +                                           uint32_t hwpt_id, Error **errp)
+>>> +{
+>>> +    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
+>>> +
+>>> +    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
+>>> +}
+>>> +
+>>> +static bool
+>>>
+>> +host_iommu_device_iommufd_vfio_detach_hwpt(HostIOMMUDeviceIOMMUF
+>> D *idev,
+>>> +                                           Error **errp)
+>>> +{
+>>> +    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
+>>> +
+>>> +    return iommufd_cdev_detach_ioas_hwpt(vbasedev, errp);
+>>> +}
+>>> +
+>>>  static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void
+>> *opaque,
+>>>                                        Error **errp)
+>>>  {
+>>> @@ -863,11 +881,15 @@
+>> hiod_iommufd_vfio_get_page_size_mask(HostIOMMUDevice *hiod)
+>>>  static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
+>>>  {
+>>>      HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
+>>> +    HostIOMMUDeviceIOMMUFDClass *idevc =
+>> HOST_IOMMU_DEVICE_IOMMUFD_CLASS(oc);
+>>>      hiodc->realize = hiod_iommufd_vfio_realize;
+>>>      hiodc->realize_late = hiod_iommufd_vfio_realize_late;
+>>>      hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
+>>>      hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
+>>> +
+>>> +    idevc->attach_hwpt = host_iommu_device_iommufd_vfio_attach_hwpt;
+>>> +    idevc->detach_hwpt = host_iommu_device_iommufd_vfio_detach_hwpt;
+>>>  };
+>>>
+>>>  static const TypeInfo types[] = {
 
 
