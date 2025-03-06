@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B671A54FD9
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C57A54F38
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:33:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDW9-0005am-M8; Thu, 06 Mar 2025 10:52:13 -0500
+	id 1tqDDR-0000H6-2g; Thu, 06 Mar 2025 10:32:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVi-0004rS-H1
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:51:46 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVg-0006nh-6f
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:51:45 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-390effd3e85so810335f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:51:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276302; x=1741881102; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xEi19GICoksLADKOo55mK0c9OwojgM4AwDlkdDj14C0=;
- b=Nf7FgUOiC1ppDQZ1S/Ed2O2IYTrP8GWk6dFxoqwBkSi0SF/7KM8XGTgZTdAnqSLNYc
- tlWwoyWqGmCXKFzT11DW5kZdKYVGQA11/iarX/mGsKTb4IBOOZZO07XBLoM3F/yr/4X2
- b08X6C70hJIRorOEMpepX6Lu9yHK9tI4Qig+w5Tg+nmNHKG/L4T3LfJJH0/uXaDkSSgd
- xAV1inTt3e1qXW+WQ40f9LHrS53LkeCgb4uYnBO1VUHTj59q7x0lJ81dMTDqtDI9iEE8
- aQg6JR2Pzcyl2k+JNj64c59SQwa7fJCv0jE/9EporEbIuy63Nyftn+Qx/qGc9dHBK9UI
- 8KCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276302; x=1741881102;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xEi19GICoksLADKOo55mK0c9OwojgM4AwDlkdDj14C0=;
- b=mQwDF7fAKGMEF2NQ2bD3PpY1fLgmuBZo0GTr+V3+naG7J3K+kI0ew+nfSEt39t/ylP
- BhNe0lZlytHabEZG2SCgBTFO0ce4Zm3sp/JpeZH5gz8jcx/GfCTu+8NASgi4h6xNJq12
- wqKU+Wl8hulbJ7mBeRG5by0TtN4sCimFCbESBE1hJW0+8Mtm4xPteHgNBEOI7Ympf9gO
- LTnSUSKB56DqnYTXzKNU2S/HkTAU8zeSy7LC+lm2pK8/0CACy8FmffrW0UmWX7E7sK9Z
- fYJTyBWRFL8Z0U4x8BM6zGygNRSdbWJp6rC/VrZYy+UfiTDd5ftYmrqCqTn91rZR4ju5
- u3/A==
-X-Gm-Message-State: AOJu0YywqI6n6NWtsDKtX+xAQXmlAPIAUBAw1MMn7cCo+LU4LCRPkNy+
- KyTUrqWD7CR+v/eqSJ5hvyJpGkOdHyvg3gcvNlB1h0gxraanCo+Af/qqBNZJzjFvyTg0iirka8A
- oOwU=
-X-Gm-Gg: ASbGncs1yXiAzdJ5+ytGm10ZvS4JlqRBe5to4gm85yxD++wUb5SBhycji2Aw864ETxM
- 6ddP3gkd5cN5kCHMp1wIytjrxIw4hdE2/GRa/3TOmwUx3LZpeuLgrrg0CrYLYK6ROtSnpDS5E+g
- CuKmeFzcY106EL9eAGuxjgkVbVD5lLPFRx8RdzsBTuI5XVOgMEigVCMDHQLpp5Bz6GiUTIuS3OK
- 8TEhKTaZyWm7N6bxvUwB+Dmpa1T1NtA4jF9XPeuY8fRASukrzxKKNmU7pTtmKUgvYvRJyWOq9Z8
- 3+2IDfasYJFXAqIBnOVxfVv6zBE8poKw+lkqaUKgqdfdJseDsb0IVc6DMK4JWyk+7AfvC7O52re
- SBLsgHDaDhdlxpi8Gxp4=
-X-Google-Smtp-Source: AGHT+IEVrov16+raJ7o2l7HY9jVUt18KcgUcA0AfP24jVhhusgHCSyixLNk2eCd9tgvCgDUviWTRiQ==
-X-Received: by 2002:a5d:5f91:0:b0:391:fcc:9ee8 with SMTP id
- ffacd0b85a97d-3911f740cb5mr7729816f8f.23.1741276302120; 
- Thu, 06 Mar 2025 07:51:42 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103808sm2438477f8f.97.2025.03.06.07.51.41
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:51:41 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 54/54] include: Poison TARGET_PHYS_ADDR_SPACE_BITS definition
-Date: Thu,  6 Mar 2025 16:47:36 +0100
-Message-ID: <20250306154737.70886-55-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
-References: <20250306154737.70886-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tqDCo-00007k-Kx
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:32:20 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tqDCl-00046A-AO
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:32:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741275131; x=1772811131;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=zRp/7uMnJT5vLMmnXR+37wi6QWu/dy1lzTsljPFz+gk=;
+ b=ibk1040pxdFULljWfrF1BLEwanVdIgFV4jKbgaknNF8T0q+RR2r1+tjV
+ G+c4bSYe0GDazVU4M8dcV7npEDKi7/rgLJYnpvBQ9OAJSXc9CcyJiTruT
+ yQoYdkLp+d+EpvGnZaTvLRLZ9lAJgWN7yUT6C4X9RW55kF43CbrAOxRC+
+ jyUz8mgwVJvCwsGZtEG/fMF3Aay+RjX8BvjxO09bWj3477EDQGFacdjbX
+ xPumYzeB25eicDZtDILjdkBsNpwamgNwy1Xmxk4855u3Bp5NrnVm9Kp80
+ o9/iVnE9oPOC6tabiKbEBUvbSJeNZnZbMxt1Tu/NCOw0TDtW3OlVdScNQ Q==;
+X-CSE-ConnectionGUID: CuCkTzdNTHGrIESQcgp/Lw==
+X-CSE-MsgGUID: Dl8yU6IBRl2f0zzyocVPww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53694682"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="53694682"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 07:32:08 -0800
+X-CSE-ConnectionGUID: D4BGUIZdTFyk5FNU0QE61Q==
+X-CSE-MsgGUID: 7szPwbsuR8GIngmAifx79Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="124069539"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 06 Mar 2025 07:32:07 -0800
+Date: Thu, 6 Mar 2025 23:52:15 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Dongli Zhang <dongli.zhang@oracle.com>
+Subject: Re: [PATCH 1/2] i386/cpu: Move adjustment of CPUID_EXT_PDCM before
+ feature_dependencies[] check
+Message-ID: <Z8nEr2tQ9PWd9sEC@intel.com>
+References: <20250304052450.465445-1-xiaoyao.li@intel.com>
+ <20250304052450.465445-2-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304052450.465445-2-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,28 +83,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure common code never use this target specific definition.
+On Tue, Mar 04, 2025 at 12:24:49AM -0500, Xiaoyao Li wrote:
+> Date: Tue, 4 Mar 2025 00:24:49 -0500
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH 1/2] i386/cpu: Move adjustment of CPUID_EXT_PDCM before
+>  feature_dependencies[] check
+> X-Mailer: git-send-email 2.34.1
+> 
+> There is one entry relates to CPUID_EXT_PDCM in feature_dependencies[].
+> So it needs to get correct value of CPUID_EXT_PDCM before using
+> feature_dependencies[] to apply dependencies.
+> 
+> Besides, it also ensures CPUID_EXT_PDCM value is tracked in
+> env->features[FEAT_1_ECX].
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/cpu.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250305153929.43687-4-philmd@linaro.org>
----
- include/exec/poison.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index f4283f693af..d6d4832854e 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -48,6 +48,7 @@
- #pragma GCC poison TARGET_PAGE_MASK
- #pragma GCC poison TARGET_PAGE_BITS
- #pragma GCC poison TARGET_PAGE_ALIGN
-+#pragma GCC poison TARGET_PHYS_ADDR_SPACE_BITS
- 
- #pragma GCC poison CPU_INTERRUPT_HARD
- #pragma GCC poison CPU_INTERRUPT_EXITTB
--- 
-2.47.1
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
