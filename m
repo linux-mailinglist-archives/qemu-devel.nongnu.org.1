@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C924EA54D79
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A698A54D74
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:19:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqC0u-0007ZQ-Uc; Thu, 06 Mar 2025 09:15:53 -0500
+	id 1tqC12-000842-DP; Thu, 06 Mar 2025 09:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqC0Q-0007Hd-9Z
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:15:33 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqC0Z-0007MF-26
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:15:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqC0J-0001my-F9
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:15:17 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqC0S-0001nK-1r
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:15:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741270514;
+ s=mimecast20190719; t=1741270519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WS7YUvhiU0H9JPDNMiJqsDDCj4ZF6iHMJo/TyYhiLQU=;
- b=bxrVKz0F4gfpZCX1UczT8Z3Pox59qfBNYeciHGiCehlseax2MYOBOoyM570rHExTGygKiw
- TnHN9lOeZ7QQVxF5br34arigjfD9Duq74YeEb+IolsKTRQBlrxJZF9cP1xu6DXmmwU0JhZ
- t9iODLFrqNUuxv8dWiG6fT7LjP8EzZw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ORsMgR5tNUkV2umt2LiJWC8AWrhfAOEM9RMcEU3OdRk=;
+ b=YMj673rgglNVZFQW5cZL6uDp9JZgV/qPIJqdypq+CPVJOm0nVcbZ89tpPml6fjwzD2xrR8
+ wdIzdBlRPKECvEIFU0pw+T4w9qxAH3lzXU8iz5dTUxXwaAwtq3eaBnQxRaCXOXYuhWlMHG
+ cukj3+9qVFamHvQ6KiqCa4X5hUNejVI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-sfGV4ux4NoiUzLEPqYF6Rg-1; Thu,
- 06 Mar 2025 09:15:08 -0500
-X-MC-Unique: sfGV4ux4NoiUzLEPqYF6Rg-1
-X-Mimecast-MFC-AGG-ID: sfGV4ux4NoiUzLEPqYF6Rg_1741270507
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-ZqouXhPaO6CfDQxDWiUCDg-1; Thu,
+ 06 Mar 2025 09:15:10 -0500
+X-MC-Unique: ZqouXhPaO6CfDQxDWiUCDg-1
+X-Mimecast-MFC-AGG-ID: ZqouXhPaO6CfDQxDWiUCDg_1741270510
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E7E519560B2; Thu,  6 Mar 2025 14:15:07 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D978A180AF5B; Thu,  6 Mar 2025 14:15:09 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.141])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6A5D318001D3; Thu,  6 Mar 2025 14:15:04 +0000 (UTC)
+ id AF79D18001D3; Thu,  6 Mar 2025 14:15:07 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>
-Subject: [PULL 12/42] thread-pool: Rename AIO pool functions to *_aio() and
- data types to *Aio
-Date: Thu,  6 Mar 2025 15:13:48 +0100
-Message-ID: <20250306141419.2015340-13-clg@redhat.com>
+ Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 13/42] thread-pool: Implement generic (non-AIO) pool support
+Date: Thu,  6 Mar 2025 15:13:49 +0100
+Message-ID: <20250306141419.2015340-14-clg@redhat.com>
 In-Reply-To: <20250306141419.2015340-1-clg@redhat.com>
 References: <20250306141419.2015340-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,319 +85,223 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-These names conflict with ones used by future generic thread pool
-equivalents.
-Generic names should belong to the generic pool type, not specific (AIO)
-type.
+Migration code wants to manage device data sending threads in one place.
 
-Acked-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+QEMU has an existing thread pool implementation, however it is limited
+to queuing AIO operations only and essentially has a 1:1 mapping between
+the current AioContext and the AIO ThreadPool in use.
+
+Implement generic (non-AIO) ThreadPool by essentially wrapping Glib's
+GThreadPool.
+
+This brings a few new operations on a pool:
+* thread_pool_wait() operation waits until all the submitted work requests
+have finished.
+
+* thread_pool_set_max_threads() explicitly sets the maximum thread count
+in the pool.
+
+* thread_pool_adjust_max_threads_to_work() adjusts the maximum thread count
+in the pool to equal the number of still waiting in queue or unfinished work.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Link: https://lore.kernel.org/qemu-devel/70f9e0fb4b01042258a1a57996c64d19779dc7f0.1741124640.git.maciej.szmigiero@oracle.com
+Link: https://lore.kernel.org/qemu-devel/b1efaebdbea7cb7068b8fb74148777012383e12b.1741124640.git.maciej.szmigiero@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/block/aio.h         |  8 ++---
- include/block/thread-pool.h |  8 ++---
- util/async.c                |  6 ++--
- util/thread-pool.c          | 58 ++++++++++++++++++-------------------
- util/trace-events           |  4 +--
- 5 files changed, 42 insertions(+), 42 deletions(-)
+ include/block/thread-pool.h |  51 ++++++++++++++++
+ util/thread-pool.c          | 119 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 170 insertions(+)
 
-diff --git a/include/block/aio.h b/include/block/aio.h
-index 43883a8a33a8efcab92da58a8071ac082365ed25..b2ab3514de23ac8b744b23e9cb9d3a237a050a35 100644
---- a/include/block/aio.h
-+++ b/include/block/aio.h
-@@ -54,7 +54,7 @@ typedef void QEMUBHFunc(void *opaque);
- typedef bool AioPollFn(void *opaque);
- typedef void IOHandler(void *opaque);
- 
--struct ThreadPool;
-+struct ThreadPoolAio;
- struct LinuxAioState;
- typedef struct LuringState LuringState;
- 
-@@ -207,7 +207,7 @@ struct AioContext {
-     /* Thread pool for performing work and receiving completion callbacks.
-      * Has its own locking.
-      */
--    struct ThreadPool *thread_pool;
-+    struct ThreadPoolAio *thread_pool;
- 
- #ifdef CONFIG_LINUX_AIO
-     struct LinuxAioState *linux_aio;
-@@ -500,8 +500,8 @@ void aio_set_event_notifier_poll(AioContext *ctx,
-  */
- GSource *aio_get_g_source(AioContext *ctx);
- 
--/* Return the ThreadPool bound to this AioContext */
--struct ThreadPool *aio_get_thread_pool(AioContext *ctx);
-+/* Return the ThreadPoolAio bound to this AioContext */
-+struct ThreadPoolAio *aio_get_thread_pool(AioContext *ctx);
- 
- /* Setup the LinuxAioState bound to this AioContext */
- struct LinuxAioState *aio_setup_linux_aio(AioContext *ctx, Error **errp);
 diff --git a/include/block/thread-pool.h b/include/block/thread-pool.h
-index 4f6694026123e2b6b503eab3ee23cf51db4bdef1..6f27eb085b451ecc712aeff385944541a729c83d 100644
+index 6f27eb085b451ecc712aeff385944541a729c83d..dd48cf07e85f886e9efc44916e4018141f352233 100644
 --- a/include/block/thread-pool.h
 +++ b/include/block/thread-pool.h
-@@ -24,10 +24,10 @@
- 
- typedef int ThreadPoolFunc(void *opaque);
- 
--typedef struct ThreadPool ThreadPool;
-+typedef struct ThreadPoolAio ThreadPoolAio;
- 
--ThreadPool *thread_pool_new(struct AioContext *ctx);
--void thread_pool_free(ThreadPool *pool);
-+ThreadPoolAio *thread_pool_new_aio(struct AioContext *ctx);
-+void thread_pool_free_aio(ThreadPoolAio *pool);
- 
- /*
-  * thread_pool_submit_{aio,co} API: submit I/O requests in the thread's
-@@ -36,7 +36,7 @@ void thread_pool_free(ThreadPool *pool);
- BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
-                                    BlockCompletionFunc *cb, void *opaque);
+@@ -38,5 +38,56 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
  int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg);
-+void thread_pool_update_params(ThreadPoolAio *pool, struct AioContext *ctx);
+ void thread_pool_update_params(ThreadPoolAio *pool, struct AioContext *ctx);
  
--void thread_pool_update_params(ThreadPool *pool, struct AioContext *ctx);
++/* ------------------------------------------- */
++/* Generic thread pool types and methods below */
++typedef struct ThreadPool ThreadPool;
++
++/* Create a new thread pool. Never returns NULL. */
++ThreadPool *thread_pool_new(void);
++
++/*
++ * Free the thread pool.
++ * Waits for all the previously submitted work to complete before performing
++ * the actual freeing operation.
++ */
++void thread_pool_free(ThreadPool *pool);
++
++/*
++ * Submit a new work (task) for the pool.
++ *
++ * @opaque_destroy is an optional GDestroyNotify for the @opaque argument
++ * to the work function at @func.
++ */
++void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
++                        void *opaque, GDestroyNotify opaque_destroy);
++
++/*
++ * Submit a new work (task) for the pool, making sure it starts getting
++ * processed immediately, launching a new thread for it if necessary.
++ *
++ * @opaque_destroy is an optional GDestroyNotify for the @opaque argument
++ * to the work function at @func.
++ */
++void thread_pool_submit_immediate(ThreadPool *pool, ThreadPoolFunc *func,
++                                  void *opaque, GDestroyNotify opaque_destroy);
++
++/*
++ * Wait for all previously submitted work to complete before returning.
++ *
++ * Can be used as a barrier between two sets of tasks executed on a thread
++ * pool without destroying it or in a performance sensitive path where the
++ * caller just wants to wait for all tasks to complete while deferring the
++ * pool free operation for later, less performance sensitive time.
++ */
++void thread_pool_wait(ThreadPool *pool);
++
++/* Set the maximum number of threads in the pool. */
++bool thread_pool_set_max_threads(ThreadPool *pool, int max_threads);
++
++/*
++ * Adjust the maximum number of threads in the pool to give each task its
++ * own thread (exactly one thread per task).
++ */
++bool thread_pool_adjust_max_threads_to_work(ThreadPool *pool);
  
  #endif
-diff --git a/util/async.c b/util/async.c
-index 0fe29436090dc383f1a867ce109c90c1d763d6e7..47e3d35a263fa98777da5b341f0d7cf287b92c45 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -369,7 +369,7 @@ aio_ctx_finalize(GSource     *source)
-     QEMUBH *bh;
-     unsigned flags;
- 
--    thread_pool_free(ctx->thread_pool);
-+    thread_pool_free_aio(ctx->thread_pool);
- 
- #ifdef CONFIG_LINUX_AIO
-     if (ctx->linux_aio) {
-@@ -435,10 +435,10 @@ GSource *aio_get_g_source(AioContext *ctx)
-     return &ctx->source;
- }
- 
--ThreadPool *aio_get_thread_pool(AioContext *ctx)
-+ThreadPoolAio *aio_get_thread_pool(AioContext *ctx)
- {
-     if (!ctx->thread_pool) {
--        ctx->thread_pool = thread_pool_new(ctx);
-+        ctx->thread_pool = thread_pool_new_aio(ctx);
-     }
-     return ctx->thread_pool;
- }
 diff --git a/util/thread-pool.c b/util/thread-pool.c
-index 2f751d55b33ffcbde584c99030c5b46b583b87d3..908194dc070fb90390c493f0c7fb10062dcb5c15 100644
+index 908194dc070fb90390c493f0c7fb10062dcb5c15..d2ead6b7285765821f0fa956132b207b5985b015 100644
 --- a/util/thread-pool.c
 +++ b/util/thread-pool.c
-@@ -23,9 +23,9 @@
- #include "block/thread-pool.h"
- #include "qemu/main-loop.h"
- 
--static void do_spawn_thread(ThreadPool *pool);
-+static void do_spawn_thread(ThreadPoolAio *pool);
- 
--typedef struct ThreadPoolElement ThreadPoolElement;
-+typedef struct ThreadPoolElementAio ThreadPoolElementAio;
- 
- enum ThreadState {
-     THREAD_QUEUED,
-@@ -33,9 +33,9 @@ enum ThreadState {
-     THREAD_DONE,
- };
- 
--struct ThreadPoolElement {
-+struct ThreadPoolElementAio {
-     BlockAIOCB common;
--    ThreadPool *pool;
-+    ThreadPoolAio *pool;
-     ThreadPoolFunc *func;
-     void *arg;
- 
-@@ -47,13 +47,13 @@ struct ThreadPoolElement {
-     int ret;
- 
-     /* Access to this list is protected by lock.  */
--    QTAILQ_ENTRY(ThreadPoolElement) reqs;
-+    QTAILQ_ENTRY(ThreadPoolElementAio) reqs;
- 
-     /* This list is only written by the thread pool's mother thread.  */
--    QLIST_ENTRY(ThreadPoolElement) all;
-+    QLIST_ENTRY(ThreadPoolElementAio) all;
- };
- 
--struct ThreadPool {
-+struct ThreadPoolAio {
-     AioContext *ctx;
-     QEMUBH *completion_bh;
-     QemuMutex lock;
-@@ -62,10 +62,10 @@ struct ThreadPool {
-     QEMUBH *new_thread_bh;
- 
-     /* The following variables are only accessed from one AioContext. */
--    QLIST_HEAD(, ThreadPoolElement) head;
-+    QLIST_HEAD(, ThreadPoolElementAio) head;
- 
-     /* The following variables are protected by lock.  */
--    QTAILQ_HEAD(, ThreadPoolElement) request_list;
-+    QTAILQ_HEAD(, ThreadPoolElementAio) request_list;
-     int cur_threads;
-     int idle_threads;
-     int new_threads;     /* backlog of threads we need to create */
-@@ -76,14 +76,14 @@ struct ThreadPool {
- 
- static void *worker_thread(void *opaque)
- {
--    ThreadPool *pool = opaque;
-+    ThreadPoolAio *pool = opaque;
- 
-     qemu_mutex_lock(&pool->lock);
-     pool->pending_threads--;
-     do_spawn_thread(pool);
- 
-     while (pool->cur_threads <= pool->max_threads) {
--        ThreadPoolElement *req;
-+        ThreadPoolElementAio *req;
-         int ret;
- 
-         if (QTAILQ_EMPTY(&pool->request_list)) {
-@@ -131,7 +131,7 @@ static void *worker_thread(void *opaque)
-     return NULL;
+@@ -374,3 +374,122 @@ void thread_pool_free_aio(ThreadPoolAio *pool)
+     qemu_mutex_destroy(&pool->lock);
+     g_free(pool);
  }
- 
--static void do_spawn_thread(ThreadPool *pool)
-+static void do_spawn_thread(ThreadPoolAio *pool)
- {
-     QemuThread t;
- 
-@@ -148,14 +148,14 @@ static void do_spawn_thread(ThreadPool *pool)
- 
- static void spawn_thread_bh_fn(void *opaque)
- {
--    ThreadPool *pool = opaque;
-+    ThreadPoolAio *pool = opaque;
- 
-     qemu_mutex_lock(&pool->lock);
-     do_spawn_thread(pool);
-     qemu_mutex_unlock(&pool->lock);
- }
- 
--static void spawn_thread(ThreadPool *pool)
-+static void spawn_thread(ThreadPoolAio *pool)
- {
-     pool->cur_threads++;
-     pool->new_threads++;
-@@ -173,8 +173,8 @@ static void spawn_thread(ThreadPool *pool)
- 
- static void thread_pool_completion_bh(void *opaque)
- {
--    ThreadPool *pool = opaque;
--    ThreadPoolElement *elem, *next;
-+    ThreadPoolAio *pool = opaque;
-+    ThreadPoolElementAio *elem, *next;
- 
-     defer_call_begin(); /* cb() may use defer_call() to coalesce work */
- 
-@@ -184,8 +184,8 @@ restart:
-             continue;
-         }
- 
--        trace_thread_pool_complete(pool, elem, elem->common.opaque,
--                                   elem->ret);
-+        trace_thread_pool_complete_aio(pool, elem, elem->common.opaque,
-+                                       elem->ret);
-         QLIST_REMOVE(elem, all);
- 
-         if (elem->common.cb) {
-@@ -217,10 +217,10 @@ restart:
- 
- static void thread_pool_cancel(BlockAIOCB *acb)
- {
--    ThreadPoolElement *elem = (ThreadPoolElement *)acb;
--    ThreadPool *pool = elem->pool;
-+    ThreadPoolElementAio *elem = (ThreadPoolElementAio *)acb;
-+    ThreadPoolAio *pool = elem->pool;
- 
--    trace_thread_pool_cancel(elem, elem->common.opaque);
-+    trace_thread_pool_cancel_aio(elem, elem->common.opaque);
- 
-     QEMU_LOCK_GUARD(&pool->lock);
-     if (elem->state == THREAD_QUEUED) {
-@@ -234,16 +234,16 @@ static void thread_pool_cancel(BlockAIOCB *acb)
- }
- 
- static const AIOCBInfo thread_pool_aiocb_info = {
--    .aiocb_size         = sizeof(ThreadPoolElement),
-+    .aiocb_size         = sizeof(ThreadPoolElementAio),
-     .cancel_async       = thread_pool_cancel,
- };
- 
- BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
-                                    BlockCompletionFunc *cb, void *opaque)
- {
--    ThreadPoolElement *req;
-+    ThreadPoolElementAio *req;
-     AioContext *ctx = qemu_get_current_aio_context();
--    ThreadPool *pool = aio_get_thread_pool(ctx);
-+    ThreadPoolAio *pool = aio_get_thread_pool(ctx);
- 
-     /* Assert that the thread submitting work is the same running the pool */
-     assert(pool->ctx == qemu_get_current_aio_context());
-@@ -290,7 +290,7 @@ int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg)
-     return tpc.ret;
- }
- 
--void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
-+void thread_pool_update_params(ThreadPoolAio *pool, AioContext *ctx)
- {
-     qemu_mutex_lock(&pool->lock);
- 
-@@ -317,7 +317,7 @@ void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
-     qemu_mutex_unlock(&pool->lock);
- }
- 
--static void thread_pool_init_one(ThreadPool *pool, AioContext *ctx)
-+static void thread_pool_init_one(ThreadPoolAio *pool, AioContext *ctx)
- {
-     if (!ctx) {
-         ctx = qemu_get_aio_context();
-@@ -337,14 +337,14 @@ static void thread_pool_init_one(ThreadPool *pool, AioContext *ctx)
-     thread_pool_update_params(pool, ctx);
- }
- 
--ThreadPool *thread_pool_new(AioContext *ctx)
-+ThreadPoolAio *thread_pool_new_aio(AioContext *ctx)
- {
--    ThreadPool *pool = g_new(ThreadPool, 1);
-+    ThreadPoolAio *pool = g_new(ThreadPoolAio, 1);
-     thread_pool_init_one(pool, ctx);
-     return pool;
- }
- 
--void thread_pool_free(ThreadPool *pool)
-+void thread_pool_free_aio(ThreadPoolAio *pool)
- {
-     if (!pool) {
-         return;
-diff --git a/util/trace-events b/util/trace-events
-index 5be12d7fab8943458097d7d03bf1fe41e330aba6..bd8f25fb592097b32d2017e9623823635d042691 100644
---- a/util/trace-events
-+++ b/util/trace-events
-@@ -15,8 +15,8 @@ reentrant_aio(void *ctx, const char *name) "ctx %p name %s"
- 
- # thread-pool.c
- thread_pool_submit_aio(void *pool, void *req, void *opaque) "pool %p req %p opaque %p"
--thread_pool_complete(void *pool, void *req, void *opaque, int ret) "pool %p req %p opaque %p ret %d"
--thread_pool_cancel(void *req, void *opaque) "req %p opaque %p"
-+thread_pool_complete_aio(void *pool, void *req, void *opaque, int ret) "pool %p req %p opaque %p ret %d"
-+thread_pool_cancel_aio(void *req, void *opaque) "req %p opaque %p"
- 
- # buffer.c
- buffer_resize(const char *buf, size_t olen, size_t len) "%s: old %zd, new %zd"
++
++struct ThreadPool {
++    GThreadPool *t;
++    size_t cur_work;
++    QemuMutex cur_work_lock;
++    QemuCond all_finished_cond;
++};
++
++typedef struct {
++    ThreadPoolFunc *func;
++    void *opaque;
++    GDestroyNotify opaque_destroy;
++} ThreadPoolElement;
++
++static void thread_pool_func(gpointer data, gpointer user_data)
++{
++    ThreadPool *pool = user_data;
++    g_autofree ThreadPoolElement *el = data;
++
++    el->func(el->opaque);
++
++    if (el->opaque_destroy) {
++        el->opaque_destroy(el->opaque);
++    }
++
++    QEMU_LOCK_GUARD(&pool->cur_work_lock);
++
++    assert(pool->cur_work > 0);
++    pool->cur_work--;
++
++    if (pool->cur_work == 0) {
++        qemu_cond_signal(&pool->all_finished_cond);
++    }
++}
++
++ThreadPool *thread_pool_new(void)
++{
++    ThreadPool *pool = g_new(ThreadPool, 1);
++
++    pool->cur_work = 0;
++    qemu_mutex_init(&pool->cur_work_lock);
++    qemu_cond_init(&pool->all_finished_cond);
++
++    pool->t = g_thread_pool_new(thread_pool_func, pool, 0, TRUE, NULL);
++    /*
++     * g_thread_pool_new() can only return errors if initial thread(s)
++     * creation fails but we ask for 0 initial threads above.
++     */
++    assert(pool->t);
++
++    return pool;
++}
++
++void thread_pool_free(ThreadPool *pool)
++{
++    /*
++     * With _wait = TRUE this effectively waits for all
++     * previously submitted work to complete first.
++     */
++    g_thread_pool_free(pool->t, FALSE, TRUE);
++
++    qemu_cond_destroy(&pool->all_finished_cond);
++    qemu_mutex_destroy(&pool->cur_work_lock);
++
++    g_free(pool);
++}
++
++void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
++                        void *opaque, GDestroyNotify opaque_destroy)
++{
++    ThreadPoolElement *el = g_new(ThreadPoolElement, 1);
++
++    el->func = func;
++    el->opaque = opaque;
++    el->opaque_destroy = opaque_destroy;
++
++    WITH_QEMU_LOCK_GUARD(&pool->cur_work_lock) {
++        pool->cur_work++;
++    }
++
++    /*
++     * Ignore the return value since this function can only return errors
++     * if creation of an additional thread fails but even in this case the
++     * provided work is still getting queued (just for the existing threads).
++     */
++    g_thread_pool_push(pool->t, el, NULL);
++}
++
++void thread_pool_submit_immediate(ThreadPool *pool, ThreadPoolFunc *func,
++                                  void *opaque, GDestroyNotify opaque_destroy)
++{
++    thread_pool_submit(pool, func, opaque, opaque_destroy);
++    thread_pool_adjust_max_threads_to_work(pool);
++}
++
++void thread_pool_wait(ThreadPool *pool)
++{
++    QEMU_LOCK_GUARD(&pool->cur_work_lock);
++
++    while (pool->cur_work > 0) {
++        qemu_cond_wait(&pool->all_finished_cond,
++                       &pool->cur_work_lock);
++    }
++}
++
++bool thread_pool_set_max_threads(ThreadPool *pool,
++                                 int max_threads)
++{
++    assert(max_threads > 0);
++
++    return g_thread_pool_set_max_threads(pool->t, max_threads, NULL);
++}
++
++bool thread_pool_adjust_max_threads_to_work(ThreadPool *pool)
++{
++    QEMU_LOCK_GUARD(&pool->cur_work_lock);
++
++    return thread_pool_set_max_threads(pool, pool->cur_work);
++}
 -- 
 2.48.1
 
