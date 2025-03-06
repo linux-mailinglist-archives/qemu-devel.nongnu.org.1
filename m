@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9418BA550F4
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28078A551DF
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:53:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqE7G-00006m-T0; Thu, 06 Mar 2025 11:30:36 -0500
+	id 1tqERa-0000Vx-Sc; Thu, 06 Mar 2025 11:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tqE6o-0008Uq-Dm
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:30:08 -0500
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tqERP-0000SQ-Pz
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:51:27 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tqE6l-0003CU-QG
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:30:05 -0500
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tqERO-0006SN-12
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:51:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741278604; x=1772814604;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9JT6hQcuHPteGjoaNI+sWKgKEc5E/9AZD+AdonkE+gQ=;
- b=Tm11V0NaurniXzAkZR8hY+PCrLEyUBMH3EUXKpppVj/66VVpGWADyidm
- zO0Efh9ceVn0Qi+l2PEFYmhRWsCvb9Y8P1jTD4roiiHFrF5OwaeAMBJYj
- sswFJNH4V7s4urey94xyHo/f0xAVPBAnm8tgfHIVGU3v9eS5GedNXLKf7
- 6ZsWoe4jEpQHqAwfzLf3mK85LyGXxCHwyFpJuV7XFOiRCWfTbbBdZJ9Ox
- bPGF3rRdAuEydKYU93tANbHYkiqFAzXwCHLPOZ6qvCO54FqDBTmd3e1Oi
- KUvCzF7CjU4I2C6gGIakq2BgkwYkmBDVValaijzcItU136eX8y4wL0Z8q w==;
-X-CSE-ConnectionGUID: gdBHqypTSPaTNMgJxPW33w==
-X-CSE-MsgGUID: dwFjMivZRLS3u/F6UcFTxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46069640"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="46069640"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 08:30:01 -0800
-X-CSE-ConnectionGUID: 6/o4d1CJRlmH59W6JvCY3g==
-X-CSE-MsgGUID: 9vz7cgYqQKO18CkQEoPjYw==
+ t=1741279882; x=1772815882;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=t5t5Nl/GCwwxsBlhYyIbhXilnqn1z2pq64UN4JmmvKs=;
+ b=klUvz9vwnciou3qu7Lpcy2Pwd+iA/81rt3WjfFUbn7cRTjMV/AisVrRM
+ 1JwJh5xxhIDvia7GM4z5iqllAQZja6x53NVyGyanYo/qeD0TZSNG371Of
+ mLkDW4Vmxyi+zJjjjkktsTX/8xxqXtGmgYt7fGDvUYqVZjah+/IXIPgoQ
+ uj9sH2o6V3qei8TzFqHN7N2T2Yuj4iNeVaIWXNVkXFZ5lvJs/ZNeU1oIO
+ NQEz/+1R09C9fSf+SPNRq+7M2nW0Y4k8F6nUdZ4oUhXldUnNQYmBEUbQZ
+ 7vo9QLEAS4XkdBwRS6d0qZQ98dR1qvzVzFkrW27ddb2FVX2AKERwI/Efz g==;
+X-CSE-ConnectionGUID: WgBpjR6lQdiUz8Bmkn+w2A==
+X-CSE-MsgGUID: IGNuupelQu+XTTCCWUjPow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42437512"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="42437512"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 08:51:13 -0800
+X-CSE-ConnectionGUID: FqAaO7kKSX2E1FgjkyNM7A==
+X-CSE-MsgGUID: JqrwuYLvTBmHnewNyznwPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119579483"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 06 Mar 2025 08:29:57 -0800
-Date: Fri, 7 Mar 2025 00:50:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com
-Subject: Re: [PATCH v2 02/10] target/i386: disable PERFCORE when "-pmu" is
- configured
-Message-ID: <Z8nSPf4bUPICgf3g@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-3-dongli.zhang@oracle.com>
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="123662659"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2025 08:51:11 -0800
+Message-ID: <84abfe3b-babd-41de-b527-dc9644bcff4e@intel.com>
+Date: Fri, 7 Mar 2025 00:51:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250302220112.17653-3-dongli.zhang@oracle.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] i386: Adjust CPUID_EXT_PDCM based on enable_pmu at
+ realization
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Dongli Zhang <dongli.zhang@oracle.com>
+References: <20250304052450.465445-1-xiaoyao.li@intel.com>
+ <Z8nL0eLE/trEtlNd@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <Z8nL0eLE/trEtlNd@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,36 +86,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dongli,
+On 3/7/2025 12:22 AM, Zhao Liu wrote:
+> Hi Xiaoyao,
+> 
+>> First, it's not a good practice that values in env->features[] cannot be
+>> directly used for guest CPUID in void cpu_x86_cpuid(), but require further
+>> adjustment there. env->features[] are supposed to be finalized at cpu
+>> realization, so that after it env->features[] is reliable.
+>>
+>> Second, there is one dependency entry relates to CPUID_EXT_PDCM in
+>> feature_dependencies[]. QEMU needs to get correct value of
+>> CPUID_EXT_PDCM in env->features[] to ensure applying the dependencies
+>> correctly.
+> 
+> I agree that this is a very good idea, especially since PDCM has a
+> dependency entry.
+> 
+> "pmu" is totally a property rather than a feature bit, which makes the
+> dependency relationships in the code complex. Therefore, I think it's
+> worth having a series to clarify the dependencies of pmu as much as
+> possible.
+> 
+> I remember Dapeng/Zide also have fixes for pmu dependencies, and if
+> possible, I could help you combine this series with others' cleanups.
 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index b6d6167910..61a671028a 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7115,6 +7115,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              !(env->hflags & HF_LMA_MASK)) {
->              *edx &= ~CPUID_EXT2_SYSCALL;
->          }
-> +
-> +        if (kvm_enabled() && IS_AMD_CPU(env) && !cpu->enable_pmu) {
+The reason I sent out this small series quickly is mainly for Dongli to 
+as a reference.
 
-No need to check "kvm_enabled() && IS_AMD_CPU(env)" because:
+In fact, there are mess on LBR enabling that it checks enable_pmu 
+everytime with CPUID_7_0_EDX_ARCH_LBR as well as 
+CPUID_8000_0022_EAX_PERFMON_V2. That's on my WIP list to clean it up.
 
- * "pmu" is a general CPU property option which should cover all PMU
-   related features, and not kvm-specific/vendor-specific.
- * this bit is reserved on Intel. So the following operation doesn't
-   affect Intel.
+I think I need to check if they are duplicated with Dapeng/Zide's series.
 
-I think Xiaoyao's idea about checking in x86_cpu_expand_features() is
-good. And I believe it's worth having another cleanup series to revisit
-pmu dependencies. I can help you later to consolidate and move this
-check to x86_cpu_expand_features(), so this patch can focus on correctly
-defining the current dependency relationship.
+> Additionally, I think patch 1 and patch 2 can be merged together. Do you
+> agree?
 
-With the above nit fixed,
+IMHO, they stand as their own. I'll leave it to Paolo to make the decision.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-
+> Thanks,
+> Zhao
+> 
 
 
