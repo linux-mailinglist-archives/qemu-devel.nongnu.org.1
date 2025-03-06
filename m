@@ -2,116 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F67A55022
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E426CA55033
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:07:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDdq-0005uZ-1G; Thu, 06 Mar 2025 11:00:10 -0500
+	id 1tqDjd-0006kv-1G; Thu, 06 Mar 2025 11:06:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tqDdc-0005WG-N4
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:59:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tqDdY-0007Nv-FC
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:59:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741276790;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bobaLhRHul//cvP8MQrT14uvIx1z/vjGDTXE77jjM2k=;
- b=ZTj9TQbM0AV4FpGZVmUCgobFDwJzIkl3/ndyFIdivJGr/2kQdA72B0kBhJ/Zq0uwcTxbZn
- NwxakvhVnHelQxSXIXl+VNqa39GRW16mW9d15DCB5/zkz6aPyN5H/A9OiQQ+oTYrgg3ngU
- 5ffkRKYj9c27YHSKj7TkLVHJiwg3X1s=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-XfPB1T32PLyrHRDPBPT1SA-1; Thu, 06 Mar 2025 10:59:43 -0500
-X-MC-Unique: XfPB1T32PLyrHRDPBPT1SA-1
-X-Mimecast-MFC-AGG-ID: XfPB1T32PLyrHRDPBPT1SA_1741276782
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43bce8882d4so3951835e9.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:59:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tqDiG-0005qZ-35
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:04:45 -0500
+Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tqDiD-00084Y-OW
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 11:04:43 -0500
+Received: by mail-io1-xd2a.google.com with SMTP id
+ ca18e2360f4ac-85ae65ba2f1so22116539f.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 08:04:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1741277077; x=1741881877; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7zjWRlT1mM5gZ3fNd5beMHj2DNNCa7v3xU8WYp9B7KU=;
+ b=E1pNw/n/SKcRPv1vHC3en9WIWoccGgfPr7pPw2c3LFEkCIA6w9TqHlpy7qgJAPqZND
+ A2HMCJnrgoxxYqMowHiZt/ich9r8t93Aa5gE1emcIvy5vm0QVWvO2aooCdvaQRnfXHDZ
+ G0pOpne4uNkdj2oStN7Q2dby3egdqd72tYubo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276782; x=1741881582;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1741277077; x=1741881877;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=bobaLhRHul//cvP8MQrT14uvIx1z/vjGDTXE77jjM2k=;
- b=ULotnFBM+Sshy4oxBPY0B2OvBNKmGndxyYwcEHDdYfk//tbXdE3PZMgWgf4/lGUtod
- xwpZ3AWFBT+vQkFcdDxSJqh5uRkWMCOJllTyEG27xs94h0DKWUoJwkxnvHGu7fwBDKee
- Ljk7wV3ZSwlBaGYFarG30QrDJBRsIhp+/Ech+Bp2ANtwnwCBXOHlaF3kf8ngBcAmwj2V
- bmol1ghnH0J8GCGGUTq4UPUOp5NmUfN6P5k0AZWYVi7VqSuejqpY6ma91HGYK5PDsevZ
- 6iTncJ6VZ3B4mpCMins2y9iZYWFbOR/miFziUpH0IWE1Tt6ouXQNXCo2qF7UjqARdZv0
- 2J5g==
+ bh=7zjWRlT1mM5gZ3fNd5beMHj2DNNCa7v3xU8WYp9B7KU=;
+ b=W74oa9L59Ep1A0MXLu7bp0dpRS3JrrcFz4INFdtOnlzTKJQWf6OuqlA9sNOZLD8v+3
+ vrzstxIZd0qMgRL7Z8VkrKfuLhY+8WnZpPmKelT15i6qNh10iudTdJeWcQh3bmxpT3yA
+ X/lCjgJDMirNzkFand8l2E3oyaqFcDsk8Ux5Jy7uWx/69qVKRhtY1G13h+IiF1wXfeGH
+ +0b/ICu93zzYz5BM/wMEjxkANONZjJd8BDKTINmJdySvQ2ufG9EIBF76OrVea1NrbtPj
+ R1wTO05+dv/wcxxCZKSeKblgTkKO7fXB/DBk/qAvMRIc2ciU8c3z45Ag6iSI2dZAV5T4
+ lRdw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUExcRMaTMZLoC0XyBb+7Cpmue9PD9oA7SjdgatOMb3yzXN4pFJHpayyQYcIAVji9Sqt8ufoM2yJars@nongnu.org
-X-Gm-Message-State: AOJu0YwyniGoFEJZWai6OGtww1ru4jathXYyWcOervyjAoTSumhlQ03j
- ipiEeWwNqNhAUm9KQ0j6jUJAq6bYm21r0jFrVLRkF9qBRtJx0YthcoFo23GGLj5qBtVel1UsyBb
- 5KTu2wKxfuZi9c9rYp2TIcKudCZsV0+BuxqUzpoU6a/O3JhP/T7Rh
-X-Gm-Gg: ASbGncvr0UTKCVt/EkQHNeuzxO7u9x/C+EwUxnzDjG+mxUjzUy6/8FJv/mrme7OtuGa
- dEYABCuBC2GUzkR2ovUmCfNFqYZzb+8g0vFeyxM5pion4qXKBrpaoxQPsmYOE4DBY7booBFyndE
- CSxwH7+QnQuBL+6LNk0PEMzYDL8M1XJmtolPlT3Uk7WkQWE5+7UWLtP159+XC7bGwIb0FHqWvIy
- Zhlph67PEjntYeWSkNb5t8HCkmkxefWsNvVt/GwunWOJXu/litU5nTcgYEggDmWveau5nt34sRL
- McbQ9Iox8WxuLkHC1fIw76zjSjjQsITiHt6u0q/jf70xPVca6iXPPtJOPYUz0IQ=
-X-Received: by 2002:a05:6000:2808:b0:38f:2ffc:1e99 with SMTP id
- ffacd0b85a97d-3911f7c5802mr3868578f8f.49.1741276782442; 
- Thu, 06 Mar 2025 07:59:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEeZbNRGXn0wfJ038vIe6HzSqG4oTdl02SbWhggmVMax7GV5lBBMVVA5Jx+Fk2qUagITlZvfQ==
-X-Received: by 2002:a05:6000:2808:b0:38f:2ffc:1e99 with SMTP id
- ffacd0b85a97d-3911f7c5802mr3868563f8f.49.1741276781994; 
- Thu, 06 Mar 2025 07:59:41 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bfb799fsm2428541f8f.2.2025.03.06.07.59.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 07:59:41 -0800 (PST)
-Message-ID: <0ccbf699-e6be-4936-89f7-b4f69672516f@redhat.com>
-Date: Thu, 6 Mar 2025 16:59:39 +0100
+ AJvYcCUFl0ahbvb/Ul+325RHIEtl7nOsiCxOa5CdIEw0HIZuubGhWujLYtk1B3ywYquoj+93/6k6GTZ2WvFY@nongnu.org
+X-Gm-Message-State: AOJu0YyU2yE4Hc0BW5GTVzLJFnWS4TrfUGchk+iORh8bmsUDt4n81lT6
+ FzTDCYrKuoWnMJ8FtK0IO6Bp/le2OdmSqLo/Z9D/PJd4bxHVEBx3W4DUG/FxaA==
+X-Gm-Gg: ASbGncuaEgPBrHhn2RrMPMWF99ztZhYiIbDyU3IZw0faHBldGWuFAkbWaLZaZHJcwYz
+ 0n41ifR8wP37DxZkIYcc5L2tUjTAyz/goAwVbbEjU5Qk9M5EFdTAX0AOIAQuVXBRQimRXxDit1T
+ k+B9QnEeriHbGaVahxGqrplLSeGXNy2nwCcQPmpeWfDz2n8IImU4pg8aYQhvC/iovvJ05+NkUsk
+ v7bsk0EEOfQAZckPNBrCRv8vIBOOO20wdD0RyGcefxrZp5DKShPJyq5vOBaOnt1bGLqiBiikgOz
+ IpQcVfvkP1CziLm/4KZIs4jr1HEdNcddkcOJed8tL4fFZ0wYR0ebri2NCFqPVKwV0Cm+L8cfyX2
+ icyZBvg==
+X-Google-Smtp-Source: AGHT+IHGmqN8GCgbIDDzpVCcfc90ZQZCD5qugGWbo1vtWFPWqfqPNn8lXFPZGfoGHp6Gd7pAK9Oe3Q==
+X-Received: by 2002:a05:6602:6a8a:b0:85a:fca9:4633 with SMTP id
+ ca18e2360f4ac-85b1cf81a51mr6778339f.2.1741277075581; 
+ Thu, 06 Mar 2025 08:04:35 -0800 (PST)
+Received: from chromium.org (c-73-203-119-151.hsd1.co.comcast.net.
+ [73.203.119.151]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4f213b959c1sm46759173.38.2025.03.06.08.04.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Mar 2025 08:04:33 -0800 (PST)
+From: Simon Glass <sjg@chromium.org>
+To: U-Boot Mailing List <u-boot@lists.denx.de>
+Cc: Bin Meng <bmeng.cn@gmail.com>, Simon Glass <sjg@chromium.org>,
+ Andrew Goodbody <andrew.goodbody@linaro.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Angelo Dureghello <angelo@kernel-space.org>,
+ Guillaume La Roque <glaroque@baylibre.com>,
+ Heinrich Schuchardt <xypron.glpk@gmx.de>,
+ Igor Opaniuk <igor.opaniuk@gmail.com>,
+ Jerome Forissier <jerome.forissier@linaro.org>,
+ Julien Masson <jmasson@baylibre.com>, Julius Lehmann <lehmanju@devpi.de>,
+ Love Kumar <love.kumar@amd.com>,
+ Marek Vasut <marek.vasut+renesas@mailbox.org>,
+ Martyn Welch <martyn.welch@collabora.com>,
+ Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+ Maximilian Brune <maximilian.brune@9elements.com>,
+ Moritz Fischer <moritzf@google.com>,
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Philip Oberfichtner <pro@denx.de>,
+ Quentin Schulz <quentin.schulz@cherry.de>,
+ Richard Weinberger <richard@nod.at>, Stephen Warren <swarren@nvidia.com>,
+ Stephen Warren <swarren@wwwdotorg.org>,
+ Sughosh Ganu <sughosh.ganu@linaro.org>, Tom Rini <trini@konsulko.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH v4 00/47] x86: Improve operation under QEMU
+Date: Thu,  6 Mar 2025 09:03:27 -0700
+Message-ID: <20250306160428.3041057-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv2 06/20] host_iommu_device: Define two new
- capabilities HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP]
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "shameerali.kolothum.thodi@huawei.com"
- <shameerali.kolothum.thodi@huawei.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
- <20250219082228.3303163-7-zhenzhong.duan@intel.com>
- <4f13004c-a6d9-4f45-938e-3fc8d49183d7@redhat.com>
- <SJ0PR11MB6744FAC917F2DF9A7BF9FF9992CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744FAC917F2DF9A7BF9FF9992CC2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2a;
+ envelope-from=sjg@chromium.org; helo=mail-io1-xd2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,70 +109,176 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+U-Boot can start and boot an OS in both qemu-x86 and qemu-x86_64 but it
+is not perfect.
 
+With both builds, executing the VESA ROM causes an intermittent hang, at
+least on some AMD CPUs.
 
+With qemu-x86_64 kvm cannot be used since the move to long mode (64-bit)
+is done in a way that works on real hardware but not with QEMU. This
+means that performance is 4-5x slower than it could be, at least on my
+CPU.
 
-On 2/28/25 9:29 AM, Duan, Zhenzhong wrote:
-> Hi Eric,
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Subject: Re: [PATCH rfcv2 06/20] host_iommu_device: Define two new
->> capabilities HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP]
->>
->> Hi Zhenzhong,
->>
->>
->> On 2/19/25 9:22 AM, Zhenzhong Duan wrote:
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>  include/system/host_iommu_device.h | 8 ++++++++
->>>  1 file changed, 8 insertions(+)
->>>
->>> diff --git a/include/system/host_iommu_device.h
->> b/include/system/host_iommu_device.h
->>> index df782598f2..18f8b5e5cf 100644
->>> --- a/include/system/host_iommu_device.h
->>> +++ b/include/system/host_iommu_device.h
->>> @@ -22,10 +22,16 @@
->>>   *
->>>   * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this
->> represents
->>>   *           the @out_capabilities value returned from IOMMU_GET_HW_INFO
->> ioctl)
->>> + *
->>> + * @nesting: nesting page table support.
->>> + *
->>> + * @fs1gp: first stage(a.k.a, Stage-1) 1GB huge page support.
->>>   */
->>>  typedef struct HostIOMMUDeviceCaps {
->>>      uint32_t type;
->>>      uint64_t hw_caps;
->>> +    bool nesting;
->>> +    bool fs1gp;
->> this looks quite vtd specific, isn't it? Shouldn't we hide this is a
->> vendor specific cap struct?
-> Yes? I guess ARM hw could also provide nesting support at least
-> There are some reasons I perfer a flatten struct even if some
-> Elements may be vendor specific.
-> 1. If a vendor doesn't support an capability for other vendor,
-> corresponding element should be zero by default.
-> 2. An element vendor specific may become generic in future
-> and we don't need to update the structure when that happens.
-> 3. vIOMMU calls get_cap() to query if a capability is supported,
-> so a vIOMMU never query a vendor specific capability it doesn't
-> recognize. Even if that happens, zero is returned hinting no support.
-I will let others comment but in general this is frown upon and unions
-are prefered at least.
+We can work around the first problem by using Bochs, which is anyway a
+better choice than VESA for QEMU. The second can be addressed by using
+the same descriptor across the jump to long mode.
 
-Eric
->
-> Thanks
-> Zhenzhong
->
+With an MTRR fix this allows booting into Ubuntu on qemu-x86_64
 
+In v3 some e820 patches are included to make booting reliable and avoid
+ACPI tables being dropped. Also, several MTTR problems are addressed, to
+support memory sizes above 4GB reliably.
+
+Changes in v4:
+- Rewrite the commit message
+- Enable the flag by default
+- Split out into separate patch
+- Split out the command change into a separate patch
+
+Changes in v3:
+- Always return true from flag_is_changeable_p() on amd64
+- Add new patch with functions to convert between mtrr size and mask
+- Add new patch to update mtrr command to support 64-bit values
+- Add new patch to update cpuid_eax et al to work on amd64
+- Add new patch to correct msr operation on amd64
+- Add new patch to allow adding non-aligned size for MTRR
+- Support memory sizes above 3GB properly
+- Add new patch to correct sizing of created disks
+- Add new patch with a function to dump the e820 table
+- Add new patch with an API for e820
+- Add new patch to use the new e820 API
+- Add new patch to support BLOBLIST_TABLES properly in QEMU
+- Add new patch to support a 64-bit ramdisk address
+- Add new patch to mark struct acpi_rsdp as packed
+- Add new patch to consider non-bootable partitions
+- Add new patch to handle running out of labels
+- Add new patch to support IO UARTs for earlycon and console
+- Add new patch to correct mapping in FADT
+- Add new patch to add a checksum to the DMAR table
+- Add new patch to correct memory leaks in the ACPI test
+- Add new patch to support checking checksums with ACPI command
+- Significantly expanded to correct e820 and other issues
+
+Changes in v2:
+- Redo commit message
+- Add new patch to rename the _D dirty flag
+- Add new patch to support CPU functions in long mode
+- Add new patch to set an MTRR for the RAM in QEMU
+- Add new patch with a helper to send characters
+- Add new patch to allow tests to be filtered by role
+- Add more patches to support booting with kvm
+- Add new patch with a test for booting Ubuntu 24.04
+
+Simon Glass (47):
+  boot: Correct ramdisk address
+  sandbox: Correct a typo in mapmem
+  x86: Expand x86_64 early memory
+  x86: qemu: Switch to bochs display
+  x86: qemu: Enable dhrystone
+  x86: qemu: Avoid accessing BSS too early
+  x86: Drop mpspec from the SPL build
+  x86: Add some log categories
+  x86: Drop use of CONFIG_REALMODE_DEBUG
+  x86: Avoid clearing the VESA display
+  x86: Add 64-bit entries to the GDT
+  x86: Use defines for the cache flags
+  x86: spl: Drop duplicate CPU init
+  x86: Drop the message about features missing in 64-bit
+  x86: Include stdbool.h in interrupt header
+  x86: Tidy up the GDT size in start/16.S
+  x86: Disable paging before changing to long mode
+  x86: Use the same GDT when jumping to long mode
+  x86: Use a simple jump into long mode
+  x86: Rename the _D dirty flag
+  x86: Support CPU functions in long mode
+  x86: Add functions to convert between mtrr size and mask
+  x86: Update mtrr command to support 64-bit values
+  x86: Update cpuid_eax et al to work on amd64
+  x86: Correct msr operation on amd64
+  x86: Allow adding non-aligned size for MTRR
+  x86: emulation: Set an MTRR for the RAM
+  x86: qemu: Support environment and cat command
+  test/py: Correct sizing of created disks
+  test/py: Add a helper to send characters
+  test/py: Allow tests to be filtered by role
+  x86: e820: Add a function to dump the e820 table
+  x86: Add a new API for e820
+  x86: qemu: Use the new e820 API
+  x86: emulation: Support BLOBLIST_TABLES properly
+  x86: Support a 64-bit ramdisk address
+  acpi: Mark struct acpi_rsdp as packed
+  boot: Consider non-bootable partitions
+  boot: Handle running out of labels
+  boot: Support IO UARTs for earlycon and console
+  sandbox: acpi: Avoid a warning about FADT
+  sandbox: acpi: Correct mapping in FADT
+  acpi: Add a checksum to the DMAR table
+  test: acpi: Correct memory leaks
+  acpi: Support checking checksums
+  RFC: test/py: Deal with timeouts
+  test: Add a test for booting Ubuntu 24.04
+
+ .gitlab-ci.yml                   |   5 ++
+ arch/x86/cpu/cpu.c               |  24 +++++++
+ arch/x86/cpu/i386/call64.S       |  35 ++++------
+ arch/x86/cpu/i386/cpu.c          |  41 ++++-------
+ arch/x86/cpu/mtrr.c              | 115 ++++++++++++++++++++++++-------
+ arch/x86/cpu/qemu/dram.c         |  18 +++++
+ arch/x86/cpu/qemu/e820.c         |  62 +++++++----------
+ arch/x86/cpu/qemu/qemu.c         |  20 ++++--
+ arch/x86/cpu/start.S             |   4 +-
+ arch/x86/cpu/start16.S           |   3 +-
+ arch/x86/cpu/x86_64/cpu.c        |   5 --
+ arch/x86/include/asm/bootparam.h |  15 +++-
+ arch/x86/include/asm/cpu.h       |  91 ++++++++++--------------
+ arch/x86/include/asm/e820.h      |  95 ++++++++++++++++++++++++-
+ arch/x86/include/asm/interrupt.h |   1 +
+ arch/x86/include/asm/msr.h       |   9 ++-
+ arch/x86/include/asm/mtrr.h      |  16 +++++
+ arch/x86/include/asm/processor.h |   5 +-
+ arch/x86/lib/Makefile            |   2 +
+ arch/x86/lib/bios.c              |  27 +++++---
+ arch/x86/lib/bios_interrupts.c   |   8 +--
+ arch/x86/lib/e820.c              |  70 +++++++++++++++++++
+ arch/x86/lib/i8259.c             |   2 +
+ arch/x86/lib/spl.c               |   4 +-
+ arch/x86/lib/tables.c            |   9 ++-
+ arch/x86/lib/zimage.c            |  34 +++------
+ boot/bootdev-uclass.c            |   7 +-
+ boot/bootflow.c                  |   7 +-
+ boot/pxe_utils.c                 |   3 +-
+ cmd/acpi.c                       |  59 ++++++++++------
+ cmd/bootflow.c                   |   2 +-
+ cmd/x86/mtrr.c                   |  11 ++-
+ configs/qemu-x86_64_defconfig    |  18 ++---
+ configs/qemu-x86_defconfig       |  12 ++--
+ doc/develop/bootstd/overview.rst |   5 +-
+ doc/usage/cmd/acpi.rst           |  20 +++++-
+ drivers/misc/qfw_acpi.c          |  32 +++++++--
+ include/acpi/acpi_table.h        |   2 +-
+ include/bootflow.h               |   2 +
+ include/bootstd.h                |   3 +
+ include/mapmem.h                 |   2 +-
+ lib/acpi/acpi_table.c            |   5 +-
+ test/boot/bootdev.c              |   1 +
+ test/boot/bootflow.c             |   5 +-
+ test/dm/acpi.c                   |  59 ++++++++++++++++
+ test/py/conftest.py              |  22 ++++++
+ test/py/console_base.py          |  33 +++++----
+ test/py/pytest.ini               |   1 +
+ test/py/tests/test_distro.py     |  53 ++++++++++++++
+ test/py/tests/test_sleep.py      |   1 +
+ test/py/tests/test_ut.py         |  17 ++++-
+ 51 files changed, 800 insertions(+), 302 deletions(-)
+ create mode 100644 test/py/tests/test_distro.py
+
+-- 
+2.43.0
+
+base-commit: 17657f396d03ecb875ece04e1ffbc19b31db56e5
+branch: qemu4
 
