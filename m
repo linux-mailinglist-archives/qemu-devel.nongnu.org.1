@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0674DA54FED
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DF1A54FB7
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:54:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDTi-0000Pg-Ob; Thu, 06 Mar 2025 10:49:42 -0500
+	id 1tqDTo-00018w-Qj; Thu, 06 Mar 2025 10:49:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDSx-0008VC-V8
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:00 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDT1-00005o-10
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:49:01 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDSv-0006KZ-3D
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:48:55 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43bb6b0b898so7158935e9.1
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:48:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDSz-0006Kp-7U
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:48:58 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43bb6b0b898so7159715e9.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:48:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276131; x=1741880931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276135; x=1741880935; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vBqWCN5asMJDU7YX+TXWWAjMjDHkesNYFUgdbjXa4FQ=;
- b=sHTDxQxQPjXc9yb4PAYZY3TcCQK9Z56h0FO/Ke8l2jZt1fNyOQNngnH3NJak4hSiez
- B8rLFC6ZrVTXQzKotTVihmle/3H6Ekj+lRv6fk7hFj/xXux+/seGWnhY4y/LmJUTiACC
- DXBXXyNL1rg5UYttFHonoSzKbk40QRNLDeQav5vNEpBUVOCDQwD+Tc+uA+tcduGfSf/b
- vlI8lsfpjWTYWzvPqz2XQoPtpDDSvFyACz6oWAoh//e7XPsZoZaYC/8G/CzTdNzY0c+R
- aO+nMpQ48iRHuLAL2xIUsNtsdKCJMf8LwvExl61VaBYAtCmJ51HAcDqvlU1U5KDZ/dDU
- wwTw==
+ :reply-to; bh=tTLBFu22G8ChNwnUUuiiV0/VSwHr+qaXgLj/hapvjNA=;
+ b=U1vgWMQxX69TlhsF4blk4qZwYqKIMTK6ekfzKEVov30ebnZF7s1VYz97Wl24wrgbTp
+ az6wo0jkSTdeoJiLcGQfnSIA7/rDPZ4M9DXs/5qI6vGrTACtKcwixonkI0ncF5PMusPy
+ KT7hr+IhYLp1fFSOCdVXNCN7jdq/suVBE/3GvwXtqI0hJFUVXEY8mzpv5qa6CuZmSAl8
+ fMzTSrKc4zhRx4BmPUDjDJK95dqw/5H8EFj8vWu365+bf/Xc8llgiw7jI+BdnQ21Ze/j
+ 56yte3IG88UbDKOmDj1dIZBGwu6OrfdlKoAXT3h6vw/6iRf01NYEYWwVAcBoyRKsanUv
+ 5wCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276131; x=1741880931;
+ d=1e100.net; s=20230601; t=1741276135; x=1741880935;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vBqWCN5asMJDU7YX+TXWWAjMjDHkesNYFUgdbjXa4FQ=;
- b=H0Jl+6VtmyuY6yL0c/2zp9PrPvx7HRZW8ULzvK3/H53pq8neAvnGYk/EwmqQU17Eoh
- l/sU3+38YUr9v9tmy8H8ECDyc08P7f8RxI9XXzOU0fjsrGi6lry1TSEEBqMGtYW74WI2
- HF6s+Abu4vyrhyijnN+mjqVFnnyjkPH/HCHK6EVUzyJLAmN99A41THB2VBOEDLt5C7Bw
- ceoJEt3PkYkyP91nMLDcrNYrpZCuhLB+zNlHNXvBx1nKAjLCA67CBxKljcXQG1oR72Qg
- fwTP5MLH/oa7iwXblKYjkyY2qMMqjaInCEkD5g30X2AbzmaUuQM17QPcNO1yK4RzjMQT
- XiXQ==
-X-Gm-Message-State: AOJu0YzTGGCoBDuLnumKeM5+LaCz1taKhNa8of4r/dbks/3baFvJbYAm
- L4oiSmG+ucvSBsMyuarpaHp9ihzEzVAHbWzAcB7NY5Z33owlGypUdjlsMxTzm0g1gvx/6x/BfIs
- +Tvc=
-X-Gm-Gg: ASbGnctn0kRLaKuseiEEawv0NHsVS15a2g+ENipqYfhQcUKNcx4DH8V/iRbQch8IxYq
- BgmjPrQAF3ADtLMtCB+kFCTGKCgQnvSnTchkJMcWAedNotlLaDcqmXqoRTlh28PoAFH7lisE+Bo
- vOjdqi1PHtSK9CMzHg2G1hFNlran3aOZuQtiogw5wxL9VONB0E5Sp4MF+4H0AIbAZMKG9Hvhrr5
- LV+SrRxOfi9SlO8qY1FYUXDoi2pyCvJNXiujiSbizO1x4A8OL12J+IOjo6DwMhDTvHNhnxwaeVP
- BAQe5+SrwX+IQQ5Bwx0NtuU3srOEl97rEzDM6lzfxh9VNgdTwevw6R6LAnojyQn6urWl66H+Ch7
- EjDfHKvCGI262sDxivp0=
-X-Google-Smtp-Source: AGHT+IHNHylW2x1xoSvNcv4hKXXLsqXgqg3y/D+97YDyrBBz54Zifs1tDtU1oYVH4Y1dMklTcJyglA==
-X-Received: by 2002:a05:600c:474b:b0:439:9e13:2dd7 with SMTP id
- 5b1f17b1804b1-43bd2948911mr61887925e9.2.1741276130936; 
- Thu, 06 Mar 2025 07:48:50 -0800 (PST)
+ bh=tTLBFu22G8ChNwnUUuiiV0/VSwHr+qaXgLj/hapvjNA=;
+ b=Q0MZXOtTi1g7c2iKzHQLfiDe8Pp9/Vx4XOklsuSVN/4Ai/zPpRwAxN3Z+0uLWoLCM2
+ RB03qizs4Bfh0b0CmbOSqIg34lexdlmcvQDkRQJqp20HRvYO49LWEhyzBvVZKKLh5C5i
+ vNWJ58Wqq4N8w4lERfyppljJ5TFrLtjbToq6Bt3x6TQJlD7UFLU0ACPtrc7iN7tkpEkG
+ av7o9/rnJvEjZw+lVvLYU+5jG/oKIePBVxb4Dy0YJzcCcNjotDY6wWb8RQ4jIL9mBaiQ
+ XRb3C3jmIAygfFx7KuYLsTGCnbHpuJiPqHunsB9ddlTVZec4WxwWW7m1YQeVdCIxBo4Z
+ Wahg==
+X-Gm-Message-State: AOJu0YyJlWH/cJHEsf1Qb/yqJI9IwKyyEf+TGRnD1k4IhvtD7psQstXx
+ mHRI5/5n/YOsT0JC1iDpktvnOyMwB59YmKsiie4Xmb7PXTHbcuLZgyJpENfyaZ7xJ5V/TnS7kAf
+ lYg8=
+X-Gm-Gg: ASbGncuNAda6gcswniKTczeQyn5xvccgeI9gzqmnusbLAvP2cMQi4Fb2pqQWvM4en1L
+ /6w/EyU04t3E25vWNnqW4aXc9D6BT31AG3Un8W4OtDefGE/gR92f0Y1RO+hqRJtyA0VAyDc+cbH
+ vzalGRCTIZNp1EpRIdlVh2LXckSjd4lGHNEbdg5b5J1jJTvjIuZi75Ow+LuiRZdlIMWBDYAPW10
+ ypgWDmUcemsfB0P00Y1AScP7AtHBABFE/eVnYRvr+iTIaXh3ewJP/qG+O56CD9EvM5ijR0BEWr5
+ FHlCNLl1Pp4Hu4RnuAy5xNRbNWPAuOcCKJf8ir55yIw2pCz5zLa8vCWEEt97CJCwE+mRdhahzL0
+ 0VfY2T19npLODkBUarZU=
+X-Google-Smtp-Source: AGHT+IFJr2jgtqTnLgcuDpOtP8ONwP4dgqyH2Y2WNPtLCuhBb2RVfdFnuVSOGidQ3T4uzOvqGKKVxQ==
+X-Received: by 2002:a05:600c:4687:b0:439:8346:506b with SMTP id
+ 5b1f17b1804b1-43bd2ae56f5mr59372335e9.19.1741276135333; 
+ Thu, 06 Mar 2025 07:48:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd4292b06sm53431265e9.14.2025.03.06.07.48.50
+ 5b1f17b1804b1-43bd426c01bsm54378555e9.2.2025.03.06.07.48.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:48:50 -0800 (PST)
+ Thu, 06 Mar 2025 07:48:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/54] accel/tcg: Take mmap lock in the whole
- cpu_memory_rw_debug() function
-Date: Thu,  6 Mar 2025 16:46:58 +0100
-Message-ID: <20250306154737.70886-17-philmd@linaro.org>
+Subject: [PULL 17/54] accel/tcg: Avoid using lock_user() in
+ cpu_memory_rw_debug()
+Date: Thu,  6 Mar 2025 16:46:59 +0100
+Message-ID: <20250306154737.70886-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,53 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify user implementation of cpu_memory_rw_debug() by
-taking the mmap lock globally. See commit 87ab2704296
-("linux-user: Allow gdbstub to ignore page protection")
-for why this lock is necessary.
+We checked the page flags with page_get_flags(), so
+locking the page is superfluous. Remove the lock_user()
+calls and directly use g2h() in place.
 
 Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250217130610.18313-4-philmd@linaro.org>
+Message-Id: <20250217130610.18313-5-philmd@linaro.org>
 ---
- cpu-target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ cpu-target.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 diff --git a/cpu-target.c b/cpu-target.c
-index 20933bde7d4..b5230ce1837 100644
+index b5230ce1837..3892ce12229 100644
 --- a/cpu-target.c
 +++ b/cpu-target.c
-@@ -380,6 +380,8 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+@@ -374,7 +374,6 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+ {
+     int flags;
+     vaddr l, page;
+-    void * p;
+     uint8_t *buf = ptr;
+     ssize_t written;
      int ret = -1;
-     int fd = -1;
- 
-+    mmap_lock();
-+
-     while (len > 0) {
-         page = addr & TARGET_PAGE_MASK;
-         l = (page + TARGET_PAGE_SIZE) - addr;
-@@ -414,11 +416,9 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-                  * be under mmap_lock() in order to prevent the creation of
-                  * another TranslationBlock in between.
-                  */
--                mmap_lock();
-                 tb_invalidate_phys_range(addr, addr + l - 1);
-                 written = pwrite(fd, buf, l,
-                                  (off_t)(uintptr_t)g2h_untagged(addr));
--                mmap_unlock();
-                 if (written != l) {
-                     goto out_close;
+@@ -393,13 +392,7 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+         }
+         if (is_write) {
+             if (flags & PAGE_WRITE) {
+-                /* XXX: this code should not depend on lock_user */
+-                p = lock_user(VERIFY_WRITE, addr, l, 0);
+-                if (!p) {
+-                    goto out_close;
+-                }
+-                memcpy(p, buf, l);
+-                unlock_user(p, addr, l);
++                memcpy(g2h(cpu, addr), buf, l);
+             } else {
+                 /* Bypass the host page protection using ptrace. */
+                 if (fd == -1) {
+@@ -424,13 +417,7 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
                  }
-@@ -454,6 +454,8 @@ out_close:
-         close(fd);
-     }
- out:
-+    mmap_unlock();
-+
-     return ret;
- }
- #endif
+             }
+         } else if (flags & PAGE_READ) {
+-            /* XXX: this code should not depend on lock_user */
+-            p = lock_user(VERIFY_READ, addr, l, 1);
+-            if (!p) {
+-                goto out_close;
+-            }
+-            memcpy(buf, p, l);
+-            unlock_user(p, addr, 0);
++            memcpy(buf, g2h(cpu, addr), l);
+         } else {
+             /* Bypass the host page protection using ptrace. */
+             if (fd == -1) {
 -- 
 2.47.1
 
