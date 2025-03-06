@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0EFA55967
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 23:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38191A55971
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 23:13:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqJPs-00015s-5w; Thu, 06 Mar 2025 17:10:08 -0500
+	id 1tqJSY-0003Bz-Tx; Thu, 06 Mar 2025 17:12:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqJPn-0000wL-08
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:10:03 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tqJSS-0003Bd-Hw
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:12:51 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqJPk-0005RM-Vf
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:10:02 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-22334203781so46839425ad.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 14:10:00 -0800 (PST)
+ id 1tqJSR-0005of-1w
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:12:48 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso22184105ad.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 14:12:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741298999; x=1741903799; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741299165; x=1741903965; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=50Yb4m4RoUbCo+jFNAyXQr1aRoOzdBZYd0J5HNF539k=;
- b=D8vBqR9p3zFAHbul0RItv7k65huuuw92jY9yUwXHHFBVBz16Y1fE4HExpzbT9Nldr7
- oHmQpujQPNUwyxN6wgjQ8DhqHbkQpl7pqRUQe/IAtzlWr6rrYubojDZpLUsY//dwamsu
- G/4UqRAX8YrwuXJ7hMCa2j4zHzsJ15kGdvjuuetS3swihZKt35NNeUw5dnpDBtr5Zs4i
- 5N3dynNrlaDrew9UV1IJ2/vHqbty9Mc07lQ0NCrQDh4qs+eQnBLT/YtCm4Ul/Z566INz
- zV6B9HFBkCRINYaxMLxputSxdvDIlkQ5p75yfpRJj21aeoci+cM221RDl9n6pvAI5EhK
- /M7A==
+ bh=krQRbOL278W+oJrJxxiSvtUOLHtiXoInrPgfO0rnWE4=;
+ b=VKTuhV55EXYHQTA+vwapmv7C81yMtBLjayxBEIAiDODGKlGo3VuvHsWbLmp26mTUPT
+ Ck6IcQPIa+JGbEu+A9WRCTKxNc+JtFEd+ipdI8WvUc+Yns9e7/hAp9/oa70RPsfUK00I
+ UURe85Syxly0tzQogJSSun0OHssN+aG0FG4JZs9lYliM14zQvAXKrb6c9ngM7GaotqII
+ 7PtRt/3hc/dzz80TIaEd+H3OAwLEjBhYsFLJUX6LcmeRa9t2fUiQIWpAfNBEwPlUMrQ6
+ G0TZMbr+zrzLAFNLJ+GCoTR6Mp1vkGQhRiowpT79WM9GrQr7hkMbetdrJiKAX2VHGe6d
+ ywRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741298999; x=1741903799;
+ d=1e100.net; s=20230601; t=1741299165; x=1741903965;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=50Yb4m4RoUbCo+jFNAyXQr1aRoOzdBZYd0J5HNF539k=;
- b=YL5fkJUn2BcgvL/3m2LnaANCW4uo3+GaS+GzcGfQDynyT4USh0zQXTK1TM1xkv4Tga
- rAv7vk2sdiMUk3DCISSiclsW6ohjvzhuJe5lgGNCdMxss8flCKBC1GNK9fuvs3BH8DnK
- mctTuyxWkRxBtCCoO64yDZ1hEHXr7m8aWF+KLgMCLfcE+hgLOuFX3Jg6mCQg68M/trHj
- +MwmSIdC7JBQke0/fWaez1cxkkuAmzN07iayZ0llD81/bsahQ6nfEwa2nYUW9IxJ9QV2
- joH8Tmv8rQfdNACyTRYd+rwBzEEvH1tRE+jSv5Si8RiREHW1cFXyvDxsHkJazcJo5/kM
- bfPQ==
-X-Gm-Message-State: AOJu0Yzhs2LqugZEWpvGJ3WgnLuzZwNC3LAimIlN5/R4jm9r2s+fg8PY
- X0MIyb+dll7/jzp2kSAzTbLa58KlAqzNpDGSRZPLlLvrQ9ICYgxC42JSIYV0IFa0ghMr7YM6gjR
- I
-X-Gm-Gg: ASbGncu8IRVEDf/sYRqfeU8sTp4AdZP5ClL81YOTowGpTE/eutapdc+rCeGEVu9I/if
- 7fItn8rG/zF/cXepM/67Vp818nQouks9gKa7TkS9llxvem0QOmEfve0NuWNWYwhc7u6SMJQPtYo
- t9yFCuH2AwEBdbFdxRib2ZYiUBLl+5zEUniW4n1QIC34P18MSolRPfRGknck5E2oTPym7G5jg30
- 5LYrNFc2RITJysnHkLIYw5HHbORUs4FX03FxrJNVTcXCW6jpmCsiRurORNGSRPil3CtzSOdf8Ml
- oSwHzramfG+E99Dbha24uHAxHYuCrmYT5aJKwOA8XAmOJ0U9KexIThhiqRZiWiR7CFR1rP+EQFe
- GXRHRbQIq
-X-Google-Smtp-Source: AGHT+IHpQjcF1QnP1dhgR8zU3aXqjjbYY6xIJaxiazfPOHGoi5foYIFmMRtEd2XcSdlOFe3PLR2Eow==
-X-Received: by 2002:a05:6a00:3397:b0:734:26c6:26d3 with SMTP id
- d2e1a72fcca58-73693e85ddcmr9941371b3a.5.1741298999456; 
- Thu, 06 Mar 2025 14:09:59 -0800 (PST)
+ bh=krQRbOL278W+oJrJxxiSvtUOLHtiXoInrPgfO0rnWE4=;
+ b=X+5Ijmudo+k+ia/hEiRDbHVq/dXNRjz1U8hK2GqYYD/GU5cXjE42hDZyQvqdkNNadp
+ bdtSGuO+qbNzXrYzy17CuOErbJQ7WvxTpbgDkq8Lad9YoPPz4MtJomKJH6wtIe3Sn7WT
+ zjdZevStQw0VxSWHx33YFTZlXlzyQdvU62OuL2m/rBFoL5OcC91/ioN8m9lf4lUjExA4
+ HlVjIiE3YV2+PAn06pjUYRnsBuo77ODfW5tHa4ao3h4gitG1gA6wPiIcfH/oiA56jgdH
+ QppfEUpNe9BBPyCezCJhueSKxo/u/4IZGUSfRbMvvnHvdqK++m4UVUe7+Y8mLbil3qKd
+ dApw==
+X-Gm-Message-State: AOJu0YyRgeSJMRiSAD+kq0XAB4/cuOtHcXMZ8xRpAF+N3HIKTT7rbDj+
+ ffHUv15M/fNG7ptfM2f6o3hiPb8nzg7QeGbzlkiqk/R3SzbUSm00je457YuUGb8ssEppz/qYy08
+ G
+X-Gm-Gg: ASbGncvkunHe1AziEQCXJLvacBQ/GxQOTN7e8YH1EJlGMp11NtDhyveZuEol5vcYRkz
+ bpcvlnnTP9M0DJ/MRof+pGyIaR/x1IzpuyJVwrqaEfz76nT0Dn++i3FdWLr7AEehkRE2rbM6K21
+ VBdl7IV58XTVsYI1ncemCsAsZwL3HUc2AghLLtlX40b5xBiLGOU7lQ9DDo034WJ2mVQoYv9J0QP
+ 6F6wb2aWd+3D/gHxc7GDIOj2HuoNsbYAmrEg9WOkKVpkTtNXdE/JjFwBDj+6XRxoVVFRjWJo/Y8
+ +dvjrwqHVSkawrmm1hXzv/DvxVvLKdin43zFdWXeuZk7SEs9eox64GtCs4HYuaEA6u7Q2dvTfL0
+ c3si5mgD7
+X-Google-Smtp-Source: AGHT+IH3HvKVgQy90h7Q2Mvmxjb1TOtdNQ4F+SkZ9jtodOlQq2jwgA2ZSfBYduzpyeHZ6Do8GGLIQg==
+X-Received: by 2002:a17:902:f54e:b0:223:4d7e:e52c with SMTP id
+ d9443c01a7336-224288695d3mr15362495ad.5.1741299165278; 
+ Thu, 06 Mar 2025 14:12:45 -0800 (PST)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736982456d8sm1874321b3a.46.2025.03.06.14.09.58
+ d9443c01a7336-22410a9193fsm17441835ad.164.2025.03.06.14.12.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 14:09:59 -0800 (PST)
-Message-ID: <ade4a142-d304-44e0-8888-a0d61569fe7d@linaro.org>
-Date: Thu, 6 Mar 2025 14:09:57 -0800
+ Thu, 06 Mar 2025 14:12:44 -0800 (PST)
+Message-ID: <300563a6-a37f-47a7-bb94-74cdcd6256b3@linaro.org>
+Date: Thu, 6 Mar 2025 14:12:42 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/10] linux-user/arm: Remove unused get_put_user macros
+Subject: Re: [PATCH 05/10] target/arm: Move arm_cpu_data_is_big_endian() etc
+ to internals.h
 To: qemu-devel@nongnu.org
 References: <20250306163925.2940297-1-peter.maydell@linaro.org>
- <20250306163925.2940297-5-peter.maydell@linaro.org>
+ <20250306163925.2940297-6-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250306163925.2940297-5-peter.maydell@linaro.org>
+In-Reply-To: <20250306163925.2940297-6-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,21 +103,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/6/25 08:39, Peter Maydell wrote:
-> In linux-user/arm/cpu_loop.c we define a full set of get/put
-> macros for both code and data (since the endianness handling
-> is different between the two). However the only one we actually
-> use is get_user_code_u32(). Remove the rest.
+> The arm_cpu_data_is_big_endian() and related functions are now used
+> only in target/arm; they can be moved to internals.h.
 > 
-> We leave a comment noting how data-side accesses should be handled
-> for big-endian, because that's a subtle point and we just removed the
-> macros that were effectively documenting it.
+> The motivation here is that we would like to move arm_current_el()
+> to internals.h.
 > 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   linux-user/arm/cpu_loop.c | 43 ++++-----------------------------------
->   1 file changed, 4 insertions(+), 39 deletions(-)
+>   target/arm/cpu.h       | 48 ------------------------------------------
+>   target/arm/internals.h | 48 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 48 insertions(+), 48 deletions(-)
 
+Is there a good reason to keep these inline?
+The expansion of arm_cpu_data_is_big_endian is really quite large, it would seem.
+
+Either way,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+
 r~
+
 
