@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7A3A5428F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68324A5429B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 07:13:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq4O7-0005nK-AL; Thu, 06 Mar 2025 01:07:19 -0500
+	id 1tq4TI-00086J-Al; Thu, 06 Mar 2025 01:12:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tq4O4-0005n3-Sp
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:07:16 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tq4O3-0002KC-0M
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:07:16 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525LCwT1000389;
- Thu, 6 Mar 2025 06:07:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=KF0K7WXnSlPxtYfcySYIHBSFh8/Jg4wf4y4TWH+Wl
- jw=; b=gc1RumkCYQSx746OL8GYP7Q3bUi2RXnyjc3i3qJSMoZURCvQt6APMqJjQ
- EnAoL9PJc3uFwv/619L/tCSOlK5NRYcGMoWnb62GTEk40qhqddx+vlx9bbrTpTKG
- KVQhcdP6zAdIs0No/E4wubOex7nCkxAabJgYzXmJsvotmCP5jdI1KTENQbx9i4VG
- UwOqc3oPATXbaDsrmpb7ZegzYRUv2Lqi1i/WHr0h4HSmWReXw1vR2AP5LRr4SN13
- FEjp+kdP2Sj9w0m6/BrCTLyzlKSwPL//TN4BvjdaKOqPQdDTnKxXTipIRMYIXWSB
- SxKXtqrnfABc5VWb5UkjCOlOyy9cw==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 456pnavh5h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Mar 2025 06:07:12 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 526407EU025026;
- Thu, 6 Mar 2025 06:07:11 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 454f926m3u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Mar 2025 06:07:11 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 526678Ox42271138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Mar 2025 06:07:08 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50B0720043;
- Thu,  6 Mar 2025 06:07:08 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5671F20040;
- Thu,  6 Mar 2025 06:07:07 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
- [9.109.199.160])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  6 Mar 2025 06:07:07 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: <qemu-devel@nongnu.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH] doc: add missing 'Asset' type in function test doc
-Date: Thu,  6 Mar 2025 11:37:06 +0530
-Message-ID: <20250306060706.1982992-1-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1tq4TF-00085p-OS
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:12:37 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1tq4TD-00031F-4f
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 01:12:37 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2234bec7192so5372615ad.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Mar 2025 22:12:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1741241552; x=1741846352;
+ darn=nongnu.org; 
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=rkEsEEwr4y9Cti1xkWS8KJTkUSom9OOmfKcwnvPhmNA=;
+ b=hEvKpyPZL9/SyMu7ScFV3f6gUvWd0NQpM17McJ43GycvfMOn/TY1CDrtFNHFfFfDVg
+ ejDEWn4gq9AMmEoHRG2vyOzFtUnDwwKSBNvQvqVc86Xfk0JXkh/+9nV3A/P/+P2Y/kJi
+ kTBbz8R+MKJlcUIMGtZ2kIWw4VBIieMbes30DgxU3DujLJlv/oPm9gk+0MXy357cmNqf
+ VkChR59o4LgW+GUiVDG0gFMQ8j3OPyldXMJDUvxas/3pbLf70VdUiKhGX+upE5IickKz
+ a+/r49+eAX938KV1m4LBZnwT1RrxAB+p3uTOt5byhioCoiBxKjqY9FxRpj68as/Lw6dl
+ ZYxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741241552; x=1741846352;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rkEsEEwr4y9Cti1xkWS8KJTkUSom9OOmfKcwnvPhmNA=;
+ b=Yj8NMvRrohzXzDnCIyxbD4Jlca7ugCQrrsyoJATaASfOzRYK24XBLGxE+UbKQz7YD2
+ FIzfRhBVWAHPzu4jW+67Bp8FHnvleWU6agdz7qd8rAyNZ+LFuiey3kzDXp0Vh0+TiV/b
+ dScNUOK/vJag2ZwpjW+GZajwTfXhPj4CwigUv8u7DxrkYjLDAo8h1kC3/uijysyJrT9E
+ ZRrEWNwratxj0Ekek0IFWWfFeKdaBLBRDj4rlKb3CkggvAIRApdPY1bPvxXeWa6dyl1R
+ fpJJwHsXBW/9sXAXP2bYL+SbexpNzPCLw1hb+LRHO3GwgtHFzp4H0r4HWT6roaCkaak1
+ zYlg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXuNjYU+0Q4SbAwk3UWFtasOKquSg6eteg87KrO4jyBvOLWwePEgfuMGCRegmV4NYEdAoDXC2fD0NyP@nongnu.org
+X-Gm-Message-State: AOJu0YwSWqhuiYoc4cNya+IIJoczT1VJSJhWiRWK3PVfWAlXxmCEfqja
+ JzIs1r4YfSOURRxm4QIFnzGir/79a8Ra1BFfFa2ahDJvdtJeIW6kmsfMitcAkHo=
+X-Gm-Gg: ASbGncs8NvljyXrz3U2HnN6Fk6lzh/rcqhZKyuPf9qflJkZk8SYntJeOc1vz0LTpadb
+ 5e2TvTXlO8lPrb5qSprdep0ReQitNCp9M2DNFXDnzjq9IBJa/y+/CPWjYNZul1Yz2taJ5QBX2LY
+ FZKLvOSwjexvgucFxKZGJjTbrJ3DSRmrghcBn0aKpARgLryPt0iFN5DuX3Vbe/EeguC7ZBEC9+X
+ M8TpKAIkv/JrJCCb4LC6zUj0+euBjaLScR3FUgoqCw8u/P8spMA3oZ/oiRmUn/rvQLoNAWZa863
+ K73/VVKvwpop0F87C3OtKi1/2h3YuGASCxWJ3n23Wo8JA0McgL9V904=
+X-Google-Smtp-Source: AGHT+IGZvko1GORcaZVbFJhepRYNWtqQL6u2ZIlENO1TLiMHvT01mL/TEAKQksA+DJ19HvJekExnPA==
+X-Received: by 2002:a17:903:46ce:b0:223:faf3:b9c2 with SMTP id
+ d9443c01a7336-223faf3c317mr67496635ad.27.1741241552653; 
+ Wed, 05 Mar 2025 22:12:32 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22410a7f75dsm4221555ad.122.2025.03.05.22.12.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Mar 2025 22:12:32 -0800 (PST)
+Date: Wed, 5 Mar 2025 22:12:30 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Adam Zabrocki <azabrocki@nvidia.com>
+Subject: Re: [PATCH 1/2] target/riscv: fix access permission checks for CSR_SSP
+Message-ID: <Z8k8zi3Moy/RxCWr@debug.ba.rivosinc.com>
+References: <20250218025446.2452254-1-debug@rivosinc.com>
+ <CAKmqyKMrod154GEdDFajnBMh0gg2zFGWxXYA0+xF=xW42SgEjg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: p4oxg_KkcPFFZC3fSdZCbe_84XC6hel6
-X-Proofpoint-GUID: p4oxg_KkcPFFZC3fSdZCbe_84XC6hel6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-06_03,2025-03-06_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0
- phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- bulkscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503060042
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+In-Reply-To: <CAKmqyKMrod154GEdDFajnBMh0gg2zFGWxXYA0+xF=xW42SgEjg@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,40 +103,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Seems 'Asset' got missed in the documentation by mistake.
+On Thu, Mar 06, 2025 at 03:20:55PM +1000, Alistair Francis wrote:
+>On Tue, Feb 18, 2025 at 12:56 PM Deepak Gupta <debug@rivosinc.com> wrote:
+>>
+>> Commit:8205bc1 ("target/riscv: introduce ssp and enabling controls for
+>> zicfiss") introduced CSR_SSP but it mis-interpreted the spec on access
+>> to CSR_SSP in M-mode. Gated to CSR_SSP is not gated via `xSSE`. But
+>> rather rules clearly specified in section "2.2.4. Shadow Stack Pointer"
+>
+>Do you mean "22.2.1. Shadow Stack Pointer (ssp) CSR access contr" in
+>the priv spec?
 
-Also fix the one spellcheck issue pointed by spellcheck
+No I meant 2.2.4 of zicfiss specification. Section 22.2.1 of priv spec
+says same.
 
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- docs/devel/testing/functional.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+>
+>> of `zicfiss` specification. Thanks to Adam Zabrocki for bringing this
+>> to attention.
+>
+>The thanks should probably be below the line
 
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index ecc738922b7c..50fca2a0291e 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -251,7 +251,7 @@ Many functional tests download assets (e.g. Linux kernels, initrds,
- firmware images, etc.) from the internet to be able to run tests with
- them. This imposes additional challenges to the test framework.
- 
--First there is the the problem that some people might not have an
-+First there is the problem that some people might not have an
- unconstrained internet connection, so such tests should not be run by
- default when running ``make check``. To accomplish this situation,
- the tests that download files should only be added to the "thorough"
-@@ -274,7 +274,9 @@ the tests are run. This pre-caching is done with the qemu_test.Asset
- class. To use it in your test, declare an asset in your test class with
- its URL and SHA256 checksum like this::
- 
--    ASSET_somename = (
-+    from qemu_test import Asset
-+
-+    ASSET_somename = Asset(
-         ('https://www.qemu.org/assets/images/qemu_head_200.png'),
-         '34b74cad46ea28a2966c1d04e102510daf1fd73e6582b6b74523940d5da029dd')
- 
--- 
-2.48.1
+Sure
 
+>
+>>
+>> Fixes: 8205bc127a83 ("target/riscv: introduce ssp and enabling controls
+>> for zicfiss"
+>>
+>> Reported-by: Adam Zabrocki <azabrocki@nvidia.com>
+>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>
+>The actual change looks good:
+>
+>Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+>
+>Alistair
+>
+>> ---
+>>  target/riscv/csr.c | 5 +++++
+>>  1 file changed, 5 insertions(+)
+>>
+>> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+>> index afb7544f07..75c661d2a1 100644
+>> --- a/target/riscv/csr.c
+>> +++ b/target/riscv/csr.c
+>> @@ -191,6 +191,11 @@ static RISCVException cfi_ss(CPURISCVState *env, int csrno)
+>>          return RISCV_EXCP_ILLEGAL_INST;
+>>      }
+>>
+>> +    /* If ext implemented, M-mode always have access to SSP CSR */
+>> +    if (env->priv == PRV_M) {
+>> +        return RISCV_EXCP_NONE;
+>> +    }
+>> +
+>>      /* if bcfi not active for current env, access to csr is illegal */
+>>      if (!cpu_get_bcfien(env)) {
+>>  #if !defined(CONFIG_USER_ONLY)
+>> --
+>> 2.34.1
+>>
+>>
 
