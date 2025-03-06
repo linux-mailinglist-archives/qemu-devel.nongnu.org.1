@@ -2,73 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6274A54939
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 12:26:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D46A5499B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 12:38:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq9LM-00010s-18; Thu, 06 Mar 2025 06:24:48 -0500
+	id 1tq9XO-0006vn-Dc; Thu, 06 Mar 2025 06:37:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tq9LG-0000zv-D7; Thu, 06 Mar 2025 06:24:42 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tq9XC-0006uT-M9
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 06:37:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tq9L8-0004w6-45; Thu, 06 Mar 2025 06:24:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741260274; x=1772796274;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=r6wgExkk4U7GWJSctxjV7Bi6XilOhIqVrFjK/a1ZwRI=;
- b=MG/5WSMgX4LwxJSzhXlynVYyXxuDrwySup6XM+Rmpwf+0kGXre769o5z
- QlUvjQSBbM82p5mQGqp/9kuPlrWiuw5qnQNLllEVpGgretCFpMyE0K6n3
- E7LCLNEaMm69BgmRGnFDH6Md1KBFnFGOXSTsNQgGdCus/gWyiH73cBe9m
- khseES26k7apnC5pJmg9iiYO1H0Sd/JqHG0GQxdKkhXKJ3LAKsAN+FNXS
- 7qgeUPGF7gYxUlBuc3pDtO02uizqiu+L+JFHQ5bhNOLGuK49DBmENjM11
- C+gF1f861JhGglgXwdcyBYEN0FWcHsflnzpuDqcwswA3GY9r2OU6BvVsE A==;
-X-CSE-ConnectionGUID: WEHk3fI/RNWFAWL4yHWA9A==
-X-CSE-MsgGUID: vRFAyiHvQpqf4SHfk2pJdg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52472196"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="52472196"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2025 03:15:05 -0800
-X-CSE-ConnectionGUID: cQ8Kb5HoRh2VEhTv4L70wA==
-X-CSE-MsgGUID: TwxIT0DGTxaGxSoAO1Zm8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; d="scan'208";a="119491051"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 06 Mar 2025 03:15:02 -0800
-Date: Thu, 6 Mar 2025 19:35:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 04/12] rust: timer: wrap QEMUTimer with Opaque<> and
- express pinning requirements
-Message-ID: <Z8mIbmv9fFmCzEsg@intel.com>
-References: <20250227142219.812270-1-pbonzini@redhat.com>
- <20250227142219.812270-5-pbonzini@redhat.com>
- <Z8WzRyPbt6d7CHWM@intel.com>
- <7b09b4e3-3c1f-4c94-ad3a-054eaf74f24c@redhat.com>
- <Z8bEN0HFbfMJ5rmm@intel.com>
- <90a21eff-a7b4-41dd-99df-c36fd83a1c08@redhat.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tq9XA-0006sA-Eu
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 06:37:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741261019;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZLQfEOMGWpxgLXQhNBFjxFx/BKO6TLiimvv3Zx/uBGA=;
+ b=II/tJV0P2+rkFL5pX6cyPrBIrsPcXvb4ksEjZOqwb3CGh6+qPFeixnhyhYbdWJ7UuZhLAA
+ Znl0J3T1rQSz4C2sqolWel6qT0MejdWxq1RajfliXITnWZ0/1cg7znx5o0S394DWY9Zqco
+ dGEAm1zXt0LucV2erABxxHW0vCgYulU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-pNX-QQTNOGifZGzaXFSceg-1; Thu, 06 Mar 2025 06:36:55 -0500
+X-MC-Unique: pNX-QQTNOGifZGzaXFSceg-1
+X-Mimecast-MFC-AGG-ID: pNX-QQTNOGifZGzaXFSceg_1741261014
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3912fe32a30so60808f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 03:36:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741261014; x=1741865814;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZLQfEOMGWpxgLXQhNBFjxFx/BKO6TLiimvv3Zx/uBGA=;
+ b=Gaggm9XaBSe6yWBKB8O0mBxIB+jSLqXkmAng+BUZNyn6UqMLadyRgHSxKh4wDrbjwU
+ mJxk8DHLqRCbSI+PlbS7rzTVBZh+8b8hdWu/inbQBLGj2M7mZNxD1qaEB/cWGfUT0Ngx
+ KOgqHN0IvQmTL3SVfKawo0oajYgFOwTXrXWkiJ5aRu6n4tNBkCqOdMso2mlx80DkC4OJ
+ nl8ZgontcMTsZooPLKDRXKFCv26F801jIPMGw78ENF53EFkTpef/nyXMNKl87xREZ5nH
+ b8DJ7+oCFvvq1ZUDiyLxC3fe3pRZKeN0/cwa5s3a3v8yFxeYpbuZK1+6EmA1PygVYmqY
+ 6snQ==
+X-Gm-Message-State: AOJu0Ywel1rqRnxmEETpiFNvQBVCgkY+OQbJ7b+20NkWqexnQYc7k8Ap
+ w8VaAt2X6WX4BTMnvnxf1ryWjp/43kIqgIITG0shM8hlhFY+sVLxRNRRo+a2/pmWanvPqrDpkq4
+ HMwbPI2PDw7YhYK32+z7sYbPCFe8qqrrg0ORbIcS277tFJvgk/E/DlUyzSVeX9tTgkwRzE3GeTS
+ edVe/Ol2NDQHKHfYYanHZJx7sauYM=
+X-Gm-Gg: ASbGncvEO0pDAasoyx99Q+SkWaSw043VxR23HKlCbaInoLzjrYDS7LHFhmpUagCxe3c
+ ka90ikbvF1MLqE/tQbFhhPlkK/1N9eqPap4Gl3tzphKbXE0JL4c8T801tdeSU+ix6lp0gZnCX
+X-Received: by 2002:a5d:64aa:0:b0:391:2887:5193 with SMTP id
+ ffacd0b85a97d-39128875308mr3174494f8f.40.1741261014171; 
+ Thu, 06 Mar 2025 03:36:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFhZszNZ9sowu8Gsg1YWalPFEJyJTswgDZR6YsM68RyULJjwNyoEjJKxqftZ/JymgbJ9YbWCc53XCdwtIRsZjc=
+X-Received: by 2002:a5d:64aa:0:b0:391:2887:5193 with SMTP id
+ ffacd0b85a97d-39128875308mr3174481f8f.40.1741261013863; Thu, 06 Mar 2025
+ 03:36:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90a21eff-a7b4-41dd-99df-c36fd83a1c08@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250306105306.2064458-1-alex.bennee@linaro.org>
+In-Reply-To: <20250306105306.2064458-1-alex.bennee@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 6 Mar 2025 12:36:40 +0100
+X-Gm-Features: AQ5f1JrRJ1JrWTZUjbPLD-Hlb7TpcLuGGp-0y7mdz010ApLN8jGChoAvcl-J3mg
+Message-ID: <CABgObfZpf7Oki+0rH-3OTBLF_cW8+5e-jAaG=AU58oAn8CP=5w@mail.gmail.com>
+Subject: Re: [PATCH v2] meson.build: default to -gsplit-dwarf for debug info
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000003160db062faaecc8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,83 +100,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> While neither is good, a zeroed area of memory behaves better than an
-> uninitialized one...  In particular, Drop calls timer_del() which works fine
-> with a zeroed QEMUTimer.  With Opaque::uninit() you could have a crash just
-> with
-> 
->     drop(Timer::new());
+--0000000000003160db062faaecc8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Good point.
+Il gio 6 mar 2025, 11:53 Alex Benn=C3=A9e <alex.bennee@linaro.org> ha scrit=
+to:
 
-> > // No compiling error or runtime panic
-> > let t: MaybeUninit<bindings::QEMUTimer> = MaybeUninit::zeroed();
-> > let _t = unsafe { t.assume_init() };
-> > 
-> > Further more, I spent some time trying to figure out if MaybeUninit in
-> > Opaque<> could help identify UB caused by uninitialized Timer, but I found
-> > it doesn't work. :-(
-> > 
-> > // No compiling error or runtime panic
-> > let mut v: UnsafeCell<MaybeUninit<bindings::QEMUTimer>> = UnsafeCell::new(MaybeUninit::uninit());
-> > let _v = unsafe { v.get_mut().assume_init() };
-> > 
-> > But when I adjust MaybeUninit as the outer wrapper, the UB check can
-> > work:
-> > 
-> > // Runtime panic: Illegal instruction
-> > let v: MaybeUninit<UnsafeCell<bindings::QEMUTimer>> = MaybeUninit::uninit();
-> > let _v = unsafe { v.assume_init() };
-> > 
-> > Compared with linux's Opaque, it also puts MaybeUninit on the outermost
-> > layer.
-> 
-> Yes, I admit I just copied what Linux does. :)
+> -option_cflags =3D (get_option('debug') ? ['-g'] : [])
+> +option_cflags =3D []
+> +if get_option('debug')
+> +  option_cflags +=3D get_option('split_debug') ? ['-gsplit-dwarf'] : ['-=
+g']
+> +endif
+>
 
-Thanks for pointing this! I realized I referred the old code, since this
-commit, linux puts the UnsafeCell to the outer layer [2]
+option_cflags does nothing, it's only for clarity in the final summary. So
+you need
 
-[2]: https://github.com/torvalds/linux/commit/35cad617df2eeef8440a38e82bb2d81ae32ca50d
+if get_option('debug') and get_option('split_debug')
+  qemu_cflags +=3D '-gsplit-dwarf'
+endif
 
-It seems that, at least from the Linux view, here the role of MaybeUninit
-(as the cases I tested) is not a main concern, and Rust convention is
-superior...
+(I wonder if it should be implemented in meson instead... It should be
+beneficial for other projects surely).
 
-> > And there's another example:
-> > 
-> > https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html#method.raw_get
-> > 
-> > Emm, I guess now we have UnsafeCell<MaybeUninit<>> because interior
-> > mutability is expected... but this layout breaks MaybeUninit's functionality.
-> 
-> Thanks for the example from the documentation!  Indeed it should be possible
-> to do
-> 
->     /// Returns a raw mutable pointer to the opaque data.
->     pub const fn as_mut_ptr(&self) -> *mut T {
->         UnsafeCell::raw_get(self.value.as_ptr())
->     }
-> 
->     /// Returns a raw pointer to the opaque data that can be passed to a
->     /// C function as `void *`.
->     pub const fn as_void_ptr(&self) -> *mut std::ffi::c_void {
->         self.as_mut_ptr().cast()
->     }
-> 
->     pub const fn raw_get(slot: *const Self) -> *mut T {
->         // SAFETY: even if uninitialized, slot points to a MaybeUninit
->         let slot = slot.cast::<MaybeUninit<UnsafeCell<T>>>;
->         UnsafeCell::raw_get(slot.as_ptr())
->     }
-> 
-> if Opaque<> uses a MaybeUninit<UnsafeCell<T>>.  I'm a bit worried of
-> deviating from what Linux does though...
+Paolo
 
-Thank you, this convertion to UnsafeCell<MaybeUninit<T>> in Linux
-history convinces me... I also agree that we should follow it for now :-).
+ if get_option('optimization') !=3D 'plain'
+>    option_cflags +=3D ['-O' + get_option('optimization')]
+>  endif
+> diff --git a/meson_options.txt b/meson_options.txt
+> index 59d973bca0..3432123fee 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -362,6 +362,8 @@ option('debug_mutex', type: 'boolean', value: false,
+>         description: 'mutex debugging support')
+>  option('debug_stack_usage', type: 'boolean', value: false,
+>         description: 'measure coroutine stack usage')
+> +option('split_debug', type: 'boolean', value: true,
+> +       description: 'split debug info from object files')
+>  option('qom_cast_debug', type: 'boolean', value: true,
+>         description: 'cast debugging support')
+>  option('slirp_smbd', type : 'feature', value : 'auto',
+> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.s=
+h
+> index 3e8e00852b..aca6e68830 100644
+> --- a/scripts/meson-buildoptions.sh
+> +++ b/scripts/meson-buildoptions.sh
+> @@ -504,6 +504,8 @@ _meson_option_parse() {
+>      --disable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=3Dfalse=
+ ;;
+>      --enable-strip) printf "%s" -Dstrip=3Dtrue ;;
+>      --disable-strip) printf "%s" -Dstrip=3Dfalse ;;
+> +    --enable-split-debug) printf "%s" -Dsplit_debug=3Dtrue ;;
+> +    --disable-split-debug) printf "%s" -Dsplit_debug=3Dfalse ;;
+>      --sysconfdir=3D*) quote_sh "-Dsysconfdir=3D$2" ;;
+>      --enable-tcg) printf "%s" -Dtcg=3Denabled ;;
+>      --disable-tcg) printf "%s" -Dtcg=3Ddisabled ;;
+> --
+> 2.39.5
+>
+>
 
-Regards,
-Zhao
+--0000000000003160db062faaecc8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il gio 6 mar 2025, 11:53 Alex Be=
+nn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.org">alex.bennee@linaro.=
+org</a>&gt; ha scritto:</div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex">
+-option_cflags =3D (get_option(&#39;debug&#39;) ? [&#39;-g&#39;] : [])<br>
++option_cflags =3D []<br>
++if get_option(&#39;debug&#39;)<br>
++=C2=A0 option_cflags +=3D get_option(&#39;split_debug&#39;) ? [&#39;-gspli=
+t-dwarf&#39;] : [&#39;-g&#39;]<br>
++endif<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">option_cflags does nothing, it&#39;s only for clarity in the final su=
+mmary. So you need</div><div dir=3D"auto"><br></div><div dir=3D"auto">if ge=
+t_option(&#39;debug&#39;) and get_option(&#39;split_debug&#39;)</div><div d=
+ir=3D"auto">=C2=A0 qemu_cflags +=3D &#39;-gsplit-dwarf&#39;</div><div dir=
+=3D"auto">endif</div><div dir=3D"auto"><br></div><div dir=3D"auto">(I wonde=
+r if it should be implemented in meson instead... It should be beneficial f=
+or other projects surely).</div><div dir=3D"auto"><br></div><div dir=3D"aut=
+o">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"g=
+mail_quote gmail_quote_container"><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+=C2=A0if get_option(&#39;optimization&#39;) !=3D &#39;plain&#39;<br>
+=C2=A0 =C2=A0option_cflags +=3D [&#39;-O&#39; + get_option(&#39;optimizatio=
+n&#39;)]<br>
+=C2=A0endif<br>
+diff --git a/meson_options.txt b/meson_options.txt<br>
+index 59d973bca0..3432123fee 100644<br>
+--- a/meson_options.txt<br>
++++ b/meson_options.txt<br>
+@@ -362,6 +362,8 @@ option(&#39;debug_mutex&#39;, type: &#39;boolean&#39;, =
+value: false,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 description: &#39;mutex debugging support&#39;)=
+<br>
+=C2=A0option(&#39;debug_stack_usage&#39;, type: &#39;boolean&#39;, value: f=
+alse,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 description: &#39;measure coroutine stack usage=
+&#39;)<br>
++option(&#39;split_debug&#39;, type: &#39;boolean&#39;, value: true,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0description: &#39;split debug info from object =
+files&#39;)<br>
+=C2=A0option(&#39;qom_cast_debug&#39;, type: &#39;boolean&#39;, value: true=
+,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 description: &#39;cast debugging support&#39;)<=
+br>
+=C2=A0option(&#39;slirp_smbd&#39;, type : &#39;feature&#39;, value : &#39;a=
+uto&#39;,<br>
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh<=
+br>
+index 3e8e00852b..aca6e68830 100644<br>
+--- a/scripts/meson-buildoptions.sh<br>
++++ b/scripts/meson-buildoptions.sh<br>
+@@ -504,6 +504,8 @@ _meson_option_parse() {<br>
+=C2=A0 =C2=A0 =C2=A0--disable-strict-rust-lints) printf &quot;%s&quot; -Dst=
+rict_rust_lints=3Dfalse ;;<br>
+=C2=A0 =C2=A0 =C2=A0--enable-strip) printf &quot;%s&quot; -Dstrip=3Dtrue ;;=
+<br>
+=C2=A0 =C2=A0 =C2=A0--disable-strip) printf &quot;%s&quot; -Dstrip=3Dfalse =
+;;<br>
++=C2=A0 =C2=A0 --enable-split-debug) printf &quot;%s&quot; -Dsplit_debug=3D=
+true ;;<br>
++=C2=A0 =C2=A0 --disable-split-debug) printf &quot;%s&quot; -Dsplit_debug=
+=3Dfalse ;;<br>
+=C2=A0 =C2=A0 =C2=A0--sysconfdir=3D*) quote_sh &quot;-Dsysconfdir=3D$2&quot=
+; ;;<br>
+=C2=A0 =C2=A0 =C2=A0--enable-tcg) printf &quot;%s&quot; -Dtcg=3Denabled ;;<=
+br>
+=C2=A0 =C2=A0 =C2=A0--disable-tcg) printf &quot;%s&quot; -Dtcg=3Ddisabled ;=
+;<br>
+-- <br>
+2.39.5<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000003160db062faaecc8--
 
 
