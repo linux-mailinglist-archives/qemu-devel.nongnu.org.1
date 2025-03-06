@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD82A54807
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1D6A54847
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:45:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq8dR-0004xK-1a; Thu, 06 Mar 2025 05:39:25 -0500
+	id 1tq8eG-0005gU-Re; Thu, 06 Mar 2025 05:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8dO-0004wf-HA; Thu, 06 Mar 2025 05:39:22 -0500
+ id 1tq8dn-0005Zs-HP; Thu, 06 Mar 2025 05:39:47 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8dL-0000St-IS; Thu, 06 Mar 2025 05:39:22 -0500
+ id 1tq8dh-0000TZ-Ty; Thu, 06 Mar 2025 05:39:45 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 6 Mar
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 11/29] hw/intc/aspeed: Rename num_ints to num_inpins for
- clarity
-Date: Thu, 6 Mar 2025 18:38:19 +0800
-Message-ID: <20250306103846.429221-12-jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 12/29] hw/intc/aspeed: Add support for multiple output pins
+ in INTC
+Date: Thu, 6 Mar 2025 18:38:20 +0800
+Message-ID: <20250306103846.429221-13-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
 References: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
@@ -65,157 +65,93 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To support AST2700 A1, some registers of the INTC(CPU Die) support one input
-pin to multiple output pins. Renamed "num_ints" to "num_inpins" in the INTC
-controller code for better clarity and consistency in naming conventions.
+Added support for multiple output pins in the INTC controller to
+accommodate the AST2700 A1.
+
+Introduced "num_outpins" to represent the number of output pins. Updated the
+IRQ handling logic to initialize and connect output pins separately from input
+pins. Modified the "aspeed_soc_ast2700_realize" function to connect source
+orgates to INTC and INTC to GIC128 - GIC136. Updated the "aspeed_intc_realize"
+function to initialize output pins.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/intc/aspeed_intc.h | 11 ++++++-----
- hw/arm/aspeed_ast27x0.c       |  2 +-
- hw/intc/aspeed_intc.c         | 31 +++++++++++++++++--------------
- 3 files changed, 24 insertions(+), 20 deletions(-)
+ include/hw/intc/aspeed_intc.h | 5 +++--
+ hw/arm/aspeed_ast27x0.c       | 6 +++++-
+ hw/intc/aspeed_intc.c         | 4 ++++
+ 3 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-index 3e5068fd50..bb634d2b4a 100644
+index bb634d2b4a..41b1f82d73 100644
 --- a/include/hw/intc/aspeed_intc.h
 +++ b/include/hw/intc/aspeed_intc.h
-@@ -17,6 +17,7 @@
+@@ -16,8 +16,8 @@
+ #define TYPE_ASPEED_2700_INTC TYPE_ASPEED_INTC "-ast2700"
  OBJECT_DECLARE_TYPE(AspeedINTCState, AspeedINTCClass, ASPEED_INTC)
  
- #define ASPEED_INTC_NR_INTS 9
-+#define ASPEED_INTC_MAX_INPINS 9
+-#define ASPEED_INTC_NR_INTS 9
+ #define ASPEED_INTC_MAX_INPINS 9
++#define ASPEED_INTC_MAX_OUTPINS 9
  
  struct AspeedINTCState {
      /*< private >*/
-@@ -27,19 +28,19 @@ struct AspeedINTCState {
-     MemoryRegion iomem_container;
+@@ -29,7 +29,7 @@ struct AspeedINTCState {
  
      uint32_t *regs;
--    OrIRQState orgates[ASPEED_INTC_NR_INTS];
-+    OrIRQState orgates[ASPEED_INTC_MAX_INPINS];
-     qemu_irq output_pins[ASPEED_INTC_NR_INTS];
+     OrIRQState orgates[ASPEED_INTC_MAX_INPINS];
+-    qemu_irq output_pins[ASPEED_INTC_NR_INTS];
++    qemu_irq output_pins[ASPEED_INTC_MAX_OUTPINS];
  
--    uint32_t enable[ASPEED_INTC_NR_INTS];
--    uint32_t mask[ASPEED_INTC_NR_INTS];
--    uint32_t pending[ASPEED_INTC_NR_INTS];
-+    uint32_t enable[ASPEED_INTC_MAX_INPINS];
-+    uint32_t mask[ASPEED_INTC_MAX_INPINS];
-+    uint32_t pending[ASPEED_INTC_MAX_INPINS];
- };
- 
- struct AspeedINTCClass {
-     SysBusDeviceClass parent_class;
+     uint32_t enable[ASPEED_INTC_MAX_INPINS];
+     uint32_t mask[ASPEED_INTC_MAX_INPINS];
+@@ -41,6 +41,7 @@ struct AspeedINTCClass {
  
      uint32_t num_lines;
--    uint32_t num_ints;
-+    uint32_t num_inpins;
+     uint32_t num_inpins;
++    uint32_t num_outpins;
      uint64_t mem_size;
      uint64_t reg_size;
      uint64_t reg_offset;
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index abd1f6b741..01a8e1d6b4 100644
+index 01a8e1d6b4..2d24361daa 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -531,7 +531,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+@@ -530,10 +530,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc), 0,
                      sc->memmap[ASPEED_DEV_INTC]);
  
-     /* GICINT orgates -> INTC -> GIC */
--    for (i = 0; i < ic->num_ints; i++) {
-+    for (i = 0; i < ic->num_inpins; i++) {
+-    /* GICINT orgates -> INTC -> GIC */
++    /* source orgates -> INTC */
+     for (i = 0; i < ic->num_inpins; i++) {
          qdev_connect_gpio_out(DEVICE(&a->intc.orgates[i]), 0,
                                  qdev_get_gpio_in(DEVICE(&a->intc), i));
++    }
++
++    /* INTC -> GIC128 - GIC136 */
++    for (i = 0; i < ic->num_outpins; i++) {
          sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc), i,
+                            qdev_get_gpio_in(DEVICE(&a->gic),
+                                 aspeed_soc_ast2700_gic_intcmap[i].irq));
 diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index 570da39b37..f062db5b72 100644
+index f062db5b72..4ce2904e0b 100644
 --- a/hw/intc/aspeed_intc.c
 +++ b/hw/intc/aspeed_intc.c
-@@ -47,8 +47,9 @@ static void aspeed_intc_update(AspeedINTCState *s, int irq, int level)
-     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
-     const char *name = object_get_typename(OBJECT(s));
- 
--    if (irq >= aic->num_ints) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
-+    if (irq >= aic->num_inpins) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Invalid input pin index: %d\n",
-                       __func__, irq);
-         return;
-     }
-@@ -60,7 +61,7 @@ static void aspeed_intc_update(AspeedINTCState *s, int irq, int level)
- /*
-  * The address of GICINT128 to GICINT136 are from 0x1000 to 0x1804.
-  * Utilize "address & 0x0f00" to get the irq and irq output pin index
-- * The value of irq should be 0 to num_ints.
-+ * The value of irq should be 0 to num_inpins.
-  * The irq 0 indicates GICINT128, irq 1 indicates GICINT129 and so on.
-  */
- static void aspeed_intc_set_irq(void *opaque, int irq, int level)
-@@ -73,8 +74,8 @@ static void aspeed_intc_set_irq(void *opaque, int irq, int level)
-     uint32_t enable;
-     int i;
- 
--    if (irq >= aic->num_ints) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
-+    if (irq >= aic->num_inpins) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid input pin index: %d\n",
-                       __func__, irq);
-         return;
-     }
-@@ -134,8 +135,9 @@ static void aspeed_intc_enable_handler(AspeedINTCState *s, hwaddr offset,
- 
-     irq = (offset & 0x0f00) >> 8;
- 
--    if (irq >= aic->num_ints) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
-+    if (irq >= aic->num_inpins) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Invalid input pin index: %d\n",
-                       __func__, irq);
-         return;
-     }
-@@ -190,8 +192,9 @@ static void aspeed_intc_status_handler(AspeedINTCState *s, hwaddr offset,
- 
-     irq = (offset & 0x0f00) >> 8;
- 
--    if (irq >= aic->num_ints) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: Invalid interrupt number: %d\n",
-+    if (irq >= aic->num_inpins) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Invalid input pin index: %d\n",
-                       __func__, irq);
-         return;
-     }
-@@ -299,8 +302,8 @@ static void aspeed_intc_instance_init(Object *obj)
-     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
-     int i;
- 
--    assert(aic->num_ints <= ASPEED_INTC_NR_INTS);
--    for (i = 0; i < aic->num_ints; i++) {
-+    assert(aic->num_inpins <= ASPEED_INTC_MAX_INPINS);
-+    for (i = 0; i < aic->num_inpins; i++) {
-         object_initialize_child(obj, "intc-orgates[*]", &s->orgates[i],
-                                 TYPE_OR_IRQ);
-         object_property_set_int(OBJECT(&s->orgates[i]), "num-lines",
-@@ -338,9 +341,9 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->iomem_container, aic->reg_offset,
-                                 &s->iomem);
- 
--    qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_ints);
-+    qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_inpins);
- 
--    for (i = 0; i < aic->num_ints; i++) {
-+    for (i = 0; i < aic->num_inpins; i++) {
+@@ -347,6 +347,9 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
          if (!qdev_realize(DEVICE(&s->orgates[i]), NULL, errp)) {
              return;
          }
-@@ -387,7 +390,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
- 
++    }
++
++    for (i = 0; i < aic->num_outpins; i++) {
+         sysbus_init_irq(sbd, &s->output_pins[i]);
+     }
+ }
+@@ -391,6 +394,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
      dc->desc = "ASPEED 2700 INTC Controller";
      aic->num_lines = 32;
--    aic->num_ints = 9;
-+    aic->num_inpins = 9;
+     aic->num_inpins = 9;
++    aic->num_outpins = 9;
      aic->mem_size = 0x4000;
      aic->reg_size = 0x808 >> 2;
      aic->reg_offset = 0x1000;
