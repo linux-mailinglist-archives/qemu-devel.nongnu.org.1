@@ -2,57 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32360A54D56
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A8EA54D8C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 15:22:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqBzs-0006ih-A1; Thu, 06 Mar 2025 09:14:48 -0500
+	id 1tqC00-0006nP-U3; Thu, 06 Mar 2025 09:14:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqBzq-0006i6-Dl
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:14:46 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqBzy-0006mC-VN
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:14:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqBzn-0001Y1-VO
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:14:46 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqBzw-0001ZE-5s
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 09:14:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741270482;
+ s=mimecast20190719; t=1741270491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s48Mv6Z7UKnwAVAi7fOx0Bp9CMRWP4ErHPxAcs9KJ60=;
- b=VxnCIt9yGvM+mxTjNUkBi2FRl3yBmh66gi4y59DoDMrcU++MZvKWYq4uXy8rZhZR1xXXDk
- VpDirC2zxgU7zyZJ2Sh3zRlQ4jmUAj83R+XwClu+vGclP5lCHHO+zIwmvgjpIixLxQaY5U
- X1TV64n0D/1tm1Pil4qopO3Z+BNAK0E=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=S7xl4PVyNoAGYZsF4VN6ErV6AJOrELxS7uo5iP6Ku9o=;
+ b=fupyYCH0T/sd8qJBauY/+zqST9or8TtxkmKRL8EotFMR1SisJoKT+SdA9z014gYE9qJoJX
+ ulUn83SHkJO1y4+JJl4NGW8GjVVCmt2Q7Cnu70OW/0I01/s+NISNJCUx/vsLs8+sfE22kb
+ OE7kZa+j6uWRZbCHUi+PNn8ARg+XIjo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-4KLrfvfPOJmK7fXh0tFzfA-1; Thu,
- 06 Mar 2025 09:14:38 -0500
-X-MC-Unique: 4KLrfvfPOJmK7fXh0tFzfA-1
-X-Mimecast-MFC-AGG-ID: 4KLrfvfPOJmK7fXh0tFzfA_1741270478
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-L3geaJjbN9Wcz8T4d3qzYQ-1; Thu,
+ 06 Mar 2025 09:14:45 -0500
+X-MC-Unique: L3geaJjbN9Wcz8T4d3qzYQ-1
+X-Mimecast-MFC-AGG-ID: L3geaJjbN9Wcz8T4d3qzYQ_1741270484
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB99A19560B4; Thu,  6 Mar 2025 14:14:37 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 11FC51828A87; Thu,  6 Mar 2025 14:14:44 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.141])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 135851801748; Thu,  6 Mar 2025 14:14:34 +0000 (UTC)
+ id 62F6018001D3; Thu,  6 Mar 2025 14:14:38 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 03/42] hw/pci: Basic support for PCI power management
-Date: Thu,  6 Mar 2025 15:13:39 +0100
-Message-ID: <20250306141419.2015340-4-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 04/42] pci: Use PCI PM capability initializer
+Date: Thu,  6 Mar 2025 15:13:40 +0100
+Message-ID: <20250306141419.2015340-5-clg@redhat.com>
 In-Reply-To: <20250306141419.2015340-1-clg@redhat.com>
 References: <20250306141419.2015340-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,223 +91,138 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Williamson <alex.williamson@redhat.com>
 
-The memory and IO BARs for devices are only accessible in the D0 power
-state.  In other power states the PCI spec defines that the device
-responds to TLPs and messages with an Unsupported Request response.
+Switch callers directly initializing the PCI PM capability with
+pci_add_capability() to use pci_pm_init().
 
-To approximate this behavior, consider the BARs as unmapped when the
-device is not in the D0 power state.  This makes the BARs inaccessible
-and has the additional bonus for vfio-pci that we don't attempt to DMA
-map BARs for devices in a non-D0 power state.
-
-To support this, an interface is added for devices to register the PM
-capability, which allows central tracking to enforce valid transitions
-and unmap BARs in non-D0 states.
-
-NB. We currently have device models (eepro100 and pcie_pci_bridge)
-that register a PM capability but do not set wmask to enable writes to
-the power state field.  In order to maintain migration compatibility,
-this new helper does not manage the wmask to enable guest writes to
-initiate a power state change.  The contents and write access of the
-PM capability are still managed by the caller.
-
+Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Weil <sw@weilnetz.de>
+Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Klaus Jensen <its@irrelevant.dk>
+Cc: Jesper Devantier <foss@defmacro.it>
 Cc: Michael S. Tsirkin <mst@redhat.com>
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250225215237.3314011-2-alex.williamson@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250225215237.3314011-3-alex.williamson@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/pci/pci.h        |  3 ++
- include/hw/pci/pci_device.h |  3 ++
- hw/pci/pci.c                | 93 ++++++++++++++++++++++++++++++++++++-
- hw/pci/trace-events         |  2 +
- 4 files changed, 99 insertions(+), 2 deletions(-)
+ hw/net/e1000e.c                 | 3 +--
+ hw/net/eepro100.c               | 4 +---
+ hw/net/igb.c                    | 3 +--
+ hw/nvme/ctrl.c                  | 3 +--
+ hw/pci-bridge/pcie_pci_bridge.c | 2 +-
+ hw/vfio/pci.c                   | 7 ++++++-
+ hw/virtio/virtio-pci.c          | 3 +--
+ 7 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 4002bbeebde0968aec07146f045d0dcfabcda36e..c220cc844962416b6b3eaac4283548e66a00ca61 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -216,6 +216,8 @@ enum {
-     QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
- #define QEMU_PCIE_EXT_TAG_BITNR 13
-     QEMU_PCIE_EXT_TAG = (1 << QEMU_PCIE_EXT_TAG_BITNR),
-+#define QEMU_PCI_CAP_PM_BITNR 14
-+    QEMU_PCI_CAP_PM = (1 << QEMU_PCI_CAP_PM_BITNR),
- };
- 
- typedef struct PCIINTxRoute {
-@@ -676,5 +678,6 @@ static inline void pci_irq_deassert(PCIDevice *pci_dev)
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
- void pci_set_enabled(PCIDevice *pci_dev, bool state);
- void pci_set_power(PCIDevice *pci_dev, bool state);
-+int pci_pm_init(PCIDevice *pci_dev, uint8_t offset, Error **errp);
- 
- #endif
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index add208edfabdae8902598042bbcd4efbec0a80b8..345b12eaac1a192bbeace8ff5227bf04c5edbcc7 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -105,6 +105,9 @@ struct PCIDevice {
-     /* Capability bits */
-     uint32_t cap_present;
- 
-+    /* Offset of PM capability in config space */
-+    uint8_t pm_cap;
-+
-     /* Offset of MSI-X capability in config space */
-     uint8_t msix_cap;
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 1d42847ef04457e49af535b646c0beb0c543dedf..2ef7f617491498d6e6853e91e9fb7321037475f5 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -435,6 +435,84 @@ static void pci_msi_trigger(PCIDevice *dev, MSIMessage msg)
-                          attrs, NULL);
- }
- 
-+/*
-+ * Register and track a PM capability.  If wmask is also enabled for the power
-+ * state field of the pmcsr register, guest writes may change the device PM
-+ * state.  BAR access is only enabled while the device is in the D0 state.
-+ * Return the capability offset or negative error code.
-+ */
-+int pci_pm_init(PCIDevice *d, uint8_t offset, Error **errp)
-+{
-+    int cap = pci_add_capability(d, PCI_CAP_ID_PM, offset, PCI_PM_SIZEOF, errp);
-+
-+    if (cap < 0) {
-+        return cap;
-+    }
-+
-+    d->pm_cap = cap;
-+    d->cap_present |= QEMU_PCI_CAP_PM;
-+
-+    return cap;
-+}
-+
-+static uint8_t pci_pm_state(PCIDevice *d)
-+{
-+    uint16_t pmcsr;
-+
-+    if (!(d->cap_present & QEMU_PCI_CAP_PM)) {
-+        return 0;
-+    }
-+
-+    pmcsr = pci_get_word(d->config + d->pm_cap + PCI_PM_CTRL);
-+
-+    return pmcsr & PCI_PM_CTRL_STATE_MASK;
-+}
-+
-+/*
-+ * Update the PM capability state based on the new value stored in config
-+ * space respective to the old, pre-write state provided.  If the new value
-+ * is rejected (unsupported or invalid transition) restore the old value.
-+ * Return the resulting PM state.
-+ */
-+static uint8_t pci_pm_update(PCIDevice *d, uint32_t addr, int l, uint8_t old)
-+{
-+    uint16_t pmc;
-+    uint8_t new;
-+
-+    if (!(d->cap_present & QEMU_PCI_CAP_PM) ||
-+        !range_covers_byte(addr, l, d->pm_cap + PCI_PM_CTRL)) {
-+        return old;
-+    }
-+
-+    new = pci_pm_state(d);
-+    if (new == old) {
-+        return old;
-+    }
-+
-+    pmc = pci_get_word(d->config + d->pm_cap + PCI_PM_PMC);
-+
-+    /*
-+     * Transitions to D1 & D2 are only allowed if supported.  Devices may
-+     * only transition to higher D-states or to D0.
-+     */
-+    if ((!(pmc & PCI_PM_CAP_D1) && new == 1) ||
-+        (!(pmc & PCI_PM_CAP_D2) && new == 2) ||
-+        (old && new && new < old)) {
-+        pci_word_test_and_clear_mask(d->config + d->pm_cap + PCI_PM_CTRL,
-+                                     PCI_PM_CTRL_STATE_MASK);
-+        pci_word_test_and_set_mask(d->config + d->pm_cap + PCI_PM_CTRL,
-+                                   old);
-+        trace_pci_pm_bad_transition(d->name, pci_dev_bus_num(d),
-+                                    PCI_SLOT(d->devfn), PCI_FUNC(d->devfn),
-+                                    old, new);
-+        return old;
-+    }
-+
-+    trace_pci_pm_transition(d->name, pci_dev_bus_num(d), PCI_SLOT(d->devfn),
-+                            PCI_FUNC(d->devfn), old, new);
-+    return new;
-+}
-+
- static void pci_reset_regions(PCIDevice *dev)
+diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
+index f637853073e2610dd93b4de006f539093883fe07..b72cbab7e88904e3e6e7eb8d1904d68ca2e64d9d 100644
+--- a/hw/net/e1000e.c
++++ b/hw/net/e1000e.c
+@@ -372,8 +372,7 @@ static int
+ e1000e_add_pm_capability(PCIDevice *pdev, uint8_t offset, uint16_t pmc)
  {
-     int r;
-@@ -474,6 +552,11 @@ static void pci_do_device_reset(PCIDevice *dev)
-                               pci_get_word(dev->wmask + PCI_INTERRUPT_LINE) |
-                               pci_get_word(dev->w1cmask + PCI_INTERRUPT_LINE));
-     dev->config[PCI_CACHE_LINE_SIZE] = 0x0;
-+    /* Default PM state is D0 */
-+    if (dev->cap_present & QEMU_PCI_CAP_PM) {
-+        pci_word_test_and_clear_mask(dev->config + dev->pm_cap + PCI_PM_CTRL,
-+                                     PCI_PM_CTRL_STATE_MASK);
-+    }
-     pci_reset_regions(dev);
-     pci_update_mappings(dev);
+     Error *local_err = NULL;
+-    int ret = pci_add_capability(pdev, PCI_CAP_ID_PM, offset,
+-                                 PCI_PM_SIZEOF, &local_err);
++    int ret = pci_pm_init(pdev, offset, &local_err);
  
-@@ -1606,7 +1689,7 @@ static void pci_update_mappings(PCIDevice *d)
-             continue;
- 
-         new_addr = pci_bar_address(d, i, r->type, r->size);
--        if (!d->enabled) {
-+        if (!d->enabled || pci_pm_state(d)) {
-             new_addr = PCI_BAR_UNMAPPED;
+     if (local_err) {
+         error_report_err(local_err);
+diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
+index 6d853229aec2ed285d212a48bdfc69812e58c30f..29a39865a6086b8f175be6be00311487bc59f25c 100644
+--- a/hw/net/eepro100.c
++++ b/hw/net/eepro100.c
+@@ -551,9 +551,7 @@ static void e100_pci_reset(EEPRO100State *s, Error **errp)
+     if (info->power_management) {
+         /* Power Management Capabilities */
+         int cfg_offset = 0xdc;
+-        int r = pci_add_capability(&s->dev, PCI_CAP_ID_PM,
+-                                   cfg_offset, PCI_PM_SIZEOF,
+-                                   errp);
++        int r = pci_pm_init(&s->dev, cfg_offset, errp);
+         if (r < 0) {
+             return;
          }
- 
-@@ -1672,6 +1755,7 @@ uint32_t pci_default_read_config(PCIDevice *d,
- 
- void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int l)
+diff --git a/hw/net/igb.c b/hw/net/igb.c
+index c965fc2fb68a37699c1cc4be0be2a6467522ccc0..e318df40e0138d5101f99680d17b97917e6fb559 100644
+--- a/hw/net/igb.c
++++ b/hw/net/igb.c
+@@ -356,8 +356,7 @@ static int
+ igb_add_pm_capability(PCIDevice *pdev, uint8_t offset, uint16_t pmc)
  {
-+    uint8_t new_pm_state, old_pm_state = pci_pm_state(d);
-     int i, was_irq_disabled = pci_irq_disabled(d);
-     uint32_t val = val_in;
+     Error *local_err = NULL;
+-    int ret = pci_add_capability(pdev, PCI_CAP_ID_PM, offset,
+-                                 PCI_PM_SIZEOF, &local_err);
++    int ret = pci_pm_init(pdev, offset, &local_err);
  
-@@ -1684,11 +1768,16 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
-         d->config[addr + i] = (d->config[addr + i] & ~wmask) | (val & wmask);
-         d->config[addr + i] &= ~(val & w1cmask); /* W1C: Write 1 to Clear */
+     if (local_err) {
+         error_report_err(local_err);
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index e62c6a358828b82d6f0cef5de9b49291f17bde96..518d02dc66706e2d2e86f1705db52188a97a67fc 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8600,8 +8600,7 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
+     Error *err = NULL;
+     int ret;
+ 
+-    ret = pci_add_capability(pci_dev, PCI_CAP_ID_PM, offset,
+-                             PCI_PM_SIZEOF, &err);
++    ret = pci_pm_init(pci_dev, offset, &err);
+     if (err) {
+         error_report_err(err);
+         return ret;
+diff --git a/hw/pci-bridge/pcie_pci_bridge.c b/hw/pci-bridge/pcie_pci_bridge.c
+index fd4514a595ce08d82773376bd7294a43a551762a..9fa656b43b42624fd597ec6df5d986e71e5f06f0 100644
+--- a/hw/pci-bridge/pcie_pci_bridge.c
++++ b/hw/pci-bridge/pcie_pci_bridge.c
+@@ -52,7 +52,7 @@ static void pcie_pci_bridge_realize(PCIDevice *d, Error **errp)
+         goto cap_error;
      }
-+
-+    new_pm_state = pci_pm_update(d, addr, l, old_pm_state);
-+
-     if (ranges_overlap(addr, l, PCI_BASE_ADDRESS_0, 24) ||
-         ranges_overlap(addr, l, PCI_ROM_ADDRESS, 4) ||
-         ranges_overlap(addr, l, PCI_ROM_ADDRESS1, 4) ||
--        range_covers_byte(addr, l, PCI_COMMAND))
-+        range_covers_byte(addr, l, PCI_COMMAND) ||
-+        !!new_pm_state != !!old_pm_state) {
-         pci_update_mappings(d);
-+    }
  
-     if (ranges_overlap(addr, l, PCI_COMMAND, 2)) {
-         pci_update_irq_disabled(d, was_irq_disabled);
-diff --git a/hw/pci/trace-events b/hw/pci/trace-events
-index e98f575a9d19ba9ce8d391fef1326aa317c322f9..6a9968962f4afcc2c0a33ced25794bea7282efbb 100644
---- a/hw/pci/trace-events
-+++ b/hw/pci/trace-events
-@@ -1,6 +1,8 @@
- # See docs/devel/tracing.rst for syntax documentation.
+-    pos = pci_add_capability(d, PCI_CAP_ID_PM, 0, PCI_PM_SIZEOF, errp);
++    pos = pci_pm_init(d, 0, errp);
+     if (pos < 0) {
+         goto pm_error;
+     }
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4f92b50b133060c9199079a0ab620793ecdac0ee..d33b795af079ae6999a5b4e4074c202c5a9de362 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2216,7 +2216,12 @@ static bool vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+     case PCI_CAP_ID_PM:
+         vfio_check_pm_reset(vdev, pos);
+         vdev->pm_cap = pos;
+-        ret = pci_add_capability(pdev, cap_id, pos, size, errp) >= 0;
++        ret = pci_pm_init(pdev, pos, errp) >= 0;
++        /*
++         * PCI-core config space emulation needs write access to the power
++         * state enabled for tracking BAR mapping relative to PM state.
++         */
++        pci_set_word(pdev->wmask + pos + PCI_PM_CTRL, PCI_PM_CTRL_STATE_MASK);
+         break;
+     case PCI_CAP_ID_AF:
+         vfio_check_af_flr(vdev, pos);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index c773a9130c7e8890b93d20a17b099940284060be..afe8b5551c5cc5d33a184f25ac05efa2c126e796 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2204,8 +2204,7 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+         pos = pcie_endpoint_cap_init(pci_dev, 0);
+         assert(pos > 0);
  
- # pci.c
-+pci_pm_bad_transition(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, uint8_t old, uint8_t new) "%s %02x:%02x.%x REJECTED PM transition D%d->D%d"
-+pci_pm_transition(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, uint8_t old, uint8_t new) "%s %02x:%02x.%x PM transition D%d->D%d"
- pci_update_mappings_del(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, int bar, uint64_t addr, uint64_t size) "%s %02x:%02x.%x %d,0x%"PRIx64"+0x%"PRIx64
- pci_update_mappings_add(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, int bar, uint64_t addr, uint64_t size) "%s %02x:%02x.%x %d,0x%"PRIx64"+0x%"PRIx64
- pci_route_irq(int dev_irq, const char *dev_path, int parent_irq, const char *parent_path) "IRQ %d @%s -> IRQ %d @%s"
+-        pos = pci_add_capability(pci_dev, PCI_CAP_ID_PM, 0,
+-                                 PCI_PM_SIZEOF, errp);
++        pos = pci_pm_init(pci_dev, 0, errp);
+         if (pos < 0) {
+             return;
+         }
 -- 
 2.48.1
 
