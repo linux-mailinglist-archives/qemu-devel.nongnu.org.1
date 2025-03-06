@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C43A54FEF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C18DA5500E
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:03:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDVh-0004X2-AH; Thu, 06 Mar 2025 10:51:45 -0500
+	id 1tqDVn-0004uU-RK; Thu, 06 Mar 2025 10:51:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUF-0003am-28
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:17 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUJ-0003bs-FL
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:21 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUD-0006f3-Gf
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:14 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-390f69f8083so790352f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:50:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUH-0006gE-Sq
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:19 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43bd45e4d91so5732075e9.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:50:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276211; x=1741881011; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276216; x=1741881016; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=12zNcZ/J8iu/OABHwpRBgZT92nQcl4kBcq8dKGM93S4=;
- b=P8nNi2xpGOWeokJ3ruzS40fhyhLESsClhyq8nxh2aeBdNSS6AZnPsBrea1I8h615oG
- TiJ3mptB10mgTYfetStrGFmEFNm2NLP4A2D22BKxAhBSsoSM2bj2/lJCaIeOPYplmrSs
- UdunP7NGPA7qy/hUWBnBKLcC7yqZB9GTTxeZ08HiiXjls4JUEdWszwOdAH7E65+1dU6Y
- 4IIhFKHRnTGMCBFnMXYhtuIk+OnoNEWunpLSoVK9uVJtaCjcUHyBLIzSQS6XboJZTsLE
- gRlRC4tbFTpBShBpmX+lVcWqXpcKs7XyoqLsyC7zdSOFEeHvpVw9JJ/tlkAFfQ0A2hH2
- RP0g==
+ :reply-to; bh=SnfT7DORVv/itpA6HOJTnRR+mH0KMqcNOFRFeDG2Dgs=;
+ b=Yj7K6hgrmwS8yc+mDL3njIWiaOEuCfidpJUdYVFZOLSPQSDkkTRA5AuAfXVPqKbd1R
+ 6wtKWRne6bb4PxTlKtMdFAzI2wk8lWTTmMAqgjg0YVaZiIT5k8r0H1hJKAHNBfJIkHrP
+ xxAWPh0cj8/ZCdO5kAPasXMivgiV3cYxi/ydvsu+/BftXh9DiZSAyCqIRCAZWM3906pL
+ +OhV/nEHTUtHqNygBBTdb35yonDKUUG+Id+MqvShiAAG/+3ryaPcW87O2EBrZmeClhhm
+ jQ31gyipbrQaTccUdKarwS4a2l4A1OtQLN9gTSniLYuXuq5Qf2Wdy89qA+BNb2zOR/on
+ BbQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276211; x=1741881011;
+ d=1e100.net; s=20230601; t=1741276216; x=1741881016;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=12zNcZ/J8iu/OABHwpRBgZT92nQcl4kBcq8dKGM93S4=;
- b=jbJCTutfei9Weca1dmIDMMs2MX62IfQRswtirJSWHD4p7gHsdV7JZuPYPy1TmGM5di
- hlRsXFO3MYlfPq76CNDHbczRNHzl4yXyPF9snGTYzCf1kRiADzsIaux2Ybc4BwQSao0E
- WtZ+2BvIah5vVc7YS/yyl8AujY94b3Eb4S+p6eOVW0l77Ykx/A0wLwVdqUwSZFwIVKWa
- xZMjVqY4As8eTkW6JihIfru3dtZc2EXGkgiEyIfTzaB2FT9NfTAbX0x5SvSAF0Psf4uw
- 8eFT2s5ABBAbgDJYv7jydGZQn5gVgKfNmUCsw2qbxnWQ51XceFPEdwc7uok6kX7ohRDP
- Z1jg==
-X-Gm-Message-State: AOJu0YwCbOfXR7PQyVzP7r28cu0iCuB4ABanYEF3yaq0k0uzDaZkLgi4
- OGkrMO85okFNwIC98p9hD/YF5tsY4QrPQy1LEpwLCs1UGRvL8VjNG2ii4cX4JDoTDAT/7tRE0/o
- nrUg=
-X-Gm-Gg: ASbGncv3BXK41Xc8MaksRB8WXEuXAAvdryxgqEOQmjRuHeSOue7kyLiAzaf0jk+fuOb
- j4Qg3WYmDZmD1ifcJMncBGo4Ud009X00HHvxMyP0vuzV1lw99IAudgep4Xl/C13MjV26FkmNBBC
- oNsaj3j7bVN5qHaXFaP8Xtv+TcnYF3JssMORLOxyq0Rk+gvcyCuBnyH2db08kxNdPCovM9GgFtC
- YSjul2kDEx+kav8cDZ3uozoiPvMldib9FVzjI4nF2mx+yzDPE1qEy82mP3zryVWtyvOkAS9Cfrf
- taDxJkbvGia1bHLsWkCgR8MM4Vz8NFRyf7Bg86B/T7Xvpof4cWcOB3BAcgszqiPh0XEMK/r+NLc
- DzLfuAuoYef2NSX/VJ4U=
-X-Google-Smtp-Source: AGHT+IHHiswM5cv9QvdxjsyGCKmpVmil+EfbgZw/2sbI+WV6lOrqekBklZzIk3A/T7bVaG8ztpUW7g==
-X-Received: by 2002:a5d:5f8b:0:b0:385:faaa:9d1d with SMTP id
- ffacd0b85a97d-3911f7b76ddmr7639406f8f.35.1741276211467; 
- Thu, 06 Mar 2025 07:50:11 -0800 (PST)
+ bh=SnfT7DORVv/itpA6HOJTnRR+mH0KMqcNOFRFeDG2Dgs=;
+ b=Y8Un+bguR8Taa0lTi2MBDu4C/Gh4b7sbVT6DGIL7myXe+BHpTxRm84D6k3r3H+SmK/
+ L0vjCBDBiq853whTUH8Vea7dkq0WMpS4iC6ZSsZfENga5oa9RML4CycGDWkKyQGJH9PF
+ onF2XUEu+eT5I1FwrmbrEo6ho/eTU7NZ0Q0ZR0/8hGLIexC3epXO+AD/DLn0gh+7MsSC
+ gDJWmocg011socxrk+1AqxB3E2Ifm6kPRScS+6l4E3Nhh45E2VgTJIWV77xahqKcd9lA
+ hZTQZzkp9u2vMpr1f0ihf7Xf60wIsHqyF1M3rMystTVPn6OlsVersD31vW66rS3SwOw9
+ rDEg==
+X-Gm-Message-State: AOJu0YzZeQoLaPjn3bMJINmV3wbF6kKWBhrJWNjtLZwWKa8J/H4ggDrH
+ D4Nq8K86Nc5wla+SHLWPYT3DO/nlG/6MCUTICUcWXxa7W83IlJLH7Y/dO76DzhG9h4bRZDnKjAt
+ kbrk=
+X-Gm-Gg: ASbGnctCMe0wnUOHODKu3DILNDfxIG7rvgXCgQfXkd8haoL0SmkqWmXXxDbOhP0PoAs
+ 9G7SKaBTK7hUQR3KsImxBfJT9a21arcz+1bsY/LJznn/M4wUp+ALfQ9fpowNRg61u12eSHXYQHx
+ gEoI2Hjn0l24gmj7D1CioC1EiDjE7CoL1qOLrr1zOCAkad1NxrEVoAJahEoIwodGrL6ppUPpEag
+ BgSxn//3Byurnhq90ehlVLJVTgQdgf3z7lQ9gaGmF67UImH2a246FWffMhTEPHM7oMtJthPKkNi
+ j3uTPgeqMwZiARwF4ZFGF0WmIo000TRvnWaC7pgyPqkztQHXA1flbiRxt0DHrAw6434oeNF4bzf
+ z5S6qGNfZKIXo3uMILio=
+X-Google-Smtp-Source: AGHT+IH/mA76cIl2YsHlsMIktLuqn5LkW/+5ivwAUhK+ukO1uoiPNruTKAEfU24hN2sjoGmA0MkXZw==
+X-Received: by 2002:a05:600c:458f:b0:439:91c7:895a with SMTP id
+ 5b1f17b1804b1-43bdb38dd94mr30596655e9.7.1741276215897; 
+ Thu, 06 Mar 2025 07:50:15 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd8c324csm23300605e9.12.2025.03.06.07.50.10
+ 5b1f17b1804b1-43bdd8db6c7sm23249105e9.22.2025.03.06.07.50.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:50:11 -0800 (PST)
+ Thu, 06 Mar 2025 07:50:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 34/54] target/tricore: Ensure not being build on user emulation
-Date: Thu,  6 Mar 2025 16:47:16 +0100
-Message-ID: <20250306154737.70886-35-philmd@linaro.org>
+Subject: [PULL 35/54] target/mips: Fix possible MSA int overflow
+Date: Thu,  6 Mar 2025 16:47:17 +0100
+Message-ID: <20250306154737.70886-36-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently only system emulation is supported.
-Assert no target code is built for user emulation.
+From: Denis Rastyogin <gerben@altlinux.org>
 
+Fix possible overflow in 1 << (DF_BITS(df) - 2) when DF_BITS(df)
+is 64 by using a 64-bit integer for the shift operation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reported-by: Dmitriy Fedin <d.fedin@fobos-nt.ru>
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20250124122707.54264-1-gerben@altlinux.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250121142341.17001-4-philmd@linaro.org>
 ---
- target/tricore/cpu.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/mips/tcg/msa_helper.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
-index 8e431d79222..cf9dbc6df8e 100644
---- a/target/tricore/cpu.h
-+++ b/target/tricore/cpu.h
-@@ -26,6 +26,10 @@
- #include "qemu/cpu-float.h"
- #include "tricore-defs.h"
+diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
+index ec38d9fde5e..74fb80cc256 100644
+--- a/target/mips/tcg/msa_helper.c
++++ b/target/mips/tcg/msa_helper.c
+@@ -5577,7 +5577,7 @@ static inline int64_t msa_mulr_q_df(uint32_t df, int64_t arg1, int64_t arg2)
+ {
+     int64_t q_min = DF_MIN_INT(df);
+     int64_t q_max = DF_MAX_INT(df);
+-    int64_t r_bit = 1 << (DF_BITS(df) - 2);
++    int64_t r_bit = 1LL << (DF_BITS(df) - 2);
  
-+#ifdef CONFIG_USER_ONLY
-+#error "TriCore does not support user mode emulation"
-+#endif
-+
- typedef struct CPUArchState {
-     /* GPR Register */
-     uint32_t gpr_a[16];
+     if (arg1 == q_min && arg2 == q_min) {
+         return q_max;
+@@ -5685,7 +5685,7 @@ static inline int64_t msa_maddr_q_df(uint32_t df, int64_t dest, int64_t arg1,
+ 
+     int64_t q_max = DF_MAX_INT(df);
+     int64_t q_min = DF_MIN_INT(df);
+-    int64_t r_bit = 1 << (DF_BITS(df) - 2);
++    int64_t r_bit = 1LL << (DF_BITS(df) - 2);
+ 
+     q_prod = arg1 * arg2;
+     q_ret = ((dest << (DF_BITS(df) - 1)) + q_prod + r_bit) >> (DF_BITS(df) - 1);
+@@ -5700,7 +5700,7 @@ static inline int64_t msa_msubr_q_df(uint32_t df, int64_t dest, int64_t arg1,
+ 
+     int64_t q_max = DF_MAX_INT(df);
+     int64_t q_min = DF_MIN_INT(df);
+-    int64_t r_bit = 1 << (DF_BITS(df) - 2);
++    int64_t r_bit = 1LL << (DF_BITS(df) - 2);
+ 
+     q_prod = arg1 * arg2;
+     q_ret = ((dest << (DF_BITS(df) - 1)) - q_prod + r_bit) >> (DF_BITS(df) - 1);
 -- 
 2.47.1
 
