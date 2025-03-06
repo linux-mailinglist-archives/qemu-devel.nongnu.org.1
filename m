@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB776A553FF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 19:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D9DA553E8
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 19:03:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqFXr-00038y-Gc; Thu, 06 Mar 2025 13:02:07 -0500
+	id 1tqFXo-00037H-Jq; Thu, 06 Mar 2025 13:02:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tqFXk-00034s-3Z
+ id 1tqFXj-00034p-46
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:02:00 -0500
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tqFXa-000089-Ur
+ id 1tqFXb-00008G-02
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:01:58 -0500
-Received: by mail-pl1-x643.google.com with SMTP id
- d9443c01a7336-22337bc9ac3so21342435ad.1
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 10:01:47 -0800 (PST)
+Received: by mail-pl1-x644.google.com with SMTP id
+ d9443c01a7336-223959039f4so20660005ad.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 10:01:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741284107; x=1741888907; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741284109; x=1741888909; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Mvd2byRBLj1EWurRow3kwEAQYrHkAuspw1kE35aVtA8=;
- b=Jsu+t8SGep7D8CVfGfRGz4covtcInakwnXsHbVMdIQZ99ynI8DF0yaJX2ZT4uERCY5
- E6HbU7bUFDc668JT0/mL79UHYFlDCn8x0W6ox+VDd6joSqGut9JjajMk6yW6KYsqL5Eo
- t/n8H1/FCOKd5baKLpkwtpqnZmkP1kWhDkDtSYoxAw3jgM38czkji2cZEvs52esokDGO
- j8bXWFgb2BWHWQ0IsWvX9hYoDiv/Njn82iZzUGjmFqYpDVotiAZ++YAVWrqWRHC/5/wI
- 8H3oy2SGmkrq2DfcP32r7uiK9MQi3ZNPrZuPQbv84G8utoovqe6tLUiPuop8xLP1hkLn
- Zgsg==
+ bh=3PsFwF/uA/8VpOdWLdhwbP0WWGdT9opuyryY51WuBZk=;
+ b=hK+ZbyUjkRa9YMQT7E4cd/Bbl24FSS3asy3+KC98MxwFfzdshRsg1d6GrAw5rGo5Ej
+ EQXcB+I1im3UMLvd3DiVbadQHXyMv6vSKuezrRQJwdF7+ecZImBtC2oKqptf63m5FHam
+ sgmfLtDBogSp6xl7E7dfFJwhU3wbFYXalHfdJ6C2ukew0AXI1plCo/ycVQRLGnzie84P
+ kS+yKDT0tviZtbQ/vswEAn2v2TsvgQi9e3DwXuudVWeR5Q08wqFXDDovAkV6JZqabc6u
+ BkeMgapW64fMoyyWdxxQh117h93SUowD8ZAkjh30wSEkIeNOkqldqkhMzyp9e+9ilE1N
+ Gasg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741284107; x=1741888907;
+ d=1e100.net; s=20230601; t=1741284109; x=1741888909;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mvd2byRBLj1EWurRow3kwEAQYrHkAuspw1kE35aVtA8=;
- b=X4JYqQr5x7DQ/2WxFTM7zNqr/hOQJUo/iT6B5aam1RjDabvQU2mMutJr+dK0KeUHlR
- zvX5sT7GO+TObhA4o/QOBktwrFhUn+RoIGUqScEwZR8yIP8izUwHtWUujsH2dwLYrbxs
- PshvhSRXlDjh3eMrJgmc4jF2OCwEcroeXUFKZvGtUtNQzlRemDPNFuBi6JZBp6Vd4boQ
- y4mueQwOk6/CDTr1qj5228NCUn4VUjVeVzFxcUnboo5v0d0JYmYPuw85vua/lkVwqezV
- bZwM92BVrfKAl+mvwC2WaImn5A6KoAH3SYpB/uISDsve6a425uve3GbAgEBZ12+BUUQu
- DzQw==
-X-Gm-Message-State: AOJu0YzIWyGc0qAeVmdpOtFySYT40R286sqQcPrVo8Drmx0woB62hMM6
- u849W+aETK2IW/QABeQFgWaqWOs4tYR4vD8FgsZ5eBScKUlJqux50Rg6cRFdIw==
-X-Gm-Gg: ASbGncsqQjzpsVBgBU25Rnl0XNvZtsyQEKNEhhcciir5/sGvhRqO1/CikGIOrN7B/5N
- OU5bxLUCbEikqJFGSJgKT0HKaJE4FJgQlc24OCy5scpO5mH2ZCQxjh29faym2TzeDk/3JzXzOI/
- A2fcqvOrFZukcV/HhEHbtSbldvy1REtcJta8UPwI0bmqpjF/nGbJDUddxqM9XOCLWfUCo91SVID
- EOqZMBYYBfQzwgOrtZAl+jUK9DWesT5WGFzBpeQl3AB6SpWRKYYl6Ht8MShha6EuYf2LkilCE0H
- K3A78WdoKYtuaPfiXGIzdlFeKItqMRV1RHw8AEcl+Qv3bXyWWjjh0PR+Kw==
-X-Google-Smtp-Source: AGHT+IEPu+g214qh6HyKpc9FbNm2wQshtagCkuKR9pSGN+w7eUUnIi/mwORZIcKOrfc87ef9uxr+kg==
-X-Received: by 2002:a05:6a21:78a7:b0:1f3:194b:30b0 with SMTP id
- adf61e73a8af0-1f544ad717cmr663232637.5.1741284106595; 
- Thu, 06 Mar 2025 10:01:46 -0800 (PST)
+ bh=3PsFwF/uA/8VpOdWLdhwbP0WWGdT9opuyryY51WuBZk=;
+ b=UH++oawC9HkoYkts2VZiCSyD4LXq44F4bAP0tYcr+f5zD70fDQ/zv+2wkgcb2/X5/B
+ oo3n379F22o38FQzYNKCWb1h0wb4VtIDY6jyz2gDMk/gO7E2bIX1vOfDyEX84EVMNveM
+ h+COhzaJbQYT05qSYgwuEDp7T2PD6p8YZpDZ8mnwGj/a1KSuIgSfqs3ce8rTkNkEBAvY
+ VbVGsgo6j8TfAzncUOzz47GRwDgdGw/Ux/yp4j5yXK1ZMMTin5wmFg/ihOMjwqQnE0Iu
+ BZtSCV9yKQi0jrYjFz5fCcg8yTLmKBa+fW+FzwzcdB65Qu+XJRG7FbXs60G2YdtUmoBt
+ Dtzg==
+X-Gm-Message-State: AOJu0YypM/LjgnyfS+tog21kyCoHvw17v2BAwAs2Oh343XYvbcs/J11k
+ w10NBolv3197ZQgF4x1e/wTmM5kLvORox3UdczhZ7xaUC+Ds+JMKcm6JZ1TAGg==
+X-Gm-Gg: ASbGncsK7eWE62z6N+Vi9lLY0EGU6+ByHAeHd/h8jFQWTJQEPNmuY4JZ0Q01k/JqiSF
+ HzmMqCU9vND8xzKsXi0cW3qErtP6TGjizC2J/zrHj1MsPUFfzu6bCP1MJuo/NexNMtt6ZWSjU8k
+ qqlt6Xh6dbi9WNQ6kgGpqmk6tH33WGscPJKKMlAlofWRn/XF1IErfToox5FZQpQv/PgMo9t8UgC
+ VA1Gbmddn+Rosg6fviaf0g/KhfNOtMF8ORwWoctVimxgjCWKpBZtV7oKFHujSEwwP2c8V5PbaV4
+ TRhoDGwWAT6RH2hoLon/saiLaDoLOdDkmsSGI6vDiW/gFxBi4Dm8+/5eTw==
+X-Google-Smtp-Source: AGHT+IEfDcc69/rQZ37g+UchCe2/B2HUPfGLw8hKwKNG8GOK0WX64d5JlT8EUw3LPpouNtdkCCParw==
+X-Received: by 2002:a05:6a21:7a43:b0:1f3:45f4:9ba0 with SMTP id
+ adf61e73a8af0-1f544b1a99fmr853603637.25.1741284108739; 
+ Thu, 06 Mar 2025 10:01:48 -0800 (PST)
 Received: from localhost.localdomain ([58.37.175.138])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af28126db9bsm1338498a12.58.2025.03.06.10.01.44
+ 41be03b00d2f7-af28126db9bsm1338498a12.58.2025.03.06.10.01.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Mar 2025 10:01:46 -0800 (PST)
+ Thu, 06 Mar 2025 10:01:48 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v3 04/10] vfio/igd: Move LPC bridge initialization to a
- separate function
-Date: Fri,  7 Mar 2025 02:01:24 +0800
-Message-ID: <20250306180131.32970-5-tomitamoeko@gmail.com>
+Subject: [PATCH v3 05/10] vfio/pci: Add placeholder for device-specific config
+ space quirks
+Date: Fri,  7 Mar 2025 02:01:25 +0800
+Message-ID: <20250306180131.32970-6-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250306180131.32970-1-tomitamoeko@gmail.com>
 References: <20250306180131.32970-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x643.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,176 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A new option will soon be introduced to decouple the LPC bridge/Host
-bridge ID quirk from legacy mode. To prepare for this, move the LPC
-bridge initialization into a separate function.
+IGD devices require device-specific quirk to be applied to their PCI
+config space. Currently, it is put in the BAR4 quirk that does nothing
+to BAR4 itself. Add a placeholder for PCI config space quirks to hold
+that quirk later.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 122 +++++++++++++++++++++++++++++---------------------
- 1 file changed, 70 insertions(+), 52 deletions(-)
+ hw/vfio/pci-quirks.c | 5 +++++
+ hw/vfio/pci.c        | 4 ++++
+ hw/vfio/pci.h        | 1 +
+ 3 files changed, 10 insertions(+)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 50e4007abe..9d2b761d1d 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -351,6 +351,72 @@ static int vfio_pci_igd_lpc_init(VFIOPCIDevice *vdev,
-     return ret;
- }
- 
-+static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index cac0aa1910..8a81c60400 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -1117,6 +1117,11 @@ static void vfio_probe_rtl8168_bar2_quirk(VFIOPCIDevice *vdev, int nr)
+ /*
+  * Common quirk probe entry points.
+  */
++bool vfio_config_quirk_setup(VFIOPCIDevice *vdev, Error **errp)
 +{
-+    g_autofree struct vfio_region_info *host = NULL;
-+    g_autofree struct vfio_region_info *lpc = NULL;
-+    PCIDevice *lpc_bridge;
-+    int ret;
-+
-+    /*
-+     * Copying IDs or creating new devices are not supported on hotplug
-+     */
-+    if (vdev->pdev.qdev.hotplugged) {
-+        error_setg(errp, "IGD LPC is not supported on hotplugged device");
-+        return false;
-+    }
-+
-+    /*
-+     * We need to create an LPC/ISA bridge at PCI bus address 00:1f.0 that we
-+     * can stuff host values into, so if there's already one there and it's not
-+     * one we can hack on, this quirk is no-go.  Sorry Q35.
-+     */
-+    lpc_bridge = pci_find_device(pci_device_root_bus(&vdev->pdev),
-+                                 0, PCI_DEVFN(0x1f, 0));
-+    if (lpc_bridge && !object_dynamic_cast(OBJECT(lpc_bridge),
-+                                           "vfio-pci-igd-lpc-bridge")) {
-+        error_setg(errp,
-+                   "Cannot create LPC bridge due to existing device at 1f.0");
-+        return false;
-+    }
-+
-+    /*
-+     * Check whether we have all the vfio device specific regions to
-+     * support LPC quirk (added in Linux v4.6).
-+     */
-+    ret = vfio_get_dev_region_info(&vdev->vbasedev,
-+                        VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
-+                        VFIO_REGION_SUBTYPE_INTEL_IGD_LPC_CFG, &lpc);
-+    if (ret) {
-+        error_setg(errp, "IGD LPC bridge access is not supported by kernel");
-+        return false;
-+    }
-+
-+    ret = vfio_get_dev_region_info(&vdev->vbasedev,
-+                        VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
-+                        VFIO_REGION_SUBTYPE_INTEL_IGD_HOST_CFG, &host);
-+    if (ret) {
-+        error_setg(errp, "IGD host bridge access is not supported by kernel");
-+        return false;
-+    }
-+
-+    /* Create/modify LPC bridge */
-+    ret = vfio_pci_igd_lpc_init(vdev, lpc);
-+    if (ret) {
-+        error_setg(errp, "Failed to create/modify LPC bridge for IGD");
-+        return false;
-+    }
-+
-+    /* Stuff some host values into the VM PCI host bridge */
-+    ret = vfio_pci_igd_host_init(vdev, host);
-+    if (ret) {
-+        error_setg(errp, "Failed to modify host bridge for IGD");
-+        return false;
-+    }
-+
 +    return true;
 +}
 +
- #define IGD_GGC_MMIO_OFFSET     0x108040
- #define IGD_BDSM_MMIO_OFFSET    0x1080C0
- 
-@@ -419,9 +485,6 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+ void vfio_vga_quirk_setup(VFIOPCIDevice *vdev)
  {
-     g_autofree struct vfio_region_info *rom = NULL;
--    g_autofree struct vfio_region_info *host = NULL;
--    g_autofree struct vfio_region_info *lpc = NULL;
--    PCIDevice *lpc_bridge;
-     int ret, gen;
-     uint64_t gms_size;
-     uint64_t *bdsm_size;
-@@ -440,20 +503,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
+     vfio_vga_probe_ati_3c3_quirk(vdev);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 098d17b866..a58d555934 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3124,6 +3124,10 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         goto out_unset_idev;
      }
  
--    /*
--     * We need to create an LPC/ISA bridge at PCI bus address 00:1f.0 that we
--     * can stuff host values into, so if there's already one there and it's not
--     * one we can hack on, legacy mode is no-go.  Sorry Q35.
--     */
--    lpc_bridge = pci_find_device(pci_device_root_bus(&vdev->pdev),
--                                 0, PCI_DEVFN(0x1f, 0));
--    if (lpc_bridge && !object_dynamic_cast(OBJECT(lpc_bridge),
--                                           "vfio-pci-igd-lpc-bridge")) {
--        error_report("IGD device %s cannot support legacy mode due to existing "
--                     "devices at address 1f.0", vdev->vbasedev.name);
--        return;
--    }
--
-     /*
-      * IGD is not a standard, they like to change their specs often.  We
-      * only attempt to support back to SandBridge and we hope that newer
-@@ -490,28 +539,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
++    if (!vfio_config_quirk_setup(vdev, errp)) {
++        goto out_unset_idev;
++    }
++
+     if (vdev->vga) {
+         vfio_vga_quirk_setup(vdev);
      }
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 4763f14415..d54e43764b 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -205,6 +205,7 @@ uint64_t vfio_vga_read(void *opaque, hwaddr addr, unsigned size);
+ void vfio_vga_write(void *opaque, hwaddr addr, uint64_t data, unsigned size);
  
--    /*
--     * Check whether we have all the vfio device specific regions to
--     * support legacy mode (added in Linux v4.6).  If not, bail.
--     */
--    ret = vfio_get_dev_region_info(&vdev->vbasedev,
--                        VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
--                        VFIO_REGION_SUBTYPE_INTEL_IGD_HOST_CFG, &host);
--    if (ret) {
--        error_report("IGD device %s does not support host bridge access,"
--                     "legacy mode disabled", vdev->vbasedev.name);
--        return;
--    }
--
--    ret = vfio_get_dev_region_info(&vdev->vbasedev,
--                        VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
--                        VFIO_REGION_SUBTYPE_INTEL_IGD_LPC_CFG, &lpc);
--    if (ret) {
--        error_report("IGD device %s does not support LPC bridge access,"
--                     "legacy mode disabled", vdev->vbasedev.name);
--        return;
--    }
--
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
- 
-     /*
-@@ -533,19 +560,10 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
-     }
- 
--    /* Create our LPC/ISA bridge */
--    ret = vfio_pci_igd_lpc_init(vdev, lpc);
--    if (ret) {
--        error_report("IGD device %s failed to create LPC bridge, "
--                     "legacy mode disabled", vdev->vbasedev.name);
--        return;
--    }
--
--    /* Stuff some host values into the VM PCI host bridge */
--    ret = vfio_pci_igd_host_init(vdev, host);
--    if (ret) {
--        error_report("IGD device %s failed to modify host bridge, "
--                     "legacy mode disabled", vdev->vbasedev.name);
-+    /* Setup LPC bridge / Host bridge PCI IDs */
-+    if (!vfio_pci_igd_setup_lpc_bridge(vdev, &err)) {
-+        error_append_hint(&err, "IGD legacy mode disabled\n");
-+        error_report_err(err);
-         return;
-     }
- 
+ bool vfio_opt_rom_in_denylist(VFIOPCIDevice *vdev);
++bool vfio_config_quirk_setup(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_vga_quirk_setup(VFIOPCIDevice *vdev);
+ void vfio_vga_quirk_exit(VFIOPCIDevice *vdev);
+ void vfio_vga_quirk_finalize(VFIOPCIDevice *vdev);
 -- 
 2.47.2
 
