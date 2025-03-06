@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95E4A54681
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 10:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03813A54684
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 10:38:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq7eX-0008Vc-0i; Thu, 06 Mar 2025 04:36:29 -0500
+	id 1tq7eV-0008Ue-0R; Thu, 06 Mar 2025 04:36:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eS-0008UQ-Cg
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:24 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eL-0008TD-UU
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eO-0002Bm-Fi
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:23 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eJ-0002Aw-R9
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741253778;
+ s=mimecast20190719; t=1741253775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5TdnYHHRODMzVI0IC2jnQunKPXP7jDs3XFPM93QW51s=;
- b=W3kjWJWDwhk92YtUPnp7niQRvTCy7+Mte1MvWk3mvX6rdRlFxsBiMXoNZBVKvtKqgBpOsC
- lRZV/94VmWDZoeQIg+AM+vn2vgPX2hrssrzYDZ0u4tgUZcO0OkK2n8jc0++pbPJ6Vi7J/V
- vdxeJdeS3wohgAqL2s+0EP+QLGKpszs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UXBKwZQYCzvLtOQMkjHrW4vkQj6qxAm6/iuBhXGD8k8=;
+ b=eaRjpWnI7wJB2wQ1lM9NOzGp0V0EbnAYab+dokmI8XAxOSb9lqoH8J9Q8ycWCLTtiif9Kb
+ TNAGcEi1ISXtfxV6mNJ3K/IBjsj+cx0glJjh3EXfsjMN1MYFJL5SDAnUOLvCZzPlt7bNMr
+ LyUQA/mFS9FV5GD4DOO/5T0DgnEcT0c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-0RGQ8K-2PFC_2dvTyufH5Q-1; Thu,
- 06 Mar 2025 04:36:05 -0500
-X-MC-Unique: 0RGQ8K-2PFC_2dvTyufH5Q-1
-X-Mimecast-MFC-AGG-ID: 0RGQ8K-2PFC_2dvTyufH5Q_1741253765
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-oAJ3x9JEOL-LTazFhxoJOg-1; Thu,
+ 06 Mar 2025 04:36:08 -0500
+X-MC-Unique: oAJ3x9JEOL-LTazFhxoJOg-1
+X-Mimecast-MFC-AGG-ID: oAJ3x9JEOL-LTazFhxoJOg_1741253767
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AED33180AB19
- for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:04 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7E031800349
+ for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:07 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.15])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6966C18001E9
- for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:04 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A4151956096
+ for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:07 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C0DE921E66BC; Thu, 06 Mar 2025 10:36:01 +0100 (CET)
+ id C4A5E21E65D4; Thu, 06 Mar 2025 10:36:01 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 04/10] qdev: Delete unused qdev_prop_enum
-Date: Thu,  6 Mar 2025 10:35:55 +0100
-Message-ID: <20250306093601.2264772-5-armbru@redhat.com>
+Subject: [PULL 05/10] qdev: Change qdev_prop_pci_devfn member @name from
+ "int32" to "str"
+Date: Thu,  6 Mar 2025 10:35:56 +0100
+Message-ID: <20250306093601.2264772-6-armbru@redhat.com>
 In-Reply-To: <20250306093601.2264772-1-armbru@redhat.com>
 References: <20250306093601.2264772-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,44 +86,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Properties using qdev_prop_pci_devfn initially accepted a string of
+the form "DEV.FN" or "DEV" where DEV and FN are in hexadecimal.
+Member @name was "pci-devfn" initially.
+
+Commit b403298adb5 (qdev: make the non-legacy pci address property
+accept an integer) changed them to additionally accept integers: bits
+3..7 are DEV, and bits 0..2 are FN.  This is inaccessible externally
+in device_add so far.
+
+The commit also changed @name to "int32", and set member @legacy-name
+to "pci-devfn".  Together, this kept QMP command
+device-list-properties unaffected: it used @name only when
+@legacy_name was null.
+
+Commit 07d09c58dbb (qmp: Print descriptions of object properties)
+quietly dumbed that down to use @name always, and the next commit
+18b91a3e082q (qdev: Drop legacy_name from qdev properties) dropped
+member @legacy_name.  This changed the value of @type reported by QMP
+command device-list-properties from "pci-devfn" to "int32".
+
+But "int32" is misleading: device_add actually wants QAPI type "str".
+So change @name to that.
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250227085601.4140852-2-armbru@redhat.com>
+Message-ID: <20250227085601.4140852-3-armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/qdev-properties.h | 1 -
- hw/core/qdev-properties.c    | 7 -------
- 2 files changed, 8 deletions(-)
+ hw/core/qdev-properties-system.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index bf27375a3c..ae6ec2b990 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -49,7 +49,6 @@ struct PropertyInfo {
- extern const PropertyInfo qdev_prop_bit;
- extern const PropertyInfo qdev_prop_bit64;
- extern const PropertyInfo qdev_prop_bool;
--extern const PropertyInfo qdev_prop_enum;
- extern const PropertyInfo qdev_prop_uint8;
- extern const PropertyInfo qdev_prop_uint16;
- extern const PropertyInfo qdev_prop_uint32;
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 0b52aad555..2540bd8880 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -122,13 +122,6 @@ void qdev_propinfo_set_default_value_enum(ObjectProperty *op,
-         qapi_enum_lookup(prop->info->enum_table, prop->defval.i));
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index a91551a5ee..f2b6136d0a 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -882,7 +882,7 @@ static int print_pci_devfn(Object *obj, const Property *prop, char *dest,
  }
  
--const PropertyInfo qdev_prop_enum = {
--    .name  = "enum",
--    .get   = qdev_propinfo_get_enum,
--    .set   = qdev_propinfo_set_enum,
--    .set_default_value = qdev_propinfo_set_default_value_enum,
--};
--
- /* Bit */
- 
- static uint32_t qdev_get_prop_mask(const Property *prop)
+ const PropertyInfo qdev_prop_pci_devfn = {
+-    .name  = "int32",
++    .name  = "str",
+     .description = "Slot and optional function number, example: 06.0 or 06",
+     .print = print_pci_devfn,
+     .get   = qdev_propinfo_get_int32,
 -- 
 2.48.1
 
