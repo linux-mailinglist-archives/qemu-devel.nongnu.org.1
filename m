@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4765AA54FB6
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A836A54FCA
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:57:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDVz-00059l-75; Thu, 06 Mar 2025 10:52:03 -0500
+	id 1tqDW3-0005E3-C3; Thu, 06 Mar 2025 10:52:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVe-0004ZO-3C
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVe-0004ZP-3A
  for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:51:42 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVS-0006mO-S2
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:51:32 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-390f69f8083so792225f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:51:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDVX-0006mc-5n
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:51:36 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-39127512371so630910f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276289; x=1741881089; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276293; x=1741881093; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Q/XxsDfHOS1Wk77anKxnWzNd9TMtmnv8t/Ha/8QCoUc=;
- b=rVjt2CuKUdiIILIowYcmfg1WSNe6qzM8rAJi3pJ0lLb7Y3Tl2ZWG3iX0GiV92KOoq5
- ZFvFjHzfJEahq4dldDwkKpbo68NZJ7zMjPGFGaRyx9DOF0vKY6r8pS6GEH60V3qcHBft
- M7Q8U+Juk6bv31Fy0FBPfKZZCfKAQ5DNzoRkA1zqrNYtOASuarEPNdP57qFsPtIwlQ/H
- npp2xP3eGeUHZksQQLcsO5fX2W3ns56WuxnX908Z5V8sQJDyTAUZgZyfIaB0EQ1QWtCi
- EqgkvtMtae9veSb1Ess3R1XdvYEvcSZhTGh1+x1sE9mWWJ+fQD4oCI0uOgUvCVj8eb72
- 9KsQ==
+ :reply-to; bh=8iAMOsd7yhgOQOkZMNXOMWl45bAeyqtgN6CSQKPbqzQ=;
+ b=QtUAL6MIgsiVYwYRVlsUXwafygnWQ8QkxL0nBB7haHd4LD7TGrRCZjhVVfsAk5vRT6
+ +G2nYIjS6yAaPJc9C84lEaw8McV/a3fi6JG+bxZ5UtEppjmTKMIacu2iBl4Rdqz2WkBK
+ Ym9gZe+tzmTndyycy6jAh6f7u/RgVlUxwBfmYt5Kwu+MCTqPLh95Cu1owNvwgZTduJMr
+ 17nSodLdJ6BM1YPBQxvZ7CNoLBkIxXOCWzIPtKoY6q9a+9MFeVjay6U3Kq94F59UrpPn
+ 3ZW2LGo2xZ44HLTXGm35jBQkg6PzpFz9ZWjpNQfEz5K3LoDS5qV/2x+g0Z+U1o5D2099
+ FiOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276289; x=1741881089;
+ d=1e100.net; s=20230601; t=1741276293; x=1741881093;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q/XxsDfHOS1Wk77anKxnWzNd9TMtmnv8t/Ha/8QCoUc=;
- b=QqFN9iPnTH6u7huIqDGyVM3+MWVpCUN+Sn0jlFAaBIvPif5d6auH9eUyuNoUonoDGp
- iUknY53+LcSPjXVLcKQTx0EZDLOoUshWtCf4zkw2QbW8ap0Rjh8gN2pTWYpHyHA0BrfH
- m/c2O6PbVVxynmwHmHy+WnXlRzIlAYhGLxKakyPRSkqgaw81sdaT3xoX3EMde2E7Vg8a
- k8EaHk6qvKUiCH9lwAPLk6jeeoEy7NCHfql87a27mNIZ9m9iNZizdDLuuBINmfdUrPB0
- LgORtgjZd1hKNftJLfXB7oZMccSVEimkjI9ENoHYqvPDGMay6KNgR5p//EHftL7nXFta
- 7nsA==
-X-Gm-Message-State: AOJu0YzZCcw5kHW8Ee9DmmWLBaNvpP4huZP/XZxNzrgVOF4hg6p0aAmd
- TkPZeumvFiJBIkcafDZG5A+lUOmv8T9O1nWeoh8dePCddsdBMfdd1KG6RdZ39fNi6pw08m2rf3k
- 308w=
-X-Gm-Gg: ASbGncthdanmPoVhs5ispT3zNUPsAogE9tKgeJ+K3itRfiOAYAYPToTDVQMjpsxbaGU
- OcPm1lozuQR09flQxlUViVpkJvRzFIjqYNCCisQvakQ1W86RRDvpdQ22d6WZOxcqNq8Kp/OwxqG
- wWVvCZqxM/Qf1OQ3IPVAYOPUIgsG8vKrEoWGI7p6uvGUkxO70wmDWZRUXLk5IqowlUTapKtV7v8
- l0TWjJDCUFvQdfqlpUj8nzcVbyUg+baycS2UD8esBoKMTm2N0EEi0/0H8nGVUHnivbcbedSSE/A
- UZ1XoTV/2Gzy3LC4G/c71yPUFHxtn8+MMZhY8cYiA8pQLUXvxZjMCK/ZysyEQW68uwO9cApGn2Y
- Mo/BKXsC641jG15RcwI4=
-X-Google-Smtp-Source: AGHT+IGGNEqDa0CO5YNd8YzyxzegQ4aopm2urFOdqm7MPPMhG/1u0hidlTkpMaCoM1tqej1CNlMtaA==
-X-Received: by 2002:a05:6000:156d:b0:391:22e2:cce1 with SMTP id
- ffacd0b85a97d-39122e2d0c7mr5474838f8f.42.1741276288822; 
- Thu, 06 Mar 2025 07:51:28 -0800 (PST)
+ bh=8iAMOsd7yhgOQOkZMNXOMWl45bAeyqtgN6CSQKPbqzQ=;
+ b=uEfSncPq79KihvszHNuO5Di3C7ZqQMjZwJZenBrpkCgCISEruyhmloEMhkZz6/amXQ
+ BFYY5RInP6wsmuxALTDWFvGlamy/QCJRoDiIljiSsqb2+LdWrRDr6odYeZVkkWmbhu6A
+ yR/8ZTiwvWvFEaDczCu9FvG2Bx5wJwNXuJY/hc42NE6No7o8Ha9JUlX2Km6U2K7dviXk
+ 0unjwEoHW5dZDyHZXoGBs3zNUg3uq00w0XzCh1vAyqUpssOVtURKX3RoltFM7YAL/8FG
+ FFuGEc2ufwL0kek3PUlcCwF0BpYk7mLG9UO0M5qcF8QU4ihpCW7b++T2OMW10tcgJA5e
+ RGgQ==
+X-Gm-Message-State: AOJu0YxJJ1DzqXOV4vZznW/ebh0r4T1oq9/X2oOtVaBA9unw6IzF93Nk
+ phY8R1AhEk7R4iu64u9QOPw1QKnNF7DXeXFduVAVk3i7fxLaANute5dBh9Vg20GsaIrZySvWZej
+ Xcrw=
+X-Gm-Gg: ASbGncv638T/II4gz5qJiUbNEPonCcvuEcMYl4xaNggVt+cGRzJDzMZIHjrNGyQWv83
+ 2bOY0XD6OWHDUMorP5togj/QU/YkIF8nzRVemBudBJuwQtArvX7dgf3W/d4K2fiPhW9MYdjETMs
+ JkVlsNRqXC5qsUQmY8j5z+zGh6JtTgGtt8QV4o/aO2ujAJp3ZfNy342vSvnLVUAcxJCT7b5hL0X
+ RxEYl2zUAMw1uv4tk/+EdH37MtXBxc8lcVgNxWwYiBFNV/4FGlKIqZdu4hid/lRrrVFQ+6h+B5m
+ 4840Rx/4S3rg9ROO8wKOrm7Z4w5tYGq0VrsASM2K9xdnujO4PNwjIBR5/4d6hgBHBHAR9czKizT
+ s2gllY7VasMmRydtpjhI=
+X-Google-Smtp-Source: AGHT+IFfU6FQV9Lj5NaK+MWlGh1nIjCTFYb3BmaFRFUZYNuw1YriS+rY5v1o6f+Pr2eL8yRSWtAm3w==
+X-Received: by 2002:a05:6000:1844:b0:391:306f:57d1 with SMTP id
+ ffacd0b85a97d-391306f5a44mr873346f8f.35.1741276293277; 
+ Thu, 06 Mar 2025 07:51:33 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103f41sm2371624f8f.85.2025.03.06.07.51.28
+ ffacd0b85a97d-3912c0195bfsm2411546f8f.48.2025.03.06.07.51.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:51:28 -0800 (PST)
+ Thu, 06 Mar 2025 07:51:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 51/54] target/alpha: Do not mix exception flags and FPCR bits
-Date: Thu,  6 Mar 2025 16:47:33 +0100
-Message-ID: <20250306154737.70886-52-philmd@linaro.org>
+Subject: [PULL 52/54] target/i386: Mark WHPX APIC region as little-endian
+Date: Thu,  6 Mar 2025 16:47:34 +0100
+Message-ID: <20250306154737.70886-53-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,57 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-get_float_exception_flags() returns exception flags,
-which are distinct from the FPCR bits used as error code.
+This device is only used by the x86 targets, which are only
+built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
+definition expand to DEVICE_LITTLE_ENDIAN (besides, the
+DEVICE_BIG_ENDIAN case isn't tested). Simplify directly
+using DEVICE_LITTLE_ENDIAN.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250211162604.83446-1-philmd@linaro.org>
+Message-Id: <20250212113938.38692-6-philmd@linaro.org>
 ---
- target/alpha/fpu_helper.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ target/i386/whpx/whpx-apic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/alpha/fpu_helper.c b/target/alpha/fpu_helper.c
-index f810a9b6a47..6aefb9b851a 100644
---- a/target/alpha/fpu_helper.c
-+++ b/target/alpha/fpu_helper.c
-@@ -455,29 +455,28 @@ static uint64_t do_cvttq(CPUAlphaState *env, uint64_t a, int roundmode)
- {
-     float64 fa;
-     int64_t ret;
--    uint32_t exc;
-+    uint32_t exc = 0;
-+    int flags;
+diff --git a/target/i386/whpx/whpx-apic.c b/target/i386/whpx/whpx-apic.c
+index 4245ab68a27..630a9616d71 100644
+--- a/target/i386/whpx/whpx-apic.c
++++ b/target/i386/whpx/whpx-apic.c
+@@ -231,7 +231,7 @@ static void whpx_apic_mem_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps whpx_apic_io_ops = {
+     .read = whpx_apic_mem_read,
+     .write = whpx_apic_mem_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
-     fa = t_to_float64(a);
-     ret = float64_to_int64_modulo(fa, roundmode, &FP_STATUS);
- 
--    exc = get_float_exception_flags(&FP_STATUS);
--    if (unlikely(exc)) {
-+    flags = get_float_exception_flags(&FP_STATUS);
-+    if (unlikely(flags)) {
-         set_float_exception_flags(0, &FP_STATUS);
- 
-         /* We need to massage the resulting exceptions. */
--        if (exc & float_flag_invalid_cvti) {
-+        if (flags & float_flag_invalid_cvti) {
-             /* Overflow, either normal or infinity. */
-             if (float64_is_infinity(fa)) {
-                 exc = FPCR_INV;
-             } else {
-                 exc = FPCR_IOV | FPCR_INE;
-             }
--        } else if (exc & float_flag_invalid) {
-+        } else if (flags & float_flag_invalid) {
-             exc = FPCR_INV;
--        } else if (exc & float_flag_inexact) {
-+        } else if (flags & float_flag_inexact) {
-             exc = FPCR_INE;
--        } else {
--            exc = 0;
-         }
-     }
-     env->error_code = exc;
+ static void whpx_apic_reset(APICCommonState *s)
 -- 
 2.47.1
 
