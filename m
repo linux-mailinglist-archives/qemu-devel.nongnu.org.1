@@ -2,65 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDED5A54F0B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AF8A54F50
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 16:37:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqD9a-0006pv-Mc; Thu, 06 Mar 2025 10:28:54 -0500
+	id 1tqDHA-0002Ke-TW; Thu, 06 Mar 2025 10:36:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tqD9V-0006oj-C9
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:28:49 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1tqDGp-0002Hx-1I; Thu, 06 Mar 2025 10:36:26 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tqD9S-0003hU-Sq
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:28:48 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5940C4E6013;
- Thu, 06 Mar 2025 16:28:43 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id rIuRJW1JyRqo; Thu,  6 Mar 2025 16:28:41 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 5DF6E4E6001; Thu, 06 Mar 2025 16:28:41 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5B43074577D;
- Thu, 06 Mar 2025 16:28:41 +0100 (CET)
-Date: Thu, 6 Mar 2025 16:28:41 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
-cc: Paolo Bonzini <pbonzini@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- qemu-devel <qemu-devel@nongnu.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH 04/18] qemu: Introduce 'qemu/legacy_binary_info.h'
-In-Reply-To: <Z8m8GmPzTum7qEcS@redhat.com>
-Message-ID: <15694c26-5a08-d786-e1bf-212365b1f957@eik.bme.hu>
-References: <20250305153929.43687-1-philmd@linaro.org>
- <20250305153929.43687-5-philmd@linaro.org>
- <35177cd6-0741-4c28-a5d5-3529208a31dc@linaro.org>
- <dd0336c2-c2ed-477c-8f40-eaee2f110238@redhat.com>
- <21a34cac-855b-4628-a154-e708ea85df59@linaro.org>
- <CABgObfaKQLizim36Lzqzn+brc5d7m10eKbZV59ZK9+03Kt7eTg@mail.gmail.com>
- <Z8mMhjwiYCY7Pq4H@redhat.com>
- <c6953b69-a54d-6d42-343e-dae07266306f@eik.bme.hu>
- <Z8m8GmPzTum7qEcS@redhat.com>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1tqDGj-0004Ve-DS; Thu, 06 Mar 2025 10:36:19 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 526E3CDT019289;
+ Thu, 6 Mar 2025 15:36:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=5p/qx4
+ iyFBsj96syQVyc2ZLjhRr0lIS0Fi0xwM2a3R4=; b=deVi2TC4IWGgpffk0m646S
+ 2f8dtUDGkgczDBWQTyW58Jao6iS0nF3essIaYuAfm5kK2ATKlppRLcALYo/IZDzN
+ vy0WIUOyjFqLZEGqRBi3140ttDd/VoPebbEewc7E8eEnhav8l1eKs1DrWRkLgnks
+ /16Hn7S3SwFaMFq6tGbEac014bQ/BrcMT1oc2cZ2bzDQitIZKuuBsM6gPk0zkI4U
+ p+d8nGzjXRNBM8y4Dhwx52ldTQnEL62JHJd7gdSaQk0xrnG1+YehWO+pWwdnnQnq
+ 2/cbdNcuaaxx53+2w41FLk0EyAkQNrty45qJEr2pocAgeiCxVdsEX08Y5Mk5oB8w
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457d4p0g80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 15:36:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 526CHPOP009038;
+ Thu, 6 Mar 2025 15:36:14 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454cxyskhy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Mar 2025 15:36:14 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 526FaAtG47579456
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Mar 2025 15:36:10 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BB2620040;
+ Thu,  6 Mar 2025 15:36:10 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D785120043;
+ Thu,  6 Mar 2025 15:36:09 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.179.9.216]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Mar 2025 15:36:09 +0000 (GMT)
+Message-ID: <de5e3ddbdd36cafe444058b79d8aa12e912ae89f.camel@linux.ibm.com>
+Subject: Re: [PATCH qemu v2 1/3] hw/s390x: add CPI identifiers to QOM
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>, Shalini
+ Chellathurai Saroja <shalini@linux.ibm.com>
+Cc: qemu-s390x mailing list <qemu-s390x@nongnu.org>, Thomas Huth
+ <thuth@redhat.com>, qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>
+Date: Thu, 06 Mar 2025 16:36:09 +0100
+In-Reply-To: <Z8m5pV0kPIfp2jo2@redhat.com>
+References: <20250224120449.1764114-1-shalini@linux.ibm.com>
+ <Z8h2hNFlNvjWWHqd@redhat.com>
+ <b44e0b46f69ee6f86a15ecabecd6942c@imap.linux.ibm.com>
+ <Z8m5pV0kPIfp2jo2@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1209260455-1741274921=:53921"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tcocyIe0YkrikESQvaBXyq448pbetjqi
+X-Proofpoint-ORIG-GUID: tcocyIe0YkrikESQvaBXyq448pbetjqi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_05,2025-03-06_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 phishscore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503060118
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,126 +111,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, 2025-03-06 at 15:06 +0000, Daniel P. Berrang=C3=A9 wrote:
+> BTW, your email client is possibly mis-configured - your mail
+> came through with "From: shalini <shalini@imap.linux.ibm.com>"
+> and attempting to reply to that gets an error saying that
+> 'imap.linux.ibm.com' does not exist.
+>=20
+> On Thu, Mar 06, 2025 at 02:55:27PM +0100, shalini wrote:
+> > On 2025-03-05 17:06, Daniel P. Berrang=C3=A9 wrote:
+> > > On Mon, Feb 24, 2025 at 01:04:47PM +0100, Shalini Chellathurai Saroja
+> > > wrote:
+> > > > Add Control-Program Identification (CPI) to the QEMU Object
+> > > > Model (QOM). The CPI identifiers provide information about
+> > > > the guest operating system. The CPI identifiers are:
+> > > > system type, system name, system level and sysplex name.
+> > > >=20
+> > > > The system type provides the OS type of the guest (e.g. LINUX).
+> > > > The system name provides the name of the guest (e.g. TESTVM).
+> > > > The system level provides the distribution and kernel version
+> > > > of the guest OS (e.g. 0x50e00).
+> > > > The sysplex name provides the sysplex name of the guest
+> > > > (e.g. SYSPLEX).
+> > > >=20
+> > > > Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+> > > > ---
+> > > >  hw/s390x/s390-virtio-ccw.c         | 29 ++++++++++++++++++++++++++=
++++
+> > > >  include/hw/s390x/s390-virtio-ccw.h |  8 ++++++++
+> > > >  qapi/machine.json                  | 24 ++++++++++++++++++++++++
+> > > >  3 files changed, 61 insertions(+)
 
---3866299591-1209260455-1741274921=:53921
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+[...]
+>=20
+> > > > +# @system-name: system name of Linux instance
+> > >=20
+> > > What is a system name ?  Is that a hostname, or is that something
+> > > else ?
+> > >=20
+> >=20
+> > Yes, it is the hostname of the guest virtual machine.
 
-On Thu, 6 Mar 2025, Daniel P. Berrangé wrote:
-> On Thu, Mar 06, 2025 at 02:45:52PM +0100, BALATON Zoltan wrote:
->> On Thu, 6 Mar 2025, Daniel P. Berrangé wrote:
->>> On Thu, Mar 06, 2025 at 12:34:13PM +0100, Paolo Bonzini wrote:
->>>> Il gio 6 mar 2025, 10:27 Philippe Mathieu-Daudé <philmd@linaro.org> ha
->>>> scritto:
->>>>
->>>>> This API is to allow refactoring code for heterogeneous emulation,
->>>>> without changing user-facing behavior of current qemu-system binaries,
->>>>> which I now consider as 'legacy'.
->>>>>
->>>>> Once all current restrictions removed, the new qemu-system-heterogeneous
->>>>> binary is expected to run any combination of targets.
->>>>>
->>>>> qemu-system-$target will be a call to qemu-system-heterogeneous with
->>>>> a restricted subset, possibly in the form of:
->>>>>
->>>>>   $ qemu-system-heterogeneous --target aarch64-softmmu
->>>>>
->>>>
->>>> Or just qemu-system I guess.
->>>>
->>>>     ^ equivalent of today's qemu-system-aarch64
->>>>>
->>>>> If you don't like 'qemu_legacy_binary_' prefix, I can use
->>>>> 'qemu_single_binary_' instead.
->>>>>
->>>>
->>>> Still there is a problem with renaming binaries (both the "qemu-kvm" case
->>>> and the good/bad case that Richard pointed out).
->>>
->>> We could special case the '-kvm' suffix, because by its nature it
->>> implies the current binary build target.
->>>
->>>>
->>>> I think you should try creating two versions of system/arch_init.c, so that
->>>> it has a separate implementation for heterogeneous vs. single-target
->>>> binaries. Then you can keep separate linking steps for single-target
->>>> binaries and you naturally get the right target info from either the
->>>> target-specific arch_init-single.c, or the --target option for
->>>> arch_init-multi.c.
->>>>
->>>> (Is --target even necessary? As long as you have a way disambiguate
->>>> same-named machines like -M virt, and have no default machine in the
->>>> multi-target binary, you shouldn't need it).
->>>
->>> If we did 'query-machines' on qemu-system-heterogeneous, it would
->>> return all machines from all targets. To disambiguate naming there
->>> are various options
->>>
->>>  * The query-machines command would have to gain a new 'target'
->>>    field and we would have to document that uniqness is across
->>>    the tuple (name, target), not merely name. That's a semantic
->>>    change.
->>>
->>>    We would still need a way to express the 'target' when asking
->>>    to instantiate a machine
->>>
->>>  * The query-machines command would have to gain a new 'target'
->>>    paramter so callers can restrict the data they receive back
->>>
->>>    We would still need a way to express the 'target' when asking
->>>    to instantiate a machine
->>>
->>>  * Rename all machine types so they are '<target>-<machine>'
->>>    The query-machines command doesn't change. Apps would have
->>>    to "parse" the machine name to see what 'target' each is
->>>    associated with, or we include an explicit 'target' field
->>>    in the returned data. Instianting a machine would not need
->>>    changing
->>
->> I think -machine m68k:virt could work, -M help would list machines like:
->>
->> arm:raspi
->> i386:pc
->> etc.
->>
->> Management apps could easily find : to separate arch but those that don't
->> care about arch would just work and list more possible machines. Some
->> machines like pc or mac99 that may appear differently in different single
->> arch binary might need to get resolved first. Maybe need a way to search
->> machine list by pattern e.g. as -machine x86_64:help.
->
-> ...except that custom structures/formats in command line args is
-> something we've tried very hard to eliminate in Qemu, and instead
-> model everything as a distinct fields, using QAPI, so...
->
-> .. if you're meaning "arm:raspi" as a short hand for "target:machine"
->   that would be a design anti-pattern, b
->
-> ...if you're meaning that "arm:raspi" is the full machine name, to be
->   strictly treated as an opaque string that would be acceptable.
->
-> I rather think the latter would not end up being treated as an opaque
-> string though - the tempetation to parse it & assign semantics to the
-> pieces is just too great. So I'm not a fan of that approach.
->
-> From a QAPI design best pratice POV, the requirement would be for
->
-> -machine target=arm,name=raspi
+Is it? Seems to me it it just a user configurable name of the system.
+It's empty on the two LPARs I checked.
 
-As long as I don't have to type that and can use -M arm:raspi as a 
-shorthand that's OK but then we could just make an exception for this and 
-combine target and machine name here for simplicity. Unless it's simpler 
-to internally use separate name and target attributes and implement a 
-command line shorthand. You'll also need a way to display machine list 
-with target and name in a way that's easy to parse for tools for which the 
-target:name format seems like a trivial way. So I don't mind how you 
-rationalise it and call all of it the machine name or if it's implemented 
-as separate name and target attributes but please try to keep the command 
-line something a human can use too.
+>=20
+> Lets rename it to 'system-hostname' to be unambiguous.
 
-Regards,
-BALATON Zoltan
---3866299591-1209260455-1741274921=:53921--
+In any case "system name" is the established name for this value on s390x.
+>=20
+>=20
+> With regards,
+> Daniel
+
+--=20
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
+art, HRB 243294
 
