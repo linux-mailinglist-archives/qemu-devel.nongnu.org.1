@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129AAA54829
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D494CA54811
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 11:40:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq8d2-0004mY-Tb; Thu, 06 Mar 2025 05:39:00 -0500
+	id 1tq8d5-0004nV-TD; Thu, 06 Mar 2025 05:39:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8d0-0004mG-5w; Thu, 06 Mar 2025 05:38:58 -0500
+ id 1tq8d2-0004nD-VY; Thu, 06 Mar 2025 05:39:00 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tq8cw-0000St-9p; Thu, 06 Mar 2025 05:38:57 -0500
+ id 1tq8d1-0000St-5d; Thu, 06 Mar 2025 05:39:00 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 6 Mar
@@ -29,13 +29,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v5 00/29] Support AST2700 A1
-Date: Thu, 6 Mar 2025 18:38:08 +0800
-Message-ID: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 01/29] hw/intc/aspeed: Support setting different memory size
+Date: Thu, 6 Mar 2025 18:38:09 +0800
+Message-ID: <20250306103846.429221-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
+References: <20250306103846.429221-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -61,112 +63,70 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1:
- 1. Refactor INTC model to support both INTC0 and INTC1.
- 2. Support AST2700 A1.
- 3. Create ast2700a0-evb machine.
+According to the AST2700 datasheet, the INTC(CPU DIE) controller has 16KB
+(0x4000) of register space, and the INTCIO (I/O DIE) controller has 1KB (0x400)
+of register space.
+
+Introduced a new class attribute "mem_size" to set different memory sizes for
+the INTC models in AST2700.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ include/hw/intc/aspeed_intc.h | 3 +++
+ hw/intc/aspeed_intc.c         | 9 ++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
+index 18cb43476c..03324f05ab 100644
+--- a/include/hw/intc/aspeed_intc.h
++++ b/include/hw/intc/aspeed_intc.h
+@@ -25,6 +25,8 @@ struct AspeedINTCState {
  
-v2:
-  To streamline the review process, split the following patch series into
-  three parts.
-  https://patchwork.kernel.org/project/qemu-devel/cover/20250121070424.2465942-1-jamin_lin@aspeedtech.com/
-  This patch series focuses on cleaning up the INTC model to
-  facilitate future support for the INTC_IO model.
-
-v3:
- 1. Update and add functional test for AST2700
- 2. Add AST2700 INTC design guidance and its block diagram.
- 3. Retaining the INTC naming and introducing a new INTCIO model to support the AST2700 A1.
- 4. Create ast2700a1-evb machine and rename ast2700a0-evb machine
- 5. Fix silicon revision issue and support AST2700 A1.
-
-v4:
- 1. rework functional test for AST2700
- 2. the initial machine "ast2700-evb" is aliased to "ast2700a0-evb.
- 3. intc: Reduce regs array size by adding a register sub-region
- 4. intc: split patch for Support setting different register sizes
- 5. update ast2700a1-evb machine parent to TYPE_ASPEED_MACHINE
-
-v5:
- 1. Rename status_addr and addr to status_reg and reg for clarity
- 2. Introduce dynamic allocation for regs array
- 3. Sort the memmap table by mapping address
- 4. ast27x0.c split patch for Support two levels of INTC controllers for AST2700 A1
- 5. tests/functional/aspped split patch for Introduce start_ast2700_test API
- 6. keep variable naming for reviewer suggestion.
- 7. Add reviewer suggestion and split patch to make more readable.
+     /*< public >*/
+     MemoryRegion iomem;
++    MemoryRegion iomem_container;
++
+     uint32_t regs[ASPEED_INTC_NR_REGS];
+     OrIRQState orgates[ASPEED_INTC_NR_INTS];
+     qemu_irq output_pins[ASPEED_INTC_NR_INTS];
+@@ -39,6 +41,7 @@ struct AspeedINTCClass {
  
-With the patch applied, QEMU now supports two machines for running AST2700 SoCs:
-ast2700a0-evb: Designed for AST2700 A0
-ast2700a1-evb: Designed for AST2700 A1
-
-Test information
-1. QEMU version: https://github.com/qemu/qemu/commit/50d38b8921837827ea397d4b20c8bc5efe186e53
-2. ASPEED SDK v09.05 pre-built image
-   https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.05
-   ast2700-default-obmc.tar.gz (AST2700 A1)
-   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-default-obmc.tar.gz
-   ast2700-a0-default-obmc.tar.gz (AST2700 A0)
-   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz
-   
-This patch series depends on the following patch series:
-https://patchwork.kernel.org/project/qemu-devel/cover/20250303073547.1145080-1-jamin_lin@aspeedtech.com/
-https://patchwork.kernel.org/project/qemu-devel/cover/20250225075622.305515-1-jamin_lin@aspeedtech.com/
-
-Jamin Lin (29):
-  hw/intc/aspeed: Support setting different memory size
-  hw/intc/aspeed: Rename status_addr and addr to status_reg and reg for
-    clarity
-  hw/intc/aspeed: Introduce dynamic allocation for regs array
-  hw/intc/aspeed: Support setting different register size
-  hw/intc/aspeed: Reduce regs array size by adding a register sub-region
-  hw/intc/aspeed: Introduce helper functions for enable and status
-    registers
-  hw/intc/aspeed: Add object type name to trace events for better
-    debugging
-  hw/arm/aspeed: Rename IRQ table and machine name for AST2700 A0
-  hw/arm/aspeed_ast27x0: Sort the IRQ table by IRQ number
-  hw/intc/aspeed: Support different memory region ops
-  hw/intc/aspeed: Rename num_ints to num_inpins for clarity
-  hw/intc/aspeed: Add support for multiple output pins in INTC
-  hw/intc/aspeed: Refactor INTC to support separate input and output pin
-    indices
-  hw/intc/aspeed: Introduce AspeedINTCIRQ structure to save the irq
-    index and register address
-  hw/intc/aspeed: Introduce IRQ handler function to reduce code
-    duplication
-  hw/intc/aspeed: Add Support for Multi-Output IRQ Handling
-  hw/intc/aspeed: Add Support for AST2700 INTCIO Controller
-  hw/misc/aspeed_scu: Add Support for AST2700/AST2750 A1 Silicon
-    Revisions
-  hw/arm/aspeed_ast27x0.c Support AST2700 A1 GIC Interrupt Mapping
-  hw/arm/aspeed_ast27x0: Define an Array of AspeedINTCState with Two
-    Instances
-  hw/arm/aspeed_ast27x0: Support two levels of INTC controllers for
-    AST2700 A1
-  hw/arm/aspeed_ast27x0: Add SoC Support for AST2700 A1
-  hw/arm/aspeed: Add Machine Support for AST2700 A1
-  hw/arm/aspeed_ast27x0: Sort the memmap table by mapping address
-  tests/functional/aspeed: Introduce start_ast2700_test API
-  tests/functional/aspeed: Update temperature hwmon path
-  tests/functional/aspeed: Update test ASPEED SDK v09.05
-  tests/functional/aspeed: Add test case for AST2700 A1
-  docs/specs: Add aspeed-intc
-
- docs/specs/aspeed-intc.rst              | 136 +++++
- docs/specs/index.rst                    |   1 +
- include/hw/arm/aspeed_soc.h             |   3 +-
- include/hw/intc/aspeed_intc.h           |  36 +-
- include/hw/misc/aspeed_scu.h            |   2 +
- hw/arm/aspeed.c                         |  33 +-
- hw/arm/aspeed_ast27x0.c                 | 329 ++++++++----
- hw/intc/aspeed_intc.c                   | 667 ++++++++++++++++++------
- hw/misc/aspeed_scu.c                    |   2 +
- hw/intc/trace-events                    |  25 +-
- tests/functional/test_aarch64_aspeed.py |  47 +-
- 11 files changed, 978 insertions(+), 303 deletions(-)
- create mode 100644 docs/specs/aspeed-intc.rst
-
+     uint32_t num_lines;
+     uint32_t num_ints;
++    uint64_t mem_size;
+ };
+ 
+ #endif /* ASPEED_INTC_H */
+diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
+index 126b711b94..033b574c1e 100644
+--- a/hw/intc/aspeed_intc.c
++++ b/hw/intc/aspeed_intc.c
+@@ -302,10 +302,16 @@ static void aspeed_intc_realize(DeviceState *dev, Error **errp)
+     AspeedINTCClass *aic = ASPEED_INTC_GET_CLASS(s);
+     int i;
+ 
++    memory_region_init(&s->iomem_container, OBJECT(s),
++            TYPE_ASPEED_INTC ".container", aic->mem_size);
++
++    sysbus_init_mmio(sbd, &s->iomem_container);
++
+     memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_intc_ops, s,
+                           TYPE_ASPEED_INTC ".regs", ASPEED_INTC_NR_REGS << 2);
+ 
+-    sysbus_init_mmio(sbd, &s->iomem);
++    memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
++
+     qdev_init_gpio_in(dev, aspeed_intc_set_irq, aic->num_ints);
+ 
+     for (i = 0; i < aic->num_ints; i++) {
+@@ -344,6 +350,7 @@ static void aspeed_2700_intc_class_init(ObjectClass *klass, void *data)
+     dc->desc = "ASPEED 2700 INTC Controller";
+     aic->num_lines = 32;
+     aic->num_ints = 9;
++    aic->mem_size = 0x4000;
+ }
+ 
+ static const TypeInfo aspeed_2700_intc_info = {
 -- 
 2.43.0
 
