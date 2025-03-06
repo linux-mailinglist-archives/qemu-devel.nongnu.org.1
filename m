@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699BEA54FFF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B69DDA55009
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 17:03:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqDVr-0004yC-IY; Thu, 06 Mar 2025 10:51:55 -0500
+	id 1tqDVu-00051n-SZ; Thu, 06 Mar 2025 10:51:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUS-0003l8-RM
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:29 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUX-00043p-CH
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:35 -0500
 Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUR-0006hM-48
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:28 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqDUV-0006ho-0I
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 10:50:32 -0500
 Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43bd45e4d91so5733365e9.1
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:50:26 -0800 (PST)
+ 5b1f17b1804b1-43bbb440520so9749635e9.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 07:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741276225; x=1741881025; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741276229; x=1741881029; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BUX6zYPG6f15eLnBlXMyTHI0pnIpQboe8CXPknmBs/s=;
- b=kEjyKDT0Gveyo07K/bZRAQT/bkUGGaBcr4QQf/eZUwKXxSc18Oa7mym4NEYmaXO4gC
- VgrsXM3ZN9Uknao0un39SL/KsAxppIi2EeH3Iafx+txyg0ohcxqxnmTcLCUr35gLwyWe
- ZQcHLXyHQIod3BzNfhg8eZT9Gj9bN26D9/Fa2VeO/Pmuvmn0uYl4j9uxNkhkHtzck5N8
- EuQfjVzf/t4vvdWFExpD8+Ew/9irbH/cJrMdFCS8Cjw4Hd6WWL74D7wiOLDuftranNMe
- 48W858yeKjV00TgrDq/sdA+UjUAbqZeO5UvQKHfKuz+wMz6OD4ckkfz0adaDPMVeE2Us
- uG5g==
+ :reply-to; bh=1WCMtYnB/Q/FPr4quB+y9Nf8Ulz7xJ98JX+NEB2sY0o=;
+ b=XmbW7AgOzkAEZz5a1fjCsUf6f+nF4FESBHMI09NRgiFLeOB2S0c93EIMcTtXbsexPg
+ f50qJDADyIPlMNDvLBO6xA+c59axKIR5MPreS+sRZ+Gr6qjbPa4U1k1P0Wo4oG3mM+Rx
+ xC3uAfoVlcvVxIxJ5pv/fMMhUsPFTkeH5Kbh/45EjhAXZa+t5KPKOnHM2jWJLgJNpJz6
+ lL4KhBnZaPEerO8sg3IFmiYrAmEs1d/7BPyBOAuZSNHMccTRiyXG5TIwY/zxJuPaFddP
+ 3vCA/B/8eH4rpl7by7PRBy52NxFtZH7f+cyC1PRdU9Z5NKKHRTuXHeKd/1hIA8/kaLXp
+ Ss7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741276225; x=1741881025;
+ d=1e100.net; s=20230601; t=1741276229; x=1741881029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BUX6zYPG6f15eLnBlXMyTHI0pnIpQboe8CXPknmBs/s=;
- b=J1XIRYRfMs5jUsZDpUGYs27doYYdbrARJOHnMNT3m7vvwNVEdQkyNyzLyssNko9ezk
- /AeLC/qDQ41inrTu+yr23du6xd2WpCRM1ClXmZZPXXCfXAr/YL0oQw/vIpDvdz8LmRbw
- Hqt8aQOtmeIZYVtvh5R/V6HNUGoDXeKOvLqnzA1YEZZ3zsqIYmCUxBPXIvGcvwusfi99
- joHc0rwlVWLF0TfS32aQ0cLxviQ0jMVSb9Zwzb4muBO+6eae5asvSw8247EFIPm2lsJz
- SZhwBy21DNUUwEuuTfING4ymtMs/JgFYA4wXBHPrLcvQxibg8AEKu3MLqQLXcVRcYTSi
- HYKw==
-X-Gm-Message-State: AOJu0YzTnSikMWGGjTOQu5flftyZzPrbGroqKmXB8rUtF4MgwXzqFztO
- HH2nl0s+n4DKKR2DlTWH+obtJ1Uk7Z2v5Xrw5J75x1U5MhgUZfrhMBFTlK+yWYslgbNB7AiFhd5
- 11vI=
-X-Gm-Gg: ASbGncsX+o5kGBDI44vXLnAkEo2e102RIaTbXkx9IVmdfQQ7ZmxfbcEtbWgE5VVzzDi
- 6oz59+ifNtEFvkBM1lyHnWCQwNrsWfRYuVi7gApM8tUEe0G1wC8Tc3Grv3tF6kWM/ldpFhHPy8J
- y9BAdxQ4kLmVJJI0rXmDHfCGfVAW3u84Gwi+pRA6etaeGxb3h9Q94hvtPIxwKGQ17jRSZo+TF49
- iQYP1dN0FW8LAAJkKWPF7QWADm/sSWHzbX55oSO5IJhe+hR3bE+PMbZpjZDMZcntfO5vH8MlHoh
- qHXAu2WXv2hM+OdHwsC8P2IMW4RSUx/smepc58pKY7FNdLqdNPmduT+vh+Yv5yjB+aDoP5QspCX
- n+x1mXwWKZvg2Y2QqnO4=
-X-Google-Smtp-Source: AGHT+IEvkLEVWVnVJ0+3wlCN6PfwpqRiojj1/29nXQzQ8XxLkgdpXjS9Od/6r4SMeYYz9exmhAUSeA==
-X-Received: by 2002:a05:600c:4997:b0:43b:c824:97fa with SMTP id
- 5b1f17b1804b1-43bdb3e12f3mr31592375e9.14.1741276224782; 
- Thu, 06 Mar 2025 07:50:24 -0800 (PST)
+ bh=1WCMtYnB/Q/FPr4quB+y9Nf8Ulz7xJ98JX+NEB2sY0o=;
+ b=UO6+jsP7dvZ5Zm282rFoM2NwCHzClCSf7fROiFxj0+oZ4qUoPmKEcOGtK/sPQyi1Ds
+ O+S6QsDs4W7SpnuDNXIqZw6/Wvj9fb4BRnuFShBp13FlRe41pKe10yZvq5k7JO45zzjR
+ kv4Q53yvP+f3yE48X4R6mMfKJfl8hI9+7aLABOApfaldidg7NnKx83St8QhTw8Btp64n
+ DaLFrHDBFJ9A/caMInedKrXLF1xNgMITdWJqNcemw6mCyaTzdpOJTWWQ43Y/kTEmAxCh
+ k5sB42riU3D9mT8to8xM20cGS0zF8RNyep8Vm28dF4gD+8JL7iT03ykQQitPZdkmCTJv
+ tPxw==
+X-Gm-Message-State: AOJu0Yx8YgJib0yp0ZhzX5Q15pOXErR3zIDhcoMrM8XEBtgSyk8ZpBQC
+ +gxpOan8DcsshTMpEbyubfmF2wtzqi3dBL5A/Ij6W6JguuK+KjecLy8dhD/Fs5Rijvx6M32rfpS
+ zlbI=
+X-Gm-Gg: ASbGncsbrT/oNjXxpjrV4hVsYEjlHBSLUl5BF2Gwl3jrAJf6vEfXcEnwx5QfIlGgpOW
+ vMlLeqww0tDJ2XzBZ+CsLzNo7u8NoMG+5Ngpms+E4Qz3lOxKTBacZxahPLv2cdx/s8qvVZWh2eu
+ il/lCSASWPqRY94gQsG/8Np/EqGm3RyrDrlPnG/5HXdOpA4M803Gs8GSlBNYL3SuZHu3ejvkxq9
+ A3cb46lAp/ew5CLhfeicn5vNCasBTCGHac56XUJQDcGWE15Jo4TJY6uufGO0Na7OLQ5GkP+6GPQ
+ 1UQJHyB2/QfNfVcqI/ZlRojdE5WZplrkoB7Xw2yvMQvl0wj6pqHS5IrxLrScnYHl8aS32PmWci8
+ Rf22KxPDzarzSFwmJ/P0=
+X-Google-Smtp-Source: AGHT+IGkDbcVHf3B9eL8q6jL42T2q+4DkUCpBOGSOBuP2C8/ANLvBmK75fbj3N4OUQ/rHXD6mT1qOw==
+X-Received: by 2002:a05:6000:18a6:b0:390:f0f3:138a with SMTP id
+ ffacd0b85a97d-3911f757382mr8911760f8f.27.1741276229176; 
+ Thu, 06 Mar 2025 07:50:29 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd435c88esm52884005e9.36.2025.03.06.07.50.24
+ 5b1f17b1804b1-43bd4292b06sm53471455e9.14.2025.03.06.07.50.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Mar 2025 07:50:24 -0800 (PST)
+ Thu, 06 Mar 2025 07:50:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 37/54] target: Set disassemble_info::endian value for
- big-endian targets
-Date: Thu,  6 Mar 2025 16:47:19 +0100
-Message-ID: <20250306154737.70886-38-philmd@linaro.org>
+Subject: [PULL 38/54] target/arm: Set disassemble_info::endian value in
+ disas_set_info()
+Date: Thu,  6 Mar 2025 16:47:20 +0100
+Message-ID: <20250306154737.70886-39-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250306154737.70886-1-philmd@linaro.org>
 References: <20250306154737.70886-1-philmd@linaro.org>
@@ -98,80 +98,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Have the CPUClass::disas_set_info() callback set the
-disassemble_info::endian field for big-endian targets.
+disassemble_info::endian field.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250210212931.62401-3-philmd@linaro.org>
+Message-Id: <20250210212931.62401-4-philmd@linaro.org>
 ---
- target/hppa/cpu.c     | 1 +
- target/m68k/cpu.c     | 1 +
- target/openrisc/cpu.c | 1 +
- target/s390x/cpu.c    | 1 +
- target/sparc/cpu.c    | 1 +
- 5 files changed, 5 insertions(+)
+ target/arm/cpu.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 4bb5cff624e..d15f8c9c217 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -150,6 +150,7 @@ static int hppa_cpu_mmu_index(CPUState *cs, bool ifetch)
- static void hppa_cpu_disas_set_info(CPUState *cs, disassemble_info *info)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index ac1ceec2110..948defa3f5d 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1171,7 +1171,7 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
  {
-     info->mach = bfd_mach_hppa20;
-+    info->endian = BFD_ENDIAN_BIG;
-     info->print_insn = print_insn_hppa;
- }
+     ARMCPU *ac = ARM_CPU(cpu);
+     CPUARMState *env = &ac->env;
+-    bool sctlr_b;
++    bool sctlr_b = arm_sctlr_b(env);
  
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index eedda07c2ab..df8b9c53fca 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -157,6 +157,7 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
- static void m68k_cpu_disas_set_info(CPUState *s, disassemble_info *info)
- {
-     info->print_insn = print_insn_m68k;
-+    info->endian = BFD_ENDIAN_BIG;
-     info->mach = 0;
- }
+     if (is_a64(env)) {
+         info->cap_arch = CS_ARCH_ARM64;
+@@ -1198,13 +1198,9 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
+         info->cap_mode = cap_mode;
+     }
  
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index 785b065b513..e8c357ae836 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -83,6 +83,7 @@ static int openrisc_cpu_mmu_index(CPUState *cs, bool ifetch)
- 
- static void openrisc_disas_set_info(CPUState *cpu, disassemble_info *info)
- {
-+    info->endian = BFD_ENDIAN_BIG;
-     info->print_insn = print_insn_or1k;
- }
- 
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 3bea014f9ee..972d265478d 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -243,6 +243,7 @@ static void s390_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
- {
-     info->mach = bfd_mach_s390_64;
-     info->cap_arch = CS_ARCH_SYSZ;
-+    info->endian = BFD_ENDIAN_BIG;
-     info->cap_insn_unit = 2;
-     info->cap_insn_split = 6;
- }
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index e3b46137178..9fd222e4c82 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -106,6 +106,7 @@ static bool sparc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
- static void cpu_sparc_disas_set_info(CPUState *cpu, disassemble_info *info)
- {
-     info->print_insn = print_insn_sparc;
-+    info->endian = BFD_ENDIAN_BIG;
- #ifdef TARGET_SPARC64
-     info->mach = bfd_mach_sparc_v9b;
- #endif
+-    sctlr_b = arm_sctlr_b(env);
++    info->endian = BFD_ENDIAN_LITTLE;
+     if (bswap_code(sctlr_b)) {
+-#if TARGET_BIG_ENDIAN
+-        info->endian = BFD_ENDIAN_LITTLE;
+-#else
+-        info->endian = BFD_ENDIAN_BIG;
+-#endif
++        info->endian = TARGET_BIG_ENDIAN ? BFD_ENDIAN_LITTLE : BFD_ENDIAN_BIG;
+     }
+     info->flags &= ~INSN_ARM_BE32;
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.47.1
 
