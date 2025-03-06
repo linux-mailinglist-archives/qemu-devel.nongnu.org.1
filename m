@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314F5A54674
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 10:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D5FA54685
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 10:38:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tq7eJ-0008Sk-Rc; Thu, 06 Mar 2025 04:36:15 -0500
+	id 1tq7eN-0008Sz-SX; Thu, 06 Mar 2025 04:36:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eG-0008S2-EX
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:12 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eJ-0008Sm-6b
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eE-0002A0-5t
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:11 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tq7eD-00029t-PO
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 04:36:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741253768;
+ s=mimecast20190719; t=1741253767;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EgcuTHvlXcfEotO4OUFKwqzMuaFqBKh1DlQUqPo7CsI=;
- b=fIN03+hHUI+JKyahKhInuPTLH5F1jQCoumC20U06CVbtu0YAeGglRGHIcwHtu5aPBosZmn
- VDxwa7im8XgT0+uwnnaDJt2z4VBm6oJAN1CB8Y0tQYiSWDTONFDMuRnG9ibFjaAiVXVyDb
- 1R3UUpJ6vnX2OU4aEEhugxDv4CYnei8=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aCgtCBEIBzfaCfc0MDh/ed0kDPXmUteLh0jpenL3vJY=;
+ b=WnPMfKXsi7mwCftevyeqt0K51CVizVNYH3Idld9XbXHYmECZYMfOh9v9K/3+9qsRkW2e2j
+ Zt571m/tddbKU1F1V/RINB6mqQD5LrgPQIkiGZbDbg6eAnCnNleR9COlHttHtImpRRrpzA
+ xYAGkOTAEptY7J+FM/XzP7M9gqDuwVM=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-122-l2mffnA2OMWOJwW_oyzn9Q-1; Thu,
- 06 Mar 2025 04:36:06 -0500
-X-MC-Unique: l2mffnA2OMWOJwW_oyzn9Q-1
-X-Mimecast-MFC-AGG-ID: l2mffnA2OMWOJwW_oyzn9Q_1741253765
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-410-27veApwjOM6N_HB3mcXxQA-1; Thu,
+ 06 Mar 2025 04:36:05 -0500
+X-MC-Unique: 27veApwjOM6N_HB3mcXxQA-1
+X-Mimecast-MFC-AGG-ID: 27veApwjOM6N_HB3mcXxQA_1741253765
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99FB81800349
- for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:05 +0000 (UTC)
+ id B4B821800266
+ for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:04 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.15])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 502421955DCE
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 694CE1801747
  for <qemu-devel@nongnu.org>; Thu,  6 Mar 2025 09:36:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B2B7F21E675F; Thu, 06 Mar 2025 10:36:01 +0100 (CET)
+ id B4AD521E66C3; Thu, 06 Mar 2025 10:36:01 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 00/10] QAPI patches patches for 2025-03-06
-Date: Thu,  6 Mar 2025 10:35:51 +0100
-Message-ID: <20250306093601.2264772-1-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 01/10] docs/about/build-platforms: Correct minimum supported
+ Python version
+Date: Thu,  6 Mar 2025 10:35:52 +0100
+Message-ID: <20250306093601.2264772-2-armbru@redhat.com>
+In-Reply-To: <20250306093601.2264772-1-armbru@redhat.com>
+References: <20250306093601.2264772-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,59 +86,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e8a01102936286e012ed0f00bd7f3b7474d415c9:
+Fixes: ca056f4499c2 (Python: Drop support for Python 3.7)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250227080757.3978333-2-armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ docs/about/build-platforms.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2025-03-05 21:58:23 +0800)
-
-are available in the Git repository at:
-
-  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-03-06
-
-for you to fetch changes up to 71ba2613ad470b6397868ae7333cd255e467be68:
-
-  docs/devel/qapi-code-gen: Discourage use of 'prefix' (2025-03-06 10:33:05 +0100)
-
-----------------------------------------------------------------
-QAPI patches patches for 2025-03-06
-
-----------------------------------------------------------------
-Markus Armbruster (10):
-      docs/about/build-platforms: Correct minimum supported Python version
-      qapi: Eliminate OrderedDict
-      qapi/introspect: Use @dataclass to simplify
-      qdev: Delete unused qdev_prop_enum
-      qdev: Change qdev_prop_pci_devfn member @name from "int32" to "str"
-      qdev: Rename PropertyInfo member @name to @type
-      qdev: Change values of PropertyInfo member @type to be QAPI types
-      qdev: Improve PropertyInfo member @description for enum properties
-      qdev: Improve a few more PropertyInfo @description members
-      docs/devel/qapi-code-gen: Discourage use of 'prefix'
-
- docs/about/build-platforms.rst   |  2 +-
- docs/devel/qapi-code-gen.rst     |  3 +-
- include/hw/qdev-properties.h     |  3 +-
- backends/tpm/tpm_util.c          |  2 +-
- hw/block/xen-block.c             |  4 +-
- hw/core/qdev-properties-system.c | 80 +++++++++++++++++++---------------------
- hw/core/qdev-properties.c        | 44 ++++++++++------------
- hw/misc/xlnx-versal-trng.c       |  2 +-
- hw/nvme/nguid.c                  |  2 +-
- hw/nvram/xlnx-bbram.c            |  2 +-
- hw/nvram/xlnx-efuse.c            |  2 +-
- hw/pci/pci.c                     |  2 +-
- hw/s390x/ccw-device.c            |  6 +--
- hw/s390x/css.c                   |  4 +-
- hw/s390x/s390-pci-bus.c          |  3 +-
- hw/vfio/pci-quirks.c             |  2 +-
- target/riscv/cpu.c               | 44 +++++++++++++++-------
- target/sparc/cpu.c               |  3 +-
- hw/display/apple-gfx.m           |  2 +-
- scripts/qapi/introspect.py       | 12 +++---
- scripts/qapi/parser.py           |  5 +--
- scripts/qapi/schema.py           | 11 +++---
- tests/qapi-schema/test-qapi.py   | 11 +-----
- 23 files changed, 123 insertions(+), 128 deletions(-)
-
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 482b09819c..1552b1a704 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -101,7 +101,7 @@ Python runtime
+   option of the ``configure`` script to point QEMU to a supported
+   version of the Python runtime.
+ 
+-  As of QEMU |version|, the minimum supported version of Python is 3.7.
++  As of QEMU |version|, the minimum supported version of Python is 3.8.
+ 
+ Python build dependencies
+   Some of QEMU's build dependencies are written in Python.  Usually these
 -- 
 2.48.1
 
