@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676F8A5615B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 08:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06618A561CB
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 08:29:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqRhF-0000Ym-No; Fri, 07 Mar 2025 02:00:37 -0500
+	id 1tqS7j-0002wi-4L; Fri, 07 Mar 2025 02:27:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tqRgd-0000U0-PE
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 02:00:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tqS7f-0002wN-5a
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 02:27:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tqRgc-00012g-7A
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 01:59:59 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tqS7d-0002Br-E8
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 02:27:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741330796;
+ s=mimecast20190719; t=1741332471;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YNFZqopnojGpZWlRMCrrvlTlBRW7WQ7D1D85arhJb+4=;
- b=WgPWNf215FuDPYImiveOUEoF0P/kaJ1zBJ1wDBLueKbt+NuCcIqZsxYH9ycNeLCfknmODO
- y+XEUHaqqO/b/jsojnOqx+UciF4ZY36jOE4mRvnqkfFyTuZxQKMz1nvUzjUvHKIUcOj6oM
- tGypgHqQQp8dlOG6SalAx8umGq/eZTo=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=R9IukfbzAvGZFZsNiO8OdJRISK3AikXymEbMouc2hZs=;
+ b=SI0t9Dg8EYTceHFA3bjB+Eo0T58ZitmnquID0tDeJP5EneHZCcadCqWy2hovqxp31Gq4qa
+ SUeqwdsURtGapXYPfwLM1rApgTIHUDlPYmlclKM1fjRY5FIhTiR5gODyjkSj9IJzsFEkOr
+ N/XKDcBfJuPqpSbAsMY68Tmh8iyfD14=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-pnsGgYQ7NsORaIFmkGCQlw-1; Fri,
- 07 Mar 2025 01:59:50 -0500
-X-MC-Unique: pnsGgYQ7NsORaIFmkGCQlw-1
-X-Mimecast-MFC-AGG-ID: pnsGgYQ7NsORaIFmkGCQlw_1741330789
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-573-f3aPkZUaOWewr2rRtXWPYQ-1; Fri,
+ 07 Mar 2025 02:27:45 -0500
+X-MC-Unique: f3aPkZUaOWewr2rRtXWPYQ-1
+X-Mimecast-MFC-AGG-ID: f3aPkZUaOWewr2rRtXWPYQ_1741332464
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52F1A19560B0; Fri,  7 Mar 2025 06:59:49 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.15])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8C011801748; Fri,  7 Mar 2025 06:59:48 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 41C0E21E675E; Fri, 07 Mar 2025 07:59:46 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Philippe =?utf-8?Q?Mat?=
- =?utf-8?Q?hieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peter Maydell <peter.maydell@linaro.org>,  Thomas
- Huth <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH 12/57] docs/qapi-domain: add :since: directive option
-In-Reply-To: <20250305034610.960147-13-jsnow@redhat.com> (John Snow's message
- of "Tue, 4 Mar 2025 22:45:21 -0500")
-References: <20250305034610.960147-1-jsnow@redhat.com>
- <20250305034610.960147-13-jsnow@redhat.com>
-Date: Fri, 07 Mar 2025 07:59:46 +0100
-Message-ID: <878qphs4v1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ id 5F1DE19560B7
+ for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 07:27:44 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.2])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5C3261955DCE; Fri,  7 Mar 2025 07:27:42 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [qemu-web PATCH] Announce Google Summer of Code 2025
+Date: Thu,  6 Mar 2025 20:46:39 +0800
+Message-ID: <20250306124639.346864-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,94 +81,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Let people know that QEMU is participating in Google Summer of Code so
+that they can apply for an internship this summer.
 
-> Add a little special markup for registering "Since:" information. Adding
-> it as an option instead of generic content lets us hoist the information
-> into the Signature bar, optionally put it in the index, etc.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  docs/sphinx/qapi_domain.py | 29 +++++++++++++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-> index 6168c23936f..9919dacd4e6 100644
-> --- a/docs/sphinx/qapi_domain.py
-> +++ b/docs/sphinx/qapi_domain.py
-> @@ -4,6 +4,7 @@
->  
->  from __future__ import annotations
->  
-> +import re
->  from typing import (
->      TYPE_CHECKING,
->      AbstractSet,
-> @@ -104,6 +105,18 @@ def process_link(
->          return title, target
->  
->  
-> +def since_validator(param: str) -> str:
-> +    """
-> +    Validate the `:since: X.Y` option field.
-> +    """
-> +    match = re.match(r"[0-9]+\.[0-9]+", param)
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ _posts/2025-03-06-gsoc-2025.md | 40 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 _posts/2025-03-06-gsoc-2025.md
 
-This accepts arbitrary crap after the version.  Example:
-"9.2.50v9.2.0-2253-ge8a0110293" is fine.  Intentional?
-
-> +    if not match:
-> +        raise ValueError(
-> +            f":since: requires a version number in X.Y format; not {param!r}"
-> +        )
-> +    return param
-
-Schema validation is the frontend's job.  Ideally, a backend doesn't
-report any errors.  The backends generating C don't.  A backend
-generating docs has to: all the reST processing happens there, and
-therefore reST errors can only be diagnosed there.  Since "no errors"
-purity is impossible for this backend, we can be pragmatic about sinning
-a bit more.
-
-Still, I think this one should rather go into the doc comment parser.
-
-This is not a demand.  We can always clean it up later.
-
-> +
-> +
->  # Alias for the return of handle_signature(), which is used in several places.
->  # (In the Python domain, this is Tuple[str, str] instead.)
->  Signature = str
-> @@ -124,6 +137,8 @@ class QAPIObject(ObjectDescription[Signature]):
->          {
->              # Borrowed from the Python domain:
->              "module": directives.unchanged,  # Override contextual module name
-> +            # These are QAPI originals:
-> +            "since": since_validator,
->          }
->      )
->  
-> @@ -135,9 +150,19 @@ def get_signature_prefix(self) -> List[nodes.Node]:
->              SpaceNode(" "),
->          ]
->  
-> -    def get_signature_suffix(self) -> list[nodes.Node]:
-> +    def get_signature_suffix(self) -> List[nodes.Node]:
->          """Returns a suffix to put after the object name in the signature."""
-> -        return []
-> +        ret: List[nodes.Node] = []
-> +
-> +        if "since" in self.options:
-> +            ret += [
-> +                SpaceNode(" "),
-> +                addnodes.desc_sig_element(
-> +                    "", f"(Since: {self.options['since']})"
-> +                ),
-> +            ]
-> +
-> +        return ret
->  
->      def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
->          """
+diff --git a/_posts/2025-03-06-gsoc-2025.md b/_posts/2025-03-06-gsoc-2025.md
+new file mode 100644
+index 0000000..5c7352f
+--- /dev/null
++++ b/_posts/2025-03-06-gsoc-2025.md
+@@ -0,0 +1,40 @@
++---
++layout: post
++title:  "Announcing QEMU Google Summer of Code 2025 internships"
++date:   2025-03-06 07:00:00 +0000
++categories: [internships, gsoc]
++---
++QEMU is participating in [Google Summer of
++Code](https://summerofcode.withgoogle.com/) again this year! Google Summer of Code
++is an open source internship program that offers paid remote work
++opportunities for contributing to open source. Internships run May through
++August, so if you have time and want to experience open source development,
++read on to find out how you can apply.
++
++Each intern is paired with one or more mentors, experienced QEMU contributors
++who support them during the internship. Code developed by the intern is
++submitted through the same open source development process that all QEMU
++contributions follow. This gives interns experience with contributing to open
++source software. Some interns then choose to pursue a career in open source
++software after completing their internship.
++
++## Find out if you are eligible
++Information on who can apply for Google Summer of Code is
++[here](https://developers.google.com/open-source/gsoc/faq#what_are_the_eligibility_requirements_for_participation).
++
++## Select a project idea
++Look through the the [list of QEMU project
++ideas](https://wiki.qemu.org/Google_Summer_of_Code_2025) and see if there is
++something you are interested in working on. Once you have found a project idea
++you want to apply for, email the mentor for that project idea to ask any
++questions you may have and discuss the idea further.
++
++## Submit your application
++You can [apply for Google Summer of Code](https://summerofcode.withgoogle.com/)
++from March 24th to April 8th.
++
++Good luck with your applications!
++
++If you have questions about applying for QEMU GSoC, please email
++[Stefan Hajnoczi](mailto:stefanha@gmail.com) or ask on the [#qemu-gsoc IRC
++channel](https://webchat.oftc.net/?channels=qemu-gsoc).
+-- 
+2.48.1
 
 
