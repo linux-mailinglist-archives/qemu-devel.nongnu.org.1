@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64C3A5596A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 23:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77297A55968
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 23:10:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqJPM-0000h6-0Q; Thu, 06 Mar 2025 17:09:36 -0500
+	id 1tqJPb-0000iP-V5; Thu, 06 Mar 2025 17:09:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqJPK-0000gx-Nt
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:09:34 -0500
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1tqJPY-0000iH-P3
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:09:48 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqJPJ-0005PW-4g
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:09:34 -0500
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2ff4a4f901fso1893602a91.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 14:09:32 -0800 (PST)
+ id 1tqJPX-0005QU-0c
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 17:09:48 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-223cc017ef5so24434325ad.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 14:09:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741298971; x=1741903771; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741298985; x=1741903785; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cP2wjtrpOqZKtnXqRlV1nduIN9lXjZAAE6SeyIRV+ZY=;
- b=B9ME5/ynozfxHcxmRjKvoetOBOxtugX65DjGFBjKMbxclHov9qfmsEpLOhYx/1PhDu
- 8/BTrmk3thZG2YeXKIGtH8UypihEFa0SWKahVV6C6rtCgQ6JpppM0OeKCmPrqvHiM5uE
- F3cAoLi3H3bZ9a1kwbNoraXTZsw41qwCrcEm1JY7v6qt1UdS6jaLi6XUNxQvZhx9d4lE
- 8FpURm3+OL1+GBCV1ZygtxgNP41exoR49K8FOyB/33JE20gWoSQE/ID2kPNt/AN5UfpZ
- efbgjiCnojTkkASG/nneD2rw54DJghbUQFGxRBIgVPwi7n3h33GGL6DFhnmmDltLDuJ7
- V23A==
+ bh=197N/sLLhaFlD6ueIYkgzFwKq+QiA+TqVrks6EWNrp4=;
+ b=lA8KeFTLx4NzXaYd+1Bsh7QsvRSJrsHvHxdruC3R4/IXCZtEFICTK9qp3HBiCiQWFg
+ VJkMS5L8jOlqHXZHl8lgvW/SsGm7/83c/zTuT/6lAIZiqY3k5RSmJddL/5jRpaVKwXBS
+ 7KhN6VbydH0P1P1dJx9norvJjQUMXZajI+GOC2/UGZyHA9zxKGWGNGS7/xAYWpKq2AN/
+ Y0Otgzo62pbndrHlCjX10OITKMaDFybjB0uJ3ekVVXyfbCGjgh5XC65C0NLtRpyo/EtG
+ FIaK2DajqDehnWaSifMbuVkR2zf6JLHB9DNYtm62AFkXQLAZLnHTVGWoXpaz4hPkYr1p
+ DE0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741298971; x=1741903771;
+ d=1e100.net; s=20230601; t=1741298985; x=1741903785;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cP2wjtrpOqZKtnXqRlV1nduIN9lXjZAAE6SeyIRV+ZY=;
- b=pz/55LnU5Bl7IJOd5087ZDrd1opnutPHAjqTcQ796vfpZQgxQf/SiGJwHltBzPlzAZ
- 6yLe3TyiBKoKRcm5iNSBo1NWLx0bURJSLL47Ko4WPfTgP8OsSuoMhwMeqqbk2dQj+QJ1
- slV5K2MKbBTfadCOnJxnJsl77qgBqfBxwGy6PkKraIAcuGsUqcUfBvoW/AOa0WJGDG/l
- 4hwJEBMY1njuZ+hHJuZLSWpC4VQCT4XJJyQCF+yFHWADorL4kMPYrPG15cK95IbYzblq
- WYxdbcof2L9vZzKHRJziY1xnCZLWud56xyEff7R3b71M97VUjsur89VNH3Z2DkCdbrgV
- kk5A==
-X-Gm-Message-State: AOJu0Yx2cQfo9c+5pqY/ijsDwMjG6kQqYVAEQxJYKwIYggOi69V11jMy
- Ybzioa8jFWyoBGZWL50XcquZIIANSOhAyh+1b/TU97FxsYxYc+v8jVzFql7PLdvitWjGXUHK5fL
- k
-X-Gm-Gg: ASbGnctpnH6WvHGDe/v8oHsbSNeBPGMW4Cp6h7M9JIws3E1JsOjl9nZtrziy+uR/Ou3
- A2BxPkW/TbXGIAjk4lvzvyebxLcThobnwfeDwG2N9qY8S5nPZzCBC2jTb+rnaXDIUgwLFif6Qaz
- x9GCjoMAIwBFZr39tl05N9X5YwSjKVUL0qXj5QIom84ulH9hxSTPjiZFnYu85ifmXRGYeGhvkmL
- LBbelbQ5A2ScKbgp04bkd0yvLmJyKiCjj9Ao8mDM2fcM5e6Io6d5HSh+7Q9Y1X3UgIn1TlrxXrn
- bpawptYCYieeM3vDOXIL1IgFbml5MkIQq6HPmQ7C+UJ6NAy8Axs01vCqHRllt5/dHuhfBRD4n8f
- JMp8TD51Q
-X-Google-Smtp-Source: AGHT+IGPJNJMWoMaoUrTC3ptajRLRJN9VkKccn+q32hv6tc5L5bSWmdWGZE62FHJtKlASxN/9LIv8Q==
-X-Received: by 2002:a17:90a:ec87:b0:2f5:88bb:118 with SMTP id
- 98e67ed59e1d1-2ff7cef6771mr1234553a91.22.1741298971349; 
- Thu, 06 Mar 2025 14:09:31 -0800 (PST)
+ bh=197N/sLLhaFlD6ueIYkgzFwKq+QiA+TqVrks6EWNrp4=;
+ b=pSXVT7NQq2B0OtNT1JNHPtO78/lg9CjXYEI3skCtrSxYpqJe8tzlE+NELPXPNegnj4
+ KqO7ELz8zHKGYO5lmmfUhaRybP30ndH9tQNaK5593ClNKpMemY6qmUvtm+6Xf8ohgCO8
+ RpBvPCxrXwfr4huwhec8q7sYhCR1K1yy+fW1FxBHPS/D8T9/xxOuG2QyTuIhOdB7E0jR
+ E0BIqzMZAdAyWe86QKTjCEDsNFCmhANTkcVmBSB2QtsZRGFyOiuis3wW69AN/DSz9XJE
+ d/eRhcOQmGWAZWe/G4nZ6AAW112EfZXDla2VPC0UH78CfwmuL+6dFU+vxnDL71xWyvdD
+ V5/Q==
+X-Gm-Message-State: AOJu0YygBKzFKUwWIjLG+Le8AwdeymhfeKo6AEOiBUxQWXdHiXt/96ym
+ xGvEmhL+BHi2FSCpmcod5dEzxAv2ypON3PsPhmU6eN/38ibU38Y4ubjCrlI4L9LFTyF9J4kRsPI
+ m
+X-Gm-Gg: ASbGncvBVu7w/ks8uPbom+HzHpHBlBSNiRZ7HQuo0HPWkrtfgMLGR9uuUcAtr4e9oMu
+ oe5oQIMdc/Y6dFtllMU+XiOjW7VXRiizn7QNbv5zMwpwTgC/LHRhjE28YwIXfDe2Gfz0FL+/eRF
+ jjCLnYLnIAcfTIhtQAOGdT/zk1oivqInRkoTg5x5Qr3tocCoG8vpKqI0XTNOrE38MKQMsPIC5BC
+ 0GCuUNn4wu3VV8Nmw6IQl63DKSHh3VR9F3KQwNWfmCXPtLQSQhsdcKm9XckuZh6hWcDs7S3HfK+
+ EQGLjvDExPWvSi1wU0nC6PYz9C7lnwOMSnZLv4HSkLB3spuWoSF2rqjBaB/kajywka7JE3CiYRu
+ 4xNr2Yk4k
+X-Google-Smtp-Source: AGHT+IF/BU7BZZeJ/aErC83E+VUqPGSKTLVBAxMNa2nju7snGHvoIUI1bTWj+qFaJDO4gDULtLQB+g==
+X-Received: by 2002:a17:902:e5d2:b0:223:3b76:4e22 with SMTP id
+ d9443c01a7336-22428886738mr13018785ad.6.1741298984914; 
+ Thu, 06 Mar 2025 14:09:44 -0800 (PST)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff69353383sm1775166a91.14.2025.03.06.14.09.30
+ d9443c01a7336-224109e974fsm17585855ad.78.2025.03.06.14.09.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 14:09:30 -0800 (PST)
-Message-ID: <bbb69106-0829-4606-8057-a3640293efab@linaro.org>
-Date: Thu, 6 Mar 2025 14:09:29 -0800
+ Thu, 06 Mar 2025 14:09:44 -0800 (PST)
+Message-ID: <d886ab14-fbd4-4414-8519-fdb1a718c703@linaro.org>
+Date: Thu, 6 Mar 2025 14:09:43 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/10] target/arm: Un-inline access_secure_reg()
+Subject: Re: [PATCH 03/10] linux-user/aarch64: Remove unused get/put_user
+ macros
 To: qemu-devel@nongnu.org
 References: <20250306163925.2940297-1-peter.maydell@linaro.org>
- <20250306163925.2940297-3-peter.maydell@linaro.org>
+ <20250306163925.2940297-4-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250306163925.2940297-3-peter.maydell@linaro.org>
+In-Reply-To: <20250306163925.2940297-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,26 +103,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/6/25 08:39, Peter Maydell wrote:
-> We would like to move arm_el_is_aa64() to internals.h; however, it is
-> used by access_secure_reg().  Make that function not be inline, so
-> that it can stay in cpu.h.
-> 
-> access_secure_reg() is used only in two places:
->   * in hflags.c
->   * in the user-mode arm emulators, to decide whether to store
->     the TLS value in the secure or non-secure banked field
-> 
-> The second of these is not on a super-hot path that would care about
-> the inlining (and incidentally will always use the NS banked field
-> because our user-mode CPUs never set ARM_FEATURE_EL3); put the
-> definition of access_secure_reg() in hflags.c, near its only use
-> inside target/arm.
+> At the top of linux-user/aarch64/cpu_loop.c we define a set of
+> macros for reading and writing data and code words, but we never
+> use these macros. Delete them.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/cpu.h        | 12 +++---------
->   target/arm/tcg/hflags.c |  9 +++++++++
->   2 files changed, 12 insertions(+), 9 deletions(-)
+>   linux-user/aarch64/cpu_loop.c | 48 -----------------------------------
+>   1 file changed, 48 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
