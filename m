@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3AAA553E6
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 19:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5225AA5540B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Mar 2025 19:06:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqFY1-0003AL-Ux; Thu, 06 Mar 2025 13:02:17 -0500
+	id 1tqFbN-0001Qw-62; Thu, 06 Mar 2025 13:05:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tqFXn-00036Z-IY
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:02:03 -0500
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1tqFb7-0001MP-4v
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:05:29 -0500
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tqFXl-0000DN-OL
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:02:03 -0500
-Received: by mail-pl1-x644.google.com with SMTP id
- d9443c01a7336-22401f4d35aso18439285ad.2
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 10:02:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1tqFb3-0001Kq-TY
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 13:05:28 -0500
+Received: by mail-qt1-x833.google.com with SMTP id
+ d75a77b69052e-4750a85a0ddso9221cf.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 10:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741284120; x=1741888920; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=google.com; s=20230601; t=1741284323; x=1741889123; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+jrFIingrAbF5dij+VV01pN3aIuY/zKM1+KpxvGbRKI=;
- b=BffE7O73YHCSxxL38icGoNCj2UY8CVfCkDJtA6aHAU8UdT6mRBC/Iu7j9g2N2qyjYH
- GccGPcOueWLZWyBKClMTY1GD75BcMDZV63sIqjC80paTXOj/F8ev/s0UqIdE4zaPXcss
- uBsqYlMmtXsb7pVCwgOieZINHdw/+y2VTwSsUhK+BG8y4kdqtiwqHz3nUbLXpHUkIiK7
- yGh9Ko9qvBDYe+rtyr1j2G0a325JX8qaZZ3qgNwmW+rX4PlWzQRdqT7UJe/PAls2c89O
- TTLeve3Ks2DAUty2z1WRVNLPlrtFEWLF3bw99PRv9A4wvb1mw7UGvXZmJDtWmSbu1Ces
- TjSw==
+ bh=h1KmfNYxKGtGgHY0ymgELcudFoIW5QI3uHOLWnlpF6s=;
+ b=1iG1enuw9QFhwOKRYn4gxLJnrAqmZNpD9Nv/gTzhpUXDoxsGS6sv8mkRvJTrP7Zmu3
+ Svrs+gppPtY3j5rJqR/LAqpj816rsg/qstNu1t5b70N07RoDgCr+DOlahQkN3c3hR0i0
+ ZWmxJ9UKFpJiJOdaFS1bWG45PUzlXurj0qE8rHHhgmPQ58O1t7Fls+orInrzIKiAzQnT
+ rw0jlenNAihVpxzYxUGKJYmRRcb7jPfPrw9JoXk//G/7Kfyx9iRVtzm+sfoFqn20D/+F
+ vfAdeltm7ze4YQ84cEz5GlAEEB50Rcrtdnu9BuOtikh4niAbnH8E1x+fBDP5jxSY5wPJ
+ I8PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741284120; x=1741888920;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1741284323; x=1741889123;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+jrFIingrAbF5dij+VV01pN3aIuY/zKM1+KpxvGbRKI=;
- b=IJyLkO6L0Q2uGjfCNkKBjxMFisFVqxSLxw1CvrLTN6qalt7nvm3wh+EDTu7ZPbR9Gj
- HTRXVl/CVXaxh0VFFA8dtNLRVglgHTZjEwue0jnevieai+JBeQfnuBccwZb2p7lzi/kk
- FdJfWqsGNY+pItXc7c/1Tk0DTZENZQOGtjFReS/xI37IDc9UzbL9dIHTdnR1guzub5Uq
- e+vvRRgntYcFoqQi2/aNKEI35FxaCgJT00dBqOXcJQNPKAiCSs8PM5hO8QuROWwWRhit
- VwHhQyt+WvWTxb5C10N6oQV8fN8BPw7eXDQ3Fv7LlNzVcQNjL7rSNH7PTaljyhkxnx5n
- OFlg==
-X-Gm-Message-State: AOJu0YxTnTR5eYk8ubBFvoU3+3MX62Ryr4C5kaaVxzwvUlMUnYZCkJr4
- a4VQw+YYEesQycWwW2ET/F/wl3Hhl4CpbPn6PK17Yxx/D/OPfkQ=
-X-Gm-Gg: ASbGncuZ+n21sw6R/kkGCiQQi52zlyTe/kKqdXmRDoK9zcOR6KEazsfZlk/ttiw/rz0
- V58uEOHtbPy0sSKvdKuqR6r/a8inU6wUD/+K4UeObWe8RhUCZIpeUk0y95xklnqsv7+hHl0oQ2i
- f45SAKITZVVNYladu14V3/fhfdv6d/iYoHDxx5LNcSZYMieE2RgfIxNnMGHjt/Ns9wCBBnhqsHT
- x2TH2laK3WoTcAvqLqDvqBeibYW68zGMHj8aKkHoyITC1TuDX3oMFb2dNTCxLMxOJr7m7WuwZnk
- W73pjy2UcLPv41qz1lZc0IRnREFRStZHjzi4UX90nwvOwTV49il8uChXRA==
-X-Google-Smtp-Source: AGHT+IGM+vtzTBAbn3N/cHyXCI95F0tCreWUJsk8cg2uorxSD5Tj6eRkaJiFjpeTcqP8yizysmsBbg==
-X-Received: by 2002:a17:90b:1b0b:b0:2fa:e9b:33b8 with SMTP id
- 98e67ed59e1d1-2ff7ce989dcmr336874a91.18.1741284119206; 
- Thu, 06 Mar 2025 10:01:59 -0800 (PST)
-Received: from localhost.localdomain ([58.37.175.138])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af28126db9bsm1338498a12.58.2025.03.06.10.01.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Mar 2025 10:01:58 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
- Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v3 10/10] vfio/igd: Fix broken KVMGT OpRegion support
-Date: Fri,  7 Mar 2025 02:01:30 +0800
-Message-ID: <20250306180131.32970-11-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250306180131.32970-1-tomitamoeko@gmail.com>
-References: <20250306180131.32970-1-tomitamoeko@gmail.com>
+ bh=h1KmfNYxKGtGgHY0ymgELcudFoIW5QI3uHOLWnlpF6s=;
+ b=h/lBiS6TdGVWWysHTIGtoav10+2O9+UM3lizUWEgb+1h8ywtlMpT54v185woOGa6d2
+ RMJouQkA0jMkIWt6Ee6eI+QymlhUfyiJTS9ulvacYUoGXJjeaYPnM+zI+Je2Xq/OHyF4
+ YfPFaccC/hO43Fk74UCIuCqKjUiwWGrL5KVu4QHGc0NlJ+XQ+0hX0chfBO5qkJvlsIOd
+ DtJ5aUF8kKAcPxiCxI3xataQj3J9TLjvlh2v8Gt0Ieiq/5R8kybMmcz1R5669weop9Qs
+ EJEkK2Su7+a6XDokc/2qVrwUJOWdVHp/uQno9qd1qfg6oDBWh+1MJ2LzDbK8SAbzQYLu
+ xwNA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXukLOYWz1XNKxmSLbHnJuPMVfru3fG6Ja/BUfv9gENvNEnyAhPqAkdcdGT71XKjjC7UU5gBUQKcWin@nongnu.org
+X-Gm-Message-State: AOJu0YxmTFqOxvSm7e7lgzeeq5PEx5LQwHlfgH9eUT59HY+Gw/oSibGE
+ v9T1/o9wg80XMxBNV1ORqAlUyHvlAGBtvcwccv2Ya5RsOuFT7wYy3CsiYDrHsGCwSsuRKlinKQN
+ RyHmzpTyle7uyNhsukJzInyKEsuLIoepWpRmcM6sgNI21Ng+kILKecaDLQg==
+X-Gm-Gg: ASbGncuGLQJ/T+KGHqO8CHRcFH+BmytfO+6g4GHHMTjNn41OL8G3jniaXyJ6jC2TF+L
+ bBmfTbYJeDXF3KcamBLvzstJxFh1qSV1YMRsgSmW19Xti1Wv3EqGOGesrVMhObmccLpaxKre/Lk
+ G8Ko2IeDQLBzBebuoj9HBSitmwdlnzR2KlWhgA8lMBLtsJPJW+7kFXEj2Q
+X-Google-Smtp-Source: AGHT+IEpy4SMpwB76nHg+z7VDp6WUm74+d6waQr2dvTOPmTwYXiGRL+tCxd8ielTaklGQDYySdNL7wYGs172OcuXoA4=
+X-Received: by 2002:ac8:590f:0:b0:466:975f:b219 with SMTP id
+ d75a77b69052e-4751b01835fmr5128821cf.8.1741284322454; Thu, 06 Mar 2025
+ 10:05:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250306000408.2088020-1-nabihestefan@google.com>
+ <310205a4-15b1-43b1-93ee-d20d47285478@kaod.org>
+In-Reply-To: <310205a4-15b1-43b1-93ee-d20d47285478@kaod.org>
+From: Nabih Estefan <nabihestefan@google.com>
+Date: Thu, 6 Mar 2025 10:05:11 -0800
+X-Gm-Features: AQ5f1JpGZPV9LXpzx4PWq8aUBA-kLwPnlE8xRLaDyU7KkUm0YEK2oncUfEWo56w
+Message-ID: <CA+QoejW15VztgKQ8f2a_ApA=P+eC70Et80pUVcd9rBR=j+cRAw@mail.gmail.com>
+Subject: Re: [v5,1/6] hw/misc/aspeed_scu: Skipping dram_init in u-boot
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: jamin_lin@aspeedtech.com, Peter Maydell <peter.maydell@linaro.org>, 
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
+ envelope-from=nabihestefan@google.com; helo=mail-qt1-x833.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,64 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The KVMGT/GVT-g vGPU also exposes OpRegion. But unlike IGD passthrough,
-it only needs the OpRegion quirk. A previous change moved x-igd-opregion
-handling to config quirk breaks KVMGT functionality as it brings extra
-checks and applied other quirks. Here we check if the device is mdev
-(KVMGT) or not (passthrough), and then applies corresponding quirks.
+Hi C=C3=A9dric,
 
-As before, users must manually specify x-igd-opregion=on to enable it
-on KVMGT devices. In the future, we may check the VID/DID and enable
-OpRegion automatically.
+We have a custom machine and a custom image using the AST27x0 A0. I ran
+some of our internal tests using these patches. They even fixed some of the
+errors we=E2=80=99d been seeing recently!
 
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
----
- hw/vfio/igd.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+I=E2=80=99m also working on testing through the A1 patches, will reply to t=
+hose soon.
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 6775ce2eac..4c5d6a016b 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -481,7 +481,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, bdsm_quirk, next);
- }
- 
--bool vfio_probe_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- {
-     int ret, gen;
-     uint64_t gms_size;
-@@ -655,3 +655,28 @@ error:
-     error_propagate(errp, err);
-     return false;
- }
-+
-+/*
-+ * KVMGT/GVT-g vGPU exposes an emulated OpRegion. So far, users have to specify
-+ * x-igd-opregion=on to enable the access.
-+ * TODO: Check VID/DID and enable opregion access automatically
-+ */
-+static bool vfio_pci_kvmgt_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-+{
-+    if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
-+        !vfio_pci_igd_setup_opregion(vdev, errp)) {
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+bool vfio_probe_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-+{
-+    /* KVMGT/GVT-g vGPU is exposed as mdev */
-+    if (vdev->vbasedev.mdev) {
-+        return vfio_pci_kvmgt_config_quirk(vdev, errp);
-+    }
-+
-+    return vfio_pci_igd_config_quirk(vdev, errp);
-+}
--- 
-2.47.2
+Thanks,
+Nabih
 
+On Thu, Mar 6, 2025 at 12:05=E2=80=AFAM C=C3=A9dric Le Goater <clg@kaod.org=
+> wrote:
+>
+> Nabih,
+>
+> On 3/6/25 01:04, Nabih Estefan wrote:
+> >> Setting BIT6 in VGA0 SCRATCH register will indicate that the ddr trani=
+ng
+> >> is done, therefore skipping the u-boot-spl dram_init() process.
+> >>
+> >> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> >> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+> >> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> >
+> > Tested-by: Nabih Estefan <nabihestefan@google.com>
+> Thanks for the feedback !
+>
+> Can you tell us a bit more about your tests ?
+>
+>
+> C.
+>
+>
 
