@@ -2,108 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05191A57019
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22890A5704F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:18:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqc5t-0007t0-L9; Fri, 07 Mar 2025 13:06:45 -0500
+	id 1tqcEv-0000hD-MI; Fri, 07 Mar 2025 13:16:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc4E-0004p1-Dr
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:05:03 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tqcEq-0000gn-ME
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:16:00 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc4B-0002L4-Gz
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:05:02 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-390eebcc331so1396744f8f.1
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:04:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741370697; x=1741975497; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=agcsT+LijTsdk7Aq19MciJhNx25N7TH6CXZbFxHQbqw=;
- b=YFE/+6V1ldaSLRuPkm2c8ZQBZwfWoeMAe+ziIljR3CxuU+4HzvXmZmu/s40yNEg8WF
- ZCtDCoTkOP0Kp2NoZHEA2t6JOC44RRaOAgKfdGR0LCN0tC+k0Gha0yamYwPGBl3j1Cr9
- 8desrD1zla6jADc82cPZ7KC5DhSis7tTFE0X3pSSEiyzh6bSC/LRZLnzBsx9R/MNhDmz
- /BeEHGnoOs76l8TjRR8pP7toPfI1Xvbfl88ZY/e+LyNLyXaLmIQewcj9Kc5/sLh0W04P
- Ih34e23CcsKn1LEY5gsMAfIRIgKMEkmWUmaPd+hDHZ+iswniEK4lA8GAnMZwivvdejDN
- dUrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741370697; x=1741975497;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=agcsT+LijTsdk7Aq19MciJhNx25N7TH6CXZbFxHQbqw=;
- b=GWAC4IF1Vn7AH62vZq6+bw5S//Jiqg5KZVwtGxx8uktQ5nCKLa11kiCBpSzRn3hGzF
- kYcl7FL5vB9ZSUyVNmV8x/FmzqDAyQbGmwMFMhcmRwjAykWp8LcUuB1/ok3Q1yUYSfoT
- qUHfRTnIcjBz7v05LvtNponRQgoMyo10qGnDN/ZnG6gsAQYBWIhM+cA6ycIZABRitZly
- oYQ/0UzEb0vjrZjExpd7cCpX9VCTQSybnLoartUsX2h2vTDx7I9yJlnHD3lbPOpHuVSE
- mMYUA5io6e4FC2vN2aRtOJ6I+ijYoFEJ583YsgvJNd2Ufig7xSq9dWKO/db23BM/hGZE
- 7Pag==
-X-Gm-Message-State: AOJu0Yzg9WLR5sIsTa3Zaa7rULGmG/4+uJRBANgWvXJQxrg+ESf9IB41
- FSesenHkRZ9Iw2GTIgGbkZKh7olrmBgtHeo4jXfIxhqoBg5hjieDarrxyTa/xfpwCM7zpxzWO6M
- HI3c=
-X-Gm-Gg: ASbGncvde0g3UvYOfPTf0vxr/w58FOZJweN/iLFETgEEg+NesyIYAg/NkJ3UXKf6BmF
- x1aGmPaPjMSZt9yOjF6VleW5eMjPqQizBhIpdNbg+F8oeqdna39wPMR5b2CeDAN29e+2cZR2WrT
- zEqtiHcrHdVW+2Ka/xDnN3VKXDiXFsaLP5RgT/NH6K4jgKT2ane+lo0uTs1NM+7oF04j2H2WzWH
- fgWI1+4fxZ+VL9ATRAcqMPyg9c2wpS/DpofvLsxJGoOO9w9l6VdjJnmNVFKVEnbaOFxkvlF2xac
- OXn/3s1dY89bc7Y2zb9cIaZLHNc+HSRgF/cuooGsiw05HJtnFwhcd1HuvNLeYQM9pnjSkzCyL0d
- EynJnypeZ+djZSvvoLkE=
-X-Google-Smtp-Source: AGHT+IE+YfUTsyezmJk1O/V7rJmU3VYke7MWbvI0vhhGZxFwIjiesECECfkOBaEgpCq1WPQAC5PfkA==
-X-Received: by 2002:a05:6000:1f8f:b0:391:952:c74a with SMTP id
- ffacd0b85a97d-3913aeee2d7mr346949f8f.8.1741370697461; 
- Fri, 07 Mar 2025 10:04:57 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd4352eb1sm86964935e9.31.2025.03.07.10.04.55
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 10:04:57 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tqcEo-00047v-MB
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:16:00 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CDCBB2118C;
+ Fri,  7 Mar 2025 18:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1741371355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=S8E+Idmbou/cWXK9o0//2th7/KbSEL18ohTUT99X5ko=;
+ b=EvLwh5Km/7JewB93KK3TstRqdgVtG5iLMN+KANkp9EDMh6KHPAojiMLNaBYggDzJQkIIHF
+ 3SxVPundM8XyLnEMrd/KOaXB78vDok2W8b+f74Zr37mIYI0sOwBR3oMdyRJWnmD0yURPDN
+ kgsOplvmrWp/0yBz0Iz4WV98Xl4PiJo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1741371355;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=S8E+Idmbou/cWXK9o0//2th7/KbSEL18ohTUT99X5ko=;
+ b=igGN7zFHeQd/WZz72AcYI20GtEhwj/qGOViD2LzFNfRBVTsfzWuQ3yD3hpr93bcPnZFJGC
+ nVB//zmzpjcAbsCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1741371355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=S8E+Idmbou/cWXK9o0//2th7/KbSEL18ohTUT99X5ko=;
+ b=EvLwh5Km/7JewB93KK3TstRqdgVtG5iLMN+KANkp9EDMh6KHPAojiMLNaBYggDzJQkIIHF
+ 3SxVPundM8XyLnEMrd/KOaXB78vDok2W8b+f74Zr37mIYI0sOwBR3oMdyRJWnmD0yURPDN
+ kgsOplvmrWp/0yBz0Iz4WV98Xl4PiJo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1741371355;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=S8E+Idmbou/cWXK9o0//2th7/KbSEL18ohTUT99X5ko=;
+ b=igGN7zFHeQd/WZz72AcYI20GtEhwj/qGOViD2LzFNfRBVTsfzWuQ3yD3hpr93bcPnZFJGC
+ nVB//zmzpjcAbsCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B603913A22;
+ Fri,  7 Mar 2025 18:15:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id N6C7HNo3y2dNcgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 07 Mar 2025 18:15:54 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- kvm@vger.kernel.org, Yi Liu <yi.l.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eric Auger <eric.auger@redhat.com>, qemu-s390x@nongnu.org,
- Jason Herne <jjherne@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH 14/14] hw/vfio/platform: Check CONFIG_IOMMUFD at runtime using
- iommufd_builtin
-Date: Fri,  7 Mar 2025 19:03:37 +0100
-Message-ID: <20250307180337.14811-15-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250307180337.14811-1-philmd@linaro.org>
-References: <20250307180337.14811-1-philmd@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PULL 0/8] Migration patches for 2025-03-07
+Date: Fri,  7 Mar 2025 15:15:43 -0300
+Message-Id: <20250307181551.19887-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,109 +108,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the compile time check on the CONFIG_IOMMUFD definition
-by a runtime one by calling iommufd_builtin().
+The following changes since commit 98c7362b1efe651327385a25874a73e008c6549e:
 
-Since the file doesn't use any target-specific knowledge anymore,
-move it to system_ss[] to build it once.
+  Merge tag 'accel-cpus-20250306' of https://github.com/philmd/qemu into staging (2025-03-07 07:39:49 +0800)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/vfio/platform.c  | 25 ++++++++++++-------------
- hw/vfio/meson.build |  2 +-
- 2 files changed, 13 insertions(+), 14 deletions(-)
+are available in the Git repository at:
 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 67bc57409c1..265c550b747 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -15,7 +15,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
- #include "qapi/error.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
-@@ -637,10 +636,11 @@ static const Property vfio_platform_dev_properties[] = {
-     DEFINE_PROP_UINT32("mmap-timeout-ms", VFIOPlatformDevice,
-                        mmap_timeout, 1100),
-     DEFINE_PROP_BOOL("x-irqfd", VFIOPlatformDevice, irqfd_allowed, true),
--#ifdef CONFIG_IOMMUFD
-+};
-+
-+static const Property vfio_platform_dev_iommufd_properties[] = {
-     DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
--#endif
- };
- 
- static void vfio_platform_instance_init(Object *obj)
-@@ -652,12 +652,10 @@ static void vfio_platform_instance_init(Object *obj)
-                      DEVICE(vdev), false);
- }
- 
--#ifdef CONFIG_IOMMUFD
- static void vfio_platform_set_fd(Object *obj, const char *str, Error **errp)
- {
-     vfio_device_set_fd(&VFIO_PLATFORM_DEVICE(obj)->vbasedev, str, errp);
- }
--#endif
- 
- static void vfio_platform_class_init(ObjectClass *klass, void *data)
- {
-@@ -666,9 +664,10 @@ static void vfio_platform_class_init(ObjectClass *klass, void *data)
- 
-     dc->realize = vfio_platform_realize;
-     device_class_set_props(dc, vfio_platform_dev_properties);
--#ifdef CONFIG_IOMMUFD
--    object_class_property_add_str(klass, "fd", NULL, vfio_platform_set_fd);
--#endif
-+    if (iommufd_builtin()) {
-+        device_class_set_props(dc, vfio_platform_dev_iommufd_properties);
-+        object_class_property_add_str(klass, "fd", NULL, vfio_platform_set_fd);
-+    }
-     dc->vmsd = &vfio_platform_vmstate;
-     dc->desc = "VFIO-based platform device assignment";
-     sbc->connect_irq_notifier = vfio_start_irqfd_injection;
-@@ -692,11 +691,11 @@ static void vfio_platform_class_init(ObjectClass *klass, void *data)
-     object_class_property_set_description(klass, /* 2.6 */
-                                           "sysfsdev",
-                                           "Host sysfs path of assigned device");
--#ifdef CONFIG_IOMMUFD
--    object_class_property_set_description(klass, /* 9.0 */
--                                          "iommufd",
--                                          "Set host IOMMUFD backend device");
--#endif
-+    if (iommufd_builtin()) {
-+        object_class_property_set_description(klass, /* 9.0 */
-+                                              "iommufd",
-+                                              "Set host IOMMUFD backend device");
-+    }
- }
- 
- static const TypeInfo vfio_platform_dev_info = {
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index bd6e1d999e4..e5010db2c71 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -7,7 +7,6 @@ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
-   'pci-quirks.c',
- ))
--vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
- 
- specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
- 
-@@ -26,6 +25,7 @@ system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
- ))
- system_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
- system_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
-+system_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
- system_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
-   'display.c',
-   'pci.c',
+  https://gitlab.com/farosas/qemu.git tags/migration-20250307-pull-request
+
+for you to fetch changes up to 5aee8eaea8ec1d5d364f529bf044f4129286b9f1:
+
+  migration: Add qtest for migration over RDMA (2025-03-07 12:04:58 -0300)
+
+Patch 8/8 triggers a bogus checkpatch error that doesn't apply to
+qtest, please ignore:
+
+ ERROR: Error messages should not contain newlines
+
+----------------------------------------------------------------
+Migration pull request
+
+- Fix use-after-free in incoming migration
+- Improve cpr migration blocker for volatile ram
+- Fix RDMA migration
+- RDMA migration test + helper script to setup an rdma link
+
+----------------------------------------------------------------
+
+Li Zhijian (6):
+  migration: Prioritize RDMA in ram_save_target_page()
+  migration: check RDMA and capabilities are compatible on both sides
+  migration: disable RDMA + postcopy-ram
+  migration/rdma: Remove redundant migration_in_postcopy checks
+  migration: Unfold control_save_page()
+  migration: Add qtest for migration over RDMA
+
+Peter Xu (1):
+  migration: Fix UAF for incoming migration on MigrationState
+
+Steve Sistare (1):
+  migration: ram block cpr blockers
+
+ MAINTAINERS                           |  1 +
+ include/exec/memory.h                 |  3 ++
+ include/exec/ramblock.h               |  1 +
+ migration/migration.c                 | 70 ++++++++++++++++++++++-----
+ migration/options.c                   | 25 ++++++++++
+ migration/options.h                   |  1 +
+ migration/ram.c                       | 41 +++++-----------
+ migration/rdma.c                      | 11 ++---
+ migration/rdma.h                      |  3 +-
+ migration/savevm.c                    |  2 +
+ scripts/rdma-migration-helper.sh      | 48 ++++++++++++++++++
+ system/physmem.c                      | 66 +++++++++++++++++++++++++
+ tests/qtest/migration/precopy-tests.c | 69 ++++++++++++++++++++++++++
+ 13 files changed, 290 insertions(+), 51 deletions(-)
+ create mode 100755 scripts/rdma-migration-helper.sh
+
 -- 
-2.47.1
+2.35.3
 
 
