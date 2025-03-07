@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C209A5674C
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9624A56731
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:56:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqWGs-0002La-VA; Fri, 07 Mar 2025 06:53:42 -0500
+	id 1tqWH3-0002NM-JH; Fri, 07 Mar 2025 06:53:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGq-0002Ks-EW
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGz-0002Mu-IH
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGo-0000Jw-Vc
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:40 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGx-0000Ks-V7
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741348418;
+ s=mimecast20190719; t=1741348424;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6ODttkY/S+wdI4qfJM7IuKT40adwY7alCOmfckIuHiI=;
- b=B2I17mIV3/KGGqh4svGebo4LzdFlZnwEVO5PDbi0wSdkbnUYK1JEcMkD682iN20cA+aMom
- nm5urOCIkYIDgm8CT52OSbpd+OoBIfcTbMvIMw7LRRC5uwSsYb64JjjrrS05IhfYPGNuvw
- wrPmDQgnD0CGpL0op+mET1swvKpg6Xc=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=X/Gx09Fa5xKgnrPHQVMi3DB/WVQEZMM2n1MRlNhuThA=;
+ b=RQKGeNUNrVGWdj3QTmehYVPpcJ/IymjIkaL5P52yaSQpt1SmOPY4JjAyztLy5GNibh2yZh
+ yheTmc2+ypptQTA6rD3HDryoIX2lrHsUJbNv5JDKe/7942JCeStKriLKW37+HdE57cH8q9
+ o8lRu3o9am1Spq9F30lfCxtjHRIEzUs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-8mLW6mMAMs6zK0TWCchM8Q-1; Fri,
- 07 Mar 2025 06:53:37 -0500
-X-MC-Unique: 8mLW6mMAMs6zK0TWCchM8Q-1
-X-Mimecast-MFC-AGG-ID: 8mLW6mMAMs6zK0TWCchM8Q_1741348416
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-EtZJ8h8qPe6Wd2fXBR_Uww-1; Fri,
+ 07 Mar 2025 06:53:43 -0500
+X-MC-Unique: EtZJ8h8qPe6Wd2fXBR_Uww-1
+X-Mimecast-MFC-AGG-ID: EtZJ8h8qPe6Wd2fXBR_Uww_1741348418
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3C0771956048
- for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 11:53:36 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D1ADD1800258
+ for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 11:53:38 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.60])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B28231944F2E; Fri,  7 Mar 2025 11:53:33 +0000 (UTC)
+ id 44C441944E45; Fri,  7 Mar 2025 11:53:36 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 06/15] tests/functional: stop output from zstd command when
- uncompressing
-Date: Fri,  7 Mar 2025 12:53:05 +0100
-Message-ID: <20250307115314.1096373-7-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 07/15] tests/functional: Move the code for testing HTTP
+ downloads to a common function
+Date: Fri,  7 Mar 2025 12:53:06 +0100
+Message-ID: <20250307115314.1096373-8-thuth@redhat.com>
 In-Reply-To: <20250307115314.1096373-1-thuth@redhat.com>
 References: <20250307115314.1096373-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,48 +81,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+We are going to use this code in other tests, too, so let's move it
+to the qemu_test module to be able to re-use it more easily.
 
-The zstd command will print incremental decompression progress to stderr
-when running. Fortunately it is not on stdout as that would confuse the
-TAP parsing, but we should still not have this printed. By switching
-from 'check_call' to 'run' with the check=True and capture_output=True
-we'll get the desired silence on success, and on failure the raised
-exception will automatically include stdout/stderr data for diagnosis
-purposes.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250228102738.3064045-8-berrange@redhat.com>
+Message-ID: <20250227103915.19795-2-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/uncompress.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/functional/qemu_test/linuxkernel.py | 26 ++++++++++++++++++++++-
+ tests/functional/test_intel_iommu.py      | 22 +------------------
+ 2 files changed, 26 insertions(+), 22 deletions(-)
 
-diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
-index 76dcf223856..ce79da1b686 100644
---- a/tests/functional/qemu_test/uncompress.py
-+++ b/tests/functional/qemu_test/uncompress.py
-@@ -13,7 +13,7 @@
- import stat
- import shutil
- from urllib.parse import urlparse
--from subprocess import check_call, CalledProcessError
-+from subprocess import run, CalledProcessError, DEVNULL
+diff --git a/tests/functional/qemu_test/linuxkernel.py b/tests/functional/qemu_test/linuxkernel.py
+index 2c9598102d0..2aca0ee3cd0 100644
+--- a/tests/functional/qemu_test/linuxkernel.py
++++ b/tests/functional/qemu_test/linuxkernel.py
+@@ -3,8 +3,12 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
  
- from .asset import Asset
++import hashlib
++import urllib.request
++
++from .cmd import wait_for_console_pattern, exec_command_and_wait_for_pattern
+ from .testcase import QemuSystemTest
+-from .cmd import wait_for_console_pattern
++from .utils import get_usernet_hostfwd_port
  
-@@ -46,8 +46,8 @@ def zstd_uncompress(zstd_path, output_path):
-         return
  
-     try:
--        check_call(['zstd', "-f", "-d", zstd_path,
--                    "-o", output_path])
-+        run(['zstd', "-f", "-d", zstd_path,
-+             "-o", output_path], capture_output=True, check=True)
-     except CalledProcessError as e:
-         os.remove(output_path)
-         raise Exception(
+ class LinuxKernelTest(QemuSystemTest):
+@@ -26,3 +30,23 @@ def launch_kernel(self, kernel, initrd=None, dtb=None, console_index=0,
+         self.vm.launch()
+         if wait_for:
+                 self.wait_for_console_pattern(wait_for)
++
++    def check_http_download(self, filename, hashsum, guestport=8080,
++                            pythoncmd='python3 -m http.server'):
++        exec_command_and_wait_for_pattern(self,
++                        f'{pythoncmd} {guestport} & sleep 1',
++                        f'Serving HTTP on 0.0.0.0 port {guestport}')
++        hl = hashlib.sha256()
++        hostport = get_usernet_hostfwd_port(self.vm)
++        url = f'http://localhost:{hostport}{filename}'
++        self.log.info(f'Downloading {url} ...')
++        with urllib.request.urlopen(url) as response:
++            while True:
++                chunk = response.read(1 << 20)
++                if not chunk:
++                    break
++                hl.update(chunk)
++
++        digest = hl.hexdigest()
++        self.log.info(f'sha256sum of download is {digest}.')
++        self.assertEqual(digest, hashsum)
+diff --git a/tests/functional/test_intel_iommu.py b/tests/functional/test_intel_iommu.py
+index a9e8f82ab59..62268d6f278 100755
+--- a/tests/functional/test_intel_iommu.py
++++ b/tests/functional/test_intel_iommu.py
+@@ -10,11 +10,7 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+-import hashlib
+-import urllib.request
+-
+ from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
+-from qemu_test.utils import get_usernet_hostfwd_port
+ 
+ 
+ class IntelIOMMU(LinuxKernelTest):
+@@ -125,23 +121,7 @@ def run_and_check(self):
+ 
+         # Check virtio-net via HTTP:
+         exec_command_and_wait_for_pattern(self, 'dhclient eth0', prompt)
+-        exec_command_and_wait_for_pattern(self,
+-                        f'python3 -m http.server {self.GUEST_PORT} & sleep 1',
+-                        f'Serving HTTP on 0.0.0.0 port {self.GUEST_PORT}')
+-        hl = hashlib.sha256()
+-        hostport = get_usernet_hostfwd_port(self.vm)
+-        url = f'http://localhost:{hostport}{filename}'
+-        self.log.info(f'Downloading {url} ...')
+-        with urllib.request.urlopen(url) as response:
+-            while True:
+-                chunk = response.read(1 << 20)
+-                if not chunk:
+-                    break
+-                hl.update(chunk)
+-
+-        digest = hl.hexdigest()
+-        self.log.info(f'sha256sum of download is {digest}.')
+-        self.assertEqual(digest, hashsum)
++        self.check_http_download(filename, hashsum, self.GUEST_PORT)
+ 
+     def test_intel_iommu(self):
+         self.common_vm_setup()
 -- 
 2.48.1
 
