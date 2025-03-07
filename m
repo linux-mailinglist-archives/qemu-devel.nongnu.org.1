@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B19A56724
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C209A5674C
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:58:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqWGq-0002Kr-Tw; Fri, 07 Mar 2025 06:53:40 -0500
+	id 1tqWGs-0002La-VA; Fri, 07 Mar 2025 06:53:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGo-0002K6-1l
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:38 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGq-0002Ks-EW
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGm-0000JA-7x
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:37 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWGo-0000Jw-Vc
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741348415;
+ s=mimecast20190719; t=1741348418;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LIAO22KFy9kDFijwrho+kmya6T4frgqQLKWLiJSbcGQ=;
- b=G5HkhD0RM3syr7+yXNEpF+r1VDgKsXCYfwSc+uPpSArMJUbthUH2Bei4f2CB7M5jOFmEne
- 0gtCsaoApGvn0XJ7+2c3Y7Fj39j34BBopeQNRNyo+oY0kCcVuoxsBL6nc3G2Jvo6iqZaI4
- yXRlxTVQZ4q2WIvD7w6Fx0IRc14Q1qo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=6ODttkY/S+wdI4qfJM7IuKT40adwY7alCOmfckIuHiI=;
+ b=B2I17mIV3/KGGqh4svGebo4LzdFlZnwEVO5PDbi0wSdkbnUYK1JEcMkD682iN20cA+aMom
+ nm5urOCIkYIDgm8CT52OSbpd+OoBIfcTbMvIMw7LRRC5uwSsYb64JjjrrS05IhfYPGNuvw
+ wrPmDQgnD0CGpL0op+mET1swvKpg6Xc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-J3L1GuEXN1ekNZb9s6n1CQ-1; Fri,
- 07 Mar 2025 06:53:33 -0500
-X-MC-Unique: J3L1GuEXN1ekNZb9s6n1CQ-1
-X-Mimecast-MFC-AGG-ID: J3L1GuEXN1ekNZb9s6n1CQ_1741348413
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-8mLW6mMAMs6zK0TWCchM8Q-1; Fri,
+ 07 Mar 2025 06:53:37 -0500
+X-MC-Unique: 8mLW6mMAMs6zK0TWCchM8Q-1
+X-Mimecast-MFC-AGG-ID: 8mLW6mMAMs6zK0TWCchM8Q_1741348416
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0866C180AF52
- for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 11:53:33 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C0771956048
+ for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 11:53:36 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.60])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 225DF1944F2E; Fri,  7 Mar 2025 11:53:30 +0000 (UTC)
+ id B28231944F2E; Fri,  7 Mar 2025 11:53:33 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 05/15] tests/functional: drop unused 'get_tag' method
-Date: Fri,  7 Mar 2025 12:53:04 +0100
-Message-ID: <20250307115314.1096373-6-thuth@redhat.com>
+Subject: [PULL 06/15] tests/functional: stop output from zstd command when
+ uncompressing
+Date: Fri,  7 Mar 2025 12:53:05 +0100
+Message-ID: <20250307115314.1096373-7-thuth@redhat.com>
 In-Reply-To: <20250307115314.1096373-1-thuth@redhat.com>
 References: <20250307115314.1096373-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,36 +85,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
+The zstd command will print incremental decompression progress to stderr
+when running. Fortunately it is not on stdout as that would confuse the
+TAP parsing, but we should still not have this printed. By switching
+from 'check_call' to 'run' with the check=True and capture_output=True
+we'll get the desired silence on success, and on failure the raised
+exception will automatically include stdout/stderr data for diagnosis
+purposes.
+
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250228102738.3064045-7-berrange@redhat.com>
+Message-ID: <20250228102738.3064045-8-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/tuxruntest.py | 11 -----------
- 1 file changed, 11 deletions(-)
+ tests/functional/qemu_test/uncompress.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index 41a4945a14f..ad74156f9c5 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -24,17 +24,6 @@ class TuxRunBaselineTest(QemuSystemTest):
-     # Tests are ~10-40s, allow for --debug/--enable-gcov overhead
-     timeout = 100
+diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
+index 76dcf223856..ce79da1b686 100644
+--- a/tests/functional/qemu_test/uncompress.py
++++ b/tests/functional/qemu_test/uncompress.py
+@@ -13,7 +13,7 @@
+ import stat
+ import shutil
+ from urllib.parse import urlparse
+-from subprocess import check_call, CalledProcessError
++from subprocess import run, CalledProcessError, DEVNULL
  
--    def get_tag(self, tagname, default=None):
--        """
--        Get the metadata tag or return the default.
--        """
--        utag = self._get_unique_tag_val(tagname)
--        print(f"{tagname}/{default} -> {utag}")
--        if utag:
--            return utag
--
--        return default
--
-     def setUp(self):
-         super().setUp()
+ from .asset import Asset
  
+@@ -46,8 +46,8 @@ def zstd_uncompress(zstd_path, output_path):
+         return
+ 
+     try:
+-        check_call(['zstd', "-f", "-d", zstd_path,
+-                    "-o", output_path])
++        run(['zstd', "-f", "-d", zstd_path,
++             "-o", output_path], capture_output=True, check=True)
+     except CalledProcessError as e:
+         os.remove(output_path)
+         raise Exception(
 -- 
 2.48.1
 
