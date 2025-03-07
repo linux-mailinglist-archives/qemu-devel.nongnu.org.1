@@ -2,90 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93981A55D7A
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 03:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF90A55DC5
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 03:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqN92-0008I6-8J; Thu, 06 Mar 2025 21:09:00 -0500
+	id 1tqNeO-0007TP-BG; Thu, 06 Mar 2025 21:41:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqN8k-0008HU-3z
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 21:08:42 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqN8i-0007XR-Gb
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 21:08:41 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22185cddbffso47945275ad.1
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 18:08:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741313318; x=1741918118; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=XPm7vUDA5ufTI4bbQzGsBhjs3j6e558LlXKlob7pDOo=;
- b=Jzim5kTUplhdKSeP7fcxFPoSpWOKGtsTGZ0p3BJIJof4ADY920sNcJG8X17D7TVvLc
- Lnxck1Gao+rwdBCbATrGj1lx0AGELwEzhQj6FCZwqSsrdVqdVHWSEu0RMXqe/A3iZW1K
- BA+zLr+ZBw4TzwD1+OHPitUh8kyUnE/tUThhpnRmGkG1eLnda6ZWHL40xkCujf7ip6JP
- Jpwe6mS3ITLAlqYnFz5hcX4nxjWOxKm4a1F+QTSrrbLxEz0ccc+kwelkxJawLCTnV/Tj
- 0vCkr68oEX6D5CfjYj3xLgsvoBcfnghLWfS9EMIJWBMYtmOO3nPLcteIaIEo0cOFHyoP
- SZoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741313318; x=1741918118;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XPm7vUDA5ufTI4bbQzGsBhjs3j6e558LlXKlob7pDOo=;
- b=EKeGrBoo20IlL1ngMpiELXGkg6k09/em51nEuu39rLcsA/moZw/fYtYk2HBryleR75
- IW9/THQJBN4gg7Hf5yRw7ZVQ6Nv4KmbNDaBW/UG6UrmjMq1dmfvkWctkktneulnVwTca
- 9OkZoy1LC9c47cDoDOHojBK8sdwSSZBX1Ky5ir7uU3nU3q9TFg80yVB782wS7yBn3qPc
- H44tkW6bM/NLmBHNwy+oGRvqU6ME+lb4bG8vCP7XzEWwArl7wvfbhByO5dDyWUk4/WKF
- EP8otk9AccyFkx8N+evRmYFRLRe3NYMcSvSdXKmriKORIvcNppbfVOwczrUV9lDdtqgz
- xlTA==
-X-Gm-Message-State: AOJu0YzSSKmk8qgCEfPkLkdbW5Z/XTjlx41kBoiEvB1Ggnfk5bVM07ci
- lxDUV5YC1fFHCh/p/9IhC92bRGE4EF4sJCVPpj5E4JRroeDJBOvzRsLU3DwrixQ/itSjXr/Ir6z
- n
-X-Gm-Gg: ASbGncvNAQVt0+0Y/HbxJsJ10OpCY29U7CcU0077R/XZ18DE9TjytTrEA3MGtAwqcIE
- UO0Yi77kMqrn9+MxZ2ySS9WCYZDn0jiqYbwq39fy3SulOmkodTMNrOFJaGzzj+Q46C32fZGz4nE
- 7PFH5Is+ktHftxGWtpHIlhPuHCU0CRD2/Bniy+ELu4GNpzMN+i50CjERj9fs+WvpixTfpDz5PtX
- pYrIcr6UIwGNXZzsJ0WlMHTlmEFGXYGFFm9t8gLW4EfgvQ3WGwuBjer/8MEWR+NMxOuC6OkYLAM
- oM/Y0oYat3+r5nyIYGDCybML0GbrRTABKskHt6Z8vm+EfJeUyLqh+j3zyTUgPnietLoH/+2xqDm
- b15DsbphF
-X-Google-Smtp-Source: AGHT+IHK/TboxA35bxI7syF7jO5+TnRsl7DxiHtyMKXxbkDpq1E5vQnRvLpr682OSZ2TKVVs0rppjg==
-X-Received: by 2002:a05:6a00:140d:b0:728:f21b:ce4c with SMTP id
- d2e1a72fcca58-736a97086b3mr3212944b3a.5.1741313318043; 
- Thu, 06 Mar 2025 18:08:38 -0800 (PST)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736ae61b68fsm183181b3a.178.2025.03.06.18.08.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Mar 2025 18:08:37 -0800 (PST)
-Message-ID: <b44e107d-3481-4d88-a0da-e7587c69afe0@linaro.org>
-Date: Thu, 6 Mar 2025 18:08:35 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] include/exec: Move TARGET_PAGE_{SIZE,MASK,BITS} to
- target_page.h
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1tqNeL-0007Sj-Hl
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 21:41:21 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1tqNeJ-0006iN-En
+ for qemu-devel@nongnu.org; Thu, 06 Mar 2025 21:41:21 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Bx12nCXMpnSAaNAA--.44464S3;
+ Fri, 07 Mar 2025 10:41:06 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBxLsfAXMpnQro6AA--.23941S2;
+ Fri, 07 Mar 2025 10:41:04 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, alex.bennee@linaro.org, philmd@linaro.org
-References: <20250306234108.378881-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250306234108.378881-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: stefanha@gmail.com,
+	maobibo@loongson.cn
+Subject: [PULL 0/2] loongarch tcg queue
+Date: Fri,  7 Mar 2025 10:19:32 +0800
+Message-Id: <20250307021934.1080115-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxLsfAXMpnQro6AA--.23941S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,22 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/25 15:41, Richard Henderson wrote:
-> diff --git a/page-vary-target.c b/page-vary-target.c
-> index 343b4adb95..1b4a9a10be 100644
-> --- a/page-vary-target.c
-> +++ b/page-vary-target.c
-> @@ -37,5 +37,7 @@ void finalize_target_page_bits(void)
->   {
->   #ifdef TARGET_PAGE_BITS_VARY
->       finalize_target_page_bits_common(TARGET_PAGE_BITS_MIN);
-> +#else
-> +    finalize_target_page_bits_common(TARGET_PAGE_BITS);
->   #endif
->   }
+The following changes since commit e8a01102936286e012ed0f00bd7f3b7474d415c9:
 
-Actually, the ifdef here should be removed.
-TARGET_PAGE_BITS_MIN is always correct.
+  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2025-03-05 21:58:23 +0800)
 
-r~
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20250307
+
+for you to fetch changes up to d882c284a3d4472d827e49a7357198b611900b08:
+
+  target/loongarch: check tlb_ps (2025-03-07 10:15:08 +0800)
+
+----------------------------------------------------------------
+ pull-loongarch-tcg-20250307
+
+----------------------------------------------------------------
+Song Gao (2):
+      target/loongarch: fix 'make check-functional' failed
+      target/loongarch: check tlb_ps
+
+ target/loongarch/cpu.c                             | 11 +++++--
+ target/loongarch/helper.h                          |  1 +
+ target/loongarch/internals.h                       |  2 ++
+ target/loongarch/tcg/csr_helper.c                  | 26 ++++++++++++++--
+ .../tcg/insn_trans/trans_privileged.c.inc          |  1 +
+ target/loongarch/tcg/tlb_helper.c                  | 35 ++++++++++++++++++++--
+ 6 files changed, 68 insertions(+), 8 deletions(-)
+
 
