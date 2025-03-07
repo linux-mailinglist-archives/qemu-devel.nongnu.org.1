@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953BCA5728D
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9137A57293
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:57:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdno-00081a-TD; Fri, 07 Mar 2025 14:56:17 -0500
+	id 1tqdoA-00086T-AB; Fri, 07 Mar 2025 14:56:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tqdnM-0007zN-41
+ id 1tqdnM-0007zQ-9F
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:44 -0500
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnK-0005ib-3q
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:43 -0500
+ (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnK-0005ik-HI
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:44 -0500
 Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 4AB142038F3F; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4AB142038F3F
+ id 586132038F40; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 586132038F40
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1741377336;
- bh=FZmm7Arvwo6yz+fCYEZ+cN2f/QxcM9KlwRwPHLMST9k=;
+ bh=emdIj3k5ujCrejeEldBaJ9iIGKoFw1OvrMFlb+8p+lI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sou2N9MqfqHyfLv8DGhaFo0K7mC8eNGH6T4DUvjyGPx4WDMQ+V/JN3sBjunUxr9Us
- S4yTv7ziCoCtUDioTyIzjEcIy1u7MFdBK4VMy3wjpemIuPI9zkdOzWfEuYfQbV23gJ
- gTkBsF5r1GFiny0IM+oFOgnTtFOFbTGMWSKF/ivM=
+ b=KS3XKdNsq9Eda3Rp2GVNtwCR5yn++2fvKLkM7wHhDHlj6XiZ2qV+a3KT3sd3MWaqU
+ YmsSZwSTI1FsVwEcDxauSLjUmsDbEie/coh1wF/DTAC00O+nCBrB+1EVlwOw7N4sPg
+ 5IHPjUV1rTs84HlM7BA+FIkfOG4bVueS/LZW/CAs=
 From: Wei Liu <liuwe@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
@@ -35,9 +35,9 @@ Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
  mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
  prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
  Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PATCH v2 05/14] target/i386/hvf: use emul_ops->read_mem in x86_emu.c
-Date: Fri,  7 Mar 2025 11:55:16 -0800
-Message-Id: <1741377325-28175-6-git-send-email-liuwe@linux.microsoft.com>
+Subject: [PATCH v2 06/14] taret/i386/hvf: provide and use write_mem in emul_ops
+Date: Fri,  7 Mar 2025 11:55:17 -0800
+Message-Id: <1741377325-28175-7-git-send-email-liuwe@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
 References: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
@@ -65,55 +65,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No functional change.
-
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
 ---
- target/i386/hvf/x86_emu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/i386/hvf/hvf.c     | 6 ++++++
+ target/i386/hvf/x86_emu.c | 8 ++++----
+ target/i386/hvf/x86_emu.h | 1 +
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index e59a73e00d5c..7b816b5a1dab 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -184,7 +184,7 @@ void write_val_ext(CPUX86State *env, target_ulong ptr, target_ulong val, int siz
- 
- uint8_t *read_mmio(CPUX86State *env, target_ulong ptr, int bytes)
- {
--    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, ptr, bytes);
-+    emul_ops->read_mem(env_cpu(env), env->emu_mmio_buf, ptr, bytes);
-     return env->emu_mmio_buf;
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 1cecb765952b..e4f48a79fb7c 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -242,8 +242,14 @@ static void hvf_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
+     vmx_read_mem(cpu, data, gva, bytes);
  }
  
-@@ -510,8 +510,8 @@ static void exec_outs_single(CPUX86State *env, struct x86_decode *decode)
- {
-     target_ulong addr = decode_linear_addr(env, decode, RSI(env), R_DS);
++static void hvf_write_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
++{
++    vmx_write_mem(cpu, gva, data, bytes);
++}
++
+ static const struct x86_emul_ops hvf_x86_emul_ops = {
+     .read_mem = hvf_read_mem,
++    .write_mem = hvf_write_mem,
+     .read_segment_descriptor = hvf_read_segment_descriptor,
+     .handle_io = hvf_handle_io,
+ };
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+index 7b816b5a1dab..3ff41c35d89a 100644
+--- a/target/i386/hvf/x86_emu.c
++++ b/target/i386/hvf/x86_emu.c
+@@ -179,7 +179,7 @@ void write_val_ext(CPUX86State *env, target_ulong ptr, target_ulong val, int siz
+         write_val_to_reg(ptr, val, size);
+         return;
+     }
+-    vmx_write_mem(env_cpu(env), ptr, &val, size);
++    emul_ops->write_mem(env_cpu(env), &val, ptr, size);
+ }
  
--    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, addr,
--                 decode->operand_size);
-+    emul_ops->read_mem(env_cpu(env), env->emu_mmio_buf, addr,
-+                       decode->operand_size);
-     emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 1,
+ uint8_t *read_mmio(CPUX86State *env, target_ulong ptr, int bytes)
+@@ -489,8 +489,8 @@ static void exec_ins_single(CPUX86State *env, struct x86_decode *decode)
+ 
+     emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 0,
                          decode->operand_size, 1);
+-    vmx_write_mem(env_cpu(env), addr, env->emu_mmio_buf,
+-                  decode->operand_size);
++    emul_ops->write_mem(env_cpu(env), env->emu_mmio_buf, addr,
++                        decode->operand_size);
  
-@@ -620,7 +620,7 @@ static void exec_scas_single(CPUX86State *env, struct x86_decode *decode)
+     string_increment_reg(env, R_EDI, decode);
+ }
+@@ -596,7 +596,7 @@ static void exec_stos_single(CPUX86State *env, struct x86_decode *decode)
      addr = linear_addr_size(env_cpu(env), RDI(env),
                              decode->addressing_size, R_ES);
-     decode->op[1].type = X86_VAR_IMMEDIATE;
--    vmx_read_mem(env_cpu(env), &decode->op[1].val, addr, decode->operand_size);
-+    emul_ops->read_mem(env_cpu(env), &decode->op[1].val, addr, decode->operand_size);
+     val = read_reg(env, R_EAX, decode->operand_size);
+-    vmx_write_mem(env_cpu(env), addr, &val, decode->operand_size);
++    emul_ops->write_mem(env_cpu(env), &val, addr, decode->operand_size);
  
-     EXEC_2OP_FLAGS_CMD(env, decode, -, SET_FLAGS_OSZAPC_SUB, false);
      string_increment_reg(env, R_EDI, decode);
-@@ -645,7 +645,7 @@ static void exec_lods_single(CPUX86State *env, struct x86_decode *decode)
-     target_ulong val = 0;
+ }
+diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
+index 40cc786694e1..107c1f1ac866 100644
+--- a/target/i386/hvf/x86_emu.h
++++ b/target/i386/hvf/x86_emu.h
+@@ -25,6 +25,7 @@
  
-     addr = decode_linear_addr(env, decode, RSI(env), R_DS);
--    vmx_read_mem(env_cpu(env), &val, addr,  decode->operand_size);
-+    emul_ops->read_mem(env_cpu(env), &val, addr,  decode->operand_size);
-     write_reg(env, R_EAX, val, decode->operand_size);
- 
-     string_increment_reg(env, R_ESI, decode);
+ struct x86_emul_ops {
+     void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
++    void (*write_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
+     void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
+                                     enum X86Seg seg);
+     void (*handle_io)(CPUState *cpu, uint16_t port, void *data, int direction,
 -- 
 2.47.2
 
