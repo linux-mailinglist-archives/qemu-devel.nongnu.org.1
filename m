@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E25CA57306
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FB9A57308
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:43:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqeV8-0004jU-ET; Fri, 07 Mar 2025 15:40:58 -0500
+	id 1tqeX4-0008Rj-Jt; Fri, 07 Mar 2025 15:42:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tqeUp-0004Rj-0s
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:43 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tqeWx-0008MO-CD
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:42:52 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tqeUl-0001xZ-9k
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:38 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2fe9759e5c1so3569917a91.0
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:40:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tqeWu-00028Y-Rj
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:42:50 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2241053582dso19189865ad.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:42:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1741380033; x=1741984833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Zxx0WY85eWS+nBxEymR5IyPvpq7FG/RiNFvCALVpVjI=;
- b=E5gsurGMhY0d06ODdfufhBqGF5+UXLsXCe3G4vRT+1qemLV+EuZVGIrLdFQWGF0GIP
- q3U5S8cdUcQXz1P4XSofdbB2HYb7n01QGCoQtdw8CKY93cKYORSt/5msXscvMb6j4fQX
- hQvvq9TVp/8h1yiR96Q5Q4ChdL5IYvxbSCFlyExumHduVEtJJWdI4bIh0TCk8UlwXQsw
- y5VKQKaAKLk9Kvam0XCCLzfUbNmDgxJBMIHh35nK9mxy9ySScyDGaF7j9aHinipeGjKR
- PUGFs4s2h3ctBDGuUlm4vZooOzAwzu76AyBT5A1DwRvEFMn16/1COMLJcq9w8508RSmd
- M90g==
+ d=linaro.org; s=google; t=1741380167; x=1741984967; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=du8QOQGF2nqhWzxCQqgYoIbW1gsvamlhUrbkXg3XLe8=;
+ b=rksgBp2om3ntcBxIyyBVRBSEeeKVus0a0+MA8IvaBdztiP3ASqb+JogzyYscKqkPM5
+ gIi2zIF0TJsluXDGD8w1xo15L570gtJpT1W9gVc8C8sNgTobxhXBJa5wO6ML3Rg8lTQ3
+ WgJfsjMRrxowGuWicJgJHJ2JVOYGLpfYtt2XmXOeA260cylZI0m1yfjEVZvUGjkSuGGS
+ ThC4MenjCwtZv6AmL9bzcYKwxh1MucFKkpX6lDl+CUx0LceRopGivgftxiTupQpfDSrD
+ ZLf2JLB9I9f37NxqJ9MvQUqviezoicM4QEm66NbzGFsYcIfUjSidnKHsV/pXQmoKYRuf
+ wzvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741380033; x=1741984833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Zxx0WY85eWS+nBxEymR5IyPvpq7FG/RiNFvCALVpVjI=;
- b=WtAyj6kOvdFzMa/W2ASz97nNjGi1azcd8UIqv2wU75Vb+n/7399rH/NX2+vrXfOEs+
- yVFwQKPeEhw802CMlI0IGyPlQ+nl5VDkZyyhQLpRgXfj/1Vc7pS74zC0ZGs54qO6/Ps1
- 8wh1tQjNDgY5WEI6ch/nMiCEU8ZPf6Hiua55HmrDPbYpU66Eff5pdUpLJsEc8oH/AWs5
- Lqps2Uqo3zTtky7Ygt1WQWK1D2h2dwI5tmSZ8esheETNsqVKZi8njX1GXTDHoWX5I9dv
- UFeJqVzJ2uwiuv3XOfeM/nuILPdUv7MyDr7rSlqKQqgUqjdSDibYXX+vHkw49YF8kBex
- SvyQ==
-X-Gm-Message-State: AOJu0Yw+p+oRWb35pHdwcmSu8FlWetqXjEa00VcGKdkK6d64fDc3Pt/D
- PmchMmHsWrOFXYR/X9pgnXOb1mRSGepq47fkd9DcTERushP6AiHfoUWPb/KaPwAUV13lLweErWz
- 8zzT6bz7/nH4KH07sf/nCO4o3hUMV8xiWSVXp2w9nfFoguoYTuczLn+nrIIOGO0kPQYxgOtDoIm
- j4rVGnu15tZ4IExLMIA2nebF+6jKkUN5bYkn+uQhw=
-X-Gm-Gg: ASbGncuOcnJWK9aNrqkzmx3lBODu40Pj3f73JTyKwDk9dfE4tIaq6ltRz3Tzs6KAE8t
- FrEpef6n1drytdqWp7jATQ68nZLwSeB/dMYcdDdQNGsdLMh5oFrAm+XL9hRW1ZuiN0Q6UbAUkJv
- H5J3XEp/XIF/fyiP6WUY1l/vh4NSeyPKSbEyUDOdAaGXTfeKIqvG/fYQ6glVrg1lg1clVpmTBcE
- //hNhfqC0AKxZKFCMVK/EKML/iQ1E7aewyt3O7vY9+zmg0Vj+pgr317R6Tz2wAvE4tcmS8X2TV1
- ejfkAqOV4M/4cUcUcNorGPHu/dgS42PP/xeYA3ImDVTSqNvvWZYscDSbZaXN7/PDLKanYXN4
-X-Google-Smtp-Source: AGHT+IFP2xDuJmgSrLNezd3U8sP613KFfJX3JBGDkCmeFeZwiKr8wlqkcz87Rn1Od9Rhxb81Df4JcA==
-X-Received: by 2002:a17:90a:d44c:b0:2ee:d433:7c50 with SMTP id
- 98e67ed59e1d1-2ff7cef6419mr6211011a91.23.1741380033200; 
- Fri, 07 Mar 2025 12:40:33 -0800 (PST)
-Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ d=1e100.net; s=20230601; t=1741380167; x=1741984967;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=du8QOQGF2nqhWzxCQqgYoIbW1gsvamlhUrbkXg3XLe8=;
+ b=RwhKlhYqT6RIU3G+lkUKvef+0yJG7Hj+B5ZX+9EjwYCm5Hy2bB0WUvj3jvtEx66ezM
+ gBgod+EulSxYK0kiTtZhHs5pfpPrg2IeHHAztBXnH4p1R0FSWZWAY7mMp2R3B90C1EaU
+ pQwr0CUDpfXSQbXAu11bTGZIriN0cj3tEKMN81Y1EV1acyuhQpP491I31V2e1P9xKg2P
+ H+g7ghjTS0R9H+jWmZfxyzI2jwYU0IvVhELzS3CQJvjWzhZBMoVYmxDusAyycrtgRWHM
+ htBb82P8iwidxg/85WfjJ165WILI4SNSVz0m5JDiPB7D3S2gAoQmkzzQRIXmVmFB1ARJ
+ +a5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVwO2QTN3DwlxCFbf+c5D56Pe/Zi7Uv7PfMv3kryhfC0J+4BUL4+dCA08p65e4yBjXFMNUAkeucuXWm@nongnu.org
+X-Gm-Message-State: AOJu0YwlTDuTa24ZvZtWSf2uEGcoXI9AzL+SRpgYI9ZlWEG5EKSSEkVG
+ IStLgajjlDnKYdZq9rGhPMpVb/o0v9oBqtGqZUqvOXEV0BZcNgrXovWYdHPNRDO2/snZgU4WHHI
+ +
+X-Gm-Gg: ASbGnctiEP1MKK0w7d+a9M3ruZWM4nYYtJeKZsHOMCFOgoelr9I6+/qSzenohR8vXI8
+ 54I7cKqZXRfz3m+qxOmdY9gxWsNKBy6wHqSuyzdTNq4iOZ/PINeXbBs6NBikFrxtyYleYdy4dJ+
+ 981quTdMJl/1fc/sxmp+4Cn1XMX9BunSCBQtcMWYcH1S7xDCSV+whUXr+10AU34jnZJ5LWUv6rQ
+ ImuuIjawSwXON54ahqwpauoZNsfOpIcVh5KVMOVDuys6B5s2gYoWx/Qn8ZF7HOiijUbFK+ukg9K
+ r0XuIjgxff8fyNpq7aFvK40FIum1Tr6ut2BmP0veGipTB3nCrFjxioxpsf+HPaLUrf6khjWV09y
+ 5WTz5URS7
+X-Google-Smtp-Source: AGHT+IF+pabbrgtp5ClZ67I4Q0a375fRWyeWGuyJTM4E1w6Uf2hReBGX5lyrMQOH9uSMhrXmwwNDwg==
+X-Received: by 2002:a05:6a20:72a5:b0:1f3:4661:d197 with SMTP id
+ adf61e73a8af0-1f544acd52dmr10283340637.2.1741380167372; 
+ Fri, 07 Mar 2025 12:42:47 -0800 (PST)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff5aa3d3ccsm3270900a91.0.2025.03.07.12.40.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 12:40:32 -0800 (PST)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-arm@nongnu.org (open list:MCIMX7D SABRE / i...),
- Jason Chien <jason.chien@sifive.com>
-Subject: [PATCH 4/4] hw/riscv/riscv-iommu: Connect the IOMMU with PCI hosts
- that have ATUs
-Date: Sat,  8 Mar 2025 04:39:37 +0800
-Message-ID: <20250307203952.13871-5-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20250307203952.13871-1-jason.chien@sifive.com>
-References: <20250307203952.13871-1-jason.chien@sifive.com>
+ 41be03b00d2f7-af281287d78sm3411324a12.74.2025.03.07.12.42.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Mar 2025 12:42:47 -0800 (PST)
+Message-ID: <e4dd7393-47d4-4923-b907-dbb875821274@linaro.org>
+Date: Fri, 7 Mar 2025 12:42:45 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/14] hw/vfio/ap: Check CONFIG_IOMMUFD at runtime using
+ iommufd_builtin()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250307180337.14811-1-philmd@linaro.org>
+ <20250307180337.14811-13-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250307180337.14811-13-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=jason.chien@sifive.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,42 +104,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the IOMMU detects that bus->iommu_ops has been registered, indicating
-the presence of an ATU, it sets the bus's downstream memory region to ensure
-transactions are directed to the IOMMU.
+On 3/7/25 10:03, Philippe Mathieu-Daudé wrote:
+> Convert the compile time check on the CONFIG_IOMMUFD definition
+> by a runtime one by calling iommufd_builtin().
+> 
+> Since the file doesn't use any target-specific knowledge anymore,
+> move it to system_ss[] to build it once.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/s390x/kvm/kvm_s390x.h |  2 +-
+>   hw/vfio/ap.c                 | 27 +++++++++++++--------------
+>   hw/vfio/meson.build          |  2 +-
+>   3 files changed, 15 insertions(+), 16 deletions(-)
+> 
+> diff --git a/target/s390x/kvm/kvm_s390x.h b/target/s390x/kvm/kvm_s390x.h
+> index 649dae5948a..7b1cce3e60d 100644
+> --- a/target/s390x/kvm/kvm_s390x.h
+> +++ b/target/s390x/kvm/kvm_s390x.h
+> @@ -10,7 +10,7 @@
+>   #ifndef KVM_S390X_H
+>   #define KVM_S390X_H
+>   
+> -#include "cpu-qom.h"
+> +#include "target/s390x/cpu-qom.h"
+>   
+>   struct kvm_s390_irq;
+>   
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index c7ab4ff57ad..832b98532ea 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -11,7 +11,6 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> -#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+>   #include <linux/vfio.h>
+>   #include <sys/ioctl.h>
+>   #include "qapi/error.h"
+> @@ -24,7 +23,7 @@
+>   #include "qemu/module.h"
+>   #include "qemu/option.h"
+>   #include "qemu/config-file.h"
+> -#include "kvm/kvm_s390x.h"
+> +#include "target/s390x/kvm/kvm_s390x.h"
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
----
- hw/riscv/riscv-iommu.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+Do I take from this that this is actually a target-specific device?
+Otherwise the two s390x changes are confusing.
+Is it built once already, due to only being enabled for qemu-system-s390x?
+If so, I question the need to move it out of specific_ss at all.
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index d46beb2d64..9701fe3831 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -2628,11 +2628,16 @@ static const PCIIOMMUOps riscv_iommu_ops = {
- void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
-         Error **errp)
- {
--    if (bus->iommu_ops &&
--        bus->iommu_ops->get_address_space == riscv_iommu_find_as) {
--        /* Allow multiple IOMMUs on the same PCIe bus, link known devices */
--        RISCVIOMMUState *last = (RISCVIOMMUState *)bus->iommu_opaque;
--        QLIST_INSERT_AFTER(last, iommu, iommus);
-+    if (bus->iommu_ops) {
-+        if (bus->iommu_ops->get_address_space == riscv_iommu_find_as) {
-+            /* Allow multiple IOMMUs on the same PCIe bus, link known devices */
-+            RISCVIOMMUState *last = (RISCVIOMMUState *)bus->iommu_opaque;
-+            QLIST_INSERT_AFTER(last, iommu, iommus);
-+        } else {
-+            /* The bus has an ATU. Set its downsteam memory region. */
-+            AddressSpace *as = riscv_iommu_space(iommu, 0);
-+            pci_setup_iommu_downstream_mr(bus, as->root);
-+        }
-     } else if (!bus->iommu_ops && !bus->iommu_opaque) {
-         pci_setup_iommu(bus, &riscv_iommu_ops, iommu);
-     } else {
--- 
-2.43.2
+Anyway, this is two changes -- one for iommufd_builtin and one for meson.build.
 
+
+r~
 
