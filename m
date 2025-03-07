@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0859A56B63
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9D2A56B71
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:14:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZIX-00013Q-Ff; Fri, 07 Mar 2025 10:07:37 -0500
+	id 1tqZIW-00012L-GC; Fri, 07 Mar 2025 10:07:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIS-00010k-Po
+ id 1tqZIS-00010i-OF
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:32 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIQ-0008Jv-Sh
+ id 1tqZIQ-0008Jj-SB
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:32 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-390effd3e85so1772573f8f.0
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43bc0b8520cso12153845e9.1
  for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1741360049; x=1741964849; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=saDmTi5qBVoivSppj4pMAPptghWgJB1RwsIGgVuCH9w=;
- b=xa6cvBcf72XiZXwn2004RbZmRnn2fp6RbDCQzLNp/uC9DAGuLGAVUZe8MzqX6gq5Hb
- s4nvJQ609Um4KfTIF7Ym3m3QkmelHVaCrFllMgzNIMEWuEB+/QhG8hBqmiNzS7jaBVe5
- dZoWAeFKoVJp2lwgcC+qpPnBIxOyju0iIFd0P7dt6yLp9y/+RjmZWwp0doDEPB9nwBjU
- 1GR3MBI5lswZ3SkRiAVGaG4KyEBOsDMIiIlEtY54cJhsh6B21XDv5KDhXITdM44nG1GV
- DyP4oz9gcLFSAGskQnO66Qtqm+74EJgicvitocsvdYEquzmHooaqPj5N6zGNB8u4xTwz
- 5azw==
+ :reply-to; bh=pPEjy4gO+6lS+Bi1oqacrZc1QhZKm+yak03NfzfqAsw=;
+ b=t2EMNZ++qJx5fv9sixt/Jw0M8R7n4nyS+rzPINwk5BhuqWmNnCs1Gqq7cakZ/2EYq4
+ Sn4qU6yVG2stVwRRLDm+o7D9rGUc/IO4oGaWDCnSnhSTN2C7/gCqgKmUWWdAU2Mwtdxo
+ I4YR6vOt9CjojMsKXSSExa4bLC/FsK4Yk2e4U4DrvMYu2BKSh+0L67jYQyf1HRCA8sCt
+ m5Sk3d0OgZ2CKtwx6aObL8khVc3QxSvOIDNZa5VbyMMrqXcpSRoaDilUXDlX3SY33Rbt
+ 9oITBGqqAld0+CUPppZWSIvT0Zu9UTe9cH1PXXM5211kkBD5UjXXJOhbdY63OqpZKQ1i
+ u+DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741360049; x=1741964849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=saDmTi5qBVoivSppj4pMAPptghWgJB1RwsIGgVuCH9w=;
- b=OR31881FQ0Q+OrztEDywNo7vm80vBpIa21kn75tCGSQYb0Sm/0vA4zijSG2E8BvWfX
- nK9q54ArJhHhjY+AaLxtTkiz2gMSPzWc1Npe0FrxFVSmWGWsbsdU3ABcVDN3Nv2UyoYQ
- wOfQeFFiflIzyjZ9OPDhqJIyhYrZBz8WJN8nNfdcCLYsDda9VbD0hUDQ7+e9i/6Y17Mx
- IlRFjrOpAsJTT8qfiR9pcuNKKc8GJeqr7qY0LNpa2hXgLhAdFhaGIRhX3+HRKtqPNvmY
- BJWsrwZKgMlZIWXgu3tEHTVqqnxmxfpjZNT3GOu+o8XkezRTGKe908MWOlcSZywKqh3Z
- ry3g==
-X-Gm-Message-State: AOJu0YwAzpWd4bR/hiWKbqnyFob9qWCN2jw8/1+A4rfm8iSkxjNfHTqj
- uy4DCgTrx10TeNx5tyI3zr6IHO712iUZpnf5k4esD9oTGrV7GxbDljWDwtrdUz8me5/s1zSvv6a
- K
-X-Gm-Gg: ASbGncs1q5e4Hm8nwABFtNvd9IUB83rNfD5bb0cbrALCX25YzrKqouRQwoDU2zp7uW8
- oHPmG0/IjoJASI/cPgs9u/pQaYP3up1jSzbgSQIQ5jxqYdQaBfDjFsk/SRhq4RzthCYR5MxRnrB
- /+HIM2pPcIOJItww/Vj4RUpXPnaq4uWUGCCNKK92i8H0wZsfk6oKDKwTVUIzMXzHJ2wx5JOwas1
- 1g/dAtm2x1SgB+OsCeUdxfcBxJ/LTKARnwTM5J/Imf56poTosUAG4eDfLka3WHfZlgQ1KgGe3WK
- Cyi6vmZvzURdIZykPA1OIp6l8xrWKI1Jr9pfDC72/5VUcYoZz7g=
-X-Google-Smtp-Source: AGHT+IG/DI/PzagIoXFn3Y3PbRQSRXOr1wjolRSuyFV8uAkKlJotoHN4YGPXT1zPPnXXUW7f17a4/g==
-X-Received: by 2002:a05:6000:1862:b0:390:fe4b:70b9 with SMTP id
- ffacd0b85a97d-39132d6c5demr3031096f8f.21.1741360047696; 
- Fri, 07 Mar 2025 07:07:27 -0800 (PST)
+ bh=pPEjy4gO+6lS+Bi1oqacrZc1QhZKm+yak03NfzfqAsw=;
+ b=KBg97R18f1pdbGMELpt4yXgf7b0Rt29hLzn0yMVnkMt1sYaPwe7T/U5aUuZvzfBgpj
+ vbSG+ps+mfaCH84/GegnOXKXhZiQi160auF/LbLYVE0pjRlBxkwbVnZ/pntozh1gUil/
+ Od3DNu+Rla6meyQ4FnDiGG2pzj7CpFBjuc3d2JkgunkANf2e1+7Y3/0Yp4d18IszjBUu
+ tvG3A+fuqgBfs16w1B9eNhZkcs1KZ/pSdSQX0/ILjO58aGaJUrsiUe+btAyWEOo6ysLM
+ toT8VHQuyeBOIC/SpOVc4vccbf2vb2wXnxDq8jl9gnYiK+s048Q0cTsuaN1UbUNytIcg
+ bPkQ==
+X-Gm-Message-State: AOJu0YzXrUr+W0WzLbCyhRGtz2qGBwSx1vtJj90y5G2DLcskDfUlsMsq
+ pVbJckhOczaq9omrMwmiISoqC2ZQ5/MDXueFHvV1wzIvsobk50NzQ8CfGs+/PZupF3CSR/E4TRg
+ r
+X-Gm-Gg: ASbGncu+1UzVwfxojgYTMe7M3MUf18G8HIBJ22FM4LN+l5ai/Go53Baf9gqIo+7uyB/
+ 6FNqnjdZcEFSv4n6q2d1JYVTngsmCOh3khB0epLfRv8Qu9kZmrLIOxz8/tYtGUo9/HBv3V1PEt+
+ kbtbas60+kUmaDA0ZgULdyG9SA4tIG5N4etEm3sXVlmJBMoOLM/GvLOF87NPcB1ef/R5MFNtma2
+ kak0Z5/xJtD3Vrn+Ga3W6uhnkKd0UnQ1PQFriNkdqnEpnjmlwNHQA/GuQGc0sCFHzsDc3Ek0bWC
+ PRO7sooIs2IZP5s8U/nsCbV+3LzLpuU3MNpJ0+xNnuqtrsqEX1g=
+X-Google-Smtp-Source: AGHT+IGtyuJfAD9aeJVzXV0pEFUm2Ao+aqvWyESaqgen7GqYPctv2Mw9AA0ElZNq+Sup427lp00rTg==
+X-Received: by 2002:a5d:6daa:0:b0:391:2d61:453f with SMTP id
+ ffacd0b85a97d-39132d71099mr1908488f8f.24.1741360048714; 
+ Fri, 07 Mar 2025 07:07:28 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.26
+ ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 07:07:27 -0800 (PST)
+ Fri, 07 Mar 2025 07:07:28 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/21] target/arm: Correct STRD atomicity
-Date: Fri,  7 Mar 2025 15:07:01 +0000
-Message-ID: <20250307150708.3222813-15-peter.maydell@linaro.org>
+Subject: [PULL 15/21] target/arm: Drop unused address_offset from op_addr_{rr,
+ ri}_post()
+Date: Fri,  7 Mar 2025 15:07:02 +0000
+Message-ID: <20250307150708.3222813-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307150708.3222813-1-peter.maydell@linaro.org>
 References: <20250307150708.3222813-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,114 +98,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Our STRD implementation doesn't correctly implement the requirement:
- * if the address is 8-aligned the access must be a 64-bit
-   single-copy atomic access, not two 32-bit accesses
+All the callers of op_addr_rr_post() and op_addr_ri_post() now pass in
+zero for the address_offset, so we can remove that argument.
 
-Rewrite the handling of STRD to use a single tcg_gen_qemu_st_i64()
-of a value produced by concatenating the two 32 bit source registers.
-This allows us to get the atomicity right.
-
-As with the LDRD change, now that we don't update 'addr' in the
-course of performing the store we need to adjust the offset
-we pass to op_addr_ri_post() and op_addr_rr_post().
-
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250227142746.1698904-3-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250227142746.1698904-4-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate.c | 59 +++++++++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 20 deletions(-)
+ target/arm/tcg/translate.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 93772da39a4..404a254678a 100644
+index 404a254678a..d2800181388 100644
 --- a/target/arm/tcg/translate.c
 +++ b/target/arm/tcg/translate.c
-@@ -5063,10 +5063,42 @@ static bool trans_LDRD_rr(DisasContext *s, arg_ldst_rr *a)
-     return true;
+@@ -4941,7 +4941,7 @@ static TCGv_i32 op_addr_rr_pre(DisasContext *s, arg_ldst_rr *a)
  }
  
-+static void do_strd_store(DisasContext *s, TCGv_i32 addr, int rt, int rt2)
-+{
-+    /*
-+     * STRD is required to be an atomic 64-bit access if the
-+     * address is 8-aligned, two atomic 32-bit accesses if
-+     * it's only 4-aligned, and to give an alignment fault
-+     * if it's not 4-aligned.
-+     * Rt is always the word from the lower address, and Rt2 the
-+     * data from the higher address, regardless of endianness.
-+     * So (like gen_store_exclusive) we avoid gen_aa32_ld_i64()
-+     * so we don't get its SCTLR_B check, and instead do a 64-bit access
-+     * using MO_BE if appropriate, using a value constructed
-+     * by putting the two halves together in the right order.
-+     *
-+     * As with LDRD, the 64-bit atomicity is not required for
-+     * M-profile, or for A-profile before LPAE, and we provide
-+     * the higher guarantee always for simplicity.
-+     */
-+    int mem_idx = get_mem_index(s);
-+    MemOp opc = MO_64 | MO_ALIGN_4 | MO_ATOM_SUBALIGN | s->be_data;
-+    TCGv taddr = gen_aa32_addr(s, addr, opc);
-+    TCGv_i32 t1 = load_reg(s, rt);
-+    TCGv_i32 t2 = load_reg(s, rt2);
-+    TCGv_i64 t64 = tcg_temp_new_i64();
-+
-+    if (s->be_data == MO_BE) {
-+        tcg_gen_concat_i32_i64(t64, t2, t1);
-+    } else {
-+        tcg_gen_concat_i32_i64(t64, t1, t2);
-+    }
-+    tcg_gen_qemu_st_i64(t64, taddr, mem_idx, opc);
-+}
-+
- static bool trans_STRD_rr(DisasContext *s, arg_ldst_rr *a)
+ static void op_addr_rr_post(DisasContext *s, arg_ldst_rr *a,
+-                            TCGv_i32 addr, int address_offset)
++                            TCGv_i32 addr)
  {
--    int mem_idx = get_mem_index(s);
--    TCGv_i32 addr, tmp;
-+    TCGv_i32 addr;
- 
-     if (!ENABLE_ARCH_5TE) {
-         return false;
-@@ -5077,15 +5109,9 @@ static bool trans_STRD_rr(DisasContext *s, arg_ldst_rr *a)
+     if (!a->p) {
+         TCGv_i32 ofs = load_reg(s, a->rm);
+@@ -4954,7 +4954,6 @@ static void op_addr_rr_post(DisasContext *s, arg_ldst_rr *a,
+     } else if (!a->w) {
+         return;
      }
-     addr = op_addr_rr_pre(s, a);
+-    tcg_gen_addi_i32(addr, addr, address_offset);
+     store_reg(s, a->rn, addr);
+ }
  
--    tmp = load_reg(s, a->rt);
--    gen_aa32_st_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-+    do_strd_store(s, addr, a->rt, a->rt + 1);
+@@ -4974,7 +4973,7 @@ static bool op_load_rr(DisasContext *s, arg_ldst_rr *a,
+      * Perform base writeback before the loaded value to
+      * ensure correct behavior with overlapping index registers.
+      */
+-    op_addr_rr_post(s, a, addr, 0);
++    op_addr_rr_post(s, a, addr);
+     store_reg_from_load(s, a->rt, tmp);
+     return true;
+ }
+@@ -4999,7 +4998,7 @@ static bool op_store_rr(DisasContext *s, arg_ldst_rr *a,
+     gen_aa32_st_i32(s, tmp, addr, mem_idx, mop);
+     disas_set_da_iss(s, mop, issinfo);
  
--    tcg_gen_addi_i32(addr, addr, 4);
--
--    tmp = load_reg(s, a->rt + 1);
--    gen_aa32_st_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
--
--    op_addr_rr_post(s, a, addr, -4);
-+    op_addr_rr_post(s, a, addr, 0);
+-    op_addr_rr_post(s, a, addr, 0);
++    op_addr_rr_post(s, a, addr);
      return true;
  }
  
-@@ -5213,20 +5239,13 @@ static bool trans_LDRD_ri_t32(DisasContext *s, arg_ldst_ri2 *a)
+@@ -5059,7 +5058,7 @@ static bool trans_LDRD_rr(DisasContext *s, arg_ldst_rr *a)
+     do_ldrd_load(s, addr, a->rt, a->rt + 1);
  
- static bool op_strd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
+     /* LDRD w/ base writeback is undefined if the registers overlap.  */
+-    op_addr_rr_post(s, a, addr, 0);
++    op_addr_rr_post(s, a, addr);
+     return true;
+ }
+ 
+@@ -5111,7 +5110,7 @@ static bool trans_STRD_rr(DisasContext *s, arg_ldst_rr *a)
+ 
+     do_strd_store(s, addr, a->rt, a->rt + 1);
+ 
+-    op_addr_rr_post(s, a, addr, 0);
++    op_addr_rr_post(s, a, addr);
+     return true;
+ }
+ 
+@@ -5147,13 +5146,14 @@ static TCGv_i32 op_addr_ri_pre(DisasContext *s, arg_ldst_ri *a)
+ }
+ 
+ static void op_addr_ri_post(DisasContext *s, arg_ldst_ri *a,
+-                            TCGv_i32 addr, int address_offset)
++                            TCGv_i32 addr)
  {
--    int mem_idx = get_mem_index(s);
--    TCGv_i32 addr, tmp;
-+    TCGv_i32 addr;
++    int address_offset = 0;
+     if (!a->p) {
+         if (a->u) {
+-            address_offset += a->imm;
++            address_offset = a->imm;
+         } else {
+-            address_offset -= a->imm;
++            address_offset = -a->imm;
+         }
+     } else if (!a->w) {
+         return;
+@@ -5178,7 +5178,7 @@ static bool op_load_ri(DisasContext *s, arg_ldst_ri *a,
+      * Perform base writeback before the loaded value to
+      * ensure correct behavior with overlapping index registers.
+      */
+-    op_addr_ri_post(s, a, addr, 0);
++    op_addr_ri_post(s, a, addr);
+     store_reg_from_load(s, a->rt, tmp);
+     return true;
+ }
+@@ -5203,7 +5203,7 @@ static bool op_store_ri(DisasContext *s, arg_ldst_ri *a,
+     gen_aa32_st_i32(s, tmp, addr, mem_idx, mop);
+     disas_set_da_iss(s, mop, issinfo);
  
-     addr = op_addr_ri_pre(s, a);
+-    op_addr_ri_post(s, a, addr, 0);
++    op_addr_ri_post(s, a, addr);
+     return true;
+ }
  
--    tmp = load_reg(s, a->rt);
--    gen_aa32_st_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
-+    do_strd_store(s, addr, a->rt, rt2);
+@@ -5216,7 +5216,7 @@ static bool op_ldrd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
+     do_ldrd_load(s, addr, a->rt, rt2);
  
--    tcg_gen_addi_i32(addr, addr, 4);
--
--    tmp = load_reg(s, rt2);
--    gen_aa32_st_i32(s, tmp, addr, mem_idx, MO_UL | MO_ALIGN);
--
--    op_addr_ri_post(s, a, addr, -4);
-+    op_addr_ri_post(s, a, addr, 0);
+     /* LDRD w/ base writeback is undefined if the registers overlap.  */
+-    op_addr_ri_post(s, a, addr, 0);
++    op_addr_ri_post(s, a, addr);
+     return true;
+ }
+ 
+@@ -5245,7 +5245,7 @@ static bool op_strd_ri(DisasContext *s, arg_ldst_ri *a, int rt2)
+ 
+     do_strd_store(s, addr, a->rt, rt2);
+ 
+-    op_addr_ri_post(s, a, addr, 0);
++    op_addr_ri_post(s, a, addr);
      return true;
  }
  
