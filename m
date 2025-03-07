@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66841A570FD
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A70A570F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:58:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqcsZ-0007UF-8U; Fri, 07 Mar 2025 13:57:03 -0500
+	id 1tqcsY-0007U8-MY; Fri, 07 Mar 2025 13:57:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqcsP-0007Rg-Vu
+ id 1tqcsQ-0007Rj-ED
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:56:54 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqcsN-0007lh-Np
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:56:53 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2feb91a2492so4019101a91.2
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:56:51 -0800 (PST)
+ id 1tqcsO-0007m1-GG
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:56:54 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2235908a30aso15234785ad.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:56:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741373810; x=1741978610; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741373811; x=1741978611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k6rq6CIIqovi+rqTbWr+nZgRpCqEfphmlSslf2GR3LU=;
- b=ApNry4HTsE4L5IdCITjCRkk4QHvKn5RWgFtJV+7RXL79FlqWTkPTk88rEVNsGNu2Zw
- LXcyolFnOJiGJqKBFzpcqsoAR9je1LjjsoRYc9JAHvzCSQBSgP25b2ynf0uafbOaZeJB
- I9Eh4lSTMmhDovl2mIcdyF4QbnweHAbPPjByXIL/Grv4qbbq9rzlhny2hGxfaPG+Gpz6
- zfPuWzpo3kccyP5rrxGCneOQwoCXRZ+TpY3g3Q9Ad1Lm+5qG6vgPA5FQknGYrjgPz/Y2
- v20X7qm2ySO4gAcij5IjxzzUS24KZUyrVW2Frz2kW1ctrK2Xksxw1SJTBuKyAhiPxX3O
- f+ag==
+ bh=SzyDViup58ROLXi9a5eLqmvAZgtt4FP4fwTvGjoaRo8=;
+ b=DywH/P87pkGFFqMRxJ7xn6GRLtOnOdrrX0ym/RwcEANRUHBq7APug8TCsdVZx5OtE2
+ ho45EyhEZfKedbyo+D9mKm3uOslz9zi5h36ErRrVztTdjYgs/d3ygVqIF2D9hui7jRMo
+ L+g34Ogado4luUc0bH7SzDsHungxD6OvYYVHZtPzlfwGhj0xDhWhOzW/6mKUydJDTbxI
+ WTFJfzfMJeTOZR4tDp4J9c3aDm397Uuyax16+ya+avu8hVoO64vLaV95bVdzDMrWN0kL
+ Njnm7DnMoR4yopWHlwhy+eGI+LEBPYKwDxAPPmncHmSmlFQBuXXQZu6zJA+yiqUGyAfx
+ mR+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741373810; x=1741978610;
+ d=1e100.net; s=20230601; t=1741373811; x=1741978611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k6rq6CIIqovi+rqTbWr+nZgRpCqEfphmlSslf2GR3LU=;
- b=UMBgtaAMes1YNtZ2h1Ge6uiXLjbD7KcWSb/ElH751nbl98durYsCpOBnQfYTcSx31F
- 5d4NEXcUKBR2U8cDp07d6pP9E7JQ7ATgJsMEwEsLO3zzcu9VeWg30iFbV6yyYAOLjFiT
- Z3t8SdT4UP4jeD6JT4R8BXN15bF1RvCjFUsySxcVGR88+xOderTwWChRMyLc/v7acl4y
- Im3VYaJwNNHuNYKbhcQGyis7mr5LMSld+UAJ7UrXqdyfjuYotF2w65R1IQfcrkfwI7jZ
- vg7RLHckckVswbN3QHJ7zBmGmNT0mjj/G3nP8UOiRoJtZe/GkaF/B1z0NFeAeRl4bn3c
- 0Ong==
-X-Gm-Message-State: AOJu0Yx40Mi4E3twn8rdIQE64sJQ4Wyqb18c8CQdRsdYPPjEO1aD3dHY
- +y5D+7egTny25B6aCZIYsbnUYwAYoV0X3ytmuXE/KNnxbCO0N9VxibtNDA8WKaYuJoqRLxOQKax
- e
-X-Gm-Gg: ASbGncs6tbIt8WQJim40AkZ43r/xZrhwUeeNcVYnE4KP0k1F0WaBO88QWCiPSaNsfed
- xD/+LHgMGu5QeTcxL5apW7P76hUDFcHjE0uLeS+/CuTtqX7pBgKhi22wwkS88Hsudylf6h5UhZI
- Icn1n0O/x11oJ4WPmdpL5cHkKVv28QSjeDoLwBUX1sWiBw18MluLadK4S5pTizSrIPgZAFtbSJF
- bLKEbnGc/L1e3DuMxmjvFXOU9mSYJEcPx9dxnuG0GdV7YuzNha6Xbk0sHi0uqw7uA4cjWr4w3Ba
- uLumFKe92LCxwR+goZUdeirx3+IeVCgHXZDc6sdGKKg1yJ9cEkmGC8/7VHi5vvdesdWYMsq2/+k
- 3
-X-Google-Smtp-Source: AGHT+IHm3ACmK48dcxvecCMc0q8ObbimEvoFT+PEBg5oQDTvsotjyz6ve+I+ZO6Vqa6s1AQ0+tMkVA==
-X-Received: by 2002:a17:90a:e7c2:b0:2ee:c91a:ad05 with SMTP id
- 98e67ed59e1d1-2ff7ce52479mr6405940a91.3.1741373810325; 
- Fri, 07 Mar 2025 10:56:50 -0800 (PST)
+ bh=SzyDViup58ROLXi9a5eLqmvAZgtt4FP4fwTvGjoaRo8=;
+ b=BgMs+5RJ8QykdonwP5ODZbmodKptPcd5VJkNesbapQBTwq38nyoR6wg3UhpNP3SfzZ
+ +hkDuaK35LKdAyXO73MTprOjz1mzlWZ72lDstWWY3FWT2NTbx32tTi2k4dw0Pt4qGhha
+ l49LYa4UNEqvqxiEf/K3BqmGznLG+lfLiSM4Wbe/6WPuehpFKAn2iMjrkI3CNs2jHKcl
+ 7PaBlVdRG5uM9qnETZ8SfUyjcZj+EnIbCoL1pCr4YpZbtBpp4ISx3ZpqynrC1cbYyXje
+ Z3a04yn/BqwZU9hJkVWTbwBL7tXWByQM0aUwvUJAjF+Bq2mTv+DpmqFfEObWtC7GhRpd
+ kqGg==
+X-Gm-Message-State: AOJu0Yz+CzvNXRU9yLaJYRe0JM8jCGNKAgn8IMMnVgwIMnjC6hmWs5mn
+ T1V1FMnlRNjbKPTtmN8Z65tkphgo5EhqlGda+mA7YeTZUzh3OQpz9duLtTSoQMKn99KJefPBGze
+ h
+X-Gm-Gg: ASbGncvLFfK+oqV52fnFxKQZq24ryrAWzBffERaUeKGj1/7RSEhavypSDkCdgmA4Tfm
+ +9SO+rxZgd3QwQxaZ4SJGBRK2W+8LzFlCEnO8HZ1IqjAN8z/zPdKOTRBgR/PhPsRgkMDISpcSDe
+ vb1yP7UcXMKRKjOlEgxm6R+YrK2NWu9ODCyeJZzCA5nmYj2GxamlWBWPE3ai/OkRWemlteO76IU
+ 1Zy/M5ZNiGSCCsu+BVESFJtOD1t/uVMU1WrzOvyqnr6/cRf9H2LNLlvit22cXM7mA6G/v3hdfXW
+ rlb9QdFyPtD8fCMBdrQY0tIXZdn4Xx9wHWcBCZHq3eS//TYSzDmqMTxZhTIIKIzhtwy7G92L/LQ
+ S
+X-Google-Smtp-Source: AGHT+IHHWMIx9HNmHaffyTP2HpiJ/yDQRPiibxBLg45i8lTaa1UT1sXFbutkrSYnD8yZrerMKPYwUA==
+X-Received: by 2002:a17:902:e5ce:b0:224:26f5:9c1e with SMTP id
+ d9443c01a7336-22428880333mr69820735ad.2.1741373811125; 
+ Fri, 07 Mar 2025 10:56:51 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff693534f8sm3391917a91.17.2025.03.07.10.56.49
+ 98e67ed59e1d1-2ff693534f8sm3391917a91.17.2025.03.07.10.56.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 10:56:49 -0800 (PST)
+ Fri, 07 Mar 2025 10:56:50 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 03/16] exec: Declare tlb_reset_dirty*() in 'exec/cputlb.h'
-Date: Fri,  7 Mar 2025 10:56:32 -0800
-Message-ID: <20250307185645.970034-5-richard.henderson@linaro.org>
+Subject: [PATCH 04/16] exec: Declare tlb_set_page_full() in 'exec/cputlb.h'
+Date: Fri,  7 Mar 2025 10:56:33 -0800
+Message-ID: <20250307185645.970034-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307185645.970034-1-richard.henderson@linaro.org>
 References: <20250307185645.970034-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,69 +106,99 @@ Move CPU TLB related methods to "exec/cputlb.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20241114011310.3615-14-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241114011310.3615-16-philmd@linaro.org>
 ---
- include/exec/cputlb.h   | 7 +++++++
- include/exec/exec-all.h | 3 ---
- include/exec/ram_addr.h | 1 +
- system/physmem.c        | 1 +
- 4 files changed, 9 insertions(+), 3 deletions(-)
+ include/exec/cputlb.h     | 23 +++++++++++++++++++++++
+ include/exec/exec-all.h   | 22 ----------------------
+ target/sparc/mmu_helper.c |  2 +-
+ 3 files changed, 24 insertions(+), 23 deletions(-)
 
 diff --git a/include/exec/cputlb.h b/include/exec/cputlb.h
-index ef18642a32..6cac7d530f 100644
+index 6cac7d530f..733ef012d1 100644
 --- a/include/exec/cputlb.h
 +++ b/include/exec/cputlb.h
-@@ -32,4 +32,11 @@ void tlb_unprotect_code(ram_addr_t ram_addr);
+@@ -21,6 +21,7 @@
+ #define CPUTLB_H
  
- #endif /* CONFIG_TCG */
+ #include "exec/cpu-common.h"
++#include "exec/vaddr.h"
  
-+#ifndef CONFIG_USER_ONLY
-+
-+void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
-+void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
-+
-+#endif
+ #ifdef CONFIG_TCG
+ 
+@@ -39,4 +40,26 @@ void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+ 
+ #endif
+ 
++/**
++ * tlb_set_page_full:
++ * @cpu: CPU context
++ * @mmu_idx: mmu index of the tlb to modify
++ * @addr: virtual address of the entry to add
++ * @full: the details of the tlb entry
++ *
++ * Add an entry to @cpu tlb index @mmu_idx.  All of the fields of
++ * @full must be filled, except for xlat_section, and constitute
++ * the complete description of the translated page.
++ *
++ * This is generally called by the target tlb_fill function after
++ * having performed a successful page table walk to find the physical
++ * address and attributes for the translation.
++ *
++ * At most one entry for a given virtual address is permitted. Only a
++ * single TARGET_PAGE_SIZE region is mapped; @full->lg_page_size is only
++ * used by tlb_flush_page.
++ */
++void tlb_set_page_full(CPUState *cpu, int mmu_idx, vaddr addr,
++                       CPUTLBEntryFull *full);
 +
  #endif
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 8eb0df48f9..f24256fb5e 100644
+index f24256fb5e..f43c67366b 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -486,9 +486,6 @@ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
+@@ -156,28 +156,6 @@ void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *cpu,
+                                                uint16_t idxmap,
+                                                unsigned bits);
  
- #if !defined(CONFIG_USER_ONLY)
- 
--void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
--void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+-/**
+- * tlb_set_page_full:
+- * @cpu: CPU context
+- * @mmu_idx: mmu index of the tlb to modify
+- * @addr: virtual address of the entry to add
+- * @full: the details of the tlb entry
+- *
+- * Add an entry to @cpu tlb index @mmu_idx.  All of the fields of
+- * @full must be filled, except for xlat_section, and constitute
+- * the complete description of the translated page.
+- *
+- * This is generally called by the target tlb_fill function after
+- * having performed a successful page table walk to find the physical
+- * address and attributes for the translation.
+- *
+- * At most one entry for a given virtual address is permitted. Only a
+- * single TARGET_PAGE_SIZE region is mapped; @full->lg_page_size is only
+- * used by tlb_flush_page.
+- */
+-void tlb_set_page_full(CPUState *cpu, int mmu_idx, vaddr addr,
+-                       CPUTLBEntryFull *full);
 -
- MemoryRegionSection *
- address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
-                                   hwaddr *xlat, hwaddr *plen,
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index 94bb3ccbe4..3d8df4edf1 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -23,6 +23,7 @@
+ /**
+  * tlb_set_page_with_attrs:
+  * @cpu: CPU to add this TLB entry for
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 9ff06026b8..7548d01777 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
  #include "cpu.h"
- #include "system/xen.h"
- #include "system/tcg.h"
-+#include "exec/cputlb.h"
- #include "exec/ramlist.h"
- #include "exec/ramblock.h"
- #include "exec/exec-all.h"
-diff --git a/system/physmem.c b/system/physmem.c
-index 8c1736f84e..a6af555f4b 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -32,6 +32,7 @@
- #endif /* CONFIG_TCG */
- 
- #include "exec/exec-all.h"
+-#include "exec/exec-all.h"
 +#include "exec/cputlb.h"
  #include "exec/page-protection.h"
- #include "exec/target_page.h"
- #include "exec/translation-block.h"
+ #include "qemu/qemu-print.h"
+ #include "trace.h"
 -- 
 2.43.0
 
