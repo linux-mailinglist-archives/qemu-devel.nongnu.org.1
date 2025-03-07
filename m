@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF21A56B41
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DEEA56B64
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:13:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZIJ-0000vu-Mz; Fri, 07 Mar 2025 10:07:23 -0500
+	id 1tqZIM-0000x2-UW; Fri, 07 Mar 2025 10:07:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIF-0000uu-Hc
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:20 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tqZIH-0000vM-8e
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:21 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZID-00089m-HZ
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:19 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43bcf9612f4so16469715e9.3
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:17 -0800 (PST)
+ id 1tqZIF-0008D3-I0
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:21 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-39129fc51f8so1697890f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741360035; x=1741964835; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741360038; x=1741964838; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rIwmQF35hYwgON9JLC3NfuNYRtNZnkx/8hFBCdAWebE=;
- b=Yj5J8pArVlXgZfm3UvwuCPjIJGPpnJptdcz/fhlQLRuxBah26pHfiJsqkL0xriHt9x
- VtEg37erg00hBetuJQ9Ixm2SaBEE5mKFiMUWtiIHYLDkSCr0wKTiEgUvoZ23W7tO1EgN
- +zWDIrN101XBrJ6dRMLeXr6he1WytVkEiPmqXjWvv71VI7CvXd6MG065Y5xJsZBYZPJ+
- BJuN1HnzksKtdwUhv3tydvaY2eVHJhZsffVvtghjFq07uooF0rl8zQMgTQaC7Uzd4CCL
- MEarPU2ebPQXzWnRl34FBHpbwbcoUl54B7AjbaBIQ9BHmtwjdMhGNN+3L/V3Q0+cF9QE
- YzPA==
+ :reply-to; bh=aSWu7SERkDl4TrKpc52a/rImNAR7H05Ny8NJ0H5vIQY=;
+ b=uCABt+866vWW+CObqd+rU+h5jLeK34m7UnixvPcPSfrRkwo30yZ6OVIg42KCJEfRB/
+ FJSrNcv70X/YDA0mICK1XF11NpTK+mH6x0LuGrUjh+FlZNC+ICGQwxHf+TTCUZB4OAKc
+ 6RNuhKALz3xR6lZJW4U4FvjE7e0+DIGG3qH7wp8zV03l0ydcHakph6Yr9+kOPgl7XG5s
+ lFU7x/j1nwCafkjmkq9ol6jBt2O4k4UNekvYvDc2CcCSrKFPF10ED1oEiE25rklw4e4z
+ KzU+mKGWpqcQ+3ibGIfhhtInUXViH//sH6NWon4Wy/qki0Jp8WinFIb8DjzKKs+VgKvu
+ bAkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741360035; x=1741964835;
+ d=1e100.net; s=20230601; t=1741360038; x=1741964838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rIwmQF35hYwgON9JLC3NfuNYRtNZnkx/8hFBCdAWebE=;
- b=nhCuH8bFe7k99MLFejr9ORHsHwBGU0NMogFDJ7hMKlZrFGLX2QbI2jC39WLTI7sha+
- vajvHPAA1eIBYuFQDW2ode61eOYHrfCaxe6ZOAiIWKZblDq3wo/K9m4zqqszFUJwxWQf
- OqqVGWrs3SWwfxvRoG6/qLWTTEpLzfAJHGmLcVglu6E5yaITl13EROvlNpUjKm8KIR48
- sEKCbxywxt5X2skyQ8YqCZsdiqRrSK4uccxFoRDyWrkvd7u4+Azkb4fi0kQOmtGorIit
- fjrSh5Ox0reDNxEp7xrj/sp8irFYi8iJ5mqLnb9q1M1/+cGU/iT1dg43Ob5oBQagLKuN
- ijxA==
-X-Gm-Message-State: AOJu0Yy+ntlfxfOKEfGu6M4ZE2dy4tcBiNyGz3MN/iMiONOzNvf5oiGh
- 3XJ5IA0sj+zIk8Hnsrij7mw9X8bCnmP97VNPXEIqdC1tTAMwk86XVP5zPgGolujm+54W1Z1zoWR
- 1
-X-Gm-Gg: ASbGnct4HjGls0tmNTKy4bhBhJwhgKRuDX+QBlvlEouVbRhWZst/qRYgmvflnY7EveY
- mzQSOJEbtN5iuzGBtoaEFwcZzTBUFdw3RWsgtneTOJLyf/RPbNQLVvvvKou25qpGZvj59oPCwlU
- BmJvAQV7utBR8UYXzzD9BsuS2eCbzrUUvsTP0u+EaSZNZoyzGxzBxsP3qdp3NMjs32bW6anailq
- UA4QLA9edHNdJTWvmx3+FTinIAVY3gRE0eWIsMVK4EF3MeKBQIUMCioKUalOvl2BrdRydfReX9j
- oLWgTWdcMjutAq2e8Z1baDQ4sHG6sbz2rnYBHyzvYm2q+64VUjI=
-X-Google-Smtp-Source: AGHT+IFqTOgIuw/RO92V7XXqoQMiwcpaymB5c2qqQV2oZyGyWEwVslopCyqQe9lD5mC2WriJeHaCDQ==
-X-Received: by 2002:a5d:59a8:0:b0:390:ea4b:ea9 with SMTP id
- ffacd0b85a97d-39132d98be4mr2743830f8f.39.1741360034779; 
- Fri, 07 Mar 2025 07:07:14 -0800 (PST)
+ bh=aSWu7SERkDl4TrKpc52a/rImNAR7H05Ny8NJ0H5vIQY=;
+ b=E4VaY8DkhSA/HVU5oiHVpJzsLb1sfvk8zq23NJzuOEaKKJE+AhKrg64egjQGlCHBGy
+ 9yHWqsF9fT/GhrZBDp7v+lVYiJOnz+xKYSxaAg3FOWtWFOcjUz5PfC+vEIf5k4XwIeTZ
+ KsuWVPXhhAI+h4QPKMXeXP5MFjO1aJjuqI0qnOVNZpSmNJs8pi5zgKhGw7sqzO9greOc
+ Q+3/9b3qQmV6/9hLWpQ2QdUsiYRCbxVdahpc0JUme5kH8JrtJYT1tlKh7nLBxE4Sxj+m
+ 0ZmxJzYjyrLcLSGDBzv/zHTuqIHx1RS2OdjLasUC+YE9hQEUSAbrE3NQAoCHYc9hGz2b
+ pl6g==
+X-Gm-Message-State: AOJu0Yza7hz1cWjjK572Dre7K0ZmDpiLecRLsoMxm8v/Sh8JHhR2Jifc
+ oeYbueDn6XfFLVRynOFp8OrlQkDX4If+P4ZBc/ctcwyyt1J2I/tFdYWDujHDrtdrFIN1yRXx7ef
+ m
+X-Gm-Gg: ASbGncsRRor+VY1Gg/r0rydGTevtLgycGaDPSQubSSlxXdAauRoETbEVC8FCdGTSmYw
+ r7bZ1xyUz/KO5HZytYMWmlzEG+74VrTWtbP1dRFLCOb0Rf7K3+E7K7dbEiZ5jsIg9B01eGZbLGy
+ fXdvduK/BVyiMJJyKNAl46t4P/xG94t8EHkRitQnzwesAA9o9b12QcSpux/877wMLqN35IyEYO0
+ 9deyLuztKkiTdMbYe4TmOEeHLtIqoe6cgnu3fkKZHGY/QKIVqKONx4j2EEOEFLarYnh8DXnQoQd
+ 7nC4A72JgDBf1+FZLRIXYWvqs6YMVyQWs3DPT4343pIDe/D/1UM=
+X-Google-Smtp-Source: AGHT+IEjEya4lXF0/VdtEPqr400qAh/j7du9RnWoBz7wuoGOdMhUUBVusIlBb0R2DJe1kjY1RYXVBw==
+X-Received: by 2002:a05:6000:1fa9:b0:391:2e31:c7e1 with SMTP id
+ ffacd0b85a97d-39132d2b0ebmr2397201f8f.4.1741360036529; 
+ Fri, 07 Mar 2025 07:07:16 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.13
+ ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 07:07:13 -0800 (PST)
+ Fri, 07 Mar 2025 07:07:15 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/21] tests/functional/test_arm_sx1: Check whether the serial
- console is working
-Date: Fri,  7 Mar 2025 15:06:50 +0000
-Message-ID: <20250307150708.3222813-4-peter.maydell@linaro.org>
+Subject: [PULL 04/21] target/arm: Apply correct timer offset when calculating
+ deadlines
+Date: Fri,  7 Mar 2025 15:06:51 +0000
+Message-ID: <20250307150708.3222813-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307150708.3222813-1-peter.maydell@linaro.org>
 References: <20250307150708.3222813-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,69 +98,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+When we are calculating timer deadlines, the correct definition of
+whether or not to apply an offset to the physical count is described
+in the Arm ARM DDI4087 rev L.a section D12.2.4.1.  This is different
+from when the offset should be applied for a direct read of the
+counter sysreg.
 
-The kernel that is used in the sx1 test prints the usual Linux log
-onto the serial console, but this test currently ignores it. To
-make sure that the serial device is working properly, let's check
-for some strings in the output here.
+We got this right for the EL1 physical timer and for the EL1 virtual
+timer, but got all the rest wrong: they should be using a zero offset
+always.
 
-While we're at it, also add the test to the corresponding section
-in the MAINTAINERS file.
+Factor the offset calculation out into a function that has a comment
+documenting exactly which offset it is calculating and which gets the
+HYP, SEC, and HYPVIRT cases right.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250226104833.1176253-1-thuth@redhat.com
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20250204125009.2281315-2-peter.maydell@linaro.org
 ---
- MAINTAINERS                      | 1 +
- tests/functional/test_arm_sx1.py | 7 ++++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ target/arm/helper.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5df6020ed54..699cf59e0b8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2010,6 +2010,7 @@ S: Maintained
- F: hw/*/omap*
- F: include/hw/arm/omap.h
- F: docs/system/arm/sx1.rst
-+F: tests/functional/test_arm_sx1.py
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 71dead7241b..7f341d753cd 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2460,6 +2460,32 @@ static uint64_t gt_phys_cnt_offset(CPUARMState *env)
+     return gt_phys_raw_cnt_offset(env);
+ }
  
- IPack
- M: Alberto Garcia <berto@igalia.com>
-diff --git a/tests/functional/test_arm_sx1.py b/tests/functional/test_arm_sx1.py
-index 4dd1e1859fa..25800b388c9 100755
---- a/tests/functional/test_arm_sx1.py
-+++ b/tests/functional/test_arm_sx1.py
-@@ -43,7 +43,8 @@ def test_arm_sx1_initrd(self):
-         self.vm.add_args('-append', f'kunit.enable=0 rdinit=/sbin/init {self.CONSOLE_ARGS}')
-         self.vm.add_args('-no-reboot')
-         self.launch_kernel(zimage_path,
--                           initrd=initrd_path)
-+                           initrd=initrd_path,
-+                           wait_for='Boot successful')
-         self.vm.wait(timeout=120)
- 
-     def test_arm_sx1_sd(self):
-@@ -54,7 +55,7 @@ def test_arm_sx1_sd(self):
-         self.vm.add_args('-no-reboot')
-         self.vm.add_args('-snapshot')
-         self.vm.add_args('-drive', f'format=raw,if=sd,file={sd_fs_path}')
--        self.launch_kernel(zimage_path)
-+        self.launch_kernel(zimage_path, wait_for='Boot successful')
-         self.vm.wait(timeout=120)
- 
-     def test_arm_sx1_flash(self):
-@@ -65,7 +66,7 @@ def test_arm_sx1_flash(self):
-         self.vm.add_args('-no-reboot')
-         self.vm.add_args('-snapshot')
-         self.vm.add_args('-drive', f'format=raw,if=pflash,file={flash_path}')
--        self.launch_kernel(zimage_path)
-+        self.launch_kernel(zimage_path, wait_for='Boot successful')
-         self.vm.wait(timeout=120)
- 
- if __name__ == '__main__':
++static uint64_t gt_indirect_access_timer_offset(CPUARMState *env, int timeridx)
++{
++    /*
++     * Return the timer offset to use for indirect accesses to the timer.
++     * This is the Offset value as defined in D12.2.4.1 "Operation of the
++     * CompareValue views of the timers".
++     *
++     * The condition here is not always the same as the condition for
++     * whether to apply an offset register when doing a direct read of
++     * the counter sysreg; those conditions are described in the
++     * access pseudocode for each counter register.
++     */
++    switch (timeridx) {
++    case GTIMER_PHYS:
++        return gt_phys_raw_cnt_offset(env);
++    case GTIMER_VIRT:
++        return env->cp15.cntvoff_el2;
++    case GTIMER_HYP:
++    case GTIMER_SEC:
++    case GTIMER_HYPVIRT:
++        return 0;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
+ {
+     ARMGenericTimer *gt = &cpu->env.cp15.c14_timer[timeridx];
+@@ -2469,8 +2495,7 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
+          * Timer enabled: calculate and set current ISTATUS, irq, and
+          * reset timer to when ISTATUS next has to change
+          */
+-        uint64_t offset = timeridx == GTIMER_VIRT ?
+-            cpu->env.cp15.cntvoff_el2 : gt_phys_raw_cnt_offset(&cpu->env);
++        uint64_t offset = gt_indirect_access_timer_offset(&cpu->env, timeridx);
+         uint64_t count = gt_get_countervalue(&cpu->env);
+         /* Note that this must be unsigned 64 bit arithmetic: */
+         int istatus = count - offset >= gt->cval;
 -- 
 2.43.0
 
