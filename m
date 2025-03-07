@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67A3A5730B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0C9A57314
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:48:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqeZe-0001qx-Ox; Fri, 07 Mar 2025 15:45:38 -0500
+	id 1tqecM-0003d2-OQ; Fri, 07 Mar 2025 15:48:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqeZc-0001py-8y
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:45:36 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1tqecD-0003cC-NO
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:48:20 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqeZa-0003OX-O2
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:45:36 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2feb867849fso3720600a91.3
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:45:33 -0800 (PST)
+ id 1tqecC-00052b-1H
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:48:17 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ff6cf448b8so4379795a91.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:48:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741380333; x=1741985133; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741380494; x=1741985294; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=rLO/+StPw/X4oUCCovoIqeWmzSABFEJNeyQLzxi5l8M=;
- b=XqhN4vcFIqJdr8jlDA0crrkog+tY6v+5LWeAEwGNzvcLTjkeMj13+oXU3gku7ha2YT
- 2HgmJcpOTH2ge0ZczYpZGnnmGRLMS6cMtE7lTsW7oSxsmbvhY1gvjczgx20RQvpmkB9s
- ML6uFk5Ig8Rl9R36q6jDjoKmk8ySS053Oow2RDDHW75xedI+98JV0nrtTJV4x0bYODDy
- yxPLr+BsfaTjwYJwkVhO6EjdhDcB8Y9fd0nEccDj3uBvgTKObPZPgUi/rpfEwjL4PM5q
- 6hFpopTdsIY9BgkeVC6GVugWoVIRqBIyRPso4vLvAnX/NNbDkwWaridxsVRcv2bxAqt8
- dtvw==
+ bh=mP0ey5gOmHtDhYxtoP2ViJ36qFqdu5yKgOMz6cPBmSY=;
+ b=eheEt/NCQANXL50yeW3qC/41r+LtlCd/J1DhYpHMCIVFOg5VgJaQg02whLjg7Zhh66
+ mKKhqNOhuGURNJ5T/j4O2IuXP17w0HK6KjarY+aXEBEeutrhZcPEDffzhOa9gpqy6Z3a
+ TR5kyWV3vj6VLXlmQh1ExLunprEfOMdYUDxNdhAShjujtHU47fsY3eUbVwP/h5dbcn8k
+ IKx1IE6q6BrVG+lV9xRN2CDscvtSfqCwFvUJufsD1PQK8xSTom0a0mPCv5TMzp3g1Cx+
+ x5L0Qa6/4z5fQr5ZPY/oqrN/ooWN/xqMmcD8WQ6EbU5F8E1FSr+Lm085UApFmIspeclm
+ kolQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741380333; x=1741985133;
+ d=1e100.net; s=20230601; t=1741380494; x=1741985294;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rLO/+StPw/X4oUCCovoIqeWmzSABFEJNeyQLzxi5l8M=;
- b=pW5IPLCMXGT92yw3NLXijv4lDG2w9o6LVbVcMf86eAJLfYLo3O/A7RI2gp8T4FGwh1
- uZLGy/KTcel9OxjRda6DAFz0oVxGdHFjkBSxH6WqkEP9PTDWvmYxm+bJqdg4AOsOaSWc
- pmAWFArC52bNh+S3bdD8cd+b7l/AFwjxMjhShTqHHR7iy4lzfnJikwPItbOvIOA9cXCo
- iZsLd13jo6ubL7Z39xubtdXeVdW23fJQ6tnnxe8qiQ61BhGBfjlt1lqluDfLYHBwVer2
- xKE0gLFW5al2XRkFl/JB85brFH7gIR8EZ/l0Tm6mMeEKWJRp37Zn4J9lQPr5kSPHsCI3
- uaAg==
+ bh=mP0ey5gOmHtDhYxtoP2ViJ36qFqdu5yKgOMz6cPBmSY=;
+ b=ZY631lPOjZtTiaw687nj8yLH6e7xnLDRaoa0Ey2Rm0LbHBuKi1p+vil3b/FNJk5Nar
+ kymtQTqCf3FNnH1a8gmsjPxIS2LgQEh3w4QNLwQIb58MHmdMwoJmHbe1ctpvMWwsw/VJ
+ KAGeJAySVIea0AMXW1QoPQJ+RH8BWXmvJBBsfwIPHyvBwvtTGO2ifgc3UhWHt5xIoxaG
+ CbX/BXcMiM3jHJW96LOFvJQjE0NZTMWUt7PXSMTLOaKIWkS4oXlfi9TMiSTkqQG/ymx6
+ jmVMe3QISJaVxPiFhoKCQ2rbWb81a/6ebJV78I+zc3BfKV5FgEjYXQ+qckhZ8n3XzZRz
+ D+zw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVB5SqpORV7cBpjWYP4sUfP7Views0TJWRIFaC+9nwb5P/+GZ9tMrujOGVx1vWLh3ITv+ne5rxhRfd0@nongnu.org
-X-Gm-Message-State: AOJu0YxeZpG2eGxhgwKgO2Fu15w01UzBhPHAgjQ8JdNBJsMfBvC5N2FP
- 1DF83HvlqZxdDPAatUXQyMivXtoAD7UKSEk+nXh3HWR8nwTeH2y5os3bHgt1tBNvUrdqdzp7ulS
- y
-X-Gm-Gg: ASbGnculB5fIIYJNVsWzA97TzGuPmT3em9Moqo5SunXvXGfWqm07lurlZB62raWKnhG
- LswNf+TuPef4QJ1y4jKdFJVggObJ1hejUxdcXqK+vS6kz5m+MosO8k2JFm+5d7f+lqs23e5NXYn
- dtRxG3kVfDehQkkfwYotPQuPphdA03Ke5PLnDf47g0cNMkS1wMYozn+e42R0zjc5XmsziAz0YdV
- ZAlnw7cErDkXvjMr5P3vBhbkzKgzwCw5P2CvQuWAwDSAlWl3zoNR/S0jxR7nshqrOvF8luiKqE6
- 7j15Rk+8DvV1Sz/zV6IuarxxkbcEEzBgtu9H/4EFH0xloviQkx6DwhTGHhCm5BAu9vjbJ3PvFma
- BrsHcljvO
-X-Google-Smtp-Source: AGHT+IGwCMdbLAW1CF8VaUmQROJB67bsnK5YtWJaBtG8tJy4UtvlYxRKLmQ0610im2RjPW/Tjy6l0g==
-X-Received: by 2002:a17:90b:2e90:b0:2ee:d7d3:3019 with SMTP id
- 98e67ed59e1d1-2ff7ce8e50amr8996345a91.12.1741380332757; 
- Fri, 07 Mar 2025 12:45:32 -0800 (PST)
+ AJvYcCWedPZkBQuJwQ+f9Wu/c2DY9kCju5+sEw6MrgJGWkFJdOR1rHAxrIjSqY72LGYIriTrFdG0BRO63NBC@nongnu.org
+X-Gm-Message-State: AOJu0YwGlISKHrcCsWl1ehq8+srZSPub1lS0DNIIW6lL/n/UznFGvxm9
+ yVLRjsML8x/5cfIFLK5uytYSk3ds5Cm+ysN65tjJzvb2vOmNshnYJ5MXE2vqpvA=
+X-Gm-Gg: ASbGnctbp7iIH99kAUC50NI8CEEZoqtFEHrWQkRYF5awZiB9BAC/6IaML8OTDcXbaXa
+ 1yYeBL3UdCNOFdgjX679hTJbFpOmXUjRV50xRt0CRcuegpzHjomyqjkXRUaN1sd9a5cGiRqvDEH
+ Mt/rNZbh+ohBloXrqytW3BfAGtWwaANgRU43k39rXPYu16NA1xrp+aUL2V1++uIfyt2TftNdYPx
+ fin4DXvz5RWZHkAZLRGktvzk4Q4iwiHFIFM1PJ2zs+h1LBVQb0kxM5m0SgGAKVsLt6/yYdDtI4q
+ sxCN/FE217hz1+azxxg5p3Ub50ylo0GGgagsSDRHoO+g9YEvdUz1pA2XGu7JxMmYVOrMrdRuQbl
+ wft29B/ru
+X-Google-Smtp-Source: AGHT+IEWkQlrdetRd94fT+hOzz8JRKTvbKVL3l4M8roPMIfPg3hSlPN7m+QLOA5e070tYHII4qe9xg==
+X-Received: by 2002:a17:90b:17c3:b0:2ea:712d:9a82 with SMTP id
+ 98e67ed59e1d1-2ff7cf4809amr7523764a91.29.1741380494492; 
+ Fri, 07 Mar 2025 12:48:14 -0800 (PST)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a7f8eesm34513565ad.112.2025.03.07.12.45.32
+ 98e67ed59e1d1-2ff4e823b98sm5398968a91.46.2025.03.07.12.48.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Mar 2025 12:45:32 -0800 (PST)
-Message-ID: <77ee5a00-05f7-4163-ab0c-d0cd3202c8d4@linaro.org>
-Date: Fri, 7 Mar 2025 12:45:30 -0800
+ Fri, 07 Mar 2025 12:48:14 -0800 (PST)
+Message-ID: <4e5205b8-128e-40df-b926-104a5da33e85@linaro.org>
+Date: Fri, 7 Mar 2025 12:48:12 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/14] hw/vfio/ccw: Check CONFIG_IOMMUFD at runtime using
- iommufd_builtin()
+Subject: Re: [PATCH 14/14] hw/vfio/platform: Check CONFIG_IOMMUFD at runtime
+ using iommufd_builtin
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20250307180337.14811-1-philmd@linaro.org>
- <20250307180337.14811-14-philmd@linaro.org>
+ <20250307180337.14811-15-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250307180337.14811-14-philmd@linaro.org>
+In-Reply-To: <20250307180337.14811-15-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,15 +110,13 @@ On 3/7/25 10:03, Philippe Mathieu-Daudé wrote:
 > Since the file doesn't use any target-specific knowledge anymore,
 > move it to system_ss[] to build it once.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   hw/vfio/ccw.c       | 27 +++++++++++++--------------
+>   hw/vfio/platform.c  | 25 ++++++++++++-------------
 >   hw/vfio/meson.build |  2 +-
->   2 files changed, 14 insertions(+), 15 deletions(-)
+>   2 files changed, 13 insertions(+), 14 deletions(-)
 
-Again, separate the changes for iommufd_builtin and meson.
-This is an s390x specific device; it really can't be shared beyond.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
