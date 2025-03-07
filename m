@@ -2,88 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD6DA55E46
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 04:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02F5A55F12
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 05:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqOJQ-0007iQ-F1; Thu, 06 Mar 2025 22:23:48 -0500
+	id 1tqOsR-0007ZP-Kh; Thu, 06 Mar 2025 22:59:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1tqOJN-0007ht-UQ
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 22:23:46 -0500
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1tqOJL-0002f1-KQ
- for qemu-devel@nongnu.org; Thu, 06 Mar 2025 22:23:45 -0500
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e4930eca0d4so1143873276.3
- for <qemu-devel@nongnu.org>; Thu, 06 Mar 2025 19:23:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1741317821; x=1741922621;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fuiEK/WSSOVigEAARmIocqRSaN77iMaB82+Lcmjelzc=;
- b=TCR6/OLlUdfNsquTrYoD7UyWfhG7KfkP6XV06fbXDHNo+qeSGIxe5a6As7tTqyFtl8
- Sceg4YUUHAW0WITsZmyW+Xrnm8ANksehA9I3DGrKk5MBd0p5NE7mKpNige812M19S0i5
- dEz56MroJxEe+LEvG2BkNf+ykUrbmiWxA71cUYCMDGe1jHylygFGxcfw2F64PBCrEtsQ
- 93iYv4XRusUpWXpVUL+G4SnMfYTNUf61tur2Wuyp1BJdzeIf8+dnvDn3WlZ5Wxgxg8yR
- PPClBWyNtfvAVZkBFlkfhnN6re1FcqwPW0YviuvJq0wla20nBVUEyK3w2gePw55Gf3sx
- jMKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741317821; x=1741922621;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fuiEK/WSSOVigEAARmIocqRSaN77iMaB82+Lcmjelzc=;
- b=mKbFhWSeyD6gGMJujoJA3JCV7VcQWuaLuoF3M6qWTgE0lG+ThTVThRvk2SUfLqUBUe
- UXfOGhdrZZaA/WWnFmGj7UdGBg3ruCfg9+E2RCUdCtxJ3EB5abZqhkSKDbuzzs4W8We3
- nXfrblCXe271+ohwUkBM73n0bcQ2guEv4Mm5QSD/+dDKMEmYGGZ4ZBi+RCYtgf74EQdx
- VmnnNj4DtMLdLQiP9TRDv/ySuLcJQzk7aG11K4KzJki3EbSPXisXtPzSOh7kVoW9IhSP
- Q+lxBHgXlOgNvdSTJabQPz9MHIWRx0CgjnBxZMLuAf7DTGeG2O+056I3fUH/0HkOfeEI
- jttQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVtI8FyaJeg3S99edDrkfsz5bt2c0yl2NlsmdQ11tyHaEbNzR13CJaO3mWXevPe+L84QOX282uEkmR7@nongnu.org
-X-Gm-Message-State: AOJu0YyDETOQV6Km4NSFeZ7Q91x9DDXm2rAbIu/OxmPb//w5jOiCBf/I
- rwSvnDgDv6rAHgO1aWzRgEsZEuUCXqMWyXSYOeI568GorqKo1bSD4Its461y3GUEXzWOr+Q04NS
- m1QLTqw9Cv3RbWhHlTHqhbetWzBeaj+wUnwk/iw==
-X-Gm-Gg: ASbGncs0YYpVeMlxQM8zisNsy5wEN4SRZNYeOYfJPy8E6oCzACfWRpQBRhjOGsvGQMY
- JCBDnSJpqZosecvZ+cBHoUe5Rlb6u50lzuHF6Y8eH77OSTghry/KCoYb9nrdJFqHuJTQJHMyMgd
- etKtd/+PpnleQM+S55x98nlgc=
-X-Google-Smtp-Source: AGHT+IFw1SSrNB8WIjPKAh2lIEku2XQuaoW1JIP5hAtyXXx5KMgPyxqzjRzr1+wpKqZftyfgf/PMuYhSxJxCEDnlLBI=
-X-Received: by 2002:a05:6902:330c:b0:e5b:1c0a:6cac with SMTP id
- 3f1490d57ef6-e635c1d81f6mr2224860276.38.1741317820817; Thu, 06 Mar 2025
- 19:23:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1tqOsO-0007X2-Gl; Thu, 06 Mar 2025 22:59:56 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1tqOsL-0004iq-Uw; Thu, 06 Mar 2025 22:59:56 -0500
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 7 Mar
+ 2025 11:59:45 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Fri, 7 Mar 2025 11:59:45 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
+Subject: [PATCH v6 00/29] Support AST2700 A1
+Date: Fri, 7 Mar 2025 11:59:09 +0800
+Message-ID: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250306064636.452396-1-debug@rivosinc.com>
- <20250306064636.452396-2-debug@rivosinc.com>
- <CAKmqyKOHrYSMVNUo9B6fcG7921eMeuioXw0KK8rD=NS8HEqbTQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKOHrYSMVNUo9B6fcG7921eMeuioXw0KK8rD=NS8HEqbTQ@mail.gmail.com>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 6 Mar 2025 19:23:28 -0800
-X-Gm-Features: AQ5f1JolP-ZYT18RnjLIxpCJqkUa6x5pexpwGZuDYCBKOafxFsrozu_b7EsOjuA
-Message-ID: <CAKC1njQ-ziJFAFfSiXwY=fB17ih3dMPCra-PWxHkFSZ7OTaz7A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] target/riscv: fixes a bug against `ssamoswap`
- behavior in M-mode
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- Ved Shanbhogue <ved@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=debug@rivosinc.com; helo=mail-yb1-xb34.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,33 +56,123 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Mar 6, 2025 at 6:05=E2=80=AFPM Alistair Francis <alistair23@gmail.c=
-om> wrote:
->
-> On Thu, Mar 6, 2025 at 4:47=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> =
-wrote:
-> >
-> > Commit f06bfe3dc38c ("target/riscv: implement zicfiss instructions") ad=
-ds
-> > `ssamoswap` instruction. `ssamoswap` takes the code-point from existing
-<... snipped...>
-> > Fixes: f06bfe3dc38c ("target/riscv: implement zicfiss instructions")
-> >
-> > Reported-by: Ved Shanbhogue <ved@rivosinc.com>
-> > Signed-off-by: Deepak Gupta <debug@rivosinc.com>
->
-> Thanks!
->
-> Applied to riscv-to-apply.next
+v1:
+ 1. Refactor INTC model to support both INTC0 and INTC1.
+ 2. Support AST2700 A1.
+ 3. Create ast2700a0-evb machine.
+ 
+v2:
+  To streamline the review process, split the following patch series into
+  three parts.
+  https://patchwork.kernel.org/project/qemu-devel/cover/20250121070424.2465942-1-jamin_lin@aspeedtech.com/
+  This patch series focuses on cleaning up the INTC model to
+  facilitate future support for the INTC_IO model.
 
-Thanks a lot.
+v3:
+ 1. Update and add functional test for AST2700
+ 2. Add AST2700 INTC design guidance and its block diagram.
+ 3. Retaining the INTC naming and introducing a new INTCIO model to support the AST2700 A1.
+ 4. Create ast2700a1-evb machine and rename ast2700a0-evb machine
+ 5. Fix silicon revision issue and support AST2700 A1.
 
->
-> Please use a cover letter for a multi-patch series in the future
->
+v4:
+ 1. rework functional test for AST2700
+ 2. the initial machine "ast2700-evb" is aliased to "ast2700a0-evb.
+ 3. intc: Reduce regs array size by adding a register sub-region
+ 4. intc: split patch for Support setting different register sizes
+ 5. update ast2700a1-evb machine parent to TYPE_ASPEED_MACHINE
 
-Noted.
+v5:
+ 1. Rename status_addr and addr to status_reg and reg for clarity
+ 2. Introduce dynamic allocation for regs array
+ 3. Sort the memmap table by mapping address
+ 4. ast27x0.c split patch for Support two levels of INTC controllers for AST2700 A1
+ 5. tests/functional/aspped split patch for Introduce start_ast2700_test API
+ 6. keep variable naming for reviewer suggestion.
+ 7. Add reviewer suggestion and split patch to make more readable.
+ 
+v6: 
+  1. rename reg_size to nr_regs
+  2. Fix clean regs size
+  3. replace g_malloc with g_new
+
+With the patch applied, QEMU now supports two machines for running AST2700 SoCs:
+ast2700a0-evb: Designed for AST2700 A0
+ast2700a1-evb: Designed for AST2700 A1
+
+Test information
+1. QEMU version: https://github.com/qemu/qemu/commit/50d38b8921837827ea397d4b20c8bc5efe186e53
+2. ASPEED SDK v09.05 pre-built image
+   https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.05
+   ast2700-default-obmc.tar.gz (AST2700 A1)
+   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-default-obmc.tar.gz
+   ast2700-a0-default-obmc.tar.gz (AST2700 A0)
+   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz
+   
+This patch series depends on the following patch series:
+https://patchwork.kernel.org/project/qemu-devel/cover/20250304064710.2128993-1-jamin_lin@aspeedtech.com/
+https://patchwork.kernel.org/project/qemu-devel/cover/20250225075622.305515-1-jamin_lin@aspeedtech.com/
+
+Jamin Lin (29):
+  hw/intc/aspeed: Support setting different memory size
+  hw/intc/aspeed: Rename status_addr and addr to status_reg and reg for
+    clarity
+  hw/intc/aspeed: Introduce dynamic allocation for regs array
+  hw/intc/aspeed: Support setting different register size
+  hw/intc/aspeed: Reduce regs array size by adding a register sub-region
+  hw/intc/aspeed: Introduce helper functions for enable and status
+    registers
+  hw/intc/aspeed: Add object type name to trace events for better
+    debugging
+  hw/arm/aspeed: Rename IRQ table and machine name for AST2700 A0
+  hw/arm/aspeed_ast27x0: Sort the IRQ table by IRQ number
+  hw/intc/aspeed: Support different memory region ops
+  hw/intc/aspeed: Rename num_ints to num_inpins for clarity
+  hw/intc/aspeed: Add support for multiple output pins in INTC
+  hw/intc/aspeed: Refactor INTC to support separate input and output pin
+    indices
+  hw/intc/aspeed: Introduce AspeedINTCIRQ structure to save the irq
+    index and register address
+  hw/intc/aspeed: Introduce IRQ handler function to reduce code
+    duplication
+  hw/intc/aspeed: Add Support for Multi-Output IRQ Handling
+  hw/intc/aspeed: Add Support for AST2700 INTCIO Controller
+  hw/misc/aspeed_scu: Add Support for AST2700/AST2750 A1 Silicon
+    Revisions
+  hw/arm/aspeed_ast27x0.c Support AST2700 A1 GIC Interrupt Mapping
+  hw/arm/aspeed_ast27x0: Define an Array of AspeedINTCState with Two
+    Instances
+  hw/arm/aspeed_ast27x0: Support two levels of INTC controllers for
+    AST2700 A1
+  hw/arm/aspeed_ast27x0: Add SoC Support for AST2700 A1
+  hw/arm/aspeed: Add Machine Support for AST2700 A1
+  hw/arm/aspeed_ast27x0: Sort the memmap table by mapping address
+  tests/functional/aspeed: Introduce start_ast2700_test API
+  tests/functional/aspeed: Update temperature hwmon path
+  tests/functional/aspeed: Update test ASPEED SDK v09.05
+  tests/functional/aspeed: Add test case for AST2700 A1
+  docs/specs: Add aspeed-intc
+
+ docs/specs/aspeed-intc.rst              | 136 +++++
+ docs/specs/index.rst                    |   1 +
+ include/hw/arm/aspeed_soc.h             |   3 +-
+ include/hw/intc/aspeed_intc.h           |  36 +-
+ include/hw/misc/aspeed_scu.h            |   2 +
+ hw/arm/aspeed.c                         |  33 +-
+ hw/arm/aspeed_ast27x0.c                 | 329 ++++++++----
+ hw/intc/aspeed_intc.c                   | 667 ++++++++++++++++++------
+ hw/misc/aspeed_scu.c                    |   2 +
+ hw/intc/trace-events                    |  25 +-
+ tests/functional/test_aarch64_aspeed.py |  47 +-
+ 11 files changed, 978 insertions(+), 303 deletions(-)
+ create mode 100644 docs/specs/aspeed-intc.rst
+
+-- 
+2.43.0
+
 
