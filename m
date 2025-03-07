@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E58A56886
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B258BA568E9
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:27:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqXTO-0002q7-Q1; Fri, 07 Mar 2025 08:10:42 -0500
+	id 1tqXij-0000hp-8x; Fri, 07 Mar 2025 08:26:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqXSv-0002oZ-60
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:10:13 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tqXie-0000hV-UF
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:26:31 -0500
+Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqXSr-0001TW-K6
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:10:11 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-39127512371so1125405f8f.0
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 05:10:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tqXid-0007Fb-5S
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:26:28 -0500
+Received: by mail-yb1-xb30.google.com with SMTP id
+ 3f1490d57ef6-e46ebe19489so1399640276.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 05:26:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741353007; x=1741957807; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lNWRd/3bpDqDY9go9fwbBzHVlSOjDlQlmHNSNyWLCFQ=;
- b=yUdeLq3jnlkWZlltyx+pXnhbgeqqqF/saWeRbJtV9pF+77cyt9R1Uj6d5xMNk0GOB4
- Td28VjoDk99fQRSg2LVQNr8wyEJR/6ALXc2CBcMIsWLqA6w1d0YveGgCoQKf5SlgEb1G
- M9gtY8NXvqdqrALyFZdL7jsAdNw0yz28QOuVDCHr+ThnNxkSHGSeODn8aKS8Rl9BwmBf
- 3TdG2P1CBxt5pCm1vZmjcEBl6BsN/ZYl9suhe6nUhDlFHmziz7dnhjK3v+et/vszgRUW
- Kgw3lNsbTaijt3rQ1adAV0Gz1OJI9hvdMj67f9sV0/5gfAY1bZgsW5QP1Z9B259LE0HM
- HstA==
+ d=linaro.org; s=google; t=1741353985; x=1741958785; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zSDIgEnwut/0cuVmGxS3WfG5GsPK27jE0q3te0D2oOE=;
+ b=s2ZS772f1ltaxo6a6LxmzlcUgdxbFuC/ZhGALWf1Dm5/nwPwN6Fgh8GX9kMyl0amxI
+ Vu0QUT4Ud0AR4sPCoj2wHlOTDyZbtxi3LQYaeFEwp9mYdSh9iKOG+cERCVoMXZp3UlQE
+ WlKrv7xff+Zb5zR9TSWFt5rQQtLyZGQEvY4WDa8MdUinfiQHinBoxQuGy6X53LjQN872
+ XO6xvqM/leghiWh7hmsPdBb6Xq08QBNma2xmHAwaIX3BJ0byRHTJ5QTTGYUn5NLMqv6q
+ 52RVxh9iv0NDG4vR54ZXf5BUvKREQZPmVjplre8ydEaYtsjhTPMZ0Dxn2z2wWb3971bT
+ MFlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741353007; x=1741957807;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lNWRd/3bpDqDY9go9fwbBzHVlSOjDlQlmHNSNyWLCFQ=;
- b=PUVzD2rWgvUdpVWg3TcGeQess1Y0ipyZuiUKmfkz+jPqldlUXwcKVX4oC4vle0nWdT
- NEaO6iDCnhitfIJ7/ruuU2LrxnF7tOwHBrJ7vLd2pnAhxSYZvDD/TWgAnzhSoAyxUW42
- nNrJCIVecVv6hN5Vs5cz6329SzI6+81es6FsyQXz3wGxK0XAtbQGIX0wzf2o/vTjoQsv
- Z71f265zXFmBie4DGUjxP2Wl9AX4rQTVkVsdo2k1bvCwtaCFpoLHInfl2EHo8fWFY2GG
- cnp32nPzHRidf94QWglGw2sLSMasp7WqqtgAxCjyxoPvv1gOiJhsdlmYNqql4zJH24U4
- Mn0w==
-X-Gm-Message-State: AOJu0Yw92A2E8Mhg1zqw0GyU9N4hy0Do1zviP0vAkKOu7wdYcsXEug/H
- ZiNb8yzT1pXA9zERxidXkaVSehHH9CKH0hU3hdTbEaUkNGz5xZbJ/dUxOsW48DtRks07yIk7Fgc
- BClw=
-X-Gm-Gg: ASbGncvrWUyeXEzUjEx8OnkwjgMnpsZ7po2krcNW8TaoZWuWx/JYFsezwHlU8Tsa1eT
- DNDKVsrS40pxWVS+DBHzNaCRSV6z2C/gUJGsTorVkAQJERamoP0jGU600R2rHOQX5GoH/0lvejN
- UItcxBs5eR7HGrPWZBHXJBkDkLv43RmNK94ZRtO6GJusuVzPv7Zrs1pRY2qRsa2W9lOdvemGb7b
- AiDmu+B1TMix7Qn2Qe2C0yyZHlez2b+qEGqXgHa3thA0pp/h34X+pFzrnRjgCDxXewTt+t7A4Pv
- 9OUJqTYS6PGNX8NElKxHHJk6H02EAYL5P+UM3tw42kodAoJHMcJP8HzQiFLJU+ezvk25bAmcgdV
- xlRfnqBuNmDzk3/Az/ck=
-X-Google-Smtp-Source: AGHT+IEPVIFMKocCD3jCPYbRF/oYb0vgNWSBKX8TUtvoqF/C4a8ingzOxsi1FbRQFHjURUZIE7JJRA==
-X-Received: by 2002:a5d:584e:0:b0:38d:cf33:31d6 with SMTP id
- ffacd0b85a97d-39132d68426mr2062622f8f.3.1741353006878; 
- Fri, 07 Mar 2025 05:10:06 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42c5880sm80124445e9.19.2025.03.07.05.10.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 05:10:06 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
- Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 3/3] user: Extract common MMAP API to 'user/mmap.h'
-Date: Fri,  7 Mar 2025 14:09:51 +0100
-Message-ID: <20250307130951.4816-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250307130951.4816-1-philmd@linaro.org>
-References: <20250307130951.4816-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1741353985; x=1741958785;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zSDIgEnwut/0cuVmGxS3WfG5GsPK27jE0q3te0D2oOE=;
+ b=dnNImCLufwchqWC35DjvvOFCi6j3nfpoXnhED+xeSvkQ6M4ErpE8yyoHgZTrRxWe/c
+ 68x48caQjcSOeyUCpkL89aa3gF0ByJxGNHqASnUqxUrLHax3VEUi908MwoyPU7IyLk0V
+ KcdnegdsmU8oZ7xOpESI68EWtnPfk6VmuntbNEDTv585wk7k4BL0wGqHKrMpARb+GN8z
+ nCLRRCBgzRE2jjQzO9ZNFaYwZ1ELmk3cN+ZlAG9tSae8TdC4aUCGCegOqBXz4w3g6ymV
+ JSyHZImMqGQBYvVG7eROSsLOCkYFZw5of+vlrUowRh/ELlOFVp5lO1RU48dj4MzXszdn
+ 70mQ==
+X-Gm-Message-State: AOJu0YxRlQK5Jn+v2y+6KTd6AoRVVZO2vCvFNG4WGjhCkPvz7xoxLjLg
+ JEVtXn31r5IldW2CBPZMc6XZpDnjMqKt6eiVaXQlA+lAyA5ZJK8KClFiHJIHUw9RrwaYS4ofIEZ
+ GyO606KA3qcJjYiU6bYWNHmvofUX2OFNdy5TZdxEcL+eFug4y
+X-Gm-Gg: ASbGnctvoJbKkRCmplYpbnmEIbb34+6g1DDzpi4Ay2eOpBBPt1mByuPHTWtyewQ/D8B
+ y2jeXh5E3VtM/DPusjU6k3yLCjd55a2XtzEaxEgoyxjygUMLcoBBkFO8R/vlczRRuPzy9uhKfmY
+ PmSiVRK/0SdbR5tM32gZIgyr/t72Q=
+X-Google-Smtp-Source: AGHT+IGpaaPKCgD6dGSgHh8MPsESAxvuLrvOuT8AY+A3Q8WEdecXZMm3/DJY56E/suCnUYB/+jiLn31FI18ZQAykudw=
+X-Received: by 2002:a05:6902:e0f:b0:e5d:cdc6:7acf with SMTP id
+ 3f1490d57ef6-e635c1d7c51mr3868593276.31.1741353985523; Fri, 07 Mar 2025
+ 05:26:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+References: <20250215021654.1786679-1-keithp@keithp.com>
+ <20250218212103.2024039-1-keithp@keithp.com>
+ <20250218212103.2024039-4-keithp@keithp.com>
+In-Reply-To: <20250218212103.2024039-4-keithp@keithp.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 7 Mar 2025 13:26:14 +0000
+X-Gm-Features: AQ5f1Jp_B0srcvbhBQlDFs6uBkGUUstmJJw-XOcbkWU4je_rrbQ_V0uFhWeYnOY
+Message-ID: <CAFEAcA-YDsGJNyARdv4_3TmzvDyT06xykzLCxyVXY3YZCk6bCA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] hw/rx: Reset the CPU at qemu reset time
+To: Keith Packard <keithp@keithp.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,131 +91,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep common MMAP-related declarations in a single place.
+On Tue, 18 Feb 2025 at 21:22, Keith Packard via <qemu-devel@nongnu.org> wrote:
+>
+> This ensure that the CPU gets reset every time QEMU resets. Use either
+> the kernel entry point or the reset vector if no kernel was loaded.
+>
+> Signed-off-by: Keith Packard <keithp@keithp.com>
+> ---
+>  hw/rx/rx-gdbsim.c | 36 +++++++++++++++++++++++++++++++++++-
+>  target/rx/cpu.c   |  9 ++-------
+>  target/rx/cpu.h   |  3 +++
+>  3 files changed, 40 insertions(+), 8 deletions(-)
+>
+> diff --git a/hw/rx/rx-gdbsim.c b/hw/rx/rx-gdbsim.c
+> index 4afd77efd5..9e395ae345 100644
+> --- a/hw/rx/rx-gdbsim.c
+> +++ b/hw/rx/rx-gdbsim.c
+> @@ -22,6 +22,7 @@
+>  #include "qemu/guest-random.h"
+>  #include "qemu/units.h"
+>  #include "qapi/error.h"
+> +#include "exec/cpu_ldst.h"
+>  #include "hw/loader.h"
+>  #include "hw/rx/rx62n.h"
+>  #include "system/qtest.h"
+> @@ -56,6 +57,34 @@ DECLARE_OBJ_CHECKERS(RxGdbSimMachineState, RxGdbSimMachineClass,
+>                       RX_GDBSIM_MACHINE, TYPE_RX_GDBSIM_MACHINE)
+>
+>
+> +static void rx_cpu_reset(void *opaque)
+> +{
+> +    RXCPU *cpu = opaque;
+> +    CPUState *cs = CPU(cpu);
+> +    CPURXState *env = cpu_env(cs);
+> +
+> +    cpu_reset(cs);
+> +
+> +    if (env->use_reset_pc) {
+> +        /*
+> +         * Load the PC with the starting address for the kernel
+> +         */
+> +        env->pc = env->reset_pc;
+> +    } else {
+> +        /*
+> +         * Load the initial PC from the reset vector. If there is
+> +         * a ROM containing that vector use that, otherwise read
+> +         * it from target memory.
+> +         */
+> +        uint32_t *resetvec_p = rom_ptr_for_as(cs->as, 0xfffffffc, 4);
+> +        if (resetvec_p) {
+> +            env->pc = ldl_p(resetvec_p);
+> +        } else {
+> +            env->pc = cpu_ldl_data(env, 0xfffffffc);
+> +        }
+> +    }
+> +}
 
-Note, this disable ThreadSafetyAnalysis on Linux for:
-- mmap_fork_start()
-- mmap_fork_end().
+Unless there's a strong reason for doing something different,
+I would favour following the same pattern arm does for this.
+(Or were you following existing code in some other target?
+I certainly wouldn't be surprised if we already did this in
+multiple different ways...)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- bsd-user/qemu.h        | 12 +-----------
- include/user/mmap.h    | 32 ++++++++++++++++++++++++++++++++
- linux-user/user-mmap.h | 19 ++-----------------
- 3 files changed, 35 insertions(+), 28 deletions(-)
- create mode 100644 include/user/mmap.h
+Anyway, Arm splits up the work like this:
+ * the CPU reset function does the "load initial PC from
+   reset vector table" part (including using rom_ptr_for_as()
+   to decide whether to do cpu_ldl_data() or not)
+ * the board boot code's reset function does:
+    cpu_reset();
+    if (need to override the start PC because of the image loaded) {
+        cpu_set_pc(cs, image_pc);
+    }
+    /* and any other CPU setup that's specific to kernel load etc */
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 0b3bd65b180..c1c508281a8 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -32,6 +32,7 @@
- extern char **environ;
- 
- #include "user/thunk.h"
-+#include "user/mmap.h"
- #include "target_arch.h"
- #include "syscall_defs.h"
- #include "target_syscall.h"
-@@ -233,19 +234,8 @@ void print_taken_signal(int target_signum, const target_siginfo_t *tinfo);
- extern int do_strace;
- 
- /* mmap.c */
--int target_mprotect(abi_ulong start, abi_ulong len, int prot);
--abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
--                     int flags, int fd, off_t offset);
--int target_munmap(abi_ulong start, abi_ulong len);
--abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
--                       abi_ulong new_size, unsigned long flags,
--                       abi_ulong new_addr);
- int target_msync(abi_ulong start, abi_ulong len, int flags);
--extern abi_ulong mmap_next_start;
--abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
- void mmap_reserve(abi_ulong start, abi_ulong size);
--void TSA_NO_TSA mmap_fork_start(void);
--void TSA_NO_TSA mmap_fork_end(int child);
- 
- /* main.c */
- extern char qemu_proc_pathname[];
-diff --git a/include/user/mmap.h b/include/user/mmap.h
-new file mode 100644
-index 00000000000..4d5e9aac70a
---- /dev/null
-+++ b/include/user/mmap.h
-@@ -0,0 +1,32 @@
-+/*
-+ * MMAP declarations for QEMU user emulation
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef USER_MMAP_H
-+#define USER_MMAP_H
-+
-+#include "user/abitypes.h"
-+
-+/*
-+ * mmap_next_start: The base address for the next mmap without hint,
-+ * increased after each successful map, starting at task_unmapped_base.
-+ * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
-+ */
-+extern abi_ulong mmap_next_start;
-+
-+int target_mprotect(abi_ulong start, abi_ulong len, int prot);
-+
-+abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-+                     int flags, int fd, off_t offset);
-+int target_munmap(abi_ulong start, abi_ulong len);
-+abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-+                       abi_ulong new_size, unsigned long flags,
-+                       abi_ulong new_addr);
-+
-+abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
-+
-+void TSA_NO_TSA mmap_fork_start(void);
-+void TSA_NO_TSA mmap_fork_end(int child);
-+
-+#endif
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index b94bcdcf83c..dfc4477a720 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -18,6 +18,8 @@
- #ifndef LINUX_USER_USER_MMAP_H
- #define LINUX_USER_USER_MMAP_H
- 
-+#include "user/mmap.h"
-+
- /*
-  * Guest parameters for the ADDR_COMPAT_LAYOUT personality
-  * (at present this is the only layout supported by QEMU).
-@@ -39,24 +41,7 @@
- extern abi_ulong task_unmapped_base;
- extern abi_ulong elf_et_dyn_base;
- 
--/*
-- * mmap_next_start: The base address for the next mmap without hint,
-- * increased after each successful map, starting at task_unmapped_base.
-- * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
-- */
--extern abi_ulong mmap_next_start;
--
--int target_mprotect(abi_ulong start, abi_ulong len, int prot);
--abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
--                     int flags, int fd, off_t offset);
--int target_munmap(abi_ulong start, abi_ulong len);
--abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
--                       abi_ulong new_size, unsigned long flags,
--                       abi_ulong new_addr);
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
--abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
--void mmap_fork_start(void);
--void mmap_fork_end(int child);
- 
- abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-                        abi_ulong shmaddr, int shmflg);
--- 
-2.47.1
+That way if the user chooses to use the 'generic loader'
+(-device loader) to load their guest image rather than
+-kernel, we will correctly load the reset PC out
+of their image.
 
+You might then prefer to put the initial image_pc into
+the RxGdbSimMachineState instead of the CPURXState,
+since the code that cares about it directly is all
+in hw/rx/ rather than target/rx/.
+
+thanks
+-- PMM
 
