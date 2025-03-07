@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA35EA55F2F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 05:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF687A55F2B
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 05:05:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqOuG-0002BM-HF; Thu, 06 Mar 2025 23:01:52 -0500
+	id 1tqOuG-00028r-7M; Thu, 06 Mar 2025 23:01:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tqOtr-0001Xd-8p; Thu, 06 Mar 2025 23:01:30 -0500
+ id 1tqOtu-0001YW-AI; Thu, 06 Mar 2025 23:01:30 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tqOtn-00053C-IH; Thu, 06 Mar 2025 23:01:25 -0500
+ id 1tqOts-00053C-A1; Thu, 06 Mar 2025 23:01:29 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 7 Mar
@@ -30,10 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v6 21/29] hw/arm/aspeed_ast27x0: Support two levels of INTC
- controllers for AST2700 A1
-Date: Fri, 7 Mar 2025 11:59:30 +0800
-Message-ID: <20250307035945.3698802-22-jamin_lin@aspeedtech.com>
+Subject: [PATCH v6 22/29] hw/arm/aspeed_ast27x0: Add SoC Support for AST2700 A1
+Date: Fri, 7 Mar 2025 11:59:31 +0800
+Message-ID: <20250307035945.3698802-23-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
 References: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
@@ -65,192 +64,122 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The design of INTC controllers has significantly changed in AST2700 A1.
-
-There are a total of 480 interrupt sources in AST2700 A1. For interrupt numbers
-from 0 to 127, they can route directly to PSP, SSP, and TSP. Due to the
-limitation of interrupt numbers of processors, the interrupts are merged every
-32 sources for interrupt numbers greater than 127.
-
-There are two levels of interrupt controllers, INTC(CPUD Die) and INTCIO
-(IO Die). The interrupt sources of INTC are the interrupt numbers from INTC_0 to
-INTC_127 and interrupts from INTCIO. The interrupt sources of INTCIO are the
-interrupt numbers greater than INTC_127. INTC_IO controls the interrupts
-INTC_128 to INTC_319 only.
-
-Currently, only GIC 192 to 201 are supported, and their source interrupts are
-from INTCIO and connected to INTC at input pin 0 and output pins 0 to 9 for
-GIC 192-201.
-
-The design of the orgates for GICINT 196 is as follows:
-It has interrupt sources ranging from 0 to 31, with its output pin connected to
-INTCIO "T0 GICINT_196". The output pin is then connected to INTC "GIC_192_201"
-at bit 4, and its bit 4 output should be connected to GIC 196.
-The design of INTC GIC_192_201 have 10 output pins, mapped as following:
-Bit 0 -> GIC 192
-Bit 1 -> GIC 193
-Bit 2 -> GIC 194
-Bit 3 -> GIC 195
-Bit 4 -> GIC 196
-
-To support both AST2700 A1 and A0, INTC input pins 1 to 9 and output pins
-10 to 18 remain to support GIC 128-136, which source interrupts from INTC.
-These will be removed if we decide not to support AST2700 A0 in the future.
-
-|-------------------------------------------------------------------------------------------------------|
-|                                                   AST2700 A1 Design                                   |
-|           To GICINT196                                                                                |
-|                                                                                                       |
-|   ETH1    |-----------|                    |--------------------------|        |--------------|       |
-|  -------->|0          |                    |         INTCIO           |        |  orgates[0]  |       |
-|   ETH2    |          4|   orgates[0]------>|inpin[0]-------->outpin[0]|------->| 0            |       |
-|  -------->|1         5|   orgates[1]------>|inpin[1]-------->outpin[1]|------->| 1            |       |
-|   ETH3    |          6|   orgates[2]------>|inpin[2]-------->outpin[2]|------->| 2            |       |
-|  -------->|2        19|   orgates[3]------>|inpin[3]-------->outpin[3]|------->| 3  OR[0:9]   |-----| |
-|   UART0   |         20|-->orgates[4]------>|inpin[4]-------->outpin[4]|------->| 4            |     | |
-|  -------->|7        21|   orgates[5]------>|inpin[5]-------->outpin[5]|------->| 5            |     | |
-|   UART1   |         22|   orgates[6]------>|inpin[6]-------->outpin[6]|------->| 6            |     | |
-|  -------->|8        23|   orgates[7]------>|inpin[7]-------->outpin[7]|------->| 7            |     | |
-|   UART2   |         24|   orgates[8]------>|inpin[8]-------->outpin[8]|------->| 8            |     | |
-|  -------->|9        25|   orgates[9]------>|inpin[9]-------->outpin[9]|------->| 9            |     | |
-|   UART3   |         26|                    |--------------------------|        |--------------|     | |
-|  ---------|10       27|                                                                             | |
-|   UART5   |         28|                                                                             | |
-|  -------->|11       29|                                                                             | |
-|   UART6   |           |                                                                             | |
-|  -------->|12       30|     |-----------------------------------------------------------------------| |
-|   UART7   |         31|     |                                                                         |
-|  -------->|13         |     |                                                                         |
-|   UART8   |  OR[0:31] |     |                |------------------------------|           |----------|  |
-|  -------->|14         |     |                |            INTC              |           |     GIC  |  |
-|   UART9   |           |     |                |inpin[0:0]--------->outpin[0] |---------->|192       |  |
-|  -------->|15         |     |                |inpin[0:1]--------->outpin[1] |---------->|193       |  |
-|   UART10  |           |     |                |inpin[0:2]--------->outpin[2] |---------->|194       |  |
-|  -------->|16         |     |                |inpin[0:3]--------->outpin[3] |---------->|195       |  |
-|   UART11  |           |     |--------------> |inpin[0:4]--------->outpin[4] |---------->|196       |  |
-|  -------->|17         |                      |inpin[0:5]--------->outpin[5] |---------->|197       |  |
-|   UART12  |           |                      |inpin[0:6]--------->outpin[6] |---------->|198       |  |
-|  -------->|18         |                      |inpin[0:7]--------->outpin[7] |---------->|199       |  |
-|           |-----------|                      |inpin[0:8]--------->outpin[8] |---------->|200       |  |
-|                                              |inpin[0:9]--------->outpin[9] |---------->|201       |  |
-|-------------------------------------------------------------------------------------------------------|
-|-------------------------------------------------------------------------------------------------------|
-|  ETH1    |-----------|     orgates[1]------->|inpin[1]----------->outpin[10]|---------->|128       |  |
-| -------->|0          |     orgates[2]------->|inpin[2]----------->outpin[11]|---------->|129       |  |
-|  ETH2    |          4|     orgates[3]------->|inpin[3]----------->outpin[12]|---------->|130       |  |
-| -------->|1         5|     orgates[4]------->|inpin[4]----------->outpin[13]|---------->|131       |  |
-|  ETH3    |          6|---->orgates[5]------->|inpin[5]----------->outpin[14]|---------->|132       |  |
-| -------->|2        19|     orgates[6]------->|inpin[6]----------->outpin[15]|---------->|133       |  |
-|  UART0   |         20|     orgates[7]------->|inpin[7]----------->outpin[16]|---------->|134       |  |
-| -------->|7        21|     orgates[8]------->|inpin[8]----------->outpin[17]|---------->|135       |  |
-|  UART1   |         22|     orgates[9]------->|inpin[9]----------->outpin[18]|---------->|136       |  |
-| -------->|8        23|                       |------------------------------|           |----------|  |
-|  UART2   |         24|                                                                                |
-| -------->|9        25|                       AST2700 A0 Design                                        |
-|  UART3   |         26|                                                                                |
-| -------->|10       27|                                                                                |
-|  UART5   |         28|                                                                                |
-| -------->|11       29| GICINT132                                                                      |
-|  UART6   |           |                                                                                |
-| -------->|12       30|                                                                                |
-|  UART7   |         31|                                                                                |
-| -------->|13         |                                                                                |
-|  UART8   |  OR[0:31] |                                                                                |
-| -------->|14         |                                                                                |
-|  UART9   |           |                                                                                |
-| -------->|15         |                                                                                |
-|  UART10  |           |                                                                                |
-| -------->|16         |                                                                                |
-|  UART11  |           |                                                                                |
-| -------->|17         |                                                                                |
-|  UART12  |           |                                                                                |
-| -------->|18         |                                                                                |
-|          |-----------|                                                                                |
-|                                                                                                       |
-|-------------------------------------------------------------------------------------------------------|
+The memory map for AST2700 A1 remains compatible with AST2700 A0. However, the
+IRQ mapping has been updated for AST2700 A1, with GIC interrupts now ranging
+from 192 to 201. Add a new IRQ map table for AST2700 A1.
+Add "aspeed_soc_ast2700a1_class_init" to initialize the AST2700 A1 SoC.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed_soc.h |  1 +
- hw/arm/aspeed_ast27x0.c     | 24 ++++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 80 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 1ac99269ae..62f75c33dc 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -195,6 +195,7 @@ enum {
-     ASPEED_DEV_EHCI2,
-     ASPEED_DEV_VIC,
-     ASPEED_DEV_INTC,
-+    ASPEED_DEV_INTCIO,
-     ASPEED_DEV_SDMC,
-     ASPEED_DEV_SCU,
-     ASPEED_DEV_ADC,
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 90545215e2..cd37d2b4ba 100644
+index cd37d2b4ba..7439512b83 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -57,6 +57,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_ETH3]      =  0x14070000,
-     [ASPEED_DEV_EMMC]      =  0x12090000,
-     [ASPEED_DEV_INTC]      =  0x12100000,
-+    [ASPEED_DEV_INTCIO]    =  0x14C18000,
-     [ASPEED_DEV_SLI]       =  0x12C17000,
-     [ASPEED_DEV_SLIIO]     =  0x14C1E000,
-     [ASPEED_GIC_DIST]      =  0x12200000,
-@@ -411,6 +412,8 @@ static void aspeed_soc_ast2700_init(Object *obj)
-     object_initialize_child(obj, "sli", &s->sli, TYPE_ASPEED_2700_SLI);
-     object_initialize_child(obj, "sliio", &s->sliio, TYPE_ASPEED_2700_SLIIO);
-     object_initialize_child(obj, "intc", &a->intc[0], TYPE_ASPEED_2700_INTC);
-+    object_initialize_child(obj, "intcio", &a->intc[1],
-+                            TYPE_ASPEED_2700_INTCIO);
+@@ -120,6 +120,52 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
+     [ASPEED_DEV_SDHCI]     = 133,
+ };
  
-     snprintf(typename, sizeof(typename), "aspeed.adc-%s", socname);
-     object_initialize_child(obj, "adc", &s->adc, typename);
-@@ -523,6 +526,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     AspeedSoCState *s = ASPEED_SOC(dev);
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     AspeedINTCClass *ic = ASPEED_INTC_GET_CLASS(&a->intc[0]);
-+    AspeedINTCClass *icio = ASPEED_INTC_GET_CLASS(&a->intc[1]);
-     g_autofree char *sram_name = NULL;
-     qemu_irq irq;
++static const int aspeed_soc_ast2700a1_irqmap[] = {
++    [ASPEED_DEV_SDMC]      = 0,
++    [ASPEED_DEV_HACE]      = 4,
++    [ASPEED_DEV_XDMA]      = 5,
++    [ASPEED_DEV_UART4]     = 8,
++    [ASPEED_DEV_SCU]       = 12,
++    [ASPEED_DEV_RTC]       = 13,
++    [ASPEED_DEV_EMMC]      = 15,
++    [ASPEED_DEV_TIMER1]    = 16,
++    [ASPEED_DEV_TIMER2]    = 17,
++    [ASPEED_DEV_TIMER3]    = 18,
++    [ASPEED_DEV_TIMER4]    = 19,
++    [ASPEED_DEV_TIMER5]    = 20,
++    [ASPEED_DEV_TIMER6]    = 21,
++    [ASPEED_DEV_TIMER7]    = 22,
++    [ASPEED_DEV_TIMER8]    = 23,
++    [ASPEED_DEV_DP]        = 28,
++    [ASPEED_DEV_LPC]       = 192,
++    [ASPEED_DEV_IBT]       = 192,
++    [ASPEED_DEV_KCS]       = 192,
++    [ASPEED_DEV_I2C]       = 194,
++    [ASPEED_DEV_ADC]       = 194,
++    [ASPEED_DEV_GPIO]      = 194,
++    [ASPEED_DEV_FMC]       = 195,
++    [ASPEED_DEV_WDT]       = 195,
++    [ASPEED_DEV_PWM]       = 195,
++    [ASPEED_DEV_I3C]       = 195,
++    [ASPEED_DEV_UART0]     = 196,
++    [ASPEED_DEV_UART1]     = 196,
++    [ASPEED_DEV_UART2]     = 196,
++    [ASPEED_DEV_UART3]     = 196,
++    [ASPEED_DEV_UART5]     = 196,
++    [ASPEED_DEV_UART6]     = 196,
++    [ASPEED_DEV_UART7]     = 196,
++    [ASPEED_DEV_UART8]     = 196,
++    [ASPEED_DEV_UART9]     = 196,
++    [ASPEED_DEV_UART10]    = 196,
++    [ASPEED_DEV_UART11]    = 196,
++    [ASPEED_DEV_UART12]    = 196,
++    [ASPEED_DEV_ETH1]      = 196,
++    [ASPEED_DEV_ETH2]      = 196,
++    [ASPEED_DEV_ETH3]      = 196,
++    [ASPEED_DEV_PECI]      = 197,
++    [ASPEED_DEV_SDHCI]     = 197,
++};
++
+ /* GICINT 128 */
+ /* GICINT 192 */
+ static const int ast2700_gic128_gic192_intcmap[] = {
+@@ -861,6 +907,34 @@ static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, void *data)
+     sc->get_irq      = aspeed_soc_ast2700_get_irq;
+ }
  
-@@ -560,6 +564,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc[0]), 0,
-                     sc->memmap[ASPEED_DEV_INTC]);
++static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, void *data)
++{
++    static const char * const valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-a35"),
++        NULL
++    };
++    DeviceClass *dc = DEVICE_CLASS(oc);
++    AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
++
++    /* Reason: The Aspeed SoC can only be instantiated from a board */
++    dc->user_creatable = false;
++    dc->realize      = aspeed_soc_ast2700_realize;
++
++    sc->name         = "ast2700-a1";
++    sc->valid_cpu_types = valid_cpu_types;
++    sc->silicon_rev  = AST2700_A1_SILICON_REV;
++    sc->sram_size    = 0x20000;
++    sc->spis_num     = 3;
++    sc->wdts_num     = 8;
++    sc->macs_num     = 3;
++    sc->uarts_num    = 13;
++    sc->num_cpus     = 4;
++    sc->uarts_base   = ASPEED_DEV_UART0;
++    sc->irqmap       = aspeed_soc_ast2700a1_irqmap;
++    sc->memmap       = aspeed_soc_ast2700_memmap;
++    sc->get_irq      = aspeed_soc_ast2700_get_irq;
++}
++
+ static const TypeInfo aspeed_soc_ast27x0_types[] = {
+     {
+         .name           = TYPE_ASPEED27X0_SOC,
+@@ -873,6 +947,12 @@ static const TypeInfo aspeed_soc_ast27x0_types[] = {
+         .instance_init  = aspeed_soc_ast2700_init,
+         .class_init     = aspeed_soc_ast2700a0_class_init,
+     },
++    {
++        .name           = "ast2700-a1",
++        .parent         = TYPE_ASPEED27X0_SOC,
++        .instance_init  = aspeed_soc_ast2700_init,
++        .class_init     = aspeed_soc_ast2700a1_class_init,
++    },
+ };
  
-+    /* INTCIO */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&a->intc[1]), errp)) {
-+        return;
-+    }
-+
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc[1]), 0,
-+                    sc->memmap[ASPEED_DEV_INTCIO]);
-+
-     /* irq sources -> orgates -> INTC */
-     for (i = 0; i < ic->num_inpins; i++) {
-         qdev_connect_gpio_out(DEVICE(&a->intc[0].orgates[i]), 0,
-@@ -574,6 +586,18 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-                                             ast2700_gic_intcmap[i].irq));
-     }
- 
-+    /* irq source -> orgates -> INTCIO */
-+    for (i = 0; i < icio->num_inpins; i++) {
-+        qdev_connect_gpio_out(DEVICE(&a->intc[1].orgates[i]), 0,
-+                              qdev_get_gpio_in(DEVICE(&a->intc[1]), i));
-+    }
-+
-+    /* INTCIO -> INTC */
-+    for (i = 0; i < icio->num_outpins; i++) {
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc[1]), i,
-+                           qdev_get_gpio_in(DEVICE(&a->intc[0].orgates[0]), i));
-+    }
-+
-     /* SRAM */
-     sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
-     if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
+ DEFINE_TYPES(aspeed_soc_ast27x0_types)
 -- 
 2.43.0
 
