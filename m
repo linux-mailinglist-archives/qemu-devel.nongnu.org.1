@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E4EA56B66
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72C0A56B3E
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:08:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZIU-00011I-LL; Fri, 07 Mar 2025 10:07:34 -0500
+	id 1tqZIT-00010X-G5; Fri, 07 Mar 2025 10:07:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIR-000100-4E
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:31 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1tqZIQ-0000z5-2h
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:30 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIO-0008IM-BF
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:30 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3912d2c89ecso1549867f8f.2
+ id 1tqZIN-0008I4-IC
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:29 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-38f403edb4eso1088696f8f.3
  for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741360047; x=1741964847; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741360046; x=1741964846; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=POedfr8OIoRc4zd6hYJv4201L8L1FVmVr4GGYLpisj8=;
- b=kNBWhgy/LEL30ACulA/BuTInuN6Ik4T2XRk0heVgWKUPucJyrypNuh1tAZHuNfk82b
- AGa01dii8V6IIq3xBhSLDtVw/nyEV51/vEgrsqI0b/mxWYEh5eVy2aT6ak0BZqy8PxJa
- r08i5s020Z2IOx/TIRTbT1pVtJMHXwBwj3CN6940eqJR2EriieUGXQsb2GS2uGrFQCFC
- pPski5ZDboxFjwWLV3F9QtlDALkupNWo5599oYbhGNgYbLL1UIgJGGXXnwEK2wG7oTil
- o1uonVVE7t674ArfCRFuicDQMmCmJuHtqk98OJ2RrE1o1A74hTGX4Vei3R52yysvxDlo
- JMNg==
+ :reply-to; bh=l5tIzE5Flt/Mk2PuwQMT4yx2y90XXlNLNl3RYwyZsjU=;
+ b=NyynZ3z4WCM1BU2nlh4qOFFCUmQSPS34HDprI1rTyJdwdqedqM5ZqnJ35CKeCpT6Pq
+ oSafWweRJM65d/i28XK6M5/B2Ere1fCSyWyLiBET5CahxK6W1OOFAkKD0xZyNKS54AXn
+ ePd7QExFRPp4cbXvcZdP4wN9T5bS6MZOlhskYHR/g2Dr0gAba6BktEWoJaqCbfOIBk4m
+ P7nD89fmwtXNeSJUX3NXhZZqvc1UgK5i2sF3qHvR2zMfRHKbGxTdijH+dSWx1Lti7NNf
+ ZFQbO1MX5uuyYIk1EOErEqf9Eo1wrCiH0OaMy7zYLJ1kLu8np5b8iyukmAp5pfp7RRq0
+ OwaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741360047; x=1741964847;
+ d=1e100.net; s=20230601; t=1741360046; x=1741964846;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=POedfr8OIoRc4zd6hYJv4201L8L1FVmVr4GGYLpisj8=;
- b=bmkRku7UtnFlIT8wfYaNTENOwHAUheZIaqNDWvYNvh7Bcf0zqwvDgHQCS79BScgnqE
- gpamblNdkfseHcNPMzftmjcbgsfVYM3L3SGfUPvNTRyf/Y62Om6QXpuvpOgVaB4wsISE
- bU1OEeEJU9vpdCgmxXhKLLVw04jKdePVqOYNtX/j8PaUqG+OzzmVXa8sEati9AAfwAA/
- OHHv+SkmaEnni0ezIEgboDtLJOIg8cLeICSHrCkzHeO1liJ7iA1guBpryAjxGaOwmQ+9
- 6wqqykBHr66vr1YGGTCZpinQKMFFIweNt2eQMNKLZuUAzYvFB6wl/vnuQJ5qvddTQUov
- E+Yg==
-X-Gm-Message-State: AOJu0Yxg3uiXp7DYWPwDs8pwxZkgxwolDXQ93lTTAAKXuAP7T6zei0/6
- dVquTnb3TKO00l1wK4yVe5N9ApP79j8XEdnFLiVVKcycLNHijRD54kB6qV6sOlMZp8FZNwN1/vQ
- a
-X-Gm-Gg: ASbGnctlrRpI1k56GPw54vIXmE2AFDQSSXomFN7F5GMHKVC0phkDepx1lctmWihSjS/
- R52/am+r5Q8IGjqiYbQXxGnh1eBfDY3/LtLSqLihqhm34FQifRY+I8Kgu2fekhcp06l+7/Q8hPG
- l0DawYzzVvWdxVJz1AhcGMSqyvWEh6X58g49CfphhwD3vv3q6cyvG7Q4CJFkLF+UJOMIFzyRLuR
- NGcZlI2CHD2SJNqeRrX4FZIJP8AMGLZUjTOm3k/PKP0xW5vCVS4WLZ/stUUmpA7NasZtkpZv+ld
- f4vTiOdJe7qJz2KgWDmM3lBSZqb8G3CRYuLuqbXl0VKpgp7dwNg=
-X-Google-Smtp-Source: AGHT+IEvsD8hXWoTWLSm6mqM5kgwRT8yM6HjevbJWpKI89qJe7JEfXFGSKTZHt4ElfQzy4XvFS719w==
-X-Received: by 2002:a05:6000:1862:b0:390:fe4b:70b9 with SMTP id
- ffacd0b85a97d-39132d6c5demr3030629f8f.21.1741360044586; 
- Fri, 07 Mar 2025 07:07:24 -0800 (PST)
+ bh=l5tIzE5Flt/Mk2PuwQMT4yx2y90XXlNLNl3RYwyZsjU=;
+ b=M/0FeZsVCJD3qGRbmvkz3WB8qpWLXlWPznoqWytyRXc8E7wAElqNA2KMXRCOdyJcNh
+ RpXfvF9QucfbwBi14z7loOngodNnedLxZoqO86xW1oyKPVqletxpfE7ZqagBmfzcLCvS
+ tNrJtYLVQUNSApu4JucteCSVp9Yr5Hf1OtoWOsZfFtRmCYv4f2uUUEen+rlAfdT8KznP
+ HW+8RFusCmpOkdm7at0sKmHBkr/pufERinTx93ntqyr6LtcJKcKxHHwcrf858JwmAubZ
+ x9udgaPPk8aAfJb0271MkS2gtSFi946t5cTpVNpgWV7ojzmxv1P08G1dJ0FKOwrSvjGo
+ yDFg==
+X-Gm-Message-State: AOJu0YwVhE1oe6ImlbTSEkQ3t7IOcSutqDfi4jKXCpMQt1wbsbNysaTZ
+ xDBVWOvwsVOrMMWiNpmjRlv5ubvwWb0OP9BfTdybXfODEooZyt+u1v7mASP/RnlOGtpIviQRCLT
+ 9
+X-Gm-Gg: ASbGnctoGpBL543teZNddp4h6YITFesVamKZ5nPV7ahZkWXIJk0q27Ggq66RV88f/Mb
+ DcnKwcmuWIWf8TzMY70Ovie3KhPSWspMfn4/5n+jQD2UuFIbRz9XicF1w6ED+QuRzqTmSBug7mP
+ 7qh1Anv6MLLsXoSrDQsPgu8KrPqydBpaQjNgJX76oJ8eCLMGGAaNa7RCYuEg8robES3E3OF3wtr
+ gTxOTBdhklb3msEEq4g65QjgxFgTI5O0K0y6e85zeBUxGQzjSXjra8STs+UQzfZ2S7gqqL8iuxd
+ Q4m4PoBWzfh6nvDwKfozsRtk13t8f6dkAukZ82y9g9u48zJBid8=
+X-Google-Smtp-Source: AGHT+IEoCN1E5wB3mFTgdNKvBRStr8cVfW0gQuLJ9vJuyKPlTMlDpW59B2AFZ7V9TbBFe2rJcrXwfQ==
+X-Received: by 2002:a5d:64c3:0:b0:391:ccf:2d1b with SMTP id
+ ffacd0b85a97d-39132db1454mr2479087f8f.49.1741360045811; 
+ Fri, 07 Mar 2025 07:07:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.23
+ ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 07:07:24 -0800 (PST)
+ Fri, 07 Mar 2025 07:07:25 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/21] hw/arm: enable secure EL2 timers for virt machine
-Date: Fri,  7 Mar 2025 15:06:58 +0000
-Message-ID: <20250307150708.3222813-12-peter.maydell@linaro.org>
+Subject: [PULL 12/21] hw/arm: enable secure EL2 timers for sbsa machine
+Date: Fri,  7 Mar 2025 15:06:59 +0000
+Message-ID: <20250307150708.3222813-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307150708.3222813-1-peter.maydell@linaro.org>
 References: <20250307150708.3222813-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,21 +100,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Alex Bennée <alex.bennee@linaro.org>
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250204125009.2281315-9-peter.maydell@linaro.org
+Message-id: 20250204125009.2281315-10-peter.maydell@linaro.org
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 2 ++
+ hw/arm/sbsa-ref.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 904c698b140..a96452f17a4 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -882,6 +882,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index e720de30641..aa09d7a0917 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -484,6 +484,8 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
              [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
              [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
              [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
@@ -122,7 +121,7 @@ index 904c698b140..a96452f17a4 100644
 +            [GTIMER_S_EL2_VIRT] = ARCH_TIMER_S_EL2_VIRT_IRQ,
          };
  
-         for (unsigned irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
+         for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
 -- 
 2.43.0
 
