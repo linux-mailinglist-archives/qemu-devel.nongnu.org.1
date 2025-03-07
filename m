@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3066FA57224
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6B0A57227
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:39:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdWJ-000104-4s; Fri, 07 Mar 2025 14:38:07 -0500
+	id 1tqdWB-0000xU-1S; Fri, 07 Mar 2025 14:38:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqdVh-0000ui-C5
+ id 1tqdVj-0000ur-Nc
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:37:38 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqdVf-0007WP-5w
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:37:29 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2239f8646f6so43849805ad.2
+ id 1tqdVf-0007Wb-Fr
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:37:30 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2ff85fec403so1438601a91.1
  for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:37:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741376245; x=1741981045; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741376246; x=1741981046; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sfg9fp/d1PdwCXS3veKjw2zFmzOBBZVU57mmT0JR/f0=;
- b=hqH7arRW4yYYMk1/mUJX3CSyj/Ut11kwCZPDqBhCUzTWLnKGH0Ai7phDLHBzvBtw+/
- oK16mkBFOrf4uJdvNU+1gRFtGLTvn5qiCq01WBvryZzJ8ywWKeH0onuDhLk2yZ8QKWPA
- hBuItB6CrGdPmuGe/Tcigj/5ZqSNDuOffe4+6ITmuKdhxculsUiUgRNJkER7ahXJOi0V
- wM82xWz65ZRkwVobI30UfTF7IC3kLnKuAOj8jMEmnO+3fHWYakTIKKE38E5QiwENruuN
- hsHW0MzGvRSX6RG7Y+7L6QOgku8IPO/K84kI/5U9Zpb7RHUT0LKpeQNcXeZ9vRN/vPo3
- FfHw==
+ bh=xUvuEjETtAwgjY+HHVzD3fRoYrhNXj1rMDKPunM+tus=;
+ b=glPlM0CLgdTTJzCYQSUqfKBKnnU7jFXVlQ0jeBOhtK6NI6SnIaPEaJbtK8NwCI/42v
+ l/BQbSKp+sO6s9169Z0MrpcaUwSKxdKpW1nq/EFFe/6auZnqemh9ch5vMSCq9z2SyzB+
+ kx7BgFh20ETGlh1TYPAenceOTKWTog9nTwyYeVujlmtiMMnI6ZAS+IyrGUBLzCKfzE/W
+ Kp7beFu5DJKFXSR2UO3fuQ24ZdMSRpeSmHpiRG8mZ5RlfNbFhFbUMFj4ITCdzcJVSyq6
+ Gs6th6AuJMaUIfOgOS4zvu9L8n+IJjo67MQLSfA6AO9UVWi3p+n2uKlRHxBc80oIe0lv
+ TyjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741376245; x=1741981045;
+ d=1e100.net; s=20230601; t=1741376246; x=1741981046;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sfg9fp/d1PdwCXS3veKjw2zFmzOBBZVU57mmT0JR/f0=;
- b=EFvuNBcCiSIkbpfDH98YOFBev8/xFiZZhtIUwBol6w0Kvx27yDMFsuVoRlOIRo0y4e
- 9oWDW8UfdBLBo3nEBOWaRekNZ9e0qSR46fHlVnVKFnq0l3hEeg5fGp6azkAtmPmHWDwk
- XMpQ+7DedpvbfqrzJLuWMZEJn5InJYIv8FvjRUQ1vF+yt8Af7PAtdmz/EB1S68UdqTyC
- vaz3QGG7Z42Y+0ecEVyL4a1MqXH731gkmFrY29YWmhCynujjqVV+ztBCWkoDaZPlo84Y
- ONvhg2yWvqOtraTLF1X/xzb9yqhKB0NvtJJNoltmEGVACKONlIPWckqde2DUCJkgggr8
- eYPA==
-X-Gm-Message-State: AOJu0YxrzixsUrzl5oDztgQ1uJ4u3PcK2m+8tbiqom4y1BCdL88ApEvv
- PulSWVSEtlwX80HLQs/u31Z3qd9YpI0lZ8VaQOUqLpqWVRU+YhVh2Lo28t3rBcypRyMvoJWaGta
- y
-X-Gm-Gg: ASbGncsuUo/l59GXEaHyIv17sfK97KPBTcDYSCq7natbETXnmhN8YWuRqeMCrDGh6Ig
- M+Q+crEFLTht3dRFZwnTsQsnDzmy5we+JUsk6YfKGW0QIoMDyMR+LeQIL/yN9/F19D1vd+N7v8s
- tIdP6vcQqo0kWoMhRyKlO8KfWb/bLv/ER3ZKCZOHJ0uByVktnsSIvLsTyKel7un/ltr3pWeZDRe
- +JeVFWl9R5NzKQHDwOgdOPRQ6HDTmnj3gWqEzlQ0VTbZYTZeHY6D85qZ4RsdNOAyCixRZe9+ASk
- 3B787yHNqmrbyUdzxzlxNt4mhwJVL6u6YstratLmh8v/
-X-Google-Smtp-Source: AGHT+IG/Cs/7jguUQxnpsh7chCHttVnF2BIWXPHq+mbdcgvzPmEQkaG/XQxPrsdd/q4ZyMSNtVdLIQ==
-X-Received: by 2002:a17:903:192:b0:21f:507b:9ad7 with SMTP id
- d9443c01a7336-22428a89081mr74798445ad.25.1741376245255; 
- Fri, 07 Mar 2025 11:37:25 -0800 (PST)
+ bh=xUvuEjETtAwgjY+HHVzD3fRoYrhNXj1rMDKPunM+tus=;
+ b=HeA2KVy0cO1JjLgQdoZViTwLkZ2f62FDAr3cSmK9kub78NRR7Z4Ok1z5AWno9m7OCw
+ HVhQdFFkVufmU+UZgdCj2EhcxgEH/wcY1GlykoIXHqEW7a8pag8j0aNJrUbXIP/Mt7JQ
+ G3w3wgbVvvNeIeHVDSALcAqW4yjcMknEqSzg5WOYukgmD9bWrLkQ1afj3NVah+XLodUD
+ n5egiWD8PG3ulHjlkvgJ0kLi7kEYk0uEWYl0p+GFBEqcihj4a+ZCuZWp5g0ZE1YDRVM7
+ hAWTfTSDg3OOb4pWhzS2/IoTw7Rg0li73YOfzqVVbJyzwiUdE7oZk2BAlBtLNS4ufNkz
+ bXog==
+X-Gm-Message-State: AOJu0YyhB1lXGwv+oHcyKCeQ6oBF1zzNcrFXH4/0uouj4BPIbXWsgJjr
+ ydkZeUuuYl/9+xmtghhVF0TSJmvoLm6WvKLvCDLB2ehESiwNX1bLECCScCJkZMjyG+XOw/K6hrX
+ f
+X-Gm-Gg: ASbGnctG3TDlPrmhpuSWw28USg1+ROEPUxk0nhY/EovoL/k80QacBTeXJ4vt9bgZgTc
+ pWBRek3Ud2kDwqpXFxmn5TfABavKijUe3Onu/uAS7nLk2KTUtQDfmSgDzgVpl2w3acufuUXrHq/
+ OqCxKsloK6xrsUZo0Wq/YF7AsVDSs5zdiWoffWCU+SwUlZjnpjgbiSAUSDGK5/yC8nqXa7xrOcf
+ IWimzLTMma3hkLuP/m+TtkOyCRiEvon8q+/GchokvN0GGKcX5f6YMCc29nX1MKPWnwd5H+vQIy2
+ ZvXBicLwEzesxI3jRGdgCBXzNYu3EkYkNVp4gGmXsVCb
+X-Google-Smtp-Source: AGHT+IHZK5ChSqOaMo09JMNQrhVS25wP/pkCSoEVH4/5AzuwGO5vlGkUiG7MGthTlS3QETr7obULIA==
+X-Received: by 2002:a17:90b:180e:b0:2f9:d0cd:3403 with SMTP id
+ 98e67ed59e1d1-2ffbc1ee5aemr1105732a91.16.1741376246136; 
+ Fri, 07 Mar 2025 11:37:26 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff693739ecsm3821757a91.26.2025.03.07.11.37.24
+ 98e67ed59e1d1-2ff693739ecsm3821757a91.26.2025.03.07.11.37.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 11:37:24 -0800 (PST)
+ Fri, 07 Mar 2025 11:37:25 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, philmd@linaro.org, kvm@vger.kernel.org,
@@ -68,16 +68,18 @@ Cc: alex.bennee@linaro.org, philmd@linaro.org, kvm@vger.kernel.org,
  "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
  Paolo Bonzini <pbonzini@redhat.com>, manos.pitsidianakis@linaro.org,
  pierrick.bouvier@linaro.org, Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH v3 3/7] hw/hyperv/vmbus: common compilation unit
-Date: Fri,  7 Mar 2025 11:37:08 -0800
-Message-Id: <20250307193712.261415-4-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 4/7] hw/hyperv/hyperv-proto: move SYNDBG definition from
+ target/i386
+Date: Fri,  7 Mar 2025 11:37:09 -0800
+Message-Id: <20250307193712.261415-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250307193712.261415-1-pierrick.bouvier@linaro.org>
 References: <20250307193712.261415-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,192 +102,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace TARGET_PAGE.* by runtime calls.
+Allows them to be available for common compilation units.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/hyperv/vmbus.c     | 50 +++++++++++++++++++++----------------------
- hw/hyperv/meson.build |  2 +-
- 2 files changed, 26 insertions(+), 26 deletions(-)
+ include/hw/hyperv/hyperv-proto.h | 12 ++++++++++++
+ target/i386/kvm/hyperv-proto.h   | 12 ------------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
-index 12a7dc43128..109ac319caf 100644
---- a/hw/hyperv/vmbus.c
-+++ b/hw/hyperv/vmbus.c
-@@ -18,7 +18,7 @@
- #include "hw/hyperv/vmbus.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/sysbus.h"
--#include "cpu.h"
-+#include "exec/target_page.h"
- #include "trace.h"
+diff --git a/include/hw/hyperv/hyperv-proto.h b/include/hw/hyperv/hyperv-proto.h
+index 4a2297307b0..fffc5ce342f 100644
+--- a/include/hw/hyperv/hyperv-proto.h
++++ b/include/hw/hyperv/hyperv-proto.h
+@@ -61,6 +61,18 @@
+ #define HV_MESSAGE_X64_APIC_EOI               0x80010004
+ #define HV_MESSAGE_X64_LEGACY_FP_ERROR        0x80010005
  
- enum {
-@@ -309,7 +309,7 @@ void vmbus_put_gpadl(VMBusGpadl *gpadl)
++/*
++ * Hyper-V Synthetic debug options MSR
++ */
++#define HV_X64_MSR_SYNDBG_CONTROL               0x400000F1
++#define HV_X64_MSR_SYNDBG_STATUS                0x400000F2
++#define HV_X64_MSR_SYNDBG_SEND_BUFFER           0x400000F3
++#define HV_X64_MSR_SYNDBG_RECV_BUFFER           0x400000F4
++#define HV_X64_MSR_SYNDBG_PENDING_BUFFER        0x400000F5
++#define HV_X64_MSR_SYNDBG_OPTIONS               0x400000FF
++
++#define HV_X64_SYNDBG_OPTION_USE_HCALLS         BIT(2)
++
+ /*
+  * Message flags
+  */
+diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
+index 464fbf09e35..a9f056f2f3e 100644
+--- a/target/i386/kvm/hyperv-proto.h
++++ b/target/i386/kvm/hyperv-proto.h
+@@ -151,18 +151,6 @@
+ #define HV_X64_MSR_STIMER3_CONFIG               0x400000B6
+ #define HV_X64_MSR_STIMER3_COUNT                0x400000B7
  
- uint32_t vmbus_gpadl_len(VMBusGpadl *gpadl)
- {
--    return gpadl->num_gfns * TARGET_PAGE_SIZE;
-+    return gpadl->num_gfns * qemu_target_page_size();
- }
- 
- static void gpadl_iter_init(GpadlIter *iter, VMBusGpadl *gpadl,
-@@ -323,14 +323,14 @@ static void gpadl_iter_init(GpadlIter *iter, VMBusGpadl *gpadl,
- 
- static inline void gpadl_iter_cache_unmap(GpadlIter *iter)
- {
--    uint32_t map_start_in_page = (uintptr_t)iter->map & ~TARGET_PAGE_MASK;
--    uint32_t io_end_in_page = ((iter->last_off - 1) & ~TARGET_PAGE_MASK) + 1;
-+    uint32_t map_start_in_page = (uintptr_t)iter->map & ~qemu_target_page_mask();
-+    uint32_t io_end_in_page = ((iter->last_off - 1) & ~qemu_target_page_mask()) + 1;
- 
-     /* mapping is only done to do non-zero amount of i/o */
-     assert(iter->last_off > 0);
-     assert(map_start_in_page < io_end_in_page);
- 
--    dma_memory_unmap(iter->as, iter->map, TARGET_PAGE_SIZE - map_start_in_page,
-+    dma_memory_unmap(iter->as, iter->map, qemu_target_page_size() - map_start_in_page,
-                      iter->dir, io_end_in_page - map_start_in_page);
- }
- 
-@@ -348,17 +348,17 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
-     assert(iter->active);
- 
-     while (len) {
--        uint32_t off_in_page = iter->off & ~TARGET_PAGE_MASK;
--        uint32_t pgleft = TARGET_PAGE_SIZE - off_in_page;
-+        uint32_t off_in_page = iter->off & ~qemu_target_page_mask();
-+        uint32_t pgleft = qemu_target_page_size() - off_in_page;
-         uint32_t cplen = MIN(pgleft, len);
-         void *p;
- 
-         /* try to reuse the cached mapping */
-         if (iter->map) {
-             uint32_t map_start_in_page =
--                (uintptr_t)iter->map & ~TARGET_PAGE_MASK;
--            uint32_t off_base = iter->off & ~TARGET_PAGE_MASK;
--            uint32_t mapped_base = (iter->last_off - 1) & ~TARGET_PAGE_MASK;
-+                (uintptr_t)iter->map & ~qemu_target_page_mask();
-+            uint32_t off_base = iter->off & ~qemu_target_page_mask();
-+            uint32_t mapped_base = (iter->last_off - 1) & ~qemu_target_page_mask();
-             if (off_base != mapped_base || off_in_page < map_start_in_page) {
-                 gpadl_iter_cache_unmap(iter);
-                 iter->map = NULL;
-@@ -368,10 +368,10 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
-         if (!iter->map) {
-             dma_addr_t maddr;
-             dma_addr_t mlen = pgleft;
--            uint32_t idx = iter->off >> TARGET_PAGE_BITS;
-+            uint32_t idx = iter->off >> qemu_target_page_bits();
-             assert(idx < iter->gpadl->num_gfns);
- 
--            maddr = (iter->gpadl->gfns[idx] << TARGET_PAGE_BITS) | off_in_page;
-+            maddr = (iter->gpadl->gfns[idx] << qemu_target_page_bits()) | off_in_page;
- 
-             iter->map = dma_memory_map(iter->as, maddr, &mlen, iter->dir,
-                                        MEMTXATTRS_UNSPECIFIED);
-@@ -382,7 +382,7 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
-             }
-         }
- 
--        p = (void *)(uintptr_t)(((uintptr_t)iter->map & TARGET_PAGE_MASK) |
-+        p = (void *)(uintptr_t)(((uintptr_t)iter->map & qemu_target_page_mask()) |
-                 off_in_page);
-         if (iter->dir == DMA_DIRECTION_FROM_DEVICE) {
-             memcpy(p, buf, cplen);
-@@ -591,9 +591,9 @@ static void ringbuf_init_common(VMBusRingBufCommon *ringbuf, VMBusGpadl *gpadl,
-                                 uint32_t begin, uint32_t end)
- {
-     ringbuf->as = as;
--    ringbuf->rb_addr = gpadl->gfns[begin] << TARGET_PAGE_BITS;
--    ringbuf->base = (begin + 1) << TARGET_PAGE_BITS;
--    ringbuf->len = (end - begin - 1) << TARGET_PAGE_BITS;
-+    ringbuf->rb_addr = gpadl->gfns[begin] << qemu_target_page_bits();
-+    ringbuf->base = (begin + 1) << qemu_target_page_bits();
-+    ringbuf->len = (end - begin - 1) << qemu_target_page_bits();
-     gpadl_iter_init(&ringbuf->iter, gpadl, as, dir);
- }
- 
-@@ -734,7 +734,7 @@ static int vmbus_channel_notify_guest(VMBusChannel *chan)
-     unsigned long *int_map, mask;
-     unsigned idx;
-     hwaddr addr = chan->vmbus->int_page_gpa;
--    hwaddr len = TARGET_PAGE_SIZE / 2, dirty = 0;
-+    hwaddr len = qemu_target_page_size() / 2, dirty = 0;
- 
-     trace_vmbus_channel_notify_guest(chan->id);
- 
-@@ -743,7 +743,7 @@ static int vmbus_channel_notify_guest(VMBusChannel *chan)
-     }
- 
-     int_map = cpu_physical_memory_map(addr, &len, 1);
--    if (len != TARGET_PAGE_SIZE / 2) {
-+    if (len != qemu_target_page_size() / 2) {
-         res = -ENXIO;
-         goto unmap;
-     }
-@@ -1038,14 +1038,14 @@ static int sgl_from_gpa_ranges(QEMUSGList *sgl, VMBusDevice *dev,
-         }
-         len -= sizeof(range);
- 
--        if (range.byte_offset & TARGET_PAGE_MASK) {
-+        if (range.byte_offset & qemu_target_page_mask()) {
-             goto eio;
-         }
- 
-         for (; range.byte_count; range.byte_offset = 0) {
-             uint64_t paddr;
-             uint32_t plen = MIN(range.byte_count,
--                                TARGET_PAGE_SIZE - range.byte_offset);
-+                                qemu_target_page_size() - range.byte_offset);
- 
-             if (len < sizeof(uint64_t)) {
-                 goto eio;
-@@ -1055,7 +1055,7 @@ static int sgl_from_gpa_ranges(QEMUSGList *sgl, VMBusDevice *dev,
-                 goto err;
-             }
-             len -= sizeof(uint64_t);
--            paddr <<= TARGET_PAGE_BITS;
-+            paddr <<= qemu_target_page_bits();
-             paddr |= range.byte_offset;
-             range.byte_count -= plen;
- 
-@@ -1804,7 +1804,7 @@ static void handle_gpadl_header(VMBus *vmbus, vmbus_message_gpadl_header *msg,
-      * anything else and simplify things greatly.
-      */
-     if (msg->rangecount != 1 || msg->range[0].byte_offset ||
--        (msg->range[0].byte_count != (num_gfns << TARGET_PAGE_BITS))) {
-+        (msg->range[0].byte_count != (num_gfns << qemu_target_page_bits()))) {
-         return;
-     }
- 
-@@ -2240,10 +2240,10 @@ static void vmbus_signal_event(EventNotifier *e)
-         return;
-     }
- 
--    addr = vmbus->int_page_gpa + TARGET_PAGE_SIZE / 2;
--    len = TARGET_PAGE_SIZE / 2;
-+    addr = vmbus->int_page_gpa + qemu_target_page_size() / 2;
-+    len = qemu_target_page_size() / 2;
-     int_map = cpu_physical_memory_map(addr, &len, 1);
--    if (len != TARGET_PAGE_SIZE / 2) {
-+    if (len != qemu_target_page_size() / 2) {
-         goto unmap;
-     }
- 
-diff --git a/hw/hyperv/meson.build b/hw/hyperv/meson.build
-index f4aa0a5ada9..c855fdcf04c 100644
---- a/hw/hyperv/meson.build
-+++ b/hw/hyperv/meson.build
-@@ -1,6 +1,6 @@
- specific_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'))
- specific_ss.add(when: 'CONFIG_HYPERV_TESTDEV', if_true: files('hyperv_testdev.c'))
--specific_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
-+system_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
- specific_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
- specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
- system_ss.add(when: 'CONFIG_HV_BALLOON', if_false: files('hv-balloon-stub.c'))
+-/*
+- * Hyper-V Synthetic debug options MSR
+- */
+-#define HV_X64_MSR_SYNDBG_CONTROL               0x400000F1
+-#define HV_X64_MSR_SYNDBG_STATUS                0x400000F2
+-#define HV_X64_MSR_SYNDBG_SEND_BUFFER           0x400000F3
+-#define HV_X64_MSR_SYNDBG_RECV_BUFFER           0x400000F4
+-#define HV_X64_MSR_SYNDBG_PENDING_BUFFER        0x400000F5
+-#define HV_X64_MSR_SYNDBG_OPTIONS               0x400000FF
+-
+-#define HV_X64_SYNDBG_OPTION_USE_HCALLS         BIT(2)
+-
+ /*
+  * Guest crash notification MSRs
+  */
 -- 
 2.39.5
 
