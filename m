@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B4BA56B48
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DFEA56B4E
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:09:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZIJ-0000vq-MD; Fri, 07 Mar 2025 10:07:23 -0500
+	id 1tqZIL-0000w0-Ht; Fri, 07 Mar 2025 10:07:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZID-0000uh-Oc
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:18 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1tqZIF-0000us-9C
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:20 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIB-00088N-8r
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:17 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-390ec449556so2383743f8f.1
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:13 -0800 (PST)
+ id 1tqZIC-000898-7i
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:18 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-390cf7458f5so1927703f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741360032; x=1741964832; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741360034; x=1741964834; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+QkSXpcJmb4SjhyzEiZSJ5JG+w4vRWp9nEHIGthYBHI=;
- b=thqRFN7zE2ku6n9akLdRiBFPzENE5uCDlJgsUdrscgNznRrR2WBJG78H1tOekZDBQE
- OPFmxXvH8Xb8h4Huge6keL4PAePUx2pp1YAF1a2FWkCmDJAXt1M+K2lj/2Sby3pg0l/o
- +NOFExdOFx4kwghtUI+O5llA75ExJ3Xt9lumN4o1GN2Hj5ZvAqxt0vHSyFZYFbBmGiIe
- PvAel6r80J6uVhH3l6p1/dvi2aex2Jy5ZK1aG//GCszIBd2RKkQcV62Ba1SttnqABO6O
- i8w3oQ1XFUu9vpa9lkzIezrZYRMg8JYK8DVIYeaqy9guZiaYdxI4gVkR/tfuWPccx3fo
- nDow==
+ :reply-to; bh=dJa7xFMSJ9Cj8sAYI9y1hV/NskVbtE4S9vRHsNQbdj8=;
+ b=XSrxlXKZDWZghH/3DjN+v7VrXSUicoODJzOBNQUNbkH8n9JW9D5UllUJJw5GBnFRNF
+ xUdYs2pYnm1PWhLxgGCfPvF1+zlBKWVdHs6RvGD0x5RfJsBV4EEARMGpNls1ymFI8xR+
+ QPodK6eWVZWoXqfAfwlpwevuOArkn/wIcN6msUZvRSnEa5rUWWg+iSAjR2V0Gb0EOvEw
+ q7CEX/P9z0HQd+oFNAwpGhA3PTRiv7uq935zN2rgl+jIKXIuX7TQc3PDKEarYeVj6PZ7
+ Ct7wh7NvxlbhZwgaeddPvsbvcZNBaSV8xe4QKwaPFCyyJxyq8XzCTe+qhwJS31kEknVY
+ ARYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741360032; x=1741964832;
+ d=1e100.net; s=20230601; t=1741360034; x=1741964834;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+QkSXpcJmb4SjhyzEiZSJ5JG+w4vRWp9nEHIGthYBHI=;
- b=i/DK7xKDwvcdJqadr65nVHNRbNAdS9KupECfPns6AYrBjlrkduHAmhYi6v2/yFtBCR
- N3Q45YcdpG7REFvATwdpssQOho3iEqHd9HAhCFVY3pqEqg3eDJQ+dlI1tcz3oRiepL/E
- Sj35ZbhZfLsmU2BBrqoFZ0DKktLgJwK84AOY3x1pFRcZnpSPf+lBqXeDy9rNzcRm5Tvo
- YSG6cjByLkco5cwYlC1X3NxoQL4cmv9bKOwlMxqj3K9slYq+Snabts8o+nRXGBEXGwSa
- DMpTdQY9e35FxQHFTToZzqDjFISO03lt4uJ61ejtE+zriY1QwAHrvzGkl3D0eeJcBqIh
- NRFw==
-X-Gm-Message-State: AOJu0YxxjhsBZrgwOabBX1UwX5JlTVlLf390eGG0U4MlzA+xnK6bj0ud
- wsRz+VT4g5eOKmeoJQZ5wZCsjnI6SLNxVH+bHbDfqvElsY6uPsXDFvtgo80sFOTkwwGF0HASztg
- L
-X-Gm-Gg: ASbGncvRUg27ZZI8T50qkiWVnXJKESXr59RglFpR9fqfhRz/o/LQFjYRMAgjWYdnpge
- xWlvim1Gc66l4FBe2uhN07GRiz0WrFS4Lhhoqrm4HHV3PK/Y4FJcRPWDt2DghPDn74p6SRXOP34
- Lk3NgRMT6Qpdd8m+PuKWawdIaplUpjrStb62tDdL6/JdGy+Pss8Eg1aPdB/By19bbWKAfRfWGcc
- N3xOcRVD1mV8NdPg5mtRyscM0RWfrHAEkNlzqjAYemRazVsRMd3MdQte47J1HFxlKJTO/aaiZEK
- FvuxeAqJm9hcvlx57a4hlxYFNxLfHtK6174QQAAhyqGonmQsQN4=
-X-Google-Smtp-Source: AGHT+IEipGZ5hY4utgxesPXs60KaW82O9P+tVN0ixOB4fdu5HmxoZ0XJJu+edFgwgmsVj3GMfuVdMQ==
-X-Received: by 2002:a05:6000:1a86:b0:391:4f9:a048 with SMTP id
- ffacd0b85a97d-39132d095e2mr3263933f8f.4.1741360032400; 
- Fri, 07 Mar 2025 07:07:12 -0800 (PST)
+ bh=dJa7xFMSJ9Cj8sAYI9y1hV/NskVbtE4S9vRHsNQbdj8=;
+ b=PVwUCa4Ikzz0xX+r/SSBTCFxWZ2qLHoIGBoosr23zByCJcks6CivJF0RBxyKvQCPKN
+ ejUa1yY11FkwNAFTXgyqJ0CJrnjYT/TgIYcd1w21g4MjkpSdWV2Hxse8TIqGfSC6zHrt
+ xmU6gxQoSGZsLYeAhvRseLTnqjsSjg4/t48SpUOnLRyF49cjgEijb3G1DGbUSk7ahf/K
+ 3fO2y5SRcVmHnTF3ed824TgHlyaHg0jgJVcor/GZ0QopYT7gbbECSzuaEFFAAxi2MtQi
+ J/i+918QBtkREsLgzq/smnz0J9zTDTmHt95yBWqDUbAgarrofbgURsd3gbR5EO2Sa2Ys
+ cTxQ==
+X-Gm-Message-State: AOJu0YyvXsJgn4lnDmMKEhzuL7+4VkAhrNHVo0fPSW+jD8OC1qWv/vRr
+ M5CSVt+W5zuEB3lerKAvG16CQ3L+8ol7RQ3xEBnQhvz7yXE86iZW3bUrO1qB8ZKZaOZKW55viw0
+ x
+X-Gm-Gg: ASbGnctgfVp/ATlXDSLDzEU52uk9zpeH8FMgHNXUJaEVD+Y67SwFcBhE1CUB4qxt4iq
+ pquYMOW44R8VCoYNDwT87UeMS9IqS7tFVvvj+oQCDjz2IE0jzjOuxMNWthrSd6DV5I0lAeOxCsv
+ 3CgBLowN+/yA8MpeOVbmdzBfrzc4d84NRMaZwtiMfLhmU3b0TL6IFdMPbdqA8ZZ4E8UmVHEoj74
+ EbmZjJdOsyYXvKqf2jH91lwMytq/PO2n33irygIH+yCrlMdzND2cNjgaENGlwAiEcB4dT1fyTHC
+ Rdhb5sRxOesUhpQ2yKsUbbAVVwHGGBYbD4KG1i1TISdmvFfgr1E=
+X-Google-Smtp-Source: AGHT+IHP7D6KsDUOeNhHxc9V30FkxjqXeBIloOt+xMSXLkwTuYXHlPRQ8GjCqG2VQLEBocoq4cbTdA==
+X-Received: by 2002:a5d:6d0f:0:b0:390:e46f:4454 with SMTP id
+ ffacd0b85a97d-39132d72c52mr3186094f8f.32.1741360033505; 
+ Fri, 07 Mar 2025 07:07:13 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.11
+ ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 07:07:11 -0800 (PST)
+ Fri, 07 Mar 2025 07:07:12 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/21] hw/arm/smmu-common: Remove the repeated ttb field
-Date: Fri,  7 Mar 2025 15:06:48 +0000
-Message-ID: <20250307150708.3222813-2-peter.maydell@linaro.org>
+Subject: [PULL 02/21] hw/gpio: npcm7xx: fixup out-of-bounds access
+Date: Fri,  7 Mar 2025 15:06:49 +0000
+Message-ID: <20250307150708.3222813-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307150708.3222813-1-peter.maydell@linaro.org>
 References: <20250307150708.3222813-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: JianChunfu <jansef.jian@hj-micro.com>
+From: Patrick Venture <venture@google.com>
 
-SMMUTransCfg->ttb is never used in QEMU, TT base address
-can be accessed by SMMUTransCfg->tt[i]->ttb.
+The reg isn't validated to be a possible register before
+it's dereferenced for one case.  The mmio space registered
+for the gpio device is 4KiB but there aren't that many
+registers in the struct.
 
-Signed-off-by: JianChunfu <jansef.jian@hj-micro.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20250221031034.69822-1-jansef.jian@hj-micro.com
+Cc: qemu-stable@nongnu.org
+Fixes: 526dbbe0874 ("hw/gpio: Add GPIO model for Nuvoton NPCM7xx")
+Signed-off-by: Patrick Venture <venture@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250226024603.493148-1-venture@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/smmu-common.h | 1 -
- 1 file changed, 1 deletion(-)
+ hw/gpio/npcm7xx_gpio.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
-index d1a4a64551d..e5ad55bbae7 100644
---- a/include/hw/arm/smmu-common.h
-+++ b/include/hw/arm/smmu-common.h
-@@ -110,7 +110,6 @@ typedef struct SMMUTransCfg {
-     /* Used by stage-1 only. */
-     bool aa64;                 /* arch64 or aarch32 translation table */
-     bool record_faults;        /* record fault events */
--    uint64_t ttb;              /* TT base address */
-     uint8_t oas;               /* output address width */
-     uint8_t tbi;               /* Top Byte Ignore */
-     int asid;
+diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
+index 23e67424c9f..2916056fae6 100644
+--- a/hw/gpio/npcm7xx_gpio.c
++++ b/hw/gpio/npcm7xx_gpio.c
+@@ -220,8 +220,6 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
+         return;
+     }
+ 
+-    diff = s->regs[reg] ^ value;
+-
+     switch (reg) {
+     case NPCM7XX_GPIO_TLOCK1:
+     case NPCM7XX_GPIO_TLOCK2:
+@@ -242,6 +240,7 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
+     case NPCM7XX_GPIO_PU:
+     case NPCM7XX_GPIO_PD:
+     case NPCM7XX_GPIO_IEM:
++        diff = s->regs[reg] ^ value;
+         s->regs[reg] = value;
+         npcm7xx_gpio_update_pins(s, diff);
+         break;
 -- 
 2.43.0
 
