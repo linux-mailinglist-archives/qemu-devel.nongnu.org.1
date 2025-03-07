@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA54A574D4
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 23:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01064A574D8
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 23:18:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqg0W-0002DZ-At; Fri, 07 Mar 2025 17:17:28 -0500
+	id 1tqg0e-0002Um-3d; Fri, 07 Mar 2025 17:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tqg05-0001v4-Bf
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:17:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tqg07-0001wp-FR
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:17:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tqg02-0007oz-OU
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:17:00 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tqg05-0007pj-Tr
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:17:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741385818;
+ s=mimecast20190719; t=1741385821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EVbiYipccsLmBbLc7DH923fS89CDAwHcTdukc84RR4Y=;
- b=YYL/bnkGMOdUlVY6hxGVsQrhPQoALl4Det8hoH9l2mGLPugrg39UUn/VVtV5Ig2tuDSXnO
- hi4e31aOa1e7cmtiLPV/u6DN9bwBvoTvO9epUsJc3+GoxdR6Ng98XJSaGIeeeUybIgC890
- JFhytOnxGjOrJlW/Qsgb6eq+WAN53K0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=M8Xl/SVYSEAKwlrx0RSXnQBf/T5BGKVCST6sd5FrBLU=;
+ b=Kd9cjLT8Ea2HcIqm4Q88xA4beBcfv3JuQHVuwk/kSC2h7+s38l/zIPojMqnX8DX38mlOYj
+ LA26RcXOU/SrdSYtoKID5UfX/tbGGjZ//iqDiomDajTwYt6SJVEFSFOxekneol5+luwApu
+ CtGSIsFi2Nvz1D15dGrHepo5PdE8wNg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-fCezoiiwPPGs7yNOFZB_Pg-1; Fri,
- 07 Mar 2025 17:16:55 -0500
-X-MC-Unique: fCezoiiwPPGs7yNOFZB_Pg-1
-X-Mimecast-MFC-AGG-ID: fCezoiiwPPGs7yNOFZB_Pg_1741385814
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-RzOrYB8KN0ajvNFv7lfhoA-1; Fri,
+ 07 Mar 2025 17:16:58 -0500
+X-MC-Unique: RzOrYB8KN0ajvNFv7lfhoA-1
+X-Mimecast-MFC-AGG-ID: RzOrYB8KN0ajvNFv7lfhoA_1741385817
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 21A2A19560BC; Fri,  7 Mar 2025 22:16:54 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3E0AD1956083; Fri,  7 Mar 2025 22:16:57 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.226.27])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B81D018009BC; Fri,  7 Mar 2025 22:16:51 +0000 (UTC)
+ id C27C018009AE; Fri,  7 Mar 2025 22:16:54 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, pbonzini@redhat.com,
  afaria@redhat.com, hreitz@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH 2/5] block/io: Ignore FUA with cache.no-flush=on
-Date: Fri,  7 Mar 2025 23:16:31 +0100
-Message-ID: <20250307221634.71951-3-kwolf@redhat.com>
+Subject: [PATCH 3/5] aio: Create AioPolledEvent
+Date: Fri,  7 Mar 2025 23:16:32 +0100
+Message-ID: <20250307221634.71951-4-kwolf@redhat.com>
 In-Reply-To: <20250307221634.71951-1-kwolf@redhat.com>
 References: <20250307221634.71951-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -80,34 +80,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For block drivers that don't advertise FUA support, we already call
-bdrv_co_flush(), which considers BDRV_O_NO_FLUSH. However, drivers that
-do support FUA still see the FUA flag with BDRV_O_NO_FLUSH and get the
-associated performance penalty that cache.no-flush=on was supposed to
-avoid.
-
-Clear FUA for write requests if BDRV_O_NO_FLUSH is set.
+As a preparation for having multiple adaptive polling states per
+AioContext, move the 'ns' field into a separate struct.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/io.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/block/aio.h |  6 +++++-
+ util/aio-posix.c    | 31 ++++++++++++++++---------------
+ util/async.c        |  3 ++-
+ 3 files changed, 23 insertions(+), 17 deletions(-)
 
-diff --git a/block/io.c b/block/io.c
-index d369b994df..1ba8d1aeea 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -1058,6 +1058,10 @@ bdrv_driver_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
-         return -ENOMEDIUM;
+diff --git a/include/block/aio.h b/include/block/aio.h
+index 43883a8a33..49f46e01cb 100644
+--- a/include/block/aio.h
++++ b/include/block/aio.h
+@@ -123,6 +123,10 @@ struct BHListSlice {
+ 
+ typedef QSLIST_HEAD(, AioHandler) AioHandlerSList;
+ 
++typedef struct AioPolledEvent {
++    int64_t ns;        /* current polling time in nanoseconds */
++} AioPolledEvent;
++
+ struct AioContext {
+     GSource source;
+ 
+@@ -229,7 +233,7 @@ struct AioContext {
+     int poll_disable_cnt;
+ 
+     /* Polling mode parameters */
+-    int64_t poll_ns;        /* current polling time in nanoseconds */
++    AioPolledEvent poll;
+     int64_t poll_max_ns;    /* maximum polling time in nanoseconds */
+     int64_t poll_grow;      /* polling time growth factor */
+     int64_t poll_shrink;    /* polling time shrink factor */
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index 06bf9f456c..95bddb9e4b 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -585,7 +585,7 @@ static bool try_poll_mode(AioContext *ctx, AioHandlerList *ready_list,
+         return false;
      }
  
-+    if (bs->open_flags & BDRV_O_NO_FLUSH) {
-+        flags &= ~BDRV_REQ_FUA;
-+    }
+-    max_ns = qemu_soonest_timeout(*timeout, ctx->poll_ns);
++    max_ns = qemu_soonest_timeout(*timeout, ctx->poll.ns);
+     if (max_ns && !ctx->fdmon_ops->need_wait(ctx)) {
+         /*
+          * Enable poll mode. It pairs with the poll_set_started() in
+@@ -683,40 +683,40 @@ bool aio_poll(AioContext *ctx, bool blocking)
+     if (ctx->poll_max_ns) {
+         int64_t block_ns = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - start;
+ 
+-        if (block_ns <= ctx->poll_ns) {
++        if (block_ns <= ctx->poll.ns) {
+             /* This is the sweet spot, no adjustment needed */
+         } else if (block_ns > ctx->poll_max_ns) {
+             /* We'd have to poll for too long, poll less */
+-            int64_t old = ctx->poll_ns;
++            int64_t old = ctx->poll.ns;
+ 
+             if (ctx->poll_shrink) {
+-                ctx->poll_ns /= ctx->poll_shrink;
++                ctx->poll.ns /= ctx->poll_shrink;
+             } else {
+-                ctx->poll_ns = 0;
++                ctx->poll.ns = 0;
+             }
+ 
+-            trace_poll_shrink(ctx, old, ctx->poll_ns);
+-        } else if (ctx->poll_ns < ctx->poll_max_ns &&
++            trace_poll_shrink(ctx, old, ctx->poll.ns);
++        } else if (ctx->poll.ns < ctx->poll_max_ns &&
+                    block_ns < ctx->poll_max_ns) {
+             /* There is room to grow, poll longer */
+-            int64_t old = ctx->poll_ns;
++            int64_t old = ctx->poll.ns;
+             int64_t grow = ctx->poll_grow;
+ 
+             if (grow == 0) {
+                 grow = 2;
+             }
+ 
+-            if (ctx->poll_ns) {
+-                ctx->poll_ns *= grow;
++            if (ctx->poll.ns) {
++                ctx->poll.ns *= grow;
+             } else {
+-                ctx->poll_ns = 4000; /* start polling at 4 microseconds */
++                ctx->poll.ns = 4000; /* start polling at 4 microseconds */
+             }
+ 
+-            if (ctx->poll_ns > ctx->poll_max_ns) {
+-                ctx->poll_ns = ctx->poll_max_ns;
++            if (ctx->poll.ns > ctx->poll_max_ns) {
++                ctx->poll.ns = ctx->poll_max_ns;
+             }
+ 
+-            trace_poll_grow(ctx, old, ctx->poll_ns);
++            trace_poll_grow(ctx, old, ctx->poll.ns);
+         }
+     }
+ 
+@@ -770,8 +770,9 @@ void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
+     /* No thread synchronization here, it doesn't matter if an incorrect value
+      * is used once.
+      */
++    ctx->poll.ns = 0;
 +
-     if ((flags & BDRV_REQ_FUA) &&
-         (~bs->supported_write_flags & BDRV_REQ_FUA)) {
-         flags &= ~BDRV_REQ_FUA;
+     ctx->poll_max_ns = max_ns;
+-    ctx->poll_ns = 0;
+     ctx->poll_grow = grow;
+     ctx->poll_shrink = shrink;
+ 
+diff --git a/util/async.c b/util/async.c
+index 0fe2943609..38667ea091 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -609,7 +609,8 @@ AioContext *aio_context_new(Error **errp)
+     qemu_rec_mutex_init(&ctx->lock);
+     timerlistgroup_init(&ctx->tlg, aio_timerlist_notify, ctx);
+ 
+-    ctx->poll_ns = 0;
++    ctx->poll.ns = 0;
++
+     ctx->poll_max_ns = 0;
+     ctx->poll_grow = 0;
+     ctx->poll_shrink = 0;
 -- 
 2.48.1
 
