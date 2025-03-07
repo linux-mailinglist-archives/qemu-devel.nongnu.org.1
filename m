@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D9FA56B55
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E4EA56B66
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:13:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZIR-0000zS-Bx; Fri, 07 Mar 2025 10:07:31 -0500
+	id 1tqZIU-00011I-LL; Fri, 07 Mar 2025 10:07:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIO-0000yT-Ga
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:28 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1tqZIR-000100-4E
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:31 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tqZIL-0008H2-J5
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:27 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3913958ebf2so192411f8f.3
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:25 -0800 (PST)
+ id 1tqZIO-0008IM-BF
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:07:30 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3912d2c89ecso1549867f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:07:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741360044; x=1741964844; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741360047; x=1741964847; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y41BX0LJZfpDpcW2N8rAeN5eJqcWg7U9y6aGyYB7vHI=;
- b=cS2fqHtwq0T47Nv0BwJ5jerXL3UF4js+QsUGu+kEE8hg7rAnOlbfJY8i/e0xo5DPt5
- zLmkrpLgc/bukZ71RiWyBSwUthb9pGvrrld4gGv8+kVdMGSysu1Ysi6t7EeUQLqi0Y+x
- cQTRFbWJcaBgwOfDI4Bol3gRCC6JcwN7fTDcncki+uR3ibaEkf70cVWGuFs6mSOmSrQs
- ewIZMtwZc71TEaB66sByfOmJAy0HMSMalm6tCUf8u3zM2lr40deIOg6HOFIpYOGCLVcZ
- AWKxCj7FpCzS7x7az5uxy6yNiBfnXDR0Jks9XiENiaEjmtikSTeHTB91Fd/PI0vg+x9m
- n/4w==
+ :reply-to; bh=POedfr8OIoRc4zd6hYJv4201L8L1FVmVr4GGYLpisj8=;
+ b=kNBWhgy/LEL30ACulA/BuTInuN6Ik4T2XRk0heVgWKUPucJyrypNuh1tAZHuNfk82b
+ AGa01dii8V6IIq3xBhSLDtVw/nyEV51/vEgrsqI0b/mxWYEh5eVy2aT6ak0BZqy8PxJa
+ r08i5s020Z2IOx/TIRTbT1pVtJMHXwBwj3CN6940eqJR2EriieUGXQsb2GS2uGrFQCFC
+ pPski5ZDboxFjwWLV3F9QtlDALkupNWo5599oYbhGNgYbLL1UIgJGGXXnwEK2wG7oTil
+ o1uonVVE7t674ArfCRFuicDQMmCmJuHtqk98OJ2RrE1o1A74hTGX4Vei3R52yysvxDlo
+ JMNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741360044; x=1741964844;
+ d=1e100.net; s=20230601; t=1741360047; x=1741964847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y41BX0LJZfpDpcW2N8rAeN5eJqcWg7U9y6aGyYB7vHI=;
- b=AfWF7c/bcPj3XhY0WUBxvUUv9xUjZgzoeKD5dRX582FcfILm6UTJZHR8X4ynH7Sxa5
- dlywEhz3lkg8wv1yA5H1nTFQQYhbPGiudLc6wxXpJrHudTsZ6vYub8wjEgBEHJrxmSp1
- +xfdTuslnJV0pXlTJpgZd8t1TEyMUA4hH6eputh4TSCslIXwJ/0s45euMQVlU1xqt9f+
- 9ZA/ZP1lrZeFj7WjcQbrpbV0d9pCaoDIimpVTUNLmaYInlaC2kneSBwPWJoSiSHHrhp+
- Rf5ZHi/mcWFJKBkYCkg9P+36/kShbJPEUI/GqmmUkXZNeK7jrW6EJ51Hq7yJDG8kLSMn
- ayCw==
-X-Gm-Message-State: AOJu0YyvejlGAK08w8MEwHYB4jsjWXr+ansP4Mt8v93bUaFUvnfqNCNi
- h9ongnk9xN8dDPWm9LgQVPDSFoqah1pVrMS5Rj+WeCj0zNsbS3wyiUtrRoal6AElI0jmGJ2FwVS
- s
-X-Gm-Gg: ASbGnctMhSH/ByAh2ZpeUyalfCfc9dX/ttlULHjKhkhRZZMOd+8sVMxPQzRMYNrvsBl
- zS463jSNbTJhvzhvss1O1cw0pde1XMbvJp6dGY9OLTcLPysF4i29b9bw4Dr6HbvMsOGvW1NyEFq
- Z0MzEpSs7NtpX/RyZC8J3XfDUpcPJ/nrD9aY/p2/4skybl0uBhJL+oQk4DHh7XK8jxTQLJL/N9o
- C7RMSUeayrFIlZ5On10BJdh9dxb+jdboNC9i6pBJ4hz3JILpvc3B5OTfPUlYjfiMarv8cpi7fem
- 3lukOsWgjaDXy9L7kyMzbYQ8FEWV6am7y7Yyl4IXeEwNHQoCUr4=
-X-Google-Smtp-Source: AGHT+IFSd3bC3wHsvyi4BkO/+GbFn+PUqRcbDs4LMVOJtPClH/PegcJK+rLfHfEZVqAeVep86vdQuQ==
-X-Received: by 2002:a05:6000:1447:b0:391:30b9:557b with SMTP id
- ffacd0b85a97d-39132d5a940mr2407754f8f.29.1741360043666; 
- Fri, 07 Mar 2025 07:07:23 -0800 (PST)
+ bh=POedfr8OIoRc4zd6hYJv4201L8L1FVmVr4GGYLpisj8=;
+ b=bmkRku7UtnFlIT8wfYaNTENOwHAUheZIaqNDWvYNvh7Bcf0zqwvDgHQCS79BScgnqE
+ gpamblNdkfseHcNPMzftmjcbgsfVYM3L3SGfUPvNTRyf/Y62Om6QXpuvpOgVaB4wsISE
+ bU1OEeEJU9vpdCgmxXhKLLVw04jKdePVqOYNtX/j8PaUqG+OzzmVXa8sEati9AAfwAA/
+ OHHv+SkmaEnni0ezIEgboDtLJOIg8cLeICSHrCkzHeO1liJ7iA1guBpryAjxGaOwmQ+9
+ 6wqqykBHr66vr1YGGTCZpinQKMFFIweNt2eQMNKLZuUAzYvFB6wl/vnuQJ5qvddTQUov
+ E+Yg==
+X-Gm-Message-State: AOJu0Yxg3uiXp7DYWPwDs8pwxZkgxwolDXQ93lTTAAKXuAP7T6zei0/6
+ dVquTnb3TKO00l1wK4yVe5N9ApP79j8XEdnFLiVVKcycLNHijRD54kB6qV6sOlMZp8FZNwN1/vQ
+ a
+X-Gm-Gg: ASbGnctlrRpI1k56GPw54vIXmE2AFDQSSXomFN7F5GMHKVC0phkDepx1lctmWihSjS/
+ R52/am+r5Q8IGjqiYbQXxGnh1eBfDY3/LtLSqLihqhm34FQifRY+I8Kgu2fekhcp06l+7/Q8hPG
+ l0DawYzzVvWdxVJz1AhcGMSqyvWEh6X58g49CfphhwD3vv3q6cyvG7Q4CJFkLF+UJOMIFzyRLuR
+ NGcZlI2CHD2SJNqeRrX4FZIJP8AMGLZUjTOm3k/PKP0xW5vCVS4WLZ/stUUmpA7NasZtkpZv+ld
+ f4vTiOdJe7qJz2KgWDmM3lBSZqb8G3CRYuLuqbXl0VKpgp7dwNg=
+X-Google-Smtp-Source: AGHT+IEvsD8hXWoTWLSm6mqM5kgwRT8yM6HjevbJWpKI89qJe7JEfXFGSKTZHt4ElfQzy4XvFS719w==
+X-Received: by 2002:a05:6000:1862:b0:390:fe4b:70b9 with SMTP id
+ ffacd0b85a97d-39132d6c5demr3030629f8f.21.1741360044586; 
+ Fri, 07 Mar 2025 07:07:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.22
+ ffacd0b85a97d-3912c1031fdsm5443627f8f.89.2025.03.07.07.07.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 07:07:22 -0800 (PST)
+ Fri, 07 Mar 2025 07:07:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/21] target/arm: Document the architectural names of our
- GTIMERs
-Date: Fri,  7 Mar 2025 15:06:57 +0000
-Message-ID: <20250307150708.3222813-11-peter.maydell@linaro.org>
+Subject: [PULL 11/21] hw/arm: enable secure EL2 timers for virt machine
+Date: Fri,  7 Mar 2025 15:06:58 +0000
+Message-ID: <20250307150708.3222813-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307150708.3222813-1-peter.maydell@linaro.org>
 References: <20250307150708.3222813-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,41 +99,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Bennée <alex.bennee@linaro.org>
 
-As we are about to add more physical and virtual timers let's make it
-clear what each timer does.
-
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250204125009.2281315-8-peter.maydell@linaro.org
-[PMM: Add timer register name prefix to each comment]
+Message-id: 20250204125009.2281315-9-peter.maydell@linaro.org
+Cc: qemu-stable@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/gtimer.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/arm/virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/arm/gtimer.h b/target/arm/gtimer.h
-index 0e89b8e58d0..d49c63cbf87 100644
---- a/target/arm/gtimer.h
-+++ b/target/arm/gtimer.h
-@@ -10,11 +10,11 @@
- #define TARGET_ARM_GTIMER_H
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 904c698b140..a96452f17a4 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -882,6 +882,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+             [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
+             [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
+             [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
++            [GTIMER_S_EL2_PHYS] = ARCH_TIMER_S_EL2_IRQ,
++            [GTIMER_S_EL2_VIRT] = ARCH_TIMER_S_EL2_VIRT_IRQ,
+         };
  
- enum {
--    GTIMER_PHYS     = 0,
--    GTIMER_VIRT     = 1,
--    GTIMER_HYP      = 2,
--    GTIMER_SEC      = 3,
--    GTIMER_HYPVIRT  = 4,
-+    GTIMER_PHYS     = 0, /* CNTP_* ; EL1 physical timer */
-+    GTIMER_VIRT     = 1, /* CNTV_* ; EL1 virtual timer */
-+    GTIMER_HYP      = 2, /* CNTHP_* ; EL2 physical timer */
-+    GTIMER_SEC      = 3, /* CNTPS_* ; EL3 physical timer */
-+    GTIMER_HYPVIRT  = 4, /* CNTHV_* ; EL2 virtual timer ; only if FEAT_VHE */
-     GTIMER_S_EL2_PHYS = 5, /* CNTHPS_* ; only if FEAT_SEL2 */
-     GTIMER_S_EL2_VIRT = 6, /* CNTHVS_* ; only if FEAT_SEL2 */
- #define NUM_GTIMERS   7
+         for (unsigned irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
 -- 
 2.43.0
 
