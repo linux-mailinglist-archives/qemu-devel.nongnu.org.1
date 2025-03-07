@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C469EA5712E
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC6DA57130
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:12:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqd6a-0004es-T1; Fri, 07 Mar 2025 14:11:33 -0500
+	id 1tqd7K-00066G-G6; Fri, 07 Mar 2025 14:12:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqd6W-0004Y6-AG
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:11:28 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1tqd75-0005pw-VG
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:12:10 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqd6S-0005yI-KH
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:11:27 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2fee4d9c2efso4039905a91.3
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:11:24 -0800 (PST)
+ id 1tqd73-000605-Tv
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:12:03 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-223594b3c6dso42005795ad.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:12:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741374683; x=1741979483; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1741374720; x=1741979520; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8rdRRuRUBzxrt5SMTYr25b430C+FWF9U4qpYfx110Mo=;
- b=i6KWJ6aVqQXFRKIrz2ZseGPG05WKhoXYZ4zteq9tpE3DNrSyG/5g4MXu+r13YN58s/
- erkwfUncR6/wlAR36EfZ5vR6xcsHD7MQMMFPrAWUo7vZA1lUL7fvxUP0X46sY7cpsszQ
- oIEJzLvCJDB1uBjdScCQ55PyZlpEvZWbpu1YO4UPh3p798fMJOGe4UhMSFnTXYQZlkF+
- PzPU94jtRh+i2CajCsXxO51CJvutg0aEnkbuO8fwre7p3K9UaBJUKgLT23Qz2KiBOfss
- MgYh90xAMBCNKDmUUnK6ZbDZ2+sZgmtXYczfP+23gNEi1IRDnyxNxhl89Jaw7W6/3WvZ
- ZYsw==
+ bh=pO31XiD3H9Op276gmvECOc5hjBFZk+ESYZCRPkxTRlQ=;
+ b=vHbCraLQ4oHzT4TbMjvOdBh+9rESeRDPjtNoC9V9p9+ZlIfEhhCvlemXNxvECQR4g4
+ Fgj7lHIt6GaNFr5EqSj2QQpjuG3pHxJYZ0q1qVH3ZJiCgRB+cHtn2R9I4gcRhHfu7NJe
+ GuZbWFRCV0c7PK4gJGrzIlLbbfvvhvMnBFxfxlX6bTHNUo5s/iOb2IfGKgesXdunVS8w
+ fMvEKstroNl/ObSfG2Twl/NN4BwUfCkkhEiRDV4skp8mJA9rPRszj+g12xXQu5RYwR5y
+ uwoIYvY2XpHTWsa8F35GIkmhWya9XrugAk6qXVjI7oST3PJKa0GQCNjmv9ti+ySMdiY2
+ 56hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741374683; x=1741979483;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1741374720; x=1741979520;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8rdRRuRUBzxrt5SMTYr25b430C+FWF9U4qpYfx110Mo=;
- b=PSQwbZ8GmOmNuY9OHvsvr+j3/LFj6mN29IH29W8XqZ8HcUFbgjycJVzLZ6MM/AUmyH
- 6qHewkC9Oh4xoMnFtBKcJ7H9VwZ594f3WRUGtBtzVhvjGLUuhxlws2sbu2cp0aqtmIua
- FWnf3PYs99iZoZR1eYWWck+qzLpA64Ur+9eTox6dVhFWG+VNp4dBKWNlQGHNaijs9KI2
- TKaoUykkTOjFlzcLHXQmwirw96KZXY7lS9mzX32S32iOkvUESU3FEkv05hYcw0t2+Njl
- nZ6E5QY/y3Iitrwu/eWr5uH0ZcXFLgO0eEAwGxWYdmo8sTFzc8aZQr/lUhSGTwH4zSnx
- Eqiw==
+ bh=pO31XiD3H9Op276gmvECOc5hjBFZk+ESYZCRPkxTRlQ=;
+ b=lXYL1FVrvGgPPz8rrdSoQ7eouCpeqZX/ennnlIV/VmpUxZt7E/m0682rktVxjCkq3N
+ OQKjuwb9tm9M6klp0LAxMlTEQ93OPYXi8ZzPTpE5Z6X8Xm0KoQgMTXdxqofjWmMZ9xP+
+ TFJbf8pmrlwY678N2MfblDm72HOj4kKRtVEsoG/eXit22xWxyvja4mY72Qh9Ue5nvjwj
+ 18Gu3qGHQKKscz9BFOaTPawE4kI4+VHJLXB7lmyfu3pFZ53/p5xotfVyEvAWMoLwMWSH
+ lW3cX2r3oj+FeLuqSYUWT4TgFdKTsnz7PDpLakcQA04mHYOsbjfA2xT39/vUrgStxBQ2
+ CI6Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVYEehhab0GmzCk2c35EK4d5ezyIqWcdHMEQsBTjrdmARZ3+8YKHnLknZZ9PF6/LqTaodLNl4WvbWzT@nongnu.org
-X-Gm-Message-State: AOJu0Yz+1ewZCxR5PEoqicyTPv/YqokdaU0MCD5pURokJCE1z5j81duk
- CJVes1cDQFgnvoSZnEqHN3DAqqcrO9i/kyad5P0Dtut3IMYkmQiqvH2uINggu48DArKfvrmXmnO
- 5
-X-Gm-Gg: ASbGncsC2VdKS/1GLV9DnBNGtAK7OFqbAXixlFq3OgXKlnpkEpCXzw3dGRFOd3gNtat
- 3K3+gq9+n5YD64F/jXtvaFg8GbbPoa9vxqlTWP0edDwyysngwA0o2Zh8/uYYnnbQdFBQZl3Z8+Y
- /WaLYkPMvifsFs4JNc3yU9ExpmsVokRLNlmhI+b6CatewVbCQjUgkkOWboNhs+0I02JvfDKtPTO
- ts1wZN7YDGV0tWafEF4evp3Af5DA4u9Zya+ajHWcTRpEN5FzRUECiZOoNIEID2yG1UHpX7/wsuO
- kaACQwjHXFeZAxYuFmJwMLS2QS6IwtvRPeJNxuoGknw1NyyqVq4W/9uasg==
-X-Google-Smtp-Source: AGHT+IFY3DtZo2klkkjLU8omvHh+PgiaSZeCteu9AlOVQwp5zKMqhjsXz5nFMqE1FF0HXjOlZ6NgSg==
-X-Received: by 2002:a17:90b:4f8d:b0:2f5:747:cbd with SMTP id
- 98e67ed59e1d1-2ff7ce89c80mr8104864a91.18.1741374682971; 
- Fri, 07 Mar 2025 11:11:22 -0800 (PST)
+ AJvYcCU9sJN5Y0TleFjnLDMiJwAd4jTzDcYpXns6nJIedD28WPHutW6BQmoCzM5Q8FsAqnWMc3hzs6NI+4gM@nongnu.org
+X-Gm-Message-State: AOJu0YwRVa6PO5IFQxbukTfSiIhFlUooiUkxIBTo6UIvlBNBDhcpS0iP
+ 2FOgWUbBZbDZjuhRJFzXFXrYlo/3X0NcVHoQzdVdAcX9CtZlCkdHQdB8s0uaE98=
+X-Gm-Gg: ASbGnctuZ7YVW4sX39UnjNANjCv+kRUNp2qgNNXYBPFYJyTFe4NEPDL2wttsGDe44KT
+ bcjRX469LY/12/0p7lur+u60KjdKaX31JdmVfMxOOfoll86z3xsgSq5HHu5Te8yzJGP/BBGJNw9
+ gyrb6zn8Yw1Ws6zDU7YCNmd6ZzTATNrd8odTp0n8GRYhxsskzkW75Dqdkk+eGNeA8xlHoeuLSMz
+ DvK0sJJqeNzAN7tUq4nqCuKzM8PBbxnw3oZd6Mz5tIthw+ghNTRBnmqBn4LskAiCV+6ToBZ2g36
+ I62fw1W8P8gwWXR8c5IRzO0LzfT3PTn0UtO7dckTysPIhmMtvbrUQoMIXA==
+X-Google-Smtp-Source: AGHT+IGVUrnDVPENMOVvIKfP07rxSD/8iHbWa0HaZiz+5HQ+7tEWSLyAEQQjsblmF9s0JsPcS6QPTA==
+X-Received: by 2002:a05:6a00:c95:b0:725:96f2:9e63 with SMTP id
+ d2e1a72fcca58-736aab16545mr8529817b3a.24.1741374720336; 
+ Fri, 07 Mar 2025 11:12:00 -0800 (PST)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff6937494esm3430586a91.28.2025.03.07.11.11.22
+ d2e1a72fcca58-736abe02bdasm1926596b3a.31.2025.03.07.11.11.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Mar 2025 11:11:22 -0800 (PST)
-Message-ID: <4408a91a-d701-4234-8f8a-87a469b168e3@linaro.org>
-Date: Fri, 7 Mar 2025 11:11:21 -0800
+ Fri, 07 Mar 2025 11:11:59 -0800 (PST)
+Message-ID: <5884d2cc-12b6-41d3-b1e8-77d0d2e79059@linaro.org>
+Date: Fri, 7 Mar 2025 11:11:59 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] include/exec: Move TARGET_PAGE_{SIZE, MASK, BITS} to
- target_page.h
+Subject: Re: [PATCH 01/16] include/exec: Split out exec/cpu-interrupt.h
+Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: philmd@linaro.org
 References: <20250307185645.970034-1-richard.henderson@linaro.org>
- <20250307185645.970034-2-richard.henderson@linaro.org>
+ <20250307185645.970034-3-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250307185645.970034-2-richard.henderson@linaro.org>
+In-Reply-To: <20250307185645.970034-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,182 +102,190 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/7/25 10:56, Richard Henderson wrote:
-> Re-use the TARGET_PAGE_BITS_VARY mechanism to define
-> TARGET_PAGE_SIZE and friends when not compiling per-target.
-> Inline qemu_target_page_{size,mask,bits} as they are now trivial.
+> Some of these bits are actually common to all cpus; while the
+> reset have common reservations for target-specific usage.
+> While generic code cannot know what the target-specific usage is,
+> common code can know what to do with the bits, e.g. single-step.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> 
-> After this, we could in fact remove qemu_target_page_foo(), etc.
-> We certainly don't need to convert any more uses of TARGET_PAGE_FOO.
-> 
-> r~
-> 
-> ---
->   include/exec/cpu-all.h     | 21 +-------------
->   include/exec/poison.h      |  5 ----
->   include/exec/target_page.h | 58 ++++++++++++++++++++++++++++++++++----
->   page-target.c              | 18 ------------
->   page-vary-target.c         |  2 ++
->   5 files changed, 55 insertions(+), 49 deletions(-)
+>   include/exec/cpu-all.h       | 53 +--------------------------
+>   include/exec/cpu-interrupt.h | 70 ++++++++++++++++++++++++++++++++++++
+>   include/exec/poison.h        | 13 -------
+>   3 files changed, 71 insertions(+), 65 deletions(-)
+>   create mode 100644 include/exec/cpu-interrupt.h
 > 
 > diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-> index 09f537d06f..8f7aebb088 100644
+> index 8f7aebb088..9e6724097c 100644
 > --- a/include/exec/cpu-all.h
 > +++ b/include/exec/cpu-all.h
-> @@ -105,26 +105,7 @@ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val
+> @@ -21,6 +21,7 @@
 >   
->   /* page related stuff */
->   #include "exec/cpu-defs.h"
-> -#ifdef TARGET_PAGE_BITS_VARY
-> -# include "exec/page-vary.h"
-> -extern const TargetPageBits target_page;
-> -# ifdef CONFIG_DEBUG_TCG
-> -#  define TARGET_PAGE_BITS   ({ assert(target_page.decided); \
-> -                                target_page.bits; })
-> -#  define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
-> -                                (target_long)target_page.mask; })
-> -# else
-> -#  define TARGET_PAGE_BITS   target_page.bits
-> -#  define TARGET_PAGE_MASK   ((target_long)target_page.mask)
-> -# endif
-> -# define TARGET_PAGE_SIZE    (-(int)TARGET_PAGE_MASK)
-> -#else
-> -# define TARGET_PAGE_BITS_MIN TARGET_PAGE_BITS
-> -# define TARGET_PAGE_SIZE    (1 << TARGET_PAGE_BITS)
-> -# define TARGET_PAGE_MASK    ((target_long)-1 << TARGET_PAGE_BITS)
-> -#endif
-> -
-> -#define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
-> +#include "exec/target_page.h"
+>   #include "exec/page-protection.h"
+>   #include "exec/cpu-common.h"
+> +#include "exec/cpu-interrupt.h"
+>   #include "exec/memory.h"
+>   #include "exec/tswap.h"
+>   #include "hw/core/cpu.h"
+> @@ -109,58 +110,6 @@ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val
 >   
 >   CPUArchState *cpu_copy(CPUArchState *env);
 >   
+> -/* Flags for use in ENV->INTERRUPT_PENDING.
+> -
+> -   The numbers assigned here are non-sequential in order to preserve
+> -   binary compatibility with the vmstate dump.  Bit 0 (0x0001) was
+> -   previously used for CPU_INTERRUPT_EXIT, and is cleared when loading
+> -   the vmstate dump.  */
+> -
+> -/* External hardware interrupt pending.  This is typically used for
+> -   interrupts from devices.  */
+> -#define CPU_INTERRUPT_HARD        0x0002
+> -
+> -/* Exit the current TB.  This is typically used when some system-level device
+> -   makes some change to the memory mapping.  E.g. the a20 line change.  */
+> -#define CPU_INTERRUPT_EXITTB      0x0004
+> -
+> -/* Halt the CPU.  */
+> -#define CPU_INTERRUPT_HALT        0x0020
+> -
+> -/* Debug event pending.  */
+> -#define CPU_INTERRUPT_DEBUG       0x0080
+> -
+> -/* Reset signal.  */
+> -#define CPU_INTERRUPT_RESET       0x0400
+> -
+> -/* Several target-specific external hardware interrupts.  Each target/cpu.h
+> -   should define proper names based on these defines.  */
+> -#define CPU_INTERRUPT_TGT_EXT_0   0x0008
+> -#define CPU_INTERRUPT_TGT_EXT_1   0x0010
+> -#define CPU_INTERRUPT_TGT_EXT_2   0x0040
+> -#define CPU_INTERRUPT_TGT_EXT_3   0x0200
+> -#define CPU_INTERRUPT_TGT_EXT_4   0x1000
+> -
+> -/* Several target-specific internal interrupts.  These differ from the
+> -   preceding target-specific interrupts in that they are intended to
+> -   originate from within the cpu itself, typically in response to some
+> -   instruction being executed.  These, therefore, are not masked while
+> -   single-stepping within the debugger.  */
+> -#define CPU_INTERRUPT_TGT_INT_0   0x0100
+> -#define CPU_INTERRUPT_TGT_INT_1   0x0800
+> -#define CPU_INTERRUPT_TGT_INT_2   0x2000
+> -
+> -/* First unused bit: 0x4000.  */
+> -
+> -/* The set of all bits that should be masked when single-stepping.  */
+> -#define CPU_INTERRUPT_SSTEP_MASK \
+> -    (CPU_INTERRUPT_HARD          \
+> -     | CPU_INTERRUPT_TGT_EXT_0   \
+> -     | CPU_INTERRUPT_TGT_EXT_1   \
+> -     | CPU_INTERRUPT_TGT_EXT_2   \
+> -     | CPU_INTERRUPT_TGT_EXT_3   \
+> -     | CPU_INTERRUPT_TGT_EXT_4)
+> -
+>   #include "cpu.h"
+>   
+>   #ifdef CONFIG_USER_ONLY
+> diff --git a/include/exec/cpu-interrupt.h b/include/exec/cpu-interrupt.h
+> new file mode 100644
+> index 0000000000..40715193ca
+> --- /dev/null
+> +++ b/include/exec/cpu-interrupt.h
+> @@ -0,0 +1,70 @@
+> +/*
+> + * Flags for use with cpu_interrupt()
+> + *
+> + * Copyright (c) 2003 Fabrice Bellard
+> + * SPDX-License-Identifier: LGPL-2.1-or-later
+> + */
+> +
+> +#ifndef CPU_INTERRUPT_H
+> +#define CPU_INTERRUPT_H
+> +
+> +/*
+> + * The numbers assigned here are non-sequential in order to preserve binary
+> + * compatibility with the vmstate dump.  Bit 0 (0x0001) was previously used
+> + * for CPU_INTERRUPT_EXIT, and is cleared when loading the vmstate dump.
+> + */
+> +
+> +/*
+> + * External hardware interrupt pending.
+> + * This is typically used for interrupts from devices.
+> + */
+> +#define CPU_INTERRUPT_HARD        0x0002
+> +
+> +/*
+> + * Exit the current TB.  This is typically used when some system-level device
+> + * makes some change to the memory mapping.  E.g. the a20 line change.
+> + */
+> +#define CPU_INTERRUPT_EXITTB      0x0004
+> +
+> +/* Halt the CPU.  */
+> +#define CPU_INTERRUPT_HALT        0x0020
+> +
+> +/* Debug event pending.  */
+> +#define CPU_INTERRUPT_DEBUG       0x0080
+> +
+> +/* Reset signal.  */
+> +#define CPU_INTERRUPT_RESET       0x0400
+> +
+> +/*
+> + * Several target-specific external hardware interrupts.  Each target/cpu.h
+> + * should define proper names based on these defines.
+> + */
+> +#define CPU_INTERRUPT_TGT_EXT_0   0x0008
+> +#define CPU_INTERRUPT_TGT_EXT_1   0x0010
+> +#define CPU_INTERRUPT_TGT_EXT_2   0x0040
+> +#define CPU_INTERRUPT_TGT_EXT_3   0x0200
+> +#define CPU_INTERRUPT_TGT_EXT_4   0x1000
+> +
+> +/*
+> + * Several target-specific internal interrupts.  These differ from the
+> + * preceding target-specific interrupts in that they are intended to
+> + * originate from within the cpu itself, typically in response to some
+> + * instruction being executed.  These, therefore, are not masked while
+> + * single-stepping within the debugger.
+> + */
+> +#define CPU_INTERRUPT_TGT_INT_0   0x0100
+> +#define CPU_INTERRUPT_TGT_INT_1   0x0800
+> +#define CPU_INTERRUPT_TGT_INT_2   0x2000
+> +
+> +/* First unused bit: 0x4000.  */
+> +
+> +/* The set of all bits that should be masked when single-stepping.  */
+> +#define CPU_INTERRUPT_SSTEP_MASK \
+> +    (CPU_INTERRUPT_HARD          \
+> +     | CPU_INTERRUPT_TGT_EXT_0   \
+> +     | CPU_INTERRUPT_TGT_EXT_1   \
+> +     | CPU_INTERRUPT_TGT_EXT_2   \
+> +     | CPU_INTERRUPT_TGT_EXT_3   \
+> +     | CPU_INTERRUPT_TGT_EXT_4)
+> +
+> +#endif /* CPU_INTERRUPT_H */
 > diff --git a/include/exec/poison.h b/include/exec/poison.h
-> index f4283f693a..ce43a12965 100644
+> index 35721366d7..8ed04b3108 100644
 > --- a/include/exec/poison.h
 > +++ b/include/exec/poison.h
-> @@ -44,11 +44,6 @@
->   #pragma GCC poison TARGET_FMT_ld
->   #pragma GCC poison TARGET_FMT_lu
+> @@ -46,19 +46,6 @@
 >   
-> -#pragma GCC poison TARGET_PAGE_SIZE
-> -#pragma GCC poison TARGET_PAGE_MASK
-> -#pragma GCC poison TARGET_PAGE_BITS
-> -#pragma GCC poison TARGET_PAGE_ALIGN
-> -
->   #pragma GCC poison CPU_INTERRUPT_HARD
->   #pragma GCC poison CPU_INTERRUPT_EXITTB
->   #pragma GCC poison CPU_INTERRUPT_HALT
-> diff --git a/include/exec/target_page.h b/include/exec/target_page.h
-> index 98ffbb5c23..8e89e5cbe6 100644
-> --- a/include/exec/target_page.h
-> +++ b/include/exec/target_page.h
-> @@ -14,10 +14,56 @@
->   #ifndef EXEC_TARGET_PAGE_H
->   #define EXEC_TARGET_PAGE_H
+>   #pragma GCC poison TARGET_PHYS_ADDR_SPACE_BITS
 >   
-> -size_t qemu_target_page_size(void);
-> -int qemu_target_page_mask(void);
-> -int qemu_target_page_bits(void);
-> -int qemu_target_page_bits_min(void);
+> -#pragma GCC poison CPU_INTERRUPT_HARD
+> -#pragma GCC poison CPU_INTERRUPT_EXITTB
+> -#pragma GCC poison CPU_INTERRUPT_HALT
+> -#pragma GCC poison CPU_INTERRUPT_DEBUG
+> -#pragma GCC poison CPU_INTERRUPT_TGT_EXT_0
+> -#pragma GCC poison CPU_INTERRUPT_TGT_EXT_1
+> -#pragma GCC poison CPU_INTERRUPT_TGT_EXT_2
+> -#pragma GCC poison CPU_INTERRUPT_TGT_EXT_3
+> -#pragma GCC poison CPU_INTERRUPT_TGT_EXT_4
+> -#pragma GCC poison CPU_INTERRUPT_TGT_INT_0
+> -#pragma GCC poison CPU_INTERRUPT_TGT_INT_1
+> -#pragma GCC poison CPU_INTERRUPT_TGT_INT_2
 > -
-> -size_t qemu_target_pages_to_MiB(size_t pages);
-> +/*
-> + * If compiling per-target, get the real values.
-> + * For generic code, reuse the mechanism for variable page size.
-> + */
-> +#ifdef COMPILING_PER_TARGET
-> +#include "cpu-param.h"
-> +#include "exec/target_long.h"
-> +#define TARGET_PAGE_TYPE  target_long
-> +#else
-> +#define TARGET_PAGE_BITS_VARY
-> +#define TARGET_PAGE_TYPE  int
-> +#endif
-> +
-> +#ifdef TARGET_PAGE_BITS_VARY
-> +# include "exec/page-vary.h"
-> +extern const TargetPageBits target_page;
-> +# ifdef CONFIG_DEBUG_TCG
-> +#  define TARGET_PAGE_BITS   ({ assert(target_page.decided); \
-> +                                target_page.bits; })
-> +#  define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
-> +                                (TARGET_PAGE_TYPE)target_page.mask; })
-> +# else
-> +#  define TARGET_PAGE_BITS   target_page.bits
-> +#  define TARGET_PAGE_MASK   ((TARGET_PAGE_TYPE)target_page.mask)
-> +# endif
-> +# define TARGET_PAGE_SIZE    (-(int)TARGET_PAGE_MASK)
-> +#else
-> +# define TARGET_PAGE_BITS_MIN TARGET_PAGE_BITS
-> +# define TARGET_PAGE_SIZE    (1 << TARGET_PAGE_BITS)
-> +# define TARGET_PAGE_MASK    ((TARGET_PAGE_TYPE)-1 << TARGET_PAGE_BITS)
-> +#endif
-> +
-> +#define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
-> +
-> +static inline size_t qemu_target_page_size(void)
-> +{
-> +    return TARGET_PAGE_SIZE;
-> +}
-> +
-> +static inline int qemu_target_page_mask(void)
-> +{
-> +    return TARGET_PAGE_MASK;
-> +}
-> +
-> +static inline int qemu_target_page_bits(void)
-> +{
-> +    return TARGET_PAGE_BITS;
-> +}
-> +
-> +int qemu_target_page_bits_min(void);
-> +size_t qemu_target_pages_to_MiB(size_t pages);
-> +
->   #endif
-> diff --git a/page-target.c b/page-target.c
-> index 82211c8593..321e43d06f 100644
-> --- a/page-target.c
-> +++ b/page-target.c
-> @@ -8,24 +8,6 @@
->   
->   #include "qemu/osdep.h"
->   #include "exec/target_page.h"
-> -#include "exec/cpu-defs.h"
-> -#include "cpu.h"
-> -#include "exec/cpu-all.h"
-> -
-> -size_t qemu_target_page_size(void)
-> -{
-> -    return TARGET_PAGE_SIZE;
-> -}
-> -
-> -int qemu_target_page_mask(void)
-> -{
-> -    return TARGET_PAGE_MASK;
-> -}
-> -
-> -int qemu_target_page_bits(void)
-> -{
-> -    return TARGET_PAGE_BITS;
-> -}
->   
->   int qemu_target_page_bits_min(void)
->   {
-> diff --git a/page-vary-target.c b/page-vary-target.c
-> index 343b4adb95..1b4a9a10be 100644
-> --- a/page-vary-target.c
-> +++ b/page-vary-target.c
-> @@ -37,5 +37,7 @@ void finalize_target_page_bits(void)
->   {
->   #ifdef TARGET_PAGE_BITS_VARY
->       finalize_target_page_bits_common(TARGET_PAGE_BITS_MIN);
-> +#else
-> +    finalize_target_page_bits_common(TARGET_PAGE_BITS);
->   #endif
->   }
+>   #pragma GCC poison CONFIG_ALPHA_DIS
+>   #pragma GCC poison CONFIG_HPPA_DIS
+>   #pragma GCC poison CONFIG_I386_DIS
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
