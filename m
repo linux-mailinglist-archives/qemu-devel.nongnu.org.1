@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6F8A5732B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EE4A5732F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:57:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqekF-0000IF-Hi; Fri, 07 Mar 2025 15:56:36 -0500
+	id 1tqekI-0000Rk-9z; Fri, 07 Mar 2025 15:56:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tqejn-0008P8-5m
+ id 1tqejn-0008P9-6F
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:56:14 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tqejj-0003kR-9V
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:56:05 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 527Jtkjm017510;
- Fri, 7 Mar 2025 20:56:00 GMT
+ id 1tqejk-0003qY-6W
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:56:06 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 527JtwtK018267;
+ Fri, 7 Mar 2025 20:56:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=IuY98+6rwmP/rroRpKLqM65CjlaGLlASb9JcDNwWpuU=; b=
- mox7A6ABFYkgO/2gfosmFs+vCf1FhRmAdIOotOf0uAh34hCc+Vakq6Fd6ym6yiCv
- Qo4hPhw5cy30Oxlerv151gogKD9+bJQf1oiU2jZwFcm/KWgICbFBU1alvCUwx3TL
- ha23hc5o28hc+aTApEKqRW6JaTXpfWieSza0BXKTW+9/AM58S7bYDr7oQZC7vuAr
- XAc8yrpnwm6x3x6uBs31HltDwM7kJYvkf/ZvVNdWih3hs70vDFoxXIoANhQVlP86
- n1mEBuvuos+Ofm0phH+JFetGl+sATByBXzdNrL93ziqAYzQIEbAL9ClNcg8yGwhD
- NDIoxrqssOc7zdxQb/Jo1w==
+ corp-2023-11-20; bh=n1k0/HyO5PaySwG59q3NWb0lYya8BcADYAqkC9BtGk0=; b=
+ I/h4TYZB3hovjoNlWNp0mlNOAl46wszgzGWdCbsU3V/bGCTdJuqyTE7lgo8PCTbS
+ UvpwpCooroOj9QiWMOXzqvoaF2QjeI4x+J72OchxmT6mFPmWCvq0zCL+DXGWpDNN
+ e+Qf9shHa+5suLpk43lleqp8fCYEKiveHjYcLzYK4X0s12mYRQe+kynavYEdJ6p7
+ fNDryTT9IiQfglk2WG0O9cHjchh9y+uQsmEnygxz7HH6iH19xgxhZIBBiquTCifw
+ hG4Q48hH04alHeeCiFd4O5TjeRdK8QMhrHSgWeg5G2qu4KRsIS1Vh8yN4WnXIhUE
+ QH/db8x6uKilcCfO7oDtwA==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453uaw51h7-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u8255um-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 07 Mar 2025 20:56:00 +0000 (GMT)
+ Fri, 07 Mar 2025 20:56:01 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 527KCtl0010911; Fri, 7 Mar 2025 20:55:59 GMT
+ with ESMTP id 527Kf97Q011061; Fri, 7 Mar 2025 20:56:00 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 453rpfmv3g-1
+ 453rpfmv45-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 07 Mar 2025 20:55:59 +0000
+ Fri, 07 Mar 2025 20:56:00 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 527KtuLt016275;
- Fri, 7 Mar 2025 20:55:58 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 527KtuLv016275;
+ Fri, 7 Mar 2025 20:55:59 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 453rpfmv2c-3; Fri, 07 Mar 2025 20:55:58 +0000
+ ESMTP id 453rpfmv2c-4; Fri, 07 Mar 2025 20:55:59 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Philippe Mathieu-Daude <philmd@linaro.org>,
@@ -58,22 +58,22 @@ Cc: Philippe Mathieu-Daude <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 2/4] pflash: fix cpr
-Date: Fri,  7 Mar 2025 12:55:52 -0800
-Message-Id: <1741380954-341079-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 3/4] hw/loader: fix roms during cpr
+Date: Fri,  7 Mar 2025 12:55:53 -0800
+Message-Id: <1741380954-341079-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1741380954-341079-1-git-send-email-steven.sistare@oracle.com>
 References: <1741380954-341079-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-07_07,2025-03-07_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=968
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0
  spamscore=0 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
  definitions=main-2503070158
-X-Proofpoint-GUID: doY-NKB49UOAprb8vtwa4tyOHkjbQyGk
-X-Proofpoint-ORIG-GUID: doY-NKB49UOAprb8vtwa4tyOHkjbQyGk
+X-Proofpoint-GUID: alAcPc-LPdah80zclEuYSZNB4dtwEB6h
+X-Proofpoint-ORIG-GUID: alAcPc-LPdah80zclEuYSZNB4dtwEB6h
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -108,32 +108,32 @@ fix, skip the re-init during CPR.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/block/block.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/core/loader.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/block/block.c b/hw/block/block.c
-index 1d405e0..2e10611 100644
---- a/hw/block/block.c
-+++ b/hw/block/block.c
-@@ -12,6 +12,7 @@
- #include "system/blockdev.h"
- #include "system/block-backend.h"
- #include "hw/block/block.h"
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index fd25c5e..3c3a9a0 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -51,6 +51,7 @@
+ #include "trace.h"
+ #include "hw/hw.h"
+ #include "disas/disas.h"
 +#include "migration/cpr.h"
- #include "qapi/error.h"
- #include "qapi/qapi-types-block.h"
+ #include "migration/vmstate.h"
+ #include "monitor/monitor.h"
+ #include "system/reset.h"
+@@ -1029,7 +1030,9 @@ static void *rom_set_mr(Rom *rom, Object *owner, const char *name, bool ro)
+     vmstate_register_ram_global(rom->mr);
  
-@@ -66,6 +67,10 @@ bool blk_check_size_and_read_all(BlockBackend *blk, DeviceState *dev,
-     int ret;
-     g_autofree char *dev_id = NULL;
- 
-+    if (cpr_is_incoming()) {
-+        return true;
+     data = memory_region_get_ram_ptr(rom->mr);
+-    memcpy(data, rom->data, rom->datasize);
++    if (!cpr_is_incoming()) {
++        memcpy(data, rom->data, rom->datasize);
 +    }
-+
-     blk_len = blk_getlength(blk);
-     if (blk_len < 0) {
-         error_setg_errno(errp, -blk_len,
+ 
+     return data;
+ }
 -- 
 1.8.3.1
 
